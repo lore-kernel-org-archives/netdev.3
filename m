@@ -1,61 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC6C1CEE97
-	for <netdev@vger.kernel.org>; Thu, 10 Oct 2024 15:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725811C9B63
+	for <netdev@vger.kernel.org>; Thu, 10 Oct 2024 15:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728575761; cv=none; b=fDilFB8yP5rDYGMcljPF8dD5Fj+dGeNV+f+VE8fYg08tDTzE6L9aBV30/jv85F0UwTxDaHX03uYtPmCz95YYRt6LnH1e9Sh+wsmbguVix3JbydSOMTlHPE+jMnfKRdxGo+EADwVgEnPEBRg4j+yurjJs4IJkp8wAswywZNP7N/4=
+	t=1728575976; cv=none; b=ZMkafNZwiL1g9t4CwpxUapw9robrJcWSLUhzeA9qO8bcDbyGIV7WUvAKSJAX8dfN5WWUOqW6WZ4l1jGsTQo/hcoy3CytOeedfVp00wlsqPch7O7IHG2u48yi6TBQL4MJ65GwdbsrV0becC14tAvN8Cu3XIHfjiuWTvi8xorf1vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728575761; c=relaxed/simple;
-	bh=1i6VwhKRP+RPdE0J7al15vAclQ+hjJ24MDC5H/cRbdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VWDwSA2SpTfoDzYGcb5gpep6cs7ARAK5srro3cs8UbQW3YXZtxZ4bPM6zprPmKxrGSYBcvFO/Qab7VOo6eeSVD4+pGlq7nKMfAW8gxpqe4Kp6SG/y3TK9HzbX3ifElu5OnRdr+j4pp3+FDiaI7UkrYWS2JgtzSEA4xqsRHk4Jtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfIEkr5D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728575976; c=relaxed/simple;
+	bh=PfZeNcFw1bT/pN+WBxONE28O+RahXMikU7YuitEDd84=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MJYNFYjhRaUEsZi9C6UeT0dShxa72PHNtSrbZtb9q5fHBMTVIBfIcyW+2pOWEScaWQBm05cAimLfCBGPlVMaF9nV4jXK0xa7ZMjFQFIG0HdvIU+YIaU3g8sa1sH3+K3m3vIBvgJilvNt2aMbKvEgcD0YWvm3SnWkCgMVtQs0tnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=AQ5s48re; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfIEkr5D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E29C4CED0;
-	Thu, 10 Oct 2024 15:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728575761;
-	bh=1i6VwhKRP+RPdE0J7al15vAclQ+hjJ24MDC5H/cRbdI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MfIEkr5Dfvz/gKmQgpF/UYNosi7XNEPxxyANxF3SNOGpT2QDyqt/Il6VEP7uZ9MuY
-	 ia6xablrufdKiQeipeQruzLaeMzIqpTfaKHKlCdhDgKE3WZbn6t5hXlEgq+VcTgwjk
-	 b89dC2wi2QZQjShYkfZZtfoQHQXmMv2+gUhvXK+jMp29DvHCfY9R4+CwJH5Cl8xcZv
-	 bSRfzYsdTgJWvEl/KPu4pjAl+9XxXYDOrL5dk2gb16t1bFO64ukLos+maBu9QBzF6F
-	 vvq4RA/R8EnNMM3DbfsSP80Ocl54wiwq1s5GPXE1T4VWKtQ2FjEs99TmqVHjneWx2V
-	 GTqBSYrQOYrIA==
-Date: Thu, 10 Oct 2024 08:55:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="AQ5s48re"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3e039889ca0so621825b6e.3
+        for <netdev@vger.kernel.org>; Thu, 10 Oct 2024 08:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1728575973; x=1729180773; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yeku9+EKhD0eyLZNLUrY1WzCvsvKi1BJ6gq9NUUHrtQ=;
+        b=AQ5s48rekCCbw87iaHEPqcoXvyhDm9vluE6oNylcuF6w+wuBxJVKv56ryVuJkFKOa5
+         ri9P2mcx05hSIH9qyyi92wKEmr6ZD21ffUSYSr+j0NtQhMirHt/IruIgViA8nYqTHJ6x
+         32mpUl8ubnnI42uggIv3yr8QWFwAoYqcZGvmo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728575973; x=1729180773;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yeku9+EKhD0eyLZNLUrY1WzCvsvKi1BJ6gq9NUUHrtQ=;
+        b=lJMh26X5PmLwMWkzlW+hTzipkwjSvt1f6xrphQUu/7on57Jmhq/59HGBUCTV9dXgGj
+         rgXHEjtuh4RUlfANDA8OUy2d1Yk6KQKqVhQXmJxnwO5uItE8yIeg2DZM01mZB4ZLPKMR
+         A9PlwkOkfyE5IXlp048gF5H16qILkIbnt5F0rSU1iYZNNV0rA43JN0L8JASMHcHa4k77
+         8H8qqf6hN7q6FXrE+P2T1s5FxBYoWGFEhHxqJ6AL43pnoYFu17D46deb+TIE6qpwkoDY
+         rRz7zGiqLLb2eIjZ8KwwUO1OUdcGRTyDzCeqLZyUCXuJnPUB+17bWwpKqsTSjS2uzHQB
+         eJTA==
+X-Gm-Message-State: AOJu0Yypau0wZBXvmTUKycILluCneDjl6MSuumGKIUsn0Ahh3JlhOTRE
+	8bvouWS32M0uikNf/nwQWJSlgT4G31CZbTduybWBWYXLPHzdI3LUMxJYCHzaFBY=
+X-Google-Smtp-Source: AGHT+IEtL6WXGzPYuh+MnBkT5NJl2Cl0DdJhepAOU04VKXDoCawCLBlrMQZVO/pkGBZrqJMIhISK1A==
+X-Received: by 2002:a05:6808:1918:b0:3d2:18c1:bf35 with SMTP id 5614622812f47-3e4d71beaddmr4147622b6e.33.1728575973406;
+        Thu, 10 Oct 2024 08:59:33 -0700 (PDT)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea4495d331sm1152526a12.60.2024.10.10.08.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2024 08:59:32 -0700 (PDT)
+Date: Thu, 10 Oct 2024 08:59:29 -0700
+From: Joe Damato <jdamato@fastly.com>
 To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next 0/2] net: do not rely on rtnl in
- netdev_nl_napi_get_xxx()
-Message-ID: <20241010085559.36725e69@kernel.org>
-In-Reply-To: <20241009232728.107604-1-edumazet@google.com>
-References: <20241009232728.107604-1-edumazet@google.com>
+Cc: netdev@vger.kernel.org, mkarsten@uwaterloo.ca, skhawaja@google.com,
+	sdf@fomichev.me, bjorn@rivosinc.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, willemdebruijn.kernel@gmail.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jiri Pirko <jiri@resnulli.us>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [net-next v5 5/9] net: napi: Add napi_config
+Message-ID: <Zwf54UVvfyx830sk@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	mkarsten@uwaterloo.ca, skhawaja@google.com, sdf@fomichev.me,
+	bjorn@rivosinc.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, willemdebruijn.kernel@gmail.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jiri Pirko <jiri@resnulli.us>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+References: <20241009005525.13651-1-jdamato@fastly.com>
+ <20241009005525.13651-6-jdamato@fastly.com>
+ <CANn89iKytfwyax_d+7U8Xw-Wvj5z1d7xoi4LNhmUQphDiborDQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89iKytfwyax_d+7U8Xw-Wvj5z1d7xoi4LNhmUQphDiborDQ@mail.gmail.com>
 
-On Wed,  9 Oct 2024 23:27:25 +0000 Eric Dumazet wrote:
-> With upcoming per netns RTNL, rtnl use in netdev_nl_napi_get_doit()
-> and netdev_nl_napi_get_dumpit() is a bit problematic.
+On Thu, Oct 10, 2024 at 06:20:57AM +0200, Eric Dumazet wrote:
+> On Wed, Oct 9, 2024 at 2:56 AM Joe Damato <jdamato@fastly.com> wrote:
+
+[...]
+
+> > +
+> > +static void napi_hash_add_with_id(struct napi_struct *napi,
+> > +                                 unsigned int napi_id)
+> > +{
+> > +       spin_lock(&napi_hash_lock);
+> > +       __napi_hash_add_with_id(napi, napi_id);
 > 
-> They can be changed to only rely on RCU.
+> Hmmm... there is no check if 'napi_id' is already used and hashed.
+> 
+> I would add
+> 
+> WARN_ON_ONCE(napi_by_id(napi_id));
 
-Oh, you already posted this.
+Thanks for the careful review, Eric.
 
-I was hoping we can start moving NAPIs and queues under dev->lock,
-gradually move all local netdev state under that lock. RCU only
-gets us so far when we have to cross reference objects (e.g. link
-queue to NAPI). Even with NAPI SET not sure if RCU will work given
-the writes have to happen into the instance and the "config struct".
+I agree that adding this is a good idea and I will do so for the v6.
+
+Jakub: I hope that it's OK if I retain your Reviewed-by tag as the
+change Eric suggested is a minor one?
+
+If you'd prefer I drop your Reviewed-by from this one, please let me
+know.
