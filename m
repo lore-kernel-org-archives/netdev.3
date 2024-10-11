@@ -1,83 +1,142 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFC91CCB31
-	for <netdev@vger.kernel.org>; Fri, 11 Oct 2024 18:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425A21D0406;
+	Fri, 11 Oct 2024 18:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728672592; cv=none; b=m57ZVVXKv0r+XgcheUHV0KgHGjwfSPt3w+l3BHfU4l6Moi8jToW5S6HSCVbJ5NGjTcMVdyIH98U8iTlXLW3yo752otFfkSaIjN0vxuySD6g688H+xD0bXzenJwmc5AfuHaBYGG4xuing/n38ot/gRO2Zf0G4vmoVuGk3iGPMQQQ=
+	t=1728672609; cv=none; b=PmvoWRYP6l1N4qNBiDRPhfVk/azG14v8rvcsTGydGCcaoDfEf1w+9N7B5OERyG+VD/Ex5oW36+1Db9NfXl0lZRTS8YRW2DV4yftO3eyLHjpcpKeD7coDaX/kU/+nJPCqUJz/aABGhLh+VnRdOuQ79t3JyR9GK+AotOHUOQ80XTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728672592; c=relaxed/simple;
-	bh=QIHwncpZoPxRu2uYUBr20M+nEnu60kU1bDm4StCp+FI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nsczhlsfjLY+VS1VLXzPc1ikrrS/z7yuBljkSUetQDwAnMSjkl+ao908RjRqrxwh2Z62mnSOsPqFBYGZUY0s61obwN0Ppr6IjhFM1hRAaRrRNYRIb7ZSfMDD63PFHJ4DGIRZmrQ7IIQGqhb0zi1GxtvnCv7Cr68B1PMmJ+aHD24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VUO9ZYgU; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728672609; c=relaxed/simple;
+	bh=NKdwyV2yhRLyVZ+vhlosGcKFUdD7xmu+679Y6S8XNsY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RevjjbNPF32cUhhbUDOQAhZZ0+E811m8bkt9MPBXbqWulhjmZZ787smDVzSf5TAPCTkmsvv9+VEn+5aZZdyLMK44f+mO68a41BawLRZYGZcyeSxFAHyrjwP93ylCqls5Nd+AGXRpqOJjL0p/16Ehw691OBSg/CIhcMow5GCCV/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N1l+97Wk; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VUO9ZYgU"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c87c7d6ad4so3245399a12.3
-        for <netdev@vger.kernel.org>; Fri, 11 Oct 2024 11:49:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728672589; x=1729277389; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QIHwncpZoPxRu2uYUBr20M+nEnu60kU1bDm4StCp+FI=;
-        b=VUO9ZYgUu39w9QKq/L+qfsHIn52oQkaV089XNPV1JKUFUT11ceG/kBfrPsmg8Y0lZU
-         tvXCRhzKyK8kMSWN/PIN4sOcpFd6lFDRL/ARyQzEuAijIBptRrCOqPfueDI+b7XHfDTo
-         16Nqc6etYljjS1GHnUdgOZFqG4oqBtWn59/V4+36/JMkSCdP9Ovhue9vyqNpIM3vpMWx
-         kYefHKzFf1xoczxsY5TgTOMrgDdB9MOqGueAFhqq/Q4/bj/W21Q4pCUc6kIfqKkE/1gJ
-         zR5bBOatCg/TJ6lDO6NX2p8guGKcBs9Y6R/eBVUzeZ07hmaLyqMt+LBwfFrWH0Ncjjd7
-         39mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728672589; x=1729277389;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QIHwncpZoPxRu2uYUBr20M+nEnu60kU1bDm4StCp+FI=;
-        b=H3w7ivljQoxYOpyYYdGvpcnsjILRemFUOWd6GrV6BodMlwXLaQQ5IJ8xsYQ+m7n6Lm
-         PntKe0AQQ04ZVJflfq0VbuPKJlDFS5hkgppGWPX3U/ZFWRHb/nlpYht3lZvdD7rucVve
-         PWIIDtnoq6opPwzt1tiOkK0UOfZxcUgysZ9uzZCvmfJdXcwM+Y0CSI2WcLkO88XwNSxo
-         9B+tCVD3x3BArStgyQxCUCyLDENByP/BLvvSpBfOUzWGZ0NEewcJSTwzZEM58pM9DADh
-         SZbkwFBKKOl3UxlWJVl5A2RyMuz879dnDWKhi52x80KSV92ryIeTRxObgcGAwT4Zau3n
-         G+vw==
-X-Gm-Message-State: AOJu0YwajA0U2C7prnhJOmibbhZY+BHM0OesF3s/d9dvIL956TBY1t0u
-	GViZwWS++RcZuQVeuo2yfDiC29pnUvlRk9l16KtqJ0hGqUdFLksy/uH3PFG2Pbu2x0pxaaxHolW
-	nIbJYW+usYYkR/6Sj6SQYFH6l2eYqYrjs09qNRG4LHYeHvnSZIr8O
-X-Google-Smtp-Source: AGHT+IHkYbxqk/YesUXXruMuOI+CR8GCey6RROAO7yQ6qHLCyPdTSNHKOsMY9NIgQ6xgXpENUM2N0HadBwodQZ7bUD0=
-X-Received: by 2002:a05:6402:3512:b0:5c9:40e6:24e with SMTP id
- 4fb4d7f45d1cf-5c95ac4175emr209271a12.28.1728672588855; Fri, 11 Oct 2024
- 11:49:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N1l+97Wk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728672607; x=1760208607;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=NKdwyV2yhRLyVZ+vhlosGcKFUdD7xmu+679Y6S8XNsY=;
+  b=N1l+97WkCgo9O5d650GhnzMf86YGCJkUvaXPAJOl5WG0tKy7zrJZ6xgW
+   vTtTy8xra5bgbRAq8c0yKeb93bC99+Vr5R8/ICQMfd6meFo8ZNXXhiY8B
+   AohkNmQVry9bQQgEUpXWpzkf6CxIuG2v+rC+ORwizaTUKDvZO2kRDbhct
+   JIzEya8Tl5il+wOGapRvI31OAUHuwgnANbWyuxKQQNtZ000vcnQnllJ5t
+   brEuDYk8zRqP7BogcSxt/F0tn/Jgzmx/gRzvWnuvYc3wZMrWTpDNEVkpf
+   E73NiIDHV5OQuMucLBxxJdeoYhZ2Sjl0+r62jAqQPSNIz3AZ9hM4KuVmv
+   w==;
+X-CSE-ConnectionGUID: JWPBwNJRTMmnKIv6McPMKA==
+X-CSE-MsgGUID: cE1fAFMGQoOHM82zoN241w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="50626150"
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
+   d="scan'208";a="50626150"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 11:50:06 -0700
+X-CSE-ConnectionGUID: zJgxWzITQY+UgaeF8BONzA==
+X-CSE-MsgGUID: tZrstZS4Tpqo5f+gg0Kmqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
+   d="scan'208";a="77804142"
+Received: from jekeller-desk.jf.intel.com ([10.166.241.20])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 11:50:06 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH net-next 0/8] lib: packing: introduce and use
+ (un)pack_fields
+Date: Fri, 11 Oct 2024 11:48:28 -0700
+Message-Id: <20241011-packing-pack-fields-and-ice-implementation-v1-0-d9b1f7500740@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241011184527.16393-1-jdamato@fastly.com> <20241011184527.16393-7-jdamato@fastly.com>
-In-Reply-To: <20241011184527.16393-7-jdamato@fastly.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 11 Oct 2024 20:49:37 +0200
-Message-ID: <CANn89iLT1AFU7KidF=w0UkA0PXVa=engQjZvCgsoQ25pDa3S1w@mail.gmail.com>
-Subject: Re: [net-next v6 6/9] netdev-genl: Support setting per-NAPI config values
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, mkarsten@uwaterloo.ca, skhawaja@google.com, 
-	sdf@fomichev.me, bjorn@rivosinc.com, amritha.nambiar@intel.com, 
-	sridhar.samudrala@intel.com, willemdebruijn.kernel@gmail.com, 
-	Jakub Kicinski <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Mina Almasry <almasrymina@google.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPxyCWcC/x2N0QqDMBAEf0XuuQeJCin9ldKHNFntUb2GJIgg/
+ nuDT8vAMnNQQRYUenQHZWxS5KcN7K2j8PE6gyU2pt70ozVm5OTDV3S+lifBEgt7jSyhXde0YIV
+ WX5uG39YFF3DH4AZqwpQxyX7FnqSorNgrvc7zD6sdPq6GAAAA
+To: Vladimir Oltean <olteanv@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+X-Mailer: b4 0.14.1
 
-On Fri, Oct 11, 2024 at 8:46=E2=80=AFPM Joe Damato <jdamato@fastly.com> wro=
-te:
->
-> Add support to set per-NAPI defer_hard_irqs and gro_flush_timeout.
->
-> Signed-off-by: Joe Damato <jdamato@fastly.com>
-> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+This series improves the packing library with a new API for packing or
+unpacking a large number of fields at once with minimal code footprint. The
+API is then used to replace bespoke packing logic in the ice driver,
+preparing it to handle unpacking in the future. Finally, the ice driver has
+a few other cleanups related to the packing logic.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+The pack_fields and unpack_fields functions have the following improvements
+over the existing pack() and unpack() API:
+
+ 1. Packing or unpacking a large number of fields takes significantly less
+    code. This significantly reduces the .text size for an increase in the
+    .data size which is much smaller.
+
+ 2. The unpacked data can be stored in sizes smaller than u64 variables.
+    This reduces the storage requirement both for runtime data structures,
+    and for the rodata defining the fields. This scales with the number of
+    fields used.
+
+ 3. Most of the error checking is done at compile time, rather than
+    runtime via CHECK_PACKED_FIELD_* macros. This saves wasted computation
+    time, *and* catches errors in the field definitions immediately instead
+    of only after the offending code executes.
+
+The actual packing and unpacking code still uses the u64 size
+variables. However, these are converted to the appropriate field sizes when
+storing or reading the data from the buffer.
+
+One complexity is that the CHECK_PACKED_FIELD_* macros need to be defined
+one per size of the packed_fields array. This is because we don't have a
+good way to handle the ordering checks otherwise. The C pre-processor is
+unable to generate and run variable length loops at compile time.
+
+This is a significant amount of macro code, ~22,000 lines of code. To
+ensure it is correct and to avoid needing to store this directly in the
+kernel history, this file is generated as <generated/packing-checks.h> via
+a small C program, gen_packing_checks. To generate this, we need to update
+the top level Kbuild process to include the compilation of
+gen_packing_checks and execution to generate the packing-checks.h file.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+Jacob Keller (5):
+      ice: remove int_q_state from ice_tlan_ctx
+      ice: use <linux/packing.h> for Tx and Rx queue context data
+      ice: reduce size of queue context fields
+      ice: move prefetch enable to ice_setup_rx_ctx
+      ice: cleanup Rx queue context programming functions
+
+Vladimir Oltean (3):
+      lib: packing: create __pack() and __unpack() variants without error checking
+      lib: packing: demote truncation error in pack() to a warning in __pack()
+      lib: packing: add pack_fields() and unpack_fields()
+
+ drivers/net/ethernet/intel/ice/ice_common.h     |  12 +-
+ drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h  |  49 +---
+ include/linux/packing.h                         |  69 ++++++
+ drivers/net/dsa/sja1105/sja1105_static_config.c |   8 +-
+ drivers/net/ethernet/intel/ice/ice_base.c       |   6 +-
+ drivers/net/ethernet/intel/ice/ice_common.c     | 300 +++++-------------------
+ lib/gen_packing_checks.c                        |  31 +++
+ lib/packing.c                                   | 285 ++++++++++++++++------
+ Kbuild                                          |  13 +-
+ drivers/net/ethernet/intel/Kconfig              |   1 +
+ 10 files changed, 423 insertions(+), 351 deletions(-)
+---
+base-commit: d677aebd663ddc287f2b2bda098474694a0ca875
+change-id: 20241004-packing-pack-fields-and-ice-implementation-b17c7ce8e373
+
+Best regards,
+-- 
+Jacob Keller <jacob.e.keller@intel.com>
+
