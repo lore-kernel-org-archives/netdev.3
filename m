@@ -1,146 +1,133 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FDD1C8FB7;
-	Fri, 11 Oct 2024 18:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A0D1C9EAC
+	for <netdev@vger.kernel.org>; Fri, 11 Oct 2024 18:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728671798; cv=none; b=XZxLajIs0JGy9gqsxh+3lQRQUYFmYySrM+R7VlYHTd+qjVweSICzkj0e71fQ9Rlwt6aJFKbpbTtybguJ5SA0X9I90ac9ELmWkv4J/fzshxs5wW8HW3ujjpzq/7uOkYQ8UMYFJiJr824C6hj4c4sA/JCHAZStWo4xViu2oNpV0U8=
+	t=1728672282; cv=none; b=fPilqEUOYh6Jy3+MDQAH/I4jmRiVyZrypVpl0CCoIu0wjpCBumWRrG+m7+rDfpRTv7ZEj11aOa1FuiWltsvdjs/KJgN9nCz3yMEj2PmrTZIANplx/jOB0sZovIpX4i+/cDNazo4TQlIxtyc8ImTxJMD7ltMFW8cLCuLq6chl0BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728671798; c=relaxed/simple;
-	bh=ayPciMWY//VbPSzpp2VbZbk7uWTZGaXOBvAeQgtBwzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AK9TyZVgjo/RbdnZAOvVU/Sx8YWpbi2dHMfgJtnZSEk+MYOoTw8n7ARpGm1tijSDMeV4m9FL6ynF1D++lEPkovuMrZyI/uO4cwl7WafzEehbwI/0XoHfWnfMtKX9VMKR/tkT1ApUSpl55mW6LAd55Lvc21A3Yu3wpqKK9YAKJxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVt8ugzr; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728672282; c=relaxed/simple;
+	bh=+CrjRFmuRBhakr4lGSUJwfVpywUbknE5IX8tnyZ1I64=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YHvpZuwhStse+9+eOUu/ipIFHCTUyJ/q1IeSfFaObh/Yp4zQAWbMt0gBu2qkXrQqFzEYjaHnuuXUFupNq4Pr0G8NwjoIHrIWzFrWjcNWnOUJFbfsLNF7ushnqd1UKZr05fVD9TrBnQbwwMhFn2G6k+DaozlT3FoHzaYcoSSAllA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=RRklVcYr; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVt8ugzr"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6e2346f164cso20646957b3.3;
-        Fri, 11 Oct 2024 11:36:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="RRklVcYr"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20caccadbeeso7917675ad.2
+        for <netdev@vger.kernel.org>; Fri, 11 Oct 2024 11:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728671796; x=1729276596; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D0I/3yItTQ/jGPmVdy1AuiludxZJFxBg01l9+u4Pb+Q=;
-        b=kVt8ugzrwd7atyJPCNjar/NfIf9ojRW7BIob9BPt3/WPtqBdn+9S2baLwqHWWi1PJQ
-         QMnNefGwqLgGJMIpDn9KSfvnRaBQTngUDKLc411Iw+MzY2yownih37xfMj/+90Bh3ZXR
-         QWCOo1p3pWmvjqPL8tDvg4UEtus6JTll7upcibSg1i/H89ylCU1AYQR4Nur4qPJ9BqgE
-         JwDKUyyNI4m0bVtIFIge21QTtfN/Wa2m3NxktSONNLHGsqBy3iDE7tXoaz/FudNs/gRg
-         GvGVGbtoY6Dmw65/sIGPxJplGUibuZ9VSOSMloj/fHdqzGmICcPaqqdFwK3TCoqau5sr
-         VVvg==
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1728672280; x=1729277080; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JXJkaI14eGa0xZB9hgsghdQZjRzdnP97+WPOm8D2LtA=;
+        b=RRklVcYrD4BoTsQIjyF2EHmH7gBCFUon8Q6mnu4kzrgQ+NoDj8hjvS/JTxr/HsGTDP
+         optMz2hhGjZcuaq9pcJ64aa/nDbRbEKI9p2zUOoDuOgEZSQpJUPjUvXsKbIs1+QyXfBE
+         CXbcK/o/zadmm8UmObeU1UyeRmHqGftjs4doPTsllx0ZJQZzVOkBm3G9Xr/0OChjIJAQ
+         zVppii+X/T4tUoUBypfbfctToyGIlXlaxTNdy/wj6lqAMlQdraq1pMogwCl6zQRrmoLA
+         xA7LmQtxzZI6EJrFgt5z7gYDwIjViXP6zOcREHdn6sEe3M76RxkaeHdUQqYDFuOiRhFx
+         Abaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728671796; x=1729276596;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D0I/3yItTQ/jGPmVdy1AuiludxZJFxBg01l9+u4Pb+Q=;
-        b=omLotlVWFkd86uhmEnRjOjgnLhSglI7dCg5Ac1aLjvuH7ypyCdiwCWkyNB7X+cnmYO
-         /awhhs70z9EPPEd/1v+GueyLb5unmLCYKyWS+FyaieP8gAowDa/Dw7DMMZFvTzUjMlwV
-         ekOtT//vgPlaf7t3TGqU1Nbv4ri1evb+jffrgzkQ0bLuEUG2L7NZyJZF7Rq/E3hYR8BT
-         2bSlKiWhd/552stP3x1D949vHSTET0QBPeqj9WjRxDCKPJbECMOJVFHidF071EDC6hZk
-         KMpCmOivWJKn1RB5RtzaK3zJqfeUfE+kHrteP8kpE87oofh+7CSV0NORB4pvn4BTl9H7
-         +iIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbUW0g2u+6llfpq2ipsVcv+0BLBMsWurXDfCb23c5FmtqPcnDt3IREdgNomoqZELmSDUiyzaT5tZ34CqWcvNVh@vger.kernel.org, AJvYcCV80AF13tVvjS73zc/Y3M8+IZrGd3MBcPzAJ8NW+dCpmXvUekYbME5sBJ7xnGGWPh8mUhGKdBbxg4BaQuE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2EtCHbFqDVXeLsCbqFQRrOjZF3YnRXp7I+vaCSSi1bglOf0DI
-	/qsVwbBXKtI1v8aAMAHgXNnovfuTvkOUB9+B0JffKgfUlIoMGcKz
-X-Google-Smtp-Source: AGHT+IEkRojL52hJwweCx2O+wUTzR4I5MkaqX2ww+MF8GrcLEe5MjWVwn/h2w/MXIKyB1CbvEhASEQ==
-X-Received: by 2002:a05:690c:9c05:b0:6e2:2600:ed50 with SMTP id 00721157ae682-6e3479ca9dcmr38458547b3.21.1728671796308;
-        Fri, 11 Oct 2024 11:36:36 -0700 (PDT)
-Received: from localhost (fwdproxy-nha-112.fbsv.net. [2a03:2880:25ff:70::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e332b83e8dsm6983997b3.33.2024.10.11.11.36.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 11:36:36 -0700 (PDT)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next 2/2] selftests: drv-net: rss_ctx: add rss ctx busy testcase
-Date: Fri, 11 Oct 2024 11:35:48 -0700
-Message-ID: <20241011183549.1581021-3-daniel.zahka@gmail.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241011183549.1581021-1-daniel.zahka@gmail.com>
-References: <20241011183549.1581021-1-daniel.zahka@gmail.com>
+        d=1e100.net; s=20230601; t=1728672280; x=1729277080;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JXJkaI14eGa0xZB9hgsghdQZjRzdnP97+WPOm8D2LtA=;
+        b=Ydwj6OucgChr2jwpXkviZTj1n91mR+z8Lp07n7hxBJxst1No3OOKjohwvxFM5S0vUa
+         c93aY1Du0rBue41kqntBfPRkBXE+hbsyCKZbLiqZn/hU+rXetwRaaWLzv4fhnVI9jWK4
+         NXyDdp7j8wVz+VpRmxHAnTgtAEpMG1/BTiYmWykKwoVDtgwZHXyHKZRb6nAOOoVR9wOL
+         0u9Wu1dO5oxSuhoijGEG2FkPZRJvBUA0wjgF0Pj+JoD/onpoWCpHO1f04nq9DitOywL8
+         4CwoeAnco/syIoJEpbl8QklpT6/pAaMB/KRROHvgMPxlWOYkXrzHUX1g07QTLwHyPJtL
+         PLnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUV3ZyVG8aOVjaTv620CoGvcbsyqZlfkKIE0Fha18CQbND0CynLAbt2ftpL5wbiG3pwdefHLYw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbOSargkt6vYqCNQPBoODKPjq7YfSl76krUjjGdPXrPd64haZ8
+	f4CaiZ5/MohCeNAdfWU6+Xr5mByucUHFkJLzSpoR4a5z8SE4CXpgb7V2T6RAFLY=
+X-Google-Smtp-Source: AGHT+IESg0X/mbRRf8DMPNZmcIB4i+1z+3SJHm0Fz37PItVLeEBmfLD87NQcIQZeMDevsGSg2nDlEw==
+X-Received: by 2002:a17:902:e801:b0:20c:9821:6997 with SMTP id d9443c01a7336-20ca142a39amr37682845ad.8.1728672279750;
+        Fri, 11 Oct 2024 11:44:39 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1256:1:80c:c984:f4f1:951f? ([2620:10d:c090:500::7:4e3c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8c0e791esm26312445ad.132.2024.10.11.11.44.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Oct 2024 11:44:39 -0700 (PDT)
+Message-ID: <b2aa16ac-a5fe-4bab-a047-8f38086f4d43@davidwei.uk>
+Date: Fri, 11 Oct 2024 11:44:37 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 03/15] net: generalise net_iov chunk owners
+Content-Language: en-GB
+To: Stanislav Fomichev <stfomichev@gmail.com>,
+ Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Mina Almasry <almasrymina@google.com>, David Wei <dw@davidwei.uk>
+References: <20241007221603.1703699-1-dw@davidwei.uk>
+ <20241007221603.1703699-4-dw@davidwei.uk> <ZwVT8AnAq_uERzvB@mini-arch>
+ <ade753dd-caab-4151-af30-39de9080f69b@gmail.com> <ZwavJuVI-6d9ZSuh@mini-arch>
+From: David Wei <dw@davidwei.uk>
+In-Reply-To: <ZwavJuVI-6d9ZSuh@mini-arch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-It should be invalid to delete an rss context while it is being
-referenced from an ntuple filter. ethtool core should prevent this
-from happening. This patch adds a testcase to verify this behavior.
+On 2024-10-09 09:28, Stanislav Fomichev wrote:
+> On 10/08, Pavel Begunkov wrote:
+>> On 10/8/24 16:46, Stanislav Fomichev wrote:
+>>> On 10/07, David Wei wrote:
+>>>> From: Pavel Begunkov <asml.silence@gmail.com>
+>>>>
+>>>> Currently net_iov stores a pointer to struct dmabuf_genpool_chunk_owner,
+>>>> which serves as a useful abstraction to share data and provide a
+>>>> context. However, it's too devmem specific, and we want to reuse it for
+>>>> other memory providers, and for that we need to decouple net_iov from
+>>>> devmem. Make net_iov to point to a new base structure called
+>>>> net_iov_area, which dmabuf_genpool_chunk_owner extends.
+>>>>
+>>>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+>>>> Signed-off-by: David Wei <dw@davidwei.uk>
+>>>> ---
+>>>>   include/net/netmem.h | 21 ++++++++++++++++++++-
+>>>>   net/core/devmem.c    | 25 +++++++++++++------------
+>>>>   net/core/devmem.h    | 25 +++++++++----------------
+>>>>   3 files changed, 42 insertions(+), 29 deletions(-)
+>>>>
+>>>> diff --git a/include/net/netmem.h b/include/net/netmem.h
+>>>> index 8a6e20be4b9d..3795ded30d2c 100644
+>>>> --- a/include/net/netmem.h
+>>>> +++ b/include/net/netmem.h
+>>>> @@ -24,11 +24,20 @@ struct net_iov {
+>>>>   	unsigned long __unused_padding;
+>>>>   	unsigned long pp_magic;
+>>>>   	struct page_pool *pp;
+>>>> -	struct dmabuf_genpool_chunk_owner *owner;
+>>>> +	struct net_iov_area *owner;
+>>>
+>>> Any reason not to use dmabuf_genpool_chunk_owner as is (or rename it
+>>> to net_iov_area to generalize) with the fields that you don't need
+>>> set to 0/NULL? container_of makes everything harder to follow :-(
+>>
+>> It can be that, but then io_uring would have a (null) pointer to
+>> struct net_devmem_dmabuf_binding it knows nothing about and other
+>> fields devmem might add in the future. Also, it reduces the
+>> temptation for the common code to make assumptions about the origin
+>> of the area / pp memory provider. IOW, I think it's cleaner
+>> when separated like in this patch.
+> 
+> Ack, let's see whether other people find any issues with this approach.
+> For me, it makes the devmem parts harder to read, so my preference
+> is on dropping this patch and keeping owner=null on your side.
 
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
- .../selftests/drivers/net/hw/rss_ctx.py       | 32 +++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-index 9d7adb3cf33b..29995586993c 100755
---- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-+++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-@@ -6,7 +6,7 @@ import random
- from lib.py import ksft_run, ksft_pr, ksft_exit, ksft_eq, ksft_ne, ksft_ge, ksft_lt
- from lib.py import NetDrvEpEnv
- from lib.py import EthtoolFamily, NetdevFamily
--from lib.py import KsftSkipEx
-+from lib.py import KsftSkipEx, KsftFailEx
- from lib.py import rand_port
- from lib.py import ethtool, ip, defer, GenerateTraffic, CmdExitFailure
- 
-@@ -606,6 +606,33 @@ def test_rss_context_overlap2(cfg):
-     test_rss_context_overlap(cfg, True)
- 
- 
-+def test_delete_rss_context_busy(cfg):
-+    """
-+    Test that deletion returns -EBUSY when an rss context is being used
-+    by an ntuple filter.
-+    """
-+
-+    require_ntuple(cfg)
-+
-+    # create additional rss context
-+    ctx_id = ethtool_create(cfg, "-X", "context new")
-+    ctx_deleter = defer(ethtool, f"-X {cfg.ifname} context {ctx_id} delete")
-+
-+    # utilize context from ntuple filter
-+    port = rand_port()
-+    flow = f"flow-type tcp{cfg.addr_ipver} dst-port {port} context {ctx_id}"
-+    ntuple_id = ethtool_create(cfg, "-N", flow)
-+    defer(ethtool, f"-N {cfg.ifname} delete {ntuple_id}")
-+
-+    # attempt to delete in-use context
-+    try:
-+        ctx_deleter.exec_only()
-+        ctx_deleter.cancel()
-+        raise KsftFailEx(f"deleted context {ctx_id} used by rule {ntuple_id}")
-+    except CmdExitFailure:
-+        pass
-+
-+
- def main() -> None:
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-         cfg.ethnl = EthtoolFamily()
-@@ -616,7 +643,8 @@ def main() -> None:
-                   test_rss_context, test_rss_context4, test_rss_context32,
-                   test_rss_context_dump, test_rss_context_queue_reconfigure,
-                   test_rss_context_overlap, test_rss_context_overlap2,
--                  test_rss_context_out_of_order, test_rss_context4_create_with_cfg],
-+                  test_rss_context_out_of_order, test_rss_context4_create_with_cfg,
-+                  test_delete_rss_context_busy],
-                  args=(cfg, ))
-     ksft_exit()
- 
--- 
-2.43.5
-
+I don't mind at this point which approach to take right now. I would
+prefer keeping dmabuf_genpool_chunk_owner today even if it results in a
+nullptr in io_uring's case. Once there are more memory providers in the
+future, I think it'll be clearer what sort of abstraction we might need
+here.
