@@ -1,38 +1,38 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E0B21019C;
-	Fri, 11 Oct 2024 09:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC2A212634;
+	Fri, 11 Oct 2024 09:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728640315; cv=none; b=EA98O4FtokmU81zKDThwWfNXgGMFSAAOokG6zmHuutXElnZLC2gpWl14bK0PiTyo6GryVoxKsa1IPdltffRl1oAS/SbXA+7FfW/Dp9KOyyH0Xb0aV1Gmtr57N+wP55cJLvUKGlFZepOIjjJbr9DK9dx6sfRLffFoENvR+3Io/cU=
+	t=1728640317; cv=none; b=fbfZ9m+mWYuWnjr32pV4sErCAc9suqbWAB2Q/aVNyu3O2CxzLaYRlgxgUW0fm+uPzK/ZOKyIqU4OgfEIZkH13BoOiIyOo5WiAfHeCvA2Z3DKwvAQNInlFTntL2dzNB7G/UQoqT6ItJC/gJ/oldy34bBNWKoj469Kpp0KzgHiYes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728640315; c=relaxed/simple;
-	bh=eKWEx8xRwhTllo6yhgTJcmyURg0CWnNx4rpL7atPUec=;
+	s=arc-20240116; t=1728640317; c=relaxed/simple;
+	bh=y4OwYsHddu9qi+TDSRi3YOofcyuZhteRYVgPRUGNpfI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nt/A09wPevzXPNowS21GyJFRU8jaNMJkZSh//wiyQ5TDegmiSFZ9lfxXP5nEIdH7mETwk68U0+JW/8z+DQu3peIr6ZISrswmh5MjDhbgDqEKJDRVHqO6g3VbO6gyvnkijl/AXhovSAcy5oF6XfqTiNoDBGKiRn+199zP+RsURPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+	 MIME-Version:Content-Type; b=U/36p+Vq/P8YgggHDuycBSpoH7hooM3+6UKXzd5AV0eDbudyjQSLahJBj1bOeDTWp2SkBHqPIgFD+ikb0vfEItxHazpv3K9eEDStviiL+rtnsCzQ+YbdOfXAf0HQL0Z/ny8nR/o74mcyxYlxPbSt0WhgmgHWx5uOJ2KYGl1AsGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XQ2280Fc8zCtGF;
-	Fri, 11 Oct 2024 17:51:12 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XQ22539Hlz20q1G;
+	Fri, 11 Oct 2024 17:51:09 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id E28C6180AE9;
-	Fri, 11 Oct 2024 17:51:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1E56C1402CD;
+	Fri, 11 Oct 2024 17:51:48 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 11 Oct 2024 17:51:50 +0800
+ 15.1.2507.39; Fri, 11 Oct 2024 17:51:47 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <shenjian15@huawei.com>, <salil.mehta@huawei.com>
 CC: <liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>,
 	<shaojijie@huawei.com>, <lanhao@huawei.com>, <chenhao418@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net 8/9] net: hns3: fixed hclge_fetch_pf_reg accesses bar space out of bounds issue
-Date: Fri, 11 Oct 2024 17:45:20 +0800
-Message-ID: <20241011094521.3008298-9-shaojijie@huawei.com>
+Subject: [PATCH net 2/9] net: hns3: add sync command to sync io-pgtable
+Date: Fri, 11 Oct 2024 17:45:14 +0800
+Message-ID: <20241011094521.3008298-3-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241011094521.3008298-1-shaojijie@huawei.com>
 References: <20241011094521.3008298-1-shaojijie@huawei.com>
@@ -47,108 +47,71 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-From: Hao Lan <lanhao@huawei.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-The TQP BAR space is divided into two segments. TQPs 0-1023 and TQPs
-1024-1279 are in different BAR space addresses. However,
-hclge_fetch_pf_reg does not distinguish the tqp space information when
-reading the tqp space information. When the number of TQPs is greater
-than 1024, access bar space overwriting occurs.
-The problem of different segments has been considered during the
-initialization of tqp.io_base. Therefore, tqp.io_base is directly used
-when the queue is read in hclge_fetch_pf_reg.
+To avoid errors in pgtable prefectch, add a sync command to sync
+io-pagtable.
 
-The error message:
-
-Unable to handle kernel paging request at virtual address ffff800037200000
-pc : hclge_fetch_pf_reg+0x138/0x250 [hclge]
-lr : hclge_get_regs+0x84/0x1d0 [hclge]
-Call trace:
- hclge_fetch_pf_reg+0x138/0x250 [hclge]
- hclge_get_regs+0x84/0x1d0 [hclge]
- hns3_get_regs+0x2c/0x50 [hns3]
- ethtool_get_regs+0xf4/0x270
- dev_ethtool+0x674/0x8a0
- dev_ioctl+0x270/0x36c
- sock_do_ioctl+0x110/0x2a0
- sock_ioctl+0x2ac/0x530
- __arm64_sys_ioctl+0xa8/0x100
- invoke_syscall+0x4c/0x124
- el0_svc_common.constprop.0+0x140/0x15c
- do_el0_svc+0x30/0xd0
- el0_svc+0x1c/0x2c
- el0_sync_handler+0xb0/0xb4
- el0_sync+0x168/0x180
-
-Fixes: 939ccd107ffc ("net: hns3: move dump regs function to a separate file")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c  | 9 +++++----
- .../net/ethernet/hisilicon/hns3/hns3vf/hclgevf_regs.c    | 9 +++++----
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-index 43c1c18fa81f..8c057192aae6 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-@@ -510,9 +510,9 @@ static int hclge_get_dfx_reg(struct hclge_dev *hdev, void *data)
- static int hclge_fetch_pf_reg(struct hclge_dev *hdev, void *data,
- 			      struct hnae3_knic_private_info *kinfo)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index ac88e301f221..8760b4e9ade6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -381,6 +381,24 @@ static const struct hns3_rx_ptype hns3_rx_ptype_tbl[] = {
+ #define HNS3_INVALID_PTYPE \
+ 		ARRAY_SIZE(hns3_rx_ptype_tbl)
+ 
++static void hns3_dma_map_sync(struct device *dev, unsigned long iova)
++{
++	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
++	struct iommu_iotlb_gather iotlb_gather;
++	size_t granule;
++
++	if (!domain || !iommu_is_dma_domain(domain))
++		return;
++
++	granule = 1 << __ffs(domain->pgsize_bitmap);
++	iova = ALIGN_DOWN(iova, granule);
++	iotlb_gather.start = iova;
++	iotlb_gather.end = iova + granule - 1;
++	iotlb_gather.pgsize = granule;
++
++	iommu_iotlb_sync(domain, &iotlb_gather);
++}
++
+ static irqreturn_t hns3_irq_handle(int irq, void *vector)
  {
--#define HCLGE_RING_REG_OFFSET		0x200
- #define HCLGE_RING_INT_REG_OFFSET	0x4
- 
-+	struct hnae3_queue *tqp;
- 	int i, j, reg_num;
- 	int data_num_sum;
- 	u32 *reg = data;
-@@ -533,10 +533,11 @@ static int hclge_fetch_pf_reg(struct hclge_dev *hdev, void *data,
- 	reg_num = ARRAY_SIZE(ring_reg_addr_list);
- 	for (j = 0; j < kinfo->num_tqps; j++) {
- 		reg += hclge_reg_get_tlv(HCLGE_REG_TAG_RING, reg_num, reg);
-+		tqp = kinfo->tqp[j];
- 		for (i = 0; i < reg_num; i++)
--			*reg++ = hclge_read_dev(&hdev->hw,
--						ring_reg_addr_list[i] +
--						HCLGE_RING_REG_OFFSET * j);
-+			*reg++ = readl_relaxed(tqp->io_base -
-+					       HCLGE_TQP_REG_OFFSET +
-+					       ring_reg_addr_list[i]);
- 	}
- 	data_num_sum += (reg_num + HCLGE_REG_TLV_SPACE) * kinfo->num_tqps;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_regs.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_regs.c
-index 6db415d8b917..7d9d9dbc7560 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_regs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_regs.c
-@@ -123,10 +123,10 @@ int hclgevf_get_regs_len(struct hnae3_handle *handle)
- void hclgevf_get_regs(struct hnae3_handle *handle, u32 *version,
- 		      void *data)
+ 	struct hns3_enet_tqp_vector *tqp_vector = vector;
+@@ -1728,7 +1746,9 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
+ 				  unsigned int type)
  {
--#define HCLGEVF_RING_REG_OFFSET		0x200
- #define HCLGEVF_RING_INT_REG_OFFSET	0x4
+ 	struct hns3_desc_cb *desc_cb = &ring->desc_cb[ring->next_to_use];
++	struct hnae3_handle *handle = ring->tqp->handle;
+ 	struct device *dev = ring_to_dev(ring);
++	struct hnae3_ae_dev *ae_dev;
+ 	unsigned int size;
+ 	dma_addr_t dma;
  
- 	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
-+	struct hnae3_queue *tqp;
- 	int i, j, reg_um;
- 	u32 *reg = data;
- 
-@@ -147,10 +147,11 @@ void hclgevf_get_regs(struct hnae3_handle *handle, u32 *version,
- 	reg_um = ARRAY_SIZE(ring_reg_addr_list);
- 	for (j = 0; j < hdev->num_tqps; j++) {
- 		reg += hclgevf_reg_get_tlv(HCLGEVF_REG_TAG_RING, reg_um, reg);
-+		tqp = &hdev->htqp[j].q;
- 		for (i = 0; i < reg_um; i++)
--			*reg++ = hclgevf_read_dev(&hdev->hw,
--						  ring_reg_addr_list[i] +
--						  HCLGEVF_RING_REG_OFFSET * j);
-+			*reg++ = readl_relaxed(tqp->io_base -
-+					       HCLGEVF_TQP_REG_OFFSET +
-+					       ring_reg_addr_list[i]);
+@@ -1760,6 +1780,13 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
+ 		return -ENOMEM;
  	}
  
- 	reg_um = ARRAY_SIZE(tqp_intr_reg_addr_list);
++	/* Add a SYNC command to sync io-pgtale to avoid errors in pgtable
++	 * prefetch
++	 */
++	ae_dev = hns3_get_ae_dev(handle);
++	if (ae_dev->dev_version >= HNAE3_DEVICE_VERSION_V3)
++		hns3_dma_map_sync(dev, dma);
++
+ 	desc_cb->priv = priv;
+ 	desc_cb->length = size;
+ 	desc_cb->dma = dma;
 -- 
 2.33.0
 
