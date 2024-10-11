@@ -1,38 +1,41 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C051420FA9F;
-	Fri, 11 Oct 2024 09:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8832E20B1F3;
+	Fri, 11 Oct 2024 09:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728640312; cv=none; b=cRTnn0CGSWImyRt7KSYZN8+BFvzID8AMmz8VYzloIxdcS3T2+zFPmxltIyxHe9IqPveY4rUheGCLK/KF10KgEa9pvia5ibLoenYNcbaTpQfkSegMoptftuwxKOZ4pVgp1LkP88C8G6/R8BBvK8S5eX7eLBzjfy47+jZUsZ/7K+Y=
+	t=1728640313; cv=none; b=GNTl3yeBAz6cnLahPyHSiDLOq5Cf/aLzufKSi9SiIsxT0Ouv2CniYRKIMfqESjqg7aonv2BMGSb7eFUu4S+uKTA+nbLCdNaJzupQPPgs+9z4f3I8686Nn55G/0GVwdH02DXzrTl9YSQMfJW1QlG0uTdb+LdswHUo5xia0m8REMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728640312; c=relaxed/simple;
-	bh=vW4lb5AP6JnHDHFpP+cLapCaBacyrSVQpxWPMsOux8U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iUtmm3MOhCASxNoqnYLR8G7P8vu9Oc/8X3Wz48kMlji+579NnV9HxHKCA+NO80USCGl7A35MzM3DqvNHrPq27DIRQ1KCozG9goEhCMD08Q6povdfkSLwgTXDX2YWSk+E9QRW//IsHR3PelME/T1w3rr0sKajAyYeTwM31RuBdYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+	s=arc-20240116; t=1728640313; c=relaxed/simple;
+	bh=vAVE7LtdTqlUBO9yQ2hPuz/qtZ4cIlGmCNa5nYPv0FQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mkfsk6c2ZjkpiEQi7ttaFhP5PegFsJcfO2EGF9URBz+KpWCV/GiA6dpOFHRQJwSnd2V2PKDyfWLE2C+R9wlrIha2utP5iLVTB3O7EUEHab3/Oc5Jcx4mmiScZAk6uwJs+mHhF+QO+LgL51ks9oNy3+f4rPnZ0dj7j3twiWVmhbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XQ21V5z6Jz1SBR4;
-	Fri, 11 Oct 2024 17:50:38 +0800 (CST)
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XQ21Y3Qnjz1j9Z1;
+	Fri, 11 Oct 2024 17:50:41 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2FE9B1A016C;
-	Fri, 11 Oct 2024 17:51:47 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 10B4F1A016C;
+	Fri, 11 Oct 2024 17:51:49 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 11 Oct 2024 17:51:46 +0800
+ 15.1.2507.39; Fri, 11 Oct 2024 17:51:48 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <shenjian15@huawei.com>, <salil.mehta@huawei.com>
 CC: <liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>,
 	<shaojijie@huawei.com>, <lanhao@huawei.com>, <chenhao418@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net 0/9] There are some bugfix for the HNS3 ethernet driver
-Date: Fri, 11 Oct 2024 17:45:12 +0800
-Message-ID: <20241011094521.3008298-1-shaojijie@huawei.com>
+Subject: [PATCH net 4/9] net: hns3: fix missing features due to dev->features configuration too early
+Date: Fri, 11 Oct 2024 17:45:16 +0800
+Message-ID: <20241011094521.3008298-5-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241011094521.3008298-1-shaojijie@huawei.com>
+References: <20241011094521.3008298-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,40 +47,32 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-There are some bugfix for the HNS3 ethernet driver
+From: Hao Lan <lanhao@huawei.com>
 
-Hao Lan (4):
-  net: hns3: fixed reset failure issues caused by the incorrect reset
-    type
-  net: hns3: fix missing features due to dev->features configuration too
-    early
-  net: hns3: Resolved the issue that the debugfs query result is
-    inconsistent.
-  net: hns3: fixed hclge_fetch_pf_reg accesses bar space out of bounds
-    issue
+Currently, the netdev->features is configured in hns3_nic_set_features.
+As a result, __netdev_update_features considers that there is no feature
+difference, and the procedures of the real features are missing.
 
-Jian Shen (3):
-  net: hns3: add sync command to sync io-pgtable
-  net: hns3: don't auto enable misc vector
-  net: hns3: initialize reset_timer before hclgevf_misc_irq_init()
+Fixes: 2a7556bb2b73 ("net: hns3: implement ndo_features_check ops for hns3 driver")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Jie Wang (1):
-  net: hns3: fix kernel crash when 1588 is sent on HIP08 devices
-
-Peiyang Wang (1):
-  net: hns3: default enable tx bounce buffer when smmu enabled
-
- .../ethernet/hisilicon/hns3/hns3_debugfs.c    |  4 +-
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 59 ++++++++++++++++++-
- .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 +
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 33 +++++++++++
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 44 +++++++++++---
- .../hisilicon/hns3/hns3pf/hclge_ptp.c         |  3 +
- .../hisilicon/hns3/hns3pf/hclge_regs.c        |  9 +--
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 40 ++++++++++---
- .../hisilicon/hns3/hns3vf/hclgevf_regs.c      |  9 +--
- 9 files changed, 178 insertions(+), 25 deletions(-)
-
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 8760b4e9ade6..b09f0cca34dc 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -2483,7 +2483,6 @@ static int hns3_nic_set_features(struct net_device *netdev,
+ 			return ret;
+ 	}
+ 
+-	netdev->features = features;
+ 	return 0;
+ }
+ 
 -- 
 2.33.0
 
