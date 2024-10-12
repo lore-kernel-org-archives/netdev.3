@@ -1,269 +1,106 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9094C1A0B08;
-	Sat, 12 Oct 2024 11:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D78D204929;
+	Sat, 12 Oct 2024 11:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732597; cv=none; b=Mg6C0v3L7jZwahJ1NbjrF6z8KtbpzfPB4igPLOnNDmrPcLpx+DeJY0Y6S6uoljE4yJi10PTsylHgDQLnATXhBIb704foQxsvXM8asVwlGA8i2jWpiNKz6ow8aGUVfTnwxTxeikChXQaz4Fj9ZzNcUZ8MRodA3boIGet0IVqxrq0=
+	t=1728732598; cv=none; b=NcGduQT6r46XrlZgQP91Y69c8Om328WP0VxnR+D74G74XaqcieejOeqyElJf+BtmRokF/e3xP2Dsa/tJvCN8n3wZuo1y3b0iRHlCFgkcxv/B2pmyR0S/vpOLCSdF0rzmAqYbtXs/Ju7vJf1W+9frkLABZUM2uUrVxdcfoiHlSn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732597; c=relaxed/simple;
-	bh=le1jJsxG2hG8+S/6kiQeOL3nY3QgeFDH/55Gds/jM3o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qZ2jI2b5UnWuO69z9ZqKpEtbaLyv7UZnhzyYl0l/yiM/cfling9F7YxAZMmsL56/a3qcCizSmOJ0FG/sHqFj9stOVTp1TaKzpc07r/jFjZqlxURWn3bFwgF7j09bBsHs56T/pNtwDGfBy7qKdiMKd6wjMe27uUBbxZde7VbQQJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XQh8n2VjszQrcZ;
-	Sat, 12 Oct 2024 19:29:13 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 65C0D180087;
-	Sat, 12 Oct 2024 19:29:53 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:29:53 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>
-Subject: [PATCH net-next v21 10/14] mm: page_frag: introduce prepare/probe/commit API
-Date: Sat, 12 Oct 2024 19:23:16 +0800
-Message-ID: <20241012112320.2503906-11-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
-References: <20241012112320.2503906-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1728732598; c=relaxed/simple;
+	bh=rOWPAKO67xoaTevQ9uPSPkXjZCQIdgr3JwOF1JCIfUA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OkikUkzaEb5ofXY7gdqk98QU4hBlzEydLdv69xksE7c82eXVgiCUNHNW/04ZMVZjL7xCNdBQXd6dOaHzrXlLIAfYVqDUi5UXhaMGs1Hr+vWoievmp2y2Ko3Mp3DqWIOyPtGr9eNROvvrsdWgphH2ZUXbqAvNQeV9W6BBI8KzIIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ii9EdKjZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ii9EdKjZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1080DC4CECF;
+	Sat, 12 Oct 2024 11:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732597;
+	bh=rOWPAKO67xoaTevQ9uPSPkXjZCQIdgr3JwOF1JCIfUA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ii9EdKjZiuhW6WcEpQQtRGzCrnQp/yPH+TPaL39tAT50u8YuS0zkLliI+y82UuMXN
+	 bUmPTPAEFx3/YyO8X3wyfVu5Mnv2H1v6K3gopbvoaIUlQyBeyQZVPPAe29elMrCe4T
+	 CTQaCLOhDjf3kKFuWSEV0X1CqJ1Rrx3GFap8yWzrvNrkdU+bD8M3M1ouoij03Hh7Ay
+	 pWzDiveDOZDnYBTOIpsv2dJrd+d+CLVcXgQlaFbHiHX0O2CVM//zgKAwfDmMOF6Xzh
+	 GoZVGud6Qelaxd7kQYkWbgzZ1b1akuLaQImeUt0VTxw5RvdpxpZo0vj+7OsHQ411r5
+	 FmPEa7brnUVFw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Moon Yeounsu <yyyynoom@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	cooldavid@cooldavid.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	sd@queasysnail.net,
+	shannon.nelson@amd.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 3/7] net: ethernet: use ip_hdrlen() instead of bit shift
+Date: Sat, 12 Oct 2024 07:29:38 -0400
+Message-ID: <20241012112948.1764454-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241012112948.1764454-1-sashal@kernel.org>
+References: <20241012112948.1764454-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-There are many use cases that need minimum memory in order
-for forward progress, but more performant if more memory is
-available or need to probe the cache info to use any memory
-available for frag caoleasing reason.
+From: Moon Yeounsu <yyyynoom@gmail.com>
 
-Currently skb_page_frag_refill() API is used to solve the
-above use cases, but caller needs to know about the internal
-detail and access the data field of 'struct page_frag' to
-meet the requirement of the above use cases and its
-implementation is similar to the one in mm subsystem.
+[ Upstream commit 9a039eeb71a42c8b13408a1976e300f3898e1be0 ]
 
-To unify those two page_frag implementations, introduce a
-prepare API to ensure minimum memory is satisfied and return
-how much the actual memory is available to the caller and a
-probe API to report the current available memory to caller
-without doing cache refilling. The caller needs to either call
-the commit API to report how much memory it actually uses, or
-not do so if deciding to not use any memory.
+`ip_hdr(skb)->ihl << 2` is the same as `ip_hdrlen(skb)`
+Therefore, we should use a well-defined function not a bit shift
+to find the header length.
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+It also compresses two lines to a single line.
+
+Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
+Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/page_frag_cache.h | 135 ++++++++++++++++++++++++++++++++
- mm/page_frag_cache.c            |  21 +++++
- 2 files changed, 156 insertions(+)
+ drivers/net/ethernet/jme.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
-index feed99d0cddb..e21688e7edc8 100644
---- a/include/linux/page_frag_cache.h
-+++ b/include/linux/page_frag_cache.h
-@@ -38,6 +38,11 @@ static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
- 	return encoded_page_decode_pfmemalloc(nc->encoded_page);
- }
- 
-+static inline unsigned int page_frag_cache_page_offset(const struct page_frag_cache *nc)
-+{
-+	return nc->offset;
-+}
+diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
+index 25aa400e2e3c2..773ec50d515bc 100644
+--- a/drivers/net/ethernet/jme.c
++++ b/drivers/net/ethernet/jme.c
+@@ -947,15 +947,13 @@ jme_udpsum(struct sk_buff *skb)
+ 	if (skb->protocol != htons(ETH_P_IP))
+ 		return csum;
+ 	skb_set_network_header(skb, ETH_HLEN);
+-	if ((ip_hdr(skb)->protocol != IPPROTO_UDP) ||
+-	    (skb->len < (ETH_HLEN +
+-			(ip_hdr(skb)->ihl << 2) +
+-			sizeof(struct udphdr)))) {
 +
- void page_frag_cache_drain(struct page_frag_cache *nc);
- void __page_frag_cache_drain(struct page *page, unsigned int count);
- void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
-@@ -46,6 +51,10 @@ void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
- unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
- 					    struct page_frag *pfrag,
- 					    unsigned int used_sz);
-+void *__page_frag_alloc_refill_probe_align(struct page_frag_cache *nc,
-+					   unsigned int fragsz,
-+					   struct page_frag *pfrag,
-+					   unsigned int align_mask);
- 
- static inline unsigned int __page_frag_cache_commit(struct page_frag_cache *nc,
- 						    struct page_frag *pfrag,
-@@ -88,6 +97,132 @@ static inline void *page_frag_alloc(struct page_frag_cache *nc,
- 	return __page_frag_alloc_align(nc, fragsz, gfp_mask, ~0u);
- }
- 
-+static inline bool __page_frag_refill_align(struct page_frag_cache *nc,
-+					    unsigned int fragsz,
-+					    struct page_frag *pfrag,
-+					    gfp_t gfp_mask,
-+					    unsigned int align_mask)
-+{
-+	if (unlikely(!__page_frag_cache_prepare(nc, fragsz, pfrag, gfp_mask,
-+						align_mask)))
-+		return false;
-+
-+	__page_frag_cache_commit(nc, pfrag, fragsz);
-+	return true;
-+}
-+
-+static inline bool page_frag_refill_align(struct page_frag_cache *nc,
-+					  unsigned int fragsz,
-+					  struct page_frag *pfrag,
-+					  gfp_t gfp_mask, unsigned int align)
-+{
-+	WARN_ON_ONCE(!is_power_of_2(align));
-+	return __page_frag_refill_align(nc, fragsz, pfrag, gfp_mask, -align);
-+}
-+
-+static inline bool page_frag_refill(struct page_frag_cache *nc,
-+				    unsigned int fragsz,
-+				    struct page_frag *pfrag, gfp_t gfp_mask)
-+{
-+	return __page_frag_refill_align(nc, fragsz, pfrag, gfp_mask, ~0u);
-+}
-+
-+static inline bool __page_frag_refill_prepare_align(struct page_frag_cache *nc,
-+						    unsigned int fragsz,
-+						    struct page_frag *pfrag,
-+						    gfp_t gfp_mask,
-+						    unsigned int align_mask)
-+{
-+	return !!__page_frag_cache_prepare(nc, fragsz, pfrag, gfp_mask,
-+					   align_mask);
-+}
-+
-+static inline bool page_frag_refill_prepare_align(struct page_frag_cache *nc,
-+						  unsigned int fragsz,
-+						  struct page_frag *pfrag,
-+						  gfp_t gfp_mask,
-+						  unsigned int align)
-+{
-+	WARN_ON_ONCE(!is_power_of_2(align));
-+	return __page_frag_refill_prepare_align(nc, fragsz, pfrag, gfp_mask,
-+						-align);
-+}
-+
-+static inline bool page_frag_refill_prepare(struct page_frag_cache *nc,
-+					    unsigned int fragsz,
-+					    struct page_frag *pfrag,
-+					    gfp_t gfp_mask)
-+{
-+	return __page_frag_refill_prepare_align(nc, fragsz, pfrag, gfp_mask,
-+						~0u);
-+}
-+
-+static inline void *__page_frag_alloc_refill_prepare_align(struct page_frag_cache *nc,
-+							   unsigned int fragsz,
-+							   struct page_frag *pfrag,
-+							   gfp_t gfp_mask,
-+							   unsigned int align_mask)
-+{
-+	return __page_frag_cache_prepare(nc, fragsz, pfrag, gfp_mask, align_mask);
-+}
-+
-+static inline void *page_frag_alloc_refill_prepare_align(struct page_frag_cache *nc,
-+							 unsigned int fragsz,
-+							 struct page_frag *pfrag,
-+							 gfp_t gfp_mask,
-+							 unsigned int align)
-+{
-+	WARN_ON_ONCE(!is_power_of_2(align));
-+	return __page_frag_alloc_refill_prepare_align(nc, fragsz, pfrag,
-+						      gfp_mask, -align);
-+}
-+
-+static inline void *page_frag_alloc_refill_prepare(struct page_frag_cache *nc,
-+						   unsigned int fragsz,
-+						   struct page_frag *pfrag,
-+						   gfp_t gfp_mask)
-+{
-+	return __page_frag_alloc_refill_prepare_align(nc, fragsz, pfrag,
-+						      gfp_mask, ~0u);
-+}
-+
-+static inline void *page_frag_alloc_refill_probe(struct page_frag_cache *nc,
-+						 unsigned int fragsz,
-+						 struct page_frag *pfrag)
-+{
-+	return __page_frag_alloc_refill_probe_align(nc, fragsz, pfrag, ~0u);
-+}
-+
-+static inline bool page_frag_refill_probe(struct page_frag_cache *nc,
-+					  unsigned int fragsz,
-+					  struct page_frag *pfrag)
-+{
-+	return !!page_frag_alloc_refill_probe(nc, fragsz, pfrag);
-+}
-+
-+static inline void page_frag_commit(struct page_frag_cache *nc,
-+				    struct page_frag *pfrag,
-+				    unsigned int used_sz)
-+{
-+	__page_frag_cache_commit(nc, pfrag, used_sz);
-+}
-+
-+static inline void page_frag_commit_noref(struct page_frag_cache *nc,
-+					  struct page_frag *pfrag,
-+					  unsigned int used_sz)
-+{
-+	__page_frag_cache_commit_noref(nc, pfrag, used_sz);
-+}
-+
-+static inline void page_frag_alloc_abort(struct page_frag_cache *nc,
-+					 unsigned int fragsz)
-+{
-+	VM_BUG_ON(fragsz > nc->offset);
-+
-+	nc->pagecnt_bias++;
-+	nc->offset -= fragsz;
-+}
-+
- void page_frag_free(void *addr);
- 
- #endif
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index f55d34cf7d43..5ea4b663ab8e 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -112,6 +112,27 @@ unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
- }
- EXPORT_SYMBOL(__page_frag_cache_commit_noref);
- 
-+void *__page_frag_alloc_refill_probe_align(struct page_frag_cache *nc,
-+					   unsigned int fragsz,
-+					   struct page_frag *pfrag,
-+					   unsigned int align_mask)
-+{
-+	unsigned long encoded_page = nc->encoded_page;
-+	unsigned int size, offset;
-+
-+	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
-+	offset = __ALIGN_KERNEL_MASK(nc->offset, ~align_mask);
-+	if (unlikely(!encoded_page || offset + fragsz > size))
-+		return NULL;
-+
-+	pfrag->page = encoded_page_decode_page(encoded_page);
-+	pfrag->size = size - offset;
-+	pfrag->offset = offset;
-+
-+	return encoded_page_decode_virt(encoded_page) + offset;
-+}
-+EXPORT_SYMBOL(__page_frag_alloc_refill_probe_align);
-+
- void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
- 				struct page_frag *pfrag, gfp_t gfp_mask,
- 				unsigned int align_mask)
++	if (ip_hdr(skb)->protocol != IPPROTO_UDP ||
++	    skb->len < (ETH_HLEN + ip_hdrlen(skb) + sizeof(struct udphdr))) {
+ 		skb_reset_network_header(skb);
+ 		return csum;
+ 	}
+-	skb_set_transport_header(skb,
+-			ETH_HLEN + (ip_hdr(skb)->ihl << 2));
++	skb_set_transport_header(skb, ETH_HLEN + ip_hdrlen(skb));
+ 	csum = udp_hdr(skb)->check;
+ 	skb_reset_transport_header(skb);
+ 	skb_reset_network_header(skb);
 -- 
-2.33.0
+2.43.0
 
