@@ -1,103 +1,133 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E916A201110;
-	Sat, 12 Oct 2024 11:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D525C2038B3;
+	Sat, 12 Oct 2024 11:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732593; cv=none; b=n98l9Cwn7BjkDKCuytk/wcxQFfgD6pGhwgANvVj66x6ejIsOQKA3AplB/ErsE7ga2v5uMz4fzWz/d7jh40/hfidE/Qtem1MmkQdX1FW2RPZW+j10vLqKLCn/CMQRJkHocd5f34T4aXiuC3GrgoiW8TAiGQ8ZSjNGpPdApfWTtI8=
+	t=1728732594; cv=none; b=Bgd/y2FQlqJMX0Yba9TlD5+m+e1jZ0p1M/4FJkYkfiqCx7E29K2Bb4tvjXqiMBZ0Wh4luPK3pdp7ee+nNaBDLZHtGoo09REfnVuHIyIRL6F990A1KzBDrZIP61Qdme8zJW0cxlgQp1NKTRmRXUJragr6/zp+/T1b9ftpwhoLzDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732593; c=relaxed/simple;
-	bh=yHtnCHg0Gu6pqRoGz7RGYAKv3M4cju4Qz+dhzi79qDk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oAy8NIQICByXdK3GME3DRMVud+5VpCLxXZXe5CmJDYZUt5C4mRwJ3KQytVq+Q+q/QCjgW4abh+JyMT+iJ28jfqM+F+V+oSOHyqI8FhM/+288dWE+yFbf3chhOL9XB4zSwq29xiAeF7dWuHLnt2yuoWG7x0Fq66SjZGs9rynQbkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XQh7J5FnTz10N1q;
-	Sat, 12 Oct 2024 19:27:56 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 51BDF1402CB;
-	Sat, 12 Oct 2024 19:29:44 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:29:44 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Max
- Filippov <jcmvbkbc@gmail.com>, Alexander Duyck <alexanderduyck@fb.com>, Chris
- Zankel <chris@zankel.net>
-Subject: [PATCH net-next v21 05/14] xtensa: remove the get_order() implementation
-Date: Sat, 12 Oct 2024 19:23:11 +0800
-Message-ID: <20241012112320.2503906-6-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
-References: <20241012112320.2503906-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1728732594; c=relaxed/simple;
+	bh=Es2J6zvyjI79XtLDSAe+sm1UQjMf40YO7hZ6YjWQ2SM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jmk4WtjzaqAdib7qsOyFZ5rxY4Dw0zuXufzcc+cNX8VSfJszBCvny7dPI8m7tS3cQ2B3fIkGPfV7jVeNidIzhZxFHKQIPW2kQkfEAWVU3UPXO3QVEZ40t47nk89DH6kiJK9kPo+fPFNCXpGIOc33Swk2R4i07tUvYEWfbXZmSOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ko4H5R32; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ko4H5R32"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C62EC4CEC7;
+	Sat, 12 Oct 2024 11:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732594;
+	bh=Es2J6zvyjI79XtLDSAe+sm1UQjMf40YO7hZ6YjWQ2SM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ko4H5R32yc3DJHAUoLABftd571kCJFne5o+K88Tc33cxxG7MOhtpoC5qW8PdQXUKu
+	 UmaOsPDEdW1n1kk18CZ65J4DX72qE+LEi5KpP7HJ1DtwGkxuzW7731q8BXYD5DLWeS
+	 4er7s18XmB2KV1PoLXuPaL1602K4tOuNzCLeS52y8ATdPICKsfExtRG3EPnO4hFssc
+	 /sXiJtWTluEylhRR+2CYJkmkd4EIbSkfROcuPFIbd+sPA+LSj+S7QjfhyGGxhNDm/l
+	 TDB5qlcPiuGRdPU2einsUrPoOmxUD1Ns+Uhl4FkJcybfv91ZGwzylREV2J/yJHJEjv
+	 jezsAZs+l5QvA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	oneukum@suse.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/7] usbnet: ipheth: fix carrier detection in modes 1 and 4
+Date: Sat, 12 Oct 2024 07:29:37 -0400
+Message-ID: <20241012112948.1764454-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241012112948.1764454-1-sashal@kernel.org>
+References: <20241012112948.1764454-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-As the get_order() implemented by xtensa supporting 'nsau'
-instruction seems be the same as the generic implementation
-in include/asm-generic/getorder.h when size is not a constant
-value as the generic implementation calling the fls*() is also
-utilizing the 'nsau' instruction for xtensa.
+From: Foster Snowhill <forst@pen.gy>
 
-So remove the get_order() implemented by xtensa, as using the
-generic implementation may enable the compiler to do the
-computing when size is a constant value instead of runtime
-computing and enable the using of get_order() in BUILD_BUG_ON()
-macro in next patch.
+[ Upstream commit 67927a1b255d883881be9467508e0af9a5e0be9d ]
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Apart from the standard "configurations", "interfaces" and "alternate
+interface settings" in USB, iOS devices also have a notion of
+"modes". In different modes, the device exposes a different set of
+available configurations.
+
+Depending on the iOS version, and depending on the current mode, the
+length and contents of the carrier state control message differs:
+
+* 1 byte (seen on iOS 4.2.1, 8.4):
+    * 03: carrier off (mode 0)
+    * 04: carrier on (mode 0)
+* 3 bytes (seen on iOS 10.3.4, 15.7.6):
+    * 03 03 03: carrier off (mode 0)
+    * 04 04 03: carrier on (mode 0)
+* 4 bytes (seen on iOS 16.5, 17.6):
+    * 03 03 03 00: carrier off (mode 0)
+    * 04 03 03 00: carrier off (mode 1)
+    * 06 03 03 00: carrier off (mode 4)
+    * 04 04 03 04: carrier on (mode 0 and 1)
+    * 06 04 03 04: carrier on (mode 4)
+
+Before this change, the driver always used the first byte of the
+response to determine carrier state.
+
+From this larger sample, the first byte seems to indicate the number of
+available USB configurations in the current mode (with the exception of
+the default mode 0), and in some cases (namely mode 1 and 4) does not
+correlate with the carrier state.
+
+Previous logic erroneously counted `04 03 03 00` as "carrier on" and
+`06 04 03 04` as "carrier off" on iOS versions that support mode 1 and
+mode 4 respectively.
+
+Only modes 0, 1 and 4 expose the USB Ethernet interfaces necessary for
+the ipheth driver.
+
+Check the second byte of the control message where possible, and fall
+back to checking the first byte on older iOS versions.
+
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/include/asm/page.h | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/net/usb/ipheth.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/xtensa/include/asm/page.h b/arch/xtensa/include/asm/page.h
-index 4db56ef052d2..8665d57991dd 100644
---- a/arch/xtensa/include/asm/page.h
-+++ b/arch/xtensa/include/asm/page.h
-@@ -109,26 +109,8 @@ typedef struct page *pgtable_t;
- #define __pgd(x)	((pgd_t) { (x) } )
- #define __pgprot(x)	((pgprot_t) { (x) } )
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 7814856636907..c7495227545bb 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -253,13 +253,14 @@ static int ipheth_carrier_set(struct ipheth_device *dev)
+ 			0x02, /* index */
+ 			dev->ctrl_buf, IPHETH_CTRL_BUF_SIZE,
+ 			IPHETH_CTRL_TIMEOUT);
+-	if (retval < 0) {
++	if (retval <= 0) {
+ 		dev_err(&dev->intf->dev, "%s: usb_control_msg: %d\n",
+ 			__func__, retval);
+ 		return retval;
+ 	}
  
--/*
-- * Pure 2^n version of get_order
-- * Use 'nsau' instructions if supported by the processor or the generic version.
-- */
--
--#if XCHAL_HAVE_NSA
--
--static inline __attribute_const__ int get_order(unsigned long size)
--{
--	int lz;
--	asm ("nsau %0, %1" : "=r" (lz) : "r" ((size - 1) >> PAGE_SHIFT));
--	return 32 - lz;
--}
--
--#else
--
- # include <asm-generic/getorder.h>
- 
--#endif
--
- struct page;
- struct vm_area_struct;
- extern void clear_page(void *page);
+-	if (dev->ctrl_buf[0] == IPHETH_CARRIER_ON) {
++	if ((retval == 1 && dev->ctrl_buf[0] == IPHETH_CARRIER_ON) ||
++	    (retval >= 2 && dev->ctrl_buf[1] == IPHETH_CARRIER_ON)) {
+ 		netif_carrier_on(dev->net);
+ 		if (dev->tx_urb->status != -EINPROGRESS)
+ 			netif_wake_queue(dev->net);
 -- 
-2.33.0
+2.43.0
 
