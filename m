@@ -1,94 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15A520110A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EE0201101;
 	Sat, 12 Oct 2024 11:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732592; cv=none; b=GPHQzXVndxVbxgZfmsueJyiesanLnpB/8i6xYm21yiJFLlVhiM9qS76ilr96P5Dt2tYpcdXoc0ROh0b2XVN+KpeRIN+TTA6brkzqpuuv9+bmQGFGHqFlSj7tYAxPaYN81LoJR+JQ+O0+nQTZoVMG3sIoC1ruyTMo8Mzs/V6SXZc=
+	t=1728732593; cv=none; b=fD0FHuXORp0kFtamP7umM9cbpD6dURLqlEmZgEIuZ/w3r9IjUp7vEu1XAtWUIDqnUuBoZLew32/AWvS9wGPj/G6vEvlcE8wEbnK3R116h9vGwL5wbszC+tci5UIkvX0M1WiDB3hREKnPvVaJ7Q0YXSZS9olSxlk63sTPx3CSul8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732592; c=relaxed/simple;
-	bh=i6H85g7iWTCKvOl28Kd9R/lEDQAsUzGltT4u0pdJOT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MQoBOESIR6WL9alJ/0vt5Qwh8pDNrilfCw8K1oeEcM+A5Y2m1rU5dD8gfxm9SjtI0+ypp9YGEK5OqI+W0QyyWms7VQzXa5McjI7LTJQ3VgkdLbn70I5n9dUZCjAfvkdtl6ZDA4kJC6nYtAjq0qu3BsQ8rnDpUxjRNKRD9ssEizo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPQab3xa; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPQab3xa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A739C4CECF;
-	Sat, 12 Oct 2024 11:29:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732591;
-	bh=i6H85g7iWTCKvOl28Kd9R/lEDQAsUzGltT4u0pdJOT8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RPQab3xaJwhyKdwCSkbr7PIE98e2OXHqE2BCLUUT8MJB/EAn8RU82nE3I8r5/33dn
-	 59pPze3uBG91LZCN9rWiAZa/L8huzYztsLyiSJCEqpaxvalZbNbhfKYnK3YypmQAOF
-	 FUzdnw8tWpbaY2cpLsz2DkWg1aJduTl4J3lIexKbT0gFvKgTqBBZafTEkD1I4dswFK
-	 6xHPF7VtdGEIlVIUCIk1wLoyffIDVwrBVI1dI5iIqvPXXBWsLfy6YrLRi1oXzebppY
-	 i32YY8FfulTLjXnx63nGtrmktdWnBP0VPID5oDZ2LALRaSm7YBUjWRBdclpWcJRAOd
-	 4arlFJrixoIRg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>,
-	Foster Snowhill <forst@pen.gy>,
-	Georgi Valkov <gvalkov@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/7] usbnet: ipheth: race between ipheth_close and error handling
-Date: Sat, 12 Oct 2024 07:29:36 -0400
-Message-ID: <20241012112948.1764454-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1728732593; c=relaxed/simple;
+	bh=F8NaFy8Gqe3Y7KuxbrOesyWY58h7LgGRc3j4/fenDHI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W8kFHbVTPhRbWbH3/KBel1w/zn13xN5z9CTfS7NJC1NeFf2T+dcvGgWrdjLfIrLXDXDPNYRE1oEwV3Rb7tPHP8oaHkte+ZhoC+4EzCtFZAHkUXn++EdgHKOdPqzI/+fpO1bZasnEcmZ0Bq/xeibIvWA8Yn6NSjyK7rU+0sLn/UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XQh883ZRrz2DdSc;
+	Sat, 12 Oct 2024 19:28:40 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id A03CF1402CC;
+	Sat, 12 Oct 2024 19:29:49 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 12 Oct 2024 19:29:49 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
+	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>,
+	Alexander Duyck <alexanderduyck@fb.com>, Andrew Morton
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
+Subject: [PATCH net-next v21 08/14] mm: page_frag: use __alloc_pages() to replace alloc_pages_node()
+Date: Sat, 12 Oct 2024 19:23:14 +0800
+Message-ID: <20241012112320.2503906-9-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
+References: <20241012112320.2503906-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-From: Oliver Neukum <oneukum@suse.com>
+It seems there is about 24Bytes binary size increase for
+__page_frag_cache_refill() after refactoring in arm64 system
+with 64K PAGE_SIZE. By doing the gdb disassembling, It seems
+we can have more than 100Bytes decrease for the binary size
+by using __alloc_pages() to replace alloc_pages_node(), as
+there seems to be some unnecessary checking for nid being
+NUMA_NO_NODE, especially when page_frag is part of the mm
+system.
 
-[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
-
-ipheth_sndbulk_callback() can submit carrier_work
-as a part of its error handling. That means that
-the driver must make sure that the work is cancelled
-after it has made sure that no more URB can terminate
-with an error condition.
-
-Hence the order of actions in ipheth_close() needs
-to be inverted.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Foster Snowhill <forst@pen.gy>
-Tested-by: Georgi Valkov <gvalkov@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/usb/ipheth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_frag_cache.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
-index 73ad78f47763c..7814856636907 100644
---- a/drivers/net/usb/ipheth.c
-+++ b/drivers/net/usb/ipheth.c
-@@ -353,8 +353,8 @@ static int ipheth_close(struct net_device *net)
- {
- 	struct ipheth_device *dev = netdev_priv(net);
- 
--	cancel_delayed_work_sync(&dev->carrier_work);
- 	netif_stop_queue(net);
-+	cancel_delayed_work_sync(&dev->carrier_work);
- 	return 0;
- }
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index a852523bc8ca..f55d34cf7d43 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -56,11 +56,11 @@ static struct page *__page_frag_cache_refill(struct page_frag_cache *nc,
+ #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
+ 	gfp_mask = (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
+ 		   __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
+-	page = alloc_pages_node(NUMA_NO_NODE, gfp_mask,
+-				PAGE_FRAG_CACHE_MAX_ORDER);
++	page = __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDER,
++			     numa_mem_id(), NULL);
+ #endif
+ 	if (unlikely(!page)) {
+-		page = alloc_pages_node(NUMA_NO_NODE, gfp, 0);
++		page = __alloc_pages(gfp, 0, numa_mem_id(), NULL);
+ 		order = 0;
+ 	}
  
 -- 
-2.43.0
+2.33.0
 
