@@ -1,194 +1,94 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99002010E5;
-	Sat, 12 Oct 2024 11:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15A520110A;
+	Sat, 12 Oct 2024 11:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732591; cv=none; b=On6lDkOoKrcP8TnptTsrcKT9n0Y7ziEo3aAOP+7HcJ2t5xju0BLuEfJAVIXDhxZGcuFh9CkT2+EembEAIGdY5TzWT0pT4s7Xx2jOiquwYslsogY7k+SY40ZYP5mxg8kgbYrghulALmrCtBfxyhwk3hkx205Fm7jGKkB3XkS/gKE=
+	t=1728732592; cv=none; b=GPHQzXVndxVbxgZfmsueJyiesanLnpB/8i6xYm21yiJFLlVhiM9qS76ilr96P5Dt2tYpcdXoc0ROh0b2XVN+KpeRIN+TTA6brkzqpuuv9+bmQGFGHqFlSj7tYAxPaYN81LoJR+JQ+O0+nQTZoVMG3sIoC1ruyTMo8Mzs/V6SXZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732591; c=relaxed/simple;
-	bh=6VS3q2n6lAU6a37KBXGGG25/r+/phVlFc8nQdtexTyM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k6KBEaX9Llzk1lGaKyNP9eqh53d8ozeMMqSNzWaA6zj5surbrBr9Y2Q6Q3XZAZw8QeM2vSri1cMl7obAGHzL2lbu5kY07hfYMaWulesbaDQGFChrLVpWWRbGFchRvoUUxO2j7P/yNYP53OkgPHzHhfWLgVeemI1cdC06VP+kgLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XQh786Rw1zpWd8;
-	Sat, 12 Oct 2024 19:27:48 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1AD061402CB;
-	Sat, 12 Oct 2024 19:29:48 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:29:47 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>
-Subject: [PATCH net-next v21 07/14] mm: page_frag: some minor refactoring before adding new API
-Date: Sat, 12 Oct 2024 19:23:13 +0800
-Message-ID: <20241012112320.2503906-8-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
-References: <20241012112320.2503906-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1728732592; c=relaxed/simple;
+	bh=i6H85g7iWTCKvOl28Kd9R/lEDQAsUzGltT4u0pdJOT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MQoBOESIR6WL9alJ/0vt5Qwh8pDNrilfCw8K1oeEcM+A5Y2m1rU5dD8gfxm9SjtI0+ypp9YGEK5OqI+W0QyyWms7VQzXa5McjI7LTJQ3VgkdLbn70I5n9dUZCjAfvkdtl6ZDA4kJC6nYtAjq0qu3BsQ8rnDpUxjRNKRD9ssEizo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPQab3xa; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPQab3xa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A739C4CECF;
+	Sat, 12 Oct 2024 11:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732591;
+	bh=i6H85g7iWTCKvOl28Kd9R/lEDQAsUzGltT4u0pdJOT8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RPQab3xaJwhyKdwCSkbr7PIE98e2OXHqE2BCLUUT8MJB/EAn8RU82nE3I8r5/33dn
+	 59pPze3uBG91LZCN9rWiAZa/L8huzYztsLyiSJCEqpaxvalZbNbhfKYnK3YypmQAOF
+	 FUzdnw8tWpbaY2cpLsz2DkWg1aJduTl4J3lIexKbT0gFvKgTqBBZafTEkD1I4dswFK
+	 6xHPF7VtdGEIlVIUCIk1wLoyffIDVwrBVI1dI5iIqvPXXBWsLfy6YrLRi1oXzebppY
+	 i32YY8FfulTLjXnx63nGtrmktdWnBP0VPID5oDZ2LALRaSm7YBUjWRBdclpWcJRAOd
+	 4arlFJrixoIRg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/7] usbnet: ipheth: race between ipheth_close and error handling
+Date: Sat, 12 Oct 2024 07:29:36 -0400
+Message-ID: <20241012112948.1764454-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-Refactor common codes from __page_frag_alloc_va_align() to
-__page_frag_cache_prepare() and __page_frag_cache_commit(),
-so that the new API can make use of them.
+From: Oliver Neukum <oneukum@suse.com>
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
+
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
+
+Hence the order of actions in ipheth_close() needs
+to be inverted.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/page_frag_cache.h | 36 +++++++++++++++++++++++++++--
- mm/page_frag_cache.c            | 40 ++++++++++++++++++++++++++-------
- 2 files changed, 66 insertions(+), 10 deletions(-)
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
-index 41a91df82631..feed99d0cddb 100644
---- a/include/linux/page_frag_cache.h
-+++ b/include/linux/page_frag_cache.h
-@@ -5,6 +5,7 @@
- 
- #include <linux/bits.h>
- #include <linux/log2.h>
-+#include <linux/mmdebug.h>
- #include <linux/mm_types_task.h>
- #include <linux/types.h>
- 
-@@ -39,8 +40,39 @@ static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
- 
- void page_frag_cache_drain(struct page_frag_cache *nc);
- void __page_frag_cache_drain(struct page *page, unsigned int count);
--void *__page_frag_alloc_align(struct page_frag_cache *nc, unsigned int fragsz,
--			      gfp_t gfp_mask, unsigned int align_mask);
-+void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
-+				struct page_frag *pfrag, gfp_t gfp_mask,
-+				unsigned int align_mask);
-+unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
-+					    struct page_frag *pfrag,
-+					    unsigned int used_sz);
-+
-+static inline unsigned int __page_frag_cache_commit(struct page_frag_cache *nc,
-+						    struct page_frag *pfrag,
-+						    unsigned int used_sz)
-+{
-+	VM_BUG_ON(!nc->pagecnt_bias);
-+	nc->pagecnt_bias--;
-+
-+	return __page_frag_cache_commit_noref(nc, pfrag, used_sz);
-+}
-+
-+static inline void *__page_frag_alloc_align(struct page_frag_cache *nc,
-+					    unsigned int fragsz, gfp_t gfp_mask,
-+					    unsigned int align_mask)
-+{
-+	struct page_frag page_frag;
-+	void *va;
-+
-+	va = __page_frag_cache_prepare(nc, fragsz, &page_frag, gfp_mask,
-+				       align_mask);
-+	if (unlikely(!va))
-+		return NULL;
-+
-+	__page_frag_cache_commit(nc, &page_frag, fragsz);
-+
-+	return va;
-+}
- 
- static inline void *page_frag_alloc_align(struct page_frag_cache *nc,
- 					  unsigned int fragsz, gfp_t gfp_mask,
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index a36fd09bf275..a852523bc8ca 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -90,9 +90,31 @@ void __page_frag_cache_drain(struct page *page, unsigned int count)
- }
- EXPORT_SYMBOL(__page_frag_cache_drain);
- 
--void *__page_frag_alloc_align(struct page_frag_cache *nc,
--			      unsigned int fragsz, gfp_t gfp_mask,
--			      unsigned int align_mask)
-+unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
-+					    struct page_frag *pfrag,
-+					    unsigned int used_sz)
-+{
-+	unsigned int orig_offset;
-+
-+	VM_BUG_ON(used_sz > pfrag->size);
-+	VM_BUG_ON(pfrag->page != encoded_page_decode_page(nc->encoded_page));
-+	VM_BUG_ON(pfrag->offset + pfrag->size >
-+		  (PAGE_SIZE << encoded_page_decode_order(nc->encoded_page)));
-+
-+	/* pfrag->offset might be bigger than the nc->offset due to alignment */
-+	VM_BUG_ON(nc->offset > pfrag->offset);
-+
-+	orig_offset = nc->offset;
-+	nc->offset = pfrag->offset + used_sz;
-+
-+	/* Return true size back to caller considering the offset alignment */
-+	return nc->offset - orig_offset;
-+}
-+EXPORT_SYMBOL(__page_frag_cache_commit_noref);
-+
-+void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
-+				struct page_frag *pfrag, gfp_t gfp_mask,
-+				unsigned int align_mask)
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 73ad78f47763c..7814856636907 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -353,8 +353,8 @@ static int ipheth_close(struct net_device *net)
  {
- 	unsigned long encoded_page = nc->encoded_page;
- 	unsigned int size, offset;
-@@ -114,6 +136,8 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 		/* reset page count bias and offset to start of new frag */
- 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
- 		nc->offset = 0;
-+	} else {
-+		page = encoded_page_decode_page(encoded_page);
- 	}
+ 	struct ipheth_device *dev = netdev_priv(net);
  
- 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
-@@ -132,8 +156,6 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 			return NULL;
- 		}
- 
--		page = encoded_page_decode_page(encoded_page);
--
- 		if (!page_ref_sub_and_test(page, nc->pagecnt_bias))
- 			goto refill;
- 
-@@ -148,15 +170,17 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 
- 		/* reset page count bias and offset to start of new frag */
- 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
-+		nc->offset = 0;
- 		offset = 0;
- 	}
- 
--	nc->pagecnt_bias--;
--	nc->offset = offset + fragsz;
-+	pfrag->page = page;
-+	pfrag->offset = offset;
-+	pfrag->size = size - offset;
- 
- 	return encoded_page_decode_virt(encoded_page) + offset;
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
  }
--EXPORT_SYMBOL(__page_frag_alloc_align);
-+EXPORT_SYMBOL(__page_frag_cache_prepare);
  
- /*
-  * Frees a page fragment allocated out of either a compound or order 0 page.
 -- 
-2.33.0
+2.43.0
 
