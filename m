@@ -1,41 +1,42 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7EA2110E;
-	Sat, 12 Oct 2024 18:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE9B768FD
+	for <netdev@vger.kernel.org>; Sat, 12 Oct 2024 18:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728757759; cv=none; b=SYIEzPV538NiMmLEpymiLpaoz5w7s7lRH9IqJm1mwKr2SU3y0OGMLmPHmFKG0Dmsb0FvdWtJp02mNgDKGXu60Z0uMhku2h/OZhwfUw+EM4Z+/0SPq1dBAcX24LiMfmdokEKSwddRLwE3dnlsKQtlKQZSMA37RJDT1SAROOcEOIc=
+	t=1728758568; cv=none; b=h8LQKRTd1LPRtMe9oQTHbXavw5n+ly/gihDJ17aRWTkaRl6gHKBGE9/ba9CFbQ0sbCSl0Xw5+v/7RB8h7WPuQ70Ntzs7KuUNG7BfUXxQGoYRBJSYK7pQ2PB5VNKNwTxjVmM3u0Dkg0RGNzyb3S8iRtS0XUOcxE5vMSP78CaMPw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728757759; c=relaxed/simple;
-	bh=Qg8+YlMWVycQQ0N7V4mJ6bWJn6wFCTzfiXzJsajCrM4=;
+	s=arc-20240116; t=1728758568; c=relaxed/simple;
+	bh=aD9769Ai33ANRRwRfBKAvc06HGoBZ3EEiEmQXAolgZY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TeIfz9AFzSrVhRZhzrQCB4r9VyircOseZpjGfp5JK1kpa3SatLNLTtbFiFn1ptYXmNXVFeF2gtlKrnq4rkZ3QbVFba/wb4gJ9Q5AgyPPXNpvg4AYckuSA9rOgGvkAXvNGbr2d22ACB7PD6pgCpCY+JLXRB3lFafIdUoBCjmGM8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wYMiyIvC; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cbkh98uy57sHPK/GvREz8UNHowYWlwdhraRRkDdRnPs86/FgPJmZE5bQpeVVTgcd+8PyggihghO4GieZHfU1ve0v7ZKfZ/ukn4HOvfxMF5Cp9x5Qp/bd6Be6UPFu5aaY0+yddVmbWLZ2cBiQ9cy09Jdwx5ouNipLJvUcrnIClxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HfAJmhSL; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wYMiyIvC"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HfAJmhSL"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=JXGrwAJ4nPZdixL8Osla8TyTvVRvZyTkZ+Q5jkHPYos=; b=wYMiyIvCGjzwAv/fbxB3IFL4hV
-	hmEb7g/dW9qnh3hz/neGGBuhLtpEkMxnJEuyOvqU8tnncm21lDlHV3AuvGYzs1b8Aacm6l0v4MgGw
-	qMTj5qVWv+4K3x5NPBbiLiLsEp8NetfJvH5XUWl0lc/rXe/IwjuuTMzC5V0RVzH7Qxyk=;
+	bh=Z9Vw9tqTsh2NIgXn2Uom2hDgSwNfIr0HX3ljk/NnuIg=; b=HfAJmhSL4g3kOsUQKML81Gg3vK
+	sClunIM9MCqsdL+9gFNEypLQ8lYWeBayvoeKYpt/HMWgZvZH7EtYtKvtyX7HtgWPJcDMIZ8Jsgpwy
+	2e5CO39h4Uaa+TI9PRz6T8dh3IHqbasKUqaO98Wf/gLUgAVCkMlN/L5QrcA6kb0OrEtw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1szgrP-009oRv-KA; Sat, 12 Oct 2024 20:29:03 +0200
-Date: Sat, 12 Oct 2024 20:29:03 +0200
+	id 1szh4R-009oTJ-PA; Sat, 12 Oct 2024 20:42:31 +0200
+Date: Sat, 12 Oct 2024 20:42:31 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jacob.e.keller@intel.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net] net: ftgmac100: corrcet the phy interface of NC-SI mode
-Message-ID: <e22bf47d-db22-4659-8246-619aafe1ba43@lunn.ch>
-References: <20241011082827.2205979-1-jacky_chou@aspeedtech.com>
+To: Gerhard Engleder <gerhard@engleder-embedded.com>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, Gerhard Engleder <eg@keba.com>
+Subject: Re: [PATCH RFC net-next] e1000e: Fix real-time violations on link up
+Message-ID: <f8fe665a-5e6c-4f95-b47a-2f3281aa0e6c@lunn.ch>
+References: <20241011195412.51804-1-gerhard@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,49 +45,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241011082827.2205979-1-jacky_chou@aspeedtech.com>
+In-Reply-To: <20241011195412.51804-1-gerhard@engleder-embedded.com>
 
-On Fri, Oct 11, 2024 at 04:28:27PM +0800, Jacky Chou wrote:
-> In NC-SI specification, NC-SI is using RMII, not MII.
+On Fri, Oct 11, 2024 at 09:54:12PM +0200, Gerhard Engleder wrote:
+> From: Gerhard Engleder <eg@keba.com>
 > 
-> Fixes: e24a6c874601 ("net: ftgmac100: Get link speed and duplex for NC-SI")
-> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> Link down and up triggers update of MTA table. This update executes many
+> PCIe writes and a final flush. Thus, PCIe will be blocked until all writes
+> are flushed. As a result, DMA transfers of other targets suffer from delay
+> in the range of 50us. The result are timing violations on real-time
+> systems during link down and up of e1000e.
+> 
+> Execute a flush after every single write. This prevents overloading the
+> interconnect with posted writes. As this also increases the time spent for
+> MTA table update considerable this change is limited to PREEMPT_RT.
+> 
+> Signed-off-by: Gerhard Engleder <eg@keba.com>
 > ---
->  drivers/net/ethernet/faraday/ftgmac100.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/ethernet/intel/e1000e/mac.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index ae0235a7a74e..85fea13b2879 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.c
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-> @@ -1913,7 +1913,7 @@ static int ftgmac100_probe(struct platform_device *pdev)
->  			goto err_phy_connect;
->  		}
->  		err = phy_connect_direct(netdev, phydev, ftgmac100_adjust_link,
-> -					 PHY_INTERFACE_MODE_MII);
-> +					 PHY_INTERFACE_MODE_RMII);
->  		if (err) {
->  			dev_err(&pdev->dev, "Connecting PHY failed\n");
->  			goto err_phy_connect;
+> diff --git a/drivers/net/ethernet/intel/e1000e/mac.c b/drivers/net/ethernet/intel/e1000e/mac.c
+> index d7df2a0ed629..f4693d355886 100644
+> --- a/drivers/net/ethernet/intel/e1000e/mac.c
+> +++ b/drivers/net/ethernet/intel/e1000e/mac.c
+> @@ -331,9 +331,15 @@ void e1000e_update_mc_addr_list_generic(struct e1000_hw *hw,
+>  	}
+>  
+>  	/* replace the entire MTA table */
+> -	for (i = hw->mac.mta_reg_count - 1; i >= 0; i--)
+> +	for (i = hw->mac.mta_reg_count - 1; i >= 0; i--) {
+>  		E1000_WRITE_REG_ARRAY(hw, E1000_MTA, i, hw->mac.mta_shadow[i]);
+> +#ifdef CONFIG_PREEMPT_RT
+> +		e1e_flush();
+> +#endif
+> +	}
+> +#ifndef CONFIG_PREEMPT_RT
+>  	e1e_flush();
+> +#endif
 
-I'm a but confused here. Please could you expand the commit
-message. When i look at the code:
+#ifdef FOO is generally not liked because it reduces the effectiveness
+of build testing.
 
-		phydev = fixed_phy_register(PHY_POLL, &ncsi_phy_status, NULL);
-		err = phy_connect_direct(netdev, phydev, ftgmac100_adjust_link,
-					 PHY_INTERFACE_MODE_MII);
-		if (err) {
-			dev_err(&pdev->dev, "Connecting PHY failed\n");
-			goto err_phy_connect;
-		}
+Two suggestions:
 
-The phy being connected to is a fixed PHY. So the interface mode
-should not matter, at least to the PHY, since there is no physical
-PHY. Does the MAC driver get this value returned to it, e.g. as part
-of ftgmac100_adjust_link, and the MAC then configures itself into the
-wrong interface mode?
+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+		e1e_flush();
 
-For a patch with a Fixes: it is good to describe the problem the user
-sees.
+This will then end up as and if (0) or if (1), with the statement
+following it always being compiled, and then optimised out if not
+needed.
+
+Alternatively, consider something like:
+
+	if (i % 8)
+		e1e_flush()
+
+if there is a reasonable compromise between RT and none RT
+performance. Given that RT is now fully merged, we might see some
+distros enable it, so a compromise would probably be better.
 
 	Andrew
