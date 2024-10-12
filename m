@@ -1,90 +1,97 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69472B9A9;
-	Sat, 12 Oct 2024 11:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98521A01D8;
+	Sat, 12 Oct 2024 11:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728731778; cv=none; b=srW/MODOoW3HgEWB5Sn9d2BSbc1e/RYq25peZMGKG3clAJJL/8oZ1/8XeFNO4+3/qk2mJUdOzv8tCQhGuku9lHr1Mh0+FsaBKPtSShK4nHT91SAlAIWs4qpTSNKluVtbRsPQGcyjFWjw0ixHr1L5cJajUE0O/4oZNktqzFRzRaU=
+	t=1728732442; cv=none; b=HerB+a3TzawNGKG1tVxr/IAkgWE9RIYF5knpMWK3Je4dvaJ5uZPzm5iAR+206O6qhpz7+NeAWNHBcuaI6lvkEonlA7FEmt4aaeoHWHEtpjU9BPNSuLVwO8EE8ABpPULsn6myKcf7K2RMvCABMs/x4LFgqznOYO5LypSjilmnsWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728731778; c=relaxed/simple;
-	bh=3VkUv22cBbsez+d4gFS6qiQBa0yFs/qqI5re8YUOiT4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J4VfLYGomlfmSIK+0e3ovTcJzHpFdlkvxqYDVhB+KJkfMMwj+a8xuw90rYpnE1oUW/O7YwOQOtd3TOs2PfWKnaWG5s1X6/EyS03VpbdWCqmAAxNvFyFk4pKGe4oHwxYQIDmbGp4z4cToyKoP9Aelw1azsouqDkhp+PMvRp+Fp1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XQgqK2Q8NzpWPj;
-	Sat, 12 Oct 2024 19:14:05 +0800 (CST)
-Received: from kwepemm600001.china.huawei.com (unknown [7.193.23.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 80C591402CB;
-	Sat, 12 Oct 2024 19:16:04 +0800 (CST)
-Received: from [10.174.176.245] (10.174.176.245) by
- kwepemm600001.china.huawei.com (7.193.23.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 12 Oct 2024 19:16:03 +0800
-Message-ID: <539a13f9-d3b8-43f0-a5a4-158261408c07@huawei.com>
-Date: Sat, 12 Oct 2024 19:16:02 +0800
+	s=arc-20240116; t=1728732442; c=relaxed/simple;
+	bh=yyLRPc7BWlh0n3nzjsmQdJGceCFz05ihd1PqC5TEijI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FbTGonnoj3Fxw3IJCJc71QyZafw41JrLgp+Li8qliodx+cGvQuL0E3qqysUwialvIYSyt4w2ru/9TT8gds0bsHJrGYnQQjwSKUHyfDJuBJIv96WwgHo0kLc6GRLUaIW8k0AFp4D62eqMH1aaIBi6IXZ/pa03TZCnuHLXMyJ9fv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3PlRjri; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3PlRjri"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F6DC4CEC7;
+	Sat, 12 Oct 2024 11:27:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732442;
+	bh=yyLRPc7BWlh0n3nzjsmQdJGceCFz05ihd1PqC5TEijI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J3PlRjribwI8vpt7Ff7t/ad9Tk8k2D20lMPkCoFs+x7UYhsm9rGk3UZh3Xm3imNYz
+	 WK5e6+W/jnwF/nnygoyGq1U4u6lUxNXXvA4sb9rZqxivK7XsKv7J7rpGrrmCggjK+9
+	 ndgFnHhrxZyjXYzH/LqyPemE7c/yvfjgetykXLHeDduDMPtiXIQN/nvKIhrczN0XXD
+	 syRm08fK6GQhPk5+gF8xm7dujkVwmamjLsm4gu6JjzzA4a40iy27mS6XZdmV9FGZIT
+	 hfhFVj3+/VWOf8oS8MBdTKJe1jAMNwVpvnMqJd25RZMuFaW2I/mzadX/+eMlwG9lwN
+	 KFl9mvWnnCbNg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/20] usbnet: ipheth: race between ipheth_close and error handling
+Date: Sat, 12 Oct 2024 07:26:35 -0400
+Message-ID: <20241012112715.1763241-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241012112715.1763241-1-sashal@kernel.org>
+References: <20241012112715.1763241-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: ethernet: aeroflex: fix potential memory leak in
- greth_start_xmit_gbit()
-To: Gerhard Engleder <gerhard@engleder-embedded.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<andreas@gaisler.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <edumazet@google.com>, <kristoffer@gaisler.com>
-References: <20241011113908.43966-1-wanghai38@huawei.com>
- <3d26ab3e-2a3c-4c36-b165-06a1029bb0b0@engleder-embedded.com>
-Content-Language: en-US
-From: Wang Hai <wanghai38@huawei.com>
-In-Reply-To: <3d26ab3e-2a3c-4c36-b165-06a1029bb0b0@engleder-embedded.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.56
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemm600001.china.huawei.com (7.193.23.3)
 
+From: Oliver Neukum <oneukum@suse.com>
 
-On 2024/10/12 4:41, Gerhard Engleder wrote:
-> On 11.10.24 13:39, Wang Hai wrote:
->> The greth_start_xmit_gbit() returns NETDEV_TX_OK without freeing skb
->> in case of skb->len being too long, add dev_kfree_skb() to fix it.
->>
->> Fixes: d4c41139df6e ("net: Add Aeroflex Gaisler 10/100/1G Ethernet 
->> MAC driver")
->> Signed-off-by: Wang Hai <wanghai38@huawei.com>
->> ---
->>   drivers/net/ethernet/aeroflex/greth.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/net/ethernet/aeroflex/greth.c 
->> b/drivers/net/ethernet/aeroflex/greth.c
->> index 27af7746d645..8f6835a710b9 100644
->> --- a/drivers/net/ethernet/aeroflex/greth.c
->> +++ b/drivers/net/ethernet/aeroflex/greth.c
->> @@ -484,6 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct 
->> net_device *dev)
->>         if (unlikely(skb->len > MAX_FRAME_SIZE)) {
->>           dev->stats.tx_errors++;
->> +        dev_kfree_skb(skb);
->>           goto out;
->
-> dev_kfree_skb(skb) is already part of the error handling, one line above
-> the "out" label. Why don't you just add another label which includes
-> dev_kfree_skb(skb) and goto that label?
->
-> Gerhard
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
 
-Hi, Gerhard.
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
 
-Thanks for the suggestion, I just sent the v2 version.
+Hence the order of actions in ipheth_close() needs
+to be inverted.
 
-[PATCH v2 net] net: ethernet: aeroflex: fix potential memory leak in 
-greth_start_xmit_gbit()
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 687d70cfc5563..6eeef10edadad 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -475,8 +475,8 @@ static int ipheth_close(struct net_device *net)
+ {
+ 	struct ipheth_device *dev = netdev_priv(net);
+ 
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
