@@ -1,259 +1,129 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9412040B0;
-	Sat, 12 Oct 2024 11:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F412A204F77;
+	Sat, 12 Oct 2024 11:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732599; cv=none; b=CDVqki+UE5ENeOkaE9U2R8hqP2PfWdVxCZhE2N6Y0v6/2D+LtKxmw/PIlXx2l2PTNfhFCoR8xLyc6xT3nPyZmCy4R6qMU7NUOl8QC/bHnyXY+6JUtsnQ5yVQqLkCO9PhnghvyXUpOOnQGW9+ZnqfiNAE4zrb0DixKIFfdEptCKA=
+	t=1728732600; cv=none; b=CVX8LIXWcay8yMWBVs0iZqUyyWYAt+U/k5zsQ/oA3h7NnJiaPLxPQJ7xXCQKIjhYWwyreGpANpU931CfuoUa3oPjVKKLsF6AjgY1GOsWYl/Bjn/FsAH/vAc/4KYbhWScxQ0flEHZqqn8ltfkiCcFXVmYqaPoJX9XASnxwMWO5JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732599; c=relaxed/simple;
-	bh=rbHZBZOXHfiZy/gmHARXVXNCWRv4406Hnk7FgPY+Cpo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pkt3IAtLoXHA7hH1nhMXC23eSGQzi/lUw+jpeEoUExvNShejnTIy9T9S8XPJ8pZ0oN/AHSDff2naKt/i/ulFxBHaSlp8QXa2zWgnSvVuEm4IoC44Kk+4rNb0Y/6HyyQWXvmsf8zo0j9VENPaYHWkNBlHWiyDRuKnod9F9q2aLhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XQh9h4zCnz1ymwy;
-	Sat, 12 Oct 2024 19:30:00 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9D0321402CA;
-	Sat, 12 Oct 2024 19:29:55 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:29:55 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-	<linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>
-Subject: [PATCH net-next v21 11/14] mm: page_frag: add testing for the newly added prepare API
-Date: Sat, 12 Oct 2024 19:23:17 +0800
-Message-ID: <20241012112320.2503906-12-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
-References: <20241012112320.2503906-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1728732600; c=relaxed/simple;
+	bh=PNoNd7ySCCKZSMeht91COu5h8hrIkKAZ4nWz2IT5jlo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ONvzPbaZy0fp/oXolO6EkyJ2Jp63rcEWytPCIFJs9xiyQyyk2T55fxrYXTu4jYTSp3tyD5sZW8g4c74gJXSIkADM8AWhGHPcdfXIiR+rGmGTcHycu4XgrfRI07VY5/COpX4XQsCdtGdMTMKr+7DjZwBiHaCYZF7rAXsG57P+Tc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M23v9F6s; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M23v9F6s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0C5C4CEC7;
+	Sat, 12 Oct 2024 11:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732599;
+	bh=PNoNd7ySCCKZSMeht91COu5h8hrIkKAZ4nWz2IT5jlo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M23v9F6sADI7KumI0IvWYqs9R6vns8dvXojRKSBSWdUHFO4PL9ZhktTUGZlSC+fN8
+	 ZfKiNgUXtkvej+aCZcujM0jl2Ujx7pSr94V9qzuT54k/oB/l+qCn/nmVskxPLMT2Wz
+	 K+woNKRrKgyLfdaa+O8LHTxsr4qY0Jxk7keSsjOtzXXz+t72zQavG5i4q8jQmsVkel
+	 y8hvYfUGBBmI7oiovBIQZGafef38RLbYQY1pViDpAVN6pkIbjROCYnG9yZHrVuiDtj
+	 RnSOUGgBAucccmXwGKNjFDAvucZg5dpMX2MoR+RM07Ml9DVVKAzZX80LnFNA3Nnis6
+	 uAclSWgaSFM5A==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Pawel Dembicki <paweldembicki@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 4/7] net: phy: vitesse: repair vsc73xx autonegotiation
+Date: Sat, 12 Oct 2024 07:29:39 -0400
+Message-ID: <20241012112948.1764454-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241012112948.1764454-1-sashal@kernel.org>
+References: <20241012112948.1764454-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-Add testing for the newly added prepare API, for both aligned
-and non-aligned API, also probe API is also tested along with
-prepare API.
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
+
+When the vsc73xx mdio bus work properly, the generic autonegotiation
+configuration works well.
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/mm/page_frag/page_frag_test.c   | 76 +++++++++++++++++--
- tools/testing/selftests/mm/run_vmtests.sh     |  4 +
- tools/testing/selftests/mm/test_page_frag.sh  | 27 +++++++
- 3 files changed, 102 insertions(+), 5 deletions(-)
+ drivers/net/phy/vitesse.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/page_frag/page_frag_test.c b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-index e806c1866e36..1e47e9ad66f0 100644
---- a/tools/testing/selftests/mm/page_frag/page_frag_test.c
-+++ b/tools/testing/selftests/mm/page_frag/page_frag_test.c
-@@ -32,6 +32,10 @@ static bool test_align;
- module_param(test_align, bool, 0);
- MODULE_PARM_DESC(test_align, "use align API for testing");
- 
-+static bool test_prepare;
-+module_param(test_prepare, bool, 0);
-+MODULE_PARM_DESC(test_prepare, "use prepare API for testing");
-+
- static int test_alloc_len = 2048;
- module_param(test_alloc_len, int, 0);
- MODULE_PARM_DESC(test_alloc_len, "alloc len for testing");
-@@ -74,6 +78,21 @@ static int page_frag_pop_thread(void *arg)
+diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
+index bb680352708a6..3f594c8784e20 100644
+--- a/drivers/net/phy/vitesse.c
++++ b/drivers/net/phy/vitesse.c
+@@ -232,16 +232,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
  	return 0;
  }
  
-+static void frag_frag_test_commit(struct page_frag_cache *nc,
-+				  struct page_frag *prepare_pfrag,
-+				  struct page_frag *probe_pfrag,
-+				  unsigned int used_sz)
-+{
-+	if (prepare_pfrag->page != probe_pfrag->page ||
-+	    prepare_pfrag->offset != probe_pfrag->offset ||
-+	    prepare_pfrag->size != probe_pfrag->size) {
-+		force_exit = true;
-+		WARN_ONCE(true, TEST_FAILED_PREFIX "wrong probed info\n");
-+	}
-+
-+	page_frag_commit(nc, prepare_pfrag, used_sz);
-+}
-+
- static int page_frag_push_thread(void *arg)
- {
- 	struct ptr_ring *ring = arg;
-@@ -86,15 +105,61 @@ static int page_frag_push_thread(void *arg)
- 		int ret;
- 
- 		if (test_align) {
--			va = page_frag_alloc_align(&test_nc, test_alloc_len,
--						   GFP_KERNEL, SMP_CACHE_BYTES);
-+			if (test_prepare) {
-+				struct page_frag prepare_frag, probe_frag;
-+				void *probe_va;
-+
-+				va = page_frag_alloc_refill_prepare_align(&test_nc,
-+									  test_alloc_len,
-+									  &prepare_frag,
-+									  GFP_KERNEL,
-+									  SMP_CACHE_BYTES);
-+
-+				probe_va = __page_frag_alloc_refill_probe_align(&test_nc,
-+										test_alloc_len,
-+										&probe_frag,
-+										-SMP_CACHE_BYTES);
-+				if (va != probe_va) {
-+					force_exit = true;
-+					WARN_ONCE(true, TEST_FAILED_PREFIX "wrong va\n");
-+				}
-+
-+				if (likely(va))
-+					frag_frag_test_commit(&test_nc, &prepare_frag,
-+							      &probe_frag, test_alloc_len);
-+			} else {
-+				va = page_frag_alloc_align(&test_nc,
-+							   test_alloc_len,
-+							   GFP_KERNEL,
-+							   SMP_CACHE_BYTES);
-+			}
- 
- 			if ((unsigned long)va & (SMP_CACHE_BYTES - 1)) {
- 				force_exit = true;
- 				WARN_ONCE(true, TEST_FAILED_PREFIX "unaligned va returned\n");
- 			}
- 		} else {
--			va = page_frag_alloc(&test_nc, test_alloc_len, GFP_KERNEL);
-+			if (test_prepare) {
-+				struct page_frag prepare_frag, probe_frag;
-+				void *probe_va;
-+
-+				va = page_frag_alloc_refill_prepare(&test_nc, test_alloc_len,
-+								    &prepare_frag, GFP_KERNEL);
-+
-+				probe_va = page_frag_alloc_refill_probe(&test_nc, test_alloc_len,
-+									&probe_frag);
-+
-+				if (va != probe_va) {
-+					force_exit = true;
-+					WARN_ONCE(true, TEST_FAILED_PREFIX "wrong va\n");
-+				}
-+
-+				if (likely(va))
-+					frag_frag_test_commit(&test_nc, &prepare_frag,
-+							      &probe_frag, test_alloc_len);
-+			} else {
-+				va = page_frag_alloc(&test_nc, test_alloc_len, GFP_KERNEL);
-+			}
- 		}
- 
- 		if (!va)
-@@ -176,8 +241,9 @@ static int __init page_frag_test_init(void)
- 	}
- 
- 	duration = (u64)ktime_us_delta(ktime_get(), start);
--	pr_info("%d of iterations for %s testing took: %lluus\n", nr_test,
--		test_align ? "aligned" : "non-aligned", duration);
-+	pr_info("%d of iterations for %s %s API testing took: %lluus\n", nr_test,
-+		test_align ? "aligned" : "non-aligned",
-+		test_prepare ? "prepare" : "alloc", duration);
- 
- out:
- 	ptr_ring_cleanup(&ptr_ring, NULL);
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 2c5394584af4..f6ff9080a6f2 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -464,6 +464,10 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh aligned
- 
- CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
- 
-+CATEGORY="page_frag" run_test ./test_page_frag.sh aligned_prepare
-+
-+CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned_prepare
-+
- echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}" | tap_prefix
- echo "1..${count_total}" | tap_output
- 
-diff --git a/tools/testing/selftests/mm/test_page_frag.sh b/tools/testing/selftests/mm/test_page_frag.sh
-index f55b105084cf..1c757fd11844 100755
---- a/tools/testing/selftests/mm/test_page_frag.sh
-+++ b/tools/testing/selftests/mm/test_page_frag.sh
-@@ -43,6 +43,8 @@ check_test_failed_prefix() {
- SMOKE_PARAM="test_push_cpu=$TEST_CPU_0 test_pop_cpu=$TEST_CPU_1"
- NONALIGNED_PARAM="$SMOKE_PARAM test_alloc_len=75 nr_test=$NR_TEST"
- ALIGNED_PARAM="$NONALIGNED_PARAM test_align=1"
-+NONALIGNED_PREPARE_PARAM="$NONALIGNED_PARAM test_prepare=1"
-+ALIGNED_PREPARE_PARAM="$ALIGNED_PARAM test_prepare=1"
- 
- check_test_requirements()
- {
-@@ -77,6 +79,20 @@ run_aligned_check()
- 	insmod $DRIVER $ALIGNED_PARAM > /dev/null 2>&1
- }
- 
-+run_nonaligned_prepare_check()
-+{
-+	echo "Run performance tests to evaluate how fast nonaligned prepare API is."
-+
-+	insmod $DRIVER $NONALIGNED_PREPARE_PARAM > /dev/null 2>&1
-+}
-+
-+run_aligned_prepare_check()
-+{
-+	echo "Run performance tests to evaluate how fast aligned prepare API is."
-+
-+	insmod $DRIVER $ALIGNED_PREPARE_PARAM > /dev/null 2>&1
-+}
-+
- run_smoke_check()
- {
- 	echo "Run smoke test."
-@@ -87,6 +103,7 @@ run_smoke_check()
- usage()
- {
- 	echo -n "Usage: $0 [ aligned ] | [ nonaligned ] | | [ smoke ] | "
-+	echo "[ aligned_prepare ] | [ nonaligned_prepare ] | "
- 	echo "manual parameters"
- 	echo
- 	echo "Valid tests and parameters:"
-@@ -107,6 +124,12 @@ usage()
- 	echo "# Performance testing for aligned alloc API"
- 	echo "$0 aligned"
- 	echo
-+	echo "# Performance testing for nonaligned prepare API"
-+	echo "$0 nonaligned_prepare"
-+	echo
-+	echo "# Performance testing for aligned prepare API"
-+	echo "$0 aligned_prepare"
-+	echo
- 	exit 0
- }
- 
-@@ -158,6 +181,10 @@ function run_test()
- 			run_nonaligned_check
- 		elif [[ "$1" = "aligned" ]]; then
- 			run_aligned_check
-+		elif [[ "$1" = "nonaligned_prepare" ]]; then
-+			run_nonaligned_prepare_check
-+		elif [[ "$1" = "aligned_prepare" ]]; then
-+			run_aligned_prepare_check
- 		else
- 			run_manual_check $@
- 		fi
+-static int vsc73xx_config_aneg(struct phy_device *phydev)
+-{
+-	/* The VSC73xx switches does not like to be instructed to
+-	 * do autonegotiation in any way, it prefers that you just go
+-	 * with the power-on/reset defaults. Writing some registers will
+-	 * just make autonegotiation permanently fail.
+-	 */
+-	return 0;
+-}
+-
+ /* This adds a skew for both TX and RX clocks, so the skew should only be
+  * applied to "rgmii-id" interfaces. It may not work as expected
+  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces. */
+@@ -424,7 +414,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -433,7 +422,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc738x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -442,7 +430,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
+@@ -451,7 +438,6 @@ static struct phy_driver vsc82xx_driver[] = {
+ 	.phy_id_mask    = 0x000ffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.config_init    = vsc739x_config_init,
+-	.config_aneg    = vsc73xx_config_aneg,
+ 	.read_page      = vsc73xx_read_page,
+ 	.write_page     = vsc73xx_write_page,
+ }, {
 -- 
-2.33.0
+2.43.0
 
