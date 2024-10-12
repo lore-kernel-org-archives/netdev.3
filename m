@@ -1,38 +1,38 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EE0201101;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E916A201110;
 	Sat, 12 Oct 2024 11:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732593; cv=none; b=fD0FHuXORp0kFtamP7umM9cbpD6dURLqlEmZgEIuZ/w3r9IjUp7vEu1XAtWUIDqnUuBoZLew32/AWvS9wGPj/G6vEvlcE8wEbnK3R116h9vGwL5wbszC+tci5UIkvX0M1WiDB3hREKnPvVaJ7Q0YXSZS9olSxlk63sTPx3CSul8=
+	t=1728732593; cv=none; b=n98l9Cwn7BjkDKCuytk/wcxQFfgD6pGhwgANvVj66x6ejIsOQKA3AplB/ErsE7ga2v5uMz4fzWz/d7jh40/hfidE/Qtem1MmkQdX1FW2RPZW+j10vLqKLCn/CMQRJkHocd5f34T4aXiuC3GrgoiW8TAiGQ8ZSjNGpPdApfWTtI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728732593; c=relaxed/simple;
-	bh=F8NaFy8Gqe3Y7KuxbrOesyWY58h7LgGRc3j4/fenDHI=;
+	bh=yHtnCHg0Gu6pqRoGz7RGYAKv3M4cju4Qz+dhzi79qDk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8kFHbVTPhRbWbH3/KBel1w/zn13xN5z9CTfS7NJC1NeFf2T+dcvGgWrdjLfIrLXDXDPNYRE1oEwV3Rb7tPHP8oaHkte+ZhoC+4EzCtFZAHkUXn++EdgHKOdPqzI/+fpO1bZasnEcmZ0Bq/xeibIvWA8Yn6NSjyK7rU+0sLn/UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=oAy8NIQICByXdK3GME3DRMVud+5VpCLxXZXe5CmJDYZUt5C4mRwJ3KQytVq+Q+q/QCjgW4abh+JyMT+iJ28jfqM+F+V+oSOHyqI8FhM/+288dWE+yFbf3chhOL9XB4zSwq29xiAeF7dWuHLnt2yuoWG7x0Fq66SjZGs9rynQbkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XQh883ZRrz2DdSc;
-	Sat, 12 Oct 2024 19:28:40 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XQh7J5FnTz10N1q;
+	Sat, 12 Oct 2024 19:27:56 +0800 (CST)
 Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id A03CF1402CC;
-	Sat, 12 Oct 2024 19:29:49 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 51BDF1402CB;
+	Sat, 12 Oct 2024 19:29:44 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:29:49 +0800
+ 15.2.1544.11; Sat, 12 Oct 2024 19:29:44 +0800
 From: Yunsheng Lin <linyunsheng@huawei.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>,
-	Alexander Duyck <alexanderduyck@fb.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
-Subject: [PATCH net-next v21 08/14] mm: page_frag: use __alloc_pages() to replace alloc_pages_node()
-Date: Sat, 12 Oct 2024 19:23:14 +0800
-Message-ID: <20241012112320.2503906-9-linyunsheng@huawei.com>
+	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Max
+ Filippov <jcmvbkbc@gmail.com>, Alexander Duyck <alexanderduyck@fb.com>, Chris
+ Zankel <chris@zankel.net>
+Subject: [PATCH net-next v21 05/14] xtensa: remove the get_order() implementation
+Date: Sat, 12 Oct 2024 19:23:11 +0800
+Message-ID: <20241012112320.2503906-6-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
 References: <20241012112320.2503906-1-linyunsheng@huawei.com>
@@ -47,41 +47,57 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggpemf200006.china.huawei.com (7.185.36.61)
 
-It seems there is about 24Bytes binary size increase for
-__page_frag_cache_refill() after refactoring in arm64 system
-with 64K PAGE_SIZE. By doing the gdb disassembling, It seems
-we can have more than 100Bytes decrease for the binary size
-by using __alloc_pages() to replace alloc_pages_node(), as
-there seems to be some unnecessary checking for nid being
-NUMA_NO_NODE, especially when page_frag is part of the mm
-system.
+As the get_order() implemented by xtensa supporting 'nsau'
+instruction seems be the same as the generic implementation
+in include/asm-generic/getorder.h when size is not a constant
+value as the generic implementation calling the fls*() is also
+utilizing the 'nsau' instruction for xtensa.
+
+So remove the get_order() implemented by xtensa, as using the
+generic implementation may enable the compiler to do the
+computing when size is a constant value instead of runtime
+computing and enable the using of get_order() in BUILD_BUG_ON()
+macro in next patch.
 
 CC: Alexander Duyck <alexander.duyck@gmail.com>
 Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- mm/page_frag_cache.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/xtensa/include/asm/page.h | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index a852523bc8ca..f55d34cf7d43 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -56,11 +56,11 @@ static struct page *__page_frag_cache_refill(struct page_frag_cache *nc,
- #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
- 	gfp_mask = (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
- 		   __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
--	page = alloc_pages_node(NUMA_NO_NODE, gfp_mask,
--				PAGE_FRAG_CACHE_MAX_ORDER);
-+	page = __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDER,
-+			     numa_mem_id(), NULL);
- #endif
- 	if (unlikely(!page)) {
--		page = alloc_pages_node(NUMA_NO_NODE, gfp, 0);
-+		page = __alloc_pages(gfp, 0, numa_mem_id(), NULL);
- 		order = 0;
- 	}
+diff --git a/arch/xtensa/include/asm/page.h b/arch/xtensa/include/asm/page.h
+index 4db56ef052d2..8665d57991dd 100644
+--- a/arch/xtensa/include/asm/page.h
++++ b/arch/xtensa/include/asm/page.h
+@@ -109,26 +109,8 @@ typedef struct page *pgtable_t;
+ #define __pgd(x)	((pgd_t) { (x) } )
+ #define __pgprot(x)	((pgprot_t) { (x) } )
  
+-/*
+- * Pure 2^n version of get_order
+- * Use 'nsau' instructions if supported by the processor or the generic version.
+- */
+-
+-#if XCHAL_HAVE_NSA
+-
+-static inline __attribute_const__ int get_order(unsigned long size)
+-{
+-	int lz;
+-	asm ("nsau %0, %1" : "=r" (lz) : "r" ((size - 1) >> PAGE_SHIFT));
+-	return 32 - lz;
+-}
+-
+-#else
+-
+ # include <asm-generic/getorder.h>
+ 
+-#endif
+-
+ struct page;
+ struct vm_area_struct;
+ extern void clear_page(void *page);
 -- 
 2.33.0
 
