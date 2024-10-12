@@ -1,87 +1,94 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621F146D57;
-	Sat, 12 Oct 2024 11:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CF3206E87;
+	Sat, 12 Oct 2024 11:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732609; cv=none; b=PAzI7FaKith7c1iVDJcnvmsNWrDVQPDG89Rg98teqrvtsyaUL7Yx7xyMK/bigC9ddqJ5uOA9nE5ihTrihK1hHAad+N1pOJrKgj25Sm4NinqMr4cUPa15fX+0u9L8jZmvvcKFO4GHQ3Xl6544hhNv2GfFg7+tzvi2FJeejOxxcIo=
+	t=1728732612; cv=none; b=SDNBS6LXYHftt3TRBdGsiPM9zJ2kh2vomqFfeO2JpI9Jxaa89xTQUnF4S2aCTWOLOZmW66Iv60TlCfNWOzTkxjrabsMaSVXIcbjuVFRgTDIIUyYrMAR4MF5fHneEp4HCpig2t0vOtzURvBk79aEKhwQhGGTARB9UipL8CRyMMS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732609; c=relaxed/simple;
-	bh=vHDPWYE5nb4eWuoyihpAcwdu9W5PN//KZhiVlefVGvI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XU7SxzmErSE4ro2E0dPFatenci91WUQO6W9sTlJDlgPlEuJP6Y/t/Iq+wMNarWHIkYVq3fmqWr/quBSjnZYOc06S7KhjpB/1cfGw1lFGA4FOA5pV67rv8MD9KVCndE1PC+Kd+XnwiN5ImwSUPNNW6tS3TOPovdl92eKmI1oPT00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XQh920qYtz20qBr;
-	Sat, 12 Oct 2024 19:29:26 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id ECA9B1A016C;
-	Sat, 12 Oct 2024 19:30:05 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 12 Oct 2024 19:30:05 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>
-Subject: [PATCH net-next v21 14/14] mm: page_frag: add an entry in MAINTAINERS for page_frag
-Date: Sat, 12 Oct 2024 19:23:20 +0800
-Message-ID: <20241012112320.2503906-15-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241012112320.2503906-1-linyunsheng@huawei.com>
-References: <20241012112320.2503906-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1728732612; c=relaxed/simple;
+	bh=8OBu2cqnDAzLu4KPvPWmve/cJux7/7IAaJOlRV8JjV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PUS8xBmAYT5HlGCpfVHYQyeMJng2DmIXMHC747ioSUT7r5UO7G1ehdYN4HDwm+SPRrYcxGzLZxTs1F8A2ki2Rdm8nFuwBwvXVdlkWMwf59z3crd+MG0JC1tUGm1mnoODvGC5fsPWyx3wwvfZfGdYc5cJHn7fvvDBlas5y9P26jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDoqGzYC; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDoqGzYC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D87C4CEC6;
+	Sat, 12 Oct 2024 11:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728732612;
+	bh=8OBu2cqnDAzLu4KPvPWmve/cJux7/7IAaJOlRV8JjV8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qDoqGzYCP9OruEjyYp8xhNcLYumf8boiEGMFPgZLHPp18nlze2crMJbsWOFReDP9c
+	 fcXzU/JtU3KIEcihBQ1qu8kseuuCAvFw0ofck3TNVUJuGwRsk+k86IUQqjzOS5/Tk/
+	 oonCPj3FoaDk1+mV5nxw4E5sAjtXIyodjX67yyMsr/moIJrdPSvj1aOUCcWax+cXf6
+	 RsR4E1zfUQobnuJS0yyN2oVsN/dsq68iznmRg0x1x6IrbdQmEi2YtrfrEC/SFY/Svi
+	 Vnk9CMAeY6sl2tGDlrCBmUoSe57HsGh02CpTh7AvVFFo7HrJNpIv8fekIY0JhUQQ6L
+	 JF5jQsSz/SscA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/6] usbnet: ipheth: race between ipheth_close and error handling
+Date: Sat, 12 Oct 2024 07:29:58 -0400
+Message-ID: <20241012113009.1764620-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-After this patchset, page_frag is a small subsystem/library
-on its own, so add an entry in MAINTAINERS to indicate the
-new subsystem/library's maintainer, maillist, status and file
-lists of page_frag.
+From: Oliver Neukum <oneukum@suse.com>
 
-Alexander is the original author of page_frag, add him in the
-MAINTAINERS too.
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
+
+Hence the order of actions in ipheth_close() needs
+to be inverted.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 560a65b85297..536078dc3fd4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17512,6 +17512,18 @@ F:	mm/page-writeback.c
- F:	mm/readahead.c
- F:	mm/truncate.c
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index cea005cc7b2ab..c762335587a43 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -407,8 +407,8 @@ static int ipheth_close(struct net_device *net)
+ {
+ 	struct ipheth_device *dev = netdev_priv(net);
  
-+PAGE FRAG
-+M:	Alexander Duyck <alexander.duyck@gmail.com>
-+M:	Yunsheng Lin <linyunsheng@huawei.com>
-+L:	linux-mm@kvack.org
-+L:	netdev@vger.kernel.org
-+S:	Supported
-+F:	Documentation/mm/page_frags.rst
-+F:	include/linux/page_frag_cache.h
-+F:	mm/page_frag_cache.c
-+F:	tools/testing/selftests/mm/page_frag/
-+F:	tools/testing/selftests/mm/test_page_frag.sh
-+
- PAGE POOL
- M:	Jesper Dangaard Brouer <hawk@kernel.org>
- M:	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
+ }
+ 
 -- 
-2.33.0
+2.43.0
 
