@@ -1,72 +1,63 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C0B17BA5;
-	Sat, 12 Oct 2024 03:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08AE139D
+	for <netdev@vger.kernel.org>; Sat, 12 Oct 2024 03:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728702881; cv=none; b=ObVJJSqqzmLc8cUcow5fejPa9jeVMi382+TfXVnoijVqmyvyxz171YLOpsJZSLjkvpWn4CN1RQgGjSnwOnVfEPQ8ithv7gvvnxzihGHbP5dRIrWtaYduvMPaADXInI8glozOUrgcDRtcTPLQbQglR58pFvnA7bkk3z4wi8sEVAs=
+	t=1728703977; cv=none; b=lgKOR6j/K3NLb7pfeLdDyvCpE5y1PDVqaHkJI9DAdw2ii+g0Wv/pq6DfOsGxdJyihKN1kOWHTEZZyFCeX9uNoK20laVkGWrqXcPByrf/tRUTso+LLjnj+y+lliMvKfXkg9lvKHTKHsyxMNEMQc9bl1dSDzGJiqogl8Ovsu4DnPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728702881; c=relaxed/simple;
-	bh=DxG3jFhJxBZHy9y4ut7XkUjBm+Q/CU+DcDmSa6Et+bg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F7C+JLbrY+cfywBHyMb46VqwBQxStyRA3/9r+18s2gjCD1YCeDlCdEPnIvOdn2B+Z+f/oezeUlbsT8jE1vxn7J5IT91zReD4I08NnIBmGDf/Q5qMUhQ9DE2bAH2uG2/uP+IVZQT8jkykwGyN/7kVJcz8zaN0s9HlzGyKF7mBcJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=localhost)
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1szS0P-0005hE-FC; Sat, 12 Oct 2024 02:37:21 +0000
-From: Lee Trager <lee@trager.us>
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Lee Trager <lee@trager.us>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Sanman Pradhan <sanmanpradhan@meta.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Cc: netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] eth: fbnic: Add devlink dev flash support
-Date: Fri, 11 Oct 2024 19:34:02 -0700
-Message-ID: <20241012023646.3124717-1-lee@trager.us>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1728703977; c=relaxed/simple;
+	bh=N0qJ+wn1fElSxU8qsWpqFsFdHRJwYTc6/QLcAqm3M2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QZ9pBiqiufOd2q8YtwDx6T5/2KdXETVR3SjIa5Au0YOheqY1CgSndfurIwceZibcUQCSulf06Dta5vCRFfBHk1s3z0hAslNcAjmxSdCIVSsvVGSR1/wkRnxmwBosou/ZeS6e8BB8F3oCR7osDp4nq0txva7W6WoYpeeBT24eBdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YYah/0i6; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YYah/0i6"
+Message-ID: <81741c6e-52c7-4384-afc7-ad3ccaffe3a9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1728703974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y0kvkytFNZfH+DGlBJ3tbwQKE0zOqYmN8G+bnASRXgA=;
+	b=YYah/0i65HHmO6/S8str/xPjdCY7ht3w8MyK3R9fwPL9o2lOGmJXABf8QT9paBMoH1tFx6
+	vz/PNRXZAK0tmsmxiCRSbw1CN6jCRcIIyDTIUnASAizv3mLdtFk/29+tf8mUeCsHTTqqci
+	PUmT9Ia9O7KknapOr54JYfP4J1MFyYs=
+Date: Fri, 11 Oct 2024 20:32:41 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 1/5] net: add TIME_WAIT logic to
+ sk_to_full_sk()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Martin KaFai Lau <martin.lau@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Neal Cardwell <ncardwell@google.com>,
+ Brian Vazquez <brianvv@google.com>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
+References: <20241010174817.1543642-1-edumazet@google.com>
+ <20241010174817.1543642-2-edumazet@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <20241010174817.1543642-2-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-fbnic supports updating firmware using a PLDM image signed and distributed
-by Meta. PLDM images are written into stored flash. Flashing does not
-interrupt operation.
+On 10/10/24 10:48 AM, Eric Dumazet wrote:
+> TCP will soon attach TIME_WAIT sockets to some ACK and RST.
+> 
+> Make sure sk_to_full_sk() detects this and does not return
+> a non full socket.
 
-Mailbox support additional adds support to utilize the kernel completion
-API with firmware. This allows the driver to block on firmware response.
-Initial support is only for firmware updates, future patches will add
-support for additional features.
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
 
-Lee Trager (2):
-  eth: fbnic: Add mailbox support for PLDM updates
-  eth: fbnic: Add devlink dev flash support
-
- .../device_drivers/ethernet/meta/fbnic.rst    |  11 +
- drivers/net/ethernet/meta/Kconfig             |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   1 +
- .../net/ethernet/meta/fbnic/fbnic_devlink.c   | 270 +++++++++++++++++-
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 263 +++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  59 ++++
- 6 files changed, 604 insertions(+), 1 deletion(-)
-
---
-2.43.5
