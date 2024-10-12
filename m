@@ -1,40 +1,39 @@
 Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDE915442A;
-	Sat, 12 Oct 2024 09:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E2814F9F8;
+	Sat, 12 Oct 2024 10:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728726917; cv=none; b=m8yG25r89R6ZPyXdFEM9ZJs/OUcSXB8qOK/kTs1v84Fnr2VpYwyxPtcBMsaOW4W/jlLpreiA8u9QzVDPV0yI/nIMb/kK/gII0CnD5/BkORagvCaDSXz3RnXPx800NNOC0kCrx23nbfsNjlxwTKWbIjhOn3xytxF69qBLoOW61Tw=
+	t=1728727289; cv=none; b=OTkoEh4mJu2uqILbiHDj1k7Bd1i/3hvrhyiKOYcC0+2+wKlID4JfHkeVwbqYN71dGabjRTwXygwvZWZ+WiStzYtj+M/TBYEQwJmxiK8hznIANL23EN9PG9sGcu+CK66CrsjMHcvHIW2yTlokjLHdzFe9H2c7QDQ3Qc4N9whczAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728726917; c=relaxed/simple;
-	bh=LpD7nSOqL0xZBzDZAy5+pkvuurXcf9akYEhw9FqkPAA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QoAcviJsKiKH+bPzTWhzANZnBzH9OUqHqLsLwZg0ZrvKwzUv4xzUfddeiAVeRwsz5ThOyT8sl68B4K107ap4HTnVmUto/phCb1siAszOjg7uSAaB3mDcBVgTnuK9w4fPBNL940Z7+THDaYvRSownmZmIaVmhgadRCxViG9EgHaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=T+N50k70; arc=none smtp.client-ip=109.73.34.58
+	s=arc-20240116; t=1728727289; c=relaxed/simple;
+	bh=7TfbiSh7h/FvoSgfkSAdJUsaQDbGBFzhDxW9+YGHlnQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dFlksXQgGFVMCGBwqaT9EXAxMM0dDFKbw/Zk5L7+UavfEprffeQok0IhdoNb2qEJgY3+0FQ9KDt+BvP4Q/DsJCDlZVV34b28LUysVxQvBTkNGd1MGttQqq49mrdnsLBEL22nny7UveJA5Xbq5U5oSDCl4yamg9ai1U2M6PL7uBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=hlMze5gT; arc=none smtp.client-ip=109.73.34.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="T+N50k70"
+	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="hlMze5gT"
 Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id 9149C100006;
-	Sat, 12 Oct 2024 12:54:57 +0300 (MSK)
+	by mx1.t-argos.ru (Postfix) with ESMTP id F117B100003;
+	Sat, 12 Oct 2024 12:51:47 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1728726897; bh=JXgwjey7j0QMl4Ux8Xn13v6r0ah2NLP0LwiGYOCtAFA=;
+	t=1728726708; bh=V7SirxrsBs4GfKTT3SldwSArpY7B0gckaI0s57IsTCU=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=T+N50k704BTprexf388jy4KSugh4fJkVXnz2wfqE0z/wGQhuL9ZW7kQMweyRwh8wQ
-	 AzbzpRbQ8pJk0dQpPbv+mzwNHk4nu7XjYnOCsbfiWYNYtKCjYxLTU6A2pLXe4RaAaK
-	 by9HClwG7sCRICs8Oq0ZB+W9i/iaDA2kiW7dU9Mj0WsiMmD9jmDxMXXkNcyHxY9E/F
-	 Wu9oHgiUo75gTRbZCT+VBold5ilK3Fy7D+Nfye8qQPeAQw64hw8lpAGw30ioCoc73w
-	 F0FsqmQiVjrE9RzoEl8JmdcuPBeckLIlERmsT7rkEmnCimR4JhjJwgWWssOg+ULUnz
-	 gYe8dwvM9wJGw==
+	b=hlMze5gT6xZmYIdjQTdcSG+VzOjK6xKT7hxq+RAbaEVJUYn5JuIhS3OMgbX0sbJF5
+	 i6iENO1/+6iD8wWk1afbowx3Mq7ZmXQM09LcNuShlfJsTXQlVlRaLHqEXZnWLDe4qG
+	 QMg5+nsKOB0i8hgCV1xNs7dJQ4ASZczhUSNl3x4vMfI3fpC+0HWeoNFlLfTBQT3ncl
+	 jhW2BlCA7MPAXFunETbhxYmyi77eDd0QuZGICPmBgguSvqXMoYvfCjNZfo01iTindq
+	 JqMsTB43UtCFxbsL1oWQ+cZaRx0anZ6DhPnD2Jin1c/a6v6CG4IbGiIf3U5FHeoCwW
+	 sjtBIOGRjuWCw==
 Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
 	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Sat, 12 Oct 2024 12:53:55 +0300 (MSK)
+	Sat, 12 Oct 2024 12:50:40 +0300 (MSK)
 Received: from localhost.localdomain (172.17.210.7) by ta-mail-02
  (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 12 Oct
- 2024 12:53:02 +0300
+ 2024 12:50:19 +0300
 From: Aleksandr Mishin <amishin@t-argos.ru>
 To: Veerasenareddy Burru <vburru@marvell.com>, Abhijit Ayarekar
 	<aayarekar@marvell.com>, Satananda Burla <sburla@marvell.com>, Sathesh Edara
@@ -43,12 +42,10 @@ CC: Aleksandr Mishin <amishin@t-argos.ru>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH net v4 2/2] octeon_ep: Add SKB allocation failures handling in __octep_oq_process_rx()
-Date: Sat, 12 Oct 2024 12:49:50 +0300
-Message-ID: <20241012094950.9438-3-amishin@t-argos.ru>
+Subject: [PATCH net v4 0/2] octeon_ep: Add SKB allocation failures handling in __octep_oq_process_rx()
+Date: Sat, 12 Oct 2024 12:49:48 +0300
+Message-ID: <20241012094950.9438-1-amishin@t-argos.ru>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20241012094950.9438-1-amishin@t-argos.ru>
-References: <20241012094950.9438-1-amishin@t-argos.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,39 +65,35 @@ X-KSMG-AntiSpam-Rate: 0
 X-KSMG-AntiSpam-Status: not_detected
 X-KSMG-AntiSpam-Method: none
 X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 39 0.3.39 e168d0b3ce73b485ab2648dd465313add1404cce, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, t-argos.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mx1.t-argos.ru.ru:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Info: LuaCore: 39 0.3.39 e168d0b3ce73b485ab2648dd465313add1404cce, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, mx1.t-argos.ru.ru:7.1.1;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;t-argos.ru:7.1.1, FromAlignment: s
 X-MS-Exchange-Organization-SCL: -1
 X-KSMG-AntiSpam-Interceptor-Info: scan successful
 X-KSMG-AntiPhishing: Clean, bases: 2024/10/12 09:22:00
 X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/10/12 08:26:00 #26739312
 X-KSMG-AntiVirus-Status: Clean, skipped
 
-build_skb() returns NULL in case of a memory allocation failure so handle
-it inside __octep_oq_process_rx() to avoid NULL pointer dereference.
+__octep_oq_process_rx() is called during NAPI polling by the driver and
+calls build_skb() which may return NULL as skb pointer in case of memory
+allocation error. This pointer is dereferenced later without checking for
+NULL.
 
-__octep_oq_process_rx() is called during NAPI polling by the driver. If
-skb allocation fails, keep on pulling packets out of the Rx DMA queue: we
-shouldn't break the polling immediately and thus falsely indicate to the
-octep_napi_poll() that the Rx pressure is going down. As there is no
-associated skb in this case, don't process the packets and don't push them
-up the network stack - they are skipped.
+In this series, we introduce two helpers to make the fix more readable and
+avoid code duplication. Also we handle build_skb() errors inside
+__octep_oq_process_rx() to avoid NULL pointer dereference.
 
-Helper function is implemented to unmmap/flush all the fragment buffers
-used by the dropped packet. 'alloc_failures' counter is incremented to
-mark the skb allocation error in driver statistics.
+A similar situation is present in the __octep_vf_oq_process_rx() of the
+Octeon VF driver. First we want to try the fix on __octep_oq_process_rx().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 37d79d059606 ("octeon_ep: add Tx/Rx processing and interrupt support")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
----
 Compile tested only.
 
+Changelog:
 v4:
   - Split patch up as suggested by Jakub
     (https://lore.kernel.org/all/20241004073311.223efca4@kernel.org/)
 v3: https://lore.kernel.org/all/20240930053328.9618-1-amishin@t-argos.ru/
+  - Implement helper which frees current packet resources and increase
+    index and descriptor as suggested by Simon
+    (https://lore.kernel.org/all/20240919134812.GB1571683@kernel.org/)
   - Optimize helper as suggested by Paolo
     (https://lore.kernel.org/all/b9ae8575-f903-425f-aa42-0c2a7605aa94@redhat.com/)
   - v3 has been reviewed-by Simon Horman
@@ -112,54 +105,14 @@ v2: https://lore.kernel.org/all/20240916060212.12393-1-amishin@t-argos.ru/
     (https://lore.kernel.org/all/ba514498-3706-413b-a09f-f577861eef28@redhat.com/)
 v1: https://lore.kernel.org/all/20240906063907.9591-1-amishin@t-argos.ru/
 
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Aleksandr Mishin (2):
+  octeon_ep: Implement helper for iterating packets in Rx queue
+  octeon_ep: Add SKB allocation failures handling in
+    __octep_oq_process_rx()
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index 62db101b2147..2d9d95071786 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -360,6 +360,27 @@ static void octep_oq_next_pkt(struct octep_oq *oq,
- 		*read_idx = 0;
- }
- 
-+/**
-+ * octep_oq_drop_rx() - Free the resources associated with a packet.
-+ *
-+ * @oq: Octeon Rx queue data structure.
-+ * @buff_info: Current packet buffer info.
-+ * @read_idx: Current packet index in the ring.
-+ * @desc_used: Current packet descriptor number.
-+ *
-+ */
-+static void octep_oq_drop_rx(struct octep_oq *oq,
-+			     struct octep_rx_buffer *buff_info,
-+			     u32 *read_idx, u32 *desc_used)
-+{
-+	int data_len = buff_info->len - oq->max_single_buffer_size;
-+
-+	do {
-+		octep_oq_next_pkt(oq, buff_info, read_idx, desc_used);
-+		data_len -= oq->buffer_size;
-+	} while (data_len > 0);
-+}
-+
- /**
-  * __octep_oq_process_rx() - Process hardware Rx queue and push to stack.
-  *
-@@ -417,6 +438,12 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 		}
- 
- 		skb = build_skb((void *)resp_hw, PAGE_SIZE);
-+		if (!skb) {
-+			octep_oq_drop_rx(oq, buff_info,
-+					 &read_idx, &desc_used);
-+			oq->stats.alloc_failures++;
-+			continue;
-+		}
- 		skb_reserve(skb, data_offset);
- 
- 		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
+ .../net/ethernet/marvell/octeon_ep/octep_rx.c | 82 +++++++++++++------
+ 1 file changed, 59 insertions(+), 23 deletions(-)
+
 -- 
 2.30.2
 
