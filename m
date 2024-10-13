@@ -1,127 +1,169 @@
-Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D40148314
-	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 21:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B6B8F64;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728853405; cv=none; b=Qut4UsHMJEFJRud7UjujzYG4nZ2Qs9AFn4ymUSfj6R/92k3aItTiNKsubqbqU8JUNZOUOrAKEeMpQ3mpiAG3C5YfnlcPQuZApjckbRiSyqroX3zr5/owxRsjLxN94pOyXJ8PZNdfoqBiUzM9qQdgBgMfafvwH4wGBAhbgTY4Zkg=
+	t=1728854877; cv=none; b=TqvYVfzUaFuS6doqTNyrFc1vHqDkFNTy9+kOyF6fCZD1KrQ/3cbOPupQXhZumKLE6uDzY3VyrPPsoyvgXkvHCenJ51k0pehEpasSNYm+5GjEMvWqVAb+liudm0Je6R6Jw53cI+mFzYMJg7NOMfwxL+CFxl58BgwN5dvbiVYFmHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728853405; c=relaxed/simple;
-	bh=9CQpwdgXVc21I8EUQ4DUE2KYJ69fMnFI7RjT7KcNiM0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nhoiwB5Q6h/PaB/i+6kVWv5RBK/V8yHoUbO174RyjoaZmAXKeKDX/2McEglOkngZrIOsPlwlQzqA7frnz/5jC4up/TLgwzgljvdGvP6clRUe2u0FoRFa1c1oPrm4/UV4B182OibZNSjeHDVGcb3NWormurC/Cwjw88Aw+Jf6HvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=BR/SWXqc; arc=none smtp.client-ip=81.19.149.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1728854877; c=relaxed/simple;
+	bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hNPRd6t66lRamXqDQG7Cxl7WQk/O/O2TYSaEXt/UJkh5tpUs9e9rYyiyzYJmkjyjOQ5+/v9wlyR4B6shYvylSVKUNy+ljA47z6wb/mMy3T5RdXJ55/OSIgTX41bXYrJd2hG9mZb+eEZWQPV8ci6Xxv8bufGNtPzXlzYFRBwV45E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQyJ9f1I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="BR/SWXqc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=19LHjx0sTM0kv9XanzWE8FODtpIz64O5KVgtFRfu2pg=; b=BR/SWXqcnkjCCWdpyB32ql0pPa
-	gJ1TxElsH/THb7IGM+1fNhCeAaAiPp4UQIg2ZgtAg7om6weUiWSn5mUTgW3wL5plBUIfKLR7edi2z
-	gcHYPN2V4D8Wmc43/P2cEwcXC+Udo+dMs5ZGCarxE0uLzkE9RK5XhdPfVGbFrDze/ptE=;
-Received: from [88.117.56.173] (helo=hornet.engleder.at)
-	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1t0594-000000008Un-3qzu;
-	Sun, 13 Oct 2024 22:24:55 +0200
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH RFC net-next] net: phy: micrel: Improve loopback support if autoneg is enabled
-Date: Sun, 13 Oct 2024 22:24:30 +0200
-Message-Id: <20241013202430.93851-1-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQyJ9f1I"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 87542C4CEC5;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728854877;
+	bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=oQyJ9f1IxArTESrxsU6Qy/b9vgNtSpYoTlB2W+1unAU1ILkDe4TQAwdL4Y3f09DbY
+	 npkIB4XN3+qkAT3BOOvy25d1WmiFGHwXopcnY3F9i9+Qrkbkd10W13PgJOguBCqAOO
+	 kHmN+o/5WJ/kd81Q/v51kvyohk1l4IBimFjeOCBN1v8HUL6n7rgKcyvp0JuO00F1OL
+	 P6AJkFmlWm0Dd95u2EXEUrY/Xk8liyiIkl6QT7x0YQ/XN16/2UYDHJEfqhJD4uV1Fd
+	 2zdMgmgJXmh+1J2b/2Vu26wU/iD1uqmAwVsTnn7NGTooV+p5IALXAVjbkztRQnYXZ1
+	 dZs/Ke1hQ7LdA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B891CF2591;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Subject: [PATCH v3 00/16] Add support for Synopsis DWMAC IP on NXP
+ Automotive SoCs S32G2xx/S32G3xx/S32R45
+Date: Sun, 13 Oct 2024 23:27:35 +0200
+Message-Id: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEc7DGcC/x3MSQqAMAxA0atI1hY0db6KSKk1ahYONCqCeHeLy
+ 7f4/wEhzyTQRA94ulh4WwN0HIGb7TqR4iEYMMEsqVGrc5fDk12MaHTOTIt1qqjqlPoy71MsIJS
+ 7p5Hv/9p27/sBCKI3SmUAAAA=
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Serge Semin <fancer.lancer@gmail.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Andrei Botila <andrei.botila@nxp.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=3830;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=2J/X2hiCuNODJ8Ht7z/AVpabipXFZ+tjUjf+e1KY4Bc=;
+ b=N1XXm6twcb9Ly1bnTdMtCh4TGGSqesmvTCxPJmrgU+2pNf3ToKecL1yajDIOnK73jRj1Q3EHe
+ vxK6Gt65iKWB8mchgSwkwz0/M1t85nndEj/7IowP7Z6TX/iJwOdUGoa
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Prior to commit 6ff3cddc365b it was possible to enable loopback with
-a defined speed. First a fixed speed was set with ETHTOOL_SLINKSETTINGS
-and afterwards the loopback was enabled. This worked, because
-genphy_loopback() uses the current speed and duplex. I used this
-mechanism to test tsnep in loopback with different speeds. A KSZ9031 PHY
-is used.
+The SoC series S32G2xx and S32G3xx feature one DWMAC instance,
+the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+interface over Pinctrl device or the output can be routed
+to the embedded SerDes for SGMII connectivity.
 
-With commit 6ff3cddc365b for 1000 Mbit/s auto negotiation was enabled.
-Setting a fixed speed with ETHTOOL_SLINKSETTINGS does not work anymore
-for 1000 Mbit/s as speed and duplex of the PHY now depend on the result
-of the auto negotiation. As a result, genphy_loopback() also depends on
-the result of the auto negotiation. But enabling loopback shall be
-independent of any auto negotiation process.
+The provided stmmac glue code implements only basic functionality,
+interface support is restricted to RGMII only. More, including
+SGMII/SerDes support will come later.
 
-Make loopback of KSZ9031 PHY work even if current speed and/or duplex of
-PHY are unkown because of autoneg.
+This patchset adds stmmac glue driver based on downstream NXP git [0].
 
-Fixes: 6ff3cddc365b ("net: phylib: do not disable autoneg for fixed speeds >= 1G")
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+[0] https://github.com/nxp-auto-linux/linux
+
+v3:
+- switched to b4 WoW to overcome threading issue with b4
+- extracted the hunk with the typo fix from v2 patch#1 to separate patch
+  as Jacob suggested
+- removed dead code for RMII/MII support, which will be added alter
+- used new rgmii_clock() helper in other stmmac:dwmac glue drivers
+- yaml: compatible strings compressed to simple one "nxp,s32-dwmac",
+  removed duplicated required properties, already defined in snps,dwmac,
+  fixed example
+
+v2:
+- send to wider audience as first version missed many maintainers
+- created rgmi_clk() helper as Russell suggested (see patch#4)
+- address Andrew's, Russell's, Serge's and Simon's comments
+
+Message-ID: <AM9PR04MB85066576AD6848E2402DA354E2832@AM9PR04MB8506.eurprd04.prod.outlook.com>
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/phy/micrel.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Jan Petrous (OSS) (16):
+      net: driver: stmmac: Fix CSR divider comment
+      net: driver: stmmac: Extend CSR calc support
+      net: stmmac: Fix clock rate variables size
+      net: phy: Add helper for mapping RGMII link speed to clock rate
+      net: dwmac-dwc-qos-eth: Use helper rgmii_clock
+      net: dwmac-imx: Use helper rgmii_clock
+      net: dwmac-intel-plat: Use helper rgmii_clock
+      net: dwmac-rk: Use helper rgmii_clock
+      net: dwmac-starfive: Use helper rgmii_clock
+      net: macb: Use helper rgmii_clock
+      net: xgene_enet: Use helper rgmii_clock
+      net: dwmac-sti: Use helper rgmii_clock
+      dt-bindings: net: Add DT bindings for DWMAC on NXP S32G/R SoCs
+      net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver
+      MAINTAINERS: Add Jan Petrous as the NXP S32G/R DWMAC driver maintainer
+      net: stmmac: dwmac-s32: Read PTP clock rate when ready
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 65b0a3115e14..3cbe40265190 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1028,6 +1028,32 @@ static int ksz9021_config_init(struct phy_device *phydev)
- #define MII_KSZ9031RN_EDPD		0x23
- #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
- 
-+static int ksz9031_set_loopback(struct phy_device *phydev, bool enable)
-+{
-+	if (enable) {
-+		u16 ctl = BMCR_LOOPBACK;
-+		int ret, val;
-+
-+		if ((phydev->speed != SPEED_10) && (phydev->speed != SPEED_100))
-+			phydev->speed = SPEED_1000;
-+		phydev->duplex = DUPLEX_FULL;
-+
-+		ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
-+
-+		phy_modify(phydev, MII_BMCR, ~0, ctl);
-+
-+		ret = phy_read_poll_timeout(phydev, MII_BMSR, val,
-+					    val & BMSR_LSTATUS, 5000, 500000,
-+					    true);
-+		if (ret)
-+			return ret;
-+	} else {
-+		return genphy_loopback(phydev, enable);
-+	}
-+
-+	return 0;
-+}
-+
- static int ksz9031_of_load_skew_values(struct phy_device *phydev,
- 				       const struct device_node *of_node,
- 				       u16 reg, size_t field_sz,
-@@ -5478,6 +5504,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.resume		= kszphy_resume,
- 	.cable_test_start	= ksz9x31_cable_test_start,
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
-+	.set_loopback	= ksz9031_set_loopback,
- }, {
- 	.phy_id		= PHY_ID_LAN8814,
- 	.phy_id_mask	= MICREL_PHY_ID_MASK,
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     |  97 +++++++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
+ MAINTAINERS                                        |   7 +
+ drivers/net/ethernet/apm/xgene/xgene_enet_hw.c     |  16 +-
+ drivers/net/ethernet/cadence/macb_main.c           |  14 +-
+ drivers/net/ethernet/stmicro/stmmac/Kconfig        |  12 ++
+ drivers/net/ethernet/stmicro/stmmac/Makefile       |   1 +
+ drivers/net/ethernet/stmicro/stmmac/common.h       |   2 +
+ .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |  11 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    |  15 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-intel-plat.c |  20 +-
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c     |  30 +--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 237 +++++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/dwmac-starfive.c   |  19 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c    |  18 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   6 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |   2 +-
+ include/linux/phy.h                                |  21 ++
+ include/linux/stmmac.h                             |  10 +-
+ 21 files changed, 424 insertions(+), 119 deletions(-)
+---
+base-commit: 18ba6034468e7949a9e2c2cf28e2e123b4fe7a50
+change-id: 20240923-upstream_s32cc_gmac-6891eb75b126
+
+Best regards,
 -- 
-2.39.2
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
 
