@@ -1,55 +1,46 @@
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B771A7047;
-	Sun, 13 Oct 2024 20:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0470149E13;
+	Sun, 13 Oct 2024 20:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728850706; cv=none; b=oEWYSHl6GdLnzYOIkWhECXbWStPQukOIOs9O/IQpeV7FXM5aou0DWeSjW9jCWLCkZx0dQO+ywpMDHDGCtK9Rp8GBcqQHOJpLeQ+Bi1t8l/5dSE8Sr3WlXbz7WNYLhEviivVNuKSjBQu0uz/Fi8Os0mmWblwUqTrmlYmgr9gXI78=
+	t=1728851927; cv=none; b=bVtBe2+FL3Z/VJt1/odIo8EY9Ey/zOuAOB6k7uk+IzPJbB1bQ9le+WZyxmX6ypKSBGn8SJKMGowWR4mPcawp1JxtlWlDfJoRSfr+YSOfFBcgnWOgQwSqJuVbqmefTAK6Ui8KYAEJ8vk5mFD6hHyB2NYj0QdomZpK+dTzdu/vBFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728850706; c=relaxed/simple;
-	bh=nPI1KUY0y5ZVvOVYmqwiOP/3+JXV4M/eGrJnRpqjMF8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D50SXLN+bimzWOgfgnBVnXgP1Q6yIy8S4eQYUWDNOifntNCqrRyn9s2559hvKqbHnLeKaJcNDPzKFtfjPXb0S/xB5gQE4l9AdhnXlUWvAOOJqjAacPjlhyjAY5E2FrgL2aatoPKOiYTVusCrJlY/d+hxOOnSr4YTIqxQffyzlOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=SYsDZHEK; arc=none smtp.client-ip=192.134.164.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+	s=arc-20240116; t=1728851927; c=relaxed/simple;
+	bh=Fj0J825jzpGUhzbd+jhdu/I+6ynYvltWXDjamahmznw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q3AqrK9WvZJlPgqroOV562Kg7ntTmjE1tGQ8ik/HewaED6yIEVNvIQ9RRGdGbe/GZ9LcTs2pI0FETLrC6AKmVIrsQ2LMm+GUU2XqIeeGrxXLd2f3aFLmzFxIsFy1FFaq1R2BGLpQxC6CEZAoQtjfh3uvHp3t6Jy9H0EWIYB7m2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Yr5U/Gee; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="SYsDZHEK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kFW/hho3zfoBYZLXkHEk+t9EhY0lm+H2Lt9PvPsPfwY=;
-  b=SYsDZHEKMDyhdntWfCHsALfPcQV5BxGmPv/NgmkM4HM+brzN3PdbUPZw
-   qdH1cro9zCjtVxjM8aqctbkcmGBjNLeBYUv7UiSsPKxX0z3nYe8zLmW9c
-   jgmuoHiGUihei+PCyXp+hnGPwr0UTHdvKAEEx1X3+NGQyJpZK70V1dka/
-   U=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.11,201,1725314400"; 
-   d="scan'208";a="98968292"
-Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 22:18:01 +0200
-From: Julia Lawall <Julia.Lawall@inria.fr>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: kernel-janitors@vger.kernel.org,
-	vbabka@suse.cz,
-	paulmck@kernel.org,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 17/17] netfilter: xt_hashlimit: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
-Date: Sun, 13 Oct 2024 22:17:04 +0200
-Message-Id: <20241013201704.49576-18-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
-References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Yr5U/Gee"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=ucizAdyhiCOUunoRreah5hE0Z6dugC99p9oKd7SBn3c=; b=Yr5U/GeeGe/fB90o
+	glrN8yAtk4UE+pz3KL0EulPFuOXV70kbSdrN5w1XSbSCLM/9Y3kRqb46G/Bs0fFQ6kl+iH1QUOHj2
+	J+c+CfCKo2X/C+NukLJmd3gvBRIRwuubRx9A4VfYoVveUKJg1UNoDjVgHL2kLdiSojjG7zpkJujxe
+	iGCcCforhBUSDfO/iW6CpqcFOlRav4zYDCUH8dL7IXXpATdKaxZW/jAkNVdRhlBPyw8cLZPlmr86m
+	5ezl5P67IGfML+nZjw6AOz9QtQ+eIDKWxhOViYdkusiKnR2y21CT9fDe7aYCHdPEvYzClv5f0cSMw
+	K0UrVHAmGBfuFaKMLg==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1t05MK-00AnUX-24;
+	Sun, 13 Oct 2024 20:38:36 +0000
+From: linux@treblig.org
+To: bharat@chelsio.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH net-next 0/6] cxgb4: Deadcode removal
+Date: Sun, 13 Oct 2024 21:38:25 +0100
+Message-ID: <20241013203831.88051-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,41 +49,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since SLOB was removed and since
-commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-it is not necessary to use call_rcu when the callback only performs
-kmem_cache_free. Use kfree_rcu() directly.
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-The changes were made using Coccinelle.
+Hi,
+  This is a bunch of deadcode removal in cxgb4.
+It's all complete function removal rather than any actual change to
+logic.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Build and boot tested, but I don't have the hardware to test
+the actual card.
 
----
- net/netfilter/xt_hashlimit.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+Dave
 
-diff --git a/net/netfilter/xt_hashlimit.c b/net/netfilter/xt_hashlimit.c
-index 0859b8f76764..c2b9b954eb53 100644
---- a/net/netfilter/xt_hashlimit.c
-+++ b/net/netfilter/xt_hashlimit.c
-@@ -256,18 +256,11 @@ dsthash_alloc_init(struct xt_hashlimit_htable *ht,
- 	return ent;
- }
- 
--static void dsthash_free_rcu(struct rcu_head *head)
--{
--	struct dsthash_ent *ent = container_of(head, struct dsthash_ent, rcu);
--
--	kmem_cache_free(hashlimit_cachep, ent);
--}
--
- static inline void
- dsthash_free(struct xt_hashlimit_htable *ht, struct dsthash_ent *ent)
- {
- 	hlist_del_rcu(&ent->node);
--	call_rcu(&ent->rcu, dsthash_free_rcu);
-+	kfree_rcu(ent, rcu);
- 	ht->count--;
- }
- static void htable_gc(struct work_struct *work);
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+
+
+Dr. David Alan Gilbert (6):
+  cxgb4: Remove unused cxgb4_alloc/free_encap_mac_filt
+  cxgb4: Remove unused cxgb4_alloc/free_raw_mac_filt
+  cxgb4: Remove unused cxgb4_get_srq_entry
+  cxgb4: Remove unused cxgb4_scsi_init
+  cxgb4: Remove unused cxgb4_l2t_alloc_switching
+  cxgb4: Remove unused t4_free_ofld_rxqs
+
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    | 23 -----
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   | 12 ---
+ .../net/ethernet/chelsio/cxgb4/cxgb4_mps.c    | 98 -------------------
+ .../net/ethernet/chelsio/cxgb4/cxgb4_uld.h    |  2 -
+ drivers/net/ethernet/chelsio/cxgb4/l2t.c      | 19 ----
+ drivers/net/ethernet/chelsio/cxgb4/l2t.h      |  2 -
+ drivers/net/ethernet/chelsio/cxgb4/sge.c      | 16 ---
+ drivers/net/ethernet/chelsio/cxgb4/srq.c      | 58 -----------
+ drivers/net/ethernet/chelsio/cxgb4/srq.h      |  2 -
+ 9 files changed, 232 deletions(-)
+
+-- 
+2.47.0
 
