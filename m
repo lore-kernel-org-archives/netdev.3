@@ -1,67 +1,77 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B5114900B;
-	Sun, 13 Oct 2024 18:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220F218E20;
+	Sun, 13 Oct 2024 18:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728845286; cv=none; b=FgKcXnF4wEBva1g/kokERMmfvexRxDMCSTSMWMm+TEM3xRM9iq44rsqG5KbVod8PlWFQtug+pKJi2CzjhRaiashI81jLmexDAAfLAokEeh40NJoYOmFcMQEcX8JFIUTBDYjyCBEsH2Gh1aODx4k6wlWHl5/yx9xxhjXVqyqc6ms=
+	t=1728845482; cv=none; b=gbjNsosRJkiNxuKLfk6Fv6nORHi7YEkyAeMDR12/IwYB0gp8zya9Bn16+fRebhYFfj2rHSpVIadzMyBoDOImNbBK3sV8TVhDR2U7pGKDtxpGkXLilUHOSpPkzvzqTr6OOTkXu7CaXNRCWDDwHuV5YlGKfHSVfvEvH1JBKHF+FkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728845286; c=relaxed/simple;
-	bh=5+qEXQ8j9Xk87g+b7ukViGdjwM4PAheqtOsCKYEne70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ry8hnV+d4Xpjqz5dEJor/2bNyolzN0Zj9WL0Vptvv/4LCyCU8D/XX5iGVeKJbYA7khRsU0EIEfleIf4eHMaV1EIzSfQ1/AhUf28IQVEX5ki/tOZuKs1ifyck7X1c4Ly4K09/vVa4vIG3cpYQhl+2gZfXhmToi2GuVqGgF8xPECU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=BMeakRL6; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1728845482; c=relaxed/simple;
+	bh=JDL2wuPFcpu6wq2ydWF1mXO6CiWRnypM6m0Bv/9xFUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dhfeXEqlNzMzwT9CZFgr8WQRuFqW4tb8MMWaLktHfPx84E16tSWzf+XOKzxV5L701AghqzreFfFhA0ovULP0CRJm2Tv6At6NJZrVjnr7oFAAOJqAhvoynhEIDizxy79fmbCRUf+AInj6wxGBTYngBEbzpJaKg9rZRK4v2jfKcAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7N8BS7I; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="BMeakRL6"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49D3rVTx028973;
-	Sun, 13 Oct 2024 17:06:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=1gONX
-	+JYs/QTIX7dRpcXxTDtFE0fTePclVPcb/A4oJM=; b=BMeakRL6KXONKV5DyVz5r
-	/3SIOO0ZPN0RnKxQcKRhsicNUops9by+YVhEQtkeWHo7K1pSFl2fzjik+oHupqn/
-	MaIj7cMA+Ht2bDlB3x0kuuP1aKwQ6oEsv2CtWaJvJWbLLBMLZIgzWhoAzD8MBt2B
-	hzTCBbak6ROB9WA3F0tepMV92zhOEuu/5Ua1W+WpWINfQWHce64XfcjaYwpWmMHZ
-	RW5+B9pOdNm1A2pWO1FrdHm5qag8+1qMmHZDQDq+3JXl+lSRa3mvKdWoOTPiwwlU
-	EO0ZOpsp9aYx3hqPvR1bkhnqqiUvw+6C4jIWT3XNgSQK7Mli27gDEl9d1vh8Eom7
-	A==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427hnt19dm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 13 Oct 2024 17:06:30 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49DGF14o026388;
-	Sun, 13 Oct 2024 17:06:30 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fj561e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 13 Oct 2024 17:06:30 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49DH6MFC040166;
-	Sun, 13 Oct 2024 17:06:29 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 427fj561c0-3;
-	Sun, 13 Oct 2024 17:06:29 +0000
-From: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
-To: davem@davemloft.net, Liam.Howlett@Oracle.com
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mingo@redhat.com,
-        peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        vschneid@redhat.com, jiri@resnulli.us, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, akpm@linux-foundation.org, shuah@kernel.org,
-        linux-kselftest@vger.kernel.org, anjali.k.kulkarni@oracle.com,
-        peili.io@oracle.com
-Subject: [PATCH net-next v1 2/3] connector/cn_proc: Kunit tests for threads hash table
-Date: Sun, 13 Oct 2024 10:06:16 -0700
-Message-ID: <20241013170617.2139204-3-anjali.k.kulkarni@oracle.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241013170617.2139204-1-anjali.k.kulkarni@oracle.com>
-References: <20241013170617.2139204-1-anjali.k.kulkarni@oracle.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7N8BS7I"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c96936065dso1266055a12.3;
+        Sun, 13 Oct 2024 11:51:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728845479; x=1729450279; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=upE0t48bx6bnFX6rRPJniUFr4RqVvS0QgUcy6/B4hDA=;
+        b=Q7N8BS7IKgPeiJgSpCFEz0slI8LIwZMdIXg9+21+WIuJFzhLCZQ5oV4zXYGIOhdCPe
+         W6+/IigCmsbk29dud+zlGCgqpvl3Ud8dBP4QZr5NKxzY/D5qxMbX8pLrp0iz0VzkmkQA
+         0QMjGMn5hVIkoGhdeiMfqTdnacspftCk8ICuqcGuVuuPmR6I86irVEExfjviWtuiw2F0
+         K7hBBph+0e4fiRWm/8YepeNvStEsNakavvnCn2apH+BAju6sqv0DoMvk8hhFs1wi8r6i
+         4DdNYoXwtsU3KASmqOtkqdMQkIMNOVnaH0CNNn79ly8zzIraSrrqwMYNdVHNAiOL8GUY
+         iXHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728845479; x=1729450279;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=upE0t48bx6bnFX6rRPJniUFr4RqVvS0QgUcy6/B4hDA=;
+        b=NYHKrb4/YWQyJsrft03tfL4VlXb0XjKxuDFWyvZRn2+Yp8u4/H+KdzRZZ5Jle0hbqc
+         ed6ZgMraqiLLFLsz1IqSg5NRwWxtdrQxu8u1Q2ZL9qedwTOICa1frrDyU7sSjtHAgDq+
+         zx+rq4OTAL/cnSW+0yolXj+Ncbw1NSCsm44lgaclpoLnvmQQ+M/Qg40ISbcvHl/GJMKA
+         J0/ZEQNdDZa9jAV6X57Xkada0UFdpXkk4Xe30oHiHx4RB+0uQxn5HY9wQWT1NJjtWtxt
+         XVbhN3Bd9af9t5C9t0W5jAbFc+sdjuf2hCBm3gXseSp2iC+2I9s135wcZ8H3CvMugkwS
+         t80Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUyOIHvVSqMtTDXPNM4NZcPsdA3xNRRE2YAJZZ6gtRPig28WyX0xp95hqL6F5mPrgoSjVSWaSACXWLkX5w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMBv1BwDruTRQYdMp6Dc2Y8NdogAW8anHsPOlDlgDBg3P/IGcV
+	m5ptnO/Fnqg7BwQovMGkfsp0a/RgMUgCtF9aArzXtgo+s6E9yXko
+X-Google-Smtp-Source: AGHT+IFisFXHNsMThYF5hflDELoTjfJVgJKtvK5aGnjqGXgf/Lkez2iRLHMqqM2Mpjy0m2JcUM5ZOw==
+X-Received: by 2002:a05:6402:42c9:b0:5c9:6c03:48ca with SMTP id 4fb4d7f45d1cf-5c96c035050mr2810750a12.31.1728845479275;
+        Sun, 13 Oct 2024 11:51:19 -0700 (PDT)
+Received: from corebook.localdomain (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c937156781sm4059656a12.56.2024.10.13.11.51.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Oct 2024 11:51:17 -0700 (PDT)
+From: Eric Woudstra <ericwouds@gmail.com>
+To: Felix Fietkau <nbd@nbd.name>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Mark Lee <Mark-MC.Lee@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Frank Wunderlich" <frank-w@public-files.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Woudstra <ericwouds@gmail.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH RFC v1 net-next] net: ethernet: mtk_ppe_offload: Allow QinQ
+Date: Sun, 13 Oct 2024 20:50:56 +0200
+Message-ID: <20241013185056.4077-1-ericwouds@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,403 +79,84 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-13_11,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
- definitions=main-2410130128
-X-Proofpoint-ORIG-GUID: O5-wfkFHlNGFoPtdFyBKhLrYCWJzKhjh
-X-Proofpoint-GUID: O5-wfkFHlNGFoPtdFyBKhLrYCWJzKhjh
 
-Kunit tests to test hash table add, delete, duplicate add and delete.
-Add following configs and compile kernel code:
+mtk_foe_entry_set_vlan() in mtk_ppe.c already seems to support
+double vlan tagging, but mtk_flow_offload_replace() in
+mtk_ppe_offload.c only allows for 1 vlan tag, optionally in
+combination with pppoe and dsa tags.
 
-CONFIG_CONNECTOR=y
-CONFIG_PROC_EVENTS=y
-CONFIG_NET=y
-CONFIG_KUNIT=m
-CONFIG_CN_HASH_KUNIT_TEST=m
+This patch adds QinQ support to mtk_flow_offload_replace().
 
-To run kunit tests:
-sudo modprobe cn_hash_test
+Only PPPoE-in-Q (as before) and Q-in-Q are allowed. A combination
+of PPPoE and Q-in-Q is not allowed.
 
-Output of kunit tests and hash table contents are displayed in
-/var/log/messages (at KERN_DEBUG level).
+As I do not have any documentation of the ppe hardware, I do not
+know if there is any other reason to not implement Q-in-Q in
+mtk_flow_offload_replace().
 
-Signed-off-by: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
+Tested on the BPI-R3(mini), on non-dsa-ports and dsa-ports.
+
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
 ---
- drivers/connector/cn_hash.c   |  49 +++++++++-
- drivers/connector/connector.c |  15 ++-
- include/linux/connector.h     |   8 +-
- lib/Kconfig.debug             |  17 ++++
- lib/Makefile                  |   1 +
- lib/cn_hash_test.c            | 167 ++++++++++++++++++++++++++++++++++
- lib/cn_hash_test.h            |  12 +++
- 7 files changed, 264 insertions(+), 5 deletions(-)
- create mode 100644 lib/cn_hash_test.c
- create mode 100644 lib/cn_hash_test.h
+ .../net/ethernet/mediatek/mtk_ppe_offload.c   | 21 +++++++++++--------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/connector/cn_hash.c b/drivers/connector/cn_hash.c
-index a0211cd99132..8f0eb6acb158 100644
---- a/drivers/connector/cn_hash.c
-+++ b/drivers/connector/cn_hash.c
-@@ -166,7 +166,7 @@ __u32 cn_hash_del_get_exval(struct cn_hash_dev *hdev, pid_t pid)
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index f20bb390df3a..c19789883a9d 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -34,8 +34,10 @@ struct mtk_flow_data {
+ 	u16 vlan_in;
  
--__u32 cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid)
-+int cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid)
- {
- 	struct uexit_pid_hnode *hnode;
- 	__u32 excde;
-@@ -189,7 +189,52 @@ __u32 cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid)
- 	return -EINVAL;
- }
+ 	struct {
+-		u16 id;
+-		__be16 proto;
++		struct {
++			u16 id;
++			__be16 proto;
++		} vlans[2];
+ 		u8 num;
+ 	} vlan;
+ 	struct {
+@@ -349,18 +351,19 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 		case FLOW_ACTION_CSUM:
+ 			break;
+ 		case FLOW_ACTION_VLAN_PUSH:
+-			if (data.vlan.num == 1 ||
++			if (data.vlan.num + data.pppoe.num == 2 ||
+ 			    act->vlan.proto != htons(ETH_P_8021Q))
+ 				return -EOPNOTSUPP;
  
-+int cn_hash_display_hlist(struct cn_hash_dev *hdev, pid_t pid, int max_len,
-+				int *hkey, int *key_display)
-+{
-+	struct uexit_pid_hnode *hnode;
-+	int key, count = 0;
-+
-+	mutex_lock(&hdev->uexit_hash_lock);
-+	key = hash_min(pid, HASH_BITS(hdev->uexit_pid_htable));
-+	pr_debug("Bucket: %d\n", key);
-+
-+	hlist_for_each_entry(hnode,
-+			&hdev->uexit_pid_htable[key],
-+			uexit_pid_hlist) {
-+		if (key_display[key] != 1) {
-+			if (hnode->uexit_pid_hlist.next == NULL)
-+				pr_debug("pid %d ", hnode->pid);
-+			else
-+				pr_debug("pid %d --> ", hnode->pid);
-+		}
-+		count++;
-+	}
-+
-+	mutex_unlock(&hdev->uexit_hash_lock);
-+
-+	if ((key_display[key] != 1) && !count)
-+		pr_debug("(empty)\n");
-+
-+	pr_debug("\n");
-+
-+	*hkey = key;
-+
-+	if (count > max_len) {
-+		pr_err("%d entries in hlist for key %d, expected %d\n",
-+				count, key, max_len);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- bool cn_hash_table_empty(struct cn_hash_dev *hdev)
- {
--	return hash_empty(hdev->uexit_pid_htable);
-+	bool is_empty;
-+
-+	is_empty = hash_empty(hdev->uexit_pid_htable);
-+	pr_debug("Hash table is %s\n", (is_empty ? "empty" : "not empty"));
-+
-+	return is_empty;
- }
-diff --git a/drivers/connector/connector.c b/drivers/connector/connector.c
-index 506e3cbedf85..28e60c8b0fdf 100644
---- a/drivers/connector/connector.c
-+++ b/drivers/connector/connector.c
-@@ -308,7 +308,7 @@ int cn_add_elem(__u32 uexit_code, pid_t pid)
- }
- EXPORT_SYMBOL_GPL(cn_add_elem);
+-			data.vlan.id = act->vlan.vid;
+-			data.vlan.proto = act->vlan.proto;
++			data.vlan.vlans[data.vlan.num].id = act->vlan.vid;
++			data.vlan.vlans[data.vlan.num].proto = act->vlan.proto;
+ 			data.vlan.num++;
+ 			break;
+ 		case FLOW_ACTION_VLAN_POP:
+ 			break;
+ 		case FLOW_ACTION_PPPOE_PUSH:
+-			if (data.pppoe.num == 1)
++			if (data.pppoe.num == 1 ||
++			    data.vlan.num == 2)
+ 				return -EOPNOTSUPP;
  
--__u32 cn_get_exval(pid_t pid)
-+int cn_get_exval(pid_t pid)
- {
- 	struct cn_dev *dev = &cdev;
- 	__u32 exval;
-@@ -321,6 +321,19 @@ __u32 cn_get_exval(pid_t pid)
- }
- EXPORT_SYMBOL_GPL(cn_get_exval);
+ 			data.pppoe.sid = act->pppoe.sid;
+@@ -450,11 +453,11 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
+ 		foe.bridge.vlan = data.vlan_in;
  
-+int cn_display_hlist(pid_t pid, int max_len, int *hkey,
-+			int *key_display)
-+{
-+	struct cn_dev *dev = &cdev;
-+
-+	if (!cn_already_initialized)
-+		return 0;
-+
-+	return cn_hash_display_hlist(dev->hdev, pid, max_len,
-+					hkey, key_display);
-+}
-+EXPORT_SYMBOL_GPL(cn_display_hlist);
-+
- bool cn_table_empty(void)
- {
- 	struct cn_dev *dev = &cdev;
-diff --git a/include/linux/connector.h b/include/linux/connector.h
-index 094e1730a4f6..af801c5005e8 100644
---- a/include/linux/connector.h
-+++ b/include/linux/connector.h
-@@ -165,7 +165,7 @@ __u32 cn_hash_del_get_exval(struct cn_hash_dev *hdev, pid_t pid);
- int cn_add_elem(__u32 uexit_code, pid_t pid);
- int cn_del_elem(pid_t pid);
- __u32 cn_del_get_exval(pid_t pid);
--__u32 cn_get_exval(pid_t pid);
-+int cn_get_exval(pid_t pid);
+-	if (data.vlan.num == 1) {
+-		if (data.vlan.proto != htons(ETH_P_8021Q))
++	for (i = 0; i < data.vlan.num; i++) {
++		if (data.vlan.vlans[i].proto != htons(ETH_P_8021Q))
+ 			return -EOPNOTSUPP;
  
- struct cn_hash_dev *cn_hash_alloc_dev(const char *name);
- void cn_hash_free_dev(struct cn_hash_dev *hdev);
-@@ -175,9 +175,13 @@ void cn_hash_free_elem(struct uexit_pid_hnode *elem);
- int cn_hash_add_elem(struct cn_hash_dev *hdev, __u32 uexit_code, pid_t pid);
- int cn_hash_del_elem(struct cn_hash_dev *hdev, pid_t pid);
- __u32 cn_hash_del_get_exval(struct cn_hash_dev *hdev, pid_t pid);
--__u32 cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid);
-+int cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid);
- 
- bool cn_table_empty(void);
- bool cn_hash_table_empty(struct cn_hash_dev *hdev);
- 
-+int cn_display_hlist(pid_t pid, int max_len, int *hkey, int *key_display);
-+int cn_hash_display_hlist(struct cn_hash_dev *hdev, pid_t pid, int max_len,
-+				int *hkey, int *key_display);
-+
- #endif				/* __CONNECTOR_H */
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 7315f643817a..23599beb9bec 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2705,6 +2705,23 @@ config HASHTABLE_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config CONFIG_CN_HASH_KUNIT_TEST
-+	tristate "KUnit Test for connector hashtable code" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds the hashtable KUnit test suite.
-+	  It tests the basic functionality of the API defined in
-+	  drivers/connector/cn_hash.c.
-+	  CONFIG_CONNECTOR=y, CONFIG_PROC_EVENTS=y as well as CONFIG_NET=y
-+	  needs to be enabled along with CONFIG_CN_HASH_KUNIT_TEST=m and
-+	  CONFIG_KUNIT=m in .config file to compile and then test as a kernel
-+	  module with "modprobe cn_hash_test".
-+	  For more information on KUnit and unit tests in general please
-+	  refer to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  If unsure, say N.
-+
- config LINEAR_RANGES_TEST
- 	tristate "KUnit test for linear_ranges"
- 	depends on KUNIT
-diff --git a/lib/Makefile b/lib/Makefile
-index 811ba12c8cd0..2c59c82b0b18 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -379,6 +379,7 @@ obj-$(CONFIG_CMDLINE_KUNIT_TEST) += cmdline_kunit.o
- obj-$(CONFIG_SLUB_KUNIT_TEST) += slub_kunit.o
- obj-$(CONFIG_MEMCPY_KUNIT_TEST) += memcpy_kunit.o
- obj-$(CONFIG_IS_SIGNED_TYPE_KUNIT_TEST) += is_signed_type_kunit.o
-+obj-$(CONFIG_CN_HASH_KUNIT_TEST) += cn_hash_test.o
- CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
- obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
- CFLAGS_stackinit_kunit.o += $(call cc-disable-warning, switch-unreachable)
-diff --git a/lib/cn_hash_test.c b/lib/cn_hash_test.c
-new file mode 100644
-index 000000000000..78c39c0a0997
---- /dev/null
-+++ b/lib/cn_hash_test.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit test for the connector threads hashtable code.
-+ *
-+ * Copyright (c) 2024 Oracle and/or its affiliates.
-+ * Author: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
-+ */
-+#include <kunit/test.h>
-+
-+#include "cn_hash_test.h"
-+
-+#define ARR_SIZE	4
-+#define HASH_TABLE_LEN	1024
-+
-+struct add_data {
-+	pid_t pid;
-+	int exit_val;
-+	int key;
-+};
-+
-+static struct add_data adata[ARR_SIZE];
-+static int key_display[HASH_TABLE_LEN];
-+
-+static int cn_hash_init(struct kunit *test)
-+{
-+	for (int i = 0; i < HASH_TABLE_LEN; i++)
-+		key_display[i] = 0;
-+
-+	return 0;
-+}
-+
-+static void cn_display_htable(struct kunit *test, int len)
-+{
-+	int i, err;
-+
-+	cn_hash_init(test);
-+
-+	pr_debug("\n");
-+	pr_debug("Displaying hash table:\n");
-+
-+	for (i = 0; i < len; i++) {
-+		err = cn_display_hlist(adata[i].pid, len, &adata[i].key,
-+					key_display);
-+		key_display[adata[i].key] = 1;
-+		KUNIT_EXPECT_EQ(test, err, 0);
-+	}
-+}
-+
-+static void cn_hash_test_add(struct kunit *test)
-+{
-+	int err, i;
-+	int exit_val;
-+
-+	adata[0].pid = 1;
-+	adata[0].exit_val = 45;
-+
-+	adata[1].pid = 2;
-+	adata[1].exit_val = 13;
-+
-+	adata[2].pid = 1024;
-+	adata[2].exit_val = 16;
-+
-+	adata[3].pid = 1023;
-+	adata[3].exit_val = 71;
-+
-+	for (i = 0; i < ARRAY_SIZE(adata); i++) {
-+		err = cn_add_elem(adata[i].exit_val, adata[i].pid);
-+		KUNIT_EXPECT_EQ_MSG(test, 0, err,
-+				"Adding pid %d returned err %d",
-+				adata[i].pid, err);
-+
-+		exit_val = cn_get_exval(adata[i].pid);
-+		KUNIT_EXPECT_EQ(test, adata[i].exit_val, exit_val);
-+	}
-+
-+	cn_display_htable(test, ARRAY_SIZE(adata));
-+}
-+
-+static void cn_hash_test_del(struct kunit *test)
-+{
-+	int i, err;
-+	int exit_val;
-+
-+	for (i = 0; i < ARRAY_SIZE(adata); i++) {
-+		err = cn_del_elem(adata[i].pid);
-+		KUNIT_EXPECT_EQ_MSG(test, 0, err,
-+				"Deleting pid %d returned err %d",
-+				adata[i].pid, err);
-+
-+		exit_val = cn_get_exval(adata[i].pid);
-+		KUNIT_EXPECT_EQ(test, -EINVAL, exit_val);
-+	}
-+
-+	cn_display_htable(test, ARRAY_SIZE(adata));
-+	KUNIT_EXPECT_TRUE(test, cn_table_empty());
-+}
-+
-+static void cn_hash_test_del_get_exval(struct kunit *test)
-+{
-+	int i, exval;
-+
-+	for (i = 0; i < ARRAY_SIZE(adata); i++) {
-+		exval = cn_del_get_exval(adata[i].pid);
-+		KUNIT_EXPECT_EQ(test, adata[i].exit_val, exval);
-+
-+		cn_display_htable(test, ARRAY_SIZE(adata));
-+	}
-+
-+	KUNIT_EXPECT_TRUE(test, cn_table_empty());
-+}
-+static void cn_hash_test_dup_add(struct kunit *test)
-+{
-+	int err, exit_val;
-+
-+	adata[0].pid = 10;
-+	adata[0].exit_val = 21;
-+
-+	err = cn_add_elem(adata[0].exit_val, adata[0].pid);
-+	KUNIT_EXPECT_EQ(test, 0, err);
-+
-+	exit_val = cn_get_exval(adata[0].pid);
-+	KUNIT_EXPECT_EQ(test, 21, exit_val);
-+
-+	adata[1].pid = 10;
-+	adata[1].exit_val = 12;
-+
-+	err = cn_add_elem(adata[1].exit_val, adata[1].pid);
-+	KUNIT_EXPECT_EQ(test, -EEXIST, err);
-+
-+	exit_val = cn_get_exval(adata[1].pid);
-+	KUNIT_EXPECT_EQ(test, 21, exit_val);
-+
-+	cn_display_htable(test, 1);
-+}
-+
-+static void cn_hash_test_dup_del(struct kunit *test)
-+{
-+	int err;
-+
-+	err = cn_del_elem(adata[0].pid);
-+	KUNIT_EXPECT_EQ(test, 0, err);
-+
-+	err = cn_del_elem(adata[0].pid);
-+	KUNIT_EXPECT_EQ(test, -EINVAL, err);
-+
-+	KUNIT_EXPECT_TRUE(test, cn_table_empty());
-+}
-+
-+static struct kunit_case cn_hashtable_test_cases[] = {
-+	KUNIT_CASE(cn_hash_test_add),
-+	KUNIT_CASE(cn_hash_test_del),
-+	KUNIT_CASE(cn_hash_test_dup_add),
-+	KUNIT_CASE(cn_hash_test_dup_del),
-+	KUNIT_CASE(cn_hash_test_add),
-+	KUNIT_CASE(cn_hash_test_del_get_exval),
-+	{},
-+};
-+
-+static struct kunit_suite cn_hashtable_test_module = {
-+	.name = "cn_hashtable",
-+	.init = cn_hash_init,
-+	.test_cases = cn_hashtable_test_cases,
-+};
-+kunit_test_suite(cn_hashtable_test_module);
-+
-+MODULE_DESCRIPTION("KUnit test for the connector threads hashtable code");
-+MODULE_LICENSE("GPL");
-diff --git a/lib/cn_hash_test.h b/lib/cn_hash_test.h
-new file mode 100644
-index 000000000000..46fcda31b25c
---- /dev/null
-+++ b/lib/cn_hash_test.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (c) 2024 Oracle and/or its affiliates.
-+ * Author: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
-+ */
-+extern int cn_display_hlist(pid_t pid, int max_len, int *hkey,
-+				int *key_display);
-+extern int cn_del_elem(pid_t pid);
-+extern int cn_add_elem(__u32 uexit_code, pid_t pid);
-+extern __u32 cn_del_get_exval(pid_t pid);
-+extern int cn_get_exval(pid_t pid);
-+extern bool cn_table_empty(void);
+-		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.id);
++		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.vlans[i].id);
+ 	}
+ 	if (data.pppoe.num == 1)
+ 		mtk_foe_entry_set_pppoe(eth, &foe, data.pppoe.sid);
 -- 
-2.46.0
+2.45.2
 
