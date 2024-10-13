@@ -1,93 +1,97 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792FF1474C5
-	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4D13DDB9
+	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 16:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728836849; cv=none; b=kmipe534w+QP9M5R9xyrBlWScuR1csl3CGK+M/nP1dvhOSgxH1ysScKrFPSHuplpfNrjc9O7gy7IKFad9Ew6dv8eUuFcWreuLQkFTIi92JlI9DBEvs9bzO7ETAxzrfabOodClYA/7mXSHhl4KbFgZfjBAVVLQ+jUtAvaVHRe0Rs=
+	t=1728836939; cv=none; b=sH0jWK3D/f8EMUeFTiJgCQWvwmCRetMeZ+3VmvqsJ0YnNkAjMIc01I1HdUv09w37aR3icQnoR733mCcymsW172HV9n1LbLzpoXT3I/L72VzKUd4RQUXUp1uS6eJydvYL/b+XDMvne0wOrvgBfqSfCs4fhBiy0iqYnPx5jE95sg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728836849; c=relaxed/simple;
-	bh=KhWoRD2H+BmWFgR1juH3zFWA2YBT95nUEwQS/ULNd4w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cM/ci7s1/q5Mac6zEuVv3L0p0etFOX6V8Bzydltb/x4PISf+EteILHXodmkCATBj6BWLtDDpgga85tt0OwNc+G9F8m2o78Mg11BmXKskrZUDkQLhEUX+hH4HXH7jr1Y0kYMLtMc+UQRRf25S96yJMN/HzqMq3FUHozCFmMq0Exg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=oJXC59B8; arc=none smtp.client-ip=185.226.149.38
+	s=arc-20240116; t=1728836939; c=relaxed/simple;
+	bh=zLiPBf1YEdBMWFLgK9tV16l3TNMRcCLLAzsO2dxRFso=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ntqFlLW+M0cIGRWQ8mONbFmohAqd3B80lUpl0YsiqBW5VjSWUJX/46DTx0+oRLTFQSzLr+ggRPKWyZmQQ80uvEFCV9naf/ly97T6PjyoHbi1Rzml/NYz/eMro0Zt/d16ICIz2piiThMRQXifbqoxioY9y1uetxdccTi2KF630mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=e7zqfddA; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="oJXC59B8"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="e7zqfddA"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1t01R2-00Crmo-Kh; Sun, 13 Oct 2024 18:27:12 +0200
+	id 1t01SY-00Crvv-KM; Sun, 13 Oct 2024 18:28:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=4ZHKODsTHKVTvolB7Hhh4+kBDfGSvykMXekv9gZvMxU=; b=oJXC59B87d0uZ/LSPGnVfqXu9z
-	8cEMtgRQkvAu9eT6Xwi8c5mWDj6usFWxz7tNNtFWC9O5IqlhCbtWnlSu4wO4Q5VeIfwes8PyxlTMu
-	kH1PQdYzkO5MyeZeUP58awCjQqDE0q/9bh9EhcSsNscfFjWiRGBI8L9FUbFKr8DlMKlxBeFB0MZy8
-	yiIg56KbaBDW0lQpBORThDQjlJQtB3pmSKSbdOgMlCb52OLKTGkcplrSrbMVZMYRQ5LO1Yph2LV3A
-	mmwx6EJHzuh2UN+SMncB/c4HjpRplc66MrNLJc1I3eZXWiEkADBwFqCUg4ZpdmC0mP9gku64Htp1G
-	65KR8K5Q==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=+abiPB0rL2pZ7+/1GAhspcsF1eaJlmhqsP9hIzzCSOE=; b=e7zqfddAJi4C4ZnIQZc2m3iGom
+	J72T0pJpWIbbKaJjzADBkqD5J8HZasQiwOMRX8f0coD7MmwwQWn6QSmIkB5y4wOc6Jq2gAwHagmJk
+	o3NTgGNA6vyFwIJmswayjqtbySvUwG9oceH4SmPp/HnnfwuSw9A6dQCHTJdMPCj45hD/I1h8Lch0T
+	DZiS6ntziihlVMdUx5/Muqc5Fbj1GlB0FQy1W8IuQA/FH6WTpJMaCTdUhz35ZShd1gbeiY5Rs9eYv
+	8JhldTJL1uAM7ofHTVuEx+rkhfRWTXxMRsFFyD0t0Bv2hseSMuzAskLmcQum14e11RzKwJ7K6QAtn
+	ZUSDGs0w==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1t01R2-0007HW-AV; Sun, 13 Oct 2024 18:27:12 +0200
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	id 1t01SX-0007Mq-Kx; Sun, 13 Oct 2024 18:28:45 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1t01Qh-00GV5b-9M; Sun, 13 Oct 2024 18:26:51 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Sun, 13 Oct 2024 18:26:41 +0200
-Subject: [PATCH bpf v2 3/4] vsock: Update msg_count on read_skb()
+	id 1t01SK-00DrP9-Ki; Sun, 13 Oct 2024 18:28:32 +0200
+Message-ID: <9e886805-36ee-418c-9d75-175599eab6d0@rbox.co>
+Date: Sun, 13 Oct 2024 18:28:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-vsock-fixes-for-redir-v2-3-d6577bbfe742@rbox.co>
-References: <20241013-vsock-fixes-for-redir-v2-0-d6577bbfe742@rbox.co>
-In-Reply-To: <20241013-vsock-fixes-for-redir-v2-0-d6577bbfe742@rbox.co>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- Bobby Eshleman <bobby.eshleman@bytedance.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH bpf 2/4] vsock: Update rx_bytes on
+ read_skb()
+To: Stefano Garzarella <sgarzare@redhat.com>,
+ "Robert Eshleman ." <bobby.eshleman@bytedance.com>
+Cc: bobby.eshleman@gmail.com, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org
+References: <20241009-vsock-fixes-for-redir-v1-0-e455416f6d78@rbox.co>
+ <20241009-vsock-fixes-for-redir-v1-2-e455416f6d78@rbox.co>
+ <mwemnay5bb7ft5zvlrh5emdtkilqvkj42xnxnatnh3hmmtkhce@fqe64sbx6b2z>
+ <CALa-AnBQAhpBn2cPG4wW9c-dMq0JXAbkd4NSJL+Vtv=r=+hn2w@mail.gmail.com>
+ <cjhxc6sgmufeemnhgsv4prrf5uionxtgadsgwbxajwsljhqwao@3k4nrd2ivvtl>
+From: Michal Luczaj <mhal@rbox.co>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <cjhxc6sgmufeemnhgsv4prrf5uionxtgadsgwbxajwsljhqwao@3k4nrd2ivvtl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Dequeuing via vsock_transport::read_skb() left msg_count outdated, which
-then confused SOCK_SEQPACKET recv(). Decrease the counter.
+On 10/11/24 10:40, Stefano Garzarella wrote:
+> On Thu, Oct 10, 2024 at 05:09:17PM GMT, Robert Eshleman . wrote:
+>> On Thu, Oct 10, 2024 at 1:49 AM Stefano Garzarella <sgarzare@redhat.com>
+>> wrote:
+>>>
+>>> The modification looks good to me, but now that I'm looking at it
+>>> better, I don't understand why we don't also call
+>>> virtio_transport_send_credit_update().
+>>>
+>>> This is to inform the peer that we've freed up space and it has more
+>>> credit.
+>>>
+>>> @Bobby do you remember?
+>>>
+>>>
+>> I do not remember, but I do think it seems wrong not to.
+> 
+> Yeah, @Michal can you also add that call?
+> 
+> For now just call it, without the optimization we did for stream 
+> packets, in the future I'll try to unify the paths.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/virtio_transport_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+Sure, here is v2:
+https://lore.kernel.org/bpf/20241013-vsock-fixes-for-redir-v2-0-d6577bbfe742@rbox.co
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 2e5ad96825cc0988c9e1b3f8a8bfcff2ef00a2b2..ccbd2bc0d2109aea4f19e79a0438f85893e1d89c 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1723,6 +1723,9 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
- 	}
- 
- 	hdr = virtio_vsock_hdr(skb);
-+	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
-+		vvs->msg_count--;
-+
- 	virtio_transport_dec_rx_pkt(vvs, le32_to_cpu(hdr->len));
- 	spin_unlock_bh(&vvs->rx_lock);
- 
-
--- 
-2.46.2
+Thanks,
+Michal
 
