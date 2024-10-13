@@ -1,129 +1,107 @@
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CDD15CD64;
-	Sun, 13 Oct 2024 20:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7DB14B956
+	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 20:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728851934; cv=none; b=lXKN7EJ/W1KAddDphCCJzdUW/mgvztY3u6IPmMk9DMfLosXOTozonGh6LOj5t1Ha7b1vvqEOcQkDggp+bYfCh5jjCRRxjLPCclfDXwXTykUuCEs60izCDOrnq3JBwa1ZnXWraFAjAMh2qjX7B+j/mgYdSFI8kW/Ov0zxVI33+Uc=
+	t=1728852815; cv=none; b=I6BLxZJ1jiRPhkWyORKhpVCCr2wQAwdF9thg1D/Q3KUcPm4syfWmE9yj7Gw59//vGlFKwFAjwfwDE/934PXEl7bD52Yp24kGYelW6F0a+0RLvEcAJ+U2VQylfZB4E4yZ5/urv2VMu70MNxA0FJWZrKpOOznmssJPgngktJzVMCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728851934; c=relaxed/simple;
-	bh=MBwMZ4xiO0sumWJtTHTe6GkRXUXySlWfbs3PmjCuG78=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3Y92DNpf0QmuORRvmhH2NpG60/bM2vdTsV3HyQTHhKePSWT9G1WW22ISalHR6EiWbvBL6upsIGNZVNnwVQYv5MTrtzfNPeDm2LFOx+Jp+8fJ5cJ7G2vqyP1xwNRPf8Uxt8MtYBnvrqdszoiH2ix2HX47XbZBNXWsTqXfgfkRs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=fBg0dGvr; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+	s=arc-20240116; t=1728852815; c=relaxed/simple;
+	bh=2IcaxRsCZu1Weo0t3+AVfcXRdGrBjE6IgF1kYYjiVfU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EdNhHZCBgheMvRTJDSUFCKbaWH1qlDLT98vS9M08nkOKcfr3m4hY4HCZ0hrRhx00JvaCjBs/ljuXAUl5s39dL1jU2R1viLCxKekIlhtqpY5qgCdPk8QFS07FQ2cMyxuNBiRqUgqPNCkmxSo4p1f2McFcNS9PNlsUMTbKgi+bvn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=siip4Rmw; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="fBg0dGvr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=IczDtGTS4Z5CULUm4z191Tp3qUncfTs57+PPNdjNah8=; b=fBg0dGvrShDBM1NT
-	7mxAz6mbR8FJbIf+ZQ0TZaSLO2xWtoPtmfxWoak+VsKHfYF1dYdKYmrDUu6gwu+y58QoD8fNXRSY+
-	oBWT+p4ABTY9NQ5cEw6arClzaclIVIY1VzwnpAVukNGeTn6cZkGd+7I0qjrf4o8Z2OD2ac1FSzdd5
-	JP/KlmjkrwAI7JN3aAx5CA6Tq2e4pyxX0aY1b8Tp33s2CegmaFSufG3Jg0R4yl5zlCmGXto3VuZ1Z
-	aeVf7HZVBIThOL8cKuWvYyCyBu2ZMNzAqiut+0H7BuT/7XsxOQqo4rb4JUYGd1AjL7qUIvkCXlzSr
-	QFng5HnOMj4VnwTnaw==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1t05ML-00AnUX-1m;
-	Sun, 13 Oct 2024 20:38:37 +0000
-From: linux@treblig.org
-To: bharat@chelsio.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH net-next 1/6] cxgb4: Remove unused cxgb4_alloc/free_encap_mac_filt
-Date: Sun, 13 Oct 2024 21:38:26 +0100
-Message-ID: <20241013203831.88051-2-linux@treblig.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241013203831.88051-1-linux@treblig.org>
-References: <20241013203831.88051-1-linux@treblig.org>
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="siip4Rmw"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e67d505ceso123860b3a.1
+        for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 13:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1728852813; x=1729457613; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tW/oVLxMGVp293pF30Jw4BkfUNSmxaGcYjy7Hqe9zSo=;
+        b=siip4RmwMjZU+1aLa2isf62iO/PUxAwUMitbswzRhZl2Wm7XYbwBvEh6ghMlcy6HX0
+         p+CHV9a4l3LBJGOOL0WnlPho23AAtQnHgS2Egs/1i4dhSOLSR4lTYtnxZdh/f1gACW0C
+         ted3/v4g17PBHA23o1DTxlg6pv4wVCpE4LyBiV1Z6YxKet6/UjfejzmomLunSs/tu24d
+         mnPJXlbSM7njM2Kc2kACuGTkhqiXK2bkGXZq3XtcBho3son8FAGEAL1Qa595sI2FcFBw
+         xwRDsZlaG63VF2oSnxMzM9arpzlFZzSf0qVTcb7f20qTdWlqtdburfnUf8zM2iXINQ4Q
+         Ieew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728852813; x=1729457613;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tW/oVLxMGVp293pF30Jw4BkfUNSmxaGcYjy7Hqe9zSo=;
+        b=wh+O4rP+6WcCeIhSbdK2mLmhwN5I8kdPDMTD6IMJ5MuQivbB+8ehX5Q6nKPAKASpaF
+         Q6n+V482zVnBBExzoNZsBZFDNVxdyJSiCFdZ9ID8iz9P8CAUB5XzgJjHZXT0zTv3G8m4
+         JAXazAxUlEXPNrLIqnx3ndJRqyTIP+bXgb7rMALUGJiOIq2/GLkaryPVNE2vKaFm4WGR
+         82a5bEeMUSTXLJ0XLwq2o0rsdLKhXx+8UcwYmzUcJtJzOhkuvihhuVkqxnpzkVYBfmxR
+         bvksn08twBF6kaX+gXXzKSwb+PLMl0JmDmbsRccPVW5ffOeOaghjknFNgZSKnx3TpCkP
+         HtxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6yUGF48YyUL8YWnstuQxuGZ83MsZOiHPfo671VH4HuvKLAOJQfQWx3OMjEVyv3PB1Tzh4/5c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxMV7y8JljwvFt9NuuGTcdfLeH38CtgV5+Aib0DjjQJhxgEAD3
+	XFu2I+i5BoMxBeSqoxsC8PIJ5tUjiqSnRMi9qaCNVZbCsRDBeE6X0nw/5pPBdKI=
+X-Google-Smtp-Source: AGHT+IGeHW/T1utnJaL2THMthWNT/SlEE9KTreIWsQr33pvF5db22afBNXHDL1azWfd6tDGW/vbLCA==
+X-Received: by 2002:a05:6a00:1391:b0:71e:ba5:820e with SMTP id d2e1a72fcca58-71e4c1dcd95mr9404250b3a.27.1728852812746;
+        Sun, 13 Oct 2024 13:53:32 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e48bcfe81sm3815287b3a.66.2024.10.13.13.53.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Oct 2024 13:53:32 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-nfs@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: kernel-janitors@vger.kernel.org, vbabka@suse.cz, paulmck@kernel.org, 
+ Tom Talpey <tom@talpey.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Neil Brown <neilb@suse.de>, 
+ linux-can@vger.kernel.org, bridge@lists.linux.dev, 
+ b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org, 
+ wireguard@lists.zx2c4.com, netdev@vger.kernel.org, ecryptfs@vger.kernel.org, 
+ linux-block@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+Subject: Re: (subset) [PATCH 00/17] replace call_rcu by kfree_rcu for
+ simple kmem_cache_free callback
+Message-Id: <172885281086.338120.2063739137198887833.b4-ty@kernel.dk>
+Date: Sun, 13 Oct 2024 14:53:30 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-cxgb4_alloc_encap_mac_filt() and cxgb4_free_encap_mac_filt() have been
-unused since
-commit 28b3870578ef ("cxgb4: Re-work the logic for mps refcounting")
+On Sun, 13 Oct 2024 22:16:47 +0200, Julia Lawall wrote:
+> Since SLOB was removed and since
+> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+> it is not necessary to use call_rcu when the callback only performs
+> kmem_cache_free. Use kfree_rcu() directly.
+> 
+> The changes were done using the following Coccinelle semantic patch.
+> This semantic patch is designed to ignore cases where the callback
+> function is used in another way.
+> 
+> [...]
 
-Remove them.
+Applied, thanks!
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |  6 ----
- .../net/ethernet/chelsio/cxgb4/cxgb4_mps.c    | 30 -------------------
- 2 files changed, 36 deletions(-)
+[09/17] block: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+        commit: 7a9b197adbafa9d6d1a79a0633607b78b1adef82
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-index bbf7641a0fc7..1efb0a73ce0e 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-@@ -2141,12 +2141,6 @@ int cxgb4_free_mac_filt(struct adapter *adap, unsigned int viid,
- 			unsigned int naddr, const u8 **addr, bool sleep_ok);
- int cxgb4_init_mps_ref_entries(struct adapter *adap);
- void cxgb4_free_mps_ref_entries(struct adapter *adap);
--int cxgb4_alloc_encap_mac_filt(struct adapter *adap, unsigned int viid,
--			       const u8 *addr, const u8 *mask,
--			       unsigned int vni, unsigned int vni_mask,
--			       u8 dip_hit, u8 lookup_type, bool sleep_ok);
--int cxgb4_free_encap_mac_filt(struct adapter *adap, unsigned int viid,
--			      int idx, bool sleep_ok);
- int cxgb4_free_raw_mac_filt(struct adapter *adap,
- 			    unsigned int viid,
- 			    const u8 *addr,
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_mps.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_mps.c
-index a020e8490681..0e5663d19fcf 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_mps.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_mps.c
-@@ -187,36 +187,6 @@ int cxgb4_alloc_raw_mac_filt(struct adapter *adap,
- 	return ret;
- }
- 
--int cxgb4_free_encap_mac_filt(struct adapter *adap, unsigned int viid,
--			      int idx, bool sleep_ok)
--{
--	int ret = 0;
--
--	if (!cxgb4_mps_ref_dec(adap, idx))
--		ret = t4_free_encap_mac_filt(adap, viid, idx, sleep_ok);
--
--	return ret;
--}
--
--int cxgb4_alloc_encap_mac_filt(struct adapter *adap, unsigned int viid,
--			       const u8 *addr, const u8 *mask,
--			       unsigned int vni, unsigned int vni_mask,
--			       u8 dip_hit, u8 lookup_type, bool sleep_ok)
--{
--	int ret;
--
--	ret = t4_alloc_encap_mac_filt(adap, viid, addr, mask, vni, vni_mask,
--				      dip_hit, lookup_type, sleep_ok);
--	if (ret < 0)
--		return ret;
--
--	if (cxgb4_mps_ref_inc(adap, addr, ret, mask)) {
--		ret = -ENOMEM;
--		t4_free_encap_mac_filt(adap, viid, ret, sleep_ok);
--	}
--	return ret;
--}
--
- int cxgb4_init_mps_ref_entries(struct adapter *adap)
- {
- 	spin_lock_init(&adap->mps_ref_lock);
+Best regards,
 -- 
-2.47.0
+Jens Axboe
+
+
 
