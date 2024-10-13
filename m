@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526051547F3;
-	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B1B1514FB;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728854878; cv=none; b=q038jIkXcFyr9afSR99YcrilI4UrbmCuPomTSKCdblE58zEzjcTjS/+nJcHt/tas+NjK3i7v7P/Th60xzRZdNN+5q2o0K2fGZ3zg3q+lwlxYfzf/alFKAC0Y+HeNY+QXqVITBLfyoLCFnTtq6WVzh62rW1++4Qshkvl5QDr+pSU=
+	t=1728854878; cv=none; b=ezRgdVoVKyDIRlJRKVjX1cBR7R3GI4K/4y+9mOSuLLUZs7rSh6hYILLK234cmVYuu4TT237F+tJiuDftb1qQBhwnFoa6Rtvxrf2Kr3GBDotAcix/D4ZsDVyfBdPmRyHjK/PwpMsGs36YivOfgN9ToMOFjtNYlUNJam/5K0Ypg9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728854878; c=relaxed/simple;
-	bh=zHRajnY9H8eN6PJGvRNKjSnuYQB2Ukcx8EeNRHoCbkk=;
+	bh=RgbIdJN+VqFXRLRSWXCj5mbLS8wmvR17QJqbojTIhQw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=j6e6TIxwUxqBXRaysVGIdXtPHeND3F8LrxII95apz36uCfMGpxn7tQMVgGIcsnOqUR0xDQlXUpNJ4TiqhFMaFNb1aUKVNj6rk7iMwpdphGHu7ji80m7DUeoxEcQR43fhvY/c/bNMlpy8tRUUx+8MI9gQYuB1Yj/hIWcUYZjP+1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMEqTSIJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hx/T7FIE7sxcC/F74jYyIDaXLXGbbe/MxNMY51kbgOzcr2iGnjZ2+cMfz9RcLU2tagUfRgLHGurPzq1B1YHYkR4D26GhwcFEVRlmaiQ1O2YZ53eWpKuu7YlztROWGA8NmQzrw7Y2AFfdHDD/JrKlVOi5wJ9dzqZ79R1zkGrslYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsRx9qbD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMEqTSIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2928CC4CEEE;
-	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsRx9qbD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9737EC4CECF;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728854878;
-	bh=zHRajnY9H8eN6PJGvRNKjSnuYQB2Ukcx8EeNRHoCbkk=;
+	s=k20201202; t=1728854877;
+	bh=RgbIdJN+VqFXRLRSWXCj5mbLS8wmvR17QJqbojTIhQw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jMEqTSIJRvLcJAaEQCu4UlIBFl8+tCe0SuKHhHxREv3n6G4ElTA4iUGgsFsUZrYP7
-	 qNXtr98Qod0/yiOjY/BfCpdc8PhTcyXzANCiucsrQDPNLbjU6D4G8CGhvQ4H45KmJ3
-	 Bb459oY2vmMS0XLIoQpZsn2Gn4feLzrJEJIhiGok69bASGHGhV1+2DBmp72h4ybSxu
-	 nxm3mT/VVX8EMmtH75Jkueu4qmujAVz0L5TA/pedq/iPN0IENUVHAJfmrfuAL+STJA
-	 dOKASIgcGFZmH6EcLZ2TrHsu+XfEEFrFIsVy3SeWcYfRk4vjZbUamE6Kz06atBKgVv
-	 ioeO54bLKCBgw==
+	b=XsRx9qbDbrJE9mHjmA9Ol/v/7VTsFvYuL1noSJnUsC3Xoj32Bd21EpVHNXAJrBl/Q
+	 A5kMXpcxI2k8btTnomFbIYAUNXuEh14QsJJBCH2gLkcc/OEWcT+LBcZbPdcxOHKuHn
+	 w4BYtl6qSIqNVA5lRJd+S9RFiV8yY0GMVbDf/vepY60a5UXlF3kYDEiHTOGiQxoESp
+	 2V+UFoV++niuICNszd5nopKh8ipzT+yQVFRDEJGlQsxbjSIKEaUJBJxn0SDJJs8WhE
+	 rhHIabYT/Ee9bgOLvE3oqzr3WvU+Bjbmw2sQbZIALTKhTnjbjie4J9Dqj0L331mKLv
+	 UXK57ys30WR7g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20D87CF258D;
-	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84F95CF258D;
+	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 13 Oct 2024 23:27:43 +0200
-Subject: [PATCH v3 08/16] net: dwmac-rk: Use helper rgmii_clock
+Date: Sun, 13 Oct 2024 23:27:36 +0200
+Subject: [PATCH v3 01/16] net: driver: stmmac: Fix CSR divider comment
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-upstream_s32cc_gmac-v3-8-d84b5a67b930@oss.nxp.com>
+Message-Id: <20241013-upstream_s32cc_gmac-v3-1-d84b5a67b930@oss.nxp.com>
 References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 In-Reply-To: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -67,13 +67,14 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=1624;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=957;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=U6B9llxVwSxlc0p2LOF6M6zvdPnjMTTRfZwqZD1qOy4=;
- b=2UPBUVZmHJTPvpD1TJ5YdLKzbeaJCX5He7BjUTtN0eKRXqzc97ghHMI6k5ksb6MdTzu0AinR/
- fr38i5oL3b4BxmW2bmPMrVz+ojAbXUPl67nMkyvCM6s2bJc8tyWyg34
+ bh=8n8ej/rHu52TTToCJhA4ikVpR3Q+lsQuV+aNubhE0Rc=;
+ b=MoZImcR0uKl3vpz4ak+fge//EmVq/0vEY6/rQyYOpdrp7HfBXPvM+Vdj5fKEpcoX3Pp2XKY+p
+ UwwUd59fwp8CvO8VwdYccjnmzwUKajEOjeUqHRUckomYKb6wh0tD6na
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -83,65 +84,30 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-???
+The comment in declaration of STMMAC_CSR_250_300M
+incorrectly describe the constant as '/* MDC = clk_scr_i/122 */'
+but the DWC Ether QOS Handbook version 5.20a says it is
+CSR clock/124.
 
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 30 ++++++--------------------
- 1 file changed, 6 insertions(+), 24 deletions(-)
+ include/linux/stmmac.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 50073bdade46..2fd650b3bc5c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1079,20 +1079,11 @@ static void rk3568_set_gmac_speed(struct rk_priv_data *bsp_priv, int speed)
- {
- 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
--	unsigned long rate;
-+	long rate;
- 	int ret;
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index d79ff252cfdc..75cbfb576358 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -33,7 +33,7 @@
+ #define	STMMAC_CSR_20_35M	0x2	/* MDC = clk_scr_i/16 */
+ #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
+ #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
+-#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/122 */
++#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
  
--	switch (speed) {
--	case 10:
--		rate = 2500000;
--		break;
--	case 100:
--		rate = 25000000;
--		break;
--	case 1000:
--		rate = 125000000;
--		break;
--	default:
-+	rate = rgmii_clock(speed);
-+	if (rate < 0) {
- 		dev_err(dev, "unknown speed value for GMAC speed=%d", speed);
- 		return;
- 	}
-@@ -1540,20 +1531,11 @@ static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
- {
- 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
- 	struct device *dev = &bsp_priv->pdev->dev;
--	unsigned long rate;
-+	long rate;
- 	int ret;
- 
--	switch (speed) {
--	case 10:
--		rate = 2500000;
--		break;
--	case 100:
--		rate = 25000000;
--		break;
--	case 1000:
--		rate = 125000000;
--		break;
--	default:
-+	rate = rgmii_clock(speed);
-+	if (rate < 0) {
- 		dev_err(dev, "unknown speed value for RGMII speed=%d", speed);
- 		return;
- 	}
+ /* MTL algorithms identifiers */
+ #define MTL_TX_ALGORITHM_WRR	0x0
 
 -- 
 2.46.0
