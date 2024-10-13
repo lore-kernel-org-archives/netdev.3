@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B1B1514FB;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA9D155C98;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728854878; cv=none; b=ezRgdVoVKyDIRlJRKVjX1cBR7R3GI4K/4y+9mOSuLLUZs7rSh6hYILLK234cmVYuu4TT237F+tJiuDftb1qQBhwnFoa6Rtvxrf2Kr3GBDotAcix/D4ZsDVyfBdPmRyHjK/PwpMsGs36YivOfgN9ToMOFjtNYlUNJam/5K0Ypg9A=
+	t=1728854878; cv=none; b=BWF5GDp/y9L8M8IzQ4J7xlRIu1a+29aDRIyg8lVp8ns/oiWvHK0Mj0O9ebeqQdWrPjYaUCvd+Aoh92qruAJ+9uMUz4EeyoT+xMjtAEWPwT34dw04ufcb8IkgXMwm/0p6xllnxHzE/OuXd2hpZ1YAQDJvG46ESYD3e6lmXYqnyXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728854878; c=relaxed/simple;
-	bh=RgbIdJN+VqFXRLRSWXCj5mbLS8wmvR17QJqbojTIhQw=;
+	bh=Nn+g7eeRUbmuioaQ/PGNqFJ6Ggh6l4nHhAt5g4V3gMg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hx/T7FIE7sxcC/F74jYyIDaXLXGbbe/MxNMY51kbgOzcr2iGnjZ2+cMfz9RcLU2tagUfRgLHGurPzq1B1YHYkR4D26GhwcFEVRlmaiQ1O2YZ53eWpKuu7YlztROWGA8NmQzrw7Y2AFfdHDD/JrKlVOi5wJ9dzqZ79R1zkGrslYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsRx9qbD; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=sMS5IOQB+GvXa+rWzRaionU0G4Gm8XLLoJqUd5U0gvlbzavXkx8Ti53yVQDFHwuBoRPQRJxoQTnwkH+Vibs0BqURLpXw6g8wIjkO97moo/2lpA59YeJUHyxWY6Hg10XxnbDeW3GTiD66q6gZnUgHG7YuQVqGu119Lkp+VVqwtFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjEMFAiY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsRx9qbD"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9737EC4CECF;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjEMFAiY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3879AC4CEF1;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728854877;
-	bh=RgbIdJN+VqFXRLRSWXCj5mbLS8wmvR17QJqbojTIhQw=;
+	s=k20201202; t=1728854878;
+	bh=Nn+g7eeRUbmuioaQ/PGNqFJ6Ggh6l4nHhAt5g4V3gMg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XsRx9qbDbrJE9mHjmA9Ol/v/7VTsFvYuL1noSJnUsC3Xoj32Bd21EpVHNXAJrBl/Q
-	 A5kMXpcxI2k8btTnomFbIYAUNXuEh14QsJJBCH2gLkcc/OEWcT+LBcZbPdcxOHKuHn
-	 w4BYtl6qSIqNVA5lRJd+S9RFiV8yY0GMVbDf/vepY60a5UXlF3kYDEiHTOGiQxoESp
-	 2V+UFoV++niuICNszd5nopKh8ipzT+yQVFRDEJGlQsxbjSIKEaUJBJxn0SDJJs8WhE
-	 rhHIabYT/Ee9bgOLvE3oqzr3WvU+Bjbmw2sQbZIALTKhTnjbjie4J9Dqj0L331mKLv
-	 UXK57ys30WR7g==
+	b=cjEMFAiY7Ilnablxc1XnsahBC13AgXZcGgFq8RZLoZ4gDl0XgkDXXZVSkdNlAws3U
+	 4sg72gY4L5PczgMuDrhy0orAioLUEnn+ntiBK/lsAM40agn7GBEY2ahfmDG2mjjoYP
+	 1gjYdFxVs7hedeWk5zegTh0rh60rqz7fl5sGdgmybn4xdTtILM0faSrP5zD5+sf6nk
+	 wdUuumjt1rYV8KCElth6SD441pfGaiWq0o8/FpMULhXyFmcGN6S4/QDuMuUIEhxVrS
+	 xrYScGtWYKHSKAmb30AXG5KN/zfA20OSU+SKrcotQAaSYtZagJaKqZx5L/4uAtgQDK
+	 BO+GxOcej76cQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84F95CF258D;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E9D9CF2591;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 13 Oct 2024 23:27:36 +0200
-Subject: [PATCH v3 01/16] net: driver: stmmac: Fix CSR divider comment
+Date: Sun, 13 Oct 2024 23:27:44 +0200
+Subject: [PATCH v3 09/16] net: dwmac-starfive: Use helper rgmii_clock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-upstream_s32cc_gmac-v3-1-d84b5a67b930@oss.nxp.com>
+Message-Id: <20241013-upstream_s32cc_gmac-v3-9-d84b5a67b930@oss.nxp.com>
 References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 In-Reply-To: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -67,14 +67,13 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=957;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=1143;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=8n8ej/rHu52TTToCJhA4ikVpR3Q+lsQuV+aNubhE0Rc=;
- b=MoZImcR0uKl3vpz4ak+fge//EmVq/0vEY6/rQyYOpdrp7HfBXPvM+Vdj5fKEpcoX3Pp2XKY+p
- UwwUd59fwp8CvO8VwdYccjnmzwUKajEOjeUqHRUckomYKb6wh0tD6na
+ bh=izAPXG5Zoogrdq15i39txVo0VJdx5W3UBGLtbZvPlic=;
+ b=dWiupgAbQZP27LJq6sBgPF9PByHgqcK5ZAu9fXs+dfegW0+SH1JyL3mFhzPOblsb2pCIf/2Tj
+ vlU/UQ34qo+AAeIRoWfzNnyaVAwUzMD0kfANP6BZ6i+X+bcK/nFiB2B
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -84,30 +83,46 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The comment in declaration of STMMAC_CSR_250_300M
-incorrectly describe the constant as '/* MDC = clk_scr_i/122 */'
-but the DWC Ether QOS Handbook version 5.20a says it is
-CSR clock/124.
+???
 
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- include/linux/stmmac.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index d79ff252cfdc..75cbfb576358 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -33,7 +33,7 @@
- #define	STMMAC_CSR_20_35M	0x2	/* MDC = clk_scr_i/16 */
- #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
- #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
--#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/122 */
-+#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+index 4e1076faee0c..d80461a721c1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
+@@ -34,24 +34,13 @@ struct starfive_dwmac {
+ static void starfive_dwmac_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
+ {
+ 	struct starfive_dwmac *dwmac = priv;
+-	unsigned long rate;
++	long rate;
+ 	int err;
  
- /* MTL algorithms identifiers */
- #define MTL_TX_ALGORITHM_WRR	0x0
+-	rate = clk_get_rate(dwmac->clk_tx);
+-
+-	switch (speed) {
+-	case SPEED_1000:
+-		rate = 125000000;
+-		break;
+-	case SPEED_100:
+-		rate = 25000000;
+-		break;
+-	case SPEED_10:
+-		rate = 2500000;
+-		break;
+-	default:
++	rate = rgmii_clock(speed);
++	if (rate < 0) {
+ 		dev_err(dwmac->dev, "invalid speed %u\n", speed);
+-		break;
++		return;
+ 	}
+ 
+ 	err = clk_set_rate(dwmac->clk_tx, rate);
 
 -- 
 2.46.0
