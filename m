@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51C0156F27;
-	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7BB18453E;
+	Sun, 13 Oct 2024 21:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728854878; cv=none; b=SoG09Ef5XAXCKH9KRTg1awYFJU0NNjKdRV6bHpHf1FmFk6OgJmasbc4pLOHTN3t8GI/HPwETTEo+G9gm2g40ZSXIIc+XDgkb3mu97WqaYJ0S+fGZq5vL9246MBtI4UEeBYQcWHQNgmmZ2cMUlwEgs7maIL5KtgFy3TABEksTz5s=
+	t=1728854879; cv=none; b=Yujhdl/M31VDNB11SMCtNRHH7YTQRr4NdteZEU01o3hwAiYtZW+NAoPytVfiRGqL0K4aVj7g/NMMwYxCH+vjQ8r8bPYz0tLOV9JkP718E+Gp2t57Q6ZL4EqaLbX/OIBdEge90jH8AW9fSu1qETe/8C2LDLkQByaWQXCQ4krzkUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728854878; c=relaxed/simple;
-	bh=miuoZAxa8gH/3bOfvp1cMVTbaTxNFTSxZIfvFfwUPUM=;
+	s=arc-20240116; t=1728854879; c=relaxed/simple;
+	bh=B8D4rtkDCUvIgkAJnwHDrRoK8VWaANfpHt6JnSqvkNo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Fc4VA9zSWtI9O8h1whEGYLVm8b2VdFfZ+zP1Ak5ndfJy5+hZUfUidiSHFc3kRl1zI7jzkxiHT9br3Bb9Uqs4025xnTXGxioFICM6Y9b8jsUGcqFwrU3VAFF4sbbv6NhseQuGMQGUdPmlfdI+pMno27xyie6OsxX+tNSOpLc6rPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpqDgtor; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YXnpbBOxc8MisM50i1dHAloZlllck4WDNbF6MQXMMG57qFtY4sQT0yFoAcx2a2yKPppMMOqPu/GqtllW80KYSZW7ncPRamXSLRsxQP26Fi56TmOpEYJ2jSU0yoY16YVMe1PG/ZgWWAyqbrzcM0JuSLKFpGWCxs/uVn0qDkYS7Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOBQviP8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpqDgtor"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 85FEAC4CEFE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOBQviP8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD119C4AF0D;
 	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1728854878;
-	bh=miuoZAxa8gH/3bOfvp1cMVTbaTxNFTSxZIfvFfwUPUM=;
+	bh=B8D4rtkDCUvIgkAJnwHDrRoK8VWaANfpHt6JnSqvkNo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gpqDgtorCPHLTzB65xW4+ivkmoVlzkK71rhjOT+774g5oMj1gSxIRH6GEbqfNujWf
-	 63FoJReOsZelpYbJYcuehpTf0Sx9tH5fMBKvR5MEN1zJL02E9MwGUVIwnw+czLiysR
-	 GTxtYPq+R5h3NhnkIJXxTLqblNjrTugsqg7ZbAA1ZlXtKoyC8GV9BqXMev4FDtA01G
-	 NzBUM8WP6pc6CvtzsKMH8NSuXzPgXOH8MDRR73ccyu8rfmQiuaWeHjY272kjS8TGP3
-	 SUbNebZ4aEnvnNQIsH0oPKziewb1zD4WtXzr7TL+8HD2WceiQFw8qT2CdZ5wyGZpoD
-	 d+zyNHbVhu+Vw==
+	b=QOBQviP8pMyYkocR/dYrePt3TOxF4ryOhIhqa7EhFJ+oZKOXdFimXxr3Z8xlRkHDl
+	 3gpA26xp/W//S5FmRR+H8heZsOICERBXxEtwI4HqDenNgdYcP2bwih8folFnqWd6If
+	 rI6ygSGPlP4WEjnmJX4Rts00i8Iqd/EGOzL0AalOubPmQ1MV2ryaCdBy1zqi7Lqek3
+	 OJD42OnQW+EHMPPTTSZUaqE4ELQpZhpx9di5QlFxV4OOgt6xNnjyJqFhsYWjzVjHIR
+	 wwXjR0HOBzHMViLTGv//IqsRBIb40n3AOOgU57o0jaZw2Z5Dl4HQ0PWTpTlg0kl24H
+	 r8rnt5g4UVXwQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B4E5CF2591;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD547CF2591;
 	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 13 Oct 2024 23:27:47 +0200
-Subject: [PATCH v3 12/16] net: dwmac-sti: Use helper rgmii_clock
+Date: Sun, 13 Oct 2024 23:27:51 +0200
+Subject: [PATCH v3 16/16] net: stmmac: dwmac-s32: Read PTP clock rate when
+ ready
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-upstream_s32cc_gmac-v3-12-d84b5a67b930@oss.nxp.com>
+Message-Id: <20241013-upstream_s32cc_gmac-v3-16-d84b5a67b930@oss.nxp.com>
 References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 In-Reply-To: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -67,13 +68,15 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Andrei Botila <andrei.botila@nxp.org>, 
+ Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=1868;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=1605;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=JMTOl/4Rkgg8MzRxHwxEln56QmjXWHwbotmJcc4tZQA=;
- b=YhJIILVd9Eay9lSSnwFd64FJMwW3HOTjRBkTyLBmu9udYHtKm6H8zZSWkYwVISN+20AT+3McJ
- LyJfpw+HRj8BWnbs1e/dU/Jdsh+79q4Fyt735099z8GRUObyNjJiwOL
+ bh=yghcsP0rT1E+KchKPuX8DbIOCwUwU33DKX66yshrGiI=;
+ b=rlFKSP5vX/qcXmdlWd4FXmmlRdEmQ1yeJaLvdVoYW0pouWkcfUFvPcxCrMwVsedbS365JSzZB
+ h+dQP6P/jtsBNIya5JLVNWMXWpGB7PDdgKlyqw+3OjugSO34ce4lc7a
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -83,61 +86,49 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-???
+The PTP clock is read by stmmac_platform during DT parse.
+On S32G/R the clock is not ready and returns 0. Postpone
+reading of the clock on PTP init.
 
+Co-developed-by: Andrei Botila <andrei.botila@nxp.org>
+Signed-off-by: Andrei Botila <andrei.botila@nxp.org>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-index 4445cddc4cbe..0b02d079360d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-@@ -21,10 +21,7 @@
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+index aedd6bf80684..3daf282d8da7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+@@ -140,6 +140,18 @@ static void s32_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
+ 		dev_err(gmac->dev, "Can't set tx clock\n");
+ }
  
- #include "stmmac_platform.h"
- 
--#define DWMAC_125MHZ	125000000
- #define DWMAC_50MHZ	50000000
--#define DWMAC_25MHZ	25000000
--#define DWMAC_2_5MHZ	2500000
- 
- #define IS_PHY_IF_MODE_RGMII(iface)	(iface == PHY_INTERFACE_MODE_RGMII || \
- 			iface == PHY_INTERFACE_MODE_RGMII_ID || \
-@@ -140,7 +137,7 @@ static void stih4xx_fix_retime_src(void *priv, u32 spd, unsigned int mode)
- 	struct sti_dwmac *dwmac = priv;
- 	u32 src = dwmac->tx_retime_src;
- 	u32 reg = dwmac->ctrl_reg;
--	u32 freq = 0;
-+	long freq = 0;
- 
- 	if (dwmac->interface == PHY_INTERFACE_MODE_MII) {
- 		src = TX_RETIME_SRC_TXCLK;
-@@ -153,19 +150,14 @@ static void stih4xx_fix_retime_src(void *priv, u32 spd, unsigned int mode)
- 		}
- 	} else if (IS_PHY_IF_MODE_RGMII(dwmac->interface)) {
- 		/* On GiGa clk source can be either ext or from clkgen */
--		if (spd == SPEED_1000) {
--			freq = DWMAC_125MHZ;
--		} else {
-+		freq = rgmii_clock(spd);
++static void s32_dwmac_ptp_clk_freq_config(struct stmmac_priv *priv)
++{
++	struct plat_stmmacenet_data *plat = priv->plat;
 +
-+		if (spd != SPEED_1000 && freq > 0)
- 			/* Switch to clkgen for these speeds */
- 			src = TX_RETIME_SRC_CLKGEN;
--			if (spd == SPEED_100)
--				freq = DWMAC_25MHZ;
--			else if (spd == SPEED_10)
--				freq = DWMAC_2_5MHZ;
--		}
- 	}
++	if (!plat->clk_ptp_ref)
++		return;
++
++	plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
++
++	netdev_dbg(priv->dev, "PTP rate %lu\n", plat->clk_ptp_rate);
++}
++
+ static int s32_dwmac_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat;
+@@ -195,6 +207,7 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+ 	plat->init = s32_gmac_init;
+ 	plat->exit = s32_gmac_exit;
+ 	plat->fix_mac_speed = s32_fix_mac_speed;
++	plat->ptp_clk_freq_config = s32_dwmac_ptp_clk_freq_config;
  
--	if (src == TX_RETIME_SRC_CLKGEN && freq)
-+	if (src == TX_RETIME_SRC_CLKGEN && freq > 0)
- 		clk_set_rate(dwmac->clk, freq);
+ 	plat->bsp_priv = gmac;
  
- 	regmap_update_bits(dwmac->regmap, reg, STIH4XX_RETIME_SRC_MASK,
 
 -- 
 2.46.0
