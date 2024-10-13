@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C5814F9E2;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526051547F3;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728854878; cv=none; b=DGfNGjJXmtt6+RlQRe/8ctffs71NUJ3aGLW5oe0j1jwyC5IHEXUfCUVFHhNTiJIYq04Tds56GiPmXidlV/ua2f2Ajg73wYLn4UpfQDUUlEl9sw7xga1d7tT0hTOARZLFXo5082ReNvdBfK6PW0q8WGhyVsuwOdeqxHGD8aJNM2A=
+	t=1728854878; cv=none; b=q038jIkXcFyr9afSR99YcrilI4UrbmCuPomTSKCdblE58zEzjcTjS/+nJcHt/tas+NjK3i7v7P/Th60xzRZdNN+5q2o0K2fGZ3zg3q+lwlxYfzf/alFKAC0Y+HeNY+QXqVITBLfyoLCFnTtq6WVzh62rW1++4Qshkvl5QDr+pSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728854878; c=relaxed/simple;
-	bh=OjTehc/SjYSJ6s+SGBVf5yG2y+QV0nJLwhhFg/WQymk=;
+	bh=zHRajnY9H8eN6PJGvRNKjSnuYQB2Ukcx8EeNRHoCbkk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MWb6SKtSO4Iy/K1zlldIvqgTHMKoiQKrAPmXROuMPbVBznJkBIumKcKD0NvnGNtx0QcN3I7TJaWvAniw53XR2bpZRDz2vLw2UFU2UG7eJ2P7eDsvp+rkrVyMWPr0ZP56Ud7aIQQpHRIsYYo1k2Qd7MxYn5ff2L+CIkJqONTQCh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5bQZuSb; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=j6e6TIxwUxqBXRaysVGIdXtPHeND3F8LrxII95apz36uCfMGpxn7tQMVgGIcsnOqUR0xDQlXUpNJ4TiqhFMaFNb1aUKVNj6rk7iMwpdphGHu7ji80m7DUeoxEcQR43fhvY/c/bNMlpy8tRUUx+8MI9gQYuB1Yj/hIWcUYZjP+1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMEqTSIJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5bQZuSb"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5F45C4CED4;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMEqTSIJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2928CC4CEEE;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728854877;
-	bh=OjTehc/SjYSJ6s+SGBVf5yG2y+QV0nJLwhhFg/WQymk=;
+	s=k20201202; t=1728854878;
+	bh=zHRajnY9H8eN6PJGvRNKjSnuYQB2Ukcx8EeNRHoCbkk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=p5bQZuSbrNAQsbQCXgFONqwC3pWiUInNOc6I0BK394gB7gxUErhieX7Nmu2+euNVm
-	 EQeZdT8p90oLeX+0vB4FjBBjw0edo1ms6ZMFkfsJeKj2gaX3fCWZk4bid15eS/VsIW
-	 8bhMCJQRLWRe0/mO413UGnjqj3o+r/TgcNK4SkUH1vJyQnZuiPX2HIgwDbDvnstrxz
-	 eGqCY7REuwTlThpTNNe+McIPn9FFv/2X88imQ9TkRriw6736ETLGriJs97M8/JLMZ5
-	 hb+fhT2RknYV1exlDGco3ktCV8SGBDp9+XYKI1ltO2lMqsKV3H4FIkV9jN62jxqfLb
-	 fbc/GUitjtnow==
+	b=jMEqTSIJRvLcJAaEQCu4UlIBFl8+tCe0SuKHhHxREv3n6G4ElTA4iUGgsFsUZrYP7
+	 qNXtr98Qod0/yiOjY/BfCpdc8PhTcyXzANCiucsrQDPNLbjU6D4G8CGhvQ4H45KmJ3
+	 Bb459oY2vmMS0XLIoQpZsn2Gn4feLzrJEJIhiGok69bASGHGhV1+2DBmp72h4ybSxu
+	 nxm3mT/VVX8EMmtH75Jkueu4qmujAVz0L5TA/pedq/iPN0IENUVHAJfmrfuAL+STJA
+	 dOKASIgcGFZmH6EcLZ2TrHsu+XfEEFrFIsVy3SeWcYfRk4vjZbUamE6Kz06atBKgVv
+	 ioeO54bLKCBgw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC31ACF2591;
-	Sun, 13 Oct 2024 21:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20D87CF258D;
+	Sun, 13 Oct 2024 21:27:58 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 13 Oct 2024 23:27:38 +0200
-Subject: [PATCH v3 03/16] net: stmmac: Fix clock rate variables size
+Date: Sun, 13 Oct 2024 23:27:43 +0200
+Subject: [PATCH v3 08/16] net: dwmac-rk: Use helper rgmii_clock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241013-upstream_s32cc_gmac-v3-3-d84b5a67b930@oss.nxp.com>
+Message-Id: <20241013-upstream_s32cc_gmac-v3-8-d84b5a67b930@oss.nxp.com>
 References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 In-Reply-To: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -67,14 +67,13 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
- Serge Semin <fancer.lancer@gmail.com>
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=4015;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728854875; l=1624;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=rZtvgxdJs+uvFCspKOdVSbISr0XerCY0VS1ForZPWcc=;
- b=qGAdtifhY+adK80vHwqsEVOx202MRrqBh5WpmcYV0IkVWKznOLsSbId2cJxV1jKHUTTa4tLZj
- Y0KinVpiB/cAg9R4msHIXGf55De/5B5x9wzFZKCe9y7Bvxw/2wh2vmZ
+ bh=U6B9llxVwSxlc0p2LOF6M6zvdPnjMTTRfZwqZD1qOy4=;
+ b=2UPBUVZmHJTPvpD1TJ5YdLKzbeaJCX5He7BjUTtN0eKRXqzc97ghHMI6k5ksb6MdTzu0AinR/
+ fr38i5oL3b4BxmW2bmPMrVz+ojAbXUPl67nMkyvCM6s2bJc8tyWyg34
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -84,98 +83,65 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The clock API clk_get_rate() returns unsigned long value.
-Expand affected members of stmmac platform data and
-convert the stmmac_clk_csr_set() and dwmac4_core_init() methods
-to defining the unsigned long clk_rate local variables.
+???
 
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c       | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c   | 2 +-
- include/linux/stmmac.h                                  | 6 +++---
- 5 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 30 ++++++--------------------
+ 1 file changed, 6 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 901a3c1959fa..2a5b38723635 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -777,7 +777,7 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
- 		netdev_err(priv->dev, "Failed to max out clk_ptp_ref: %d\n", err);
- 	plat_dat->clk_ptp_rate = clk_get_rate(plat_dat->clk_ptp_ref);
- 
--	netdev_dbg(priv->dev, "PTP rate %d\n", plat_dat->clk_ptp_rate);
-+	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
- }
- 
- static int qcom_ethqos_probe(struct platform_device *pdev)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index a1858f083eef..a70bcd72f5ad 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -25,7 +25,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	void __iomem *ioaddr = hw->pcsr;
- 	u32 value = readl(ioaddr + GMAC_CONFIG);
--	u32 clk_rate;
-+	unsigned long clk_rate;
- 
- 	value |= GMAC_CORE_INIT;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f9cab62cfde9..dd155dd4903b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -300,7 +300,7 @@ static void stmmac_global_err(struct stmmac_priv *priv)
-  */
- static void stmmac_clk_csr_set(struct stmmac_priv *priv)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 50073bdade46..2fd650b3bc5c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1079,20 +1079,11 @@ static void rk3568_set_gmac_speed(struct rk_priv_data *bsp_priv, int speed)
  {
--	u32 clk_rate;
-+	unsigned long clk_rate;
+ 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
+ 	struct device *dev = &bsp_priv->pdev->dev;
+-	unsigned long rate;
++	long rate;
+ 	int ret;
  
- 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index ad868e8d195d..b1e4df1a86a0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -639,7 +639,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 		dev_info(&pdev->dev, "PTP uses main clock\n");
- 	} else {
- 		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
--		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
-+		dev_dbg(&pdev->dev, "PTP rate %lu\n", plat->clk_ptp_rate);
+-	switch (speed) {
+-	case 10:
+-		rate = 2500000;
+-		break;
+-	case 100:
+-		rate = 25000000;
+-		break;
+-	case 1000:
+-		rate = 125000000;
+-		break;
+-	default:
++	rate = rgmii_clock(speed);
++	if (rate < 0) {
+ 		dev_err(dev, "unknown speed value for GMAC speed=%d", speed);
+ 		return;
  	}
+@@ -1540,20 +1531,11 @@ static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
+ {
+ 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
+ 	struct device *dev = &bsp_priv->pdev->dev;
+-	unsigned long rate;
++	long rate;
+ 	int ret;
  
- 	plat->stmmac_rst = devm_reset_control_get_optional(&pdev->dev,
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 865d0fe26f98..c9878a612e53 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -252,8 +252,8 @@ struct plat_stmmacenet_data {
- 	struct clk *stmmac_clk;
- 	struct clk *pclk;
- 	struct clk *clk_ptp_ref;
--	unsigned int clk_ptp_rate;
--	unsigned int clk_ref_rate;
-+	unsigned long clk_ptp_rate;
-+	unsigned long clk_ref_rate;
- 	unsigned int mult_fact_100ns;
- 	s32 ptp_max_adj;
- 	u32 cdc_error_adj;
-@@ -265,7 +265,7 @@ struct plat_stmmacenet_data {
- 	int mac_port_sel_speed;
- 	int has_xgmac;
- 	u8 vlan_fail_q;
--	unsigned int eee_usecs_rate;
-+	unsigned long eee_usecs_rate;
- 	struct pci_dev *pdev;
- 	int int_snapshot_num;
- 	int msi_mac_vec;
+-	switch (speed) {
+-	case 10:
+-		rate = 2500000;
+-		break;
+-	case 100:
+-		rate = 25000000;
+-		break;
+-	case 1000:
+-		rate = 125000000;
+-		break;
+-	default:
++	rate = rgmii_clock(speed);
++	if (rate < 0) {
+ 		dev_err(dev, "unknown speed value for RGMII speed=%d", speed);
+ 		return;
+ 	}
 
 -- 
 2.46.0
