@@ -1,224 +1,137 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662B22F855;
-	Sun, 13 Oct 2024 15:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A573D2F42;
+	Sun, 13 Oct 2024 16:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728833604; cv=none; b=Q5HDNW3YpgdOmYa/2UNWjkMjZDrtsWx/W2HrklLEOz47UsoX/Qxgwi0QNm1IQBibWxvCBX4LKEX4eEtI+RFj6bV/Ehi6CCMA7A42VpKPnc9kcv1nNcYZvBG0aDAJ2LWdB1gsLvy56m+BZKwUA0Qs1oVeZOWfKX5Fn7WFsmOxWA8=
+	t=1728836843; cv=none; b=gNh22/1OeZzYfPK/9XQTkf4aKasWXvDExPLG7KhGn9PU7gUWRY15IntmxHa7Yo+GvDBriTu7PT48dm6hAjvh0DDosYd9O2bVymIHWLcR9pWgukp6q4xDvH1PG3SyMX3QKwoytHpwKv6YVco+wFYP4GEVuEwEC9+cdzOaMK9D70o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728833604; c=relaxed/simple;
-	bh=fJkul6k+1xkEG6jqLAyJbONQ+3rSxf+oxu/+tMfJTrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U1xM0RrR7CkqZnyd7yU1vZ4XqPSIP5HMh7kRu3j870t1Y9Jaz7YkZG7UvI7jvOStQuCnhnzja6ZZpSQNaKuv0dTX337MJF+pGr7aPUOA5MFR65YNxNs5eslshGSx76ZELdeSvwNTxC6RDiK3aSkuY39Olcb5g2U59STaHuInk+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0C6EA1A13F7;
-	Sun, 13 Oct 2024 17:33:15 +0200 (CEST)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 052241A1C55;
-	Sun, 13 Oct 2024 17:33:15 +0200 (CEST)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id C72CB20406;
-	Sun, 13 Oct 2024 17:33:15 +0200 (CEST)
-Date: Sun, 13 Oct 2024 17:33:14 +0200
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	dl-S32 <S32@nxp.com>
-Subject: Re: [PATCH v2 3/7] dt-bindings: net: Add DT bindings for DWMAC on
- NXP S32G/R SoCs
-Message-ID: <ZwvoOpgApLQWWY05@lsv051416.swis.nl-cdc01.nxp.com>
-References: <AM9PR04MB8506A1FAC2DA26F27771D039E2832@AM9PR04MB8506.eurprd04.prod.outlook.com>
- <7bbd48c8-7fa6-4d41-9560-3de0a2394c55@kernel.org>
+	s=arc-20240116; t=1728836843; c=relaxed/simple;
+	bh=ATz0ke/Gyqfq12BWInrt1+S0gvlwRss8NN0cvFIE+XI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Xw3xLb2+H18toFb57KTmmU3oG8DgeH3Xxeyp9g8ABdLimqgp0lWXou6b+9AW+LqYAq+mGy55+uJUzNKV4nULgB4Rrh2yZaJBn7UY9493lXHFQmVmzYBWGJ7EW390f4GXurPuHpqBXQgX7K0KtpwoX6RLUVMghE74tGyN2CCwhgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=JTuiPL34; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="JTuiPL34"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1t01R0-00Cycu-CN; Sun, 13 Oct 2024 18:27:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=L1Tce96RUTs2pMiFj61EXXUMJFuuEoy26u+9hdzmS0A=; b=JTuiPL34z2zWnLWD4vcIWJ9nlp
+	sz8V25aXSC1omfOy4Glv1XkSH+XXuNoZwav8Mfqd+6fkuZG6xilSOsUekQcEnMftoXPszNDGh3HgN
+	J5+nthL4MM7ZvN1S5HA4PMnBSf1x7jcXiHG9uz0fOST33dwaOlPDn+6G3Mb8SNry27aal+hVHjuxM
+	6wcKnHuU2BhxIb4KDr70wsXP0cJ9k6UNlRhMJwT6zo2UrjOu8HDGt2nEsO8wCl20FvONkyvLN6c3A
+	y7vm14K2h2cyzVoWMix99IgQUYYZpr47G6RClICiVoefNf/usZL8kFYlAMAbz4bJfYdwIlbzj/X3v
+	ccqJmR7Q==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1t01Qz-0007ii-PK; Sun, 13 Oct 2024 18:27:10 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1t01Qg-00GV5b-3f; Sun, 13 Oct 2024 18:26:50 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Sun, 13 Oct 2024 18:26:39 +0200
+Subject: [PATCH bpf v2 1/4] bpf, sockmap: SK_DROP on attempted redirects of
+ unsupported af_vsock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7bbd48c8-7fa6-4d41-9560-3de0a2394c55@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241013-vsock-fixes-for-redir-v2-1-d6577bbfe742@rbox.co>
+References: <20241013-vsock-fixes-for-redir-v2-0-d6577bbfe742@rbox.co>
+In-Reply-To: <20241013-vsock-fixes-for-redir-v2-0-d6577bbfe742@rbox.co>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobby.eshleman@bytedance.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Mon, Aug 19, 2024 at 08:21:03AM +0200, Krzysztof Kozlowski wrote:
-> On 18/08/2024 23:50, Jan Petrous (OSS) wrote:
-> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
-> > and S32R45 automotive series SoCs.
-> 
-> Fix your email threading. b4 handle everything correctly, so start using it.
-> 
+Don't mislead the callers of bpf_{sk,msg}_redirect_{map,hash}(): make sure
+to immediately and visibly fail the forwarding of unsupported af_vsock
+packets.
 
-Done. V3 will be sent by b4/msmtp.
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ include/net/sock.h  | 5 +++++
+ net/core/sock_map.c | 8 ++++++++
+ 2 files changed, 13 insertions(+)
 
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > ---
-> >  .../bindings/net/nxp,s32cc-dwmac.yaml         | 127 ++++++++++++++++++
-> >  .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
-> >  2 files changed, 128 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/net/nxp,s32cc-dwmac.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/net/nxp,s32cc-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32cc-dwmac.yaml
-> > new file mode 100644
-> > index 000000000000..443ad918a9a5
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/nxp,s32cc-dwmac.yaml
-> 
-> Filename based on compatible, so what does "cc" stand for?
+diff --git a/include/net/sock.h b/include/net/sock.h
+index c58ca8dd561b7312ffc0836585c04d9fe917a124..c87295f3476db23934d4fcbeabc7851c61ad2bc4 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2715,6 +2715,11 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
+ 	return sk->sk_family == AF_UNIX && sk->sk_type == SOCK_STREAM;
+ }
+ 
++static inline bool sk_is_vsock(const struct sock *sk)
++{
++	return sk->sk_family == AF_VSOCK;
++}
++
+ /**
+  * sk_eat_skb - Release a skb if it is no longer needed
+  * @sk: socket to eat this skb from
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 242c91a6e3d3870ec6da6fa095d180a933d1d3d4..07d6aa4e39ef606aab33bd0d95711ecf156596b9 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -647,6 +647,8 @@ BPF_CALL_4(bpf_sk_redirect_map, struct sk_buff *, skb,
+ 	sk = __sock_map_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -675,6 +677,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
+@@ -1249,6 +1253,8 @@ BPF_CALL_4(bpf_sk_redirect_hash, struct sk_buff *, skb,
+ 	sk = __sock_hash_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+ 	return SK_PASS;
+@@ -1277,6 +1283,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
+ 		return SK_DROP;
+ 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
+ 		return SK_DROP;
++	if (sk_is_vsock(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
 
-Ok, removed 'cc'.
+-- 
+2.46.2
 
-> 
-> > @@ -0,0 +1,127 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +# Copyright 2021-2024 NXP
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/nxp,s32cc-dwmac.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
-> > +
-> > +maintainers:
-> > +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > +
-> > +description: |
-> 
-> Do not need '|' unless you need to preserve formatting.
-
-Removed.
-
-> 
-> > +  This device is a platform glue layer for stmmac.
-> 
-> Drop description of driver and instead describe the hardware.
-
-Changed in v3.
-
-> 
-> > +  Please see snps,dwmac.yaml for the other unchanged properties.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - nxp,s32g2-dwmac
-> > +      - nxp,s32g3-dwmac
-> > +      - nxp,s32r45-dwmac
-> > +
-> > +  reg:
-> > +    items:
-> > +      - description: Main GMAC registers
-> > +      - description: GMAC PHY mode control register
-> > +
-> > +  interrupts:
-> > +    description: Common GMAC interrupt
-> 
-> No, instead maxItems: 1
-> 
-
-Done.
-
-> > +
-> > +  interrupt-names:
-> > +    const: macirq
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: Main GMAC clock
-> > +      - description: Transmit clock
-> > +      - description: Receive clock
-> > +      - description: PTP reference clock
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: stmmaceth
-> > +      - const: tx
-> > +      - const: rx
-> > +      - const: ptp_ref
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - interrupt-names
-> > +  - clocks
-> > +  - clock-names
-> > +  - phy-mode
-> 
-> Drop, snps,dwmac requires this.
-
-Compressed to 'clocks' and 'clock-names'.
-
-> 
-> > +
-> > +allOf:
-> > +  - $ref: snps,dwmac.yaml#
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    #include <dt-bindings/phy/phy.h>
-> > +    bus {
-> > +      #address-cells = <2>;
-> > +      #size-cells = <2>;
-> > +
-> > +      ethernet@4033c000 {
-> > +        compatible = "nxp,s32cc-dwmac";
-> > +        reg = <0x0 0x4033c000 0x0 0x2000>, /* gmac IP */
-> > +              <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
-> > +        interrupt-parent = <&gic>;
-> > +        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > +        interrupt-names = "macirq";
-> > +        snps,mtl-rx-config = <&mtl_rx_setup>;
-> > +        snps,mtl-tx-config = <&mtl_tx_setup>;
-> > +        clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
-> > +        clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-> > +        phy-mode = "rgmii-id";
-> > +        phy-handle = <&phy0>;
-> > +
-> > +        mtl_rx_setup: rx-queues-config {
-> > +          snps,rx-queues-to-use = <5>;
-> > +
-> > +          queue0 {
-> > +          };
-> > +          queue1 {
-> > +          };
-> 
-> 
-> Why listing empty nodes?
-
-Removed in v3.
-
-> 
-> Best regards,
-> Krzysztof
-> 
-
-Thanks.
-/Jan
