@@ -1,107 +1,127 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx14lb.world4you.com (mx14lb.world4you.com [81.19.149.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7DB14B956
-	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 20:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D40148314
+	for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 21:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728852815; cv=none; b=I6BLxZJ1jiRPhkWyORKhpVCCr2wQAwdF9thg1D/Q3KUcPm4syfWmE9yj7Gw59//vGlFKwFAjwfwDE/934PXEl7bD52Yp24kGYelW6F0a+0RLvEcAJ+U2VQylfZB4E4yZ5/urv2VMu70MNxA0FJWZrKpOOznmssJPgngktJzVMCE=
+	t=1728853405; cv=none; b=Qut4UsHMJEFJRud7UjujzYG4nZ2Qs9AFn4ymUSfj6R/92k3aItTiNKsubqbqU8JUNZOUOrAKEeMpQ3mpiAG3C5YfnlcPQuZApjckbRiSyqroX3zr5/owxRsjLxN94pOyXJ8PZNdfoqBiUzM9qQdgBgMfafvwH4wGBAhbgTY4Zkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728852815; c=relaxed/simple;
-	bh=2IcaxRsCZu1Weo0t3+AVfcXRdGrBjE6IgF1kYYjiVfU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EdNhHZCBgheMvRTJDSUFCKbaWH1qlDLT98vS9M08nkOKcfr3m4hY4HCZ0hrRhx00JvaCjBs/ljuXAUl5s39dL1jU2R1viLCxKekIlhtqpY5qgCdPk8QFS07FQ2cMyxuNBiRqUgqPNCkmxSo4p1f2McFcNS9PNlsUMTbKgi+bvn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=siip4Rmw; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1728853405; c=relaxed/simple;
+	bh=9CQpwdgXVc21I8EUQ4DUE2KYJ69fMnFI7RjT7KcNiM0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nhoiwB5Q6h/PaB/i+6kVWv5RBK/V8yHoUbO174RyjoaZmAXKeKDX/2McEglOkngZrIOsPlwlQzqA7frnz/5jC4up/TLgwzgljvdGvP6clRUe2u0FoRFa1c1oPrm4/UV4B182OibZNSjeHDVGcb3NWormurC/Cwjw88Aw+Jf6HvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=BR/SWXqc; arc=none smtp.client-ip=81.19.149.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="siip4Rmw"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e67d505ceso123860b3a.1
-        for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 13:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1728852813; x=1729457613; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tW/oVLxMGVp293pF30Jw4BkfUNSmxaGcYjy7Hqe9zSo=;
-        b=siip4RmwMjZU+1aLa2isf62iO/PUxAwUMitbswzRhZl2Wm7XYbwBvEh6ghMlcy6HX0
-         p+CHV9a4l3LBJGOOL0WnlPho23AAtQnHgS2Egs/1i4dhSOLSR4lTYtnxZdh/f1gACW0C
-         ted3/v4g17PBHA23o1DTxlg6pv4wVCpE4LyBiV1Z6YxKet6/UjfejzmomLunSs/tu24d
-         mnPJXlbSM7njM2Kc2kACuGTkhqiXK2bkGXZq3XtcBho3son8FAGEAL1Qa595sI2FcFBw
-         xwRDsZlaG63VF2oSnxMzM9arpzlFZzSf0qVTcb7f20qTdWlqtdburfnUf8zM2iXINQ4Q
-         Ieew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728852813; x=1729457613;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tW/oVLxMGVp293pF30Jw4BkfUNSmxaGcYjy7Hqe9zSo=;
-        b=wh+O4rP+6WcCeIhSbdK2mLmhwN5I8kdPDMTD6IMJ5MuQivbB+8ehX5Q6nKPAKASpaF
-         Q6n+V482zVnBBExzoNZsBZFDNVxdyJSiCFdZ9ID8iz9P8CAUB5XzgJjHZXT0zTv3G8m4
-         JAXazAxUlEXPNrLIqnx3ndJRqyTIP+bXgb7rMALUGJiOIq2/GLkaryPVNE2vKaFm4WGR
-         82a5bEeMUSTXLJ0XLwq2o0rsdLKhXx+8UcwYmzUcJtJzOhkuvihhuVkqxnpzkVYBfmxR
-         bvksn08twBF6kaX+gXXzKSwb+PLMl0JmDmbsRccPVW5ffOeOaghjknFNgZSKnx3TpCkP
-         HtxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6yUGF48YyUL8YWnstuQxuGZ83MsZOiHPfo671VH4HuvKLAOJQfQWx3OMjEVyv3PB1Tzh4/5c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxMV7y8JljwvFt9NuuGTcdfLeH38CtgV5+Aib0DjjQJhxgEAD3
-	XFu2I+i5BoMxBeSqoxsC8PIJ5tUjiqSnRMi9qaCNVZbCsRDBeE6X0nw/5pPBdKI=
-X-Google-Smtp-Source: AGHT+IGeHW/T1utnJaL2THMthWNT/SlEE9KTreIWsQr33pvF5db22afBNXHDL1azWfd6tDGW/vbLCA==
-X-Received: by 2002:a05:6a00:1391:b0:71e:ba5:820e with SMTP id d2e1a72fcca58-71e4c1dcd95mr9404250b3a.27.1728852812746;
-        Sun, 13 Oct 2024 13:53:32 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e48bcfe81sm3815287b3a.66.2024.10.13.13.53.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 13:53:32 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: linux-nfs@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc: kernel-janitors@vger.kernel.org, vbabka@suse.cz, paulmck@kernel.org, 
- Tom Talpey <tom@talpey.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Olga Kornievskaia <okorniev@redhat.com>, Neil Brown <neilb@suse.de>, 
- linux-can@vger.kernel.org, bridge@lists.linux.dev, 
- b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org, 
- wireguard@lists.zx2c4.com, netdev@vger.kernel.org, ecryptfs@vger.kernel.org, 
- linux-block@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
-References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
-Subject: Re: (subset) [PATCH 00/17] replace call_rcu by kfree_rcu for
- simple kmem_cache_free callback
-Message-Id: <172885281086.338120.2063739137198887833.b4-ty@kernel.dk>
-Date: Sun, 13 Oct 2024 14:53:30 -0600
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="BR/SWXqc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=19LHjx0sTM0kv9XanzWE8FODtpIz64O5KVgtFRfu2pg=; b=BR/SWXqcnkjCCWdpyB32ql0pPa
+	gJ1TxElsH/THb7IGM+1fNhCeAaAiPp4UQIg2ZgtAg7om6weUiWSn5mUTgW3wL5plBUIfKLR7edi2z
+	gcHYPN2V4D8Wmc43/P2cEwcXC+Udo+dMs5ZGCarxE0uLzkE9RK5XhdPfVGbFrDze/ptE=;
+Received: from [88.117.56.173] (helo=hornet.engleder.at)
+	by mx14lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1t0594-000000008Un-3qzu;
+	Sun, 13 Oct 2024 22:24:55 +0200
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>
+Subject: [PATCH RFC net-next] net: phy: micrel: Improve loopback support if autoneg is enabled
+Date: Sun, 13 Oct 2024 22:24:30 +0200
+Message-Id: <20241013202430.93851-1-gerhard@engleder-embedded.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
+X-ACL-Warn: X-W4Y-Internal
 
+Prior to commit 6ff3cddc365b it was possible to enable loopback with
+a defined speed. First a fixed speed was set with ETHTOOL_SLINKSETTINGS
+and afterwards the loopback was enabled. This worked, because
+genphy_loopback() uses the current speed and duplex. I used this
+mechanism to test tsnep in loopback with different speeds. A KSZ9031 PHY
+is used.
 
-On Sun, 13 Oct 2024 22:16:47 +0200, Julia Lawall wrote:
-> Since SLOB was removed and since
-> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-> it is not necessary to use call_rcu when the callback only performs
-> kmem_cache_free. Use kfree_rcu() directly.
-> 
-> The changes were done using the following Coccinelle semantic patch.
-> This semantic patch is designed to ignore cases where the callback
-> function is used in another way.
-> 
-> [...]
+With commit 6ff3cddc365b for 1000 Mbit/s auto negotiation was enabled.
+Setting a fixed speed with ETHTOOL_SLINKSETTINGS does not work anymore
+for 1000 Mbit/s as speed and duplex of the PHY now depend on the result
+of the auto negotiation. As a result, genphy_loopback() also depends on
+the result of the auto negotiation. But enabling loopback shall be
+independent of any auto negotiation process.
 
-Applied, thanks!
+Make loopback of KSZ9031 PHY work even if current speed and/or duplex of
+PHY are unkown because of autoneg.
 
-[09/17] block: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
-        commit: 7a9b197adbafa9d6d1a79a0633607b78b1adef82
+Fixes: 6ff3cddc365b ("net: phylib: do not disable autoneg for fixed speeds >= 1G")
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+---
+ drivers/net/phy/micrel.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Best regards,
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 65b0a3115e14..3cbe40265190 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1028,6 +1028,32 @@ static int ksz9021_config_init(struct phy_device *phydev)
+ #define MII_KSZ9031RN_EDPD		0x23
+ #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
+ 
++static int ksz9031_set_loopback(struct phy_device *phydev, bool enable)
++{
++	if (enable) {
++		u16 ctl = BMCR_LOOPBACK;
++		int ret, val;
++
++		if ((phydev->speed != SPEED_10) && (phydev->speed != SPEED_100))
++			phydev->speed = SPEED_1000;
++		phydev->duplex = DUPLEX_FULL;
++
++		ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
++
++		phy_modify(phydev, MII_BMCR, ~0, ctl);
++
++		ret = phy_read_poll_timeout(phydev, MII_BMSR, val,
++					    val & BMSR_LSTATUS, 5000, 500000,
++					    true);
++		if (ret)
++			return ret;
++	} else {
++		return genphy_loopback(phydev, enable);
++	}
++
++	return 0;
++}
++
+ static int ksz9031_of_load_skew_values(struct phy_device *phydev,
+ 				       const struct device_node *of_node,
+ 				       u16 reg, size_t field_sz,
+@@ -5478,6 +5504,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.resume		= kszphy_resume,
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
++	.set_loopback	= ksz9031_set_loopback,
+ }, {
+ 	.phy_id		= PHY_ID_LAN8814,
+ 	.phy_id_mask	= MICREL_PHY_ID_MASK,
 -- 
-Jens Axboe
-
-
+2.39.2
 
