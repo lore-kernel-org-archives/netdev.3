@@ -1,329 +1,175 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B3F156F2B;
-	Mon, 14 Oct 2024 08:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833D614F126;
+	Mon, 14 Oct 2024 08:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894173; cv=none; b=eojR8Puax6OX/0/lT23Ei+bbZIzFSbDTHPbeMFKyM9fte/T10ygw+dpDJhkr5stW1p/hhEp5xE+bbIcZ2XOc7PAvImh9/hubGNZsx4TPwD1DcqW+GtCzzMGMQZ+WB9MOjz3nBscqVi1ZBfmolG6pTBEVpkj0+xKg+dTMzFunvnI=
+	t=1728894268; cv=none; b=HZjXleWbN/gFO8Ah5r9NBibzJeE4C2CXL3zKr+DGz/N+i0ccOYYZxwoJKw4mBd3BFIVO63P5nUduTX35ciB95JEQyy+D55FJRden3Lis/cmEjKKWC1DfjXrBZL9C+aBhm+wXUx/UAZiw4sjeOQVb6nKci8CTSVbSBSfNDEmYUEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728894173; c=relaxed/simple;
-	bh=RE0lPJ142pYDDUVy84Jj7l/XWzvXfsM2zlFIVk2tmzg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XU+WmtUQo/IsLcvCREngb+HcGbSeHw/NldYlQbPCBdh20H3pW25zkn+zWhGUJ73jJZ1fMehZGns+vAaq61OxMm7NxnqyloEk6ghLkyh/fXmQAHxiox32m3WVbMBx6qFamI0B3lUldY98ScRatBqAFz1WWhxhsdvRll3yLpystT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yLDIGvZ5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OV92svpV; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1728894268; c=relaxed/simple;
+	bh=NgDDNlBQFOcpJj65lJ2aMUNfcyjB71Szgakm/vBxSnM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I5wMyncCILo6/pzpLYllUnBHEjFineQw85a/MVMUJy0Fa44DPwPfOkMrDv4VXE4JN2k93BEsjuR/1RqrB4OzGltXulXoe94gDiJCsLeUFNo1/kqVymUHXYX6d4k4qEFMDp3l4zPdqhH6PBuZYD/vHdO0+QgHaUdd48Bcmw0z47I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npCCVLlv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yLDIGvZ5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OV92svpV"
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728894169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oqNSgO0ccYOB1F7gXkVsubKRt9n1kvpOSCotor1CtWA=;
-	b=yLDIGvZ5CJjGXi8nakS+qfgGRt82lzRE0oepRgvsJ4wIYX2cLxtG7WE6zcfTEuDsLiEzmd
-	sXB5kHFEc0/Royjv+LQn+3iLv/jBW0v6qgySfxZlagjDuh0uu6/TCoaVBa/yTJlVLarvxp
-	GBVxJ5GriU/b+qUOyTjAyMrrD35HzQUWeZI6qob5DScvRreC3OoAJWt0K9K/fWYx1VT72h
-	hkaMpY91C3leUVUyd1/EjrAa/se/X/vjX59qt5VT9MuUGP3crW4onoXNegNNYpcNHG0hzp
-	pWLmBvTs0DChbjVQsHmIEL1xaSeRIFebrEJmAFbzJ+u/zuoLqgLI2S2WH1eiOg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728894169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oqNSgO0ccYOB1F7gXkVsubKRt9n1kvpOSCotor1CtWA=;
-	b=OV92svpV47OwXvi+yta09kQeQB70QgemAJQpdfjmRusSbLu8F3zZLk8IBeacXYJatojiIh
-	rVl0fx7/ikXd/RCA==
-Date: Mon, 14 Oct 2024 10:22:29 +0200
-Subject: [PATCH v3 12/16] iopoll/regmap/phy/snd: Fix comment referencing
- outdated timer documentation
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npCCVLlv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C41C4CEC3;
+	Mon, 14 Oct 2024 08:24:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728894267;
+	bh=NgDDNlBQFOcpJj65lJ2aMUNfcyjB71Szgakm/vBxSnM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=npCCVLlvP9kUWTji1IeZVImyV+YKKlcsOXC+7cSHHRwbPQgTTJD48+2032RMeeC7s
+	 sVIW97xqs7Pk5KxqThIinFsY6hBIM4pNo+Wp0BAS5yRBvau+t5h5C6qIfApbt/TQnr
+	 zryhi4R8S7qCfoLvVAEAJBw2aV2XuxYr/foV709Y6mr6I5xAYVmBnEcJRwLfahOEbH
+	 wYkS23Ijq0UpIDZtOLx9ytAk3GnBGuyX9i4QwSu/pqUO+w8eEHYcvW8aecyPcbBD+D
+	 saIekTs+LEUavmbqst3V8G6hmbScdq/8CLvRj8yPK+0leeGHl8F2QoUIAIdUvKOXLu
+	 cBgyOEYRwR8Pg==
+Message-ID: <b968706e-b48c-4eab-ab20-cf09f6ed9a25@kernel.org>
+Date: Mon, 14 Oct 2024 10:24:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+ Keyur Chudgar <keyur@os.amperecomputing.com>,
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>
+References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
+ <20241013-upstream_s32cc_gmac-v3-13-d84b5a67b930@oss.nxp.com>
+ <44745af3-1644-4a71-82b6-a33fb7dc1ff4@kernel.org>
+ <ZwzM4tx3zj8+M/Om@lsv051416.swis.nl-cdc01.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <ZwzM4tx3zj8+M/Om@lsv051416.swis.nl-cdc01.nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-12-dc8b907cb62f@linutronix.de>
-References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
-In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
-To: Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
- Alice Ryhl <aliceryhl@google.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Miguel Ojeda <ojeda@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- netdev@vger.kernel.org, linux-sound@vger.kernel.org
 
-Function descriptions in iopoll.h, regmap.h, phy.h and sound/soc/sof/ops.h
-copied all the same outdated documentation about sleep/delay function
-limitations. In those comments, the generic (and still outdated) timer
-documentation file is referenced.
+On 14/10/2024 09:48, Jan Petrous wrote:
+> On Mon, Oct 14, 2024 at 08:56:58AM +0200, Krzysztof Kozlowski wrote:
+>> On 13/10/2024 23:27, Jan Petrous via B4 Relay wrote:
+>>> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+>>>
+>>> Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+>>> and S32R45 automotive series SoCs.
+>>>
+>>> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>>> ---
+>>>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 97 ++++++++++++++++++++++
+>>>  .../devicetree/bindings/net/snps,dwmac.yaml        |  1 +
+>>>  2 files changed, 98 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+>>> new file mode 100644
+>>> index 000000000000..4c65994cbe8b
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+>>> @@ -0,0 +1,97 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +# Copyright 2021-2024 NXP
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
+>>> +
+>>> +maintainers:
+>>> +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>>> +
+>>> +description:
+>>> +  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - nxp,s32g2-dwmac
+>>
+>> Where are the other compatibles? Commit msg mentions several devices.
+> 
+> Well, I removed other compatibles thinking we can re-use this only one
+> also for other SoCs as, on currect stage, we don't need to do any
+> SoC specific setup.
+> 
+> Is it ok or shall I reinsert them?
 
-As proper function descriptions for used delay and sleep functions are in
-place, simply update the descriptions to reference to them. While at it fix
-missing colon after "Returns" in function description and move return value
-description to the end of the function description.
+Do not use compatibles from other devices for something else. Please
+consult writing-bindings.
 
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-sound@vger.kernel.org
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch> # for phy.h
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
----
-v2: Add cleanup of usage of 'Returns' in function description
----
- include/linux/iopoll.h | 52 +++++++++++++++++++++++++-------------------------
- include/linux/phy.h    |  9 +++++----
- include/linux/regmap.h | 38 ++++++++++++++++++------------------
- sound/soc/sof/ops.h    |  8 ++++----
- 4 files changed, 54 insertions(+), 53 deletions(-)
+Yes, bring back all relevant compatibles, use proper fallbacks and
+compatibility when appropriate (hundreds of examples in the kernel).
 
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index 19a7b00baff4..91324c331a4b 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -19,19 +19,19 @@
-  * @op: accessor function (takes @args as its arguments)
-  * @val: Variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  * @sleep_before_read: if it is true, sleep @sleep_us before read.
-  * @args: arguments for @op poll
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-- * case, the last read value at @args is stored in @val. Must not
-- * be called from atomic context if sleep_us or timeout_us are used.
-- *
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @args is stored in @val. Must not
-+ * be called from atomic context if sleep_us or timeout_us are used.
-  */
- #define read_poll_timeout(op, val, cond, sleep_us, timeout_us, \
- 				sleep_before_read, args...) \
-@@ -64,22 +64,22 @@
-  * @op: accessor function (takes @args as its arguments)
-  * @val: Variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-- *            be less than ~10us since udelay is used (see
-- *            Documentation/timers/timers-howto.rst).
-+ * @delay_us: Time to udelay between reads in us (0 tight-loops). Please
-+ *            read udelay() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  * @delay_before_read: if it is true, delay @delay_us before read.
-  * @args: arguments for @op poll
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-- * case, the last read value at @args is stored in @val.
-- *
-  * This macro does not rely on timekeeping.  Hence it is safe to call even when
-  * timekeeping is suspended, at the expense of an underestimation of wall clock
-  * time, which is rather minimal with a non-zero delay_us.
-  *
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @args is stored in @val.
-  */
- #define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
- 					delay_before_read, args...) \
-@@ -119,17 +119,17 @@
-  * @addr: Address to poll
-  * @val: Variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-- * case, the last read value at @addr is stored in @val. Must not
-- * be called from atomic context if sleep_us or timeout_us are used.
-- *
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @addr is stored in @val. Must not
-+ * be called from atomic context if sleep_us or timeout_us are used.
-  */
- #define readx_poll_timeout(op, addr, val, cond, sleep_us, timeout_us)	\
- 	read_poll_timeout(op, val, cond, sleep_us, timeout_us, false, addr)
-@@ -140,16 +140,16 @@
-  * @addr: Address to poll
-  * @val: Variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-- *            be less than ~10us since udelay is used (see
-- *            Documentation/timers/timers-howto.rst).
-+ * @delay_us: Time to udelay between reads in us (0 tight-loops). Please
-+ *            read udelay() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-- * case, the last read value at @addr is stored in @val.
-- *
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @addr is stored in @val.
-  */
- #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
- 	read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index a98bc91a0cde..504766d4b2d5 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1378,12 +1378,13 @@ int phy_read_mmd(struct phy_device *phydev, int devad, u32 regnum);
-  * @regnum: The register on the MMD to read
-  * @val: Variable to read the register into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  * @sleep_before_read: if it is true, sleep @sleep_us before read.
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-  * case, the last read value at @args is stored in @val. Must not
-  * be called from atomic context if sleep_us or timeout_us are used.
-  */
-diff --git a/include/linux/regmap.h b/include/linux/regmap.h
-index f9ccad32fc5c..75f162b60ba1 100644
---- a/include/linux/regmap.h
-+++ b/include/linux/regmap.h
-@@ -106,17 +106,17 @@ struct reg_sequence {
-  * @addr: Address to poll
-  * @val: Unsigned integer variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout or the regmap_read
-+ * This is modelled after the readx_poll_timeout macros in linux/iopoll.h.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout or the regmap_read
-  * error return value in case of a error read. In the two former cases,
-  * the last read value at @addr is stored in @val. Must not be called
-  * from atomic context if sleep_us or timeout_us are used.
-- *
-- * This is modelled after the readx_poll_timeout macros in linux/iopoll.h.
-  */
- #define regmap_read_poll_timeout(map, addr, val, cond, sleep_us, timeout_us) \
- ({ \
-@@ -133,20 +133,20 @@ struct reg_sequence {
-  * @addr: Address to poll
-  * @val: Unsigned integer variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @delay_us: Time to udelay between reads in us (0 tight-loops).
-- *            Should be less than ~10us since udelay is used
-- *            (see Documentation/timers/timers-howto.rst).
-+ * @delay_us: Time to udelay between reads in us (0 tight-loops). Please
-+ *            read udelay() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout or the regmap_read
-- * error return value in case of a error read. In the two former cases,
-- * the last read value at @addr is stored in @val.
-- *
-  * This is modelled after the readx_poll_timeout_atomic macros in linux/iopoll.h.
-  *
-  * Note: In general regmap cannot be used in atomic context. If you want to use
-  * this macro then first setup your regmap for atomic use (flat or no cache
-  * and MMIO regmap).
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout or the regmap_read
-+ * error return value in case of a error read. In the two former cases,
-+ * the last read value at @addr is stored in @val.
-  */
- #define regmap_read_poll_timeout_atomic(map, addr, val, cond, delay_us, timeout_us) \
- ({ \
-@@ -177,17 +177,17 @@ struct reg_sequence {
-  * @field: Regmap field to read from
-  * @val: Unsigned integer variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout or the regmap_field_read
-+ * This is modelled after the readx_poll_timeout macros in linux/iopoll.h.
-+ *
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout or the regmap_field_read
-  * error return value in case of a error read. In the two former cases,
-  * the last read value at @addr is stored in @val. Must not be called
-  * from atomic context if sleep_us or timeout_us are used.
-- *
-- * This is modelled after the readx_poll_timeout macros in linux/iopoll.h.
-  */
- #define regmap_field_read_poll_timeout(field, val, cond, sleep_us, timeout_us) \
- ({ \
-diff --git a/sound/soc/sof/ops.h b/sound/soc/sof/ops.h
-index 2584621c3b2d..d73644e85b6e 100644
---- a/sound/soc/sof/ops.h
-+++ b/sound/soc/sof/ops.h
-@@ -597,12 +597,12 @@ snd_sof_is_chain_dma_supported(struct snd_sof_dev *sdev, u32 dai_type)
-  * @addr: Address to poll
-  * @val: Variable to read the value into
-  * @cond: Break condition (usually involving @val)
-- * @sleep_us: Maximum time to sleep between reads in us (0
-- *            tight-loops).  Should be less than ~20ms since usleep_range
-- *            is used (see Documentation/timers/timers-howto.rst).
-+ * @sleep_us: Maximum time to sleep between reads in us (0 tight-loops). Please
-+ *            read usleep_range() function description for details and
-+ *            limitations.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  *
-- * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-  * case, the last read value at @addr is stored in @val. Must not
-  * be called from atomic context if sleep_us or timeout_us are used.
-  *
 
--- 
-2.39.5
+
+Best regards,
+Krzysztof
 
