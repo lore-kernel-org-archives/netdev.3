@@ -1,163 +1,113 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345EB1D0F4D
-	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 20:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7193F1D0942
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 20:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728937286; cv=none; b=KMMMHK8nFTY1w3vPB1+WrJpIrSTd135PovKgrsslz6K/N9fFqAUqF+9Y8XORhO8L78jt5xpANzF3owd+OCgzNIOxHMJXugreManR42H5qSBrZDvfs0ncAK20/M3oV4agJ8DTpt7x8C9QfMw7SM4sUOVukNzhaEvvVAonZxzNgic=
+	t=1728937296; cv=none; b=gUKUP9S7ZlmnrvISmlHTlEASYNpsGRhH7GZubebyHOMx60WeeaxzUYCPktMe2t92FIRzx7Qz7K4Kq0ZK2H07XrT1Kwy+EDBG4Dx7kyJut14QA3nk/rYk69VJ6GvjIif4USziEtTlFSvs+PMCs7pW88T+8GeiDv/4jpiFSNZnj6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728937286; c=relaxed/simple;
-	bh=bDPRxWLE2erjYAE59syMdkJp8m4krVITgmEnI8ZwRHQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rH9Qz4unxkWv+PMAFRDHrr0RLWTlS8uB5gaEZviAkhPj0nc7xZRubVVmFrY1QaIHQgOFrHytyJx/1mDrqi/dCJC2JEVk2bfe64lrGTV7IE1bW36tSbYksmTLfnUl8zHE94ccdR0rLHBf4YT+Q7Kyfsfxsn0G4mgeu8qU0B/sKwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yk9abx3I; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com
+	s=arc-20240116; t=1728937296; c=relaxed/simple;
+	bh=REtm5n7+1DZ4k0KtNm9WCi5peXxPk/FZEMNthSvKfTQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O1cw/ZwXaqjmaP51PDfGrA4pIU7o2TIzXz8fVPl4IODeStOcuuToyBDqiiFIOVDmN11YwZ9wa8NDKFJHFe9AZR0151p9l2lMVuuUlu4OuaImZnr9E+HMsXMyQ3GpT5i2bjnzYQrlbxwrnw+5PC8ubhBEelSrAHnjFg0GaCEug9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=DrFOamXT; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yk9abx3I"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-71e46373148so2797033b3a.2
-        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 13:21:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="DrFOamXT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728937284; x=1729542084; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=coy9TRspwLfh094EnJKxY/+K0whveUSWK78Q8cLFZKg=;
-        b=yk9abx3Iftl3gfD2un6b2OIUHdn7RKqjnOx6gQsI3Kow8qzPdVo2RwzbW63dGuGAuY
-         66xxZZEN9h1DKaFOKz9aUOgAk/baGEnFFq1zMBrMLDwmzAK+xBzgxMuoRGWNTsI4R57y
-         X+5jBkfX99/CKpn575twaIiXTd1rPyRgpmH5MLUbEnWjtKEyBnTkRRaVGzkjgZF1dS5A
-         KAaEnS4Hc8be8kCGv2paPurmiLHS/+5TVEBI+II+WFg+1bUrRqxsCXBIeu/nFOgGNdMZ
-         MxBcjzGcyEPn7+qfO84xB9vYnDaPcoxfPc8vsdDqT4tO7OofntZvlBgELUUdskH2K27Y
-         /ZnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728937284; x=1729542084;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=coy9TRspwLfh094EnJKxY/+K0whveUSWK78Q8cLFZKg=;
-        b=nRw4Ss1pHGjb4edbMHQbul6nA/b4fA0FIVT3A7wh6d9nU2J3kit3UaKdKM9WHzgYXr
-         2+mFidjcJ/V6UTRrR4yeOJsJ4n+y6dnzYqqqvupRJNKy59GS4VJDTVl9cg5MNgE7ppnY
-         PWdoB1nhNdGItV6FP9c/MIVIZoF0nsv9C3OMDZvUMh08xN1t4gZXuSUOMIVMXwoS8S5Q
-         7Oi7fuj2Djl/BEnP+D/pV9b2Fp77RG78cpxHCXAr3aTUAGqElh668Wi++TwLR+I0gTel
-         TYQQEDDhQiZYT2q0vCDdas1zHCogOtwPZZA7Ho1WQzHlR0Y3nKIxtB8s/unALMFb6Gu/
-         Jj2w==
-X-Gm-Message-State: AOJu0YxeynZJxXMq0Z7PusI6mnzc1TSHYzZostZgrOBejQ7NPRNQt48A
-	g5d13t116LJUgYGDQnr9DOvjY7GwB4izM336MteQTY9cRMVquoZArNf8iDA2hV4tF+/oGqGBSKT
-	lP645eauFAW+WaVvHFA1SOr4+lcc4JELOmbofEX4lVAQiqjiX3HXhOQcKtB1Kzt8x1oEBMYpX0v
-	Yl7xAPoF8zeZiTd7dcxo05VlDpOxHQTKd2oB6bCSCH+NYzHzuHv5Qiz8rCy1LgwXBd
-X-Google-Smtp-Source: AGHT+IFEmb1WH4+IYn79jgpm81jCi0HfSKU9hOcB6Zeeed+mR+F6nF75JIgjqHas5L7mw5VC0icdWMIH0JB5pzC8nkM=
-X-Received: from pkaligineedi.sea.corp.google.com ([2620:15c:11c:202:1ab8:7f2d:7123:f4fc])
- (user=pkaligineedi job=sendgmr) by 2002:a05:6a00:870b:b0:71e:4ec7:aed8 with
- SMTP id d2e1a72fcca58-71e4ec7afb8mr13213b3a.6.1728937282856; Mon, 14 Oct 2024
- 13:21:22 -0700 (PDT)
-Date: Mon, 14 Oct 2024 13:21:08 -0700
-In-Reply-To: <20241014202108.1051963-1-pkaligineedi@google.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1728937295; x=1760473295;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3bDxMx9hDUc5wn3aOL+B3lBxn+/ttl89v2cRT5uPzNg=;
+  b=DrFOamXT/gdxsokQvTnhHHVhnY+gVHnRajswf/2/g5G/1eidK3zvzWZ9
+   0ALQ3GVzll2/0Zb62VuFWJViyWdz/VnEDD4Nb9egl8p/JrQyzmCUDesxj
+   XwHodYnI8kCB9+3o6CoKSqQWDYstdU+W7O4TL4N78LDEwZE1g/oEmobkJ
+   U=;
+X-IronPort-AV: E=Sophos;i="6.11,203,1725321600"; 
+   d="scan'208";a="138009099"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 20:21:34 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:7512]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.107:2525] with esmtp (Farcaster)
+ id cd792d99-86c7-47b8-a056-b7605a942c32; Mon, 14 Oct 2024 20:21:34 +0000 (UTC)
+X-Farcaster-Flow-ID: cd792d99-86c7-47b8-a056-b7605a942c32
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 14 Oct 2024 20:21:33 +0000
+Received: from 6c7e67c6786f.amazon.com (10.106.101.44) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Mon, 14 Oct 2024 20:21:31 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v2 net-next 09/11] dcb: Use rtnl_register_many().
+Date: Mon, 14 Oct 2024 13:18:26 -0700
+Message-ID: <20241014201828.91221-10-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241014201828.91221-1-kuniyu@amazon.com>
+References: <20241014201828.91221-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241014202108.1051963-1-pkaligineedi@google.com>
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241014202108.1051963-4-pkaligineedi@google.com>
-Subject: [PATCH net-next v3 3/3] gve: add support for basic queue stats
-From: Praveen Kaligineedi <pkaligineedi@google.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, willemb@google.com, jeroendb@google.com, 
-	shailend@google.com, hramamurthy@google.com, ziweixiao@google.com, 
-	shannon.nelson@amd.com, jacob.e.keller@intel.com, 
-	Praveen Kaligineedi <pkaligineedi@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWB002.ant.amazon.com (10.13.139.181) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Harshitha Ramamurthy <hramamurthy@google.com>
+We will remove rtnl_register() in favour of rtnl_register_many().
 
-Implement netdev_stats_ops to export basic per-queue stats.
+When it succeeds, rtnl_register_many() guarantees all rtnetlink types
+in the passed array are supported, and there is no chance that a part
+of message types is not supported.
 
-With page pool support for DQO added in the previous patches,
-rx-alloc-fail captures failures in page pool allocations as
-well since the rx_buf_alloc_fail stat tracked in the driver
-is incremented when gve_alloc_buffer returns error.
+Let's use rtnl_register_many() instead.
 
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 ---
-
-Changes in v3:
--Add this patch to the series for per queue stats (Jakub Kicinski)
-
+v2:
+  * Add __initconst
+  * Use C99 initialisation
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 49 ++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ net/dcb/dcbnl.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 294ddcd0bf6c..e171ca248f9a 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2561,6 +2561,54 @@ static const struct netdev_queue_mgmt_ops gve_queue_mgmt_ops = {
- 	.ndo_queue_stop		=	gve_rx_queue_stop,
+diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+index 2e6b8c8fd2de..03eb1d941fca 100644
+--- a/net/dcb/dcbnl.c
++++ b/net/dcb/dcbnl.c
+@@ -2408,6 +2408,11 @@ static struct notifier_block dcbnl_nb __read_mostly = {
+ 	.notifier_call  = dcbnl_netdevice_event,
  };
  
-+static void gve_get_rx_queue_stats(struct net_device *dev, int idx,
-+				   struct netdev_queue_stats_rx *rx_stats)
-+{
-+	struct gve_priv *priv = netdev_priv(dev);
-+	struct gve_rx_ring *rx = &priv->rx[idx];
-+	unsigned int start;
-+
-+	do {
-+		start = u64_stats_fetch_begin(&rx->statss);
-+		rx_stats->packets = rx->rpackets;
-+		rx_stats->bytes = rx->rbytes;
-+		rx_stats->alloc_fail = rx->rx_skb_alloc_fail +
-+				       rx->rx_buf_alloc_fail;
-+	} while (u64_stats_fetch_retry(&rx->statss, start));
-+}
-+
-+static void gve_get_tx_queue_stats(struct net_device *dev, int idx,
-+				   struct netdev_queue_stats_tx *tx_stats)
-+{
-+	struct gve_priv *priv = netdev_priv(dev);
-+	struct gve_tx_ring *tx = &priv->tx[idx];
-+	unsigned int start;
-+
-+	do {
-+		start = u64_stats_fetch_begin(&tx->statss);
-+		tx_stats->packets = tx->pkt_done;
-+		tx_stats->bytes = tx->bytes_done;
-+	} while (u64_stats_fetch_retry(&tx->statss, start));
-+}
-+
-+static void gve_get_base_stats(struct net_device *dev,
-+			       struct netdev_queue_stats_rx *rx,
-+			       struct netdev_queue_stats_tx *tx)
-+{
-+	rx->packets = 0;
-+	rx->bytes = 0;
-+	rx->alloc_fail = 0;
-+
-+	tx->packets = 0;
-+	tx->bytes = 0;
-+}
-+
-+static const struct netdev_stat_ops gve_stat_ops = {
-+	.get_queue_stats_rx	= gve_get_rx_queue_stats,
-+	.get_queue_stats_tx	= gve_get_tx_queue_stats,
-+	.get_base_stats		= gve_get_base_stats,
++static const struct rtnl_msg_handler dcbnl_rtnl_msg_handlers[] __initconst = {
++	{.msgtype = RTM_GETDCB, .doit = dcb_doit},
++	{.msgtype = RTM_SETDCB, .doit = dcb_doit},
 +};
 +
- static int gve_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ static int __init dcbnl_init(void)
  {
- 	int max_tx_queues, max_rx_queues;
-@@ -2616,6 +2664,7 @@ static int gve_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	dev->ethtool_ops = &gve_ethtool_ops;
- 	dev->netdev_ops = &gve_netdev_ops;
- 	dev->queue_mgmt_ops = &gve_queue_mgmt_ops;
-+	dev->stat_ops = &gve_stat_ops;
+ 	int err;
+@@ -2416,8 +2421,7 @@ static int __init dcbnl_init(void)
+ 	if (err)
+ 		return err;
  
- 	/* Set default and supported features.
- 	 *
+-	rtnl_register(PF_UNSPEC, RTM_GETDCB, dcb_doit, NULL, 0);
+-	rtnl_register(PF_UNSPEC, RTM_SETDCB, dcb_doit, NULL, 0);
++	rtnl_register_many(dcbnl_rtnl_msg_handlers);
+ 
+ 	return 0;
+ }
 -- 
-2.47.0.rc1.288.g06298d1525-goog
+2.39.5 (Apple Git-154)
 
