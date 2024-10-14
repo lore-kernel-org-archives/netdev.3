@@ -1,129 +1,121 @@
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from mx09lb.world4you.com (mx09lb.world4you.com [81.19.149.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24A91A76CC
-	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 19:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A491C3306
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 19:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728932687; cv=none; b=myAl1tbbA8Ckn/LrQkK7uRG2biCUn/K4uY09q6K09NiZSih7O/2Z/sbdEBiAD548b4BL/eu5Ur1r7hcbtV0yslI4G1nZwZ2RGHQG3fo4Jz0RHUXXAVODXIMzlJdRSBCFSlUovwyWZePBsSyK0Qr8A4GSJJ2XijPFIlwG11tYxUg=
+	t=1728933315; cv=none; b=MuSJWEejmB5+tCNDNK8IyJsPh7pkNZO5/zzPK8i0C0OWj4JHVatJ5t+rMyM1pmaVkXKKm3Bv5a9AxGxzoZnR80ivEkXMTlUtLmOPO4IsJcp39M/NHF1p7LeBdikMcfwbnH4DB76TbsMywZKefatLq4KBhcfrFhJdku+07lUPJVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728932687; c=relaxed/simple;
-	bh=S346DqSFl7/gcpomNKwVPze4NJfmyem8qncuPJ+JhEw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=H01pZNTOeRGlpQZHAepmRIKi1LiiIAutqQ8eolOnQwvQzKxcWIpr5kp6qonh6WyO4MRbcOCM8OzElHsn4wuhiTBlzkN1EUNB5S6EeeU4nekGycZl+DjhsVgrGqVp6j3pNDC2DpRUyAKjvaCYk9Ajof/48y2hvMzWUBMbc0sVtoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-220-pDP3ThQGNACk57nwVo0TMw-1; Mon, 14 Oct 2024 20:04:35 +0100
-X-MC-Unique: pDP3ThQGNACk57nwVo0TMw-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 14 Oct
- 2024 20:04:34 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 14 Oct 2024 20:04:34 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Jacob Keller' <jacob.e.keller@intel.com>, Simon Horman
-	<horms@kernel.org>, Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"pawel.chmielewski@intel.com" <pawel.chmielewski@intel.com>,
-	"sridhar.samudrala@intel.com" <sridhar.samudrala@intel.com>,
-	"pio.raczynski@gmail.com" <pio.raczynski@gmail.com>,
-	"konrad.knitter@intel.com" <konrad.knitter@intel.com>,
-	"marcin.szycik@intel.com" <marcin.szycik@intel.com>,
-	"wojciech.drewek@intel.com" <wojciech.drewek@intel.com>,
-	"nex.sw.ncis.nat.hpm.dev@intel.com" <nex.sw.ncis.nat.hpm.dev@intel.com>,
-	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>
-Subject: RE: [iwl-next v4 3/8] ice: get rid of num_lan_msix field
-Thread-Topic: [iwl-next v4 3/8] ice: get rid of num_lan_msix field
-Thread-Index: AQHbHmoCqcXBLFNJnUCdfpROPNqWFbKGmCGQ
-Date: Mon, 14 Oct 2024 19:04:34 +0000
-Message-ID: <3e015d17e53f4cdd813c88c93b966810@AcuMS.aculab.com>
-References: <20240930120402.3468-1-michal.swiatkowski@linux.intel.com>
- <20240930120402.3468-4-michal.swiatkowski@linux.intel.com>
- <20241012151304.GK77519@kernel.org>
- <636e511e-055d-4b7d-8fdb-13e546ff5b90@intel.com>
-In-Reply-To: <636e511e-055d-4b7d-8fdb-13e546ff5b90@intel.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1728933315; c=relaxed/simple;
+	bh=MMvUSRb3hsQCsLjN+p94fgRzpUrEqtu6wMtabPdTwfA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YDodjTqDMLCM7Wg7WMxeEmMuzyAk1EgVK+dXf0/2HkZAsinos2hpATE+V/+bmQmmkKmN2RWU/KuM718s5h8uaV2To174m4QlCah6qMcL+q3b96yPPQAgg935VLI0Xe55iCbsB5o6mUjla+m1BBR7LrOh+7h9QMl7+Ec8PN/NRHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=sXifZNbi; arc=none smtp.client-ip=81.19.149.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="sXifZNbi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=NpiFOxMjDOI1s6M2dDGRxm7ZqqtS7QwC3673jWn+xGM=; b=sXifZNbiIIEqoHWsqFRVPSCyv8
+	IknJQDZ0kiAVLSim9OAv5eR+C1TGMdq9qKwdAyEoGHdjGQ+/dNTgPKJmCdXu3Y0IbOKovIRXzmBdi
+	pdli3BYSg5ZYRtfY27USPpjOXLP4mYTlmNADehpPJ09+6y+ruT4IJpWDQTYa/3WLcwdg=;
+Received: from [88.117.56.173] (helo=[10.0.0.160])
+	by mx09lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1t0Pzk-000000000zA-3djb;
+	Mon, 14 Oct 2024 20:40:40 +0200
+Message-ID: <3c77d9b2-0933-4da5-a12b-1dd7ebcfebad@engleder-embedded.com>
+Date: Mon, 14 Oct 2024 20:40:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next] net: phy: micrel: Improve loopback support
+ if autoneg is enabled
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+References: <20241013202430.93851-1-gerhard@engleder-embedded.com>
+ <63352ee3-f056-4e28-bc10-b6e971e2c775@lunn.ch>
+ <Zw0jHKKt6z4O3D5U@shell.armlinux.org.uk>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <Zw0jHKKt6z4O3D5U@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-RnJvbTogSmFjb2IgS2VsbGVyDQo+IFNlbnQ6IDE0IE9jdG9iZXIgMjAyNCAxOTo1MQ0KPiANCj4g
-T24gMTAvMTIvMjAyNCA4OjEzIEFNLCBTaW1vbiBIb3JtYW4gd3JvdGU6DQo+ID4gKyBEYXZpZCBM
-YWlnaHQNCj4gPg0KPiA+IE9uIE1vbiwgU2VwIDMwLCAyMDI0IGF0IDAyOjAzOjU3UE0gKzAyMDAs
-IE1pY2hhbCBTd2lhdGtvd3NraSB3cm90ZToNCj4gPj4gUmVtb3ZlIHRoZSBmaWVsZCB0byBhbGxv
-dyBoYXZpbmcgbW9yZSBxdWV1ZXMgdGhhbiBNU0ktWCBvbiBWU0kuIEFzDQo+ID4+IGRlZmF1bHQg
-dGhlIG51bWJlciB3aWxsIGJlIHRoZSBzYW1lLCBidXQgaWYgdGhlcmUgd29uJ3QgYmUgbW9yZSBN
-U0ktWA0KPiA+PiBhdmFpbGFibGUgVlNJIGNhbiBydW4gd2l0aCBhdCBsZWFzdCBvbmUgTVNJLVgu
-DQo+ID4+DQo+ID4+IFJldmlld2VkLWJ5OiBXb2pjaWVjaCBEcmV3ZWsgPHdvamNpZWNoLmRyZXdl
-a0BpbnRlbC5jb20+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IE1pY2hhbCBTd2lhdGtvd3NraSA8bWlj
-aGFsLnN3aWF0a293c2tpQGxpbnV4LmludGVsLmNvbT4NCj4gPj4gLS0tDQo+ID4+ICBkcml2ZXJz
-L25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlLmggICAgICAgICB8ICAxIC0NCj4gPj4gIGRyaXZl
-cnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfYmFzZS5jICAgIHwgMTAgKysrLS0tLS0NCj4g
-Pj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfZXRodG9vbC5jIHwgIDggKysr
-LS0tDQo+ID4+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2lycS5jICAgICB8
-IDExICsrKy0tLS0tLQ0KPiA+PiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9s
-aWIuYyAgICAgfCAyNiArKysrKysrKysrKy0tLS0tLS0tLQ0KPiA+PiAgNSBmaWxlcyBjaGFuZ2Vk
-LCAyNyBpbnNlcnRpb25zKCspLCAyOSBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2UuaCBiL2RyaXZlcnMvbmV0L2V0
-aGVybmV0L2ludGVsL2ljZS9pY2UuaA0KPiA+PiBpbmRleCBjZjgyNGQwNDFkNWEuLjFlMjNhZWMy
-NjM0ZiAxMDA2NDQNCj4gPj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2lj
-ZS5oDQo+ID4+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2UuaA0KPiA+
-PiBAQCAtNjIyLDcgKzYyMiw2IEBAIHN0cnVjdCBpY2VfcGYgew0KPiA+PiAgCXUxNiBtYXhfcGZf
-dHhxczsJLyogVG90YWwgVHggcXVldWVzIFBGIHdpZGUgKi8NCj4gPj4gIAl1MTYgbWF4X3BmX3J4
-cXM7CS8qIFRvdGFsIFJ4IHF1ZXVlcyBQRiB3aWRlICovDQo+ID4+ICAJc3RydWN0IGljZV9wZl9t
-c2l4IG1zaXg7DQo+ID4+IC0JdTE2IG51bV9sYW5fbXNpeDsJLyogVG90YWwgTVNJWCB2ZWN0b3Jz
-IGZvciBiYXNlIGRyaXZlciAqLw0KPiA+PiAgCXUxNiBudW1fbGFuX3R4OwkJLyogbnVtIExBTiBU
-eCBxdWV1ZXMgc2V0dXAgKi8NCj4gPj4gIAl1MTYgbnVtX2xhbl9yeDsJCS8qIG51bSBMQU4gUngg
-cXVldWVzIHNldHVwICovDQo+ID4+ICAJdTE2IG5leHRfdnNpOwkJLyogTmV4dCBmcmVlIHNsb3Qg
-aW4gcGYtPnZzaVtdIC0gMC1iYXNlZCEgKi8NCj4gPg0KPiA+IC4uLg0KPiA+DQo+ID4+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2V0aHRvb2wuYw0KPiBi
-L2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9pY2VfZXRodG9vbC5jDQo+ID4+IGluZGV4
-IDg1YTNiMjMyNmU3Yi4uZTVjNTZlYzhiYmRhIDEwMDY0NA0KPiA+PiAtLS0gYS9kcml2ZXJzL25l
-dC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2V0aHRvb2wuYw0KPiA+PiArKysgYi9kcml2ZXJzL25l
-dC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2V0aHRvb2wuYw0KPiA+PiBAQCAtMzgxMSw4ICszODEx
-LDggQEAgaWNlX2dldF90c19pbmZvKHN0cnVjdCBuZXRfZGV2aWNlICpkZXYsIHN0cnVjdCBrZXJu
-ZWxfZXRodG9vbF90c19pbmZvICppbmZvKQ0KPiA+PiAgICovDQo+ID4+ICBzdGF0aWMgaW50IGlj
-ZV9nZXRfbWF4X3R4cShzdHJ1Y3QgaWNlX3BmICpwZikNCj4gPj4gIHsNCj4gPj4gLQlyZXR1cm4g
-bWluMyhwZi0+bnVtX2xhbl9tc2l4LCAodTE2KW51bV9vbmxpbmVfY3B1cygpLA0KPiA+PiAtCQkg
-ICAgKHUxNilwZi0+aHcuZnVuY19jYXBzLmNvbW1vbl9jYXAubnVtX3R4cSk7DQo+ID4+ICsJcmV0
-dXJuIG1pbl90KHUxNiwgbnVtX29ubGluZV9jcHVzKCksDQo+ID4+ICsJCSAgICAgcGYtPmh3LmZ1
-bmNfY2Fwcy5jb21tb25fY2FwLm51bV90eHEpOw0KPiA+DQo+ID4gSXQgaXMgdW5jbGVhciB3aHkg
-bWluX3QoKSBpcyB1c2VkIGhlcmUgb3IgZWxzZXdoZXJlIGluIHRoaXMgcGF0Y2gNCj4gPiBpbnN0
-ZWFkIG9mIG1pbigpIGFzIGl0IHNlZW1zIHRoYXQgYWxsIHRoZSBlbnRpdGllcyBiZWluZyBjb21w
-YXJlZA0KPiA+IGFyZSB1bnNpZ25lZC4gQXJlIHlvdSBjb25jZXJuZWQgYWJvdXQgb3ZlcmZsb3dp
-bmcgdTE2PyBJZiBzbywgcGVyaGFwcw0KPiA+IGNsYW1wLCBvciBzb21lIGVycm9yIGhhbmRsaW5n
-LCBpcyBhIGJldHRlciBhcHByb2FjaC4NCj4gPg0KPiA+IEkgYW0gY29uY2VybmVkIHRoYXQgdGhl
-IGNhc3RpbmcgdGhhdCBtaW5fdCgpIGJyaW5ncyB3aWxsIGhpZGUNCj4gPiBhbnkgcHJvYmxlbXMg
-dGhhdCBtYXkgZXhpc3QuDQo+ID4NCj4gWWEsIEkgdGhpbmsgbWluIG1ha2VzIG1vcmUgc2Vuc2Uu
-IG1pbl90IHdhcyBsaWtlbHkgc2VsZWN0ZWQgb3V0IG9mIGhhYml0DQo+IG9yIGxvb2tpbmcgYXQg
-b3RoZXIgZXhhbXBsZXMgaW4gdGhlIGRyaXZlci4NCg0KTXkgJ3Nwb3QgcGF0Y2hlcyB0aGF0IHVz
-ZSBtaW5fdCgpJyBmYWlsZWQgdG8gc3BvdCB0aGF0IG9uZS4NCg0KQnV0IGl0IGlzIGp1c3QgcGxh
-aW4gd3JvbmcgLSBhbmQgYWx3YXlzIHdhcy4NCllvdSB3YW50IGEgcmVzdWx0IHRoYXQgaXMgMTZi
-aXRzLCBjYXN0aW5nIHRoZSBpbnB1dHMgaXMgd3JvbmcuDQpDb25zaWRlciBhIHN5c3RlbSB3aXRo
-IDY0ayBjcHVzIQ0KDQpQcmV0dHkgbXVjaCBhbGwgdGhlIG1pbl90KCkgdGhhdCBzcGVjaWZ5IHU4
-IG9yIHUxNiBhcmUgbGlrZWx5IHRvDQpiZSBhY3R1YWxseSBicm9rZW4uDQpNb3N0IG9mIHRoZSBy
-ZXN0IHNwZWNpZnkgdTMyIG9yIHU2NCBpbiBvcmRlciB0byBjb21wYXJlICh1c3VhbGx5KQ0KdW5z
-aWduZWQgdmFsdWVzIG9mIGRpZmZlcmVudCBzaXplcy4NCkJ1dCBJIGZvdW5kIHNvbWUgdGhhdCBt
-aWdodCBiZSB1c2luZyAnbG9uZycgb24gNjRiaXQgdmFsdWVzDQpvbiAzMmJpdCAoYW5kIGFzIGRp
-c2sgc2VjdG9yIG51bWJlcnMhKS4NCg0KSW4gdGhlIGN1cnJlbnQgbWluKCkgYmxlYXRzLCB0aGUg
-Y29kZSBpcyBhbG1vc3QgY2VydGFpbmx5IGF3cnkuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVk
-IEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5l
-cywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+On 14.10.24 15:56, Russell King (Oracle) wrote:
+> On Mon, Oct 14, 2024 at 03:18:29PM +0200, Andrew Lunn wrote:
+>> Russell's reading of 802.3 is that 1G requires autoneg. Hence the
+>> change. Loopback is however special. Either the PHY needs to do
+>> autoneg with itself, which is pretty unlikely, or it needs to ignore
+>> autoneg and loopback packets independent of the autoneg status.
+>>
+>> What does 802.3 say about loopback? At least the bit in BMCR must be
+>> defined. Is there more? Any mention of how it should work in
+>> combination with autoneg?
+> 
+> Loopback is not defined to a great degree in 802.3, its only suggesting
+> that as much of the PHY data path should be exercised as possible.
+> However, it does state in clause 22 that the duplex bit should not
+> affect loopback.
+> 
+> It doesn't make any reference to speed or autoneg.
+> 
+> Given that PHYs that support multiple speeds need to have different
+> data paths through them, and the requirement for loopback to use as
+> much of the data path as possible, it does seem sensible that some
+> PHYs may not be able to negotiate with themselves in loopback mode,
+> (e.g. at 1G speeds, one PHY needs to be master the other slave, how
+> does a single PHY become both master and slave at the same time...)
+> then maybe forced speed is necessary when entering loopback.
+> 
+> So probably yes, when entering loopback, we probably ought to force
+> the PHY speed, but that gets difficult for a PHY that is down and
+> as autoneg enabled (what speed do we force?)
+> 
+> We do have the forced-settings in phy->autoneg, phy->speed and
+> phy->duplex even after the referred to commit, so we could use
+> that to switch the PHY back to a forced mode. However, I suepct
+> we're into PHY specific waters here - whether the PHY supports
+> 1G without AN even in loopback mode is probably implementation
+> specific.
 
+I posted as a RFC, because I felt not able to suggest a more generic
+solution without any input. But I can add some facts about the KSZ9031
+PHY. The data sheet agrees with Russells commit: "For 1000BASE-T mode,
+auto-negotiation is required and always used to establish a link"
+It also requests autoneg disable, full duplex and speed bits set for
+loopback. So loopback speed is configurable. For 1000 Mbps it also
+requires some slave configuration. genphy_loopback() mostly follows
+the data sheet.
+
+In my opinion the genphy_loopback() seems to work with most PHYs
+or most real use cases. Otherwise, there would have been more PHY
+specific set_loopback() implementations. The only problem is how
+speed/duplex is determined. It is not guaranteed that phydev->speed and
+phydev->duplex have reasonable values if autoneg has been triggered,
+maybe because autoneg is still in progress or link is down or just
+because the PHY state machine has not run so far. Always enabling
+autoneg for 1000 Mbps only made the problem more apparent.
+
+My suggestion would be to improve the speed/duplex selection for
+loopback in the generic code. The selected speed/duplex should be
+forwarded to genphy_loopback() or PHY specific set_loopback().
+If speed/duplex have valid values, then these values should be used.
+Otherwise the maximum speed/duplex of the PHY should be used.
+Would that be a valid solution?
+
+Gerhard
