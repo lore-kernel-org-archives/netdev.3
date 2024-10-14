@@ -1,58 +1,59 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E1733C9
-	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 06:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806C4136353
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 07:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728889201; cv=none; b=p1IZv0Ka/R6CXFn3D7K4PPE7DeiOpprANqi9IIiSx3ZQQB+qIzedeQ53ej9BuEQRtBYlHhPs5czk78kh0flX2EgCHpy90ITcBexLwGp03UtcdHTTtWSz5JsJSjHPu2c5Tf8fRVIr0y06HeR5A3LeFZ4SrN0qwG9M0lCPDqNCU48=
+	t=1728889462; cv=none; b=LA5dT/vTCFYs8cRSpfy1RWG3luReb4nJC3ICYVeBqPa9b3p0tC4jx6bkw9VZx1GozS0nIJdlgfOXnLPHZx1x9HNIe83JDzfLMIB9da0xexyw+E9MaqJneweXVbYUTPxUqDh2XxTaOGt+rYur11JbjA5ANY5JmxUTv7DQtJTvG80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728889201; c=relaxed/simple;
-	bh=xKtOQZK5HutUaVl6kbbOU9Qu7Ar2joczRXup5ujyrgE=;
+	s=arc-20240116; t=1728889462; c=relaxed/simple;
+	bh=NNv6gvfmx2HjUFMGU+o2ltt/UiZOt25h1rUaIZXBx2s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=itj1RpW8TU30dl5hGBSFXzPQKGGi0VNoDjlA4DJen7Ra0A37AdFrvJ2OmaeMHm4IXbm2kKj+TRXxcOpow1ivRmWQN/RDgE+wcbaSI4aLXEUv1bs9wnAqaKbeY5tEMcR4CcKMeDtLXOuGTTkPefJoM3/kcFXXxCib04jowUb4a/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=KqfUwbpq; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:Content-Type; b=mnkscYN+X68Iy9mmyXv2U0HCFlExLatvSsFEMQgxJxy4eakrcSfYSkaYHTOP3MKjNyaJ1nWS5FtWU+SOcFvQop3MEgg/C32IzxtPkvKNriPH8eRhlrQNb9IG+aMqyAsM3J+PXbP48hU1tkXgDgVJ9ovz22CjudC/ABmCa/tL+Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=1qlRRVC5; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="KqfUwbpq"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a99b1f43aceso525955266b.0
-        for <netdev@vger.kernel.org>; Sun, 13 Oct 2024 23:59:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="1qlRRVC5"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb498a92f6so8424391fa.1
+        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 00:04:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1728889197; x=1729493997; darn=vger.kernel.org;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1728889459; x=1729494259; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SbvyoL9Luo/70/PTVBa7h557couwK2dRn3xz6x5mHho=;
-        b=KqfUwbpqQ1gzt++iVRYbKYodeC5q6EqZM81NuUSPt94AA7DSrvMhhpTOvmCC6Omt7E
-         eZ8uPiw6rmjA+UaqjWoOVrwEub0lgjTjv9KZx7ydj14aChqkaldxgu1/8qs8HPowIifu
-         DcdFuCgwrAxzP++14QY6RJ/DMzzsOb5VcDqt9CslirzHEL3Gh72eKnQ6iWuUJoT2HDgx
-         8tbJyi6X2CkkwEYriX1kMTWCjKk4Abfz5K52eXeHA86HIACWgBd8gwnht+Ky8pJroc2y
-         TZdO4PKQnEpvAK9Z2eS/bWDKR3fsG1O31VPRau8Vvidxl7O3BR9vG5hVGqdES2AHdrn1
-         UY1g==
+        bh=vGaIhPPoqC5MI9WRgwGY99B8fU3f7PY4Vcuv5+yQqFs=;
+        b=1qlRRVC5r5zo5QpkK4ITdgJm27XooPDYEPA9lLISmwFFfWFtpUAVjGtp1M50zt6vzE
+         6d3ocD9PKu7DPWMe6eD3POXL5jASG6wVGhCu/e5Y7Bv8uLDP/oBTsj82LzCsAfIkqNM7
+         fswnm54f2Po2PNeSSvl9/AKPW2eyuXPKE3JmSYtuPlwp8PsnLrQcfUabpKHikwyVeV89
+         GFDnBftcA7RC8JAZzIxHc77uhWD/vHNK8x5dmVkQU8kPSEFy76djUNKE2SviqJeJJWHV
+         /p4HScwn4u7+yoBwYmX6neZAtHgvEmIeI7UBn+nCkq/QfCfDCfYlNsQT0zOgRqz4dkOm
+         leKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728889197; x=1729493997;
+        d=1e100.net; s=20230601; t=1728889459; x=1729494259;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SbvyoL9Luo/70/PTVBa7h557couwK2dRn3xz6x5mHho=;
-        b=k5fDJC/qmw1wKltk0iSgQ06EDcRNo/fPQV4TMcT1YdTcZlnDfIhEROILr1n4Aq9qFj
-         edYIEW8YbcfT7C9+8qSbvNI6GxgegGKtdjreTw1YWGwJeCXgJge714/16s/400EhlhKX
-         mTtiaxDBFrKgTOFK0EqND36dTJKxlZDYBwmwjTLTZ9KJHWtsZRFBPjROibXGkzU2a9WC
-         KD4EIMEiHPC5e368eEV/czGL2kDhHms4a5dKh+w7/poLPEXgstFHH144ROdPMs2pCH+B
-         ZDTZX3SVZGsRfrUEnRe2MR2Qr/JCuHsJEFzKfJhZegut4pFe/Uamr2y4ls/iUpXT8/7L
-         QMbA==
-X-Gm-Message-State: AOJu0YxDNDj+ZLJjcXxFNuTb6huK5Slr73t2mznq9dbrgDg8TQuGzF+d
-	V5HlauOoquxquocHYazvuaj3jcV70CcXx6+QmnhNMzdMl8GNsGO9hXNzIlOR4HM=
-X-Google-Smtp-Source: AGHT+IGOUfK99ago/evOrlGj0pi4YFg7EEKNgJdbazY59vps+t6ylGtngYjJWYkKZ58+i22OdP1stg==
-X-Received: by 2002:a17:906:eec7:b0:a77:ab9e:9202 with SMTP id a640c23a62f3a-a99a0eb9349mr1327215166b.4.1728889196586;
-        Sun, 13 Oct 2024 23:59:56 -0700 (PDT)
+        bh=vGaIhPPoqC5MI9WRgwGY99B8fU3f7PY4Vcuv5+yQqFs=;
+        b=opMRWwDoaFaRb0KtSVbVHgRd/VnS2f9jfzIsfYIochKQEUc+cEEKjoGebFTYG+DJ5l
+         no3VwiOhmOkbZtlYMwgn/+2V+9tEToNUs6OspX9zUJzbdJedfo8LnXdMNEKYCf9H43JZ
+         JqNRf3xLypLuXrci4eiR5AGISX7tiL1KQtsUQGgueXZHxSOLSu1BiQjel1p27lSK/9L/
+         tIMlU8FtAvp8F+qnvma3VY+LAx7UZi1mECmMrsl8K+Ziz98yjtMzO4xY34dBgX0DLiW6
+         qJ2RgU0BPjZ3cSuumBZ1zs92Zg0V5sQ+es65EclrzPxO7Z6kA3D4WtHypCO86akwgJI3
+         QJWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2CP2ugAImLsfwi7pepDWoNZIFEGKo0haM1kg8PGby1pn7kOBluWvz0KzCgzcFcUCK2cexGCU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNPKK8e2b7Q6Dx45tvwDhvkzs2M2+oUCiD95Pa+uH6dx0WHiHH
+	czUMJE1AQOO6HXtjh4ue5LeGHKAVXzP38tJw1XeTHBUJqqPuI+vrYEuufSs4HtI=
+X-Google-Smtp-Source: AGHT+IEm+t/0wxGBRiGGCCWGQXQM/paXJQi/z5wDFT45Y4vSsDzbKlZTz1XXD3y2hVv/E6wIFsje1Q==
+X-Received: by 2002:a2e:6111:0:b0:2f9:ce91:dea9 with SMTP id 38308e7fff4ca-2fb327a6df0mr33120871fa.32.1728889458495;
+        Mon, 14 Oct 2024 00:04:18 -0700 (PDT)
 Received: from [192.168.0.245] ([62.73.69.208])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a13f42e8bsm62471966b.58.2024.10.13.23.59.55
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d2196sm4631649a12.7.2024.10.14.00.04.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Oct 2024 23:59:56 -0700 (PDT)
-Message-ID: <c3678626-7f5c-4446-9b4d-2650ddf5d5a6@blackwall.org>
-Date: Mon, 14 Oct 2024 09:59:54 +0300
+        Mon, 14 Oct 2024 00:04:18 -0700 (PDT)
+Message-ID: <7982b197-8ca6-4621-b983-2a6b24aad2b6@blackwall.org>
+Date: Mon, 14 Oct 2024 10:04:16 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,173 +61,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v1 net-next 06/12] net: core: dev: Add
- dev_fill_bridge_path()
-To: Eric Woudstra <ericwouds@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+Subject: Re: [PATCH 08/17] net: bridge: replace call_rcu by kfree_rcu for
+ simple kmem_cache_free callback
+To: Julia Lawall <Julia.Lawall@inria.fr>, Roopa Prabhu <roopa@nvidia.com>
+Cc: kernel-janitors@vger.kernel.org, vbabka@suse.cz, paulmck@kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>,
- Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Frank Wunderlich <frank-w@public-files.de>,
- Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20241013185509.4430-1-ericwouds@gmail.com>
- <20241013185509.4430-7-ericwouds@gmail.com>
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+ <20241013201704.49576-9-Julia.Lawall@inria.fr>
 Content-Language: en-US
 From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20241013185509.4430-7-ericwouds@gmail.com>
+In-Reply-To: <20241013201704.49576-9-Julia.Lawall@inria.fr>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/10/2024 21:55, Eric Woudstra wrote:
-> New function dev_fill_bridge_path(), similar to dev_fill_forward_path().
-> It handles starting from a bridge port instead of the bridge master.
-> The structures ctx and nft_forward_info need to be already filled in with
-> the (vlan) encaps.
+On 13/10/2024 23:16, Julia Lawall wrote:
+> Since SLOB was removed and since
+> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+> it is not necessary to use call_rcu when the callback only performs
+> kmem_cache_free. Use kfree_rcu() directly.
 > 
-> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+> The changes were made using Coccinelle.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
 > ---
->  include/linux/netdevice.h |  2 +
->  net/core/dev.c            | 77 ++++++++++++++++++++++++++++++++-------
->  2 files changed, 66 insertions(+), 13 deletions(-)
+>  net/bridge/br_fdb.c |    9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
 > 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index e87b5e488325..9d80f650345e 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -3069,6 +3069,8 @@ void dev_remove_offload(struct packet_offload *po);
->  
->  int dev_get_iflink(const struct net_device *dev);
->  int dev_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb);
-> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
-> +			 struct net_device_path_stack *stack);
->  int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
->  			  struct net_device_path_stack *stack);
->  struct net_device *__dev_get_by_flags(struct net *net, unsigned short flags,
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index cd479f5f22f6..49959c4904fc 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -713,44 +713,95 @@ static struct net_device_path *dev_fwd_path(struct net_device_path_stack *stack)
->  	return &stack->path[k];
+> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+> index 642b8ccaae8e..1cd7bade9b3b 100644
+> --- a/net/bridge/br_fdb.c
+> +++ b/net/bridge/br_fdb.c
+> @@ -73,13 +73,6 @@ static inline int has_expired(const struct net_bridge *br,
+>  	       time_before_eq(fdb->updated + hold_time(br), jiffies);
 >  }
 >  
-> -int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
-> -			  struct net_device_path_stack *stack)
-> +static int dev_fill_forward_path_common(struct net_device_path_ctx *ctx,
-> +					struct net_device_path_stack *stack)
+> -static void fdb_rcu_free(struct rcu_head *head)
+> -{
+> -	struct net_bridge_fdb_entry *ent
+> -		= container_of(head, struct net_bridge_fdb_entry, rcu);
+> -	kmem_cache_free(br_fdb_cache, ent);
+> -}
+> -
+>  static int fdb_to_nud(const struct net_bridge *br,
+>  		      const struct net_bridge_fdb_entry *fdb)
 >  {
->  	const struct net_device *last_dev;
-> -	struct net_device_path_ctx ctx = {
-> -		.dev	= dev,
-> -	};
->  	struct net_device_path *path;
->  	int ret = 0;
->  
-> -	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
-> -	stack->num_paths = 0;
-> -	while (ctx.dev && ctx.dev->netdev_ops->ndo_fill_forward_path) {
-> -		last_dev = ctx.dev;
-> +	while (ctx->dev && ctx->dev->netdev_ops->ndo_fill_forward_path) {
-> +		last_dev = ctx->dev;
->  		path = dev_fwd_path(stack);
->  		if (!path)
->  			return -1;
->  
->  		memset(path, 0, sizeof(struct net_device_path));
-> -		ret = ctx.dev->netdev_ops->ndo_fill_forward_path(&ctx, path);
-> +		ret = ctx->dev->netdev_ops->ndo_fill_forward_path(ctx, path);
->  		if (ret < 0)
->  			return -1;
->  
-> -		if (WARN_ON_ONCE(last_dev == ctx.dev))
-> +		if (WARN_ON_ONCE(last_dev == ctx->dev))
->  			return -1;
->  	}
->  
-> -	if (!ctx.dev)
-> +	if (!ctx->dev)
->  		return ret;
->  
->  	path = dev_fwd_path(stack);
->  	if (!path)
->  		return -1;
->  	path->type = DEV_PATH_ETHERNET;
-> -	path->dev = ctx.dev;
-> +	path->dev = ctx->dev;
-> +
-> +	return ret;
-> +}
-> +
-> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
-> +			 struct net_device_path_stack *stack)
-> +{
-> +	const struct net_device *last_dev, *br_dev;
-> +	struct net_device_path *path;
-> +	int ret = 0;
-> +
-> +	stack->num_paths = 0;
-> +
-> +	if (!ctx->dev || !netif_is_bridge_port(ctx->dev))
-> +		return -1;
-> +
-> +	br_dev = netdev_master_upper_dev_get_rcu((struct net_device *)ctx->dev);
-> +	if (!br_dev || !br_dev->netdev_ops->ndo_fill_forward_path)
-> +		return -1;
-> +
-> +	last_dev = ctx->dev;
-> +	path = dev_fwd_path(stack);
-> +	if (!path)
-> +		return -1;
-> +
-> +	memset(path, 0, sizeof(struct net_device_path));
-> +	ret = br_dev->netdev_ops->ndo_fill_forward_path(ctx, path);
-> +	if (ret < 0)
-> +		return -1;
-> +
-> +	if (!ctx->dev || WARN_ON_ONCE(last_dev == ctx->dev))
-> +		return -1;
-> +
-> +	if (!netif_is_bridge_master(ctx->dev))
-
-hmm, do we expect ctx->dev to be a bridge master? Looking at
-br_fill_forward_path, it seems to be == fdb->dst->dev which
-should be the target port
-
-> +		return dev_fill_forward_path_common(ctx, stack);
-> +
-> +	path = dev_fwd_path(stack);
-> +	if (!path)
-> +		return -1;
-> +	path->type = DEV_PATH_ETHERNET;
-> +	path->dev = ctx->dev;
->  
->  	return ret;
+> @@ -329,7 +322,7 @@ static void fdb_delete(struct net_bridge *br, struct net_bridge_fdb_entry *f,
+>  	if (test_and_clear_bit(BR_FDB_DYNAMIC_LEARNED, &f->flags))
+>  		atomic_dec(&br->fdb_n_learned);
+>  	fdb_notify(br, f, RTM_DELNEIGH, swdev_notify);
+> -	call_rcu(&f->rcu, fdb_rcu_free);
+> +	kfree_rcu(f, rcu);
 >  }
-> +EXPORT_SYMBOL_GPL(dev_fill_bridge_path);
-> +
-> +int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
-> +			  struct net_device_path_stack *stack)
-> +{
-> +	struct net_device_path_ctx ctx = {
-> +		.dev	= dev,
-> +	};
-> +
-> +	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
-> +
-> +	stack->num_paths = 0;
-> +
-> +	return dev_fill_forward_path_common(&ctx, stack);
-> +}
->  EXPORT_SYMBOL_GPL(dev_fill_forward_path);
 >  
->  /**
+>  /* Delete a local entry if no other port had the same address.
+> 
+
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
 
