@@ -1,204 +1,97 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3284714601C;
-	Mon, 14 Oct 2024 07:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6D713A258
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 07:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728890007; cv=none; b=bGZTiFmrEllWazbOK099mTNwClKGLhhe9EAy3g32EbJjq05wq51c87yZpXcN9i00YzYlD+GEK8WCqsLkY3tNkvd+OhTJOMZQekUf8VcAV3hedYsN2olsPyJkt6f+2OAb+Vk3WtJSDWC2893UAejctO0/jQjwCsHlSlJZ5hGwf+k=
+	t=1728890133; cv=none; b=hThzhWPPUMzb0ZwZOD8EmIbRKKm2Pl2Ehd9hXs710EvrOQOiwR10pcpcX93Xn6OCrgaz5WzBuqLCLgdBQ5/WPSplqgWQDwSe9WVofQXH9WoG0mMAJ1+W00xFMX1PqDNTwy6ggbkePJuTrAFetahdj8c1fPgnJ7E4IHTMvdIvp/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728890007; c=relaxed/simple;
-	bh=zgxvLRR3w3kjqFDgWGHDCjUaqXkNWkNYk3LGPt7EkZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jXlZ52MIsYQGOfWBCkOLIqh9/VJqLoLXg6jEV3fyUbMlt9c4WSJ3tYDMJdZGHH81yR0a3l8SuPOlKK/gWtxPtFH3qHBBS2sEQylh6J9jS66V3Ok7IxYT64qs1Oxqaju96njo54uqywuI3CF90DTc4uMkmA71Gz7XzZlGWKBVMuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=Xe54NCsc; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="Xe54NCsc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1728889420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=httTAT48fu+3mO0g6dqX16B/PSb/AZaAB5kFQ49ZHpw=;
-	b=Xe54NCscJgu36LAoRk5nICKys82aNg3+GsjFGnInFdAafoHCnhLMlKiQlH9O9rDNupMsmm
-	/gCyhwOm/RbFmKrvS8PEkAkjJHf6xiJMhZO9BSLdAZ/l8T36cBzyTFNdE+PqZhdfV+RWWB
-	5M1lZzm3KwY8vIO/cfRIt4BhpcJeJdI=
-From: Sven Eckelmann <sven@narfation.org>
-To: Julia Lawall <Julia.Lawall@inria.fr>, vbabka@suse.cz,
- linus.luessing@c0d3.blue
-Cc: Marek Lindner <mareklindner@neomailbox.ch>,
- kernel-janitors@vger.kernel.org, paulmck@kernel.org,
- Simon Wunderlich <sw@simonwunderlich.de>, Antonio Quartulli <a@unstable.cc>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH 06/17] batman-adv: replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Date: Mon, 14 Oct 2024 09:03:30 +0200
-Message-ID: <6091264.lOV4Wx5bFT@ripper>
-In-Reply-To: <20241013201704.49576-7-Julia.Lawall@inria.fr>
-References:
- <20241013201704.49576-1-Julia.Lawall@inria.fr>
- <20241013201704.49576-7-Julia.Lawall@inria.fr>
+	s=arc-20240116; t=1728890133; c=relaxed/simple;
+	bh=rmqTKNE3CQ2Qgo8lS0qL8MYGdLeq9a0JDaea/S64Nto=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=liuop9VXRDhL1kGQoW3x1Huzgz/zqiH/kMO+CLa1N2/wxpKZF1022z2gO57HgkVXzfUTHdB4TSvvuItYzdXuV34+V/y5Lb0cxraGejPEMqsDJOYdVh8f9HijNsbOr5xH53mU0/WclQMFM3aR5Gf/covm8sVNzBvrPgt0vf6lXm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a3ba4fcf24so25191725ab.0
+        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 00:15:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728890131; x=1729494931;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VrAUuRqPsMn2YVWLeSUiBzZkrw+Pm6gR5I3+M7Woy/g=;
+        b=uKiSHhg8jMbbhoLrRTvNnffrsc+16SVNudKZNGHRCz7EZFcjuE9xs1JHzewTuHW1hG
+         +qLodzGNz42IhKfNdHGYT0JbD3RJAqYM6kpZU84Baiot7lPV+zBFcLVbHLXvAHh15huf
+         ED1mfALpZRcjMj5MaensOXGJy3XWwWm/IezlDqoDTaBRRH4a5kh/SyBqHMDF4wkSEd/d
+         cURJwTJmEcgC2Iv6gL3Qix6St/QyBKbvzNGv9g/SPJzIhHYOhMT9R/2WCb0e2wN2LhR/
+         yu4+v7znfsUncxTqZbGfMKE3H5nZpGu4hj/37WzWGsj349bpsLIDfTxUGNwaxe5S5CmC
+         kDqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmD3F7KbFhtJF+OimdPgOnJZmNUSLC8V8Pu4gLj4U+bhgDywgUoNmjWSkxqdZk15IHtVnd+Jc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhGGd6r/j/RrFjxneKGbZxL0Fv2br4ixQL7eWTPnnXNnJZGkXF
+	Vtu7FJfGIyEYsZb2KNM6TT/kiv6pPkQyC2BxzRAOcs6ozSa4fN3xOwP06KGk+M/1e7H2M5/Y4iP
+	imvgS9qhGRHElsxc81F4wHmXQ21mpcSwrK8HaiZoQw+5Do9hZ6NwECOk=
+X-Google-Smtp-Source: AGHT+IF9A6QjWA23L9s/ioWJStNI8SjP8VOHWp0B3A+U9f9u2ynjRhrmA0ymijDb9J0hP3hQDjuKzUGz9UhROlcuPHQnedBxxRjI
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4957463.31r3eYUQgx";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Received: by 2002:a05:6e02:1548:b0:3a3:6045:f8bd with SMTP id
+ e9e14a558f8ab-3a3b5f7845dmr96684315ab.5.1728890130818; Mon, 14 Oct 2024
+ 00:15:30 -0700 (PDT)
+Date: Mon, 14 Oct 2024 00:15:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <670cc512.050a0220.4cbc0.0047.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Oct 2024)
+From: syzbot <syzbot+listafa8479e7289edf8e367@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
---nextPart4957463.31r3eYUQgx
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Mon, 14 Oct 2024 09:03:30 +0200
-Message-ID: <6091264.lOV4Wx5bFT@ripper>
-In-Reply-To: <20241013201704.49576-7-Julia.Lawall@inria.fr>
-MIME-Version: 1.0
+Hello wireless maintainers/developers,
 
-On Sunday, 13 October 2024 22:16:53 CEST Julia Lawall wrote:
-> Since SLOB was removed and since
-> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-> it is not necessary to use call_rcu when the callback only performs
-> kmem_cache_free. Use kfree_rcu() directly.
-> 
-> The changes were made using Coccinelle.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
-> ---
->  net/batman-adv/translation-table.c |   47 ++-----------------------------------
->  1 file changed, 3 insertions(+), 44 deletions(-)
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
+During the period, 5 new issues were detected and 0 were fixed.
+In total, 40 issues are still open and 144 have been fixed so far.
 
-This was tried and we noticed that it is not safe [1]. So, I would get 
-confirmation that commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() 
-from kmem_cache_destroy()") is fixing the problem which we had at that time. 
-The commit message sounds like it but I just want to be sure.
+Some of the still happening issues:
 
-Kind regards,
-	Sven
+Ref  Crashes Repro Title
+<1>  31987   Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  5861    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<3>  2734    Yes   WARNING in ath6kl_bmi_get_target_info (2)
+                   https://syzkaller.appspot.com/bug?extid=92c6dd14aaa230be6855
+<4>  1468    Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<5>  1144    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<6>  905     Yes   WARNING in plfxlc_mac_release
+                   https://syzkaller.appspot.com/bug?extid=51a42f7c2e399392ea82
+<7>  383     Yes   INFO: task hung in rfkill_global_led_trigger_worker (3)
+                   https://syzkaller.appspot.com/bug?extid=50499e163bfa302dfe7b
+<8>  253     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<9>  233     Yes   INFO: rcu detected stall in ieee80211_handle_queued_frames
+                   https://syzkaller.appspot.com/bug?extid=1c991592da3ef18957c0
+<10> 209     Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
 
-[1] https://lore.kernel.org/r/20240612133357.2596-1-linus.luessing@c0d3.blue
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-> 
-> diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-> index 2243cec18ecc..b21ff3c36b07 100644
-> --- a/net/batman-adv/translation-table.c
-> +++ b/net/batman-adv/translation-table.c
-> @@ -208,20 +208,6 @@ batadv_tt_global_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
->  	return tt_global_entry;
->  }
->  
-> -/**
-> - * batadv_tt_local_entry_free_rcu() - free the tt_local_entry
-> - * @rcu: rcu pointer of the tt_local_entry
-> - */
-> -static void batadv_tt_local_entry_free_rcu(struct rcu_head *rcu)
-> -{
-> -	struct batadv_tt_local_entry *tt_local_entry;
-> -
-> -	tt_local_entry = container_of(rcu, struct batadv_tt_local_entry,
-> -				      common.rcu);
-> -
-> -	kmem_cache_free(batadv_tl_cache, tt_local_entry);
-> -}
-> -
->  /**
->   * batadv_tt_local_entry_release() - release tt_local_entry from lists and queue
->   *  for free after rcu grace period
-> @@ -236,7 +222,7 @@ static void batadv_tt_local_entry_release(struct kref *ref)
->  
->  	batadv_softif_vlan_put(tt_local_entry->vlan);
->  
-> -	call_rcu(&tt_local_entry->common.rcu, batadv_tt_local_entry_free_rcu);
-> +	kfree_rcu(tt_local_entry, common.rcu);
->  }
->  
->  /**
-> @@ -254,20 +240,6 @@ batadv_tt_local_entry_put(struct batadv_tt_local_entry *tt_local_entry)
->  		 batadv_tt_local_entry_release);
->  }
->  
-> -/**
-> - * batadv_tt_global_entry_free_rcu() - free the tt_global_entry
-> - * @rcu: rcu pointer of the tt_global_entry
-> - */
-> -static void batadv_tt_global_entry_free_rcu(struct rcu_head *rcu)
-> -{
-> -	struct batadv_tt_global_entry *tt_global_entry;
-> -
-> -	tt_global_entry = container_of(rcu, struct batadv_tt_global_entry,
-> -				       common.rcu);
-> -
-> -	kmem_cache_free(batadv_tg_cache, tt_global_entry);
-> -}
-> -
->  /**
->   * batadv_tt_global_entry_release() - release tt_global_entry from lists and
->   *  queue for free after rcu grace period
-> @@ -282,7 +254,7 @@ void batadv_tt_global_entry_release(struct kref *ref)
->  
->  	batadv_tt_global_del_orig_list(tt_global_entry);
->  
-> -	call_rcu(&tt_global_entry->common.rcu, batadv_tt_global_entry_free_rcu);
-> +	kfree_rcu(tt_global_entry, common.rcu);
->  }
->  
->  /**
-> @@ -407,19 +379,6 @@ static void batadv_tt_global_size_dec(struct batadv_orig_node *orig_node,
->  	batadv_tt_global_size_mod(orig_node, vid, -1);
->  }
->  
-> -/**
-> - * batadv_tt_orig_list_entry_free_rcu() - free the orig_entry
-> - * @rcu: rcu pointer of the orig_entry
-> - */
-> -static void batadv_tt_orig_list_entry_free_rcu(struct rcu_head *rcu)
-> -{
-> -	struct batadv_tt_orig_list_entry *orig_entry;
-> -
-> -	orig_entry = container_of(rcu, struct batadv_tt_orig_list_entry, rcu);
-> -
-> -	kmem_cache_free(batadv_tt_orig_cache, orig_entry);
-> -}
-> -
->  /**
->   * batadv_tt_orig_list_entry_release() - release tt orig entry from lists and
->   *  queue for free after rcu grace period
-> @@ -433,7 +392,7 @@ static void batadv_tt_orig_list_entry_release(struct kref *ref)
->  				  refcount);
->  
->  	batadv_orig_node_put(orig_entry->orig_node);
-> -	call_rcu(&orig_entry->rcu, batadv_tt_orig_list_entry_free_rcu);
-> +	kfree_rcu(orig_entry, rcu);
->  }
->  
->  /**
-> 
-> 
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
---nextPart4957463.31r3eYUQgx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZwzCQwAKCRBND3cr0xT1
-y7i+AQDVLdYz744YITcGjxNtokduQbc/TMXye8cDpvnUIRqeswEA3w/Kg7zDNvz2
-rI43KEYfCJOuJv0+vY4mZmhJob37RQw=
-=/WZq
------END PGP SIGNATURE-----
-
---nextPart4957463.31r3eYUQgx--
-
-
-
+You may send multiple commands in a single email message.
