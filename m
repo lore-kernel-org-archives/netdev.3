@@ -1,125 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB5C2B9A6
-	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 08:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2D52B9A6
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 08:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728893322; cv=none; b=cEikzRrUfEZ3DuZhwWWeiqVfgbUSI5xpNt4DI+FbfMUAUpV9YS5Epb33cszRH07rBZ5ic0Oltbe8DoUJJwmvTodXyQDiVmQwjLuFnD7E8bgH/hXpJ/6nCrQb9Hm+TKf56NEbWVeYY91pmTrgr1MgseUi47YW/lE9MZ02NGgNdLk=
+	t=1728893502; cv=none; b=jd3jAkeugdO516Ay9vanwFw7S5qdGSf+1/vrA98paX2Rw3sqpCqGRyaRNRrBhes2KcBXDWWLx4fECit6ggGg2GwIiuUVtFOm4OR7ewKVytP0lTdyXOqTDGIwW9ruBoCzJp0L8WE92lkjMW5htb63cCWB75yM99PwAH5Gyqjrr2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728893322; c=relaxed/simple;
-	bh=TaWs/ibx85c0CtG18bNpX/cgoj6kclzeopbcQX6fQ8s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=snLCxxFKoW5324qToolp9YGvfPcIgMBYLjnnYm/5kuTUcGymH8ZOhjCDS/cEK8yX0hgWFs0kHV+0mQAwNtM7xpPk+0VpNcBo8SokjBOd6Cc6R3EqbyEmLyJ0+j2lDXXLQNNX6ROe1oGfOVMTNHiogikW+BDuPMvxr5G/MpeVHs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N6tKQPj9; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728893502; c=relaxed/simple;
+	bh=C/S7uUJV+ORPIlh72pWeWGo24p9KHoLbPFQ5cMMUYAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qja+zHuDEyvWewljq9Ts3lvnuasVm5tj29Wz+RNCs5iIO3MvbHBB7plTwqcaSqre/gbzX6MCbeADj3a/t+b191W8JjKiBH3gC55oGmKQIqpKpOyQ4z6H5PRpng0rTLB2FfwboSwyoh8MZ1mGKV+iTY6f8q7R1WK9nF1zbEwJ3g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=LF4TAhJP; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N6tKQPj9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728893319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TaWs/ibx85c0CtG18bNpX/cgoj6kclzeopbcQX6fQ8s=;
-	b=N6tKQPj9zsCMEWw4zeDBVfEkkUuyo34Q39WKbRi0IW6zq6906OlXgg3B/Rwlx1uEZRfLDy
-	RJ4I1kJGNG9R9QrIx6jtdt2JVHg0nsjddrJZP/V/5SkqOVCwlW9NHCXBoSMsAJ9tObzuJA
-	a4+h9G79WLCpvdvhiUJ288jySze9LLE=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-Nj0139MoPw-H_krMTGnBvw-1; Mon, 14 Oct 2024 04:08:36 -0400
-X-MC-Unique: Nj0139MoPw-H_krMTGnBvw-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a99ea3e1448so111960566b.3
-        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 01:08:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="LF4TAhJP"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43116f8a3c9so44460535e9.1
+        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 01:11:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1728893498; x=1729498298; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9qWoo1kkqjr9irWeSjlL15fWHEEjygxg5BMj89zjpps=;
+        b=LF4TAhJPmrJMXQBodemg+5Boa1Q2A68IZSnPhaHppCrxtGo6nxpZcJ8JD18Rkog+fg
+         fpSNa5Bv+8xJX8fXZyAPOaS/DHsSLzQRqrGG93W3RUP8DT9n0j86VWMLfdzClEb8+D7U
+         Tz0WJEO35lws1ME4UcDasusJa08w0zEj5269cqPFB5Zc9M9yK03m4+54AgRx7+fAwGO0
+         BcqP/+6W0fmmwovM6sGtb9xuusXHT70xB9ofOscD1h5oqhrCxVOVFc2L7Hf+flk4prHo
+         JhlAI1Dy2y1V+/esDKMyM706Efvb1dM8dQXUJ8xhD44wRywV0nthqM7KXUBPN08YQaZK
+         gqSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728893315; x=1729498115;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TaWs/ibx85c0CtG18bNpX/cgoj6kclzeopbcQX6fQ8s=;
-        b=hkLPp+NVab0bjsztfy6r7nMevB4L6xX1dPSNc8C8TQdcKc5M64k53aJZSRJbfILnG8
-         0PAP5VsP/RZn/8z4G592AndV2uoGpDKj6/Oa3sRh8c62Nz2oOcYnSishKjY2GdE3sSpv
-         meMo5+5mEg5MUueLPniO7yUIXHrOvK6br7Q1QAlff/C51nL6Y+uHy2hv3amwd+gO6PoG
-         NyE9cyV5IcLNwjD+GNSaoDRRkHre8SUS+aCyhdowcMi0uEYUB/glU13mcCxVNuboNB+6
-         /kMBXmCXUya2JW7s4lWyqP21teM475tIvXcuFHyWMK9M7xtBby7/CketnxpTzUVlYShW
-         As4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWOqSkg0KTuMDqToCi3cXSJgviq46zrVX6FpQLZX/x9Fwe6synO38NgSZe4stihXGwJcm+Pllw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTajpuWdy+YAqDDtyPE/f0JXFDdAVqtb1Zix1xRcn8HoguHyH3
-	ehJteZG8xxaWXsK9qeWJt1Wrn0LpLdOhNOHFptboLrkDtrP1NUoS9miBvYxklGXbGwCzZZIg1gq
-	FC27Cl588afTDkzl148zJABs1gjcjr/i4aseAj/rUHyvdVF+j6xD5Hw==
-X-Received: by 2002:a17:907:944b:b0:a9a:296:b501 with SMTP id a640c23a62f3a-a9a0296b7f7mr310400866b.26.1728893315337;
-        Mon, 14 Oct 2024 01:08:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1q2sRlNJ7gBIJ0qtGA/4lKRT5VNcFbD+svupkTpAqykus1uvSFx9KVJU4QLRIETgW7hI7mw==
-X-Received: by 2002:a17:907:944b:b0:a9a:296:b501 with SMTP id a640c23a62f3a-a9a0296b7f7mr310398866b.26.1728893314974;
-        Mon, 14 Oct 2024 01:08:34 -0700 (PDT)
-Received: from ?IPv6:2001:16b8:2d37:9800:1d57:78cf:c1ae:b0b3? (200116b82d3798001d5778cfc1aeb0b3.dip.versatel-1u1.de. [2001:16b8:2d37:9800:1d57:78cf:c1ae:b0b3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99e3e338e5sm325954766b.209.2024.10.14.01.08.33
+        d=1e100.net; s=20230601; t=1728893498; x=1729498298;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9qWoo1kkqjr9irWeSjlL15fWHEEjygxg5BMj89zjpps=;
+        b=J7hYg7vp1g0sf2b8AkTImqp0hSTrLdw4fCu3z2re8ITfc77USyR/2CZ0lAaTyEWAwf
+         fPCjKoXo33JVn2eaubyU+tLTEdNCYzMzfrOaDFr58LOrsJhVIfZJo3lZ+4dUSDBrI1YI
+         dV12jBzYrUWEvQemJTGxBbNcubz1Wtt92gjhhhDE5Y9Nznw6KIh76xLHijYuY29Ed0cN
+         F6bO+tCHh8bL+KWg3sIxfLaSyL7qPzQE5rZ4PiI+vL3jpr9N9ZXNtW3nA5lpSKbTfkSI
+         QcRJU4GY5CsNReMpMAvWwdZrreNpt8+ER85tDpVjw2YQOcPgP6i4csJxFsTbk3IfnAQ/
+         JPyA==
+X-Gm-Message-State: AOJu0YzOaixhr5k8pUnEtOdBz2VsP2b1UtmzDsOjTBLLQwm64qqhTmly
+	ody6tAesEFDQ6975XknsdBVaP2lcQTXwoAYRswgLlYvEidm5RT91m0fM5TGf+V+23RbViGMsd9U
+	YLGw=
+X-Google-Smtp-Source: AGHT+IE1NcdGxGtuOYOvIOVww2XMcP66f8MDhQtya5JBz6TWAUsK/xuv9BS0423RR98jNAq/2ysUSw==
+X-Received: by 2002:a05:600c:1e0a:b0:42c:b995:20db with SMTP id 5b1f17b1804b1-431255cea70mr96553755e9.5.1728893497638;
+        Mon, 14 Oct 2024 01:11:37 -0700 (PDT)
+Received: from localhost ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430c7e653absm147566995e9.0.2024.10.14.01.11.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 01:08:34 -0700 (PDT)
-Message-ID: <dc9d7bd817e5c8bc88b0b8dfffcf83b2676cc225.camel@redhat.com>
-Subject: Re: [PATCH v7 4/5] gpio: Replace deprecated PCI functions
-From: Philipp Stanner <pstanner@redhat.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Jens Axboe <axboe@kernel.dk>, Wu Hao <hao.wu@intel.com>, Tom Rix
- <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>, Xu Yilun
- <yilun.xu@intel.com>,  Andy Shevchenko <andy@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Richard
- Cochran <richardcochran@gmail.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hannes Reinecke <hare@suse.de>, Al Viro <viro@zeniv.linux.org.uk>,  Keith
- Busch <kbusch@kernel.org>, Li Zetao <lizetao1@huawei.com>,
- linux-block@vger.kernel.org,  linux-kernel@vger.kernel.org,
- linux-fpga@vger.kernel.org,  linux-gpio@vger.kernel.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Mon, 14 Oct 2024 10:08:32 +0200
-In-Reply-To: <CAMRc=McAfEPM0b0m6oYUO9_RC=qTd1vsg4wMn1Hb4jYQbx4irA@mail.gmail.com>
-References: <20241014075329.10400-1-pstanner@redhat.com>
-	 <20241014075329.10400-5-pstanner@redhat.com>
-	 <CAMRc=McAfEPM0b0m6oYUO9_RC=qTd1vsg4wMn1Hb4jYQbx4irA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+        Mon, 14 Oct 2024 01:11:36 -0700 (PDT)
+From: Jiri Pirko <jiri@resnulli.us>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	donald.hunter@gmail.com,
+	vadim.fedorenko@linux.dev,
+	arkadiusz.kubalewski@intel.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com
+Subject: [PATCH net-next v3 0/2] dpll: expose clock quality level
+Date: Mon, 14 Oct 2024 10:11:31 +0200
+Message-ID: <20241014081133.15366-1-jiri@resnulli.us>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-10-14 at 09:59 +0200, Bartosz Golaszewski wrote:
-> On Mon, Oct 14, 2024 at 9:53=E2=80=AFAM Philipp Stanner <pstanner@redhat.=
-com>
-> wrote:
-> >=20
-> > pcim_iomap_regions() and pcim_iomap_table() have been deprecated by
-> > the
-> > PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
-> > pcim_iomap_table(), pcim_iomap_regions_request_all()").
-> >=20
-> > Replace those functions with calls to pcim_iomap_region().
-> >=20
-> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> > Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
->=20
-> This is part of a larger series so I acked it previously but at
-> second
-> glance it doesn't look like it depends on anything that comes before?
-> Should it have been sent separately to the GPIO tree? Should I pick
-> it
-> up independently?
+From: Jiri Pirko <jiri@nvidia.com>
 
-Thx for the offer, but it depends on pcim_iounmap_region(), which only
-becomes a public symbol through patch No.1 of this series :)
+Some device driver might know the quality of the clock it is running.
+In order to expose the information to the user, introduce new netlink
+attribute and dpll device op. Implement the op in mlx5 driver.
 
-P.
+Example:
+$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/dpll.yaml --dump device-get
+[{'clock-id': 13316852727532664826,
+  'clock-quality-level': ['itu-opt1-eeec'],    <<<<<<<<<<<<<<<<<
+  'id': 0,
+  'lock-status': 'unlocked',
+  'lock-status-error': 'none',
+  'mode': 'manual',
+  'mode-supported': ['manual'],
+  'module-name': 'mlx5_dpll',
+  'type': 'eec'}]
 
->=20
-> Bart
->=20
+---
+v2->v3:
+- changed "itu" prefix to "itu-opt1"
+- changed driver op to pass bitmap to allow to set multiple qualities
+  and pass it to user over multiple attrs
+- enhanced the documentation a bit
+v1->v2:
+- extended quality enum documentation
+- added "itu" prefix to the enum values
+
+Jiri Pirko (2):
+  dpll: add clock quality level attribute and op
+  net/mlx5: DPLL, Add clock quality level op implementation
+
+ Documentation/netlink/specs/dpll.yaml         | 35 ++++++++
+ drivers/dpll/dpll_netlink.c                   | 24 ++++++
+ .../net/ethernet/mellanox/mlx5/core/dpll.c    | 81 +++++++++++++++++++
+ include/linux/dpll.h                          |  4 +
+ include/uapi/linux/dpll.h                     | 24 ++++++
+ 5 files changed, 168 insertions(+)
+
+-- 
+2.47.0
 
