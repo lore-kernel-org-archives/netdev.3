@@ -1,58 +1,121 @@
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E24E156C69;
-	Mon, 14 Oct 2024 11:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB33417BECA;
+	Mon, 14 Oct 2024 11:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728904423; cv=none; b=VpuRfu+NTG2JArcHF9SesguzGhKWMJNgIw09rDnxoGqIGwsUbU8tTOgE1nmENXs7riLRtkcX1ohvhNWaEMNNmHT6DmhsLeIpU1Nr8KAYBHgYcA/KNF4yW4VphxkDEAV/XHUaxxMhIxzSGPsHMbb2EzvEJue7zL7ojxDFsUzORMs=
+	t=1728904469; cv=none; b=ha99KXQ+iLXPwnbg+7j/6sl7stR3nBdOcQ8mtKoD7ovs/3YBe2QIYppNd8QIaQWg8RYXzwTljmVUu2lweoyijRbZNv64FwZQmW0nN3jC1Nhc8nHe281caA1PVJHl0Hcsug3Or1VR6R9T3X1qRu/zF4jB8T6PTYtoxrdJEA25wBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728904423; c=relaxed/simple;
-	bh=s9EdIrToNe1X4raz+OIvL//9qPb1YTxtelE1sffA10w=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=KJifnSmF5ex9KppAqJAnp4ZfxAIe9bcRylS49WswBQo334ShcE+aYji6U3ZP/VDArvHB7ih6expv5E0iYjnO01BHvhPmlVMGE1CTBEpfGlO+DnUVYvTL9mXq6Dc802iIhZbPaHLwC4cZAiVumZlgng6UH7ybBmtpSwRSAFLdsbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 8135492009C; Mon, 14 Oct 2024 13:13:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 7C88A92009B;
-	Mon, 14 Oct 2024 12:13:39 +0100 (BST)
-Date: Mon, 14 Oct 2024 12:13:39 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-cc: Johannes Berg <johannes@sipsolutions.net>, 
-    Jakub Kicinski <kuba@kernel.org>, Bagas Sanjaya <bagasdotme@gmail.com>, 
-    Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-    Linux Networking <netdev@vger.kernel.org>, 
-    Loic Poulain <loic.poulain@linaro.org>, 
-    Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-    Simon Horman <horms@kernel.org>, Martin Wolf <mwolf@adiumentum.com>
-Subject: Re: [PATCH net v2 1/2] MAINTAINERS: Move M Chetan Kumar to CREDITS
-In-Reply-To: <cc949ab7-b5aa-4812-9c4a-d50bfee92de0@leemhuis.info>
-Message-ID: <alpine.DEB.2.21.2410141209390.40463@angie.orcam.me.uk>
-References: <20231023032905.22515-2-bagasdotme@gmail.com> <20231023032905.22515-3-bagasdotme@gmail.com> <20231023093837.49c7cb35@kernel.org> <e1b1f477-e41d-4834-984b-0db219342e5b@gmail.com> <20231023185221.2eb7cb38@kernel.org>
- <3a68f9ff27d9c82a038aea6acfb39848d0b31842.camel@sipsolutions.net> <cc949ab7-b5aa-4812-9c4a-d50bfee92de0@leemhuis.info>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1728904469; c=relaxed/simple;
+	bh=kj4opEKkbC23Nkk+DhAR5RFISU84LX1aLJJ3F/yuDog=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=avdvcHgy/ruPbNnLOpLwBNr1799GBH6lBU/4NPpVkLap0uOfUAtU7f9YHyC7sIaPpaBm1QRrFHlWbU9RnV6Or7OBywjVhvZtr5tH35IluwIYmXd7wHpdCznpC8+CPR1TalMDuK1U+FPBwO5F2N09EnPxJkcqZOMtug0Fm8YPM1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de
+Subject: [PATCH net-next 1/9] netfilter: nf_tables: Fix percpu address space issues in nf_tables_api.c
+Date: Mon, 14 Oct 2024 13:14:12 +0200
+Message-Id: <20241014111420.29127-2-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20241014111420.29127-1-pablo@netfilter.org>
+References: <20241014111420.29127-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Mon, 14 Oct 2024, Thorsten Leemhuis wrote:
+From: Uros Bizjak <ubizjak@gmail.com>
 
-> >>> He's now in a state of limbo. He has significant contribution
-> >>> (and gets listed by get_maintainer script with (AFAIK) no way
-> >>> to filter him out), yet emails to him bounces. What will be
-> >>> the resolution then?
-> >>
-> >> Yes :( Not much we can do about that (even if we drop him from
-> >> maintainers all fixes will CC him based on the sign-off tags).
+Compiling nf_tables_api.c results in several sparse warnings:
 
- FWIW adding an entry to .get_maintainer.ignore is the way to sort it.
+nf_tables_api.c:2077:31: warning: incorrect type in return expression (different address spaces)
+nf_tables_api.c:2080:31: warning: incorrect type in return expression (different address spaces)
+nf_tables_api.c:2084:31: warning: incorrect type in return expression (different address spaces)
 
-  Maciej
+nf_tables_api.c:2740:23: warning: incorrect type in assignment (different address spaces)
+nf_tables_api.c:2752:38: warning: incorrect type in assignment (different address spaces)
+nf_tables_api.c:2798:21: warning: incorrect type in argument 1 (different address spaces)
+
+Use {ERR_PTR,IS_ERR,PTR_ERR}_PCPU() macros when crossing between generic
+and percpu address spaces and add __percpu annotation to *stats pointer
+to fix these warnings.
+
+Found by GCC's named address space checks.
+
+There were no changes in the resulting object files.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/nf_tables_api.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index a24fe62650a7..6552ec616745 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2082,14 +2082,14 @@ static struct nft_stats __percpu *nft_stats_alloc(const struct nlattr *attr)
+ 	err = nla_parse_nested_deprecated(tb, NFTA_COUNTER_MAX, attr,
+ 					  nft_counter_policy, NULL);
+ 	if (err < 0)
+-		return ERR_PTR(err);
++		return ERR_PTR_PCPU(err);
+ 
+ 	if (!tb[NFTA_COUNTER_BYTES] || !tb[NFTA_COUNTER_PACKETS])
+-		return ERR_PTR(-EINVAL);
++		return ERR_PTR_PCPU(-EINVAL);
+ 
+ 	newstats = netdev_alloc_pcpu_stats(struct nft_stats);
+ 	if (newstats == NULL)
+-		return ERR_PTR(-ENOMEM);
++		return ERR_PTR_PCPU(-ENOMEM);
+ 
+ 	/* Restore old counters on this cpu, no problem. Per-cpu statistics
+ 	 * are not exposed to userspace.
+@@ -2533,10 +2533,10 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+ 
+ 		if (nla[NFTA_CHAIN_COUNTERS]) {
+ 			stats = nft_stats_alloc(nla[NFTA_CHAIN_COUNTERS]);
+-			if (IS_ERR(stats)) {
++			if (IS_ERR_PCPU(stats)) {
+ 				nft_chain_release_hook(&hook);
+ 				kfree(basechain);
+-				return PTR_ERR(stats);
++				return PTR_ERR_PCPU(stats);
+ 			}
+ 			rcu_assign_pointer(basechain->stats, stats);
+ 		}
+@@ -2650,7 +2650,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 	struct nft_table *table = ctx->table;
+ 	struct nft_chain *chain = ctx->chain;
+ 	struct nft_chain_hook hook = {};
+-	struct nft_stats *stats = NULL;
++	struct nft_stats __percpu *stats = NULL;
+ 	struct nft_hook *h, *next;
+ 	struct nf_hook_ops *ops;
+ 	struct nft_trans *trans;
+@@ -2746,8 +2746,8 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 		}
+ 
+ 		stats = nft_stats_alloc(nla[NFTA_CHAIN_COUNTERS]);
+-		if (IS_ERR(stats)) {
+-			err = PTR_ERR(stats);
++		if (IS_ERR_PCPU(stats)) {
++			err = PTR_ERR_PCPU(stats);
+ 			goto err_hooks;
+ 		}
+ 	}
+-- 
+2.30.2
+
