@@ -1,309 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61118453E
-	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 09:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B8146A79
+	for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 09:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728899056; cv=none; b=SyLGowrEuI6sPv+nxIDuZyhEFSn/4ocxL8LxtLHtDorO4t7ZPkESYgjtHAI0HuFqCVjtSm4zPRA6SOPvN5LdoW1SxfIgD3TPpuSAXTZKcIQUqDcykK0QD7ZUXaVA83WQ1Qrhmshuu9lNffstsNuB40n9cDedp37Q4JpFWiKiIFE=
+	t=1728899272; cv=none; b=CsOLiaQ2AO3hoGWjT9pGd7+2fubrQ0E70bcTqjUJf+E2Mb8Wr9dpfuv2QX8pfC8KkoFS25+13QGcx3iReObyDmA+fDPn0FH1rnq93P6Huj+A9ByRC/avBbLFs24IOp9zk20vnVsXmSSF9S7br40uKKXUxQV3UBibb90xXaJFXOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728899056; c=relaxed/simple;
-	bh=jGD7oNKwU5MrxipdNFiJJDZ82IxT7fO06kkoC7mmTI0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kGxUD0x2tGsC5ywp4iChCAHSWGkpT8NzZcMlQrF8OvqKTHxoeZR5VMr3vvDCEiTWeutr2fMK40XU9u4dQUR5/r4elhJg2wMctZBN4JsQEg1Zag1vzIMgt/xD0gy5gx/wtHlMTcDFtZ3trJg8OAn5sqXvs1ViRg3+XaTe9rSdvOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a+T7KCZ+; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728899272; c=relaxed/simple;
+	bh=b8NCLRJKGrm+n0lum0OQZapBDj5h/D1HEj2AK7tWcKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DEcCjkPKr0Nm/czHx3I2SDJ3t6qDD/krRHOCIXubB3yTdyLmGuMQC3Rd6lROtMALwsBciTXvC5a8LOUQLW1TNcTad+JEletauNspTNHMe09PW+kbVIAvCym7jLCihLjRiTuvLvUrKmyolN+xA64YZURuMtygBuGEE4AsKsdh8Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bDd1L5KU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a+T7KCZ+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728899055; x=1760435055;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jGD7oNKwU5MrxipdNFiJJDZ82IxT7fO06kkoC7mmTI0=;
-  b=a+T7KCZ+F/pKuDJVTQO/mfovCB8z/X7aZP0cfrW6w4qJT+KJMFX1Siao
-   qf6Wu3FnU5/708p/Xv9Zy2GHi3PAaSdPg0PvxHQPMSjKNyovynlZEkQtI
-   9T0+9I+xCRuQL1DegQc6DATYIt1vaoniL3D0lihuLi4wpcgYEhNEirMF3
-   3WrEY5y+DG+XAZumSUy/VvSu+6dJSDPieS1xEjrEwoGHJyncFB0q84lQ8
-   b1Rrt2lZIYmBu/ab2LvP2ydYFzwrK50ihaeQN0Bs2bS0m5rquq/my227h
-   X58zHia6Kj0hMc9h2F37j4Q48ohS7h6ulIr9wYxnCs9SbfTDODYB6DzFW
-   w==;
-X-CSE-ConnectionGUID: zToVR4SiQcqURLatNYsmmg==
-X-CSE-MsgGUID: tXXX5u7LRmqjM5MchRJNKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45712234"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="45712234"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 02:44:14 -0700
-X-CSE-ConnectionGUID: TE4aHIr1STWE4JiAYnaLLg==
-X-CSE-MsgGUID: 7/Fh5e8CTOiEf4LDpvRwZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
-   d="scan'208";a="77531863"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa009.fm.intel.com with ESMTP; 14 Oct 2024 02:44:10 -0700
-Received: from fedora.igk.intel.com (Metan_eth.igk.intel.com [10.123.220.124])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 1659027BD1;
-	Mon, 14 Oct 2024 10:44:09 +0100 (IST)
-From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	aleksander.lobakin@intel.com
-Cc: netdev@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Subject: [Intel-wired-lan] [PATCH iwl-next v11 14/14] iavf: add support for Rx timestamps to hotpath
-Date: Sun, 13 Oct 2024 11:44:15 -0400
-Message-Id: <20241013154415.20262-15-mateusz.polchlopek@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20241013154415.20262-1-mateusz.polchlopek@intel.com>
-References: <20241013154415.20262-1-mateusz.polchlopek@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bDd1L5KU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728899269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sbyVEHx1wYT46hZ0YR53rr13HilYd79w5fQFSE3Vqco=;
+	b=bDd1L5KU6NufRvg/tuuRymQ7geTiod+4yoil6cZT/KfghQxbDhVSzfO4nWAvJd6NfQ9gnt
+	AVPrqW/DxJ4Z6+X/rL8alj77tGsFwj6FilW+DY9KfdNZq5aS16uXZh+/nNtccRLjnln1Do
+	bIbvrqWTKLKy3ThLq41YZE0rDWMv2S8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-5QVgXFflNAy3E_JTOzqKGA-1; Mon, 14 Oct 2024 05:47:47 -0400
+X-MC-Unique: 5QVgXFflNAy3E_JTOzqKGA-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a9a1e429a8fso2663166b.0
+        for <netdev@vger.kernel.org>; Mon, 14 Oct 2024 02:47:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728899266; x=1729504066;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sbyVEHx1wYT46hZ0YR53rr13HilYd79w5fQFSE3Vqco=;
+        b=USMMAr1xlrciB0YSDdBBpwg2zw9P3FdUVYDfAo/rXQx55BgsQNe4a1hhpM1eLTuxtr
+         5T3sCUizNjhJ6cK/Q0VLK1FEg96fcuTQ34I5LvZYJz1R4Sjds0+gppueI2pkgITXXqMu
+         af+rC9lkaU6DxVH6WtwzFq7dUzFRF0mTAcAlP+UD72hymzc8TTIeXX0Ow1SR1uJq4HU4
+         G9hyD4cJfY6PeVGBw75FAyHsouocEu2WaiqPWxs3qDJ6Ta1564lFdR1ZTWr42laYPfwu
+         d8Bf+V8qHPfwlxyhaMLWIO7bUFZtcH/15SJ6kXcLaVUxM7OXap3HYM7lMHm1H93HvmTC
+         vkEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWyxEyYO6wFRlbM5I/ig90KE3N/ip3tBh3FgpooKivt/hZsrVmL5h8beLCLjLKPT1RAdcH0rNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzizkna3XBVGGNBTzax88rPERNtzHuSU87i9JDAp92YOjpq35+
+	p+WumGmGoBehOPTBz2TJcCEnepHQiR2ZknX9HDcSgro9gyWjhwRuhWERPAIqV1DtWvaeRL02q61
+	AG7mcJl8lxeOdoTdQsTXdZ2DzsgqIQpb5+lAsmlk3bfLuygcbqZdUBQ==
+X-Received: by 2002:a17:907:31c8:b0:a8d:2b7a:ff44 with SMTP id a640c23a62f3a-a99e3c97e69mr785564966b.32.1728899266553;
+        Mon, 14 Oct 2024 02:47:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMHMu4YWij0zyJOKwCcWc+znbiga0jEn5SFeqDdbHrQBD3dXiMBV8NYSsDJh+q3dUEZeJFiA==
+X-Received: by 2002:a17:907:31c8:b0:a8d:2b7a:ff44 with SMTP id a640c23a62f3a-a99e3c97e69mr785562766b.32.1728899266063;
+        Mon, 14 Oct 2024 02:47:46 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1ec:d16c:2d5b:a55d:7fda:5330])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a07662ffbsm178004966b.130.2024.10.14.02.47.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 02:47:45 -0700 (PDT)
+Date: Mon, 14 Oct 2024 05:47:41 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "Colin King (gmail)" <colin.i.king@gmail.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jason Wang <jasowang@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: virtio_net: support device stats
+Message-ID: <20241014054305-mutt-send-email-mst@kernel.org>
+References: <eb09900a-8443-4260-9b66-5431a85ca102@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eb09900a-8443-4260-9b66-5431a85ca102@gmail.com>
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+On Mon, Oct 14, 2024 at 10:39:26AM +0100, Colin King (gmail) wrote:
+> Hi,
+> 
+> Static analysis on Linux-next has detected a potential issue with the
+> following commit:
+> 
+> commit 941168f8b40e50518a3bc6ce770a7062a5d99230
+> Author: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Date:   Fri Apr 26 11:39:24 2024 +0800
+> 
+>     virtio_net: support device stats
+> 
+> 
+> The issue is in function virtnet_stats_ctx_init, in drivers/net/virtio_net.c
+> as follows:
+> 
+>         if (vi->device_stats_cap & VIRTIO_NET_STATS_TYPE_CVQ) {
+>                 queue_type = VIRTNET_Q_TYPE_CQ;
+> 
+>                 ctx->bitmap[queue_type]   |= VIRTIO_NET_STATS_TYPE_CVQ;
+>                 ctx->desc_num[queue_type] +=
+> ARRAY_SIZE(virtnet_stats_cvq_desc);
+>                 ctx->size[queue_type]     += sizeof(struct
+> virtio_net_stats_cvq);
+>         }
+> 
+> 
+> ctx->bitmap is declared as a u32 however it is being bit-wise or'd with
+> VIRTIO_NET_STATS_TYPE_CVQ and this is defined as 1 << 32:
+> 
+> include/uapi/linux/virtio_net.h:#define VIRTIO_NET_STATS_TYPE_CVQ (1ULL <<
+> 32)
+> 
+> ..and hence the bit-wise or operation won't set any bits in ctx->bitmap
+> because 1ULL < 32 is too wide for a u32.
 
-Add support for receive timestamps to the Rx hotpath. This support only
-works when using the flexible descriptor format, so make sure that we
-request this format by default if we have receive timestamp support
-available in the PTP capabilities.
+Indeed. Xuan Zhuo how did you test this patch?
 
-In order to report the timestamps to userspace, we need to perform
-timestamp extension. The Rx descriptor does actually contain the "40
-bit" timestamp. However, upper 32 bits which contain nanoseconds are
-conveniently stored separately in the descriptor. We could extract the
-32bits and lower 8 bits, then perform a bitwise OR to calculate the
-40bit value. This makes no sense, because the timestamp extension
-algorithm would simply discard the lower 8 bits anyways.
+> I suspect ctx->bitmap should be
+> declared as u64.
+> 
+> Colin
+> 
+> 
 
-Thus, implement timestamp extension as iavf_ptp_extend_32b_timestamp(),
-and extract and forward only the 32bits of nominal nanoseconds.
+In fact, it is read into a u64:
 
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
----
- drivers/net/ethernet/intel/iavf/iavf_main.c |  9 +++
- drivers/net/ethernet/intel/iavf/iavf_ptp.c  | 61 +++++++++++++++++++++
- drivers/net/ethernet/intel/iavf/iavf_ptp.h  |  4 ++
- drivers/net/ethernet/intel/iavf/iavf_txrx.c | 43 +++++++++++++++
- drivers/net/ethernet/intel/iavf/iavf_type.h |  1 +
- 5 files changed, 118 insertions(+)
+       u64 offset, bitmap;
+....
+        bitmap = ctx->bitmap[queue_type];
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 1103c210b4e3..a25ceecf1ea7 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -730,6 +730,15 @@ static u8 iavf_select_rx_desc_format(const struct iavf_adapter *adapter)
- 	if (!IAVF_RXDID_ALLOWED(adapter))
- 		return VIRTCHNL_RXDID_1_32B_BASE;
+we'll have to reorder fields to avoid wasting memory.
+Like this I guess:
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+Colin, can you confirm pls?
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index c6af18948092..ef221429f784 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4111,12 +4111,12 @@ struct virtnet_stats_ctx {
+ 	/* Used to calculate the offset inside the output buffer. */
+ 	u32 desc_num[3];
  
-+	/* Rx timestamping requires the use of flexible NIC descriptors */
-+	if (iavf_ptp_cap_supported(adapter, VIRTCHNL_1588_PTP_CAP_RX_TSTAMP)) {
-+		if (rxdids & BIT(VIRTCHNL_RXDID_2_FLEX_SQ_NIC))
-+			return VIRTCHNL_RXDID_2_FLEX_SQ_NIC;
-+
-+		pci_warn(adapter->pdev,
-+			 "Unable to negotiate flexible descriptor format\n");
-+	}
-+
- 	/* Warn if the PF does not list support for the default legacy
- 	 * descriptor format. This shouldn't happen, as this is the format
- 	 * used if VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC is not supported. It is
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.c b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-index 5550f44c87d3..a5162ee3a1c9 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.c
-@@ -392,6 +392,9 @@ void iavf_ptp_release(struct iavf_adapter *adapter)
- 	}
- 	adapter->aq_required &= ~IAVF_FLAG_AQ_SEND_PTP_CMD;
- 	mutex_unlock(&adapter->ptp.aq_cmd_lock);
-+
-+	adapter->ptp.hwtstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
-+	iavf_ptp_disable_rx_tstamp(adapter);
- }
+-	/* The actual supported stat types. */
+-	u32 bitmap[3];
+-
+ 	/* Used to calculate the reply buffer size. */
+ 	u32 size[3];
  
- /**
-@@ -420,3 +423,61 @@ void iavf_ptp_process_caps(struct iavf_adapter *adapter)
- 		iavf_ptp_disable_rx_tstamp(adapter);
- 	}
- }
++	/* The actual supported stat types. */
++	u64 bitmap[3];
 +
-+/**
-+ * iavf_ptp_extend_32b_timestamp - Convert a 32b nanoseconds timestamp to 64b
-+ * nanoseconds
-+ * @cached_phc_time: recently cached copy of PHC time
-+ * @in_tstamp: Ingress/egress 32b nanoseconds timestamp value
-+ *
-+ * Hardware captures timestamps which contain only 32 bits of nominal
-+ * nanoseconds, as opposed to the 64bit timestamps that the stack expects.
-+ *
-+ * Extend the 32bit nanosecond timestamp using the following algorithm and
-+ * assumptions:
-+ *
-+ * 1) have a recently cached copy of the PHC time
-+ * 2) assume that the in_tstamp was captured 2^31 nanoseconds (~2.1
-+ *    seconds) before or after the PHC time was captured.
-+ * 3) calculate the delta between the cached time and the timestamp
-+ * 4) if the delta is smaller than 2^31 nanoseconds, then the timestamp was
-+ *    captured after the PHC time. In this case, the full timestamp is just
-+ *    the cached PHC time plus the delta.
-+ * 5) otherwise, if the delta is larger than 2^31 nanoseconds, then the
-+ *    timestamp was captured *before* the PHC time, i.e. because the PHC
-+ *    cache was updated after the timestamp was captured by hardware. In this
-+ *    case, the full timestamp is the cached time minus the inverse delta.
-+ *
-+ * This algorithm works even if the PHC time was updated after a Tx timestamp
-+ * was requested, but before the Tx timestamp event was reported from
-+ * hardware.
-+ *
-+ * This calculation primarily relies on keeping the cached PHC time up to
-+ * date. If the timestamp was captured more than 2^31 nanoseconds after the
-+ * PHC time, it is possible that the lower 32bits of PHC time have
-+ * overflowed more than once, and we might generate an incorrect timestamp.
-+ *
-+ * This is prevented by (a) periodically updating the cached PHC time once
-+ * a second, and (b) discarding any Tx timestamp packet if it has waited for
-+ * a timestamp for more than one second.
-+ *
-+ * Return: extended timestamp (to 64b).
-+ */
-+u64 iavf_ptp_extend_32b_timestamp(u64 cached_phc_time, u32 in_tstamp)
-+{
-+	u32 low = lower_32_bits(cached_phc_time);
-+	u32 delta = in_tstamp - low;
-+	u64 ns;
-+
-+	/* Do not assume that the in_tstamp is always more recent than the
-+	 * cached PHC time. If the delta is large, it indicates that the
-+	 * in_tstamp was taken in the past, and should be converted
-+	 * forward.
-+	 */
-+	if (delta > S32_MAX)
-+		ns = cached_phc_time - (low - in_tstamp);
-+	else
-+		ns = cached_phc_time + delta;
-+
-+	return ns;
-+}
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ptp.h b/drivers/net/ethernet/intel/iavf/iavf_ptp.h
-index 4c8539c1841d..0f69ccf54ccc 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ptp.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ptp.h
-@@ -6,6 +6,9 @@
- 
- #include "iavf_types.h"
- 
-+/* bit indicating whether a 40bit timestamp is valid */
-+#define IAVF_PTP_40B_TSTAMP_VALID	BIT(24)
-+
- void iavf_ptp_init(struct iavf_adapter *adapter);
- void iavf_ptp_release(struct iavf_adapter *adapter);
- void iavf_ptp_process_caps(struct iavf_adapter *adapter);
-@@ -14,5 +17,6 @@ void iavf_virtchnl_send_ptp_cmd(struct iavf_adapter *adapter);
- int iavf_ptp_set_ts_config(struct iavf_adapter *adapter,
- 			   struct kernel_hwtstamp_config *config,
- 			   struct netlink_ext_ack *extack);
-+u64 iavf_ptp_extend_32b_timestamp(u64 cached_phc_time, u32 in_tstamp);
- 
- #endif /* _IAVF_PTP_H_ */
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-index a3dfbb9806b4..b78b377047a8 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-@@ -8,6 +8,7 @@
- #include "iavf.h"
- #include "iavf_trace.h"
- #include "iavf_prototype.h"
-+#include "iavf_ptp.h"
- 
- /**
-  * iavf_is_descriptor_done - tests DD bit in Rx descriptor
-@@ -1076,6 +1077,45 @@ static void iavf_flex_rx_hash(const struct iavf_ring *ring, __le64 qw1,
- 	}
- }
- 
-+/**
-+ * iavf_flex_rx_tstamp - Capture Rx timestamp from the descriptor
-+ * @rx_ring: descriptor ring
-+ * @qw2: quad word 2 of descriptor
-+ * @qw3: quad word 3 of descriptor
-+ * @skb: skb currently being received
-+ *
-+ * Read the Rx timestamp value from the descriptor and pass it to the stack.
-+ *
-+ * This function only operates on the VIRTCHNL_RXDID_2_FLEX_SQ_NIC flexible
-+ * descriptor writeback format.
-+ */
-+static void iavf_flex_rx_tstamp(const struct iavf_ring *rx_ring, __le64 qw2,
-+				__le64 qw3, struct sk_buff *skb)
-+{
-+	u32 tstamp;
-+	u64 ns;
-+
-+	/* Skip processing if timestamps aren't enabled */
-+	if (!(rx_ring->flags & IAVF_TXRX_FLAGS_HW_TSTAMP))
-+		return;
-+
-+	/* Check if this Rx descriptor has a valid timestamp */
-+	if (!le64_get_bits(qw2, IAVF_PTP_40B_TSTAMP_VALID))
-+		return;
-+
-+	/* the ts_low field only contains the valid bit and sub-nanosecond
-+	 * precision, so we don't need to extract it.
-+	 */
-+	tstamp = le64_get_bits(qw3, IAVF_RXD_FLEX_QW3_TSTAMP_HIGH_M);
-+
-+	ns = iavf_ptp_extend_32b_timestamp(rx_ring->ptp->cached_phc_time,
-+					   tstamp);
-+
-+	*skb_hwtstamps(skb) = (struct skb_shared_hwtstamps) {
-+		.hwtstamp = ns_to_ktime(ns),
-+	};
-+}
-+
- /**
-  * iavf_process_skb_fields - Populate skb header fields from Rx descriptor
-  * @rx_ring: rx descriptor ring packet is being transacted on
-@@ -1097,11 +1137,14 @@ static void iavf_process_skb_fields(const struct iavf_ring *rx_ring,
- 	struct libeth_rx_pt decoded_pt;
- 	__le64 qw0 = rx_desc->qw0;
- 	__le64 qw1 = rx_desc->qw1;
-+	__le64 qw2 = rx_desc->qw2;
-+	__le64 qw3 = rx_desc->qw3;
- 
- 	decoded_pt = libie_rx_pt_parse(ptype);
- 
- 	if (flex) {
- 		iavf_flex_rx_hash(rx_ring, qw1, skb, decoded_pt);
-+		iavf_flex_rx_tstamp(rx_ring, qw2, qw3, skb);
- 		csum_bits = iavf_flex_rx_csum(rx_ring->vsi, le64_to_cpu(qw1),
- 					      decoded_pt);
- 	} else {
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_type.h b/drivers/net/ethernet/intel/iavf/iavf_type.h
-index e62a8a0067ea..f9e1319620f4 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_type.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_type.h
-@@ -285,6 +285,7 @@ struct iavf_rx_desc {
- /* L2 Tag 2 Presence */
- #define IAVF_RXD_FLEX_L2TAG2P_M			BIT(11)
- 	aligned_le64 qw3;
-+#define IAVF_RXD_FLEX_QW3_TSTAMP_HIGH_M		GENMASK_ULL(63, 32)
- } __aligned(4 * sizeof(__le64));
- static_assert(sizeof(struct iavf_rx_desc) == 32);
- 
+ 	/* Record the output buffer. */
+ 	u64 *data;
+ };
 -- 
-2.38.1
+MST
 
