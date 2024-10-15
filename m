@@ -1,153 +1,118 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2067.outbound.protection.outlook.com [40.107.22.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B461FAEE0;
-	Tue, 15 Oct 2024 17:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729013396; cv=fail; b=rYYZm9wQzQFb5j7fGzcRdCjKQ/w1/lsp4x3Qybm/HHle/R3O6TOmvcUm3ub6vwSqdB4uJZZMjSgc49wGMIeOcu2twsvq8hEWqMcb26Sue9ZR7qa8NDlBkH8AvKKX4c9/PMHFyRIn78Vo006jAFbLQ2cqFIRaolAnkC4ODzgHUKw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729013396; c=relaxed/simple;
-	bh=iqaNkKlaAbZm2eiP1qbSoj9kj4alZHe/pTKhv6hrZJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lhM26VjrGJyEKO1WXSpRfxkT8ArwtDsLv/bQH5UlZQQpcTigXysqFIZd+BEZ0Imo4M5ZDlMNfdipi7hdoqJxO0yMFyawqgTvV30j6SoUibVzZKyHyZIjhJjMAHr75XUtQhhRw83Fq2jMS8zEw6KsPSV0IP+sKqikLIoV0kE7LuA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=a4nk8oVu; arc=fail smtp.client-ip=40.107.22.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0B21F9EA8
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 17:30:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729013439; cv=none; b=uHNiu73pzzHTzTHMM9EMN+YoQ2LJrRrYOEYrWhSUPU8hWQjES1IMrZvhAQ8Gy6ARp191Cr8DvhT7wGBqyq1SRfL2jLFjLW6EcfS8LXDxqAJFvwVDuLyhe8lZg4X9W8z9KBNZq8PKDVRBxOviqi8wOfkIsKuV+yWNcWGK+3B43gQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729013439; c=relaxed/simple;
+	bh=fPoINJewr4rZ2fD0i2SvcxTzuhA/UFayJmMdvI3vclc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D4Pl3PFq6uf5am1L7qpLqc8rEHaWpyY4dOKTDyVtcVmsttd3LDGBTU+2HWfHHXF0RGQMEjxmqNo/+3NPIThGnEyJDwpPIAuOqEbycHSSeDQPOv1JF8rYfsQ+oMPtARfyumDQOBpc69d+/e4CGwRjJ5g1rMbDX3HmW54IWyUxOGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Wf9tqruW; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="a4nk8oVu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ibZpFQyoyd3Wc1tRXt05+mFjHh7W5WVkcord3n49cmT0RNUtRwrZD61XGlspyE6vB416gwyHgN8qlJLCgBWoyaY7q2mQuT7KRcIiwlPcIliWuWBXamosVheh/EJBvbPhVKJ2600cXrMo2qbO26PX39tv1wQQKacUR7QD6lHtOKWvE0+uXMHuSOiiZtBCvla9KI2sAQoZESQtgRXxVMHWjEOpN+BOkoYeZKbw2aBDNJwAF7IDn/0N1Ev12OdEgCkHZWknnSi/JkOxmRogHPAl7WYFBcMYdHoh+YSaw2BJqo3GFsbawmOi4ov5FU3e3I5i6lTJa9fKMjliGf1gkZ6z/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L3YiibD17f+yOMI4rorypzf8N8CM2lCHyJQ60/Iz0Oc=;
- b=q0ztjA/oGNjc3USbNacz3Q9sgrKW8i7WinNGjx/V4XE6nb47UuAdPMaUUHJr5axyWGfk7QTcxLHSpagzibqlN77hL1g+IaT/Yg4ZW92Ob8RnPPyxb8lioALVoBKe4BGeVsfBL4gSYfm2otS5OVkuq24/VxxtEVszOat0S4k+EL8+XyuOtVDVIx+LeJXIS4HLcKDrIw+VXCP4c5I+H8vI49cS+Zt76pKdYFBn5/oXB12+A2tMlPpkk1gRtzqoiMdNrHZgvXZFwpk8lqR6t+sKXdf037OTooozuzU3uBLx8JPAIEVQYaDIJofalLg7MW5VcNB1hzjJa2Jn50WnIN2KnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L3YiibD17f+yOMI4rorypzf8N8CM2lCHyJQ60/Iz0Oc=;
- b=a4nk8oVuO59Gp+3Q5m1CYAsjFoc461hfg5aAEMUuLSBzVqHw7FHcKyOeq7JIDtwdjtCUakY2vnOxiADlwG5SYW23NSrF1L2Aysy3uYJrPtDkR7e7uNv0WV+Sb/FxuI/CKxWv/YSYdjLXNeUyfaFDhO/BHOkxuMt+VaE76hPWo/qmyucBx0Sk2cxoDj+GXcUEMR71zwaZ2q64sestj1Tx8hWn/bXoDOoz8X1/7eCU3/6Z3YuXCJaTnkgCG8JyHOz1PPbAUVPtt4viMh8kC75w/+bXDhLkvGVmQuqn1v6g0MF9g+SUZirUnuie7g1/yZi6ak24Z7OxuR2MirDuyJyOWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AM9PR04MB7636.eurprd04.prod.outlook.com (2603:10a6:20b:281::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Tue, 15 Oct
- 2024 17:29:52 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8048.013; Tue, 15 Oct 2024
- 17:29:51 +0000
-Date: Tue, 15 Oct 2024 20:29:48 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:CLANG/LLVM BUILD SUPPORT:" <llvm@lists.linux.dev>
-Subject: Re: [PATCH 1/2] net: systemport: Remove unused txchk accessors
-Message-ID: <20241015172948.xvb3xoed52zhaqtm@skbuf>
-References: <20241015172458.673241-1-florian.fainelli@broadcom.com>
- <20241015172458.673241-1-florian.fainelli@broadcom.com>
- <20241015172458.673241-2-florian.fainelli@broadcom.com>
- <20241015172458.673241-2-florian.fainelli@broadcom.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015172458.673241-2-florian.fainelli@broadcom.com>
- <20241015172458.673241-2-florian.fainelli@broadcom.com>
-X-ClientProxiedBy: VE1PR03CA0022.eurprd03.prod.outlook.com
- (2603:10a6:802:a0::34) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Wf9tqruW"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-45f05a65398so43338981cf.1
+        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 10:30:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1729013436; x=1729618236; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=32F43aWFFhVGx2UIPkft94nsDcd5w72khuVk+0067EI=;
+        b=Wf9tqruWeL5uklteWZdV19EqgNPqCkvc0CrBSUWwdZfCXAGtFes9Y+yJrIluzVbvTd
+         G//DUMn42BNCos6dWSEfjqlyrkaqCc6YMlz6zAe79TuY28dAKtCWBCCyDM33zh+rgpqQ
+         jJKWZMwW6IsqB1GzPNCnAYd3Yc955f2Fg2qfA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729013436; x=1729618236;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=32F43aWFFhVGx2UIPkft94nsDcd5w72khuVk+0067EI=;
+        b=EuYkV38KUdul29dYJ5P1uo+2ymQ4LDVkskf02KGDMSwqwkimwBeiYN/knEOXuENTfR
+         oss8ahtqMHonKAA0abuDP+saSWN2t0vdOCgJn2N640SWQe8kmkHnyb8cRGwQPzclF3Wk
+         fI+toWVugQFY9aiellRAG205PNicu8bpadZKu7AFvVZnHC7JXLbL+dYiOVls8qw8ZRR6
+         7VLFpdy9GJ3rQbdcUEKdYL83tAM9Gnxcg3SD6AkVKxmeH6V8YK/y/cAd159LgMHWgFZe
+         DSwI46rooqWRthDrwg2uVk/G750QBIfheser7eDYGoR7sD8fQ9YCshpI9d7M7hpbDx/T
+         Dotg==
+X-Gm-Message-State: AOJu0YwrPlJVZAka7UjkDVqmXUgO8n1qSK915Wa+x5OTenf5nEP9AXeI
+	Qjpg+S4Db7xYQBmElCa7rf/WFKsip9v9nqjO1l9NF4SHlYXW++dF0NB8CQpbTnHU/l6sJ0FoQHt
+	/kaqWSP8cWGU9gsTtGGH83UMuxVsQCnGC2+LZ2Ya2YbwZfzKn2oWm0ZZp6zzyjlxzJ1jzYClLo1
+	d5vAHEgK+jUOsbzPM5Pd7W4bGc3A9+Tz9ei+oJ99TwykEpGZnw
+X-Google-Smtp-Source: AGHT+IHELpbG7H9Sua7HCjciXrVYE/ELUIdGP3K1aU0Bv5OvRhFzrOOMBo7qamKP9usHie3DBAUdbw==
+X-Received: by 2002:a05:622a:17c4:b0:45d:a196:b321 with SMTP id d75a77b69052e-4604bbcccf0mr237508761cf.32.1729013435935;
+        Tue, 15 Oct 2024 10:30:35 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4607b37ba97sm8677491cf.63.2024.10.15.10.30.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Oct 2024 10:30:35 -0700 (PDT)
+Message-ID: <e3a61540-714a-4f57-a3c4-c0f333e16a07@broadcom.com>
+Date: Tue, 15 Oct 2024 10:30:32 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB7636:EE_
-X-MS-Office365-Filtering-Correlation-Id: 234cbd4b-a293-4e0d-f8d9-08dced3ef9e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jyVwayIJ4m/13QWjqKBDpG71h7Wm9HLn6RP1c06ESTU1TQgKFn48nJ3RVsrS?=
- =?us-ascii?Q?ltLBWIA4mjs/njc9gf9ZliMIon4zkt8YK+KsImDFU6rNj5xxrK2UYt0mFWGd?=
- =?us-ascii?Q?nMiVlqFnf3afak9I0Pq1NrvBW0CKIyrddr24UtpjlNInkRUCvCGm2+4ffevB?=
- =?us-ascii?Q?DKPLWW3vNDoJiuua3HGJ0kyMQGIxAc0D5RpbI1blcKAZNPdwFfMHjUHZMmZW?=
- =?us-ascii?Q?lgc/pqCshXq2C99H+4/vynEIE6hJPTPHxorw/jZBSvoqH1Y67p7ke1irSdNW?=
- =?us-ascii?Q?8N/6MWbQEi7+RdazCLsLtxFA3f2oCHezKJJoAGUe6lwbtvxJszzVX1cu1/1J?=
- =?us-ascii?Q?WL3mf5i6WSm4sQYKcn+7uR+MFhKpgLq/P7hx39Iljd/B02iSqXCcHWE+m4FR?=
- =?us-ascii?Q?Hf4YKJVGD+YjpPsMzuWf4v8QPj7zl8epd9XVp6QJ6HH8TWJCY3sYA0XgKJFX?=
- =?us-ascii?Q?cywkcWX7Askh/2MwGbqva8dhIsjE4cxoS+YUK/cvjqML6A4/sgdtKybUyykM?=
- =?us-ascii?Q?mDS7pM2oT+vpE7jHGYPnM0dK0+zT7iDOlvnyn9cmRvB+2OmfJVW44/tgGDP6?=
- =?us-ascii?Q?/bwYzkCzmYJDn7lyLyfuAbE+EDIWSh2d1CfXAWK4O3t+RuapcjyWw4rc0eL+?=
- =?us-ascii?Q?tYvG+tdhDuJ2M1Wfi6gSJednAOYDnHy6wg1/CUHioTQSRO+2Q6YMhCd6IxKj?=
- =?us-ascii?Q?6FD/aeOPoSCBPdqt1P+KRm3+7IJimVzwE3MyHlz/mGeErBpogcqr6RhjcckD?=
- =?us-ascii?Q?ci2evlJCk5f+x8fG9iR0B7gNcKKKBrYlWXot6mbFgyVwGV3Qyxb2RvSLCHFh?=
- =?us-ascii?Q?g0KGT3hsc+dMLub3pNrTwhuqD63Oxl5rGJulCwrhjiSpSEdkDzLniz529X6s?=
- =?us-ascii?Q?9LZdK/bXdjYpO6kl8gp1G6ckBF9D6Xy3lTugWeEztiqDDrLQQqlAGGaDzKXv?=
- =?us-ascii?Q?u1LCppkdBIPNJD3CT0qrVIR5Baiymmp9SJfL8AQBg4bR5CRdwLOnN82Uua6D?=
- =?us-ascii?Q?m8vSqU92W7y1FUdrMtDRDQFhv8MyCk+PvGZ1R/J+4S+mVYWHBVLeGZhoVBrb?=
- =?us-ascii?Q?o+BDG/4Iq6g5s1wUp2QLYa6hSuqO9MkakpaSHn/QZW4nWE3N5Ac76/T5dIwr?=
- =?us-ascii?Q?dkeU0P4s5etztrbmSLfNCXXJD7M76iiugy8W5gNOGWhDcsX3iUJgsGWFT3ns?=
- =?us-ascii?Q?bpteDbeDaDe4nhReKrYxcTbhFwDIf3fE+AsV2EJV3t52QDxZT9jsiM6OEfaQ?=
- =?us-ascii?Q?r/trswmaKLO4tiPp7k6sc2eKEtGu69xkHVMR145aPQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Y7p6eU7aObNKxTHJRpxtkDRSJ1xkCi9/lW2ypVjzcdNybw4uEb5XRKQVszR8?=
- =?us-ascii?Q?okF0ueGhIva+biWccVQHB2i3Xc3mSegbGcklYxBNfDUpPAOacZt8tZMjklT8?=
- =?us-ascii?Q?aphchcrd6URRB4qoRwvEvO2lqUbzEciGqb2WOyqQflhxMcqDZJh6WIi6VGGx?=
- =?us-ascii?Q?noqD4eYwPuJ4DYKPBsxd57xwuErBHXcA76GqvW1mjFssDxRocIRBUwBGP2jK?=
- =?us-ascii?Q?C7tgnr7hOQ90VaS0H1hPOy5pdMwevdFCnbhWYJn/RAMaDWEWpg4ZUpTXNIwk?=
- =?us-ascii?Q?BKsB3SyRJ8SWzIA4BfF/g3Pv3QUibrPf+4efBFNTMyzcdaOIM65Oek3QqOgn?=
- =?us-ascii?Q?qg6XXXM3+EhxIEBeIOgOzGVliGjflTArOW+EDHqHAJDCtmcBmuChYEdXW4XQ?=
- =?us-ascii?Q?6t1uNhDhwV86k9EG/PantOL69s2l1wtIPbzImSmMl4BQkx/uhtAwWDVGD6yW?=
- =?us-ascii?Q?hqLnMxgh9Yy26cln+v5khzjvQvzUEuXk6j8IQF1TCFpUo5odgjP3SfI2LpgM?=
- =?us-ascii?Q?V0+zRyYPCzuPgxju870EhjqhsN6yx653u/5Wtr4nTaaVqADUyHGGnmr1v2t8?=
- =?us-ascii?Q?IA6sDXtTCxvnaJ2RXygSpnN6o9QSQok06+8orwVCL+fBt3XXnBWVMfwIZyCB?=
- =?us-ascii?Q?EMpCaFKtlwsw1rmordCYpuUxTAp6WrLmP7Q1fHPDF1xWwQGfjNQQntSIQTL6?=
- =?us-ascii?Q?Sr8LDYrAnkjRu7HwN1DtvITUvNuNBVnrYhioB25JhWHeGdlhl+T1KoufsMk7?=
- =?us-ascii?Q?k3+yMAZE+eFah1phyHchlB166joN1j1YAaI1/8iXKuP4xUebinWsXPWRSGLa?=
- =?us-ascii?Q?mP9tXTK+P2wZYmevSmZThNytKY6xCvpgYqzmh2ATc1NMeHIqjIgqHgGEIpLB?=
- =?us-ascii?Q?PG539sCUkdHsEr2+vPjLS6P0gXFqJJXKVptW3IstxS0rtcm/7DkFCJSwJhbq?=
- =?us-ascii?Q?/i8ytY18UFUUXS9JaAIRpGeNDhaKHmP2j5wXCKEO606EDanRKcNdlKDVs1+r?=
- =?us-ascii?Q?+xduer7gsnE5RTd7KG3A0LrzfWUnA4hD+2jDb1t+c3OS8B8q/im+5YPp1Dk+?=
- =?us-ascii?Q?iXZsS5xh4ffc3RPBHEtZx/nuVvmpDOc8/3zk7uwDEnckTrSpQ74qFUj1dzWf?=
- =?us-ascii?Q?DFiWkb01nL5APV+HmruwuFd5pGi6i4HHxKe6h8dM4pKv3UHjvJbcV3G//4ge?=
- =?us-ascii?Q?SO2o6K2H6q7yQcGPwysvBWNW0sFAAi+hLvZy4NMaHTmbVsXi3zpPhnm2eZfG?=
- =?us-ascii?Q?gke1zt4sjody2MOPaZ14fkCTMysXsVGSAzKVsZmIKl6mH+564YiQ6lSIlUPR?=
- =?us-ascii?Q?baeabRk3F8altvHV74oGx9ivx7NgwIqhV3Jdu4v+LMR8O2rOetd7rvqDA7N2?=
- =?us-ascii?Q?vLdVTu64PuVKeur0YexrglVRKbb/lKyD6ueoIu7kffad/bjyzpfyfE1WqqU5?=
- =?us-ascii?Q?YpoO/p6W3uNTXySMQnReAOkUNf8qNs04oigRabywhbPA+mE0hBVkwhxgdFi9?=
- =?us-ascii?Q?0ZhJSzF7Jck9smmZIKsqwKUcV4FgcfbdHUM0/Nfx6JhIzzsICNkvDfF7CQoM?=
- =?us-ascii?Q?7azv8dRSQCLL32/4DLQru6g2fzl4rI1lODqZE8xqQzRPD0Vxxiv7kv61rZAq?=
- =?us-ascii?Q?Iw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 234cbd4b-a293-4e0d-f8d9-08dced3ef9e9
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 17:29:51.8387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HbP1PTz0lsd3GOc50owvB6HGJlhhEEMmvgyyabZMD875uyc4oRKPYGyRoLw+d35+cX6c0ZIu+kntTT45SP9kFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7636
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] net: systemport: Remove unused txchk accessors
+To: netdev@vger.kernel.org
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:CLANG/LLVM BUILD SUPPORT:" <llvm@lists.linux.dev>
+References: <20241015172458.673241-1-florian.fainelli@broadcom.com>
+ <20241015172458.673241-2-florian.fainelli@broadcom.com>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20241015172458.673241-2-florian.fainelli@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 15, 2024 at 10:24:57AM -0700, Florian Fainelli wrote:
+On 10/15/24 10:24, Florian Fainelli wrote:
 > Vladimir reported the following warning with clang-16 and W=1:
 > 
 > warning: unused function 'txchk_readl' [-Wunused-function]
@@ -163,34 +128,13 @@ On Tue, Oct 15, 2024 at 10:24:57AM -0700, Florian Fainelli wrote:
 > 
 > warning: unused function 'tbuf_writel' [-Wunused-function]
 > note: expanded from macro 'BCM_SYSPORT_IO_MACRO'
-
-I mean the warnings do say that the tbuf macros are unused too, yet you
-only remove txchk? I did ask yesterday if that should also be deleted,
-and with it the other unused transmit buffer macros?
-https://lore.kernel.org/netdev/20241014174056.sxcgikf4hhw2olp7@skbuf/
-
 > 
 > The TXCHK block is not being accessed, remove the IO macros used to
 > access this block. No functional impact.
 > 
 > Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/bcmsysport.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-> index 9332a9390f0d..05c83cb3871c 100644
-> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
-> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-> @@ -46,7 +46,6 @@ BCM_SYSPORT_IO_MACRO(umac, SYS_PORT_UMAC_OFFSET);
->  BCM_SYSPORT_IO_MACRO(gib, SYS_PORT_GIB_OFFSET);
->  BCM_SYSPORT_IO_MACRO(tdma, SYS_PORT_TDMA_OFFSET);
->  BCM_SYSPORT_IO_MACRO(rxchk, SYS_PORT_RXCHK_OFFSET);
-> -BCM_SYSPORT_IO_MACRO(txchk, SYS_PORT_TXCHK_OFFSET);
->  BCM_SYSPORT_IO_MACRO(rbuf, SYS_PORT_RBUF_OFFSET);
->  BCM_SYSPORT_IO_MACRO(tbuf, SYS_PORT_TBUF_OFFSET);
->  BCM_SYSPORT_IO_MACRO(topctrl, SYS_PORT_TOPCTRL_OFFSET);
-> -- 
-> 2.43.0
->
+
+Forgot to remove the tbuf accessor here as well, will post again in 24hrs.
+-- 
+Florian
