@@ -1,29 +1,29 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACB3221E25;
-	Tue, 15 Oct 2024 12:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCC620721A;
+	Tue, 15 Oct 2024 12:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996105; cv=none; b=DGQff27DINPoUYmfNvMeKTOQl2CqStmAamW9G2QDtoBi8NeCPaO+Cgt2hjzbDgVClXPauEdfsz5c4eUUJNjB3g7ky4+LPAtNi34cDFm/7PaPD3riw9bOd6YWOZDcf39PXUNIvKAiVK2ettEbql53EDs5gYq97PIMu7WXDLOXxQU=
+	t=1728996106; cv=none; b=oXJReNbQTi9buwiAyhTlvSKNpiVo5Kl/4OUoI288eRh8x5J+T1Eh3Z/vYDEKBeSuw11UYWXfM5jq5ks1nMWgt9ogow5c8KAzecQ2MOaaLoNMv3eWunBvPshcpyZHfSEUAxmB2Rg9GZUR588fTr3+urbhtlldUnK3M6v2GPWG7BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996105; c=relaxed/simple;
-	bh=ThLwwObzdwIUKuymEVSgNjtIXt+0GGjasJgm5wImJlc=;
+	s=arc-20240116; t=1728996106; c=relaxed/simple;
+	bh=0JRej7RCXPq4S9cUaYod7CYeC5YRIYUcHknS5Vf7hBM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EirHHcX5I15UZGXHLG1Al6gUaSsq7qo/xrQx95kuqXqn9cyKc16Qx9LPjLwoo3HWI9sPV8E3Z8a+lVe5R6Kihv/Ixhs6O9n1lKAk6WsqIw7pKr62MR+IDlMnLCa8bos4tgi/SyU0tq84ti6jEVKHDk74SOOv5QCa3kzLfURjNqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=C4yrhZz8uA1nRAmvNiAiXpMmYRWykx3bvsX/QHIeGagR/SYyW7ZRCXbqDnpFnByhPEpGHZTACpzsbwePMBzYSPAGFM+uOmOE5p3Gv+qKhhSQmXeTcVeL03k/xYExOYGvu0uglBuaOKlEHXp0WTGRstEPBktxCSh8VImdyJkroqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XSYbb12M4z2DdMM;
-	Tue, 15 Oct 2024 20:40:27 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XSYbQ5FxczyS2K;
+	Tue, 15 Oct 2024 20:40:18 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2C69D1A016C;
-	Tue, 15 Oct 2024 20:41:40 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 9BB3918005F;
+	Tue, 15 Oct 2024 20:41:41 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 15 Oct 2024 20:41:39 +0800
+ 15.1.2507.39; Tue, 15 Oct 2024 20:41:40 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>
@@ -35,9 +35,9 @@ CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
 	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
 	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V12 RESEND net-next 02/10] net: hibmcge: Add read/write registers supported through the bar space
-Date: Tue, 15 Oct 2024 20:35:08 +0800
-Message-ID: <20241015123516.4035035-3-shaojijie@huawei.com>
+Subject: [PATCH V12 RESEND net-next 04/10] net: hibmcge: Add interrupt supported in this module
+Date: Tue, 15 Oct 2024 20:35:10 +0800
+Message-ID: <20241015123516.4035035-5-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241015123516.4035035-1-shaojijie@huawei.com>
 References: <20241015123516.4035035-1-shaojijie@huawei.com>
@@ -52,14 +52,26 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-Add support for to read and write registers through the pic bar space.
+The driver supports four interrupts: TX interrupt, RX interrupt,
+mdio interrupt, and error interrupt.
 
-Some driver parameters, such as mac_id, are determined by the
-board form. Therefore, these parameters are initialized
-from the register as device specifications.
+Actually, the driver does not use the mdio interrupt.
+Therefore, the driver does not request the mdio interrupt.
 
-the device specifications register are initialized and written by bmc.
-driver will read these registers when loading.
+The error interrupt distinguishes different error information
+by using different masks. To distinguish different errors,
+the statistics count is added for each error.
+
+To ensure the consistency of the code process, masks are added for the
+TX interrupt and RX interrupt.
+
+This patch implements interrupt request, and provides a
+unified entry for the interrupt handler function. However,
+the specific interrupt handler function of each interrupt
+is not implemented currently.
+
+Because of pcim_enable_device(), the interrupt vector
+is already device managed and does not need to be free actively.
 
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
@@ -68,244 +80,358 @@ v11 -> v12:
   - Fix some warnings detected by checkpatch, suggested by Jakub and Simon Horman.
      ./scripts/checkpatch.pl --strict --codespell --max-line-length=80
   v11: https://lore.kernel.org/all/20241008022358.863393-1-shaojijie@huawei.com/
-v3 -> v4:
-  - Delete INITED_STATE in priv, suggested by Andrew.
-  v3: https://lore.kernel.org/all/20240822093334.1687011-1-shaojijie@huawei.com/
+v10 -> v11:
+  - Fix a syntax error in comment, suggested by Christophe JAILLET.
+  v10: https://lore.kernel.org/all/20240912025127.3912972-1-shaojijie@huawei.com/
+RFC v1 -> RFC v2:
+  - Replace request_irq with devm_request_irq, suggested by Jonathan.
+  - Replace BIT_MASK() with BIT(), suggested by Jonathan.
+  - Introduce irq_handle in struct hbg_irq_info in advance to reduce code changes,
+    suggested by Jonathan.
+  RFC v1: https://lore.kernel.org/all/20240731094245.1967834-1-shaojijie@huawei.com/
 ---
- .../ethernet/hisilicon/hibmcge/hbg_common.h   | 26 +++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 77 +++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.h   | 34 ++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c | 16 ++++
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  | 20 +++++
- 5 files changed, 173 insertions(+)
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
+ .../ethernet/hisilicon/hibmcge/hbg_common.h   |  18 +++
+ .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  57 +++++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_hw.h   |   4 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_irq.c  | 115 ++++++++++++++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_irq.h  |  11 ++
+ .../net/ethernet/hisilicon/hibmcge/hbg_main.c |   5 +
+ .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  27 ++++
+ 7 files changed, 237 insertions(+)
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.h
 
 diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 614650e9a71f..6fbc24803942 100644
+index bb88a37518cb..f60c2cc828fb 100644
 --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
 +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -7,10 +7,36 @@
- #include <linux/netdevice.h>
- #include <linux/pci.h>
+@@ -12,6 +12,7 @@
+ #define HBG_STATUS_ENABLE		0x1
+ #define HBG_RX_SKIP1			0x00
+ #define HBG_RX_SKIP2			0x01
++#define HBG_VECTOR_NUM			4
  
-+enum hbg_nic_state {
-+	HBG_NIC_STATE_EVENT_HANDLING = 0,
+ enum hbg_nic_state {
+ 	HBG_NIC_STATE_EVENT_HANDLING = 0,
+@@ -37,6 +38,22 @@ struct hbg_dev_specs {
+ 	u32 rx_buf_size;
+ };
+ 
++struct hbg_irq_info {
++	const char *name;
++	u32 mask;
++	bool re_enable;
++	bool need_print;
++	u64 count;
++
++	void (*irq_handle)(struct hbg_priv *priv, struct hbg_irq_info *info);
 +};
 +
-+enum hbg_hw_event_type {
-+	HBG_HW_EVENT_NONE = 0,
-+	HBG_HW_EVENT_INIT, /* driver is loading */
++struct hbg_vector {
++	char name[HBG_VECTOR_NUM][32];
++	struct hbg_irq_info *info_array;
++	u32 info_array_len;
 +};
 +
-+struct hbg_dev_specs {
-+	u32 mac_id;
-+	struct sockaddr mac_addr;
-+	u32 phy_addr;
-+	u32 mdio_frequency;
-+	u32 rx_fifo_num;
-+	u32 tx_fifo_num;
-+	u32 vlan_layers;
-+	u32 max_mtu;
-+	u32 min_mtu;
-+
-+	u32 max_frame_len;
-+	u32 rx_buf_size;
-+};
-+
- struct hbg_priv {
- 	struct net_device *netdev;
- 	struct pci_dev *pdev;
- 	u8 __iomem *io_base;
-+	struct hbg_dev_specs dev_specs;
-+	unsigned long state;
+ struct hbg_mac {
+ 	struct mii_bus *mdio_bus;
+ 	struct phy_device *phydev;
+@@ -55,6 +72,7 @@ struct hbg_priv {
+ 	struct hbg_dev_specs dev_specs;
+ 	unsigned long state;
+ 	struct hbg_mac mac;
++	struct hbg_vector vectors;
  };
  
  #endif
 diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-new file mode 100644
-index 000000000000..65cd13ebe5d0
---- /dev/null
+index 133d0d70fa89..76ce0d811f64 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
 +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -0,0 +1,77 @@
+@@ -75,6 +75,63 @@ static int hbg_hw_dev_specs_init(struct hbg_priv *priv)
+ 	return 0;
+ }
+ 
++u32 hbg_hw_get_irq_status(struct hbg_priv *priv)
++{
++	u32 status;
++
++	status = hbg_reg_read(priv, HBG_REG_CF_INTRPT_STAT_ADDR);
++
++	hbg_field_modify(status, HBG_INT_MSK_TX_B,
++			 hbg_reg_read(priv, HBG_REG_CF_IND_TXINT_STAT_ADDR));
++	hbg_field_modify(status, HBG_INT_MSK_RX_B,
++			 hbg_reg_read(priv, HBG_REG_CF_IND_RXINT_STAT_ADDR));
++
++	return status;
++}
++
++void hbg_hw_irq_clear(struct hbg_priv *priv, u32 mask)
++{
++	if (FIELD_GET(HBG_INT_MSK_TX_B, mask))
++		return hbg_reg_write(priv, HBG_REG_CF_IND_TXINT_CLR_ADDR, 0x1);
++
++	if (FIELD_GET(HBG_INT_MSK_RX_B, mask))
++		return hbg_reg_write(priv, HBG_REG_CF_IND_RXINT_CLR_ADDR, 0x1);
++
++	return hbg_reg_write(priv, HBG_REG_CF_INTRPT_CLR_ADDR, mask);
++}
++
++bool hbg_hw_irq_is_enabled(struct hbg_priv *priv, u32 mask)
++{
++	if (FIELD_GET(HBG_INT_MSK_TX_B, mask))
++		return hbg_reg_read(priv, HBG_REG_CF_IND_TXINT_MSK_ADDR);
++
++	if (FIELD_GET(HBG_INT_MSK_RX_B, mask))
++		return hbg_reg_read(priv, HBG_REG_CF_IND_RXINT_MSK_ADDR);
++
++	return hbg_reg_read(priv, HBG_REG_CF_INTRPT_MSK_ADDR) & mask;
++}
++
++void hbg_hw_irq_enable(struct hbg_priv *priv, u32 mask, bool enable)
++{
++	u32 value;
++
++	if (FIELD_GET(HBG_INT_MSK_TX_B, mask))
++		return hbg_reg_write(priv,
++				     HBG_REG_CF_IND_TXINT_MSK_ADDR, enable);
++
++	if (FIELD_GET(HBG_INT_MSK_RX_B, mask))
++		return hbg_reg_write(priv,
++				     HBG_REG_CF_IND_RXINT_MSK_ADDR, enable);
++
++	value = hbg_reg_read(priv, HBG_REG_CF_INTRPT_MSK_ADDR);
++	if (enable)
++		value |= mask;
++	else
++		value &= ~mask;
++
++	hbg_reg_write(priv, HBG_REG_CF_INTRPT_MSK_ADDR, value);
++}
++
+ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+ {
+ 	hbg_reg_write_field(priv, HBG_REG_PORT_MODE_ADDR,
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
+index 47df597b885f..4d09bdd41c76 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
+@@ -45,5 +45,9 @@ int hbg_hw_event_notify(struct hbg_priv *priv,
+ 			enum hbg_hw_event_type event_type);
+ int hbg_hw_init(struct hbg_priv *priv);
+ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex);
++u32 hbg_hw_get_irq_status(struct hbg_priv *priv);
++void hbg_hw_irq_clear(struct hbg_priv *priv, u32 mask);
++bool hbg_hw_irq_is_enabled(struct hbg_priv *priv, u32 mask);
++void hbg_hw_irq_enable(struct hbg_priv *priv, u32 mask, bool enable);
+ 
+ #endif
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c
+new file mode 100644
+index 000000000000..66e047fb2d79
+--- /dev/null
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c
+@@ -0,0 +1,115 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +// Copyright (c) 2024 Hisilicon Limited.
 +
-+#include <linux/etherdevice.h>
-+#include <linux/ethtool.h>
-+#include <linux/iopoll.h>
-+#include <linux/minmax.h>
-+#include "hbg_common.h"
++#include <linux/interrupt.h>
++#include "hbg_irq.h"
 +#include "hbg_hw.h"
-+#include "hbg_reg.h"
 +
-+#define HBG_HW_EVENT_WAIT_TIMEOUT_US	(2 * 1000 * 1000)
-+#define HBG_HW_EVENT_WAIT_INTERVAL_US	(10 * 1000)
-+
-+static bool hbg_hw_spec_is_valid(struct hbg_priv *priv)
++static void hbg_irq_handle_err(struct hbg_priv *priv,
++			       struct hbg_irq_info *irq_info)
 +{
-+	return hbg_reg_read(priv, HBG_REG_SPEC_VALID_ADDR) &&
-+	       !hbg_reg_read(priv, HBG_REG_EVENT_REQ_ADDR);
-+}
-+
-+int hbg_hw_event_notify(struct hbg_priv *priv,
-+			enum hbg_hw_event_type event_type)
-+{
-+	bool is_valid;
-+	int ret;
-+
-+	if (test_and_set_bit(HBG_NIC_STATE_EVENT_HANDLING, &priv->state))
-+		return -EBUSY;
-+
-+	/* notify */
-+	hbg_reg_write(priv, HBG_REG_EVENT_REQ_ADDR, event_type);
-+
-+	ret = read_poll_timeout(hbg_hw_spec_is_valid, is_valid, is_valid,
-+				HBG_HW_EVENT_WAIT_INTERVAL_US,
-+				HBG_HW_EVENT_WAIT_TIMEOUT_US,
-+				HBG_HW_EVENT_WAIT_INTERVAL_US, priv);
-+
-+	clear_bit(HBG_NIC_STATE_EVENT_HANDLING, &priv->state);
-+
-+	if (ret)
++	if (irq_info->need_print)
 +		dev_err(&priv->pdev->dev,
-+			"event %d wait timeout\n", event_type);
-+
-+	return ret;
++			"receive error interrupt: %s\n", irq_info->name);
 +}
 +
-+static int hbg_hw_dev_specs_init(struct hbg_priv *priv)
-+{
-+	struct hbg_dev_specs *specs = &priv->dev_specs;
-+	u64 mac_addr;
++#define HBG_TXRX_IRQ_I(name, handle) \
++	{#name, HBG_INT_MSK_##name##_B, false, false, 0, handle}
++#define HBG_ERR_IRQ_I(name, need_print) \
++	{#name, HBG_INT_MSK_##name##_B, true, need_print, 0, hbg_irq_handle_err}
 +
-+	if (!hbg_hw_spec_is_valid(priv)) {
-+		dev_err(&priv->pdev->dev, "dev_specs not init\n");
-+		return -EINVAL;
++static struct hbg_irq_info hbg_irqs[] = {
++	HBG_TXRX_IRQ_I(RX, NULL),
++	HBG_TXRX_IRQ_I(TX, NULL),
++	HBG_ERR_IRQ_I(MAC_MII_FIFO_ERR, true),
++	HBG_ERR_IRQ_I(MAC_PCS_RX_FIFO_ERR, true),
++	HBG_ERR_IRQ_I(MAC_PCS_TX_FIFO_ERR, true),
++	HBG_ERR_IRQ_I(MAC_APP_RX_FIFO_ERR, true),
++	HBG_ERR_IRQ_I(MAC_APP_TX_FIFO_ERR, true),
++	HBG_ERR_IRQ_I(SRAM_PARITY_ERR, true),
++	HBG_ERR_IRQ_I(TX_AHB_ERR, true),
++	HBG_ERR_IRQ_I(RX_BUF_AVL, false),
++	HBG_ERR_IRQ_I(REL_BUF_ERR, true),
++	HBG_ERR_IRQ_I(TXCFG_AVL, false),
++	HBG_ERR_IRQ_I(TX_DROP, false),
++	HBG_ERR_IRQ_I(RX_DROP, false),
++	HBG_ERR_IRQ_I(RX_AHB_ERR, true),
++	HBG_ERR_IRQ_I(MAC_FIFO_ERR, false),
++	HBG_ERR_IRQ_I(RBREQ_ERR, false),
++	HBG_ERR_IRQ_I(WE_ERR, false),
++};
++
++static irqreturn_t hbg_irq_handle(int irq_num, void *p)
++{
++	struct hbg_irq_info *info;
++	struct hbg_priv *priv = p;
++	u32 status;
++	u32 i;
++
++	status = hbg_hw_get_irq_status(priv);
++	for (i = 0; i < priv->vectors.info_array_len; i++) {
++		info = &priv->vectors.info_array[i];
++		if (status & info->mask) {
++			if (!hbg_hw_irq_is_enabled(priv, info->mask))
++				continue;
++
++			hbg_hw_irq_enable(priv, info->mask, false);
++			hbg_hw_irq_clear(priv, info->mask);
++
++			info->count++;
++			if (info->irq_handle)
++				info->irq_handle(priv, info);
++
++			if (info->re_enable)
++				hbg_hw_irq_enable(priv, info->mask, true);
++		}
 +	}
 +
-+	specs->mac_id = hbg_reg_read(priv, HBG_REG_MAC_ID_ADDR);
-+	specs->phy_addr = hbg_reg_read(priv, HBG_REG_PHY_ID_ADDR);
-+	specs->mdio_frequency = hbg_reg_read(priv, HBG_REG_MDIO_FREQ_ADDR);
-+	specs->max_mtu = hbg_reg_read(priv, HBG_REG_MAX_MTU_ADDR);
-+	specs->min_mtu = hbg_reg_read(priv, HBG_REG_MIN_MTU_ADDR);
-+	specs->vlan_layers = hbg_reg_read(priv, HBG_REG_VLAN_LAYERS_ADDR);
-+	specs->rx_fifo_num = hbg_reg_read(priv, HBG_REG_RX_FIFO_NUM_ADDR);
-+	specs->tx_fifo_num = hbg_reg_read(priv, HBG_REG_TX_FIFO_NUM_ADDR);
-+	mac_addr = hbg_reg_read64(priv, HBG_REG_MAC_ADDR_ADDR);
-+	u64_to_ether_addr(mac_addr, (u8 *)specs->mac_addr.sa_data);
++	return IRQ_HANDLED;
++}
 +
-+	if (!is_valid_ether_addr((u8 *)specs->mac_addr.sa_data))
-+		return -EADDRNOTAVAIL;
++static const char *irq_names_map[HBG_VECTOR_NUM] = { "tx", "rx",
++						     "err", "mdio" };
 +
++int hbg_irq_init(struct hbg_priv *priv)
++{
++	struct hbg_vector *vectors = &priv->vectors;
++	struct device *dev = &priv->pdev->dev;
++	int ret, id;
++	u32 i;
++
++	/* used pcim_enable_device(),  so the vectors become device managed */
++	ret = pci_alloc_irq_vectors(priv->pdev, HBG_VECTOR_NUM, HBG_VECTOR_NUM,
++				    PCI_IRQ_MSI | PCI_IRQ_MSIX);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to allocate vectors\n");
++
++	if (ret != HBG_VECTOR_NUM)
++		return dev_err_probe(dev, -EINVAL,
++				     "requested %u MSI, but allocated %d MSI\n",
++				     HBG_VECTOR_NUM, ret);
++
++	/* mdio irq not requested, so the number of requested interrupts
++	 * is HBG_VECTOR_NUM - 1.
++	 */
++	for (i = 0; i < HBG_VECTOR_NUM - 1; i++) {
++		id = pci_irq_vector(priv->pdev, i);
++		if (id < 0)
++			return dev_err_probe(dev, id, "failed to get irq id\n");
++
++		snprintf(vectors->name[i], sizeof(vectors->name[i]), "%s-%s-%s",
++			 dev_driver_string(dev), pci_name(priv->pdev),
++			 irq_names_map[i]);
++
++		ret = devm_request_irq(dev, id, hbg_irq_handle, 0,
++				       vectors->name[i], priv);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "failed to request irq: %s\n",
++					     irq_names_map[i]);
++	}
++
++	vectors->info_array = hbg_irqs;
++	vectors->info_array_len = ARRAY_SIZE(hbg_irqs);
 +	return 0;
 +}
-+
-+int hbg_hw_init(struct hbg_priv *priv)
-+{
-+	return hbg_hw_dev_specs_init(priv);
-+}
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.h
 new file mode 100644
-index 000000000000..4a62d1a610ea
+index 000000000000..5c5323cfc751
 --- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-@@ -0,0 +1,34 @@
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.h
+@@ -0,0 +1,11 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/* Copyright (c) 2024 Hisilicon Limited. */
 +
-+#ifndef __HBG_HW_H
-+#define __HBG_HW_H
++#ifndef __HBG_IRQ_H
++#define __HBG_IRQ_H
 +
-+#include <linux/bitfield.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
++#include "hbg_common.h"
 +
-+static inline u32 hbg_reg_read(struct hbg_priv *priv, u32 addr)
-+{
-+	return readl(priv->io_base + addr);
-+}
-+
-+static inline void hbg_reg_write(struct hbg_priv *priv, u32 addr, u32 value)
-+{
-+	writel(value, priv->io_base + addr);
-+}
-+
-+static inline u64 hbg_reg_read64(struct hbg_priv *priv, u32 addr)
-+{
-+	return lo_hi_readq(priv->io_base + addr);
-+}
-+
-+static inline void hbg_reg_write64(struct hbg_priv *priv, u32 addr, u64 value)
-+{
-+	lo_hi_writeq(value, priv->io_base + addr);
-+}
-+
-+int hbg_hw_event_notify(struct hbg_priv *priv,
-+			enum hbg_hw_event_type event_type);
-+int hbg_hw_init(struct hbg_priv *priv);
++int hbg_irq_init(struct hbg_priv *priv);
 +
 +#endif
 diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index 86027434d5e0..83f1bd1a950b 100644
+index 546c36021905..e71ff821c582 100644
 --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
 +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -5,6 +5,18 @@
- #include <linux/netdevice.h>
+@@ -6,6 +6,7 @@
  #include <linux/pci.h>
  #include "hbg_common.h"
-+#include "hbg_hw.h"
-+
-+static int hbg_init(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_INIT);
-+	if (ret)
-+		return ret;
-+
-+	return hbg_hw_init(priv);
-+}
+ #include "hbg_hw.h"
++#include "hbg_irq.h"
+ #include "hbg_mdio.h"
  
- static int hbg_pci_init(struct pci_dev *pdev)
- {
-@@ -55,6 +67,10 @@ static int hbg_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ static int hbg_init(struct hbg_priv *priv)
+@@ -20,6 +21,10 @@ static int hbg_init(struct hbg_priv *priv)
  	if (ret)
  		return ret;
  
-+	ret = hbg_init(priv);
++	ret = hbg_irq_init(priv);
 +	if (ret)
 +		return ret;
 +
- 	netdev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+ 	return hbg_mdio_init(priv);
+ }
  
- 	ret = devm_register_netdev(dev, netdev);
 diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-new file mode 100644
-index 000000000000..77153f1132fd
---- /dev/null
+index 40decafd1e04..8cdf018c2de9 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
 +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (c) 2024 Hisilicon Limited. */
-+
-+#ifndef __HBG_REG_H
-+#define __HBG_REG_H
-+
-+/* DEV SPEC */
-+#define HBG_REG_SPEC_VALID_ADDR			0x0000
-+#define HBG_REG_EVENT_REQ_ADDR			0x0004
-+#define HBG_REG_MAC_ID_ADDR			0x0008
-+#define HBG_REG_PHY_ID_ADDR			0x000C
-+#define HBG_REG_MAC_ADDR_ADDR			0x0010
-+#define HBG_REG_MDIO_FREQ_ADDR			0x0024
-+#define HBG_REG_MAX_MTU_ADDR			0x0028
-+#define HBG_REG_MIN_MTU_ADDR			0x002C
-+#define HBG_REG_TX_FIFO_NUM_ADDR		0x0030
-+#define HBG_REG_RX_FIFO_NUM_ADDR		0x0034
-+#define HBG_REG_VLAN_LAYERS_ADDR		0x0038
-+
-+#endif
+@@ -51,6 +51,27 @@
+ #define HBG_REG_RECV_CTRL_STRIP_PAD_EN_B	BIT(3)
+ 
+ /* PCU */
++#define HBG_REG_CF_INTRPT_MSK_ADDR		(HBG_REG_SGMII_BASE + 0x042C)
++#define HBG_INT_MSK_WE_ERR_B			BIT(31)
++#define HBG_INT_MSK_RBREQ_ERR_B			BIT(30)
++#define HBG_INT_MSK_MAC_FIFO_ERR_B		BIT(29)
++#define HBG_INT_MSK_RX_AHB_ERR_B		BIT(28)
++#define HBG_INT_MSK_RX_DROP_B			BIT(26)
++#define HBG_INT_MSK_TX_DROP_B			BIT(25)
++#define HBG_INT_MSK_TXCFG_AVL_B			BIT(24)
++#define HBG_INT_MSK_REL_BUF_ERR_B		BIT(23)
++#define HBG_INT_MSK_RX_BUF_AVL_B		BIT(22)
++#define HBG_INT_MSK_TX_AHB_ERR_B		BIT(21)
++#define HBG_INT_MSK_SRAM_PARITY_ERR_B		BIT(20)
++#define HBG_INT_MSK_MAC_APP_TX_FIFO_ERR_B	BIT(19)
++#define HBG_INT_MSK_MAC_APP_RX_FIFO_ERR_B	BIT(18)
++#define HBG_INT_MSK_MAC_PCS_TX_FIFO_ERR_B	BIT(17)
++#define HBG_INT_MSK_MAC_PCS_RX_FIFO_ERR_B	BIT(16)
++#define HBG_INT_MSK_MAC_MII_FIFO_ERR_B		BIT(15)
++#define HBG_INT_MSK_TX_B			BIT(1) /* just used in driver */
++#define HBG_INT_MSK_RX_B			BIT(0) /* just used in driver */
++#define HBG_REG_CF_INTRPT_STAT_ADDR		(HBG_REG_SGMII_BASE + 0x0434)
++#define HBG_REG_CF_INTRPT_CLR_ADDR		(HBG_REG_SGMII_BASE + 0x0438)
+ #define HBG_REG_RX_BUF_SIZE_ADDR		(HBG_REG_SGMII_BASE + 0x04E4)
+ #define HBG_REG_RX_BUF_SIZE_M			GENMASK(15, 0)
+ #define HBG_REG_BUS_CTRL_ADDR			(HBG_REG_SGMII_BASE + 0x04E8)
+@@ -64,6 +85,12 @@
+ #define HBG_REG_RX_CTRL_RXBUF_1ST_SKIP_SIZE2_M	GENMASK(3, 0)
+ #define HBG_REG_RX_PKT_MODE_ADDR		(HBG_REG_SGMII_BASE + 0x04F4)
+ #define HBG_REG_RX_PKT_MODE_PARSE_MODE_M	GENMASK(22, 21)
++#define HBG_REG_CF_IND_TXINT_MSK_ADDR		(HBG_REG_SGMII_BASE + 0x0694)
++#define HBG_REG_CF_IND_TXINT_STAT_ADDR		(HBG_REG_SGMII_BASE + 0x0698)
++#define HBG_REG_CF_IND_TXINT_CLR_ADDR		(HBG_REG_SGMII_BASE + 0x069C)
++#define HBG_REG_CF_IND_RXINT_MSK_ADDR		(HBG_REG_SGMII_BASE + 0x06a0)
++#define HBG_REG_CF_IND_RXINT_STAT_ADDR		(HBG_REG_SGMII_BASE + 0x06a4)
++#define HBG_REG_CF_IND_RXINT_CLR_ADDR		(HBG_REG_SGMII_BASE + 0x06a8)
+ 
+ enum hbg_port_mode {
+ 	/* 0x0 ~ 0x5 are reserved */
 -- 
 2.33.0
 
