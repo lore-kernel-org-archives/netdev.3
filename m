@@ -1,16 +1,16 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED11A0B15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412191AB510
 	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 07:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728978343; cv=none; b=ELpzF3Ze08BGr0l+EpaY/VDOnHQE5f1kb2dr1JmNHISWac+e3OBtxyUg/YFhCXOY2QKOcBYbbQJG7xNmd+r+rOnwTJa0GeW22qUb/FFTxL9/glvNXQU1cVC2IRuESgXrzlUld4UI3lsqjv2PAMBrY+dNcLQr83/CRLshQfj3Cww=
+	t=1728978343; cv=none; b=k/gWJb0myZno72XWzH9+QSqhelgerBP1OC7Cd1J0L2NkA3MrTbzzTX2CFeUcg1x9JPLjo32OwItiMNgXiv5QRB5BeUl7OYFqF/tef9Khvpz7Q91ckr5Xgbsiftd7rKlQzow0zKQ7dqU4X6PolO9VC+pWsO4Rw01IqAeMqyRuHeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728978343; c=relaxed/simple;
-	bh=aKy2eSD2H8iEe2Cs/9wyx9D0Vx7gXXDva4TPzCHSAuo=;
+	bh=oQ0+8nbFKc4JBWBScRpGx74v8zpjRW0Cn9MJVfOA3L4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kjrM4p3DQnrt9nubP4jXIWv8gSuvD+F5Ygq16yicq/XlzHiLzPfMTfD4EkDPUpVv8MLGxptN4ZoAZ5mMvhNiI81S1Tr/puMr1LnMcvCJiT2zCAKcget9K0qpvhlOrpFBOPecIsrlL6ouRpToGpv7FMvzjiyw2pTb9weqzeuNHIE=
+	 MIME-Version; b=eifT5ZWQkaSGgBjiNLxdgwtejk9e8dZjq3wJIE+iF2FSm99Y/4YD9Il16mry9egh1D7PLTBqQnW2KFYROyNi30vTEs/Ksj/+BJW5t3jnGJ9r+6tEptTY7hRuUXBGQbVb6F98e8xiRb+Mr+9JcT8prSTNrsk3yrR3kguU6sEMoSg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
@@ -18,19 +18,17 @@ Received: from kero.packetmixer.de (p5480b09e.dip0.t-ipconnect.de [84.128.176.15
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id E13F7FAA33;
-	Tue, 15 Oct 2024 09:39:50 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 95D0CFA181;
+	Tue, 15 Oct 2024 09:39:48 +0200 (CEST)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: kuba@kernel.org,
 	davem@davemloft.net
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4/4] batman-adv: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
-Date: Tue, 15 Oct 2024 09:39:46 +0200
-Message-Id: <20241015073946.46613-5-sw@simonwunderlich.de>
+Subject: [PATCH 1/4] batman-adv: Start new development cycle
+Date: Tue, 15 Oct 2024 09:39:43 +0200
+Message-Id: <20241015073946.46613-2-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241015073946.46613-1-sw@simonwunderlich.de>
 References: <20241015073946.46613-1-sw@simonwunderlich.de>
@@ -42,115 +40,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Julia Lawall <Julia.Lawall@inria.fr>
+This version will contain all the (major or even only minor) changes for
+Linux 6.13.
 
-Since SLOB was removed and since
-commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-it is not necessary to use call_rcu when the callback only performs
-kmem_cache_free. Use kfree_rcu() directly.
+The version number isn't a semantic version number with major and minor
+information. It is just encoding the year of the expected publishing as
+Linux -rc1 and the number of published versions this year (starting at 0).
 
-The changes were made using Coccinelle.
-
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 47 ++----------------------------
- 1 file changed, 3 insertions(+), 44 deletions(-)
+ net/batman-adv/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 6815d1262feb..b44c382226a1 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -209,20 +209,6 @@ batadv_tt_global_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
- 	return tt_global_entry;
- }
+diff --git a/net/batman-adv/main.h b/net/batman-adv/main.h
+index 3d4c36ae2e1a..97ea71a052f8 100644
+--- a/net/batman-adv/main.h
++++ b/net/batman-adv/main.h
+@@ -13,7 +13,7 @@
+ #define BATADV_DRIVER_DEVICE "batman-adv"
  
--/**
-- * batadv_tt_local_entry_free_rcu() - free the tt_local_entry
-- * @rcu: rcu pointer of the tt_local_entry
-- */
--static void batadv_tt_local_entry_free_rcu(struct rcu_head *rcu)
--{
--	struct batadv_tt_local_entry *tt_local_entry;
--
--	tt_local_entry = container_of(rcu, struct batadv_tt_local_entry,
--				      common.rcu);
--
--	kmem_cache_free(batadv_tl_cache, tt_local_entry);
--}
--
- /**
-  * batadv_tt_local_entry_release() - release tt_local_entry from lists and queue
-  *  for free after rcu grace period
-@@ -237,7 +223,7 @@ static void batadv_tt_local_entry_release(struct kref *ref)
+ #ifndef BATADV_SOURCE_VERSION
+-#define BATADV_SOURCE_VERSION "2024.2"
++#define BATADV_SOURCE_VERSION "2024.3"
+ #endif
  
- 	batadv_softif_vlan_put(tt_local_entry->vlan);
- 
--	call_rcu(&tt_local_entry->common.rcu, batadv_tt_local_entry_free_rcu);
-+	kfree_rcu(tt_local_entry, common.rcu);
- }
- 
- /**
-@@ -255,20 +241,6 @@ batadv_tt_local_entry_put(struct batadv_tt_local_entry *tt_local_entry)
- 		 batadv_tt_local_entry_release);
- }
- 
--/**
-- * batadv_tt_global_entry_free_rcu() - free the tt_global_entry
-- * @rcu: rcu pointer of the tt_global_entry
-- */
--static void batadv_tt_global_entry_free_rcu(struct rcu_head *rcu)
--{
--	struct batadv_tt_global_entry *tt_global_entry;
--
--	tt_global_entry = container_of(rcu, struct batadv_tt_global_entry,
--				       common.rcu);
--
--	kmem_cache_free(batadv_tg_cache, tt_global_entry);
--}
--
- /**
-  * batadv_tt_global_entry_release() - release tt_global_entry from lists and
-  *  queue for free after rcu grace period
-@@ -283,7 +255,7 @@ void batadv_tt_global_entry_release(struct kref *ref)
- 
- 	batadv_tt_global_del_orig_list(tt_global_entry);
- 
--	call_rcu(&tt_global_entry->common.rcu, batadv_tt_global_entry_free_rcu);
-+	kfree_rcu(tt_global_entry, common.rcu);
- }
- 
- /**
-@@ -408,19 +380,6 @@ static void batadv_tt_global_size_dec(struct batadv_orig_node *orig_node,
- 	batadv_tt_global_size_mod(orig_node, vid, -1);
- }
- 
--/**
-- * batadv_tt_orig_list_entry_free_rcu() - free the orig_entry
-- * @rcu: rcu pointer of the orig_entry
-- */
--static void batadv_tt_orig_list_entry_free_rcu(struct rcu_head *rcu)
--{
--	struct batadv_tt_orig_list_entry *orig_entry;
--
--	orig_entry = container_of(rcu, struct batadv_tt_orig_list_entry, rcu);
--
--	kmem_cache_free(batadv_tt_orig_cache, orig_entry);
--}
--
- /**
-  * batadv_tt_orig_list_entry_release() - release tt orig entry from lists and
-  *  queue for free after rcu grace period
-@@ -434,7 +393,7 @@ static void batadv_tt_orig_list_entry_release(struct kref *ref)
- 				  refcount);
- 
- 	batadv_orig_node_put(orig_entry->orig_node);
--	call_rcu(&orig_entry->rcu, batadv_tt_orig_list_entry_free_rcu);
-+	kfree_rcu(orig_entry, rcu);
- }
- 
- /**
+ /* B.A.T.M.A.N. parameters */
 -- 
 2.39.5
 
