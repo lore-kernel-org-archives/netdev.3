@@ -1,68 +1,87 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62BC1C07FA;
-	Tue, 15 Oct 2024 12:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A5E1C07C9
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 13:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728996880; cv=none; b=CSVJ/SuvBqpqev/6AGBKssV+tnAgrpSF9WV05uvpaobo5fTn7RptE4KIt0M9gRg+2CHbeChdulstj/SosomkjncO5B0om2OAF0ecTX8eZYebO2AJ62S5DZt9lpcIjKFVXVQ6eMwt6lPIAwCY3i7ZEPcAK0qYHvArmRyKg9ydky8=
+	t=1728997297; cv=none; b=KaOkVRpddNQIx05UjxV42wsM42lmP+1LDK2r+LGhkzS1jZRBlZafdljG81gYA8c5PbNTjg91WUhkKXW82pN9jMKnhwEJ7RG9EzdtLRdpokDyi+l6odsjbSLXpGJo2iDAvOee2AaLA4Y0v1d0vp71NUdMm8DdCphRQ80B4A/cgV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728996880; c=relaxed/simple;
-	bh=oK+G8a33qABtf0hMSDI5iwKCPFm59lWpc2Ii4qH5YkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sg99SoowraWRd9b2/yEZxwm6JEtl3iYsVvMbm4m32AjjbV9CpBVZwn2qQgJ+xNxkoJLC2fmZm4j3f3rDfRB3Ly+V0rDPdYuAKlpUht9DiwRyznNC5t++/Yb/BZyY7w/Ah8PNXxLtykwQiwApamlIyEpBrBiqPplma4/n5cCQQCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iVDHgLOS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1728997297; c=relaxed/simple;
+	bh=yUZfuBVgIiU110ZO+jUaSJoucQDF0N+swGkk10tzhUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RdEmoWheWJumm0IAeSbVBOi0YPZlZcIQX2ApIYubJzRvkpBx9TtVv4CicVVylNlDnwdWlsILvHmCbAMaXdMDm5jbHAc2PFuTfyW+raczhsS3U1M1JnQztkMGYyLsFDHlfdMxmgLz4BcEYr21WYywSgXHe1EfdKd+DhLT4xn79WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yor2z9Hw; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iVDHgLOS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9KMHHH9wy1NkUhK8b6gjz467PXF6XivpVm4tvJmq5Ss=; b=iVDHgLOSYJkK/J+OmYpLWRhUgs
-	EKzrISJF7Kzsr3wd/12kzYPhhV/ia6n2/QPws/keUF4rlWitV0pZPjqJZNR6sufToFSO3EijPCA9z
-	LvNLRPDl3njhHyg43KYW6Acc/Nv4btEeoJyESXaL0ehtOmz7uAadT4w7ZSK1j3ZPHIBc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t0h4B-00A228-RQ; Tue, 15 Oct 2024 14:54:23 +0200
-Date: Tue, 15 Oct 2024 14:54:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Felix Fietkau <nbd@nbd.name>
-Cc: netdev@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
-	Mark Lee <Mark-MC.Lee@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next 4/4] net: ethernet: mtk_eth_soc: optimize dma
- ring address/index calculation
-Message-ID: <e67883e3-b278-4052-849c-8a9a8ef145f0@lunn.ch>
-References: <20241015110940.63702-1-nbd@nbd.name>
- <20241015110940.63702-4-nbd@nbd.name>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yor2z9Hw"
+Message-ID: <a94404f1-93a9-4d13-9207-c95eff0d8b7f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1728997292;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GLuuY0Y6k3+TUbvxD1oCTUWEIHJK3gEjZzJobTHvMuc=;
+	b=Yor2z9HwmUlLOijHKzIgHV3TSZtdWYrKb/DNT3GS9tfh3OtrUTs6KIIbs/869LtWPsNit/
+	JedA/rEUHOSB7djUzNjzOyBluZPbG73x1Gx3+pbfasqOSB/Ug3Pdi3OzqJgSiBhMK29QI8
+	86mJhVVKgHakWRfJpD0+7c0aw0Lzhes=
+Date: Tue, 15 Oct 2024 14:01:26 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015110940.63702-4-nbd@nbd.name>
+Subject: Re: [PATCH net-next] bnxt_en: replace PTP spinlock with seqlock
+To: Michael Chan <michael.chan@broadcom.com>,
+ Vadim Fedorenko <vadfed@meta.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+References: <20241014232947.4059941-1-vadfed@meta.com>
+ <CACKFLinJE-QfyUSDpYYfKtKEypMKZX_y_rAm_nQCQz_cDh8YjQ@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <CACKFLinJE-QfyUSDpYYfKtKEypMKZX_y_rAm_nQCQz_cDh8YjQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Oct 15, 2024 at 01:09:38PM +0200, Felix Fietkau wrote:
-> Since DMA descriptor sizes are all power of 2, we can avoid costly integer
-> division in favor or simple shifts.
+On 15/10/2024 07:20, Michael Chan wrote:
+> On Mon, Oct 14, 2024 at 4:29 PM Vadim Fedorenko <vadfed@meta.com> wrote:
+>>
+>> We can see high contention on ptp_lock while doing RX timestamping
+>> on high packet rates over several queues. Spinlock is not effecient
+>> to protect timecounter for RX timestamps when reads are the most
+>> usual operations and writes are only occasional. It's better to use
+>> seqlock in such cases.
+>>
+>> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+> 
+>> -/* Caller holds ptp_lock */
+>>   static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
+>>                              u64 *ns)
+>>   {
+>>          struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+>>          u32 high_before, high_now, low;
+>>
+>> +       /* Make sure the RESET bit is set */
+>> +       smp_mb__before_atomic();
+> 
+> This may not be sufficient.  MMIO read of any register (clock register
+> in this case) can hang the chip if it is undergoing reset.
+> 
+>>          if (test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+>>                  return -EIO;
+> 
+> We could have missed the flag and got here while the chip is about to be reset.
+> 
+> I will review the patch in more detail tomorrow.  Thanks.
 
-Could a BUILD_BUG_ON() be added to validate this?
 
-Do you have some benchmark data for this series? It would be good to
-add to a patch 0/4.
-
-Thanks
-	Andrew
+Ok, so we have to serialize bnxt_refclk_read() and FW RESETS, but don't
+block readers of ptp, especially on RX hot path. So it looks like
+read_seqcount_excl_bh() can help us with it.
