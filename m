@@ -1,53 +1,53 @@
-Received: from dispatch1-eu1.ppe-hosted.com (dispatch1-eu1.ppe-hosted.com [185.183.29.34])
+Received: from dispatch1-eu1.ppe-hosted.com (dispatch1-eu1.ppe-hosted.com [185.183.29.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E25D1F76AF
-	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 16:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.29.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3433C1F4FBB
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 16:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.29.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729011594; cv=fail; b=Yww5xqE6CIUmKfWkT/sm7YLveLcoVJCPfoYfphquSmBB9EHcDTWqnv/cS73lRj4EfwUBI0Fx74X8k942qO6T7wWdM5kBMPTK/Y0TVxUB0mXe7LABZnhIS7AKPfWp3xKtlXLmrfaf/nFtWiu/MYCV7s/maGzhLl5oSmIPcFBGJlI=
+	t=1729011594; cv=fail; b=ti3qWvgeVOxZ5nUvjAbp7unu+RekEYIOTSt6aL6JP788dlxctKBSUomnUaBOvCClXzE3V7hR/QcTry00ecGMFZRXd+BexKEHCDedJo9jBF8Xt4r/iaVDYA7QqBoYlQVSb6gWiocZiaVQUUjyvVmx9zfT1xh9JFq02Ro9ARuxkG8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729011594; c=relaxed/simple;
-	bh=mqow4GwpKVCb4uKJl3IHqy1FHjQQ4/GCj9ypx3nUp74=;
+	bh=07A2N/b28n/u59nTYk0xtg0N7IDeA+zlBQ0+dtfqAZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PufkklraZhB3d1KyUNlf/HK9KE2DR4NsUt52IfWtNWfVNw3q1pQJUN4AZjA9Y3Tr13BQVs6/2iZB0eYKE2TX1b0aKagz6MMFNlsPXx5ITr7a+Pl2PjEj33Ln8PpwWeuBQoLBx9vykrohiFtENKyHqitpTc6h9/EFCtJK0mIUurQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com; spf=pass smtp.mailfrom=drivenets.com; dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b=IF48Xqbl; arc=fail smtp.client-ip=185.183.29.34
+	 Content-Type:MIME-Version; b=K0ca4rpm6rIcT/CB9NtrkGz4i0CCtSey5BQl4j6UVcDHf4nka9taMWaT1+NshJZFmeFrITbALTdV2euMNEEPyLINO9a0Q1963CYipqrD5BTZRy5V9lehXJ06pHl7ujQHQkbK5WM4LuZ/QpYlNPj5gXaUJUEzonN7kA9yAoL/IDQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com; spf=pass smtp.mailfrom=drivenets.com; dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b=HU+dXS9H; arc=fail smtp.client-ip=185.183.29.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=drivenets.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b="IF48Xqbl"
+	dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b="HU+dXS9H"
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05lp2106.outbound.protection.outlook.com [104.47.17.106])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05lp2172.outbound.protection.outlook.com [104.47.17.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 387E0200058;
-	Tue, 15 Oct 2024 16:59:44 +0000 (UTC)
+	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 9C5C434005A;
+	Tue, 15 Oct 2024 16:59:48 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xSQVkTM7Xi9BChhjZbR41xjhdVKevSDVelCd7lDxAgd/nrsi4t53kxUfV5mzFqJ5+LL9d5BD3DlEFfGtG1Ks8cZoExPKPM3GOGM6FfuCNKoJKcH3Y5mgFiP+zgI+pMAySxlxuhO0NLcnW3T8jZMshoLacDnaIdnC1bTUQQIrKqRpPEuYRkEkEVdGBoOpwCcRYjbImJn+GzdixZGp3CRlaV6EM9r7eIioJvoh+RRWpIUCbJ85cJXlgQ9DVpJxtuLlwI7T1dxCRQSl66kxwnp+/5lUcGp4qyrWcz6ShNxMdSWO0X9d0CuFm7x8b9/RuQMPoioVXlWPX3E5gLT0Hvy1fA==
+ b=r20CxdOnnCXtluUNo2xSs2ZHZbcYU3EdDfNr+LAtNBJsSQ0MSVHnkbcbEA7//R1ltWcPoFPQF73qJ/z5PaWioe+rSfgOjsZX54kphndlJEYlqLCGzo/E7oKaAlxq87f/fYO5GzPHM5kJ4xCJVwqt89YDNgDpr4rzK83kx6J4WsA+vpemwWeKHf2PGcinNC1F7dge3uojl1S+qKY0e+hCNGAgobYFbVc4xbNDZ6dgagUrL3u9qHphcSfTmv8kPekrxXnsijxuWdQkqP8jCwhJKC0ZP1LupnyZT4GQ65q1OkhVvMCrS4NEHQ+noqTbL6xkcp7fi7LcrTsD4Rag5Ev1Gw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FH0kTpDubKw9a5AmpY/kCXXEW3xh2mammEcnEQ9jseA=;
- b=cd3vUwRIgvRC2OdpVl7nh8mww5LcgKd111A1BFwjwWDtHXYDhjsA4C4EAVXCRDP6fBeLVuFMm40SmvimjivVEK7BSKXkzNrlFfBXzsKq7TWBoslqb4vnXm58LxQ3i/0ZxZyfOJe+u+5YIWZ6jtZZ73Ss9gmRMAdMNjKu5Un0ByhwbQykGWpTZHCVs7i6Q8OZSqOE896aT3dfko6ouxwG/POJ6y7Q4rueNsBXbOZZHu2dFU8tT5xILnQ6gFaySdSbMPCxWo6Fuw17sZthySMLyYcWHYbgWRRefA0vq4CO5aJ9kP2C/bAypaUy5INORzRbD/wgz+zVz+zYk/L2qbHoTw==
+ bh=4I5Uh7JSsfgHtT+ozN6AbXrFUZizsi7J7DIyroK6YQs=;
+ b=mNqf+KBQfd7Cd8rsQhyDFMcEqvZ5DWMTcxrAeWKVxjQ0e951DSBq3OzrUGq4p70yhcVj8Zn9aGPhyez8xxGhXeSZ7EME9hAGcU2ddDmOFBQ6QlL3uMcMpxaY6uBpfkL9q4RO+qVd03xvDuVLxKgyRqEq+8fEbJ9oRv+ekiLyQsfu4C5I+FmCbtNgA9Sq0ZcS6cbSjYzvJBMBBYvnvFSBo67F1MPFPadQ/gnkvjZGUXFGdigIuysx9LMeM9bauD4VkhUk2S1BqHBmVHiq+g5JzVceQJtY6dJf1TLv2LXWlEYoj74hAbicscZAJziJQsnuBSUiscesmlvN4d/OcGu9fA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=drivenets.com; dmarc=pass action=none
  header.from=drivenets.com; dkim=pass header.d=drivenets.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=drivenets.onmicrosoft.com; s=selector2-drivenets-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FH0kTpDubKw9a5AmpY/kCXXEW3xh2mammEcnEQ9jseA=;
- b=IF48XqblTuXPrhhpyYXdbxLMq60OmnuWAqsk1OkQrtXKA1+tc03S14UyHCa5486AvscH02EP8BgCMMcc3HPyhXezGUxDmtXL2A9gwL51kHRUBCV73y8coQmYD4q4c+VjQ3Nsbja7P2E6OnYthmb+Vgc2bqaystaqQMG5aoGlYrY=
+ bh=4I5Uh7JSsfgHtT+ozN6AbXrFUZizsi7J7DIyroK6YQs=;
+ b=HU+dXS9HNBAFv0P1C4NNnl8PClZ0D61ocvSzRzGi2W7173vcQ2+Oeo8AFcQM0kPn3J1zKcq6Wq7GpKgPu5pZombEJ2Jk6BHv5yHzBfLy19BwRlDgm/a/sBPd+vrktG0suKaafB3yKUMim18QglYqFzIeUSL+XRECuO/9JQjVLWE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=drivenets.com;
 Received: from DB8PR08MB5388.eurprd08.prod.outlook.com (2603:10a6:10:11c::7)
  by AS8PR08MB8249.eurprd08.prod.outlook.com (2603:10a6:20b:53f::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
- 2024 16:59:43 +0000
+ 2024 16:59:47 +0000
 Received: from DB8PR08MB5388.eurprd08.prod.outlook.com
  ([fe80::29dd:6773:4977:dc4e]) by DB8PR08MB5388.eurprd08.prod.outlook.com
  ([fe80::29dd:6773:4977:dc4e%5]) with mapi id 15.20.8069.016; Tue, 15 Oct 2024
- 16:59:43 +0000
+ 16:59:47 +0000
 From: Gilad Naaman <gnaaman@drivenets.com>
 To: netdev <netdev@vger.kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -56,9 +56,9 @@ To: netdev <netdev@vger.kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Gilad Naaman <gnaaman@drivenets.com>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: [PATCH net-next v4 2/6] Define neigh_for_each
-Date: Tue, 15 Oct 2024 16:59:22 +0000
-Message-ID: <20241015165929.3203216-3-gnaaman@drivenets.com>
+Subject: [PATCH net-next v4 6/6] Create netdev->neighbour association
+Date: Tue, 15 Oct 2024 16:59:26 +0000
+Message-ID: <20241015165929.3203216-7-gnaaman@drivenets.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20241015165929.3203216-1-gnaaman@drivenets.com>
 References: <20241015165929.3203216-1-gnaaman@drivenets.com>
@@ -75,198 +75,346 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB8PR08MB5388:EE_|AS8PR08MB8249:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ec6ffc8-ffaf-44c6-4480-08dced3ac3ec
+X-MS-Office365-Filtering-Correlation-Id: 014f4181-37ff-4ee2-115d-08dced3ac66e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?smCb+PvY4BMxTXTzDQomVB1sq2vjxkFdUolO/nnJEfA249U1jMm/680ojtxh?=
- =?us-ascii?Q?2EIs7PjRjf6p1QVsZvhhtG1NQmSg5L9ig6TjDUMcWtydk4p+9C/vIOXzaH62?=
- =?us-ascii?Q?hH/yX8jnqtr/XE1arvT+o4hnOi5iShY43x2s7rJfsEJuZagGFBEqWjtiv/7p?=
- =?us-ascii?Q?kGWX9bOXGxHyR/Qinwsm3cGWpWgvGywXUx0U728EL6FG604WO5RjSfi28FHi?=
- =?us-ascii?Q?g7Nsb13wLZ2lP8Ur5Cgy+8ZB5QZvCemfrU9uVF4osoQTwIhbk2kbMwoyOk4P?=
- =?us-ascii?Q?/paUtyEAs1oczLPCZ690wi2wdzQ5j1GWMGMc92TQ/3qQGinGEAZUpX/OAgYB?=
- =?us-ascii?Q?essufJ36IsoAaSRZEKtt7jTEZdPQJLSEWUKYaKgle8fxcbKTaJSqdaMPVUAr?=
- =?us-ascii?Q?bpi15Q8u9UK1nAq1s3meb6WMOfMaypm5Qwo5haAkiHBsYkQpuIvPOsUoDay6?=
- =?us-ascii?Q?F+vn0KmmzuX0YJs9jhl6WSE2evRYZ1Us635sld5eZ/jEY9EIop4+6/RZSJNm?=
- =?us-ascii?Q?KAfffA2PmQxogbL1imyDjq22sOL1P9S4WFwW9WG/xpEL+sRUEG3CaYitm3cK?=
- =?us-ascii?Q?w4vLYxuAscpypw3TqC5OpzahLyPP5gTDep65uwRXxKS/vpJzbFhKLG+2UU4v?=
- =?us-ascii?Q?mtNe13AkGaP5m8zVhAqMe0bNpWefieHcC+1yHnbtLo84A2DeiqUOjz1NNMEl?=
- =?us-ascii?Q?6fjfEwDwGAip4LIgRBE7c7s8t34xqEcafGpvRzaFHYmUCxIvat8VX7jTpGsR?=
- =?us-ascii?Q?sEQkDIQv9ne7skKQACKkctx4MVTpG7WZuJTZVuqUAdJ+tHhVrY5SATMuXpbQ?=
- =?us-ascii?Q?XMIpfRzlQqoCme1M6YcQ4Vtn+Rn3000qhL5rW5K2tNdr5HfamZNJqYa0vdvo?=
- =?us-ascii?Q?XPplcHt4i/eSAvdeCvkx6FKDCO19xEZ3EfR4BC72K2wRufjg24MPx3nokbEp?=
- =?us-ascii?Q?1HkX5VdZJeuwGY5tuGrMSXKIKW7F8tTMS9pJeDODteC3NKo42t5pgwdye14V?=
- =?us-ascii?Q?LefZzvdg9l+bGGA/DhuKizmfmqfTlREDxKwOb/E+qYembbP1NXviIrdm/Tfg?=
- =?us-ascii?Q?eBpCJvOz4+7Lz0jl/WBXjhkt0JUpveBG8x8iw/X9W7UC/PruYHZec8TIxBRk?=
- =?us-ascii?Q?5HpSGJ2DQdGFpHk3y23qsRNyCjmRzOU9u+ZYFCUjMT73E6oSzm3N49dExBF3?=
- =?us-ascii?Q?KACliFoUg6jYWe/5wIn5XwPoLhv52SaLTgQ7i5xyUflRPlGY8uCwZqjUYf2x?=
- =?us-ascii?Q?+yn3RKzrYvveSvkRzwbKQp8ZrU9U+1gbPqKi4aT7oy9k8zLpPhhjDzOERNJ+?=
- =?us-ascii?Q?o22TOumOEn+hQZShedHCAp0ceO6C8avF5yOXzmOQ5bkfrg=3D=3D?=
+	=?us-ascii?Q?mQOYwzZEtaPYRMwWkMTM9EIxvE343Lb0Z0SMF1gZRDmeYk56x2uvFESupenh?=
+ =?us-ascii?Q?BJVB//B/g3+aLABVN2jApLVUYQut3vC1kYJ3YrzHNIsqdo216KGcDs9Z7nq1?=
+ =?us-ascii?Q?EnEajEFdXL1/QTfLFO0Rfjhfa2DchpBTYSjXJYMDXE0rQzWEkI/0o/DjjqIg?=
+ =?us-ascii?Q?s62G+M/zP9pKf7JKXc8nCXs0oOOWSRsocEAC2oifrXZ8LTNBF2uMsGrlIJzi?=
+ =?us-ascii?Q?tgwmFxMZIdeLEKEo2DCBWCn8NALLl8OjfAXzt1+oXdy258x7cuzD6GDfFAtr?=
+ =?us-ascii?Q?oZiUkV1xUH2As+EazNU5PEysyY7gOOF9UgWXjtuFV/noxhr9My6E43k5nq+L?=
+ =?us-ascii?Q?r7U8wRs1nh/8LN3Bc3x6X5xp56VrxaD50ykBWyuoBBfrQgsdQZth935qUaL4?=
+ =?us-ascii?Q?hjZc0rtsOtmkeBxoG/alVth8TYJGbzk0ik6FGqxRgLCn3sF7Egn4YX+l3Eqq?=
+ =?us-ascii?Q?7ARo/hoTTjkq1VF+1FjPEebliERHj1VVy0wAOLA0tjFHPXfPUkj1v+wdUwKi?=
+ =?us-ascii?Q?CZxToJZ8eYscvtu4GSI3mlgKfPOvLumBx1U9LUPGpmkIj0HAWVVPl8dV43N8?=
+ =?us-ascii?Q?v/9MUUef6Z72bCRHNpytUp+wjM+IRWx1dDPgKTmd3pe8tp75a4aDQvvWMHdG?=
+ =?us-ascii?Q?fpWLyuh4eeqL2W/AoQcKnY5pDUiJ2Nn+Iohz5Is19CTf8ZxWF1K5vrC4oXV0?=
+ =?us-ascii?Q?fnXehHW5+tOz15eyapKrp6Ccdie2Ws0R97n2jgIhirZiRVeS9SnEHuHiC548?=
+ =?us-ascii?Q?YCdHG9vFqSyPDpZGe5MIrFD5zXZQt36obOagYymnTdzKDcvGI9ROHOWjARLr?=
+ =?us-ascii?Q?brAciyyLhfdOHfY/mphyVlFCol73Mg4IvjJRBkeDgFBej1UQ2qvvEzwC6HVj?=
+ =?us-ascii?Q?rQ9uah70uAXOpndLs1D/8emiEfIB7QvOvSHxAN+myorpS6Dqh1jPz950y4c2?=
+ =?us-ascii?Q?be5W5TMrXb1DMyW3b1oDc2kFwSt7/nb0T3y0eV+VkK2lxGHolBRl6ysbN4PQ?=
+ =?us-ascii?Q?8ASczGbXibWUi775VQLqOBcqkXRPTf2+CWFjv1KS30Pj1tycpGhd7TI0JJ5V?=
+ =?us-ascii?Q?mllP6z3lZOgPSAXEN/OnnooTBAYdoOVvQzDjvE1PovX/KTeKmcgYlKFXzzQH?=
+ =?us-ascii?Q?hWfAbuOH487Mwrpr4APQhmHiBWRfQ7cVgEM6hITudN8PhLcZdm2Zdgm13Tub?=
+ =?us-ascii?Q?n8teCmxTjm3eZ2q+Xz4w7hCi8qBJTZZTwz7FYo3zFt9ipyogVuldF+UKMDDu?=
+ =?us-ascii?Q?BkejjADMRvRuSxqjauAr7wVJji9nLfaopUawCN1rET9o83dIjT1eDhyjwlWS?=
+ =?us-ascii?Q?qYxP2w2wnaz6Yt2IEUgLftL5C2D6BhyxXtw8C+qyl2Z7Xw=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB5388.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DxsVnk//JV5+KBbDgAeBDzbNV83NzBjMOfgoftiC/1G7P7h4MYhaaKrqAkfi?=
- =?us-ascii?Q?F4rpcOElWUwtneghYJ+6eAERQVGDckVCUm5GYCjsPWlD2O6EKpbS3Ky4vi85?=
- =?us-ascii?Q?3BREbZvdIYYQvU0Xfpah6522X3YXjE5D5SwD9mgeZjVDtkcvYl52TI44EjbU?=
- =?us-ascii?Q?0fgLPAxX45uaLhAcXfHxBUh7pc4xTgtncdmnG0q6bfjqHNgYF9vd2fKEA3iz?=
- =?us-ascii?Q?QqNrzJbP8bAbdx0CiR+mIZ8N4gABmSAbo+/Fa7EsdfU4hGflTLWKQrg8f/2o?=
- =?us-ascii?Q?FEMp/HpKJTVInTaOj8pcdNRcUExx8jYEhP0Yz3tLng8hjaPiCyTgUn2HtInT?=
- =?us-ascii?Q?+IxCDMZguB0jMlUhcPOWYQmH4qFS/136MqZiRTnLVyAdxS8gDz9j7Yi+YPxS?=
- =?us-ascii?Q?OBoX8h2u4sjG7v23xuMQAQ97OKdM7OUzx84PeAGgWcRqLB16NOKEA2UkJdQO?=
- =?us-ascii?Q?aTcd0N23HoTdK5H2Ik6zJN2lGdkXDsX9PJRzRBZUeNrVpjGPr2EGWj59iWdW?=
- =?us-ascii?Q?PdpLYinDjK0pBS/HxeoYYVb6gveb8mtHimogqf5LWvG8MRaipq7uwK0LuNYr?=
- =?us-ascii?Q?ZByICf6rdQGMaJ7jIDxAF2wmI12DKiHOplBXVSt0noHr+pbxZC8zBFWTK0I1?=
- =?us-ascii?Q?rmDuYezklVvIUbbCYP/rly6gWpV11U5GtL6OOrb/jQ0mK4S4JIL9HUKBjeui?=
- =?us-ascii?Q?diaQncJ8ZNcy4Kz0eozU+NrAfIATuumZ9jwldOb4CQBo70+/9eyFZaJ/cbPD?=
- =?us-ascii?Q?Jt45ikGfrNOrhMAb61KgYbX12G9Ymv5bPKEGZ6R9Cqkwq+tF9XThYANmAeV4?=
- =?us-ascii?Q?COshBHaLltHTKCMFD2v6BejSrx1gHgYti5T4+mC0upYwxVEUcjoPTk+fN7V0?=
- =?us-ascii?Q?+PKoiVoJGPdFeFseH00AkKqWdz+PkghuXXql8ptMo8IUZB8BbVynZOs8aLil?=
- =?us-ascii?Q?HQYhmt/oGv7947nfaN6UKXGZJktFXZ+3hgdYu4fA9GmmFol+bnDHHYGpOC/r?=
- =?us-ascii?Q?yoKYqcUQJ8w+Y+04StPjhiLHr/7m3MhyJTYSgw46MT8Kg1hXbr8zhNlFIgOE?=
- =?us-ascii?Q?8+QkWJD/WmKBuSPQFRyuzlHN55cjOAfTe2r9TR6gf9pB8C8nC/HuzPUcAON0?=
- =?us-ascii?Q?ZAGJAkVsyv9AbI6STYXEyiarJOHc2U/zY7a1Xw4v+nRqNVIdoLDId1M1+X6y?=
- =?us-ascii?Q?QY8TOa5z3iJjiGqvuRQS8WZXbLU/1yCx7n9sQhDiqC82MZ75llNeVezCZnMV?=
- =?us-ascii?Q?+gUAKzF9L6qGmM0GXFBAqq7cQ1jw5esVqFCrSS4sHtCGVYAWde4aPdB926NY?=
- =?us-ascii?Q?JPKHZqMSK1cF5oITu64d8WOeDc+FswlCiVMwvvZxm4RcnLWawENc8ijpuOtm?=
- =?us-ascii?Q?05J5nJJun9CK15l95ns1HdFnD+ovyKq5gaQYOeh9grn403WFdyo8ccFA/Tme?=
- =?us-ascii?Q?MXVoDNZng6kG0cBKHkOVyz2BQlFm0Qg4bEWYFNV5A3K9X1whF/tYJhrrFWqh?=
- =?us-ascii?Q?V75hh1YECVCRpBjNQLd45ApCvyZfIzCLySifUyPSD+itqXiF1NyPV1+awBUb?=
- =?us-ascii?Q?1F57QgQqzJ43+8cYrtrh+LD9OzXvVT/n2LBEzQpBK/2WbzTR2oWRszfAj8Py?=
- =?us-ascii?Q?Cw=3D=3D?=
+	=?us-ascii?Q?bQZ8Mc+GBzH2xKrrzTrdJERJ2s7Mc5wNCl6oAkpQuqaHQUro858HnbphyeDU?=
+ =?us-ascii?Q?e3GQ8b6ea+WNTh6cxfFj1+hp/rPFGed3hR6CxZg3VIsKgmCeoWJe1+JDXgju?=
+ =?us-ascii?Q?hOV71SMTT1U+xCfF3fH3Pndct/l4Oj0XTHsVTp5VTKegLVcGzQZlGLqcQ+kF?=
+ =?us-ascii?Q?uJrD2Jgo74L79iiobLHsmPdzuRiiiMaSogS8bNI0vepozWGa3s4Ih/MXfFWX?=
+ =?us-ascii?Q?y9NexMfas7iSFE+Cob2LWnG+z4HamiyfAlUvUVaoZ1H4oI9e+ITS2qXrpZMj?=
+ =?us-ascii?Q?m0En6MINz4ymXqJ+aHa1scy6eUShRx0/l45Bo5btBHJR7AOettYkpWCdNZhR?=
+ =?us-ascii?Q?Rv2NRn+lkUv93Rd8gnvhbeosiy697lAxE3Bn2uVi9pUEuNMOR93Bu2oIVmCm?=
+ =?us-ascii?Q?Su3yWYirFnuwH0wvDTZUE8oRk4UFAMFdgkaC+QNEYgMc0znwMeTt1e6gK1AP?=
+ =?us-ascii?Q?+18UkHJM9nMWRI7JawyXDIC9C9wcUWdGJwZ4uq/DPud3kpRyOaSJNBN/ldED?=
+ =?us-ascii?Q?XksVssZ3aZZC23YwtBO8yOqLmhc2odfB5kV7LtM2gJspM0bna0YXFDTtUReF?=
+ =?us-ascii?Q?ti6uu1ZEwmaZOEofSTLRnNl69bann0OxNHnxOpvQKlbNp4L/22d6tE3mUigS?=
+ =?us-ascii?Q?rLq2W6Vp0pfg5/TDBFV8dGIkM0wUe6wvqlGf/xJU4A4apMjQchUKyVRmOdMC?=
+ =?us-ascii?Q?9b+QOMQf0RhAkECT6aZRVGP+53RFzmZYz+VAgyG4wil5eTqAn/F7OvmOxIXW?=
+ =?us-ascii?Q?CKyTTSWyi/kpKqtZsE3iQ5MCLYK/bhJqGEYIZjJFLA54zbgfmlmZYsq7rh6g?=
+ =?us-ascii?Q?5+tXJzONFMPku+krqqiVjN5bV4gZI1Hb/UE9p0R4VLVelRFaOfb87gC9o1PH?=
+ =?us-ascii?Q?wlIRNJQDzJ9wUD71D0W5E6WPI8hNkqWXWyiAVHRxU8r6fhDArNA+75XTCI3m?=
+ =?us-ascii?Q?Xk/HCaALSAGiwjVA06A7uHbuayYhEcVAbOKz+W4bSWyw76fa4OvTFwBpw4vr?=
+ =?us-ascii?Q?PC8bKfDhwPQrB/pu4WNBQpKMwIgD8zBsElLQgUtN1nJJ3FsfUn9w+rXwvuAS?=
+ =?us-ascii?Q?0IwAymdrWVT1NJZqc3UnWk2WDXHyTGkDJ11HCaqeMIerZs65B9m+hbCJiHYY?=
+ =?us-ascii?Q?nth6NRWv/WzgLfcAVJ+j+W27UuLXKMhUTuQ72Y0AupbRVgt2fKUrhFCUunII?=
+ =?us-ascii?Q?iSgtUpHHcIHQ1cAxlr7Lt88zhqep/sBz0dKFuzelu0i3jlan9+tiD2dhcyvo?=
+ =?us-ascii?Q?bmOzvTgY3QgS+ncK8uS/2utqvFgggJwbjBxu3iaP/RirBvhVNRnc9L4Nzgpn?=
+ =?us-ascii?Q?hSP/CvYt2VXIYJ45MZ8/VDv1Ajd3n6dXx0x3eW4O6lhZFljWp4AHG+b7DRH1?=
+ =?us-ascii?Q?dTTN+8Ue5CBdHXxd5ze6XOrVJ0e25ziUOLLUN6lEl9jDNW6wSFCPfL5NH/4b?=
+ =?us-ascii?Q?5ro0RnKEJUV1G/v1HQ7KjICJRoycOzNcaOAAwzPjrJkDkGfW7Ne1tTB0rfMT?=
+ =?us-ascii?Q?jR+X6QTzwGqXFgSN/h1uGQ41E5uarlBbNzXZOi3A0f2IGcFobNmcoeuZ/nAt?=
+ =?us-ascii?Q?KW3+xNFc6jdGYpYLMJvVGbTXPhRQ7VPcP+25F8iOP/sqXLdEBcnNYX/onN5z?=
+ =?us-ascii?Q?kw=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	k3yylNO+18vzCEEEO9Ymafnmw9saSf+n85gYQ2z8w6KJg4CaaNfaM678ovtExyuUQYjeHTshj29Vt80CfJQWbxsG21s9FvBypplvDbcwVWncBQQ+PojLTAJU9LnLLrCQrdeEzdI/kLwTnOE4fE/vOv92Y8WC0MbfiZruaHdN3G+3OPL79Gvd55G9w2EAL+O9vWdl+Siz19O+iP3qNtWW3MJCt7AG5PT7/X0MDGuQ5o58xFRQPlTemWSoOWVB3EjNDGOwArN0zt0Qn0WxZBAb5a0LrQLfCNmQ+SiPZa8CkhM5G1lK2laVMgELOCG7gD9d4ErN/+2E4Y+ZT/6KsSfrSYiTSXty0J2PwdDornYVyy/T1BQgdQHN9+2Bm5be5gIae+v71OS5XxQdUb6QKq73TWlCX43Hgc1YuwrnU7EEwY3MdUjRzqjzbAbbDVVVseoPbQMCmO9w/w4gkT+4FBNKkGD3OwAdf5BVZPtuR/su05Bnthr2KGEd840zP25CL+hmUAcx0Nj1/2gpC9FD2jLUHMKQ4wqBHCWZ4+ypSK2/+V7VWy+SJEiHtgNwEkg4wuksHjBG5ikH32cWvIbvylecJmGnJm8YbQoZajRCD7uTe3YJg1klXebdo+DX/kAv2EqB
+	v3AC8znCDi+eDinrhwY8Sw06mB6sjAFM3LlBehhyfqjDqBCtMnpGRF1TGWh+ba3NqrYvlN+MRf8du4WsyIy8nVVa1tsGQgDG9lgnemPzLHrmzU/RnM/AXCN/PqwZMBzGSsI+Oy9B69RbVw0erW2Rb9vqmQrN7TzxQzgh9nxfI04D3yeoRy6Su9Zh3uxQxl3RiX1nWXvIrFihVF4IMgN0bUc/9KHQViuj6fXhh3BugG4B3Jm+02bwg8rT33etgEksP5Po0WeLIi7ZTr/zy4r/RJ9zgLAU2q0T12qsQApNBZx5ZSEPseANZgF3BdV5gWcTKPvNp7l0XMm7nxX7rXRtSHH81SS4PcW3baYkH8e/Ai+YkK2woGr2hXThqoud6OJOgyaRTPz6NGiFEGyzoVDksTDYbrXN9lc0kGVYZSd7G0Jo2y2Hv8uaPEjbwBBO5FPE0IpDucuJ8gPP8YCYGEt7Do8yzNsnjJuN/EBrDYGFbvOLRJiNYRJ1yHi7mHVoFmcIS9Gk9vgc3kLZkuU5PUZBFSyV4pVSXjkoG1BiaZqMLqXer0fRSfOEp82Y7QfBW+YyzPQMntlR6XW2NatNec0id/SHqMzDLpP49caR/BcghP5vDQfhnaITqHBiEnmwoHzy
 X-OriginatorOrg: drivenets.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ec6ffc8-ffaf-44c6-4480-08dced3ac3ec
+X-MS-Exchange-CrossTenant-Network-Message-Id: 014f4181-37ff-4ee2-115d-08dced3ac66e
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR08MB5388.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 16:59:43.1946
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 16:59:47.4057
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 662f82da-cf45-4bdf-b295-33b083f5d229
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gYERo2tG7pyH7BJFEvpUp9GuwwmN2S+cO8R6QqfFwfsp//ZKtT+9xthPIxCCHJ5TPgqdCAMCzK+F13nJHL+tgQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: j74C+QPI40cJwc8O2mX+1dJViXpDqiBC44NwDND8o1a8P2SGZnnN+Pa12coguUlvnqIco1RrjbB07dDiOUkypQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8249
-X-MDID: 1729011585-yiIKYJ0fJwp4
+X-MDID: 1729011589-EiczDBLQw0FE
 X-MDID-O:
- eu1;ams;1729011585;yiIKYJ0fJwp4;<gnaaman@drivenets.com>;495c1e7a27a6c3e35a5fabc922783896
+ eu1;ams;1729011589;EiczDBLQw0FE;<gnaaman@drivenets.com>;495c1e7a27a6c3e35a5fabc922783896
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Define neigh_for_each in neighbour.h and move old definition
-to its only point of usage within the mlxsw driver.
+Create a mapping between a netdev and its neighoburs,
+allowing for much cheaper flushes.
 
 Signed-off-by: Gilad Naaman <gnaaman@drivenets.com>
 ---
- .../ethernet/mellanox/mlxsw/spectrum_router.c | 25 +++++++++++++++++--
- include/net/neighbour.h                       |  4 +--
- net/core/neighbour.c                          | 22 ----------------
- 3 files changed, 25 insertions(+), 26 deletions(-)
+ .../networking/net_cachelines/net_device.rst  |  1 +
+ include/linux/netdevice.h                     |  7 ++
+ include/net/neighbour.h                       | 10 +--
+ include/net/neighbour_tables.h                | 12 +++
+ net/core/neighbour.c                          | 85 ++++++++++++-------
+ net/mpls/af_mpls.c                            |  2 +-
+ 6 files changed, 75 insertions(+), 42 deletions(-)
+ create mode 100644 include/net/neighbour_tables.h
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 800dfb64ec83..0bb46aba2502 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -3006,6 +3006,27 @@ static void mlxsw_sp_neigh_rif_made_sync_each(struct neighbour *n, void *data)
- 		rms->err = -ENOMEM;
- }
+diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
+index db6192b2bb50..2edb6ac1cab4 100644
+--- a/Documentation/networking/net_cachelines/net_device.rst
++++ b/Documentation/networking/net_cachelines/net_device.rst
+@@ -189,4 +189,5 @@ u64                                 max_pacing_offload_horizon
+ struct_napi_config*                 napi_config
+ unsigned_long                       gro_flush_timeout
+ u32                                 napi_defer_hard_irqs
++struct hlist_head                   neighbours[2]
+ =================================== =========================== =================== =================== ===================================================================================
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8feaca12655e..80bde95cc302 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -52,6 +52,7 @@
+ #include <net/net_trackers.h>
+ #include <net/net_debug.h>
+ #include <net/dropreason-core.h>
++#include <net/neighbour_tables.h>
  
-+static void mlxsw_sp_neigh_for_each(struct neigh_table *tbl,
-+				    void (*cb)(struct neighbour *, void *),
-+				    void *cookie)
-+{
-+	int chain;
-+	struct neigh_hash_table *nht;
-+
-+	rcu_read_lock();
-+	nht = rcu_dereference(tbl->nht);
-+
-+	read_lock_bh(&tbl->lock); /* avoid resizes */
-+	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
-+		struct neighbour *n;
-+
-+		neigh_for_each(n, &nht->hash_heads[chain])
-+			cb(n, cookie);
-+	}
-+	read_unlock_bh(&tbl->lock);
-+	rcu_read_unlock();
-+}
-+
- static int mlxsw_sp_neigh_rif_made_sync(struct mlxsw_sp *mlxsw_sp,
- 					struct mlxsw_sp_rif *rif)
- {
-@@ -3014,12 +3035,12 @@ static int mlxsw_sp_neigh_rif_made_sync(struct mlxsw_sp *mlxsw_sp,
- 		.rif = rif,
- 	};
- 
--	neigh_for_each(&arp_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
-+	mlxsw_sp_neigh_for_each(&arp_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
- 	if (rms.err)
- 		goto err_arp;
- 
- #if IS_ENABLED(CONFIG_IPV6)
--	neigh_for_each(&nd_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
-+	mlxsw_sp_neigh_for_each(&nd_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
+ struct netpoll_info;
+ struct device;
+@@ -2034,6 +2035,9 @@ enum netdev_reg_state {
+  *	@napi_defer_hard_irqs:	If not zero, provides a counter that would
+  *				allow to avoid NIC hard IRQ, on busy queues.
+  *
++ *	@neighbours:	List heads pointing to this device's neighbours'
++ *			dev_list, one per address-family.
++ *
+  *	FIXME: cleanup struct net_device such that network protocol info
+  *	moves out.
+  */
+@@ -2443,6 +2447,9 @@ struct net_device {
+ 	 */
+ 	struct net_shaper_hierarchy *net_shaper_hierarchy;
  #endif
- 	if (rms.err)
- 		goto err_nd;
++
++	struct hlist_head neighbours[NEIGH_NR_TABLES];
++
+ 	u8			priv[] ____cacheline_aligned
+ 				       __counted_by(priv_len);
+ } ____cacheline_aligned;
 diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 5f2b7249ba02..2f4cb9e51364 100644
+index 21c0c20a0ed5..d0bc618d4fe2 100644
 --- a/include/net/neighbour.h
 +++ b/include/net/neighbour.h
-@@ -278,6 +278,8 @@ static inline void *neighbour_priv(const struct neighbour *n)
+@@ -29,6 +29,7 @@
+ #include <linux/sysctl.h>
+ #include <linux/workqueue.h>
+ #include <net/rtnetlink.h>
++#include <net/neighbour_tables.h>
  
- extern const struct nla_policy nda_policy[];
+ /*
+  * NUD stands for "neighbor unreachability detection"
+@@ -136,6 +137,7 @@ struct neigh_statistics {
  
-+#define neigh_for_each(pos, head) hlist_for_each_entry(pos, head, hash)
-+
- static inline bool neigh_key_eq32(const struct neighbour *n, const void *pkey)
+ struct neighbour {
+ 	struct hlist_node	hash;
++	struct hlist_node	dev_list;
+ 	struct neigh_table	*tbl;
+ 	struct neigh_parms	*parms;
+ 	unsigned long		confirmed;
+@@ -236,14 +238,6 @@ struct neigh_table {
+ 	struct pneigh_entry	**phash_buckets;
+ };
+ 
+-enum {
+-	NEIGH_ARP_TABLE = 0,
+-	NEIGH_ND_TABLE = 1,
+-	NEIGH_DN_TABLE = 2,
+-	NEIGH_NR_TABLES,
+-	NEIGH_LINK_TABLE = NEIGH_NR_TABLES /* Pseudo table for neigh_xmit */
+-};
+-
+ static inline int neigh_parms_family(struct neigh_parms *p)
  {
- 	return *(const u32 *)n->primary_key == *(const u32 *)pkey;
-@@ -391,8 +393,6 @@ static inline struct net *pneigh_net(const struct pneigh_entry *pneigh)
- }
- 
- void neigh_app_ns(struct neighbour *n);
--void neigh_for_each(struct neigh_table *tbl,
--		    void (*cb)(struct neighbour *, void *), void *cookie);
- void __neigh_for_each_release(struct neigh_table *tbl,
- 			      int (*cb)(struct neighbour *));
- int neigh_xmit(int fam, struct net_device *, const void *, struct sk_buff *);
+ 	return p->tbl->family;
+diff --git a/include/net/neighbour_tables.h b/include/net/neighbour_tables.h
+new file mode 100644
+index 000000000000..bcffbe8f7601
+--- /dev/null
++++ b/include/net/neighbour_tables.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _NET_NEIGHBOUR_TABLES_H
++#define _NET_NEIGHBOUR_TABLES_H
++
++enum {
++	NEIGH_ARP_TABLE = 0,
++	NEIGH_ND_TABLE = 1,
++	NEIGH_NR_TABLES,
++	NEIGH_LINK_TABLE = NEIGH_NR_TABLES /* Pseudo table for neigh_xmit */
++};
++
++#endif
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 01987368b6c5..e91105a4c5ee 100644
+index 61b5f0d4896a..dbfd27f79bb8 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -3113,28 +3113,6 @@ static int neigh_get(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	return err;
- }
+@@ -61,6 +61,19 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+ static const struct seq_operations neigh_stat_seq_ops;
+ #endif
  
--void neigh_for_each(struct neigh_table *tbl, void (*cb)(struct neighbour *, void *), void *cookie)
--{
--	int chain;
--	struct neigh_hash_table *nht;
--
--	rcu_read_lock();
--	nht = rcu_dereference(tbl->nht);
--
--	read_lock_bh(&tbl->lock); /* avoid resizes */
--	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
++static int family_to_neightbl_index(int family)
++{
++	switch (family) {
++	case AF_INET:
++		return NEIGH_ARP_TABLE;
++	case AF_INET6:
++		return NEIGH_ND_TABLE;
++	default:
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return 0; /* to avoid panic by null-ptr-deref */
++	}
++}
++
+ /*
+    Neighbour hash table buckets are protected with rwlock tbl->lock.
+ 
+@@ -216,6 +229,7 @@ bool neigh_remove_one(struct neighbour *ndel, struct neigh_table *tbl)
+ 	write_lock(&ndel->lock);
+ 	if (refcount_read(&ndel->refcnt) == 1) {
+ 		hlist_del_rcu(&ndel->hash);
++		hlist_del_rcu(&ndel->dev_list);
+ 		neigh_mark_dead(ndel);
+ 		retval = true;
+ 	}
+@@ -357,46 +371,45 @@ static void neigh_flush_dev(struct neigh_table *tbl, struct net_device *dev,
+ 			    bool skip_perm)
+ {
+ 	int i;
++	struct neighbour *n;
++	struct hlist_node *tmp;
+ 	struct neigh_hash_table *nht;
+ 
++	i = family_to_neightbl_index(tbl->family);
++
+ 	nht = rcu_dereference_protected(tbl->nht,
+ 					lockdep_is_held(&tbl->lock));
+ 
+-	for (i = 0; i < (1 << nht->hash_shift); i++) {
 -		struct neighbour *n;
 -
--		for (n = rcu_dereference(nht->hash_buckets[chain]);
--		     n != NULL;
--		     n = rcu_dereference(n->next))
--			cb(n, cookie);
--	}
--	read_unlock_bh(&tbl->lock);
--	rcu_read_unlock();
--}
--EXPORT_SYMBOL(neigh_for_each);
+-		neigh_for_each(n, &nht->hash_heads[i]) {
+-			if (dev && n->dev != dev)
+-				continue;
+-			if (skip_perm && n->nud_state & NUD_PERMANENT)
+-				continue;
++	hlist_for_each_entry_safe(n, tmp, &dev->neighbours[i], dev_list) {
++		if (skip_perm && n->nud_state & NUD_PERMANENT)
++			continue;
+ 
+-			hlist_del_rcu(&n->hash);
+-			write_lock(&n->lock);
+-			neigh_del_timer(n);
+-			neigh_mark_dead(n);
+-			if (refcount_read(&n->refcnt) != 1) {
+-				/* The most unpleasant situation.
+-				   We must destroy neighbour entry,
+-				   but someone still uses it.
 -
- /* The tbl->lock must be held as a writer and BH disabled. */
- void __neigh_for_each_release(struct neigh_table *tbl,
- 			      int (*cb)(struct neighbour *))
+-				   The destroy will be delayed until
+-				   the last user releases us, but
+-				   we must kill timers etc. and move
+-				   it to safe state.
+-				 */
+-				__skb_queue_purge(&n->arp_queue);
+-				n->arp_queue_len_bytes = 0;
+-				WRITE_ONCE(n->output, neigh_blackhole);
+-				if (n->nud_state & NUD_VALID)
+-					n->nud_state = NUD_NOARP;
+-				else
+-					n->nud_state = NUD_NONE;
+-				neigh_dbg(2, "neigh %p is stray\n", n);
+-			}
+-			write_unlock(&n->lock);
+-			neigh_cleanup_and_release(n);
++		hlist_del_rcu(&n->hash);
++		hlist_del_rcu(&n->dev_list);
++		write_lock(&n->lock);
++		neigh_del_timer(n);
++		neigh_mark_dead(n);
++		if (refcount_read(&n->refcnt) != 1) {
++			/* The most unpleasant situation.
++			 * We must destroy neighbour entry,
++			 * but someone still uses it.
++			 *
++			 * The destroy will be delayed until
++			 * the last user releases us, but
++			 * we must kill timers etc. and move
++			 * it to safe state.
++			 */
++			__skb_queue_purge(&n->arp_queue);
++			n->arp_queue_len_bytes = 0;
++			WRITE_ONCE(n->output, neigh_blackhole);
++			if (n->nud_state & NUD_VALID)
++				n->nud_state = NUD_NOARP;
++			else
++				n->nud_state = NUD_NONE;
++			neigh_dbg(2, "neigh %p is stray\n", n);
+ 		}
++		write_unlock(&n->lock);
++		neigh_cleanup_and_release(n);
+ 	}
+ }
+ 
+@@ -672,6 +685,10 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 	if (want_ref)
+ 		neigh_hold(n);
+ 	hlist_add_head_rcu(&n->hash, &nht->hash_heads[hash_val]);
++
++	error = family_to_neightbl_index(tbl->family);
++	hlist_add_head_rcu(&n->dev_list, &dev->neighbours[error]);
++
+ 	write_unlock_bh(&tbl->lock);
+ 	neigh_dbg(2, "neigh %p is created\n", n);
+ 	rc = n;
+@@ -953,6 +970,7 @@ static void neigh_periodic_work(struct work_struct *work)
+ 			     !time_in_range_open(jiffies, n->used,
+ 						 n->used + NEIGH_VAR(n->parms, GC_STALETIME)))) {
+ 				hlist_del_rcu(&n->hash);
++				hlist_del_rcu(&n->dev_list);
+ 				neigh_mark_dead(n);
+ 				write_unlock(&n->lock);
+ 				neigh_cleanup_and_release(n);
+@@ -3052,6 +3070,7 @@ void __neigh_for_each_release(struct neigh_table *tbl,
+ 			release = cb(n);
+ 			if (release) {
+ 				hlist_del_rcu(&n->hash);
++				hlist_del_rcu(&n->dev_list);
+ 				neigh_mark_dead(n);
+ 			}
+ 			write_unlock(&n->lock);
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index df62638b6498..a0573847bc55 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -1664,7 +1664,7 @@ static int nla_put_via(struct sk_buff *skb,
+ 		       u8 table, const void *addr, int alen)
+ {
+ 	static const int table_to_family[NEIGH_NR_TABLES + 1] = {
+-		AF_INET, AF_INET6, AF_DECnet, AF_PACKET,
++		AF_INET, AF_INET6, AF_PACKET,
+ 	};
+ 	struct nlattr *nla;
+ 	struct rtvia *via;
 -- 
 2.46.0
 
