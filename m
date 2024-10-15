@@ -1,67 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8D61D9A5F;
-	Tue, 15 Oct 2024 12:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B79A1D9A5F;
+	Tue, 15 Oct 2024 12:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728995953; cv=none; b=g3vI5RvDoUMuAZjdjP7JmihWL6hC5eZNYzIFHOxDvn7wb7v/shENaCTfhuoJmeUV6EjaOrG7sSYVowlKvJJyk4GfPBg0NVC5WKpQzw+GS4TRjwnkR7zCiujFZ2wdJvKyQEpxTsHHiCYk1Xe1Pz1HDwkICEOCSH80/VwV828T2XM=
+	t=1728996105; cv=none; b=ZKZV96k0efvoDNryTHhM1Yr1PW99gQFlbZJHOByPQoHFS6eiTWTJU3YMXOnd0ylcEuin6IQlp4STJWl5Smm2SosPDQO1FyUQE8uNrKI6ex1EceDhx6F9qAdRarzU0EA5Y7lzRCF/8k+s0i9rxY5wRnlf5JNYWQi1rIS+TVi9/Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728995953; c=relaxed/simple;
-	bh=QTtYFAEPIf5I0d3qekBOMwiJidbWoVXnP2kMc1zPBC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AllgddHkVZlAf6XQqEo1JLjuFi71LLtTC4pc5MWx7/l5leTiPPx2QqT5jZ4VJGO9HFSFpe19fAorQWZk92ffftPCFBjoQGnKrOAUh1PiWfO+uwdI413SglQnxdbiIfnznaCrof/pfHHYu0RBtIyoelpDastzWulAIGC/Sq7i4mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFaLvdqK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFaLvdqK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC26C4CEC6;
-	Tue, 15 Oct 2024 12:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728995953;
-	bh=QTtYFAEPIf5I0d3qekBOMwiJidbWoVXnP2kMc1zPBC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GFaLvdqKM641PB4NIUtGmSOACidFNEUEyl+fFoA7ibrfvakrbRNHx0FZkTYazGoRP
-	 LQmguEsQeLXaCIQVo4SsQhcGgSSEUHo3fzsNExRixt49Yr23coWF3IRKUI/iQbz1Zo
-	 UPYpLeiIh3cwQG7fcrm14bCWcNfxhmhuDOHaM0WTyEaF8wmmX0sGjhzjcqhhpFS7/D
-	 1yjQFJ2IWOmpyzEcdtIwU7f0eP2cbkVkb5gGV1mBP/zre+gGu12BqqJ89HojVSxWN8
-	 +a5WN7I14ca4PyC/TUbdIE67eqowNyjDDgjaLJwncR4EGPGenvA5hMhtNYYaqpjZuW
-	 MArpXchwiyaYQ==
-Date: Tue, 15 Oct 2024 13:39:07 +0100
-From: Simon Horman <horms@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>
-Cc: netdev@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
-	Mark Lee <Mark-MC.Lee@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: ethernet: mtk_eth_soc: fix memory corruption
- during fq dma init
-Message-ID: <20241015123907.GG569285@kernel.org>
-References: <20241015081755.31060-1-nbd@nbd.name>
+	s=arc-20240116; t=1728996105; c=relaxed/simple;
+	bh=6bzmQWZ50Z4Ptqwi0MxNuTn8rxQ1BZUD81funVcZdgc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RCgqtO9hvQhC8vXXkpjziEa77tTvig1vRKt261EZbcged1x2+FD9+42w3MafFBXId9Iz1ZlR5Pr8ANBnOdzH++4WqgnuZ+R4cyu1yncVGrXEl22tb976/zVb8vB1mQpSSpggh2N8lGRhKT8tZL5x+JojbhzNLSFlYyqE7y4SYRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XSYbN3q8lzyT7F;
+	Tue, 15 Oct 2024 20:40:16 +0800 (CST)
+Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C2A81402E2;
+	Tue, 15 Oct 2024 20:41:39 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 15 Oct 2024 20:41:38 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
+	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
+	<andrew@lunn.ch>, <jdamato@fastly.com>, <horms@kernel.org>,
+	<kalesh-anakkur.purayil@broadcom.com>, <christophe.jaillet@wanadoo.fr>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH V12 RESEND net-next 01/10] net: hibmcge: Add pci table supported in this module
+Date: Tue, 15 Oct 2024 20:35:07 +0800
+Message-ID: <20241015123516.4035035-2-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241015123516.4035035-1-shaojijie@huawei.com>
+References: <20241015123516.4035035-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015081755.31060-1-nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm000007.china.huawei.com (7.193.23.189)
 
-On Tue, Oct 15, 2024 at 10:17:55AM +0200, Felix Fietkau wrote:
-> The loop responsible for allocating up to MTK_FQ_DMA_LENGTH buffers must
-> only touch as many descriptors, otherwise it ends up corrupting unrelated
-> memory. Fix the loop iteration count accordingly.
-> 
-> Fixes: c57e55819443 ("net: ethernet: mtk_eth_soc: handle dma buffer size soc specific")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Add pci table supported in this module, and implement pci_driver function
+to initialize this driver.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+hibmcge is a passthrough network device. Its software runs
+on the host side, and the MAC hardware runs on the BMC side
+to reduce the host CPU area. The software interacts with the
+MAC hardware through the PCIe.
+
+  ┌─────────────────────────┐
+  │ HOST CPU network device │
+  │    ┌──────────────┐     │
+  │    │hibmcge driver│     │
+  │    └─────┬─┬──────┘     │
+  │          │ │            │
+  │HOST  ┌───┴─┴───┐        │
+  │      │ PCIE RC │        │
+  └──────┴───┬─┬───┴────────┘
+             │ │
+            PCIE
+             │ │
+  ┌──────┬───┴─┴───┬────────┐
+  │      │ PCIE EP │        │
+  │BMC   └───┬─┬───┘        │
+  │          │ │            │
+  │ ┌────────┴─┴──────────┐ │
+  │ │        GE           │ │
+  │ │ ┌─────┐    ┌─────┐  │ │
+  │ │ │ MAC │    │ MAC │  │ │
+  └─┴─┼─────┼────┼─────┼──┴─┘
+      │ PHY │    │ PHY │
+      └─────┘    └─────┘
+
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ChangeLog:
+v10 -> v11:
+  - Delete devm_netdev_alloc_pcpu_stats to prevent memory leak,
+    suggested by Jakub.
+  v10: https://lore.kernel.org/all/20240912025127.3912972-1-shaojijie@huawei.com/
+v7 -> v8:
+  - Set netdev->pcpu_stat_type to NETDEV_PCPU_STAT_TSTATS, suggested by Jakub
+  v7: https://lore.kernel.org/all/20240905143120.1583460-1-shaojijie@huawei.com/
+v6 -> v7:
+  - Add devm_netdev_alloc_pcpu_stats() to init netdev->tstats,
+    suggested by Paolo.
+  v6: https://lore.kernel.org/all/20240830121604.2250904-2-shaojijie@huawei.com/
+RFC v1 -> RFC v2:
+  - Add the null pointer check on the return value of pcim_iomap_table(),
+    suggested by Jonathan.
+  RFC v1: https://lore.kernel.org/all/20240731094245.1967834-1-shaojijie@huawei.com/
+---
+ .../ethernet/hisilicon/hibmcge/hbg_common.h   | 16 ++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_main.c | 84 +++++++++++++++++++
+ 2 files changed, 100 insertions(+)
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+ create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+new file mode 100644
+index 000000000000..614650e9a71f
+--- /dev/null
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/* Copyright (c) 2024 Hisilicon Limited. */
++
++#ifndef __HBG_COMMON_H
++#define __HBG_COMMON_H
++
++#include <linux/netdevice.h>
++#include <linux/pci.h>
++
++struct hbg_priv {
++	struct net_device *netdev;
++	struct pci_dev *pdev;
++	u8 __iomem *io_base;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+new file mode 100644
+index 000000000000..86027434d5e0
+--- /dev/null
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+@@ -0,0 +1,84 @@
++// SPDX-License-Identifier: GPL-2.0+
++// Copyright (c) 2024 Hisilicon Limited.
++
++#include <linux/etherdevice.h>
++#include <linux/netdevice.h>
++#include <linux/pci.h>
++#include "hbg_common.h"
++
++static int hbg_pci_init(struct pci_dev *pdev)
++{
++	struct net_device *netdev = pci_get_drvdata(pdev);
++	struct hbg_priv *priv = netdev_priv(netdev);
++	struct device *dev = &pdev->dev;
++	int ret;
++
++	ret = pcim_enable_device(pdev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to enable PCI device\n");
++
++	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set PCI DMA mask\n");
++
++	ret = pcim_iomap_regions(pdev, BIT(0), dev_driver_string(dev));
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to map PCI bar space\n");
++
++	priv->io_base = pcim_iomap_table(pdev)[0];
++	if (!priv->io_base)
++		return dev_err_probe(dev, -ENOMEM, "failed to get io base\n");
++
++	pci_set_master(pdev);
++	return 0;
++}
++
++static int hbg_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
++{
++	struct device *dev = &pdev->dev;
++	struct net_device *netdev;
++	struct hbg_priv *priv;
++	int ret;
++
++	netdev = devm_alloc_etherdev(dev, sizeof(struct hbg_priv));
++	if (!netdev)
++		return -ENOMEM;
++
++	pci_set_drvdata(pdev, netdev);
++	SET_NETDEV_DEV(netdev, dev);
++
++	priv = netdev_priv(netdev);
++	priv->netdev = netdev;
++	priv->pdev = pdev;
++
++	ret = hbg_pci_init(pdev);
++	if (ret)
++		return ret;
++
++	netdev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
++
++	ret = devm_register_netdev(dev, netdev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register netdev\n");
++
++	netif_carrier_off(netdev);
++	return 0;
++}
++
++static const struct pci_device_id hbg_pci_tbl[] = {
++	{PCI_VDEVICE(HUAWEI, 0x3730), 0},
++	{ }
++};
++MODULE_DEVICE_TABLE(pci, hbg_pci_tbl);
++
++static struct pci_driver hbg_driver = {
++	.name		= "hibmcge",
++	.id_table	= hbg_pci_tbl,
++	.probe		= hbg_probe,
++};
++module_pci_driver(hbg_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
++MODULE_DESCRIPTION("hibmcge driver");
++MODULE_VERSION("1.0");
+-- 
+2.33.0
+
