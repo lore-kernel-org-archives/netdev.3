@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED971537DA;
-	Tue, 15 Oct 2024 01:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A665A158866
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 01:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728954633; cv=none; b=OJ2jHpS3QEWc0SP/1uhZ5XiWB/qus/KOAWtZQICAr1sy45mc7ISY+tq9yYwAUXMbr9yvJE1hIzBRTEyxgbuZnukp6AvcAnP4NXJLYSrDcGCTUuMMWdrFTDoCIjPzNUxoAmYEZW03PTH2K8/EiYYUTyMD+jvMRjN8wUveFQO/LbA=
+	t=1728954635; cv=none; b=rXLKHpLKB81///n5MJF3R7Oa6iPPFAEzXjDITpKxtO6HTM6+Nj+PWZzpmaMLzTjoW7Y7lmOxVvFOKGUu3RhuxGJ+oiyJy74RaG26bOvs6XXR/ApRozJlen8jsPAWpPwPOZal6kEue8fRGjwdbDfo8EqNwZqghn4iZ26CTl1Hf4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728954633; c=relaxed/simple;
-	bh=UOJbWPQWmTdSA81rRftszQfoSPKSv3GWQ0BhskXRA1Q=;
+	s=arc-20240116; t=1728954635; c=relaxed/simple;
+	bh=PZDJrDIw2e8jTOfTHQZ5gmtYgRL3V9aibvLqQofhq5A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dRUYbzI5qokLKf9deTGIe02nUSTsDlHSf8xzqBwlyTtI16mk5+L1vWsz/LHvjNUulaXEdgj5ysXbjgGbTDUHEQ+Esng3+LVR+slxMe7kWN4HBI5pHALDVQi9opMtS4x1jlNkMmuHuLgs2DHu7x/ArCwfzPQl+XVds7ilC65lVSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hcqc9zXW; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=AKtVKW+V4b+ipvIW4PBP8hUMKMtx/IgwBpCzVt41cXvVvJ4S9Qsm0s7gSbF4tuaa/pShnSnL/Jij81HSfD/U2knp+KmIPtnJFiRfBKGZvvrF6ppHHk7B/xhDoHj+Nzd3SfxavOId+0vsCrsrCB7ve+34kRUz7INZhKPwyAYjQg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ac91n/tQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hcqc9zXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BCAC4CEC6;
-	Tue, 15 Oct 2024 01:10:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ac91n/tQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E969C4CED0;
+	Tue, 15 Oct 2024 01:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728954632;
-	bh=UOJbWPQWmTdSA81rRftszQfoSPKSv3GWQ0BhskXRA1Q=;
+	s=k20201202; t=1728954634;
+	bh=PZDJrDIw2e8jTOfTHQZ5gmtYgRL3V9aibvLqQofhq5A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Hcqc9zXWMU9uInhPEYS18uZ18agL7FETCOaPCOiNIvw2HOxui9j/HJQXDlxgLyhvc
-	 7P7YHkfk2qIe/vYDYq4JNKy/qpc2bk9LJgCobv/+idYbJdwS0brsGYZtF2/M+ag1x8
-	 cLMNv+X7ueeSFXWrTKpv5sMWwrfrfOqcCpJViPYGKiE3XdIWaMhtQia7qUHl9Wc3Y1
-	 WDBQuE/6nf8WpF+BCm953upU5QeW4QZCXVCPmCMl8h214KsupcF1e7ylGKn5Nk27EC
-	 KwstXL5YPECB9NaHjgjJOZ0IFKareUYpP/Ak1CDpEcog4HH8TXjCCJWb/3Hj4FglXc
-	 WjGVbjL7od4bQ==
+	b=Ac91n/tQOZXgUIvnWOVJc9rtOxp347Ar4FDWAo2wjavJ8iSQB0nQnZ/UWeEAdVDIQ
+	 dREW6wbk2gpMqHnXsk62MMkbEoACObsvBhkOH9jpmold5EjTal5SmVoHCM11VTNwuH
+	 ALupISxteKqnrOZmD7bDanxUw1B5nc4Pp+NAtjRHGL/BRufX4fU1asMWu2rCPp+Ed0
+	 ysLHD5PO50QDVakJPpMM1WkfWH0CWMpVKNCTZNbyhMjB2pQM/netKyEDKmWjHSjakN
+	 ZUKEw/B3Ai6VTBAqbEtvRMpOR0mr+Jo2ArOv/NgSS/5vCArx5yJeMcrlSQOS9c2oz+
+	 Jv4XCWGoLty2g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAF983822E4C;
-	Tue, 15 Oct 2024 01:10:38 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70BAE3822E4C;
+	Tue, 15 Oct 2024 01:10:40 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: mtk_eth_soc: use ethtool_puts
+Subject: Re: [PATCH net-next v2 1/2] selftests: net: rebuild YNL if dependencies
+ changed
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <172895463776.686374.17879317591216862359.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Oct 2024 01:10:37 +0000
-References: <20241011200225.7403-1-rosenp@gmail.com>
-In-Reply-To: <20241011200225.7403-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, nbd@nbd.name, sean.wang@mediatek.com,
- Mark-MC.Lee@mediatek.com, lorenzo@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
+ <172895463899.686374.7630398528769381304.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Oct 2024 01:10:38 +0000
+References: <20241011230311.2529760-1-kuba@kernel.org>
+In-Reply-To: <20241011230311.2529760-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, donald.hunter@gmail.com, sdf@fomichev.me
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 11 Oct 2024 13:02:25 -0700 you wrote:
-> Allows simplifying get_strings and avoids manual pointer manipulation.
+On Fri, 11 Oct 2024 16:03:10 -0700 you wrote:
+> Try to rebuild YNL if either user added a new family or the specs
+> of the families have changed. Stanislav's ncdevmem cause a false
+> positive build failure in NIPA because libynl.a isn't rebuilt
+> after ethtool is added to YNL_GENS.
 > 
-> Tested on Belkin RT1800.
+> Note that sha1sum is already used in other parts of the build system.
 > 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  drivers/net/ethernet/mediatek/mtk_eth_soc.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+> [...]
 
 Here is the summary with links:
-  - net: mtk_eth_soc: use ethtool_puts
-    https://git.kernel.org/netdev/net-next/c/2a22bead433e
+  - [net-next,v2,1/2] selftests: net: rebuild YNL if dependencies changed
+    https://git.kernel.org/netdev/net-next/c/0cb06dc6c42b
+  - [net-next,v2,2/2] selftests: net: move EXTRA_CLEAN of libynl.a into ynl.mk
+    https://git.kernel.org/netdev/net-next/c/60b4d49b9621
 
 You are awesome, thank you!
 -- 
