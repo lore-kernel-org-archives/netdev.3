@@ -1,419 +1,153 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6341A1F6695
-	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 18:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E81F80CA
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 19:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729018425; cv=none; b=epbfowcDxb7q20oafy29Q6UW4VJ/kTKNgHPrjBhCffstjFT2phzE675pPkhySDvo4l799f3qfY4+8lJMp1kyNE7LNJDHQoA+nS0Ui7sNxEoKQqeQL9fsu/DfDemNjk/GAzjvsUECkcF8z2kL8xracLqn7hfi1CAhlzouXXTZ9Ig=
+	t=1729019834; cv=none; b=qI18MuoyNKESzAx6XkoxcM1pErovA98snM1xnm4zWyc17aoquvhw4YgbrzLNFryctOwcxI8aLd6Ho/REkYwTV93xTc4XZwemH/WAFL/HzF3uotXi98V47hKGpFQ/fOG0+3SJ9laBQwFqlMJGWr7fobQTMVvsxNYKfJrcrD3BtPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729018425; c=relaxed/simple;
-	bh=LP0llIjm3FnSKLf1YIVOjbPCtWiuce7UzcruKETxN0Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ot0Ba4MmEAugRpZ67EsN6RppIs1sPCwTGa+SHZVVoBWB+S/DmxEjLkwwPEN3UtwdAsw+9xcrqfnViJoTvujCjilYY8BYdEatGncRhd72gRHxZK/X/uw6dsgArkOjuH3j7b35erpxGpCDhQIXcY1lVpyi5r05amu7NZBWCctJCJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NPOeCBRa; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1729019834; c=relaxed/simple;
+	bh=Jw+WdBzdeJ1ejN6JFooZdebJTss0hVEiqW0IkRTOyf4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=php6s+cCn1kHiYBB3n+MVCz+QOYc9DuQF2eDrRHF9Fy8aw45VcPPklWN5+/kANfrqviYsleapMkp8RuALZ8kQkECMBa0nO5ERZzlPAhKCv4J2rw+11ZDUHq7plubcUW4GsbcmawebCmZzqabXAce2AoGLkufO0iQRi3vLvDIZUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yQaNsijE; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NPOeCBRa"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FINg7G000392;
-	Tue, 15 Oct 2024 11:53:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2021-q4; bh=UO4OFj24RrdMBEV4UC
-	w/prglpRJlfQD3epg0dnC9EYA=; b=NPOeCBRaj2FqaeiCZ93DEQ22B/+z1TIdyp
-	seDKePP5kfvjS9s7HPzlLp/6cgxclY9Z3O/WG7GHDMFj5zfXt+JyM3BfrximP8X1
-	LlXnsiO3zoW4FUh8vkfBog3h1D/YnEOXMByDdh8K+Q+gUwm5V53mfXrW/nrujbsO
-	YYUpXcnUOy4NIOYxHmqrurQ4NmqRJcn9Oggar8X1lZYThxEGYTh9peiWE80Km+Q7
-	5XrjGpWvN7+6ppPvjvbEt9mb4Oy+wjrcumk+I0Zg/E8JEgi2+9xwaIWEZNKWILqS
-	eLaopaSMGsM+eyDxS4XEqcvcaQrtHromKIbkV8uWsKWj7Wsfh2Mg==
-Received: from maileast.thefacebook.com ([163.114.130.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4291qk3c78-19
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 15 Oct 2024 11:53:28 -0700 (PDT)
-Received: from devvm4158.cln0.facebook.com (2620:10d:c0a8:fe::f072) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server id
- 15.2.1544.11; Tue, 15 Oct 2024 18:53:26 +0000
-From: Vadim Fedorenko <vadfed@meta.com>
-To: Michael Chan <michael.chan@broadcom.com>,
-        Edwin Peer
-	<edwin.peer@broadcom.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, Richard Cochran <richardcochran@gmail.com>,
-        "Vadim
- Fedorenko" <vadfed@meta.com>
-Subject: [PATCH net] bnxt_en: replace ptp_lock with irqsave variant
-Date: Tue, 15 Oct 2024 11:53:10 -0700
-Message-ID: <20241015185310.608328-1-vadfed@meta.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yQaNsijE"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a86e9db75b9so835208466b.1
+        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 12:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729019830; x=1729624630; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BosgQ+kD0H5BJCs43wOOr0oQ/yjsIN/cdckDvbryFCI=;
+        b=yQaNsijE1PZ/e4b4fOvo0oEiUo84DNtinRmfG84VSrHQAcu+zmXyojK0n7raycgRmw
+         VwU1Dh8Vny3PizuUu2v7JHoQGjE8lkNZUzby6T8vYVek3mvaW6kLLILpQCQWkAQ/HsXE
+         TquicYi7uOTBLkFbU9w6j8eoNDyQGFCsVPCkn9GAkHq/Ad0ieZiQZUFYhqrli09UpoBk
+         asAvC9i8lT1KI0SU1/99uAK8HjMTMXBHYypK3210cd1YgKNtScDmorYuEtcfdAj9l/8x
+         yczlG8oNFcQPktg3vr/qKaomsn3fCLQfw890LalN5iw3nelaCuBQj8/aaBlKoX2xbQmN
+         7/iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729019830; x=1729624630;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BosgQ+kD0H5BJCs43wOOr0oQ/yjsIN/cdckDvbryFCI=;
+        b=JxO4HBIxlcCq3DowlexAEByGSaLkHqPei5EklZzCFrgKpUoyOlIcxpvS4o3qPaMJPT
+         P25X5k3NbSTXuz+/FpfN/bEMGCJqiGFCAxxuIY+CgYrcJpJ0EbfkS1UzLHC35YUtZ1XJ
+         jn9GiGzlB+27ayoN6VmlJA0GnVLGKMlYiEay2d4Tqoz+S5N+nh1hxgyKbzGbSm+jvTFg
+         gIXPrxnH+9M0adJpNmJZRnIoI/hSzW9VfTWeBk3x01WMXAeKVzRpC7jK0+9T5eNTyqQB
+         2fkkav7fIT/uao9mFY0U83nX13304kYvSDqeIvDKTebmzuh7CLtvLT+cICDZBMjWwstb
+         Jhow==
+X-Forwarded-Encrypted: i=1; AJvYcCUMAUCbqJDbiihEcT7k01CV/De136r3HOaHQHZeHkOneEYSpSKKjp1Nk6WIk8WM1OjLgR5AH2w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXWq+OfRNZiDWbcna+NAhlqUuJcQuSDmvvns6mMUhXPOExlCtX
+	fv2z4KGoyXbSFpjBhYTUStwZm6C+6Gwh40aWukP76VHqdkTrvq2y8vv7FYEYrnw=
+X-Google-Smtp-Source: AGHT+IFsYtA77wAuh9nis+Oc6a+Lfq19dmpQld1Bd4sJ531FzQwGqpJkoSD0d+dwGzwE0A/GIUGxDg==
+X-Received: by 2002:a17:907:7291:b0:a99:f4eb:b7ee with SMTP id a640c23a62f3a-a99f4ebba87mr1017022866b.11.1729019830501;
+        Tue, 15 Oct 2024 12:17:10 -0700 (PDT)
+Received: from localhost ([2001:4090:a244:83ae:2517:2666:43c9:d0d3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2971a51esm101941966b.37.2024.10.15.12.17.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 12:17:10 -0700 (PDT)
+From: Markus Schneider-Pargmann <msp@baylibre.com>
+Date: Tue, 15 Oct 2024 21:15:55 +0200
+Subject: [PATCH v4 1/9] dt-bindings: can: m_can: Add wakeup properties
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: hoOT7zR59ZJhhrQhtKDi4yGuqQAt2Hbm
-X-Proofpoint-GUID: hoOT7zR59ZJhhrQhtKDi4yGuqQAt2Hbm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_02,2024-10-04_01,2024-09-30_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241015-topic-mcan-wakeup-source-v6-12-v4-1-fdac1d1e7aa6@baylibre.com>
+References: <20241015-topic-mcan-wakeup-source-v6-12-v4-0-fdac1d1e7aa6@baylibre.com>
+In-Reply-To: <20241015-topic-mcan-wakeup-source-v6-12-v4-0-fdac1d1e7aa6@baylibre.com>
+To: Chandrasekar Ramakrishnan <rcsekar@samsung.com>, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>
+Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+ Vishal Mahaveer <vishalm@ti.com>, Kevin Hilman <khilman@baylibre.com>, 
+ Dhruva Gole <d-gole@ti.com>, Simon Horman <horms@kernel.org>, 
+ Vincent MAILHOL <mailhol.vincent@wanadoo.fr>, 
+ Markus Schneider-Pargmann <msp@baylibre.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1874; i=msp@baylibre.com;
+ h=from:subject:message-id; bh=Jw+WdBzdeJ1ejN6JFooZdebJTss0hVEiqW0IkRTOyf4=;
+ b=owGbwMvMwCGm0rPl0RXRdfaMp9WSGNL59rcHTtJ/VpO3mLlHjY0r6UKy1A873eMXXD+4bivaV
+ Ki43HxfRykLgxgHg6yYIsvdDwvf1cldXxCx7pEjzBxWJpAhDFycAjCRr8YM/2uytik0z7co6z+5
+ f/NiuZi2pwwypzN/bHXdcr3Nb0XR61uMDP3xIbNWWVbbZBsf/XOsQtx5goxrOr+e+ryluV37PbJ
+ OswAA
+X-Developer-Key: i=msp@baylibre.com; a=openpgp;
+ fpr=BADD88DB889FDC3E8A3D5FE612FA6A01E0A45B41
 
-In netpoll configuration the completion processing can happen in hard
-irq context which will break with spin_lock_bh() for fullfilling RX
-timestamp in case of all packets timestamping. Replace it with
-spin_lock_irqsave() variant.
+m_can can be a wakeup source on some devices. Especially on some of the
+am62* SoCs pins, connected to m_can in the mcu, can be used to wakeup
+the SoC.
 
-Fixes: 7f5515d19cd7 ("bnxt_en: Get the RX packet timestamp")
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+The wakeup-source property defines on which devices m_can can be used
+for wakeup.
+
+The pins associated with m_can have to have a special configuration to
+be able to wakeup the SoC. This configuration is described in the wakeup
+pinctrl state while the default state describes the default
+configuration.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 22 +++---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 70 +++++++++++--------
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 12 ++--
- 3 files changed, 63 insertions(+), 41 deletions(-)
+ .../devicetree/bindings/net/can/bosch,m_can.yaml       | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 6e422e24750a..8d2fe091e03f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -2254,10 +2254,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+diff --git a/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml b/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
+index c4887522e8fe97c3947357b4dbd4ecf20ee8100a..0c1f9fa7371897d45539ead49c9d290fb4966f30 100644
+--- a/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
++++ b/Documentation/devicetree/bindings/net/can/bosch,m_can.yaml
+@@ -106,6 +106,22 @@ properties:
+         maximum: 32
+     minItems: 1
  
- 			if (!bnxt_get_rx_ts_p5(bp, &ts, cmpl_ts)) {
- 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-+				unsigned int flags;
- 
--				spin_lock_bh(&ptp->ptp_lock);
-+				spin_lock_irqsave(&ptp->ptp_lock, flags);
- 				ns = timecounter_cyc2time(&ptp->tc, ts);
--				spin_unlock_bh(&ptp->ptp_lock);
-+				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 				memset(skb_hwtstamps(skb), 0,
- 				       sizeof(*skb_hwtstamps(skb)));
- 				skb_hwtstamps(skb)->hwtstamp = ns_to_ktime(ns);
-@@ -2757,17 +2758,18 @@ static int bnxt_async_event_process(struct bnxt *bp,
- 		case ASYNC_EVENT_CMPL_PHC_UPDATE_EVENT_DATA1_FLAGS_PHC_RTC_UPDATE:
- 			if (BNXT_PTP_USE_RTC(bp)) {
- 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-+				unsigned int flags;
- 				u64 ns;
- 
- 				if (!ptp)
- 					goto async_event_process_exit;
- 
--				spin_lock_bh(&ptp->ptp_lock);
-+				spin_lock_irqsave(&ptp->ptp_lock, flags);
- 				bnxt_ptp_update_current_time(bp);
- 				ns = (((u64)BNXT_EVENT_PHC_RTC_UPDATE(data1) <<
- 				       BNXT_PHC_BITS) | ptp->current_time);
- 				bnxt_ptp_rtc_timecounter_init(ptp, ns);
--				spin_unlock_bh(&ptp->ptp_lock);
-+				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 			}
- 			break;
- 		}
-@@ -13494,9 +13496,11 @@ static void bnxt_force_fw_reset(struct bnxt *bp)
- 		return;
- 
- 	if (ptp) {
--		spin_lock_bh(&ptp->ptp_lock);
-+		unsigned int flags;
++  pinctrl-0:
++    description: Default pinctrl state
 +
-+		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	} else {
- 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
- 	}
-@@ -13561,9 +13565,11 @@ void bnxt_fw_reset(struct bnxt *bp)
- 		int n = 0, tmo;
- 
- 		if (ptp) {
--			spin_lock_bh(&ptp->ptp_lock);
-+			unsigned int flags;
++  pinctrl-1:
++    description: Wakeup pinctrl state
 +
-+			spin_lock_irqsave(&ptp->ptp_lock, flags);
- 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
--			spin_unlock_bh(&ptp->ptp_lock);
-+			spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		} else {
- 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
- 		}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index 37d42423459c..04f23c776793 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -62,13 +62,14 @@ static int bnxt_ptp_settime(struct ptp_clock_info *ptp_info,
- 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
- 						ptp_info);
- 	u64 ns = timespec64_to_ns(ts);
-+	unsigned int flags;
- 
- 	if (BNXT_PTP_USE_RTC(ptp->bp))
- 		return bnxt_ptp_cfg_settime(ptp->bp, ns);
- 
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	timecounter_init(&ptp->tc, &ptp->cc, ns);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	return 0;
- }
- 
-@@ -100,13 +101,14 @@ static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
- static void bnxt_ptp_get_current_time(struct bnxt *bp)
- {
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-+	unsigned int flags;
- 
- 	if (!ptp)
- 		return;
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	WRITE_ONCE(ptp->old_time, ptp->current_time);
- 	bnxt_refclk_read(bp, NULL, &ptp->current_time);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- }
- 
- static int bnxt_hwrm_port_ts_query(struct bnxt *bp, u32 flags, u64 *ts,
-@@ -149,17 +151,18 @@ static int bnxt_ptp_gettimex(struct ptp_clock_info *ptp_info,
- {
- 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
- 						ptp_info);
-+	unsigned int flags;
- 	u64 ns, cycles;
- 	int rc;
- 
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	rc = bnxt_refclk_read(ptp->bp, sts, &cycles);
- 	if (rc) {
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		return rc;
- 	}
- 	ns = timecounter_cyc2time(&ptp->tc, cycles);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	*ts = ns_to_timespec64(ns);
- 
- 	return 0;
-@@ -177,6 +180,7 @@ void bnxt_ptp_update_current_time(struct bnxt *bp)
- static int bnxt_ptp_adjphc(struct bnxt_ptp_cfg *ptp, s64 delta)
- {
- 	struct hwrm_port_mac_cfg_input *req;
-+	unsigned int flags;
- 	int rc;
- 
- 	rc = hwrm_req_init(ptp->bp, req, HWRM_PORT_MAC_CFG);
-@@ -190,9 +194,9 @@ static int bnxt_ptp_adjphc(struct bnxt_ptp_cfg *ptp, s64 delta)
- 	if (rc) {
- 		netdev_err(ptp->bp->dev, "ptp adjphc failed. rc = %x\n", rc);
- 	} else {
--		spin_lock_bh(&ptp->ptp_lock);
-+		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		bnxt_ptp_update_current_time(ptp->bp);
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	}
- 
- 	return rc;
-@@ -202,13 +206,14 @@ static int bnxt_ptp_adjtime(struct ptp_clock_info *ptp_info, s64 delta)
- {
- 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
- 						ptp_info);
-+	unsigned int flags;
- 
- 	if (BNXT_PTP_USE_RTC(ptp->bp))
- 		return bnxt_ptp_adjphc(ptp, delta);
- 
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	timecounter_adjtime(&ptp->tc, delta);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	return 0;
- }
- 
-@@ -236,14 +241,15 @@ static int bnxt_ptp_adjfine(struct ptp_clock_info *ptp_info, long scaled_ppm)
- 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
- 						ptp_info);
- 	struct bnxt *bp = ptp->bp;
-+	unsigned int flags;
- 
- 	if (!BNXT_MH(bp))
- 		return bnxt_ptp_adjfine_rtc(bp, scaled_ppm);
- 
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	timecounter_read(&ptp->tc);
- 	ptp->cc.mult = adjust_by_scaled_ppm(ptp->cmult, scaled_ppm);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 	return 0;
- }
- 
-@@ -251,12 +257,13 @@ void bnxt_ptp_pps_event(struct bnxt *bp, u32 data1, u32 data2)
- {
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
- 	struct ptp_clock_event event;
-+	unsigned int flags;
- 	u64 ns, pps_ts;
- 
- 	pps_ts = EVENT_PPS_TS(data2, data1);
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	ns = timecounter_cyc2time(&ptp->tc, pps_ts);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 
- 	switch (EVENT_DATA2_PPS_EVENT_TYPE(data2)) {
- 	case ASYNC_EVENT_CMPL_PPS_TIMESTAMP_EVENT_DATA2_EVENT_TYPE_INTERNAL:
-@@ -393,16 +400,17 @@ static int bnxt_get_target_cycles(struct bnxt_ptp_cfg *ptp, u64 target_ns,
- {
- 	u64 cycles_now;
- 	u64 nsec_now, nsec_delta;
-+	unsigned int flags;
- 	int rc;
- 
--	spin_lock_bh(&ptp->ptp_lock);
-+	spin_lock_irqsave(&ptp->ptp_lock, flags);
- 	rc = bnxt_refclk_read(ptp->bp, NULL, &cycles_now);
- 	if (rc) {
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		return rc;
- 	}
- 	nsec_now = timecounter_cyc2time(&ptp->tc, cycles_now);
--	spin_unlock_bh(&ptp->ptp_lock);
-+	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 
- 	nsec_delta = target_ns - nsec_now;
- 	*cycles_delta = div64_u64(nsec_delta << ptp->cc.shift, ptp->cc.mult);
-@@ -689,6 +697,7 @@ static int bnxt_stamp_tx_skb(struct bnxt *bp, int slot)
- 	struct skb_shared_hwtstamps timestamp;
- 	struct bnxt_ptp_tx_req *txts_req;
- 	unsigned long now = jiffies;
-+	unsigned int flags;
- 	u64 ts = 0, ns = 0;
- 	u32 tmo = 0;
- 	int rc;
-@@ -702,9 +711,9 @@ static int bnxt_stamp_tx_skb(struct bnxt *bp, int slot)
- 				     tmo, slot);
- 	if (!rc) {
- 		memset(&timestamp, 0, sizeof(timestamp));
--		spin_lock_bh(&ptp->ptp_lock);
-+		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		ns = timecounter_cyc2time(&ptp->tc, ts);
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		timestamp.hwtstamp = ns_to_ktime(ns);
- 		skb_tstamp_tx(txts_req->tx_skb, &timestamp);
- 		ptp->stats.ts_pkts++;
-@@ -730,6 +739,7 @@ static long bnxt_ptp_ts_aux_work(struct ptp_clock_info *ptp_info)
- 	unsigned long now = jiffies;
- 	struct bnxt *bp = ptp->bp;
- 	u16 cons = ptp->txts_cons;
-+	unsigned int flags;
- 	u32 num_requests;
- 	int rc = 0;
- 
-@@ -757,9 +767,9 @@ static long bnxt_ptp_ts_aux_work(struct ptp_clock_info *ptp_info)
- 	bnxt_ptp_get_current_time(bp);
- 	ptp->next_period = now + HZ;
- 	if (time_after_eq(now, ptp->next_overflow_check)) {
--		spin_lock_bh(&ptp->ptp_lock);
-+		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		timecounter_read(&ptp->tc);
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		ptp->next_overflow_check = now + BNXT_PHC_OVERFLOW_PERIOD;
- 	}
- 	if (rc == -EAGAIN)
-@@ -819,6 +829,7 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
- 	u32 opaque = tscmp->tx_ts_cmp_opaque;
- 	struct bnxt_tx_ring_info *txr;
- 	struct bnxt_sw_tx_bd *tx_buf;
-+	unsigned int flags;
- 	u64 ts, ns;
- 	u16 cons;
- 
-@@ -833,9 +844,9 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
- 				   le32_to_cpu(tscmp->tx_ts_cmp_flags_type),
- 				   le32_to_cpu(tscmp->tx_ts_cmp_errors_v));
- 		} else {
--			spin_lock_bh(&ptp->ptp_lock);
-+			spin_lock_irqsave(&ptp->ptp_lock, flags);
- 			ns = timecounter_cyc2time(&ptp->tc, ts);
--			spin_unlock_bh(&ptp->ptp_lock);
-+			spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 			timestamp.hwtstamp = ns_to_ktime(ns);
- 			skb_tstamp_tx(tx_buf->skb, &timestamp);
- 		}
-@@ -975,6 +986,7 @@ void bnxt_ptp_rtc_timecounter_init(struct bnxt_ptp_cfg *ptp, u64 ns)
- int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg)
- {
- 	struct timespec64 tsp;
-+	unsigned int flags;
- 	u64 ns;
- 	int rc;
- 
-@@ -993,9 +1005,9 @@ int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg)
- 		if (rc)
- 			return rc;
- 	}
--	spin_lock_bh(&bp->ptp_cfg->ptp_lock);
-+	spin_lock_irqsave(&bp->ptp_cfg->ptp_lock, flags);
- 	bnxt_ptp_rtc_timecounter_init(bp->ptp_cfg, ns);
--	spin_unlock_bh(&bp->ptp_cfg->ptp_lock);
-+	spin_unlock_irqrestore(&bp->ptp_cfg->ptp_lock, flags);
- 
- 	return 0;
- }
-@@ -1063,10 +1075,12 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
- 	atomic64_set(&ptp->stats.ts_err, 0);
- 
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
--		spin_lock_bh(&ptp->ptp_lock);
-+		unsigned int flags;
++  pinctrl-names:
++    description:
++      When present should contain at least "default" describing the default pin
++      states. The second state called "wakeup" describes the pins in their
++      wakeup configuration required to exit sleep states.
++    minItems: 1
++    items:
++      - const: default
++      - const: wakeup
 +
-+		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		bnxt_refclk_read(bp, NULL, &ptp->current_time);
- 		WRITE_ONCE(ptp->old_time, ptp->current_time);
--		spin_unlock_bh(&ptp->ptp_lock);
-+		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		ptp_schedule_worker(ptp->ptp_clock, 0);
- 	}
- 	ptp->txts_tmo = BNXT_PTP_DFLT_TX_TMO;
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-index a9a2f9a18c9c..1120c650edcf 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-@@ -146,11 +146,13 @@ struct bnxt_ptp_cfg {
- };
+   power-domains:
+     description:
+       Power domain provider node and an args specifier containing
+@@ -122,6 +138,8 @@ properties:
+     minItems: 1
+     maxItems: 2
  
- #if BITS_PER_LONG == 32
--#define BNXT_READ_TIME64(ptp, dst, src)		\
--do {						\
--	spin_lock_bh(&(ptp)->ptp_lock);		\
--	(dst) = (src);				\
--	spin_unlock_bh(&(ptp)->ptp_lock);	\
-+#define BNXT_READ_TIME64(ptp, dst, src)				\
-+do {								\
-+	unsigned int flags;					\
-+								\
-+	spin_lock_irqsave(&(ptp)->ptp_lock, flags);		\
-+	(dst) = (src);						\
-+	spin_unlock_irqrestore(&(ptp)->ptp_lock, flags);	\
- } while (0)
- #else
- #define BNXT_READ_TIME64(ptp, dst, src)		\
++  wakeup-source: true
++
+ required:
+   - compatible
+   - reg
+
 -- 
-2.43.5
+2.45.2
 
