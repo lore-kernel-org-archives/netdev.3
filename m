@@ -1,150 +1,130 @@
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3A1F5854;
-	Tue, 15 Oct 2024 19:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81FD1B6CF6;
+	Tue, 15 Oct 2024 19:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729021511; cv=none; b=u/q6URYJJ7JonsTK039+PdeVuMF6eE0g/ckcGyvijxcrZKz82bMfREXsnUEuLNVnhlPKQ6l7BARQA6w0h4oJ/c/89OobT3NmQn+rQf6PkJkHZ/JN/pRbAb7p8yADsS017CXT5mhmC7XxULU7sztHMSp8gZ0EYf+A57pKbxWq+Zg=
+	t=1729021552; cv=none; b=SyCfUZ6E5Ny8pgdJNHLypgzI3sLiNC3JoiPdsOKxv/51vmCSnK44BulrCJB/mm/f34Dy6UBp95qCDLXohzORip3PzgSTzlxzI1ag453wHTomk1WbDZdA0iqWztru6IjZrDmcjTxADNqNGQlIhK72l9vQZJ1mwrZ+5i5/LQ65LHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729021511; c=relaxed/simple;
-	bh=Jxw4wtlEr6vIs5MfVc+/KOu5i1arbajJ5xkHL+jGtOE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J0bwyjJgFiqjXzdhadv9lxijemKeO6Y7I0OE7XCaF3IHExtLsrT93SAU1m3byjTsvTCApT9ZYRSgfguax/CoaIBtMXAJY5L8JDd0T+koMWWPipIosJNJ6j+p5soc983/P7WHqEXLmaDr3QgsATUVsKagxeP0LR9ZGe9TVVrVwqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=q0UQPzEo; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+	s=arc-20240116; t=1729021552; c=relaxed/simple;
+	bh=AsXgrgElAqeyg/3ruB7Ekzfjodq40Q8l1Ja+T5NjlZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IRFJ/fxfs3UFNwaItZ1kze6uhFWX3TH/iOPzehQcPe1droe6W+sYdQSOVlHm7H+2h9zdlBsiFfV1cSgcxSnvj6P9JyucsWpveCojnmr4Xqv3aHoH9DEQ27UgHEi1Kx+LXDolsb51H1VMZmvzKAH/J+p25A1Mx+9rwtcHALkUySg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=chUQo1UN; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="q0UQPzEo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bwhtgi8DcQyDJ8FWIikvDQQ5XGGnfVqxrzGDPV+2pkY=; b=q0UQPzEohGuorgdFB4IwQpx1yq
-	GxIVNS6g41P3QuqbKLt22y2lwrJpodiLo3mk1Nfrqv1Pvurq6zvOI6tXrm3k0Jw0mz0PZJ2QosunQ
-	lE8xR87+5HHebNwe5uSRwkWAYPaWlOsY9QT8x5IZqBTh+xQKQeojq94bdj/swJAkyv9k=;
-Received: from p54ae9bfc.dip0.t-ipconnect.de ([84.174.155.252] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1t0nTR-009Kvt-0i;
-	Tue, 15 Oct 2024 21:44:53 +0200
-Message-ID: <a7ab80d5-ff49-4277-ba73-db46547a8a8e@nbd.name>
-Date: Tue, 15 Oct 2024 21:44:52 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chUQo1UN"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6e3d97b8274so821677b3.1;
+        Tue, 15 Oct 2024 12:45:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729021549; x=1729626349; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rkt0JKUXF/S078vhZLSbZ5KsSqfzEMKVm++kKWs1278=;
+        b=chUQo1UNe4t7JbolUhg3QTUipmCtcuMyb0CI7JAKxNMqngJdrN6tPJEp4B+ek3QVlI
+         5RUzhlVUZbmpma0Ns7KQ55nuUkB/yX8f9yKgnur7wgftN4Uf2F97vsKbWfBVftzOa+JT
+         wtXDJUay1nrDRAS1O2hyLIzt5QSYuhBWNacBWLv/GTPkghgaK6B9qzTcWHqbpKVrCr3d
+         SH1NLoHQhQ/NPedgBn29cXoPuaZ7RyAhCBd9WF1zqHUSv2j24g1jHs7+AG1W4jO4XnL8
+         maD2ei5PK6JPMDxfHFkx07XThMMBpDBG6AhxVbmRjKiGkO2Y7r1mvVtGIIGeJiUMBCuA
+         DRrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729021549; x=1729626349;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rkt0JKUXF/S078vhZLSbZ5KsSqfzEMKVm++kKWs1278=;
+        b=mBS9TdlsddP7AAu5gv7QxcmHe4xhHemo6gmU24YjchEwxDAap48htOS4yE7zIsH0tX
+         eEcK96eHFv3kZZz9Kjdm+Gff7z/fAO0yYolnfaCleCUeSNMi+UC961Buwxy1Bbep6pq9
+         aB7S59yOEHzlmxQ5hkPnrh7HuBF5cX1vMmwXZHp8vOP25PwvvdXyrFOGt9dpPMqMh5w9
+         0wIA3mmf8piDKgbCh0BvuKGvDION8/Vy/nDvI6Ygadf3hoDPRP2oM8OFM/Z7LM68G9qO
+         QurA99l3/h1sPGgmofKMRHixwFbLK0lHYqsORBw5UjT2PFcAKscj+JGPHJNTmzZ1y8WD
+         c8+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXe7gz+xdHQoqnSMfDhqAVCn8jXw7H/yXk2NCxGIx/olywNqf26HZonWaCODmuZdOtsjHbwlmMPIzm2fKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkknojlrefFrrgSsPtegD6c6th4vSu4ZDpXBGcuVGLvCqMEEZS
+	12TSNzE3iamTulOGw/X+hRp9iH/EIFgNe1FjmkiHOgwlfk23mfy3yj+VyEhFtbSDytAwYtHm++x
+	m9hBcd82IlQQboKYXzXf4kmHicEU=
+X-Google-Smtp-Source: AGHT+IH8oW0jckDR/xoIXDCdOaWcak+kHVJkRlwUYZBmK2NvyyPhsdMHprTdb4ZNJFobCa8nWbkqVoT0ZQXOJsxYqYU=
+X-Received: by 2002:a05:690c:4391:b0:6e3:16da:e6e with SMTP id
+ 00721157ae682-6e3479c736fmr87337257b3.19.1729021549522; Tue, 15 Oct 2024
+ 12:45:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v1 net-next 00/12] bridge-fastpath and related
- improvements
-To: Eric Woudstra <ericwouds@gmail.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>,
- Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Frank Wunderlich <frank-w@public-files.de>,
- Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20241013185509.4430-1-ericwouds@gmail.com>
- <9f9f3cf0-7a78-40f1-b8d5-f06a2d428210@blackwall.org>
- <a07cadd3-a8ff-4d1c-9dca-27a5dba907c3@gmail.com>
- <0b0a92f2-2e80-429c-8fcd-d4dc162e6e1f@nbd.name>
- <137aa23a-db21-43c2-8fb0-608cfe221356@gmail.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <137aa23a-db21-43c2-8fb0-608cfe221356@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241011195622.6349-1-rosenp@gmail.com> <20241011195622.6349-8-rosenp@gmail.com>
+ <20241012132137.GF77519@kernel.org>
+In-Reply-To: <20241012132137.GF77519@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 15 Oct 2024 12:45:38 -0700
+Message-ID: <CAKxU2N8cm_ku876uKcZmJKsXESM25z+xe9r0HqFWiuHGCP0cFQ@mail.gmail.com>
+Subject: Re: [PATCHv6 net-next 7/7] net: ibm: emac: use of_find_matching_node
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Shannon Nelson <shannon.nelson@amd.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Breno Leitao <leitao@debian.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Christian Marangi <ansuelsmth@gmail.com>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 15.10.24 15:32, Eric Woudstra wrote:
-> 
-> 
-> On 10/15/24 2:16 PM, Felix Fietkau wrote:
->> Hi Eric,
->> 
->> On 14.10.24 20:29, Eric Woudstra wrote:
->>> It would be no problem for me to change the subject and body, if you
->>> think that is better.
->>>
->>> The thing is, these patches actually make it possible to set up a fully
->>> functional software fastpath between bridged interfaces. Only after the
->>> software fastpath is set up and functional, it can be offloaded, which
->>> happens to by my personal motivation to write this patch-set.
->>>
->>> If the offload flag is set in the flowtable, the software fastpath will
->>> be offloaded. But in this patch-set, there is nothing that changes
->>> anything there, the existing code is used unchanged.
->> 
->> FWIW, a while back, I also wanted to add a software fast path for the
->> bridge layer to the kernel, also with the intention of using it for
->> hardware offload. It wasn't accepted back then, because (if I remember
->> correctly) people didn't want any extra complexity in the network stack
->> to make the bridge layer faster.
-> 
-> Hello Felix,
-> 
-> I think this patch-set is a clear showcase it is not very complex at
-> all. The core of making it possible only consists a few patches. Half of
-> this patch-set involves improvements that also apply to the
-> forward-fastpath.
-
-It's definitely an interesting approach. How does it deal with devices 
-roaming from one bridge port to another? I couldn't find that in the code.
-
->> Because of that, I created this piece of software:
->> https://github.com/nbd168/bridger
->> 
->> It uses an eBPF TC classifier for discovering flows and handling the
->> software fast path, and also creates hardware offload rules for flows.
->> With that, hardware offloading for bridged LAN->WLAN flows is fully
->> supported on MediaTek hardware with upstream kernels.
->> 
->> - Felix
-> 
-> Thanks, I've seen that already. Nice piece of software, but I'm not
-> running openwrt. I would like to see a solution implemented in the
-> kernel, so any operating system can use it.
-
-Makes sense. By the way, bridger can easily be built for non-OpenWrt 
-systems too. The only library that's actually needed is libubox - that 
-one is small and can be linked in statically. ubus support is fully 
-optional and not necessary for standard cases.
-
-- Felix
+On Sat, Oct 12, 2024 at 6:21=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Fri, Oct 11, 2024 at 12:56:22PM -0700, Rosen Penev wrote:
+> > Cleaner than using of_find_all_nodes and then of_match_node.
+> >
+> > Also modified EMAC_BOOT_LIST_SIZE check to run before of_node_get to
+> > avoid having to call of_node_put on failure.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  drivers/net/ethernet/ibm/emac/core.c | 10 +++-------
+> >  1 file changed, 3 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/etherne=
+t/ibm/emac/core.c
+> > index faa483790b29..5265616400c2 100644
+> > --- a/drivers/net/ethernet/ibm/emac/core.c
+> > +++ b/drivers/net/ethernet/ibm/emac/core.c
+> > @@ -3253,21 +3253,17 @@ static void __init emac_make_bootlist(void)
+> >       int cell_indices[EMAC_BOOT_LIST_SIZE];
+> >
+> >       /* Collect EMACs */
+> > -     while((np =3D of_find_all_nodes(np)) !=3D NULL) {
+> > +     while((np =3D of_find_matching_node(np, emac_match))) {
+> >               u32 idx;
+> >
+> > -             if (of_match_node(emac_match, np) =3D=3D NULL)
+> > -                     continue;
+> >               if (of_property_read_bool(np, "unused"))
+> >                       continue;
+> >               if (of_property_read_u32(np, "cell-index", &idx))
+> >                       continue;
+> >               cell_indices[i] =3D idx;
+> > -             emac_boot_list[i++] =3D of_node_get(np);
+> > -             if (i >=3D EMAC_BOOT_LIST_SIZE) {
+> > -                     of_node_put(np);
+> > +             if (i >=3D EMAC_BOOT_LIST_SIZE)
+> >                       break;
+> > -             }
+> > +             emac_boot_list[i++] =3D of_node_get(np);
+>
+> Reading the Kernel doc for of_find_matching_node() it seems
+> that of_node_put() needs to called each time it (and thus
+> of_find_matching_node() returns a np. But that doesn't seem
+> to be the case here. Am I mistaken?
+Bad change. Will remove.
+>
+>
+> >       }
+> >       max =3D i;
+> >
+> > --
+> > 2.47.0
+> >
