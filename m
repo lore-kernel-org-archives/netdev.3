@@ -1,41 +1,42 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB4F1F9EA8;
-	Tue, 15 Oct 2024 18:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E62122739B;
+	Tue, 15 Oct 2024 18:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016426; cv=none; b=Dhib6LN4U1T5SKPdbE5o+M6tQ/cRdX3MtNukTTp9aXWkYXOod5V6YyNIvZ0y2dDbLOGUpxaYEmTqeBqJAFT5+lw4IrA1XBN3/fqitU4z4qMjjQFk/mI0cNpGKasT/tW+UVbeifSQyW+TKMDl/DPO3B4Aa7dJs8s24HRydWNkOYo=
+	t=1729016430; cv=none; b=efqtJclsLD80BniJNt+seEwj9m6FLAZB1TgK6V5j2UDhR/wBQgVMCbmiqyjBqH3OjONCFRbXAfxID/hbwAxLcErvZrLmUueWpFtvyGRhUNGMVmzWqOKyw4WzFlUyslwQAKb242W015chlBGpohfL4AmO3/3MQaRQNokwgdA2l4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016426; c=relaxed/simple;
-	bh=xlJulwgFadsww1fxuY/kdqupOC+XrWysfnSRy7xGE1Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gwaZBxRDNPAatMbty44qAWO217sYDJWkNhq/uwkYGLlW6gqz5sH7qs2NL0BPFSiKP2/AQMKS5OvyY3lTfiwHr8Hx9itONUSGGqeYT5uz4RUn5o/ewOVd/qSqf8ILHR8MxIICd4YYSmJ2uSLc36Zf1vfGYXVE+k1fxvPuWd0O/gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Akl35Y1N; arc=none smtp.client-ip=148.251.105.195
+	s=arc-20240116; t=1729016430; c=relaxed/simple;
+	bh=E2gOs3UqePmkVJladD+DLQjs/f55bJHoGr84z8564Nc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=j075ShwcO+u+JuWKhxZLRFIRg5TAzx1w7PSHNxhodITR+XnY835FoFRkduooqOgyCmhSIKH+xmtO/31C5e+LwKMPM9G8FuF5/jgFRU2dMjiUbEHltKx0N38Ik+38Nvln0mkHg2sQD2xTnKsPBHsIeAOgz2HjF87eC9RrSdo2/vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=jH4OoGPD; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Akl35Y1N"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="jH4OoGPD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1729016421;
-	bh=xlJulwgFadsww1fxuY/kdqupOC+XrWysfnSRy7xGE1Q=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Akl35Y1Nf6JAV23EHQ1lKZaz2LzFQPmujxrUcTdcGTTOaBPjJ8YCMZcR+C5u+ccCQ
-	 pta/nIQ+eJPSQPO03pogjoFtXgeO7S5rStsaS+F4gu0BosaQp9iZAMLVh9Vb72NzOE
-	 fx4sJ/G97bpMsQgchqabMQkeCDoThib27vDXb/IhacuIo07CLOa6tZo1MVIwewk5pV
-	 RHAj/IKzk12H/0h2inkDyCQpPdH9S61r+OXw3l0IWs+filtdSLUAOZ6gUj3tZ6K4mi
-	 nGIBf3Dwefwn+oCkzJI53nPKmoStF8h+LpjZ6tYKCiJubkwvRDWeCL5qfWA650pcZz
-	 O3MWQ2fo6LomQ==
+	s=mail; t=1729016426;
+	bh=E2gOs3UqePmkVJladD+DLQjs/f55bJHoGr84z8564Nc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=jH4OoGPDk0aVyfiS/cLKMzw17XYyB94r8zru2XB5x1vumpgmLUYp43Uu08VsDvo+D
+	 LvwnBCKHcXC3kWjR9iMaTMPFbllHPgOACPH8YrgLgvuNDr1XOSPEdGgcY2Xa43LCyz
+	 KK+F37ETvJW4LX/Q3JKL4eKGntWxjo3fNxfel2FFT4r5HsWLUtUBw7hxsP8lnwXql+
+	 OYdzdjJEtT1dSinjiYq6WhpdkEJbDEZu5Zhs1X+tddRLNE42yPx/euBRk6HXnuEQBU
+	 wgJYTFAe9r3kVt7PqBbK/p1EZjTVVTumFHYih8mDCXdHU5BKPIPEiU1uZkyXH8txl0
+	 6itdU6TIKv6kg==
 Received: from [192.168.1.206] (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DAFC417E3687;
-	Tue, 15 Oct 2024 20:20:19 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id AC39B17E369C;
+	Tue, 15 Oct 2024 20:20:24 +0200 (CEST)
 From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Subject: [PATCH 0/2] Enable Ethernet on the Genio 700 EVK board
-Date: Tue, 15 Oct 2024 14:15:00 -0400
-Message-Id: <20241015-genio700-eth-v1-0-16a1c9738cf4@collabora.com>
+Date: Tue, 15 Oct 2024 14:15:02 -0400
+Subject: [PATCH 2/2] arm64: dts: mediatek: mt8390-genio-700-evk: Enable
+ ethernet
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,10 +45,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIACSxDmcC/x3MQQqAIBBA0avIrBNGK4WuEi3EJp2NhkYE4d2Tl
- m/x/wuVClOFRbxQ6ObKOXWoQYCPLgWSvHeDRj0pVLMMlDhbRElXlHrWI067s8Z46MlZ6ODn361
- bax/KJmqpXgAAAA==
-X-Change-ID: 20241015-genio700-eth-252304da766c
+Message-Id: <20241015-genio700-eth-v1-2-16a1c9738cf4@collabora.com>
+References: <20241015-genio700-eth-v1-0-16a1c9738cf4@collabora.com>
+In-Reply-To: <20241015-genio700-eth-v1-0-16a1c9738cf4@collabora.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
  Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -63,27 +63,65 @@ Cc: kernel@collabora.com, devicetree@vger.kernel.org,
  fanyi zhang <fanyi.zhang@mediatek.com>
 X-Mailer: b4 0.14.2
 
-The patches in this series add the ethernet node on mt8188 and enable it
-on the Genio 700 EVK board.
+Enable ethernet on the Genio 700 EVK board. It has been tested to work
+with speeds up to 1000Gbps.
 
-The changes were picked up from the downstream branch at
-https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-mtk/+git/jammy,
-cleaned up and split into two commits.
-
+Signed-off-by: Jianguo Zhang <jianguo.zhang@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Signed-off-by: Hsuan-Yu Lin <shane.lin@canonical.com>
+Signed-off-by: Pablo Sun <pablo.sun@mediatek.com>
+Signed-off-by: fanyi zhang <fanyi.zhang@mediatek.com>
+[Cleaned up to pass dtbs_check, follow DTS style guidelines, and split
+between mt8188 and genio700 commits]
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 ---
-Nícolas F. R. A. Prado (2):
-      arm64: dts: mediatek: mt8188: Add ethernet node
-      arm64: dts: mediatek: mt8390-genio-700-evk: Enable ethernet
+ .../boot/dts/mediatek/mt8390-genio-700-evk.dts     | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
- arch/arm64/boot/dts/mediatek/mt8188.dtsi           | 95 ++++++++++++++++++++++
- .../boot/dts/mediatek/mt8390-genio-700-evk.dts     | 25 ++++++
- 2 files changed, 120 insertions(+)
----
-base-commit: 7f773fd61baa9b136faa5c4e6555aa64c758d07c
-change-id: 20241015-genio700-eth-252304da766c
+diff --git a/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts b/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
+index 0a6c9871b41e5f913740e68853aea78bc33d02aa..73e34e98726d36785e8b2cef73f532b6bb07c97f 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
+@@ -24,6 +24,7 @@ / {
+ 
+ 	aliases {
+ 		serial0 = &uart0;
++		ethernet0 = &eth;
+ 	};
+ 
+ 	chosen {
+@@ -845,6 +846,30 @@ pins-wifi-enable {
+ 	};
+ };
+ 
++&eth {
++	phy-mode ="rgmii-rxid";
++	phy-handle = <&ethernet_phy0>;
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&eth_default_pins>;
++	pinctrl-1 = <&eth_sleep_pins>;
++	snps,reset-gpio = <&pio 147 GPIO_ACTIVE_HIGH>;
++	snps,reset-delays-us = <0 10000 10000>;
++	mediatek,tx-delay-ps = <2030>;
++	mediatek,mac-wol;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethernet_phy0: ethernet-phy@1 {
++			compatible = "ethernet-phy-id001c.c916";
++			reg = <0x1>;
++		};
++	};
++};
++
+ &pmic {
+ 	interrupt-parent = <&pio>;
+ 	interrupts = <222 IRQ_TYPE_LEVEL_HIGH>;
 
-Best regards,
 -- 
-Nícolas F. R. A. Prado <nfraprado@collabora.com>
+2.47.0
 
