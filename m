@@ -1,104 +1,146 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC946189F50
-	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 06:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A037D189BA9;
+	Tue, 15 Oct 2024 06:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728973416; cv=none; b=lCi809sxiOFAdPuWKd2pG/YcyLKnNtI7GUeVcQsE2z9gNDZAxBnBoaIKryvggMN/Y1khcsZCHev9CiyYBRvEHv6urN4NIsBVDEdc+onDS/wKtIEWdJWXmrkS+ATTb3RFr+QANRp+XbbAv6RLqUZy6c3B1EmnfOwSfh+My2khxro=
+	t=1728973686; cv=none; b=b2TU8K/a9Gsn476Wt2EAy6Q4/V0TKJ2ScFl0sN9LFZHKhVEVc7DlGqv4x/nLeb3baYq6Dn/fT8i7mOtAhLTLXfJ6sgE3rGdmGwgyQgwdunA2XAx4XE6RAzVeKvH+hneYAGU8qPJpcBVKLaQU4SsPvfv2tBi6ewZ6scVtDWTdpSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728973416; c=relaxed/simple;
-	bh=KHAi2VgNu03KG896sE8HnTfHWbjZzQZ+KrRFXALJR2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OYumbOG5WIov4FssHstpxLIvBYgHBFTzVFxrvJ7aSJ/2ujQot4FUAlMSaSAaXks1kpEdu+lPIBs6HvLUH5bQD+PEq/gzOM6WKm51f24HXm0v5yGOpOp/m1dtwnMpezIIpYCXJgCIacF3Q4gSJWYbb7ADY4RxZs8Q4iNV2r14lKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t0axs-0008Ns-2F; Tue, 15 Oct 2024 08:23:28 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t0axr-001xwt-KT; Tue, 15 Oct 2024 08:23:27 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 48B37352EC9;
-	Tue, 15 Oct 2024 06:23:27 +0000 (UTC)
-Date: Tue, 15 Oct 2024 08:23:27 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH v2 net-next 10/11] can: gw: Use rtnl_register_many().
-Message-ID: <20241015-ochre-gaur-of-whirlwind-d6e892-mkl@pengutronix.de>
-References: <20241014201828.91221-1-kuniyu@amazon.com>
- <20241014201828.91221-11-kuniyu@amazon.com>
+	s=arc-20240116; t=1728973686; c=relaxed/simple;
+	bh=tPQDC6jWE/QSFlktB+sW1IjHMIzKkrLP0/8RKmBWHug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=asIVvy0K8SDfj1b+ClLBkCx2r37uCX8rH4r3HxZmfzKZ7W7JLDHCuDK4YhG678LfLbDrbProGA/s4GPmHzobu3RFdtRX17bzTZ1s3LBz6avewKU2PL0mN2ohj/upr4AQBRn1064wb6iTcg7W2GgOft7/1xcCgr7p5xgACGHGYls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+nGoZq5; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+nGoZq5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7F4C4CEC7;
+	Tue, 15 Oct 2024 06:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728973686;
+	bh=tPQDC6jWE/QSFlktB+sW1IjHMIzKkrLP0/8RKmBWHug=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=o+nGoZq5itIkZyD5F2liKKz1Uw12xx+MPZXRBfFe/iLWO07ykJlkT2m30ClLZxPBz
+	 qXamBn8TdEgE/c9JnJLuz8WMuI7AEA8F145zGiCrrhZ/9xFleOikATBbH5jFaj6CsM
+	 1PQbn1dlLz4JDmI6Dl/JCEMB7NRSlDK1NzKbKxK+m1d7/+RuqXBYACU3kr4qMe/KJS
+	 eNJTtHPtcosha73Obd8eGjkliCk46jY+O9VTaSLXZOlTFGngSvBdNTf3c16K2/aKFr
+	 aA2BpnQB+5wQRMDGEX4xQSkKehfNKiDtPi7wRlvC3svMBN1ZT4FiL3sguD/nm6b1J9
+	 Ey6bluucObdmA==
+Message-ID: <f96fe4a7-9903-4b15-9994-985004bd6d4c@kernel.org>
+Date: Tue, 15 Oct 2024 08:27:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="obmbugxzhx27phby"
-Content-Disposition: inline
-In-Reply-To: <20241014201828.91221-11-kuniyu@amazon.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] dt-bindings: net: qcom,ethqos: add description for
+ qcs8300
+To: Yijie Yang <quic_yijiyang@quicinc.com>
+Cc: Vinod Koul <vkoul@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, quic_tingweiz@quicinc.com,
+ quic_aiquny@quicinc.com
+References: <20241010-schema-v1-0-98b2d0a2f7a2@quicinc.com>
+ <20241010-schema-v1-3-98b2d0a2f7a2@quicinc.com>
+ <da45vocnwnnnlo6nrxh6x4xwmnsgdp5axfvomzniw5vxlmerer@6ntl3ae4q2ci>
+ <b2f027d1-5b4a-4b73-aa26-a332df2a561b@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <b2f027d1-5b4a-4b73-aa26-a332df2a561b@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 15/10/2024 08:21, Yijie Yang wrote:
+> 
+> 
+> On 2024-10-10 14:15, Krzysztof Kozlowski wrote:
+>> On Thu, Oct 10, 2024 at 10:03:45AM +0800, Yijie Yang wrote:
+>>> Add compatible for the MAC controller on qcs8300 platforms.
+>>> Since qcs8300 shares the same EMAC as sa8775p, so it fallback to the
+>>> compatible.
+>>>
+>>> Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
+>>> ---
+>>>   Documentation/devicetree/bindings/net/qcom,ethqos.yaml | 4 ++++
+>>>   1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+>>> index 8cf29493b822..3ee5367bdde1 100644
+>>> --- a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+>>> +++ b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+>>> @@ -23,6 +23,10 @@ properties:
+>>>             - enum:
+>>>                 - qcom,qcs615-ethqos
+>>>             - const: qcom,sm8150-ethqos
+>>> +      - items:
+>>> +          - enum:
+>>> +              - qcom,qcs8300-ethqos
+>>> +          - const: qcom,sa8775p-ethqos
+>>
+>> This block should go before earlier qcs615, to keep order by fallback.
 
---obmbugxzhx27phby
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--------------------------------------------------^^^^^^^^^^^^^^^^^^^^^^^
 
-On 14.10.2024 13:18:27, Kuniyuki Iwashima wrote:
-> We will remove rtnl_register_module() in favour of rtnl_register_many().
->=20
-> rtnl_register_many() will unwind the previous successful registrations
-> on failure and simplify module error handling.
->=20
-> Let's use rtnl_register_many() instead.
->=20
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Here
 
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> 
+> Why this block should positioned before qcs615, given that it comes 
+> later in alphabetical order?
 
-Who is going to take this patch?
+sa < sm
 
-regards,
-Marc
+Best regards,
+Krzysztof
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---obmbugxzhx27phby
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcOClwACgkQKDiiPnot
-vG+nTAgAjnKUXYYbIxZLDIeYWnWd+OVPRbhE+gb7SzXu/V/z2yykWxBBmJNyV7Ga
-+KFkWNJStmB8Nqf1VahhQzRwU1irKfxJfstINXWU0efv5SSK9/0SKMdDkrR/vCIo
-73l+qwfzEeszScGmMeRwdreSNNyD5PwiAVwWwQUygFkX9KqlwbLIAsybLUgl/BWP
-WLEKbJOiYH9N0HLl0JhZ9RUjTZF8ki58GsGdrHrb9HV818L1H3RMzkOn+KayNgQF
-k3u0eRWoZNjeXhqAUuMn3xDsUWjA40ntJCe637VKKjE1ZfDwKzmBVh/147mhPao6
-ltEPEfqxSGWTtg+xXQlloxv2u8/LQw==
-=Op3n
------END PGP SIGNATURE-----
-
---obmbugxzhx27phby--
