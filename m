@@ -1,190 +1,151 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2059.outbound.protection.outlook.com [40.107.20.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCD1227B86;
-	Tue, 15 Oct 2024 13:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998091; cv=fail; b=ecBEm1G0XwbXO/VU6W4UWVDBRSmFBnHQuvAg/c//y0lZXafAvCnn+DWuTXDsgb6jnGqNyiKRhwTbfRdMTkBHUqXiW7sWNaXBIAWdM5sB2ka9AJf3GXyzsrEqU6vtI0Huw8gshtPye1PGpMr8kt5ffyK2guZFaTgJm3ShiTA/iIs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998091; c=relaxed/simple;
-	bh=YgZNB/EmSVJPLKDYKi47AleOk5ikPYICbIRo2U2baf4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tSN/EyN4NFJU+qQfF7I+78yBMF+l8EqHumBySTh7aQxVYLKAGbPCb8YnTe9jSsjFgs24NCWnHfFsPY6forqcfNpReSZ9lPC//bnxIE2mNb5dVs5S3jCWqpUU7VM97G4xk3ev+h+fJIRybLeppgBitTH5nsOK+i9lxC2SfZDXumE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EVQBh0ml; arc=fail smtp.client-ip=40.107.20.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EVQBh0ml"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GEre3735zEUkg+KvJ3AC0h+pga26Do6kJ2TzgtJHV59/hYw7diYEth29onTKma59hzPiYMYzYfa3/ONgTOhDLKSdNzRtz3KL8bh/ZjZHN341J39hs0oRlAyBQlNevVj3u4rLRL7XVQN9BaVvS2ATYmbNeYIkSlkLLadgAfb0+GVi8W+FV3YGjeajh7H7lvUVvDa71L2ITSnEuJ2sIll64YOj7nifhliSKlItoV/1DJZhMLfqbLJyMvCaMrglwZHh/d2VMFwAIZscpUf7fQuGUv0PkPOYphGhF4aeKVLmuzWO81wZn/egL+QtxRhVenGL/7eUF1Fk/7I19iZrq+xytw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NVtYO/fn4p2g/u3b2G4C8Nt+g+55vkATBe26/TZIf1g=;
- b=lIUdfUpoBJr/9aGjSzDaQLBuNymnO+3kZyQewZNVtoO5orRiz9Vi+y0XDFe+mskyGTAolYAJatTeTxsqoSRpFrq8djBwhiDRVZH6bXrqHSV5eY/Jk2MGRb7+uXkkVnsjL+V+ZJeYyMqPSFf5fXQJRad12B7poDX+Wk/++4MUreYcEPOCzgo1FEZN4DO/B9OYzlInw9LlAgkUolg1gX5YJ4aT4wYGOpbGRs/63hKzv0fxQckCq79dBlaPcPqLazBx/XkWEsMLgdcK6GGKbmeCrd+xif7RkaRnQqIW4I51bN0nFxkU+Yrya/CiJXQrbGI6RfuSliRppsauUrQxPpTcuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NVtYO/fn4p2g/u3b2G4C8Nt+g+55vkATBe26/TZIf1g=;
- b=EVQBh0mlAO9rTofsSkPknL9uyDk9E1Y8EBOubr8KEg2lTa8uGW5WC3w+19gV2VJwAb8ukpswXlNGEHomXERo7mp/dD7Coh1TgsNGMrLzfz51n2iwi8LuewVHHfycH/JxWpBHWLuX/qqF42GqNiIQd4U+Q0P/xx2esovwyxYyp1jYRgKFV46ZMBwx+lMw9IR57ZhQ6WTEcegaWBEqfNhVxkt6JGUolcW1knQsNgpl1toHHh9C8Wt7iYiCW0288n9k3rfmiRp53GfdkNXjPugujUrEzCBCRI4g/wycXqc2NhAOTg8Ly+jfPp5WszHYg6jIq7ms1fBlWzIpuLLMit3hdA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAWPR04MB9988.eurprd04.prod.outlook.com (2603:10a6:102:38b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
- 2024 13:14:47 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8026.019; Tue, 15 Oct 2024
- 13:14:47 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
+Received: from zg8tmtu5ljy1ljeznc42.icoremail.net (zg8tmtu5ljy1ljeznc42.icoremail.net [159.65.134.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9194B20721A;
+	Tue, 15 Oct 2024 13:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.65.134.6
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728998227; cv=none; b=pie3WOjS8gRbQbM2YqWzhI98LoSZ3MBAfz/pm+drPzxjRrfzU5pmcG1ujWpX7/OBj6KdFExbYm19TWu2aEgez+MK95IGZD1k+OEYYMPMfSXDf86CeIqjIPfkNGCe0ktuSjMaAzJ+kFlo8TC1qNT9r/lx/bxDRkb9jTBI2fRAkyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728998227; c=relaxed/simple;
+	bh=QpqIaM8N9zPhfV9L2BCBLTRstVrV21xsVwggs+Q3r34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qP1YnkHas32+Jt5YsND+jACiTVt9OGUNt4V4YzOdcXUlU6nootX/HKtlvmeUPG+CfYaNEL1Dz61NCqCDWGorCNahYvfEAAwTn7Vs7QBO8XjzBGK+OlPcID+5aXM397VSMPYg5WC0f6EiSc0zWuJxbaVYU0xlPOvfqRJNsulu4lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=159.65.134.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from localhost (unknown [10.193.54.193])
+	by mail-app3 (Coremail) with SMTP id cC_KCgBXbWYmaw5nTTojAA--.14492S2;
+	Tue, 15 Oct 2024 21:16:22 +0800 (CST)
+From: Lin Ma <linma@zju.edu.cn>
+To: loic.poulain@linaro.org,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	vladimir.oltean@nxp.com,
-	claudiu.manoil@nxp.com,
-	xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com,
-	christophe.leroy@csgroup.eu,
-	linux@armlinux.org.uk,
-	bhelgaas@google.com,
-	horms@kernel.org
-Cc: imx@lists.linux.dev,
 	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v2 net-next 13/13] MAINTAINERS: update ENETC driver files and maintainers
-Date: Tue, 15 Oct 2024 20:58:41 +0800
-Message-Id: <20241015125841.1075560-14-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241015125841.1075560-1-wei.fang@nxp.com>
-References: <20241015125841.1075560-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0008.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	linux-kernel@vger.kernel.org
+Cc: Lin Ma <linma@zju.edu.cn>
+Subject: [PATCH net v1] net: wwan: fix global oob in wwan_rtnl_policy
+Date: Tue, 15 Oct 2024 21:16:21 +0800
+Message-Id: <20241015131621.47503-1-linma@zju.edu.cn>
+X-Mailer: git-send-email 2.39.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAWPR04MB9988:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16f04ea6-d5a0-4f05-8ccd-08dced1b5779
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|366016|7416014|1800799024|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OodAkMIoGsTe3CInzM7/o+L4UePet/S67hVgOvC0ORQ6iJrEpODvbB02KkkL?=
- =?us-ascii?Q?8vKoZeo01e6HFhLBKUa5MLK9XKhB2TZ/Xh6wOEXrlhqtZw4gf5+B+VCS9Hrt?=
- =?us-ascii?Q?MOH49O93XsSiZJt9AgGJ5RFxIBnTY/BA26AwRWBhv/urAxPecirmtrInWPrA?=
- =?us-ascii?Q?OgTC/cNHK14Gg0S/1HeyfdNpiVcpCtGRvHYdrpo31P4D/qjnPMEReGp9okYh?=
- =?us-ascii?Q?1DabMhSb7Eg4FHxHvJbnKS4ce45CJJeKkaGitYVE6MivsDHn/szJIZ9ob+3g?=
- =?us-ascii?Q?NYRtFUrY4nmWfYpcf9zlf60Aqy49sVD80dZI1m8IBgLW+7UYQHXd/+Qaa1pm?=
- =?us-ascii?Q?WgyOvblI65D9lju2W1hi1QxWfpjd3OIO+W25kS5yyKdfyJ1E8tJIQRiF4RIp?=
- =?us-ascii?Q?IG5xFrHTME1cWTITI7fqRj8UYT63uUr1ix0syZuaLhmOmKdQQyL4iBE94UMU?=
- =?us-ascii?Q?uSSwfIGHL0cAPyL+KmHqw324D0bCy2Al4MEzjeF36IfBZipFDwb5usdH2iMu?=
- =?us-ascii?Q?5j9AExm1XNvhjB3iI02jTfYcWpPC+U8oWo4whMQDEpsWnfVy525baK6i3gvH?=
- =?us-ascii?Q?hI0mpvnlZZxGY/xGua45WmZwAW7BogUgqhp994pf+gSAhUqNmH4RsxIzYXo1?=
- =?us-ascii?Q?7iG7JRCJdXqxO950l29jjOEPwGcZt98Z9SLpmz3b3uiFLZ4f9d6+VF39Tmo2?=
- =?us-ascii?Q?P80vISpGbwjsOZ2fqLlnjCeTewHIpXfrprdF6vdwjt7vXPazemf+Sk6DkiRY?=
- =?us-ascii?Q?l84QoJGzolZ4x5wo3Gi/acRaX3nnpKQ7Lq64Qzlr5/ig0zEFqrcRqa3TQHv2?=
- =?us-ascii?Q?WlpUmJOSTZJ22AHg6aQxgsTicIUYUlK7xPP0ExIOTeDArX6XwMfZTsziSKXu?=
- =?us-ascii?Q?S6JL9lLlNWdGajPIWDp1ox1vn8Ejt1P5y4cjzJvgvNGPV1lU/5Odd29rgdIK?=
- =?us-ascii?Q?Q5PwEZ+KpTGo5EWKVLRgs9wEGJHfWu7dY6BS+6xh9pn5du1DJ4mG7HZE651/?=
- =?us-ascii?Q?sm/wEKQavxieuE7rZTrzzRRGCztW+gIvyvKtprkeEopENAj5mpxZ6f60J0EQ?=
- =?us-ascii?Q?eA6jTW2LH1/VJyDBBkIJY85A+rorqb0uatRKg0PXelmd8Sjm4I3w/P99+rly?=
- =?us-ascii?Q?P9YZwJI7NM0cIkLpfyZrJUV80QlPmbePAZ0gFzht1oR1HunCw6FvxiaB5MvC?=
- =?us-ascii?Q?QZ0fIG8eJxWgnFKcDqbxxhTYJjGLw8HOoiS6/Ajgkv+VNRuSUF+odJYNC9vQ?=
- =?us-ascii?Q?R1tTnabrAcborbJQlYTYz6o4M9gmO/2p5Wppom2+KXLEUAzgQ4Of/WzN+8f3?=
- =?us-ascii?Q?84MDJKe15o07y2p8IlqAtt607Tchr3TDpdVGpoLG6d2XQ4i2BOn2fI+gxhxf?=
- =?us-ascii?Q?9Ls7xog=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(7416014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2Tfsp1fxMXqnBpOjsMVB2KUTTGY5yFDc6BUe2jut9VCbi3H7dhc7wcDTq2cr?=
- =?us-ascii?Q?5uHOdDsYMOarwn4CVx29+V4crVYQFhxOq+0BktaB+Fq7oncCWm2+LZ22avnk?=
- =?us-ascii?Q?1IUr3zQWewBvMyUcAH25MY3dzRqmZa7jfw1XSVxokN6OpdHf0X1X/N0wq3TA?=
- =?us-ascii?Q?ZE3mMNoPlOB6c48783wyhTwpPDMVNfj929ZK7bJ9OlvPbRYCy7Z0CSUmPFPP?=
- =?us-ascii?Q?ugflla7zG22WpM8tw5bJ4K52NahrFxcwtemsRNtZBS4zP9iAgKTXw2wtNsmd?=
- =?us-ascii?Q?0s5FnyxKMQCZxT5L8eQfIV5ag+ScsMo6jrdocVP8RFg/IfmW4P9rBUTkcofc?=
- =?us-ascii?Q?KT0Jtqs8PH3ppE55l1HOE2jX3HCi/n0BEB5S27lKQl8DbmVhEXrPb5IV7wnG?=
- =?us-ascii?Q?ZoRr2Gm24sNI4ILhLvvCSEe8tEfHysxtfzbwcQdloEXZ/QctzoxZWT3QjlNN?=
- =?us-ascii?Q?gOI8X68Zn41WuiUqz2DmADdLSZcwnrFGnP9TdkbFS5AOkExIdR+SbpPd7cod?=
- =?us-ascii?Q?aRS3mxYxvX5cuapgYxltrmRKZ8fZxxWwuoIFRqCW7VG6O35o/tZErflud65G?=
- =?us-ascii?Q?8RDL+LExcWvi43/N0hniki6KBHZeCpgv93zlGOYakSz/IdHJtpddUjdS6McK?=
- =?us-ascii?Q?BXFWh6JfTJ/PnzwUhkMEMfS2QiWHyRWYbzkxR75Z1bpPT2O8Eesh9ZqtiwWx?=
- =?us-ascii?Q?/+bxL76Vk/uKi88lmfR68bh4FxwOWCUwDMCS60fxHLA3XKV6B9DVmxvgVekF?=
- =?us-ascii?Q?LDdblNzvS8b9U5xMeH9NDn+RdW6Ryu/J39zZBDv00ENJPmgkaERwe7gUIDTV?=
- =?us-ascii?Q?npoA78jTvJNR+G+S3D5rjfKl2ret4S15vuqahirlBB3ug/B3LFIIhhTVXR5P?=
- =?us-ascii?Q?4/R4DpRC4QNGQKN6PkuuqjN4lKFSbLb9lqfDoR7w40StXIyf92OyJ/uIOmRS?=
- =?us-ascii?Q?b1tNGuKbTcjc8SFmkbUdOc1KKhl6Raj4zoCGXUDGxOYIh34aw/7Sufm1K3HP?=
- =?us-ascii?Q?s1yASPh0NsRyg8xh0ske2iLnzL9BU6OUoD1y7EL1B/X+5ioxnXnhAJGiOlwr?=
- =?us-ascii?Q?zpNRWbu6j0X6jtbbol5vScrBoaHLQYfpEmG01vIFVrDpXB2royAv4FdzPIYb?=
- =?us-ascii?Q?d9nSNT+0o2r7bVCb63RqGzPhIiUDZFX+UxJ0U9Mqq2rfbo9/zN2Et5QDHq+F?=
- =?us-ascii?Q?GS7/QAedMo623S4H9bYwhQ/nymax/oM6aQxWA6oRxy6JPolpd1N0LXoGGSCv?=
- =?us-ascii?Q?eBWAo4nAvC2yvJdwl01YGJcOfnSx1o0+WTZg8uPtmRH5Aq97CE8t/etUxXGB?=
- =?us-ascii?Q?Sz7JJOXppSwz81WbhpYt441NQfPdSjQOUc5A9mjSWltkWW2o8m5TpGewOR33?=
- =?us-ascii?Q?N7msbg6D5BPEa7Uwmkqm9X6jQqp1blrw+jZzUbCDK/emdncSD8T4k1wx2Uwf?=
- =?us-ascii?Q?u59aFSAGxSZRQKentlDJLLUqPmkHXK2eoxw6NXj28jUtIGlsdF6mW9fnrDTW?=
- =?us-ascii?Q?x7JF82tsPrLhYCQw6pUDEdNZ8tESTa1rjZHyAwVTiaxXgf9ZrbQSbXbQH4gk?=
- =?us-ascii?Q?g1UaTXI6h3EgrRBr+8wsmYZJcP9DLidcu60vnlTO?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16f04ea6-d5a0-4f05-8ccd-08dced1b5779
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 13:14:47.0014
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tq+r9FGnIG621JsA3+qE66Qay1IrBlG6BurOm5CSmu+dzd2g4Ikv2kpP1vgkc3+Jq8MYFAL+xQLzAj3J5HoSwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9988
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cC_KCgBXbWYmaw5nTTojAA--.14492S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGr48Wr1DAFWrJFW3Kr45ZFb_yoWrurW3p3
+	90gryxGr48Jry0qF4xXw1rJr1xXF1DA3WUGr1xWr1rAF15Gw1UJryUtFW3JrnxuF90yFy7
+	Xr1DJr40vr15GaUanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUHFb7Iv0xC_tr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+	AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
+	0_GcCE3s1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxVWUJVW8JwAv7VC0I7IYx2IY67AKxVWUAV
+	WUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAK
+	I48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
+	kKe7AKxVWrXVW3AwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj4RWuWlUUUUU
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
 
-Add related YAML documentation and header files. Also, add maintainers
-from the i.MX side as ENETC starts to be used on i.MX platforms.
+The variable wwan_rtnl_link_ops assign a *bigger* maxtype which leads to
+a global out-of-bounds read when parsing the netlink attributes. Exactly
+same bug cause as the oob fixed in commit b33fb5b801c6 ("net: qualcomm:
+rmnet: fix global oob in rmnet_policy").
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+==================================================================
+BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:388 [inline]
+BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
+Read of size 1 at addr ffffffff8b09cb60 by task syz.1.66276/323862
+
+CPU: 0 PID: 323862 Comm: syz.1.66276 Not tainted 6.1.70 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:284 [inline]
+ print_report+0x14f/0x750 mm/kasan/report.c:395
+ kasan_report+0x139/0x170 mm/kasan/report.c:495
+ validate_nla lib/nlattr.c:388 [inline]
+ __nla_validate_parse+0x19d7/0x29a0 lib/nlattr.c:603
+ __nla_parse+0x3c/0x50 lib/nlattr.c:700
+ nla_parse_nested_deprecated include/net/netlink.h:1269 [inline]
+ __rtnl_newlink net/core/rtnetlink.c:3514 [inline]
+ rtnl_newlink+0x7bc/0x1fd0 net/core/rtnetlink.c:3623
+ rtnetlink_rcv_msg+0x794/0xef0 net/core/rtnetlink.c:6122
+ netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
+ netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
+ netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
+ netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
+ sock_sendmsg_nosec net/socket.c:716 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
+ ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
+ __sys_sendmsg net/socket.c:2582 [inline]
+ __do_sys_sendmsg net/socket.c:2591 [inline]
+ __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f67b19a24ad
+RSP: 002b:00007f67b17febb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f67b1b45f80 RCX: 00007f67b19a24ad
+RDX: 0000000000000000 RSI: 0000000020005e40 RDI: 0000000000000004
+RBP: 00007f67b1a1e01d R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd2513764f R14: 00007ffd251376e0 R15: 00007f67b17fed40
+ </TASK>
+
+The buggy address belongs to the variable:
+ wwan_rtnl_policy+0x20/0x40
+
+The buggy address belongs to the physical page:
+page:ffffea00002c2700 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xb09c
+flags: 0xfff00000001000(reserved|node=0|zone=1|lastcpupid=0x7ff)
+raw: 00fff00000001000 ffffea00002c2708 ffffea00002c2708 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner info is not present (never set?)
+
+Memory state around the buggy address:
+ ffffffff8b09ca00: 05 f9 f9 f9 05 f9 f9 f9 00 01 f9 f9 00 01 f9 f9
+ ffffffff8b09ca80: 00 00 00 05 f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9
+>ffffffff8b09cb00: 00 00 00 00 05 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
+                                                       ^
+ ffffffff8b09cb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+According to the comment of `nla_parse_nested_deprecated`, use correct size
+`IFLA_WWAN_MAX` here to fix this issue.
+
+Fixes: 88b710532e53 ("wwan: add interface creation support")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
 ---
-v2 changes: Use regular expressions to match related files.
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wwan/wwan_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 560a65b85297..cf442fcb9b49 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9018,9 +9018,16 @@ F:	drivers/dma/fsl-edma*.*
- FREESCALE ENETC ETHERNET DRIVERS
- M:	Claudiu Manoil <claudiu.manoil@nxp.com>
- M:	Vladimir Oltean <vladimir.oltean@nxp.com>
-+M:	Wei Fang <wei.fang@nxp.com>
-+M:	Clark Wang <xiaoning.wang@nxp.com>
-+L:	imx@lists.linux.dev
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/fsl,enetc*.yaml
-+F:	Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
- F:	drivers/net/ethernet/freescale/enetc/
-+F:	include/linux/fsl/enetc_mdio.h
-+F:	include/linux/fsl/netc_global.h
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index 17431f1b1a0c..65a7ed4d6766 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -1038,7 +1038,7 @@ static const struct nla_policy wwan_rtnl_policy[IFLA_WWAN_MAX + 1] = {
  
- FREESCALE eTSEC ETHERNET DRIVER (GIANFAR)
- M:	Claudiu Manoil <claudiu.manoil@nxp.com>
+ static struct rtnl_link_ops wwan_rtnl_link_ops __read_mostly = {
+ 	.kind = "wwan",
+-	.maxtype = __IFLA_WWAN_MAX,
++	.maxtype = IFLA_WWAN_MAX,
+ 	.alloc = wwan_rtnl_alloc,
+ 	.validate = wwan_rtnl_validate,
+ 	.newlink = wwan_rtnl_newlink,
 -- 
-2.34.1
+2.39.2
 
