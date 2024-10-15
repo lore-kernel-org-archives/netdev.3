@@ -1,16 +1,16 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412191AB510
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3470E1AB508
 	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 07:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728978343; cv=none; b=k/gWJb0myZno72XWzH9+QSqhelgerBP1OC7Cd1J0L2NkA3MrTbzzTX2CFeUcg1x9JPLjo32OwItiMNgXiv5QRB5BeUl7OYFqF/tef9Khvpz7Q91ckr5Xgbsiftd7rKlQzow0zKQ7dqU4X6PolO9VC+pWsO4Rw01IqAeMqyRuHeY=
+	t=1728978344; cv=none; b=HGNIwOtXa8BPFVjSEYJzfYuYHBWM08ZIQeDsgmvRgQVGBXhBqro1tq7NkMOXg6rVAvSjbnIqv8D9Ru9Zr/e03Ky7tZu/0r09KdwAE8y+avrCrVCuc14OL4KULwLQ7fUuL5Ih97mnnrgwAV091M4gfsUA7amDAy8969d8fDHVjUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728978343; c=relaxed/simple;
-	bh=oQ0+8nbFKc4JBWBScRpGx74v8zpjRW0Cn9MJVfOA3L4=;
+	s=arc-20240116; t=1728978344; c=relaxed/simple;
+	bh=BiZPoHyXE3wK0PqOLoV1/coRhSpTMWVKREQHwYo7L9Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eifT5ZWQkaSGgBjiNLxdgwtejk9e8dZjq3wJIE+iF2FSm99Y/4YD9Il16mry9egh1D7PLTBqQnW2KFYROyNi30vTEs/Ksj/+BJW5t3jnGJ9r+6tEptTY7hRuUXBGQbVb6F98e8xiRb+Mr+9JcT8prSTNrsk3yrR3kguU6sEMoSg=
+	 MIME-Version; b=DqCxFIAWzPfkUw6+rPWXFRxk204OiOWQ5RFEklWWKFQXyXvJ7mJWUVm6EJRWe2YnTxN5v/t9099rH5cW8XpkjW0zpJyjRN60LQtaD+TBhUuaJrYNfRkjDndci+umKDTGO9Hjr+p4V148+GLdOcr8jppv2tt9zf5CQJKdQdiDPMQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
@@ -18,17 +18,18 @@ Received: from kero.packetmixer.de (p5480b09e.dip0.t-ipconnect.de [84.128.176.15
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 95D0CFA181;
-	Tue, 15 Oct 2024 09:39:48 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 1223CFAA31;
+	Tue, 15 Oct 2024 09:39:50 +0200 (CEST)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: kuba@kernel.org,
 	davem@davemloft.net
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 1/4] batman-adv: Start new development cycle
-Date: Tue, 15 Oct 2024 09:39:43 +0200
-Message-Id: <20241015073946.46613-2-sw@simonwunderlich.de>
+Subject: [PATCH 3/4] batman-adv: Use string choice helper to print booleans
+Date: Tue, 15 Oct 2024 09:39:45 +0200
+Message-Id: <20241015073946.46613-4-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241015073946.46613-1-sw@simonwunderlich.de>
 References: <20241015073946.46613-1-sw@simonwunderlich.de>
@@ -40,31 +41,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This version will contain all the (major or even only minor) changes for
-Linux 6.13.
+From: Sven Eckelmann <sven@narfation.org>
 
-The version number isn't a semantic version number with major and minor
-information. It is just encoding the year of the expected publishing as
-Linux -rc1 and the number of published versions this year (starting at 0).
+The commit ea4692c75e1c ("lib/string_helpers: Consolidate string helpers
+implementation") introduced common helpers to print string representations
+of boolean helpers. These are supposed to be used instead of open coded
+versions.
 
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/main.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bat_iv_ogm.c            | 4 ++--
+ net/batman-adv/bridge_loop_avoidance.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/batman-adv/main.h b/net/batman-adv/main.h
-index 3d4c36ae2e1a..97ea71a052f8 100644
---- a/net/batman-adv/main.h
-+++ b/net/batman-adv/main.h
-@@ -13,7 +13,7 @@
- #define BATADV_DRIVER_DEVICE "batman-adv"
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 74b49c35ddc1..07ae5dd1f150 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -36,6 +36,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
++#include <linux/string_choices.h>
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
+ #include <net/genetlink.h>
+@@ -371,8 +372,7 @@ static void batadv_iv_ogm_send_to_if(struct batadv_forw_packet *forw_packet,
+ 			   batadv_ogm_packet->orig,
+ 			   ntohl(batadv_ogm_packet->seqno),
+ 			   batadv_ogm_packet->tq, batadv_ogm_packet->ttl,
+-			   ((batadv_ogm_packet->flags & BATADV_DIRECTLINK) ?
+-			    "on" : "off"),
++			   str_on_off(batadv_ogm_packet->flags & BATADV_DIRECTLINK),
+ 			   hard_iface->net_dev->name,
+ 			   hard_iface->net_dev->dev_addr);
  
- #ifndef BATADV_SOURCE_VERSION
--#define BATADV_SOURCE_VERSION "2024.2"
-+#define BATADV_SOURCE_VERSION "2024.3"
- #endif
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index 5f46ca3d4bb8..449faf5a5487 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -33,6 +33,7 @@
+ #include <linux/sprintf.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
++#include <linux/string_choices.h>
+ #include <linux/workqueue.h>
+ #include <net/arp.h>
+ #include <net/genetlink.h>
+@@ -1946,16 +1947,15 @@ bool batadv_bla_rx(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 	claim = batadv_claim_hash_find(bat_priv, &search_claim);
  
- /* B.A.T.M.A.N. parameters */
+ 	if (!claim) {
++		bool local = batadv_is_my_client(bat_priv, ethhdr->h_source, vid);
++
+ 		/* possible optimization: race for a claim */
+ 		/* No claim exists yet, claim it for us!
+ 		 */
+ 
+ 		batadv_dbg(BATADV_DBG_BLA, bat_priv,
+ 			   "%s(): Unclaimed MAC %pM found. Claim it. Local: %s\n",
+-			   __func__, ethhdr->h_source,
+-			   batadv_is_my_client(bat_priv,
+-					       ethhdr->h_source, vid) ?
+-			   "yes" : "no");
++			   __func__, ethhdr->h_source, str_yes_no(local));
+ 		batadv_handle_claim(bat_priv, primary_if,
+ 				    primary_if->net_dev->dev_addr,
+ 				    ethhdr->h_source, vid);
 -- 
 2.39.5
 
