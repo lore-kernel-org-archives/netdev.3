@@ -1,139 +1,167 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F401F8197;
-	Tue, 15 Oct 2024 20:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729024312; cv=pass; b=uI8NL/DFrzVXstl6Aq15MpErTG/AQnas+BYLeMIhjN0rJE3GLvCleS4CROb5/gIVwwH/SvwIavBMuL8/NDxRQG/uvh6ycfQp5EbI4z2w6Yot1l9h5UBJ/vi1T99aomOBxIv2R88KKFaOmIdmbbXLPgxHT3OMzDNOirbW79aVULs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729024312; c=relaxed/simple;
-	bh=8pgXEjNi/4oUtEnAW6SMd7jhC+spMEMMSSSuFHS3gDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IQK3lUs2acLuB1IJ521CD2wMkDsz1EZetqr0eSuCxshW0og9qPJK4JqbLLx82qFNant7qvb7f8nm/BmFYdEziC097/PYqQal+9XyAXS7Ubqu5O9q6aPscpHmWitiOEpvtd5WQbnlEzmrP6a+34u5m4T42fc7Xc1+HOJa1UouMp0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=OBMAgv84; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B736158D9C
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 20:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729024954; cv=none; b=dk0eWL58asaEkqrgl2ub/iwad9RKeXHZarD9Yh74XKLtzd5uP7YbL0RXoRFAxwUYbHFj4JlNCY2cbT/QY/1DotAkIh5R0kzNA0EzNUQq6bt9kcpq652QMKiFNfFK9H/PkbQfZcIqNxFo7vTQPQJKKhszSnZAFmRBJz7fpinaf1g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729024954; c=relaxed/simple;
+	bh=kdXSJkVNAq9dkeQk80wzpoAZOthAqy9gaz8a6xGLKkw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m6RD6sMAL+UNfgBUousCbg8vRwUisS8zHbY+KlLPn8cBZXNzO4w954ntzfGyeb32BtnhSbG7Txr8QEM5VdesLPsNINWR83pZGYsWDk0dmz3z1AHHDRQu9ie5yV1Xai3Ko7NXFYx/J5jJQPriusKo5avivZdD0hGO6iSBljsxkkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SK8fQTbu; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="OBMAgv84"
-ARC-Seal: i=1; a=rsa-sha256; t=1729024278; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jwww7gRQHfBX0chd0jT/PqoypZG+ZFlT6XJIWplL5vTeTufNWOp41MOxAQC6Q/LV/ZRpZX5UBvPVpCzRB6FMNtrxyEZ84Q2/oHsm/IiM50Nk5k2BPoidpVEIH26QRGQd5RrLlo/5EveWkrnpIBAKKtl1sXHfew9GLBvKiiDqkCw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1729024278; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=t3x05/iWQkrdQdnoD8NFZZRDkLEPrALiLb9TpzuwUQM=; 
-	b=IuRqM1/IWd9C6ZFNcrGO4mb3V+ZARxquYFUxgMcNH7Qr+kAHjGZEP6WUFKyqLXzkKBfmk5QWP0RPqGvIZPhcU7tQuT8E6AQAa4XXK/J9Ox1Fqz4jr8ntUXF9f0bVuMnZ5MTts3+r2aCjWGivrxZW5kksdYc2wvQ+j5HB++n4WdE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729024278;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=t3x05/iWQkrdQdnoD8NFZZRDkLEPrALiLb9TpzuwUQM=;
-	b=OBMAgv84wc0VNms2thoO2pvKlssV8a8PHglZNeZc5Q/8n+m9fRwByGeUDQBuq1VV
-	imiboeizclOdd0+zob+6LHwn3UpIMQS10B+r8+okbPsraKswQJ+xvUzjzEIqnaa6vPv
-	6d5WXqeIcRD1P+gQcOjugmzcl8dOduRRdTTe2VQw=
-Received: by mx.zohomail.com with SMTPS id 17290242769731012.8904185135845;
-	Tue, 15 Oct 2024 13:31:16 -0700 (PDT)
-Received: by mercury (Postfix, from userid 1000)
-	id 7FE011060433; Tue, 15 Oct 2024 22:31:05 +0200 (CEST)
-Date: Tue, 15 Oct 2024 22:31:05 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Lee Jones <lee@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
-	Macpaul Lin <macpaul.lin@mediatek.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Sen Chu <sen.chu@mediatek.com>, 
-	Sean Wang <sean.wang@mediatek.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-rtc@vger.kernel.org, linux-sound@vger.kernel.org, 
-	Alexandre Mergnat <amergnat@baylibre.com>, Bear Wang <bear.wang@mediatek.com>, 
-	Pablo Sun <pablo.sun@mediatek.com>, Macpaul Lin <macpaul@gmail.com>, 
-	Chris-qj chen <chris-qj.chen@mediatek.com>, 
-	MediaTek Chromebook Upstream <Project_Global_Chrome_Upstream_Group@mediatek.com>, Chen-Yu Tsai <wenst@chromium.org>
-Subject: Re: [PATCH v8 3/3] dt-bindings: mfd: mediatek: mt6397: Convert to DT
- schema format
-Message-ID: <vb324yv7s7yew6m74lfvdv6wnuo6e4rxtiu2q7okypttw46ox2@lgfdkie6o3t2>
-References: <20241001104145.24054-1-macpaul.lin@mediatek.com>
- <20241001104145.24054-3-macpaul.lin@mediatek.com>
- <5nvshurbpmjkqysphfrfxhekq3c6od6a2uqai4rfxns64mdvf7@ftjvgjnivr3k>
- <20241009155222.GB637580@google.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SK8fQTbu"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c949d60d84so5599408a12.1
+        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 13:42:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1729024951; x=1729629751; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kdXSJkVNAq9dkeQk80wzpoAZOthAqy9gaz8a6xGLKkw=;
+        b=SK8fQTbuKIDlKKV32lt7w60AvqsetHSMaIALyCkHq9F5x47HOdu5MjMu7V0dnvGhNv
+         GXPfE12aip/d2VG3F4rHJRIxzEKdP8DYPLVXfgS3RzhOU4s/ab0PTl1eX/Cav88V/dR6
+         gAW+mvMk+GSww5AIuKUaT53LNQAeRieCUyvTU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729024951; x=1729629751;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kdXSJkVNAq9dkeQk80wzpoAZOthAqy9gaz8a6xGLKkw=;
+        b=OjaCPbLUfYkgDNb3ejzGo9TEP/MiEFSEUPbMRVXyeZPOiBqrYr2DEWUNTS2RFJkQXH
+         orV6IZ8hcQ7qN6f05GqYTZ/+HixkASSR8i41QbHIGyKNBRCcOx+vRtTHDFrBGi+o+0y+
+         N7qFr+IAQbqgsg1FhQjRLO+S1CN/a207f4lG9FiAM5sKRSxZTo8+xhdKVg0TKEHafsj4
+         ykNVmf98dOU26CE6b4X/+qn9/qEr9Px+IXw85KOwLbaKS2FANtkM9rp4kd59DReOQtGI
+         CfHQBpINHXvW2rMTBto88BTKwR3PCkLLAC1Oec/WByy1WESKdwH21Fmf5VVYCP9r/lQm
+         UJcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVtwG9Knzb8jfTRhjBzem+AFTczpt/z1ZX5Ax9KdrZebPXdlgFrYEb5ev4vOB2L8SoPY84XE4U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDqNNfwNlbWaSFZwDKdDEkVDOKBMM2FlmiqVls9zwQHBvOrgO/
+	+Qn9htaXveGcjEDBaONzVlbLdJGiTwcbN8GYosn0j0Ae1t/v77lSOEgX5r12OMTbCkXRVY63y8U
+	RIajUiy0NJdZTVs8S4N7UpDR+0LaHi4zzQ8EJARSn3sPPb4MMBw==
+X-Google-Smtp-Source: AGHT+IGKpAvTk0bSuTx118OVCJ6RNzTkfKcoLBE2J9HmgwV8x1RmtjkBQ10wxE52ftwFFNPbFuX0A3zi8bzkEkTqiRY=
+X-Received: by 2002:a05:6402:4402:b0:5c8:84b2:6ddc with SMTP id
+ 4fb4d7f45d1cf-5c948dac386mr11624536a12.33.1729024950615; Tue, 15 Oct 2024
+ 13:42:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2l3agui2g5zltsjn"
-Content-Disposition: inline
-In-Reply-To: <20241009155222.GB637580@google.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.3.1/228.999.33
-X-ZohoMailClient: External
+References: <20241015185310.608328-1-vadfed@meta.com>
+In-Reply-To: <20241015185310.608328-1-vadfed@meta.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Tue, 15 Oct 2024 13:42:18 -0700
+Message-ID: <CACKFLikahUtGiJJoqT2mxJN-gfRT1z1Cy0bjLo6ZZRxk=bt0ig@mail.gmail.com>
+Subject: Re: [PATCH net] bnxt_en: replace ptp_lock with irqsave variant
+To: Vadim Fedorenko <vadfed@meta.com>
+Cc: Edwin Peer <edwin.peer@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	Richard Cochran <richardcochran@gmail.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000004ddd6062489fec2"
 
-
---2l3agui2g5zltsjn
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+--00000000000004ddd6062489fec2
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v8 3/3] dt-bindings: mfd: mediatek: mt6397: Convert to DT
- schema format
-MIME-Version: 1.0
 
-Hi,
+On Tue, Oct 15, 2024 at 11:53=E2=80=AFAM Vadim Fedorenko <vadfed@meta.com> =
+wrote:
+>
+> In netpoll configuration the completion processing can happen in hard
+> irq context which will break with spin_lock_bh() for fullfilling RX
+> timestamp in case of all packets timestamping. Replace it with
+> spin_lock_irqsave() variant.
+>
+> Fixes: 7f5515d19cd7 ("bnxt_en: Get the RX packet timestamp")
+> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
 
-On Wed, Oct 09, 2024 at 04:52:22PM +0100, Lee Jones wrote:
-> On Wed, 02 Oct 2024, Krzysztof Kozlowski wrote:
->=20
-> > On Tue, Oct 01, 2024 at 06:41:45PM +0800, Macpaul Lin wrote:
-> > > Convert the mfd: mediatek: mt6397 binding to DT schema format.
-> > >=20
-> > > MT6323, MT6358, and MT6397 are PMIC devices with multiple function
-> > > subdevices. They share a common PMIC design but have variations in
-> > > subdevice combinations.
-> > >=20
-> > > Key updates in this conversion:
-> > >=20
-> > > 1. RTC:
-> > >    - Convert rtc-mt6397.txt and merge into parent MT6397 PMIC DT sche=
-ma.
-> >=20
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> Everyone okay with me taking this without a pull-request?
+Thanks.
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+--00000000000004ddd6062489fec2
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
--- Sebastian
-
---2l3agui2g5zltsjn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmcO0QUACgkQ2O7X88g7
-+pq0FQ/9FMCSq1lfOMV4aYkiPMJgvA+Yi89RMy4XcuGLf6F+EvXVlOJN4qdpFD8D
-Pe40iww7vsZTqfHbl/YOLF4g2vJKqxz1wU/TeY2dVv39o++IYhoVaSaQjoJrtHgT
-8p8cHExz+AmO9caP5P6uGx6oTISGKhDr7ZwAY5ntAiacuFhDxJHO3qOXZ/IRzhLo
-WjhmBe4YjhuInmTz0Hq609b+9s2qIwf+aeuxenap+/V2qlZh213GwolJiDc3x+nu
-oa/CCu0c4Ocm/PFmqNdinqGv1hxAP5BlzwTBhVjCWVE3/av6G3pjXzlGRBD+1/QH
-u4mE566PcmYY1AcM28A+sDng1OU362Jdj9xoAfvQRLlvioQ+e4rW2hPxo3Ix4KOK
-bWDwuSVS96Pm/5F2lqXCTqmxYWPD5M9gSdFhvTebVq/OIEh6F8Oqd0wU79T/va8W
-EavPKNvXjekoPv/o7zKStW8Fu8HzeCAvYnDBEjmr7igL+8fKI5SGvcNV3SgSmyBE
-Tp/RLXiICnFqwzKVOS5n9EotpwQvWQEwlkPMhPKjNAi0E06FB/TZRTJ0/f1J+w4E
-TiwnYKQYKaNaM293kor6pNz/PCWvDK1kBMRSOYcmscu8KJjYzmvi/NaBXsHP5oZx
-0aOTHfrk7EXHEWJoLssNe4VKphceb4PosOWNK04tR1yEpcAKc+4=
-=wdwg
------END PGP SIGNATURE-----
-
---2l3agui2g5zltsjn--
+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
+OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
+/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
+AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
+c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
+AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
+TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
+bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
+L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
+L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
+kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
+5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
+hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
+E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJtMIIC
+aQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
+EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
+DQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEICyYQXxo+V/US2QRevuk77Mb0Dad/i+q
+F/v+n6lG7TupMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MTAx
+NTIwNDIzMVowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
+SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQC
+ATANBgkqhkiG9w0BAQEFAASCAQB6gpKOyiCIeafsFdxSh6SsojbFgflWkoB9K1SJZKdzZrwEeQeb
+MiIFo2j0NZDDqkz8eDmqgMNK15mvRDxXn0H2UlnLrqT+AWmzOhuGJcM3z7J8Kbl5gIwVDzwIzPo5
+5q+nUcNKZnEEfi57HFlMRsLQLmOHlS36wUVfgRxMPXgDZSwRM6GMd8/5rBQ4c2vEWJGXaWaouWpW
+yYGbabIfq74k7LCkn9Xu7A3vsQKtvVGF4mKj2KCCz62bhd8Z0oLpQod1h3fJ7El/OKtv3QwezB16
+0J0yvevtipaWNbhRKFKUtQ/kZ29cPe7vwvyfKjzKevIGEQGccQJ+Ws+LvturajqK
+--00000000000004ddd6062489fec2--
