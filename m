@@ -1,140 +1,142 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0B21F9EA8
-	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 17:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CBD1F9EB9;
+	Tue, 15 Oct 2024 17:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729013439; cv=none; b=uHNiu73pzzHTzTHMM9EMN+YoQ2LJrRrYOEYrWhSUPU8hWQjES1IMrZvhAQ8Gy6ARp191Cr8DvhT7wGBqyq1SRfL2jLFjLW6EcfS8LXDxqAJFvwVDuLyhe8lZg4X9W8z9KBNZq8PKDVRBxOviqi8wOfkIsKuV+yWNcWGK+3B43gQ=
+	t=1729013441; cv=none; b=RYYKOpr6CaflE6LcZ6fv6rbzsMiYdWr+P6xN5S+zwhvzp1c2BAfhV3OBpRL9JuGwww/cCGsNVLG+zyJsEMosqcgFLBGeHIA2njUULZHAcqXae/kNeRGS9WUMQGD9aNglI1s1PhBKDZNzkXUebL1Ptm3Azj4j5ZqlDIFXFehplKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729013439; c=relaxed/simple;
-	bh=fPoINJewr4rZ2fD0i2SvcxTzuhA/UFayJmMdvI3vclc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D4Pl3PFq6uf5am1L7qpLqc8rEHaWpyY4dOKTDyVtcVmsttd3LDGBTU+2HWfHHXF0RGQMEjxmqNo/+3NPIThGnEyJDwpPIAuOqEbycHSSeDQPOv1JF8rYfsQ+oMPtARfyumDQOBpc69d+/e4CGwRjJ5g1rMbDX3HmW54IWyUxOGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Wf9tqruW; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1729013441; c=relaxed/simple;
+	bh=6s2k+WnDaC5FrWrkNfrjRLbi7NW2sN0cOAnvjqWqMb0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RGdsQGA+BsEV1mtKeOachp5xlMh/oKOlvY5XTwp6KP4IKIefN+7DLBHAu5KcsZ/6kiMiL1x3gTA8SY90OLhQpydxppqWdk8IG2fgzv5oa5SIvCf1kXlkqsQAjcX4lwmhYprnNo0xl26ODBFvwgwXswWvFN8NAIXHIaEXGXtov7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Xyvn2Kfw; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Wf9tqruW"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-45f05a65398so43338981cf.1
-        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 10:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1729013436; x=1729618236; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=32F43aWFFhVGx2UIPkft94nsDcd5w72khuVk+0067EI=;
-        b=Wf9tqruWeL5uklteWZdV19EqgNPqCkvc0CrBSUWwdZfCXAGtFes9Y+yJrIluzVbvTd
-         G//DUMn42BNCos6dWSEfjqlyrkaqCc6YMlz6zAe79TuY28dAKtCWBCCyDM33zh+rgpqQ
-         jJKWZMwW6IsqB1GzPNCnAYd3Yc955f2Fg2qfA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729013436; x=1729618236;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=32F43aWFFhVGx2UIPkft94nsDcd5w72khuVk+0067EI=;
-        b=EuYkV38KUdul29dYJ5P1uo+2ymQ4LDVkskf02KGDMSwqwkimwBeiYN/knEOXuENTfR
-         oss8ahtqMHonKAA0abuDP+saSWN2t0vdOCgJn2N640SWQe8kmkHnyb8cRGwQPzclF3Wk
-         fI+toWVugQFY9aiellRAG205PNicu8bpadZKu7AFvVZnHC7JXLbL+dYiOVls8qw8ZRR6
-         7VLFpdy9GJ3rQbdcUEKdYL83tAM9Gnxcg3SD6AkVKxmeH6V8YK/y/cAd159LgMHWgFZe
-         DSwI46rooqWRthDrwg2uVk/G750QBIfheser7eDYGoR7sD8fQ9YCshpI9d7M7hpbDx/T
-         Dotg==
-X-Gm-Message-State: AOJu0YwrPlJVZAka7UjkDVqmXUgO8n1qSK915Wa+x5OTenf5nEP9AXeI
-	Qjpg+S4Db7xYQBmElCa7rf/WFKsip9v9nqjO1l9NF4SHlYXW++dF0NB8CQpbTnHU/l6sJ0FoQHt
-	/kaqWSP8cWGU9gsTtGGH83UMuxVsQCnGC2+LZ2Ya2YbwZfzKn2oWm0ZZp6zzyjlxzJ1jzYClLo1
-	d5vAHEgK+jUOsbzPM5Pd7W4bGc3A9+Tz9ei+oJ99TwykEpGZnw
-X-Google-Smtp-Source: AGHT+IHELpbG7H9Sua7HCjciXrVYE/ELUIdGP3K1aU0Bv5OvRhFzrOOMBo7qamKP9usHie3DBAUdbw==
-X-Received: by 2002:a05:622a:17c4:b0:45d:a196:b321 with SMTP id d75a77b69052e-4604bbcccf0mr237508761cf.32.1729013435935;
-        Tue, 15 Oct 2024 10:30:35 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4607b37ba97sm8677491cf.63.2024.10.15.10.30.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Oct 2024 10:30:35 -0700 (PDT)
-Message-ID: <e3a61540-714a-4f57-a3c4-c0f333e16a07@broadcom.com>
-Date: Tue, 15 Oct 2024 10:30:32 -0700
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Xyvn2Kfw"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FF0aqK005054;
+	Tue, 15 Oct 2024 17:30:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=Oc+63R/zsqInaDKwT3Ya6GqPPtGbB
+	c7i4ch4FcUgIK0=; b=Xyvn2Kfwfiu9VwJqhJ61TheRJafbaJQx9Op/K0kr1ttTe
+	nkE+UkMNjoz7EYi3CY97/QskjkOXllP0E7we4PZdYoPrsJ/N1tq5y0shoCW2/yzx
+	yslCEG12bnwg9ymp4zn3CNaR7WoWAs3C8sn8kbJTevpdKap5dmy834gtkTnDBXHP
+	cm1ywOVO6ZVeuZVBYbGmNSOscM3W2ibwU3fOblKLHJtmL2ePTN2lGwaBUJ7xyWub
+	JgW7m/rHrYEiJZCzTuH5IwHlAiuIxUrGQw0Mouzwos95L5pKbB43X/dGostPuOr4
+	5sjsjGDXG8Nm9WmXdG7Xl/M8w1VBnVZueNMMmz46Q==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427h5cj1mm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Oct 2024 17:30:20 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49FGBNcE019864;
+	Tue, 15 Oct 2024 17:30:19 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 427fj7s8am-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Oct 2024 17:30:19 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49FHUIQg040726;
+	Tue, 15 Oct 2024 17:30:19 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 427fj7s865-1;
+	Tue, 15 Oct 2024 17:30:18 +0000
+From: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
+To: davem@davemloft.net, Liam.Howlett@Oracle.com
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mingo@redhat.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        vschneid@redhat.com, jiri@resnulli.us, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, akpm@linux-foundation.org, shuah@kernel.org,
+        linux-kselftest@vger.kernel.org, anjali.k.kulkarni@oracle.com,
+        peili.io@oracle.com
+Subject: [PATCH net-next v2 0/3] Threads support in proc connector
+Date: Tue, 15 Oct 2024 10:30:11 -0700
+Message-ID: <20241015173014.1083069-1-anjali.k.kulkarni@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] net: systemport: Remove unused txchk accessors
-To: netdev@vger.kernel.org
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:CLANG/LLVM BUILD SUPPORT:" <llvm@lists.linux.dev>
-References: <20241015172458.673241-1-florian.fainelli@broadcom.com>
- <20241015172458.673241-2-florian.fainelli@broadcom.com>
-Content-Language: en-US
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20241015172458.673241-2-florian.fainelli@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_13,2024-10-15_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410150120
+X-Proofpoint-ORIG-GUID: LwuysuGpc_VItypm2T6AyNYbxEKCOvS4
+X-Proofpoint-GUID: LwuysuGpc_VItypm2T6AyNYbxEKCOvS4
 
-On 10/15/24 10:24, Florian Fainelli wrote:
-> Vladimir reported the following warning with clang-16 and W=1:
-> 
-> warning: unused function 'txchk_readl' [-Wunused-function]
-> BCM_SYSPORT_IO_MACRO(txchk, SYS_PORT_TXCHK_OFFSET);
-> note: expanded from macro 'BCM_SYSPORT_IO_MACRO'
-> 
-> warning: unused function 'txchk_writel' [-Wunused-function]
-> note: expanded from macro 'BCM_SYSPORT_IO_MACRO'
-> 
-> warning: unused function 'tbuf_readl' [-Wunused-function]
-> BCM_SYSPORT_IO_MACRO(tbuf, SYS_PORT_TBUF_OFFSET);
-> note: expanded from macro 'BCM_SYSPORT_IO_MACRO'
-> 
-> warning: unused function 'tbuf_writel' [-Wunused-function]
-> note: expanded from macro 'BCM_SYSPORT_IO_MACRO'
-> 
-> The TXCHK block is not being accessed, remove the IO macros used to
-> access this block. No functional impact.
-> 
-> Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Recently we committed a fix to allow processes to receive notifications for
+non-zero exits via the process connector module. Commit is a4c9a56e6a2c.
 
-Forgot to remove the tbuf accessor here as well, will post again in 24hrs.
+However, for threads, when it does a pthread_exit(&exit_status) call, the
+kernel is not aware of the exit status with which pthread_exit is called.
+It is sent by child thread to the parent process, if it is waiting in
+pthread_join(). Hence, for a thread exiting abnormally, kernel cannot
+send notifications to any listening processes.
+
+The exception to this is if the thread is sent a signal which it has not
+handled, and dies along with it's process as a result; for eg. SIGSEGV or
+SIGKILL. In this case, kernel is aware of the non-zero exit and sends a
+notification for it.
+
+For our use case, we cannot have parent wait in pthread_join, one of the
+main reasons for this being that we do not want to track normal
+pthread_exit(), which could be a very large number. We only want to be
+notified of any abnormal exits. Hence, threads are created with
+pthread_attr_t set to PTHREAD_CREATE_DETACHED.
+
+To fix this problem, we add a new type PROC_CN_MCAST_NOTIFY to proc connector
+API, which allows a thread to send it's exit status to kernel either when
+it needs to call pthread_exit() with non-zero value to indicate some
+error or from signal handler before pthread_exit().
+
+v1->v2 changes:
+- Handled comment by Peter Zijlstra to remove locking for PF_EXIT_NOTIFY
+  task->flags.
+- Added error handling in thread.c 
+
+v->v1 changes:
+- Handled comment by Simon Horman to remove unused err in cn_proc.c
+- Handled comment by Simon Horman to make adata and key_display static
+  in cn_hash_test.c
+
+Anjali Kulkarni (3):
+  connector/cn_proc: Add hash table for threads
+  connector/cn_proc: Kunit tests for threads hash table
+  connector/cn_proc: Selftest for threads
+
+ drivers/connector/Makefile                    |   2 +-
+ drivers/connector/cn_hash.c                   | 240 ++++++++++++++++++
+ drivers/connector/cn_proc.c                   |  55 +++-
+ drivers/connector/connector.c                 |  96 ++++++-
+ include/linux/connector.h                     |  47 ++++
+ include/linux/sched.h                         |   2 +-
+ include/uapi/linux/cn_proc.h                  |   4 +-
+ lib/Kconfig.debug                             |  17 ++
+ lib/Makefile                                  |   1 +
+ lib/cn_hash_test.c                            | 167 ++++++++++++
+ lib/cn_hash_test.h                            |  12 +
+ tools/testing/selftests/connector/Makefile    |  23 +-
+ .../testing/selftests/connector/proc_filter.c |   5 +
+ tools/testing/selftests/connector/thread.c    | 116 +++++++++
+ .../selftests/connector/thread_filter.c       |  96 +++++++
+ 15 files changed, 873 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/connector/cn_hash.c
+ create mode 100644 lib/cn_hash_test.c
+ create mode 100644 lib/cn_hash_test.h
+ create mode 100644 tools/testing/selftests/connector/thread.c
+ create mode 100644 tools/testing/selftests/connector/thread_filter.c
+
 -- 
-Florian
+2.46.0
+
