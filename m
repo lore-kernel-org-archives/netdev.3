@@ -1,122 +1,119 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670671E32D0;
-	Tue, 15 Oct 2024 10:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21E91E8857
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 10:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728989688; cv=none; b=XqatZJYWq1gS6IIDYxk/Jn8jdE+QWDHtNLQROkkheAf2sr/upnj9MDB8rmiiHc/9FFrIBwuGX9a4LdBpmgz+umWFruLwMCturv2V2YgzpU1tcTPkXU0t8sqYCV2+PavSUfXDYxYF8UVvAftfVLcnxJ5jVhcpFwgD9OYFBCCLHLc=
+	t=1728989735; cv=none; b=e5/h6GbxBk/A3WWoFcfDpN4Hm/dgK6vNvwyrvH8F4Fqm1MxGSORmfDgIMY3XPZU4YcIwvKvQvgf6tMDGYXgxeKB/ZVJbjGAfK0rz8vpeA2/7U6G7NQlzrbh/7hG/lC+UDjAdKYx4NhvgXFI989JVWg6nBqaPXou83ewUZ2Ub0U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728989688; c=relaxed/simple;
-	bh=0GjnuafM8+MuY524RzRyuybMbh2e1W5adOorLwp9ITw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d+pEJs9JD+Uu1lNEaGOTkYYZAqkaPP/kQInb8RONULWZrzKcETg+2NdcMzMpz2bBtZ0aaB6f1LgW7/Xttql6W7ErF2Rw6ZJWc6bWwOVaqLDeYqKAoFawO8GgXiHpIT2kjHmJis1NwukiDJAu2OW8txCv+aaRZH9n7ooRuz0865Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=n//Oe3bf; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1728989735; c=relaxed/simple;
+	bh=dJZxNsHufyVnVkGZ7KBRcyWcePNegdl1XvkyiSwKVwI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=g3lwYdko3IJAoz2/qYjHxTYMd1VGDqdpZP199kkZUBHRHj8g2gig82vO5wEq2czVsM++q3cDPGRhbh75VCWVh7sY6duGZDWMp/CBPvZtlptthikg+fEhgc1hL/ZEJhSIINkTq/iRWuW41BRT9JDEO5SMryjDzc6Ijpn73w0ipCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=FN/6EoI3; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="n//Oe3bf"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FApOv6013632;
-	Tue, 15 Oct 2024 10:54:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=6fsOagLG+nDf85J5DatB5patV9Oe55a8JmOALUnjE
-	80=; b=n//Oe3bfyDbve1gkdx9BaQ38NYVprDivMQSdj9tpmCiLJzc62VAt2kfR9
-	Yb1Ty5NicPsgEAnhJZaegaxTebyN2bUJfNeXJA1vg8Vlb+ASM70rej5dyGoM/6R7
-	qbfox8En6vxWmXRtoEVJh2C0RJGbNsvs3YVcEmM4WRMzCHv0ksVzqZKHlwgWJoHk
-	CApMVNrAPXXgHnQ2AXbv/5+b7Uf80iydpTGINVZWtBkWkAt+iD7IV+RcgqprW0pN
-	8gO1IMGE9dStHo6eFFRMlNx6+cw23mZ5ZgcgJAWyEngQLWKRRgntzZqe/MEl9kc+
-	ppAxyFZvogei+W/dwyPNfHBI7Vuzw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429q0gg0n1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 10:54:34 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49FAsYRl020601;
-	Tue, 15 Oct 2024 10:54:34 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 429q0gg0mw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 10:54:34 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49F943eJ005951;
-	Tue, 15 Oct 2024 10:54:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428650u092-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 10:54:33 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49FAsUtj45154746
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Oct 2024 10:54:30 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0981D20040;
-	Tue, 15 Oct 2024 10:54:30 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EAC6A2005A;
-	Tue, 15 Oct 2024 10:54:29 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 15 Oct 2024 10:54:29 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55390)
-	id 7A0F4E0125; Tue, 15 Oct 2024 12:54:29 +0200 (CEST)
-From: Sven Schnelle <svens@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Ricardo B. Marliere" <ricardo@marliere.net>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH RESEND 0/3] PtP driver for s390 clocks
-Date: Tue, 15 Oct 2024 12:54:11 +0200
-Message-ID: <20241015105414.2825635-1-svens@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="FN/6EoI3"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c9404c0d50so5416495a12.3
+        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 03:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1728989732; x=1729594532; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qxWaIsUg6giBeZB/qFZgxvxYS8Q3WXg/pwadc9vI6U4=;
+        b=FN/6EoI3dCHV7bU1thwTZfY1F7axilseOO6PvuCCFqIViQo7ynHcdA50Q1Veb2YF3e
+         2SfW1VxpqGhfEvmUOwxhKlGDZJ/VoHa/hYEHIRvf0hQahpE6EsPY7V6alhxZSByTeucZ
+         zuKfbO16bFoc1oIDbkjKRrr+/gFvCGruvI3vWfvDdch9ixAMrY37lozB7gzMzEhpQntI
+         NP/0/vgQij5f0nbe6QfbHDa3+kmCnuOg8alnfmuBRKxd0Nkfnh0TWfzUb2xvmPjW9W1+
+         4bjUyQsGQzkCUHOrbs3N40LPyGy681QIpXlYG+epZgluLeja4Hbk6yEH5Q1UaZEfBi22
+         aXVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728989732; x=1729594532;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qxWaIsUg6giBeZB/qFZgxvxYS8Q3WXg/pwadc9vI6U4=;
+        b=VoeOqpjzoDTVZyLSVwAxtJHhLR4MV0bpjBNUcCGCEJVehhzmqp2sccntCobjJoR/LY
+         h9gEIoC/JI9QO1+FJX0oFfnW9jg6CiuRRkInaOKLb7hgg7hbOMz+YgmiyYt4nUWYP2xF
+         yNW6UBZQ5zk8EtVPLx72/gFGSjidKIQrLmQ+8MQJIPSn88EfiT/d4jJxwWFFgxU2FNTd
+         3OY0blxJlvJ0yiud8T0QVTtei25kdNqr8glu5f6+kdl+47b7NPsEG3N8G9fdR8X3jJav
+         5xTIuLkP4CWufiMbmvepc2LJ8Efgsx4iRHkIchmaLMIMz92m5fbMoqrIP/mCgsW1PH4R
+         KLyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBSkq9hF2NuMXfYyZQRZGf1dqYAOWXFytjjQDch19MUis49gW/ujoGC86w7w9J22KWvCyCPXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK99pRNJ/RckdvJGUr8o/R/u+gmXTFujyM1L2f5qD0hCMEVb9a
+	0jte1Aegu56GSgSZs3sa3sVhjBuDpIko9l2cvv+sf/3q2M/QRZoZ0QRuD5GSrHo=
+X-Google-Smtp-Source: AGHT+IENngL8kUtvdGqBvfWOeT0HU3Jz0wnco8VTc5j19kviovROQUzgBtOacG8vxlSE5QNA5vJkkA==
+X-Received: by 2002:a17:906:f59b:b0:a99:f7df:b20a with SMTP id a640c23a62f3a-a99f7dfb8ecmr782739366b.62.1728989731976;
+        Tue, 15 Oct 2024 03:55:31 -0700 (PDT)
+Received: from [192.168.0.245] ([62.73.69.208])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a298232f4sm56459066b.117.2024.10.15.03.55.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Oct 2024 03:55:31 -0700 (PDT)
+Message-ID: <7d4c49da-e071-4b74-85d8-f0b5efaa0cf3@blackwall.org>
+Date: Tue, 15 Oct 2024 13:55:30 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iOuI4dTUGHzT8hkOBGbOW4ro6_dV7sy3
-X-Proofpoint-GUID: v7l7l6wg5oaeQfeQFKftht8yVhUZCnBN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 clxscore=1011 mlxlogscore=514
- priorityscore=1501 bulkscore=0 spamscore=0 mlxscore=0 malwarescore=0
- adultscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410150072
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] bpf: xdp: fallback to SKB mode if DRV flag is absent.
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrii Nakryiko <andriin@fb.com>,
+ Jussi Maki <joamaki@gmail.com>, Jay Vosburgh <jv@jvosburgh.net>,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Liang Li <liali@redhat.com>
+References: <20241015033632.12120-1-liuhangbin@gmail.com>
+ <8ef07e79-4812-4e02-a5d1-03a05726dd07@iogearbox.net>
+ <2cdcad89-2677-4526-8ab5-3624d0300b7f@blackwall.org>
+ <Zw5GNHSjgut12LEV@fedora>
+ <8088f2a7-3ab1-4a1e-996d-c15703da13cc@blackwall.org>
+Content-Language: en-US
+In-Reply-To: <8088f2a7-3ab1-4a1e-996d-c15703da13cc@blackwall.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 15/10/2024 13:46, Nikolay Aleksandrov wrote:
+> On 15/10/2024 13:38, Hangbin Liu wrote:
+>> On Tue, Oct 15, 2024 at 12:53:08PM +0300, Nikolay Aleksandrov wrote:
+>>> On 15/10/2024 11:17, Daniel Borkmann wrote:
+>>>> On 10/15/24 5:36 AM, Hangbin Liu wrote:
+>>>>> After commit c8a36f1945b2 ("bpf: xdp: Fix XDP mode when no mode flags
+>>>>> specified"), the mode is automatically set to XDP_MODE_DRV if the driver
+>>>>> implements the .ndo_bpf function. However, for drivers like bonding, which
+>>>>> only support native XDP for specific modes, this may result in an
+>>>>> "unsupported" response.
+>>>>>
+>>>>> In such cases, let's fall back to SKB mode if the user did not explicitly
+>>>>> request DRV mode.
+>>>>>
+>>>
+>>> So behaviour changed once, now it's changing again.. 
+>>
+>> This should not be a behaviour change, it just follow the fallback rules.
+>>
+> 
+> hm, what fallback rules? I see dev_xdp_attach() exits on many errors
+> with proper codes and extack messages, am I missing something, where's the
+> fallback?
+> 
 
-these patches add support for using the s390 physical and TOD clock as ptp
-clock. To do so, the first patch adds a clock id to the s390 TOD clock. The
-second patch adds sending a udev event when a ptp device is added, so that
-userspace is able to generate stable device names for virtual ptp devices.
-The last patch adds the PtP driver itself.
+Oh did you mean dev_xdp_mode()'s ndo_bpf check to decide which mode to use ?
 
-Sven Schnelle (3):
-  s390/time: Add clocksource id to TOD clock
-  ptp: Add clock name to uevent
-  s390/time: Add PtP driver
+So you'd like to do that for the unsupported bond modes as well, then I'd go
+with Daniel's suggestion in that case and keep it in the bonding until
+something else needs it.
 
- MAINTAINERS                     |   6 ++
- arch/s390/include/asm/timex.h   |   8 ++
- arch/s390/kernel/time.c         |   8 ++
- drivers/ptp/Kconfig             |  11 +++
- drivers/ptp/Makefile            |   1 +
- drivers/ptp/ptp_clock.c         |  11 ++-
- drivers/ptp/ptp_s390.c          | 127 ++++++++++++++++++++++++++++++++
- include/linux/clocksource_ids.h |   1 +
- 8 files changed, 172 insertions(+), 1 deletion(-)
- create mode 100644 drivers/ptp/ptp_s390.c
-
--- 
-2.43.0
 
