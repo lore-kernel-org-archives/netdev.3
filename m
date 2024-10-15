@@ -1,91 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0971F8F03
-	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 12:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767691EF923;
+	Tue, 15 Oct 2024 12:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728994135; cv=none; b=MGo++kD1l0+FArFPsDmupzw4ofhcU1FAskqBbHeLL9tFoeo2SB8rwlL3Kxr1FVHiBDFLaGv+TfjbSUnFVRm9BXTru5vk0k7MlkOAUFy8o3ynycflC8+bh28U9rhaXP5hbtcdcXmC9a+eQ8eHI0/9wIInBeZgZFRwnLNW75/MVXo=
+	t=1728994251; cv=none; b=SQByuKy+CPuly+XAoVH+8FaKyjxNTEaZl2WWny1QHoZzZVdGht/7ho4TeBO9PjsCEntwwh5XMrmP9aaONeMibUke7E5kY4of7wrpK2KnT5isginYMEcuMuasxI2+o1/vTin2PmHawWUcsGJ1mMehiwF9OIeC1rrNnHLds1nESvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728994135; c=relaxed/simple;
-	bh=LMg+qC3GpapOJTqPuu7/tbziQjUFoXkQImoXQtdY9pQ=;
+	s=arc-20240116; t=1728994251; c=relaxed/simple;
+	bh=y+TgaiI7J/jSSYzxAw22Eb8Kte8Q1JyRu7C9LHRxYNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFmDpzTqSgtF1I8TRxVLOmrVkeaAS6DYjieuSTTBEnFIMJ7VDstQTvVsDdM1VIrvKZ46NnyVvmOYUD7vWg/wTC36l0YMhGlwmMzGdYgKIZFAZzQ8zcI34S0DZJZBW3mqzCdshQK5wsx9eO0A919gDS+XVfxlCV9Yg/XTr++hrWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oq7Wihvi; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=J9XFPzeSNoatcjeL6lZ3JXMqDLLRtzwJhuQqkhZrkHpyWRuuxOyfOQNduFqcAwIbP+evvHkhtEy7ZfnP4RqLiWzDwKnPXi8r4QbkCphSDUuZTT+eGp22ZgtK+DEohmHj3HUINaaHCh56nSv9y6+npPXHdqLpK1dzsLODu9Zy7Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaN+i4Qs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oq7Wihvi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=2XP5y9z+Zc+jzgswAxP/FFf9hvKLL+uAJ4Hn3GaWj2A=; b=oq
-	7WihviQrPVKXcxGTit4/qgULQrRYwGRWyF+PyYkezLoWslXj2GzuLJb7AP6IidoDfsv+nPv6BqRHm
-	d07M4irZbYJtD3hYhXZaLatHHzX63e4BQtnBq1qem8SdbjqntHFBI92EyS8Td7UlzFcDLCL4Ejo25
-	Dl+FXtB+qDaY+7c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t0gM3-00A1eh-EX; Tue, 15 Oct 2024 14:08:47 +0200
-Date: Tue, 15 Oct 2024 14:08:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?B?5ZCz6YC86YC8?= <wojackbb@gmail.com>
-Cc: netdev@vger.kernel.org, chandrashekar.devegowda@intel.com,
-	chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com,
-	m.chetan.kumar@linux.intel.com, ricardo.martinez@linux.intel.com,
-	loic.poulain@linaro.org, ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
-	angelogioacchino.delregno@collabora.com,
-	linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com
-Subject: Re: [PATCH] [net,v2] net: wwan: t7xx: add
- PM_AUTOSUSPEND_MS_BY_DW5933E for Dell DW5933e
-Message-ID: <562c8ee8-7ce3-4343-9d93-b01be1235954@lunn.ch>
-References: <20240930031624.2116592-1-wojackbb@gmail.com>
- <e2f390c7-4d58-47fb-ba86-b1e5ccd6e546@lunn.ch>
- <CAAQ7Y6Z2xkgxv36=WOxbUArCw3eBeY0nx_7nAH36+Wicjs_fPg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaN+i4Qs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463DEC4CEC6;
+	Tue, 15 Oct 2024 12:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728994251;
+	bh=y+TgaiI7J/jSSYzxAw22Eb8Kte8Q1JyRu7C9LHRxYNU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RaN+i4Qsf+ngZdxNJefPuqntIcEuA6A2ATjaapyVQA0uknJ48fWgfnDpbaI2GwRgY
+	 JLCSHppy/NGNEEvQwVG/KPco3oCyA+wRadCCHpUxug0BXsS260Q6ERi64dJDw47QhV
+	 b3RKAVWX6xnxVzQkGFkGAF/Fy97xy3VyHBj4TTiSPffpYs0qomYBvL306UYltxIiIF
+	 v1AgitFso53aumLsDp1o9OWeFMOYcpX2s6gavzYnTpevCys4cgFgl+d6PvfRFwjw15
+	 1WVlvIiAgrVk9RYfBhsT5eBhUg07LkxjHpGL7GyQj9WXO0ntZ05qW7CB+9RyMYPOLA
+	 yAhxyYnvloLGA==
+Date: Tue, 15 Oct 2024 13:10:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 0/2] net: ethernet: freescale: Use %pa to format
+ resource_size_t
+Message-ID: <20241015121047.GE569285@kernel.org>
+References: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
+ <20241015072448.6ssv6vsyjpv4vnhi@DEN-DL-M70577>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAQ7Y6Z2xkgxv36=WOxbUArCw3eBeY0nx_7nAH36+Wicjs_fPg@mail.gmail.com>
+In-Reply-To: <20241015072448.6ssv6vsyjpv4vnhi@DEN-DL-M70577>
 
-On Tue, Oct 15, 2024 at 10:48:15AM +0800, 吳逼逼 wrote:
-> Hi Andrew,
+On Tue, Oct 15, 2024 at 07:24:48AM +0000, Daniel Machon wrote:
+> > Hi,
+> > 
+> > This short series addersses the formatting of variables of
+> > type resource_size_t in freescale drivers.
+> > 
+> > The correct format string for resource_size_t is %pa which
+> > acts on the address of the variable to be formatted [1].
+> > 
+> > [1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+> > 
+> > These problems were introduced by
+> > commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+> > 
+> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+> > 
+> > ---
+> > Simon Horman (2):
+> >       net: fec_mpc52xx_phy: Use %pa to format resource_size_t
+> >       net: ethernet: fs_enet: Use %pa to format resource_size_t
+> > 
+> >  drivers/net/ethernet/freescale/fec_mpc52xx_phy.c     | 2 +-
+> >  drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > base-commit: 6aac56631831e1386b6edd3c583c8afb2abfd267
+> > 
 > 
-> We have a power test that uses a small script to loop through the power_state
-> of Dell DW5933e.(/sys/bus/pci/devices/..../power_state)
+> Hi Simon,
 > 
-> We expect that PCIE can enter the D3 state when Host don;t have data packet
-> transmission,
-> but the experimental result of the small script test is that it is only in the
-> D3 state about 5% of the time.
+> Is this for net-next? I dont see a target tree name :-)
+
+Hi Daniel,
+
+Yes, it is. Sorry for forgetting to include that in the subject.
+
+> Looking at the docs, %pa seems correct to me.
 > 
-> We analyze logs to found that Dell DW5933e occasionally sends signal change
-> notifications, and ModemManager occasionally captures Modem status.
-> Although these situations are not very frequent,
-> However, since the default auto suspend time is 20 seconds, the chance of PCIE
-> being able to enter the D3 state is very small.
+> For the series:
 > 
-> After we changed auto suspend to 5 seconds, PCIE have 50% of the time was in D3
-> state, which met Dell's requirements.
-
-So you answered some of my questions. But missed:
-
-What makes this machine special?
-
-It is maybe because this machine occasionally sends signal change
-notifications? There are modem status changes?
-
-Have you compared this to other machines with the same hardware? Do
-they do the same? Or is this Dell special? If it is special, why is it
-special?
-
-	Andrew
+> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+> 
