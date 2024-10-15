@@ -1,56 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B7E1F6668;
-	Tue, 15 Oct 2024 16:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076371F76AF
+	for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729010924; cv=none; b=pCttVxgXhvuRJ9jQyB/zObLofYPQE6dRrtklo0MmDb5I4f2iniHjhrcaxTgsRY1l6E9/asKhXxyi77t0GcaXCKujooj4eU5vohTLjMG34ijXgRbmedJaMNJoPwztPKYFfkWup8PbOiur2R+TZeFy/UgEwaKdFzNI+5jG4zOWES0=
+	t=1729010969; cv=none; b=Wht/4MYTT1udEXwoI7skD7hTnH9NoOJAijnC/SL47xAbkNybIaHvi+D0MVGeNLND+eosGiQVShen/FWxyLhqeO3yZDcMnzHJfRpGcB8TgPRiILmzawKNFSTHpNjsAj/ASRo8Q7ePxlLPA67GaZDYDpuTLNMtITx1SWws2mGON2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729010924; c=relaxed/simple;
-	bh=sZgmHv7WOct0dDmINL6cHDdyXXKW+oXErjp5naFf/J0=;
+	s=arc-20240116; t=1729010969; c=relaxed/simple;
+	bh=DcKp5q+RHk+DHa/BFz1tID2TndoFA5bGkqZxw6rymp4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z37400ZlgIDQNnNQnSoIOMRGrBHX8jSBHm9yuIuOVhn7VxcKjHJ5mrTJcOf1vL2m8Y0sZhTtHwf97/qZFhcfq0ZioYZjKMLfawGBlGwQeNYc2MWaT8L4BzQRt59x/jsbI/FcL1rSG41bqhC9tGReRyumbCuk3VTGhyQVzO5W4CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFW+sTyt; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=atR6vbX/+XLilfNiFTfqPhM9Mjnp2XxiOm6UhCnMU1FJn2z4GnqixgcwPEcsYUcKyp23p+Nauj1a/CbtUuBT4ZfPLaPRGfLqOOZzKLVH+9X8s4ZgK14fcRtDkZMs3SbgNkcldyIWMXdes9xLdRA3mS1J8Je4t3/9U8v05dJfNX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k5a10nqR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFW+sTyt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77303C4CEC6;
-	Tue, 15 Oct 2024 16:48:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5a10nqR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03A3C4CECD;
+	Tue, 15 Oct 2024 16:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729010923;
-	bh=sZgmHv7WOct0dDmINL6cHDdyXXKW+oXErjp5naFf/J0=;
+	s=k20201202; t=1729010968;
+	bh=DcKp5q+RHk+DHa/BFz1tID2TndoFA5bGkqZxw6rymp4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qFW+sTyt9jCaEfWRHArr3mg7h1ao/4pKK7jjNpoj0x5N7luTViZAMm3nMTnyAxVCP
-	 FDBIofWjYfFfpPl/xnHx/c1EXE4H/K1v8VpBw3O5mXMwD6LWiXPRxadMzIyXQdWDnQ
-	 +zKN4Ibkxnq97wR3x9fOjM8dGTB3BuDojgr1Vtaa5HbJ7Yw30XXVLF5jmtucELlZyT
-	 XNvvRzM7lO20E1iR4XsXNFPRzYHRY0rtfKIWQJhqLtZz1XY6XvXyLB5pX+HUt9tWne
-	 fVAanrU6EdYrhF40Y/fMX2fZGcnXhBuhArcypBAJCLO4OVO6waesUXc4zDiZhmt8d+
-	 PyNGHNQCRDD2A==
-Date: Tue, 15 Oct 2024 09:48:41 -0700
+	b=k5a10nqRl3p5qSk2VIfEQoEAxcK2ZtEZPtoeJJmx5hRDfq3oOxVefVb2qoj0XzSe9
+	 f9LOPY45DXOpNse0xHNSEvI1GlQPfOtJrYZYnCgkA+QlFCd9o77hDYqGvo8VnkHqVg
+	 G4u8/SwPayhuHkUIXz1OStFWR+HgC6RTllpn+NX/27oEJmrkmpsNgZKI0N0bAjrNAO
+	 90CEqvroXFuyn7CJ2P7bQrJrfNVAYFrUTibqKX1kwaWOVtTI6H01aVrPGp7uhIwhxz
+	 Fv+MKcXKv9y0o6hZj25KMIUC/vG0YnylvLhj0VW2CQvcCmRF0wqLkX0LOOIBdMdkJK
+	 xSrQp9IO1+2zQ==
+Date: Tue, 15 Oct 2024 09:49:26 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
-Cc: "davem@davemloft.net" <davem@davemloft.net>, Liam Howlett
- <liam.howlett@oracle.com>, "edumazet@google.com" <edumazet@google.com>,
- "pabeni@redhat.com" <pabeni@redhat.com>, "mingo@redhat.com"
- <mingo@redhat.com>, "peterz@infradead.org" <peterz@infradead.org>,
- "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
- "vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
- "dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>, "bsegall@google.com"
- <bsegall@google.com>, "mgorman@suse.de" <mgorman@suse.de>,
- "vschneid@redhat.com" <vschneid@redhat.com>, "jiri@resnulli.us"
- <jiri@resnulli.us>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "shuah@kernel.org" <shuah@kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Pei Li
- <peili.io@oracle.com>
-Subject: Re: [PATCH net-next v1 0/3] Threads support in proc connector
-Message-ID: <20241015094841.2acd5a50@kernel.org>
-In-Reply-To: <1CCDA7B3-F43B-485A-9950-85AA272D79B1@oracle.com>
-References: <20241013170617.2139204-1-anjali.k.kulkarni@oracle.com>
-	<20241015090148.72e83f7f@kernel.org>
-	<1CCDA7B3-F43B-485A-9950-85AA272D79B1@oracle.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, Mark
+ Lee <Mark-MC.Lee@mediatek.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, upstream@airoha.com
+Subject: Re: [PATCH net-next v2] net: airoha: Implement BQL support
+Message-ID: <20241015094926.594c9827@kernel.org>
+In-Reply-To: <Zw6ZyoJCv0_EOnpf@lore-desk>
+References: <20241012-en7581-bql-v2-1-4deb4efdb60b@kernel.org>
+	<20241015073255.74070172@kernel.org>
+	<Zw5-jJUIWhG6-Ja4@lore-desk>
+	<20241015075255.7a50074f@kernel.org>
+	<Zw6QUxpdnJtorc_e@lore-desk>
+	<20241015090952.6bcb5856@kernel.org>
+	<Zw6ZyoJCv0_EOnpf@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,30 +55,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 15 Oct 2024 16:22:24 +0000 Anjali Kulkarni wrote:
-> Thank you! However, looking at the MAINTAINERS file,
-> drivers/connector/ is listed under NETWORKING DRIVERS.
-> Hence sending on net-next is the most appropriate place?   
+On Tue, 15 Oct 2024 18:35:22 +0200 Lorenzo Bianconi wrote:
+> > So to be clear I think this patch is correct as of the current driver
+> > code. I'm just wondering if we should call airoha_qdma_cleanup_tx_queue()
+> > on stop as well, and then that should come with the reset.
+> > I think having a packet stuck in a queue may lead to all sort of oddness
+> > so my recommendation would be to flush the queues.  
+> 
+> ack, I will post a fix for this. Do you prefer to resend even this patch? Up to you.
 
-Hm. It was done relatively recently in
-
-commit 46cf789b68b25744be3dc99efd4afce4a5381b5c
-Author: David S. Miller <davem@davemloft.net>
-Date:   Thu Sep 10 08:40:13 2020 -0700
-
-    connector: Move maintainence under networking drivers umbrella.
-    
-    Evgeniy does not have the time nor capacity to maintain the
-    connector subsystem any longer, so just move it under networking
-    as that is effectively what has been happening lately.
-    
-    Signed-off-by: David S. Miller <davem@davemloft.net>
-
-There wasn't much development in this code for a long while,
-so I guess it was done just to make sure patches don't fall
-thru the cracks. But you seem to be trying to develop it more
-actively.
-
-Okay, if nobody else who want to take these patches into their tree
-raises their hand - we can try to continue to process the patches,
-as long as Peter or someone else with the expertise acks them.
+I'll take it. I don't think the stop rework will be a fix.
