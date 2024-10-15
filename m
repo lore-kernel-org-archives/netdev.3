@@ -1,24 +1,24 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B083D1FAF14;
-	Tue, 15 Oct 2024 13:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0531AF0BB;
+	Tue, 15 Oct 2024 13:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728999462; cv=none; b=fU4TEpszesArAXCGEqE3aHuJQKb9+NRXDWoB/hCaLFKstJGF+9nN3Bt+8HlI51lWl89DuoBZkofkLumbm9gRNpdBV5S4IanXT8aCDIyoQztz/bk/98PaV8tvyOQM/XQUnQ5xXhb6ppx5De7vF31gPd+sKNcioaP51RgYYzG8wfI=
+	t=1728999468; cv=none; b=OCjCzLqSr9vJLdiD25TK3KOgmhH4/LoZntVFXcklALav0HCclrur0woWg4mK3DxfPt/zBToFhk3JV7MhNeCEn0+hT6ofblvyIgZTjlYXjnBdsX6mU3J94Dxx3YGHIHwStFFk5roYUnGujdy11lS68fb91OumJzXw67VUyRCSWik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728999462; c=relaxed/simple;
-	bh=j6RReWYcf79gWTDSp+9jFx/cBR/XOms6tCBdzHuMCHc=;
+	s=arc-20240116; t=1728999468; c=relaxed/simple;
+	bh=bc5yl74zdn98bGrzflzZJhT8dVZ1ucUyhLi6xxRM+Rg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W11uC32GiAHRuU7bgHaPOxR3RH0bpc6eJdLFsv3tZ8LTzX0Vdp3x3BBzTUCD+U8NBoi+XI/hZzFkug+ZCZqY4UWLSzKIKECBNEjkKw0vvGkvT6JVu1CcJ91efkjlKDhkbr8VWcg8Q+TvznitIHo12xunP//KuXzXvGgU4Ft1gqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.172
+	 MIME-Version; b=Y23DOypGNm9aZIAgZifyU5myEfWBK2QE3amZu1eOE7coYugjT0sp8YcwY0IZfOAbnSmA9/vK5UWb4Z+9wQfpzPEcb7vd6WyOsPAws6mPHyAcQoMny+N2gU72zhICepd1m+aBqc3ik3OjSQk+h9DuBzCDSFr1jEoh2Sz0DKYUe2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 X-IronPort-AV: E=Sophos;i="6.11,205,1725289200"; 
-   d="scan'208";a="225980160"
+   d="scan'208";a="221998714"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 15 Oct 2024 22:37:38 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 15 Oct 2024 22:37:45 +0900
 Received: from GBR-5CG2373LKG.adwin.renesas.com (unknown [10.226.93.176])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 687F040031EA;
-	Tue, 15 Oct 2024 22:37:34 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id ADE22400755A;
+	Tue, 15 Oct 2024 22:37:28 +0900 (JST)
 From: Paul Barker <paul.barker.ct@bp.renesas.com>
 To: Sergey Shtylyov <s.shtylyov@omp.ru>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -33,9 +33,9 @@ Cc: Paul Barker <paul.barker.ct@bp.renesas.com>,
 	netdev@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [net-next PATCH v2 10/10] net: ravb: Add VLAN checksum support
-Date: Tue, 15 Oct 2024 14:36:34 +0100
-Message-Id: <20241015133634.193-11-paul.barker.ct@bp.renesas.com>
+Subject: [net-next PATCH v2 09/10] net: ravb: Enable IPv6 TX checksum offload for GbEth
+Date: Tue, 15 Oct 2024 14:36:33 +0100
+Message-Id: <20241015133634.193-10-paul.barker.ct@bp.renesas.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241015133634.193-1-paul.barker.ct@bp.renesas.com>
 References: <20241015133634.193-1-paul.barker.ct@bp.renesas.com>
@@ -47,80 +47,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The GbEth IP supports offloading checksum calculation for VLAN-tagged
-packets, provided that the EtherType is 0x8100 and only one VLAN tag is
-present.
+The GbEth IP supports offloading IPv6 TCP, UDP & ICMPv6 checksums in the
+TX path.
 
 Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
 ---
- drivers/net/ethernet/renesas/ravb.h      |  1 +
- drivers/net/ethernet/renesas/ravb_main.c | 24 ++++++++++++++++++++----
- 2 files changed, 21 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/renesas/ravb.h      |  2 +-
+ drivers/net/ethernet/renesas/ravb_main.c | 15 +++++++++++----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-index d7b3810ce21b..7b48060c250b 100644
+index e1e55e677215..d7b3810ce21b 100644
 --- a/drivers/net/ethernet/renesas/ravb.h
 +++ b/drivers/net/ethernet/renesas/ravb.h
-@@ -1055,6 +1055,7 @@ struct ravb_hw_info {
- 	size_t gstrings_size;
- 	netdev_features_t net_hw_features;
- 	netdev_features_t net_features;
-+	netdev_features_t vlan_features;
- 	int stats_len;
- 	u32 tccr_mask;
- 	u32 tx_max_frame_size;
+@@ -998,7 +998,7 @@ enum CSR1_BIT {
+ 	CSR1_TDHD	= 0x08000000,
+ };
+ 
+-#define CSR1_CSUM_ENABLE (CSR1_TTCP4 | CSR1_TUDP4)
++#define CSR1_CSUM_ENABLE (CSR1_TTCP4 | CSR1_TUDP4 | CSR1_TTCP6 | CSR1_TUDP6)
+ 
+ enum CSR2_BIT {
+ 	CSR2_RIP4	= 0x00000001,
 diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 14b4462331b0..bc56f1f4bec9 100644
+index 80c0d36bffcb..14b4462331b0 100644
 --- a/drivers/net/ethernet/renesas/ravb_main.c
 +++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2063,13 +2063,27 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+@@ -2063,17 +2063,24 @@ static void ravb_tx_timeout_work(struct work_struct *work)
  
  static bool ravb_can_tx_csum_gbeth(struct sk_buff *skb)
  {
-+	u16 net_protocol = ntohs(skb->protocol);
- 	u8 inner_protocol;
+-	struct iphdr *ip = ip_hdr(skb);
++	u8 inner_protocol;
  
--	/* TODO: Need to add support for VLAN tag 802.1Q */
--	if (skb_vlan_tag_present(skb))
--		return false;
-+	/* GbEth IP can calculate the checksum if:
-+	 * - there are zero or one VLAN headers with TPID=0x8100
-+	 * - the network protocol is IPv4 or IPv6
-+	 * - the transport protocol is TCP, UDP or ICMP
-+	 * - the packet is not fragmented
-+	 */
-+
-+	if (net_protocol == ETH_P_8021Q) {
-+		struct vlan_hdr vhdr, *vh;
-+
-+		vh = skb_header_pointer(skb, ETH_HLEN, sizeof(vhdr), &vhdr);
-+		if (!vh)
-+			return false;
-+
-+		net_protocol = ntohs(vh->h_vlan_encapsulated_proto);
+ 	/* TODO: Need to add support for VLAN tag 802.1Q */
+ 	if (skb_vlan_tag_present(skb))
+ 		return false;
+ 
+-	/* TODO: Need to add hardware checksum for IPv6 */
+-	if (skb->protocol != htons(ETH_P_IP))
++	switch (ntohs(skb->protocol)) {
++	case ETH_P_IP:
++		inner_protocol = ip_hdr(skb)->protocol;
++		break;
++	case ETH_P_IPV6:
++		inner_protocol = ipv6_hdr(skb)->nexthdr;
++		break;
++	default:
+ 		return false;
 +	}
  
--	switch (ntohs(skb->protocol)) {
-+	switch (net_protocol) {
- 	case ETH_P_IP:
- 		inner_protocol = ip_hdr(skb)->protocol;
- 		break;
-@@ -2772,6 +2786,7 @@ static const struct ravb_hw_info gbeth_hw_info = {
- 	.gstrings_size = sizeof(ravb_gstrings_stats_gbeth),
- 	.net_hw_features = NETIF_F_RXCSUM | NETIF_F_HW_CSUM,
- 	.net_features = NETIF_F_RXCSUM | NETIF_F_HW_CSUM,
-+	.vlan_features = NETIF_F_RXCSUM | NETIF_F_HW_CSUM,
- 	.stats_len = ARRAY_SIZE(ravb_gstrings_stats_gbeth),
- 	.tccr_mask = TCCR_TSRQ0,
- 	.tx_max_frame_size = 1522,
-@@ -2914,6 +2929,7 @@ static int ravb_probe(struct platform_device *pdev)
- 
- 	ndev->features = info->net_features;
- 	ndev->hw_features = info->net_hw_features;
-+	ndev->vlan_features = info->vlan_features;
- 
- 	error = reset_control_deassert(rstc);
- 	if (error)
+-	switch (ip->protocol) {
++	switch (inner_protocol) {
+ 	case IPPROTO_TCP:
+ 	case IPPROTO_UDP:
+ 		return true;
 -- 
 2.43.0
 
