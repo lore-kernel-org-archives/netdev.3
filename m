@@ -1,141 +1,209 @@
-Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA272261D
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 01:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADC27405A
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 01:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729040500; cv=none; b=pC33vOy9jnNpUs1u1AaD96itWXRHLpWYz7jHn1eRaDp4NAWo/CIPQZ415F9cnHkwWiazzQ9vWCDytLIC5UNUOADlv1cFvyJruQKOEBNviRV0X3LCMDXDJ9olD6ssO3dr1yikQXatgEnoEH3vs1KqUs+aG89ijBKb/Cd4pV5of1s=
+	t=1729040622; cv=none; b=EuH5mzJRMDjsba8yKqWA+QDOncwp6bYyHiWo2NoVjf873yYFCQeIRUH5kWRNX/DWUI4iOBuGKp8Ze/7lIU7V4f4TgVUGX/m8/zXz0+xbG4bbCVEdnDigxMUQQK81VDo0yUg3VREjIQhF3LieaBpjnjGSyUWRbn1bORLa4QkgRU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729040500; c=relaxed/simple;
-	bh=UhJQ20276+wCQLVdmkTazIjsjskEUth8Bgtwk9llFLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ou8H3fkZTRrl90r5vXZcmJGk9A80Xncp1oNGu1cCBhirEWRfpp+saZbtLlfQkqC6ZgoQ1wbIyyMMBdpeGguTevflhYG96VZW++yvVJXJNMryMuInJJWhxCLAKi+BNvY+0WuQqEad0gmuCJpglmSgeB6D118mvemcgMINPVFZ2f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p9sncRBS; arc=none smtp.client-ip=91.218.175.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1729040622; c=relaxed/simple;
+	bh=XNv0ZWnpAOUV1m6lQAKWjplPZ1vlzWKCXwkke06zRwM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jzgx9n1kOp43Zp3OzBXZ/p35jwcpjvnyjv+jBK7RBa0qMpvDNBDkJwNcJUjJjsWa2ZaUvA3Uh3w+MymdAoJZc9XpmUFTRV1jCD7eCOIqhJL0h0iIE4f65k3694mr4X/xB7EgxBmz4PgCG7sda+N/MsXX/tMHihRhzj/IALTJiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Rk/rN6Cc; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p9sncRBS"
-Message-ID: <b4767fab-9c61-49f0-8185-6445349ae30b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729040496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VPdwG9pHPiWTE2rtTkLbAlDmqGXFuooyI1m6EGMgO0s=;
-	b=p9sncRBSDIhBgnM8NZh2IyDcXXKtRjpGgU0dNMfqSXvJrptAsuPt9jBbDEACpqUzkporAk
-	EEcLKecuKQGhZiGYEu3kg+2dlwaLmPpfY/dT/GRLwPidXNnM1m1nxjSnzsJH9wU0jscGVP
-	A8qVIx1wKZ+kXIfzp0guN7mLr6up6+8=
-Date: Tue, 15 Oct 2024 18:01:23 -0700
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Rk/rN6Cc"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d473c4bb6so4650996f8f.3
+        for <netdev@vger.kernel.org>; Tue, 15 Oct 2024 18:03:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1729040618; x=1729645418; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GbcJ5yi7nw5Zqb8ME3EK5ofFYciTJHce59S97ju9J6E=;
+        b=Rk/rN6CcKAOxmKthB78EKWfzEmRhry5G/Dkp6p0BAogI96bdLNnW3GAe4rKKlj9nYa
+         h3y+YTvq4Y8zHS6uzASm7Kg1NUEE42PM99pYXQnjgI+UFVm5EqDUhjN0on2Vxqt+4RKW
+         4w6/31zXfesT+jweju2lqjt7NYbwq2lNCnwS2wX3ffrfnFwlqrUJ8mKFQeYIPyDogwoI
+         2GdTnxkcsYTbVvC9E3/Eh+S5qz3P/ugqmmhqhTNquBofUlIHi0if+nfB5sZt5KnJdvlD
+         5Sym12TeXgl1uebOOiwB1ZVTyEA9eKDC9XYSowv5aU8LVgOWH8JAO33uIX3e26YwxRi/
+         9kxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729040618; x=1729645418;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GbcJ5yi7nw5Zqb8ME3EK5ofFYciTJHce59S97ju9J6E=;
+        b=KROdov/zoXSiIAI9TvVFhpPgabBGWYBTBbSQcBjcfWerBGkdYIAc6AqW3b2EQEP4Am
+         3ftcx4tJOm7nXRGmLSJuxe9YVJunrWmUh8FNdSAvMuJICGAotp5H1daF6oqN2mAMenGZ
+         K78FIwl5cMZr49dauO3Wr4GD4Gs9HPJYP13isHB7TJaNx4iSCKLsxUY9o+OgwEo6WxsH
+         7VYgbg8tZNtr9MwZXsHXV9wBkGBRM0cwti2qANX6kuw0qugfQqpMi6/MaB6MJ2/DaIcp
+         glYB93Tr+j7hA9l1ngPCHjS1I6j+ip5aJpDG1bZU8UovQvvz9ikrgijO+5/1Yg3t7/PP
+         6yDw==
+X-Gm-Message-State: AOJu0Yysn5uZfi/dC0bnBbwseU3ht3kWi6CpHjzc697fLiNknApe2zwX
+	f3gF9tgZwVrRnNrJELEQ3k+GWkdKlawCfVhOhdgP/wf+q1zZ5kOJu4w/ySXPVCI=
+X-Google-Smtp-Source: AGHT+IEtTDthd8G0px+r1xCN9WaPWbrUKiScw/cG8Ak+rVoWwVg0SVdgJ0UIm1/wXVVcD4vjz+tWbg==
+X-Received: by 2002:a05:6000:ac5:b0:37c:cd1d:b870 with SMTP id ffacd0b85a97d-37d5ffa14cbmr11100830f8f.29.1729040618396;
+        Tue, 15 Oct 2024 18:03:38 -0700 (PDT)
+Received: from serenity.mandelbit.com ([2001:67c:2fbc:1:4c1a:a7c8:72f5:4282])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa8778csm2886765f8f.25.2024.10.15.18.03.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 18:03:37 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+Subject: [PATCH net-next v9 00/23] Introducing OpenVPN Data Channel Offload
+Date: Wed, 16 Oct 2024 03:03:00 +0200
+Message-Id: <20241016-b4-ovpn-v9-0-aabe9d225ad5@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v2 06/12] net-timestamp: introduce
- TS_SCHED_OPT_CB to generate dev xmit timestamp
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
- willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
- haoluo@google.com, jolsa@kernel.org, bpf@vger.kernel.org,
- netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
-References: <20241012040651.95616-1-kerneljasonxing@gmail.com>
- <20241012040651.95616-7-kerneljasonxing@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20241012040651.95616-7-kerneljasonxing@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIAMUQD2cC/zWMQQqDQAxFryJZNzgdp4K9SnGRmaY1i0aZERHEu
+ xsL/t3jfd4GhbNwgWe1QeZFioxq0N0qSAPpl1HexuCdD3fnPMaA4zIpsq15pLYL5MHeU+aPrP/
+ SC5RnVF5n6M1EKowxk6bhLF2u/pEo7PsBoFjkZYMAAAA=
+X-Change-ID: 20241002-b4-ovpn-eeee35c694a2
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>, 
+ Antonio Quartulli <antonio@openvpn.net>, Shuah Khan <shuah@kernel.org>, 
+ donald.hunter@gmail.com, sd@queasysnail.net, ryazanov.s.a@gmail.com, 
+ Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ openvpn-devel@lists.sourceforge.net, linux-kselftest@vger.kernel.org, 
+ steffen.klassert@secunet.com, antony.antony@secunet.com
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5703; i=antonio@openvpn.net;
+ h=from:subject:message-id; bh=XNv0ZWnpAOUV1m6lQAKWjplPZ1vlzWKCXwkke06zRwM=;
+ b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBnDxDucjwBJ8z/CqQU/iISN/exn/PqfsgH7Feq9
+ 7lzDN11n0WJATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZw8Q7gAKCRALcOU6oDjV
+ h78fB/9X8IJ4j26iHTyUy3lmSPWLvsLLZ7azrzMbAKvVc1CiRmlEEHRAzHvELbHxfKLw4aeeUve
+ nFmF4L6GXwNzfU7zUQOU5ZGuUyBqswp9yAjdrQToHdvjuGhSq2Ti7gctVe3EojVWJjemit4zHpG
+ o2FQXXPlS3WE9BNCL2BFLr5cEL+v7CDSpznt5PHAf5pzZg2M1kF31k1p2Y6Zc/t0DWlylP4MXd6
+ BDYNoo5GEOrOSqtSxJGLpk3Mcn2Rx0EGsXmST/Ha9CcqdcmXsas3SQOS6JegRTbyjAgIhgq7JNj
+ o3byncmZvHQ3PZTsABD+gacIaIRZ1cwbEi9c2ll9oJeJqEQu
+X-Developer-Key: i=antonio@openvpn.net; a=openpgp;
+ fpr=CABDA1282017C267219885C748F0CCB68F59D14C
 
-On 10/11/24 9:06 PM, Jason Xing wrote:
-> From: Jason Xing <kernelxing@tencent.com>
-> 
-> Introduce BPF_SOCK_OPS_TS_SCHED_OPT_CB flag so that we can decide to
-> print timestamps when the skb just passes the dev layer.
-> 
-> Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> ---
->   include/uapi/linux/bpf.h       |  5 +++++
->   net/core/skbuff.c              | 17 +++++++++++++++--
->   tools/include/uapi/linux/bpf.h |  5 +++++
->   3 files changed, 25 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-> index 157e139ed6fc..3cf3c9c896c7 100644
-> --- a/include/uapi/linux/bpf.h
-> +++ b/include/uapi/linux/bpf.h
-> @@ -7019,6 +7019,11 @@ enum {
->   					 * by the kernel or the
->   					 * earlier bpf-progs.
->   					 */
-> +	BPF_SOCK_OPS_TS_SCHED_OPT_CB,	/* Called when skb is passing through
-> +					 * dev layer when SO_TIMESTAMPING
-> +					 * feature is on. It indicates the
-> +					 * recorded timestamp.
-> +					 */
->   };
->   
->   /* List of TCP states. There is a build check in net/ipv4/tcp.c to detect
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 3a4110d0f983..16e7bdc1eacb 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -5632,8 +5632,21 @@ static void bpf_skb_tstamp_tx_output(struct sock *sk, int tstype)
->   		return;
->   
->   	tp = tcp_sk(sk);
-> -	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_TX_TIMESTAMPING_OPT_CB_FLAG))
-> -		return;
-> +	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_TX_TIMESTAMPING_OPT_CB_FLAG)) {
-> +		struct timespec64 tstamp;
-> +		u32 cb_flag;
-> +
-> +		switch (tstype) {
-> +		case SCM_TSTAMP_SCHED:
-> +			cb_flag = BPF_SOCK_OPS_TS_SCHED_OPT_CB;
-> +			break;
-> +		default:
-> +			return;
-> +		}
-> +
-> +		tstamp = ktime_to_timespec64(ktime_get_real());
-> +		tcp_call_bpf_2arg(sk, cb_flag, tstamp.tv_sec, tstamp.tv_nsec);
+This is the 9th version of the ovpn patchset.
 
-There is bpf_ktime_get_*() helper. The bpf prog can directly call the 
-bpf_ktime_get_* helper and use whatever clock it sees fit instead of enforcing 
-real clock here and doing an extra ktime_to_timespec64. Right now the 
-bpf_ktime_get_*() does not have real clock which I think it can be added.
+It re-introduces the RTNL Link ops and brings some changes
+to the Netlink API as well.
 
-I think overall the tstamp reporting interface does not necessarily have to 
-follow the socket API. The bpf prog is running in the kernel. It could pass 
-other information to the bpf prog if it sees fit. e.g. the bpf prog could also 
-get the original transmitted tcp skb if it is useful.
+Notably:
+* removed CMD_DEV_NEW/DEL from netlink API
+* re-added rtnl_link_ops.newlink implementation
+* removed all 'value-start: 0' from ovpn.yaml
+* added CMD_KEY_GET in Netlink API to retrieve non-sensible key data
+* used key-get in notify attribute of key-swap-nft
+* ensured that all netdev references are tracked
+* added IFF_NO_QUEUE to device priv_flags
+* set netdev devtype to ovpn_type
+* added implementation of .ndo_uninit
+* used workqueue to release socket (TCP detach may block)
+* removed inclusion of linux/version.h in main.c
+* removed commented inclusion of linux/rcupdate.h in main.c
+* fixed file path in MAINTAINERS file
+* properly sorted files in MAINTAINERS file
 
-> +	}
->   }
->   
->   void __skb_tstamp_tx(struct sk_buff *orig_skb,
-> diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-> index 93853d9d4922..d60675e1a5a0 100644
-> --- a/tools/include/uapi/linux/bpf.h
-> +++ b/tools/include/uapi/linux/bpf.h
-> @@ -7018,6 +7018,11 @@ enum {
->   					 * by the kernel or the
->   					 * earlier bpf-progs.
->   					 */
-> +	BPF_SOCK_OPS_TS_SCHED_OPT_CB,	/* Called when skb is passing through
-> +					 * dev layer when SO_TIMESTAMPING
-> +					 * feature is on. It indicates the
-> +					 * recorded timestamp.
-> +					 */
->   };
->   
->   /* List of TCP states. There is a build check in net/ipv4/tcp.c to detect
+Please note that patches previously reviewed by Andrew Lunn have
+retained the Reviewed-by tag as they have been simply rebased without
+major modifications.
+
+The latest code can also be found at:
+
+https://github.com/OpenVPN/linux-kernel-ovpn
+
+Thanks a lot!
+Best Regards,
+
+Antonio Quartulli
+OpenVPN Inc.
+
+---
+Antonio Quartulli (23):
+      netlink: add NLA_POLICY_MAX_LEN macro
+      net: introduce OpenVPN Data Channel Offload (ovpn)
+      ovpn: add basic netlink support
+      ovpn: add basic interface creation/destruction/management routines
+      ovpn: keep carrier always on
+      ovpn: introduce the ovpn_peer object
+      ovpn: introduce the ovpn_socket object
+      ovpn: implement basic TX path (UDP)
+      ovpn: implement basic RX path (UDP)
+      ovpn: implement packet processing
+      ovpn: store tunnel and transport statistics
+      ovpn: implement TCP transport
+      ovpn: implement multi-peer support
+      ovpn: implement peer lookup logic
+      ovpn: implement keepalive mechanism
+      ovpn: add support for updating local UDP endpoint
+      ovpn: add support for peer floating
+      ovpn: implement peer add/dump/delete via netlink
+      ovpn: implement key add/del/swap via netlink
+      ovpn: kill key and notify userspace in case of IV exhaustion
+      ovpn: notify userspace when a peer is deleted
+      ovpn: add basic ethtool support
+      testing/selftest: add test tool and scripts for ovpn module
+
+ Documentation/netlink/specs/ovpn.yaml             |  362 ++++
+ MAINTAINERS                                       |   11 +
+ drivers/net/Kconfig                               |   15 +
+ drivers/net/Makefile                              |    1 +
+ drivers/net/ovpn/Makefile                         |   22 +
+ drivers/net/ovpn/bind.c                           |   54 +
+ drivers/net/ovpn/bind.h                           |  117 ++
+ drivers/net/ovpn/crypto.c                         |  172 ++
+ drivers/net/ovpn/crypto.h                         |  141 ++
+ drivers/net/ovpn/crypto_aead.c                    |  356 ++++
+ drivers/net/ovpn/crypto_aead.h                    |   31 +
+ drivers/net/ovpn/io.c                             |  461 +++++
+ drivers/net/ovpn/io.h                             |   25 +
+ drivers/net/ovpn/main.c                           |  337 ++++
+ drivers/net/ovpn/main.h                           |   24 +
+ drivers/net/ovpn/netlink-gen.c                    |  212 ++
+ drivers/net/ovpn/netlink-gen.h                    |   41 +
+ drivers/net/ovpn/netlink.c                        | 1039 ++++++++++
+ drivers/net/ovpn/netlink.h                        |   18 +
+ drivers/net/ovpn/ovpnstruct.h                     |   61 +
+ drivers/net/ovpn/packet.h                         |   40 +
+ drivers/net/ovpn/peer.c                           | 1197 ++++++++++++
+ drivers/net/ovpn/peer.h                           |  165 ++
+ drivers/net/ovpn/pktid.c                          |  130 ++
+ drivers/net/ovpn/pktid.h                          |   87 +
+ drivers/net/ovpn/proto.h                          |  104 +
+ drivers/net/ovpn/skb.h                            |   61 +
+ drivers/net/ovpn/socket.c                         |  178 ++
+ drivers/net/ovpn/socket.h                         |   55 +
+ drivers/net/ovpn/stats.c                          |   21 +
+ drivers/net/ovpn/stats.h                          |   47 +
+ drivers/net/ovpn/tcp.c                            |  505 +++++
+ drivers/net/ovpn/tcp.h                            |   44 +
+ drivers/net/ovpn/udp.c                            |  406 ++++
+ drivers/net/ovpn/udp.h                            |   26 +
+ include/net/netlink.h                             |    1 +
+ include/uapi/linux/if_link.h                      |   15 +
+ include/uapi/linux/ovpn.h                         |  109 ++
+ include/uapi/linux/udp.h                          |    1 +
+ tools/net/ynl/ynl-gen-c.py                        |    4 +-
+ tools/testing/selftests/Makefile                  |    1 +
+ tools/testing/selftests/net/ovpn/.gitignore       |    2 +
+ tools/testing/selftests/net/ovpn/Makefile         |   16 +
+ tools/testing/selftests/net/ovpn/config           |   10 +
+ tools/testing/selftests/net/ovpn/data-test-tcp.sh |    9 +
+ tools/testing/selftests/net/ovpn/data-test.sh     |  157 ++
+ tools/testing/selftests/net/ovpn/data64.key       |    5 +
+ tools/testing/selftests/net/ovpn/float-test.sh    |  122 ++
+ tools/testing/selftests/net/ovpn/ovpn-cli.c       | 2136 +++++++++++++++++++++
+ tools/testing/selftests/net/ovpn/tcp_peers.txt    |    5 +
+ tools/testing/selftests/net/ovpn/udp_peers.txt    |    5 +
+ 51 files changed, 9163 insertions(+), 1 deletion(-)
+---
+base-commit: 6d858708d465669ba7de17e9c5691eb4019166e8
+change-id: 20241002-b4-ovpn-eeee35c694a2
+
+Best regards,
+-- 
+Antonio Quartulli <antonio@openvpn.net>
 
