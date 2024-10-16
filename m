@@ -1,56 +1,56 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9080316E86F
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01C918C348
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729104895; cv=none; b=WjSdDnbhVMq/9HLLoiI8iIeEb7yBGwKKCo59xsHnFVZgOLo7B0VJ2uaM4mHpZt5Sbcqv337lEyi/cwIWVx8RI2kdt2XwobHQHq7erVWHeTrpZA16LJe+w1tsb/xG8cpHgsExypa6UH7tGKqHtUHYonITNNb1TfkvtBKvTElYGeQ=
+	t=1729104931; cv=none; b=PuRVKWxdtNN7RBD9ZmcrRYNYPGFYDEtr2/rKTdCMj7C34vf+auW5tWlOz4k4IE5UJRDk2hP0C+6oB8Uf+aqU3zmAWrjKixrpnG/xo5M5RcV7gnZHtkLRo6Bl9mg6+7wE4n8niupmAfRVHRZrpO5oFZ1gF40RUfNeJFm0Nw4vACs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729104895; c=relaxed/simple;
-	bh=v7SVuKHHOAbnGyO8I0pEyLEsizxQolUPvjJWz5TRskM=;
+	s=arc-20240116; t=1729104931; c=relaxed/simple;
+	bh=eatsjWu47VHisKLgShN7FiblvXGZwY97273KttQLwek=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SWMdda7uonsYjjhgrAKuwmzRKDYZmMhCpvCDB3IlTMA7+ogaC2vCxTVAwnx5xzaeGwTmI6sEw9C3tog7YZua+pHOZuHmrELBLC/kNUGOFCtR2R98gGpF5FHLPrL1LEP98/qsUv9kwgVp7Z1ODlnJWPdWJ1sYuD/qqqH9BmPkqHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TpOWNwIu; arc=none smtp.client-ip=52.119.213.150
+	 MIME-Version:Content-Type; b=lWpSqVBzbAKvG9UeMkn+A8IFz1rWKTloYS96K2UVq3/jNe02nFtIWsc1YH+YSPAZN76bwuV6bEGnQDhR5CUJ5B9GPLW6kuQdpP7GOlyurJD9bD03ok++jHLaDGgC+xM5xB+bjMTrPD9NkFCEnmQFBj3KPHTG8dcyOCkPHNyuqb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ru0hvtaE; arc=none smtp.client-ip=52.119.213.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TpOWNwIu"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ru0hvtaE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729104893; x=1760640893;
+  t=1729104930; x=1760640930;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Y0p3jAy+q+VjHr5EsEnUAhuEQSaCiymRFa6aNIOhAjU=;
-  b=TpOWNwIung13facgRievPfqOMmY+2LQnAYpdF2Dl8bJINFpNUZuKxrIm
-   MlZypLy8gZw67l8H1BFIgcUenumn4qR5NEt/ei/2DQ/Xd4IbrlTdZqITQ
-   BsJqiMgpyDTkreqQmxOQ/iHHDgFN1XQ1PkayO2VA+uRE1LABD1jQzls/j
-   0=;
+  bh=KP2bexBixf1+S8IoUNwNduRQ8kHB2G2tEDYvUtR15b0=;
+  b=ru0hvtaE6W0XJ8V3mtPuMEhANVbfagPv+Ut6oEPYgqy3RGpHeAKT9dId
+   9AdgI/Ouo8Hn2em+EOza1VMSHq0ulmnWy6sctyyun5wTGA5VJmjFpLDON
+   7R/cVnzI5jnH0GBhLGwAi+uxjJUvOG1taFdLztQxPVuhKFtp/95MtKvp+
+   4=;
 X-IronPort-AV: E=Sophos;i="6.11,208,1725321600"; 
-   d="scan'208";a="666708139"
+   d="scan'208";a="33793798"
 Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:54:50 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:7004]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.29:2525] with esmtp (Farcaster)
- id 64034485-a2ae-4ae1-b283-ddf8f9a1889d; Wed, 16 Oct 2024 18:54:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 64034485-a2ae-4ae1-b283-ddf8f9a1889d
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:55:26 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:11682]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.108:2525] with esmtp (Farcaster)
+ id b94a6990-9a6c-4785-aa23-f29cb1544372; Wed, 16 Oct 2024 18:55:25 +0000 (UTC)
+X-Farcaster-Flow-ID: b94a6990-9a6c-4785-aa23-f29cb1544372
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 16 Oct 2024 18:54:46 +0000
+ Wed, 16 Oct 2024 18:55:25 +0000
 Received: from 6c7e67c6786f.amazon.com (10.106.100.12) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 16 Oct 2024 18:54:43 +0000
+ Wed, 16 Oct 2024 18:55:22 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>
 CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
 	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 02/14] rtnetlink: Call validate_linkmsg() in do_setlink().
-Date: Wed, 16 Oct 2024 11:53:45 -0700
-Message-ID: <20241016185357.83849-3-kuniyu@amazon.com>
+Subject: [PATCH v2 net-next 04/14] rtnetlink: Move simple validation from __rtnl_newlink() to rtnl_newlink().
+Date: Wed, 16 Oct 2024 11:53:47 -0700
+Message-ID: <20241016185357.83849-5-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241016185357.83849-1-kuniyu@amazon.com>
 References: <20241016185357.83849-1-kuniyu@amazon.com>
@@ -62,75 +62,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWA003.ant.amazon.com (10.13.139.6) To
+X-ClientProxiedBy: EX19D041UWA002.ant.amazon.com (10.13.139.121) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-There are 3 paths that finally call do_setlink(), and validate_linkmsg()
-is called in each path.
+We will push RTNL down to rtnl_newlink().
 
-  1. RTM_NEWLINK
-    1-1. dev is found in __rtnl_newlink()
-    1-2. dev isn't found, but IFLA_GROUP is specified in
-          rtnl_group_changelink()
-  2. RTM_SETLINK
-
-The next patch factorises 1-1 to a separate function.
-
-As a preparation, let's move validate_linkmsg() calls to do_setlink().
+Let's move RTNL-independent validation to rtnl_newlink().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- net/core/rtnetlink.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ net/core/rtnetlink.c | 43 ++++++++++++++++++++++++-------------------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 37193402a42c..76593de7014c 100644
+index 21165cc2b697..97d6ad65647c 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -2855,6 +2855,10 @@ static int do_setlink(const struct sk_buff *skb,
- 	char ifname[IFNAMSIZ];
- 	int err;
- 
-+	err = validate_linkmsg(dev, tb, extack);
-+	if (err < 0)
-+		goto errout;
-+
- 	if (tb[IFLA_IFNAME])
- 		nla_strscpy(ifname, tb[IFLA_IFNAME], IFNAMSIZ);
- 	else
-@@ -3269,10 +3273,6 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		goto errout;
+@@ -3707,15 +3707,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ #ifdef CONFIG_MODULES
+ replay:
+ #endif
+-	err = nlmsg_parse_deprecated(nlh, sizeof(*ifm), tb, IFLA_MAX,
+-				     ifla_policy, extack);
+-	if (err < 0)
+-		return err;
+-
+-	err = rtnl_ensure_unique_netns(tb, extack, false);
+-	if (err < 0)
+-		return err;
+-
+ 	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifi_index > 0) {
+ 		link_specified = true;
+@@ -3731,16 +3722,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		dev = NULL;
  	}
  
--	err = validate_linkmsg(dev, tb, extack);
--	if (err < 0)
--		goto errout;
--
- 	err = do_setlink(skb, dev, ifm, extack, tb, 0);
- errout:
- 	return err;
-@@ -3516,9 +3516,6 @@ static int rtnl_group_changelink(const struct sk_buff *skb,
- 
- 	for_each_netdev_safe(net, dev, aux) {
- 		if (dev->group == group) {
--			err = validate_linkmsg(dev, tb, extack);
--			if (err < 0)
--				return err;
- 			err = do_setlink(skb, dev, ifm, extack, tb, 0);
- 			if (err < 0)
- 				return err;
-@@ -3744,10 +3741,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		if (nlh->nlmsg_flags & NLM_F_REPLACE)
- 			return -EOPNOTSUPP;
- 
--		err = validate_linkmsg(dev, tb, extack);
+-	if (tb[IFLA_LINKINFO]) {
+-		err = nla_parse_nested_deprecated(linkinfo, IFLA_INFO_MAX,
+-						  tb[IFLA_LINKINFO],
+-						  ifla_info_policy, NULL);
 -		if (err < 0)
 -			return err;
+-	} else {
+-		memset(linkinfo, 0, sizeof(tbs->linkinfo));
+-	}
 -
- 		if (linkinfo[IFLA_INFO_DATA]) {
- 			if (!ops || ops != dev->rtnl_link_ops ||
- 			    !ops->changelink)
+ 	if (linkinfo[IFLA_INFO_KIND]) {
+ 		nla_strscpy(kind, linkinfo[IFLA_INFO_KIND], sizeof(kind));
+ 		ops = rtnl_link_ops_get(kind);
+@@ -3809,6 +3790,7 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			struct netlink_ext_ack *extack)
+ {
++	struct nlattr **tb, **linkinfo;
+ 	struct rtnl_newlink_tbs *tbs;
+ 	int ret;
+ 
+@@ -3816,7 +3798,30 @@ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (!tbs)
+ 		return -ENOMEM;
+ 
++	tb = tbs->tb;
++	ret = nlmsg_parse_deprecated(nlh, sizeof(struct ifinfomsg), tb,
++				     IFLA_MAX, ifla_policy, extack);
++	if (ret < 0)
++		goto free;
++
++	ret = rtnl_ensure_unique_netns(tb, extack, false);
++	if (ret < 0)
++		goto free;
++
++	linkinfo = tbs->linkinfo;
++	if (tb[IFLA_LINKINFO]) {
++		ret = nla_parse_nested_deprecated(linkinfo, IFLA_INFO_MAX,
++						  tb[IFLA_LINKINFO],
++						  ifla_info_policy, NULL);
++		if (ret < 0)
++			goto free;
++	} else {
++		memset(linkinfo, 0, sizeof(tbs->linkinfo));
++	}
++
+ 	ret = __rtnl_newlink(skb, nlh, tbs, extack);
++
++free:
+ 	kfree(tbs);
+ 	return ret;
+ }
 -- 
 2.39.5 (Apple Git-154)
 
