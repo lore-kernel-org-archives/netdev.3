@@ -1,139 +1,220 @@
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5049413B584
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BB22141A1
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729105044; cv=none; b=YMEjPcrX9rQ50zYwnpk1ROwWLR+ac6gl9SgoG4IxHfZD2AcmCYHbIiVhICl7k+n82aGofMHIe0dNhdEh9gbTRNgpWCf4Kg3oq7VhX9gPmjLc4FRivRYnN41w6L1IbuzLOqBYpEE/lW3CARlZ6WpX3LwAXBE6iwSWJsD8YtFDX94=
+	t=1729105049; cv=none; b=RDSIy/eVkjyRXItabqxz4Alju4+bm/mR7g6+akr5R1DgoQLBYKrTi62R9BTS/otFv42zanm0XvsUeOhQviiaSxz59HuvpcA71wqVkmSJ97EtCCUO7uBbkVWKGvY+FfnhvOkDDV4YCwhcGBPLakSRb7UiXO5c3EcNsiPGrQgLfwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729105044; c=relaxed/simple;
-	bh=leUFy5z6mn3IgFS+NJx9kBbFhhp2sF2uHA4LLUOUEO4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a9oTZvwgTBGHYPnMWCwT4zIA3N/xfkK6hGr7SP+5C27GF7CQbGJDKsw1yphLI43KRL7S5cK26k5Yna2UouSm87HU1EGuONHWS1DuNzbvbtTTcGbgThIMiTK2G4iLnG0Guen6eHSLwQ7bP36/k1wnjakD/Hxi8AxfE9l0XnluW0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=WHsJYHJC; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1729105049; c=relaxed/simple;
+	bh=wPhXh+r05SEEfRW+dlu3z9cBN5oJMYRSD9axo7QTfyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eyl/EbnKGZb/hn0Ysb/K+BUmKyz19Tereb6FgwM1ZjInPzCMUOPTldTcAvMTHlfpC4yeUQP7zrBBIlI/NC4k2akVkROMv+KwrFPmaxxjU2KaLv+7EZaQSyOCO4FIDUaZsBy9T9u3g/nquhv6ds60VKHAXrod+qqTIqAycU7BrNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cJLgizQw; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="WHsJYHJC"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cJLgizQw"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9a3dc089d8so18718166b.3
+        for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 11:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729105044; x=1760641044;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9qlAs2ZtbBnA6ISB6pEBwsQPvwbKQtkC7SADEbgyNik=;
-  b=WHsJYHJCLH5QT4Z1kQzNkuD19RqLxa4CoDEGRUJsMB9moZ5wjlxJAyOT
-   yqo9eVTlVz2KWM69IZW8oHpbQweK6iseISmNvIl0mQd1gjS8QnZJ1MbgX
-   GDDFs/z/iY3ccng8t4+oV2SDIRvzZSrBKnCZRomy8BWgu67eUPlKFTa2e
-   4=;
-X-IronPort-AV: E=Sophos;i="6.11,208,1725321600"; 
-   d="scan'208";a="461391478"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:57:23 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:10853]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.107:2525] with esmtp (Farcaster)
- id c239e8e8-f08c-4b7c-a121-6ca39d047a26; Wed, 16 Oct 2024 18:57:22 +0000 (UTC)
-X-Farcaster-Flow-ID: c239e8e8-f08c-4b7c-a121-6ca39d047a26
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 16 Oct 2024 18:57:21 +0000
-Received: from 6c7e67c6786f.amazon.com (10.106.100.12) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 16 Oct 2024 18:57:19 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 10/14] rtnetlink: Clean up rtnl_dellink().
-Date: Wed, 16 Oct 2024 11:53:53 -0700
-Message-ID: <20241016185357.83849-11-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241016185357.83849-1-kuniyu@amazon.com>
-References: <20241016185357.83849-1-kuniyu@amazon.com>
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729105045; x=1729709845; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4NSjzf6BPB669SPmFQAhJmWU/60txO/dSmZRKiOfK1k=;
+        b=cJLgizQwuo343rmAyv7+Vh7bhP/YxApELozMIBM7bDV3CsMutjeZpaQkGFOrjGKT+9
+         sP/cJwPLL7+zHa3qxXqBt7PPVEYPanopy0APl6GO3Rj44/8Cj0W23RNa7u6lJoHg0EXN
+         1UqvyblayPWquQia4oyJMNbSW2gVZ/t8iY1q6vjPm2Ncg5sKjci1MKcLZ+52gVLi1QXA
+         u2X5I526OI8EdY2SFeqgugUCXK7UgKYej7cPNK+zgpq0L9844nvbo1ihiCHjr2t8YNfH
+         nZG0f6ixZB35dOuAEZCAYg5LQyVMQScb+cTyBiFgS7Yrd/vPfky1UrgTqf/MmgfESGkj
+         uyAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729105045; x=1729709845;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4NSjzf6BPB669SPmFQAhJmWU/60txO/dSmZRKiOfK1k=;
+        b=TlwbJWHBkhpF6e5G9IhJ1lbxeyjPfXMHBBbnn0B0q4wb+AckefMmdRm407Ps6Y0Z8S
+         P8EmPA+fwKiMe1l/WxUDdp3xGiFhbtDKK28czk76ncqgf8RSe0kkzr+buaOcPllmTeTI
+         RSQCZB98hg07Ym6gn/c5THVnffj2opW+P5SU7j+Yg6cm7Eb52wUmTTK0uNfTWMxaIMS6
+         2Sqf4pMKVXX8jQq8/xkqX+7S7Odd+FvVdYZOzzP47cV8eWqZgMzYrNUGQe2glV4cJXMq
+         LAK6NZ37rRpQ/HTacB8cWNJ9+1PSwhPInfwpubnyy4EISRGqiamszoJHslcddGPORoRD
+         yOIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbokhgAai0r2a+paALq8gFIKgTr3DPeiNePw//AfMZPOvzQ0fk4SeOqiwy9lFSIXXRi3pMABs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ8iruCMG73LBf64eZ2btH8aaa7IFoYHioL5O/0tVkil85BFow
+	4nKj+y1yEeTQVlqQlyyLs86RKrQiWyIObE795IL2RU0j6+XwWB1EgLgqvUUXhro=
+X-Google-Smtp-Source: AGHT+IF5YBy+a1zYqbbQ1euqQQPHYEnpcp3B22EIBtiwIKZl3LYqWIhzQbqF0HNbo0k9eO8w1IAJRQ==
+X-Received: by 2002:a17:907:1c9b:b0:a7a:9f0f:ab18 with SMTP id a640c23a62f3a-a99e3b3329dmr1593991766b.20.1729105045045;
+        Wed, 16 Oct 2024 11:57:25 -0700 (PDT)
+Received: from localhost ([2001:4090:a244:83ae:c75a:6d73:cead:b69a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a29816adbsm210816666b.109.2024.10.16.11.57.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2024 11:57:24 -0700 (PDT)
+Date: Wed, 16 Oct 2024 20:57:23 +0200
+From: Markus Schneider-Pargmann <msp@baylibre.com>
+To: Vincent MAILHOL <mailhol.vincent@wanadoo.fr>
+Cc: Chandrasekar Ramakrishnan <rcsekar@samsung.com>, 
+	Marc Kleine-Budde <mkl@pengutronix.de>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, linux-can@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+	Vishal Mahaveer <vishalm@ti.com>, Kevin Hilman <khilman@baylibre.com>, Dhruva Gole <d-gole@ti.com>, 
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH v4 3/9] can: m_can: Map WoL to device_set_wakeup_enable
+Message-ID: <zas3pyfuv2f2qouctwdi6poaznobytq53mjjusificzfloafsl@q3oursy6rxjn>
+References: <20241015-topic-mcan-wakeup-source-v6-12-v4-0-fdac1d1e7aa6@baylibre.com>
+ <20241015-topic-mcan-wakeup-source-v6-12-v4-3-fdac1d1e7aa6@baylibre.com>
+ <CAMZ6RqJfBbFRaynjFAbi5quAvcA1bYj7Dw_vJ7rDsLRaEheZrw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWB002.ant.amazon.com (10.13.139.175) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kbge6drx2p5okdk6"
+Content-Disposition: inline
+In-Reply-To: <CAMZ6RqJfBbFRaynjFAbi5quAvcA1bYj7Dw_vJ7rDsLRaEheZrw@mail.gmail.com>
 
-We will push RTNL down to rtnl_delink().
 
-Let's unify the error path to make it easy to place rtnl_net_lock().
+--kbge6drx2p5okdk6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-While at it, keep the variables in reverse xmas order.
+Hi Vincent,
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
----
- net/core/rtnetlink.c | 27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+On Wed, Oct 16, 2024 at 11:32:06PM GMT, Vincent MAILHOL wrote:
+> On Wed. 16 Oct. 2024 at 04:18, Markus Schneider-Pargmann
+> <msp@baylibre.com> wrote:
+> > In some devices the pins of the m_can module can act as a wakeup source.
+> > This patch helps do that by connecting the PHY_WAKE WoL option to
+> > device_set_wakeup_enable. By marking this device as being wakeup
+> > enabled, this setting can be used by platform code to decide which
+> > sleep or poweroff mode to use.
+> >
+> > Also this prepares the driver for the next patch in which the pinctrl
+> > settings are changed depending on the desired wakeup source.
+> >
+> > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+>=20
+> I left a nitpick below. Regardless:
+>=20
+> Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+>=20
+> > ---
+> >  drivers/net/can/m_can/m_can.c | 37 +++++++++++++++++++++++++++++++++++=
+++
+> >  1 file changed, 37 insertions(+)
+> >
+> > diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_ca=
+n.c
+> > index a978b960f1f1e1e8273216ff330ab789d0fd6d51..d427645a5b3baf7d0a648e3=
+b008d7d7de7f23374 100644
+> > --- a/drivers/net/can/m_can/m_can.c
+> > +++ b/drivers/net/can/m_can/m_can.c
+> > @@ -2185,6 +2185,36 @@ static int m_can_set_coalesce(struct net_device =
+*dev,
+> >         return 0;
+> >  }
+> >
+> > +static void m_can_get_wol(struct net_device *dev, struct ethtool_wolin=
+fo *wol)
+> > +{
+> > +       struct m_can_classdev *cdev =3D netdev_priv(dev);
+> > +
+> > +       wol->supported =3D device_can_wakeup(cdev->dev) ? WAKE_PHY : 0;
+> > +       wol->wolopts =3D device_may_wakeup(cdev->dev) ? WAKE_PHY : 0;
+> > +}
+> > +
+> > +static int m_can_set_wol(struct net_device *dev, struct ethtool_wolinf=
+o *wol)
+> > +{
+> > +       struct m_can_classdev *cdev =3D netdev_priv(dev);
+> > +       bool wol_enable =3D !!(wol->wolopts & WAKE_PHY);
+> > +       int ret;
+> > +
+> > +       if ((wol->wolopts & WAKE_PHY) !=3D wol->wolopts)
+>=20
+> Here, you want to check if a bit other than WAKE_PHY is set, isn't it?
+> What about doing this:
+>=20
+>           if (wol->wolopts & ~WAKE_PHY)
+>=20
+> instead?
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index eee0f820ddf6..a19b2eb2727e 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3368,14 +3368,14 @@ EXPORT_SYMBOL_GPL(rtnl_delete_link);
- static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			struct netlink_ext_ack *extack)
- {
-+	struct ifinfomsg *ifm = nlmsg_data(nlh);
- 	struct net *net = sock_net(skb->sk);
- 	u32 portid = NETLINK_CB(skb).portid;
--	struct net *tgt_net = net;
--	struct net_device *dev = NULL;
--	struct ifinfomsg *ifm;
- 	struct nlattr *tb[IFLA_MAX+1];
--	int err;
-+	struct net_device *dev = NULL;
-+	struct net *tgt_net = net;
- 	int netnsid = -1;
-+	int err;
- 
- 	err = nlmsg_parse_deprecated(nlh, sizeof(*ifm), tb, IFLA_MAX,
- 				     ifla_policy, extack);
-@@ -3393,27 +3393,20 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			return PTR_ERR(tgt_net);
- 	}
- 
--	err = -EINVAL;
--	ifm = nlmsg_data(nlh);
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
- 		dev = rtnl_dev_get(tgt_net, tb);
-+
-+	if (dev)
-+		err = rtnl_delete_link(dev, portid, nlh);
-+	else if (ifm->ifi_index > 0 || tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
-+		err = -ENODEV;
- 	else if (tb[IFLA_GROUP])
- 		err = rtnl_group_dellink(tgt_net, nla_get_u32(tb[IFLA_GROUP]));
- 	else
--		goto out;
--
--	if (!dev) {
--		if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME] || ifm->ifi_index > 0)
--			err = -ENODEV;
--
--		goto out;
--	}
--
--	err = rtnl_delete_link(dev, portid, nlh);
-+		err = -EINVAL;
- 
--out:
- 	if (netnsid >= 0)
- 		put_net(tgt_net);
- 
--- 
-2.39.5 (Apple Git-154)
+Yes, thanks, that is better. Thank you for your reviews!
 
+Best
+Markus
+
+>=20
+> > +               return -EINVAL;
+> > +
+> > +       if (wol_enable =3D=3D device_may_wakeup(cdev->dev))
+> > +               return 0;
+> > +
+> > +       ret =3D device_set_wakeup_enable(cdev->dev, wol_enable);
+> > +       if (ret) {
+> > +               netdev_err(cdev->net, "Failed to set wakeup enable %pE\=
+n",
+> > +                          ERR_PTR(ret));
+> > +               return ret;
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +
+> >  static const struct ethtool_ops m_can_ethtool_ops_coalescing =3D {
+> >         .supported_coalesce_params =3D ETHTOOL_COALESCE_RX_USECS_IRQ |
+> >                 ETHTOOL_COALESCE_RX_MAX_FRAMES_IRQ |
+> > @@ -2194,10 +2224,14 @@ static const struct ethtool_ops m_can_ethtool_o=
+ps_coalescing =3D {
+> >         .get_ts_info =3D ethtool_op_get_ts_info,
+> >         .get_coalesce =3D m_can_get_coalesce,
+> >         .set_coalesce =3D m_can_set_coalesce,
+> > +       .get_wol =3D m_can_get_wol,
+> > +       .set_wol =3D m_can_set_wol,
+> >  };
+> >
+> >  static const struct ethtool_ops m_can_ethtool_ops =3D {
+> >         .get_ts_info =3D ethtool_op_get_ts_info,
+> > +       .get_wol =3D m_can_get_wol,
+> > +       .set_wol =3D m_can_set_wol,
+> >  };
+> >
+> >  static int register_m_can_dev(struct m_can_classdev *cdev)
+> > @@ -2324,6 +2358,9 @@ struct m_can_classdev *m_can_class_allocate_dev(s=
+truct device *dev,
+> >                 goto out;
+> >         }
+> >
+> > +       if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup=
+-source"))
+> > +               device_set_wakeup_capable(dev, true);
+> > +
+> >         /* Get TX FIFO size
+> >          * Defines the total amount of echo buffers for loopback
+> >          */
+> >
+> > --
+> > 2.45.2
+> >
+> >
+
+--kbge6drx2p5okdk6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTd8KHufh7XoFiu4kEkjLTi1BWuPwUCZxAMjAAKCRAkjLTi1BWu
+P/5DAP4wefyrUYIEtW0zEvZcxFGGUxIhdW9X8KsYmidnPmRCMQEAu6U7HHuys0aY
+E+xLPVnlePLxFke28ta1HXjD0B5r6w4=
+=VBQg
+-----END PGP SIGNATURE-----
+
+--kbge6drx2p5okdk6--
