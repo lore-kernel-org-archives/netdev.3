@@ -1,230 +1,267 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8623120CCE5;
-	Wed, 16 Oct 2024 15:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A6F20E03D;
+	Wed, 16 Oct 2024 15:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729093923; cv=none; b=eY3oZdWgBA3wMO4kd0ojAT5ABURoEJriM1t/OwI5mlnQq+llyzFsciGKOlig2i5gk601JDKQoGruzvaE2PGKj4a3/YrFnYkmKpPI/WdwtyiEzYyDBnsgSGl7JBZVTti0Od0+i9RuDxibSU58pEAbgopHjulc6pXBSAj/n6+0cWY=
+	t=1729094250; cv=none; b=dL2fa8qMEfYyd+7FDUbQ7yxVlT9ywh6GRV9QzQKZiQjyM8MovF1lC46SJ7lr9EFKf9vP89MrP9NSG60Oa65vVwPpRu13JVWijptryZPfhRcDxBk/FHey8QSddxbyxX6/CItVaSMjFcmvS9QKoptetVgHugAXplPZ8eMKSGzfsGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729093923; c=relaxed/simple;
-	bh=zKV+CN4oRDPuYTsLKdyjZVaGHKxw7iSdD7MeBWyrXGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=MWpf6pYCXGhWOYASUqp65ytdpwQPan7THsSeiemq8w3i6ScYJOKLi/YvJJtGr0Q/1yTpLx7a23iTVnvAiLACNZqdICuXlZXOQJdVaSVoJC6KZAA/tKoa7Lyo+2EmXXziQStYbA2E8XFl9zat4ROD4POkA9fhjK1c/LQNQunoE04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=BzG4JQiZ; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1729094250; c=relaxed/simple;
+	bh=pQJUycqCCqc9+T8ZvQB9kGSTugUUqfL//ag9Iyd0umo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=McBYqubumwS1+AGgRZWz8l6tCtQMlBjSeVNRP18oc2q9+Se3U2WbH3WUvpRfsM4pUcwa6/dOvPMe2SUjTCW2o5TVukW00m734q3DL9z+j37TJK/XP4wIfFfMR8KDbI9RosdLccAX1HX/+AOSoU+hSi1Y5UKu43+Tw/jyPPvcq+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7VjgrGS; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="BzG4JQiZ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C09A514838D6;
-	Wed, 16 Oct 2024 17:43:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1729093409; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=7tJSztIo9asoNqABnecSCXzHZLed1LkHJmvJttnWSz0=;
-	b=BzG4JQiZFJCLM96P4AEIt52RVEsiZt+0P987nJZfXLGtCBZaVKKDO5Eo44HEzhYFJ3JIlF
-	s61YYfjZwPGSc/87l0uYUdGrcJ4O0Fmc/3M5uBRhBbaXozJxFjW9295VBSMaSf8SnbDlZa
-	NyGjopuvhqURnTL8Ek905+nnkWRMnTHxVLE7XICKEm3j4PR/sD4q5a2FyXL4JqLsTnzU3A
-	nTL6omduEO+RwCMGGzizq3uXgBTVc48SCSL7dTqHnKXuidmZP2lQdmgxEEjHZiJdLIfPGx
-	l2iAPhHiylGxatnABWjmy0Rf7pvyD0iXIbh/2ACuNlsenuwNOtJ+LxEWJspV7Q==
-Date: Wed, 16 Oct 2024 17:43:22 +0200
-From: Alexander Dahl <ada@thorsis.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: micrel ksz8081 RMII phy and clause-22 broadcast
-Message-ID: <20241016-kissing-baffle-da66ca25d14a@thorsis.com>
-Mail-Followup-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7VjgrGS"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539e690479cso4803196e87.3;
+        Wed, 16 Oct 2024 08:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729094246; x=1729699046; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VxA07k9oSO8dTce0PP8TNRQBmoWhoKL9GFOP9Oqykdw=;
+        b=U7VjgrGSLUv2uiDgaL4OVRYhXKrP+0PSJjTEsD7g0MshznMiRTivtNMIkMOBhLHEtR
+         WvVgM2/vGSsdtxz8IGeYB76WD+2JIDXb147pSE8NbYzCSy/qLVcNNeN51j3cbjuLq+g4
+         vulph3UF52wEwivh3L5QRyEzEPApb7K2o8Me3YikO6tWpkBy8mnO/HDcDovTbkmyI1aK
+         YKzfdec3sfGGIAAOzNZaEBN9jrag98UZclU7QQMGfTdJxSWv6r93OtgOfbrH5f8xhZ91
+         HnXmleXslHa2d8D+WD9fQmgv0z9JqY/wsQJW/jf1HbiODAIVeT7OIlYr8xyMre4EakKA
+         p/IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729094246; x=1729699046;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VxA07k9oSO8dTce0PP8TNRQBmoWhoKL9GFOP9Oqykdw=;
+        b=VlJ2KFE8VQG6ISUs9wGeJG+ALNkMSaVdz46rPufZDJZHEowSguBPtwQsfzNH3dS6mY
+         ZmE7jrgGHq+5UgmzCwGxlGeyr16IdeHrKwkVf5d7/VhRILRkXI+sppJs1hWaNwh1DBcu
+         ZtbmDOkryH6/2+wAcyRZgh+/4TjAyFlCivPkb0TU4Krn3mAzTz5ZNUjlErLRVSbVZtEP
+         OGo7PCjjvx3Oeb5vlh895U1OXorLjzS1+KS6MuEs58qH14/UdspAo69o+IZlJbGyn3f4
+         0Lp9AHs5e8qxb3kASdjNLkQSG5UPzGi9aOjrAOUYZJvTNZyCA4OF6mTzMDG2Jhlstr5o
+         EBjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4r/0MF2/2e1rfdVbmLmm9ynEmZ9UILSkqqtP/WLDqARCoZe+Fj/LqAinpozZLzKsum+ftjeVJjJydtM91J73E@vger.kernel.org, AJvYcCWnjeC8JeGo7HSZnG267bhljmsAyDZYb5RgGih02VKx2NxVAl82IhvfylpJQJJaGYYXHR3NfKJsgDTHCfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpzXXabEUE7jqdvPE5mK+5tGOHu2c6GvdeLypew2XzQaxzG5rx
+	MezLK9fg1p6AV/fHNxxGjVU5z/KJrRy3xmYBxSOn8+Hw9P8ek0qG
+X-Google-Smtp-Source: AGHT+IEi/7qYhNCOFZfgn/p4Iqu9Z2zyKn6pf3/u84hhnrnCvkNEdqd/86Jf01yV6NLUAKDt1wtaMg==
+X-Received: by 2002:a05:6512:e9d:b0:535:6aa9:9855 with SMTP id 2adb3069b0e04-539e54051famr8422705e87.0.1729094246042;
+        Wed, 16 Oct 2024 08:57:26 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:20d:1300:1b1c:4449:176a:89ea? (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2988c56csm197630466b.209.2024.10.16.08.57.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2024 08:57:25 -0700 (PDT)
+Message-ID: <77aba461-2d32-4c4d-8877-c16f656a0610@gmail.com>
+Date: Wed, 16 Oct 2024 17:57:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v1 net-next 06/12] net: core: dev: Add
+ dev_fill_bridge_path()
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Frank Wunderlich <frank-w@public-files.de>,
+ Daniel Golle <daniel@makrotopia.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20241013185509.4430-1-ericwouds@gmail.com>
+ <20241013185509.4430-7-ericwouds@gmail.com>
+ <c3678626-7f5c-4446-9b4d-2650ddf5d5a6@blackwall.org>
+ <a0db4efa-2328-4935-9eb6-3344fcbc4b07@gmail.com>
+ <ea4de936-9a84-4910-960b-65c5cc2dfcdd@blackwall.org>
+From: Eric Woudstra <ericwouds@gmail.com>
+Content-Language: en-US
+In-Reply-To: <ea4de936-9a84-4910-960b-65c5cc2dfcdd@blackwall.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello everyone,
 
-migrating an old board with an SMSC LAN8720A PHY to a new hardware
-revision with a Micrel KSZ8081 PHY (both Microchip now) caused me
-quite some headaches this week, and I did not come to a satisfying
-solution, although I tried quite some different approaches.  I got
-questions.  This is all about addressing on the MDIO bus and different
-PHYs behaving differently.  Maybe someone can shed some light on it?
 
-(Note: Facing the same problem on four different boards using
-different at91 socs (sam9g20, sama5d2, sam9x60), but all the using
-'macb' ethernet driver.)
+On 10/16/24 9:43 AM, Nikolay Aleksandrov wrote:
+> On 14/10/2024 21:34, Eric Woudstra wrote:
+>>
+>>
+>> On 10/14/24 8:59 AM, Nikolay Aleksandrov wrote:
+>>> On 13/10/2024 21:55, Eric Woudstra wrote:
+>>>> New function dev_fill_bridge_path(), similar to dev_fill_forward_path().
+>>>> It handles starting from a bridge port instead of the bridge master.
+>>>> The structures ctx and nft_forward_info need to be already filled in with
+>>>> the (vlan) encaps.
+>>>>
+>>>> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+>>>> ---
+>>>>  include/linux/netdevice.h |  2 +
+>>>>  net/core/dev.c            | 77 ++++++++++++++++++++++++++++++++-------
+>>>>  2 files changed, 66 insertions(+), 13 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+>>>> index e87b5e488325..9d80f650345e 100644
+>>>> --- a/include/linux/netdevice.h
+>>>> +++ b/include/linux/netdevice.h
+>>>> @@ -3069,6 +3069,8 @@ void dev_remove_offload(struct packet_offload *po);
+>>>>  
+>>>>  int dev_get_iflink(const struct net_device *dev);
+>>>>  int dev_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb);
+>>>> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
+>>>> +			 struct net_device_path_stack *stack);
+>>>>  int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>>>  			  struct net_device_path_stack *stack);
+>>>>  struct net_device *__dev_get_by_flags(struct net *net, unsigned short flags,
+>>>> diff --git a/net/core/dev.c b/net/core/dev.c
+>>>> index cd479f5f22f6..49959c4904fc 100644
+>>>> --- a/net/core/dev.c
+>>>> +++ b/net/core/dev.c
+>>>> @@ -713,44 +713,95 @@ static struct net_device_path *dev_fwd_path(struct net_device_path_stack *stack)
+>>>>  	return &stack->path[k];
+>>>>  }
+>>>>  
+>>>> -int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>>> -			  struct net_device_path_stack *stack)
+>>>> +static int dev_fill_forward_path_common(struct net_device_path_ctx *ctx,
+>>>> +					struct net_device_path_stack *stack)
+>>>>  {
+>>>>  	const struct net_device *last_dev;
+>>>> -	struct net_device_path_ctx ctx = {
+>>>> -		.dev	= dev,
+>>>> -	};
+>>>>  	struct net_device_path *path;
+>>>>  	int ret = 0;
+>>>>  
+>>>> -	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
+>>>> -	stack->num_paths = 0;
+>>>> -	while (ctx.dev && ctx.dev->netdev_ops->ndo_fill_forward_path) {
+>>>> -		last_dev = ctx.dev;
+>>>> +	while (ctx->dev && ctx->dev->netdev_ops->ndo_fill_forward_path) {
+>>>> +		last_dev = ctx->dev;
+>>>>  		path = dev_fwd_path(stack);
+>>>>  		if (!path)
+>>>>  			return -1;
+>>>>  
+>>>>  		memset(path, 0, sizeof(struct net_device_path));
+>>>> -		ret = ctx.dev->netdev_ops->ndo_fill_forward_path(&ctx, path);
+>>>> +		ret = ctx->dev->netdev_ops->ndo_fill_forward_path(ctx, path);
+>>>>  		if (ret < 0)
+>>>>  			return -1;
+>>>>  
+>>>> -		if (WARN_ON_ONCE(last_dev == ctx.dev))
+>>>> +		if (WARN_ON_ONCE(last_dev == ctx->dev))
+>>>>  			return -1;
+>>>>  	}
+>>>>  
+>>>> -	if (!ctx.dev)
+>>>> +	if (!ctx->dev)
+>>>>  		return ret;
+>>>>  
+>>>>  	path = dev_fwd_path(stack);
+>>>>  	if (!path)
+>>>>  		return -1;
+>>>>  	path->type = DEV_PATH_ETHERNET;
+>>>> -	path->dev = ctx.dev;
+>>>> +	path->dev = ctx->dev;
+>>>> +
+>>>> +	return ret;
+>>>> +}
+>>>> +
+>>>> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
+>>>> +			 struct net_device_path_stack *stack)
+>>>> +{
+>>>> +	const struct net_device *last_dev, *br_dev;
+>>>> +	struct net_device_path *path;
+>>>> +	int ret = 0;
+>>>> +
+>>>> +	stack->num_paths = 0;
+>>>> +
+>>>> +	if (!ctx->dev || !netif_is_bridge_port(ctx->dev))
+>>>> +		return -1;
+>>>> +
+>>>> +	br_dev = netdev_master_upper_dev_get_rcu((struct net_device *)ctx->dev);
+>>>> +	if (!br_dev || !br_dev->netdev_ops->ndo_fill_forward_path)
+>>>> +		return -1;
+>>>> +
+>>>> +	last_dev = ctx->dev;
+>>>> +	path = dev_fwd_path(stack);
+>>>> +	if (!path)
+>>>> +		return -1;
+>>>> +
+>>>> +	memset(path, 0, sizeof(struct net_device_path));
+>>>> +	ret = br_dev->netdev_ops->ndo_fill_forward_path(ctx, path);
+>>>> +	if (ret < 0)
+>>>> +		return -1;
+>>>> +
+>>>> +	if (!ctx->dev || WARN_ON_ONCE(last_dev == ctx->dev))
+>>>> +		return -1;
+> 
+> * ^^^^^^^^^ here
+> 
+>>>> +
+>>>> +	if (!netif_is_bridge_master(ctx->dev))
+>>>
+>>> hmm, do we expect ctx->dev to be a bridge master? Looking at
+>>> br_fill_forward_path, it seems to be == fdb->dst->dev which
+>>> should be the target port
+>>
+>> It would indeed be very unlikely. It was a left-over from code I wrote,
+>> thinking that here I could handle cascaded bridges (via vlan-device). I
+>> dropped that, since conntrack does not follow this flow.
+>>
+>> So would it be better to only make sure that ctx->dev is not a bridge
+>> master?
+>>
+>> 	if (netif_is_bridge_master(ctx->dev))
+>> 		return -1;
+>>
+>> 	return dev_fill_forward_path_common(ctx, stack);
+>>
+> 
+> I think you misunderstood me, I don't think ctx->dev can ever be a bridge
+> device because ctx->dev gets set to fdb->dst and fdbs that point to the bridge
+> itself have fdb->dst == NULL but ctx->dev is checked against NULL earlier*
+> so the bridge dev check doesn't make sense to me.
 
-Old hardware revision uses the LAN8720, but unfortunately the PHYAD
-strap resistors where forgotten, so that the PHY could end up with
-either address 0 or 1 on the MDIO bus.  This one problem on its own
-could be handled in two different ways in DTS:
+I see, thanks. I'll drop the check in v2.
 
-        macb0: ethernet@fffc4000 {
-                phy-mode = "rmii";
-                status = "okay";
-
-                /*
-                 * We have to disable energy-detect because the 50 MHz
-                 * ref_clk signal is used by … and must not be switched off.
-                 * Disabling this through DT was introduced in Linux
-                 * v4.3 and fixed in v4.5.
-                 *
-                 * Adding two PHY nodes here, because in schematics
-                 * PHYAD pin is not explicitly pulled up or down and
-                 * address thus might be one or the other.
-                 */
-                phy0: ethernet-phy@0 {
-                        reg = <0>;
-                        smsc,disable-energy-detect;
-                };
-
-                phy1: ethernet-phy@1 {
-                        reg = <1>;
-                        smsc,disable-energy-detect;
-                };
-        };
-
-Or if the 'smsc,disable-energy-detect' is not needed, and because the
-kernel (phy core or macb driver or both?) iterates over all possible
-phy addresses to find a phy:
-
-        &macb0 {
-                pinctrl-names = "default";
-                pinctrl-0 = <&pinctrl_macb0_default>;
-                phy-mode = "rmii";
-                status = "okay";
-        };
-
-Entering the new hardware, using different options, now we need irq
-settings, and to not get in conflict with the old addresses we now add
-another node, so it looks like this now:
-
-        &macb0 {
-                pinctrl-names = "default";
-                pinctrl-0 = <&pinctrl_macb0_default>;
-                phy-mode = "rmii";
-                status = "okay";
-
-                /* HW <= v0.2, LAN8720 */
-                ethernet-phy@0 {
-                        reg = <0x0>;
-                        smsc,disable-energy-detect;
-                };
-
-                /* HW <= v0.2, LAN8720 */
-                ethernet-phy@1 {
-                        reg = <0x1>;
-                        smsc,disable-energy-detect;
-                };
-
-                /* HW >= v1.0, KSZ8081 */
-                ethernet-phy@7 {
-                        reg = <0x7>;
-                        interrupt-parent = <&pioA>;
-                        interrupts = <PIN_PC21 IRQ_TYPE_LEVEL_LOW>;
-                };
-        };
-
-The idea of this was: phy core steps through all these phy nodes,
-finds only one of them present, and uses exactly that one.  I found
-other .dts files doing the same IIRC.
-
-Problem: the KSZ8081 follows the IEEE 802.3 clause 22 which states
-this in section '22.2.4.5.5 PHYAD (PHY Address)':
-
-    A PHY that is connected to the station management entity via the
-    mechanical interface defined in 22.6 shall always respond to
-    transactions addressed to PHY Address zero <00000>. A station
-    management entity that is attached to multiple PHYs must have
-    prior knowledge of the appropriate PHY Address for each PHY.
-
-So according to standard, PHYs should all answer to address 0, even if
-they are on a different address, like a broadcast.  LAN8720 does not
-behave like that, KSZ8081 has flag in a vendor register to disable it,
-and the 'micrel' driver actually clears that flag in .config_init aka
-kszphy_config_init() - alas too late …
-
-The sequence how I understand it, is more or less like this:
-
-1. ethernet driver probe, that calls macb_mii_init() which leads to
-creating all phy devices in one or the other way.  The one and only
-KSZ8081 answers to addresses 0 and 7, thus we get two mdio/phy
-devices (and none on address 1, because there is just the single PHY
-chip):
-
-    $ ls -l /sys/bus/mdio_bus/devices/
-    lrwxrwxrwx    1 root     root             0 Jan  1 03:50 f802c000.ethernet-ffffffff:00 -> ../../../devices/platform/ahb/ahb:apb/f802c000.ethernet/mdio_bus/f802c000.ethernet-ffffffff/f802c000.ethernet-ffffffff:00
-    lrwxrwxrwx    1 root     root             0 Jan  1 03:50 f802c000.ethernet-ffffffff:07 -> ../../../devices/platform/ahb/ahb:apb/f802c000.ethernet/mdio_bus/f802c000.ethernet-ffffffff/f802c000.ethernet-ffffffff:07
-
-2. ethernet device (eth0) bringup, which somewhere down the call path
-calls phy_init_hw() and phydev->drv->config_init() disabling that
-broadcast flag.  From this point the KSZ8081 does not answer on
-address 0 anymore.
-
-3. the system (not sure which part exactly) tries to use the first phy
-it finds on that mdio bus, still address 0, but that chip does not
-answer anymore on that address after turning off broadcast, because it
-has address 7 configured through resitor straps, this looks like this
-in messages for example:
-
-    macb f8008000.ethernet eth0: Cadence GEM rev 0x00020203 at 0xf8008000 irq 156 (a2:09:7e:80:00:02)
-    macb f8008000.ethernet eth0: PHY [f8008000.ethernet-ffffffff:00] driver [Micrel KSZ8081 or KSZ8091] (irq=POLL)
-    macb f8008000.ethernet eth0: configuring for phy/rmii link mode
-    Micrel KSZ8081 or KSZ8091 f8008000.ethernet-ffffffff:00: phy_poll_reset failed: -110
-    macb f8008000.ethernet eth0: Could not attach PHY (-110)
-
-What did I try to solve this?  (Note: I don't like any of those
-approaches for different reasons.)
-
-1. Changing the order of nodes in .dts → no effect, this is considered
-at driver loading time, not at eth0 bringup time, still get two phy
-devices
-
-2. explicitly using the phy IDs in dts as compatible string, like
-'compatible = "ethernet-phy-id0007.c0f0"' for phy@0 … this leads to
-using the smsc driver for the ksz8081 phy, that's probably not good?
-
-3. tweaking kszphy_config_init() to not disable that broadcast flag,
-if the address configured (you can read that from vendor register 17h
-in the ksz8081) is not the same as the one of the phydev.  Leads to
-communicating with that phy through broadcast address 0, not a future
-proof solution IMHO.
-
-4. disabling that broadcast flag in bootloader already: increases the
-boot time quite some seconds, and adds some kind of dependency to the
-bootloader: not nice.
-
-5. returning an error in micrel PHY driver probe, well then the
-generic phy driver is used, I could achieve the same by disabling
-CONFIG_MICREL_PHY in kernel, but then we would not get vendor specific
-tweaks for that phy, and I'm not sure that interrupt stuff would still
-work.
-
-6. using phy_register_fixup_for_uid() in the micrel driver, so
-phy_scan_fixups() could return an error if phydev addr and phyad strap
-address do not match.  This leads to phy@0 not being attached on eth0
-bringup, but the phydev at address 0 is not removed (only
-unregistered) and the other phydev for address 7 is never tried then.
-
-What do I take home from this:
-
-- different PHYs behave differently with regard to the IEEE standard
-- I found no mechanism to disable broadcast in a PHY specific driver
-  early enough so the phydev for address 0 is not created (or removed
-  after creation)
-
-Would be happy if anyone could suggest a path forward here?
-
-(In the end, it will probably be solved with multiple devicetree files
-depending on hardware revision, but that is the can of worms I wanted
-to avoid in the first place.)
-
-Thanks for reading.
-
-Greets
-Alex
-
+>>>> +		return dev_fill_forward_path_common(ctx, stack);
+>>>> +
+>>>> +	path = dev_fwd_path(stack);
+>>>> +	if (!path)
+>>>> +		return -1;
+>>>> +	path->type = DEV_PATH_ETHERNET;
+>>>> +	path->dev = ctx->dev;
+>>>>  
+>>>>  	return ret;
+>>>>  }
+>>>> +EXPORT_SYMBOL_GPL(dev_fill_bridge_path);
+>>>> +
+>>>> +int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>>> +			  struct net_device_path_stack *stack)
+>>>> +{
+>>>> +	struct net_device_path_ctx ctx = {
+>>>> +		.dev	= dev,
+>>>> +	};
+>>>> +
+>>>> +	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
+>>>> +
+>>>> +	stack->num_paths = 0;
+>>>> +
+>>>> +	return dev_fill_forward_path_common(&ctx, stack);
+>>>> +}
+>>>>  EXPORT_SYMBOL_GPL(dev_fill_forward_path);
+>>>>  
+>>>>  /**
+>>>
+> 
