@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4445186E5F
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 01:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F15187872
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 01:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729040428; cv=none; b=fqEOSRoX708m/MusjjOFl+jdeOAb1whZLnBiXevF2re1NN8Z+YN+OnL1HcyE1t4Mf8YuxRD4VzC2+w0wurQwOli+r+gu6z9VsVGolb1cj4sdNDCH+hdueSjTi7gUSVBR8miCfuGTTtt/OlH1S/av6yHvIkScl6j/lPGvBpxnGyk=
+	t=1729040430; cv=none; b=bTN4X52m5JIJ51Xw92fynZ5JPb4Wod1397i2Tm0VWH9kYCSxcbmau4VHak4NPU1qFCywlCd0BoCr91HY2ET9L7rYkaN5rYEH9AxOFP5fkZJ6kKQczBK71knUlTn5LWeTcoGVA1BUf2bEcu9GfPOmFgl3NprpPa2GLpHFYGPhohY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729040428; c=relaxed/simple;
-	bh=lYQeWFCYZeLnSPpknAUYuSKVINzVgnNbeuWp5q8557M=;
+	s=arc-20240116; t=1729040430; c=relaxed/simple;
+	bh=9rS5BYKx0KHHmhvoTu3P1PQZfutq6jKrKNWs91WI/tU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hs3TduwDG14RACQz4HMAbXUz7cWisrd+JV9kQDhTOqlQR2PDbLCHk7U7oYeVbH+o1Aq2LAVOpsAJ0nb6/cjk9qrZb0Vwd2w7/AAwnretlP/NgvKLGSIhujj5/SZQPJcLGBetGA/fDpcLZLXAS0a7HgKED88aFGqeJL8eEO/7no8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJ8875nA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cKhmASPXryX/zltpmSvsLyshizymwjWajHTq6ckJGGdPKDeD9U1UUODL4vVETB5rMeTbp+uGrUbGenPZ6Srq+tGHVemMFmerchfUG7EBmk+ZnfNKGqgiUY5HkMpf6dYw/Rhk+fQ04rzVVzg6Q6tRlWngCTn024LoXA9YVpmk+SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMWKxhFE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJ8875nA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B92C4CECD;
-	Wed, 16 Oct 2024 01:00:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMWKxhFE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F0AC4CEC6;
+	Wed, 16 Oct 2024 01:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729040426;
-	bh=lYQeWFCYZeLnSPpknAUYuSKVINzVgnNbeuWp5q8557M=;
+	s=k20201202; t=1729040429;
+	bh=9rS5BYKx0KHHmhvoTu3P1PQZfutq6jKrKNWs91WI/tU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=KJ8875nAC3lYtIZf9wyIJaaH7Xaq+PbClcyo9qXG2OVSshbUglGCQp+GbBCHsRM0g
-	 c56ocXKy3ji1AamoAp6vdt2eRimVmz8VPj7a0bpRtZAlhsat/v1G2p8I72p6C/vHHa
-	 YfC3l+JpthIHQZPRxqu8iSZ9mB87BjIfV9CUk4Wu0m2X9UpXRByp8K+OiP45CJk0PK
-	 cCEQz/KgaM/i6zoe+h2alk9TM4Y+DM9j1gqNptJYLJwVvCLPNq+O1dUJJC1K9Xv605
-	 97nwtiHoWdXUtd/dnjxIdgDtO/+R35BTROlGh1OrqDFC0dOPMwX6uBPdnYKOlI+xoz
-	 gCPJo7w+4zLxw==
+	b=HMWKxhFE4YQtw8vh5gy67brripGBfHtgP93flxPNlsltk3+sZ0ZIPodgS5XLfNWKo
+	 kGJ3btE9xSv2tiRLWDy9TKVQ1F5FwodandOMjS+7mQjimWBOL4ps2O6W4mt8xZggVa
+	 1LHxsTKLQ1YTOJ34OiKg1zThoPBHAtsR3S0m/dtNMexaQZRHqEbBcP3fWQw2Dq2csp
+	 CVoQ+WNlX1Ssa25cM5RfXbrxa06Otqa9ZrlIzRU2xeVFx77CDOcTWvzOa2KqVxgCS+
+	 53rI0b4Fxp12Y+eOHc5vEzXgM0M2MHWvtXHY79ZMUXMnBZEBLU/0TqYpDVvicA0TUm
+	 WV0mHc50Nbb2w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE05F3809A8A;
-	Wed, 16 Oct 2024 01:00:32 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB5733809A8A;
+	Wed, 16 Oct 2024 01:00:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] genetlink: hold RCU in genlmsg_mcast()
+Subject: Re: [PATCH v1 net-next] neighbour: Remove NEIGH_DN_TABLE.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <172904043123.1343417.496516714849823258.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Oct 2024 01:00:31 +0000
-References: <20241011171217.3166614-1-edumazet@google.com>
-In-Reply-To: <20241011171217.3166614-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, jchapman@katalix.com,
- tparkin@katalix.com, johannes.berg@intel.com
+ <172904043448.1343417.5380255499659363908.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Oct 2024 01:00:34 +0000
+References: <20241014235216.10785-1-kuniyu@amazon.com>
+In-Reply-To: <20241014235216.10785-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, kuni1840@gmail.com, netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 11 Oct 2024 17:12:17 +0000 you wrote:
-> While running net selftests with CONFIG_PROVE_RCU_LIST=y I saw
-> one lockdep splat [1].
+On Mon, 14 Oct 2024 16:52:16 -0700 you wrote:
+> Since commit 1202cdd66531 ("Remove DECnet support from kernel"),
+> NEIGH_DN_TABLE is no longer used.
 > 
-> genlmsg_mcast() uses for_each_net_rcu(), and must therefore hold RCU.
+> MPLS has implicit dependency on it in nla_put_via(), but nla_get_via()
+> does not support DECnet.
 > 
-> Instead of letting all callers guard genlmsg_multicast_allns()
-> with a rcu_read_lock()/rcu_read_unlock() pair, do it in genlmsg_mcast().
+> Let's remove NEIGH_DN_TABLE.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] genetlink: hold RCU in genlmsg_mcast()
-    https://git.kernel.org/netdev/net/c/56440d7ec28d
+  - [v1,net-next] neighbour: Remove NEIGH_DN_TABLE.
+    https://git.kernel.org/netdev/net-next/c/95b3120a485f
 
 You are awesome, thank you!
 -- 
