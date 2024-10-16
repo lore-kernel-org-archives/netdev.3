@@ -1,144 +1,97 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6652071F9
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 09:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81321206052
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 09:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729072172; cv=none; b=PFkmH4CGub0zosQj7BBhJR7qT0LIH4PmjQ812rTEpiRMtiYQ5ZrlBFHJYMTWf53SLwZ/emGVt+CyoLCHM80twM9XCwkci3Bjv3EW/PDM3H5lwLKotZbpr5Pbo1ir3o12PWg8X+PJRcUXHtLjcJYbWQwlRhQ73N1RXlgBAQnkBSI=
+	t=1729072664; cv=none; b=iv5MMGV1+frnBBgnLKdIclqdpx6k2u1xo8BdzTzbZFUkfKXwACttLpBTzOl8lan2F+nyiAA8qJ3/5Ri/ifmo88i6YCCfjmMuOhrko/2Vopwmq2ev6rmStZFYVzIUQkn+HYVlBkue74xhaQuPayrHd0lAF5r8hB9uAqGFoA7sj08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729072172; c=relaxed/simple;
-	bh=htHW4nC4bbnEa+ZM/uajB/3THIEyeC3KtURYUab+gk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLEG+Olixe/z1FVtjMBut/lVcOYI13bOsZiNxVTyH2sS4TztHF3lCzlg5jZ1hGH6VeETdrcSj338fYVqOxMMpHTkJhPEC9LL8iOWU/gRhH+jFLvKd3TkRFAnIpXEjSovn2bRPFtNQgj+ae5wBFXkdzH9FrG9vfUA3MptU3Jm2w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P66wyrpo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1729072664; c=relaxed/simple;
+	bh=UM4U/kCd8oZ72j1DyNbAgh50SK9qiqJJp65cJULLWgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=vCdc2GyhtlbXYgpZtjD4OfirqhUc+/QlzXY6Q+Q6ZPK5QAq3jRfdwK5FlDP2zkIzAgK3hh8JagqLvVrZOA4lc2H8qlRdCPls990PhWH3zFs+kkiP3JMz6kVY3Xbp2jJXyAZNjKzO6FFVF7WA32fWafMWMo0fZ0A3Ipi2sZjZTeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=vQOVjdqj; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P66wyrpo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729072169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eAXbZXITqmfuNpuSA5zLMkRUqa2IYxNYDUv+NC55td4=;
-	b=P66wyrpoGi4RBIgBiqHTdMzHEgW557I+rZuC5KCW9GNfjWBf5kBtwifDukSts4EP6X+YJ8
-	n408u2w1PVURMAA1NyotktoM/tmB4r0Jfw96ABUUTns+VPLcimX0y6okkHMPAej1AM/vM1
-	0oq1QtQ1AiVK5ijxD+FMAZhf5v0wsec=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-kqRQD9bdMX6d1AffH7HWuA-1; Wed, 16 Oct 2024 05:49:28 -0400
-X-MC-Unique: kqRQD9bdMX6d1AffH7HWuA-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4314c6ca114so6097435e9.1
-        for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 02:49:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729072167; x=1729676967;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eAXbZXITqmfuNpuSA5zLMkRUqa2IYxNYDUv+NC55td4=;
-        b=MCP7V66IKwPzPKKCDxdhNuQu5BZP+vb8jaf9AIJU/4FhR+97xP6kIdL8iLuJzy0xcV
-         UdJzbzcB6OhWr00yDf4RBEDKwMW5GVh/TtFKMOXaOk75zicc95rnWgUwRnBQbo3VNNXR
-         upHdLyc0oHyiUXrr/qqSJN9KVDeBp6KB+6/al/Akcv9cMuFX0O0xPB2I7dOMVBW0/IoZ
-         YuwVfCj/THa6B1uRXaSNJzzsQygZ/mMr8/gIqvTSks1OlIWEHeRdy7wDrKz2uT/qA8Y9
-         G5OL0iRJL1e15guyaoIG2oCO9Z7cKYBzopNk9wEmjZ7XYoJ94/y9jB3yNCGSase3dsHj
-         t39Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXoQg/LDczdJw4kUda/gQwmf2YF6hYf0Ryskf9AHwig89UrB7uU8CEVF9Ro7M9CX7DmVRDZrIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdFhqwBTg39h37lrxAI9psMATiPyRw83cSrlrM41pkSl3BTEzr
-	0uHozAvottOJ33WkuBD1E1EIYx9npwSZIBN0kXnOtLMqKFyAfRnrS5YfRdRMegyUAdv5LAahgwf
-	k/l+t/bp8zcImVv3BZtHCUN/ZXOVUzDc+lwSZkDAQl5xBvDU8WWpZHQ==
-X-Received: by 2002:a05:600c:1f8c:b0:42c:b220:4778 with SMTP id 5b1f17b1804b1-4311df5c639mr160032925e9.33.1729072167214;
-        Wed, 16 Oct 2024 02:49:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmQuyn8hv0hBqxE0+BXi1ZnR8824mqMCiYlhK9JU94GmSaFPjJpOmCYUVQWoBnqBXMHnWe8Q==
-X-Received: by 2002:a05:600c:1f8c:b0:42c:b220:4778 with SMTP id 5b1f17b1804b1-4311df5c639mr160032565e9.33.1729072166725;
-        Wed, 16 Oct 2024 02:49:26 -0700 (PDT)
-Received: from eisenberg.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4314b32e487sm28190235e9.25.2024.10.16.02.49.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 02:49:26 -0700 (PDT)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	Wu Hao <hao.wu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Moritz Fischer <mdf@kernel.org>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="vQOVjdqj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4lvwQh2exdaoCqYLp7jg/7XYClhN7+M4G6G8llEyXHc=; b=vQOVjdqj3QkUcyz9Ag9c33uNR7
+	mxxSPGgKrrh6hlZHHBCTfvJk+6YIQMG4l27BGbv0m9pPwSQ+Nm2A0U9nJGn92JSQNd1I3Vk7qIEPk
+	LajqWTOfBxT7GmwD9x4wPmTM2YVL5vUvlgI388u64iap3kRKergwp9EUxdRO516YNRMJgn5CgZozJ
+	tWjYvpZlT7THz7HhHwgxV/ut9j6ajPEjWq/Q70FSMM/AY/CJKTI+jMxN69TmTzz1lRETYf6WvZDus
+	SMN+hIM0ZdvPv5zdSwxT2ToucIkHemTchuGxYe4kCVt/4ywX8CrF/SielPkY8lteQ25sInzS2USBt
+	Ials/+Fw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43668)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1t10mZ-0004rH-2M;
+	Wed, 16 Oct 2024 10:57:32 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1t10mX-0005Ai-0T;
+	Wed, 16 Oct 2024 10:57:29 +0100
+Date: Wed, 16 Oct 2024 10:57:29 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Li Zetao <lizetao1@huawei.com>
-Cc: linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v8 6/6] ethernet: cavium: Replace deprecated PCI functions
-Date: Wed, 16 Oct 2024 11:49:09 +0200
-Message-ID: <20241016094911.24818-8-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241016094911.24818-2-pstanner@redhat.com>
-References: <20241016094911.24818-2-pstanner@redhat.com>
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH net-next v2 0/5] Removing more phylink cruft
+Message-ID: <Zw-OCSv7SldjB7iU@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-pcim_iomap_regions() and pcim_iomap_table() have been deprecated by
-the PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
-pcim_iomap_table(), pcim_iomap_regions_request_all()").
+Hi,
 
-Replace the deprecated PCI functions with their successors.
+Continuing on with the cleanups, this patch series removes
+dsa_port_phylink_mac_select_pcs() which is no longer required. This
+will have no functional effect as phylink does this:
 
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ethernet/cavium/common/cavium_ptp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+        bool using_mac_select_pcs = false;
 
-diff --git a/drivers/net/ethernet/cavium/common/cavium_ptp.c b/drivers/net/ethernet/cavium/common/cavium_ptp.c
-index 9fd717b9cf69..984f0dd7b62e 100644
---- a/drivers/net/ethernet/cavium/common/cavium_ptp.c
-+++ b/drivers/net/ethernet/cavium/common/cavium_ptp.c
-@@ -239,12 +239,11 @@ static int cavium_ptp_probe(struct pci_dev *pdev,
- 	if (err)
- 		goto error_free;
- 
--	err = pcim_iomap_regions(pdev, 1 << PCI_PTP_BAR_NO, pci_name(pdev));
-+	clock->reg_base = pcim_iomap_region(pdev, PCI_PTP_BAR_NO, pci_name(pdev));
-+	err = PTR_ERR_OR_ZERO(clock->reg_base);
- 	if (err)
- 		goto error_free;
- 
--	clock->reg_base = pcim_iomap_table(pdev)[PCI_PTP_BAR_NO];
--
- 	spin_lock_init(&clock->spin_lock);
- 
- 	cc = &clock->cycle_counter;
-@@ -292,7 +291,7 @@ static int cavium_ptp_probe(struct pci_dev *pdev,
- 	clock_cfg = readq(clock->reg_base + PTP_CLOCK_CFG);
- 	clock_cfg &= ~PTP_CLOCK_CFG_PTP_EN;
- 	writeq(clock_cfg, clock->reg_base + PTP_CLOCK_CFG);
--	pcim_iounmap_regions(pdev, 1 << PCI_PTP_BAR_NO);
-+	pcim_iounmap_region(pdev, PCI_PTP_BAR_NO);
- 
- error_free:
- 	devm_kfree(dev, clock);
+        if (mac_ops->mac_select_pcs &&
+            mac_ops->mac_select_pcs(config, PHY_INTERFACE_MODE_NA) !=
+              ERR_PTR(-EOPNOTSUPP))
+                using_mac_select_pcs = true;
+
+and no mac_select_pcs() method is equivalent to a mac_select_pcs()
+that returns -EOPNOTSUPP.
+
+We then make mv88e6xxx_mac_select_pcs() return NULL, as we don't want
+to invoke this old behaviour anymore - mv88e6xxx doesn't require it.
+
+Then, allow phylink to remove PCS, which has been a long standing
+behavioural oddity.
+
+Remove the use of pl->pcs when validating as this will never be
+non-NULL unless "using_mac_select_pcs" was set.
+
+This then clears the way to removing using_mac_select_pcs from phylink
+and the check.
+
+ drivers/net/dsa/mv88e6xxx/chip.c |  2 +-
+ drivers/net/phy/phylink.c        | 18 +++-----------
+ net/dsa/port.c                   |  8 --------
+ 3 files changed, 5 insertions(+), 23 deletions(-)
+
 -- 
-2.47.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
