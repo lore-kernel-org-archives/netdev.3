@@ -1,66 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939AB158A36;
-	Wed, 16 Oct 2024 02:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EC621E3BF
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 02:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729044631; cv=none; b=INtCH+BMZWEEIdFRaEllR+s4wVhMZaHs5BgQfTFttScFvDm6TNhrnsOPqVfBKeqf82yfJRlv6II31VPVXtZMSlA8GhNhfpzzTze2x7x3iv8oFiTxaoF8Mzzjj7swdjL2YWXZPqheGD1+D8D2UM1pMXGI9SUAKnfOtRfBKSdo5J4=
+	t=1729045166; cv=none; b=W+6qtu3UGvFNFDeaBmYiuWrgg1L5nMdcZ2oGu64dDHjnCY7JSidIxPAsa4HsMVfyTeemNYTj7avmtmzvx7jP+cPF5vgRtiupEVLhcuggbbzvHBJulIiC+36S1a7feRj8TM+xQ+s09m9WDzOn976Y8j6VLRaL5m2DuQBE7JKfxQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729044631; c=relaxed/simple;
-	bh=QFEVKBp3PKfed8x/j9nO5Hzk2COKh3V0hiVyr+Nq1DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXGBJboxRL46yNfpySGVEam7rrxHeNhUYQKHs3XDquibHWcB1t5ewwV+5qE6ypXXtz0QNpFjr8DEjjZTcvHWgS8gycMms8o3iofF0Uu808Q8xkDxavmysYurgyb/gvfn5q0Re+TLcG6GAkzQWdimUrQ6AcHYr9k/V+g7UplmfvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRDpX/Kg; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRDpX/Kg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B726CC4CEC6;
-	Wed, 16 Oct 2024 02:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729044631;
-	bh=QFEVKBp3PKfed8x/j9nO5Hzk2COKh3V0hiVyr+Nq1DY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cRDpX/KgZk1FE2Bj4Q/R7vXWRD90Aa3SvsDGZtOk3MvYrZZ3p++0ggT29twejysDy
-	 3COXpXTknJeR98qXp1VTu76GdCUUSXxn/eu/X5BSS8HLw/oy9InNiYUOV45CpSWj0v
-	 hWKOANYI8CtcLjv4z6RBOdA4wdjX94SM8+2BhKlwHnskSqOKWXifKoTd7DGSrcvaWM
-	 xRd9JN214XhqEmeU1SW0YMNuCYvK/o44atBz8FMNrOyFxm7EXxFdAmRk7aIgI/Clsq
-	 tIBxcV27+vogP1v633yDZVMLrWri7oZhxs8uOABuiaTJ98yJAmmpYfl1e1LflijMVL
-	 xnUUY28F438Ng==
-Date: Tue, 15 Oct 2024 19:10:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
- <joabreu@synopsys.com>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, lftan.linux@gmai.com
-Subject: Re: [PATCH net-next 1/4] net: stmmac: dwmac4: Fix MTL_OP_MODE_RTC
- mask and shift macros
-Message-ID: <20241015191029.23d5bfb0@kernel.org>
-In-Reply-To: <20241015065708.3465151-2-leyfoon.tan@starfivetech.com>
-References: <20241015065708.3465151-1-leyfoon.tan@starfivetech.com>
-	<20241015065708.3465151-2-leyfoon.tan@starfivetech.com>
+	s=arc-20240116; t=1729045166; c=relaxed/simple;
+	bh=mhv+z3WCXp3ndg6cJpd2KVIfcPBjhos9utI95atwGV8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=p31waJYrHrJha4jEK0h6Gjf/31lKBWOpX9mxaQ+Z4eqzxnqwJ41d1QIBSAb+5p7HksHpmsU35+vusHIoeafjAZhPCYoByMnSiFrdJxokAYWPGXLi9f0tvEzS/yEXXlV86MLBbY0T5xGhzOEzfVuA6nvft3gSIqzrLw6vMKCjuBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XSvl25Y0jz1spnN;
+	Wed, 16 Oct 2024 10:18:06 +0800 (CST)
+Received: from dggpeml500024.china.huawei.com (unknown [7.185.36.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 248BB1A016C;
+	Wed, 16 Oct 2024 10:19:21 +0800 (CST)
+Received: from [10.174.178.41] (10.174.178.41) by
+ dggpeml500024.china.huawei.com (7.185.36.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 16 Oct 2024 10:19:20 +0800
+Message-ID: <107fb00f-1dac-4a13-b444-af2649901ae4@huawei.com>
+Date: Wed, 16 Oct 2024 10:19:19 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] mlxsw: spectrum_router: fix xa_store() error
+ checking
+To: Petr Machata <petrm@nvidia.com>
+CC: <idosch@nvidia.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>
+References: <20241015063651.8610-1-yuancan@huawei.com>
+ <8734kxix77.fsf@nvidia.com>
+Content-Language: en-US
+From: Yuan Can <yuancan@huawei.com>
+In-Reply-To: <8734kxix77.fsf@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500024.china.huawei.com (7.185.36.10)
 
-On Tue, 15 Oct 2024 14:57:05 +0800 Ley Foon Tan wrote:
-> RTC fields are located in bits [1:0]. Correct the _MASK and _SHIFT
-> macros to use the appropriate mask and shift.
-> 
-> Fixes: 35f74c0c5dce ("stmmac: add GMAC4 DMA/CORE Header File")
-> 
-> Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+On 2024/10/15 16:06, Petr Machata wrote:
+> Yuan Can <yuancan@huawei.com> writes:
+>
+>> It is meant to use xa_err() to extract the error encoded in the return
+>> value of xa_store().
+>>
+>> Fixes: 44c2fbebe18a ("mlxsw: spectrum_router: Share nexthop counters in resilient groups")
+>> Signed-off-by: Yuan Can <yuancan@huawei.com>
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+>
+> What's the consequence of using IS_ERR()/PTR_ERR() vs. xa_err()? From
+> the documentation it looks like IS_ERR() might interpret some valid
+> pointers as errors[0]. Which would then show as leaks, because we bail
+> out early and never clean up?
 
-no empty line between Fixes and Signed-off-by lines, please.
+At least the PRT_ERR() will return a wrong error number, though the 
+error number
 
-Please fix and resend with [PATCH net] in the title.
-All fixes which are needed in current Linus's tree need to go to net,
-rather than net-next, see:
-https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#git-trees-and-patch-flow
+seems not used nor printed.
+
+>
+> I.e. should this aim at net rather than net-next? It looks like it's not
+> just semantics, but has actual observable impact.
+Ok, do I need to send a V2 patch to net branch?
+>
+> [0] "The XArray does not support storing IS_ERR() pointers as some
+>      conflict with value entries or internal entries."
+>
+>> ---
+>>   drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+>> index 800dfb64ec83..7d6d859cef3f 100644
+>> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+>> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+>> @@ -3197,7 +3197,6 @@ mlxsw_sp_nexthop_sh_counter_get(struct mlxsw_sp *mlxsw_sp,
+>>   {
+>>   	struct mlxsw_sp_nexthop_group *nh_grp = nh->nhgi->nh_grp;
+>>   	struct mlxsw_sp_nexthop_counter *nhct;
+>> -	void *ptr;
+>>   	int err;
+>>   
+>>   	nhct = xa_load(&nh_grp->nhgi->nexthop_counters, nh->id);
+>> @@ -3210,12 +3209,10 @@ mlxsw_sp_nexthop_sh_counter_get(struct mlxsw_sp *mlxsw_sp,
+>>   	if (IS_ERR(nhct))
+>>   		return nhct;
+>>   
+>> -	ptr = xa_store(&nh_grp->nhgi->nexthop_counters, nh->id, nhct,
+>> -		       GFP_KERNEL);
+>> -	if (IS_ERR(ptr)) {
+>> -		err = PTR_ERR(ptr);
+>> +	err = xa_err(xa_store(&nh_grp->nhgi->nexthop_counters, nh->id, nhct,
+>> +			      GFP_KERNEL));
+>> +	if (err)
+>>   		goto err_store;
+>> -	}
+
 -- 
-pw-bot: cr
+Best regards,
+Yuan Can
+
