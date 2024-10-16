@@ -1,225 +1,260 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012019.outbound.protection.outlook.com [52.101.66.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D20C1BA89B;
-	Wed, 16 Oct 2024 07:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729064345; cv=fail; b=Cgl2mKyUiDqJ+Lnrt/cpmO7TUbaalPx02aoeUHuKhOAqDfUDyjrBrbIf+QVCV5XhVhSCDD29oqhkVet0ELirDjQgZ2MTCWGFCajFlXq4cct6Za9N8H1O8bwhZlaJdEX75O3eofpaoEkYG3lvwXx2fN4F5QDugB/ZoKiC0JW4qNg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729064345; c=relaxed/simple;
-	bh=5Deuxt/VkOoRg1BF1rf0pHgR5RQvb9U1lsWDQqpSPkc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VRQegiUkt4eun+mw+nxIqIb/AIV6mwJYZGZ+VkCstTzjjFI2zP6zx0iTo0aVl5GK3HCzmGFWlr9ZTuRXQVuZnnCc7WMDV0oXf42fwrrw9gfKtv77a7dNXWXk/A5qV3qpBMYVUuz9kA46Vw/D206FJyAmEXO3nPF6uRVfRJhUIYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GAYnILYP; arc=fail smtp.client-ip=52.101.66.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784111C0DED
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 07:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729064626; cv=none; b=lgSzYNCDtzP0Q0BUyQkzz28UAeoA8GaFLmOYqEHOT0R+JNSgw6n8Wsl2UePUB7F3jzH/ZW8JMs9xYt+HRSu+KTgqLqM58X80agCCoGcNlsmzKSm2GyRB/veJbVgkppwkebxNkCBNOCGt4PKCE+5UWCKy3nkVMew+5WPZPQDaUxM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729064626; c=relaxed/simple;
+	bh=p5ZxYhx8ZIeKOuvBg5VMhkMlNdup+Y7U0n6qru+fU0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pSgYHFPOHvceaYwhGHq4qlWXHhe4wbOt9kyfkw/UVnVoyXFaR1+k/6TVEtzyGGRQRqKiFfvv1CBWW2jU64b43cp/rmLBUr3l7aJWOXsxL75jRdKSVD4RkKRsolHMesCQEHO5hz+N7CaWJcUxnTTZbT9M9kHbjO+MBnp96dIM0Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=unFVaecN; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GAYnILYP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bcxyiMMAo8bAES7QRzXhAyJ4p+GZ5DarbGS3x/P1L+9F1jHivfUngMZsAiYnM79FQ2qNNMSZSnDPevAHGOwV5IUq8ofQryiEMmOLHbwQ67mmK9wktkhkraJkocMi59PjNoVgGicvnskn1csv9NM9kexvw+J2K0w3/hd0JSKrkqxxFQMALUvuSsQLaMvNVWnfbFHp1piJkP7aCXfzEHYUGGcUm31PI+0X4ZJJT0Ztp14Dqx4isSH0mqQopReOz64cwLSM/osiBppP5ezbg/x17gefxzVSyYZ9U/Kt+uPmS4FYdqwOGf/LAOokHqmnQHoQqOpNteRIsKLD7uDCapWOHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QIm4QckzCbMK6nds/4rD63cLypdMFKlTwTgSScW6tfc=;
- b=Drbcd410YyuLp0KXiVgFh5cM+yr9X2XF3Yn8OE69MHKTnq8MntshsKJCsFD+94Uo8WVe1I/9+YCazaf2oqBG+YEEoOPoITmQoHDxIfChZzVdUhzyx5e9HPejfj7R3IX9I1kQYHSJsRGbarcF7Yswv/gzceBJ7zbvIrg4Chi2/1bBqaDpA30wESNYiEbrz/8JUgdtIT9AgLo8rCIoWPOFogu80IJb9u0BOpuz8kGXCb8gZ+75RijTA5/mpf+q2hduKD1neLGzNbB5scJyUHfLSDJYdS9s9OVdFU7kHXF/pdAgXjP72jOW7aCOOQ2cCsHbj+LxTfLY7NpT7L9eyhNSqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIm4QckzCbMK6nds/4rD63cLypdMFKlTwTgSScW6tfc=;
- b=GAYnILYPvkmejDVIQ4aX8iHfcUFtzxeOo2mDNcWtxVJsxnbtJzYZa5YVmBp3obWImd1HufKFYIynPIIDqyabuOO0E1NUjwkYeyINQ3HPLPT//TO9llSWkL1cGmtNaMCyn6dCY8Su38FpFBn9h7AX4CT+IE7TuFm1YpjJbF81IyMioNowrpfyWS3XfTZWHOCYvUOnnvWrg4PfOMa2mCaB1Uu+Rf7sTuy6Vh7JtxdgyiMrunUtuc8UHIFHCNAAqv5sYuP4TWax8XGTCotypmrnOSeQRd2kiPHUaGDtn1Cs3lCeoLKbgpAMf83fTPJ7rzV/7LfsR6E02f86rtTywDf9pQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV1PR04MB9102.eurprd04.prod.outlook.com (2603:10a6:150:21::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Wed, 16 Oct
- 2024 07:38:59 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8048.020; Wed, 16 Oct 2024
- 07:38:59 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Simon Horman <horms@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu
- Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Frank Li
-	<frank.li@nxp.com>, "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>
-Subject: RE: [PATCH v2 net-next 10/13] net: enetc: extract
- enetc_int_vector_init/destroy() from enetc_alloc_msix()
-Thread-Topic: [PATCH v2 net-next 10/13] net: enetc: extract
- enetc_int_vector_init/destroy() from enetc_alloc_msix()
-Thread-Index: AQHbHwQq4QKqZMQ9p0KkBhFIskuic7KI/D2AgAABGCA=
-Date: Wed, 16 Oct 2024 07:38:58 +0000
-Message-ID:
- <PAXPR04MB8510FEE221C7B3B9FDB0801188462@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20241015125841.1075560-1-wei.fang@nxp.com>
- <20241015125841.1075560-11-wei.fang@nxp.com>
- <20241016072929.GD2162@kernel.org>
-In-Reply-To: <20241016072929.GD2162@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV1PR04MB9102:EE_
-x-ms-office365-filtering-correlation-id: 6212c280-ba16-4978-00b9-08dcedb598e4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?xS+svd4jRK3RM81/P62/1/PR6+5D7XksA3yWjxBmLdsMmjb+Lv84uhBsY2lq?=
- =?us-ascii?Q?vQeCS1jdpZSWFTRt+wcaH9I0mPXQGadsgfh47guI1zQ3Y7ri43xont368XDs?=
- =?us-ascii?Q?C8Gx0woTRr3EUfNFplHxZWOgCVua4ocE4hgWkrc5I8hli2iDfoZCIi7Ynp7m?=
- =?us-ascii?Q?4E6/dnzrKD2abc1q9tISY5XnCFIe48NHpYIiQbjXQJqgEyej/4HPQTkQt89K?=
- =?us-ascii?Q?tpfzqhRYM1/rjaKcv11Aa8QEncg5W8TwzYGjp438AF33kkYHhJ3L8DGx19D4?=
- =?us-ascii?Q?KHTDTD26mdrH5dPZG7XM9Ll+9QZ7/EStHTDIpLWVYcV+Lj6EjqXS/MSFyXY/?=
- =?us-ascii?Q?lNdCh67Uc+KJGRfzliDujamY2iCAOqHOt2fSL13uGfYr9h3vKp4gt4YdFJ58?=
- =?us-ascii?Q?HIAgY2Pr/OAAicZ1XlczBeS6Dr7SdJ+hKku6sXz/wdTWOSySYhoqm0AH63jz?=
- =?us-ascii?Q?us/Z1cnP3TwDN35+1h/K+A5oig12N6ANrlYn9QYzTrompBxAHv+rKVXQUC7h?=
- =?us-ascii?Q?mXAVthhuLGISRaIpMNKEflZwA8zE09oHqWke5HGKJ58TBxI91KpT4ah8RFPl?=
- =?us-ascii?Q?p41VXeNWl6MiSBD/CKHDzTau1SmDJTlr76sOUMQvbjMXd0T/83qfHIKvntR0?=
- =?us-ascii?Q?x0oIR6QkzDynWKFuZYNT7YLeDKKXFCQYkSwkWTeNVoylb7xGGrB+9pJNyXWU?=
- =?us-ascii?Q?4kcaVvYn6ncqhBySRgk1t8cjqamIhKpPukOepRP7k/pQk2PZsukoeNa9rZ4e?=
- =?us-ascii?Q?gOMiNZQ0DLyD8+LqB7rV0I033xHvG7X3/KW6MncDhcvNN75ESAU1o3NbNxAe?=
- =?us-ascii?Q?5waC0ZC0HyQpGKBr6av9hEJsKCo3O1EY4BT69MCotAbqzjzk0FBTgOCyIiTt?=
- =?us-ascii?Q?lNn1gFu06VQEqUAmp2VZUuLn3nUrBmz7f2Qa4eoAypGAlG0+hjOuCyKxnnxA?=
- =?us-ascii?Q?HJ1y20cj9RAJt1CPWv8X1A1H8j5byvn64P8NDOkFmh+vCxrBjy7q23NwZl9n?=
- =?us-ascii?Q?6GELX/hwlMbqXXqPBz/idQ2Z0ywNtMaewrisiVb80MyhyZ3eFZ31wVm3aZVK?=
- =?us-ascii?Q?Dw9xxGe438lOoRLxuXVJareb7RxJsBfcogTRMGgTZvza/rSfqBIG3C2L68rk?=
- =?us-ascii?Q?JFL3DxdM4tCYCPU/gAisMEojH32BKLN2NNuO3iW3ACNW9k4uRtyT7Yhhivl3?=
- =?us-ascii?Q?Ly7+8bEnkRttfD5JzHMKXYuLpFi+28y1tc+xbBhlsK4KIUsossK+5XI6vcj9?=
- =?us-ascii?Q?4ZL2bGbP06cJ7nWHzL+hN/rOJvt795nh+INdqSY7DyJK2mwK/Hod9k2TB+0a?=
- =?us-ascii?Q?Un4Ul7B2Alv6VzGc1IJCi+YQsa6gI0QrQEXHWxoU5LCBGA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?79z5fp39BzhhaS8H012+fpF73a/sZxTTe3lG6g0dFZuayjtUyiWiScC/EGjB?=
- =?us-ascii?Q?WxeUW2eDMOQcGlyfgrzuhi1RgUrliIBaHGn0nyoqahyArslIOvdwMtgLI82e?=
- =?us-ascii?Q?nwZNV5dD0obPKlfAWPKgoBNFKnde9dMr9nyoLMmi3TE09UApfcPfQOnL/mB9?=
- =?us-ascii?Q?aufWQcKBYwOQlGsygrXvJkADSXzzy2nuGH8KTbCcUkuPOtniDc6WWdSDE6xe?=
- =?us-ascii?Q?C6yymVIUlhKfeHGFRpvoZZpVGYiVncya2PpkPusaXSHbBdxhT8/KBaGsOBkL?=
- =?us-ascii?Q?+H5rp3lsWLbzy6BrOdZukpx2HhNoP3pu86iIm1pP21SKe74j0Q8qsxCTWxLh?=
- =?us-ascii?Q?ddk17QpVQSACMAw2uSsqFMpsI52pNUMKWcVtb5I0djNftFN6QpUwRPL5XvIk?=
- =?us-ascii?Q?1UW2apY+74bOq72VfLVr67sDhe3sDuLyJ5DV5zcIBCdGA70mUmxb53Ae1gb4?=
- =?us-ascii?Q?j2rvRv9rzqmEx3MP9eGKooYZsoALG4h0KR8DNj/MOUWSwESbCfsn/9/tvXgC?=
- =?us-ascii?Q?ARmulYnjoVq2NDw+gyC4Hh2tl9CeYZ34B6W25y7mCg4W5RJWMGJN23ur90LL?=
- =?us-ascii?Q?IMRsoqPqmeLPD7ZS1OP6N1JFjp2Lcqo9EESovT+uPdpdTuEFp8NnJRXLDRvs?=
- =?us-ascii?Q?NJZ+Pq7mESi+HpS2W6HYd011r424e8dV0vdbGYqawepksr5S6q/gg32fYErP?=
- =?us-ascii?Q?Ay8tDzdhZMJBzAuvMoJ6c4cddQM0qnXy5clURm5mIPI1YD/0byQDg1evPvv6?=
- =?us-ascii?Q?aYSvUO/aUGO96p1wXgAuNS5jmDoWC1RB8NzGuyQ5cpWG0PdUHY9puoo3782G?=
- =?us-ascii?Q?VvFfcWWMVKVbNffm0hPbri8O+0r/xw+gYi7ZGW3amY7Q/2wRtipFyN26Nz7C?=
- =?us-ascii?Q?oYa+a0wVJFFgn7s773PhuVhlrLk/ng2cAwbHm2Xps7R51p7+fr9RwaQl4ZOM?=
- =?us-ascii?Q?oCmoeoGKv2BAE+Dqvqp2a9Vh3ZX5gu20OiN4aufL6JZsLJOPaHaCsGdTkx3t?=
- =?us-ascii?Q?2xRD8WuFW4qMVzmRmgi6H4Kd0wjmAJGO5wQEo+tbpgBTlQzyAbGsGA2SV1eL?=
- =?us-ascii?Q?TRSROju5SoIOhapMRJYdLQ/uncFGT+DLjgHA2Eb4dWDEWUwgZp7IWbV7yqsA?=
- =?us-ascii?Q?xvbZ7lsDV6X+l6GZbXcwjGxs0LvaT9P+17KJ8oJnazv9HnNO1o6sfiiT+tKv?=
- =?us-ascii?Q?53wmjMKLnZALpianZYF33MKF3xlK7+KYVE4jXXXQ9swYw0m4Ibv/e0FEix62?=
- =?us-ascii?Q?ZfkyGgtK09b3FVkEQ8r+WxJjQv4x3RMZnWI+JF4Ql8xJPbm256Hu6ttoOzDe?=
- =?us-ascii?Q?fqaiazwiU8/e4IxEIh8iPmxvRi4vV7D5TPEfmOfZEj42SM6YvYm+TYrx4WjA?=
- =?us-ascii?Q?57n96i3ehNJCeXexA54RnTT8owFN7gRoLaOksMIHcylWOXs2Y0lK4Nb6Iwt5?=
- =?us-ascii?Q?KXVW/OoTKz+mGVUghffagbvSyzMMgUa9b/na9bd5AjfqHJFAMU6w3Vk06MtM?=
- =?us-ascii?Q?GwL+kXbXBfrN7maEcehrXFSwXLAqFj99W7+GnduR9MKkqjd+et7olEr2U0jD?=
- =?us-ascii?Q?5OuFNYPP7n/uovO2nsI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="unFVaecN"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a99f629a7aaso110030066b.1
+        for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 00:43:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1729064623; x=1729669423; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EOMYLzkxXlztr2X9JVmFvqxwZU+iOw3BliPLuajBLvI=;
+        b=unFVaecNG/RmQUDD464u7kC7UBXqyVkNZ2rq1WQeIlFPHyOt14Mh7ZxtRiB8E22z4r
+         Cu/uqjlYjwYVaLwPL3f2yG7by33d/wuulOFuMaLXoE7TU+3cLr2iwRN0jLcUBTjzGFyC
+         7ycvFe6Wq68asywxCHRvebBC6FN7NdmUPwI0LQSkNpDt5dqj4vsAy5wCKpAL+8m4E+5Y
+         ZuQ1A5QyA2U7ZA2TFSUbmK/Z7JUtG7x3YneAeYAiNwpw+tMHFa3mOYn1g1Rnk1NC6pya
+         L4HWZ93GEOyIRFhFgY/NwS/ZgWJBnqmpg6Gvj1ytpnt358hS3D+u1YeDSOWDUveTGAGB
+         /nww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729064623; x=1729669423;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOMYLzkxXlztr2X9JVmFvqxwZU+iOw3BliPLuajBLvI=;
+        b=WqtJrLtortY6/40zH+1KSc073kLfdmVfV9RwmJdUbsLsnf1W4LPZxSkIZUPIunD0qS
+         0mVWsmR5kX1iHJ+cNiH7GTB95BqXrqKWxLSONOH+7pEUt05z06S0i9cl9RXDDrxMj2Hi
+         M83Sia+57eulh3iMHkZShBAKF72dABdbgjFUCqkODvYqIMMhyp6zNLr3g+MdasRXNw/+
+         voE0twFuLzALwHTTl+zith0NKCyjYNVQy9eENsbbnU/iq+dISoM0zBkfFn3CZwQUQ0rD
+         qGlw14pgGqGg978ICQHC63Zc2qksmSgh+NYJbqxrjtXGQz+vJ8J5aMBFiEAMNXKJhtZ7
+         BMgA==
+X-Gm-Message-State: AOJu0YxuuaOfOOg763+zEqlmdwN6OX0f4AHLLZY3LsWpz7qT4QL0ab0B
+	gVHSd9SLFcO/IMQl01RDvv1umYLv0FrYX5yXLdk0orXrVB0Y0FY+RuFR7FtqScE=
+X-Google-Smtp-Source: AGHT+IHtkc3sEYisRvH1Z62l5rcBJzJB6v43M6C+fulzoVqkC6uCMW4XNujhBsdtaO8gPsiHnusJdA==
+X-Received: by 2002:a17:907:9706:b0:a99:facf:cfc with SMTP id a640c23a62f3a-a99facf0e10mr1044501566b.17.1729064622648;
+        Wed, 16 Oct 2024 00:43:42 -0700 (PDT)
+Received: from [192.168.0.245] ([62.73.69.208])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2973fba2sm149241266b.47.2024.10.16.00.43.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2024 00:43:42 -0700 (PDT)
+Message-ID: <ea4de936-9a84-4910-960b-65c5cc2dfcdd@blackwall.org>
+Date: Wed, 16 Oct 2024 10:43:40 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6212c280-ba16-4978-00b9-08dcedb598e4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2024 07:38:58.9234
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: utqoiHexh76q20d3M+ctrOgzwmE/oGFTSt1zCjVgkpn3qrugsAyUebJUV+ID6aE46hUs33zKKPaEURF/kiQYsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9102
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v1 net-next 06/12] net: core: dev: Add
+ dev_fill_bridge_path()
+To: Eric Woudstra <ericwouds@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Frank Wunderlich <frank-w@public-files.de>,
+ Daniel Golle <daniel@makrotopia.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20241013185509.4430-1-ericwouds@gmail.com>
+ <20241013185509.4430-7-ericwouds@gmail.com>
+ <c3678626-7f5c-4446-9b4d-2650ddf5d5a6@blackwall.org>
+ <a0db4efa-2328-4935-9eb6-3344fcbc4b07@gmail.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <a0db4efa-2328-4935-9eb6-3344fcbc4b07@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->=20
-> On Tue, Oct 15, 2024 at 08:58:38PM +0800, Wei Fang wrote:
-> >  drivers/net/ethernet/freescale/enetc/enetc.c | 174 +++++++++----------
-> >  1 file changed, 87 insertions(+), 87 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > index 032d8eadd003..d36af3f8ba31 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > @@ -2965,6 +2965,87 @@ int enetc_ioctl(struct net_device *ndev, struct
-> ifreq *rq, int cmd)
-> >  }
-> >  EXPORT_SYMBOL_GPL(enetc_ioctl);
-> >
-> > +static int enetc_int_vector_init(struct enetc_ndev_priv *priv, int i,
-> > +				 int v_tx_rings)
-> > +{
-> > +	struct enetc_int_vector *v __free(kfree);
-> > +	struct enetc_bdr *bdr;
-> > +	int j, err;
-> > +
-> > +	v =3D kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
-> > +	if (!v)
-> > +		return -ENOMEM;
->=20
-> ...
->=20
-> >  int enetc_alloc_msix(struct enetc_ndev_priv *priv)
-> >  {
-> >  	struct pci_dev *pdev =3D priv->si->pdev;
->=20
-> ...
->=20
-> > @@ -2986,64 +3067,9 @@ int enetc_alloc_msix(struct enetc_ndev_priv
-> *priv)
-> >  	/* # of tx rings per int vector */
-> >  	v_tx_rings =3D priv->num_tx_rings / priv->bdr_int_num;
-> >
-> > -	for (i =3D 0; i < priv->bdr_int_num; i++) {
-> > -		struct enetc_int_vector *v;
-> > -		struct enetc_bdr *bdr;
-> > -		int j;
-> > -
-> > -		v =3D kzalloc(struct_size(v, tx_ring, v_tx_rings), GFP_KERNEL);
-> > -		if (!v) {
-> > -			err =3D -ENOMEM;
-> > +	for (i =3D 0; i < priv->bdr_int_num; i++)
-> > +		if (enetc_int_vector_init(priv, i, v_tx_rings))
-> >  			goto fail;
->=20
-> Hi Wei Fang,
->=20
-> It looks like, if we reach this error handling during the first iteration
-> of the for loop then err, which will be return value returned by the func=
-tion,
-> is ininitialised. Perhaps this would be better expressed as follows?
-> (Completely untested!)
->=20
-> 		err =3D enetc_int_vector_init(priv, i, v_tx_rings);
-> 		if (err)
-> 			goto fail;
->=20
-> Flagged by Smatch.
->=20
+On 14/10/2024 21:34, Eric Woudstra wrote:
+> 
+> 
+> On 10/14/24 8:59 AM, Nikolay Aleksandrov wrote:
+>> On 13/10/2024 21:55, Eric Woudstra wrote:
+>>> New function dev_fill_bridge_path(), similar to dev_fill_forward_path().
+>>> It handles starting from a bridge port instead of the bridge master.
+>>> The structures ctx and nft_forward_info need to be already filled in with
+>>> the (vlan) encaps.
+>>>
+>>> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+>>> ---
+>>>  include/linux/netdevice.h |  2 +
+>>>  net/core/dev.c            | 77 ++++++++++++++++++++++++++++++++-------
+>>>  2 files changed, 66 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+>>> index e87b5e488325..9d80f650345e 100644
+>>> --- a/include/linux/netdevice.h
+>>> +++ b/include/linux/netdevice.h
+>>> @@ -3069,6 +3069,8 @@ void dev_remove_offload(struct packet_offload *po);
+>>>  
+>>>  int dev_get_iflink(const struct net_device *dev);
+>>>  int dev_fill_metadata_dst(struct net_device *dev, struct sk_buff *skb);
+>>> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
+>>> +			 struct net_device_path_stack *stack);
+>>>  int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>>  			  struct net_device_path_stack *stack);
+>>>  struct net_device *__dev_get_by_flags(struct net *net, unsigned short flags,
+>>> diff --git a/net/core/dev.c b/net/core/dev.c
+>>> index cd479f5f22f6..49959c4904fc 100644
+>>> --- a/net/core/dev.c
+>>> +++ b/net/core/dev.c
+>>> @@ -713,44 +713,95 @@ static struct net_device_path *dev_fwd_path(struct net_device_path_stack *stack)
+>>>  	return &stack->path[k];
+>>>  }
+>>>  
+>>> -int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>> -			  struct net_device_path_stack *stack)
+>>> +static int dev_fill_forward_path_common(struct net_device_path_ctx *ctx,
+>>> +					struct net_device_path_stack *stack)
+>>>  {
+>>>  	const struct net_device *last_dev;
+>>> -	struct net_device_path_ctx ctx = {
+>>> -		.dev	= dev,
+>>> -	};
+>>>  	struct net_device_path *path;
+>>>  	int ret = 0;
+>>>  
+>>> -	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
+>>> -	stack->num_paths = 0;
+>>> -	while (ctx.dev && ctx.dev->netdev_ops->ndo_fill_forward_path) {
+>>> -		last_dev = ctx.dev;
+>>> +	while (ctx->dev && ctx->dev->netdev_ops->ndo_fill_forward_path) {
+>>> +		last_dev = ctx->dev;
+>>>  		path = dev_fwd_path(stack);
+>>>  		if (!path)
+>>>  			return -1;
+>>>  
+>>>  		memset(path, 0, sizeof(struct net_device_path));
+>>> -		ret = ctx.dev->netdev_ops->ndo_fill_forward_path(&ctx, path);
+>>> +		ret = ctx->dev->netdev_ops->ndo_fill_forward_path(ctx, path);
+>>>  		if (ret < 0)
+>>>  			return -1;
+>>>  
+>>> -		if (WARN_ON_ONCE(last_dev == ctx.dev))
+>>> +		if (WARN_ON_ONCE(last_dev == ctx->dev))
+>>>  			return -1;
+>>>  	}
+>>>  
+>>> -	if (!ctx.dev)
+>>> +	if (!ctx->dev)
+>>>  		return ret;
+>>>  
+>>>  	path = dev_fwd_path(stack);
+>>>  	if (!path)
+>>>  		return -1;
+>>>  	path->type = DEV_PATH_ETHERNET;
+>>> -	path->dev = ctx.dev;
+>>> +	path->dev = ctx->dev;
+>>> +
+>>> +	return ret;
+>>> +}
+>>> +
+>>> +int dev_fill_bridge_path(struct net_device_path_ctx *ctx,
+>>> +			 struct net_device_path_stack *stack)
+>>> +{
+>>> +	const struct net_device *last_dev, *br_dev;
+>>> +	struct net_device_path *path;
+>>> +	int ret = 0;
+>>> +
+>>> +	stack->num_paths = 0;
+>>> +
+>>> +	if (!ctx->dev || !netif_is_bridge_port(ctx->dev))
+>>> +		return -1;
+>>> +
+>>> +	br_dev = netdev_master_upper_dev_get_rcu((struct net_device *)ctx->dev);
+>>> +	if (!br_dev || !br_dev->netdev_ops->ndo_fill_forward_path)
+>>> +		return -1;
+>>> +
+>>> +	last_dev = ctx->dev;
+>>> +	path = dev_fwd_path(stack);
+>>> +	if (!path)
+>>> +		return -1;
+>>> +
+>>> +	memset(path, 0, sizeof(struct net_device_path));
+>>> +	ret = br_dev->netdev_ops->ndo_fill_forward_path(ctx, path);
+>>> +	if (ret < 0)
+>>> +		return -1;
+>>> +
+>>> +	if (!ctx->dev || WARN_ON_ONCE(last_dev == ctx->dev))
+>>> +		return -1;
 
-Thanks, you are correct, I will fix it.
+* ^^^^^^^^^ here
+
+>>> +
+>>> +	if (!netif_is_bridge_master(ctx->dev))
+>>
+>> hmm, do we expect ctx->dev to be a bridge master? Looking at
+>> br_fill_forward_path, it seems to be == fdb->dst->dev which
+>> should be the target port
+> 
+> It would indeed be very unlikely. It was a left-over from code I wrote,
+> thinking that here I could handle cascaded bridges (via vlan-device). I
+> dropped that, since conntrack does not follow this flow.
+> 
+> So would it be better to only make sure that ctx->dev is not a bridge
+> master?
+> 
+> 	if (netif_is_bridge_master(ctx->dev))
+> 		return -1;
+> 
+> 	return dev_fill_forward_path_common(ctx, stack);
+> 
+
+I think you misunderstood me, I don't think ctx->dev can ever be a bridge
+device because ctx->dev gets set to fdb->dst and fdbs that point to the bridge
+itself have fdb->dst == NULL but ctx->dev is checked against NULL earlier*
+so the bridge dev check doesn't make sense to me.
+
+>>> +		return dev_fill_forward_path_common(ctx, stack);
+>>> +
+>>> +	path = dev_fwd_path(stack);
+>>> +	if (!path)
+>>> +		return -1;
+>>> +	path->type = DEV_PATH_ETHERNET;
+>>> +	path->dev = ctx->dev;
+>>>  
+>>>  	return ret;
+>>>  }
+>>> +EXPORT_SYMBOL_GPL(dev_fill_bridge_path);
+>>> +
+>>> +int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+>>> +			  struct net_device_path_stack *stack)
+>>> +{
+>>> +	struct net_device_path_ctx ctx = {
+>>> +		.dev	= dev,
+>>> +	};
+>>> +
+>>> +	memcpy(ctx.daddr, daddr, sizeof(ctx.daddr));
+>>> +
+>>> +	stack->num_paths = 0;
+>>> +
+>>> +	return dev_fill_forward_path_common(&ctx, stack);
+>>> +}
+>>>  EXPORT_SYMBOL_GPL(dev_fill_forward_path);
+>>>  
+>>>  /**
+>>
 
