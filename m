@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B7D1D5CE0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7615B1D5CF2
 	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 21:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729115556; cv=none; b=afvT9AAXfctO2/jxX5xCDh5XfkFRaa9fJSnN5hP4TVEgOsjAPff7xQt5dLucmc3W8qL4ZfdRLM+bjnF03mX0WUqPj0HXsjsKXQb5+Tq6gcglV09+qAJ1l0z7N2ygIEb4GkcnAshoEE6bYgkRJ/Fs/JTqXJpaNA1+Zg6exGXR/+A=
+	t=1729115556; cv=none; b=aDkCwa0lmFrPB1/MYrClvQr8htrJyZIhPH4IQrQsxs09yBCAGjgVW47EWF2ZT6mZM/BI4AfWdYXbX3zrTtpwEpd3kqETpm3fVuzARkvOh/L+M8AXmpv4H+/8SH4SE2wSN6lLRdpOwyQFoUWZqn8ccDRYrc+G5YG9KAP8pKia78g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729115556; c=relaxed/simple;
-	bh=svwv8RQdT5lyd7/tz6EetW56WKr+H6qzB5cVdUZBLIM=;
+	bh=7GtJji14G3kifWiJdk4fDCF5TSs2sCvgJBeyE6WDGs0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T4DbVAyM3JBeR/PHPpSr6Nk5Hd7QIGY0LMW4OQ8Sx2N7KvS0ALq9gReb6Ul2CEWXcQM9SpgOhQJ8LKDWwWoZjNtZPq2K0V7s/bXKgYH4V+BJ0vHxam+6NiQSwnDPrvhjivqvgEAOuuhZoPO4V5bEA2Pl8N8tKLliEcHe6Wl0wCU=
+	 In-Reply-To:To:Cc; b=Hhq2Gsvp+xmFae+QMattGDki6ARBUlNzK0Fni3PxdJyCjnI02A0nLFcdHY6ht2zBmdpktfMIAE5Zbvy+KVejDDbG2le+Kx95cpHs1Rx5rm17x2hx9t/YIa3pCGitbjXuINHSm4DteWX/GLo+R6vg9icAlEjXW/qpuPUeeU/PgYo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,30 +18,30 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1t1BwO-0003Ji-MR
-	for netdev@vger.kernel.org; Wed, 16 Oct 2024 23:52:24 +0200
+	id 1t1BwU-0003S1-Dn
+	for netdev@vger.kernel.org; Wed, 16 Oct 2024 23:52:30 +0200
 Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1t1BwN-002OPL-E9
-	for netdev@vger.kernel.org; Wed, 16 Oct 2024 23:52:23 +0200
+	id 1t1BwQ-002OV9-O4
+	for netdev@vger.kernel.org; Wed, 16 Oct 2024 23:52:26 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 1E1D43548C4
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 21:52:23 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 6A219354931
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 21:52:26 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id E151835487A;
-	Wed, 16 Oct 2024 21:52:19 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3627C354880;
+	Wed, 16 Oct 2024 21:52:20 +0000 (UTC)
 Received: from [172.20.34.65] (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f7a7a4d5;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id be551a47;
 	Wed, 16 Oct 2024 21:52:18 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 16 Oct 2024 23:51:50 +0200
-Subject: [PATCH net-next 02/13] net: fec: struct fec_enet_private: remove
- obsolete comment
+Date: Wed, 16 Oct 2024 23:51:53 +0200
+Subject: [PATCH net-next 05/13] net: fec: fec_restart(): introduce a define
+ for FEC_ECR_SPEED
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241016-fec-cleanups-v1-2-de783bd15e6a@pengutronix.de>
+Message-Id: <20241016-fec-cleanups-v1-5-de783bd15e6a@pengutronix.de>
 References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
 In-Reply-To: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
@@ -61,15 +61,15 @@ Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>
 X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=942; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=svwv8RQdT5lyd7/tz6EetW56WKr+H6qzB5cVdUZBLIM=;
- b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnEDWAA4MlaBYTIlXO3nam5JM2yIBsEXrcTAsk0
- Gl12UBoiciJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZxA1gAAKCRAoOKI+ei28
- b0IqB/46F2e0PqsiEsIKCw7j3fLigN58r0rjiLx7nPpJueDouojyNkREm/xNY9kWVXiorCSd1uA
- ZD4BUln4w5R0JblVMyhct8Tktilj8GB4ClYW3VPHdXmvy0CwdXSH7WRyrSOjJVA3qF9CpaMoQw8
- HViueRNL23CwbXuHX1myfQxcT91cJpJdCQ3Ka1rdmFV1keVNbEOWJ5cJXNXvHvkBhuecaQPE6KV
- dxTgzy+H8/rJcQjSpwqSIYYUzRimhZUGNrsxGNFTr5wrvoZRZSZtu7A/1LSqBhr8qyLm5MNO7kD
- TmH5CRiCgQlb6+dODiAPktiQ2rAgL7n4toTcZUOS1rtMPHHT
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1217; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=7GtJji14G3kifWiJdk4fDCF5TSs2sCvgJBeyE6WDGs0=;
+ b=owEBbQGS/pANAwAKASg4oj56LbxvAcsmYgBnEDWFQWZhrYZZkfdVhV0Jk/Nfh9q7WlZQzjSul
+ hPTCO1BEJaJATMEAAEKAB0WIQRQQLqG4LYE3Sm8Pl8oOKI+ei28bwUCZxA1hQAKCRAoOKI+ei28
+ byqWB/0afSRnTRSECfSjxdtzoGolxiFb4HYpV2P73zfe1yozkI6gXgDXT18McR6n3aAWF4L4bx5
+ Nn89bAutGj1L/8DXa95MBR5ZBZu9nQ1fkrrRz+JAQL+ipm8WQTk+2EcCDQOCjBVQiV8TYEouwaU
+ cVHaECBe48qFKg2mXcJ32kHi6YypNnolHI6BeYGVHgbb5gk58O0uoFs0k7a5egU0E2Y1LkEDI6O
+ 3rIEw0I2Ec8rgoQFFMvCqIkUStsQtrnqqr0hmVojY/iHj76TKNZQDXVFZfBChWF1uU53ebx2Irm
+ XPvVhjR9gM/LphVHnPX4JtVrrPeyZ+X+YzpScGXg+M+Hu5jZ
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -77,27 +77,35 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-In commit 4d494cdc92b3 ("net: fec: change data structure to support
-multiqueue") the data structures were changed, so that the comment
-about the sent-in-place skb doesn't apply any more. Remove it.
+Instead of open coding the bit mask to configure for 1000 MBit/s add a
+define for it.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/ethernet/freescale/fec.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 77c2a08d23542accdb85b37a6f86847d9eb56a7a..e55c7ccad2ec39a9f3492135675d480a22f7032d 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -614,7 +614,6 @@ struct fec_enet_private {
- 	unsigned int num_tx_queues;
- 	unsigned int num_rx_queues;
- 
--	/* The saved address of a sent-in-place packet/buffer, for skfree(). */
- 	struct fec_enet_priv_tx_q *tx_queue[FEC_ENET_MAX_TX_QS];
- 	struct fec_enet_priv_rx_q *rx_queue[FEC_ENET_MAX_RX_QS];
- 
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index c57039cc83228dcd980a8fdbc18cd3eab2dfe1a5..2ee7e4765ba3163fb0d158e60b534b171da26c22 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -276,6 +276,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+ #define FEC_ECR_MAGICEN         BIT(2)
+ #define FEC_ECR_SLEEP           BIT(3)
+ #define FEC_ECR_EN1588          BIT(4)
++#define FEC_ECR_SPEED           BIT(5)
+ #define FEC_ECR_BYTESWP         BIT(8)
+ /* FEC RCR bits definition */
+ #define FEC_RCR_LOOP            BIT(0)
+@@ -1160,7 +1161,7 @@ fec_restart(struct net_device *ndev)
+ 		/* 1G, 100M or 10M */
+ 		if (ndev->phydev) {
+ 			if (ndev->phydev->speed == SPEED_1000)
+-				ecntl |= (1 << 5);
++				ecntl |= FEC_ECR_SPEED;
+ 			else if (ndev->phydev->speed == SPEED_100)
+ 				rcntl &= ~FEC_RCR_10BASET;
+ 			else
 
 -- 
 2.45.2
