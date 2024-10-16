@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA72215F5B;
-	Wed, 16 Oct 2024 19:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56E3216A2C;
+	Wed, 16 Oct 2024 19:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729105554; cv=none; b=YHfzKxLIEHyKTrYP7l0xxf5oGb6TJlKFcctbuvJ8+HFJjkDnXttUwccl03kCd5F+6LJLOlXEdj8AfM65hCBnT4OVyP3fLKj+ZKV3WAHxCvT39Cg6EnuY8KF1NpMkaHa3ioP4FE560PiRJ7qtvzTzkh+T/hZChE5rhCVoThNznrI=
+	t=1729105557; cv=none; b=CkTTOcbBVCNN3V4oWnlGqhipeHcdHPtHKtbo3AWLNs6B543mG9Nvw1arQHJtVN0DZw5I6LjoAwB1dr1qgSQaC7iB6jl3lW2Hj2tOeTGkJCt85FrCmeg1ahfZQnNPAaY+4kQHGcsv9yAbOlPIvRYOIzPk5dg6YKVXqP6oq/2OKcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729105554; c=relaxed/simple;
-	bh=WtQiltnUCgWkKmpkZDumFz9tz719l9jis6mD95+yIJc=;
+	s=arc-20240116; t=1729105557; c=relaxed/simple;
+	bh=yjxkbriF4zNM9kMqtsAZUt5mOfPi6h8PCU4FZlX+Wj0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NCM5e7Khf750R8YYaVNaTML66qlgQSaUoojV0RforIEDa5JkmkeCNdqi46suegggIH3yZRZaSB4I7F7aHakVWXsg0aRgA6vRAchJq8uiFpWk7HF8Gz7GVNCPj0RyzHfr4e/PuD1UUuAMKBKZ9wqf0YaQ1P6Oz5CPI7ahPM+OPas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Is8/twvH; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mDhOQgZDlHm/AKd4v9jZR25zZLQoXfpOFP5sHzfGlgD74Eh8pgVXRg7joCDyH6dp5gpN32z6pV6wLi5h4iNrKNmGkjc9Z0gytUnld4gYQ8XyKRtvDaznkn0AsU48giA5IrTtTSVfz3/ae1RczUCeG6IpX/sLmrrlMVIvY27fsTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKrh36aN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Is8/twvH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66623C4CED1;
-	Wed, 16 Oct 2024 19:05:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKrh36aN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696BCC4CEC5;
+	Wed, 16 Oct 2024 19:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729105553;
-	bh=WtQiltnUCgWkKmpkZDumFz9tz719l9jis6mD95+yIJc=;
+	s=k20201202; t=1729105556;
+	bh=yjxkbriF4zNM9kMqtsAZUt5mOfPi6h8PCU4FZlX+Wj0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Is8/twvH9nScDbidtN/C5nZWFe4tGr9kgaDVRX9/xlKNQpqi04jASrLK9PkValyy9
-	 ziT2ROUSgHFxovtrxAAfPrMuGnnXTvn8mnmv2A0yLkcucg9s5kfjUK9At4PZD2WCyv
-	 CNSAXb6N1sSjpL9hPixiC3LiBWm/iDow3DYwI9LYsFBAT8JZoum7+Pk33A5FeJ9FYC
-	 /N9y6iHr6eH3HpgZfHapaJPFi4TBb7TM8YX4K2+ua4Z/4vifzB/zlFoGhgoPUiKqNu
-	 mqH860bziwypK0Z2g1YywbfbfvT2FWZJcI8rzbKXra+hWtW+0Fu4ughiclLwKIG0MQ
-	 ByA9oYgW+oViA==
+	b=bKrh36aNSrZAJuNw8mFN7fG5JkN+f9i65KngQw+bz73AsX0hf3CF0/YrfTWx8Y2ZL
+	 9p/psC0dCibYpKMvnM5rhXZEgPcVp2o58ERa272/uhLCUYhBXzWxZkQWFF5IK3ehmC
+	 jkGZqCWnXItyMpDSF4CY8lCe/7nNNdLZEXotrff63YG1P+9kE6ZpTiD+Uct57/Bsy+
+	 WYmjOZvscJaPCd3DhE90rjZyC2mUyQKEffGfaPBgG+ZDFIupuPtiapEwD+RnybmXeK
+	 Rg/J9OXcaOCqnmtnOjQvvoBMVSIRT1Y8jWDWoGBie72Sorvf6islk7eTpNJ1Mn7V2q
+	 OkC8RWk0xSOkg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EACF83822D30;
-	Wed, 16 Oct 2024 19:05:59 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAC433822D30;
+	Wed, 16 Oct 2024 19:06:02 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,13 +37,13 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: pull request: bluetooth 2024-09-27
+Subject: Re: pull request: bluetooth 2024-10-04
 From: patchwork-bot+bluetooth@kernel.org
 Message-Id: 
- <172910555846.1899946.14515472624740698653.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Oct 2024 19:05:58 +0000
-References: <20240927145730.2452175-1-luiz.dentz@gmail.com>
-In-Reply-To: <20240927145730.2452175-1-luiz.dentz@gmail.com>
+ <172910556148.1899946.6090629657997643714.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Oct 2024 19:06:01 +0000
+References: <20241004210124.4010321-1-luiz.dentz@gmail.com>
+In-Reply-To: <20241004210124.4010321-1-luiz.dentz@gmail.com>
 To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
 Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
  netdev@vger.kernel.org
@@ -53,20 +53,20 @@ Hello:
 This pull request was applied to bluetooth/bluetooth-next.git (master)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 27 Sep 2024 10:57:30 -0400 you wrote:
-> The following changes since commit d505d3593b52b6c43507f119572409087416ba28:
+On Fri,  4 Oct 2024 17:01:24 -0400 you wrote:
+> The following changes since commit 500257db81d067c1ad5a202501a085a8ffea10f1:
 > 
->   net: wwan: qcom_bam_dmux: Fix missing pm_runtime_disable() (2024-09-27 12:39:02 +0100)
+>   Merge branch 'ibmvnic-fix-for-send-scrq-direct' (2024-10-04 12:04:12 -0700)
 > 
 > are available in the Git repository at:
 > 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2024-09-27
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2024-10-04
 > 
 > [...]
 
 Here is the summary with links:
-  - pull request: bluetooth 2024-09-27
-    https://git.kernel.org/bluetooth/bluetooth-next/c/e5e3f369b123
+  - pull request: bluetooth 2024-10-04
+    https://git.kernel.org/bluetooth/bluetooth-next/c/f61060fb29e5
 
 You are awesome, thank you!
 -- 
