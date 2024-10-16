@@ -1,88 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5F60B8A;
-	Wed, 16 Oct 2024 06:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7D8171E70;
+	Wed, 16 Oct 2024 06:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729059789; cv=none; b=Nl7LJ4uReJy2JhO9i1AKSMOJVcUx4fTP8JzxQnRpwG3qV5k8WkkDQjDEdehDEujvVHJYCtYygTscvh8fbjTy6YCneQaVoMuFPtG6loPfkj2k6MLTrAHL6Fu/7/8vTIkqyjpolCHEGkLsFtwyEIm1JV1w+ivFN1DW/auhVRMUSAI=
+	t=1729060266; cv=none; b=RO99dzaUtVYX9nniIZlrC78ke+JRwsvA0pG8YUTi360pKY+INocI+d9BaZWXbubxfEsUCCJrmwRsG1S9mz5CsljXMxaKzSczrSChuM7Wt0HhN7kbPKoL1pGKKYynGBjrf7HAwEN5pY7mWTS+xPgTyDDeqEEDi4E0l8biqk8N0Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729059789; c=relaxed/simple;
-	bh=9/Awi+ArhEANRER83g2LYfAGAW5xtoAqhywO3+Wyt7k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=crv+EPJat4mPCnlYFGz7/Q+NAaarOOsfA+kn7s6n2GEbEk1mN59a5ijw4FRqy4gOTm358MbRnp1Te4Fj2gh0MVZ+4g/whAuzR9kiBOvQzHHj8b7rRIAKva5tdln5dqoQ54I3/VbNdS9NWHE54lc2wKx3QLwp1e90Sui/iSpdRxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDuKTfsf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729060266; c=relaxed/simple;
+	bh=vd1kShkEAAY9b/H1YcxxkckWvZM983ebztMGg3218AU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qeESCAgCOmBJH9o5FHIHYyLk9IzfzrU4mpaFIr8fYzAcRd/A0ZW18m6AGuC8KHnC5DdFdKxG1ke6rMy8mUiObT/DmaD2OtSkPgd/LxA0kfcUo9SV8jZA5FPOkw0BlrSTj1gfNLTCTbS/OBbQ6Uj7kLN+XKAmMpOpj9+wBllpslU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mwhjqkE1; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDuKTfsf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9C4C4CEC5;
-	Wed, 16 Oct 2024 06:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729059788;
-	bh=9/Awi+ArhEANRER83g2LYfAGAW5xtoAqhywO3+Wyt7k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NDuKTfsf+GnDeUf9ZAjQAGu1Fj/a2QNa/0VHfvudTHbPg9SO7KX6s++jhqDGaBkMt
-	 Oo0dsYUyPObbfi6ZhAmGOBABfgs9NSIr5z6Ct4OSR8/5STHis/O5rEH/AxAvxXRa4j
-	 2UdajvRrMDoXXknV4MWG+yDmGhhI91LDoAZZrejZMVagqU6/YzS2r2bH0ik3PMZV6y
-	 4eupgAQtj6ukVf59s7WPcf6faflCN41IW0FjunVjEpiilgDJa1umlqGNMRWBNEqwM3
-	 KlxOVRvlMI7jWNC3J1x7gmsguAST8b/rm3D9sXZsbh2hFIAMNdALgk6/BEtKgp6Abx
-	 df7Uc2Pk83OiQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	kernel-team@meta.com,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] eth: fbnic: add CONFIG_PTP_1588_CLOCK_OPTIONAL dependency
-Date: Wed, 16 Oct 2024 06:22:58 +0000
-Message-Id: <20241016062303.2551686-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mwhjqkE1"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1729060259; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=DVYZ4s29ZW4ZB3Y9mFTDBjLtH0bK73rSgGthvVvT36E=;
+	b=mwhjqkE1SOU+wYP58Nh2RqOURkc4g1LY2qTsa6FQD04myz6n6bNkMMzXQc0MYu7Pm/HVcByy+a5dT3wCpMUTHJjPJKLWgc7Qt+rjueZgywA3zVzu1o6jrW4lqXdFzkrPRypMPFfx9q4XNxNy9zYcW0kisiQ1YD9cNHZoAMtG6gs=
+Received: from 30.221.128.116(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHGBfOf_1729060257 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 16 Oct 2024 14:30:58 +0800
+Message-ID: <2888bb8f-1ee4-4342-968f-82573d583709@linux.alibaba.com>
+Date: Wed, 16 Oct 2024 14:30:57 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 net-next 2/3] net/udp: Add 4-tuple hash list basis
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, dsahern@kernel.org,
+ antony.antony@secunet.com, steffen.klassert@secunet.com,
+ linux-kernel@vger.kernel.org, dust.li@linux.alibaba.com,
+ jakub@cloudflare.com, fred.cc@alibaba-inc.com,
+ yubing.qiuyubing@alibaba-inc.com
+References: <20241012012918.70888-1-lulie@linux.alibaba.com>
+ <20241012012918.70888-3-lulie@linux.alibaba.com>
+ <9d611cbc-3728-463d-ba8a-5732e28b8cf4@redhat.com>
+From: Philo Lu <lulie@linux.alibaba.com>
+In-Reply-To: <9d611cbc-3728-463d-ba8a-5732e28b8cf4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-fbnic fails to link as built-in when PTP support is in a loadable
-module:
 
-aarch64-linux-ld: drivers/net/ethernet/meta/fbnic/fbnic_ethtool.o: in function `fbnic_get_ts_info':
-fbnic_ethtool.c:(.text+0x428): undefined reference to `ptp_clock_index'
-aarch64-linux-ld: drivers/net/ethernet/meta/fbnic/fbnic_time.o: in function `fbnic_time_start':
-fbnic_time.c:(.text+0x820): undefined reference to `ptp_schedule_worker'
-aarch64-linux-ld: drivers/net/ethernet/meta/fbnic/fbnic_time.o: in function `fbnic_ptp_setup':
-fbnic_time.c:(.text+0xa68): undefined reference to `ptp_clock_register'
+On 2024/10/14 18:07, Paolo Abeni wrote:
+> Hi,
+> 
+> On 10/12/24 03:29, Philo Lu wrote:
+>> @@ -3480,13 +3486,14 @@ static struct udp_table __net_init 
+>> *udp_pernet_table_alloc(unsigned int hash_ent
+>>       if (!udptable)
+>>           goto out;
+>> -    slot_size = sizeof(struct udp_hslot) + sizeof(struct 
+>> udp_hslot_main);
+>> +    slot_size = 2 * sizeof(struct udp_hslot) + sizeof(struct 
+>> udp_hslot_main);
+>>       udptable->hash = vmalloc_huge(hash_entries * slot_size,
+>>                         GFP_KERNEL_ACCOUNT);
+> 
+> I'm sorry for the late feedback.
+> 
+> I think it would be better to make the hash4 infra a no op (no lookup, 
+> no additional memory used) for CONFIG_BASE_SMALL=y builds.
+> 
 
-Add the appropriate dependency to enforce this.
+Got it. There are 2 affected structs, udp_hslot and udp_sock. They (as 
+well as related helpers like udp4_hash4) can be wrapped with 
+CONFIG_BASE_SMALL, and then we can enable BASE_SMALL to eliminate 
+additional overhead of hash4.
 
-Fixes: 6a2b3ede9543 ("eth: fbnic: add RX packets timestamping support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/ethernet/meta/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+```
++struct udp_hslot_main {
++	struct udp_hslot	hslot; /* must be the first member */
++#if !IS_ENABLED(CONFIG_BASE_SMALL)
++	u32			hash4_cnt;
++#endif
++} __aligned(2 * sizeof(long));
 
-diff --git a/drivers/net/ethernet/meta/Kconfig b/drivers/net/ethernet/meta/Kconfig
-index 85519690b837..831921b9d4d5 100644
---- a/drivers/net/ethernet/meta/Kconfig
-+++ b/drivers/net/ethernet/meta/Kconfig
-@@ -23,6 +23,7 @@ config FBNIC
- 	depends on !S390
- 	depends on MAX_SKB_FRAGS < 22
- 	depends on PCI_MSI
-+	depends on PTP_1588_CLOCK_OPTIONAL
- 	select NET_DEVLINK
- 	select PAGE_POOL
- 	select PHYLINK
+
+@@ -56,6 +56,12 @@ struct udp_sock {
+  	int		 pending;	/* Any pending frames ? */
+  	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+
++#if !IS_ENABLED(CONFIG_BASE_SMALL)
++	/* For UDP 4-tuple hash */
++	__u16 udp_lrpa_hash;
++	struct hlist_node udp_lrpa_node;
++#endif
++
+```
+
+> It would be great if you could please share some benchmark showing the 
+> raw max receive PPS performances for unconnected sockets, with and 
+> without this series applied, to ensure this does not cause any real 
+> regression for such workloads.
+> 
+
+Tested using sockperf tp with default msgsize (14B), 3 times for w/ and 
+w/o the patch set, and results show no obvious difference:
+
+[msg/sec]  test1    test2    test3    mean
+w/o patch  514,664  519,040  527,115  520.3k
+w/  patch  516,863  526,337  527,195  523.5k (+0.6%)
+
+Thank you for review, Paolo.
 -- 
-2.39.5
+Philo
 
