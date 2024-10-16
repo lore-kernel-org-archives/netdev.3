@@ -1,56 +1,56 @@
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD81207211
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.190.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35BB18C348
+	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 18:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729104931; cv=none; b=oiyXDdTW16aB9sMYILOoB7C/xNi16R0MtZkkV9VQwkf0iwbwZk8jSkXyVOu2A9OVoh1RJGZ/NYujxKMKwIz5oWDe7fKH45FGV61ZuvQkoSruaSZnrrmvSuN4w0sftBIaU5A/wRyJ1ciuMoN8f8Pn9knl50r8R8bKMjMbngk0aUg=
+	t=1729104953; cv=none; b=eTrnK+DiSskjT0UioCuyWoLWLPX6y/omCiFOHrp41INsp3CgpvEcrLsVq3zdnOK6NlFqv7UZum115O/ubWf8pNFH8K1u94tKQyqEoQQYrKe48v1aArOBRvV/feeCzbM/w/wpQnThP+WhmisxjDpO3u8j2C1O6M+VzIyp9scDdw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729104931; c=relaxed/simple;
-	bh=AcUYlCpgYaRYgrfih5PXc1tO19FoOBP9yIlySCJfgr4=;
+	s=arc-20240116; t=1729104953; c=relaxed/simple;
+	bh=/oxJUsjiKM5w8gM+gb2vZG3iblqhL2r8msi6uGnUhPE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H3tSG/lXmumRTntpw0ous89lpRF2KrQHWC7Fcic2CLVXk8Q8OuNjGnpa/bXqe9K7kTQ3ZtdemW7ccqqBD39iU5fAnR6BTDDzyvMlQoPc9Rf0rMrZTN0FwZ8J5xlDghX6SWDX/vhTOxCgalzzTjrlh8DcBon1hsfREjo7+F/GAuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=X9nOPXsc; arc=none smtp.client-ip=207.171.190.10
+	 MIME-Version:Content-Type; b=u1rwL63kGn+wsCS+wq0P0w4h+g3hAkm1/+6wrWNJLhDa7m0KgIgxVNjKYGyI40X6tbqiysc9eH2KVLSl9TTLVC7bzCdlsWSUCIkX7rb3qvfmpnJnJxO65gGk+xOHEoGKEJ15QSboDOmUszBekrDYJyb/cxw36SgVlAcUBzbipCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=cCPWpvU8; arc=none smtp.client-ip=207.171.184.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="X9nOPXsc"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="cCPWpvU8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729104930; x=1760640930;
+  t=1729104953; x=1760640953;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kVXlCPZ1TLBcPNnV8iHEs+MPbZKf0IDUKmZlRyt2uJE=;
-  b=X9nOPXscUQqwqC888t22GDVhYwSwGOFhm2ITY2W80spQMZFhczx43aI2
-   C4C1+21H/vPilDzqytug8LfyZ6FV3SXW+yCW5vz5fReMumEouyt2Vy/G4
-   4ZxSs2G+HwwB47Y8pZHEL6vR/sOgz2o8sagd1FB4MNdGOncwSmy7C6HsD
-   A=;
+  bh=sWSJ71Kk4zWlfKSEfiV2t0oUjZHk8oqZD1nq3CUqay4=;
+  b=cCPWpvU8Zvy3ZJHDEaiykelJ3dZ9zepAQqV8+tIi0KYeYI8gMGnpOHLR
+   cEYK4QH3xLcjArop3T3oqJyMdGjZgUbAGOQu7JVG07TbTOwKfxGJzpWkP
+   S0O17vUjjE3ur2Xi8+lnHKxuoCyqlpc9Mzkj66+4PSRnz8fLwbWHXGADO
+   M=;
 X-IronPort-AV: E=Sophos;i="6.11,208,1725321600"; 
-   d="scan'208";a="376770998"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:55:07 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:44957]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.142:2525] with esmtp (Farcaster)
- id ce6488a3-2ee4-4643-8032-b4cb352a0e86; Wed, 16 Oct 2024 18:55:06 +0000 (UTC)
-X-Farcaster-Flow-ID: ce6488a3-2ee4-4643-8032-b4cb352a0e86
+   d="scan'208";a="461391003"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 18:55:47 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:30268]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.7.250:2525] with esmtp (Farcaster)
+ id 91fe6def-808e-4927-a826-bc7da91e0dff; Wed, 16 Oct 2024 18:55:45 +0000 (UTC)
+X-Farcaster-Flow-ID: 91fe6def-808e-4927-a826-bc7da91e0dff
 Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 16 Oct 2024 18:55:05 +0000
+ Wed, 16 Oct 2024 18:55:44 +0000
 Received: from 6c7e67c6786f.amazon.com (10.106.100.12) by
  EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 16 Oct 2024 18:55:03 +0000
+ Wed, 16 Oct 2024 18:55:42 +0000
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>
 CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
 	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 03/14] rtnetlink: Factorise do_setlink() path from __rtnl_newlink().
-Date: Wed, 16 Oct 2024 11:53:46 -0700
-Message-ID: <20241016185357.83849-4-kuniyu@amazon.com>
+Subject: [PATCH v2 net-next 05/14] rtnetlink: Move rtnl_link_ops_get() and retry to rtnl_newlink().
+Date: Wed, 16 Oct 2024 11:53:48 -0700
+Message-ID: <20241016185357.83849-6-kuniyu@amazon.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20241016185357.83849-1-kuniyu@amazon.com>
 References: <20241016185357.83849-1-kuniyu@amazon.com>
@@ -62,204 +62,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWA003.ant.amazon.com (10.13.139.49) To
+X-ClientProxiedBy: EX19D037UWC001.ant.amazon.com (10.13.139.197) To
  EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-__rtnl_newlink() got too long to maintain.
+Currently, if neither dev nor rtnl_link_ops is found in __rtnl_newlink(),
+we release RTNL and redo the whole process after request_module(), which
+complicates the logic.
 
-For example, netdev_master_upper_dev_get()->rtnl_link_ops is fetched even
-when IFLA_INFO_SLAVE_DATA is not specified.
+The ops will be RTNL-independent later.
 
-Let's factorise the single dev do_setlink() path to a separate function.
+Let's move the ops lookup to rtnl_newlink() and do the retry earlier.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
 ---
- net/core/rtnetlink.c | 142 ++++++++++++++++++++++---------------------
- 1 file changed, 74 insertions(+), 68 deletions(-)
+ net/core/rtnetlink.c | 42 ++++++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 76593de7014c..21165cc2b697 100644
+index 97d6ad65647c..e708f0852602 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -3505,6 +3505,78 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- }
- EXPORT_SYMBOL(rtnl_create_link);
- 
-+struct rtnl_newlink_tbs {
-+	struct nlattr *tb[IFLA_MAX + 1];
-+	struct nlattr *linkinfo[IFLA_INFO_MAX + 1];
-+	struct nlattr *attr[RTNL_MAX_TYPE + 1];
-+	struct nlattr *slave_attr[RTNL_SLAVE_MAX_TYPE + 1];
-+};
-+
-+static int rtnl_changelink(const struct sk_buff *skb, struct nlmsghdr *nlh,
-+			   const struct rtnl_link_ops *ops,
-+			   struct net_device *dev,
-+			   struct rtnl_newlink_tbs *tbs,
-+			   struct nlattr **data,
-+			   struct netlink_ext_ack *extack)
-+{
-+	struct nlattr ** const linkinfo = tbs->linkinfo;
-+	struct nlattr ** const tb = tbs->tb;
-+	int status = 0;
-+	int err;
-+
-+	if (nlh->nlmsg_flags & NLM_F_EXCL)
-+		return -EEXIST;
-+
-+	if (nlh->nlmsg_flags & NLM_F_REPLACE)
-+		return -EOPNOTSUPP;
-+
-+	if (linkinfo[IFLA_INFO_DATA]) {
-+		if (!ops || ops != dev->rtnl_link_ops || !ops->changelink)
-+			return -EOPNOTSUPP;
-+
-+		err = ops->changelink(dev, tb, data, extack);
-+		if (err < 0)
-+			return err;
-+
-+		status |= DO_SETLINK_NOTIFY;
-+	}
-+
-+	if (linkinfo[IFLA_INFO_SLAVE_DATA]) {
-+		const struct rtnl_link_ops *m_ops = NULL;
-+		struct nlattr **slave_data = NULL;
-+		struct net_device *master_dev;
-+
-+		master_dev = netdev_master_upper_dev_get(dev);
-+		if (master_dev)
-+			m_ops = master_dev->rtnl_link_ops;
-+
-+		if (!m_ops || !m_ops->slave_changelink)
-+			return -EOPNOTSUPP;
-+
-+		if (m_ops->slave_maxtype > RTNL_SLAVE_MAX_TYPE)
-+			return -EINVAL;
-+
-+		if (m_ops->slave_maxtype) {
-+			err = nla_parse_nested_deprecated(tbs->slave_attr,
-+							  m_ops->slave_maxtype,
-+							  linkinfo[IFLA_INFO_SLAVE_DATA],
-+							  m_ops->slave_policy, extack);
-+			if (err < 0)
-+				return err;
-+
-+			slave_data = tbs->slave_attr;
-+		}
-+
-+		err = m_ops->slave_changelink(master_dev, dev, tb, slave_data, extack);
-+		if (err < 0)
-+			return err;
-+
-+		status |= DO_SETLINK_NOTIFY;
-+	}
-+
-+	return do_setlink(skb, dev, nlmsg_data(nlh), extack, tb, status);
-+}
-+
- static int rtnl_group_changelink(const struct sk_buff *skb,
- 		struct net *net, int group,
- 		struct ifinfomsg *ifm,
-@@ -3617,24 +3689,14 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
- 	goto out;
+@@ -3690,23 +3690,19 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
  }
  
--struct rtnl_newlink_tbs {
--	struct nlattr *tb[IFLA_MAX + 1];
--	struct nlattr *linkinfo[IFLA_INFO_MAX + 1];
--	struct nlattr *attr[RTNL_MAX_TYPE + 1];
--	struct nlattr *slave_attr[RTNL_SLAVE_MAX_TYPE + 1];
--};
--
  static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
++			  const struct rtnl_link_ops *ops,
  			  struct rtnl_newlink_tbs *tbs,
  			  struct netlink_ext_ack *extack)
  {
  	struct nlattr ** const linkinfo = tbs->linkinfo;
  	struct nlattr ** const tb = tbs->tb;
--	const struct rtnl_link_ops *m_ops;
--	struct net_device *master_dev;
  	struct net *net = sock_net(skb->sk);
- 	const struct rtnl_link_ops *ops;
--	struct nlattr **slave_data;
- 	char kind[MODULE_NAME_LEN];
+-	const struct rtnl_link_ops *ops;
+-	char kind[MODULE_NAME_LEN];
  	struct net_device *dev;
  	struct ifinfomsg *ifm;
-@@ -3669,14 +3731,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct nlattr **data;
+ 	bool link_specified;
+ 	int err;
+ 
+-#ifdef CONFIG_MODULES
+-replay:
+-#endif
+ 	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifi_index > 0) {
+ 		link_specified = true;
+@@ -3722,14 +3718,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
  		dev = NULL;
  	}
  
--	master_dev = NULL;
--	m_ops = NULL;
--	if (dev) {
--		master_dev = netdev_master_upper_dev_get(dev);
--		if (master_dev)
--			m_ops = master_dev->rtnl_link_ops;
+-	if (linkinfo[IFLA_INFO_KIND]) {
+-		nla_strscpy(kind, linkinfo[IFLA_INFO_KIND], sizeof(kind));
+-		ops = rtnl_link_ops_get(kind);
+-	} else {
+-		kind[0] = '\0';
+-		ops = NULL;
 -	}
 -
- 	if (tb[IFLA_LINKINFO]) {
- 		err = nla_parse_nested_deprecated(linkinfo, IFLA_INFO_MAX,
- 						  tb[IFLA_LINKINFO],
-@@ -3715,56 +3769,8 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		}
+ 	data = NULL;
+ 	if (ops) {
+ 		if (ops->maxtype > RTNL_MAX_TYPE)
+@@ -3770,16 +3758,6 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		return -EOPNOTSUPP;
+ 
+ 	if (!ops) {
+-#ifdef CONFIG_MODULES
+-		if (kind[0]) {
+-			__rtnl_unlock();
+-			request_module("rtnl-link-%s", kind);
+-			rtnl_lock();
+-			ops = rtnl_link_ops_get(kind);
+-			if (ops)
+-				goto replay;
+-		}
+-#endif
+ 		NL_SET_ERR_MSG(extack, "Unknown device type");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -3790,6 +3768,7 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			struct netlink_ext_ack *extack)
+ {
++	const struct rtnl_link_ops *ops = NULL;
+ 	struct nlattr **tb, **linkinfo;
+ 	struct rtnl_newlink_tbs *tbs;
+ 	int ret;
+@@ -3819,7 +3798,22 @@ static int rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		memset(linkinfo, 0, sizeof(tbs->linkinfo));
  	}
  
--	slave_data = NULL;
--	if (m_ops) {
--		if (m_ops->slave_maxtype > RTNL_SLAVE_MAX_TYPE)
--			return -EINVAL;
--
--		if (m_ops->slave_maxtype &&
--		    linkinfo[IFLA_INFO_SLAVE_DATA]) {
--			err = nla_parse_nested_deprecated(tbs->slave_attr,
--							  m_ops->slave_maxtype,
--							  linkinfo[IFLA_INFO_SLAVE_DATA],
--							  m_ops->slave_policy,
--							  extack);
--			if (err < 0)
--				return err;
--			slave_data = tbs->slave_attr;
--		}
--	}
--
--	if (dev) {
--		int status = 0;
--
--		if (nlh->nlmsg_flags & NLM_F_EXCL)
--			return -EEXIST;
--		if (nlh->nlmsg_flags & NLM_F_REPLACE)
--			return -EOPNOTSUPP;
--
--		if (linkinfo[IFLA_INFO_DATA]) {
--			if (!ops || ops != dev->rtnl_link_ops ||
--			    !ops->changelink)
--				return -EOPNOTSUPP;
--
--			err = ops->changelink(dev, tb, data, extack);
--			if (err < 0)
--				return err;
--			status |= DO_SETLINK_NOTIFY;
--		}
--
--		if (linkinfo[IFLA_INFO_SLAVE_DATA]) {
--			if (!m_ops || !m_ops->slave_changelink)
--				return -EOPNOTSUPP;
--
--			err = m_ops->slave_changelink(master_dev, dev, tb,
--						      slave_data, extack);
--			if (err < 0)
--				return err;
--			status |= DO_SETLINK_NOTIFY;
--		}
--
--		return do_setlink(skb, dev, ifm, extack, tb, status);
--	}
-+	if (dev)
-+		return rtnl_changelink(skb, nlh, ops, dev, tbs, data, extack);
+-	ret = __rtnl_newlink(skb, nlh, tbs, extack);
++	if (linkinfo[IFLA_INFO_KIND]) {
++		char kind[MODULE_NAME_LEN];
++
++		nla_strscpy(kind, linkinfo[IFLA_INFO_KIND], sizeof(kind));
++		ops = rtnl_link_ops_get(kind);
++#ifdef CONFIG_MODULES
++		if (!ops) {
++			__rtnl_unlock();
++			request_module("rtnl-link-%s", kind);
++			rtnl_lock();
++			ops = rtnl_link_ops_get(kind);
++		}
++#endif
++	}
++
++	ret = __rtnl_newlink(skb, nlh, ops, tbs, extack);
  
- 	if (!(nlh->nlmsg_flags & NLM_F_CREATE)) {
- 		/* No dev found and NLM_F_CREATE not set. Requested dev does not exist,
+ free:
+ 	kfree(tbs);
 -- 
 2.39.5 (Apple Git-154)
 
