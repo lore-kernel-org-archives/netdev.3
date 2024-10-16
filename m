@@ -1,184 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F486199944
-	for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 09:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6F205E05;
+	Wed, 16 Oct 2024 09:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729071016; cv=none; b=UZ9CScZa5a2gLG4a2ahQBirRDusxz55zunWQwKzYKuywoPwWc/FU/XyGZZvhOqb3nOI224yHFm4afgVDFMDF/51nyeJ9EQXMEATf6oFapCC9OvkP+yFeUO9C3A0kuN1TB2o+Say6OwliJigV7Q4ii/MvhbCrJSfFJm/hqfH931Q=
+	t=1729071432; cv=none; b=tMUv6aUC8PIdhk+1ZEkqzFNMbxjkAYK92e8rEkrxRAsAh8pqGy3tiPGc92oHPhDrmtZGo/urrewcAA5wSvD5wVFvFV8LVSwilyITZ2WJkYSLp7GwkgNDexnDllcOOOqGqQK9dQ3AR0NqQ35lnnb/P7O78WHtgmtmI0Z+fMN6Y1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729071016; c=relaxed/simple;
-	bh=YnnXeh6jcwhPnNEp9hZbToy0o2YfPiF/dNUridaGA/I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qHiqRs46KbVYqUIBSFawkly1jDH1PZdPSxSFnCBq0a0YhP4GouUjTnZG8SnbzdfK0MUyQNFwAHHiveNcGkG2lcO859zrWsL0AET4v9W+dK5feG8r6PIpakTSvSHgb/Fmpp/pjgLHIzgb0nZoAPBX+H+Ogr0bWC1mI4guK64oewQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I+BYCjOG; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729071432; c=relaxed/simple;
+	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Cnc8wtkcZW4olhmy2rYsWJnD/QgVO9gh2vUVBSkOn67kPDmY099bhEA8vV66VwO97rNkYvxIM3kXWhNUrdu/pbB7gXJTcsJqQdGPIPjm4g3/vevlGgQ40ytb1ARV34FsVdK9InA5uAqNp79NI27YxaJ6uee+i65AQPJYPQSmYKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKOX9/0G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I+BYCjOG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729071014; x=1760607014;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=YnnXeh6jcwhPnNEp9hZbToy0o2YfPiF/dNUridaGA/I=;
-  b=I+BYCjOGnCYlQxnX0xjtFUDsfasG5UqTuVO7T7ol/T8SO1RmuXnTlVQb
-   xQhmvZ91eiFZS/miUyRk9VbMW3zHL0d6pHLh3RT5BxIhjjyBq8VA39Lm0
-   xXPL6BZQjBaRBDxgFGgFMA2iGgIylzjE/0jiJs0hxjqfUxa+o7D3U56oe
-   28NBaIHccKcJVFcLX8lOcP9AqQWQ/KCa0pxBwKuscp6No8zL15yCop29S
-   wL/FU+TGCEe2RgjeYtpiYnlBL5dHw9bpXwQwzC1NZqy7FsMnNqIE9rTN9
-   D1Gf0i+BC+OBPmyD3CftEqxjBL2cUAwW9mCm7Ib91KEzlb5BeHsMLJC33
-   g==;
-X-CSE-ConnectionGUID: PJm7uO/LTVubNUG7aqmZXQ==
-X-CSE-MsgGUID: 26MIeSUtTk2QstVnQkzHVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="39880033"
-X-IronPort-AV: E=Sophos;i="6.11,207,1725346800"; 
-   d="scan'208";a="39880033"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 02:30:14 -0700
-X-CSE-ConnectionGUID: VBErF9YKQja8vT0EC0jwEQ==
-X-CSE-MsgGUID: PrKK+/z3ToiM7/OdhByqeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,207,1725346800"; 
-   d="scan'208";a="77847885"
-Received: from unknown (HELO amlin-019-225.igk.intel.com) ([10.102.19.225])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Oct 2024 02:30:12 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-net v2] i40e: fix race condition by adding filter's intermediate sync state
-Date: Wed, 16 Oct 2024 11:30:11 +0200
-Message-Id: <20241016093011.318078-1-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKOX9/0G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83DEC4CECF;
+	Wed, 16 Oct 2024 09:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729071431;
+	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=TKOX9/0GP1+lza5sQLTeaGorlh3MWnyZcXGq05D/f/GBd2opmS8ChUbAgJdPb/CZ1
+	 yn5rFWuoHPLLh+d3Tn7faqhBzYHFIRUNCjskSa+aHE7Hk+eHTbbOc5TCSh9q9iJ3uy
+	 ecD+a1d8UI2TkI22bqwo5dXLynEXWBDFQZqY5PiV0eO3UFpqqqMhVJV65YiRQTDMNj
+	 WP2usCFu0zlWexw7EVaqgNj9e/FFPneDaR8h9YjjAPmN4hPc1uAoQejPiORMJPvOU5
+	 CWaLZFgGsjhgxS13aQ+7ta5bJuOGaob/3dXOYCK3/wDOU6szpcWpgz4jJlrkWESsRr
+	 s45FfeYSH4aKw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>,  Niklas Cassel <cassel@kernel.org>,
+  Sergey Shtylyov <s.shtylyov@omp.ru>,  Basavaraj Natikar
+ <basavaraj.natikar@amd.com>,  Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  Alex Dubov <oakad@yahoo.com>,
+  Sudarsana Kalluru <skalluru@marvell.com>,  Manish Chopra
+ <manishc@marvell.com>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Rasesh Mody <rmody@marvell.com>,
+  GR-Linux-NIC-Dev@marvell.com,  Igor Mitsyanko <imitsyanko@quantenna.com>,
+  Sergey Matyukevich <geomatsi@gmail.com>,  Sanjay R Mehta
+ <sanju.mehta@amd.com>,  Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,  Jon
+ Mason <jdmason@kudzu.us>,  Dave Jiang <dave.jiang@intel.com>,  Allen Hubbe
+ <allenbh@gmail.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Juergen Gross <jgross@suse.com>,
+  Stefano Stabellini <sstabellini@kernel.org>,  Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,  Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>,  Chen Ni <nichen@iscas.ac.cn>,  Mario
+ Limonciello <mario.limonciello@amd.com>,  Ricky Wu <ricky_wu@realtek.com>,
+  Al Viro <viro@zeniv.linux.org.uk>,  Breno Leitao <leitao@debian.org>,
+  Kevin Tian <kevin.tian@intel.com>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,  Andy
+ Shevchenko
+ <andriy.shevchenko@linux.intel.com>,  Mostafa Saleh <smostafa@google.com>,
+  Jason Gunthorpe <jgg@ziepe.ca>,  Yi Liu <yi.l.liu@intel.com>,  Christian
+ Brauner <brauner@kernel.org>,  Ankit Agrawal <ankita@nvidia.com>,  Eric
+ Auger <eric.auger@redhat.com>,  Reinette Chatre
+ <reinette.chatre@intel.com>,  Ye Bin <yebin10@huawei.com>,  Marek
+ =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+  Pierre-Louis
+ Bossart <pierre-louis.bossart@linux.dev>,  Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,  Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+  linux-ide@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-input@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-wireless@vger.kernel.org,  ntb@lists.linux.dev,
+  linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+  xen-devel@lists.xenproject.org,  linux-sound@vger.kernel.org
+Subject: Re: [PATCH 10/13] wifi: qtnfmac: use always-managed version of
+ pcim_intx()
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	<20241015185124.64726-11-pstanner@redhat.com>
+Date: Wed, 16 Oct 2024 12:36:58 +0300
+In-Reply-To: <20241015185124.64726-11-pstanner@redhat.com> (Philipp Stanner's
+	message of "Tue, 15 Oct 2024 20:51:20 +0200")
+Message-ID: <87y12o4ced.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fix a race condition in the i40e driver that leads to MAC/VLAN filters
-becoming corrupted and leaking. Address the issue that occurs under
-heavy load when multiple threads are concurrently modifying MAC/VLAN
-filters by setting mac and port VLAN.
+Philipp Stanner <pstanner@redhat.com> writes:
 
-1. Thread T0 allocates a filter in i40e_add_filter() within
-        i40e_ndo_set_vf_port_vlan().
-2. Thread T1 concurrently frees the filter in __i40e_del_filter() within
-        i40e_ndo_set_vf_mac().
-3. Subsequently, i40e_service_task() calls i40e_sync_vsi_filters(), which
-        refers to the already freed filter memory, causing corruption.
+> pci_intx() is a hybrid function which can sometimes be managed through
+> devres. To remove this hybrid nature from pci_intx(), it is necessary to
+> port users to either an always-managed or a never-managed version.
+>
+> qtnfmac enables its PCI-Device with pcim_enable_device(). Thus, it needs
+> the always-managed version.
+>
+> Replace pci_intx() with pcim_intx().
+>
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 
-Reproduction steps:
-1. Spawn multiple VFs.
-2. Apply a concurrent heavy load by running parallel operations to change
-        MAC addresses on the VFs and change port VLANs on the host.
-3. Observe errors in dmesg:
-"Error I40E_AQ_RC_ENOSPC adding RX filters on VF XX,
-	please set promiscuous on manually for VF XX".
+Feel free to take this via the PCI tree:
 
-Exact code for stable reproduction Intel can't open-source now.
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
-The fix involves implementing a new intermediate filter state,
-I40E_FILTER_NEW_SYNC, for the time when a filter is on a tmp_add_list.
-These filters cannot be deleted from the hash list directly but
-must be removed using the full process.
-
-Fixes: 278e7d0b9d68 ("i40e: store MAC/VLAN filters in a hash with the MAC Address as key")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
-v1->v2 change commit title, removed RESERVED state byt request in review
----
- drivers/net/ethernet/intel/i40e/i40e.h         |  2 ++
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c |  1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c    | 12 ++++++++++--
- 3 files changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 2089a0e..2e205218 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -755,6 +755,8 @@ enum i40e_filter_state {
- 	I40E_FILTER_ACTIVE,		/* Added to switch by FW */
- 	I40E_FILTER_FAILED,		/* Rejected by FW */
- 	I40E_FILTER_REMOVE,		/* To be removed */
-+	I40E_FILTER_NEW_SYNC,		/* New, not sent yet, is in
-+					   i40e_sync_vsi_filters() */
- /* There is no 'removed' state; the filter struct is freed */
- };
- struct i40e_mac_filter {
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index abf624d..208c2f0 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -89,6 +89,7 @@ static char *i40e_filter_state_string[] = {
- 	"ACTIVE",
- 	"FAILED",
- 	"REMOVE",
-+	"NEW_SYNC",
- };
- 
- /**
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 25295ae..55fb362 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1255,6 +1255,7 @@ int i40e_count_filters(struct i40e_vsi *vsi)
- 
- 	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
- 		if (f->state == I40E_FILTER_NEW ||
-+		    f->state == I40E_FILTER_NEW_SYNC ||
- 		    f->state == I40E_FILTER_ACTIVE)
- 			++cnt;
- 	}
-@@ -1441,6 +1442,8 @@ static int i40e_correct_mac_vlan_filters(struct i40e_vsi *vsi,
- 
- 			new->f = add_head;
- 			new->state = add_head->state;
-+			if (add_head->state == I40E_FILTER_NEW)
-+				add_head->state = I40E_FILTER_NEW_SYNC;
- 
- 			/* Add the new filter to the tmp list */
- 			hlist_add_head(&new->hlist, tmp_add_list);
-@@ -1550,6 +1553,8 @@ static int i40e_correct_vf_mac_vlan_filters(struct i40e_vsi *vsi,
- 				return -ENOMEM;
- 			new_mac->f = add_head;
- 			new_mac->state = add_head->state;
-+			if (add_head->state == I40E_FILTER_NEW)
-+				add_head->state = I40E_FILTER_NEW_SYNC;
- 
- 			/* Add the new filter to the tmp list */
- 			hlist_add_head(&new_mac->hlist, tmp_add_list);
-@@ -2437,7 +2442,8 @@ static int
- i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
- 			  struct i40e_mac_filter *f)
- {
--	bool enable = f->state == I40E_FILTER_NEW;
-+	bool enable = f->state == I40E_FILTER_NEW ||
-+		      f->state == I40E_FILTER_NEW_SYNC;
- 	struct i40e_hw *hw = &vsi->back->hw;
- 	int aq_ret;
- 
-@@ -2611,6 +2617,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 
- 				/* Add it to the hash list */
- 				hlist_add_head(&new->hlist, &tmp_add_list);
-+				f->state = I40E_FILTER_NEW_SYNC;
- 			}
- 
- 			/* Count the number of active (current and new) VLAN
-@@ -2762,7 +2769,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 		spin_lock_bh(&vsi->mac_filter_hash_lock);
- 		hlist_for_each_entry_safe(new, h, &tmp_add_list, hlist) {
- 			/* Only update the state if we're still NEW */
--			if (new->f->state == I40E_FILTER_NEW)
-+			if (new->f->state == I40E_FILTER_NEW ||
-+			    new->f->state == I40E_FILTER_NEW_SYNC)
- 				new->f->state = new->state;
- 			hlist_del(&new->hlist);
- 			netdev_hw_addr_refcnt(new->f, vsi->netdev, -1);
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
