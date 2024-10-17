@@ -1,102 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4141DDA24;
-	Thu, 17 Oct 2024 14:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6015F1DE3C3;
+	Thu, 17 Oct 2024 14:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729174803; cv=none; b=AhLeotwwISopy5qsbBvl1Anh+uiFjE0Md4AEPBwrjmRTodMwcm7S0MDwn4OY1H3DJboFn5bN+e/8PrT4kZQvz7GXCTYG1G1BskrUW2MZ1XPGyiYefgxjDBfDpKG4dDmIoEewLMyxs0qKr3KhezOUEUH6EumPVcvAoP9lxZWND00=
+	t=1729174914; cv=none; b=FzmFoz/Xr7ldwq6R5pSfwqIJ/jq6JXc2T/YekenULZPPLIYpt4gMBe4/A0Gzu0MSoKydzrEA1i6nl9cXfSNj/23jB3a7UZGuw2T+UZDiWIwy93NWoy+/B5A9e8EntikEVSuocLFU7Ipty3c2Kg7RSuu9MtNqsEsMtUhEbw/x/Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729174803; c=relaxed/simple;
-	bh=GLCrs3Dovv1NiZDErsK/6Wy5iJ7ydSzeUdxuxMzzEbc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=NgzOwb45mQG5PO3HA1c58AGE4SKtGW0TQ19UOrTY6Z5Yj/Fo0yCR/IDE79NylduH9ozl4i207Xo283Z41mFlLjenZW6ohF6Cprl29NSHT7TqZHQbnaumokOmJXwzpaG5r08ixKt+mGXUEaLEEY7IttzH0OScR7aYVOFI9dLVrVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJPU1l5K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729174914; c=relaxed/simple;
+	bh=TJxiR5fL2lynj8uABjj7XdbAFsYnPYmJljXDS5EcbhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=UCsNraJ1pKyZsILr5Kyugf8b5CIUYuk1vzSslgausxfCzOR4kjBjX22oiW9cgRXAbp9icLC1m2m/59Ljqox2mQG6Wm8D6ct3jmol+V3m+C3m7u2o4isKTbBVTc2XeRvXUl6Rm9uUhGLhgax+2yDFVTo8Mam12DF2KHhGVMnGSvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FnIrR9EN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJPU1l5K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855DFC4CEC7;
-	Thu, 17 Oct 2024 14:19:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FnIrR9EN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA887C4CEC7;
+	Thu, 17 Oct 2024 14:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729174803;
-	bh=GLCrs3Dovv1NiZDErsK/6Wy5iJ7ydSzeUdxuxMzzEbc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=cJPU1l5Kps56v8mtpHDahoOu/sesVEsbfkxPxTBjZJUFVPTfhquqJmMWgfV57Mzxr
-	 g1rd1vIx0qWhbCmkzM6IbOU0nOCP1F0T68LieQMKCfZIshfUbktERB0aoZhno+uJIB
-	 A5o+vNmH35gCfzcJ1QOdrFU13evRECzSwE6VGCf7j0zJO0BnRmoebOmEkEyOrIn/Fv
-	 R89L1k8bbBzfwhnKPHRNxgVxbKJcHvuhl0Yv/hVpD8djyoy1qYZwYfCn3aQs2Yl9av
-	 VvVxXTl2yNmlJn7lkLhFj8V6hfAEtpxPJ6+iyN7zNxSED2vaeBmgGrG4sDBsIoQhrm
-	 +AHc8oQp8Nn9g==
-From: Mark Brown <broonie@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, SeongJae Park <sj@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
- linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
- linux-arch@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, 
- Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- netdev@vger.kernel.org, linux-sound@vger.kernel.org, 
- Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- linux-media@vger.kernel.org
-In-Reply-To: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
-References: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
-Subject: Re: (subset) [PATCH 00/15] timers: Cleanup delay/sleep related
- mess
-Message-Id: <172917479725.89568.14288418643818666155.b4-ty@kernel.org>
-Date: Thu, 17 Oct 2024 15:19:57 +0100
+	s=k20201202; t=1729174913;
+	bh=TJxiR5fL2lynj8uABjj7XdbAFsYnPYmJljXDS5EcbhI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FnIrR9ENRWy8tI+DCS8KAkeWLyg9IxZCpmJRbl1306BQazoEg+Gic67eFCyfA5gzW
+	 XvZWZvofSA3HfFUX2AQvmu9SZcq8FlKhpzZU7yU8qbbFnE/hI76F2vkQyR1B1608Vx
+	 gRN3UAtalbXxkbYWEE0cNsCXpH5Q929e0oU7kol07PGb8g4Z/gTNvhlYuDWvAYgSmL
+	 0aNjUnnLDGT4yoYqSFvfGuTOlNJ34uof55xLyqQl4LawyVwRMSOOgfgl9eRRa1xKaI
+	 6H1SOdDD2QmQeHTYywFCr+JxoKyEBlRoKx0fQKHeFX+Y8YcCyslarfFI7sc6gBUEmK
+	 ghp2JY6LAQJfA==
+Date: Thu, 17 Oct 2024 09:21:52 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	bhelgaas@google.com, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: Re: [PATCH iwl-next 1/2] PCI: Add PCI_VDEVICE_SUB helper macro
+Message-ID: <20241017142152.GA685610@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017131647.4255-1-piotr.kwapulinski@intel.com>
 
-On Wed, 04 Sep 2024 15:04:50 +0200, Anna-Maria Behnsen wrote:
-> a question about which sleeping function should be used in acpi_os_sleep()
-> started a discussion and examination about the existing documentation and
-> implementation of functions which insert a sleep/delay.
+On Thu, Oct 17, 2024 at 03:16:47PM +0200, Piotr Kwapulinski wrote:
+> PCI_VDEVICE_SUB generates the pci_device_id struct layout for
+> the specific PCI device/subdevice. The subvendor field is set
+> to PCI_ANY_ID. Private data may follow the output.
 > 
-> The result of the discussion was, that the documentation is outdated and
-> the implemented fsleep() reflects the outdated documentation but doesn't
-> help to reflect reality which in turns leads to the queue which covers the
-> following things:
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+> ---
+>  include/linux/pci.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> [...]
+> This patch is a part of the series from netdev.
+> 
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 573b4c4..2b6b2c8 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1050,6 +1050,20 @@ struct pci_driver {
+>  	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
+>  	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
+>  
+> +/**
+> + * PCI_VDEVICE_SUB - describe a specific PCI device/subdevice in a short form
+> + * @vend: the vendor name
+> + * @dev: the 16 bit PCI Device ID
+> + * @subdev: the 16 bit PCI Subdevice ID
+> + *
+> + * Generate the pci_device_id struct layout for the specific PCI
+> + * device/subdevice. The subvendor field is set to PCI_ANY_ID. Private data
+> + * may follow the output.
+> + */
+> +#define PCI_VDEVICE_SUB(vend, dev, subdev) \
+> +	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
+> +	.subvendor = PCI_ANY_ID, .subdevice = subdev, 0, 0
 
-Applied to
+I don't think it's right to specify the subdevice (actually "Subsystem
+ID" per spec) without specifying the subvendor ("Subsystem Vendor ID"
+in the spec).
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+Subsystem IDs are assigned by the vendor, so they have to be used in
+conjunction with the Subsystem Vendor ID.  See PCIe r6.0, sec
+7.5.1.2.3:
 
-Thanks!
-
-[11/15] regulator: core: Use fsleep() to get best sleep mechanism
-        commit: f20669fbcf99d0e15e94fb50929bb1c41618e197
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+  Values for the Subsystem ID are vendor assigned. Subsystem ID
+  values, in conjunction with the Subsystem Vendor ID, form a unique
+  identifier for the PCI product. Subsystem ID and Device ID values
+  are distinct and unrelated to each other, and software should not
+  assume any relationship between them.
