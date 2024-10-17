@@ -1,83 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED76B1D7996
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 09:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5D71D4150;
+	Thu, 17 Oct 2024 09:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729155872; cv=none; b=hpE8Q8kBua1h5bREcM/L28Yftu0PS5vmLUtAzceqM/IszJlZtf7IRn0ExIa6XOXEhKLKrAVm+CGML1Ba9Jt26YLE+CfLjebp8/fudVTrr0uK9cval6kEXkZtnEZhnoejx2IUZk/iERyKK9XsY4QepPkhQGFGvRpTYlqjjSIw8qY=
+	t=1729156647; cv=none; b=qbKZs/3BdAhNa+o1apHdyVOLYgmnc/oyaY/ISFRFmUliF0Hz8qZtGJA8QQagRvl2R1CzsWdy+HwM4F/fvBy8N93h7UOQB3jRmcqJkr2XS73NacplYL0XZL2rh0/uzPKWp/knXsMW431cmjuBo5rtqNjqYfs19Lcyebl/XCXnqfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729155872; c=relaxed/simple;
-	bh=d5kqO4Bh9+2mLG4iFeXcX1lSGbbJ2UL2sLpOF4R3KX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lG3U+YcLyx8wBt/IK/C257CnHYqt3MSMggCYgJVp2Q+PiP4brbzz/tHEyc4wvYiqmmTS3/dgpFt40GsBsZDOCFXp80T9VSKwuQGyrcZgt4S4I8WoRUjAjmqsMSpqs19ZxGAlijRw2FZTAFos+8qAf8HHtANShYP1Kc9OmgtIPRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBhsGYDE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729156647; c=relaxed/simple;
+	bh=tnGQZ6lVUra0MiSs7K66Y5k5frQFbVkK1r1M+VtYFT4=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cirRxIXnV3rJNjVb6+g93K2YD+5lGspz8JFgmVFGx5URmzrzJ6VZzQ1lyVeq7tQm9R+U/eHbsaP+GigCzc34bUmi6PWgO+0ks73sdUN9+mBxloaghq8e3SqxbDTlhqaENYSXlgjX3Pu9M6EOBR0geXPmcDuPPEHcooHmVgtGddc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnnWAINU; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBhsGYDE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9EDC4CEC3;
-	Thu, 17 Oct 2024 09:04:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729155871;
-	bh=d5kqO4Bh9+2mLG4iFeXcX1lSGbbJ2UL2sLpOF4R3KX4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fBhsGYDEZBWr9wfeIkUXehVLJCt/J7hM7gGxAJdLccpuNX1U0hYNC98bIGTWzqhbk
-	 Llp/chNtnicm3xiUxDYY3lzr8qQCNeMOFl18oJG8nKQV39Bb/EEPGXF+MKusJ9giUK
-	 +OXz5msY94POZSBJ07Qrs67baL//sIQppD6TSL0XiTGLC13ic+f/gOkTIiRld18t0w
-	 9cSsx4UmItjp6pz3VDPgF42dQqMuxOkjJ0jAaHc+ticCg8mxqCtnR5c7/Qshp2noxH
-	 QFNCK8Oyh64BQx8AlnEbq2LktCJKdDgpnypgCG5Uz20x2yk9yOk7p3/DKY8bVrQ+/y
-	 ypcvstjsXz0Fg==
-Date: Thu, 17 Oct 2024 10:04:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Joshua Hay <joshua.a.hay@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, aleksander.lobakin@intel.com,
-	madhu.chittim@intel.com, netdev@vger.kernel.org
-Subject: Re: [Intel-wired-lan][PATCH iwl-net] idpf: set completion tag for
- "empty" bufs associated with a packet
-Message-ID: <20241017090428.GS2162@kernel.org>
-References: <20241007202435.664345-1-joshua.a.hay@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnnWAINU"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e3010478e6so607774a91.1;
+        Thu, 17 Oct 2024 02:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729156645; x=1729761445; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yH9xzXbkXQtIf26L75aCO7ntLQ/eZaOKeycwP5Fq5/Y=;
+        b=OnnWAINUceeGGyoSOoe1wiEShxYin0CXrtOM+75IaeI1fb7DifQwpC1K2juTLsGcSO
+         fZxUyX3kg2tfhv/ZDtOZlws0CUKIhTbZX+10xI1fgg7liceXzYeEWAvqmh0o2HN3xvDq
+         Zz9wbugWTIJLTHMRsTPO05xR/hHIdZncGRXgDO2QGLXIQrDuNLo4Tud/jfjyCJd1IXC+
+         2Y7aflyolOSXGUnHaoncHOME14AUDtdb2GIiVrCWzbXt5d7vdtTxN4uoMWluQ6mKgqfP
+         mB+VKjiPQO1NtFgXtaRYpclk0DfX46pdM+Vk+KtVawADIht8tODp+pWmNqT7X/cQGstQ
+         diKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729156645; x=1729761445;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yH9xzXbkXQtIf26L75aCO7ntLQ/eZaOKeycwP5Fq5/Y=;
+        b=h1Q5T09t4Wvny3jph4uS+SKxddjZ7vI7D4tuTfl5mVIR6Sj3Dz/toM+HGz76B0azv3
+         txz9SOee/d1BWFV53WM/MljuVNQxZQ+DAo2HBvBjBwcSxPWKYNDOMREsnMKiWrxSL5H3
+         I0LAC6v7PRb/3bgjL8tV/VFKP3HggXCLi+2QBsyndRQIZkNZdE0JPedP/BmRwnPt2ZSs
+         4nz3TT7vl5V7xRKPvVVRCTlUOoSTZRca4lQxI188FjYwM2VCeQhW348gCwWYRhBkXjzi
+         w7S5xSpKtb2ii7FEpW25FNhxEeUUORasu6HFdmSXO9f25BzrW+uEYS5HXNWRhvIuSXl9
+         7zYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMscER0To0DkLdRhNk6n8B2EPZZfxi26wjryjrTxk47Pk5iCKznJfR//Aw5pzDfsogzBJdnM9Y@vger.kernel.org, AJvYcCVoxiyb212pfwo2wRg23CSxeQPMO4y1Gg/hyVTSAiCUVRxIj8eXxaMOorqnufj/8ckupzF5v4IToJTh8/lhyig=@vger.kernel.org, AJvYcCXD5Gep2ChxVaJDPTVtlFqjGg+IIkuWlHR++5xPDoTsxMTo1L7nbfQWVQotOTCLg3A1KQaFh7AsLHWGEYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+tDJrO7xq0hGR0Q89D1erv+MS8ZYOVrkxRjp5t7SJoGhHUtkd
+	tr8ObxybI/NS4SnXG8FfhU8a7QMdTSD/RQZOmaIKGD1qlHr5pqR0
+X-Google-Smtp-Source: AGHT+IFVEcY1hgk/uwScEfhUWsPC7yT+/rSLWFxI9G28BBKV/hTtZtoqA+IfxcWbw3Do2sFpRKoAtg==
+X-Received: by 2002:a17:90a:640e:b0:2e2:c681:51ce with SMTP id 98e67ed59e1d1-2e3151b77e0mr23884426a91.1.1729156645101;
+        Thu, 17 Oct 2024 02:17:25 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e3e094bd0bsm1354958a91.53.2024.10.17.02.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 02:17:24 -0700 (PDT)
+Date: Thu, 17 Oct 2024 18:17:11 +0900 (JST)
+Message-Id: <20241017.181711.1319333992452672716.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's
+ sub operation to Delta
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ZxAcJEDFQ-n64mnd@Boquns-Mac-mini.local>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+	<20241016035214.2229-4-fujita.tomonori@gmail.com>
+	<ZxAcJEDFQ-n64mnd@Boquns-Mac-mini.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241007202435.664345-1-joshua.a.hay@intel.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 07, 2024 at 01:24:35PM -0700, Joshua Hay wrote:
-> Commit d9028db618a6 ("idpf: convert to libeth Tx buffer completion")
-> inadvertently removed code that was necessary for the tx buffer cleaning
-> routine to iterate over all buffers associated with a packet.
-> 
-> When a frag is too large for a single data descriptor, it will be split
-> across multiple data descriptors. This means the frag will span multiple
-> buffers in the buffer ring in order to keep the descriptor and buffer
-> ring indexes aligned. The buffer entries in the ring are technically
-> empty and no cleaning actions need to be performed. These empty buffers
-> can precede other frags associated with the same packet. I.e. a single
-> packet on the buffer ring can look like:
-> 
-> 	buf[0]=skb0.frag0
-> 	buf[1]=skb0.frag1
-> 	buf[2]=empty
-> 	buf[3]=skb0.frag2
-> 
-> The cleaning routine iterates through these buffers based on a matching
-> completion tag. If the completion tag is not set for buf2, the loop will
-> end prematurely. Frag2 will be left uncleaned and next_to_clean will be
-> left pointing to the end of packet, which will break the cleaning logic
-> for subsequent cleans. This consequently leads to tx timeouts.
-> 
-> Assign the empty bufs the same completion tag for the packet to ensure
-> the cleaning routine iterates over all of the buffers associated with
-> the packet.
-> 
-> Fixes: d9028db618a6 ("idpf: convert to libeth Tx buffer completion")
-> Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-> Acked-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> Reviewed-by: Madhu chittim <madhu.chittim@intel.com>
+On Wed, 16 Oct 2024 13:03:48 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Thanks for the detailed description.
+>>  impl core::ops::Sub for Ktime {
+>> -    type Output = Ktime;
+>> +    type Output = Delta;
+>>  
+>>      #[inline]
+>> -    fn sub(self, other: Ktime) -> Ktime {
+>> -        Self {
+>> -            inner: self.inner - other.inner,
+>> +    fn sub(self, other: Ktime) -> Delta {
+>> +        Delta {
+>> +            nanos: self.inner - other.inner,
+> 
+> My understanding is that ktime_t, when used as a timestamp, can only
+> have a value in range [0, i64::MAX], so this substraction here never
+> overflows, maybe we want add a comment here?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Sure, I'll add.
