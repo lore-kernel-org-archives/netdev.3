@@ -1,100 +1,202 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BCD1D9682;
-	Thu, 17 Oct 2024 11:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D168A1D9682
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 11:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729164301; cv=none; b=tle5SIVAI3c5uGhfLyQMZO2jUrwHbUWcbgmR40eHEJoSZHmQozsyr4ilWpspKryNQW4wuP09+u0Dj8KwIyDicORnEETJSXNSZBYgqp8jpyMbRAlDITizdrrJFjnuQV/VGmxCPtLxqtSGzo9+kd1O8Lc8MZTVnI6KPIg1bHVdLmY=
+	t=1729164370; cv=none; b=sIB0Uvde8yS+TqWX+f09V6hM2Jg1l+7ipRtzM+2c0PLXgVTPcQ/Ik3HDtrGl3gfLHLhR+fF2/kKJZsUkDQ+JHKUssZSdV+0I9aBsVYRJXWT5wRK8QvtXaW/gD6ovQIlwanGwqvE0sv/nMCLSTvc2Rb4NJ6zkhJKJSd/vL4psnKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729164301; c=relaxed/simple;
-	bh=Pl1y+fabejvAdwCW1Wo6WAmJxlXAhG7pAm9j7omYYyA=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=OJ/BiK7d6+7tTWXVi+Jc2xcPZziqmGu/WofovzgxG4er875Cc161B8b5P30EFgb8tjyyXdbsCDN0GwhgleaNOjOWR9Z4ssHljz0FIOHpp0CwIqFKLVQm+u8edB0ROLwAQXkS6NvHhRmf1ytRnSMEfGEJT8rUSx+0JWCPgNNar/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npo8tZ2a; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729164370; c=relaxed/simple;
+	bh=6hKqKu5BnEHPdUOYx6Mirfp+hzeNxAKsnCfbjHVtsas=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E7BH/PU0pQnR6b6eHEmZknL+ID+1iyVREhG3W7xcwYLqNpJ7AN7nK/wwn6JDdxoRtTgKCLZtbaaEJMuJWDeL5cyOnMfdxWEqE0+RkD+LUWrgwIKFDCgpxRbL+ofUrCkcBmzW3DhIsBGxPKoVApFOF7t9JyZ6IMHRjh3TrKNzAMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=pXeQcEtJ; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npo8tZ2a"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20c70abba48so6869715ad.0;
-        Thu, 17 Oct 2024 04:24:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729164298; x=1729769098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=788NdUPICTf2wfyo7RdgecA31qsl/VeyUH4AbOThLOo=;
-        b=npo8tZ2atFwFQOE6US3lkjwDGDRSbwYxuVOT3UH6D9mQPD7pg0tsKo4NJE1osmFaaX
-         U9/HgMIiX7s4gP21lqD8gSgluCmMvcSRe43vGl+jLbJlUhzcD5Ms6vmJZYFD979JRdqe
-         vBNvfTjVmQ8AT37c82dA5WV1RlMCp1ekvfP87gaLoVnYtpYhSzhTztaRPQF78O5HNmUy
-         +iyLf7WAREGYwItkcBZVhXaJKZcLnuYK6QM7M1za6CnEUYrBVsLC98eRfpZxDpmtR17J
-         Bak8GDXfqvvnVtG/94djXZOl4aKtgIIybP8kBUNSdSF1De5hnhKfnBn4PezsM4kU6ix3
-         cg7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729164298; x=1729769098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=788NdUPICTf2wfyo7RdgecA31qsl/VeyUH4AbOThLOo=;
-        b=uny7/oEL3rUVK1eNKA+3HtNYDZp1q9agcqBP2DpRX1+5LnuEg0MyjPfYNHvhjmjukm
-         L6ZyGqvroDoQmU08vujuUHM9Ra7tvsfBrtLgWe6ztFN7fBEO8lC3Gtv5QIl4+Dh2rgwT
-         oEk2QIfSdVmUbPCjSqp0CJlrZwU6eyEwh/35/NnVk+PjS6MhoqGyNFJ8Net4HVBgdlMZ
-         ZNlROG8ihwGP5lczcGPO//MFlWEQmNrFhqs1M4zgyrqIziZUpE1SuHF6Q9A/RAdEIsbv
-         UWMv3BUmaVsYx9XjN9dRLazuyWRJZgE8/HQ4RWmPcUWc6xGiPKiiRUBvcfxav/irQZD6
-         C65w==
-X-Forwarded-Encrypted: i=1; AJvYcCV/1GU03q9cFsVISvp3CtiLPnDh5IjH3ZU0F/3afnOrZMX87cHXI7dtdw0G8Y6WmOF51vAgFiMowOcQXdi70j8=@vger.kernel.org, AJvYcCXKy3gZ5cHsBLdyF4wHcQfLavHc7qpnK3fjpV87RZ/u8nTyEXL+s8wYTsq6tnnR0Z5PHOzOlinCUL48H/0=@vger.kernel.org, AJvYcCXLayxJ85Dm2ZDoGre4odMH0W+8eLsFS57vzBgM3M+XP+5yRKFGUAim7fCWMzff1EcW4zNqvcPT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv2AEg9dEjOzpNnJAFJlLH9KQBnSn+oKViQbConrXlUhC/2ayp
-	JvM/3e9tOyMnfbQwwGU9rKwv1X1VjHbImqhCF5bxjbtyFgj23hAt
-X-Google-Smtp-Source: AGHT+IFUlHh1izUKQNOidDglqkAzWkJLsCNYonncHxtKWheHEjmx/KpO7PmBgsY0lDiO7fhvKfLH9g==
-X-Received: by 2002:a17:903:338e:b0:20c:a189:c006 with SMTP id d9443c01a7336-20cbb240c46mr218003845ad.45.1729164298150;
-        Thu, 17 Oct 2024 04:24:58 -0700 (PDT)
-Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d17f9d513sm42596565ad.101.2024.10.17.04.24.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 04:24:57 -0700 (PDT)
-Date: Thu, 17 Oct 2024 20:24:52 +0900 (JST)
-Message-Id: <20241017.202452.575883553994137336.fujita.tomonori@gmail.com>
-To: me@kloenk.dev
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <89854EA9-63AC-447C-807C-964BB61FF0D6@kloenk.dev>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
-	<20241016035214.2229-3-fujita.tomonori@gmail.com>
-	<89854EA9-63AC-447C-807C-964BB61FF0D6@kloenk.dev>
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="pXeQcEtJ"
+Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:c61f:0:640:7720:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id A2D2B60A0B;
+	Thu, 17 Oct 2024 14:26:02 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wPLwlM6xFiE0-2g4nSVtS;
+	Thu, 17 Oct 2024 14:26:01 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1729164361; bh=VpMELRrrif7Xwagkeyo71ve6U4WAEJqFkL1YyQZApUE=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=pXeQcEtJBVI5tDHjAeVg2voNAgKLQh3wedACtzMW6lLEAdSvGtwfMB6zk6TM5c5C0
+	 xZzI0trOaHRuZL/IDi8RXkIVcy8HtWBjeMurFrhpULWCktK9Du465CQNksBJpBMT2Y
+	 OsTLRUWQu4Z6jmPteN7CIqTuTS/Epz1fFpxq1wPk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	netdev@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH v6 2/2] net: sched: use RCU read-side critical section in taprio_dump()
+Date: Thu, 17 Oct 2024 14:25:05 +0300
+Message-ID: <20241017112546.208758-3-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241017112546.208758-1-dmantipov@yandex.ru>
+References: <20241017112546.208758-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Yandex-Filter: 1
 
-On Thu, 17 Oct 2024 12:17:18 +0200
-Fiona Behrens <me@kloenk.dev> wrote:
+Fix possible use-after-free in 'taprio_dump()' by adding RCU
+read-side critical section there. Never seen on x86 but
+found on a KASAN-enabled arm64 system when investigating
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa:
 
->> +/// A span of time.
->> +#[derive(Copy, Clone)]
->
-> Could we also derive PartialEq and Eq (maybe also PartialOrd and
-> Ord)? Would need that to compare deltas in my LED driver.
+[T15862] BUG: KASAN: slab-use-after-free in taprio_dump+0xa0c/0xbb0
+[T15862] Read of size 4 at addr ffff0000d4bb88f8 by task repro/15862
+[T15862]
+[T15862] CPU: 0 UID: 0 PID: 15862 Comm: repro Not tainted 6.11.0-rc1-00293-gdefaf1a2113a-dirty #2
+[T15862] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-20240524-5.fc40 05/24/2024
+[T15862] Call trace:
+[T15862]  dump_backtrace+0x20c/0x220
+[T15862]  show_stack+0x2c/0x40
+[T15862]  dump_stack_lvl+0xf8/0x174
+[T15862]  print_report+0x170/0x4d8
+[T15862]  kasan_report+0xb8/0x1d4
+[T15862]  __asan_report_load4_noabort+0x20/0x2c
+[T15862]  taprio_dump+0xa0c/0xbb0
+[T15862]  tc_fill_qdisc+0x540/0x1020
+[T15862]  qdisc_notify.isra.0+0x330/0x3a0
+[T15862]  tc_modify_qdisc+0x7b8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Allocated by task 15857:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_alloc_info+0x40/0x60
+[T15862]  __kasan_kmalloc+0xd4/0xe0
+[T15862]  __kmalloc_cache_noprof+0x194/0x334
+[T15862]  taprio_change+0x45c/0x2fe0
+[T15862]  tc_modify_qdisc+0x6a8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Freed by task 6192:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_free_info+0x4c/0x80
+[T15862]  poison_slab_object+0x110/0x160
+[T15862]  __kasan_slab_free+0x3c/0x74
+[T15862]  kfree+0x134/0x3c0
+[T15862]  taprio_free_sched_cb+0x18c/0x220
+[T15862]  rcu_core+0x920/0x1b7c
+[T15862]  rcu_core_si+0x10/0x1c
+[T15862]  handle_softirqs+0x2e8/0xd64
+[T15862]  __do_softirq+0x14/0x20
 
-Sure, I'll add.
+Fixes: 18cdd2f0998a ("net/sched: taprio: taprio_dump and taprio_change are protected by rtnl_mutex")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v6: adjust to match recent changes
+v5: add Fixes: and resend due to series change
+v4: redesign to preserve original code as much as possible,
+    adjust commit message and subject to target net tree
+v3: tweak commit message as suggested by Vinicius
+v2: added to the series
+---
+ net/sched/sch_taprio.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
->> +pub struct Delta {
->> +    nanos: i64,
->> +}
->> +
->
-> I think all this functions could be const (need from_millis as const
-> for LED, but when at it we could probably make all those const?)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 9f4e004cdb8b..8623dc0bafc0 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -2374,9 +2374,6 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	struct tc_mqprio_qopt opt = { 0 };
+ 	struct nlattr *nest, *sched_nest;
+ 
+-	oper = rtnl_dereference(q->oper_sched);
+-	admin = rtnl_dereference(q->admin_sched);
+-
+ 	mqprio_qopt_reconstruct(dev, &opt);
+ 
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+@@ -2397,18 +2394,23 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	    nla_put_u32(skb, TCA_TAPRIO_ATTR_TXTIME_DELAY, q->txtime_delay))
+ 		goto options_error;
+ 
++	rcu_read_lock();
++
++	oper = rtnl_dereference(q->oper_sched);
++	admin = rtnl_dereference(q->admin_sched);
++
+ 	if (oper && taprio_dump_tc_entries(skb, q, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (oper && dump_schedule(skb, oper))
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (!admin)
+ 		goto done;
+ 
+ 	sched_nest = nla_nest_start_noflag(skb, TCA_TAPRIO_ATTR_ADMIN_SCHED);
+ 	if (!sched_nest)
+-		goto options_error;
++		goto options_error_rcu;
+ 
+ 	if (dump_schedule(skb, admin))
+ 		goto admin_error;
+@@ -2416,11 +2418,15 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	nla_nest_end(skb, sched_nest);
+ 
+ done:
++	rcu_read_unlock();
+ 	return nla_nest_end(skb, nest);
+ 
+ admin_error:
+ 	nla_nest_cancel(skb, sched_nest);
+ 
++options_error_rcu:
++	rcu_read_unlock();
++
+ options_error:
+ 	nla_nest_cancel(skb, nest);
+ 
+-- 
+2.46.2
 
-I think that making all the from_* methods const fn make sense. I'll
-do.
