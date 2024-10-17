@@ -1,142 +1,84 @@
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3511DF995;
-	Thu, 17 Oct 2024 17:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548111DFD9B;
+	Thu, 17 Oct 2024 17:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729184833; cv=none; b=COCwUPceWFQmlLZ56u6Mnjk3QvEnjBXl1cl3/iIf+qaziiLvrPgJXaw0TLMXSDqVRiddU5u/bz54tszd3jyGE7GJqVTOIs6RDIKMi72egwuAmdbI//bcUkpVs4Ppani+UHIn+ZGp2DhPncSgvi8Oj64XChExI6LEjtE7GT6fgSY=
+	t=1729185409; cv=none; b=H39e9zGkQNoBqQ6oUo1iwKcZvb5ouOXWBKYnukPDWo/oNTx+YgP86pmErQi0n9kR8P71+bSfmM7y8Rq3gh6volLcdCc+Suy/CHTh04s/QuAzDpTFYuDCn7aDHhL0bxPTmzBIBT8gg1Rvb8T1rTBS7qmjV1MeWw698dCGD8D7xfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729184833; c=relaxed/simple;
-	bh=tKuUfBm2Xq/bcwDJR9YogArAHXWtfMMC7wDG3Mels80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LmRax7Sna6pRylCHPIqLxqiF0GVL1l7wazNdIdzbLeEz64RclfXWW+dk5mXv/i2pM9lZZt8nMTz0UgpROs08ymYYXRk3lhPQ0pDTi0B8r5ff01O5/+DQw/n7IKOclYP3l9FimPbZAu79O0oU0MugDwmvlyUKeHBYSE+noyUdAcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=n6AJ/iLq; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+	s=arc-20240116; t=1729185409; c=relaxed/simple;
+	bh=CHTkMCTOi4KADRR0Qt2Niy3JkOX6fjvWm/vnn6ueic8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g/XfvIG2e0QCpYE4jfwO23B/gEXHaIUrJbQ9Xjfq4zjazFSZyAW2+Iqd8Hx8P1GMc2/PxGy05lFpV/6v0igI9GqxTFQcfxt2R35N+zkm2DHeSi4oqPkEhz967WSoI4V4Lfdhl0HCgyDZmglGWjTqhxsjEtR7TeuW9XpAaRPutoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HaVIDepg; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="n6AJ/iLq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=m1RLVmWZRpVwJRzpSh3rndfAqydCA0xQpFJqAnYi0pM=; b=n6AJ/iLqfAT0IJvQR7XfL1e3qR
-	0Lzs6X6mMsz4RjzDahPcA9umsCpgravM5zz6efj1Gxyy7NSheuaKnv3tTq6CN6I/dOgVxnHmhjzpq
-	nepykm7SO1HHecJjOGiStB4h7pv2v5jjRxege7e1yYaDykRrrkiuRUzRJzdll5dUdt6c=;
-Received: from p4ff13b65.dip0.t-ipconnect.de ([79.241.59.101] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1t1Txc-00AukV-08;
-	Thu, 17 Oct 2024 19:06:52 +0200
-Message-ID: <eb9006ae-4ded-4249-ad0e-cf5b3d97a4cb@nbd.name>
-Date: Thu, 17 Oct 2024 19:06:51 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HaVIDepg"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d4dbb4a89so137424f8f.3;
+        Thu, 17 Oct 2024 10:16:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729185406; x=1729790206; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CHTkMCTOi4KADRR0Qt2Niy3JkOX6fjvWm/vnn6ueic8=;
+        b=HaVIDepgEW5Nz2F12YuISEirQri48FD5I59SGB/g8jUtbiqxVWFv7RDLfIhEcxGWT5
+         /D1fimx1c495coiA7uwHhxzvU0e1isnPYQYw1VTqNS9DuuWj4nvuHKjMkf7c5JciXaGy
+         L/Ec8LCteX/cGMWEhwlkWHHeLGy7PNyEN+e4YVS2G2Dz4zbyLp7NgvjI7ENrY6MkJgGm
+         KClqg6d1s1GsRbhYs73gGe60Xlu4RcEOe46TPp2xJ+rWtzLrwo/JL7szHhBhyCcvRm6r
+         G0jdN0YxB9AsL3joNb+WE1Z8/7iaGvXmoXGflGco6y6bA/EyBK9LmZ1wu194QWIUzY/u
+         YHOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729185406; x=1729790206;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CHTkMCTOi4KADRR0Qt2Niy3JkOX6fjvWm/vnn6ueic8=;
+        b=XzCYV90LdC5YpmzwnOe4oUQUKZH130G95hcTrv5Py+/sQHkHY8fAIsK7pfAlkwUnD7
+         ZKfO1TGObSQqqOBmPg743FpL4YOOujrxw/IMHgwC3MdAWcY/rfN5qkoucYRaiPXucUzY
+         qW2c1CP7T/2mxeEm0AyjQkvayPHLp2wQYfY0HvJeVxKQsQhwzLzgrhswqE17Wggm4yHk
+         do9b9lqvFAwrBj8Gdj3xgQLKt/AieLo7dnx2JpoSqSYzMuV9p2ikvUORH5/4gB3anjnx
+         0D0RXK37GwgG5DO/ba4WoPVgFkwEdLY6Cw/d+pTYPtyy5bxvqSvuoYgKJYFOEFK7iP9P
+         vqaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV3i9jwh+4fIpDJAVMYb/DpB8I1klymPuDCWEHEtUk52ImqhnPMrvv98iKeo3TeXlViOPk7oAXOre/OWts=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3bkRjhzkjDvzhjJIvpxayqzySf+AuwXPVWsF8hYoDwi8pCzev
+	qc22TxKLdlB6qWKIz8UdPjTTVfP0HPCV4LMz1UU/vyH32J4OC6Fz
+X-Google-Smtp-Source: AGHT+IHybU/ZmFXrzf4w9xc8BacfuSn5MWDGIn00ngDmgGYyYXsHgb2X+ig6bMR+mxD9CZpdU0D5RA==
+X-Received: by 2002:a5d:6c61:0:b0:37c:d0d6:ab1a with SMTP id ffacd0b85a97d-37d939bd9cbmr1387179f8f.12.1729185406268;
+        Thu, 17 Oct 2024 10:16:46 -0700 (PDT)
+Received: from skbuf ([188.25.134.29])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa7a09dsm7938351f8f.23.2024.10.17.10.16.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 10:16:45 -0700 (PDT)
+Date: Thu, 17 Oct 2024 20:16:43 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Furong Xu <0x1207@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, xfr@outlook.com
+Subject: Re: [PATCH net-next v1 3/5] net: stmmac: Rework marco definitions
+ for gmac4 and xgmac
+Message-ID: <20241017171643.kmg7gvemmedl74r7@skbuf>
+References: <cover.1728980110.git.0x1207@gmail.com>
+ <94705afa1d2815e82c27d3d1a13b2ad6ada8952f.1728980110.git.0x1207@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v1 net-next 00/12] bridge-fastpath and related
- improvements
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Eric Woudstra <ericwouds@gmail.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu <roopa@nvidia.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Frank Wunderlich <frank-w@public-files.de>,
- Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, bridge@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20241013185509.4430-1-ericwouds@gmail.com>
- <9f9f3cf0-7a78-40f1-b8d5-f06a2d428210@blackwall.org>
- <a07cadd3-a8ff-4d1c-9dca-27a5dba907c3@gmail.com>
- <0b0a92f2-2e80-429c-8fcd-d4dc162e6e1f@nbd.name>
- <137aa23a-db21-43c2-8fb0-608cfe221356@gmail.com>
- <a7ab80d5-ff49-4277-ba73-db46547a8a8e@nbd.name>
- <d7d48102-4c52-4161-a21c-4d5b42539fbb@gmail.com>
- <b5739f78-9cd5-4fd0-ae63-d80a5a37aaf0@nbd.name> <ZxEFdX1uoBYSFhBF@calendula>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <ZxEFdX1uoBYSFhBF@calendula>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <94705afa1d2815e82c27d3d1a13b2ad6ada8952f.1728980110.git.0x1207@gmail.com>
 
-On 17.10.24 14:39, Pablo Neira Ayuso wrote:
-> On Thu, Oct 17, 2024 at 11:17:09AM +0200, Felix Fietkau wrote:
-> [...]
->> By the way, based on some reports that I received, I do believe that the
->> existing forwarding fastpath also doesn't handle roaming properly.
->> I just didn't have the time to properly look into that yet.
-> 
-> I think it should work for the existing forwarding fastpath.
-> 
-> - If computer roams from different port, packets follow classic path,
->    then new flow entry is created. The flow old entry expires after 30
->    seconds.
-> - If route is stale, flow entry is also removed.
-> 
-> Maybe I am missing another possible scenario?
+On Tue, Oct 15, 2024 at 05:09:24PM +0800, Furong Xu wrote:
+> Rename and add marco definitions to better reuse them in common code.
 
-I'm mainly talking about the scenario where a computer moves to a 
-different switch port on L2 only, so all routes remain the same.
-
-I haven't fully analyzed the issue, but I did find a few potential 
-issues with what you're describing.
-
-1. Since one direction remains the same when a computer roams, a new 
-flow entry would probably fail to be added because of an existing entry 
-in the flow hash table.
-
-2. Even with that out of the way, the MTK hardware offload currently 
-does not support matching the incoming switch/ethernet port.
-So even if we manage to add an updated entry, the old entry could still 
-be kept alive by the hardware.
-
-The issues I found probably wouldn't cause connection hangs in pure L3 
-software flow offload, since it will use the bridge device for xmit 
-instead of its members. But since hardware offload needs to redirect 
-traffic to individual bridge ports, it could cause connection hangs with 
-stale flow entries.
-
-There might be other issues as well, but this is what I could come up 
-with on short notice. I think in order to properly address this, we 
-should probably monitor for FDB / neigh entry changes somehow and clear 
-affected flows.
-Routes do not become stale in my scenario, so something else is needed 
-to trigger flow entry removal.
-
-- Felix
+s/marco/macro/ (twice)
