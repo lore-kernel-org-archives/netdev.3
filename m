@@ -1,218 +1,139 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B354C6AA1
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 00:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA917580
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 00:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729126113; cv=none; b=I0k7uEp9IyHrgvRdeC2SOlTrlCKfLNj2u07iy2vnqTK9le27bLIjeRwsXO+v1j4BnFr1Xb2slkIexs8mHFY40Ew72zu+auNWu8g9fKB6IFp8pM1gLzh4aUmJLja+QSfmPjrH1A7yg1haS9Ihcq4B5cFEOoFQB1aSwKdCSior+I4=
+	t=1729126671; cv=none; b=FKAFS6cFDJyFzQT4FPaEmhp40Ww2ztM8Kr0TNGwsmacUtA0u5fcDykMuXrr3/VmY2FXpDehvutpG9LLcXSQ5hDN0+fVE2n/NQ1IGNQ4tE2toBpIZwqMHvFeWbwlYVKhw8olDWEkvt3zxcjKUotD4yQkeFyhe2PbI6hRUwaSd11A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729126113; c=relaxed/simple;
-	bh=Q1Zyx8GG9SEmUQwxBdlocYMPPhSi+dNevB1/jCoZCD0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cHOXgrlayn++mX1Q5dL094Pn5mDOgtu+iOMxv9LbYNqaelveFnV5u/BtefrqVXVXSPlTrwmi3y6Tmt4jxynN5Zd64tgczVEY9GHb8TqjRLbcb8A80DpWdN7wfwQacKCOHdpFrZOR74QgIEsAoD7f3lfMdXsQatBdx9VmWAUOMss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dC1VgyTC; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1729126671; c=relaxed/simple;
+	bh=75hR31KYcNVVw9XfAVhT5KZdKZHt01NPK5ObpGx/k0k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GDKU1re3cAdSM16FEwe9i85RVjpRGhscDMHyHzoo1B9aneAQ/xy7YpQTPUewZWCiGl/d3AaC1tocBnaSIsehE04M8WcUDhUrt7CMtJsoKjSiu212AOI57dGM9Aall+cMp4aw9H1rJ4ROmqgZmWOIGiSz52i504uz7u6aPtWuW1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=RxmvBFPr; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dC1VgyTC"
-Message-ID: <095d241a-44d5-461f-8d64-356676a44e8b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729126108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3iL9evQOvPFUCNej+Y9UMpXM8GfQq85q1dwBovHgvB8=;
-	b=dC1VgyTChjiqtDPCz+9JC5bdbOAKi+q6MdHEpjOFbWaE9gbb7XINkGvBaX4aJJQIgFX68j
-	D1uSM/697PosxsGPzBpO3MkgN40wv/rzz5sFvEex08uMj+bNJfrZ4VPdUzignaBLoZ1dhU
-	X7lUpQwm5t4zLNeCCw+NgSP4Bcs3dQU=
-Date: Wed, 16 Oct 2024 17:48:20 -0700
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="RxmvBFPr"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b11692cbcfso34834885a.0
+        for <netdev@vger.kernel.org>; Wed, 16 Oct 2024 17:57:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1729126669; x=1729731469; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Ie/0oo/Q1j/Vv9YDm7GQSm/OrG3L8RDi9nDJTydVEA=;
+        b=RxmvBFPrgdofw2l8y8pvtZvh7CYDCyzCl+v4kJrFUKFv3/cibGUzBjYa/RFWfvQaYL
+         T7oxdX7Idk5eE5prqz8UzqxsGgRvPag7G1d67+OC+JxzWrfoYjrhn58p+5XBdi4ojhXM
+         ahZK2emSx43wlJ4b5yXQWGaobGbtuJ/Ld8DfqbMAvD5sDQ4fUW2rIXoEMSIxOsOK/aBX
+         LuLTJnJ5csafZ/2AhpATrMdgIhRxiswPmH5x+tgSsN5JPa5836e/L1PCWvaKCmKpuaxq
+         SMQC1veQCdHmTvkUalZbvLHrGQY7KTkhAtQCn1S4iLs6E+HBGAtB/rOPrkOd25qWZbqN
+         5biA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729126669; x=1729731469;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0Ie/0oo/Q1j/Vv9YDm7GQSm/OrG3L8RDi9nDJTydVEA=;
+        b=BNIcpLb+998+lzThNYy6rAcjQ6MhYdUP1t9V8rweiPLtShJxTmgPqBsowT5S14dEks
+         sTCatrl6wdUYlzRrBCEzojYyS9/Ab7w/0i0dHySkj2dIDGfWaaOB6cbjI99W1bCgJ9cT
+         RkMBXncXOsl/8z5jtn1GaGoIgAzaBLdpv14kfXiZt2+AtNP+uaprjnR86X2yH5KRctwv
+         gx2xY3BchwEWK+xX56vbzjz31DvJiox/kVbJrctiERvlxjtL9VCOZABtwBpVBkhskCNV
+         sRGSCFuDZWPpmCOGEdo5vHRx4hR0ltINICzeoG4mH0eoNsY4+6GC0DtVk2qX3I68cSHb
+         u4Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUySN9z3/S/RNQJf32zebcGbwHH8fdlxzPY9pYCKN6HaMANpXug4HWcJkmzcHVdmaswvWR33c0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTCoQFRcKwVnvucM2n6lihNMqAfn2fqM2t9E/m4+Gj3KV9Ikht
+	IAUQsTpuSsQUQkCHORqjFTW3LE0bW/MZl4FryPGPXibmP5+wGyWEyVeRQNuCwQc=
+X-Google-Smtp-Source: AGHT+IFbS9Qlspq3VIc4TYQhRSNdXpqYJG5hpVKxDvn0CRr56E4UiAbQn5PBpciQJZUPAuZHJpYFAg==
+X-Received: by 2002:a05:620a:45ab:b0:7b1:4053:71c1 with SMTP id af79cd13be357-7b1417cb2fdmr901518185a.18.1729126668815;
+        Wed, 16 Oct 2024 17:57:48 -0700 (PDT)
+Received: from n191-036-066.byted.org ([130.44.212.94])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b13617a23esm242466685a.60.2024.10.16.17.57.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2024 17:57:47 -0700 (PDT)
+From: zijianzhang@bytedance.com
+To: bpf@vger.kernel.org
+Cc: john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org,
+	cong.wang@bytedance.com,
+	zijianzhang@bytedance.com
+Subject: [PATCH bpf 1/2] tcp_bpf: charge receive socket buffer in bpf_tcp_ingress()
+Date: Thu, 17 Oct 2024 00:57:41 +0000
+Message-Id: <20241017005742.3374075-2-zijianzhang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20241017005742.3374075-1-zijianzhang@bytedance.com>
+References: <20241017005742.3374075-1-zijianzhang@bytedance.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v2 04/12] net-timestamp: add static key to
- control the whole bpf extension
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Jakub Sitnicki <jakub@cloudflare.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
- willemdebruijn.kernel@gmail.com, willemb@google.com, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, bpf@vger.kernel.org,
- netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
-References: <20241012040651.95616-1-kerneljasonxing@gmail.com>
- <20241012040651.95616-5-kerneljasonxing@gmail.com>
- <dbddb085-183e-47bf-8bc7-ec6eac4d877f@linux.dev>
- <CAL+tcoBieZ3_ZX3PRY8k7-C6Rv2g=Mr1U1NAQkQpbHYYvtWpTQ@mail.gmail.com>
- <CAL+tcoBXj=EO-sk-dS+dN-pCZf8OKeOZ4LXb9GZnja3EfOhXYg@mail.gmail.com>
- <9f050a5c-644f-4fbb-ac37-53edfd160edc@linux.dev>
- <CAL+tcoDyt=3hjwdx8Wk-abKg=qQsY=7UKu9=TU4iUAk5gMT2MQ@mail.gmail.com>
- <5398c020-e9b4-49d2-a5fa-dca047296ddd@linux.dev>
- <CAL+tcoDb84bgUUpK9PjijWDt+xw=u2nKkoWf1Gjvkjf--XJ6VA@mail.gmail.com>
- <c669769f-8437-46cc-95b4-d3f84c1c95b7@linux.dev>
- <CAL+tcoD-fzq7dSwkM4nRE8vF-y=+RO1y8X=95+D8Gv3QXTRWCA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <CAL+tcoD-fzq7dSwkM4nRE8vF-y=+RO1y8X=95+D8Gv3QXTRWCA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 10/16/24 3:36 AM, Jason Xing wrote:
->>> If the skb carries the timestamp, there are three cases:
->>> 1) non-bpf case and users uses setsockopt()
->>> 2) cmsg case
->>> 3) bpf case
+From: Cong Wang <cong.wang@bytedance.com>
 
-These should have tests in the selftests/bpf/ sooner than later. (More below).
+When bpf_tcp_ingress() is called, the skmsg is being redirected to the
+ingress of the destination socket. Therefore, we should charge its
+receive socket buffer, instead of sending socket buffer.
 
->>>
->>> #1 and #2 are already handled well before this patch. I only need to
->>> test if sk_tsflags_bpf has those flags. If so, it means we hit #3, or
->>> else it could be #1 or #2, then we will let the old way print
->>> timestamps in __skb_tstamp_tx().
->>
->> hmm... I am still not sure I fully understand...but I think I may start getting it.
-> 
-> Sorry, my bad. I gave the wrong answer...
-> 
-> It should be:
-> Testing if if sk_tsflags has SOF_TIMESTAMPING_SOFTWARE flag should
+Because sk_rmem_schedule() tests pfmemalloc of skb, we need to
+introduce a wrapper and call it for skmsg.
 
-You meant adding SOF_TIMESTAMPING_SOFTWARE test to the sk_tstamp_tx_flags()?
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+---
+ include/net/sock.h | 10 ++++++++--
+ net/ipv4/tcp_bpf.c |  2 +-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-Before any bpf changes, if I read __skb_tstamp_tx() correctly, the current 
-behavior is to just queue to the sk_error_queue as long as there is 
-"SOF_TIMESTAMPING_TX_*" set in the skb's tx_flags and it is regardless of the 
-sk_tsflags. This will eventually get ignored when user read it from the error 
-queue because the SOF_TIMESTAMPING_SOFTWARE is not set in sk_tsflags? I suspect 
-the user space will still read something from the error queue unless there is 
-SOF_TIMESTAMPING_OPT_TSONLY but it won't have the tstamp cmsg.
-
-Adding SOF_TIMESTAMPING_SOFTWARE test to the sk_tstamp_tx_flags() will stop it 
-from even queuing to the error queue? I think it is ok but I am not sure if 
-anyone is depending on the above behavior.
-
-> work fine. If it has the flag, we could use skb_tstamp_tx_output() to
-> print based on patch [4/12]; if not, we will use
-> bpf_skb_tstamp_tx_output() to print.
-> 
-> If users use traditional ways of deploying SO_TIMESTAMPING, sk_tsflags
-> always has SOF_TIMESTAMPING_SOFTWARE which is a software report flag
-> (please see Documentation/networking/timestamping.rst). We can see a
-> good example on how to use in
-> tools/testing/selftests/net/txtimestamp.c:
-> do_test()
-> {
->          sock_opt = SOF_TIMESTAMPING_SOFTWARE |
->          ...
->          if (setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING,
->                                (char *) &sock_opt, sizeof(sock_opt)))
-> }
-> 
->>
->> Is it the reason that the bpf_setsockopt() cannot clear the sk_tsflags_bpf once
->> it is set in patch 2? It is not a usable api tbh. It will be a surprise to many.
->> It has to be able to set and clear.
-> 
-> I cannot find a good time to clear all the sockets which are set
-> through the BPF program. If we detach the BPF program, it will not
-> print of course. Does it really matter if we don't clear the
-> sk_tsflags_bpf?
-
-Yes, it matters. The same reason goes for why the existing bpf prog can clear 
-the tp->bpf_sock_ops_cb_flags. Yes, detach will automatically not taking the 
-timestamp. For sockops program that stays forever, not all usages expect to do 
-timestamping for the whole lifetime of the connection. If there is a way for the 
-prog to turn it on, it should have a way for the prog to turn it off.
-
-What is the concern of allowing the bpf prog to disable something that it has 
-enabled before?
-
-While we are on bpf_sock_ops_cb_flags, the 
-BPF_SOCK_OPS_TX_TIMESTAMPING_OPT_CB_FLAG addition is mostly a dup of whatever in 
-the new sk_tsflags_bpf. It is something we need to clean up later when we decide 
-what interface to use for bpf timestamping.
-
-> 
->>
->> Does it also mean either the bpf or the user space can enable the timetstamping
->> but not both? I don't think we can assume this also. It will be hard to deploy
->> the bpf prog in production to collect continuous data. The user space may have
->> some timestamping enabled but the bpf may want to do its parallel investigation
->> also. The user space may rollout timestamping in the future and suddenly break
->> the bpf prog.
-> 
-> Well, IIUC, it's also the basic idea from the current series which
-> allows both happening at the same time. Let us put it in a simple way,
-> I hope that if the app uses the SO_TIMESTAMPING feature already, then
-> one admin deploys the BPF program, that app should be traced both in
-> bpf and non-bpf ways.
-> 
-> But Willem doesn't agree about this approach[1] because of hard to debug.
-> 
-> [1]: https://lore.kernel.org/all/670dda9437147_2e6c4029461@willemb.c.googlers.com.notmuch/
-> Regarding to this link, I have a few more words to say: the socket
-> could be set through bpf_setsockopt() in different phases not like
-> setsockopt(), so in some cases we cannot make setsockopt hard failed.
-> 
-> After rethinking this point more, I still reckon that letting BPF
-> program trace timestamping parallelly without caring whether the
-> socket is set to the SO_TIMESTAMPING feature through setsockopt()
-
-I am afraid having both work in parallel is needed. Otherwise, it will be very 
-hard to deploy a bpf prog to run continuously in scale. Being able to collect 
-timestamp without worrying about application changes/updates/downgrades is 
-important. e.g. App changes from no time stamping to time stamping
-
-Please help to add selftests to show how the above cases (1), (2), (3), and 
-other tsflags/txflags sharing cases will work. This should not be delayed until 
-the discussion is done. It is needed sooner or later to prove both bpf and 
-non-bpf ways can work at the same time. It will help the reviewer and also help 
-to think about the design with a real use case in bpf prog.
-
-The example in patch 0 only prints the reported tstamp, can you share how it 
-will be used to investigate issue? Is it also useful to know when the skb is 
-written to the kernel during sendmsg()?
-
-Regarding the bpf_setsockopt() can be called in different phase, 
-bpf_setsockopt() is not limited to sockops program. e.g. it can also be called 
-from a bpf-tcp-cc (congestion control). Not a tcp-cc expert but I won't be 
-surprised people will try to trigger some on-and-off timestamping from 
-bpf-tcp-cc to measure some delay.
-
-
-More about bpf_setsockopt() in different phase, understand that UDP is not your 
-priority. However, it needs to have some clarity on how UDP will work and how to 
-enable it. UDP usually has no connect/established phase.
-
-Regarding the SOF_TIMESTAMPING_* support, can you list out what else you are 
-planning to support in the future. You mentioned the SOF_TIMESTAMPING_TX_ACK in 
-another thread. What else?
-
-> method. It means I would like to keep this part in patch [04/12]:
-> @@ -5601,6 +5636,9 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
->          if (!sk)
->                  return;
-> 
-> +       if (static_branch_unlikely(&bpf_tstamp_control))
-> +               bpf_skb_tstamp_tx_output(sk, tstype);
-> +
->          skb_tstamp_tx_output(orig_skb, ack_skb, hwtstamps, sk,
-> tstype);
->   }
->   EXPORT_SYMBOL_GPL(__skb_tstamp_tx);
-> 
->>
->> [ getting late here. will continue later. ]
-> 
-> Thanks for your effort :)
-> 
-> Thanks,
-> Jason
+diff --git a/include/net/sock.h b/include/net/sock.h
+index c58ca8dd561b..4e796b1a92d2 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1519,7 +1519,7 @@ static inline bool sk_wmem_schedule(struct sock *sk, int size)
+ }
+ 
+ static inline bool
+-sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++__sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
+ {
+ 	int delta;
+ 
+@@ -1527,7 +1527,13 @@ sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
+ 		return true;
+ 	delta = size - sk->sk_forward_alloc;
+ 	return delta <= 0 || __sk_mem_schedule(sk, delta, SK_MEM_RECV) ||
+-		skb_pfmemalloc(skb);
++	       pfmemalloc;
++}
++
++static inline bool
++sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++{
++	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
+ }
+ 
+ static inline int sk_unused_reserved_mem(const struct sock *sk)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index e7658c5d6b79..48c412744f77 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -49,7 +49,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
+ 		sge = sk_msg_elem(msg, i);
+ 		size = (apply && apply_bytes < sge->length) ?
+ 			apply_bytes : sge->length;
+-		if (!sk_wmem_schedule(sk, size)) {
++		if (!__sk_rmem_schedule(sk, size, false)) {
+ 			if (!copied)
+ 				ret = -ENOMEM;
+ 			break;
+-- 
+2.20.1
 
