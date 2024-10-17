@@ -1,32 +1,59 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEF121E3BB
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 10:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EB41D270B;
+	Thu, 17 Oct 2024 10:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729161220; cv=none; b=evyTUn5pp814mDydTZtR9kH1Cvkd8xLV0xhuQGZIdtiDQSUrDvXvJzg20XirUNjOR0RJeDmjcOnXr0t+SFQHsNp/U7qBFoQXEkehCTNw4ENuzN6ItT3YK99QnvPtyvk78kauB9nAj2NtnI4V1H6h68jVFcKSwjCwyUt30nOQE2w=
+	t=1729161371; cv=none; b=b5qMUd8VDfii0vhK+UL8g3LTJfV8qo69+2ygIesJsji/ymncV09mb41inc6c8fJF+LptDyNe07ypfJ9+PRkm0ObTlC+ujIofTmqnnBtyIuIj98/Yc555oB4fMMtlpXmPO1Ewih8YKaf0qmLozdO5kz4apsaGH9rg8f/LOJLfn/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729161220; c=relaxed/simple;
-	bh=BbOKPWQ8tdjH+N71h23K0v85p+OyYDqtFHQfngFvzp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DEAxE3FEAZzsneD6dN5QhoZvLBsgYYB4FgLngqgFaxoQKzuZuq3anFu+CRwD9bCs8T0kffNhrT8eYZnUKa4IiYNcRQBt029HXr/0CN3HkT3IW+HS3U6Ny8ymkdAlmuhDwbKMr7exnMwOPSfxUqAoSxGlVlbJ7ZqrYkaCxfI/QyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=breakpoint.cc
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-	(envelope-from <fw@breakpoint.cc>)
-	id 1t1Np0-000330-Nl; Thu, 17 Oct 2024 12:33:34 +0200
-From: Florian Westphal <fw@strlen.de>
-To: <netdev@vger.kernel.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Nathan Harold <nharold@google.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Yan Yan <evitayan@google.com>
-Subject: [PATCH ipsec] xfrm: migrate: work around 0 if_id on migrate
-Date: Thu, 17 Oct 2024 11:43:05 +0200
-Message-ID: <20241017094315.6948-1-fw@strlen.de>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1729161371; c=relaxed/simple;
+	bh=bN0ynZ5VvEebxpXgXh2TCBbbaoPHNbGQrJn45V3ZuV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZFzQ70O68clmj1Sq71U3ePTYb4KfnUsNDGt1YnaKzJ2yIWvK1tsyticTAu7Y1IVFuooBVGoHL/UC5CnSJ2iIQrHV42zQofn8q0wn/sRUeHSEJ1V0eVT0KUNyGGRewiN+unMGnv4kQN92VgRryFBH2cJJGs5s/VerVOCr5K+c/n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=G98204VL; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="G98204VL"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id ADEE91BF204;
+	Thu, 17 Oct 2024 10:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729161360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FU3ajgfKVQdp/DGYqfIoFwgjGz2NDpydxrXXIn2bE1U=;
+	b=G98204VLPKaAcWsavGd30rRwqEypallNrziTcStzdHkRWaKtaMkSoHfpTQYq6rlY1nQ9AX
+	oA97FMVpRw7r7fNmacsDX2Wo3haxFqhvQGZwRhHfs5DmGTcNPCPk1gnmvMdodkgnJs/8Lv
+	yOb4mGFH/6qKarFgC398y2e6MV1wuOtFtUUX3vDEzXCNrbPV8jmIf06Fjrcs9BR4K6Us/H
+	eRuyPpFGdEVEsDn09l0eqt0bqDUEJCdA6E269M8MKpWpK2iNhfq+wr2m+KhyJWNU9x9sS/
+	hY8egc0q6dio7a5KWPfC6PoqxbjxHxru/zYSduyYqpE+moqvOJ0piu8KKv2Ozw==
+Date: Thu, 17 Oct 2024 12:35:57 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Kyle Swenson <kyle.swenson@est.tech>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
+ <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, Dent Project
+ <dentproject@linuxfoundation.org>, "kernel@pengutronix.de"
+ <kernel@pengutronix.de>
+Subject: Re: [PATCH net-next 00/12] Add support for PSE port priority
+Message-ID: <20241017123557.68189d5b@kmaincent-XPS-13-7390>
+In-Reply-To: <20241015114352.2034b84a@kmaincent-XPS-13-7390>
+References: <20241002-feature_poe_port_prio-v1-0-787054f74ed5@bootlin.com>
+	<ZwaLDW6sKcytVhYX@p620.local.tld>
+	<20241009170400.3988b2ac@kmaincent-XPS-13-7390>
+	<ZwbAYyciOcjt7q3e@est-xps15>
+	<ZwdpQRRGst1Z0eQE@pengutronix.de>
+	<20241015114352.2034b84a@kmaincent-XPS-13-7390>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,184 +61,131 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: kory.maincent@bootlin.com
 
-Looks like there are userspace applications which rely on the ability to
-migrate xfrm-interface policies while not providing the interface id.
+On Tue, 15 Oct 2024 11:43:52 +0200
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-This worked because old code contains a match workaround:
-   "if_id == 0 || pol->if_id == if_id".
+> > Policy Variants and Implementation
+> >=20
+> > In cases where we are discussing prioritization, we are fundamentally
+> > talking about over-provisioning. This typically means that while a devi=
+ce
+> > advertises a certain maximum per-port power capacity (e.g., 95W), the t=
+otal
+> > system power budget (e.g., 300W) is insufficient to supply maximum powe=
+r to
+> > all ports simultaneously. This is often due to various system limitatio=
+ns,
+> > and if there were no power limits, prioritization wouldn't be necessary.
+> >=20
+> > The challenge then becomes how to squeeze more Powered Devices (PDs) on=
+to
+> > one PSE system. Here are two methods for over-provisioning:
+> >=20
+> > 1. Static Method:
+> > =20
+> >    This method involves distributing power based on PD classification. =
+It=E2=80=99s
+> >    straightforward and stable, with the software (probably within the P=
+SE
+> >    framework) keeping track of the budget and subtracting the power
+> > requested by each PD=E2=80=99s class.=20
+> > =20
+> >    Advantages: Every PD gets its promised power at any time, which
+> > guarantees reliability.=20
+> >=20
+> >    Disadvantages: PD classification steps are large, meaning devices re=
+quest
+> >    much more power than they actually need. As a result, the power supp=
+ly
+> > may only operate at, say, 50% capacity, which is inefficient and wastes
+> > money.
+> >=20
+> > 2. Dynamic Method: =20
+> >=20
+> >    To address the inefficiencies of the static method, vendors like
+> > Microchip have introduced dynamic power budgeting, as seen in the PD692=
+x0
+> > firmware. This method monitors the current consumption per port and
+> > subtracts it from the available power budget. When the budget is exceed=
+ed,
+> > lower-priority ports are shut down. =20
+> >=20
+> >    Advantages: This method optimizes resource utilization, saving costs.
+> >=20
+> >    Disadvantages: Low-priority devices may experience instability. A
+> > possible improvement could involve using LLDP protocols to dynamically
+> > configure power limits per port, thus allowing us to reduce power on
+> > over-consuming ports rather than shutting them down entirely. =20
+>=20
+> Indeed we will have only static method for PSE controllers not supporting
+> system power budget management like the TPS2388x or LTC426.
+> Both method could be supported for "smart" PSE controller like PD692x0.
+>=20
+> Let's begin with the static method implementation in the PSE framework for
+> now. It will need the power domain notion you have talked about.
 
-The packetpath lookup code uses the id_id as a key into rhashtable; after
-switch of migrate lookup over to those functions policy lookup fails.
+While developing the software support for port priority in static method, I
+faced an issue.
 
-Add a workaround: if no policy to migrate is found and userspace provided
-no if_id  (normal for non-interface policies!) do a full search of all
-policies and try to find one that matches the selector.
+Supposing we are exceeding the power budget when we plug a new PD.
+The port power should not be enabled directly or magic smoke will appear.
+So we have to separate the detection part to know the needs of the PD from =
+the
+power enable part.
 
-This is super-slow, so print a warning when we find a policy, so
-hopefully such userspace requests are fixed up over time to not rely on
-magic-0-match.
+Currently the port power is enabled on the hardware automatically after the
+detection process. There is no way to separate power port process and detec=
+tion
+process with the PD692x0 controller and it could be done on the TPS23881 by
+configuring it to manual mode but: "The use of this mode is intended for sy=
+stem
+diagnostic purposes only in the event that ports cannot be powered in
+accordance with the IEEE 802.3bt standard from semiauto or auto modes."
+Not sure we want that.
 
-In case of setups where userspace frequently tries to migrate non-existent
-policies with if_id 0 such migrate requests will take much longer to
-complete.
+So in fact the workaround you talked about above will be needed for the two=
+ PSE
+controllers.
+=20
+> Both methods have their pros and cons. Since the dynamic method is not al=
+ways
+> desirable, and if there's no way to disable it in the PD692x0's firmware,=
+ one
+> potential workaround could be handling the budget in software and dynamic=
+ally
+> setting per-port limits. For instance, with a total budget of 300W and un=
+used
+> ports, we could initially set 95W limits per port. As high-priority PDs (=
+e.g.,
+> three 95W devices) are powered, we could dynamically reduce the power lim=
+it on
+> the remaining ports to 15W, ensuring that no device exceeds that
+> classification threshold.
 
-Other options:
- 1. also add xfrm interface usage counter so we know in advance if the
-    slowpath could potentially find the 'right' policy or not.
+We would set port overcurrent limit for all unpowered ports when the power
+budget available is less than max PI power 100W as you described.
+If a new PD plugged exceed the overcurrent limit then it will raise an inte=
+rrupt
+and we could deal with the power budget to turn off low priority ports at t=
+hat
+time.=20
 
- 2. Completely revert policy insertion patches and go back to linear
-    insertion complexity.
+Mmh in fact I could not know if the overcurrent event interrupt comes from a
+newly plugged PD or not.
 
-1) seems premature, I'd expect userspace to try migration of policies it
-   has inserted in the past, so either normal fastpath or slowpath
-   should find a match anyway.
+An option: When we get new PD device plug interrupt event, we wait the end =
+of
+classification time (Tpon 400ms) and read the interrupt states again to kno=
+w if
+there is an overcurrent or not on the port.
 
-2) seems like a worse option to me.
+What do you think?
 
-Cc: Nathan Harold <nharold@google.com>
-Cc: Maciej Żenczykowski <maze@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Fixes: 563d5ca93e88 ("xfrm: switch migrate to xfrm_policy_lookup_bytype")
-Reported-by: Yan Yan <evitayan@google.com>
-Tested-by: Yan Yan <evitayan@google.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- net/xfrm/xfrm_policy.c | 101 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 101 insertions(+)
-
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index d555ea401234..29554173831a 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4425,6 +4425,81 @@ EXPORT_SYMBOL_GPL(xfrm_audit_policy_delete);
- #endif
- 
- #ifdef CONFIG_XFRM_MIGRATE
-+static bool xfrm_migrate_selector_match(const struct xfrm_selector *sel_cmp,
-+					const struct xfrm_selector *sel_tgt)
-+{
-+	if (sel_cmp->proto == IPSEC_ULPROTO_ANY) {
-+		if (sel_tgt->family == sel_cmp->family &&
-+		    xfrm_addr_equal(&sel_tgt->daddr, &sel_cmp->daddr,
-+				    sel_cmp->family) &&
-+		    xfrm_addr_equal(&sel_tgt->saddr, &sel_cmp->saddr,
-+				    sel_cmp->family) &&
-+		    sel_tgt->prefixlen_d == sel_cmp->prefixlen_d &&
-+		    sel_tgt->prefixlen_s == sel_cmp->prefixlen_s) {
-+			return true;
-+		}
-+	} else {
-+		if (memcmp(sel_tgt, sel_cmp, sizeof(*sel_tgt)) == 0)
-+			return true;
-+	}
-+	return false;
-+}
-+
-+/* Ugly workaround for userspace that wants to migrate policies for
-+ * xfrm interfaces but does not provide the interface if_id.
-+ *
-+ * Old code used to search the lists and handled if_id == 0 as 'does match'.
-+ * New xfrm_migrate code uses the packet-path lookup which uses the if_id
-+ * as part of hash key and won't find correct policies.
-+ *
-+ * Walk entire policy list to see if there is a matching selector without
-+ * checking if_id.
-+ */
-+static u32 xfrm_migrate_policy_find_slow(const struct xfrm_selector *sel,
-+					 u8 dir, u8 type, struct net *net)
-+{
-+	const struct xfrm_policy *policy, *cand = NULL;
-+	const struct hlist_head *chain;
-+	u32 if_id = 0;
-+
-+	chain = policy_hash_direct(net, &sel->daddr, &sel->saddr, sel->family, dir);
-+	hlist_for_each_entry(policy, chain, bydst) {
-+		if (policy->type != type)
-+			continue;
-+
-+		if (xfrm_migrate_selector_match(sel, &policy->selector)) {
-+			if_id = policy->if_id;
-+			cand = policy;
-+			break;
-+		}
-+	}
-+
-+	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
-+
-+	list_for_each_entry(policy, &net->xfrm.policy_all, walk.all) {
-+		if (xfrm_policy_is_dead_or_sk(policy))
-+			continue;
-+
-+		if (policy->type != type)
-+			continue;
-+
-+		/* candidate has better priority */
-+		if (cand && policy->priority >= cand->priority)
-+			continue;
-+
-+		if (dir != xfrm_policy_id2dir(policy->index))
-+			continue;
-+
-+		if (xfrm_migrate_selector_match(sel, &policy->selector)) {
-+			if_id = policy->if_id;
-+			cand = policy;
-+		}
-+	}
-+	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
-+
-+	return if_id;
-+}
-+
- static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *sel,
- 						    u8 dir, u8 type, struct net *net, u32 if_id)
- {
-@@ -4579,6 +4654,19 @@ static int xfrm_migrate_check(const struct xfrm_migrate *m, int num_migrate,
- 	return 0;
- }
- 
-+static void xfrm_migrate_warn_workaround(void)
-+{
-+	char name[sizeof(current->comm)];
-+	static bool warned;
-+
-+	if (warned)
-+		return;
-+
-+	warned = true;
-+	pr_warn_once("warning: `%s' is migrating xfrm interface policies with if_id 0, this is slow.\n",
-+		     get_task_comm(name, current));
-+}
-+
- int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 		 struct xfrm_migrate *m, int num_migrate,
- 		 struct xfrm_kmaddress *k, struct net *net,
-@@ -4606,11 +4694,24 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	/* Stage 1 - find policy */
- 	pol = xfrm_migrate_policy_find(sel, dir, type, net, if_id);
- 	if (IS_ERR_OR_NULL(pol)) {
-+		if (if_id == 0) {
-+			if_id = xfrm_migrate_policy_find_slow(sel, dir, type, net);
-+
-+			if (if_id) {
-+				pol = xfrm_migrate_policy_find(sel, dir, type, net, if_id);
-+				if (!IS_ERR_OR_NULL(pol)) {
-+					xfrm_migrate_warn_workaround();
-+					goto found;
-+				}
-+			}
-+		}
-+
- 		NL_SET_ERR_MSG(extack, "Target policy not found");
- 		err = IS_ERR(pol) ? PTR_ERR(pol) : -ENOENT;
- 		goto out;
- 	}
- 
-+found:
- 	/* Stage 2 - find and update state(s) */
- 	for (i = 0, mp = m; i < num_migrate; i++, mp++) {
- 		if ((x = xfrm_migrate_state_find(mp, net, if_id))) {
--- 
-2.45.2
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
