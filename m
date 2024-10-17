@@ -1,151 +1,129 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F881DE3AC
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 14:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064401DE3D6
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 14:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729174918; cv=none; b=VGpxQlLoNVqe8Pu5Xtx1vVOTJ3FzQG443t1O1GzId9Hr4MIiqLJr0L+6+ZuAl/1AiXbhmA/a5bdOlJ3dEEe6PCj8bS5tfeF9GiTLZUdDrR8kasxEkclcmj15NybgjbgeIrZCgZipwBY/AbESsojwOE6NxkkJLU1wNKxFpFGwvQo=
+	t=1729175139; cv=none; b=GFLNcTs5mdyu4e4z3Ki3MSZp9XWTYPdNzBkxo3tCFM9wI4V1AuM24FZSlWRGfp06JAW6OL1ylNVqlKONITebjoZFt51piWVz3J2mhGuYkxOh6CLvwSKJfi2dwPMxq7XflXvK5IkcQxPbc/MPcXLRnYz2Xm+1GcW70Zu+zruBR7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729174918; c=relaxed/simple;
-	bh=zBt6/1o7agVZSX+rWNtucjO/KuWPeQZtxmwFF6XugPc=;
+	s=arc-20240116; t=1729175139; c=relaxed/simple;
+	bh=xElwNTcwgTU6ZVWLcduWdFTZHns1fNNdsPlKx1iQ0LI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YghT5cfgSZ966Vb2AOVQHX0ROqqFLJBbLcdWnsEFEBhspzLwZ1vjhUlMiXkglHCaNTts+yPx7rm54d0Tr+/J8TEnERBz0cJet14j52rTrhkgc2zUY7Xl2cXJP/dnIgMUQYojSEbEKxG4XAzByfZNVCyguFUcmmwGe9LV3iA7xHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1RNf-0000d3-6B; Thu, 17 Oct 2024 16:21:35 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t1RNe-0003nc-02;
-	Thu, 17 Oct 2024 16:21:34 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A246B355320;
-	Thu, 17 Oct 2024 14:21:33 +0000 (UTC)
-Date: Thu, 17 Oct 2024 16:21:33 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: RE: [PATCH net-next 07/13] net: fec: fec_probe(): update
- quirk: bring IRQs in correct order
-Message-ID: <20241017-rainbow-nifty-gazelle-9acee4-mkl@pengutronix.de>
-References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
- <20241016-fec-cleanups-v1-7-de783bd15e6a@pengutronix.de>
- <PAXPR04MB85103D3E433F3FBE5DDFA15C88472@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241017-affable-impartial-rhino-a422ec-mkl@pengutronix.de>
- <PAXPR04MB8510149D0E8AC39E048941F988472@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241017-manipulative-dove-of-renovation-88d00b-mkl@pengutronix.de>
- <ZxEZR2lmIbX6+xX2@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=F7zXl66vZZzOogKwmoiChpMnYNhYCn0gJxp3sFDMracn2olKfZf3d0jBN/PfJ62R+9ahKvi8BhzbGJrBngFlKNyeUSiDiWcs8/kXAfloDbrIrJW2VI/0HkViouZHmqAEGxzerLbydR0SrLULCNEFwc6NrWqZ9jGCEyR4fyGemgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqKSloMK; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqKSloMK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1C0C4CEC3;
+	Thu, 17 Oct 2024 14:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729175138;
+	bh=xElwNTcwgTU6ZVWLcduWdFTZHns1fNNdsPlKx1iQ0LI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GqKSloMKuDCznntWlXfHu+M1zuNlOn6KbuOj8vSfhEKlY3hsYa+a/EdKeuBeVu0ml
+	 rSgVYp59PlSjwsuC+eW65FH+ybcmhDuiWnDnZEeDSZtVuDquM+deOYLfZ2pEk39+U2
+	 DMqvMrcQtTwbdMrxPTNV8Q0sv8FkKNqTs+tuf+Jsp000KyZdfcKAmdLyXs3iKYLfAy
+	 k6+PQ+5kIlZPeKnKsVAXe9iap6JZ4fByx/cayBjwtw27GNxa3YBe/8nX7VCHMJdaCX
+	 Jws11WFyUwCtmPM6vFs+C63pCGbLLzLZOHo5rKoxgkT2SDCXrpuHANt0QrMdyMMS99
+	 uQNARasiBpwYQ==
+Date: Thu, 17 Oct 2024 15:25:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Andrew Halaney <ahalaney@redhat.com>, Ong@qualcomm.com,
+	Boon Leong <boon.leong.ong@intel.com>,
+	Mohammad Athari Bin Ismail <mohammad.athari.ismail@intel.com>,
+	Wong Vee Khee <vee.khee.wong@linux.intel.com>,
+	Tan Tee Min <tee.min.tan@linux.intel.com>,
+	Jon Hunter <jonathanh@nvidia.com>, kernel@quicinc.com
+Subject: Re: [PATCH net-next v2] net: stmmac: Programming sequence for VLAN
+ packets with split header
+Message-ID: <20241017142533.GS1697@kernel.org>
+References: <20241016234313.3992214-1-quic_abchauha@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qjhlnbg5enicegfn"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZxEZR2lmIbX6+xX2@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <20241016234313.3992214-1-quic_abchauha@quicinc.com>
 
+On Wed, Oct 16, 2024 at 04:43:13PM -0700, Abhishek Chauhan wrote:
+> Currently reset state configuration of split header works fine for
+> non-tagged packets and we see no corruption in payload of any size
+> 
+> We need additional programming sequence with reset configuration to
+> handle VLAN tagged packets to avoid corruption in payload for packets
+> of size greater than 256 bytes.
+> 
+> Without this change ping application complains about corruption
+> in payload when the size of the VLAN packet exceeds 256 bytes.
+> 
+> With this change tagged and non-tagged packets of any size works fine
+> and there is no corruption seen.
+> 
+> Current configuration which has the issue for VLAN packet
+> ----------------------------------------------------------
+> 
+> Split happens at the position at Layer 3 header
+> |MAC-DA|MAC-SA|Vlan Tag|Ether type|IP header|IP data|Rest of the payload|
+>                          2 bytes            ^
+>                                             |
+> 
+> With the fix we are making sure that the split happens now at
+> Layer 2 which is end of ethernet header and start of IP payload
+> 
+> Ip traffic split
+> -----------------
+> 
+> Bits which take care of this are SPLM and SPLOFST
+> SPLM = Split mode is set to Layer 2
+> SPLOFST = These bits indicate the value of offset from the beginning
+> of Length/Type field at which header split should take place when the
+> appropriate SPLM is selected. Reset value is 2bytes.
+> 
+> Un-tagged data (without VLAN)
+> |MAC-DA|MAC-SA|Ether type|IP header|IP data|Rest of the payload|
+>                   2bytes ^
+> 			 |
+> 
+> Tagged data (with VLAN)
+> |MAC-DA|MAC-SA|VLAN Tag|Ether type|IP header|IP data|Rest of the payload|
+>                           2bytes  ^
+> 				  |
+> 
+> Non-IP traffic split such AV packet
+> ------------------------------------
+> 
+> Bits which take care of this are
+> SAVE = Split AV Enable
+> SAVO = Split AV Offset, similar to SPLOFST but this is for AVTP
+> packets.
+> 
+> |Preamble|MAC-DA|MAC-SA|VLAN tag|Ether type|IEEE 1722 payload|CRC|
+> 				    2bytes ^
+> 					   |
+> 
+> Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+> ---
+> Changes since v1
+> - took care of comments from Simon on FIELD_PREP
+> - explained the details of l2 and l3 split as requested by Andrew
+> - Added folks from intel and Nvidia who disabled split header
+>   need to check if they faced similar issues and if this fix  
+>   can help them too. 
+> 
+> Changes since v0
+> - The reason for posting it on net-next is to enable this new feature.
 
---qjhlnbg5enicegfn
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-On 17.10.2024 10:03:51, Frank Li wrote:
-> > > > Yes, that is IMHO the correct description of the IP core, but the
-> > > > i.MX8M/N/Q DTS have the wrong order of IRQs. And for compatibility
-> > > > reasons (fixed DTS with old driver) it's IMHO not possible to chang=
-e the
-> > > > DTS.
-> > > >
-> > >
-> > > I don't think it is a correct behavior for old drivers to use new DTB=
-s or new
-> > > drivers to use old DTBs. Maybe you are correct, Frank also asked the =
-same
-> > > question, let's see how Frank responded.
-> >
-> > DTBs should be considered stable ABI.
-> >
->=20
-> ABI defined at binding doc.
->   interrupt-names:
->     oneOf:
->       - items:
->           - const: int0
->       - items:
->           - const: int0
->           - const: pps
->       - items:
->           - const: int0
->           - const: int1
->           - const: int2
->       - items:
->           - const: int0
->           - const: int1
->           - const: int2
->           - const: pps
->=20
-> DTB should align binding doc. There are not 'descriptions' at 'interrupt',
-> which should match 'interrupt-names'. So IMX8MP dts have not match ABI,
-> which defined by binding doc. So it is DTS implement wrong.
-
-I follow your conclusion. But keep in mind, fixing the DTB would break
-compatibility. The wrong DTS looks like this:
-
-- const: int1
-- const: int2
-- const: int0
-- const: pps
-
-Currently we have broken DTS on the i.MX8M* and the
-FEC_QUIRK_WAKEUP_FROM_INT2 that "fixes" this.
-
-This patch uses this quirk to correct the IRQ <-> queue assignment in
-the driver.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---qjhlnbg5enicegfn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcRHWoACgkQKDiiPnot
-vG/STwgAhj7R/YH7PoO9JfIBXoNwyrWTFyN4vrRAwH4MyRPDxByKlcyaZq0Gmmwd
-njOY6aiDDTcEiQTn9lq1LYOJlSfq1zxLh8vY9t9WmX3Sm6YdqnYNmwLqFbhe9vLM
-qdpaxRL0ZqLNFjgzlduaBjEuTjC9AMoaXBGb5U6KJgMBvnrij6ubgNKk9qIzihhS
-XKQ/eiVd0Vx8yydq2/7+YWJzOxK/zQli3G0/a9QTYyEfh6InIBvkLhbiL48Bw7PO
-8ZfJN4W6Yf+IiCN6Ru6dmvomgGNUIE0Iptm06XRW5y5YMKjNX1EtVBLZjBey0Y6c
-6O6KLb8atwIgdsjp0EdKAKqwLPSYig==
-=dEJL
------END PGP SIGNATURE-----
-
---qjhlnbg5enicegfn--
