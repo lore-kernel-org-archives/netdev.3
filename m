@@ -1,95 +1,59 @@
-Received: from forward201b.mail.yandex.net (forward201b.mail.yandex.net [178.154.239.156])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A89A1D45F3
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 11:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA3B134A8
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 11:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729164775; cv=none; b=NFe/tYqrTlO0u9L9EbNj0utoeo8TAycM9b6ymlbRx0fqWO2E0px6EK+FpsOxbcXl9Xen12LxaykMHdq3nsF9dmdr/KfsWHu04InEFvhm4hiPeB1GokvvQ0hmEheI/JCmRWLqxHvk8EqcgyUt7NqCqFyDk6yyDSPxh/ATzfo09kk=
+	t=1729164815; cv=none; b=Hu+IzcocmqcZ8HX6813wZurnIJu52XGHgm02o8Y4NaxAb0N9uMf6Eb+5UWGS9qIK0m4xOTArmQCmUoPQZeeOAXwGraJrNHq1FVEZpZvkah5B6oLo+mXx6RneZGR/TuHd7loTXhVOK0yy1Trf5DPaJMVJH1WuZwDIJiyMVlJvxQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729164775; c=relaxed/simple;
-	bh=lWbxMZE+o7FcZaOdAJj3fxAgNYvGVZw+2PNr3Wf5kPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSJNqm/YLD18UX4W8dOhqhA1R8N8SlgU/GWWGdjbFfex3LrBhqpdpd7UBL9ipN1rkvqP3fRlmkcM5VAug99+C8Cq68VzwksxJAP/lPo4uuZDRx/lSxC7QSuMNTcQV3Ag7ipqs3N5VgYr+Rhw9Vd++dwH+G3d4XpJxpGdFILdXp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=UhkvGF0t; arc=none smtp.client-ip=178.154.239.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="UhkvGF0t"
-Received: from forward101b.mail.yandex.net (forward101b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d101])
-	by forward201b.mail.yandex.net (Yandex) with ESMTPS id A3532670D7
-	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 14:26:08 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:c61f:0:640:7720:0])
-	by forward101b.mail.yandex.net (Yandex) with ESMTPS id 65F1F60A99;
-	Thu, 17 Oct 2024 14:26:01 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wPLwlM6xFiE0-xAfQrUWk;
-	Thu, 17 Oct 2024 14:26:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1729164360; bh=DS+2lKlxktJJ20yDWr7bzVn6oFVlIMxoi7OnPBvjFUs=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=UhkvGF0tCMBGHmNcmeU/gJ09Ren0PO9WKR17Of+UIptWzUdJBF6d6VB2gMPP39X4G
-	 zXqzm6OQ7zya46rzYtm9E0uOUy23HEcEqDsb2wzADVgpSO3bmMOjxU4iV15rAE2eIz
-	 EQ6HUZLQZehzghIPjyxyJfkAznoV+bJMjuO5hwg4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	netdev@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
-Subject: [PATCH v6 1/2] net: sched: fix use-after-free in taprio_change()
-Date: Thu, 17 Oct 2024 14:25:04 +0300
-Message-ID: <20241017112546.208758-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241017112546.208758-1-dmantipov@yandex.ru>
-References: <20241017112546.208758-1-dmantipov@yandex.ru>
+	s=arc-20240116; t=1729164815; c=relaxed/simple;
+	bh=3OcphTi4R1QPpUY4U70U0Ew+7wnin/go6nGv4WaAO+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QBCAWdsk6Guz6CM+t3bmT9d/zXLAns5vPkXr62ggJ+Fom7UtBXUnoBlApz5DUANpfM5szf96FqlUeTMnpDMUg4s3PB9KU7WsueelyT3WSsa9eGdPz0lkdU65kzgIHKkwPgRsxVmdMl65ZHrr9X98hUo4X/kwkizofh6vLkqbK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+	(envelope-from <fw@strlen.de>)
+	id 1t1Ol0-0003WR-OX; Thu, 17 Oct 2024 13:33:30 +0200
+Date: Thu, 17 Oct 2024 13:33:30 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Maciej =?utf-8?Q?=C5=BBenczykowski?= <maze@google.com>
+Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+	Nathan Harold <nharold@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Yan Yan <evitayan@google.com>
+Subject: Re: [PATCH ipsec] xfrm: migrate: work around 0 if_id on migrate
+Message-ID: <20241017113330.GB12005@breakpoint.cc>
+References: <20241017094315.6948-1-fw@strlen.de>
+ <CANP3RGeeR9vso0MyjRhFuTmx5K7ttt0bisHucce0ONeJotXOZw@mail.gmail.com>
+ <20241017105251.GA12005@breakpoint.cc>
+ <CANP3RGcWhTKOgNsCEb8bMNhktgdzXH+00s5zTKU3=iVocT5rqw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
+In-Reply-To: <CANP3RGcWhTKOgNsCEb8bMNhktgdzXH+00s5zTKU3=iVocT5rqw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-In 'taprio_change()', 'admin' pointer may become dangling due to sched
-switch / removal caused by 'advance_sched()', and critical section
-protected by 'q->current_entry_lock' is too small to prevent from such
-a scenario (which causes use-after-free detected by KASAN). Fix this
-by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
-'admin' immediately before an attempt to schedule freeing.
+Maciej Żenczykowski <maze@google.com> wrote:
+> > If you think a Kconfig knob makes sense for Android sake I can respin
+> > with such a knob, but I think I'd have to make it default-y.
+> 
+> I'll trust your judgment.  I thought we could maybe eventually
+> deprecate and delete this, but it sounds like that isn't going to be
+> the case...
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v6: adjust to match recent changes
-v5: unchanged since v4 but resend due to series change
-v4: adjust subject to target net tree
-v3: unchanged since v2
-v2: unchanged since v1
----
- net/sched/sch_taprio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+We could also say 'android fixed it in userspace' and not fix it
+in kernel for now until someone else complains.
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 8498d0606b24..9f4e004cdb8b 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1965,7 +1965,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 		taprio_start_sched(sch, start, new_admin);
- 
--		rcu_assign_pointer(q->admin_sched, new_admin);
-+		admin = rcu_replace_pointer(q->admin_sched, new_admin,
-+					    lockdep_rtnl_is_held());
- 		if (admin)
- 			call_rcu(&admin->rcu, taprio_free_sched_cb);
- 
--- 
-2.46.2
+Or modify the pr_warn to also say something like
+"deprecated and scheduled to be removed in 2026"?
 
+I'm not thrilled with this patch :-)
