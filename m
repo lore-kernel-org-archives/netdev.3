@@ -1,82 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F901DE4C2;
-	Thu, 17 Oct 2024 13:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C8639FE5
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729173291; cv=none; b=El+aZdhwNOHpF2bl9snop/40k751f1XEUbiPrbr3sIWODm9pgkiNSW70PMRaI8927rwKNWYYQ23Vf7O9+85TJ9UDh3yN1sH6/cPzi1iLXdiYFUWoj3hVBnTjXdIk1w0GJMxZVgykC7ojSPXxxxcXZb3JMdanHghqQPA6XJNmX2I=
+	t=1729173724; cv=none; b=NUdFrpojRshj6OsPOKTf6c+Wbb5fY3wQavj0K+UONEZMOH51/ZLdm88R4Lys07Pxfms8NdZnmymoxeFD9Vw24fFTdUluddBfdFliM+YZssu/XQWbTIicG1FhvTEAN7lIXtpquVXT4YDgGY9qHsqyntiRkFcOG3zLZ4j/10HoeTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729173291; c=relaxed/simple;
-	bh=NGi2A8ULkjuZ6zgbxNmU56QYzHdzG396TXsDqS0rEOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbD+sJhwUGK19pGfXgW2GCb0OSQbgz3JTLW7Lb8B2Uo0FYJIQw2S+dQqqcT477qAbNa1Ytaj5vYOYb1xztLkA1JqcKymMqjwpExqOjDXhp1IQ+C26+XFKuq8U7pKcE7fZVPKjZRMfe3Uk5BIGhbqGSC9ARAybItNSSD61ueaxe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyXPz12O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729173724; c=relaxed/simple;
+	bh=pLt4qtrvN+Wt60ikm10Xa1vqgY/lQUmiZwndPnYxBeo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pCMEQYdZhF01bU+eqNZ3/3k7aZjZXcYToc6eHALuAcBbb+7FoVtv+cXqf72hSpxoe4TULUyGaSnQdtq21ma1oxXRFquCQrLZVC2r4ROzmboJsTWwOTR+wkmgrDbSfqX0X5j9QatXgX+91Qrx180bo+/ZK693y0TUTQMzG6/X5GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fo+eB0Hv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyXPz12O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DC7C4CEC3;
-	Thu, 17 Oct 2024 13:54:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fo+eB0Hv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A260C4CEC3;
+	Thu, 17 Oct 2024 14:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729173291;
-	bh=NGi2A8ULkjuZ6zgbxNmU56QYzHdzG396TXsDqS0rEOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SyXPz12OU9VQIuhJdzyo3o6ysFRCK68WcHY1Qx17vCnMn0R6NtnCTN1UF/4zXnKvB
-	 wrZ5HTWh3kB6F2S3QUS+iEAyQCzt7AoB72UT3+zocArUhOTGLH9Ik7voyxpW697v3m
-	 MQJfBglXVXnax9HLtZbUxL/usERXCUJyoXXI0UaAehcQ6k1MHmczf7OVrsYMx+bB56
-	 Ogqy/3nJ9orJJwPLMO28adKgcbZ6mUwRrekz0oXvWNUmtFF47mBmm0sC3X9BEmdsLy
-	 jR5fl4EEZK5tJ49l2p7vJDdPBdlkXXH9cSe/dp86IHXCtf0/sBewveelIFs+oXTOuU
-	 xOvvlB4QAYbOA==
-Date: Thu, 17 Oct 2024 14:54:17 +0100
-From: Simon Horman <horms@kernel.org>
-To: Wang Hai <wanghai38@huawei.com>
-Cc: justin.chen@broadcom.com, florian.fainelli@broadcom.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, zhangxiaoxu5@huawei.com,
-	bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 net] net: bcmasp: fix potential memory leak in
- bcmasp_xmit()
-Message-ID: <20241017135417.GM1697@kernel.org>
-References: <20241015143424.71543-1-wanghai38@huawei.com>
+	s=k20201202; t=1729173723;
+	bh=pLt4qtrvN+Wt60ikm10Xa1vqgY/lQUmiZwndPnYxBeo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Fo+eB0Hv88wp/+U3UCLqtvYrXW+UX4BcvoIgFm+If1ksawMPOXxeKkkMw3bjQmdrD
+	 RsbybO+udVFCkvTo3PJDMSmPyzsTFGOcbQQbynI9fVjqgobIeregdV4HGYJYpS9ZHr
+	 06VRQfetPT/Aw/pK/n3XQlgiTZ6MSMgIVyi7LKmNWwEXSsGC7qHpqE6Kj59tZn313c
+	 mEb4ZwzbeSBa37fdfa01kNeTHnjzdHI4T8frf8DvIQTaXEUBDSsUtgW+AApgqcct6c
+	 NnR/IlAnFC9dX6TxrDzoa45IyJ0aMCsaTFcReHagYxotKHPA1PT13+qgV9EcdV/P/1
+	 nl67WMN4/w/rg==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Thu, 17 Oct 2024 16:01:41 +0200
+Subject: [PATCH net-next] net: airoha: Reset BQL stopping the netdevice
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015143424.71543-1-wanghai38@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241017-airoha-en7581-reset-bql-v1-1-08c0c9888de5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMQYEWcC/x3MQQrCMBBG4auUWXcgExIqXkVcJM2vHZBUJ6UIp
+ Xc3uPwW7x3UYIpG1+Egw65N19oh40DzkuoTrKWbvPNBnEyc1NYlMeoUL8KGho3z58UhIuQSZ++
+ KUK/fhod+/+fb/Tx/kguGa2kAAAA=
+X-Change-ID: 20241017-airoha-en7581-reset-bql-45e4bd5c20d1
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
+ Mark Lee <Mark-MC.Lee@mediatek.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.2
 
-On Tue, Oct 15, 2024 at 10:34:24PM +0800, Wang Hai wrote:
-> The bcmasp_xmit() returns NETDEV_TX_OK without freeing skb
-> in case of mapping fails, add dev_consume_skb_any() to fix it.
-> 
-> Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Run airoha_qdma_cleanup_tx_queue() in ndo_stop callback in order to
+unmap pending skbs. Moreover, reset BQL txq state stopping the netdevice,
 
-There seems to be some confusion over in the thread for v1 of this patchset.
-Perhaps relating to several similar patches being in-flight at the same
-time.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/mediatek/airoha_eth.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-1. Changes were requested by Florian
-2. Jakub confirmed this concern
-3. Florian Acked v1 patch
-4. The bot sent a notificaiton that v1 had been applied
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 836a957aad77bec972c536567a4ee7d304ac7b52..23905f54f991fc8062542b890fbf002154676612 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -2341,7 +2341,7 @@ static int airoha_dev_stop(struct net_device *dev)
+ {
+ 	struct airoha_gdm_port *port = netdev_priv(dev);
+ 	struct airoha_qdma *qdma = port->qdma;
+-	int err;
++	int i, err;
+ 
+ 	netif_tx_disable(dev);
+ 	err = airoha_set_gdm_ports(qdma->eth, false);
+@@ -2352,6 +2352,14 @@ static int airoha_dev_stop(struct net_device *dev)
+ 			  GLOBAL_CFG_TX_DMA_EN_MASK |
+ 			  GLOBAL_CFG_RX_DMA_EN_MASK);
+ 
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
++		if (!qdma->q_tx[i].ndesc)
++			continue;
++
++		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
++		netdev_tx_reset_subqueue(dev, i);
++	}
++
+ 	return 0;
+ }
+ 
 
-But v1 is not in net-next.
-And I assume that 3 was intended for v2.
+---
+base-commit: e60fa8ebc2af54c2f62cc4ed63b85894dabf9101
+change-id: 20241017-airoha-en7581-reset-bql-45e4bd5c20d1
 
-From my point of view v2 addresses the concerns raised by Florian wrt v1.
-And, moreover, I agree this fix is correct.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-v2 is marked as Changes Requested in patchwork.
-But I suspect that is due to confusion around v1 as summarised above.
-So I am (hopefully) moving it back to Under Review.
-
+Best regards,
 -- 
-pw-bot: under-review
+Lorenzo Bianconi <lorenzo@kernel.org>
 
-...
