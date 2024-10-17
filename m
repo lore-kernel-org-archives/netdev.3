@@ -1,343 +1,129 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBEE17580;
-	Thu, 17 Oct 2024 03:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F022D05E;
+	Thu, 17 Oct 2024 03:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729136351; cv=none; b=L6/dCo8zrYnDs/1jeuWIMCfw3iMgpUGiisP+sfIJuk8GjD+pCW5/4PijCq0yGjmnlpjJu/EV3iGw9Ou0lJ9OHzTNe+NjGxyOcXdPNHwbqR8b4miSIj683QIKc8e7Syv7kr0696lR3Owz0y77Hpj8mULTfIqHyz45JEda93Imar4=
+	t=1729137113; cv=none; b=CCxvFb0j3vzK1BKxaszOc5a4wRD2gwrEaG7s6Pm7lupkzCcO80Te+uQ2LDhCWRspJ0Niaz2fYKd0slx1wePn5nsLCfTZVdugFGmztOqk6FJaQPbGKcbgaUG4U7ERjgif2H8iQaJ23wlPovEjytbpNzJ1d/4UhNAK+o7Tsy+xQ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729136351; c=relaxed/simple;
-	bh=ogni0ksgiVkzuA2M3FGjj0Vrlt2jXhCxNx0ODAbqM7s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rc2WPpB+9611DXT6yaK4MKIIT1m6SF4Cbat4AgVisWXG3uWs4/mBm6QmR0j2Kp9/9gnPpDAl0Uj0J9a0stpcTFPHUtcJcfAyS9V6L+Q5k4D1ZBnwa42szc1KLNuemPNCVHQurP0nEFz1o3gd8A+JljjmnhQNnTRK6YzrZzWMNaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ZqpswAq6; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ZqpswAq6"
-X-UUID: 3cdae1208c3711efb88477ffae1fc7a5-20241017
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=PvPi7sP8pm8AhaH8077Pb+442yN8gi4ybZ5FYjNqxvQ=;
-	b=ZqpswAq6r2EaIiG1141EVLZ85ztzy5hCOxEvkfOW1l3Xi+RgaQ9vTu5U/aHbOzXnuPOVx0qpSBFmGcrgZ2C7TNnVVkPzeR7Z8hZKh5YYAIqUc2aVlDPUww9OrX57DC6/KK/CL8/ulBOulH/9SbeteSvnVw0Npq1Npyx5AjoujVU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:9a798732-6ebd-4c38-950c-3a9f62bec6fa,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:285f6065-444a-4b47-a99a-591ade3b04b2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: 3cdae1208c3711efb88477ffae1fc7a5-20241017
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <skylake.huang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1038732103; Thu, 17 Oct 2024 11:23:54 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+	s=arc-20240116; t=1729137113; c=relaxed/simple;
+	bh=KBSmgoKWd/GgRU0uLa3i0Dqsp9OYyeb7JKqvvVU6VAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Btgt+SU9GPgJZyil0hw7evkZxcRbW+6ZkXRNlqOq4kkg42qKfSUmuIRzpB9HdqWCd9x9fVLZvCoFUJBoMbD+aiEiPdkCV99tgTflZCsMrqwK2qhYhfK2NcmJwpQm8SsWlJUy89N7yBDtG2rchaTm363HQ8cK2l1DxDkPvXViOy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XTYlC605hz1j9v8;
+	Thu, 17 Oct 2024 11:50:31 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id C47291A0188;
+	Thu, 17 Oct 2024 11:51:46 +0800 (CST)
+Received: from [10.174.179.113] (10.174.179.113) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 16 Oct 2024 20:23:52 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 17 Oct 2024 11:23:53 +0800
-From: Sky Huang <SkyLake.Huang@mediatek.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
-	<daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
-	<SkyLake.Huang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: Steven Liu <Steven.Liu@mediatek.com>, SkyLake.Huang
-	<skylake.huang@mediatek.com>
-Subject: [PATCH net-next v2 2/3] net: phy: mediatek-ge-soc: Shrink line wrapping to 80 characters
-Date: Thu, 17 Oct 2024 11:22:12 +0800
-Message-ID: <20241017032213.22256-3-SkyLake.Huang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20241017032213.22256-1-SkyLake.Huang@mediatek.com>
-References: <20241017032213.22256-1-SkyLake.Huang@mediatek.com>
+ 15.2.1544.11; Thu, 17 Oct 2024 11:51:45 +0800
+Message-ID: <4d80b2fd-17d8-a7bd-0e80-7d33c9764810@huawei.com>
+Date: Thu, 17 Oct 2024 11:51:45 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [Intel-wired-lan] [PATCH net] igc: Fix passing 0 to ERR_PTR in
+ igc_xdp_run_prog()
+Content-Language: en-US
+To: Jacob Keller <jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>
+CC: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+	<hawk@kernel.org>, <john.fastabend@gmail.com>, <vedang.patel@intel.com>,
+	<andre.guedes@intel.com>, <maciej.fijalkowski@intel.com>,
+	<jithu.joseph@intel.com>, <intel-wired-lan@lists.osuosl.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bpf@vger.kernel.org>
+References: <20241016105310.3500279-1-yuehaibing@huawei.com>
+ <20241016185333.GL2162@kernel.org>
+ <8e4ef7f6-1d7d-45dc-b26e-4d9bc37269de@intel.com>
+ <f8bcde08-b526-4b2e-8098-88402107c8ee@intel.com>
+From: Yue Haibing <yuehaibing@huawei.com>
+In-Reply-To: <f8bcde08-b526-4b2e-8098-88402107c8ee@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-From: "SkyLake.Huang" <skylake.huang@mediatek.com>
+On 2024/10/17 7:12, Jacob Keller wrote:
+> 
+> 
+> On 10/16/2024 4:06 PM, Jacob Keller wrote:
+>>
+>>
+>> On 10/16/2024 11:53 AM, Simon Horman wrote:
+>>> On Wed, Oct 16, 2024 at 06:53:10PM +0800, Yue Haibing wrote:
+>>>> Return NULL instead of passing to ERR_PTR while res is IGC_XDP_PASS,
+>>>> which is zero, this fix smatch warnings:
+>>>> drivers/net/ethernet/intel/igc/igc_main.c:2533
+>>>>  igc_xdp_run_prog() warn: passing zero to 'ERR_PTR'
+>>>>
+>>>> Fixes: 26575105d6ed ("igc: Add initial XDP support")
+>>>> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+>>>> ---
+>>>>  drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+>>>> index 6e70bca15db1..c3d6e20c0be0 100644
+>>>> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+>>>> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+>>>> @@ -2530,7 +2530,7 @@ static struct sk_buff *igc_xdp_run_prog(struct igc_adapter *adapter,
+>>>>  	res = __igc_xdp_run_prog(adapter, prog, xdp);
+>>>>  
+>>>>  out:
+>>>> -	return ERR_PTR(-res);
+>>>> +	return res ? ERR_PTR(-res) : NULL;
+>>>
+>>> I think this is what PTR_ERR_OR_ZERO() is for.
+>>
+>> Not quite. PTR_ERR_OR_ZERO is intended for the case where you are
+>> extracting an error from a pointer. This is converting an error into a
+>> pointer.
+>>
+>> I am not sure what is really expected here. If res is zero, shouldn't we
+>> be returning an skb pointer and not NULL?
+>>
+>> Why does igc_xdp_run_prog even return a sk_buff pointer at all? It never
+>> actually returns an skb...
+>>
+>> This feels like the wrong fix entirely.
+>>
+>> __igc_xdp_run_prog returns a custom value for the action, between
+>> IGC_XDP_PASS, IGC_XDP_TX, IGC_XDP_REDIRECT, or IGC_XDP_CONSUMED.
+>>
+>> This function is called by igc_xdp_run_prog which converts this to a
+>> negative error code with the sk_buff pointer type.
+>>
+>> All so that we can assign a value to the skb pointer in
+>> ice_clean_rx_irq, and check it with IS_ERR
+>>
+>> I don't like this fix, I think we could drop the igc_xdp_run_prog
+>> wrapper, call __igc_xdp_run_prog directly and check its return value
+>> instead of this method of using an error pointer.
+> 
+> Indeed, this SKB error stuff was added by 26575105d6ed ("igc: Add
+> initial XDP support") which claims to be aligning with other Intel drivers.
+> 
+> But the other Intel drivers just have a function that returns the xdp
+> result and checks it directly.
+>Thanks for review，maybe can fix this as commit 12738ac4754e ("i40e: Fix sparse errors in i40e_txrx.c")?
 
-This patch shrinks line wrapping to 80 chars. Also, in
-tx_amp_fill_result(), use FIELD_PREP() to prettify code.
-
-Signed-off-by: SkyLake.Huang <skylake.huang@mediatek.com>
----
- drivers/net/phy/mediatek-ge-soc.c | 125 +++++++++++++++++++++---------
- 1 file changed, 88 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/net/phy/mediatek-ge-soc.c b/drivers/net/phy/mediatek-ge-soc.c
-index e9c422f..1d7719b 100644
---- a/drivers/net/phy/mediatek-ge-soc.c
-+++ b/drivers/net/phy/mediatek-ge-soc.c
-@@ -342,7 +342,8 @@ static int cal_cycle(struct phy_device *phydev, int devad,
- 	ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
- 					MTK_PHY_RG_AD_CAL_CLK, reg_val,
- 					reg_val & MTK_PHY_DA_CAL_CLK, 500,
--					ANALOG_INTERNAL_OPERATION_MAX_US, false);
-+					ANALOG_INTERNAL_OPERATION_MAX_US,
-+					false);
- 	if (ret) {
- 		phydev_err(phydev, "Calibration cycle timeout\n");
- 		return ret;
-@@ -441,40 +442,72 @@ static int tx_amp_fill_result(struct phy_device *phydev, u16 *buf)
- 	}
- 
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TXVLD_DA_RG,
--		       MTK_PHY_DA_TX_I2MPB_A_GBE_MASK, (buf[0] + bias[0]) << 10);
-+		       MTK_PHY_DA_TX_I2MPB_A_GBE_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_A_GBE_MASK,
-+				  buf[0] + bias[0]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TXVLD_DA_RG,
--		       MTK_PHY_DA_TX_I2MPB_A_TBT_MASK, buf[0] + bias[1]);
-+		       MTK_PHY_DA_TX_I2MPB_A_TBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_A_TBT_MASK,
-+				  buf[0] + bias[1]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_A2,
--		       MTK_PHY_DA_TX_I2MPB_A_HBT_MASK, (buf[0] + bias[2]) << 10);
-+		       MTK_PHY_DA_TX_I2MPB_A_HBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_A_HBT_MASK,
-+				  buf[0] + bias[2]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_A2,
--		       MTK_PHY_DA_TX_I2MPB_A_TST_MASK, buf[0] + bias[3]);
-+		       MTK_PHY_DA_TX_I2MPB_A_TST_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_A_TST_MASK,
-+				  buf[0] + bias[3]));
- 
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_B1,
--		       MTK_PHY_DA_TX_I2MPB_B_GBE_MASK, (buf[1] + bias[4]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_B_GBE_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_B_GBE_MASK,
-+				  buf[1] + bias[4]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_B1,
--		       MTK_PHY_DA_TX_I2MPB_B_TBT_MASK, buf[1] + bias[5]);
-+		       MTK_PHY_DA_TX_I2MPB_B_TBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_B_TBT_MASK,
-+				  buf[1] + bias[5]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_B2,
--		       MTK_PHY_DA_TX_I2MPB_B_HBT_MASK, (buf[1] + bias[6]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_B_HBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_B_HBT_MASK,
-+				  buf[1] + bias[6]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_B2,
--		       MTK_PHY_DA_TX_I2MPB_B_TST_MASK, buf[1] + bias[7]);
-+		       MTK_PHY_DA_TX_I2MPB_B_TST_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_B_TST_MASK,
-+				  buf[1] + bias[7]));
- 
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_C1,
--		       MTK_PHY_DA_TX_I2MPB_C_GBE_MASK, (buf[2] + bias[8]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_C_GBE_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_C_GBE_MASK,
-+				  buf[2] + bias[8]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_C1,
--		       MTK_PHY_DA_TX_I2MPB_C_TBT_MASK, buf[2] + bias[9]);
-+		       MTK_PHY_DA_TX_I2MPB_C_TBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_C_TBT_MASK,
-+				  buf[2] + bias[9]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_C2,
--		       MTK_PHY_DA_TX_I2MPB_C_HBT_MASK, (buf[2] + bias[10]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_C_HBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_C_HBT_MASK,
-+				  buf[2] + bias[10]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_C2,
--		       MTK_PHY_DA_TX_I2MPB_C_TST_MASK, buf[2] + bias[11]);
-+		       MTK_PHY_DA_TX_I2MPB_C_TST_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_C_TST_MASK,
-+				  buf[2] + bias[11]));
- 
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_D1,
--		       MTK_PHY_DA_TX_I2MPB_D_GBE_MASK, (buf[3] + bias[12]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_D_GBE_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_D_GBE_MASK,
-+				  buf[3] + bias[12]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_D1,
--		       MTK_PHY_DA_TX_I2MPB_D_TBT_MASK, buf[3] + bias[13]);
-+		       MTK_PHY_DA_TX_I2MPB_D_TBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_D_TBT_MASK,
-+				  buf[3] + bias[13]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_D2,
--		       MTK_PHY_DA_TX_I2MPB_D_HBT_MASK, (buf[3] + bias[14]) << 8);
-+		       MTK_PHY_DA_TX_I2MPB_D_HBT_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_D_HBT_MASK,
-+				  buf[3] + bias[14]));
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_TX_I2MPB_TEST_MODE_D2,
--		       MTK_PHY_DA_TX_I2MPB_D_TST_MASK, buf[3] + bias[15]);
-+		       MTK_PHY_DA_TX_I2MPB_D_TST_MASK,
-+		       FIELD_PREP(MTK_PHY_DA_TX_I2MPB_D_TST_MASK,
-+				  buf[3] + bias[15]));
- 
- 	return 0;
- }
-@@ -663,7 +696,8 @@ static int tx_vcm_cal_sw(struct phy_device *phydev, u8 rg_txreserve_x)
- 		goto restore;
- 
- 	/* We calibrate TX-VCM in different logic. Check upper index and then
--	 * lower index. If this calibration is valid, apply lower index's result.
-+	 * lower index. If this calibration is valid, apply lower index's
-+	 * result.
- 	 */
- 	ret = upper_ret - lower_ret;
- 	if (ret == 1) {
-@@ -692,7 +726,8 @@ static int tx_vcm_cal_sw(struct phy_device *phydev, u8 rg_txreserve_x)
- 	} else if (upper_idx == TXRESERVE_MAX && upper_ret == 0 &&
- 		   lower_ret == 0) {
- 		ret = 0;
--		phydev_warn(phydev, "TX-VCM SW cal result at high margin 0x%x\n",
-+		phydev_warn(phydev,
-+			    "TX-VCM SW cal result at high margin 0x%x\n",
- 			    upper_idx);
- 	} else {
- 		ret = -EINVAL;
-@@ -796,7 +831,8 @@ static void mt7981_phy_finetune(struct phy_device *phydev)
- 
- 	/* TR_OPEN_LOOP_EN = 1, lpf_x_average = 9 */
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DEV1E_REG234,
--		       MTK_PHY_TR_OPEN_LOOP_EN_MASK | MTK_PHY_LPF_X_AVERAGE_MASK,
-+		       MTK_PHY_TR_OPEN_LOOP_EN_MASK |
-+		       MTK_PHY_LPF_X_AVERAGE_MASK,
- 		       BIT(0) | FIELD_PREP(MTK_PHY_LPF_X_AVERAGE_MASK, 0x9));
- 
- 	/* rg_tr_lpf_cnt_val = 512 */
-@@ -865,7 +901,8 @@ static void mt7988_phy_finetune(struct phy_device *phydev)
- 
- 	/* TR_OPEN_LOOP_EN = 1, lpf_x_average = 10 */
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DEV1E_REG234,
--		       MTK_PHY_TR_OPEN_LOOP_EN_MASK | MTK_PHY_LPF_X_AVERAGE_MASK,
-+		       MTK_PHY_TR_OPEN_LOOP_EN_MASK |
-+		       MTK_PHY_LPF_X_AVERAGE_MASK,
- 		       BIT(0) | FIELD_PREP(MTK_PHY_LPF_X_AVERAGE_MASK, 0xa));
- 
- 	/* rg_tr_lpf_cnt_val = 1023 */
-@@ -977,7 +1014,8 @@ static void mt798x_phy_eee(struct phy_device *phydev)
- 	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
- 
- 	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_3);
--	__phy_modify(phydev, MTK_PHY_LPI_REG_14, MTK_PHY_LPI_WAKE_TIMER_1000_MASK,
-+	__phy_modify(phydev, MTK_PHY_LPI_REG_14,
-+		     MTK_PHY_LPI_WAKE_TIMER_1000_MASK,
- 		     FIELD_PREP(MTK_PHY_LPI_WAKE_TIMER_1000_MASK, 0x19c));
- 
- 	__phy_modify(phydev, MTK_PHY_LPI_REG_1c, MTK_PHY_SMI_DET_ON_THRESH_MASK,
-@@ -987,7 +1025,8 @@ static void mt798x_phy_eee(struct phy_device *phydev)
- 	phy_modify_mmd(phydev, MDIO_MMD_VEND1,
- 		       MTK_PHY_RG_LPI_PCS_DSP_CTRL_REG122,
- 		       MTK_PHY_LPI_NORM_MSE_HI_THRESH1000_MASK,
--		       FIELD_PREP(MTK_PHY_LPI_NORM_MSE_HI_THRESH1000_MASK, 0xff));
-+		       FIELD_PREP(MTK_PHY_LPI_NORM_MSE_HI_THRESH1000_MASK,
-+				  0xff));
- }
- 
- static int cal_sw(struct phy_device *phydev, enum CAL_ITEM cal_item,
-@@ -1147,7 +1186,8 @@ static int mt798x_phy_hw_led_on_set(struct phy_device *phydev, u8 index,
- 					(index ? 16 : 0), &priv->led_state);
- 	if (changed)
- 		return phy_modify_mmd(phydev, MDIO_MMD_VEND2, index ?
--				      MTK_PHY_LED1_ON_CTRL : MTK_PHY_LED0_ON_CTRL,
-+				      MTK_PHY_LED1_ON_CTRL :
-+				      MTK_PHY_LED0_ON_CTRL,
- 				      MTK_PHY_LED_ON_MASK,
- 				      on ? MTK_PHY_LED_ON_FORCE_ON : 0);
- 	else
-@@ -1157,7 +1197,8 @@ static int mt798x_phy_hw_led_on_set(struct phy_device *phydev, u8 index,
- static int mt798x_phy_hw_led_blink_set(struct phy_device *phydev, u8 index,
- 				       bool blinking)
- {
--	unsigned int bit_blink = MTK_PHY_LED_STATE_FORCE_BLINK + (index ? 16 : 0);
-+	unsigned int bit_blink = MTK_PHY_LED_STATE_FORCE_BLINK +
-+				 (index ? 16 : 0);
- 	struct mtk_socphy_priv *priv = phydev->priv;
- 	bool changed;
- 
-@@ -1170,8 +1211,10 @@ static int mt798x_phy_hw_led_blink_set(struct phy_device *phydev, u8 index,
- 			      (index ? 16 : 0), &priv->led_state);
- 	if (changed)
- 		return phy_write_mmd(phydev, MDIO_MMD_VEND2, index ?
--				     MTK_PHY_LED1_BLINK_CTRL : MTK_PHY_LED0_BLINK_CTRL,
--				     blinking ? MTK_PHY_LED_BLINK_FORCE_BLINK : 0);
-+				     MTK_PHY_LED1_BLINK_CTRL :
-+				     MTK_PHY_LED0_BLINK_CTRL,
-+				     blinking ?
-+				     MTK_PHY_LED_BLINK_FORCE_BLINK : 0);
- 	else
- 		return 0;
- }
-@@ -1237,7 +1280,8 @@ static int mt798x_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
- static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
- 					 unsigned long *rules)
- {
--	unsigned int bit_blink = MTK_PHY_LED_STATE_FORCE_BLINK + (index ? 16 : 0);
-+	unsigned int bit_blink = MTK_PHY_LED_STATE_FORCE_BLINK +
-+				 (index ? 16 : 0);
- 	unsigned int bit_netdev = MTK_PHY_LED_STATE_NETDEV + (index ? 16 : 0);
- 	unsigned int bit_on = MTK_PHY_LED_STATE_FORCE_ON + (index ? 16 : 0);
- 	struct mtk_socphy_priv *priv = phydev->priv;
-@@ -1258,8 +1302,8 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
- 	if (blink < 0)
- 		return -EIO;
- 
--	if ((on & (MTK_PHY_LED_ON_LINK | MTK_PHY_LED_ON_FDX | MTK_PHY_LED_ON_HDX |
--		   MTK_PHY_LED_ON_LINKDOWN)) ||
-+	if ((on & (MTK_PHY_LED_ON_LINK | MTK_PHY_LED_ON_FDX |
-+		   MTK_PHY_LED_ON_HDX | MTK_PHY_LED_ON_LINKDOWN)) ||
- 	    (blink & (MTK_PHY_LED_BLINK_RX | MTK_PHY_LED_BLINK_TX)))
- 		set_bit(bit_netdev, &priv->led_state);
- 	else
-@@ -1333,17 +1377,23 @@ static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
- 
- 	if (rules & BIT(TRIGGER_NETDEV_RX)) {
- 		blink |= (on & MTK_PHY_LED_ON_LINK) ?
--			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10RX : 0) |
--			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100RX : 0) |
--			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000RX : 0)) :
-+			  (((on & MTK_PHY_LED_ON_LINK10) ?
-+			    MTK_PHY_LED_BLINK_10RX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK100) ?
-+			    MTK_PHY_LED_BLINK_100RX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK1000) ?
-+			    MTK_PHY_LED_BLINK_1000RX : 0)) :
- 			  MTK_PHY_LED_BLINK_RX;
- 	}
- 
- 	if (rules & BIT(TRIGGER_NETDEV_TX)) {
- 		blink |= (on & MTK_PHY_LED_ON_LINK) ?
--			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10TX : 0) |
--			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100TX : 0) |
--			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000TX : 0)) :
-+			  (((on & MTK_PHY_LED_ON_LINK10) ?
-+			    MTK_PHY_LED_BLINK_10TX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK100) ?
-+			    MTK_PHY_LED_BLINK_100TX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK1000) ?
-+			    MTK_PHY_LED_BLINK_1000TX : 0)) :
- 			  MTK_PHY_LED_BLINK_TX;
- 	}
- 
-@@ -1400,7 +1450,8 @@ static int mt7988_phy_fix_leds_polarities(struct phy_device *phydev)
- 	/* Only now setup pinctrl to avoid bogus blinking */
- 	pinctrl = devm_pinctrl_get_select(&phydev->mdio.dev, "gbe-led");
- 	if (IS_ERR(pinctrl))
--		dev_err(&phydev->mdio.bus->dev, "Failed to setup PHY LED pinctrl\n");
-+		dev_err(&phydev->mdio.bus->dev,
-+			"Failed to setup PHY LED pinctrl\n");
- 
- 	return 0;
- }
--- 
-2.45.2
-
+> Perhaps this is due to the way that the igc driver shares rings between
+> XDP and the regular path?
+> 
+> Its not clear to me, but I think this fix is not what I would do.
+> 
+> .
