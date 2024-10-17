@@ -1,34 +1,53 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFBA1D4609;
-	Thu, 17 Oct 2024 11:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3491DC07D
+	for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 12:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729166092; cv=none; b=tGlL+DWpJT8CF/aeYzCxeHM1AnsdxzQQcG4jKialoc2ZtX+2Pwa6C76vbBiVeSKqkUfEsVeVJMuYY2OPK6lqv4IvSQbT3vWJRHriTOUIexHHMJa4ndnQ3InqIYGab/6iBK6ofWqVAaPCwt35+yz8YzNrxOjd/bv4oqxbKylv6cg=
+	t=1729166410; cv=none; b=aJHMt8QNdzcseCk6bVja1xNHVyzMLEDkI9EKbtp69F/0ClXDYz9bB+DXA+n411ptPPPAZ8mFpOqA5b9PGTAkrmOhtZD3geJ+S+cf6kUANLjL/OpMwAYykOM46GFYAwdQ+28XajAs1vK/kPN7RNTj3wDo/QNDF8gVPhyOUvgHslo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729166092; c=relaxed/simple;
-	bh=zUDRtGDglLYVZ/ngV0bUcZr91ES4WL44E5T08acKDFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YhABpR6azBNgVdRD1v3RlpQ1SUIsa8tUiQFXeyiklx4rhwiGo94pQmTo9hL/wkUT8+go73cpJho+dvasGQL/lAkjG9Qz9jO9LFQyjU0fdw9/ipg3KUPoBRuBx1KGH5TlVXIs38357hzoZL9qkG6oW1tVj4DXu/ZGgvIlhOixsZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1t1P5S-000000007To-3A7J;
-	Thu, 17 Oct 2024 11:54:38 +0000
-Date: Thu, 17 Oct 2024 12:54:28 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Paul Davey <paul.davey@alliedtelesis.co.nz>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: aquantia: Add mdix config and
- reporting
-Message-ID: <ZxD69GqiPcqOZK2w@makrotopia.org>
-References: <20241017015407.256737-1-paul.davey@alliedtelesis.co.nz>
+	s=arc-20240116; t=1729166410; c=relaxed/simple;
+	bh=9jSppMsc1gxJrlPdeVzLA7vJLPqKWj0TOOzA0Z9FyYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=A6B5vzNm/I3kCmmfvBEbx/YCXOV+fk8vtff0fnCUu+w5wMi44NT2eexhYyFktDdEZoFQpUiE9LXZW5z/MMWT74dsviVXPLBbIloY8aCBch9rqAmK+NcOTs7FC4Nczc8xlI/bUvXQSdeMCAl422L+o7TIms+d5OM9VlEmzHF01aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=okWrHSBC; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="okWrHSBC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4duQscGOGvrU8W49nKqvw1qF0zI8jUQNj0rwZnnVGAQ=; b=okWrHSBC5bCau/vcAKAx6jfY+b
+	hes6e9Zj3KHHWweR5WJSI2DC0866Gkig8o7/ytXN2plRJasmeJ/06mphh3tZ5B6ejGwkcuoDtMsmt
+	O5UoPZdHjqvtid7mcHFa+8NdWIf2QF7rYxXBn1uUIZbcM5rettVgVJ5hoqLTzR22c+eihYDYaFl20
+	AG1nw9bBWTxvUoJqYwvqFbKPYIWMaKAnDIbxP8IoDAlUjEE2euzzeylXV9LNwYv8dol7Vl8CvRh+K
+	UJzyFuecc9/9XSKhy81YQr9fUY3ZlmWRiKjjbUufw5nyhXiiTclwSTqO6P9CKN40U3hTccShrHWjW
+	ehHiQgBw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40554)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1t1P3F-0006UI-0H;
+	Thu, 17 Oct 2024 12:52:21 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1t1P3C-0006Ds-0M;
+	Thu, 17 Oct 2024 12:52:18 +0100
+Date: Thu, 17 Oct 2024 12:52:17 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/7] net: pcs: xpcs: yet more cleanups
+Message-ID: <ZxD6cVFajwBlC9eN@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,78 +56,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241017015407.256737-1-paul.davey@alliedtelesis.co.nz>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Oct 17, 2024 at 02:54:07PM +1300, Paul Davey wrote:
-> Add support for configuring MDI-X state of PHY.
-> Add reporting of resolved MDI-X state in status information.
+Hi,
 
-> [...]
-> +static int aqr_set_polarity(struct phy_device *phydev, int polarity)
+I've found yet more potential for cleanups in the XPCS driver.
 
-"polarity" is not the right term here. This is not about the polarity
-of copper pairs, but rather about pairs being swapped.
-Please name the function accordingly, eg. aqr_set_mdix().
+The first patch switches to using generic register definitions.
 
-> +{
-> +	u16 val = 0;
-> +
-> +	switch (polarity) {
-> +	case ETH_TP_MDI:
-> +		val = MDIO_AN_RESVD_VEND_PROV_MDIX_MDI;
-> +		break;
-> +	case ETH_TP_MDI_X:
-> +		val = MDIO_AN_RESVD_VEND_PROV_MDIX_MDIX;
-> +		break;
-> +	case ETH_TP_MDI_AUTO:
-> +	case ETH_TP_MDI_INVALID:
-> +	default:
-> +		val = MDIO_AN_RESVD_VEND_PROV_MDIX_AUTO;
-> +		break;
-> +	}
-> +
-> +	return phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_RESVD_VEND_PROV,
-> +				      MDIO_AN_RESVD_VEND_PROV_MDIX_MASK, val);
-> +}
-> +
->  static int aqr_config_aneg(struct phy_device *phydev)
->  {
->  	bool changed = false;
->  	u16 reg;
->  	int ret;
->  
-> +	ret = aqr_set_polarity(phydev, phydev->mdix_ctrl);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (ret > 0)
-> +		changed = true;
-> +
->  	if (phydev->autoneg == AUTONEG_DISABLE)
->  		return genphy_c45_pma_setup_forced(phydev);
->  
-> @@ -278,6 +315,14 @@ static int aqr_read_status(struct phy_device *phydev)
->  				 val & MDIO_AN_RX_LP_STAT1_1000BASET_HALF);
->  	}
->  
-> +	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_RESVD_VEND_STATUS1);
+Next, there's an overly complex bit of code in xpcs_link_up_1000basex()
+which can be simplified down to a simple if() statement.
 
-According to the datasheet the MDI/MDI-X indication should only be
-interpreted when autonegotiation has completed.
-Hence this call should be protected by genphy_c45_aneg_done(phydev) and
-phydev->mdix set to ETH_TP_MDI_INVALID in case auto-negotiation hasn't
-completed.
+Then, rearrange xpcs_link_up_1000basex() to separate out the warnings
+from the functional bit.
 
-> +	if (val < 0)
-> +		return val;
-> +	if (val & MDIO_AN_RESVD_VEND_STATUS1_MDIX)
-> +		phydev->mdix = ETH_TP_MDI_X;
-> +	else
-> +		phydev->mdix = ETH_TP_MDI;
-> +
->  	return genphy_c45_read_status(phydev);
->  }
->  
-> -- 
-> 2.47.0
-> 
-> 
+Next, realising that the functional bit is just the helper function we
+already have and are using in the SGMII version of this function,
+switch over to that.
+
+We can now see that xpcs_link_up_1000basex() and xpcs_link_up_sgmii()
+are basically functionally identical except for the warnings, so merge
+the two functions.
+
+Next, xpcs_config_usxgmii() seems misnamed, so rename it to follow the
+established pattern.
+
+Lastly, "return foo();" where foo is a void function and the function
+being returned from is also void is a weird programming pattern.
+Replace this with something more conventional.
+
+With these changes, we see yet another reduction in the amount of
+code in this driver.
+
+ drivers/net/pcs/pcs-xpcs.c | 134 ++++++++++++++++++++++-----------------------
+ drivers/net/pcs/pcs-xpcs.h |  12 ----
+ 2 files changed, 65 insertions(+), 81 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
