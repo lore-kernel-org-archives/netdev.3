@@ -1,247 +1,212 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269BE1E32AC;
-	Fri, 18 Oct 2024 09:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843821FF7B6
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 09:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729242868; cv=none; b=IR2CTcItuuW9vzJH4+sejNNeSW2unU0kcNxvF6L7VDlzNtKWn7iEuixbjJP0rOwg3pMpZOqP9yO8k3fSDfm25ArBolIlPRFOtldrq+T4QtVGHIIKlWhpwBHA056qKqiXj1ZTfxouKZmk+3y227550e5OfF+w9pLFv2UDu+YFQnY=
+	t=1729243025; cv=none; b=hNViBtS68P+2NQ/no6JGeuRc25FkbowTZ+mvDNl4imRE9Wpg6OYGJECLHiA/XdCjtVRedk/Fk/pU3yWA/mhdQ3GFhBEp3hSTu2tD4Poc4e1v70nHNEFxgD36vTynyL7de8/aeK1wX9imr+2YbOTOTd6krrI/7ByE4+S9dK2K+bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729242868; c=relaxed/simple;
-	bh=0pL/gayMZUTWrlQja+1vgkIZ0AHX46bA4d1cb9803Y0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=msS0u9+mH/5wTP1qN5Ype/M828pyG22X+IuVHDD1hWWAt068vRRvQZh7hBmsuZ4XN5JPBYz4vPs/8rI/4b86yJpj6emyU/DP68ZsYdKUkkH0X5t3410b7fDPv1tnolfL1Zg0uh9ADVrX+lkCVJwKMtCYNoFeY6WSLcGVnpA8ICs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XVJrs0ygDz2Ddwr;
-	Fri, 18 Oct 2024 17:13:01 +0800 (CST)
-Received: from dggpemf500014.china.huawei.com (unknown [7.185.36.43])
-	by mail.maildlp.com (Postfix) with ESMTPS id CDBA6180041;
-	Fri, 18 Oct 2024 17:14:17 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpemf500014.china.huawei.com
- (7.185.36.43) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 18 Oct
- 2024 17:14:16 +0800
-From: Muyang Tian <tianmuyang@huawei.com>
-To: <bpf@vger.kernel.org>
-CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>, Magnus Karlsson
-	<magnus.karlsson@intel.com>, Maciej Fijalkowski
-	<maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<yanan@huawei.com>, <xiesongyang@huawei.com>, <wuchangye@huawei.com>,
-	<liuxin350@huawei.com>, <zhangmingyi5@huawei.com>, <liwei883@huawei.com>,
-	<tianmuyang@huawei.com>
-Subject: [PATCH bpf-next v2 1/3] xdp: Add Rx checksum hint
-Date: Fri, 18 Oct 2024 17:15:00 +0800
-Message-ID: <20241018091502.411513-2-tianmuyang@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20241018091502.411513-1-tianmuyang@huawei.com>
-References: <20241018091502.411513-1-tianmuyang@huawei.com>
+	s=arc-20240116; t=1729243025; c=relaxed/simple;
+	bh=rzkEdXf9tnVWOIhcsEoK9mKCEw0k2o0GdcuNOkBNxmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NKVirmr37Stuu/btacOs/ID02G5ivN8Oexhf3sO45Kk6T4WtfIqSW1iCtu6NPzt9wZvLTvg1ah7ggH4R6jUJbm3j+4TuTljqe4NQdWAuFctQZ/IYfUI7aARrNNYKvbBcC+TDS5/stBC4iZuoH1hAxEpkQHgB9UJSZ17qoBa5T38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t1j6G-0004by-1v; Fri, 18 Oct 2024 11:16:48 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t1j6E-000Bd1-2i;
+	Fri, 18 Oct 2024 11:16:46 +0200
+Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 7CFAF357AF1;
+	Fri, 18 Oct 2024 09:16:46 +0000 (UTC)
+Date: Fri, 18 Oct 2024 11:16:46 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: RE: RE: [PATCH net-next 07/13] net: fec: fec_probe(): update
+ quirk: bring IRQs in correct order
+Message-ID: <20241018-black-dormouse-of-exercise-f7fed0-mkl@pengutronix.de>
+References: <20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de>
+ <20241016-fec-cleanups-v1-7-de783bd15e6a@pengutronix.de>
+ <PAXPR04MB85103D3E433F3FBE5DDFA15C88472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241017-affable-impartial-rhino-a422ec-mkl@pengutronix.de>
+ <PAXPR04MB8510149D0E8AC39E048941F988472@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241017-manipulative-dove-of-renovation-88d00b-mkl@pengutronix.de>
+ <ZxEZR2lmIbX6+xX2@lizhi-Precision-Tower-5810>
+ <20241017-rainbow-nifty-gazelle-9acee4-mkl@pengutronix.de>
+ <ZxEtpRWsi+QiYsFh@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf500014.china.huawei.com (7.185.36.43)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5ozr2uxsly64lqtk"
+Content-Disposition: inline
+In-Reply-To: <ZxEtpRWsi+QiYsFh@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This is an implementation of functionality that allows drivers
-to expose checksum information to XDP, as generally based on 
-previous work[1], with xdp_csum_status modified.
-This information includes:
-- Checksum info, a union of
-  - complete checksum, if checksum is complete
-  - skb-style checksum start and offset, if checksum is partial
-- Checksum status, an enum which is the same as skb checksums in
-  skbuff.h, identical to sk_buff.ip_summed
 
-LINK:[1] https://lore.kernel.org/bpf/20230927075124.23941-13-larysa.zaremba@intel.com
+--5ozr2uxsly64lqtk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Muyang Tian <tianmuyang@huawei.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- Documentation/netlink/specs/netdev.yaml      |  4 +++
- Documentation/networking/xdp-rx-metadata.rst |  3 ++
- include/net/xdp.h                            | 38 ++++++++++++++++++++
- include/uapi/linux/netdev.h                  |  3 ++
- net/core/xdp.c                               | 23 ++++++++++++
- tools/include/uapi/linux/netdev.h            |  3 ++
- 6 files changed, 74 insertions(+)
+On 17.10.2024 11:30:45, Frank Li wrote:
+> On Thu, Oct 17, 2024 at 04:21:33PM +0200, Marc Kleine-Budde wrote:
+> > On 17.10.2024 10:03:51, Frank Li wrote:
+> > > > > > Yes, that is IMHO the correct description of the IP core, but t=
+he
+> > > > > > i.MX8M/N/Q DTS have the wrong order of IRQs. And for compatibil=
+ity
+> > > > > > reasons (fixed DTS with old driver) it's IMHO not possible to c=
+hange the
+> > > > > > DTS.
+> > > > > >
+> > > > >
+> > > > > I don't think it is a correct behavior for old drivers to use new=
+ DTBs or new
+> > > > > drivers to use old DTBs. Maybe you are correct, Frank also asked =
+the same
+> > > > > question, let's see how Frank responded.
+> > > >
+> > > > DTBs should be considered stable ABI.
+> > > >
+> > >
+> > > ABI defined at binding doc.
+> > >   interrupt-names:
+> > >     oneOf:
+> > >       - items:
+> > >           - const: int0
+> > >       - items:
+> > >           - const: int0
+> > >           - const: pps
+> > >       - items:
+> > >           - const: int0
+> > >           - const: int1
+> > >           - const: int2
+> > >       - items:
+> > >           - const: int0
+> > >           - const: int1
+> > >           - const: int2
+> > >           - const: pps
+> > >
+> > > DTB should align binding doc. There are not 'descriptions' at 'interr=
+upt',
+> > > which should match 'interrupt-names'. So IMX8MP dts have not match AB=
+I,
+> > > which defined by binding doc. So it is DTS implement wrong.
+> >
+> > I follow your conclusion. But keep in mind, fixing the DTB would break
+> > compatibility. The wrong DTS looks like this:
+> >
+> > - const: int1
+> > - const: int2
+> > - const: int0
+> > - const: pps
+> >
+> > Currently we have broken DTS on the i.MX8M* and the
+> > FEC_QUIRK_WAKEUP_FROM_INT2 that "fixes" this.
+> >
+> > This patch uses this quirk to correct the IRQ <-> queue assignment in
+> > the driver.
+>=20
+> This current code
+>=20
+> for (i =3D 0; i < irq_cnt; i++) {
+>                 snprintf(irq_name, sizeof(irq_name), "int%d", i);
+>                 irq =3D platform_get_irq_byname_optional(pdev, irq_name);
+> 		      ^^^^^^^^^^^^^^^^^^^^^
+>=20
+> You just need add interrupt-names at imx8mp dts and reorder it to pass
+> DTB check.
 
-diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-index 08412c279297..e6045b447fc1 100644
---- a/Documentation/netlink/specs/netdev.yaml
-+++ b/Documentation/netlink/specs/netdev.yaml
-@@ -58,6 +58,10 @@ definitions:
-         name: vlan-tag
-         doc:
-           Device is capable of exposing receive packet VLAN tag via bpf_xdp_metadata_rx_vlan_tag().
-+      -
-+        name: csum
-+        doc:
-+          Device is capable of exposing receive packet checksum via bpf_xdp_metadata_rx_csum().
-   -
-     type: flags
-     name: xsk-flags
-diff --git a/Documentation/networking/xdp-rx-metadata.rst b/Documentation/networking/xdp-rx-metadata.rst
-index a6e0ece18be5..6cf273b33ee6 100644
---- a/Documentation/networking/xdp-rx-metadata.rst
-+++ b/Documentation/networking/xdp-rx-metadata.rst
-@@ -28,6 +28,9 @@ metadata is supported, this set will grow:
- .. kernel-doc:: net/core/xdp.c
-    :identifiers: bpf_xdp_metadata_rx_vlan_tag
- 
-+.. kernel-doc:: net/core/xdp.c
-+   :identifiers: bpf_xdp_metadata_rx_csum
-+
- An XDP program can use these kfuncs to read the metadata into stack
- variables for its own consumption. Or, to pass the metadata on to other
- consumers, an XDP program can store it into the metadata area carried
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index e6770dd40c91..7886658975c4 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -408,6 +408,10 @@ void xdp_attachment_setup(struct xdp_attachment_info *info,
- 			   NETDEV_XDP_RX_METADATA_VLAN_TAG, \
- 			   bpf_xdp_metadata_rx_vlan_tag, \
- 			   xmo_rx_vlan_tag) \
-+	XDP_METADATA_KFUNC(XDP_METADATA_KFUNC_RX_CSUM, \
-+			   NETDEV_XDP_RX_METADATA_CSUM, \
-+			   bpf_xdp_metadata_rx_csum, \
-+			   xmo_rx_csum) \
- 
- enum xdp_rx_metadata {
- #define XDP_METADATA_KFUNC(name, _, __, ___) name,
-@@ -465,12 +469,46 @@ enum xdp_rss_hash_type {
- 	XDP_RSS_TYPE_L4_IPV6_SCTP_EX = XDP_RSS_TYPE_L4_IPV6_SCTP | XDP_RSS_L3_DYNHDR,
- };
- 
-+enum xdp_csum_status {
-+	/* The following enums are the same as skb checksums in skbuff.h, refer to
-+	 * DOC: skb checksums for more details.
-+	 */
-+
-+	XDP_CHECKSUM_NONE = 0,
-+	XDP_CHECKSUM_UNNECESSARY = 1,
-+	/* Checksum, calculated over the entire packet is provided, as ``csum`` in
-+	 * ``xdp_csum_info``.
-+	 */
-+	XDP_CHECKSUM_COMPLETE = 2,
-+	/* Refer to ``csum_start`` and ``csum_offset`` in ``xdp_csum_info`` for more information. */
-+	XDP_CHECKSUM_PARTIAL = 3,
-+};
-+
-+union xdp_csum_info {
-+	/* Checksum, calculated over the whole packet.
-+	 * Available, if ``status & XDP_CHECKSUM_COMPLETE``.
-+	 */
-+	__wsum csum;
-+	/* Checksum referred to by ``csum_start + csum_offset`` is considered
-+	 * valid, but was never calculated, TX device has to do this,
-+	 * starting from csum_start packet byte.
-+	 * Any preceding checksums are also considered valid.
-+	 * Available, if ``status == XDP_CHECKSUM_PARTIAL``.
-+	 */
-+	struct {
-+		u16 csum_start;
-+		u16 csum_offset;
-+	};
-+};
-+
- struct xdp_metadata_ops {
- 	int	(*xmo_rx_timestamp)(const struct xdp_md *ctx, u64 *timestamp);
- 	int	(*xmo_rx_hash)(const struct xdp_md *ctx, u32 *hash,
- 			       enum xdp_rss_hash_type *rss_type);
- 	int	(*xmo_rx_vlan_tag)(const struct xdp_md *ctx, __be16 *vlan_proto,
- 				   u16 *vlan_tci);
-+	int (*xmo_rx_csum)(const struct xdp_md *ctx, enum xdp_csum_status *csum_status,
-+				   union xdp_csum_info *csum_info);
- };
- 
- #ifdef CONFIG_NET
-diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
-index 7c308f04e7a0..a969b25529a3 100644
---- a/include/uapi/linux/netdev.h
-+++ b/include/uapi/linux/netdev.h
-@@ -46,11 +46,14 @@ enum netdev_xdp_act {
-  *   hash via bpf_xdp_metadata_rx_hash().
-  * @NETDEV_XDP_RX_METADATA_VLAN_TAG: Device is capable of exposing receive
-  *   packet VLAN tag via bpf_xdp_metadata_rx_vlan_tag().
-+ * @NETDEV_XDP_RX_METADATA_CSUM: Device is capable of exposing receive packet
-+ *   checksum via bpf_xdp_metadata_rx_csum().
-  */
- enum netdev_xdp_rx_metadata {
- 	NETDEV_XDP_RX_METADATA_TIMESTAMP = 1,
- 	NETDEV_XDP_RX_METADATA_HASH = 2,
- 	NETDEV_XDP_RX_METADATA_VLAN_TAG = 4,
-+	NETDEV_XDP_RX_METADATA_CSUM = 8,
- };
- 
- /**
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index bcc5551c6424..583e00d3580a 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -766,6 +766,29 @@ __bpf_kfunc int bpf_xdp_metadata_rx_vlan_tag(const struct xdp_md *ctx,
- 	return -EOPNOTSUPP;
- }
- 
-+/**
-+ * bpf_xdp_metadata_rx_csum - Read XDP frame checksum status and info.
-+ * @ctx: XDP context pointer.
-+ * @csum_status: Destination pointer for checksum status.
-+ * @csum_info: Destination pointer for complete checksum or partial checksum offset.
-+ *
-+ * Status (@csum_status) is an enum that informs what checksum processing was
-+ * performed, same as sk_buff.ip_summed. Additional results of such processing,
-+ * such as complete checksum or partial checksum offsets, are passed as
-+ * info (@csum_info).
-+ *
-+ * Return:
-+ * * Returns 0 on success or ``-errno`` on error.
-+ * * ``-EOPNOTSUPP`` : means device driver doesn't implement kfunc
-+ * * ``-ENODATA``    : means checksum status is unknown for this frame
-+ */
-+__bpf_kfunc int bpf_xdp_metadata_rx_csum(const struct xdp_md *ctx,
-+					 enum xdp_csum_status *csum_status,
-+					 union xdp_csum_info *csum_info)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- __bpf_kfunc_end_defs();
- 
- BTF_KFUNCS_START(xdp_metadata_kfunc_ids)
-diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
-index 7c308f04e7a0..a969b25529a3 100644
---- a/tools/include/uapi/linux/netdev.h
-+++ b/tools/include/uapi/linux/netdev.h
-@@ -46,11 +46,14 @@ enum netdev_xdp_act {
-  *   hash via bpf_xdp_metadata_rx_hash().
-  * @NETDEV_XDP_RX_METADATA_VLAN_TAG: Device is capable of exposing receive
-  *   packet VLAN tag via bpf_xdp_metadata_rx_vlan_tag().
-+ * @NETDEV_XDP_RX_METADATA_CSUM: Device is capable of exposing receive packet
-+ *   checksum via bpf_xdp_metadata_rx_csum().
-  */
- enum netdev_xdp_rx_metadata {
- 	NETDEV_XDP_RX_METADATA_TIMESTAMP = 1,
- 	NETDEV_XDP_RX_METADATA_HASH = 2,
- 	NETDEV_XDP_RX_METADATA_VLAN_TAG = 4,
-+	NETDEV_XDP_RX_METADATA_CSUM = 8,
- };
- 
- /**
--- 
-2.41.0
+ACK
 
+>=20
+>                 if (irq < 0)
+>                         irq =3D platform_get_irq(pdev, i);
+>                 if (irq < 0) {
+>                         ret =3D irq;
+>                         goto failed_irq;
+>                 }
+>                 ret =3D devm_request_irq(&pdev->dev, irq, fec_enet_interr=
+upt,
+>                                        0, pdev->name, ndev);
+>                 if (ret)
+>                         goto failed_irq;
+>=20
+>                 fep->irq[i] =3D irq;
+>         }
+>=20
+> All irq handle by the same fec_enet_interrupt().  Change dts irq orders
+> doesn't broken compatiblity.
+
+I'm sorry, but this is not 100% correct. Changing the _order_ of IRQs
+does break compatibility. New DT (with changed IRQ order) with old
+driver breaks wakeup functionality.
+
+Have a look at b7cdc9658ac8 ("net: fec: add WoL support for i.MX8MQ"),
+but keep in mind the patch description is not 100% correct:
+
+| By default FEC driver treat irq[0] (i.e. int0 described in dt-binding)
+| as wakeup interrupt, but this situation changed on i.MX8M serials, SoC
+| integration guys mix wakeup interrupt signal into int2 interrupt line.
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This statement is wrong. The SoC integration is correct, the DT is
+wrong.
+
+| This patch introduces FEC_QUIRK_WAKEUP_FROM_INT2 to indicate int2 as
+| wakeup interrupt for i.MX8MQ.
+
+> "pre-equeue" irq is new features. You can enable this feature only
+> when "interrupt-names" exist in future.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--5ozr2uxsly64lqtk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcSJ3sACgkQKDiiPnot
+vG9DXwgAnWJD0+pgpUJwVQfqSiGkWkMe5M6qtIWo09HfS9/N5262P2ixUjv5KrFo
+IzsTY4+y4EJquuMsX1nIxJhLIEM+GqN6m+Tan1IH9wNdvvAhAE/GJYDc3imzsKsC
+3gATfbC7NZ6kjf/v9/b7mgwelkL6Xogc4aQwvQvTRdVQgIW+BqW2VpGfPHQieW25
+henGvWDOBvWUFIQLhQYPzf20bq1VVxekaFHZe+PIr6uf7h/aCr3FVYyiHSVVx2+V
+iW4WjZkIQozCNneQ3MHq6u20f94gItt1bFuBqKhrYDSgIe+Tj7Bt1n35dtJoGUQv
+jTI3ADivQ7SoRYabV2mXTVhbq3xxTQ==
+=SR5D
+-----END PGP SIGNATURE-----
+
+--5ozr2uxsly64lqtk--
