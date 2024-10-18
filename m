@@ -1,101 +1,142 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03965155A2F;
-	Fri, 18 Oct 2024 16:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F794155A2F;
+	Fri, 18 Oct 2024 16:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729269601; cv=none; b=Rxl8ayabBcveM/Xvr2hhSq8p57eKPPf/zrIKhLxjuOZDe1EYp0zmlumMDNHS8KlZp6HDfdvg03mxat8oHU5wqA7uHYfwQtAms3et3wNuRb8lX5f8hCSTZtm4yElnTM43Egre5C4KqtN4DJ5aP1/H2LUmM0nEmeXD8tVj2GQDWQM=
+	t=1729269610; cv=none; b=e/1S08U2gXKzwuaVFo+O4O3ztdJ/dYPDW7Cra4YRhaNbrngqwFuuxrJAT0lYqmaKfO0NBTM6RUSUip5ua0EM7qGVK/OkBcFWNhBH02DDKYmfkJEwNuHT7vEf8WR5oDGUwWoIYlZd8VtK890Xwyd/+uNLotlTnphmWVUL42Fab6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729269601; c=relaxed/simple;
-	bh=H46ISeiK3W0lqbYv2LwPn1zRPE+sm2SJNIC9+JzX6Ms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hb0fOrV+syz6hvsp1fvyoWIcN6vYT4vPROn6XX6tNmoM8nbcobQWQ0rXFFK82V8E9ld1lyZ/b65ElKt9rsQRwiNdG/p90SLwVbCWmAdBeUvyS9/cwQokXjMQmPKRemmgBB+NOOC3oChPUtIvlkk7cFRujcj8k7xl3TLnEkWoIO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kEoEoiMN; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kEoEoiMN"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20c805a0753so20530595ad.0;
-        Fri, 18 Oct 2024 09:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729269599; x=1729874399; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H46ISeiK3W0lqbYv2LwPn1zRPE+sm2SJNIC9+JzX6Ms=;
-        b=kEoEoiMN7oIjv3/w9YT0B6VL9NRT0JvS9WN7HAja2GuxMJBN0ak9yk55zD2mC/NZw4
-         fnQGjS5rKeV3GvggPR3u3CV5yJgvSvghwBZh4JgXb4dOkOom1WiAJ5qGYdo+yE1kl9mC
-         OUnNsYaMi+nP+ZzS3NMcQHWEFY6okc1nWwvqH4HoU5fBfX3nxKFWzT6lIn52ZpF9EhHu
-         mRVcpWP1VGgxvq2H0W/jFaYINEGcw1Wqu0ID6Y1GzqTeTknot7/5JtxlMHgchUe4a6/A
-         f+qP+RgKPeKgLUCfcAMsMs6TPVpG5qWd2as1A3wsRNZg6KprAn7ie905FJhVV/b+uTF0
-         O5WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729269599; x=1729874399;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H46ISeiK3W0lqbYv2LwPn1zRPE+sm2SJNIC9+JzX6Ms=;
-        b=NNRwmX4Esub0GWbONkbD0Yjcr6zbghZmDS69FPKQG3tMddPMwOlxrjSdI7Trs8AqM6
-         0XjY7jB9V84VdKXmhOWBVSYnIS7ad32lfsZGnK5AadKMSgrVDkkaeacz4hEFuCKQKeJL
-         5pYTVYC/GMLsr2GWPYO85YOmVETsiVnl06QD2R0KBQ8+qJ2angbwN1aEt13v9jGw2m8Q
-         7l6bnPZBR1LA+KN9P2TkpE1xFWAjQvwV/YkL3vSbejdLU2merZhvI6saQJbeIOGbqDIr
-         nmWGud84w+Epv4SKw4H+uDcEC6hZcT2YS9jAK9ra8yck72bAht3qhl1xIRfvzdB0g8KQ
-         3RsA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Ivl6cFxL6Q3soJVJRISgCTmnx5m8GaFf90RliTOml/3LG6rOXNhVOKhF3fGMXRryofZHPk7U@vger.kernel.org, AJvYcCXaK0YrSYkHWJUx0pDKujHtLyVu0+AuD7nmALk9wOabIaIs31omV1T8AKjIj4hwwjtSWshWvkylQQPNcU1h@vger.kernel.org, AJvYcCXpU7qV+5zKa7o7ZZQCyeFmzleAd2J1zhO2kBhnCA7ZJc6CG0afjQrkQkDLrBThi/Z4vbKJ38b4C90=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5Voqg7+v8P2Nx4do5qKHxgvK3WWLYEUSyx44v+/F+ACaU47Tb
-	ZsupNyWSh+qg4ByoOjxZJ8jBCr5ixDurYYARuTbhlz3ZGmE3q8T0i7NRS2g=
-X-Google-Smtp-Source: AGHT+IE/Qr8nmy1eseHm0cw8yDRNQgfcxettWrr8jZ/XrVMu9Jtillxh0kK9TiT5cqWTWnHOvxhzvw==
-X-Received: by 2002:a17:902:ea02:b0:20c:8df8:5066 with SMTP id d9443c01a7336-20e5a8f89aamr43516495ad.45.1729269598902;
-        Fri, 18 Oct 2024 09:39:58 -0700 (PDT)
-Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e5a71ee57sm14686945ad.43.2024.10.18.09.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 09:39:58 -0700 (PDT)
-Date: Fri, 18 Oct 2024 09:39:57 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Muyang Tian <tianmuyang@huawei.com>
-Cc: bpf@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1729269610; c=relaxed/simple;
+	bh=SejFki02Gk0yg7xcH6cgvY7yrQSN10cBiT2GsFBGUNk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aD7Nm+EgIFX61Z4OGryc0ptdRaKIoGrkVpS+gdAOh0+FCaOJFc4H24PJv4dt1kkApRPFhHztB/Yfgcz9IkTEa79tuzWGSpuBXkpYoaB+Eyz2INqfYkYPsI0Ic26obdvxcsTmZ0Fhy5sa+C7FscDxJjrUcUDv0fijlzYdgr2/RDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1t1pVE-0013Jq-P5;
+	Fri, 18 Oct 2024 16:07:00 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	yanan@huawei.com, xiesongyang@huawei.com, wuchangye@huawei.com,
-	liuxin350@huawei.com, zhangmingyi5@huawei.com, liwei883@huawei.com,
-	willemb@google.com
-Subject: Re: [PATCH bpf-next v2 0/3] XDP metadata: Rx checksum/GSO hint; Tx
- GSO offload
-Message-ID: <ZxKPXdYjwPnpq95V@mini-arch>
-References: <20241018091502.411513-1-tianmuyang@huawei.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Lukasz Majewski <lukma@denx.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH net v4] net: dsa: microchip: disable EEE for KSZ879x/KSZ877x/KSZ876x
+Date: Fri, 18 Oct 2024 09:06:58 -0700
+Message-Id: <20241018160658.781564-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241018091502.411513-1-tianmuyang@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-On 10/18, Muyang Tian wrote:
-> This series introduce XDP metadata functionality, including Rx checksum/GSO hint
-> and Tx GSO offload. This is aimed to transfer control fields when processing jumbo
-> frames between VMs.
+The well-known errata regarding EEE not being functional on various KSZ
+switches has been refactored a few times. Recently the refactoring has
+excluded several switches that the errata should also apply to.
 
-Ideally, the series should also have the implementation of these hints
-for a couple of devices and appropriate selftest updates to exercise
-them.
+Disable EEE for additional switches with this errata and provide
+additional comments referring to the public errata document.
 
-For GSO, CC Willem going forward (I don't think I understand why
-we want to have gso_type in the TX hint; something like header_len
-seems like a better fit).
+The original workaround for the errata was applied with a register
+write to manually disable the EEE feature in MMD 7:60 which was being
+applied for KSZ9477/KSZ9897/KSZ9567 switch ID's.
 
-Please also don't post v3 yet and allow at least a week for the initial
-reviewers to catch up..
+Then came commit 26dd2974c5b5 ("net: phy: micrel: Move KSZ9477 errata
+fixes to PHY driver") and commit 6068e6d7ba50 ("net: dsa: microchip:
+remove KSZ9477 PHY errata handling") which moved the errata from the
+switch driver to the PHY driver but only for PHY_ID_KSZ9477 (PHY ID)
+however that PHY code was dead code because an entry was never added
+for PHY_ID_KSZ9477 via MODULE_DEVICE_TABLE.
+
+This was apparently realized much later and commit 54a4e5c16382 ("net:
+phy: micrel: add Microchip KSZ 9477 to the device table") added the
+PHY_ID_KSZ9477 to the PHY driver but as the errata was only being
+applied to PHY_ID_KSZ9477 it's not completely clear what switches
+that relates to.
+
+Later commit 6149db4997f5 ("net: phy: micrel: fix KSZ9477 PHY issues
+after suspend/resume") breaks this again for all but KSZ9897 by only
+applying the errata for that PHY ID.
+
+Following that this was affected with commit 08c6d8bae48c("net: phy:
+Provide Module 4 KSZ9477 errata (DS80000754C)") which removes
+the blatant register write to MMD 7:60 and replaces it by
+setting phydev->eee_broken_modes = -1 so that the generic phy-c45 code
+disables EEE but this is only done for the KSZ9477_CHIP_ID (Switch ID).
+
+Lastly commit 0411f73c13af ("net: dsa: microchip: disable EEE for
+KSZ8567/KSZ9567/KSZ9896/KSZ9897.") adds some additional switches
+that were missing to the errata due to the previous changes.
+
+This commit adds an additional set of switches.
+
+Fixes: 0411f73c13af ("net: dsa: microchip: disable EEE for KSZ8567/KSZ9567/KSZ9896/KSZ9897.")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+v4: rebase on top of latest
+v3: added missing fixes tag
+v2: added fixes tag and history of issue
+---
+ drivers/net/dsa/microchip/ksz_common.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 4e8710c7cb7b..5290f5ad98f3 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2733,26 +2733,27 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
+ 			return MICREL_KSZ8_P1_ERRATA;
+ 		break;
+ 	case KSZ8567_CHIP_ID:
++		/* KSZ8567R Errata DS80000752C Module 4 */
++	case KSZ8765_CHIP_ID:
++	case KSZ8794_CHIP_ID:
++	case KSZ8795_CHIP_ID:
++		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
+ 	case KSZ9477_CHIP_ID:
++		/* KSZ9477S Errata DS80000754A Module 4 */
+ 	case KSZ9567_CHIP_ID:
++		/* KSZ9567S Errata DS80000756A Module 4 */
+ 	case KSZ9896_CHIP_ID:
++		/* KSZ9896C Errata DS80000757A Module 3 */
+ 	case KSZ9897_CHIP_ID:
+-		/* KSZ9477 Errata DS80000754C
+-		 *
+-		 * Module 4: Energy Efficient Ethernet (EEE) feature select must
+-		 * be manually disabled
++		/* KSZ9897R Errata DS80000758C Module 4 */
++		/* Energy Efficient Ethernet (EEE) feature select must be manually disabled
+ 		 *   The EEE feature is enabled by default, but it is not fully
+ 		 *   operational. It must be manually disabled through register
+ 		 *   controls. If not disabled, the PHY ports can auto-negotiate
+ 		 *   to enable EEE, and this feature can cause link drops when
+ 		 *   linked to another device supporting EEE.
+ 		 *
+-		 * The same item appears in the errata for the KSZ9567, KSZ9896,
+-		 * and KSZ9897.
+-		 *
+-		 * A similar item appears in the errata for the KSZ8567, but
+-		 * provides an alternative workaround. For now, use the simple
+-		 * workaround of disabling the EEE feature for this device too.
++		 * The same item appears in the errata for all switches above.
+ 		 */
+ 		return MICREL_NO_EEE;
+ 	}
+-- 
+2.25.1
+
