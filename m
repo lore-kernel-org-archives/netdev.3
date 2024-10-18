@@ -1,88 +1,97 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [178.154.239.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6473BB24
-	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 05:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEE11514CC
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 05:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729228577; cv=none; b=ZDQWfI6C7MfoicKKRXnCnljU1XDfq4JJDGyeM8D5UG/dvgUZNMdxKSQEmEvxcnVYeutMxM4PmLzaQ2smm+AWVL2RSJsfYiZiER3MXPfwM/nCbNUcIvc+qhFTj9/euN4vJjjtzTu8l7qzh0X/vfBPRe5qbisPCdEzTTf22Hijt9w=
+	t=1729228846; cv=none; b=Hu7V/m+shyAnTRRBJb1JZI6FQ0+pPxdwRqBt27kkL6iqpnHEMqXwOyCNdx1qgsj0QqsNlXcjLPQlIFdBBdcvOUCKE8cYiaQaj9L8WYDUSoRlxexVEgRg7uJT0ZpUagmXBYy93i2khpTGKx8kTe2QaHCewfmFUnb/JS9HN/wxK8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729228577; c=relaxed/simple;
-	bh=uvBiPoJq7BvgeG3uom4U08EtiWnKRfURpd2XtcIzqio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z7KRVLCws9BaI89WoerNfMohbnh5XZtr+5wH68xhul8fi7DAkonjEKcWldrNJW6DJIrFvB8bhvJxISBRQVRJCHDQEtjJzjpAbayagcIrv0BHlYypL9b3CZRjr/LtJvO+3J8B3KnzzxTqqZvRftfIn1hN0JJnhnoBQMmCL6B3HA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qzkzyCL8; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729228846; c=relaxed/simple;
+	bh=KXvm92s07awak7G/cdC7TWsNdSrGe1cuAc+WzEpXq7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C79881NHCjIlG/7Yak2S0qN4bcFFjgoCNHwSUJBVKxFTE33jldgyraWrlLP28wWJRdQSiM/SEQR0XfYtLOi4HQ05MKxLe4L3oBE8NbyMnV5I93JXtqImayaScMDRh+wnsbiAUFOtZQsvuvtZ1Gs7Tanr/LPRgXvyFPhvSHjh+3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=N4Q3JSHy; arc=none smtp.client-ip=178.154.239.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qzkzyCL8"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb518014b9so15452161fa.3
-        for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 22:16:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729228573; x=1729833373; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uvBiPoJq7BvgeG3uom4U08EtiWnKRfURpd2XtcIzqio=;
-        b=qzkzyCL8/0WGcSPApneMUzPJVnAbjCT64s85gFeeDi77UYwGQm5I3Jl1jCYnGIflH0
-         H4FXACXOEE2yvsC6dkxePA9t9poG0LraPBxnZlST4y91KwZSOBkYOA8alAZk07lKiEMO
-         eD4wKRr4nk18oK1XYWE1wHEounlsF+yK3d7vyE9ePZPm3GYfFY2TAlgWNAxYe/rtuRuS
-         18UwyQ9D280saOCs9ZjPXnL5AF9toXQXOxqMc8Gquv0FXHPRLs0jLmePsiKWJKVQj0P0
-         bBQ58tnGkxLecB61ggEA39EhOxQc/jhb3gMSxDN3pak9cWXmo/1LkjlwXJMDUHlnmjoU
-         Igpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729228573; x=1729833373;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uvBiPoJq7BvgeG3uom4U08EtiWnKRfURpd2XtcIzqio=;
-        b=OTp5pRtO3/imLrvFUEuw0ap2eRY1SUTBbxFtzleLgCIcNFpP1dbgA2ppU8c7z3gSdx
-         H2Eu1a6XfymVw/cKrZhFIZGroqZ6QOR0h/wwH3EXXSgZNJXYfcrQ0nc/S8ullNOZITq6
-         v13o/lGgblLcLNe3g5evoP46spBE/Oz9fEq+6dVuaUwKJ5nozJ5JtfuPkuozVPpJirJO
-         ZhAp5yF0xaCbfKuaab29QmU2CGB54LggqOc5NdbhQLqeo/leIIK0dzC3EvSsKkqL4aJS
-         6gnUuy0F3FFMO0FqszDgaFYUul0ucFtstvg/PDgHPf8wRNd0/lD7Q0vfC0DHrEMZ+4UU
-         0cyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLq5zZpYqEQ3AQct2yuG2qfrYEO9YrWRDQ2HbA9tgCvmW+OOXgsJd+dUy21jZUTAcDF/N/ox0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPk0vXBOfu2mHDskCcGSDLg4g0qGZo9xSSpl+AsjjGoTJSZvTT
-	k7aFdpFeu3czHdXeyw6+XgXadzBec76W1qW9Z0ft7mqGxDOkwM8WiTZSkwnnawFfxA2CncRMNjG
-	xm/TnlpCA4yGYL8yNSoDJbKnTEVl+EotnwmMG
-X-Google-Smtp-Source: AGHT+IGQDhrr/FXur7TzLuoDdEtO28G88iLoQNz7K1NSKTgpdAOmvMWYccuxW59jiG+rInC+RTrea81hwsS6F2i+nsE=
-X-Received: by 2002:a2e:4601:0:b0:2fb:382e:410f with SMTP id
- 38308e7fff4ca-2fb831f02d1mr3990351fa.26.1729228573272; Thu, 17 Oct 2024
- 22:16:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="N4Q3JSHy"
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
+	by forward203a.mail.yandex.net (Yandex) with ESMTPS id 8825E61393
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 08:14:08 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2a:1c1:0:640:adc:0])
+	by forward103a.mail.yandex.net (Yandex) with ESMTPS id C0D0060AD4;
+	Fri, 18 Oct 2024 08:13:59 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id vDGD1k31TSw0-nyUuekjI;
+	Fri, 18 Oct 2024 08:13:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1729228438; bh=VMP8ChqrrEAjBj2IBe9W7mWr+cZyaoaLnScD0mdcSKM=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=N4Q3JSHyhVZDshMXIH3YCulkujqPJNkLt8W+q1N2QxkmvGOnykHR/hAv+q2527+Z+
+	 +oS0yXuFvuT7pgMFIGYoYKC7cUH6MQkZCvkyqEK7JpaE0GdW1wl06+BsQJeNGVS9i2
+	 rl8BxBY8jqvpdx3dWqMf+LdOKnW+WIGxXN3ovWEE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Subject: [PATCH net v7 1/2] net: sched: fix use-after-free in taprio_change()
+Date: Fri, 18 Oct 2024 08:13:38 +0300
+Message-ID: <20241018051339.418890-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241018014100.93776-1-kuniyu@amazon.com>
-In-Reply-To: <20241018014100.93776-1-kuniyu@amazon.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 18 Oct 2024 07:15:59 +0200
-Message-ID: <CANn89iJSop5Nhi7nKeuwdiuN+PSwgWh4Ge=84bgYJmbHLmcrPA@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next] ipv4: Switch inet_addr_hash() to less
- predictable hash.
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Yandex-Filter: 1
 
-On Fri, Oct 18, 2024 at 3:41=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.co=
-m> wrote:
->
-> Recently, commit 4a0ec2aa0704 ("ipv6: switch inet6_addr_hash()
-> to less predictable hash") and commit 4daf4dc275f1 ("ipv6: switch
-> inet6_acaddr_hash() to less predictable hash") hardened IPv6
-> address hash functions.
->
-> inet_addr_hash() is also highly predictable, and a malicious use
-> could abuse a specific bucket.
->
-> Let's follow the change on IPv4 by using jhash_1word().
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+In 'taprio_change()', 'admin' pointer may become dangling due to sched
+switch / removal caused by 'advance_sched()', and critical section
+protected by 'q->current_entry_lock' is too small to prevent from such
+a scenario (which causes use-after-free detected by KASAN). Fix this
+by prefer 'rcu_replace_pointer()' over 'rcu_assign_pointer()' to update
+'admin' immediately before an attempt to schedule freeing.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: syzbot+b65e0af58423fc8a73aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+v7: add (hopefully all required) process-related quirks
+v6: adjust to match recent changes
+v5: unchanged since v4 but resend due to series change
+v4: adjust subject to target net tree
+v3: unchanged since v2
+v2: unchanged since v1
+---
+ net/sched/sch_taprio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 8498d0606b24..9f4e004cdb8b 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1965,7 +1965,8 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 		taprio_start_sched(sch, start, new_admin);
+ 
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 
+-- 
+2.46.2
+
