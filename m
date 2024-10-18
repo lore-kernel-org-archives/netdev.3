@@ -1,29 +1,29 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B133EADC;
-	Fri, 18 Oct 2024 11:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001AA1CFA9;
+	Fri, 18 Oct 2024 11:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729251949; cv=none; b=q+O4ZvTdlRhqMzHrdERRIRfUwNNftZY+7Jl4QhcWVWNMmlkiE00J4zYLkxgWxQe3b3MkzNlCmHWDr4PZyr9tOCCqqu5b5sjd41gxAEMQJRdrqUYc/95d1yhXF9wI6TCZuanwcRwPCeAbT+V8rNVqPX5R2yst99IhoZ2lWyCETrY=
+	t=1729251951; cv=none; b=izTra0MQI7dR/iB54W/CW+kVsRVur1MkYsuyGPy8JCF7EGSStHUcOE3zuPraa6Aj3IYkJxZuFvsQWqd02Tc0Xi65Rco4/6/JlNEiRtPOX0i3y79vbvlwD7DJ5zAoJPojGffz1reHQxFaJeE2fS+1mW3MgkO/smea5tWaBZVdZRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729251949; c=relaxed/simple;
-	bh=1BNiMp5hft6BVcllpSQba4wculgblsP3M79IqEAZdPE=;
+	s=arc-20240116; t=1729251951; c=relaxed/simple;
+	bh=9zd1hVbiyenwlwwXyxQmAHqid14DiZU6FuVVXBzXpCA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=il+zqf3gJ71c47b+1wMs1WHhW9yOataNgkVkVmW5su4tFDDAsjA/bKWnnWnljlFtmgkCI4XDgNC2kxcJmNghP77bB/YBZDw2agOO6LT7bTfG0pQ5frqo2tM2Y3uW2dkEaf0g/dllKN1P/1nIx4G7nfNkkUfFLUW2yE2/dbjK9oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ugKK8wRr; arc=none smtp.client-ip=115.124.30.101
+	 MIME-Version; b=O4JYoHNGdkDnACKim/RGZcot0QNLbJtZOCeWSA9YMBpo0xjqz2aEgK5/ZfXcKELpw21BrINzrPksby/w7Aib89rMDawnK1DqPyX8BToSB8Gc4nfLOt8JsiqupgGf3Dr1AcGH5FZsE1kBVjbyNJZja9MTbt7dHcsDf9Jtjo00AAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WOe/coG2; arc=none smtp.client-ip=115.124.30.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ugKK8wRr"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WOe/coG2"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1729251938; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=/44VCodUUm6O/Z7vpmu5lS38/1Ge/PgfRcDjU8R+TQA=;
-	b=ugKK8wRr7zIMxDyRX2/OukeBKfLrwnlL+RZ9JNrkfFirXhF2TUvr8Vip6cNmHing81VSP3jyPXawCPx9hQSeGUIpkR+VCOwZFqlJXHV/Kk0m5AjDAElXWG2A2oR9HvYNFofNvoSfwmyROMwrrjPGTQlrCLuO/F6h8g3eZYMc0bM=
-Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHO1lIp_1729251937 cluster:ay36)
+	t=1729251940; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=vSCTgZz+X94Bfo6AJQSikIc0RtIQyocb/oaSqZYZbk8=;
+	b=WOe/coG2gOjam07AlSiTfIIqKhYXjETWXNMSlgWulzreB49b9IM4/1wESQcQ+nEGo31IOyJCngs+0WrtA5R8SuWp4lMMSVYD6Fls2+kXgRZaeH1PDxRkAn67bTRi5pL6yPBOt33XKZIFSqtDtnQ4/M3NAE/iVcSUXc0hddcVoWM=
+Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHO-mcl_1729251939 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 18 Oct 2024 19:45:37 +0800
+          Fri, 18 Oct 2024 19:45:40 +0800
 From: Philo Lu <lulie@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -39,9 +39,9 @@ Cc: willemdebruijn.kernel@gmail.com,
 	jakub@cloudflare.com,
 	fred.cc@alibaba-inc.com,
 	yubing.qiuyubing@alibaba-inc.com
-Subject: [PATCH v5 net-next 1/3] net/udp: Add a new struct for hash2 slot
-Date: Fri, 18 Oct 2024 19:45:33 +0800
-Message-Id: <20241018114535.35712-2-lulie@linux.alibaba.com>
+Subject: [PATCH v5 net-next 3/3] ipv4/udp: Add 4-tuple hash for connected socket
+Date: Fri, 18 Oct 2024 19:45:35 +0800
+Message-Id: <20241018114535.35712-4-lulie@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20241018114535.35712-1-lulie@linux.alibaba.com>
 References: <20241018114535.35712-1-lulie@linux.alibaba.com>
@@ -53,284 +53,302 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Preparing for udp 4-tuple hash (uhash4 for short).
+Currently, the udp_table has two hash table, the port hash and portaddr
+hash. Usually for UDP servers, all sockets have the same local port and
+addr, so they are all on the same hash slot within a reuseport group.
 
-To implement uhash4 without cache line missing when lookup, hslot2 is
-used to record the number of hashed sockets in hslot4. Thus adding a new
-struct udp_hslot_main with field hash4_cnt, which is used by hash2. The
-new struct is used to avoid doubling the size of udp_hslot.
+In some applications, UDP servers use connect() to manage clients. In
+particular, when firstly receiving from an unseen 4 tuple, a new socket
+is created and connect()ed to the remote addr:port, and then the fd is
+used exclusively by the client.
 
-Before uhash4 lookup, firstly checking hash4_cnt to see if there are
-hashed sks in hslot4. Because hslot2 is always used in lookup, there is
-no cache line miss.
+Once there are connected sks in a reuseport group, udp has to score all
+sks in the same hash2 slot to find the best match. This could be
+inefficient with a large number of connections, resulting in high
+softirq overhead.
 
-Related helpers are updated, and use the helpers as possible.
-
-uhash4 is implemented in following patches.
+To solve the problem, this patch implement 4-tuple hash for connected
+udp sockets. During connect(), hash4 slot is updated, as well as a
+corresponding counter, hash4_cnt, in hslot2. In __udp4_lib_lookup(),
+hslot4 will be searched firstly if the counter is non-zero. Otherwise,
+hslot2 is used like before. Note that only connected sockets enter this
+hash4 path, while un-connected ones are not affected.
 
 Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
+Signed-off-by: Fred Chen <fred.cc@alibaba-inc.com>
+Signed-off-by: Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>
 ---
- include/net/udp.h | 23 +++++++++++++++++++----
- net/ipv4/udp.c    | 44 +++++++++++++++++++++++---------------------
- net/ipv6/udp.c    | 15 ++++++---------
- 3 files changed, 48 insertions(+), 34 deletions(-)
+ include/net/udp.h |   3 +-
+ net/ipv4/udp.c    | 171 +++++++++++++++++++++++++++++++++++++++++++++-
+ net/ipv6/udp.c    |   2 +-
+ 3 files changed, 171 insertions(+), 5 deletions(-)
 
 diff --git a/include/net/udp.h b/include/net/udp.h
-index 61222545ab1c..cd2158618329 100644
+index 8aefdc404362..97c5ae83723c 100644
 --- a/include/net/udp.h
 +++ b/include/net/udp.h
-@@ -50,7 +50,7 @@ struct udp_skb_cb {
- #define UDP_SKB_CB(__skb)	((struct udp_skb_cb *)((__skb)->cb))
- 
- /**
-- *	struct udp_hslot - UDP hash slot
-+ *	struct udp_hslot - UDP hash slot used by udp_table.hash
-  *
-  *	@head:	head of list of sockets
-  *	@count:	number of sockets in 'head' list
-@@ -60,7 +60,21 @@ struct udp_hslot {
- 	struct hlist_head	head;
- 	int			count;
- 	spinlock_t		lock;
--} __attribute__((aligned(2 * sizeof(long))));
-+} __aligned(2 * sizeof(long));
-+
-+/**
-+ *	struct udp_hslot_main - UDP hash slot used by udp_table.hash2
-+ *
-+ *	@hslot:	basic hash slot
-+ *	@hash4_cnt: number of sockets in hslot4 of the same (local port, local address)
-+ */
-+struct udp_hslot_main {
-+	struct udp_hslot	hslot; /* must be the first member */
-+#if !IS_ENABLED(CONFIG_BASE_SMALL)
-+	u32			hash4_cnt;
-+#endif
-+} __aligned(2 * sizeof(long));
-+#define UDP_HSLOT_MAIN(__hslot) ((struct udp_hslot_main *)(__hslot))
- 
- /**
-  *	struct udp_table - UDP table
-@@ -72,7 +86,7 @@ struct udp_hslot {
-  */
- struct udp_table {
- 	struct udp_hslot	*hash;
--	struct udp_hslot	*hash2;
-+	struct udp_hslot_main	*hash2;
- 	unsigned int		mask;
- 	unsigned int		log;
- };
-@@ -84,6 +98,7 @@ static inline struct udp_hslot *udp_hashslot(struct udp_table *table,
- {
- 	return &table->hash[udp_hashfn(net, num, table->mask)];
- }
-+
- /*
-  * For secondary hash, net_hash_mix() is performed before calling
-  * udp_hashslot2(), this explains difference with udp_hashslot()
-@@ -91,7 +106,7 @@ static inline struct udp_hslot *udp_hashslot(struct udp_table *table,
- static inline struct udp_hslot *udp_hashslot2(struct udp_table *table,
- 					      unsigned int hash)
- {
--	return &table->hash2[hash & table->mask];
-+	return &table->hash2[hash & table->mask].hslot;
+@@ -293,7 +293,7 @@ static inline int udp_lib_hash(struct sock *sk)
  }
  
- extern struct proto udp_prot;
+ void udp_lib_unhash(struct sock *sk);
+-void udp_lib_rehash(struct sock *sk, u16 new_hash);
++void udp_lib_rehash(struct sock *sk, u16 new_hash, u16 new_hash4);
+ 
+ static inline void udp_lib_close(struct sock *sk, long timeout)
+ {
+@@ -386,6 +386,7 @@ int udp_rcv(struct sk_buff *skb);
+ int udp_ioctl(struct sock *sk, int cmd, int *karg);
+ int udp_init_sock(struct sock *sk);
+ int udp_pre_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
++int udp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
+ int __udp_disconnect(struct sock *sk, int flags);
+ int udp_disconnect(struct sock *sk, int flags);
+ __poll_t udp_poll(struct file *file, struct socket *sock, poll_table *wait);
 diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 4b74a25d0b6e..2b7e72c4ed6d 100644
+index 74bfab0f44f8..5d944cec7a27 100644
 --- a/net/ipv4/udp.c
 +++ b/net/ipv4/udp.c
-@@ -486,13 +486,12 @@ struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
- 		int sdif, struct udp_table *udptable, struct sk_buff *skb)
- {
- 	unsigned short hnum = ntohs(dport);
--	unsigned int hash2, slot2;
- 	struct udp_hslot *hslot2;
- 	struct sock *result, *sk;
-+	unsigned int hash2;
- 
- 	hash2 = ipv4_portaddr_hash(net, daddr, hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
- 
- 	/* Lookup connected or non-wildcard socket */
- 	result = udp4_lib_lookup2(net, saddr, sport,
-@@ -519,8 +518,7 @@ struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
- 
- 	/* Lookup wildcard sockets */
- 	hash2 = ipv4_portaddr_hash(net, htonl(INADDR_ANY), hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
- 
- 	result = udp4_lib_lookup2(net, saddr, sport,
- 				  htonl(INADDR_ANY), hnum, dif, sdif,
-@@ -2266,7 +2264,7 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 			    udptable->mask;
- 		hash2 = ipv4_portaddr_hash(net, daddr, hnum) & udptable->mask;
- start_lookup:
--		hslot = &udptable->hash2[hash2];
-+		hslot = &udptable->hash2[hash2].hslot;
- 		offset = offsetof(typeof(*sk), __sk_common.skc_portaddr_node);
- 	}
- 
-@@ -2537,14 +2535,13 @@ static struct sock *__udp4_lib_demux_lookup(struct net *net,
- 	struct udp_table *udptable = net->ipv4.udp_table;
- 	INET_ADDR_COOKIE(acookie, rmt_addr, loc_addr);
- 	unsigned short hnum = ntohs(loc_port);
--	unsigned int hash2, slot2;
- 	struct udp_hslot *hslot2;
-+	unsigned int hash2;
- 	__portpair ports;
- 	struct sock *sk;
- 
- 	hash2 = ipv4_portaddr_hash(net, loc_addr, hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
- 	ports = INET_COMBINED_PORTS(rmt_port, hnum);
- 
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
-@@ -3185,7 +3182,7 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
- 	batch_sks = 0;
- 
- 	for (; state->bucket <= udptable->mask; state->bucket++) {
--		struct udp_hslot *hslot2 = &udptable->hash2[state->bucket];
-+		struct udp_hslot *hslot2 = &udptable->hash2[state->bucket].hslot;
- 
- 		if (hlist_empty(&hslot2->head))
- 			continue;
-@@ -3426,10 +3423,11 @@ __setup("uhash_entries=", set_uhash_entries);
- 
- void __init udp_table_init(struct udp_table *table, const char *name)
- {
--	unsigned int i;
-+	unsigned int i, slot_size;
- 
-+	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main);
- 	table->hash = alloc_large_system_hash(name,
--					      2 * sizeof(struct udp_hslot),
-+					      slot_size,
- 					      uhash_entries,
- 					      21, /* one slot per 2 MB */
- 					      0,
-@@ -3438,16 +3436,17 @@ void __init udp_table_init(struct udp_table *table, const char *name)
- 					      UDP_HTABLE_SIZE_MIN,
- 					      UDP_HTABLE_SIZE_MAX);
- 
--	table->hash2 = table->hash + (table->mask + 1);
-+	table->hash2 = (void *)(table->hash + (table->mask + 1));
- 	for (i = 0; i <= table->mask; i++) {
- 		INIT_HLIST_HEAD(&table->hash[i].head);
- 		table->hash[i].count = 0;
- 		spin_lock_init(&table->hash[i].lock);
- 	}
- 	for (i = 0; i <= table->mask; i++) {
--		INIT_HLIST_HEAD(&table->hash2[i].head);
--		table->hash2[i].count = 0;
--		spin_lock_init(&table->hash2[i].lock);
-+		INIT_HLIST_HEAD(&table->hash2[i].hslot.head);
-+		table->hash2[i].hslot.count = 0;
-+		spin_lock_init(&table->hash2[i].hslot.lock);
-+		table->hash2[i].hash4_cnt = 0;
- 	}
+@@ -478,6 +478,134 @@ static struct sock *udp4_lib_lookup2(const struct net *net,
+ 	return result;
  }
  
-@@ -3474,18 +3473,20 @@ static void __net_init udp_sysctl_init(struct net *net)
- static struct udp_table __net_init *udp_pernet_table_alloc(unsigned int hash_entries)
++#if IS_ENABLED(CONFIG_BASE_SMALL)
++static struct sock *udp4_lib_lookup4(const struct net *net,
++				     __be32 saddr, __be16 sport,
++				     __be32 daddr, unsigned int hnum,
++				     int dif, int sdif,
++				     struct udp_table *udptable)
++{
++	return NULL;
++}
++
++static void udp4_rehash4(struct udp_table *udptable, struct sock *sk, u16 newhash4)
++{
++}
++
++static void udp4_unhash4(struct udp_table *udptable, struct sock *sk)
++{
++}
++
++static void udp4_hash4(struct sock *sk)
++{
++}
++#else /* !CONFIG_BASE_SMALL */
++static struct sock *udp4_lib_lookup4(const struct net *net,
++				     __be32 saddr, __be16 sport,
++				     __be32 daddr, unsigned int hnum,
++				     int dif, int sdif,
++				     struct udp_table *udptable)
++{
++	unsigned int hash4 = udp_ehashfn(net, daddr, hnum, saddr, sport);
++	const __portpair ports = INET_COMBINED_PORTS(sport, hnum);
++	struct udp_hslot *hslot4 = udp_hashslot4(udptable, hash4);
++	struct udp_sock *up;
++	struct sock *sk;
++
++	INET_ADDR_COOKIE(acookie, saddr, daddr);
++	udp_lrpa_for_each_entry_rcu(up, &hslot4->head) {
++		sk = (struct sock *)up;
++		if (inet_match(net, sk, acookie, ports, dif, sdif))
++			return sk;
++	}
++	return NULL;
++}
++
++/* In hash4, rehash can also happen in connect(), where hash4_cnt keeps unchanged. */
++static void udp4_rehash4(struct udp_table *udptable, struct sock *sk, u16 newhash4)
++{
++	struct udp_hslot *hslot4, *nhslot4;
++
++	hslot4 = udp_hashslot4(udptable, udp_sk(sk)->udp_lrpa_hash);
++	nhslot4 = udp_hashslot4(udptable, newhash4);
++	udp_sk(sk)->udp_lrpa_hash = newhash4;
++
++	if (hslot4 != nhslot4) {
++		spin_lock_bh(&hslot4->lock);
++		hlist_del_init_rcu(&udp_sk(sk)->udp_lrpa_node);
++		hslot4->count--;
++		spin_unlock_bh(&hslot4->lock);
++
++		synchronize_rcu();
++
++		spin_lock_bh(&nhslot4->lock);
++		hlist_add_head_rcu(&udp_sk(sk)->udp_lrpa_node, &nhslot4->head);
++		nhslot4->count++;
++		spin_unlock_bh(&nhslot4->lock);
++	}
++}
++
++static void udp4_unhash4(struct udp_table *udptable, struct sock *sk)
++{
++	struct udp_hslot *hslot2, *hslot4;
++
++	if (udp_hashed4(sk)) {
++		hslot2 = udp_hashslot2(udptable, udp_sk(sk)->udp_portaddr_hash);
++		hslot4 = udp_hashslot4(udptable, udp_sk(sk)->udp_lrpa_hash);
++
++		spin_lock(&hslot4->lock);
++		hlist_del_init_rcu(&udp_sk(sk)->udp_lrpa_node);
++		hslot4->count--;
++		spin_unlock(&hslot4->lock);
++
++		spin_lock(&hslot2->lock);
++		udp_hash4_dec(hslot2);
++		spin_unlock(&hslot2->lock);
++	}
++}
++
++/* call with sock lock */
++static void udp4_hash4(struct sock *sk)
++{
++	struct udp_hslot *hslot, *hslot2, *hslot4;
++	struct net *net = sock_net(sk);
++	struct udp_table *udptable;
++	unsigned int hash;
++
++	if (sk_unhashed(sk) || inet_sk(sk)->inet_rcv_saddr == htonl(INADDR_ANY))
++		return;
++
++	hash = udp_ehashfn(net, inet_sk(sk)->inet_rcv_saddr, inet_sk(sk)->inet_num,
++			   inet_sk(sk)->inet_daddr, inet_sk(sk)->inet_dport);
++
++	udptable = net->ipv4.udp_table;
++	if (udp_hashed4(sk)) {
++		udp4_rehash4(udptable, sk, hash);
++		return;
++	}
++
++	hslot = udp_hashslot(udptable, net, udp_sk(sk)->udp_port_hash);
++	hslot2 = udp_hashslot2(udptable, udp_sk(sk)->udp_portaddr_hash);
++	hslot4 = udp_hashslot4(udptable, hash);
++	udp_sk(sk)->udp_lrpa_hash = hash;
++
++	spin_lock_bh(&hslot->lock);
++	if (rcu_access_pointer(sk->sk_reuseport_cb))
++		reuseport_detach_sock(sk);
++
++	spin_lock(&hslot4->lock);
++	hlist_add_head_rcu(&udp_sk(sk)->udp_lrpa_node, &hslot4->head);
++	hslot4->count++;
++	spin_unlock(&hslot4->lock);
++
++	spin_lock(&hslot2->lock);
++	udp_hash4_inc(hslot2);
++	spin_unlock(&hslot2->lock);
++
++	spin_unlock_bh(&hslot->lock);
++}
++#endif /* CONFIG_BASE_SMALL */
++
+ /* UDP is nearly always wildcards out the wazoo, it makes no sense to try
+  * harder than this. -DaveM
+  */
+@@ -493,6 +621,12 @@ struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
+ 	hash2 = ipv4_portaddr_hash(net, daddr, hnum);
+ 	hslot2 = udp_hashslot2(udptable, hash2);
+ 
++	if (udp_has_hash4(hslot2)) {
++		result = udp4_lib_lookup4(net, saddr, sport, daddr, hnum, dif, sdif, udptable);
++		if (result) /* udp4_lib_lookup4 return sk or NULL */
++			return result;
++	}
++
+ 	/* Lookup connected or non-wildcard socket */
+ 	result = udp4_lib_lookup2(net, saddr, sport,
+ 				  daddr, hnum, dif, sdif,
+@@ -1931,6 +2065,19 @@ int udp_pre_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+ }
+ EXPORT_SYMBOL(udp_pre_connect);
+ 
++int udp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
++{
++	int res;
++
++	lock_sock(sk);
++	res = __ip4_datagram_connect(sk, uaddr, addr_len);
++	if (!res)
++		udp4_hash4(sk);
++	release_sock(sk);
++	return res;
++}
++EXPORT_SYMBOL(udp_connect);
++
+ int __udp_disconnect(struct sock *sk, int flags)
  {
- 	struct udp_table *udptable;
-+	unsigned int slot_size;
- 	int i;
- 
- 	udptable = kmalloc(sizeof(*udptable), GFP_KERNEL);
- 	if (!udptable)
- 		goto out;
- 
--	udptable->hash = vmalloc_huge(hash_entries * 2 * sizeof(struct udp_hslot),
-+	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main);
-+	udptable->hash = vmalloc_huge(hash_entries * slot_size,
- 				      GFP_KERNEL_ACCOUNT);
- 	if (!udptable->hash)
- 		goto free_table;
- 
--	udptable->hash2 = udptable->hash + hash_entries;
-+	udptable->hash2 = (void *)(udptable->hash + hash_entries);
- 	udptable->mask = hash_entries - 1;
- 	udptable->log = ilog2(hash_entries);
- 
-@@ -3494,9 +3495,10 @@ static struct udp_table __net_init *udp_pernet_table_alloc(unsigned int hash_ent
- 		udptable->hash[i].count = 0;
- 		spin_lock_init(&udptable->hash[i].lock);
- 
--		INIT_HLIST_HEAD(&udptable->hash2[i].head);
--		udptable->hash2[i].count = 0;
--		spin_lock_init(&udptable->hash2[i].lock);
-+		INIT_HLIST_HEAD(&udptable->hash2[i].hslot.head);
-+		udptable->hash2[i].hslot.count = 0;
-+		spin_lock_init(&udptable->hash2[i].hslot.lock);
-+		udptable->hash2[i].hash4_cnt = 0;
+ 	struct inet_sock *inet = inet_sk(sk);
+@@ -1990,6 +2137,8 @@ void udp_lib_unhash(struct sock *sk)
+ 			hlist_del_init_rcu(&udp_sk(sk)->udp_portaddr_node);
+ 			hslot2->count--;
+ 			spin_unlock(&hslot2->lock);
++
++			udp4_unhash4(udptable, sk);
+ 		}
+ 		spin_unlock_bh(&hslot->lock);
  	}
+@@ -1999,7 +2148,7 @@ EXPORT_SYMBOL(udp_lib_unhash);
+ /*
+  * inet_rcv_saddr was changed, we must rehash secondary hash
+  */
+-void udp_lib_rehash(struct sock *sk, u16 newhash)
++void udp_lib_rehash(struct sock *sk, u16 newhash, u16 newhash4)
+ {
+ 	if (sk_hashed(sk)) {
+ 		struct udp_table *udptable = udp_get_table_prot(sk);
+@@ -2031,6 +2180,19 @@ void udp_lib_rehash(struct sock *sk, u16 newhash)
+ 				spin_unlock(&nhslot2->lock);
+ 			}
  
- 	return udptable;
++			if (udp_hashed4(sk)) {
++				udp4_rehash4(udptable, sk, newhash4);
++
++				if (hslot2 != nhslot2) {
++					spin_lock(&hslot2->lock);
++					udp_hash4_dec(hslot2);
++					spin_unlock(&hslot2->lock);
++
++					spin_lock(&nhslot2->lock);
++					udp_hash4_inc(nhslot2);
++					spin_unlock(&nhslot2->lock);
++				}
++			}
+ 			spin_unlock_bh(&hslot->lock);
+ 		}
+ 	}
+@@ -2042,7 +2204,10 @@ void udp_v4_rehash(struct sock *sk)
+ 	u16 new_hash = ipv4_portaddr_hash(sock_net(sk),
+ 					  inet_sk(sk)->inet_rcv_saddr,
+ 					  inet_sk(sk)->inet_num);
+-	udp_lib_rehash(sk, new_hash);
++	u16 new_hash4 = udp_ehashfn(sock_net(sk),
++				    inet_sk(sk)->inet_rcv_saddr, inet_sk(sk)->inet_num,
++				    inet_sk(sk)->inet_daddr, inet_sk(sk)->inet_dport);
++	udp_lib_rehash(sk, new_hash, new_hash4);
+ }
+ 
+ static int __udp_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
+@@ -2935,7 +3100,7 @@ struct proto udp_prot = {
+ 	.owner			= THIS_MODULE,
+ 	.close			= udp_lib_close,
+ 	.pre_connect		= udp_pre_connect,
+-	.connect		= ip4_datagram_connect,
++	.connect		= udp_connect,
+ 	.disconnect		= udp_disconnect,
+ 	.ioctl			= udp_ioctl,
+ 	.init			= udp_init_sock,
 diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 52dfbb2ff1a8..bbf3352213c4 100644
+index bbf3352213c4..4d3dfcb48a39 100644
 --- a/net/ipv6/udp.c
 +++ b/net/ipv6/udp.c
-@@ -224,13 +224,12 @@ struct sock *__udp6_lib_lookup(const struct net *net,
- 			       struct sk_buff *skb)
- {
- 	unsigned short hnum = ntohs(dport);
--	unsigned int hash2, slot2;
- 	struct udp_hslot *hslot2;
- 	struct sock *result, *sk;
-+	unsigned int hash2;
+@@ -111,7 +111,7 @@ void udp_v6_rehash(struct sock *sk)
+ 					  &sk->sk_v6_rcv_saddr,
+ 					  inet_sk(sk)->inet_num);
  
- 	hash2 = ipv6_portaddr_hash(net, daddr, hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
+-	udp_lib_rehash(sk, new_hash);
++	udp_lib_rehash(sk, new_hash, 0); /* 4-tuple hash not implemented */
+ }
  
- 	/* Lookup connected or non-wildcard sockets */
- 	result = udp6_lib_lookup2(net, saddr, sport,
-@@ -257,8 +256,7 @@ struct sock *__udp6_lib_lookup(const struct net *net,
- 
- 	/* Lookup wildcard sockets */
- 	hash2 = ipv6_portaddr_hash(net, &in6addr_any, hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
- 
- 	result = udp6_lib_lookup2(net, saddr, sport,
- 				  &in6addr_any, hnum, dif, sdif,
-@@ -859,7 +857,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 			    udptable->mask;
- 		hash2 = ipv6_portaddr_hash(net, daddr, hnum) & udptable->mask;
- start_lookup:
--		hslot = &udptable->hash2[hash2];
-+		hslot = &udptable->hash2[hash2].hslot;
- 		offset = offsetof(typeof(*sk), __sk_common.skc_portaddr_node);
- 	}
- 
-@@ -1065,14 +1063,13 @@ static struct sock *__udp6_lib_demux_lookup(struct net *net,
- {
- 	struct udp_table *udptable = net->ipv4.udp_table;
- 	unsigned short hnum = ntohs(loc_port);
--	unsigned int hash2, slot2;
- 	struct udp_hslot *hslot2;
-+	unsigned int hash2;
- 	__portpair ports;
- 	struct sock *sk;
- 
- 	hash2 = ipv6_portaddr_hash(net, loc_addr, hnum);
--	slot2 = hash2 & udptable->mask;
--	hslot2 = &udptable->hash2[slot2];
-+	hslot2 = udp_hashslot2(udptable, hash2);
- 	ports = INET_COMBINED_PORTS(rmt_port, hnum);
- 
- 	udp_portaddr_for_each_entry_rcu(sk, &hslot2->head) {
+ static int compute_score(struct sock *sk, const struct net *net,
 -- 
 2.32.0.3.g01195cf9f
 
