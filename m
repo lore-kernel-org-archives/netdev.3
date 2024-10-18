@@ -1,55 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7D42032A
-	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 12:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8992120E302;
+	Fri, 18 Oct 2024 12:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729253623; cv=none; b=rTZ5dbnneRCCobxmpmcfl5DqN3XB5I43S4t6PCL4WYS26Ai6VUcONHsMeR5Hij8U9nD05ZUyIG7+2f05AE76TtDp/pPKxmxs0rRRk+wycc5XH62JaC+6GdofX/NnNOkKzQhwPTlcLEuFlPCwxSvn8rU8lnntNtVhwAUXaVdD18E=
+	t=1729254022; cv=none; b=IlKutCDWcAdd11RhYnq4yxLZkUz8v+HAAELcDHtrZ3EDu3QtPRxXxzmjPpucDTPbKYEzLG8n4Nu7iz8Q/2oCiZbADstmuhvAjApnpgqeR/P6EbL4P1Ryvy/5d0ZJ30D+oFHi2kg9kOahLzhcdeWb2m9aGZstIgKi/mWuodVnxhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729253623; c=relaxed/simple;
-	bh=nvCMJjUR51IT1XTeirFucHMR82FxHl7qQ0HyGjgXv4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uMf3fwxG6FmhJCqGAsUp4NwLeIGnFdGMQXr+PMYqakGmMjSJGddJ3n7SFZPlZPb+bHsK+Tz75I7ib7NQw4GUYk/NNfjXNkT6HWi/SIqbvk7ii6QA1YPS+OuXsXGvn6qzXVm9rxuOttlA6kh481+I80uHDgIhRuElD6oyxD9fQTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRnXXM5J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729254022; c=relaxed/simple;
+	bh=4n/QueacIS3wCm6O965ciM0zDr6nIslOHLdMVslm/cE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dFQuXmDoOnPiZdQqM3OpoYdCS4D10Mg91cv9KxaLyN/BmoxR/yBeHqYvMh+vJ0T3+Dm3TgwsMPE+bcjpSvx4iIDBKDRFa3+DOdGTHARI2K+j9a4rSHPg/Y/RxMuqFETVCjSCHtM+t3LlZIuC+V6jxW1V6t3aREMnIPMt0r9VHAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgQsYR30; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRnXXM5J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9ADC4CEC6;
-	Fri, 18 Oct 2024 12:13:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgQsYR30"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9B3C4CEC3;
+	Fri, 18 Oct 2024 12:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729253623;
-	bh=nvCMJjUR51IT1XTeirFucHMR82FxHl7qQ0HyGjgXv4o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qRnXXM5Jj5Q4aKthZn9/KILpm+fCOCoASPoFaARNOqlraOSBt/Ya7iicKh5yZ1WVF
-	 Buf9cpRllwyiWR1o0D0l7lq4jKYKIQc1qHOuWyP0jdJP55SqP5LsrTA2WLuoOohwk0
-	 irNgvcAI3jVA5HTvNLIW9GrA9F6Z6sDciFh5HfkvvNUMCWkWe82DW3KkDynj6+lja3
-	 0uhTCvIiZl4bkcO/olSV+CqfHZL//UKDRhMF9i5YFtR4CZu3DPCMW1IJa1SptZ+8aJ
-	 6BjYpJKU0fyeAluoUQOW8yHK8oIY+uC7ihuKtML63eb8Wmpi8r8reKUADzNP5l8jyN
-	 6F/DF+ys4Y3dw==
-Date: Fri, 18 Oct 2024 13:13:40 +0100
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] netpoll: remove ndo_netpoll_setup() second
- argument
-Message-ID: <20241018121340.GK1697@kernel.org>
-References: <20241018052108.2610827-1-edumazet@google.com>
+	s=k20201202; t=1729254022;
+	bh=4n/QueacIS3wCm6O965ciM0zDr6nIslOHLdMVslm/cE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=FgQsYR30ioJoFPWp7eg0sznAmUHouqzZCZjoK3CVVuvn1cTm9IiNn6rCbtenmbmeT
+	 yEhV+Atdk+Iv5rSu/hBjAb1Dp8rh/79pEqaQHQ1xOOrAJhTmmBV4a2hFjuxxRbRjcI
+	 UAXkHxSBjjbDw4kIu8R5EFIgygKqM5Ea614R1amMf0v9LhdoDJYaeCyNJeUeKHFyuf
+	 hWUq1fEqDpDfACgSU1D0mAWyq8Jq3olH5RLM7s4VUSfh4sREXRa9IA+kwwJXlo8r2M
+	 uP9JcjzWdto25opQXpU45VIxGHWaMtZV+DZ0TPKbONrLe+5UMdfVvZjbFA377Dunw1
+	 IsqSmisUenVvw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB51B3805CC0;
+	Fri, 18 Oct 2024 12:20:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241018052108.2610827-1-edumazet@google.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: vxlan: replace VXLAN_INVALID_HDR with
+ VNI_NOT_FOUND
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172925402777.3100100.11318902877264873310.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Oct 2024 12:20:27 +0000
+References: <20241015082830.29565-1-dongml2@chinatelecom.cn>
+In-Reply-To: <20241015082830.29565-1-dongml2@chinatelecom.cn>
+To: Menglong Dong <menglong8.dong@gmail.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, dongml2@chinatelecom.cn,
+ gnault@redhat.com, aleksander.lobakin@intel.com, leitao@debian.org,
+ b.galvani@gmail.com, alce@lafranque.net, kalesh-anakkur.purayil@broadcom.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, Oct 18, 2024 at 05:21:08AM +0000, Eric Dumazet wrote:
-> npinfo is not used in any of the ndo_netpoll_setup() methods.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Tue, 15 Oct 2024 16:28:30 +0800 you wrote:
+> Replace the drop reason "SKB_DROP_REASON_VXLAN_INVALID_HDR" with
+> "SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND" in encap_bypass_if_local(), as the
+> latter is more accurate.
 > 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Fixes: 790961d88b0e ("net: vxlan: use kfree_skb_reason() in encap_bypass_if_local()")
+> Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+> 
+> [...]
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Here is the summary with links:
+  - [net-next] net: vxlan: replace VXLAN_INVALID_HDR with VNI_NOT_FOUND
+    https://git.kernel.org/netdev/net-next/c/eb4f99c56ad3
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
