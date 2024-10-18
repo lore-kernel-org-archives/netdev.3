@@ -1,46 +1,44 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F56444C76;
-	Fri, 18 Oct 2024 14:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B285913C8E2;
+	Fri, 18 Oct 2024 14:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729261339; cv=none; b=brQLNaTF1WH49uO2LOtWXOtoOj+z7WjvzVS36faFDX2P6p3PysRktr4aLY63s6sSzGJpIvA1JBZMvqvPMVabjM9wvsDjX4jiXI/ZPfbmXOOCPKa4lBw9pRboQgVvDYKHBmNgLQbiukgh1hYBR+xfge1QNhAavVS8uGcbXyiQJJA=
+	t=1729261406; cv=none; b=NO4/P/bO7Y8NQv+Hk4Ox9eR5PRpeFay/xBDh1bSWH/tGL8CJpVuo7NizrgK1SEAi9gL9NdqJmV2XT1UF4BPTLQpLQl0GuhHs2B/y/3xeJ1JxEhum4Q28GB4G2j0nTMVF55nrBSm+FiwOUgI7YmXps1aJbzfL05Xhb66AEpg3Ios=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729261339; c=relaxed/simple;
-	bh=LdpZqeqmFWWw0Di7cFSEyNbx1YrDBM318K2CVuq/byM=;
+	s=arc-20240116; t=1729261406; c=relaxed/simple;
+	bh=O54aNSriI9o9likNhhaxvYoS8qDdxequujrf9co9Wuo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D+cHUdccgXGzgQvzlOgQ4rnR4oGZ80vaOTP431+K8X/GuA3tAs0F0FA0M7iknsprJGWDkQNzc/1BaNYUlTtbpARDUZU9+76Yr/FYj+S0wiGBmWYr7xVVcadKJThdXC3Ui4i/0R7Wi2yX1SDoawip/eRhMw2ghAj5af1UE9W7JIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BR3t0ppJ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=YoAlEicIN1tUHgcRJBpw7NENyAgl7FGWNbTjXqOCZrpt26OCmNmetRU+vjYivIzbzLEF+wIlNCCR9f63RySbgd8Din6rRXfjCVX4qAVybHAZGu0XVbT6LquRhbehC4GAkxui6VlH7OPMh3jdHQQ/9Sf4RlwXiHFR3YtdnydGF00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBJzg/dj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BR3t0ppJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FgvxWMOqST3bKwdRS0r3lXXGtROv7pM0sqsBGR+iD+w=; b=BR3t0ppJSwe1ThjZelznehOVNa
-	aWv5WGTv9HprKKuDkVT9Kz7HHmdIxRgJYkTQKfDZ/R28mdqgYUQU28ayYX0XU6lWDt3ugppt8TLtu
-	4NLA9bSgbQ5V6hBxXKOOX12UnvLFV/+lawYb7Tyy5IbOGVV+1tvxhx1q5RkHQJw6Qitg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t1nra-00AXjl-10; Fri, 18 Oct 2024 16:21:58 +0200
-Date: Fri, 18 Oct 2024 16:21:58 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
-	sboyd@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
-Message-ID: <7701b5fc-1e6b-42db-8fc4-aa4b9cdddb70@lunn.ch>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-8-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBJzg/dj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E39C4CEC3;
+	Fri, 18 Oct 2024 14:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729261406;
+	bh=O54aNSriI9o9likNhhaxvYoS8qDdxequujrf9co9Wuo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jBJzg/djToULhduXSinA3gPXpnx38Wk/iJ+k7glLU+EWXVemzCDlQSyOTmgZtfM1g
+	 vcqskygXyQDMfucHD20TO5AwD5m3H+np01jDALQJGl4GDnk/CdKnUR1Lw0Hj2fEP1b
+	 sLJjCsGcTpJOCqNqSdzFrjZS8l/88khm94BxAVq3wmXWl4FGFBiZUZ1mexqO3pDd/q
+	 alhyd/HcKHzcmP9wLQdhNtzYkEmkeMrxlkzYij9XAsLq7RBNNNJkZQOpFNJZKhQzBU
+	 CBXc+m71zkCFBQul9EUD0aC4gFCKopRBYdCp+zApcxPcgUGAd/BibEJWX9eqtDKKgj
+	 Q0G8JG/Vp6iOw==
+Date: Fri, 18 Oct 2024 15:23:21 +0100
+From: Simon Horman <horms@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net/sched: act_api: unexport tcf_action_dump_1()
+Message-ID: <20241018142321.GQ1697@kernel.org>
+References: <20241017161934.3599046-1-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,17 +47,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241016035214.2229-8-fujita.tomonori@gmail.com>
+In-Reply-To: <20241017161934.3599046-1-vladimir.oltean@nxp.com>
 
-> +            // SAFETY: FFI call.
-> +            unsafe {
-> +                $crate::bindings::__might_sleep(
-> +                    ::core::file!().as_ptr() as *const i8,
-> +                    ::core::line!() as i32,
-> +                )
+On Thu, Oct 17, 2024 at 07:19:34PM +0300, Vladimir Oltean wrote:
+> This isn't used outside act_api.c, but is called by tcf_dump_walker()
+> prior to its definition. So move it upwards and make it static.
+> 
+> Simultaneously, reorder the variable declarations so that they follow
+> the networking "reverse Christmas tree" coding style.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Can this be pulled out into an easy to share macro? I expect to see
-this to be scattered in a number of files, so making it easy to use
-would be good.
+Christmas has come early this year :)
 
-	Andrew
+Reviewed-by: Simon Horman <horms@kernel.org>
+
