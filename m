@@ -1,38 +1,38 @@
 Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1945B1D89E9;
-	Fri, 18 Oct 2024 10:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC02036F4;
+	Fri, 18 Oct 2024 10:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729246652; cv=none; b=NrhPE3vsIZHj2e5q7ZIACtJFZ6aCH93Etu9173pivyh1lIK8u4j6ET6gLvtQSy/uYXd94yrrrlv74F9sMQdIpHF6yhUBv868rvt1CveApeOtXCLTGA9x2tmAIoHRZ65OgDnoIA9l3gYqtM6ujzV3KDaYoYcCgRaRfDJ/cuRHeiM=
+	t=1729246653; cv=none; b=tuujbxRKtMBxh4iby4i9jRPUnlSTXl2GkvOktp0Iigm0E7CMgpTVOibzLf9/WJQMmi1xUcMytsTdc+m1hbz7/CyTHLo4sU2ornuCItvUTCO6ohyuCpa52w8JD6wZXlVcV2UTl8tDiljY+hmwTwrc9mBZTpDnOOitXkG2O20aMp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729246652; c=relaxed/simple;
-	bh=5RY4wo/RLWU/owYn5xRYwolnzG9Fp2xd3Mo/h4cgS44=;
+	s=arc-20240116; t=1729246653; c=relaxed/simple;
+	bh=KcCR2hzH0Uq0xUZD3RpWJkr7AgTcbWt+Z3Nw0lA76V8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nElRwDEC+ubCJ0CL6OB4RVOpqisjYi6ZyOIRLYXZXW/gg8rvu9nFyfLzvgZKPPp+cmKxRwU26YBK/Qf2N7AVB2btfpjN5nYQz5CbZ7OzzT3OsQFUZSt58To7AzP4gfB4LK5AlCNwLWagOmM1ONsrM59MmFmqyy2oKR1J4mtHP7M=
+	 MIME-Version:Content-Type; b=Jpf6QZkjWq8psSssv5D3iUD5kmIteoP43rGYRrd51tCKYSmhX9nZHE1bpu+EmGZXXi8iNXr959RnjQdc8gvpf96M0owGyI4XxKXdJvl15OCqbtwS+d/m4++AgOydUrBXl1SatMSC/pPDNn7taOtfppqciNuIMsd1AFNFfda2s9k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XVLGJ6m1hzQryV;
-	Fri, 18 Oct 2024 18:16:40 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XVLGL5xJJzQrqZ;
+	Fri, 18 Oct 2024 18:16:42 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 73A3518024A;
-	Fri, 18 Oct 2024 18:17:27 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5853A1402CF;
+	Fri, 18 Oct 2024 18:17:29 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 18 Oct 2024 18:17:26 +0800
+ 15.1.2507.39; Fri, 18 Oct 2024 18:17:28 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <shenjian15@huawei.com>, <salil.mehta@huawei.com>
 CC: <liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>,
 	<shaojijie@huawei.com>, <lanhao@huawei.com>, <chenhao418@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH V2 net 3/9] net: hns3: fixed reset failure issues caused by the incorrect reset type
-Date: Fri, 18 Oct 2024 18:10:53 +0800
-Message-ID: <20241018101059.1718375-4-shaojijie@huawei.com>
+Subject: [PATCH V2 net 7/9] net: hns3: initialize reset_timer before hclgevf_misc_irq_init()
+Date: Fri, 18 Oct 2024 18:10:57 +0800
+Message-ID: <20241018101059.1718375-8-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241018101059.1718375-1-shaojijie@huawei.com>
 References: <20241018101059.1718375-1-shaojijie@huawei.com>
@@ -47,235 +47,39 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-From: Hao Lan <lanhao@huawei.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-When a reset type that is not supported by the driver is input, a reset
-pending flag bit of the HNAE3_NONE_RESET type is generated in
-reset_pending. The driver does not have a mechanism to clear this type
-of error. As a result, the driver considers that the reset is not
-complete. This patch provides a mechanism to clear the
-HNAE3_NONE_RESET flag and the parameter of
-hnae3_ae_ops.set_default_reset_request is verified.
+Currently the misc irq is initialized before reset_timer setup. But
+it will access the reset_timer in the irq handler. So initialize
+the reset_timer earlier.
 
-The error message:
-hns3 0000:39:01.0: cmd failed -16
-hns3 0000:39:01.0: hclge device re-init failed, VF is disabled!
-hns3 0000:39:01.0: failed to reset VF stack
-hns3 0000:39:01.0: failed to reset VF(4)
-hns3 0000:39:01.0: prepare reset(2) wait done
-hns3 0000:39:01.0 eth4: already uninitialized
-
-Use the crash tool to view struct hclgevf_dev:
-struct hclgevf_dev {
-...
-	default_reset_request = 0x20,
-	reset_level = HNAE3_NONE_RESET,
-	reset_pending = 0x100,
-	reset_type = HNAE3_NONE_RESET,
-...
-};
-
-Fixes: 720bd5837e37 ("net: hns3: add set_default_reset_request in the hnae3_ae_ops")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
+Fixes: ff200099d271 ("net: hns3: remove unnecessary work in hclgevf_main")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 33 ++++++++++++++--
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 38 ++++++++++++++++---
- 2 files changed, 61 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index bd86efd92a5a..35c618c794be 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -3584,6 +3584,17 @@ static int hclge_set_vf_link_state(struct hnae3_handle *handle, int vf,
- 	return ret;
- }
- 
-+static void hclge_set_reset_pending(struct hclge_dev *hdev,
-+				    enum hnae3_reset_type reset_type)
-+{
-+	/* When an incorrect reset type is executed, the get_reset_level
-+	 * function generates the HNAE3_NONE_RESET flag. As a result, this
-+	 * type do not need to pending.
-+	 */
-+	if (reset_type != HNAE3_NONE_RESET)
-+		set_bit(reset_type, &hdev->reset_pending);
-+}
-+
- static u32 hclge_check_event_cause(struct hclge_dev *hdev, u32 *clearval)
- {
- 	u32 cmdq_src_reg, msix_src_reg, hw_err_src_reg;
-@@ -3604,7 +3615,7 @@ static u32 hclge_check_event_cause(struct hclge_dev *hdev, u32 *clearval)
- 	 */
- 	if (BIT(HCLGE_VECTOR0_IMPRESET_INT_B) & msix_src_reg) {
- 		dev_info(&hdev->pdev->dev, "IMP reset interrupt\n");
--		set_bit(HNAE3_IMP_RESET, &hdev->reset_pending);
-+		hclge_set_reset_pending(hdev, HNAE3_IMP_RESET);
- 		set_bit(HCLGE_COMM_STATE_CMD_DISABLE, &hdev->hw.hw.comm_state);
- 		*clearval = BIT(HCLGE_VECTOR0_IMPRESET_INT_B);
- 		hdev->rst_stats.imp_rst_cnt++;
-@@ -3614,7 +3625,7 @@ static u32 hclge_check_event_cause(struct hclge_dev *hdev, u32 *clearval)
- 	if (BIT(HCLGE_VECTOR0_GLOBALRESET_INT_B) & msix_src_reg) {
- 		dev_info(&hdev->pdev->dev, "global reset interrupt\n");
- 		set_bit(HCLGE_COMM_STATE_CMD_DISABLE, &hdev->hw.hw.comm_state);
--		set_bit(HNAE3_GLOBAL_RESET, &hdev->reset_pending);
-+		hclge_set_reset_pending(hdev, HNAE3_GLOBAL_RESET);
- 		*clearval = BIT(HCLGE_VECTOR0_GLOBALRESET_INT_B);
- 		hdev->rst_stats.global_rst_cnt++;
- 		return HCLGE_VECTOR0_EVENT_RST;
-@@ -4062,7 +4073,7 @@ static void hclge_do_reset(struct hclge_dev *hdev)
- 	case HNAE3_FUNC_RESET:
- 		dev_info(&pdev->dev, "PF reset requested\n");
- 		/* schedule again to check later */
--		set_bit(HNAE3_FUNC_RESET, &hdev->reset_pending);
-+		hclge_set_reset_pending(hdev, HNAE3_FUNC_RESET);
- 		hclge_reset_task_schedule(hdev);
- 		break;
- 	default:
-@@ -4096,6 +4107,8 @@ static enum hnae3_reset_type hclge_get_reset_level(struct hnae3_ae_dev *ae_dev,
- 		clear_bit(HNAE3_FLR_RESET, addr);
- 	}
- 
-+	clear_bit(HNAE3_NONE_RESET, addr);
-+
- 	if (hdev->reset_type != HNAE3_NONE_RESET &&
- 	    rst_level < hdev->reset_type)
- 		return HNAE3_NONE_RESET;
-@@ -4237,7 +4250,7 @@ static bool hclge_reset_err_handle(struct hclge_dev *hdev)
- 		return false;
- 	} else if (hdev->rst_stats.reset_fail_cnt < MAX_RESET_FAIL_CNT) {
- 		hdev->rst_stats.reset_fail_cnt++;
--		set_bit(hdev->reset_type, &hdev->reset_pending);
-+		hclge_set_reset_pending(hdev, hdev->reset_type);
- 		dev_info(&hdev->pdev->dev,
- 			 "re-schedule reset task(%u)\n",
- 			 hdev->rst_stats.reset_fail_cnt);
-@@ -4480,8 +4493,20 @@ static void hclge_reset_event(struct pci_dev *pdev, struct hnae3_handle *handle)
- static void hclge_set_def_reset_request(struct hnae3_ae_dev *ae_dev,
- 					enum hnae3_reset_type rst_type)
- {
-+#define HCLGE_SUPPORT_RESET_TYPE \
-+	(BIT(HNAE3_FLR_RESET) | BIT(HNAE3_FUNC_RESET) | \
-+	BIT(HNAE3_GLOBAL_RESET) | BIT(HNAE3_IMP_RESET))
-+
- 	struct hclge_dev *hdev = ae_dev->priv;
- 
-+	if (!(BIT(rst_type) & HCLGE_SUPPORT_RESET_TYPE)) {
-+		/* To prevent reset triggered by hclge_reset_event */
-+		set_bit(HNAE3_NONE_RESET, &hdev->default_reset_request);
-+		dev_warn(&hdev->pdev->dev, "unsupported reset type %d\n",
-+			 rst_type);
-+		return;
-+	}
-+
- 	set_bit(rst_type, &hdev->default_reset_request);
- }
- 
 diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 094a7c7b5592..ab54e6155e93 100644
+index ab54e6155e93..896f1eb172d3 100644
 --- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
 +++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -1395,6 +1395,17 @@ static int hclgevf_notify_roce_client(struct hclgevf_dev *hdev,
- 	return ret;
- }
+@@ -2315,6 +2315,7 @@ static void hclgevf_state_init(struct hclgevf_dev *hdev)
+ 	clear_bit(HCLGEVF_STATE_RST_FAIL, &hdev->state);
  
-+static void hclgevf_set_reset_pending(struct hclgevf_dev *hdev,
-+				      enum hnae3_reset_type reset_type)
-+{
-+	/* When an incorrect reset type is executed, the get_reset_level
-+	 * function generates the HNAE3_NONE_RESET flag. As a result, this
-+	 * type do not need to pending.
-+	 */
-+	if (reset_type != HNAE3_NONE_RESET)
-+		set_bit(reset_type, &hdev->reset_pending);
-+}
-+
- static int hclgevf_reset_wait(struct hclgevf_dev *hdev)
- {
- #define HCLGEVF_RESET_WAIT_US	20000
-@@ -1544,7 +1555,7 @@ static void hclgevf_reset_err_handle(struct hclgevf_dev *hdev)
- 		hdev->rst_stats.rst_fail_cnt);
+ 	INIT_DELAYED_WORK(&hdev->service_task, hclgevf_service_task);
++	timer_setup(&hdev->reset_timer, hclgevf_reset_timer, 0);
  
- 	if (hdev->rst_stats.rst_fail_cnt < HCLGEVF_RESET_MAX_FAIL_CNT)
--		set_bit(hdev->reset_type, &hdev->reset_pending);
-+		hclgevf_set_reset_pending(hdev, hdev->reset_type);
+ 	mutex_init(&hdev->mbx_resp.mbx_mutex);
+ 	sema_init(&hdev->reset_sem, 1);
+@@ -3014,7 +3015,6 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 		 HCLGEVF_DRIVER_NAME);
  
- 	if (hclgevf_is_reset_pending(hdev)) {
- 		set_bit(HCLGEVF_RESET_PENDING, &hdev->reset_state);
-@@ -1664,6 +1675,8 @@ static enum hnae3_reset_type hclgevf_get_reset_level(unsigned long *addr)
- 		clear_bit(HNAE3_FLR_RESET, addr);
- 	}
+ 	hclgevf_task_schedule(hdev, round_jiffies_relative(HZ));
+-	timer_setup(&hdev->reset_timer, hclgevf_reset_timer, 0);
  
-+	clear_bit(HNAE3_NONE_RESET, addr);
-+
- 	return rst_level;
- }
+ 	return 0;
  
-@@ -1673,14 +1686,15 @@ static void hclgevf_reset_event(struct pci_dev *pdev,
- 	struct hnae3_ae_dev *ae_dev = pci_get_drvdata(pdev);
- 	struct hclgevf_dev *hdev = ae_dev->priv;
- 
--	dev_info(&hdev->pdev->dev, "received reset request from VF enet\n");
--
- 	if (hdev->default_reset_request)
- 		hdev->reset_level =
- 			hclgevf_get_reset_level(&hdev->default_reset_request);
- 	else
- 		hdev->reset_level = HNAE3_VF_FUNC_RESET;
- 
-+	dev_info(&hdev->pdev->dev, "received reset request from VF enet, reset level is %d\n",
-+		 hdev->reset_level);
-+
- 	/* reset of this VF requested */
- 	set_bit(HCLGEVF_RESET_REQUESTED, &hdev->reset_state);
- 	hclgevf_reset_task_schedule(hdev);
-@@ -1691,8 +1705,20 @@ static void hclgevf_reset_event(struct pci_dev *pdev,
- static void hclgevf_set_def_reset_request(struct hnae3_ae_dev *ae_dev,
- 					  enum hnae3_reset_type rst_type)
- {
-+#define HCLGEVF_SUPPORT_RESET_TYPE \
-+	(BIT(HNAE3_VF_RESET) | BIT(HNAE3_VF_FUNC_RESET) | \
-+	BIT(HNAE3_VF_PF_FUNC_RESET) | BIT(HNAE3_VF_FULL_RESET) | \
-+	BIT(HNAE3_FLR_RESET) | BIT(HNAE3_VF_EXP_RESET))
-+
- 	struct hclgevf_dev *hdev = ae_dev->priv;
- 
-+	if (!(BIT(rst_type) & HCLGEVF_SUPPORT_RESET_TYPE)) {
-+		/* To prevent reset triggered by hclge_reset_event */
-+		set_bit(HNAE3_NONE_RESET, &hdev->default_reset_request);
-+		dev_info(&hdev->pdev->dev, "unsupported reset type %d\n",
-+			 rst_type);
-+		return;
-+	}
- 	set_bit(rst_type, &hdev->default_reset_request);
- }
- 
-@@ -1849,14 +1875,14 @@ static void hclgevf_reset_service_task(struct hclgevf_dev *hdev)
- 		 */
- 		if (hdev->reset_attempts > HCLGEVF_MAX_RESET_ATTEMPTS_CNT) {
- 			/* prepare for full reset of stack + pcie interface */
--			set_bit(HNAE3_VF_FULL_RESET, &hdev->reset_pending);
-+			hclgevf_set_reset_pending(hdev, HNAE3_VF_FULL_RESET);
- 
- 			/* "defer" schedule the reset task again */
- 			set_bit(HCLGEVF_RESET_PENDING, &hdev->reset_state);
- 		} else {
- 			hdev->reset_attempts++;
- 
--			set_bit(hdev->reset_level, &hdev->reset_pending);
-+			hclgevf_set_reset_pending(hdev, hdev->reset_level);
- 			set_bit(HCLGEVF_RESET_PENDING, &hdev->reset_state);
- 		}
- 		hclgevf_reset_task_schedule(hdev);
-@@ -1979,7 +2005,7 @@ static enum hclgevf_evt_cause hclgevf_check_evt_cause(struct hclgevf_dev *hdev,
- 		rst_ing_reg = hclgevf_read_dev(&hdev->hw, HCLGEVF_RST_ING);
- 		dev_info(&hdev->pdev->dev,
- 			 "receive reset interrupt 0x%x!\n", rst_ing_reg);
--		set_bit(HNAE3_VF_RESET, &hdev->reset_pending);
-+		hclgevf_set_reset_pending(hdev, HNAE3_VF_RESET);
- 		set_bit(HCLGEVF_RESET_PENDING, &hdev->reset_state);
- 		set_bit(HCLGE_COMM_STATE_CMD_DISABLE, &hdev->hw.hw.comm_state);
- 		*clearval = ~(1U << HCLGEVF_VECTOR0_RST_INT_B);
 -- 
 2.33.0
 
