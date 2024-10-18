@@ -1,126 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [205.139.111.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C312202642
-	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 10:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62583204086
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 10:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.139.111.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729248744; cv=none; b=Jr2JQtx19qcLPZTTKg5ws7SQhZl+aes476mjQe4Otltrg9cdmcAEl4tH1eK3hG2wTYEHp7jKxZx+Iv2mViNXkDaVtGzb5pLlwxdCmal+rp9e9ADUbjqTGqIyHiU/9dqCUQGSG8fVKiIIRLTbmPLOVKE8fP1sfDdpdTQaKRB3UYo=
+	t=1729248973; cv=none; b=XVvtHx9aVB/fmjD3hKi14/fH9NGubeWBIRjj+eJYIPPqmEbellhtX4dHna8wMNLccejAngjsQ/Dh2205yl9fq+E9mPoKKZ+ahXAnmv9JEGbyobs9tr3vUxpf54mu78dr0bXIDrM3hETL0S9O9Rl7FbxBxKwy5ntu/1sNVmfHIu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729248744; c=relaxed/simple;
-	bh=hlo66ijJb/Cdj770+zC+26WFSb2kI1W9QVwVBxx18DQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hYgWGeTDBQCZaCK1phsMngog+tqTvANrUXm3CPUX+W1C5T/4gduuckievq/x1o8WsW2BBUOSm1kr1hvKmoUfG85R2UGP9z6IvL/bwwMmEH1NoKEn60HOhdytTh5t7eXssIHal99iRc0Ddy3uClpnBPX2S73V0zxoznK/M7ZQgN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bmEbsZcN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bmEbsZcN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729248742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hlo66ijJb/Cdj770+zC+26WFSb2kI1W9QVwVBxx18DQ=;
-	b=bmEbsZcN86sM4xyrCE0ADC98o7Xzw/M+FWFOi8bF+fFVf4xzzCCN+nUsiO1Bpl/KwLR4y0
-	ho7LupfUqO2lHOdSraGX8P+TzXiNuuBSB/3Ot3n/Zjs1pj+RuNnl6aWkwJxbX0sIrTubFs
-	Nd9F7zzdPeHiapYDbRoBkDzRvFbGNRc=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-rmYe0ykIN0mkOXV1X3wOMg-1; Fri, 18 Oct 2024 06:52:21 -0400
-X-MC-Unique: rmYe0ykIN0mkOXV1X3wOMg-1
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4608a1a8d3eso41581161cf.1
-        for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 03:52:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729248740; x=1729853540;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hlo66ijJb/Cdj770+zC+26WFSb2kI1W9QVwVBxx18DQ=;
-        b=AILVD3ulzaDS3Gv+JwN+SaiijBMlxoKu6jUEEgm1lqjriqxBOunB8t7G/Eso5TUy37
-         2BpIByzaz9bpJIrHy2aJ/dhdzS7XFSAKnfOwDzgLAVBHOMB7EJXIc48pdFc3hBm8lJpY
-         iIXJSp2AWHBiFGIUZaJDICNRuglzjJYyOsFHA/37NsqvzNQE+pJxWI777zZLcb9nE/QT
-         53oIWI54IUDhD00q7yk5fjGy4MzemsOOaTdTiVtZaJW7Q8ubZH7p338w2NjFuBpr6j4W
-         5pQn5svJOyiz80duWpzZakob36aIv4nepuonn99adE2lVxnZG96AAK4Z27MUkqAUyP5l
-         Gf9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUgPTmhzT9BmVG3ZPuTf6A2XQIHVn9Y+IO2oJJnf9qQ92oWIxmm2nooHJOwmrFZddF5tCMrubs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy06oR9EthTD2FavM89g7ThPLt6CK5cBl5iibsCw3dGdyen7Gxn
-	DQ8nR864ajFTgps9I29DMJCpxia5aB5tE8uP8wYFMpn52TZyYFyl/0nLZvYs6RppW4I5VzcSSnR
-	aaObZ5FqKGkNF+iKaglx4TJKjDwydDdQiaCO4dE206HVgO4CECDB5TA==
-X-Received: by 2002:a05:622a:4c6:b0:460:927e:c245 with SMTP id d75a77b69052e-460aee14cfbmr30643831cf.4.1729248740427;
-        Fri, 18 Oct 2024 03:52:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEItGrt1ABtCJZWw3PgN20DLJ0r2+a0t2Y2RjfBNB5gtKNiYltQvcJbpnnnEkYFE0v3Vlk5hw==
-X-Received: by 2002:a05:622a:4c6:b0:460:927e:c245 with SMTP id d75a77b69052e-460aee14cfbmr30643441cf.4.1729248740071;
-        Fri, 18 Oct 2024 03:52:20 -0700 (PDT)
-Received: from dhcp-64-16.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460ae971993sm6164351cf.38.2024.10.18.03.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 03:52:19 -0700 (PDT)
-Message-ID: <0cf0ffed63a8645c49f043877c526b2ab0abf96e.camel@redhat.com>
-Subject: Re: [PATCH v8 2/6] PCI: Deprecate pcim_iounmap_regions()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Wu Hao <hao.wu@intel.com>, Tom Rix
- <trix@redhat.com>, Moritz Fischer <mdf@kernel.org>, Xu Yilun
- <yilun.xu@intel.com>,  Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Richard
- Cochran <richardcochran@gmail.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hannes Reinecke <hare@suse.de>, Chaitanya Kulkarni <kch@nvidia.com>,  Al
- Viro <viro@zeniv.linux.org.uk>, Li Zetao <lizetao1@huawei.com>,
- linux-block@vger.kernel.org,  linux-kernel@vger.kernel.org,
- linux-fpga@vger.kernel.org,  linux-gpio@vger.kernel.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Date: Fri, 18 Oct 2024 12:52:15 +0200
-In-Reply-To: <Zw-XkFcaXjlF5az0@smile.fi.intel.com>
-References: <20241016094911.24818-2-pstanner@redhat.com>
-	 <20241016094911.24818-4-pstanner@redhat.com>
-	 <Zw-XkFcaXjlF5az0@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729248973; c=relaxed/simple;
+	bh=aJG+Ja2ZNr4mHW6ZV8ImBlNkGhYf60iO1OTwLhQu1HM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q1Q/ZqSJ9mwyNSUO5oitOR72sjmWAPquIbM0WOUO9Dgn/tgfZFGFU0Xbs9JYLdmSGWSVBs1AHKi6fpcrqbWWbP229kJCObqtvW/hD4PXm9XT+iLV2LHkFHvvTPhFIUqi5AjUX4CSdUdmUm1RIS8PViNZJaXBG7WOTb2WjFY3Og0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=none smtp.mailfrom=queasysnail.net; arc=none smtp.client-ip=205.139.111.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=queasysnail.net
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-x-zVYiU6ONGlk7XkK1l39w-1; Fri,
+ 18 Oct 2024 06:56:06 -0400
+X-MC-Unique: x-zVYiU6ONGlk7XkK1l39w-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B1641955EA8;
+	Fri, 18 Oct 2024 10:56:04 +0000 (UTC)
+Received: from hog.localdomain (unknown [10.39.192.7])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E9C4F300019D;
+	Fri, 18 Oct 2024 10:56:01 +0000 (UTC)
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+	Boris Pismenny <borisp@nvidia.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next] selftests: tls: add a selftest for wrapping rec_seq
+Date: Fri, 18 Oct 2024 12:55:58 +0200
+Message-ID: <20775fcfd0371422921ee60a42de170c0398ac10.1729244987.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: queasysnail.net
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-On Wed, 2024-10-16 at 13:38 +0300, Andy Shevchenko wrote:
-> On Wed, Oct 16, 2024 at 11:49:05AM +0200, Philipp Stanner wrote:
-> > pcim_ionumap_region() has recently been made a public function and
-> > does
-> > not have the disadvantage of having to deal with the legacy iomap
-> > table,
-> > as pcim_iounmap_regions() does.
-> >=20
-> > Deprecate pcim_iounmap_regions().
->=20
-> ...
->=20
-> > + * This function is DEPRECATED. Do not use it in new code.
->=20
-> Interestingly that the syntax of the DEPRECATED is not documented
-> (yet?),
-> however the sphinx parser hints us about **DEPRECATED** format =E2=80=94 =
-see
-> Documentation/sphinx/parse-headers.pl:251. In any case the above
-> seems
-> like second used (in a form of the full sentence) and will be updated
-> in accordance with the above mentioned script.
+Set the initial rec_seq to 0xffffffffffffffff so that it wraps
+immediately. The send() call should fail with EBADMSG.
 
-Can't completely follow =E2=80=93 so one should always write "**DEPRECATED*=
-*",
-correct?
+A bug in this code was fixed in commit cfaa80c91f6f ("net/tls: do not
+free tls_rec on async operation in bpf_exec_tx_verdict()").
 
-Is that a blocker for you?
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+---
+ tools/testing/selftests/net/tls.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-All the docstrings in pci/pci.c and pci/devres.c so far just use
-"DEPRECATED".
-
-
-P.
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/ne=
+t/tls.c
+index f27a12d2a2c9..1a706d03bb6b 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -266,6 +266,25 @@ TEST_F(tls_basic, bad_cipher)
+ =09EXPECT_EQ(setsockopt(self->fd, SOL_TLS, TLS_TX, &tls12, sizeof(struct t=
+ls12_crypto_info_aes_gcm_128)), -1);
+ }
+=20
++TEST_F(tls_basic, recseq_wrap)
++{
++=09struct tls_crypto_info_keys tls12;
++=09char const *test_str =3D "test_read";
++=09int send_len =3D 10;
++
++=09if (self->notls)
++=09=09SKIP(return, "no TLS support");
++
++=09tls_crypto_info_init(TLS_1_2_VERSION, TLS_CIPHER_AES_GCM_128, &tls12);
++=09memset(&tls12.aes128.rec_seq, 0xff, sizeof(tls12.aes128.rec_seq));
++
++=09ASSERT_EQ(setsockopt(self->fd, SOL_TLS, TLS_TX, &tls12, tls12.len), 0);
++=09ASSERT_EQ(setsockopt(self->cfd, SOL_TLS, TLS_RX, &tls12, tls12.len), 0)=
+;
++
++=09EXPECT_EQ(send(self->fd, test_str, send_len, 0), -1);
++=09EXPECT_EQ(errno, EBADMSG);
++}
++
+ FIXTURE(tls)
+ {
+ =09int fd, cfd;
+--=20
+2.47.0
 
