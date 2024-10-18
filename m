@@ -1,190 +1,210 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward204a.mail.yandex.net (forward204a.mail.yandex.net [178.154.239.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D77152E12
-	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 05:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279AA17279E
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 05:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729228873; cv=none; b=tgxTnYoSPiV7zoabJWjSd+vl4syouEqwhEIcEMA9WDkb5rn/txxKTdc3UbGT5HxfCKPDzlFoU8tAgLcOacjQR9NPceE01zzEV766eH7txHLnm6X6wrIEJBozMWJ9TYmUHqIIbJsQPnjuCuDcDK3nGidPOUKkgehguBV5NC7l3oU=
+	t=1729228912; cv=none; b=hN9nbjxY4WDEPchI6TGdOlNDkZgl2jxdy5M0AWcBJz5GQhUv5RTzNJb0F42+c9CnN6d4WsZEpUycmYfUXVZ8tXNqVRK9YwAjcwHMMls4LO0V/4XJCFFqsY0mWheOAcj2ClhaRiQCRoCVscgm9tMV56wJW4EhF53LneRWP9RtgyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729228873; c=relaxed/simple;
-	bh=J/f1uA2chu/qI4cVVXLm4mJDhaT+EZ5fucnUD/1Ig7k=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Yk+PkdWEds9oS1u5cAaNwbnfhLJw9J0iyGRoMe/y2IBCrOZkbGMjC/b8NdLVoQABEqwnDdbLSbE8DLTYUqggWG5Br868SXqXqcumeFCf6H/4lgoZBN0mCqZazC/86RpJ5Xxic52p1893GzRWts9dz/3H7hNHpHfZ+1gxqbLyTQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b4ojSMh0; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1729228912; c=relaxed/simple;
+	bh=YYLUw1tsNAeW1RrlRIGcRwWZS7dM8hBu9T8fqSmK5YI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ei5P5su/0uB1SUl0j+KLZ+9kwhMB8bPVthA5ZWpgQiiIU31naA9H0B5OvBxb9H9hCaG8bQ3sZEehrCQGsq0E7g1H5knLjyc6t3Xt8MM+h2oWLSEJVx8Ji11k0rTLsc9Z0Nmssw4/7IQ9ZQdT8j7BGaEjIqxLnO6n4iUyRFmF0N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=TZgLSPG9; arc=none smtp.client-ip=178.154.239.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b4ojSMh0"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e31e5d1739so29416957b3.1
-        for <netdev@vger.kernel.org>; Thu, 17 Oct 2024 22:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729228871; x=1729833671; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fPkDC3Enb0xgXPmzj9uS+PkCITtpS9EpYmFVpWq2P1M=;
-        b=b4ojSMh0dY9Cy7Af236ga8sVjzNJ8VEXUCNHqlrKRX6FgNxTqho8SWBTLUGVSBRGMi
-         H4GMcgd+WYj2bW/UHA4UBMWMAfhBWL7AL6LslDNtDXAUcBS20QrgDM3+xL+ptGMVbvbj
-         osjVgY3yhjMlNYPkZxM+RNv6v3bSguUVY50EJAMmSyIxsGNl5UWuURrnLHXOsL7v2k2t
-         Q/w0ZrQOU5SHB3U8kQjFxo+S9+bIHVeaZRR/uu6IYD+oB4igu4LRbB5whXI150AZF8lf
-         vOhN6gGZEwDNA4sdR2+lljgDsLPzV8C7Fd3eCwWb9oeFUl6k7qxplK/jS/Jqm5YO+RXT
-         XPrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729228871; x=1729833671;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fPkDC3Enb0xgXPmzj9uS+PkCITtpS9EpYmFVpWq2P1M=;
-        b=aQVv8l+khJJF496CLQxRFZS+fICWdmSo/UmZBu+peZCcn6vq7MM/+10FFBrYHWSMxE
-         cmRfLIAcy5GgXflOEelPEOWaEM9E7Qe7khMrkHWW/TOc1JKxywgI7vqw8avhSBd4JEG3
-         2nfhaoITg9LWV3JjlJnAmbRdAG03hDbzxhx6dJ/yM1rLRVnwyVQTXL8IVPkqL79ln853
-         A4BlhoqKks2C4JV9ncZqj6aopgK+vkm5DiunozCLjZ+V6aX8AmYSg2tMFFgbdHV0DAsQ
-         xGzkem7WWFbnVKfiAclPAXaZkdO5IkDDCxgOG+oCVMtuQrtf0ka38njBCjSTQ3EDvOfU
-         p+Ng==
-X-Gm-Message-State: AOJu0Yxng9o7yVU9r2yIrfheNjvE7M5YeEC140N49AM7iWV2VSyySD7l
-	CfnDyw3pg/SBj9qWifVYSG/ICeiquiUazCY3uQVZkXpeVRa3ZfZD6Xmt3qdczxjCZFTlrI+xRZJ
-	vkmZTsh6fXA==
-X-Google-Smtp-Source: AGHT+IHqa4dNMponANTnODtZDu6EGlVgMaADr6YyeTSWEYoTzDFn7N/DC0yxHtkGV+gl+GyODKSD8KrWHo7qqw==
-X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:f7:ea0b:ac12:11d6])
- (user=edumazet job=sendgmr) by 2002:a25:9e0c:0:b0:e28:e6a1:fc53 with SMTP id
- 3f1490d57ef6-e2bb1308c20mr1377276.5.1729228870501; Thu, 17 Oct 2024 22:21:10
- -0700 (PDT)
-Date: Fri, 18 Oct 2024 05:21:08 +0000
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="TZgLSPG9"
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+	by forward204a.mail.yandex.net (Yandex) with ESMTPS id AF68D6625D
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 08:14:08 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2a:1c1:0:640:adc:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id B3C3F60ABD;
+	Fri, 18 Oct 2024 08:14:00 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id vDGD1k31TSw0-WBbGJlEd;
+	Fri, 18 Oct 2024 08:14:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1729228440; bh=FJiVCO64coyDGPLQKZPWSS+2s+d5qwfsR3PcXsBG+3A=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=TZgLSPG92zNHAxadWSJNqsGMTh0i6EF7I9W0amVAqDdGrn03tv6bhGVYylvp4dIGk
+	 7XfkWWsoOjYhur0fHy2gIHw0boh/aM1kx0WWhL/EFDZo1oEKd4LYZgBRHIu4pEcc0c
+	 q03xVGKKPE7AYGiugkei8VHPkpsXKHzIQwaRZ1oc=
+Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH net v7 2/2] net: sched: use RCU read-side critical section in taprio_dump()
+Date: Fri, 18 Oct 2024 08:13:39 +0300
+Message-ID: <20241018051339.418890-2-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241018051339.418890-1-dmantipov@yandex.ru>
+References: <20241018051339.418890-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241018052108.2610827-1-edumazet@google.com>
-Subject: [PATCH net-next] netpoll: remove ndo_netpoll_setup() second argument
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Yandex-Filter: 1
 
-npinfo is not used in any of the ndo_netpoll_setup() methods.
+Fix possible use-after-free in 'taprio_dump()' by adding RCU
+read-side critical section there. Never seen on x86 but
+found on a KASAN-enabled arm64 system when investigating
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+[T15862] BUG: KASAN: slab-use-after-free in taprio_dump+0xa0c/0xbb0
+[T15862] Read of size 4 at addr ffff0000d4bb88f8 by task repro/15862
+[T15862]
+[T15862] CPU: 0 UID: 0 PID: 15862 Comm: repro Not tainted 6.11.0-rc1-00293-gdefaf1a2113a-dirty #2
+[T15862] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-20240524-5.fc40 05/24/2024
+[T15862] Call trace:
+[T15862]  dump_backtrace+0x20c/0x220
+[T15862]  show_stack+0x2c/0x40
+[T15862]  dump_stack_lvl+0xf8/0x174
+[T15862]  print_report+0x170/0x4d8
+[T15862]  kasan_report+0xb8/0x1d4
+[T15862]  __asan_report_load4_noabort+0x20/0x2c
+[T15862]  taprio_dump+0xa0c/0xbb0
+[T15862]  tc_fill_qdisc+0x540/0x1020
+[T15862]  qdisc_notify.isra.0+0x330/0x3a0
+[T15862]  tc_modify_qdisc+0x7b8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Allocated by task 15857:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_alloc_info+0x40/0x60
+[T15862]  __kasan_kmalloc+0xd4/0xe0
+[T15862]  __kmalloc_cache_noprof+0x194/0x334
+[T15862]  taprio_change+0x45c/0x2fe0
+[T15862]  tc_modify_qdisc+0x6a8/0x1838
+[T15862]  rtnetlink_rcv_msg+0x3c8/0xc20
+[T15862]  netlink_rcv_skb+0x1f8/0x3d4
+[T15862]  rtnetlink_rcv+0x28/0x40
+[T15862]  netlink_unicast+0x51c/0x790
+[T15862]  netlink_sendmsg+0x79c/0xc20
+[T15862]  __sock_sendmsg+0xe0/0x1a0
+[T15862]  ____sys_sendmsg+0x6c0/0x840
+[T15862]  ___sys_sendmsg+0x1ac/0x1f0
+[T15862]  __sys_sendmsg+0x110/0x1d0
+[T15862]  __arm64_sys_sendmsg+0x74/0xb0
+[T15862]  invoke_syscall+0x88/0x2e0
+[T15862]  el0_svc_common.constprop.0+0xe4/0x2a0
+[T15862]  do_el0_svc+0x44/0x60
+[T15862]  el0_svc+0x50/0x184
+[T15862]  el0t_64_sync_handler+0x120/0x12c
+[T15862]  el0t_64_sync+0x190/0x194
+[T15862]
+[T15862] Freed by task 6192:
+[T15862]  kasan_save_stack+0x3c/0x70
+[T15862]  kasan_save_track+0x20/0x3c
+[T15862]  kasan_save_free_info+0x4c/0x80
+[T15862]  poison_slab_object+0x110/0x160
+[T15862]  __kasan_slab_free+0x3c/0x74
+[T15862]  kfree+0x134/0x3c0
+[T15862]  taprio_free_sched_cb+0x18c/0x220
+[T15862]  rcu_core+0x920/0x1b7c
+[T15862]  rcu_core_si+0x10/0x1c
+[T15862]  handle_softirqs+0x2e8/0xd64
+[T15862]  __do_softirq+0x14/0x20
+
+Fixes: 18cdd2f0998a ("net/sched: taprio: taprio_dump and taprio_change are protected by rtnl_mutex")
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- drivers/net/macvlan.c           | 2 +-
- drivers/net/team/team_core.c    | 3 +--
- include/linux/netdevice.h       | 3 +--
- net/8021q/vlan_dev.c            | 2 +-
- net/bridge/br_device.c          | 2 +-
- net/core/netpoll.c              | 2 +-
- net/dsa/user.c                  | 3 +--
- 8 files changed, 8 insertions(+), 11 deletions(-)
+v7: add (hopefully all required) process-related quirks
+v6: adjust to match recent changes
+v5: add Fixes: and resend due to series change
+v4: redesign to preserve original code as much as possible,
+    adjust commit message and subject to target net tree
+v3: tweak commit message as suggested by Vinicius
+v2: added to the series
+---
+ net/sched/sch_taprio.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b1bffd8e9a958fb1b0e7f965c6fea5bc844f9c07..3928287f58653bf9737653af94e57cb903daf429 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1476,7 +1476,7 @@ static void bond_netpoll_cleanup(struct net_device *bond_dev)
- 			slave_disable_netpoll(slave);
- }
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 9f4e004cdb8b..8623dc0bafc0 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -2374,9 +2374,6 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	struct tc_mqprio_qopt opt = { 0 };
+ 	struct nlattr *nest, *sched_nest;
  
--static int bond_netpoll_setup(struct net_device *dev, struct netpoll_info *ni)
-+static int bond_netpoll_setup(struct net_device *dev)
- {
- 	struct bonding *bond = netdev_priv(dev);
- 	struct list_head *iter;
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index cf18e66de142c9a19b8b169c26a62137118e3e41..edbd5afcec4129e09f771c96b423d2eac030bb82 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1117,7 +1117,7 @@ static void macvlan_dev_poll_controller(struct net_device *dev)
- 	return;
- }
+-	oper = rtnl_dereference(q->oper_sched);
+-	admin = rtnl_dereference(q->admin_sched);
+-
+ 	mqprio_qopt_reconstruct(dev, &opt);
  
--static int macvlan_dev_netpoll_setup(struct net_device *dev, struct netpoll_info *npinfo)
-+static int macvlan_dev_netpoll_setup(struct net_device *dev)
- {
- 	struct macvlan_dev *vlan = netdev_priv(dev);
- 	struct net_device *real_dev = vlan->lowerdev;
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 18191d5a8bd4d37000fcbae27ab6bb26802762a3..a1b27b69f010533d4bbd4d7f1e314d2582eb8133 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -1946,8 +1946,7 @@ static void team_netpoll_cleanup(struct net_device *dev)
- 	mutex_unlock(&team->lock);
- }
+ 	nest = nla_nest_start_noflag(skb, TCA_OPTIONS);
+@@ -2397,18 +2394,23 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	    nla_put_u32(skb, TCA_TAPRIO_ATTR_TXTIME_DELAY, q->txtime_delay))
+ 		goto options_error;
  
--static int team_netpoll_setup(struct net_device *dev,
--			      struct netpoll_info *npifo)
-+static int team_netpoll_setup(struct net_device *dev)
- {
- 	struct team *team = netdev_priv(dev);
- 	struct team_port *port;
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 8feaca12655ef8e3e9349e78768788ae50ed41e7..86a0b7eb9461433822996d3f6374cca8ec5a85b9 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1425,8 +1425,7 @@ struct net_device_ops {
- 						        __be16 proto, u16 vid);
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	void                    (*ndo_poll_controller)(struct net_device *dev);
--	int			(*ndo_netpoll_setup)(struct net_device *dev,
--						     struct netpoll_info *info);
-+	int			(*ndo_netpoll_setup)(struct net_device *dev);
- 	void			(*ndo_netpoll_cleanup)(struct net_device *dev);
- #endif
- 	int			(*ndo_set_vf_mac)(struct net_device *dev,
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 458040e8a0e0be007012fd25499405e89799de00..91d134961357c4737e6d53f801a2f5ffa778a002 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -725,7 +725,7 @@ static void vlan_dev_poll_controller(struct net_device *dev)
- 	return;
- }
++	rcu_read_lock();
++
++	oper = rtnl_dereference(q->oper_sched);
++	admin = rtnl_dereference(q->admin_sched);
++
+ 	if (oper && taprio_dump_tc_entries(skb, q, oper))
+-		goto options_error;
++		goto options_error_rcu;
  
--static int vlan_dev_netpoll_setup(struct net_device *dev, struct netpoll_info *npinfo)
-+static int vlan_dev_netpoll_setup(struct net_device *dev)
- {
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
- 	struct net_device *real_dev = vlan->real_dev;
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 26b79feb385d2daea3bf9c63772a566cdd621476..0ab4613aa07ad61784806e20d18836307bc33feb 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -328,7 +328,7 @@ int br_netpoll_enable(struct net_bridge_port *p)
- 	return __br_netpoll_enable(p);
- }
+ 	if (oper && dump_schedule(skb, oper))
+-		goto options_error;
++		goto options_error_rcu;
  
--static int br_netpoll_setup(struct net_device *dev, struct netpoll_info *ni)
-+static int br_netpoll_setup(struct net_device *dev)
- {
- 	struct net_bridge *br = netdev_priv(dev);
- 	struct net_bridge_port *p;
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index aa49b92e9194babab17b2e039daf092a524c5b88..94b7f07a952fff3358cc609fb29de33ae8ae8626 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -641,7 +641,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 	if (!admin)
+ 		goto done;
  
- 		ops = ndev->netdev_ops;
- 		if (ops->ndo_netpoll_setup) {
--			err = ops->ndo_netpoll_setup(ndev, npinfo);
-+			err = ops->ndo_netpoll_setup(ndev);
- 			if (err)
- 				goto free_npinfo;
- 		}
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 64f660d2334b77fa97e7d6d586a021d63ac5f6e2..91a1fa5f8ab0ef386059a81914dd27242c209b5b 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -1308,8 +1308,7 @@ static int dsa_user_set_pauseparam(struct net_device *dev,
- }
+ 	sched_nest = nla_nest_start_noflag(skb, TCA_TAPRIO_ATTR_ADMIN_SCHED);
+ 	if (!sched_nest)
+-		goto options_error;
++		goto options_error_rcu;
  
- #ifdef CONFIG_NET_POLL_CONTROLLER
--static int dsa_user_netpoll_setup(struct net_device *dev,
--				  struct netpoll_info *ni)
-+static int dsa_user_netpoll_setup(struct net_device *dev)
- {
- 	struct net_device *conduit = dsa_user_to_conduit(dev);
- 	struct dsa_user_priv *p = netdev_priv(dev);
+ 	if (dump_schedule(skb, admin))
+ 		goto admin_error;
+@@ -2416,11 +2418,15 @@ static int taprio_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 	nla_nest_end(skb, sched_nest);
+ 
+ done:
++	rcu_read_unlock();
+ 	return nla_nest_end(skb, nest);
+ 
+ admin_error:
+ 	nla_nest_cancel(skb, sched_nest);
+ 
++options_error_rcu:
++	rcu_read_unlock();
++
+ options_error:
+ 	nla_nest_cancel(skb, nest);
+ 
 -- 
-2.47.0.rc1.288.g06298d1525-goog
+2.46.2
 
