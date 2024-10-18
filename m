@@ -1,46 +1,67 @@
-Received: from mr6.vodafonemail.de (mr6.vodafonemail.de [145.253.228.166])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE7113541B
-	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 21:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.253.228.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C909F18E341;
+	Fri, 18 Oct 2024 21:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729285241; cv=none; b=JEDCOxhkWk7ghBo7MZPq6LukpBPuwMxtI8V44S4/thzDWdydseGsJsxaHL7XaePcFyBbLdw4LR7D+tVxxB5KGOjUk2OUtSnjq+FcrVtx+knlBc5v9TVC+RaFy0MwT/v73rjbydU1pFayX04F95NvLzMnM8oeGOFqn2R4YhaaL4M=
+	t=1729285811; cv=none; b=XZ7B3s2F82906VDpAUmizgkNSbfNUhvPPpRmgQ+aI/dFzqWKPjy90bFeGgvJc47ZF6sV8//qVatXB9Nl7sli6afoqVVWx1SLCbPVm88JU59I4L8Z3VksNLGtWYp1Do15ofG4PRgWP64EwywLe+0h3HECkXHDjsEeN9kutJVyA2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729285241; c=relaxed/simple;
-	bh=8yyEQPEvcp+uKeTIuPrtdLHzesVPgcJDLghlRdXeFcQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DyA1Ayp1eyD5YRc+hqnxUAeH15bY4Q/X8rKBTy9z2pmW/fnr+Xa/chJ4qLIdZ0YFrM2xUYow/sEPOL9OcGjeoM6PmZzajytyEWhppyQ4zxUCcjpG2aIj7Dg9Z9AZkQA+Mj9HQ3UJjnhJM35zs2VotDx0F0okd2N31re298Q3YAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arcor.de; spf=pass smtp.mailfrom=arcor.de; dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b=oaXNByba; arc=none smtp.client-ip=145.253.228.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arcor.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arcor.de
+	s=arc-20240116; t=1729285811; c=relaxed/simple;
+	bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxxOBegOZrX3Dfm9/r/tfspMHt2SJNwdCgDvIwFEoOhgXXqbBXrqpY7hmhp5kAenC/djxkZ4wiOzPti2U/Rt06Fg6xPI14dfyhVbH8iyu+TlXYCotDbIVqldYCH0SNvrKG/pawp8F8uLPiDi2PfvtxmzEyinmNzyP41xVgbbBSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCC/aZR8; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b="oaXNByba"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcor.de;
-	s=vfde-mb-mr2-23sep; t=1729284789;
-	bh=VoVdNNVHVJpt/Owiv/iaXaFegg43e8vAYF2kWmMJAh8=;
-	h=Date:From:To:Subject:Message-ID:Content-Type:From;
-	b=oaXNBybaFJJHIy6Y7PB4imQwttlOLp+RLpuw1Cds8g+pFjfQ3b2oZ7LW+yUUaQt+g
-	 7V/9VjntwknlEijAOqYJiGiBYI8SX80AqmblRGWMPvxsXcEaNkIkAuiwOq84Br8xfH
-	 g5ebIml8dfngvW9+dg+hdsXnVWzW2gz9DTh11kRE=
-Received: from smtp.vodafone.de (unknown [10.0.0.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by mr6.vodafonemail.de (Postfix) with ESMTPS id 4XVcNj2Lbxz1xqh;
-	Fri, 18 Oct 2024 20:53:09 +0000 (UTC)
-Received: from arcor.de (p57a23786.dip0.t-ipconnect.de [87.162.55.134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.vodafone.de (Postfix) with ESMTPSA id 4XVcNY6ZtBz8sWp;
-	Fri, 18 Oct 2024 20:52:58 +0000 (UTC)
-Date: Fri, 18 Oct 2024 22:52:55 +0200
-From: Reinhard Speyerer <rspmn@arcor.de>
-To: =?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
-Message-ID: <ZxLKp5YZDy-OM0-e@arcor.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCC/aZR8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729285809; x=1760821809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hQ0DG6/Eb3j0prKHYX364xskTLEd+9vKpIg1xcOPcDw=;
+  b=GCC/aZR8vwcft9DKreLN/fmFJWkpkZJFH67WpSDHNksW/CR04ZaKyeWL
+   XtoZtoCtFYtmcegKvkavN+KJGVxCjzqAhdXbd+IOOezcGUxYRgKG+kMbb
+   xQAYv8nfmcqKBuL0PvyKpfNP6vX9UeHUun1IeLr+j7jsejyAHejBEg/tT
+   s16Q+FTgxKC0wfRkNfHwQWmF7NPSlPljsyZ789mZrfGKSamDYzSLkMm8y
+   KtP6Yza+q5j5uz+ift8Tp9tKB45O2JaoAIcvYkYlpHFTGrcFA2Cp6MUp4
+   QCHIHtEr9tqwvVvFf4T9CQFxMMesDXYZZQ5B3/anHpvfvyAoXOs6vFg0M
+   Q==;
+X-CSE-ConnectionGUID: V2vtrIvqQPKeQ+r6dTJnFg==
+X-CSE-MsgGUID: Zp44uaT9Rnizfp3w3Th97w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28993129"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28993129"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 14:10:08 -0700
+X-CSE-ConnectionGUID: dr8iIfhTSkuHbpup6ssh2A==
+X-CSE-MsgGUID: zkUFIu82SCqVszaErv+rJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="78938262"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 18 Oct 2024 14:10:02 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1uES-000OJS-0e;
+	Fri, 18 Oct 2024 21:10:00 +0000
+Date: Sat, 19 Oct 2024 05:09:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu, linux@armlinux.org.uk,
+	bhelgaas@google.com, horms@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as
+ a separate module
+Message-ID: <202410190431.wiCDZy8G-lkp@intel.com>
+References: <20241017074637.1265584-7-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,46 +70,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-size: 1890
-X-purgate-ID: 155817::1729284785-067F349E-D2D93735/0/0
+In-Reply-To: <20241017074637.1265584-7-wei.fang@nxp.com>
 
-Add Fibocom FG132 0x0112 composition:
+Hi Wei,
 
-T:  Bus=03 Lev=02 Prnt=06 Port=01 Cnt=02 Dev#= 10 Spd=12   MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0112 Rev= 5.15
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom Module
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
----
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 4823dbdf5465..f137c82f1c0f 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
-+	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-net-add-compatible-string-for-i-MX95-EMDIO/20241017-160848
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241017074637.1265584-7-wei.fang%40nxp.com
+patch subject: [PATCH v3 net-next 06/13] net: enetc: build enetc_pf_common.c as a separate module
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241019/202410190431.wiCDZy8G-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410190431.wiCDZy8G-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+ERROR: modpost: "__delay" [drivers/net/mdio/mdio-cavium.ko] undefined!
+>> ERROR: modpost: "enetc_set_ethtool_ops" [drivers/net/ethernet/freescale/enetc/nxp-enetc-pf-common.ko] undefined!
+ERROR: modpost: "devm_of_clk_add_hw_provider" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "devm_clk_hw_register" [drivers/media/i2c/tc358746.ko] undefined!
+ERROR: modpost: "of_clk_hw_simple_get" [drivers/media/i2c/tc358746.ko] undefined!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
