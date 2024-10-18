@@ -1,29 +1,28 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5511A32;
-	Fri, 18 Oct 2024 11:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090EC53AC;
+	Fri, 18 Oct 2024 11:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729251944; cv=none; b=h8VTqrybr/lpUFaR0vcOOG8VrvHNMw5bvBkxqbFYRUK9H3+hH2JDbQRkfLgAdQ7v6VFkTlqhA3yg637jMfcA5vY/ydmuqy2qqFWbHIXsieQLlfBHyFKjvivQkosk50wfOFqzbZCjjDjYwxKHFntVUGe/re1/ADnzcuaIg5528b4=
+	t=1729251948; cv=none; b=XoxocmkVEj/wpjT7rHHG8wyzz5M3Bd8lghaBUrHb0LPthW+DVc/D1kW925HF+362DfeI5yq1sp3GpycP8C5CI4Uvm19Y312EXn+pPv+dgip6lpgtcMYW4ZmueFeSjPMvCkTasI5sNkzDwwFAAcIFW24F5b5bNjvlkytI6tAQU2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729251944; c=relaxed/simple;
-	bh=qCdh2zMzL0Z76yj5dgirxEQYgFCsAW+1uSNgGtDgcmI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eAZ0P4uV/xDBlTyFtlNKI3RPGoZxf3D30dyVqceyazFYWXUkw5YFPs1fp7+4EZKVDyCzi5ELdiw2FZ82uuoWSCjf6ZC6q5AyZt96JAZnkvbJu8e8RriAXr1RYg4yGdBhEElOKMbbMsJbjv5eX7e+YXr2dhPAWnIA4AHpAsXlFvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=NOnFYxvv; arc=none smtp.client-ip=115.124.30.112
+	s=arc-20240116; t=1729251948; c=relaxed/simple;
+	bh=m+X5tGW60K4ToKsc6kC1i+2nKbRszs4xZ9HwqAkYk+E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pVNz0HYpXgSabRFA9RAOca4mazrNMbdsdkBr+J6jDsu2KUeduron0mLpED/XM0E+Y8YXHPqZetcW9bIv2ek6Spxr1JXlC40ZuY4cIQIHjVXjNhNNO53JPc1S3FNADAIz28JTXZBnhUwIJhjirOlwRcns+zCzAdrHFGIf91ge7CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LmqLmzuP; arc=none smtp.client-ip=115.124.30.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="NOnFYxvv"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LmqLmzuP"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1729251939; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=ROzlH0PRT6Cxlwg6kW8QAqgg8DazNGwb0OtTEOwqX5s=;
-	b=NOnFYxvvgVWNgfRd+GWDNNqwwQCGrC9Nd8zB1E/s4qo2fPk3f+dNufZ2R66SsBMqrqczQxfrc1phaae/yV0fJ2BaXadEPE6swtR+wv0Sj/dZm5ZVieXTorcib7Xnqh1KNjmIWvDVaMnZ02KIHe3fzUhFzshn+/UG/ua7ry/JzaI=
-Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHO.8lc_1729251938 cluster:ay36)
+	t=1729251937; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=/M61x1cvogaG/HfRQ2l+U5zBrnsMrNgQXXlKMlMABF8=;
+	b=LmqLmzuPogTqsaLbOcHEiRRtiueb1pRRYzbfG0IVG9OUpjSKSzzoJ9edu5fzNNKnE++fa0TJi3mGUbeFWoAG9R14oaMKVlklWDPGz0NWPR6ypn2gvceI5U+v/T5UGlZLEtQddS7f8eP4eQyMoItq6rEr73xERjZ3AT4vltnqtns=
+Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHO1lIZ_1729251935 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 18 Oct 2024 19:45:38 +0800
+          Fri, 18 Oct 2024 19:45:36 +0800
 From: Philo Lu <lulie@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: willemdebruijn.kernel@gmail.com,
@@ -39,12 +38,10 @@ Cc: willemdebruijn.kernel@gmail.com,
 	jakub@cloudflare.com,
 	fred.cc@alibaba-inc.com,
 	yubing.qiuyubing@alibaba-inc.com
-Subject: [PATCH v5 net-next 2/3] net/udp: Add 4-tuple hash list basis
-Date: Fri, 18 Oct 2024 19:45:34 +0800
-Message-Id: <20241018114535.35712-3-lulie@linux.alibaba.com>
+Subject: [PATCH v5 net-next 0/3] udp: Add 4-tuple hash for connected sockets
+Date: Fri, 18 Oct 2024 19:45:32 +0800
+Message-Id: <20241018114535.35712-1-lulie@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20241018114535.35712-1-lulie@linux.alibaba.com>
-References: <20241018114535.35712-1-lulie@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,212 +50,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a new hash list, hash4, in udp table. It will be used to implement
-4-tuple hash for connected udp sockets. This patch adds the hlist to
-table, and implements helpers and the initialization. 4-tuple hash is
-implemented in the following patch.
+This patchset introduces 4-tuple hash for connected udp sockets, to make
+connected udp lookup faster. Test using udpgso_bench_tx/rx shows no
+obvious difference w/ and w/o this patchset for unconnected socket
+receiving (see v4 thread).
 
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
-Signed-off-by: Fred Chen <fred.cc@alibaba-inc.com>
-Signed-off-by: Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>
----
- include/linux/udp.h | 11 ++++++
- include/net/udp.h   | 87 ++++++++++++++++++++++++++++++++++++++++++++-
- net/ipv4/udp.c      | 10 +++---
- 3 files changed, 103 insertions(+), 5 deletions(-)
+Patch1: Add a new counter for hslot2 named hash4_cnt, to avoid cache line
+        miss when lookup.
+Patch2 and 3: Implement 4-tuple hash for ipv4.
+(That for ipv6 is in progress.)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index 3eb3f2b9a2a0..09abd3700d81 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -56,6 +56,12 @@ struct udp_sock {
- 	int		 pending;	/* Any pending frames ? */
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
- 
-+#if !IS_ENABLED(CONFIG_BASE_SMALL)
-+	/* For UDP 4-tuple hash */
-+	__u16 udp_lrpa_hash;
-+	struct hlist_node udp_lrpa_node;
-+#endif
-+
- 	/*
- 	 * Following member retains the information to create a UDP header
- 	 * when the socket is uncorked.
-@@ -206,6 +212,11 @@ static inline void udp_allow_gso(struct sock *sk)
- #define udp_portaddr_for_each_entry_rcu(__sk, list) \
- 	hlist_for_each_entry_rcu(__sk, list, __sk_common.skc_portaddr_node)
- 
-+#if !IS_ENABLED(CONFIG_BASE_SMALL)
-+#define udp_lrpa_for_each_entry_rcu(__up, list) \
-+	hlist_for_each_entry_rcu(__up, list, udp_lrpa_node)
-+#endif
-+
- #define IS_UDPLITE(__sk) (__sk->sk_protocol == IPPROTO_UDPLITE)
- 
- #endif	/* _LINUX_UDP_H */
-diff --git a/include/net/udp.h b/include/net/udp.h
-index cd2158618329..8aefdc404362 100644
---- a/include/net/udp.h
-+++ b/include/net/udp.h
-@@ -50,7 +50,7 @@ struct udp_skb_cb {
- #define UDP_SKB_CB(__skb)	((struct udp_skb_cb *)((__skb)->cb))
- 
- /**
-- *	struct udp_hslot - UDP hash slot used by udp_table.hash
-+ *	struct udp_hslot - UDP hash slot used by udp_table.hash/hash4
-  *
-  *	@head:	head of list of sockets
-  *	@count:	number of sockets in 'head' list
-@@ -81,12 +81,17 @@ struct udp_hslot_main {
-  *
-  *	@hash:	hash table, sockets are hashed on (local port)
-  *	@hash2:	hash table, sockets are hashed on (local port, local address)
-+ *	@hash4:	hash table, connected sockets are hashed on
-+ *		(local port, local address, remote port, remote address)
-  *	@mask:	number of slots in hash tables, minus 1
-  *	@log:	log2(number of slots in hash table)
-  */
- struct udp_table {
- 	struct udp_hslot	*hash;
- 	struct udp_hslot_main	*hash2;
-+#if !IS_ENABLED(CONFIG_BASE_SMALL)
-+	struct udp_hslot	*hash4;
-+#endif
- 	unsigned int		mask;
- 	unsigned int		log;
- };
-@@ -109,6 +114,86 @@ static inline struct udp_hslot *udp_hashslot2(struct udp_table *table,
- 	return &table->hash2[hash & table->mask].hslot;
- }
- 
-+#if IS_ENABLED(CONFIG_BASE_SMALL)
-+static inline struct udp_hslot *udp_hashslot4(struct udp_table *table,
-+					      unsigned int hash)
-+{
-+	BUILD_BUG();
-+	return NULL;
-+}
-+
-+static inline bool udp_hashed4(const struct sock *sk)
-+{
-+	return false;
-+}
-+
-+static inline unsigned int udp_hash4_slot_size(void)
-+{
-+	return 0;
-+}
-+
-+static inline void udp_table_hash4_init(struct udp_table *table)
-+{
-+}
-+
-+static inline bool udp_has_hash4(const struct udp_hslot *hslot2)
-+{
-+	return false;
-+}
-+
-+static inline void udp_hash4_inc(struct udp_hslot *hslot2)
-+{
-+}
-+
-+static inline void udp_hash4_dec(struct udp_hslot *hslot2)
-+{
-+}
-+#else /* !CONFIG_BASE_SMALL */
-+static inline struct udp_hslot *udp_hashslot4(struct udp_table *table,
-+					      unsigned int hash)
-+{
-+	return &table->hash4[hash & table->mask];
-+}
-+
-+static inline bool udp_hashed4(const struct sock *sk)
-+{
-+	return !hlist_unhashed(&udp_sk(sk)->udp_lrpa_node);
-+}
-+
-+static inline unsigned int udp_hash4_slot_size(void)
-+{
-+	return sizeof(struct udp_hslot);
-+}
-+
-+/* Must be called with table->hash2 initialized */
-+static inline void udp_table_hash4_init(struct udp_table *table)
-+{
-+	table->hash4 = (void *)(table->hash2 + (table->mask + 1));
-+	for (int i = 0; i <= table->mask; i++) {
-+		table->hash2[i].hash4_cnt = 0;
-+
-+		INIT_HLIST_HEAD(&table->hash4[i].head);
-+		table->hash4[i].count = 0;
-+		spin_lock_init(&table->hash4[i].lock);
-+	}
-+}
-+
-+static inline bool udp_has_hash4(const struct udp_hslot *hslot2)
-+{
-+	return UDP_HSLOT_MAIN(hslot2)->hash4_cnt;
-+}
-+
-+static inline void udp_hash4_inc(struct udp_hslot *hslot2)
-+{
-+	UDP_HSLOT_MAIN(hslot2)->hash4_cnt++;
-+}
-+
-+static inline void udp_hash4_dec(struct udp_hslot *hslot2)
-+{
-+	UDP_HSLOT_MAIN(hslot2)->hash4_cnt--;
-+}
-+#endif /* CONFIG_BASE_SMALL */
-+
- extern struct proto udp_prot;
- 
- extern atomic_long_t udp_memory_allocated;
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 2b7e72c4ed6d..74bfab0f44f8 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -3425,7 +3425,8 @@ void __init udp_table_init(struct udp_table *table, const char *name)
- {
- 	unsigned int i, slot_size;
- 
--	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main);
-+	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main) +
-+		    udp_hash4_slot_size();
- 	table->hash = alloc_large_system_hash(name,
- 					      slot_size,
- 					      uhash_entries,
-@@ -3446,8 +3447,8 @@ void __init udp_table_init(struct udp_table *table, const char *name)
- 		INIT_HLIST_HEAD(&table->hash2[i].hslot.head);
- 		table->hash2[i].hslot.count = 0;
- 		spin_lock_init(&table->hash2[i].hslot.lock);
--		table->hash2[i].hash4_cnt = 0;
- 	}
-+	udp_table_hash4_init(table);
- }
- 
- u32 udp_flow_hashrnd(void)
-@@ -3480,7 +3481,8 @@ static struct udp_table __net_init *udp_pernet_table_alloc(unsigned int hash_ent
- 	if (!udptable)
- 		goto out;
- 
--	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main);
-+	slot_size = sizeof(struct udp_hslot) + sizeof(struct udp_hslot_main) +
-+		    udp_hash4_slot_size();
- 	udptable->hash = vmalloc_huge(hash_entries * slot_size,
- 				      GFP_KERNEL_ACCOUNT);
- 	if (!udptable->hash)
-@@ -3498,8 +3500,8 @@ static struct udp_table __net_init *udp_pernet_table_alloc(unsigned int hash_ent
- 		INIT_HLIST_HEAD(&udptable->hash2[i].hslot.head);
- 		udptable->hash2[i].hslot.count = 0;
- 		spin_lock_init(&udptable->hash2[i].hslot.lock);
--		udptable->hash2[i].hash4_cnt = 0;
- 	}
-+	udp_table_hash4_init(udptable);
- 
- 	return udptable;
- 
--- 
+The detailed motivation is described in Patch 3.
+
+The 4-tuple hash increases the size of udp_sock and udp_hslot. Thus add it
+with CONFIG_BASE_SMALL check, i.e., it's a no op with CONFIG_BASE_SMALL.
+
+AFAICS the patchset can be further improved by:
+(a) Better interact with hash2/reuseport. Now hash4 hardly affects other
+mechanisms, but maintaining sockets in both hash4 and hash2 lists seems
+unnecessary.
+(b) Support early demux and ipv6.
+
+changelogs:
+v4 -> v5 (Paolo Abeni):
+- Add CONFIG_BASE_SMALL with which udp hash4 does nothing
+
+v3 -> v4 (Willem de Bruijn):
+- fix mistakes in udp_pernet_table_alloc()
+
+RFCv2 -> v3 (Gur Stavi):
+- minor fix in udp_hashslot2() and udp_table_init()
+- add rcu sync in rehash4()
+
+RFCv1 -> RFCv2:
+- add a new struct for hslot2
+- remove the sockopt UDP_HASH4 because it has little side effect for
+  unconnected sockets
+- add rehash in connect()
+- re-organize the patch into 3 smaller ones
+- other minor fix
+
+v4:
+https://lore.kernel.org/all/20241012012918.70888-1-lulie@linux.alibaba.com/
+v3:
+https://lore.kernel.org/all/20241010090351.79698-1-lulie@linux.alibaba.com/
+RFCv2:
+https://lore.kernel.org/all/20240924110414.52618-1-lulie@linux.alibaba.com/
+RFCv1:
+https://lore.kernel.org/all/20240913100941.8565-1-lulie@linux.alibaba.com/
+
+Philo Lu (3):
+  net/udp: Add a new struct for hash2 slot
+  net/udp: Add 4-tuple hash list basis
+  ipv4/udp: Add 4-tuple hash for connected socket
+
+ include/linux/udp.h |  11 +++
+ include/net/udp.h   | 111 +++++++++++++++++++++-
+ net/ipv4/udp.c      | 217 +++++++++++++++++++++++++++++++++++++++-----
+ net/ipv6/udp.c      |  17 ++--
+ 4 files changed, 317 insertions(+), 39 deletions(-)
+
+--
 2.32.0.3.g01195cf9f
 
