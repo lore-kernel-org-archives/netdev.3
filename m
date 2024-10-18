@@ -1,69 +1,259 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB69D1D7E3D;
-	Fri, 18 Oct 2024 14:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5E21877;
+	Fri, 18 Oct 2024 14:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729260347; cv=none; b=n+ENY5YnYS8fDyjaaaEgYPSTc/MGEbyLPL7PC5LYyMdYLaVfBx8X7kAWPgEMEkMujr8CrkTu/ztO7s7Yf5TKilum7AS22ILAIAj71X3PH4ZHyMzJXyvs3CrcweG2R1vkvoWY5aX10xx6JlXK4g04CZpKLicRhvOYe+iwi0NKi8E=
+	t=1729260778; cv=none; b=q/bJS2AdlxqdKBlggnlhfMJv8Ze9gpSUzucL/nS2TpnU84IuRgMD6+HVU7QbRhOmxE/AiQ17fSPc9kc1sNZSlPNPspveffnNJs55STTxDBI30I/hw9MWqrrFmEHFwQIbNBErBb1Ownpt30/+EBTdj+Aj0Q6EVmLsOABLzAk1cAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729260347; c=relaxed/simple;
-	bh=+RCB/8imlMP7I0R5+dLbRC2pOf22HBd0bzGYlLVD34w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tGAvlmM3y39qFkeC+4cqBID1ZWqj/jb1sCtPduGthPGNeVTAO5xbSpQWSXO0stt3+EVTG6npBdb1/BAcU2dbNdaMz4msGjK8cfkeCburZoMgMSqoIhX5dwDPQUVJqhOa8t1MmkZoYgaaquke/RQlcsKoK4xzZ7bhNhW4/SxxJxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JkgqFFyS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1729260778; c=relaxed/simple;
+	bh=AmilhHxrBpWJmfseO07qPvXsrQP43giiH4t8zyyH9Lg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o7wisaPzVXJB+jEkUGYU9vtNmbIJ8/nxWwy7KyWn8jbfJ4xRSv8fA9ursKaWLGuGj5pCVSQplUTFBFmgd5G+ozNhoB1GlcoQR1U6ZH4U7P+vuFJMHxKmIKDeZCsa+9WSH65mICaRqwQuNy0R1cyvPA03SQz1jDGR4/bUY2/CQz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IAkcC8o5; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JkgqFFyS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9xModl0LXKR97D6bTC1dOF0MC+8n7lokOrXW7ATMYxc=; b=JkgqFFyS99QUgDr4rm8w6lew7p
-	aboc3E6bt0G5NM5qv/32E/rRv0wVI/+yspOhXMrD5lwreXPsg2GJoNkPWQkiUlmW95/6fMgObZ6I8
-	kHxLgWGBysCX2uFuqtL1ER2HOGpOePi+HEeT7Jlpu9EMefe9UrkNw8YoGD/Jwr3sXIE8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t1nbc-00AXbU-7a; Fri, 18 Oct 2024 16:05:28 +0200
-Date: Fri, 18 Oct 2024 16:05:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
-	sboyd@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep
- function
-Message-ID: <e08ce8e2-a44a-425a-aef7-b9fd046970aa@lunn.ch>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-6-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IAkcC8o5"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1729260772;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xoASWoTi+c/T+PN9tatzMLSW/PQgL89x7z70TOYinwU=;
+	b=IAkcC8o5vxKivXfyxn5A4vrWebQiTQH6yPLn+1ICoBJMlBb5IQe8zEA3lF9WOoWbUqPv5L
+	k7FjM5d/ZN8XskOTrrSziWbNEQnbB4epKGhSeDwPOpYXziMVL4MRgU9Ah1pJd4Wm/HmBAr
+	LoM9Cq1foRhca9Qx9AytkIwOlGew6rM=
+From: Yajun Deng <yajun.deng@linux.dev>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH v3 net-next] net: vlan: Use vlan_prio instead of vlan_qos in mapping
+Date: Fri, 18 Oct 2024 22:12:33 +0800
+Message-Id: <20241018141233.2568-1-yajun.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016035214.2229-6-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-> +/// This function can only be used in a nonatomic context.
-> +pub fn fsleep(delta: time::Delta) {
-> +    // SAFETY: FFI call.
-> +    unsafe {
-> +        // Convert the duration to microseconds and round up to preserve
-> +        // the guarantee; fsleep sleeps for at least the provided duration,
-> +        // but that it may sleep for longer under some circumstances.
-> +        bindings::fsleep(
-> +            ((delta.as_nanos() + time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC) as c_ulong,
+The vlan_qos member is used to save the vlan qos, but we only save the
+priority. Also, we will get the priority in vlan netlink and proc.
+We can just save the vlan priority using vlan_prio, so we can use vlan_prio
+to get the priority directly.
 
-You add a as_sec() helper, but then don't use it? If the helper does
-not do what you want, maybe the helper is wrong? This is part of why
-we say all APIs should have a user.
+For flexibility, we introduced vlan_dev_get_egress_priority() helper
+function. After this patch, we will call vlan_dev_get_egress_priority()
+instead of vlan_dev_get_egress_qos_mask() in irdma.ko and rdma_cm.ko.
+Because we don't need the shift and mask operations anymore.
 
-	Andrew
+There is no functional changes.
+
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+---
+v3: Remove the restriction that the maximum vlan priority is 7.
+v2: Add more detailed comments and tests.
+v1: https://lore.kernel.org/all/20241009132302.2902-1-yajun.deng@linux.dev/
+---
+ include/linux/if_vlan.h  | 26 +++++++++++++++++++-------
+ net/8021q/vlan.h         |  4 ++--
+ net/8021q/vlan_dev.c     | 23 ++++++++++++-----------
+ net/8021q/vlan_netlink.c |  4 ++--
+ net/8021q/vlanproc.c     |  4 ++--
+ 5 files changed, 37 insertions(+), 24 deletions(-)
+
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index c1645c86eed9..7cc36853c017 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -150,12 +150,12 @@ extern __be16 vlan_dev_vlan_proto(const struct net_device *dev);
+ /**
+  *	struct vlan_priority_tci_mapping - vlan egress priority mappings
+  *	@priority: skb priority
+- *	@vlan_qos: vlan priority: (skb->priority << 13) & 0xE000
++ *	@vlan_prio: vlan priority
+  *	@next: pointer to next struct
+  */
+ struct vlan_priority_tci_mapping {
+ 	u32					priority;
+-	u16					vlan_qos;
++	u8					vlan_prio;
+ 	struct vlan_priority_tci_mapping	*next;
+ };
+ 
+@@ -204,8 +204,8 @@ static inline struct vlan_dev_priv *vlan_dev_priv(const struct net_device *dev)
+ 	return netdev_priv(dev);
+ }
+ 
+-static inline u16
+-vlan_dev_get_egress_qos_mask(struct net_device *dev, u32 skprio)
++static inline u8
++vlan_dev_get_egress_priority(struct net_device *dev, u32 skprio)
+ {
+ 	struct vlan_priority_tci_mapping *mp;
+ 
+@@ -214,15 +214,21 @@ vlan_dev_get_egress_qos_mask(struct net_device *dev, u32 skprio)
+ 	mp = vlan_dev_priv(dev)->egress_priority_map[(skprio & 0xF)];
+ 	while (mp) {
+ 		if (mp->priority == skprio) {
+-			return mp->vlan_qos; /* This should already be shifted
+-					      * to mask correctly with the
+-					      * VLAN's TCI */
++			return mp->vlan_prio;
+ 		}
+ 		mp = mp->next;
+ 	}
+ 	return 0;
+ }
+ 
++static inline u16
++vlan_dev_get_egress_qos_mask(struct net_device *dev, u32 skprio)
++{
++	u8 vlan_prio = vlan_dev_get_egress_priority(dev, skprio);
++
++	return (vlan_prio << VLAN_PRIO_SHIFT) & VLAN_PRIO_MASK;
++}
++
+ extern bool vlan_do_receive(struct sk_buff **skb);
+ 
+ extern int vlan_vid_add(struct net_device *dev, __be16 proto, u16 vid);
+@@ -269,6 +275,12 @@ static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
+ 	return 0;
+ }
+ 
++static inline u8 vlan_dev_get_egress_priority(struct net_device *dev,
++					      u32 skprio)
++{
++	return 0;
++}
++
+ static inline u16 vlan_dev_get_egress_qos_mask(struct net_device *dev,
+ 					       u32 skprio)
+ {
+diff --git a/net/8021q/vlan.h b/net/8021q/vlan.h
+index 5eaf38875554..b28875c4ac86 100644
+--- a/net/8021q/vlan.h
++++ b/net/8021q/vlan.h
+@@ -126,9 +126,9 @@ void vlan_filter_drop_vids(struct vlan_info *vlan_info, __be16 proto);
+ 
+ /* found in vlan_dev.c */
+ void vlan_dev_set_ingress_priority(const struct net_device *dev,
+-				   u32 skb_prio, u16 vlan_prio);
++				   u32 skb_prio, u8 vlan_prio);
+ int vlan_dev_set_egress_priority(const struct net_device *dev,
+-				 u32 skb_prio, u16 vlan_prio);
++				 u32 skb_prio, u8 vlan_prio);
+ void vlan_dev_free_egress_priority(const struct net_device *dev);
+ int vlan_dev_change_flags(const struct net_device *dev, u32 flag, u32 mask);
+ void vlan_dev_get_realdev_name(const struct net_device *dev, char *result,
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index 458040e8a0e0..5d153f1a7963 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -155,35 +155,36 @@ static int vlan_dev_change_mtu(struct net_device *dev, int new_mtu)
+ }
+ 
+ void vlan_dev_set_ingress_priority(const struct net_device *dev,
+-				   u32 skb_prio, u16 vlan_prio)
++				   u32 skb_prio, u8 vlan_prio)
+ {
+ 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+ 
+-	if (vlan->ingress_priority_map[vlan_prio & 0x7] && !skb_prio)
++	vlan_prio = vlan_prio & 0x7;
++	if (vlan->ingress_priority_map[vlan_prio] && !skb_prio)
+ 		vlan->nr_ingress_mappings--;
+-	else if (!vlan->ingress_priority_map[vlan_prio & 0x7] && skb_prio)
++	else if (!vlan->ingress_priority_map[vlan_prio] && skb_prio)
+ 		vlan->nr_ingress_mappings++;
+ 
+-	vlan->ingress_priority_map[vlan_prio & 0x7] = skb_prio;
++	vlan->ingress_priority_map[vlan_prio] = skb_prio;
+ }
+ 
+ int vlan_dev_set_egress_priority(const struct net_device *dev,
+-				 u32 skb_prio, u16 vlan_prio)
++				 u32 skb_prio, u8 vlan_prio)
+ {
+ 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+ 	struct vlan_priority_tci_mapping *mp = NULL;
+ 	struct vlan_priority_tci_mapping *np;
+-	u32 vlan_qos = (vlan_prio << VLAN_PRIO_SHIFT) & VLAN_PRIO_MASK;
+ 
++	vlan_prio = vlan_prio & 0x7;
+ 	/* See if a priority mapping exists.. */
+ 	mp = vlan->egress_priority_map[skb_prio & 0xF];
+ 	while (mp) {
+ 		if (mp->priority == skb_prio) {
+-			if (mp->vlan_qos && !vlan_qos)
++			if (mp->vlan_prio && !vlan_prio)
+ 				vlan->nr_egress_mappings--;
+-			else if (!mp->vlan_qos && vlan_qos)
++			else if (!mp->vlan_prio && vlan_prio)
+ 				vlan->nr_egress_mappings++;
+-			mp->vlan_qos = vlan_qos;
++			mp->vlan_prio = vlan_prio;
+ 			return 0;
+ 		}
+ 		mp = mp->next;
+@@ -197,14 +198,14 @@ int vlan_dev_set_egress_priority(const struct net_device *dev,
+ 
+ 	np->next = mp;
+ 	np->priority = skb_prio;
+-	np->vlan_qos = vlan_qos;
++	np->vlan_prio = vlan_prio;
+ 	/* Before inserting this element in hash table, make sure all its fields
+ 	 * are committed to memory.
+ 	 * coupled with smp_rmb() in vlan_dev_get_egress_qos_mask()
+ 	 */
+ 	smp_wmb();
+ 	vlan->egress_priority_map[skb_prio & 0xF] = np;
+-	if (vlan_qos)
++	if (vlan_prio)
+ 		vlan->nr_egress_mappings++;
+ 	return 0;
+ }
+diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
+index cf5219df7903..f62d8320c5b4 100644
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -261,11 +261,11 @@ static int vlan_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 		for (i = 0; i < ARRAY_SIZE(vlan->egress_priority_map); i++) {
+ 			for (pm = vlan->egress_priority_map[i]; pm;
+ 			     pm = pm->next) {
+-				if (!pm->vlan_qos)
++				if (!pm->vlan_prio)
+ 					continue;
+ 
+ 				m.from = pm->priority;
+-				m.to   = (pm->vlan_qos >> 13) & 0x7;
++				m.to   = pm->vlan_prio;
+ 				if (nla_put(skb, IFLA_VLAN_QOS_MAPPING,
+ 					    sizeof(m), &m))
+ 					goto nla_put_failure;
+diff --git a/net/8021q/vlanproc.c b/net/8021q/vlanproc.c
+index fa67374bda49..a5a5b8fbb054 100644
+--- a/net/8021q/vlanproc.c
++++ b/net/8021q/vlanproc.c
+@@ -266,8 +266,8 @@ static int vlandev_seq_show(struct seq_file *seq, void *offset)
+ 		const struct vlan_priority_tci_mapping *mp
+ 			= vlan->egress_priority_map[i];
+ 		while (mp) {
+-			seq_printf(seq, "%u:%d ",
+-				   mp->priority, ((mp->vlan_qos >> 13) & 0x7));
++			seq_printf(seq, "%u:%u ",
++				   mp->priority, mp->vlan_prio);
+ 			mp = mp->next;
+ 		}
+ 	}
+-- 
+2.25.1
+
