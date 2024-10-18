@@ -1,147 +1,190 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2752015383B;
-	Fri, 18 Oct 2024 02:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729218053; cv=none; b=A3u93sqqjc1IHzai7CjTana0JOFjLPPNN99xIcarKJi8l8sNX5za+aHx3f0uHpBKzAzCvqD9QjGtcGRgjCuHb51UM8QocrUKXCHfOq76aL7hAo6l0ofky+NNXIvuABPdbRgYXR6hahcHUFtE3MD9BW5RmWXDBtBPtsA5dYLJE9o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729218053; c=relaxed/simple;
-	bh=ZAdOfCJflPq+GrEYfUATws0guiiEbaONG0bAC5Q5BOw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kvz6V1ZtYSDjFe4wRzYIriF4vivFpBafT75bpdst30RxgMwIrwbVx1p9yqOpYCG9vv46d1MclyRZYUTRR4cbIoYEqkoeIfQPObJHpugJFSPi56WOEK1f4jkJEvNrN7sUJaeCqJniIY6zKlYqxkYHrcIftlcUkUHHdYwIzeuM9gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XV7fP3pNpzfdHD;
-	Fri, 18 Oct 2024 10:18:21 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5CDCD1402C8;
-	Fri, 18 Oct 2024 10:20:49 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 18 Oct
- 2024 10:20:48 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
-	<hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<maciej.fijalkowski@intel.com>, <vedang.patel@intel.com>,
-	<jithu.joseph@intel.com>, <andre.guedes@intel.com>, <horms@kernel.org>,
-	<jacob.e.keller@intel.com>, <sven.auhagen@voleatech.de>,
-	<alexander.h.duyck@intel.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH v2 net 4/4] ixgbevf: Fix passing 0 to ERR_PTR in ixgbevf_run_xdp()
-Date: Fri, 18 Oct 2024 10:37:34 +0800
-Message-ID: <20241018023734.1912166-5-yuehaibing@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFB482488
+	for <netdev@vger.kernel.org>; Fri, 18 Oct 2024 02:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729218073; cv=fail; b=HGgJYpuJRj16QaiQRTp3QTf1ZCGG7DiaKBpCr2TAKlom9/XVQyJvQkpG5oRtSfsrVMXMsjhPfprC8oSGI7y3md9j/fCIN3gB4d7ohLb2VFRQ+XRYNG3D0QLuXJ2fcmpwM7OQR2HXxKnyJWC8VXRbuX0qbw2DJbj0+UV+aSgdipY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729218073; c=relaxed/simple;
+	bh=YGKMkNZ3aAm9eukBslO3OmQNlZGHPjcxaZGy2Bgdj2k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=I8EbbTwPsGFmaUxMSnIxQrgSO5ixlPDvjjjgIQ/A3vQKQo61hCBZLoP2h4NWJ2qsCvn3V/lFZAiI1wCHaClMvsMwy+aFwXUxp3qGGP4C9qNg07Tag+7bvdpVUsOlwHNPdsk7+muTTM6yagesJWdXTIB4tHimcf41Y1yhwGayqvA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=qnOKKMIw; arc=fail smtp.client-ip=40.107.20.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="qnOKKMIw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J7RU5xXvAKId2jlgplgr8ETXEyMT2mAtmNDt1GlbSuempcYHUDFe2DhV61rw+P/i4W6KcjEqj2rQMYg7dZwJHrHTFk+qtuOGxN2jOKQcQPjZAofAJHmCUcAIi2b+ul+k8KLseva7U3WQv2YQ+weL0OAoDckPehN3BJxs9GumV2NMFzlJUDQ5EU7cISmWUnln8Ze5D+ptujsP92AdolN6Ewonc6oSgst0kvPT/w3MkdJ7GGnUgIFSRMaX1Dy8yBp875YfnwYeIjgYEFFR4hgXUOZtiU+82d8OgqV4/tOBMeIIgRI3b2P+HUGgy47DvwoTY/rm8HbFNo6J1SBSd00zUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y1GniyA0oNZaWZ3hYJBf1UMy85pPBhxwnim1KCZWz6E=;
+ b=gzzR/F1mhJDkvM4zTiyv8L0ASGZ2thhfK80beepY7HJ/gf7bJY1sgpTWDGNoe0n+9L46iHNJfUsrmkfOV0Wc5VTzK5505EA4t0EzjoUblj8+2C++ucnXk2ZM6ByeH8KZvsUV2aiEtszq65PUlK4oX7QFJU8ul4MgY2+6w9LND1dx4+CLUuA4vnj3NIzUv6J0Xp1q6C4E9eOFKGOYmYQWJ2Fkda3Gx8MYQNAWjt0zIjsqjkQMH4VLZX1PU0N/mDKzlriElzVqGOTfdpKVpSA2+SWnO0WwCjMRZOk2dQ4LnU8TfIPgBYhuBqS2LnjFCr6WSFyoOyGe0J8C0S/bqY5ONw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.6.100) smtp.rcpttodomain=nokia-bell-labs.com
+ smtp.mailfrom=nokia-bell-labs.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=nokia-bell-labs.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y1GniyA0oNZaWZ3hYJBf1UMy85pPBhxwnim1KCZWz6E=;
+ b=qnOKKMIwkl9Ukym8Ndvb1jDcq79t8HwZf2d7cY83aWbl4B0xZhGbtC2MIeRvl2peVT3UPgQ8jQf0VzXv1fppBu/R2Xbi/P0MHOeaWnp27OjmgFwBvUdbL2M5kOW36owDRHaJzApWpmEyZCM45BzXIk0EIlRm1j0EElcDOmlCUzc/PB2GDHpM4nXBnUqzNe8Kc68OU0S2Ww0k1qDEeJ7zkp0iadrfusuH0gbF9Q2WnEEw6NWpNCRAS0az4Y6/68CQXdSl9CglcgYx25Xis0o9388yzWH6ykS5FUycY4mmHl5nJQi/1MPKjGovPp0T0jlAwyavAw4y0rAIVYkATfNMAg==
+Received: from AS9PR07CA0060.eurprd07.prod.outlook.com (2603:10a6:20b:46b::31)
+ by AS2PR07MB9053.eurprd07.prod.outlook.com (2603:10a6:20b:544::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17; Fri, 18 Oct
+ 2024 02:21:07 +0000
+Received: from AM1PEPF000252DB.eurprd07.prod.outlook.com
+ (2603:10a6:20b:46b:cafe::cf) by AS9PR07CA0060.outlook.office365.com
+ (2603:10a6:20b:46b::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.10 via Frontend
+ Transport; Fri, 18 Oct 2024 02:21:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.6.100)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.6.100 as permitted sender)
+ receiver=protection.outlook.com; client-ip=131.228.6.100;
+ helo=fr711usmtp2.zeu.alcatel-lucent.com; pr=C
+Received: from fr711usmtp2.zeu.alcatel-lucent.com (131.228.6.100) by
+ AM1PEPF000252DB.mail.protection.outlook.com (10.167.16.53) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8069.17 via Frontend Transport; Fri, 18 Oct 2024 02:21:07 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fr711usmtp2.zeu.alcatel-lucent.com (GMO) with ESMTP id 49I2L0MU023685;
+	Fri, 18 Oct 2024 02:21:01 GMT
+From: chia-yu.chang@nokia-bell-labs.com
+To: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, ij@kernel.org,
+        ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+        g.white@CableLabs.com, ingemar.s.johansson@ericsson.com,
+        mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+        Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v2 net-next 00/14] AccECN protocol preparation patch series
+Date: Fri, 18 Oct 2024 04:20:37 +0200
+Message-Id: <20241018022051.39966-1-chia-yu.chang@nokia-bell-labs.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241018023734.1912166-1-yuehaibing@huawei.com>
-References: <20241018023734.1912166-1-yuehaibing@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DB:EE_|AS2PR07MB9053:EE_
+X-MS-Office365-Filtering-Correlation-Id: 304b8e29-404a-4abc-9a00-08dcef1b8664
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|7416014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZTlEL2tINnFJemI2Zyt5QVl5V09tQldUZnpBZGNQWXcyVWFTV24zeXJNYitV?=
+ =?utf-8?B?M2QwUzFnayt5VHlwVS9ldTJDMXI4djNUMlZ2SmZZb3hkQlhVTzRLVW1XVld1?=
+ =?utf-8?B?ZHorSStaZTk0cXdZdFZUNHpqZCt0RFVkeUkwK1doQ3FWaml1amYyZVV3UnR3?=
+ =?utf-8?B?Y0dPSlZMNWxUdmZuMDJPT09PNkVnNWZGZmw2R0lCb3ZEOUR2M3Jsc3QwcENC?=
+ =?utf-8?B?UkhVeFI1eW9YWktyOGYyRjZoNnFHVVhaVGZraFU1ZStGSmhacTZ0bWNTdHA3?=
+ =?utf-8?B?WE9ieUR4dDZ5VW1pTXhnLzdjZ3pqRS9ydlBRdE5pZk1kR3RQUGNnUlN0RG1z?=
+ =?utf-8?B?Rmw2VUppcmZHVUE2ZHdGNWJuemNyK2lYTFhqSnQ1NkhxS28xS1Vpc1kzV3Jp?=
+ =?utf-8?B?dG13ZFdRTGlic3JOc1pBbGhzUTM4WXY0ODhucWZhMklCV2gvS3NIc3A2dXdi?=
+ =?utf-8?B?QzRtdDVIZ0hsclFNdkFSRmh6dHlsL3cwTW1WcVBDVVBWWmM2ODlQK0xKSW5t?=
+ =?utf-8?B?VnZrWjZ1VlJUUFc1a0dCcGJuc1pyZUs1Zk4rcUJQWWtGOFlidEg4SE5MYmdK?=
+ =?utf-8?B?SkFic3dhNmRvYnZ4WWpFSDErTDhqZE1laHFTRDNxR1MrMDRIQ01vaStTMXRB?=
+ =?utf-8?B?R3AxTFJIcExVdURHR1VMUUw5U1MvV1AzZ1R3TWFuNnVHSVFlbXI0Q1NCYUlZ?=
+ =?utf-8?B?U3RXb1BBdEJacm9Sd09MSVFoYi9qMTJzQ2NHVmVNYmNaY3pxZzRzRytGNXNQ?=
+ =?utf-8?B?cmtnbW9sck9WTE9iRk1QbHNKcmpaWlV6Mlg4K2J1K2lBdUN4NTZkOXQveXB4?=
+ =?utf-8?B?YlZteGdBN1pXMmltbllpWlpmS1o4UnNRdjhwdktvMFdEMnJ5K0NaSjFydXZV?=
+ =?utf-8?B?U053azVsTHRJSnZjS1FSb1EvYzZMK0g1c3BnWDVjMmg2elNIUUgrcm5TOUVJ?=
+ =?utf-8?B?V3loanFGUVJPTUFOTFpkUDRHcCtFdGtZVFB0NHpneTFOdE9hOTlwcFZ6VkN0?=
+ =?utf-8?B?dkk0TVU2ZmJuMXN0QWUyZ3BCS3kyWE9ncDdwWS94VU9uN3JuZjN5aloyc2ZG?=
+ =?utf-8?B?N0ltSjJCOWlQTDNEY0lhcXNnTHBWOXpSTmNuU0RnbXdrN29mRDl3VkhnanNj?=
+ =?utf-8?B?QWF2bUppbWd0dDNSUWJVY2orWFVSSXNFVms4K2pJYXVjYzgvMHR6aGFOTllh?=
+ =?utf-8?B?UnUwSUluLzVndVNmeXNTajNSUmdlTUgzN3EvNXF1dzFEOS9ub2I2WERSdVY2?=
+ =?utf-8?B?U1hISlNIZDM0SVVleXQvTEpXeWRGMkFydHpHUUw0amxKcTVWcWJwMXlTQy9S?=
+ =?utf-8?B?Uk1QelplYUhjODBaNVd5U2xaSHNwT3dTR3V4N3B2cFBKRThUanlpM2dxN2w5?=
+ =?utf-8?B?VURGbitBOEJtNGVvcC9wbHptbkNUbnVYTDNYbkFSeG5BYldRTTBYN2t5Yjg4?=
+ =?utf-8?B?QytLQ3lpbEhlRU03dEgwWTE4VHl2RkRHS3FGZ0R4d2d2eDF4eWxtM0hlMlhu?=
+ =?utf-8?B?L0VHZllXR1NYKzg3UXNYTFNkVnRGWWpCM2QwSnVnSFZQazNzMGhmaDZpMDRa?=
+ =?utf-8?B?Ui9IcUZEUGEzdlQ1bUtTMXZQQWNybzc2MlIvbytkbE1lQ2dqeFRaMXVWazlx?=
+ =?utf-8?B?blpHSTh5dzhWSDBWSks2Q09HMDZCL25VSU9WMnZVYW5nQTMxcER2THVuaFMr?=
+ =?utf-8?B?RjFIV2dMWjZQKytqd0ZwZUt5MXAwNEYrSk8ranBOcUNNY25UbnczWUgzNThH?=
+ =?utf-8?B?Vm4rUjZodDFxbVV0b3hrbEd1UXB5WXZSNlBTUFdJSEVXRncyMFlqT1VIRkRh?=
+ =?utf-8?B?T0p5MW9keHo1M0dxR2JlL0Q0NzdneG10U1ZLTGlJdTcrZlpnaDdDbEZPVExp?=
+ =?utf-8?B?L3MwbURHcThUNDNtcnQ3cWM3RWRTbnRqVUtMK3RSb2ZsQWhoVGtZZEZubFpR?=
+ =?utf-8?Q?BzZwkOZqW94=3D?=
+X-Forefront-Antispam-Report:
+	CIP:131.228.6.100;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fr711usmtp2.zeu.alcatel-lucent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(7416014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 02:21:07.6569
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 304b8e29-404a-4abc-9a00-08dcef1b8664
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.6.100];Helo=[fr711usmtp2.zeu.alcatel-lucent.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252DB.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR07MB9053
 
-ixgbevf_run_xdp() converts customed xdp action to a negative error code
-with the sk_buff pointer type which be checked with IS_ERR in
-ixgbevf_clean_rx_irq(). Remove this error pointer handing instead use
-plain int return value.
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Fixes: c7aec59657b6 ("ixgbevf: Add XDP support for pass and drop actions")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 23 ++++++++-----------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+Hello,
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 149911e3002a..183d2305d058 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -732,10 +732,6 @@ static bool ixgbevf_cleanup_headers(struct ixgbevf_ring *rx_ring,
- 				    union ixgbe_adv_rx_desc *rx_desc,
- 				    struct sk_buff *skb)
- {
--	/* XDP packets use error pointer so abort at this point */
--	if (IS_ERR(skb))
--		return true;
--
- 	/* verify that the packet does not have any known errors */
- 	if (unlikely(ixgbevf_test_staterr(rx_desc,
- 					  IXGBE_RXDADV_ERR_FRAME_ERR_MASK))) {
-@@ -1044,9 +1040,9 @@ static int ixgbevf_xmit_xdp_ring(struct ixgbevf_ring *ring,
- 	return IXGBEVF_XDP_TX;
- }
- 
--static struct sk_buff *ixgbevf_run_xdp(struct ixgbevf_adapter *adapter,
--				       struct ixgbevf_ring  *rx_ring,
--				       struct xdp_buff *xdp)
-+static int ixgbevf_run_xdp(struct ixgbevf_adapter *adapter,
-+			   struct ixgbevf_ring *rx_ring,
-+			   struct xdp_buff *xdp)
- {
- 	int result = IXGBEVF_XDP_PASS;
- 	struct ixgbevf_ring *xdp_ring;
-@@ -1080,7 +1076,7 @@ static struct sk_buff *ixgbevf_run_xdp(struct ixgbevf_adapter *adapter,
- 		break;
- 	}
- xdp_out:
--	return ERR_PTR(-result);
-+	return result;
- }
- 
- static unsigned int ixgbevf_rx_frame_truesize(struct ixgbevf_ring *rx_ring,
-@@ -1122,6 +1118,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 	struct sk_buff *skb = rx_ring->skb;
- 	bool xdp_xmit = false;
- 	struct xdp_buff xdp;
-+	int xdp_res;
- 
- 	/* Frame size depend on rx_ring setup when PAGE_SIZE=4K */
- #if (PAGE_SIZE < 8192)
-@@ -1165,11 +1162,11 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 			/* At larger PAGE_SIZE, frame_sz depend on len size */
- 			xdp.frame_sz = ixgbevf_rx_frame_truesize(rx_ring, size);
- #endif
--			skb = ixgbevf_run_xdp(adapter, rx_ring, &xdp);
-+			xdp_res = ixgbevf_run_xdp(adapter, rx_ring, &xdp);
- 		}
- 
--		if (IS_ERR(skb)) {
--			if (PTR_ERR(skb) == -IXGBEVF_XDP_TX) {
-+		if (xdp_res) {
-+			if (xdp_res == IXGBEVF_XDP_TX) {
- 				xdp_xmit = true;
- 				ixgbevf_rx_buffer_flip(rx_ring, rx_buffer,
- 						       size);
-@@ -1189,7 +1186,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 		}
- 
- 		/* exit if we failed to retrieve a buffer */
--		if (!skb) {
-+		if (!xdp_res && !skb) {
- 			rx_ring->rx_stats.alloc_rx_buff_failed++;
- 			rx_buffer->pagecnt_bias++;
- 			break;
-@@ -1203,7 +1200,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 			continue;
- 
- 		/* verify the packet layout is correct */
--		if (ixgbevf_cleanup_headers(rx_ring, rx_desc, skb)) {
-+		if (xdp_res || ixgbevf_cleanup_headers(rx_ring, rx_desc, skb)) {
- 			skb = NULL;
- 			continue;
- 		}
+This patch series is grouped in preparation for the AccECN protocol, and is
+part of the full AccECN patch series.
+
+The full patch series can be found in
+https://github.com/L4STeam/linux-net-next/commits/upstream_l4steam/
+
+The Accurate ECN draft can be found in
+https://datatracker.ietf.org/doc/html/draft-ietf-tcpm-accurate-ecn-28
+
+Chia-Yu Chang (2):
+  tcp: use BIT() macro in include/net/tcp.h
+  net: sysctl: introduce sysctl SYSCTL_FIVE
+
+Ilpo Järvinen (12):
+  tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
+  tcp: create FLAG_TS_PROGRESS
+  tcp: extend TCP flags to allow AE bit/ACE field
+  tcp: reorganize SYN ECN code
+  tcp: rework {__,}tcp_ecn_check_ce() -> tcp_data_ecn_check()
+  tcp: helpers for ECN mode handling
+  gso: AccECN support
+  gro: prevent ACE field corruption & better AccECN handling
+  tcp: AccECN support to tcp_add_backlog
+  tcp: allow ECN bits in TOS/traffic class
+  tcp: Pass flags to __tcp_send_ack
+  tcp: fast path functions later
+
+ include/linux/netdev_features.h |   5 +-
+ include/linux/netdevice.h       |   1 +
+ include/linux/skbuff.h          |   2 +
+ include/linux/sysctl.h          |  17 ++--
+ include/net/tcp.h               | 133 +++++++++++++++++++++-----------
+ include/uapi/linux/tcp.h        |   9 ++-
+ kernel/sysctl.c                 |   2 +-
+ net/ethtool/common.c            |   1 +
+ net/ipv4/bpf_tcp_ca.c           |   2 +-
+ net/ipv4/ip_output.c            |   3 +-
+ net/ipv4/tcp.c                  |   2 +-
+ net/ipv4/tcp_dctcp.c            |   2 +-
+ net/ipv4/tcp_dctcp.h            |   2 +-
+ net/ipv4/tcp_input.c            | 117 ++++++++++++++++------------
+ net/ipv4/tcp_ipv4.c             |  28 +++++--
+ net/ipv4/tcp_minisocks.c        |   6 +-
+ net/ipv4/tcp_offload.c          |  10 ++-
+ net/ipv4/tcp_output.c           |  23 +++---
+ net/ipv6/tcp_ipv6.c             |  26 +++++--
+ net/netfilter/nf_log_syslog.c   |   8 +-
+ 20 files changed, 252 insertions(+), 147 deletions(-)
+
 -- 
 2.34.1
 
