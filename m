@@ -1,98 +1,120 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F0B13C816;
-	Fri, 18 Oct 2024 08:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD23113C816;
+	Fri, 18 Oct 2024 08:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729238798; cv=none; b=SSs9yCSZ7+327yIdtegDxO/H3qhcJs1q7WHJNUS0xCsu87yS/cAQaKguaIRs3V1RRZqNCwiflR8F3Se0dCiYlGfbxI/K7+YGpeQ3Vm95FfuV+BxlUQ3xbKcN1fMFNkyAkjSyH+ty/yi5mUGlNdTxs1nkzuSwSCkPvAGYI38NpfM=
+	t=1729239045; cv=none; b=FjbQz5Rjn+QaMC/yCHrRRD63CUUAr0xPbgKOkAaLbE8siZA4DJH0WTMMov20dZyJKdHZSSL+UqcMcYqFMY9IoW74i2sHxDQqUJmSFMB1GMZtnyLSAs2ykQvkv1tkoPKkBvjsy8BVSlmXvoKFQ+s6TORclHSV/ftJa8X4vYV/O98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729238798; c=relaxed/simple;
-	bh=ANf6BuYGKL8opnpub7chBIoyi0bE06rU2iYJHMT6R38=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
-	 Content-Type; b=ECPOqgOqEwR0ok5oAtxXRkjsm8UeHhIzD313FyCPw86DnflWFY4/P/NxYrbdTEWI2o6Pgyx9GZO0kTb94HgOe9foOnRA2yXYZxaZulbDLJxZofqu8+QfCOeJJIshtnNk8ky4bd2EKviYd16oZBBi7sdfTa7ixbbyTUcqN7oJ+Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E9wltJqq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iPAq467j; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1729239045; c=relaxed/simple;
+	bh=jFx+4sXbfKLfEf5jUr6CTrNp/WjeF8W4rkXKB4Fgn9k=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=uTjQfcaSNfb0JbNMH5dERHWR9yw/eVDgDqjf/gF1cdvoOtImO4EuAVDYUfGLdir88RkFq7TuyDx6iHtqcT9Q0SiIny+KWdn3rSb1OYwf/yvPA9F7kGYS6XFMWfoMOdd1u5RHqsUSXn9bcfONUi/d8XON3mgo/83eB96DEftCPtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QkH9dKdI; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E9wltJqq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iPAq467j"
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729238795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=9qhF6W1c/3/sG23aEO9tLagb3+CHQYJpHJvqkXIB/Ps=;
-	b=E9wltJqqE4fpTBnohMvI18TXh8lPPJ1Xtmu5Vy77l1LIB2eppmb7XTrSNgkqxY1J9iGgqY
-	deOgqo2bNx19ak+L55Px9Y/RlpgE9brajnjSPWAch6FhSgDdXA0XSXbigUYjFSoDA1KsiZ
-	dKPei3MRJhYXcAULfdZSikT4LhmtMgU8R9M4Oi4eL+Z9Aile6jBfvdzz+oYC0RK6Vg2KPC
-	9YE4ulAzTbxmThmqCQJV8lSNJ/lrVSaiVCgYpflQMZSBmx39XQRZgN2lEmgM0VYUOhCFX1
-	Vw6CZAE5hDi7XGzEKarvxVV3Zor6oqprypgIZgO3XRZwjK6ixSnNNUBkzWDlDg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729238795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=9qhF6W1c/3/sG23aEO9tLagb3+CHQYJpHJvqkXIB/Ps=;
-	b=iPAq467jfirDKuvqaYCqXV9px/5Hu6TKGIkeCKSsovGUgr3GHHObss64N8oXRTuUbh1ytG
-	POelUJ7DqUtCAHAA==
-To: Mark Brown <broonie@kernel.org>, Frederic Weisbecker
- <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jonathan
- Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, Alice
- Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, SeongJae Park <sj@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, linux-arch@vger.kernel.org, Heiner Kallweit
- <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, Andy
- Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Dwaipayan
- Ray <dwaipayanray1@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- netdev@vger.kernel.org, linux-sound@vger.kernel.org, Michael Ellerman
- <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@kernel.org>,
- linux-media@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>
-Subject: Re: (subset) [PATCH v3 00/16] timers: Cleanup delay/sleep related mess
-In-Reply-To: <172892295715.1548.770734377772758528.b4-ty@kernel.org>
-Date: Fri, 18 Oct 2024 10:06:33 +0200
-Message-ID: <877ca5al86.fsf@somnus>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QkH9dKdI"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7e6cbf6cd1dso1259507a12.3;
+        Fri, 18 Oct 2024 01:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729239043; x=1729843843; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jFx+4sXbfKLfEf5jUr6CTrNp/WjeF8W4rkXKB4Fgn9k=;
+        b=QkH9dKdIuXYNID59WwMOm45SOVpsHFogRY3LWpG3jmbdHs0P4PV/SSTBfSRyem8251
+         R0/OlIQwtWmiDzhr/sJLr2A8DyKVGPe7G7etMjWkKSyHKLeDe4royR4XOTBW/T+h2wN0
+         xq5TYHsjSVGh/WLYOKEEsPq6cF2PQ//BWIoE62wYQR47rHhS+FoCrRDfYDQzcIxWPDAV
+         AXUkGqd8Xv4TPSvlryXsMpTNnG2w4pYTKb+iOkNKpO9RYlGMrfrEy25JQleSXcGFRS5Q
+         6WsqL0p18MxdZM3gnCG2cBkKw4hersHKL8j5Cdf08b/Rg7pcvRZkQMv2RYqOdcVZOOQR
+         K7Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729239043; x=1729843843;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jFx+4sXbfKLfEf5jUr6CTrNp/WjeF8W4rkXKB4Fgn9k=;
+        b=Btnp9tr/ksSVlyEUcN1yB4UUVcs26GGfRQ5MTUFjJzJnAUZQLUbTLVmce8ZlysPF/F
+         6Psb7qXahIroORJ2w+lRuzFBJQ59wWQyPBafeQgI+WOaQjT6gsmPLEH76jBcQ1SLfgv0
+         lpPGYi1sqcx4SmdGH3a/KAtcF9Xp/+TRKsxaExZs66tSsONEuLNR9/1L4ywIrNSNVUGV
+         z1jSr6Egb7Tuv1s/RlxXhK7+TICzNxJbcrM/AnZjGmMJblG77iy9POnnZ6lepC52tGYY
+         CIFPqMdEYaFP+CzO84dn512tzhTBfTtBvzOlXWMyVg0fP5TnO+WzwEddNLC1BSmI7uKx
+         qsOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVU8r94IG9H3mlYL1pLg8u/inXooKEVZxKg3Aw9To9oJqo/HNTmGUadhIuURpy2Rmdxthj8RL87rEMmKJmbWfs=@vger.kernel.org, AJvYcCVUBnhNnP8fbMF9224HnCdd4XKzDMVztYp4vPlroSnRBD00CKEek4oBa5QTSuADFBx+tpgO9pMK/1DXVTk=@vger.kernel.org, AJvYcCVd/2vHf/cJa/GHIB1/J+XwqVA9AfkxmJuO8N7WRgFXm6fq5in7XYK34arpFIF/GBKcEk4xqpFd@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCSj3hCZBTAe26BLx7jgXB6JtVkKAhpm8ak/XftJYA/o4Y/i72
+	fp9uq3CeUOVljwbQfpALU/q3pR+8IDqAcUKyxQIan6NLcM4KYJH/
+X-Google-Smtp-Source: AGHT+IH7xoRms+6Tltqg2iX0ul7+ix1lcywauF5CQ6oD+OyxG8ms7RT16MNRAqegQ26LiB590c0uKQ==
+X-Received: by 2002:a05:6a21:710a:b0:1d8:b0f5:d887 with SMTP id adf61e73a8af0-1d92c4bac46mr2131330637.2.1729239043042;
+        Fri, 18 Oct 2024 01:10:43 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea333be59sm895472b3a.61.2024.10.18.01.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 01:10:42 -0700 (PDT)
+Date: Fri, 18 Oct 2024 17:10:26 +0900 (JST)
+Message-Id: <20241018.171026.271950414623402396.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgi0dN+hkTb0a29XWaGO1xsmyyJMAQyFJDH+geWZwsfAHw@mail.gmail.com>
+References: <20241016035214.2229-8-fujita.tomonori@gmail.com>
+	<CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
+	<CAH5fLgi0dN+hkTb0a29XWaGO1xsmyyJMAQyFJDH+geWZwsfAHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Hi Mark,
-
-Mark Brown <broonie@kernel.org> writes:
-
-> On Mon, 14 Oct 2024 10:22:17 +0200, Anna-Maria Behnsen wrote:
->> a question about which sleeping function should be used in acpi_os_sleep()
->> started a discussion and examination about the existing documentation and
->> implementation of functions which insert a sleep/delay.
->> 
->> The result of the discussion was, that the documentation is outdated and
->> the implemented fsleep() reflects the outdated documentation but doesn't
->> help to reflect reality which in turns leads to the queue which covers the
->> following things:
->> 
->> [...]
->
-> Applied to
->
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
->
-
-Would it be ok for you, if the patch is routed through tip tree? kernel
-test robot triggers a warning for htmldoc that there is a reference to
-the no longer existing file 'timer-howto.rst':
-
-  https://lore.kernel.org/r/202410161059.a0f6IBwj-lkp@intel.com
-
-Thanks,
-
-	Anna-Maria
+T24gV2VkLCAxNiBPY3QgMjAyNCAxMDo1MjoxNyArMDIwMA0KQWxpY2UgUnlobCA8YWxpY2VyeWhs
+QGdvb2dsZS5jb20+IHdyb3RlOg0KDQo+IE9uIFdlZCwgT2N0IDE2LCAyMDI0IGF0IDEwOjQ14oCv
+QU0gQWxpY2UgUnlobCA8YWxpY2VyeWhsQGdvb2dsZS5jb20+IHdyb3RlOg0KPj4NCj4+IE9uIFdl
+ZCwgT2N0IDE2LCAyMDI0IGF0IDU6NTTigK9BTSBGVUpJVEEgVG9tb25vcmkNCj4+IDxmdWppdGEu
+dG9tb25vcmlAZ21haWwuY29tPiB3cm90ZToNCj4+ID4gKy8vLyBQb2xscyBwZXJpb2RpY2FsbHkg
+dW50aWwgYSBjb25kaXRpb24gaXMgbWV0IG9yIGEgdGltZW91dCBpcyByZWFjaGVkLg0KPj4gPiAr
+Ly8vDQo+PiA+ICsvLy8gYG9wYCBpcyBjYWxsZWQgcmVwZWF0ZWRseSB1bnRpbCBgY29uZGAgcmV0
+dXJucyBgdHJ1ZWAgb3IgdGhlIHRpbWVvdXQgaXMNCj4+ID4gKy8vLyAgcmVhY2hlZC4gVGhlIHJl
+dHVybiB2YWx1ZSBvZiBgb3BgIGlzIHBhc3NlZCB0byBgY29uZGAuDQo+PiA+ICsvLy8NCj4+ID4g
+Ky8vLyBgc2xlZXBfZGVsdGFgIGlzIHRoZSBkdXJhdGlvbiB0byBzbGVlcCBiZXR3ZWVuIGNhbGxz
+IHRvIGBvcGAuDQo+PiA+ICsvLy8gSWYgYHNsZWVwX2RlbHRhYCBpcyBsZXNzIHRoYW4gb25lIG1p
+Y3Jvc2Vjb25kLCB0aGUgZnVuY3Rpb24gd2lsbCBidXN5LXdhaXQuDQo+PiA+ICsvLy8NCj4+ID4g
+Ky8vLyBgdGltZW91dF9kZWx0YWAgaXMgdGhlIG1heGltdW0gdGltZSB0byB3YWl0IGZvciBgY29u
+ZGAgdG8gcmV0dXJuIGB0cnVlYC4NCj4+ID4gKy8vLw0KPj4gPiArLy8vIFRoaXMgbWFjcm8gY2Fu
+IG9ubHkgYmUgdXNlZCBpbiBhIG5vbmF0b21pYyBjb250ZXh0Lg0KPj4gPiArI1ttYWNyb19leHBv
+cnRdDQo+PiA+ICttYWNyb19ydWxlcyEgcmVhZHhfcG9sbF90aW1lb3V0IHsNCj4+ID4gKyAgICAo
+JG9wOmV4cHIsICRjb25kOmV4cHIsICRzbGVlcF9kZWx0YTpleHByLCAkdGltZW91dF9kZWx0YTpl
+eHByKSA9PiB7ew0KPj4gPiArICAgICAgICAjW2NmZyhDT05GSUdfREVCVUdfQVRPTUlDX1NMRUVQ
+KV0NCj4+ID4gKyAgICAgICAgaWYgISRzbGVlcF9kZWx0YS5pc196ZXJvKCkgew0KPj4gPiArICAg
+ICAgICAgICAgLy8gU0FGRVRZOiBGRkkgY2FsbC4NCj4+ID4gKyAgICAgICAgICAgIHVuc2FmZSB7
+DQo+PiA+ICsgICAgICAgICAgICAgICAgJGNyYXRlOjpiaW5kaW5nczo6X19taWdodF9zbGVlcCgN
+Cj4+ID4gKyAgICAgICAgICAgICAgICAgICAgOjpjb3JlOjpmaWxlISgpLmFzX3B0cigpIGFzICpj
+b25zdCBpOCwNCj4+ID4gKyAgICAgICAgICAgICAgICAgICAgOjpjb3JlOjpsaW5lISgpIGFzIGkz
+MiwNCj4+ID4gKyAgICAgICAgICAgICAgICApDQo+PiA+ICsgICAgICAgICAgICB9DQo+PiA+ICsg
+ICAgICAgIH0NCj4+DQo+PiBJIHdvbmRlciBpZiB3ZSBjYW4gdXNlICNbdHJhY2tfY2FsbGVyXSBh
+bmQNCj4+IGNvcmU6OnBhbmljOjpMb2NhdGlvbjo6Y2FsbGVyIFsxXSB0byBkbyB0aGlzIHdpdGhv
+dXQgaGF2aW5nIHRvIHVzZSBhDQo+PiBtYWNybz8gSSBkb24ndCBrbm93IHdoZXRoZXIgaXQgd291
+bGQgd29yaywgYnV0IGlmIGl0IGRvZXMsIHRoYXQgd291bGQNCj4+IGJlIHN1cGVyIGNvb2wuDQoN
+ClNlZW1zIGl0IHdvcmtzLCBubyBuZWVkIHRvIHVzZSBtYWNyby4gVGhhbmtzIGEgbG90IQ0KDQo+
+PiAjW3RyYWNrX2NhbGxlcl0NCj4+IGZuIG1pZ2h0X3NsZWVwKCkgew0KPj4gICAgIGxldCBsb2Nh
+dGlvbiA9IGNvcmU6OnBhbmljOjpMb2NhdGlvbjo6Y2FsbGVyKCk7DQo+PiAgICAgLy8gU0FGRVRZ
+OiBGRkkgY2FsbC4NCj4+ICAgICB1bnNhZmUgew0KPj4gICAgICAgICAkY3JhdGU6OmJpbmRpbmdz
+OjpfX21pZ2h0X3NsZWVwKA0KPj4gICAgICAgICAgICAgbG9jYXRpb24uZmlsZSgpLmFzX2NoYXJf
+cHRyKCksDQo+PiAgICAgICAgICAgICBsb2NhdGlvbi5saW5lKCkgYXMgaTMyLA0KPj4gICAgICAg
+ICApDQo+PiAgICAgfQ0KPj4gfQ0KPiANCj4gQWN0dWFsbHksIHRoaXMgcmFpc2VzIGEgcHJvYmxl
+bSAuLi4gY29yZTo6cGFuaWM6OkxvY2F0aW9uIGRvZXNuJ3QgZ2l2ZQ0KPiB1cyBhIG51bC10ZXJt
+aW5hdGVkIHN0cmluZywgc28gd2UgcHJvYmFibHkgY2FuJ3QgcGFzcyBpdCB0bw0KPiBgX19taWdo
+dF9zbGVlcGAuIFRoZSB0aGluZyBpcywgYDo6Y29yZTo6ZmlsZSEoKWAgZG9lc24ndCBnaXZlIHVz
+IGENCj4gbnVsLXRlcm1pbmF0ZWQgc3RyaW5nIGVpdGhlciwgc28gdGhpcyBjb2RlIGlzIHByb2Jh
+Ymx5IGluY29ycmVjdA0KPiBhcy1pcy4NCg0KQWgsIHdoYXQncyB0aGUgcmVjb21tZW5kZWQgd2F5
+IHRvIGdldCBhIG51bGwtdGVybWluYXRlZCBzdHJpbmcgZnJvbQ0KJnN0cj8NCg==
