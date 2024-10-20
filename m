@@ -1,137 +1,103 @@
-Received: from fallback3.i.mail.ru (fallback3.i.mail.ru [79.137.243.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162EE194C9E;
-	Sun, 20 Oct 2024 21:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.137.243.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068DC1990AE
+	for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 21:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729458904; cv=none; b=J1M3vPPepfWDtpoPfRUzl1yADThliP4gVFXagMOHQH5r5fYsW3eoGvfzMnopJ+hxTTn1Xluxaa0vUvV1lnVN0kJRtLNrywb/mKELAUEucIQQptQ2V4BNoggyxcyFycRLujBSFLJwQ1ZHNSZeGB67SP7ZcGGSwyjnldVjDkqMzBw=
+	t=1729459535; cv=none; b=db9vqiH1sUB5TE+/iQLyspcxO9uvblBe6WnyJYhQbnoUksG+5XxAKAx9c6dJxI8jes2INd/VoxsS7a0284ZUHTJGqoAqJLp84WEDEzivJ/oH+YWHh6sjmLHPfFGFXtvhsdgEfdishwdBpttwJQddDJZl3G+i60tKwUjxroQATWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729458904; c=relaxed/simple;
-	bh=4/goLJkbYMWU9KjQLvQXzQziEVnb89ZrcCKDKvl3Uq4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fj+9Yx9YnSqY1LYCRaHq1ZhKzL6fllmxRGPDIbrJ/WKvSlzr/YvqC0gjld5+rf2JT7WBXJimuHryvHpK90fdeteusEHGG9zXRBnoE3p7ZP7YZAWLxYdciOnkiXcoNenyANrr+cu9SEdDBrhtSVabxpB543V6l106Ab9a0AgPtg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com; spf=pass smtp.mailfrom=jiaxyga.com; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=viEpNdc5; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=jVcukGwU; arc=none smtp.client-ip=79.137.243.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jiaxyga.com
+	s=arc-20240116; t=1729459535; c=relaxed/simple;
+	bh=XkJsm+YQn9dFOqvyQtmGu4r1jDNh0/lklKP+6iMRiwg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r+G2+De8JQb1fdgnZ2eme4caReNFkWLpio9Snult9b5/isIiwXwzHD0MEx8h5gwhpq6kknHKWwjMFdstkv2GYRYBSUW+H9MQl3n2ldQv1oD5wtGq9ZJcNM7y8WSyh19BPviHlqgSX/uKBFZUL871122wOVVI9E7FkDBXM6JQ1yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iF/Oo/pP; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="viEpNdc5";
-	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="jVcukGwU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com; s=mailru;
-	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=nd98pUhkeOqOCtUhwaS8bU34haL7YR32/Ufh68olpbs=;
-	t=1729458901;x=1729548901; 
-	b=viEpNdc5iD498v/jh0LHWX9kZ6hyS0wRsvEpFdXYlHsr891dhyiD6mMoBnTe3sHl5E6TuWhHEDnqGwuhjmSjMhgMm5B9qtxggoiHY+A0MlfNDaFYHmT1fen7f9PJPHQnu0XrdNJkEqHouY4Of91o2ng1XukiZHkWEWceScdesDo=;
-Received: from [10.113.175.237] (port=41532 helo=smtp61.i.mail.ru)
-	by fallback3.i.mail.ru with esmtp (envelope-from <danila@jiaxyga.com>)
-	id 1t2cz6-00FqQf-AS; Sun, 20 Oct 2024 23:57:08 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
-	; s=mailru; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:To:Cc:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
-	X-Cloud-Ids:Disposition-Notification-To;
-	bh=nd98pUhkeOqOCtUhwaS8bU34haL7YR32/Ufh68olpbs=; t=1729457828; x=1729547828; 
-	b=jVcukGwUdVMvol1n2TVU4FIVsyLQ+XHZ0W1UcsqcopZHOFx9YrygqjjfqAaWIU3sSDJ6tub2q0R
-	GxR1e8d0av3/cRF/53CPfYc/kIHcrbUs1EKAGRdluFEzMvFFjFut15jA5egf+600XxDrPst35S+IR
-	fcjwikbIjh18MM+U7yc=;
-Received: by exim-smtp-669df98d5-42lq6 with esmtpa (envelope-from <danila@jiaxyga.com>)
-	id 1t2cyr-00000000L55-3ddY; Sun, 20 Oct 2024 23:56:54 +0300
-From: Danila Tikhonov <danila@jiaxyga.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andersson@kernel.org,
-	konradybcio@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kees@kernel.org,
-	tony.luck@intel.com,
-	gpiccoli@igalia.com,
-	quic_rjendra@quicinc.com,
-	andre.przywara@arm.com,
-	quic_sibis@quicinc.com,
-	igor.belwon@mentallysanemainliners.org,
-	davidwronek@gmail.com,
-	ivo.ivanov.ivanov1@gmail.com,
-	neil.armstrong@linaro.org,
-	heiko.stuebner@cherry.de,
-	rafal@milecki.pl,
-	lpieralisi@kernel.org
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux@mainlining.org,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 5/6] dt-bindings: arm: qcom: Add SM7325 Nothing Phone 1
-Date: Sun, 20 Oct 2024 23:56:13 +0300
-Message-ID: <20241020205615.211256-6-danila@jiaxyga.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241020205615.211256-1-danila@jiaxyga.com>
-References: <20241020205615.211256-1-danila@jiaxyga.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iF/Oo/pP"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539f58c68c5so5513123e87.3
+        for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 14:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1729459530; x=1730064330; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=86Vxu3y5hRyjW/SN4fiNS5sxS0hzqrFNGJyjGIFIOpg=;
+        b=iF/Oo/pPINWRmW3YTRR53g4GbjqVI7YEfw9BNgWG1Lz+Xk6wOjCvx+TAER9A1O7VgW
+         QXLWRWq+uJZiAmBgRelR4SJuel7eKxhgOiSAJ8faWK9AVn45Yh7hKpdh792N/dX08EgW
+         rKpAsdBFZcqwXoor/QFrnEXSjat56OkBAIL2M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729459530; x=1730064330;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=86Vxu3y5hRyjW/SN4fiNS5sxS0hzqrFNGJyjGIFIOpg=;
+        b=IB29o9qhfOXAxUnmiHnvK3zEwsYSjyZAnUpVvbqe2ZI9kN2L7uAGScOWNtCUA1MTnJ
+         8RD5XQfN7r8NnRsUbPQA/qL4eUHdKXMKX/mfqXmTeN2n7uMhQuPIkIZudwEOI5xjIA3X
+         xZrolG88Bc/MllyHEM5EEIkFtysoXX+x77YIrEObZlBSYZwzEnfqs4Z7KaVvy0V4EWHd
+         Kq9yTAChF+iuYsznAuuccJwgSebKwuEMR9rVJOXOG9/IGMUgHAFu2tkl5//zDSEck9T5
+         EBY/NSI+JTdj8f/uXzdaoJ112RfL+CDseVUJAwPRqpcK34TyFCjJPQjuvg0bhMkSE+wY
+         DOig==
+X-Forwarded-Encrypted: i=1; AJvYcCV0ymvh+cyoMoCtSPxDLikHuGFG731jud5nMpcbfszrMJNaZlDHoZ3v9xQipfv7G3jX1LC3Fgc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXgkzR50XxPVTOOEOcqZfQZkQE4bpIXQsbNoGsihHh1iVhRwsb
+	y+HyiQHoXMFFT8vZ1LU5nXSvNcx7+ygWBY7nYadYcO8saZnYRbb/RJlkj5vRy+l4E3+YesGqG4Z
+	lb5pshw==
+X-Google-Smtp-Source: AGHT+IEkdA3wBPDsFwHXnQWqHDDZm1IihO/E6Z6c4xs20a5PfjtNOtQKotdFyy1Qw4cKjhMrmpF2xA==
+X-Received: by 2002:a05:6512:3b20:b0:539:901c:e2e with SMTP id 2adb3069b0e04-53a154eb6famr7245853e87.58.1729459529906;
+        Sun, 20 Oct 2024 14:25:29 -0700 (PDT)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2243ecd0sm310788e87.249.2024.10.20.14.25.29
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Oct 2024 14:25:29 -0700 (PDT)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb4af0b6beso58049851fa.3
+        for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 14:25:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWZDCJ1raYj1X46SMKmflrvihaB2nfEfGs6Ir/flMl3qoj2Dm76En+d3FMB3rJPZRziU9zbK7s=@vger.kernel.org
+X-Received: by 2002:a2e:8815:0:b0:2fb:3881:35d5 with SMTP id
+ 38308e7fff4ca-2fb831efa0dmr47530391fa.35.1729459528880; Sun, 20 Oct 2024
+ 14:25:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailru-Src: smtp
-X-4EC0790: 10
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD92EEB9808938F525BCBCD8352AE5242EBFE8B3FCA056C535A182A05F5380850407B575BFEFDC62CDF3DE06ABAFEAF6705532C3632D8DFC69143A93D006BE7B5D5679C55F6EEB1E644
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE78D182E101C1D8075C2099A533E45F2D0395957E7521B51C2CFCAF695D4D8E9FCEA1F7E6F0F101C6778DA827A17800CE70312E9A300D47E3BEA1F7E6F0F101C6723150C8DA25C47586E58E00D9D99D84E1BDDB23E98D2D38BC08E230531AC9C90EEB0765107B6EB8E3581F73775418FA373C7B7D0ED8C235EA471835C12D1D9774AD6D5ED66289B5259CC434672EE6371117882F4460429724CE54428C33FAD30A8DF7F3B2552694AC26CFBAC0749D213D2E47CDBA5A9658378DA827A17800CE759A2DA0C93DFCD719FA2833FD35BB23DF004C90652538430302FCEF25BFAB3454AD6D5ED66289B5278DA827A17800CE7B069F7EBDE4CC8E27B076A6E789B0E97A8DF7F3B2552694AD5FFEEA1DED7F25D49FD398EE364050F4B6963042765DA4BAD7EC71F1DB88427C4224003CC836476E2F48590F00D11D6E2021AF6380DFAD1A18204E546F3947CB861051D4BA689FC2E808ACE2090B5E1725E5C173C3A84C34964A708C60C975A089D37D7C0E48F6C8AA50765F7900637569CCF021E1EA749EFF80C71ABB335746BA297DBC24807EABDAD6C7F3747799A
-X-C1DE0DAB: 0D63561A33F958A548FFF8326FB520CA5002B1117B3ED696D2DFCE6761BB38F8CCE9A60C8CB01D7C823CB91A9FED034534781492E4B8EEAD21D4E6D365FE45D1C79554A2A72441328621D336A7BC284946AD531847A6065A535571D14F44ED41
-X-C8649E89: 1C3962B70DF3F0ADE00A9FD3E00BEEDF3FED46C3ACD6F73ED3581295AF09D3DF87807E0823442EA2ED31085941D9CD0AF7F820E7B07EA4CFB15934AE39018A84220CDDC10CA06413283DFB4C5EA4FF1212C61BA85426CA88A703FE8D8B5282210B1383DF4BE982FC25727F2A38A285121B4999C0876C92959F9B23C4714E51AAF72E9902079A869902C26D483E81D6BE72B480F99247062FEE42F474E8A1C6FD34D382445848F2F3
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojRqMkPUKL5s4/idOO8DD5zw==
-X-Mailru-Sender: 9EB879F2C80682A0D0AE6A344B45275FCB02445A36FA45DA20C74B26AAFF9345B15CBB05148D8919FC399A8396EA591D2C62728BC403A049225EC17F3711B6CF1A6F2E8989E84EC137BFB0221605B344978139F6FA5A77F05FEEDEB644C299C0ED14614B50AE0675
-X-Mras: Ok
-X-7564579A: B8F34718100C35BD
-X-77F55803: 6242723A09DB00B4F4F76BB1214CC8D4DE1AF98544F7A4205F4A3A7B877765BC68F3CF0E9FE49B69586F9C8573CB553B128AA3C79737AF567A6B6C82748E342A47B4208138E82915
-X-7FA49CB5: 0D63561A33F958A5C3C1E48ECFDBA1342999E19A473ABD21AF8C8168E8B552EB8941B15DA834481FA18204E546F3947C124FB6D01C44F684F6B57BC7E64490618DEB871D839B7333395957E7521B51C2DFABB839C843B9C08941B15DA834481F8AA50765F7900637A58AA41A0F9FC58D389733CBF5DBD5E9B5C8C57E37DE458BD96E472CDF7238E0725E5C173C3A84C360C233830BDED4CB35872C767BF85DA2F004C90652538430E4A6367B16DE6309
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojRqMkPUKL5s4nE6OwhG3U+g==
-X-Mailru-MI: 8000000000000800
-X-Mras: Ok
+References: <20241016204258.821965-1-luiz.dentz@gmail.com> <4e1977ca-6166-4891-965e-34a6f319035f@leemhuis.info>
+ <CABBYNZL0_j4EDWzDS=kXc1Vy0D6ToU+oYnP_uBWTKoXbEagHhw@mail.gmail.com>
+In-Reply-To: <CABBYNZL0_j4EDWzDS=kXc1Vy0D6ToU+oYnP_uBWTKoXbEagHhw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 20 Oct 2024 14:25:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh3rQ+w0NKw62PM37oe6yFVFxY1DrW-SDkvXqOBAGGmCA@mail.gmail.com>
+Message-ID: <CAHk-=wh3rQ+w0NKw62PM37oe6yFVFxY1DrW-SDkvXqOBAGGmCA@mail.gmail.com>
+Subject: Re: pull request: bluetooth 2024-10-16
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, davem@davemloft.net, kuba@kernel.org, 
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	Linux kernel regressions list <regressions@lists.linux.dev>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Nothing Phone 1 (nothing,spacewar) is a smartphone based on the SM7325
-SoC.
+On Fri, 18 Oct 2024 at 09:45, Luiz Augusto von Dentz
+<luiz.dentz@gmail.com> wrote:
+>
+> I really would like to send the PR sooner but being on the path of
+> hurricane milton made things more complicated, anyway I think the most
+> important ones are the regression fixes:
+>
+>       Bluetooth: btusb: Fix not being able to reconnect after suspend
+>       Bluetooth: btusb: Fix regression with fake CSR controllers 0a12:0001
 
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+I cherry-picked just those, but then I ended up looking at the rest
+just to see if duplicating the commits was worth it.
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 0d451082570e..0f18cb35c774 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -76,6 +76,7 @@ description: |
-         sm6375
-         sm7125
-         sm7225
-+        sm7325
-         sm8150
-         sm8250
-         sm8350
-@@ -990,6 +991,11 @@ properties:
-               - fairphone,fp4
-           - const: qcom,sm7225
- 
-+      - items:
-+          - enum:
-+              - nothing,spacewar
-+          - const: qcom,sm7325
-+
-       - items:
-           - enum:
-               - microsoft,surface-duo
--- 
-2.47.0
+And that just made me go "nope", and I undid my cherry-picks and
+instead just pulled the whole thing.
 
+The rest of the fixes looked too trivial to be worth me having created
+a separate cherry-picked "just the most critical regression fixes"
+bt-fixes branch.
+
+IOW: I've pulled the bluetooth fixes branch directly, but sincerely
+hope this won't become a pattern.
+
+           Linus
