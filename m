@@ -1,75 +1,80 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fallback22.i.mail.ru (fallback22.i.mail.ru [79.137.243.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42017198A0F;
-	Sun, 20 Oct 2024 20:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6FB199FA0;
+	Sun, 20 Oct 2024 20:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.137.243.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729457825; cv=none; b=GJ/KpNC7NUUsz7cc23E/VLQa3NRatO5GG4Y7W7Kwjg4YHVj83NHut2BNhLhgkVkaRPMJTioQVlIuiAjlnavOuYyzPS+SWIqYPL3gE66Gy9zscVYtYMdSkkRaGViMrvhgITDvOp7Plrt4ZpBJ9gshH9fD9c215pB+rKi/yHbvFoM=
+	t=1729457827; cv=none; b=muGOB+Bnuns8sNtkx1E7LvVilrgnkZ+VO9NnJPPpzMvd+43BxA7dsQUbg2DUx+AHICY9l4RjEvelE5KkAcVPWlQZlH4tciRECWWP2Nkl2Z/105HVJ7UgSwyDOXcNAQ3bcyDWihMzOU7oo0OJC74gHGVs4JgPpc4+966W3ZhdFvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729457825; c=relaxed/simple;
-	bh=AdqYORKqhScmeHeYNSD/MJ6rhroWSE8tdow1UEXHFNE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=os9lHvqqNgPTo+Cv4OB7ukZpv7kAxcigPnHWGYKnCtXsgu5U/9GNbyoRLpc10Uf/H9mS9eBtdeLF623++u3ReTzILOy3ttwpSwY0AU4WUzp+vOLfHlmwjcWUH7w+Fm95mPpNFWZBm8HwmOpOpdFxoq3JnAiKIeQtBySV8T5LQZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=STqoUV4P; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729457827; c=relaxed/simple;
+	bh=uBVBllxMTlGvUHZjqzI6BshIhJnKr2CzLsrxK7KUSzY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NvMw1j9y1gR1oP4cLI9Pw6gpqFMNczk86ZjqtfJplFqs1/FRv/1F+QQ1cJdqhMHnx/8v+OVjddM5RtbjXMcGn9YwLrIduA84+u33XUxEPt7VhsbzffGxYyJG0POYIlTlcZXgTPdMCGSCwOF3mMxo7c+sC+EHccL2VVxMXSntWyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com; spf=pass smtp.mailfrom=jiaxyga.com; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=sinodWRK; dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b=Ax4GYoOU; arc=none smtp.client-ip=79.137.243.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jiaxyga.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jiaxyga.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="STqoUV4P"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a99f629a7aaso673301066b.1;
-        Sun, 20 Oct 2024 13:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729457821; x=1730062621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9oVLv8Vu4ZHXQDXrxYkhAbVdIKoCOwOdtS+wCj0vhdU=;
-        b=STqoUV4P7ajex16K1RsDAPmypgtEyGB2wuXTclLj/QOiodzuhUT3yLO+7oMYQlamYp
-         ajyyEThN4FFDU/4YbtESOHdlkdCXREOzwrznYBn0B9CT7F/7it1wcL9rDsrIfcMcUlTi
-         DfTSz4g8ANcxw18n5nj9Z9n5GMoriO0OJzY3777tdaeeitqRPX8lg2y4mvyZ+p4GC6Wk
-         ZFy2BY7AY82oEyh/qyuMryUtqsPSha5RvrzH5c7J1GS0Qyy+1y2UME6FCzXiaFtl6aPo
-         1qzG2O4/4USByOeCo58mz1g6Ha+/32DYCOMqAsig8s8uDOAy5kjDPxSZ2soebmEQJla6
-         Apaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729457821; x=1730062621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9oVLv8Vu4ZHXQDXrxYkhAbVdIKoCOwOdtS+wCj0vhdU=;
-        b=T8edcLhAeWcc+D3dBK/FMEOqhlbnJEOsav7N6C2yGwcUXTRBPT+VpQjFwr40iKOFaZ
-         b8duCx4a1T2fhVfBW6SVHmP5Zvl0W8RlIj4sSOWHhm6mPJO20re7QNLBX+ijpzCitOxd
-         447yPzHkRX8QGvtuny6aioNDR6zjDo+GYScOnVpZj8XFMz9u53NGDKJoDrpxsHZWKN3Q
-         1XsjMMpYcDw+AFC4fEmqEGB1ZOTRTHrNTSsfVWToqzsB+B8YChWeVXucRR5hZeZunvvS
-         ZXhPBDbvbQ/J6uKcyo+6cMwvnAXOewN8PU1QiytiOYEEQ9izUGG/GaqAj8x+5q65I5/W
-         oknw==
-X-Forwarded-Encrypted: i=1; AJvYcCVch3ZgD2IBc/Aso5Ir1ytKFdTmbIqSRk7MZzseXc92i4yWzp/VzkCBoQ+SvqpFHCiaqPJjHpwuy0orw7E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdXcoUvWaZtKkBfdk7aZyv7xPGdpbM65mRIPAOfIbyTV1O96v+
-	bSizcybHCgVuXhLJO8i/318+FNbOhGP9xlktYVG3EgEjgrOB5tzfx1Sqeffa
-X-Google-Smtp-Source: AGHT+IGDXsiFmy9S2334vw44am/sCgznLYLI2wFZIGi7GDSoqTDGdYuNC3C7h8pDIBY0fWaTEu468g==
-X-Received: by 2002:a17:907:d16:b0:a99:5f65:fd9a with SMTP id a640c23a62f3a-a9a4cc3c202mr1567023166b.21.1729457821064;
-        Sun, 20 Oct 2024 13:57:01 -0700 (PDT)
-Received: from WBEC325.dom.lan ([185.188.71.122])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912edc07sm125135966b.69.2024.10.20.13.57.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Oct 2024 13:57:00 -0700 (PDT)
-From: Pawel Dembicki <paweldembicki@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/3] net: dsa: vsc73xx: implement packet reception via control interface
-Date: Sun, 20 Oct 2024 22:54:51 +0200
-Message-Id: <20241020205452.2660042-2-paweldembicki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241020205452.2660042-1-paweldembicki@gmail.com>
-References: <20241020205452.2660042-1-paweldembicki@gmail.com>
+	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="sinodWRK";
+	dkim=pass (1024-bit key) header.d=jiaxyga.com header.i=@jiaxyga.com header.b="Ax4GYoOU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com; s=mailru;
+	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=/JV818YVNl3eqjhHHbDpTsd1ZSMqaQkrrj6coyaUxKU=;
+	t=1729457825;x=1729547825; 
+	b=sinodWRKxFms8ovvLLDDqj4q84jbB+tl0NLrdaKN4JM/8uXEFFzxh/pYiV7ifIP4n1w9jSDVXX2LiGzGqSGqZb+lXpPrdw3JlUiGGOpTZQGH5CeMNJDTkR6e/U4nIxmB5jMGbJ+5Ctqsjq2udCnSReEsPzz+MGevKVBrLsOK1qU=;
+Received: from [10.113.90.223] (port=48640 helo=smtp32.i.mail.ru)
+	by fallback22.i.mail.ru with esmtp (envelope-from <danila@jiaxyga.com>)
+	id 1t2cz0-00FrTW-NQ; Sun, 20 Oct 2024 23:57:03 +0300
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jiaxyga.com
+	; s=mailru; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:To:Cc:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive:
+	X-Cloud-Ids:Disposition-Notification-To;
+	bh=/JV818YVNl3eqjhHHbDpTsd1ZSMqaQkrrj6coyaUxKU=; t=1729457822; x=1729547822; 
+	b=Ax4GYoOUIGxD3v/VSEPYwSqMmBfMwpddTYZOHKl2UOsNQP3pc+jnSeLLm3S7NXejHGbE3uF+8sA
+	BS36UH6JQeBPx68V6p9n+dqEsBjKVK2UeNKSiA/baZhzDyd9yPNzAN8nGdygf4BrXOO1l9ooKQ4AQ
+	nsQDi7Eav/4wneEeXmY=;
+Received: by exim-smtp-669df98d5-42lq6 with esmtpa (envelope-from <danila@jiaxyga.com>)
+	id 1t2cym-00000000L55-1WE7; Sun, 20 Oct 2024 23:56:48 +0300
+From: Danila Tikhonov <danila@jiaxyga.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andersson@kernel.org,
+	konradybcio@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kees@kernel.org,
+	tony.luck@intel.com,
+	gpiccoli@igalia.com,
+	quic_rjendra@quicinc.com,
+	andre.przywara@arm.com,
+	quic_sibis@quicinc.com,
+	igor.belwon@mentallysanemainliners.org,
+	davidwronek@gmail.com,
+	ivo.ivanov.ivanov1@gmail.com,
+	neil.armstrong@linaro.org,
+	heiko.stuebner@cherry.de,
+	rafal@milecki.pl,
+	lpieralisi@kernel.org
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux@mainlining.org,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 4/6] dt-bindings: vendor-prefixes: Add Nothing Technology Limited
+Date: Sun, 20 Oct 2024 23:56:12 +0300
+Message-ID: <20241020205615.211256-5-danila@jiaxyga.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241020205615.211256-1-danila@jiaxyga.com>
+References: <20241020205615.211256-1-danila@jiaxyga.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,289 +82,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Mailru-Src: smtp
+X-4EC0790: 10
+X-7564579A: 646B95376F6C166E
+X-77F55803: 4F1203BC0FB41BD92EEB9808938F525BEAEE9FA8344CC1B5E1023763A8405A29182A05F538085040FA131339EE5A3FAD3DE06ABAFEAF670597F281994077E3AA43A93D006BE7B5D574892205136C5E50
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE70043D879A87EF1BCEA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637FCE92196D28EA6468638F802B75D45FF36EB9D2243A4F8B5A6FCA7DBDB1FC311F39EFFDF887939037866D6147AF826D806A818852BFB19FA718B8CE3092C92CBF0A20935DA27CB2ACC7F00164DA146DAFE8445B8C89999728AA50765F7900637F3E38EE449E3E2AE389733CBF5DBD5E9C8A9BA7A39EFB766F5D81C698A659EA7CC7F00164DA146DA9985D098DBDEAEC8A816C540FC8EEC30F6B57BC7E6449061A352F6E88A58FB86F5D81C698A659EA73AA81AA40904B5D9A18204E546F3947C251EFD5447B32ED66136E347CC761E074AD6D5ED66289B523666184CF4C3C14F6136E347CC761E07725E5C173C3A84C3ACA9F7D16C0C9468BA3038C0950A5D36B5C8C57E37DE458B330BD67F2E7D9AF16D1867E19FE14079C09775C1D3CA48CF27ED053E960B195E1DD303D21008E298D5E8D9A59859A8B652D31B9D28593E5175ECD9A6C639B01B78DA827A17800CE7DBBA001AFC1C4016731C566533BA786AA5CC5B56E945C8DA
+X-C1DE0DAB: 0D63561A33F958A57EF999DC292C1D475002B1117B3ED6965F7E77E446CD60D1C66B2B37046EC955823CB91A9FED034534781492E4B8EEADAB4674FCF129DEEBF36E2E0160E5C55395B8A2A0B6518DF68C46860778A80D548E8926FB43031F38
+X-C8649E89: 1C3962B70DF3F0ADE00A9FD3E00BEEDF3FED46C3ACD6F73ED3581295AF09D3DF87807E0823442EA2ED31085941D9CD0AF7F820E7B07EA4CFC491945A0EEDC496F84D6A0E265E13A9EF302B9EBF38960014134CFFD8A54B39DE1AF985A89825B60B1383DF4BE982FCDF93864FD0A92AD91B4999C0876C9295F4946ADCD415B220F72E9902079A869902C26D483E81D6BE72B480F99247062FEE42F474E8A1C6FD34D382445848F2F3
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojRqMkPUKL5s5SZXZFpC6SWg==
+X-Mailru-Sender: 9EB879F2C80682A0D0AE6A344B45275FCB02445A36FA45DA4825860F061DF214043D27169FF265618D52D8A803B3004D2C62728BC403A049225EC17F3711B6CF1A6F2E8989E84EC137BFB0221605B344978139F6FA5A77F05FEEDEB644C299C0ED14614B50AE0675
+X-Mras: Ok
+X-7564579A: 646B95376F6C166E
+X-77F55803: 6242723A09DB00B4F4F76BB1214CC8D4FC5AAAD985BB12F92E1758D93CF716DF68F3CF0E9FE49B69586F9C8573CB553B04F210ABC4DA281DBC5D070BD85F8755C5E2CE4BE88332A3
+X-7FA49CB5: 0D63561A33F958A575FFD625A0A87943EBBBF726533EAE98F52315F2D56618738941B15DA834481FA18204E546F3947C9F3D0DE012848B35117882F4460429724CE54428C33FAD30A8DF7F3B2552694AC26CFBAC0749D213D2E47CDBA5A9658378DA827A17800CE7C8FBEF6EAD8577B08941B15DA834481F9449624AB7ADAF3735872C767BF85DA227C277FBC8AE2E8BBAB85A1B463F485B75ECD9A6C639B01B4E70A05D1297E1BBCB5012B2E24CD356
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojRqMkPUKL5s4ggwDt/1ephA==
+X-Mailru-MI: 8000000000000800
+X-Mras: Ok
 
-Some types of packets can be forwarded only to and from the PI/SI
-interface. For more information, see Chapter 2.7.1 (CPU Forwarding) in
-the datasheet.
+Add entry for Nothing Technology Limited (https://nothing.tech/)
 
-This patch implements the routines required for link-local reception.
-This kind of traffic can't be transferred through the RGMII interface in
-vsc73xx.
-
-The packet receiver poller uses a kthread worker, which checks if a packet
-has arrived in the CPU buffer. If the header is valid, the packet is
-transferred to the correct DSA conduit interface.
-
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 174 +++++++++++++++++++++++++
- drivers/net/dsa/vitesse-vsc73xx.h      |   4 +
- 2 files changed, 178 insertions(+)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 21ab3f214490..596b11c4d672 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -45,6 +45,15 @@
- #define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
- #define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
- 
-+/* CAPTURE Block subblock */
-+#define VSC73XX_BLOCK_CAPT_FRAME0	0x0 /* Frame 0 subblock */
-+#define VSC73XX_BLOCK_CAPT_FRAME1	0x1 /* Frame 1 subblock */
-+#define VSC73XX_BLOCK_CAPT_FRAME2	0x2 /* Frame 2 subblock */
-+#define VSC73XX_BLOCK_CAPT_FRAME3	0x3 /* Frame 3 subblock */
-+#define VSC73XX_BLOCK_CAPT_Q0		0x4 /* Queue 0 subblock */
-+#define VSC73XX_BLOCK_CAPT_Q1		0x6 /* Queue 0 subblock */
-+#define VSC73XX_BLOCK_CAPT_RST		0x7 /* Capture reset subblock */
-+
- #define CPU_PORT	6 /* CPU port */
- #define VSC73XX_NUM_FDB_ROWS	2048
- #define VSC73XX_NUM_BUCKETS	4
-@@ -244,6 +253,13 @@
- #define VSC73XX_MACTINDX_BUCKET_MSK		GENMASK(12, 11)
- #define VSC73XX_MACTINDX_INDEX_MSK		GENMASK(10, 0)
- 
-+#define VSC73XX_CAPENAB_IPMC			BIT(20)
-+#define VSC73XX_CAPENAB_ARPBC			BIT(19)
-+#define VSC73XX_CAPENAB_IGMP			BIT(18)
-+#define VSC73XX_CAPENAB_ALLBRIDGE		BIT(17)
-+#define VSC73XX_CAPENAB_BPDU			BIT(16)
-+#define VSC73XX_CAPENAB_GARP			GENMASK(15, 0)
-+
- #define VSC73XX_MACACCESS_CPU_COPY		BIT(14)
- #define VSC73XX_MACACCESS_FWD_KILL		BIT(13)
- #define VSC73XX_MACACCESS_IGNORE_VLAN		BIT(12)
-@@ -297,6 +313,13 @@
- 
- #define VSC73XX_MII_STAT_BUSY	BIT(3)
- 
-+/* Capture block 4 registers */
-+#define VSC73XX_CAPT_FRAME_DATA		0x0
-+#define VSC73XX_CAPT_FRAME_DATA_MAX	0xff
-+#define VSC73XX_CAPT_CAPREADP		0x0
-+#define VSC73XX_CAPT_CAPWRP		0x3
-+#define VSC73XX_CAPT_CAPRST		0xff
-+
- /* Arbiter block 5 registers */
- #define VSC73XX_ARBEMPTY		0x0c
- #define VSC73XX_ARBDISC			0x0e
-@@ -316,6 +339,7 @@
- #define VSC73XX_ICPU_MBOX_SET		0x16
- #define VSC73XX_ICPU_MBOX_CLR		0x17
- #define VSC73XX_CHIPID			0x18
-+#define VSC73XX_CAPCTRL			0x31
- #define VSC73XX_GPIO			0x34
- 
- #define VSC73XX_GMIIDELAY_GMII0_GTXDELAY_NONE	0
-@@ -364,6 +388,24 @@
- 				 VSC73XX_ICPU_CTRL_CLK_EN | \
- 				 VSC73XX_ICPU_CTRL_SRST)
- 
-+#define VSC73XX_CAPCTRL_QUEUE1_READY		BIT(31)
-+#define VSC73XX_CAPCTRL_QUEUE0_READY		BIT(30)
-+#define VSC73XX_CAPCTRL_ARPBC_Q			BIT(18)
-+#define VSC73XX_CAPCTRL_IPMC_Q			BIT(17)
-+#define VSC73XX_CAPCTRL_IGMP_Q			BIT(16)
-+#define VSC73XX_CAPCTRL_ALLBRIDGE_Q		BIT(15)
-+#define VSC73XX_CAPCTRL_GARP_Q			BIT(14)
-+#define VSC73XX_CAPCTRL_BPDU_Q			BIT(13)
-+#define VSC73XX_CAPCTRL_FIFO_MODE		BIT(12)
-+#define VSC73XX_CAPCTRL_QUEUE1_ENA		BIT(11)
-+#define VSC73XX_CAPCTRL_Q1_IRQ_EN		BIT(6)
-+#define VSC73XX_CAPCTRL_Q0_IRQ_EN		BIT(5)
-+#define VSC73XX_CAPCTRL_Q1_IRQ_PIN		BIT(4)
-+#define VSC73XX_CAPCTRL_Q0_IRQ_PIN		BIT(3)
-+#define VSC73XX_CAPCTRL_LEARN_TRUNCATE		BIT(2)
-+#define VSC73XX_CAPCTRL_LEARN_Q			BIT(1)
-+#define VSC73XX_CAPCTRL_MACB_Q			BIT(0)
-+
- #define IS_7385(a) ((a)->chipid == VSC73XX_CHIPID_ID_7385)
- #define IS_7388(a) ((a)->chipid == VSC73XX_CHIPID_ID_7388)
- #define IS_7395(a) ((a)->chipid == VSC73XX_CHIPID_ID_7395)
-@@ -373,6 +415,7 @@
- #define VSC73XX_POLL_SLEEP_US		1000
- #define VSC73XX_MDIO_POLL_SLEEP_US	5
- #define VSC73XX_POLL_TIMEOUT_US		10000
-+#define VSC73XX_RCV_POLL_INTERVAL	100
- 
- #define VSC73XX_IFH_MAGIC		0x52
- #define VSC73XX_IFH_SIZE		8
-@@ -834,6 +877,115 @@ static void vsc73xx_deferred_xmit(struct kthread_work *work)
- 	kfree(xmit_work);
- }
- 
-+static void vsc73xx_polled_rcv(struct kthread_work *work)
-+{
-+	struct vsc73xx *vsc = container_of(work, struct vsc73xx, dwork.work);
-+	u16 ptr = VSC73XX_CAPT_FRAME_DATA;
-+	struct dsa_switch *ds = vsc->ds;
-+	int ret, buf_len, len, part;
-+	struct vsc73xx_ifh ifh;
-+	struct net_device *dev;
-+	struct dsa_port *dp;
-+	struct sk_buff *skb;
-+	u32 val, *buf;
-+	u16 count;
-+
-+	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_SYSTEM, 0, VSC73XX_CAPCTRL, &val);
-+	if (ret)
-+		goto queue;
-+
-+	if (!(val & VSC73XX_CAPCTRL_QUEUE0_READY))
-+		/* No frame to read */
-+		goto queue;
-+
-+	/* Initialise reading */
-+	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_CAPTURE, VSC73XX_BLOCK_CAPT_Q0,
-+			   VSC73XX_CAPT_CAPREADP, &val);
-+	if (ret)
-+		goto queue;
-+
-+	/* Get internal frame header */
-+	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_CAPTURE,
-+			   VSC73XX_BLOCK_CAPT_FRAME0, ptr++, &ifh.datah);
-+	if (ret)
-+		goto queue;
-+
-+	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_CAPTURE,
-+			   VSC73XX_BLOCK_CAPT_FRAME0, ptr++, &ifh.datal);
-+	if (ret)
-+		goto queue;
-+
-+	if (ifh.magic != VSC73XX_IFH_MAGIC) {
-+		/* Something goes wrong with buffer. Reset capture block */
-+		vsc73xx_write(vsc, VSC73XX_BLOCK_CAPTURE,
-+			      VSC73XX_BLOCK_CAPT_RST, VSC73XX_CAPT_CAPRST, 1);
-+		goto queue;
-+	}
-+
-+	if (!dsa_is_user_port(ds, ifh.port))
-+		goto release_frame;
-+
-+	dp = dsa_to_port(ds, ifh.port);
-+	dev = dp->user;
-+	if (!dev)
-+		goto release_frame;
-+
-+	count = (ifh.frame_length + 7 + VSC73XX_IFH_SIZE - ETH_FCS_LEN) >> 2;
-+
-+	skb = netdev_alloc_skb(dev, len);
-+	if (unlikely(!skb)) {
-+		netdev_err(dev, "Unable to allocate sk_buff\n");
-+		goto release_frame;
-+	}
-+
-+	buf_len = ifh.frame_length - ETH_FCS_LEN;
-+	buf = (u32 *)skb_put(skb, buf_len);
-+	len = 0;
-+	part = 0;
-+
-+	while (ptr < count) {
-+		ret = vsc73xx_read(vsc, VSC73XX_BLOCK_CAPTURE,
-+				   VSC73XX_BLOCK_CAPT_FRAME0 + part, ptr++,
-+				   buf + len);
-+		if (ret)
-+			goto free_skb;
-+		len++;
-+		if (ptr > VSC73XX_CAPT_FRAME_DATA_MAX &&
-+		    count != VSC73XX_CAPT_FRAME_DATA_MAX) {
-+			ptr = VSC73XX_CAPT_FRAME_DATA;
-+			part++;
-+			count -= VSC73XX_CAPT_FRAME_DATA_MAX;
-+		}
-+	}
-+
-+	/* Get FCS */
-+	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_CAPTURE,
-+			   VSC73XX_BLOCK_CAPT_FRAME0, ptr++, &val);
-+	if (ret)
-+		goto free_skb;
-+
-+	/* Everything we see on an interface that is in the HW bridge
-+	 * has already been forwarded.
-+	 */
-+	if (dp->bridge)
-+		skb->offload_fwd_mark = 1;
-+
-+	skb->protocol = eth_type_trans(skb, dev);
-+
-+	netif_rx(skb);
-+	goto release_frame;
-+
-+free_skb:
-+	kfree_skb(skb);
-+release_frame:
-+	/* Release the frame from internal buffer */
-+	vsc73xx_write(vsc, VSC73XX_BLOCK_CAPTURE, VSC73XX_BLOCK_CAPT_Q0,
-+		      VSC73XX_CAPT_CAPREADP, 0);
-+queue:
-+	kthread_queue_delayed_work(vsc->rcv_worker, &vsc->dwork,
-+				   msecs_to_jiffies(VSC73XX_RCV_POLL_INTERVAL));
-+}
-+
- static int
- vsc73xx_connect_tag_protocol(struct dsa_switch *ds, enum dsa_tag_protocol proto)
- {
-@@ -1111,14 +1263,36 @@ static int vsc73xx_setup(struct dsa_switch *ds)
- 	ret = dsa_tag_8021q_register(ds, htons(ETH_P_8021Q));
- 	rtnl_unlock();
- 
-+	/* Reset capture block */
-+	vsc73xx_write(vsc, VSC73XX_BLOCK_CAPTURE, VSC73XX_BLOCK_CAPT_RST,
-+		      VSC73XX_CAPT_CAPRST, 1);
-+
-+	/* Capture BPDU frames */
-+	vsc73xx_write(vsc, VSC73XX_BLOCK_ANALYZER, 0, VSC73XX_CAPENAB,
-+		      VSC73XX_CAPENAB_BPDU);
-+
-+	vsc->rcv_worker = kthread_create_worker(0, "vsc73xx_rcv");
-+	if (IS_ERR(vsc->rcv_worker))
-+		return PTR_ERR(vsc->rcv_worker);
-+
-+	kthread_init_delayed_work(&vsc->dwork, vsc73xx_polled_rcv);
-+
-+	kthread_queue_delayed_work(vsc->rcv_worker, &vsc->dwork,
-+				   msecs_to_jiffies(VSC73XX_RCV_POLL_INTERVAL));
-+
- 	return ret;
- }
- 
- static void vsc73xx_teardown(struct dsa_switch *ds)
- {
-+	struct vsc73xx *vsc = ds->priv;
-+
- 	rtnl_lock();
- 	dsa_tag_8021q_unregister(ds);
- 	rtnl_unlock();
-+
-+	kthread_cancel_delayed_work_sync(&vsc->dwork);
-+	kthread_destroy_worker(vsc->rcv_worker);
- }
- 
- static void vsc73xx_init_port(struct vsc73xx *vsc, int port)
-diff --git a/drivers/net/dsa/vitesse-vsc73xx.h b/drivers/net/dsa/vitesse-vsc73xx.h
-index bf55a20f07f3..5dd458793741 100644
---- a/drivers/net/dsa/vitesse-vsc73xx.h
-+++ b/drivers/net/dsa/vitesse-vsc73xx.h
-@@ -47,6 +47,8 @@ struct vsc73xx_portinfo {
-  *	every vlan configured in port vlan operation. It doesn't cover tag_8021q
-  *	vlans.
-  * @fdb_lock: Mutex protects fdb access
-+ * @rcv_worker: Kthread worker struct for packet reciver poller
-+ * @dwork: Work struct for scheduling work to the packet reciver poller
-  */
- struct vsc73xx {
- 	struct device			*dev;
-@@ -60,6 +62,8 @@ struct vsc73xx {
- 	struct vsc73xx_portinfo		portinfo[VSC73XX_MAX_NUM_PORTS];
- 	struct list_head		vlans;
- 	struct mutex			fdb_lock;
-+	struct kthread_worker		*rcv_worker;
-+	struct kthread_delayed_work	dwork;
- };
- 
- /**
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 45f08f014ad6..b3fd32cf3153 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1053,6 +1053,8 @@ patternProperties:
+     description: Nokia
+   "^nordic,.*":
+     description: Nordic Semiconductor
++  "^nothing,.*":
++    description: Nothing Technology Limited
+   "^novatek,.*":
+     description: Novatek
+   "^novtech,.*":
 -- 
-2.34.1
+2.47.0
 
