@@ -1,93 +1,108 @@
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28073EAF1
-	for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 11:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265961F5FD;
+	Sun, 20 Oct 2024 12:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729423411; cv=none; b=BW+CBo76lqB1s7MKLnlLoa2cB11JAdG91mUv1K45HVvPNMKZBuuNsw1FojutJ8XRbfk8bT2XajHkYUU4zHcD2DCe1Rr6WTRBkY/bgTyXd1eMvZrbg3yNZBWMlUx2CcMMSoYO0X3SYYGKugRPJJLHrYb+ocA83vWBhEts13UbnOs=
+	t=1729427368; cv=none; b=mrr14WHo1Q5PCERUKf/VTXxzk58Fz5ENRK5vK7YLePNyu7bqwKbdzc2qI7D8bH+JcnwCKWVlMxc8BVYtje9X4jsoyskSWvKN25E0+dwpgikACffWHntZ+Wh0CbehP7CZL7bUBTtj0/dmFCKnlIoXgdyd6l1jERC2AM7Gl62Q+vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729423411; c=relaxed/simple;
-	bh=7ab6qhqpOr1ssykYDytup+FJiV1Hjtf3sZnKjdc3abA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XFxSvCwPjivUMEERjsUVVi5Tl2D0q6QvFfZGmPP2FEquGNIjjHNHQrgruaKLIkgAsGBRHOYZFmelmT6CzC529VijFanCMoi3KNjc+p+Z4H+VMVx+yK36O8MiJsj5IvZstQLHFKSAAXTBD8YARQbNNkvCnckE52yC2DfHq4UDNtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J8ufdvJy; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1729427368; c=relaxed/simple;
+	bh=oK7VZ748YZzPlvjiEAflfk6kW/AiZBAXdWoti14V2vY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QEtQE9hEOAb2lV8Iv6JyHKTVFHIKSGJC9zeDibISEigKt3Hy2F0DcobHoLON+ZmLdqTlLJwgUKAF4kggZij2QeeqcDmiXx5Q1QeJWLgIH6jZm32yg9W0ikvKH0YSTn0pey2PZP74p0JVL/uHULlsr63C6amekYaZFVrZUlLc5Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W7OxQxO+; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J8ufdvJy"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1729423406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HakpnS82zsiPFFcOCMvXL4ULTEn0kEgh+KDi+4EqXVQ=;
-	b=J8ufdvJyDC5yOgEJbbgu29wPam8PL+9XepPZ6/m109PAPFElp48Kt2Jx4qmn6f1GFCXRMX
-	hvOnqBxl7LaHUfnDXp1PbjQadEbwSZlOZ+r0u2z/cggVTwOJXPCLBJvWyfUSNz6K7k1GhX
-	6xh3rdo5x+8wKwvW7wnn1MAni4FQIN8=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W7OxQxO+"
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3C59A13801ED;
+	Sun, 20 Oct 2024 08:29:25 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Sun, 20 Oct 2024 08:29:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1729427365; x=1729513765; bh=7c9ju46R6QyN1443WbFxMita+e/d
+	5Edr3KeaNQmPjnE=; b=W7OxQxO+xOboy1uFXuZt2v+1seC0HNg3SRuRcZNc36jq
+	5d6mnAKCmacchvOl/4B72UcDq04TK9SVJ1CgPCAeAGb6LoVGYLCIzEhLynbRqQk3
+	tm+7vZZoRvGQ1raM8oweINlbXX/mEW3ZDJ0yJDZIWdleRPXT0b3zp2lsnd04ty+L
+	fYtYVo6LaXqwpqbTgD6qqJbGkgZhqO8QTYedYOgZnERHBcBM3sOugkVGnSMz5JNY
+	+nT0sziXuGQGsYgtV5hps7d+4vLkOuwboUytdhCE6DywMJIl+YOw5duODT9zxgEJ
+	YKJLRkigN6qy7y1y9LMN+FZoB2RXpeGiXDSSlfA3uw==
+X-ME-Sender: <xms:pPcUZ2ohHBgPVbNDkRas89oib3d_T5avJbotJYTEXCFPDQHstJlQlQ>
+    <xme:pPcUZ0qSrYukrOGqhSPBzqu8NdY8VVYOwrVa8qX5yuY5GTxtD4UANJIuBYxt17t7H
+    tz1LkVwmyvOplg>
+X-ME-Received: <xmr:pPcUZ7Md7mlMwrUXvBdK2hHF9RD1aK22deRLMH02guxXqro315hIQY8nWUq_>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehjedghedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdroh
+    hrgheqnecuggftrfgrthhtvghrnhepvddufeevkeehueegfedtvdevfefgudeifeduieef
+    gfelkeehgeelgeejjeeggefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrghdpnhgspghrtghpthht
+    ohepjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephigrjhhunhdruggvnhhgse
+    hlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgv
+    thdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
+    epkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhg
+X-ME-Proxy: <xmx:pPcUZ17j-OjwnTlDTEARwMnKh6-kwLfbxEYMd4cql93xeiKC3rCaNg>
+    <xmx:pPcUZ14HKylRg_RrD98elqCKoyC_waYN1l-p-HU3RNDHQsxPxCj12g>
+    <xmx:pPcUZ1gzf__nwf3M1zHVIzZ2i3iBjSaIWyftKr9JLNsdLAg6zyUDqw>
+    <xmx:pPcUZ_59Bylivw0nDTWr2J_jtHQa_OZm0487qguo9rfgnGHNCFMcfg>
+    <xmx:pfcUZyu13OZx96y9wyeYADZCbf5HXTagqdd6OOn22WzJtv-It-3IY3-1>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 20 Oct 2024 08:29:23 -0400 (EDT)
+Date: Sun, 20 Oct 2024 15:29:21 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] ieee802154: Replace BOOL_TO_STR() with str_true_false()
-Date: Sun, 20 Oct 2024 13:23:13 +0200
-Message-ID: <20241020112313.53174-2-thorsten.blum@linux.dev>
+Subject: Re: [PATCH v3 net-next] net: vlan: Use vlan_prio instead of vlan_qos
+ in mapping
+Message-ID: <ZxT3oVQ27erIoTVz@shredder.mtl.com>
+References: <20241018141233.2568-1-yajun.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241018141233.2568-1-yajun.deng@linux.dev>
 
-Replace the custom BOOL_TO_STR() macro with the str_true_false() helper
-function and remove the macro.
+On Fri, Oct 18, 2024 at 10:12:33PM +0800, Yajun Deng wrote:
+> The vlan_qos member is used to save the vlan qos, but we only save the
+> priority. Also, we will get the priority in vlan netlink and proc.
+> We can just save the vlan priority using vlan_prio, so we can use vlan_prio
+> to get the priority directly.
+> 
+> For flexibility, we introduced vlan_dev_get_egress_priority() helper
+> function. After this patch, we will call vlan_dev_get_egress_priority()
+> instead of vlan_dev_get_egress_qos_mask() in irdma.ko and rdma_cm.ko.
+> Because we don't need the shift and mask operations anymore.
+> 
+> There is no functional changes.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- net/ieee802154/trace.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Not sure I understand the motivation.
 
-diff --git a/net/ieee802154/trace.h b/net/ieee802154/trace.h
-index 591ce0a16fc0..284b63a0834e 100644
---- a/net/ieee802154/trace.h
-+++ b/net/ieee802154/trace.h
-@@ -35,8 +35,6 @@
- #define WPAN_CCA_PR_FMT	"cca_mode: %d, cca_opt: %d"
- #define WPAN_CCA_PR_ARG __entry->cca_mode, __entry->cca_opt
- 
--#define BOOL_TO_STR(bo) (bo) ? "true" : "false"
--
- /*************************************************************
-  *			rdev->ops traces		     *
-  *************************************************************/
-@@ -273,7 +271,7 @@ TRACE_EVENT(802154_rdev_set_lbt_mode,
- 	),
- 	TP_printk(WPAN_PHY_PR_FMT ", " WPAN_DEV_PR_FMT
- 		", lbt mode: %s", WPAN_PHY_PR_ARG,
--		WPAN_DEV_PR_ARG, BOOL_TO_STR(__entry->mode))
-+		WPAN_DEV_PR_ARG, str_true_false(__entry->mode))
- );
- 
- TRACE_EVENT(802154_rdev_set_ackreq_default,
-@@ -292,7 +290,7 @@ TRACE_EVENT(802154_rdev_set_ackreq_default,
- 	),
- 	TP_printk(WPAN_PHY_PR_FMT ", " WPAN_DEV_PR_FMT
- 		", ackreq default: %s", WPAN_PHY_PR_ARG,
--		WPAN_DEV_PR_ARG, BOOL_TO_STR(__entry->ackreq))
-+		WPAN_DEV_PR_ARG, str_true_false(__entry->ackreq))
- );
- 
- TRACE_EVENT(802154_rdev_trigger_scan,
--- 
-2.47.0
+IIUC, currently, struct vlan_priority_tci_mapping::vlan_qos is shifted
+and masked in the control path (vlan_dev_set_egress_priority) so that
+these calculations would not need to be performed in the data path where
+the VLAN header is constructed (vlan_dev_hard_header /
+vlan_dev_hard_start_xmit).
 
+This patch seems to move these calculations to the data path so that
+they would not need to be performed in the control path when dumping the
+priority mapping via netlink / proc.
+
+Why is it a good trade-off?
