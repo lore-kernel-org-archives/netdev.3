@@ -1,79 +1,75 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF4A1925B8;
-	Sun, 20 Oct 2024 14:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB43192B99
+	for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 14:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729435816; cv=none; b=lUhbYaw3WsWRYh/g7gTveCkbQ/y8Y5l8Lkc9KMjD4CenH3STegE0aOjDIK1PE4hrr4LAqyiL8XParhnz+qHelvl9Kan5Lukh63jqtoE52ftnuZGvZ/aDZWriUjH4ko+1cfbDbROlTdkBHf7eNGqTHgR4Hh9bqXx9nS6xnTkRH2Y=
+	t=1729435828; cv=none; b=kkJhr7P7G/rcKigWiMScNHV4G0B/V7/Ua7V/9uUt9af2bMaSgEikafvD7q4OfcwPAbEv19ZmLNeIemIo3sPA7M12YEg6BjqWFk+r0WqcIbZ4Is+cXiOoOjNOK/pRoRuqyeFyoIvrT/FOlJDGPdgImSGf4J8H7zlK5sYPrscZxV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729435816; c=relaxed/simple;
-	bh=AVfTH01SvlduefmUhsSdFUoQPyygoRL2NA627woyiEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KaD6h4hNVfyBD5srgbLa91tRD6XhclmXoicdauqSVlscXPwfeEeWxrgSHJPqMjdNg+zXG8cJCg6aeLRN5+BQ3DsUhemCTfGIEWg7p2MN+y/Sa9mMeLkGbC5XWLy6jlUMkPxdH97cunjxW6gxKpT+2dR9YBfsPW6gp6/E/Cs3qY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0v1s0QmU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1729435828; c=relaxed/simple;
+	bh=E4dcGd3opyJfBFCgOqShSy69HY2TYlLUBclDyYJgL6c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Xjb1JaRcmIymFFBqqH3FmNlqQ9mTZ6k7cGl+UwjEcUVX1EepQIAvyI4JVtmpRZdBuoazq/wcSF7MR+Xm8bjOuJWIfZsn31cDg1+b2JArEZVFx9PDCrINfH43Kvc757zA+O3CK5WrKSDKiMXawEDe0gLtsIkxpWHgasESXtsqfSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4klJzuX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0v1s0QmU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=8zSrv9jMkJqjVhr6qHqhDSITJsgarczXcoOi1N3rASw=; b=0v
-	1s0QmUx9NfH7UbqmHsqHUILQYfngh/pdwOJtpC2seEo0UECRM+MMTJKK4uAYWgong3kB/iIr23Vmo
-	ZB+geJc8FywMWksxBRHgGO6ZYOq0IleJVmNIBHxQiQqKrAheyOwN0t17Rl30PNpCmEAhnCBjzVCD/
-	6T5qdsV5pLThyv8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t2XFU-00AeVi-UT; Sun, 20 Oct 2024 16:49:40 +0200
-Date: Sun, 20 Oct 2024 16:49:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Fan =?utf-8?B?SGFpbG9uZy/ojIPmtbfpvpk=?= <hailong.fan@siengine.com>
-Cc: Simon Horman <horms@kernel.org>,
-	"2694439648@qq.com" <2694439648@qq.com>,
-	"alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
-	"joabreu@synopsys.com" <joabreu@synopsys.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?5Zue5aSNOiDlm57lpI0=?= =?utf-8?Q?=3A?= [PATCH] net:
- stmmac: enable MAC after MTL configuring
-Message-ID: <ecc1aaf4-8676-453f-93bc-fd93d121b694@lunn.ch>
-References: <tencent_6BF819F333D995B4D3932826194B9B671207@qq.com>
- <20241017101857.GE1697@kernel.org>
- <bd7a1be5cec348dab22f7d0c2552967d@siengine.com>
- <9a11c47e-0cd6-4741-a25b-68538763110a@lunn.ch>
- <daf687938ae1413bbc556134b47d0629@siengine.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4klJzuX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D50C4CEC6;
+	Sun, 20 Oct 2024 14:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729435827;
+	bh=E4dcGd3opyJfBFCgOqShSy69HY2TYlLUBclDyYJgL6c=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=H4klJzuXoq3U2TzDa2toqyyQcjcH+V4VG5oW6RCiX9xMvqC5oq+KqbxByFRs4Vdc+
+	 BwXI3ndPs7G4rEbvII6p2JYecfiWH5SwEBGloOy75f8utAL3dq4T1lGoWeClsb4iCp
+	 PCnYp6GDvjTcMJNsM0qClzty0ySkkv2NcZ+Zj2ePai7DVB+YFcmCbgjh5jgtd4rLcy
+	 1F3kZXL5903jRtWmMWt058tPECBX9p1rVyhCWX+PCxZ1m4c1e/kkoZQad1mgu6AaI3
+	 kEZjTsk93MBVpEwrDV4tmWVaumK1ZdP7F0WBdFm8t9l1QnLqykvfUGjf991kO2TSZB
+	 nnQtfC7FNvXtA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBEF13805CC0;
+	Sun, 20 Oct 2024 14:50:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <daf687938ae1413bbc556134b47d0629@siengine.com>
+Subject: Re: [PATCH RESEND net] net: dsa: mv88e6xxx: Fix error when setting port
+ policy on mv88e6393x
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172943583378.3593495.16662216433887676799.git-patchwork-notify@kernel.org>
+Date: Sun, 20 Oct 2024 14:50:33 +0000
+References: <20241016040822.3917-1-peter@rashleigh.ca>
+In-Reply-To: <20241016040822.3917-1-peter@rashleigh.ca>
+To: Peter Rashleigh <peter@rashleigh.ca>
+Cc: andrew@lunn.ch, netdev@vger.kernel.org, kuba@kernel.org
 
-On Sun, Oct 20, 2024 at 01:45:41AM +0000, Fan Hailong/范海龙 wrote:
-> Hi 
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Andrew Lunn <andrew@lunn.ch>:
+
+On Tue, 15 Oct 2024 21:08:22 -0700 you wrote:
+> mv88e6393x_port_set_policy doesn't correctly shift the ptr value when
+> converting the policy format between the old and new styles, so the
+> target register ends up with the ptr being written over the data bits.
 > 
-> Please find new patch in attachments, thanks.
+> Shift the pointer to align with the format expected by
+> mv88e6393x_port_policy_write().
+> 
+> [...]
 
-Please read
+Here is the summary with links:
+  - [RESEND,net] net: dsa: mv88e6xxx: Fix error when setting port policy on mv88e6393x
+    https://git.kernel.org/netdev/net/c/12bc14949c4a
 
-https://docs.kernel.org/process/submitting-patches.html
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Attachments are not accepted.
-
-	Andrew
