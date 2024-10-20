@@ -1,35 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134B1198A10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04EE198A07
 	for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 14:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729435842; cv=none; b=sEIg3EIqsGJPmirtdRtrx5AzJoCXVNRGO/OTAVEgsPva5T7XpnHPZ9tkGdnxWll9pyl9/R7krNPUhyM82jKeNULesfDxrePZ9AGOZtMnZKY1Cti6KNdmKXBwy/k+xCaXyOqeviznQGjDI53usdBq2AgLDn1tm7ZeQuc8Qcyqz9Y=
+	t=1729435843; cv=none; b=erJfNScwXKPGJyPS/UO7WHQ0+IJAKN9TWrJyHTumEpZLqlG8JMxyzAhER9+LaqmmGfhffLfzgqH0bpdSxYRePCafNSWSidVEor/reCynsYL+01lQI/Dy0ezqyrwev11dDG/zO2Tt23GtpExeLLISbhSn7AY3iGQAv1JnD4ubWU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729435842; c=relaxed/simple;
-	bh=mD9G/5aoaxeT58ACTgYo7CoTZO/1fgNpzJmg5zrgz4A=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QrMuZrv2dT14VETpp6t6L45D8eB0O/kEcmjIaA2Dur+Qri0G0M2SD9ERoq4GL0KCvASmgzdxFIhTACUEq2KOJJyRvelU5itX0Px1OkqaA9/GYHow6kq3AVXv5u7Xjbni/joCZbxGGHYifheQRQ07oRgdh1VeAc/LdRuvDEnqhN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eImLbvUo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729435843; c=relaxed/simple;
+	bh=6VfnXJnOt1Ckm7l9DjVdn33kV5ZQZTS1tLykZrl3LVc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tvneKLkSf6GanrToszseb1UnnURe6FNLD6xbd2ny/eXxwygNQunrNG2i0zym46HK8BP/6kZydAhwDSSfXPYxb8tEuvj0OV3KHLOHqxNDQXgSks5hMCNui4UHSWPfSouuAPt360tJyRQiFU5QO20mHNJ+DK5ENXl5wE1T6a6aEhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYJhwIcd; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eImLbvUo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A27C4CEC7;
-	Sun, 20 Oct 2024 14:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729435841;
-	bh=mD9G/5aoaxeT58ACTgYo7CoTZO/1fgNpzJmg5zrgz4A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=eImLbvUo1B4ItnS5StmivF/FjmSIebCZNRWKo5BeLtCgR4hLj33klz+l7UDvzuCrQ
-	 Hpp+ULSVwNJ0ID6+VJTUzq1nzRT2tISzvBBd1Y88xK2Sl27rzOpc/516CvnzrhSGw9
-	 zYL/9apd2yZImfzDWq4DtN/TmgK+FiE4h/CZghgVfRRwY0JQP3Ju1QhXkel8xkZWqx
-	 QFg0r/xcfHRAQqjDqr2bn4dK6ApLJnRogD2AdXgBXtl3yctqwu+/5dcV3J8D8gCQlz
-	 QYfQMzQt9mjpfH89+fJ1UDQDqyWJTl0RQwjdKwEMdgtSTXNoLOlILVoKM5U1edZVu5
-	 n2KopCLYKclZA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDC43805CC0;
-	Sun, 20 Oct 2024 14:50:48 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYJhwIcd"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71e5130832aso2528145b3a.0
+        for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 07:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729435841; x=1730040641; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qWOajaF2VVWKWSA0X3Ls0JcnYwJuqrgLXc05L7hqJQI=;
+        b=VYJhwIcd4JFMmWG7wL+Uw52lC7K7isbYfZ8ZVolnm3mjNduQuczfUN66TarSVVmx4I
+         A+Z8ueVv0+a0zatO6NV3NBleUDR7gzqjY728POjqKHSIjg7YjR4f1+Sz4DjM2HChr3Xv
+         FoW4P1jDe/MYDYFHwOIxfjQjTRHpbhIUQ3Zi4o1g88GOOggtghRH/Y9swM0bIwyaeIFg
+         JfKdOHiQyc+hmvJTb4eMcC87exq6eZ7e/rYnPJbL67LWmRYdTkO3YK+2x0MJU70q1P8J
+         JBohV3+WzKGfuvh9rNK7127mzrHErEjQ5SGtaaq5+hWn2Hb3xEh03UCfWgqnJqFkVGcm
+         SaNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729435841; x=1730040641;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qWOajaF2VVWKWSA0X3Ls0JcnYwJuqrgLXc05L7hqJQI=;
+        b=PBqlzD4hwfhi9J4jDC+PzU46Q47efHhTMSpb4ejGgkRf+9Scyxx+p1bLd2P1M7BuOd
+         7WMqFoIX9habCc8bRKZNc7PmqC42/VQbjOedmCLojNRTMTnyzqXipImlpvYFKgNHMjOM
+         OBmY9A64elIVUvW8Vb8mE/73TzaUFMRDNjAWL+bpr0Swe/Cf6DReKsq0e0SVNzIXk+h5
+         WIE+/IB3r91PDk0A+LplbrHvnBd61iF1otFoLI2u0+5TO18mcVcxm2ZUB6r/9CzrMuAB
+         13e+60XYUkBLluGST5tJgQscQx9I1n4Sr7zNDMYBVH8rkEP4MZrdrFDh3hVs3Ro8ZsK4
+         PnqA==
+X-Gm-Message-State: AOJu0YyLD026wN0j3TvIKAedD9mtFA53ftz5X2vYi+RX04BaYmb4o9rC
+	VXZXIOTy2uZ/hFC1xQWA1jfU7A5WUNEfuHf0gjHoV82J/ZyopX1N
+X-Google-Smtp-Source: AGHT+IGcc4dOujrbZVb7578zVC3pX2K3Vk/3LVrwm09mcXixFqp9CRa+ehh+ibZFWrrxsnekqxT6kQ==
+X-Received: by 2002:a05:6a00:1495:b0:71e:4ba:f389 with SMTP id d2e1a72fcca58-71ea314ee9cmr12223059b3a.10.1729435840991;
+        Sun, 20 Oct 2024 07:50:40 -0700 (PDT)
+Received: from KERNELXING-MC1.tencent.com ([114.253.33.190])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1415066sm1243979b3a.198.2024.10.20.07.50.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Oct 2024 07:50:40 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	ncardwell@google.com
+Cc: netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next 1/2] tcp: add a common helper to debug the underlying issue
+Date: Sun, 20 Oct 2024 22:50:28 +0800
+Message-Id: <20241020145029.27725-2-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20241020145029.27725-1-kerneljasonxing@gmail.com>
+References: <20241020145029.27725-1-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +73,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] bnxt_en: replace ptp_lock with irqsave variant
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172943584749.3593495.10567241785577650329.git-patchwork-notify@kernel.org>
-Date: Sun, 20 Oct 2024 14:50:47 +0000
-References: <20241016195234.2622004-1-vadfed@meta.com>
-In-Reply-To: <20241016195234.2622004-1-vadfed@meta.com>
-To: Vadim Fedorenko <vadfed@meta.com>
-Cc: michael.chan@broadcom.com, edwin.peer@broadcom.com,
- pavan.chebbi@broadcom.com, kuba@kernel.org, vadim.fedorenko@linux.dev,
- andrew+netdev@lunn.ch, pabeni@redhat.com, netdev@vger.kernel.org,
- richardcochran@gmail.com
 
-Hello:
+From: Jason Xing <kernelxing@tencent.com>
 
-This patch was applied to netdev/net.git (main)
-by Andrew Lunn <andrew@lunn.ch>:
+Following the commit c8770db2d544 ("tcp: check skb is non-NULL
+in tcp_rto_delta_us()"), we decided to add a helper so that it's
+easier to get verbose warning on either cases.
 
-On Wed, 16 Oct 2024 12:52:34 -0700 you wrote:
-> In netpoll configuration the completion processing can happen in hard
-> irq context which will break with spin_lock_bh() for fullfilling RX
-> timestamp in case of all packets timestamping. Replace it with
-> spin_lock_irqsave() variant.
-> 
-> Fixes: 7f5515d19cd7 ("bnxt_en: Get the RX packet timestamp")
-> Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-> 
-> [...]
+Link: https://lore.kernel.org/all/5632e043-bdba-4d75-bc7e-bf58014492fd@redhat.com/
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+---
+ include/net/tcp.h | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-Here is the summary with links:
-  - [net,v2] bnxt_en: replace ptp_lock with irqsave variant
-    https://git.kernel.org/netdev/net/c/4ab3e4983bcc
-
-You are awesome, thank you!
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 739a9fb83d0c..cac7bbff61ce 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2430,6 +2430,22 @@ void tcp_plb_update_state(const struct sock *sk, struct tcp_plb_state *plb,
+ void tcp_plb_check_rehash(struct sock *sk, struct tcp_plb_state *plb);
+ void tcp_plb_update_state_upon_rto(struct sock *sk, struct tcp_plb_state *plb);
+ 
++static inline void tcp_warn_once(const struct sock *sk, bool cond, const char *str)
++{
++	WARN_ONCE(cond,
++		  "%s"
++		  "out:%u sacked:%u lost:%u retrans:%u "
++		  "tlp_high_seq:%u sk_state:%u ca_state:%u "
++		  "advmss:%u mss_cache:%u pmtu:%u\n",
++		  str,
++		  tcp_sk(sk)->packets_out, tcp_sk(sk)->sacked_out,
++		  tcp_sk(sk)->lost_out, tcp_sk(sk)->retrans_out,
++		  tcp_sk(sk)->tlp_high_seq, sk->sk_state,
++		  inet_csk(sk)->icsk_ca_state,
++		  tcp_sk(sk)->advmss, tcp_sk(sk)->mss_cache,
++		  inet_csk(sk)->icsk_pmtu_cookie);
++}
++
+ /* At how many usecs into the future should the RTO fire? */
+ static inline s64 tcp_rto_delta_us(const struct sock *sk)
+ {
+@@ -2441,17 +2457,7 @@ static inline s64 tcp_rto_delta_us(const struct sock *sk)
+ 
+ 		return rto_time_stamp_us - tcp_sk(sk)->tcp_mstamp;
+ 	} else {
+-		WARN_ONCE(1,
+-			"rtx queue empty: "
+-			"out:%u sacked:%u lost:%u retrans:%u "
+-			"tlp_high_seq:%u sk_state:%u ca_state:%u "
+-			"advmss:%u mss_cache:%u pmtu:%u\n",
+-			tcp_sk(sk)->packets_out, tcp_sk(sk)->sacked_out,
+-			tcp_sk(sk)->lost_out, tcp_sk(sk)->retrans_out,
+-			tcp_sk(sk)->tlp_high_seq, sk->sk_state,
+-			inet_csk(sk)->icsk_ca_state,
+-			tcp_sk(sk)->advmss, tcp_sk(sk)->mss_cache,
+-			inet_csk(sk)->icsk_pmtu_cookie);
++		tcp_warn_once(sk, 1, "rtx queue empty: ");
+ 		return jiffies_to_usecs(rto);
+ 	}
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.37.3
 
