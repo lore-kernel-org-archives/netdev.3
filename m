@@ -1,63 +1,42 @@
-Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB09DDA8
-	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 01:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.155
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A1BE65;
+	Mon, 21 Oct 2024 01:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729472898; cv=none; b=r1dysc19ycIMy22W+4tsBCFBuUKs0I0nld0Zg+bfF/eQFcSlyr16ZBkesZvC2ZxmSg2C2SnfdnIcV9iGyz/US6i76DkyOIsoS5b9OlWwJQV9oWdEpyvWEr0eaZwGHuwgvqRUMqeI/38FE7RUAgXBOnyDhAti14md+Zpd47TYR7w=
+	t=1729473912; cv=none; b=cjOxZsZ7iR5TvMMnxDe5RoWFIbjTy+ORhQmCRI0upUezcnavsH59OHcpXNCf7q+xgZxVvoaGGp9U47Tj4oMKtklP4Qzl2hBWsVQYRzfUxpQXYbtmdbHZaVvJPbmw3bNYTKFKxcO4lWGfXK88Vp8EOfackcX91+Djyb7eks8hmc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729472898; c=relaxed/simple;
-	bh=RdMhlqqkg+MjjMlwmkbvT3niaq2+CGtmgkWv1f5fzFE=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=bjTi2C74tmXijg7Sq24Eq+Q80xljPLhSMS7+8/9BYa2j/eNS/dzoQvATZbPRVXg/PLUxOFO/ESZxaO/mWE4U3wcCrP4HzG3s0nyAENEXz3SkSIHiiI9KxvZx7ZLdOqzrMpXGCchZbrTQs+gUOJ/JBCj3VyGOCAZQqw72+sbXnI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IvRt+qBB; arc=none smtp.client-ip=203.205.221.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1729473912; c=relaxed/simple;
+	bh=bxM0ZLnlcZakhZciREqbmanZ3MijgpsLdgCyFRhr840=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lj8e4Ucdy3wf0J5dyi4e50UjnY7XLn66NLiYINISe6LyTLq52dhRG1xjjCghwEyZp4GmT1in9d53N/xsZKhbLZf+h8eNHHM0LW6lY60VM7QY+qW2pzFU/KpJyyd9GYF/+6d2e3/2Zeg7cxOn2d8XsC+KebxLvanlo2BOEymTTH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QGhDscV+; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IvRt+qBB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1729472590; bh=pXdO7FzWdme0VVOEOK6+AI3hpoZS5YDRXo5kibSnml0=;
-	h=From:To:Cc:Subject:Date;
-	b=IvRt+qBBbeGG9CS7Fje80VwovXE/v97RkvRfMtc5zWWeyNhr5Y6YfoQpks3e0Gj2Y
-	 pwqrWoOj/g0sruVBW+eDelBZd5mKMXjQpOqEhLu11k44vg4oVkWNDKVzVTsevWsFq1
-	 912oRuTcia5p2icEbdH074bW19K2rRH/7354o390=
-Received: from localhost ([58.246.87.66])
-	by newxmesmtplogicsvrszgpuc1-0.qq.com (NewEsmtp) with SMTP
-	id C7BECE2; Mon, 21 Oct 2024 09:03:07 +0800
-X-QQ-mid: xmsmtpt1729472587tn8xvfi5d
-Message-ID: <tencent_CCC29C4F562F2DEFE48289DB52F4D91BDE05@qq.com>
-X-QQ-XMAILINFO: OUUXHEo9i1ukMlaV8FBgvyQA6Aslcp3UpBMlH8jpNXs53ckQAdSj0fGh3LvFlV
-	 cLkLIPdZtk4ovPL3ZtKOIE+dv62rqEI86yEdye7KUVFgmIGpkXJn1PXXiZNoZ6q9fWYqAJojmAk1
-	 eLoYEDR4QVXfaLt98p12DGZfnKVqybMkF+PYTMmy4ipuX/A6PaQhHlT5BTZd/SXEKaaxYs3Tmtf0
-	 teAs5xH4XR4Aow21Xi5IuWtCmHO10OKNiTL6gC4QeRimqs5gsCScKeuuXPpMLixI0Mk/Azgo06fz
-	 CahWY6GXbhhe881UmAF2sfcHbVzTtIJVaqTeS9nR+N8NGFldjkpzBHADpfZFtoVVinoLl6ojLSbR
-	 cred4hRv12+bnqQQL2JbZWiDyll/WrFOWxJodS1ALOwWfxxuL1gWsITD20dSO0cmbLoPokACzhQM
-	 E65R86YArLCNlp14RANPuy1Jlhj0kAPp+Wm33MC/ctz1obxW0Ky3zkdeiciFe4yK/389rUU33bgX
-	 T6C6GEBExXw2MMG9iigfeKlJ/Pxl3Jqp95gyCuUOpsxtf7YkyIfN1q69zB4sMh7SRt1cdDVsx5Ui
-	 c56muyusSIpLZodj9g64Akqfsr9qa+T86B8vspb0oJCC7zFj8UdwgkkWu0zU5OfvZ7qOyt79DqIh
-	 oUHBeSEYOGQUOaNxu5OKqKIxRvwaiB4YCae2BUt9I24wVsuSBrbwAL60yag2VRUsQdvLnYtHmuPK
-	 TnwvT6EmoqEpbDJUfX5EO4+c0KiSrCZZPaflnsoCF69K7jaQYNAvxTxBsjrWwmJTD1R8mjkkPwEL
-	 cAiWxEEiaPyEzAh9E+a0tdq2hOJZ5Hv37QBxDBYglpxdrroSCVyl0wzSYR5/qWJb0FrE3VARr/C1
-	 kq/DJCk9ixTZhtfLAb3J6qKvUFgTQPJ6TwcSK83nQyJoN1Pq8OGgY54un5hrpwls1SdSw+wVg9VQ
-	 G3VdPLBLk=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-From: 2694439648@qq.com
-To: alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QGhDscV+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=upPl/
+	vJF+V+jNENLlbjlbuE9AJVSMOuiWd7sj3jAOxE=; b=QGhDscV+vj963g1cbCiGu
+	uXSrELipg7iz94YU5jr7oScPeEyC/mAR0PuLN0mOBuNnPc7cDfHDYsJi0BL+zZDb
+	dsFr03iEjAaPHKrvjjlSQFeuPnw3HaHrIO2fAjrGKKBwGR9aoV8USd63gbH/rXpX
+	wY63N6y4m2N3uxWqBOZ6rY=
+Received: from localhost.localdomain (unknown [47.252.33.72])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBHz+NDrRVnf9t6CQ--.41457S2;
+	Mon, 21 Oct 2024 09:24:24 +0800 (CST)
+From: mrpre <mrpre@163.com>
+To: edumazet@google.com,
+	jakub@cloudflare.com,
 	davem@davemloft.net,
-	edumazet@google.com,
+	dsahern@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	hailong.fan@siengine.com
-Subject: [PATCH v1] net: stmmac: enable MAC after MTL configuring
-Date: Mon, 21 Oct 2024 09:03:05 +0800
-X-OQ-MSGID: <9e4821f4b153f01611066ccc2b7d33416426a6ea.1729472506.git.hailong.fan@siengine.com>
-X-Mailer: git-send-email 2.34.1
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.orgc,
+	linux-kernel@vger.kernel.org
+Cc: mrpre <mrpre@163.com>
+Subject: [PATCH] bpf: fix filed access without lock
+Date: Mon, 21 Oct 2024 09:24:09 +0800
+Message-ID: <20241021012409.14084-1-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,120 +44,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBHz+NDrRVnf9t6CQ--.41457S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1rCFy7Ar1fKr4rKw48Zwb_yoW8GFyrpF
+	y7Cw109a1qyFWDAr4vyFWkJF13W3ySka4Uurn5W3y3Arsrur13tFWkKw4YyF1F9Fs2yF4a
+	qrWjgF1jka1DCwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piuyIUUUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDxl-p2cVqsZQ3AAAsc
 
-From: "hailong.fan" <hailong.fan@siengine.com>
+The tcp_bpf_recvmsg_parser() function, running in user context,
+retrieves seq_copied from tcp_sk without holding the socket lock, and
+stores it in a local variable seq. However, the softirq context can
+modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
 
-DMA maybe block while ETH is opening,
-Adjust the enable sequence, put the MAC enable last
+As a result, the seq value is stale when it is assigned back to
+tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
+incorrect behavior.
 
-For example, ETH is directly connected to the switch,
-which never power down and sends broadcast packets at regular intervals.
-During the process of opening ETH, data may flow into the MTL FIFO,
-once MAC RX is enabled. and then, MTL will be set, such as FIFO size.
-Once enable DMA, There is a certain probability that DMA will read
-incorrect data from MTL FIFO, causing DMA to hang up.
-By read DMA_Debug_Status, you can be observed that the RPS remains at
-a certain value forever. The correct process should be to configure
-MAC/MTL/DMA before enabling DMA/MAC
-
-Signed-off-by: hailong.fan <hailong.fan@siengine.com>
-
+Signed-off-by: mrpre <mrpre@163.com>
 ---
-V0-V1:
-   1. update commit messages
----
- drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c   |  8 --------
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 12 ------------
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  6 +++---
- 3 files changed, 3 insertions(+), 23 deletions(-)
+ net/ipv4/tcp_bpf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index 0d185e54e..92448d858 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -50,10 +50,6 @@ void dwmac4_dma_start_tx(struct stmmac_priv *priv, void __iomem *ioaddr,
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index e7658c5d6b79..7b44d4ece8b2 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -221,9 +221,9 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 				  int flags,
+ 				  int *addr_len)
+ {
+-	struct tcp_sock *tcp = tcp_sk(sk);
++	struct tcp_sock *tcp;
++	u32 seq;
+ 	int peek = flags & MSG_PEEK;
+-	u32 seq = tcp->copied_seq;
+ 	struct sk_psock *psock;
+ 	int copied = 0;
  
- 	value |= DMA_CONTROL_ST;
- 	writel(value, ioaddr + DMA_CHAN_TX_CONTROL(dwmac4_addrs, chan));
+@@ -238,7 +238,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
+ 
+ 	lock_sock(sk);
 -
--	value = readl(ioaddr + GMAC_CONFIG);
--	value |= GMAC_CONFIG_TE;
--	writel(value, ioaddr + GMAC_CONFIG);
- }
- 
- void dwmac4_dma_stop_tx(struct stmmac_priv *priv, void __iomem *ioaddr,
-@@ -77,10 +73,6 @@ void dwmac4_dma_start_rx(struct stmmac_priv *priv, void __iomem *ioaddr,
- 	value |= DMA_CONTROL_SR;
- 
- 	writel(value, ioaddr + DMA_CHAN_RX_CONTROL(dwmac4_addrs, chan));
--
--	value = readl(ioaddr + GMAC_CONFIG);
--	value |= GMAC_CONFIG_RE;
--	writel(value, ioaddr + GMAC_CONFIG);
- }
- 
- void dwmac4_dma_stop_rx(struct stmmac_priv *priv, void __iomem *ioaddr,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index 7840bc403..cba12edc1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -288,10 +288,6 @@ static void dwxgmac2_dma_start_tx(struct stmmac_priv *priv,
- 	value = readl(ioaddr + XGMAC_DMA_CH_TX_CONTROL(chan));
- 	value |= XGMAC_TXST;
- 	writel(value, ioaddr + XGMAC_DMA_CH_TX_CONTROL(chan));
--
--	value = readl(ioaddr + XGMAC_TX_CONFIG);
--	value |= XGMAC_CONFIG_TE;
--	writel(value, ioaddr + XGMAC_TX_CONFIG);
- }
- 
- static void dwxgmac2_dma_stop_tx(struct stmmac_priv *priv, void __iomem *ioaddr,
-@@ -302,10 +298,6 @@ static void dwxgmac2_dma_stop_tx(struct stmmac_priv *priv, void __iomem *ioaddr,
- 	value = readl(ioaddr + XGMAC_DMA_CH_TX_CONTROL(chan));
- 	value &= ~XGMAC_TXST;
- 	writel(value, ioaddr + XGMAC_DMA_CH_TX_CONTROL(chan));
--
--	value = readl(ioaddr + XGMAC_TX_CONFIG);
--	value &= ~XGMAC_CONFIG_TE;
--	writel(value, ioaddr + XGMAC_TX_CONFIG);
- }
- 
- static void dwxgmac2_dma_start_rx(struct stmmac_priv *priv,
-@@ -316,10 +308,6 @@ static void dwxgmac2_dma_start_rx(struct stmmac_priv *priv,
- 	value = readl(ioaddr + XGMAC_DMA_CH_RX_CONTROL(chan));
- 	value |= XGMAC_RXST;
- 	writel(value, ioaddr + XGMAC_DMA_CH_RX_CONTROL(chan));
--
--	value = readl(ioaddr + XGMAC_RX_CONFIG);
--	value |= XGMAC_CONFIG_RE;
--	writel(value, ioaddr + XGMAC_RX_CONFIG);
- }
- 
- static void dwxgmac2_dma_stop_rx(struct stmmac_priv *priv, void __iomem *ioaddr,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index e21404822..c19ca62a4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3437,9 +3437,6 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
- 		priv->hw->rx_csum = 0;
- 	}
- 
--	/* Enable the MAC Rx/Tx */
--	stmmac_mac_set(priv, priv->ioaddr, true);
--
- 	/* Set the HW DMA mode and the COE */
- 	stmmac_dma_operation_mode(priv);
- 
-@@ -3523,6 +3520,9 @@ static int stmmac_hw_setup(struct net_device *dev, bool ptp_register)
- 	/* Start the ball rolling... */
- 	stmmac_start_all_dma(priv);
- 
-+	/* Enable the MAC Rx/Tx */
-+	stmmac_mac_set(priv, priv->ioaddr, true);
-+
- 	stmmac_set_hw_vlan_mode(priv, priv->hw);
- 
- 	return 0;
++	tcp = tcp_sk(sk);
++	seq = tcp->copied_seq;
+ 	/* We may have received data on the sk_receive_queue pre-accept and
+ 	 * then we can not use read_skb in this context because we haven't
+ 	 * assigned a sk_socket yet so have no link to the ops. The work-around
 -- 
-2.34.1
+2.43.5
 
