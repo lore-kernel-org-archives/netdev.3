@@ -1,178 +1,122 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD35946C;
-	Mon, 21 Oct 2024 09:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E861E32CA
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 09:23:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729502618; cv=none; b=UUcmSd+GQPlsuZngSgQC4J9GLL8k3CE/m7jIri48xelpnqcB1EqdClffqVD68jGfWpfGPq0poGDMOOdD1xsbrOx6gi2M6mpdiPtMMZlpTBbsi4ONu2Yi0UXHfPaVNTtN/lP/m+JxgPyW4uTBn6xdsyAzm6Vr9+DZvU2GJplSXps=
+	t=1729502624; cv=none; b=DhmJwwENo2hdmL9VdsOPvfo5Sr4K1z49JNwtTc3309IjmcG2+T2i9XoRmxs8tc+fq5Jikcvtvu4gbR9F2H/Ffs8+kUQGgg5Pivc9kqK2xcC0B/AsI9Nf4sBD3PYG/rZWhlaw3lmna7DZSzMNwHO8mZ7fBDE7paQH62nXjku0ZPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729502618; c=relaxed/simple;
-	bh=NF4gcmGNEip+EEojzKeKQCC1Fyhu17xoPxeW5++eSGo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yu2OHmL2KWMVlA3fB/+57jj4ZY81zIcZFgnsC00M7db69fZf/tAT3g0hIMKxhgaGnOJWxmzYqel1s776xV8/iv1sPVH/RR7ZOqsMHtyUhh3V3VejKGAcSCI4P9U8Y+3nTF8TssMrJASFthY676b10P/uaHGif1QTj8iHjyF5L9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MGZcPNKx; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1729502624; c=relaxed/simple;
+	bh=XAazZYLkwAGGoZZOx7JUiyLm2ipHe+8hLTq1JrfcDJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VGCTWCqgNChWQIfDo4IJnjf9xTeQsrIeuWsxiXm/95X8qC9o+hoy1eL7XKX+ZxFOf/vDg8yzNJq0zXs91NAe8LvzTUsa7IUxnrmiEKxwGZO7gLpIJK9t+l1e2IKFIuCbiyrBjNDnnviEuDfWoHXYBtaLLy1+DcdbpX7aTYteQ1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SNhjluE9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MGZcPNKx"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49L7WkRG025994;
-	Mon, 21 Oct 2024 02:05:26 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=0goJgfit4TjURb3XRQO6I44JY
-	U0Wpgwn0kcUIYNFrFw=; b=MGZcPNKxs/gA9AcqBKLqfRsGOj7EGl5qVAdBCetut
-	CH34pv/7LgL001uMfvmHvSxlxC7s1xmpKyz2ObN7PMYPnyM9MriY1nXAL2lCcg6D
-	YEOeRJtoWBY6Hu37520VY4s5f+zRbrlOsQW457JUtMfAHhhPXMmsoSAGYrJ42cQO
-	L1Lf+FtfJb7e+1vth/mUI/WHdNnAOIebwiYIlRdfJgsdsgmtv9akE+8eWhlVrdAS
-	BXDGfCnGi8JzcTmTxNzZW19nQRj8NgrMOP7wuo+hlVZi0t2zQ8hxWiIm/JH7Gi9y
-	LClCY2CTpGcoZP2fQxyqjBKflr5AnLGjMD2lhXP4kXn9Q==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 42djnmr5vq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 02:05:26 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 21 Oct 2024 02:04:58 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 21 Oct 2024 02:04:58 -0700
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id 495AA3F705D;
-	Mon, 21 Oct 2024 02:04:54 -0700 (PDT)
-Date: Mon, 21 Oct 2024 14:34:53 +0530
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: Furong Xu <0x1207@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu
-	<joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>, <xfr@outlook.com>,
-        Suraj Jaiswal <quic_jsuraj@quicinc.com>
-Subject: Re: [PATCH net v1] net: stmmac: TSO: Fix unbalanced DMA map/unmap
- for non-paged SKB data
-Message-ID: <ZxYZNc+CKWglUphG@test-OptiPlex-Tower-Plus-7010>
-References: <20241021061023.2162701-1-0x1207@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SNhjluE9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729502621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZOPzM8nTUFqwLn8ohf0g1jVEfJikuSPUMDsCZxkKDsM=;
+	b=SNhjluE9FVyBzX2V8kO/9R0rhp4H+mZCg2Y6mDktaQYBdc8BymrhnoKkMR7UuCSwi4UiH4
+	k2th9grbdLxKW+2Bov6boZBBc7LwAC9zBUKEm1EbnLeJR+5wR8KnIKDA+0HFzsDBKY0mg5
+	ATSgepVKc8QbC9IBOCtU++uXD/Bix3s=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-5iA86wRSOYSmUk-0LZs7nw-1; Mon, 21 Oct 2024 05:23:40 -0400
+X-MC-Unique: 5iA86wRSOYSmUk-0LZs7nw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d603515cfso1883077f8f.1
+        for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 02:23:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729502619; x=1730107419;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZOPzM8nTUFqwLn8ohf0g1jVEfJikuSPUMDsCZxkKDsM=;
+        b=lh8Zmz7RX+Nw7Cp5zkJ/0+G9nEoTayWGff6CR+utOX6dho18+tGXY4xJoLDLULepXg
+         vM3qVMQMhZi6eyBL0qq4p/nqQQmVG26JFAhl40z2+7SqYKSZ5xPnGTaJBKX+K3+FwJaG
+         ywvB5VgaU0hf8pAooTplA4xhm4UxZMYu7Wftt1kF3XiZ7ZG6zYctyh6MS2fNxsmy2EOx
+         jrgDLYqmq8NzzUpVUYT3QBLkBQZxZCJ4RbdaL3X3JufYStDtu73jyb24qV0z6KD/fcjG
+         I/E+HvLL+KZfccUunV28VQmZyijHC1zWDcPztrBrblHH/YdOJpLoNX7ovrEEy7QadVM9
+         HNmw==
+X-Gm-Message-State: AOJu0YycPKoLzffxLAjnM5fiYGuXGSV2zyuT6gDzBaj4qFe1GiI086fi
+	kqfpATk01DMJp+GOK0gsXpAkQynXJ1YcBnDBVsKb8oxlrkxMD22/C/A4Kh7qq3IeblR46msLmNG
+	H8Vj7e+/HgL+vL3p4/5FGqXRke99eAc5SzQN3wifAOKrwmlWbMmgUIg==
+X-Received: by 2002:adf:f591:0:b0:37d:39df:8658 with SMTP id ffacd0b85a97d-37eab72a94dmr6219402f8f.58.1729502619021;
+        Mon, 21 Oct 2024 02:23:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHysyLKLLu8ecA+EiDeIyFSZdEdGbiDbJIKLmvhlv8Jpyw7lbNkChKbBAKP5wBfWcUaSVANmA==
+X-Received: by 2002:adf:f591:0:b0:37d:39df:8658 with SMTP id ffacd0b85a97d-37eab72a94dmr6219383f8f.58.1729502618678;
+        Mon, 21 Oct 2024 02:23:38 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:1b73:a910::f71? ([2a0d:3344:1b73:a910::f71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f5cbe7dsm51045765e9.39.2024.10.21.02.23.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 02:23:38 -0700 (PDT)
+Message-ID: <6b95c3c9-3b8b-4db3-b755-a3652c1a59cc@redhat.com>
+Date: Mon, 21 Oct 2024 11:23:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241021061023.2162701-1-0x1207@gmail.com>
-X-Proofpoint-GUID: VKTrNVJoQBOJl-nC4JKz4dttpbbjuoBC
-X-Proofpoint-ORIG-GUID: VKTrNVJoQBOJl-nC4JKz4dttpbbjuoBC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/4] net: ethernet: mtk_eth_soc: optimize dma
+ ring address/index calculation
+To: Felix Fietkau <nbd@nbd.name>, Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
+ Mark Lee <Mark-MC.Lee@mediatek.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20241015110940.63702-1-nbd@nbd.name>
+ <20241015110940.63702-4-nbd@nbd.name>
+ <e67883e3-b278-4052-849c-8a9a8ef145f0@lunn.ch>
+ <695421bb-6f31-4bae-8c8c-6d4fccf1b497@nbd.name>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <695421bb-6f31-4bae-8c8c-6d4fccf1b497@nbd.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2024-10-21 at 11:40:23, Furong Xu (0x1207@gmail.com) wrote:
-> In case the non-paged data of a SKB carries protocol header and protocol
-> payload to be transmitted on a certain platform that the DMA AXI address
-> width is configured to 40-bit/48-bit, or the size of the non-paged data
-> is bigger than TSO_MAX_BUFF_SIZE on a certain platform that the DMA AXI
-> address width is configured to 32-bit, then this SKB requires at least
-> two DMA transmit descriptors to serve it.
+On 10/15/24 15:07, Felix Fietkau wrote:
+> On 15.10.24 14:54, Andrew Lunn wrote:
+>> On Tue, Oct 15, 2024 at 01:09:38PM +0200, Felix Fietkau wrote:
+>>> Since DMA descriptor sizes are all power of 2, we can avoid costly integer
+>>> division in favor or simple shifts.
+>>
+>> Could a BUILD_BUG_ON() be added to validate this?
 > 
-> For example, three descriptors are allocated to split one DMA buffer
-> mapped from one piece of non-paged data:
->     dma_desc[N + 0],
->     dma_desc[N + 1],
->     dma_desc[N + 2].
-> Then three elements of tx_q->tx_skbuff_dma[] will be allocated to hold
-> extra information to be reused in stmmac_tx_clean():
->     tx_q->tx_skbuff_dma[N + 0],
->     tx_q->tx_skbuff_dma[N + 1],
->     tx_q->tx_skbuff_dma[N + 2].
-> Now we focus on tx_q->tx_skbuff_dma[entry].buf, which is the DMA buffer
-> address returned by DMA mapping call. stmmac_tx_clean() will try to
-> unmap the DMA buffer _ONLY_IF_ tx_q->tx_skbuff_dma[entry].buf
-> is a valid buffer address.
+> Not sure if that would be useful. I can't put the BUILD_BUG_ON in the 
+> initializer macro, so I could only add it for the individual dma 
+> descriptor structs.
+> Since the size of those structs will not be changed (otherwise it would 
+> immediately visibly break with existing hw), the remaining possibility 
+> would be adding new structs that violate this expectation. However, 
+> those would then not be covered by the BUILD_BUG_ON.
 > 
-> The expected behavior that saves DMA buffer address of this non-paged
-> data to tx_q->tx_skbuff_dma[entry].buf is:
->     tx_q->tx_skbuff_dma[N + 0].buf = NULL;
->     tx_q->tx_skbuff_dma[N + 1].buf = NULL;
->     tx_q->tx_skbuff_dma[N + 2].buf = dma_map_single();
-> Unfortunately, the current code misbehaves like this:
->     tx_q->tx_skbuff_dma[N + 0].buf = dma_map_single();
->     tx_q->tx_skbuff_dma[N + 1].buf = NULL;
->     tx_q->tx_skbuff_dma[N + 2].buf = NULL;
+>> Do you have some benchmark data for this series? It would be good to
+>> add to a patch 0/4.
 > 
-> On the stmmac_tx_clean() side, when dma_desc[N + 0] is closed by the
-> DMA engine, tx_q->tx_skbuff_dma[N + 0].buf is a valid buffer address
-> obviously, then the DMA buffer will be unmapped immediately.
-> There may be a rare case that the DMA engine does not finish the
-> pending dma_desc[N + 1], dma_desc[N + 2] yet. Now things will go
-> horribly wrong, DMA is going to access a unmapped/unreferenced memory
-> region, corrupted data will be transmited or iommu fault will be
-> triggered :(
-> 
-> In contrast, the for-loop that maps SKB fragments behaves perfectly
-> as expected, and that is how the driver should do for both non-paged
-> data and paged frags actually.
-> 
-> This patch corrects DMA map/unmap sequences by fixing the array index
-> for tx_q->tx_skbuff_dma[entry].buf when assigning DMA buffer address.
-> 
-> Tested and verified on DWXGMAC CORE 3.20a
-> 
-> Reported-by: Suraj Jaiswal <quic_jsuraj@quicinc.com>
-> Fixes: f748be531d70 ("stmmac: support new GMAC4")
-> Signed-off-by: Furong Xu <0x1207@gmail.com>
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 22 ++++++++++++++-----
->  1 file changed, 17 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index d3895d7eecfc..208dbc68aaf9 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -4304,11 +4304,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  	if (dma_mapping_error(priv->device, des))
->  		goto dma_map_err;
->  
-> -	tx_q->tx_skbuff_dma[first_entry].buf = des;
-> -	tx_q->tx_skbuff_dma[first_entry].len = skb_headlen(skb);
-> -	tx_q->tx_skbuff_dma[first_entry].map_as_page = false;
-> -	tx_q->tx_skbuff_dma[first_entry].buf_type = STMMAC_TXBUF_T_SKB;
-> -
->  	if (priv->dma_cap.addr64 <= 32) {
->  		first->des0 = cpu_to_le32(des);
->  
-> @@ -4327,6 +4322,23 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  
->  	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
->  
-> +	/* In case two or more DMA transmit descriptors are allocated for this
-> +	 * non-paged SKB data, the DMA buffer address should be saved to
-> +	 * tx_q->tx_skbuff_dma[].buf corresponding to the last descriptor,
-> +	 * and leave the other tx_q->tx_skbuff_dma[].buf as NULL to guarantee
-> +	 * that stmmac_tx_clean() does not unmap the entire DMA buffer too early
-> +	 * since the tail areas of the DMA buffer can be accessed by DMA engine
-> +	 * sooner or later.
-> +	 * By saving the DMA buffer address to tx_q->tx_skbuff_dma[].buf
-> +	 * corresponding to the last descriptor, stmmac_tx_clean() will unmap
-> +	 * this DMA buffer right after the DMA engine completely finishes the
-> +	 * full buffer transmission.
-> +	 */
-> +	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf = des;
-> +	tx_q->tx_skbuff_dma[tx_q->cur_tx].len = skb_headlen(skb);
-> +	tx_q->tx_skbuff_dma[tx_q->cur_tx].map_as_page = false;
-> +	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
-> +
->  	/* Prepare fragments */
->  	for (i = 0; i < nfrags; i++) {
->  		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-> -- 
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+> No, I just ran basic tests that everything still works well and looked 
+> at the assembly diff to ensure that the generated code seems sane.
+
+Since this series is about performances, some related quick figures
+would be really a plus.
+
+At least we need a cover-letter to try to keep the git log history
+clean. Otherwise cooking the net-next PR at the end of the cycle will be
+a 10w worth task;)
+
+Please re-send with a cover letter.
+Thanks,
+
+Paolo
+
