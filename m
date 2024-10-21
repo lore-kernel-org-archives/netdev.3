@@ -1,36 +1,36 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7651EABC4;
-	Mon, 21 Oct 2024 17:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897431EF945;
+	Mon, 21 Oct 2024 17:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729532037; cv=none; b=qW0EDYBRVsnPgSBeT++uyiGWXDyeyz7ON0xfb4rfzBtTTYr/5wgUrcDKfzg0h847vKa29zSjHDMUEaZiP4H9Gii/GFFo48DfcnZEqVoQ7KOuf0RgdYAlMg4OTVRa9v9RpAwSA7tAoq6AnKv8fOnav60l4zVv55zcBGyXIVY40Xg=
+	t=1729532805; cv=none; b=QfPNNJ2z+3Dl1/7vM2K9R5WupugIIu2sOoDdxDm8DPfHFt5PVAKOvWsWIiWZrA1vSfTU/3+wAs5s+go8RfaHvEOGzVEg1PbjX0BYDajMIXUGpwkSWt8F5HAW+7c23CSC8LprrU3rcpPTZ54ZeDBhKyb0Vzw55LfUbPCCQyf/l8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729532037; c=relaxed/simple;
-	bh=0BX5ye4uZiCaRI8uVOg4Db78leJWxE2sRuvRzXmmbH0=;
+	s=arc-20240116; t=1729532805; c=relaxed/simple;
+	bh=FkYnC5v0yIlyNmcCKM8Skrn2LYtpxSulwrdHUBMxZrs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ged1M53ybDC4eC8BDceHnAsQDcj83mMIAwADOHFVmB8YWwaPBPOX1yA42BYe4KtO7z70eMtlHNNn2H3pIpZaNI6rsHAjOWWYDEiy777tNCX+bSv6yqD5a4VcjayJMIf8RDF7Ou4wyCdV2vx6XuNv9oiWQbfOGvuTRS9mfgr5K1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b8vcOpxU; arc=none smtp.client-ip=217.70.183.200
+	 MIME-Version:Content-Type; b=edz/QDzZXW4TMutK9UPO3p5YPsvCkDO7U1LcFvUfHwuu9JzkQDp6ur3NTowJkr92JNskuBy7tmJrH6dPn3Ae86FlSHeayruzQqIXFwbdSQuT+/P71H6MsdeOdOhUHQ49fk9evBURrxJKSQaYzlh4m4w0LBj17z7MKmrDEq2SchE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HntMsgdZ; arc=none smtp.client-ip=217.70.183.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b8vcOpxU"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2514220004;
-	Mon, 21 Oct 2024 17:33:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HntMsgdZ"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 00B1E240002;
+	Mon, 21 Oct 2024 17:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729532032;
+	t=1729532800;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8MaX199Fe4JfeRIaLriBDyMlENqkxgT9mj03plpAUcs=;
-	b=b8vcOpxUOqkvXvlW4E6uo4uhuj8dmNLMYbV4ZPzueVPwRlg4uqmbdkOV15bonawranp5Q0
-	j1OiENoBYDckFqlcoKsglnrPJs+ccvsnTcABD8JmpXiOmXdR/C4twSTWJL7QEOfBwliBKQ
-	y1xE0r9jGrOUAuLnCE0rme9tqm+Y+Z8g5hV8QiiJ0YOQFpMP+JlLdjMiaQw87Pdq1+MObq
-	ec9eDtrUavWhhsbCGG3+kc+HnzUqwV8XoRHXODoN2jz3uK5uBjGfiIM6WNwYjM1Kdv15dw
-	guDNO6ORQltp9QHMDVzqEfgzG84jQuY8HAny69ux2ti1Ws+bHdhxYPllnuCg2w==
-Date: Mon, 21 Oct 2024 19:33:48 +0200
+	bh=hRPQmmO/50SbRRQK3oyXv/+1GlUkCXtzEQvhddj1OlI=;
+	b=HntMsgdZV5oJvoNH/bqbRjpeNglhghLXtIXNpaFxT+p37UiHNve+rdvbL+pt/zzWWmJezU
+	OILXE0sGpm4H4D5UpmOmv9Ncwf0LMXp1D3GjydiNbRLSkQIgL4KgYL3sJgtOrBYYV4w/9M
+	Ap8OpgxRmhOvrqrZ4GyouPXYIZe8E4tIjlVgZKaygkRNIoFpoT2cnb7A/5/buOGqFndxzI
+	s3/OW+8fclB6lgQF1MmYPIe3tPj72pEKNi0MsJWb+1tN85+9QC4oCT+GABunePGwqeLaUp
+	v8M6ReWU084fWe50b3CA1ZNHGlgaEpIHn1C2dlCLCg+r8arzvFrW2HlYdtf6+A==
+Date: Mon, 21 Oct 2024 19:46:38 +0200
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Daniel Machon <daniel.machon@microchip.com>
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
@@ -46,12 +46,11 @@ Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
  <ast@fiberby.net>, <netdev@vger.kernel.org>,
  <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
  <devicetree@vger.kernel.org>
-Subject: Re: [PATCH net-next 05/15] net: sparx5: add registers required by
- lan969x
-Message-ID: <20241021193348.7a2423db@device-21.home>
-In-Reply-To: <20241021-sparx5-lan969x-switch-driver-2-v1-5-c8c49ef21e0f@microchip.com>
+Subject: Re: [PATCH net-next 10/15] net: lan969x: add PTP handler function
+Message-ID: <20241021194638.585a9870@device-21.home>
+In-Reply-To: <20241021-sparx5-lan969x-switch-driver-2-v1-10-c8c49ef21e0f@microchip.com>
 References: <20241021-sparx5-lan969x-switch-driver-2-v1-0-c8c49ef21e0f@microchip.com>
-	<20241021-sparx5-lan969x-switch-driver-2-v1-5-c8c49ef21e0f@microchip.com>
+	<20241021-sparx5-lan969x-switch-driver-2-v1-10-c8c49ef21e0f@microchip.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -64,26 +63,36 @@ Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Hello Daniel,
+Hi Daniel,
 
-On Mon, 21 Oct 2024 15:58:42 +0200
+On Mon, 21 Oct 2024 15:58:47 +0200
 Daniel Machon <daniel.machon@microchip.com> wrote:
 
-> Lan969x will require a few additional registers for certain operations.
-> Some are shared, some are not. Add these.
+> Add PTP IRQ handler for lan969x. This is required, as the PTP registers
+> are placed in two different targets on Sparx5 and lan969x. The
+> implementation is otherwise the same as on Sparx5.
+> 
+> Also, expose sparx5_get_hwtimestamp() for use by lan969x.
 > 
 > Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 > Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 
 [...]
 
-> +#define PTP_PTP_TWOSTEP_STAMP_SUBNS_STAMP_SUB_NSEC GENMASK(7, 0)
+> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+> index 15f5d38776c4..3f66045c57ef 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+> @@ -114,6 +114,8 @@ enum sparx5_vlan_port_type {
+>  #define SPX5_DSM_CAL_LEN               64
+>  #define SPX5_DSM_CAL_MAX_DEVS_PER_TAXI 13
+>  
+> +#define SPARX5_MAX_PTP_ID	512
+> +
 
-I understand that this is partly autogenerated, however the naming for
-this register in particular seems very redundant... Is there any way
-this could be improved ?
+Sorry if I somehow missed it, but if you define SPARX5_MAX_PTP_ID here,
+you probably don't need it to be also defined in sparx5_ptp.c as well ?
 
 Thanks,
 
 Maxime
-
