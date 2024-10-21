@@ -1,87 +1,157 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9571FA24B
-	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 18:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A91DF754
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 18:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729535775; cv=none; b=MVGUPDbEOdFAXch5Cx+sZIux24By1kpgi0VCYN9TgYeiQVUbQfAHYW9w4y05syu1eAR6+D64gqE/u4Yqgz1N3flJRGlKmNXOqQ0//s9KyEUvn2k9Knn09FHJDwSfJNjmyAjVAWYhQNiLA7rRF5+7EELmIWn5/zY1CuLXP/TJLmc=
+	t=1729535783; cv=none; b=snUYTTCMhrS50lZzdcEqIdN79Kece3Ch+JjbHoHDN6+MSByDWt2tV45Cm3Q1HejS8d4MxBKXhwA5k4nfF9wM1pLKOSbqC9p74dFeq1uCsginU6HgU2LZnzl7lEiNeT6nDWwQTi590yJu8kmY1lQDa6A7okrWnEMy8BtqRtaP4TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729535775; c=relaxed/simple;
-	bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=HIru1xph9hOK9tJ6A5dLKD+yhw6TgfRKK7+PigxgXXjd0Q53GX0Trya8VvJjwR4d2xSm6oAxg0n+wjWwistrEMvMvBnMJKHSjEs/MeHW4vD8eZw/jyrkc0m22rYEUsSKYoQpp+1q4zLRSmbICHYNN7VRD0Os5rNjK1To3hHSqZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XwimAlmS; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729535783; c=relaxed/simple;
+	bh=I32w/hAESFnwtHqY8brOqiC1ZGxBhcMyhqA9FCbIpYM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SQPhzDq/zXAXHWF0NOlsPeLDiYQBrs4wF7UK87BOzTlBK5RlKgyICe0w5rmeExGlc1pzR6cYXIEoeLncatx8b/jmToNLasHFQq43GKW+TMKa2vpNuoS9WWJ/GBOr5W55QhM2TPlYvVn5FAhL8Z2c9RxU2XFokGPWtsWsemWqtOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=p4OSjTT1; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XwimAlmS"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53a007743e7so5748376e87.1
-        for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 11:36:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="p4OSjTT1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729535770; x=1730140570; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
-        b=XwimAlmS6W5G+5nBrUQJTnXjmhPwREPe5Geh7cIV/BRgVMBwmSR6gKn6onlD800zVP
-         KTr+IGcKu6hYSKvUAvRWY+wnL/6lx4w84QHO1a4TRFLDsyjuFPVvU42AOOd32LLMaLt5
-         GN3gbhMBKVJA9xYFLPKgIbUFZnxETX+e0ljxmflJVCWqHyt+IQ/AGCYO/akmGBw/WhK+
-         uipwL9J++2grhM/+T4BWzHkm1tInGvZtbRrgjresxUSaaKV4keWmXeYOq1b8josm4MYW
-         UcHguVJwcRaN+SZ3ZLTbjZmEmZwsFpX9u176rw2UXUrghf1IJKayuQsC5AbhBnHde4DP
-         i0kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729535770; x=1730140570;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
-        b=BOnSSBxWsV+Utd4fpVbtHoVEN9sFJ3rKdiGgmkoFrO5/p2EGVSIrnC5iCcLy0p27fC
-         eeoUj8g24hWcfFHjmbPkNnUWNUX1wAGUPq75EZiwou/Sn2KBufx68URu1XC3e6Nh5pCx
-         lp7AURsNKAxl2txeCENM2d8f2k+j8T6plaI74LOT18iCkNfF6jMEebkmfqrYANB7Tx5Z
-         HorcTBmPRXgqwoSmvB8GrA9+/uia9E3LjAf87u8v6UxUKrrjbIz2CPP4NcA1NDakkbvv
-         CqAYecLx8dPYPMzYz2egTjSJ1X7zLQ2VVrn2gmK+H3jl3qTwlo6+i87vS0YUwuRRxjsd
-         JRzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWUTisjONgCEN9A8DUKoGE6bqWPCVRYYvoA+2L3Nsojlm0qsnz44slj1KJzEZn2kbdLA6t240=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTkoCuSqrc5CwNk8Tb1fsmzl8rs2laGb6AGxcz8rotFpyLqOVU
-	fy4MsgILOFw2qTECczgAh6iNrYvabBM4yFoO9vzMDR4OOrpU7CmoVRxwDnLoN4hZ8hJ690C868X
-	R3qzmAawChmk6pgeJov9rkDlqpgjET1qiWCvL
-X-Google-Smtp-Source: AGHT+IF+0F+zaNHtxsbg+gonwYc1DvKt2ow49jd6XgmTT1CLmLAHX/pP8qve/Wi1OK1gXjQs8uB/egmJ+SnCNS621MA=
-X-Received: by 2002:a05:6512:124e:b0:539:ddf1:ac6f with SMTP id
- 2adb3069b0e04-53a154fb010mr5963550e87.46.1729535769525; Mon, 21 Oct 2024
- 11:36:09 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729535782; x=1761071782;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fTQq56tLQMMpcdJDcw1ls/VPf35Xp1XABNUi0W6KC/8=;
+  b=p4OSjTT1phTR2vgETz0QqFuqL5W6/ggX55Ain4yBZdn9DdEFlf9vqLqP
+   3/EKT2JxKYKUXA8Y4z+nioltKUrwF1DR8LFA9bAr/YoAWVr7KQvSNbTzd
+   zPHVK55xfRPQkNWmDwe+BGkouOrZZ0PaE7CYlyvWq6sqNWtCzwTsmWSWG
+   8=;
+X-IronPort-AV: E=Sophos;i="6.11,221,1725321600"; 
+   d="scan'208";a="442698936"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 18:36:17 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:17676]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.107:2525] with esmtp (Farcaster)
+ id 4a1085e3-f2b7-4800-804e-ef824db548fe; Mon, 21 Oct 2024 18:36:15 +0000 (UTC)
+X-Farcaster-Flow-ID: 4a1085e3-f2b7-4800-804e-ef824db548fe
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Mon, 21 Oct 2024 18:36:14 +0000
+Received: from 6c7e67c6786f.amazon.com (10.119.222.5) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Mon, 21 Oct 2024 18:36:12 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
+CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH v1 net-next 11/12] ipv4: Convert devinet_ioctl() to per-netns RTNL except for SIOCSIFFLAGS.
+Date: Mon, 21 Oct 2024 11:32:38 -0700
+Message-ID: <20241021183239.79741-12-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241021183239.79741-1-kuniyu@amazon.com>
+References: <20241021183239.79741-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021182821.1259487-1-dualli@chromium.org> <20241021182821.1259487-2-dualli@chromium.org>
-In-Reply-To: <20241021182821.1259487-2-dualli@chromium.org>
-From: Li Li <dualli@google.com>
-Date: Mon, 21 Oct 2024 11:35:57 -0700
-Message-ID: <CA+xfxX5ygyuaSwP7y-jEWqMLAYR6vP_Wg0CBJb+TcL1nsDJQ-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] binder: report txn errors via generic netlink
-To: dualli@google.com, corbet@lwn.net, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	donald.hunter@gmail.com, gregkh@linuxfoundation.org, arve@android.com, 
-	tkjos@android.com, maco@android.com, joel@joelfernandes.org, 
-	brauner@kernel.org, cmllamas@google.com, surenb@google.com, arnd@arndb.de, 
-	masahiroy@kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	netdev@vger.kernel.org, hridya@google.com, smoreland@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Sorry, please ignore this outdated and duplicated patch [1/1]. The
-correct one is
+Basically, devinet_ioctl() operates on a single netns.
 
-https://lore.kernel.org/lkml/20241021182821.1259487-1-dualli@chromium.org/T=
-/#m5f8d7ed4333ab4dc7f08932c01bb413e540e007a
+However, ioctl(SIOCSIFFLAGS) will trigger the netdev notifier
+that could touch another netdev in different netns.
 
-On Mon, Oct 21, 2024 at 11:28=E2=80=AFAM Li Li <dualli@chromium.org> wrote:
->
-> From: Li Li <dualli@google.com>
->
-> --
-> 2.47.0.105.g07ac214952-goog
->
+Let's use per-netns RTNL helper in devinet_ioctl() and place
+ASSERT_RTNL() for SIOCSIFFLAGS.
+
+We will remove ASSERT_RTNL() once RTM_SETLINK and RTM_DELLINK
+are converted.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/devinet.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index dcfc060694fa..fb6320f144c5 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -589,9 +589,7 @@ static int inet_insert_ifa(struct in_ifaddr *ifa)
+ 
+ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
+ {
+-	struct in_device *in_dev = __in_dev_get_rtnl(dev);
+-
+-	ASSERT_RTNL();
++	struct in_device *in_dev = __in_dev_get_rtnl_net(dev);
+ 
+ 	ipv4_devconf_setall(in_dev);
+ 	neigh_parms_data_state_setall(in_dev->arp_parms);
+@@ -1129,7 +1127,7 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 		goto out;
+ 	}
+ 
+-	rtnl_lock();
++	rtnl_net_lock(net);
+ 
+ 	ret = -ENODEV;
+ 	dev = __dev_get_by_name(net, ifr->ifr_name);
+@@ -1139,7 +1137,7 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 	if (colon)
+ 		*colon = ':';
+ 
+-	in_dev = __in_dev_get_rtnl(dev);
++	in_dev = __in_dev_get_rtnl_net(dev);
+ 	if (in_dev) {
+ 		if (tryaddrmatch) {
+ 			/* Matthias Andree */
+@@ -1149,7 +1147,7 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 			   This is checked above. */
+ 
+ 			for (ifap = &in_dev->ifa_list;
+-			     (ifa = rtnl_dereference(*ifap)) != NULL;
++			     (ifa = rtnl_net_dereference(net, *ifap)) != NULL;
+ 			     ifap = &ifa->ifa_next) {
+ 				if (!strcmp(ifr->ifr_name, ifa->ifa_label) &&
+ 				    sin_orig.sin_addr.s_addr ==
+@@ -1163,7 +1161,7 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 		   comparing just the label */
+ 		if (!ifa) {
+ 			for (ifap = &in_dev->ifa_list;
+-			     (ifa = rtnl_dereference(*ifap)) != NULL;
++			     (ifa = rtnl_net_dereference(net, *ifap)) != NULL;
+ 			     ifap = &ifa->ifa_next)
+ 				if (!strcmp(ifr->ifr_name, ifa->ifa_label))
+ 					break;
+@@ -1205,6 +1203,9 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 				inet_del_ifa(in_dev, ifap, 1);
+ 			break;
+ 		}
++
++		/* NETDEV_UP/DOWN/CHANGE could touch a peer dev */
++		ASSERT_RTNL();
+ 		ret = dev_change_flags(dev, ifr->ifr_flags, NULL);
+ 		break;
+ 
+@@ -1306,7 +1307,7 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 		break;
+ 	}
+ done:
+-	rtnl_unlock();
++	rtnl_net_unlock(net);
+ out:
+ 	return ret;
+ }
+-- 
+2.39.5 (Apple Git-154)
+
