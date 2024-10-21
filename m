@@ -1,98 +1,119 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897431EF945;
-	Mon, 21 Oct 2024 17:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3365028C;
+	Mon, 21 Oct 2024 17:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729532805; cv=none; b=QfPNNJ2z+3Dl1/7vM2K9R5WupugIIu2sOoDdxDm8DPfHFt5PVAKOvWsWIiWZrA1vSfTU/3+wAs5s+go8RfaHvEOGzVEg1PbjX0BYDajMIXUGpwkSWt8F5HAW+7c23CSC8LprrU3rcpPTZ54ZeDBhKyb0Vzw55LfUbPCCQyf/l8s=
+	t=1729532903; cv=none; b=Ttm2GlQ62CLM3k2Sdv9QOl/QA/UFjMzPJ8GkYf8NsOq2qXMFNQaamDI9pSFf2NJp9NQaAAWzxM8d8jRXisAevDNSzTcW25GDX4deQEFiUCFZtlxpZ3ft8ZwHBSq/0b9T+tjUg6zmV1ZuBG7d02BM40gqMI0ao9BxIriAudTPENs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729532805; c=relaxed/simple;
-	bh=FkYnC5v0yIlyNmcCKM8Skrn2LYtpxSulwrdHUBMxZrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=edz/QDzZXW4TMutK9UPO3p5YPsvCkDO7U1LcFvUfHwuu9JzkQDp6ur3NTowJkr92JNskuBy7tmJrH6dPn3Ae86FlSHeayruzQqIXFwbdSQuT+/P71H6MsdeOdOhUHQ49fk9evBURrxJKSQaYzlh4m4w0LBj17z7MKmrDEq2SchE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HntMsgdZ; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1729532903; c=relaxed/simple;
+	bh=fySSFkngfY5fa46FAuxT2ZsveJWPtJxTCyFd6HqJqEo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=n06IqxDYCKgJyBqDCxS4fkIvLG1t3XPBypergokFp5iKh1kZo1XMryDZMacdLpm6ErjCijkOLTLNbK16uY6lqzk8fqkxXcUWGGFBtW6M6URzgTnwE4eNPb7yFxe8RXLX1eJ9qW3AT5/pBCGOgZPBDebiEDusPn7+vybdbb1B8Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xcgebuae; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HntMsgdZ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 00B1E240002;
-	Mon, 21 Oct 2024 17:46:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729532800;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hRPQmmO/50SbRRQK3oyXv/+1GlUkCXtzEQvhddj1OlI=;
-	b=HntMsgdZV5oJvoNH/bqbRjpeNglhghLXtIXNpaFxT+p37UiHNve+rdvbL+pt/zzWWmJezU
-	OILXE0sGpm4H4D5UpmOmv9Ncwf0LMXp1D3GjydiNbRLSkQIgL4KgYL3sJgtOrBYYV4w/9M
-	Ap8OpgxRmhOvrqrZ4GyouPXYIZe8E4tIjlVgZKaygkRNIoFpoT2cnb7A/5/buOGqFndxzI
-	s3/OW+8fclB6lgQF1MmYPIe3tPj72pEKNi0MsJWb+1tN85+9QC4oCT+GABunePGwqeLaUp
-	v8M6ReWU084fWe50b3CA1ZNHGlgaEpIHn1C2dlCLCg+r8arzvFrW2HlYdtf6+A==
-Date: Mon, 21 Oct 2024 19:46:38 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, <andrew@lunn.ch>, Lars Povlsen
- <lars.povlsen@microchip.com>, Steen Hegelund
- <Steen.Hegelund@microchip.com>, <horatiu.vultur@microchip.com>,
- <jensemil.schulzostergaard@microchip.com>,
- <Parthiban.Veerasooran@microchip.com>, <Raju.Lakkaraju@microchip.com>,
- <UNGLinuxDriver@microchip.com>, Richard Cochran <richardcochran@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, <jacob.e.keller@intel.com>,
- <ast@fiberby.net>, <netdev@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>
-Subject: Re: [PATCH net-next 10/15] net: lan969x: add PTP handler function
-Message-ID: <20241021194638.585a9870@device-21.home>
-In-Reply-To: <20241021-sparx5-lan969x-switch-driver-2-v1-10-c8c49ef21e0f@microchip.com>
-References: <20241021-sparx5-lan969x-switch-driver-2-v1-0-c8c49ef21e0f@microchip.com>
-	<20241021-sparx5-lan969x-switch-driver-2-v1-10-c8c49ef21e0f@microchip.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xcgebuae"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729532902; x=1761068902;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=fySSFkngfY5fa46FAuxT2ZsveJWPtJxTCyFd6HqJqEo=;
+  b=XcgebuaegV+YpmMGI/5QL38SWBCrhhk6vBgSSnQv7vl/Fk1x6WQWvpwN
+   PyXqL8qrV7tdazXsGdq4eN9P7hp9A6PxuQMKnZbcBQ2bMO0DtuQZrzk2k
+   RrPp6nxl9YrJ2RYdES55iIb6qW9Eu1dIwnV8fEvgZcVRtK6yQzqph+AjF
+   6uqHy7ttGJIfeAxpQxLaTlkVoQXzP4Y7af6NQG2SSGg0hbXc4ybDoU5xc
+   rL10K3c6mQcISX8a6ol/3llW21OMQR6tuWkVpMPImVIy0/p3UQ+WjoY4X
+   ejZLw+9rLz+twcJ36Raj5/xSQjI21N2a3YxGNNTkXZ0vZx4aIBGp1x54T
+   g==;
+X-CSE-ConnectionGUID: IYRyfBkISSWGiWt8+WCoRw==
+X-CSE-MsgGUID: arLk4uuaT5OnNMN0FJ/ZAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="16663292"
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
+   d="scan'208";a="16663292"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 10:48:21 -0700
+X-CSE-ConnectionGUID: ZtSOvIZcTwyhQrB+3z08CA==
+X-CSE-MsgGUID: qhfYvI10QSmqJMIREiZfxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
+   d="scan'208";a="80001296"
+Received: from philliph-desk.amr.corp.intel.com (HELO vcostago-mobl3) ([10.124.220.26])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 10:48:19 -0700
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Joe Damato <jdamato@fastly.com>, netdev@vger.kernel.org
+Cc: kurt@linutronix.de, Joe Damato <jdamato@fastly.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, "moderated list:INTEL ETHERNET DRIVERS"
+ <intel-wired-lan@lists.osuosl.org>, open list
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [net-next v3 1/2] igc: Link IRQs to NAPI instances
+In-Reply-To: <20241018171343.314835-2-jdamato@fastly.com>
+References: <20241018171343.314835-1-jdamato@fastly.com>
+ <20241018171343.314835-2-jdamato@fastly.com>
+Date: Mon, 21 Oct 2024 10:48:18 -0700
+Message-ID: <878quhgxel.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain
 
-Hi Daniel,
+Joe Damato <jdamato@fastly.com> writes:
 
-On Mon, 21 Oct 2024 15:58:47 +0200
-Daniel Machon <daniel.machon@microchip.com> wrote:
+> Link IRQs to NAPI instances via netdev-genl API so that users can query
+> this information with netlink.
+>
+> Compare the output of /proc/interrupts (noting that IRQ 144 is the
+> "other" IRQ which does not appear to have a NAPI instance):
+>
+> $ cat /proc/interrupts | grep enp86s0 | cut --delimiter=":" -f1
+>  128
+>  129
+>  130
+>  131
+>  132
+>
+> The output from netlink shows the mapping of NAPI IDs to IRQs (again
+> noting that 144 is absent as it is the "other" IRQ):
+>
+> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>                          --dump napi-get --json='{"ifindex": 2}'
+>
+> [{'defer-hard-irqs': 0,
+>   'gro-flush-timeout': 0,
+>   'id': 8196,
+>   'ifindex': 2,
+>   'irq': 132},
+>  {'defer-hard-irqs': 0,
+>   'gro-flush-timeout': 0,
+>   'id': 8195,
+>   'ifindex': 2,
+>   'irq': 131},
+>  {'defer-hard-irqs': 0,
+>   'gro-flush-timeout': 0,
+>   'id': 8194,
+>   'ifindex': 2,
+>   'irq': 130},
+>  {'defer-hard-irqs': 0,
+>   'gro-flush-timeout': 0,
+>   'id': 8193,
+>   'ifindex': 2,
+>   'irq': 129}]
+>
+> Signed-off-by: Joe Damato <jdamato@fastly.com>
+> ---
 
-> Add PTP IRQ handler for lan969x. This is required, as the PTP registers
-> are placed in two different targets on Sparx5 and lan969x. The
-> implementation is otherwise the same as on Sparx5.
-> 
-> Also, expose sparx5_get_hwtimestamp() for use by lan969x.
-> 
-> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[...]
 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> index 15f5d38776c4..3f66045c57ef 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> @@ -114,6 +114,8 @@ enum sparx5_vlan_port_type {
->  #define SPX5_DSM_CAL_LEN               64
->  #define SPX5_DSM_CAL_MAX_DEVS_PER_TAXI 13
->  
-> +#define SPARX5_MAX_PTP_ID	512
-> +
-
-Sorry if I somehow missed it, but if you define SPARX5_MAX_PTP_ID here,
-you probably don't need it to be also defined in sparx5_ptp.c as well ?
-
-Thanks,
-
-Maxime
+Cheers,
+-- 
+Vinicius
