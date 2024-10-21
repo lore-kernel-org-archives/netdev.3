@@ -1,111 +1,87 @@
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5BD1EF941
-	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 18:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9571FA24B
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 18:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729535760; cv=none; b=Q0IL2JqsOQybU6AnGWFOcHihSvfuSqMSH/H+k7uO9ExNJ7tNhGo/QxnYNDqyVMRQ0ZluhH61k+DPddi9ksp/EP6eAko3eD8K7pPo+NY1vc4EtIvLH8qUnctIChcQiZ4WfeI5FVbFPu3ebaQGm3XG5e4DhYvg6dZi9gcOYWkBSBc=
+	t=1729535775; cv=none; b=MVGUPDbEOdFAXch5Cx+sZIux24By1kpgi0VCYN9TgYeiQVUbQfAHYW9w4y05syu1eAR6+D64gqE/u4Yqgz1N3flJRGlKmNXOqQ0//s9KyEUvn2k9Knn09FHJDwSfJNjmyAjVAWYhQNiLA7rRF5+7EELmIWn5/zY1CuLXP/TJLmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729535760; c=relaxed/simple;
-	bh=cx+xUQxjYib/N5aI4RBpQJgbFpJ5+vjd1acg7hlXVjo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JLMQtCMGuYSTP+uJGpTFyTqXuN3C4uur2DhqBZb615iQ89rscNj1rpYrJXuDav1SWrbg75YyAzB5/Bll3X4j1Ran6mSihsr0lfTxDe6vB2A6JhH9I8NY216n6kG1bp8DhI60z3neE2WhB5eNe9WN4BoGuub6EWvEIB9f+4Ciabs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=awgtr06W; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1729535775; c=relaxed/simple;
+	bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=HIru1xph9hOK9tJ6A5dLKD+yhw6TgfRKK7+PigxgXXjd0Q53GX0Trya8VvJjwR4d2xSm6oAxg0n+wjWwistrEMvMvBnMJKHSjEs/MeHW4vD8eZw/jyrkc0m22rYEUsSKYoQpp+1q4zLRSmbICHYNN7VRD0Os5rNjK1To3hHSqZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XwimAlmS; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="awgtr06W"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XwimAlmS"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53a007743e7so5748376e87.1
+        for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 11:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729535759; x=1761071759;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lwqS4O+iU9VmyvLJC+NwU4B1jeW5RgJY3mWNtJBI2Vk=;
-  b=awgtr06WtWmUbbDZ+yWIYVIfXtilirRUJHV52ZiX07fll/vG0sSSgi34
-   pYT+MfOs9jjKK9Mg2rYllTMadjk3vTuCTBokLuyUnvUAdrULvFS/FBFtM
-   LRa0r5CtzI5JnbdPS1ihCO+4lxqS9Acl6ONmIJ06upNVn1OjSw+Dheym1
-   s=;
-X-IronPort-AV: E=Sophos;i="6.11,221,1725321600"; 
-   d="scan'208";a="241197965"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 18:35:57 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:47205]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.20:2525] with esmtp (Farcaster)
- id fd0b1120-ba7a-45b7-88c0-f9626a145a9c; Mon, 21 Oct 2024 18:35:56 +0000 (UTC)
-X-Farcaster-Flow-ID: fd0b1120-ba7a-45b7-88c0-f9626a145a9c
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 21 Oct 2024 18:35:55 +0000
-Received: from 6c7e67c6786f.amazon.com (10.119.222.5) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Mon, 21 Oct 2024 18:35:53 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v1 net-next 10/12] ipv4: Convert devinet_sysctl_forward() to per-netns RTNL.
-Date: Mon, 21 Oct 2024 11:32:37 -0700
-Message-ID: <20241021183239.79741-11-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241021183239.79741-1-kuniyu@amazon.com>
-References: <20241021183239.79741-1-kuniyu@amazon.com>
+        d=google.com; s=20230601; t=1729535770; x=1730140570; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
+        b=XwimAlmS6W5G+5nBrUQJTnXjmhPwREPe5Geh7cIV/BRgVMBwmSR6gKn6onlD800zVP
+         KTr+IGcKu6hYSKvUAvRWY+wnL/6lx4w84QHO1a4TRFLDsyjuFPVvU42AOOd32LLMaLt5
+         GN3gbhMBKVJA9xYFLPKgIbUFZnxETX+e0ljxmflJVCWqHyt+IQ/AGCYO/akmGBw/WhK+
+         uipwL9J++2grhM/+T4BWzHkm1tInGvZtbRrgjresxUSaaKV4keWmXeYOq1b8josm4MYW
+         UcHguVJwcRaN+SZ3ZLTbjZmEmZwsFpX9u176rw2UXUrghf1IJKayuQsC5AbhBnHde4DP
+         i0kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729535770; x=1730140570;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f8oj3vfqmlM0xsYADMFgn3dqvUu8ThnYSgPeaSBvCJ4=;
+        b=BOnSSBxWsV+Utd4fpVbtHoVEN9sFJ3rKdiGgmkoFrO5/p2EGVSIrnC5iCcLy0p27fC
+         eeoUj8g24hWcfFHjmbPkNnUWNUX1wAGUPq75EZiwou/Sn2KBufx68URu1XC3e6Nh5pCx
+         lp7AURsNKAxl2txeCENM2d8f2k+j8T6plaI74LOT18iCkNfF6jMEebkmfqrYANB7Tx5Z
+         HorcTBmPRXgqwoSmvB8GrA9+/uia9E3LjAf87u8v6UxUKrrjbIz2CPP4NcA1NDakkbvv
+         CqAYecLx8dPYPMzYz2egTjSJ1X7zLQ2VVrn2gmK+H3jl3qTwlo6+i87vS0YUwuRRxjsd
+         JRzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWUTisjONgCEN9A8DUKoGE6bqWPCVRYYvoA+2L3Nsojlm0qsnz44slj1KJzEZn2kbdLA6t240=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTkoCuSqrc5CwNk8Tb1fsmzl8rs2laGb6AGxcz8rotFpyLqOVU
+	fy4MsgILOFw2qTECczgAh6iNrYvabBM4yFoO9vzMDR4OOrpU7CmoVRxwDnLoN4hZ8hJ690C868X
+	R3qzmAawChmk6pgeJov9rkDlqpgjET1qiWCvL
+X-Google-Smtp-Source: AGHT+IF+0F+zaNHtxsbg+gonwYc1DvKt2ow49jd6XgmTT1CLmLAHX/pP8qve/Wi1OK1gXjQs8uB/egmJ+SnCNS621MA=
+X-Received: by 2002:a05:6512:124e:b0:539:ddf1:ac6f with SMTP id
+ 2adb3069b0e04-53a154fb010mr5963550e87.46.1729535769525; Mon, 21 Oct 2024
+ 11:36:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <20241021182821.1259487-1-dualli@chromium.org> <20241021182821.1259487-2-dualli@chromium.org>
+In-Reply-To: <20241021182821.1259487-2-dualli@chromium.org>
+From: Li Li <dualli@google.com>
+Date: Mon, 21 Oct 2024 11:35:57 -0700
+Message-ID: <CA+xfxX5ygyuaSwP7y-jEWqMLAYR6vP_Wg0CBJb+TcL1nsDJQ-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] binder: report txn errors via generic netlink
+To: dualli@google.com, corbet@lwn.net, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	donald.hunter@gmail.com, gregkh@linuxfoundation.org, arve@android.com, 
+	tkjos@android.com, maco@android.com, joel@joelfernandes.org, 
+	brauner@kernel.org, cmllamas@google.com, surenb@google.com, arnd@arndb.de, 
+	masahiroy@kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	netdev@vger.kernel.org, hridya@google.com, smoreland@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-devinet_sysctl_forward() touches only a single netns.
+Sorry, please ignore this outdated and duplicated patch [1/1]. The
+correct one is
 
-Let's use rtnl_trylock() and __in_dev_get_rtnl_net().
+https://lore.kernel.org/lkml/20241021182821.1259487-1-dualli@chromium.org/T=
+/#m5f8d7ed4333ab4dc7f08932c01bb413e540e007a
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/devinet.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 260df53ff342..dcfc060694fa 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -2395,7 +2395,7 @@ static void inet_forward_change(struct net *net)
- 		if (on)
- 			dev_disable_lro(dev);
- 
--		in_dev = __in_dev_get_rtnl(dev);
-+		in_dev = __in_dev_get_rtnl_net(dev);
- 		if (in_dev) {
- 			IN_DEV_CONF_SET(in_dev, FORWARDING, on);
- 			inet_netconf_notify_devconf(net, RTM_NEWNETCONF,
-@@ -2486,7 +2486,7 @@ static int devinet_sysctl_forward(const struct ctl_table *ctl, int write,
- 
- 	if (write && *valp != val) {
- 		if (valp != &IPV4_DEVCONF_DFLT(net, FORWARDING)) {
--			if (!rtnl_trylock()) {
-+			if (!rtnl_net_trylock(net)) {
- 				/* Restore the original values before restarting */
- 				*valp = val;
- 				*ppos = pos;
-@@ -2505,7 +2505,7 @@ static int devinet_sysctl_forward(const struct ctl_table *ctl, int write,
- 							    idev->dev->ifindex,
- 							    cnf);
- 			}
--			rtnl_unlock();
-+			rtnl_net_unlock(net);
- 			rt_cache_flush(net);
- 		} else
- 			inet_netconf_notify_devconf(net, RTM_NEWNETCONF,
--- 
-2.39.5 (Apple Git-154)
-
+On Mon, Oct 21, 2024 at 11:28=E2=80=AFAM Li Li <dualli@chromium.org> wrote:
+>
+> From: Li Li <dualli@google.com>
+>
+> --
+> 2.47.0.105.g07ac214952-goog
+>
