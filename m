@@ -1,39 +1,40 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2123.outbound.protection.partner.outlook.cn [139.219.146.123])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2131.outbound.protection.partner.outlook.cn [139.219.146.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8569EDF49;
-	Mon, 21 Oct 2024 06:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75467148FF9;
+	Mon, 21 Oct 2024 06:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729490552; cv=fail; b=vFfu7VSDrXxPiUyUBSwv8BtOR5WxJO35Z0CLgBvLMdtDZ6vCu43xSyaftmoOp/K3Eg7iljBid8a1IccCEHWWVHXMH45WL/5hFSvRIQUH+gD0bNJncx0lZ1rn+AIJtXTLyVQfpJb5eaX5TAz30UJhn1h/afp/MY3Gcy7SwEo1xGg=
+	t=1729490715; cv=fail; b=J7GR538VnFUrfnTUHvVAZqzYHxqBKR7qExkxbQCokBJfhDjwTQpdX0ndu7wH9YgZ0KsUWXQ/OVHrMCOaBsIZ7FaJna2hsGk1JoEgknh0f427D3rxlNsVz0pd8yeIDqspyynZlE6ENPv/y0gQrD9jEXa3DwVz4V3Z5WWte/2aGLU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729490552; c=relaxed/simple;
-	bh=wgoiEgcO+qbznC3CaeAHqEAsbECjEHqD1UGQHABpUo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UdMUiOXGspP5gzNl1HPQ6wwr/knQ1TQ9VRV2cN98E9Y7GMzVEPfPBpa2AlswSP7rsDVvVdijc5uZNvnW+iPXwWg2X8uzALFY0vCgThbFBTgYnf7Yjo1LsXKqAtGUYoAgJ3gPob+Qqcf4tFqZjqyHx61aEfNFdcKIVIMlMJxSGJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.123
+	s=arc-20240116; t=1729490715; c=relaxed/simple;
+	bh=R+EeBlj86pRNtPtgXv896mqaSsSseyfHwsT8jQ5djoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YkFYbXIZBLZH0DN+jYjOgMUqXHXAqz6W9D9nR8KGH4OlPY2F6u97E14D06Z7x4g88eie3RIhigAXN284oCbOU53LpmL1xN1FC70ToZzmOHGfPFvRXtV9gARjT5UugXBOnGjI5akZ039YkqvVfSP9ZEE9SsGZNV86AZccYPLTpSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P+48SacHmXmhkI4tQoyopOV/aZ2k1ofdyqPfcMyseNdERDhxDmR0JXTsz59XN/hVU93bwJlj8neGyb0evSUZCErGNam/1qEPQGuig/JWCH3cPPdr4vjx5M591384Dgce2jYcbCB1MJhBaA3f5uSS4Pq8cRR6R0LgsRUTcHUMdabthEempBmDPppO4B99M9ickQFX0fvRgU/kImeJB8iCIl8JQQtWECGuD90ypd2SLsY3nceczYedK9uWNAU3tiCEsyRp5wItXQB+JfGTZK+D4DNvxbYHMnWsIBXcyySKI4eGuj5y1LrAAfiV9MYG9UV9kpoJPZMeZV+UJ2zC5KKHcA==
+ b=j3rTQxMuPcQQCLrf1jJr9Mgwrxbr/RLgf/LRuYtsmFcWlRH9E5KVtMvAKz7irY1WaCCHRiONkQ/IrZK0E6P3uowLNYKPvYAIIaz2XkA+mwUfGLNcHvtyZ3OV4mgT5O4paNv0nj0m6y4iV9i25tz1y2rFWiBbu/j6CShtS2D0kg0WZTI/xUIXPdw+8Qdki4DST/ZYGFVnN6ZVntk1lLtcrbJB9KWrjVtZp5HlqFQSYH4r4arMzw3P4774kZf4OhMpC3B7uWs82+uBPI2UmNsSDy3YdXpB/hgv8/cIv4slh8dv0w3eoxpWyGgbOKpU7pK2QD0659QetUi+Ln4NruVAhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tyEHvfDYeuxuqDTcz2aB0yeN4MWNx6MzARP0SqH10nY=;
- b=iVta9K67zZC5ULZD2rQ8SK+KoApyw29YafU6Dp99fR1JSmbk7/rTsEfP0BN6c8616FRDrJZeJn5qSWuV3GSvVxKvi2nX7B299TOXSj4adLUpOttWyZdc5KnJVZR64GOGhxgJle97dLUOqcPYYtM0O5vuWAl0kT3uhU+wKWG28Zm07+iBFkZSuQqtkn+y/1EmSHVj2m5iyMrfdGWMp916r2VgC48xET4MIhVElO64GmUHnwZcft3RWwwrhTqkmmyi1HyIBXRj/T5ZmjEiGJK2lHcQmCkq7BB96Y+3b4xzxxn7j0mw5mawvwJgs/+tF64Uy+jM2Ps0jeaN7fFsaivYAw==
+ bh=/sNVfhZi9kq6WRMkg6s9bACOW5z61wVpEKgboggd3Zs=;
+ b=M/T+6pF4G939G/z9iIuIqHWmatCQyWDXYe8/WP75CwBNZx9cSuFuuo/rODJFvtgBJs85mQrCUVptWvEH5w0FgWUCVYgYpL/yqEne1ZT0xyLJtI1QfbyY2xh1Rn3jNgufS3zJKoXHm5xi1tVzEAxdtRXcz25p4Za8n/7+Ltb+g2pF4yRhD+rtx4esnq+KqnCmVwypxVwkYA9FGKEoJNMD2IM1GyNMBuXHUFyOFa4OR41cS7oKbtaQ0REHbsC0ktMX/UR3TrVEPDQKR3q1kuw+52+c9tiw9Eh1vug5X1uxvrIrf6fRTwmGsKFt4NVN3lKeifkBFooALCgQGofygUUM3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=starfivetech.com;
 Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12) by ZQZPR01MB1089.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:9::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.27; Mon, 21 Oct
- 2024 05:46:47 +0000
+ (2406:e500:c550:f::12) by ZQZPR01MB0996.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:a::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.20; Mon, 21 Oct
+ 2024 05:49:16 +0000
 Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
  ([fe80::617c:34a2:c5bf:8095]) by
  ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::617c:34a2:c5bf:8095%4])
- with mapi id 15.20.8069.016; Mon, 21 Oct 2024 05:46:47 +0000
+ with mapi id 15.20.8069.016; Mon, 21 Oct 2024 05:49:16 +0000
 From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
 To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>
@@ -43,15 +44,18 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lftan.linux@gmai.com
-Subject: [PATCH net v3] net: stmmac: dwmac4: Fix high address display by updating reg_space[] from register values
-Date: Mon, 21 Oct 2024 13:46:25 +0800
-Message-ID: <20241021054625.1791965-1-leyfoon.tan@starfivetech.com>
+	lftan.linux@gmail.com,
+	leyfoon.tan@starfivetech.com
+Subject: [PATCH net-next, v1 3/3] net: stmmac: dwmac4: Receive Watchdog Timeout is not in abnormal interrupt summary
+Date: Mon, 21 Oct 2024 13:48:48 +0800
+Message-ID: <20241021054849.1801838-4-leyfoon.tan@starfivetech.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20241021054849.1801838-1-leyfoon.tan@starfivetech.com>
+References: <20241021054849.1801838-1-leyfoon.tan@starfivetech.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0005.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:5::11) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
+X-ClientProxiedBy: NT0PR01CA0028.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510:c::15) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:f::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,117 +64,100 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB1089:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e8c7189-f81d-447b-a9c9-08dcf193c0ad
+X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB0996:EE_
+X-MS-Office365-Filtering-Correlation-Id: a164545b-4736-4a28-993f-08dcf1941923
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|41320700013|366016|52116014|1800799024|38350700014;
+	BCL:0;ARA:13230040|52116014|1800799024|366016|41320700013|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	tjloJrbylN2lZ6UQy38YvJykgmMI5EYrnPIi4HoRk5RGoMA76OARMEDUC3Sfo1oP98ozw6cQaxG914jlnbrzSEgI4zmPh0uZpFl1ykpuud+J/EbsAAoAkU9HbF2wxFvvL36K2iGeQkssqhcjWJdEQAqp6hq05NuYBo/Ll3SoEUtWR6GxdiKkJioKfvMN6Or0cNatEl1dll9RtCriNtoAnsOaRhXE56w2nuTxF84/Zk7u5gARfzvSHAwkws6slPuI8mCVqao4IFxMfaLv9PKTpXAjcVOzIG6rDseaFTgXC1xUJh4IG5TG8V2fEVKBxrZBkj1AfOzLsEyEPIyVJsZYx12Sd898tgmQKLpeEJGNC3Jge3SNc7h1KQ61/h7Rdd1OejBLMiWRmGCCJE7Wfb1we/NsaPgB1qQS1fkXvEekAC3Tvh69S57Tsm0LCNx9+vyHUlZzF0alqKuSSV5GMb9s/t6KDy6ZWz91ouJbsYjb/mzlvsVR8WhGECDuFzDSWLvf9SCoCljyNdNt31IF0CSmy9P3550RNFJBmjG/T5g1/m5Ac7P5HwPwpwhYDVji7OHaX6yGT4FipmUvYrnGOCFRu/QRkZhae4FjrZ0P02bqOc0/yW122JrsvzC7wCCX2ADw
+	B9fdFMDltopznV+mF9z0mgMzVtoHacy/lZ3BLo97ZIrgzkS4KgF13teipfm/0gSpGilARxPuVl75AqcDc5edC4tdvQlTy4N4/fcGVWu2+Uo8Xigv+/Q8ElJjtr0vGCq/XEw3h9lkIb+lZz/eF9wWwgfi5SYqHsYfLSpH6BalNIQSYnnWYcRrAjAi5YZQvwew5CCkBZat6iTobsLAuPUqCVw0948nSHKUSvFK1kFzEtt4D0iy3kQQPmdT7ytoSokXWMBYpIMm6XNYzDjaYfgpVENVPIpQ0rMNoNHEPvSp0l86DMHiB1+FN/leEjJ6JHnSqq9sluLRhc85Vhi443wt9NXJrUPMJvc4Edbovxfcu7a+weGAL9KscZiQyVLZMfjX38J4BMlwDNQusBo8jeR0EEzdJvqJ1+NlqtT5898DwkEW1T0m7qOAA580hg8MwtA9LXcbX1iiz8KDKrXYAgdpnd0jAc59jUBeLbbxxkBP2kl1GXV+0WZ/pjP3KpB9hJ288NLhUEFh/9V+M5RaHwpatnS0yfnodPv16UnBFQTq6ioix6AzSfRiaukD81sYLpKFs3UMujMzWVI/BPrY3uhOkcNsoYpGzdMKL1Dmb2OwY8UYIGFKQUjS9BUT0CPtVREd
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(41320700013)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(41320700013)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NR3qmbefBsRmDaOTRnaQpuqSc32wfdtqad1NlQx9G4/PgotNYSglnOwGQ5Us?=
- =?us-ascii?Q?0tU1G3qMRj7BPwUjbJpBZjUK0ekdqUq/KnMyScaHBvd+CIk3xHZglJcJ+m16?=
- =?us-ascii?Q?8U4lEIxVMkxseh+BM6INXtrhkY0pI85umVVHitmGbv2WpKhBMNuhf4PUyMsv?=
- =?us-ascii?Q?wiCrIPoS8H0X8xGkwwmGhDJB+5m3L8hLZVkWeg9fw7lp0JuIXhebcMSJ+VrA?=
- =?us-ascii?Q?d3pSZR/6m30Fez6/bc+ixPY2R03wO+jumEQnM05GNHQyDL8lDNmubPxFSYRj?=
- =?us-ascii?Q?DiRLyVvMqdhS6bgv1oSyV/i5QA3SH1LZ5MLiW/tvu2q792mKhlLBH45OGnFq?=
- =?us-ascii?Q?QizcpzmuzzTsqCq7lwilKTO7U0uNPthWzjKCnVrYkTaIyJjPMHFy+vhWtwXe?=
- =?us-ascii?Q?euqZ9kuyFeLP4SzFIR8Wu4Cvn783nmEZ8K8weVrdCVFsVUAP0R4k6cGaUu3F?=
- =?us-ascii?Q?PtNb7XsLH03OEyRMu3WiHpaYJkBnl21FWbXjynujWFWwu2rHtuzoykjEuhJt?=
- =?us-ascii?Q?9/mW0ooCmRQTsPqHNTkbz3McWlC4/5mHm8KX6MSP1OfeFxMNyr0SrKOU6pT1?=
- =?us-ascii?Q?p0OXi/a+YATr7ZlvRMK1Ttptl/9n7A6XeLYlrbBXEcuK8Tp3Kg/9ayOD1hDB?=
- =?us-ascii?Q?VfkKVBICaYpp6JlafssbGobnKyHUwj7OxcbGGWfIQz9Ri9cSHCaKU2lya5Rf?=
- =?us-ascii?Q?GEvZFAWAHsUFSEw52V4B3b9r+bXd0r84jsdzr9/pi2EW3jMCeGNFDkrtwuce?=
- =?us-ascii?Q?HjiHKMdFiOmULs9f9B6PcqUL/tYi0MUVT3UZXM0a3sKxTbGtiVmQo7EJY9rt?=
- =?us-ascii?Q?n6TQ9StOyRHwU8LGyPJMeJTs8Cu7T/lA2KQDPP5AwnW3b13lldpmVz2ZsCAZ?=
- =?us-ascii?Q?xP0R/g0BnSmzV9rCCYeJif4p/RqQah3GzUWBX9QrXQPWvFvNullj59fW2R4V?=
- =?us-ascii?Q?/MVoqR/BsgNb7GGz8ETaRnW3LUGSsyCQAXvZyCjArScYUG2KKDCDj4hnvIjP?=
- =?us-ascii?Q?8JHqu+DC3BD2wi/EAs3xfzrAlgfmOyN3bfSuX4oKp5qFfqvaec0mW+rNqZ//?=
- =?us-ascii?Q?0m1TtugY6glCLWz2EuV3rG+JHiovoz5o5mnmEorU8VTqrIO+vmB+bTIxaTvJ?=
- =?us-ascii?Q?8oAZksjGXBNcH28MaKHGANcav5Fp4cysR3sV7zgCscJvjHwR3sPXAU3szM2u?=
- =?us-ascii?Q?fWWkVIgfN09ID2wkz4AekSa3cgvasbRsNgP8ebugrH8S2LvVSYCymmUIJAVZ?=
- =?us-ascii?Q?i8ObpooH2UIrNmc8UOQ3/uznkrnQBgmJP6WYLLxNrZHqwncDTFlkfUS9ue5p?=
- =?us-ascii?Q?2yPAhFrLwUKYOFZH9td4PSXzMvoxp+CuvVDuHkDLM1vmLcMX+g0l8QavbiCD?=
- =?us-ascii?Q?1WshkLdeoou7IxpU7cALmX2VUPYHq06pAj+128ZS6phXokQvxPJ8poEhtyuu?=
- =?us-ascii?Q?/I46EU6zKkWrAmGqGWufUPsA6HeX7oX8b+Pi9xr8urwStqKzJZr52MJCapKQ?=
- =?us-ascii?Q?LTak9If253fU0wmee5PGi8+DkXurFrmBHAK8ayK4gQZY3CLDUwcEU6U2rupA?=
- =?us-ascii?Q?Ahg7yRPRSW5CJ5vdbfrSSoEmlal59bGug3NLxR2vRVhuAseh2K8ILkX2d/D/?=
- =?us-ascii?Q?bQ=3D=3D?=
+	=?us-ascii?Q?69GpiCog967GC6fHlzf+sohmxO5xLrZ+3k2HuAoWnZERuCUHcfAoS29cIM+W?=
+ =?us-ascii?Q?HvYCEl11UMq9sIsGsWo0vRzHNsuFzvWhYPxdykBTy96VYPG0TmHZg59PBsgm?=
+ =?us-ascii?Q?Ss5hixNJpcDJBLQwZFSyOToVE31UChahF3ZDYg9576QkBbOsxP/Cqoj7qfqy?=
+ =?us-ascii?Q?07uSFRNzQezD1XxXGpaO5T/hD3U4BoiNBDzWzzqZ/2mQgHoo2wVgh5aKXzth?=
+ =?us-ascii?Q?T9mr0z5Fxc8LA4csV5SSN9veIC8oJp/SjN4Y/ioMB+2I14fcnytCwAeyAf3G?=
+ =?us-ascii?Q?ege5Dnwp0ThiHzR7IisS83ImKWMLVqfC2HLo9fsJPbfa6Rv/MoIWynvxiwa4?=
+ =?us-ascii?Q?e1PCiW006tNVX4Goig5H1R5rmA1ma5WD9nzBeyYFdfV3zd4c403tnOO/6JDd?=
+ =?us-ascii?Q?PTUs+gjsP2ncEdoB2x3XMET01Hl6j4x+tNE3RXOJZhOMChW/hl1J/dOlzt5d?=
+ =?us-ascii?Q?pTR/ft+LICdY48M47TxaegCKvfKzDqxXfa2lkpvGLyg5wpD4+hujNF4f+b15?=
+ =?us-ascii?Q?ICs2J0ySCoDeppjIJzi5ErElRGJYaCNKc7mpnbVCty1E8jLOQNYduftpcir0?=
+ =?us-ascii?Q?a8D/cnKxwEqxWFlgjafT71FoegX4VeUNY5fZ0pk7vnDLE7lixmeCmGONuce6?=
+ =?us-ascii?Q?oaAXPPGIawGBz0D2vyoQYKfOrIV/MZ3sKY5RUsS9gekoEr+sgh1kzG36o0bR?=
+ =?us-ascii?Q?omjVgwA5GO/Jy76GwSH0kODmcJMHrytbhcrZZ2yNTmZVAjy1XgD7MwNWDguG?=
+ =?us-ascii?Q?wXCdBRxeEnZj012plXtPoXENsl1uKcQL4X9tItGo8n7DIcrAWj3FKjGbjuNh?=
+ =?us-ascii?Q?XkJH+jsdt0hjat04Xe5Ny8sbdxw8iQYo6fyp6o/CT2sBSOvr+4VJBYXWR4op?=
+ =?us-ascii?Q?/I99dXdQeGUCY2TShSU/2vvLUms9HbPWLrgYCtW5ryMhi1doqPWdZg0qXlMK?=
+ =?us-ascii?Q?aBX7dtDadDybWnOked7ZbMYQtcy46+7KOdfA3DSoSfg73rzoTSImyZEDjsiX?=
+ =?us-ascii?Q?GkG+DfNPFU/0ZrPDmXXAs4qPRZgWZJOQ6if7vhAPHBex0q9lJ+MyK2lQHydG?=
+ =?us-ascii?Q?qrRNiMnxdunXj4gThk72IvzRiHBia9uGC0pGJD2ervpqwPNNKbUXjkz2Gl/a?=
+ =?us-ascii?Q?QXsRGkqjOCO0LCYtawYIP9MDi9KwUaMdDF4OERTMLNzP9ehof6EbLoXqaVb+?=
+ =?us-ascii?Q?igii4NS8AffkXiTQZPJXUriyr+rUWn1vMEi2uZTyMqmCEnPg0VD00bB+Xl0O?=
+ =?us-ascii?Q?f8DzYwkVXisINSTkIKsWnB2bVtokW71DlzCHbMlvqPMni5JL9vE9HO8nVHA5?=
+ =?us-ascii?Q?CWHzuiFrO/Ljogxl23gqERGxYu/5F3q0GTjc0WKyRROwDvJFrgOcGdKqnn+0?=
+ =?us-ascii?Q?rJtyJgonmHK7gaSHNVvGicIZkPW4/rkfZ5Ycma/+DSndG+/CiHxANDDOC1zO?=
+ =?us-ascii?Q?Zl7OjQYXUjlyay++lx2ElAWn8NhWuvVPwmMAzVskK22QicQgF8bfXY5HaGpj?=
+ =?us-ascii?Q?axDaAniXoy8HVzJXdbCLqc4IUhP+ogYeSW828C/hfq4/4HGbeUAvqHazAVyn?=
+ =?us-ascii?Q?tfK4ybkM3HZH7lAivREMZPBUObilz+lHI14LkB3G00bko/NwOM83bu52kkIm?=
+ =?us-ascii?Q?Jg=3D=3D?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e8c7189-f81d-447b-a9c9-08dcf193c0ad
+X-MS-Exchange-CrossTenant-Network-Message-Id: a164545b-4736-4a28-993f-08dcf1941923
 X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 05:46:47.6636
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 05:49:16.0416
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pa/IRbXEAn2vCKYPSOvkYstyX6JiFLSWFRvmUaBJdKmsTO6mzNQfNCpNBVHICAgqUZ+/ugwLIQ24LQVGlh/Lsman9Ur0D8XSRmzI845x7ZA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1089
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZvC1E+h7OkT6y9dYZWnWEWP2r2WtNxbvAhY6AEEBsPTLbTWrUj/mBF7qrQGOc4BOHGBIRfr/SBRuNktuo6zmBgV5V4Uzrceblmch1/uOuXI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB0996
 
-The high address will display as 0 if the driver does not set the
-reg_space[]. To fix this, read the high address registers and
-update the reg_space[] accordingly.
+The Receive Watchdog Timeout (RWT, bit[9]) is not part of Abnormal
+Interrupt Summary (AIS). Move the RWT handling out of the AIS
+condition statement.
 
-Fixes: fbf68229ffe7 ("net: stmmac: unify registers dumps methods")
+From databook, the AIS is the logical OR of the following interrupt bits:
+
+- Bit 1: Transmit Process Stopped
+- Bit 7: Receive Buffer Unavailable
+- Bit 8: Receive Process Stopped
+- Bit 10: Early Transmit Interrupt
+- Bit 12: Fatal Bus Error
+- Bit 13: Context Descriptor Error
+
+Fixes: 48863ce5940f ("stmmac: add DMA support for GMAC 4.xx")
 Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
 ---
-- Split the patch series to net and net-next. Submit this patch for net.
-- Rebased to net https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-v2: https://patchwork.kernel.org/project/netdevbpf/cover/20241016031832.3701260-1-leyfoon.tan@starfivetech.com/
----
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 8 ++++++++
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h | 2 ++
- 2 files changed, 10 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-index e0165358c4ac..77b35abc6f6f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-@@ -203,8 +203,12 @@ static void _dwmac4_dump_dma_regs(struct stmmac_priv *priv,
- 		readl(ioaddr + DMA_CHAN_TX_CONTROL(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_RX_CONTROL(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_RX_CONTROL(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_TX_BASE_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_TX_BASE_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_TX_BASE_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_TX_BASE_ADDR(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_RX_BASE_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_RX_BASE_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_RX_BASE_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_RX_BASE_ADDR(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_TX_END_ADDR(default_addrs, channel) / 4] =
-@@ -225,8 +229,12 @@ static void _dwmac4_dump_dma_regs(struct stmmac_priv *priv,
- 		readl(ioaddr + DMA_CHAN_CUR_TX_DESC(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_RX_DESC(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_RX_DESC(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_CUR_TX_BUF_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_CUR_TX_BUF_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_TX_BUF_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_TX_BUF_ADDR(dwmac4_addrs, channel));
-+	reg_space[DMA_CHAN_CUR_RX_BUF_ADDR_HI(default_addrs, channel) / 4] =
-+		readl(ioaddr + DMA_CHAN_CUR_RX_BUF_ADDR_HI(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_CUR_RX_BUF_ADDR(default_addrs, channel) / 4] =
- 		readl(ioaddr + DMA_CHAN_CUR_RX_BUF_ADDR(dwmac4_addrs, channel));
- 	reg_space[DMA_CHAN_STATUS(default_addrs, channel) / 4] =
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-index 17d9120db5fe..4f980dcd3958 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-@@ -127,7 +127,9 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
- #define DMA_CHAN_SLOT_CTRL_STATUS(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x3c)
- #define DMA_CHAN_CUR_TX_DESC(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x44)
- #define DMA_CHAN_CUR_RX_DESC(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x4c)
-+#define DMA_CHAN_CUR_TX_BUF_ADDR_HI(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x50)
- #define DMA_CHAN_CUR_TX_BUF_ADDR(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x54)
-+#define DMA_CHAN_CUR_RX_BUF_ADDR_HI(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x58)
- #define DMA_CHAN_CUR_RX_BUF_ADDR(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x5c)
- #define DMA_CHAN_STATUS(addrs, x)	(dma_chanx_base_addr(addrs, x) + 0x60)
- 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+index 0d185e54eb7e..57c03d491774 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+@@ -185,8 +185,6 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 			x->rx_buf_unav_irq++;
+ 		if (unlikely(intr_status & DMA_CHAN_STATUS_RPS))
+ 			x->rx_process_stopped_irq++;
+-		if (unlikely(intr_status & DMA_CHAN_STATUS_RWT))
+-			x->rx_watchdog_irq++;
+ 		if (unlikely(intr_status & DMA_CHAN_STATUS_ETI))
+ 			x->tx_early_irq++;
+ 		if (unlikely(intr_status & DMA_CHAN_STATUS_TPS)) {
+@@ -198,6 +196,10 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 			ret = tx_hard_error;
+ 		}
+ 	}
++
++	if (unlikely(intr_status & DMA_CHAN_STATUS_RWT))
++		x->rx_watchdog_irq++;
++
+ 	/* TX/RX NORMAL interrupts */
+ 	if (likely(intr_status & DMA_CHAN_STATUS_RI)) {
+ 		u64_stats_update_begin(&stats->syncp);
 -- 
 2.34.1
 
