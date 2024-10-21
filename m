@@ -1,102 +1,292 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4328C18C36;
-	Mon, 21 Oct 2024 14:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10CC1F891E;
+	Mon, 21 Oct 2024 14:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729522154; cv=none; b=Ts8UBl5ZJUTmkL6nJ1VDicikfLT5aH0KG+jHgJjFZPc0HTUm0NjLdvjWkNtn5I0MJNVX+r/5b3YuAg/zSk+QCrmeV0IRtlIK6Mg99vWbpUD+en5MrEe3OqmIxIbj3GrO70GslYF0zXmsGoF78TTmbVMP5immFN3mYZQJKElQvC0=
+	t=1729522190; cv=none; b=BZjPTu8gXFZ7Tc7vQWWn9jGV6u3VyXFyihnHBPQSO0+15FULqtOBzFRq0OcmpQMXfSLGFn8Z+GRTeE5Ys3SmYBF38Cbc5DviJLd+jQYYLbNC14LZ5T6g1ZNmZkdvr8knLcUwE5Y7NeG2LKS16uBd/HYvQzQGSawjbCrO7F3bMds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729522154; c=relaxed/simple;
-	bh=ThQKbnhwyaZ9JOppntHuNBOMJTIU2nFzLYi8fnpCZMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fD05AkH+oWzHxYXyJI7GinjgoJ34pMNm0qAX24K5JEhrwwYgZgutn60UEAmsI3mFkWLDUh/srQFs4HYIsnaqyeDPQ5VsLcgkDiu3m6SYwKrJV7iDXLRaZbm14+JNoiiYrchK2iOwQB4Y4ZF5sOgA+v58oPdSWiEEyeRKbQ4m7vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQNSlTxN; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729522190; c=relaxed/simple;
+	bh=hRiJWkhCjaxIknTyGTSFGJY5nAxV3+531Mlfz5dkFE0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=IX7+idN4+hxAkvI+6DG4OHu6okgUsIcqt1vatNzBdBHgRdtAO1jFb29BpuCUQRX78BfwJASJztCHVx2FIQNgpEvcSc5ajWTObABEQ/oPqgU1oq/lq2P8xzRI2BfcMWncOwdJ5HxOp/nSZfMaJatacNkN3BZ7uDn711uUG1V/OZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6wgFBJY; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQNSlTxN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729522152; x=1761058152;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ThQKbnhwyaZ9JOppntHuNBOMJTIU2nFzLYi8fnpCZMc=;
-  b=NQNSlTxNwK5yGpkJPjhAaS0IiEeQl0utwtY1CIeimSReqUDgZBUnXUm8
-   8H7rbo7QFMug9LM0mSOZ7+p9v71nWSSZnNHd1l89YFC4NKqe3hembeAg+
-   i76W/9CnNy7JU0ezpRnNC5UTm59Cpo9al2bf/GWkQm+xjC0xiH5/j9Z2d
-   xHJpfGQI4blDhICoxx9vbAb1Ae9dBdiCGcW6yU55mTLEAxCs+A5IBUlqv
-   XQBaRhKMruDlbOtZZnI+z23VothyWXbyyR85LhCV7ZlgIBw/cWwlpHRU9
-   hHr04lnljXJNQeoZBqMyLKjaYZTTsR1RAN814pkYlQsdURfbN9EKI8fYk
-   A==;
-X-CSE-ConnectionGUID: ReSbRZhsTAGeTt/VsYkZjQ==
-X-CSE-MsgGUID: Hk0RbwgITdW0BSa+n3q9lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46475745"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="46475745"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 07:49:12 -0700
-X-CSE-ConnectionGUID: 0HD6dPEqQX+GL68JPdBwKQ==
-X-CSE-MsgGUID: 97muYvKKRKqhu2eMwsjdnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="79138239"
-Received: from pkwapuli-mobl1.ger.corp.intel.com (HELO vbox-pkwap.ger.corp.intel.com) ([10.246.19.66])
-  by fmviesa006.fm.intel.com with ESMTP; 21 Oct 2024 07:49:09 -0700
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-next v2 1/2] PCI: Add PCI_VDEVICE_SUB helper macro
-Date: Mon, 21 Oct 2024 16:46:54 +0200
-Message-ID: <20241021144654.5453-1-piotr.kwapulinski@intel.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6wgFBJY"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6cb97afcec9so31319836d6.2;
+        Mon, 21 Oct 2024 07:49:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729522186; x=1730126986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=84lL9admtSqwLpg7VH6pZR2Jg/MCV+HcnAoSWzVcOks=;
+        b=Y6wgFBJYKugF39mHrlpcGwLKJBsKtWI8Z182Ge9P02QwD29cPwuw8QJ2RyGFXL2N3B
+         Wk0+/ees7f6zojjEIlh6X7eLVHaD2/GY6zBe1THhNttfMXkNjyuO0Bc9KZfap5qgV/+F
+         atb58iyWxVPozoKH+qoVZE/fLH5n7fOGPI0ykYfSssAlS5Y3jXwyYMSbnn8jknFn+3Hw
+         5f+xdwjRR/ZIqlPLrmPmbyjugVTkMEebdcb5U1VKWCh8dLu+2HOejy/GvUR9Id7vIcu4
+         f/vdPHzbXGniq87P9dGW58hlTRZYARJmH5eorGIDNFCEglWNuAoHTGQqe70DQjwmRCBb
+         osjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729522186; x=1730126986;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=84lL9admtSqwLpg7VH6pZR2Jg/MCV+HcnAoSWzVcOks=;
+        b=f7c44QRSKOTe7ZHwZpXdWK24eUjptm3qd1pVg+RalSzJFBdYa8wilPMatbjZT35u7s
+         juVfkdk09t1X3Ljrqo/RMoABP4DGVlJWwnqvUBIwp/qG5Sk/VULIrN/ZJkO97PbeLMpN
+         qHZCfRdTx3TTz+X5oyVGoCNK3K+0iWB0pKBzBYU6oiVm4C3f1R89+NKpSLxplNj7dr2V
+         b7lwqiQKRQXaKyxnzSx23ygRGcLcsXsCoGZAGN4apFbFxUmdaDSn9fFTM9BGy2/dIcwG
+         6qGlFV0KU2RplYmNDMxb7Zs/w4Q/kd7kVQgZ+77FQWvSGsGURmbyzo9cGSZsWH1qyy+w
+         GEJA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3OECeYrnJ3nf+1RBMp8PSLD+ti38PFZNn0oMKreVEbnYvLFulJatoTn4K4BCXkNE8oPwwRKnq@vger.kernel.org, AJvYcCXVaGNtlgDlWrFghMIT6BBjn+eLLUb7xS4zRMZdQVGP+5Dltsfz3rjPQ2PJ5bOCAaVVzt4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyntA3ACELRsUc6DDiCjg37ouNdQDWrjSP5bPbmd47PQO+dKz0A
+	eFcdO2WHVpApKSFAQsb9D+AM1ZUn5Scaylbh6yhJSLNeHByYvs0v
+X-Google-Smtp-Source: AGHT+IFSAu4RiEwfz/Pzl76eMYM0Wt3Oe3iUs+8/4/lZxGzXvE3tYe/jH4LjsAj75B1uwcR5SKrVeA==
+X-Received: by 2002:a05:6214:328e:b0:6cb:f40c:b868 with SMTP id 6a1803df08f44-6cde163399emr194619986d6.46.1729522186499;
+        Mon, 21 Oct 2024 07:49:46 -0700 (PDT)
+Received: from localhost (86.235.150.34.bc.googleusercontent.com. [34.150.235.86])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce0099a79fsm17697386d6.90.2024.10.21.07.49.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 07:49:45 -0700 (PDT)
+Date: Mon, 21 Oct 2024 10:49:45 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ dsahern@kernel.org, 
+ willemb@google.com, 
+ ast@kernel.org, 
+ daniel@iogearbox.net, 
+ andrii@kernel.org, 
+ martin.lau@linux.dev, 
+ eddyz87@gmail.com, 
+ song@kernel.org, 
+ yonghong.song@linux.dev, 
+ john.fastabend@gmail.com, 
+ kpsingh@kernel.org, 
+ sdf@fomichev.me, 
+ haoluo@google.com, 
+ jolsa@kernel.org, 
+ bpf@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ Jason Xing <kernelxing@tencent.com>
+Message-ID: <67166a0997028_42f03294e7@willemb.c.googlers.com.notmuch>
+In-Reply-To: <CAL+tcoD5TiaRZgW10tt8jc9srQTbaszs_o2z=Yf-bzO0Kp-vLA@mail.gmail.com>
+References: <20241012040651.95616-1-kerneljasonxing@gmail.com>
+ <20241012040651.95616-5-kerneljasonxing@gmail.com>
+ <67157b7ec615_14e1829490@willemb.c.googlers.com.notmuch>
+ <CAL+tcoD5TiaRZgW10tt8jc9srQTbaszs_o2z=Yf-bzO0Kp-vLA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 04/12] net-timestamp: add static key to
+ control the whole bpf extension
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-PCI_VDEVICE_SUB generates the pci_device_id struct layout for
-the specific PCI device/subdevice. Private data may follow the
-output.
+Jason Xing wrote:
+> On Mon, Oct 21, 2024 at 5:52=E2=80=AFAM Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
+> >
+> > Jason Xing wrote:
+> > > From: Jason Xing <kernelxing@tencent.com>
+> > >
+> > > Willem suggested that we use a static key to control. The advantage=
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
----
- include/linux/pci.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+> > > is that we will not affect the existing applications at all if we
+> > > don't load BPF program.
+> > >
+> > > In this patch, except the static key, I also add one logic that is
+> > > used to test if the socket has enabled its tsflags in order to
+> > > support bpf logic to allow both cases to happen at the same time.
+> > > Or else, the skb carring related timestamp flag doesn't know which
+> > > way of printing is desirable.
+> > >
+> > > One thing important is this patch allows print from both applicatio=
+ns
+> > > and bpf program at the same time. Now we have three kinds of print:=
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 573b4c4..7d1359e 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1050,6 +1050,20 @@ struct pci_driver {
- 	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
- 	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
- 
-+/**
-+ * PCI_VDEVICE_SUB - describe a specific PCI device/subdevice in a short form
-+ * @vend: the vendor name
-+ * @dev: the 16 bit PCI Device ID
-+ * @subvend: the 16 bit PCI Subvendor ID
-+ * @subdev: the 16 bit PCI Subdevice ID
-+ *
-+ * Generate the pci_device_id struct layout for the specific PCI
-+ * device/subdevice. Private data may follow the output.
-+ */
-+#define PCI_VDEVICE_SUB(vend, dev, subvend, subdev) \
-+	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
-+	.subvendor = (subvend), .subdevice = (subdev), 0, 0
-+
- /**
-  * PCI_DEVICE_DATA - macro used to describe a specific PCI device in very short form
-  * @vend: the vendor name (without PCI_VENDOR_ID_ prefix)
--- 
-2.43.0
+> > > 1) only BPF program prints
+> > > 2) only application program prints
+> > > 3) both can print without side effect
+> > >
+> > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> >
+> > Getting back to this thread. It is long, instead of responding to
+> > multiple messages, let me combine them in a single response.
+> =
 
+> Thank you so much!
+> =
+
+> >
+> >
+> > * On future extensions:
+> >
+> > +1 that the UDP case, and datagrams more broadly, must have a clear
+> > development path, before we can merge TCP.
+> >
+> > Similarly, hardware timestamps need not be supported from the start,
+> > but must clearly be supportable.
+> =
+
+> Agreed. Using the standalone sk_tsflags_bpf and tskey_bpf and removing
+> the TCP bpf test logic(say, BPF_SOCK_OPS_TX_TIMESTAMPING_OPT_CB_FLAG)
+> could work well for both protos. Let me give it a try first.
+
+Great, thanks.
+
+> >
+> >
+> > * On queueing packets to userspace:
+> >
+> > > > the current behavior is to just queue to the sk_error_queue as lo=
+ng
+> > > > as there is "SOF_TIMESTAMPING_TX_*" set in the skb's tx_flags and=
+ it
+> > > > is regardless of the sk_tsflags. "
+> >
+> > > Totally correct. SOF_TIMESTAMPING_SOFTWARE is a report flag while
+> > > SOF_TIMESTAMPING_TX_* are generation flags. Without former, users c=
+an
+> > > read the skb from the errqueue but are not able to parse the
+> > > timestamps
+> =
+
+> Above is what I tried to explain how the application timestamping
+> feature works, not what I tried to implement for the BPF extension.
+> =
+
+> >
+> > Before queuing a packet to userspace on the error queue, the relevant=
+
+> > reporting flag is always tested. sock_recv_timestamp has:
+> >
+> >         /*
+> >          * generate control messages if
+> >          * - receive time stamping in software requested
+> >          * - software time stamp available and wanted
+> >          * - hardware time stamps available and wanted
+> >          */
+> >         if (sock_flag(sk, SOCK_RCVTSTAMP) ||
+> >             (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE) ||
+> >             (kt && tsflags & SOF_TIMESTAMPING_SOFTWARE) ||
+> >             (hwtstamps->hwtstamp &&
+> >              (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE)))
+> >                 __sock_recv_timestamp(msg, sk, skb);
+> >
+> > Otherwise applications could get error messages queued, and
+> > epoll/poll/select would unexpectedly behave differently.
+> =
+
+> Right. And I have no intention to use the SOF_TIMESTAMPING_SOFTWARE
+> flag for BPF.
+
+Can you elaborate on this? This sounds like it would go against the
+intent to have the two versions of the API (application and BPF) be
+equivalent.
+ =
+
+> >
+> > > SOF_TIMESTAMPING_SOFTWARE is only used in traditional SO_TIMESTAMPI=
+NG
+> > > features including cmsg mode. But it will not be used in bpf mode.
+> >
+> > For simplicity, the two uses of the API are best kept identical. If
+> > there is a technical reason why BPF has to diverge from established
+> > behavior, this needs to be explicitly called out in the commit
+> > message.
+> >
+> > Also, if you want to extend the API for BPF in the future, good to
+> > call this out now and ideally extensions will apply to both, to
+> > maintain a uniform API.
+> =
+
+> As you said, I also agree on "two uses of the API are best kept identic=
+al".
+> =
+
+> >
+> >
+> > * On extra measurement points, at sendmsg or tcp_write_xmit:
+> >
+> > The first is interesting. For application timestamping, this was
+> > never needed, as the application can just call clock_gettime before
+> > sendmsg.
+> =
+
+> Yes, we could add it after we finish the current series. I'm going to
+> write it down on my todo list.
+> =
+
+> >
+> > In general, additional measurement points are not only useful if the
+> > interval between is not constant. So far, we have seen no need for
+> > any additional points.
+> =
+
+> Taking a snapshot of tcp_write_xmit() could be useful especially when
+> the skb is not transmitted due to nagle algorithm.
+> =
+
+> >
+> >
+> > * On skb state:
+> >
+> > > > For now, is there thing we can explore to share in the skb_shared=
+_info?
+> >
+> > skb_shinfo space is at a premium. I don't think we can justify two
+> > extra fields just for this use case.
+> >
+> > > My initial thought is just to reuse these fields in skb. It can wor=
+k
+> > > without interfering one another.
+> >
+> > I'm skeptical that two methods can work at the same time. If they are=
+
+> > started at different times, their sk_tskey will be different, for one=
+.
+> =
+
+> Right, sk_tskey is the only special one that I will take care of.
+> Others like tx_flags or txstamp_ack from struct tcp_skb_cb can be
+> reused.
+> =
+
+> >
+> > There may be workarounds. Maybe BPF can store its state in some BPF
+> > specific field, indeed. Or perhaps it can store per-sk shadow state
+> > that resolves the conflict. For instance, the offset between sk_tskey=
+
+> > and bpf_tskey.
+> =
+
+> Things could get complicated in the future if we want to unified the
+> final tskey value for all the cases. Since 1) the value of
+> shinfo->tskey depends on skb seq and len, 2) the final tskey output is
+> the diff between sk_tskey and shinfo->tskey, can I add a bpf_tskey in
+> struct sock and related output logic for bpf without caring if it's
+> the same as sk_tskey.
+
+I think we can add fields to struct sock without too much concern.
+Adding fields to sk_buff or skb_shared_info would be more difficult.
+
+> That said, the outputs from two methods differ. Do you think it is
+> acceptable? It could be simpler and easier if we keep them identical.
+
+Since we can only have one skb_shared_info.tskey, if both user and bpf
+request OPT_ID, starting at different times, then we will have two
+bases against which to compute the difference. Having two fields in
+struct sock should suffice.=
