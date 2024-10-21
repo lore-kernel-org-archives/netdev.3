@@ -1,49 +1,49 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73231FBC9F;
-	Mon, 21 Oct 2024 19:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764E02209B;
+	Mon, 21 Oct 2024 19:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729537975; cv=none; b=MqOG6o2RheQKkkr2cH9mlFb+G7UJoikc//+3nTkkpVb5pw2RwPfQFHZRkN9t6tHqw1J4YiLen9ZFl371VHSliRuOys0uY0+4meHCI8S+g8lgBNp6fb74vIB/a+97criFHNCKBzOAmoVhFv6m/DcBdhfEgouvSzLeK5C2NG79PO8=
+	t=1729538065; cv=none; b=A7mYm+zO09KZllTw89Mmx2NBdjKlxrdgDoF4AySk5ilE5LUMNB3iP0t1RdZ0r7OfpTC4i2v4/7doXkAG+tW9ph9Tej9+ZKAZQl0P9r1DCtXcDfyWnDuSdGv/3TEBrSieH1BIYj+S5fNwA49sZ7p4GUWBJ1pMMGa2yQX19BxVltA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729537975; c=relaxed/simple;
-	bh=71MvAum+6d78RYFlLQaF+K24ogaifmLcj8CMqlCWKXE=;
+	s=arc-20240116; t=1729538065; c=relaxed/simple;
+	bh=7wFMp0HxrbR9VJ8qywVbEmIhYSvSbwVhJ8LjTG/7fTs=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmYNuUvFxNA4p+Bo/ozC7sF9+ZR6nkHWL7PX/aIU2Qf0x00GANJ2DSKkTeKX9NZAbWocYOKqe0tCzfu2ET0M6OeaTenCaUW0728HNXoHgDbgfZe1BG7rLm/5ddPUFgXuvxFw8vhltwr08FVo7wKrogrQBQww85Lo7ARbr/0racA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Kxux+rof; arc=none smtp.client-ip=68.232.153.233
+	 Content-Type:Content-Disposition:In-Reply-To; b=NSqCBpPuOq/ielaICRHRhclLrgZEcabwjSQ6yBTrdUIzeXml6PFamxOUPQdpvHcIA+gbIzfwnMd4gCNNVN1d/2/ARhD5StF4uqKX5nWIOL/KPbwa3qbCgcY50MVzd2dqGEOTi7YiNlicgPInDabLpxqAMeVVcTqqZWtj1rwaaXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=pYg/iRxJ; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Kxux+rof"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="pYg/iRxJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1729537973; x=1761073973;
+  t=1729538063; x=1761074063;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=71MvAum+6d78RYFlLQaF+K24ogaifmLcj8CMqlCWKXE=;
-  b=Kxux+rofVHucCaVfSb6UY899ioSyZYn38DdrLw+u+nq2sE6TTOy9fspv
-   OYiIE+WEyoFJngkORFDUyqXkD+6AkSweji671/dRDBRqUNeh90/LPn5N+
-   yj7rcKFRektik0durQvh5V0nQLs9hZUOPyEo0e5fUFbyYJX3vvK4/wTaq
-   nPSsGZMFYQnJP92jBjnNIHKCP4Yt6/sLuygRdXQkwmLnovFyv5CAAB5EX
-   BkDP9UQRWixdbGr8SeuSjeCWyVzVhOf5t4ftx7AjgpCNAjhhjLCx651hL
-   mUln5MMZmwHGGKUAS0mqVUR47wWzvbbMW7UHHnbJpPTVoC5BvrWfsvBVv
-   A==;
-X-CSE-ConnectionGUID: 8pX8BFJzRaej4ADE6ll6eg==
-X-CSE-MsgGUID: t+5YL8yTQN+zeQL/C8b/Ew==
+  bh=7wFMp0HxrbR9VJ8qywVbEmIhYSvSbwVhJ8LjTG/7fTs=;
+  b=pYg/iRxJZbwePJSpvc86czzyZ1uF5CxmurtoPO8P2Vqo26DqxH2kxb5Q
+   cb8bR//z+qwMKxdWfrp2exZIZW5LCqjgIUILBdW1yi5YS+prXaSUnVHNY
+   rUdw4Y/4gkg0Xxgz20bedMN85Ivb7JtLKZlZ0SxTiuLRqtuGwtlKJS5AC
+   mA3rT1eCGiGI6QA7lBk+J0K3nq3DAIUIjdha9pVg2vGU4wNR2qnJAGQxH
+   9tevLsvDUsekqjVx/p39ln+85kkAow7nWO6hXq89KPZZzrQC6XR/RCeou
+   iwidjj6EEGroXo0fQ4rO5iOY8N6G06vnLZTPR+Zek4HLYrgsZjf3FiBu6
+   w==;
+X-CSE-ConnectionGUID: 8BSVVT0GSq6qC8d419X4YA==
+X-CSE-MsgGUID: +168UpgjR1eYpnndNkotiw==
 X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
-   d="scan'208";a="36683250"
+   d="scan'208";a="33842623"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Oct 2024 12:12:52 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Oct 2024 12:14:22 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 21 Oct 2024 12:12:32 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 21 Oct 2024 12:12:28 -0700
-Date: Mon, 21 Oct 2024 19:12:27 +0000
+ 15.1.2507.35; Mon, 21 Oct 2024 12:13:53 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 21 Oct 2024 12:13:49 -0700
+Date: Mon, 21 Oct 2024 19:13:48 +0000
 From: Daniel Machon <daniel.machon@microchip.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>
 CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
@@ -58,11 +58,12 @@ CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<ast@fiberby.net>, <netdev@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
 	<devicetree@vger.kernel.org>
-Subject: Re: [PATCH net-next 10/15] net: lan969x: add PTP handler function
-Message-ID: <20241021191227.dxfqli6uoeoxbhzj@DEN-DL-M70577>
+Subject: Re: [PATCH net-next 11/15] net: lan969x: add function for
+ calculating the DSM calendar
+Message-ID: <20241021191348.sd5k5qnxya734muc@DEN-DL-M70577>
 References: <20241021-sparx5-lan969x-switch-driver-2-v1-0-c8c49ef21e0f@microchip.com>
- <20241021-sparx5-lan969x-switch-driver-2-v1-10-c8c49ef21e0f@microchip.com>
- <20241021194638.585a9870@device-21.home>
+ <20241021-sparx5-lan969x-switch-driver-2-v1-11-c8c49ef21e0f@microchip.com>
+ <20241021195140.442c0a4f@device-21.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,46 +72,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20241021194638.585a9870@device-21.home>
+In-Reply-To: <20241021195140.442c0a4f@device-21.home>
 
 Hi Maxime,
 
 > Hi Daniel,
 > 
-> On Mon, 21 Oct 2024 15:58:47 +0200
+> On Mon, 21 Oct 2024 15:58:48 +0200
 > Daniel Machon <daniel.machon@microchip.com> wrote:
 > 
-> > Add PTP IRQ handler for lan969x. This is required, as the PTP registers
-> > are placed in two different targets on Sparx5 and lan969x. The
-> > implementation is otherwise the same as on Sparx5.
+> > Lan969x has support for RedBox / HSR / PRP (not implemented yet). In
+> > order to accommodate for this in the future, we need to give lan969x it's
+> > own function for calculating the DSM calendar.
 > >
-> > Also, expose sparx5_get_hwtimestamp() for use by lan969x.
+> > The function calculates the calendar for each taxi bus. The calendar is
+> > used for bandwidth allocation towards the ports attached to the taxi
+> > bus. A calendar configuration consists of up-to 64 slots, which may be
+> > allocated to ports or left unused. Each slot accounts for 1 clock cycle.
+> >
+> > Also expose sparx5_cal_speed_to_value(), sparx5_get_port_cal_speed,
+> > sparx5_cal_bw and SPX5_DSM_CAL_EMPTY for use by lan969x.
 > >
 > > Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 > > Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 > 
 > [...]
 > 
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> > index 15f5d38776c4..3f66045c57ef 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-> > @@ -114,6 +114,8 @@ enum sparx5_vlan_port_type {
-> >  #define SPX5_DSM_CAL_LEN               64
-> >  #define SPX5_DSM_CAL_MAX_DEVS_PER_TAXI 13
-> >
-> > +#define SPARX5_MAX_PTP_ID    512
+> > +     /* Place the remaining devices */
+> > +     for (u32 i = 0; i < DSM_CAL_DEV_MAX; i++) {
+> > +             speed = &dev_speeds[i];
+> > +             for (u32 dev = 0; dev < speed->n_devs; dev++) {
+> > +                     u32 idx = 0;
 > > +
+> > +                     for (n_slots = 0; n_slots < speed->n_slots; n_slots++) {
+> > +                             lan969x_dsm_cal_idx_find_next_free(data->schedule,
+> > +                                                                cal_len,
+> > +                                                                &idx);
 > 
-> Sorry if I somehow missed it, but if you define SPARX5_MAX_PTP_ID here,
-> you probably don't need it to be also defined in sparx5_ptp.c as well ?
+> You're not checking the return of lan969x_dsm_cal_idx_find_next_free(),
+> can this be a problem ?
 > 
 > Thanks,
 > 
 > Maxime
 
-You are right. It should definitely be removed from sparx5_ptp.c
+Yes, it should be checked as we have a finite number of calendar slots.
 
-Will fix it in v2. Thanks!
+Will fix in v2. Thanks!
 
 /Daniel
+
