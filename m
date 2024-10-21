@@ -1,83 +1,73 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.208])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5541F429B;
-	Mon, 21 Oct 2024 17:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164741EB9EF
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 17:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729532988; cv=none; b=PmkAYj/EEQeT/DyLkGexpru9PLwIrDwedRvfecPQLK+Fo9HaFYdnO8Pm9dRdDJS2x0WPmEHP8rVrQRlBk8EmXkaCvviVCaHdOa/lY69kX7hroWkicsK/ohNEnX25tUxmOfGtAz6VTjuBuSYmlivtfCH0Y4bHcv6jh6EcKrybPqw=
+	t=1729533005; cv=none; b=bv6zBMuuwue1jiC/xcPtgzlQCS6yMuOQGT3hydwLchMAq8wnFNfCs5TWwTwv7Fc52/8YgiqKkrkuVlTtO7+KisJebaN5QSaUio9y70L/1yyRq97PDQNCVAgepvW009A0DSyMo2FDwOAtgzjVMeMOL6KwfhdvPys/AhqOOsoWLeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729532988; c=relaxed/simple;
-	bh=mGBxfEo3fvwdyoCVC+cSHK0qhI2yCmOesExVfHIKSRQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E/0A7ObHeJuuMqNjAlBYoyjmPLsgrJs4pkLE/ZBZxbzQheiy4oMDNxyMXuMXGJDh0H5CwiWPOawdThd8zvxbqd/COmE+YZhLaKCau82ZsPIIuL/C2UFwAeDbjk9FHfoOkIG5OhKkNrkijbvMxU3pgFVUAS7rfyZQsQyyOtaB5nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Wvef3+ZA; arc=none smtp.client-ip=192.19.144.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1729533005; c=relaxed/simple;
+	bh=thWgYPLWsQ5uEt2CJgrMonCIUbTSN+6hJrm79KstynE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b3syZlLBQpHkcVRxVpcJr6Std8flizn9CQlepNm8ZHOZf7DRnrcEWUjQ9oGAPc3GP24KJXlkrQpiO1fi6BoZ353+MKd/K4hcSp3jVSP6+J1nE3qOzFGxpgmhmsYibbwaHLQX368JRT4Zb7DgYE6kZrw28Nwg1mCvQnpGlcsmmHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNwDAWvI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Wvef3+ZA"
-Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 75571C0005CF;
-	Mon, 21 Oct 2024 10:49:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 75571C0005CF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1729532978;
-	bh=mGBxfEo3fvwdyoCVC+cSHK0qhI2yCmOesExVfHIKSRQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Wvef3+ZAAB76ANY940+j4fDlq+GAVTfj2+dQXbiQyzDTWMI0F5BM5kOEt+qWM6jfh
-	 sV8spCMYlOrN84ov5+Fmqz7ygBUdIkGIm+3Yj9CXW7DqaoewmQ9FKFsjrfS6WG4Q2g
-	 TDs9nKJudFomfxnfI8Poq2Ak4Jp/PyEJ44gTyACs=
-Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id E995918041CAC6;
-	Mon, 21 Oct 2024 10:49:37 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-kernel@vger.kernel.org (open list),
-	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:),
-	vladimir.oltean@nxp.com
-Subject: [PATCH net-next v2 0/2] net: systemport: Minor IO macros changes
-Date: Mon, 21 Oct 2024 10:49:33 -0700
-Message-ID: <20241021174935.57658-1-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNwDAWvI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CC7C4CEC3;
+	Mon, 21 Oct 2024 17:50:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729533004;
+	bh=thWgYPLWsQ5uEt2CJgrMonCIUbTSN+6hJrm79KstynE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oNwDAWvIZfaV8epC0b6ACXfk4ZLnJdAPVCE2OYEevOgISXmzZ37BhQFW+6gNJpPcS
+	 WB9dgBxdqqCHkj7zAJ8hSPaUU72P+hViRMgC5BHBwjaYNPtmjDTj6dJ7jO8LnM0j1d
+	 G/niUc/vMhp+gNjJ1lbsKJt6eDRYUNfhz0bymgToXS3a8PefLbF5gbtxw55QnyVp66
+	 TJCUbbqgPylHpR4xetLTrXLgzPKHau4ivDKcJHLUP/3XpQWVBFvXR4DtPfmYOXqtzf
+	 HPLkqrM57/l77HVJNT2wOsdE0Auz+IqxIRYtqqdgGbIKmaCWdCKR7O2oiBfcuHWJev
+	 fArkGxXp6Jq5w==
+Message-ID: <f6e70c8d-b9d8-4d15-bb25-69fbec0d138a@kernel.org>
+Date: Mon, 21 Oct 2024 11:50:03 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/2] tcp: add a common helper to debug the
+ underlying issue
+Content-Language: en-US
+To: Jason Xing <kerneljasonxing@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ncardwell@google.com
+Cc: netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
+References: <20241021155245.83122-1-kerneljasonxing@gmail.com>
+ <20241021155245.83122-2-kerneljasonxing@gmail.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20241021155245.83122-2-kerneljasonxing@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patch series addresses the warning initially reported by Vladimir
-here:
+On 10/21/24 9:52 AM, Jason Xing wrote:
+> From: Jason Xing <kernelxing@tencent.com>
+> 
+> Following the commit c8770db2d544 ("tcp: check skb is non-NULL
+> in tcp_rto_delta_us()"), we decided to add a helper so that it's
+> easier to get verbose warning on either cases.
+> 
+> Link: https://lore.kernel.org/all/5632e043-bdba-4d75-bc7e-bf58014492fd@redhat.com/
+> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> Cc: Neal Cardwell <ncardwell@google.com>
+> ---
+> v2
+> Link: https://lore.kernel.org/all/38811a75-ae98-48e7-96c0-bb1a39a0d722@kernel.org/
+> 1. fix "break quoted strings at a space character" warning (David Ahern)
+> ---
+>  include/net/tcp.h | 25 ++++++++++++++-----------
+>  1 file changed, 14 insertions(+), 11 deletions(-)
+> 
 
-https://lore.kernel.org/all/20241014150139.927423-1-vladimir.oltean@nxp.com/
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-and follows on with proceeding with his suggestion the IO macros to the
-header file.
-
-Changes in v2:
-
-- also removed the TBUF accessor
-
-Florian Fainelli (2):
-  net: systemport: Remove unused txchk accessors
-  net: systemport: Move IO macros to header file
-
- drivers/net/ethernet/broadcom/bcmsysport.c | 24 ----------------------
- drivers/net/ethernet/broadcom/bcmsysport.h | 23 +++++++++++++++++++++
- 2 files changed, 23 insertions(+), 24 deletions(-)
-
--- 
-2.43.0
 
