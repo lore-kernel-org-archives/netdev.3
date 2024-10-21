@@ -1,123 +1,89 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE07B1EABD5;
-	Mon, 21 Oct 2024 17:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7651EABC4;
+	Mon, 21 Oct 2024 17:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729530972; cv=none; b=Kn5Bd8e9vvlhngMm0BkL1Ixt/8JIlGElUabtskb37L6G+NXjJoYVvb0fs4t4uJNO2ZPBg3w6oWnGC5usBwAHqPu6tCadUClCZNcFlpAO45XD+GYWjYPOWJEuWInx5yXu3fcBoYTIqH9IUyQl+rtASpTATaHf+/LV1GRxDHpalv0=
+	t=1729532037; cv=none; b=qW0EDYBRVsnPgSBeT++uyiGWXDyeyz7ON0xfb4rfzBtTTYr/5wgUrcDKfzg0h847vKa29zSjHDMUEaZiP4H9Gii/GFFo48DfcnZEqVoQ7KOuf0RgdYAlMg4OTVRa9v9RpAwSA7tAoq6AnKv8fOnav60l4zVv55zcBGyXIVY40Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729530972; c=relaxed/simple;
-	bh=P7M6hK2QGGokXWddLX6ahenELm3JSyYN9TJnSQFDCtA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Peludkex7JW9pjoOfp8fIcgYULEZd5HukqDS3gcR1Lx6xGQYTEZUlWh7zDksJmnYH5MdawQCjFJZ3MROOJzXz9pT0x+2UY97b4wKomyLXvVXawZqbfNxmaZsYqroPBk8B/VWSOpyk944awFh/A9YOvcgIh0Ijv7cdIyeyc7cOig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIiPTImD; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729532037; c=relaxed/simple;
+	bh=0BX5ye4uZiCaRI8uVOg4Db78leJWxE2sRuvRzXmmbH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ged1M53ybDC4eC8BDceHnAsQDcj83mMIAwADOHFVmB8YWwaPBPOX1yA42BYe4KtO7z70eMtlHNNn2H3pIpZaNI6rsHAjOWWYDEiy777tNCX+bSv6yqD5a4VcjayJMIf8RDF7Ou4wyCdV2vx6XuNv9oiWQbfOGvuTRS9mfgr5K1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b8vcOpxU; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIiPTImD"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fb3da341c9so46465191fa.2;
-        Mon, 21 Oct 2024 10:16:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729530969; x=1730135769; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZjIFzIpBZflzITDVXrEWci55i0lCxZNwkLn1/JkamZk=;
-        b=dIiPTImDjmeFigHbSkJqBuezsgJWgh8reOBkunDjwPRequdnZi4j6iDVaKzvxI7X3Y
-         +1eGqri46F4jxSUSFZf3u+fCdpf/rxhGG96lYEpvTKqb1eVaHpOJnnZEU8+fbSDXxpz3
-         bCQkGzDUxfz5y0FVCmagPqG0DIf3MjM0cLRDc2Qdd0cx6QW8iA2Kaiynv+2c0ZUYj0HW
-         t9eVIo8oS8Bfm08UI0ARK4KFdjDjMNjq8yndkbyzkQVT3kRvn5ViICBfFMoZWQmdGtl8
-         CCQNWFewR67vxLRnQGNUpa2787uXeX6hKZC9OQGfifThgP5MTLPH+rXwM4o4NFQO/WkH
-         Uc6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729530969; x=1730135769;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZjIFzIpBZflzITDVXrEWci55i0lCxZNwkLn1/JkamZk=;
-        b=e+vhxQt3hhp5qlP0pcApVPSyJ32NVZ+KohLOwBSkpsCNi/oH5jTL60E0wK2EfYfgif
-         ltH5eKm/MzPteYiqmflRhfRASSUKpCC/gqDfmBu5lgl0JwXNScAaCYJQ+y1i1wRt8Svn
-         JFuIxURBl+FmyMSvy2pmDJvRQgaen4m4EiAURTqnL8v+QMoiAFOmIjZuI2I8eKd+9IWo
-         wLVBoJbar4gbG0wN0+cvJQPRiyQ7gyXjVW8W21DSKmpqGjvJEZoUNgjL54eDXHyt2mjs
-         edEUZek3nCGijZoPwYCrrL+K+/NyEd1ctJTzCSjRZaVJkDfKXiIKK8Mk6VBG78bkQRn5
-         R7xA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXBlyvbEVRlj9kXt2r8pYQXNiytRnmGrc5Nq4DiCFzJ+hEag1nPTs2EVOzTv/LJmERomz8fzsX@vger.kernel.org, AJvYcCXY/hqVjT3v6RL4VMDJLhuKWPmt0PFhyMYXaakyAs8p19j44973N8kS7j2PR/+JbRmFgUcCLvCl9Q3oHLqvNbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm9vZrIW24l2JZTcdQZHjDAOUMBJpWtfQwoevIE85XsFvrqX6m
-	4qlkvM7N2DOok7GNNDI0pkJAGryJeMbdRbXXpKKuQGxA9O+mymVRrpagHOvk2xtSDYr/eGW17am
-	xT0o1Xkn1/EvjCgxUs+Ci31b2GsE=
-X-Google-Smtp-Source: AGHT+IEkZ7gfcQYBcHFr2b0K8I9CQ3NUCnWQqHfvZazLDfBUdpefcdsx2PbVYbOCZnJ24Y5S7krAD7KMHWs7fkb/D9o=
-X-Received: by 2002:a2e:a58a:0:b0:2fb:4ca9:8f4 with SMTP id
- 38308e7fff4ca-2fb82eaee9bmr53020881fa.23.1729530968390; Mon, 21 Oct 2024
- 10:16:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b8vcOpxU"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2514220004;
+	Mon, 21 Oct 2024 17:33:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729532032;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8MaX199Fe4JfeRIaLriBDyMlENqkxgT9mj03plpAUcs=;
+	b=b8vcOpxUOqkvXvlW4E6uo4uhuj8dmNLMYbV4ZPzueVPwRlg4uqmbdkOV15bonawranp5Q0
+	j1OiENoBYDckFqlcoKsglnrPJs+ccvsnTcABD8JmpXiOmXdR/C4twSTWJL7QEOfBwliBKQ
+	y1xE0r9jGrOUAuLnCE0rme9tqm+Y+Z8g5hV8QiiJ0YOQFpMP+JlLdjMiaQw87Pdq1+MObq
+	ec9eDtrUavWhhsbCGG3+kc+HnzUqwV8XoRHXODoN2jz3uK5uBjGfiIM6WNwYjM1Kdv15dw
+	guDNO6ORQltp9QHMDVzqEfgzG84jQuY8HAny69ux2ti1Ws+bHdhxYPllnuCg2w==
+Date: Mon, 21 Oct 2024 19:33:48 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, <andrew@lunn.ch>, Lars Povlsen
+ <lars.povlsen@microchip.com>, Steen Hegelund
+ <Steen.Hegelund@microchip.com>, <horatiu.vultur@microchip.com>,
+ <jensemil.schulzostergaard@microchip.com>,
+ <Parthiban.Veerasooran@microchip.com>, <Raju.Lakkaraju@microchip.com>,
+ <UNGLinuxDriver@microchip.com>, Richard Cochran <richardcochran@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, <jacob.e.keller@intel.com>,
+ <ast@fiberby.net>, <netdev@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH net-next 05/15] net: sparx5: add registers required by
+ lan969x
+Message-ID: <20241021193348.7a2423db@device-21.home>
+In-Reply-To: <20241021-sparx5-lan969x-switch-driver-2-v1-5-c8c49ef21e0f@microchip.com>
+References: <20241021-sparx5-lan969x-switch-driver-2-v1-0-c8c49ef21e0f@microchip.com>
+	<20241021-sparx5-lan969x-switch-driver-2-v1-5-c8c49ef21e0f@microchip.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016204258.821965-1-luiz.dentz@gmail.com> <4e1977ca-6166-4891-965e-34a6f319035f@leemhuis.info>
- <be9ead27-bd67-49a8-a311-a7ce5e82d4fa@redhat.com>
-In-Reply-To: <be9ead27-bd67-49a8-a311-a7ce5e82d4fa@redhat.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 21 Oct 2024 13:15:55 -0400
-Message-ID: <CABBYNZKWSqpn9whkYGVm49B472JsGpumF09fK8Nw7dWvmhrKVw@mail.gmail.com>
-Subject: Re: pull request: bluetooth 2024-10-16
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>, davem@davemloft.net, kuba@kernel.org, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Linux kernel regressions list <regressions@lists.linux.dev>, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Hi Paolo,
+Hello Daniel,
 
-On Mon, Oct 21, 2024 at 11:29=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wr=
-ote:
->
-> On 10/18/24 07:30, Thorsten Leemhuis wrote:
-> > [CCing Linus, the two other -net maintainers, and the regressions lists=
-]
-> >
-> > On 16.10.24 22:42, Luiz Augusto von Dentz wrote:
-> >> The following changes since commit 11d06f0aaef89f4cad68b92510bd9decff2=
-d7b87:
-> >>
-> >>   net: dsa: vsc73xx: fix reception from VLAN-unaware bridges (2024-10-=
-15 18:41:52 -0700)
-> >>
-> >> are available in the Git repository at:
-> >>
-> >>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.gi=
-t tags/for-net-2024-10-16
-> >
-> > FWIW, from my point of view it would be nice if these changes could mak=
-e
-> > it to mainline this week. I know, they missed the weekly -net merge,
-> > despite the quoted PR being sent on Wednesday (I assume it was too late
-> > in the day).
->
-> The net PR is prepared and sent on Thursday morning - either European
-> Time or West Cost, depending on who actually is cooking it.
->
-> Wednesday is usually/nearly always a good time for PR to be send on
-> netdev to land into the next 'net' PR, but due to some unfortunate
-> scheduling, we are lagging behind the netdev ML traffic - to the point
-> that I'm processing this email only now.
->
-> The limited capacity will last for all the current week, but we should
-> come back to speed from the next one.
+On Mon, 21 Oct 2024 15:58:42 +0200
+Daniel Machon <daniel.machon@microchip.com> wrote:
 
-Thanks for the feedback, I will try to get the bluetooth tree PR done
-on Wednesday (weekly) morning (East Coast) then.
+> Lan969x will require a few additional registers for certain operations.
+> Some are shared, some are not. Add these.
+> 
+> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 
->
-> Cheers,
->
-> Paolo
->
+[...]
 
+> +#define PTP_PTP_TWOSTEP_STAMP_SUBNS_STAMP_SUB_NSEC GENMASK(7, 0)
 
---=20
-Luiz Augusto von Dentz
+I understand that this is partly autogenerated, however the naming for
+this register in particular seems very redundant... Is there any way
+this could be improved ?
+
+Thanks,
+
+Maxime
+
