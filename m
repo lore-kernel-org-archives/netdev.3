@@ -1,97 +1,83 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6485A26ACD;
-	Mon, 21 Oct 2024 14:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DB01F7092
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 14:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729521703; cv=none; b=Nr4Dc7ATvnq0FPPFfPRUY7LOq2d52pZiflgxC5DS92ZQEqEBs/BQzde9i80zggLjjoobwfmuEFl8GQD/R0HBOyaqDlghOCC/JVAiYsAs7yCbs4cu9wtD3oUE4vVK+KcT63oBmQEgIDH9Q7tzqAeApmNDVPVSV30cTxz4zNR4d60=
+	t=1729521765; cv=none; b=VOne4oLvSvp/LOZgRDcaMBka746dh+340jt5GZf2qHLwcVO37OCKolJB5ZvxxK57+rf0NC54btNRxKC8r11VjYWJnMcJT7PTI6iTQNw/eMTzy1Sj5LQIibivW5HJwstBYCvVFuNFnSjufgoFucWUiyF/ylIU/PydceFstdbWLAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729521703; c=relaxed/simple;
-	bh=oES9w02HsNO+wAdgGTKwa5IUNCRPd0m/e8VFJjy8Y6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sOM/fs0DxDo82KcfjBwl5PSe2FSytOtNlqOFWO/yzYOGzHQj7YF9c0kKmOHeiDTKpCZxEDty54yhjRS4KazWNom0dbo9ueQQRLgouxfxzmTugA3ID1U5guE7MBvFZpk7eHjSOjwEGLXgzg4xLtGYuFzHPfFCMUC+ZiSTQPh+WPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=l1NZndhc; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1729521765; c=relaxed/simple;
+	bh=0jMj2R4y40mpfGAjo7u60beUyCLYy3jUUb5fV/e/Fzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qPkxy8dk6ISHnTVPKLtkMGyoRJuIA80i7j/CdLgMxQC0PO/CMxg1hy5K/TUj5F9b7lQmYxIlLcx8a28DGrDxfwxM27vZsga8e8tjYiVFyQsBkfbfQ71qE+51zlx4JqBnS0yN9ttUYZsBnUPIqrabGY87WvhBB+VQrl4rBiKXaSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PBpZQzlk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="l1NZndhc"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C1E1660003;
-	Mon, 21 Oct 2024 14:41:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729521698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HWKKfevfqq3xTQx/qm5VhEu0R1W8s/2FfrkGVfXaCqU=;
-	b=l1NZndhcmmiFNAfOeaopATuWCDhot1mJIYIJNqbwnUDhfcG+fSZwrPO3K+LKKi1VuAKCva
-	F1XcD3cp8ikbu1KgiUyGHW3NhsuAi/a7L7vK5Ii0AMJYpEeBAWcMoNMTqSaLIkc3cDw1Vq
-	o0ochi2t0hSFRAjfr531mBmOSYHH+I//wjmQNp3rDbDDpRiloKt/kLQZrYqZsAx1O886Wk
-	L12XTFZMg0eHP4GXV8BWpe9YcF3nU1b+1pHbADu88IvXV/MWaEMs2xv0tF+LIvzb/vA3T6
-	j0JE4uEgGi9icat4PhlAuxS+BDSDzDLoJEw71RmrQusyBk00/i3tW52e7My8ag==
-Date: Mon, 21 Oct 2024 16:41:35 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Simon Horman <horms@kernel.org>, Lee Jones
- <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Derek Kiernan
- <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Herve Codina
- <herve.codina@bootlin.com>, Bjorn Helgaas <bhelgaas@google.com>, Philipp
- Zabel <p.zabel@pengutronix.de>, Lars Povlsen <lars.povlsen@microchip.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon
- <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Saravana Kannan <saravanak@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, Andrew
- Lunn <andrew@lunn.ch>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Allan
- Nielsen <allan.nielsen@microchip.com>, Luca Ceresoli
- <luca.ceresoli@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v10 0/6] Add support for the LAN966x PCI device using a
- DT overlay
-Message-ID: <20241021164135.494c8ff6@bootlin.com>
-In-Reply-To: <20241014124636.24221-1-herve.codina@bootlin.com>
-References: <20241014124636.24221-1-herve.codina@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PBpZQzlk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729521764; x=1761057764;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0jMj2R4y40mpfGAjo7u60beUyCLYy3jUUb5fV/e/Fzk=;
+  b=PBpZQzlkFamdcFK0jN/cQSX4xr+mrWslthsCB542urcIAdPiP3JAxeTP
+   jdqdHshfnovTrkp6iSOhRgnnGWpaRjQKR5gk69V8HSH7Acv6SWRx+JSwC
+   MouTlw7JSoCDBWm8Ns/1fePWdDajc+G5ukw2pzc8Bqoux2zHK2k7wWdqS
+   Ue6GfQtVO40p42nH+Do5WWzdxMjBZCnt5qtMkpvHErAwVub9gJimBuz1O
+   78yK3y1c/3tCDAjrn4Jptr/gHvfBCJ3FDzA4oxGYun1/vSwyTa1bV4+u7
+   5KNDD43DYfTxgd6LDQucg2eHQ5g15AZjaYyE/kNls7vCeUJ1wzkNINo8H
+   g==;
+X-CSE-ConnectionGUID: fzzsJkHURk622E/of4p0Qg==
+X-CSE-MsgGUID: pNX83EKKQBm1TUqdKCkflw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28783934"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28783934"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 07:42:43 -0700
+X-CSE-ConnectionGUID: AvKQVR9DQl+Im2hIxrmhUA==
+X-CSE-MsgGUID: JjScTn6gS5W6+X80IAoysg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; 
+   d="scan'208";a="79183353"
+Received: from pkwapuli-mobl1.ger.corp.intel.com (HELO vbox-pkwap.ger.corp.intel.com) ([10.246.19.66])
+  by fmviesa007.fm.intel.com with ESMTP; 21 Oct 2024 07:42:42 -0700
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Subject: [PATCH iwl-next v2 0/2] ixgbevf: Add support for Intel(R) E610 device
+Date: Mon, 21 Oct 2024 16:40:27 +0200
+Message-ID: <20241021144027.5369-1-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Greg, Philip, Maintainers,
+Add support for Intel(R) E610 Series of network devices. The E610 is
+based on X550 but adds firmware managed link, enhanced security
+capabilities and support for updated server manageability.
 
-On Mon, 14 Oct 2024 14:46:29 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
+Piotr Kwapulinski (2):
+  PCI: Add PCI_VDEVICE_SUB helper macro
+  ixgbevf: Add support for Intel(R) E610 device
 
-> Hi,
-> 
-> This series adds support for the LAN966x chip when used as a PCI
-> device.
-> 
-...
-
-All patches have received an 'Acked-by' and I didn't receive any
-feedback on this v10.
-
-Is there anything that blocks the whole series merge?
-
-Let me know if I need to do something else to have the series applied.
-
-Best regards,
-Hervé
+ drivers/net/ethernet/intel/ixgbevf/defines.h      |  5 ++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf.h      |  6 +++++-
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 12 ++++++++++--
+ drivers/net/ethernet/intel/ixgbevf/vf.c           | 12 +++++++++++-
+ drivers/net/ethernet/intel/ixgbevf/vf.h           |  4 +++-
+ include/linux/pci.h                               | 14 ++++++++++++++
+ 6 files changed, 47 insertions(+), 6 deletions(-)
 
 -- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+v1 -> v2
+  allow specifying the subvendor ("Subsystem Vendor ID" in the spec) in
+  the PCI_VDEVICE_SUB macro
+
+2.43.0
+
