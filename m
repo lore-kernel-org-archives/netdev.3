@@ -1,135 +1,275 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2103.outbound.protection.partner.outlook.cn [139.219.146.103])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270E2BA27;
-	Mon, 21 Oct 2024 06:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.103
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729491740; cv=fail; b=mvPbEbdgwWhcchYSg1z3wBUjrW1nd9g3RwWizNaqxe1uS5YE0X9VhaATwlVtcC1NqdR+HyOpGWr1g8OmTbQv0LvdWKEnz+8XOXMYmJ7GuGPf+1zA8QdBFgCKbqhiC17sN5thKKd4ShxJB4bxBFbBjsKmX6ULIdMhBzFZoH7T6Ms=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729491740; c=relaxed/simple;
-	bh=nrhVvbhQ4Cid68XoDalOXADlRjCYvC9AZABxfoQeVgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NKwKQbeUjAh6HbOs+stpFc9vUZAAp2UuAhUe7RQe3AxbBmHvwVZSx8NbR4ENW+7zrQYPh+2dW6NmCjji6cDAQOUZhHwLy5q8yLKm2+NgjcO4AjRdW8I/S+ajyQssR28i94u/v0MoFAy00UnkCd1Y/X5v/C5Cf690sn0eWEk7LF8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y2Nxcd/QBKuschKDf7fUmp3agsH8y9fmhcGS8yebA9kuYzGmkyXlnrBDuTAbg+XBbEmNE0h96hF03e54gIzzIqR2J7vd+i2QagK928GJH6A8kDSzrtZ3JBIyeTxuL3qHIjdXNIGMfpkUDnFahyNx21QcHry6CXiEPvYmXO5HcbohHs1mAUy3yFUSRioX7eEogKAjwUQWJkKAQMu2kUf/Zc4Rh772v5G2HDp4wDd1DbTM/VKFgJCDiS/yZnpBMeX/sHzKdrdEp1VCfKPB+y+lbYJzJISiHTfwfZOut6+M4xNJJA+eSmQgM4a4yDmRVdV/l9KuiGpPET/fw3490V5/1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xAnb4E5HUG15fezuefi26RFzij2OA0OrVaxlJZDy8iw=;
- b=E/KoaWItpjG/Ke3beTQNgaDs7wEE7vVKOD0j+zJGIDIkpJxiKXxPpX2kiaMk0DTR4PVeiXhnafjgf/yphcHZJVFuipYAE/GnA+bhXjopD1pY1prrIYiuGdKguch+i0ci5ZfWZVAzhR2iLelazT9iJO0nxt7Oc3+S/idCbNbWShvrxt/W0xqfqjvinXlI9pobrLMb5AQHbVgGmCTusxGIGdhOOrYx0TcqvhqDB10M28uMZZoheyfg13RqEIfRMN5xq2tW6hz3RINct2fScj9iuHt2tPKUwa7cLn9fb54QOdRMrQFvq4jHkWu5F7i15FUP4ZUiVjHLaHScmZuZYswiuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12) by ZQZPR01MB0996.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:a::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.20; Mon, 21 Oct
- 2024 05:49:10 +0000
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- ([fe80::617c:34a2:c5bf:8095]) by
- ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::617c:34a2:c5bf:8095%4])
- with mapi id 15.20.8069.016; Mon, 21 Oct 2024 05:49:10 +0000
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lftan.linux@gmail.com,
-	leyfoon.tan@starfivetech.com
-Subject: [PATCH net-next, v1 0/3] net: stmmac: dwmac4: Fixes bugs in dwmac4
-Date: Mon, 21 Oct 2024 13:48:45 +0800
-Message-ID: <20241021054849.1801838-1-leyfoon.tan@starfivetech.com>
-X-Mailer: git-send-email 2.46.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: NT0PR01CA0028.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:c::15) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851C11DF732
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 06:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729493277; cv=none; b=cLTO0RRa69OohVy0tSUkSSg6LkZaDCLNs3q4KCVECMcKzYl2CFEtWNKyhH0+KD84nUdoQ9SdHiOqAj7oO1RSqFr1KbkRpMGdmy4tg9ktGkywujFBLaUNaUySKNXFGzVK6vik1mNCmmENeUSt8QYRC8IWqsk4JLh/I1HuAVdtRVI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729493277; c=relaxed/simple;
+	bh=teyMIfpNNQjSsb5MbXyVqzP1VIlH5kdTfogRdrP4p8U=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=X6P+QYHeUQL0vS2YcVsvbYL79H0PbLueski8yWVjSySOY7rzi9mHi2bFoQ2RvvyFDC7/nVeLdSR0MH0q3vh8J8o+IlAFpVINjpIo/5qZvxwyIP0Lc/qL72yxJQMSVMR1aorOfS73t01bTOL+3ma2mJHwVc0SufCjZlKRm/NNDcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H6yyz7ZQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H6yyz7ZQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729493274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=teyMIfpNNQjSsb5MbXyVqzP1VIlH5kdTfogRdrP4p8U=;
+	b=H6yyz7ZQHfOJWxDQybm0UBGe0/oNi9DhJrT6zT7tpjtTexTcwOt0JzQY8Amy4NLVvnVbjA
+	Xi2DatgmBicfvR3VXskiKwJhoV3hy3sOnt5UHDm3IIVCiL+6grEtWOk5WBE54nubgIXcXi
+	QBWW19Wvy8uPGrR8ZoWXTz7SD4722Ao=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-G-rxa3oyPEaXDkWRozuwRw-1; Mon, 21 Oct 2024 02:47:50 -0400
+X-MC-Unique: G-rxa3oyPEaXDkWRozuwRw-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso28952895e9.1
+        for <netdev@vger.kernel.org>; Sun, 20 Oct 2024 23:47:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729493269; x=1730098069;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=teyMIfpNNQjSsb5MbXyVqzP1VIlH5kdTfogRdrP4p8U=;
+        b=P7tZy3OIcnDyrnWVaRulhquJghTp50QmB2cWWiZrYWpct4j0A0WklcFoywHupCknwM
+         xOTckEHrWhEuw0ESUfJ/KAaBXsW7bPnzT308048tQqUjUIYY/Db2BUm2FZ+egq+5DJOg
+         cRHqd/joYuh/GVHFYsMNLt2JHba7doQltETgTUttBjnrepsddft39OCC1UfMgZOKBh2x
+         eSQ36yzhMz9AJtx7meXQa8u+Ek+sXBjatO8L51pNaNj6/LhrqF5MtJvkvJSHuqAQWyFi
+         L75vPOlne/T8KJJU/rmpgWIzdMcFvIEpmIZO3OeuPjDkhxZlGbQYfMQNs/9UB8v9RR/7
+         r3OA==
+X-Forwarded-Encrypted: i=1; AJvYcCXADIrctpYBoWgMpWy4huNmHYdDyTGV4f2SZUaS5wbJjrI0H9jTqcGBjthB+ykko8CijJYulXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFYZDGnP8UrYqB0bwqt+NjkYNBR2B2/yTRg9WE2S0eUr9Iwbox
+	oxDhG5Nz4j46neRryRjVBNMm/+xGpb3NZC6WsoExpnAYho5uF406Zr70SqUw2yQkeF3KYv168sk
+	XED/dN8pKkadzVMNG0JMjUW/WIJx4iyR9tOW29TSOpAw+4Q6ufQkarw==
+X-Received: by 2002:a05:600c:3591:b0:431:4c14:abf4 with SMTP id 5b1f17b1804b1-4316163a1b2mr84025925e9.14.1729493269436;
+        Sun, 20 Oct 2024 23:47:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVZgn1S+/IbVUHVqZogTbkz5rvgpgAowACslYYkYZ99T9pAyCEi5NExPZQP+nHcWcbmjh9Bw==
+X-Received: by 2002:a05:600c:3591:b0:431:4c14:abf4 with SMTP id 5b1f17b1804b1-4316163a1b2mr84025225e9.14.1729493268971;
+        Sun, 20 Oct 2024 23:47:48 -0700 (PDT)
+Received: from eisenberg.fritz.box (200116b82d449800aee93296d73e68da.dip.versatel-1u1.de. [2001:16b8:2d44:9800:aee9:3296:d73e:68da])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f570f89sm45821675e9.7.2024.10.20.23.47.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Oct 2024 23:47:48 -0700 (PDT)
+Message-ID: <1f90d885f0e8dc2e8d9b2b7e88700b4cdb19d84c.camel@redhat.com>
+Subject: Re: [PATCH 13/13] PCI: Deprecate pci_intx(), pcim_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Alex Williamson
+ <alex.williamson@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, Niklas
+ Cassel <cassel@kernel.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj
+ Natikar <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,
+ Benjamin Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
+ <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,  Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>,  Mario Limonciello
+ <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>,  Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>,  Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>,  Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
+ <yi.l.liu@intel.com>, Christian Brauner <brauner@kernel.org>, Ankit Agrawal
+ <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette Chatre
+ <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Mon, 21 Oct 2024 08:47:46 +0200
+In-Reply-To: <20241018234537.GA770692@bhelgaas>
+References: <20241018234537.GA770692@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB0996:EE_
-X-MS-Office365-Filtering-Correlation-Id: cca46268-b624-4387-020f-08dcf19415ff
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|366016|41320700013|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	wW3mFeqOVrKd0waebQlb9TTUP1/4hbnUwqJ6nnzoG6OEjHTkICuWvbuGe9RBIL7QIhaqWSb4Og8CDXhE92MfyvwZkEXoYR7R7gUoQZ6fi+A2JjuE3h1SN0n8zhJInywBzKomJS/M4pPikQ4Kwb/0HZUuTW/ANCK/Fysjh7Vn42+F5vpVn+1hn1976TAl1ifahbNa/SNlzeBSTTSC2QqI37Wj5WPdE3HAp+UfaWTZLKHH9yKpfxEPnzekXP43dnhcsX0N0eFpSTZQ+Zuo5TYVh/1t8/tCTYp+n6DSFRiZssipPLk3u7w3jXiGtFOaqNmPYAmiLIqsvsEHcENdH09VPE+TbPj/MVkpZUjLQYt7KpUj94Z7pvGzzxAVZvQin4DYN5vGtoqfNwr2WHNu+mDyr2hQnGTt/MoD7sY66xPDqF3lGYfPBvS1HK1biktuwpOgNwbeMI4I0aeOm0WWZb4s7FMBrCNN0zmzHoi2Myb3U6wqyNuUcL2g9YHN8Q3BwEzB5fZ4UYMik8QR7qYwj3nalzexaGrEw9fXQGlegr/VrGk4XiYVBKqRQoBKN216CypN29xaZVf0aNJYs1HwKzbiCGNRdtGT4INQ7u4hr5XOqz9JwJ66RhOmOB+prW+Q6waJ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(41320700013)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cGgClt8UGKAfCDugPH4VPFAiXYTaAsVqyl003yUxTu74uV40h53XNOneTm6w?=
- =?us-ascii?Q?H96hggYdn4b3WztEgtJZ10DU4M5B1TLbUjQbG4cpZzIUMnkqSKs0rh8oz4o1?=
- =?us-ascii?Q?/1Ztwn7BK5Fb+BXE+hdgZadgIXNrokMXZgtFPhO7epevx1VSccz4J8KFMtQY?=
- =?us-ascii?Q?KVB17xR12RCpzNkhHvOrT9b1ARUm6io/bYfs4uXfulHQ6/9aLb3Q4lmz13vf?=
- =?us-ascii?Q?d0xatSl9V9UdVsu7FuxWaIVGsQV2ZHBnh5DqcEcW1t39X1IVaccaeQD4A8jA?=
- =?us-ascii?Q?A4619G4g+Us6592g/c+D3GCHnN0TV03LIurF2e4pz5ZDtnT6aGD9hnV/F6mK?=
- =?us-ascii?Q?FWbWxN1MCE5kLHFpIX2XM5Pn6azRZTJljQvAN1kQXkRK9IsdgX5ufKfA77Ty?=
- =?us-ascii?Q?sVtLuiWLyc1JcmhZOmlDEJvXs8bv4B+EcwkXIYan8gphRCbvqMtuQ8NVgndy?=
- =?us-ascii?Q?5bkbNX1UllITVoC9FpymCUYqw9dfz0I/gvRR5hVD6B158ZCMXX6V7ifUZ2jh?=
- =?us-ascii?Q?wWYysCU4B1y7uRzWU7G/P8hrOaeZ432jkUU5W7AaZhUBzMqRXW4ZMqa/GzgT?=
- =?us-ascii?Q?U9lv/BEbD2FQ7EQupVELLyXF+mVdddPCSbKI5fBd1S9L1wYgV0zfcXh4+1as?=
- =?us-ascii?Q?FfikR8vfq2egDvKF2bSNjkPqZ1gokaMh8q2VGlxyIl/hUgayyzC2mfzLbIJf?=
- =?us-ascii?Q?Tt+RjNd5KFAAnkCLhOoawfYUScPszwwit7n7aPidRtOFaMOUeCrDbTdnOnvv?=
- =?us-ascii?Q?Bzp+CQGaKvM7r/LUksqxznZV6CHxah/DemkhX8RL5BwA2HPfKSyYXlH1+73x?=
- =?us-ascii?Q?+4MzSPp3JCY6ah57+NyyNz0e3Ng33OnlFxg+SYdTfLoZ1XsB63sMHGJSmC87?=
- =?us-ascii?Q?RUM8gh9rkCUEbyLitcOil4tC7PTLZeWY2c9kT9dnOCPAgaBQkrvXDAlq7aXx?=
- =?us-ascii?Q?ZcZpHEMDXmgt8/KRVd2jUB40mFaC322gbVQNhFFfXpJw++iZwVirLghk1y67?=
- =?us-ascii?Q?ulR60KAwkuX0zQMy+vjuoNcYw7y7hz9lQ1nFg/DVOIFc86VOnZpsH9y9DzEv?=
- =?us-ascii?Q?48Vwf485/QkcY2U6dTAaXW+L1FmTCVdv0Z7j+cg+sx3+ZLPOkM/7RsCN7ErG?=
- =?us-ascii?Q?dGfKviXaQiAQ4eMD9gb04ns8vZRKCTZw36g+2lPri+x0FAIffQYQ0W1mbu0j?=
- =?us-ascii?Q?m6l1SX2+pF1OZW6apLqqRa/TZrvNN1pObMkmSnsH4vhnQdkih9wFQcQRNufK?=
- =?us-ascii?Q?5kuR21ucHCsg1j2fDDGuYVHlmROAsSqV7k6wagF1eWxWX/1q+xrC4s9dsOua?=
- =?us-ascii?Q?ru86GDMqBLLofTV5zlUjXu8Rp80meDYWtIXSo3oX5Tk1Pcj4AysYNtUDW6HB?=
- =?us-ascii?Q?sd56Z9QDMZBPM48HK7Ut3HiTpSJAv3Ie3f4C+27jWC/a4N/Z1mPiOBvofxok?=
- =?us-ascii?Q?nrq/a+FDx6WO5SYQAibPiGcG34fM+suUcdGX9QfP6ocZMD4ts8a1O+MyGsEd?=
- =?us-ascii?Q?hdepMBpgMH0y79haTsZXkRQsNWf0JOnLCZSZNMe5+w3H6LuJNZ9ZBc1NkHqd?=
- =?us-ascii?Q?DljagyIpuAMpkQK4xtdarPLrtKiF1HVh4jxWYw7r5RFrb82k7EhLAuJgcKEQ?=
- =?us-ascii?Q?6g=3D=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cca46268-b624-4387-020f-08dcf19415ff
-X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 05:49:10.8263
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tKqYHPpXYDT83HkK5aNCh4H/TbofP4E/7V9yydML8ledUxUWvckpCvbY5CSH9cl+Bs9eUOLAY/DKrspMJKVFZ/ysVPJz1LioSnrMw39tDk0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB0996
 
-This patch series fixes the bugs in the dwmac4 drivers.
+On Fri, 2024-10-18 at 18:45 -0500, Bjorn Helgaas wrote:
+> On Wed, Oct 16, 2024 at 10:53:16AM +0200, Philipp Stanner wrote:
+> > On Wed, 2024-10-16 at 10:43 +0200, Heiner Kallweit wrote:
+> > > On 16.10.2024 08:57, Philipp Stanner wrote:
+> > > > On Tue, 2024-10-15 at 13:53 -0600, Alex Williamson wrote:
+> > > > > On Tue, 15 Oct 2024 20:51:23 +0200
+> > > > > Philipp Stanner <pstanner@redhat.com> wrote:
+> > > > >=20
+> > > > > > pci_intx() and its managed counterpart pcim_intx() only
+> > > > > > exist
+> > > > > > for
+> > > > > > older
+> > > > > > drivers which have not been ported yet for various reasons.
+> > > > > > Future
+> > > > > > drivers should preferably use pci_alloc_irq_vectors().
+> > > > > >=20
+> > > > > > Mark pci_intx() and pcim_intx() as deprecated and encourage
+> > > > > > usage
+> > > > > > of
+> > > > > > pci_alloc_irq_vectors() in its place.
+> > > > >=20
+> > > > > I don't really understand this.=C2=A0 As we've discussed
+> > > > > previously
+> > > > > pci_alloc_irq_vectors() is, unsurprisingly, for allocating
+> > > > > PCI
+> > > > > IRQ
+> > > > > vectors while pci_intx() is for manipulating the INTx disable
+> > > > > bit
+> > > > > on
+> > > > > PCI devices.=C2=A0 The latter is a generic mechanism for
+> > > > > preventing
+> > > > > PCI
+> > > > > devices from generating INTx, regardless of whether there's a
+> > > > > vector
+> > > > > allocated for it.=C2=A0 How does the former replace the latter an=
+d
+> > > > > why
+> > > > > do
+> > > > > we
+> > > > > feel the need to deprecate the latter?
+> > > > >=20
+> > > > > It feels like this fits some narrow narrative and makes all
+> > > > > users
+> > > > > of
+> > > > > these now deprecated functions second class citizens.=C2=A0 Why?=
+=C2=A0
+> > > > > At
+> > > > > it's
+> > > > > root these are simply providing mask and set or mask and
+> > > > > clear
+> > > > > register
+> > > > > bit operations.=C2=A0 Thanks,
+> > > >=20
+> > > > I got the feeling from the RFC discussion that that was
+> > > > basically
+> > > > the
+> > > > consensus: people should use pci_alloc_irq_vectors(). Or did I
+> > > > misunderstand Andy and Heiner?
+> > > >=20
+> > > I think there are two different use cases for pci_intx().
+> > > At first there are several drivers where the direct usage of
+> > > pci_intx()
+> > > can be eliminated by switching to the pci_alloc_irq_vectors()
+> > > API.
+> > >=20
+> > > And then there's usage of pci_intx() in
+> > > drivers/vfio/pci/vfio_pci_intrs.c
+> > > drivers/xen/xen-pciback/conf_space_header.c
+> > > There we have to keep the (AFAICS unmanaged) pci_intx() calls.
+> >=20
+> > There is also the usage within PCI itself, in MSI. Patch =E2=84=968 tou=
+ches
+> > that.
+> >=20
+> > It's why I think this series should land before anyone should port
+> > direct pci_intx() users to the irq vectors function, because the
+> > latter
+> > also uses pci_intx() and its own devres, which sounds explosive to
+> > me.
+> >=20
+> > > > I'm perfectly happy with dropping this patch and continue
+> > > > offering
+> > > > pci{m}_intx() to users, since after removing that hybrid
+> > > > hazzard I
+> > > > don't see any harm in them anymore.
+>=20
+> So is the bottom line that we should drop *this* patch and apply the
+> rest of the series?
 
-Based on the feedback in [1], split the patch series into net and net-next,
-and resubmit these three patches to net-next.
+Yes Sir, that's the idea
 
-[1] https://patchwork.kernel.org/project/netdevbpf/cover/20241016031832.3701260-1-leyfoon.tan@starfivetech.com/
+Regards,
+P.
 
-Ley Foon Tan (3):
-  net: stmmac: dwmac4: Fix MTL_OP_MODE_RTC mask and shift macros
-  net: stmmac: dwmac4: Fix the MTL_OP_MODE_*_MASK operation
-  net: stmmac: dwmac4: Receive Watchdog Timeout is not in abnormal
-    interrupt summary
-
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h     | 4 ++--
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 4 ++--
- drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c | 6 ++++--
- 3 files changed, 8 insertions(+), 6 deletions(-)
-
--- 
-2.34.1
+>=20
+> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > > ---
+> > > > > > =C2=A0drivers/pci/devres.c | 5 ++++-
+> > > > > > =C2=A0drivers/pci/pci.c=C2=A0=C2=A0=C2=A0 | 5 ++++-
+> > > > > > =C2=A02 files changed, 8 insertions(+), 2 deletions(-)
+> > > > > >=20
+> > > > > > diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+> > > > > > index 6f8f712fe34e..4c76fc063104 100644
+> > > > > > --- a/drivers/pci/devres.c
+> > > > > > +++ b/drivers/pci/devres.c
+> > > > > > @@ -435,7 +435,7 @@ static struct pcim_intx_devres
+> > > > > > *get_or_create_intx_devres(struct device *dev)
+> > > > > > =C2=A0}
+> > > > > > =C2=A0
+> > > > > > =C2=A0/**
+> > > > > > - * pcim_intx - managed pci_intx()
+> > > > > > + * pcim_intx - managed pci_intx() (DEPRECATED)
+> > > > > > =C2=A0 * @pdev: the PCI device to operate on
+> > > > > > =C2=A0 * @enable: boolean: whether to enable or disable PCI INT=
+x
+> > > > > > =C2=A0 *
+> > > > > > @@ -443,6 +443,9 @@ static struct pcim_intx_devres
+> > > > > > *get_or_create_intx_devres(struct device *dev)
+> > > > > > =C2=A0 *
+> > > > > > =C2=A0 * Enable/disable PCI INTx for device @pdev.
+> > > > > > =C2=A0 * Restore the original state on driver detach.
+> > > > > > + *
+> > > > > > + * This function is DEPRECATED. Do not use it in new code.
+> > > > > > + * Use pci_alloc_irq_vectors() instead (there is no
+> > > > > > managed
+> > > > > > version, currently).
+> > > > > > =C2=A0 */
+> > > > > > =C2=A0int pcim_intx(struct pci_dev *pdev, int enable)
+> > > > > > =C2=A0{
+> > > > > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > > > > > index 7ce1d0e3a1d5..dc69e23b8982 100644
+> > > > > > --- a/drivers/pci/pci.c
+> > > > > > +++ b/drivers/pci/pci.c
+> > > > > > @@ -4477,11 +4477,14 @@ void pci_disable_parity(struct
+> > > > > > pci_dev
+> > > > > > *dev)
+> > > > > > =C2=A0}
+> > > > > > =C2=A0
+> > > > > > =C2=A0/**
+> > > > > > - * pci_intx - enables/disables PCI INTx for device dev
+> > > > > > + * pci_intx - enables/disables PCI INTx for device dev
+> > > > > > (DEPRECATED)
+> > > > > > =C2=A0 * @pdev: the PCI device to operate on
+> > > > > > =C2=A0 * @enable: boolean: whether to enable or disable PCI INT=
+x
+> > > > > > =C2=A0 *
+> > > > > > =C2=A0 * Enables/disables PCI INTx for device @pdev
+> > > > > > + *
+> > > > > > + * This function is DEPRECATED. Do not use it in new code.
+> > > > > > + * Use pci_alloc_irq_vectors() instead.
+> > > > > > =C2=A0 */
+> > > > > > =C2=A0void pci_intx(struct pci_dev *pdev, int enable)
+> > > > > > =C2=A0{
+> > > > >=20
+> > > >=20
+> > > >=20
+> > >=20
+> >=20
+>=20
 
