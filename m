@@ -1,245 +1,259 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2056.outbound.protection.outlook.com [40.107.244.56])
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891391974F4
-	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 10:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729505039; cv=fail; b=YkiLF1uORefFMonkYlY0IEqu/hiOqG1PGvX50LZc3sbfxExcllMgAtTFoLgIVbV01+lJs77mRQ2ZrXPAB/EnuKcwQibgDkYOdskIB+JinCZlS3LGqKsH1w8GTNfFa1Xq1UkuhiI2FXU5NS1mLfiqg94t/Qy0BYsYGkfqzYZlYe8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729505039; c=relaxed/simple;
-	bh=tmsrejfNIThpHrw34LS1rBqlJF+324HeHoWvLb7w9a0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RbOUHJDt+BVp26cq90APN9dRP0bQ7NW2pvzTmp2EFde0C6f2SJofEXtdEoiZ5s2xdCbj/2ce7j9qbt9VZo3xdqgTMmagEelFuGj4gaRaT+PjD+kRv8mSRMWPFVmrElZWOXZ64Baloi8+9UKH+k/Cj6SNW7xtKGGjr49TAjESRu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kxR3QQK9; arc=fail smtp.client-ip=40.107.244.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8BE1E3DFC
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 10:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729505090; cv=none; b=qPquLQmZX+qFQmJzF0X2jI16lTO//IOpthBU6t1iRgiP3oe+LBNCP4yJJmx0zEaq1OBLctmU1Bpjrk7e9CMhrZpIQH45M67pSWftVq33pwUijwgMrx6te+tmzt8DKRMrKegdvVgWbx4CVQsSt29dwiEU5Q9bfAt1M/y7Z6Tr2q4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729505090; c=relaxed/simple;
+	bh=EVL4wUmYrTJEyHGsQ/62BPsBtlNsOUVSRfFQ61ReZ6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G68fEWQee7oVSBRPGkgbdznL/510FoSe+Fzyojqcm3k1Y2Kfg6A8wi0yATI8k3ppz8ZY21CjoiIMJWHRe/liHTnnrX6B1ex2PtHmd4PJAqc7qP4GNFexkdhPAra0rHEfCvgbqrGULvdYi/E4/FIk71ywMESKs/p7BtIMcOrqch0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=G4O7qF5J; arc=none smtp.client-ip=45.157.188.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kxR3QQK9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QoIJ7Ajh196otKexeOlB9zZL2fGB4PJusBHw1VhLb2TbjDOCvF8yDLmNR3jCb0yaKbte5/cMLD6kkjeH+wDB/axrnqvyguIMhZpt1ab7C7PMHuV7hSxIKxc3NUIYczhdKD4GNGF7kVH15wZ/pF+XhvSm5MGVnv2a+28MCiX1ELRnama/XG17HGIv3rz4qfS6FWFXstEdVm9gl4Jgp2TfDjWijsCCVH3d9Ip+cwA/Jx+fFPbJPXsMbGwbTsonppUN5SIe9BLlQ5nMSAmp6FLP6uMvh5dazA9nR6aLA35LdHBQBn/M4jUwERrbjkIF06YGVtBKQ+Y3ci/3PhBjfyJY8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e0HOZwVp7txxiSw8ZezaP1JeC5uNA3E98O/8tkCBihI=;
- b=GSCD7p2xafudc768jAVdzTeCviiC7lS1KjXVtubpIsFXAbA2yhfPr9hCpLv4bEY9rfZ32cuGz00W/eruD13vBbgTT73G03hBazBbYL5EZ0/b8eZKfTErYD6Er8jrxGEEcDCAJmFoPRWTdG/f411tm3TOlEBwCZY1KSP882FtJ9xHJTvcGnpn0iK+Mc82VzR6FbHdPuopMqditQQgohsCz1vfEo4IwjAvyNN3fQv/l8m474EfditGWBS+cfRmj2YGGOHQIl6NVJBN1GF37l6mPxiZGEruvlB245v9Wlq9+ggwDmt4LqECCoIS9l+wWKS6dcfQEakdQKtry3IHsLI/tQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e0HOZwVp7txxiSw8ZezaP1JeC5uNA3E98O/8tkCBihI=;
- b=kxR3QQK9XIZ6gWh8H9BTF3fOvm2t/wVtS1O9EeZHha/xrHiX8VwVmECX5PPO/0h3AFR3NpqF43WZgdHKxt51bdCYuPKXKaHbEOd3/EBN7WAcpEWwXPCMOcHCGZ3ibsWv4wPK078Y9ONoPTXQ63GaZIOXgYeLFYVoLz0rDjSKLYbq3SjDbo6DITf72d1uzn2MqyqKS7/310a8+o8jwAfZFPcPd4nKsTclkegR+sHJU0B+TXZCLtnuW9hfuaQ9ERRGw6CdYcVMjQ1kJC3H9FzJFKdC+dqsSEWDfyMHt3trmthqv2LUWrtGCTnIc2FUFkiLzDo4PM6wpNyCtZJiz35K5Q==
-Received: from SN7PR18CA0007.namprd18.prod.outlook.com (2603:10b6:806:f3::27)
- by SJ2PR12MB8832.namprd12.prod.outlook.com (2603:10b6:a03:4d0::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.27; Mon, 21 Oct
- 2024 10:03:54 +0000
-Received: from SA2PEPF00001505.namprd04.prod.outlook.com
- (2603:10b6:806:f3:cafe::2a) by SN7PR18CA0007.outlook.office365.com
- (2603:10b6:806:f3::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28 via Frontend
- Transport; Mon, 21 Oct 2024 10:03:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SA2PEPF00001505.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Mon, 21 Oct 2024 10:03:53 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 21 Oct
- 2024 03:03:45 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 21 Oct 2024 03:03:44 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 21 Oct 2024 03:03:41 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Sabrina
- Dubroca" <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
-	<gal@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Jianbo Liu
-	<jianbol@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>, Chris Mi
-	<cmi@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net V2] macsec: Fix use-after-free while sending the offloading packet
-Date: Mon, 21 Oct 2024 13:03:09 +0300
-Message-ID: <20241021100309.234125-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="G4O7qF5J"
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4XX9jH57xszXs9;
+	Mon, 21 Oct 2024 11:57:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1729504675;
+	bh=oQqDcNvi3dV/GKQZTqzoU9Gy+j6RUcYEDosffosB1cE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G4O7qF5Jlq8MVI5T7TPwo0OXw/iZ+oNwBlrtKbywh/q/ICD+2YW2GyClZm/L4XJFD
+	 JirGE6PckwP2NdFR8Wh4hcrBRrMwUqn2ESk2UpSyHYxxB2zcRTl6D1AmdJR5j4L5Zm
+	 4GNjbCAHym9OHgf4mKwFXzNhtpdBpc3CyQhu/4Qk=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4XX9jG0KMHzcSf;
+	Mon, 21 Oct 2024 11:57:53 +0200 (CEST)
+Date: Mon, 21 Oct 2024 11:57:53 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Matthieu Buffet <matthieu@buffet.re>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>, Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: Re: [RFC PATCH v1 4/7] landlock: Add UDP send+recv access control
+Message-ID: <20241021.Abohbuph8eet@digikod.net>
+References: <20240916122230.114800-1-matthieu@buffet.re>
+ <20240916122230.114800-5-matthieu@buffet.re>
+ <20240921.ohCheQuoh1eu@digikod.net>
+ <3631edfd-7f41-4ff1-9f30-20dcaa17b726@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001505:EE_|SJ2PR12MB8832:EE_
-X-MS-Office365-Filtering-Correlation-Id: f70c120c-83d1-48fa-dcb1-08dcf1b7ab5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sNAIjDoIriawc1aZ2+Mkt1G298loOVVtHnn+XhpnhzhJ+xcg4ZRad0x7jgew?=
- =?us-ascii?Q?894tB3o+fZurMtR7fq/BE+BH9h+SZ10DLpTGiLvKsLR+npHbRu/xzIWbGgGr?=
- =?us-ascii?Q?4Fs1mwShZvvy7YbEkUnCwv0ePtPbuL4PCQtwK5OL/pEhOmY3gKnAv9k3NYES?=
- =?us-ascii?Q?cg2aMzwSV74GJfKr/MCY/LLZc3G0cWasdvoZQK9WIjPta47/ntAhz+uxxj09?=
- =?us-ascii?Q?CqN2CwfIKhHZWqPvGBEleopLZ25ArTNwZ/DRiKIqTS3AnuB2mxXw+Mm+jACv?=
- =?us-ascii?Q?udhXQCKE1aLbcR0kNNqQBmSQqQs0y8UFuNouF0742jFgjxEzPuAc4wbk77mw?=
- =?us-ascii?Q?PLBe588C5psEIcqWz5Z3D+lg7y1vAqCuVBTRkSZSmDYP+o/UDglGMwcbj3so?=
- =?us-ascii?Q?BueTaL/Aw0Y/Q5V5voagU5bGWHxvWteG9K+I0hHvXUJpd33dOqmuM6N0dvq1?=
- =?us-ascii?Q?fn14mE7qXIp18loRwIzYwS12z0buYdX9fDZiYfHDmrh8cSOQZV5luvP6YYiW?=
- =?us-ascii?Q?Nh5PRtsKL7ZLT6rai0JuVhPfyQMFK9Y9HKMG+vDD3bnGvWDA8PupHEsBvGlq?=
- =?us-ascii?Q?rUF/+wxSgOjFU72yNij0bjqYR7Vc+LuCDTAF2A4M6Z0CLk9TVlvXxdPwyfEz?=
- =?us-ascii?Q?PjdPLZXLKrtWtkpI9IrtPt5vsxklcN2YsfLp/ISmw38eFhgHt5sv1AdWaDSS?=
- =?us-ascii?Q?wOBDw4SunYcOAm3i80qBZ7ZF4GnR7M//X6ypj6In7qDW9Aldi5wB/7KJtRZS?=
- =?us-ascii?Q?09FBSClPKWYtstOdjM84bcGZDOdB+XMwPT50/dF+O7vzNnOWpqL3iBARGT4F?=
- =?us-ascii?Q?SOC+IhDIfV7VGvrHjIfKfS47o8bVnsflmcUEWebLfP/jwKaJlss08DkIuk/2?=
- =?us-ascii?Q?LKpY0+EW6FuuxzBcs7zy0ZZEd6NxvLAG8dVtM/1nqR94TS4qR6Zkg2C2Wmq3?=
- =?us-ascii?Q?a5RRiAccUzwmC6mximPY6kZ0+pNYSdt4Ruxpsj7OJvyFm1KQAiVyup1qs2rq?=
- =?us-ascii?Q?zp1Fnoo/5j8zEx1nuN4p+boWijpy0MqdMTWCV2DzLhuq4METTs8qFMFhOqT7?=
- =?us-ascii?Q?Ho22tsX3dWvun0msem0e803/6jAjq7o/ZFRJlvHnGCuPZ7G57vMPjf36I7mb?=
- =?us-ascii?Q?dOfHcOiKZ1WGi43YW1ouwwAQWPyWKGk2raIzLs4HTRPxybjQenjV/qM++yXc?=
- =?us-ascii?Q?LUvq6sUAg+HrsYpLtiEUHq7bkJR5t0gvoJ/x7dDbBnSmej8/O569MyalYCCh?=
- =?us-ascii?Q?+VI30B3r5S4UvEJg4S8WvlAYZKYa/FEI6NEME5cIP8Bro2qin9OXNtPjZYQO?=
- =?us-ascii?Q?79ElRJ6sxdI7f9A9MrDAdLRkey585S0NLIQBTGzZxgYgDSMEHhdj3miLbckA?=
- =?us-ascii?Q?TSCfsAVrX3Z6oBAdzXFPlIgQvW07eLi06Kaw/eV+1wrQX2nqXw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 10:03:53.4660
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f70c120c-83d1-48fa-dcb1-08dcf1b7ab5c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001505.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8832
+In-Reply-To: <3631edfd-7f41-4ff1-9f30-20dcaa17b726@buffet.re>
+X-Infomaniak-Routing: alpha
 
-From: Jianbo Liu <jianbol@nvidia.com>
+On Sat, Oct 19, 2024 at 02:47:48PM +0200, Matthieu Buffet wrote:
+> Hi Mickaël,
+> 
+> I've almost finished merging your review (thanks for all the feedback), with
+> the exception of this main point. Just making sure we agree on the
+> limitations before I merge this into a new version.
+> 
+> On 9/21/2024 12:23 PM, Mickaël Salaün wrote:
+> >> +	/*
+> >> +	 * If there is a more specific address in the message, it will take
+> >> +	 * precedence over any connect()ed address. Base our access check on
+> it.
+> >> +	 */
+> >> +	if (address) {
+> >> +		const bool in_udpv6_sendmsg =
+> >> +			(sock->sk->sk_prot == &udpv6_prot);
+> >> +
+> >> +		err = get_addr_port(address, msg->msg_namelen, in_udpv6_sendmsg,
+> >> +				    &port);
+> >> +		if (err != 0)
+> >> +			return err;
+> >> +
+> >> +		/*
+> >> +		 * In `udpv6_sendmsg`, AF_UNSPEC is interpreted as "no address".
+> >> +		 * In that case, the call above will succeed but without
+> >> +		 * returning a port.
+> >> +		 */
+> >> +		if (in_udpv6_sendmsg && address->sa_family == AF_UNSPEC)
+> >> +			address = NULL;
+> >> +	}
+> >> +
+> >> +	/*
+> >> +	 * Without a message-specific destination address, the socket must be
+> >> +	 * connect()ed to an address, base our access check on that one.
+> >> +	 */
+> >> +	if (!address) {
+> >
+> > If the address is not specified, I think we should just allow the
+> > request and let the network stack handle the rest.  The advantage of
+> > this approach would be that if the socket was previously allowed to be
+> > connected, the check is only done once and they will be almost no
+> > performance impact when calling sendto/write/recvfrom/read on this
+> > "connected" socket.
+> > [...]
+> > What about something like this (with the appropriate comments)?
+> >
+> > if (!address)
+> > 	return 0;
+> >
+> > if (address->sa_family == AF_UNSPEC && sock->sk->sk_prot ==
+> >     &udpv6_prot)
+> > 	return 0;
+> >
+> > err = get_addr_port(address, msg->msg_namelen, &port);
+> > if (err)
+> > 	return err;
+> >
+> > return check_access_port(dom, LANDLOCK_ACCESS_NET_SENDMSG_UDP, port);
+> 
+> If I understand correctly, you would like the semantics of
+> LANDLOCK_ACCESS_NET_CONNECT_UDP to be {connect(), and sendmsg() without
+> explicit address} and LANDLOCK_ACCESS_NET_SENDMSG_UDP to be {sendmsg() with
+> explicit address}.
 
-KASAN reports the following UAF. The metadata_dst, which is used to
-store the SCI value for macsec offload, is already freed by
-metadata_dst_free() in macsec_free_netdev(), while driver still use it
-for sending the packet.
+Not exactly, here is the rewording with my thinking:
+...the semantics of LANDLOCK_ACCESS_NET_CONNECT_UDP to be {connect()}
+and LANDLOCK_ACCESS_NET_SENDMSG_UDP to be {sendmsg() with explicit
+address}.
 
-To fix this issue, dst_release() is used instead to release
-metadata_dst. So it is not freed instantly in macsec_free_netdev() if
-still referenced by skb.
+sendmsg() without explicit address should always be allowed,
+whatever the Landlock policy (similarly as write(2) on a write-opened
+file descriptor).  In a nutshell, sendmsg(2) without explicit address
+should be handled the same as a write(2) call on a connected socket (I
+guess the kernel handles such action on connected datagram sockets the
+same as on connected stream sockets).
 
- BUG: KASAN: slab-use-after-free in mlx5e_xmit+0x1e8f/0x4190 [mlx5_core]
- Read of size 2 at addr ffff88813e42e038 by task kworker/7:2/714
- [...]
- Workqueue: mld mld_ifc_work
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x51/0x60
-  print_report+0xc1/0x600
-  kasan_report+0xab/0xe0
-  mlx5e_xmit+0x1e8f/0x4190 [mlx5_core]
-  dev_hard_start_xmit+0x120/0x530
-  sch_direct_xmit+0x149/0x11e0
-  __qdisc_run+0x3ad/0x1730
-  __dev_queue_xmit+0x1196/0x2ed0
-  vlan_dev_hard_start_xmit+0x32e/0x510 [8021q]
-  dev_hard_start_xmit+0x120/0x530
-  __dev_queue_xmit+0x14a7/0x2ed0
-  macsec_start_xmit+0x13e9/0x2340
-  dev_hard_start_xmit+0x120/0x530
-  __dev_queue_xmit+0x14a7/0x2ed0
-  ip6_finish_output2+0x923/0x1a70
-  ip6_finish_output+0x2d7/0x970
-  ip6_output+0x1ce/0x3a0
-  NF_HOOK.constprop.0+0x15f/0x190
-  mld_sendpack+0x59a/0xbd0
-  mld_ifc_work+0x48a/0xa80
-  process_one_work+0x5aa/0xe50
-  worker_thread+0x79c/0x1290
-  kthread+0x28f/0x350
-  ret_from_fork+0x2d/0x70
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
+I think it is more important to first have a simple model that
+enables developers to initialize a socket with connect(2) and then
+sandbox the process to only be able to use this socket to communicate
+with the configured peer, similar to what can be enforced with TCP
+sockets.
 
- Allocated by task 3922:
-  kasan_save_stack+0x20/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x77/0x90
-  __kmalloc_noprof+0x188/0x400
-  metadata_dst_alloc+0x1f/0x4e0
-  macsec_newlink+0x914/0x1410
-  __rtnl_newlink+0xe08/0x15b0
-  rtnl_newlink+0x5f/0x90
-  rtnetlink_rcv_msg+0x667/0xa80
-  netlink_rcv_skb+0x12c/0x360
-  netlink_unicast+0x551/0x770
-  netlink_sendmsg+0x72d/0xbd0
-  __sock_sendmsg+0xc5/0x190
-  ____sys_sendmsg+0x52e/0x6a0
-  ___sys_sendmsg+0xeb/0x170
-  __sys_sendmsg+0xb5/0x140
-  do_syscall_64+0x4c/0x100
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+sendmsg(2) can do two different thinks: (optionally) configure a
+peer/port and write data. recvmsg(2) only reads data.  We should first
+start by controlling exchange from/to peers, and maybe later controlling
+data flow.
 
- Freed by task 4011:
-  kasan_save_stack+0x20/0x40
-  kasan_save_track+0x10/0x30
-  kasan_save_free_info+0x37/0x50
-  poison_slab_object+0x10c/0x190
-  __kasan_slab_free+0x11/0x30
-  kfree+0xe0/0x290
-  macsec_free_netdev+0x3f/0x140
-  netdev_run_todo+0x450/0xc70
-  rtnetlink_rcv_msg+0x66f/0xa80
-  netlink_rcv_skb+0x12c/0x360
-  netlink_unicast+0x551/0x770
-  netlink_sendmsg+0x72d/0xbd0
-  __sock_sendmsg+0xc5/0x190
-  ____sys_sendmsg+0x52e/0x6a0
-  ___sys_sendmsg+0xeb/0x170
-  __sys_sendmsg+0xb5/0x140
-  do_syscall_64+0x4c/0x100
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+An alternative approach would be to not add a sendmsg specific access
+right but only LANDLOCK_ACCESS_NET_CONNECT_UDP because connect should
+be a superset of sendmsg.  This would make it impossible to specifically
+deny (shared) socket's configuration change though.  I think it's
+better to stick to the kernel semantic with 3 dedicated access rights,
+and it should make more sense for users too.  What do you think?
 
-Fixes: 0a28bfd4971f ("net/macsec: Add MACsec skb_metadata_dst Tx Data path support")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Chris Mi <cmi@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/macsec.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-V2:
-- Removed NULL check before call to dst_release().
+> This makes it impossible to allow a landlocked server to
+> connect() in order to receive traffic only from a specific client while at
+> the same time preventing it from sending traffic (that is, a receive-only
+> client-specific socket ala Cloudflare's "established-over-unconnected"[1]).
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 12d1b205f6d1..6223c1fa2f09 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -3816,8 +3816,7 @@ static void macsec_free_netdev(struct net_device *dev)
- {
- 	struct macsec_dev *macsec = macsec_priv(dev);
- 
--	if (macsec->secy.tx_sc.md_dst)
--		metadata_dst_free(macsec->secy.tx_sc.md_dst);
-+	dst_release(&macsec->secy.tx_sc.md_dst->dst);
- 	free_percpu(macsec->stats);
- 	free_percpu(macsec->secy.tx_sc.stats);
- 
--- 
-2.44.0
+My proposal would indeed makes this use case impossible to enforce only
+with the proposed access rights, and we would need to restrict write(2)
+too BTW.  However, I think it would make sense to add complementary
+access rights to restrict reading or writing to a socket.  I guess this
+semantic would be useful for non-UDP protocols too with
+LANDLOCK_ACCESS_NET_{READ,WRITE}_{TCP,UDP} access rights set at
+socket-creation time and stored in the socket object (instead of looking
+at a Landlock domain for each read/write call, similarly to the truncate
+and ioctl_dev access rights).  What do you think?
 
+I wonder what happens if we call recvmsg(2) on a newly created (and then
+unconfigured) socket.  Without prior call to bind(2) I would guess that
+the recvmsg(2) call fail but I'm not so sure with a datagram socket.  We
+should check that.
+
+> 
+> >> +	err = check_access_port(dom, LANDLOCK_ACCESS_NET_RECVMSG_UDP,
+> >> +				port_bigendian);
+> >> +	if (err != -EACCES)
+> >> +		return err;
+> >
+> > We should be able to follow the same policy for "connected" sockets.
+> 
+> Again if I understand correctly, to fully merge semantics of
+> LANDLOCK_ACCESS_NET_BIND_UDP and LANDLOCK_ACCESS_NET_RECVMSG_UDP (since if
+> the access check is performed at bind() time, there is nothing to check in
+> recvmsg() anymore).
+
+Correct (I was a bit confused with recvmsg, but it doesn't set the
+receiving address/port).
+
+> Similarly, this makes it impossible to allow a send-only
+> program to bind() to set a source port without allowing it to recvmsg()
+> traffic.
+
+Correct with the current access rights.  We would need a
+LANDLOCK_ACCESS_NET_READ_UDP.
+
+> 
+> I do not know of real-life programs that might want to sandbox their network
+> workers *that* precisely, nor how much we want to be future-proof and
+> support it. If not, I can merge your feedback and:
+> - remove LANDLOCK_ACCESS_NET_RECVMSG_UDP and the recvmsg() hook;
+
+Yes
+
+> - change the doc for LANDLOCK_ACCESS_NET_SENDMSG_UDP to mention that it is
+> not required if the app uses connect() and then sendmsg() without explicit
+> addresses;
+
+Yes
+
+> - change the doc for LANDLOCK_ACCESS_NET_CONNECT_UDP to mention that it
+> grants the right to send traffic (and similarly for
+> LANDLOCK_ACCESS_NET_BIND_UDP to receive traffic), and the reason
+
+The documentation should highlight that these flags grants the right to
+configure a socket, but indeed, no restrictions are enforced on reading
+or writing on sockets.
+
+> (performance, though I haven't managed to get a benchmark);
+> - rename to LANDLOCK_ACCESS_NET_CONNECT_SENDMSG_UDP,
+> LANDLOCK_ACCESS_NET_SENDMSG_UDP, and LANDLOCK_ACCESS_NET_BIND_RECVMSG_UDP,
+> what do you think?
+
+The first and third rights are confusing.  I prefer simple names such as
+LANDLOCK_ACCESS_NET_CONNECT_UDP and LANDLOCK_ACCESS_NET_BIND_UDP.
+Moreover, LANDLOCK_ACCESS_NET_CONNECT_UDP would not impact sendmsg(2)
+calls at all.
+
+> 
+> If merging semantics is a problem, I mentioned socket tagging in [2] to
+> reduce the performance impact (e.g. tag whether it can send traffic at
+> connect() time, and tag whether it can recv at bind() time). So another
+> option could be to keep precise semantics and explore that?
+
+This tagging mechanism looks like a good idea to implement
+LANDLOCK_ACCESS_NET_{READ,WRITE}_{TCP,UDP}, but that should be a
+future separate patch series.
+
+> 
+> >> +	/*
+> >> +	 * Slow path: socket is bound to an ephemeral port. Need a second check
+> >> +	 * on port 0 with different semantics ("any ephemeral port").
+> >> +	 */
+> >> +	inet_sk_get_local_port_range(sk, &ephemeral_low, &ephemeral_high);
+> >
+> > Is it to handle recvmsg(with port 0)?
+> 
+> If you mean recvmsg() on a socket that was previously bind(0), yep. This
+> second rule lookup added a different meaning to rules on port 0. Without
+> this, one would not be able to allow "all ephemeral ports", making the
+> feature unusable for servers that bind on ephemeral ports. All this
+> disappears if we remove LANDLOCK_ACCESS_NET_RECVMSG_UDP.
+
+OK
+
+> 
+> Matthieu
+> 
+> [1] https://blog.cloudflare.com/everything-you-ever-wanted-to-know-about-udp-sockets-but-were-afraid-to-ask-part-1/
+> [2] https://github.com/landlock-lsm/linux/issues/10#issuecomment-2267871144
+> 
