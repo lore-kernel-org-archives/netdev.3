@@ -1,259 +1,137 @@
-Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8BE1E3DFC
-	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 10:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511F41E3776
+	for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 10:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729505090; cv=none; b=qPquLQmZX+qFQmJzF0X2jI16lTO//IOpthBU6t1iRgiP3oe+LBNCP4yJJmx0zEaq1OBLctmU1Bpjrk7e9CMhrZpIQH45M67pSWftVq33pwUijwgMrx6te+tmzt8DKRMrKegdvVgWbx4CVQsSt29dwiEU5Q9bfAt1M/y7Z6Tr2q4=
+	t=1729506040; cv=none; b=Pv01YeY6qhcbbMZL0Mc3qSoHsLL9gRZf05h4t2nVUICCBdWSIzUi63WkPLEUJgTnvvw0jDdY5XxLOJ0O1sRiKY9/Zx1TBJzzujCEUKUDbO1NuW//q6azP0SMjNbRbYlxfOmSRhuFp4fWxYa2M70MF4l5u+tuTe+hudR1mHnEZIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729505090; c=relaxed/simple;
-	bh=EVL4wUmYrTJEyHGsQ/62BPsBtlNsOUVSRfFQ61ReZ6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G68fEWQee7oVSBRPGkgbdznL/510FoSe+Fzyojqcm3k1Y2Kfg6A8wi0yATI8k3ppz8ZY21CjoiIMJWHRe/liHTnnrX6B1ex2PtHmd4PJAqc7qP4GNFexkdhPAra0rHEfCvgbqrGULvdYi/E4/FIk71ywMESKs/p7BtIMcOrqch0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=G4O7qF5J; arc=none smtp.client-ip=45.157.188.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	s=arc-20240116; t=1729506040; c=relaxed/simple;
+	bh=5zHelJe1bDK28iLwFY1cCNY4u2Gkk8i8u7Slp0npj9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rqRX+cM357ec9VetlH5D1aDL6NxP4ovJLgwP68lZdytaYXvXjKN2Qrn6D8v0Ud/+LupjNQ2y5nDX9Jy3ai3ENoXE7qdSTDJMqTxUpoEpAZiGEHqHgpTXAKbOrnfjGEc3SY9eKakQkonsrD5asIpgvvsph4MhIx2pF9lTIZ0J5Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g7DcycQb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="G4O7qF5J"
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4XX9jH57xszXs9;
-	Mon, 21 Oct 2024 11:57:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1729504675;
-	bh=oQqDcNvi3dV/GKQZTqzoU9Gy+j6RUcYEDosffosB1cE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G4O7qF5Jlq8MVI5T7TPwo0OXw/iZ+oNwBlrtKbywh/q/ICD+2YW2GyClZm/L4XJFD
-	 JirGE6PckwP2NdFR8Wh4hcrBRrMwUqn2ESk2UpSyHYxxB2zcRTl6D1AmdJR5j4L5Zm
-	 4GNjbCAHym9OHgf4mKwFXzNhtpdBpc3CyQhu/4Qk=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4XX9jG0KMHzcSf;
-	Mon, 21 Oct 2024 11:57:53 +0200 (CEST)
-Date: Mon, 21 Oct 2024 11:57:53 +0200
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Matthieu Buffet <matthieu@buffet.re>
-Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>, Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: Re: [RFC PATCH v1 4/7] landlock: Add UDP send+recv access control
-Message-ID: <20241021.Abohbuph8eet@digikod.net>
-References: <20240916122230.114800-1-matthieu@buffet.re>
- <20240916122230.114800-5-matthieu@buffet.re>
- <20240921.ohCheQuoh1eu@digikod.net>
- <3631edfd-7f41-4ff1-9f30-20dcaa17b726@buffet.re>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g7DcycQb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729506037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aa4j0hvqQ8YIdEGwaAmQadfFJ+eIOZ3R8RkFSPeDBa4=;
+	b=g7DcycQbnUMHj9fQP562o0aMfTDmtJSAxLZFGCBbR3OL5SWjGZsAi1qdzHLDK37ryuChNZ
+	3vqUM/aHcUXCp7kr66/1FnzxFrnbrB7c6efTdHrh6wg7Yi1xmlZKhAVl6YEU6rzvEJ0zW6
+	nPqy3JA9/rTtjrMKNmVNGs0elY/kBW8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-Knp44OaLMompCvjKH9P_eA-1; Mon, 21 Oct 2024 06:20:35 -0400
+X-MC-Unique: Knp44OaLMompCvjKH9P_eA-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-37d4d51b4efso2090558f8f.3
+        for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 03:20:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729506035; x=1730110835;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aa4j0hvqQ8YIdEGwaAmQadfFJ+eIOZ3R8RkFSPeDBa4=;
+        b=vogEyX3m88jzoycZDWUau9qH70ThWiwHOoXP5lgfnPPZaXQR76a7GuUUu7HtcOjzcg
+         cWmyRFLBIp3srdZGnZVzfQWmZtML8Xh7Iedf/t1qtVZyJsuK7qMFbyGcVdRYohLIcz0Z
+         lmD+tZlLhAooRQklj2ts95BznKIUAvnHaOLh9kirBS2BIcKO3MWj+lWfovqL0OYOmac7
+         KeE7vQDJv/3xZvEBEF+fp63KPkRsQDRvCJ10LyRMQ/wqt94E5kjZ0wJ3THKigk760SUX
+         RXF1/j6KOJ9QLcDESgolyyxpYTeBmNU9LKE8MA6i0zqYJ6ZsddXfTYqul+07PPzeup/r
+         6jcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAECWgpTQ9H4IDpXxoXD7S4j3d77JpwExEjZxSlQHRh1LQOP23f2PhmUxzvbKJWvvF5gID4Ig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDbLVphQTdIUhIFTv1QrqVhxSamRgR/4l+EjcAb31iSi/MeKKz
+	1Hv1Pjwz0tlc7qtCP7IzEjrtyrLqrr0lM6BC/kY4EA9j9BzuCTT6H/HyTylqHkMxkPNvlSqifwo
+	0bWEXzCRDbvBZUHhjAneFnuIkao3Ov21tSHdbwDTDF3b+nVJK1vx3Aw==
+X-Received: by 2002:adf:e948:0:b0:37d:4846:42c3 with SMTP id ffacd0b85a97d-37eab6e36f4mr7408555f8f.22.1729506034692;
+        Mon, 21 Oct 2024 03:20:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNHYycRfxM/0v/040xU61cqanOhA3NX8yirVsJjQsqWI4Oasit0M3UBZJ+KkxPthi+0+9uLg==
+X-Received: by 2002:adf:e948:0:b0:37d:4846:42c3 with SMTP id ffacd0b85a97d-37eab6e36f4mr7408539f8f.22.1729506034334;
+        Mon, 21 Oct 2024 03:20:34 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:1b73:a910::f71? ([2a0d:3344:1b73:a910::f71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b9bb42sm3917637f8f.98.2024.10.21.03.20.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Oct 2024 03:20:33 -0700 (PDT)
+Message-ID: <71a20e24-10e8-42a8-8509-7e704aff9c5c@redhat.com>
+Date: Mon, 21 Oct 2024 12:20:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3631edfd-7f41-4ff1-9f30-20dcaa17b726@buffet.re>
-X-Infomaniak-Routing: alpha
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 02/10] net: ip: make fib_validate_source()
+ return drop reason
+To: Menglong Dong <menglong8.dong@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ dsahern@kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
+ roopa@nvidia.com, razor@blackwall.org, gnault@redhat.com,
+ bigeasy@linutronix.de, idosch@nvidia.com, ast@kernel.org,
+ dongml2@chinatelecom.cn, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, bridge@lists.linux.dev, bpf@vger.kernel.org
+References: <20241015140800.159466-1-dongml2@chinatelecom.cn>
+ <20241015140800.159466-3-dongml2@chinatelecom.cn>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241015140800.159466-3-dongml2@chinatelecom.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 19, 2024 at 02:47:48PM +0200, Matthieu Buffet wrote:
-> Hi Mickaël,
-> 
-> I've almost finished merging your review (thanks for all the feedback), with
-> the exception of this main point. Just making sure we agree on the
-> limitations before I merge this into a new version.
-> 
-> On 9/21/2024 12:23 PM, Mickaël Salaün wrote:
-> >> +	/*
-> >> +	 * If there is a more specific address in the message, it will take
-> >> +	 * precedence over any connect()ed address. Base our access check on
-> it.
-> >> +	 */
-> >> +	if (address) {
-> >> +		const bool in_udpv6_sendmsg =
-> >> +			(sock->sk->sk_prot == &udpv6_prot);
-> >> +
-> >> +		err = get_addr_port(address, msg->msg_namelen, in_udpv6_sendmsg,
-> >> +				    &port);
-> >> +		if (err != 0)
-> >> +			return err;
-> >> +
-> >> +		/*
-> >> +		 * In `udpv6_sendmsg`, AF_UNSPEC is interpreted as "no address".
-> >> +		 * In that case, the call above will succeed but without
-> >> +		 * returning a port.
-> >> +		 */
-> >> +		if (in_udpv6_sendmsg && address->sa_family == AF_UNSPEC)
-> >> +			address = NULL;
-> >> +	}
-> >> +
-> >> +	/*
-> >> +	 * Without a message-specific destination address, the socket must be
-> >> +	 * connect()ed to an address, base our access check on that one.
-> >> +	 */
-> >> +	if (!address) {
-> >
-> > If the address is not specified, I think we should just allow the
-> > request and let the network stack handle the rest.  The advantage of
-> > this approach would be that if the socket was previously allowed to be
-> > connected, the check is only done once and they will be almost no
-> > performance impact when calling sendto/write/recvfrom/read on this
-> > "connected" socket.
-> > [...]
-> > What about something like this (with the appropriate comments)?
-> >
-> > if (!address)
-> > 	return 0;
-> >
-> > if (address->sa_family == AF_UNSPEC && sock->sk->sk_prot ==
-> >     &udpv6_prot)
-> > 	return 0;
-> >
-> > err = get_addr_port(address, msg->msg_namelen, &port);
-> > if (err)
-> > 	return err;
-> >
-> > return check_access_port(dom, LANDLOCK_ACCESS_NET_SENDMSG_UDP, port);
-> 
-> If I understand correctly, you would like the semantics of
-> LANDLOCK_ACCESS_NET_CONNECT_UDP to be {connect(), and sendmsg() without
-> explicit address} and LANDLOCK_ACCESS_NET_SENDMSG_UDP to be {sendmsg() with
-> explicit address}.
+On 10/15/24 16:07, Menglong Dong wrote:
+> diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+> index 90ff815f212b..b3f7a1562140 100644
+> --- a/include/net/ip_fib.h
+> +++ b/include/net/ip_fib.h
+> @@ -452,13 +452,16 @@ int __fib_validate_source(struct sk_buff *skb, __be32 src, __be32 dst,
+>  			  dscp_t dscp, int oif, struct net_device *dev,
+>  			  struct in_device *idev, u32 *itag);
+>  
+> -static inline int
+> +static inline enum skb_drop_reason
+>  fib_validate_source(struct sk_buff *skb, __be32 src, __be32 dst,
+>  		    dscp_t dscp, int oif, struct net_device *dev,
+>  		    struct in_device *idev, u32 *itag)
+>  {
+> -	return __fib_validate_source(skb, src, dst, dscp, oif, dev, idev,
+> -				     itag);
+> +	int err = __fib_validate_source(skb, src, dst, dscp, oif, dev, idev,
+> +					itag);
+> +	if (err < 0)
+> +		return -err;
+> +	return SKB_NOT_DROPPED_YET;
+>  }
 
-Not exactly, here is the rewording with my thinking:
-...the semantics of LANDLOCK_ACCESS_NET_CONNECT_UDP to be {connect()}
-and LANDLOCK_ACCESS_NET_SENDMSG_UDP to be {sendmsg() with explicit
-address}.
+It looks like the code churn in patch 1 is not needed??? You could just
+define here a fib_validate_source_reason() helper doing the above, and
+replace fib_validate_source with the the new helper as needed. Would
+that work?
 
-sendmsg() without explicit address should always be allowed,
-whatever the Landlock policy (similarly as write(2) on a write-opened
-file descriptor).  In a nutshell, sendmsg(2) without explicit address
-should be handled the same as a write(2) call on a connected socket (I
-guess the kernel handles such action on connected datagram sockets the
-same as on connected stream sockets).
+> @@ -1785,9 +1785,10 @@ static int __mkroute_input(struct sk_buff *skb, const struct fib_result *res,
+>  		return -EINVAL;
+>  	}
+>  
+> -	err = fib_validate_source(skb, saddr, daddr, dscp, FIB_RES_OIF(*res),
+> -				  in_dev->dev, in_dev, &itag);
+> +	err = __fib_validate_source(skb, saddr, daddr, dscp, FIB_RES_OIF(*res),
+> +				    in_dev->dev, in_dev, &itag);
+>  	if (err < 0) {
+> +		err = -EINVAL;
+>  		ip_handle_martian_source(in_dev->dev, in_dev, skb, daddr,
+>  					 saddr);
 
-I think it is more important to first have a simple model that
-enables developers to initialize a socket with connect(2) and then
-sandbox the process to only be able to use this socket to communicate
-with the configured peer, similar to what can be enforced with TCP
-sockets.
+I'm sorry for not noticing this issue before, but must preserve (at
+least) the -EXDEV error code from the unpatched version or RP Filter MIB
+accounting in ip_rcv_finish_core() will be fooled.
 
-sendmsg(2) can do two different thinks: (optionally) configure a
-peer/port and write data. recvmsg(2) only reads data.  We should first
-start by controlling exchange from/to peers, and maybe later controlling
-data flow.
+Thanks,
 
-An alternative approach would be to not add a sendmsg specific access
-right but only LANDLOCK_ACCESS_NET_CONNECT_UDP because connect should
-be a superset of sendmsg.  This would make it impossible to specifically
-deny (shared) socket's configuration change though.  I think it's
-better to stick to the kernel semantic with 3 dedicated access rights,
-and it should make more sense for users too.  What do you think?
+Paolo
 
-
-> This makes it impossible to allow a landlocked server to
-> connect() in order to receive traffic only from a specific client while at
-> the same time preventing it from sending traffic (that is, a receive-only
-> client-specific socket ala Cloudflare's "established-over-unconnected"[1]).
-
-My proposal would indeed makes this use case impossible to enforce only
-with the proposed access rights, and we would need to restrict write(2)
-too BTW.  However, I think it would make sense to add complementary
-access rights to restrict reading or writing to a socket.  I guess this
-semantic would be useful for non-UDP protocols too with
-LANDLOCK_ACCESS_NET_{READ,WRITE}_{TCP,UDP} access rights set at
-socket-creation time and stored in the socket object (instead of looking
-at a Landlock domain for each read/write call, similarly to the truncate
-and ioctl_dev access rights).  What do you think?
-
-I wonder what happens if we call recvmsg(2) on a newly created (and then
-unconfigured) socket.  Without prior call to bind(2) I would guess that
-the recvmsg(2) call fail but I'm not so sure with a datagram socket.  We
-should check that.
-
-> 
-> >> +	err = check_access_port(dom, LANDLOCK_ACCESS_NET_RECVMSG_UDP,
-> >> +				port_bigendian);
-> >> +	if (err != -EACCES)
-> >> +		return err;
-> >
-> > We should be able to follow the same policy for "connected" sockets.
-> 
-> Again if I understand correctly, to fully merge semantics of
-> LANDLOCK_ACCESS_NET_BIND_UDP and LANDLOCK_ACCESS_NET_RECVMSG_UDP (since if
-> the access check is performed at bind() time, there is nothing to check in
-> recvmsg() anymore).
-
-Correct (I was a bit confused with recvmsg, but it doesn't set the
-receiving address/port).
-
-> Similarly, this makes it impossible to allow a send-only
-> program to bind() to set a source port without allowing it to recvmsg()
-> traffic.
-
-Correct with the current access rights.  We would need a
-LANDLOCK_ACCESS_NET_READ_UDP.
-
-> 
-> I do not know of real-life programs that might want to sandbox their network
-> workers *that* precisely, nor how much we want to be future-proof and
-> support it. If not, I can merge your feedback and:
-> - remove LANDLOCK_ACCESS_NET_RECVMSG_UDP and the recvmsg() hook;
-
-Yes
-
-> - change the doc for LANDLOCK_ACCESS_NET_SENDMSG_UDP to mention that it is
-> not required if the app uses connect() and then sendmsg() without explicit
-> addresses;
-
-Yes
-
-> - change the doc for LANDLOCK_ACCESS_NET_CONNECT_UDP to mention that it
-> grants the right to send traffic (and similarly for
-> LANDLOCK_ACCESS_NET_BIND_UDP to receive traffic), and the reason
-
-The documentation should highlight that these flags grants the right to
-configure a socket, but indeed, no restrictions are enforced on reading
-or writing on sockets.
-
-> (performance, though I haven't managed to get a benchmark);
-> - rename to LANDLOCK_ACCESS_NET_CONNECT_SENDMSG_UDP,
-> LANDLOCK_ACCESS_NET_SENDMSG_UDP, and LANDLOCK_ACCESS_NET_BIND_RECVMSG_UDP,
-> what do you think?
-
-The first and third rights are confusing.  I prefer simple names such as
-LANDLOCK_ACCESS_NET_CONNECT_UDP and LANDLOCK_ACCESS_NET_BIND_UDP.
-Moreover, LANDLOCK_ACCESS_NET_CONNECT_UDP would not impact sendmsg(2)
-calls at all.
-
-> 
-> If merging semantics is a problem, I mentioned socket tagging in [2] to
-> reduce the performance impact (e.g. tag whether it can send traffic at
-> connect() time, and tag whether it can recv at bind() time). So another
-> option could be to keep precise semantics and explore that?
-
-This tagging mechanism looks like a good idea to implement
-LANDLOCK_ACCESS_NET_{READ,WRITE}_{TCP,UDP}, but that should be a
-future separate patch series.
-
-> 
-> >> +	/*
-> >> +	 * Slow path: socket is bound to an ephemeral port. Need a second check
-> >> +	 * on port 0 with different semantics ("any ephemeral port").
-> >> +	 */
-> >> +	inet_sk_get_local_port_range(sk, &ephemeral_low, &ephemeral_high);
-> >
-> > Is it to handle recvmsg(with port 0)?
-> 
-> If you mean recvmsg() on a socket that was previously bind(0), yep. This
-> second rule lookup added a different meaning to rules on port 0. Without
-> this, one would not be able to allow "all ephemeral ports", making the
-> feature unusable for servers that bind on ephemeral ports. All this
-> disappears if we remove LANDLOCK_ACCESS_NET_RECVMSG_UDP.
-
-OK
-
-> 
-> Matthieu
-> 
-> [1] https://blog.cloudflare.com/everything-you-ever-wanted-to-know-about-udp-sockets-but-were-afraid-to-ask-part-1/
-> [2] https://github.com/landlock-lsm/linux/issues/10#issuecomment-2267871144
-> 
