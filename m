@@ -1,151 +1,228 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2127.outbound.protection.partner.outlook.cn [139.219.17.127])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8552B1CF285;
-	Mon, 21 Oct 2024 07:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.127
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729495340; cv=fail; b=Hl9Wdvywq4yvI56fJoXap1H3c+8gQixp/xkXTr2j/r32Ud1T8SR9vuqWRfow3Ww7WHek1LJw80dIPo3aKDoA/qRoYPnLk1TkpnRx+yVppMEOr9+Kvkwf1p1nOKdpmiV0DWdVtt4iNQLdrOrdgzIia63R6Up151AlMLtp3/NclXY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729495340; c=relaxed/simple;
-	bh=HW8KSwXWeO/6JE4pbs1n16h4fsVPU8jQQFlgxBrKAI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XG6DOzMFcFsyXR0ZkfbuVXyFa4BhX7pL+vQRm3e3LDGBQWVZGxOThgqd5vj+FU0v7sJ4nMA4D2S8R9N+gMJKxaMhw38WLGBFVgy0wvP8MxfPgHhjUohWHuqDS22QPrdxGTUG7Go4q8MmbbLH6sTVwJRrqz9ysM21atMxSgIzdlE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kIlZ2aaoIxWSkEBWwyeAPIpaww8jawiQssCpxJWhHn3sLYnpI9PG85nH0dOafX4sC+0WsVjQL1SEvWusRgPwLXe33guU9L6QuyZ0zFhZQHoNB2U73IoxYizs1gqg759z5yLWrkIDY8oHGOs6li27Aj1eIHjB+M0ln797yzko6LechUa0ibm39TU92UnTK9/mLwv26wJiwF6ZtAecG03YIvLb30DxbHIDescrD4LPT3cir6LfLIRnlfYsFMCz+BSz85WvY8h3X6pm4exJ640NWXfsCr8n+LwhMUQdM8VT1znDRCJyJoWjzQ/v0AZOgNdHrGuk2Xn3WxSP6Tgb2WfhYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ImfW7z7XD5azVTc+abegwuNShrnp0d2Wh4zrw+IKVkY=;
- b=iuu5TIQowKQyi7PX52xRPXNshOQoCt75dLn8XXsiDIVHkT3NY4miId1/nSABRv3lAyvQy2gcKf6GhKbmWEZIhf/96ZbwqH0biFftwlepGEpH6kaqYUOgwxBbzTA8tUNO/5WqWk+XG7tIMmE8KU1Z833wiAQr1kZC/FYJMnxKEBOsq45qsOZykjO9fzNVI+5h7edVrTD3KqJny9Uhq/NXg52c1ABTAckAVsu3STT2US86EejbZpMCh+ek9o0tpC01h9Leuw9Hg7KL0rmfayKHagCOQw3D22PqvatsvQpsSs9RNtgaoeSDwhCyKAGib2ra5/T4x4lgjlcnVdRNtrZqug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12) by ZQZPR01MB0996.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:a::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.20; Mon, 21 Oct
- 2024 05:49:14 +0000
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- ([fe80::617c:34a2:c5bf:8095]) by
- ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::617c:34a2:c5bf:8095%4])
- with mapi id 15.20.8069.016; Mon, 21 Oct 2024 05:49:14 +0000
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lftan.linux@gmail.com,
-	leyfoon.tan@starfivetech.com
-Subject: [PATCH net-next, v1 2/3] net: stmmac: dwmac4: Fix the MTL_OP_MODE_*_MASK operation
-Date: Mon, 21 Oct 2024 13:48:47 +0800
-Message-ID: <20241021054849.1801838-3-leyfoon.tan@starfivetech.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241021054849.1801838-1-leyfoon.tan@starfivetech.com>
-References: <20241021054849.1801838-1-leyfoon.tan@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: NT0PR01CA0028.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:c::15) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F701D14E2;
+	Mon, 21 Oct 2024 07:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729495374; cv=none; b=Dh8fFtrBg3Dik2vI0cihZ7LO8/tH3OifSyD125DPeXLAMTAmUmMcJh9gZl7P95I+mAqL6aC/CWMhgg7VXsd47CiFoTHrvha6EtCHw0YlcoM/FlZrYzUBWCg/43dRqJZMXp3yICktTUOoc6WJgRXmJg5+folyUJix3HfiUYg337g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729495374; c=relaxed/simple;
+	bh=j2o9aZZ2MpjYuhcSr3OChzYTBDv4hplxBC14TRULQI8=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:References; b=TtEU88xkeZM8Ji4n2xNUCZ+Nflh+Sw85TbE+szClsz59bDv20jWDu7s5mhSteReZh6dYN83sEGFZv4CV9gnWURdcySOuPXQWJEcCfFMgsdaL6+Kb27WnWIg1yhXNzwB9B9EaGNNFqiQnK5ZSRtt3lLTWVxRZAnED57ACA6yj8Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=fnxRFywd; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="fnxRFywd"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20241021072248euoutp0154700447ddf6f2066342e26bab501df4~AZt-x-Amy0550305503euoutp01m;
+	Mon, 21 Oct 2024 07:22:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20241021072248euoutp0154700447ddf6f2066342e26bab501df4~AZt-x-Amy0550305503euoutp01m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1729495369;
+	bh=7Vo8bdrcTD2TExgOyGSaPfXGd7Aa+ItF6FSKHNsruAQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=fnxRFywdKm9yix+Os5AePl5xtBGH7BesiJShYmaisTyJZ/AS4iGDhbklMvt9x1kEM
+	 zPaQ2OJJ4T/lPQNPh4sf7AiPbu0Wstfk081wl8KgWVn05dVgeJ49CYQ0zb3V+7tuzC
+	 yr4G/XvCuCQv+r4PENRyJdNjfV8WfhOtwbvyeYMs=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20241021072248eucas1p1ac0b469a13d7941e669de1fa2b7f0fa0~AZt-gjzjO2488824888eucas1p1n;
+	Mon, 21 Oct 2024 07:22:48 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id 69.14.20409.84106176; Mon, 21
+	Oct 2024 08:22:48 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20241021072248eucas1p127c01b427e01c363b0425b9f5e130811~AZt-DOXgy2553825538eucas1p17;
+	Mon, 21 Oct 2024 07:22:48 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241021072248eusmtrp2bc9e687864d5b91d6aadf0c7c223c017~AZt-BmeZp2870628706eusmtrp22;
+	Mon, 21 Oct 2024 07:22:48 +0000 (GMT)
+X-AuditID: cbfec7f4-c0df970000004fb9-92-671601482b13
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 05.B1.19654.74106176; Mon, 21
+	Oct 2024 08:22:47 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20241021072247eusmtip2b1ef0deb415b435079661bd6a9f0346a~AZt_l4KqO0165901659eusmtip2t;
+	Mon, 21 Oct 2024 07:22:47 +0000 (GMT)
+Received: from localhost (106.110.32.107) by CAMSVWEXC02.scsc.local
+	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Mon, 21 Oct 2024 08:22:46 +0100
+Date: Mon, 21 Oct 2024 09:22:45 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: Kaixiong Yu <yukaixiong@huawei.com>
+CC: <akpm@linux-foundation.org>, <mcgrof@kernel.org>, <ysato@users.osdn.me>,
+	<dalias@libc.org>, <glaubitz@physik.fu-berlin.de>, <luto@kernel.org>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <jack@suse.cz>, <kees@kernel.org>,
+	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
+	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
+	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
+	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
+	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
+	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
+	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
+	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
+	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+Subject: Re: [PATCH v3 -next 00/15] sysctl: move sysctls from vm_table into
+ its own files
+Message-ID: <ngknhtecptqk56gtiikvb5mdujhtxdyngzndiaz7ifslzrki7q@4wcykosdnsna>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB0996:EE_
-X-MS-Office365-Filtering-Correlation-Id: b22898f1-019b-4fd5-d80f-08dcf194181b
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|366016|41320700013|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	5xPyOS8+gJndNrStGK0RcXFHsg19JZ9wDpNfVY5uIDZD8e98hNUaVtR8NzY3k1Eq1c1nMY0lQvQESa5xP2m8+iYKSHiZxuQuuxy6UABW8SSza4qcdLACb1kW/cfg1lkjkwurM9wc+07DS3wTcNrsYyeXfqc5m0DxAOZmwgCvOL+E+Bc79Hbw2fwg9b6uKAjQWJ/eR2LZh6BMiMYb2ciBaRNDzo6u0pyVI58kb/OC7QFbHO073TprW9VZW1Ku3DLEithy/jz5hlfX2yP9HX+LYZJvi78/qftz1CeQzEUfOu6Z3UKy4FxSRmURUPHj1iNoXS3yTvrgpibCDQUNz9oPSoeyBz5Jrq1g7nI/eimaTdGFmcod7rbvz3qC43HAxKS+RI2sEBI2xE3v9v7BkBwT15UweHadSXIGIGpl6q4JAYiJEo9xPyUJSqyt+Ttch0QhMnAzHsdcKVXdSrY6sNGpnRJOcMYPRN/SrNiERYz2qw+ayy1eY0XRqvQmeSo0ZvdpyJ+fjPixNfg7Vjan2NGA4Gq1AV6k7wJK7Tr+KKv2MhO9Yiu7S0MZHtmKOlq3YKtwg9KeTPrUPEs+MuvzF7NmkHeo0xLBR3fJi/8g7Qm6QBYfMhSPzl0sRIY1i+wq4/r/
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(41320700013)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?x1G4sGsB7ftfgk59+oZRPyYqfYqThXB1ULKGYDu0LRIdazRQBgtozgFq+g7e?=
- =?us-ascii?Q?j5h759vqf8ZSLgD6ivKas5+zwOgiElZU2oNj5qB4Ortj04gnz085denJPL1+?=
- =?us-ascii?Q?C7iAveT/yG4HwU4B0vSxJuXUIzoUe+x3Y8hFiEIh3dFoRUvjWesP9RiF/69Y?=
- =?us-ascii?Q?cYEmh2EjxQLlRRfVytbfWkv1O+yeiXX6TjnmtA6j/KZNQ6O0Y2YKNMIDNJth?=
- =?us-ascii?Q?8HxqTOd1HUQv2G3tBEZW3qNaFvTolmZ1QhUjK+IuDujVFQ1NvvJ9H8awpRPd?=
- =?us-ascii?Q?F/ZkFRRvEC4/scqvXGBqkNZxYqQuJ41TV31KVfn62p+Ar0zAq5V3OSFqWsk3?=
- =?us-ascii?Q?IPSo98VPSf/WKiT04wDxq5BBojEpqcTcUSeGLDysFrF5qQSGh/cvEkisK6+t?=
- =?us-ascii?Q?CwPlBJlcxIrvIORB4pp0TIOXBkAuDcGu1NDTMivhoiCIQ61WSujJUCSpj60Z?=
- =?us-ascii?Q?IAbYPsL68VZT+L/bLLe1GjLN2V0lVff0W13i6k4ji3ep22sDc/a1Au33FRie?=
- =?us-ascii?Q?X7WSge7wbwlTbpSNeZXQhigkwGgC03hcXvyaro/Wr1udEfAgLLb6+ykEpaDB?=
- =?us-ascii?Q?iYpRGVuydqZ8fbmFy+HdQybT799AgsGtbsARrv8Hzq67ZwXyEmBLE8CXqj2w?=
- =?us-ascii?Q?sItWCnMcDFZsE8xF/yTpbyiHoRTY7Rt8LCJRNkCWAhNnq45FhPQgtXpjgNzR?=
- =?us-ascii?Q?r9CGlouU94E8kKftiySLCupUod6/2at0KyekDjcPZUFqZQ391YjIfua7bP3x?=
- =?us-ascii?Q?CGFAJo1UgVuawyWWJxwyAmpCINYfebFMzkE1Lm5XJdJpPW1hgVYaS9FHTeN9?=
- =?us-ascii?Q?N9wdcjUAt3eRsi8tXpjBkqKz06JWEYH9KCIpJtNQavWjTRPBUB6urYESefWY?=
- =?us-ascii?Q?i/KnBogSoWnYZR/oaTPNjE27guzGWLN+gXXfetzG5cNfZLvQUAXgoRONNjJ6?=
- =?us-ascii?Q?0+3ZUHWkUq5CDxF8yTxtmKZ2L5VEzYp79Lc1Zd0BEJLRlvEyBAPlNtfTtUoY?=
- =?us-ascii?Q?IiykmSuAvPfKshY5aqZcP5+e1wAXjniD/P67WQkfxzInZLF0rn61aqRMf9ZS?=
- =?us-ascii?Q?Mi+YaXcAx97IWsVoACMjTVqIJuymb5Bwk7aGR1hJgtz2NsAwGg3cB7wWQ8kX?=
- =?us-ascii?Q?X/LMmqjRhAnG43TPGZaQ3RSnPnxA98XZtgwokJ7jcfCzpIXspaJbMlvzSxAi?=
- =?us-ascii?Q?KlOYoyEFGo0t4i0Yp0aHqu+W/4at1GCAI2ixBnontMHSIrcRNXuNN3Gk1gbc?=
- =?us-ascii?Q?wDrB06psjd9kPLiTIKCSPdtCHr7e8kRfQq8zhcfLUZzY8krOipQ65a2SORx0?=
- =?us-ascii?Q?2sE4vtKAs3G47gpcEZr/GJiUcTqjVaGtse9pL7TnO5ImeAApy/5guFXtbFPF?=
- =?us-ascii?Q?lshIEukxtbqvdwXfokk48pg3oNjnrmLtCc3PkiTU2erLqQw5VzoWlFlKXMpB?=
- =?us-ascii?Q?+LGPw3v8NN3a1792u3O5EIg5pNO0oK+uUqiC5v4CE5vsCIEwtcvSpnI59/fl?=
- =?us-ascii?Q?0Tw3k/RloQrnW5MCaHKd70JY0OXkZbZjeRfghdkt3FUazAjTgU3kI3lLWY4N?=
- =?us-ascii?Q?bFVuVI+vpfGKiyqV1YpPuANomden1qkuxDuPsewEM8ObLO0/cYjXTZynERM5?=
- =?us-ascii?Q?og=3D=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b22898f1-019b-4fd5-d80f-08dcf194181b
-X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 05:49:14.3103
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Wl+Jv8HoaJPYedKhygBwHpG+PmqPLieYIxRnyblafMF5z8Fzyqlp88WYOVMQyDaUx9mSrTFJ0X50+qpGC+ov2G1EOq+6qzwZsN+4inZV8E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB0996
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241010152215.3025842-1-yukaixiong@huawei.com>
+X-ClientProxiedBy: CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) To
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02TeUxUVxTGc986YLHDItwMiBaENqQsNiYeKza1rfWVRkvqVjVFpvIymALS
+	GbCWLgFZBRkREBSQpRLZhsWBIKtQrSDbDC2iWOvSiahldwAtjAwdeNj633fOd373nu8mV0Ra
+	dbES0aGQMF4eIg1yYsyp2rYZjTuHbGVehS9WQU6lioHY+nkK5pvbEIxNRsBklZGB4at6BPN3
+	HxOQ93M1AwUzszQ8qYpHkKONoWC6cpaEnqFzLIwdM1Aw2KZjIXvcGUZqSkgoU2+DjIt2kJ0Z
+	TcDMhVIWKirPE1AxqqWht1ZJw6XIByw0NXdQ0NeQw8A91bzJaO2iYeKEjoGcF+kkdGSVUKBt
+	KKdhIGUQwe+t+QQ050VS0JZvC6mP9Cw86xpB0DnzA9xJzaQgrvAiAScaTyPQ9mpYGFc2ERCl
+	SiLhtvYhA9Xq0yR0znYSoD9npCE7Somg55iKBu1cOw1Rk/cRGP4xbZJc2MGark4zPUbLcwbK
+	5mtIuDHYS73vzT2PVVKcKleFuPw7n3JXR8ZJrqbkNsHlq8O5m417uZhfR2luqv4k4qqL3bjz
+	TX8TnLr0OMOp9aksp8meoLgxjYblrp8xUL5v7DP3DuCDDh3h5Z7v+ZsHJvam06EDK4+Wnxih
+	I9G4TSIyE2HxOjx3/BabiMxFVuJihHWzKUgophBOfVRICsUkwuml/cxLJO3JGCEYRQh3x5Yz
+	/03dKile4msQ1hcZ6AWEErvgSGUPtaAZ8dtYO/InuaBtxG/iR+M9izQpblyGz55qXjSsxftx
+	382cRcBCvA3PXeulBW2JO84+XOyTpoPyG/UmWGTS9rjIKFqQZuJNuH5WImzqhPtT7lKC/hE3
+	R7cuBsXiY6/hqrxYVjA+woaoNlLQ1niovWap74Dn6/MIAUhDuMU4sUSXIXwhapoQpjbimBsP
+	l4jNuDM6GS1sgcXL8cCopbDncpxam0kKbQucEGclTLvisnsjVApyznolWdYrybL+T5aPyFJk
+	x4crgmW84p0Q/lsPhTRYER4i8zh4OFiNTP+ty9g+VYeKhp56XEGECF1BWEQ62Vg4ha2QWVkE
+	SL+L4OWHD8jDg3jFFWQvopzsLFwCVvFWYpk0jP+a50N5+UuXEJlJIomtvn6OH9pteGBfF/jx
+	bytXLyua8lnPtv3yeIPhoJnuTtal2e5QdDnxOrPCVeO7qtJDl5tzbbNO0mE7mqlqeWvt/bg/
+	jmzcWG8f5RfySaGxoMZVdqpBs166+/PpOuwRN+Syu3vHqN83Ljurk9Ren63p3jWk/PKr/Z3D
+	vnXJ3cjRLWDa+obDyjnJC52PrVfYsGT7lsoI26sVElm8ZkuCdcaeMM+BGHdf/czeYN3lA6E7
+	g+f+GgS3nzrd8hwb/ZOednv6vG7f51iYy21aF2Gw7H9wm0zvO9wf+32yrPjMasUX209qvBQF
+	7xrcd+2R73D4oEnpP+6cERP/THLUqG/PhX0JpZZrMrydKEWgdK0bKVdI/wXyI7Kl3gQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Te0yTZxTGfb9bi46kXNRvXCLWuCXIKgXKDhs4nX/sC85ly2IWvAw77MBR
+	wLSFVKdZuc1xGSKiDCiW4WUDKki5iYXJgOEKgdahjLsLEXBYWiigo2hZoS7zv+fNc57fe3Jy
+	Dht3naI82MfjZSJJvFDMpdYT3ba7Y299gDZF+7fcCgFltZqC9KYVAlZaOhGY5k/B/E0bBU/a
+	LQhWRqcwUJXVUvDjkpWExzfPIlDq0whYrLbi0DNdwgJTyjIBE53jLCg2bwNjXTkOlZr9cKlm
+	MxQXpGKwdL2CBVXVVzComtGTYGjIIaFR8RcLmlt0BPTdVlIwpl6xG63dJMxmj1OgfJ6Pg66o
+	nAD97RskDOROIPijtRSDFpWCgM7STZA3aWHB024jgq6l0zCcV0DAt1drMMjWXkSgN/SywJzT
+	jEGyOguHQf0jCmo1F3HosnZhYCmxkVCcnIOgJ0VNgv7FXRKS5x8iWP7H3sn3V3Us+9cX7MO4
+	84yCypU6HO5PGIjdocyz9ByCUV9WI6Z0eB/TbjTjTF35IMaUahKZfm0Ek9YxQzILTecQU/uz
+	L3Ol+W+M0VRkUIzGksdieotnCcbU28tifv9hmfh460FeqCQhUSbyiUmQysK4h/gQwOOHAC8g
+	KITHD3z7yDsBAu7OXaHHROLjSSLJzl1HeTGZhnzyxIC3/Ea2kVQgs3smcmLTnCD6wmMTlonW
+	s1051xCt0C6xHIYXXbPwgHRoN/p5fyblKJpD9PCTEdLxqEP0ZFoltVpFcLbTipweYlVTHD9a
+	bxzBV7U750160tyzlsY52g104fmWNcONc4ju61euBZw5++kXvxleUnMRbZsbfWm40LrCR2sa
+	t1NLtRY7iW3XnvRPNvaqdOKE0U1WD0enXPpBriNJc87QGdPdVC5yK3oFVPQKqOh/UCnCK5C7
+	KFEaFx0nDeBJhXHSxPhoXlRCnAbZN76hc6nuFiqfnuO1IYyN2hDNxrnuzlzZxmhX52PCk6dE
+	koRISaJYJG1DAvsozuMeG6MS7CcTL4vkB/sL+EHBIf6CkOBA7mZn6r7+S1dOtFAmihWJTogk
+	/+UwtpOHAlMxh9NdI6as+jvys25cWdK9vfE6T1ty6OI2vNhTOvzLYLsyTGMouvRReJbFrCpq
+	DOw2HS0Xf9NQ/53nhjw2e2xP7IiO2H2knr2uNyN1MGO+PWJ8ct2svF4a5JoVTn7xKTWY9dWK
+	8l6fT7+VHhAslry/5GbxKvORjUpC/2zxde4cKtg+V+vSLn/vDYE2aW8YHrul6zM94SMQS4rP
+	dHjv8fu6pmZh3n98KLfjYOTl4En9zI7UiEYXT9Un7uFphg8PDD1N1UdtPQmGw3G4d9mo3PQw
+	heM38K7SeGC0zetXj/y86+KqgWprkxPK+vw1Ve4OaJVvqQ4716Pqep2VYTx9rZBLSGOEfF9c
+	IhX+C6gKfYZ6BAAA
+X-CMS-MailID: 20241021072248eucas1p127c01b427e01c363b0425b9f5e130811
+X-Msg-Generator: CA
+X-RootMTR: 20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd
+References: <CGME20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd@eucas1p1.samsung.com>
+	<20241010152215.3025842-1-yukaixiong@huawei.com>
 
-In order to mask off the bits, we need to use the '~' operator to invert
-all the bits of _MASK and clear them.
+On Thu, Oct 10, 2024 at 11:22:00PM +0800, Kaixiong Yu wrote:
+> This patch series moves sysctls of vm_table in kernel/sysctl.c to
+> places where they actually belong, and do some related code clean-ups.
+> After this patch series, all sysctls in vm_table have been moved into its
+> own files, meanwhile, delete vm_table.
+> 
+> All the modifications of this patch series base on
+> linux-next(tags/next-20241010). To test this patch series, the code was
+> compiled with both the CONFIG_SYSCTL enabled and disabled on arm64 and
+> x86_64 architectures. After this patch series is applied, all files
+> under /proc/sys/vm can be read or written normally.
+> 
+> Changes in v3:
+>  - change patch1~10, patch14 title suggested by Joel Granados
+>  - change sysctl_stat_interval to static type in patch1
+>  - add acked-by from Paul Moore in patch7
+>  - change dirtytime_expire_interval to static type in patch9
+>  - add acked-by from Anna Schumaker in patch11
+> 
+> Changes in v2:
+>  - fix sysctl_max_map_count undeclared issue in mm/nommu.c for patch6
+>  - update changelog for patch7/12, suggested by Kees/Paul
+>  - fix patch8, sorry for wrong changes and forget to built with NOMMU
+>  - add reviewed-by from Kees except patch8 since patch8 is wrong in v1
+>  - add reviewed-by from Jan Kara, Christian Brauner in patch12
+> 
+> Kaixiong Yu (15):
+>   mm: vmstat: move sysctls to mm/vmstat.c
+>   mm: filemap: move sysctl to mm/filemap.c
+>   mm: swap: move sysctl to mm/swap.c
+>   mm: vmscan: move vmscan sysctls to mm/vmscan.c
+>   mm: util: move sysctls to mm/util.c
+>   mm: mmap: move sysctl to mm/mmap.c
+>   security: min_addr: move sysctl to security/min_addr.c
+>   mm: nommu: move sysctl to mm/nommu.c
+>   fs: fs-writeback: move sysctl to fs/fs-writeback.c
+>   fs: drop_caches: move sysctl to fs/drop_caches.c
+>   sunrpc: use vfs_pressure_ratio() helper
+>   fs: dcache: move the sysctl to fs/dcache.c
+>   x86: vdso: move the sysctl to arch/x86/entry/vdso/vdso32-setup.c
+>   sh: vdso: move the sysctl to arch/sh/kernel/vsyscall/vsyscall.c
+>   sysctl: remove unneeded include
+> 
+>  arch/sh/kernel/vsyscall/vsyscall.c |  14 ++
+>  arch/x86/entry/vdso/vdso32-setup.c |  16 ++-
+>  fs/dcache.c                        |  21 ++-
+>  fs/drop_caches.c                   |  23 ++-
+>  fs/fs-writeback.c                  |  30 ++--
+>  include/linux/dcache.h             |   7 +-
+>  include/linux/mm.h                 |  23 ---
+>  include/linux/mman.h               |   2 -
+>  include/linux/swap.h               |   9 --
+>  include/linux/vmstat.h             |  11 --
+>  include/linux/writeback.h          |   4 -
+>  kernel/sysctl.c                    | 221 -----------------------------
+>  mm/filemap.c                       |  18 ++-
+>  mm/internal.h                      |  10 ++
+>  mm/mmap.c                          |  54 +++++++
+>  mm/nommu.c                         |  15 +-
+>  mm/swap.c                          |  16 ++-
+>  mm/swap.h                          |   1 +
+>  mm/util.c                          |  67 +++++++--
+>  mm/vmscan.c                        |  23 +++
+>  mm/vmstat.c                        |  44 +++++-
+>  net/sunrpc/auth.c                  |   2 +-
+>  security/min_addr.c                |  11 ++
+>  23 files changed, 330 insertions(+), 312 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
+General comment for the patchset in general. I would consider making the
+new sysctl tables const. There is an effort for doing this and it has
+already lanted in linux-next. So if you base your patch from a recent
+next release, then it should just work. If you *do* decide to add a
+const qualifier, then note that you will create a dependency with the
+sysctl patchset currently in next and that will have to go in before.
 
-Fixes: 48863ce5940f ("stmmac: add DMA support for GMAC 4.xx")
-Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Best
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-index e0165358c4ac..4e1b1bd98f68 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
-@@ -266,7 +266,7 @@ static void dwmac4_dma_rx_chan_op_mode(struct stmmac_priv *priv,
- 	} else {
- 		pr_debug("GMAC: disable RX SF mode (threshold %d)\n", mode);
- 		mtl_rx_op &= ~MTL_OP_MODE_RSF;
--		mtl_rx_op &= MTL_OP_MODE_RTC_MASK;
-+		mtl_rx_op &= ~MTL_OP_MODE_RTC_MASK;
- 		if (mode <= 32)
- 			mtl_rx_op |= MTL_OP_MODE_RTC_32;
- 		else if (mode <= 64)
-@@ -335,7 +335,7 @@ static void dwmac4_dma_tx_chan_op_mode(struct stmmac_priv *priv,
- 	} else {
- 		pr_debug("GMAC: disabling TX SF (threshold %d)\n", mode);
- 		mtl_tx_op &= ~MTL_OP_MODE_TSF;
--		mtl_tx_op &= MTL_OP_MODE_TTC_MASK;
-+		mtl_tx_op &= ~MTL_OP_MODE_TTC_MASK;
- 		/* Set the transmit threshold */
- 		if (mode <= 32)
- 			mtl_tx_op |= MTL_OP_MODE_TTC_32;
 -- 
-2.34.1
 
+Joel Granados
