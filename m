@@ -1,95 +1,220 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B98312C522;
-	Tue, 22 Oct 2024 05:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5851E529
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 05:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729573921; cv=none; b=IYZxv7awz1a0Zw8BxM6O5Jn35/C7/mJBB9oF6WZAyvQdp0fHkvoi+wXbdcPTiyYzybqaO/nJE90/mwYmoVe+K4g+vaKJLePAB8aVC/+qscw0pKOVOi2Zw53rUkn/CZRq8Y8QZVsL1pYap62jNYyADpWj8cDbzMnCyNINGxvjDvw=
+	t=1729575674; cv=none; b=rLkdNkVexwqzsuJBprC37vRzzaBA1lYQpdjlbg68yOOHQI8PiMl8PP8uNrjkCtEJlcjKxGZH/jBiFirT39G9nPbecN4+1twPsuVoIG8Q49azOB99+3ml4bXsVnTH6zhk5ByuDHFg1Cqv/j4nSdmMdIzP8hbhU3SDVk896QKf+Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729573921; c=relaxed/simple;
-	bh=6nL3F0+rXvu/ufwo6ILRxMgK5uGgnngX3VW9rqLR2cI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jJIpTq/icyRW0cA/hioFV932fuymwI68jfcLgOZe8Vazjkn8Uajb463/hb/u3G1q5aVDPoPFZaD94n2tLUPlmogNqx1apC8oQk6bY/9hL7y8RNnHpRjS0n5RTuIZxtCZ9/CMoiMRPQCrO6LGdWaLD7UCoVRiVIw7Oi0WTbP9B8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7Gbq3NS; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729575674; c=relaxed/simple;
+	bh=RhxsYHu4UcnKbtEwFAjVRy76QMqyckr7ihO1I6MDMoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R3pgf0aGJ28dqRDs+fcCh/g7w1WLys1PtF5Ir9DAxandE7mc75vO+74qQmMNNm4VnbVy6SDP3h7FZbwz4tu3pUFjUs84NT9YTBLo83cf6xFtIKZ2j0QQ0Ud89xjIdmtLrtiVMGWyB8O31GnPPc975KgACD3jy59ZixfMyoYsV1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SyqVpoiT; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7Gbq3NS"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20c693b68f5so55562675ad.1;
-        Mon, 21 Oct 2024 22:11:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729573919; x=1730178719; darn=vger.kernel.org;
-        h=content-disposition:content-description:mime-version:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cKMBsCanZz1Gh8n+AXUDeahzWcX6egHuFJT38KRlsqs=;
-        b=U7Gbq3NSUCTWk9aoGgC3vkORAN4WO/65FMpR9u7w/ny/Jze3lZvd0RswgDvD5Nj/9T
-         VlMoxZ/rumAG/7W6tX943EIx4P5IRZz0xpTLOB60zJdGiK4uyYt5XMzWJh6W1l4SrLg/
-         K3bQ9iT3gTwgAPvfIZZrtDXVExwMSOsuFuJPlYw1pWChup5cb1MtYMbf4cuMCCHWMqks
-         tCxG2PDPEYIR0nLKVkPbA8DL/zZdtkbo9gkRIOFg8I0q027IUV0L3QfA4eCi/HNEGll+
-         ETaefy5aWpyfteZyW3KDhy1IMnGiAyPrEft1xW3EMdsudNzTwHrnrDH64b+h17NMfiPn
-         2GmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729573919; x=1730178719;
-        h=content-disposition:content-description:mime-version:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cKMBsCanZz1Gh8n+AXUDeahzWcX6egHuFJT38KRlsqs=;
-        b=qNxYZS+XK8SMhtdPBCcBSR2leXHpsqQ69DtRFqBolO7xayrJ/89uETRqXl7YW2zS9/
-         mX9vMS7tHgkQ3GRgTDaVENJWBDnq90F2MR4YtOQY+SSM5cBBY1en72wNYQ/1GVcAnOrQ
-         mv2Gi3YvSQFO7SFgPTAX2PGoO2FpikQjARC6ERG6GdIp62VA9Nu/JB01C050nbNeKcQo
-         kzl94DM9nk2FMGYZl080gGXshHmedsZB5vRIBJ9qfVMLLomrMdvJTKBildjo6dJf+myQ
-         Q5aFPg2lw7MbB8lcdsb05xbvnbICqI/s4/6xuHzDOtcQsnlSe6u6QZUOHAAYpyXPC0tC
-         86Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4ew3arVYQfKXMbV/iZIiF+B9+fjjAfCP42L7qUYm5IQJE1OLTNgNKS0mxSmrOvzz0XckeA/zyQUuDVYTR@vger.kernel.org, AJvYcCUCTi0NA9rBSx+CC5RuM7pHNX3i8kO4ZMrGlwQG/Lc6RR6XtTf60lD0w9hDr1WgZu55QT/QUA4pp/ce9sqhS1I=@vger.kernel.org, AJvYcCVLLcfNmB0dCy1GjrAJguImSCbo7QD1mIcDvR5JrzDvpsB7eysfgNJ2cNtoA/RHPgCBt9nxPXPo@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM83+bzzumhZtWzd6gNdz+J9Bx8sKWx46R4um4hNC8/yGnN4Yz
-	GcqVrdXDUUtLp4lFebW1Q/JoSKftByjkUzoBPccAxT13DtWAmsft
-X-Google-Smtp-Source: AGHT+IFa0NskIKUN1a+IaBC/kiN3u+O4oI32iW4jSozQeLQ+HEEZ9YiELB5Tn/cEBttmtLXKufCSSw==
-X-Received: by 2002:a17:903:2306:b0:205:3e6d:9949 with SMTP id d9443c01a7336-20e98596fc9mr18662135ad.52.1729573919236;
-        Mon, 21 Oct 2024 22:11:59 -0700 (PDT)
-Received: from Fantasy-Ubuntu ([2001:56a:7eb6:f700:f589:b8ad:400:2216])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0f3665sm34705005ad.271.2024.10.21.22.11.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 22:11:58 -0700 (PDT)
-Date: Mon, 21 Oct 2024 23:11:56 -0600
-From: Johnny Park <pjohnny0508@gmail.com>
-To: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [net-next] igb: Fix spelling "intialize"->"initialize"
-Message-ID: <Zxc0HP27kcMwGyaa@Fantasy-Ubuntu>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SyqVpoiT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729575672; x=1761111672;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RhxsYHu4UcnKbtEwFAjVRy76QMqyckr7ihO1I6MDMoo=;
+  b=SyqVpoiT8qnlTFhu6A5Y+kOgjS6VZ/tWHysewTy4r5etLF5jCG949Hes
+   ju/wVxLL1D0OBks8lw1vn+aiiBAEqX7q1n/4zVYo5nbgdJCP6EaWU603F
+   ev6u8qJIYHTseePFFxBzTthQ/RSoQF4F+uj4oSy1ICtpBF0z8mFSMi51Q
+   TBsWGhimjgyCdZ0r22LBd/rBhTFhNN3P5pKyUCWElOlwzD4XDeweUZKre
+   THbj14EoAErO1Lgwu1Z62QFqdp4cEN5IrFau3Y7k3lEmaNTYMAw5hQmOZ
+   6Xv8XRRHKAuApiqN+Fy7Yivx24H142uJJW3LgemRIDxvhJk0mYVccQATx
+   g==;
+X-CSE-ConnectionGUID: Ow6+zasaSHuFqFtNcDIRVA==
+X-CSE-MsgGUID: ZzhslNUZTeixRcuzjq0tIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="33015588"
+X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
+   d="scan'208";a="33015588"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 22:41:12 -0700
+X-CSE-ConnectionGUID: S0Al3gnCRrmUGb+3EX9l1w==
+X-CSE-MsgGUID: 7CEvXZnNQBGNl6IhjeRPwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="84558078"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa003.jf.intel.com with ESMTP; 21 Oct 2024 22:41:09 -0700
+Received: from fedora.igk.intel.com (Metan_eth.igk.intel.com [10.123.220.124])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 843DF27BCA;
+	Tue, 22 Oct 2024 06:41:07 +0100 (IST)
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-next v12 00/14] Add support for Rx timestamping for both ice and iavf drivers
+Date: Tue, 22 Oct 2024 07:41:07 -0400
+Message-Id: <20241022114121.61284-1-mateusz.polchlopek@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Description: Typo fix "intialize" -> "initialize"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Simple patch that fixes the spelling mistake "intialize" in igb_main.c
+Initially, during VF creation it registers the PTP clock in
+the system and negotiates with PF it's capabilities. In the
+meantime the PF enables the Flexible Descriptor for VF.
+Only this type of descriptor allows to receive Rx timestamps.
 
-Signed-off-by: Johnny Park <pjohnny0508@gmail.com>
+Enabling virtual clock would be possible, though it would probably
+perform poorly due to the lack of direct time access.
+
+Enable timestamping should be done using userspace tools, e.g.
+hwstamp_ctl -i $VF -r 14
+
+In order to report the timestamps to userspace, the VF extends
+timestamp to 40b.
+
+To support this feature the flexible descriptors and PTP part
+in iavf driver have been introduced.
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v12:
+- small changes versus v11, fixed compilation warnings and errors and covered
+  Vadim's request about ptp_read_system_prets and ptp_read_system_postts()
+  in iavf_read_phc_indirect() function. Added stubs in iavf_ptp.h file depends
+  on CONFIG_PTP_1588_CLOCK config option.
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 1ef4cb871452..ad091179872b 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -1204,7 +1204,7 @@ static int igb_alloc_q_vector(struct igb_adapter *adapter,
- 	/* initialize pointer to rings */
- 	ring = q_vector->ring;
- 
--	/* intialize ITR */
-+	/* initialize ITR */
- 	if (rxr_count) {
- 		/* rx or rx/tx vector */
- 		if (!adapter->rx_itr_setting || adapter->rx_itr_setting > 3)
+v11:
+- addressed all comments from v10 done by Alexander L. Short list: changed some
+  logging functions (like pci_warn instead of dev_warn), fix RCT, fix indentation,
+  remove unnecessary comments and casts, change error codes where applicable,
+  remove ptp.initialized field in struct (now check for ptp.clock as Olek
+  suggested), invert condition in few places to avoid +1 indent level, function
+  iavf_ptp_do_aux_work made as static, add more descriptive kdoc for libeth
+  struct fields, restore ptype as a field in libeth struct, remove unused
+  defines, pass to specific functions quad word of descriptor instead of pass
+  rx_desc, add asserts to structs where applicable, return from fields extracting
+  functions when !fields.eop, refactor get VLAN tags, remove unnecessary empty
+  initialization of structs and few more. Please see v10 to compare all changes.
+https://lore.kernel.org/netdev/20241013154415.20262-1-mateusz.polchlopek@intel.com/
+
+v10:
+- only cosmetic changes, make every patch compile, fixing checkpatch issues
+https://lore.kernel.org/netdev/20240821121539.374343-1-wojciech.drewek@intel.com/
+
+v9:
+- another big refactor of code, again the list is too long to describe each change. Only
+  patch1 and patch12 has not been changed AFAIR. Please take a look on v8 and changes
+  requests from Alexander L. (in short - fixed structs paddings, aligns, optimized rx hot
+  path, renamed few structs, added "const" keyword where applicable, added kdoc comments
+  to newly introduced structs and defines, removed unnecessary casts, simplified few
+  functions and few more).
+https://lore.kernel.org/netdev/20240813125513.8212-1-mateusz.polchlopek@intel.com/
+
+v8:
+- big refactor to make code more optimised (too many changes to list them here, please
+  take a look on v7 patch9 and comments from Alexander L) - patch 11. Because of that I
+  decided to remove all gathered RB tags.
+- changed newly introduced spinlock aq_cmd_lock to mutex type to avoid deadlock - patch 7
+- adjusted function iavf_is_descriptor_done() to extract fields from descriptor in a new
+  way - patch 12
+- changed (and removed unused) defines that describe specific fields and bits in
+  descriptor
+https://lore.kernel.org/netdev/20240730091509.18846-1-mateusz.polchlopek@intel.com/
+
+v7:
+- changed .ndo_eth_ioctl to .ndo_hwtstamp_get and .ndo_hwtstamp_set
+  (according to Kuba's suggestion) - patch 11
+https://lore.kernel.org/netdev/20240604131400.13655-1-mateusz.polchlopek@intel.com/
+
+v6:
+- reordered tags
+- added RB tags where applicable
+- removed redundant instructions in ifs - patch 4 and patch 5
+- changed teardown to LIFO, adapter->ptp.initialized = false
+  moved to the top of function - patch 6
+- changed cpu-endianess for testing - patch 9
+- aligned to libeth changes - patch 9
+https://lore.kernel.org/netdev/20240528112301.5374-1-mateusz.polchlopek@intel.com/
+
+v5:
+- fixed all new issues generated by this series in kernel-doc
+https://lore.kernel.org/netdev/20240418052500.50678-1-mateusz.polchlopek@intel.com/
+
+v4:
+- fixed duplicated argument in iavf_virtchnl.c reported by coccicheck
+https://lore.kernel.org/netdev/20240410121706.6223-1-mateusz.polchlopek@intel.com/
+
+v3:
+- added RB in commit 6
+- removed inline keyword in commit 9
+- fixed sparse issues in commit 9 and commit 10
+- used GENMASK_ULL when possible in commit 9
+https://lore.kernel.org/netdev/20240403131927.87021-1-mateusz.polchlopek@intel.com/
+
+v2:
+- fixed warning related to wrong specifier to dev_err_once in
+  commit 7
+- fixed warnings related to unused variables in commit 9
+https://lore.kernel.org/netdev/20240327132543.15923-1-mateusz.polchlopek@intel.com/
+
+v1:
+- initial series
+https://lore.kernel.org/netdev/20240326115116.10040-1-mateusz.polchlopek@intel.com/
+---
+
+Jacob Keller (10):
+  virtchnl: add support for enabling PTP on iAVF
+  virtchnl: add enumeration for the rxdid format
+  iavf: add support for negotiating flexible RXDID format
+  iavf: negotiate PTP capabilities
+  iavf: add initial framework for registering PTP clock
+  iavf: add support for indirect access to PHC time
+  iavf: periodically cache PHC time
+  iavf: refactor iavf_clean_rx_irq to support legacy and flex
+    descriptors
+  iavf: handle set and get timestamps ops
+  iavf: add support for Rx timestamps to hotpath
+
+Mateusz Polchlopek (3):
+  libeth: move idpf_rx_csum_decoded and idpf_rx_extracted
+  iavf: define Rx descriptors as qwords
+  iavf: Implement checking DD desc field
+
+Simei Su (1):
+  ice: support Rx timestamp on flex descriptor
+
+ drivers/net/ethernet/intel/iavf/Makefile      |   2 +
+ drivers/net/ethernet/intel/iavf/iavf.h        |  35 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 228 +++++++-
+ drivers/net/ethernet/intel/iavf/iavf_ptp.c    | 485 ++++++++++++++++++
+ drivers/net/ethernet/intel/iavf/iavf_ptp.h    |  47 ++
+ drivers/net/ethernet/intel/iavf/iavf_trace.h  |   6 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   | 433 ++++++++++++----
+ drivers/net/ethernet/intel/iavf/iavf_txrx.h   |  24 +-
+ drivers/net/ethernet/intel/iavf/iavf_type.h   | 239 ++++-----
+ drivers/net/ethernet/intel/iavf/iavf_types.h  |  34 ++
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 203 ++++++++
+ drivers/net/ethernet/intel/ice/ice_base.c     |   3 -
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   5 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c      |   4 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h      |   8 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |   3 +
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  77 ++-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.h |   6 +
+ .../intel/ice/ice_virtchnl_allowlist.c        |   7 +
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  51 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  16 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  19 -
+ include/linux/avf/virtchnl.h                  | 135 ++++-
+ include/net/libeth/rx.h                       |  47 ++
+ 24 files changed, 1786 insertions(+), 331 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_ptp.c
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_ptp.h
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_types.h
+
+
+base-commit: af148a444def1452fb6a565d8d81d4e7bbe06c30
 -- 
-2.43.0
+2.38.1
 
