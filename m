@@ -1,177 +1,162 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E91322A;
-	Tue, 22 Oct 2024 03:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B45828E8;
+	Tue, 22 Oct 2024 03:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729566467; cv=none; b=QlI02cMPvo2CzVDzSE7rLWgsq/nWMs4GxMNzI+V6au0XyJ5U1Fuclh2+oSx/EnJL7hZ9sqzhZm6d7/eOEQTZbLSIi4SsiYZ6+VYKg28WRtHSyFq7eT3G0aGXUYcdQh2bv3YM6CwLiirRkPaspEi9FctbYtt9ErBmB7o+CzDKJ0E=
+	t=1729566734; cv=none; b=XUxj2yoX+iA4382rZExWHIiyOsCUurKY5RD3WKPo7Fuwo/39sRzZrOq5tUFxqwlk8/wXJUuYu9pR7JaQcr2AaTqtqrEigRCeCCAyDyuZQFvtVcEqKaliI6WKfJUWg8s2Y26WdtX1D63T08nVk7q2ToneDWnXwVucaEO1nTo3svA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729566467; c=relaxed/simple;
-	bh=pcXWKg3Dwx917197QJAKwJoycbVvQEw1HjCOIri/uL4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h51wB7nlkq8FAhPi9llFdf+dAax5mx3tddP5W162ViDLMTfFCxL7Ksy3pH690g7+1R4Bi9N4GRxp0slTmvNq0L5bROZyO6eE7z3Pi16C7aiV9UTPusGQ4XYqnwPNBMZiYjGyKZ7+ZUrizkZitARGkYwqCb3uyxYeOx7a2eXhFHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHWZt1tP; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729566734; c=relaxed/simple;
+	bh=3YHkXyk0hl2jqIBCwCWhBOAYI/fCkzb2NdRgpLLCU5Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HMj75lPwmzJRePg7m/Xod5WXBe7i9KOLCOiu1bjKwI0c5l5hhzZz+fTWoB8tb6mcUkbglHn6QUUPVwdBs5FQxevABBblBFkCIqBCnjAx043dE8l+v38jWEUICgh+vgEhIgem+qQP5WRN8rE8BLbzkKcBaYwL6afzLuu+UuFyflA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dLcX4Qe3; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHWZt1tP"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71eb1d0e3c2so1981401b3a.2;
-        Mon, 21 Oct 2024 20:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729566465; x=1730171265; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WWq31H5n39331yEuvn0+CKOb9FJ00xa/NHJ9azf7H20=;
-        b=HHWZt1tPLFycOLcX/6aTgsXO3+UPFukcWz13yM/+o+k6SXTK9F54K4sLOqPSA4fARW
-         VYj3VVwc4zlqOaXOTNPPugog8RqxzJs9LSnIQEBgf3Per7jaoLlK5pB3Vjx8n+vQLJuS
-         Y8kV3bSYWyzKTqLxPveAs5FYjZRcQM5L56e3i6Zu0aZFXuosecS04Uvz4EKpSnMHRa2U
-         ey7p0LqrdEI2qQOBABX+Cbsqn3iXnKbsE46ku+D6riXfp07vsr5WWWcH1tFg5B5ZgGNk
-         DdvI8DekKuH49f7nI0uSTnTfJmFM35AOCwbI3gvzZs/pti5eXlGIF+s0xYPcQ1yXuNX0
-         gdlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729566465; x=1730171265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WWq31H5n39331yEuvn0+CKOb9FJ00xa/NHJ9azf7H20=;
-        b=JKfnWGOh6i2eohKMcNKb7LrmTsLkIphuX6acJpNdCEcQ+ixifIDC1GIUPAARkK1q9A
-         JIfHIO/UdmQ4HWAxYLs/zjH5NYeYHjPafCavkxdtr13CY85pQ2zQN+6lWIyXtJfu9+qg
-         n9q3XU4or0CUTw7ZfDW3gSNCA9ZkDFoMKalGCI1pBmnXZlbfYGyeJPpFiG+sk+NXddlP
-         FJJVjQ6YLX6xGTdpQDyGx5XJYyY0htBgspj1HMsAbwjK6+lzrt/3B/gO5vksDaCDIIA/
-         s33ZuHuapCdOhw/MJFbMSgaCcGeZKSZArg4bQteIbcHF05GSI6h1VvOl1phf98jBOyyi
-         39pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9tPbnmJ+Cf9SrvDXZDt+IQxt38xDiPlf1FBnX8D4YgZwu/drXWhTDmPamoU8bDk+gQK++Zmqn@vger.kernel.org, AJvYcCUuJ0FjrS1M6AHaFe71S4tpkQRPYoXv6oeNcjYU8kGkzBZ7LR4qterFOli3B+Gd/3iIryHtlk1YQ0UWbw==@vger.kernel.org, AJvYcCVUDYOdlWV9w96NC0LCVkrbqZoSmQkhv5qMuO1wjAHHhkDB+CCEBWFzhzsSzLDKEFjJcOY=@vger.kernel.org, AJvYcCW18izol0I7lfYTck5r83aHidw3Le87giIbLTn1fOnPgaODLvYPcRBj3vZDV4oIQ+Xb5TimGobH+mLwzsoF@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLG2j0FJM96OnTUiNnhIHeWCxcof3PAxURX5gubPb1WEAODC3s
-	Y20WS6ctQXrEMYgQft0rz5lUfdC4uPj2mdCFqBtQtczXc2owJRMN/n8/pk1QqB0+tll+I+BsaVU
-	rdNANVZJ5rHi0KesIrLNhBYPJsg4=
-X-Google-Smtp-Source: AGHT+IFqKI6HjrzUPwBD8vnjKRXBX4V+2NxfwmmxwYKZ8aFnomTb3ADnQd+7OdNwacjn1UMxhv8nk2zSbu06FB/Uniw=
-X-Received: by 2002:a05:6a00:3e0e:b0:71e:19a:c48b with SMTP id
- d2e1a72fcca58-71ea31e49ecmr18822797b3a.22.1729566464727; Mon, 21 Oct 2024
- 20:07:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dLcX4Qe3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729566733; x=1761102733;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3YHkXyk0hl2jqIBCwCWhBOAYI/fCkzb2NdRgpLLCU5Q=;
+  b=dLcX4Qe3T27mS9qDsMSyWCHuafBfO1MN0ORHc/1Pub+B/MyvtIzdBnL2
+   78pkaG/ig8KbTCgPPVZDc5eW4f2xXqDHfT/h+dL/OGP4FQ0xu4YD4FCdZ
+   ix6xxTXogC81uUkqM3MbtD8IiAxGQhXM5lfTQ+BxZTvtR6ZKL2vD0mzAh
+   B6xCc4upQfOxS3eJpuuSPrgcKfO/iasVqwefhI7e3/2v58X8W/CPTfWTI
+   RJQ0UOn3J+Nw5RURHIEzbHKTAbmh8I5/85xMWAKsGq7u3VMvLPd0OzXZE
+   DWyE9A+9qlH2D3kaF8/A6aHOuUHerVbrcrTTRBqRy3aTYgX9Z8fzvG0T2
+   g==;
+X-CSE-ConnectionGUID: VSrXkCD4RZChtE/HVp1aQQ==
+X-CSE-MsgGUID: yE/SnpRBTGe5NfAqpzvUag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="40466009"
+X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
+   d="scan'208";a="40466009"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 20:12:12 -0700
+X-CSE-ConnectionGUID: zsn6Wc6LS9eHXrxUcRxjlg==
+X-CSE-MsgGUID: r+4nQiC/R4m76eLBFmS8XA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
+   d="scan'208";a="80082482"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 21 Oct 2024 20:12:08 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t35JW-000Syw-2R;
+	Tue, 22 Oct 2024 03:12:06 +0000
+Date: Tue, 22 Oct 2024 11:11:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pawel Dembicki <paweldembicki@gmail.com>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/3] net: dsa: vsc73xx: implement transmit via
+ control interface
+Message-ID: <202410221001.KrzTEU3A-lkp@intel.com>
+References: <20241020205452.2660042-1-paweldembicki@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022120211.2a5d41ed@canb.auug.org.au>
-In-Reply-To: <20241022120211.2a5d41ed@canb.auug.org.au>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Mon, 21 Oct 2024 20:07:32 -0700
-Message-ID: <CAEf4BzamHrmdwRFKAr9MGSmaVtrJT3-ru=KPXEcO981XZsM+Ew@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the bpf-next tree with Linus' tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Viktor Malik <vmalik@redhat.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Networking <netdev@vger.kernel.org>, 
-	=?UTF-8?Q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>, Martin KaFai Lau <martin.lau@kernel.org>, 
-	Simon Sundberg <simon.sundberg@kau.se>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241020205452.2660042-1-paweldembicki@gmail.com>
 
-On Mon, Oct 21, 2024 at 6:02=E2=80=AFPM Stephen Rothwell <sfr@canb.auug.org=
-.au> wrote:
->
-> Hi all,
->
-> Today's linux-next merge of the bpf-next tree got a conflict in:
->
->   tools/testing/selftests/bpf/Makefile
->
-> between commit:
->
->   f91b256644ea ("selftests/bpf: Add test for kfunc module order")
->
-> from Linus' tree and commit:
->
->   c3566ee6c66c ("selftests/bpf: remove test_tcp_check_syncookie")
->
-> from the bpf-next tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->
-> --
-> Cheers,
-> Stephen Rothwell
->
-> diff --cc tools/testing/selftests/bpf/Makefile
-> index 75016962f795,6d15355f1e62..000000000000
-> --- a/tools/testing/selftests/bpf/Makefile
-> +++ b/tools/testing/selftests/bpf/Makefile
-> @@@ -154,11 -153,9 +153,10 @@@ TEST_PROGS_EXTENDED :=3D with_addr.sh
->
->   # Compile but not part of 'make run_tests'
->   TEST_GEN_PROGS_EXTENDED =3D \
-> -       flow_dissector_load test_flow_dissector test_tcp_check_syncookie_=
-user \
-> -       test_lirc_mode2_user xdping test_cpp runqslower bench bpf_testmod=
-.ko \
-> -       xskxceiver xdp_redirect_multi xdp_synproxy veristat xdp_hw_metada=
-ta \
-> -       xdp_features bpf_test_no_cfi.ko bpf_test_modorder_x.ko \
-> -       bpf_test_modorder_y.ko
-> +       flow_dissector_load test_flow_dissector test_lirc_mode2_user xdpi=
-ng \
-> +       test_cpp runqslower bench bpf_testmod.ko xskxceiver xdp_redirect_=
-multi \
->  -      xdp_synproxy veristat xdp_hw_metadata xdp_features bpf_test_no_cf=
-i.ko
-> ++      xdp_synproxy veristat xdp_hw_metadata xdp_features bpf_test_no_cf=
-i.ko \
-> ++      bpf_test_modorder_x.ko bpf_test_modorder_y.ko
->
->   TEST_GEN_FILES +=3D liburandom_read.so urandom_read sign-file uprobe_mu=
-lti
->
-> @@@ -301,22 -302,11 +303,24 @@@ $(OUTPUT)/bpf_testmod.ko: $(VMLINUX_BTF
->   $(OUTPUT)/bpf_test_no_cfi.ko: $(VMLINUX_BTF) $(RESOLVE_BTFIDS) $(wildca=
-rd bpf_test_no_cfi/Makefile bpf_test_no_cfi/*.[ch])
->         $(call msg,MOD,,$@)
->         $(Q)$(RM) bpf_test_no_cfi/bpf_test_no_cfi.ko # force re-compilati=
-on
-> -       $(Q)$(MAKE) $(submake_extras) RESOLVE_BTFIDS=3D$(RESOLVE_BTFIDS) =
--C bpf_test_no_cfi
-> +       $(Q)$(MAKE) $(submake_extras) -C bpf_test_no_cfi \
-> +               RESOLVE_BTFIDS=3D$(RESOLVE_BTFIDS)         \
-> +               EXTRA_CFLAGS=3D'' EXTRA_LDFLAGS=3D''
->         $(Q)cp bpf_test_no_cfi/bpf_test_no_cfi.ko $@
->
->  +$(OUTPUT)/bpf_test_modorder_x.ko: $(VMLINUX_BTF) $(RESOLVE_BTFIDS) $(wi=
-ldcard bpf_test_modorder_x/Makefile bpf_test_modorder_x/*.[ch])
->  +      $(call msg,MOD,,$@)
->  +      $(Q)$(RM) bpf_test_modorder_x/bpf_test_modorder_x.ko # force re-c=
-ompilation
->  +      $(Q)$(MAKE) $(submake_extras) RESOLVE_BTFIDS=3D$(RESOLVE_BTFIDS) =
--C bpf_test_modorder_x
->  +      $(Q)cp bpf_test_modorder_x/bpf_test_modorder_x.ko $@
->  +
->  +$(OUTPUT)/bpf_test_modorder_y.ko: $(VMLINUX_BTF) $(RESOLVE_BTFIDS) $(wi=
-ldcard bpf_test_modorder_y/Makefile bpf_test_modorder_y/*.[ch])
->  +      $(call msg,MOD,,$@)
->  +      $(Q)$(RM) bpf_test_modorder_y/bpf_test_modorder_y.ko # force re-c=
-ompilation
->  +      $(Q)$(MAKE) $(submake_extras) RESOLVE_BTFIDS=3D$(RESOLVE_BTFIDS) =
--C bpf_test_modorder_y
+Hi Pawel,
 
-This and above will need the EXTRA_CFLAGS and EXTRA_LDFLAGS additions
-that we have for bpf_test_no_cfi.ko. For now, I'll unland the patch
-set to avoid this conflict and breakage. We'll reapply once bpf is
-merged into bpf-next. Viktor, please rebase to take into account these
-new modorder.ko additions.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pawel-Dembicki/net-dsa-vsc73xx-implement-packet-reception-via-control-interface/20241021-050041
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241020205452.2660042-1-paweldembicki%40gmail.com
+patch subject: [PATCH net-next 1/3] net: dsa: vsc73xx: implement transmit via control interface
+config: openrisc-allyesconfig (https://download.01.org/0day-ci/archive/20241022/202410221001.KrzTEU3A-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241022/202410221001.KrzTEU3A-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410221001.KrzTEU3A-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/dsa/vitesse-vsc73xx-core.c: In function 'vsc73xx_inject_frame':
+>> drivers/net/dsa/vitesse-vsc73xx-core.c:766:30: warning: argument to 'sizeof' in 'memset' call is the same expression as the destination; did you mean to dereference it? [-Wsizeof-pointer-memaccess]
+     766 |         memset(buf, 0, sizeof(buf));
+         |                              ^
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [y]:
+   - RESOURCE_KUNIT_TEST [=y] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
 
 
->  +      $(Q)cp bpf_test_modorder_y/bpf_test_modorder_y.ko $@
->  +
->  +
->   DEFAULT_BPFTOOL :=3D $(HOST_SCRATCH_DIR)/sbin/bpftool
->   ifneq ($(CROSS_COMPILE),)
->   CROSS_BPFTOOL :=3D $(SCRATCH_DIR)/sbin/bpftool
+vim +766 drivers/net/dsa/vitesse-vsc73xx-core.c
+
+   750	
+   751	static int
+   752	vsc73xx_inject_frame(struct vsc73xx *vsc, int port, struct sk_buff *skb)
+   753	{
+   754		struct vsc73xx_ifh *ifh;
+   755		u32 length, i, count;
+   756		u32 *buf;
+   757		int ret;
+   758	
+   759		if (skb->len + VSC73XX_IFH_SIZE < 64)
+   760			length = 64;
+   761		else
+   762			length = skb->len + VSC73XX_IFH_SIZE;
+   763	
+   764		count = DIV_ROUND_UP(length, 8);
+   765		buf = kzalloc(count * 8, GFP_KERNEL);
+ > 766		memset(buf, 0, sizeof(buf));
+   767	
+   768		ifh = (struct vsc73xx_ifh *)buf;
+   769		ifh->frame_length = skb->len;
+   770		ifh->magic = VSC73XX_IFH_MAGIC;
+   771	
+   772		skb_copy_and_csum_dev(skb, (u8 *)(buf + 2));
+   773	
+   774		for (i = 0; i < count; i++) {
+   775			ret = vsc73xx_write_tx_fifo(vsc, port, buf[2 * i],
+   776						    buf[2 * i + 1]);
+   777			if (ret) {
+   778				/* Clear buffer after error */
+   779				vsc73xx_update_bits(vsc, VSC73XX_BLOCK_MAC, port,
+   780						    VSC73XX_MISCFIFO,
+   781						    VSC73XX_MISCFIFO_REWIND_CPU_TX,
+   782						    VSC73XX_MISCFIFO_REWIND_CPU_TX);
+   783				goto err;
+   784			}
+   785		}
+   786	
+   787		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MISCFIFO,
+   788			      VSC73XX_MISCFIFO_CPU_TX);
+   789	
+   790		skb_tx_timestamp(skb);
+   791	
+   792		skb->dev->stats.tx_packets++;
+   793		skb->dev->stats.tx_bytes += skb->len;
+   794	err:
+   795		kfree(buf);
+   796		return ret;
+   797	}
+   798	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
