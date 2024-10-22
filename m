@@ -1,141 +1,84 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF8A19923D;
-	Tue, 22 Oct 2024 08:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A42E2BB09
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 08:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729587458; cv=none; b=NLgUJ2GlDSldq2Y9jbXwelaQvlo/A1qnRM6XPWooIN3CAS8Ullns3LJE3JNyJmSX/C04BKAalRQ43g1lYTHd0oUIAS9J/Q8LNnUii8FQayD52x0Q1u9D4tto3GfbJHhrQL5omoOj/JNSb4btLyrNQAGebtjX9kclwb6ZpkHWyVs=
+	t=1729587565; cv=none; b=A5YXoEokYLwWGUqHB2UaHNMrU9zftt0Yjw95/eqvvuPk2fSeGg5Si2BPWWR9r3VgF9R95m3/HU0Vx2KsVNXcEJc+jvFU9rQhvxVu4ShrxyprGXzseQcXu5FwrBtbw19MR7D6I51mnoETxtSwopeVxYEKicNJKo4P474i9IV/Xzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729587458; c=relaxed/simple;
-	bh=CSDIdrsCl4FE8/0Omz+BP48e9uK4dqAaWfIDnDhupAI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WXzguizmhDZkG8qRcTKP1CYsRqUXn0OIjqQtBJDv/8ikRAM/wsdiz//gDKs1Sdh/kD/ICLidx+A/SKsKd7zahT11YlRub4mlHmfrF5s4XcjE0v+8oTO3/9sMTOliUiLlmYyI7Uft8ZN7Qn/2029h7OU877aNLgd8PrC3Oz5+lXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XXmJB0bd8z20qdB;
-	Tue, 22 Oct 2024 16:56:42 +0800 (CST)
-Received: from kwepemd100023.china.huawei.com (unknown [7.221.188.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id A28861400CB;
-	Tue, 22 Oct 2024 16:57:32 +0800 (CST)
-Received: from localhost.localdomain (10.175.104.82) by
- kwepemd100023.china.huawei.com (7.221.188.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 22 Oct 2024 16:57:31 +0800
-From: Dong Chenchen <dongchenchen2@huawei.com>
-To: <pablo@netfilter.org>, <kadlec@netfilter.org>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<fw@strlen.de>, <kuniyu@amazon.com>
-CC: <netfilter-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<yuehaibing@huawei.com>, Dong Chenchen <dongchenchen2@huawei.com>
-Subject: [PATCH net] net: netfilter: Fix use-after-free in get_info()
-Date: Tue, 22 Oct 2024 16:57:53 +0800
-Message-ID: <20241022085753.2069639-1-dongchenchen2@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1729587565; c=relaxed/simple;
+	bh=5eXpd5te8xm/yapD8YQMh4TuNbGd84GpOKGaCnsGhr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hX+3jdV6WooYj2nPGUcOIsRzpFQRz9vo/JRSgXY1gZojNhBPBswXEZvQO7zHJ90Ig7qm4teA14o94afs9khWrCyaUtQwgm+XsAI+IMEuW9yB/RE5fxJcs3gFhFlVRL2dFZnKehzEgxCmrsEjOuT+UWVLSULXHeHBhyiFkxkOoh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qn3eqQOH; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qn3eqQOH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2303C4CEC3;
+	Tue, 22 Oct 2024 08:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729587565;
+	bh=5eXpd5te8xm/yapD8YQMh4TuNbGd84GpOKGaCnsGhr8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qn3eqQOHvIBsOiKBdRxaSfIqwBgD6P4aYA61vglvTOwSA5Xdk9FjY1Umb26ARtCA9
+	 U1FGEI9+nk9E+q4a9/dDDEmMwI4ESEzNLkneeOCZ5m1cx+ZEWcB3qOd4l0BJxnsA+h
+	 iLjb7Rg3teJ0kpzHqhhg9bVmLA/zo2aq1lLJCOtkZgRS8lOwETLOs1pU6x5GIJxsqK
+	 OIiDK0NQB/C6sQJ3qb4HKg7RToB013lmEFkW3ENjSOL5LtnkwFLogApESv4GTDBo4x
+	 gzEoHLLlpnuts2+8Tw054PRJlZjW+W3Tz3qxHIn/AgqrD+eIWr2I1tgg/6EP1VR2yq
+	 YAcfClETQZ4bw==
+Date: Tue, 22 Oct 2024 09:59:20 +0100
+From: Simon Horman <horms@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	Roopa Prabhu <roopa@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>
+Subject: Re: [PATCH v2 net-next 13/14] rtnetlink: Return int from
+ rtnl_af_register().
+Message-ID: <20241022085920.GS402847@kernel.org>
+References: <20241016185357.83849-1-kuniyu@amazon.com>
+ <20241016185357.83849-14-kuniyu@amazon.com>
+ <ec78e7dd-a0c4-45e3-afe6-604308f7240e@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemd100023.china.huawei.com (7.221.188.33)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec78e7dd-a0c4-45e3-afe6-604308f7240e@redhat.com>
 
-ip6table_nat module unload has refcnt warning for UAF. call trace is:
+On Tue, Oct 22, 2024 at 10:53:32AM +0200, Paolo Abeni wrote:
+> On 10/16/24 20:53, Kuniyuki Iwashima wrote:
+> > diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> > index 445e6ffed75e..70b663aca209 100644
+> > --- a/net/core/rtnetlink.c
+> > +++ b/net/core/rtnetlink.c
+> > @@ -686,11 +686,13 @@ static const struct rtnl_af_ops *rtnl_af_lookup(const int family)
+> >   *
+> >   * Returns 0 on success or a negative error code.
+> >   */
+> > -void rtnl_af_register(struct rtnl_af_ops *ops)
+> > +int rtnl_af_register(struct rtnl_af_ops *ops)
+> >  {
+> >  	rtnl_lock();
+> >  	list_add_tail_rcu(&ops->list, &rtnl_af_ops);
+> >  	rtnl_unlock();
+> > +
+> > +	return 0;
+> >  }
+> >  EXPORT_SYMBOL_GPL(rtnl_af_register);
+> 
+> kdoc complains about the missing description for the return value. You
+> need to replace 'Returns' with '@return'.
+> 
+> Not blocking, but please follow-up.
 
-WARNING: CPU: 1 PID: 379 at kernel/module/main.c:853 module_put+0x6f/0x80
-Modules linked in: ip6table_nat(-)
-CPU: 1 UID: 0 PID: 379 Comm: ip6tables Not tainted 6.12.0-rc4-00047-gc2ee9f594da8-dirty #205
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:module_put+0x6f/0x80
-Call Trace:
- <TASK>
- get_info+0x128/0x180
- do_ip6t_get_ctl+0x6a/0x430
- nf_getsockopt+0x46/0x80
- ipv6_getsockopt+0xb9/0x100
- rawv6_getsockopt+0x42/0x190
- do_sock_getsockopt+0xaa/0x180
- __sys_getsockopt+0x70/0xc0
- __x64_sys_getsockopt+0x20/0x30
- do_syscall_64+0xa2/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Concurrent execution of module unload and get_info() trigered the warning.
-The root cause is as follows:
-
-cpu0				      cpu1
-module_exit
-//mod->state = MODULE_STATE_GOING
-  ip6table_nat_exit
-    xt_unregister_template
-    //remove table from templ list
-				      getinfo()
-					  t = xt_find_table_lock
-						list_for_each_entry(tmpl, &xt_templates[af]...)
-							if (strcmp(tmpl->name, name))
-								continue;  //table not found
-							try_module_get
-						list_for_each_entry(t, &xt_net->tables[af]...)
-							return t;  //not get refcnt
-					  module_put(t->me) //uaf
-    unregister_pernet_subsys
-    //remove table from xt_net list
-
-While xt_table module was going away and has been removed from
-xt_templates list, we couldnt get refcnt of xt_table->me. Skip
-the re-traversal of xt_net->tables list to fix it.
-
-Fixes: c22921df777d ("netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().")
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
----
- net/netfilter/x_tables.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index da5d929c7c85..359c880ecb07 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1239,6 +1239,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
- 	struct module *owner = NULL;
- 	struct xt_template *tmpl;
- 	struct xt_table *t;
-+	int err = -ENOENT;
- 
- 	mutex_lock(&xt[af].mutex);
- 	list_for_each_entry(t, &xt_net->tables[af], list)
-@@ -1247,8 +1248,6 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
- 
- 	/* Table doesn't exist in this netns, check larval list */
- 	list_for_each_entry(tmpl, &xt_templates[af], list) {
--		int err;
--
- 		if (strcmp(tmpl->name, name))
- 			continue;
- 		if (!try_module_get(tmpl->me))
-@@ -1267,6 +1266,9 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
- 		break;
- 	}
- 
-+	if (err < 0)
-+		goto out;
-+
- 	/* and once again: */
- 	list_for_each_entry(t, &xt_net->tables[af], list)
- 		if (strcmp(t->name, name) == 0)
-@@ -1275,7 +1277,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
- 	module_put(owner);
-  out:
- 	mutex_unlock(&xt[af].mutex);
--	return ERR_PTR(-ENOENT);
-+	return ERR_PTR(err);
- }
- EXPORT_SYMBOL_GPL(xt_find_table_lock);
- 
--- 
-2.25.1
-
+FWIIW, I think "Return: " or "Returns: " also works.
