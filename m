@@ -1,41 +1,44 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231C513E03E;
-	Tue, 22 Oct 2024 06:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C812C491;
+	Tue, 22 Oct 2024 06:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729578901; cv=none; b=bnqTiL31d71V4RLv/QKg0BpgF3I+y4OTJgQ1iKSOAd6p0WJrv08XWnSNzp3VcJF43pa8wf4YRJQvf5xQUzekFYdSPrgndLqi/4ETF/+OaPN2lJbfWRzlH/GGGKGfPFETtsKgF91eNo/dvbNWYXxJYs1s+bPk918JFy8klIXKDoA=
+	t=1729579131; cv=none; b=FbYMDmBMn0LLXbjwvXEDIoefIs1tMgHJ7voQkg/U274v1evD0obs0CIjRWUvo74ntdBTJSAOvnvAe9OEKjPeV64NyIGCbpoQtbSE/1xHm66z+HEc6p+kZduh0l2DAbSk3Y/OGrEEGDE8TDUvzNhvu/Btr2E3O12YF3RnadPvEn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729578901; c=relaxed/simple;
-	bh=8K/VATla1L1n8Z05aZvcxnm6SoF/Q5GPkeLFx03jPxU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o/9Ea952T7BYjwoTyNQ4vcLSQHdCmEKJgIEeMBcGXErRzV+gkvX1aamA/h8Ecr07jTsN7K6bvFtNCHGK9P0U3mLg+GwOLCyytl/BodJidravO3fh+xkt2/b441IYX+VlEGagj+ht+WmfxLUzh+tYWZFhmhA2H/h8KSGSePOdb4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wEMifSCQ; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wEMifSCQ"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1729578895; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=+ZZPQAYmRXKxmJmQ4eJpW73d5G6LtgL0a+fwNFvJN9Q=;
-	b=wEMifSCQ2zAKL9U4jqcBK30U5Lz61BN2V7FyZXYAv+vsz3N2BweQv8wbmhX2RWmmAmI6fhv+83hMaXEkxGFr0aMdXinZmlp1xZGWQdLEJBtulUREUOUsfbjF0nsUmEc4QMzjpgPz8IeQEOd+HiWZXgSaPWOl1KC77cWFhXxEtTQ=
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0WHgplux_1729578894 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Oct 2024 14:34:55 +0800
-From: Yang Li <yang.lee@linux.alibaba.com>
-To: vburru@marvell.com,
-	sedara@marvell.com,
-	davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next] octeon_ep: Remove unneeded semicolon
-Date: Tue, 22 Oct 2024 14:34:53 +0800
-Message-Id: <20241022063453.103751-1-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+	s=arc-20240116; t=1729579131; c=relaxed/simple;
+	bh=k14RtmqwKfkvlT+nCUP+ARSG0sVw9XIzZz6Ejz/ouNE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mr5tX2skJw69nMf620AFFfXAaOE9P553n8KZ9BM6rmq+8bHlXc1ybtWJuBOAU17A8PvsPtJntRNuN6GxcXRF3zM3jOCaHHMIvUWF5luff8b/xFYQW5cRdnxkE0DKcwkAghtD6Kq7RTXUSzaH/RIN9MVNcteS2WAL2SZBnUkiDQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XXjBn3fhpzpXJ3;
+	Tue, 22 Oct 2024 14:36:49 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id B6B52140384;
+	Tue, 22 Oct 2024 14:38:46 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 22 Oct
+ 2024 14:38:45 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+	<hawk@kernel.org>, <john.fastabend@gmail.com>,
+	<maciej.fijalkowski@intel.com>, <vedang.patel@intel.com>,
+	<jithu.joseph@intel.com>, <andre.guedes@intel.com>, <horms@kernel.org>,
+	<jacob.e.keller@intel.com>, <sven.auhagen@voleatech.de>,
+	<alexander.h.duyck@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH v3 net 0/4] Fix passing 0 to ERR_PTR in intel ether drivers
+Date: Tue, 22 Oct 2024 14:56:19 +0800
+Message-ID: <20241022065623.1282224-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,31 +46,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-This patch removes an unneeded semicolon after a while statement.
+Fixing sparse error in xdp run code by introducing new variable xdp_res
+instead of overloading this into the skb pointer as i40e drivers done
+in commit 12738ac4754e ("i40e: Fix sparse errors in i40e_txrx.c") and
+commit ae4393dfd472 ("i40e: fix broken XDP support").
 
-./drivers/net/ethernet/marvell/octeon_ep/octep_rx.c:381:2-3: Unneeded semicolon
+v3: Fix uninitialized 'xdp_res' in patch 3 and 4 which Reported-by
+    kernel test robot
+v2: Fix this as i40e drivers done instead of return NULL in xdp run code
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11430
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/net/ethernet/marvell/octeon_ep/octep_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yue Haibing (4):
+  igc: Fix passing 0 to ERR_PTR in igc_xdp_run_prog()
+  igb: Fix passing 0 to ERR_PTR in igb_run_xdp()
+  ixgbe: Fix passing 0 to ERR_PTR in ixgbe_run_xdp()
+  ixgbevf: Fix passing 0 to ERR_PTR in ixgbevf_run_xdp()
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index 8af75cb37c3e..d65d9572ffa6 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -378,7 +378,7 @@ static void octep_oq_drop_rx(struct octep_oq *oq,
- 	while (data_len > 0) {
- 		octep_oq_next_pkt(oq, buff_info, read_idx, desc_used);
- 		data_len -= oq->buffer_size;
--	};
-+	}
- }
- 
- /**
+ drivers/net/ethernet/intel/igb/igb_main.c     | 22 +++++++-----------
+ drivers/net/ethernet/intel/igc/igc_main.c     | 20 ++++++----------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 23 ++++++++-----------
+ .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 23 ++++++++-----------
+ 4 files changed, 34 insertions(+), 54 deletions(-)
+
 -- 
-2.32.0.3.g01195cf9f
+2.34.1
 
