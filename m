@@ -1,232 +1,165 @@
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011007.outbound.protection.outlook.com [52.101.65.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49736770FD
-	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 17:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729618241; cv=none; b=nOWTlb/Th0XrrFHL0ToGZTrF3NFpdOtanRiEq/wSlbRxukdxrkzm7cW8df0gj6gTU3rpQB4ukUbynDthCDVKqLwQBzbS5Lb3JICqTNJAqrhhstR1PpgGJa8jjpT2sc3QqZ23y9NdNCnXDkg0ZEqfa3DbYcgswyq9LEvc8WEqW/g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729618241; c=relaxed/simple;
-	bh=8GUnW0klfLk4CvdCGeRjaYnUhFPegexZt+M3RWhjR1k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cUcZCyWn+3gA8yMyA1VkKjHepLJZ9sxphVSqRiDdYmPm0EYaI304j1zB6fOwKvcs79VgB8wW+GKBDvoKNlN1GdPxvUtVvTSprwu7UKfmwqqlkRj+H4mKXO6GRaUWmJMNs4eBR608QlkVi9GDBnhv0PIKwwnBMdx2q9EjKnaFU+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=SyhXsfpM; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6F21EB48;
+	Tue, 22 Oct 2024 17:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729618574; cv=fail; b=MmtW5FOoV6X4kL7fMGx1SfrR/6DDyXXWfy5t5a4z4gq+orax+bfO9lWSnj2D57WOY3OdG2Z6ylzQnNdoqokhGKzUlzSN90bhSsnIzAcXbW4qUy0PCrizVxguK+zDg5sgXrAGDcJNLOvZZX3X/JgjxBPptfA+yS83ElZG+5wjSeQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729618574; c=relaxed/simple;
+	bh=zGiFIpmjy7wFAp3GqcgaJ96A2zQlhj+VNwKo8Jr2bxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QExYQVPV6CcVLOFjYE9aoSGeYO+S/FEE6maG4KErjZTNZH5FrMtVFd2NXtuWn57g9vjV03bhAbyeEiqh/PqcsS1WeZ52a0+ZPgjGaHko617jQQ3T7yG8IdOKbG7ymubjKq8YPaXqjsRUTtj9e6WC7y7I/xQVs3jBRbb/tGy1Gq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TFCTk/0J; arc=fail smtp.client-ip=52.101.65.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="SyhXsfpM"
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id 3FECtjoFCiA193IiMtNPaT; Tue, 22 Oct 2024 17:30:38 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 3IiLttK50zWaB3IiLtV1Q0; Tue, 22 Oct 2024 17:30:37 +0000
-X-Authority-Analysis: v=2.4 cv=dfaG32Xe c=1 sm=1 tr=0 ts=6717e13d
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=OKg9RQrQ6+Y1xAlsUndU0w==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=mDV3o1hIAAAA:8 a=1M5SEvRStrY57UaG3sYA:9 a=QEXdDO2ut3YA:10 a=SS-iHM-wgvsA:10
- a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rVIHG0XmA4f4VSAeMysoNLiGdGii26ZP6xLyaTfZXZ0=; b=SyhXsfpMsrRwSnWbESjHwRXAF/
-	KZcjBwyvOV4yb56hqbhhAnejgGQ5NLdbLdfJPCxJHP2oJTvmMHdl64yB5UebGwJjJLPTV5gRmuXTf
-	OFq2gnQnYmoLGG5B3kvMFTi2BtsqvfgTpeGwzKYtswLcm5Gdr2atCbLw5FZFaWt7XwzoRM/kXjffN
-	X1kpHQ7AB+DNAWy9yi4NvlnycyngOJTTyLPy09ZR0Y89FuJHIolLrX3l70AoX/4JpSUwLJHSGNxi+
-	HMWBA8vKkjKeNpS1zV3GwNR8i/f/gPhvP6uU30o5YFGrEXIe6JZb8eV6we+y+PuyIKCp8FTmpMg5x
-	LVXgNpaw==;
-Received: from [201.172.173.7] (port=32812 helo=[192.168.15.5])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1t3IiJ-001Gog-1s;
-	Tue, 22 Oct 2024 12:30:35 -0500
-Message-ID: <ce6cd8e7-cd59-4fcd-89d4-b62765add7a9@embeddedor.com>
-Date: Tue, 22 Oct 2024 11:30:32 -0600
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TFCTk/0J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FINoWu9RNDhmxJdO1XoGdwI5hv/1PEVSSEY79DInWMn/4IS2AX5HrqXuIpLR4y+bTVklaBqG4PqlEhhju4AQAPrCwMTtteskKh01DMHvkZnqPuiXG+IEP1ZKYsqAmV5JlJ/2VwDBEjVXVW3v/lo6LKWdw8yne46EpgryHtEUrz2p8U6yz5nP5eVePjkutmOgNtyWCbSc8/aXFmfD4z5AsfE2YOGpaxLkleVHgQBxwvRsb8ZnQcry68wBJECKUJ1i/ugBP6A4VX9vTDIAUehPCpTUrfLaL/Go8xWjEYYeXWqEMS4C6zFMGZEwAgyBtzWjiugf5Tkpe8PDjkY8mJFHaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d56vrc4UWB2paQYd6qHnBuQWJKMmNmLVAx2Fy6A/xK0=;
+ b=mfUKWPITocMNbzZ0iLOEBlzEcHX/pTy8OC0HEPGr84/dWIgZUUhM6FamPKCge294g+sUsk7yyy9dcc4OwM4WF7hLlucnLyWtIHBcBpFqLSbi2ZIV5t5bDpoW4895ip3fhg09WAb+f4kz7eZY+eUvig2s/je4VYzyP5qvHKvAYMyhUy+BECPyB6MA5YkZAzFzqwj/pyaX5TuNbcYCv/fsH8yMCcdVhLjtdgtsOvc/GrlmbCS4Ur+YseylpT9+62/ZLGzglfiKIEa9GZ7gwvbgEFWLwi+7cNJsJXhQHp0j54Yh7++4wupo3d7QwaNGTSYUioGvNAJ+m8TgCR/D/+inwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d56vrc4UWB2paQYd6qHnBuQWJKMmNmLVAx2Fy6A/xK0=;
+ b=TFCTk/0JmmNsDTxwdbI76m8XPOjDao2asl9ElhqT1ebe3M3CaZPTe5wDjQx8yJg9Aqyp6CXnvUhGlCuRye/oqZdngFyw48XaRddfkT63IwA5VnuGPqYXQMzrf+BUXxYKxb5UTmRZfm+0xIn7vwJzQUnZClp/1M2UToeaX+UQ8HNiZYsZWG9Dzn2PPUk52E1ZSlzCLbDWoTFL5AhQwoozXK9NGTBffYXhqEUfS8xv3WwY9CDuZvMlC+JZhCbFlmloRsBIrg1n2xb4UA+tNkdRD2alO1j9LakcaMBbp4CZsHtfVFLTlgzkJ3U82u+CCVbrYTE0f8MwccYfKJEBjMRlAQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AS8PR04MB8344.eurprd04.prod.outlook.com (2603:10a6:20b:3b3::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Tue, 22 Oct
+ 2024 17:36:09 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8069.027; Tue, 22 Oct 2024
+ 17:36:09 +0000
+Date: Tue, 22 Oct 2024 20:36:05 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	UNGLinuxDriver@microchip.com, Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	Vlad Buslov <vladbu@nvidia.com>, Simon Horman <horms@kernel.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 1/6] net: sched: propagate "skip_sw" flag to
+ offload for flower and matchall
+Message-ID: <20241022173605.qg4lfkwfqi4zju5m@skbuf>
+References: <20241017165215.3709000-1-vladimir.oltean@nxp.com>
+ <20241017165215.3709000-2-vladimir.oltean@nxp.com>
+ <ZxUo0Dc0M5Y6l9qF@shredder.mtl.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxUo0Dc0M5Y6l9qF@shredder.mtl.com>
+X-ClientProxiedBy: VI1PR09CA0119.eurprd09.prod.outlook.com
+ (2603:10a6:803:78::42) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5][next] net: dev: Introduce struct sockaddr_legacy
-To: David Laight <David.Laight@ACULAB.COM>,
- "'Gustavo A. R. Silva'" <gustavoars@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Johannes Berg <johannes@sipsolutions.net>, David Ahern <dsahern@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- Kees Cook <kees@kernel.org>
-References: <cover.1729037131.git.gustavoars@kernel.org>
- <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
- <9e6a2efa17b94522ad2274332f608c38@AcuMS.aculab.com>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <9e6a2efa17b94522ad2274332f608c38@AcuMS.aculab.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.7
-X-Source-L: No
-X-Exim-ID: 1t3IiJ-001Gog-1s
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.5]) [201.172.173.7]:32812
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 19
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDLMfntxKAO6oq/370pcYTdEnaHjtdedEAoAkaIBfcelenwXuzgo3+Fxb+jLJiABt+kEUqu4GGlTbdqbUSdTnshOemNwOXPe5jAbVeKEpp+879w7Y9o3
- qNmTy665SVDgPEM4wrOc1VpyR+biU0kauakogfLocRLuR1x383tC+JGJTT3hqg2gX/l3aNdaAwfvvhxCijlK4YE6CirmCltIAWo=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS8PR04MB8344:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce4d448f-fd8d-4631-48eb-08dcf2c003ed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?krZF78gNEgKqoE58miETS03puuFOPS48C7rLUf6ijtKiyOCyq9owIPBu6SdM?=
+ =?us-ascii?Q?4D3xW5lyTr77sG68FuBiKtteTWV7a/3T0rT44nU7B6qv9usyXbqbBPbPo7Ve?=
+ =?us-ascii?Q?Ty2NB2wPndzE8ku3x1QFNLRny0sxiQqCMlmoSWfDt2ZZnQVNT4CDYfTiqUG0?=
+ =?us-ascii?Q?fXEpdqpaTNmr3hhbLsZzW8xRQNz7/DR/orPayDJQi6Fz48DPp8KxWM9+CHKw?=
+ =?us-ascii?Q?XVYZsEVuFKw1bOc1WcjKcCOwyZiKjYFj1NsfP6gesfRVqT8xepnSq1LGsu9x?=
+ =?us-ascii?Q?arR4GWa9S7qDtjxSY9JauR/MVuuxwsmJDTOxGBAXvv672lgGOzn8gK5bSwAj?=
+ =?us-ascii?Q?4u2Piby3uJ6UcoFfy1CcfxNvyacVGKJLkBfJ4721sxeaT0MKsDjqL9i4keaB?=
+ =?us-ascii?Q?xmzZNQy8aZZ+ef3trRIvhwTCakwfxK0+UwLFYYTELeNTK4erPMhRZX1erHqh?=
+ =?us-ascii?Q?y1k89Q/EoimSUqBIUf/+RMju0QGWhv6LdrMMackg4JacwoWvNfpEAuHKbFXG?=
+ =?us-ascii?Q?t/VLHzGVx43QaU9leTuiE/2NeOMLaz2G/NssMIKuN1iPjVJeavIANGIlZfh9?=
+ =?us-ascii?Q?wUoz1i9V5T49lgFah1uGP0eH1t9RV7V83ez7vy4t6QlerpIIzyPRFERnaqZ8?=
+ =?us-ascii?Q?ANFNKKFuB8ZsawCjD+CPMyi1hL0tM1wrwClXJwmmTzUmtIjFlyVXtCSLedIp?=
+ =?us-ascii?Q?5iiQhx9s66RG3LcUaz7O2dhJfgSmW99s/27bxqHQ4bxjkSMF01FHYbfq9EES?=
+ =?us-ascii?Q?ebf6mkimGSGbojia65qCfBZGLCSfUYADPDoBDJoilypTZMY0Z9TzKjwTU8qv?=
+ =?us-ascii?Q?iQOZ1Fh5m2vFtUEvZ7szPw1IWKH81rinjmqHPrDGx6sqp1vLLVENsdZdrwb1?=
+ =?us-ascii?Q?z4smHQvGYeFuLAWJcFXjNI1BCOV+2BGyEbENNKrWGqAfX0yHO8dsDm/XRUs0?=
+ =?us-ascii?Q?pnbMkSILgH9rlX3mt+YNhKH3d1KXRYa0skI+/Tz+odl9BC9+icq0SF5KWR8Y?=
+ =?us-ascii?Q?kLr8AEQ7Wtx+GznqdOepoCdpWmYZ/zy+bHoRhRLYISYwYuFo4kJwKWNIYaPG?=
+ =?us-ascii?Q?8vkE2dNIaDsLJqS2uwa2JUpklS979mHoz31e4GSuVZCrgwdAF7LMspKY8M89?=
+ =?us-ascii?Q?YgyiRxxnfOLSgZ1hPXdKxsj8tsIZjM+3fJniyn0sR9QLXTUiSId2qpu7/Piu?=
+ =?us-ascii?Q?Hy3yTx7nHbp3yYsyzyioX9eSJmlarcRW0qEBybstLJ8uhzcJLlJGydk33FyL?=
+ =?us-ascii?Q?f9f9PsY/v0SyC1kLGEkrWi/dYuV3UflZvL/bCd/HHY6jc+N8V1YMC+ELiBzV?=
+ =?us-ascii?Q?H6yLd84elqJWr0Vkhk2i1xab?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JD+DOfoggXMZtA5wbNUuKB0aDO+rVr4hw+4TLWMNReTV8f+sbZvjJAy4Ml8E?=
+ =?us-ascii?Q?2jItmv1jznXdQ2lUBpEMgCnsuvk77zNKaveJHD1GC4XJ887/zKzwK8GeLHL1?=
+ =?us-ascii?Q?AK9aQ+M8/Lc1mdhwlohpcHNizooJ/SAmkqGUKpCOUGpbXSQ/0z/TLuRpSovs?=
+ =?us-ascii?Q?t/3McQDXl5912QIOKM9JpoqHwEQXlyZKdXnnw+ft2Z6h/EKQFZSyT6Wc/mVH?=
+ =?us-ascii?Q?0BIvJRYVVm2ZTekCkuMDp+IEKuXj2lKWor7ScvkycsA8SncWbImYnQ1cE+Ig?=
+ =?us-ascii?Q?D251eknr02AjqylfG2JsmBnGfk+dJ6UY+akWHWQPFPq0yDgsKl2MdBcHUs60?=
+ =?us-ascii?Q?PcgO/r8+xrlZC9wiWuHBelnDIcNIjwqlyUooVrGca2kB0JcqkblbvERihHb0?=
+ =?us-ascii?Q?zrqy34wLIovnungOkVNLjSdlS1Rl3izqtsuUy7qYr9vWBOPDt7Ai3DH+WNWX?=
+ =?us-ascii?Q?IBPWsZ9Nafg8m73XjdyO+VjC+OC4T5+gvL9gw5k5BzeAvhd2mLmxl0Clwcoa?=
+ =?us-ascii?Q?xGA/yWRCajGJVEeFTWfZxjXeCeI+mV3HV+zom5IrCzzNdyB3YMUT0JVbCRJQ?=
+ =?us-ascii?Q?szLTVGPOzqdtldw8d/gpHbbRz8ubgS5SR4jC4OjvRXa8/M6R9a3wFaaKoKrY?=
+ =?us-ascii?Q?l98CrJDaXeNgjC8DeAM8eL221mLfMM0aQHxH7Pj8pwMlTU0jyPwYU2hVroDK?=
+ =?us-ascii?Q?j9mYrgLUvFy1yKMP0R6X7zfTblFfIajVfYLY07j/GF1xUu6GES2LVE1jX6L9?=
+ =?us-ascii?Q?iq5wB6g/EIlTKSHfFNmTh39LU5GUt+BvKPAOdE2YNYzMYCCzv8oVctmWaM40?=
+ =?us-ascii?Q?5+4Cu+0521O4708yoK7l2ULfgLjYpN0HxF4nsGRgT3N3QYAaRRQRb7pQXW22?=
+ =?us-ascii?Q?vhEsIxOSYogJBp+1e64OaktIp+QTqTca8cqOjoNDtMnc/4cmL0CQKBBdXkc8?=
+ =?us-ascii?Q?4qOpDWhY1ZJOYVcDWzK6+IaaOL7J/ymAteH0aimHN6r6vBSXQs7w5OZ0PV6Y?=
+ =?us-ascii?Q?O5717MEWqkq2RZjvfbu9kmcrZ2XbN+7/inEa1N8/AyFaIecrFjLUFpgYJoWy?=
+ =?us-ascii?Q?jDNGdZ0p0H87RLsDG8UG3jiI7mo6GVHY/x7h7kD2orb7w+P4chKi4zUYoz7f?=
+ =?us-ascii?Q?5+Tgij8aRf+oTBusUgOsi/zE83fNvLkwR0lNVc4xlzum4cYpo3Ei//Cm95YX?=
+ =?us-ascii?Q?bRduh5qoZ2SSf/PB6JyyT4e5ZdyjQM1QGPDRkdH+A2fgaxi5Ea0goUJ8zrMf?=
+ =?us-ascii?Q?G/QLPTdFZrhUYh0shFVAP8p4qF8whtvr5mvLZMFql3ZPOz+4sBpujNBReijQ?=
+ =?us-ascii?Q?FwmarVa3LldUMGFfwzFqBI0VjJ43S/RQ/KLDtepTmYTrRtF4stbGntxLqxgA?=
+ =?us-ascii?Q?EXtaSrJGu+t2m8Ic0XRPfPWIthC2o9DcxmiWiRm79xw4UJ1+fbkiCxgzrNT6?=
+ =?us-ascii?Q?Kmjshvk1ZWNicCdFi5Oofrg/GSCUdHbu6UAVqeIpb1m8AhO9XCvlXbB2pC67?=
+ =?us-ascii?Q?d0mZk6ZlGsOfsvV9FHRSBSoop3b6C/UmhbKUMNl5T4f8U3VotOHaD5IB4D6z?=
+ =?us-ascii?Q?/B/c4Evu2k8MR0ypy32G+tbdQWBQefHoEDWna6gDgK36iLJ9zcR5SiHn9W8Q?=
+ =?us-ascii?Q?Ww=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce4d448f-fd8d-4631-48eb-08dcf2c003ed
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 17:36:09.5400
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zY9YMwjMZDHtyo508j2o9Oc8Ya0STtG4JwDlLE+IrgJHTRnBedg4ILeQZerU9YtA/4zehR3UCXZwfk4NzcIRLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8344
 
-
-
-On 22/10/24 06:13, David Laight wrote:
-> From: Gustavo A. R. Silva
->> Sent: 16 October 2024 01:27
->>
->> We are currently working on enabling the -Wflex-array-member-not-at-end
->> compiler option. This option has helped us detect several objects of
->> the type `struct sockaddr` that appear in the middle of composite
->> structures like `struct rtentry`, `struct compat_rtentry`, and others:
->>
-> ...
->>
->> In order to fix the warnings above, we introduce `struct sockaddr_legacy`.
->> The intention is to use it to replace the type of several struct members
->> in the middle of composite structures, currently of type `struct sockaddr`.
->>
->> These middle struct members are currently causing thousands of warnings
->> because `struct sockaddr` contains a flexible-array member, introduced
->> by commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible array in
->> struct sockaddr").
->>
->> The new `struct sockaddr_legacy` doesn't include a flexible-array
->> member, making it suitable for use as the type of middle members
->> in composite structs that don't really require the flexible-array
->> member in `struct sockaddr`, thus avoiding -Wflex-array-member-not-at-end
->> warnings.
->>
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->> ---
->>   include/linux/socket.h | 19 +++++++++++++++++++
->>   1 file changed, 19 insertions(+)
->>
->> diff --git a/include/linux/socket.h b/include/linux/socket.h
->> index d18cc47e89bd..f370ae0e6c82 100644
->> --- a/include/linux/socket.h
->> +++ b/include/linux/socket.h
->> @@ -40,6 +40,25 @@ struct sockaddr {
->>   	};
->>   };
->>
->> +/*
->> + * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
->> + * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
->> + * array in struct sockaddR") due to the fact that "One of the worst offenders
->> + * of "fake flexible arrays" is struct sockaddr". This means that the original
->> + * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
->> + * flexible-array member was introduced.
->> + *
->> + * This caused several flexible-array-in-the-middle issues:
->> + * https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wflex-array-member-not-at-end
+On Sun, Oct 20, 2024 at 06:59:12PM +0300, Ido Schimmel wrote:
+> Possibly a stupid question given I don't remember all the details of the
+> TC offload, but is there a reason not to put the 'skip_sw' indication in
+> 'struct flow_cls_common_offload' and initialize the new field as part of
+> tc_cls_common_offload_init()?
 > 
-> I'd bet that the code even indexed the array?
-> So it is all worse that just a compiler warning/
+> Seems like it won't require patching every classifier and will also work
+> for the re-offload case (e.g., fl_reoffload())?
 
-I haven't found evidence of that, but this is precisely what we want to prevent
-from happening. :)
-
-> 
->> + *
->> + * `struct sockaddr_legacy` replaces `struct sockaddr` in all instances where
->> + * objects of this type do not appear at the end of composite structures.
->> + */
->> +struct sockaddr_legacy {
->> +	sa_family_t	sa_family;	/* address family, AF_xxx	*/
->> +	char 		sa_data[14];	/* 14 bytes of protocol address	*/
->> +};
->> +
-> 
-> I'm not sure that is a very good name.
-> Reading it you don't know when it is 'legacy' from.
-
-Yep, naming is hard sometimes. This is why I added that long comment
-above the struct. :)
-
-However, this is changing and now it looks like this:
-
-diff --git a/include/uapi/linux/socket.h b/include/uapi/linux/socket.h
-index d3fcd3b5ec53d2..2e179706bec4d8 100644
---- a/include/uapi/linux/socket.h
-+++ b/include/uapi/linux/socket.h
-@@ -35,4 +35,32 @@ struct __kernel_sockaddr_storage {
-  #define SOCK_TXREHASH_DISABLED	0
-  #define SOCK_TXREHASH_ENABLED	1
-
-+typedef __kernel_sa_family_t    sa_family_t;
-+
-+/*
-+ * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
-+ * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
-+ * array in struct sockaddr") due to the fact that "One of the worst offenders
-+ * of "fake flexible arrays" is struct sockaddr". This means that the original
-+ * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
-+ * flexible-array member was introduced.
-+ *
-+ * This caused several flexible-array-in-the-middle issues:
-+ * https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wflex-array-member-not-at-end
-+ *
-+ * `struct sockaddr_legacy` replaces `struct sockaddr` in all instances where
-+ * objects of this type do not appear at the end of composite structures.
-+ */
-+struct sockaddr_legacy {
-+        sa_family_t     sa_family;      /* address family, AF_xxx       */
-+        char            sa_data[14];    /* 14 bytes of protocol address */
-+};
-+
-+#ifdef __KERNEL__
-+#	define __kernel_sockaddr_legacy		sockaddr_legacy
-+#else
-+#	define __kernel_sockaddr_legacy		sockaddr
-+#endif
-+
-+
-  #endif /* _UAPI_LINUX_SOCKET_H */
-
-https://lore.kernel.org/linux-hardening/202410160942.000495E@keescook/
-
---
-Gustavo
-
-> It's size is clearly that of the original IPv4 sockaddr.
-> (I'm not sure there was ever an earlier one.)
-> 
-> Perhaps 'strict sockaddr_16' would be better?
-> Or, looking at the actual failures, sockaddr_ipv4?
-> 
-> Alternatively revert b5f0de6df6dce and add a new type that has the char[]
-> field??
-> 
-> 	David
-> 
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-> Registration No: 1397386 (Wales)
-> 
+I think you forgot more about tc than I ever knew. The answer isn't
+more complicated than "I didn't think about it". I've tested this
+simpler proposal and will send v3 using it. Thanks.
