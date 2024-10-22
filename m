@@ -1,105 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E1E146A97
-	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 09:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F34D22083
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 09:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729590511; cv=none; b=h2WzXGE/mHd8JK8Fui/ngFl3FLJQbEblpcDelKvyl1KrfZcPaDlrS+qgniVzOhYyiHosloBLTUaBYoEnnqMrahASgQvkVEio0P10lJtbZbtNlCC7fnw6ESJU1c2PyBNlV2QyygHjNXpEyjTeSlADkz92fmX4CXI5iWybMIJnuC8=
+	t=1729590536; cv=none; b=FBrB0bdDEkVmq0TeqIQ68VHkBlX0dnjDZlm1bCS0c38LrwCbPVnlJRJj7VMoidkRp02yiwihREm0iVye3HrktkUM/ZyCthHSuiBgDDsNsaPaS7NkCODJ8cZaJIcZ9fZa7erarWv6blNqLby4Z96+i2RWJdLoIIHYilZPT1o9gSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729590511; c=relaxed/simple;
-	bh=h5QExSH5FpwIjk76tbd1hfebqN6WOzSNNNcaIGbi5vI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnzA+yPV/qGxEwXqyT9kjZIeil7+G2mQ9Rb6Tm29vQbgvoBsQxthvYHLGC6UTqLXZ0nYQry1lJFP+fM3z70cXR0z1AFMaXz4uSmyGYrD/TCBRZ/ahqG4743v5KTe55Kzz7k+PmHaiFhek+w5MD5HYW14Fr1+HO316KYult3Pnqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O/cZGMN7; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1729590536; c=relaxed/simple;
+	bh=np/oMiEleV3eiDfO38QHX5bBp+FCGGZ9axapg3vkJXg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AL4ezv7N50IyStYQD6W4Se36ljHndvYReDIfmplGRFHc+NVEJqeC0FhgnISzaRjdu0CXhVEAJXL8zQDtb24Cz6jDG/AY8AB6O31fmUHe0cdA7dQq7nksI96KbOP46QzSJtBA2Mn2t6/3lwWYy2m95eQzCeMJmdz5AESjKj+fJMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tv2dfv/G; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O/cZGMN7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tv2dfv/G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729590508;
+	s=mimecast20190719; t=1729590534;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iEbIPgPvL601C6KZ3E2D4Xn3tKsNlbZfCIuRhDAjfM4=;
-	b=O/cZGMN74zEy0pxj2ntcfYnlF4Xhd0LhXCwd6xm+sQIu1gs+aEjxAjhjULCPRiF7S4ubyv
-	jxtTKo50AYRd96XN8sjWbZ+AoNKCvrDSE+9G5umTfK6s7HQzsNcSVkDsYkUSg236MGpOg2
-	hlGUaLf87M8I0SLA/gu5/RY7CKySTMw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Dh4JWQgDCy7f4hUaCVPSilGsVTg/1tlAM2ttQqHSmuQ=;
+	b=Tv2dfv/GnTJcC8bM/fxhr4bvHqVDZiqqke5t79IQuIrABnw8PEOdzbvJmIrOlhRoo64JB0
+	xD1kNjYkR0dOcESc56GLrEK1BTTNNJN73JmnoLKIsR0Jc86GOkwg/2CSsXU3WJU2GKJViN
+	oIn4bI/5ujTnSP024rnf/j41kgz3hvs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-tNvOWcLiPSG7qbTQqltFlw-1; Tue, 22 Oct 2024 05:48:27 -0400
-X-MC-Unique: tNvOWcLiPSG7qbTQqltFlw-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43159c07193so48594375e9.0
-        for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 02:48:27 -0700 (PDT)
+ us-mta-599-EbrKQD5gOESvh5E9Su9X1g-1; Tue, 22 Oct 2024 05:48:53 -0400
+X-MC-Unique: EbrKQD5gOESvh5E9Su9X1g-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d531a19a9so2721900f8f.1
+        for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 02:48:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729590506; x=1730195306;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iEbIPgPvL601C6KZ3E2D4Xn3tKsNlbZfCIuRhDAjfM4=;
-        b=CMYZ9bs2sdto/VLkjwWnNlR0NzW/KhXTaok02oCtkt30XlE3Twdw+3YCwxJyKv9QCy
-         KFil+1zphqaYvPwYBirmKksGLwxej1z2/ssDY10uR2TXLgJrCg/vbupeoWDG8JvbawXs
-         t3pd3stT9wRwZAtwPRV147JwUKvmMF6g21bUy3oNCo7FWbXBPrYP3Tj7UfOYns9RPxxd
-         QWii4eylUujDlKYuWwjnjLORJOdxIsKF/BoNnQVlKAMEYSyumV1fQYGJF6M4f0yIjphH
-         CL+lWFtY+xlVAgXK4iOboIMVqlLB7GGUAHSu7jR1uvMqClrcb7xzMhcwCAw5toWmfis8
-         EJLw==
-X-Gm-Message-State: AOJu0Yz2KO1H3LMdLM7FfFeg/aLRTCAA3p2kbwt789Yc6LljfE/3CTaF
-	o6jgbb/3ESiexEzjWjDmg26BvSujYTxu8VmWq6aMauX9X8uUqFo4CL4XMntTyvzg+Vnk3RT3Rww
-	DL1zRJnJ2ckZWXy8fcBHMooxt/qM+GyPQ6LKppJPNWUtw/5mCTDkK7w==
-X-Received: by 2002:a7b:c2aa:0:b0:42f:75e0:780e with SMTP id 5b1f17b1804b1-43161627e30mr150600865e9.10.1729590506211;
-        Tue, 22 Oct 2024 02:48:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF96qU/9Z2K/IWAZJG7JO8BsrvfzdxLosKUDO/83RpxxK4h/YDUCY/dZB3+2Uk15dpNnbayFg==
-X-Received: by 2002:a7b:c2aa:0:b0:42f:75e0:780e with SMTP id 5b1f17b1804b1-43161627e30mr150600445e9.10.1729590505738;
-        Tue, 22 Oct 2024 02:48:25 -0700 (PDT)
-Received: from debian (2a01cb058918ce00b54b8c7a11d7112d.ipv6.abo.wanadoo.fr. [2a01:cb05:8918:ce00:b54b:8c7a:11d7:112d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f58adffsm83215485e9.22.2024.10.22.02.48.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 02:48:25 -0700 (PDT)
-Date: Tue, 22 Oct 2024 11:48:23 +0200
-From: Guillaume Nault <gnault@redhat.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net-next 4/4] ipv4: Prepare ip_rt_get_source() to future
- .flowi4_tos conversion.
-Message-ID: <0a13a200f31809841975e38633914af1061e0c04.1729530028.git.gnault@redhat.com>
-References: <cover.1729530028.git.gnault@redhat.com>
+        d=1e100.net; s=20230601; t=1729590532; x=1730195332;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dh4JWQgDCy7f4hUaCVPSilGsVTg/1tlAM2ttQqHSmuQ=;
+        b=hm88xU75IW6Hh01H+Vfrw67GynQ5Ry0qEJGqlllKM1IDpHyjxL9GumxeEhvKxxoYyb
+         w+4ybV/9Wldq0zW0S7CfyDWnsguVavgiUC0MWViI4HlTU9ycGqgmenIQBw1TpBB6RJKg
+         OZi3YIby9OURKizLu7/ktqe7bRnLjCaJRR1H5vjiu8ijjK1g/HMVBMOazuV1ypXEm8kG
+         3e3XSoiYyYaT0q6QVTorgQyb+jBUdBL4P4/VKovsQA1ae+mh64atxnSZo+JV/nzKZNVZ
+         ZoHFen77Da3y57srOqk6z920QeXdfHJX0h2iAx06AEqRZg1ucsGlYj6v1hJCZEy43sNO
+         Bnkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXopAahpquV5b+9c2mJu+73P6xWZUVRlxnZO16tyLPJXAdrzwJCDaW6JzrB+2qJW60TwbAZPw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBmzhTPOMdKbM+9KCo0TZCfEOue9MjZQ8Oei6RPCs4fRfaC+y4
+	Xlbb9cu8g90QFnCf3ef6B01XOIbLgHTlcfY4cHCeWgvLUMc19V/F2kQxZHBzZRtRhiqVuR5j5MI
+	y2pUWpAOQEwnYtS9vTOCkov18N7xV5tuV3/HunllEp/6lJb1B4o1Gig==
+X-Received: by 2002:a05:6000:124d:b0:37d:43e5:a013 with SMTP id ffacd0b85a97d-37ef21329e6mr1350922f8f.8.1729590531682;
+        Tue, 22 Oct 2024 02:48:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4nJbgsS+oolp7+z293Shdqn+zOCHUUqXKuuAQbREypUB/3N+OmB5ozWRS+gZFiWSQ67Qcsg==
+X-Received: by 2002:a05:6000:124d:b0:37d:43e5:a013 with SMTP id ffacd0b85a97d-37ef21329e6mr1350911f8f.8.1729590531351;
+        Tue, 22 Oct 2024 02:48:51 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:1b73:a910:d583:6ebb:eb80:7cd8? ([2a0d:3344:1b73:a910:d583:6ebb:eb80:7cd8])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a4b26dsm6243789f8f.45.2024.10.22.02.48.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Oct 2024 02:48:50 -0700 (PDT)
+Message-ID: <278ca1d0-2a21-49a1-87b5-34b0f03bb9d3@redhat.com>
+Date: Tue, 22 Oct 2024 11:48:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1729530028.git.gnault@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 12/12] selftests: ncdevmem: Add automated test
+To: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ Mina Almasry <almasrymina@google.com>
+References: <20241016203422.1071021-1-sdf@fomichev.me>
+ <20241016203422.1071021-13-sdf@fomichev.me>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241016203422.1071021-13-sdf@fomichev.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Use ip4h_dscp() to get the DSCP from the IPv4 header, then convert the
-dscp_t value to __u8 with inet_dscp_to_dsfield().
+On 10/16/24 22:34, Stanislav Fomichev wrote:
+> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+> index 182348f4bd40..1c6a77480923 100644
+> --- a/tools/testing/selftests/drivers/net/hw/Makefile
+> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
+> @@ -3,6 +3,7 @@
+>  TEST_PROGS = \
+>  	csum.py \
+>  	devlink_port_split.py \
+> +	devmem.py \
+>  	ethtool.sh \
+>  	ethtool_extended_state.sh \
+>  	ethtool_mm.sh \
+> diff --git a/tools/testing/selftests/drivers/net/hw/devmem.py b/tools/testing/selftests/drivers/net/hw/devmem.py
+> new file mode 100755
+> index 000000000000..29085591616b
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/hw/devmem.py
+> @@ -0,0 +1,46 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +import errno
 
-Then, when we'll convert .flowi4_tos to dscp_t, we'll just have to drop
-the inet_dscp_to_dsfield() call.
+Possibly unneeded import?
 
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
----
- net/ipv4/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 18a08b4f4a5a..763398e08b7d 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1263,7 +1263,7 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
- 		struct flowi4 fl4 = {
- 			.daddr = iph->daddr,
- 			.saddr = iph->saddr,
--			.flowi4_tos = iph->tos & INET_DSCP_MASK,
-+			.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(iph)),
- 			.flowi4_oif = rt->dst.dev->ifindex,
- 			.flowi4_iif = skb->dev->ifindex,
- 			.flowi4_mark = skb->mark,
--- 
-2.39.2
+Paolo
 
