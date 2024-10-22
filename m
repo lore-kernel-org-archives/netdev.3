@@ -1,147 +1,125 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A49198E7F;
-	Tue, 22 Oct 2024 09:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43A01494CA
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 09:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729588984; cv=none; b=cnBcdD7cOY4VWxdy054jvRBkSaxRuX/fxAWJ6mZ+X54ggY3Z+xGY+IAEFcDIRwU30gJpud4RTo/cHpdlXmbMSvCpbo+lp9F+AyLbyRY+tdrW1Yb4H/g/AIoQS7f1wHQNgwsudwDpuFTZgn1ofGdM3f2WJ6P9V2uTq4clnzgz/gQ=
+	t=1729588990; cv=none; b=eLyPaXtspRQHS5WVid8BR6U60TihjyUil/tWTpd7DQY2LahN5I38Ty9qdUSczgIEokNWngLySGU2DPmDRMHXQMr+XWyKdNCX2tKH6VPWdYhfCZzOp7h8oI6aMB9l0TC6lLPj3FDP9FJLdWvjhE9ENVxJ7NJqK0eedNT70jGZOD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729588984; c=relaxed/simple;
-	bh=kJ2S20Sg7oN3zYohr7hzpWZrhh5+78y+mYTmv+AwEIY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=rBRdnlMEOOY1x6yx7iqdkBqVlT3TI3Ae3DU5SfqqLsVVeTa2WMSsawKjCELysQUq2kdPVdOVQ8MQOmYTMU5DvFwppLqV1j4FoUbq7b70i7/+mAS2XM88+HUVPLNpFz/avBhV3BLLD1EmbkHnzQJdyK6nyROp98v2YDARaUvuGE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XXmrB3N3Pz10N0G;
-	Tue, 22 Oct 2024 17:20:58 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0E0C4140360;
-	Tue, 22 Oct 2024 17:22:59 +0800 (CST)
-Received: from [10.174.179.113] (10.174.179.113) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 22 Oct 2024 17:22:58 +0800
-Message-ID: <8ab6afec-b021-5327-9be4-c58c1e29b874@huawei.com>
-Date: Tue, 22 Oct 2024 17:22:57 +0800
+	s=arc-20240116; t=1729588990; c=relaxed/simple;
+	bh=iQw3YGm6GSjRhjlvwQyiid7hdggoSRH2JXYVbt0ZQFg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E2K/8OkRev2ZqjmC/47u638+edaLlWq1rPYuc0b4ZXZ4rqiG+qSkF0/6ZqvmopWujuudlMerXDs6C3XROH9EA45udoLt0elg1nK6FRdB5wJ9XHCqj1pwxBDzTt0cdIp1SsfZsSq1Lm29RqOE0f/Wtr0KheKUAGhF96Kue3yqMR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=eYcj3lFu; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="eYcj3lFu"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 613D52087D;
+	Tue, 22 Oct 2024 11:23:01 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id UZAIEnqHKqb2; Tue, 22 Oct 2024 11:23:00 +0200 (CEST)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id DB7332083E;
+	Tue, 22 Oct 2024 11:22:59 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com DB7332083E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1729588979;
+	bh=T8JYjKQRvunTW/OMcEcY9HBmCVyz6p7UZEsaMK1sNH8=;
+	h=From:To:CC:Subject:Date:From;
+	b=eYcj3lFuwaAhOlWz3Q1Uy2N69kRV/tnltyuvuwAduDKmFEipguwQ2P2r6t/89pZnM
+	 n7G3WnZaHsBepd8xFgV2zgOSf6G22/x9XFzlJ7faTb7MY61H6bEgHu96JEwXlkqFih
+	 JKe5bgb9pIMcAm+cwiG5u4gbpvebIXyGcaB65vtSZLOF2blmX0a+0N04za0fbRjZU2
+	 HYpI89gjM1wk/4QrYWwQIYUvF1W3JtLH8toQNDIuOneTqZ4tNMozwsnNR1Cdu3w3qM
+	 BqBSr8YpPhd9v8ct9r0lDyFqngeeN4HecbDGRq/qM07SWST/+dnf0qQDrFN7ocOZVI
+	 wt3zjHpIgb3Yw==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 22 Oct 2024 11:22:29 +0200
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 22 Oct
+ 2024 11:22:29 +0200
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 08B4A3184BFB; Tue, 22 Oct 2024 11:22:29 +0200 (CEST)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 0/5] pull request (net): ipsec 2024-10-22
+Date: Tue, 22 Oct 2024 11:22:21 +0200
+Message-ID: <20241022092226.654370-1-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH net] net: netfilter: Fix use-after-free in get_info()
-Content-Language: en-US
-To: Dong Chenchen <dongchenchen2@huawei.com>, <pablo@netfilter.org>,
-	<kadlec@netfilter.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <fw@strlen.de>, <kuniyu@amazon.com>
-CC: <netfilter-devel@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20241022085753.2069639-1-dongchenchen2@huawei.com>
-From: Yue Haibing <yuehaibing@huawei.com>
-In-Reply-To: <20241022085753.2069639-1-dongchenchen2@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On 2024/10/22 16:57, Dong Chenchen wrote:
-> ip6table_nat module unload has refcnt warning for UAF. call trace is:
-> 
-> WARNING: CPU: 1 PID: 379 at kernel/module/main.c:853 module_put+0x6f/0x80
-> Modules linked in: ip6table_nat(-)
-> CPU: 1 UID: 0 PID: 379 Comm: ip6tables Not tainted 6.12.0-rc4-00047-gc2ee9f594da8-dirty #205
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-> BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-> RIP: 0010:module_put+0x6f/0x80
-> Call Trace:
->  <TASK>
->  get_info+0x128/0x180
->  do_ip6t_get_ctl+0x6a/0x430
->  nf_getsockopt+0x46/0x80
->  ipv6_getsockopt+0xb9/0x100
->  rawv6_getsockopt+0x42/0x190
->  do_sock_getsockopt+0xaa/0x180
->  __sys_getsockopt+0x70/0xc0
->  __x64_sys_getsockopt+0x20/0x30
->  do_syscall_64+0xa2/0x1a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Concurrent execution of module unload and get_info() trigered the warning.
-> The root cause is as follows:
-> 
-> cpu0				      cpu1
-> module_exit
-> //mod->state = MODULE_STATE_GOING
->   ip6table_nat_exit
->     xt_unregister_template
->     //remove table from templ list
-> 				      getinfo()
-> 					  t = xt_find_table_lock
-> 						list_for_each_entry(tmpl, &xt_templates[af]...)
-> 							if (strcmp(tmpl->name, name))
-> 								continue;  //table not found
-> 							try_module_get
-> 						list_for_each_entry(t, &xt_net->tables[af]...)
-> 							return t;  //not get refcnt
-> 					  module_put(t->me) //uaf
->     unregister_pernet_subsys
->     //remove table from xt_net list
-> 
-> While xt_table module was going away and has been removed from
-> xt_templates list, we couldnt get refcnt of xt_table->me. Skip
-> the re-traversal of xt_net->tables list to fix it.
-> 
-> Fixes: c22921df777d ("netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().")
+1) Fix routing behavior that relies on L4 information
+   for xfrm encapsulated packets.
+   From Eyal Birger.
 
-This should be
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+2) Remove leftovers of pernet policy_inexact lists.
+   From Florian Westphal.
 
-> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-> ---
->  net/netfilter/x_tables.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-> index da5d929c7c85..359c880ecb07 100644
-> --- a/net/netfilter/x_tables.c
-> +++ b/net/netfilter/x_tables.c
-> @@ -1239,6 +1239,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  	struct module *owner = NULL;
->  	struct xt_template *tmpl;
->  	struct xt_table *t;
-> +	int err = -ENOENT;
->  
->  	mutex_lock(&xt[af].mutex);
->  	list_for_each_entry(t, &xt_net->tables[af], list)
-> @@ -1247,8 +1248,6 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  
->  	/* Table doesn't exist in this netns, check larval list */
->  	list_for_each_entry(tmpl, &xt_templates[af], list) {
-> -		int err;
-> -
->  		if (strcmp(tmpl->name, name))
->  			continue;
->  		if (!try_module_get(tmpl->me))
-> @@ -1267,6 +1266,9 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  		break;
->  	}
->  
-> +	if (err < 0)
-> +		goto out;
-> +
->  	/* and once again: */
->  	list_for_each_entry(t, &xt_net->tables[af], list)
->  		if (strcmp(t->name, name) == 0)
-> @@ -1275,7 +1277,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  	module_put(owner);
->   out:
->  	mutex_unlock(&xt[af].mutex);
-> -	return ERR_PTR(-ENOENT);
-> +	return ERR_PTR(err);
->  }
->  EXPORT_SYMBOL_GPL(xt_find_table_lock);
->  
+3) Validate new SA's prefixlen when the selector family is
+   not set from userspace.
+   From Sabrina Dubroca.
+
+4) Fix a kernel-infoleak when dumping an auth algorithm.
+   From Petr Vaganov.
+
+Please pull or let me know if there are problems.
+
+Thanks!
+
+The following changes since commit 7ebf44c910690a7097442d4dd68f12315569b2f4:
+
+  MAINTAINERS: adjust file entry of the oa_tc6 header (2024-09-22 19:55:04 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2024-10-22
+
+for you to fetch changes up to 6889cd2a93e1e3606b3f6e958aa0924e836de4d2:
+
+  xfrm: fix one more kernel-infoleak in algo dumping (2024-10-11 09:00:03 +0200)
+
+----------------------------------------------------------------
+ipsec-2024-10-22
+
+----------------------------------------------------------------
+Eyal Birger (2):
+      xfrm: extract dst lookup parameters into a struct
+      xfrm: respect ip protocols rules criteria when performing dst lookups
+
+Florian Westphal (1):
+      xfrm: policy: remove last remnants of pernet inexact list
+
+Petr Vaganov (1):
+      xfrm: fix one more kernel-infoleak in algo dumping
+
+Sabrina Dubroca (1):
+      xfrm: validate new SA's prefixlen using SA family when sel.family is unset
+
+ include/net/netns/xfrm.h |  1 -
+ include/net/xfrm.h       | 28 +++++++++++++------------
+ net/ipv4/xfrm4_policy.c  | 40 ++++++++++++++++--------------------
+ net/ipv6/xfrm6_policy.c  | 31 ++++++++++++++--------------
+ net/xfrm/xfrm_device.c   | 11 +++++++---
+ net/xfrm/xfrm_policy.c   | 53 ++++++++++++++++++++++++++++++++++--------------
+ net/xfrm/xfrm_user.c     | 10 +++++++--
+ 7 files changed, 103 insertions(+), 71 deletions(-)
