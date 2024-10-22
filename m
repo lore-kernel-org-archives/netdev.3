@@ -1,98 +1,89 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F84E1A0737;
-	Tue, 22 Oct 2024 14:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0F119D089
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 14:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729608268; cv=none; b=Wq2IZmnCG+mjRfa3RhrUSUV24nNYZjHg1tB2hKeWDqeONl7NVZLNZIkLx+rt/1UQvpWYaKyJIp3+Z4SIUfwe3ZklqG//yYfgChY7xMaEJ2wf8w8J3fKmb/XT2A1AnXc1mtq5o+zNp2aPnHK/WA6zAXDbbkEdNuEkONtinnu9q0M=
+	t=1729608519; cv=none; b=ZIvJt2Rj1ZRKtSCZSItIMCHk8alKnEjE7IGSCB8LURw0dxhzEhJHHx07p4T34XzOj6S0KjwkHHbTPIaiZfICV75U2pHhUAvtyiwNnCLfn3u+8RFPI99PFkVrbG0nkcynPHhdPNuWsktDfx3MfC30zqyyNcOy3BN7HFnFybh6kcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729608268; c=relaxed/simple;
-	bh=2QKP5bShhJgstrGjEpmyAJHBDPoJQrvbizAvM/kvMQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbmnD0RfkqOpZying71SJR1+/PudL5ZD2hPyGSx3sv1guJ7yYN8jALFPrOf6N366yfIf/Q4xIvZXZpLUxviGT9JP754xDyGNqZElM3cpqsgpifTWk5sRXs77SSvFtq5NqaTJ9L4UgIpyauuwNViF1xRA7uafX/YG9G4DtXJnGt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=M0q1PpH0; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="M0q1PpH0"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id B5B81883D4;
-	Tue, 22 Oct 2024 16:44:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729608264;
-	bh=XpHkPMU9+jmzDRCDk3QaPWlsUvggEKn5/K45SclQhvo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M0q1PpH0oUl6Cus5XKlSbppFeAItUcnij+MxEsLIZpOzIcOPT1+4vTlqsQKxUfqKt
-	 QcCkF10ZOKiqwDGrVuImGWf++kKhnMSqUJQ5oKDghKfInq9VJgcyIIIdDYB7SHO0s+
-	 bfjfOqcPIpC6bahy0RYfclJza+zaegY0liKiR2zEKdO0vhhUWNDg4SxytsRPidgkxH
-	 8yli49eSfSydAdu/vSwr0sBP0U2GaqwZNnrP42vbVjC3G7GTE7GnSxjCB/WBF8egqJ
-	 2LrcmILnCd7DYVIiccdUK9iVoqevfLEfZiC9LLrrLHw7L32GNm2iyKwLClAtbO7rY+
-	 T1VVFPALtV/3Q==
-Message-ID: <f95fc508-fe6f-4501-9233-07bda0d28d98@denx.de>
-Date: Tue, 22 Oct 2024 15:23:33 +0200
+	s=arc-20240116; t=1729608519; c=relaxed/simple;
+	bh=6A5a/16NnXGONpP881/4IS1clJdHVU7+19LTmvOowzE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GoASX9lUGMS1MW44MP8ejs14M6t9jOcoRsRWvfHbCB8kokJ2nIyHdptMuZqB91l/ZAsASqHObXfqQdpKXTtpT5msk1IzHEhNKPU59CAsN0Ss47DJXZ+SVT6St7B9MEABQZyLaD2Ff6+Y2m7sjUu0Ml+9gHLz3963vq3Pm60+ZSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	pespin@sysmocom.de,
+	laforge@gnumonks.org,
+	osmocom-net-gprs@lists.osmocom.org
+Subject: [PATCH net] gtp: allow -1 to be specified as file description from userspace
+Date: Tue, 22 Oct 2024 16:48:25 +0200
+Message-Id: <20241022144825.66740-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Add proper error handling for remaining
- CMD52
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20241018194244.280322-1-marex@denx.de>
- <a6529da9-6333-4516-923d-01f12c439b33@bootlin.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <a6529da9-6333-4516-923d-01f12c439b33@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 10/22/24 11:11 AM, Alexis Lothoré wrote:
+Existing user space applications maintained by the Osmocom project are
+breaking since a recent fix that addresses incorrect error checking.
 
-Hi,
+Restore operation for user space programs that specify -1 as file
+descriptor to skip GTPv0 or GTPv1 only sockets.
 
->> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
->> index 5262c8846c13d..170470d1c2092 100644
->> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
->> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
->> @@ -769,8 +769,10 @@ static int wilc_sdio_init(struct wilc *wilc, bool resume)
->>   
->>   static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
->>   {
->> -	u32 tmp;
->> +	struct sdio_func *func = dev_to_sdio_func(wilc->dev);
->>   	struct sdio_cmd52 cmd;
->> +	u32 tmp;
->> +	int ret;
->>   
->>   	/**
->>   	 *      Read DMA count in words
->> @@ -780,12 +782,20 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
->>   	cmd.raw = 0;
->>   	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
->>   	cmd.data = 0;
->> -	wilc_sdio_cmd52(wilc, &cmd);
->> +	ret = wilc_sdio_cmd52(wilc, &cmd);
->> +	if (ret) {
->> +		dev_err(&func->dev, "Fail cmd 52, set DATA_SZ[0] register...\n");
-> 
-> I don't get the log message, why "set" DATA_SZ[0] ? This helper is rather trying
-> to read it. Same for the other logs added below
-Fixed in V2 , s@set@get@ , thanks !
+Fixes: defd8b3c37b0 ("gtp: fix a potential NULL pointer dereference")
+Reported-by: Pau Espin Pedrol <pespin@sysmocom.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ drivers/net/gtp.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index a60bfb1abb7f..70f981887518 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1702,20 +1702,24 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
+ 		return -EINVAL;
+ 
+ 	if (data[IFLA_GTP_FD0]) {
+-		u32 fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
++		int fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
+ 
+-		sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
+-		if (IS_ERR(sk0))
+-			return PTR_ERR(sk0);
++		if (fd0 >= 0) {
++			sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
++			if (IS_ERR(sk0))
++				return PTR_ERR(sk0);
++		}
+ 	}
+ 
+ 	if (data[IFLA_GTP_FD1]) {
+-		u32 fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
++		int fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
+ 
+-		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
+-		if (IS_ERR(sk1u)) {
+-			gtp_encap_disable_sock(sk0);
+-			return PTR_ERR(sk1u);
++		if (fd1 >= 0) {
++			sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
++			if (IS_ERR(sk1u)) {
++				gtp_encap_disable_sock(sk0);
++				return PTR_ERR(sk1u);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.30.2
+
