@@ -1,80 +1,110 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E15A18E02D;
-	Tue, 22 Oct 2024 09:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578E41991C2
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 09:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729590538; cv=none; b=U/qMu2qiwYJTZwGcjznXlYl1kMhJJ2MTURV0JAeSB7QAn1l3Rr5b03rjtNd1iY55lQKUIYZIEYLbFSG92gu2u/eu1bQLJJqsyHaC8TKj7FEgWu0hwNpEn/Lv119sNoBliSQ6iPzypaJ7fbU8WznU7TJBttKohDjkk/Pt0FWcJC4=
+	t=1729590596; cv=none; b=oTITtHMqiK8oEzDT/2nB6u/nYfvezSayzwXHiHZMiD/u7fyrwjiTBmUq+rrGW6XxxCUAHDKXpIzzRA1Wdm9kGiCkR6ay6MsIGP3ltgxFM3SkhosEFE+KiAGTeomndbUhNP/9o9KqFKB8R7LNjbnoXko/uEMQrNtYmRjSWT2HXJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729590538; c=relaxed/simple;
-	bh=jEqJUe9yeGE6M9ONasHF2b0aUci9zW4T+caELjnBlJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EonvGNN6Oo0yDflTrmePDZlXBQZxQJroFbPtlOZeBsWyDAThiNEa6Om1K8DfhjfThi/T/cKkbT62IMsd8FNuoaPPeu7RIUtFvfe0IYsUiv+1fNf3dyA65FpZrCwA6bb1LboxJ8pWmR7Ny5JlnAZJ7Y3JNJMfUiHneh9omg2e2kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-	(envelope-from <fw@strlen.de>)
-	id 1t3BVH-000765-3A; Tue, 22 Oct 2024 11:48:39 +0200
-Date: Tue, 22 Oct 2024 11:48:39 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Dong Chenchen <dongchenchen2@huawei.com>
-Cc: pablo@netfilter.org, kadlec@netfilter.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	fw@strlen.de, kuniyu@amazon.com, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org, yuehaibing@huawei.com
-Subject: Re: [PATCH net] net: netfilter: Fix use-after-free in get_info()
-Message-ID: <20241022094839.GA26371@breakpoint.cc>
-References: <20241022085753.2069639-1-dongchenchen2@huawei.com>
+	s=arc-20240116; t=1729590596; c=relaxed/simple;
+	bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Q9xaeFgeuFdHswSJAM2wZD4+LzkSYue7Hgr/xhTj4gUUPfBatc6jZS3JNLqDkO+JWxwIBl2eI1bgX8nru6SWHDGOm42RHQaxdVXFUt+3we2QLY0vBN5+zeN+IdgPlmVCL02e4XKrR+sy2vnWg+s10eDzPgdAYwQHYWNxMxJkJXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c0ccslYX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c0ccslYX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729590594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+	b=c0ccslYXT1Jvr5bfvIpZnLGgoYJXQt8jyPMqYh/lOVn9mdHEp9iAR0diAnVPYqR+TNq+Nf
+	XyAhSrHk5BMwI9Mbkt0NMHTZyo/dX5j4AFfFM+L8igqIm2LwM3BR+iL9weRObJ4/05/Xi1
+	a5MwUBsH6c0QpY1qHdlhnYY4tPy+4Js=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-304-J8-EEBbXOnynvIYd4QbA7w-1; Tue, 22 Oct 2024 05:49:53 -0400
+X-MC-Unique: J8-EEBbXOnynvIYd4QbA7w-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-37d533a484aso3144250f8f.0
+        for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 02:49:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729590592; x=1730195392;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:to:from:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+        b=RBxwdOHjeP5PnHLk/D/J9OXEEqb0z5dRtI864KOoMJA6wBeG1wtH4KlicxqjiKquBt
+         TfKEsrPihjlSq5mM/9yPLpyWPixiLdjURm2TzyTNi1yyP/e9bks2HkO9I2QAT1E6dpYj
+         f4nnpwfQjRNPcZBtF/pwzrPxZvzx/yb3fvV3Jl7BAXp8dTgK/sB2MIl9TOHiNMVGhAqD
+         LkWG1qNGrjaLPz5DqiIFlo6laHmJrlR0lRSOT+6b7Hh1oDbJ2kVTfInJNDjxLzq9FYtQ
+         A/G33Xtr0FJomLkGcaOVgaftq6uFzmfcqwAfT6nivTWnXs60XmxSlzzd1H2UV+1NweQD
+         hZZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTSi0WsG/rh/SPOFCxYnqKnq6NN5ZHdkenhFecT/tZxioKHkMoTQCQyGFja/NPPjbLAOxpHhM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTbDd6bcdQZzTfY8hnq/BhhG2zk6BLkK1uj3Kqdu/CjLPAGO8c
+	rsnVwpiC7iVZclOIEYY7BhW2ZPl6to6rmwVG3pVvVhznGXgBkg657IFkRwwzz61/wDjSMWQhVE0
+	y9Or63v9nlLXd0N2lfdiYD40AT2ZzvamWGRWrcLFGj2WxZP1iN5CGNA==
+X-Received: by 2002:adf:b186:0:b0:376:dbb5:10c2 with SMTP id ffacd0b85a97d-37ef13cd752mr1751560f8f.29.1729590592130;
+        Tue, 22 Oct 2024 02:49:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGIEHKao3U/XFI7bzq9Kj6t6RyZxy0cnLw5nrYDT+Cbr6tQg8AZS6TySYFQBcdNzKRVWndUxQ==
+X-Received: by 2002:adf:b186:0:b0:376:dbb5:10c2 with SMTP id ffacd0b85a97d-37ef13cd752mr1751544f8f.29.1729590591777;
+        Tue, 22 Oct 2024 02:49:51 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b9bcc8sm6205364f8f.107.2024.10.22.02.49.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2024 02:49:51 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 84B08160B2CF; Tue, 22 Oct 2024 11:49:50 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Puranjay Mohan <puranjay@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexei Starovoitov <ast@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>,
+ bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>, "David S.
+ Miller" <davem@davemloft.net>, Eduard Zingerman <eddyz87@gmail.com>, Eric
+ Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>, Helge Deller
+ <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jiri Olsa <jolsa@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Martin KaFai Lau <martin.lau@linux.dev>,
+ Mykola Lysenko <mykolal@fb.com>, netdev@vger.kernel.org, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Puranjay Mohan <puranjay12@gmail.com>,
+ Puranjay Mohan <puranjay@kernel.org>, Shuah Khan <shuah@kernel.org>, Song
+ Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Yonghong Song
+ <yonghong.song@linux.dev>
+Subject: Re: [PATCH bpf-next 1/5] net: checksum: move from32to16() to
+ generic header
+In-Reply-To: <20241021122112.101513-2-puranjay@kernel.org>
+References: <20241021122112.101513-1-puranjay@kernel.org>
+ <20241021122112.101513-2-puranjay@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 22 Oct 2024 11:49:50 +0200
+Message-ID: <877ca0ii0x.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022085753.2069639-1-dongchenchen2@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Dong Chenchen <dongchenchen2@huawei.com> wrote:
->  net/netfilter/x_tables.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-> index da5d929c7c85..359c880ecb07 100644
-> --- a/net/netfilter/x_tables.c
-> +++ b/net/netfilter/x_tables.c
-> @@ -1239,6 +1239,7 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  	struct module *owner = NULL;
->  	struct xt_template *tmpl;
->  	struct xt_table *t;
-> +	int err = -ENOENT;
->  
->  	mutex_lock(&xt[af].mutex);
->  	list_for_each_entry(t, &xt_net->tables[af], list)
-> @@ -1247,8 +1248,6 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  
->  	/* Table doesn't exist in this netns, check larval list */
->  	list_for_each_entry(tmpl, &xt_templates[af], list) {
-> -		int err;
-> -
->  		if (strcmp(tmpl->name, name))
->  			continue;
->  		if (!try_module_get(tmpl->me))
-> @@ -1267,6 +1266,9 @@ struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
->  		break;
->  	}
->  
-> +	if (err < 0)
-> +		goto out;
-> +
->  	/* and once again: */
->  	list_for_each_entry(t, &xt_net->tables[af], list)
->  		if (strcmp(t->name, name) == 0)
+Puranjay Mohan <puranjay@kernel.org> writes:
 
-Proabably also:
+> from32to16() is used by lib/checksum.c and also by
+> arch/parisc/lib/checksum.c. The next patch will use it in the
+> bpf_csum_diff helper.
+>
+> Move from32to16() to the include/net/checksum.h as csum_from32to16() and
+> remove other implementations.
+>
+> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
 
--  		if (strcmp(t->name, name) == 0)
-+               if (strcmp(t->name, name) == 0 && owner == t->me)
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+
