@@ -1,142 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4E713A863;
-	Tue, 22 Oct 2024 03:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D549713B297
+	for <netdev@vger.kernel.org>; Tue, 22 Oct 2024 03:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729566736; cv=none; b=uUzIzjfjuOi1RQnN3kvPd7iTAFhPivtmzyaI5iO5IpnvBSpbUC9M//vvVmRb/F/U4TmaVRvIwZTdcwUAPxm48PTiO5EjdkYCHP5eVeYlsUjOkhu34wY+sVvgOcP8CPPzCL2NxBoR8xw0WDqtjjTpj8f2K4CAd+izOeNASzjedZM=
+	t=1729567019; cv=none; b=EmTYyoDT0igfXFfiDsBAQdQ+2LurJUqQI/ZtQix/AUuhXPpogcG05mwHh3GqdIvfiPepj4+kKd5kCwnXZMctL07pquvkske2KxbPS0qy091DscGU0kkiY872qRSCp3W73yDz5lEm26wbcMmDPqyfTlCoZTBAYlPyYn/FVm6wXiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729566736; c=relaxed/simple;
-	bh=fP+1+JuHEGhY4qB7oegLo0qvYsovRFMW4i47QEYmDvc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qky3A5/ocKIytWjtPcqOZAMd5kIiiyVX0i6NLF4pD0c6EnDSCAt3cf66bcY0E9VbX2Yk29lNU8BQXD93GtSCYonrGmxsgrOG4ThV2G4lgdRPmly6AexE8HcKPuALJxcAKE+3ph0eYUEGUPjRgnF6WyV+7rr6IS67mWNRC7g2y9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mtgTCJAG; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729567019; c=relaxed/simple;
+	bh=OEmfwiAkoZN1ST5JdtiQAcgQq190u8l5XLy4d0qXCzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eVdhbJHdo/ZnQsaYQAe7zlPtSXALTjCDLMmN053ywYK7rMlIGHMYtESmm+G05E6PS/dX2lfop1mva9GClrgiDVfZfI5QIgD1CTRYIgmomFbTQgiI2V+jj6gaBXVSndz8s7zh5syeEBNQgMahGoO7HTEgGJ3+dWejIKGaChy4oqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W2KKWHav; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mtgTCJAG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729566735; x=1761102735;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fP+1+JuHEGhY4qB7oegLo0qvYsovRFMW4i47QEYmDvc=;
-  b=mtgTCJAG6nRt0ETRky2PYuc5LmBoLRd8qMz3uV0fT2yhjVouleh6Su9B
-   5WTKjA6ipTYyEGY54WOVVSXVI9nlQNGsqgPkklqs1AjeBzLL0w3fMwDah
-   DYdfk+gCnY/jIsL6DKGtTRo7afkNguTIiwgxKA1lBXcqp4xHokguSj71W
-   3x9Uj+TkThsNpFjzc9m9phDd7TJlHkhYoDxeJBJr5hOwkT5VEN1oYkulj
-   KUCV8QBWWIZ+3p8vN2VVfwi1rmBTcCbgblOQd94ybRLemPiTTUTsiyQDN
-   QYEFmugGj4fEOSLqXPGNACVKo3R1lp1IGp0Y97/Zm+hKJkLtA7lScB7lK
-   g==;
-X-CSE-ConnectionGUID: G+PCILBoTuy47/rX2K9y1Q==
-X-CSE-MsgGUID: 6qZcbzXoST+swdTSu/JUYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="40466017"
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="40466017"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2024 20:12:12 -0700
-X-CSE-ConnectionGUID: KFwW+s6jQH2W8/yRcCIrgw==
-X-CSE-MsgGUID: KzMNp8EORISIZhPPxB3MLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; 
-   d="scan'208";a="80082481"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 21 Oct 2024 20:12:08 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t35JW-000Syy-2l;
-	Tue, 22 Oct 2024 03:12:06 +0000
-Date: Tue, 22 Oct 2024 11:11:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matt Johnston <matt@codeconstruct.com.au>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Wolfram Sang <wsa-dev@sang-engineering.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Dung Cao <dung@os.amperecomputing.com>
-Subject: Re: [PATCH net v2] mctp i2c: handle NULL header address
-Message-ID: <202410221036.hs5xBVOp-lkp@intel.com>
-References: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W2KKWHav"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6e39bf12830so36039547b3.1
+        for <netdev@vger.kernel.org>; Mon, 21 Oct 2024 20:16:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729567017; x=1730171817; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z/cn0iNCyYAWaqDPrWymeoJ6QjtEh5iPBAJ25ZQN+F4=;
+        b=W2KKWHavr0eeteka2CtXuIWga5kauzxcisbSFCiIa4aLAeCxS673CNNzDfwJvi2lbQ
+         OsrTg/gXhEYi7sy6jgSROoBIw334g23jVR8WupajHb4G3ruFGx/v9Yh1SUeTLXBLwnJZ
+         TTKWX0bxRLRhFh40qYdPEhdybDfARbanQBpOfwZ9XbfcFpcPBvocyrEO0CpawEO8XZx0
+         eROMuvZpqEGI0YaH5dCufF30pQ5BlFm1ppJ6mO9NKnkFRcq5nGdVMPYjbc7fTef7enbg
+         kV6GqDuULQc3768YpU3lAeOf47K3j80nmhznPhmn6J0s8f672w7uKoJhnoPDeDuq71rA
+         OebQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729567017; x=1730171817;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z/cn0iNCyYAWaqDPrWymeoJ6QjtEh5iPBAJ25ZQN+F4=;
+        b=Hw7diWIucTvUUCJoIE5JjY1ExzDWVsiwHGorPOwBPuF30qEfxdinUL8md6h+01UNcj
+         xsEaJtep+NiJ07hdHwN3L5opdsfOuqBxzWs45Dv7lSrPkDWzOoaJVoLWsF5sdZFThe/7
+         egReg0+kuSkp5hyG/ZCl5dJhCqLdZeHA8OE4uS8BQ9mqYWYgfTyXhYy+sx4A10ygwR8o
+         iTNHdP5+xUYOaTiXlU+9tVnIqqNx4NUg4vfl7f+VxP0+/q9sk7qFEy9qeCuiNm7TgHfn
+         5xZvqj/gg3TlGYci/hy6eRFleoYfZL/6Vw4c4pzhWWkNfXiy9GV1B6EIAATATWWB6F7Z
+         eZPw==
+X-Gm-Message-State: AOJu0Yyx53ObGuApUdL5PMW7PDllvKD0/xsn83qupPfFb7JrGTWYwn3r
+	ZcI8LTvQGfoh8Cp6RzceUD+UOfj062/9w+WCZbRbOdImwPDGCe61d6qW4HftkuquKh6byWueZyH
+	6lsAQfS1Dt5l7KvigyFs3tSkPbmw=
+X-Google-Smtp-Source: AGHT+IFRk9XzxSsT9ULI+6gld1WMI5Vz5Pn3tTaPjwiKTRyp8Y0VIg3sDi0/mu/fTFHvTtDvWOp3qtiKrMy6jdISIr4=
+X-Received: by 2002:a05:690c:b9c:b0:6dd:c619:4cb1 with SMTP id
+ 00721157ae682-6e7d4334d5amr16437527b3.0.1729567016653; Mon, 21 Oct 2024
+ 20:16:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021-mctp-i2c-null-dest-v2-1-4503e478517c@codeconstruct.com.au>
+References: <20240930031624.2116592-1-wojackbb@gmail.com> <e2f390c7-4d58-47fb-ba86-b1e5ccd6e546@lunn.ch>
+ <CAAQ7Y6Z2xkgxv36=WOxbUArCw3eBeY0nx_7nAH36+Wicjs_fPg@mail.gmail.com> <562c8ee8-7ce3-4343-9d93-b01be1235954@lunn.ch>
+In-Reply-To: <562c8ee8-7ce3-4343-9d93-b01be1235954@lunn.ch>
+From: =?UTF-8?B?5ZCz6YC86YC8?= <wojackbb@gmail.com>
+Date: Tue, 22 Oct 2024 11:16:44 +0800
+Message-ID: <CAAQ7Y6aqLJoScfVD3NMyw_0r42qYS2BCCWa5iRDaM8h1EKwwkg@mail.gmail.com>
+Subject: Re: [PATCH] [net,v2] net: wwan: t7xx: add PM_AUTOSUSPEND_MS_BY_DW5933E
+ for Dell DW5933e
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, chandrashekar.devegowda@intel.com, 
+	chiranjeevi.rapolu@linux.intel.com, haijun.liu@mediatek.com, 
+	m.chetan.kumar@linux.intel.com, ricardo.martinez@linux.intel.com, 
+	loic.poulain@linaro.org, ryazanov.s.a@gmail.com, johannes@sipsolutions.net, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, 
+	linux-mediatek@lists.infradead.org, matthias.bgg@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Matt,
+Andrew Lunn <andrew@lunn.ch> =E6=96=BC 2024=E5=B9=B410=E6=9C=8815=E6=97=A5 =
+=E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=888:09=E5=AF=AB=E9=81=93=EF=BC=9A
 
-kernel test robot noticed the following build errors:
+>
+> On Tue, Oct 15, 2024 at 10:48:15AM +0800, =E5=90=B3=E9=80=BC=E9=80=BC wro=
+te:
+> > Hi Andrew,
+> >
+> > We have a power test that uses a small script to loop through the power=
+_state
+> > of Dell DW5933e.(/sys/bus/pci/devices/..../power_state)
+> >
+> > We expect that PCIE can enter the D3 state when Host don;t have data pa=
+cket
+> > transmission,
+> > but the experimental result of the small script test is that it is only=
+ in the
+> > D3 state about 5% of the time.
+> >
+> > We analyze logs to found that Dell DW5933e occasionally sends signal ch=
+ange
+> > notifications, and ModemManager occasionally captures Modem status.
+> > Although these situations are not very frequent,
+> > However, since the default auto suspend time is 20 seconds, the chance =
+of PCIE
+> > being able to enter the D3 state is very small.
+> >
+> > After we changed auto suspend to 5 seconds, PCIE have 50% of the time w=
+as in D3
+> > state, which met Dell's requirements.
+>
+> So you answered some of my questions. But missed:
+>
+> What makes this machine special?
+>
+> It is maybe because this machine occasionally sends signal change
+> notifications? There are modem status changes?
+>
+> Have you compared this to other machines with the same hardware? Do
+> they do the same? Or is this Dell special? If it is special, why is it
+> special?
+>
+>         Andrew
 
-[auto build test ERROR on cb560795c8c2ceca1d36a95f0d1b2eafc4074e37]
+Hi Andrew,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matt-Johnston/mctp-i2c-handle-NULL-header-address/20241021-123741
-base:   cb560795c8c2ceca1d36a95f0d1b2eafc4074e37
-patch link:    https://lore.kernel.org/r/20241021-mctp-i2c-null-dest-v2-1-4503e478517c%40codeconstruct.com.au
-patch subject: [PATCH net v2] mctp i2c: handle NULL header address
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20241022/202410221036.hs5xBVOp-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241022/202410221036.hs5xBVOp-lkp@intel.com/reproduce)
+The chip of Fibocom FM350 is MTK T7XX,
+It is the same chip as our device.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410221036.hs5xBVOp-lkp@intel.com/
+We tested the Fibocom FM350 and It had the same issue as our device.
+The following tests use the same environment and steps:
+a. Make data call to connect Internet
+b. No data is transferred to the Internet and wait one minute.
+c. use test script to capture and count power_state until one minute.
 
-All errors (new ones prefixed by >>):
+Result:
+1. When autosuspend_delay_ms is 20000,
+Our device's d3_cold time is 0%
+Fibocom FM350's d3_cold time 0%
 
->> drivers/net/mctp/mctp-i2c.c:599:9: error: incompatible pointer to integer conversion assigning to 'u8' (aka 'unsigned char') from 'const unsigned char *' [-Wint-conversion]
-     599 |                 llsrc = dev->dev_addr;
-         |                       ^ ~~~~~~~~~~~~~
-   1 error generated.
+2. When autosuspend_delay_ms is 5000,
+Our device's d3_cold time is 80%
+Fibocom FM350's d3_cold time 60%
 
+So this problem is a common problem.
+Should I remove PM_AUTOSUSPEND_MS_BY_DW5933E,
+and modify PM_AUTOSUSPEND_MS to 5000 at my patch?
 
-vim +599 drivers/net/mctp/mctp-i2c.c
-
-   579	
-   580	static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
-   581					  unsigned short type, const void *daddr,
-   582					  const void *saddr, unsigned int len)
-   583	{
-   584		struct mctp_i2c_hdr *hdr;
-   585		struct mctp_hdr *mhdr;
-   586		u8 lldst, llsrc;
-   587	
-   588		if (len > MCTP_I2C_MAXMTU)
-   589			return -EMSGSIZE;
-   590	
-   591		if (daddr)
-   592			lldst = *((u8 *)daddr);
-   593		else
-   594			return -EINVAL;
-   595	
-   596		if (saddr)
-   597			llsrc = *((u8 *)saddr);
-   598		else
- > 599			llsrc = dev->dev_addr;
-   600	
-   601		skb_push(skb, sizeof(struct mctp_i2c_hdr));
-   602		skb_reset_mac_header(skb);
-   603		hdr = (void *)skb_mac_header(skb);
-   604		mhdr = mctp_hdr(skb);
-   605		hdr->dest_slave = (lldst << 1) & 0xff;
-   606		hdr->command = MCTP_I2C_COMMANDCODE;
-   607		hdr->byte_count = len + 1;
-   608		hdr->source_slave = ((llsrc << 1) & 0xff) | 0x01;
-   609		mhdr->ver = 0x01;
-   610	
-   611		return sizeof(struct mctp_i2c_hdr);
-   612	}
-   613	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks.
