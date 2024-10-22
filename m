@@ -1,139 +1,80 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D94019E99E;
-	Tue, 22 Oct 2024 13:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4011E481;
+	Tue, 22 Oct 2024 13:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729604274; cv=none; b=m2RZV0BiVBqws681e9+dibY4ttY5lnrJ7c530NTY+ytWYHkK9vSS3bd8cnPj8rIcPpcatvieZ2I4PiMUg/2uXqtz1aDDw8NuZWJRHwiAjxorbAh6OFv2WOeKcC1vZqwo0GkL9ig7Xh25eRm4XyOJuQcILoKM1OxuCHRLUj64src=
+	t=1729604422; cv=none; b=U/L3TtfgdVYqOXC4YhCROK6GBAj4hzdOknBauES8uFPhWddJtCkvHZG9GACVCox+k/nDaHWN8MY4ysNiSruOXgscZL55P1M1fUIHvIaKwFlDnsZVCNwQGzZKUQbeinUGOUCP+fM5kNT5fyzgiVjw32zYw1qpwl+beKLmvsYtWks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729604274; c=relaxed/simple;
-	bh=9g88+vo+w3pHcZYFTHanutEy/cUSfaKP7KjUnZfdDCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRwlD1js5xFeVLTFOCqPM6TzFg6PbEPe0YXymw2hjhuS179Z9esNQMhrTmxCaAHfo06Oh4FzObK59MWjSC06t2HIzJUd+kHQ9hZNUeNHTBTUPngc022cTZCBhNBDDnE3rFMGmnMvmqqVDzc1U4EojI+MUuYLxVZpep2qzMiYcaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=k9sNs1yk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1729604422; c=relaxed/simple;
+	bh=WQqmPsFzX948qO5n2uVgN03q+hIMvwWm4jLEtyM8bjA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Fofk1zCK1nqWOirvAeYBWH/c0nKV1OuG8Dii8x6SEO5R5ethBnzb1FAp+85+i8zBb0zfzGlue3/SXDVV8JRQCgRli2cqZRfrlkfwSsxqKtajLTzau/cccJReZ0lvl91ZhI5C1wZI/1NSSPhvP96bZE8jFQ95PkxaEDdC2sK1r38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RloKJxnD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="k9sNs1yk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2lLWUy23eHb4MgFna+aBGyb7zbgEcHoFz1AAK36qYiQ=; b=k9sNs1ykHFkSe7oZVo7n1QwwwI
-	qkDWA7xTVJdC83jRqnoXHQGP2QQoeEL94aUL9RFKWalZtLdpEjqOLeg0PrHfvYkaivPJxzFfUCZSX
-	VJuRKHmdypK5r5oG5p26eCmTQ4lCCFdmCt1rQ+8JPGDNEZj/vj+O16+Ro/ESmMHWHVnw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t3F4q-00AqUR-33; Tue, 22 Oct 2024 15:37:36 +0200
-Date: Tue, 22 Oct 2024 15:37:36 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Kiran Kumar C.S.K" <quic_kkumarcs@quicinc.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, vsmuthu@qti.qualcomm.com,
-	arastogi@qti.qualcomm.com, linchen@qti.qualcomm.com,
-	john@phrozen.org, Luo Jie <quic_luoj@quicinc.com>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	"Suruchi Agarwal (QUIC)" <quic_suruchia@quicinc.com>,
-	"Lei Wei (QUIC)" <quic_leiwei@quicinc.com>
-Subject: Re: RFC: Advice on adding support for Qualcomm IPQ9574 SoC Ethernet
-Message-ID: <7b5227fc-0114-40be-ba5d-7616cebb4bf9@lunn.ch>
-References: <f0f0c065-bf7c-4106-b5e2-bfafc6b52101@quicinc.com>
- <d2929bd2-bc9e-4733-a89f-2a187e8bf917@quicinc.com>
- <817a0d2d-e3a6-422c-86d2-4e4216468fe6@lunn.ch>
- <c7d8109d-8f88-4f4c-abb7-6ebfa1f1daa3@quicinc.com>
- <Zv_6mf3uYcqtHC2j@shell.armlinux.org.uk>
- <ba1bf2a6-76b7-4e82-b192-86de9a8b8012@quicinc.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RloKJxnD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CA8C4CEE6;
+	Tue, 22 Oct 2024 13:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729604422;
+	bh=WQqmPsFzX948qO5n2uVgN03q+hIMvwWm4jLEtyM8bjA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RloKJxnDOhAMi8QX77gftiaUJY5WRU00UyTFWoyz/iZaIOXa6hIm9bQkqQlVfKHlY
+	 LJZ+JAiKAIpGWRJMb4AU37nExOGbdlyheRzoiMVbJ+/EcYmmS77btTiUZSPuegEr18
+	 2Vu1ZbkWo7AuBXAT/SXzyqAFL0joPin0Kq7qhfZhdMwDOQE6QThOBPQTd2HdlrbucR
+	 nocWhQtNWURPyFarhKj2MnYRr/CZqIpSLcHZQGGRTw1X07IVyb6FapXqfc9O8IawPp
+	 nxMs053ykXIGxTNpzBOdbv1Jjz7nhtSr8pNuitJSej2CGfngscIXmPvhD9l1rZoMg8
+	 Vsgqx/zmALELA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE0F3822D22;
+	Tue, 22 Oct 2024 13:40:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ba1bf2a6-76b7-4e82-b192-86de9a8b8012@quicinc.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] tools: ynl-gen: use big-endian netlink attribute
+ types
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172960442851.967544.3510243712784820450.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Oct 2024 13:40:28 +0000
+References: <20241017094704.3222173-1-ast@fiberby.net>
+In-Reply-To: <20241017094704.3222173-1-ast@fiberby.net>
+To: =?utf-8?b?QXNiasO4cm4gU2xvdGggVMO4bm5lc2VuIDxhc3RAZmliZXJieS5uZXQ+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, donald.hunter@gmail.com,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org
 
-> Apologies for the delay in response. I understand that the PCS<->PHY
-> clocks may be out of the scope of PCS DT due to the reasons you mention.
-> However would like to clarify that the MII clocks referred to here, are
-> part of the connection between the MAC and PCS and not between PCS and PHY.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu, 17 Oct 2024 09:47:02 +0000 you wrote:
+> Change ynl-gen-c.py to use NLA_BE16 and NLA_BE32 types to represent
+> big-endian u16 and u32 ynl types.
 > 
-> Below is a diagram that shows the sub-blocks inside the 'UNIPHY' block
-> of IPQ9574 which houses the PCS and the serdes, along with the clock
-> connectivity. The MII Rx/Tx clocks are supplied from the NSS CC, to the
-> GMII channels between PCS and MAC. So, it seemed appropriate to have
-> these clocks described as part of the PCS DT node.
+> Doing this enables those attributes to have range checks applied, as
+> the validator will then convert to host endianness prior to validation.
 > 
->               +-------+ +---------+  +-------------------------+
->    -----------|CMN PLL| |  GCC    |  |   NSSCC (Divider)       |
->    |25/50mhz  +----+--+ +----+----+  +--+-------+--------------+
->    |clk            |         |          ^       |
->    |       31.25M  |  SYS/AHB|clk  RX/TX|clk    +------------+
->    |       ref clk |         |          |       |            |
->    |               |         v          | MII RX|TX clk   MAC| RX/TX clk
->    |            +--+---------+----------+-------+---+      +-+---------+
->    |            |  |   +----------------+       |   |      | |     PPE |
->    v            |  |   |     UNIPHY0            V   |      | V         |
->   +-------+     |  v   |       +-----------+ (X)GMII|      |           |
->   |       |     |  +---+---+   |           |--------|------|-- MAC0    |
->   |       |     |  |       |   |           | (X)GMII|      |           |
->   |  Quad |     |  |SerDes |   |  (X)PCS   |--------|------|-- MAC1    |
->   |       +<----+  |       |   |           | (X)GMII|      |           |
->   |(X)GPHY|     |  |       |   |           |--------|------|-- MAC2    |
->   |       |     |  |       |   |           | (X)GMII|      |           |
->   |       |     |  +-------+   |           |--------|------|-- MAC3    |
->   +-------+     |              |           |        |      |           |
->                 |              +-----------+        |      |           |
->                 +-----------------------------------+      |           |
-
-Thanks for the detailed diagram. That always helps get things
-straight.
-
-Im i correct in says that MII RX|TX is identical to MAC RX|TX? These
-two clocks are used by the MAC and XPCS to clock data from one to the
-other? If they are the exact same clocks, i would suggest you use the
-same name, just to avoid confusion.
-
-Both XPCS and PPE are clock consumers, so both will have a phandle
-pointing to the NSSCC clock provider?
-
-> We had one other question on the approach used in the driver for PCS
-> clocks, could you please provide your comments.
+> The autogenerated kernel/uapi code have been regenerated by running:
+>   ./tools/net/ynl/ynl-regen.sh -f
 > 
-> As we can see from the above diagram, each serdes in the UNIPHY block
-> provides the clocks to the NSSCC, and the PCS block consumes the MII
-> Rx/Tx clocks. In our current design, the PCS/UNIPHY driver registers a
-> provider driver for the clocks that the serdes supplies to the NSS CC.
+> [...]
 
-That sounds reasonable.
+Here is the summary with links:
+  - [net-next,v2] tools: ynl-gen: use big-endian netlink attribute types
+    https://git.kernel.org/netdev/net-next/c/867d13a75488
 
-> It also enables the MII Rx/Tx clocks which are supplied to the PCS from
-> the NSS CC. Would this be an acceptable design to have the PCS driver
-> register the clock provider driver and also consume the MII Rx/Tx
-> clocks? It may be worth noting that the serdes and PCS are part of the
-> same UNIPHY block and also share same register region.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Does the SERDES consume the MII Rx/Tx? Your diagram indicates it does
-not. I'm just wondering if you have circular dependencies at runtime?
 
-Where you will need to be careful is probe time vs runtime. Since you
-have circular phandles you need to first create all the clock
-providers, and only then start the clock consumers. Otherwise you
-might get into an endless EPROBE_DEFER loop.
-
-	Andrew
