@@ -1,133 +1,494 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE1C15C13F
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 08:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4865A156F5E;
+	Wed, 23 Oct 2024 08:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671308; cv=none; b=H2oF/xvZGSSF7G63MFHKzS0lM0YPUI9QnYSIoa+Iud5+DGI31SFxF9ljTDewtZWgmPRvLNZ6tIv2/+4SVaIh6gTWH0Yiq2pedin6chv0rZJCxjGwQyGP1YkVW5JshtOuUvD3GbkUyft3Sj35fL9R7rhmrSKJc/7+Dsyh6aLaeVk=
+	t=1729671532; cv=none; b=JZIZEtoztQ0Z6tPxUF5Q4TF02SKI5onRz6/NN0A89nzgEr30PSVWlUSp1PEo8lE5gJm5/RlWIaNKrQVhPeROFwWyy0NBh4V8Xcd9Iqvm0nVQJMXX8wrPLnhwM5C5O7a/s2dfo3WGtKqKlEbnjFm4tXHdmODecTwHz/hqj0wka24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671308; c=relaxed/simple;
-	bh=TGV+TDsctUgneUan+to+MWzX/iPyiUeA4AKWokegHfA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gdqo/UczBg29x8UBl3QJMh6/CkMWjoSCKMksYMotxf3I3rCGbnOWXnPX0ODPUGMv3end0w0EL4Jg209Nad2xFISQIrR2icw00T1bETbXvzyiHkYs2wllZFIu8kfQ9MGZI03EuglBtzcQHaxgwpWZhcLoo9EJI8XUpGxmc8ICqY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yt5fnLjb; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729671532; c=relaxed/simple;
+	bh=nRYsdh20ulVhIqky7GSqNnbitg9IwiHaw0XADbawyqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WZDm2AW8IQ7TiSbeiSyE6zYf/ADFma2m1MSGzrt/uKpc4QNVW1lC42Zd7ZYargn36vYh/dwIr7C62BAQ8WNHUhF51SuDmCiU0mIJD15qAWaLkHkf8teCdILuVabNJM25eASjzNdv+TG+q4gOE0izdiwkEkDL0MBRJ+f6u9A/k+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=wH2Ef/rV; arc=none smtp.client-ip=51.81.35.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yt5fnLjb"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7ed9c16f687so501614a12.0
-        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 01:15:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729671306; x=1730276106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I3lDrf8nMbheae0kI9Cq9wDU/qv8Sa2XrwC1/t0b94w=;
-        b=Yt5fnLjbOjxtsHaa8aPKa/yWunA8DZPIb20u7BEPnZksFovy2lrD6EktG++qailTMX
-         w7ILKL69HzT6wqsdfoNhOZcZt1iczSJF1f7db2aFQFnFjX8jMZGEtOfI73Ck/rBXo2ho
-         VItI/KEjRWZ+ZYDNy0sTKcIV0xP1yIYZCaNl0t/0GX+Mzp3jdOU5PApykqM0T2i9RX+C
-         7MpfgBYq49VdsOJiING6InpdaJHfgZ0yT6gENB33zY+aEVpfS5Rb3LVlm0CACNQkhDzf
-         9EIGiqWWnnpNvaJQCyHxhEozT0IBpKuWuo3Xs+eaNxrnRTkj81rI2HRuoBd6dtUVQ0KS
-         wVsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729671306; x=1730276106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I3lDrf8nMbheae0kI9Cq9wDU/qv8Sa2XrwC1/t0b94w=;
-        b=MdvG2JbwmJAZ+2JCvMchnf7P+ZYGRlBuF9QGHZ83ZMODgmYSJVDoIzOGJnzkBpGi1h
-         wGiTHKLyLzbV5jo1fQ4ljJqGkmbRMWqAtsGM00otbhtV5ZHfB4NPHUKyffdFdGW/qCAg
-         YsLFjjJOX9F31SailiSxEzCrDcDUBBooo1XJZ8Qvwf2Z9yhhj8MdUCR2V/cO1Vja1hes
-         R8iHgeisYTpmpt4byJ0z1we97mbSqffzEbeGzYXaiBGRoceVzBIE1SxTxeoWUAAexGNe
-         BeU7JvDjoP6HSbAy3jNS8oo+5y98eeiIkQmhDbjCyjo4sIHlyqIpe4zz0nVmDPnHDITJ
-         Ee+Q==
-X-Gm-Message-State: AOJu0YwZrxEqdTqgWUo9pTnW88V0cQxlcbt3GNeJyuenus50xOwkdE3b
-	P8TVa7/pVw4SNK3SkyA7ODj5AXn4W+lq5G376qD2qn/IA2GKuibV
-X-Google-Smtp-Source: AGHT+IE+vKPLhg1UzhA2Ko991QH82Cxc/X7DJX+l0HqsEK1jHh23tAoIvRqu/5He/Ed237uPn1QU/g==
-X-Received: by 2002:a05:6a21:78b:b0:1d9:21fb:d31f with SMTP id adf61e73a8af0-1d978bb2aacmr2016659637.45.1729671306036;
-        Wed, 23 Oct 2024 01:15:06 -0700 (PDT)
-Received: from KERNELXING-MB0.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1312d1fsm5837786b3a.5.2024.10.23.01.15.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 01:15:05 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dsahern@kernel.org
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>,
-	Neal Cardwell <ncardwell@google.com>
-Subject: [PATCH net-next v3 2/2] tcp: add more warn of socket in tcp_send_loss_probe()
-Date: Wed, 23 Oct 2024 16:14:52 +0800
-Message-Id: <20241023081452.9151-3-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20241023081452.9151-1-kerneljasonxing@gmail.com>
-References: <20241023081452.9151-1-kerneljasonxing@gmail.com>
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="wH2Ef/rV"
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id D7B6220A2F;
+	Wed, 23 Oct 2024 08:11:54 +0000 (UTC)
+Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3C9C720056;
+	Wed, 23 Oct 2024 08:11:45 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay2.mymailcheap.com (Postfix) with ESMTPS id 051733E8B0;
+	Wed, 23 Oct 2024 10:11:36 +0200 (CEST)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id EBEF340071;
+	Wed, 23 Oct 2024 08:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1729671093; bh=nRYsdh20ulVhIqky7GSqNnbitg9IwiHaw0XADbawyqw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=wH2Ef/rVmT74V531v+ulCIDHN9SB0nSEpVtEc7tw344HjnvVcj54jftVa5KYE6Spe
+	 sjhKF3HnuJsziCtdgFpFAJQGLYyA7kOgUDyBRycpWuUmmwdkUOrYbP+2glUEbWJLE5
+	 dwMfijq+AXUUzSAvRtIZkutFacWYMZjIorkQP+NA=
+Received: from localhost.localdomain (unknown [58.32.43.121])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id C566B407D9;
+	Wed, 23 Oct 2024 08:11:25 +0000 (UTC)
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+To: jeffbai@aosc.io,
+	gregkh@linuxfoundation.org,
+	wangyuli@uniontech.com,
+	torvalds@linux-foundation.org
+Cc: aospan@netup.ru,
+	conor.dooley@microchip.com,
+	ddrokosov@sberdevices.ru,
+	dmaengine@vger.kernel.org,
+	dushistov@mail.ru,
+	fancer.lancer@gmail.com,
+	geert@linux-m68k.org,
+	hoan@os.amperecomputing.com,
+	ink@jurassic.park.msu.ru,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fpga@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	mattst88@gmail.com,
+	netdev@vger.kernel.org,
+	nikita@trvn.ru,
+	ntb@lists.linux.dev,
+	patches@lists.linux.dev,
+	richard.henderson@linaro.org,
+	s.shtylyov@omp.ru,
+	serjk@netup.ru,
+	shc_work@mail.ru,
+	tsbogend@alpha.franken.de,
+	v.georgiev@metrotek.ru,
+	wsa+renesas@sang-engineering.com,
+	xeb@mail.ru,
+	Kexy Biscuit <kexybiscuit@aosc.io>
+Subject: [PATCH] Revert "MAINTAINERS: Remove some entries due to various compliance requirements."
+Date: Wed, 23 Oct 2024 16:09:34 +0800
+Message-ID: <20241023080935.2945-2-kexybiscuit@aosc.io>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
+References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Rspamd-Queue-Id: EBEF340071
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-1.60 / 10.00];
+	REPLY(-4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[renesas];
+	FREEMAIL_CC(0.00)[netup.ru,microchip.com,sberdevices.ru,vger.kernel.org,mail.ru,gmail.com,linux-m68k.org,os.amperecomputing.com,jurassic.park.msu.ru,lists.infradead.org,linaro.org,trvn.ru,lists.linux.dev,omp.ru,alpha.franken.de,metrotek.ru,sang-engineering.com,aosc.io];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,mail.ru];
+	TO_DN_SOME(0.00)[]
 
-From: Jason Xing <kernelxing@tencent.com>
+This reverts commit 6e90b675cf942e50c70e8394dfb5862975c3b3b2.
 
-Add two fields to print in the helper which here covers tcp_send_loss_probe().
+An absolutely no-one-ever-reviewed patch, not even by the maintainers who
+got removed themselves - at least not on the mailing list. Then the patch
+just got slipped into an unrelated subsystem pull request, and got pulled
+by Torvalds with not even a comment.
 
-Link: https://lore.kernel.org/all/5632e043-bdba-4d75-bc7e-bf58014492fd@redhat.com/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
---
-v3
-Link: https://lore.kernel.org/all/20241021155245.83122-3-kerneljasonxing@gmail.com/
-1. add missing string "invalid inflight: " (David)
-2. add reviewed-by tag (David)
-3. remove tcp_current_mss() due to possible change happening on the socket's state (Eric)
+What about the next time? Who next would be removed from the MAINTAINERS
+file, the kernel.org infrastructure? What if the compliance requires
+another XZ backdoor to be developed without further explanation? Is the
+kernel development process still done in public?
 
-v2
-Link:https://lore.kernel.org/all/CAL+tcoAr7RHhaZGV12wYDcPPPaubAqdxMCmy7Jujtr8b3+bY=w@mail.gmail.com/
-1. use "" instead of NULL in tcp_send_loss_probe()
+Are the "compliance requirements" documented on docs.kernel.org? Who are
+responsible for them? Are all that are responsible employees of
+The Linux Foundation, which is regulated by the U.S. legislature?
+
+Fixes: 6e90b675cf94 ("MAINTAINERS: Remove some entries due to various compliance requirements.")
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
 ---
- include/net/tcp.h     | 3 ++-
- net/ipv4/tcp_output.c | 4 +---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+Please keep all discussions on at least one of the mailing lists.
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 8b8d94bb1746..e9b37b76e894 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2433,8 +2433,9 @@ void tcp_plb_update_state_upon_rto(struct sock *sk, struct tcp_plb_state *plb);
- static inline void tcp_warn_once(const struct sock *sk, bool cond, const char *str)
- {
- 	WARN_ONCE(cond,
--		  "%sout:%u sacked:%u lost:%u retrans:%u tlp_high_seq:%u sk_state:%u ca_state:%u advmss:%u mss_cache:%u pmtu:%u\n",
-+		  "%scwn:%u out:%u sacked:%u lost:%u retrans:%u tlp_high_seq:%u sk_state:%u ca_state:%u advmss:%u mss_cache:%u pmtu:%u\n",
- 		  str,
-+		  tcp_snd_cwnd(tcp_sk(sk)),
- 		  tcp_sk(sk)->packets_out, tcp_sk(sk)->sacked_out,
- 		  tcp_sk(sk)->lost_out, tcp_sk(sk)->retrans_out,
- 		  tcp_sk(sk)->tlp_high_seq, sk->sk_state,
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 054244ce5117..5485a70b5fe5 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2954,9 +2954,7 @@ void tcp_send_loss_probe(struct sock *sk)
- 	}
- 	skb = skb_rb_last(&sk->tcp_rtx_queue);
- 	if (unlikely(!skb)) {
--		WARN_ONCE(tp->packets_out,
--			  "invalid inflight: %u state %u cwnd %u mss %d\n",
--			  tp->packets_out, sk->sk_state, tcp_snd_cwnd(tp), mss);
-+		tcp_warn_once(sk, tp->packets_out, "invalid inflight: ");
- 		smp_store_release(&inet_csk(sk)->icsk_pending, 0);
- 		return;
- 	}
+ MAINTAINERS | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 178 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e9659a5a7fb3..501aa5c0887e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -258,6 +258,12 @@ L:	linux-acenic@sunsite.dk
+ S:	Maintained
+ F:	drivers/net/ethernet/alteon/acenic*
+ 
++ACER ASPIRE 1 EMBEDDED CONTROLLER DRIVER
++M:	Nikita Travkin <nikita@trvn.ru>
++S:	Maintained
++F:	Documentation/devicetree/bindings/platform/acer,aspire1-ec.yaml
++F:	drivers/platform/arm64/acer-aspire1-ec.c
++
+ ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
+ M:	Peter Kaestle <peter@piie.net>
+ L:	platform-driver-x86@vger.kernel.org
+@@ -882,6 +888,7 @@ F:	drivers/staging/media/sunxi/cedrus/
+ 
+ ALPHA PORT
+ M:	Richard Henderson <richard.henderson@linaro.org>
++M:	Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+ M:	Matt Turner <mattst88@gmail.com>
+ L:	linux-alpha@vger.kernel.org
+ S:	Odd Fixes
+@@ -2256,6 +2263,12 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+ F:	arch/arm/mach-ep93xx/ts72xx.c
+ 
++ARM/CIRRUS LOGIC CLPS711X ARM ARCHITECTURE
++M:	Alexander Shiyan <shc_work@mail.ru>
++L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++S:	Odd Fixes
++N:	clps711x
++
+ ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
+ M:	Hartley Sweeten <hsweeten@visionengravers.com>
+ M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+@@ -3802,6 +3815,14 @@ F:	drivers/video/backlight/
+ F:	include/linux/backlight.h
+ F:	include/linux/pwm_backlight.h
+ 
++BAIKAL-T1 PVT HARDWARE MONITOR DRIVER
++M:	Serge Semin <fancer.lancer@gmail.com>
++L:	linux-hwmon@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/hwmon/baikal,bt1-pvt.yaml
++F:	Documentation/hwmon/bt1-pvt.rst
++F:	drivers/hwmon/bt1-pvt.[ch]
++
+ BARCO P50 GPIO DRIVER
+ M:	Santosh Kumar Yadav <santoshkumar.yadav@barco.com>
+ M:	Peter Korsgaard <peter.korsgaard@barco.com>
+@@ -6455,6 +6476,7 @@ F:	drivers/mtd/nand/raw/denali*
+ 
+ DESIGNWARE EDMA CORE IP DRIVER
+ M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++R:	Serge Semin <fancer.lancer@gmail.com>
+ L:	dmaengine@vger.kernel.org
+ S:	Maintained
+ F:	drivers/dma/dw-edma/
+@@ -9737,6 +9759,14 @@ F:	drivers/gpio/gpiolib-cdev.c
+ F:	include/uapi/linux/gpio.h
+ F:	tools/gpio/
+ 
++GRE DEMULTIPLEXER DRIVER
++M:	Dmitry Kozlov <xeb@mail.ru>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	include/net/gre.h
++F:	net/ipv4/gre_demux.c
++F:	net/ipv4/gre_offload.c
++
+ GRETH 10/100/1G Ethernet MAC device driver
+ M:	Andreas Larsson <andreas@gaisler.com>
+ L:	netdev@vger.kernel.org
+@@ -12929,6 +12959,12 @@ S:	Maintained
+ F:	drivers/ata/pata_arasan_cf.c
+ F:	include/linux/pata_arasan_cf_data.h
+ 
++LIBATA PATA DRIVERS
++R:	Sergey Shtylyov <s.shtylyov@omp.ru>
++L:	linux-ide@vger.kernel.org
++F:	drivers/ata/ata_*.c
++F:	drivers/ata/pata_*.c
++
+ LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
+ M:	Linus Walleij <linus.walleij@linaro.org>
+ L:	linux-ide@vger.kernel.org
+@@ -12945,6 +12981,15 @@ F:	drivers/ata/ahci_platform.c
+ F:	drivers/ata/libahci_platform.c
+ F:	include/linux/ahci_platform.h
+ 
++LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
++M:	Serge Semin <fancer.lancer@gmail.com>
++L:	linux-ide@vger.kernel.org
++S:	Maintained
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
++F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
++F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
++F:	drivers/ata/ahci_dwc.c
++
+ LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
+ M:	Mikael Pettersson <mikpelinux@gmail.com>
+ L:	linux-ide@vger.kernel.org
+@@ -14140,6 +14185,16 @@ S:	Maintained
+ T:	git git://linuxtv.org/media_tree.git
+ F:	drivers/media/platform/nxp/imx-pxp.[ch]
+ 
++MEDIA DRIVERS FOR ASCOT2E
++M:	Sergey Kozlov <serjk@netup.ru>
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/dvb-frontends/ascot2e*
++
+ MEDIA DRIVERS FOR CXD2099AR CI CONTROLLERS
+ M:	Jasmin Jessich <jasmin@anw.at>
+ L:	linux-media@vger.kernel.org
+@@ -14148,6 +14203,16 @@ W:	https://linuxtv.org
+ T:	git git://linuxtv.org/media_tree.git
+ F:	drivers/media/dvb-frontends/cxd2099*
+ 
++MEDIA DRIVERS FOR CXD2841ER
++M:	Sergey Kozlov <serjk@netup.ru>
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/dvb-frontends/cxd2841er*
++
+ MEDIA DRIVERS FOR CXD2880
+ M:	Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>
+ L:	linux-media@vger.kernel.org
+@@ -14192,6 +14257,35 @@ F:	drivers/media/platform/nxp/imx-mipi-csis.c
+ F:	drivers/media/platform/nxp/imx7-media-csi.c
+ F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+ 
++MEDIA DRIVERS FOR HELENE
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/dvb-frontends/helene*
++
++MEDIA DRIVERS FOR HORUS3A
++M:	Sergey Kozlov <serjk@netup.ru>
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/dvb-frontends/horus3a*
++
++MEDIA DRIVERS FOR LNBH25
++M:	Sergey Kozlov <serjk@netup.ru>
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/dvb-frontends/lnbh25*
++
+ MEDIA DRIVERS FOR MXL5XX TUNER DEMODULATORS
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+@@ -14199,6 +14293,16 @@ W:	https://linuxtv.org
+ T:	git git://linuxtv.org/media_tree.git
+ F:	drivers/media/dvb-frontends/mxl5xx*
+ 
++MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
++M:	Sergey Kozlov <serjk@netup.ru>
++M:	Abylay Ospan <aospan@netup.ru>
++L:	linux-media@vger.kernel.org
++S:	Supported
++W:	https://linuxtv.org
++W:	http://netup.tv/
++T:	git git://linuxtv.org/media_tree.git
++F:	drivers/media/pci/netup_unidvb/*
++
+ MEDIA DRIVERS FOR NVIDIA TEGRA - VDE
+ M:	Dmitry Osipenko <digetx@gmail.com>
+ L:	linux-media@vger.kernel.org
+@@ -14842,6 +14946,13 @@ F:	drivers/mtd/
+ F:	include/linux/mtd/
+ F:	include/uapi/mtd/
+ 
++MEMSENSING MICROSYSTEMS MSA311 DRIVER
++M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
++L:	linux-iio@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
++F:	drivers/iio/accel/msa311.c
++
+ MEN A21 WATCHDOG DRIVER
+ M:	Johannes Thumshirn <morbidrsa@gmail.com>
+ L:	linux-watchdog@vger.kernel.org
+@@ -15175,6 +15286,7 @@ F:	drivers/tty/serial/8250/8250_pci1xxxx.c
+ 
+ MICROCHIP POLARFIRE FPGA DRIVERS
+ M:	Conor Dooley <conor.dooley@microchip.com>
++R:	Vladimir Georgiev <v.georgiev@metrotek.ru>
+ L:	linux-fpga@vger.kernel.org
+ S:	Supported
+ F:	Documentation/devicetree/bindings/fpga/microchip,mpf-spi-fpga-mgr.yaml
+@@ -15429,6 +15541,17 @@ F:	arch/mips/
+ F:	drivers/platform/mips/
+ F:	include/dt-bindings/mips/
+ 
++MIPS BAIKAL-T1 PLATFORM
++M:	Serge Semin <fancer.lancer@gmail.com>
++L:	linux-mips@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
++F:	Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
++F:	drivers/bus/bt1-*.c
++F:	drivers/clk/baikal-t1/
++F:	drivers/memory/bt1-l2-ctl.c
++F:	drivers/mtd/maps/physmap-bt1-rom.[ch]
++
+ MIPS BOSTON DEVELOPMENT BOARD
+ M:	Paul Burton <paulburton@kernel.org>
+ L:	linux-mips@vger.kernel.org
+@@ -15441,6 +15564,7 @@ F:	include/dt-bindings/clock/boston-clock.h
+ 
+ MIPS CORE DRIVERS
+ M:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
++M:	Serge Semin <fancer.lancer@gmail.com>
+ L:	linux-mips@vger.kernel.org
+ S:	Supported
+ F:	drivers/bus/mips_cdmm.c
+@@ -16408,6 +16532,12 @@ F:	include/linux/ntb.h
+ F:	include/linux/ntb_transport.h
+ F:	tools/testing/selftests/ntb/
+ 
++NTB IDT DRIVER
++M:	Serge Semin <fancer.lancer@gmail.com>
++L:	ntb@lists.linux.dev
++S:	Supported
++F:	drivers/ntb/hw/idt/
++
+ NTB INTEL DRIVER
+ M:	Dave Jiang <dave.jiang@intel.com>
+ L:	ntb@lists.linux.dev
+@@ -18428,6 +18558,13 @@ F:	drivers/pps/
+ F:	include/linux/pps*.h
+ F:	include/uapi/linux/pps.h
+ 
++PPTP DRIVER
++M:	Dmitry Kozlov <xeb@mail.ru>
++L:	netdev@vger.kernel.org
++S:	Maintained
++W:	http://sourceforge.net/projects/accel-pptp
++F:	drivers/net/ppp/pptp.c
++
+ PRESSURE STALL INFORMATION (PSI)
+ M:	Johannes Weiner <hannes@cmpxchg.org>
+ M:	Suren Baghdasaryan <surenb@google.com>
+@@ -19518,6 +19655,15 @@ S:	Supported
+ F:	Documentation/devicetree/bindings/i2c/renesas,iic-emev2.yaml
+ F:	drivers/i2c/busses/i2c-emev2.c
+ 
++RENESAS ETHERNET AVB DRIVER
++R:	Sergey Shtylyov <s.shtylyov@omp.ru>
++L:	netdev@vger.kernel.org
++L:	linux-renesas-soc@vger.kernel.org
++F:	Documentation/devicetree/bindings/net/renesas,etheravb.yaml
++F:	drivers/net/ethernet/renesas/Kconfig
++F:	drivers/net/ethernet/renesas/Makefile
++F:	drivers/net/ethernet/renesas/ravb*
++
+ RENESAS ETHERNET SWITCH DRIVER
+ R:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+ L:	netdev@vger.kernel.org
+@@ -19567,6 +19713,14 @@ F:	Documentation/devicetree/bindings/i2c/renesas,rmobile-iic.yaml
+ F:	drivers/i2c/busses/i2c-rcar.c
+ F:	drivers/i2c/busses/i2c-sh_mobile.c
+ 
++RENESAS R-CAR SATA DRIVER
++R:	Sergey Shtylyov <s.shtylyov@omp.ru>
++L:	linux-ide@vger.kernel.org
++L:	linux-renesas-soc@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
++F:	drivers/ata/sata_rcar.c
++
+ RENESAS R-CAR THERMAL DRIVERS
+ M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
+ L:	linux-renesas-soc@vger.kernel.org
+@@ -19642,6 +19796,16 @@ S:	Supported
+ F:	Documentation/devicetree/bindings/i2c/renesas,rzv2m.yaml
+ F:	drivers/i2c/busses/i2c-rzv2m.c
+ 
++RENESAS SUPERH ETHERNET DRIVER
++R:	Sergey Shtylyov <s.shtylyov@omp.ru>
++L:	netdev@vger.kernel.org
++L:	linux-renesas-soc@vger.kernel.org
++F:	Documentation/devicetree/bindings/net/renesas,ether.yaml
++F:	drivers/net/ethernet/renesas/Kconfig
++F:	drivers/net/ethernet/renesas/Makefile
++F:	drivers/net/ethernet/renesas/sh_eth*
++F:	include/linux/sh_eth.h
++
+ RENESAS USB PHY DRIVER
+ M:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+ L:	linux-renesas-soc@vger.kernel.org
+@@ -22295,11 +22459,19 @@ F:	drivers/tty/serial/8250/8250_lpss.c
+ 
+ SYNOPSYS DESIGNWARE APB GPIO DRIVER
+ M:	Hoan Tran <hoan@os.amperecomputing.com>
++M:	Serge Semin <fancer.lancer@gmail.com>
+ L:	linux-gpio@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+ F:	drivers/gpio/gpio-dwapb.c
+ 
++SYNOPSYS DESIGNWARE APB SSI DRIVER
++M:	Serge Semin <fancer.lancer@gmail.com>
++L:	linux-spi@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++F:	drivers/spi/spi-dw*
++
+ SYNOPSYS DESIGNWARE AXI DMAC DRIVER
+ M:	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+ S:	Maintained
+@@ -23609,6 +23781,12 @@ L:	linux-input@vger.kernel.org
+ S:	Maintained
+ F:	drivers/hid/hid-udraw-ps3.c
+ 
++UFS FILESYSTEM
++M:	Evgeniy Dushistov <dushistov@mail.ru>
++S:	Maintained
++F:	Documentation/admin-guide/ufs.rst
++F:	fs/ufs/
++
+ UHID USERSPACE HID IO DRIVER
+ M:	David Rheinsberg <david@readahead.eu>
+ L:	linux-input@vger.kernel.org
 -- 
-2.37.3
+2.47.0
 
