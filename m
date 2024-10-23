@@ -1,146 +1,91 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA67319DF4B
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 09:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2E514F9ED;
+	Wed, 23 Oct 2024 09:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729675976; cv=none; b=uvZKA6fcm+5ItUmWBUh5rAibnEGIfXRM/q8sagFQiKJOnSXyp9lMTsIxHOYpEHco1ohL713ASaZ7OhX9lW3Z9uxkSq2QuJmlDgc7y1vu8jiL1ZPPRCC4sPRj5X4+1UiqZ1dX7831sFgXuNFHzSodckPXpX8OJpuWNVxiJMGsygQ=
+	t=1729676009; cv=none; b=hwDtf6xWsKGzwxr6CkYvKUxJuD7LieFVjZPwle4+oNXJJzoxUCKpllHTZsba2YMSkwdPObOCOaYkVQ4hZYg9dmqKDoStpDil/RtRKsRoewUWzND8pHmQtN8O+7MX6VZOjU/IE0po3Q2niYYLO8U65poxPw8TbwZEslXx1InmcOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729675976; c=relaxed/simple;
-	bh=+hiji2bfjAW8cUnmlFPD9XWkt4ENY6EEoWYgbq0mPPA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UhL88ruOJ014bDEEBq/oglI4sN/jTSmTyEcBgJ7ixzYtttP7L7slY9ChwQv9O+7oRN7istDV+rNbZTrPM/8wlVwZROkLImsV5BwWAbRa4t6xFrpiva+W2tBsnC3Tqbe7e7KKBYQaiGH698nEpGfwXYRfnrL2BCBb4/1QQIJrnhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=r9lzyMSa; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="r9lzyMSa"
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 1CC243F17E
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 09:32:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1729675968;
-	bh=EjhAYSWuMWcY9+F1bfEIJ6rw0z2JaMjOgVamvmV6dkw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=r9lzyMSaYTlmF/5FK7D9zsMc+OeCHkhCzavbios8Vzmd0abFfeMEBeJqsnyZfAPDx
-	 bsRmc6DhgnJ5CMC+EmqQBcgRNO7zUtNtJpLFpjjw28J3hoJAb2JjCfJ3tx1IT/bEnK
-	 Vqg29x8dyAto4HBlO8gGBS85eqw7QuECT/Q/SeHGrFv8pUmn58lnPXxCUhip6mZMlJ
-	 FijRfitHBhLuKndNqGmF6u4dpLcxTWAmayqqFHefluwK4YVDUbsQ5s5BnXF/cQqObU
-	 NIsgvWIMYcNDQ5pLKMUCw9Qqq/qj1JEW6Dd6kICBMS85a61xrGgzikFFvwveJ2lMdl
-	 tA+R21EaUOM6g==
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-7163489149fso6264449a12.3
-        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 02:32:48 -0700 (PDT)
+	s=arc-20240116; t=1729676009; c=relaxed/simple;
+	bh=bfUBNWwFLKfTBGLkd2zfwZH7CNfkBV8lzbx++T641ek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NH3kyR9lRiH73uAvf5rrY7rCzb/RyOKtVm0kbMqeWpTg3WoKzoyYpvSIl+HRvCSwoCfN0C9IKuCP9x0MDKTaaaqIl50/Q5aEh21I0q7gZJ4lVPSuha15EaOkEv+AUSuPxbZuMiE4F4NItKZWO6MAFC8wd5pTtmZ1dj22wvP44rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c935d99dc5so7147427a12.1;
+        Wed, 23 Oct 2024 02:33:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729675967; x=1730280767;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EjhAYSWuMWcY9+F1bfEIJ6rw0z2JaMjOgVamvmV6dkw=;
-        b=T+jdmILiRO81SDoXm6lgPfqXysGuIibMLO8hrXCmAfZ3fvXS6HJ1AlSFCSDfEQWEKs
-         XisN30L+ODRSgbPPUj6JMGUFM41U782wyRE7x5cDmFMcVdIgaGUuqjdWJ5zQNL94LCJ7
-         KqtCaQmveOjLbxnbIc0zayGzdc2OandI1JLEokI9wWxjIDhGHfOTHwtmHS98wdZuLgWX
-         a5ZSKEk+nqnv2X6zVgdgTTFrB6z3C9jjtIXtFcy0Gt67mNpUnUSgJl6eS3X/IHgr0sRb
-         3EPQg0NBDYry/LvCYltcBMwrX4MLpS8lvm41Y71FGZH20NWETVuVZb5WAI7p7Gb8QuK+
-         0cbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuZbOuCPkAmSjKH4XIR9u2ozJU4+ziNkU7FpDcLXv9e9LdAhJ6CLAKBacpgzssQFuxbKNPCfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrK+G7C/5x0AeyFWPz/8hHjBc07ld3yjs8/UVbnX2TCocVFItj
-	BD1RPByZ5VNxDcnyh2SX+gRCnhymDiG4laZVE4b4xF5DGpYuGQlDvpFQuPmUk5BzFkmaM9bYkuS
-	iYD70K5qT0Nu7KmlWlRxK8mQANiVQoqdmhVl5bA1AM8uxyZYr68Jl5o6nOQPt5E6MuarFTe+WJA
-	FLg88gY6pFxBFXQzaLi499tWYnfdFynfBhxiqs33MsxfBY
-X-Received: by 2002:a05:6a21:4d8b:b0:1d9:cc2:2c00 with SMTP id adf61e73a8af0-1d978af8325mr2112632637.14.1729675966645;
-        Wed, 23 Oct 2024 02:32:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFr83Aq6kOUjlKZ22A7Bd+0WCiN8m2BCuMfVylA6+geLojpcOYML/m+GSxbePTP+WAYXAJAthy/Dz5yvZmBEpc=
-X-Received: by 2002:a05:6a21:4d8b:b0:1d9:cc2:2c00 with SMTP id
- adf61e73a8af0-1d978af8325mr2112619637.14.1729675966256; Wed, 23 Oct 2024
- 02:32:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729676006; x=1730280806;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vn1kct+AaR7zOrbvjx4Kb6wixkI+c0ohNQAwCnY0kSk=;
+        b=ZLSS1ZVQMQbxAPRZ3SGVXdQBfvW+n1n4dZCxNy8dO2C9e408oLI7icIBAq42/HvVOq
+         EsDiStZ8/BoYcF9fo5Y/XSnPhjJt2fAt7ROl+hdAzBVnAL//QFvGjH4jcGdf6sD+plCN
+         TZFVu1DvnrVLgaDVXreDbhIEHIuKAIRSL4yWsubkmGo1yU02jKODjIDr3/C11a3jZqQn
+         atYB00+yPsGj+RX8zxBFBzGF6sl7oAs8YQe1Q1yj/Jh/tH2lhoU1Me5A6N7HfXWSKXR1
+         njo+xcR7SU/goVqnB/eR6gwvro/KzcWyVSi4bK1nGXKiM8f0LHci7NEYtpnJrNdyyb2f
+         359w==
+X-Forwarded-Encrypted: i=1; AJvYcCV+OFHf/hHRobs4kWfCzqvQm0Awn9VejeICJIsnMBJdT+9P8z+qDBa2B2FSKaLvEU3l/dTmlUgp@vger.kernel.org, AJvYcCX3Wni0eo4+TTo1Uf/X3TH8o3lvX5ha4TlWkOqzqFeYFWvrV3GHrQ12F04yCcYX9HEq6rVAq7l0QUFm/f08@vger.kernel.org, AJvYcCX6NI5aUBKtErguhe5Zw6klVvdAIv8KidW7xTb3GzilkzT5hdvQ9mp4EePoQJjJzEVbdAN5PmDUQDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEDzf3mMHxFDE4S7oA2zC/jg929EromZjn+ggKyy/lEyJf9Okd
+	D50CZr5zgWA6MQYfjQ09zr1jmKjmQaUxRkCEGQvMQ2xZJ+SgMv0K
+X-Google-Smtp-Source: AGHT+IEkMrop+R2IjYJDv8tG5ep0f9ZEr1Xi6TXRRd2QOzVVwjqUXkY189A9/iiJqxZbCfXfk1S8kQ==
+X-Received: by 2002:a05:6402:40d0:b0:5c9:4be9:7c4 with SMTP id 4fb4d7f45d1cf-5cb8b1ac8cdmr1216760a12.31.1729676006198;
+        Wed, 23 Oct 2024 02:33:26 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-113.fbsv.net. [2a03:2880:30ff:71::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66a6547esm4194990a12.37.2024.10.23.02.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 02:33:25 -0700 (PDT)
+Date: Wed, 23 Oct 2024 02:33:22 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>, kernel-team@meta.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next v3] net: Implement fault injection forcing skb
+ reallocation
+Message-ID: <20241023-precious-gorgeous-taipan-4e0ad1@leitao>
+References: <20241014135015.3506392-1-leitao@debian.org>
+ <CAC5umygsk3NyPB99kdKtyV0xdpXihq-VRfzgua_8b40DexQ_QQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231012195127.129585-1-saeed@kernel.org> <20231012195127.129585-10-saeed@kernel.org>
-In-Reply-To: <20231012195127.129585-10-saeed@kernel.org>
-From: Frode Nordahl <frode.nordahl@canonical.com>
-Date: Wed, 23 Oct 2024 11:32:34 +0200
-Message-ID: <CAKpbOAT=i2_j7uSXNwbcES04aDm64YEJa=6YD4Bdzneww4Epag@mail.gmail.com>
-Subject: Re: [net 09/10] net/mlx5e: Don't offload internal port if filter
- device is out device
-To: Saeed Mahameed <saeedm@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, 
-	Ariel Levkovich <lariel@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
-	Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeed@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAC5umygsk3NyPB99kdKtyV0xdpXihq-VRfzgua_8b40DexQ_QQ@mail.gmail.com>
 
-On Thu, Oct 12, 2023 at 9:53=E2=80=AFPM Saeed Mahameed <saeed@kernel.org> w=
-rote:
->
-> From: Jianbo Liu <jianbol@nvidia.com>
->
-> In the cited commit, if the routing device is ovs internal port, the
-> out device is set to uplink, and packets go out after encapsulation.
->
-> If filter device is uplink, it can trigger the following syndrome:
-> mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 3966): SET_FLOW_TABLE_E=
-NTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xcdb0=
-51), err(-22)
->
-> Fix this issue by not offloading internal port if filter device is out
-> device. In this case, packets are not forwarded to the root table to
-> be processed, the termination table is used instead to forward them
-> from uplink to uplink.
+On Sat, Oct 19, 2024 at 12:28:03AM +0900, Akinobu Mita wrote:
+> 2024年10月14日(月) 22:50 Breno Leitao <leitao@debian.org>:
+> > +static int __init skb_realloc_setup(char *str)
+> > +{
+> > +       return setup_fault_attr(&skb_realloc.attr, str);
+> > +}
+> > +__setup("skb_realloc=", skb_realloc_setup);
+> 
+> The documentation says "fail_net_force_skb_realloc=" boot option,
+> but this code seems to add "skb_realloc=" boot option.
+> 
+> I don't have a strong opinion about the naming, but I feel like
+> it's a bit long.  How about "fail_skb_realloc="?
+> 
+> The same goes for the debugfs directory name.
+> 
+> Reviewed-by: Akinobu Mita <akinobu.mita@gmail.com>
 
-This patch breaks forwarding for in production use cases with hardware
-offload enabled. In said environments, we do not see the above
-mentioned syndrome, so it appears the logic change in this patch hits
-too wide.
-
-I do not know the details and inner workings of the constructs
-outlined above, can you explain how this is intended to work to help
-our understanding of how to approach a fix to this?
-
-Flow steering dumps from a system showing broken and working behavior
-(same kernel with this patch reverted) have been attached to
-https://launchpad.net/bugs/2085018.
-
---=20
-Frode Nordahl
-
-> Fixes: 100ad4e2d758 ("net/mlx5e: Offload internal port as encap route dev=
-ice")
-> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-> Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
-> Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/=
-drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-> index 1730f6a716ee..b10e40e1a9c1 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-> @@ -24,7 +24,8 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv =
-*priv,
->
->         route_dev =3D dev_get_by_index(dev_net(e->out_dev), e->route_dev_=
-ifindex);
->
-> -       if (!route_dev || !netif_is_ovs_master(route_dev))
-> +       if (!route_dev || !netif_is_ovs_master(route_dev) ||
-> +           attr->parse_attr->filter_dev =3D=3D e->out_dev)
->                 goto out;
->
->         err =3D mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_de=
-v_ifindex,
-> --
-> 2.41.0
->
->
+Thanks. I will update and spin a new version.
