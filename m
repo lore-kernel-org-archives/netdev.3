@@ -1,122 +1,90 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF911A08C2;
-	Wed, 23 Oct 2024 14:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E8D1C232D
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 14:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694106; cv=none; b=nuQyO/8KPmyg+AZl2ygCILjIlUwLJ6bZSh01EuvW5mIV8XQ7Cs18EEB7Y+hVZwXiVLTF3ePeVVFuv/zbTf6fewgpFmgKjFgX6pdO/ZBL8iKLK28EfMbDqSaPa0+C3acWHEiMuw4kqXdwQ8HYD0v19thOpOEdDzrX8IJfQAfXOP8=
+	t=1729694424; cv=none; b=ajaHb73/XcLwcyCmPIuppCbK9ZNHFgWHFFvRzjLZ/Pf5QK8/ttFf/m0Q7p85Ocb+hepo3ydyQ1D3qJGvW7D/O1+NofVZ8IM95No1GMtJuu3f51uYSy3gpA6TN7hzsYWVJOvbWdVxbIWlpxGhIblm+v0kfAQwBYNv3El4mAq7Tco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694106; c=relaxed/simple;
-	bh=bmjGsHMXAeX5XcBGgjerSHve5jjSHl0wCLRdNvyfgBg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QThHoRm6N4Vv5iAC/d1zEJT2SzyfRbaheYraUeAS/dESll47imhwFShlYgLtPixXfu6aQCNRc4w8uCAKSqTgCPRtwKK5VGOEJ23VopspYB1LzNwQgTrZ0P35SMekHwGUTLNClU/H99rJdL8SWLguCob6YHXIG1cyb3HsVXHoOF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQojqAs3; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729694424; c=relaxed/simple;
+	bh=DnaqBZSuom3atESzWnwxXO/gl4QZsfGBoZkEfIWy5uQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=XEOJlxk4eSiJT63VztZaoAL2i05pCfJGqGQVhdcioumMca/bst3qVkbxPgKWkkwtBsdor0ANnp/8nmHh2JCTP4Kz2u+cDAt7ro2O9DdWXFuTALLfqnVZvjT/iJC79wMC1zk3vpkVjbEk63wM+X7H7bvE7XJ5rVBT0qpwHhMgccY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVRn2Ekl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQojqAs3"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cc2ea27a50so8520476d6.0;
-        Wed, 23 Oct 2024 07:35:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729694103; x=1730298903; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bkMJyYR7c7SG8wgO3Jx2FRRIafLBQFGXDU9zueI2iKI=;
-        b=bQojqAs3bLiEM/H1henPCE1cRezKseG0b30o8/vvbUYsW6NfB9xyWtfBlNcM29gOQu
-         CDd+n6KUzAvdHMdS/knsMFcjKh9Wpb4SGPI1tZOMkmvP+IpIU5JPBifcEiJiaFboPxq8
-         yhcAoUY6cR8mY2y9fL0DtHydHnzqnheh6kp1ulc0VVHjWzEUD+VIn7E5/PPMIAroWZXl
-         t6Sw/fcWGRmQ9O645jqvj9zymKXv4Pnyy5zlhT2/q049nQZcwliebKLmoiUBsiUQtCpS
-         wX4NKxOX4Vw9l69bIgHUJUdE0NIkBgJ3TCJTjZ9Jh9Nugg4zU6KBEEgCDL8BnQmLzOjc
-         avZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729694103; x=1730298903;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bkMJyYR7c7SG8wgO3Jx2FRRIafLBQFGXDU9zueI2iKI=;
-        b=RxxTTFXxsMgomgKUPhJ5yryfnCHj9zB4/Ax9uOLmyt+Qr9jhmqLMIYBFnjAOicUDt2
-         1HAtBXv1Zkpxy15gM5sePTssNaYzFuNW6EvlSFvLq0Xzmp2+p0kBS2BFJFgQe9MnE6Bz
-         xYD3SK5KD+5pdpfUfwIW9VpubESke6i8qkJWEeUhJ72aFoEK8YtCUUJhG+gaFXh67I+J
-         oUipvaPMGm94FtS7Zicjw3B93dWIxGxhxVQFzca4/aXkPZEh0sEb4B1wHMuSqfntivI1
-         hOIbJ3hi4UN/lR2e9cUanuvaxtIuPdzPEX3BfywYD+16LE3Qwr9qn8JcU/XIalEaJu98
-         hUmA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7m/mLAMzqELOYaUTZjJLy9Xt9vQcBAuxqF7wgD6u1d+mbCU6UjCou2MPLUXIOU2/9ElE16aFkQPUDD5ixXzpIOLg=@vger.kernel.org, AJvYcCXZ4IR3Hcr70hawAWISMxkk6fECLvQjeqMo1j8ZTqypVik2ujRD3Mt8itmP6GbUu7HVfFJXo5Hd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOijDwWvP5wmkYj4Re0RfGj0C7/VdAhDk/YnNeJWjnuPIL8eJA
-	0zbRU9rS2MdjDyTBN49H25NyN/zrdhcxS4rqQPZ9hoZuFW62B3QaQ7+OInZ2Q4S8d/JLg83UZ9d
-	Ngwjuo9kOTmHqdznPtG3S5bnTmNo=
-X-Google-Smtp-Source: AGHT+IEyMrVpeyVjamwXzDGlQ4tJiXt8MSGfV65lvALJbuOn4a2yF71mGGylnET4KICL9tqp9PVZOFaNDt1jIXyumU8=
-X-Received: by 2002:a05:6214:416:b0:6cb:ee9c:7045 with SMTP id
- 6a1803df08f44-6ce2178fee0mr134017996d6.2.1729694103589; Wed, 23 Oct 2024
- 07:35:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVRn2Ekl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F83C4CEC6;
+	Wed, 23 Oct 2024 14:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729694423;
+	bh=DnaqBZSuom3atESzWnwxXO/gl4QZsfGBoZkEfIWy5uQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=dVRn2Ekl5Xa5yL270d9bgGfC7QFXbmUb936rDF1sOA96/JTqbozqaBOXSPJXVPOWJ
+	 5lhdxQTySW5Yb+l8Ht6Kvn9N2vBsOnkqkUy1bsRPFZl2Y8ld7LYeGoZbyLb7quDFS/
+	 /UU6G8BWtNP4IOT867Rkrw2cvvc5h0OL7RvNjVt+XjaLKju3zoU7YgqhAsDmTAYJRm
+	 ult7XVS4eDw8UUH+OjgZj/eZ0FC5PJMEkYEw4dPJF06UKnJjKI0nK2pL5dqliqIcEd
+	 k4mvhgyEisj+bIZB7KK53aOvjwLEmDhKIVI5kklPC//fO815QtcGBHlCiGgD3V6jUF
+	 RnTnjtF+DvULA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F773809A8A;
+	Wed, 23 Oct 2024 14:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023123212.15908-1-laoar.shao@gmail.com> <CANn89iJuShCmidCi_ZkYABtmscwbVjhuDta1MS5LxV_4H9tKOA@mail.gmail.com>
-In-Reply-To: <CANn89iJuShCmidCi_ZkYABtmscwbVjhuDta1MS5LxV_4H9tKOA@mail.gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 23 Oct 2024 22:34:27 +0800
-Message-ID: <CALOAHbDk48363Bs3OyXVw-PpTLc08-+MEo4bq9kXq1EWtyh24g@mail.gmail.com>
-Subject: Re: [PATCH] net: Add tcp_drop_reason tracepoint
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, netdev@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, Menglong Dong <menglong8.dong@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/7] net: pcs: xpcs: yet more cleanups
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172969443002.1617019.2864114644993231138.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Oct 2024 14:40:30 +0000
+References: <ZxD6cVFajwBlC9eN@shell.armlinux.org.uk>
+In-Reply-To: <ZxD6cVFajwBlC9eN@shell.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, Jose.Abreu@synopsys.com,
+ netdev@vger.kernel.org, pabeni@redhat.com
 
-On Wed, Oct 23, 2024 at 9:01=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Wed, Oct 23, 2024 at 2:33=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com=
-> wrote:
-> >
-> > We previously hooked the tcp_drop_reason() function using BPF to monito=
-r
-> > TCP drop reasons. However, after upgrading our compiler from GCC 9 to G=
-CC
-> > 11, tcp_drop_reason() is now inlined, preventing us from hooking into i=
-t.
-> > To address this, it would be beneficial to introduce a dedicated tracep=
-oint
-> > for monitoring.
->
-> This patch would require changes in user space tracers.
-> I am surprised no one came up with a noinline variant.
->
-> __bpf_kfunc is using
->
-> #define __bpf_kfunc __used __retain noinline
->
-> I would rather not have include/trace/events/tcp.h becoming the
-> biggest file in TCP stack...
+Hello:
 
-I=E2=80=99d prefer not to introduce a new tracepoint if we can easily hook =
-it
-with BPF. Does the following change look good to you?
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 092456b8f8af..ebea844cc974 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4720,7 +4720,7 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
-        return res;
- }
+On Thu, 17 Oct 2024 12:52:17 +0100 you wrote:
+> Hi,
+> 
+> I've found yet more potential for cleanups in the XPCS driver.
+> 
+> The first patch switches to using generic register definitions.
+> 
+> Next, there's an overly complex bit of code in xpcs_link_up_1000basex()
+> which can be simplified down to a simple if() statement.
+> 
+> [...]
 
--static void tcp_drop_reason(struct sock *sk, struct sk_buff *skb,
-+noinline static void tcp_drop_reason(struct sock *sk, struct sk_buff *skb,
-                            enum skb_drop_reason reason)
- {
-        sk_drops_add(sk, skb);
+Here is the summary with links:
+  - [net-next,1/7] net: pcs: xpcs: use generic register definitions
+    https://git.kernel.org/netdev/net-next/c/1d2709d6d390
+  - [net-next,2/7] net: pcs: xpcs: remove switch() in xpcs_link_up_1000basex()
+    https://git.kernel.org/netdev/net-next/c/8d2aeab4ce78
+  - [net-next,3/7] net: pcs: xpcs: rearrange xpcs_link_up_1000basex()
+    https://git.kernel.org/netdev/net-next/c/b61a465a7619
+  - [net-next,4/7] net: pcs: xpcs: replace open-coded mii_bmcr_encode_fixed()
+    https://git.kernel.org/netdev/net-next/c/1c17f9d3fe17
+  - [net-next,5/7] net: pcs: xpcs: combine xpcs_link_up_{1000basex,sgmii}()
+    https://git.kernel.org/netdev/net-next/c/4145921c3055
+  - [net-next,6/7] net: pcs: xpcs: rename xpcs_config_usxgmii()
+    https://git.kernel.org/netdev/net-next/c/11afdf3b2ece
+  - [net-next,7/7] net: pcs: xpcs: remove return statements in void function
+    https://git.kernel.org/netdev/net-next/c/fd4056db7aee
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-
-
---
-Regards
-Yafang
