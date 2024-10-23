@@ -1,176 +1,133 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBA7153BED;
-	Wed, 23 Oct 2024 12:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A821AC882;
+	Wed, 23 Oct 2024 12:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729686833; cv=none; b=hYIr2jqoNv55CpHxRsF+vs2dbI2b4CPMgmSwHD2hoG2ii8Eu4ckUzzElRc5a1kHoP6RfK9qFDNbhYPIuf9rq3cAqy2sIH0KR7d+mJ8SOlp7dZKQbda8X7vnwTg7e2MNWX+rZTolp5J3B71rO9xBVDzCKMCE8f9ZuFhbMd1qFkS0=
+	t=1729686842; cv=none; b=QXCWqwWtZiJRQAC//DNmpni3aHD1XpYrxNB7O7K+bzdEsSn9G1Lj04KoS2zS+LlM0QOHzQSLyNLh5h27fFLRhoCH/hh5Yn4i21jSd4o9lU2k+/UnXbLocOGEmNQLuxpLBNh9iOHU7dOM23iDcKJOLL2bTXLbEUaGs1b3ZuSHd18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729686833; c=relaxed/simple;
-	bh=gKeqeVjhHUZh+ESzvZDJjMrqbNux/iGxBvsEukSEH4I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uFmdAVmAKPJHVDsXBGX4N6VmuUn9WwSdgcyK4FpKZ/hzSLupOYpnu1wOIUkNnQb5V5M+px9pb1E2VjpsxKYPeZ3KTm4UQjGtkgsw0YXbm4x+lXZEdkU00B2dBjKl+KgJeAvXU8NcqmHa4z/bmNAAyXPbittA6XJu5VS2TJrlBL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mcmc8zG+; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1729686842; c=relaxed/simple;
+	bh=6qBPmAgCD2RNJ5ERNzeh2m1p2+HKuBilNgolUWw92fQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kJK555oyeJV85qCUsdX46+PiOTLAmkAFO2M6Kkf7aBjfroqaNiF7NHnsp5zxwQCHlH47skf+0tdIMxWucmwdFGBqueABxBFsrHtlB96pAq0rx9yiNKUyCX8WrRcJ3vtdL8b6rUnbGIgu9q/t5+K+WUzzxAyINiLFsu7Fp1EOGDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7RZ81Dj; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mcmc8zG+"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20e576dbc42so50167375ad.0;
-        Wed, 23 Oct 2024 05:33:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7RZ81Dj"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-208cf673b8dso65493035ad.3;
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729686831; x=1730291631; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aFMUoRiKams8qBaX6W+JDQ3XrVb5ZlSwxg7abK4rGBY=;
-        b=mcmc8zG+v8MWmw7uH+fvAQdacoJrW3O7EZrSoYN1z6q1i9u1cCHxlQsxuRP4t80FX+
-         SLVYsBiXC+u96PBIx5UBEhrdTPqeh9BVvutnCcVqTnJTYjyWEl3ec7hsg9W/zMaQbQtr
-         VgaByzBIB8H6yKDxzQ0NYvJoC4l3jnw3MdafjrL7eC1RmGC/7QR3ZNzhJNKnMQiKcOvi
-         ern2AXNQCbBCKttuLuqzFrrm4x+Kh6H9Fk5pJPZkrzn5TIqUNRltYOHut3CulDdLcc2I
-         6yHCbP5crOuaV3CqJlKi2VBx3UH/wHaXKH69iV8KmazOfZZuDgsJnCm3FtH5al4QlrdH
-         BFQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729686831; x=1730291631;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1729686840; x=1730291640; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aFMUoRiKams8qBaX6W+JDQ3XrVb5ZlSwxg7abK4rGBY=;
-        b=bNNMHzO2FYVceZd3UcQyTMAx+/c9uAGksMtc+RfCw4+1XFMVOclBhmspPo7Q53NgZf
-         fvOy3SOm+qN8hkBZY3qQXs9Mod5chwrrt0cglb7P9X34llZ97lj3nHQogkc56k8XZr5e
-         5vSWN7jSgvNFzg9+yclWunUeCWs9v85eJne7CqSC9qiJ3gktJIhMTFfJyJNUbG0ubhdb
-         LCiXxEitERip4Nvcnsij+XHESW+gzpxKB4jwirQjIEUA/GdcycW8hlaXLSMpWxU65iam
-         McFjJy18yEZmgKXQMGJpLOGN/lts2JQ9n6LbIFr+QK229KR+04zurjPKYtlHU6/8C2gF
-         8OGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXh8zZ+6m7Slx7E6YGI8Ip5lTHIh8doGGUAp0HNUL0lc87zHZc1OfbkIdWHnQlvnEF/pbw9uowFEvglZzwN9D+xjWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWsHuD/S8UzHJDqfIt8yd/7jdW2hkW9SJiiKtaBBdDnUwP8H7p
-	FC4oZOR3Hjr2BdwYG1Vs19F6e1m6ALIh6d62WYvqhxqt17SsECxI
-X-Google-Smtp-Source: AGHT+IEDRB2GOfj0ZvS2PC9NICvNP04PNbT/YtDTesmQlfun1kXwRk8EQ7rEtlg6auTSxxiGEu18bQ==
-X-Received: by 2002:a17:902:da8f:b0:20c:a175:b720 with SMTP id d9443c01a7336-20fa9deb65dmr28134295ad.1.1729686831550;
-        Wed, 23 Oct 2024 05:33:51 -0700 (PDT)
-Received: from localhost.localdomain ([39.144.105.201])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7ef1330csm56784335ad.86.2024.10.23.05.33.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Oct 2024 05:33:51 -0700 (PDT)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com
-Cc: netdev@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Menglong Dong <menglong8.dong@gmail.com>
-Subject: [PATCH] net: Add tcp_drop_reason tracepoint
-Date: Wed, 23 Oct 2024 20:32:12 +0800
-Message-Id: <20241023123212.15908-1-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
+        b=I7RZ81DjwHMplg2XiIzk1b8cjeS/J7OJvxeXBvG0cHl7Qjx9gUrblRD2C4gexBbbKj
+         Om0hHfNtHS7M3z0UrQ0e5wzDl/qxjWGyULrUu3ZcCh+IdsYJY7f0fDqY1rQd8xSjhHQO
+         GhFSUTY+qxrZuMW3W+zdwCFjkRK7usOCXVseI07TPOgj5ECDJjUhE915PvKm0vayTG1Y
+         8SOnjwoWQ52Qi0E3hWAzoDsxWAsS+bhtIa7x0iNDAT8vL2eR5UmkVkLifnRep6/YlQ0K
+         3bhHlkRYSQpS9MX1LVADZa9Un1Ihgaxo/AgxT8OYg7rXSff8qUBHCLDSnlhYdPFBIkyP
+         7AGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729686840; x=1730291640;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
+        b=sMi4egnAiyrqXrIplDwWGztlzjLxZKeDlk1W59YflPA71UTaCBN9tmqlWIY9WOyuT8
+         YW4nDRN4VwBfIXkw5R3AF5J1EzjsGXuVyxhx08aSdMbbzOEhzBnk0kPcAHD8mZLngUHl
+         +PwnDwO++5UwfRkQW6P3Sz9RKOC6Yn4/jtjeP5DfTXDtu+26DnWW7ptwaC8ncw1t4ujz
+         0MK4D8JR7tpUiyQnU5ntsuq91aZxw6u6PU4CRS4+bG2riTAw3BWb7ZzAslOSS85PBJ4W
+         WzWVHO59U4xM+rCTZ2tnZ8pt2NI7jBkXIfqXnNNgXaq+KCROpKaloCCsrDrVMxghDzlh
+         HbzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2kJnbMmwV02fg54Ml6t299u6sea/MhO+FilJ5YecDGS1vTRl1n2iwz2BSLogOqsBnUHdkFY7j@vger.kernel.org, AJvYcCVQzYeVBD9L8Qv/Mdt96DWuw5TtjkUvr4i5GJBcbryjP/WEeMIM6VRfl41je9y7NINT9mmvYJ+fHMCTdSA=@vger.kernel.org, AJvYcCX/becbvJI34l3TFOxS/DeiveR8H1t9EnKkGDmvjGzQjKow95pcQ34N/qz9S18tm9kbvyM7gGFhlUjTVNm3EZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc9m8uPLT0eJD6RWUrhZmTmzkyOH1/ShhAN0APiWcIhy9mQzxE
+	1Q4zl7AZ+B7nIy3Qux0T95/Ukc83D4838DUHDSD6BgiZmFI6x10h
+X-Google-Smtp-Source: AGHT+IH9n/qU6Rv+MXUSEUJm4JVUaOK76SXTgg8tMJecu8olE0KEpAZsSmxYsevEjWL/iDDH23E0yw==
+X-Received: by 2002:a17:902:f541:b0:20c:5b80:930f with SMTP id d9443c01a7336-20fa9e29844mr31991765ad.12.1729686840422;
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7ef0ad34sm56832105ad.68.2024.10.23.05.33.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
+Date: Wed, 23 Oct 2024 21:33:45 +0900 (JST)
+Message-Id: <20241023.213345.2086786446806395897.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep
+ function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+	<20241016035214.2229-6-fujita.tomonori@gmail.com>
+	<CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-We previously hooked the tcp_drop_reason() function using BPF to monitor
-TCP drop reasons. However, after upgrading our compiler from GCC 9 to GCC
-11, tcp_drop_reason() is now inlined, preventing us from hooking into it.
-To address this, it would be beneficial to introduce a dedicated tracepoint
-for monitoring.
+On Wed, 16 Oct 2024 10:29:12 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Menglong Dong <menglong8.dong@gmail.com>
----
- include/trace/events/tcp.h | 53 ++++++++++++++++++++++++++++++++++++++
- net/ipv4/tcp_input.c       |  1 +
- 2 files changed, 54 insertions(+)
+>> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+>> new file mode 100644
+>> index 000000000000..dc7e2b3a0ab2
+>> --- /dev/null
+>> +++ b/rust/kernel/time/delay.rs
+>> @@ -0,0 +1,31 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Delay and sleep primitives.
+>> +//!
+>> +//! This module contains the kernel APIs related to delay and sleep that
+>> +//! have been ported or wrapped for usage by Rust code in the kernel.
+>> +//!
+>> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
+>> +
+>> +use crate::time;
+>> +use core::ffi::c_ulong;
+>> +
+>> +/// Sleeps for a given duration at least.
+>> +///
+>> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
+>> +/// which automatically chooses the best sleep method based on a duration.
+>> +///
+>> +/// `Delta` must be longer than one microsecond.
+> 
+> Why is this required? Right now you just round up to one microsecond,
+> which seems okay.
 
-diff --git a/include/trace/events/tcp.h b/include/trace/events/tcp.h
-index a27c4b619dff..056f7026224c 100644
---- a/include/trace/events/tcp.h
-+++ b/include/trace/events/tcp.h
-@@ -12,6 +12,7 @@
- #include <net/tcp.h>
- #include <linux/sock_diag.h>
- #include <net/rstreason.h>
-+#include <net/dropreason-core.h>
- 
- /*
-  * tcp event with arguments sk and skb
-@@ -728,6 +729,58 @@ DEFINE_EVENT(tcp_ao_event_sne, tcp_ao_rcv_sne_update,
- 	TP_ARGS(sk, new_sne)
- );
- 
-+#undef FN
-+#undef FNe
-+#define FN(reason)	{ SKB_DROP_REASON_##reason, #reason },
-+#define FNe(reason)	{ SKB_DROP_REASON_##reason, #reason }
-+
-+TRACE_EVENT(tcp_drop_reason,
-+
-+	TP_PROTO(const struct sock *sk, const struct sk_buff *skb,
-+		 const enum skb_drop_reason reason),
-+
-+	TP_ARGS(sk, skb, reason),
-+
-+	TP_STRUCT__entry(
-+		__field(const void *, skbaddr)
-+		__field(const void *, skaddr)
-+		__field(int, state)
-+		__field(enum skb_drop_reason, reason)
-+		__array(__u8, saddr, sizeof(struct sockaddr_in6))
-+		__array(__u8, daddr, sizeof(struct sockaddr_in6))
-+	),
-+
-+	TP_fast_assign(
-+		__entry->skbaddr = skb;
-+		__entry->skaddr = sk;
-+		/* Zero means unknown state. */
-+		__entry->state = sk ? sk->sk_state : 0;
-+
-+		memset(__entry->saddr, 0, sizeof(struct sockaddr_in6));
-+		memset(__entry->daddr, 0, sizeof(struct sockaddr_in6));
-+
-+		if (sk && sk_fullsock(sk)) {
-+			const struct inet_sock *inet = inet_sk(sk);
-+
-+			TP_STORE_ADDR_PORTS(__entry, inet, sk);
-+		} else {
-+			const struct tcphdr *th = (const struct tcphdr *)skb->data;
-+
-+			TP_STORE_ADDR_PORTS_SKB(skb, th, entry->saddr, entry->daddr);
-+		}
-+		__entry->reason = reason;
-+	),
-+
-+	TP_printk("skbaddr=%p skaddr=%p src=%pISpc dest=%pISpc state=%s reason=%s",
-+		  __entry->skbaddr, __entry->skaddr,
-+		  __entry->saddr, __entry->daddr,
-+		  __entry->state ? show_tcp_state_name(__entry->state) : "UNKNOWN",
-+		  __print_symbolic(__entry->reason, DEFINE_DROP_REASON(FN, FNe)))
-+);
-+
-+#undef FN
-+#undef FNe
-+
- #endif /* _TRACE_TCP_H */
- 
- /* This part must be outside protection */
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index cc05ec1faac8..44795555596a 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4897,6 +4897,7 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
- static void tcp_drop_reason(struct sock *sk, struct sk_buff *skb,
- 			    enum skb_drop_reason reason)
- {
-+	trace_tcp_drop_reason(sk, skb, reason);
- 	sk_drops_add(sk, skb);
- 	sk_skb_reason_drop(sk, skb, reason);
- }
--- 
-2.43.5
+Oops, it should have been removed.
 
+>> +/// This function can only be used in a nonatomic context.
+>> +pub fn fsleep(delta: time::Delta) {
+>> +    // SAFETY: FFI call.
+>> +    unsafe {
+>> +        // Convert the duration to microseconds and round up to preserve
+>> +        // the guarantee; fsleep sleeps for at least the provided duration,
+>> +        // but that it may sleep for longer under some circumstances.
+>> +        bindings::fsleep(
+>> +            ((delta.as_nanos() + time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC) as c_ulong,
+> 
+> You probably want this:
+> 
+> delta.as_nanos().saturating_add(time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC
+> 
+> This would avoid a crash if someone passes i64::MAX nanoseconds and
+> CONFIG_RUST_OVERFLOW_CHECKS is enabled.
+
+Ah, I'll fix.
+
+Thanks!
