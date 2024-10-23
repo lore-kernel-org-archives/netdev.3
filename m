@@ -1,66 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941661C2BD
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 08:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148DF145B0B;
+	Wed, 23 Oct 2024 08:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671149; cv=none; b=n6I1CN2clPQeW1RtBMrRpJLcp/u461ui+BbGioCzsfLbnAfA65TFWnV6ALw7RueT3h9cZtAxCuQvDABGAuTZ+y+5WhHFDGKGQ1ZsD6HMmEcVJRHthfL3lr0u3OsM1h/ZB2Jj06XyGr+iLeAKdK1NBzIBzqoBdfBwSYP2lsRMK94=
+	t=1729671216; cv=none; b=KgTTW0q5imlCtRUVVQMcsNxkrytR7urXm5eJpgvTwHA8chPtmtEcYHOowaGiyrePEuMePd2v0EUr9xQWYfBVf8tmzy6+oT9lxS/9l3YnkxIHEh0pMEoZD9NFem9Rhv4JDnBH5WpHT1vRCPzNeYmRPhpGzgTKvii8po+fVP9RO48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671149; c=relaxed/simple;
-	bh=Jjrw7Aa9EXghQc04YRM97m3oLtHh5j/b9bDaktqmGec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t0p9a6Ob0XbgZ8UTbAAj/bBNT12TTaDu+Jy+ysi/vUrBTYroX/BMhXY+1fpCGfh35SC0sfqIcH8gUa+rlVJKDLlMsNcP51tSbA69sF6ybRFGvIXfk7nkQZMXLriEa77JqHDz/AjDCpDZv7rkzDmoW6xWK9F5X6Fu1RYiUvDh1Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZxvusKO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729671216; c=relaxed/simple;
+	bh=Y6OB0T9eVIvbtDeAbcfkqhd81lAUoIF0KWm/CGFLIWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fAuXkYnIXzt8hfiTo0yczwFEW0tyZdP+xa17vPOZSuKkQ51q+9kW9LnfDs2wnkJi07PCy1W16BSH5mYw1l5e5FcZsShtYhe00aTc+q00m363Q5SkTSI0RfdSWmcMetfD3vz9WhQpgarTNTK/vS2Glqz1iOaINeyeweSHLlY43aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=alkkpS/n; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZxvusKO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0685C4CEC7;
-	Wed, 23 Oct 2024 08:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729671149;
-	bh=Jjrw7Aa9EXghQc04YRM97m3oLtHh5j/b9bDaktqmGec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fZxvusKO3gusRMCJP/MryWMTRiuWnhM9IHtqYhaY1hTGWi+vLfT79O0HEa4IoFCnS
-	 EjUajMXEaX+94Y6zhN/IOMPis+Xb/WOy6Lnr1xrvkvaKsuBHB64Ffk7MXzZNsaqnIy
-	 0QyaL+NBiWrB8IZr41RREQ2OXebb3rcYNFuD91z4CgsVgYKLfBuA0ynfHoZ8iPku6E
-	 g2G0EJY+KSNj08Pp99g+srdBw9MBpr2fpRPB1CN8ZN71PjR9Igo0/B39GfFdP6D9Ia
-	 PfidsXzPKcqXcMbUf++FszxDp9tOkv2xNPJLU/wLurlw2kHEHfZCxdTnmb17wv5dbH
-	 bqbEM9fd+y2Mw==
-Date: Wed, 23 Oct 2024 09:12:25 +0100
-From: Simon Horman <horms@kernel.org>
-To: Guillaume Nault <gnault@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] bareudp: Use pcpu stats to update rx_dropped
- counter.
-Message-ID: <20241023081225.GK402847@kernel.org>
-References: <959d4ea099039922e60efe738dd2172c87b5382c.1729257592.git.gnault@redhat.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="alkkpS/n"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CFB5A40003;
+	Wed, 23 Oct 2024 08:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729671212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y6OB0T9eVIvbtDeAbcfkqhd81lAUoIF0KWm/CGFLIWA=;
+	b=alkkpS/n4/Yo8gi382U6tXaUlltsCAaLaVUx2WsFBYA1M3CNqjrVY5zXwPyFnBmosoS61f
+	w0xIS8PKTr0dIhX9p+Mvn4NyBReYAq067qBVPCRnzqVp1AiwZD0a4PaUbbBOtMrg4tMuxb
+	EJgsG0scBhK6Ia0g03DGrPv+s+rKjyGmwvCt+6oceXFIWduDE1KD5DEd7cptVE7Wt8ReP9
+	8mfzV8/fikF4uZ8UjEh0I0EWXFLD5rtoGf7eST5Z1SSixeNi8LDzfAdGp/aQLXtR32XuA1
+	LRJ1YODU5PvTiXDi5uojItflSBHSG8mM7QTB3AjRaJhHZPCvYL1oR2Yqq0X/1g==
+Date: Wed, 23 Oct 2024 10:13:28 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Leo Stone <leocstone@gmail.com>
+Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, corbet@lwn.net,
+ linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org, anupnewmail@gmail.com
+Subject: Re: [PATCH net] Documentation: ieee802154: fix grammar
+Message-ID: <20241023101328.76bb70bf@xps-13>
+In-Reply-To: <20241023041203.35313-1-leocstone@gmail.com>
+References: <20241023041203.35313-1-leocstone@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <959d4ea099039922e60efe738dd2172c87b5382c.1729257592.git.gnault@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, Oct 18, 2024 at 03:35:28PM +0200, Guillaume Nault wrote:
-> Use the core_stats rx_dropped counter to avoid the cost of atomic
-> increments.
-> 
-> Signed-off-by: Guillaume Nault <gnault@redhat.com>
-> ---
-> I'm using core_stats for consistency with the vxlan implementation.
-> If we really want to avoid using core_stats in tunnel drivers, just
-> let me know and I'll convert bareudp to NETDEV_PCPU_STAT_DSTATS. But
-> for the moment, I still prefer to favor code consistency across UDP
-> tunnel implementations.
+Hi Leo,
 
-Hi Guillaume, all,
+leocstone@gmail.com wrote on Tue, 22 Oct 2024 21:12:01 -0700:
 
-I think that this patch improves things and the suggestion above
-can be treated as a possible follow-up.
+> Fix grammar where it improves readability.
+>=20
+> Signed-off-by: Leo Stone <leocstone@gmail.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
