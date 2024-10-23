@@ -1,127 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FFD1AE850
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 13:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E752B1BD017
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 13:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729690913; cv=none; b=Esy9mFCILJedRO7CJAr+bv+7KOANfpPVnuTx0FrVI5BL8N1LX4HmoJzmXxt4N4PK3OLPeJMYTJ283JoZamIyIZm4mcpzvRiUDB3BJHJxddLFGO87pbHE44hyNdq04aqBHFt6CI3VhHMPtOZElCgWtj0CBX7h28NVGkWC/50NlzE=
+	t=1729690918; cv=none; b=bn7rArBY/R5e/IfG7p2V81WdYz4DQzPGvTCDVfE/JLxC/wOGh2f/LVsLxqzdlqSGq3kp5s2axWB7FsA+fHnbjt+Dg+se2n3DYAMqCuOgBhhohfBTPMADcTZr1DgaV+C78MT7E2dX1o7C+dP6eroUjdDod+FKM7Rsef0q97W6KFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729690913; c=relaxed/simple;
-	bh=u9FF3WzzoqNp4eLryQOSowGgpuAPFK0vwL3y9Yg8ZNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5tzO/KnofrIcRgzWSmoOLxcz0TbBiqvF6QGhMdhrqkLztByp60LK3MMNJdMYc2BrCQbSCScK6lyICLS1AGIeMqzYWmjNpug7iygEMwxEEH4XkSC47a+RkzIin54WtpAM3Nhkz7jC7774pKgTZCQgw4ISJ9PQZhPjv+MwOkqIp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QGPuHhC+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1729690918; c=relaxed/simple;
+	bh=Y/9LSH97RISVAGv2vWka3noTDVtyFdpgKSTe9/umAkw=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=n2ClkjqRaSoiYal65yKFT/+mPR7dEC4okhlG7SSI7lwoMF2rMJJ/jJYcfiyRO1lF9P/7oKMzfb7VQXO5UE40H18UNDO2zEdeeVNIyhHEXjqrYuszPsm/ajVzMS+yOQQWl3UVkPDNgkZaIM0lWq0D+GIjA6V41qVNxn4j56Himwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=S9r8GVTb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QGPuHhC+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729690911;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAM8ZRvTda+LEs/8ya4sgurWTTiohnnijyfOuyfhNxo=;
-	b=QGPuHhC+o8n1N4VS2NxdbkoX92jXhTAyWtrYDg24i706jDkvx0Dxk2249U5NY+wx/NNFRV
-	PYDeyoIomc6kSV1fo7NzZfN49NGYpag4AbmLsbkQ9dQU1XwKcyLMNEThGB2ncm3KKXTuq4
-	2BpGZ/89cNqs9jw3CDG9+ataP9EMl8I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-u5I4w3B7PuaaCu4uG0nf8A-1; Wed, 23 Oct 2024 09:41:50 -0400
-X-MC-Unique: u5I4w3B7PuaaCu4uG0nf8A-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-37d52ccc50eso3435462f8f.3
-        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 06:41:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729690908; x=1730295708;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZAM8ZRvTda+LEs/8ya4sgurWTTiohnnijyfOuyfhNxo=;
-        b=SPjmx7zDoAEFZOSPY5xZ6g4nkWQVvnf2JZ4zGn1l6B/0OBu9ogdUvOoepSWPeD7+bs
-         F2BmQBLEj5GmfhbZSOOv4gaGojUHj4RxC3AX7pe/GB4oGKavrXeumlpbVgpdX2cKbhWK
-         jBFOxHcRKeousSln3VDoE14svdg2YfMRmFtR9c1VopC47IJi4aS8EjUOmdI8/DAXdzdk
-         GYt7jxSOBkOg1rMEBxLlEYposj+3A3eRjtqOS9wdR/O3FkJ0jze2LAgs6KICALaQBhaT
-         fE21eX+jgWpGs4tlDmu3dmPDqTa7mcG3XbJRc+lZYh9EHadS9j1FUXS9XUCHXh6pCbSC
-         HPRg==
-X-Gm-Message-State: AOJu0Yy/jyOS3G0hH/lbzgqrTlhe2xA8B6Hq8ZHGCT8pIDxWqKohO5sC
-	1wAiUy8XhOGQSnflM+c/ceNdJwXp12zm8vofKuMfn+jvxdL/pTQC+QV724NEiACxFiH4BrLR4xa
-	usHK8GDXl78RhNazXp6lZ0Q6t1ZXRJzlEJKyxjwMNJ3KarPEr1XXQeEtUz1f7toNWV/qmk0gfXz
-	g327OmUkmMoORauJNOH11kvH3IM7sIrLnLic9J0g==
-X-Received: by 2002:a5d:44c2:0:b0:374:cd3e:7d98 with SMTP id ffacd0b85a97d-37efcf106ddmr2013612f8f.19.1729690908087;
-        Wed, 23 Oct 2024 06:41:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXPXXPAYcibfIzDBRMTHs9hPWdPNDz3Eha+UK8URGkuRSuFekIz7fNUsSwd5AIqn2zOU7BLQ==
-X-Received: by 2002:a5d:44c2:0:b0:374:cd3e:7d98 with SMTP id ffacd0b85a97d-37efcf106ddmr2013576f8f.19.1729690907619;
-        Wed, 23 Oct 2024 06:41:47 -0700 (PDT)
-Received: from rh.fritz.box (p200300f6af01c000f92aec4042337510.dip0.t-ipconnect.de. [2003:f6:af01:c000:f92a:ec40:4233:7510])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a5882dsm8898858f8f.50.2024.10.23.06.41.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 06:41:47 -0700 (PDT)
-From: Sebastian Ott <sebott@redhat.com>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="S9r8GVTb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=N3W6iTA+tH+JqtoxZsmnNdn92DjZQLTDiLxEsqa4ACY=; b=S9r8GVTb+oEhuvHfYI5cPjH1Nf
+	gK0QP5DYAJB15FJxgwUEVVSSt51aJP0UWoD4Cvc2Z1GQWwicMjEwmvqvK+h/Zo5gRdmD1W5i2ggU+
+	yWQw6ZsVAH/NMAAYexflOtiiyM7W/C1MyIytEf/dkkYeyyBNcnKtIC0CtD/WfXOr6DioRHBP9DXyO
+	cKlqvFdbiBhudhJ/TrpUqv0034r6npDpPkk9ZUzbG5xs2GxVsuvF6FqfRjjZwA3uwt2MczB0Fjt5M
+	5vaWZJXB7Vl4Thh4mCmZVzuiGnyhKW+AFgDseLgvdc7jnyfrmApREAbh5jzJbUSK2uq4A3IYYrO2m
+	3AoB11XQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:34452 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1t3bcV-0006Ux-2m;
+	Wed, 23 Oct 2024 14:41:52 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1t3bcV-000c8B-Vz; Wed, 23 Oct 2024 14:41:52 +0100
+In-Reply-To: <Zxj8_clRmDA_G7uH@shell.armlinux.org.uk>
+References: <Zxj8_clRmDA_G7uH@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Breno Leitao <leitao@debian.org>
-Subject: [PATCH v2 RESEND] net/mlx5: unique names for per device caches
-Date: Wed, 23 Oct 2024 15:41:46 +0200
-Message-ID: <20241023134146.28448-1-sebott@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20240920181129.37156-1-sebott@redhat.com>
-References: <20240920181129.37156-1-sebott@redhat.com>
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v2 2/3] net: phylink: validate sfp_select_interface()
+ returned interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1t3bcV-000c8B-Vz@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 23 Oct 2024 14:41:51 +0100
 
-Add the device name to the per device kmem_cache names to
-ensure their uniqueness. This fixes warnings like this:
-"kmem_cache of name 'mlx5_fs_fgs' already exists".
+Validate that the returned interface from sfp_select_interface() is
+supportable by the MAC/PCS. If it isn't, print an error and return
+the NA interface type. This is a preparatory step to reorganising
+how a PHY on a SFP module is handled.
 
-Reviwed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/phylink.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 8505d5e241e1..c2db0a1c132b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -3689,6 +3689,7 @@ void mlx5_fs_core_free(struct mlx5_core_dev *dev)
- int mlx5_fs_core_alloc(struct mlx5_core_dev *dev)
- {
- 	struct mlx5_flow_steering *steering;
-+	char name[80];
- 	int err = 0;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 62d347d1112c..4049d85cb477 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2421,11 +2421,22 @@ static phy_interface_t phylink_sfp_select_interface(struct phylink *pl,
+ 	phy_interface_t interface;
  
- 	err = mlx5_init_fc_stats(dev);
-@@ -3713,10 +3714,12 @@ int mlx5_fs_core_alloc(struct mlx5_core_dev *dev)
- 	else
- 		steering->mode = MLX5_FLOW_STEERING_MODE_DMFS;
+ 	interface = sfp_select_interface(pl->sfp_bus, link_modes);
+-	if (interface == PHY_INTERFACE_MODE_NA)
++	if (interface == PHY_INTERFACE_MODE_NA) {
+ 		phylink_err(pl,
+ 			    "selection of interface failed, advertisement %*pb\n",
+ 			    __ETHTOOL_LINK_MODE_MASK_NBITS,
+ 			    link_modes);
++		return interface;
++	}
++
++	if (!test_bit(interface, pl->config->supported_interfaces)) {
++		phylink_err(pl,
++			    "selection of interface failed, SFP selected %s (%u) but MAC supports %*pbl\n",
++			    phy_modes(interface), interface,
++			    (int)PHY_INTERFACE_MODE_MAX,
++			    pl->config->supported_interfaces);
++		return PHY_INTERFACE_MODE_NA;
++	}
  
--	steering->fgs_cache = kmem_cache_create("mlx5_fs_fgs",
-+	snprintf(name, sizeof(name), "%s-mlx5_fs_fgs", dev_name(dev->device));
-+	steering->fgs_cache = kmem_cache_create(name,
- 						sizeof(struct mlx5_flow_group), 0,
- 						0, NULL);
--	steering->ftes_cache = kmem_cache_create("mlx5_fs_ftes", sizeof(struct fs_fte), 0,
-+	snprintf(name, sizeof(name), "%s-mlx5_fs_ftes", dev_name(dev->device));
-+	steering->ftes_cache = kmem_cache_create(name, sizeof(struct fs_fte), 0,
- 						 0, NULL);
- 	if (!steering->ftes_cache || !steering->fgs_cache) {
- 		err = -ENOMEM;
+ 	return interface;
+ }
 -- 
-2.42.0
+2.30.2
 
