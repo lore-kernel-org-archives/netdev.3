@@ -1,101 +1,75 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9A5152787;
-	Wed, 23 Oct 2024 08:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494D214D430;
+	Wed, 23 Oct 2024 08:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729670735; cv=none; b=ivnYworC/RxEunQm7STaHHafUw3s08WEHE1fJLAbcoQ/sqZgDq2z0DFSz25Hf51p4WHJH89qmJOK/WkmIdpcoPw/K/spCB3Vb5rD/Lr66J2tMRhOmwpYVR6gSWLLA4J2K3pJVajYJXvDfqPgQZgBc4k4Rxaz8fR+LW31GgYGjDc=
+	t=1729671022; cv=none; b=DRS4HhuM0n2x/WuGQIobyd4dSoA+15L68nDhtEyTaambQsVAgnYq2iqV32qXJWuwwNJvONI/RHRZmJIGslwus2V3QqMzwqWB8GdnGVBe64o31vnNtKoKbaq9BxKUSeenLAQxrpbOMi5ezRkv1ebUZf4hGkMU2E0zRS2OsNMLs4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729670735; c=relaxed/simple;
-	bh=ezTVhyyhWtup+bc5fzujfyflKD8dHccc9qonD4HK7fs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AVhak6UJm42D3Hv+k/DwlVDcq0Vc68L2Ig9xGs3yn3HI5hfH92Bm7dsquQ24mdjpNvvXxSxBCY3d6kxzlwtqWvBX5xqUG9Cfpa6cQfBgLRZnayEWlPoGYYFWqm0bbU0iHUWXD1DjoR281BzSpAJH2DpAxT0VH9KQzA1vlyIKeKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.224] (ip5f5aeec7.dynamic.kabel-deutschland.de [95.90.238.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id DADAF61E5FE05;
-	Wed, 23 Oct 2024 10:04:45 +0200 (CEST)
-Message-ID: <ba58bbcd-079e-42b9-8e66-52b2626936e2@molgen.mpg.de>
-Date: Wed, 23 Oct 2024 10:04:45 +0200
+	s=arc-20240116; t=1729671022; c=relaxed/simple;
+	bh=KEVapUmSHNAnKHpUbqWWY7HUKA/s/hQPC4oid7+P+4c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QhWzGd4kj1ZAQMQTTqORxWBNaPniFHxrQJoYXLXzRq0tcHYjPNPNkEhx6rG6iWuPu/CC+jQI+c70vPIBjEX5yWb3R6WyyECvZKrluGxFuOUaNKkuSa/XbcCps8E4IWoSQHjmROTvkkUKsygjfpMGVNYP4q3glM5YPP9Jt06fuGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MjQfwkvT; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MjQfwkvT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2467BC4CEC6;
+	Wed, 23 Oct 2024 08:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729671022;
+	bh=KEVapUmSHNAnKHpUbqWWY7HUKA/s/hQPC4oid7+P+4c=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=MjQfwkvTLzps/JFjJs67ULTPscnSGnQaHYrAx0jJE4b1CAS0Q6esK576yhzQ9Crjs
+	 U8aXuDK66V7EOxYo5daH9+0muYtVxEJFqezbJX6x2TXO2qm3HFbzR3uinacSzV+2La
+	 cBv61MhLs/UeFpllE7crC+UsYQCNte5TO2abx3sPBS2MoItWhRUiQ6iu/BBWc6vCoH
+	 l0RiOIf8NapXhe8u/9EVLRs9TC9qFHN1e4MxmfxGgOniroW65KEECPYFEZE2OTlKj+
+	 1YBhiBcAPnb1mskiaUjPJ4MTAQdieCZjna4rPGNhKrd3qIk3JvFP2AaH9elZzi6KfC
+	 K2eNGWuWy/ycg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD2B3809A8A;
+	Wed, 23 Oct 2024 08:10:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2 1/1] [net-next] igb: Fix spelling in
- igb_main.c
-To: Johnny Park <pjohnny0508@gmail.com>
-Cc: horms@kernel.org, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew@lunn.ch,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZxhruNNXvQI-xUwE@Fantasy-Ubuntu>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <ZxhruNNXvQI-xUwE@Fantasy-Ubuntu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: use sock_valbool_flag() only in
+ __sock_set_timestamps()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172967102851.1512053.4625084732459579673.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Oct 2024 08:10:28 +0000
+References: <20241017133435.2552-1-yajun.deng@linux.dev>
+In-Reply-To: <20241017133435.2552-1-yajun.deng@linux.dev>
+To: Yajun Deng <yajun.deng@linux.dev>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Dear Johnny,
+Hello:
 
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Thank you for your patch. I recommend to put the information, that the 
-typos are only in comments, to the summary/title:
-
-igb: Fix 2 typos in comments in igb_main.c
-
-That way, skimming `git log --oneline` is more informative.
-
-Am 23.10.24 um 05:21 schrieb Johnny Park:
-> Simple patch that fix spelling mistakes in igb_main.c
-
-fix*es*, but better use imperative mood:
-
-Fix 2 spelling mistakes in comments `igb_main.c`.
-
-> Signed-off-by: Johnny Park <pjohnny0508@gmail.com>
-> ---
-> Changes in v2:
->    - Fix spelling mor -> more
-> ---
->   drivers/net/ethernet/intel/igb/igb_main.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Thu, 17 Oct 2024 21:34:35 +0800 you wrote:
+> sock_{,re}set_flag() are contained in sock_valbool_flag(),
+> it would be cleaner to just use sock_valbool_flag().
 > 
-> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-> index 1ef4cb871452..fc587304b3c0 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_main.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-> @@ -1204,7 +1204,7 @@ static int igb_alloc_q_vector(struct igb_adapter *adapter,
->   	/* initialize pointer to rings */
->   	ring = q_vector->ring;
->   
-> -	/* intialize ITR */
-> +	/* initialize ITR */
->   	if (rxr_count) {
->   		/* rx or rx/tx vector */
->   		if (!adapter->rx_itr_setting || adapter->rx_itr_setting > 3)
-> @@ -3906,7 +3906,7 @@ static void igb_remove(struct pci_dev *pdev)
->    *
->    *  This function initializes the vf specific data storage and then attempts to
->    *  allocate the VFs.  The reason for ordering it this way is because it is much
-> - *  mor expensive time wise to disable SR-IOV than it is to allocate and free
-> + *  more expensive time wise to disable SR-IOV than it is to allocate and free
->    *  the memory for the VFs.
->    **/
->   static void igb_probe_vfs(struct igb_adapter *adapter)
+> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+> ---
+>  net/core/sock.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
-Rest looks good.
+Here is the summary with links:
+  - [net-next] net: use sock_valbool_flag() only in __sock_set_timestamps()
+    https://git.kernel.org/netdev/net-next/c/6886c14bdc30
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Kind regards,
-
-Paul
