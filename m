@@ -1,179 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D6315746F;
-	Wed, 23 Oct 2024 08:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5950A15A843
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 08:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671297; cv=none; b=Ha/Rn5f2Yb33FhfEUMghiRutXMEFLQLdqVdt83eaGmZSGZAkU1+2cMO71pVvBzLDaepL7pZtX0grvNBYpshrbFb/EuZE/bRIHGwBjIr9Ii/4xeOjRfhsgNKIkZap4+YqBV5cVIbZMOGaq5INQKDcDtBmSfsbEVczsBbsgtN7tic=
+	t=1729671302; cv=none; b=IVbbIf4WSy1+64va0vl29cvsOMLgabrynKdqIAAuVxSYm13I9pHVJQsWBWHaDSSIPALQBU/JGn1TN2jds9h/pt2ndAqhkkAYZdgcKcoa9ucF9uoHuOgaBHadGhuaVoGnQIGRDlAtoc+TTMLvSAH6mQTDtEHebEAKyDaSdd4hzoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671297; c=relaxed/simple;
-	bh=PCYN10kLm7y5N3zh5gY4Cdbwis2bzdQoq+BQVvVyqK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cpro9dyQhkhoQBQXu2MBDEtwkyBswtwHRCo43yPItzw4W8Ru/Mb2s3MXG+y+Gi0Jc6uEgPy7BmfcTmKz0meMijI9R3lT2emh6NVLcN1+rAH4s1XShhtpyDENkto+kndZ8NUqZgIn8yPqlEASPs7oMC+AUIrZYZHiQY1Wks8DnEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YctDnfDm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729671302; c=relaxed/simple;
+	bh=N+5HwTqFWfo5eSwFOh+iyfnhI+7RhwURZf+Udb0BYU8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BIlaRSUjSgv5V957Rdd4A3pmKZeWbzI91Y0iJkQiGSE7xhiw/aExETZYmJGrYX3y6BmqMIfqPfeh7Mnlhd3B3PEqCXyIIhhRoTRhDZTtG5MV/beaOtxDVKAJjxBG4Y2KGDbs0uRNG5jXYogxiM/i8S70PsVrrymVfizuu/bewo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqDbH8R3; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YctDnfDm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F5C4CEC6;
-	Wed, 23 Oct 2024 08:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729671297;
-	bh=PCYN10kLm7y5N3zh5gY4Cdbwis2bzdQoq+BQVvVyqK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YctDnfDmwr3IK2pisJqLuLBy6/gCIerF7wUKqqa1CfH2RjXTxnFqmPHa97AiuVFd3
-	 +ddngVuWmLFnZp1uToHCHMBNAWffgj71hZDa9YBrkfFEPbBFdQBV2cmtU+3464Kg1n
-	 Upg4n+S8N+j/dGA33zrClI+TpwJ2BkRWNHKOfdYuUyU+9yjTqpySd44d9Jv5tkFTEt
-	 CMWg5e6ir7KfkDF1J+yByJQVXs2Im8O+b800ZScK77zjYghIqrKXzNzOvblPVUIVAq
-	 oflJ+JpOVdUmdzQU+kN4xLRyPmk6DDB7EeHT1MoRHDHHm7RVXK2xwny0n3MxFCvF6r
-	 ZxtgVoE9nqRrg==
-Date: Wed, 23 Oct 2024 10:14:54 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, andrew@lunn.ch, Lars Povlsen <lars.povlsen@microchip.com>, 
-	Steen Hegelund <Steen.Hegelund@microchip.com>, horatiu.vultur@microchip.com, 
-	jensemil.schulzostergaard@microchip.com, Parthiban.Veerasooran@microchip.com, 
-	Raju.Lakkaraju@microchip.com, UNGLinuxDriver@microchip.com, 
-	Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, jacob.e.keller@intel.com, 
-	ast@fiberby.net, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 14/15] net: sparx5: add compatible strings for
- lan969x and verify the target
-Message-ID: <cetor3ohhg6rzf3w2cm6hqxsqukh52nm54mp7tizb2qc3x44j4@n53v6btq6t6r>
-References: <20241021-sparx5-lan969x-switch-driver-2-v1-0-c8c49ef21e0f@microchip.com>
- <20241021-sparx5-lan969x-switch-driver-2-v1-14-c8c49ef21e0f@microchip.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqDbH8R3"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71e4e481692so5333114b3a.1
+        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 01:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729671300; x=1730276100; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+8z2pZA5/zlCn6Nxcrtyfo0Fz/RuXHvDVKS7oNMaVnU=;
+        b=CqDbH8R3VQbRkgaEl79obYwDa91ac+T8HFaHDvtMeBKg1zXPyCeom2WEG5/7CAqZ1F
+         bv9gNwNFwDPzNWLLP3XDcCA/fKxHxwXkEs8Z8nDU4g4UYfGmtXSlBJ5ED8tj5XD/xyxn
+         YS+s5oKiMpPSE7TpI4UEmfrM4lAMJwDeHMLHr/FKNrTlBcX35P0fGL15UdWGIHM38eGq
+         NaHALNjeyVW6j+hSHsdJ9rHkG/ppwHOQ/S5CB60sYrMTwJykFyVoSw0/a5QLwMQgzQlc
+         kkIasqh6Ks62LIlXrHqHng1LDUtBt2Cq2IlpRR7TQ96P51x8pBzT0SaJ/keq4uA/vrcZ
+         SGhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729671300; x=1730276100;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+8z2pZA5/zlCn6Nxcrtyfo0Fz/RuXHvDVKS7oNMaVnU=;
+        b=Yn/mP7YBovUSDCiu8r1uBP/uqzMd0yswBm6Jc9qSLuYzj/uE3Xpcn71U9pIPr1m3nX
+         OPkEh4m+OioOpxq+CQ6GORgMYD0zV/o9xV5zxOJN7qPZzwukRXMyiFb8KL2mQ6xJxN3Z
+         4/yyfNBlFxjQoK4lcav1Ja7gHFFS6hp3qwZ52iOVS/7JJBTLT+hAzO9g6hhiNCQVAxTC
+         qWElnMN5MZlUS5roKlNPKb/Ti7ZLkbrPQL2hiIis+g6C9b83fnjVtizRlhHqcJ/RKCXE
+         2b58TZPNw6nlLutoINLGEvSIyp6ju0MLgv/XBU140ottm5PQQrvCTPAsXSnQ551lmpGt
+         3jlA==
+X-Gm-Message-State: AOJu0Yx26fB5pE/+GCGuTFUUdVmuBZlIijCp4hj/H8BbFCGPDvaToZ8J
+	HKCZcr3fKx7Jz8z5ZVZ8L94LLDeAg7dsJPC3W7NPK9j7T/u73m592mFG9w==
+X-Google-Smtp-Source: AGHT+IGDk4L1rMsNmBITpyc9Jc5HozyIop+7IG/tRYT/1NwdoMahuloM901PakxBdXUVogKqihksvQ==
+X-Received: by 2002:a05:6a00:3c92:b0:71d:f012:6de7 with SMTP id d2e1a72fcca58-72030cbdb99mr2397796b3a.27.1729671300453;
+        Wed, 23 Oct 2024 01:15:00 -0700 (PDT)
+Received: from KERNELXING-MB0.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1312d1fsm5837786b3a.5.2024.10.23.01.14.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 01:15:00 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org
+Cc: netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next v3 0/2] tcp: add tcp_warn_once() common helper
+Date: Wed, 23 Oct 2024 16:14:50 +0800
+Message-Id: <20241023081452.9151-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241021-sparx5-lan969x-switch-driver-2-v1-14-c8c49ef21e0f@microchip.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 21, 2024 at 03:58:51PM +0200, Daniel Machon wrote:
-> Add compatible strings for the twelve lan969x SKU's (Stock Keeping Unit)
-> that we support, and verify that the devicetree target is supported by
-> the chip target.
-> 
-> Each SKU supports different bandwidths and features (see [1] for
-> details). We want to be able to run a SKU with a lower bandwidth and/or
-> feature set, than what is supported by the actual chip. In order to
-> accomplish this we:
-> 
->     - add new field sparx5->target_dt that reflects the target from the
->       devicetree (compatible string).
-> 
->     - compare the devicetree target with the actual chip target. If the
->       bandwidth and features provided by the devicetree target is
->       supported by the chip, we approve - otherwise reject.
-> 
->     - set the core clock and features based on the devicetree target
-> 
-> [1] https://www.microchip.com/en-us/product/lan9698
-> 
-> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-> ---
->  drivers/net/ethernet/microchip/sparx5/Makefile     |   1 +
->  .../net/ethernet/microchip/sparx5/sparx5_main.c    | 194 ++++++++++++++++++++-
->  .../net/ethernet/microchip/sparx5/sparx5_main.h    |   1 +
->  3 files changed, 193 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/Makefile b/drivers/net/ethernet/microchip/sparx5/Makefile
-> index 3435ca86dd70..8fe302415563 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/Makefile
-> +++ b/drivers/net/ethernet/microchip/sparx5/Makefile
-> @@ -19,3 +19,4 @@ sparx5-switch-$(CONFIG_DEBUG_FS) += sparx5_vcap_debugfs.o
->  # Provide include files
->  ccflags-y += -I$(srctree)/drivers/net/ethernet/microchip/vcap
->  ccflags-y += -I$(srctree)/drivers/net/ethernet/microchip/fdma
-> +ccflags-y += -I$(srctree)/drivers/net/ethernet/microchip/lan969x
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> index 5c986c373b3e..edbe639d98c5 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> @@ -24,6 +24,8 @@
->  #include <linux/types.h>
->  #include <linux/reset.h>
->  
-> +#include "lan969x.h" /* lan969x_desc */
-> +
->  #include "sparx5_main_regs.h"
->  #include "sparx5_main.h"
->  #include "sparx5_port.h"
-> @@ -227,6 +229,168 @@ bool is_sparx5(struct sparx5 *sparx5)
->  	}
->  }
->  
-> +/* Set the devicetree target based on the compatible string */
-> +static int sparx5_set_target_dt(struct sparx5 *sparx5)
-> +{
-> +	struct device_node *node = sparx5->pdev->dev.of_node;
-> +
-> +	if (is_sparx5(sparx5))
-> +		/* For Sparx5 the devicetree target is always the chip target */
-> +		sparx5->target_dt = sparx5->target_ct;
-> +	else if (of_device_is_compatible(node, "microchip,lan9691-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9691VAO;
-> +	else if (of_device_is_compatible(node, "microchip,lan9692-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9692VAO;
-> +	else if (of_device_is_compatible(node, "microchip,lan9693-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9693VAO;
-> +	else if (of_device_is_compatible(node, "microchip,lan9694-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9694;
-> +	else if (of_device_is_compatible(node, "microchip,lan9695-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9694TSN;
-> +	else if (of_device_is_compatible(node, "microchip,lan9696-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9696;
-> +	else if (of_device_is_compatible(node, "microchip,lan9697-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9696TSN;
-> +	else if (of_device_is_compatible(node, "microchip,lan9698-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9698;
-> +	else if (of_device_is_compatible(node, "microchip,lan9699-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9698TSN;
-> +	else if (of_device_is_compatible(node, "microchip,lan969a-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9694RED;
-> +	else if (of_device_is_compatible(node, "microchip,lan969b-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9696RED;
-> +	else if (of_device_is_compatible(node, "microchip,lan969c-switch"))
-> +		sparx5->target_dt = SPX5_TARGET_CT_LAN9698RED;
-> +	else
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +/* Compare the devicetree target with the chip target.
-> + * Make sure the chip target supports the features and bandwidth requested
-> + * from the devicetree target.
-> + */
-> +static int sparx5_verify_target(struct sparx5 *sparx5)
-> +{
-> +	switch (sparx5->target_dt) {
-> +	case SPX5_TARGET_CT_7546:
-> +	case SPX5_TARGET_CT_7549:
-> +	case SPX5_TARGET_CT_7552:
-> +	case SPX5_TARGET_CT_7556:
-> +	case SPX5_TARGET_CT_7558:
-> +	case SPX5_TARGET_CT_7546TSN:
-> +	case SPX5_TARGET_CT_7549TSN:
-> +	case SPX5_TARGET_CT_7552TSN:
-> +	case SPX5_TARGET_CT_7556TSN:
-> +	case SPX5_TARGET_CT_7558TSN:
-> +		return 0;
+From: Jason Xing <kernelxing@tencent.com>
 
-All this is weird. Why would you verify? You were matched, it cannot be
-mis-matching.
+Paolo Abeni suggested we can introduce a new helper to cover more cases
+in the future for better debug.
 
-> +	case SPX5_TARGET_CT_LAN9698RED:
-> +		if (sparx5->target_ct == SPX5_TARGET_CT_LAN9698RED)
+Jason Xing (2):
+  tcp: add a common helper to debug the underlying issue
+  tcp: add more warn of socket in tcp_send_loss_probe()
 
-What is "ct"? sorry, all this code is a big no.
+ include/net/tcp.h     | 26 +++++++++++++++-----------
+ net/ipv4/tcp_output.c |  4 +---
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
-Best regards,
-Krzysztof
+-- 
+2.37.3
 
