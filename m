@@ -1,494 +1,263 @@
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4865A156F5E;
-	Wed, 23 Oct 2024 08:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671532; cv=none; b=JZIZEtoztQ0Z6tPxUF5Q4TF02SKI5onRz6/NN0A89nzgEr30PSVWlUSp1PEo8lE5gJm5/RlWIaNKrQVhPeROFwWyy0NBh4V8Xcd9Iqvm0nVQJMXX8wrPLnhwM5C5O7a/s2dfo3WGtKqKlEbnjFm4tXHdmODecTwHz/hqj0wka24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671532; c=relaxed/simple;
-	bh=nRYsdh20ulVhIqky7GSqNnbitg9IwiHaw0XADbawyqw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WZDm2AW8IQ7TiSbeiSyE6zYf/ADFma2m1MSGzrt/uKpc4QNVW1lC42Zd7ZYargn36vYh/dwIr7C62BAQ8WNHUhF51SuDmCiU0mIJD15qAWaLkHkf8teCdILuVabNJM25eASjzNdv+TG+q4gOE0izdiwkEkDL0MBRJ+f6u9A/k+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=wH2Ef/rV; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C3157476;
+	Wed, 23 Oct 2024 08:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729671533; cv=fail; b=lXQzmkHkDXGoQaH5X9F/dxsNyCzUfasPERMSjbFO5q+Rdl8CgWid96b4Oa0sHqG8iKCHwuRGcKMZ2aex8xdp5vNkFgszpYbUjGrJUMiEq6sAX305yjKdYNUas3z/Gu6nBoXnEGdV1TAXgjkUXPIhMULzZwYu6j2gBEmnCELCjYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729671533; c=relaxed/simple;
+	bh=sOXHi80Wj3+R2DkQNjKOIgezdQMCQ3nX+JUCca/jXU8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bnc1UVkFqE+gkXCJSDOeyq2ywAbRO4la38Lym35lnvoq/4xyTgWfN0qOcCh9s1C5a9IoGWXk8kPfGdinalQG+m4zc4Jc7oVl5BU/TJfNJ7kSOa3GFxAbnEPPpBOux0G0IyD7e2hx6jyYX0tIvHGZLA00fEyq79G45LdaBC86Op0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aVZREeso; arc=fail smtp.client-ip=40.107.22.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="wH2Ef/rV"
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id D7B6220A2F;
-	Wed, 23 Oct 2024 08:11:54 +0000 (UTC)
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 3C9C720056;
-	Wed, 23 Oct 2024 08:11:45 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 051733E8B0;
-	Wed, 23 Oct 2024 10:11:36 +0200 (CEST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id EBEF340071;
-	Wed, 23 Oct 2024 08:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1729671093; bh=nRYsdh20ulVhIqky7GSqNnbitg9IwiHaw0XADbawyqw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wH2Ef/rVmT74V531v+ulCIDHN9SB0nSEpVtEc7tw344HjnvVcj54jftVa5KYE6Spe
-	 sjhKF3HnuJsziCtdgFpFAJQGLYyA7kOgUDyBRycpWuUmmwdkUOrYbP+2glUEbWJLE5
-	 dwMfijq+AXUUzSAvRtIZkutFacWYMZjIorkQP+NA=
-Received: from localhost.localdomain (unknown [58.32.43.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id C566B407D9;
-	Wed, 23 Oct 2024 08:11:25 +0000 (UTC)
-From: Kexy Biscuit <kexybiscuit@aosc.io>
-To: jeffbai@aosc.io,
-	gregkh@linuxfoundation.org,
-	wangyuli@uniontech.com,
-	torvalds@linux-foundation.org
-Cc: aospan@netup.ru,
-	conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org,
-	dushistov@mail.ru,
-	fancer.lancer@gmail.com,
-	geert@linux-m68k.org,
-	hoan@os.amperecomputing.com,
-	ink@jurassic.park.msu.ru,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com,
-	netdev@vger.kernel.org,
-	nikita@trvn.ru,
-	ntb@lists.linux.dev,
-	patches@lists.linux.dev,
-	richard.henderson@linaro.org,
-	s.shtylyov@omp.ru,
-	serjk@netup.ru,
-	shc_work@mail.ru,
-	tsbogend@alpha.franken.de,
-	v.georgiev@metrotek.ru,
-	wsa+renesas@sang-engineering.com,
-	xeb@mail.ru,
-	Kexy Biscuit <kexybiscuit@aosc.io>
-Subject: [PATCH] Revert "MAINTAINERS: Remove some entries due to various compliance requirements."
-Date: Wed, 23 Oct 2024 16:09:34 +0800
-Message-ID: <20241023080935.2945-2-kexybiscuit@aosc.io>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
-References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aVZREeso"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=No7dGGTLiLxPW3uP7iv5FuILhDE5xYle6vIfsfYkarw23Nh+KRFY6smmU+kg9L03J/kMPgoGHdlBTELAHH2/tRrb2CmcOoRTkhcwTXYC4+cDkh5UIEQARvcpCKX3wl0tbFsjtnwMreIdi9N+RolDxlIQ3RIycoA+CEmLNK2VhfZHgVezH2vas0HwRhZlV7Ar8vyFjgrvvZ+ZsrBoC/aFk3K4ATBZbCd7jSIt5CTrjSfL+ljhEZ1fxjsiy5izt2g3XKAFmKR4n/rltkebr/2TLWbSq8M0Tb5Ll2JqITRxiGjw3NEjDPMw/kCN5MfYo+kF0AM5lU0YJBCoSZDd0TU7Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RBaKQcT1Cx0jrBSSkCevsGKVzSnzcBdEuJQAvm53few=;
+ b=kWRpbCnkXraVDqi/yXu2AxMEvBxh6GniZNM0G4PLS8qvTS0DBc61V/E4eCx+ZeUkDl+pFWHimYNNpFGfkqXgKDw2Dd526ihG2SOj5Quuf2GgWq8FpMYhmLEXxHmtcIiNArpPsvkpWeyAFtbiYXqEBnxUe+WB8fWcAmTiZxfo+uQkTHH1ZUJchG5rzzOLMsd4vg+nD54Ns2JDhkGdiNF+RxGMKekB+Uz1kjtb2g+y+bvS57el/SMwW8abYfgb5ahjFkb2gmvB2lq1mJ18vV9l+/xQxkA/H68+o8474jaYD+GYyGzhODixVAUgEsKQxqe4YaHhKGxjop5pW9GgLObpXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RBaKQcT1Cx0jrBSSkCevsGKVzSnzcBdEuJQAvm53few=;
+ b=aVZREesoEOTsQtWPbxMT8jqRs3/vrkLrTNJgA2KTiE7pC7qZN8GOWUaeLqp0XKiOfZHR6/M9zTSyQr2nRTvz+YSNEDqMa0r2XX41kXYZeG5usfXfyynt55YqIBJlw6DVmTV5vUX9wMdrXU4jZ/N92gR5FlpWAUuX6mdL7DnHkb/HAtohaKhxHPe8zG+ecyuvNSbt6h5EMaQAdAb4etc24OZQY9+TsnnP1A9vkHzcGDxuzlnfrMu89tB4At9b+krBE5v1ELmSHa4uLeWr++T70a6167N2C5IYORXA4gZWbh67dhFeUMK+7iKWcX0fzbnO8VCh+Mn7ukkQw4rl9ASS2A==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU4PR04MB10387.eurprd04.prod.outlook.com (2603:10a6:10:568::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
+ 2024 08:18:44 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
+ 08:18:43 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu
+ Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Frank Li
+	<frank.li@nxp.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"horms@kernel.org" <horms@kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>
+Subject: RE: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for NETC
+ blocks control
+Thread-Topic: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for
+ NETC blocks control
+Thread-Index: AQHbJEi1opWCvzFL8kS18Y10TWXurLKT6McAgAAQObA=
+Date: Wed, 23 Oct 2024 08:18:43 +0000
+Message-ID:
+ <PAXPR04MB851034FDAC4E63F1866356B4884D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241022055223.382277-1-wei.fang@nxp.com>
+ <20241022055223.382277-4-wei.fang@nxp.com>
+ <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
+In-Reply-To: <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DU4PR04MB10387:EE_
+x-ms-office365-filtering-correlation-id: f9a1c7c9-a24a-45b7-d1e4-08dcf33b4f44
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?GJ5Vg3BAGDKuPetWoctP3s6+urnlyB0MkgzPOqS8192Ymlaf6Zoc/9/GUvVe?=
+ =?us-ascii?Q?PUjHwd6zGGGldh5iPHj7mPk6xsmPOgODtmzE2ozRjYCe0q/gfPkQexr63a8B?=
+ =?us-ascii?Q?hjGeJb02Bke4IbrITfgebeqW1pkwf0uStUnbCvaojJc9R4DV/9Uumr2ngAln?=
+ =?us-ascii?Q?e6fgU2WKlhOmo9poa6+Ig3o8mxBEYHy10VHrb38U2Ma+685TmZuKO7mPhe8h?=
+ =?us-ascii?Q?PDEKrpyBMXuNSudEgxUfew8TXGtmbl3HsVQRH1Fp2F9DlZ91+jRsRaJQs+QQ?=
+ =?us-ascii?Q?UAHrvzNxP0dpAKah3ehI/b38YWnFHhp0FFjTTxItd9YHFHxNvnfnKxwZkMV6?=
+ =?us-ascii?Q?OfYMkkHkgP3LWhoBCkysMvnvMlFDAy+yePcv7W9ydpC6o0sKiibAcZAyJB4B?=
+ =?us-ascii?Q?h0/FP5zDlGVXFiFOimYD/8/DKoW5O1Ny3t44xeg2u6zk6mxK+/LkopIlO+p8?=
+ =?us-ascii?Q?HebTtHdWveRmIUYh+csgjh9GnrlAeDSyAgmoGBansSi7tkfvcUykYuSrDVUY?=
+ =?us-ascii?Q?Baq2MsqvhC4ONMaL39Rfnm/FBz2eyJlU5cstirX3jGhlHCOj+WQgKaOKZhf1?=
+ =?us-ascii?Q?KbsIWUL8Sji5cIMBhPO1IO1vf2xU/WdIMLBTiWKKojU2ZUBKA3gzKagHDgqb?=
+ =?us-ascii?Q?BI+kD/grEVWIUAMpgjxgMRPLJGychFFwK2NQbIY9NNqPLv7UqmoG1RrQ3+7i?=
+ =?us-ascii?Q?I5dOwrAXumaY1g49YRsD7Dc7pF3GDvqt2sJzVzgCxOwkpIK05CXooiSgGeMQ?=
+ =?us-ascii?Q?v49cNWHLKUJLWZ4+Xis2HfgX1F5SO870RVrLYTLxli1xfPfLwSoyE5LRPYiR?=
+ =?us-ascii?Q?HhwRncgfl2rmw5l+cmw0t7ZyzkggpaDsGA+DW/kv0ZeASOUtQbxAu/biR4QV?=
+ =?us-ascii?Q?6eH3JLY0IvmYLQoRYIyevQyszz88V+HvjKM59nfThornh6QXSboGif1Ro9ah?=
+ =?us-ascii?Q?R8YtAltwA7p3QdSR7lgKOszn2/fALj9z7NHAEKhrioiaOmE4KxIgggUMbsaX?=
+ =?us-ascii?Q?n6HLal30pBJfT9e1F8cXmxueL955FTHlj9jv0m6OLgp+gU88joo9jvLIk/nC?=
+ =?us-ascii?Q?e+MDJunjIQCOhfU7FT2lvM47j25hKqJXPK7uWRpeI7DCnzy9Y/QhtGQlJJPj?=
+ =?us-ascii?Q?jiWeI62IOc7annlP7U3LzqdROBDz7UgQanWpdoSINvj2IMzi8XjkgBMA9iME?=
+ =?us-ascii?Q?kPsCrZBP9+wI2YnsgDco9qgdCFuLSqr1+4gwb8yZcyqtAFg2YNQOAgmU7crs?=
+ =?us-ascii?Q?hFw4Szp6lQpmMew2eF/wril6NbEm8+hxxqlawiEibpTmGKeGGa0wEjLjOBoD?=
+ =?us-ascii?Q?EE06Ohk/9jnIIEpL875T+uXcSf4WTEEOYAjmRE5RLnfpDGAHiQgvA1oQRHBL?=
+ =?us-ascii?Q?zJD8lD4=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4Q+F9W+jenTvUfLv0aaPvf/+ev2ar18PgYxRpTJ7cH2rnnzTyIYKTp47cdhi?=
+ =?us-ascii?Q?Q1ruTqTXXoy4Yuaak8kJUPZzm1Ck4OmUKuTbQ/BvshvTnUVhqiF1JWDR6icI?=
+ =?us-ascii?Q?X1TSAkUV2ZjoaIpRUsVI2VZys1hJZSGBA4ADe6EI+U5p2DZqm5IByiDZXPAf?=
+ =?us-ascii?Q?TWh4Sdh66TE7Pgg/H1/76/t1qC7o6KjP7gEkVD7HvfzhVinGERlqMPOk7mch?=
+ =?us-ascii?Q?WgYArq5WtbIYgv+lIQY0BvR/Ze0UunU7fDdThudpb3u4bl9W3anpBOX4p9M4?=
+ =?us-ascii?Q?Uc9aOsBuryJgCAJZg4ooyg9aOPb8zFlb4QaXuhODA5C7BINSxSOLbP73rZyC?=
+ =?us-ascii?Q?niDTdsAuiSqqPXvTIGk40Q21REq2+ihUEr+4Dki24mFo7RVlwzHE8K+lXM9G?=
+ =?us-ascii?Q?kX81mKF2dxV+i5HQ4Gs2HMdKjHO6y9msDHh0swz2V5lqnBs5IpLx0j1DZeLT?=
+ =?us-ascii?Q?v3nk9rpQEO0rRWtL1jWPN5TVTVVrxQzLFBwz49TMxrm6KvQm7BNGKjjcpOcl?=
+ =?us-ascii?Q?GbRYR1QyUPxHI1USNi2NtDr/rHbw7SHMDodM00hwU9n8Si4ki9wGhIL1icg5?=
+ =?us-ascii?Q?2XRUHu3TmAfzcU95E5wHlMGayvctBNXscXItuF8ixeyF0cgAJp8h639sB0FJ?=
+ =?us-ascii?Q?VTNyJ6fwGvxQwtNLwttUyiCPOM15+ZUZIl5zltVlmKubCGzDJCBLQklJ8nSZ?=
+ =?us-ascii?Q?NyTsNO2ith8bmdv0j6wIKSDGW6vOlhgYNt0XbruoHFWAR/P6pDUzc2A1TuSw?=
+ =?us-ascii?Q?bMBXGhdt4Iox/pYHCGJ2Flo575191dzsE5boEKeq2N4OsAf+TXU73MMEuQKj?=
+ =?us-ascii?Q?o0U5hF9VJLFeS+LRZtd/ag4wruESPotLles4L2SsFlkBMvERRft2B6A4WCUl?=
+ =?us-ascii?Q?LDxC0BFFS2pKcB4aAjkT4scqtHGCaqM8CdeC50aH3TW1FO0wuxrG0PKfIkPt?=
+ =?us-ascii?Q?j8YqGqmxvTWIKzs77jBpu3s1nhewBspJSHEwiwi+NMpwi9beKMODXlTXd38B?=
+ =?us-ascii?Q?vEa173FA2yeYxadnWrmW8gIe2NCvmYQ3080lke72kPQSiqA4l/LcXbWzueCp?=
+ =?us-ascii?Q?gSMqUzkXwUYVJPUaY+/lJO0SN13NPY5XHHNNoFc6SYjXjAYEiBCUcOk+wmLB?=
+ =?us-ascii?Q?Fp818wIU34ZBnA6dAy/zxExv93x2ma2YcEqIcCLH1bDA7uORuhSw27hz1axm?=
+ =?us-ascii?Q?fX+LZWTtIQKzlqqvfCAqWgqMQx8Z7DwOpexNnR6QsIjb52kk6SeECw77tf7i?=
+ =?us-ascii?Q?4pVQp5UR2EEa2IHiIX4NEuRdvLbzExKLoq03LQeYLq9bplpxF0WNvaCHDHbB?=
+ =?us-ascii?Q?EkfgCluSueN2JqVNwT4omcMZ805skub5GTs8dzzlAYggzCli+pBtJizrQB1F?=
+ =?us-ascii?Q?LulTO5s0kSC4NsVeeQUEcYz0dBUADyXMZImjW3qLbgRCXLsdRFqybi0wCZH/?=
+ =?us-ascii?Q?PfwA7XOwnLY9rH8t6avQcgLg+cu+9SrIRRyLya4UGhim+TEFPlrZ9OcfG7sP?=
+ =?us-ascii?Q?+ueFBMvnJEw6fqAI4Qk4RLy5wzh7ArWVPKEDm2rswpOXAnpu3B2gT1nrTXT2?=
+ =?us-ascii?Q?e7ytRKpzuVGr4LY/T68=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Rspamd-Queue-Id: EBEF340071
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.60 / 10.00];
-	REPLY(-4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[renesas];
-	FREEMAIL_CC(0.00)[netup.ru,microchip.com,sberdevices.ru,vger.kernel.org,mail.ru,gmail.com,linux-m68k.org,os.amperecomputing.com,jurassic.park.msu.ru,lists.infradead.org,linaro.org,trvn.ru,lists.linux.dev,omp.ru,alpha.franken.de,metrotek.ru,sang-engineering.com,aosc.io];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[39];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,mail.ru];
-	TO_DN_SOME(0.00)[]
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9a1c7c9-a24a-45b7-d1e4-08dcf33b4f44
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2024 08:18:43.7772
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: X+mVqgGvDJ0voceyqtPOuo7ID+AlJBqY63s3ocKOmG/fYJGcX9thBhSMoNmLn7wH/+5bbK1o5KRmTMWa5l6TuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10387
 
-This reverts commit 6e90b675cf942e50c70e8394dfb5862975c3b3b2.
+> > +maintainers:
+> > +  - Wei Fang <wei.fang@nxp.com>
+> > +  - Clark Wang <xiaoning.wang@nxp.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - nxp,imx95-netc-blk-ctrl
+> > +
+> > +  reg:
+> > +    minItems: 2
+> > +    maxItems: 3
+>=20
+> You have one device, why this is flexible? Device either has exactly 2
+> or exactly 3 IO spaces, not both depending on the context.
+>=20
 
-An absolutely no-one-ever-reviewed patch, not even by the maintainers who
-got removed themselves - at least not on the mailing list. Then the patch
-just got slipped into an unrelated subsystem pull request, and got pulled
-by Torvalds with not even a comment.
+There are three register blocks, IERB and PRB are inside NETC IP, but NETCM=
+IX
+is outside NETC. There are dependencies between these three blocks, so it i=
+s
+better to configure them in one driver. But for other platforms like S32, i=
+t does
+not have NETCMIX, so NETCMIX is optional.
 
-What about the next time? Who next would be removed from the MAINTAINERS
-file, the kernel.org infrastructure? What if the compliance requires
-another XZ backdoor to be developed without further explanation? Is the
-kernel development process still done in public?
+> > +
+> > +  reg-names:
+> > +    minItems: 2
+> > +    items:
+> > +      - const: ierb
+> > +      - const: prb
+> > +      - const: netcmix
+> > +
+> > +  "#address-cells":
+> > +    const: 2
+> > +
+> > +  "#size-cells":
+> > +    const: 2
+> > +
+> > +  ranges: true
+> > +  assigned-clocks: true
+> > +  assigned-clock-parents: true
+> > +  assigned-clock-rates: true
+>=20
+> Drop these three.
+>=20
 
-Are the "compliance requirements" documented on docs.kernel.org? Who are
-responsible for them? Are all that are responsible employees of
-The Linux Foundation, which is regulated by the U.S. legislature?
+Okay, I will drop them. Thanks.
 
-Fixes: 6e90b675cf94 ("MAINTAINERS: Remove some entries due to various compliance requirements.")
-Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
----
-Please keep all discussions on at least one of the mailing lists.
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +  clock-names:
+> > +    const: ipg
+> > +
+> > +  power-domains:
+> > +    maxItems: 1
+> > +
+> > +patternProperties:
+> > +  "^pcie@[0-9a-f]+$":
+> > +    $ref: /schemas/pci/host-generic-pci.yaml#
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - reg-names
+> > +  - "#address-cells"
+> > +  - "#size-cells"
+> > +  - ranges
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    bus {
+> > +        #address-cells =3D <2>;
+> > +        #size-cells =3D <2>;
+> > +
+> > +        netc-blk-ctrl@4cde0000 {
+>=20
+> system-controller? Don't use compatible as node name.
+>=20
 
- MAINTAINERS | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 178 insertions(+)
+netc-blk-ctrl provides pre-configuration and warm reset services for the en=
+tire NETC
+IP, so system-controller sounds good.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e9659a5a7fb3..501aa5c0887e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -258,6 +258,12 @@ L:	linux-acenic@sunsite.dk
- S:	Maintained
- F:	drivers/net/ethernet/alteon/acenic*
- 
-+ACER ASPIRE 1 EMBEDDED CONTROLLER DRIVER
-+M:	Nikita Travkin <nikita@trvn.ru>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/platform/acer,aspire1-ec.yaml
-+F:	drivers/platform/arm64/acer-aspire1-ec.c
-+
- ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
- M:	Peter Kaestle <peter@piie.net>
- L:	platform-driver-x86@vger.kernel.org
-@@ -882,6 +888,7 @@ F:	drivers/staging/media/sunxi/cedrus/
- 
- ALPHA PORT
- M:	Richard Henderson <richard.henderson@linaro.org>
-+M:	Ivan Kokshaysky <ink@jurassic.park.msu.ru>
- M:	Matt Turner <mattst88@gmail.com>
- L:	linux-alpha@vger.kernel.org
- S:	Odd Fixes
-@@ -2256,6 +2263,12 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
- F:	arch/arm/mach-ep93xx/ts72xx.c
- 
-+ARM/CIRRUS LOGIC CLPS711X ARM ARCHITECTURE
-+M:	Alexander Shiyan <shc_work@mail.ru>
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Odd Fixes
-+N:	clps711x
-+
- ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
- M:	Hartley Sweeten <hsweeten@visionengravers.com>
- M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
-@@ -3802,6 +3815,14 @@ F:	drivers/video/backlight/
- F:	include/linux/backlight.h
- F:	include/linux/pwm_backlight.h
- 
-+BAIKAL-T1 PVT HARDWARE MONITOR DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-hwmon@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/hwmon/baikal,bt1-pvt.yaml
-+F:	Documentation/hwmon/bt1-pvt.rst
-+F:	drivers/hwmon/bt1-pvt.[ch]
-+
- BARCO P50 GPIO DRIVER
- M:	Santosh Kumar Yadav <santoshkumar.yadav@barco.com>
- M:	Peter Korsgaard <peter.korsgaard@barco.com>
-@@ -6455,6 +6476,7 @@ F:	drivers/mtd/nand/raw/denali*
- 
- DESIGNWARE EDMA CORE IP DRIVER
- M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-+R:	Serge Semin <fancer.lancer@gmail.com>
- L:	dmaengine@vger.kernel.org
- S:	Maintained
- F:	drivers/dma/dw-edma/
-@@ -9737,6 +9759,14 @@ F:	drivers/gpio/gpiolib-cdev.c
- F:	include/uapi/linux/gpio.h
- F:	tools/gpio/
- 
-+GRE DEMULTIPLEXER DRIVER
-+M:	Dmitry Kozlov <xeb@mail.ru>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	include/net/gre.h
-+F:	net/ipv4/gre_demux.c
-+F:	net/ipv4/gre_offload.c
-+
- GRETH 10/100/1G Ethernet MAC device driver
- M:	Andreas Larsson <andreas@gaisler.com>
- L:	netdev@vger.kernel.org
-@@ -12929,6 +12959,12 @@ S:	Maintained
- F:	drivers/ata/pata_arasan_cf.c
- F:	include/linux/pata_arasan_cf_data.h
- 
-+LIBATA PATA DRIVERS
-+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-+L:	linux-ide@vger.kernel.org
-+F:	drivers/ata/ata_*.c
-+F:	drivers/ata/pata_*.c
-+
- LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
- M:	Linus Walleij <linus.walleij@linaro.org>
- L:	linux-ide@vger.kernel.org
-@@ -12945,6 +12981,15 @@ F:	drivers/ata/ahci_platform.c
- F:	drivers/ata/libahci_platform.c
- F:	include/linux/ahci_platform.h
- 
-+LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-ide@vger.kernel.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
-+F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
-+F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
-+F:	drivers/ata/ahci_dwc.c
-+
- LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
- M:	Mikael Pettersson <mikpelinux@gmail.com>
- L:	linux-ide@vger.kernel.org
-@@ -14140,6 +14185,16 @@ S:	Maintained
- T:	git git://linuxtv.org/media_tree.git
- F:	drivers/media/platform/nxp/imx-pxp.[ch]
- 
-+MEDIA DRIVERS FOR ASCOT2E
-+M:	Sergey Kozlov <serjk@netup.ru>
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/dvb-frontends/ascot2e*
-+
- MEDIA DRIVERS FOR CXD2099AR CI CONTROLLERS
- M:	Jasmin Jessich <jasmin@anw.at>
- L:	linux-media@vger.kernel.org
-@@ -14148,6 +14203,16 @@ W:	https://linuxtv.org
- T:	git git://linuxtv.org/media_tree.git
- F:	drivers/media/dvb-frontends/cxd2099*
- 
-+MEDIA DRIVERS FOR CXD2841ER
-+M:	Sergey Kozlov <serjk@netup.ru>
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/dvb-frontends/cxd2841er*
-+
- MEDIA DRIVERS FOR CXD2880
- M:	Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>
- L:	linux-media@vger.kernel.org
-@@ -14192,6 +14257,35 @@ F:	drivers/media/platform/nxp/imx-mipi-csis.c
- F:	drivers/media/platform/nxp/imx7-media-csi.c
- F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
- 
-+MEDIA DRIVERS FOR HELENE
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/dvb-frontends/helene*
-+
-+MEDIA DRIVERS FOR HORUS3A
-+M:	Sergey Kozlov <serjk@netup.ru>
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/dvb-frontends/horus3a*
-+
-+MEDIA DRIVERS FOR LNBH25
-+M:	Sergey Kozlov <serjk@netup.ru>
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/dvb-frontends/lnbh25*
-+
- MEDIA DRIVERS FOR MXL5XX TUNER DEMODULATORS
- L:	linux-media@vger.kernel.org
- S:	Orphan
-@@ -14199,6 +14293,16 @@ W:	https://linuxtv.org
- T:	git git://linuxtv.org/media_tree.git
- F:	drivers/media/dvb-frontends/mxl5xx*
- 
-+MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
-+M:	Sergey Kozlov <serjk@netup.ru>
-+M:	Abylay Ospan <aospan@netup.ru>
-+L:	linux-media@vger.kernel.org
-+S:	Supported
-+W:	https://linuxtv.org
-+W:	http://netup.tv/
-+T:	git git://linuxtv.org/media_tree.git
-+F:	drivers/media/pci/netup_unidvb/*
-+
- MEDIA DRIVERS FOR NVIDIA TEGRA - VDE
- M:	Dmitry Osipenko <digetx@gmail.com>
- L:	linux-media@vger.kernel.org
-@@ -14842,6 +14946,13 @@ F:	drivers/mtd/
- F:	include/linux/mtd/
- F:	include/uapi/mtd/
- 
-+MEMSENSING MICROSYSTEMS MSA311 DRIVER
-+M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-+F:	drivers/iio/accel/msa311.c
-+
- MEN A21 WATCHDOG DRIVER
- M:	Johannes Thumshirn <morbidrsa@gmail.com>
- L:	linux-watchdog@vger.kernel.org
-@@ -15175,6 +15286,7 @@ F:	drivers/tty/serial/8250/8250_pci1xxxx.c
- 
- MICROCHIP POLARFIRE FPGA DRIVERS
- M:	Conor Dooley <conor.dooley@microchip.com>
-+R:	Vladimir Georgiev <v.georgiev@metrotek.ru>
- L:	linux-fpga@vger.kernel.org
- S:	Supported
- F:	Documentation/devicetree/bindings/fpga/microchip,mpf-spi-fpga-mgr.yaml
-@@ -15429,6 +15541,17 @@ F:	arch/mips/
- F:	drivers/platform/mips/
- F:	include/dt-bindings/mips/
- 
-+MIPS BAIKAL-T1 PLATFORM
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-mips@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
-+F:	Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
-+F:	drivers/bus/bt1-*.c
-+F:	drivers/clk/baikal-t1/
-+F:	drivers/memory/bt1-l2-ctl.c
-+F:	drivers/mtd/maps/physmap-bt1-rom.[ch]
-+
- MIPS BOSTON DEVELOPMENT BOARD
- M:	Paul Burton <paulburton@kernel.org>
- L:	linux-mips@vger.kernel.org
-@@ -15441,6 +15564,7 @@ F:	include/dt-bindings/clock/boston-clock.h
- 
- MIPS CORE DRIVERS
- M:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-+M:	Serge Semin <fancer.lancer@gmail.com>
- L:	linux-mips@vger.kernel.org
- S:	Supported
- F:	drivers/bus/mips_cdmm.c
-@@ -16408,6 +16532,12 @@ F:	include/linux/ntb.h
- F:	include/linux/ntb_transport.h
- F:	tools/testing/selftests/ntb/
- 
-+NTB IDT DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	ntb@lists.linux.dev
-+S:	Supported
-+F:	drivers/ntb/hw/idt/
-+
- NTB INTEL DRIVER
- M:	Dave Jiang <dave.jiang@intel.com>
- L:	ntb@lists.linux.dev
-@@ -18428,6 +18558,13 @@ F:	drivers/pps/
- F:	include/linux/pps*.h
- F:	include/uapi/linux/pps.h
- 
-+PPTP DRIVER
-+M:	Dmitry Kozlov <xeb@mail.ru>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+W:	http://sourceforge.net/projects/accel-pptp
-+F:	drivers/net/ppp/pptp.c
-+
- PRESSURE STALL INFORMATION (PSI)
- M:	Johannes Weiner <hannes@cmpxchg.org>
- M:	Suren Baghdasaryan <surenb@google.com>
-@@ -19518,6 +19655,15 @@ S:	Supported
- F:	Documentation/devicetree/bindings/i2c/renesas,iic-emev2.yaml
- F:	drivers/i2c/busses/i2c-emev2.c
- 
-+RENESAS ETHERNET AVB DRIVER
-+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-+L:	netdev@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+F:	Documentation/devicetree/bindings/net/renesas,etheravb.yaml
-+F:	drivers/net/ethernet/renesas/Kconfig
-+F:	drivers/net/ethernet/renesas/Makefile
-+F:	drivers/net/ethernet/renesas/ravb*
-+
- RENESAS ETHERNET SWITCH DRIVER
- R:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
- L:	netdev@vger.kernel.org
-@@ -19567,6 +19713,14 @@ F:	Documentation/devicetree/bindings/i2c/renesas,rmobile-iic.yaml
- F:	drivers/i2c/busses/i2c-rcar.c
- F:	drivers/i2c/busses/i2c-sh_mobile.c
- 
-+RENESAS R-CAR SATA DRIVER
-+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-+L:	linux-ide@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-+F:	drivers/ata/sata_rcar.c
-+
- RENESAS R-CAR THERMAL DRIVERS
- M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
- L:	linux-renesas-soc@vger.kernel.org
-@@ -19642,6 +19796,16 @@ S:	Supported
- F:	Documentation/devicetree/bindings/i2c/renesas,rzv2m.yaml
- F:	drivers/i2c/busses/i2c-rzv2m.c
- 
-+RENESAS SUPERH ETHERNET DRIVER
-+R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-+L:	netdev@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+F:	Documentation/devicetree/bindings/net/renesas,ether.yaml
-+F:	drivers/net/ethernet/renesas/Kconfig
-+F:	drivers/net/ethernet/renesas/Makefile
-+F:	drivers/net/ethernet/renesas/sh_eth*
-+F:	include/linux/sh_eth.h
-+
- RENESAS USB PHY DRIVER
- M:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
- L:	linux-renesas-soc@vger.kernel.org
-@@ -22295,11 +22459,19 @@ F:	drivers/tty/serial/8250/8250_lpss.c
- 
- SYNOPSYS DESIGNWARE APB GPIO DRIVER
- M:	Hoan Tran <hoan@os.amperecomputing.com>
-+M:	Serge Semin <fancer.lancer@gmail.com>
- L:	linux-gpio@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
- F:	drivers/gpio/gpio-dwapb.c
- 
-+SYNOPSYS DESIGNWARE APB SSI DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-spi@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-+F:	drivers/spi/spi-dw*
-+
- SYNOPSYS DESIGNWARE AXI DMAC DRIVER
- M:	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
- S:	Maintained
-@@ -23609,6 +23781,12 @@ L:	linux-input@vger.kernel.org
- S:	Maintained
- F:	drivers/hid/hid-udraw-ps3.c
- 
-+UFS FILESYSTEM
-+M:	Evgeniy Dushistov <dushistov@mail.ru>
-+S:	Maintained
-+F:	Documentation/admin-guide/ufs.rst
-+F:	fs/ufs/
-+
- UHID USERSPACE HID IO DRIVER
- M:	David Rheinsberg <david@readahead.eu>
- L:	linux-input@vger.kernel.org
--- 
-2.47.0
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fdevic=
+etr
+> ee-specification.readthedocs.io%2Fen%2Flatest%2Fchapter2-devicetree-basic=
+s.
+> html%23generic-names-recommendation&data=3D05%7C02%7Cwei.fang%40nx
+> p.com%7C35715ef05b824c5d479f08dcf32fd256%7C686ea1d3bc2b4c6fa92cd
+> 99c5c301635%7C0%7C0%7C638652633944352532%7CUnknown%7CTWFpb
+> GZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6
+> Mn0%3D%7C0%7C%7C%7C&sdata=3DunWcE1OaH2Id%2FEny9UFAUH%2F5Xablg
+> PM0Yj4Br2jfQuI%3D&reserved=3D0
+>=20
+> Best regards,
+> Krzysztof
 
