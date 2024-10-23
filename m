@@ -1,198 +1,309 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2074.outbound.protection.outlook.com [40.107.93.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC48196
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 12:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729686664; cv=fail; b=nkdcMp4Prm3F4DXRHkQ1Hg9QI+HzhzeDKHpbST83/E0hE/qVqlTBQsnOJEnfAQ5XOHOgKUa4pCgOfrqy8PzOe7wNbjnVHfCgef7GKmZ1CdIP0V1JEByh8iW3iB0AN28AEeNWvvVvNqtWr2NzaY0J8n8HWpHDBigNr4aF1QAeZIA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729686664; c=relaxed/simple;
-	bh=5HxQuc+xEkFJLJ5che9kB0dDDPSGTtaC11AWTK17Jhs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lw8QujPA5O47zCQD/54EO2ATQUX+7xSsGFXvPawoCjteq0XRdZFNv/cAFDXFTlnRLzSLi5z0NUDbqiZV5koYDcnNMKaqIHCQ4OkTfgu8lkZTDJ1ril2Lw94IHoBxkv6dgSsG0/zspfx+YHy/Mt3nUx7d8iMgM8u2dPpNxSTnfZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bTI/RtJu; arc=fail smtp.client-ip=40.107.93.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0C155C87;
+	Wed, 23 Oct 2024 12:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729686749; cv=none; b=Zii4/e9KyvMWgzTolrjFxq2mES8VemHUh1SvUxZPVq7Hrojg1zwoCOQrnypf7eWNeuHYx5njFu1trG1mvh8hoVSaB9fYHthUFQtVMdkUi1t8FmgDbagKe24KYyHF+3H6BztYm43nhMGhOnOvmYLUW8ZpuHRqdchu7L0sKDOvWJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729686749; c=relaxed/simple;
+	bh=0u61zPI6kPaYE6d7SUDMcg9KEvVtVS3BiNpZ5FQc7io=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GSirOC0YTYP1+xpvCN7iRatF4rIwzwTAwT00HubPI2A0DAT1swOSplsTpsNHN19Jw2XjItKkJP0Sp+OTHYm5DUa0CrNqMRdw9HAdRUV/5g/r8J7eloBwMvZD7eDOD9Dk5aZ+9kHtzjQFj8VPChXD3o699GTM6KVR1x+CHqArw9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kDF7Eh0B; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bTI/RtJu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xw8N3wm+f2dqn9j/ob4K5CQ58+V3cOQ36zyef5AUJwPmCxnKOrtzYrp2xCDuyNUbI84F5nehd7YY9/2Ffc+ExoTOUEjrosImtAEEiwiG3J5DW3p/Zh+lD/5rT9Hjfg4VXQyreoAxX81ASSDYT8ga4NfV+xXP9XwzTTdyFbw4x3y4wkCF31ExTXh0b/3AMYce5VoMSnHRc0OUvfw4Xtnmgde287iodStkA62F+/VgJicypFEFUJbZTORo55gY3kOKDa6ubb/62uVResFIzHipWEVtei+8Kvk/Y/3sSmk77Itnzbs59cu/s4HrA6CyNVY11UHumSXVCqxXtV3/VjcyHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BO7F85MTmKxdF+29D63q6VIeJ3PBZOMM/trsEHjvcn8=;
- b=HAc2YGqGiHr531ZbOkv0DzSBSU+rmlii9Gsfv5S+U8mtYX2I1QodZhfU7Um++tKaAQCEJTzHEep9W55qieE61wgslMEn4QOFdnLFOJJhl4s76YnqoRlvEeSPnV20PhiohlVBTC1a+IAbptUgEdmY0zBE+VzuC/8T9CSEx9CfTMqAvluY12Ok/TpkjodcH3yztdCavjZNNA+CDVhvBztPyh18HOUKBbPGq7OFZKLbP3c4oxwNbMubWwfGOygaf1DUp/xmlYAne6zOldzljiu+Tool5l6ZgitUEH01tvcRE4nNUm/Zrt/f6S2VjxTIuk/csq20cyq+pvAVX0yG5KYpyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BO7F85MTmKxdF+29D63q6VIeJ3PBZOMM/trsEHjvcn8=;
- b=bTI/RtJuhw7UDoz/tzGIiz3t3sxELeV4ZsBCPIjYog2FCBPpOLdGsHQadCzrtAPq5zGxPurDg85gZ0XMYmHdl+AvbtpLg1Eyj+hkxMZ9MbZP9FEMd/oN1Bd04fbhDa0Iy2HptvX7NIP5yoImpd17zFddoJkequqBpGydc2NBuEhDCZfj0EBfoLp6LwEongmVh9rf7HTAuVDmoWMwCerNLKWfzZAgbAJ4cNZtCLLU43ZE5dW4e8iwceHkq/4JNAjeHFGifI0sUNRkwzsZOpGHWjMncTn2PMAIzGbK6EOinRZXCHmJf/vIqmhVQwlASDmn0V2vwkhr+kqq3uNSdNvPyA==
-Received: from SJ0PR13CA0068.namprd13.prod.outlook.com (2603:10b6:a03:2c4::13)
- by MN2PR12MB4173.namprd12.prod.outlook.com (2603:10b6:208:1d8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Wed, 23 Oct
- 2024 12:30:56 +0000
-Received: from SJ1PEPF00001CE5.namprd03.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::1c) by SJ0PR13CA0068.outlook.office365.com
- (2603:10b6:a03:2c4::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.20 via Frontend
- Transport; Wed, 23 Oct 2024 12:30:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00001CE5.mail.protection.outlook.com (10.167.242.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Wed, 23 Oct 2024 12:30:55 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 23 Oct
- 2024 05:30:40 -0700
-Received: from shredder.lan (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 23 Oct
- 2024 05:30:36 -0700
-From: Ido Schimmel <idosch@nvidia.com>
-To: <netdev@vger.kernel.org>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@google.com>, <dsahern@kernel.org>, <horms@kernel.org>,
-	<pshelar@nicira.com>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net v2] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-Date: Wed, 23 Oct 2024 15:30:09 +0300
-Message-ID: <20241023123009.749764-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.47.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kDF7Eh0B"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20c693b68f5so72352635ad.1;
+        Wed, 23 Oct 2024 05:32:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729686747; x=1730291547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EyPlzhyIGQ6drEk3t/yWEdQeT6zpBSBiNYimm8vS+lA=;
+        b=kDF7Eh0BeOT2XTpgkTx/qmYbAj82DCIe28S1+4AQWIBKdFw2dO6fREegxnsL2cbI8J
+         NIBmOd7qKmGG3oOgNm/y0Jf7IqBuEvYNyDx6af+jxDCBEtA4Z8sEsMY5LxijC0cvt4X7
+         HCZ4KwNyzk7lrX7wJaJrd2ut0ikCJhVtpAqNpx7KgWFo73bRMqoEXyhI16eoQGLimcos
+         ZSnd1L1TPH2fyR8wp3ZXnsitXSDYdviB2gPLxulzpXIWCwmty5WfUxFxk8Y2rAmR98mu
+         vsPv5PTLiPmW7t4JGjEWoeiKC1qqlgk9V8FSSxpIDrfxN6MiIXV6/DhIvaDAbjqyPbwj
+         oGHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729686747; x=1730291547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EyPlzhyIGQ6drEk3t/yWEdQeT6zpBSBiNYimm8vS+lA=;
+        b=Xj1aYL5AUAECQiopGgIcU12s40TJCEQH1SdAu/G3dSdKuRhn0lw2/c9KDvdGT0t80e
+         vqIEGJMC5hYQGbsnunrSHXRBdeUW51ODcUuaac8nyEdAH5s2HRYngbEske9XFd2ctkYF
+         CYX0fp8Ytj9gMO9Yi3cEVf2FY8JxyPq6qCxpqW2rEYIcY+7oCv4CORuPMjTJB9Q8A/Eo
+         xtDIo95WKUK7H8SmCO6Lu3dpk9UHsbzGkNhYXPtIy/vjUCZMbEkVtaAs6wpX1bmIECiI
+         5ogr613i840otrkGuSYWtKQJFQVfWU151trz2SKdKP3ftzeV8BwXmzHZuGknPyfVVVL+
+         zjIg==
+X-Forwarded-Encrypted: i=1; AJvYcCU60O8QCWAgJ9wtYRuL0FI5Plg1z8UhXfcXpKSbLv1zQ7VmOJhzIPH5iijTeLeAiuRWpyYRs+NIOu4MkQc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6kMikM2aZ+xrNjvHNZr6dyAoRyp0qIwAhZ8QUAISTVms3xH+e
+	+KKiJ2Ib53xf9n6haAZVSZQfaOz9/p7O3BkniA2kFyffZ0YEhsksKRSJ9V0iJiY=
+X-Google-Smtp-Source: AGHT+IHhGyFnOA0JEuXypLbyS99ekRbpTMXNBF40qoDwdwUJeNtU9rp5IbYcGbvg0Rinr4nuUaNeuA==
+X-Received: by 2002:a05:6a20:cfa5:b0:1d9:22c1:1231 with SMTP id adf61e73a8af0-1d978b3ddc5mr2474719637.29.1729686746583;
+        Wed, 23 Oct 2024 05:32:26 -0700 (PDT)
+Received: from fedora.dns.podman ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec13d7462sm6256722b3a.109.2024.10.23.05.32.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 05:32:25 -0700 (PDT)
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>,
+	Andy Gospodarek <andy@greyhouse.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: [PATCHv2 net] bonding: add ns target multicast address to slave device
+Date: Wed, 23 Oct 2024 12:32:15 +0000
+Message-ID: <20241023123215.5875-1-liuhangbin@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE5:EE_|MN2PR12MB4173:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fd2b63f-8f5c-4335-4838-08dcf35e8a50
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WlibVjRT9xbpi6/UmuMPvL+xOQ3GmN3AYrP6VxJJ4LcDeQzaCBKNv7SE8Aqc?=
- =?us-ascii?Q?vDbHZxV41ECEMdu0XEG1IKNTrR1xtZhQrYcIRHcaecm9A1LP0Vyf89oCtDzg?=
- =?us-ascii?Q?c4nCjZskqJmdWmFFDLFYtP8Ulo5to26llv+DubrrLmTeXrhn8kTU+zy05Ud8?=
- =?us-ascii?Q?/DgeOUU0+FVmAbCxA8H+5jCdTk3Q5dl8xGbNm0yqFNsNXCiCVEqs2bFRkcKL?=
- =?us-ascii?Q?qkfCCyViq+W4+IFBzNMqmSEuL9qYLXc6nR7X5isK0JA4joN3GCl7YfH4Cc4u?=
- =?us-ascii?Q?QfaZI0NVw2tMi8+y+GQgGZy5Ps0y1T8OpUwoHeT7aefm5RmqU3oWNarA+n91?=
- =?us-ascii?Q?TeNlaGP7DIjm/VEa6E5qst0JbuLGc6qz485+gIwI5vvgd00MdPgm9UjgbKqv?=
- =?us-ascii?Q?bG94vnxW3F6a4L7gwDB67xgqC1Vy32pFWEaCjr4Lz6KBCS6R5wYW71OZF1zp?=
- =?us-ascii?Q?roLigW3G/dJZ7kzMB1IlYaCEY5TVYjIxt8MbRGs+nQzR7TTapqfuayIeHybO?=
- =?us-ascii?Q?qigAHJztyxZIC/AZ/nVfJC5zW2hmLLuC9pWpITJSicbFIZGInlcp1cv/nJuS?=
- =?us-ascii?Q?locYTxPppbHJ7kWuqHct5j/Pg6+T4JYZ3gQs4rCtQimm++evqsqiysdlmoQ0?=
- =?us-ascii?Q?gvSnmFrIfZ7XNHEQG+gwIJp4NkPEJdhO6DDjSYbbsMl/JmojUlo1AholetsC?=
- =?us-ascii?Q?wrrZ57kBnNcaneZQXh23TbDbTOaWgurTUJCl3WhArKM8D8BeFM81Wq/m2Aff?=
- =?us-ascii?Q?vTX4zqq3mKk68QzsSFCb+lXO1ojQBsEVCQ/LVnB4uR+W5Vhr9+x+/+9nuoSS?=
- =?us-ascii?Q?qq2g7sq1vdRUvnCzvbYcWXTP5d3XZbaEKz2dx7HELoZxaNnOhoBrC7oJc3Cb?=
- =?us-ascii?Q?vQp3G63RvrWtDXc8A7vZ3AAYra019S3JQTK39eqb9E41GxBrRzpOYMvtYDFc?=
- =?us-ascii?Q?qjruMY6P3XMLaG69RWOHXCg6C3v1oeTwxyz31mZKg2TmrMYO7fQ6Q4VOO1SM?=
- =?us-ascii?Q?urgXVlLtptCmzZVGscQ2xPCiq/FLOw8zvh6VbXZn5rdylwdRY59iKL9X2FRt?=
- =?us-ascii?Q?+dKuQ2AXwWWrX+k9QGURKA71edSqX5aKvgMuS1pzJK/g/SV//fn2t9EeziSV?=
- =?us-ascii?Q?5xfDfAcLYXKOWQG+Fe3er9CPfE2yrs/2ROwEUKF7TB6Cm0S8E4IgL2IQeBsI?=
- =?us-ascii?Q?SZUL5ZhI8pCB3MsFVxclLF+0YJgs/JIgi0PF9nuV22xfocobWPQ3j4dSgiIz?=
- =?us-ascii?Q?111cgpvEa+LNUl+XD83W0tOqsbGa/AnxvsoA9U7GMon4iUfqsmAJtvXp4QD+?=
- =?us-ascii?Q?dtHd/uf6IvHQIA8z2BfQ+esMIcTW9872jxQHeA1COxjUXL8M8VTngLirPL6E?=
- =?us-ascii?Q?wl33BuwS448JwvGAGskTHuvPOyAQKDA8Ak6dpGyOY2w/SiBiSQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 12:30:55.2447
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fd2b63f-8f5c-4335-4838-08dcf35e8a50
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE5.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4173
 
-The per-netns IP tunnel hash table is protected by the RTNL mutex and
-ip_tunnel_find() is only called from the control path where the mutex is
-taken.
+Commit 4598380f9c54 ("bonding: fix ns validation on backup slaves")
+tried to resolve the issue where backup slaves couldn't be brought up when
+receiving IPv6 Neighbor Solicitation (NS) messages. However, this fix only
+worked for drivers that receive all multicast messages, such as the veth
+interface.
 
-Add a lockdep expression to hlist_for_each_entry_rcu() in
-ip_tunnel_find() in order to validate that the mutex is held and to
-silence the suspicious RCU usage warning [1].
+For standard drivers, the NS multicast message is silently dropped because
+the slave device is not a member of the NS target multicast group.
 
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gd95d9a31aceb #139 Not tainted
------------------------------
-net/ipv4/ip_tunnel.c:221 RCU-list traversed in non-reader section!!
+To address this, we need to make the slave device join the NS target
+multicast group, ensuring it can receive these IPv6 NS messages to validate
+the slave’s status properly.
 
-other info that might help us debug this:
+There are three policies before joining the multicast group:
+1. All settings must be under active-backup mode (alb and tlb do not support
+   arp_validate), with backup slaves and slaves supporting multicast.
+2. We can add or remove multicast groups when arp_validate changes.
+3. Other operations, such as enslaving, releasing, or setting NS targets,
+   need to be guarded by arp_validate.
 
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/362:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 12 UID: 0 PID: 362 Comm: ip Not tainted 6.12.0-rc3-custom-gd95d9a31aceb #139
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- ip_tunnel_find+0x435/0x4d0
- ip_tunnel_newlink+0x517/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
 ---
+v2: only add/del mcast group on backup slaves when arp_validate is set (Jay Vosburgh)
+    arp_validate doesn't support 3ad, tlb, alb. So let's only do it on ab mode.
+---
+ drivers/net/bonding/bond_main.c    | 18 +++++-
+ drivers/net/bonding/bond_options.c | 95 +++++++++++++++++++++++++++++-
+ include/net/bond_options.h         |  1 +
+ 3 files changed, 112 insertions(+), 2 deletions(-)
 
-Notes:
-    v2:
-    * Add a lockdep expression to hlist_for_each_entry_rcu() instead of
-      using hlist_for_each_entry()
-
- net/ipv4/ip_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index d591c73e2c0e..25505f9b724c 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -218,7 +218,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index b1bffd8e9a95..d7c1016619f9 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1008,6 +1008,9 @@ static void bond_hw_addr_swap(struct bonding *bond, struct slave *new_active,
  
- 	ip_tunnel_flags_copy(flags, parms->i_flags);
+ 		if (bond->dev->flags & IFF_UP)
+ 			bond_hw_addr_flush(bond->dev, old_active->dev);
++
++		/* add target NS maddrs for backup slave */
++		slave_set_ns_maddrs(bond, old_active, true);
+ 	}
  
--	hlist_for_each_entry_rcu(t, head, hash_node) {
-+	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
- 		if (local == t->parms.iph.saddr &&
- 		    remote == t->parms.iph.daddr &&
- 		    link == READ_ONCE(t->parms.link) &&
+ 	if (new_active) {
+@@ -1024,6 +1027,9 @@ static void bond_hw_addr_swap(struct bonding *bond, struct slave *new_active,
+ 			dev_mc_sync(new_active->dev, bond->dev);
+ 			netif_addr_unlock_bh(bond->dev);
+ 		}
++
++		/* clear target NS maddrs for active slave */
++		slave_set_ns_maddrs(bond, new_active, false);
+ 	}
+ }
+ 
+@@ -2341,6 +2347,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	bond_compute_features(bond);
+ 	bond_set_carrier(bond);
+ 
++	/* set target NS maddrs for new slave, need to be called before
++	 * bond_select_active_slave(), which will remove the maddr if
++	 * the slave is selected as active slave
++	 */
++	slave_set_ns_maddrs(bond, new_slave, true);
++
+ 	if (bond_uses_primary(bond)) {
+ 		block_netpoll_tx();
+ 		bond_select_active_slave(bond);
+@@ -2350,7 +2362,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	if (bond_mode_can_use_xmit_hash(bond))
+ 		bond_update_slave_arr(bond, NULL);
+ 
+-
+ 	if (!slave_dev->netdev_ops->ndo_bpf ||
+ 	    !slave_dev->netdev_ops->ndo_xdp_xmit) {
+ 		if (bond->xdp_prog) {
+@@ -2548,6 +2559,11 @@ static int __bond_release_one(struct net_device *bond_dev,
+ 	if (oldcurrent == slave)
+ 		bond_change_active_slave(bond, NULL);
+ 
++	/* clear target NS maddrs, must after bond_change_active_slave()
++	 * as we need to clear the maddrs on backup slave
++	 */
++	slave_set_ns_maddrs(bond, slave, false);
++
+ 	if (bond_is_lb(bond)) {
+ 		/* Must be called only after the slave has been
+ 		 * detached from the list and the curr_active_slave
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 95d59a18c022..2554ba70f092 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1234,6 +1234,75 @@ static int bond_option_arp_ip_targets_set(struct bonding *bond,
+ }
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
++/* convert IPv6 address to link-local solicited-node multicast mac address */
++static void ipv6_addr_to_solicited_mac(const struct in6_addr *addr,
++				       unsigned char mac[ETH_ALEN])
++{
++	mac[0] = 0x33;
++	mac[1] = 0x33;
++	mac[2] = 0xFF;
++	mac[3] = addr->s6_addr[13];
++	mac[4] = addr->s6_addr[14];
++	mac[5] = addr->s6_addr[15];
++}
++
++static bool slave_can_set_ns_maddr(struct bonding *bond, struct slave *slave)
++{
++	return BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP &&
++	       !bond_is_active_slave(slave) &&
++	       slave->dev->flags & IFF_MULTICAST;
++}
++
++static void _slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
++{
++	struct in6_addr *targets = bond->params.ns_targets;
++	unsigned char slot_maddr[ETH_ALEN];
++	int i;
++
++	if (!slave_can_set_ns_maddr(bond, slave))
++		return;
++
++	for (i = 0; i < BOND_MAX_NS_TARGETS; i++) {
++		if (ipv6_addr_any(&targets[i]))
++			break;
++
++		ipv6_addr_to_solicited_mac(&targets[i], slot_maddr);
++		if (add)
++			dev_mc_add(slave->dev, slot_maddr);
++		else
++			dev_mc_del(slave->dev, slot_maddr);
++	}
++}
++
++void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
++{
++	if (!bond->params.arp_validate)
++		return;
++
++	_slave_set_ns_maddrs(bond, slave, add);
++}
++
++static void slave_set_ns_maddr(struct bonding *bond, struct slave *slave,
++			       struct in6_addr *target, struct in6_addr *slot)
++{
++	unsigned char target_maddr[ETH_ALEN], slot_maddr[ETH_ALEN];
++
++	if (!bond->params.arp_validate || !slave_can_set_ns_maddr(bond, slave))
++		return;
++
++	/* remove the previous maddr on salve */
++	if (!ipv6_addr_any(slot)) {
++		ipv6_addr_to_solicited_mac(slot, slot_maddr);
++		dev_mc_del(slave->dev, slot_maddr);
++	}
++
++	/* add new maddr on slave if target is set */
++	if (!ipv6_addr_any(target)) {
++		ipv6_addr_to_solicited_mac(target, target_maddr);
++		dev_mc_add(slave->dev, target_maddr);
++	}
++}
++
+ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+ 					    struct in6_addr *target,
+ 					    unsigned long last_rx)
+@@ -1243,8 +1312,10 @@ static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+ 	struct slave *slave;
+ 
+ 	if (slot >= 0 && slot < BOND_MAX_NS_TARGETS) {
+-		bond_for_each_slave(bond, slave, iter)
++		bond_for_each_slave(bond, slave, iter) {
+ 			slave->target_last_arp_rx[slot] = last_rx;
++			slave_set_ns_maddr(bond, slave, target, &targets[slot]);
++		}
+ 		targets[slot] = *target;
+ 	}
+ }
+@@ -1296,15 +1367,37 @@ static int bond_option_ns_ip6_targets_set(struct bonding *bond,
+ {
+ 	return -EPERM;
+ }
++
++static void _slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
++{
++}
++
++void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
++{
++}
+ #endif
+ 
+ static int bond_option_arp_validate_set(struct bonding *bond,
+ 					const struct bond_opt_value *newval)
+ {
++	bool changed = (bond->params.arp_validate == 0 && newval->value != 0) ||
++		       (bond->params.arp_validate != 0 && newval->value == 0);
++	struct list_head *iter;
++	struct slave *slave;
++
+ 	netdev_dbg(bond->dev, "Setting arp_validate to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.arp_validate = newval->value;
+ 
++	if (changed) {
++		bond_for_each_slave(bond, slave, iter) {
++			if (bond->params.arp_validate)
++				_slave_set_ns_maddrs(bond, slave, true);
++			else
++				_slave_set_ns_maddrs(bond, slave, false);
++		}
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/include/net/bond_options.h b/include/net/bond_options.h
+index 473a0147769e..59a91d12cd57 100644
+--- a/include/net/bond_options.h
++++ b/include/net/bond_options.h
+@@ -161,5 +161,6 @@ void bond_option_arp_ip_targets_clear(struct bonding *bond);
+ #if IS_ENABLED(CONFIG_IPV6)
+ void bond_option_ns_ip6_targets_clear(struct bonding *bond);
+ #endif
++void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add);
+ 
+ #endif /* _NET_BOND_OPTIONS_H */
 -- 
-2.47.0
+2.46.0
 
