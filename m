@@ -1,178 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202622318;
-	Wed, 23 Oct 2024 06:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9264B1509A0;
+	Wed, 23 Oct 2024 06:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729666588; cv=none; b=YesP2fBPAy38BTQRtqiqynE/nsWnGR6A6N7mm6VALQRdt7RsYoq52LsRsgNfV0cKmkufgTCy/+ihKnfWnDDdO9NgBkVTlSQTnarlD68rfvf4SA54hzXwYl5X7MZoQQaK+Uo/R3v7P/f8l9MZX1ZvGpe0gsnRhQAbIWF6qYDi2zk=
+	t=1729666593; cv=none; b=HJcnlHFMQPiK+wBZuav8Yx141rh2rYr+KxEKnNbeWwZJAPEbV2rGOX5ka0IjNi5VxCK+Uf8Um10N4gas5lx9tPQp1b0oBX/kFgIP33O28d5IsGtBNGzChKPS8oi6sPnEuAgkB3ec6eJJP1dyDS73mQ5725KXbmEAVrx5W8DVNl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729666588; c=relaxed/simple;
-	bh=4qN2s5zoqbBxdDlMfTyfRaNHDkUJuWvdiUUIKG6VDd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tkbcRsID6+rI0IXOpz7hGzMkxWDDjsjfxo1i/WKfB5qoxzaMgMh8idRzIoNINW5ZlgDzg7X+Q8Vz1zQn9RwozHdYqKMetaSNXDLZvwenJQhan28ZEheO6DCchnHn7FMnJTXQipgXcP9F5yKLHhzyR/VYMXFG7LYHVi6aqMNaRBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVE5WCO5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729666593; c=relaxed/simple;
+	bh=FBdH48WS+IvGD8WYTKIx5RamtptdbVy8DoUvR1LlUls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OI9QS4BXsSQYNU4Ei8utqvwD18/1hToV0i0USr9poRq9ge2hSwy+vqhezC+FjEa2SUe+MgtyshVmGiw5yJGyw7m8h0d2DK3sO9z4KY7bMxDLnfEnHAeUmHKzHlsgMycAeZInxKgrJ6w39I4P5fWaooVUrutSlYksPRZ9SXmJEq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SVr1xglj; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVE5WCO5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B394C4CEC6;
-	Wed, 23 Oct 2024 06:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729666588;
-	bh=4qN2s5zoqbBxdDlMfTyfRaNHDkUJuWvdiUUIKG6VDd0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YVE5WCO5DRwWkG+GV1aoV89agNuEAs2GEodGFVvE+MsGkHdnK5b/XaWcJ5fUxe3vu
-	 sPxulQMsTQWdRANFmgkaQGGeN3fVFRTwWFqtwsuYFZiptRaZAwoAzhAYgLbWdFXtno
-	 0eC2n3lEIVE+JI/Cs2Ct5QgtOt3/dPBN5+zPsPccvmT0KvrxAYYme92SocA+1/25OW
-	 lkjNaOCjkGJkrKAxr6KwESPq0uO/H/cXZi/LA7ao8rDu7SsqcHeCnc9d5GNtrSscFY
-	 PhCv245wOYnuTBn52IfMG60dxDDmSG5Q/tqSHKaNHzk0br0mIad0WjA4ZoWeL6vqlf
-	 x958z8MBz1CCA==
-Date: Wed, 23 Oct 2024 08:56:24 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com, 
-	christophe.leroy@csgroup.eu, linux@armlinux.org.uk, bhelgaas@google.com, horms@kernel.org, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, alexander.stein@ew.tq-group.com
-Subject: Re: [PATCH v4 net-next 03/13] dt-bindings: net: add bindings for
- NETC blocks control
-Message-ID: <xx4l4bs4iqmtgafs63ly2labvqzul2a7wkpyvxkbde257hfgs2@xgfs57rcdsk6>
-References: <20241022055223.382277-1-wei.fang@nxp.com>
- <20241022055223.382277-4-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SVr1xglj"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49N0N2Qb014739;
+	Wed, 23 Oct 2024 06:56:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=YvwiCkNvSHTkSF26CAop+OGG4ER7uIdT4mf9Hw7W7
+	wg=; b=SVr1xgljcQ0AfBS7PhTzO7JRfyYHek15TcGw1+OXwmLEKOuupB4/AsMC3
+	mI0H1RKntBAu2wVVkRMuSaxh1bL4y2laE8666xbUmGk1sSe5GB4CVdon69Hobx02
+	U1SfGPBiu0vg91Egv7zTJr+xG/B+vHo/B66YS37wWneKLwWjxcS2owEiXU6lJnDz
+	thDjst9mn23HU3H5SbyH/GF9U8DEP/SVtm/XX7OnyMxQhRk26EVJHT4Pjj+/JYhp
+	NmLoYSaXWNUxrCvBLW2r3p2/A6rtQg8iCjsus5kZIm0IUY3wcNyvn917vBW3R3gW
+	BqW8IWAwh5RZwoV/ExFyW0UQsbEGQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emadspvv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 06:56:21 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49N6uK8J032083;
+	Wed, 23 Oct 2024 06:56:20 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emadspvq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 06:56:20 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49N2rh3h012615;
+	Wed, 23 Oct 2024 06:56:20 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emhf9mgy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 06:56:19 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49N6uGSe52429098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Oct 2024 06:56:16 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C7202004D;
+	Wed, 23 Oct 2024 06:56:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7CB122004B;
+	Wed, 23 Oct 2024 06:56:16 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 23 Oct 2024 06:56:16 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55390)
+	id 400D8E04B3; Wed, 23 Oct 2024 08:56:16 +0200 (CEST)
+From: Sven Schnelle <svens@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Ricardo B. Marliere" <ricardo@marliere.net>
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH net-next v4 0/2] PtP driver for s390 clocks
+Date: Wed, 23 Oct 2024 08:55:59 +0200
+Message-ID: <20241023065601.449586-1-svens@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241022055223.382277-4-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: X0Vmp7ex288DEA4M4p9y0MzayYJUejOc
+X-Proofpoint-GUID: eYFR-xYEoYC28xUczqRz8kqDN0cs-Ryx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 phishscore=0 mlxlogscore=985 adultscore=0 spamscore=0
+ malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230041
 
-On Tue, Oct 22, 2024 at 01:52:13PM +0800, Wei Fang wrote:
-> Add bindings for NXP NETC blocks control. Usually, NETC has 2 blocks of
-> 64KB registers, integrated endpoint register block (IERB) and privileged
-> register block (PRB). IERB is used for pre-boot initialization for all
-> NETC devices, such as ENETC, Timer, EMDIO and so on. And PRB controls
-> global reset and global error handling for NETC. Moreover, for the i.MX
-> platform, there is also a NETCMIX block for link configuration, such as
-> MII protocol, PCS protocol, etc.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v2 changes:
-> 1. Rephrase the commit message.
-> 2. Change unevaluatedProperties to additionalProperties.
-> 3. Remove the useless lables from examples.
-> v3 changes:
-> 1. Remove the items from clocks and clock-names, add maxItems to clocks
-> and rename the clock.
-> v4 changes:
-> 1. Reorder the required properties.
-> 2. Add assigned-clocks, assigned-clock-parents and assigned-clock-rates.
-> ---
->  .../bindings/net/nxp,netc-blk-ctrl.yaml       | 111 ++++++++++++++++++
->  1 file changed, 111 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> new file mode 100644
-> index 000000000000..0b7fd2c5e0d8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
-> @@ -0,0 +1,111 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/nxp,netc-blk-ctrl.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NETC Blocks Control
-> +
-> +description:
-> +  Usually, NETC has 2 blocks of 64KB registers, integrated endpoint register
-> +  block (IERB) and privileged register block (PRB). IERB is used for pre-boot
-> +  initialization for all NETC devices, such as ENETC, Timer, EMIDO and so on.
-> +  And PRB controls global reset and global error handling for NETC. Moreover,
-> +  for the i.MX platform, there is also a NETCMIX block for link configuration,
-> +  such as MII protocol, PCS protocol, etc.
-> +
-> +maintainers:
-> +  - Wei Fang <wei.fang@nxp.com>
-> +  - Clark Wang <xiaoning.wang@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,imx95-netc-blk-ctrl
-> +
-> +  reg:
-> +    minItems: 2
-> +    maxItems: 3
+Hi,
 
-You have one device, why this is flexible? Device either has exactly 2
-or exactly 3 IO spaces, not both depending on the context.
+these patches add support for using the s390 physical and TOD clock as ptp
+clock. To do so, the first patch adds a clock id to the s390 TOD clock,
+while the second patch adds the PtP driver itself.
 
-> +
-> +  reg-names:
-> +    minItems: 2
-> +    items:
-> +      - const: ierb
-> +      - const: prb
-> +      - const: netcmix
-> +
-> +  "#address-cells":
-> +    const: 2
-> +
-> +  "#size-cells":
-> +    const: 2
-> +
-> +  ranges: true
-> +  assigned-clocks: true
-> +  assigned-clock-parents: true
-> +  assigned-clock-rates: true
+Changes in v4:
+- Add Acked-by to patches
 
-Drop these three.
+Changes in v3:
+- drop 'IBM' from clock names
+- use u128 as return type of eitod_to_ns()
+- fix calculation in eitod_to_timespec64()
 
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: ipg
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +patternProperties:
-> +  "^pcie@[0-9a-f]+$":
-> +    $ref: /schemas/pci/host-generic-pci.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +  - ranges
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    bus {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        netc-blk-ctrl@4cde0000 {
+Changes in v2:
+- add missing MODULE_DESCRIPTION()
+- drop udev event patch
+- simplify eitod_to_ns()
+- use store_tod_clock_ext() instead of store_tod_clock_ext_cc()
+- move stp_enabled() declaration to stp.h
+- use s390 instead of 'Z' in clock names
+- defconfig symbol should be default-n
 
-system-controller? Don't use compatible as node name.
+Sven Schnelle (2):
+  s390/time: Add clocksource id to TOD clock
+  s390/time: Add PtP driver
 
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+ MAINTAINERS                     |   6 ++
+ arch/s390/include/asm/stp.h     |   1 +
+ arch/s390/include/asm/timex.h   |   6 ++
+ arch/s390/kernel/time.c         |   7 ++
+ drivers/ptp/Kconfig             |  11 +++
+ drivers/ptp/Makefile            |   1 +
+ drivers/ptp/ptp_s390.c          | 129 ++++++++++++++++++++++++++++++++
+ include/linux/clocksource_ids.h |   1 +
+ 8 files changed, 162 insertions(+)
+ create mode 100644 drivers/ptp/ptp_s390.c
 
-Best regards,
-Krzysztof
+-- 
+2.45.2
 
