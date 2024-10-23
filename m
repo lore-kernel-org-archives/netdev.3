@@ -1,148 +1,101 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EC81ADFF2
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 14:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489761B6556;
+	Wed, 23 Oct 2024 14:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693413; cv=none; b=mTrvayUnM+7Vf1wo1A8BPwbG0cXRnhzfsB/oxehrtlCADMpZBbhJtx0moy85jeEKR4SjsmxxsPbZpihdc13Q2Z/IAfgQOBSUWrQEE0mrRkgbrKLyOG+M3Kszit73Qs3KpD72yO1/aSpzxLvFHS73K/TII3EpdlSyA8z9UYXXxlg=
+	t=1729693812; cv=none; b=Qkrz/r+YUhJlS9EqL+DfZ38wOce3nGd9PXbRp27x/2uDViYGlSZse186N0LROVZOZccWHgRxlJif8vbITGhAX+kPofnyrwmStZHCFAFG9w2YIpoa8iCgCphG8UGeRaWNOwur2p2MG3YF+xVuZL2Ae5vSf9njk7tFBBJLe+O2bXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693413; c=relaxed/simple;
-	bh=3r6YoYvZ30f6qSghDf2DxgmurOn2Xt3nPopUNujTEog=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=eKwXi70VD7FF4f8DOzIj7TxQcW+Yn9Q1sVjtz5D4DZyw3xxjDgzJ/gn4EYukTOGtrFiVsArAIV/oubeFEGf0AT8uHblI3TnhYjbJfLZ0nG5So95pecUMH89ZIslwdN/JmwMLwm0yMUyPzmfoQv51BmTUWLYPMWj3qZH47/yDfL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a3c4554d29so63028485ab.1
-        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 07:23:31 -0700 (PDT)
+	s=arc-20240116; t=1729693812; c=relaxed/simple;
+	bh=Ny+pBxi0NgaWUjjDRofys6H7NPSe45LenRlJKqd0ipA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Clw8SlwdIqwuJor0mpP3UZwrySNa837JiYUGzoDf7gfdTrdmcAB/nifJtDzQk1oVEeiZ1SNDlbpBfQ7U41//uwtNkGslb+W7V9ws9K9i2Sj4+xooDDzzQVY5/pMaP1CSzFOUvpIwaN6aVstMqvS7S0aT8JIvMsF2R+Wt5RZpnZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QxTVFZ0n; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QxTVFZ0n"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-50d5795c0f8so1906414e0c.1;
+        Wed, 23 Oct 2024 07:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729693810; x=1730298610; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ndrHVmlglh5VPgD+LU3cetVg+cCVQgCBeurY/1N0jAk=;
+        b=QxTVFZ0nb38TrUOZWnsZtw6p87LgNogfztNNKiJI09v7R30JhXusXPHa5xwUTi7kC1
+         ekaD2vkqeRsvX67uvIC2qEKUkOI1lhQ3avb/n2YvjKd8sMxdv23AtVhMZo53lo7qelTz
+         ZPCA0uybNwjasJgAbB+b5yejKFu9YuuvQW5UrAcLOiulPacbQdRHjpYmwN4QPzj+y2Qw
+         lKJC8GPkTJCiuDzLlhPPpiI0jHiC1jV8lVDNIiJ1neDlZVZQzsjvhqpy18MD2AFT3B1o
+         Jb5TiBDOR4h3SBnBsrMIjx5OfRg/pJGg6ui73nhSmLs0/BV1S4GeKVsxUQH1p1BSt8tc
+         TT2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729693411; x=1730298211;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uXgVuYbLPnoBu31aImaW1frkkoB/BLDKXzwgKQxsWZg=;
-        b=S4EeS++cXx69sAlp97xdGy48kqkDNDHrjUKiE3uV41janpiL0FUO+onMPLJxDi/yvC
-         KLrubxpkoeoS3rAghv9TDuME8grpFKc714+ltOca7bNq85PGgV/wXPtKZSfxWIObHiLT
-         vxrhDhnPEclWC3v6TR7KzbzG2WNhx2uXx/f5/AXZYO0RGTm/62OKvRL/U/0PDCdALRxG
-         7xKJcbQaoECoA2g4Y86rGgIvm5FMo2kqtZ5PSv05+RX++b9AVRb/qrh0rK/MIYvBYcsD
-         v7fjCLRxecIaD6acQtcWaNTtxKfX3VQcJwALsuOx5fLVgVSnYmpfniIMVw+xLc/4ccwi
-         LFgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXyQJpjOv6nCF1Uzr/jcASrIBGGG0huDO8NjTY4HwcuZSUYtgIfkOhlcoH6I8yHkHU2CpbB5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2aiiuEjFWcDTXMSK17XN+ovHAi7/ZbVC2rAFoSd49ga6hewst
-	tl9eRa4HrtpFz4zkz9We4SiZLXJsZUZ3Y1oBfKbk7I6fiLkgEqJUDAm3yHvsW+rrG7hGwo+0uVJ
-	1QTS+lRfSx2cmgIYer8wXYmEWrBdVTOHM2Yq4OLCaXP7LAy5fKpgssIw=
-X-Google-Smtp-Source: AGHT+IGwEjTStvpcETt83wrxx5aGKbXY6HKNveezndoZtS1B0nzQkOb8HT7Xtw7qBIXS30eWur6ICH8SKG0PJf1h/mAaj5gMfBEa
+        d=1e100.net; s=20230601; t=1729693810; x=1730298610;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ndrHVmlglh5VPgD+LU3cetVg+cCVQgCBeurY/1N0jAk=;
+        b=biPGUqDzQtxJEhdqwL0T/035I9kVGa9g+il+nkAS3EI0FvCJprtkut/vMJTANF75MI
+         CcFSsjostcU3bv0x5gsNorJPKholwRre8vlymGeyuS7us/o0MGVQ8Z/VCSFVJ8Re6wzF
+         B88IViUD25lZE7j8JGEqpdgFcog5PzbyXSTMzNFaBEsjEhy1MgD2AsUGFvDaA2g4Ka4H
+         y2CGi76ZUq05je56KeeybHvKgXJ66kka8WjsiLABKHoxItzbhJ5AIywGMHcEDHPWwQlF
+         zaxCujB1OuIIjeXN5zQby5peE4BOpyjO2S/DLCtOGcx3LRxu+gGtlZx+DOp+wDW6lS2h
+         DnHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSpr2Vprj2+iMA8ON1g3tIkUQXvGh9EZxhbC95uvLSUQSZPBdZDCAC5oyhXCjnqYsdLqfeCtA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTy84J81ZNjetRoGVwyj+1VV6TGfDSC7MV1ABPhGCrd48SWiW6
+	043+OhnCcfXzEA2L3AT40uuZS2OOFGNr08Lff5F6BvKFX4d+m2L5
+X-Google-Smtp-Source: AGHT+IEo9I6dvpksdbcG7fKkqD06EgzlH5PD1VrNg7uulL61Z6XctF2+cpsIi/y4tBOLENCK0Y1K/w==
+X-Received: by 2002:a05:6122:3c46:b0:4fc:e3c2:2c71 with SMTP id 71dfb90a1353d-50fd00b0896mr3032995e0c.2.1729693809722;
+        Wed, 23 Oct 2024 07:30:09 -0700 (PDT)
+Received: from lvondent-mobl5.. (syn-107-146-107-067.res.spectrum.com. [107.146.107.67])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-50e19f941b6sm1056696e0c.54.2024.10.23.07.30.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 07:30:07 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: pull request: bluetooth 2024-10-23
+Date: Wed, 23 Oct 2024 10:30:05 -0400
+Message-ID: <20241023143005.2297694-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12ef:b0:3a3:9801:b668 with SMTP id
- e9e14a558f8ab-3a4d5977eb6mr33022115ab.15.1729693410890; Wed, 23 Oct 2024
- 07:23:30 -0700 (PDT)
-Date: Wed, 23 Oct 2024 07:23:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <671906e2.050a0220.1e4b4d.008d.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING: ODEBUG bug in ieee80211_led_exit (2)
-From: syzbot <syzbot+e84ecca6d1fa09a9b3d9@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+The following changes since commit 6e62807c7fbb3c758d233018caf94dfea9c65dbd:
 
-syzbot found the following issue on:
+  posix-clock: posix-clock: Fix unbalanced locking in pc_clock_settime() (2024-10-23 16:05:01 +0200)
 
-HEAD commit:    c6d9e43954bf Merge 6.12-rc4 into usb-next
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=17196640580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4a2bb21f91d75c65
-dashboard link: https://syzkaller.appspot.com/bug?extid=e84ecca6d1fa09a9b3d9
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+are available in the Git repository at:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2024-10-23
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/3bf4a453ec2f/disk-c6d9e439.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e4a2db2a5d95/vmlinux-c6d9e439.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/8eb8e481b288/bzImage-c6d9e439.xz
+for you to fetch changes up to 246b435ad668596aa0e2bbb9d491b6413861211a:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e84ecca6d1fa09a9b3d9@syzkaller.appspotmail.com
+  Bluetooth: ISO: Fix UAF on iso_sock_timeout (2024-10-23 10:21:14 -0400)
 
-------------[ cut here ]------------
-ODEBUG: free active (active state 0) object: ffff888113c7a630 object type: timer_list hint: tpt_trig_timer+0x0/0x300 net/mac80211/led.c:145
-WARNING: CPU: 0 PID: 13007 at lib/debugobjects.c:514 debug_print_object+0x1a3/0x2b0 lib/debugobjects.c:514
-Modules linked in:
-CPU: 0 UID: 0 PID: 13007 Comm: kworker/0:1 Not tainted 6.12.0-rc4-syzkaller-00052-gc6d9e43954bf #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:debug_print_object+0x1a3/0x2b0 lib/debugobjects.c:514
-Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 54 48 8b 14 dd c0 fd 46 87 41 56 4c 89 e6 48 c7 c7 20 f1 46 87 e8 0e c1 c3 fe 90 <0f> 0b 90 90 58 83 05 fd 6f ff 07 01 48 83 c4 18 5b 5d 41 5c 41 5d
-RSP: 0018:ffffc900020cf4e8 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: 0000000000000003 RCX: ffffc9000fb91000
-RDX: 0000000000100000 RSI: ffffffff811aaff6 RDI: 0000000000000001
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffffffff8746f7c0
-R13: ffffffff872a8ee0 R14: ffffffff86ca22f0 R15: ffffc900020cf5f8
-FS:  0000000000000000(0000) GS:ffff8881f5800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f0bdc23b01e CR3: 0000000116760000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __debug_check_no_obj_freed lib/debugobjects.c:989 [inline]
- debug_check_no_obj_freed+0x4b8/0x600 lib/debugobjects.c:1019
- slab_free_hook mm/slub.c:2273 [inline]
- slab_free mm/slub.c:4579 [inline]
- kfree+0x294/0x480 mm/slub.c:4727
- ieee80211_led_exit+0x162/0x1c0 net/mac80211/led.c:210
- ieee80211_unregister_hw+0x27e/0x3a0 net/mac80211/main.c:1694
- rt2x00lib_remove_hw drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1085 [inline]
- rt2x00lib_remove_dev+0x528/0x640 drivers/net/wireless/ralink/rt2x00/rt2x00dev.c:1550
- rt2x00usb_disconnect+0x71/0x240 drivers/net/wireless/ralink/rt2x00/rt2x00usb.c:874
- usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
- device_remove drivers/base/dd.c:569 [inline]
- device_remove+0x122/0x170 drivers/base/dd.c:561
- __device_release_driver drivers/base/dd.c:1273 [inline]
- device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1296
- bus_remove_device+0x22f/0x420 drivers/base/bus.c:576
- device_del+0x396/0x9f0 drivers/base/core.c:3864
- usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
- usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2304
- hub_port_connect drivers/usb/core/hub.c:5361 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
- port_event drivers/usb/core/hub.c:5821 [inline]
- hub_event+0x1bed/0x4f40 drivers/usb/core/hub.c:5903
- process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
- process_scheduled_works kernel/workqueue.c:3310 [inline]
- worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+----------------------------------------------------------------
+bluetooth pull request for net:
 
+ - hci_core: Disable works on hci_unregister_dev
+ - SCO: Fix UAF on sco_sock_timeout
+ - ISO: Fix UAF on iso_sock_timeout
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+----------------------------------------------------------------
+Luiz Augusto von Dentz (3):
+      Bluetooth: hci_core: Disable works on hci_unregister_dev
+      Bluetooth: SCO: Fix UAF on sco_sock_timeout
+      Bluetooth: ISO: Fix UAF on iso_sock_timeout
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/af_bluetooth.c      | 22 ++++++++++++++++++++++
+ net/bluetooth/hci_core.c          | 24 +++++++++++++++---------
+ net/bluetooth/hci_sync.c          | 12 +++++++++---
+ net/bluetooth/iso.c               | 18 ++++++++++++------
+ net/bluetooth/sco.c               | 18 ++++++++++++------
+ 6 files changed, 71 insertions(+), 24 deletions(-)
