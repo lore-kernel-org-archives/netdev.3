@@ -1,84 +1,70 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F166E1CACDD;
-	Wed, 23 Oct 2024 16:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53231CDA12;
+	Wed, 23 Oct 2024 16:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729700446; cv=none; b=obxT5oYL/5dXvkor5ShCljk05/gHI3eEgFF9aL+zx5l/06c64hSpf6fvpLGVpFzj9Ze/+zdWkLgDrhKdfV63sgQ06niQwBuTSOs8IVzNXzvGSkRPDU0JQMUlGqpiTAaXFepSZnC7DivG2vnJ/RECs+/HLlNsSM8c1xKlOHnKgeE=
+	t=1729700446; cv=none; b=mJ4DUkJQR12og/wd5sq0z4Ak68QmScuTDT/QHbubrTg9Ey8IrVwd5YGTo0r8jZA2CKe23gtynxI3BL91DYNfVjuQYnYgMUb0O4nikIwn9RFmKUSY3ib9oGY6ihUdu/uIGsWN0BEZ8uC8J0A9RRkuKTpAeoYgcmhkFvLfWgdh3TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729700446; c=relaxed/simple;
-	bh=yEZDDdRfKvZQvqSeOCYMGOt128dlUQgyrQEu9xCypIU=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHb7yt+a/Z3DuvuLbdMDkDsh0n9wC44eLP2KA4UrnU2/fKcmfgwUSkyZszjIBlh/bFog48hygvPY8RoH26f90a5NBIKuAnbaFeEwJQPmYWCYNjp/Z//M1RG+c/rOnnX75uBSn2JXz7b2BoOEkDZrTBHw1fHwuusrDZ9cvG3DrvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjZOHPZk; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=zvs5cgal6OmHVCOd2y14W6tflMp1V8skP1ffN15hzWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VMWHcOMjADU5acuOM8bDztF/HVRYGx4xmBB+K3/g94w7RtPMWU50N/aFt4nXZOGTRBtSCUFnKuLbjd9A4OuK6hl8CRDUXt58tkfU3BFvCkaeAY2JPt/JUos2BE88GobVx70/66ZHX6t2AqcIbULlUEUvzRECv4X9as9H0jz5Rmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=WXasyLaK; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjZOHPZk"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d808ae924so4896900f8f.0;
-        Wed, 23 Oct 2024 09:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729700442; x=1730305242; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BnXmGzBtfa7kC1qzpg2xEmOEHLK960MKCFFUQoyIJF0=;
-        b=RjZOHPZkLwDg1Br5SEycWLBew+A0w/KLgrO9veVpxSR+Qh3NtMv81lUfMKcVnh84Jh
-         5VAS1oZr+lg1cwvTpTdkIQdpdiPTWbIeOQYXYrG2oD3dfYM6RBV5C2Q9FU/fqhD3RtxL
-         qI3PO4xaWKsjx5INxqVKndKDdEleHCdEtlhTuJnercA3UIpeJhH9YVgmNYLA3hBQ3cGI
-         qYWuLn0khnBPprrY7mHF83c8ZFFkhFDu8afj4epi0Sl1yGO86g5DWZwkk5rb+YlRro6F
-         Z0WfEbYbb7CTSJqBXdmfGVE2hK2uCSrPjtTnhv0GG7pRGZx3iolUcLeVDdv1ieQ3HwoD
-         /sww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729700442; x=1730305242;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BnXmGzBtfa7kC1qzpg2xEmOEHLK960MKCFFUQoyIJF0=;
-        b=Hfd0e04zv/1II1fwmXt7gOQTiU9XUGDVv1zJvQNYrF7bfE0/LCzs8BDAJ8jKo0l4ne
-         splOxbc1pzpjmY53lCs2BEWAMt2J8tU0a2BbSVIODGTcBOwAHOencDhWvOrnHHep1SMu
-         dc1gAuSYx3VltOWgBHBSBIJCFBvYpMCtgVSx8HnkBimQs69Wvb1Fokpk7Qf/ITPmOBds
-         1IjPfERrLKxSwvEmuLSCsimKNuyNOQjV9KwtMn9VX3jvakZ4zAlxUM3hyBlwoZihiUbS
-         h+YZ/+L1ChLG6F8vdcHftmv2FHshGkNt9FX3LdOP059E/qLkI274jGQH7gIK60jequ5c
-         vFlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfYQPRmtXdE69WBEZc15G2NjgFzpZTRdwWDvZA+8w8c1VvavakkYip0uAsw0AsB5fI0MD0chMYPjmJ@vger.kernel.org, AJvYcCWG+ukvaAuEvVnCwuIZfnopao4LFJ9A32GChDIKPNjHAqmUTXDDbf9UPUv+NuwtI+V4h/N70RdhRkTPfHGF@vger.kernel.org, AJvYcCXJ6ON4oXRwo45c9cS7cXN5+6JzpCl1QPGD7mRZY8NbnMbIA1QMWDXHXU7iZN+xUEvTFUIWrHnx@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBccG1rcPmSvqhd2zFBNpvDzOHbGDPuYWuu6pmOzLniqNzP7F5
-	v/Mzki9csy3JIrj9sstV5S+qjJMq5flbQiSMnMwnnAZQ5SWaPJpM
-X-Google-Smtp-Source: AGHT+IGp8he+nOmx6pOtzShCTzm3JVZc/I0S6JDbj6P5LRnLn+aiBz1tuBucLUhrFfjLDnJmb0novQ==
-X-Received: by 2002:a05:6000:1f86:b0:37d:50e1:b3e1 with SMTP id ffacd0b85a97d-37efcf0615cmr2722552f8f.16.1729700442055;
-        Wed, 23 Oct 2024 09:20:42 -0700 (PDT)
-Received: from localhost.localdomain (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37ee0ba7dffsm9249993f8f.116.2024.10.23.09.20.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 09:20:41 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [net-next RFC PATCH v2 3/3] net: phy: Add Airoha AN8855 Internal Switch Gigabit PHY
-Date: Wed, 23 Oct 2024 18:19:52 +0200
-Message-ID: <20241023161958.12056-4-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241023161958.12056-1-ansuelsmth@gmail.com>
-References: <20241023161958.12056-1-ansuelsmth@gmail.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="WXasyLaK"
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NFfh1A026708;
+	Wed, 23 Oct 2024 16:20:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2023-11-20; bh=JV+Or
+	5j2yYMLcT/7Bjsk7C66zx628hBm0ipklImId74=; b=WXasyLaKuTlrjvb9jk+8e
+	74FjNradSsZWXnBDbjx8AIHVzDprS4W7DEmOoxm4ydg3GInHXhco04V8dA8pdC4H
+	Ne4ZoiURXvAQVOYHSzfBnceeQpQAYhPA7z/5xy5WUcjHGKUuzI2zWjKhOa61x6JD
+	9wojGNg7Dy4H7mgt28hxcXadwT0DVGHvsV6HlA5AD/nlssEaFMAQckVXaky4dpmc
+	rb4Li+zZywtluh2AXhow9SuJU/XuiBcokmvRKHGqmcRZOmncHkumqz2/WgRK1110
+	EUrB1+PDVp5ZKuk3tiIjmcqmrjHLmMTf0yGaogSVt1URj29l8XTqL1O9onZBkev6
+	Q==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c55egesj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Oct 2024 16:20:14 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49NG7xcm025381;
+	Wed, 23 Oct 2024 16:20:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42emh9r664-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Oct 2024 16:20:13 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49NGK80A012043;
+	Wed, 23 Oct 2024 16:20:12 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 42emh9r5x9-3;
+	Wed, 23 Oct 2024 16:20:12 +0000
+From: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
+To: davem@davemloft.net, Liam.Howlett@Oracle.com
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mingo@redhat.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        vschneid@redhat.com, jiri@resnulli.us, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, akpm@linux-foundation.org,
+        brendan.higgins@linux.dev, davidgow@google.com, rmoar@google.com,
+        johannes.berg@intel.com, mic@digikod.net, gnoack@google.com,
+        jk@codeconstruct.com.au, kunit-dev@googlegroups.com, shuah@kernel.org,
+        linux-kselftest@vger.kernel.org, anjali.k.kulkarni@oracle.com,
+        peili.io@oracle.com
+Subject: [PATCH net-next v6 2/3] connector/cn_proc: Kunit tests for threads hash table
+Date: Wed, 23 Oct 2024 09:20:05 -0700
+Message-ID: <20241023162006.1725309-3-anjali.k.kulkarni@oracle.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20241023162006.1725309-1-anjali.k.kulkarni@oracle.com>
+References: <20241023162006.1725309-1-anjali.k.kulkarni@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,332 +72,378 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-23_13,2024-10-23_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 adultscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410230095
+X-Proofpoint-ORIG-GUID: hQaXY6k8J-T_QPUrNQQB6oDyN3ep_n7Z
+X-Proofpoint-GUID: hQaXY6k8J-T_QPUrNQQB6oDyN3ep_n7Z
 
-Add support for Airoha AN8855 Internal Switch Gigabit PHY.
+Kunit tests to test hash table add, delete, duplicate add and delete.
+Add following configs and compile kernel code:
 
-This is a simple PHY driver to configure and calibrate the PHY for the
-AN8855 Switch with the use of NVMEM cells.
+CONFIG_CONNECTOR=y
+CONFIG_PROC_EVENTS=y
+CONFIG_NET=y
+CONFIG_KUNIT=m
+CONFIG_CN_HASH_KUNIT_TEST=m
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+To run kunit tests:
+sudo modprobe cn_hash_test
+
+Output of kunit tests and hash table contents are displayed in
+/var/log/messages (at KERN_DEBUG level).
+
+Signed-off-by: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
 ---
- MAINTAINERS                  |   1 +
- drivers/net/phy/Kconfig      |   5 +
- drivers/net/phy/Makefile     |   1 +
- drivers/net/phy/air_an8855.c | 265 +++++++++++++++++++++++++++++++++++
- 4 files changed, 272 insertions(+)
- create mode 100644 drivers/net/phy/air_an8855.c
+ drivers/connector/cn_hash.c                  |  40 +++++
+ drivers/connector/connector.c                |  12 ++
+ include/linux/connector.h                    |   4 +
+ lib/Kconfig.debug                            |  19 +++
+ lib/Makefile                                 |   1 +
+ lib/cn_hash_test.c                           | 169 +++++++++++++++++++
+ lib/cn_hash_test.h                           |  10 ++
+ tools/testing/kunit/configs/all_tests.config |   5 +
+ 8 files changed, 260 insertions(+)
+ create mode 100644 lib/cn_hash_test.c
+ create mode 100644 lib/cn_hash_test.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e3077d9feee2..cf34add2a0bb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -726,6 +726,7 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/airoha,an8855.yaml
- F:	drivers/net/dsa/an8855.c
- F:	drivers/net/dsa/an8855.h
-+F:	drivers/net/phy/air_an8855.c
+diff --git a/drivers/connector/cn_hash.c b/drivers/connector/cn_hash.c
+index b94f6c461496..a8b8760c2e8c 100644
+--- a/drivers/connector/cn_hash.c
++++ b/drivers/connector/cn_hash.c
+@@ -165,6 +165,46 @@ int cn_hash_get_exval(struct cn_hash_dev *hdev, pid_t pid)
+ 	return -EINVAL;
+ }
  
- AIROHA ETHERNET DRIVER
- M:	Lorenzo Bianconi <lorenzo@kernel.org>
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index ee3ea0b56d48..1d474038ea7f 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -79,6 +79,11 @@ config SFP
- 
- comment "MII PHY device drivers"
- 
-+config AIR_AN8855_PHY
-+	tristate "Airoha AN8855 Internal Gigabit PHY"
-+	help
-+	  Currently supports the internal Airoha AN8855 Switch PHY.
-+
- config AIR_EN8811H_PHY
- 	tristate "Airoha EN8811H 2.5 Gigabit PHY"
- 	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 90f886844381..baba7894785b 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -35,6 +35,7 @@ obj-y				+= $(sfp-obj-y) $(sfp-obj-m)
- 
- obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
-+obj-$(CONFIG_AIR_AN8855_PHY)   += air_an8855.o
- obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
- obj-$(CONFIG_AMCC_QT2025_PHY)	+= qt2025.o
-diff --git a/drivers/net/phy/air_an8855.c b/drivers/net/phy/air_an8855.c
-new file mode 100644
-index 000000000000..c43ae7b76177
---- /dev/null
-+++ b/drivers/net/phy/air_an8855.c
-@@ -0,0 +1,265 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <linux/phy.h>
-+#include <linux/module.h>
-+#include <linux/bitfield.h>
-+#include <linux/nvmem-consumer.h>
-+
-+#define AN8855_PHY_PAGE_CTRL			0x1f
-+#define   AN8855_PHY_NORMAL_PAGE		0x0
-+#define   AN8855_PHY_EXT_PAGE			0x1
-+
-+#define AN8855_PHY_EXT_REG_14			0x14
-+#define   AN8855_PHY_EN_DOWN_SHFIT		BIT(4)
-+
-+/* R50 Calibration regs in MDIO_MMD_VEND1 */
-+#define AN8855_PHY_R500HM_RSEL_TX_AB		0x174
-+#define AN8855_PHY_R50OHM_RSEL_TX_A_EN		BIT(15)
-+#define AN8855_PHY_R50OHM_RSEL_TX_A		GENMASK(14, 8)
-+#define AN8855_PHY_R50OHM_RSEL_TX_B_EN		BIT(7)
-+#define AN8855_PHY_R50OHM_RSEL_TX_B		GENMASK(6, 0)
-+#define AN8855_PHY_R500HM_RSEL_TX_CD		0x175
-+#define AN8855_PHY_R50OHM_RSEL_TX_C_EN		BIT(15)
-+#define AN8855_PHY_R50OHM_RSEL_TX_C		GENMASK(14, 8)
-+#define AN8855_PHY_R50OHM_RSEL_TX_D_EN		BIT(7)
-+#define AN8855_PHY_R50OHM_RSEL_TX_D		GENMASK(6, 0)
-+
-+#define AN8855_SWITCH_EFUSE_R50O		GENMASK(30, 24)
-+
-+/* PHY TX PAIR DELAY SELECT Register */
-+#define PHY_TX_PAIR_DLY_SEL_GBE			0x013
-+/* PHY ADC Register */
-+#define PHY_RXADC_CTRL				0x0d8
-+#define PHY_RXADC_REV_0				0x0d9
-+#define PHY_RXADC_REV_1				0x0da
-+
-+#define AN8855_PHY_ID			0xc0ff0410
-+
-+struct air_an8855_priv {
-+	u8 calibration_data[4];
-+};
-+
-+static const u8 dsa_r50ohm_table[] = {
-+	127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
-+	127, 127, 127, 127, 127, 127, 127, 126, 122, 117,
-+	112, 109, 104, 101,  97,  94,  90,  88,  84,  80,
-+	78,  74,  72,  68,  66,  64,  61,  58,  56,  53,
-+	51,  48,  47,  44,  42,  40,  38,  36,  34,  32,
-+	31,  28,  27,  24,  24,  22,  20,  18,  16,  16,
-+	14,  12,  11,   9
-+};
-+
-+static int en8855_get_r50ohm_val(struct device *dev, const char *calib_name,
-+				 u8 *dest)
++int cn_hash_display_hlist(struct cn_hash_dev *hdev, pid_t pid, int max_len,
++			  int *hkey, int *key_display)
 +{
-+	u32 shift_sel, val;
-+	int ret;
-+	int i;
++	struct uexit_pid_hnode *hnode;
++	int key, count = 0;
 +
-+	ret = nvmem_cell_read_u32(dev, calib_name, &val);
-+	if (ret)
-+		return ret;
++	mutex_lock(&hdev->uexit_hash_lock);
++	key = hash_min(pid, HASH_BITS(hdev->uexit_pid_htable));
++	pr_debug("Bucket: %d\n", key);
 +
-+	shift_sel = FIELD_GET(AN8855_SWITCH_EFUSE_R50O, val);
-+	for (i = 0; i < ARRAY_SIZE(dsa_r50ohm_table); i++)
-+		if (dsa_r50ohm_table[i] == shift_sel)
-+			break;
++	hlist_for_each_entry(hnode,
++			     &hdev->uexit_pid_htable[key],
++			     uexit_pid_hlist) {
++		if (key_display[key] != 1) {
++			if (!hnode->uexit_pid_hlist.next)
++				pr_debug("pid %d ", hnode->pid);
++			else
++				pr_debug("pid %d --> ", hnode->pid);
++		}
++		count++;
++	}
 +
-+	if (i < 8 || i >= ARRAY_SIZE(dsa_r50ohm_table))
-+		*dest = dsa_r50ohm_table[25];
-+	else
-+		*dest = dsa_r50ohm_table[i - 8];
++	mutex_unlock(&hdev->uexit_hash_lock);
++
++	if (key_display[key] != 1 && !count)
++		pr_debug("(empty)\n");
++
++	pr_debug("\n");
++
++	*hkey = key;
++
++	if (count > max_len) {
++		pr_err("%d entries in hlist for key %d, expected %d\n",
++		       count, key, max_len);
++		return -EINVAL;
++	}
 +
 +	return 0;
 +}
 +
-+static int an8855_probe(struct phy_device *phydev)
+ bool cn_hash_table_empty(struct cn_hash_dev *hdev)
+ {
+ 	bool is_empty;
+diff --git a/drivers/connector/connector.c b/drivers/connector/connector.c
+index 2494a443fbd6..9b0cbe134e87 100644
+--- a/drivers/connector/connector.c
++++ b/drivers/connector/connector.c
+@@ -304,6 +304,18 @@ int cn_get_exval(pid_t pid)
+ }
+ EXPORT_SYMBOL_GPL(cn_get_exval);
+ 
++int cn_display_hlist(pid_t pid, int max_len, int *hkey, int *key_display)
 +{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct device_node *node = dev->of_node;
-+	struct air_an8855_priv *priv;
-+	int ret;
++	struct cn_dev *dev = &cdev;
 +
-+	/* If we don't have a node, skip get calib */
-+	if (!node)
++	if (!cn_already_initialized)
 +		return 0;
 +
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	ret = en8855_get_r50ohm_val(dev, "tx_a", &priv->calibration_data[0]);
-+	if (ret)
-+		return ret;
-+
-+	ret = en8855_get_r50ohm_val(dev, "tx_b", &priv->calibration_data[1]);
-+	if (ret)
-+		return ret;
-+
-+	ret = en8855_get_r50ohm_val(dev, "tx_c", &priv->calibration_data[2]);
-+	if (ret)
-+		return ret;
-+
-+	ret = en8855_get_r50ohm_val(dev, "tx_d", &priv->calibration_data[3]);
-+	if (ret)
-+		return ret;
-+
-+	phydev->priv = priv;
-+
-+	return 0;
++	return cn_hash_display_hlist(dev->hdev, pid, max_len,
++					hkey, key_display);
 +}
++EXPORT_SYMBOL_GPL(cn_display_hlist);
 +
-+static int an8855_config_init(struct phy_device *phydev)
-+{
-+	struct air_an8855_priv *priv = phydev->priv;
-+	int ret;
+ bool cn_table_empty(void)
+ {
+ 	struct cn_dev *dev = &cdev;
+diff --git a/include/linux/connector.h b/include/linux/connector.h
+index 3f0648c886bc..393e1a391b70 100644
+--- a/include/linux/connector.h
++++ b/include/linux/connector.h
+@@ -173,4 +173,8 @@ int cn_get_exval(pid_t pid);
+ bool cn_table_empty(void);
+ bool cn_hash_table_empty(struct cn_hash_dev *hdev);
+ 
++int cn_display_hlist(pid_t pid, int max_len, int *hkey, int *key_display);
++int cn_hash_display_hlist(struct cn_hash_dev *hdev, pid_t pid, int max_len,
++			  int *hkey, int *key_display);
 +
-+	/* Enable HW auto downshift */
-+	ret = phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_EXT_PAGE);
-+	if (ret)
-+		return ret;
-+	ret = phy_set_bits(phydev, AN8855_PHY_EXT_REG_14,
-+			   AN8855_PHY_EN_DOWN_SHFIT);
-+	if (ret)
-+		return ret;
-+	ret = phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_NORMAL_PAGE);
-+	if (ret)
-+		return ret;
+ #endif				/* __CONNECTOR_H */
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 7315f643817a..784bd66221ab 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2705,6 +2705,25 @@ config HASHTABLE_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config CN_HASH_KUNIT_TEST
++	tristate "KUnit Test for connector hashtable code" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	depends on CONNECTOR && PROC_EVENTS
++	depends on NET
++	default KUNIT_ALL_TESTS
++	help
++	  This builds the hashtable KUnit test suite.
++	  It tests the basic functionality of the API defined in
++	  drivers/connector/cn_hash.c.
++	  CONFIG_CONNECTOR=y, CONFIG_PROC_EVENTS=y and CONFIG_NET=y needs
++	  to be enabled along with CONFIG_CN_HASH_KUNIT_TEST=m and
++	  CONFIG_KUNIT=m in .config file to compile and then test as a
++	  kernel module with "modprobe cn_hash_test".
++	  For more information on KUnit and unit tests in general please
++	  refer to the KUnit documentation in Documentation/dev-tools/kunit/.
 +
-+	/* Enable Asymmetric Pause Capability */
-+	ret = phy_set_bits(phydev, MII_ADVERTISE, ADVERTISE_PAUSE_ASYM);
-+	if (ret)
-+		return ret;
++	  If unsure, say N.
 +
-+	/* Disable EEE */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
-+	if (ret)
-+		return ret;
+ config LINEAR_RANGES_TEST
+ 	tristate "KUnit test for linear_ranges"
+ 	depends on KUNIT
+diff --git a/lib/Makefile b/lib/Makefile
+index 811ba12c8cd0..2c59c82b0b18 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -379,6 +379,7 @@ obj-$(CONFIG_CMDLINE_KUNIT_TEST) += cmdline_kunit.o
+ obj-$(CONFIG_SLUB_KUNIT_TEST) += slub_kunit.o
+ obj-$(CONFIG_MEMCPY_KUNIT_TEST) += memcpy_kunit.o
+ obj-$(CONFIG_IS_SIGNED_TYPE_KUNIT_TEST) += is_signed_type_kunit.o
++obj-$(CONFIG_CN_HASH_KUNIT_TEST) += cn_hash_test.o
+ CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
+ obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
+ CFLAGS_stackinit_kunit.o += $(call cc-disable-warning, switch-unreachable)
+diff --git a/lib/cn_hash_test.c b/lib/cn_hash_test.c
+new file mode 100644
+index 000000000000..efaf727d9b2a
+--- /dev/null
++++ b/lib/cn_hash_test.c
+@@ -0,0 +1,169 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * KUnit test for the connector threads hashtable code.
++ *
++ * Copyright (c) 2024 Oracle and/or its affiliates.
++ * Author: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
++ */
++#include <kunit/test.h>
 +
-+	/* Apply calibration values, if needed. BIT(0) signal this */
-+	if (phydev->dev_flags & BIT(0)) {
-+		u8 *calibration_data = priv->calibration_data;
++#include "cn_hash_test.h"
 +
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R500HM_RSEL_TX_AB,
-+				     AN8855_PHY_R50OHM_RSEL_TX_A | AN8855_PHY_R50OHM_RSEL_TX_B,
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_A, calibration_data[0]) |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_B, calibration_data[1]));
-+		if (ret)
-+			return ret;
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R500HM_RSEL_TX_CD,
-+				     AN8855_PHY_R50OHM_RSEL_TX_C | AN8855_PHY_R50OHM_RSEL_TX_D,
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_C, calibration_data[2]) |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_D, calibration_data[3]));
-+		if (ret)
-+			return ret;
-+	}
++#define ARR_SIZE	4
++#define HASH_TABLE_LEN	1024
 +
-+	/* Apply values to decude signal noise */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, PHY_TX_PAIR_DLY_SEL_GBE, 0x4040);
-+	if (ret)
-+		return ret;
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, PHY_RXADC_CTRL, 0x1010);
-+	if (ret)
-+		return ret;
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, PHY_RXADC_REV_0, 0x100);
-+	if (ret)
-+		return ret;
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, PHY_RXADC_REV_1, 0x100);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int an8855_get_downshift(struct phy_device *phydev, u8 *data)
-+{
-+	int val;
-+	int ret;
-+
-+	ret = phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_EXT_PAGE);
-+	if (ret)
-+		return ret;
-+
-+	val = phy_read(phydev, AN8855_PHY_EXT_REG_14);
-+	*data = val & AN8855_PHY_EXT_REG_14 ? DOWNSHIFT_DEV_DEFAULT_COUNT :
-+					      DOWNSHIFT_DEV_DISABLE;
-+
-+	ret = phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_NORMAL_PAGE);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int an8855_set_downshift(struct phy_device *phydev, u8 cnt)
-+{
-+	int ret;
-+
-+	ret = phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_EXT_PAGE);
-+	if (ret)
-+		return ret;
-+
-+	if (cnt != DOWNSHIFT_DEV_DISABLE) {
-+		ret = phy_set_bits(phydev, AN8855_PHY_EXT_REG_14,
-+				   AN8855_PHY_EN_DOWN_SHFIT);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = phy_clear_bits(phydev, AN8855_PHY_EXT_REG_14,
-+				     AN8855_PHY_EN_DOWN_SHFIT);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return phy_write(phydev, AN8855_PHY_PAGE_CTRL, AN8855_PHY_NORMAL_PAGE);
-+}
-+
-+static int an8855_get_tunable(struct phy_device *phydev,
-+			      struct ethtool_tunable *tuna, void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return an8855_get_downshift(phydev, data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int an8855_set_tunable(struct phy_device *phydev,
-+			      struct ethtool_tunable *tuna, const void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return an8855_set_downshift(phydev, *(const u8 *)data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static struct phy_driver an8855_driver[] = {
-+{
-+	PHY_ID_MATCH_EXACT(AN8855_PHY_ID),
-+	.name			= "Airoha AN8855 internal PHY",
-+	/* PHY_GBIT_FEATURES */
-+	.flags			= PHY_IS_INTERNAL,
-+	.probe			= an8855_probe,
-+	.config_init		= an8855_config_init,
-+	.soft_reset		= genphy_soft_reset,
-+	.get_tunable		= an8855_get_tunable,
-+	.set_tunable		= an8855_set_tunable,
-+	.suspend		= genphy_suspend,
-+	.resume			= genphy_resume,
-+}, };
-+
-+module_phy_driver(an8855_driver);
-+
-+static struct mdio_device_id __maybe_unused an8855_tbl[] = {
-+	{ PHY_ID_MATCH_EXACT(AN8855_PHY_ID) },
-+	{ }
++struct add_data {
++	pid_t pid;
++	int exit_val;
++	int key;
 +};
 +
-+MODULE_DEVICE_TABLE(mdio, an8855_tbl);
++static struct add_data adata[ARR_SIZE];
++static int key_display[HASH_TABLE_LEN];
 +
-+MODULE_DESCRIPTION("Airoha AN8855 PHY driver");
-+MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
++static int cn_hash_init(struct kunit *test)
++{
++	for (int i = 0; i < HASH_TABLE_LEN; i++)
++		key_display[i] = 0;
++
++	return 0;
++}
++
++static void cn_display_htable(struct kunit *test, int len)
++{
++	int i, err;
++
++	cn_hash_init(test);
++
++	pr_debug("\n");
++	pr_debug("Displaying hash table:\n");
++
++	for (i = 0; i < len; i++) {
++		err = cn_display_hlist(adata[i].pid, len, &adata[i].key,
++				       key_display);
++		key_display[adata[i].key] = 1;
++		KUNIT_EXPECT_EQ(test, err, 0);
++	}
++}
++
++static void cn_hash_test_add(struct kunit *test)
++{
++	int err, i;
++	int exit_val;
++
++	adata[0].pid = 1;
++	adata[0].exit_val = 45;
++
++	adata[1].pid = 2;
++	adata[1].exit_val = 13;
++
++	adata[2].pid = 1024;
++	adata[2].exit_val = 16;
++
++	adata[3].pid = 1023;
++	adata[3].exit_val = 71;
++
++	for (i = 0; i < ARRAY_SIZE(adata); i++) {
++		err = cn_add_elem(adata[i].exit_val, adata[i].pid);
++		KUNIT_EXPECT_EQ_MSG(test, 0, err,
++				    "Adding pid %d returned err %d",
++				    adata[i].pid, err);
++
++		exit_val = cn_get_exval(adata[i].pid);
++		KUNIT_EXPECT_EQ(test, adata[i].exit_val, exit_val);
++	}
++
++	cn_display_htable(test, ARRAY_SIZE(adata));
++}
++
++static void cn_hash_test_del(struct kunit *test)
++{
++	int i, err;
++	int exit_val;
++
++	for (i = 0; i < ARRAY_SIZE(adata); i++) {
++		err = cn_del_get_exval(adata[i].pid);
++		KUNIT_EXPECT_GT_MSG(test, err, 0,
++				    "Deleting pid %d returned err %d",
++				    adata[i].pid, err);
++
++		exit_val = cn_get_exval(adata[i].pid);
++		KUNIT_EXPECT_EQ(test, -EINVAL, exit_val);
++	}
++
++	cn_display_htable(test, ARRAY_SIZE(adata));
++	KUNIT_EXPECT_TRUE(test, cn_table_empty());
++}
++
++static void cn_hash_test_del_get_exval(struct kunit *test)
++{
++	int i, exval;
++
++	for (i = 0; i < ARRAY_SIZE(adata); i++) {
++		exval = cn_del_get_exval(adata[i].pid);
++		KUNIT_EXPECT_EQ(test, adata[i].exit_val, exval);
++
++		cn_display_htable(test, ARRAY_SIZE(adata));
++	}
++
++	KUNIT_EXPECT_TRUE(test, cn_table_empty());
++}
++
++static void cn_hash_test_dup_add(struct kunit *test)
++{
++	int err, exit_val;
++
++	adata[0].pid = 10;
++	adata[0].exit_val = 21;
++
++	err = cn_add_elem(adata[0].exit_val, adata[0].pid);
++	KUNIT_EXPECT_EQ(test, 0, err);
++
++	exit_val = cn_get_exval(adata[0].pid);
++	KUNIT_EXPECT_EQ(test, 21, exit_val);
++
++	adata[1].pid = 10;
++	adata[1].exit_val = 12;
++
++	err = cn_add_elem(adata[1].exit_val, adata[1].pid);
++	KUNIT_EXPECT_EQ(test, -EEXIST, err);
++
++	exit_val = cn_get_exval(adata[1].pid);
++	KUNIT_EXPECT_EQ(test, 21, exit_val);
++
++	cn_display_htable(test, 1);
++}
++
++static void cn_hash_test_dup_del(struct kunit *test)
++{
++	int err;
++
++	err = cn_del_get_exval(adata[0].pid);
++	KUNIT_EXPECT_EQ(test, adata[0].exit_val, err);
++
++	err = cn_del_get_exval(adata[0].pid);
++	KUNIT_EXPECT_EQ(test, -EINVAL, err);
++
++	KUNIT_EXPECT_TRUE(test, cn_table_empty());
++}
++
++static struct kunit_case cn_hashtable_test_cases[] = {
++	KUNIT_CASE(cn_hash_test_add),
++	KUNIT_CASE(cn_hash_test_del),
++	KUNIT_CASE(cn_hash_test_dup_add),
++	KUNIT_CASE(cn_hash_test_dup_del),
++	KUNIT_CASE(cn_hash_test_add),
++	KUNIT_CASE(cn_hash_test_del_get_exval),
++	{},
++};
++
++static struct kunit_suite cn_hashtable_test_module = {
++	.name = "cn_hashtable",
++	.init = cn_hash_init,
++	.test_cases = cn_hashtable_test_cases,
++};
++
++kunit_test_suite(cn_hashtable_test_module);
++
++MODULE_DESCRIPTION("KUnit test for the connector threads hashtable code");
 +MODULE_LICENSE("GPL");
+diff --git a/lib/cn_hash_test.h b/lib/cn_hash_test.h
+new file mode 100644
+index 000000000000..b25033feab09
+--- /dev/null
++++ b/lib/cn_hash_test.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (c) 2024 Oracle and/or its affiliates.
++ * Author: Anjali Kulkarni <anjali.k.kulkarni@oracle.com>
++ */
++int cn_display_hlist(pid_t pid, int max_len, int *hkey, int *key_display);
++int cn_add_elem(__u32 uexit_code, pid_t pid);
++int cn_del_get_exval(pid_t pid);
++int cn_get_exval(pid_t pid);
++bool cn_table_empty(void);
+diff --git a/tools/testing/kunit/configs/all_tests.config b/tools/testing/kunit/configs/all_tests.config
+index b3b00269a52a..a663280b0f3a 100644
+--- a/tools/testing/kunit/configs/all_tests.config
++++ b/tools/testing/kunit/configs/all_tests.config
+@@ -52,3 +52,8 @@ CONFIG_SOUND=y
+ CONFIG_SND=y
+ CONFIG_SND_SOC=y
+ CONFIG_SND_SOC_TOPOLOGY_BUILD=y
++
++CONFIG_CONNECTOR=y
++CONFIG_PROC_EVENTS=y
++CONFIG_NET=y
++CONFIG_CN_HASH_KUNIT_TEST=y
 -- 
-2.45.2
+2.46.0
 
