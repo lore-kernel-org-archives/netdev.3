@@ -1,74 +1,189 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C61BFE10;
-	Wed, 23 Oct 2024 13:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF7F1BDA8F
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 13:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729691350; cv=none; b=Yjg75eUE/HlqTMBCK0KN1OAqr3cyzGW0LPZK8lInoVdOpiAvAC7SGJftTNmmYIrU3NRQaPnl7zuhqKCvxR+fh+Nf0Ci0kRcZPzFy+9SzdPTz5H/8R9llJgT1ZPBIRgVZ9JyhtMp7ZB/0dy13B15FPm24MuLlbxfQLs605fWXInU=
+	t=1729691417; cv=none; b=ckNE7ZS0NerZyXsfMoKFhsM+DCxRuhkMwC+j8XYH8/JzlXUypzv+gXS1dfb81eiYTCVRSDDV6Pr8T7EWlY/z801jnbnOc4FmQ/C7beOQi29pjSHpEFP0ODYHogA/iFmdhaJqgzBT+zgIeQsVCUMFVAFmibBD4vHlJ286WDjo49I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729691350; c=relaxed/simple;
-	bh=UnZrJKd0MuH4JfX7UeVSpKWbsg/xJmlN0RuzxNkTPug=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hJpVkuhEI4W3ec3zGD7y+z48u/UZwOQgg3eLWtIiwdU971fGIEzZDVyoqHYLbaOzsMa2gK18TRnnC8VOt+gRDpTBjVInjGPNuReBWwkoq+VSfbzmxu56x0RXZF8GcbCp7uFZkjz6yGme3IT7Q70V9COiaNa1jG4PSRbS+scB+ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XYVlB38gpz1ynRd;
-	Wed, 23 Oct 2024 21:49:10 +0800 (CST)
-Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2354C1402C7;
-	Wed, 23 Oct 2024 21:49:03 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 23 Oct 2024 21:49:02 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH net-next 6/7] net: hibmcge: Add nway_reset supported in this module
-Date: Wed, 23 Oct 2024 21:42:12 +0800
-Message-ID: <20241023134213.3359092-7-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241023134213.3359092-1-shaojijie@huawei.com>
-References: <20241023134213.3359092-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1729691417; c=relaxed/simple;
+	bh=1CTS0Ugnf9jJBC1ruM/WIiADBY5GmrMIo6GSJ3E70PI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DwPZryUnKpCQOLK7hSpSAdqEMMjS6rYkPmSoXn1jX5kKH+ruLHhd5rzgqrHJY44dl41HmrDAPsrpuPJopWRyuCSRbMHFxpygedba6+0B18ZmT92qxbn3OT8Nul+cApbLvvnv6E/FGyi3VUOWzt0sPBqT3aWVYMUTuxjf9cUgdYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d95We1WZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d95We1WZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729691414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
+	b=d95We1WZBbUdVyDSFgIvU8zgDceWjJa5cmeHp624v+Z/g5Sry4W1+LvpqC2UquTYy5le6z
+	mdUq1Pb78mNpYhkiILLaP+xU0ZrMPnMfdNJYt1NIS+rJJggkOUWu7ePkh25BDCEA92vkLI
+	LWEOXfgFl9WSkjphcdhRbUxfXpf3ORg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-656-WwO5vAUXNQW8oC9OwfZyBg-1; Wed, 23 Oct 2024 09:50:13 -0400
+X-MC-Unique: WwO5vAUXNQW8oC9OwfZyBg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315e8e9b1cso5513175e9.1
+        for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 06:50:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729691412; x=1730296212;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
+        b=RKM7yODPz31W6D61xrgV76NE2pmvpPuArAps0Vwoc4mzSV6VZQcGK6ojSAv7uUkTlk
+         Bd9c5PDy0XEoSEJSuCkt2+XL/8QdU9gBr8Fr3ZvH+RdN69HOIn6ibbCSl4/4Y2BV7tlO
+         TRc3w+ia7MDjoN/APoLyXxMvA6RnmzWZiGVi4iaQBCxRTFUC1kChZGt4vAJkrmD8h5Qg
+         9Aa+7ZaQq1oEpLKfTzM1V3NljyO0hYuNfZrNpj9K03MMIxYEmoQHzI/vnvZsZoe+Nh1r
+         iIAQGzLHK7cUJDkJCyjH1r+qA+ueBiVhbP+0z0QsPTRvVMmwpcp3vmGZgDNROd3QPjpZ
+         CAZA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8mxG3FyBPyoyJhzJ9smQ8VlHWqbjrKbiQ5tPU0DwNtXKKq2mFQTsZ7sTtnTlNfVc0PC/DfkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyhr9KEKo6pyx6LjVB1LpqwTGiM8yo8v1pM3UD6vOqz4qOBqhBl
+	bOVK5WRKoiBJalBjzBJsw7yIWPWhv24E/uYE3aTW4yNDUvxtMUx1+DFieViCNc50FG4DL4f2x5S
+	SZP4fQKJ7Udg5MNxjCagEhY46HFwg57cVQ675ip3kaOMply5tDDS0Xw==
+X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316385e9.9.1729691412200;
+        Wed, 23 Oct 2024 06:50:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVbS2v+nb51IE57ofZXQEpzrUukFuey0NWkF8DOXs6/K2mGsAvF2UpvyCTTgP3Onw94z3R5g==
+X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316115e9.9.1729691411741;
+        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
+Received: from eisenberg.fritz.box ([2001:16b8:3dac:2f00:8834:dd3a:39b8:e43b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186be7605sm16955265e9.19.2024.10.23.06.50.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
+Message-ID: <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
+Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
+ pcim_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
+ <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
+ <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
+ Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Wed, 23 Oct 2024 15:50:09 +0200
+In-Reply-To: <87v7xk2ps5.wl-tiwai@suse.de>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm000007.china.huawei.com (7.193.23.189)
 
-Add nway_reset supported in this module
+On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
+> On Tue, 15 Oct 2024 20:51:12 +0200,
+> Philipp Stanner wrote:
+> >=20
+> > pci_intx() is a hybrid function which can sometimes be managed
+> > through
+> > devres. To remove this hybrid nature from pci_intx(), it is
+> > necessary to
+> > port users to either an always-managed or a never-managed version.
+> >=20
+> > hda_intel enables its PCI-Device with pcim_enable_device(). Thus,
+> > it needs
+> > the always-managed version.
+> >=20
+> > Replace pci_intx() with pcim_intx().
+> >=20
+> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > ---
+> > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+> > index b4540c5cd2a6..b44ca7b6e54f 100644
+> > --- a/sound/pci/hda/hda_intel.c
+> > +++ b/sound/pci/hda/hda_intel.c
+> > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx *chip,
+> > int do_disconnect)
+> > =C2=A0	}
+> > =C2=A0	bus->irq =3D chip->pci->irq;
+> > =C2=A0	chip->card->sync_irq =3D bus->irq;
+> > -	pci_intx(chip->pci, !chip->msi);
+> > +	pcim_intx(chip->pci, !chip->msi);
+> > =C2=A0	return 0;
+> > =C2=A0}
+> > =C2=A0
+>=20
+> Hm, it's OK-ish to do this as it's practically same as what
+> pci_intx()
+> currently does.=C2=A0 But, the current code can be a bit inconsistent
+> about
+> the original intx value.=C2=A0 pcim_intx() always stores !enable to
+> res->orig_intx unconditionally, and it means that the orig_intx value
+> gets overridden at each time pcim_intx() gets called.
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+Yes.
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index 1e93d1dcf7a0..2fef3d161c21 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -367,6 +367,7 @@ static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
-+	.nway_reset		= phy_ethtool_nway_reset,
- 	.get_sset_count		= hbg_ethtool_get_sset_count,
- 	.get_strings		= hbg_ethtool_get_strings,
- 	.get_ethtool_stats	= hbg_ethtool_get_stats,
--- 
-2.33.0
+>=20
+> Meanwhile, HD-audio driver does release and re-acquire the interrupt
+> after disabling MSI when something goes wrong, and pci_intx() call
+> above is a part of that procedure.=C2=A0 So, it can rewrite the
+> res->orig_intx to another value by retry without MSI.=C2=A0 And after the
+> driver removal, it'll lead to another state.
+
+I'm not sure that I understand this paragraph completely. Still, could
+a solution for the driver on the long-term just be to use pci_intx()?
+
+>=20
+> In anyway, as it doesn't change the current behavior, feel free to
+> take my ack for now:
+>=20
+> Acked-by: Takashi Iwai <tiwai@suse.de>
+
+Thank you,
+P.
+
+>=20
+>=20
+> thanks,
+>=20
+> Takashi
+>=20
 
