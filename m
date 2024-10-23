@@ -1,111 +1,132 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.sysmocom.de (mail.sysmocom.de [176.9.212.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73AF7482;
-	Wed, 23 Oct 2024 09:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A6419CC27
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 09:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.212.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729676032; cv=none; b=jhAmlhMo/jjaYTHcwC3UFH8ttTu7azeMvkRT30i4M5fkQbhmC5EeW6U2AXlChS8mUCmGZFyGuyohhT2LR2TG9ODmdeWC3olgbWzGfmhdPQCKukA+yA5eI4I6qjBCm6MIdobyVt/JFXhLr8ZCxtspHawuJdX+SO4W+Me8EIOSh8s=
+	t=1729676129; cv=none; b=VE0szCSJREnIV1maFAuZ1auSDvq51EOUkUwX+vQ+RRuYoT3ij3jyLiwCsBhp7ejIWxRW3R1qjlygWG4hot4rgstXOpqXu/vhMLlY4ZPmVnFXSdI4b9jGmWxfGTRMWk6W+ymhcUvGAIKfMTt8dAnYquKTlUJJOCEjdMArxuY//V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729676032; c=relaxed/simple;
-	bh=I+t5Y1LPYeVgxRmZ+1UAf49hXymGsrVgLf2jhMU34Oo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRuPE1K1VqXYzKHfHk6ggpY1EsgFxxEiSE1n8KeYrknd8h359gQymeiN0N11HE5KRNqIiblkcJbj2civcQGF2ZAnJY/I2KdZdvnQPGM260TLJvwunpJRyYIoRRK41y8tBCN3p4tnzDfnCMkxQ5cvpZPzOm3SfSoBeAicOtq9SsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a9a2209bd7fso873190666b.2;
-        Wed, 23 Oct 2024 02:33:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729676029; x=1730280829;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nvoMYU14br2JwNAhJzhWrmnAu9bil/nQbgtl7e1GbYk=;
-        b=BL/jY7yDd8LV6ZRP3YXm7u5pTkduCXbrV0W2I5s5+yLwF9AyIkWs+J+QCSdqzVX0M8
-         ZPrL++lehFOu1zR5sPNWlie4xbKiEjiyT/pvwDcOuNKjPjq3CUwmt5EgPL3vQ6tlUJuW
-         vXLdAkdYv47Tv0RFg8nC1TrTY9u8d0pOAoeODH3ILP5J1Ja1I8/LnJHw0sDVQfVjwWmt
-         CKlf7yDFJTJoC5/GTD124tffB0RcdGp7391pUJlCcTAnd02Hg0T0+6zSswLnCjtQ+KdO
-         nd3fRn1GRtgXiVVRbAF3DpOoP1I9xoXZOG1dfLBYO6YOFinXOvI/cpeXDkm06E7a7aCP
-         0Fgg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/JZF6n1VnY8pjCFubV4BitElj8xlIPYY9m+3VprrSRIA8M3nPGMBHdKUXvaeCSAKorhd8K2gSNrY=@vger.kernel.org, AJvYcCUKdWxbYD11ER89G2PkhtCx7JANvACQcu32zcIIcD35HPtRDONpX+2RIKxb2I3FeLj2hd8RSrOQYN1HQRHV@vger.kernel.org, AJvYcCUWb0rAEcakXYz0RJZ39uQODaax7+XvykAPaPEaYL6kSABzifTta6Gn8AHB9TcMfOmK65q4MYhL@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbIMENjIH4BbKa5enpgFvyNdmI6zYbQwzOVWizFzsp9Jlxkz0W
-	0m+ljt8Ua54xXqtJiJcn/KzIWvu3Mf5Q+qmFbp2HJBMJzOa5H/Cf
-X-Google-Smtp-Source: AGHT+IH6IguzdeEsuxacjyH9mS3q+nAPKkgRAK8asjxpAb8XRl2duCALzsVvrykgoTpiSWZmOeEw8A==
-X-Received: by 2002:a17:907:7211:b0:a99:f71a:4305 with SMTP id a640c23a62f3a-a9abf871265mr154553666b.18.1729676029134;
-        Wed, 23 Oct 2024 02:33:49 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-114.fbsv.net. [2a03:2880:30ff:72::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d6307sm450952066b.33.2024.10.23.02.33.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 02:33:48 -0700 (PDT)
-Date: Wed, 23 Oct 2024 02:33:46 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, kernel-team@meta.com,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next v3] net: Implement fault injection forcing skb
- reallocation
-Message-ID: <20241023-hasty-inescapable-tapir-a2f7d9@leitao>
-References: <20241014135015.3506392-1-leitao@debian.org>
- <d0fa8332-aeef-4d33-9167-b9716b050594@redhat.com>
+	s=arc-20240116; t=1729676129; c=relaxed/simple;
+	bh=ak8DIHEu81gUaSM4NF/00PF87B4QSaKIyK4qyxBLNNk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VQz7boCHg6moH3wP8PBCxjCSZJnRihTqDcGTRvwrAWd5V6bXu0a6QoToC80qtDDsE2nq9UNfjjBU9fq3inwq+56pGc0n0RxiUJTTc8zHmPXNB53mNbEnLk/Pdh5kx0Ywfm29lxJyUluKGEEJjYKhAcW7bylTKyGxExMa2kkszm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de; spf=pass smtp.mailfrom=sysmocom.de; arc=none smtp.client-ip=176.9.212.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sysmocom.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysmocom.de
+Received: from localhost (localhost [127.0.0.1])
+	by mail.sysmocom.de (Postfix) with ESMTP id 2F2E7C801F6;
+	Wed, 23 Oct 2024 09:27:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at sysmocom.de
+Received: from mail.sysmocom.de ([127.0.0.1])
+	by localhost (mail.sysmocom.de [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id xdh_NtUTNUYG; Wed, 23 Oct 2024 09:27:00 +0000 (UTC)
+Message-ID: <93352553-9015-46fa-8797-52cb94ce14df@sysmocom.de>
+Date: Wed, 23 Oct 2024 11:26:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0fa8332-aeef-4d33-9167-b9716b050594@redhat.com>
+Subject: Re: [PATCH net] gtp: allow -1 to be specified as file description
+ from userspace
+To: Pablo Neira Ayuso <pablo@netfilter.org>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, fw@strlen.de, pespin@sysmocom.de, laforge@gnumonks.org,
+ osmocom-net-gprs@lists.osmocom.org
+References: <20241022144825.66740-1-pablo@netfilter.org>
+Content-Language: en-US
+From: Oliver Smith <osmith@sysmocom.de>
+Autocrypt: addr=osmith@sysmocom.de; keydata=
+ xjMEXqaMvBYJKwYBBAHaRw8BAQdAKlLfpb/UKvlUjGFwzzkDBT1fXdlqg+MaEG2+hTXDYUrN
+ IU9saXZlciBTbWl0aCA8b3NtaXRoQHN5c21vY29tLmRlPsKWBBMWCAA+AhsDBQsJCAcCBhUK
+ CQgLAgQWAgMBAh4BAheAFiEECfuANpg5IsWyQFcH6+DRJFm2BMUFAmDG9VIFCRTsa5YACgkQ
+ 6+DRJFm2BMUJ0wD+L0gpHABtBfkNQ7i0/qtMs5thoqt2yldxao6q31BBLAAA/iXUDIEYjQ0L
+ wsZRtiSdXNjbBfdT9boLdh4CY+TKwuYPzjgEXqaMvBIKKwYBBAGXVQEFAQEHQPGmG2/uQrDy
+ xalQoBnT1zdIbeg/xWLjl1AnOYGITnpEAwEIB8J4BBgWCAAgFiEECfuANpg5IsWyQFcH6+DR
+ JFm2BMUFAl6mjLwCGwwACgkQ6+DRJFm2BMXSRgD/f8twzpyQfpE+viVjtlOxsq0HCavXZqbW
+ VvIuvbyfSWQBAJhEIFF/fxmksu9r3FzixNQMOLc3EJgSwqvEYA28Db8O
+In-Reply-To: <20241022144825.66740-1-pablo@netfilter.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 17, 2024 at 03:50:41PM +0200, Paolo Abeni wrote:
-> On 10/14/24 15:50, Breno Leitao wrote:
-> > Introduce a fault injection mechanism to force skb reallocation. The
-> > primary goal is to catch bugs related to pointer invalidation after
-> > potential skb reallocation.
-> > 
-> > The fault injection mechanism aims to identify scenarios where callers
-> > retain pointers to various headers in the skb but fail to reload these
-> > pointers after calling a function that may reallocate the data. This
-> > type of bug can lead to memory corruption or crashes if the old,
-> > now-invalid pointers are used.
-> > 
-> > By forcing reallocation through fault injection, we can stress-test code
-> > paths and ensure proper pointer management after potential skb
-> > reallocations.
-> > 
-> > Add a hook for fault injection in the following functions:
-> > 
-> >   * pskb_trim_rcsum()
-> >   * pskb_may_pull_reason()
-> >   * pskb_trim()
-> > 
-> > As the other fault injection mechanism, protect it under a debug Kconfig
-> > called CONFIG_FAIL_SKB_FORCE_REALLOC.
-> > 
-> > This patch was *heavily* inspired by Jakub's proposal from:
-> > https://lore.kernel.org/all/20240719174140.47a868e6@kernel.org/
-> > 
-> > CC: Akinobu Mita <akinobu.mita@gmail.com>
-> > Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> 
-> I'm sorry to nit-pick, but checkpatch laments that the new command line
-> argument lacks documentation in
-> Documentation/admin-guide/kernel-parameters.txt, and I feel that could be
-> actually useful.
-> 
-> With that, feel free to include my ack in the next revision,
+Hello Pablo,
 
-Thanks Paolo, I will send a new updated version soon.
+I've reproduced the regression:
+
+> 20241023090545167 DGGSN NOTICE Initialized GTP kernel mode (genl ID is 32) (gtp-kernel.c:80)
+> [    0.721705] gtp: enable gtp on -1, 4
+> [    0.722017] gtp: gtp socket fd=-1 not found
+> 20241023090545169 DTUN ERROR cannot create GTP tunnel device: Bad file descriptor (tun.c:213)
+
+and verified that it is fixed with your patch. Thanks!
+
+Best regards,
+Oliver
+
+On 22.10.24 16:48, Pablo Neira Ayuso wrote:
+> Existing user space applications maintained by the Osmocom project are
+> breaking since a recent fix that addresses incorrect error checking.
+> 
+> Restore operation for user space programs that specify -1 as file
+> descriptor to skip GTPv0 or GTPv1 only sockets.
+> 
+> Fixes: defd8b3c37b0 ("gtp: fix a potential NULL pointer dereference")
+> Reported-by: Pau Espin Pedrol <pespin@sysmocom.de>
+
+Tested-by: Oliver Smith <osmith@sysmocom.de>
+
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> ---
+>   drivers/net/gtp.c | 22 +++++++++++++---------
+>   1 file changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+> index a60bfb1abb7f..70f981887518 100644
+> --- a/drivers/net/gtp.c
+> +++ b/drivers/net/gtp.c
+> @@ -1702,20 +1702,24 @@ static int gtp_encap_enable(struct gtp_dev *gtp, struct nlattr *data[])
+>   		return -EINVAL;
+>   
+>   	if (data[IFLA_GTP_FD0]) {
+> -		u32 fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
+> +		int fd0 = nla_get_u32(data[IFLA_GTP_FD0]);
+>   
+> -		sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
+> -		if (IS_ERR(sk0))
+> -			return PTR_ERR(sk0);
+> +		if (fd0 >= 0) {
+> +			sk0 = gtp_encap_enable_socket(fd0, UDP_ENCAP_GTP0, gtp);
+> +			if (IS_ERR(sk0))
+> +				return PTR_ERR(sk0);
+> +		}
+>   	}
+>   
+>   	if (data[IFLA_GTP_FD1]) {
+> -		u32 fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
+> +		int fd1 = nla_get_u32(data[IFLA_GTP_FD1]);
+>   
+> -		sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
+> -		if (IS_ERR(sk1u)) {
+> -			gtp_encap_disable_sock(sk0);
+> -			return PTR_ERR(sk1u);
+> +		if (fd1 >= 0) {
+> +			sk1u = gtp_encap_enable_socket(fd1, UDP_ENCAP_GTP1U, gtp);
+> +			if (IS_ERR(sk1u)) {
+> +				gtp_encap_disable_sock(sk0);
+> +				return PTR_ERR(sk1u);
+> +			}
+>   		}
+>   	}
+>   
+
+-- 
+- Oliver Smith <osmith@sysmocom.de>            https://www.sysmocom.de/
+=======================================================================
+* sysmocom - systems for mobile communications GmbH
+* Siemensstr. 26a
+* 10551 Berlin, Germany
+* Sitz / Registered office: Berlin, HRB 134158 B
+* Geschaeftsfuehrer / Managing Director: Harald Welte
+
