@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22281D9667;
-	Wed, 23 Oct 2024 14:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3AE206972;
+	Wed, 23 Oct 2024 14:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693861; cv=none; b=ZRAVLsB4weDwX7QJgC0809e9448GYyb3F4K/dYU7uCdoNI4/zu0FmKk0x+F5lWwkUJWxt9WzvoKaXKzZtiWWKUzWbSUsuif0FnWAZ1Eo8Mgw0p4tPAnY2y/1H2AlS+4MMPqtnLcoJslxIzpFxEUfAo7Hvc7GDN4ltrvLuq1hL7o=
+	t=1729693912; cv=none; b=DxF07Xd1pErlSI34wIS0V2zsaeCOrb1VvRnRUYVFpQVs5Nkag7X4Zxv3aWkcZ7s/KLMuQnHoEYvgPC4ezbm04ZmKCyIKSrPXoC4wJjDpgRpP5QtFC7XJMnCHha/XbsOCMDLjMY+gq1O/v+97GMcXluxj4WBMLv7l8hitBCKDlQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693861; c=relaxed/simple;
-	bh=TJDqKmWx8NFMqxvpICR8eEvMuQorJuWmsNwdKIDufc4=;
+	s=arc-20240116; t=1729693912; c=relaxed/simple;
+	bh=SlBQzsEAo/x6o3r86R4cy7HoJeHZz3+LE9P1qcBrK2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNu9SsN+BGcADxSq/nUAHBcE4yVV2qHEG1g+TY+TrFeeT8iHwY6rxglVVkvIxTVQayVnFiGyIAijtbL3Z9F7lvL2F7RfkhwGxJISVaVz0qPRJK/khAOdmG8wrO2KodDZEhTIqu621v+hD2HOaDhLNR0EIkl+IaJYCaDa8lKYWtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6+S0XV9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Y7pyLFGpZ7NsI0bKSs/He2p2/S50uglTnNuN5cemgporGGkfjOsazgRtmevx10z3l2Efz3aQ+imwm6XVHp0hGlODz0pn7yng04qFxQ+HQ7dN+dmcYIkcwSQSAONGnzr89s5rWGQykSFjMBUyQ4+lpqxj5Lm9HPSLbSwhbVqAzMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+eRgqnP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6+S0XV9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B57C4CEE6;
-	Wed, 23 Oct 2024 14:30:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+eRgqnP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C48AC4CEE6;
+	Wed, 23 Oct 2024 14:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693861;
-	bh=TJDqKmWx8NFMqxvpICR8eEvMuQorJuWmsNwdKIDufc4=;
+	s=k20201202; t=1729693912;
+	bh=SlBQzsEAo/x6o3r86R4cy7HoJeHZz3+LE9P1qcBrK2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6+S0XV90y4L3qG1gkwQ6Oypyk/YyaIkS2INgK5gWarYAh8jDf3K800YPs/JKDzs3
-	 dP25QqH4Vdum75Q6KcVNhTm/swv6VW9w2YRFF7/JKKULcIxeClL9jbIFrsoy9eX5Sy
-	 Kgt/VARXuXvxlZSJY6DwHDHBjqI14nCwwfX/SrQ/WUJnz6hRo1kt12DtFguvDfNsI+
-	 OBSOrIXrK3Nv9NYhLjkQbci1/bMhFsttA6X53obx/iSK5akBlHoKntqugMFiSN3czc
-	 KltLVirXuguMtxj0oF9OCK0+xL3EFbIEDxFVMG3b3RmD+FpbOuCDEwy4BUtmWVv+TC
-	 g1erKtq0WuowA==
+	b=s+eRgqnP/VPHsscwlonC5nIkcjq8IWkbnhskQqFtqH3RS7fl2Z5DBhPMiUPqCPeSj
+	 WUZpNbPjawDoKUxQZm1iOqQYAsrdU6/Z7J3t6CCFSn++6QJ1HLc9yGVPVNnCV64KOp
+	 hxznGR9BBmIHdri2dwHfkMCXjjPpcsVmGp/NGyYwOWezay+NVdIU9ND5T417QVtnuz
+	 ea1bCrhLV3B0zBMTIoHe5RNH/sA5pqGQBep9gqC+qPebed8dWFx3RV37003qOoa38X
+	 eYafkTi9Y3rTngyOssyZhp2rHdNP0Y5cYRD68Ia60cZOgGjw3UtHVbt3tSPvZkxpoT
+	 fpdFbKDgvGHWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -40,12 +40,12 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 27/30] net: phy: mdio-bcm-unimac: Add BCM6846 support
-Date: Wed, 23 Oct 2024 10:29:52 -0400
-Message-ID: <20241023143012.2980728-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 21/23] net: phy: mdio-bcm-unimac: Add BCM6846 support
+Date: Wed, 23 Oct 2024 10:31:05 -0400
+Message-ID: <20241023143116.2981369-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241023143012.2980728-1-sashal@kernel.org>
-References: <20241023143012.2980728-1-sashal@kernel.org>
+In-Reply-To: <20241023143116.2981369-1-sashal@kernel.org>
+References: <20241023143116.2981369-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.5
+X-stable-base: Linux 6.6.58
 Content-Transfer-Encoding: 8bit
 
 From: Linus Walleij <linus.walleij@linaro.org>
@@ -78,11 +78,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
-index f40eb50bb978d..b7bc70586ee0a 100644
+index 6b26a0803696d..a29838be335c9 100644
 --- a/drivers/net/mdio/mdio-bcm-unimac.c
 +++ b/drivers/net/mdio/mdio-bcm-unimac.c
-@@ -337,6 +337,7 @@ static const struct of_device_id unimac_mdio_ids[] = {
- 	{ .compatible = "brcm,asp-v2.2-mdio", },
+@@ -336,6 +336,7 @@ static SIMPLE_DEV_PM_OPS(unimac_mdio_pm_ops,
+ static const struct of_device_id unimac_mdio_ids[] = {
  	{ .compatible = "brcm,asp-v2.1-mdio", },
  	{ .compatible = "brcm,asp-v2.0-mdio", },
 +	{ .compatible = "brcm,bcm6846-mdio", },
