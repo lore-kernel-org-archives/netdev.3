@@ -1,138 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713535C603
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 02:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A545A48;
+	Wed, 23 Oct 2024 03:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729651198; cv=none; b=mv3BuccdMWc3pDuVi+/c5qD488uOqswPEYqSCHTP0xROJmWj4oxXlMkujM13if7W9LNBZRDlfyZg+2ZMKac/KM1EU6kkvLIcXvRLJZoVDO4qZwjjBKAJ4jfeuYGCVyt57AWSmmamKayv8i1RNjEArUAyDJBh+hs5XvkOHvv/1RA=
+	t=1729652725; cv=none; b=SwKlDN/ReYU7vmO0hTWFwHxKEq/PSFmPPANfymQLW/uaqTmVo+RUaC969b+FJwNhXCXO46Sb2SBUe1J7ZDju/zwxoUqwAmRNlpC5NArbKeOuvWiDx3DenE1fn8kJNW/+fo5cC29cdYZDHq0v/QQi4o0Sv4kOe6P7bWKnQMOKmn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729651198; c=relaxed/simple;
-	bh=fI2PP8aO+nTDU/nnhz7qcI6i6PH/omY2nZpMN6FK/9o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t77H6UVW/OeA4KFdy4JsGOODnFLWOj9Ls9W7Tq4oyZIKRnSqJmb8uz6vA4k7OGoimBV0f5DwvPqMlYz6DAdLiBaNH9x1A/fyWp4a+KJa/ZDcEzvKvTyIAKkxkpX0TfeONGGPfaI3yQSJU6beDBLfg+z7hFkkWyfTna9WK8nl980=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O4TMeZ+4; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729652725; c=relaxed/simple;
+	bh=bOzHRlqzme7Gk8wj104vkcRGuZynpK1QLzUDGGuNWhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AC1QLVMvFi4f8FERLqDsvRnUcpwnh6hMCMLQY8RdprMC6HOY2oJTiLLnqzZBwE2MTXuo0UuTscnzfIGHkge7g/nInCYz62m9vFwFALeklUKxj1zO+8gQdZbGmoDi5SYmjm0QNZTC9PNBJdQOn0egpqcS/A6KMfnOlK8b8ZdRDP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fwZGoD6R; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O4TMeZ+4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729651197; x=1761187197;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=fI2PP8aO+nTDU/nnhz7qcI6i6PH/omY2nZpMN6FK/9o=;
-  b=O4TMeZ+4BMsIVTzkfvmp5wKvUIiW8P+NI6hSNwsbXPjUjcAl0Gfh6og4
-   C8KT4wWhCh9mcn5e9MyZDevDHtDQjTcmJ3sm1kY/KRoS2864U498lR/Bo
-   vMKNOMC81EaJ2mepObQEbFVYk7rzztLGOzAP65CXOQb9qA7SSoboVz7h5
-   DZsR/pZnO/hFlD3OszWne0zecQTUOfbtOWa9DlHxcL4akBWhWDGqGSuzV
-   QP2rsfsgZjnm+S06mbJyvSyO/IIXQ1mNhHxyJu8nnczm2Cu+VVo+2CNu9
-   29O7ZZznpN5Jr31BHnCN7cFTrioSJKDuBa2DFtbQjo1VjAeGZRuRs3sUH
-   w==;
-X-CSE-ConnectionGUID: KIkVRUVUSjy8KYmuyQwIwA==
-X-CSE-MsgGUID: 49NkbMgQTiG3zuvoQOZUVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32918046"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="32918046"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 19:39:55 -0700
-X-CSE-ConnectionGUID: v24BRyP1T7ymzKN/4Lzeag==
-X-CSE-MsgGUID: axdojXz8SaObmq+J6tzNtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="80396834"
-Received: from timelab-spr11.ch.intel.com ([143.182.136.151])
-  by fmviesa010.fm.intel.com with ESMTP; 22 Oct 2024 19:39:54 -0700
-From: Chris H <christopher.s.hall@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: david.zage@intel.com,
-	vinicius.gomes@intel.com,
-	netdev@vger.kernel.org,
-	rodrigo.cadore@l-acoustics.com,
-	vinschen@redhat.com,
-	Christopher S M Hall <christopher.s.hall@intel.com>
-Subject: [PATCH iwl-net v2 4/4] igc: Add lock preventing multiple simultaneous PTM transactions
-Date: Wed, 23 Oct 2024 02:30:40 +0000
-Message-Id: <20241023023040.111429-5-christopher.s.hall@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241023023040.111429-1-christopher.s.hall@intel.com>
-References: <20241023023040.111429-1-christopher.s.hall@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fwZGoD6R"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20cb89a4e4cso44762265ad.3;
+        Tue, 22 Oct 2024 20:05:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729652723; x=1730257523; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QSo+aUkA2L09wnQi5t2l0lbWR/1059zX0K6vucStlzg=;
+        b=fwZGoD6Rm0AjroDQR8tRaIHNH4WdfyzXCET8kDwVwD2ijoSXu5h4TwztJrMtNzTEBO
+         7xvz65sip5WBSzyPLqZ9q3XsuTRl63xeO305vbHJhC2BhIUafzOnUWVLJBk21wJk3z1r
+         AKWODavF2cX0iUPHK1uCTJTOb6t0iA59S5KF6g0iWn7mh/NRxaqzdMIfrvFp8OEgzqcW
+         efqfIDhl6cTZtkweD5B+YRvRlaP3xErul9X+ebOdy2LtHnPBWr9ODO8ywG1+Nuq0hvvU
+         FwcRh1xXmiE6g5M/3a4DTtKOWQQmGc22d1dEa524p4PU6YaBpBXPQOMuK/v/5cDd12pQ
+         r0dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729652723; x=1730257523;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QSo+aUkA2L09wnQi5t2l0lbWR/1059zX0K6vucStlzg=;
+        b=MIEz9keE5Ph6fDIADBNcFq2TAcIcI6jFnpWSCdWCSrYMjew3AWAcm5BuQ/aR8KqCjz
+         UtBHyKKLvpYlhdqx34OixJ0ginhB2gSfeUUop7npTvU4DAfCIE8b1c7lL/NVKz+S5Iup
+         VRcQk3ERa1bWwkhH8sjFHHPMCf0zVVsxotyOV4Pm5nbzTXIOnK3hpErEWzAA8m3HrL97
+         ja7h8fhWko5fAdNslAHHWcVB6SFLU+K141ml6vMVKeOX7Cdx8BbC/MtW5JxbY8/3ns6a
+         bpdSKb6E8PblrxaSZyC2RRqkkv+oZGUO4C+swLJdAz+wxrujBT/IgDXk9NRGOdYWU1jH
+         9sxA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhc3GivwxJATzejSM+Dfk6jeiFZteWU7rg/GV6JNe6lOtpKocLgKvf6+sAiw0t2qjcnpDJtWuv@vger.kernel.org, AJvYcCUleU5VTH241E/wLbszxCueaT8Rc8yQMuSEK1rb1yrR2cRyXgCOqm7fqSNxen6EgNjIieX9gCTItI5QNLbs@vger.kernel.org, AJvYcCWGVmb79WzRCcbvXmzW258fKrQbt0gEO/kq0OrCElNUv9zK90E/3qpNzXhB5QoQGSFu/uL3vRJS1kddjSnrZZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1/+/j6vhLHr+x/yaLrfhEF26rempnDDW4YZ8ZIty4+/E03Gud
+	ke1sVcnYXs7Ng2nlwh9pds7q+a3mHJKSxDlhm2FgZM0XX5H4ypH+
+X-Google-Smtp-Source: AGHT+IGNCd6pswnFVJbP69j1MMou7cXV+SSVwZfX4y88ppmSoNsF/1akW0qlPsxclP17PP3VS2uVgw==
+X-Received: by 2002:a17:903:2287:b0:20c:bcd8:5ccb with SMTP id d9443c01a7336-20fa9e61d41mr16004915ad.30.1729652723384;
+        Tue, 22 Oct 2024 20:05:23 -0700 (PDT)
+Received: from Fantasy-Ubuntu ([2001:56a:7eb6:f700:b2d3:e25a:778e:1172])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeabb8418sm4914142a12.67.2024.10.22.20.05.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2024 20:05:22 -0700 (PDT)
+Date: Tue, 22 Oct 2024 21:05:20 -0600
+From: Johnny Park <pjohnny0508@gmail.com>
+To: Simon Horman <horms@kernel.org>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [net-next] igb: Fix spelling "intialize"->"initialize"
+Message-ID: <Zxhn8AfRBNzY8XEO@Fantasy-Ubuntu>
+References: <Zxc0HP27kcMwGyaa@Fantasy-Ubuntu>
+ <20241022160933.GB402847@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022160933.GB402847@kernel.org>
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
-
-Add a mutex around the PTM transaction to prevent multiple transactors
-
-Multiple processes try to initiate a PTM transaction, one or all may
-fail. This can be reproduced by running two instances of the
-following:
-
-$ sudo phc2sys -O 0 -i tsn0 -m
-
-PHC2SYS exits with:
-
-"ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
- fails
-
-Note: Normally two instance of PHC2SYS will not run, but one process
- should not break another.
-
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
----
- drivers/net/ethernet/intel/igc/igc.h     |  1 +
- drivers/net/ethernet/intel/igc/igc_ptp.c | 12 ++++++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index eac0f966e0e4..323db1e2be38 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -319,6 +319,7 @@ struct igc_adapter {
- 	struct timespec64 prev_ptp_time; /* Pre-reset PTP clock */
- 	ktime_t ptp_reset_start; /* Reset time in clock mono */
- 	struct system_time_snapshot snapshot;
-+	struct mutex ptm_lock; /* Only allow one PTM transaction at a time */
- 
- 	char fw_version[32];
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index fb885fcaa97c..4e1379b7d2ee 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -1068,9 +1068,16 @@ static int igc_ptp_getcrosststamp(struct ptp_clock_info *ptp,
- {
- 	struct igc_adapter *adapter = container_of(ptp, struct igc_adapter,
- 						   ptp_caps);
-+	int ret;
- 
--	return get_device_system_crosststamp(igc_phc_get_syncdevicetime,
--					     adapter, &adapter->snapshot, cts);
-+	/* This blocks until any in progress PTM transactions complete */
-+	mutex_lock(&adapter->ptm_lock);
-+
-+	ret = get_device_system_crosststamp(igc_phc_get_syncdevicetime,
-+					    adapter, &adapter->snapshot, cts);
-+	mutex_unlock(&adapter->ptm_lock);
-+
-+	return ret;
- }
- 
- static int igc_ptp_getcyclesx64(struct ptp_clock_info *ptp,
-@@ -1169,6 +1176,7 @@ void igc_ptp_init(struct igc_adapter *adapter)
- 	spin_lock_init(&adapter->ptp_tx_lock);
- 	spin_lock_init(&adapter->free_timer_lock);
- 	spin_lock_init(&adapter->tmreg_lock);
-+	mutex_init(&adapter->ptm_lock);
- 
- 	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
- 	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
--- 
-2.34.1
-
+On Tue, Oct 22, 2024 at 05:09:33PM +0100, Simon Horman wrote:
+> On Mon, Oct 21, 2024 at 11:11:56PM -0600, Johnny Park wrote:
+> > Simple patch that fixes the spelling mistake "intialize" in igb_main.c
+> > 
+> > Signed-off-by: Johnny Park <pjohnny0508@gmail.com>
+> 
+> Thanks Johnny,
+> 
+> I agree this is correct. But I am wondering if you could also fix the
+> following around 3909. It seems to be the only other non false-positive
+> flagged by codespell in this file.
+> 
+> mor -> more
+> 
+> -- 
+> pw-bot: changes-requested
+Sounds good, I'll make a new patch shortly.
