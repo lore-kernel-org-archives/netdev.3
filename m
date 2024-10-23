@@ -1,177 +1,73 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6281B4F07
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 13:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4AB83CC1;
+	Wed, 23 Oct 2024 13:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729690923; cv=none; b=QNpkHMoRIdxAGU3wZAUUGOJOBwEunTG0Ww6vA8VbApOJPAyThrv0QVUE5K97NlQRT2oIC/GJFN/ZyBemLadln37ZWjkEy8VBX2oowFFXPSIUXIs8vUo6y2endixh8//ewkJVXu8DJN67RXdm0C7rCI2z/NtJepgHjQ7tAzIvSpk=
+	t=1729690979; cv=none; b=f3rZFZJqR0xKDWeCT1lMiBNIroHkDA6ETxYGcwABsJ7UO4ViOteGJi62UDalghIAmGdGTec2Je/rPEU6gBgPlt8/NjvK8RWxP1mDGJNgMIcre/BMuNRP/ijsdEO8plVYv5e+lUHTUNUGFGupoZzQo0BBYNZopxj+bI7h16NA6EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729690923; c=relaxed/simple;
-	bh=jd8OQfKXaN1JKtuWUzrNENwnYood5pc4oOxsA32ILqw=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=TaNfodIUmmT661BMyc5AnLlvNTjlyZqWXmCwTbNn+sAiGJpH7va/xiD+AaE7UvCKTjWw+VEsDD++bZ3LP0rAG4Jj63wNkoFvJFHPaRTPt6rGBzrWxpngFW1YrgZGGklS1zrHG9vDWdiS4tQ7eGTKEfwTTtJ3IafkMSalXR6KQ0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eh7k5mX1; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eh7k5mX1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=38mX6vQDmwM4fbc/6POxhDUwyU0S+DQqQSP/6kMA1eM=; b=eh7k5mX1j+iIBSwjJIDJ105S5w
-	adeTSru/VLj0msTDG7FuHYC8A+lM+6ytFDRZ51Ihik/pGvEs0o5ibdmHsNyIVHoY9IvBQMvHw6bTg
-	emPoLSuvAtjQJVYhDLKrxfZ3mFYvsvI1Oztdij5eP6BPhOXaqt4WPvnI3MugT03yrSdggYj2AXdBx
-	8t/E6JvaTEJHDuDfz8ByenZtyc/qBTgSImSZABE8KRAvXONqoR9MyJJeLu4jUEeTpjKRKBMMC9u1D
-	Lm/dUGaWj3Gg1YZS9n0708efWvZ+qipAqSmxHIZbPJ0ApjYplZfbTRo4Br0lg9gipQ6Q0Ogg9ROXu
-	zjArT0eQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:34464 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1t3bca-0006V9-38;
-	Wed, 23 Oct 2024 14:41:57 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1t3bcb-000c8H-3e; Wed, 23 Oct 2024 14:41:57 +0100
-In-Reply-To: <Zxj8_clRmDA_G7uH@shell.armlinux.org.uk>
-References: <Zxj8_clRmDA_G7uH@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1729690979; c=relaxed/simple;
+	bh=n7cLF7zHYqAx+76dI4PF8+q8HbNgcOHOBVGEngQH9KY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uFlRlONHAkstCEOpe7SnNEEZJzKzKQk8t7vIBObTnf2uiKFDLQGi02a5vfEn9OMIYPyiYCkpHqV18dCExSQnkNXJ6hfxFcDgVwbpxwnnjv0uvuYAZiO1Oog2gvnFXM2KdL2r07WtEfF5yXzzFazzPe3PiYSS/Ro+V4jDcGtH1Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fb4ec17f5cso65079421fa.3;
+        Wed, 23 Oct 2024 06:42:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729690976; x=1730295776;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/lD78OmVjG6F7WkvlccJcCu6C0/3U8zr++1e/ZSoEU4=;
+        b=gleBoPeGWQXYPNtIUE/YQa03sXiGe4pvkGGsdwrG1AbmM69nmkeOZ4JMCDMmQ7aghB
+         hx2vD9MKJfQhM05FPzw7vQzrQ2sQuUk8kqW252w2Cros/VMRc0MmGpuNQA8Lq4DWSi+5
+         IK9oR+8tN6xhWSH6htqHwJ5zTySl5ZDCpXih4Eprjr/1vd9TfUHkvKqOnCQ4vW7GKXXw
+         tmaTix7wzqm/O6kwXoh6vehJBCnMR0zl6USXyEVxC4C3W18IndMueEvHmDjkT9YBgmBA
+         00c1URcTXrX2uirPI21/5uZXl3nzs+s8ZSBO4nfGPtvVM845uA6+1rfw4G7x0XYSyc+h
+         Nzww==
+X-Forwarded-Encrypted: i=1; AJvYcCXXfG95ZdHdeAPW+uB4dWQc4rewmrbBql+ZLmKmnX1Aajqz3rsyuKTI2iEUs3GXBgJUU2tHV99IIJKz4CE=@vger.kernel.org, AJvYcCXZea4bJIw/f9YRlJc/wT/OGBCxoHoMRTWxpO8rgZCsCJHpSHVTa4F5+p6NUt1ZPoxlR92neDZzDCbhAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuW0S0ht9jJQdDhzHtHbaQtQkDvslB5HFj/waR0vw/CYcotHgD
+	0R0X4uQwZC/57ZdgXUrqRiGu+j4R2Z0YnZ4q5E2Fh9PB+MBpkPTy
+X-Google-Smtp-Source: AGHT+IHetgLHGRAyVKfEUkgEUquxnQiZkddJnhW0Wp/4iTVgIfTlOT79mLKZ2PAe8Z++7e/4l23LPw==
+X-Received: by 2002:a2e:4c01:0:b0:2fc:9869:2e14 with SMTP id 38308e7fff4ca-2fc9d622b12mr10102061fa.45.1729690975613;
+        Wed, 23 Oct 2024 06:42:55 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-005.fbsv.net. [2a03:2880:30ff:5::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb6696b561sm4407777a12.20.2024.10.23.06.42.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 06:42:55 -0700 (PDT)
+Date: Wed, 23 Oct 2024 06:42:52 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Sebastian Ott <sebott@redhat.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: phylink: simplify how SFP PHYs are
- attached
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Parav Pandit <parav@nvidia.com>
+Subject: Re: [PATCH v2 RESEND] net/mlx5: unique names for per device caches
+Message-ID: <20241023-aquamarine-koala-of-freedom-ff5f77@leitao>
+References: <20240920181129.37156-1-sebott@redhat.com>
+ <20241023134146.28448-1-sebott@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1t3bcb-000c8H-3e@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 23 Oct 2024 14:41:57 +0100
+In-Reply-To: <20241023134146.28448-1-sebott@redhat.com>
 
-There are a few issues with how SFP PHYs are attached:
+On Wed, Oct 23, 2024 at 03:41:46PM +0200, Sebastian Ott wrote:
+> Add the device name to the per device kmem_cache names to
+> ensure their uniqueness. This fixes warnings like this:
+> "kmem_cache of name 'mlx5_fs_fgs' already exists".
+> 
+> Reviwed-by: Breno Leitao <leitao@debian.org>
+in fact, it should be:
 
-a) The phylink_sfp_connect_phy() and phylink_sfp_config_phy() code
-   validates the configuration three times:
-
-1. To discover the support/advertising masks that the PHY/PCS/MAC
-   can support in order to select an interface.
-2. To validate the selected interface.
-3. When the PHY is brought up after being attached, another validation
-   is done.
-
-   This is needlessly complex.
-
-b) The configuration is set prior to the PHY being attached, which
-   means we don't have the PHY available in phylink_major_config()
-   for phylink_pcs_neg_mode() to make decisions upon.
-
-We have already added an extra step to validate the selected interface,
-so we can now move the attachment and bringup of the PHY earlier,
-inside phylink_sfp_config_phy(). This results in the validation at
-step 2 above becoming entirely unnecessary, so remove that too.
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/phy/phylink.c | 44 +++++++++++++--------------------------
- 1 file changed, 14 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 4049d85cb477..29206f72ab8b 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3231,10 +3231,8 @@ static void phylink_sfp_set_config(struct phylink *pl, u8 mode,
- static int phylink_sfp_config_phy(struct phylink *pl, u8 mode,
- 				  struct phy_device *phy)
- {
--	__ETHTOOL_DECLARE_LINK_MODE_MASK(support1);
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(support);
- 	struct phylink_link_state config;
--	phy_interface_t iface;
- 	int ret;
- 
- 	linkmode_copy(support, phy->supported);
-@@ -3255,20 +3253,21 @@ static int phylink_sfp_config_phy(struct phylink *pl, u8 mode,
- 		return ret;
- 	}
- 
--	iface = phylink_sfp_select_interface(pl, config.advertising);
--	if (iface == PHY_INTERFACE_MODE_NA)
-+	config.interface = phylink_sfp_select_interface(pl, config.advertising);
-+	if (config.interface == PHY_INTERFACE_MODE_NA)
- 		return -EINVAL;
- 
--	config.interface = iface;
--	linkmode_copy(support1, support);
--	ret = phylink_validate(pl, support1, &config);
--	if (ret) {
--		phylink_err(pl,
--			    "validation of %s/%s with support %*pb failed: %pe\n",
--			    phylink_an_mode_str(mode),
--			    phy_modes(config.interface),
--			    __ETHTOOL_LINK_MODE_MASK_NBITS, support,
--			    ERR_PTR(ret));
-+	/* Attach the PHY so that the PHY is present when we do the major
-+	 * configuration step.
-+	 */
-+	ret = phylink_attach_phy(pl, phy, config.interface);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* This will validate the configuration for us. */
-+	ret = phylink_bringup_phy(pl, phy, config.interface);
-+	if (ret < 0) {
-+		phy_detach(phy);
- 		return ret;
- 	}
- 
-@@ -3426,9 +3425,7 @@ static bool phylink_phy_no_inband(struct phy_device *phy)
- static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
- {
- 	struct phylink *pl = upstream;
--	phy_interface_t interface;
- 	u8 mode;
--	int ret;
- 
- 	/*
- 	 * This is the new way of dealing with flow control for PHYs,
-@@ -3449,20 +3446,7 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
- 			  pl->config->supported_interfaces);
- 
- 	/* Do the initial configuration */
--	ret = phylink_sfp_config_phy(pl, mode, phy);
--	if (ret < 0)
--		return ret;
--
--	interface = pl->link_config.interface;
--	ret = phylink_attach_phy(pl, phy, interface);
--	if (ret < 0)
--		return ret;
--
--	ret = phylink_bringup_phy(pl, phy, interface);
--	if (ret)
--		phy_detach(phy);
--
--	return ret;
-+	return phylink_sfp_config_phy(pl, mode, phy);
- }
- 
- static void phylink_sfp_disconnect_phy(void *upstream,
--- 
-2.30.2
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
