@@ -1,35 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494D214D430;
-	Wed, 23 Oct 2024 08:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD8B157E78
+	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 08:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729671022; cv=none; b=DRS4HhuM0n2x/WuGQIobyd4dSoA+15L68nDhtEyTaambQsVAgnYq2iqV32qXJWuwwNJvONI/RHRZmJIGslwus2V3QqMzwqWB8GdnGVBe64o31vnNtKoKbaq9BxKUSeenLAQxrpbOMi5ezRkv1ebUZf4hGkMU2E0zRS2OsNMLs4A=
+	t=1729671041; cv=none; b=Z9PxyL6milavDFwrglg0oVQR0Kwtl1W8AQdVYmxcgbQUHj+tD/vN10a8ygys/yYstLS3JRo1A3xIDpPrHEvfYgtnRlzBIZlikgK5jt+IDp2PKnjYc8zppyO/vwQNn+7JCYJahg8ITTu8X1ZqZdwLdtwUcAzZmo9PL41HfcBw+Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729671022; c=relaxed/simple;
-	bh=KEVapUmSHNAnKHpUbqWWY7HUKA/s/hQPC4oid7+P+4c=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QhWzGd4kj1ZAQMQTTqORxWBNaPniFHxrQJoYXLXzRq0tcHYjPNPNkEhx6rG6iWuPu/CC+jQI+c70vPIBjEX5yWb3R6WyyECvZKrluGxFuOUaNKkuSa/XbcCps8E4IWoSQHjmROTvkkUKsygjfpMGVNYP4q3glM5YPP9Jt06fuGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MjQfwkvT; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MjQfwkvT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2467BC4CEC6;
-	Wed, 23 Oct 2024 08:10:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729671022;
-	bh=KEVapUmSHNAnKHpUbqWWY7HUKA/s/hQPC4oid7+P+4c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MjQfwkvTLzps/JFjJs67ULTPscnSGnQaHYrAx0jJE4b1CAS0Q6esK576yhzQ9Crjs
-	 U8aXuDK66V7EOxYo5daH9+0muYtVxEJFqezbJX6x2TXO2qm3HFbzR3uinacSzV+2La
-	 cBv61MhLs/UeFpllE7crC+UsYQCNte5TO2abx3sPBS2MoItWhRUiQ6iu/BBWc6vCoH
-	 l0RiOIf8NapXhe8u/9EVLRs9TC9qFHN1e4MxmfxGgOniroW65KEECPYFEZE2OTlKj+
-	 1YBhiBcAPnb1mskiaUjPJ4MTAQdieCZjna4rPGNhKrd3qIk3JvFP2AaH9elZzi6KfC
-	 K2eNGWuWy/ycg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD2B3809A8A;
-	Wed, 23 Oct 2024 08:10:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1729671041; c=relaxed/simple;
+	bh=LOpu70cwJidgCBxiWDxTE2T+gCEG72KKRcQuNgOV5OQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FoLc4W9JhUkE5/HP2VVXFudoyWC6MKlQZo0Q5XUZavyvM/z1gV04x9bL42+ZSrkWH75yOtU26udJkjZtenRZL+3JxpYcacmGeE7ojYiLbw/GROjhVBIlF7JvukZM8kY2DHAzuffRR5kQaQTZlmKAFydnVrcLeti5ix/wqzZE1IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XYMBH3vhkzpWtL;
+	Wed, 23 Oct 2024 16:08:39 +0800 (CST)
+Received: from dggpemf100006.china.huawei.com (unknown [7.185.36.228])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8CAB814022F;
+	Wed, 23 Oct 2024 16:10:36 +0800 (CST)
+Received: from thunder-town.china.huawei.com (10.174.178.55) by
+ dggpemf100006.china.huawei.com (7.185.36.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 23 Oct 2024 16:10:35 +0800
+From: Zhen Lei <thunder.leizhen@huawei.com>
+To: Rasesh Mody <rmody@marvell.com>, Sudarsana Kalluru <skalluru@marvell.com>,
+	<GR-Linux-NIC-Dev@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
+ . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>
+CC: Zhen Lei <thunder.leizhen@huawei.com>
+Subject: [PATCH 1/2] bna: Fix return value check for debugfs create APIs
+Date: Wed, 23 Oct 2024 16:09:20 +0800
+Message-ID: <20241023080921.326-2-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.37.3.windows.1
+In-Reply-To: <20241023080921.326-1-thunder.leizhen@huawei.com>
+References: <20241023080921.326-1-thunder.leizhen@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,39 +44,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: use sock_valbool_flag() only in
- __sock_set_timestamps()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172967102851.1512053.4625084732459579673.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Oct 2024 08:10:28 +0000
-References: <20241017133435.2552-1-yajun.deng@linux.dev>
-In-Reply-To: <20241017133435.2552-1-yajun.deng@linux.dev>
-To: Yajun Deng <yajun.deng@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf100006.china.huawei.com (7.185.36.228)
 
-Hello:
+Fix the incorrect return value check for debugfs_create_dir() and
+debugfs_create_file(), which returns ERR_PTR(-ERROR) instead of NULL
+when it fails.
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Commit 4ad23d2368cc ("bna: Remove error checking for
+debugfs_create_dir()") allows the program to continue execution if the
+creation of bnad->port_debugfs_root fails, which causes the atomic count
+bna_debugfs_port_count to be unbalanced. The corresponding error check
+need to be added back.
 
-On Thu, 17 Oct 2024 21:34:35 +0800 you wrote:
-> sock_{,re}set_flag() are contained in sock_valbool_flag(),
-> it would be cleaner to just use sock_valbool_flag().
-> 
-> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-> ---
->  net/core/sock.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+Fixes: 4ad23d2368cc ("bna: Remove error checking for debugfs_create_dir()")
+Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+---
+ drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-Here is the summary with links:
-  - [net-next] net: use sock_valbool_flag() only in __sock_set_timestamps()
-    https://git.kernel.org/netdev/net-next/c/6886c14bdc30
-
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+index 97291bfbeea589e..ad0b29391f990f3 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
++++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+@@ -493,25 +493,29 @@ void
+ bnad_debugfs_init(struct bnad *bnad)
+ {
+ 	const struct bnad_debugfs_entry *file;
++	struct dentry *de;
+ 	char name[64];
+ 	int i;
+ 
+ 	/* Setup the BNA debugfs root directory*/
+ 	if (!bna_debugfs_root) {
+-		bna_debugfs_root = debugfs_create_dir("bna", NULL);
++		de = debugfs_create_dir("bna", NULL);
+ 		atomic_set(&bna_debugfs_port_count, 0);
+-		if (!bna_debugfs_root) {
++		if (IS_ERR(de)) {
+ 			netdev_warn(bnad->netdev,
+ 				    "debugfs root dir creation failed\n");
+ 			return;
+ 		}
++		bna_debugfs_root = de;
+ 	}
+ 
+ 	/* Setup the pci_dev debugfs directory for the port */
+ 	snprintf(name, sizeof(name), "pci_dev:%s", pci_name(bnad->pcidev));
+ 	if (!bnad->port_debugfs_root) {
+-		bnad->port_debugfs_root =
+-			debugfs_create_dir(name, bna_debugfs_root);
++		de = debugfs_create_dir(name, bna_debugfs_root);
++		if (IS_ERR(de))
++			return;
++		bnad->port_debugfs_root = de;
+ 
+ 		atomic_inc(&bna_debugfs_port_count);
+ 
+@@ -523,7 +527,7 @@ bnad_debugfs_init(struct bnad *bnad)
+ 							bnad->port_debugfs_root,
+ 							bnad,
+ 							file->fops);
+-			if (!bnad->bnad_dentry_files[i]) {
++			if (IS_ERR(bnad->bnad_dentry_files[i])) {
+ 				netdev_warn(bnad->netdev,
+ 					    "create %s entry failed\n",
+ 					    file->name);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
