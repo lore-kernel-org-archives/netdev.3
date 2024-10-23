@@ -1,71 +1,83 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFC53A8D0
-	for <netdev@vger.kernel.org>; Wed, 23 Oct 2024 07:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29ED3A8D0;
+	Wed, 23 Oct 2024 07:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729668064; cv=none; b=YQYf9qSO7E2Ku0V23Bgy/H+fHgeNM+/8D5vDgxz5Cx1wVIxIAPvhFG6Eiy7o8nZmSGlEqVv611Bn2WbbMTaLIEgIYFU+V13SMY5tSY19YQKRHZ+7h7k2qXXyslk1Lp9b1wctg/7EDnaw1J4uBhjufq0opqKGEWRQX0axFEHqPwY=
+	t=1729668120; cv=none; b=ROSgIo2eyd4R7r3aK9YrOrbDNpGj4yPRPfpI6D/WZqJXx/jLy0lrdR90lNTiOGECM1uwmrtIEds4aTyFcwJpB7V1Vl5GlL/1vdIDJpZHx7RCdXOmCAl0XG9UbJSMq5guvxQR080XBN/o8Cc9JLyx/kJlmuUr/oCww/p8Fn/cQwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729668064; c=relaxed/simple;
-	bh=9lEGaxY+Lh9tuFwrLh09Xs9uWI18TVqbHDoQNZ6hhmo=;
+	s=arc-20240116; t=1729668120; c=relaxed/simple;
+	bh=50ezmcEJzxDJ24mowip9lHrIonLa3G33aAyWzqTY2C8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y48Gdzk14zJ2h/NG60xE2kvtnoiZJZfIKLbwG7G1d40WqHpPDEh6HfaW02ktC3jV3775+YrZVlBmDMdnbrjxXMEJl0DBoHjUAX7ggUEwve+28oy7IFAAidiTolnK5PScB0hMMonUigE+MhkKcs/QYnlWv/1nJb9z/OT8llaoK4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2e3wquT; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GpBU25QqYn8f8/8zwN5KCZ0AW/ad1C8CSaewJ12eQVBRbociayZvYpcN8GkRYafSmH92NSvE3QRXawpCiRQKHhVngwEefkcssYNW4BObkwX8ocOTxP0lsvIjW1w+F/812GyHuddkpWKcvpRAJK53Selg7cC7Ojgqc231Ly+Cgb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aukyNOez; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2e3wquT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729668063; x=1761204063;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9lEGaxY+Lh9tuFwrLh09Xs9uWI18TVqbHDoQNZ6hhmo=;
-  b=j2e3wquTsCvmvAjJyO2OA4NHokHjnVmwxOcNpZA4rO47Yik2/YA6Qfok
-   fiyA4nxHNSSoKZMTAo7nwHYOl1rJ7nlYKTacBp+Vj20xj7yoHDV0ZdRPn
-   tl0ua9hPzlnwj90TygK6B5zFrs5s6kcr+vuZAifNzzBSGEzf1s3gkUQR9
-   cZFNPuseWIXDzwcHSHE8SXPBR9Gz0y7hcAq1DiCDKUqlragCIXL3/Mlb7
-   AC7TlnADc1cB/ZMyIFpr7JpW/w5pXtUAPGlFRVO9yeoufjqhf3MABPS0y
-   TU5iYTyhvL0W3xdVg+3qRHmuY9tWvWHChWaIR14bZNfTrHpcGF4VQhR3M
-   w==;
-X-CSE-ConnectionGUID: usirx8xLQvmmQcLM/AHGKw==
-X-CSE-MsgGUID: jOEmsLYIQtqrFnM/SQ3VQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32935695"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="32935695"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 00:19:36 -0700
-X-CSE-ConnectionGUID: lk1904+xSmWQ/pdMWDShpw==
-X-CSE-MsgGUID: 4j4Fdq5JQZixQ9GuuxUnWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; 
-   d="scan'208";a="80522555"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 00:19:32 -0700
-Date: Wed, 23 Oct 2024 09:17:03 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: David Laight <David.Laight@aculab.com>, Simon Horman <horms@kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"pawel.chmielewski@intel.com" <pawel.chmielewski@intel.com>,
-	"sridhar.samudrala@intel.com" <sridhar.samudrala@intel.com>,
-	"pio.raczynski@gmail.com" <pio.raczynski@gmail.com>,
-	"konrad.knitter@intel.com" <konrad.knitter@intel.com>,
-	"marcin.szycik@intel.com" <marcin.szycik@intel.com>,
-	"wojciech.drewek@intel.com" <wojciech.drewek@intel.com>,
-	"nex.sw.ncis.nat.hpm.dev@intel.com" <nex.sw.ncis.nat.hpm.dev@intel.com>,
-	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>
-Subject: Re: [iwl-next v4 3/8] ice: get rid of num_lan_msix field
-Message-ID: <Zxii7w4TpJGBL4g3@mev-dev.igk.intel.com>
-References: <20240930120402.3468-1-michal.swiatkowski@linux.intel.com>
- <20240930120402.3468-4-michal.swiatkowski@linux.intel.com>
- <20241012151304.GK77519@kernel.org>
- <636e511e-055d-4b7d-8fdb-13e546ff5b90@intel.com>
- <3e015d17e53f4cdd813c88c93b966810@AcuMS.aculab.com>
- <534ab479-29a1-4a95-a9e1-d068b5290ebd@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aukyNOez"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20c8c50fdd9so3948855ad.0;
+        Wed, 23 Oct 2024 00:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729668118; x=1730272918; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JpW5l4cHfObYzl7+2svJ3Qk3MetE1pLsV3fZ39aook=;
+        b=aukyNOezlMoyLLPOnobizcuoLXqApP5+SFgftgaMYrQjRAdreKkGefUiRwcKrgFh1U
+         vGXymT3blML9AdzJEp82I3rj/PjG2sF8I5xl8gvFlCkKMpeQC+ejulE6YEA2/XinL3vA
+         +QCW5EsZGT/0O9bGOEtohDS1Kk9idGqKBtdqjNSppbAsiZC96GzOOraPkv82KYPTESfA
+         mz3c5JMWgU4iT4XKn4+Acbf8Ygcp6npnEf97AmDT0UaqTWOGkFo+KkB5a2+4sWxdccz3
+         f+GEL7DJrKJOdhNUXTZ3vQaJ+061vV6E1UAj/04cMCw1zMlX3b0wUkdL4dUxOMMR8UYG
+         ltLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729668118; x=1730272918;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3JpW5l4cHfObYzl7+2svJ3Qk3MetE1pLsV3fZ39aook=;
+        b=Yayv2axVMXF7Hti/dUmaoOkLGQSLJCcCwqe4cLI8vYYF+hy/4QcKjE9Oe2nisrgMki
+         0NZAdHFqISEYe1VdEum2AtGMxSK2pTPKupb3+Sdgs1x+IrZ3y+X1Ebv4Kdm9sXIGRDJ5
+         +CYwjBhOHvJgFysK11E1J9AUUbkwPAUxx69MjKcGsl1TTi5mH5RXsRYkThqRClu2FdQO
+         G23TkTBDcjz46bEQK91/S4hDrI98A+CppOjMNg7Z0gkRwW7jYLVZ7z7ynMaC8PrreAPO
+         S5MEYRjGCCEtFBNRvI5HSwETP4fyWJ5g1kwKk7tBYuA4uXR+perEH8uqBM9qY2cpw+ri
+         aNSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0Tzc5GX6BT1R+lAKCrJfejs7gu4A1ISfuDxTzj3K2/uQAjqh7aBOIUqTlRb4uc0fut2lGEYNb@vger.kernel.org, AJvYcCVHZPeLqCYjOQP3TPAHjN9OabwvAX3yjw0oKVKu2moXis40NlOJnDLPFkrnWYjXjBM9h5RiCUJl4E1U@vger.kernel.org, AJvYcCX6z5FOaaugTphGsLZR7YFT+aYaojDTW8pgHI+Aq55Nqe4x7Ko5loOW+/gXSxSHaLGymikn7v5lXNcjT7v7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx46+GZDEEvpBgdNr4qM/m7FYZ1zBvL/tbPxcGiK3fyjCEmTEkO
+	AQKf1POiv1CISXxl8kK11IbSUe4nAT5n2YWY/CCChVEjx8ojpuFv
+X-Google-Smtp-Source: AGHT+IFtrw0bTSDjOUHwOCouu0KJSU1+vA+nX8p6eBupMmcRvLXscxMVgLjlJ5OaperPpo2phGpacw==
+X-Received: by 2002:a17:903:244a:b0:205:8763:6c2d with SMTP id d9443c01a7336-20fa9ea22f1mr30676555ad.9.1729668117790;
+        Wed, 23 Oct 2024 00:21:57 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7eeef535sm52795975ad.44.2024.10.23.00.21.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 00:21:57 -0700 (PDT)
+Date: Wed, 23 Oct 2024 15:21:36 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Chen Wang <unicorn_wang@outlook.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Inochi Amaoto <inochiama@outlook.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Yixun Lan <dlan@gentoo.org>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 4/4] net: stmmac: Add glue layer for Sophgo SG2044 SoC
+Message-ID: <amg64lxjjetkzo5bpi7icmsfgmt5e7jmu2z2h3duqy2jcloj7s@nma2hjk4so5b>
+References: <20241021103617.653386-1-inochiama@gmail.com>
+ <20241021103617.653386-5-inochiama@gmail.com>
+ <227daa87-1924-4b0b-80db-77507fc20f19@lunn.ch>
+ <gwtiuotmwj2x3d5rhfrploj7o763yjye4jj7vniomv77s7crqx@5jwrpwrlwn4s>
+ <65720a16-d165-4379-a01f-54340fb907df@lunn.ch>
+ <424erlm55tuorjvs2xgmanzpximvey22ufhzf3fli7trpimxih@st4yz53hpzzr>
+ <66f35d1b-fd26-429b-bbf9-d03ed0c1edaf@lunn.ch>
+ <zum7n3656qonk4sdfu76owfs4jk2mkjrzayd57uuoqeb6iiris@635pw3mqymqd>
+ <d691a687-c0e2-48a9-bf76-d0a086aa7870@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,96 +86,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <534ab479-29a1-4a95-a9e1-d068b5290ebd@intel.com>
+In-Reply-To: <d691a687-c0e2-48a9-bf76-d0a086aa7870@lunn.ch>
 
-On Mon, Oct 14, 2024 at 03:23:49PM -0700, Jacob Keller wrote:
-> 
-> 
-> On 10/14/2024 12:04 PM, David Laight wrote:
-> > From: Jacob Keller
-> >> Sent: 14 October 2024 19:51
-> >>
-> >> On 10/12/2024 8:13 AM, Simon Horman wrote:
-> >>> + David Laight
-> >>>
-> >>> On Mon, Sep 30, 2024 at 02:03:57PM +0200, Michal Swiatkowski wrote:
-> >>>> Remove the field to allow having more queues than MSI-X on VSI. As
-> >>>> default the number will be the same, but if there won't be more MSI-X
-> >>>> available VSI can run with at least one MSI-X.
-> >>>>
-> >>>> Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-> >>>> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> >>>> ---
-> >>>>  drivers/net/ethernet/intel/ice/ice.h         |  1 -
-> >>>>  drivers/net/ethernet/intel/ice/ice_base.c    | 10 +++-----
-> >>>>  drivers/net/ethernet/intel/ice/ice_ethtool.c |  8 +++---
-> >>>>  drivers/net/ethernet/intel/ice/ice_irq.c     | 11 +++------
-> >>>>  drivers/net/ethernet/intel/ice/ice_lib.c     | 26 +++++++++++---------
-> >>>>  5 files changed, 27 insertions(+), 29 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-> >>>> index cf824d041d5a..1e23aec2634f 100644
-> >>>> --- a/drivers/net/ethernet/intel/ice/ice.h
-> >>>> +++ b/drivers/net/ethernet/intel/ice/ice.h
-> >>>> @@ -622,7 +622,6 @@ struct ice_pf {
-> >>>>  	u16 max_pf_txqs;	/* Total Tx queues PF wide */
-> >>>>  	u16 max_pf_rxqs;	/* Total Rx queues PF wide */
-> >>>>  	struct ice_pf_msix msix;
-> >>>> -	u16 num_lan_msix;	/* Total MSIX vectors for base driver */
-> >>>>  	u16 num_lan_tx;		/* num LAN Tx queues setup */
-> >>>>  	u16 num_lan_rx;		/* num LAN Rx queues setup */
-> >>>>  	u16 next_vsi;		/* Next free slot in pf->vsi[] - 0-based! */
-> >>>
-> >>> ...
-> >>>
-> >>>> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> >> b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> >>>> index 85a3b2326e7b..e5c56ec8bbda 100644
-> >>>> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> >>>> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> >>>> @@ -3811,8 +3811,8 @@ ice_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *info)
-> >>>>   */
-> >>>>  static int ice_get_max_txq(struct ice_pf *pf)
-> >>>>  {
-> >>>> -	return min3(pf->num_lan_msix, (u16)num_online_cpus(),
-> >>>> -		    (u16)pf->hw.func_caps.common_cap.num_txq);
-> >>>> +	return min_t(u16, num_online_cpus(),
-> >>>> +		     pf->hw.func_caps.common_cap.num_txq);
-> >>>
-> >>> It is unclear why min_t() is used here or elsewhere in this patch
-> >>> instead of min() as it seems that all the entities being compared
-> >>> are unsigned. Are you concerned about overflowing u16? If so, perhaps
-> >>> clamp, or some error handling, is a better approach.
-> >>>
-> >>> I am concerned that the casting that min_t() brings will hide
-> >>> any problems that may exist.
-> >>>
-> >> Ya, I think min makes more sense. min_t was likely selected out of habit
-> >> or looking at other examples in the driver.
+On Wed, Oct 23, 2024 at 03:08:52AM +0200, Andrew Lunn wrote:
+> On Wed, Oct 23, 2024 at 08:41:36AM +0800, Inochi Amaoto wrote:
+> > On Tue, Oct 22, 2024 at 03:51:08PM +0200, Andrew Lunn wrote:
+> > > On Tue, Oct 22, 2024 at 06:21:49PM +0800, Inochi Amaoto wrote:
+> > > > On Mon, Oct 21, 2024 at 03:27:18PM +0200, Andrew Lunn wrote:
+> > > > > > It is related to the RGMII delay. On sg2044, when the phy 
+> > > > > > sets rx-delay, the interal mac is not set the same delay, 
+> > > > > > so this is needed to be set.
+> > > > > 
+> > > > > This is the wrong way to do it. Please look at how phy-mode should be
+> > > > > used, the four different "rgmii" values. Nearly everybody gets this
+> > > > > wrong, so there are plenty of emails from me in the netdev list about
+> > > > > how it should be done.
+> > > > > 
+> > > > 
+> > > > The phy-mode is alreay set to the "rgmii-id" and a rx delay is already
+> > > > set (a default tx delay is set by the phy driver). In the scenario 
+> > > > the extra bit is used to fix 2ns difference between the sampling clock
+> > > > and data. It is more like an extra setting and the kernel can not handle
+> > > > it by only setting the phy-mode.
+> > > 
+> > > This sounds wrong.
+> > > 
+> > > So in DT you have rgmii-id? You say the PHY is doing TX delay. So you
+> > > pass PHY_INTERFACE_MODE_RGMII_TXID to the PHY? It is not clear from
+> > > this patch, i don't see any code mentioning
+> > > PHY_INTERFACE_MODE_RGMII_TXID. Could you point me at that code.
+> > > 
+> > > 	Andrew
 > > 
-> > My 'spot patches that use min_t()' failed to spot that one.
-> > 
-> > But it is just plain wrong - and always was.
-> > You want a result that is 16bits, casting the inputs is wrong.
-> > Consider a system with 64k cpus!
-> > 
+> > The phy on the board I have is YT8531, The config code is here:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/phy/motorcomm.c#n868
 > 
-> Yea, that makes sense. This is definitely not going to behave well in
-> the event that one of the values is above 16-bit.
+> This PHY should be able to do rgmii-id, so there is no need for the
+> MAC to add delays. We encourage that setup in linux, so all RGMII
+> MAC/PHY pairs are the same, the PHY add the delays.
 > 
 
-I blindly copied that, thanks for pointing it, will fix in next version.
+Yes, this is what I have done at the beginning. At first I only
+set up the phy setting and not set the config in the syscon. 
+But I got a weird thing: the phy lookback test is timeout. 
+Although the datasheet told it just adds a internal delay for 
+the phy, I suspect sophgo does something more to set this delay.
 
-Thanks,
-Michal
-
-> > Pretty much all the min_t() that specify u8 or u16 are likely to
-> > be actually broken.
-> > Most of the rest specify u32 or u64 in order to compare (usually)
-> > unsigned values of different sizes.
-> > But I found some that might be using 'long' on 64bit values
-> > on 32bit (and as disk sector numbers!).
-> > 
-> > In the current min() bleats, the code is almost certainly awry.
-> > 
-> > 	David
+Regards,
+Inochi
