@@ -1,153 +1,125 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E841F9EB5;
-	Thu, 24 Oct 2024 17:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C83918991B
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 17:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729790338; cv=none; b=EpPHZwZ9onOzcKGNhp3gTx3Q5xdAwdbeeY6gBpNdH9eFTSomL6CfO8bfn/6Bi4XWN61dRBBTu7CEn4/u7UABIJZ9rd7YHilP0+CFZ70LsKZ3BH5CX0dYnpLaMB0wXXRHgRtYOndQ9a8QkBOKto0g2Sh6z6q4+1hyYtMpKniyY7k=
+	t=1729790750; cv=none; b=KTbZBqmF6IwGXM50n6w+ejRVfk4ls+qIfclU6DuBvzwO+2AxEvjdhcv798cGPZALsmJ29hILHvD4E4viyBjyFHMIdh43tu4h8hXPpJhIJbMfqyavUj25ZEl5nfREnOYZbga0ih7sMZOeAcEVpwg8JT1r3+rJoOyjYeyKtmy9rcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729790338; c=relaxed/simple;
-	bh=nTVRYLsAvfk/lLXdgAe/3h3LsHu4QnTJysO1smFIuPY=;
+	s=arc-20240116; t=1729790750; c=relaxed/simple;
+	bh=tr+Qm5f12B2SPCCFaFP2Nj8I8ueUgelJy0p6OTXIe9U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rI+5xd8lyVenAIe0yasEvq6UVvEcrfLKfyCmygcbXZruvMmeURc8NfvZKcfB+euCyK3hwGcKyPEZRe1Lc8nGG8NKRetdnRJhPT7Elh+Zxhyn/fX+pJXaJd7ku6mEtn4FvDZDBOPNnONSRbERffEP1K4zSuYKYaq/q3GlEfBN1W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Prfqp2Zu; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=bGghI5Fvw7EdYjoxnIPjkAB+aL+K1zzDUqVBVeXlcepJX7Zqpd8QWw2T3XGJMRbPb4IOEs2R0lW3tPyDXWn8/phwmCz1Wi6Iz7Kye4BE1YGLpaFSEllRXmrRPheyfO7HwT+VEQSEQJrRYLYo4oi2lggAltBd/TrhtQwTglUIJgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=La4GjTBU; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Prfqp2Zu"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2ee0a47fdso220803a91.2;
-        Thu, 24 Oct 2024 10:18:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="La4GjTBU"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e983487a1so867933b3a.2
+        for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 10:25:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729790336; x=1730395136; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nTVRYLsAvfk/lLXdgAe/3h3LsHu4QnTJysO1smFIuPY=;
-        b=Prfqp2ZuNz9ZfxOiZ0LAYZZSuBTYGgX2obrfvhcd++kQxyNMdvVhJ6L6aWjQUSi5Va
-         N/+y4AWdfKZ3hRICJIKnKF6z6fQZFaktgOVdXoPYoYZV5vSTSWv2FUZk5PBOkER/LiGr
-         yf66R8rKpcxixfl415YR1ufwpvg2kb/q90QXALebQ1yrQIlL/+1G5dAZUFSGlMxTtc6v
-         pNHzkAA4KTWdsQ5Z8LWE2zbJmnEFUA6s7tsqyFwFzM09+NBVjjHNy4MGHQIPgDmpJA//
-         eJz6gebb9VYZbO6u3KIuczbdSCpcHiTjy3No78qQYaxF7aQEfJ69VYUZtUXDsC0lzEWM
-         1Kwg==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1729790747; x=1730395547; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QSPd+Y4Io8/rh2KrV0oYhpz1P/mGyw3qNXCsxXIo8xk=;
+        b=La4GjTBUaa74SemtvYdg3BjFyAuen802EG69neHNMsHCqXF3jHHuKDDH8Am74afzCS
+         stThooKL5MtysYEgzggcBttX+DC+/q7lmC8SOnC3ePaxgi9V1S/CBWuesb6/9RgPzecR
+         IturCogCLQGr0a6m+LgxPNw/6QdxrGBubj61dn+lPtDOVY8JJ/mh91tRjoJbzu5x+Vx6
+         0aFqPCouzsdXOx7RW4D00qCN5yagDasuU9LHY22sg83TSuTdgXzhSrT+vHerPgRN21rs
+         cR0lMZYrXlapfhg/jKJjPvC6UNt14S97+6P5S7n389G3K61C0FeX2qcSxC+b6rbDkqeu
+         VaFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729790336; x=1730395136;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nTVRYLsAvfk/lLXdgAe/3h3LsHu4QnTJysO1smFIuPY=;
-        b=MWlR+ZZXa2yR/uzqiNeDXCDVdlWJDLfWToQVGHxUr10uVnnw5bV4ijwGe77zhSpf12
-         kG7ucskQFDGVLjEe8MDCE60hdv5M3sNVcRtwfV1FR8nZWjmsNfGwDWYZ3OeyzhojgS3u
-         LE6tlKY0zCpz+vWWd5aQYPyzYOc8uLnJ9Ixs8ytdyNALVb4P9ECthmhsnyr8u//mnwWt
-         VHilVBcxab3uPsGTGpgb7WT3ic/JOiGMORbu0/SJHgn1v70fOsvPnQyLURCYB3n0y/cQ
-         U1k23teUqTJrePeAQE7UFooL782ec//UlZAtAC37Da2A+vv2NIbo1SqUUnsc5UmxLeoe
-         hegg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1id6rlDS6nXfXMazWIPJw2Kpb3A9IEf7CtagWZSBCy2wcTPRxUYhgfkahjsAWEymcPGvP2g84jVdn@vger.kernel.org, AJvYcCUJHazVYzVVWfKRZ+WQOICghycN1vm92CVaM310iZmWlbn6oDE/9S+PEDSOQbs3y+/y/w2tcRc8PQcGZQ==@vger.kernel.org, AJvYcCUpAivP5UxCSQD57V7HmkLr5htzOlmNccTpvpHgGgQrjr5zeQwJKLKKEs+6ov488or76btO0WBZ744=@vger.kernel.org, AJvYcCVT4G6qjo/qrDGYnxE/l0rgMip9g86sNglLoViabHVx3z/LaeZ3YYcZK0m/9LBbpt/EJAArN9T8@vger.kernel.org, AJvYcCVjzsyxY8Miym2PQjRLu1xW64MIdkql0pShNk/SGl4zhC1ivOVmXsVWBPHzN4CMPFxzEd04sJjfouI3fnBm@vger.kernel.org, AJvYcCVsyHGc9kGTfnh85XPvTQZ/zGC68SzN6xaxR7GyKs2rqnGBHIE0gtd8bv5wwQOXY+e/Lv7Nq7auFubU@vger.kernel.org, AJvYcCW5bzktZOOn0pWRbmgtk25siL8HNeP/867N3QWRfpVWP1atz9/EcQ+vID1JO1hqkeHTkCO2Imv2+Q5v5O8=@vger.kernel.org, AJvYcCWKZd3bJg/YGczz+UEYfywxONMds2YC3MH/GwQf2IJkMt0s0Y4m1WQ4E08ZsK/Ol9r125ga3W39GuD0lg==@vger.kernel.org, AJvYcCX1pmbRSujgipvjWcOnGD5KoXBuxh2ZX6zWe3i7SGxei0KoeAvXRvF4NGKpmBpo56U1fnrKsEHuyp4z@vger.kernel.org, AJvYcCXFo67RuPI6lgCl0xPU9qelivMaZyCQvNZ4JlY5kLa3sQdeN9rW8nbb2YKqYud//KXZZXhXKdEjphfVZdRTKMp8wR4=@vger.kernel.org, AJvYcCXQeFHUqGpIrwJGJCkDsL+PHTGZIej5rMgTt3TYpDgVWP3QDJmPqTbQXICSbwplpZpyLo0Oot8j8B6w7pqB@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzM84FC9B75MbuB38uQafomnv9t5mpoWcoeocMjaT8gctRgiqU
-	QMXk/MiMrEJ3w4uULMjcv//LKigpEtqBooWsPJt+Ls7ikOKMZ4gas5yjksr/JqKEoVnJQrmZC7b
-	0ep4+KSrQQy7oUyvFw1pOV2wQm0M=
-X-Google-Smtp-Source: AGHT+IHlG1XLwcp7JbpxEPhwJbRhJPhkOVwX1+UQqAPGsdjFxfa26tBKYAcI0RMZCzFwbNjxjrRmsEC+sV+YOtvF3B8=
-X-Received: by 2002:a17:90b:4a83:b0:2e2:e929:e8d2 with SMTP id
- 98e67ed59e1d1-2e76b6c3194mr3216467a91.4.1729790335973; Thu, 24 Oct 2024
- 10:18:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729790747; x=1730395547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QSPd+Y4Io8/rh2KrV0oYhpz1P/mGyw3qNXCsxXIo8xk=;
+        b=N3ycpqRq6/cgRmjRgk1Dm7lMN6fbvkW6+yI7kBhtOFzQrtvI1bRZSdK4u9YG0hycUI
+         UYoNVdEwyyMiriZq5YlG81RPKliAFZ6q5Zm7Rrky1wBAlpZJGjoZeTyCf6PHOtynG7hI
+         DXzSoe+X4lDdOkdMcNWA/mVbrUyyu/YpJB8YX28AFcv/JEy/Ul2bihACgJgo5rxIjef5
+         RiJw2vwBj39rjUjlMP5dVy/pizs/00osb7ezh61VJvGyItvtTaO0FFICoLyvNHYDB8ju
+         ZgW7XXpbKZC98hzmFI2F7HKGsw6hIqAA0HngKYwi+g4YxOaDtwv2d33sp18NPiq6cr3q
+         So9A==
+X-Gm-Message-State: AOJu0Yze7ept601WqUc1CnSThr/CVo5nUM7xfQ6IGdpi9cCTUXBwgYsj
+	R6rtuJNaJUfSvjVxHEnlylsHOu+ATUZQJBaifMCg6aDjmCJby9kpCkQvrf2OyOoUere/9VPJNyV
+	82peKBQGyy7x2y55+kvFiJQE9G9CBuiyqLSUC
+X-Google-Smtp-Source: AGHT+IGew298ys0/OvLoRriNgXdYmMv/0T9VfbwE9bIOiPsMviFvE5ZuybtogPB/MnXkyiq57FiddxEZ6DbuPfUV89Y=
+X-Received: by 2002:a05:6a00:390a:b0:71e:51ae:d765 with SMTP id
+ d2e1a72fcca58-72030b9af5emr8932161b3a.27.1729790747307; Thu, 24 Oct 2024
+ 10:25:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
- <e7d548a7fc835f9f3c9cb2e5ed97dfdfa164813f.camel@HansenPartnership.com> <6beb4070-1946-4387-bd0e-34608a76b19e@typeblog.net>
-In-Reply-To: <6beb4070-1946-4387-bd0e-34608a76b19e@typeblog.net>
-From: =?UTF-8?Q?Dragan_Milivojevi=C4=87?= <d.milivojevic@gmail.com>
-Date: Thu, 24 Oct 2024 19:18:44 +0200
-Message-ID: <CALtW_agj1rurb3DRrPd9o2mkfku5fq_M3CEKY5sW+Zz7shKYHA@mail.gmail.com>
-Subject: Re: linux: Goodbye from a Linux community volunteer
-To: Peter Cai <peter@typeblog.net>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Serge Semin <fancer.lancer@gmail.com>, Jon Mason <jdmason@kudzu.us>, 
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, ntb@lists.linux.dev, 
-	Andy Shevchenko <andy@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Kory Maincent <kory.maincent@bootlin.com>, Cai Huoqing <cai.huoqing@linux.dev>, 
-	dmaengine@vger.kernel.org, Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
-	Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, 
-	Paul Burton <paulburton@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Arnd Bergmann <arnd@arndb.de>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-pci@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>, 
-	Vladimir Oltean <olteanv@gmail.com>, Keguang Zhang <keguang.zhang@gmail.com>, 
-	Yanteng Si <siyanteng@loongson.cn>, netdev@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
-	linux-hwmon@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linux-edac@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-serial@vger.kernel.org, 
-	Andrew Halaney <ajhalaney@gmail.com>, Nikita Travkin <nikita@trvn.ru>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Alexander Shiyan <shc_work@mail.ru>, Dmitry Kozlov <xeb@mail.ru>, 
-	Sergey Shtylyov <s.shtylyov@omp.ru>, Evgeniy Dushistov <dushistov@mail.ru>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
-	Nikita Shubin <nikita.shubin@maquefel.me>, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>, jeffbai@aosc.io, 
-	Linus Torvalds <torvalds@linux-foundation.org>
+References: <20241021221248.60378-1-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20241021221248.60378-1-chia-yu.chang@nokia-bell-labs.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 24 Oct 2024 13:25:35 -0400
+Message-ID: <CAM0EoMk6EGGWAbYiumPZOxdNV93_zt2ycNQETGXGK4Y5RG60RQ@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next 0/1] DualPI2 patch
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, stephen@networkplumber.org, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, 
+	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 24 Oct 2024 at 18:31, Peter Cai <peter@typeblog.net> wrote:
+Hi,
+
+On Mon, Oct 21, 2024 at 6:13=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
 >
-> Hi James,
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 >
-> Thanks for your clarification. This sort of non-provocative
-> clarifications of the regulations you need to comply to has always been
-> what the community wants to see. _This_ should have been the first
-> official statement when anyone raised the concern, instead of Greg's
-> attempt to "defuse" the situation over private correspondence, or Linus
-> Torvald's outright defamation and accusing anyone who dares to disagree
-> of being a "Russian troll". This is not even to mention the _complete
-> ignorance_ and arrogance shown by his statement on what sending a revert
-> patch means.
+> Hello,
 >
-> With sanctions in place, there is no reasonable person who will demand
-> the LF or the Linux Kernel maintainers to do otherwise. However, as
-> someone who does rely on Linux for daily work, and as someone who has
-> contributed to the Linux project and its community, I think seeing the
-> following should be the minimum:
->
-> 1. Linus Torvalds (+Cc) send an apology letter to **everyone** who he
-> accused of being a Russian troll;
-> 2. Linus Torvalds need to **unconditionally retract** his personal
-> attack on Kexy Biscuit, the person who sent the revert patch in protest
-> (+Cc), and acknowledge that people who work with AOSC.io aren't
-> "state-sponsored paid actors";
-> 3. This type of statement should be included somewhere public as soon as
-> practically possible should sanction compliance affect kernel
-> development again in the future;
-> 4. No personal attacks should be allowed based on tinfoil-hat reasoning.
->
-> Thanks,
-> Peter.
+> Specific changes in this version
+> - Make succinct stateent in Kconfig for DualPI2
+> - Put a blank line after each #define
+> - Fix line length warning
 >
 
-That list is great but it will never happen, Linus is high on his
-western supremacy complex.
-Most of the anger (including mine) comes from people who have just
-realized what kind of a person Linus is.
+Thanks for tracking the changes. Also please if you can attribute who
+asked for which specific change. Are you able to retrieve the previous
+versions changes/history and put them there? I am asking because I
+sent feedback to which i received no response. Then i started looking
+at this version and noticed you addressed some of the comments but not
+all. It's just more work to review since you never responded to any of
+the email comments i made.
+Could you also please include all the stakeholders like i asked last
+time? This is just common practise. For example i see zero tc
+maintainers cc-ed yet you are adding code to that subsystem etc. It
+would help to read the patch submission howto.
 
-He has exposed his lack of morals and inability of self reflection
-with the trolls comment.
-He has exposed his ignorance, coming from his state media
-brainwashing, with the media comment.
-He has exposed his ignorance, arrogance and blatant Russophobia with
-his "I'm Finish" comment, as if
-Finland has any high moral ground when it comes to WWII (for the
-historically ignorant: Finnish "concentration camps").
+cheers,
+jamal
 
-And this is not over, there are plenty of other countries and entities
-on the official USA enemies list.
-The real majority of the world, all of us outside the USA and their
-vassal states, their so called "free world" (one maintainer
-actually used that blatant display of American supremacy in a commit
-removing Huawei maintainers) are looking at this
-with sadness and anger.
-The Cold War 2.0 has came to the Linux world and as in the first one,
-the Iron curtain has been erected
-by those that claim moral high ground with their false values of
-freedom, openes, merit etc.
+
+> Please find the updated patch for DualPI2
+> (IETF RFC9332 https://datatracker.ietf.org/doc/html/rfc9332).
+>
+> --
+> Chia-Yu
+>
+> Koen De Schepper (1):
+>   sched: Add dualpi2 qdisc
+>
+>  Documentation/netlink/specs/tc.yaml |  124 ++++
+>  include/linux/netdevice.h           |    1 +
+>  include/uapi/linux/pkt_sched.h      |   34 +
+>  net/sched/Kconfig                   |   12 +
+>  net/sched/Makefile                  |    1 +
+>  net/sched/sch_dualpi2.c             | 1052 +++++++++++++++++++++++++++
+>  6 files changed, 1224 insertions(+)
+>  create mode 100644 net/sched/sch_dualpi2.c
+>
+> --
+> 2.34.1
+>
