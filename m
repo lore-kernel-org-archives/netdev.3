@@ -1,121 +1,88 @@
-Received: from mail.tlmp.cc (unknown [148.135.104.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6631E282B;
-	Thu, 24 Oct 2024 14:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.135.104.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C89A1EABAB
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 14:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729779238; cv=none; b=JcUK9CR64Kf6O8wvpTwSKGkJf0j4r8q4CzWGMCTgK8HypsrIqtzPjjieFySoIZIk5J7TEpM1YrwxXNkEXgnb5fXA4Ssul5/40cfmbsDvug2HdmnyfmX06Re2BWYx+jHlYWovc0o9XBmS0S4V4FDq+4Pshci7MkbLWmfxgr8Yzns=
+	t=1729779286; cv=none; b=itf/gEe1xQGHkN1cz6cZjoJbd80LvRAVZgZhCoKvY1H4B+Uz5ru6ZXc6+GqM4KwXi4a+1ioS5NCHdfWI3ocrqhxwJpQqkelTQI1WKr3rL+qfzBOgGsyOx654kqctEoFbOD3JhvCgKP+QVCvYJdr/ze09UdzVvtbg7J4JleIXS8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729779238; c=relaxed/simple;
-	bh=FqtmwA94oipzr+62VsJdTfpQcYtuXccvlcXq2Sfzq50=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=au0COAI16dULNcXGdUNXTIlCCCN8p0UrTKKClTGFc0uKlFqvWQtzaanUE9v5OMLUoBz7kxP9rfQUlOrV5wNiBphk1gmpaVXI2I4PKpVEyZi1hhslLuyl39FuupbU87wJii41XnF8gJSTD/5RuOu0p2rwTPgQibTNqCQwvyhJmo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kremlin.ru; spf=fail smtp.mailfrom=kremlin.ru; arc=none smtp.client-ip=148.135.104.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kremlin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kremlin.ru
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 434E85E5C5;
-	Thu, 24 Oct 2024 10:03:59 -0400 (EDT)
-From: Vladimir Vladimirovich Putin <vladimir_putin_rus@kremlin.ru>
-To: torvalds@linux-foundation.org
-Cc: aospan@netup.ru,
-	conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org,
-	dushistov@mail.ru,
-	fancer.lancer@gmail.com,
-	geert@linux-m68k.org,
-	gregkh@linuxfoundation.org,
-	hoan@os.amperecomputing.com,
-	ink@jurassic.park.msu.ru,
-	jeffbai@aosc.io,
-	kexybiscuit@aosc.io,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com,
-	netdev@vger.kernel.org,
-	nikita@trvn.ru,
-	ntb@lists.linux.dev,
-	patches@lists.linux.dev,
-	richard.henderson@linaro.org,
-	s.shtylyov@omp.ru,
-	serjk@netup.ru,
-	shc_work@mail.ru,
-	torvic9@mailbox.org,
-	tsbogend@alpha.franken.de,
-	v.georgiev@metrotek.ru,
-	wangyuli@uniontech.com,
-	wsa+renesas@sang-engineering.com,
-	xeb@mail.ru,
-	LKML <linux-kernel@vger.kernel.org>,
-	Vladimir Vladimirovich Putin <vladimir_putin_rus@kremlin.ru>
-Subject: [PATCH 0/2] MAINTAINERS: Remove few Chinese Entries
-Date: Thu, 24 Oct 2024 22:03:51 +0800
-Message-ID: <20241024140353.384881-1-vladimir_putin_rus@kremlin.ru>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-References: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+	s=arc-20240116; t=1729779286; c=relaxed/simple;
+	bh=4E96ONiFu6oPVrd9FVp4DMR3A5juKrgtl5Xg/EU1kU0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Gu70n0zlqyF4YlctWRVp95LeNtpBUZVX8GtZ/0IzjyPQqzLWV05QzzuZZp0qB9G0SYDWEhuDO4Q/gsch4akAnrOnfWVd8N4D/q3EMk7KNFp2GTFcV/8Y6UfsZIfrRq1H3iamYBJMi5ZucrDA00HnbCfVKCs8zF84cCF/yYypVvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f1xtXZrg; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f1xtXZrg"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6e38fc62b9fso9422437b3.2
+        for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 07:14:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729779280; x=1730384080; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8MQUgZ/BbPDPdqyq38gojGKFlT7p4FSzsLrZhyCwmLc=;
+        b=f1xtXZrg8ZJ39HYRncDc7u/N6l7vn2FwTn0cFb95X0GFCG3Hd+HM/U/b1zYPD8Z5rx
+         c+i5673/OZ+fD7AgRynDI56JGHFnzXSE05usY/Ah5B/WjxcFeme+uTWI3vuMUX4ndbFd
+         amnaZWJD7NdezMKds7fVEmsp3uLiIpjwpDU14z7vzVJufQzFeXAsUjasTBDsRpDlDt5M
+         0ebtQLtws+oiE83aQTpz0ZbBcn/rC2Qo2bnU3zVLn0ghfLFTsQEXdohBaLnywt0mUqRy
+         42PVDIIBt9ZtSHebbWt71PbqfvctzTORYIW1wzszlx0mnCPf1EyZPiPP7JlbhRday4w+
+         8K5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729779280; x=1730384080;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8MQUgZ/BbPDPdqyq38gojGKFlT7p4FSzsLrZhyCwmLc=;
+        b=uvsUbCGMvzhl+5/FIMDSNccbQZSzbDecYFADul5FtnekVlrpZn4KxBnhB1Lph/+p8i
+         VIDEldyrpPPuz1oSJjBjU0vGB8YhjURn8prZHjIzRMOMviBM/v5EZAIidLB1tk4Xa99w
+         9WIPArXCRI8/mVJPt0kTVRjmNedGl66U2aFun9YqRWjSeR2F3PGgsWDOqBrVkph/8Pv1
+         Q77e0PTAVkBiRyYI/SmKvpobK/KiISISAD5mCcSOAyfix/cz2KH93zEyhPCG4nzrUBdG
+         a96smOFID3MwNRf+bXsenV9WhxT031moD9x3pGkZJrlpQHdof5VllvAuPZ/me/CWUkVx
+         rHdQ==
+X-Gm-Message-State: AOJu0Yy5QMU8rec1K1hz0m2ncRKk2CWQ1WNhJ+jGgWj+LaOo7inGh2ot
+	xkmleA07653CpV/QrQ9PJ3EsNAjHj6FlTYnAoE6SY9IVPVDcQ5qq7TeBbrd62pQKPlAPIbD8Wdb
+	WOm3zjzxNQHWc4P85LmdrhrZa1o3xPiu/
+X-Google-Smtp-Source: AGHT+IEpZlVp3vgT5W5NtnOSSmMp+e5aC/0QE/en0gajdrf/d/3CmbNZYzOR/hQVlGiall8R1jqW8a7T80mm7I9ce0o=
+X-Received: by 2002:a05:690c:681:b0:6dd:d709:6f18 with SMTP id
+ 00721157ae682-6e7f0fc17bcmr79241047b3.39.1729779280632; Thu, 24 Oct 2024
+ 07:14:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: SIMON BABY <simonkbaby@gmail.com>
+Date: Thu, 24 Oct 2024 07:14:28 -0700
+Message-ID: <CAEFUPH2npsz4XKna0KYjOeU_MfYN-bVTw25jn6m2dS+f32RuxQ@mail.gmail.com>
+Subject: query on VLAN with linux DSA ports
+To: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi, Linux Community.
+Hello Team,
 
-If you haven't heard of Chinese sanctions yet, you should try to read
-the news some day.  And by "news", I don't mean Chinese
-state-sponsored spam like Central China Television some kind of BS.
+Can I know what is the best way of  implementing VLAN on linux DSA user ports ?
 
-So I hereby submit another two patches to remove the entries owned by
-two US-sanctioned entities Huawei[1] and LoongSon[2]. "They can come
-back in the future if sufficient documentation is provided."
+I would like to know if I can go with VLAN interface or VLAN filtering
+on bridge interface. I am using Marvel DSA  (88E6390) running on Linux
+6.1 kernel.
 
-Best Regards,
+Below is my requirement.
 
-Vladimir Vladimirovich Putin
+eth0 (conduit interface)
 
----
-Привет, Linux-сообщество.
+lan1 ----VLAN 10    192.168.1.1/24
+lan2 ----VLAN 10
 
-Если вы еще не слышали о китайских санкциях, попробуйте прочитать
-новости когда-нибудь.  И под «новостями» я не имею в виду китайские
-спам, спонсируемый государством, типа Центрального китайского
-телевидения, какая-то чушь.
+lan3 -----VLAN 20   192.168.2.1/24
 
-Поэтому я отправляю еще два патча для удаления записей, принадлежащих
-две компании, находящиеся под санкциями США, Huawei[1] и LoongSon[2]. 
-«Они могут прийтив будущем, если будет предоставлена
-достаточная документация».
+lan4------VLAN 30    192.168.3.1/24
 
-С наилучшими пожеланиями,
+Do I need to create a separate bridge interface for each port which
+belongs to different subnets?
 
-Владимир Владимирович Путин
+Is it better to use a VLAN aware bridge (with vlan_filitering = 1) or
+create multiple vlan interfaces ?
 
-[1]: https://sanctionssearch.ofac.treas.gov/Details.aspx?id=30947
-[2]: https://en.wikipedia.org/wiki/Loongson
 
-Vladimir Vladimirovich Putin (2):
-  MAINTAINERS: Remove Huawei due to compilance requirements.
-  MAINTAINERS: Remove Loongson due to compilance requirements.
-
- MAINTAINERS | 96 -----------------------------------------------------
- 1 file changed, 96 deletions(-)
-
--- 
-2.47.0
-
+Thanks, Simon
