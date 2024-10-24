@@ -1,121 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124431D5151
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 12:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AB91C9B87
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 12:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729771985; cv=none; b=pP0ooZ+MLMRy2ChNqsPD9WPHBccYtI//TURg6vFpzzp1/5lI/4WR+e9fP4Tpu4RBB6QFSVS5HJndHs7fKVjUWAT/6wfrRkZmetvxJsr/aD/6Ss5NoTBo9xx5NgmY34co55d+sgGPUxdJrNnIj3oWvgrZiwtdIHKxXlkMkqqH85w=
+	t=1729772010; cv=none; b=ZkyV0NjyQuvjzlci3WfM/OkGSBJvzNA50CJoYwfQ6lC56THZenROgGxE9KkkuOJQ3RO9jbsgEkmdBUD3D0eeh0JQoC4DwvpXwJleB6ZxLj5YOg0VD0vIn6RDkVPia/NAfcIQb1Z6l5pq71sW/8lPmZza4E0lwdXTWsVovp91/Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729771985; c=relaxed/simple;
-	bh=bNMiaOO8wUNylIk9gISuKsnF9jJ0waLC+cK5MBdQs1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLIcbOEN2e+6xFzP3Em5Le7NUy6iGSf1bdSYx5vmYlicIRJH7gDhT4p0ZGrD0QCNlVH/lv/NHWF8mqfwWsTK3VFOkmSt4amq06pswREIcgQSlUxzxTtnU5a3wPD3Z81LPlWC++LYPkFyVz3m8YUl52PIjcowBYPA0cF6LCtkYuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gnYcg52U; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1729772010; c=relaxed/simple;
+	bh=9fa+03V1sKP+x6ThALSZDPwEdBH5CtGmmodPwAscStI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WAv+LndjWpdhtmusgKPkjwAhlL25A0DkWFCEoTbck/Hq95AMl/oumqDGV8g/ymNE1JX5/bYQaSUy9FtGQJT5UX9XiFHKUZI+qxHLngHTe839M7bIGPzAsVUhwhzISo83SuhxROyH9hA4IJc+X8v5ZdKzRLmedYzScXgZ+YlJYKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrHlfL6s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gnYcg52U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729771984; x=1761307984;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bNMiaOO8wUNylIk9gISuKsnF9jJ0waLC+cK5MBdQs1o=;
-  b=gnYcg52UbVtsJRbQ8DTkMNRJIPBDpbCjYrvg5ORvYxsWtd45D5YzdT4L
-   KRKzpCgbsmCsNu+COePOySS04MhRgcdw9dprskF5fivj4cMBJMQ93+aaG
-   fdqE9L0gJuJj01Ok4/etdPyLbU88Yo+OJieHep3Ulp+OrIl2X4gcUD0PR
-   bHzv7OQvrNL/HamRxcnhW1w6p+GJ+pWfEKpOQaa+ALM9tELIP4kWGG2mb
-   7DT3W+RLmbHM6TgYk5a8blTu/Oz0GdQdQwejF3cSt3+75kHoYohGYLldG
-   gxjaplQCpxu5Cr8BmN6BcalEatf7L06aProCaLBKMed64qbdojO4fXYON
-   Q==;
-X-CSE-ConnectionGUID: E/sYBT9TQrODA1zj31PKvg==
-X-CSE-MsgGUID: 8ZdgZlkeSdCpTNqjpJAdnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="40008340"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="40008340"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 05:13:04 -0700
-X-CSE-ConnectionGUID: Sw7L44ZHQcmrDxWdgfUTGg==
-X-CSE-MsgGUID: Z8CvajSmSHeDasj/KKYMaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="85184537"
-Received: from gk3153-dr2-r750-36946.igk.intel.com ([10.102.20.192])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Oct 2024 05:13:01 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	pawel.chmielewski@intel.com,
-	sridhar.samudrala@intel.com,
-	jacob.e.keller@intel.com,
-	pio.raczynski@gmail.com,
-	konrad.knitter@intel.com,
-	marcin.szycik@intel.com,
-	wojciech.drewek@intel.com,
-	nex.sw.ncis.nat.hpm.dev@intel.com,
-	przemyslaw.kitszel@intel.com,
-	jiri@resnulli.us,
-	horms@kernel.org,
-	David.Laight@ACULAB.COM
-Subject: [iwl-next v5 9/9] ice: init flow director before RDMA
-Date: Thu, 24 Oct 2024 14:12:30 +0200
-Message-ID: <20241024121230.5861-10-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20241024121230.5861-1-michal.swiatkowski@linux.intel.com>
-References: <20241024121230.5861-1-michal.swiatkowski@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrHlfL6s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA858C4CECD;
+	Thu, 24 Oct 2024 12:13:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729772009;
+	bh=9fa+03V1sKP+x6ThALSZDPwEdBH5CtGmmodPwAscStI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nrHlfL6sZSykjUq0vNOSjDfd8AL29cHnKb1G4ecpxKd77Gu+L3ekzPhID3Kp2bZYB
+	 s4ic0y7EhxwDCT2roiEpELTU/5qBd9SaY8tmEgVaNfiMBaS16ZoYmFvsDtCiiD42Wn
+	 M+PyJ7iyfDf2j+rN85QH/aUDDcRZlpOMehjU5JLqP/1hJLbqK7Sem/AoXQ1sTyWVvm
+	 nRY+Ps6L6RhXTRYnuYzYwtCZDL9ElSpnFA9ILtUSX0gI9Zbc0699SKbr4GRjRdknpx
+	 QHzaV+IzYbqnly6IU4AatDD/ZUtJbuKSrtWlUwu1zBM4qBqSP/ZRR/hZNv+Uf39Iv9
+	 kBwkwrUiJxOkQ==
+Date: Thu, 24 Oct 2024 13:13:25 +0100
+From: Simon Horman <horms@kernel.org>
+To: Zhen Lei <thunder.leizhen@huawei.com>
+Cc: Rasesh Mody <rmody@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/2] bna: Fix return value check for debugfs create APIs
+Message-ID: <20241024121325.GJ1202098@kernel.org>
+References: <20241023080921.326-1-thunder.leizhen@huawei.com>
+ <20241023080921.326-2-thunder.leizhen@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023080921.326-2-thunder.leizhen@huawei.com>
 
-Flow director needs only one MSI-X. Load it before RDMA to save MSI-X
-for it.
+On Wed, Oct 23, 2024 at 04:09:20PM +0800, Zhen Lei wrote:
+> Fix the incorrect return value check for debugfs_create_dir() and
+> debugfs_create_file(), which returns ERR_PTR(-ERROR) instead of NULL
+> when it fails.
+> 
+> Commit 4ad23d2368cc ("bna: Remove error checking for
+> debugfs_create_dir()") allows the program to continue execution if the
+> creation of bnad->port_debugfs_root fails, which causes the atomic count
+> bna_debugfs_port_count to be unbalanced. The corresponding error check
+> need to be added back.
 
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Hi Zhen Lei,
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index f3dd300a7dad..b819e7f9d97d 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5168,11 +5168,12 @@ int ice_load(struct ice_pf *pf)
- 
- 	ice_napi_add(vsi);
- 
-+	ice_init_features(pf);
-+
- 	err = ice_init_rdma(pf);
- 	if (err)
- 		goto err_init_rdma;
- 
--	ice_init_features(pf);
- 	ice_service_task_restart(pf);
- 
- 	clear_bit(ICE_DOWN, pf->state);
-@@ -5180,6 +5181,7 @@ int ice_load(struct ice_pf *pf)
- 	return 0;
- 
- err_init_rdma:
-+	ice_deinit_features(pf);
- 	ice_tc_indir_block_unregister(vsi);
- err_tc_indir_block_register:
- 	ice_unregister_netdev(vsi);
-@@ -5203,8 +5205,8 @@ void ice_unload(struct ice_pf *pf)
- 
- 	devl_assert_locked(priv_to_devlink(pf));
- 
--	ice_deinit_features(pf);
- 	ice_deinit_rdma(pf);
-+	ice_deinit_features(pf);
- 	ice_tc_indir_block_unregister(vsi);
- 	ice_unregister_netdev(vsi);
- 	ice_devlink_destroy_pf_port(pf);
--- 
-2.42.0
+The documentation for debugfs_create_dir states:
 
+ * NOTE: it's expected that most callers should _ignore_ the errors returned
+ * by this function. Other debugfs functions handle the fact that the "dentry"
+ * passed to them could be an error and they don't crash in that case.
+ * Drivers should generally work fine even if debugfs fails to init anyway.
+
+Which makes me wonder why we are checking the return value of
+debugfs_create_dir() at all. Can't we just take advantage of
+it not mattering, to debugfs functions, if the return value
+is an error or not?
+
+> Fixes: 4ad23d2368cc ("bna: Remove error checking for debugfs_create_dir()")
+> Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
+> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+
+...
