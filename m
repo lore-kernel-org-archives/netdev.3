@@ -1,191 +1,131 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E071F668C
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 15:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A4C1D8A1E;
+	Thu, 24 Oct 2024 15:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729783738; cv=none; b=uVWwobJvat1/PEwXycaNzICSg5Td8UitUkj9GL0fDlQXSrllRw9qQSIacvwH3lm3Ct+ucgx7MWVFDQw08pA+i26AX6fKKNJZdLEzPFGVO0QcxfbtwLanYrVuJerC4m99FTP1pahVF5nzyhLlZX+61tYG8pVnJcyfvhBhtJczJhc=
+	t=1729783795; cv=none; b=HN0SmW8ySDqZ/1Okepi/piO7i5MtES5AJr+/OceF+BWVlvtu9dQyqzrNXfwZcmZqBkPbz/adSvECad8FfryCjA/TR+9HsEM7yP+7+EZoUv/Xb+Cz+W+l4+LzL/UPkfw67uowzwwpOoyCfKW3+Nk0K6+j/pfiHMi2KSFPj6q0tXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729783738; c=relaxed/simple;
-	bh=LKBaP9w6Uf0ZW0ufuHdlIFhtJcqlyUWbO2EgFOCBNPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7S9jVyX03lTfqxkCQaUwPh6E7IOwXu/NFh9KsxuiFMz8+/OOmuS9lXyCUJGjSbZdYcAl9CT1y0okY89N3gwrTr3NmBJhsKkftzLyuURjOyiZDZvrAsovknfwPRbc8tH6MfO9lcYplWaSJG+AXif1FKpUHdGVSlzwxVEkvZK8A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3zl3-0005Dr-DK; Thu, 24 Oct 2024 17:28:17 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3zl2-000Djr-2N;
-	Thu, 24 Oct 2024 17:28:16 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 488FC35DE79;
-	Thu, 24 Oct 2024 15:28:16 +0000 (UTC)
-Date: Thu, 24 Oct 2024 17:28:15 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 4/9] can: Add Nuvoton NCT6694 CAN support
-Message-ID: <20241024-marvellous-brainy-anteater-f61302-mkl@pengutronix.de>
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-5-tmyu0@nuvoton.com>
- <20241024-majestic-chowchow-from-wonderland-096eb4-mkl@pengutronix.de>
+	s=arc-20240116; t=1729783795; c=relaxed/simple;
+	bh=/c3nPV0FlFBZC3KSq4T9BU0smS+lIYhUyC2Quk6Z91M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=c2MkxT0WY4LQYSmlsbrF50tuxeFEp+Pj4Zqb5skk3WpBZ654ZLzIzy9U5snNEfswYXdW6knrrJiBo2PMjusZLURLcFVh1vKUdWUjH91gSf6sdazqk8GlRYfa9lHotZbQmKn4mWnnD9cQpXC7msacel5cH7icwVm8qx2nKniQ2OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JkmA6aU+; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JkmA6aU+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=1xiupaF61lfS6z4Pq8dSc4R0ENSuX2KdNUITbPAYRRM=;
+	t=1729783793; x=1730993393; b=JkmA6aU+xDkflpCKFxNi+2p7k5hXG8/0udrO6D/wvzk0bAk
+	okL6v/nw4fUrixwEDCvsL1Olt1a9e5kwVa+tZp/Oj7HiSJosZvG6S9ZWXYyI8xrrFjWKTBaynmqsx
+	y2sQCmLqTWOzWtpDZkoTSIO1uh2K1QlVqaKG6i5ozJKHUorIALc7m/kzpwFMOSQ73YHJdbljLNZGu
+	01DOOyA5y/QN3ikSFOY4kYWOCVC/DzDJvdm3fJdNiJsiybpzYssrgC0mbp66tQnNJLWysD1Hruag8
+	GZjD4sWjnl/AF5mPSBKvIT5KlWXi5Onacih5DkV7EMA923M1bOWmRzJrSAcQovxQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t3zmT-00000003hnS-2GLn;
+	Thu, 24 Oct 2024 17:29:45 +0200
+Message-ID: <4c9b5027a70f7d9039ffb5579a1e7a08c7fa5ddb.camel@sipsolutions.net>
+Subject: Re: [RFC PATCH 2/2] net: convert to nla_get_*_default()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Thu, 24 Oct 2024 17:29:44 +0200
+In-Reply-To: <ZxplEne_oHXQycnc@hog>
+References: 
+	<20241024131807.0a6c07355832.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
+	 <20241024131807.d5b9f6e57ede.I740beeaa2f70ebfc19bfca1045a24d6151992790@changeid>
+	 <8fabb6e5a2eda8c3bd7ca0bccc3e7804ad27bbad.camel@sipsolutions.net>
+	 <ZxpeL7S2GZeJOiQw@hog>
+	 <2e3b106585cebbb579c0d5cca33737623765ded7.camel@sipsolutions.net>
+	 <ZxplEne_oHXQycnc@hog>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="h6dfqpkeuoasgop3"
-Content-Disposition: inline
-In-Reply-To: <20241024-majestic-chowchow-from-wonderland-096eb4-mkl@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-malware-bazaar: not-scanned
 
-
---h6dfqpkeuoasgop3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 4/9] can: Add Nuvoton NCT6694 CAN support
-MIME-Version: 1.0
-
-On 24.10.2024 14:12:44, Marc Kleine-Budde wrote:
-> Hello,
+On Thu, 2024-10-24 at 17:17 +0200, Sabrina Dubroca wrote:
+> 2024-10-24, 16:52:00 +0200, Johannes Berg wrote:
+> > On Thu, 2024-10-24 at 16:48 +0200, Sabrina Dubroca wrote:
+> > >=20
+> > > If nla_get_*_default was a macro (generating an "attr ? getter :
+> > > default" expression) you wouldn't have that problem I think,=C2=A0
+> >=20
+> > Hmm. Perhaps. In the conditional operator (?:) they're subject to
+> > integer promotion though
 >=20
-> thanks for your contribution. It seems to me that there is no proper
-> TX-flow control and I have some questions.
+> Is it?
 >=20
-> On 24.10.2024 16:59:17, Ming Yu wrote:
+>     #define nla_get_u16_default(attr, d) (attr ? nla_get_u16(attr) : d)
+>     int v =3D nla_get_u16_default(NULL, -1);
 >=20
-> [...]
->=20
-> > +static netdev_tx_t nct6694_canfd_start_xmit(struct sk_buff *skb,
-> > +					    struct net_device *ndev)
-> > +{
-> > +	struct nct6694_canfd_priv *priv =3D netdev_priv(ndev);
-> > +	struct nct6694 *nct6694 =3D priv->nct6694;
-> > +	struct canfd_frame *cf =3D (struct canfd_frame *)skb->data;
-> > +	struct net_device_stats *stats =3D &ndev->stats;
-> > +	int can_idx =3D priv->can_idx;
-> > +	u32 txid =3D 0;
-> > +	int i;
-> > +	unsigned int echo_byte;
-> > +	u8 data_buf[REQUEST_CAN_CMD10_LEN] =3D {0};
-> > +
-> > +	if (can_dropped_invalid_skb(ndev, skb))
-> > +		return NETDEV_TX_OK;
-> > +
-> > +	/*
-> > +	 * No check for NCT66794 because the TX bit is read-clear
-> > +	 * and may be read-cleared by other function
-> > +	 * Just check the result of tx command.
-> > +	 */
->=20
-> Where do you check the result of the TX command?
->=20
-> > +	/* Check if the TX buffer is full */
->=20
-> Where's the check if the TX buffer is full?
->=20
-> > +	netif_stop_queue(ndev);
-> > +
-> > +	if (can_idx =3D=3D 0)
-> > +		data_buf[CAN_TAG_IDX] =3D CAN_TAG_CAN0;
-> > +	else
-> > +		data_buf[CAN_TAG_IDX] =3D CAN_TAG_CAN1;
-> > +
-> > +	if (cf->can_id & CAN_EFF_FLAG) {
-> > +		txid =3D cf->can_id & CAN_EFF_MASK;
-> > +		/*
-> > +		 * In case the Extended ID frame is transmitted, the
-> > +		 * standard and extended part of the ID are swapped
-> > +		 * in the register, so swap them back to send the
-> > +		 * correct ID.
-> > +		 */
-> > +		data_buf[CAN_FLAG_IDX] |=3D CAN_FLAG_EFF;
-> > +	} else {
-> > +		txid =3D cf->can_id & CAN_SFF_MASK;
-> > +	}
-> > +
-> > +	set_buf32(&data_buf[CAN_ID_IDX], txid);
-> > +
-> > +	data_buf[CAN_DLC_IDX] =3D cf->len;
-> > +
-> > +	if ((priv->can.ctrlmode & CAN_CTRLMODE_FD) && can_is_canfd_skb(skb)) {
-> > +		data_buf[CAN_FLAG_IDX] |=3D CAN_FLAG_FD;
-> > +		if (cf->flags & CANFD_BRS)
-> > +			data_buf[CAN_FLAG_IDX] |=3D CAN_FLAG_BRS;
-> > +	}
-> > +
-> > +	if (cf->can_id & CAN_RTR_FLAG)
-> > +		data_buf[CAN_FLAG_IDX] |=3D CAN_FLAG_RTR;
-> > +
-> > +	/* set data to buf */
-> > +	for (i =3D 0; i < cf->len; i++)
-> > +		data_buf[CAN_DATA_IDX + i] =3D *(u8 *)(cf->data + i);
-> > +
-> > +	can_put_echo_skb(skb, ndev, 0, 0);
-> > +
-> > +	memcpy(priv->data_buf, data_buf, REQUEST_CAN_CMD10_LEN);
-> > +	queue_work(nct6694->async_workqueue, &priv->tx_work);
-> > +
-> > +	stats->tx_bytes +=3D cf->len;
-> > +	stats->tx_packets++;
-> > +	echo_byte =3D can_get_echo_skb(ndev, 0, NULL);
-> > +
-> > +	netif_wake_queue(ndev);
->=20
-> How do you make sure that the tx_work has finished?
-> Once you wake the queue, the xmit function can be called again. If your
-> tx_work has not finished, you'll overwrite the priv->data_buf.
+> seems to put the correct value into v.
+> (but -ENOFOOD and -ELOWCOFFEE here, so I don't trust this quick test
+> much :))
 
-Do you get a CAN TX complete message/IRQ from your device?
+I'm probably -ELOWBLOODSUGAR right now ;-)
 
-regards,
-Marc
+But yeah, I couldn't yet construct a scenario where it mattered, but I'
+also couldn't convince myself that there isn't one. Maybe too much
+inspired by the enum compare warnings:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+https://lore.kernel.org/linux-wireless/20241018151841.3821671-1-arnd@kernel=
+.org/
 
---h6dfqpkeuoasgop3
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+> > , I wonder if that could cause some subtle issue
+> > too especially if nla_get_u*() is used with signed variables?
+>=20
+> The issue in that example is pretty subtle and I'm fairly sure people
+> are going to mess up :/
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcaZ4kACgkQKDiiPnot
-vG974Qf+LEKGXgXPxMXrYiiOQHJWjs4Mt5jzVCCkFhLgwCl8AQstWmg8VVtGrhlR
-8MQ//KYGUjpOgf2HMBzm8tVduk1AlHw4qUpDfn94AzF2bs+r16LSuUK6Kr1xYM6Q
-P+XQuSaK3J7/zuPGu9z0zk2i77GN88LCBecdUKHVEbNAIa0LlYHKng/ixeIYFdGY
-mpOHQYFkT9kJIzHxFmjd8IqfFWsVUStEvamVz7/ilHigCKo2SseU674xN2MDKIFE
-+2YwADjK1B4X4Mjpga9S5Ckf/t6h3kgh5m8K4zGGYjX7jxNcbgMeD0FD0jyIar9l
-moJeeldIOCwdGU3wR1vGneNUjJEhlg==
-=Ce8N
------END PGP SIGNATURE-----
+I didn't think it was that bad, but it's well possible that my
+calibration for "subtle" is way off ;-)
 
---h6dfqpkeuoasgop3--
+> But I'm not attached to that macro I just suggested, it's just a
+> thought.
+
+Sure.
+
+> > > but you
+> > > couldn't nicely generate all the helpers with MAKE_NLA_GET_DEFAULT
+> > > anymore.
+> >=20
+> > Right, that too.
+> >=20
+> > I think it's probably better to just review them, and only commit the
+> > obvious ones originally?
+>=20
+> Well, this one looked reasonable too. I'm not convinced reviewers are
+> going to catch those problems. Or authors of new code using those
+> _default helpers from the start.
+
+Fair point. I didn't think it was that bad, in fact there were some I
+was far less sure about, say
+
+> +	request->page =3D nla_get_u8_default(info->attrs[NL802154_ATTR_PAGE],
+> +					   wpan_phy->current_page);
+
+which really depends on the types of 'page' and 'current_page'...
+
+
+I think for most cases it's probably still worth doing, and I wouldn't
+be _too_ concerned about the type issues here, most places are just
+using zero or a small constant as the default anyway.
+
+Even nla_get_XX_or_zero() would be a win, but that seemed too special
+...
+
+johannes
