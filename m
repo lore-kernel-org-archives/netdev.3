@@ -1,329 +1,185 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC401F81B8;
-	Thu, 24 Oct 2024 16:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729789148; cv=fail; b=sfHHwXxGPh0BCZz6xyer3lkKqybsZ5QlEc8G5bLv6Ycqwm+OC7GUmDrMvK4RtGHMpd4K2UCq86TBcwtsKABguy4DTLgqHgPI1zy+BxuSVVw8oI4P85PrPFmll+xh4qP0q1IkpNMFxJcefV4+E0PMP0x9xg4OrUzshPOcq1tEctU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729789148; c=relaxed/simple;
-	bh=xxAdYsW3HOEs0Cml+QCp5VwfBEkfmFKsghgwW8Ivsm0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yrk8fqPNqHMA1d1q3z9ig4/ilhT054NJBGyYf+3LYyVZ+B2ZHIfNRjb2tFNcBJSbXCMzvllA7GHUFTeZFeurvMyJXWFPx2F3p0LOVqnigNMVbAxHrrXXjW0ecCLK40JWtceaPRSzcmoxRaDvUJLZyseYgE9op4CYian2K2HsJlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BTeoLZf+; arc=fail smtp.client-ip=40.107.92.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E8A1F8195;
+	Thu, 24 Oct 2024 16:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729789150; cv=none; b=VdMEWgS5pqpRWunJyPmNpFJC1sjbmN6NyH5uEhTY9ZfhvKmZOQ2S3TSCe/agoDyR6t+sYqBNwC5vIlydTI0RnKv+rjdqCFhT0Wq73D1ncmcR7B9/QkzZCh2zgkmzEJvSQFpYeyk7vQ1vwbyVyEhghfQhcvB0YRCJnNsPFMdkdSY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729789150; c=relaxed/simple;
+	bh=1D9MXsAVWcNpk072yB1qs3fINFV1pE9hhttXGeJgq0w=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YBSaORGyiCSSumVHQY7wiwSHfqHY8DjcdJdf5V4yK7HEcit4lYHcCrwpbQVCKk/l5A9RyklPChTPoMyjTDiFmto1cLvgqlLL0GmL7B1PxERARj7EmhS+TbN5L8JdgKXAUlZHDjQzMzAXqAF+eS90plni0/yL0a1XX6LVr+HEmnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=cxBTxKea; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cbGlugOU; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BTeoLZf+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sr1Ur7l4snzup+ox1pgZIWNFK2gNK7kTMX9qNUl+OU8h2RLQSRvklZi9L48qmubVwO6My+cwPA1YNMv89kLvXAd6gKJEIdnWvSU23R+lJpu6drREdm56/aRtuYk3+peezlkSxVqQwi2hBwQ9b6aTurgbsJHG2ekeHiCqkWGEYbGyOEk0tcwjjyTCoOgCwLq9FtMXfnvSA6GM/GQZEAWBAAVBUVHF56dLnAgDqzQKs65KVI9CtczFlQqTA5rlCk3wkXkZriiuCXdNxNZhQH5GhBcuLDOdCyi7YcLROnG8MxjMW9XD+Xp0GWORFvxrqBjBbOo7OqmJnMSohwxRBcc5gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eNQzkEYujqRiG0Ljs6B48BRVlLwKrxXSiws9RhvFwEo=;
- b=cQzhdR07PM8hyccU+kGcAahFXNRRpI66d1XRLHg9jZx8pVh57dvs2kXjU4Kb9gDf98JUEUFf5sSDlV9cSM6AJQBq3LZrr8uLx1K6SeSrezbHAzdsQO1rmXC24f567cdQG3tq1P2NCxbXOOP7DcmfhrFclv800ug6a72+pbMZk93PypgkbJgcxl8tBWUExqPHnks4kXDK9EpC3vXPieBjyQenht9S8/CJpHOLa4kABsGmFiEp/ENYuS+JBq8SUKymluZUpMS+dqLxOnG2xAivVdd/lTEC207zsBdzxL4XCyq+mhvOoV39cnMX/IRO0ga4c7wDoND1avEDhftM542EDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eNQzkEYujqRiG0Ljs6B48BRVlLwKrxXSiws9RhvFwEo=;
- b=BTeoLZf+zsyh3kKr/saSrhKkx2VP/eh3oN6O106lEJM1FejUKPxgr8NDzi6BX85tYS9o7QeSTu2H79unXd8mxRJQT13tuZKkVh7nr7d1zXHTLU7c+vmk+lI6ED9LyWwd7+9KiGJ0FqBhRRlBKAMM4IT9eURHsn96nIWkSLm60hwoqXSrCaRsPjV76shGKmTamkPP7OY7uVVtRiITIHZVb7v+Pt0iM/tNAegPOHcwVs9OEZAkBHltulGLTGJlC9W6255vKZfIgtRuzf9nt7RLVUd70WTdSLrH2ytYA61G1E8Wyp7Kxnja19ffd5OlWRYs8knQ78Or60ON6vO/ygPXJw==
-Received: from MW4PR04CA0124.namprd04.prod.outlook.com (2603:10b6:303:84::9)
- by SA0PR12MB7076.namprd12.prod.outlook.com (2603:10b6:806:2d5::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Thu, 24 Oct
- 2024 16:58:59 +0000
-Received: from SJ1PEPF00002310.namprd03.prod.outlook.com
- (2603:10b6:303:84:cafe::31) by MW4PR04CA0124.outlook.office365.com
- (2603:10b6:303:84::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.17 via Frontend
- Transport; Thu, 24 Oct 2024 16:58:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00002310.mail.protection.outlook.com (10.167.242.164) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Thu, 24 Oct 2024 16:58:54 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 24 Oct
- 2024 09:58:43 -0700
-Received: from fedora.mtl.com (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 24 Oct
- 2024 09:58:36 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, "Amit
- Cohen" <amcohen@nvidia.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, "Andy
- Roulin" <aroulin@nvidia.com>, <mlxsw@nvidia.com>, Shuah Khan
-	<skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, Benjamin Poirier
-	<bpoirier@nvidia.com>, Hangbin Liu <liuhangbin@gmail.com>,
-	<linux-kselftest@vger.kernel.org>, Jiri Pirko <jiri@resnulli.us>
-Subject: [PATCH net-next v2 6/8] selftests: net: lib: Move checks from forwarding/lib.sh here
-Date: Thu, 24 Oct 2024 18:57:41 +0200
-Message-ID: <6a29cda5dfe01a29673c300d01725ff93a4bea6d.1729786087.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1729786087.git.petrm@nvidia.com>
-References: <cover.1729786087.git.petrm@nvidia.com>
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="cxBTxKea";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cbGlugOU"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 783C61140198;
+	Thu, 24 Oct 2024 12:59:06 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-09.internal (MEProxy); Thu, 24 Oct 2024 12:59:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1729789146;
+	 x=1729875546; bh=SG3wwx+g/r6vJORvVjNOrsa8CYeWjsvioBIcUqvZ0Gc=; b=
+	cxBTxKea8RPf2jlrM1D6wxexXn5vE6Xj//laaXmXFjCGxWbPu6xANhQbzZ5QoL0E
+	ixToHxmhkxEGpzLv7BjCXUn2OTgnKH04lfOnY2B+CD2PW9vQgfkA8WtsI3UP62E9
+	8RcBwxeTXFHzDv+LJvsG8fhJyLCU6YD2ejjfKB++MLgPCFBfN2DqWq9ZvyKIiv8p
+	F1uJDciPNrkuiWKgYFtEJSKTgf67Nr7aScnqXE47Hi0Et0olBmdZSBlC6gaGeLpD
+	JTR8/WStnKExjJD826l+H/IxpkHEdgNadk+OJ26bZyVlYZCPsYsWsv2WU/803W4X
+	C3OjUor3j17hDFuxKVdTVg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1729789146; x=
+	1729875546; bh=SG3wwx+g/r6vJORvVjNOrsa8CYeWjsvioBIcUqvZ0Gc=; b=c
+	bGlugOUXH5ZBeyeaY5Oezi+nuczo7orALTFLPa/uZ7myChfORdcCuRMKjj1Cn2dS
+	YuEGubMQ+5eApaNSjFIRU9XGJ2zNWQFM4xtb4SnXLC+PtVHnVthS8J4/5+o0w9hO
+	WuQtY9VrzR212nLOfd2C2GRf31hDEILaQZXUoPSRt1BXNAWsMSfP4LSPfsBWaTVv
+	7phmzfDkz4I3eKvm4fNgbdP5HpjL8MM27fUq2IzfSoi52Anb0l/IQRZK90cDvIjm
+	+2FKZt2z43RNyk1qK0FKEu3W0MD/pUkHGzEi/uXIOz58qlYNpdPMPOTMoWWnWAG4
+	cIaiojrVQzfcLvHGesJ8A==
+X-ME-Sender: <xms:2nwaZ9di9pcf1ltxSDIdzKw-YZloXhGxo1-8dJROD8pMbiUkMruhuA>
+    <xme:2nwaZ7Nb3-hStk1NEJEIEYiNuG0yt11T1Y2hK1Z6h-QJaGJ6LPVgoU2g9JBzsmNYh
+    P6OqMhV3UakBUkgPVM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejtddgkeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+    hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
+    hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
+    thdrtghomhdpnhgspghrtghpthhtohepvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:2nwaZ2g14Y01JmG-33WPQCjxC3JPyDQnpJ43p21zYZSOdaLsUaXOPw>
+    <xmx:2nwaZ2-Zom9-ZlISL8yiAminBt1FT0kNBPP5bnKWzLZtQxZAU9B-NA>
+    <xmx:2nwaZ5vSrI7WdW3RUNEFaMHpwUODsoQQaB6drPUgSmDNacOqpMnF9A>
+    <xmx:2nwaZ1GKlxbdiEQ_UKAIUG_Pp5B2CkL1lzP1gTK7ypoYoD77w-KUNg>
+    <xmx:2nwaZ6XDo5rKPgHgtwIoNTBEoGd_7cON6yTSVNLZ5qlZMpakkq3Qj5x2>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 37E8F1C20066; Thu, 24 Oct 2024 12:59:06 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002310:EE_|SA0PR12MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50d09751-d41c-491e-9150-08dcf44d24fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xNWKjSxDueE2fob8Z83MMvTH1LAMrr6L6P6qJGsFiZAlkUD8ttQXHGZBvXuw?=
- =?us-ascii?Q?nVBl8ssuD5youmIb/Hg+517HUrpv7KffRtu7cjPZ4mdPRIrpM/bJiN0lyVZ2?=
- =?us-ascii?Q?hDYbmI9HFLrBlGvt0wYBa5VwzcfwWC34+SdFXPy7Ud1+TBvxndijgp/iPf/M?=
- =?us-ascii?Q?EIkZJFaiDuOo0/6N9XM9oWaDrvi5SYoNQUIALjqEQ8UfQBMSUiYsKZn5N0HX?=
- =?us-ascii?Q?tr1YxkDVOuf28rhm5m6iSYKsOoTHshw6eO/3tCvx3+SjJaUmHHMRd0ZfT3hg?=
- =?us-ascii?Q?ho6WEG3+XrbUvnpiA7W5X8k6ze8XWoexzB5fvCUSvGQkYGxTXvaeAZFQ/A8S?=
- =?us-ascii?Q?iAcQU5GiBdwrAFovtuw5vE0lVmnERkrzPXj0y5lFJg3h0nX03x8pbhMTUq1a?=
- =?us-ascii?Q?PdPMuKE+0ar+ktPMo8yBLumZy+phvXcOzAOwKW0dpLw3eWyzRfCT45hpj9b8?=
- =?us-ascii?Q?cQv7kQ/J6L8GFuMKGfPAHVuRRe13CZS3BkHod+OrcGhBwll3elIq20/UCyUo?=
- =?us-ascii?Q?TdgGFXUXDxlW6dAEofalWWxsMPfTU9/nSI3AvgGoMY0YSH4XMspiM+Tn6e5F?=
- =?us-ascii?Q?NbU/1TptVDCfTUONFnGeRQb68fWTMU7fmfi83bTkdAspS26uJP+Oc9xpbO1q?=
- =?us-ascii?Q?2WiTNsOR1uplHAuA27ULuAQ65/4c7QETfsi0oUmTKPpcnpmVpV0B856R32Sg?=
- =?us-ascii?Q?WptYehR9eMSlrlZBD6N1EmvrtBu0sv8wRNGF1VpcKTHM+5xzHJEuvHh7NN9+?=
- =?us-ascii?Q?/80Spkf8qasWQNmmU7jnyrRjcilrRk5TEEyHYvVMqFUF94+STkKsLKBd+wdV?=
- =?us-ascii?Q?lC9Un7DmIhZq4btcBqATlJoMJ60tnqb4NhalSSBXSXh6q8Ii6NXvTLbIlZfq?=
- =?us-ascii?Q?aewAXQHzaBa8/2SCgt62otNfb8jGlGxJTw7e2xUrqb9BAkE4gpbEKpLWI/U3?=
- =?us-ascii?Q?vOK3i5JnHBVFCl8iRAtAYCBKmSE5EKL81Br4Ruyfr9lxaU15Dmt0rIbGEEHI?=
- =?us-ascii?Q?xxklEDBlSlSYPfGlFlaYzSf/JhlBQvxP1R19VCxWgm4ntsBjDYdSYXqNmZsr?=
- =?us-ascii?Q?Vjd6kE/el7sXBWV1KqhAHFzVrpmSd5S2iwT/ODA6SgkqLATMg9iHaNJnObvo?=
- =?us-ascii?Q?ezqTJbULFde0oHkIe8D4/cBHopGEWxqGRC1yNuQ2yN230u4Z1F3tMHJzhu5A?=
- =?us-ascii?Q?8DjFb89FcyTqGWG4U0akQaFxEqk2JPXdM6DbU1TvFWBoN8j7dJGsMnR64IRA?=
- =?us-ascii?Q?/PXj4n5oeMzHDsMBboY8ZMdC8P/3zOwNAGKYAhGG+hbmDAXQZlFe9JbnX4BN?=
- =?us-ascii?Q?dqy1CAyTN3dhMdMTO+w7wqbW1jBmmNdzH64z2SqB3qUnXTRjKVzRS0TOoYef?=
- =?us-ascii?Q?GpwEmnWbEQ6X+qWcknbihORzFufje2zOS2SFhqoxPdzCa0kTDw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 16:58:54.9555
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50d09751-d41c-491e-9150-08dcf44d24fd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002310.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7076
+Date: Thu, 24 Oct 2024 17:58:45 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "James Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Serge Semin" <fancer.lancer@gmail.com>, "Jon Mason" <jdmason@kudzu.us>,
+ "Dave Jiang" <dave.jiang@intel.com>, "Allen Hubbe" <allenbh@gmail.com>,
+ ntb@lists.linux.dev, "Andy Shevchenko" <andy@kernel.org>,
+ "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+ "Kory Maincent" <kory.maincent@bootlin.com>,
+ "Cai Huoqing" <cai.huoqing@linux.dev>, dmaengine@vger.kernel.org,
+ "Mark Brown" <broonie@kernel.org>, linux-spi@vger.kernel.org,
+ "Damien Le Moal" <dlemoal@kernel.org>, linux-ide@vger.kernel.org,
+ "paulburton@kernel.org" <paulburton@kernel.org>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Arnd Bergmann" <arnd@arndb.de>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>,
+ "Yoshihiro Shimoda" <yoshihiro.shimoda.uh@renesas.com>,
+ linux-pci <linux-pci@vger.kernel.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Andrew Lunn" <andrew@lunn.ch>, "Russell King" <linux@armlinux.org.uk>,
+ "Vladimir Oltean" <olteanv@gmail.com>,
+ "Kelvin Cheung" <keguang.zhang@gmail.com>,
+ "Yanteng Si" <siyanteng@loongson.cn>, netdev@vger.kernel.org,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Guenter Roeck" <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
+ "Borislav Petkov" <bp@alien8.de>, linux-edac@vger.kernel.org,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ linux-serial@vger.kernel.org
+Cc: "Andrew Halaney" <ajhalaney@gmail.com>, "Nikita Travkin" <nikita@trvn.ru>,
+ "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+ "Alexander Shiyan" <shc_work@mail.ru>, "Dmitry Kozlov" <xeb@mail.ru>,
+ "Sergey Shtylyov" <s.shtylyov@omp.ru>,
+ "Evgeniy Dushistov" <dushistov@mail.ru>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Nikita Shubin" <nikita.shubin@maquefel.me>,
+ linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <2f203b14-be13-4eef-bcb1-743dd9e9e9bd@app.fastmail.com>
+In-Reply-To: 
+ <f90bba20e86dac698472d686be7ec565736adca0.camel@HansenPartnership.com>
+References: <2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
+ <e7d548a7fc835f9f3c9cb2e5ed97dfdfa164813f.camel@HansenPartnership.com>
+ <753d203a-a008-4cd3-b053-38b5ce31281b@app.fastmail.com>
+ <f90bba20e86dac698472d686be7ec565736adca0.camel@HansenPartnership.com>
+Subject: Re: linux: Goodbye from a Linux community volunteer
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-For logging to be useful, something has to set RET and retmsg by calling
-ret_set_ksft_status(). There is a suite of functions to that end in
-forwarding/lib: check_err, check_fail et.al. Move them to net/lib.sh so
-that every net test can use them.
 
-Existing lib.sh users might be using these same names for their functions.
-However lib.sh is always sourced near the top of the file (checked), and
-whatever new definitions will simply override the ones provided by lib.sh.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
----
+=E5=9C=A82024=E5=B9=B410=E6=9C=8824=E6=97=A5=E5=8D=81=E6=9C=88 =E4=B8=8B=
+=E5=8D=885:27=EF=BC=8CJames Bottomley=E5=86=99=E9=81=93=EF=BC=9A
+> On Thu, 2024-10-24 at 16:59 +0100, Jiaxun Yang wrote:
+[...]
 
-Notes:
-CC: Shuah Khan <shuah@kernel.org>
-CC: Benjamin Poirier <bpoirier@nvidia.com>
-CC: Hangbin Liu <liuhangbin@gmail.com>
-CC: linux-kselftest@vger.kernel.org
-CC: Jiri Pirko <jiri@resnulli.us>
----
+Hi James,
 
- tools/testing/selftests/net/forwarding/lib.sh | 73 -------------------
- tools/testing/selftests/net/lib.sh            | 73 +++++++++++++++++++
- 2 files changed, 73 insertions(+), 73 deletions(-)
+>
+> It's Linux, so no official capacity at all.  However, I am expressing
+> the views of a number of people I talked to but it's not fair of me to
+> name them.
 
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-index d28dbf27c1f0..8625e3c99f55 100644
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -445,79 +445,6 @@ done
- ##############################################################################
- # Helpers
- 
--# Whether FAILs should be interpreted as XFAILs. Internal.
--FAIL_TO_XFAIL=
--
--check_err()
--{
--	local err=$1
--	local msg=$2
--
--	if ((err)); then
--		if [[ $FAIL_TO_XFAIL = yes ]]; then
--			ret_set_ksft_status $ksft_xfail "$msg"
--		else
--			ret_set_ksft_status $ksft_fail "$msg"
--		fi
--	fi
--}
--
--check_fail()
--{
--	local err=$1
--	local msg=$2
--
--	check_err $((!err)) "$msg"
--}
--
--check_err_fail()
--{
--	local should_fail=$1; shift
--	local err=$1; shift
--	local what=$1; shift
--
--	if ((should_fail)); then
--		check_fail $err "$what succeeded, but should have failed"
--	else
--		check_err $err "$what failed"
--	fi
--}
--
--xfail()
--{
--	FAIL_TO_XFAIL=yes "$@"
--}
--
--xfail_on_slow()
--{
--	if [[ $KSFT_MACHINE_SLOW = yes ]]; then
--		FAIL_TO_XFAIL=yes "$@"
--	else
--		"$@"
--	fi
--}
--
--omit_on_slow()
--{
--	if [[ $KSFT_MACHINE_SLOW != yes ]]; then
--		"$@"
--	fi
--}
--
--xfail_on_veth()
--{
--	local dev=$1; shift
--	local kind
--
--	kind=$(ip -j -d link show dev $dev |
--			jq -r '.[].linkinfo.info_kind')
--	if [[ $kind = veth ]]; then
--		FAIL_TO_XFAIL=yes "$@"
--	else
--		"$@"
--	fi
--}
--
- not()
- {
- 	"$@"
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 4f52b8e48a3a..6bcf5d13879d 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -361,3 +361,76 @@ tests_run()
- 			$current_test
- 	done
- }
-+
-+# Whether FAILs should be interpreted as XFAILs. Internal.
-+FAIL_TO_XFAIL=
-+
-+check_err()
-+{
-+	local err=$1
-+	local msg=$2
-+
-+	if ((err)); then
-+		if [[ $FAIL_TO_XFAIL = yes ]]; then
-+			ret_set_ksft_status $ksft_xfail "$msg"
-+		else
-+			ret_set_ksft_status $ksft_fail "$msg"
-+		fi
-+	fi
-+}
-+
-+check_fail()
-+{
-+	local err=$1
-+	local msg=$2
-+
-+	check_err $((!err)) "$msg"
-+}
-+
-+check_err_fail()
-+{
-+	local should_fail=$1; shift
-+	local err=$1; shift
-+	local what=$1; shift
-+
-+	if ((should_fail)); then
-+		check_fail $err "$what succeeded, but should have failed"
-+	else
-+		check_err $err "$what failed"
-+	fi
-+}
-+
-+xfail()
-+{
-+	FAIL_TO_XFAIL=yes "$@"
-+}
-+
-+xfail_on_slow()
-+{
-+	if [[ $KSFT_MACHINE_SLOW = yes ]]; then
-+		FAIL_TO_XFAIL=yes "$@"
-+	else
-+		"$@"
-+	fi
-+}
-+
-+omit_on_slow()
-+{
-+	if [[ $KSFT_MACHINE_SLOW != yes ]]; then
-+		"$@"
-+	fi
-+}
-+
-+xfail_on_veth()
-+{
-+	local dev=$1; shift
-+	local kind
-+
-+	kind=$(ip -j -d link show dev $dev |
-+			jq -r '.[].linkinfo.info_kind')
-+	if [[ $kind = veth ]]; then
-+		FAIL_TO_XFAIL=yes "$@"
-+	else
-+		"$@"
-+	fi
-+}
--- 
-2.45.0
+Fair enough, I was hoping that it's from Linux Foundation but it's still
+good news to me that it do represent some respectful individuals.
 
+>
+[...]
+>> How should we handle it?
+>
+> A big chunk of the reason it's taken so long just to get the above is
+> that the Lawyers (of which I'm not one) are still discussing the
+> specifics and will produce a much longer policy document later, so they
+> don't want to be drawn into questions like this.  However, my non-
+> legal-advice rule of thumb that I'm applying until I hear otherwise is
+> not on the SDN list, not a problem.
+
+Thank you for sharing your insights. I'm looking forward to the document.
+
+While I remain quite upset about how things were handled, your message h=
+as
+helped restore some of my confidence in the community.
+
+I agree with Peter Cai's earlier comment that steps should be taken to a=
+ddress
+the harm caused by the initial reckless actions, particularly to those w=
+ho were
+humiliated.
+
+It is also important to put measures in place to prevent such drama from=
+ recurring.
+A formal procedure for handling urgent compliance requests may be a sens=
+ible step
+forward.
+
+I hold our community in high regard and would be heartbreaking to see th=
+e reputation
+of the Linux Kernel undermined in such an unfortunate manner. I would ap=
+preciate it
+if you could convey those thoughts to the relevant individuals.
+
+Thanks
+>
+> James
+
+--=20
+- Jiaxun
