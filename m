@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703261EABDF
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC91EC00F;
+	Thu, 24 Oct 2024 15:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729783628; cv=none; b=dNfqP+iArx1Syvdn1Ucf5sYRd4Fj8248bUgswYOnAlYLIwibeAE0ulYzBuC3C22wUh2lW/eZsatq6sCuJcVygf3aVXSpk3smlvCp5ZTe+Ckp1rSf909Hv9qddrQcAhIDRfmLI1tT2musI/QTSKoEjGbobOPxT+o2GQp1Hqb0USo=
+	t=1729783701; cv=none; b=WO6GgwP0GT+TKQ6GL1Ekc6anE4olMA/+PXTyMu0IxuOsWqoVXC14tyhve5+RJ8EAbFz10SwgSrQU8vc8UsrYC/sBxJ50nKyQeMImxmt0mgPPfjE+ernaRJHvu4Yk39r403UjbitxhFU09Pij61lANAG/DuHJ+2SKZXc29kV0Ubc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729783628; c=relaxed/simple;
-	bh=104Vhor7ZYpfQ65jwmwwWPHwxqkG4KJ8b/4ibDgqmM0=;
+	s=arc-20240116; t=1729783701; c=relaxed/simple;
+	bh=A3+WFvu5Hl8t2/BhdPAsefVmYLEp9do9rPFLS0+ariQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2n74qvARhgzUXJIyqOSlaVnmjMnZh/D4CbL3svvo+1/mOh6FnXfBZxGTQdQAmPMiHr4YN9HCmaTg3o4suybFAeyz0jpGXfGt77K2jvNszZwOrEW+8iO0eL9ycm2HNfyXxBDFHGMDjpTQ7hshUJ2rb/MJC4fl/iv5kmZUCY0bzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcHnmH29; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=a33QpGGTmW/FFAU11dROv0cu/cZbOn2bHxQNdccWObmHyHRJKjgKNhN6IgVj/CwAC7Y9LQesP/wi153g7TZ9G/SYU3116h0lHJPIQ+Wbvxl6Vf3VWpmyJMG0pk9uc9t5wJ3ELgFkP5RAKfIOwGZhynQuwdNmjLnZ6+l/01vQJ9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFlSlW3f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcHnmH29"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59788C4CEC7;
-	Thu, 24 Oct 2024 15:27:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFlSlW3f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC48C4CEC7;
+	Thu, 24 Oct 2024 15:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729783628;
-	bh=104Vhor7ZYpfQ65jwmwwWPHwxqkG4KJ8b/4ibDgqmM0=;
+	s=k20201202; t=1729783700;
+	bh=A3+WFvu5Hl8t2/BhdPAsefVmYLEp9do9rPFLS0+ariQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KcHnmH29ZwqO/tsiWi67RZTNIzk/6UgPnOxILrBDZPSVBXsUeA7SRLKCTjkQ/EgtN
-	 2SwQXUpD2Yx/U504tfuKu7weMeGoAHGPY5C+HpugVeAstpwtX2dOZE1P3spRQD3Y6E
-	 RLcP2fV5on74oD3xxeQomaW3LFlKHOZOMwREPbRYGTrLHAq6dVtOq/1jk8waouwBbx
-	 oJHpJgiCb/PnI3adhng74gzHFu06Bbb1vbSdO/GfydjkSthW+FvcBbhfQ8INuaNbBs
-	 zqEumK4N2QY5zeITtuWmLhuaIy0DF0lMvBwAkeNyC7LQxSmP0YjXxubmzxEJme9Bwu
-	 d7xPRsFAQ4TzA==
-Date: Thu, 24 Oct 2024 16:27:04 +0100
+	b=ZFlSlW3f8oB626HmiKkyLOJu5+l42JXKVnmoUyWYKkhsdnxMNRC6ziN8Dnvhj82+X
+	 Dt93tXjeQISjgAFxG58PgmzBzNQDFAvv2jT+/h/vvwmdfF0v5+2pQomOpR84n+g/1n
+	 BJlvm9VovVkudzla+NNkE11u0SEIWHWWW/giX7mezrOHTDL13odSH5ehhPIhKrN1nd
+	 FToP+cc93aWSMwkZJrEA2ZKKpM2gDz+pJ5cZLgFnQTMRy1rCpzWl4Ie2r5lYAQn3J4
+	 zOWQsxm2qtmiOTXNB6xCEAQUMlKRWUYf2arQ1ehMX0l9O6GSoEzJ5qmaLTpGMambej
+	 qFtjF+59xfdsw==
+Date: Thu, 24 Oct 2024 16:28:16 +0100
 From: Simon Horman <horms@kernel.org>
-To: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Cc: Rasesh Mody <rmody@marvell.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	GR-Linux-NIC-Dev@marvell.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 1/2] bna: Fix return value check for debugfs create APIs
-Message-ID: <20241024152704.GZ1202098@kernel.org>
-References: <20241023080921.326-1-thunder.leizhen@huawei.com>
- <20241023080921.326-2-thunder.leizhen@huawei.com>
- <20241024121325.GJ1202098@kernel.org>
- <19322579-a24b-679a-051b-c202eb3750f7@huawei.com>
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH net-next] Documentation: networking: Add missing PHY_GET
+ command in the message list
+Message-ID: <20241024152816.GA1202098@kernel.org>
+References: <20241023141559.100973-1-kory.maincent@bootlin.com>
+ <20241024145223.GR1202098@kernel.org>
+ <20241024171802.4e0f0110@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,76 +51,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <19322579-a24b-679a-051b-c202eb3750f7@huawei.com>
+In-Reply-To: <20241024171802.4e0f0110@kmaincent-XPS-13-7390>
 
-On Thu, Oct 24, 2024 at 09:26:30PM +0800, Leizhen (ThunderTown) wrote:
+On Thu, Oct 24, 2024 at 05:18:02PM +0200, Kory Maincent wrote:
+> On Thu, 24 Oct 2024 15:52:23 +0100
+> Simon Horman <horms@kernel.org> wrote:
 > 
+> > On Wed, Oct 23, 2024 at 04:15:58PM +0200, Kory Maincent wrote:
+> > > ETHTOOL_MSG_PHY_GET/GET_REPLY/NTF is missing in the ethtool message list.
+> > > Add it to the ethool netlink documentation.
+> > > 
+> > > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> > > ---
+> > >  Documentation/networking/ethtool-netlink.rst | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/Documentation/networking/ethtool-netlink.rst
+> > > b/Documentation/networking/ethtool-netlink.rst index
+> > > 295563e91082..70ecc3821007 100644 ---
+> > > a/Documentation/networking/ethtool-netlink.rst +++
+> > > b/Documentation/networking/ethtool-netlink.rst @@ -236,6 +236,7 @@
+> > > Userspace to kernel: ``ETHTOOL_MSG_MM_GET``                get MAC merge
+> > > layer state ``ETHTOOL_MSG_MM_SET``                set MAC merge layer
+> > > parameters ``ETHTOOL_MSG_MODULE_FW_FLASH_ACT``   flash transceiver module
+> > > firmware
+> > > +  ``ETHTOOL_MSG_PHY_GET``               get Ethernet PHY information
+> > >    ===================================== =================================
+> > >  
+> > >  Kernel to userspace:
+> > > @@ -283,6 +284,8 @@ Kernel to userspace:
+> > >    ``ETHTOOL_MSG_PLCA_NTF``                 PLCA RS parameters
+> > >    ``ETHTOOL_MSG_MM_GET_REPLY``             MAC merge layer status
+> > >    ``ETHTOOL_MSG_MODULE_FW_FLASH_NTF``      transceiver module flash updates
+> > > +  ``ETHTOOL_MSG_PHY_GET_REPLY``            Ethernet PHY information
+> > > +  ``ETHTOOL_MSG_PHY_NTF``                  Ethernet PHY information  
+> > 
+> > I wonder if ETHTOOL_MSG_PHY_NTF should be removed.
+> > It doesn't seem to be used anywhere.
 > 
-> On 2024/10/24 20:13, Simon Horman wrote:
-> > On Wed, Oct 23, 2024 at 04:09:20PM +0800, Zhen Lei wrote:
-> >> Fix the incorrect return value check for debugfs_create_dir() and
-> >> debugfs_create_file(), which returns ERR_PTR(-ERROR) instead of NULL
-> >> when it fails.
-> >>
-> >> Commit 4ad23d2368cc ("bna: Remove error checking for
-> >> debugfs_create_dir()") allows the program to continue execution if the
-> >> creation of bnad->port_debugfs_root fails, which causes the atomic count
-> >> bna_debugfs_port_count to be unbalanced. The corresponding error check
-> >> need to be added back.
-> > 
-> > Hi Zhen Lei,
-> > 
-> > The documentation for debugfs_create_dir states:
-> > 
-> >  * NOTE: it's expected that most callers should _ignore_ the errors returned
-> >  * by this function. Other debugfs functions handle the fact that the "dentry"
-> >  * passed to them could be an error and they don't crash in that case.
-> >  * Drivers should generally work fine even if debugfs fails to init anyway.
-> > 
-> > Which makes me wonder why we are checking the return value of
-> > debugfs_create_dir() at all. Can't we just take advantage of
-> > it not mattering, to debugfs functions, if the return value
-> > is an error or not?
-> 
-> Do you want to ignore all the return values of debugfs_create_dir() and debugfs_create_file()?
-> "bna_debugfs_root = debugfs_create_dir("bna", NULL);" and debugfs_create_file() is OK.
-> I've carefully analyzed the current code, and "bnad->port_debugfs_root = debugfs_create_dir(...);"
-> is also OK for now.
+> We can't, as it is in the ethtool UAPI. Also I believe Maxime will use it on
+> later patch series. Maxime, you confirm?
 
-What I'm saying is that it is unusual to depend on the return value of
-debugfs_create_dir() for anything. And it would be best to avoid doing so.
+Ok, if it's in the UAPI then I suppose it needs to stay.
 
-But perhaps that isn't possible for some reason?
-
-> 
-> bnad_debugfs_init():
-> 	bnad->port_debugfs_root = debugfs_create_dir(name, bna_debugfs_root);	//IS_ERR() if fails
-> (1)
-> 	atomic_inc(&bna_debugfs_port_count);
-> 
-> bnad_debugfs_uninit():
-> (2)	if (bnad->port_debugfs_root)						//It still works when it's IS_ERR()
-> 		atomic_dec(&bna_debugfs_port_count);
-> 
-> 	if (atomic_read(&bna_debugfs_port_count) == 0)
-> 		debugfs_remove(bna_debugfs_root);
-> 
-> If we want the code to be more robust or easier to understand, it is better
-> to modify (1) and (2) above as follows:
-> (1) if (IS_ERR(bnad->port_debugfs_root))
-> 	return;
-> (2) if (!IS_ERR_OR_NULL(bnad->port_debugfs_root))
-> 
-> > 
-> >> Fixes: 4ad23d2368cc ("bna: Remove error checking for debugfs_create_dir()")
-> >> Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
-> >> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-> > 
-> > ...
-> > .
-> > 
-> 
-> -- 
-> Regards,
->   Zhen Lei
-> 
+But could we differentiate in the documentation between
+ETHTOOL_MSG_PHY_GET_REPLY and ETHTOOL_MSG_PHY_NTF?
