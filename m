@@ -1,109 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73AA1EBFE3
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 14:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2811B1E285D;
+	Thu, 24 Oct 2024 14:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778774; cv=none; b=rFbyLwBf61MIz0k2B/1fSPCot6V4T/fJ8DDxKwY7FR7w86IT/TVFXNlfxDUXXICaIQk+X5avoT9E5p7x6CRUOQVqhMe2X3DT1GoXTCT/jjHvnoLyeEWrYfXQUraqyPDcDKUVwHkj4vfLACqsro2EkKh+4BXDLPmy6tNNmSK5i60=
+	t=1729778783; cv=none; b=SCh9EKYF1DNvaHpdbok60vFWaJlQx2ISGkD/u2j2l9KvG99Oz/V9F3T9rM3+NnvLsOp3Qd+OD2ixgRC2kXS7xTXUABoZsOmjwTZ2OinELV9w0Ir1vOa4iSvvsfIr/4bHjG0xX86U7vydyEimc1uBRMti+jVObaJOClBPAy6cq6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778774; c=relaxed/simple;
-	bh=PkZy5Bm2Mgnujb/0DqtZnvhh4LaJYhfynDFVUZ+zO5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P83VmLBjb1BW2sFavnJ43Y0OBSabTvlCqGjNl8Vxz4YG6eZzactPBD8Nl+aEbkHC0QpJKZWzltZfJjJlTbWHbPon7opbhYxrrqW4DabXHUVhB59XbNdV2c1d4EnGe6rWZ4ppC8cSR4RwvjcXz50gzm28mrzeXO1Y1KmIzWzgKfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JQs977lL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JQs977lL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729778770;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SueMPOdHep9t3PCuklU6bVWhougpE6WyFc4wdjmYJYc=;
-	b=JQs977lLarEpWiNR4eBXjD+6Gx9ZmPQOsN8TSJtZV6ibJG0lFnqgXqijgEndlPPylZwE7n
-	VJ/sSGj0q2o00hcRhaPtohwGF7/0HjQx82kx5L+HX/YKeKHVJS3zJmoX9b8KCmG1RwXRjh
-	uWJEfeDVxHod4B9eVNuHLHMhdWH7rVM=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-69oGyEVANHudqYkVi238wQ-1; Thu,
- 24 Oct 2024 10:06:07 -0400
-X-MC-Unique: 69oGyEVANHudqYkVi238wQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0886E1955E75;
-	Thu, 24 Oct 2024 14:06:03 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D2CAC30001A7;
-	Thu, 24 Oct 2024 14:05:55 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 01/27] netfs: Remove call to folio_index()
-Date: Thu, 24 Oct 2024 15:04:59 +0100
-Message-ID: <20241024140539.3828093-2-dhowells@redhat.com>
-In-Reply-To: <20241024140539.3828093-1-dhowells@redhat.com>
-References: <20241024140539.3828093-1-dhowells@redhat.com>
+	s=arc-20240116; t=1729778783; c=relaxed/simple;
+	bh=HtTUQ2nfCVxqvs52SvfCUte+akCJyiK2RSivJbAGDn4=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=eBwUFPPoIPelZX4s7wVyBQt4zJ0+km2XVqAAr8it8QfhPe8sBksn4TozeL7IlWALfjZHv1KUnCm0pFbla4qdLIXB3xeNH+v+nWnPZRWIbsovz5aKfUJxCRrB7zRun0YBqUuegcL/xAY9wkWRa3Z1BdjppSJwfLaWKxlEggAQFP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XZ72C51ZXzpXM8;
+	Thu, 24 Oct 2024 22:04:19 +0800 (CST)
+Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6D7E41800E4;
+	Thu, 24 Oct 2024 22:06:16 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 24 Oct 2024 22:06:15 +0800
+Message-ID: <0c0de40c-7bf3-4d98-9d25-9b4f36a91e0b@huawei.com>
+Date: Thu, 24 Oct 2024 22:06:14 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+	<horms@kernel.org>, <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
+	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 2/7] net: hibmcge: Add debugfs supported in this
+ module
+To: Andrew Lunn <andrew@lunn.ch>
+References: <20241023134213.3359092-1-shaojijie@huawei.com>
+ <20241023134213.3359092-3-shaojijie@huawei.com>
+ <924e9c5c-f4a8-4db5-bbe8-964505191849@lunn.ch>
+ <5375ce1b-8778-4696-a530-1a002f7ec4c7@huawei.com>
+ <6103ee00-175d-4a35-9081-2c500ad3c123@lunn.ch>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <6103ee00-175d-4a35-9081-2c500ad3c123@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm000007.china.huawei.com (7.193.23.189)
 
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-Calling folio_index() is pointless overhead; directly dereferencing
-folio->index is fine.
+on 2024/10/24 20:05, Andrew Lunn wrote:
+>>>> +	seq_printf(s, "mdio frequency: %u\n", specs->mdio_frequency);
+>>> Is this interesting? Are you clocking it greater than 2.5MHz?
+>> MDIO controller supports 1MHz, 2.5MHz, 12.5MHz, and 25MHz
+>> Of course, we chose and tested 2.5M in actual work, but this can be modified.
+> How? What API are you using it allow it to be modified? Why cannot you
+> get the value using the same API?
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20241005182307.3190401-2-willy@infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- include/trace/events/netfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This frequency cannot be modified dynamically.
+There are some specification registers that store some initialization configuration parameters
+written by the BMC, such as the default MAC address and hardware FIFO size and mdio frequency.
 
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 69975c9c6823..bf511bca896e 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -450,7 +450,7 @@ TRACE_EVENT(netfs_folio,
- 		    struct address_space *__m = READ_ONCE(folio->mapping);
- 		    __entry->ino = __m ? __m->host->i_ino : 0;
- 		    __entry->why = why;
--		    __entry->index = folio_index(folio);
-+		    __entry->index = folio->index;
- 		    __entry->nr = folio_nr_pages(folio);
- 			   ),
- 
+When the device is in prob, the driver reads the related configuration information and
+initializes the device based on the configuration.
+
+>
+>> We requested three interrupts: "tx", "rx", "err"
+>> The err interrupt is a summary interrupt. We distinguish different errors
+>> based on the status register and mask.
+>>
+>> With "cat /proc/interrupts | grep hibmcge",
+>> we can't distinguish the detailed cause of the error,
+>> so we added this file to debugfs.
+>>
+>> the following effects are achieved:
+>> [root@localhost sjj]# cat /sys/kernel/debug/hibmcge/0000\:83\:00.1/irq_info
+>> RX                  : is enabled: true, print: false, count: 2
+>> TX                  : is enabled: true, print: false, count: 0
+>> MAC_MII_FIFO_ERR    : is enabled: false, print: true, count: 0
+>> MAC_PCS_RX_FIFO_ERR : is enabled: false, print: true, count: 0
+>> MAC_PCS_TX_FIFO_ERR : is enabled: false, print: true, count: 0
+>> MAC_APP_RX_FIFO_ERR : is enabled: false, print: true, count: 0
+>> MAC_APP_TX_FIFO_ERR : is enabled: false, print: true, count: 0
+>> SRAM_PARITY_ERR     : is enabled: true, print: true, count: 0
+>> TX_AHB_ERR          : is enabled: true, print: true, count: 0
+>> RX_BUF_AVL          : is enabled: true, print: false, count: 0
+>> REL_BUF_ERR         : is enabled: true, print: true, count: 0
+>> TXCFG_AVL           : is enabled: true, print: false, count: 0
+>> TX_DROP             : is enabled: true, print: false, count: 0
+>> RX_DROP             : is enabled: true, print: false, count: 0
+>> RX_AHB_ERR          : is enabled: true, print: true, count: 0
+>> MAC_FIFO_ERR        : is enabled: true, print: false, count: 0
+>> RBREQ_ERR           : is enabled: true, print: false, count: 0
+>> WE_ERR              : is enabled: true, print: false, count: 0
+>>
+>>
+>> The irq framework of hibmcge driver also includes tx/rx interrupts.
+>> Therefore, these interrupts are not distinguished separately in debugfs.
+> Please make this a patch of its own, and include this in the commit
+> message.
+>
+> Ideally you need to show there is no standard API for what you want to
+> put into debugfs, because if there is a standard API, you don't need
+> debugfs...
+
+Because standard API don't meet my needs, I added detailed interrupt information to debugfs.
+I'll add a detailed description to the commit message of v2.
+
+>
+>>>> +static int hbg_dbg_nic_state(struct seq_file *s, void *unused)
+>>>> +{
+>>>> +	struct net_device *netdev = dev_get_drvdata(s->private);
+>>>> +	struct hbg_priv *priv = netdev_priv(netdev);
+>>>> +
+>>>> +	seq_printf(s, "event handling state: %s\n",
+>>>> +		   hbg_get_bool_str(test_bit(HBG_NIC_STATE_EVENT_HANDLING,
+>>>> +					     &priv->state)));
+>>>> +
+>>>> +	seq_printf(s, "tx timeout cnt: %llu\n", priv->stats.tx_timeout_cnt);
+>>> Don't you have this via ethtool -S ?
+>> Although tx_timeout_cnt is a statistical item, it is not displayed in the ethtool -S.
+> Why?
+>
+> 	Andrew
+
+This was decided by our internal discussion before,
+and we'll revisit it, and move it to ethtool -S in the next version if it's okay with us.
+
+Thanks,
+Jijie Shao
 
