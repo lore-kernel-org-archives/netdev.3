@@ -1,407 +1,243 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2055.outbound.protection.outlook.com [40.107.22.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9201662F4;
-	Thu, 24 Oct 2024 06:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729753021; cv=none; b=TQFaOSPYz3vpjaHp/DeX6agbi9/vPWdhOkVefIkZ0K5hQnPrToGvpKFxZWix0e8e/pfIiHikePcmb94BmQZFzy6nOrGTB8OF/Vo1aD/gRYeuKQVTgsHW7x+ZcUla3k1Das9nftzvB6nSSbjOZvlpZs4mr4fESJj1Y4Q/6vXw9D8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729753021; c=relaxed/simple;
-	bh=wdgD6qvXSVO8H0q9V3v24HaTgfvhkQIOWPYzBuOxHw8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=crP+5+ds7LXYvoYhk4hoCXwqffJ3lF3lB8egIakW5VhVEMeoo0JEAjzokwjSIIT7gJn/TVAbwEwpuOIm7ZdbwtuclwUYxFQQA6LLUVZw7MJqTW6guMPrGrhiqfwrXbYI0nUOIcu7gp1tbr9rwMRwHvv3fgzYvUQjSH9LzNehaPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=reimar.doeffinger@gmx.de header.b=tzP19X4m; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D53216EB56;
+	Thu, 24 Oct 2024 07:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729753724; cv=fail; b=em3pBdUi8w+kEJB+MgB30bkz0krz0IRgViTUuelwGZHQ6nezgEv+50WoMw0Uyp6gm4VyjrnhCckjKWSOFoe6rRHzlONRUnZTUkhEBxBJK+C/2VOzhIYoCdrgA2w6dCRxAIVGI+jWLxurok6WkJSdLBIku0VODUwNkMoXMmnV22o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729753724; c=relaxed/simple;
+	bh=tOUDmFt+GerWKX4fuyuWYxCPKwsvxDf9+CGSX5WwmVU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=mCInHoo9LToVdwhzdupqznWN3vgOH1nrsKgw46xeUY2K5SH2CfXV7vttoQoCKe7eror7y8v59zOZj2718edIeR2zjGYH/O/BXJOYode7iG0xTggLzJbKXobMWy6j+9YLIx6Upzp9CE9hU7VKl80DkwuqmYBcrWBMnKyhhuM3RRw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=a2OAFgCz; arc=fail smtp.client-ip=40.107.22.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=reimar.doeffinger@gmx.de header.b="tzP19X4m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1729752930; x=1730357730;
-	i=reimar.doeffinger@gmx.de;
-	bh=dbq90nrq8LfkX1Ug149kdQ8PEHRPGRI4rzHx8hOaEss=;
-	h=X-UI-Sender-Class:Content-Type:Mime-Version:Subject:From:
-	 In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:cc:content-transfer-encoding:content-type:date:from:
-	 message-id:mime-version:reply-to:subject:to;
-	b=tzP19X4mYfx99tlCYHElzIncUINmjJmY64Tvzhy+puX0CUzTnpXtaEFP3En+UVSW
-	 Im89H+yOxexeu/ER0tskm6M+g5FXhTgNuy9PgEyxPszxM+XXsU3rtubJEuo66VR6b
-	 Gt4vbmF3OnPk7HedzlokO8v5wr69CC/kRspI+/8vQr+6rNTyJehsV+FR6Waz3wJfb
-	 4HHDb1/43DKfrPaTFpvT8ez05Uu0bsh0FpWWvXVHGwdwjM5hvy8j3cxJ3lQ8RSTD6
-	 3VwCl3sjRXSsS6HJvJrZQyrf2Cuy40/MMgo8V5chzJFcsc3D7lqXjDxiKIlSTby1c
-	 FGzmM/YA+oOsOGL0bw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from smtpclient.apple ([155.4.74.59]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1McYCb-1tbXPo3PDR-00m2mo; Thu, 24
- Oct 2024 08:55:29 +0200
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="a2OAFgCz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OWSgC9o75EKnFqXu8D3VmAZ1XYmhmUmDjgp5lQE1I01BiXNrexTgHgRONIuSGNagRH21Vh10mz5n4MGWJ47c4lj2UiRe3xBoVvuuamSY3mvo5W3uKIkBMNMfTcKl2X4UJl4/Qc59hF0YMlTpwM9tR/oxzfW7g1frJLpYBeLoS21fznRP8zLAGMek7DG/15JsrkYAhltWmFWT/vjoUM8v3JYkSRFFoeStln8gKO7qsRJ0w2Dl5+5461dzwywd1nO5UljtEyRRl8BFT7mA0zb2TpH/v38uZGVMMduXtVeYePVhD6lhX4hUYSxA8jO8q8CBx9l7jBHD7D54o0fpidRe6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5u7pgGn74EiUJxXOrO5RMfzOWHGWyc7rjQLJieRI5BQ=;
+ b=oBf/dfSPDhUud1+ORJgFKJevOPmMkIVo+HxSajxzS9BFErfVTXDIwY5q9/mnoSZFIgu5SgFsuwAauaysij8SEKqs28n8PIiFwlY0mRxrq2bRdXWq0cZQndc41TrocSa0Ty5eqlZc5SqqAaqtQZ0ws9yVJTN7H0JllLfgVlXRkw6pJwQUQow/Lgx/aYQ6wAtf24H0Z4IEPBQU2hcSvoOeW5FE9wt8I0pxVaF4lzGv5elkAudJwEVSSs7nc7Tom/9gE2qlkM9DKczQExaAdEW5ofOrQoROx84zAIvGWIuKzAfmpjKZN/kr/R6YP4iLbetsEwrql5V+TI5T1KaTZ+p4gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5u7pgGn74EiUJxXOrO5RMfzOWHGWyc7rjQLJieRI5BQ=;
+ b=a2OAFgCz8InvXt2TFXIXvpo5pO9u0+nqlHs0CuBG2myzXVt0A/UPU8C4vJ2hze9VDDlNs9tXW1RSKU2YNT7nGhVO9k4AjjKdQRALJQXk5P7WysrqBl2au7MOIY45tOkUbykwZ4wmhE8nSOgvaYtgMFHvX9VCO6aKNLanzGp/O69Qu6/8U/PIUKOdUB3mMcVkFh9cLjarNfJ6FiQtslml0IidyYG4LdxdK6XxWul4fW6VYtZXhwc17WI5BCKgD0BxOKXF0QmzJ325rqlVmQXvcI+mPjDbr7wmQ08p58SzDrJVUkrTMAewXeNDIKiC0EKm9y1HhjSTA4SxZfpIjluL3g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAXPR04MB9153.eurprd04.prod.outlook.com (2603:10a6:102:22b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Thu, 24 Oct
+ 2024 07:08:37 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8069.027; Thu, 24 Oct 2024
+ 07:08:37 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	vladimir.oltean@nxp.com,
+	claudiu.manoil@nxp.com,
+	xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com,
+	christophe.leroy@csgroup.eu,
+	linux@armlinux.org.uk,
+	bhelgaas@google.com,
+	horms@kernel.org
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	alexander.stein@ew.tq-group.com
+Subject: [PATCH v5 net-next 00/13] add basic support for i.MX95 NETC
+Date: Thu, 24 Oct 2024 14:53:15 +0800
+Message-Id: <20241024065328.521518-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0011.apcprd04.prod.outlook.com
+ (2603:1096:4:197::10) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: linux: Goodbye from a Linux community volunteer
-From: =?utf-8?Q?Reimar_D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
-In-Reply-To: <2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
-Date: Thu, 24 Oct 2024 08:55:05 +0200
-Cc: Jon Mason <jdmason@kudzu.us>,
- Dave Jiang <dave.jiang@intel.com>,
- Allen Hubbe <allenbh@gmail.com>,
- ntb@lists.linux.dev,
- Andy Shevchenko <andy@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Cai Huoqing <cai.huoqing@linux.dev>,
- dmaengine@vger.kernel.org,
- Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org,
- Damien Le Moal <dlemoal@kernel.org>,
- linux-ide@vger.kernel.org,
- Paul Burton <paulburton@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Arnd Bergmann <arnd@arndb.de>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-mips@vger.kernel.org,
- Bjorn Helgaas <bhelgaas@google.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-pci@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew@lunn.ch>,
- Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <olteanv@gmail.com>,
- Keguang Zhang <keguang.zhang@gmail.com>,
- Yanteng Si <siyanteng@loongson.cn>,
- netdev@vger.kernel.org,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>,
- linux-hwmon@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>,
- linux-edac@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-serial@vger.kernel.org,
- Andrew Halaney <ajhalaney@gmail.com>,
- Nikita Travkin <nikita@trvn.ru>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Alexander Shiyan <shc_work@mail.ru>,
- Dmitry Kozlov <xeb@mail.ru>,
- Sergey Shtylyov <s.shtylyov@omp.ru>,
- Evgeniy Dushistov <dushistov@mail.ru>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Nikita Shubin <nikita.shubin@maquefel.me>,
- linux-renesas-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D454EE83-DFB9-4A2D-821E-EF709350D5BB@gmx.de>
-References: <2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
-To: Serge Semin <fancer.lancer@gmail.com>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-Provags-ID: V03:K1:k3CVh5UwL8Pr/QS58KpuV8k33BndHnbC3H+BIpo/1DJWFypIkuS
- N/hzcr7X8i2LvFoAEfWjMCcex7w3EYtjq2rYvFLATE7ycsPjRqZZ4VMdu0mv4o6o2XPEV6f
- qG5/X5qwYvrM0UlAeg26MiHfER5UCJzK7uI5qY+nWXMqmQL1YyNU4yLTagqVf9pDO4vDvxt
- 98ZLb+QsQUf5paugVVstQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:92UNTiVAadM=;4dqRgDg6n4gLXT6FjhukD/0b6+W
- cAxvAWlthP+w/cgMg25Gt0gR4wH+rWwx+h1AiMjjme5RKv++iqKL0xjNBp5BM/7/Hwnpe3UYm
- o8Vkwq66DyBaEqk3xacLhdkpkdGKTXtG++OgKShHJt3uhBdBq41d9crk8vRrBbPwKPTMbswSm
- J6OzXOOOmi+01thCwy4mlqNnVeoifHAPabt8eX7s/0hNffoJNhFjHa1NUsWFkSrQAoNOU0E8+
- NEtxofXAieUtzVvocrNDFaWTgCbEGhbXjHYQ3AcMPHDkJfTEC4wfl7lJIUa2xbOtqifTqzeTj
- aF7XzVjxoVihSzQeGztEynTuma4d8SK3cNYpQ12c6/EH0NtEdhH0qYuPfDYq0JPvY9eoosSPj
- ASljvkH7D/Xfxdu+kJ88aWu7TBbUF2oVE11gSTi6u0ZrDSYQFf2lvinhldkIIOLKw1tuDui3X
- 5XB0CjikMWKr8iOtmdUjBbD9wAc64IQw2BPOny3Meon+nVUTZXQGvwHGvY83O0tDNepZgceyQ
- /Nw6RoeWqH26gkVfxV28vRjfpvCfgOL+2T5gj8nuMHdEqL8yvjUA0x133sFmvA90DfsE8tij5
- wMUerleYmMgeDpxf2+C3zNNYAXEfCtrTuTQ3hOW4fkaRq3+qsRj7twmFyNzyRugmvBmDB02Il
- cYnFmPdNFN8VYURjGdOce1sIKREajABwRlfLyt0wBKTxhKvHTEjo25YHlURfWakMUMsPBDNw2
- p0sdYF3h6d8d2Rq7tFGONj5aO+BbeVqqnW/hM9zNatKsA6yIpDC8E6t1oVfp/Thkl7XbYEpBs
- 9bvjbNbLISJBRd0RxLlRiGog==
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAXPR04MB9153:EE_
+X-MS-Office365-Filtering-Correlation-Id: 912580b4-2c65-47f8-d5ad-08dcf3faae63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?y983ZoOV83xnxIBcTpad26SJUB5/HAYn41Vv9b3nN9L98MBq/pdUmIM8uvbh?=
+ =?us-ascii?Q?1xq7nmPVVwwk1xb7VpEKNd3Stkm6g+tr2whCUQqKjmooQbdgit0x/x8vnlBk?=
+ =?us-ascii?Q?BPUHq6GD1xgUyoZmwJ+IXkXmOIJJsltLWPd6ZjrtnpCPrzGjefAOAMNQKcjI?=
+ =?us-ascii?Q?a0k1xTqrBVEGk5lBdjYiXGO9mNdLXuqFCscCgnlrSbt7fKNav3ZevH5L3cRv?=
+ =?us-ascii?Q?6htIQd5mJwIsyXdhfnO8D4kfH26aUFCT8as6rATcmC/5aa3xXKLzSfwsz6xQ?=
+ =?us-ascii?Q?3Og9VJ4bH1gLwuVfquqqtyfXZG3oWJ1WTO6C9f7rwvl5nOOVXBRoPyLA0Tm/?=
+ =?us-ascii?Q?O579joCJPllwtUb9Ntvrt8tpGLZxbBKiSuqlj+YPU87ueXBSoiH+ppNfdVyr?=
+ =?us-ascii?Q?uMXO690CUHuJbNiU4u8XOb8lpugGKZFCjdmZ1VEFs5Z4q95pH0Bmnfd5r8ZN?=
+ =?us-ascii?Q?DG7hneUb/7LdnuzQ8kMBrmilkxJQPpTyAaMb9Iuw/TNezSKWv6eRHn5jkKVs?=
+ =?us-ascii?Q?oM7HdTgJ+aXKGiYqPa9vuxf1JMg9zYS8vQaAo03fn7qcKIti9XSPX/9EZAyn?=
+ =?us-ascii?Q?f4IukZcH70WD2B21Wwr3cXwjXGqdwAp/JfmGxSuMvKeINHwtgGvKj+zRbWhZ?=
+ =?us-ascii?Q?OCSv7FW5Lynu55cLEDYx71G64/H7ETsL44XeA8l918MiFCJP7IzklJqdYfEP?=
+ =?us-ascii?Q?mgTZXmBhx2jIyag7AnszUe/g5GWI9Dd6yqLugevNtbBlAr8/vOTTFZ/A8w7q?=
+ =?us-ascii?Q?KUX64gwXy4wdnMhcAhCMDNYPdLexPuCa8bHoSePh+IyXg9K2YDiGn2LHhXp4?=
+ =?us-ascii?Q?fIYSMKun1+CE3hSsfaptmnjGN8msUgqKaG6yoTRpfYL/0lbvHrxkJMVFQF2v?=
+ =?us-ascii?Q?fuaUHFfwpQYFIYWbIks0myWuhV4Vyj/gwZEngPTHazZd76jFzYTeJbYe4sQ7?=
+ =?us-ascii?Q?Eu6g+aRjko0Xu6ht23k/EzVT08KlSWjlGxZhuFsvA0xekmxV3OP37anaS5gA?=
+ =?us-ascii?Q?DaKc40TlE0riijucYbRe0D1TtsTLSCBbskE8krlMLxzfIBUst5/weXKxcIhs?=
+ =?us-ascii?Q?y3qwEhJMPlFYQzOBVNfWCaxuLgpVeRUW6aSKjYs9FTG93haIPrPgWrUil5gm?=
+ =?us-ascii?Q?RzYhT6xX7phkpLvjRWbG+AJKx9bMo9rtJK4w7WH4K933g6ICc+UrdFoDubSw?=
+ =?us-ascii?Q?IjliMDLHwXqtts+f/o7hIRrfNGZ7eMmIdoUY9DG+J4/mpLKrgMg9cNGujH+y?=
+ =?us-ascii?Q?nXpLeM2UhfkkL20dWhyVQ6CfXDFn6NKPwIqoY4Zi3K6HAJmhuNojt9rgoOl/?=
+ =?us-ascii?Q?uKc+MA3VnyQpB3BjNSgG77MbhFiYtmVFZpRbEzUJi1FK1c89cGbeXd1uouJt?=
+ =?us-ascii?Q?fqTAJmTchl0fTfeRbt8XCRXsqDG4?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?b8lyJgLR7C4qpCNje9K+OnBwlzQEMWy6bHvjQPIlfMD88KMLB91uw8KbOsur?=
+ =?us-ascii?Q?6yf6pVU3Sn3Nd/l45e7Sn5YEMzpj/jzpW0IGgEBYhAKWPhIWgtcutyRqTQju?=
+ =?us-ascii?Q?IziTWXAJ0UwrGiLmlfZ+Tmgta6/1OZtud0jwLshbo9AfAEv6HNHYYHVnPYpk?=
+ =?us-ascii?Q?HHle7jihEyRh4xyG+Xh01sLcrheLbNw/P8h3sQS3JxgodezezSXIxUY9+FxP?=
+ =?us-ascii?Q?ZUCKGCmQGCS9LqKj/pGaDKPO7F7JNcoPnS++6569wr+MuvSK1koHVliuRU1o?=
+ =?us-ascii?Q?5oq77myEGwRBxOJ1cfgh4zMpRNMQwnSGKR6Grpa5DjRtVzP210hLOHNoojzX?=
+ =?us-ascii?Q?Qf84QIq5ZOy7M9b6q8GtnzAFP7HwS13JcI1xCmYWgAfogwoJcB/cOwAACHXI?=
+ =?us-ascii?Q?69+H3EUrCu7n1RwXj6SibV4UxTHbNGbICeT+10B8kKFFu4JA63b72F2rcTLf?=
+ =?us-ascii?Q?+XOH+N1PrSBB7U9/iG04Crn0ROGm+VUr2z8o+KZyA1L5XVv1JD43k2i5t3RY?=
+ =?us-ascii?Q?BzoZai7Gzf8VigkFP3zM+rzxXye3Hck/6HpdjvbBIbz+WJRhpuAJIN9xt5eV?=
+ =?us-ascii?Q?tN69VSR2khWiAVgr6yMWl2o/7f8LTEPPqx+Mm6GLbeOg8piFtFQ6U/vSp3rs?=
+ =?us-ascii?Q?p27O2JU3ZAKLOUYkRkAkM0ee/ui68UWEqdF7VDqjKvP4JV8WkzxyriqWGEUL?=
+ =?us-ascii?Q?gswDm0hitCCqRgWyp9QFFGr9bqedUBL3GaM4jMFvPouTpTX5y6ebyZmzh2L9?=
+ =?us-ascii?Q?CIu4rfDvz7naa/CCv+yA58ZHL/z/EFV7jV7NN4zzJ9i1QW1BlBD7z97jHXVJ?=
+ =?us-ascii?Q?VdDxjialzEHRcLzyVTX3yv+5M4S9jg5kKJvdiO11nQw4dCAliSF4zuqK4lsT?=
+ =?us-ascii?Q?96bEVaSFjUsUikdl/1iZXPuz99Z2rc2gDk9bd0mKhqveG57PCc7rGiXrgEWK?=
+ =?us-ascii?Q?75p17+qILDvbXrHVqMbxm7g3AROkPhQv9+TdFSu+CJDJYZxEFgee+gobqB+D?=
+ =?us-ascii?Q?5mv2/ufTnmZkDYCsm6iXqVbsMHMW4/oF4vMdPQQodQZEPllhdx41a895bisG?=
+ =?us-ascii?Q?uFvrTnAU7ME+nLyvlamYFrm3Nnln7yMb4ulm7lW4c1+9FtzJ6i3F2aw63HSG?=
+ =?us-ascii?Q?gXrjmw/4tougbHwJDexQlZ4lhwHrK9npp8B+tFT4AOJoVRf2UnJBnw7C96mM?=
+ =?us-ascii?Q?//I16vCtpODdYdb/eRetgi3u0AfJnvLlNVneaQ3eJnz2JrNjZQ+aXnGYWn14?=
+ =?us-ascii?Q?p8obq8PXlQBcnHiFHgbmqFpxyzJpHRXvQ1JRWkCfv6ROf/oj4lVTmWLSN+YQ?=
+ =?us-ascii?Q?vj2DyfxSBjFJ8ZiQtU/i416ZtSI0soKLbqC4x68VXk6orgeSgIOLxMHgTvIv?=
+ =?us-ascii?Q?WeE0ouwpV4p/CafDDnyAp3lz0XqJSOdSrYWd6BHuwolhzlc6Ns6pPtiwETQA?=
+ =?us-ascii?Q?lkHMFqHBqNSX9nmIcrrmTNfH5Ne24oSzhc7SuapwezYUDgasTiz1uzzw3mSG?=
+ =?us-ascii?Q?Og5LxC6gAR30bCkUlsnjulEkQFE4H156EZjwVwUTpiPw1cSltzzjXIfFy84x?=
+ =?us-ascii?Q?u/hCgu3ZW0WiqJOhRGhcioFF3fwpUa2uExuGTJ6f?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 912580b4-2c65-47f8-d5ad-08dcf3faae63
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 07:08:37.5708
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VlADpL+XLm0pX91v+Rk+2V4q4DiUOu2+QFVBs2WV8CZq2XVX9cekqiSu+vjTcMgdc6eQWC084RsqgxO8sE0cNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9153
 
-Hello Serge!
-I do not have many contributions to show to give it extra weight nor do
-I actually know you.
-Nevertheless I still wanted to say thank you for your nice message even =
-if
-it is for a sad occasion, and share your sentiment of hoping
-for more pleasant circumstances.
+This is first time that the NETC IP is applied on i.MX MPU platform.
+Its revision has been upgraded to 4.1, which is very different from
+the NETC of LS1028A (its revision is 1.0). Therefore, some existing
+drivers of NETC devices in the Linux kernel are not compatible with
+the current hardware. For example, the fsl-enetc driver is used to
+drive the ENETC PF of LS1028A, but for i.MX95 ENETC PF, its registers
+and tables configuration are very different from those of LS1028A,
+and only the station interface (SI) part remains basically the same.
+For the SI part, Vladimir has separated the fsl-enetc-core driver, so
+we can reuse this driver on i.MX95. However, for other parts of PF,
+the fsl-enetc driver cannot be reused, so the nxp-enetc4 driver is
+added to support revision 4.1 and later.
 
-Best regards,
-Reimar
+During the development process, we found that the two PF drivers have
+some interfaces with basically the same logic, and the only difference
+is the hardware configuration. So in order to reuse these interfaces
+and reduce code redundancy, we extracted these interfaces and compiled
+them into a separate nxp-enetc-pf-common driver for use by the two PF
+drivers.
 
-(and apologies if anyone is annoyed by the wide CC list, but I think =
-it's
-important for at least some thank yous to be public and nobody else =
-seems
-to have written one yet)
+In addition, we have developed the nxp-netc-blk-ctrl driver, which
+is used to control three blocks, namely Integrated Endpoint Register
+Block (IERB), Privileged Register Block (PRB) and NETCMIX block. The
+IERB contains registers that are used for pre-boot initialization,
+debug, and non-customer configuration. The PRB controls global reset
+and global error handling for NETC. The NETCMIX block is mainly used
+to set MII protocol and PCS protocol of the links, it also contains
+settings for some other functions.
 
-> On 24 Oct 2024, at 06:27, Serge Semin <fancer.lancer@gmail.com> wrote:
->=20
-> Hello Linux-kernel community,
->=20
-> I am sure you have already heard the news caused by the recent Greg' =
-commit
-> 6e90b675cf942e ("MAINTAINERS: Remove some entries due to various =
-compliance
-> requirements."). As you may have noticed the change concerned some of =
-the
-> Ru-related developers removal from the list of the official kernel =
-maintainers,
-> including me.
->=20
-> The community members rightly noted that the _quite_ short commit log =
-contained
-> very vague terms with no explicit change justification. No matter how =
-hard I
-> tried to get more details about the reason, alas the senior maintainer =
-I was
-> discussing the matter with haven't given an explanation to what =
-compliance
-> requirements that was. I won't cite the exact emails text since it was =
-a private
-> messaging, but the key words are "sanctions", "sorry", "nothing I can =
-do", "talk
-> to your (company) lawyer"... I can't say for all the guys affected by =
-the
-> change, but my work for the community has been purely _volunteer_ for =
-more than
-> a year now (and less than half of it had been payable before that). =
-For that
-> reason I have no any (company) lawyer to talk to, and honestly after =
-the way the
-> patch has been merged in I don't really want to now. Silently, behind =
-everyone's
-> back, _bypassing_ the standard patch-review process, with no affected
-> developers/subsystem notified - it's indeed the worse way to do what =
-has been
-> done. No gratitude, no credits to the developers for all these years =
-of the
-> devoted work for the community. No matter the reason of the situation =
-but
-> haven't we deserved more than that? Adding to the GREDITS file at =
-least, no?..
->=20
-> I can't believe the kernel senior maintainers didn't consider that the =
-patch
-> wouldn't go unnoticed, and the situation might get out of control with
-> unpredictable results for the community, if not straight away then in =
-the middle
-> or long term perspective. I am sure there have been plenty ways to =
-solve the
-> problem less harmfully, but they decided to take the easiest path. =
-Alas what's
-> done is done. A bifurcation point slightly initiated a year ago has =
-just been
-> fully implemented. The reason of the situation is obviously in the =
-political
-> ground which in this case surely shatters a basement the community has =
-been built
-> on in the first place. If so then God knows what might be next (who =
-else might
-> be sanctioned...), but the implemented move clearly sends a bad signal =
-to the
-> Linux community new comers, to the already working volunteers and =
-hobbyists like
-> me.
->=20
-> Thus even if it was still possible for me to send patches or perform =
-some
-> reviews, after what has been done my motivation to do that as a =
-volunteer has
-> simply vanished. (I might be doing a commercial upstreaming in future =
-though).
-> But before saying goodbye I'd like to express my gratitude to all the =
-community
-> members I have been lucky to work with during all these years. =
-Specifically:
->=20
-> NTB-folks, Jon, Dave, Allen. NTB was my starting point in the kernel =
-upstream
-> work. Thanks for the initial advices and despite of very-very-very =
-tough reviews
-> with several complete patchset refactorings, I learned a lot back =
-then. That
-> experience helped me afterwards. Thanks a lot for that. BTW since then =
-I've got
-> several thank-you letters for the IDT NTB and IDT EEPROM drivers. If =
-not for you
-> it wouldn't have been possible.
->=20
-> Andy, it's hard to remember who else would have given me more on my =
-Linux kernel
-> journey as you have. We first met in the I2C subsystem review of my DW =
-I2C
-> driver patches. Afterwards we've got to be frequently meeting here and =
-there -
-> GPIO, SPI, TTY, DMA, NET, etc, clean/fixes/features patch(set)s. Quite =
-heat
-> discussions in your first reviews drove me crazy really. But all the =
-time we
-> managed to come up with some consensus somehow. And you never quit the
-> discussions calmly explaining your point over and over. You never =
-refused to
-> provide more detailed justification to your requests/comments even =
-though you
-> didn't have to. Thanks to that I learned how to be patient to =
-reviewers
-> and reviewees. And of course thank you for the Linux-kernel knowledges =
-and all
-> the tips and tricks you shared.
->=20
-> * Andy, please note due to the situation I am not going to work on my =
-DW DMAC
-> fixes patchset anymore. So if you ever wish to have DW UART stably =
-working with the
-> DW DMA-engine driver, then feel free to pick the series up:
-> Link: =
-https://lore.kernel.org/dmaengine/20240911184710.4207-1-fancer.lancer@gmai=
-l.com/
->=20
-> Linus (Walleij), after you merged one of my pretty much heavy patchset =
-in you
-> suggested to me to continue the DW APB GPIO driver maintaining. It was =
-a first
-> time I was asked to maintain a not-my driver. Thank you for the trust. =
-I'll
-> never forget that.
->=20
-> Mark, thank you very much for entrusting the DW APB SSI driver =
-maintenance to
-> me. I've put a lot of efforts into making it more generic and less =
-errors-prune,
-> especially when it comes working under a DMA-engine control or working =
-in the
-> mem-ops mode. I am sure the results have been beneficial to a lot of =
-DW
-> SPI-controller users since then.
->=20
-> Damien, our first and last meeting was at my generic AHCI-platform and =
-DW AHCI
-> SATA driver patches review. You didn't make it a quick and easy path. =
-But still
-> all the reviews comments were purely on the technical basis, and the =
-patches
-> were eventually merged in. Thank you for your time and experience I've =
-got from
-> the reviews.
->=20
-> Paul, Thomas, Arnd, Jiaxun, we met several times in the mailing list =
-during my
-> MIPS P5600 patches and just generic MIPS patches review. It was always =
-a
-> pleasure to discuss the matters with such brilliant experts in the =
-field. Alas
-> I've spent too much time working on the patches for another subsystems =
-and
-> failed to submit all the MIPS-related bits. Sorry I didn't keep my =
-promise, but
-> as you can see the circumstances have suddenly drawn its own deadline.
->=20
-> Bjorn, Mani, we were working quite a lot with you in the framework of =
-the DW
-> PCIe RC drivers. You reviewed my patches. I helped you to review =
-another patches
-> for some time. Despite of some arguing it was always a pleasure to =
-work with
-> you.  Mani, special thanks for the cooperative DW eDMA driver =
-maintenance. I
-> think we were doing a great work together.
->=20
-> Paolo, Jakub, David, Andrew, Vladimir, Russell. The network subsystem =
-and
-> particularly the STMMAC driver (no doubt the driver sucks) have turned =
-to be a
-> kind of obstacle on which my current Linux-kernel activity has =
-stopped. I really
-> hope that at least in some way my help with the incoming STMMAC and DW =
-XPCS
-> patches reviews lightened up your maintainance duty. I know Russell =
-might
-> disagree, but I honestly think that all our discussions were useful =
-after all,
-> at least for me. I also think we did a great work working together =
-with Russell
-> on the DW GMAC/QoS ETH PCS patches. Hopefully you'll find a time to =
-finish it up
-> after all.=20
->=20
-> Rob, Krzysztof, from your reviews I've learned a lot about the most =
-hardwary part
-> of the kernel - DT sources and DT-bindings. All your comments have =
-been laconic
-> and straight to the point. That made reviews quick and easy. Thank you =
-very
-> much for that.
->=20
-> Guenter, special thanks for reviewing and accepting my patches to the =
-hwmon and
-> watchdog subsystems. It was pleasure to be working with you.
->=20
-> Borislav, we disagreed and argued a lot. So my DW uMCTL2 DDRC EDAC =
-patches even
-> got stuck in limbo for quite a long time. Anyway thank you for the =
-time
-> you spent reviewing my patches and trying to explain your point.
->=20
-> * Borislav, it looks like I won't be able to work on my Synopsys EDAC =
-patchsets
-> anymore. If you or somebody else could pick them up and finish up the =
-work it
-> would be great (you can find it in the lore archive). The patches =
-convert the
-> mainly Zynq(MP)-specific Synopsys EDAC driver to supporting the =
-generic DW
-> uMCTL2 DDRC. It would be very beneficial for each platform based on =
-that
-> controller.
->=20
-> Greg, we met several times in the mailing lists. You reviewed my =
-patches sent
-> for the USB and TTY subsystems, and all the time the process was =
-straight,
-> highly professional, and simpler than in the most of my other case.
-> Thank you very much for that.
->=20
-> Yoshihiro, Keguang, Yanteng, Kory, Cai and everybody I was lucky to =
-meet in the
-> kernel mailing lists, but forgot to mention here. Thank you for the =
-time spent
-> for our cooperative work on making the Linux kernel better. It was a =
-pleasure to
-> meet you here.
->=20
-> I also wish to say huge thanks to the community members trying to
-> defend the kicked off maintainers and for support you expressed in
-> these days. It means a lot.
->=20
-> A little bit statics of my kernel-work at the end:
->=20
-> Signed-off patches: 518
-> Reviewed and Acked patches: 253
-> Tested patches: 80
->=20
-> You might say not the greatest achievement for seven years comparing =
-to some
-> other developers. Perhaps. But I meant each of these tags, be sure.
->=20
-> I guess that's it. If you ever need some info or consultation =
-regarding the
-> drivers I used to maintain or the respective hardware or the Synopsys =
-IP-cores
-> (about which I've got quite comprehensive knowledge by this time), =
-feel free to
-> reach me out via this email. I am always willing to help to the =
-community
-> members.
->=20
-> Hope we'll meet someday in more pleasant circumstances and drink a
-> couple or more beers together. But now it's time to say good bye.
-> Sorry for a long-read text. I wish good luck on your Linux-way.
->=20
-> Best Regards,
-> -Serge(y)
->=20
+---
+v1 Link: https://lore.kernel.org/imx/20241009095116.147412-1-wei.fang@nxp.com/
+v2 Link: https://lore.kernel.org/imx/20241015125841.1075560-1-wei.fang@nxp.com/
+v3 Link: https://lore.kernel.org/imx/20241017074637.1265584-1-wei.fang@nxp.com/
+v4 Link: https://lore.kernel.org/imx/20241022055223.382277-1-wei.fang@nxp.com/
+---
+
+Clark Wang (2):
+  net: enetc: extract enetc_int_vector_init/destroy() from
+    enetc_alloc_msix()
+  net: enetc: optimize the allocation of tx_bdr
+
+Vladimir Oltean (1):
+  net: enetc: remove ERR050089 workaround for i.MX95
+
+Wei Fang (10):
+  dt-bindings: net: add compatible string for i.MX95 EMDIO
+  dt-bindings: net: add i.MX95 ENETC support
+  dt-bindings: net: add bindings for NETC blocks control
+  net: enetc: add initial netc-blk-ctrl driver support
+  net: enetc: extract common ENETC PF parts for LS1028A and i.MX95
+    platforms
+  net: enetc: build enetc_pf_common.c as a separate module
+  PCI: Add NXP NETC vendor ID and device IDs
+  net: enetc: add i.MX95 EMDIO support
+  net: enetc: add preliminary support for i.MX95 ENETC PF
+  MAINTAINERS: update ENETC driver files and maintainers
+
+ .../bindings/net/fsl,enetc-mdio.yaml          |  11 +-
+ .../devicetree/bindings/net/fsl,enetc.yaml    |  34 +-
+ .../bindings/net/nxp,netc-blk-ctrl.yaml       | 104 +++
+ MAINTAINERS                                   |   7 +
+ drivers/net/ethernet/freescale/enetc/Kconfig  |  40 +
+ drivers/net/ethernet/freescale/enetc/Makefile |   9 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 261 +++---
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  30 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  | 152 ++++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 759 ++++++++++++++++++
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  35 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  53 +-
+ .../ethernet/freescale/enetc/enetc_pci_mdio.c |  21 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 310 +------
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  42 +
+ .../freescale/enetc/enetc_pf_common.c         | 338 ++++++++
+ .../net/ethernet/freescale/enetc/enetc_qos.c  |   2 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   6 +
+ .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 438 ++++++++++
+ include/linux/fsl/netc_global.h               |  19 +
+ include/linux/pci_ids.h                       |   7 +
+ 21 files changed, 2263 insertions(+), 415 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+ create mode 100644 include/linux/fsl/netc_global.h
+
+-- 
+2.34.1
 
