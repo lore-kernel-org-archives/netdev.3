@@ -1,71 +1,75 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2077.outbound.protection.outlook.com [40.107.244.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4BE1F80C3
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 16:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729788971; cv=none; b=jYLZeCSFyOcVn17P5l9oZ4Sbp79obGjW4gLUp/1SpBA/mvfWjefRl4rwj1HfGOKdSNuyJheGsSga2a4SMBvSh26UbolQVYSFVYBEuYZBFIOYeSRphXP4q/RbvB76j5bmPu/0S9SvXaPMFHq7UM3q82OqKDy4D867g0P0nNS2RCI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729788971; c=relaxed/simple;
-	bh=qKqkMGsYmpuy5PSCkQ4EF3lEVszQwWbtNFYJK9p8kao=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r0jAfWC1mAR2910vPxRD82f7d43ZII/zhVPJ6XRY84xcpru8cZoUJlC0HS/1wRQx/wKl9yOkIilDyf/H74QyxmwJ053KZTe3f5qXuz+sivbfhFDw90LO5hmc9ILi8XiXZ0aj435L3GbmSDG3SCg5WIz5AQSi7gXyZZ1ABIys1Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=NvI2LNsb; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945111F81B9
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 16:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729789102; cv=fail; b=RN0VCyf9bnNsef4lTtspdIYDuGuA2ug0hoYtB7qmxwdUiUeLgLOed8NuYUTvKxm1jB/gNMgdGA8kLf8iVTgPTS0Qg/mrH9iTNny8fH2F5fJniFl/Q/P5lIL3HY86h2Lj24P2k5WPiZ0ByoUgTwfr04ttlJ2cliySUARgyUd5JjI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729789102; c=relaxed/simple;
+	bh=/TxRBAsLwiTvKwl7yqogfik72flC9PmV/g7Qm0U6650=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qGw/tpy/0YtAGqxheTUQrW1lNoEB4cT1grEb3ktfMcvy+FyFoDv5S9CE9IErLhYLfwTmHSrB4eH2d0reJZxlNPDDKHSlzwtFvlAE5w2ZHx1ujLVjcWqZEXRrAPlcKITaUEvjz1641yIJGRzmAs/VSdKaaUzwkMTlIw9nNh7cz7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HsY91AWM; arc=fail smtp.client-ip=40.107.244.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="NvI2LNsb"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7b1474b1377so79510585a.2
-        for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 09:56:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1729788968; x=1730393768; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dPSh3Z+ZTMZDlTdUsv3BdKV7k7VjnJt8nSE7oQ/GPbc=;
-        b=NvI2LNsbV0iUgegw5KTNIJ3+g8i0g7N0g8L3Yyw9fOjZRFoPzfeCKu+DDLX00ykkC3
-         PMXd5vtAAt4rWnV6YadJT/i/8ymM+7m0pXSvocIXNkYrq0eI3rv5UpepRpmPb6Kptj1E
-         SbHkoOqJVgZF7QSGOEn1Zs6Ahal3GAFnqb+PMQPLQ+X5O63hAVwZuwFfWuNAPpkFyglL
-         jwd+Ny+9306zmGMgPRqkhqn6KdEukNKsykAZWAhhHIlqFp3AvZr6qe79lmKy0dWTWH77
-         n9aMMtLL16XB25e2exzTNjCsTXJ/OXJU4Fv/4hVAm/cMJp7ebOvbhAiQrgb6p0z5CVvo
-         m5RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729788968; x=1730393768;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dPSh3Z+ZTMZDlTdUsv3BdKV7k7VjnJt8nSE7oQ/GPbc=;
-        b=R1hy1dN6OnkTq+J+HdC4c9RxB8cJYggCDo0I26Zmi0cP74emBVMOlRze18WnBG2V2R
-         YGutHuEjPj+NbHtzdwbaRnFrZauBECKXKjGriHvAkr6sVuRjPPOZM+v8aIcGoRXKYcSL
-         TPjwEM/J0aE/CWFsQKwYkS1vRstlH+ZP1ISv/4z27MorlEj3hJz5TBTsCL35lWgdqJDL
-         zMILjCuPXLpPiy6Q93Il2owm3xiMdaYvsL4K5VSJZ1Q5ynug36kbj2pAUtk6mpEclmhx
-         /ZoRSgudR2rBlt4iA4IZ7Xp2iv6GAK+dddZpSnIsBECPAUHmuF30ywyv7qc+KL6GQDDG
-         +iSA==
-X-Gm-Message-State: AOJu0Yz3tsT7IRvsfxcCkLGTPrLKRXErVfXY8ZU1VhKgz6VHZLa0Jm1f
-	qQqj28I50zLcZqoM+a5iMe3eBBvA6TY0gCteXmeaH/xRHbVHZ+6xOSMS92U5iYEuSxAKSxODTQU
-	=
-X-Google-Smtp-Source: AGHT+IF7eQYrMtAVUppKAeLDMrz3SD35N6qXJSJopnuYFAQi1SBTEN+L8NFbYV0OXaJSZJHIZc2z3A==
-X-Received: by 2002:a05:620a:4691:b0:7b1:4480:5d77 with SMTP id af79cd13be357-7b17e5b41ffmr863779685a.49.1729788967685;
-        Thu, 24 Oct 2024 09:56:07 -0700 (PDT)
-Received: from majuu.waya ([184.146.41.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b165a7624csm504849785a.108.2024.10.24.09.56.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 09:56:07 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: markovicbudimir@gmail.com,
-	victor@mojatatu.com,
-	pctammela@mojatatu.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: [PATCH net-n] net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
-Date: Thu, 24 Oct 2024 12:55:47 -0400
-Message-Id: <20241024165547.418570-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HsY91AWM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Yz8naYSNV4K8D1xICC+Q4eMtpe/YfC7Fi6LO+FqZCdfLn53+sG86J1HFPBxvrgF6t5513o2Yo+XuGCAEBLLtX/Mpz5Qmhj8rnDoVrtPoOwtcYXBJQ9zYUZSOKnP7/QFGefeKMxOs6nSP7wh8ed5hf+oZqby0se9UHnG4o0Rhlc3ssQLHiGwUo1Rk/z+s/AFn6ZUGWLcmR5nBEIsozbfs2kOce5dx1y/e53HfTZulDgPlljPfu3Rb1IfL++7zlY/hGhxJ031IFOGaJSmcVyGum67WjkAAJ0/V/eExJ3XFuuZpZkz5Pc+5K1CE/7gGiDU8M+T1rp2Z52T8RfZUxyoD0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xu5eqNmBCF6JcOsRUvKCX/YhUPBqx3+/5jRrA0PS0AQ=;
+ b=N94qWUyrbXiH357DEzbfW6M8m/Qx3+Weg6Xo4i2xrjW4H2y/YcizfYQPuFE1n2TELxQlo+mi2AUA6ZLAUv/DbVqKAg4EJ+3OJP4M96h3yIYXUPySBjfN7v+BWwJhyEBcdbjqWD87dT0JDAlypXfE6UN1kjohjK1Xxavvmz0ivyWVf0UtNR0r1hpHKaetKjKFp8pMiu3nyPaxXGC3efOnwHVi3KINLzsaTtQGujH3h2K14m8gbu/QQwlTQEIzv6EVOzzR1PPn6mcjNfdO6N/kqaBZDUir1gMDeZ6xc3iV06DiFJc0yAmWufCY4Qmn8aWpbc4njus5KexVmz4eKXDm5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xu5eqNmBCF6JcOsRUvKCX/YhUPBqx3+/5jRrA0PS0AQ=;
+ b=HsY91AWMgysJ9bDMZ11e+DuDa12TZRNe5x3A1vM4CNwTc25N9IaW+kVdhrDFNYs22uc6dntXLudCi/rguL6a5RMy8v9jJT3vm406nRpg9F5Eu+lhtbC5TvYAoG5SmjoGTu87IRBDnB2P6fuuAtmjRBGqF3um0x7sKf+O5zWwac2H3meWgFgUheCEvWchK9AyZD9bOVZrq3WxgHFuAxXK6uck55eedTAOjKw2RwB2Af6k+CMaCMwRNo3DkRsbOjxzpKEeZr83KSN8uIcbXiitL8IL2KY9uxcvByIjZS9ks09Rc0qPQOvb7sFOTFfj+BKTcdGKVYuPGGRqSbJOyV3m8w==
+Received: from MW4PR04CA0129.namprd04.prod.outlook.com (2603:10b6:303:84::14)
+ by IA1PR12MB6410.namprd12.prod.outlook.com (2603:10b6:208:38a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.30; Thu, 24 Oct
+ 2024 16:58:15 +0000
+Received: from SJ1PEPF00002310.namprd03.prod.outlook.com
+ (2603:10b6:303:84:cafe::d9) by MW4PR04CA0129.outlook.office365.com
+ (2603:10b6:303:84::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.20 via Frontend
+ Transport; Thu, 24 Oct 2024 16:58:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF00002310.mail.protection.outlook.com (10.167.242.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.14 via Frontend Transport; Thu, 24 Oct 2024 16:58:14 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 24 Oct
+ 2024 09:57:59 -0700
+Received: from fedora.mtl.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 24 Oct
+ 2024 09:57:54 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>
+CC: Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, "Amit
+ Cohen" <amcohen@nvidia.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, "Andy
+ Roulin" <aroulin@nvidia.com>, <mlxsw@nvidia.com>
+Subject: [PATCH net-next v2 0/8] net: Shift responsibility for FDB notifications to drivers
+Date: Thu, 24 Oct 2024 18:57:35 +0200
+Message-ID: <cover.1729786087.git.petrm@nvidia.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,48 +77,131 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002310:EE_|IA1PR12MB6410:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47b659f3-8cbc-42d3-9ffb-08dcf44d0cd2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xCO7EHxNhR8QzeyACJP7sfKicPYfnPlbf5lpf31TIgbW6TKbBp3TK0/+xYf9?=
+ =?us-ascii?Q?xG31e5QnBbzFZJFsJh2draOdoROiGzgRvYnBrnD+LBT4sUt5GZ6f9owe1CRJ?=
+ =?us-ascii?Q?JiUoGSNrO6ZLSEGrJQudyCjonX0pxdOsV+4lNdRF/QVCNZEKa0SRZ687Ui8G?=
+ =?us-ascii?Q?Kw+VA0TAEs5RcLJ9biv7TXX+eKg4waYM8Qeef0HIBVAv4V6VWkXPc2rY+11g?=
+ =?us-ascii?Q?HpisDfcRlLk083NveY9ag3EQkd2HdsWVLlaAP5iix/VtNGt0PAKxntOFQpFY?=
+ =?us-ascii?Q?5cETfF1enLz07EJdjadvpKXPmIkEXmyksVCSsz15X9OPN8gnq2grYMcDKfD/?=
+ =?us-ascii?Q?uVN7Q+a6CRlWHbT7inu34XHO7c0Zh5eX/iKZ44qI1gtgIHJ9vprRwqKQWiuL?=
+ =?us-ascii?Q?CtpCVg8jkK/pgByWMrQQw9v7ByF9cS4bjnw3LpicaIDLkWZeU6P5a80bDPBU?=
+ =?us-ascii?Q?dIzpQPN6jbCiGHr19AhY58ayObyqQqRz3FGSSR86B3VtRQ39tHViQ79j5PNS?=
+ =?us-ascii?Q?zneGtSnAxL+0pLF+ZYl7MnDZHmNctGdnV+kRCP/mqWfSyv+FSdbR9Hw7YtRO?=
+ =?us-ascii?Q?OfYaukPukzrIDyAzwxuS8ISJs0Sxjv5Xq48j8/CyiE6B0oLGhh49FIFQLi4U?=
+ =?us-ascii?Q?dCbrxC1JinlXqOL2vWsoXS5ufRolC3d/LNMP2USgX0p5gRDocNEMcL9QjBqE?=
+ =?us-ascii?Q?zzyeG5wMeojxrgdTg4LHHJpRWvN85NoDZ9NGvk+WwuBLoR4QHi5wZuhR0w7d?=
+ =?us-ascii?Q?q/kO/zY8OlnIbIUF653caoH51peKh77Wf1vu14pTSBGVMaOAPECu7rfSu8N9?=
+ =?us-ascii?Q?Oxq8wTSNb17pJAShJeMYpZrrAiJtv3pffUEjzz4NrW6bsSDtQf6pgYE5KytK?=
+ =?us-ascii?Q?ZXO39+zV+3/WwCaCItEvEQ6miE5ZN9p/hBSsvXoP1zRKALwlLe8HlNMDMStu?=
+ =?us-ascii?Q?JPp6dTrHDiYX5m7Max1KheRpSRKn+MT9RwzaEN0r9iP2/2m43RPB3Q74YiPZ?=
+ =?us-ascii?Q?i74Cda8PgxM8lZahWSJqYgei7U+T1AN6D9zQ1I50K0MMy1tKlwRyjhK1YlEc?=
+ =?us-ascii?Q?d9ayCYFCs9IKw9W2jM4xXCx4BimwpXCRwNRtxoLmKOmH6jzVP7aH85/XSVN4?=
+ =?us-ascii?Q?OujCh+pdcedmFlWgliVsjL24NVYhUcCl5OsPgkj7WA8rAnH8F7+tQxOxixeD?=
+ =?us-ascii?Q?QzN0qCaO6Gp/G/Lj4fNlJ8IX0JLPoYYtRYV32tqA6vOPq/l7r65IoGksaSCb?=
+ =?us-ascii?Q?/6yDhTo9oqqtmP0JW11jWikgRoyn61q/5lz6BVgx1BfMikPclOKX3e8L2ptw?=
+ =?us-ascii?Q?w+Eq/P25M1+26yDPPAqLm2lN8Z7A9NwCyfuhnf2N3FOUPNo0gtr1tHbcXKpo?=
+ =?us-ascii?Q?gzAelRwhRHlcKp9XZeEaWOQ4PqPrfGYWnBp/VtfTkKuZdUAQBA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 16:58:14.4244
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47b659f3-8cbc-42d3-9ffb-08dcf44d0cd2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002310.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6410
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+Currently when FDB entries are added to or deleted from a VXLAN netdevice,
+the VXLAN driver emits one notification, including the VXLAN-specific
+attributes. The core however always sends a notification as well, a generic
+one. Thus two notifications are unnecessarily sent for these operations. A
+similar situation comes up with bridge driver, which also emits
+notifications on its own.
 
-In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
-to be either root or ingress. This assumption is bogus since it's valid
-to create egress qdiscs with major handle ffff:
-Budimir Markovic found that for qdiscs like DRR that maintain an active
-class list, it will cause a UAF with a dangling class pointer.
+ # ip link add name vx type vxlan id 1000 dstport 4789
+ # bridge monitor fdb &
+ [1] 1981693
+ # bridge fdb add de:ad:be:ef:13:37 dev vx self dst 192.0.2.1
+ de:ad:be:ef:13:37 dev vx dst 192.0.2.1 self permanent
+ de:ad:be:ef:13:37 dev vx self permanent
 
-In 066a3b5b2346, the concern was to avoid iterating over the ingress
-qdisc since its parent is itself. The proper fix is to stop when parent
-TC_H_ROOT is reached because the only way to retrieve ingress is when a
-hierarchy which does not contain a ffff: major handle call into
-qdisc_lookup with TC_H_MAJ(TC_H_ROOT).
+In order to prevent this duplicity, shift the responsibility to send the
+notification always to the drivers. Only where the default FDB add / del
+operations are used does the core emit notifications. If fdb_add and
+fdb_del are overridden, the driver should do that instead.
 
-In the scenario where major ffff: is an egress qdisc in any of the tree
-levels, the updates will also propagate to TC_H_ROOT, which then the
-iteration must stop.
+To facilitate upholding this new responsibility, export rtnl_fdb_notify()
+for drivers to use.
 
-Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Besides this approach, we considered just passing a boolean back from the
+driver, which would indicate whether the notification was done. But the
+approach presented here seems cleaner.
 
- net/sched/sch_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patches #1 to #3 are concerned with the above.
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 2eefa4783879..a1d27bc039a3 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -791,7 +791,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
--		if (TC_H_MAJ(parentid) == TC_H_MAJ(TC_H_INGRESS))
-+		if (parentid == TC_H_ROOT)
- 			break;
- 
- 		if (sch->flags & TCQ_F_NOPARENT)
+In the remaining patches, #4 to #8, add a selftest. This takes place across
+several patches. Many of the helpers we would like to use for the test are
+in forwarding/lib.sh, whereas net/ is a more suitable place for the test,
+so the libraries need to be massaged a bit first.
+
+v2:
+- Patches #2, #3:
+    - Fix qlcnic build
+
+Petr Machata (8):
+  net: rtnetlink: Publish rtnl_fdb_notify()
+  ndo_fdb_add: Shift responsibility for notifying to drivers
+  ndo_fdb_del: Shift responsibility for notifying to drivers
+  selftests: net: lib: Move logging from forwarding/lib.sh here
+  selftests: net: lib: Move tests_run from forwarding/lib.sh here
+  selftests: net: lib: Move checks from forwarding/lib.sh here
+  selftests: net: lib: Add kill_process
+  selftests: net: fdb_notify: Add a test for FDB notifications
+
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |   3 +
+ drivers/net/ethernet/intel/ice/ice_main.c     |   6 +
+ drivers/net/ethernet/mscc/ocelot_net.c        |  16 +-
+ .../net/ethernet/qlogic/qlcnic/qlcnic_main.c  |  12 +-
+ drivers/net/macvlan.c                         |   6 +
+ include/linux/netdevice.h                     |   5 +
+ include/linux/rtnetlink.h                     |   2 +
+ net/core/rtnetlink.c                          |  24 +-
+ .../drivers/net/mlxsw/devlink_trap.sh         |   2 +-
+ .../net/mlxsw/devlink_trap_l3_drops.sh        |   4 +-
+ .../net/mlxsw/devlink_trap_l3_exceptions.sh   |  12 +-
+ .../net/mlxsw/devlink_trap_tunnel_ipip.sh     |   4 +-
+ .../net/mlxsw/devlink_trap_tunnel_ipip6.sh    |   4 +-
+ .../net/mlxsw/devlink_trap_tunnel_vxlan.sh    |   4 +-
+ .../mlxsw/devlink_trap_tunnel_vxlan_ipv6.sh   |   4 +-
+ .../selftests/drivers/net/mlxsw/tc_sample.sh  |   4 +-
+ .../net/netdevsim/fib_notifications.sh        |   6 +-
+ tools/testing/selftests/net/Makefile          |   2 +-
+ .../selftests/net/drop_monitor_tests.sh       |   2 +-
+ tools/testing/selftests/net/fdb_notify.sh     |  95 ++++++++
+ tools/testing/selftests/net/fib_tests.sh      |   8 +-
+ .../selftests/net/forwarding/devlink_lib.sh   |   2 +-
+ tools/testing/selftests/net/forwarding/lib.sh | 199 +---------------
+ .../selftests/net/forwarding/tc_police.sh     |   8 +-
+ tools/testing/selftests/net/lib.sh            | 223 ++++++++++++++++++
+ 25 files changed, 411 insertions(+), 246 deletions(-)
+ create mode 100755 tools/testing/selftests/net/fdb_notify.sh
+
 -- 
-2.34.1
+2.45.0
 
