@@ -1,52 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1C51CFEA2;
-	Thu, 24 Oct 2024 11:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAFF1A0BC4
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 11:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729770430; cv=none; b=HfFGk7G51u8qBqlSrnS2v6lvs9bLbn8FskmOKA4kTcO2O9PVBdjbMDNvon9NztYR+veEvFrPWi5foVIqvljVVqJCzzKOm8eFB7+ey0hGZtqIMK/roMAQAJsj9nf1ymctU//sCwQRu8Q7euozAVSv4wVRxKB8pAi33VLITrhFgjc=
+	t=1729771012; cv=none; b=XYdxZg+55awEGwqWscKUPFIz0uu76pIikLx1IfvxDU8OhuekJUabSU4E9y87Ka60UsHjd2TemKQ7nmOAzBX9bsIUQTcz6V8xa8FDArRlUAnc69zMNyw7121G4qsOd2Nyd9QEsQ64cGxAcI9rx1fzNCURhg8xBz5vhnOMJSviee4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729770430; c=relaxed/simple;
-	bh=SJPiKVSmLSdFCzKmPxgqaKEBlut3fRo8Lwy8ODvCwEA=;
+	s=arc-20240116; t=1729771012; c=relaxed/simple;
+	bh=ofE9I3vjiUQ36e71FDLUW1wNXvWL66Y7E/oJmLyDGCI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q/nnh07ZyoRc7TqQTomIKDjOpqD0y78qZnX+TrE/tw1Y5qOvJyqt1j3ig8pHLP3xfV0IxlvAbYpcYDYRCUTLb6rRtuBvsnFYGggMmdcOwoDStF+lyLQRVdQRe3IxrCJIVwNtYyrs0Zp7rG55bzJbZrt3Q/DES4D3Nv1TK9ojJFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9H8lJeb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8NFOd0ljHvC69Mam6GuEJOx4vf35VeXkpSbz/i2S60pyv1bLcBN/OnoeLjtyiigJ4qJXiHc7l+78gv9vuFMhbjJGCphl7Co6G9rIBUq68O+rYvN7UeBu5gSqkonLB+OSfe4ergadgd+UgLQQb3+n3Mzm7tlBhYut6fSgNy0EOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Mi9fzW7l; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9H8lJeb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF90C4CEC7;
-	Thu, 24 Oct 2024 11:47:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729770429;
-	bh=SJPiKVSmLSdFCzKmPxgqaKEBlut3fRo8Lwy8ODvCwEA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F9H8lJeb+ZvoGtGJG4TpNfFOU4B4TtyxzYzZbzR4IfL6IDt67f0+jIbaClWEaoS5J
-	 NK+S/O2aKEnxacfApyOjNKiX+T2it910jeAD0yPwTx/cJjNaV46X1A6DOUKbvOMmH7
-	 c6QsvVD4o4vKHGBFlipKUOvaK9tUbEPJtdXCVJTgX1T8QyUR3BiHVBokBKYb0kqTbo
-	 ft/nriO/GfwFLeFVivgpghUIPm/9bQ0DeQXOuB8CRl2zhcasUqeMD456SawPnm89QD
-	 FtUCuPN+9Uo/ujI1IO3lavVrhyarZaIGUgnno+rZA7NquJgpujkqZLc1seWB/hgREZ
-	 iLs4URIk0a/fA==
-Date: Thu, 24 Oct 2024 12:47:04 +0100
-From: Simon Horman <horms@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: broadcom: use ethtool string helpers
-Message-ID: <20241024114704.GG1202098@kernel.org>
-References: <20241023012734.766789-1-rosenp@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Mi9fzW7l"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BbsxK2PB4uXCf6KuoGXUyUOFAdbgpmoF0pKiK04h4bU=; b=Mi9fzW7lKycK341J89BTbzPMuL
+	ESSh/kfC/70/gVD5H6Da3r/1T6FGnJoTw4TN5tEF+A7ulCT+OZnPtJpCxXGSR+vDpXR8ASyUL7z78
+	XgUq1tF/CJyNZzBO/MQQDFYOcZRQ5hManpzqHXqc1B1IHa6dWF18/OTPuPj8WOkkUHv0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t3wSB-00B6p8-PT; Thu, 24 Oct 2024 13:56:35 +0200
+Date: Thu, 24 Oct 2024 13:56:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Zhang Zekun <zhangzekun11@huawei.com>
+Cc: justin.chen@broadcom.com, florian.fainelli@broadcom.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com, horms@kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	chenjun102@huawei.com
+Subject: Re: [PATCH net 1/2] net: bcmasp: Add missing of_node_get() before
+ of_find_node_by_name()
+Message-ID: <d3c3c6b5-499a-4890-9829-ae39022fec87@lunn.ch>
+References: <20241024015909.58654-1-zhangzekun11@huawei.com>
+ <20241024015909.58654-2-zhangzekun11@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,14 +48,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241023012734.766789-1-rosenp@gmail.com>
+In-Reply-To: <20241024015909.58654-2-zhangzekun11@huawei.com>
 
-On Tue, Oct 22, 2024 at 06:27:34PM -0700, Rosen Penev wrote:
-> The latter is the preferred way to copy ethtool strings.
-> 
-> Avoids manually incrementing the pointer. Cleans up the code quite well.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+On Thu, Oct 24, 2024 at 09:59:08AM +0800, Zhang Zekun wrote:
+> of_find_node_by_name() will decrease the refcount of the device_node.
+> So, get the device_node before passing to it.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This seems like an odd design. Why does it decrement the reference
+count?
 
+Rather than adding missing of_node_get() everywhere, should we be
+thinking about the design and fixing it to be more logical?
+
+	Andrew
