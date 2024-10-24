@@ -1,59 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7EE1B3930
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 09:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436045258
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 09:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729761274; cv=none; b=I7z5cGF4OCB/vhIZvGnURdqAJGRCT2b+NhDz0u+KSGg3jmUV/XecumEhqqL40Gdl1rfrP6ADtIZiDAFLtyyeCve9ie07ywH26NFEvq19YmufJsyKv2JKBk/c86ongtHy1MLl0tMDDbKA0jaiQj+pMXCeeDQjP0nqA4QalBd3nRM=
+	t=1729761630; cv=none; b=j4qXB/Fa1TAdfFjAfK5sHE5Y0gEVabmTi901xyBrxCXnEj8rMLXiPuaVCeuHOnHbY2Hib0CoWdICuY67DW6TU5S7gib4nfWZGsad1VuksVN4kgTKaAwvdcecpivL5gKsWkKdssn2A8lXnCvwTc+d7OQIUYYwhTjNS4ujhGPHjV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729761274; c=relaxed/simple;
-	bh=yBfz3EgduySwTFpnNerIzVboNzwmg/ifnCAQdO1XLss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H6zpzQgAcAb4ipCVezrbnAzcnwaHFdfj/s0Aj1EF6raFnnKs7ar4R5EY5/iPq4wETcWkqFSFU3O6bushVf5CpHkch9bEdPqSeSOexBKaX836zWeHMUmgVT7EtI0WaoiITh76W2a/LbpAljDApxB67m1Tx32W3Gu9ehrodi7X2/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjatKlAA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729761630; c=relaxed/simple;
+	bh=Fz8MhRAv84psw3Bx5LLORTTu9KqBElHdD2w0j+wd0bc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pIE7gx/kjZXG7cseW2K+d//HKtOPJAzA1HIj2A6Dp1k9PHGtFRxVnT/8NFF9P1/f5rhFMRqij28vtmErglLc/uU/fIcR+/miBN3FOZmPTS9svutkSDshWp7XMKFunp9jxXghKZxLQ0w1+oESJ6KqIezRwvIpxnpEAx0/3xSO6sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/6GIEAu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjatKlAA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CADC4CEC7;
-	Thu, 24 Oct 2024 09:14:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/6GIEAu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA61CC4CEC7;
+	Thu, 24 Oct 2024 09:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729761274;
-	bh=yBfz3EgduySwTFpnNerIzVboNzwmg/ifnCAQdO1XLss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SjatKlAAQB5wpHOvzrPK6ZOaeTy0VRbfrL1byjzZs/GFachwAuGCUiXgyWf5sFeVE
-	 0t3p5e2W5WdC9JAroBGACK6+4LNTTjJkQAYkwiVIYNcP/6sZHVgClxyayfoda9qdiH
-	 GrzvR6JOD8TGpzjrsjzL/R+z4VGDwHsHfJ6ckdVVByJlAgCSpl/0L7UAOi/x1lYyfp
-	 Rw48qnksZEpYNFNWn80ogZ0qoVMCkcdXYBVVthquVy0NsGHBd99SWP+z/9blfqti9c
-	 zGDZ8ajSIK+p+XOeX1xqMQqLrjgn75e8n7buUC1dBa0LpECn90YBm5WP8fL6p4FvCF
-	 sfDvdPj3tNpYA==
-Date: Thu, 24 Oct 2024 10:14:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phylink: simplify phylink_parse_fixedlink()
-Message-ID: <20241024091430.GJ402847@kernel.org>
-References: <E1t3Fh5-000aQi-Nk@rmk-PC.armlinux.org.uk>
+	s=k20201202; t=1729761629;
+	bh=Fz8MhRAv84psw3Bx5LLORTTu9KqBElHdD2w0j+wd0bc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=f/6GIEAuxisVKug77FUoqoQIpQ/a+JF0SFvdlvewjKMDct+amDzQdPqaAfJ6vHdUk
+	 mL8KR8Hc/qr4YZ9W4Llw0pldOo9Ch+XswFyS1lO4hfPF7qzVZTwpV6FGkn6d9ZGS8A
+	 QHsg7tEc3miGKzlAEnX7uWKXI90c95Ov34upFYP4R+JFW2g5VaVNv22ucQSQBjB1x/
+	 oS/wE5njYQNOMNN7OMB0CyA0xfCqrCXNWepewnBxTZUyfIpM7TLEatXkft0V+NR3MS
+	 sCRG4ge532CZSTcCUmGnpu3wPt8w0BvbdubQomqh7NRYVjGuCn35mr2HJcqChipx9c
+	 ib0CvtMuCYyEg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 717E4380DBDC;
+	Thu, 24 Oct 2024 09:20:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1t3Fh5-000aQi-Nk@rmk-PC.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/5] xfrm: extract dst lookup parameters into a struct
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172976163606.2169378.7808893214162654338.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Oct 2024 09:20:36 +0000
+References: <20241022092226.654370-2-steffen.klassert@secunet.com>
+In-Reply-To: <20241022092226.654370-2-steffen.klassert@secunet.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
+ netdev@vger.kernel.org
 
-On Tue, Oct 22, 2024 at 03:17:07PM +0100, Russell King (Oracle) wrote:
-> phylink_parse_fixedlink() wants to preserve the pause, asym_pause and
-> autoneg bits in pl->supported. Rather than reading the bits into
-> separate bools, zeroing pl->supported, and then setting them if they
-> were previously set, use a mask and linkmode_and() to achieve the same
-> result.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Steffen Klassert <steffen.klassert@secunet.com>:
+
+On Tue, 22 Oct 2024 11:22:22 +0200 you wrote:
+> From: Eyal Birger <eyal.birger@gmail.com>
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Preparation for adding more fields to dst lookup functions without
+> changing their signatures.
+> 
+> Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+> 
+> [...]
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Here is the summary with links:
+  - [1/5] xfrm: extract dst lookup parameters into a struct
+    https://git.kernel.org/netdev/net/c/e509996b1672
+  - [2/5] xfrm: respect ip protocols rules criteria when performing dst lookups
+    https://git.kernel.org/netdev/net/c/b84697210343
+  - [3/5] xfrm: policy: remove last remnants of pernet inexact list
+    https://git.kernel.org/netdev/net/c/645546a05b03
+  - [4/5] xfrm: validate new SA's prefixlen using SA family when sel.family is unset
+    https://git.kernel.org/netdev/net/c/3f0ab59e6537
+  - [5/5] xfrm: fix one more kernel-infoleak in algo dumping
+    https://git.kernel.org/netdev/net/c/6889cd2a93e1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
