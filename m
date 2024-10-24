@@ -1,84 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0F81C4A33
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 11:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9AF1B3954
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 11:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729767627; cv=none; b=Rw/EkE5rpI0eUaXponcelX4qMeJr2stxgaqGhdd2CgprLa+0hGIeSqniaAOWrK81zqiQulWpZToFLaSznKMoiVa0svN1BUBcarKwZLbFVv7Vwrq17hTEWTe6Daj9TZxGC73a5yon0wu4NlLN+GrPmZ/gu7jronnWUCKYrLeGv4g=
+	t=1729767735; cv=none; b=K6vOmU+F93HS+1Ej8ffUVVh/15jw64l9libdIhTtBoD/v264dn9eijzXEV2Qued/D0VLcwHhOd2O0qY1+vTie5taUL0iP6UU1qcJwr/9FoDGeg2W8pGVkTzpKxyG5mULpoD2mvsHUGEOfJTuytBRh+cunBc8PQK80t33bmJjeWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729767627; c=relaxed/simple;
-	bh=+l1e5LKa8wZ48pc/d+g8uQUZI92XnFFYeaCgQRHP+qM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=G6LIlu/LeOlBOzpmakkR865qVTeVUspulnXzz1Wpi4Kz2HIWQ1NdRHtZ3zloBoA/N5/ym4JyNUe40LRn+Q8bQjPe9rwhHRGu6nnAnSBe5RseaS9vBl/4bf4lPZgpvmiOVqf3+GKzUbrkDhVVnYq6r+c65mv4CoOxIKyz7DB2h/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aN4FpdJ1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729767735; c=relaxed/simple;
+	bh=X7ALf/7jO6mxXtlnsi2jMka+ACsTXoH81UhBpVUUKK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bDoTd6t6/JHlyveYAIZUMdCbgGyrt5ZLVTYdxb/FDl/RY2aWWX3aYJlrpD0/3dxmezZUOMPDs8isvEAyZEUJVySGIYNKy+Bvj9pkf/YLqDYB78SS7GHyhJzbszx+B1MJx4NEySoH8M1NQouNq7mkqKYzvCK3nNntNgCLNSau85Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n54lsoti; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aN4FpdJ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF29AC4CEC7;
-	Thu, 24 Oct 2024 11:00:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n54lsoti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AACC4CEC7;
+	Thu, 24 Oct 2024 11:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729767626;
-	bh=+l1e5LKa8wZ48pc/d+g8uQUZI92XnFFYeaCgQRHP+qM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aN4FpdJ1/BkX55FwMtgzfmbBwiTcpnuHsO2LevdDZHIXDVyUo6tPXs06Vozd5fv0R
-	 s1EzLkb3oNdYuG9kgMMejo1qA8JB3c91tfyVFXVzCbuVMHheQHYhI9MHxKT8RfkdO2
-	 lraZ+deBdFaBVcHK0+sQXEdjZlBTAXXNOPI0jMeiw61l85S0FmzAOLHX805ah7BPDd
-	 fOloF/S4prCwWpYNgsZK/sWLK8xTrq+oMhJxWavCo4MbYaOERdk8WaJqCyIyaEauNQ
-	 1+c+Ctu9uACMGULKiTxO7jJFhV+V22BPjchtubMHfKWd9L3lWZ/fPEtbODBq6uV2+E
-	 EHGyPE8WqE9kA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD68380DBDC;
-	Thu, 24 Oct 2024 11:00:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1729767735;
+	bh=X7ALf/7jO6mxXtlnsi2jMka+ACsTXoH81UhBpVUUKK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n54lsotiBPxAIdeDnhBHvcxJTUXJluMn6PUN7tImW9WXhTiHmCSguyzWmcsQiXE5+
+	 VvZv3H4JXJ+I5O1+f6CiW1GZr/jk86aSqJqMor1SbvagLhNy+A5nLA2diBuSiU2GUU
+	 MlmzGQHol+/s8ws6cP6bsYoXcCzXcZxoUZaVlCUI7QqStxCUTX0Y1CLCgLeeSc8dI8
+	 AZ6bgtIBfRL2T39HiMh8MkVev0U5Il+kqgo5o9p3fZjN9hU0+2Slx6mfY+k/L9WV0l
+	 61L1iBBioxxpRRWNFJ1ctQNi+5rgNUiFzPWUANXwrTeUJzdebTgUCUOjWwzfRc0pSI
+	 4Zmuoff17U9/A==
+Date: Thu, 24 Oct 2024 12:02:11 +0100
+From: Simon Horman <horms@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net-next] rtnetlink: Fix kdoc of rtnl_af_register().
+Message-ID: <20241024110211.GB1202098@kernel.org>
+References: <20241022210320.86111-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/3] net: dsa: mv88e6xxx: fix MV88E6393X PHC frequency
- on internal clock
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172976763352.2198052.11564087146899333434.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Oct 2024 11:00:33 +0000
-References: <20241020063833.5425-1-me@shenghaoyang.info>
-In-Reply-To: <20241020063833.5425-1-me@shenghaoyang.info>
-To: Shenghao Yang <me@shenghaoyang.info>
-Cc: netdev@vger.kernel.org, f.fainelli@gmail.com, olteanv@gmail.com,
- pavana.sharma@digi.com, ashkan.boldaji@digi.com, kabel@kernel.org,
- andrew@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- richardcochran@gmail.com, kuba@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022210320.86111-1-kuniyu@amazon.com>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun, 20 Oct 2024 14:38:27 +0800 you wrote:
-> The MV88E6393X family of switches can additionally run their cycle
-> counters using a 250MHz internal clock instead of the usual 125MHz
-> external clock [1].
+On Tue, Oct 22, 2024 at 02:03:20PM -0700, Kuniyuki Iwashima wrote:
+> The cited commit made rtnl_af_register() return int again,
+> and kdoc needs to be fixed up.
 > 
-> The driver currently assumes all designs utilize that external clock,
-> but MikroTik's RB5009 uses the internal source - causing the PHC to be
-> seen running at 2x real time in userspace, making synchronization
-> with ptp4l impossible.
-> 
-> [...]
+> Fixes: 26eebdc4b005 ("rtnetlink: Return int from rtnl_af_register().")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Here is the summary with links:
-  - [net,v3,1/3] net: dsa: mv88e6xxx: group cycle counter coefficients
-    https://git.kernel.org/netdev/net/c/67af86afff74
-  - [net,v3,2/3] net: dsa: mv88e6xxx: read cycle counter period from hardware
-    https://git.kernel.org/netdev/net/c/7e3c18097a70
-  - [net,v3,3/3] net: dsa: mv88e6xxx: support 4000ps cycle counter period
-    https://git.kernel.org/netdev/net/c/3e65ede526cf
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Simon Horman <horms@kernel.org>
