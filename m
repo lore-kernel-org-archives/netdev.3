@@ -1,146 +1,174 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A5314B088;
-	Thu, 24 Oct 2024 10:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C151ABEB1;
+	Thu, 24 Oct 2024 10:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729764051; cv=none; b=tL5n6zTkrJcCLHoZej2RUZHeD+9xnuMrCeXPRrDLQ1nXtFSlXMNqnNgioLLVSIbGSQJ3qwIqmy1ijdQAKUaOPCb7ODZBNJoRElUeTy4pEoxAeEdHov17tn/IN7jKQg+wRov1EoqPCO107lB89T9CqI8T+isc8jDeeSggXM17R/c=
+	t=1729764086; cv=none; b=c3deY2buR/TSUyOa2t+z9mU9JLLPZIMrq1XN1xyYuedlJyjIVi72doWTLbvpHmLdr7yr7qeUwuLtnN5whFMafUrDGjoucrug+3uWFVkGhwRT099uMV7vYrYM7N29guP3Qvd9btpnrzFm19SeH9vRtdF/Q2nUW9+95M7KURrDULU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729764051; c=relaxed/simple;
-	bh=/MzpiqBK5uBE0u3FoqrrKUK+jiIckyJWA0U5/GOwrtk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aXd0BjXfm/w5V9kjRTXzGy77/tncEs633VHCVZNETlybRkhOANo7rasXwfLZvNcEB33uW/q6Z1k+/apotmzM1Zw0eRTVTviJ93LU2Aaz3IpcLX9FniYgQ/ilKYzouGLy6dwPnX2n6BR6bc+Mr8xl/dSm5fQ2Bk7n8cdrt/YtVkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U/vNpmrB; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U/vNpmrB"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49O7WvcO026027;
-	Thu, 24 Oct 2024 10:00:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dhKHsS
-	XcbJQEnePonUcJC6X9r2M3tUpNdJGkfNo7KOA=; b=U/vNpmrBO/I2wbUNvlnwiR
-	5pbGWWG1unLK/QzasCK3rOM+qGOZAqteSlhNEUf3lkJofK3C3pwBt4JhgMNAr+j8
-	piXXvnBxtot1j2OXRsO9u5CEAppRdBdyg6lp5sQV4iht4CD/BOhtfqmKpeCOWgWG
-	mBA2ohDnN6NjUmSuwwb6D80CLnR/cMcfeDca9DEz/NkJ1gVqLi/Dj6r/7JsPYhMJ
-	LSnGjrDDzt6Qc6tN7Xf6ygZQHgeRLyWiC2s+NL8OE0s7h+zi0mRNJEObZB6cWj8S
-	O8eaicqhsHybIHrg+BJB4NJE2Gh/0/2ovg7BWcZ8NJZnAiNp3f9mOQ8+MjfiRRZw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42fhxnrpk4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Oct 2024 10:00:44 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49OA0iWI013147;
-	Thu, 24 Oct 2024 10:00:44 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42fhxnrpjy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Oct 2024 10:00:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49O6npRh014576;
-	Thu, 24 Oct 2024 10:00:42 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emk7ysjj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Oct 2024 10:00:42 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49OA0fhh35193304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Oct 2024 10:00:42 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4E1658054;
-	Thu, 24 Oct 2024 10:00:41 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B478858066;
-	Thu, 24 Oct 2024 10:00:39 +0000 (GMT)
-Received: from [9.171.35.241] (unknown [9.171.35.241])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Oct 2024 10:00:39 +0000 (GMT)
-Message-ID: <61cf578f-020e-4e0d-a551-98df5367ee27@linux.ibm.com>
-Date: Thu, 24 Oct 2024 12:00:38 +0200
+	s=arc-20240116; t=1729764086; c=relaxed/simple;
+	bh=iY1/51zaPHjVqosPGel6QiZiJ04KavIR7kHi6cy2EJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTaKuz3oDPCtoPxNuNPdqYHLrKrAOfCXTX5JrKe1cc7lkXNuYKlwJzdamKZalD3Yh6gDIkF4qOYzX7XDoUuJ913lQ0/1JtNZdZXjNNDMC/sJ2AAohunhP9moollVU0cThI3Vsx1khdA+v5bFKpbt6k/CWOJYB421niKwoeW2v+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.ru; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 3854C72C8F5;
+	Thu, 24 Oct 2024 12:53:39 +0300 (MSK)
+Received: by imap.altlinux.org (Postfix, from userid 705)
+	id 336F236D070D; Thu, 24 Oct 2024 12:53:39 +0300 (MSK)
+Date: Thu, 24 Oct 2024 12:53:39 +0300
+From: Michael Shigorin <mike@altlinux.ru>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Tor Vic <torvic9@mailbox.org>, Kexy Biscuit <kexybiscuit@aosc.io>,
+	jeffbai@aosc.io, gregkh@linuxfoundation.org, wangyuli@uniontech.com,
+	aospan@netup.ru, conor.dooley@microchip.com,
+	ddrokosov@sberdevices.ru, dmaengine@vger.kernel.org,
+	dushistov@mail.ru, fancer.lancer@gmail.com, geert@linux-m68k.org,
+	hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+	mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
+	ntb@lists.linux.dev, patches@lists.linux.dev,
+	richard.henderson@linaro.org, s.shtylyov@omp.ru, serjk@netup.ru,
+	shc_work@mail.ru, tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
+	wsa+renesas@sang-engineering.com, xeb@mail.ru
+Subject: what about CoC? (was: [PATCH] Revert "MAINTAINERS: Remove some
+ entries due to various compliance requirements.")
+Message-ID: <20241024095339.GA32487@imap.altlinux.org>
+References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
+ <20241023080935.2945-2-kexybiscuit@aosc.io>
+ <124c1b03-24c9-4f19-99a9-6eb2241406c2@mailbox.org>
+ <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/smc: use new helper to get the netdev
- associated to an ibdev
-To: Wen Gu <guwen@linux.alibaba.com>, jaka@linux.ibm.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: alibuda@linux.alibaba.com, tonylu@linux.alibaba.com,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20241024054456.37124-1-guwen@linux.alibaba.com>
-Content-Language: en-US
-From: Wenjia Zhang <wenjia@linux.ibm.com>
-In-Reply-To: <20241024054456.37124-1-guwen@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xV3DHfE8zzSz7iSyun__0WW7cfMcBbu2
-X-Proofpoint-GUID: xOBevlq1o5fhyrsUS31uY8OD-MlLYglO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
- mlxlogscore=544 malwarescore=0 impostorscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410240075
+Content-Type: text/plain; charset=koi8-r
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+
+как хорошо, что по-русски можно писать то, что думаешь
 
 
+On Wed, Oct 23, 2024 at 10:45:47AM -0700, Linus Torvalds wrote:
+> It's entirely clear why the change was done
 
-On 24.10.24 07:44, Wen Gu wrote:
-> Patch [1] provides common interfaces to store and get net devices
-> associated to an IB device port and removes the ops->get_netdev()
-> callback of mlx5 driver. So use the new interface in smc.
-> 
-> [1]: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev functions")
-> 
-> Reported-by: D. Wythe <alibuda@linux.alibaba.com>
-> Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-> ---
-[...]
+Might seem so to you, but apparently not to those wondering.
 
-We detected the problem as well, and I already sent a patch with the 
-same code change in our team internally these. Because some agreement 
-issues on the commit message, it is still not sent out externally. Now 
-we (our team) have almost an agreement, I'd like to attach it here. 
-Please have a look if it is also for you to use:
+> And FYI for the actual innocent bystanders who aren't troll
+> farm accounts - the "various compliance requirements" are not
+> just a US thing.
 
-"
-[PATCH net] net/smc: Fix lookup of netdev by using ib_device_get_netdev()
+US is just another victim of those trotzkist slugs --
+you can ask your father, he must know better *why*
+those have been expelled even by their own ilk
+a century ago here in Russia.
 
-Since/Although commit c2261dd76b54 ("RDMA/device: Add 
-ib_device_set_netdev() as an alternative to get_netdev") introduced an 
-API ib_device_get_netdev, the SMC-R variant of the SMC protocol 
-continued to use the old API ib_device_ops.get_netdev() to lookup 
-netdev. As commit 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and 
-get_netdev functions") removed the get_netdev callback from 
-mlx5_ib_dev_common_roce_ops, calling ib_device_ops.get_netdev didn't 
-work any more at least by using a mlx5 device driver. Thus, using 
-ib_device_set_netdev() now became mandatory.
+> If you haven't heard of Russian sanctions yet, you should try
+> to read the news some day.  And by "news", I don't mean Russian
+> state-sponsored spam.
 
-Replace ib_device_ops.get_netdev() with ib_device_get_netdev().
+Linus, those "news" have cost your family a child already,
+and Elon has paid a similar tax.  You have been limited in
+your right to tell what you think right here in linux-kernel@
+(unless you speak hate against *all* of the Russians, yeah).
 
-Fixes: 54903572c23c ("net/smc: allow pnetid-less configuration")
-Fixes: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev 
-functions")
-"
-My main points are:
-- This patch should go to net, not net-next. Because it can result in 
-malfunction. e.g. if the RoCE devices are used as both handshake device 
-and RDMA device without any PNET_ID, it would be failed to find SMC-R 
-device, then fallback.
-- We need the both fixes, which would help us for the backport
+You've agreed that black is white and vice versa.  It is not.
+
+> As to sending me a revert patch - please use whatever mush
+> you call brains.
+
+It's not about the patch but rather about the attitude;
+Documentation/process/code-of-conduct-interpretation.rst:
+
+"regardless of ... ethnicity, ... nationality, ... race"
+"Focusing on what is best for the community"
+
+"Examples of unacceptable behavior ... insulting/derogatory
+comments ... Public or private harassment"
+
+Get back to single-standard integrity for yor own's sake.
+
+> I'm Finnish. Did you think I'd be *supporting* Russian
+> aggression?
+
+Have you heard of casus belli?  Do you think these were one?
+
+http://nypost.com/2022/02/21/russia-kills-5-ukrainian-saboteurs-allegedly-trying-to-breach-border/
+http://reuters.com/world/europe/russias-fsb-says-shell-ukrainian-territory-destroys-russian-border-guard-post-2022-02-21/
+
+That's February 21, 2022.  If I yelled all over the place
+about "Finnish invasion" after Russian IFVs have rovered
+Finland *first* for no good reason, would I be right?
+
+Feel free to ask, I actually grew up in Kiev and e.g.
+this bug fix was done there as well:
+
+http://bugzilla.kernel.org/show_bug.cgi?id=15658
+http://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=c9e2fbd909c20b165b2b9ffb59f8b674cf0a55b0
+
+Please do revert it too then.
+
+Drop Linux network stack while at that, that "roomful
+of Russian mathematicians" is now declared untermensch.
+
+> Apparently it's not just lack of real news,
+> it's lack of history knowledge too.
+
+On your side, Linus.
+On your side.
+
+Hope you're still Finnish, not a Finnish nazi
+(swap "Russians" with "Jews" in your email and
+re-read it; it's my homegrown "nazi test" --
+if this change suddenly makes a text "nazist",
+it was).
+
+It is the US that has pushed Finland towards NATO,
+basically to follow the grim destiny that the former
+Ukraine currently harvests, and that was prepared
+for Georgia (that evades it), Moldavia (that rishes
+full speed towards destruction), Poland, the three
+Baltic states, and now your homeland.
+
+There is no regulation that can force your own heart.
+Listen to it.  Not to emotions, but to the deep truth
+that never cries aloud.
+
+You bow to the jerks who are *afraid* of opposition,
+because there is no truth in their father.
+
+Remember those who yelled "Assad must go"?
+How many of them are still around?
+Those siding with them perish with them.
 
 
-Thanks,
-Wenjia
+PS: last time I've seen RMS in Moscow, he declared
+his support "to the Moscow protesters"; I've asked him
+whether he knows that the initial issue was that the
+dead people were identified en masse as those "voting"
+for "democratic" candidates in 2019 elections, and he
+stared at me and answered, "nonsense".  I've emailed
+him after BLM affairs to ask if what he sees makes
+sense but never seen a reply this time -- and dead
+voters turned out to be not a purely export-only
+"technology" a bit later (pretty cosmopolitan).
 
+
+Господи, спаси и сохрани раба Твоего заблуждшего
+Линуса и ближних его во веки веков; аминь!
+
+-- 
+Michael Shigorin
+(whose first book on programming was
+Hyvonen and Seppanen's one on LISP)
+http://t.me/anna_news
