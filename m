@@ -1,31 +1,64 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFB323CB;
-	Thu, 24 Oct 2024 09:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00FE1B0F00
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 09:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729760498; cv=none; b=jTFotaIA819Q3So53cP/aSsoVJWnTHnWAgAWf5onLhyyAiJurWvgDqroGd570zE9AlvgfxGtuoJD+smKAQL4ek5mNYK+HBFWGK6fjEeKXFGixI4+NMsTkX4Z629SiFmCbez56a9P+sqvUsB+NIwuObovhIjhiJabRbwgSq7HHFw=
+	t=1729760742; cv=none; b=S+dmQXS/VcKZWm/LCg//SXC1hhu1GNmXESxrxfWxg79rJBNBFoV1TffA+/e7r+TVoNAB/WJDVPQiHrpi+3uAVOfNHE2kjXCfzYBfSYrLMyIkygi11/ylCk2xYY4fQE1sY8RDJTARWKKc3bWZF7eyDaJXMPu86H43kIft8M0jDW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729760498; c=relaxed/simple;
-	bh=86RwdYNnZhoVzz9f/soUGnWuGwDz+UOZt81K5y2tbd0=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KIHFM6M4e6KRmRSI28Yvxhr1pNQl4gGNre+CqirRDYF2YKKZhG+kaCGV16+WWnhlz7hs9K7ojR1lYhTKZDjvxdP22XcJe2KPrz1/r2GAaaJ/UgMZ7SEWcCsVnI5i1CRsWJNekzr0TzTGjFiFRVXjgCKSNkjcSecVbYs+xnFhNO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XZ0Fq0BKVzdkS3;
-	Thu, 24 Oct 2024 16:58:55 +0800 (CST)
-Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id C2C2A140135;
-	Thu, 24 Oct 2024 17:01:25 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 24 Oct 2024 17:01:24 +0800
-Message-ID: <5a2786ab-1c7c-4641-a3f6-3c3722f2ac14@huawei.com>
-Date: Thu, 24 Oct 2024 17:01:23 +0800
+	s=arc-20240116; t=1729760742; c=relaxed/simple;
+	bh=Z32bqkdyvIrXas41lz6iz5PGpFo2gmvCedA9F9R4I0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GG8t6RZSmqrYX8dBW1Pmxe6fjH1FHCTO2AKpOeGgL7Ldjm7owEZHMWSORHC2KPVqQ9haaNkfYeLvt8CiXlc551yr8rsmKCmufePrgbMUWHgzFxZuJXKT4Zv0IHg9Y+0tKd6Co/3ztR+jjvzLos80OxBTU86RMGZna99umd0EwGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QsxteRP0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QsxteRP0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729760738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u70sIwyFm0suH4CDe5A/iIejFVl9J+uk9rhnPzF4Ntc=;
+	b=QsxteRP0s+qOeqTQGgnm0UKS9mgIUVyKTfZq3YrlNZmkx6cjH6mUM99BfeQh48bI/Ofj82
+	vaL9IRX0Cr9BUnFnH3s9Bcm+AULWDMzDv+HAjbbTmyR4ojtgbg4McBWiC4xOhAkKx3Ul3p
+	kgUnYh4pAERnLUTEwqCGcoCFy7hAdvs=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-am_dqmrkOv-zCBDnrlNN3Q-1; Thu, 24 Oct 2024 05:05:37 -0400
+X-MC-Unique: am_dqmrkOv-zCBDnrlNN3Q-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-539f7abe2e6so520522e87.1
+        for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 02:05:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729760736; x=1730365536;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u70sIwyFm0suH4CDe5A/iIejFVl9J+uk9rhnPzF4Ntc=;
+        b=CQBGP4VP/Ux4FOPIB3JRRcWi5VVFOxFki+2hs7ctO+gzzJBj5HAo5xt7NrYPfu5Uin
+         6Xs7xtxsgbZyTWlWxtIWFhqcDqmbYC0wbGQHUB/4odxPyDjGViUOXAGo5kW9YnyGAjTc
+         +gdkmBPJc4JCLG4hPqhPlRlQQGWFri9Bdethtz9ME7UVj3NP2z+ZCmiSkbO8ZxOh7ZjI
+         ntPR7FXqBFOMKZg9iJL5fa8kljeLWYBvpyqkSmJQhkKt5BORCbCX+Epdqbtzx5kJ9wZn
+         cfyPTnAttwb0DznBFhZcHxSQyr8vUjDg9bLx09tXgP1bx/AUtvJJE8q5q0h6PSYEvGwX
+         Dv1w==
+X-Gm-Message-State: AOJu0YxZ2own1i3f/JmN8i47aXyrZnpWNrpNRtHXa0XPa5E8sNQeLO/B
+	FCp0cHlT+xi0YBFHcl2vVomzToNstCZaL6Xhj/6m6tL0YJne4n7HQguGmsaoUbUHAhCCzrg8nNY
+	pxi6Ak8Qh8ZVyT+OTE2Ze67bbWa0NSCeXhgVqwtwlJCCbanUvHQrDBw==
+X-Received: by 2002:a05:6512:2392:b0:539:f8cb:f5e3 with SMTP id 2adb3069b0e04-53b1a375b33mr2937451e87.48.1729760735836;
+        Thu, 24 Oct 2024 02:05:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExoOpe615O7V0Vd9OGAHQxabxJ1jZDno5UnaeKOorq+8MwKq3jNe31QuxTpcKXM4fOXZjb5g==
+X-Received: by 2002:a05:6512:2392:b0:539:f8cb:f5e3 with SMTP id 2adb3069b0e04-53b1a375b33mr2937433e87.48.1729760735411;
+        Thu, 24 Oct 2024 02:05:35 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:1b73:a910::f71? ([2a0d:3344:1b73:a910::f71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a4b26dsm10814443f8f.45.2024.10.24.02.05.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Oct 2024 02:05:34 -0700 (PDT)
+Message-ID: <add10dd4-7f5d-4aa1-aa04-767590f944e0@redhat.com>
+Date: Thu, 24 Oct 2024 11:05:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,66 +66,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <liuyonglong@huawei.com>,
-	<wangpeiyang1@huawei.com>, <lanhao@huawei.com>, <chenhao418@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V2 net 2/9] net: hns3: add sync command to sync io-pgtable
-To: Paolo Abeni <pabeni@redhat.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <shenjian15@huawei.com>,
-	<salil.mehta@huawei.com>
-References: <20241018101059.1718375-1-shaojijie@huawei.com>
- <20241018101059.1718375-3-shaojijie@huawei.com>
- <214d37cc-96c0-4d47-bea0-3985e920d88c@redhat.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <214d37cc-96c0-4d47-bea0-3985e920d88c@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH net-next v22 00/14] Replace page_frag with page_frag_cache
+ for sk_page_frag()
+To: Yunsheng Lin <yunshenglin0825@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>, Eric Dumazet <edumazet@google.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, davem@davemloft.net,
+ Yunsheng Lin <linyunsheng@huawei.com>, kuba@kernel.org, linux-mm@kvack.org
+References: <20241018105351.1960345-1-linyunsheng@huawei.com>
+ <CAKgT0Uft5Ga0ub_Fj6nonV6E0hRYcej8x_axmGBBX_Nm_wZ_8w@mail.gmail.com>
+ <02d4971c-a906-44e8-b694-bd54a89cf671@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <02d4971c-a906-44e8-b694-bd54a89cf671@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm000007.china.huawei.com (7.193.23.189)
 
+Hi,
 
-on 2024/10/24 16:36, Paolo Abeni wrote:
-> On 10/18/24 12:10, Jijie Shao wrote:
->> From: Jian Shen <shenjian15@huawei.com>
->>
->> To avoid errors in pgtable prefectch, add a sync command to sync
->> io-pagtable.
->>
->> In the case of large traffic, the TX bounce buffer may be used up.
-> It's unclear to me what do you mean for large traffic. Is that large
-> packets instead?
->
-> Skimming over the previous patch, it looks like the for the bugger H/W
-> driver will use the bounce buffer for all packets with len < 64K. As
-> this driver does not support big tcp, such condition means all packets.
->
-> So its not clear to me the 'may' part - it looks like the critical path
-> will always happen on the bugged H/W
+I just noted MM maintainer and ML was not CC on the cover-letter (but
+they were on the relevant patches), adding them now.
 
-Sorry, actually not, I mean with tools like iperf3, we can hit the speed limit.
-In this case, many packets are sent within a short period of time.
-Therefore, the TX bounce buffer may be used up.
-In this case, mapping/unmapping is used for packets that cannot use the TX bounce buffer.
+On 10/19/24 10:27, Yunsheng Lin wrote:
+> On 10/19/2024 1:39 AM, Alexander Duyck wrote:
+>> So I still think this set should be split in half in order to make
+>> this easier to review. The ones I have provided a review-by for so far
+>> seem fine to me. I really think if you just submitted that batch first
+>> we can get that landed and let them stew in the kernel for a bit to
+>> make sure we didn't miss anything there.
+> 
+> It makes sense to me too that it might be better to get those submitted
+> to get more testing if there is no more comment about it.
+> 
+> I am guessing they should be targetting net-next tree to get more
+> testing as all the callers of page_frag API seem to be in the
+> networking, right?
+> 
+> Hi, David, Jakub & Paolo
+> It would be good if those patches are just cherry-picked from this
+> patchset as those patches with 'Reviewed-by' tag seem to be applying
+> cleanly. Or any better suggestion here?
 
-Thanks,
-Jijie Shao
+We can cherry pick the patches from the posted series, applying the
+review tags as needed, but we need an explicit ack from the mm
+maintainer, given the mentioned patches touch mostly such code.
 
->
->> At this point, we go to mapping/unmapping on TX path again.
->> So we added the sync command in driver to avoid hardware issue.
-> I thought the goal of the previous patch was to avoid such sync-up.
->
-> So I don't understand why it's there.
->
-> A more verbose explanation will help.
->
->> Signed-off-by: Jian Shen <shenjian15@huawei.com>
->> Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> Also we need a fixes tag.
->
-> Thanks,
->
-> Paolo
->
->
+I would like to avoid repeating a recent incident of unintentionally
+stepping on other subsystem toes.
+
+@Andrew: are you ok with the above plan?
+
+Thank you,
+
+Paolo
+
