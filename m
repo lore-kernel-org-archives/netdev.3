@@ -1,160 +1,123 @@
-Received: from mail.rosalinux.ru (mail.rosalinux.ru [195.19.76.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C862178E9;
-	Thu, 24 Oct 2024 21:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.19.76.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6391217338;
+	Thu, 24 Oct 2024 21:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729804341; cv=none; b=NEzwkx2PCM7PmjcwXpipaKAsF2AMXLCCFacgKSWbJ2JBA+KC2Af/0n+ZpYjlFBzH0TVwuNvBXTH9bEqVSG4CAfgpFFXZVEcpZ2ofL2Y3P8J9yqlVWQR5zz7FZcH1Hm6KyQ8LCkulDwxZt21/CdAsS3REHMBJhxY/ElGK9T4TrJs=
+	t=1729804429; cv=none; b=hOIUD81a8vrtAqZRD7BvN1PZW1cB2/QwE/YCk0pqZLewODB3R1PzJ8oCEF73A3cAWRsx08bybroHATufoc16YAcryJTp66XJo6V8lQmBsEGucm09C4hjMuxRpjLGRa4/2iU67mHIqVWrYSVMhOVnHf4jZ2N4woY6LhFUHsTu3xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729804341; c=relaxed/simple;
-	bh=YFSCR7IfY9tTJHnomR8IWpjA3ksgmVsEmuV7YWqhDac=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UAz074Jej2xpDozq+lxHweZgbI/KAwMmgJ7+9U1eeZdBLDu8ICdqG2b65PEs2nqNFcH40vxrbCg/I1XX/pAaFG5OMjesHHaUn7qTjsD5GdHhjucjCZ6fNeDgC9pshnAnS5ijijDsVy6ZLcFlA4v4O+2sVTRxeeSwEEmSvyleSgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru; spf=pass smtp.mailfrom=rosalinux.ru; dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b=JvCI2bpf; arc=none smtp.client-ip=195.19.76.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosalinux.ru
+	s=arc-20240116; t=1729804429; c=relaxed/simple;
+	bh=go564DnfBiEx79xSbk4V/4Kf/fjy5zdl97UH8liwTnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u3elEEWrqPUzBRYo9Kvn8mR0HQvzoT1KLBPtKn2K+ESs7lLVUr+V9BIS3N7+lA8luykM+trHODq0RG6MHLIPtzuaeb6MmbI3gkaLHytcTG+VsokL/zTSxEnEnVtq780WUo9p2vkcWieTKwaJACEZE/Ynwn7wyP99S8yiaqQAymc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMkvpFS5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b="JvCI2bpf"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rosalinux.ru (Postfix) with ESMTP id 7D26B1CE86E68;
-	Fri, 25 Oct 2024 00:01:25 +0300 (MSK)
-Received: from mail.rosalinux.ru ([127.0.0.1])
-	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id 9oq4DAnOWm9h; Fri, 25 Oct 2024 00:01:25 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rosalinux.ru (Postfix) with ESMTP id 291291CEA7786;
-	Fri, 25 Oct 2024 00:01:25 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru 291291CEA7786
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
-	s=1D4BB666-A0F1-11EB-A1A2-F53579C7F503; t=1729803685;
-	bh=YFSCR7IfY9tTJHnomR8IWpjA3ksgmVsEmuV7YWqhDac=;
-	h=From:To:Date:Message-Id:MIME-Version;
-	b=JvCI2bpfYn6dddRZiFpXBEzWeMaIIIutw82nrEpFKELoHPE6QGlusc8ot6Pz2qsRl
-	 xgHZlg0ZN4qSjNTvX61QWUAB7GUVXTPMjDh1akMWR7Bv4mMuo14u26B5xrIwAhP7XR
-	 Zhx7eK353znte05A8c+mxDcOLCydBtTG2ls2w5c9/Mo4C87hbpDNzyXbRsAchC7Ks5
-	 XLwSg/4N1t2FVpz/nBcGXLz3qFrQp8PdasmrTypM0817oCh9kImIJI7nLBMD++8mIh
-	 k/jBTljV5jxoD21CpoJ1X8V5EyMSn2YqMYMoH55SN7eGLDRMqD3tW7zwRTBXHwT4Xf
-	 C3mBvJUzpSmNA==
-X-Virus-Scanned: amavisd-new at rosalinux.ru
-Received: from mail.rosalinux.ru ([127.0.0.1])
-	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id DcLkSC7j36Ww; Fri, 25 Oct 2024 00:01:25 +0300 (MSK)
-Received: from hp-xfce (unknown [89.189.111.209])
-	by mail.rosalinux.ru (Postfix) with ESMTPSA id 21D671CE86E68;
-	Fri, 25 Oct 2024 00:01:24 +0300 (MSK)
-Received: from localhost (hp-xfce [local])
-	by hp-xfce (OpenSMTPD) with ESMTPA id eeebd703;
-	Thu, 24 Oct 2024 21:01:23 +0000 (UTC)
-From: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
-To: torvalds@linux-foundation.org
-Cc: aospan@netup.ru,
-	conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org,
-	dushistov@mail.ru,
-	fancer.lancer@gmail.com,
-	geert@linux-m68k.org,
-	gregkh@linuxfoundation.org,
-	hoan@os.amperecomputing.com,
-	ink@jurassic.park.msu.ru,
-	jeffbai@aosc.io,
-	kexybiscuit@aosc.io,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com,
-	netdev@vger.kernel.org,
-	nikita@trvn.ru,
-	ntb@lists.linux.dev,
-	patches@lists.linux.dev,
-	peter@typeblog.net,
-	richard.henderson@linaro.org,
-	s.shtylyov@omp.ru,
-	serjk@netup.ru,
-	shc_work@mail.ru,
-	torvic9@mailbox.org,
-	tsbogend@alpha.franken.de,
-	v.georgiev@metrotek.ru,
-	wangyuli@uniontech.com,
-	wsa+renesas@sang-engineering.com,
-	xeb@mail.ru,
-	m.novosyolov@rosalinux.ru
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various compliance requirements."
-Date: Fri, 25 Oct 2024 00:01:20 +0300
-Message-Id: <20241024210120.4126-1-m.novosyolov@rosalinux.ru>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <CAHk-=wjw0i-95S_3Wgk+rGu0TUs8r1jVyBv0L8qfsz+TJR8XTQ@mail.gmail.com>
-References: <CAHk-=wjw0i-95S_3Wgk+rGu0TUs8r1jVyBv0L8qfsz+TJR8XTQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMkvpFS5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221F2C4CEC7;
+	Thu, 24 Oct 2024 21:13:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729804429;
+	bh=go564DnfBiEx79xSbk4V/4Kf/fjy5zdl97UH8liwTnw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hMkvpFS5bU/4cGW/N/i+elpi8q8hEn8bQ6ByXvXB8teAKsSx6SzVXcvVz/6EAqjiz
+	 JX/5rjlg6o1Nvpftw4Kfc7s3RoTAbbzeIYbD2+xBWBFpSsAn9fvSn8TxwbmNGTyAss
+	 nwV2bj4EzLWZJUh+yRpkjJI97rjvcFTkmwdHgFnfHW+8VgYnnGAQuHeXKbKuDJ1L7/
+	 xLIU+CVXpkWSflPqWlo6BwBYmBzh1oaSxU8zkhRWuzZ+8kAkwpyLeFAHHaOkSqGXcD
+	 AEZVZf4X0AR24dSpdlQ/AvsnzH/GW6wJuRuMqz6wE4Jmgs6GtGcJ30ljSDxvtBGOVW
+	 Sev3uG064/NGw==
+Date: Thu, 24 Oct 2024 15:13:45 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH v2 3/4][next] uapi: net: arp: Avoid
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <903f37962945fe0aa46e1d05c2a05f39571a53fa.1729802213.git.gustavoars@kernel.org>
+References: <cover.1729802213.git.gustavoars@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1729802213.git.gustavoars@kernel.org>
 
-Linus, Greg,
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-First of all thanks to you for taking by far not the most harmful actions=
- to achieve what your lawyers very kindly asked you to do.
+Address the following warnings by changing the type of the middle struct
+members in a couple of composite structs, which are currently causing
+trouble, from `struct sockaddr` to `struct __kernel_sockaddr_legacy`.
 
-Unfortunately, already a lot of highly qualified people have started thin=
-king that you acted very badly. Of course, there are questions like why r=
-emoved maintainers were not properly notified and did not receive any add=
-itional explanations, but, to my mind, it is useless to try to find 100% =
-justice -- it is not possible. Overton windows has been opened a bit more=
-.
+include/uapi/linux/if_arp.h:118:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+include/uapi/linux/if_arp.h:119:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+include/uapi/linux/if_arp.h:121:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+include/uapi/linux/if_arp.h:126:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+include/uapi/linux/if_arp.h:127:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-Usually the first contribution is much harder to make then the following =
-ones. A big problem here is that now many people even will not try to con=
-tribute to the Linux kernel and other open source projects: their pride f=
-or themselves, their homeland, their colleagues has been severely hurt (w=
-e are ready to fight for all that).
+Also, refactor some related code, accordingly.
 
-It is not clear what to do with this problem. Any ideas?
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ include/uapi/linux/if_arp.h | 18 +++++++++---------
+ net/ipv4/arp.c              |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-I am sure that people from any country and of any nationality will have s=
-imilar feelings if you act with them or their colleagues in a similar way=
-.
+diff --git a/include/uapi/linux/if_arp.h b/include/uapi/linux/if_arp.h
+index 4783af9fe520..4a25a05125d3 100644
+--- a/include/uapi/linux/if_arp.h
++++ b/include/uapi/linux/if_arp.h
+@@ -115,18 +115,18 @@
+ 
+ /* ARP ioctl request. */
+ struct arpreq {
+-	struct sockaddr	arp_pa;		/* protocol address		 */
+-	struct sockaddr	arp_ha;		/* hardware address		 */
+-	int		arp_flags;	/* flags			 */
+-	struct sockaddr arp_netmask;    /* netmask (only for proxy arps) */
+-	char		arp_dev[IFNAMSIZ];
++	struct __kernel_sockaddr_legacy	arp_pa;		/* protocol address		 */
++	struct __kernel_sockaddr_legacy	arp_ha;		/* hardware address		 */
++	int				arp_flags;	/* flags			 */
++	struct __kernel_sockaddr_legacy	arp_netmask;    /* netmask (only for proxy arps) */
++	char				arp_dev[IFNAMSIZ];
+ };
+ 
+ struct arpreq_old {
+-	struct sockaddr	arp_pa;		/* protocol address		 */
+-	struct sockaddr	arp_ha;		/* hardware address		 */
+-	int		arp_flags;	/* flags			 */
+-	struct sockaddr	arp_netmask;    /* netmask (only for proxy arps) */
++	struct __kernel_sockaddr_legacy	arp_pa;		/* protocol address		 */
++	struct __kernel_sockaddr_legacy	arp_ha;		/* hardware address		 */
++	int				arp_flags;	/* flags			 */
++	struct sockaddr			arp_netmask;    /* netmask (only for proxy arps) */
+ };
+ 
+ /* ARP Flag values. */
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 11c1519b3699..3a97efe1587b 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -1185,7 +1185,7 @@ static int arp_req_get(struct net *net, struct arpreq *r)
+ 
+ 	read_lock_bh(&neigh->lock);
+ 	memcpy(r->arp_ha.sa_data, neigh->ha,
+-	       min(dev->addr_len, sizeof(r->arp_ha.sa_data_min)));
++	       min(dev->addr_len, sizeof(r->arp_ha.sa_data)));
+ 	r->arp_flags = arp_state_to_flags(neigh);
+ 	read_unlock_bh(&neigh->lock);
+ 
+-- 
+2.34.1
 
-Thanks to people who were not afraid to say something against this action=
-. Chinese, Latin American, African and other people probably understand t=
-hat they may be the next ones to be dropped from maintainers. Hope that w=
-e will not have to form another Linux kernel upstream one day...
-
-I am sorry that you have to read a lot of text from people who you call t=
-rolls -- it is hard to keep calm.
-
-You know, you have really made it much harder to motivate people to contr=
-ibute into the kernel. There is such problem among developers of hardware=
- that they do not feel comfortable enough to show their code, for example=
- because they think that it is not perfect. Let=E2=80=99s take Baikal Ele=
-ctronics. They do publish their kernel code, but in a form of tarballs wi=
-thout git. They slowly, but constantly worked on contributing support of =
-their hardware into the upstream kernel, fixing not Baikal-related bugs b=
-y the way. One day someone told them that =E2=80=9Cwe are not comfortable=
- with accepting your patches=E2=80=9D. And they stopped their work on ups=
-tream. Now that man has been removed from maintainers of previously contr=
-ibuted code (code for not Russian hardware, by the way).
-
-What do I suggest to do? Well, I don=E2=80=99t know, but I do not see dir=
-ect legal reasons why doing this was required and why patches from Baikal=
- could not be accepted (the fact that I do not see does not mean that the=
-y do not exist, but please show them). Politicians and activists can be s=
-hown a finger in some places, by both developers and lawyers, at least to=
- prevent them from being too ambitious, when they decide to break somethi=
-ng working next time... But maybe I do not know something about truly dem=
-ocratic regimes :-)
-
-Thanks for reading.
