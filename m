@@ -1,108 +1,72 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EA61D2B21
-	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 09:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB80170826;
+	Thu, 24 Oct 2024 09:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729762698; cv=none; b=N3kyFMvVUKLzPVXv3vlEMyR1aeg/QF89KBLU70MrtetnB6Nr1u/3mQkcDGpNtKb9zJ66lyx/JNXjF/J1Ow51Q4AOm9K4ROW7D2vbCawffdjCkUJxw4Fsik7zeszWp/6KbJK0DhuxhZCH6H3Z2x+Z32uMiAlaI0xoqzIk26g0IgA=
+	t=1729763101; cv=none; b=EZfQBecW/JOpNiniy9lo/k9jqyoW7G/QRYIU0sMXadTs5h8fvvPA0MjYX1XSnIwmWZc1DHsKBND9X1TdK9+0KmYlLMThas11fbP3mGh47f6y6EIqMklNuFaaCOH/6uoCJaNQ+GAvK0PMG08UE7lgpWCx4uJQb83P5/NR3PURfpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729762698; c=relaxed/simple;
-	bh=eEWc8uzG9YS6xpTxiJveLH9YJXMl6ltPj3uRUP3htAw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nFFbkiqTRjSBRjZWq5RDYE0bnwfWgMFvdBxrLPlUbQ84PHi+RFRVr/bTdrg3A8tdMcwGcxiTfrHW3sa6sZLT9EpmxAXTnxE5TnpzsnDMwk4IqO5A2JMyRDRQBGDExFf2pAP9CNl/9Cuwchcv6LBZQiKufskzjKkUKeVPkqAQuow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXxj4Apn; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729763101; c=relaxed/simple;
+	bh=7kngg9pdtYpQtza0UYmezUYqLMx3hxlD2ZRjOunfoJQ=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=B8Z+rxh2uG2AAZBb2zj2PtLd1XXYPuLA8lqfLX7snOUPrNAWSTZxYtLpFPTscFA4UKMIy3z5NjCNquiJ8epY1aGlCQFh8z3fBHqbxy5t5t3ihcVUJEF3iQkJo5EkZRHr/qv5NlkvvHNUq0yiTfQ4aW/NAjmXJgMQvCmRWlG0LmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULBwzZbm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXxj4Apn"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e6cec7227so552261b3a.0
-        for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 02:38:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729762696; x=1730367496; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8CPLrrngokzuY0+Bs9QdrYJltx7NudqNJiilD478Iog=;
-        b=UXxj4ApnpvQkw0F3/K09fWoZFyOgKct98Ut2qzlQ4GwobIyiOF9DiUK5mDALT+SS9I
-         6C5Y0xDOMH1G1AdXpK8UdSdBmQLxAw8uGedbWN8y0qhRNWwjrTJKVG1oXiZ3xrq98Xu1
-         sUmUbEQvDDFKdKvgCikRXO48FPbirJxo/+YfrC0G/RPjZ9huCW7YgsK0fE0EHRFsOYoe
-         EUyealhzNhaWoUrDVE0/B8OEqHquuOdB4yD9SpDBLhXOhdIoz52pow+ZBtNiKezra1z/
-         1RSmDTJg02xlDShAXsFygOP4HSKKFaZxPv7vPgdLBkzYN/3y5OGmDjFVITtys537i+CP
-         xblA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729762696; x=1730367496;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8CPLrrngokzuY0+Bs9QdrYJltx7NudqNJiilD478Iog=;
-        b=QPVfMvX3GIFV2M1ImU+e+4Fe4M6M8aFvgkAXIiQhGSKSdciQqSW48mmMIPAlZRQCOT
-         JfJTifK8DJvtch4P5dKRrsZtFe1azsSeCKihT+U2uD/V3bu+uHHtWG+zljrGX4BwNNPz
-         uCH4h283fJIsAojIi29Ixm3uJyFnwMKRe8nREZ9w1JO4aREqJ+QXEAd1Rs9gj589GKy3
-         fkSQkfZHoHYf7pQAMR+hNY6VYYa7gxfNV9txtM/M5N3/LDjaCIrDtFmL0gjoDy9o46b7
-         P+T43cG79VWJsEoL74gVAAhu2NSdJzwoNkrKbf+O7LKQqJ3nfO4BrsBtuKoF392OmsyP
-         xpyA==
-X-Gm-Message-State: AOJu0Yzw4Bs6+j58BJ5Tei9Irw6ZAQR0aRXriydTUKLutsT0/hgYDAgO
-	ABddK/o1WR/sriWZry6FmcH8GK+GvYufD8zQzR4aDYFUqoTZ8ImD
-X-Google-Smtp-Source: AGHT+IFj1OYYx3TmNcFDIXrFDzr+agNO+o0nHtIRaYkuGaiMPeLv013Kc0D5ZqY8p7/tMHEbR/7cwg==
-X-Received: by 2002:a05:6a00:2295:b0:71e:692e:7afb with SMTP id d2e1a72fcca58-72045e25427mr1311724b3a.5.1729762696176;
-        Thu, 24 Oct 2024 02:38:16 -0700 (PDT)
-Received: from localhost.localdomain ([39.144.39.134])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec13d75b9sm7613923b3a.131.2024.10.24.02.38.11
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 24 Oct 2024 02:38:15 -0700 (PDT)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Menglong Dong <menglong8.dong@gmail.com>
-Subject: [PATCH 2/2] net: tcp: Add noinline_for_tracing annotation for tcp_drop_reason()
-Date: Thu, 24 Oct 2024 17:37:42 +0800
-Message-Id: <20241024093742.87681-3-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
-In-Reply-To: <20241024093742.87681-1-laoar.shao@gmail.com>
-References: <20241024093742.87681-1-laoar.shao@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULBwzZbm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383A3C4CEC7;
+	Thu, 24 Oct 2024 09:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729763100;
+	bh=7kngg9pdtYpQtza0UYmezUYqLMx3hxlD2ZRjOunfoJQ=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=ULBwzZbmzRqEiKMBg+X47y/WZVApeTALq+fPUp0CgDq00Mh+9w9V2ocx6l9qjRzad
+	 OEXHKio+E/V2kJX26fUDK+CAP8p3ORql12Q7rQynmue1Maye50WFNfH36vREdRG2EE
+	 08XkbOdmfPq+jmfNwapFhBspZxLg188Gnc9rwymRVZBEKEVijjRktE9Y1f47FqvMCZ
+	 VPfWg7bnEkcFk3LHVR4bh5sN58ufNf/a6YKf2+MVhC0jJzSYEyQP7Qy4E1sKW0PRFv
+	 arCwJY09rMZ0pED8kmfTv0IOPj596D7keiN7DSjfDO4MuCs+/XsSQ7LIs4g4b4fkZA
+	 Dpse0VaaF7jng==
+From: Kalle Valo <kvalo@kernel.org>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-wireless@vger.kernel.org,  "David S. Miller"
+ <davem@davemloft.net>,  Adham Abozaeid <adham.abozaeid@microchip.com>,
+  Ajay Singh <ajay.kathat@microchip.com>,  Alexis =?utf-8?Q?Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>,  Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+  Conor Dooley <conor+dt@kernel.org>,  Eric Dumazet <edumazet@google.com>,
+  Jakub Kicinski <kuba@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh@kernel.org>,  devicetree@vger.kernel.org,  netdev@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: wilc1000: Rework bus locking
+References: <20241023144125.80296-1-marex@denx.de>
+Date: Thu, 24 Oct 2024 12:44:52 +0300
+In-Reply-To: <20241023144125.80296-1-marex@denx.de> (Marek Vasut's message of
+	"Wed, 23 Oct 2024 16:41:21 +0200")
+Message-ID: <87r085n8bv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-We previously hooked the tcp_drop_reason() function using BPF to monitor
-TCP drop reasons. However, after upgrading our compiler from GCC 9 to GCC
-11, tcp_drop_reason() is now inlined, preventing us from hooking into it.
-To address this, it would be beneficial to make noinline explicitly for
-tracing.
+Marek Vasut <marex@denx.de> writes:
 
-Link: https://lore.kernel.org/netdev/CANn89iJuShCmidCi_ZkYABtmscwbVjhuDta1MS5LxV_4H9tKOA@mail.gmail.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Menglong Dong <menglong8.dong@gmail.com>
----
- net/ipv4/tcp_input.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> The bus locking in this driver is broken and produces subtle race
+> condition with ksdioirqd and its mmc_claim_host()/mmc_release_host()
+> usage in case of SDIO bus. Rework the locking to avoid this race
+> condition.
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index cc05ec1faac8..cf1e2e3a7407 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4894,8 +4894,8 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
- 	return res;
- }
- 
--static void tcp_drop_reason(struct sock *sk, struct sk_buff *skb,
--			    enum skb_drop_reason reason)
-+noinline_for_tracing static void
-+tcp_drop_reason(struct sock *sk, struct sk_buff *skb, enum skb_drop_reason reason)
- {
- 	sk_drops_add(sk, skb);
- 	sk_skb_reason_drop(sk, skb, reason);
+[...]
+
+> NOTE: I only tested the SDIO part
+
+BTW if the patch is not yet ready to be applied to our trees it's a good
+idea to mark it as RFC. That way the maintainers know that they should
+skip it.
+
 -- 
-2.43.5
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
