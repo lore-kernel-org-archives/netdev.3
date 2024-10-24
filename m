@@ -1,199 +1,495 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A311C2301;
-	Thu, 24 Oct 2024 09:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53AC1C4A0B;
+	Thu, 24 Oct 2024 09:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729760409; cv=none; b=LbXOmGK/XaDzaP5Wp1LjKetDNCtw/trsTIs4/pICLYXt9LuPMJ+D3Eioga1eUeT50n/2ity35S3VSosDauv7AdvGquyUqRGXi3mKUEXro8n7g5L0xQ4kiA7Z4j1ar3bOS/kBk3urXOf6GFbbuRhXJzmnhh5wj81ybnmYFSUmW5Y=
+	t=1729760411; cv=none; b=mNGcdBv9oOKeBAOCkI2B8N20Gvt1dHk7S1Syd4pKC0RVXQc3JujqWwM+7XZl/NzVDUBVGg1pCqfp6rj8Vy7olhhri6tZBtXxvVWzQefbiObNQSMmaZMc5Zom0YxoiHbQGgCMWDBWDVyU0ddrATIlkUGbeOV5a22Dzf7md+uuvfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729760409; c=relaxed/simple;
-	bh=5ohQDOoW3mIzHXRtqUK6vuWfWTSWfm/8yu4VqsKy41w=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:References; b=HMrzvhzYQRXB8n06+feDYBrI8MNMS+xGcHyl9Z8O3ip896gkkabPD6f7p/EjrTI2IiM+ekjF0n6d34+WlBaxxkkpD7uUasHYkaRWB3vnJA2hUqIN8KV8V4NRgiDp847cXivlW55lXC7OHReukpaBBdMEsFcq8MH5fAnNZOjkBuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=PKWcctag; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1729760411; c=relaxed/simple;
+	bh=3I8ywrsU0xhtRdbt2GAAAVfMRR4Z0NFWWn/DEx8sutw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qTxtKRmXjHDBGFKJUOuffsAPc4KXkxVs6SF98rIQgeYKrvWx1tzHZO0l3Jb1aRYc45EmpdOmC/FtPyj+QJSeXAQybVIPRTFPCPB0PaqpnuYI5KzeQshf4hOuiviSlGQ2BGdkcb3yIEbY1b3g0AxIncvVU9a2cKYJr/YIO2JX5F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fnEQJk45; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="PKWcctag"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20241024090002euoutp018a0108ce9bcef735dfc2001bcd9eb563~BV_v9kCks2844428444euoutp01c;
-	Thu, 24 Oct 2024 09:00:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20241024090002euoutp018a0108ce9bcef735dfc2001bcd9eb563~BV_v9kCks2844428444euoutp01c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1729760403;
-	bh=h4aMns0vuxoj2DGKLLnGNiIIfjWEYlc98f5DfBMf9BA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PKWcctagUKqph0utZfFpZKN3KY/qjUavkEMXcM5jAgjkTBCJp4r2ARpnEC7BANlm7
-	 JkrukntINZ7KkZXYQxfxUDlegETw9QtlYjv92KU4Phx0kwXFVK8Cb6ddt5KslCN2Ql
-	 qnONcceyEgshb3vORqGH8/vgxFhRkUXBlqYCjLiE=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20241024090002eucas1p29b6425c21e9270f2caf6bc3f05b4341f~BV_vl5fpu2350923509eucas1p2R;
-	Thu, 24 Oct 2024 09:00:02 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id BA.A8.20397.29C0A176; Thu, 24
-	Oct 2024 10:00:02 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20241024090001eucas1p143fc38cbcaa9538710040c2d957e9f6f~BV_u8PgHB0678306783eucas1p1j;
-	Thu, 24 Oct 2024 09:00:01 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20241024090001eusmtrp2dcdd7d123acd3c24d819eddc1fef8d71~BV_u1ZF280636006360eusmtrp2P;
-	Thu, 24 Oct 2024 09:00:01 +0000 (GMT)
-X-AuditID: cbfec7f5-ed1d670000004fad-a5-671a0c92f203
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id D9.E9.19654.19C0A176; Thu, 24
-	Oct 2024 10:00:01 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20241024090001eusmtip1faaa6f50c4bd058871f85094590722b6~BV_ujLojm1676816768eusmtip1x;
-	Thu, 24 Oct 2024 09:00:01 +0000 (GMT)
-Received: from localhost (106.110.32.107) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Thu, 24 Oct 2024 10:00:00 +0100
-Date: Thu, 24 Oct 2024 10:59:58 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: yukaixiong <yukaixiong@huawei.com>
-CC: <akpm@linux-foundation.org>, <mcgrof@kernel.org>, <ysato@users.osdn.me>,
-	<dalias@libc.org>, <glaubitz@physik.fu-berlin.de>, <luto@kernel.org>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <kees@kernel.org>,
-	<willy@infradead.org>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<lorenzo.stoakes@oracle.com>, <trondmy@kernel.org>, <anna@kernel.org>,
-	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
-	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<linux-sh@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <dhowells@redhat.com>,
-	<haifeng.xu@shopee.com>, <baolin.wang@linux.alibaba.com>,
-	<shikemeng@huaweicloud.com>, <dchinner@redhat.com>, <bfoster@redhat.com>,
-	<souravpanda@google.com>, <hannes@cmpxchg.org>, <rientjes@google.com>,
-	<pasha.tatashin@soleen.com>, <david@redhat.com>, <ryan.roberts@arm.com>,
-	<ying.huang@intel.com>, <yang@os.amperecomputing.com>,
-	<zev@bewilderbeest.net>, <serge@hallyn.com>, <vegard.nossum@oracle.com>,
-	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<joel.granados@kernel.org>
-Subject: Re: [PATCH v3 -next 00/15] sysctl: move sysctls from vm_table into
- its own files
-Message-ID: <wk7dqsx42rxjt76dowrydumhinwwdltw7e5ptp7fh4rc4c4sji@jrtopui4fpwb>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fnEQJk45"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20cbcd71012so5909395ad.3;
+        Thu, 24 Oct 2024 02:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729760408; x=1730365208; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5FARd89uMKMiwdRE0HODiifxKuOk++DnE6Elk0uN6w0=;
+        b=fnEQJk458wv1gR/FZmPZcnURLeS3uD/tg2Z+LiShknc4oHqLGf5Cn69ZwqUaTmghfN
+         ShPwYkucCZAk+LbuwYyjyPJEpETUVfdIPi7BlmNFgMgx9QxjDMDc0wdlNOPk2x7AA5O7
+         mX/RXveGSzAa8NyLTFzLNpxKS3DWwSogBYlCyExisnvWj6+3N2cAsUTqA1HVOZaatA1f
+         bffZAnoWtxElnoDKyl/0JS/PO6gtajcvi+r76Qh3wyjVcrMN4LSZbp+xdIWojNpSA0MZ
+         8atkpjYjA756vX8/LIXpMaj2SGOtfN00vH6xnpNOBICglmroRSxlRXYjYx3NcjWZptFH
+         teZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729760408; x=1730365208;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5FARd89uMKMiwdRE0HODiifxKuOk++DnE6Elk0uN6w0=;
+        b=fyzlpN4aBvY6ch+7JTiIrIJ2PN/vu+QZ0eOOttY+9jFRcMhJoGwNjs7dMRNNc3uMKM
+         M1rwp27IFBdyLQa8m+wJq/sKwdIm3v2c/O7OVI+P1Es+cLbGIWEwrf3pA4KDzllnzAlz
+         25hIoSSn16UJKK5YJxWLb21TYm/YHASiXaCEQbyBFPUfp5D/kG3GYbDSUzp5DnIRySjH
+         JfQ0zxM51K28L064QBTtpqQzhXWCA1dfRxoPPDD8v+jzLk8vtnC5HDzDev8iiT5Fiv+u
+         TciCorZ4T9HFK+6BaYFiEXZ2CvFgt7mZ1Wo1/77W2WS3Cgqcq+5mPu97IEiqyAyB1Lft
+         wwug==
+X-Forwarded-Encrypted: i=1; AJvYcCUsZUi8xqW3nf+3mlSi12tKUSGU6tNiqFiA59BOWmSKztzLr36aEKtfNArpHNBzlQFeVVKpz9hNlQfA@vger.kernel.org, AJvYcCUwfYx2j9FaOYxi9ILdFyyy/5dHHSAAo/+Yx7yv7C/NHISCvFMiezMkbz8tp0Dyc4wgXg/TWF50Rr3NS1Wh4+A=@vger.kernel.org, AJvYcCVF3ICxiuOKprFAPFtnQltPPtYUSSm4StI0XC3ivD7LdiPR6RH8D+xH0M70t36gnQ3QdcwjEdpwkCs=@vger.kernel.org, AJvYcCVJ4fqFZDIsBMSRn0MV5GtNiEQNIV4nm8aLx5wYR3lfAtEPlMK4XdFBpL3ufaSPSPDdIV3HEw8PsI9wUA==@vger.kernel.org, AJvYcCVvmdHb67rkC/zuJq3NJXnOW3Cn5IGm5k4SpuH0gn1+tE5Zf+byThXxLHoI3B8Z+AhJUDExR9h4EdRU@vger.kernel.org, AJvYcCVvwFKTOmEPcKrE5BzprR6XNIvN2UYktutu99NNbI6IdSEa2K3e5/ew3Yc8+n5LySXquOA17Wuh@vger.kernel.org, AJvYcCWeBt1aKZBQlz6oBLbeIc2SkZDwinEZLyixJry9cQEzAZU9GE0CTr2cSGbY+0gtgxRy9CjST6TKZwXn@vger.kernel.org, AJvYcCWoGGqXeIGeSE6EAEHq6NET03ollHo1nQeFTCBWNtw3pYnsD/6WeMLWyH5HwbAp8dZjBJADccDpdI+xpkw=@vger.kernel.org, AJvYcCXPe0rPPI4yYE8gxiPeISsEZ5QnNECPA3wTxE5Vw1AmS29GpM5iSfblq/c8Q7J5tCaC/jPWJIGVSAQg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6G7PSQRRac63TsJwZJ5Eor94b82ECH8hMu2l0LWLgXgJ6jcqm
+	bD01wUDjdyk4JZDsF9ME96Cp1fp6hajcJDE6E8u2FQDXQwlQr0p3
+X-Google-Smtp-Source: AGHT+IEjlQjtK3IdPe7OozHEaVT+1//rpRzkg/Zm2w6oPWo0AbisWaaw/ay7mB7dih1HMy0pVb7n2Q==
+X-Received: by 2002:a17:902:fc83:b0:20c:aae9:7bd7 with SMTP id d9443c01a7336-20fa9e9f8d1mr50554125ad.39.1729760407938;
+        Thu, 24 Oct 2024 02:00:07 -0700 (PDT)
+Received: from hcdev-d520mt2.. (60-250-192-107.hinet-ip.hinet.net. [60.250.192.107])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0f6e89sm68503615ad.277.2024.10.24.02.00.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 02:00:07 -0700 (PDT)
+From: Ming Yu <a0282524688@gmail.com>
+X-Google-Original-From: Ming Yu <tmyu0@nuvoton.com>
+To: tmyu0@nuvoton.com,
+	lee@kernel.org,
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	andi.shyti@kernel.org,
+	mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	wim@linux-watchdog.org,
+	linux@roeck-us.net,
+	jdelvare@suse.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	ukleinek@kernel.org,
+	alexandre.belloni@bootlin.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: [PATCH v1 5/9] watchdog: Add Nuvoton NCT6694 WDT support
+Date: Thu, 24 Oct 2024 16:59:18 +0800
+Message-Id: <20241024085922.133071-6-tmyu0@nuvoton.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241024085922.133071-1-tmyu0@nuvoton.com>
+References: <20241024085922.133071-1-tmyu0@nuvoton.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <79b33640-fc81-b4c1-4967-30189d9a4b23@huawei.com>
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Te0xTVxzHd+69vfcCVsoj9ghL3GC6SRBksvlLnG4ak91tmmxZ9lC3jEZu
-	ihnUppWhBGfrA6bII1WE0SpVnDyKAoWhiAQFBgNGyxScgqBjdBusvFpBAYG1XN387/N7fM/5
-	fk9yWNLXygSwuxR7eJVCFhtEe1JVTVOWVbpFAfLVpW1SMJSW0HCkep6C+domBCPORHCWzdHw
-	T4MDwXzvXwTknaug4ezUtAj+LktBYLAepmCidJqE9qHTDIwcnKHA1tTPgH40GOyVRSSYzFvh
-	VLkU9NmHCJi6UMzApdJ8An7Jv0fBpWGrCDqq0kVwWfOAgWu1LRTcumqgoa9k3jW43iaCseP9
-	NBienCShJbeIAuvViyK4k2lDcPO6kYDaPA0FTcYloPvTwcBkmx1B61QS9OiyKUg+X07A8Zos
-	BNYOCwOj6dcI0JakknDXOkBDhTmLhNbpVgIcp+dEoNemI2g/WCIC62yzCLTO+whmHrucpJ1v
-	YVxXn3C9SN0jGkzzlSR02jqod9Zzj46kU1zJmRLEGXs+4BrsoyRXWXSX4IzmeO52zTbucOOw
-	iHtYnYG4isIQLv/aIMGZi4/SnNmhYziLfoziRiwWhvs5Z4b68OXtnm9F87G7vuFV4RuiPGNO
-	3rhAK9u995ZnnkMalOJ1DHmwWBKJG09YKDf7SgoRnjTsPIY8XfwQ4e4/xhmhcCLcXt9OP1Ok
-	duUTwqAAYXv5FeK/rdmseiQUlQg35Y8jt4SSLMfmjAzGzbQkFFvt90g3+0tW4CHbNO0WkJK7
-	Xtg2bFpw4ifZgW/dNiywWLIVz5T/RArsg1u+H1jok66DjDUOl5h1cSAumGPdbQ/JBmxq7BYJ
-	VoNwV2YvJfB+3FrZTQisW4R/PPqFwJtxW8ZZRmA/PNRc+ZRfxPPVeQvJsOQEwnVzY4xQmBC+
-	oJ14etI6fLhz4KliI249lIbchrBkMb4z7CP4XIx1Vdmk0Bbj75J9he0V2NRnpzJRcO5zyXKf
-	S5b7fzIjIouRlI9Xx8l59RoFnxCmlsWp4xXysJ2748zI9efa5ponrqDCofGwekSwqB5hlgzy
-	F/8as1TuK46W7UvkVbu/UsXH8up6FMhSQVLx8uhlvK9ELtvDf83zSl71bEqwHgEaQnVAHil7
-	7zPzFvXuvtWppM2RNbxW42jI0a9P6vG2+EzYGqiIqi/ftPxeRT0OaY7LexKQ2L93i3ZdgXpa
-	4ancuKwtMzrqwJJVCfTaG5P3V+aYZuv2J+nlQ46bBZeH76i9Ix1J4Yn2QK3nvqhc6Rsfn2Rb
-	lL2NsqVdFYnv1z3enBC1aQP/Svds/wy70kOsOSW/qA+u9gpXp/Rs32i1TTlDz5z71L/20J4H
-	fm+nvdTyw0dKHRu/bVzTgGp+G8x5obcsJHlz56D086vfdnzCOiLyGl8T3/RJGkhLKPNI1Y4o
-	X9+R/apJYVCo3l2+yeosapTK5aGp3JBVOeg847Fm4qh3O86UBlHqGFlECKlSy/4FvpOZEOIE
-	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Te1CUZRTGe7/bLgixAcUXgmPbCMLYcl04MIiOTuNHDTOVAw1a4YorkNzc
-	BUzUCUwyEQEJpLjEJsR1A3dBChdEYcUWgkVuBogJgdxBLqawwrawNfnf877Pc37nzJn3ZeOm
-	M5QlOzQiWiiKEIRxKUOide3u4DuXjSyDHSVqW8itlFKQWKslQFvfjGB2MQ4Wr61RMNW0gEA7
-	OIZB/tUqCn5cXiFh/Np5BLnqcwQ8rVzBoW0yjwWzZzUEjDYPsyBn7m2Yri7FoVzuC1dkFpCT
-	9RUGy0VlLKioLMDg94IHBFTMqEnoqEkh4Zf4Ryyoq1cR0HUjl4KHUq3OuNVKwpPkYQpyX2Tg
-	oMouJUB942cS/kgbRdB5S4JBfX48Ac2SNyD98QIL/m6dRtCyfBoG0rMI+LpQhkGyIhOBuqOd
-	BXMpdRgkSC/i0KceoaBKnolDy0oLBgt5ayTkJKQgaDsrJUG9epeEhMU/EWie6ya5VKhi6Vp/
-	q9tIwzMKyrXVOHSPdhC7dzLPElMIRvqDFDGSgfeZpuk5nKku7cMYiTyG6VUEMOeUMySzVJuK
-	mKoSe6agbgJj5GUXKEa+kM5i2nOeEMxsezuL+e07DfHBWwd4XqLImGjh1pBIcfRO7kEncOY5
-	eQDP2dWD5+Ti/qmnM5/r4O11RBgWGisUOXgf4oVk3C6iotpMvpClXUXx6PymJGTApjmu9MWe
-	AiwJGbJNOT8hurNmFNMbVrRsqYfUazP6RW8SpQ/NI1rTOETqD9WInijo30gRnG20PDWVta4p
-	zg5aPf0AX9fmHBt6cnRloxrn9G2iR2fKiXXDjHOQ7urN3dDGHF9aI7uD66nfYPRqUSWpN16j
-	Vd+PbIRwHVWiWNCR2Dq9mS5eY69fG3C86XJl/7+jcumetEFCr8/Qi6uPURoyy36JlP0SKft/
-	kgThZchcGCMODw4XO/PEgnBxTEQwLygyXI50776mebn6V1Q6Oc9rRBgbNSKajXPNje+FvBls
-	anxEcDJOKIoMFMWECcWNiK/bxWXc8vWgSN3HiYgOdHJz5Du5unk48j3cXLgWxlS3+qgpJ1gQ
-	LTwmFEYJRf/VYWwDy3jsw6a8iTxVY6Jdgq1Xi1duRWixjbtH0Hv2DSc+bvsrrhKL5Z+yGrqv
-	8LSS3tTu1UbJS1TMnJ2ryGqLC1dCLfJLAiKatjGG96/vKyCLB6NsZqwbmrp2qwWmJYeVg75j
-	pwzbfDL80QC5fUdC31rjkML2uMjv0P7rn3ymqUX3LJ8aLWmclzXbfeqPdRbZBlaY+NitjvQa
-	+B8/yW+dV/jJRB8VB5i479ozPPjo3TMWNbEPP9dmKlUXshRT+fF7OrdeqT8c/rwvJJm5bTR+
-	YK9G+cppyYmKffVThRVfWu23HtD2bPHJ7LZWOrzabHFns/Jmh7+LzC87ubWtv2fXoudRF5OB
-	sYZxLiEOETjZ4yKx4B/VplmkgAQAAA==
-X-CMS-MailID: 20241024090001eucas1p143fc38cbcaa9538710040c2d957e9f6f
-X-Msg-Generator: CA
-X-RootMTR: 20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd
-References: <CGME20241010141133eucas1p1999f17c74198d3880cbd345276bcd3bd@eucas1p1.samsung.com>
-	<20241010152215.3025842-1-yukaixiong@huawei.com>
-	<ngknhtecptqk56gtiikvb5mdujhtxdyngzndiaz7ifslzrki7q@4wcykosdnsna>
-	<79b33640-fc81-b4c1-4967-30189d9a4b23@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 24, 2024 at 04:07:10PM +0800, yukaixiong wrote:
-...
-> 
-> 
-> >>   mm/swap.c                          |  16 ++-
-> >>   mm/swap.h                          |   1 +
-> >>   mm/util.c                          |  67 +++++++--
-> >>   mm/vmscan.c                        |  23 +++
-> >>   mm/vmstat.c                        |  44 +++++-
-> >>   net/sunrpc/auth.c                  |   2 +-
-> >>   security/min_addr.c                |  11 ++
-> >>   23 files changed, 330 insertions(+), 312 deletions(-)
-> >>
-> >> -- 
-> >> 2.34.1
-> >>
-> > General comment for the patchset in general. I would consider making the
-> > new sysctl tables const. There is an effort for doing this and it has
-> > already lanted in linux-next. So if you base your patch from a recent
-> > next release, then it should just work. If you *do* decide to add a
-> > const qualifier, then note that you will create a dependency with the
-> > sysctl patchset currently in next and that will have to go in before.
-> >
-> > Best
-> >
-> 
-> Sorry,  I don't understand what is the meaning of "create a dependency 
-> with the sysctl patchset".
-The patches in the sysctl subsys that allow you to qualify the ctl_table
-as const are not in mainline yet. They are in linux-next. This means
-that if these patches go into the next kernel release before the
-sysctl-next branch, it will have compilation errors. Therefore the
-sysctl-next branch needs to be pulled in to the new kernel release
-before this patchest. This also means that for this to build properly it
-has to be based on a linux-next release.
+This driver supports Watchdog timer functionality for NCT6694 MFD
+device based on USB interface.
 
-> 
-> Do you just want me to change all "static struct ctl_table" type table 
-> into "static const struct ctl_table" type in my patchset?
-You should const qualify them if the maintainer that is pulling in these
-patches is ok with it. You should *not* const qualify them if the
-maintainer prefers otherwise.
+Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
+---
+ MAINTAINERS                    |   1 +
+ drivers/watchdog/Kconfig       |  11 ++
+ drivers/watchdog/Makefile      |   1 +
+ drivers/watchdog/nct6694_wdt.c | 329 +++++++++++++++++++++++++++++++++
+ 4 files changed, 342 insertions(+)
+ create mode 100644 drivers/watchdog/nct6694_wdt.c
 
-Please get back to me if I did not address your questions.
-
-Best
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index eccd5e795daa..63387c0d4ab6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16442,6 +16442,7 @@ F:	drivers/gpio/gpio-nct6694.c
+ F:	drivers/i2c/busses/i2c-nct6694.c
+ F:	drivers/mfd/nct6694.c
+ F:	drivers/net/can/nct6694_canfd.c
++F:	drivers/watchdog/nct6694_wdt.c
+ F:	include/linux/mfd/nct6694.h
+ 
+ NVIDIA (rivafb and nvidiafb) FRAMEBUFFER DRIVER
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 684b9fe84fff..bc9d63d69204 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -739,6 +739,17 @@ config MAX77620_WATCHDOG
+ 	  MAX77620 chips. To compile this driver as a module,
+ 	  choose M here: the module will be called max77620_wdt.
+ 
++config NCT6694_WATCHDOG
++	tristate "Nuvoton NCT6694 watchdog support"
++	depends on MFD_NCT6694
++	select WATCHDOG_CORE
++	help
++	If you say yes to this option, support will be included for Nuvoton
++	NCT6694, a USB device to watchdog timer.
++
++	This driver can also be built as a module. If so, the module
++	will be called nct6694_wdt.
++
+ config IMX2_WDT
+ 	tristate "IMX2+ Watchdog"
+ 	depends on ARCH_MXC || ARCH_LAYERSCAPE || COMPILE_TEST
+diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
+index ab6f2b41e38e..453ceacd43ab 100644
+--- a/drivers/watchdog/Makefile
++++ b/drivers/watchdog/Makefile
+@@ -231,6 +231,7 @@ obj-$(CONFIG_WM831X_WATCHDOG) += wm831x_wdt.o
+ obj-$(CONFIG_WM8350_WATCHDOG) += wm8350_wdt.o
+ obj-$(CONFIG_MAX63XX_WATCHDOG) += max63xx_wdt.o
+ obj-$(CONFIG_MAX77620_WATCHDOG) += max77620_wdt.o
++obj-$(CONFIG_NCT6694_WATCHDOG)	+= nct6694_wdt.o
+ obj-$(CONFIG_ZIIRAVE_WATCHDOG) += ziirave_wdt.o
+ obj-$(CONFIG_SOFT_WATCHDOG) += softdog.o
+ obj-$(CONFIG_MENF21BMC_WATCHDOG) += menf21bmc_wdt.o
+diff --git a/drivers/watchdog/nct6694_wdt.c b/drivers/watchdog/nct6694_wdt.c
+new file mode 100644
+index 000000000000..68e2926ec504
+--- /dev/null
++++ b/drivers/watchdog/nct6694_wdt.c
+@@ -0,0 +1,329 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Nuvoton NCT6694 WDT driver based on USB interface.
++ *
++ * Copyright (C) 2024 Nuvoton Technology Corp.
++ */
++
++#include <linux/watchdog.h>
++#include <linux/slab.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/mfd/core.h>
++#include <linux/platform_device.h>
++#include <linux/mfd/nct6694.h>
++
++#define DRVNAME "nct6694-wdt"
++
++#define WATCHDOG_TIMEOUT	10
++#define WATCHDOG_PRETIMEOUT	0
++
++/* Host interface */
++#define REQUEST_WDT_MOD		0x07
++
++/* Message Channel*/
++/* Command 00h */
++#define REQUEST_WDT_CMD0_LEN	0x0F
++#define REQUEST_WDT_CMD0_OFFSET(idx)	(idx ? 0x0100 : 0x0000)	/* OFFSET = SEL|CMD */
++#define WDT_PRETIMEOUT_IDX	0x00
++#define WDT_PRETIMEOUT_LEN	0x04	/* PRETIMEOUT(3byte) | ACT(1byte) */
++#define WDT_TIMEOUT_IDX		0x04
++#define WDT_TIMEOUT_LEN		0x04	/* TIMEOUT(3byte) | ACT(1byte) */
++#define WDT_COUNTDOWN_IDX	0x0C
++#define WDT_COUNTDOWN_LEN	0x03
++
++#define WDT_PRETIMEOUT_ACT	BIT(1)
++#define WDT_TIMEOUT_ACT		BIT(1)
++
++/* Command 01h */
++#define REQUEST_WDT_CMD1_LEN		0x04
++#define REQUEST_WDT_CMD1_OFFSET(idx)	(idx ? 0x0101 : 0x0001)	/* OFFSET = SEL|CMD */
++#define WDT_CMD_IDX			0x00
++#define WDT_CMD_LEN			0x04
++
++static unsigned int timeout;
++module_param(timeout, int, 0);
++MODULE_PARM_DESC(timeout, "Watchdog timeout in seconds");
++
++static unsigned int pretimeout;
++module_param(pretimeout, int, 0);
++MODULE_PARM_DESC(pretimeout, "Watchdog pre-timeout in seconds");
++
++static bool nowayout = WATCHDOG_NOWAYOUT;
++module_param(nowayout, bool, 0);
++MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
++			   __MODULE_STRING(WATCHDOG_NOWAYOUT) ")");
++
++struct nct6694_wdt_data {
++	struct nct6694 *nct6694;
++	struct watchdog_device wdev;
++	unsigned int wdev_idx;
++};
++
++static inline void set_buf32(void *buf, u32 u32_val)
++{
++	u8 *p = (u8 *)buf;
++
++	p[0] = u32_val & 0xFF;
++	p[1] = (u32_val >> 8) & 0xFF;
++	p[2] = (u32_val >> 16) & 0xFF;
++	p[3] = (u32_val >> 24) & 0xFF;
++}
++
++static int nct6694_wdt_start(struct watchdog_device *wdev)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++
++	pr_debug("%s: WDT(%d) Start\n", __func__, data->wdev_idx);
++
++	return 0;
++}
++
++static int nct6694_wdt_stop(struct watchdog_device *wdev)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned char buf[REQUEST_WDT_CMD1_LEN] = {'W', 'D', 'T', 'C'};
++	int ret;
++
++	pr_debug("%s: WDT(%d) Close\n", __func__, data->wdev_idx);
++	ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
++				REQUEST_WDT_CMD1_OFFSET(data->wdev_idx),
++				REQUEST_WDT_CMD1_LEN, buf);
++	if (ret)
++		pr_err("%s: Failed to start WDT device!\n", __func__);
++
++	return ret;
++}
++
++static int nct6694_wdt_ping(struct watchdog_device *wdev)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned char buf[REQUEST_WDT_CMD1_LEN] = {'W', 'D', 'T', 'S'};
++	int ret;
++
++	pr_debug("%s: WDT(%d) Ping\n", __func__, data->wdev_idx);
++	ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
++				REQUEST_WDT_CMD1_OFFSET(data->wdev_idx),
++				REQUEST_WDT_CMD1_LEN, buf);
++	if (ret)
++		pr_err("%s: Failed to ping WDT device!\n", __func__);
++
++	return ret;
++}
++
++static int nct6694_wdt_set_timeout(struct watchdog_device *wdev,
++				   unsigned int timeout)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned int timeout_fmt, pretimeout_fmt;
++	unsigned char buf[REQUEST_WDT_CMD0_LEN];
++	int ret;
++
++	if (timeout < wdev->pretimeout) {
++		pr_err("%s: 'timeout' must be greater than 'pre timeout'!\n",
++		       __func__);
++		return -EINVAL;
++	}
++
++	timeout_fmt = timeout * 1000 | (WDT_TIMEOUT_ACT << 24);
++	pretimeout_fmt = wdev->pretimeout * 1000 | (WDT_PRETIMEOUT_ACT << 24);
++	set_buf32(&buf[WDT_TIMEOUT_IDX], le32_to_cpu(timeout_fmt));
++	set_buf32(&buf[WDT_PRETIMEOUT_IDX], le32_to_cpu(pretimeout_fmt));
++
++	ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
++				REQUEST_WDT_CMD0_OFFSET(data->wdev_idx),
++				REQUEST_WDT_CMD0_LEN, buf);
++	if (ret) {
++		pr_err("%s: Don't write the setup command in Start stage!\n",
++		       __func__);
++		return ret;
++	}
++
++	wdev->timeout = timeout;
++
++	return 0;
++}
++
++static int nct6694_wdt_set_pretimeout(struct watchdog_device *wdev,
++				      unsigned int pretimeout)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned int timeout_fmt, pretimeout_fmt;
++	unsigned char buf[REQUEST_WDT_CMD0_LEN];
++	int ret;
++
++	if (pretimeout > wdev->timeout) {
++		pr_err("%s: 'pre timeout' must be less than 'timeout'!\n",
++		       __func__);
++		return -EINVAL;
++	}
++	timeout_fmt = wdev->timeout * 1000 | (WDT_TIMEOUT_ACT << 24);
++	pretimeout_fmt = pretimeout * 1000 | (WDT_PRETIMEOUT_ACT << 24);
++	set_buf32(&buf[WDT_TIMEOUT_IDX], le32_to_cpu(timeout_fmt));
++	set_buf32(&buf[WDT_PRETIMEOUT_IDX], le32_to_cpu(pretimeout_fmt));
++
++	ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
++				REQUEST_WDT_CMD0_OFFSET(data->wdev_idx),
++				REQUEST_WDT_CMD0_LEN, buf);
++	if (ret) {
++		pr_err("%s: Don't write the setup command in Start stage!\n", __func__);
++		return ret;
++	}
++
++	wdev->pretimeout = pretimeout;
++	return 0;
++}
++
++static unsigned int nct6694_wdt_get_time(struct watchdog_device *wdev)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned char buf[WDT_COUNTDOWN_LEN];
++	unsigned int timeleft_ms;
++	int ret;
++
++	ret = nct6694_read_msg(nct6694, REQUEST_WDT_MOD,
++			       REQUEST_WDT_CMD0_OFFSET(data->wdev_idx),
++			       REQUEST_WDT_CMD0_LEN, WDT_COUNTDOWN_IDX,
++			       WDT_COUNTDOWN_LEN, buf);
++	if (ret)
++		pr_err("%s: Failed to get WDT device!\n", __func__);
++
++	timeleft_ms = ((buf[2] << 16) | (buf[1] << 8) | buf[0]) & 0xFFFFFF;
++
++	return timeleft_ms / 1000;
++}
++
++static int nct6694_wdt_setup(struct watchdog_device *wdev)
++{
++	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
++	struct nct6694 *nct6694 = data->nct6694;
++	unsigned char buf[REQUEST_WDT_CMD0_LEN] = {0};
++	unsigned int timeout_fmt, pretimeout_fmt;
++	int ret;
++
++	if (timeout)
++		wdev->timeout = timeout;
++
++	if (pretimeout) {
++		wdev->pretimeout = pretimeout;
++		pretimeout_fmt = wdev->pretimeout * 1000 | (WDT_PRETIMEOUT_ACT << 24);
++	} else {
++		pretimeout_fmt = 0;
++	}
++
++	timeout_fmt = wdev->timeout * 1000 | (WDT_TIMEOUT_ACT << 24);
++	set_buf32(&buf[WDT_TIMEOUT_IDX], le32_to_cpu(timeout_fmt));
++	set_buf32(&buf[WDT_PRETIMEOUT_IDX], le32_to_cpu(pretimeout_fmt));
++
++	ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
++				REQUEST_WDT_CMD0_OFFSET(data->wdev_idx),
++				REQUEST_WDT_CMD0_LEN, buf);
++	if (ret)
++		return ret;
++
++	pr_info("Setting WDT(%d): timeout = %d, pretimeout = %d\n",
++		data->wdev_idx, wdev->timeout, wdev->pretimeout);
++
++	return 0;
++}
++
++static const struct watchdog_info nct6694_wdt_info = {
++	.options = WDIOF_SETTIMEOUT	|
++		   WDIOF_KEEPALIVEPING	|
++		   WDIOF_MAGICCLOSE	|
++		   WDIOF_PRETIMEOUT,
++	.identity = DRVNAME,
++};
++
++static const struct watchdog_ops nct6694_wdt_ops = {
++	.owner = THIS_MODULE,
++	.start = nct6694_wdt_start,
++	.stop = nct6694_wdt_stop,
++	.set_timeout = nct6694_wdt_set_timeout,
++	.set_pretimeout = nct6694_wdt_set_pretimeout,
++	.get_timeleft = nct6694_wdt_get_time,
++	.ping = nct6694_wdt_ping,
++};
++
++static int nct6694_wdt_probe(struct platform_device *pdev)
++{
++	const struct mfd_cell *cell = mfd_get_cell(pdev);
++	struct nct6694 *nct6694 = dev_get_drvdata(pdev->dev.parent);
++	struct nct6694_wdt_data *data;
++	struct watchdog_device *wdev;
++	int ret;
++
++	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return -ENOMEM;
++
++	data->nct6694 = nct6694;
++	data->wdev_idx = cell->id;
++
++	wdev = &data->wdev;
++	wdev->info = &nct6694_wdt_info;
++	wdev->ops = &nct6694_wdt_ops;
++	wdev->timeout = WATCHDOG_TIMEOUT;
++	wdev->pretimeout = WATCHDOG_PRETIMEOUT;
++	wdev->min_timeout = 1;
++	wdev->max_timeout = 255;
++
++	platform_set_drvdata(pdev, data);
++
++	/* Register watchdog timer device to WDT framework */
++	watchdog_set_drvdata(&data->wdev, data);
++	watchdog_init_timeout(&data->wdev, timeout, &pdev->dev);
++	watchdog_set_nowayout(&data->wdev, nowayout);
++	watchdog_stop_on_reboot(&data->wdev);
++
++	ret = devm_watchdog_register_device(&pdev->dev, &data->wdev);
++	if (ret) {
++		dev_err(&pdev->dev, "%s: Failed to register watchdog device: %d\n",
++			__func__, ret);
++		return ret;
++	}
++
++	ret = nct6694_wdt_setup(&data->wdev);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to setup WDT device!\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static struct platform_driver nct6694_wdt_driver = {
++	.driver = {
++		.name	= DRVNAME,
++	},
++	.probe		= nct6694_wdt_probe,
++};
++
++static int __init nct6694_init(void)
++{
++	int err;
++
++	err = platform_driver_register(&nct6694_wdt_driver);
++	if (!err) {
++		if (err)
++			platform_driver_unregister(&nct6694_wdt_driver);
++	}
++
++	return err;
++}
++subsys_initcall(nct6694_init);
++
++static void __exit nct6694_exit(void)
++{
++	platform_driver_unregister(&nct6694_wdt_driver);
++}
++module_exit(nct6694_exit);
++
++MODULE_DESCRIPTION("USB-WDT driver for NCT6694");
++MODULE_AUTHOR("Ming Yu <tmyu0@nuvoton.com>");
++MODULE_LICENSE("GPL");
 -- 
+2.34.1
 
-Joel Granados
