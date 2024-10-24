@@ -1,164 +1,136 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C71BDDF;
-	Thu, 24 Oct 2024 01:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECB9EEA6;
+	Thu, 24 Oct 2024 01:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729734932; cv=none; b=XBWAZ4jJLD5hx/7WHueH27WElU+glUTsFS64/wRYlqE+5yq9P+vUtNYj1EXXrnvRbZoATxtRZBvR5pEC+3eoixU1cfHoS5hCIhSI1N3o8B2nGs9KcJjrZo/velURBgJlKqXuWd59eYR8pZDP7h2btZ50jhiBEw1PqLBZRsZpwbk=
+	t=1729735058; cv=none; b=aJfXAOgEuTpvXW9QjABhnFbaXyhfDLTMr2jJFT35+tve9tM6L2pIk9brtTOYN2Z60WQZuu1m9kziX2JGUU7roHBZHYIepXLX8EQYDIrmBUv2GLxOqsVl18niz8xHbODIKOSWOVX9HhLYxIOGZU4VXl4DDyOtU3NXChiKbmzU/xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729734932; c=relaxed/simple;
-	bh=ZFj4mUEuOcX5w4DA8ts0g9WAnUKoJnphHg4JubR5mow=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cK1qukDpnGhS4YktW+XjmOltcXmDzVRCFaSJelxJG1OkjMXmlqtxzAm2Vxfm5DKH59NkJYO8axQgVzMKT80Ez3OfadkG4oeJ0bZe7R7SlMJ6tg+5rFUXAxGXPe40uTrcgoklGJwh83laRCIFMK+Dw2vF8mnPXb/mgCQoS284hjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XYprm6kXkz4f3lfk;
-	Thu, 24 Oct 2024 09:55:04 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 35C1B1A07BA;
-	Thu, 24 Oct 2024 09:55:23 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.101.107])
-	by APP4 (Coremail) with SMTP id gCh0CgDHR8QIqRlnEnfNEw--.48608S4;
-	Thu, 24 Oct 2024 09:55:22 +0800 (CST)
-From: Ye Bin <yebin@huaweicloud.com>
-To: trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	jlayton@kernel.org,
-	neilb@suse.de,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	joel.granados@kernel.org,
-	linux@weissschuh.net,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: yebin10@huawei.com,
-	zhangxiaoxu5@huawei.com
-Subject: [PATCH] svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()
-Date: Thu, 24 Oct 2024 09:55:20 +0800
-Message-Id: <20241024015520.1448198-1-yebin@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729735058; c=relaxed/simple;
+	bh=oZMUhWVO7+3xn3dgd26Vi2YryHIADS7A4b4fmRkRi4U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pDp6Tbb1YDXXMdMcFfqhVHOQPAT24/hescmUKZIvOPRujilJBsFKC+jaHBNKz8Vf+rWDGZHMAF7I+Up4ieq7+tPAuGN0pjZsL9ZIsSFlvvX55Qvr99tzOx3OZ1fiPmVBk8+sBugMg83tXN7tsog+1jGuKyavWu03UeEch3vaewg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XYpss1kfPz1SD6P;
+	Thu, 24 Oct 2024 09:56:01 +0800 (CST)
+Received: from kwepemd100023.china.huawei.com (unknown [7.221.188.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id C530A1A016C;
+	Thu, 24 Oct 2024 09:57:25 +0800 (CST)
+Received: from [10.174.177.223] (10.174.177.223) by
+ kwepemd100023.china.huawei.com (7.221.188.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 24 Oct 2024 09:57:24 +0800
+Message-ID: <e1f97171-8655-44be-b3e4-ce4c4c197e8a@huawei.com>
+Date: Thu, 24 Oct 2024 09:57:23 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: netfilter: Fix use-after-free in get_info()
+To: Dan Carpenter <dan.carpenter@linaro.org>, <oe-kbuild@lists.linux.dev>,
+	<pablo@netfilter.org>, <kadlec@netfilter.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<fw@strlen.de>, <kuniyu@amazon.com>
+CC: <lkp@intel.com>, <oe-kbuild-all@lists.linux.dev>,
+	<netfilter-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+References: <01b2bdd1-39f4-43d1-a7e6-f8e8061175a4@stanley.mountain>
+From: "dongchenchen (A)" <dongchenchen2@huawei.com>
+In-Reply-To: <01b2bdd1-39f4-43d1-a7e6-f8e8061175a4@stanley.mountain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDHR8QIqRlnEnfNEw--.48608S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxZr43ZF43CFy5CFy3Jw4UXFb_yoW5Ary3pa
-	43Kry5Jrs0krnakr43tws7uFyUAa18WF4Fg3Z7Cr1fZa1qkr98t3W0gayrJF97WrWfXryI
-	qr1UW3Z8Ca98A3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
-	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
-	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
-	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
-	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
-	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU0s2-5UUUUU==
-X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd100023.china.huawei.com (7.221.188.33)
 
-From: Ye Bin <yebin10@huawei.com>
 
-There's issue as follows:
-RPC: Registered rdma transport module.
-RPC: Registered rdma backchannel transport module.
-RPC: Unregistered rdma transport module.
-RPC: Unregistered rdma backchannel transport module.
-BUG: unable to handle page fault for address: fffffbfff80c609a
-PGD 123fee067 P4D 123fee067 PUD 123fea067 PMD 10c624067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
-RIP: 0010:percpu_counter_destroy_many+0xf7/0x2a0
-Call Trace:
- <TASK>
- __die+0x1f/0x70
- page_fault_oops+0x2cd/0x860
- spurious_kernel_fault+0x36/0x450
- do_kern_addr_fault+0xca/0x100
- exc_page_fault+0x128/0x150
- asm_exc_page_fault+0x26/0x30
- percpu_counter_destroy_many+0xf7/0x2a0
- mmdrop+0x209/0x350
- finish_task_switch.isra.0+0x481/0x840
- schedule_tail+0xe/0xd0
- ret_from_fork+0x23/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+On 2024/10/24 1:16, Dan Carpenter wrote:
+> Hi Dong,
+>
+> kernel test robot noticed the following build warnings:
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Dong-Chenchen/net-netfilter-Fix-use-after-free-in-get_info/20241022-165936
+> base:   net/main
+> patch link:    https://lore.kernel.org/r/20241022085753.2069639-1-dongchenchen2%40huawei.com
+> patch subject: [PATCH net] net: netfilter: Fix use-after-free in get_info()
+> config: x86_64-randconfig-161-20241023 (https://download.01.org/0day-ci/archive/20241024/202410240020.Cqi2d68p-lkp@intel.com/config)
+> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202410240020.Cqi2d68p-lkp@intel.com/
+>
+> smatch warnings:
+> net/netfilter/x_tables.c:1280 xt_find_table_lock() warn: passing zero to 'ERR_PTR'
+>
+> vim +/ERR_PTR +1280 net/netfilter/x_tables.c
+>
+> 03d13b6868a261 Florian Westphal  2017-12-08  1234  /* Find table by name, grabs mutex & ref.  Returns ERR_PTR on error. */
+> 76108cea065cda Jan Engelhardt    2008-10-08  1235  struct xt_table *xt_find_table_lock(struct net *net, u_int8_t af,
+> 76108cea065cda Jan Engelhardt    2008-10-08  1236  				    const char *name)
+> 2e4e6a17af35be Harald Welte      2006-01-12  1237  {
+> 1d610d4d31a8ed Florian Westphal  2021-04-01  1238  	struct xt_pernet *xt_net = net_generic(net, xt_pernet_id);
+> fdacd57c79b79a Florian Westphal  2021-08-03  1239  	struct module *owner = NULL;
+> fdacd57c79b79a Florian Westphal  2021-08-03  1240  	struct xt_template *tmpl;
+> fdacd57c79b79a Florian Westphal  2021-08-03  1241  	struct xt_table *t;
+> f4f502d5a8ea29 Dong Chenchen     2024-10-22  1242  	int err = -ENOENT;
+> 2e4e6a17af35be Harald Welte      2006-01-12  1243
+> 7926dbfa4bc14e Pablo Neira Ayuso 2014-07-31  1244  	mutex_lock(&xt[af].mutex);
+> 1d610d4d31a8ed Florian Westphal  2021-04-01  1245  	list_for_each_entry(t, &xt_net->tables[af], list)
+> 2e4e6a17af35be Harald Welte      2006-01-12  1246  		if (strcmp(t->name, name) == 0 && try_module_get(t->me))
+> 2e4e6a17af35be Harald Welte      2006-01-12  1247  			return t;
+> b9e69e12739718 Florian Westphal  2016-02-25  1248
+> fdacd57c79b79a Florian Westphal  2021-08-03  1249  	/* Table doesn't exist in this netns, check larval list */
+> fdacd57c79b79a Florian Westphal  2021-08-03  1250  	list_for_each_entry(tmpl, &xt_templates[af], list) {
+> fdacd57c79b79a Florian Westphal  2021-08-03  1251  		if (strcmp(tmpl->name, name))
+> b9e69e12739718 Florian Westphal  2016-02-25  1252  			continue;
+> fdacd57c79b79a Florian Westphal  2021-08-03  1253  		if (!try_module_get(tmpl->me))
+> 03d13b6868a261 Florian Westphal  2017-12-08  1254  			goto out;
+> fdacd57c79b79a Florian Westphal  2021-08-03  1255
+> fdacd57c79b79a Florian Westphal  2021-08-03  1256  		owner = tmpl->me;
+> fdacd57c79b79a Florian Westphal  2021-08-03  1257
+> b9e69e12739718 Florian Westphal  2016-02-25  1258  		mutex_unlock(&xt[af].mutex);
+> fdacd57c79b79a Florian Westphal  2021-08-03  1259  		err = tmpl->table_init(net);
+> 03d13b6868a261 Florian Westphal  2017-12-08  1260  		if (err < 0) {
+> fdacd57c79b79a Florian Westphal  2021-08-03  1261  			module_put(owner);
+> 03d13b6868a261 Florian Westphal  2017-12-08  1262  			return ERR_PTR(err);
+> b9e69e12739718 Florian Westphal  2016-02-25  1263  		}
+> b9e69e12739718 Florian Westphal  2016-02-25  1264
 
-If register_sysctl() return NULL, then svc_rdma_proc_cleanup() will not
-destroy the percpu counters which init in svc_rdma_proc_init().
-If CONFIG_HOTPLUG_CPU is enabled, residual nodes may be in the
-'percpu_counters' list. The above issue may occur once the module is
-removed. If the CONFIG_HOTPLUG_CPU configuration is not enabled, memory
-leakage occurs.
-To solve above issue just destroy all percpu counters when
-register_sysctl() return NULL.
+If rmmod is executed concurrently here, xtable will be remove from 
+xt_net list，
 
-Fixes: 1e7e55731628 ("svcrdma: Restore read and write stats")
-Fixes: 22df5a22462e ("svcrdma: Convert rdma_stat_sq_starve to a per-CPU counter")
-Fixes: df971cd853c0 ("svcrdma: Convert rdma_stat_recv to a per-CPU counter")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
----
- net/sunrpc/xprtrdma/svc_rdma.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+which may lead to ERR_PTR(0).
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
-index 58ae6ec4f25b..11dff4d58195 100644
---- a/net/sunrpc/xprtrdma/svc_rdma.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma.c
-@@ -233,25 +233,33 @@ static int svc_rdma_proc_init(void)
- 
- 	rc = percpu_counter_init(&svcrdma_stat_read, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err;
- 	rc = percpu_counter_init(&svcrdma_stat_recv, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_read;
- 	rc = percpu_counter_init(&svcrdma_stat_sq_starve, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_recv;
- 	rc = percpu_counter_init(&svcrdma_stat_write, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_sq;
- 
- 	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
- 					       svcrdma_parm_table);
-+	if (!svcrdma_table_header)
-+		goto err_write;
-+
- 	return 0;
- 
--out_err:
-+err_write:
-+	percpu_counter_destroy(&svcrdma_stat_write);
-+err_sq:
- 	percpu_counter_destroy(&svcrdma_stat_sq_starve);
-+err_recv:
- 	percpu_counter_destroy(&svcrdma_stat_recv);
-+err_read:
- 	percpu_counter_destroy(&svcrdma_stat_read);
-+err:
- 	return rc;
- }
- 
--- 
-2.34.1
+Thank you for your review. v2 has been sent
 
+> b9e69e12739718 Florian Westphal  2016-02-25  1265  		mutex_lock(&xt[af].mutex);
+> b9e69e12739718 Florian Westphal  2016-02-25  1266  		break;
+> b9e69e12739718 Florian Westphal  2016-02-25  1267  	}
+> b9e69e12739718 Florian Westphal  2016-02-25  1268
+> f4f502d5a8ea29 Dong Chenchen     2024-10-22  1269  	if (err < 0)
+> f4f502d5a8ea29 Dong Chenchen     2024-10-22  1270  		goto out;
+> f4f502d5a8ea29 Dong Chenchen     2024-10-22  1271
+> b9e69e12739718 Florian Westphal  2016-02-25  1272  	/* and once again: */
+> 1d610d4d31a8ed Florian Westphal  2021-04-01  1273  	list_for_each_entry(t, &xt_net->tables[af], list)
+> b9e69e12739718 Florian Westphal  2016-02-25  1274  		if (strcmp(t->name, name) == 0)
+> b9e69e12739718 Florian Westphal  2016-02-25  1275  			return t;
+>
+> ret it zero here, but if we fail to find the name then we should set ret =
+> -ENOENT;
+>
+> b9e69e12739718 Florian Westphal  2016-02-25  1276
+> fdacd57c79b79a Florian Westphal  2021-08-03  1277  	module_put(owner);
+> b9e69e12739718 Florian Westphal  2016-02-25  1278   out:
+> 9e19bb6d7a0959 Ingo Molnar       2006-03-25  1279  	mutex_unlock(&xt[af].mutex);
+> f4f502d5a8ea29 Dong Chenchen     2024-10-22 @1280  	return ERR_PTR(err);
+> 2e4e6a17af35be Harald Welte      2006-01-12  1281  }
+>
