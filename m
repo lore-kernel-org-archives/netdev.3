@@ -1,156 +1,181 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2061.outbound.protection.outlook.com [40.107.103.61])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5791B1F6662;
-	Thu, 24 Oct 2024 14:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778791; cv=fail; b=OChciqxi39ar+hjcIaKKtyeGVwmvx3A4v9SyhnpAlZMf1BOb/oHKeKGSzrDqPHQYx4HP82qykylEbmmMr5RzGQqjTEuzVSV/vnTbiyipkQCorJib0qj5A+HMnKljrI3zESI44ZolHEDu6qP922crf/iHQDRFKY1z0zZ330nsI2A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778791; c=relaxed/simple;
-	bh=jhVOxV/yv31HFAKxWeOF0LsvGurUd5L+Bot20NbXE4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GCSyV5BzwtXQpE/WiVmm/K458kPwhjhBJzBSdTvKKzsn1nTECKnV/rdT6lMiz2lmZ5qDJE5CMLe+M6J6Kzs90Ix2lH0fgIRHVFuBGXsWVCUdu4Ekxd5xbWGl0DyYihkpgB+ZSb07cowc4bDtHlOSEEKkJW7K3M2YigC9BNpAlSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BBtzRT/i; arc=fail smtp.client-ip=40.107.103.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E382A1F5852
+	for <netdev@vger.kernel.org>; Thu, 24 Oct 2024 14:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729778792; cv=none; b=CL3cWTTV9G668uAF1efw43+oaCkzVjt0a5DAzaHOQYYUJWhVJB+9Kaf8jozWU37GvZk5lxw7vV40aP27KLfOKJ+D8LeMDxLF25TaHSjD6Cc1HNUS+qgRo8pHueNmAJDNhERQfu+eeowKueVxKGaMLTibbDchYJpliYZSOXMtLkU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729778792; c=relaxed/simple;
+	bh=2vC/IfGilItl9YoYzSLfac5oxJJtNnQtCMzGrNI6xUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=frqMKyRrmQSDYBc6og30oqUrcEuB24uCF8wvmrHDv02KDrpk/qzkWI6ecYKKix6ikYyGXsvbF7li53JJtsiDdUpTjRx1Hc/e/zaG/q4y8ulzB3R+c4+KoGQUNaZBb1bPy7QZvu3/DnPMRayPH9zVG8doz6r0Qmh/1wo8YnKptQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rv3iecie; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BBtzRT/i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IMdkBXZZa6PrIQvyKudTz8meyLmFD0VQ6uGzo42/WWAeLnPO+eaVpoTirMzeAJVPSg/gOx2Jo258kaYn9ZzCcQswr3Zz5cKoY0d1ue0Imy9x4GyqGY2W9WhD2YvKjj0x2jMyJexdruWFf2TbmxwDExRqvH5ovoUtPtYLsMFCZMHTt47glQ1+6bXE8YWw5q5iVA8isEoUd79t6JU/RSIdWd8zwc1qITHb4ynp1N/HcvpFLPQvZRkxLwYBSOMKbQZy/p4oOQ+x1HXrfgcFRy2SXXQ1WCgyVM4zDto4NrQr8ETAlXKGEWdgVmI2NaRp1FEpFNrydOYqul6iXjf4IIXMeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=28lhZMPaEqWLjsypx9eenXJnHWzghLwS1fLosq8lNSM=;
- b=wC4OThTUUOXXcVSFO+lnHw8DlY5ZVnBF2QQRhRvdPuGT6aB0pi3l/9/TkPhUKxtUlgFB0LeB8HIoBBNVO3OJw4B8gJMSmaxSa3w8PWWfSqLX5zSYYhYrFQ84wgQDGromTHie3fqShVRGrgnv6OFs3IhSLedLTR2x83bJkw8LAs8DxGvSI7U2KVQlQlrZYPwp8K5gsMUnll45QusuJDyprCqIjIS12Mei2JL797X6S18JHoT0jKhnmQd61EeNyvDIpWhh9LCmmYmQvqHCcjqPwgy/T0vkqWGuFQ9z1VsE172raktMM57SSUFv084oPn0PY0BDtI6D9853e+jCRUbpkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=28lhZMPaEqWLjsypx9eenXJnHWzghLwS1fLosq8lNSM=;
- b=BBtzRT/iXIF+/J2GxYkbpKQj3+0qH6ar32I0TnloOdpL357i/yEaRBENrY7cjq3i8Obr8LnypCziheih4TsIu4qyWPEta9QKfY1mU7tlcw1WLLvyh8YjuY+gzx2gifarm9IlY8eJr3fRb6JZto6UEBBLTjUg8hmzdy12tch2h3bDw9iJFoQFnivrlpmCpVsbqDstVryDdbxPYncVhY0gLnHKujb5jQIgYYK+jIvOkE25V3GES2ttSHMbdx7V0Wd3o5XzavXm/Bdby4kBHZI2MvN7B3lBrSpWB6jBGlHS99K0pz57nWWa/vLO8LGq8SIwpRtuPGFFbXrBoZ15U7ufiw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by GV1PR04MB10560.eurprd04.prod.outlook.com (2603:10a6:150:203::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Thu, 24 Oct
- 2024 14:06:26 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
- 14:06:26 +0000
-Date: Thu, 24 Oct 2024 17:06:23 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, claudiu.manoil@nxp.com, xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com, christophe.leroy@csgroup.eu,
-	linux@armlinux.org.uk, bhelgaas@google.com, horms@kernel.org,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, alexander.stein@ew.tq-group.com
-Subject: Re: [PATCH v4 net-next 01/13] dt-bindings: net: add compatible
- string for i.MX95 EMDIO
-Message-ID: <20241024140623.yr4lgjp7pryx344i@skbuf>
-References: <20241022055223.382277-1-wei.fang@nxp.com>
- <20241022055223.382277-2-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022055223.382277-2-wei.fang@nxp.com>
-X-ClientProxiedBy: BE1P281CA0122.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:7a::13) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rv3iecie"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729778789;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2WJ3IwRH8RLBNIi0Kxo/o1E5+hUSf0Z9V2WPyhSRrlg=;
+	b=Rv3iecieKtvfURDTBn6fT4Pt3FP9zJzNBg1ZiNBpgvHYQK9YxVoBFTji7FFCC1M8msmSn9
+	zllNo7diUVyHVvnCxrcfM32aBgYCm7lrYhCp7m/OnSqkWriqk8fwm88hP4V+z3YKrhFfkq
+	Ued7lDT9if3uirJSgkBkczAM5k+6F+o=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-488-K1AZ-6hrP7ClMaUkBCUW0w-1; Thu,
+ 24 Oct 2024 10:06:25 -0400
+X-MC-Unique: K1AZ-6hrP7ClMaUkBCUW0w-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2FB241933195;
+	Thu, 24 Oct 2024 14:06:21 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7C7D4195607C;
+	Thu, 24 Oct 2024 14:06:13 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 03/27] netfs: Remove unnecessary references to pages
+Date: Thu, 24 Oct 2024 15:05:01 +0100
+Message-ID: <20241024140539.3828093-4-dhowells@redhat.com>
+In-Reply-To: <20241024140539.3828093-1-dhowells@redhat.com>
+References: <20241024140539.3828093-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|GV1PR04MB10560:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d5f4280-0441-49a9-b487-08dcf4350ca5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5pfMLovlrSgV4JcdVZwmPQi21a3qPX9QKXa6kcapO4/YUyMHrzKLRSIo/8Tm?=
- =?us-ascii?Q?jBIEDUq+263uZAWC0NksoezXFncn9XFvjaRh4filfX/JHXsuR1vD049a7A2g?=
- =?us-ascii?Q?tcdx2l2BRkb/3CSFXHBbRywCnI6RVbT3IYwXuL/C0PR8an1K8jM/rHlHQuXV?=
- =?us-ascii?Q?64yl30N6D/uvEStanQcq+ZSBRuyusH/Ca0oyJ3QwHCzyC/yxcXsWRc3IXHmP?=
- =?us-ascii?Q?e5kMyJ1AI16/AItYbHgC5Cbo+aPt0+U4wCgRCxugfR7xOo+nTi3/8meK9yxB?=
- =?us-ascii?Q?MeINP4Bbg0D0W5G80UxLZ7wyA7Nl6Wu5zQQM2DhZYxraVc8oTpB5ZQzp+GHO?=
- =?us-ascii?Q?8HJslUOdLAUxPw4Jo676JDvtJK/aLYnqlx2HL7ZtRUdy0Eub+NsnRyq9ibal?=
- =?us-ascii?Q?INPvvIZ2VenY0URR7ANgXf9zzGGEnNs3tRFImLO/aQIuSWd7WirXCkZjOSzf?=
- =?us-ascii?Q?6PShOh6IkOAtO3qH74q1F3FmHE6zTkLLjswcwtFZIUsLsSH6IcyE5K03agZg?=
- =?us-ascii?Q?woVwhqo2X8hKzYVlzsoMBaBcjgi3FcwGjGA8jaqWGGZSjGVm93iqBxQNUIWh?=
- =?us-ascii?Q?LhXhL1Xy04uaOw70e/e0A6ttoYCaAF8atZL3/A9N2z3nXasPeknwzN6anqPw?=
- =?us-ascii?Q?By153YYx6Dq/M/wsex9lXQNBRP0NpyBKtPpAIgVC46N2f6GFvwfL0aRYRI49?=
- =?us-ascii?Q?WNrJmYmjBvFULR4bwy9UB7Cm4p6sRYaxx0YF8xJaGXrQ2TswHWXXmkVKpBLf?=
- =?us-ascii?Q?qCWPa6MyTrXDfbo4xaXTTEDwljBTcIOnPjYoIUWkowysxotLgfzy56gSpbmr?=
- =?us-ascii?Q?2eR9GdTsP/jpSn1uwbUg0E5aUewE0ZUHMMUMd/YnqYPAHf+aDRBKDHupcILa?=
- =?us-ascii?Q?icNDQQRKfVp4b/jq59n/1fOc2HiU3DKIvsaxzeAcQjmsMlhTNV18pBGVmc33?=
- =?us-ascii?Q?WtIKy6TIoTEAYBId1Uf5OUjpfLtGasnENLdZLW7SBM6W0hUebfCwZX+iOjIe?=
- =?us-ascii?Q?Zy9nwm2UPKubrjZxQluAepW96CgVeoyNBr2f6djz97Qj/NAWq+Djgo8ocChF?=
- =?us-ascii?Q?TdrzTvS1TNC/g16CkNEByGF3d9oSaRaFH9fbpYOs3ZYjRJMA1TWpoQkQFGhB?=
- =?us-ascii?Q?SEGUjlm97IqOpIJ7po2sFfLhkm5JA08mInYAdSzvf4uvujQhiOt2u032rOMD?=
- =?us-ascii?Q?D8o/QkZ9hOOlKw7l6EQtkahVJhEcIF19CiG3MsmlE2UQoowf7NvQJRaPkYQ6?=
- =?us-ascii?Q?v3AfZUT7lRViKTa5uMfCgVwElij2MSAvk1oH+P9dFELxYMtdzcLkEPxtcU7g?=
- =?us-ascii?Q?A5I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+x7/fXQWYZ9k5c8UOdN0nPHfqK03a2C1PLHSAdlHNheeL3s8gSFCun6iUw42?=
- =?us-ascii?Q?1PLPpCz5sLvRSTEmnEqCNPz+ib0JLlIOuk06fjES5zD9VgMEL0eiRfZiUPop?=
- =?us-ascii?Q?rMDi7VK9XcufQOZZb17Qlhe+AibefyflHXVafAIY2vW/6Ig/3c7iDWtrjUpL?=
- =?us-ascii?Q?OfriVSezHsYop1mevTkAgbRynacOL6FLboBQujt44RY8IB+q57S7b+Cb5UU4?=
- =?us-ascii?Q?00q4RM8N3tr1lQ3P8zMZ83IS7MjX0dHmG85GZUFmLm/vIzK1zP5txmQ/lJW9?=
- =?us-ascii?Q?AP/SWMLZLhdeMDhVostNtpD3ky0jlyWyGl8lDyjlYLcW9msA1kAkgmLGxFeD?=
- =?us-ascii?Q?rqPYrDvg6xDwsIGe6UIfu20oSiRLgHjYdSGWrvUuKuJr5DQrErgEx+yeoMmE?=
- =?us-ascii?Q?/ufSHA1Vewx1Bdu2VpzA+Ip2/fqUD39PCGTPaHSCmwvyVbMl0icw6n0qawfi?=
- =?us-ascii?Q?ujboF5RJ2YoR0trpC2Ia77vfnEDi+kuzAy4s5efG5rXOvjxZjZxxfXby7hWh?=
- =?us-ascii?Q?heHJTBrGpwME117SUyZBvpsYf1OTfTk1GEssN68HQkdjfJAcDrbQ22yh2Ntj?=
- =?us-ascii?Q?fj/NaoZGNaxOCvSOEwetgCkPw/eM2qxljKKNaRCNB9e2lddOWe9q+SLcPhWD?=
- =?us-ascii?Q?5XLp1XkCr+18Dz1+Tqh3B/t5p8LLVqDB729PP8AXX4TArN11/Td5e7jYNS24?=
- =?us-ascii?Q?uEI9+uROlQAgYDk/9sKVklWMpDJeedbhjkSZCaezMtl34kBjirDggwQLqN+P?=
- =?us-ascii?Q?IWcFRvEc/cE8X5b+5vJpMgppc5gYTIqlWaUbjZG8utHTgcpx+HAicnbu9Xrd?=
- =?us-ascii?Q?NlJd3GWQjUWLyvt6pdJfAwd27NrPry3rrWxBf4t2aKWpfmr6um25CSRAVVUi?=
- =?us-ascii?Q?9d60VvqTHOg6UufN5DaexZO0PMaoFgTcGpfRv1qteBu2Uh3o1hH2JAtR8Mm/?=
- =?us-ascii?Q?ulEgt4ZwbfOvaNvNyoGPx8kKIwdofc8TDVIp987kVdkm3g/kVuh19e/sEzRm?=
- =?us-ascii?Q?ZbJpd1G9ASo5IXVo5dGARfwXOpLNyR1UHUf6xllu+iE8dOFMa0cRdoL9DwSa?=
- =?us-ascii?Q?zn/x6qSt8K9XKDsd5hVR6wVxxhhSXqZyRxF9kTiGe3BM0Qwk5rnWZTuMOYyh?=
- =?us-ascii?Q?gc4iHFlscTrGOgBy0qejlt+H4UbwiJpJ6xbMRtCBYtTwhj2C5sg4eTPydD7q?=
- =?us-ascii?Q?WMnYAS772MiQCcZO94L8+tZo/l4Z2DUoZzDBWpkxdw+ZNSVXwG0WyHJADedI?=
- =?us-ascii?Q?TjnaThWtTaBnuW6G9OmHJ/DWYG5x2jJHtL2kJMy+D6puE5idm2+/3UKsholy?=
- =?us-ascii?Q?FuFiKPKmbA0cd1dI1tFKxIsb+wjZpoAbFWRXB/h+n4ofNGPgWmQ3ui2NO8SN?=
- =?us-ascii?Q?+mhJm0b8WcJKzd5+Uqm3UU1bvvyCULS7xXcKO722C9gwO5aTXUQhl5anSa0S?=
- =?us-ascii?Q?muv9xGLT9vrjrcaJknRHIq0LXFjz/8cX2zpRhaRyIxGy/tOh0thVSV6SW5kO?=
- =?us-ascii?Q?TvkiHVhjm5cXKu3ifTMo7B864k7bZHlhxqoFgB4XWiO2Vm6/3sqI5bqW62j0?=
- =?us-ascii?Q?l4dvXrgvDFdS8TSqLhhF2Ehtcwu/NoHPG5lB82HL3XsI0Kvk0mOOv8P2qgyT?=
- =?us-ascii?Q?Sg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d5f4280-0441-49a9-b487-08dcf4350ca5
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 14:06:26.4720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /A4GGOSaiHuGIIlhruKaIVDaV9o4TcZmDf2LRLpPxx5z4/O+FgEzydayuz4p5hiFS/85P4INFNDEyCjDpuFVnQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10560
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Tue, Oct 22, 2024 at 01:52:11PM +0800, Wei Fang wrote:
-> The EMDIO of i.MX95 has been upgraded to revision 4.1, and the vendor
-> ID and device ID have also changed, so add the new compatible strings
-> for i.MX95 EMDIO.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+These places should all use folios instead of pages.
+
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20241005182307.3190401-4-willy@infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+ fs/netfs/buffered_read.c  |  8 ++++----
+ fs/netfs/buffered_write.c | 14 +++++++-------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index af46a598f4d7..7ac34550c403 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -627,7 +627,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
+ 	if (unlikely(always_fill)) {
+ 		if (pos - offset + len <= i_size)
+ 			return false; /* Page entirely before EOF */
+-		zero_user_segment(&folio->page, 0, plen);
++		folio_zero_segment(folio, 0, plen);
+ 		folio_mark_uptodate(folio);
+ 		return true;
+ 	}
+@@ -646,7 +646,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
+ 
+ 	return false;
+ zero_out:
+-	zero_user_segments(&folio->page, 0, offset, offset + len, plen);
++	folio_zero_segments(folio, 0, offset, offset + len, plen);
+ 	return true;
+ }
+ 
+@@ -713,7 +713,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	if (folio_test_uptodate(folio))
+ 		goto have_folio;
+ 
+-	/* If the page is beyond the EOF, we want to clear it - unless it's
++	/* If the folio is beyond the EOF, we want to clear it - unless it's
+ 	 * within the cache granule containing the EOF, in which case we need
+ 	 * to preload the granule.
+ 	 */
+@@ -773,7 +773,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ EXPORT_SYMBOL(netfs_write_begin);
+ 
+ /*
+- * Preload the data into a page we're proposing to write into.
++ * Preload the data into a folio we're proposing to write into.
+  */
+ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 			     size_t offset, size_t len)
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index ff2814da88b1..b4826360a411 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -83,13 +83,13 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
+  * netfs_perform_write - Copy data into the pagecache.
+  * @iocb: The operation parameters
+  * @iter: The source buffer
+- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
++ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
+  *
+- * Copy data into pagecache pages attached to the inode specified by @iocb.
++ * Copy data into pagecache folios attached to the inode specified by @iocb.
+  * The caller must hold appropriate inode locks.
+  *
+- * Dirty pages are tagged with a netfs_folio struct if they're not up to date
+- * to indicate the range modified.  Dirty pages may also be tagged with a
++ * Dirty folios are tagged with a netfs_folio struct if they're not up to date
++ * to indicate the range modified.  Dirty folios may also be tagged with a
+  * netfs-specific grouping such that data from an old group gets flushed before
+  * a new one is started.
+  */
+@@ -223,11 +223,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		 * we try to read it.
+ 		 */
+ 		if (fpos >= ctx->zero_point) {
+-			zero_user_segment(&folio->page, 0, offset);
++			folio_zero_segment(folio, 0, offset);
+ 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
+ 			if (unlikely(copied == 0))
+ 				goto copy_failed;
+-			zero_user_segment(&folio->page, offset + copied, flen);
++			folio_zero_segment(folio, offset + copied, flen);
+ 			__netfs_set_group(folio, netfs_group);
+ 			folio_mark_uptodate(folio);
+ 			trace_netfs_folio(folio, netfs_modify_and_clear);
+@@ -407,7 +407,7 @@ EXPORT_SYMBOL(netfs_perform_write);
+  * netfs_buffered_write_iter_locked - write data to a file
+  * @iocb:	IO state structure (file, offset, etc.)
+  * @from:	iov_iter with data to write
+- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
++ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
+  *
+  * This function does all the work needed for actually writing data to a
+  * file. It does all basic checks, removes SUID from the file, updates
+
