@@ -1,253 +1,424 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7016418F2C3;
-	Fri, 25 Oct 2024 19:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093141B07D4
+	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 19:48:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729884938; cv=none; b=ihUutpJZLTy80DZPVHuHMIiiqFUqXmvDCaZ/1xZwan6yqXBLT35Oj0qcgoPEpNkjflavVIzoI3RaIZLwhOqCH3fklt78ef/AduZGEfwZsPQZXc1QflY+kXizp5KvJ5OlJDBT2B7WwDxZ1ZTz4bs1P6VqsGinL7LmwBS2AaEs3nM=
+	t=1729885715; cv=none; b=YvAuVu99x70zIAHVLC8yVzXv7BXhw9Ke1rIirq/KYXpxRj09SNbhSYinfiGOUTViS9muSTa8jpdxIddWEpm59cHo6/2YWAtxqbCDJ4t7qlonytkWWzJmGtExlNDkZBbmpYAIBP8qflaX4DfrW3k+FsDTJbqOLBrKZmvQn6COoSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729884938; c=relaxed/simple;
-	bh=EgyR/UbyJ4Voj9eU/40Jz25ghogHjnVJeexcYHhMjPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hKE3VYW4u/wbOACRzbrvDm/ItgqbkcMZ65+Jhg5bMdJJBM9n5miIDRAsz4vd9MJRmxJ1qmiGEAoyCm7vQAQSR+v/HnocUwcje1wLnfLMlA2Zm98uqhhPmCgPqdLN1sCUu78Lf6RRqZNiyWM7F6puL55OBa9whRTJwXDYFXIBfJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXq4sh8a; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729885715; c=relaxed/simple;
+	bh=dGBfjG8ggJmUcTXlvm0QZPyj5SkI3yFpYLX8m0Oo55Y=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jHhywXvAZwe/7l7CxFimkwLh7rmkWsNu9nRkysD8s7B3ZEZYtijUnVnUF4flUQbUQrhSCyQTuDf0YQTC7r/pTTY9HRArN9XRUMd6YlVufxOtDBxFpgEbellQEDYl32uffqpIKS5JxpT8s0EJg01QuP7UAIgD/sa629VOCFsWUhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=SdH1llf0; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXq4sh8a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729884935; x=1761420935;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EgyR/UbyJ4Voj9eU/40Jz25ghogHjnVJeexcYHhMjPo=;
-  b=hXq4sh8a+CNHRFtsfsXG27z2fbwkfM8+zYN3GE4Lmq8ES2DXvPkLZku9
-   d/K9e7DOYorgGsC3S3nCYb3b1I/IkNWFbytBsL5dHNcvl8pcthDaE6+w8
-   LigkCwRqz+8xf1ENJBkICa5KjNLzf+BtqDZaOLvImJnGQrdfhBP3zQg8Y
-   qfXjaH6HVIofM6vtDCG4nJWpqCUZQN4dqT2w6JkcUFFvaSoDLt25SFQJO
-   Uo6APOgY+tylZl5CN1px3YhYY6CCEhqkWKvO7LIZP2pk6BQMg4Ij/QqTU
-   07ZHVur4y80CWP60VwbQolbj68ZdXPj1YmL19wd/AC+WpHckDdF1SnZsi
-   A==;
-X-CSE-ConnectionGUID: huvUCd4cTK66tBlI9TafLg==
-X-CSE-MsgGUID: DAZlq5gZRfaVPKyq6L+C6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="29007672"
-X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; 
-   d="scan'208";a="29007672"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 12:35:34 -0700
-X-CSE-ConnectionGUID: fJ4qj/scTtu8exG4VL8VPQ==
-X-CSE-MsgGUID: NN4ixM9NSji1YGfQYgpSdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; 
-   d="scan'208";a="118468872"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 25 Oct 2024 12:35:27 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t4Q5l-000YoY-0Z;
-	Fri, 25 Oct 2024 19:35:25 +0000
-Date: Sat, 26 Oct 2024 03:34:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Inochi Amaoto <inochiama@outlook.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] net: stmmac: Add glue layer for Sophgo SG2044 SoC
-Message-ID: <202410260337.pPIMKkX6-lkp@intel.com>
-References: <20241025011000.244350-5-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="SdH1llf0"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PJ5LE6015903;
+	Fri, 25 Oct 2024 12:48:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2021-q4;
+	 bh=4yPFaBtKGefKagURgm4Ye0CoZ/9fggfVEEvMvBQ+n3I=; b=SdH1llf0hO0A
+	D+7uylop7aU5yUQdwKRacfwKsMy7iXZ7tSzQnVtLSyuYQM7zKo5MW5AhpiSDlcck
+	Kzc/f8GLhJzbF7I7f6SEbEADmHCjGg7EXZfJpmy5OqB/sK1i91ohPW0QAyOPBYrC
+	y7WZL12g6c5M8GxtIsGr7nTn9oNNqcUa8sXBLxAl1B2B5v1vWQESxOgzsovebUY2
+	u96cxjRmxibYwI+Ph+cZv5pVWmLpAZO+hRdnAYKFuqqw8v6Gr8ofqwBWTIw6I0vC
+	ol4tFwJXnC7QTm0fbLo04tQbdS84xuz0zA6wovNaj0SllW4/Aa7m/koza8Y62La8
+	2FdwaZqxLA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 42gg1rrtnw-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 25 Oct 2024 12:48:20 -0700 (PDT)
+Received: from devvm4158.cln0.facebook.com (2620:10d:c0a8:1c::11) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server id
+ 15.2.1544.11; Fri, 25 Oct 2024 19:48:18 +0000
+From: Vadim Fedorenko <vadfed@meta.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Michael Chan
+	<michael.chan@broadcom.com>,
+        Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        "Richard
+ Cochran" <richardcochran@gmail.com>,
+        Vadim Fedorenko <vadfed@meta.com>
+Subject: [PATCH net-next v2 2/2] bnxt_en: replace PTP spinlock with seqlock
+Date: Fri, 25 Oct 2024 12:47:53 -0700
+Message-ID: <20241025194753.3070604-2-vadfed@meta.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241025194753.3070604-1-vadfed@meta.com>
+References: <20241025194753.3070604-1-vadfed@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241025011000.244350-5-inochiama@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: iSb-lI3bcxodIAMJJ4LRWX84OMaYYu0j
+X-Proofpoint-ORIG-GUID: iSb-lI3bcxodIAMJJ4LRWX84OMaYYu0j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-05_03,2024-10-04_01,2024-09-30_01
 
-Hi Inochi,
+We can see high contention on ptp_lock while doing RX timestamping
+on high packet rates over several queues. Spinlock is not effecient
+to protect timecounter for RX timestamps when reads are the most
+usual operations and writes are only occasional. It's better to use
+seqlock in such cases.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+---
+v2:
+- use read_excl lock to serialize reg access with FW reset
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 18 ++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 73 ++++++-------------
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 14 +++-
+ 3 files changed, 46 insertions(+), 59 deletions(-)
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on sophgo/for-next sophgo/fixes net-next/main net/main linus/master v6.12-rc4 next-20241025]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Inochi-Amaoto/dt-bindings-net-snps-dwmac-Add-dwmac-5-30a-version/20241025-091315
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20241025011000.244350-5-inochiama%40gmail.com
-patch subject: [PATCH v2 4/4] net: stmmac: Add glue layer for Sophgo SG2044 SoC
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20241026/202410260337.pPIMKkX6-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 5886454669c3c9026f7f27eab13509dd0241f2d6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241026/202410260337.pPIMKkX6-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410260337.pPIMKkX6-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:11:
-   In file included from include/linux/platform_device.h:13:
-   In file included from include/linux/device.h:32:
-   In file included from include/linux/device/driver.h:21:
-   In file included from include/linux/module.h:19:
-   In file included from include/linux/elf.h:6:
-   In file included from arch/s390/include/asm/elf.h:181:
-   In file included from arch/s390/include/asm/mmu_context.h:11:
-   In file included from arch/s390/include/asm/pgalloc.h:18:
-   In file included from include/linux/mm.h:2213:
-   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     505 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     512 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     525 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:14:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:28:
-   In file included from include/linux/dma-mapping.h:11:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:37:59: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
-         |                                                           ^
-   include/uapi/linux/swab.h:102:54: note: expanded from macro '__swab16'
-     102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
-         |                                                      ^
-   In file included from drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:14:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:28:
-   In file included from include/linux/dma-mapping.h:11:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:35:59: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-         |                                                           ^
-   include/uapi/linux/swab.h:115:54: note: expanded from macro '__swab32'
-     115 | #define __swab32(x) (__u32)__builtin_bswap32((__u32)(x))
-         |                                                      ^
-   In file included from drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:14:
-   In file included from include/linux/phy.h:16:
-   In file included from include/linux/ethtool.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:28:
-   In file included from include/linux/dma-mapping.h:11:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     693 |         readsb(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     701 |         readsw(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     709 |         readsl(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     718 |         writesb(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     727 |         writesw(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     736 |         writesl(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
->> drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:30:9: error: call to undeclared function 'rgmii_clock'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      30 |         rate = rgmii_clock(speed);
-         |                ^
-   drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c:46:6: warning: unused variable 'ret' [-Wunused-variable]
-      46 |         int ret;
-         |             ^~~
-   17 warnings and 1 error generated.
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for MODVERSIONS
-   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
-   Selected by [y]:
-   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
-
-
-vim +/rgmii_clock +30 drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-
-    23	
-    24	static void sophgo_dwmac_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
-    25	{
-    26		struct sophgo_dwmac *dwmac = priv;
-    27		long rate;
-    28		int ret;
-    29	
-  > 30		rate = rgmii_clock(speed);
-    31		if (ret < 0) {
-    32			dev_err(dwmac->dev, "invalid speed %u\n", speed);
-    33			return;
-    34		}
-    35	
-    36		ret = clk_set_rate(dwmac->clk_tx, rate);
-    37		if (ret)
-    38			dev_err(dwmac->dev, "failed to set tx rate %lu\n", rate);
-    39	}
-    40	
-
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 6dd6541d8619..f5ddd01c78eb 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -2256,9 +2256,7 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 				unsigned long flags;
+ 
+-				spin_lock_irqsave(&ptp->ptp_lock, flags);
+-				ns = timecounter_cyc2time(&ptp->tc, ts);
+-				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++				ns = bnxt_timecounter_cyc2time(ptp, ts);
+ 				memset(skb_hwtstamps(skb), 0,
+ 				       sizeof(*skb_hwtstamps(skb)));
+ 				skb_hwtstamps(skb)->hwtstamp = ns_to_ktime(ns);
+@@ -2764,12 +2762,12 @@ static int bnxt_async_event_process(struct bnxt *bp,
+ 				if (!ptp)
+ 					goto async_event_process_exit;
+ 
+-				spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 				bnxt_ptp_update_current_time(bp);
+ 				ns = (((u64)BNXT_EVENT_PHC_RTC_UPDATE(data1) <<
+ 				       BNXT_PHC_BITS) | ptp->current_time);
++				write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 				bnxt_ptp_rtc_timecounter_init(ptp, ns);
+-				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++				write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 			}
+ 			break;
+ 		}
+@@ -13496,12 +13494,13 @@ static void bnxt_force_fw_reset(struct bnxt *bp)
+ 	    test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+ 		return;
+ 
++	/* we have to serialize with bnxt_refclk_read()*/
+ 	if (ptp) {
+ 		unsigned long flags;
+ 
+-		spin_lock_irqsave(&ptp->ptp_lock, flags);
++		write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++		write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 	} else {
+ 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+ 	}
+@@ -13565,12 +13564,13 @@ void bnxt_fw_reset(struct bnxt *bp)
+ 		struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 		int n = 0, tmo;
+ 
++		/* we have to serialize with bnxt_refclk_read()*/
+ 		if (ptp) {
+ 			unsigned long flags;
+ 
+-			spin_lock_irqsave(&ptp->ptp_lock, flags);
++			write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+-			spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++			write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 		} else {
+ 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+ 		}
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index c7e626b9098a..6c507fd5689c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -67,19 +67,21 @@ static int bnxt_ptp_settime(struct ptp_clock_info *ptp_info,
+ 	if (BNXT_PTP_USE_RTC(ptp->bp))
+ 		return bnxt_ptp_cfg_settime(ptp->bp, ns);
+ 
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
++	write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 	timecounter_init(&ptp->tc, &ptp->cc, ns);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 	return 0;
+ }
+ 
+-/* Caller holds ptp_lock */
+ static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
+ 			    u64 *ns)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 	u32 high_before, high_now, low;
++	unsigned long flags;
+ 
++	/* We have to serialize reg access and FW reset */
++	read_seqlock_excl_irqsave(&ptp->ptp_lock, flags);
+ 	if (test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+ 		return -EIO;
+ 
+@@ -93,6 +95,7 @@ static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
+ 		low = readl(bp->bar0 + ptp->refclk_mapped_regs[0]);
+ 		ptp_read_system_postts(sts);
+ 	}
++	read_sequnlock_excl_irqrestore(&ptp->ptp_lock, flags);
+ 	*ns = ((u64)high_now << 32) | low;
+ 
+ 	return 0;
+@@ -101,14 +104,11 @@ static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
+ static void bnxt_ptp_get_current_time(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+-	unsigned long flags;
+ 
+ 	if (!ptp)
+ 		return;
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 	WRITE_ONCE(ptp->old_time, (u32)(ptp->current_time >> 24));
+ 	bnxt_refclk_read(bp, NULL, &ptp->current_time);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
+ }
+ 
+ static int bnxt_hwrm_port_ts_query(struct bnxt *bp, u32 flags, u64 *ts,
+@@ -151,24 +151,19 @@ static int bnxt_ptp_gettimex(struct ptp_clock_info *ptp_info,
+ {
+ 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
+ 						ptp_info);
+-	unsigned long flags;
+ 	u64 ns, cycles;
+ 	int rc;
+ 
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 	rc = bnxt_refclk_read(ptp->bp, sts, &cycles);
+-	if (rc) {
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	if (rc)
+ 		return rc;
+-	}
+-	ns = timecounter_cyc2time(&ptp->tc, cycles);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++
++	ns = bnxt_timecounter_cyc2time(ptp, cycles);
+ 	*ts = ns_to_timespec64(ns);
+ 
+ 	return 0;
+ }
+ 
+-/* Caller holds ptp_lock */
+ void bnxt_ptp_update_current_time(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+@@ -180,7 +175,6 @@ void bnxt_ptp_update_current_time(struct bnxt *bp)
+ static int bnxt_ptp_adjphc(struct bnxt_ptp_cfg *ptp, s64 delta)
+ {
+ 	struct hwrm_port_mac_cfg_input *req;
+-	unsigned long flags;
+ 	int rc;
+ 
+ 	rc = hwrm_req_init(ptp->bp, req, HWRM_PORT_MAC_CFG);
+@@ -194,9 +188,7 @@ static int bnxt_ptp_adjphc(struct bnxt_ptp_cfg *ptp, s64 delta)
+ 	if (rc) {
+ 		netdev_err(ptp->bp->dev, "ptp adjphc failed. rc = %x\n", rc);
+ 	} else {
+-		spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 		bnxt_ptp_update_current_time(ptp->bp);
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
+ 	}
+ 
+ 	return rc;
+@@ -211,9 +203,9 @@ static int bnxt_ptp_adjtime(struct ptp_clock_info *ptp_info, s64 delta)
+ 	if (BNXT_PTP_USE_RTC(ptp->bp))
+ 		return bnxt_ptp_adjphc(ptp, delta);
+ 
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
++	write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 	timecounter_adjtime(&ptp->tc, delta);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 	return 0;
+ }
+ 
+@@ -246,10 +238,10 @@ static int bnxt_ptp_adjfine(struct ptp_clock_info *ptp_info, long scaled_ppm)
+ 	if (!BNXT_MH(bp))
+ 		return bnxt_ptp_adjfine_rtc(bp, scaled_ppm);
+ 
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
++	write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 	timecounter_read(&ptp->tc);
+ 	ptp->cc.mult = adjust_by_scaled_ppm(ptp->cmult, scaled_ppm);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 	return 0;
+ }
+ 
+@@ -257,13 +249,10 @@ void bnxt_ptp_pps_event(struct bnxt *bp, u32 data1, u32 data2)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 	struct ptp_clock_event event;
+-	unsigned long flags;
+ 	u64 ns, pps_ts;
+ 
+ 	pps_ts = EVENT_PPS_TS(data2, data1);
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
+-	ns = timecounter_cyc2time(&ptp->tc, pps_ts);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	ns = bnxt_timecounter_cyc2time(ptp, pps_ts);
+ 
+ 	switch (EVENT_DATA2_PPS_EVENT_TYPE(data2)) {
+ 	case ASYNC_EVENT_CMPL_PPS_TIMESTAMP_EVENT_DATA2_EVENT_TYPE_INTERNAL:
+@@ -400,17 +389,13 @@ static int bnxt_get_target_cycles(struct bnxt_ptp_cfg *ptp, u64 target_ns,
+ {
+ 	u64 cycles_now;
+ 	u64 nsec_now, nsec_delta;
+-	unsigned long flags;
+ 	int rc;
+ 
+-	spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 	rc = bnxt_refclk_read(ptp->bp, NULL, &cycles_now);
+-	if (rc) {
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++	if (rc)
+ 		return rc;
+-	}
+-	nsec_now = timecounter_cyc2time(&ptp->tc, cycles_now);
+-	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++
++	nsec_now = bnxt_timecounter_cyc2time(ptp, cycles_now);
+ 
+ 	nsec_delta = target_ns - nsec_now;
+ 	*cycles_delta = div64_u64(nsec_delta << ptp->cc.shift, ptp->cc.mult);
+@@ -697,7 +682,6 @@ static int bnxt_stamp_tx_skb(struct bnxt *bp, int slot)
+ 	struct skb_shared_hwtstamps timestamp;
+ 	struct bnxt_ptp_tx_req *txts_req;
+ 	unsigned long now = jiffies;
+-	unsigned long flags;
+ 	u64 ts = 0, ns = 0;
+ 	u32 tmo = 0;
+ 	int rc;
+@@ -711,9 +695,7 @@ static int bnxt_stamp_tx_skb(struct bnxt *bp, int slot)
+ 				     tmo, slot);
+ 	if (!rc) {
+ 		memset(&timestamp, 0, sizeof(timestamp));
+-		spin_lock_irqsave(&ptp->ptp_lock, flags);
+-		ns = timecounter_cyc2time(&ptp->tc, ts);
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++		ns = bnxt_timecounter_cyc2time(ptp, ts);
+ 		timestamp.hwtstamp = ns_to_ktime(ns);
+ 		skb_tstamp_tx(txts_req->tx_skb, &timestamp);
+ 		ptp->stats.ts_pkts++;
+@@ -767,9 +749,9 @@ static long bnxt_ptp_ts_aux_work(struct ptp_clock_info *ptp_info)
+ 	bnxt_ptp_get_current_time(bp);
+ 	ptp->next_period = now + HZ;
+ 	if (time_after_eq(now, ptp->next_overflow_check)) {
+-		spin_lock_irqsave(&ptp->ptp_lock, flags);
++		write_seqlock_irqsave(&ptp->ptp_lock, flags);
+ 		timecounter_read(&ptp->tc);
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++		write_sequnlock_irqrestore(&ptp->ptp_lock, flags);
+ 		ptp->next_overflow_check = now + BNXT_PHC_OVERFLOW_PERIOD;
+ 	}
+ 	if (rc == -EAGAIN)
+@@ -829,7 +811,6 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
+ 	u32 opaque = tscmp->tx_ts_cmp_opaque;
+ 	struct bnxt_tx_ring_info *txr;
+ 	struct bnxt_sw_tx_bd *tx_buf;
+-	unsigned long flags;
+ 	u64 ts, ns;
+ 	u16 cons;
+ 
+@@ -844,9 +825,7 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
+ 				   le32_to_cpu(tscmp->tx_ts_cmp_flags_type),
+ 				   le32_to_cpu(tscmp->tx_ts_cmp_errors_v));
+ 		} else {
+-			spin_lock_irqsave(&ptp->ptp_lock, flags);
+-			ns = timecounter_cyc2time(&ptp->tc, ts);
+-			spin_unlock_irqrestore(&ptp->ptp_lock, flags);
++			ns = bnxt_timecounter_cyc2time(ptp, ts);
+ 			timestamp.hwtstamp = ns_to_ktime(ns);
+ 			skb_tstamp_tx(tx_buf->skb, &timestamp);
+ 		}
+@@ -1005,9 +984,9 @@ int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg)
+ 		if (rc)
+ 			return rc;
+ 	}
+-	spin_lock_irqsave(&bp->ptp_cfg->ptp_lock, flags);
++	write_seqlock_irqsave(&bp->ptp_cfg->ptp_lock, flags);
+ 	bnxt_ptp_rtc_timecounter_init(bp->ptp_cfg, ns);
+-	spin_unlock_irqrestore(&bp->ptp_cfg->ptp_lock, flags);
++	write_sequnlock_irqrestore(&bp->ptp_cfg->ptp_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -1042,7 +1021,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
+ 	bnxt_ptp_free(bp);
+ 
+ 	WRITE_ONCE(ptp->tx_avail, BNXT_MAX_TX_TS);
+-	spin_lock_init(&ptp->ptp_lock);
++	seqlock_init(&ptp->ptp_lock);
+ 	spin_lock_init(&ptp->ptp_tx_lock);
+ 
+ 	if (BNXT_PTP_USE_RTC(bp)) {
+@@ -1075,12 +1054,8 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
+ 	atomic64_set(&ptp->stats.ts_err, 0);
+ 
+ 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
+-		unsigned long flags;
+-
+-		spin_lock_irqsave(&ptp->ptp_lock, flags);
+ 		bnxt_refclk_read(bp, NULL, &ptp->current_time);
+ 		WRITE_ONCE(ptp->old_time, (u32)(ptp->current_time >> 24));
+-		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
+ 		ptp_schedule_worker(ptp->ptp_clock, 0);
+ 	}
+ 	ptp->txts_tmo = BNXT_PTP_DFLT_TX_TMO;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+index 80046bd314db..e2b401251399 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+@@ -102,7 +102,7 @@ struct bnxt_ptp_cfg {
+ 	struct timecounter	tc;
+ 	struct bnxt_pps		pps_info;
+ 	/* serialize timecounter access */
+-	spinlock_t		ptp_lock;
++	seqlock_t		ptp_lock;
+ 	/* serialize ts tx request queuing */
+ 	spinlock_t		ptp_tx_lock;
+ 	u64			current_time;
+@@ -168,4 +168,16 @@ void bnxt_ptp_rtc_timecounter_init(struct bnxt_ptp_cfg *ptp, u64 ns);
+ int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg);
+ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg);
+ void bnxt_ptp_clear(struct bnxt *bp);
++static inline u64 bnxt_timecounter_cyc2time(struct bnxt_ptp_cfg *ptp, u64 ts)
++{
++	unsigned int seq;
++	u64 ns;
++
++	do {
++		seq = read_seqbegin(&ptp->ptp_lock);
++		ns = timecounter_cyc2time(&ptp->tc, ts);
++	} while (read_seqretry(&ptp->ptp_lock, seq));
++
++	return ns;
++}
+ #endif
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.5
+
