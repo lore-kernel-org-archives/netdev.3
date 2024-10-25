@@ -1,100 +1,100 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E6718C33C
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 09:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D411D4350;
+	Fri, 25 Oct 2024 09:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729849221; cv=none; b=WhuGTNHXIyKGQAKkw14Okc9igppNMVII0fMZ1LhF3TOM8tnr6NtR+NGzru8RjQ2vLqVVcYsboUYxycJI0FkjmaPYCxNI9xvzOEXh94dqRnnL/O1koSsYUZtD8zsRsrbwmJM5VTKdVaTnjqaZXkSFBmp1isAbcA3+WSInLTdGhDY=
+	t=1729849476; cv=none; b=InK9H2FRNX8Ozs/GKwLFk/cEDCmTdZCeX4DlPjX30WTK+5BcHfM1rJ6uh8s2ZfNsiAcQyo2SgneAQ83agSx+dHTpgEdNStdXqDvrLnAlaAWcmZS7mCoaXUwo/Sk6YORLqriLJzGrDn/ynjWDD+Hi7vkNRH95zEe9v7m7MUYR13o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729849221; c=relaxed/simple;
-	bh=YMwDdCNly5MbeDSxYcykydUZn9YSJhk2f5F6t4cSDZo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fdNydYpxb2OLNGQvM3A6+tTuSpkdjQF8EGsPivZ8UW2fLoIC5/I93iFR1qOU1YJ90AzOslJlPRdzftqQUKrLFX3rif+hF6TJM8fng69FdaHhydhoWq9QGEUh93f/lwH5DmZkVxue95NdWLK7EszSFkQVdOoxy7ELmxBMthOh2vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XZd6p5VyTz4f3k6H
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 17:40:02 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 2E6431A0359
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 17:40:15 +0800 (CST)
-Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
-	by APP4 (Coremail) with SMTP id gCh0CgCnJ8R0Zxtnl6ZLFA--.53579S2;
-	Fri, 25 Oct 2024 17:40:14 +0800 (CST)
-From: Chen Ridong <chenridong@huaweicloud.com>
-To: manishc@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	chenridong@huawei.com,
-	wangweiyang2@huawei.com
-Subject: [PATCH] qed/qed_sriov: avoid null-ptr-deref
-Date: Fri, 25 Oct 2024 09:31:35 +0000
-Message-Id: <20241025093135.1053121-1-chenridong@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729849476; c=relaxed/simple;
+	bh=nUgI+KAw1OCK1FlS4+823m7SpvqpbidXV4y4blyHU/0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZoHIc5sN8XdL4FdG6NVbqmL+SxA7L2I3448goW8GYSlz9Z2SsouOlSgZgfpmUZFWbdiJuH79I07OD1NKKQ9kjk//tzfrxhu2YZpGjDnY//xinlH7MoD7VhEkSo/r9AcbO9bI7iryslkAqkve1VJ9BAP1F/p2a3YCGM8mSaqhSKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H18zrlnn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F3F5yYkE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H18zrlnn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F3F5yYkE"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729849471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nUgI+KAw1OCK1FlS4+823m7SpvqpbidXV4y4blyHU/0=;
+	b=H18zrlnnzpvYcwzsURWB6lTCIfb2z6h1opcqYO+/p4MP/iBtPwaKKpnKXK6C64c8JIofNZ
+	MCXgGdX6ip6jfPmGIyG9NpDkWWgzwmlYmaqTqrtuKEtGCsYYo8CoMIGwb3g7k+IrMhxRcQ
+	Ex+HUUdoEQEQ6V9Aw5r9pzz0wHOcDSREVF+2XFEKL7cR9ukv7Foql91dgEssLeRuTGJzok
+	jI8dzF/qRXkUMAqwwD6nZBzqMLBqhQn3i170k7ec8gsqe04Ls1RPSFCHFFE/+PHKGzrGJ1
+	t8tB70kW8O0eeSPDyLhwf1B7d8ixwYzpX92EI+ad9SGA1/SDue2fUMBRUdHw3g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729849471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nUgI+KAw1OCK1FlS4+823m7SpvqpbidXV4y4blyHU/0=;
+	b=F3F5yYkEAS0ullAJeSkBsJ0AQfFUszH4ZeIZcnoqfXYOjexMm7AaOvnNk65zavjrEiiCK7
+	4f2k1XrqXl7ePcAw==
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Andrew Lunn
+ <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Woojung Huh
+ <woojung.huh@microchip.com>, "maintainer:MICROCHIP KSZ SERIES ETHERNET
+ SWITCH DRIVER" <UNGLinuxDriver@microchip.com>, =?utf-8?Q?Cl=C3=A9ment_L?=
+ =?utf-8?Q?=C3=A9ger?=
+ <clement.leger@bootlin.com>, George McCollister
+ <george.mccollister@gmail.com>, Simon Horman <horms@kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, "open list:RENESAS RZ/N1 A5PSW SWITCH
+ DRIVER" <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCHv3 net-next] net: dsa: use ethtool string helpers
+In-Reply-To: <20241024195238.176131-1-rosenp@gmail.com>
+References: <20241024195238.176131-1-rosenp@gmail.com>
+Date: Fri, 25 Oct 2024 11:44:29 +0200
+Message-ID: <87wmhwpldu.fsf@kurt.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCnJ8R0Zxtnl6ZLFA--.53579S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrZrW7Jw4kJrykCryfXr4kXrb_yoW8Jr1Dp3
-	y5WFyDurW3XF1rCws7Z3W8JFy5Ga9rtFWDW3Z7Ja4fZr90yFy5uF1UAa4YkryfJws5GFya
-	yF90vFn8tFyDGa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI
-	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY
-	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6x
-	AIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
-	1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU17KsUUUUUU==
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-From: Chen Ridong <chenridong@huawei.com>
+--=-=-=
+Content-Type: text/plain
 
-The qed_iov_get_public_vf_info may return NULL, which may lead to
-null-ptr-deref. To avoid possible null-ptr-deref, check vf_info
-before accessing its member.
+On Thu Oct 24 2024, Rosen Penev wrote:
+> These are the preferred way to copy ethtool strings.
+>
+> Avoids incrementing pointers all over the place.
+>
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
 
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
----
- drivers/net/ethernet/qlogic/qed/qed_sriov.c | 5 +++++
- 1 file changed, 5 insertions(+)
+I've only reviewed the hellcreek driver, not the other ones. Please, add
+this to the reviewed by tag.
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_sriov.c b/drivers/net/ethernet/qlogic/qed/qed_sriov.c
-index fa167b1aa019..30da9865496d 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_sriov.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_sriov.c
-@@ -2997,6 +2997,8 @@ static int qed_iov_pre_update_vport(struct qed_hwfn *hwfn,
- 		return 0;
- 
- 	vf_info = qed_iov_get_public_vf_info(hwfn, vfid, true);
-+	if (!vf_info)
-+		return 0;
- 
- 	if (flags->update_rx_mode_config) {
- 		vf_info->rx_accept_mode = flags->rx_accept_filter;
-@@ -5145,6 +5147,9 @@ static void qed_iov_handle_trust_change(struct qed_hwfn *hwfn)
- 		 * needed.
- 		 */
- 		vf_info = qed_iov_get_public_vf_info(hwfn, i, true);
-+		if (!vf_info)
-+			continue;
-+
- 		if (vf_info->is_trusted_configured ==
- 		    vf_info->is_trusted_request)
- 			continue;
--- 
-2.34.1
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmcbaH0THGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgvwdD/0bEdNauUSPWGAi7KZzkRxLK6A8tTek
+U36iKiZK7iVuq1064RqP45uejZki1d2WPIuFZt+Sp33SDwW3jsoybsw912pW0y4r
+ENl8z8rWSg6zYvW+7w3liv3ZEVAm6DzjOyqPrqPIDQG2OS03erATXsoj9z4RUdg5
+lA7pz4WBYyzIiBSwLlM4DSJWj/T0S6L4jOEWaHwBsk7awBf/XXQnpfnm5GttR/vC
+fHnQvZwJw0KCNt020jaYueER5v9mmvvYnOBahh25iDr+Bk6qMcQ/g2s0cLO+HUz9
+zNST5Gb9iN+922BXmrhk2deF2dvOr6EtBc7u6qUOJotcM5eLN4qmdC4viDVc1dB2
+lM3KnXhryIfHb9Xds8QeOx4lrhGNdRFP2er6ar8+NqVd0yFGBt5+3jv/SRXnuBl9
+1XAQ73nLxJ55jDfGRsCJBZtTmbtUyDIKe7dbZv4Zu/QfUuQfGhHDihcfP5nlJo5P
+kVbi5e1SjLONv1OddiyyBk//+TXvbVHqqlYf/Xzj60VjOix70WLeawZ7whLuBybS
+dCowA/6Rfo/J9s3QqNLCcLoNQD4gEV6/MrlQjopW9CHH+CT23ewnwOo8IzIm5K8w
+jKDk8lVkYXTzOjtoUw00qQNueUuGLHmYvr7yxJUcHp15fY0Q1sc9lyTRRlAZ4T0r
+SFRrj367zJvf5g==
+=dcMD
+-----END PGP SIGNATURE-----
+--=-=-=--
