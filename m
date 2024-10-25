@@ -1,111 +1,100 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29EB1D4354
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 09:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8391CF295
+	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 09:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729846990; cv=none; b=r/uZ4A00h2r7Buuishesgmjfkv2XQTXdho2kFr9A+mSi+8IRyS0Sxz6uwfRq80EWxsBHJPP2QE9Hjf7mG9I8UxjvogtHD4qiXYR2niKjSTpzCkq74eW+IyXaghrWHZOrTMHAIIS9Jwjn2m9G0ETyouSrX2l2r7l/JAUs88YjdLA=
+	t=1729847358; cv=none; b=kwxcnCgSjlVBIRjpmH76eSw1bteXT6FDEg+70fb2E2dLBTNLnu2iW50dO6bZC4FJEewxCFx4I01cQ3ThBYN+RhRf/8jwBWlZdgtsZ/mG6mWl1X60+VhQ2huUxxBXCwbYkqsbxExm23ucJoNT7AhtUUmcmJYD1BlscnhlGpwuozc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729846990; c=relaxed/simple;
-	bh=MSNa8VidgGFndoM5D+stANMch+8+eFrp9sAOIyBpKWE=;
+	s=arc-20240116; t=1729847358; c=relaxed/simple;
+	bh=g0JppvObfk3iNTqV3mU7dfQbTKcrxAZKtQOZlZ8VC2o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQSmaNXW3zejJxbIIxXGX13BahM4eQQHQA1ah07cJ0XM0pVmTn6oeyzT81tq7jk5kVMayEbnynI+NlwT/bieS3iyBRvLXQ9Wk5miOV6vQZBsVsOTKMpuuXon7J9kWyxfIhk2hI3nD7bu1B+MBzXtXQpR+AhB1YpLKMmyG4+Nj1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t4GDF-0002Vw-3H; Fri, 25 Oct 2024 11:02:29 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t4GDD-000KtQ-1v;
-	Fri, 25 Oct 2024 11:02:27 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 163F235E85E;
-	Fri, 25 Oct 2024 09:02:27 +0000 (UTC)
-Date: Fri, 25 Oct 2024 11:02:26 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
-Message-ID: <20241025-dark-efficient-bird-6b09b9-mkl@pengutronix.de>
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-2-tmyu0@nuvoton.com>
- <20241024-adventurous-imaginary-hornet-4d5c46-mkl@pengutronix.de>
- <20241024-pumpkin-parrot-of-excellence-299c57-mkl@pengutronix.de>
- <CAOoeyxXX2fpHVJ8urLmy+pBjH1aRdYu6qrtwOmwUxTUyQq30DA@mail.gmail.com>
- <20241025-sexy-fanatic-snail-a1d2e7-mkl@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=iETA9qoCxE4Tq8xoBME1eUH3WWN203EVk+55yEaINn/IVVfrUqB2v6OC9i41qfUjW3RJkR7gDvK7iMHSS/O/iKP3MgBC4Opmn8AqSB0aW7ckFv8R57fmEYKmP9trOtep7o+DTPt8aEhwQjFyKqHJ5pTxiUpGixTO9wdo3/Jt3qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDfUjk62; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDfUjk62"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8F3C4CEC3;
+	Fri, 25 Oct 2024 09:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729847358;
+	bh=g0JppvObfk3iNTqV3mU7dfQbTKcrxAZKtQOZlZ8VC2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mDfUjk62n/kFzSLM7FkN1lLNdZtI7cPzziu0QMR6mCJJsTPhuSs4Zr8JpK+4QIxiq
+	 1uiCxcC+YtXU+D16VBDy4aoxb+N4scGDshg/filAVNPC/gFdBgITUzG/fA7YOt4tyf
+	 n9bBMw2XfGrPqcJf49Tml+FgiqZl1yoXj+6YFhN2P2j1sNThGPwalwMwYfX1P2eBfU
+	 urW/mI+sRNqmXnA28C7waYhOjVNOmkTDGCZ6nM7FGL7Vm3kuO9SJ2xDK5Rhg9KS5sI
+	 ccrUO9ZonSQbEsFN/tCRwbCsOMxCVfkyUBPCZhalaQpfw6C8Ooxrve0W39VkFyeCRz
+	 Y4nQKpHqTpCDQ==
+Date: Fri, 25 Oct 2024 10:09:13 +0100
+From: Simon Horman <horms@kernel.org>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	willemb@google.com, jeroendb@google.com, shailend@google.com,
+	ziweixiao@google.com, jacob.e.keller@intel.com
+Subject: Re: [PATCH net-next] gve: change to use page_pool_put_full_page when
+ recycling pages
+Message-ID: <20241025090913.GI1202098@kernel.org>
+References: <20241023221141.3008011-1-pkaligineedi@google.com>
+ <cf13ffde-2a5f-4845-a27d-d4789a384891@huawei.com>
+ <20241024154503.GB1202098@kernel.org>
+ <CAEAWyHewCMmWmA16jdPiT6pQvwFX88JOtAyzKJHXzRBFogdyPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hvvsexv3tqputmip"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241025-sexy-fanatic-snail-a1d2e7-mkl@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEAWyHewCMmWmA16jdPiT6pQvwFX88JOtAyzKJHXzRBFogdyPg@mail.gmail.com>
 
+On Thu, Oct 24, 2024 at 10:58:47AM -0700, Harshitha Ramamurthy wrote:
+> On Thu, Oct 24, 2024 at 8:45 AM Simon Horman <horms@kernel.org> wrote:
+> >
+> > On Thu, Oct 24, 2024 at 10:36:02AM +0800, Yunsheng Lin wrote:
+> > > On 2024/10/24 6:11, Praveen Kaligineedi wrote:
+> > > > From: Harshitha Ramamurthy <hramamurthy@google.com>
+> > > >
+> > > > The driver currently uses page_pool_put_page() to recycle
+> > > > page pool pages. Since gve uses split pages, if the fragment
+> > > > being recycled is not the last fragment in the page, there
+> > > > is no dma sync operation. When the last fragment is recycled,
+> > > > dma sync is performed by page pool infra according to the
+> > > > value passed as dma_sync_size which right now is set to the
+> > > > size of fragment.
+> > > >
+> > > > But the correct thing to do is to dma sync the entire page when
+> > > > the last fragment is recycled. Hence change to using
+> > > > page_pool_put_full_page().
+> > >
+> > > I am not sure if Fixes tag is needed if the blamed commit is only
+> > > in the net-next tree. Otherwise, LGTM.
+> >
+> > I think it would be best to provide a fixes tag in this case.
+> > It can be done by supplying it in a response to this email thread.
+> > (I think it needs to start at the beginning of a line.)
+> 
+> Thanks Yunsheng and Simon. I wasn't sure since this patch was targeted
+> for net-next. I have provided a Fixes tag below.
 
---hvvsexv3tqputmip
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
-MIME-Version: 1.0
+Thanks. FWIIW, the tag looks correct to me.
 
-On 25.10.2024 10:35:35, Marc Kleine-Budde wrote:
-> > Excuse me, I'm a bit confused. Is there anything I need to
-> > improve on?
->=20
-> It looks racy to _first_ add the devices and _then_ the workqueue.
->=20
-> So the obvious solution is to allocate the worklist first and then add
-                                             workqueue
-> the devices.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---hvvsexv3tqputmip
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcbXqAACgkQKDiiPnot
-vG/v8gf/ZnYZ8UX7isWhAOloRjzqHr1tCeRD0dNOcVRIA2O5jDm1vOg1oHVf4tCm
-Y+crw/DQeALVVHoLDLru8STjvEbqTt2x/b88OletCJHckvwLapQaQsRUhX1RHJtp
-W3PaKTZPAFpjFdATjCEhrPPX73bJzok9lExwap2uF0R7dzv/XCz5tnVsVqKCp4lu
-MhhEesF7ssLrmU5lvCmRj3iw8yssq1sGuPjYRyfL81VameNbcXdzpl//GGx3XBOC
-pCYZ1iaK/KuzfSaDtR18JzOiG8o68WkIRDAJUDWRt+OoSg04EcPkma4MONH+uHqt
-Ddg9vZTO2m/TN/IbNekjrp0BdO6nqw==
-=BAyk
------END PGP SIGNATURE-----
-
---hvvsexv3tqputmip--
+> >
+> > > Reviewed-by: Yunsheng Lin <linyunsheng@huawei.com>
+> > >
+> > > >
+> > > > Link: https://lore.kernel.org/netdev/89d7ce83-cc1d-4791-87b5-6f7af29a031d@huawei.com/
+> > > >
+> Fixes: ebdfae0d377b ("gve: adopt page pool for DQ RDA mode")
+> > > > Suggested-by: Yunsheng Lin <linyunsheng@huawei.com>
+> > > > Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+> > > > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > > > Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> >
+> > ...
+> 
