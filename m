@@ -1,114 +1,90 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from relay163.nicmail.ru (relay163.nicmail.ru [91.189.117.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A120518C02E
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 17:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F63524F;
+	Fri, 25 Oct 2024 18:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.189.117.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729878943; cv=none; b=kYY8nbWEtyqqPigjpN9uyYPDgEmY/bdO7JGNSKFjehBCEb42EeUCz6ZnQBAB0OGMa9Jqy61o3B7j14LZpf/ru9OpsDO/37yOsMZgMpok82VsSeu1aTXencdBdgdsFLcFHx2WDXkP9NptGwEkMAe7bjDjUHFOaRxqXrATyiQd3iU=
+	t=1729879710; cv=none; b=lxXeRGuZp88j0WLH3WePEQNxMQIFa/Xmzt08VycBgam+oJLkdJHPfEa9y1Jr7Ea9HWT5lUTy1itNb3rSNSx+ZEGf7UGucWxj/DCU1crPyAGvAWXnWGupVlpgFkftZ4yc/EwDySpdTK1U7aiyYHbax7RlYnnAV8XynRkhb0v3NXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729878943; c=relaxed/simple;
-	bh=oLTcbBsCH/Mt/pGRwR/C6SI2AZWl7kQEGneT7miSIcA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JadTKvPORrorTuAy0AM4AhApmjxaYdgfLSEPUjtm0RHxpeQk8X1l3xFQxAxxBm3Ir8ugFvn5Wf88oenAdLjKmYhseVvgEaAt1SDU9FYt5fUUtQydOyWQt1PeGeMFUKz7Apwa8rmOBt78FChw7gC8yUYxnqKYTmIbU4ZRlnF8ek8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=fail smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ut98twQ2; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ut98twQ2"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PDggnH028792
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 17:55:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aE1OgiX/KUdd+ojY/198MhALC2g0LqMiphme5ARCTko=; b=Ut98twQ2ucKlUrj4
-	HZviYBEU4rZMhmO1aivLRC5zWwdo6eKqcepmWJp9cYXaS0W1EGC4FckmIZWipCPG
-	kT8xJUKWkt7MDRjHDP9cOXW028GLx8issDSqOl+/0gxE/vrWYhajiMpdrsG6XHKi
-	vPYdw3Kp/GfdxmViEe3n+8sgLtfYsja5Ke61JwE2c4+ylkk6U6k0beFsl4p7WeWm
-	s2Jzt9s7ETcnchUgURBz18JCROVXVjZD1L8ufh1Dv5kb6JcsBwWQMnQtMftzyAZr
-	3GTE1Yqqx+NMqucvCL/E0eCqAj3PoiCKUfhTFrU5eYLoA/BpcE2rouo0XLT8E3Mr
-	qREIow==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42fdtxnucd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 17:55:40 +0000 (GMT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-717fac47d50so712987a34.2
-        for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 10:55:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729878940; x=1730483740;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aE1OgiX/KUdd+ojY/198MhALC2g0LqMiphme5ARCTko=;
-        b=piR9coFjm/DYgLYvOOcaCidnid6kwf7uLkEsXsamH7x/yOfdv/MNebYtPCyz5SdZ1d
-         vK+Q8h1qlTfWJEuwbZ6RRYlHbgUig2SXlmLyV6WRc3p+SQxC+snn+bl5PEuiOb241O48
-         ds+g2+sEgSBfXdcVEVgOgDa24KC4mf8xLmyDEjlqOwm/+QCZ6ndWuGrM6JxJsuAGSdtZ
-         lUGWKjBE8frxnpIAY01D1XJFrhqcYaVwTF1gpedYMOodvvMk0bGEleQuwrKixlsdY33z
-         yP/3TJeg0/QYVFd7Wfex4HGqua+pfCsJZY0gQMHhTFx+0VdhwVoWnR5BK0vecZp/ygwl
-         CKQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXAS51zWVT0fw/n89ln1A9kv93Zsrw14I2fuwJOtKXpIoXkBro/JchLtQtc4RYcP0P9vmht3FI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycEduAeGGQ3EZfIyfGSShcegeSzIziKYDmbonbwpggK9wJzPYM
-	p5no7VL641jmE2BO36FOEYscOTfW6KCxtA++Cs4OXUwVZS5ObKIg3icviV+1KwJhLhmLSvH8BVp
-	BHFPq0wD1JdoJQ6Ya+Xf5HVhKzzZyzbdJF2VE0UJlhiN7yQFe2DAdAaI=
-X-Received: by 2002:a05:6808:21a6:b0:3e0:38ab:6ebc with SMTP id 5614622812f47-3e6384c6587mr107513b6e.10.1729878939898;
-        Fri, 25 Oct 2024 10:55:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXFx7ijeorARsQkinM4rEFrRkYVYVx+dmiHRKzTF+5GoWLt3KqkcnzbR9O07EqXEHibq8a+g==
-X-Received: by 2002:a05:6808:21a6:b0:3e0:38ab:6ebc with SMTP id 5614622812f47-3e6384c6587mr107499b6e.10.1729878939510;
-        Fri, 25 Oct 2024 10:55:39 -0700 (PDT)
-Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b3a0849b1sm92613666b.203.2024.10.25.10.55.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Oct 2024 10:55:38 -0700 (PDT)
-Message-ID: <8955baf6-8e86-4eea-945a-258ca287a5ac@oss.qualcomm.com>
-Date: Fri, 25 Oct 2024 19:55:36 +0200
+	s=arc-20240116; t=1729879710; c=relaxed/simple;
+	bh=C58FuUNaOUL1vyt3RYD5GSs3VU2MrYiAmSNxI09uajw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Eo2vCMpz45hsjy5T5vWjGqCPa6xfRImhOBeju2/pW23IkmAm15SBWtRQ6/p93d55oOAgmruQ1+m4OJ5+cQ1B6GUTpFKJEBu1dj9Uu/b/u0ZFd/LpA9LTZvDB0zBBiL3tfjmZOmAsA2N5FyFJqK6VrOG6lTahVdvezUTo7U1Yy3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ancud.ru; spf=pass smtp.mailfrom=ancud.ru; arc=none smtp.client-ip=91.189.117.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ancud.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ancud.ru
+Received: from [10.28.138.19] (port=24734 helo=mitx-gfx..)
+	by relay.hosting.mail.nic.ru with esmtp (Exim 5.55)
+	(envelope-from <kiryushin@ancud.ru>)
+	id 1t4OKQ-000000001Nl-6STd;
+	Fri, 25 Oct 2024 20:42:26 +0300
+Received: from [87.245.155.195] (account kiryushin@ancud.ru HELO mitx-gfx..)
+	by incarp1106.mail.hosting.nic.ru (Exim 5.55)
+	with id 1t4OKP-00FwYI-37;
+	Fri, 25 Oct 2024 20:42:26 +0300
+From: Nikita Kiryushin <kiryushin@ancud.ru>
+To: Sudarsana Kalluru <skalluru@marvell.com>
+Cc: Nikita Kiryushin <kiryushin@ancud.ru>,
+	Manish Chopra <manishc@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH net-next v2] bnx2x: remove redundant NULL-pointer check
+Date: Fri, 25 Oct 2024 20:42:03 +0300
+Message-ID: <20241025174209.500712-1-kiryushin@ancud.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] arm64: dts: qcom: qcs8300-ride-r2: add new board
- file
-To: YijieYang <quic_yijiyang@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        quic_tingweiz@quicinc.com, quic_aiquny@quicinc.com
-References: <20241017102728.2844274-1-quic_yijiyang@quicinc.com>
- <20241017102728.2844274-6-quic_yijiyang@quicinc.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20241017102728.2844274-6-quic_yijiyang@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: MPGJqRUejjWNJAYtYHGvYUR5K5VYIsEf
-X-Proofpoint-ORIG-GUID: MPGJqRUejjWNJAYtYHGvYUR5K5VYIsEf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 spamscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410250136
+Content-Transfer-Encoding: 8bit
+X-MS-Exchange-Organization-SCL: -1
 
-On 17.10.2024 12:27 PM, YijieYang wrote:
-> From: Yijie Yang <quic_yijiyang@quicinc.com>
-> 
-> Revision 2 of the qcs8300-ride board uses a different PHY for the two
-> ethernet ports and supports 2.5G speed. Create a new file for the board
-> reflecting the changes.
-> 
-> Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
-> ---
+bnx2x_get_vf_config() contains NULL-pointer checks for
+mac_obj and vlan_obj.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+The fields checked are assigned to (after macro expansions):
 
-Konrad
+mac_obj = &((vf)->vfqs[0].mac_obj);
+vlan_obj = &((vf)->vfqs[0].vlan_obj);
+
+It is impossible to get NULL for those.
+
+Remove superfluous NULL-pointer check and associated
+unreachable code to improve readability.
+
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+---
+v2:
+  - remove confusing part of commit message as Simon Horman <horms@kernel.org>
+  suggested in https://lore.kernel.org/lkml/20240715181029.GD249423@kernel.org/
+v1: https://lore.kernel.org/lkml/20240712185431.81805-1-kiryushin@ancud.ru/
+---
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c
+index 12198fc3ab22..0f121b15f5d7 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sriov.c
+@@ -2619,10 +2619,6 @@ int bnx2x_get_vf_config(struct net_device *dev, int vfidx,
+ 
+ 	mac_obj = &bnx2x_leading_vfq(vf, mac_obj);
+ 	vlan_obj = &bnx2x_leading_vfq(vf, vlan_obj);
+-	if (!mac_obj || !vlan_obj) {
+-		BNX2X_ERR("VF partially initialized\n");
+-		return -EINVAL;
+-	}
+ 
+ 	ivi->vf = vfidx;
+ 	ivi->qos = 0;
+-- 
+2.43.0
+
