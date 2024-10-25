@@ -1,92 +1,79 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AC3187332
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 02:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B64922B64B
+	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 02:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729823774; cv=none; b=X3WV9kQ0tZ4r5iSID/rvc/Y+Kjvv8aWu4xSSZ1p2V1d37CbJD8q7lKLWqPFchuCSy6z66N4YWtRTCylTDV8zTifwIdxCpwYwZYvIHKvBJ7lPSG9KZjLyrnMras0UrtaF1ebRgogSm8JNXdu/wc/nZeIqv0egXs9102I2oqWEkHY=
+	t=1729824104; cv=none; b=g2ly5rVQMi4fL6pZlRmL6f6nTRpGEZIiArOgqmmShyUh7LMcFCAWN+zKOOqE4Nwe66z7YeVxGm3erLVJB1TL09K1hLxSD17jfJx+XvoSRc4fqcaXUXQs+86K//0STs/fbZKkhbATbteo5PXrjh8JsjArfK8gNC4EX6ie6QHojWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729823774; c=relaxed/simple;
-	bh=8tXTJq0tG/6yIVDyuTeuiExlPBwjmzg1klBdfzn6QvA=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=CI1UkGL6Yi7zho6RU1O0kZt6pxeZQYEh3/aQAftNbllTVGIzfevMOOtD1vbJgzD0eGMgG67ZMZhOYHGRab3/mhUZVkt/c09V2FiBAk8jbKCfutEG/ihALTWSaJqa0KihEXhrLtpdI7sT/Islpnerj22noSjZDk9WLCi75qxepqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wVdCCA57; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wVdCCA57"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1729823769; h=Message-ID:Subject:Date:From:To;
-	bh=8tXTJq0tG/6yIVDyuTeuiExlPBwjmzg1klBdfzn6QvA=;
-	b=wVdCCA577xlJN5RlUSP+GXAsRH7SAPF7ojQue5DvcRQbUS8Yk0kAw2oqWhU6963Rldsw6SqHXIQe2rQkB8Hm58L9+VZornlmIovyXbeJ6+aWkodupERvnrFEfJu1XrbDR1TFYY9OV1z5f3AGzt/WEq8QfCR9pwbb3hnHtsW14Po=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WHqq4m9_1729823767 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 25 Oct 2024 10:36:08 +0800
-Message-ID: <1729823753.4548287-2-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH 1/5] virtio-net: fix overflow inside virtnet_rq_alloc
-Date: Fri, 25 Oct 2024 10:35:53 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- virtualization@lists.linux.dev,
- "Si-Wei Liu" <si-wei.liu@oracle.com>,
- netdev@vger.kernel.org
-References: <20241014031234.7659-1-xuanzhuo@linux.alibaba.com>
- <20241014031234.7659-2-xuanzhuo@linux.alibaba.com>
- <6aaee824-a5df-42a4-b35e-e89756471084@redhat.com>
-In-Reply-To: <6aaee824-a5df-42a4-b35e-e89756471084@redhat.com>
+	s=arc-20240116; t=1729824104; c=relaxed/simple;
+	bh=YLrBgO/XgzYXB+D2+FCvBdd2B8LIU7GK68REM7lPx1Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TV2SXCkfW/TVPP7V6/sFBt5fOBWQdtexxg4Ro/QtTfNyu54l66D+ODG+v7AQ5cPcAD7QcTtKAEkynV9SWXoEGpxqd002dNizzOOjzixQqH8Yqbirc9YEjtmEI9wb9N/GpumPPnsBeRAzID5HU+ArHaoHkTZktsgAo/rLRVqdA5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XZRr95vC0z1ynGG;
+	Fri, 25 Oct 2024 10:41:45 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3707C180044;
+	Fri, 25 Oct 2024 10:41:38 +0800 (CST)
+Received: from [10.174.176.82] (10.174.176.82) by
+ kwepemf500003.china.huawei.com (7.202.181.241) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 25 Oct 2024 10:41:37 +0800
+Message-ID: <9ed41df0-7d35-4f64-87d7-e0717d9c172b@huawei.com>
+Date: Fri, 25 Oct 2024 10:41:22 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net: bcmasp: Add missing of_node_get() before
+ of_find_node_by_name()
+To: Andrew Lunn <andrew@lunn.ch>
+CC: <justin.chen@broadcom.com>, <florian.fainelli@broadcom.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <o.rempel@pengutronix.de>,
+	<kory.maincent@bootlin.com>, <horms@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<chenjun102@huawei.com>
+References: <20241024015909.58654-1-zhangzekun11@huawei.com>
+ <20241024015909.58654-2-zhangzekun11@huawei.com>
+ <d3c3c6b5-499a-4890-9829-ae39022fec87@lunn.ch>
+From: "zhangzekun (A)" <zhangzekun11@huawei.com>
+In-Reply-To: <d3c3c6b5-499a-4890-9829-ae39022fec87@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
 
-On Thu, 17 Oct 2024 15:42:59 +0200, Paolo Abeni <pabeni@redhat.com> wrote:
->
->
-> On 10/14/24 05:12, Xuan Zhuo wrote:
-> > When the frag just got a page, then may lead to regression on VM.
-> > Specially if the sysctl net.core.high_order_alloc_disable value is 1,
-> > then the frag always get a page when do refill.
-> >
-> > Which could see reliable crashes or scp failure (scp a file 100M in size
-> > to VM):
-> >
-> > The issue is that the virtnet_rq_dma takes up 16 bytes at the beginning
-> > of a new frag. When the frag size is larger than PAGE_SIZE,
-> > everything is fine. However, if the frag is only one page and the
-> > total size of the buffer and virtnet_rq_dma is larger than one page, an
-> > overflow may occur.
-> >
-> > Here, when the frag size is not enough, we reduce the buffer len to fix
-> > this problem.
-> >
-> > Fixes: f9dac92ba908 ("virtio_ring: enable premapped mode whatever use_dma_api")
-> > Reported-by: "Si-Wei Liu" <si-wei.liu@oracle.com>
-> > Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->
-> This looks like a fix that should target the net tree, but the following
-> patches looks like net-next material. Any special reason to bundle them
-> together?
 
-Sorry, I forgot to add net-next as a target tree.
 
-This may look like a fix. But the feature was disabled in the last Linux
-version. So the bug cannot be triggered, so we don't need to push to the net
-tree.
+在 2024/10/24 19:56, Andrew Lunn 写道:
+> On Thu, Oct 24, 2024 at 09:59:08AM +0800, Zhang Zekun wrote:
+>> of_find_node_by_name() will decrease the refcount of the device_node.
+>> So, get the device_node before passing to it.
+> 
+> This seems like an odd design. Why does it decrement the reference
+> count?
+> 
+> Rather than adding missing of_node_get() everywhere, should we be
+> thinking about the design and fixing it to be more logical?
+> 
+> 	Andrew
 
-Thanks.
+Hi, Andrew,
 
->
-> Also, please explicitly include the the target tree in the subj on next
-> submissions, thanks!
->
-> Paolo
->
->
+of_find* API is used as a iterater of the for loop defined in 
+"include/linux/of.h", which is already wildly used. I think is 
+reasonable to put the previous node when implement a loop, besides, the 
+functionality has been documented before the definiton of of_find* APIs.
+The logical change of these series of APIs would require a large number 
+of conversions in the driver subsys, and I don't think it it necessary.
+
+Thanks,
+Zekun
