@@ -1,155 +1,352 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511901AAE27
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 08:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A68722B666;
+	Fri, 25 Oct 2024 08:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729845918; cv=none; b=PK2VPtzLBG9GdH1Z3ZmhGk08VIH65N9YDgCcS1Bwtint5FvVmsmzKvriX4kplDHSesmWhP2VVPGBTdd5nvshXK48b3+Yst3Fi3PeM3neccjlOqRdZeLCG+/nVPe6dm1FCKUbj9DNuOszUEGJbcdTyhseMAisOa9NHgh/FZVRHWg=
+	t=1729845951; cv=none; b=EmylY3FnCWxZvscTP2Knrh3XNJF6SvFE4heBr4UfhVlF9uftYO8rA0TWSxZGFAanlQKleD2vbRSVzRMGBzxWyBj+DPqFlTAT8H1LAwonte+TKlC3P+8KjIWJ8qPqJPEtPn/dYLQbh5iWd0c6oVC460uMm/b+klciX/62pDzoeCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729845918; c=relaxed/simple;
-	bh=XuBQGjZ5JOG6MI6CUFZOHw9E0PSTps7gQhy9H7RNdBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tL3EBTyFGSphANPRT4C8fy1FtyySQT563ftafQHFeIm9c1mBiF6kfYXMXl6GZE5kIwKXRgPbXkI2wL8mfqrHBWrTaLUUw5ZgnH005DFEFYduucCoHTRxx2rWE8rkklkRDVprqC209iGi+PXB8JeNxg0ZrcmMSUqJWU8CXFTyfew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XiO26t2i; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1729845951; c=relaxed/simple;
+	bh=C4fWJFLdEqfmiCwfG0ijR0otCuRMO6pfGtCX8B1l6tQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=grYqiJWp3kxKbkVhN8OSROr9lOi60dxAhWBuWuq2on7fM6aZbAbzM4QIGBawwwgJYcjfkm8xdrkNgSz883BwEO49D0xfRlS4FC5MgKtuKQOuGq25xFGS9sGs7n1q9BAmnoeFTLyrB5bgy1SuHvP4IxGdoSFtKaLOdnMufjlfAkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=clx2zOsi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=g3bikHGi; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=clx2zOsi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=g3bikHGi; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XiO26t2i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729845915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="clx2zOsi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="g3bikHGi";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="clx2zOsi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="g3bikHGi"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AA66B1FDD6;
+	Fri, 25 Oct 2024 08:45:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729845946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mhj6VqPM2VjHYMoW6p/lBQKC9GMLxj15xt9OEYJsl9I=;
-	b=XiO26t2iN2L+Yfx9omtce20OApT/+dFxPpav03frAEfAtTLaC4KzW6u4yYzGqOSVNgW721
-	y7AV9FCTdDs4gKlb/GJJH/fk4xEAvngX+9p0S1MFSOPgypIZgFVuVMd37FR2E4FzlcMeS2
-	J6c3psqHJyvqaKkTQINdeP0NzTSWwc4=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-kxMXtWuYMMKz3C91HNp9-g-1; Fri, 25 Oct 2024 04:45:13 -0400
-X-MC-Unique: kxMXtWuYMMKz3C91HNp9-g-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7b144a054baso618062485a.0
-        for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 01:45:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729845913; x=1730450713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mhj6VqPM2VjHYMoW6p/lBQKC9GMLxj15xt9OEYJsl9I=;
-        b=a2tDU2dwclL/OaPKQiaZlPh2xKn0lSdouhLBzL1vbXn1+mnB5UKXYOZqVVIRME7Mn3
-         jHtswY8AX4o76ZLIJhjBhAWBVttTWCbOrCxQKlRgxFJwoUM+NyDHz26vdMLa/Tk7yKiZ
-         pHwqopZP2hbORiMryWUXY8aCiFxSjc6wKEhThpvId27+dSaeeODsiN9ZQLuOoSBedBSd
-         /4Omk+6gtdnsb2VpfGj1QXCGB9SaKxE48qmIAaDt8JkP+cYDEVMzVidXq6VEjFYaaSyv
-         VLtVNo7P4r04E9la6kA0s4+41ryX3hzih58ToLlT18kW3CkXF/DO9mNqjwOHHWI1WeZk
-         GgjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXgNBkGOrbf4YihQTtwV1MSPQdIH8/FuuB4JJQuOtXAx+dO5+Ksm3KJrJ1ah6BwJcfC0r30gg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1MO8z0F3OgxCdnW0i6E8dbL4+aRQwCiwEWEfZ0SB/xprZrU0L
-	Fbn3Uaju1Qg+Yx/cvLSmlgXLuuxCHtckt8ZduZjqNPX0mbRQfLrDhP6VdFMIKX6X5OO8VPiMzgh
-	TNhs5kvtV9nMZoofls4kTLLK+7rk0AtZsrXwwa2Q37DLqLxFWF0yJAA==
-X-Received: by 2002:a05:620a:198a:b0:7b1:4783:aa2 with SMTP id af79cd13be357-7b1865c79bemr699920485a.7.1729845913024;
-        Fri, 25 Oct 2024 01:45:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa+1dfhcJC1eGAt2GZOLgNSzedWqpxn8NM3WyYhqUZ/YN5IhzfELtJw11IJr9h/YP3u/5+aw==
-X-Received: by 2002:a05:620a:198a:b0:7b1:4783:aa2 with SMTP id af79cd13be357-7b1865c79bemr699917685a.7.1729845912633;
-        Fri, 25 Oct 2024 01:45:12 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-231.retail.telecomitalia.it. [79.46.200.231])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d27a895sm35160185a.19.2024.10.25.01.45.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 01:45:12 -0700 (PDT)
-Date: Fri, 25 Oct 2024 10:45:06 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, syzbot <syzkaller@googlegroups.com>, 
-	Ignat Korchagin <ignat@cloudflare.com>, Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: Re: [PATCH net-next] vsock: do not leave dangling sk pointer in
- vsock_create()
-Message-ID: <ftgql72hggzafexvpfqxfkimf22joj2inlywipbajv6t3ekly4@yxotdtqqpdyv>
-References: <20241022134819.1085254-1-edumazet@google.com>
+	bh=fLLgMgD1WuFn/eZRfUUwEempoL5IxybItGs0mIW5a9c=;
+	b=clx2zOsiRnAuc/eTROpKVLO0ZG2bWwOUHl34fY82qjlAR59nmmv9gR3LTJjwI7qQYdy+Va
+	+L4ZLvLaaLX3fgCTVEAvLvlG8BUUEfsdsnwqtRtQXjsQzc/CTJMC5EoXs1I0X1WuxtBHMj
+	SGDUlg6cg2a43qISAqaOgFi37jxdQE4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729845946;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fLLgMgD1WuFn/eZRfUUwEempoL5IxybItGs0mIW5a9c=;
+	b=g3bikHGiSMvF/vrKNbyrTxKTQLKBT4FQ0i45X842GsWYwukqgd4FAz50GQEct1VSruaxQ8
+	VZrEyDx/K8YlfIAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=clx2zOsi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=g3bikHGi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729845946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fLLgMgD1WuFn/eZRfUUwEempoL5IxybItGs0mIW5a9c=;
+	b=clx2zOsiRnAuc/eTROpKVLO0ZG2bWwOUHl34fY82qjlAR59nmmv9gR3LTJjwI7qQYdy+Va
+	+L4ZLvLaaLX3fgCTVEAvLvlG8BUUEfsdsnwqtRtQXjsQzc/CTJMC5EoXs1I0X1WuxtBHMj
+	SGDUlg6cg2a43qISAqaOgFi37jxdQE4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729845946;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fLLgMgD1WuFn/eZRfUUwEempoL5IxybItGs0mIW5a9c=;
+	b=g3bikHGiSMvF/vrKNbyrTxKTQLKBT4FQ0i45X842GsWYwukqgd4FAz50GQEct1VSruaxQ8
+	VZrEyDx/K8YlfIAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B42513B18;
+	Fri, 25 Oct 2024 08:45:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0kI8DblaG2dPaAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 25 Oct 2024 08:45:45 +0000
+Date: Fri, 25 Oct 2024 10:46:46 +0200
+Message-ID: <878quctvrd.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Takashi Iwai <tiwai@suse.de>,	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Basavaraj Natikar <basavaraj.natikar@amd.com>,	Jiri Kosina
+ <jikos@kernel.org>,	Benjamin Tissoires <bentiss@kernel.org>,	Arnd Bergmann
+ <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,	Alex
+ Dubov <oakad@yahoo.com>,	Sudarsana Kalluru <skalluru@marvell.com>,	Manish
+ Chopra <manishc@marvell.com>,	"David S. Miller" <davem@davemloft.net>,	Eric
+ Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,	Paolo
+ Abeni <pabeni@redhat.com>,	Rasesh Mody <rmody@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com,	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>,	Kalle Valo <kvalo@kernel.org>,
+	Sanjay R Mehta <sanju.mehta@amd.com>,	Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>,	Jon Mason <jdmason@kudzu.us>,	Dave Jiang
+ <dave.jiang@intel.com>,	Allen Hubbe <allenbh@gmail.com>,	Bjorn Helgaas
+ <bhelgaas@google.com>,	Alex Williamson <alex.williamson@redhat.com>,
+	Juergen Gross <jgross@suse.com>,	Stefano Stabellini
+ <sstabellini@kernel.org>,	Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,	Jaroslav Kysela <perex@perex.cz>,	Takashi
+ Iwai <tiwai@suse.com>,	Chen Ni <nichen@iscas.ac.cn>,	Mario Limonciello
+ <mario.limonciello@amd.com>,	Ricky Wu <ricky_wu@realtek.com>,	Al Viro
+ <viro@zeniv.linux.org.uk>,	Breno Leitao <leitao@debian.org>,	Kevin Tian
+ <kevin.tian@intel.com>,	Thomas Gleixner <tglx@linutronix.de>,	Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,	Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>,	Mostafa Saleh
+ <smostafa@google.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Yi Liu
+ <yi.l.liu@intel.com>,	Christian Brauner <brauner@kernel.org>,	Ankit Agrawal
+ <ankita@nvidia.com>,	Eric Auger <eric.auger@redhat.com>,	Reinette Chatre
+ <reinette.chatre@intel.com>,	Ye Bin <yebin10@huawei.com>,	Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,	Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,	Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,	Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,	Rui Salvaterra <rsalvaterra@gmail.com>,
+	linux-ide@vger.kernel.org,	linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org,	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of pcim_intx()
+In-Reply-To: <ae081c36c49733b007a8946dceeec0af94fc449a.camel@redhat.com>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	<20241015185124.64726-3-pstanner@redhat.com>
+	<87v7xk2ps5.wl-tiwai@suse.de>
+	<6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
+	<87ttd2276j.wl-tiwai@suse.de>
+	<aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
+	<875xphzeun.wl-tiwai@suse.de>
+	<ae081c36c49733b007a8946dceeec0af94fc449a.camel@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241022134819.1085254-1-edumazet@google.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AA66B1FDD6
+X-Spam-Score: -3.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[yahoo.com];
+	RCVD_TLS_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,kernel.org,omp.ru,amd.com,arndb.de,linuxfoundation.org,yahoo.com,marvell.com,davemloft.net,google.com,redhat.com,quantenna.com,gmail.com,kudzu.us,intel.com,suse.com,epam.com,perex.cz,iscas.ac.cn,realtek.com,zeniv.linux.org.uk,debian.org,linutronix.de,linux.intel.com,ziepe.ca,nvidia.com,huawei.com,invisiblethingslab.com,linux.dev,vger.kernel.org,lists.linux.dev,lists.xenproject.org];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_GT_50(0.00)[67];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Tue, Oct 22, 2024 at 01:48:19PM +0000, Eric Dumazet wrote:
->syzbot was able to trigger the following warning after recent
->core network cleanup.
->
->On error vsock_create() frees the allocated sk object, but sock_init_data()
->has already attached it to the provided sock object.
->
->We must clear sock->sk to avoid possible use-after-free later.
->
->WARNING: CPU: 0 PID: 5282 at net/socket.c:1581 __sock_create+0x897/0x950 net/socket.c:1581
->Modules linked in:
->CPU: 0 UID: 0 PID: 5282 Comm: syz.2.43 Not tainted 6.12.0-rc2-syzkaller-00667-g53bac8330865 #0
->Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-> RIP: 0010:__sock_create+0x897/0x950 net/socket.c:1581
->Code: 7f 06 01 65 48 8b 34 25 00 d8 03 00 48 81 c6 b0 08 00 00 48 c7 c7 60 0b 0d 8d e8 d4 9a 3c 02 e9 11 f8 ff ff e8 0a ab 0d f8 90 <0f> 0b 90 e9 82 fd ff ff 89 e9 80 e1 07 fe c1 38 c1 0f 8c c7 f8 ff
->RSP: 0018:ffffc9000394fda8 EFLAGS: 00010293
->RAX: ffffffff89873c46 RBX: ffff888079f3c818 RCX: ffff8880314b9e00
->RDX: 0000000000000000 RSI: 00000000ffffffed RDI: 0000000000000000
->RBP: ffffffff8d3337f0 R08: ffffffff8987384e R09: ffffffff8989473a
->R10: dffffc0000000000 R11: fffffbfff203a276 R12: 00000000ffffffed
->R13: ffff888079f3c8c0 R14: ffffffff898736e7 R15: dffffc0000000000
->FS:  00005555680ab500(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
->CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->CR2: 00007f22b11196d0 CR3: 00000000308c0000 CR4: 00000000003526f0
->DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->Call Trace:
-> <TASK>
->  sock_create net/socket.c:1632 [inline]
->  __sys_socket_create net/socket.c:1669 [inline]
->  __sys_socket+0x150/0x3c0 net/socket.c:1716
->  __do_sys_socket net/socket.c:1730 [inline]
->  __se_sys_socket net/socket.c:1728 [inline]
->  __x64_sys_socket+0x7a/0x90 net/socket.c:1728
->  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-> entry_SYSCALL_64_after_hwframe+0x77/0x7f
->RIP: 0033:0x7f22b117dff9
->Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
->RSP: 002b:00007fff56aec0e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000029
->RAX: ffffffffffffffda RBX: 00007f22b1335f80 RCX: 00007f22b117dff9
->RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000028
->RBP: 00007f22b11f0296 R08: 0000000000000000 R09: 0000000000000000
->R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
->R13: 00007f22b1335f80 R14: 00007f22b1335f80 R15: 00000000000012dd
->
->Fixes: 48156296a08c ("net: warn, if pf->create does not clear sock->sk on error")
->Reported-by: syzbot <syzkaller@googlegroups.com>
->Signed-off-by: Eric Dumazet <edumazet@google.com>
->Cc: Ignat Korchagin <ignat@cloudflare.com>
->Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
->---
-> net/vmw_vsock/af_vsock.c | 1 +
-> 1 file changed, 1 insertion(+)
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index 35681adedd9aaec3565495158f5342b8aa76c9bc..109b7a0bd0714c9a2d5c9dd58421e7e9344a8474 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -2417,6 +2417,7 @@ static int vsock_create(struct net *net, struct socket *sock,
-> 	if (sock->type == SOCK_DGRAM) {
-> 		ret = vsock_assign_transport(vsk, NULL);
-> 		if (ret < 0) {
->+			sock->sk = NULL;
-> 			sock_put(sk);
-> 			return ret;
+On Fri, 25 Oct 2024 10:37:57 +0200,
+Philipp Stanner wrote:
+> 
+> On Thu, 2024-10-24 at 17:43 +0200, Takashi Iwai wrote:
+> > On Thu, 24 Oct 2024 10:02:59 +0200,
+> > Philipp Stanner wrote:
+> > > 
+> > > On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
+> > > > On Wed, 23 Oct 2024 15:50:09 +0200,
+> > > > Philipp Stanner wrote:
+> > > > > 
+> > > > > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
+> > > > > > On Tue, 15 Oct 2024 20:51:12 +0200,
+> > > > > > Philipp Stanner wrote:
+> > > > > > > 
+> > > > > > > pci_intx() is a hybrid function which can sometimes be
+> > > > > > > managed
+> > > > > > > through
+> > > > > > > devres. To remove this hybrid nature from pci_intx(), it is
+> > > > > > > necessary to
+> > > > > > > port users to either an always-managed or a never-managed
+> > > > > > > version.
+> > > > > > > 
+> > > > > > > hda_intel enables its PCI-Device with pcim_enable_device().
+> > > > > > > Thus,
+> > > > > > > it needs
+> > > > > > > the always-managed version.
+> > > > > > > 
+> > > > > > > Replace pci_intx() with pcim_intx().
+> > > > > > > 
+> > > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > > > ---
+> > > > > > >  sound/pci/hda/hda_intel.c | 2 +-
+> > > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > > > 
+> > > > > > > diff --git a/sound/pci/hda/hda_intel.c
+> > > > > > > b/sound/pci/hda/hda_intel.c
+> > > > > > > index b4540c5cd2a6..b44ca7b6e54f 100644
+> > > > > > > --- a/sound/pci/hda/hda_intel.c
+> > > > > > > +++ b/sound/pci/hda/hda_intel.c
+> > > > > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
+> > > > > > > *chip,
+> > > > > > > int do_disconnect)
+> > > > > > >  	}
+> > > > > > >  	bus->irq = chip->pci->irq;
+> > > > > > >  	chip->card->sync_irq = bus->irq;
+> > > > > > > -	pci_intx(chip->pci, !chip->msi);
+> > > > > > > +	pcim_intx(chip->pci, !chip->msi);
+> > > > > > >  	return 0;
+> > > > > > >  }
+> > > > > > >  
+> > > > > > 
+> > > > > > Hm, it's OK-ish to do this as it's practically same as what
+> > > > > > pci_intx()
+> > > > > > currently does.  But, the current code can be a bit
+> > > > > > inconsistent
+> > > > > > about
+> > > > > > the original intx value.  pcim_intx() always stores !enable
+> > > > > > to
+> > > > > > res->orig_intx unconditionally, and it means that the
+> > > > > > orig_intx
+> > > > > > value
+> > > > > > gets overridden at each time pcim_intx() gets called.
+> > > > > 
+> > > > > Yes.
+> > > > > 
+> > > > > > 
+> > > > > > Meanwhile, HD-audio driver does release and re-acquire the
+> > > > > > interrupt
+> > > > > > after disabling MSI when something goes wrong, and pci_intx()
+> > > > > > call
+> > > > > > above is a part of that procedure.  So, it can rewrite the
+> > > > > > res->orig_intx to another value by retry without MSI.  And
+> > > > > > after
+> > > > > > the
+> > > > > > driver removal, it'll lead to another state.
+> > > > > 
+> > > > > I'm not sure that I understand this paragraph completely.
+> > > > > Still,
+> > > > > could
+> > > > > a solution for the driver on the long-term just be to use
+> > > > > pci_intx()?
+> > > > 
+> > > > pci_intx() misses the restore of the original value, so it's no
+> > > > long-term solution, either.
+> > > 
+> > > Sure that is missing – I was basically asking whether the driver
+> > > could
+> > > live without that feature.
+> > > 
+> > > Consider that point obsolete, see below
+> > > 
+> > > > 
+> > > > What I meant is that pcim_intx() blindly assumes the negative of
+> > > > the
+> > > > passed argument as the original state, which isn't always true. 
+> > > > e.g.
+> > > > when the driver calls it twice with different values, a wrong
+> > > > value
+> > > > may be remembered.
+> > > 
+> > > Ah, I see – thoguh the issue is when it's called several times with
+> > > the
+> > > *same* value, isn't it?
+> > > 
+> > > E.g.
+> > > 
+> > > pcim_intx(pdev, 1); // 0 is remembered as the old value
+> > > pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
+> > > 
+> > > Also, it would seem that calling the function for the first time
+> > > like
+> > > that:
+> > > 
+> > > pcim_intx(pdev, 0); // old value: 1
+> > > 
+> > > is at least incorrect, because INTx should be 0 per default,
+> > > shouldn't
+> > > it? Could then even be a 1st class bug, because INTx would end up
+> > > being
+> > > enabled despite having been disabled all the time.
+> > 
+> > Yeah, and the unexpected restore can happen even with a single call
+> > of
+> > pcim_intx(), if the driver calls it unnecessarily.
+> > 
+> > > > That said, I thought of something like below.
+> > > 
+> > > At first glance that looks like a good idea to me, thanks for
+> > > working
+> > > this out!
+> > > 
+> > > IMO you can submit that as a patch so we can discuss it separately.
+> > 
+> > Sure, I'm going to submit later.
+> 
+> I just took a look into the old implementation of pci_intx() (there was
+> no pcim_intx() back then), before I started cleaning up PCI's devres.
+> This what it looked like before
+> 25216afc9db53d85dc648aba8fb7f6d31f2c8731:
+> 
+> void pci_intx(struct pci_dev *pdev, int enable)
+> {
+> 	u16 pci_command, new;
+> 
+> 	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
+> 
+> 	if (enable)
+> 		new = pci_command & ~PCI_COMMAND_INTX_DISABLE;
+> 	else
+> 		new = pci_command | PCI_COMMAND_INTX_DISABLE;
+> 
+> 	if (new != pci_command) {
+> 		struct pci_devres *dr;
+> 
+> 		pci_write_config_word(pdev, PCI_COMMAND, new);
+> 
+> 		dr = find_pci_dr(pdev);
+> 		if (dr && !dr->restore_intx) {
+> 			dr->restore_intx = 1;
+> 			dr->orig_intx = !enable;
 > 		}
->-- 
->2.47.0.105.g07ac214952-goog
->
->
+> 	}
+> }
+> EXPORT_SYMBOL_GPL(pci_intx);
+> 
+> If I'm not mistaken the old version did not have the problem because
+> the value to be restored only changed if new != pci_command.
+> 
+> That should always be correct, what do you think?
+> 
+> If so, only my commit 25216afc9db53d85dc648aba8fb7f6d31f2c8731 needs to
+> be fixed.
 
+Yes, it looks so.  Fortunately my submitted patch pointed to the right
+Fixes tag :)
+
+
+thanks,
+
+Takashi
