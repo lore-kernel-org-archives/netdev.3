@@ -1,394 +1,218 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3831D54EA
-	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 09:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1742D1DACB6;
+	Fri, 25 Oct 2024 09:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729847705; cv=none; b=nwyFSSaUwfoHwBFsq2AHPb4b/xbm2T9VqvtXYGJYLlQqEb5VXb96x7LYH4HvBkTe/Hb+nMt4mf8IrZfkw8zBmsRonMvU7vuOo8xzh2ufSv/9pG1AFqC1h2op5XbFNzo+4Icy0FIS9rpt79wqaz4Y9xcZsFtryQCZgdXaszZpNyc=
+	t=1729847708; cv=none; b=NYQ8G+kNhxwFprT3xeOA4ziU6y+mmJBWY6YOeEKYfP6alQsyTTySf2VlKDCg5k4YGkLtB+egAE9hXu7E9P0P0xUTB3xBBa7G/c/ZdwP7msMpyDnjqf/NA8yKIKFAupVmtMQfnz8L72yDepfpGGJ973mvu5Z1ujy/fXCLhs/R0EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729847705; c=relaxed/simple;
-	bh=NHB8DY+derJjmpIyfM7tZseTb7zJiJA5OcsJ97CZXUw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kpgJMe+2GhXSjlVgvmcsPpAG9M9l1xx/CQACtAy0uXD2md5uQ7HP0oKZQsRGaY0yTUqn1fVoqj1Yh1jOAXE5oQTfBuwd+Ey17npvqriVYNzwrCXs1t/bB36MqjieGxuOackrfz+zw32yd2lEXpxCMKqt8uh3nkY16PpvsmcHnmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=AFbKW+oW; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1729847708; c=relaxed/simple;
+	bh=4XMDoD+OeLfbg1UVKD38t5UItaObkTJ3EMHjIj5Uj94=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PDy3az4Rdp0KQgpSbg2rgGy0ktF06lKxeM//FG/aqIxqL3as9+PcUayKUK/kxz7GVdh945MnvEjulgZ5/8+/ZzAlxJTggSa2l+AQe3UVfr/9rKXLvlZsP3AZVEdRAJ8RNX1wPjV/mIacXpL6ECCd2kv69enWiB33zcE38v7hOio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EMX2wLbv; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="AFbKW+oW"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4314c452180so19715375e9.0
-        for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 02:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1729847699; x=1730452499; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TpOrbfvwpuTF+GzXl29fSyJFnaQGQgrW9YLo7vYL7GQ=;
-        b=AFbKW+oWgHgRYUIdMXmXm8GIv9x8C8WofaMk9n5gopC2Yk+XJ5lzskt2eHzGjGD+FP
-         9LzMUNG39G/YP4qlvxDVFB0i+NewalQYNUxolxYFhvh1KXWJd7dfuC3rcdcIvQ1jOI8N
-         HuOdqupVE6LvpAUyyi91u76lrgOR7Otqrjmo32xW8yqZcNtqgRBfhEj4nHUFAEGdmVQD
-         uudLbyKVsDv2IVbhfPiudMo2Infh3rJpStDtWHihCkSi5VMW/e6b08IVw+/6vDI2tp0i
-         vtnE0d6CyiumXBxf3ZPWHtJqaX/pG8MAS1WoOycYFsu1UdNf/BJdMtJ9+e35xBHnTpFA
-         UupQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729847699; x=1730452499;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TpOrbfvwpuTF+GzXl29fSyJFnaQGQgrW9YLo7vYL7GQ=;
-        b=wuFuj0M8HT0lNsl/ZPiayrqM6n6xDUNPT+Kv1KSvOnPzUyHpprVyJjZhsUrSQ6fyHD
-         rV5pBgCbuDJI368pOjjHKXJ7MvmYYQ6IV6zoJpMtBu8d6c61IsZH4uOOE0FV1OGm5wgU
-         Q1jOFsIZJvqDf+7TQY9u1nIOVc1gojO5Kua1V807R2gfzXjQUnXK24CPtCEtEMg7y87J
-         7ECbXXPOCkmNZHCI91nB7c6GWedI7GddsltFI9fJoysH1AhzPBfVUegH0QnSD+7E4Wuv
-         XJl1wO8Tr1+ug27PHct4IIbq+kthopnXdy9hhHEtMC2HVFb0QIHpK7bjiSA8tcCvZqj3
-         Ct2g==
-X-Gm-Message-State: AOJu0YxDL21YLcizY+bvJH7nAEcX0UjmazK3+6lRDMo4povP5clvl6zE
-	5W1CqayrdXnz+10BBp90224AXigY3+4rfGYP5LIP+eseYTnNPfKvpMYzjB2YrD4=
-X-Google-Smtp-Source: AGHT+IG77+KbHvkxlJQDbqmfLiTOSMnWsDeEmThpIwLS5v4uzjizAkNCiG9ot5DqyJpXYPTH/bZTIw==
-X-Received: by 2002:a05:600c:3516:b0:431:4e25:fe31 with SMTP id 5b1f17b1804b1-4318bc8a372mr35051045e9.12.1729847698831;
-        Fri, 25 Oct 2024 02:14:58 -0700 (PDT)
-Received: from serenity.mandelbit.com ([2001:67c:2fbc:1:676b:7d84:55a4:bea5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b55f484sm41981485e9.13.2024.10.25.02.14.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 02:14:58 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-Date: Fri, 25 Oct 2024 11:14:03 +0200
-Subject: [PATCH net-next v10 04/23] ovpn: add basic interface
- creation/destruction/management routines
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EMX2wLbv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729847706; x=1761383706;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4XMDoD+OeLfbg1UVKD38t5UItaObkTJ3EMHjIj5Uj94=;
+  b=EMX2wLbvBL+z++EU8aXIWmakBrS2W6+gSnZQAcAFZhn1cchMcslEfDJM
+   0gs8jStoRqSzyz+tYMTXqBFY1UvzjZrP/kmkKnR9GUrFStk+P7QAVnsY7
+   53+WNxBpJiVXjl9oq1TO5ndG0iX8uToUjaFCrn0qL8n/0HzhO8wVdfejP
+   yga/DJ2GACQqzrUkE6PFJPdZKcLaoty0HQkclhxHY0215mTs9bnh23noK
+   /2IgkSCgLIDozP8JrIQ3nKP4fsbQdsCCbP3UmWFKcpjso6oT5vOq8Vm2S
+   xUgR6ZeJ4NuLcm/e0Tlov9RV+2bs0feDui7W7Xd+jAz0/+PAslb+Xs+5E
+   g==;
+X-CSE-ConnectionGUID: +H4Tfs8MS+m8Kq+JUvJ+Ng==
+X-CSE-MsgGUID: iqwsR7vBRr6Otv3herqZuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52066589"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="52066589"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 02:15:01 -0700
+X-CSE-ConnectionGUID: UyiVqf9YRASFXPSsA9mn2Q==
+X-CSE-MsgGUID: HLEMjEXGRF62b6hBGS5IGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; 
+   d="scan'208";a="85653620"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 25 Oct 2024 02:14:54 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t4GPD-000XyP-17;
+	Fri, 25 Oct 2024 09:14:51 +0000
+Date: Fri, 25 Oct 2024 17:14:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>, kgraul@linux.ibm.com,
+	wenjia@linux.ibm.com, jaka@linux.ibm.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	pabeni@redhat.com, song@kernel.org, sdf@google.com,
+	haoluo@google.com, yhs@fb.com, edumazet@google.com,
+	john.fastabend@gmail.com, kpsingh@kernel.org, jolsa@kernel.org,
+	guwen@linux.alibaba.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, kuba@kernel.org,
+	davem@davemloft.net, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org, dtcccc@linux.alibaba.com
+Subject: Re: [PATCH bpf-next 2/4] bpf: allow to access bpf_prog during
+ bpf_struct_access
+Message-ID: <202410251600.4VOzw93J-lkp@intel.com>
+References: <1729737768-124596-3-git-send-email-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241025-b4-ovpn-v10-4-b87530777be7@openvpn.net>
-References: <20241025-b4-ovpn-v10-0-b87530777be7@openvpn.net>
-In-Reply-To: <20241025-b4-ovpn-v10-0-b87530777be7@openvpn.net>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>, 
- Antonio Quartulli <antonio@openvpn.net>, Shuah Khan <shuah@kernel.org>, 
- donald.hunter@gmail.com, sd@queasysnail.net, ryazanov.s.a@gmail.com, 
- Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8751; i=antonio@openvpn.net;
- h=from:subject:message-id; bh=NHB8DY+derJjmpIyfM7tZseTb7zJiJA5OcsJ97CZXUw=;
- b=owEBbQGS/pANAwAIAQtw5TqgONWHAcsmYgBnG2GYGEzAUjR6mDIcvWuYGZbfm8ATX6IaFMjdy
- UpjjWUniFWJATMEAAEIAB0WIQSZq9xs+NQS5N5fwPwLcOU6oDjVhwUCZxthmAAKCRALcOU6oDjV
- h6BeCACDQv15QbzlXRSejuLys6ioWgs+qzms29dkyfEYtVmpq4JL61M120/KkNI52tMnkizzTq9
- R2Rj9ptIHL8xgrxNldCUiOuyUIkN0zHhUxapfgYLvD6zyHGNdGrv64P3XbKPXsqwL2H054uEduz
- JiNDahgxRG8mus75qiSrHJV6/v9xycqJUc/Q29JgxvFI2VpL48RWi039nPzIs+0hsiDV3knWgSR
- ZbxKsTKKS3Y/HN3Cn16u6ynqaxKP4qkE2qxvC5bZOD2q7TiOtO4C3IvnjQD0Z1hzz57rY+vPnsr
- s+r7IVLESEfvE5hEdvh87YMywA1ZIsnhr8eLARrv80Z01aH1
-X-Developer-Key: i=antonio@openvpn.net; a=openpgp;
- fpr=CABDA1282017C267219885C748F0CCB68F59D14C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1729737768-124596-3-git-send-email-alibuda@linux.alibaba.com>
 
-Add basic infrastructure for handling ovpn interfaces.
+Hi Wythe,
 
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
----
- drivers/net/ovpn/main.c       | 115 ++++++++++++++++++++++++++++++++++++++++--
- drivers/net/ovpn/main.h       |   7 +++
- drivers/net/ovpn/ovpnstruct.h |   8 +++
- drivers/net/ovpn/packet.h     |  40 +++++++++++++++
- include/uapi/linux/if_link.h  |  15 ++++++
- 5 files changed, 180 insertions(+), 5 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-index d5bdb0055f4dd3a6e32dc6e792bed1e7fd59e101..eead7677b8239eb3c48bb26ca95492d88512b8d4 100644
---- a/drivers/net/ovpn/main.c
-+++ b/drivers/net/ovpn/main.c
-@@ -10,18 +10,52 @@
- #include <linux/genetlink.h>
- #include <linux/module.h>
- #include <linux/netdevice.h>
-+#include <linux/inetdevice.h>
-+#include <net/ip.h>
- #include <net/rtnetlink.h>
--#include <uapi/linux/ovpn.h>
-+#include <uapi/linux/if_arp.h>
- 
- #include "ovpnstruct.h"
- #include "main.h"
- #include "netlink.h"
- #include "io.h"
-+#include "packet.h"
- 
- /* Driver info */
- #define DRV_DESCRIPTION	"OpenVPN data channel offload (ovpn)"
- #define DRV_COPYRIGHT	"(C) 2020-2024 OpenVPN, Inc."
- 
-+static void ovpn_struct_free(struct net_device *net)
-+{
-+}
-+
-+static int ovpn_net_open(struct net_device *dev)
-+{
-+	netif_tx_start_all_queues(dev);
-+	return 0;
-+}
-+
-+static int ovpn_net_stop(struct net_device *dev)
-+{
-+	netif_tx_stop_all_queues(dev);
-+	return 0;
-+}
-+
-+static const struct net_device_ops ovpn_netdev_ops = {
-+	.ndo_open		= ovpn_net_open,
-+	.ndo_stop		= ovpn_net_stop,
-+	.ndo_start_xmit		= ovpn_net_xmit,
-+};
-+
-+static const struct device_type ovpn_type = {
-+	.name = OVPN_FAMILY_NAME,
-+};
-+
-+static const struct nla_policy ovpn_policy[IFLA_OVPN_MAX + 1] = {
-+	[IFLA_OVPN_MODE] = NLA_POLICY_RANGE(NLA_U8, OVPN_MODE_P2P,
-+					    OVPN_MODE_MP),
-+};
-+
- /**
-  * ovpn_dev_is_valid - check if the netdevice is of type 'ovpn'
-  * @dev: the interface to check
-@@ -33,16 +67,76 @@ bool ovpn_dev_is_valid(const struct net_device *dev)
- 	return dev->netdev_ops->ndo_start_xmit == ovpn_net_xmit;
- }
- 
-+static void ovpn_setup(struct net_device *dev)
-+{
-+	/* compute the overhead considering AEAD encryption */
-+	const int overhead = sizeof(u32) + NONCE_WIRE_SIZE + 16 +
-+			     sizeof(struct udphdr) +
-+			     max(sizeof(struct ipv6hdr), sizeof(struct iphdr));
-+
-+	netdev_features_t feat = NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_RXCSUM |
-+				 NETIF_F_GSO | NETIF_F_GSO_SOFTWARE |
-+				 NETIF_F_HIGHDMA;
-+
-+	dev->needs_free_netdev = true;
-+
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
-+
-+	dev->netdev_ops = &ovpn_netdev_ops;
-+
-+	dev->priv_destructor = ovpn_struct_free;
-+
-+	dev->hard_header_len = 0;
-+	dev->addr_len = 0;
-+	dev->mtu = ETH_DATA_LEN - overhead;
-+	dev->min_mtu = IPV4_MIN_MTU;
-+	dev->max_mtu = IP_MAX_MTU - overhead;
-+
-+	dev->type = ARPHRD_NONE;
-+	dev->flags = IFF_POINTOPOINT | IFF_NOARP;
-+	dev->priv_flags |= IFF_NO_QUEUE;
-+
-+	dev->lltx = true;
-+	dev->features |= feat;
-+	dev->hw_features |= feat;
-+	dev->hw_enc_features |= feat;
-+
-+	dev->needed_headroom = OVPN_HEAD_ROOM;
-+	dev->needed_tailroom = OVPN_MAX_PADDING;
-+
-+	SET_NETDEV_DEVTYPE(dev, &ovpn_type);
-+}
-+
- static int ovpn_newlink(struct net *src_net, struct net_device *dev,
- 			struct nlattr *tb[], struct nlattr *data[],
- 			struct netlink_ext_ack *extack)
- {
--	return -EOPNOTSUPP;
-+	struct ovpn_struct *ovpn = netdev_priv(dev);
-+	enum ovpn_mode mode = OVPN_MODE_P2P;
-+
-+	if (data && data[IFLA_OVPN_MODE]) {
-+		mode = nla_get_u8(data[IFLA_OVPN_MODE]);
-+		netdev_dbg(dev, "setting device mode: %u\n", mode);
-+	}
-+
-+	ovpn->dev = dev;
-+	ovpn->mode = mode;
-+
-+	/* turn carrier explicitly off after registration, this way state is
-+	 * clearly defined
-+	 */
-+	netif_carrier_off(dev);
-+
-+	return register_netdevice(dev);
- }
- 
- static struct rtnl_link_ops ovpn_link_ops = {
- 	.kind = OVPN_FAMILY_NAME,
- 	.netns_refund = false,
-+	.priv_size = sizeof(struct ovpn_struct),
-+	.setup = ovpn_setup,
-+	.policy = ovpn_policy,
-+	.maxtype = IFLA_OVPN_MAX,
- 	.newlink = ovpn_newlink,
- 	.dellink = unregister_netdevice_queue,
- };
-@@ -51,26 +145,37 @@ static int ovpn_netdev_notifier_call(struct notifier_block *nb,
- 				     unsigned long state, void *ptr)
- {
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct ovpn_struct *ovpn;
- 
- 	if (!ovpn_dev_is_valid(dev))
- 		return NOTIFY_DONE;
- 
-+	ovpn = netdev_priv(dev);
-+
- 	switch (state) {
- 	case NETDEV_REGISTER:
--		/* add device to internal list for later destruction upon
--		 * unregistration
--		 */
-+		ovpn->registered = true;
- 		break;
- 	case NETDEV_UNREGISTER:
-+		/* twiddle thumbs on netns device moves */
-+		if (dev->reg_state != NETREG_UNREGISTERING)
-+			break;
-+
- 		/* can be delivered multiple times, so check registered flag,
- 		 * then destroy the interface
- 		 */
-+		if (!ovpn->registered)
-+			return NOTIFY_DONE;
-+
-+		netif_carrier_off(dev);
-+		ovpn->registered = false;
- 		break;
- 	case NETDEV_POST_INIT:
- 	case NETDEV_GOING_DOWN:
- 	case NETDEV_DOWN:
- 	case NETDEV_UP:
- 	case NETDEV_PRE_UP:
-+		break;
- 	default:
- 		return NOTIFY_DONE;
- 	}
-diff --git a/drivers/net/ovpn/main.h b/drivers/net/ovpn/main.h
-index a3215316c49bfcdf2496590bac878f145b8b27fd..0740a05070a817e0daea7b63a1f4fcebd274eb37 100644
---- a/drivers/net/ovpn/main.h
-+++ b/drivers/net/ovpn/main.h
-@@ -12,4 +12,11 @@
- 
- bool ovpn_dev_is_valid(const struct net_device *dev);
- 
-+#define SKB_HEADER_LEN                                       \
-+	(max(sizeof(struct iphdr), sizeof(struct ipv6hdr)) + \
-+	 sizeof(struct udphdr) + NET_SKB_PAD)
-+
-+#define OVPN_HEAD_ROOM ALIGN(16 + SKB_HEADER_LEN, 4)
-+#define OVPN_MAX_PADDING 16
-+
- #endif /* _NET_OVPN_MAIN_H_ */
-diff --git a/drivers/net/ovpn/ovpnstruct.h b/drivers/net/ovpn/ovpnstruct.h
-index e3e4df6418b081436378fc51d98db5bd7b5d1fbe..211df871538d34fdff90d182f21a0b0fb11b28ad 100644
---- a/drivers/net/ovpn/ovpnstruct.h
-+++ b/drivers/net/ovpn/ovpnstruct.h
-@@ -11,15 +11,23 @@
- #define _NET_OVPN_OVPNSTRUCT_H_
- 
- #include <net/net_trackers.h>
-+#include <uapi/linux/if_link.h>
-+#include <uapi/linux/ovpn.h>
- 
- /**
-  * struct ovpn_struct - per ovpn interface state
-  * @dev: the actual netdev representing the tunnel
-  * @dev_tracker: reference tracker for associated dev
-+ * @registered: whether dev is still registered with netdev or not
-+ * @mode: device operation mode (i.e. p2p, mp, ..)
-+ * @dev_list: entry for the module wide device list
-  */
- struct ovpn_struct {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
-+	bool registered;
-+	enum ovpn_mode mode;
-+	struct list_head dev_list;
- };
- 
- #endif /* _NET_OVPN_OVPNSTRUCT_H_ */
-diff --git a/drivers/net/ovpn/packet.h b/drivers/net/ovpn/packet.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..7ed146f5932a25f448af6da58738a7eae81007fe
---- /dev/null
-+++ b/drivers/net/ovpn/packet.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*  OpenVPN data channel offload
-+ *
-+ *  Copyright (C) 2020-2024 OpenVPN, Inc.
-+ *
-+ *  Author:	Antonio Quartulli <antonio@openvpn.net>
-+ *		James Yonan <james@openvpn.net>
-+ */
-+
-+#ifndef _NET_OVPN_PACKET_H_
-+#define _NET_OVPN_PACKET_H_
-+
-+/* When the OpenVPN protocol is ran in AEAD mode, use
-+ * the OpenVPN packet ID as the AEAD nonce:
-+ *
-+ *    00000005 521c3b01 4308c041
-+ *    [seq # ] [  nonce_tail   ]
-+ *    [     12-byte full IV    ] -> NONCE_SIZE
-+ *    [4-bytes                   -> NONCE_WIRE_SIZE
-+ *    on wire]
-+ */
-+
-+/* OpenVPN nonce size */
-+#define NONCE_SIZE 12
-+
-+/* OpenVPN nonce size reduced by 8-byte nonce tail -- this is the
-+ * size of the AEAD Associated Data (AD) sent over the wire
-+ * and is normally the head of the IV
-+ */
-+#define NONCE_WIRE_SIZE (NONCE_SIZE - sizeof(struct ovpn_nonce_tail))
-+
-+/* Last 8 bytes of AEAD nonce
-+ * Provided by userspace and usually derived from
-+ * key material generated during TLS handshake
-+ */
-+struct ovpn_nonce_tail {
-+	u8 u8[OVPN_NONCE_TAIL_SIZE];
-+};
-+
-+#endif /* _NET_OVPN_PACKET_H_ */
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index 8516c1ccd57a7c7634a538fe3ac16c858f647420..84d294aab20b79b8e9cb9b736a074105c99338f3 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1975,4 +1975,19 @@ enum {
- 
- #define IFLA_DSA_MAX	(__IFLA_DSA_MAX - 1)
- 
-+/* OVPN section */
-+
-+enum ovpn_mode {
-+	OVPN_MODE_P2P,
-+	OVPN_MODE_MP,
-+};
-+
-+enum {
-+	IFLA_OVPN_UNSPEC,
-+	IFLA_OVPN_MODE,
-+	__IFLA_OVPN_MAX,
-+};
-+
-+#define IFLA_OVPN_MAX	(__IFLA_OVPN_MAX - 1)
-+
- #endif /* _UAPI_LINUX_IF_LINK_H */
+[auto build test ERROR on bpf-next/master]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/D-Wythe/bpf-export-necessary-sympols-for-modules/20241024-104903
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
+patch link:    https://lore.kernel.org/r/1729737768-124596-3-git-send-email-alibuda%40linux.alibaba.com
+patch subject: [PATCH bpf-next 2/4] bpf: allow to access bpf_prog during bpf_struct_access
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20241025/202410251600.4VOzw93J-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 5886454669c3c9026f7f27eab13509dd0241f2d6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241025/202410251600.4VOzw93J-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410251600.4VOzw93J-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/hid/bpf/hid_bpf_struct_ops.c:10:
+   In file included from include/linux/bpf_verifier.h:7:
+   In file included from include/linux/bpf.h:20:
+   In file included from include/linux/module.h:19:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/s390/include/asm/elf.h:181:
+   In file included from arch/s390/include/asm/mmu_context.h:11:
+   In file included from arch/s390/include/asm/pgalloc.h:18:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   In file included from drivers/hid/bpf/hid_bpf_struct_ops.c:10:
+   In file included from include/linux/bpf_verifier.h:9:
+   In file included from include/linux/filter.h:12:
+   In file included from include/linux/skbuff.h:28:
+   In file included from include/linux/dma-mapping.h:11:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/s390/include/asm/io.h:93:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:37:59: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:102:54: note: expanded from macro '__swab16'
+     102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
+         |                                                      ^
+   In file included from drivers/hid/bpf/hid_bpf_struct_ops.c:10:
+   In file included from include/linux/bpf_verifier.h:9:
+   In file included from include/linux/filter.h:12:
+   In file included from include/linux/skbuff.h:28:
+   In file included from include/linux/dma-mapping.h:11:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/s390/include/asm/io.h:93:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:35:59: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:115:54: note: expanded from macro '__swab32'
+     115 | #define __swab32(x) (__u32)__builtin_bswap32((__u32)(x))
+         |                                                      ^
+   In file included from drivers/hid/bpf/hid_bpf_struct_ops.c:10:
+   In file included from include/linux/bpf_verifier.h:9:
+   In file included from include/linux/filter.h:12:
+   In file included from include/linux/skbuff.h:28:
+   In file included from include/linux/dma-mapping.h:11:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/s390/include/asm/io.h:93:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     693 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     701 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     709 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     718 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     727 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     736 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+>> drivers/hid/bpf/hid_bpf_struct_ops.c:146:23: error: incompatible function pointer types initializing 'int (*)(struct bpf_verifier_log *, const struct bpf_reg_state *, const struct bpf_prog *, int, int)' with an expression of type 'int (struct bpf_verifier_log *, const struct bpf_reg_state *, int, int)' [-Wincompatible-function-pointer-types]
+     146 |         .btf_struct_access = hid_bpf_ops_btf_struct_access,
+         |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   16 warnings and 1 error generated.
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for MODVERSIONS
+   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
+   Selected by [y]:
+   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
+
+
+vim +146 drivers/hid/bpf/hid_bpf_struct_ops.c
+
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08  142  
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08  143  static const struct bpf_verifier_ops hid_bpf_verifier_ops = {
+bd0747543b3d97 Benjamin Tissoires 2024-06-08  144  	.get_func_proto = bpf_base_func_proto,
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08  145  	.is_valid_access = hid_bpf_ops_is_valid_access,
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08 @146  	.btf_struct_access = hid_bpf_ops_btf_struct_access,
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08  147  };
+ebc0d8093e8c97 Benjamin Tissoires 2024-06-08  148  
 
 -- 
-2.45.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
