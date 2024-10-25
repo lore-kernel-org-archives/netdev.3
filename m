@@ -1,101 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36E9212178;
-	Fri, 25 Oct 2024 13:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA241E52D;
+	Fri, 25 Oct 2024 13:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729863633; cv=none; b=IhIxfhwZk6Sa6CNt92N6NdhZeca2A05J77fVrUg6cYzlUTPiqUPjZv4M1PlC+i9xgoEwQu77FUZo90W6yCVQs11ubMGL4Jl81iFz39oYY2kTKYc/sjig4qjtv1AOGohc+SZjzKMul7z+oYR2WxWDIzCb+BqDU78xaiGTNUai8PY=
+	t=1729863987; cv=none; b=ovZqehkVo24JGg3tZq0mPcwbRW7b11Mrs72e9fo0F45xcUUuDJ4jyTUKnD6eP17kz6R4MDFVVZOlaht2vsIa3T7AFrLntYAc8sSJngVH+7+e6Yo8yDMs+K5h/Nb99lnTl6vmATE6BPMcRdR8ZrgHW/69j2NhWmdfHH0cSjH/OCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729863633; c=relaxed/simple;
-	bh=pVBN/pYnecKbodkMkBrlE2AMRkbGJn4StYxxRVqPtJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DrZ/yhawpJJVKel00QxeEbAewRx+eWBzV2qb1Dt+e7jOSjH9zJv70kvoFFv8aT+xAFERhJdGv+SXtX6Ha2ZYqFuR6UvlFRoDIw0JJrSCzOzGRzkr5CUdC2RgG2NHaQp1dfJracmtf4UdtByybh5h82K2ufF1X5qb73JN3/oaBRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkSX5Y0O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729863987; c=relaxed/simple;
+	bh=po3oqvvSsArGXD1EvWQlOiEKTRCDioPTGvw8Mlb4W34=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ARxrjNdSkReJYzoqpKIhzekW29d95WMDD6nwGS20VaQ7Az1Ev6/0949Mo5Bz7kH3bEI0GXl6E6rw9W7mKmAA+PO70K/yjnwfUijDQz/X41ryyniA1wGY3trK3mGbQWJQCim+wxhT5jrH03YgQhueRUMdbUvA1y5V22D7IQy+bW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=AsrPx7d0; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkSX5Y0O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F69C4CEC3;
-	Fri, 25 Oct 2024 13:40:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729863632;
-	bh=pVBN/pYnecKbodkMkBrlE2AMRkbGJn4StYxxRVqPtJM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LkSX5Y0O06lKZVBTf+07pj6MacCDHVfYJaJ13wd5+BzO/6MXW+9rw2vIfr7mlrbZM
-	 lhfMC9SjIEpl25Lfjdnd17pr4d5IjDpGwExR80cNnRMP0ITR3KG+E8E0hJXRLz7ggr
-	 TWjyrZtC6laDDr2bVPF1plmgEx3ER78I5KwOTxx+FsH9i1910qMsW6qqkiCugLjbe0
-	 5BQ1GZACH8UE6g4MY19zXhAlPyby+WdE794/je0UWdmG5iUY8dlztfVv1+B8yRk7Z8
-	 dDS+kOseJ3cpZspqcynW4Bz9e++wzZ9qQWeCGH2Q5u8AFieiQAj0rdZKFI4kF8dRAp
-	 73rJPZgsNaBEA==
-Date: Fri, 25 Oct 2024 14:40:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
-	guodongtai@kylinos.cn, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org, paul@paul-moore.com
-Subject: Re: [PATCH 1/1] add comment for doi_remove in struct
- netlbl_lsm_secattr
-Message-ID: <20241025134028.GW1202098@kernel.org>
-References: <0667f18b-2228-4201-9da7-0e3536bae321@redhat.com>
- <20241025064031.994215-1-dongtai.guo@linux.dev>
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="AsrPx7d0"
+Received: from localhost.localdomain (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 7370A200EEC3;
+	Fri, 25 Oct 2024 15:37:49 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 7370A200EEC3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1729863469;
+	bh=0zch5HZGpUzO3VSt3kgI73Tmmq2bTZwt6RcGcHiAEd4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AsrPx7d06HTL+tQD82j5gy7OpZO1iu9DPMfxNJiPpT2XY/HmtlQkP1bOgRuwqUje7
+	 zCXQq03zLPdcv2WbCLtJSEbmwwu3g+8eWEcxvFrENv8jgEoAIZqoyJizsJ4gHl9il6
+	 FPAOAkoChcoIefhuklKT5sKNx3OjD+EbbSLLsia1PbdE6mozQsNmLBiXbOdYEI9nlO
+	 9rG7EnLm/dS/znqtHL9PBD7mCFVorsEqzhGXperL+8xU/ysjCDgM7wEB2vplK6a9s9
+	 PFQnIp1RaBe1qm9hYLP5PTElp4Jhb4v0RhRxPwrnxe4M7WW6cADolzwuUxyL1gNXlZ
+	 WKGkiSYTEG9hA==
+From: Justin Iurman <justin.iurman@uliege.be>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	justin.iurman@uliege.be
+Subject: [PATCH net-next 0/3] Mitigate the two-reallocations issue for iptunnels
+Date: Fri, 25 Oct 2024 15:37:24 +0200
+Message-Id: <20241025133727.27742-1-justin.iurman@uliege.be>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241025064031.994215-1-dongtai.guo@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 25, 2024 at 02:40:31PM +0800, George Guo wrote:
-> From: George Guo <guodongtai@kylinos.cn>
+The same pattern is found in ioam6, rpl6, and seg6. Basically, it first
+makes sure there is enough room for inserting a new header:
 
-Hi George,
+(1) err = skb_cow_head(skb, len + skb->mac_len);
 
-Thanks for your patch. I agree that is is correct and a good change
-to make. But there are some process issues to be addressed before this
-patch can be accepted.
+Then, when the insertion (encap or inline) is performed, the input and
+output handlers respectively make sure there is enough room for layer 2:
 
-Firstly, as this is presumably a non-bug fix for networking code,
-it should be targeted at the net-next tree. That it should
-be based on that tree (it seems to be) and explicitly targeted
-at that tree in the Subject.
+(2) err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
 
-  Subject: [PATCH net-next v2] ...
+skb_cow_head() does nothing when there is enough room. Otherwise, it
+reallocates more room, which depends on the architecture. Briefly,
+skb_cow_head() calls __skb_cow() which then calls pskb_expand_head() as
+follows:
 
-Secondly, the subject should include a prefix.
-Looking at git log include/net/netlabel.h it
-seems that should be 'netlabel:'
+pskb_expand_head(skb, ALIGN(delta, NET_SKB_PAD), 0, GFP_ATOMIC);
 
-  Subject: [PATCH net-next v2] netlabel: ...
+"delta" represents the number of bytes to be added. This value is
+aligned with NET_SKB_PAD, which is defined as follows:
 
-And it might be best to make the subject a bit more descriptive.
+NET_SKB_PAD = max(32, L1_CACHE_BYTES)
 
-  Subject: [PATCH net-next v2] netlabel: document doi_remove field of struct netlbl_calipso_ops
+... where L1_CACHE_BYTES also depends on the architecture. In our case
+(x86), it is defined as follows:
 
+L1_CACHE_BYTES = (1 << CONFIG_X86_L1_CACHE_SHIFT)
 
-Next, a commit message is required. It should explain why the change is
-being made. And, ideally how you found this problem. It should
-also include a Signed-off-by line [1]. e.g.
+... where (again, in our case) CONFIG_X86_L1_CACHE_SHIFT equals 6
+(=X86_GENERIC).
 
-  Add documentation of do_remove field to Kernel doc for struct
-  netlbl_calipso_ops.
+All this to say, skb_cow_head() would reallocate to the next multiple of
+NET_SKB_PAD (in our case a 64-byte multiple) when there is not enough
+room.
 
-  Found using W=1 build.
+Back to the main issue with the pattern: in some cases, two
+reallocations are triggered, resulting in a performance drop (i.e.,
+lines (1) and (2) would both trigger an implicit reallocation). How's
+that possible? Well, this is kind of bad luck as we hit an exact
+NET_SKB_PAD boundary and when skb->mac_len (=14) is smaller than
+LL_RESERVED_SPACE(dst->dev) (=16 in our case). For an x86 arch, it
+happens in the following cases (with the default needed_headroom):
 
-  Signed-off-by: ...
+- ioam6:
+ - (inline mode) pre-allocated data trace of 236 or 240 bytes
+ - (encap mode) pre-allocated data trace of 196 or 200 bytes
+- seg6:
+ - (encap mode) for 13, 17, 21, 25, 29, 33, ...(+4)... prefixes
 
-[1] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+Let's illustrate the problem, i.e., when we fall on the exact
+NET_SKB_PAD boundary. In the case of ioam6, for the above problematic
+values, the total overhead is 256 bytes for both modes. Based on line
+(1), skb->mac_len (=14) is added, therefore passing 270 bytes to
+skb_cow_head(). At that moment, the headroom has 206 bytes available (in
+our case). Since 270 > 206, skb_cow_head() performs a reallocation and
+the new headroom is now 206 + 64 (NET_SKB_PAD) = 270. Which is exactly
+the room we needed. After the insertion, the headroom has 0 byte
+available. But, there's line (2) where 16 bytes are still needed. Which,
+again, triggers another reallocation.
 
-Lastly, please do wait 24h before posting a new version.
-Please include information about what has changed below the scissors ('---').
-And please send the new patch as a new thread.
+The same logic is applied to seg6 (although it does not happen with the
+inline mode, i.e., -40 bytes). It happens with other L1 cache shifts too
+(the larger the cache shift, the less often it happens). For example,
+with a +32 cache shift (instead of +64), the following number of
+segments would trigger two reallocations: 11, 15, 19, ... With a +128
+cache shift, the following number of segments would trigger two
+reallocations: 17, 25, 33, ... And so on and so forth. Note that it is
+the same for both the "encap" and "l2encap" modes. For the "encap.red"
+and "l2encap.red" modes, it is the same logic but with "segs+1" (e.g.,
+14, 18, 22, 26, etc for a +64 cache shift). Note also that it may happen
+with rpl6 (based on some calculations), although it did not in our case.
 
-More information on development processes for Networking can be found here:
-https://docs.kernel.org/process/maintainer-netdev.html
+This series provides a solution to mitigate the aforementioned issue for
+ioam6, seg6, and rpl6. It provides the dst_entry (in the cache) to
+skb_cow_head() **before** the insertion (line (1)). As a result, the
+very first iteration would still trigger two reallocations (i.e., empty
+cache), while next iterations would only trigger a single reallocation.
 
-...
+Justin Iurman (3):
+  net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue
+  net: ipv6: seg6_iptunnel: mitigate 2-realloc issue
+  net: ipv6: rpl_iptunnel: mitigate 2-realloc issue
+
+ net/ipv6/ioam6_iptunnel.c |  84 ++++++++++++++++---------------
+ net/ipv6/rpl_iptunnel.c   |  60 +++++++++++-----------
+ net/ipv6/seg6_iptunnel.c  | 103 +++++++++++++++++++++-----------------
+ 3 files changed, 132 insertions(+), 115 deletions(-)
 
 -- 
-pw-bot: changes-requested
+2.34.1
+
