@@ -1,348 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0570838DC7;
-	Fri, 25 Oct 2024 01:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6788522B644;
+	Fri, 25 Oct 2024 01:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729819264; cv=none; b=iWhET678/w1le9UzHT2D5QFeCBQS+NJ8EEzbtbtn8EJD3MEJhdr2G3mT5Le4bOOTmFEh7JhpiVwIAuUC3oEgbn4GRdOH9IrOpNN9OkRzccKWscoOIqzwgb956h+Imh3zHi33AYWAstEQsG3f5ekHA4ipK0BexmvGY0JEDIAyhAk=
+	t=1729820389; cv=none; b=mg4dhnZai3mTretoPx/8gAfQMxIIw/z+tdpUK4WU0lMV9JoaSKpo0y4MvW/sG8BIrqQopjB43VdodnWw5QbCBqXizQujl0Cmt5OzKDLQgEDSXzhT5/8Ja2XK0kgQ1RUtLZ+UxzeND5kaa6bZLZUxEW6RqqpxOu6tDXHCpQYO06s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729819264; c=relaxed/simple;
-	bh=yrqbiZFhn51WEomiKGvcXRetuIKBXye22S0xMCc0lk8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OPOGenGz4FdhEPB4uNFiiU1aegw3e57Z3e/jc7L86k89EsVrS46foT7ggRSLxS+kmetWv2/sj7YZql/cRFKCKetvApcdJGKz/EKKwQVteewP7oqn/M5V5C7wOQDeVfB+ML4ISASSGul+wX1zYGCo3XaUHddPxlEpcU2irqUOkHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZWmymXM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729820389; c=relaxed/simple;
+	bh=jyqhRjmJYUC4dlrzZbnwcaBJiIpqnBNzCBrurqjVkFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dXKHWtmMCZt/j987HBOPuFz1a/BZfVNXOUY6Km8RYAJlB88jciVcjA2iM9E8mdVuHA242RL/BqF4mvkqClOqx+h5j/jXMuolohNWteGLVJRjJRCvCorAtszYI+jluA4iSxluCSkWMxQwnlPCbepTUi1wHN60ct3tuqMhXhvL0EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=s8SS9Yrc; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZWmymXM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AC4EAC4CEEE;
-	Fri, 25 Oct 2024 01:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729819263;
-	bh=yrqbiZFhn51WEomiKGvcXRetuIKBXye22S0xMCc0lk8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gZWmymXMSOEezRJ3VCSJ5GujLLHsG8QGBXR2s9v0D36kt3mNNIdsKOiiXajdA45P2
-	 2A+0/7w7/1gLMPjTZvHEQJlK4+WCjc8CaIg1zaoMgcF5he8BLI7tRt9iBSZ6S7Dp4a
-	 oRQ/50gYTiy6rF4w36d2rUT6qCrl7Yg1+ydMhkqEd0+xo9B4j/Clqa7V0qbnefXnJM
-	 7xOtBkEAYIPVrEeKdunGDv0CzvrEBl4EgGjXWTCoCo7brVjExZPc4vzK6xfV+vifK9
-	 M9BucIao793uZFeAzNBrblwA4qoCb2mWTWTDV/ZFRklXpKPyY6xBGHA8trOp4SK3km
-	 HD06jMv2wfIOg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3333D10399;
-	Fri, 25 Oct 2024 01:21:03 +0000 (UTC)
-From: Nelson Escobar via B4 Relay <devnull+neescoba.cisco.com@kernel.org>
-Date: Thu, 24 Oct 2024 18:19:47 -0700
-Subject: [PATCH net-next v2 5/5] enic: Adjust used MSI-X wq/rq/cq/interrupt
- resources in a more robust way
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="s8SS9Yrc"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1729820388; x=1761356388;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=jyqhRjmJYUC4dlrzZbnwcaBJiIpqnBNzCBrurqjVkFw=;
+  b=s8SS9YrcQ7wO3LOju2FMNXbjWCQefS7/d9eakavYcVH7y5CQrowRoIT3
+   qNRkdF1w5mTlRF2Bbr194a4OLinCmABgQ0Gtt2Q4WZ6Jo+zbqdVjgUGl1
+   Am3HS9XXsG/UhfXk74WLX2muimYSMQ+PKwIN7O2DOlDC1ftY0jMlF7144
+   TyXdqtzax3ij9o2OuC5sIDToo952pl26EFUlxjR0YSrbVQMf1WHtpV/us
+   65xfCQ8Vkh0Xs6KUYahLZ510Vmppez1g0pzbgOO1B2V5JvW7ffjzWGQe5
+   QSb/RdiA5DmUklXBFxB7VLpDoXED8edhRwWR+ESYIPUHs5fNnL6iML/RH
+   g==;
+X-CSE-ConnectionGUID: CA8vzYT3SVySnH5uzc4ZIw==
+X-CSE-MsgGUID: FsSvR9yvSVapvhdFuTKYdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="180136537"
+X-IronPort-AV: E=Sophos;i="6.11,230,1725289200"; 
+   d="scan'208";a="180136537"
+Received: from unknown (HELO yto-r1.gw.nic.fujitsu.com) ([218.44.52.217])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 10:39:39 +0900
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com [192.168.83.66])
+	by yto-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 234DADB3C7;
+	Fri, 25 Oct 2024 10:39:37 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com [192.51.206.22])
+	by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 6A507D968B;
+	Fri, 25 Oct 2024 10:39:36 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id EF3CF70BC6;
+	Fri, 25 Oct 2024 10:39:35 +0900 (JST)
+Received: from iaas-rdma.. (unknown [10.167.135.44])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id 462531A01E9;
+	Fri, 25 Oct 2024 09:39:35 +0800 (CST)
+From: Li Zhijian <lizhijian@fujitsu.com>
+To: linux-kselftest@vger.kernel.org
+Cc: shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH for-next 7/7] selftests/net: Fix ./ns-XXXXXX not cleanup
+Date: Fri, 25 Oct 2024 09:40:10 +0800
+Message-ID: <20241025014010.6533-7-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20241025014010.6533-1-lizhijian@fujitsu.com>
+References: <20241025014010.6533-1-lizhijian@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241024-remove_vic_resource_limits-v2-5-039b8cae5fdd@cisco.com>
-References: <20241024-remove_vic_resource_limits-v2-0-039b8cae5fdd@cisco.com>
-In-Reply-To: <20241024-remove_vic_resource_limits-v2-0-039b8cae5fdd@cisco.com>
-To: John Daley <johndale@cisco.com>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Christian Benvenuti <benve@cisco.com>, Satish Kharat <satishkh@cisco.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nelson Escobar <neescoba@cisco.com>, Simon Horman <horms@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729819262; l=8413;
- i=neescoba@cisco.com; s=20241023; h=from:subject:message-id;
- bh=GXz0cT0Pl6EsGEqJO9PYLd3Kcxc4wzzJoA1tyJnCrJs=;
- b=QxcOUUMNugJ/vWYyjm3BtWGcEwdjRnFb0lASNna1zPMDnDrG6xJP9t8l3AmMX2/elHC9Fte40
- LTZF12OyF+oCSQIkIRNHiZRrBeAt6rcv7IbFLmwPExbYnIQt6rFOmxg
-X-Developer-Key: i=neescoba@cisco.com; a=ed25519;
- pk=bLqWB7VU0KFoVybF4LVB4c2Redvnplt7+5zLHf4KwZM=
-X-Endpoint-Received: by B4 Relay for neescoba@cisco.com/20241023 with
- auth_id=255
-X-Original-From: Nelson Escobar <neescoba@cisco.com>
-Reply-To: neescoba@cisco.com
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28752.003
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28752.003
+X-TMASE-Result: 10--1.620900-10.000000
+X-TMASE-MatchedRID: 6n1zk+md1nW+AcfZRlRvHuOnF2j8nBWbn5nfR7I2dFNlmPP/XnGELrmK
+	lv3K7lvCloSrM+MzMAEa/Rm8RmNZp6s4CIwqUsM8rMZ+BqQt2NrJ5SXtoJPLyFcZNuxCoduSsaY
+	IF6sQsQ7Nbuq5jiJ+bEqGW42c0HkYPCIyO+XnL284hD0Y/Y/a78E5XPQnBzGXq8KsbROd9VSD3F
+	7iC1Qm2idrKX/gwnicYx6ZNoOmH25g/HvJ1232Mp4CIKY/Hg3AaZGo0EeYG95UMLUJu4leYyq2r
+	l3dzGQ1tyaKchQkyE45QtN9xzZW3ugJcSBd3qZSUzqf3+iknU+bV/bRlWl7V3ed4oqRsBtzx8E/
+	iqf5nIPM85RmE6LnSrhZsTzrx0WohLvAid2uj0YVxRB/din+uJ07T8ZSLiAVvR84/OmB1wQp4n8
+	eQBnwiw==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
-From: Nelson Escobar <neescoba@cisco.com>
+```
+readonly STATS="$(mktemp -p /tmp ns-XXXXXX)"
+readonly BASE=`basename $STATS`
+```
+It could be a mistake to write to $BASE rather than $STATS, where $STATS
+is used to save the NSTAT_HISTORY and it will be cleaned up before exit.
 
-Instead of erroring out on probe if the resources are not configured
-exactly right in hardware, try to make due with the resources we do have.
-
-To accomplish this do the following:
-- Make enic_set_intr_mode() only set up interrupt related stuff.
-- Move resource adjustment out of enic_set_intr_mode() into its own
-  function, and basing the resources used on the most constrained
-  resource.
-- Move the kdump resources limitations into the new function too.
-
-Co-developed-by: John Daley <johndale@cisco.com>
-Signed-off-by: John Daley <johndale@cisco.com>
-Co-developed-by: Satish Kharat <satishkh@cisco.com>
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
-Signed-off-by: Nelson Escobar <neescoba@cisco.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- drivers/net/ethernet/cisco/enic/enic_main.c | 197 ++++++++++++++--------------
- 1 file changed, 96 insertions(+), 101 deletions(-)
+Cc: netdev@vger.kernel.org
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-index 564202e81a711a6791bef7e848627f0a439cc6f3..fb979c19a1785ace633c51e47de391cf4a4640b3 100644
---- a/drivers/net/ethernet/cisco/enic/enic_main.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_main.c
-@@ -2440,113 +2440,120 @@ static void enic_tx_hang_reset(struct work_struct *work)
- 	rtnl_unlock();
+---
+Hello,
+Cover letter is here.
+
+This patch set aims to make 'git status' clear after 'make' and 'make
+run_tests' for kselftests.
+---
+V2: nothing change
+---
+ tools/testing/selftests/net/veth.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
+index 4f1edbafb946..457312ef135a 100755
+--- a/tools/testing/selftests/net/veth.sh
++++ b/tools/testing/selftests/net/veth.sh
+@@ -46,8 +46,8 @@ create_ns() {
+ 		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V4$ns/24
+ 		ip -n $BASE$ns addr add dev veth$ns $BM_NET_V6$ns/64 nodad
+ 	done
+-	echo "#kernel" > $BASE
+-	chmod go-rw $BASE
++	echo "#kernel" > $STATS
++	chmod go-rw $STATS
  }
  
--static int enic_set_intr_mode(struct enic *enic)
-+static int enic_adjust_resources(struct enic *enic)
- {
--	unsigned int n = min_t(unsigned int, enic->rq_count, ENIC_RQ_MAX);
--	unsigned int m = min_t(unsigned int, enic->wq_count, ENIC_WQ_MAX);
--	unsigned int i;
-+	unsigned int max_queues;
-+	unsigned int rq_avail;
-+	unsigned int wq_avail;
- 
--	/* Set interrupt mode (INTx, MSI, MSI-X) depending
--	 * on system capabilities.
--	 *
--	 * Try MSI-X first
--	 *
--	 * We need n RQs, m WQs, n+m CQs, and n+m+2 INTRs
--	 * (the second to last INTR is used for WQ/RQ errors)
--	 * (the last INTR is used for notifications)
--	 */
-+	if (enic->rq_avail < 1 || enic->wq_avail < 1 || enic->cq_avail < 2) {
-+		dev_err(enic_get_dev(enic),
-+			"Not enough resources available rq: %d wq: %d cq: %d\n",
-+			enic->rq_avail, enic->wq_avail,
-+			enic->cq_avail);
-+		return -ENOSPC;
-+	}
- 
--	for (i = 0; i < enic->intr_avail; i++)
--		enic->msix_entry[i].entry = i;
-+	if (is_kdump_kernel()) {
-+		dev_info(enic_get_dev(enic), "Running from within kdump kernel. Using minimal resources\n");
-+		enic->rq_avail = 1;
-+		enic->wq_avail = 1;
-+		enic->config.rq_desc_count = ENIC_MIN_RQ_DESCS;
-+		enic->config.wq_desc_count = ENIC_MIN_WQ_DESCS;
-+		enic->config.mtu = min_t(u16, 1500, enic->config.mtu);
-+	}
- 
--	/* Use multiple RQs if RSS is enabled
--	 */
-+	/* if RSS isn't set, then we can only use one RQ */
-+	if (!ENIC_SETTING(enic, RSS))
-+		enic->rq_avail = 1;
- 
--	if (ENIC_SETTING(enic, RSS) &&
--	    enic->config.intr_mode < 1 &&
--	    enic->rq_count >= n &&
--	    enic->wq_count >= m &&
--	    enic->cq_count >= n + m &&
--	    enic->intr_count >= n + m + 2) {
-+	switch (vnic_dev_get_intr_mode(enic->vdev)) {
-+	case VNIC_DEV_INTR_MODE_INTX:
-+	case VNIC_DEV_INTR_MODE_MSI:
-+		enic->rq_count = 1;
-+		enic->wq_count = 1;
-+		enic->cq_count = 2;
-+		enic->intr_count = enic->intr_avail;
-+		break;
-+	case VNIC_DEV_INTR_MODE_MSIX:
-+		/* Adjust the number of wqs/rqs/cqs/interrupts that will be
-+		 * used based on which resource is the most constrained
-+		 */
-+		wq_avail = min(enic->wq_avail, ENIC_WQ_MAX);
-+		rq_avail = min(enic->rq_avail, ENIC_RQ_MAX);
-+		max_queues = min(enic->cq_avail,
-+				 enic->intr_avail - ENIC_MSIX_RESERVED_INTR);
-+		if (wq_avail + rq_avail <= max_queues) {
-+			/* we have enough cq and interrupt resources to cover
-+			 *  the number of wqs and rqs
-+			 */
-+			enic->rq_count = rq_avail;
-+			enic->wq_count = wq_avail;
-+		} else {
-+			/* recalculate wq/rq count */
-+			if (rq_avail < wq_avail) {
-+				enic->rq_count = min(rq_avail, max_queues / 2);
-+				enic->wq_count = max_queues - enic->rq_count;
-+			} else {
-+				enic->wq_count = min(wq_avail, max_queues / 2);
-+				enic->rq_count = max_queues - enic->wq_count;
-+			}
-+		}
-+		enic->cq_count = enic->rq_count + enic->wq_count;
-+		enic->intr_count = enic->cq_count + ENIC_MSIX_RESERVED_INTR;
- 
--		if (pci_enable_msix_range(enic->pdev, enic->msix_entry,
--					  n + m + 2, n + m + 2) > 0) {
-+		break;
-+	default:
-+		dev_err(enic_get_dev(enic), "Unknown interrupt mode\n");
-+		return -EINVAL;
-+	}
- 
--			enic->rq_count = n;
--			enic->wq_count = m;
--			enic->cq_count = n + m;
--			enic->intr_count = n + m + 2;
-+	return 0;
-+}
- 
--			vnic_dev_set_intr_mode(enic->vdev,
--				VNIC_DEV_INTR_MODE_MSIX);
-+static int enic_set_intr_mode(struct enic *enic)
-+{
-+	unsigned int i;
-+	int num_intr;
- 
--			return 0;
--		}
--	}
-+	/* Set interrupt mode (INTx, MSI, MSI-X) depending
-+	 * on system capabilities.
-+	 *
-+	 * Try MSI-X first
-+	 */
- 
- 	if (enic->config.intr_mode < 1 &&
--	    enic->rq_count >= 1 &&
--	    enic->wq_count >= m &&
--	    enic->cq_count >= 1 + m &&
--	    enic->intr_count >= 1 + m + 2) {
--		if (pci_enable_msix_range(enic->pdev, enic->msix_entry,
--					  1 + m + 2, 1 + m + 2) > 0) {
--
--			enic->rq_count = 1;
--			enic->wq_count = m;
--			enic->cq_count = 1 + m;
--			enic->intr_count = 1 + m + 2;
--
-+	    enic->intr_avail >= ENIC_MSIX_MIN_INTR) {
-+		for (i = 0; i < enic->intr_avail; i++)
-+			enic->msix_entry[i].entry = i;
-+
-+		num_intr = pci_enable_msix_range(enic->pdev, enic->msix_entry,
-+						 ENIC_MSIX_MIN_INTR,
-+						 enic->intr_avail);
-+		if (num_intr > 0) {
- 			vnic_dev_set_intr_mode(enic->vdev,
--				VNIC_DEV_INTR_MODE_MSIX);
--
-+					       VNIC_DEV_INTR_MODE_MSIX);
-+			enic->intr_avail = num_intr;
- 			return 0;
- 		}
- 	}
- 
--	/* Next try MSI
--	 *
--	 * We need 1 RQ, 1 WQ, 2 CQs, and 1 INTR
--	 */
-+	/* Next try MSI */
- 
- 	if (enic->config.intr_mode < 2 &&
--	    enic->rq_count >= 1 &&
--	    enic->wq_count >= 1 &&
--	    enic->cq_count >= 2 &&
--	    enic->intr_count >= 1 &&
-+	    enic->intr_avail >= 1 &&
- 	    !pci_enable_msi(enic->pdev)) {
--
--		enic->rq_count = 1;
--		enic->wq_count = 1;
--		enic->cq_count = 2;
--		enic->intr_count = 1;
--
-+		enic->intr_avail = 1;
- 		vnic_dev_set_intr_mode(enic->vdev, VNIC_DEV_INTR_MODE_MSI);
--
- 		return 0;
- 	}
- 
--	/* Next try INTx
--	 *
--	 * We need 1 RQ, 1 WQ, 2 CQs, and 3 INTRs
--	 * (the first INTR is used for WQ/RQ)
--	 * (the second INTR is used for WQ/RQ errors)
--	 * (the last INTR is used for notifications)
--	 */
-+	/* Next try INTx */
- 
- 	if (enic->config.intr_mode < 3 &&
--	    enic->rq_count >= 1 &&
--	    enic->wq_count >= 1 &&
--	    enic->cq_count >= 2 &&
--	    enic->intr_count >= 3) {
--
--		enic->rq_count = 1;
--		enic->wq_count = 1;
--		enic->cq_count = 2;
--		enic->intr_count = 3;
--
-+	    enic->intr_avail >= 3) {
-+		enic->intr_avail = 3;
- 		vnic_dev_set_intr_mode(enic->vdev, VNIC_DEV_INTR_MODE_INTX);
--
- 		return 0;
- 	}
- 
-@@ -2758,18 +2765,6 @@ static void enic_dev_deinit(struct enic *enic)
- 	enic_free_enic_resources(enic);
- }
- 
--static void enic_kdump_kernel_config(struct enic *enic)
--{
--	if (is_kdump_kernel()) {
--		dev_info(enic_get_dev(enic), "Running from within kdump kernel. Using minimal resources\n");
--		enic->rq_count = 1;
--		enic->wq_count = 1;
--		enic->config.rq_desc_count = ENIC_MIN_RQ_DESCS;
--		enic->config.wq_desc_count = ENIC_MIN_WQ_DESCS;
--		enic->config.mtu = min_t(u16, 1500, enic->config.mtu);
--	}
--}
--
- static int enic_dev_init(struct enic *enic)
- {
- 	struct device *dev = enic_get_dev(enic);
-@@ -2805,14 +2800,7 @@ static int enic_dev_init(struct enic *enic)
- 		return err;
- 	}
- 
--	/* modify resource count if we are in kdump_kernel
--	 */
--	enic_kdump_kernel_config(enic);
--
--	/* Set interrupt mode based on resource counts and system
--	 * capabilities
--	 */
--
-+	/* Set interrupt mode based on system capabilities */
- 	err = enic_set_intr_mode(enic);
- 	if (err) {
- 		dev_err(dev, "Failed to set intr mode based on resource "
-@@ -2820,6 +2808,13 @@ static int enic_dev_init(struct enic *enic)
- 		goto err_out_free_vnic_resources;
- 	}
- 
-+	/* Adjust resource counts based on most constrained resources */
-+	err = enic_adjust_resources(enic);
-+	if (err) {
-+		dev_err(dev, "Failed to adjust resources\n");
-+		goto err_out_free_vnic_resources;
-+	}
-+
- 	/* Allocate and configure vNIC resources
- 	 */
- 
-
+ __chk_flag() {
 -- 
-2.47.0
-
+2.44.0
 
