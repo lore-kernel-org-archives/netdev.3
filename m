@@ -1,191 +1,94 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE3C23B0;
-	Fri, 25 Oct 2024 03:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BB618A6D8
+	for <netdev@vger.kernel.org>; Fri, 25 Oct 2024 03:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729828251; cv=none; b=UHLgA+3N9I9USAaKES5MHLqVggEtFe0ux5P792IZvl4RC1GA4PQkH9SwsCLehtseAgJk/JkVu5DDCOup4ibQGP2G/oQpqoFsu4XP4UN6l0k1WSpJTle5UAvM2xKMbDL7u3U63Juso7GirTvATlBjv32Q1HXxeKoZPbBXm/yssP0=
+	t=1729828520; cv=none; b=oDBqw+173ltDvNQj3Q2ZoVvJLcR4tp9u+LVWFGW+nnUCup+qKCMDtnj6TYGndylcCA6116fki7Cces0b+lWKY7BNqJldWIWwLvgGGirUCs/mJTmn46Zt+U2L1O1Lrn/OeEMFMdkVHNxFxQG+g1WYHH3/Hd9yj9goIrpdlTBn3Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729828251; c=relaxed/simple;
-	bh=BAfCx1BUhJEiTvQh+lxJIaEH29wG0UZqb0XAr0QgVMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BAdYoVXRN0d6bTRscuKcIIo303oR6dXrw+L1wxm0e85xFtmzLO/r4cRk26AftHZYnhqbzBeRoHTTMsDLqRYyBOTA6KVwmZmwQQ7SlXGvpAN5VhSOEikHGkUtUXklEdSxussKAwwOvpcE1P3maOB5Elrk9dzljmItJSDEHHeTkbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TmGZTsw6; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TmGZTsw6"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1729828244; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=csXrtLmLvSSe1liKlQmsgcqYt2pEi6/QWS4TVjAn6dI=;
-	b=TmGZTsw6sbPcd36rUFfg7zARhHdA+UJHiaVEFLnzO0a4k6k3jGOC54Xit+5jDN5qeJmQ1aSCsiSsHRBbtviyGv4XMPZmK6c9hiiOAasUqEq+qvTDalrxlF8bgdgyM+PbePttvfQNGo995duSeckbwzXExv7NzkkYw3xRKu2dcTQ=
-Received: from 30.221.128.174(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WHqz3cK_1729828242 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 25 Oct 2024 11:50:43 +0800
-Message-ID: <80fbd73f-ce75-44bf-a444-116217a50c91@linux.alibaba.com>
-Date: Fri, 25 Oct 2024 11:50:42 +0800
+	s=arc-20240116; t=1729828520; c=relaxed/simple;
+	bh=2/gB0WF/dPjAmSqvdkhrXBddibqioOwExG/N94Xu0bU=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=p5cRw5FFipibtwIU/fj/TvafoZXgN2xj2Dj5v1A77i/Yu1A1OdrAM1nhuIrkbVKfukqgbAx7grbzdrGyeAyw8sZ7ktEr2lwhUxci9+KFtnf56plj6HswHGKz5WsICRqh4O2rmpsO20NOCl49lQ7Q1tDfHxokJTR/G21crIrzo1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XZTT60kdfz1ynGM;
+	Fri, 25 Oct 2024 11:55:22 +0800 (CST)
+Received: from dggpemf100006.china.huawei.com (unknown [7.185.36.228])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7B1B51400DC;
+	Fri, 25 Oct 2024 11:55:14 +0800 (CST)
+Received: from [10.174.178.55] (10.174.178.55) by
+ dggpemf100006.china.huawei.com (7.185.36.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 25 Oct 2024 11:55:13 +0800
+Subject: Re: [PATCH 1/2] bna: Fix return value check for debugfs create APIs
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Simon Horman <horms@kernel.org>, Rasesh Mody <rmody@marvell.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>, <GR-Linux-NIC-Dev@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>
+References: <20241023080921.326-1-thunder.leizhen@huawei.com>
+ <20241023080921.326-2-thunder.leizhen@huawei.com>
+ <20241024121325.GJ1202098@kernel.org>
+ <19322579-a24b-679a-051b-c202eb3750f7@huawei.com>
+ <d7d04629-941b-4efb-84ee-92fbd0f42f9c@lunn.ch>
+From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <0ac107c9-ff97-46bf-fce0-712e5bb9d24f@huawei.com>
+Date: Fri, 25 Oct 2024 11:55:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 3/3] ipv4/udp: Add 4-tuple hash for connected
- socket
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, dsahern@kernel.org,
- antony.antony@secunet.com, steffen.klassert@secunet.com,
- linux-kernel@vger.kernel.org, dust.li@linux.alibaba.com,
- jakub@cloudflare.com, fred.cc@alibaba-inc.com,
- yubing.qiuyubing@alibaba-inc.com
-References: <20241018114535.35712-1-lulie@linux.alibaba.com>
- <20241018114535.35712-4-lulie@linux.alibaba.com>
- <b232a642-2f0d-4bac-9bcf-50d653ea875d@redhat.com>
-From: Philo Lu <lulie@linux.alibaba.com>
-In-Reply-To: <b232a642-2f0d-4bac-9bcf-50d653ea875d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <d7d04629-941b-4efb-84ee-92fbd0f42f9c@lunn.ch>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf100006.china.huawei.com (7.185.36.228)
 
 
 
-On 2024/10/24 23:01, Paolo Abeni wrote:
-> On 10/18/24 13:45, Philo Lu wrote:
-> [...]
->> +/* In hash4, rehash can also happen in connect(), where hash4_cnt keeps unchanged. */
->> +static void udp4_rehash4(struct udp_table *udptable, struct sock *sk, u16 newhash4)
->> +{
->> +	struct udp_hslot *hslot4, *nhslot4;
->> +
->> +	hslot4 = udp_hashslot4(udptable, udp_sk(sk)->udp_lrpa_hash);
->> +	nhslot4 = udp_hashslot4(udptable, newhash4);
->> +	udp_sk(sk)->udp_lrpa_hash = newhash4;
->> +
->> +	if (hslot4 != nhslot4) {
->> +		spin_lock_bh(&hslot4->lock);
->> +		hlist_del_init_rcu(&udp_sk(sk)->udp_lrpa_node);
->> +		hslot4->count--;
->> +		spin_unlock_bh(&hslot4->lock);
->> +
->> +		synchronize_rcu();
+On 2024/10/24 22:04, Andrew Lunn wrote:
+>> Do you want to ignore all the return values of debugfs_create_dir() and debugfs_create_file()?
 > 
-> This deserve a comment explaining why it's needed. I had to dig in past
-> revision to understand it.
+> All return values from all debugfs_foo() calls.
+
+I searched. Currently, bna only involves functions debugfs_create_dir() and
+debugfs_create_file(). debugfs_remove() has no return value.
+
+
+git grep -n "\bdebugfs_" drivers/net/ethernet/brocade/bna/
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:501:            bna_debugfs_root = debugfs_create_dir("bna", NULL);
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:514:                    debugfs_create_dir(name, bna_debugfs_root);
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:521:                                    debugfs_create_file(file->name,
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:544:                    debugfs_remove(bnad->bnad_dentry_files[i]);
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:551:            debugfs_remove(bnad->port_debugfs_root);
+drivers/net/ethernet/brocade/bna/bnad_debugfs.c:558:            debugfs_remove(bna_debugfs_root);
+
+
 > 
-
-Got it. And a short explanation here (see [1] for detail):
-
-Here, we move a node from a hlist to another new one, i.e., update 
-node->next from the old hlist to the new hlist. For readers traversing 
-the old hlist, if we update node->next just when readers move onto the 
-moved node, then the readers also move to the new hlist. This is unexpected.
-
-     Reader(lookup)     Writer(rehash)
-     -----------------  ---------------
-1. rcu_read_lock()
-2. pos = sk;
-3.                     hlist_del_init_rcu(sk, old_slot)
-4.                     hlist_add_head_rcu(sk, new_slot)
-5. pos = pos->next; <=
-6. rcu_read_unlock()
-
-[1]
-https://lore.kernel.org/all/0fb425e0-5482-4cdf-9dc1-3906751f8f81@linux.alibaba.com/
-
->> +
->> +		spin_lock_bh(&nhslot4->lock);
->> +		hlist_add_head_rcu(&udp_sk(sk)->udp_lrpa_node, &nhslot4->head);
->> +		nhslot4->count++;
->> +		spin_unlock_bh(&nhslot4->lock);
->> +	}
->> +}
->> +
->> +static void udp4_unhash4(struct udp_table *udptable, struct sock *sk)
->> +{
->> +	struct udp_hslot *hslot2, *hslot4;
->> +
->> +	if (udp_hashed4(sk)) {
->> +		hslot2 = udp_hashslot2(udptable, udp_sk(sk)->udp_portaddr_hash);
->> +		hslot4 = udp_hashslot4(udptable, udp_sk(sk)->udp_lrpa_hash);
->> +
->> +		spin_lock(&hslot4->lock);
->> +		hlist_del_init_rcu(&udp_sk(sk)->udp_lrpa_node);
->> +		hslot4->count--;
->> +		spin_unlock(&hslot4->lock);
->> +
->> +		spin_lock(&hslot2->lock);
->> +		udp_hash4_dec(hslot2);
->> +		spin_unlock(&hslot2->lock);
->> +	}
->> +}
->> +
->> +/* call with sock lock */
->> +static void udp4_hash4(struct sock *sk)
->> +{
->> +	struct udp_hslot *hslot, *hslot2, *hslot4;
->> +	struct net *net = sock_net(sk);
->> +	struct udp_table *udptable;
->> +	unsigned int hash;
->> +
->> +	if (sk_unhashed(sk) || inet_sk(sk)->inet_rcv_saddr == htonl(INADDR_ANY))
->> +		return;
->> +
->> +	hash = udp_ehashfn(net, inet_sk(sk)->inet_rcv_saddr, inet_sk(sk)->inet_num,
->> +			   inet_sk(sk)->inet_daddr, inet_sk(sk)->inet_dport);
->> +
->> +	udptable = net->ipv4.udp_table;
->> +	if (udp_hashed4(sk)) {
->> +		udp4_rehash4(udptable, sk, hash);
+> debugfs has been designed so that it should be robust if any previous
+> call to debugfs failed. It will not crash, it will just keep going.
 > 
-> It's unclear to me how we can enter this branch. Also it's unclear why
-> here you don't need to call udp_hash4_inc()udp_hash4_dec, too. Why such
-> accounting can't be placed in udp4_rehash4()?
+> It does not matter if the contents of debugfs are messed up as a
+> result, it is not an ABI, you cannot trust it to contain anything
+> useful, and it might be missing all together, since it is optional.
+
+Okay, thank you for your detailed explanation.
+
 > 
-
-It's possible that a connected udp socket _re-connect_ to another remote 
-address. Then, because the local address is not changed, hash2 and its 
-hash4_cnt keep unchanged. But rehash4 need to be done.
-
-I'll also add a comment here.
-
-> [...]
->> @@ -2031,6 +2180,19 @@ void udp_lib_rehash(struct sock *sk, u16 newhash)
->>   				spin_unlock(&nhslot2->lock);
->>   			}
->>   
->> +			if (udp_hashed4(sk)) {
->> +				udp4_rehash4(udptable, sk, newhash4);
->> +
->> +				if (hslot2 != nhslot2) {
->> +					spin_lock(&hslot2->lock);
->> +					udp_hash4_dec(hslot2);
->> +					spin_unlock(&hslot2->lock);
->> +
->> +					spin_lock(&nhslot2->lock);
->> +					udp_hash4_inc(nhslot2);
->> +					spin_unlock(&nhslot2->lock);
->> +				}
->> +			}
->>   			spin_unlock_bh(&hslot->lock);
+> 	Andrew
+> .
 > 
-> The udp4_rehash4() call above is in atomic context and could end-up
-> calling synchronize_rcu() which is a blocking function. You must avoid that.
-> 
-
-I see, synchronize_rcu() cannot be used with spinlock. However, I don't 
-have a good idea to solve it by now. Do you have any thoughts or 
-suggestions?
-
-> Cheers,
-> 
-> Paolo
-
-Thanks for your reviewing, Paolo. I'll address all your concerns in the 
-next version.
 
 -- 
-Philo
-
+Regards,
+  Zhen Lei
