@@ -1,28 +1,29 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665CF1D26E7;
-	Fri, 25 Oct 2024 09:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0B11D2F5F;
+	Fri, 25 Oct 2024 09:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729848987; cv=none; b=SKttT4wfFrFOPXpZ1hYIKxZz340QSnetB7mraHYlZD75jLqiSx69kZHGUmDU6tUY83ceiGSX3TDkX0CwQj4wAGW9dwY58ebXVBXvEnLR6jdewoYAsPjVwFis6UHkG71jw6U3jAaoCyv+59WLfAgnPGkarZf8wukSFp7B2+9zNSE=
+	t=1729848987; cv=none; b=inpVQfvtQ3H2NSJcpIWWtyMuY1o1WjT2+zk8c568mpZ5WtIoP1iY1oDsln+LEMNzI51P//SUMTk68yLSh49ttDTL3qRLjlAj5Bb2l7geq4WsQ9nk1HniLTSi5GHARfOq/OSGCNlgSZLo7khTKMFfV7J2/2dQsTch09gkO5ctYs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729848987; c=relaxed/simple;
-	bh=NsYOqFpzdrIrWT6NiyUNfAQahqInYQXDY8E5PUrFv1U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OWPvSwMjskMt7ZFb1FnxvT+z7818mx1BFXwkEfM+5tv1hLIgfcuRq8+rzdDkCsgBzw0Nj4RCG6nAbLTy6H9bIiDZL9kdvLNVxcYb/7cIeMhg1q1GGx+23ZU0dXSCKtJ1IVtzwo1FWdU7eqALW+Qailu+3cvla4iw5Mn/K7+Hyn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+	bh=35cOsTT1YYRA+to1SFi0U9iscvlef3bF9fV2AKVrJ9s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZRuo1DY161CetAtcI/1lM03toW/ERqPzCZzNOMljEL6BpHkvEbwjhg26dsmBUsLJ5kfUymf+W0CYfeN89XliNrKPl8f2S0iYxVIpeu9RzY8aIEkkKzUItsIlY4TrGIEOelNjJInYh3yYR3w80+XL0r99ukFuF+V0vKBXi1pg5xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XZd0t2M3Hz1SD0l;
-	Fri, 25 Oct 2024 17:34:54 +0800 (CST)
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XZd2j2P6kz1ynfM;
+	Fri, 25 Oct 2024 17:36:29 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8E815140361;
-	Fri, 25 Oct 2024 17:36:20 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A35B8140361;
+	Fri, 25 Oct 2024 17:36:21 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 25 Oct 2024 17:36:19 +0800
+ 15.1.2507.39; Fri, 25 Oct 2024 17:36:20 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -30,10 +31,12 @@ CC: <shenjian15@huawei.com>, <salil.mehta@huawei.com>,
 	<liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>, <shaojijie@huawei.com>,
 	<chenhao418@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [PATCH V3 net 0/9] There are some bugfix for the HNS3 ethernet driver
-Date: Fri, 25 Oct 2024 17:29:29 +0800
-Message-ID: <20241025092938.2912958-1-shaojijie@huawei.com>
+Subject: [PATCH V3 net 2/9] net: hns3: add sync command to sync io-pgtable
+Date: Fri, 25 Oct 2024 17:29:31 +0800
+Message-ID: <20241025092938.2912958-3-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241025092938.2912958-1-shaojijie@huawei.com>
+References: <20241025092938.2912958-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,54 +48,83 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-There are some bugfix for the HNS3 ethernet driver
+From: Jian Shen <shenjian15@huawei.com>
 
+To avoid errors in pgtable prefectch, add a sync command to sync
+io-pagtable.
+
+This is a supplement for the previous patch.
+We want all the tx packet can be handled with tx bounce buffer path.
+But it depends on the remain space of the spare buffer, checked by the
+hns3_can_use_tx_bounce(). In most cases, maybe 99.99%, it returns true.
+But once it return false by no available space, the packet will be handled
+with the former path, which will map/unmap the skb buffer.
+Then the driver will face the smmu prefetch risk again.
+
+So add a sync command in this case to avoid smmu prefectch,
+just protects corner scenes.
+
+Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
-ChangeLog:
-v2 -> v3:
-  - Rewrite the commit logs of net: hns3: add sync command to sync io-pgtable' to
-    add more verbose explanation, suggested Paolo.
-  - Add fixes tag for hardware issue, suggested Paolo and Simon Horman.
-v2: https://lore.kernel.org/all/20241018101059.1718375-1-shaojijie@huawei.com/
-v1 -> v2:
-  - Pass IRQF_NO_AUTOEN to request_irq(), suggested by Jakub.
-  - Rewrite the commit logs of 'net: hns3: default enable tx bounce buffer when smmu enabled'
-    and 'net: hns3: add sync command to sync io-pgtable'.
-v1: https://lore.kernel.org/all/20241011094521.3008298-1-shaojijie@huawei.com/
----
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 27 +++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Hao Lan (4):
-  net: hns3: fixed reset failure issues caused by the incorrect reset
-    type
-  net: hns3: fix missing features due to dev->features configuration too
-    early
-  net: hns3: Resolved the issue that the debugfs query result is
-    inconsistent.
-  net: hns3: fixed hclge_fetch_pf_reg accesses bar space out of bounds
-    issue
-
-Jian Shen (3):
-  net: hns3: add sync command to sync io-pgtable
-  net: hns3: don't auto enable misc vector
-  net: hns3: initialize reset_timer before hclgevf_misc_irq_init()
-
-Jie Wang (1):
-  net: hns3: fix kernel crash when 1588 is sent on HIP08 devices
-
-Peiyang Wang (1):
-  net: hns3: default enable tx bounce buffer when smmu enabled
-
- .../ethernet/hisilicon/hns3/hns3_debugfs.c    |  4 +-
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 59 ++++++++++++++++++-
- .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 +
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 33 +++++++++++
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 45 +++++++++++---
- .../hisilicon/hns3/hns3pf/hclge_ptp.c         |  3 +
- .../hisilicon/hns3/hns3pf/hclge_regs.c        |  9 +--
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 40 ++++++++++---
- .../hisilicon/hns3/hns3vf/hclgevf_regs.c      |  9 +--
- 9 files changed, 178 insertions(+), 26 deletions(-)
-
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index ac88e301f221..8760b4e9ade6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -381,6 +381,24 @@ static const struct hns3_rx_ptype hns3_rx_ptype_tbl[] = {
+ #define HNS3_INVALID_PTYPE \
+ 		ARRAY_SIZE(hns3_rx_ptype_tbl)
+ 
++static void hns3_dma_map_sync(struct device *dev, unsigned long iova)
++{
++	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
++	struct iommu_iotlb_gather iotlb_gather;
++	size_t granule;
++
++	if (!domain || !iommu_is_dma_domain(domain))
++		return;
++
++	granule = 1 << __ffs(domain->pgsize_bitmap);
++	iova = ALIGN_DOWN(iova, granule);
++	iotlb_gather.start = iova;
++	iotlb_gather.end = iova + granule - 1;
++	iotlb_gather.pgsize = granule;
++
++	iommu_iotlb_sync(domain, &iotlb_gather);
++}
++
+ static irqreturn_t hns3_irq_handle(int irq, void *vector)
+ {
+ 	struct hns3_enet_tqp_vector *tqp_vector = vector;
+@@ -1728,7 +1746,9 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
+ 				  unsigned int type)
+ {
+ 	struct hns3_desc_cb *desc_cb = &ring->desc_cb[ring->next_to_use];
++	struct hnae3_handle *handle = ring->tqp->handle;
+ 	struct device *dev = ring_to_dev(ring);
++	struct hnae3_ae_dev *ae_dev;
+ 	unsigned int size;
+ 	dma_addr_t dma;
+ 
+@@ -1760,6 +1780,13 @@ static int hns3_map_and_fill_desc(struct hns3_enet_ring *ring, void *priv,
+ 		return -ENOMEM;
+ 	}
+ 
++	/* Add a SYNC command to sync io-pgtale to avoid errors in pgtable
++	 * prefetch
++	 */
++	ae_dev = hns3_get_ae_dev(handle);
++	if (ae_dev->dev_version >= HNAE3_DEVICE_VERSION_V3)
++		hns3_dma_map_sync(dev, dma);
++
+ 	desc_cb->priv = priv;
+ 	desc_cb->length = size;
+ 	desc_cb->dma = dma;
 -- 
 2.33.0
 
