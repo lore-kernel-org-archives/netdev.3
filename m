@@ -1,42 +1,44 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F2D13C9A3
-	for <netdev@vger.kernel.org>; Sat, 26 Oct 2024 03:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379F01DFD8;
+	Sat, 26 Oct 2024 03:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729914554; cv=none; b=cw24eNaFvCegBfsKyaeNInuPNMT2l3KSPydT4UnxFrlRKu+spVFegMywNWWX4hP7I3WT4nyPuaXODe7dSJ+9/2lGM0v7E+KoyTDWx8Wqnv47aQ3cTG99kpORTMfX7cCo3izlteyzxnV8REXHi0g4gs43Kd9jbhOY27qYDCSlBOI=
+	t=1729915066; cv=none; b=l8GJykl5/FUwxAtWOmvDi5qf31GxTwF6eaaNZH4m3yphtqfnAFpSN0kvIy4oFJJm/EsbdByvpxSPjPr6AuSXLWBM7i/bGx/lqGuPcSumE9f/mBHCfA+hhL89PFOJFAK3r2iJ+SViTO5YzRbxwVwGTelg1cP7K9krdnooG3tL7GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729914554; c=relaxed/simple;
-	bh=M+vbKR/dapp5WWzfzGYRNGd+SKluD0eHn0NA3znI5Mc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qAcdOxHAsxJ/kQO9sWJQCLGJFwQKtiqrOM0/1P0XEx++XINZ0rwhL8ERgB6QPYJCmNitNiuryTM7giOOVX1BSy1lMiVONheIX3T28ufAoKiRt9EX1hodCNPdRyFOb2dS/zfYAVSak7/cGtkM8giaZXhxZOFDkIvnr+6cP27pRBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+	s=arc-20240116; t=1729915066; c=relaxed/simple;
+	bh=MfjRLEEH73Bx7axO85yFCiYfX5F+trhTGwga2ALtTK4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U2+kerVxGq20lzRdai9G3/i4IkwttCH8/0L/4ZKL1VPUSLPbFkgJZsVBxWESyR9Q9TSVGfnuuGEU7ny/wf0fgh3bwE9MyRbceg/0HsCx6uxdocw5H4nzZ2KUQ+wYHWuNSot6CqpKI2VQiZRNqc5MfpMHav207fpikuIEc8gZ+So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Xb5Fg2nMJz1jvwL;
-	Sat, 26 Oct 2024 11:47:35 +0800 (CST)
-Received: from dggpemf100006.china.huawei.com (unknown [7.185.36.228])
-	by mail.maildlp.com (Postfix) with ESMTPS id CF4F81401E9;
-	Sat, 26 Oct 2024 11:49:01 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.178.55) by
- dggpemf100006.china.huawei.com (7.185.36.228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 26 Oct 2024 11:49:01 +0800
-From: Zhen Lei <thunder.leizhen@huawei.com>
-To: Rasesh Mody <rmody@marvell.com>, Sudarsana Kalluru <skalluru@marvell.com>,
-	<GR-Linux-NIC-Dev@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <netdev@vger.kernel.org>
-CC: Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH v2 1/2] bna: Remove error checking for debugfs create APIs
-Date: Sat, 26 Oct 2024 11:47:59 +0800
-Message-ID: <20241026034800.450-2-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.37.3.windows.1
-In-Reply-To: <20241026034800.450-1-thunder.leizhen@huawei.com>
-References: <20241026034800.450-1-thunder.leizhen@huawei.com>
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Xb5SH2D2wz20qjm;
+	Sat, 26 Oct 2024 11:56:47 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 066D51A0188;
+	Sat, 26 Oct 2024 11:57:42 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 26 Oct
+ 2024 11:57:40 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
+	<hawk@kernel.org>, <john.fastabend@gmail.com>,
+	<maciej.fijalkowski@intel.com>, <vedang.patel@intel.com>,
+	<jithu.joseph@intel.com>, <andre.guedes@intel.com>, <horms@kernel.org>,
+	<jacob.e.keller@intel.com>, <sven.auhagen@voleatech.de>,
+	<alexander.h.duyck@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH v4 net-next 0/4] Fix passing 0 to ERR_PTR in intel ether drivers
+Date: Sat, 26 Oct 2024 12:12:45 +0800
+Message-ID: <20241026041249.1267664-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,55 +48,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf100006.china.huawei.com (7.185.36.228)
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Driver bna can work fine even if any previous call to debugfs create
-APIs failed. All return value checks of them should be dropped, as
-debugfs APIs say.
+Fixing sparse error in xdp run code by introducing new variable xdp_res
+instead of overloading this into the skb pointer as i40e drivers done
+in commit 12738ac4754e ("i40e: Fix sparse errors in i40e_txrx.c") and
+commit ae4393dfd472 ("i40e: fix broken XDP support").
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+v4: Target to net-next
+v3: https://lore.kernel.org/bpf/20241022065623.1282224-3-yuehaibing@huawei.com/T/
+    Fix uninitialized 'xdp_res' in patch 3 and 4 which Reported-by
+    kernel test robot
+v2: Fix this as i40e drivers done instead of return NULL in xdp run code
 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-index 97291bfbeea589e..220d20a829c8a84 100644
---- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-@@ -500,19 +500,12 @@ bnad_debugfs_init(struct bnad *bnad)
- 	if (!bna_debugfs_root) {
- 		bna_debugfs_root = debugfs_create_dir("bna", NULL);
- 		atomic_set(&bna_debugfs_port_count, 0);
--		if (!bna_debugfs_root) {
--			netdev_warn(bnad->netdev,
--				    "debugfs root dir creation failed\n");
--			return;
--		}
- 	}
- 
- 	/* Setup the pci_dev debugfs directory for the port */
- 	snprintf(name, sizeof(name), "pci_dev:%s", pci_name(bnad->pcidev));
- 	if (!bnad->port_debugfs_root) {
--		bnad->port_debugfs_root =
--			debugfs_create_dir(name, bna_debugfs_root);
--
-+		bnad->port_debugfs_root = debugfs_create_dir(name, bna_debugfs_root);
- 		atomic_inc(&bna_debugfs_port_count);
- 
- 		for (i = 0; i < ARRAY_SIZE(bnad_debugfs_files); i++) {
-@@ -523,12 +516,6 @@ bnad_debugfs_init(struct bnad *bnad)
- 							bnad->port_debugfs_root,
- 							bnad,
- 							file->fops);
--			if (!bnad->bnad_dentry_files[i]) {
--				netdev_warn(bnad->netdev,
--					    "create %s entry failed\n",
--					    file->name);
--				return;
--			}
- 		}
- 	}
- }
+Yue Haibing (4):
+  igc: Fix passing 0 to ERR_PTR in igc_xdp_run_prog()
+  igb: Fix passing 0 to ERR_PTR in igb_run_xdp()
+  ixgbe: Fix passing 0 to ERR_PTR in ixgbe_run_xdp()
+  ixgbevf: Fix passing 0 to ERR_PTR in ixgbevf_run_xdp()
+
+ drivers/net/ethernet/intel/igb/igb_main.c     | 22 +++++++-----------
+ drivers/net/ethernet/intel/igc/igc_main.c     | 20 ++++++----------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 23 ++++++++-----------
+ .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 23 ++++++++-----------
+ 4 files changed, 34 insertions(+), 54 deletions(-)
+
 -- 
 2.34.1
 
