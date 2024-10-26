@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C93017BB07
-	for <netdev@vger.kernel.org>; Sat, 26 Oct 2024 06:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DD818FC61
+	for <netdev@vger.kernel.org>; Sat, 26 Oct 2024 06:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729924564; cv=none; b=XIMCJcQ+RW++tiY32kFAZcAVCUp6ylxKHVMXGK1NccGj3ciKN+TrPuhxaxfNf/si9KYR/l2TCjTWplBrJUzKNh0urh+I/sB5VIr6uonbEjiKTqo+9/AcW631jdBQgJhL+pSVEqJv+OJIWOAHkRLYYgtmUCUCpzx6UGtn2Yqwdc0=
+	t=1729924565; cv=none; b=iCEDCFe6XvKJSGZ7hiK04rNSfuj9OinmW2n7uYt3TEQvxXGAuK/rR3VgWBBsFt1rI7iArIS5yTkKnwGcT2vTEA4W7mt6LfbGq23vknLScAHP5Ue2ptA2VY9LShq53IQ2cCjMoGUzsFiJ+JpVHOPY7ooxmHkEr4ceCApFLGF7oEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729924564; c=relaxed/simple;
-	bh=PyA6XkLuW//YJHuLU9e9e+Uvse6PTMXkl5C2E+oqirI=;
+	s=arc-20240116; t=1729924565; c=relaxed/simple;
+	bh=KnM1jkiNDNi+pT5UhL74vYUlzz9wd7posbbyo5VAvbk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jw7kU+A6fUpKbFKhaXDRSie1uJy4i++uG+JHTwDG+K6NO3SLR+8l+rdQU9RNqOD0OrNYzpjDkoJHymQ9BpnWl3lqz4PnhEdi241MHYEje8A7cdAbOo1PD3TUtmY1hPR/EieqI/79P/balmf1DCC3PxL6VDXXqQKTMl0LEoBvQfU=
+	 MIME-Version; b=Sd1+GnLmii1MLelyrMIC8avnvd2sjrAERwiK571sEoHlgJMm0NeH4bSKFtkL+N5uwd/yT3FBaJvnTJbDlAMCakNgktKddUMz0vGWYNWhd+xChZxvSDz6vBfkkm2FYLSB4KmAG08Vc7oS50Ih9a6N4JuZNPHke4MCpgrKc5UrrV8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t4aOj-0006kD-1l; Sat, 26 Oct 2024 08:35:41 +0200
+	id 1t4aOj-0006kB-1m; Sat, 26 Oct 2024 08:35:41 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t4aOh-000UfO-0Y;
+	id 1t4aOh-000UfM-0M;
 	Sat, 26 Oct 2024 08:35:39 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t4aOh-00AVyn-0E;
+	id 1t4aOh-00AVyT-05;
 	Sat, 26 Oct 2024 08:35:39 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -49,9 +49,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	UNGLinuxDriver@microchip.com,
 	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	devicetree@vger.kernel.org
-Subject: [PATCH net-next v1 4/5] net: dsa: microchip: cleanup error handling in ksz_mdio_register
-Date: Sat, 26 Oct 2024 08:35:37 +0200
-Message-Id: <20241026063538.2506143-5-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 2/5] dt-bindings: net: dsa: ksz: add mdio-parent-bus property for internal MDIO
+Date: Sat, 26 Oct 2024 08:35:35 +0200
+Message-Id: <20241026063538.2506143-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241026063538.2506143-1-o.rempel@pengutronix.de>
 References: <20241026063538.2506143-1-o.rempel@pengutronix.de>
@@ -67,41 +67,35 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Replace repeated cleanup code with a single error path using a label.
+Introduce `mdio-parent-bus` property in the ksz DSA bindings to
+reference the parent MDIO bus when the internal MDIO bus is attached to
+it, bypassing the main management interface.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/net/dsa/microchip,ksz.yaml       | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index bcd963191cb25..f08fa52dd1387 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2339,8 +2339,8 @@ static int ksz_mdio_register(struct ksz_device *dev)
- 
- 	bus = devm_mdiobus_alloc(ds->dev);
- 	if (!bus) {
--		of_node_put(mdio_np);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto put_mdio_node;
- 	}
- 
- 	if (dev->dev_ops->mdio_bus_preinit) {
-@@ -2385,10 +2385,8 @@ static int ksz_mdio_register(struct ksz_device *dev)
- 
- 	if (dev->irq > 0) {
- 		ret = ksz_irq_phy_setup(dev);
--		if (ret) {
--			of_node_put(mdio_np);
--			return ret;
--		}
-+		if (ret)
-+			goto put_mdio_node;
- 	}
- 
- 	ret = devm_of_mdiobus_register(ds->dev, bus, mdio_np);
+diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+index a4e463819d4d7..121a4bbd147be 100644
+--- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+@@ -84,6 +84,15 @@ properties:
+   mdio:
+     $ref: /schemas/net/mdio.yaml#
+     unevaluatedProperties: false
++    properties:
++      mdio-parent-bus:
++        $ref: /schemas/types.yaml#/definitions/phandle
++        description:
++          Phandle pointing to the MDIO bus controller connected to the
++          secondary MDIO interface. This property should be used when
++          the internal MDIO bus is accessed via a secondary MDIO
++          interface rather than the primary management interface.
++
+     patternProperties:
+       "^ethernet-phy@[0-9a-f]$":
+         type: object
 -- 
 2.39.5
 
