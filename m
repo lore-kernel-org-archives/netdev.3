@@ -1,29 +1,29 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A50A1D363A;
-	Sat, 26 Oct 2024 12:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC94A1D31A8;
+	Sat, 26 Oct 2024 12:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729944261; cv=none; b=Is+v/en6rxhZYWXkN9FIdlya/ptBjdBnzswlwXaJFZNPK1s/u6GUJhGse0R3aq1nd+mxjsfUQ8MBTaYZly0W7WqCPKS36biP0mxBTxHAGCVBvd/TWcFnEWTO5NLqZK/z6etqldDHX9UewlVVfNe/sEQaDBFZcC2cRj4INKe6UiA=
+	t=1729944261; cv=none; b=qCHl4FO+v5nRF/ObI0B628Edpj6FiEH88OgSIouUsurDMJDad1JB2Pgd8PQjVBWe9Q6EsY7CTa6/9Bej5IBZuTXBktMPU3JPtR3WzmRnKpConhQZH6QcQufQZUHIlrIPtg+cy4q+7N6HAv9urfb1S9IaSWjPoz7NievLdBnL/xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729944261; c=relaxed/simple;
-	bh=gF4/RfapNRtWmMG0wVHjcxjScGG3v+6wqjUR4V+BglA=;
+	bh=A4ZHu4WlQPNEn6TUBFLxokFNhXE/SK5n3HZUdfcZtwE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hUoM+IDSgWntCnj6nQBXVSO9PFRoUjsYKRjcMkPzhRAyWp05spkCkvigJceKS4QFrBlio19hSNy6447hWvsbsxmS3/qf4Djmjddrg+IR6ylaMQqSl9RqGFBChYFthIxCkgSZbo6tF9ucryWcUq3YZVU8g9gEGRZoXR6uc5/Vly4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	 MIME-Version:Content-Type; b=Q3POnt5rTeFL5dCXdN5a80tM5+hr2/VBH63Jcr7Sm1+/w0F2MIH8SSi9mIMo6Wi/rqpJ85B6Fp5SKzReCl3xML9Z0by7hraG83edqjh57JoyFoJwN1DzLPnAhYnjB4OpIfmleIFeqBNmOdsn0aJgZVTFcUFZvgSTPrf61FeC6uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XbJFj2Qdmz20qlD;
-	Sat, 26 Oct 2024 20:03:21 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XbJDv2yxRzyTT0;
+	Sat, 26 Oct 2024 20:02:39 +0800 (CST)
 Received: from kwepemm000007.china.huawei.com (unknown [7.193.23.189])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6146B14011D;
-	Sat, 26 Oct 2024 20:04:16 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 3CB6F1400E3;
+	Sat, 26 Oct 2024 20:04:14 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 26 Oct 2024 20:04:15 +0800
+ 15.1.2507.39; Sat, 26 Oct 2024 20:04:13 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -33,9 +33,9 @@ CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
 	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
 	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V2 net-next 6/8] net: hibmcge: Add pauseparam supported in this module
-Date: Sat, 26 Oct 2024 19:57:38 +0800
-Message-ID: <20241026115740.633503-7-shaojijie@huawei.com>
+Subject: [PATCH V2 net-next 3/8] net: hibmcge: Add irq_info file to debugfs
+Date: Sat, 26 Oct 2024 19:57:35 +0800
+Message-ID: <20241026115740.633503-4-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241026115740.633503-1-shaojijie@huawei.com>
 References: <20241026115740.633503-1-shaojijie@huawei.com>
@@ -50,131 +50,79 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  kwepemm000007.china.huawei.com (7.193.23.189)
 
-The MAC can automatically send or respond to pause frames.
-This patch supports the function of enabling pause frames
-by using ethtool.
+the driver requested three interrupts: "tx", "rx", "err".
+The err interrupt is a summary interrupt. We distinguish
+different errors based on the status register and mask.
 
-Pause auto-negotiation is not supported currently.
+With "cat /proc/interrupts | grep hibmcge",
+we can't distinguish the detailed cause of the error,
+so we added this file to debugfs.
+
+the following effects are achieved:
+[root@localhost sjj]# cat /sys/kernel/debug/hibmcge/0000\:83\:00.1/irq_info
+RX                  : enabled: true , logged: false, count: 0
+TX                  : enabled: true , logged: false, count: 0
+MAC_MII_FIFO_ERR    : enabled: false, logged: true , count: 0
+MAC_PCS_RX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_PCS_TX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_APP_RX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_APP_TX_FIFO_ERR : enabled: false, logged: true , count: 0
+SRAM_PARITY_ERR     : enabled: true , logged: true , count: 0
+TX_AHB_ERR          : enabled: true , logged: true , count: 0
+RX_BUF_AVL          : enabled: true , logged: false, count: 0
+REL_BUF_ERR         : enabled: true , logged: true , count: 0
+TXCFG_AVL           : enabled: true , logged: false, count: 0
+TX_DROP             : enabled: true , logged: false, count: 0
+RX_DROP             : enabled: true , logged: false, count: 0
+RX_AHB_ERR          : enabled: true , logged: true , count: 0
+MAC_FIFO_ERR        : enabled: true , logged: false, count: 0
+RBREQ_ERR           : enabled: true , logged: false, count: 0
+WE_ERR              : enabled: true , logged: false, count: 0
+
+The irq framework of hibmcge driver also includes tx/rx interrupts.
+Therefore, TX and RX are not moved separately form this file.
 
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 22 +++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 21 ++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.h   |  3 +++
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  1 +
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  2 ++
- 5 files changed, 49 insertions(+)
+ .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index aee1a81383ec..bcc552a240d6 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -317,6 +317,26 @@ static void hbg_ethtool_get_regs(struct net_device *netdev,
- 	}
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
+index 9c0b2c7231fe..99d4e22a1d6f 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
+@@ -56,9 +56,31 @@ static int hbg_dbg_rx_ring(struct seq_file *s, void *unused)
+ 	return 0;
  }
  
-+static void hbg_ethtool_get_pauseparam(struct net_device *net_dev,
-+				       struct ethtool_pauseparam *param)
++static int hbg_dbg_irq_info(struct seq_file *s, void *unused)
 +{
-+	struct hbg_priv *priv = netdev_priv(net_dev);
++	struct net_device *netdev = dev_get_drvdata(s->private);
++	struct hbg_priv *priv = netdev_priv(netdev);
++	struct hbg_irq_info *info;
++	u32 i;
 +
-+	hbg_hw_get_pause_enable(priv, &param->tx_pause, &param->rx_pause);
-+}
++	for (i = 0; i < priv->vectors.info_array_len; i++) {
++		info = &priv->vectors.info_array[i];
++		seq_printf(s,
++			   "%-20s: enabled: %-5s, logged: %-5s, count: %llu\n",
++			   info->name,
++			   hbg_get_bool_str(hbg_hw_irq_is_enabled(priv,
++								  info->mask)),
++			   hbg_get_bool_str(info->need_print),
++			   info->count);
++	}
 +
-+static int hbg_ethtool_set_pauseparam(struct net_device *net_dev,
-+				      struct ethtool_pauseparam *param)
-+{
-+	struct hbg_priv *priv = netdev_priv(net_dev);
-+
-+	if (param->autoneg)
-+		return -EOPNOTSUPP;
-+
-+	hbg_hw_set_pause_enable(priv, !!param->tx_pause, !!param->rx_pause);
 +	return 0;
 +}
 +
- static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
-@@ -326,6 +346,8 @@ static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_ethtool_stats	= hbg_ethtool_get_stats,
- 	.get_regs_len		= hbg_ethtool_get_regs_len,
- 	.get_regs		= hbg_ethtool_get_regs,
-+	.get_pauseparam         = hbg_ethtool_get_pauseparam,
-+	.set_pauseparam         = hbg_ethtool_set_pauseparam,
+ static const struct hbg_dbg_info hbg_dbg_infos[] = {
+ 	{ "tx_ring", hbg_dbg_tx_ring },
+ 	{ "rx_ring", hbg_dbg_rx_ring },
++	{ "irq_info", hbg_dbg_irq_info },
  };
  
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 29d66a0ea0a6..0cbe9f7229b3 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -220,6 +220,27 @@ void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable)
- 			    HBG_REG_REC_FILT_CTRL_UC_MATCH_EN_B, enable);
- }
- 
-+void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en)
-+{
-+	hbg_reg_write_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+			    HBG_REG_PAUSE_ENABLE_TX_B, tx_en);
-+	hbg_reg_write_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+			    HBG_REG_PAUSE_ENABLE_RX_B, rx_en);
-+}
-+
-+void hbg_hw_get_pause_enable(struct hbg_priv *priv, u32 *tx_en, u32 *rx_en)
-+{
-+	*tx_en = hbg_reg_read_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+				    HBG_REG_PAUSE_ENABLE_TX_B);
-+	*rx_en = hbg_reg_read_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+				    HBG_REG_PAUSE_ENABLE_RX_B);
-+}
-+
-+void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr)
-+{
-+	hbg_reg_write64(priv, HBG_REG_FD_FC_ADDR_LOW_ADDR, mac_addr);
-+}
-+
- static void hbg_hw_init_transmit_ctrl(struct hbg_priv *priv)
- {
- 	u32 ctrl = 0;
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-index 6eb4b7d2cba8..a4a049b5121d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-@@ -56,5 +56,8 @@ u32 hbg_hw_get_fifo_used_num(struct hbg_priv *priv, enum hbg_dir dir);
- void hbg_hw_set_tx_desc(struct hbg_priv *priv, struct hbg_tx_desc *tx_desc);
- void hbg_hw_fill_buffer(struct hbg_priv *priv, u32 buffer_dma_addr);
- void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable);
-+void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en);
-+void hbg_hw_get_pause_enable(struct hbg_priv *priv, u32 *tx_en, u32 *rx_en);
-+void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr);
- 
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index b050cfb8c5bb..79bb23b8a959 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -204,6 +204,7 @@ static int hbg_net_set_mac_address(struct net_device *netdev, void *addr)
- 	if (is_exists)
- 		hbg_set_mac_to_mac_table(priv, index, NULL);
- 
-+	hbg_hw_set_rx_pause_mac_addr(priv, ether_addr_to_u64(mac_addr));
- 	dev_addr_set(netdev, mac_addr);
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index 44e4b16c48ea..42cd3d64e8ae 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -51,6 +51,8 @@
- #define HBG_REG_PORT_ENABLE_RX_B		BIT(1)
- #define HBG_REG_PORT_ENABLE_TX_B		BIT(2)
- #define HBG_REG_PAUSE_ENABLE_ADDR		(HBG_REG_SGMII_BASE + 0x0048)
-+#define HBG_REG_PAUSE_ENABLE_RX_B		BIT(0)
-+#define HBG_REG_PAUSE_ENABLE_TX_B		BIT(1)
- #define HBG_REG_AN_NEG_STATE_ADDR		(HBG_REG_SGMII_BASE + 0x0058)
- #define HBG_REG_TRANSMIT_CTRL_ADDR		(HBG_REG_SGMII_BASE + 0x0060)
- #define HBG_REG_TRANSMIT_CTRL_PAD_EN_B		BIT(7)
+ static void hbg_debugfs_uninit(void *data)
 -- 
 2.33.0
 
