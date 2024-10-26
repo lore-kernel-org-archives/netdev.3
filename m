@@ -1,148 +1,238 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E4817965E;
-	Sat, 26 Oct 2024 03:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BE414EC47;
+	Sat, 26 Oct 2024 05:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729915074; cv=none; b=dPX+tgFQGtpGbyb4V3ZXamkwUbvN2R6kaSDnpvA7zoWl4uTU6DxOWYbY+wZo15EU6AT5KJB7pRTjU8fcoWJbaoqO3WR0xUY1OjbWieUgHqnKIXHV3JZIAhaVIi8GpUTTQeEBnnyGKPS0I/ZjDVc8Rk830NWyRozQXl4v0l7Tmhg=
+	t=1729919491; cv=none; b=Q+0ZWccjFNk0Xn/YKhF6RCVu1AdFuvycvj9vQ378kSTnjvc42LzBDU+ca9r9BU9mrW+buSnxq18hpxGVlxpj1YPCMMi4BBc3jwvuXaIfI5v4UNxdr0ZelkzhDEgpY83pEa8j/y00VvhL9APQuZ3E0iRBngv9pALTw6R4aLbPFag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729915074; c=relaxed/simple;
-	bh=lZ1bnjQFeXfWkJLEQSnLHKuLo0tlD67J4Hgui1RoWjA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eImbwjLDB5Zst/Y1S3XKJ/k4507Nvf5lrC6WeSP+8LnwATaFkXNZ7mr+uw/bPFgpeR2SwcI0wRm8HqUmvVbW+BwN3Q8JcMU1fIuqJT9ya5RVXdIAPkgkf+PHLLuFW+e/60dCznLz1Y7K4Zd/W8BqqNJc7MdJl+0tBXY7olw+Y78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Xb5RY34p4zyTlL;
-	Sat, 26 Oct 2024 11:56:09 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id D9C751800DB;
-	Sat, 26 Oct 2024 11:57:43 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 26 Oct
- 2024 11:57:42 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
-	<hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<maciej.fijalkowski@intel.com>, <vedang.patel@intel.com>,
-	<jithu.joseph@intel.com>, <andre.guedes@intel.com>, <horms@kernel.org>,
-	<jacob.e.keller@intel.com>, <sven.auhagen@voleatech.de>,
-	<alexander.h.duyck@intel.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH v4 net-next 2/4] igb: Fix passing 0 to ERR_PTR in igb_run_xdp()
-Date: Sat, 26 Oct 2024 12:12:47 +0800
-Message-ID: <20241026041249.1267664-3-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241026041249.1267664-1-yuehaibing@huawei.com>
-References: <20241026041249.1267664-1-yuehaibing@huawei.com>
+	s=arc-20240116; t=1729919491; c=relaxed/simple;
+	bh=McFv6i9UQcN/k/nhaQP/YsTf1hwbsUeQnG0tS0NSIzE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H4aiuekyILLQbO37wRWq7AUZnYFZBN46/57+cJWNrJgeXqV53VVmSoxBQe6cpunc56jLgjsQ3wGSnnN7zr04yP138SOoMniwiqIkHp0c02ccmVFJ5Tq6s07+2PCDh9ZvnBsEnP1AuhsphAFky/6AUqX/hSxqREl9gCRbWRA9/Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UZWl4Z9/; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UZWl4Z9/"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a99ea294480so183710466b.2;
+        Fri, 25 Oct 2024 22:11:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729919487; x=1730524287; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hxqf2Vbhgw6HqjwNVbbcfem37l/wnYntm54FveWHRgM=;
+        b=UZWl4Z9/YVh7Oys/gsXgGueV8ZOcY6g2q4b0CbPZlMsNfcCKc85RlEhRCKA6ST2CSR
+         8PDlxRypRmwJvZIXmuH+cxUtkTHTKqnTG/Oiqj1YI1STEO0hQ3UR56Z0gP7x2YeXMKud
+         zm3+kV6uU73ztWWUoSdxknb8HpepACTqk3TrAcCGpEXgHnzLfFkNXDvPEXGM7DLUftD+
+         ahxl0EzK5UhrvImzXbW5IgG086tJUIlrrRGV5L6ZL3t1RLcwSga/fs0SW6a9bojj76YZ
+         LsMXvDNF0yXpeRKVAxZnMVofAyASmt41zUmDVa2ZBxmVEVlsklhs10+PCgq6yUrhqo2o
+         9lBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729919487; x=1730524287;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hxqf2Vbhgw6HqjwNVbbcfem37l/wnYntm54FveWHRgM=;
+        b=cN8ZKE31xM8oQiVaShRQvBOd5mUFU3XAZ+dl+ziDbetw3UCLd18QrPFMSUx3e1H3tO
+         Q6jxEuiIhT0n85Y+GttV8DjiVQj3YspuXP4UDX43GfMc7SEolgVoX+ZtXrHhEJAEYQcJ
+         mGz4fb3QF2vU8Se8e6nHyQcdSxjGDJdXBU75cTleQ6/Asu9XRndjlm6bA+S9Oy2WCAT3
+         uQBLzD9wbna4YSfbPyHxtYIkRj7GCZ9soEPUqrdwJ4k4e76UfHRBXegTh/b4EWPOCBuC
+         ZBcrynPP8q8IDnXWVRPhFURKtsVT8ddz2x+r+bGK5gowgcvP23YJuvQ9hsDk6r721e6Q
+         8ypQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVi70xC1biUsQbM5L+rBvobegB+LUbtFuRgNWX5alucUMuHFpadZeDpT88f3/pAfx9Jsd6k6HO@vger.kernel.org, AJvYcCXkuz8hHgaR2tn5z+ZfjbrzQvJigep+D1NlmTnRQMOOgsmpLn9djPGH6AbaKAFJZw3uITica6H1LrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwA9fMI0VCKaXb24lhTTW4RqNY/xHIsxrjRyaSV9DpaHb4b538H
+	X7UZiFPOSoWV/ohiLW3eR9y8JsPlPJXWVV2NeHUupZZLINDiOfNSH1lKAc+g0t85tZDfCZhjDnu
+	Sj/j/PQ3YHfUhiiiVpnIpLvzF6QU=
+X-Google-Smtp-Source: AGHT+IFQYE/UT9oHGzFoJnp/9TIsc6W3ik2NF0iTGv/VM1ntvMxNHiwy/m2+cv0S/llQ+YY71LqUhCGKBH+t/IwLqXE=
+X-Received: by 2002:a05:6402:1f4b:b0:5c8:9529:1b59 with SMTP id
+ 4fb4d7f45d1cf-5cbbf8dec0bmr1387729a12.20.1729919486838; Fri, 25 Oct 2024
+ 22:11:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+References: <20241022162359.2713094-1-ap420073@gmail.com> <20241022162359.2713094-3-ap420073@gmail.com>
+ <CACKFLikBKi2jBNG6_O1uFUmMwfBC30ef5AG4ACjVv_K=vv38PA@mail.gmail.com>
+ <ZxvwZmJsdFOStYcV@JRM7P7Q02P.dhcp.broadcom.net> <CACKFLinbsMQE1jb0G-7iMKAo4ZMKp42xiSCZ0XznBV9pDAs3-g@mail.gmail.com>
+In-Reply-To: <CACKFLinbsMQE1jb0G-7iMKAo4ZMKp42xiSCZ0XznBV9pDAs3-g@mail.gmail.com>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Sat, 26 Oct 2024 14:11:15 +0900
+Message-ID: <CAMArcTWrA0ib9XHnSGGH-sNqQ9TG0BaRq+5nsGC3iQv6Zd40rQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 2/8] bnxt_en: add support for tcp-data-split
+ ethtool command
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: Andy Gospodarek <andrew.gospodarek@broadcom.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, edumazet@google.com, almasrymina@google.com, 
+	donald.hunter@gmail.com, corbet@lwn.net, andrew+netdev@lunn.ch, 
+	hawk@kernel.org, ilias.apalodimas@linaro.org, ast@kernel.org, 
+	daniel@iogearbox.net, john.fastabend@gmail.com, dw@davidwei.uk, 
+	sdf@fomichev.me, asml.silence@gmail.com, brett.creeley@amd.com, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, kory.maincent@bootlin.com, 
+	maxime.chevallier@bootlin.com, danieller@nvidia.com, hengqi@linux.alibaba.com, 
+	ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com, hkallweit1@gmail.com, 
+	ahmed.zaki@intel.com, rrameshbabu@nvidia.com, idosch@nvidia.com, 
+	jiri@resnulli.us, bigeasy@linutronix.de, lorenzo@kernel.org, 
+	jdamato@fastly.com, aleksander.lobakin@intel.com, kaiyuanz@google.com, 
+	willemb@google.com, daniel.zahka@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-igb_run_xdp() converts customed xdp action to a negative error code
-with the sk_buff pointer type which be checked with IS_ERR in
-igb_clean_rx_irq(). Remove this error pointer handing instead use plain
-int return value.
+On Sat, Oct 26, 2024 at 7:00=E2=80=AFAM Michael Chan <michael.chan@broadcom=
+.com> wrote:
+>
+> On Fri, Oct 25, 2024 at 12:24=E2=80=AFPM Andy Gospodarek
+> <andrew.gospodarek@broadcom.com> wrote:
 
-Fixes: 9cbc948b5a20 ("igb: add XDP support")
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- drivers/net/ethernet/intel/igb/igb_main.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+Hi Andy,
+Thank you so much for your review!
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index f1d088168723..50c23dfcf304 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -8584,9 +8584,8 @@ static struct sk_buff *igb_build_skb(struct igb_ring *rx_ring,
- 	return skb;
- }
- 
--static struct sk_buff *igb_run_xdp(struct igb_adapter *adapter,
--				   struct igb_ring *rx_ring,
--				   struct xdp_buff *xdp)
-+static int igb_run_xdp(struct igb_adapter *adapter, struct igb_ring *rx_ring,
-+		       struct xdp_buff *xdp)
- {
- 	int err, result = IGB_XDP_PASS;
- 	struct bpf_prog *xdp_prog;
-@@ -8626,7 +8625,7 @@ static struct sk_buff *igb_run_xdp(struct igb_adapter *adapter,
- 		break;
- 	}
- xdp_out:
--	return ERR_PTR(-result);
-+	return result;
- }
- 
- static unsigned int igb_rx_frame_truesize(struct igb_ring *rx_ring,
-@@ -8752,10 +8751,6 @@ static bool igb_cleanup_headers(struct igb_ring *rx_ring,
- 				union e1000_adv_rx_desc *rx_desc,
- 				struct sk_buff *skb)
- {
--	/* XDP packets use error pointer so abort at this point */
--	if (IS_ERR(skb))
--		return true;
--
- 	if (unlikely((igb_test_staterr(rx_desc,
- 				       E1000_RXDEXT_ERR_FRAME_ERR_MASK)))) {
- 		struct net_device *netdev = rx_ring->netdev;
-@@ -8879,6 +8874,7 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
- 	struct xdp_buff xdp;
- 	u32 frame_sz = 0;
- 	int rx_buf_pgcnt;
-+	int xdp_res = 0;
- 
- 	/* Frame size depend on rx_ring setup when PAGE_SIZE=4K */
- #if (PAGE_SIZE < 8192)
-@@ -8936,12 +8932,10 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
- 			/* At larger PAGE_SIZE, frame_sz depend on len size */
- 			xdp.frame_sz = igb_rx_frame_truesize(rx_ring, size);
- #endif
--			skb = igb_run_xdp(adapter, rx_ring, &xdp);
-+			xdp_res = igb_run_xdp(adapter, rx_ring, &xdp);
- 		}
- 
--		if (IS_ERR(skb)) {
--			unsigned int xdp_res = -PTR_ERR(skb);
--
-+		if (xdp_res) {
- 			if (xdp_res & (IGB_XDP_TX | IGB_XDP_REDIR)) {
- 				xdp_xmit |= xdp_res;
- 				igb_rx_buffer_flip(rx_ring, rx_buffer, size);
-@@ -8960,7 +8954,7 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
- 						&xdp, timestamp);
- 
- 		/* exit if we failed to retrieve a buffer */
--		if (!skb) {
-+		if (!xdp_res && !skb) {
- 			rx_ring->rx_stats.alloc_failed++;
- 			rx_buffer->pagecnt_bias++;
- 			break;
-@@ -8974,7 +8968,7 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
- 			continue;
- 
- 		/* verify the packet layout is correct */
--		if (igb_cleanup_headers(rx_ring, rx_desc, skb)) {
-+		if (xdp_res || igb_cleanup_headers(rx_ring, rx_desc, skb)) {
- 			skb = NULL;
- 			continue;
- 		}
--- 
-2.34.1
+> >
+> > On Thu, Oct 24, 2024 at 10:02:30PM -0700, Michael Chan wrote:
+> > > On Tue, Oct 22, 2024 at 9:24=E2=80=AFAM Taehee Yoo <ap420073@gmail.co=
+m> wrote:
+> > > >
+> > > > NICs that uses bnxt_en driver supports tcp-data-split feature by th=
+e
+> > > > name of HDS(header-data-split).
+> > > > But there is no implementation for the HDS to enable or disable by
+> > > > ethtool.
+> > > > Only getting the current HDS status is implemented and The HDS is j=
+ust
+> > > > automatically enabled only when either LRO, HW-GRO, or JUMBO is ena=
+bled.
+> > > > The hds_threshold follows rx-copybreak value. and it was unchangeab=
+le.
+> > > >
+> > > > This implements `ethtool -G <interface name> tcp-data-split <value>=
+`
+> > > > command option.
+> > > > The value can be <on>, <off>, and <auto> but the <auto> will be
+> > > > automatically changed to <on>.
+> > > >
+> > > > HDS feature relies on the aggregation ring.
+> > > > So, if HDS is enabled, the bnxt_en driver initializes the aggregati=
+on
+> > > > ring.
+> > > > This is the reason why BNXT_FLAG_AGG_RINGS contains HDS condition.
+> > > >
+> > > > Tested-by: Stanislav Fomichev <sdf@fomichev.me>
+> > > > Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+> > > > ---
+> > > >
+> > > > v4:
+> > > >  - Do not support disable tcp-data-split.
+> > > >  - Add Test tag from Stanislav.
+> > > >
+> > > > v3:
+> > > >  - No changes.
+> > > >
+> > > > v2:
+> > > >  - Do not set hds_threshold to 0.
+> > > >
+> > > >  drivers/net/ethernet/broadcom/bnxt/bnxt.c         |  8 +++-----
+> > > >  drivers/net/ethernet/broadcom/bnxt/bnxt.h         |  5 +++--
+> > > >  drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 13 +++++++++++=
+++
+> > > >  3 files changed, 19 insertions(+), 7 deletions(-)
+> > > >
+> > > > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/ne=
+t/ethernet/broadcom/bnxt/bnxt.c
+> > > > index 0f5fe9ba691d..91ea42ff9b17 100644
+> > > > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> > > > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> > >
+> > > > @@ -6420,15 +6420,13 @@ static int bnxt_hwrm_vnic_set_hds(struct bn=
+xt *bp, struct bnxt_vnic_info *vnic)
+> > > >
+> > > >         req->flags =3D cpu_to_le32(VNIC_PLCMODES_CFG_REQ_FLAGS_JUMB=
+O_PLACEMENT);
+> > > >         req->enables =3D cpu_to_le32(VNIC_PLCMODES_CFG_REQ_ENABLES_=
+JUMBO_THRESH_VALID);
+> > > > +       req->jumbo_thresh =3D cpu_to_le16(bp->rx_buf_use_size);
+> > > >
+> > > > -       if (BNXT_RX_PAGE_MODE(bp)) {
+> > > > -               req->jumbo_thresh =3D cpu_to_le16(bp->rx_buf_use_si=
+ze);
+> > >
+> > > Please explain why this "if" condition is removed.
+> > > BNXT_RX_PAGE_MODE() means that we are in XDP mode and we currently
+> > > don't support HDS in XDP mode.  Added Andy Gospo to CC so he can also
+> > > comment.
+> > >
+> >
+> > In bnxt_set_rx_skb_mode we set BNXT_FLAG_RX_PAGE_MODE and clear
+> > BNXT_FLAG_AGG_RINGS
+>
+> The BNXT_FLAG_AGG_RINGS flag is true if the JUMBO, GRO, or LRO flag is
+> set.  So even though it is initially cleared in
+> bnxt_set_rx_skb_mode(), we'll set the JUMBO flag if we are in
+> multi-buffer XDP mode.  Again, we don't enable HDS in any XDP mode so
+> I think we need to keep the original logic here to skip setting the
+> HDS threshold if BNXT_FLAG_RX_PAGE_MODE is set.
 
+I thought the HDS is disallowed only when single-buffer XDP is set.
+By this series, Core API disallows tcp-data-split only when
+single-buffer XDP is set, but it allows tcp-data-split to set when
+multi-buffer XDP is set.
+
++       if (kernel_ringparam.tcp_data_split =3D=3D ETHTOOL_TCP_DATA_SPLIT_E=
+NABLED &&
++           dev_xdp_sb_prog_count(dev)) {
++               NL_SET_ERR_MSG(info->extack,
++                              "tcp-data-split can not be enabled with
+single buffer XDP");
++               return -EINVAL;
++       }
+
+I think other drivers would allow tcp-data-split on multi buffer XDP,
+so I wouldn't like to remove this condition check code.
+
+I will not set HDS if XDP is set in the bnxt_hwrm_vnic_set_hds()
+In addition, I think we need to add a condition to check XDP is set in
+bnxt_set_ringparam().
+
+>
+> > , so this should work.  The only issue is that we
+> > have spots in the driver where we check BNXT_RX_PAGE_MODE(bp) to
+> > indicate that XDP single-buffer mode is enabled on the device.
+> >
+> > If you need to respin this series I would prefer that the change is lik=
+e
+> > below to key off the page mode being disabled and BNXT_FLAG_AGG_RINGS
+> > being enabled to setup HDS.  This will serve as a reminder that this is
+> > for XDP.
+> >
+> > @@ -6418,15 +6418,13 @@ static int bnxt_hwrm_vnic_set_hds(struct bnxt *=
+bp, struct bnxt_vnic_info *vnic)
+> >
+> >         req->flags =3D cpu_to_le32(VNIC_PLCMODES_CFG_REQ_FLAGS_JUMBO_PL=
+ACEMENT);
+> >         req->enables =3D cpu_to_le32(VNIC_PLCMODES_CFG_REQ_ENABLES_JUMB=
+O_THRESH_VALID);
+> > +       req->jumbo_thresh =3D cpu_to_le16(bp->rx_buf_use_size);
+> >
+> > -       if (BNXT_RX_PAGE_MODE(bp)) {
+> > -               req->jumbo_thresh =3D cpu_to_le16(bp->rx_buf_use_size);
+> > -       } else {
+> > +       if (!BNXT_RX_PAGE_MODE(bp) && (bp->flags & BNXT_FLAG_AGG_RINGS)=
+) {
+> >                 req->flags |=3D cpu_to_le32(VNIC_PLCMODES_CFG_REQ_FLAGS=
+_HDS_IPV4 |
+> >                                           VNIC_PLCMODES_CFG_REQ_FLAGS_H=
+DS_IPV6);
+> >                 req->enables |=3D
+> >                         cpu_to_le32(VNIC_PLCMODES_CFG_REQ_ENABLES_HDS_T=
+HRESHOLD_VALID);
+> > -               req->jumbo_thresh =3D cpu_to_le16(bp->rx_copy_thresh);
+> >                 req->hds_threshold =3D cpu_to_le16(bp->rx_copy_thresh);
+> >         }
+> >         req->vnic_id =3D cpu_to_le32(vnic->fw_vnic_id);
+> >
+
+Thanks a lot!
+Taehee Yoo
