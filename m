@@ -1,109 +1,138 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5D918DF7D;
-	Mon, 28 Oct 2024 06:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8543518FDA9;
+	Mon, 28 Oct 2024 07:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730098399; cv=none; b=c4qfNBn5j51yoL+3EXdu9Efx3YfikviUeoTht9JpPuVP2EPZjhiQnfGwFJlwZuCpGwD5uQPUR8rJK8kVftuumO0ugZ/0owA67gJ1bRVTHigBw3TlVBk5mTIUngat7fw9gIbIK1Fy71XQxpXTjMr+u3vbCN0i62CJ3T5dbdXKZrs=
+	t=1730099197; cv=none; b=tldtgo4ZK8Za000mb49+5zJsaEBHQ1oZ1J0jyuEb0dmtWk1ob5oCsJHlEOcCxvmIMCGhPUUk6lIt5uupukeBrqz/amGepaHsJPPvB//MSrhaUWG60wxgTXx7yWmiizMYALEBw6Vr5eh7m6i58i36QzNyV/X6jfY9TedecnpTFvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730098399; c=relaxed/simple;
-	bh=TogJYoeh0M9kdGAtiQR8MXVdXkWmgbpwWJ/bfasQLnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BBEGgACj+d+DaypwAaZbfslVwI0YGlynAMMmvgSIma8nS9Cp9EVlP3Kw8keRAtDg4xcbARKWoZZTY4UZEJOQ4zhsuCODSN30396UO6A3EW3VaJhzrmqZuPUakVPxQMW7ByyhaUh40ux9u87gbzEdvKpSQ1ggOu0vBgHeQ1obTYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=K0RhwyT9; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1730099197; c=relaxed/simple;
+	bh=C6ecd/IilLnEJaRLZPz9N5mizdHDr5C84R9swhXE194=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JnB3LZJoIv/G9HO81ZqvPR04K+N1kKNUtzuC1vNCwZJWJrwrcJ2pGPqyBUVMv6ikTleuvQNSCoqxtZNVehtXRQGQfbOfCFJDqgLNjSe92s92gfr42YKb4KBAwoED748qfYtCFVJAMHe2lon3aGMShRtrnZMcKEwForXcyrRNSUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCUlQA93; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="K0RhwyT9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=gb2og
-	vjqOAk5QavOCwc2NuFRUeYMEbkQL5DGyoyp6jw=; b=K0RhwyT9lrnEBzG7oLml+
-	KHV8RdDgoO1TjUfU42azWbIZFsM1SSSTv0a1OF6BF+FKZszOxxt7Q624XnwVr7U6
-	L+Cbq9HXA1j1cUi8I2obcPI0zghGuzLNxbxo7nFeFLPrWGqTVmcmiVgmV/SvKe9C
-	Z2GR1sWy0TIGMQXECzDS1w=
-Received: from localhost.localdomain (unknown [47.252.33.72])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDn70W0NB9nqv9XBw--.5137S2;
-	Mon, 28 Oct 2024 14:52:42 +0800 (CST)
-From: mrpre <mrpre@163.com>
-To: xiyou.wangcong@gmail.com
-Cc: yonghong.song@linux.dev,
-	john.fastabend@gmail.com,
-	edumazet@google.com,
-	jakub@cloudflare.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mrpre <mrpre@163.com>
-Subject: [PATCH v2] bpf: fix filed access without lock
-Date: Mon, 28 Oct 2024 14:52:26 +0800
-Message-ID: <20241028065226.35568-1-mrpre@163.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCUlQA93"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13209C4CEC3;
+	Mon, 28 Oct 2024 07:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730099197;
+	bh=C6ecd/IilLnEJaRLZPz9N5mizdHDr5C84R9swhXE194=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VCUlQA93gEIP1NchFREE5xQcXjzsAzjJIC+oFkDeVy452QZzmUGi5sZvLoVQaPtrk
+	 scwWaNnc7kMoUSpCnEYkUB51OcV+bxrHeRZQotNLpsCHPSOmRricfXNBWQfE8DtJFR
+	 DjSoA/QGAYRZH9+Oh9bdIF7lkuYvmjWZvDnwJzXbWnpNvqJrAeC34lu0ZDnnV+++07
+	 Xysk5czeUUhrXktJlYbj9CTiEOZ2dSz3PmO3GSuoZz3lxwmGdPIz7I7aRzBQm9Ftmo
+	 o+N5Fc3ZxK5nyzZMoyAARIU5/Wo9z78TBK3czpljO1wINA7TgavHydybaFsUfBhskw
+	 Zz80XJvXNYfeQ==
+Message-ID: <8eeb1f7c-3198-45ac-be9a-c3d4e5174f1f@kernel.org>
+Date: Mon, 28 Oct 2024 08:06:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn70W0NB9nqv9XBw--.5137S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1rCFy7WFWfXr43KFy5CFg_yoW8ZrWxpF
-	ZrGw109a1DJFyDAr4vyFZ7JF13u3ySka4Uurn5WayfArsI9r1SgFWvkw4ayF1YgF4vv3Wa
-	qrWYqr1q93WDAwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piX_-PUUUUU=
-X-CM-SenderInfo: xpus2vi6rwjhhfrp/xtbBDx2Gp2cfJFjVrQACsN
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] dt-bindings: net: Add support for Sophgo SG2044
+ dwmac
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Chen Wang <unicorn_wang@outlook.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Inochi Amaoto <inochiama@outlook.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, Yixun Lan <dlan@gentoo.org>,
+ Longbin Li <looong.bin@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
+References: <20241025011000.244350-1-inochiama@gmail.com>
+ <20241025011000.244350-3-inochiama@gmail.com>
+ <4avwff7m4puralnaoh6pat62nzpovre2usqkmp3q4r4bk5ujjf@j3jzr4p74v4a>
+ <mwlbdxw7yh5cqqi5mnbhelf4ihqihup4zkzppkxm7ggsb5itbb@mcbyevoat76d>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <mwlbdxw7yh5cqqi5mnbhelf4ihqihup4zkzppkxm7ggsb5itbb@mcbyevoat76d>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The tcp_bpf_recvmsg_parser() function, running in user context,
-retrieves seq_copied from tcp_sk without holding the socket lock, and
-stores it in a local variable seq. However, the softirq context can
-modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
+On 28/10/2024 00:32, Inochi Amaoto wrote:
+> On Sun, Oct 27, 2024 at 09:38:00PM +0100, Krzysztof Kozlowski wrote:
+>> On Fri, Oct 25, 2024 at 09:09:58AM +0800, Inochi Amaoto wrote:
+>>> The GMAC IP on SG2044 is almost a standard Synopsys DesignWare MAC
+>>> with some extra clock.
+>>>
+>>> Add necessary compatible string for this device.
+>>>
+>>> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+>>> ---
+>>
+>> This should be squashed with a corrected previous patch 
+> 
+> Good, I will.
+> 
+>> (why do you need to select snps,dwmac-5.30a?), 
+> 
+> The is because the driver use the fallback versioned compatible 
+> string to set up some common arguments. (This is what the patch
 
-As a result, the seq value is stale when it is assigned back to
-tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
-incorrect behavior.
+Nope. Driver never relies on schema doing select. That's just incorrect.
 
-Due to concurrency, the copied_seq field in tcp_bpf_recvmsg_parser()
-might be set to an incorrect value (less than the actual copied_seq) at
-the end of function: 'WRITE_ONCE(tcp->copied_seq, seq)'. This causes the
-'offset' to be negative in tcp_read_sock()->tcp_recv_skb() when
-processing new incoming packets (sk->copied_seq - skb->seq becomes less
-than 0), and all subsequent packets will be dropped.
+> 3 does). It is also better to have a accurate fallback compatible
+> if we already know what it is.
 
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
----
-v1 -> v2: add more commit message to describle the issue
-          v1: https://lore.kernel.org/bpf/Zx1S9vf2i7O+BNE+@pop-os.localdomain/T/
----
- net/ipv4/tcp_bpf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index e7658c5d6b79..7b44d4ece8b2 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -221,9 +221,9 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 				  int flags,
- 				  int *addr_len)
- {
--	struct tcp_sock *tcp = tcp_sk(sk);
-+	struct tcp_sock *tcp;
-+	u32 seq;
- 	int peek = flags & MSG_PEEK;
--	u32 seq = tcp->copied_seq;
- 	struct sk_psock *psock;
- 	int copied = 0;
- 
-@@ -238,7 +238,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
- 
- 	lock_sock(sk);
--
-+	tcp = tcp_sk(sk);
-+	seq = tcp->copied_seq;
- 	/* We may have received data on the sk_receive_queue pre-accept and
- 	 * then we can not use read_skb in this context because we haven't
- 	 * assigned a sk_socket yet so have no link to the ops. The work-around
--- 
-2.43.5
+Best regards,
+Krzysztof
 
