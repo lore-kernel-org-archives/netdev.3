@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B29204086;
-	Mon, 28 Oct 2024 10:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88C3204F60;
+	Mon, 28 Oct 2024 10:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730112823; cv=none; b=lCDTI4Sc1+NPCN+QA3+SzJtZhNXOnFw0pGCM8jreEbPH3ZgNYAGL7wG/TQnA0fNTPPRfFfuoSDzc6Xl2luU4Yf4f1XkgBWOpteDa/Ml8XAqtJlgvEmk0ilylfiAYWf++jycUMFbIJ2fwkSd0gdsM0INBUAdXLxEcGolE3vt4FYw=
+	t=1730112831; cv=none; b=fcNP7JXlDd3oGrbY8nN+S309hv+JQ83GHWR072Enl/GjpAZf7IChcrTdOWIeBlHney9Xt1Ufeit8IZdb3NzbA2l+vWcaoRetvqeaYXn7o8sGsFcrwd68uKLtaWG7IZrylzAjq97Er79ZTIFj58LGPKgE7JPTG9Sf9zkiNk/1VKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730112823; c=relaxed/simple;
-	bh=il6lkg5jDhtId9fEvJ3VqpFBL8gZnVU8tsvEzN6SW9w=;
+	s=arc-20240116; t=1730112831; c=relaxed/simple;
+	bh=ZBaiIXAge1eRzAuLUtF2KWCeJNV3ALSenv4EqDuYlzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGAgjGNj7x+TAF2vkKnDY9fasUZ2rsTaGwNaQKp5AK2+Vx/4WLb3uqvq4jin0uZSiUAIZMoC9dxSxCrMTlTbEzZ+xDCO8v5b4EroMxZH+bIepIsCJz7J6iGI3zeJeI08LM2MRpMDGeoyoiX+jYYANzavhlZLuUnNflbRxqsVWuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEFK5o8r; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=V4wZtceM559CH98yczRPVNFPPlpvhgGiF8yG/8cfGiBUJtLcZ3psudoae4XEyfUE53tTES5QZDCDxNknAGMrQVN32EGZxlfIl8UF52rZABh5ssBI0zr9GzbsnDJDVGH7aJppcz+VfWJ6QieyVNyh+ESju+t5ajFyhKD6i6p7Ouc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rORnD3pF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEFK5o8r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E5C4CEE7;
-	Mon, 28 Oct 2024 10:53:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rORnD3pF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28119C4CEE7;
+	Mon, 28 Oct 2024 10:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112822;
-	bh=il6lkg5jDhtId9fEvJ3VqpFBL8gZnVU8tsvEzN6SW9w=;
+	s=k20201202; t=1730112830;
+	bh=ZBaiIXAge1eRzAuLUtF2KWCeJNV3ALSenv4EqDuYlzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEFK5o8rHq1G1QIiyoFMzuHq5qxF0sdLgLrJ7r3aGgHmibEL8FTQqlg0g2hrfvANw
-	 cyazn94onmGCw2TdIUR/J0tWnazjW1HcEw6jYjJ6urXf/HYSnGt4yW3/peR4gby5ms
-	 aWxrMtvCeKiwDItqzlSSAJYIiZ63+T7NvKZDX84UcAJXPW/k0R++k3U7ABOZyDql1V
-	 oZTa0gTM2vJHn3uhfxYgpzgz166/MNy1CLkLT1xbOpr1PZivf47g7UlLhDE7Xp0xvT
-	 vhbxb7XVxyCRr8jk53vBCv7HbUkjSjCZ9F4FYGnfhIreCOAKgZ9Pmm+5qjYpP9HPlN
-	 iKFzd8+yJJz+A==
+	b=rORnD3pF3nO0o7oF84+QczhjmacOhybhV8Tq0nshwOv1TUMa526QJpG97KboQm8Tk
+	 ihuAkGDFAPswqwIYb01/jYpNHKVl558JxOVvufP1DEI+HN5TsJVYkq4H0ua3vWxUEj
+	 5Pqofq0C9uvQAK6BQLcSRVd8yT5u6Idca4LM9l7tCmnAm9WHKMocjYxtkaNWGhmAHY
+	 /nsw7AgRLSPa5n9tVUnw087cKIsrRdrdG8ozU4linaXxtS4EagqCZyrER3IxuXzxkv
+	 EwO+hFXmucZsCL7oOf594SFqk2E7uAuTMdiczttEDPJ1JiB6AHX/+Ajo9hxD8XEDeb
+	 w19FKESuEkt1w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -39,12 +39,12 @@ Cc: Reinhard Speyerer <rspmn@arcor.de>,
 	kuba@kernel.org,
 	netdev@vger.kernel.org,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/3] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
-Date: Mon, 28 Oct 2024 06:53:35 -0400
-Message-ID: <20241028105336.3560730-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 3/3] net: usb: qmi_wwan: add Fibocom FG132 0x0112 composition
+Date: Mon, 28 Oct 2024 06:53:43 -0400
+Message-ID: <20241028105343.3560809-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241028105336.3560730-1-sashal@kernel.org>
-References: <20241028105336.3560730-1-sashal@kernel.org>
+In-Reply-To: <20241028105343.3560809-1-sashal@kernel.org>
+References: <20241028105343.3560809-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.284
+X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
 From: Reinhard Speyerer <rspmn@arcor.de>
@@ -94,10 +94,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index cce5ee84d29d3..db52090bb27be 100644
+index bbd5183e5e635..57ccbc8a6c059 100644
 --- a/drivers/net/usb/qmi_wwan.c
 +++ b/drivers/net/usb/qmi_wwan.c
-@@ -1382,6 +1382,7 @@ static const struct usb_device_id products[] = {
+@@ -1385,6 +1385,7 @@ static const struct usb_device_id products[] = {
  	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
  	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
  	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
