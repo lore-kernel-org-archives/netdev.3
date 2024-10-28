@@ -1,434 +1,195 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2078.outbound.protection.outlook.com [40.107.103.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47CE193060;
-	Mon, 28 Oct 2024 08:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730105826; cv=none; b=YzmunXdKT+Xlr1UiEDqz1FdOUmd6dJrni9s93t/zPhIXbtSr1WBfZtHVIBqiYd6E7AjzFkE75+wOOw1hmUephToOyzU+WEdTUf+qm8oZ98t0REbmDWBj4LtAcYeAGzWnca9KsTYMIDRE5RBH327XI7khYL8SNqVwpbMApxYXpBY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730105826; c=relaxed/simple;
-	bh=Bcq0fO9Pxym95RWibiLq5Q1tL5fYFE8eVqoefhl/Omg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eKT38hcO9wrz3GiIiZSUCXpN01WQUzDM9h7mMjZS6UZfVDi+Iy0/hdiMSgzBSJCE//cwctNppVW4aQ/H29SZs6DQWn9dEQXJu8ZlCh8PfVes6phv6vRpCEx3v7sZyhOYnqvKuFuguJ8dzJaniLcAtoqKc6v87ImEc75x02PxCaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHNPu75E; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F60192B7A;
+	Mon, 28 Oct 2024 09:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730106491; cv=fail; b=uR3RP90VgzCiUwvRZqvvqhOnm5I6xmDbvIDftZR9WrTQA3jjrzV62gGjJiM0ZfFVQeVVI4nZombNmR9A83BmAmEnyiVk6dPktpOOdEEXzJaxp2f6MpDxyGDRFP4mlOyvCeWqpevYXwXYWm3ApyoK4dhzuF4sebDaFweh1jvRUbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730106491; c=relaxed/simple;
+	bh=5GgFHuwb4sJqRpXWbsAUqxri0laIKklNEQrJaVvGiv8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TP0p9uJIDYfXYh/ze6k1IE+ChZrXrUwKBcLEtgslKwmdEQ7sAycB0mkkJcK3x32HU+L6QH6zhxtpQhkYmFUiclv/CKsuOyCVLH+GUMREcXvg8rSc6tXL/O2If+7+eOtw0hxIpMbYWI9MjkfbIhlvNbxYCVzVMc5R2Vq7s1ip2sw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vpm95E5F; arc=fail smtp.client-ip=40.107.103.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHNPu75E"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e290e857d56so3670536276.1;
-        Mon, 28 Oct 2024 01:57:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730105822; x=1730710622; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xA4cE9U51TPg8RedW2fRonR3ROLTQ7izS+w6TopxWcw=;
-        b=kHNPu75E7XNc5+H9n2LMiadl9ud+iwKaQ0HSBOzBWOKzyfm5qmTJtQVFojgCn19nZ+
-         X91FWxgsc3PKcIlTmCp1bv2abQ9ubYMwAJKLlomQxv6jtH1J8KUZ1H/lzx722BdQL4BJ
-         vmbebm0rlhAifazASjbza8KRVmDVBtABo63Yv9i6O2Pyp9PaVxRTwC8kFSfl7VMC5X+M
-         d6UFvGboSq5mWa4vLOJ7G/lvhU6oezWIUhvuZjfPMZuva3Vw55VU+yg5MmMueIFB6vNC
-         owNQN/Q/PsQR5Rm2gvQDC87zOo2PiVjKGHLUghnuEqTuDJpqzEOcHCpOPl7GmNW3AFKc
-         HMqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730105822; x=1730710622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xA4cE9U51TPg8RedW2fRonR3ROLTQ7izS+w6TopxWcw=;
-        b=xMKXFgnKb3JYHKjDB6oy5UnRpef9+YdeRLQe/fiva8nLxKw8LBhx0tSqXUYwRwXsW8
-         5Xvj4DC3Y3/yboOgpAjh9IWP6jKwufCgpDN9jKLadxtpGJzqphVjStIJ0ii6m0BZaM5U
-         RB+wLoWnzuFw3KjiqGbC816CCi+8B/8fmP6zw924k1ZRVAtBWoIeTWp9IeCsSIADDCZN
-         14x3ZfEinQ0uoFOi+GK5NVIzMcqrdYM3/WND7bBWOjKGNogbHRoeF6pZu7c0lmLSvBtb
-         8LaZWfvxIndhulQQ5rAbPVHZ67eJqDhLbP9BcR+ScrcELgyA4zppkzsupI3Iak2F+opK
-         +rLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUG0at1EkgGiSQtNaGMtxDP4rGtqjBjVvVS9j3uiNHUDAhOg+mTU2bd/yaq27L/Ooh1JFO9xuwzjM1N@vger.kernel.org, AJvYcCUdzZbOjPmckXVc2uKCxVcUBDGqfPCULtgp4ssdyvfg4V2uetPiuU1coKElC2O6fm9xw6cEY0osP02tDKA=@vger.kernel.org, AJvYcCV43LBP1zW1MnF7/ctv4avirNvhg+CNIuK4XcYKL7qL/P1Gy2qyxE0vdgjNYA6r6jTxNF6kULsR53B+VkTS@vger.kernel.org, AJvYcCVAiCfcf1Qf/JWBucTTfGJaeEz9Pr38CWLzAT159B8V0vTXtie2RqXj1zWjgFJlrsCOMEbNchA58xcx@vger.kernel.org, AJvYcCVnjep+eqvGWyH1fj89i3jHtbywh3FwupQuR9KjNsXkJD+aMmBJOnjf1d/f43/X4TERusJocDhe@vger.kernel.org, AJvYcCWE5gwA/N1PEB889SuRLvK+0jhp59qnqdeQUsUS2gdT2wUCP0gUVzBEXt9y632xkGGBIYY7XOlodzOK@vger.kernel.org, AJvYcCWT0rf0M6yis1YDw+TtWVMDX8KR7n+kX11u3aApD+uIhOKk+r6wUSXaG2g4PlA+CMJOJH8xUUo0DVx7xj4MaMs=@vger.kernel.org, AJvYcCWiINHc4gS6HHTkG2SdQqhOuQ26Ggt/J8wereDtuBXLeu/cMz01H5TjX00gUW3Y26nR7ZO1s51WXIk=@vger.kernel.org, AJvYcCXCuT3qTsc8aFZz03NmG0q7UQSlBrDJIMqroirbGbtbKJB0iYpazPr5RBLWln6Jwf1RIq0rRYhPD348hA==@vger.kernel.org, AJvYcCXlROj3SYDal1BwayWYUH1xt3/g6rACLGFI69E3G7md1+DhoUxgDWmBMkAMcQORlzAo0QFjmMto3I76@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrpFBC/aWccssHJfbzbk75hlIfkXyZXLrcek/V/1CgBLFoG1N8
-	iv87tpB0p7rpXcvFqbPaCnUu6ELqg9qk/tgITRD94PHKAzu4SsyC9EjlIPD6p9B2t4MaXvYWUPz
-	J0tiQD5RImczU9es9naPjWmDgQNk=
-X-Google-Smtp-Source: AGHT+IE4UksOy84hxGbzbWeIH9i7eGolsfQtJRd/1c9LoziNujkHyuL7UiVtMDmnP7Rr/qQLZYMsNLGs1tvOmiZHpxM=
-X-Received: by 2002:a05:6902:2b8b:b0:e29:7e0a:38f4 with SMTP id
- 3f1490d57ef6-e3087c10616mr6393294276.52.1730105822487; Mon, 28 Oct 2024
- 01:57:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vpm95E5F"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uP2MZc7M6Qa64TNTO5+hQUltK3rDVcusqxPaJauDqasLUZD96on0rbqh13TR3LzY+1N5Yu9C6fDiZAeu8G9rnwkGojX57R3xg77mGoRqdAZAeubjhHcT1Yo3oOAeSpi+T4WEzQNDaRcHNX1fwSgQ07wFuZFGCkSy47OZpHRhNhsf8TghdqlKumgU9wKEv+76CU3cUgYYuW2P3VSQxyrFgD1eoVsSZXtXezCHJ2HG40i1FRmdHN5UfBnYNasOnqWN17CBMzldsoFPqnepvNaRoaBQqbVIHfNqDoj13Abr9HjujPGe3gAznXfBz7iPeusUqU7OC9AWiwreMsZZebOhUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qk6ThNSqKzj6ZB65rHIlgg/MRlXL3XwHS/Owh8MvgcA=;
+ b=gsJTjKQJABD9Gn+jQaEXRsfNT1GFO2wZWHsE7MG1bVSmh8RBp53IDGXJ8aHMlfzy70N3fbWzcgfGdjgFTNScxL7/0Vrjn79L05vkHJWhhdZRpX8qg9EJt20CWx7KT38Nil5T81JiFGEfqJ+K7d0/u4dlaiKZgs1qdCVURjMBivjbZyN5/XNoal/n2UNUuzIP72TYVFDYchyl9GC92TgGgFeXctthh4yPJvC16o/QU6l9DJ688LfILcCcJmE3pnYoXBDcdfRvI3yVAZuOVT/rCRXABHn1ZWGAclZSCoe2RbKG1VZAbL04F2kbf+STmsghzol++lPFiKJa4Y/Z0gn0Jw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qk6ThNSqKzj6ZB65rHIlgg/MRlXL3XwHS/Owh8MvgcA=;
+ b=Vpm95E5Fa9umL07Bx6FiTERE9vZSWN4VrgS8OXJpAWgO4V3oWw5lpgeD5g6fKvxJHLT2L3rTO/riOfWI4InKqoUyQ89PpjFNOrvECq/5a+TTs8I5w6qYrNl7z8ET/TNRT7FjxoFujy+DGtfW4sS/dk1/JGIU0tAEWpO/huQ6CFZ4TviHrJu43BXJpdpXNR5U6UeEdvLHnT4LGs/kBQupsfD2acQKyn/dW4VeghE5t0r1DL/Jxj3Cj1c3BE3qeOh8nrvcKrDWw2K1dMkrsBLdsr2U7auwZwhFTQ+H3uIl+sOLLaZlpi9N9/tOJJcdyYdyR5Qj1NDUQOEr9wBMLy+rTw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI2PR04MB10642.eurprd04.prod.outlook.com (2603:10a6:800:27f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Mon, 28 Oct
+ 2024 09:08:05 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8093.024; Mon, 28 Oct 2024
+ 09:08:05 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net] net: enetc: set MAC address to the VF net_device
+Date: Mon, 28 Oct 2024 16:52:42 +0800
+Message-Id: <20241028085242.710250-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0145.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::25) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024085922.133071-1-tmyu0@nuvoton.com> <20241024085922.133071-3-tmyu0@nuvoton.com>
- <CAMRc=Mc+SZN=EytxY=qA-qBEAY_F17GP-7FRE9oLojLbdUoPaQ@mail.gmail.com>
- <CAOoeyxW4=+5-QMcd_wgncFC9jgx_1Zf1Tq8RTnBvVqZ1JcUBQg@mail.gmail.com> <CAMRc=MexqwSCDrsBS0mK0fo_MCwngAH9XVgjRuDQjw0TVUBmPw@mail.gmail.com>
-In-Reply-To: <CAMRc=MexqwSCDrsBS0mK0fo_MCwngAH9XVgjRuDQjw0TVUBmPw@mail.gmail.com>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Mon, 28 Oct 2024 16:56:51 +0800
-Message-ID: <CAOoeyxXRrDuKJRMb3O2h3BF1vC=pwNN3DKfnEN9LnA+jiBCTQg@mail.gmail.com>
-Subject: Re: [PATCH v1 2/9] gpio: Add Nuvoton NCT6694 GPIO support
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	andi.shyti@kernel.org, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org, 
-	linux@roeck-us.net, jdelvare@suse.com, jic23@kernel.org, lars@metafoo.de, 
-	ukleinek@kernel.org, alexandre.belloni@bootlin.com, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI2PR04MB10642:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c69b3b0-90fb-4dd8-5fea-08dcf7300879
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3XqrXoQcq+0RITuvdErYdy5+ZDYrBHKK8/B1WCksdYUlNnycrKk8zBXQ/AuL?=
+ =?us-ascii?Q?9YmNWqkMeAMuxAmes62cYOn7ORp2I00dPftE7zXaHVAKE6AL9oqo7OuEE3n8?=
+ =?us-ascii?Q?U/33EGHBh48L2ATpVXFJ+Oai1Cth2XzczG6O7fYJd2T8D4ulIyw+YsKzxpco?=
+ =?us-ascii?Q?SeMjViXqP3iUOxgKDGCHvYXiQEf2sEEbohG4BhzOH8kxZygEjgjj3CD5H8lR?=
+ =?us-ascii?Q?SYqKbI24XYIOh1AFIrEoZCnEsPboZEbf/DzectF9YHcTylknMhgxzXCIfltR?=
+ =?us-ascii?Q?ofCM7dn4O7khY2Ul655mmVA/CWPfcSHIm+IR11blECvdCPmsCQz59iFEdGfx?=
+ =?us-ascii?Q?cbKnP7bC5cQ9WtYTtxsXkdy7byfOu/fJFlgTYkQ/0ByaMgR4rZl1Tr9Iv8HH?=
+ =?us-ascii?Q?r4Yi85QVoTUm0BZAEpzI0dfHndyqq9KvhnWwik8fvekE5gcAqgMckWHt5TWE?=
+ =?us-ascii?Q?C55vfeg9o0fREZW0jfcSh8d5rmaA/dT3DkPVNf28DCFt7oCvyTNnoUsDw+dH?=
+ =?us-ascii?Q?SLg10Qc1OVKKCXYF1bpR6V4UIN/r3xHJ4mNCd6pxon5QrMgv3AEVmmG9GzYP?=
+ =?us-ascii?Q?fdJG7v9wRIQGe39RjelLHsqlpoLZpNTuGJ99eeDv70fZmKUIIWWv7Xqm42UX?=
+ =?us-ascii?Q?dFOwDoUbWaccdv4fEtvC6gtcfmnSwXlSAlECAkV7AE1ZLT0i17r0uCjn36Ht?=
+ =?us-ascii?Q?HmbzlnIJOO1kgG1mphytKc/lHa0chvx/MQunQRzOVtHJDnvZzMKjBnYnqLzq?=
+ =?us-ascii?Q?xb476PMFDOq3DT/5BlvjPp9Z3uvSIa1sFaAYX7jIGUtMI7VE6qP2qMRXrGRk?=
+ =?us-ascii?Q?Q1ZbH2FjcAm1Ot8Y1nwcL+2EXjQ79EJWTPLVaNsIzwcJ43gHLgBU/NoelXwG?=
+ =?us-ascii?Q?Egx2+B8+aLf1VVarzGVBaX7xb7lodJTf4NBjxzehH+uFFuKEBGWpohtwXdZK?=
+ =?us-ascii?Q?Gb6wEAowW214xfKRawY0+voArwVLDXye7cXYrh0O9RSrlxugeFy4TgIAizwq?=
+ =?us-ascii?Q?wHRDNClq7kF5fT9jS48Rs4n3Mfd2ixhdE66WF/QrQVg2v1M9cLJOmAPey3dH?=
+ =?us-ascii?Q?4xkK8ptCEiEBPr5SE58IrryV0VoHUDLyli31oZkB2dRTim1iCthoW3Qoa3s9?=
+ =?us-ascii?Q?nTTUAIRlA35Hb5VL8RNviJ3/1lh6DWNHOvsczAMP+AacVpckZuR/lileIfvz?=
+ =?us-ascii?Q?BzCHLUpQMM4vR2enwE4jXGVqzttsjP6SGv4zwRUIge2rl04MyrH+f+J4GxTD?=
+ =?us-ascii?Q?ljYrRtPz51x8FSixlrzB3sS9Bagbgzc6+2M4IS2ULNBwFsPJZTaUXrJ/QwXy?=
+ =?us-ascii?Q?6RDredDRSs6V1K+X0nCIWo5F3BUR1VBSTrmy6rVHHBc7AC07h4K+qyZvligm?=
+ =?us-ascii?Q?InC0bT8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?udBH5vXinPz6Ma0lQLiyojt7HjqeOwkFNIRVQ38Lbe2cN/YdauVPOiNnpNBn?=
+ =?us-ascii?Q?tb4Lw3x0h/VyO+5gexQ24diSR5zZsY1WIL7tYDr+0N+GofCFAxaeFayTHMJ+?=
+ =?us-ascii?Q?K3I5p3FA8ijIMaAIGITSIEnJ6sxJm/tl9u0qF8QIIyQ1+MLQ+H177fDtEceM?=
+ =?us-ascii?Q?XGEIjAst1tWw8HIW9HTa7GOQajSw5zKoUGzENV9tCbpYEDAdByERb3CiiGrs?=
+ =?us-ascii?Q?5n2/P4+Gh/SYRiwXYD+l974RFsqQJtXsiA4mCewPrUGqljl5ieRLbEYpZ6x4?=
+ =?us-ascii?Q?NtLWbHAmzZ9+fCuJmS/EFTZoJ0CEyH2bu7u1JceFL17FZVJuzt3udorO4/SK?=
+ =?us-ascii?Q?2oskuXWa+L4s/099SqY98YDOyZ56hCoUmVhV5U+ntV79h+6AZLGEWEXu8zrf?=
+ =?us-ascii?Q?afevtQT0WmcLUsTMFUnDFXo73q+fosdO8lpA7C8X7kGtqZ8unGPNeXap7J/O?=
+ =?us-ascii?Q?u/AllvBBBFTFdXO4Yncu968pBTi5emRzCogprlYVFXEEv3R4hUItDPQDVbUq?=
+ =?us-ascii?Q?d6IoGfFr0LVBe4Vlb1qtNGr1pxLOttMSSUDtCNW7AHc0ZOSox1KB2aFY4rXC?=
+ =?us-ascii?Q?VUCy62yl5EfJcpblAyh6IRrcn7Xjna0mWuT9uht7AI/QvXl2wqig4Kj3Dpxk?=
+ =?us-ascii?Q?wcQK7Z/mSQ1/Y4P7KUvzdF+Rbjw5NkeFrjBP3pEdDzIwsSAwHTJcTiNGQMF7?=
+ =?us-ascii?Q?5qBFf+RamygdxEFWnammOVFdIzv+zYk5NSm4zbWGrxchZen4z+XPhVrxaALt?=
+ =?us-ascii?Q?Qwlsp1/F9FxnC2/DYrD1iyxnGT6UyFl16B0oqp2saRwaX2MTX6lxuNAwYNrW?=
+ =?us-ascii?Q?xAClOLEr9L4LIXDbp7Owz7o9UhfY5yZwSftUiugDiyxg/tlgFo7nvtkoc1Hs?=
+ =?us-ascii?Q?ZylBq6t5i8gpxPdxmYn3+R4wZjjBZ4jsi06Iet3odgseR70h/Mg9RW3gR2kN?=
+ =?us-ascii?Q?NPkm7G1vOEFzeSvW/B+d91TJnw78RSZS1D7XwhxZ6O5w8eFHn2O+xPBi8fpb?=
+ =?us-ascii?Q?dZhfwuEBzvAEanO4Xo5e9mdbNEKY5ESlYuu1ivQcwIrXiCwPeCqVC2Jh05c+?=
+ =?us-ascii?Q?ZPWvbZw6dlnrcF/ekTMuLsaQ0TDD2syL94Ve6Dqgk49yR8ZytSHrk+x+g7CV?=
+ =?us-ascii?Q?a/eCYwkeUN5o4JkEomxbuM7dYgrKiCPYg/a43DubS3SkEyTTqm38vLSM3+qP?=
+ =?us-ascii?Q?+pQxktJi6Sk5lb42exPjJGjnNjTj4PXm1U90y6cKXpTQDdIKhfj7cHf9ZAFn?=
+ =?us-ascii?Q?qh/9a6evC6iQiEBqqVHzvSyF0oCWSbhm0GUEiTh+CV3VtmU4EME0pK6CZcgu?=
+ =?us-ascii?Q?nMB7/ERrAjqgAL2yVKXVcikYH2JjovDplwWc10FJeKxNTTkQrD5JHCblk9G1?=
+ =?us-ascii?Q?KmctpntbJEh+FRut6mA3HtPu99MIpOMb7aoSHvyPkpW8zPywtyNYKR9cyUza?=
+ =?us-ascii?Q?1fu9lB9AH/fFSMfReLXyeE3pzp1dftpriDdVonlI5WxtoqeLJSTBqC4ycGUE?=
+ =?us-ascii?Q?4I+RJbIBbQKn7pUbAQIBjlMzxIucei/s5DOolOgVP0a6LAUQwSRpDw21tBcB?=
+ =?us-ascii?Q?JmphQP6kU4OYXrvGsepjYPBhGktIZKvTj6GjYh3W?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c69b3b0-90fb-4dd8-5fea-08dcf7300879
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 09:08:05.4701
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 98UGRf3Uz2MkRMTww3Bm7t0MLADRkjWtnph2vNoWVCuh4/rTD1KUD2vUNxIKR/oRQhUm6dcNcH/1l5RE3vnndg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10642
 
-Dear Bartosz,
+The MAC address of VF can be configured through the mailbox mechanism of
+ENETC, but the previous implementation forgot to set the MAC address in
+net_device, resulting in the SMAC of the sent frames still being the old
+MAC address. Since the MAC address in the hardware has been changed, Rx
+cannot receive frames with the DMAC address as the new MAC address. The
+most obvious phenomenon is that after changing the MAC address, we can
+see that the MAC address of eno0vf0 has not changed through the "ifconfig
+eno0vf0" commandand the IP address cannot be obtained .
 
-Thank you for your comments,
+root@ls1028ardb:~# ifconfig eno0vf0 down
+root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
+root@ls1028ardb:~# ifconfig eno0vf0
+eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
+        RX packets 794  bytes 69239 (69.2 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 11  bytes 2226 (2.2 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-Bartosz Golaszewski <brgl@bgdev.pl> =E6=96=BC 2024=E5=B9=B410=E6=9C=8825=E6=
-=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=883:47=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Fri, Oct 25, 2024 at 9:39=E2=80=AFAM =E6=B8=B8=E5=AD=90=E6=B0=91 <a028=
-2524688@gmail.com> wrote:
-> >
-> > Sorry, resending this email in plain text format.
-> >
-> > Dear Bart,
-> >
-> > Thank you for your comments.
-> >
-> > Bartosz Golaszewski <brgl@bgdev.pl> =E6=96=BC 2024=E5=B9=B410=E6=9C=882=
-4=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=885:47=E5=AF=AB=E9=81=93=EF=
-=BC=9A
-> > >
-> > > On Thu, Oct 24, 2024 at 10:59=E2=80=AFAM Ming Yu <a0282524688@gmail.c=
-om> wrote:
-> > > >
-> > > > This driver supports GPIO and IRQ functionality for NCT6694 MFD
-> > > > device based on USB interface.
-> > > >
-> > > > Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> > > > ---
-> > > >  MAINTAINERS                 |   1 +
-> > > >  drivers/gpio/Kconfig        |  12 +
-> > > >  drivers/gpio/Makefile       |   1 +
-> > > >  drivers/gpio/gpio-nct6694.c | 489 ++++++++++++++++++++++++++++++++=
-++++
-> > > >  4 files changed, 503 insertions(+)
-> > > >  create mode 100644 drivers/gpio/gpio-nct6694.c
-> > > >
-> > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > index 30157ca95cf3..2c86d5dab3f1 100644
-> > > > --- a/MAINTAINERS
-> > > > +++ b/MAINTAINERS
-> > > > @@ -16438,6 +16438,7 @@ NUVOTON NCT6694 MFD DRIVER
-> > > >  M:     Ming Yu <tmyu0@nuvoton.com>
-> > > >  L:     linux-kernel@vger.kernel.org
-> > > >  S:     Supported
-> > > > +F:     drivers/gpio/gpio-nct6694.c
-> > > >  F:     drivers/mfd/nct6694.c
-> > > >  F:     include/linux/mfd/nct6694.h
-> > > >
-> > > > diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> > > > index d93cd4f722b4..aa78ad9ff4ac 100644
-> > > > --- a/drivers/gpio/Kconfig
-> > > > +++ b/drivers/gpio/Kconfig
-> > > > @@ -1450,6 +1450,18 @@ config GPIO_MAX77650
-> > > >           GPIO driver for MAX77650/77651 PMIC from Maxim Semiconduc=
-tor.
-> > > >           These chips have a single pin that can be configured as G=
-PIO.
-> > > >
-> > > > +config GPIO_NCT6694
-> > > > +       tristate "Nuvoton NCT6694 GPIO controller support"
-> > > > +       depends on MFD_NCT6694
-> > > > +       select GENERIC_IRQ_CHIP
-> > > > +       select GPIOLIB_IRQCHIP
-> > > > +       help
-> > > > +         This driver supports 8 GPIO pins per bank that can all be=
- interrupt
-> > > > +         sources.
-> > > > +
-> > > > +         This driver can also be built as a module. If so, the mod=
-ule will be
-> > > > +         called gpio-nct6694.
-> > > > +
-> > > >  config GPIO_PALMAS
-> > > >         bool "TI PALMAS series PMICs GPIO"
-> > > >         depends on MFD_PALMAS
-> > > > diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> > > > index 1429e8c0229b..02c94aa28017 100644
-> > > > --- a/drivers/gpio/Makefile
-> > > > +++ b/drivers/gpio/Makefile
-> > > > @@ -121,6 +121,7 @@ obj-$(CONFIG_GPIO_MXC)                      +=
-=3D gpio-mxc.o
-> > > >  obj-$(CONFIG_GPIO_MXS)                 +=3D gpio-mxs.o
-> > > >  obj-$(CONFIG_GPIO_NOMADIK)             +=3D gpio-nomadik.o
-> > > >  obj-$(CONFIG_GPIO_NPCM_SGPIO)          +=3D gpio-npcm-sgpio.o
-> > > > +obj-$(CONFIG_GPIO_NCT6694)             +=3D gpio-nct6694.o
-> > > >  obj-$(CONFIG_GPIO_OCTEON)              +=3D gpio-octeon.o
-> > > >  obj-$(CONFIG_GPIO_OMAP)                        +=3D gpio-omap.o
-> > > >  obj-$(CONFIG_GPIO_PALMAS)              +=3D gpio-palmas.o
-> > > > diff --git a/drivers/gpio/gpio-nct6694.c b/drivers/gpio/gpio-nct669=
-4.c
-> > > > new file mode 100644
-> > > > index 000000000000..42c0e6e76730
-> > > > --- /dev/null
-> > > > +++ b/drivers/gpio/gpio-nct6694.c
-> > > > @@ -0,0 +1,489 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +/*
-> > > > + * Nuvoton NCT6694 GPIO controller driver based on USB interface.
-> > > > + *
-> > > > + * Copyright (C) 2024 Nuvoton Technology Corp.
-> > > > + */
-> > > > +
-> > > > +#include <linux/gpio.h>
-> > >
-> > > Don't include this header. It's documented as obsolete.
-> >
-> > [Ming] Okay! I'll drop it in the next patch.
-> >
-> > >
-> > > > +#include <linux/gpio/driver.h>
-> > > > +#include <linux/module.h>
-> > > > +#include <linux/interrupt.h>
-> > > > +#include <linux/platform_device.h>
-> > > > +#include <linux/mfd/core.h>
-> > > > +#include <linux/mfd/nct6694.h>
-> > > > +
-> > >
-> > > You only use it once, drop it.
-> >
-> > [Ming] That line is blank, did you mean #include <linux/gpio.h>?
-> >
-> > >
-> > > > +#define DRVNAME "nct6694-gpio"
->
-> I meant this line. Just put the driver name in the driver struct
-> definition directly.
->
-> > > > +
-> > > > +/* Host interface */
-> > > > +#define REQUEST_GPIO_MOD               0xFF
-> > > > +#define REQUEST_GPIO_LEN               0x01
-> > > > +
-> > > > +/* Report Channel */
-> > > > +#define GPIO_VER_REG                   0x90
-> > > > +#define GPIO_VALID_REG                 0x110
-> > > > +#define GPI_DATA_REG                   0x120
-> > > > +#define GPO_DIR_REG                    0x170
-> > > > +#define GPO_TYPE_REG                   0x180
-> > > > +#define GPO_DATA_REG                   0x190
-> > > > +
-> > > > +#define GPI_STS_REG                    0x130
-> > > > +#define GPI_CLR_REG                    0x140
-> > > > +#define GPI_FALLING_REG                        0x150
-> > > > +#define GPI_RISING_REG                 0x160
-> > > > +
-> > >
-> > > Please use the NCT6694 prefix for these defines, otherwise it's not
-> > > clear whether they come from the driver or from GPIO core.
-> > >
-> > > []
-> >
-> > [Ming] Okay! I'll add the prefix to the defines in the next patch.
-> >
-> > >
-> > > > +
-> > > > +static const char * const nct6694_gpio_name[] =3D {
-> > > > +       "NCT6694-GPIO0",
-> > > > +       "NCT6694-GPIO1",
-> > > > +       "NCT6694-GPIO2",
-> > > > +       "NCT6694-GPIO3",
-> > > > +       "NCT6694-GPIO4",
-> > > > +       "NCT6694-GPIO5",
-> > > > +       "NCT6694-GPIO6",
-> > > > +       "NCT6694-GPIO7",
-> > > > +       "NCT6694-GPIO8",
-> > > > +       "NCT6694-GPIO9",
-> > > > +       "NCT6694-GPIOA",
-> > > > +       "NCT6694-GPIOB",
-> > > > +       "NCT6694-GPIOC",
-> > > > +       "NCT6694-GPIOD",
-> > > > +       "NCT6694-GPIOE",
-> > > > +       "NCT6694-GPIOF",
-> > > > +};
-> > >
-> > > This looks like it corresponds with the MFD cells and makes me wonder=
-:
-> > > am I getting that wrong or do you want to register 0xf GPIO chips? Or
-> > > a single GPIO chip with 0xf lines? What is the topology?
-> >
-> > [Ming] Yes, it corresponds to the MFD cells.
-> > I would like to register 16 GPIO chips, each with 8 lines.
-> > The chip has 128 pins totally, the core can check if the pin is valid t=
-hrough
-> > the init_valid_mask() callback.
-> >
->
-> Ok, that's fine but the GPIO chip names should be in the MFD driver
-> only, it doesn't make sense to have them here. It's the MFD core that
-> will register the GPIO platform devices.
+Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-I understand. I will remove it.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+index dfcaac302e24..b15db70769e5 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
+ {
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 	struct sockaddr *saddr = addr;
++	int err;
+ 
+ 	if (!is_valid_ether_addr(saddr->sa_data))
+ 		return -EADDRNOTAVAIL;
+ 
+-	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
++	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
++	if (err)
++		return err;
++
++	eth_hw_addr_set(ndev, saddr->sa_data);
++
++	return 0;
+ }
+ 
+ static int enetc_vf_set_features(struct net_device *ndev,
+-- 
+2.34.1
 
->
-> No for line names - as this is a dynamic USB expander, I'd suggest to
-> have them in the driver and assign to gc->names.
-
-Could I create an array to map each of the GPIO pins?
-
->
-> > >
-> > > > +
-> > > > +static int nct6694_gpio_probe(struct platform_device *pdev)
-> > > > +{
-> > > > +       const struct mfd_cell *cell =3D mfd_get_cell(pdev);
-> > > > +       struct nct6694 *nct6694 =3D dev_get_drvdata(pdev->dev.paren=
-t);
-> > > > +       struct nct6694_gpio_data *data;
-> > > > +       struct gpio_irq_chip *girq;
-> > > > +       int ret;
-> > > > +
-> > > > +       data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL=
-);
-> > > > +       if (!data)
-> > > > +               return -ENOMEM;
-> > > > +
-> > > > +       data->nct6694 =3D nct6694;
-> > > > +       data->group =3D cell->id;
-> > > > +
-> > > > +       data->gpio.label                =3D nct6694_gpio_name[cell-=
->id];
-> > > > +       data->gpio.direction_input      =3D nct6694_direction_input=
-;
-> > > > +       data->gpio.get                  =3D nct6694_get_value;
-> > > > +       data->gpio.direction_output     =3D nct6694_direction_outpu=
-t;
-> > > > +       data->gpio.set                  =3D nct6694_set_value;
-> > > > +       data->gpio.get_direction        =3D nct6694_get_direction;
-> > > > +       data->gpio.set_config           =3D nct6694_set_config;
-> > > > +       data->gpio.init_valid_mask      =3D nct6694_init_valid_mask=
-;
-> > > > +       data->gpio.base                 =3D -1;
-> > > > +       data->gpio.can_sleep            =3D false;
-> > > > +       data->gpio.owner                =3D THIS_MODULE;
-> > > > +       data->gpio.ngpio                =3D 8;
-> > > > +
-> > > > +       INIT_WORK(&data->irq_work, nct6694_irq);
-> > > > +       INIT_WORK(&data->irq_trig_work, nct6694_irq_trig);
-> > > > +       mutex_init(&data->irq_lock);
-> > > > +
-> > > > +       ret =3D nct6694_register_handler(nct6694, GPIO_IRQ_STATUS,
-> > > > +                                      nct6694_gpio_handler, data);
-> > > > +       if (ret) {
-> > > > +               dev_err(&pdev->dev, "%s:  Failed to register handle=
-r: %pe\n",
-> > > > +                       __func__, ERR_PTR(ret));
-> > > > +               return ret;
-> > > > +       }
-> > > > +
-> > > > +       platform_set_drvdata(pdev, data);
-> > > > +
-> > > > +       ret =3D nct6694_get_irq_trig(data);
-> > > > +       if (ret)
-> > > > +               return ret;
-> > > > +
-> > > > +       /* Register gpio chip to GPIO framework */
-> > > > +       girq =3D &data->gpio.irq;
-> > > > +       gpio_irq_chip_set_chip(girq, &nct6694_irq_chip);
-> > > > +       girq->parent_handler =3D NULL;
-> > > > +       girq->num_parents =3D 0;
-> > > > +       girq->parents =3D NULL;
-> > > > +       girq->default_type =3D IRQ_TYPE_NONE;
-> > > > +       girq->handler =3D handle_level_irq;
-> > > > +       girq->threaded =3D true;
-> > > > +
-> > > > +       ret =3D gpiochip_add_data(&data->gpio, data);
-> > > > +       if (ret) {
-> > > > +               dev_err(&pdev->dev, "%s: Failed to register GPIO ch=
-ip: %pe",
-> > > > +                       __func__, ERR_PTR(ret));
-> > > > +               return ret;
-> > > > +       }
-> > > > +
-> > > > +       return 0;
-> > > > +}
-> > > > +
-> > > > +static void nct6694_gpio_remove(struct platform_device *pdev)
-> > > > +{
-> > > > +       struct nct6694_gpio_data *data =3D platform_get_drvdata(pde=
-v);
-> > > > +
-> > > > +       gpiochip_remove(&data->gpio);
-> > >
-> > > This should be dropped in favor of using devm_gpiochip_add_data().
-> > > Especially since you probably want to cancel the irq_work before
-> > > removing the chip.
-> >
-> > [Ming] Okay! I'll change it in the next patch.
-> >
-> > >
-> > > > +       cancel_work(&data->irq_work);
-> > > > +       cancel_work(&data->irq_trig_work);
-> > > > +}
-> > > > +
-> > > > +static struct platform_driver nct6694_gpio_driver =3D {
-> > > > +       .driver =3D {
-> > > > +               .name   =3D DRVNAME,
-> > > > +       },
-> > > > +       .probe          =3D nct6694_gpio_probe,
-> > > > +       .remove         =3D nct6694_gpio_remove,
-> > > > +};
-> > > > +
-> > > > +static int __init nct6694_init(void)
-> > > > +{
-> > > > +       int err;
-> > > > +
-> > > > +       err =3D platform_driver_register(&nct6694_gpio_driver);
-> > > > +       if (!err) {
-> > > > +               if (err)
-> > >
-> > > If err is equal to 0, check if it's not equal to zero?
-> > >
-> > > > +                       platform_driver_unregister(&nct6694_gpio_dr=
-iver);
-> > >
-> > > If platform_driver_register() failed, then the device was never regis=
-tered.
-> > >
-> > > > +       }
-> > > > +
-> > > > +       return err;
-> > > > +}
-> > > > +subsys_initcall(nct6694_init);
-> > >
-> > > Any reason why this must be initialized earlier? It's a USB driver af=
-ter all.
-> >
-> > [Ming] For platform driver registration, I'll change it to
-> > module_platform_driver()
-> > in the next patch.
-> >
->
-> Thanks,
-> Bartosz
->
-> > >
-> > > > +
-> > > > +static void __exit nct6694_exit(void)
-> > > > +{
-> > > > +       platform_driver_unregister(&nct6694_gpio_driver);
-> > > > +}
-> > > > +module_exit(nct6694_exit);
-> > > > +
-> > > > +MODULE_DESCRIPTION("USB-GPIO controller driver for NCT6694");
-> > > > +MODULE_AUTHOR("Ming Yu <tmyu0@nuvoton.com>");
-> > > > +MODULE_LICENSE("GPL");
-> > > > --
-> > > > 2.34.1
-> > > >
-> > >
-> > > Bart
-
-Best regards,
-Ming
