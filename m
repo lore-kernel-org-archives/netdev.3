@@ -1,37 +1,41 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE661D88BF;
-	Mon, 28 Oct 2024 12:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E77D1D934D;
+	Mon, 28 Oct 2024 12:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730117113; cv=none; b=Glvzt5Bng6mdT8/GI6CSEvBdpdo1BMhTk+44HyrHLJZ340JLPlP6Bg+KVPqxrc5F5WP4d95FYYZODFcp+S9DK8YzKOJcHBnfkPy798EnS67eSikjv3HkerfX9BzMfW8zP9Q9Ryfzs+bpyc8nS6wAn2EwgW2XBqI+YXVOwYnA/AY=
+	t=1730117119; cv=none; b=Zaidiw4DNmxYu72Och+Hhjhuasc+u5qzioWp6Fz0nSoPDA5zR0bckzz9j9oFEsMCNAvK/i1qqunA+vTo/5cpQnv/IC1xoJWx6MbNOFCG5j0kmanHMFxEKPwUucGtu1O8+KCQ642wOn/HwH8hf3f/UD8q48O/wyAQNpZIPtIg7z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730117113; c=relaxed/simple;
-	bh=xNtzbU6RYxE7Z3LPDjmeMYyTQ+edxjCw2G+7nLTaFwY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TkUhWucH+RIo3G8uKrOuXqyrNmo8bsAZvSokOgTG3KIJwS8iU18qdadxN/x7tWRNvaT8JmkOf31FGfh6Nw5t27FpXRPXtSfE6CXNzWP01PqqMsA32eKSsz0W3vt5995Pl+r3xm+77dFoJtRdMNigWchG/1WH/7Ta0UsgZ4zAjlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+	s=arc-20240116; t=1730117119; c=relaxed/simple;
+	bh=AnS873QB+hwd0VrFLf/D5rY6qh3rve2wNTTBNEyvE14=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HjdhPq/FUVbvmtirnCczVW1JYteFKAQp59Unf549dOaDmbbMGo7Pce9KIqH+L098vxoViN2r69ewJJyCq7EDmrYR8S+8iqAsafYKfPSfzsb1Le81xCTcbsQ85syzdDpO+pEIxzHy7Vzejhu2Oqvs+P5KzcJOnGBhbYBBScTCapM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XcXC02J2zz1ynlN;
-	Mon, 28 Oct 2024 20:05:16 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XcX8108CfzfdT3;
+	Mon, 28 Oct 2024 20:02:41 +0800 (CST)
 Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0BC2E180041;
-	Mon, 28 Oct 2024 20:05:08 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B429C1402CC;
+	Mon, 28 Oct 2024 20:05:13 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 28 Oct 2024 20:05:07 +0800
+ 15.2.1544.11; Mon, 28 Oct 2024 20:05:13 +0800
 From: Yunsheng Lin <linyunsheng@huawei.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Shuah
- Khan <skhan@linuxfoundation.org>
-Subject: [PATCH RFC 00/10] Replace page_frag with page_frag_cache (Part-2)
-Date: Mon, 28 Oct 2024 19:58:40 +0800
-Message-ID: <20241028115850.3409893-1-linyunsheng@huawei.com>
+	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>, Jonathan
+ Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Subject: [PATCH RFC 03/10] mm: page_frag: update documentation for page_frag
+Date: Mon, 28 Oct 2024 19:58:43 +0800
+Message-ID: <20241028115850.3409893-4-linyunsheng@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241028115850.3409893-1-linyunsheng@huawei.com>
+References: <20241028115850.3409893-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,218 +47,262 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  dggpemf200006.china.huawei.com (7.185.36.61)
 
-This is part 2 of "Replace page_frag with page_frag_cache",
-which introduces the new API and replaces page_frag with
-page_frag_cache for sk_page_frag().
-
-The part 1 of "Replace page_frag with page_frag_cache" is in
-[1].
-
-After [2], there are still two implementations for page frag:
-
-1. mm/page_alloc.c: net stack seems to be using it in the
-   rx part with 'struct page_frag_cache' and the main API
-   being page_frag_alloc_align().
-2. net/core/sock.c: net stack seems to be using it in the
-   tx part with 'struct page_frag' and the main API being
-   skb_page_frag_refill().
-
-This patchset tries to unfiy the page frag implementation
-by replacing page_frag with page_frag_cache for sk_page_frag()
-first. net_high_order_alloc_disable_key for the implementation
-in net/core/sock.c doesn't seems matter that much now as pcp
-is also supported for high-order pages:
-commit 44042b449872 ("mm/page_alloc: allow high-order pages to
-be stored on the per-cpu lists")
-
-As the related change is mostly related to networking, so
-targeting the net-next. And will try to replace the rest
-of page_frag in the follow patchset.
-
-After this patchset:
-1. Unify the page frag implementation by taking the best out of
-   two the existing implementations: we are able to save some space
-   for the 'page_frag_cache' API user, and avoid 'get_page()' for
-   the old 'page_frag' API user.
-2. Future bugfix and performance can be done in one place, hence
-   improving maintainability of page_frag's implementation.
-
-Kernel Image changing:
-    Linux Kernel   total |      text      data        bss
-    ------------------------------------------------------
-    after     45250307 |   27274279   17209996     766032
-    before    45254134 |   27278118   17209984     766032
-    delta        -3827 |      -3839        +12         +0
-
-Performance validation:
-1. Using micro-benchmark ko added in patch 1 to test aligned and
-   non-aligned API performance impact for the existing users, there
-   is no notiable performance degradation. Instead we seems to have
-   some major performance boot for both aligned and non-aligned API
-   after switching to ptr_ring for testing, respectively about 200%
-   and 10% improvement in arm64 server as below.
-
-2. Use the below netcat test case, we also have some minor
-   performance boot for replacing 'page_frag' with 'page_frag_cache'
-   after this patchset.
-   server: taskset -c 32 nc -l -k 1234 > /dev/null
-   client: perf stat -r 200 -- taskset -c 0 head -c 20G /dev/zero | taskset -c 1 nc 127.0.0.1 1234
-
-In order to avoid performance noise as much as possible, the testing
-is done in system without any other load and have enough iterations to
-prove the data is stable enough, complete log for testing is below:
-
-perf stat -r 200 -- insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000
-perf stat -r 200 -- insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1
-taskset -c 32 nc -l -k 1234 > /dev/null
-perf stat -r 200 -- taskset -c 0 head -c 20G /dev/zero | taskset -c 1 nc 127.0.0.1 1234
-
-*After* this patchset:
-
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
-
-         17.758393      task-clock (msec)         #    0.004 CPUs utilized            ( +-  0.51% )
-                 5      context-switches          #    0.293 K/sec                    ( +-  0.65% )
-                 0      cpu-migrations            #    0.008 K/sec                    ( +- 17.21% )
-                74      page-faults               #    0.004 M/sec                    ( +-  0.12% )
-          46128650      cycles                    #    2.598 GHz                      ( +-  0.51% )
-          60810511      instructions              #    1.32  insn per cycle           ( +-  0.04% )
-          14764914      branches                  #  831.433 M/sec                    ( +-  0.04% )
-             19281      branch-misses             #    0.13% of all branches          ( +-  0.13% )
-
-       4.240273854 seconds time elapsed                                          ( +-  0.13% )
-
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
-
-         17.348690      task-clock (msec)         #    0.019 CPUs utilized            ( +-  0.66% )
-                 5      context-switches          #    0.310 K/sec                    ( +-  0.84% )
-                 0      cpu-migrations            #    0.009 K/sec                    ( +- 16.55% )
-                74      page-faults               #    0.004 M/sec                    ( +-  0.11% )
-          45065287      cycles                    #    2.598 GHz                      ( +-  0.66% )
-          60755389      instructions              #    1.35  insn per cycle           ( +-  0.05% )
-          14747865      branches                  #  850.085 M/sec                    ( +-  0.05% )
-             19272      branch-misses             #    0.13% of all branches          ( +-  0.13% )
-
-       0.935251375 seconds time elapsed                                          ( +-  0.07% )
-
- Performance counter stats for 'taskset -c 0 head -c 20G /dev/zero' (200 runs):
-
-      16626.042731      task-clock (msec)         #    0.607 CPUs utilized            ( +-  0.03% )
-           3291020      context-switches          #    0.198 M/sec                    ( +-  0.05% )
-                 1      cpu-migrations            #    0.000 K/sec                    ( +-  0.50% )
-                85      page-faults               #    0.005 K/sec                    ( +-  0.16% )
-       30581044838      cycles                    #    1.839 GHz                      ( +-  0.05% )
-       34962744631      instructions              #    1.14  insn per cycle           ( +-  0.01% )
-        6483883671      branches                  #  389.984 M/sec                    ( +-  0.02% )
-          99624551      branch-misses             #    1.54% of all branches          ( +-  0.17% )
-
-      27.370305077 seconds time elapsed                                          ( +-  0.01% )
-
-
-*Before* this patchset:
-
-Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
-
-         21.587934      task-clock (msec)         #    0.005 CPUs utilized            ( +-  0.72% )
-                 6      context-switches          #    0.281 K/sec                    ( +-  0.28% )
-                 1      cpu-migrations            #    0.047 K/sec                    ( +-  0.50% )
-                73      page-faults               #    0.003 M/sec                    ( +-  0.12% )
-          56080697      cycles                    #    2.598 GHz                      ( +-  0.72% )
-          61605150      instructions              #    1.10  insn per cycle           ( +-  0.05% )
-          14950196      branches                  #  692.526 M/sec                    ( +-  0.05% )
-             19410      branch-misses             #    0.13% of all branches          ( +-  0.18% )
-
-       4.603530546 seconds time elapsed                                          ( +-  0.11% )
-
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
-
-         20.988297      task-clock (msec)         #    0.006 CPUs utilized            ( +-  0.81% )
-                 7      context-switches          #    0.316 K/sec                    ( +-  0.54% )
-                 1      cpu-migrations            #    0.048 K/sec                    ( +-  0.70% )
-                73      page-faults               #    0.003 M/sec                    ( +-  0.11% )
-          54512166      cycles                    #    2.597 GHz                      ( +-  0.81% )
-          61440941      instructions              #    1.13  insn per cycle           ( +-  0.08% )
-          14906043      branches                  #  710.207 M/sec                    ( +-  0.08% )
-             19927      branch-misses             #    0.13% of all branches          ( +-  0.17% )
-
-       3.438041238 seconds time elapsed                                          ( +-  1.11% )
-
- Performance counter stats for 'taskset -c 0 head -c 20G /dev/zero' (200 runs):
-
-      17364.040855      task-clock (msec)         #    0.624 CPUs utilized            ( +-  0.02% )
-           3340375      context-switches          #    0.192 M/sec                    ( +-  0.06% )
-                 1      cpu-migrations            #    0.000 K/sec
-                85      page-faults               #    0.005 K/sec                    ( +-  0.15% )
-       32077623335      cycles                    #    1.847 GHz                      ( +-  0.03% )
-       35121047596      instructions              #    1.09  insn per cycle           ( +-  0.01% )
-        6519872824      branches                  #  375.481 M/sec                    ( +-  0.02% )
-         101877022      branch-misses             #    1.56% of all branches          ( +-  0.14% )
-
-      27.842745343 seconds time elapsed                                          ( +-  0.02% )
-
-
-Note, ipv4-udp, ipv6-tcp and ipv6-udp is also tested with the below script:
-nc -u -l -k 1234 > /dev/null
-perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -N -u 127.0.0.1 1234
-
-nc -l6 -k 1234 > /dev/null
-perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -N ::1 1234
-
-nc -l6 -k -u 1234 > /dev/null
-perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -u -N ::1 1234
+Update documentation about design, implementation and API usages
+for page_frag.
 
 CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Shuah Khan <skhan@linuxfoundation.org>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: Linux-MM <linux-mm@kvack.org>
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ Documentation/mm/page_frags.rst | 110 +++++++++++++++++++++++++++++++-
+ include/linux/page_frag_cache.h |  54 ++++++++++++++++
+ mm/page_frag_cache.c            |  12 +++-
+ 3 files changed, 173 insertions(+), 3 deletions(-)
 
-1. https://lore.kernel.org/all/20241028115343.3405838-1-linyunsheng@huawei.com/
-2. https://lore.kernel.org/all/20240228093013.8263-1-linyunsheng@huawei.com/
-
-RFC:
-    1. CC Andrew and MM ML explicitly.
-    2. Split into two parts according to the discussion in v22, and this is
-       the part-2.
-    3. Split 'introduce new API' patch to more patches to make more reviewable
-       and easier to discuss.
-
-Yunsheng Lin (10):
-  mm: page_frag: some minor refactoring before adding new API
-  net: rename skb_copy_to_page_nocache() helper
-  mm: page_frag: update documentation for page_frag
-  mm: page_frag: introduce page_frag_alloc_abort() related API
-  mm: page_frag: introduce refill prepare & commit API
-  mm: page_frag: introduce alloc_refill prepare & commit API
-  mm: page_frag: introduce probe related API
-  mm: page_frag: add testing for the newly added API
-  net: replace page_frag with page_frag_cache
-  mm: page_frag: add an entry in MAINTAINERS for page_frag
-
- Documentation/mm/page_frags.rst               | 207 ++++++++++-
- MAINTAINERS                                   |  12 +
- .../chelsio/inline_crypto/chtls/chtls.h       |   3 -
- .../chelsio/inline_crypto/chtls/chtls_io.c    | 101 ++----
- .../chelsio/inline_crypto/chtls/chtls_main.c  |   3 -
- drivers/net/tun.c                             |  47 ++-
- include/linux/page_frag_cache.h               | 330 +++++++++++++++++-
- include/linux/sched.h                         |   2 +-
- include/net/sock.h                            |  30 +-
- kernel/exit.c                                 |   3 +-
- kernel/fork.c                                 |   3 +-
- mm/page_frag_cache.c                          | 108 +++++-
- net/core/skbuff.c                             |  58 +--
- net/core/skmsg.c                              |  12 +-
- net/core/sock.c                               |  32 +-
- net/ipv4/ip_output.c                          |  28 +-
- net/ipv4/tcp.c                                |  26 +-
- net/ipv4/tcp_output.c                         |  25 +-
- net/ipv6/ip6_output.c                         |  28 +-
- net/kcm/kcmsock.c                             |  21 +-
- net/mptcp/protocol.c                          |  47 ++-
- net/tls/tls_device.c                          | 100 ++++--
- .../selftests/mm/page_frag/page_frag_test.c   |  76 +++-
- tools/testing/selftests/mm/run_vmtests.sh     |   4 +
- tools/testing/selftests/mm/test_page_frag.sh  |  27 ++
- 25 files changed, 1045 insertions(+), 288 deletions(-)
-
+diff --git a/Documentation/mm/page_frags.rst b/Documentation/mm/page_frags.rst
+index 503ca6cdb804..34e654c2956e 100644
+--- a/Documentation/mm/page_frags.rst
++++ b/Documentation/mm/page_frags.rst
+@@ -1,3 +1,5 @@
++.. SPDX-License-Identifier: GPL-2.0
++
+ ==============
+ Page fragments
+ ==============
+@@ -40,4 +42,110 @@ page via a single call.  The advantage to doing this is that it allows for
+ cleaning up the multiple references that were added to a page in order to
+ avoid calling get_page per allocation.
+ 
+-Alexander Duyck, Nov 29, 2016.
++
++Architecture overview
++=====================
++
++.. code-block:: none
++
++                      +----------------------+
++                      | page_frag API caller |
++                      +----------------------+
++                                  |
++                                  |
++                                  v
++    +------------------------------------------------------------------+
++    |                   request page fragment                          |
++    +------------------------------------------------------------------+
++             |                                 |                     |
++             |                                 |                     |
++             |                          Cache not enough             |
++             |                                 |                     |
++             |                         +-----------------+           |
++             |                         | reuse old cache |--Usable-->|
++             |                         +-----------------+           |
++             |                                 |                     |
++             |                             Not usable                |
++             |                                 |                     |
++             |                                 v                     |
++        Cache empty                   +-----------------+            |
++             |                        | drain old cache |            |
++             |                        +-----------------+            |
++             |                                 |                     |
++             v_________________________________v                     |
++                              |                                      |
++                              |                                      |
++             _________________v_______________                       |
++            |                                 |              Cache is enough
++            |                                 |                      |
++ PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE         |                      |
++            |                                 |                      |
++            |               PAGE_SIZE >= PAGE_FRAG_CACHE_MAX_SIZE    |
++            v                                 |                      |
++    +----------------------------------+      |                      |
++    | refill cache with order > 0 page |      |                      |
++    +----------------------------------+      |                      |
++      |                    |                  |                      |
++      |                    |                  |                      |
++      |              Refill failed            |                      |
++      |                    |                  |                      |
++      |                    v                  v                      |
++      |      +------------------------------------+                  |
++      |      |   refill cache with order 0 page   |                  |
++      |      +----------------------------------=-+                  |
++      |                       |                                      |
++ Refill succeed               |                                      |
++      |                 Refill succeed                               |
++      |                       |                                      |
++      v                       v                                      v
++    +------------------------------------------------------------------+
++    |             allocate fragment from cache                         |
++    +------------------------------------------------------------------+
++
++API interface
++=============
++
++Depending on different aligning requirement, the page_frag API caller may call
++page_frag_*_align*() to ensure the returned virtual address or offset of the
++page is aligned according to the 'align/alignment' parameter. Note the size of
++the allocated fragment is not aligned, the caller needs to provide an aligned
++fragsz if there is an alignment requirement for the size of the fragment.
++
++.. kernel-doc:: include/linux/page_frag_cache.h
++   :identifiers: page_frag_cache_init page_frag_cache_is_pfmemalloc
++		 __page_frag_alloc_align page_frag_alloc_align page_frag_alloc
++
++.. kernel-doc:: mm/page_frag_cache.c
++   :identifiers: page_frag_cache_drain page_frag_free
++
++Coding examples
++===============
++
++Initialization and draining API
++-------------------------------
++
++.. code-block:: c
++
++   page_frag_cache_init(nc);
++   ...
++   page_frag_cache_drain(nc);
++
++
++Allocation & freeing API
++------------------------
++
++.. code-block:: c
++
++    void *va;
++
++    va = page_frag_alloc_align(nc, size, gfp, align);
++    if (!va)
++        goto do_error;
++
++    err = do_something(va, size);
++    if (err)
++        goto do_error;
++
++    ...
++
++    page_frag_free(va);
+diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
+index 5ae97f93a0a1..a2b1127e8ac8 100644
+--- a/include/linux/page_frag_cache.h
++++ b/include/linux/page_frag_cache.h
+@@ -28,11 +28,28 @@ static inline bool encoded_page_decode_pfmemalloc(unsigned long encoded_page)
+ 	return !!(encoded_page & PAGE_FRAG_CACHE_PFMEMALLOC_BIT);
+ }
+ 
++/**
++ * page_frag_cache_init() - Init page_frag cache.
++ * @nc: page_frag cache from which to init
++ *
++ * Inline helper to initialize the page_frag cache.
++ */
+ static inline void page_frag_cache_init(struct page_frag_cache *nc)
+ {
+ 	nc->encoded_page = 0;
+ }
+ 
++/**
++ * page_frag_cache_is_pfmemalloc() - Check for pfmemalloc.
++ * @nc: page_frag cache from which to check
++ *
++ * Check if the current page in page_frag cache is allocated from the pfmemalloc
++ * reserves. It has the same calling context expectation as the allocation API.
++ *
++ * Return:
++ * true if the current page in page_frag cache is allocated from the pfmemalloc
++ * reserves, otherwise return false.
++ */
+ static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
+ {
+ 	return encoded_page_decode_pfmemalloc(nc->encoded_page);
+@@ -57,6 +74,19 @@ static inline unsigned int __page_frag_cache_commit(struct page_frag_cache *nc,
+ 	return __page_frag_cache_commit_noref(nc, pfrag, used_sz);
+ }
+ 
++/**
++ * __page_frag_alloc_align() - Allocate a page fragment with aligning
++ * requirement.
++ * @nc: page_frag cache from which to allocate
++ * @fragsz: the requested fragment size
++ * @gfp_mask: the allocation gfp to use when cache need to be refilled
++ * @align_mask: the requested aligning requirement for the 'va'
++ *
++ * Allocate a page fragment from page_frag cache with aligning requirement.
++ *
++ * Return:
++ * Virtual address of the page fragment, otherwise return NULL.
++ */
+ static inline void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 					    unsigned int fragsz, gfp_t gfp_mask,
+ 					    unsigned int align_mask)
+@@ -72,6 +102,19 @@ static inline void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 	return va;
+ }
+ 
++/**
++ * page_frag_alloc_align() - Allocate a page fragment with aligning requirement.
++ * @nc: page_frag cache from which to allocate
++ * @fragsz: the requested fragment size
++ * @gfp_mask: the allocation gfp to use when cache needs to be refilled
++ * @align: the requested aligning requirement for the fragment
++ *
++ * WARN_ON_ONCE() checking for @align before allocating a page fragment from
++ * page_frag cache with aligning requirement.
++ *
++ * Return:
++ * virtual address of the page fragment, otherwise return NULL.
++ */
+ static inline void *page_frag_alloc_align(struct page_frag_cache *nc,
+ 					  unsigned int fragsz, gfp_t gfp_mask,
+ 					  unsigned int align)
+@@ -80,6 +123,17 @@ static inline void *page_frag_alloc_align(struct page_frag_cache *nc,
+ 	return __page_frag_alloc_align(nc, fragsz, gfp_mask, -align);
+ }
+ 
++/**
++ * page_frag_alloc() - Allocate a page fragment.
++ * @nc: page_frag cache from which to allocate
++ * @fragsz: the requested fragment size
++ * @gfp_mask: the allocation gfp to use when cache need to be refilled
++ *
++ * Allocate a page fragment from page_frag cache.
++ *
++ * Return:
++ * virtual address of the page fragment, otherwise return NULL.
++ */
+ static inline void *page_frag_alloc(struct page_frag_cache *nc,
+ 				    unsigned int fragsz, gfp_t gfp_mask)
+ {
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index f55d34cf7d43..d014130fb893 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -70,6 +70,10 @@ static struct page *__page_frag_cache_refill(struct page_frag_cache *nc,
+ 	return page;
+ }
+ 
++/**
++ * page_frag_cache_drain - Drain the current page from page_frag cache.
++ * @nc: page_frag cache from which to drain
++ */
+ void page_frag_cache_drain(struct page_frag_cache *nc)
+ {
+ 	if (!nc->encoded_page)
+@@ -182,8 +186,12 @@ void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
+ }
+ EXPORT_SYMBOL(__page_frag_cache_prepare);
+ 
+-/*
+- * Frees a page fragment allocated out of either a compound or order 0 page.
++/**
++ * page_frag_free - Free a page fragment.
++ * @addr: va of page fragment to be freed
++ *
++ * Free a page fragment allocated out of either a compound or order 0 page by
++ * virtual address.
+  */
+ void page_frag_free(void *addr)
+ {
 -- 
 2.33.0
 
