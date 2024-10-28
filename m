@@ -1,60 +1,61 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC3B1DFE39
-	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 17:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D3E1E0DCB
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 17:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730137232; cv=none; b=m3+gIg4Riur0fGIjGDp+kT6s8T528vzUBPTAUcDW4wJPg+fnQPmVjqF5/Hj5re6NiBLFePqYJ77pzkUq1scehrdvH95OYtXGSucdDE++7aEcjVi49UncbTi0WpvTC34b+LR2jwTf8BF6Rnsw48NwEjqtYbh+hmrC56qJZWQR01U=
+	t=1730137233; cv=none; b=YIYs4c3mDsy2QIdwdH7iij66MJHoy7OrBwZWBscHfsnBOX/V//Glx+RyTpKkP9XIVY+V42wfdz0JBmKA8LwQPnyZG9UXwMhmsSdDCrSrKQtRxGg8DA8FkRI/noRb45qmV0vY8JpzGnt0OXrEFtuphXi6WX30FnYkAOK1gjlqsFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730137232; c=relaxed/simple;
-	bh=f+4c/xAyZM4ng0MgHl2luM8EJirET+RfnpCZLFWpJ+I=;
+	s=arc-20240116; t=1730137233; c=relaxed/simple;
+	bh=lb40xLu/VXrpPNedn2QOJM+HYtvP+0chbzXXKOqoOlE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X5jqvWBQem0IF2H1VrcRBxrfum/Iz4HF/ElhN6REkNkGLCV6e6u/sKS+5iBWNelciRWWxEqSPq6SX5f/YZe+2vThtr7k1kLE0Bb0mEGxxUosYF+dTTH7mupGwctZHUUgh74YEgldDf8eLHBw0QPb+EnPM3VnzzolwMPnhHwDCdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Qq3puezO; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:To:Cc; b=JefacTPLoim7jpspQ4PIbLmN7AO+1wF7de4eOleJ2Mcwszh2n48k5lxBfuof9eOrL03kx8aTZbUufeKbLoAcimgworRodnv+X+HQBCHHg+4EYglplVs4byXdySVa7LaRLT/lv4a0PUZPWFkfJcNuxhXnWuh4LxNWGkIprRNzEiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=T5bLXICu; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Qq3puezO"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431ac30d379so9609905e9.1
-        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 10:40:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="T5bLXICu"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d8901cb98so3837276f8f.0
+        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 10:40:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730137227; x=1730742027; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730137229; x=1730742029; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Te/9/WdXEHbGw1bV3Tw3mQ9dGEF+E7KMYxRV/chzUCY=;
-        b=Qq3puezOkTxdqc40eiP5SHSCd7k13u6w7f0JthZboAuG+XmZ3Jmc3XNjkr3pxu0X5C
-         H4//uQMC+yYOKizAUmfEtqR/fBPWbaYRkP4yI4bqC7j8v5wpsBio4cwWtuR44LQh/y55
-         1hLOGbow3GukRqDGmOmVk8GH8KNPTJgLDZhkGSx4erL6jCBweFLRQOA01vLJ7Y79ZaM5
-         3U/cnRYSR32PKgOzItEW01IuSw8/uayUzp0kVhaPbIK3izmzu8wec4ZHu141WN7mxDru
-         p9+s1WU0lIX/9t+faHcZrPtTrAOjSE3CHklKTFW80hB2MJnEtB69S1PVXfSOCS/EARXF
-         IqbA==
+        bh=p570CyCpET4jQOMvqTRvBlj0hjjJLO72psUJRNLRpe8=;
+        b=T5bLXICuY0CiKG/92kgQm1dM5ZWngXuf51K8kBFLaOPP2jqs9JOkafaJSfqLMEo7hR
+         +HEGG3ahdsKCUygQIrRezl3TrsbC7Eol0v8JcaIHsvUcZLfneUDu+7Dic9J/8jAZDAUN
+         NdlqgwS4QnUcABzZ5HzOGMPcxSDsTreTez7qx5CX7jLoyTdXsVV4rbj7osv6jSwbB+aj
+         jrZn07W99eUkguqIVu2L38+qfwODeKgH9Ceoo6fE5tNetRC6nMcwQ/UL//Jztetl3C52
+         yAeein/iUjJ9kR5SKrdYngq9crhXjMbrzTAr9f0e2XHmx31o66hFpJNWT2tUNceDjDwj
+         O73g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730137227; x=1730742027;
+        d=1e100.net; s=20230601; t=1730137229; x=1730742029;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Te/9/WdXEHbGw1bV3Tw3mQ9dGEF+E7KMYxRV/chzUCY=;
-        b=gNhCJL6ejhRJzUFYLPeonfRk5Vhagnc7pbDUIvFOHV7IrqQ89QdmSkOJ7660+WBeBi
-         fYrkWjZF/WjsremuxNQhkdhTapfr4nN4MUTHEyywFeOluQRKel/Zhmirnrrq/oA4UV2F
-         xYHpQMaK+KVKCykaN/yrg11Am2g5ofaLwnkSrnuO5E2tFgh7VmAIwhatQ6P21ameId5i
-         FjMi7W3dsVBYkcacx29wc5KW+Fo2LnibnO1/sPN6iu7bVEg9yH8lIyTC7ws30ruoUin0
-         WeGGR9j7WwUcwrEsO5OOUY3kS6MYqijz6eNxYXgWJ4XEwD1NDc7w38wOqSDDlFfMt45d
-         9IQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwRjf/QoFBYynta10lDs4xK1kxrNZ6jEGIZr32uyNpu7XsUBnreiha/2e3isPbUiVpWxitd7s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcWLlzD5i2I9AR885xGDBGteXzy94DYC2ybaCx9KrWa8rvlhyJ
-	tI3WcGnXFqTriteKD6kF7dgJMcY3FMQwCnl/VXi4gTCRocA6et8evdNUoElfEJg=
-X-Google-Smtp-Source: AGHT+IFqMPdBogulD24ryHYACs/0/kPy+ME5m39YFDX+/TOrN8GU2WdBOh9BaqWlHQ/G2u6uOhGjww==
-X-Received: by 2002:adf:fa07:0:b0:37d:54de:1609 with SMTP id ffacd0b85a97d-380610f3056mr6761435f8f.10.1730137226809;
-        Mon, 28 Oct 2024 10:40:26 -0700 (PDT)
+        bh=p570CyCpET4jQOMvqTRvBlj0hjjJLO72psUJRNLRpe8=;
+        b=uWDjjUKNIJT32zBZgf2VujTRcxnh3hBM46HFUbWfZMTtJfvKp5SzuZuVtEW5LreNnB
+         UD+aGJzdhL1cZRaAhkWbNNZgmiqZ3FZV08Q84k1uKARTVM5TbwhpHEDT6J7C/QJT2b+T
+         +Y00f7rlxW92CE2h83K5n2gHdejx6pKTlhnVmZap9XSs233yOT5OkPoEsBD1eurSxQMd
+         1jOSTyyXS5r2gQqH6W4cj39d0Zdh2JxoZdx8SDtqM2Cty/OutAsJjyb9nSCGBgPqDlav
+         TcwDQ8j2zJ02mH29PRzlcJce2LSnLEFpuD7jK9tXmO+9rJufUuQPi2uH1DISLX6oYWHi
+         gVww==
+X-Forwarded-Encrypted: i=1; AJvYcCXmDDM53wwhtPd0EnJ2znQTi7RoaIP6ZqBfo3CP7QWGObVi1GUF4FVE08korywE2gAFbcSlyPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQLsHnK7s1/7R/k362NfVnNt0c2kSfoQUuH7FNLHTqAiU/Lyf1
+	Mfp/5C/G75X1jCUJq5v00QDQ9iEl6Hc6GgFAhvhERViib3krjaFhJW5g3oRznv8=
+X-Google-Smtp-Source: AGHT+IHJoT1Kru8t2gTjCW87GFlKfRhV5K1JOlejOdWGN1XWolqFZDApbwBdxFRY5yWNwO7g4PRChA==
+X-Received: by 2002:adf:f84b:0:b0:37d:321e:ef0c with SMTP id ffacd0b85a97d-380813c9f8dmr327949f8f.11.1730137229455;
+        Mon, 28 Oct 2024 10:40:29 -0700 (PDT)
 Received: from localhost ([2001:4091:a245:81f4:340d:1a9d:1fa6:531f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b714fesm10130545f8f.71.2024.10.28.10.40.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4319360c10asm116567725e9.43.2024.10.28.10.40.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 10:40:26 -0700 (PDT)
+        Mon, 28 Oct 2024 10:40:29 -0700 (PDT)
 From: Markus Schneider-Pargmann <msp@baylibre.com>
-Date: Mon, 28 Oct 2024 18:38:12 +0100
-Subject: [PATCH v5 6/9] can: m_can: Add use of optional regulator
+Date: Mon, 28 Oct 2024 18:38:14 +0100
+Subject: [PATCH v5 8/9] arm64: dts: ti: k3-am62a-mcu: Mark mcu_mcan0/1 as
+ wakeup-source
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,7 +64,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241028-topic-mcan-wakeup-source-v6-12-v5-6-33edc0aba629@baylibre.com>
+Message-Id: <20241028-topic-mcan-wakeup-source-v6-12-v5-8-33edc0aba629@baylibre.com>
 References: <20241028-topic-mcan-wakeup-source-v6-12-v5-0-33edc0aba629@baylibre.com>
 In-Reply-To: <20241028-topic-mcan-wakeup-source-v6-12-v5-0-33edc0aba629@baylibre.com>
 To: Chandrasekar Ramakrishnan <rcsekar@samsung.com>, 
@@ -83,48 +84,43 @@ Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org,
  Vincent MAILHOL <mailhol.vincent@wanadoo.fr>, 
  Markus Schneider-Pargmann <msp@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1254; i=msp@baylibre.com;
- h=from:subject:message-id; bh=f+4c/xAyZM4ng0MgHl2luM8EJirET+RfnpCZLFWpJ+I=;
- b=owGbwMvMwCGm0rPl0RXRdfaMp9WSGNLlz2QdE8mMSbp8bbLv+ZxJ8W/43HN2iuR/eBo7KWhiW
- 9W35aeMOkpZGMQ4GGTFFFnuflj4rk7u+oKIdY8cYeawMoEMYeDiFICJTIth+Ct75s0SoUmLJiUr
- ha7aLa3Z8zkktDC/YM8J38kCalWLlA0Y/vBvX7j1/Mzma7P+zEq3bLi1nruHSVAv7eGNle9/J1+
- 7Us8KAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1028; i=msp@baylibre.com;
+ h=from:subject:message-id; bh=lb40xLu/VXrpPNedn2QOJM+HYtvP+0chbzXXKOqoOlE=;
+ b=owGbwMvMwCGm0rPl0RXRdfaMp9WSGNLlz5RsODMjKeDO7+xNd8/K/zh6sOuF8nNxG6+uE2UJE
+ w6vDmXh7ChlYRDjYJAVU2S5+2Hhuzq56wsi1j1yhJnDygQyhIGLUwAmkjiL4X/djwWuh178yZz3
+ 8avSzEPBl7SzZy/b0Xxo/oX5rNv2eHAlM/zTiZgXyNKl9DBf4bGY4gabxKBnTDWH61TWhOXLt2W
+ 7b+MAAA==
 X-Developer-Key: i=msp@baylibre.com; a=openpgp;
  fpr=BADD88DB889FDC3E8A3D5FE612FA6A01E0A45B41
 
-Add support to use a regulator for the core. This is optional and used
-to register the dependency on the regulator.
+mcu_mcan0 and mcu_mcan1 can be wakeup sources for the SoC. Mark them
+accordingly in the devicetree.
 
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
 ---
- drivers/net/can/m_can/m_can.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62a-mcu.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 8c6452d1490c11d365bab598f2abe047f730d24b..56884c49b6f2a36acbcd7ca04be506154f991621 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -23,6 +23,7 @@
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-mcu.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-mcu.dtsi
+index 0469c766b769e46068f23e0073f951aa094c456f..06361cfd7a8ee6f2acf2d15e8106087dd0f38008 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-mcu.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-mcu.dtsi
+@@ -161,6 +161,7 @@ mcu_mcan0: can@4e08000 {
+ 		clocks = <&k3_clks 188 6>, <&k3_clks 188 1>;
+ 		clock-names = "hclk", "cclk";
+ 		bosch,mram-cfg = <0x0 128 64 64 64 64 32 32>;
++		wakeup-source;
+ 		status = "disabled";
+ 	};
  
- #include "m_can.h"
- 
-@@ -2421,6 +2422,11 @@ struct m_can_classdev *m_can_class_allocate_dev(struct device *dev,
- 	if (dev->of_node && of_property_read_bool(dev->of_node, "wakeup-source"))
- 		device_set_wakeup_capable(dev, true);
- 
-+	ret = devm_regulator_get_enable_optional(dev, "vio");
-+	if (ret)
-+		return ERR_PTR(
-+			dev_err_probe(dev, ret, "Failed to get or enable optional regulator\n"));
-+
- 	/* Get TX FIFO size
- 	 * Defines the total amount of echo buffers for loopback
- 	 */
+@@ -173,6 +174,7 @@ mcu_mcan1: can@4e18000 {
+ 		clocks = <&k3_clks 189 6>, <&k3_clks 189 1>;
+ 		clock-names = "hclk", "cclk";
+ 		bosch,mram-cfg = <0x0 128 64 64 64 64 32 32>;
++		wakeup-source;
+ 		status = "disabled";
+ 	};
+ };
 
 -- 
 2.45.2
