@@ -1,174 +1,150 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B05F1DFE03
-	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 18:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89CE1D8E16
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 18:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730141878; cv=none; b=ZQo8HZ++7Mbctq7/sAenjcAzFXSgWYTBXTUtgEKiYh/Vc4N+D+GoO73SbPyIvsqKQagn+RDlbjGl0PpdXEwKMj5KET0KVxp3t1UxxnHzm4oA5Lh9rQzNueEcUpJUyIj2+QryYLNAveRZmi/PvDKNkGeXi3IEmMOb6/T2o7ZYD7I=
+	t=1730141973; cv=none; b=nKAmp9YB9WCpDYEWlxgPwavUEm9KURoQV82IZorjSQ+8M3JUAC8pxbzigcU1/z0z35sYbSTf/8el+O2S+gtA7j7Ar8fltvwX/6BMgg1UkYB4hYYPfqcAHIoBf/pwMm95k5b8Lp1qjpvbyHgcGFCBeorniAAMSUPwX5F2O39PB7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730141878; c=relaxed/simple;
-	bh=0gX0LnKuJ/NX4wwERuBq+5xSFvDbn8YTjRCAKP0YkAg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=feDeImyWRDmOkXj6Bwd1OV/2E2ALvV4OwoqsbFy0T+pcjqxgJUyYpXolumoQ24Bn9wdTHMKf6ho40yLyltZZ62pO0NZ08PD78dRnAT7uOmLf0meIMwh1aVDbcBpIu+KBc7Shi24RpOA5tVDIAEMmkCeK46C6bQbP1pLFnIifc1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=EYqMGquK; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1730141973; c=relaxed/simple;
+	bh=f7jCv518i3r2DmaD2jR4yg1phCBC6+krsahdbsKRe+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NwG7FfzjdjYrheAoPKz+RwQ+CVh9NX3F2LMv70V4je/Y51TnSbhEOyQOp8VGQyQn1Li7cUlxTgZ6dSAR8iiwDSdaph4fEi6XCsmiQEgvIpn6hgBAxGpe0LpLyuIw+2owgPbv3bAbACOBlRgUc5nY/G9bJmrwS+6Bqi98x/CqHS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=YDxXyY6v; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="EYqMGquK"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49SImcPR021869;
-	Mon, 28 Oct 2024 11:57:34 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2021-q4; bh=mae+YG/JczWdEFfkEv
-	fI31j08Bf4XKpEzpp3e/RWsMQ=; b=EYqMGquKhdzVoSATMz7bqi0tOQvE4SoceN
-	AvlqqMAtJtYvukM1jFL17CC7JwWpIRaklcKViQRj/W97727zqQL+bJ4WPM49RPUI
-	zu5qQOEODXyqlaJlvcOhsHSnB9d52j3YJxkBfKy75Osd947I3ft/ja/LKkjmrgvF
-	3nIpO7zmyY/dhJRDeXgeu/e1bQhYwquozfklykP7nbOgXUUhT0zYq4+XIMNt5oGC
-	091pzNLwKc/H3P30x0r41YD8oc6H9VNgvZSmYHpG0fG1pRA9AFDIL/U85u1l9SMn
-	GvmOuAcA2faM+e7R10stmr4ztONB5meMiPvlN0g3DK5cYVtxHXoA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 42j8wt3n1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 28 Oct 2024 11:57:33 -0700 (PDT)
-Received: from devvm4158.cln0.facebook.com (2620:10d:c085:208::f) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server id
- 15.2.1544.11; Mon, 28 Oct 2024 18:57:31 +0000
-From: Vadim Fedorenko <vadfed@meta.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        Michael Chan
-	<michael.chan@broadcom.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        "Jakub
- Kicinski" <kuba@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        "Richard
- Cochran" <richardcochran@gmail.com>,
-        Vadim Fedorenko <vadfed@meta.com>
-Subject: [PATCH net-next v3 1/2] bnxt_en: cache only 24 bits of hw counter
-Date: Mon, 28 Oct 2024 11:57:22 -0700
-Message-ID: <20241028185723.4065146-1-vadfed@meta.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="YDxXyY6v"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20ce5e3b116so31197325ad.1
+        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 11:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1730141971; x=1730746771; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qeCldZNN0uQOZMpedqS7Oua78AnyCHE6/huQVyFkvbY=;
+        b=YDxXyY6vXCC9BbgYD5Jr8qrdQe9mPTWj90+kgVZ1KVfX0fVSEl95U7goCVw1wjSzUu
+         VWjMUQnnlPAs5uIPIV4FD3/miDd7lXPpOirJbl6X6Lj0qRS3AP26VWTIh4ig592R40cC
+         K0qIhI87pReApToH/HKCVgLvz+AqFB1TrckQA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730141971; x=1730746771;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qeCldZNN0uQOZMpedqS7Oua78AnyCHE6/huQVyFkvbY=;
+        b=Ua7R7wM1Hz9n7MS6LYx755s8RNi5+ImzhAFFBkQ2Qlf5XYW8XZifpJZlBH2LwfLtBb
+         C/MmKQK0z0ZLXvaZrcljlOUcU1z0Q8IyGFipr4+NW2q6SwJhI2l926PKmAvWx99GC7Z1
+         c5QmUbUWnD2HeCn3ZdxxYpaUy/AehTKrCffhCEmN70rA7C0nt1qhJYrJtP9BmS2KqIgu
+         E+K1+rrTD/CLGaUygI1438kuk0ku8yUANFRUUebbJBe2uzck63gIakjkdhylHpPJIKrb
+         x0/zfr4TeIihpqMFU6ttrBhkuXQO9y/0hrbvBrGyFhvBUXNa6+2AZrMfA/vTXiiBZ3X9
+         bAPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlrvvsXHPZReXTvvTNUd4hYQ7HHO/xhDvA2HTZQgN0wBYq3MeiifKYLDJXCjkzDwzMH/yeJfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwabwaVUF/jUkcVDysZGkIu12GGnNgDQVS4EW72k6mlAal1ysZ7
+	stHC7E0ck+tfgzqZ6zIccAVtCtufzyv/wro/kN3QkaNvec2KFIaG4IayIFhchS4=
+X-Google-Smtp-Source: AGHT+IHUdnN8IaS4uaqWrdTjg4xrewbchje8khIGQ1Drr+enMS0lfIciArKhVhl88XNPN1+fZdpMbg==
+X-Received: by 2002:a17:902:ce12:b0:20c:7898:a8f4 with SMTP id d9443c01a7336-210c6ccfc15mr125345945ad.60.1730141971225;
+        Mon, 28 Oct 2024 11:59:31 -0700 (PDT)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bbf434adsm53854335ad.10.2024.10.28.11.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 11:59:30 -0700 (PDT)
+Date: Mon, 28 Oct 2024 11:59:27 -0700
+From: Joe Damato <jdamato@fastly.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"kurt@linutronix.de" <kurt@linutronix.de>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:XDP (eXpress Data Path)" <bpf@vger.kernel.org>,
+	stanislaw.gruszka@linux.intel.com
+Subject: Re: [Intel-wired-lan] [iwl-next v4 2/2] igc: Link queues to NAPI
+ instances
+Message-ID: <Zx_fD72US_Jhq1oL@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"Lifshits, Vitaly" <vitaly.lifshits@intel.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"kurt@linutronix.de" <kurt@linutronix.de>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:XDP (eXpress Data Path)" <bpf@vger.kernel.org>,
+	stanislaw.gruszka@linux.intel.com
+References: <20241022215246.307821-1-jdamato@fastly.com>
+ <20241022215246.307821-3-jdamato@fastly.com>
+ <d7799132-7e4a-0ac2-cbda-c919ce434fe2@intel.com>
+ <Zx-yzhq4unv0gsVX@LQ3V64L9R2>
+ <Zx-1BhZlXRQCImex@LQ3V64L9R2>
+ <529d08d7-94ee-43da-904e-cf89823a59fb@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: N-maloUvRsR49SXxY3NAPvgOk8aLa-2P
-X-Proofpoint-ORIG-GUID: N-maloUvRsR49SXxY3NAPvgOk8aLa-2P
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_03,2024-10-04_01,2024-09-30_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <529d08d7-94ee-43da-904e-cf89823a59fb@intel.com>
 
-This hardware can provide only 48 bits of cycle counter. We can leave
-only 24 bits in the cache to extend RX timestamps from 32 bits to 48
-bits. Lower 8 bits of the cached value will be used to check for
-roll-over while extending to full 48 bits.
-This change makes cache writes atomic even on 32 bit platforms and we
-can simply use READ_ONCE()/WRITE_ONCE() pair and remove spinlock. The
-configuration structure will be also reduced by 4 bytes.
+On Mon, Oct 28, 2024 at 11:53:55AM -0700, Jacob Keller wrote:
+> 
+> 
+> On 10/28/2024 9:00 AM, Joe Damato wrote:
+> > 
+> > I see, so it looks like there is:
+> >    - resume
+> >    - runtime_resume
+> > 
+> > The bug I am reintroducing is runtime_resume already holding RTNL
+> > before my added call to rtnl_lock.
+> > 
+> > OK.
+> > 
+> > Does resume also hold rtnl before the driver's igc_resume is called?
+> > I am asking because I don't know much about how PM works.
+> > 
+> > If resume does not hold RTNL (but runtime resume does, as the bug
+> > you pointed out shows), it seems like a wrapper can be added to tell
+> > the code whether rtnl should be held or not based on which resume is
+> > happening.
+> > 
+> > Does anyone know if: resume (not runtime_resume) already holds RTNL?
+> > I'll try to take a look and see, but I am not very familiar with PM.
+> 
+> I believe the resume doesn't hold RTNL, as its part of the core device
+> code, which is not networking specific. It shouldn't be acquiring RTNL
+> since that is a network specific lock.
+> 
+> I believe the code you posted as v5 should resolve this, and makes sense
+> to me.
+> 
+> Thanks for digging into this :)
 
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
----
-v2 -> v3:
-* define BNXT_HI_TIMER_SHIFT for shift
-* add comment explaining that 8 bits of cahced value will be used to
-  check for roll-over
----
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c |  8 ++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 18 +++---------------
- 2 files changed, 7 insertions(+), 19 deletions(-)
+No problem; sorry for all the back and forth on this one and I
+really appreciate your patience and reviews.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index fa514be87650..820c7e83e586 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -106,7 +106,7 @@ static void bnxt_ptp_get_current_time(struct bnxt *bp)
- 	if (!ptp)
- 		return;
- 	spin_lock_irqsave(&ptp->ptp_lock, flags);
--	WRITE_ONCE(ptp->old_time, ptp->current_time);
-+	WRITE_ONCE(ptp->old_time, (u32)(ptp->current_time >> BNXT_HI_TIMER_SHIFT));
- 	bnxt_refclk_read(bp, NULL, &ptp->current_time);
- 	spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- }
-@@ -174,7 +174,7 @@ void bnxt_ptp_update_current_time(struct bnxt *bp)
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
- 
- 	bnxt_refclk_read(ptp->bp, NULL, &ptp->current_time);
--	WRITE_ONCE(ptp->old_time, ptp->current_time);
-+	WRITE_ONCE(ptp->old_time, (u32)(ptp->current_time >> BNXT_HI_TIMER_SHIFT));
- }
- 
- static int bnxt_ptp_adjphc(struct bnxt_ptp_cfg *ptp, s64 delta)
-@@ -813,7 +813,7 @@ int bnxt_get_rx_ts_p5(struct bnxt *bp, u64 *ts, u32 pkt_ts)
- 	if (!ptp)
- 		return -ENODEV;
- 
--	BNXT_READ_TIME64(ptp, time, ptp->old_time);
-+	time = (u64)(READ_ONCE(ptp->old_time) << BNXT_HI_TIMER_SHIFT);
- 	*ts = (time & BNXT_HI_TIMER_MASK) | pkt_ts;
- 	if (pkt_ts < (time & BNXT_LO_TIMER_MASK))
- 		*ts += BNXT_LO_TIMER_MASK + 1;
-@@ -1079,7 +1079,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
- 
- 		spin_lock_irqsave(&ptp->ptp_lock, flags);
- 		bnxt_refclk_read(bp, NULL, &ptp->current_time);
--		WRITE_ONCE(ptp->old_time, ptp->current_time);
-+		WRITE_ONCE(ptp->old_time, (u32)(ptp->current_time >> BNXT_HI_TIMER_SHIFT));
- 		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
- 		ptp_schedule_worker(ptp->ptp_clock, 0);
- 	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-index f322466ecad3..3ac5cbc1c5c4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-@@ -21,6 +21,7 @@
- #define BNXT_DEVCLK_FREQ	1000000
- #define BNXT_LO_TIMER_MASK	0x0000ffffffffUL
- #define BNXT_HI_TIMER_MASK	0xffff00000000UL
-+#define BNXT_HI_TIMER_SHIFT	24
- 
- #define BNXT_PTP_DFLT_TX_TMO	1000 /* ms */
- #define BNXT_PTP_QTS_TIMEOUT	1000
-@@ -106,10 +107,11 @@ struct bnxt_ptp_cfg {
- 	/* serialize ts tx request queuing */
- 	spinlock_t		ptp_tx_lock;
- 	u64			current_time;
--	u64			old_time;
- 	unsigned long		next_period;
- 	unsigned long		next_overflow_check;
- 	u32			cmult;
-+	/* cache of upper 24 bits of cyclecoutner. 8 bits are used to check for roll-over */
-+	u32			old_time;
- 	/* a 23b shift cyclecounter will overflow in ~36 mins.  Check overflow every 18 mins. */
- 	#define BNXT_PHC_OVERFLOW_PERIOD	(18 * 60 * HZ)
- 
-@@ -145,20 +147,6 @@ struct bnxt_ptp_cfg {
- 	struct bnxt_ptp_stats	stats;
- };
- 
--#if BITS_PER_LONG == 32
--#define BNXT_READ_TIME64(ptp, dst, src)				\
--do {								\
--	unsigned long flags;					\
--								\
--	spin_lock_irqsave(&(ptp)->ptp_lock, flags);		\
--	(dst) = (src);						\
--	spin_unlock_irqrestore(&(ptp)->ptp_lock, flags);	\
--} while (0)
--#else
--#define BNXT_READ_TIME64(ptp, dst, src)		\
--	((dst) = READ_ONCE(src))
--#endif
--
- #define BNXT_PTP_INC_TX_AVAIL(ptp)		\
- do {						\
- 	spin_lock_bh(&(ptp)->ptp_tx_lock);	\
--- 
-2.43.5
-
+Thanks,
+Joe
