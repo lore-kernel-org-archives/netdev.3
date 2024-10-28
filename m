@@ -1,68 +1,47 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303351DEFCF;
-	Mon, 28 Oct 2024 20:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9742C1DEFCF
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 20:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730146933; cv=none; b=F7IqwNLnQMvphvQyJYUqO3sL5tzVD3RoASDgulr6Y3GJM+ps5hNpHQ3Ap36WXUaUVUOGrqE4jC+cqA3Qq+P+rsP/BKzym/9qcLFobs/9OQAKtIgjJaiJKYgNLmhVlIQRPu61v2Eho72BCPv2kofXrUopS96xKIlMFoYTL+9ANAY=
+	t=1730147015; cv=none; b=adkwDu8sS73ApspHE+C7s+hcbvoV82wk4MD1+SA8kpDblGzie7kav+8LQFlfEk8nA1w20E3RB7nHW+NFAPhrMboovrbcXJLtADZXTvmY4MfzQp655ZtDMdCI3VpgZ5zMFzUrreYCXN5dfFRVFZ6CEg83UhLpK2tgGK61yyi2bxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730146933; c=relaxed/simple;
-	bh=CHCbmADrldFg8+CkaQwy/6aOCUZ1BikaPLszOv7Ix0g=;
+	s=arc-20240116; t=1730147015; c=relaxed/simple;
+	bh=F/3fDSa5XC3iqr1+K3VuePfvXPgo2rnhIxeIBgrXp5M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t9EPgQ8t+zP7A57K7i8Xgki88EOHL727THuAe3+TSaimbipMRu7/ge/1pIZC1+sEIlniVuhtNcultLDcNuw+iFm58BwVATdTT4L6cTI721ujvujjm/aqpan9+PELZuiDkhpYTQMh+gRKbJGR5zv5xFGpr7JnYbywss+oX0cYoqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2726D1A02CA;
-	Mon, 28 Oct 2024 21:12:33 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0F99D1A12AE;
-	Mon, 28 Oct 2024 21:12:33 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 498682039A;
-	Mon, 28 Oct 2024 21:12:32 +0100 (CET)
-Date: Mon, 28 Oct 2024 21:12:32 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=cL00WUtA+8JAsYcYcVikiJDOlMXpjyCo5UpBSFjk6hTMel+ROY6Ut01mWwogspAQPZSlC/Z5eAW5UQKujbISsbLNpwsgwJs2s8exBJw9HnP0XK94rMU/rS9+xoHKCO3LW/d/vN2R2RvG2x+qxc09U2TS6Vd/DrcHm8Eo0LdQxBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T/y0sYDU; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T/y0sYDU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=eCa5Cfdq/dIYeb1XBnaQ/U67Co7nlY7mZ2ZvKcR/8xI=; b=T/y0sYDU/NH933LnF7Rht7xxpe
+	LCeUmYT2flSxAS8YObF473YDFXO6KjmRYOcd4Vok5zuup+lehkZB5oaBmR/DK8vrZsuXVmgvZ87yM
+	3Y0/uJmhHS1QVVhk8q0Q7Uv9CjaS5L+kxFt1jp99XMbnUb3k9Re78IEWqe2x1I9rhfNE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t5WGf-00BU6K-FX; Mon, 28 Oct 2024 21:23:13 +0100
+Date: Mon, 28 Oct 2024 21:23:13 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: Re: [PATCH v3 04/16] net: phy: Add helper for mapping RGMII link
- speed to clock rate
-Message-ID: <Zx/wMO0YjJ+QK7qT@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20241013-upstream_s32cc_gmac-v3-0-d84b5a67b930@oss.nxp.com>
- <20241013-upstream_s32cc_gmac-v3-4-d84b5a67b930@oss.nxp.com>
- <4686019c-f6f1-4248-9555-c736813417b7@lunn.ch>
+	Joel Stanley <joel@jms.id.au>,
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net 2/2] net: ethernet: ftgmac100: fix NULL phy usage on
+ device remove
+Message-ID: <8780e73e-78cd-4841-8c04-b453fe664bab@lunn.ch>
+References: <20241028-ftgmac-fixes-v1-0-b334a507be6c@codeconstruct.com.au>
+ <20241028-ftgmac-fixes-v1-2-b334a507be6c@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,79 +50,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4686019c-f6f1-4248-9555-c736813417b7@lunn.ch>
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20241028-ftgmac-fixes-v1-2-b334a507be6c@codeconstruct.com.au>
 
-On Mon, Oct 14, 2024 at 03:40:51PM +0200, Andrew Lunn wrote:
-> On Sun, Oct 13, 2024 at 11:27:39PM +0200, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The helper rgmii_clock() implemented Russel's hint during stmmac
-> > glue driver review:
-> > 
-> >   > We seem to have multiple cases of very similar logic in lots of stmmac
-> >   > platform drivers, and I think it's about time we said no more to this.
-> >   > So, what I think we should do is as follows:
-> >   >
-> >   > add the following helper - either in stmmac, or more generically
-> >   > (phylib? - in which case its name will need changing.)
-> >   >
-> >   > static long stmmac_get_rgmii_clock(int speed)
-> >   > {
-> >   >        switch (speed) {
-> >   >        case SPEED_10:
-> >   >                return 2500000;
-> >   >
-> >   >        case SPEED_100:
-> >   >                return 25000000;
-> >   >
-> >   >        case SPEED_1000:
-> >   >                return 125000000;
-> >   >
-> >   >        default:
-> >   >                return -ENVAL;
-> >   >        }
-> >   > }
-> >   >
-> >   > Then, this can become:
-> >   >
-> >   >        long tx_clk_rate;
-> >   >
-> >   >        ...
-> >   >
-> >   >        tx_clk_rate = stmmac_get_rgmii_clock(speed);
-> >   >        if (tx_clk_rate < 0) {
-> >   >                dev_err(gmac->dev, "Unsupported/Invalid speed: %d\n", speed);
-> >   >                return;
-> >   >        }
-> >   >
-> >   >        ret = clk_set_rate(gmac->tx_clk, tx_clk_rate);
-> > 
-> > Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+On Mon, Oct 28, 2024 at 12:54:11PM +0800, Jeremy Kerr wrote:
+> Commit e24a6c874601 ("net: ftgmac100: Get link speed and duplex for
+> NC-SI") introduced a fixed phydev attached to the ftgmac netdev for ncsi
+> configurations, cleaned up on remove as:
 > 
-> But of an unusual commit message, but it does explain the "Why?".
-
-I will reformulate description in v4.
-
+>     phy_disconnect(netdev->phydev);
 > 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>     /* ... */
 > 
-
-Thanks.
-
-> >  
-> > +/**
-> > + * rgmii_clock - map link speed to the clock rate
-> > + * @speed: link speed value
-> > + *
-> > + * Description: maps RGMII supported link speeds
-> > + * into the clock rates.
-> > + */
+>     if (priv->use_ncsi)
+>         fixed_phy_unregister(netdev->phydev);
 > 
-> A Returns: line would be nice. 
+> However, phy_disconnect() will clear the netdev's ->phydev pointer, so
+> the fixed_phy_unregister() will always be invoked with a null pointer.
+> 
+> Use a temporary for the phydev, rather than expecting the netdev->phydev
+> point to be valid over the phy_disconnect().
+> 
+> Fixes: e24a6c874601 ("net: ftgmac100: Get link speed and duplex for NC-SI")
+> Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+> ---
+>  drivers/net/ethernet/faraday/ftgmac100.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+> index 9caee68468ff5f71d7ea63a0c8c9ec2be4a718bc..c6ed7ed0e2389a45a671b85ae60936df99458cd1 100644
+> --- a/drivers/net/ethernet/faraday/ftgmac100.c
+> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
+> @@ -1730,16 +1730,17 @@ static int ftgmac100_setup_mdio(struct net_device *netdev)
+>  static void ftgmac100_phy_disconnect(struct net_device *netdev)
 
- will add it in v4.
+This all seems rather hacky. What is the mirror function to
+ftgmac100_phy_disconnect(). I don't see a
+ftgmac100_phy_connect(). Generally, if the teardown function does the
+same as the setup function, but reverse order, it just works....
 
-Thanks
-/Jan
+     Andrew
