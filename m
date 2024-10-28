@@ -1,83 +1,105 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D827618D649;
-	Mon, 28 Oct 2024 20:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9046E18D649
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 20:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730148437; cv=none; b=ViwFYPFe7scm3CTiBV+WlL6/gUxOMnAgP4aM+gTGxHJDS1tNL2uNuNwJuFyKBsXMRBN53ccTDMf/ieMUo9ZTj9ckkOrZ56TmNC+xNnnuTCK9ADRiVRvV/G5Wlk0KxPihNtItds+qFcdO+KJv2g0fctjXetpv+OWFb7+rDqS7SGc=
+	t=1730148510; cv=none; b=bNLpw7YjkQ7n/+nP1FnRNjRM24waaUftrOxKP6tp7IVk0wdu/f3aVwV1s4QWiaAll05zG2u8xqeSjZSRnIEYRPFRNb0XBtIcwTz5g8G60mnPF9N5IUKNoAUlcmTSjzmIZyS5gRzsk6Ul2V4xejG1WMyxzNIs4gAhW/1o0v3ERzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730148437; c=relaxed/simple;
-	bh=9zhy4+xfsoY/yelPEXafdYgdMnBrE4lgFH5t3MkDVaM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ROxP7hAf1WQHn4PpZbeZEufbjULkI/yVJ982UrG1LMxbvgCBgJ6LBKdUMD7JCe9Pp/PmcQwttc4KuW4WLBHd0rCeVP28MOCvlFhVGrBzRa0sXTCCz+1A2BBFJw71IMvHQXany+zBQaRCH2v4lnH8bbgWXEAPMX9B3SNbkze80RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zf8Q3oMW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1730148510; c=relaxed/simple;
+	bh=SvRvHWEPkL1s1/bhNIhAxLbUg0uF/huboOQbYt9COnI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YQ9r1PuR3pliY/MVs7Xia4cRHiVChyq0XceCJsaq7vdI+AhuUAor4GFfSofQ883UrpSeza+rsnAB2LAsnc0YEz4+jmWBkdYWGEVFprn8d03XthIhSgk4CVy7MS5c8TskvLyF3TiYdGPNgGbp2RPHItmWnryyKge1Gb9QSQYXzdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TkLseHLO; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zf8Q3oMW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=9zhy4+xfsoY/yelPEXafdYgdMnBrE4lgFH5t3MkDVaM=;
-	t=1730148434; x=1731358034; b=Zf8Q3oMWL6SkyN8ILTcgGD0wN0mDy94Rl5Lq150WXAFDUTV
-	CS0+fZ+m/C024Wgmc6yYhk4avlXq7RFSTe8zpOsRtw5TygawUJd2GdCJzl7HuP2XUQzqN+Tjw26zK
-	lYuO5hbv1zbjMNCAtV8HcXNIQnHnbJreea3JQNovW030nSvEYomgaEV7GLt5buVbKsWHZNHHpRe5o
-	veZI8sWEBqqNSF+AP499lB4w2q1Cfol+7VaReczhkjuBVxwi5KrWzXoROjCQH1PVmQK0fL8MFy7u1
-	0R+gxBQMl/WbINVh0VZ9T49Jbgw4AlNO02MUYHzmdlaSm8gA37uu+M9iKFxL4EMA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t5Wdp-00000007PAV-1Uhr;
-	Mon, 28 Oct 2024 21:47:09 +0100
-Message-ID: <bc7d77fdbe97edc3481f9f73a438742651bd4b8b.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 1/4][next] uapi: socket: Introduce struct
- sockaddr_legacy
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Andrew Lunn <andrew@lunn.ch>, "Gustavo A. R. Silva"
- <gustavoars@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>, Simon Horman
- <horms@kernel.org>
-Date: Mon, 28 Oct 2024 21:47:08 +0100
-In-Reply-To: <66641c32-a9fb-4cd6-b910-52d2872fad3d@lunn.ch>
-References: <cover.1729802213.git.gustavoars@kernel.org>
-	 <23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
-	 <66641c32-a9fb-4cd6-b910-52d2872fad3d@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TkLseHLO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730148508; x=1761684508;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SvRvHWEPkL1s1/bhNIhAxLbUg0uF/huboOQbYt9COnI=;
+  b=TkLseHLOGl0XMALjSd0nvhsfWGTQefHSxXPP6YrJ6ipMgVq51VRpbRqQ
+   4vu7GtLiiTLu9h4gEmp8gJd7p/5zBc19h6U7E7c3mgN9Og0TqH0VzqDQo
+   F7+eBm0IvfqoKVJxmyDboOLBfTwmTTazniuft2ym0YzJKV+3Tg4Ygrh2j
+   yEuN1AFKPk4+NGItY9nwCHczz30vG5LpA//uglRQKFGsmr2NXxA4gKvUc
+   +/vrVzGVJKGqAYlW3dVBXHj2IDVCq0HVGkdFuiFp8ZibfC6yQN/kSiIrd
+   ZXbroLjf2NueVwB24jwRC+BwlkWbpzmhqVFOUIw4bXxOB8SzzTGMfuH+f
+   w==;
+X-CSE-ConnectionGUID: wtnZt6/vRz+IJRMFmgBFBw==
+X-CSE-MsgGUID: L7zjMj4nS7aOsn2VbgnhPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="33685463"
+X-IronPort-AV: E=Sophos;i="6.11,240,1725346800"; 
+   d="scan'208";a="33685463"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 13:48:28 -0700
+X-CSE-ConnectionGUID: GS9LcOXoQBWErAqTgD1Sxw==
+X-CSE-MsgGUID: plqjDdVbRYuw60lBlggk0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,240,1725346800"; 
+   d="scan'208";a="86529740"
+Received: from unknown (HELO gklab-003-001.igk.intel.com) ([10.211.3.1])
+  by orviesa005.jf.intel.com with ESMTP; 28 Oct 2024 13:48:26 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+Subject: [PATCH v3 iwl-net 0/4] Fix E825 initialization
+Date: Mon, 28 Oct 2024 21:45:39 +0100
+Message-Id: <20241028204543.606371-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-10-28 at 21:38 +0100, Andrew Lunn wrote:
-> > As this new struct will live in UAPI, to avoid breaking user-space code
-> > that expects `struct sockaddr`, the `__kernel_sockaddr_legacy` macro is
-> > introduced. This macro allows us to use either `struct sockaddr` or
-> > `struct sockaddr_legacy` depending on the context in which the code is
-> > used: kernel-space or user-space.
->=20
-> Are there cases of userspace API structures where the flexiable array
-> appears in the middle?
+E825 products have incorrect initialization procedure, which may lead to
+initialization failures and register values.
 
-Clearly, it's the case for all the three other patches in this series.
+Fix E825 products initialization by adding correct sync delay, checking
+the PHY revision only for current PHY and adding proper destination
+device when reading port/quad.
 
-> I assume this new compiler flag is not only for
-> use in the kernel? When it gets turned on in user space, will the
-> kernel headers will again produce warnings? Should we be considering
-> allowing user space to opt in to using sockaddr_legacy?
+In addition, E825 uses PF ID for indexing per PF registers and as
+a primary PHY lane number, which is incorrect.
 
-For the userspace covered by patch 2 this will almost certainly never
-happen, and I suspect that might also be true for the others (arp and
-rtnetlink ioctls)? But it probably wouldn't be difficult either.
+Karol Kolacinski (4):
+  ice: Fix E825 initialization
+  ice: Fix quad registers read on E825
+  ice: Fix ETH56G FC-FEC Rx offset value
+  ice: Add correct PHY lane assignment
 
-johannes=20
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   1 +
+ drivers/net/ethernet/intel/ice/ice_common.c   |  47 ++-
+ drivers/net/ethernet/intel/ice/ice_common.h   |   1 +
+ drivers/net/ethernet/intel/ice/ice_main.c     |   6 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c      |  23 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h      |   4 +-
+ .../net/ethernet/intel/ice/ice_ptp_consts.h   |  77 +----
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c   | 281 ++++++++++--------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h   |  37 ++-
+ drivers/net/ethernet/intel/ice/ice_sbq_cmd.h  |   7 +-
+ drivers/net/ethernet/intel/ice/ice_type.h     |   2 -
+ 11 files changed, 247 insertions(+), 239 deletions(-)
+
+V2 -> V3: Removed net-next hunks from "ice: Fix E825 initialization",
+          replaced lower/upper_32_bits calls with lower/upper_16_bits
+          in "ice: Fix quad registers read on E825",
+          improved ice_get_phy_lane_number function in "ice: Add correct
+          PHY lane assignment"
+V1 -> V2: Removed net-next hunks from "ice: Fix E825 initialization",
+          whole "ice: Remove unnecessary offset calculation for PF
+          scoped registers" patch and fixed kdoc in "ice: Fix quad
+          registers read on E825"
+
+base-commit: 19acd6818aa7404d96cd5d0e4373d4ebe71448c2
+-- 
+2.39.3
+
