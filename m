@@ -1,85 +1,83 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF2F1DFE2B
-	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 20:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D827618D649;
+	Mon, 28 Oct 2024 20:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730148337; cv=none; b=T/Is00vX9NLrJy9hC6uxbgqKpmu88L/IrYZXb3rs/BphEcRn6pnpRDjrYUPIACRbJEAQ5wQ236qWwBcb8uShjOaonvwlUNNMcg4nlnrhZQb+SsA8r4mg1++Bxk+b0Fv/88ycDBhR4GrrLQBD7O8PSuN6Kyp/BPBNM+reMNllQOM=
+	t=1730148437; cv=none; b=ViwFYPFe7scm3CTiBV+WlL6/gUxOMnAgP4aM+gTGxHJDS1tNL2uNuNwJuFyKBsXMRBN53ccTDMf/ieMUo9ZTj9ckkOrZ56TmNC+xNnnuTCK9ADRiVRvV/G5Wlk0KxPihNtItds+qFcdO+KJv2g0fctjXetpv+OWFb7+rDqS7SGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730148337; c=relaxed/simple;
-	bh=JlSTUzkhOJrT5VFcvOPsjv667t7ku0zyTga+DMVjXaM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=a/5KKoGlqiFOttmdTUBqGLHxF2n0nLSC5swUC4nXV4UF4U9p4da1AAPr+h3zWMTkPpk86HrzDqdoBxG9C6ifuZhM6rm4f7kjmRGx5vKQG9OUlfDnLKaT8wqZw32hTyn+fisPygJL3Gle6aKEqhUVcu73L37mmK3jrSwxDiZ0tgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a3cb771556so41585865ab.3
-        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 13:45:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730148333; x=1730753133;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gm9HIUjtIgm+D7gqVN7uBVlVAbtiOD76ZVg8RQFmbeg=;
-        b=CssxVuKV8QBzL7zkcS8RLIcsJWtQEqW9t0dN8LGm3B7d34fwoHMi2ndvgqzYxigm98
-         HAjqi/OWqktH1zhz1Hnbr6l5zlkCa8VlQJ43ntvz+nh1o20KAKhEXTehdxxY/SusJl8l
-         HmRs7MBhqBC/ypoSMrwuBp5p6wx6AMqXeEwRHoA9Os5HaoWarhgS1OCTa09kolAXI0Fi
-         xu450I84cOeHgmt6OGqYOHY2IM/++LYB84eZQbfLblcLCZeJrVzzUhvqVuMuybopB73U
-         tw6fXm3lTzUMcIhjCvH9u9ArOdV9AdH78SbLKlMIMR1XxpA4eniwoQ7pYrHg4FmtNp/i
-         0qTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXXPqvTMJNdgiv55UrU61L6k4zBmlwXwyfZ1uIhjjwsIZ5kvGoOGgfmzoFtk+Od0glDCOoIUnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDWInpxM8aDSAr/XliL83ah9eYdwy6jEMk2hBIbIVkzTzOuXdY
-	vMX6rywBcZzJpF6lbuqbPMFnPQo3bOaysDSjRG71xVr+fCbavYKnyqN1wYDUnnXzcdbP1Ljz8fl
-	KarifWLjsyzNeDnONSTsZPQZk2lMv2di7Fwi20Arn+PjnusulxMTEMDc=
-X-Google-Smtp-Source: AGHT+IGZzVyntIeyX/gZ5yaDPioEdLlL7du5r6uZZi31yylONzfTAyJa0yATwAh/BOFzUE7mZXZlsTnS5exUluxtxolLDOBU84EI
+	s=arc-20240116; t=1730148437; c=relaxed/simple;
+	bh=9zhy4+xfsoY/yelPEXafdYgdMnBrE4lgFH5t3MkDVaM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ROxP7hAf1WQHn4PpZbeZEufbjULkI/yVJ982UrG1LMxbvgCBgJ6LBKdUMD7JCe9Pp/PmcQwttc4KuW4WLBHd0rCeVP28MOCvlFhVGrBzRa0sXTCCz+1A2BBFJw71IMvHQXany+zBQaRCH2v4lnH8bbgWXEAPMX9B3SNbkze80RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zf8Q3oMW; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zf8Q3oMW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=9zhy4+xfsoY/yelPEXafdYgdMnBrE4lgFH5t3MkDVaM=;
+	t=1730148434; x=1731358034; b=Zf8Q3oMWL6SkyN8ILTcgGD0wN0mDy94Rl5Lq150WXAFDUTV
+	CS0+fZ+m/C024Wgmc6yYhk4avlXq7RFSTe8zpOsRtw5TygawUJd2GdCJzl7HuP2XUQzqN+Tjw26zK
+	lYuO5hbv1zbjMNCAtV8HcXNIQnHnbJreea3JQNovW030nSvEYomgaEV7GLt5buVbKsWHZNHHpRe5o
+	veZI8sWEBqqNSF+AP499lB4w2q1Cfol+7VaReczhkjuBVxwi5KrWzXoROjCQH1PVmQK0fL8MFy7u1
+	0R+gxBQMl/WbINVh0VZ9T49Jbgw4AlNO02MUYHzmdlaSm8gA37uu+M9iKFxL4EMA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t5Wdp-00000007PAV-1Uhr;
+	Mon, 28 Oct 2024 21:47:09 +0100
+Message-ID: <bc7d77fdbe97edc3481f9f73a438742651bd4b8b.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/4][next] uapi: socket: Introduce struct
+ sockaddr_legacy
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Andrew Lunn <andrew@lunn.ch>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>, Simon Horman
+ <horms@kernel.org>
+Date: Mon, 28 Oct 2024 21:47:08 +0100
+In-Reply-To: <66641c32-a9fb-4cd6-b910-52d2872fad3d@lunn.ch>
+References: <cover.1729802213.git.gustavoars@kernel.org>
+	 <23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
+	 <66641c32-a9fb-4cd6-b910-52d2872fad3d@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:16cf:b0:3a0:9cd5:931c with SMTP id
- e9e14a558f8ab-3a4ed33225bmr96405405ab.20.1730148333472; Mon, 28 Oct 2024
- 13:45:33 -0700 (PDT)
-Date: Mon, 28 Oct 2024 13:45:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <671ff7ed.050a0220.4735a.0251.GAE@google.com>
-Subject: [syzbot] Monthly rdma report (Oct 2024)
-From: syzbot <syzbot+list1a9e20eb3cc9c246ba85@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-Hello rdma maintainers/developers,
+On Mon, 2024-10-28 at 21:38 +0100, Andrew Lunn wrote:
+> > As this new struct will live in UAPI, to avoid breaking user-space code
+> > that expects `struct sockaddr`, the `__kernel_sockaddr_legacy` macro is
+> > introduced. This macro allows us to use either `struct sockaddr` or
+> > `struct sockaddr_legacy` depending on the context in which the code is
+> > used: kernel-space or user-space.
+>=20
+> Are there cases of userspace API structures where the flexiable array
+> appears in the middle?
 
-This is a 31-day syzbot report for the rdma subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/rdma
+Clearly, it's the case for all the three other patches in this series.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 7 issues are still open and 61 have been fixed so far.
+> I assume this new compiler flag is not only for
+> use in the kernel? When it gets turned on in user space, will the
+> kernel headers will again produce warnings? Should we be considering
+> allowing user space to opt in to using sockaddr_legacy?
 
-Some of the still happening issues:
+For the userspace covered by patch 2 this will almost certainly never
+happen, and I suspect that might also be true for the others (arp and
+rtnetlink ioctls)? But it probably wouldn't be difficult either.
 
-Ref Crashes Repro Title
-<1> 295     No    INFO: task hung in disable_device
-                  https://syzkaller.appspot.com/bug?extid=4d0c396361b5dc5d610f
-<2> 186     No    INFO: task hung in rdma_dev_change_netns
-                  https://syzkaller.appspot.com/bug?extid=73c5eab674c7e1e7012e
-<3> 33      No    WARNING in rxe_pool_cleanup
-                  https://syzkaller.appspot.com/bug?extid=221e213bf17f17e0d6cd
-<4> 5       No    possible deadlock in sock_set_reuseaddr
-                  https://syzkaller.appspot.com/bug?extid=af5682e4f50cd6bce838
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+johannes=20
