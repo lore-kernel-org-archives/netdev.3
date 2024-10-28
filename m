@@ -1,37 +1,37 @@
 Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1AB1E0DA7;
-	Mon, 28 Oct 2024 22:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9375C19005F;
+	Mon, 28 Oct 2024 22:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730152966; cv=none; b=mtjXvAwhLqDSDQu+JaMYC3lPhRTWI6x2yiZrewSdoMNdRPtAc/8qjelf/3WUZxefCH/Ru5eMuG+WNrgxa2RtLlB8Mqrco6pxtuXlM/OOGys1BXd4E4aNahdG+mh5ZJJ3RahM8fP8Wf0wf6I27zXN6KDCez4VGF9i8HetR5bYmh0=
+	t=1730152967; cv=none; b=MWTNHU3YSeKiiva0LRdVsdEyGJuFiAvrfCft7R1HQb9C1i0OGn7UsGq+tD+QZavKzRx+ZBy6VZRP1SlLjq79CJS4nZ2aEvTiqq4CCp93vZte7hG+C+/sjhUPAFSVuRxJs3FLww5yycF3JRS4mt7qj/swQCFioWqyoDU/+LWcKaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730152966; c=relaxed/simple;
-	bh=fcb6/ZXqWJIFRDmjDhyI8ULDpI0uIWrmsfpnD3tx5PU=;
+	s=arc-20240116; t=1730152967; c=relaxed/simple;
+	bh=ilClyPQtRxrsdEANoquGAOae7YeLsPgwb/N5C57thMc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PrIyrmxggPPjTatwd+MgDI77IQWrzpq/9e4Tq4QUQ10Wo/snkjn/Is90i077DvsbWd70NnuoEgq1uhzG4jF39zNfjvGICw4dAcFCPnajXU+/0TiQDJecNeNSUPRkElm4j7iOsfCFyLyBV0h5EcL0KdtahxJ86CTzFywbOtodB8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=woZRg5x7; arc=none smtp.client-ip=139.165.32.111
+	 MIME-Version; b=Sb0anUtjuggLVIwg8HDaFC2VXavFvDDoEu0Jjq6bmdAwPGY/seNKRaCZvBp1lbwg0rFfWhrfwTnZIcR05z3/i0T3UgHo8/kUc47aAJA47hwXZ8r38zVj6F7PK1IPnT1RAbafYn+2M5RQsAIM7E48gkvLFkbu7vM2104gIpQUfVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=pqmNwI9F; arc=none smtp.client-ip=139.165.32.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="woZRg5x7"
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="pqmNwI9F"
 Received: from localhost.localdomain (modemcable174.147-130-66.mc.videotron.ca [66.130.147.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id CDE7D20167C3;
-	Mon, 28 Oct 2024 23:02:39 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be CDE7D20167C3
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id 2097A20167C2;
+	Mon, 28 Oct 2024 23:02:34 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be 2097A20167C2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1730152961;
-	bh=tYfpbkPNAjaZpZFMkRWmpEDluZdW9RukyEp0aeELqDs=;
+	s=ulg20190529; t=1730152957;
+	bh=HsRx5WoasynQ2MWTPxAcC1uxVEajhdd82qZcgSPFNK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woZRg5x7nZwMXHRrx0h8EzaobhN3BZNB9x3+KRi9HF7MdBllXDf8JSKPVXCtOIHqu
-	 TMLY6jnoQk8g+4qiZsAZjxUVbHg84g3jWRuT7M5sU/OGMV+TmYWn1rkGwlcBBmg4ft
-	 b58x6f5X8vh+N4Afojs2ZdVaGDxiaXAUTMPo2LUss5/jyK/IC5tqenTVJC7DRzhSCQ
-	 VTXnCDlKl45XGSPkY0kiGwxiH/JiY5EpLuXWjmtC3635JlVLF4J61a7KsOWjt3Fc1i
-	 0O8JKOn7bw6GLOPMhKmVhVFmdowQgX1yJAPO9NC1O7Ki3UIU5m8HCedkTyfPNCChZp
-	 /2pYbk3b9VKTA==
+	b=pqmNwI9FMFr1l9CoqOrHksyazxDPicnwwW3mSUsnElPz6jkUktHmdZTSdZt5ATMNF
+	 67wYYjOv/4H40oLHzxf8Uj3YMWjrKRXeunPdjEA64nMuuxRTLOMybC6nt7DZ/GMKOV
+	 3ongZvswpfM+YJkP/OppsAZShboTRjKmoYda5QBYq88Uqxg2xDLYvsi3WtjYYKYlda
+	 qwsXkvwxnnacjkYOFRdX+qHpzhjn5mStUn8YKbFpES3DV2QvonzTXYAca85+g55nWA
+	 vwi3SSGQuuMivRGf6dueNoINo/eMSSqHmn/HyEfwTU5doCmmN0UNL4SZGWs6gn5anL
+	 cZgcUuhwi0E7w==
 From: Justin Iurman <justin.iurman@uliege.be>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -41,11 +41,10 @@ Cc: davem@davemloft.net,
 	pabeni@redhat.com,
 	horms@kernel.org,
 	linux-kernel@vger.kernel.org,
-	justin.iurman@uliege.be,
-	Alexander Aring <aahringo@redhat.com>
-Subject: [PATCH net-next v2 3/3] net: ipv6: rpl_iptunnel: mitigate 2-realloc issue
-Date: Mon, 28 Oct 2024 23:02:12 +0100
-Message-Id: <20241028220212.24132-4-justin.iurman@uliege.be>
+	justin.iurman@uliege.be
+Subject: [PATCH net-next v2 1/3] net: ipv6: ioam6_iptunnel: mitigate 2-realloc issue
+Date: Mon, 28 Oct 2024 23:02:10 +0100
+Message-Id: <20241028220212.24132-2-justin.iurman@uliege.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028220212.24132-1-justin.iurman@uliege.be>
 References: <20241028220212.24132-1-justin.iurman@uliege.be>
@@ -57,29 +56,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch mitigates the two-reallocations issue with rpl_iptunnel by
+This patch mitigates the two-reallocations issue with ioam6_iptunnel by
 providing the dst_entry (in the cache) to the first call to
 skb_cow_head(). As a result, the very first iteration would still
 trigger two reallocations (i.e., empty cache), while next iterations
 would only trigger a single reallocation.
 
 Performance tests before/after applying this patch, which clearly shows
-there is no impact (it even shows improvement):
-- before: https://ibb.co/nQJhqwc
-- after: https://ibb.co/4ZvW6wV
+the improvement:
+- inline mode:
+  - before: https://ibb.co/LhQ8V63
+  - after: https://ibb.co/x5YT2bS
+- encap mode:
+  - before: https://ibb.co/3Cjm5m0
+  - after: https://ibb.co/TwpsxTC
+- encap mode with tunsrc:
+  - before: https://ibb.co/Gpy9QPg
+  - after: https://ibb.co/PW1bZFT
+
+This patch also fixes an incorrect behavior: after the insertion, the
+second call to skb_cow_head() makes sure that the dev has enough
+headroom in the skb for layer 2 and stuff. In that case, the "old"
+dst_entry was used, which is now fixed. After discussing with Paolo, it
+appears that both patches can be merged into a single one -this one-
+(for the sake of readability) and target net-next.
 
 Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: Alexander Aring <aahringo@redhat.com>
 ---
- net/ipv6/rpl_iptunnel.c | 67 +++++++++++++++++++++++------------------
- 1 file changed, 38 insertions(+), 29 deletions(-)
+ net/ipv6/ioam6_iptunnel.c | 90 +++++++++++++++++++++------------------
+ 1 file changed, 49 insertions(+), 41 deletions(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index db3c19a42e1c..c518728460a2 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -124,8 +124,17 @@ static void rpl_destroy_state(struct lwtunnel_state *lwt)
- 	dst_cache_destroy(&rpl_lwt_lwtunnel(lwt)->cache);
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index beb6b4cfc551..07bfd557e08a 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -254,15 +254,24 @@ static int ioam6_do_fill(struct net *net, struct sk_buff *skb)
+ 	return 0;
  }
  
 +static inline int dev_overhead(struct dst_entry *dst, struct sk_buff *skb)
@@ -90,139 +102,169 @@ index db3c19a42e1c..c518728460a2 100644
 +	return skb->mac_len;
 +}
 +
- static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
--			     const struct ipv6_rpl_sr_hdr *srh)
-+			     const struct ipv6_rpl_sr_hdr *srh,
-+			     struct dst_entry *dst)
+ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+-			   struct ioam6_lwt_encap *tuninfo)
++			   struct ioam6_lwt_encap *tuninfo,
++			   struct dst_entry *dst)
  {
- 	struct ipv6_rpl_sr_hdr *isrh, *csrh;
- 	const struct ipv6hdr *oldhdr;
-@@ -153,7 +162,7 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
+ 	struct ipv6hdr *oldhdr, *hdr;
+ 	int hdrlen, err;
  
- 	hdrlen = ((csrh->hdrlen + 1) << 3);
+ 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
  
 -	err = skb_cow_head(skb, hdrlen + skb->mac_len);
 +	err = skb_cow_head(skb, hdrlen + dev_overhead(dst, skb));
- 	if (unlikely(err)) {
- 		kfree(buf);
+ 	if (unlikely(err))
  		return err;
-@@ -186,36 +195,35 @@ static int rpl_do_srh_inline(struct sk_buff *skb, const struct rpl_lwt *rlwt,
- 	return 0;
- }
  
--static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt)
-+static int rpl_do_srh(struct sk_buff *skb, const struct rpl_lwt *rlwt,
-+		      struct dst_entry *dst)
+@@ -293,16 +302,16 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 			  struct ioam6_lwt_encap *tuninfo,
+ 			  bool has_tunsrc,
+ 			  struct in6_addr *tunsrc,
+-			  struct in6_addr *tundst)
++			  struct in6_addr *tundst,
++			  struct dst_entry *dst)
  {
 -	struct dst_entry *dst = skb_dst(skb);
- 	struct rpl_iptunnel_encap *tinfo;
+ 	struct ipv6hdr *hdr, *inner_hdr;
+ 	int hdrlen, len, err;
  
+ 	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
+ 	len = sizeof(*hdr) + hdrlen;
+ 
+-	err = skb_cow_head(skb, len + skb->mac_len);
++	err = skb_cow_head(skb, len + dev_overhead(dst, skb));
+ 	if (unlikely(err))
+ 		return err;
+ 
+@@ -326,7 +335,7 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 	if (has_tunsrc)
+ 		memcpy(&hdr->saddr, tunsrc, sizeof(*tunsrc));
+ 	else
+-		ipv6_dev_get_saddr(net, dst->dev, &hdr->daddr,
++		ipv6_dev_get_saddr(net, skb_dst(skb)->dev, &hdr->daddr,
+ 				   IPV6_PREFER_SRC_PUBLIC, &hdr->saddr);
+ 
+ 	skb_postpush_rcsum(skb, hdr, len);
+@@ -336,7 +345,7 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 
+ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct dst_entry *dst = skb_dst(skb);
++	struct dst_entry *dst, *orig_dst = skb_dst(skb);
+ 	struct in6_addr orig_daddr;
+ 	struct ioam6_lwt *ilwt;
+ 	int err = -EINVAL;
+@@ -345,7 +354,7 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
  	if (skb->protocol != htons(ETH_P_IPV6))
- 		return -EINVAL;
+ 		goto drop;
  
--	tinfo = rpl_encap_lwtunnel(dst->lwtstate);
-+	tinfo = rpl_encap_lwtunnel(skb_dst(skb)->lwtstate);
+-	ilwt = ioam6_lwt_state(dst->lwtstate);
++	ilwt = ioam6_lwt_state(orig_dst->lwtstate);
  
--	return rpl_do_srh_inline(skb, rlwt, tinfo->srh);
-+	return rpl_do_srh_inline(skb, rlwt, tinfo->srh, dst);
- }
+ 	/* Check for insertion frequency (i.e., "k over n" insertions) */
+ 	pkt_cnt = atomic_fetch_inc(&ilwt->pkt_cnt);
+@@ -354,6 +363,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
  
- static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct dst_entry *orig_dst = skb_dst(skb);
--	struct dst_entry *dst = NULL;
-+	struct dst_entry *dst;
- 	struct rpl_lwt *rlwt;
- 	int err;
+ 	orig_daddr = ipv6_hdr(skb)->daddr;
  
--	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
--
--	err = rpl_do_srh(skb, rlwt);
--	if (unlikely(err))
--		goto drop;
-+	rlwt = rpl_lwt_lwtunnel(skb_dst(skb)->lwtstate);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
- 	local_bh_enable();
- 
-+	err = rpl_do_srh(skb, rlwt, dst);
-+	if (unlikely(err))
-+		goto drop;
-+
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -237,15 +245,15 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		local_bh_disable();
- 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
- 		local_bh_enable();
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	}
- 
- 	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
--
- 	return dst_output(net, sk, skb);
- 
- drop:
-@@ -255,36 +263,37 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- static int rpl_input(struct sk_buff *skb)
- {
--	struct dst_entry *orig_dst = skb_dst(skb);
--	struct dst_entry *dst = NULL;
-+	struct dst_entry *dst;
- 	struct rpl_lwt *rlwt;
- 	int err;
- 
--	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
--
--	err = rpl_do_srh(skb, rlwt);
--	if (unlikely(err))
--		goto drop;
-+	rlwt = rpl_lwt_lwtunnel(skb_dst(skb)->lwtstate);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
++	local_bh_disable();
++	dst = dst_cache_get(&ilwt->cache);
 +	local_bh_enable();
 +
-+	err = rpl_do_srh(skb, rlwt, dst);
-+	if (unlikely(err))
-+		goto drop;
+ 	switch (ilwt->mode) {
+ 	case IOAM6_IPTUNNEL_MODE_INLINE:
+ do_inline:
+@@ -361,7 +374,7 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		if (ipv6_hdr(skb)->nexthdr == NEXTHDR_HOP)
+ 			goto out;
  
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
-+			local_bh_enable();
- 		}
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	} else {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
+-		err = ioam6_do_inline(net, skb, &ilwt->tuninfo);
++		err = ioam6_do_inline(net, skb, &ilwt->tuninfo, dst);
+ 		if (unlikely(err))
+ 			goto drop;
+ 
+@@ -371,7 +384,7 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		/* Encapsulation (ip6ip6) */
+ 		err = ioam6_do_encap(net, skb, &ilwt->tuninfo,
+ 				     ilwt->has_tunsrc, &ilwt->tunsrc,
+-				     &ilwt->tundst);
++				     &ilwt->tundst, dst);
+ 		if (unlikely(err))
+ 			goto drop;
+ 
+@@ -389,45 +402,40 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		goto drop;
  	}
--	local_bh_enable();
--
+ 
 -	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
 -	if (unlikely(err))
 -		goto drop;
++	if (unlikely(!dst)) {
++		struct ipv6hdr *hdr = ipv6_hdr(skb);
++		struct flowi6 fl6;
++
++		memset(&fl6, 0, sizeof(fl6));
++		fl6.daddr = hdr->daddr;
++		fl6.saddr = hdr->saddr;
++		fl6.flowlabel = ip6_flowinfo(hdr);
++		fl6.flowi6_mark = skb->mark;
++		fl6.flowi6_proto = hdr->nexthdr;
++
++		dst = ip6_route_output(net, NULL, &fl6);
++		if (dst->error) {
++			err = dst->error;
++			dst_release(dst);
++			goto drop;
++		}
  
- 	return dst_input(skb);
+-	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
+ 		local_bh_disable();
+-		dst = dst_cache_get(&ilwt->cache);
++		dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+ 		local_bh_enable();
  
+-		if (unlikely(!dst)) {
+-			struct ipv6hdr *hdr = ipv6_hdr(skb);
+-			struct flowi6 fl6;
+-
+-			memset(&fl6, 0, sizeof(fl6));
+-			fl6.daddr = hdr->daddr;
+-			fl6.saddr = hdr->saddr;
+-			fl6.flowlabel = ip6_flowinfo(hdr);
+-			fl6.flowi6_mark = skb->mark;
+-			fl6.flowi6_proto = hdr->nexthdr;
+-
+-			dst = ip6_route_output(net, NULL, &fl6);
+-			if (dst->error) {
+-				err = dst->error;
+-				dst_release(dst);
+-				goto drop;
+-			}
+-
+-			local_bh_disable();
+-			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+-			local_bh_enable();
+-		}
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
++		if (unlikely(err))
++			goto drop;
++	}
+ 
+-		skb_dst_drop(skb);
+-		skb_dst_set(skb, dst);
++	skb_dst_drop(skb);
++	skb_dst_set(skb, dst);
+ 
++	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr))
+ 		return dst_output(net, sk, skb);
+-	}
+ out:
+-	return dst->lwtstate->orig_output(net, sk, skb);
++	return orig_dst->lwtstate->orig_output(net, sk, skb);
+ drop:
+ 	kfree_skb(skb);
+ 	return err;
 -- 
 2.34.1
 
