@@ -1,91 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9742C1DEFCF
-	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 20:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063511DEFCF;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730147015; cv=none; b=adkwDu8sS73ApspHE+C7s+hcbvoV82wk4MD1+SA8kpDblGzie7kav+8LQFlfEk8nA1w20E3RB7nHW+NFAPhrMboovrbcXJLtADZXTvmY4MfzQp655ZtDMdCI3VpgZ5zMFzUrreYCXN5dfFRVFZ6CEg83UhLpK2tgGK61yyi2bxk=
+	t=1730147128; cv=none; b=oylZ/dXYShwT8/bh0XLjR7czUZ8/y6dssAZpD68PSL/Jl939VFKYAus/pE17kDNE1VxgaOcaBBmIcy9kuMVtA4rFF365/lVow0AN+pEttow6LRlY6ELY93W+hU73lTg/Wem1CKBjh2auIYmCd4x1I7oHKfy6B1ozvfj3ajjarqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730147015; c=relaxed/simple;
-	bh=F/3fDSa5XC3iqr1+K3VuePfvXPgo2rnhIxeIBgrXp5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cL00WUtA+8JAsYcYcVikiJDOlMXpjyCo5UpBSFjk6hTMel+ROY6Ut01mWwogspAQPZSlC/Z5eAW5UQKujbISsbLNpwsgwJs2s8exBJw9HnP0XK94rMU/rS9+xoHKCO3LW/d/vN2R2RvG2x+qxc09U2TS6Vd/DrcHm8Eo0LdQxBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T/y0sYDU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1730147128; c=relaxed/simple;
+	bh=IpWxsYIfuuTJONyY6RJYpXgwIN5saxNVQGws4EoHP+4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=G0GCIOBkn1BfmE0jQ6XNA5dJQDOSNa1zVr5lsVLKpuiM+YeIU6iiRWVDJVvrXDKLpnaIs8ba3yE+d6I1WtigjA2ggy92vJ+WdAUGnSRkEWaxyMQP5OdFaJf6fSIWixkzpV8oKOye9KY7K0dQ2wFvg+JzL32IRy/qL0kTkxLuTyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGbf39fZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T/y0sYDU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eCa5Cfdq/dIYeb1XBnaQ/U67Co7nlY7mZ2ZvKcR/8xI=; b=T/y0sYDU/NH933LnF7Rht7xxpe
-	LCeUmYT2flSxAS8YObF473YDFXO6KjmRYOcd4Vok5zuup+lehkZB5oaBmR/DK8vrZsuXVmgvZ87yM
-	3Y0/uJmhHS1QVVhk8q0Q7Uv9CjaS5L+kxFt1jp99XMbnUb3k9Re78IEWqe2x1I9rhfNE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t5WGf-00BU6K-FX; Mon, 28 Oct 2024 21:23:13 +0100
-Date: Mon, 28 Oct 2024 21:23:13 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: ethernet: ftgmac100: fix NULL phy usage on
- device remove
-Message-ID: <8780e73e-78cd-4841-8c04-b453fe664bab@lunn.ch>
-References: <20241028-ftgmac-fixes-v1-0-b334a507be6c@codeconstruct.com.au>
- <20241028-ftgmac-fixes-v1-2-b334a507be6c@codeconstruct.com.au>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGbf39fZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 40548C4CEE4;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730147127;
+	bh=IpWxsYIfuuTJONyY6RJYpXgwIN5saxNVQGws4EoHP+4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=HGbf39fZcUR5w52xcBPt5CiRR5TRL6rVTEWozmT0bffEKwL3/RgENSxi+cg+PIw5K
+	 2HLwexEaa6A/OVsST91Pz8FPxvkluSWtUa0/HsUdf3vt68RJR329SWkDR6WGucRwau
+	 fXwRvn480kuJUmXZRk7bQn876V7SOPKlPO8Grg7BLdcyPggvDw81ummZgkOIKZBY74
+	 vCMOZDG26w2aJcT3zUOeyquaG7s3lBhOO8hO1qqowcG3ZgdxGPJgFBw/tHFwejhxCJ
+	 mgqkPvSgjiAYHN4RKcNc9G23YYZ4nH/4++UQvY5ahNj0FsFiuCWyv6Hyz3h+a41y3m
+	 vXckUiDjYln3Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 221B2D5B148;
+	Mon, 28 Oct 2024 20:25:27 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 28 Oct 2024 21:24:43 +0100
+Subject: [PATCH v4 01/16] net: driver: stmmac: Fix CSR divider comment
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028-ftgmac-fixes-v1-2-b334a507be6c@codeconstruct.com.au>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241028-upstream_s32cc_gmac-v4-1-03618f10e3e2@oss.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+In-Reply-To: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730147124; l=958;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=YCKaeA/xV5exOeaV42TsvtvrFwKq5QOyi/twLXcBhk0=;
+ b=ly73UvyKBxNkbGRXT/qdaY3nCOHU7De4UENA/7q8MZSZVdSurII2+gCsPJ1K1eSuNRTS08I8H
+ kG3WG7uEmLBC3LXms0bijaX87ZVNyhEgu2KkS8tR8XpIif86lnim32n
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Mon, Oct 28, 2024 at 12:54:11PM +0800, Jeremy Kerr wrote:
-> Commit e24a6c874601 ("net: ftgmac100: Get link speed and duplex for
-> NC-SI") introduced a fixed phydev attached to the ftgmac netdev for ncsi
-> configurations, cleaned up on remove as:
-> 
->     phy_disconnect(netdev->phydev);
-> 
->     /* ... */
-> 
->     if (priv->use_ncsi)
->         fixed_phy_unregister(netdev->phydev);
-> 
-> However, phy_disconnect() will clear the netdev's ->phydev pointer, so
-> the fixed_phy_unregister() will always be invoked with a null pointer.
-> 
-> Use a temporary for the phydev, rather than expecting the netdev->phydev
-> point to be valid over the phy_disconnect().
-> 
-> Fixes: e24a6c874601 ("net: ftgmac100: Get link speed and duplex for NC-SI")
-> Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-> ---
->  drivers/net/ethernet/faraday/ftgmac100.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index 9caee68468ff5f71d7ea63a0c8c9ec2be4a718bc..c6ed7ed0e2389a45a671b85ae60936df99458cd1 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.c
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-> @@ -1730,16 +1730,17 @@ static int ftgmac100_setup_mdio(struct net_device *netdev)
->  static void ftgmac100_phy_disconnect(struct net_device *netdev)
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-This all seems rather hacky. What is the mirror function to
-ftgmac100_phy_disconnect(). I don't see a
-ftgmac100_phy_connect(). Generally, if the teardown function does the
-same as the setup function, but reverse order, it just works....
+The comment in declaration of STMMAC_CSR_250_300M
+incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
+but the DWC Ether QOS Handbook version 5.20a says it is
+CSR clock/124.
 
-     Andrew
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ include/linux/stmmac.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index d79ff252cfdc..75cbfb576358 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -33,7 +33,7 @@
+ #define	STMMAC_CSR_20_35M	0x2	/* MDC = clk_scr_i/16 */
+ #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
+ #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
+-#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/122 */
++#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
+ 
+ /* MTL algorithms identifiers */
+ #define MTL_TX_ALGORITHM_WRR	0x0
+
+-- 
+2.46.0
+
+
