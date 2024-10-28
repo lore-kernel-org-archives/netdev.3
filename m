@@ -1,130 +1,121 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45367190049;
-	Mon, 28 Oct 2024 22:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9941547CA
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 22:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730155476; cv=none; b=R86j3tROcpOZ4ayl4c/RlJOG9OxU/ygvpNp1MyItTc6C5weQyEwmWv+4kuHlza+n34PbZ3ETW9AW3OpVlj7XlMUmQEm7A58Q1oOMkRiSi5scsHx+3aZptMB/CQb7FZIKOFxOC4MWSFx7AMrG6bs8hr05X9XwaBIbPkQbefCL0aU=
+	t=1730155543; cv=none; b=upFDkjcGbwL51v/rKC2rLlfbRDySx7kEoRoz9uBXwNc3G1mRJGiDI6yp4ceRVVJU/jhSNKfqe+6idx8eZaEnrPoEHBadLfSwRnwiRjmeNI4fD3djgugOgsiHqHEB71MVB4dYhU0Ztdx3ySTcp8ooyg+hJD0GVcC17KNaeos3GqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730155476; c=relaxed/simple;
-	bh=oFC5xLPzfVQG32+qWcuc3Y/1lCF6OHVwdkJz8EgHe7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cX366trgWhkClSf07bzvYpaD9joUPWHc9WIxsiU640DORSzR0pmSVU3GvJUy1OHeprXCowuc08EDsp41x9qqySQlP7nOhGLZxjh4wruGuaOY7hfu5yQNhQQIr2ykLrCF4vDynL5s4wWQvLEZlBkCA6tK46JAZ6bKBQ+mtRDI2JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KURCSItT; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1730155543; c=relaxed/simple;
+	bh=PakjCDbAkx0e0abthJ3AueRHSKJanhWrhmcwvkBaI4A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SfE+w82bxLbI+f5Bk8HO4vtwc3IIrT7gZqkHr/Jwmz+iMIeYGe6s4gVnunu0euYbKahLN4mVU1jGds6GU9vEeRpTTdJBfJj41mi7LuN7LYMvT8zK8bT29StQXOXCUA93Pp4p8Mz0+SdbMmvXUaUhe951WdUVxYcccSVhkZId8Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRoU/j5x; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KURCSItT"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20e6981ca77so51790975ad.2;
-        Mon, 28 Oct 2024 15:44:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRoU/j5x"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2ad9825a7so3416566a91.0
+        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 15:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730155473; x=1730760273; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mgFwSqKxZi3FF7UkmPRYG9KwHiHgPKv/2vs0tc5OzUo=;
-        b=KURCSItTavul58JAA5FmNmASe2JxY46t/MaRrdfG6oEDye6os14++IeB0hXeKODZjm
-         uY7LAUalaFIipeJXULjUpHOkW8RVcwBADIeAFquOW5cTkSeHO3ZyKDF6hBLwbLXXvpOK
-         70coOvtqzqrWYULcV7M7wsyuqTnLCu5WvAzsGXrnT5QIh2uGN7lBf80ynNRT5IaJGsjI
-         KixmCPge6rCU8VXnM1Lt/bbTzvzAUW4yhTSSEL/yxL1bYq44FywDXR4xBB8FVuabI8ff
-         BLr0qMg0ADj046X51UxUEzCI7yRQ1SdTFWrSjfbCLD/5xQJBMZWNEgjt/8hstAT6nAJf
-         hqYA==
+        d=gmail.com; s=20230601; t=1730155541; x=1730760341; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kfsp5rQRorGMlZCXCu2Jf1tRAtBRCcWvsYQDV5MsXRw=;
+        b=gRoU/j5xtOvmifZVsADzVmu8p3y+QqlcpQZP+YrDPD3JxJOQrTLGzmuP2RU2eKIDDU
+         EqxBcFjxZmmXJnSbosITqb1RkdvJJkRFbHE3E5fwYoLjMi9z99If0bGE2RGwgsVRzHYo
+         ZjLuxmRNWimGgszyWPxhSYgsFsXGcbuMPpV0AiVaLLbqHcxuWnJs5Dw8Dtsdt2G+Azz7
+         ZzYCt9gFLUg71/MRXggMo4o39g0qrp1l+mPEiHvyeQBp35aL2bTmyMz0FbDZeS4sPTa6
+         u/TeGXGW+skZNmmHFxD8vdMt+MpOfi/iamGGT8lTb1Y+E6HZ13NSRIvTCBGbaBa8essR
+         0vGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730155473; x=1730760273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mgFwSqKxZi3FF7UkmPRYG9KwHiHgPKv/2vs0tc5OzUo=;
-        b=oasc9upHEyjUT3eCy6FA1Rh/gmmzGoVLCsWU0uib5RhfTsQ0nx5QtLlppwcUXk44RF
-         NfDwgjUfVPpgkhsxmx4ZqqXqgnSb3FgzwaSsr8mmUor9TkoPyesDQFwp2qK8RBoeXifM
-         cVm13vtWIyPBUp3gMrAdfi8CBtSEcj/5zoDP/CJssfyjKWgV1wwYirn56LrT4s899zAn
-         7zXnJI8kffzw4jVKQpzDb9bzbWv7TQzy6cBvvI0JeIaN8Ocgl88gnpyDlB5Bp0COlCp7
-         UvVW24uP1/aLXyH91BjQf2G7+UsBm4L2ruBZzN8UUPuXlJWAFoHL8wR0OJB/iQo9oFgf
-         +Vfg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3m3fhHjJcw221kwnByB07p+p/c/FW/E27LnuU5rSBjwUmoK/qaNTbK5cV2J+jQ8c4yKAZm+6ZA3OujJQE@vger.kernel.org, AJvYcCVYTwogLSlli8NDb4LDWhMrYlMUy0ngofBFKLT0H2X1EICia9rhZ9hrkIKRe64RfYCzzKjPnlnAWw9r@vger.kernel.org, AJvYcCXtyid0bMLtc81w7GSr4jLC78npV4i9IaJLfN/4sOreDsykzE4f6s7kj7i2hv+BXpG3Br17kP7A@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRoUnAQ2kCqPZTSz2jMHu2g0Bj6mXih6f3WSIzCGsCJK38iWQk
-	6ajM9sLZImlzFmz0+i/7RzGi90NqXmHc7o2VRak9tuTIyht+nQvn
-X-Google-Smtp-Source: AGHT+IHe9JwtrfAxRCZKliVLyemHgefPy4SbHNg75z53OjoVcWbOJ47y7AP7JlSm9J6WnP1SMot6OA==
-X-Received: by 2002:a17:90b:19c8:b0:2e2:b44d:119d with SMTP id 98e67ed59e1d1-2e8f11b9703mr10455615a91.39.1730155473542;
-        Mon, 28 Oct 2024 15:44:33 -0700 (PDT)
-Received: from localhost ([2001:da8:7001:11::cb])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e77e4e631esm9895493a91.27.2024.10.28.15.44.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 15:44:33 -0700 (PDT)
-Date: Tue, 29 Oct 2024 06:43:03 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
-Cc: Chen Wang <unicorn_wang@outlook.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Inochi Amaoto <inochiama@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Richard Cochran <richardcochran@gmail.com>, Jisheng Zhang <jszhang@kernel.org>, 
-	Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Liu Gui <kenneth.liu@sophgo.com>, Yixun Lan <dlan@gentoo.org>, 
-	Longbin Li <looong.bin@gmail.com>, devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] riscv: dts: sophgo: Add ethernet configuration for cv18xx
-Message-ID: <wgggariprpp2wczsljy3vw6kp7vhnrifg6soxdgiio2seyctym@4owbzlg3ngum>
-References: <20241028011312.274938-1-inochiama@gmail.com>
- <87e215a7-0b27-4336-9f9c-e63ade0772ef@lunn.ch>
+        d=1e100.net; s=20230601; t=1730155541; x=1730760341;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kfsp5rQRorGMlZCXCu2Jf1tRAtBRCcWvsYQDV5MsXRw=;
+        b=D4h1c3W3MxdsDw38eX8Dg2SqFuhq6n06gKxUAzTtKdb9zm1Lrl+WntTWOafj1in614
+         q9EL5e7tizeSqBWL89BjExs2+H8QxXGnnZ5zO2tS9ynFSktGggmqqbGOUNPWqCBw7NTq
+         t39f2mjo1Thirut8EfyHAQcev7K0di2PybPg2p6kYKCf9/fnZN2BtA1D3yZuwT4bxiZ5
+         HOyN0iMwI4HvxwEOQaXWVcE1ax4031xCTlk1seA7vNKIQVOkcEkEc6r8FVmDa2Dba1kz
+         L7Mp/DLTP/CokP0khvQBay43RPmIT1+6d2i5R5qWlr+wauQ9OB9ElkrgXnZV0g7pGtIr
+         Xrmg==
+X-Gm-Message-State: AOJu0YxyPaiWw2JqsYweJsiKHFm/g6wRyOPXRwXURpdno5nCiU6BailA
+	2YCEkvjKT7sGxMvRI/EGc4Sc1WJY07QmVjay2AMwmfywqWm0baejRs0tRabpFNXn8hijgooreJx
+	WVHWuSGIXp5i4+S1TgdManXOnxRU=
+X-Google-Smtp-Source: AGHT+IEeavmqxDerzVZaYHnGHo8jM/l5kUcHXhUwRebBTqHnaPTw5WBFAfZhy9KkOSCvIMnrm0ZRtKpUo+FaqM+irtM=
+X-Received: by 2002:a17:90b:3504:b0:2e2:e09e:b910 with SMTP id
+ 98e67ed59e1d1-2e8f108618amr11581563a91.19.1730155541164; Mon, 28 Oct 2024
+ 15:45:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87e215a7-0b27-4336-9f9c-e63ade0772ef@lunn.ch>
+References: <20241028152645.35a8be66@kernel.org>
+In-Reply-To: <20241028152645.35a8be66@kernel.org>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
+Date: Mon, 28 Oct 2024 22:45:29 +0000
+Message-ID: <CAJwJo6aF4YJjhNzfp1a08W6tzqUizNYvkww2t+se44ro92HS8g@mail.gmail.com>
+Subject: Re: [TEST] TCP AO tests failing with CONFIG_PROVE_RCU_LIST
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 28, 2024 at 02:09:06PM +0100, Andrew Lunn wrote:
-> > +++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-> > @@ -210,6 +210,55 @@ i2c4: i2c@4040000 {
-> >  			status = "disabled";
-> >  		};
-> >  
-> > +		gmac0: ethernet@4070000 {
-> > +			compatible = "snps,dwmac-3.70a";
-> > +			reg = <0x04070000 0x10000>;
-> > +			clocks = <&clk CLK_AXI4_ETH0>, <&clk CLK_ETH0_500M>;
-> > +			clock-names = "stmmaceth", "ptp_ref";
-> > +			interrupts = <31 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "macirq";
-> > +			phy-handle = <&phy0>;
-> > +			phy-mode = "rmii";
-> > +			rx-fifo-depth = <8192>;
-> > +			tx-fifo-depth = <8192>;
-> > +			snps,multicast-filter-bins = <0>;
-> > +			snps,perfect-filter-entries = <1>;
-> > +			snps,aal;
-> > +			snps,txpbl = <8>;
-> > +			snps,rxpbl = <8>;
-> > +			snps,mtl-rx-config = <&gmac0_mtl_rx_setup>;
-> > +			snps,mtl-tx-config = <&gmac0_mtl_tx_setup>;
-> > +			snps,axi-config = <&gmac0_stmmac_axi_setup>;
-> > +			status = "disabled";
-> > +
-> > +			mdio {
-> > +				compatible = "snps,dwmac-mdio";
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +
-> > +				phy0: phy@0 {
-> > +					compatible = "ethernet-phy-ieee802.3-c22";
-> > +					reg = <0>;
-> > +				};
-> > +			};
-> 
-> It is not clear to me what cv18xx.dtsi represents, 
+Hi Jakub,
 
-This is a include file to define common ip for the whole
-cv18xx series SoCs (cv1800b, cv1812h, sg2000, sg2000).
+On Mon, 28 Oct 2024 at 22:26, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> Hi Dmitry!
+>
+> We just enabled CONFIG_PROVE_RCU_LIST with commit a3e4bf7f9675
+> ("configs/debug: make sure PROVE_RCU_LIST=y takes effect")
+> in net-next. Looks like TCP AO tests now splat, eg:
 
-> and where the PHY node should be, here, or in a .dts file. 
-> Is this a SOM, and the PHY is on the SOM? 
+Thanks, will take a look at this today.
 
-The phy is on the SoC, it is embedded, and no external phy
-is supported. So I think the phy node should stay here, not 
-in the dts file.
+> [   42.597861][  T235] =============================
+> [   42.598195][  T235] WARNING: suspicious RCU usage
+> [   42.598452][  T235] 6.12.0-rc4-virtme #1 Not tainted
+> [   42.598697][  T235] -----------------------------
+> [   42.598959][  T235] net/ipv4/tcp_ao.c:2232 RCU-list traversed in non-reader section!!
+> [   42.599319][  T235]
+> [   42.599319][  T235] other info that might help us debug this:
+> [   42.599319][  T235]
+> [   42.600044][  T235]
+> [   42.600044][  T235] rcu_scheduler_active = 2, debug_locks = 1
+> [   42.600443][  T235] 1 lock held by bench-lookups_i/235:
+> [   42.600734][  T235]  #0: ffff888005bd9098 (sk_lock-AF_INET6){+.+.}-{0:0}, at: do_tcp_getsockopt+0x40b/0x2fe0
+> [   42.601327][  T235]
+> [   42.601327][  T235] stack backtrace:
+> [   42.601628][  T235] CPU: 2 UID: 0 PID: 235 Comm: bench-lookups_i Not tainted 6.12.0-rc4-virtme #1
+> [   42.602077][  T235] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   42.602605][  T235] Call Trace:
+> [   42.602796][  T235]  <TASK>
+> [   42.602930][  T235]  dump_stack_lvl+0xb0/0xd0
+> [   42.603178][  T235]  lockdep_rcu_suspicious+0x1ea/0x280
+> [   42.603426][  T235]  tcp_ao_copy_mkts_to_user+0xded/0x1050
+> [   42.603657][  T235]  ? __lock_acquire+0xb3f/0x1580
+> [   42.603917][  T235]  ? __pfx_tcp_ao_copy_mkts_to_user+0x10/0x10
+> [   42.604221][  T235]  ? lock_acquire.part.0+0xeb/0x330
+> [   42.604463][  T235]  ? __pte_offset_map_lock+0xfb/0x280
+> [   42.604707][  T235]  ? __pfx_lock_acquire.part.0+0x10/0x10
+> [   42.604947][  T235]  ? __pfx_lock_acquire.part.0+0x10/0x10
+> [   42.605220][  T235]  ? do_raw_spin_lock+0x131/0x270
+> [   42.605524][  T235]  ? __lock_acquire+0xb3f/0x1580
+> [   42.605796][  T235]  ? lock_acquire.part.0+0xeb/0x330
+> [   42.606049][  T235]  ? find_held_lock+0x2c/0x110
+> [   42.606300][  T235]  ? __lock_release+0x103/0x460
+> [   42.606545][  T235]  ? do_tcp_getsockopt+0x40b/0x2fe0
+> [   42.606809][  T235]  ? hlock_class+0x4e/0x130
+> [   42.607058][  T235]  ? mark_lock+0x38/0x3e0
+> [   42.607273][  T235]  ? do_tcp_getsockopt+0x10dd/0x2fe0
+> [   42.607508][  T235]  do_tcp_getsockopt+0x10dd/0x2fe0
+>
+>
+> https://netdev-3.bots.linux.dev/vmksft-tcp-ao-dbg/results/835822/1-bench-lookups-ipv6/stderr
 
-Regards,
-Inochi
+Thanks,
+             Dmitry
