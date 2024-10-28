@@ -1,195 +1,152 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2078.outbound.protection.outlook.com [40.107.103.78])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2071.outbound.protection.outlook.com [40.107.236.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F60192B7A;
-	Mon, 28 Oct 2024 09:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6272318C929;
+	Mon, 28 Oct 2024 09:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730106491; cv=fail; b=uR3RP90VgzCiUwvRZqvvqhOnm5I6xmDbvIDftZR9WrTQA3jjrzV62gGjJiM0ZfFVQeVVI4nZombNmR9A83BmAmEnyiVk6dPktpOOdEEXzJaxp2f6MpDxyGDRFP4mlOyvCeWqpevYXwXYWm3ApyoK4dhzuF4sebDaFweh1jvRUbA=
+	t=1730106747; cv=fail; b=cxiTU2tC4OvMai2vJCu+EpG0x4WHCSbqP5r+K9CBCYjnVU1Ggs4uy+qh+iWsgO/nRG+EmF9CZUOu+2TvRmnS6gufHG6+sIkjZxHL+FQmCmkPps+0CDfJBFcz9rKQu7iIeq8IdGSYfH2mDarSxG7U2imD/VLsyeUyZurROiUf34k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730106491; c=relaxed/simple;
-	bh=5GgFHuwb4sJqRpXWbsAUqxri0laIKklNEQrJaVvGiv8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TP0p9uJIDYfXYh/ze6k1IE+ChZrXrUwKBcLEtgslKwmdEQ7sAycB0mkkJcK3x32HU+L6QH6zhxtpQhkYmFUiclv/CKsuOyCVLH+GUMREcXvg8rSc6tXL/O2If+7+eOtw0hxIpMbYWI9MjkfbIhlvNbxYCVzVMc5R2Vq7s1ip2sw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vpm95E5F; arc=fail smtp.client-ip=40.107.103.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1730106747; c=relaxed/simple;
+	bh=FV4Tr9bUI7hiSZWxJeyZUf3lX7D4Irtugaeaj/eVrbQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gt2HPk607lDy9v4gUUYm5+ENDWqrqSzmnZ+O87199WWyl+U17bMq2uyfX9aoOumnB8LH3UgvgLtIKZRBhBQKyepXBnI0tGcjXazgDsjlqf5RjdqmKtWRZpKX5y2THxB4CNmD1NHHR+ACbL9mFb98vijkkWq5puWXC6l+Q1bGQn8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mSCOkdUs; arc=fail smtp.client-ip=40.107.236.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vpm95E5F"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mSCOkdUs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uP2MZc7M6Qa64TNTO5+hQUltK3rDVcusqxPaJauDqasLUZD96on0rbqh13TR3LzY+1N5Yu9C6fDiZAeu8G9rnwkGojX57R3xg77mGoRqdAZAeubjhHcT1Yo3oOAeSpi+T4WEzQNDaRcHNX1fwSgQ07wFuZFGCkSy47OZpHRhNhsf8TghdqlKumgU9wKEv+76CU3cUgYYuW2P3VSQxyrFgD1eoVsSZXtXezCHJ2HG40i1FRmdHN5UfBnYNasOnqWN17CBMzldsoFPqnepvNaRoaBQqbVIHfNqDoj13Abr9HjujPGe3gAznXfBz7iPeusUqU7OC9AWiwreMsZZebOhUw==
+ b=UBX+MCGZKumF0PqTIhtY6hbXeF017ldcvY3ZK6SdQ487Sk6WAIV11eLfYVzZllUq/nf+2lb4LBKCddY9Bfhj7LJA5itxHvAfBZZg/NKgJpyGaP8i7rsaCwISu/E4l0x8weZEpIVqFiLxK4/QS2jNO0vLJTxC/jRY0jOi4zl/uZYy95LVJAGM2ejHNshxEbE4JDtnZfLL8zZpchcWaEk70pV9wW5/RySXdzROHCdqWEJP36zrOr9lBaQkgka1gNzIcyK3ysu4i5Zau2jAQU9j0yfzoq3qwv6mKrVL6qzYDxYCEtcNZg9GBTUUASI0tTDglMoGYJ+/2A1m4IdTbuh+KQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qk6ThNSqKzj6ZB65rHIlgg/MRlXL3XwHS/Owh8MvgcA=;
- b=gsJTjKQJABD9Gn+jQaEXRsfNT1GFO2wZWHsE7MG1bVSmh8RBp53IDGXJ8aHMlfzy70N3fbWzcgfGdjgFTNScxL7/0Vrjn79L05vkHJWhhdZRpX8qg9EJt20CWx7KT38Nil5T81JiFGEfqJ+K7d0/u4dlaiKZgs1qdCVURjMBivjbZyN5/XNoal/n2UNUuzIP72TYVFDYchyl9GC92TgGgFeXctthh4yPJvC16o/QU6l9DJ688LfILcCcJmE3pnYoXBDcdfRvI3yVAZuOVT/rCRXABHn1ZWGAclZSCoe2RbKG1VZAbL04F2kbf+STmsghzol++lPFiKJa4Y/Z0gn0Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=0AuR8X18923nEMkF2ZRoiT0KiluUbKk0CdZyiLWFLp0=;
+ b=zQ6leJJFfFS7+JJrNkCDf4dR6FShVeCbSpthTiU3GFtxEJwnWOl76OGYbP14gbXaOCVYETnU0M2qV76Jh1rcGAy+InQ8n28NbBkqd2JemuvUC3G9APSuREQdT7o5UwQTdqXCcImRvy+hvbsRN/FoKWCTFIGxkf7Ooj2MmLynRI4yVTR0UYEmi6HmgLdKTumfx5PgsTfWQVCKPO4bbcazVUa2QrDtC0qisSt+BQivAEfDfS4mBwi1f/PV5DBpg7FPPWqphHT5f2NBtfQCdk1JbWtKwhD4pX0OaomrvRXSCkEYFGRzEIoPYwXDpXYXbGDYf5UuIeh7atyYj3rM7Dr4Hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qk6ThNSqKzj6ZB65rHIlgg/MRlXL3XwHS/Owh8MvgcA=;
- b=Vpm95E5Fa9umL07Bx6FiTERE9vZSWN4VrgS8OXJpAWgO4V3oWw5lpgeD5g6fKvxJHLT2L3rTO/riOfWI4InKqoUyQ89PpjFNOrvECq/5a+TTs8I5w6qYrNl7z8ET/TNRT7FjxoFujy+DGtfW4sS/dk1/JGIU0tAEWpO/huQ6CFZ4TviHrJu43BXJpdpXNR5U6UeEdvLHnT4LGs/kBQupsfD2acQKyn/dW4VeghE5t0r1DL/Jxj3Cj1c3BE3qeOh8nrvcKrDWw2K1dMkrsBLdsr2U7auwZwhFTQ+H3uIl+sOLLaZlpi9N9/tOJJcdyYdyR5Qj1NDUQOEr9wBMLy+rTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI2PR04MB10642.eurprd04.prod.outlook.com (2603:10a6:800:27f::18) with
+ bh=0AuR8X18923nEMkF2ZRoiT0KiluUbKk0CdZyiLWFLp0=;
+ b=mSCOkdUsbmQ5XUgkHjH+OAHSavNNawdGuQHPLb4dGvU2wZdApRiFNe7cq7bstQpZ5xrQcwZIw2thiL+Qm2bhRVOh1FFUfXrvcsxnAzqloMzdZqcP1xU4gJaF7isQ9urgtpWj1YQEqrH5fAUyb1K4KqbO1TxafeNOWYbCwuPeWSA=
+Received: from CH0PR03CA0435.namprd03.prod.outlook.com (2603:10b6:610:10e::9)
+ by PH7PR12MB6809.namprd12.prod.outlook.com (2603:10b6:510:1af::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Mon, 28 Oct
- 2024 09:08:05 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8093.024; Mon, 28 Oct 2024
- 09:08:05 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: enetc: set MAC address to the VF net_device
-Date: Mon, 28 Oct 2024 16:52:42 +0800
-Message-Id: <20241028085242.710250-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0145.apcprd01.prod.exchangelabs.com
- (2603:1096:4:8f::25) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.17; Mon, 28 Oct
+ 2024 09:12:21 +0000
+Received: from CH2PEPF0000014A.namprd02.prod.outlook.com
+ (2603:10b6:610:10e:cafe::30) by CH0PR03CA0435.outlook.office365.com
+ (2603:10b6:610:10e::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.26 via Frontend
+ Transport; Mon, 28 Oct 2024 09:12:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000014A.mail.protection.outlook.com (10.167.244.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 09:12:21 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 28 Oct
+ 2024 04:12:18 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 28 Oct 2024 04:12:15 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <git@amd.com>, <harini.katakam@amd.com>
+Subject: [PATCH net] dt-bindings: net: xlnx,axi-ethernet: Correct phy-mode property value
+Date: Mon, 28 Oct 2024 14:42:14 +0530
+Message-ID: <20241028091214.2078726-1-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: suraj.gupta2@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI2PR04MB10642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c69b3b0-90fb-4dd8-5fea-08dcf7300879
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000014A:EE_|PH7PR12MB6809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3415daa8-7ec7-47d4-d0af-08dcf730a0fe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3XqrXoQcq+0RITuvdErYdy5+ZDYrBHKK8/B1WCksdYUlNnycrKk8zBXQ/AuL?=
- =?us-ascii?Q?9YmNWqkMeAMuxAmes62cYOn7ORp2I00dPftE7zXaHVAKE6AL9oqo7OuEE3n8?=
- =?us-ascii?Q?U/33EGHBh48L2ATpVXFJ+Oai1Cth2XzczG6O7fYJd2T8D4ulIyw+YsKzxpco?=
- =?us-ascii?Q?SeMjViXqP3iUOxgKDGCHvYXiQEf2sEEbohG4BhzOH8kxZygEjgjj3CD5H8lR?=
- =?us-ascii?Q?SYqKbI24XYIOh1AFIrEoZCnEsPboZEbf/DzectF9YHcTylknMhgxzXCIfltR?=
- =?us-ascii?Q?ofCM7dn4O7khY2Ul655mmVA/CWPfcSHIm+IR11blECvdCPmsCQz59iFEdGfx?=
- =?us-ascii?Q?cbKnP7bC5cQ9WtYTtxsXkdy7byfOu/fJFlgTYkQ/0ByaMgR4rZl1Tr9Iv8HH?=
- =?us-ascii?Q?r4Yi85QVoTUm0BZAEpzI0dfHndyqq9KvhnWwik8fvekE5gcAqgMckWHt5TWE?=
- =?us-ascii?Q?C55vfeg9o0fREZW0jfcSh8d5rmaA/dT3DkPVNf28DCFt7oCvyTNnoUsDw+dH?=
- =?us-ascii?Q?SLg10Qc1OVKKCXYF1bpR6V4UIN/r3xHJ4mNCd6pxon5QrMgv3AEVmmG9GzYP?=
- =?us-ascii?Q?fdJG7v9wRIQGe39RjelLHsqlpoLZpNTuGJ99eeDv70fZmKUIIWWv7Xqm42UX?=
- =?us-ascii?Q?dFOwDoUbWaccdv4fEtvC6gtcfmnSwXlSAlECAkV7AE1ZLT0i17r0uCjn36Ht?=
- =?us-ascii?Q?HmbzlnIJOO1kgG1mphytKc/lHa0chvx/MQunQRzOVtHJDnvZzMKjBnYnqLzq?=
- =?us-ascii?Q?xb476PMFDOq3DT/5BlvjPp9Z3uvSIa1sFaAYX7jIGUtMI7VE6qP2qMRXrGRk?=
- =?us-ascii?Q?Q1ZbH2FjcAm1Ot8Y1nwcL+2EXjQ79EJWTPLVaNsIzwcJ43gHLgBU/NoelXwG?=
- =?us-ascii?Q?Egx2+B8+aLf1VVarzGVBaX7xb7lodJTf4NBjxzehH+uFFuKEBGWpohtwXdZK?=
- =?us-ascii?Q?Gb6wEAowW214xfKRawY0+voArwVLDXye7cXYrh0O9RSrlxugeFy4TgIAizwq?=
- =?us-ascii?Q?wHRDNClq7kF5fT9jS48Rs4n3Mfd2ixhdE66WF/QrQVg2v1M9cLJOmAPey3dH?=
- =?us-ascii?Q?4xkK8ptCEiEBPr5SE58IrryV0VoHUDLyli31oZkB2dRTim1iCthoW3Qoa3s9?=
- =?us-ascii?Q?nTTUAIRlA35Hb5VL8RNviJ3/1lh6DWNHOvsczAMP+AacVpckZuR/lileIfvz?=
- =?us-ascii?Q?BzCHLUpQMM4vR2enwE4jXGVqzttsjP6SGv4zwRUIge2rl04MyrH+f+J4GxTD?=
- =?us-ascii?Q?ljYrRtPz51x8FSixlrzB3sS9Bagbgzc6+2M4IS2ULNBwFsPJZTaUXrJ/QwXy?=
- =?us-ascii?Q?6RDredDRSs6V1K+X0nCIWo5F3BUR1VBSTrmy6rVHHBc7AC07h4K+qyZvligm?=
- =?us-ascii?Q?InC0bT8=3D?=
+	=?us-ascii?Q?+898IQ2KM5u0KXp6H6Do9gHkS7zOTDNtrtQvQ7Jqii7XzesoVR0v4G114jw5?=
+ =?us-ascii?Q?6yArINWY+rFXvfGeg/mamTuM3oyOCGjw9Ii1+uuvmTg0hY39gngK5WFOcRG9?=
+ =?us-ascii?Q?ClDG3lz5EfTx912XqZDNPsn6N3DZbsCo+vhKhRIYMxJI4KFARicKd4Lwd6Vx?=
+ =?us-ascii?Q?NPFCPu8TQWTNIq6hIWkxgR8GpmhLqm0Wzr5LatDsoBiEKtPRMPie7ew18oG8?=
+ =?us-ascii?Q?HHrAchxe1w4ierVI0yiyq2H/5c1xTe2FyRjsg579//JWopqhuDIRrCDXj06a?=
+ =?us-ascii?Q?mmwfwU5u+V1TfiFV/sat+FhaUERoEqMciAgKLvr+XcShXt2Ajnwo+Dz/2JSV?=
+ =?us-ascii?Q?q4+5EmGWT+MoFPGPGgNQzD2lA0+2QWT9UiPKlVe/K/hLEkIuvZ4uWX8wMPxJ?=
+ =?us-ascii?Q?MYh9mzu2B8rnU/vRnpkn30FIsgKNiIz9CeOt9OH1Bmp7LhVgOeL2IDvqYlIf?=
+ =?us-ascii?Q?kDSY2QjhzhicD05PEOuUFcyV6V70C45/O8P0w/2EO739kFXOEWT3BTwWh4Nl?=
+ =?us-ascii?Q?usNEFmQOkfCluTX9vWAGmTFKR7r+rk/n9ol9JZH3KnmT88bGJoPpqmjOrFmZ?=
+ =?us-ascii?Q?BAshq2FOzovmxjb3ztOLQ8/NhsM7HXLFOIUDJYacmyJsFUe1PC2nhjgXlNZ4?=
+ =?us-ascii?Q?SwQXacOdJMLArQdgR127zbBJijwWMemRyGMm4xDoxbA4KCUZSLZ4j1T0Tnmg?=
+ =?us-ascii?Q?coJWeC1j1GOdYbFAPO7reVlVUSq3/mEjlChQY5OisT+eYPOmL6loM/BbZD/D?=
+ =?us-ascii?Q?e1UUyADncKaLvpUlBpOPVTBN/kM7IboR2HUpfjY5AIl9ou2j/ezbixDYwMBs?=
+ =?us-ascii?Q?POcgOgmHb7hGBD2rJaJz2vg5vzMDw2a32JBZlP/qdQsxXqFktTsgCvOvDmmL?=
+ =?us-ascii?Q?gCgDv0QLJNXUTn9UdfZd8HkaHPVC27dWljlkd4yvSKyMB7Ul2V07KHoE4sRP?=
+ =?us-ascii?Q?2fBqKZqunbnu1VYmJgDIQ8hTPgTH8cO2GqP88ZoC6aEDrZrBEdCB4iYFRM3G?=
+ =?us-ascii?Q?VvsBv5C2uEpVCQ4x7T2imzuQtXBBHbhEf4mDOCg56TwcD1XRPkb47Umi2g5u?=
+ =?us-ascii?Q?fqFTPKLDC68FwoUojCofQUKD3bE2F2cIjNb/zLHxqPe0hq1779g+ktilkS06?=
+ =?us-ascii?Q?quF3ZuS1RAiJlGIaGF6EZEOPUfwiveanHX0hdu1iheoStp3k9KLK/kmlj5PL?=
+ =?us-ascii?Q?KKnbvTt72BL6hfz+34rQRGSAQ4Y8suUMGd2v15xJ7EwaauQsOpJlj8klpdc/?=
+ =?us-ascii?Q?hcCU+/s+wrBds2Yck3/EG/qIgUTYgxzNQLLd83asCQk4Yr3SaHO+0LGxeuj9?=
+ =?us-ascii?Q?cD2v/+zsUbXo6YfZXp8L2CzFwxYKo725x0a/zjjasqvaNeyFMmscUmEHm3u8?=
+ =?us-ascii?Q?Kw7BNof5YsQY4xFZtXhKJ63w+ZjmG49875EsDFTmGRbkZB7PTHPfQjzrp8VN?=
+ =?us-ascii?Q?bFIo3akPYNY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?udBH5vXinPz6Ma0lQLiyojt7HjqeOwkFNIRVQ38Lbe2cN/YdauVPOiNnpNBn?=
- =?us-ascii?Q?tb4Lw3x0h/VyO+5gexQ24diSR5zZsY1WIL7tYDr+0N+GofCFAxaeFayTHMJ+?=
- =?us-ascii?Q?K3I5p3FA8ijIMaAIGITSIEnJ6sxJm/tl9u0qF8QIIyQ1+MLQ+H177fDtEceM?=
- =?us-ascii?Q?XGEIjAst1tWw8HIW9HTa7GOQajSw5zKoUGzENV9tCbpYEDAdByERb3CiiGrs?=
- =?us-ascii?Q?5n2/P4+Gh/SYRiwXYD+l974RFsqQJtXsiA4mCewPrUGqljl5ieRLbEYpZ6x4?=
- =?us-ascii?Q?NtLWbHAmzZ9+fCuJmS/EFTZoJ0CEyH2bu7u1JceFL17FZVJuzt3udorO4/SK?=
- =?us-ascii?Q?2oskuXWa+L4s/099SqY98YDOyZ56hCoUmVhV5U+ntV79h+6AZLGEWEXu8zrf?=
- =?us-ascii?Q?afevtQT0WmcLUsTMFUnDFXo73q+fosdO8lpA7C8X7kGtqZ8unGPNeXap7J/O?=
- =?us-ascii?Q?u/AllvBBBFTFdXO4Yncu968pBTi5emRzCogprlYVFXEEv3R4hUItDPQDVbUq?=
- =?us-ascii?Q?d6IoGfFr0LVBe4Vlb1qtNGr1pxLOttMSSUDtCNW7AHc0ZOSox1KB2aFY4rXC?=
- =?us-ascii?Q?VUCy62yl5EfJcpblAyh6IRrcn7Xjna0mWuT9uht7AI/QvXl2wqig4Kj3Dpxk?=
- =?us-ascii?Q?wcQK7Z/mSQ1/Y4P7KUvzdF+Rbjw5NkeFrjBP3pEdDzIwsSAwHTJcTiNGQMF7?=
- =?us-ascii?Q?5qBFf+RamygdxEFWnammOVFdIzv+zYk5NSm4zbWGrxchZen4z+XPhVrxaALt?=
- =?us-ascii?Q?Qwlsp1/F9FxnC2/DYrD1iyxnGT6UyFl16B0oqp2saRwaX2MTX6lxuNAwYNrW?=
- =?us-ascii?Q?xAClOLEr9L4LIXDbp7Owz7o9UhfY5yZwSftUiugDiyxg/tlgFo7nvtkoc1Hs?=
- =?us-ascii?Q?ZylBq6t5i8gpxPdxmYn3+R4wZjjBZ4jsi06Iet3odgseR70h/Mg9RW3gR2kN?=
- =?us-ascii?Q?NPkm7G1vOEFzeSvW/B+d91TJnw78RSZS1D7XwhxZ6O5w8eFHn2O+xPBi8fpb?=
- =?us-ascii?Q?dZhfwuEBzvAEanO4Xo5e9mdbNEKY5ESlYuu1ivQcwIrXiCwPeCqVC2Jh05c+?=
- =?us-ascii?Q?ZPWvbZw6dlnrcF/ekTMuLsaQ0TDD2syL94Ve6Dqgk49yR8ZytSHrk+x+g7CV?=
- =?us-ascii?Q?a/eCYwkeUN5o4JkEomxbuM7dYgrKiCPYg/a43DubS3SkEyTTqm38vLSM3+qP?=
- =?us-ascii?Q?+pQxktJi6Sk5lb42exPjJGjnNjTj4PXm1U90y6cKXpTQDdIKhfj7cHf9ZAFn?=
- =?us-ascii?Q?qh/9a6evC6iQiEBqqVHzvSyF0oCWSbhm0GUEiTh+CV3VtmU4EME0pK6CZcgu?=
- =?us-ascii?Q?nMB7/ERrAjqgAL2yVKXVcikYH2JjovDplwWc10FJeKxNTTkQrD5JHCblk9G1?=
- =?us-ascii?Q?KmctpntbJEh+FRut6mA3HtPu99MIpOMb7aoSHvyPkpW8zPywtyNYKR9cyUza?=
- =?us-ascii?Q?1fu9lB9AH/fFSMfReLXyeE3pzp1dftpriDdVonlI5WxtoqeLJSTBqC4ycGUE?=
- =?us-ascii?Q?4I+RJbIBbQKn7pUbAQIBjlMzxIucei/s5DOolOgVP0a6LAUQwSRpDw21tBcB?=
- =?us-ascii?Q?JmphQP6kU4OYXrvGsepjYPBhGktIZKvTj6GjYh3W?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c69b3b0-90fb-4dd8-5fea-08dcf7300879
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 09:08:05.4701
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 09:12:21.0375
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 98UGRf3Uz2MkRMTww3Bm7t0MLADRkjWtnph2vNoWVCuh4/rTD1KUD2vUNxIKR/oRQhUm6dcNcH/1l5RE3vnndg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10642
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3415daa8-7ec7-47d4-d0af-08dcf730a0fe
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000014A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6809
 
-The MAC address of VF can be configured through the mailbox mechanism of
-ENETC, but the previous implementation forgot to set the MAC address in
-net_device, resulting in the SMAC of the sent frames still being the old
-MAC address. Since the MAC address in the hardware has been changed, Rx
-cannot receive frames with the DMAC address as the new MAC address. The
-most obvious phenomenon is that after changing the MAC address, we can
-see that the MAC address of eno0vf0 has not changed through the "ifconfig
-eno0vf0" commandand the IP address cannot be obtained .
+Correct phy-mode property value to 1000base-x.
 
-root@ls1028ardb:~# ifconfig eno0vf0 down
-root@ls1028ardb:~# ifconfig eno0vf0 hw ether 00:04:9f:3a:4d:56 up
-root@ls1028ardb:~# ifconfig eno0vf0
-eno0vf0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        ether 66:36:2c:3b:87:76  txqueuelen 1000  (Ethernet)
-        RX packets 794  bytes 69239 (69.2 KB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 11  bytes 2226 (2.2 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-Fixes: beb74ac878c8 ("enetc: Add vf to pf messaging support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Fixes: cbb1ca6d5f9a ("dt-bindings: net: xlnx,axi-ethernet: convert bindings document to yaml")
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-index dfcaac302e24..b15db70769e5 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-@@ -78,11 +78,18 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
- 	struct sockaddr *saddr = addr;
-+	int err;
+diff --git a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+index e95c21628281..fb02e579463c 100644
+--- a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+@@ -61,7 +61,7 @@ properties:
+       - gmii
+       - rgmii
+       - sgmii
+-      - 1000BaseX
++      - 1000base-x
  
- 	if (!is_valid_ether_addr(saddr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
--	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-+	if (err)
-+		return err;
-+
-+	eth_hw_addr_set(ndev, saddr->sa_data);
-+
-+	return 0;
- }
- 
- static int enetc_vf_set_features(struct net_device *ndev,
+   xlnx,phy-type:
+     description:
 -- 
-2.34.1
+2.25.1
 
