@@ -1,55 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62E318FC83;
-	Mon, 28 Oct 2024 23:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FEF18FDD8
+	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 23:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730158065; cv=none; b=JQua+xHuLKQhRszAc2WRcLnETJ5YNSbHLZ7kLxJxF2UWRRE+EzPvXnV8S30b4wxkMs6PaQYZjaJIHOAuy6nBqmlXDmyLf+EhS7SYgQOapuGhRCS/8lYrMQSXJFZZrtMn4yvlI9pFFpDfz8zpGChsl/6xdexZUhmsF2fGQHkAE10=
+	t=1730158225; cv=none; b=N/9m9tQFIBGhyGUKlvb3VOYq3wGCvzx8ldixPqIHWHDt922pexcNyeXlqsbPaEpnMwNJOp4MXeELoylim9zmgdRjv25q0CWn7Q4C62En1lkjP07BiyQA+cP2Ow9rBVOO8epUKRaYZvB/gSI49aPNO/Sjhto3R4B5oWrw2dEbHI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730158065; c=relaxed/simple;
-	bh=iogHFvfb9MqEi1euQ4gV1TYc3cLwkdDGJc/GwTd5TpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UfeEASZz4N9eIweCR1e9/tYp7di5Ryibaxhj5v3ONIaCEh0gWzNnQShX/qf3U0swBeK5Z7+fs93D2mID2RXOPnE5bhIul80fftGQ/oGH1ldWl7leNCiXxaQInzrscJux0jl9dJQ1MRskyPOmAwYn/KaSEzva10mfUvg+XZvemGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7JY9HXD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730158225; c=relaxed/simple;
+	bh=gTBtL/ex7jxveq6ta4PIW3b0KtAqTbtbzOW4AHpgbE4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jMwZfc0rBfe6NfuI/DoDbhNUXS+ToLhp+vqzbshJmiyIV/MQJm/Mf8nXFAIJ2dAQ+gf+oGi8DJr23gJvh7sOCtSzqYUw7QdxwB7526RZJ3VOhNG5OXtsWMlkjTGaQJthcTiZfnekh4fXLXlwtiVXtNEecWkAgyj4TkdGDAkIunQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4xAyje0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7JY9HXD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BB8C4CEC3;
-	Mon, 28 Oct 2024 23:27:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4xAyje0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC522C4CEC3;
+	Mon, 28 Oct 2024 23:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730158065;
-	bh=iogHFvfb9MqEi1euQ4gV1TYc3cLwkdDGJc/GwTd5TpA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p7JY9HXDjrVB4MavRa19lkHzRIc+peGI56/PNPnc3PCFKrJLWdUbVRS9dfvXEVpzl
-	 joN+kxKXiOYdFkw3mUJpVLXi6vUx2Y5GpyCFHCVuqdJIHw/usTE0nbnturB+RjovJ0
-	 zdHq5vQeA6r9ksZpg2Nqv/M+00jvgojiAYH19s85dmNSeyJeQ2e8ZHuxU8iAzXvADz
-	 VdrzzNOOeHMuLjGq/Us4XbiIswR85oyA+ucpnbcPxNJxasZVxhUJ+FN5gK/9DnAzyf
-	 wdlgo+jCl4ngWGZhIxl2IkafgsERQjpRpQlBDTu9jYWYts2yFST+NoOELkClrcPEoL
-	 5VBKw3uJcRjWg==
-Date: Mon, 28 Oct 2024 16:27:43 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: <davem@davemloft.net>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Alexander Duyck
- <alexander.duyck@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- Linux-MM <linux-mm@kvack.org>
-Subject: Re: [PATCH RFC 10/10] mm: page_frag: add an entry in MAINTAINERS
- for page_frag
-Message-ID: <20241028162743.75bfd8a1@kernel.org>
-In-Reply-To: <20241028115850.3409893-11-linyunsheng@huawei.com>
-References: <20241028115850.3409893-1-linyunsheng@huawei.com>
-	<20241028115850.3409893-11-linyunsheng@huawei.com>
+	s=k20201202; t=1730158224;
+	bh=gTBtL/ex7jxveq6ta4PIW3b0KtAqTbtbzOW4AHpgbE4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=d4xAyje0LzdkkVwJyCQy5tR9tZveFG06qIoS6/vdBcRbodRS+Kob4wxtwWzpHFMQM
+	 O9Vc2kHqV1HBUAWbYxUmMmaH0Ky8uMfOFk6De5spnz7NJHyc2i4q7FLM9ivGYVjf6s
+	 ld1iJ2naeavYopfZXcX58n4u+bToqkxqTxufzyQ1aXxVo2IJ8bG5U99tZtSHAf6NfX
+	 MEiG+N1oMQoaMRhhLbe/LnTKu24Zz0elU7p3BjKvnfaKEBAsjRmPveh67/5+Te4+ja
+	 PmrzpbFkUSLDJhDg6HdrqN0VmCJD1iI+I3it0T1Za30zGpLV/B6SAL6WWypCPL9VLG
+	 gkm+dvm2I5G8A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 713B2380AC1C;
+	Mon, 28 Oct 2024 23:30:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V2] macsec: Fix use-after-free while sending the
+ offloading packet
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173015823226.212000.8120352168152068818.git-patchwork-notify@kernel.org>
+Date: Mon, 28 Oct 2024 23:30:32 +0000
+References: <20241021100309.234125-1-tariqt@nvidia.com>
+In-Reply-To: <20241021100309.234125-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, sd@queasysnail.net, netdev@vger.kernel.org,
+ saeedm@nvidia.com, gal@nvidia.com, leonro@nvidia.com, jianbol@nvidia.com,
+ phaddad@nvidia.com, cmi@nvidia.com
 
-On Mon, 28 Oct 2024 19:58:50 +0800 Yunsheng Lin wrote:
-> +M:	Yunsheng Lin <linyunsheng@huawei.com>
+Hello:
 
-Why is this line still here? You asked for a second opinion
-and you got one from Paolo.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 21 Oct 2024 13:03:09 +0300 you wrote:
+> From: Jianbo Liu <jianbol@nvidia.com>
+> 
+> KASAN reports the following UAF. The metadata_dst, which is used to
+> store the SCI value for macsec offload, is already freed by
+> metadata_dst_free() in macsec_free_netdev(), while driver still use it
+> for sending the packet.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,V2] macsec: Fix use-after-free while sending the offloading packet
+    https://git.kernel.org/netdev/net/c/f1e54d11b210
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
