@@ -1,150 +1,127 @@
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D80F18E05A;
-	Mon, 28 Oct 2024 07:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605951E517;
+	Mon, 28 Oct 2024 07:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730099377; cv=none; b=eY3DSanorE6f//ohCFDOjXIWmjb3+D8IMrgr81XF8LRrKL/OqmB0rVfmuqnNk0Oi1NTfHaM3HUoAa0nFkwVK7CqSvXxzCN4zAMKy1E/QA06gUSkbyhjLDu+BpxUkbeaOP4Vs71M6HMFszFPqm4kj1F8WfLW10n8lzSGs24Q3OTM=
+	t=1730099842; cv=none; b=r8hepBaFUWSwKCTff3XqNZ8wPoidrgkooKmN3sMnhPPHvENZwvJGe+OwFg30d6IwQk5H2Ed+CDXRmGc4nmcEJTB61cNy67oiOtmr3mx67cHQ3dcWey0LO7l8dnsr1ftnAsoY0ZHjEczNLRBwZbosApHtC+x0+GBT9vzF7GZUzVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730099377; c=relaxed/simple;
-	bh=VWC1nHpOnQMfHS2IajS5B1U2ElXAuNB+4YFi0LN9JSI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nwbvr8qL/KoHSzlFJce4NwwCvzSf7KdlpewItAeH8HCioSB/gro5JvSqMEopLBVoPUsKmLjoJ0672wogBZ+4KWh7PG+LDqLu1eGEVkBKNB0gqxITMx425Ma2UEBaGv5JmqagaZzfoHXQeYYQhZ+EJ8nzDff8ODwo9DiAkBbG/EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=P7fbbknc; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
+	s=arc-20240116; t=1730099842; c=relaxed/simple;
+	bh=8tuaFEHw3gd14bd6i5uZJEEY5FA/5gDCV4eRFXdy/dU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jn8b2FHbCej2ZSsPisMNxUPIvMIUhuV44phNpG76xx/vaw/+cTOk6kg0x9jiXPiwRahmp1rhJoJegAF6d5+gI4+Owmag3GAVCvHAx2nbO3hyaibfA9FmXR/9maxnif5A1cRH4keP373m4c9mGvolOjhYlc2zR8FqXUR9pvkozVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwSYCtcm; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="P7fbbknc"
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id 1DE7D100003;
-	Mon, 28 Oct 2024 10:00:10 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1730098810; bh=RN2mSQ9y2BkKPqjSxY5ISepC6Gm0Q+p6EoQS4iqNWM0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=P7fbbknceZNWh/5zRJW8GY5t4hhL3fpEPt7AMK7crnGQwEf++n1J+eRvsbIh6JMcp
-	 Wd2P0fD6B3oW5y6m+5DnmOsqZbSmd0dQAVKiCwsJUL/VL29IsFBhLbbfigdtAgo3x1
-	 1Z0rV98sA5qQAyBDfgFfAAUSWhhbYSNLKo4On3+TDW1jQHYFupoIESE2pntln7DdB6
-	 aLxN6+gZMln0Uf03LnLzjk6NWKUeGtGSfXcgengB1ADzPIXKDZic3iZf6Arb+BRBbB
-	 vhdM68F3Z5LY77dEz2ZwsXHt7bjP8Zfzj3mhruRCS43NAdQZGrVtpsOVZzXYPYkAwg
-	 G+Bjjwz7O9b3Q==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Mon, 28 Oct 2024 09:59:01 +0300 (MSK)
-Received: from Comp.ta.t-argos.ru (172.17.44.124) by ta-mail-02
- (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 28 Oct
- 2024 09:58:41 +0300
-From: Aleksandr Mishin <amishin@t-argos.ru>
-To: Igal Liberman <igal.liberman@freescale.com>
-CC: Aleksandr Mishin <amishin@t-argos.ru>, Madalin Bucur
-	<madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH net v4] fsl/fman: Validate cell-index value obtained from Device Tree
-Date: Mon, 28 Oct 2024 09:58:24 +0300
-Message-ID: <20241028065824.15452-1-amishin@t-argos.ru>
-X-Mailer: git-send-email 2.30.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwSYCtcm"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e30db524c2so2926071a91.1;
+        Mon, 28 Oct 2024 00:17:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730099840; x=1730704640; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=l+Lv0cqccltbLrN2cRosIlLw7fZjxncTIQzMOXjL94g=;
+        b=TwSYCtcm48pXmRU+arOsA6E+fqs5Dxj4PvGqj0SVH+W0b8Mx4KrdpURxb2kwumzWR0
+         HYBKZzYtHIcN/4d/6uS4r4EATU/xwEnq6wkzi4quZmNDcMQdvzZf/tPMT1oSL/Ejfl6M
+         M6LVyYvCgyDO1XW/V412Q+qYjlTpkQ9Cf97IWvymW4fY/4Ne0xxQdLs9rSFTNzhZq6/F
+         0qTIKeaqyMqQFbINxk5bPOkUezj2C4tV0KtB2dS7J5zblBGUVJltBPJ2jQoYzSQPokuT
+         7RkjAzIeBxeANEcHCGSsZdNtFNq3x+9VXhp4Ed9HhpohKBeTxfrKx6kFnHDNPc08KzCw
+         dGhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730099840; x=1730704640;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l+Lv0cqccltbLrN2cRosIlLw7fZjxncTIQzMOXjL94g=;
+        b=sLTEQ92Typ7tsQRv7NzzHyfKG8HuleaydhiQBpIEHkURiR6TKi03754lQFXMZ5QrwV
+         di3BKTiAcwpx16ce7JcbNUBc5n+UYxPKkRDL1KU7il6uujDjpDkGHkCBW6UBC0Zr3FGN
+         PVbwxTBObrvzFyNHmcWECPTFpZGr8vBuZvuouJBanjg5a+90MaPmXsNwptuJXma1zNIF
+         hi6rbIqBHBvxhwqvdaFiR4/iYiSaNic+gcNw7SeRVlNazAl0RVvJ7ipSaHfzd8NCeT+q
+         5yS9Ld9p3EV2SF1E3idz6cW79k22r56rNp6Uapbq0UpJitlzE2mCN0aRq0sMCr8yRRNN
+         wxRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULq8uMrxomVIG1aJv9vsyeeXqgCBf6nQdgbXseOFm3o3+r7G51Y/+mh3c5EbSJSSlYs0i+B/6wqwue@vger.kernel.org, AJvYcCVFRsPICoTJKuc762p13OYWtwSF+d7ZdO0Y+O6yHSfGcN+tDvEgp0uJfK0yY99n45i5StMowIeW@vger.kernel.org, AJvYcCVeVE+FxNDQJCcS4DMn8Glg+etJLUcHrgqDVYvBRc10psnWkuYMK9wT5OVpUATcwMUDDt+PLskmGGtYVr9t@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS91V3DPS/NSjrLCU2o1mm2ikqjlu8tst/X3qsFLWIRYKr+8Vi
+	vxwKnCTjM63vbyR5oFxtKNZj9TiKrBZlXT+9jJcBYVP7Nj6UKdVo
+X-Google-Smtp-Source: AGHT+IHzWBoCJf/unr9JRCs10+RBX8U2VlT071YJUNmeAJD/FQLj2WyaOuVYdAuzuRY5sIOEG1ACqQ==
+X-Received: by 2002:a17:90a:bcf:b0:2e2:effb:618b with SMTP id 98e67ed59e1d1-2e8f106f63cmr9468469a91.13.1730099839533;
+        Mon, 28 Oct 2024 00:17:19 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e8e36a4860sm6374761a91.32.2024.10.28.00.17.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 00:17:19 -0700 (PDT)
+Date: Mon, 28 Oct 2024 15:16:54 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+	Inochi Amaoto <inochiama@gmail.com>
+Cc: Chen Wang <unicorn_wang@outlook.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Inochi Amaoto <inochiama@outlook.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v2 2/4] dt-bindings: net: Add support for Sophgo SG2044
+ dwmac
+Message-ID: <gcur4pgotkwp6nd557ftkvlzh5xv3shxvvl3ofictlie2hlxua@f4zxljrgzvke>
+References: <20241025011000.244350-1-inochiama@gmail.com>
+ <20241025011000.244350-3-inochiama@gmail.com>
+ <4avwff7m4puralnaoh6pat62nzpovre2usqkmp3q4r4bk5ujjf@j3jzr4p74v4a>
+ <mwlbdxw7yh5cqqi5mnbhelf4ihqihup4zkzppkxm7ggsb5itbb@mcbyevoat76d>
+ <8eeb1f7c-3198-45ac-be9a-c3d4e5174f1f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 188748 [Oct 28 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 40 0.3.40 cefee68357d12c80cb9cf2bdcf92256b1d238d22, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, t-argos.ru:7.1.1;127.0.0.199:7.1.2;mx1.t-argos.ru.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/10/28 05:10:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/10/28 06:18:00 #26808967
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8eeb1f7c-3198-45ac-be9a-c3d4e5174f1f@kernel.org>
 
-Cell-index value is obtained from Device Tree and then used to calculate
-the index for accessing arrays port_mfl[], mac_mfl[] and intr_mng[].
-In case of broken DT due to any error cell-index can contain any value
-and it is possible to go beyond the array boundaries which can lead
-at least to memory corruption.
+On Mon, Oct 28, 2024 at 08:06:25AM +0100, Krzysztof Kozlowski wrote:
+> On 28/10/2024 00:32, Inochi Amaoto wrote:
+> > On Sun, Oct 27, 2024 at 09:38:00PM +0100, Krzysztof Kozlowski wrote:
+> >> On Fri, Oct 25, 2024 at 09:09:58AM +0800, Inochi Amaoto wrote:
+> >>> The GMAC IP on SG2044 is almost a standard Synopsys DesignWare MAC
+> >>> with some extra clock.
+> >>>
+> >>> Add necessary compatible string for this device.
+> >>>
+> >>> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> >>> ---
+> >>
+> >> This should be squashed with a corrected previous patch 
+> > 
+> > Good, I will.
+> > 
+> >> (why do you need to select snps,dwmac-5.30a?), 
+> > 
+> > The is because the driver use the fallback versioned compatible 
+> > string to set up some common arguments. (This is what the patch
+> 
+> Nope. Driver never relies on schema doing select. That's just incorrect.
+> 
 
-Validate cell-index value obtained from Device Tree.
+Yeah, I make a mistake on understanding you. For me, I just followed
+what others do. But there is a comment before this select.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+"""
+Select every compatible, including the deprecated ones. This way, we
+will be able to report a warning when we have that compatible, since
+we will validate the node thanks to the select, but won't report it
+as a valid value in the compatible property description
+"""
 
-Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
----
-v4:
-  - Update patch after refcount leaks fix
-    (https://lore.kernel.org/all/20241015060122.25709-1-amishin@t-argos.ru/)
-	as suggested by Jakub
-	(https://lore.kernel.org/all/20240904072307.1b17227c@kernel.org/)
-v3: https://lore.kernel.org/all/20240904060920.9645-1-amishin@t-argos.ru/
-  - Add Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-    (https://lore.kernel.org/all/e0b8c69a-3cc0-4034-b3f7-d8bdcc480c4d@seco.com/)
-v2: https://lore.kernel.org/all/20240702140124.19096-1-amishin@t-argos.ru/
-  - Move check to mac.c to avoid allmodconfig build errors and reference leaks
-v1: https://lore.kernel.org/all/20240702095034.12371-1-amishin@t-argos.ru/
+By reading this, I think there may be some historical reason? Maybe
+someone can explain this.
 
- drivers/net/ethernet/freescale/fman/fman.c | 1 -
- drivers/net/ethernet/freescale/fman/fman.h | 3 +++
- drivers/net/ethernet/freescale/fman/mac.c  | 5 +++++
- 3 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-index d96028f01770..fb416d60dcd7 100644
---- a/drivers/net/ethernet/freescale/fman/fman.c
-+++ b/drivers/net/ethernet/freescale/fman/fman.c
-@@ -24,7 +24,6 @@
- 
- /* General defines */
- #define FMAN_LIODN_TBL			64	/* size of LIODN table */
--#define MAX_NUM_OF_MACS			10
- #define FM_NUM_OF_FMAN_CTRL_EVENT_REGS	4
- #define BASE_RX_PORTID			0x08
- #define BASE_TX_PORTID			0x28
-diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
-index 2ea575a46675..74eb62eba0d7 100644
---- a/drivers/net/ethernet/freescale/fman/fman.h
-+++ b/drivers/net/ethernet/freescale/fman/fman.h
-@@ -74,6 +74,9 @@
- #define BM_MAX_NUM_OF_POOLS		64 /* Buffers pools */
- #define FMAN_PORT_MAX_EXT_POOLS_NUM	8  /* External BM pools per Rx port */
- 
-+/* General defines */
-+#define MAX_NUM_OF_MACS			10
-+
- struct fman; /* FMan data */
- 
- /* Enum for defining port types */
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
-index 11da139082e1..1916a2ac48b9 100644
---- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -259,6 +259,11 @@ static int mac_probe(struct platform_device *_of_dev)
- 		err = -EINVAL;
- 		goto _return_dev_put;
- 	}
-+	if (val >= MAX_NUM_OF_MACS) {
-+		dev_err(dev, "cell-index value is too big for %pOF\n", mac_node);
-+		err = -EINVAL;
-+		goto _return_dev_put;
-+	}
- 	priv->cell_index = (u8)val;
- 
- 	/* Get the MAC address */
--- 
-2.30.2
-
+Regards,
+Inochi
