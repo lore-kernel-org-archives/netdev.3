@@ -1,116 +1,69 @@
-Received: from mx17lb.world4you.com (mx17lb.world4you.com [81.19.149.127])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5685018E76F
-	for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 20:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF4C1E0B7A;
+	Mon, 28 Oct 2024 20:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730147910; cv=none; b=mVr0kdRX1POemiIEYwYfvxkdZLdbRheEXhFpaOLjoYThoQkw/eVNPF5L0tSrg23m+QDx91+QlQ/f4TTR9xeht9PzyKuZB2to8SQ0bzxaCrQBulP2N74iNOWhaWzHxSahRMbVwo8SbIJ2Cep/vO8nUmrF7RMq0tx+sjcbiujDb9g=
+	t=1730147934; cv=none; b=bHpusQkVitGE8apQdFyR5DmXexAiaH/HCVPdmMkxG9i1yof8kK7fRt2qMX1INjYyCSyYgaOqsVpi5ZYdLVkoVpoM2MnxKJjj1KBV6OSLMxLUV1HC24vE+w/5alCeI+AypURiG1krhmxsVH6+HqBfj9WDOxZWydO6nVfVrHsS1j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730147910; c=relaxed/simple;
-	bh=Gu0f++Y1buYbjq2XeMlS7hfvZHhvWdE4z4GSyY+LEvQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gVy15g/y+bXAtkk+e4jMjclDPB9esm3ydu7aPXiBIHFDQwdN4L5cM03jPfnLNiRQqie1S5+INRxMbkeKryfkt8bpDoUBpCxzKp9J2scXYdBfmHIgkNzEjHK2YyiOGlCM9OjlELuH9tT7bJ2dK5lIX6drGcjsG9pomiVYe0Ru9kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=QRE+P0H+; arc=none smtp.client-ip=81.19.149.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1730147934; c=relaxed/simple;
+	bh=0SHhwMvBQ0R/VwzQbIYNd7Gy0atuINm9sxnfjq3nmGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mbWHh+jC9LN0nSvI6/3sBAiMPPOJmeau7htCIRSyCxicuQuKznu9wgYYhLwmCwIRJfEA3H1roCvZMEQsPmpNm+1/ELcd1CNUD440sCWRRTXC4WrBPpPIDH1cO6XmXYSqFSZnaahrCCi8KDC/1Y5DJqY+NO6OFuu693BZxW/if1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dC8/TwOH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="QRE+P0H+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HZREiFQf5R44he02JNkvnaf1vB0lV0+xrGaWK/Oh2dQ=; b=QRE+P0H+7X/VaCVc5W4TCaOY76
-	LfN5NUyVTuCPb/tglzoLHppHecpUTBSjisG9PZzjmAtOFU0xgLC7wDg4r5lFmDRtpyPeXckeJ3ZRB
-	C9R1Wn4QeNuqUFyGBR1PPsZgcZpRr4y7N0a4MiO80r5aRKj9alQ7fDRJKEQyGmH63qxk=;
-Received: from 88-117-52-189.adsl.highway.telekom.at ([88.117.52.189] helo=hornet.engleder.at)
-	by mx17lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1t5WVL-0000000077v-1SdK;
-	Mon, 28 Oct 2024 21:38:23 +0100
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Gerhard Engleder <gerhard@engleder-embedded.com>
-Subject: [PATCH net-next 3/4] net: phy: micrel: Add loopback support
-Date: Mon, 28 Oct 2024 21:38:03 +0100
-Message-Id: <20241028203804.41689-4-gerhard@engleder-embedded.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241028203804.41689-1-gerhard@engleder-embedded.com>
-References: <20241028203804.41689-1-gerhard@engleder-embedded.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dC8/TwOH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0cyChLLmUWYrZilbG+gZNOZFe7OHGrSoufugVIJy4Og=; b=dC8/TwOHMmChIkwoaPwsvpOWwg
+	n7VREjt24R6PPg8Ts918jTJqwKotUYuMH/bgWI03PrzGNq67+jWGDFi3Mei4ZSQqUpLRQmy2YmLB2
+	5s5WxtnD0nR8NbUt70pmG7UltPqWOcrdW+bUssN1YekgV4FCpBucJ90ka+XWsX50k4+M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t5WVi-00BULE-L0; Mon, 28 Oct 2024 21:38:46 +0100
+Date: Mon, 28 Oct 2024 21:38:46 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH v2 1/4][next] uapi: socket: Introduce struct
+ sockaddr_legacy
+Message-ID: <66641c32-a9fb-4cd6-b910-52d2872fad3d@lunn.ch>
+References: <cover.1729802213.git.gustavoars@kernel.org>
+ <23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
-X-ACL-Warn: X-W4Y-Internal
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
 
-The KSZ9031 PHYs requires full duplex for loopback mode. Add PHY
-specific set_loopback() to ensure this.
+> As this new struct will live in UAPI, to avoid breaking user-space code
+> that expects `struct sockaddr`, the `__kernel_sockaddr_legacy` macro is
+> introduced. This macro allows us to use either `struct sockaddr` or
+> `struct sockaddr_legacy` depending on the context in which the code is
+> used: kernel-space or user-space.
 
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
----
- drivers/net/phy/micrel.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Are there cases of userspace API structures where the flexiable array
+appears in the middle? I assume this new compiler flag is not only for
+use in the kernel? When it gets turned on in user space, will the
+kernel headers will again produce warnings? Should we be considering
+allowing user space to opt in to using sockaddr_legacy?
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 65b0a3115e14..41b92d4e1d17 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1028,6 +1028,33 @@ static int ksz9021_config_init(struct phy_device *phydev)
- #define MII_KSZ9031RN_EDPD		0x23
- #define MII_KSZ9031RN_EDPD_ENABLE	BIT(0)
- 
-+static int ksz9031_set_loopback(struct phy_device *phydev, bool enable,
-+				int speed)
-+{
-+	u16 ctl = BMCR_LOOPBACK;
-+	int ret, val;
-+
-+	if (!enable)
-+		return genphy_loopback(phydev, enable, 0);
-+
-+	if (speed == SPEED_10 || speed == SPEED_100 || speed == SPEED_1000)
-+		phydev->speed = speed;
-+	else if (speed)
-+		return -EINVAL;
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	ctl |= mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
-+
-+	phy_modify(phydev, MII_BMCR, ~0, ctl);
-+
-+	ret = phy_read_poll_timeout(phydev, MII_BMSR, val, val & BMSR_LSTATUS,
-+				    5000, 500000, true);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int ksz9031_of_load_skew_values(struct phy_device *phydev,
- 				       const struct device_node *of_node,
- 				       u16 reg, size_t field_sz,
-@@ -5478,6 +5505,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.resume		= kszphy_resume,
- 	.cable_test_start	= ksz9x31_cable_test_start,
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
-+	.set_loopback	= ksz9031_set_loopback,
- }, {
- 	.phy_id		= PHY_ID_LAN8814,
- 	.phy_id_mask	= MICREL_PHY_ID_MASK,
--- 
-2.39.2
-
+    Andrew
