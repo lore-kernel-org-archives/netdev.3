@@ -1,427 +1,372 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2080.outbound.protection.outlook.com [40.107.223.80])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F928189B8D;
-	Mon, 28 Oct 2024 11:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730116775; cv=fail; b=oOYdK2+NpZT435TZJP0lZEYQJW/g8RS3psmtdLe1Vx3hcUQoLN0PFHdau3sTlQQx/hig/bbnCu6nPbaH+UxkxUoriScOPnFjb4qXi2SQnKFzO/0RHa8wogM03Ex5SLOlb/IOeAjLUk7iEYwu0Mw4FS8rN8VgZaRg7nwgDbrLSAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730116775; c=relaxed/simple;
-	bh=nzTOZQ3gV/Rtd1sIJc2BASnlx7hLUvb/uheXm2dS/6A=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rvxPFaF1F5Qs4oQUVNFqxMHcwllOVkDcNZfHzm84o3gIHakk3Y/eyFwFu6TzSGqPcAonNI7zh8qlKq+7aY7LiNUKDc4UdRrWstuqCf6ycwAjyQfa1ZuTyZhpEgjVEMsXMrUWE/THydYJZ3mUGg8lEyK8eXu1HETqYano194V4mA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YGgaz9H7; arc=fail smtp.client-ip=40.107.223.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YGgaz9H7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aWIU+ocq5oErqA7XVdZUsOBlsZDvftfPQe89oOYAEYeKt8hNWRjd6V671zaPwPmBNIH5Kk5ejFyow4oIE6VKUPs/Ftb6PdnFqRFhyPOQS+9OeLsm4Tolm2hhf39DB8LJ9vBmMWA3sh7ePY/iaTUcYngUVVdpLSDFg6VKnRMWeJIRFa3+hlL5gYwiiHNXdIBGjxXq+1IWVas7VhnbmPKY51zMJBlQo2SkiBZm5lAWddKR+HHA+78V/g7HWngLiVSP65BVljUODZBKKnwqmyYAusC9w8joY88ePOWObkWkrl4lkbJekRLU9gOPV+AqcNxY5vruiqo1XvVzi6yCzeHuRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I5aeShbiB2H5H0CxxAaVR7o0tJdeAsIDMu001Y9SgrU=;
- b=h+7bn/Of/nb8J1PoA+IQZzQqRNyiAiOHALm/9aqKnzTrDb1juUYbd5XATgNbAj4H+JFlV7ogJhdvJSplW2A6LPRB7zkmcstG7rjyCGuB14kr+PbSWxZ2MBP9/DfUnJRcntmnmHJyD/hAbk6PSEthVLuXAQR2oMKczD9tYoreq2u41KKa8tIjEYhDduja0yffGoqqA13vE2U0iLgiTAFHFNeDWtdwaoUGBchFzAnE8hFK2lyE6VyQqZwlnucEOHZYa9DWM6PEBhytbMqAmLqE+BU7zV23r7jvJu98U5yFKjez7C5HoRUvvtIKztRym0G4+S6++H1DqDfDsGfFHAhD8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I5aeShbiB2H5H0CxxAaVR7o0tJdeAsIDMu001Y9SgrU=;
- b=YGgaz9H74rVCEVUapS+WSFf7VGINMT0+0ZzxoS5vySrAAdyxP1NgDBw+ziodTQlkFxetyDuvD3x65F26WlWuuxeb5DEOf/rIAUykleKV7I2qJlak2zFN4I2u/QVPmjELJmJS4NMWwCNcSDYKWKNAj0iwxp+4H0cR4VzH1a9150k=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
- by SN7PR12MB7449.namprd12.prod.outlook.com (2603:10b6:806:299::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.23; Mon, 28 Oct
- 2024 11:59:28 +0000
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79%4]) with mapi id 15.20.8093.024; Mon, 28 Oct 2024
- 11:59:27 +0000
-Message-ID: <b6c1ced9-0038-7819-8e61-7e486da8bd35@amd.com>
-Date: Mon, 28 Oct 2024 11:59:23 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 02/26] sfc: add cxl support using new CXL API
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- alejandro.lucero-palau@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
- dan.j.williams@intel.com, martin.habets@xilinx.com, edward.cree@amd.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@google.com
-References: <20241017165225.21206-1-alejandro.lucero-palau@amd.com>
- <20241017165225.21206-3-alejandro.lucero-palau@amd.com>
- <20241025150314.00007122@Huawei.com>
-From: Alejandro Lucero Palau <alucerop@amd.com>
-In-Reply-To: <20241025150314.00007122@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0313.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4ba::11) To DM6PR12MB4202.namprd12.prod.outlook.com
- (2603:10b6:5:219::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29E21D6DA9;
+	Mon, 28 Oct 2024 12:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730116809; cv=none; b=qC0RZtERs+irZY0xXhOKBOlpHRkZTa7h+/dNXjE+0hv0eW0AYz26rYYcnIfdFMdN3EQlK2EtpAeRaHgIU5Yw1D6M4axWf4ssItde/JWyRSmEj5IJA4wJ/5/RETSDyNnKkRf/XeoO5tGbl9xzgrDBXYAfmOd5gC91bB+zDDjwnPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730116809; c=relaxed/simple;
+	bh=Px8Y4/ZVcRnQtp3gfqFbDAiVHWZOMgND4tUTdZ8wmaE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GpumIbSruHIWseB70Xhr53KVNt/oOtkuJVpMoDpcALaNPdKVc32fV67VaOtaiaO9bRT4dDEfks+bLHBqcCLankysu5KnLeo8axSuWccw67UD144jpIfWSNz2IDnr2+mcnkG+7tCR6+J0jIlMGgGZRxIfTbtJEPPXA+SOzCermXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XcX2S2sNdz10P7R;
+	Mon, 28 Oct 2024 19:57:52 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id EBD89180064;
+	Mon, 28 Oct 2024 20:00:00 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 28 Oct 2024 20:00:00 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
+	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Shuah
+ Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Linux-MM <linux-mm@kvack.org>
+Subject: [PATCH net-next v23 0/7] Replace page_frag with page_frag_cache (Part-1)
+Date: Mon, 28 Oct 2024 19:53:35 +0800
+Message-ID: <20241028115343.3405838-1-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|SN7PR12MB7449:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ebca81d-a495-435b-4bd8-08dcf747f943
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dmhwYWZibnc0d0hQZVBHdGFjd0lTSUMxdklqSmZFRk5aYzBXeFkwRk1RS2Uy?=
- =?utf-8?B?TnBpK2lraml4L2dXL1Z4eE5hRU15UlYxbDhzc29FS08vTHoyTFhaaEpGOWc4?=
- =?utf-8?B?Z1BkZnhhb2c0RzM4ejJLZGNmS083dlAvSFRJVDB0MEE0dmRwWStsQ09DRVFn?=
- =?utf-8?B?UWpQUmlNcEFwb2F4MDZab2ZZRHlsQjluUndWb243bDA1eUhLa1JSTDYvV3Uw?=
- =?utf-8?B?aXZQM2RCOHhiWVU2Nk5ZUTY4MEpJVUdsRjBva1N1dFF0UnB1VCtOUlJVL3dw?=
- =?utf-8?B?S3dPblZ2aGJPR0djc3k5a01uemRmLzN3U0RPQmtuWWhMV1krSmN4bTlsS1ZB?=
- =?utf-8?B?WUNwVGFTTkNsQlFsQk1uaGRUbjZxdzNsU2RVeWRFaGxJaWJPY0pycVFFaVh4?=
- =?utf-8?B?TEdOb213aXNSZ1dSa3JvazI2bjdpQ1V5VTJ1UnU4ak41aDRYMWs2cHhzMmFv?=
- =?utf-8?B?L2FGYW9QbGRiVlIvU3RJWXhweGp1NkF2MzdNTUhvajNVaUZrS096MG0rTndE?=
- =?utf-8?B?RGhsNXR4cEJ3VW9qWklWZG5VNUl0MWNhc0I4OVRNTkF4dWgzMk84ci9xeXhw?=
- =?utf-8?B?UDFJRExTbXlJVmNuZjB3YkI0aVlyYlIrVldGRXJha0ZnK1RrMlJFUHJzek1a?=
- =?utf-8?B?VHc1ZWhGQmxwOWQ3NWJOYzBpT1NmMU9DakNBYldxNjlKMzZjR0lOTExlSE1l?=
- =?utf-8?B?VS8yNmp6MDZvWUNBcS8wWlVVMjVycFYxTVd4TkdpWDRLWU1OeURYK1RjZE8y?=
- =?utf-8?B?WXU4OFZtdWlmWDhhYk84YlJDM2VZQjcyTWl3VlNnZ1Z6Ui9OaExwbGtIc09V?=
- =?utf-8?B?TGw3RC9iVHd1bC96QlVHaTlXd0E2NHV3dnc4L1NRRjM4NGFncHN2OTBDRHVL?=
- =?utf-8?B?N0hFTDQ3aSt1VC9ZVkE2SlBPTjBPQVA2Qmk2ZGJBb2l4Q1Y3QzBvMlFwdG4z?=
- =?utf-8?B?a3hlWkFPcUhpTHBNL2lMV21QUWkyaXdVdUxSM2FzeVpnR29FM0VYZmpmRXVX?=
- =?utf-8?B?blR3MXJxby9XdHFUK2dmZUR5Z0RGbkErSnpRalJpd3M5YmpaVVpIYlNXdGFJ?=
- =?utf-8?B?LzR2M3lQQ251d2lsRS8reXpvcndWMzQ4ZFpTNVlXMkxUcHlaTE9TZ20rTWNK?=
- =?utf-8?B?N2RXT2hZaGdyaTd4NmNIeHN4cDkrVHppZXF6anU5N0RCSytsTVlUV005eGlM?=
- =?utf-8?B?QUJRYmE0VXJWTWZZNEwwWklSZXlRaFo0cE83VDk2UE9LVzVrVWdpTEovdVNJ?=
- =?utf-8?B?YU1KOURvT3pnM2JmVCtyMUhyM1ZHdXpCMG5scnAwYzcwOWxpWGpGdXE4SjNZ?=
- =?utf-8?B?Y0ZZVFFEV0xqZ1pXUFh3NG5MS2NKcmJYTFh0Tk45ZWZEVjdNOUZYTlhRMGRw?=
- =?utf-8?B?YnJpVHRCUTRybE9UOStmREdtZjFaZ1dQV25xdnRMU0lRYmhNTEg4dUxEZWlj?=
- =?utf-8?B?QlQ1bkwxbDFTT29yOW9QYjJEKzRybEZjSXlyTVJZSXV5VGd2dUxNUTkwWWp5?=
- =?utf-8?B?SGRrekNPZkxsMytsV1FPN1R6NXpqVFRXckU4SnBvSktsaitUTUlrYnk4OGxo?=
- =?utf-8?B?QXhoeC9LMkw5RTVPOEpMNUduUC9UeE1ScDZYei8xT3EzSUVRWW9CYS9LOUdW?=
- =?utf-8?B?NlR5UWsrWld6bk5WSy8yNWVDcVVJaFJoaGxkUWkxb2tLSnNHa1Q0WVozMnl0?=
- =?utf-8?B?NDV3Q3FsWWhyL1ZvYlh5QktTTjFjSXNyb1Z1c2gyN2JWaGdTZlhVcjdGdmZL?=
- =?utf-8?Q?6tWtgphnQSxfc4M8gip0bvdIdaPX4vpLVOeJeLM?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VkkzM1pCZnZxdGxONTVtaHY0UXVLd2NKbTFsNTlFeGI4RG1iZFZTZklxcVFB?=
- =?utf-8?B?bjRQYnRpWmFjeWZzZkNyZjg2V0g3R2xQbzF2S1hkeFp0M01CS2tIQjJlcUVH?=
- =?utf-8?B?b1VUU0FyK3NaUDZ5N3V0cmI1OCtYYmNMd1J2ZGRNaXhEVStxdER4RnU0MVFG?=
- =?utf-8?B?TURaQmNsUzFnMDVXT3JwWVI5a1Y0NXBEQnFmNTR6ajBzR3FoNll4eWdIbDlO?=
- =?utf-8?B?RVRpanpyVmJ2WFAyZWpIYnVCblFlbzRia0pwRGxvMmtKK1pUREdYbjVIL1Nu?=
- =?utf-8?B?bGFvRXA3Z1BvT0o5NDVpdGtLUmJKQklNaTFXRWR0ZHZoc0hQT2k4OTZyNll2?=
- =?utf-8?B?SHVkc3R4bXFuNFp1V2c1OTArRVhCYmllRWR3ZHBKQi9mSEVIYkRpWkN3bUo5?=
- =?utf-8?B?VlJ2Tm5mTnRLYk1OY1B5ak1WeW4vNDVuSUs2OEdjRWt1Z2hVck9vQ3lUUUdG?=
- =?utf-8?B?WkxVenl2eGUwaWV4V0JmQ21JWmtxb0FzOSs0aWY5dUFvUEJKKzVHSFd3VUVP?=
- =?utf-8?B?RFNPdUxYcW56bXdXa1YzQWtTcHBLODRpaGdVY2ZyeHBMbnlVUGZtWXJZRkNt?=
- =?utf-8?B?QXVpbGErYmtmbHp0RElud1pmdnRoV2JaeGVkSEFSclZLQ2pranRLa1M1cVB6?=
- =?utf-8?B?YzRibE1KVy85aWxQYmdZNUVrQ09Wb1Z3NFBLUmpmdjE4Vkc2OTNIZjBXMW1I?=
- =?utf-8?B?dmI5ODBCSkZrUVJ1eFBmUEFxSUVSZlNkYzRUL1hqb3lNVjIza3RQNlFHb3lt?=
- =?utf-8?B?NGFab1BrV1M2eW1qSUxPWGVrQzBDV2x6ZnJpY0dPVy93VzdKQzZTNDF3cXhp?=
- =?utf-8?B?Rm1tdFl0aG5NaW9xd0xrS1c5S3ZoeHNHVnBiZzRPeC9hU0NmSW1oMGpmY1lt?=
- =?utf-8?B?MXg2VER3eWRNY3FtWVJZVEpXd1dxK0IrWkJvbkRhTU85Ym5PS0lxY2M2UGc0?=
- =?utf-8?B?TXlyaEVVRDVwUjZtaUdZdzJNMVdOTVpGNTNrUlJtcERSOWFrUGdSTTJpdnd1?=
- =?utf-8?B?MFdQUEJXdFBTN2R0UHp3dWVQYTl3L29SaGxrSmVIMkZZUzRnT3ZlWEc5VzJJ?=
- =?utf-8?B?d0x5QjJDSEJmUWxTdzNFeWk3bHNJdHQ5Z3d0UUdsT05pNVVPdG16SWI5Yi9Y?=
- =?utf-8?B?ZlBubjVWbkZnRm5nbjlGQ3FJKzFscU9QcDl5STU2L3crMm92UFZJaG9Va1Bt?=
- =?utf-8?B?ZGV5R0pkdWlLdSt5RlBhTDFSK29nZ2pEdGpSL0E0ejVoc2xENFJVa0lmSnlZ?=
- =?utf-8?B?RVRDSFVjN2cyQmlhOTRDUlZnVHpOQ0JvOGgyYnV2cm9TdUEzWFZHVXl6Q2Z2?=
- =?utf-8?B?ZDU5b0paUnRuUkI3cnR6N0dBUEpWalAyY1czaFVielZtOFA4ejMybTBDMHV0?=
- =?utf-8?B?V0QxTm1TaWx1c1k5VlBJM21LNVhHcDIvTmRJRFdrMDBqMmVBRGFmUHM5dXk2?=
- =?utf-8?B?Qm96WU53YVNpOTBTZ1psRTFtOFpXZzRPSzBYdVVHNnVBWUFGRXpUdFdjQmNJ?=
- =?utf-8?B?WXVlbWFXVU5XSytGdTJaanFGN0xYenE5SHZKZnVHbkhYN1FTcURQSjhMVmx6?=
- =?utf-8?B?alVGSzZaNU93QXNtU0VCZjViUFF6T25sN0lUUUVpdU5zSGJhNnltRmVEM1N3?=
- =?utf-8?B?U0U0TklUb0diejBoOFVrUXlCenB1eEp6QjdpVHVQcG96NDZhc0creXBhT1ND?=
- =?utf-8?B?UHJ5STZoYy82T2x6Z1ZOY3dGc2tpVTFvdWxPbmVTMHBURDBENnlIdSt1SDRU?=
- =?utf-8?B?SXM1TVRTUms4VmVWM0t5Z0RWWnFaTkt3bWZIVWZ6VnVsYTBLbUkwbEQ0eFJX?=
- =?utf-8?B?MDByTGlRYUFvZ3ZKZmZCZW1FNTFGV1F1OUxzR0ZTYXJ0N2JVWUt3SUY2Zk9E?=
- =?utf-8?B?MTFTekFOcWlGaHlOOXdqT2JHS1hsMWlIUWRpZUdEaUNPMzg0akpxWjZPTm1u?=
- =?utf-8?B?UXhTc0gzdVB0aDFRMXdTN1FVVVRtZDltM2lWbmgxdEFjTSsyQUp0emJmOE0w?=
- =?utf-8?B?SkhGOXNYWnB2MW9oZkwrd3dJb3hpVmw0MHFEdmtDNHRWc21EZFNyMkdLN25S?=
- =?utf-8?B?REhrWEFLaGpTV3NIRlFGM1A4T2dpTmg4SldMRjRXUDhtRnJiWDlvNEdJbEg3?=
- =?utf-8?Q?oJInrhsb29q4nInRrleprkemP?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ebca81d-a495-435b-4bd8-08dcf747f943
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 11:59:27.8956
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qWs/njGzDY+IkABz4dB1Aio6wC2G4lzVvkm60W3kySU9kjRMXHaHZnSlaC4PlKy0jQfvOk6R/GlFffH/k7Tq8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7449
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
+
+This is part 1 of "Replace page_frag with page_frag_cache",
+which mainly contain refactoring and optimization for the
+implementation of page_frag API before the replacing.
+
+As the discussion in [1], it would be better to target net-next
+tree to get more testing as all the callers page_frag API are
+in networking, and the chance of conflicting with MM tree seems
+low as implementation of page_frag API seems quite self-contained.
+
+After [2], there are still two implementations for page frag:
+
+1. mm/page_alloc.c: net stack seems to be using it in the
+   rx part with 'struct page_frag_cache' and the main API
+   being page_frag_alloc_align().
+2. net/core/sock.c: net stack seems to be using it in the
+   tx part with 'struct page_frag' and the main API being
+   skb_page_frag_refill().
+
+This patchset tries to unfiy the page frag implementation
+by replacing page_frag with page_frag_cache for sk_page_frag()
+first. net_high_order_alloc_disable_key for the implementation
+in net/core/sock.c doesn't seems matter that much now as pcp
+is also supported for high-order pages:
+commit 44042b449872 ("mm/page_alloc: allow high-order pages to
+be stored on the per-cpu lists")
+
+As the related change is mostly related to networking, so
+targeting the net-next. And will try to replace the rest
+of page_frag in the follow patchset.
+
+After this patchset:
+1. Unify the page frag implementation by taking the best out of
+   two the existing implementations: we are able to save some space
+   for the 'page_frag_cache' API user, and avoid 'get_page()' for
+   the old 'page_frag' API user.
+2. Future bugfix and performance can be done in one place, hence
+   improving maintainability of page_frag's implementation.
+
+Kernel Image changing:
+    Linux Kernel   total |      text      data        bss
+    ------------------------------------------------------
+    after     45250307 |   27274279   17209996     766032
+    before    45254134 |   27278118   17209984     766032
+    delta        -3827 |      -3839        +12         +0
+
+Performance validation:
+1. Using micro-benchmark ko added in patch 1 to test aligned and
+   non-aligned API performance impact for the existing users, there
+   is no notiable performance degradation. Instead we seems to have
+   some major performance boot for both aligned and non-aligned API
+   after switching to ptr_ring for testing, respectively about 200%
+   and 10% improvement in arm64 server as below.
+
+2. Use the below netcat test case, we also have some minor
+   performance boot for replacing 'page_frag' with 'page_frag_cache'
+   after this patchset.
+   server: taskset -c 32 nc -l -k 1234 > /dev/null
+   client: perf stat -r 200 -- taskset -c 0 head -c 20G /dev/zero | taskset -c 1 nc 127.0.0.1 1234
+
+In order to avoid performance noise as much as possible, the testing
+is done in system without any other load and have enough iterations to
+prove the data is stable enough, complete log for testing is below:
+
+perf stat -r 200 -- insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000
+perf stat -r 200 -- insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1
+taskset -c 32 nc -l -k 1234 > /dev/null
+perf stat -r 200 -- taskset -c 0 head -c 20G /dev/zero | taskset -c 1 nc 127.0.0.1 1234
+
+*After* this patchset:
+
+ Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
+
+         17.758393      task-clock (msec)         #    0.004 CPUs utilized            ( +-  0.51% )
+                 5      context-switches          #    0.293 K/sec                    ( +-  0.65% )
+                 0      cpu-migrations            #    0.008 K/sec                    ( +- 17.21% )
+                74      page-faults               #    0.004 M/sec                    ( +-  0.12% )
+          46128650      cycles                    #    2.598 GHz                      ( +-  0.51% )
+          60810511      instructions              #    1.32  insn per cycle           ( +-  0.04% )
+          14764914      branches                  #  831.433 M/sec                    ( +-  0.04% )
+             19281      branch-misses             #    0.13% of all branches          ( +-  0.13% )
+
+       4.240273854 seconds time elapsed                                          ( +-  0.13% )
+
+ Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
+
+         17.348690      task-clock (msec)         #    0.019 CPUs utilized            ( +-  0.66% )
+                 5      context-switches          #    0.310 K/sec                    ( +-  0.84% )
+                 0      cpu-migrations            #    0.009 K/sec                    ( +- 16.55% )
+                74      page-faults               #    0.004 M/sec                    ( +-  0.11% )
+          45065287      cycles                    #    2.598 GHz                      ( +-  0.66% )
+          60755389      instructions              #    1.35  insn per cycle           ( +-  0.05% )
+          14747865      branches                  #  850.085 M/sec                    ( +-  0.05% )
+             19272      branch-misses             #    0.13% of all branches          ( +-  0.13% )
+
+       0.935251375 seconds time elapsed                                          ( +-  0.07% )
+
+ Performance counter stats for 'taskset -c 0 head -c 20G /dev/zero' (200 runs):
+
+      16626.042731      task-clock (msec)         #    0.607 CPUs utilized            ( +-  0.03% )
+           3291020      context-switches          #    0.198 M/sec                    ( +-  0.05% )
+                 1      cpu-migrations            #    0.000 K/sec                    ( +-  0.50% )
+                85      page-faults               #    0.005 K/sec                    ( +-  0.16% )
+       30581044838      cycles                    #    1.839 GHz                      ( +-  0.05% )
+       34962744631      instructions              #    1.14  insn per cycle           ( +-  0.01% )
+        6483883671      branches                  #  389.984 M/sec                    ( +-  0.02% )
+          99624551      branch-misses             #    1.54% of all branches          ( +-  0.17% )
+
+      27.370305077 seconds time elapsed                                          ( +-  0.01% )
 
 
-On 10/25/24 15:03, Jonathan Cameron wrote:
-> On Thu, 17 Oct 2024 17:52:01 +0100
-> <alejandro.lucero-palau@amd.com> wrote:
->
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> Add CXL initialization based on new CXL API for accel drivers and make
->> it dependable on kernel CXL configuration.
->>
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> ---
->>   drivers/net/ethernet/sfc/Kconfig      |  1 +
->>   drivers/net/ethernet/sfc/Makefile     |  2 +-
->>   drivers/net/ethernet/sfc/efx.c        | 16 +++++
->>   drivers/net/ethernet/sfc/efx_cxl.c    | 92 +++++++++++++++++++++++++++
->>   drivers/net/ethernet/sfc/efx_cxl.h    | 29 +++++++++
->>   drivers/net/ethernet/sfc/net_driver.h |  6 ++
->>   6 files changed, 145 insertions(+), 1 deletion(-)
->>   create mode 100644 drivers/net/ethernet/sfc/efx_cxl.c
->>   create mode 100644 drivers/net/ethernet/sfc/efx_cxl.h
->>
->> diff --git a/drivers/net/ethernet/sfc/Kconfig b/drivers/net/ethernet/sfc/Kconfig
->> index 3eb55dcfa8a6..b308a6f674b2 100644
->> --- a/drivers/net/ethernet/sfc/Kconfig
->> +++ b/drivers/net/ethernet/sfc/Kconfig
->> @@ -20,6 +20,7 @@ config SFC
->>   	tristate "Solarflare SFC9100/EF100-family support"
->>   	depends on PCI
->>   	depends on PTP_1588_CLOCK_OPTIONAL
->> +	depends on CXL_BUS && CXL_BUS=m && m
->   Do some makefile magic and stubs to only support efx_cxl.c
-> being built at all if necessary conditions met.
-> Doesn't necessarily need a visible control.
+*Before* this patchset:
+
+Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
+
+         21.587934      task-clock (msec)         #    0.005 CPUs utilized            ( +-  0.72% )
+                 6      context-switches          #    0.281 K/sec                    ( +-  0.28% )
+                 1      cpu-migrations            #    0.047 K/sec                    ( +-  0.50% )
+                73      page-faults               #    0.003 M/sec                    ( +-  0.12% )
+          56080697      cycles                    #    2.598 GHz                      ( +-  0.72% )
+          61605150      instructions              #    1.10  insn per cycle           ( +-  0.05% )
+          14950196      branches                  #  692.526 M/sec                    ( +-  0.05% )
+             19410      branch-misses             #    0.13% of all branches          ( +-  0.18% )
+
+       4.603530546 seconds time elapsed                                          ( +-  0.11% )
+
+ Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
+
+         20.988297      task-clock (msec)         #    0.006 CPUs utilized            ( +-  0.81% )
+                 7      context-switches          #    0.316 K/sec                    ( +-  0.54% )
+                 1      cpu-migrations            #    0.048 K/sec                    ( +-  0.70% )
+                73      page-faults               #    0.003 M/sec                    ( +-  0.11% )
+          54512166      cycles                    #    2.597 GHz                      ( +-  0.81% )
+          61440941      instructions              #    1.13  insn per cycle           ( +-  0.08% )
+          14906043      branches                  #  710.207 M/sec                    ( +-  0.08% )
+             19927      branch-misses             #    0.13% of all branches          ( +-  0.17% )
+
+       3.438041238 seconds time elapsed                                          ( +-  1.11% )
+
+ Performance counter stats for 'taskset -c 0 head -c 20G /dev/zero' (200 runs):
+
+      17364.040855      task-clock (msec)         #    0.624 CPUs utilized            ( +-  0.02% )
+           3340375      context-switches          #    0.192 M/sec                    ( +-  0.06% )
+                 1      cpu-migrations            #    0.000 K/sec
+                85      page-faults               #    0.005 K/sec                    ( +-  0.15% )
+       32077623335      cycles                    #    1.847 GHz                      ( +-  0.03% )
+       35121047596      instructions              #    1.09  insn per cycle           ( +-  0.01% )
+        6519872824      branches                  #  375.481 M/sec                    ( +-  0.02% )
+         101877022      branch-misses             #    1.56% of all branches          ( +-  0.14% )
+
+      27.842745343 seconds time elapsed                                          ( +-  0.02% )
 
 
-Yes, I have already change this after Ben Cheatham's comments.
+Note, ipv4-udp, ipv6-tcp and ipv6-udp is also tested with the below script:
+nc -u -l -k 1234 > /dev/null
+perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -N -u 127.0.0.1 1234
 
+nc -l6 -k 1234 > /dev/null
+perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -N ::1 1234
 
-> config SFC9100_CXL
-> 	boolean
->
-> then here have
-> select SFC9100_CXL if CXL_BUS
->
->
->>   	select MDIO
->>   	select CRC32
->>   	select NET_DEVLINK
->> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
->> new file mode 100644
->> index 000000000000..fb3eef339b34
->> --- /dev/null
->> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
->> @@ -0,0 +1,92 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/****************************************************************************
->> + *
->> + * Driver for AMD network controllers and boards
->> + * Copyright (C) 2024, Advanced Micro Devices, Inc.
->> + *
->> + * This program is free software; you can redistribute it and/or modify it
->> + * under the terms of the GNU General Public License version 2 as published
->> + * by the Free Software Foundation, incorporated herein by reference.
->> + */
->> +
->> +#include <linux/cxl/cxl.h>
->> +#include <linux/cxl/pci.h>
->> +#include <linux/pci.h>
->> +
->> +#include "net_driver.h"
->> +#include "efx_cxl.h"
->> +
->> +#define EFX_CTPIO_BUFFER_SIZE	SZ_256M
->> +
->> +int efx_cxl_init(struct efx_nic *efx)
->> +{
->> +#if IS_ENABLED(CONFIG_CXL_BUS)
-> If it can't do anything useful, make the build depend on this
-> and provide stubs for when it isn't enabled.
->
-> I'd not expect to see any ifdef stuff for basic CXL in this file
-> as it should build unless they are all configured.
+nc -l6 -k -u 1234 > /dev/null
+perf stat -r 4 -- head -c 51200000000 /dev/zero | nc -u -N ::1 1234
 
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+CC: Shuah Khan <skhan@linuxfoundation.org>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: Linux-MM <linux-mm@kvack.org>
 
-Right. I got rid of them after the changes commented above.
+1. https://lore.kernel.org/all/add10dd4-7f5d-4aa1-aa04-767590f944e0@redhat.com/
+2. https://lore.kernel.org/all/20240228093013.8263-1-linyunsheng@huawei.com/
 
+Change log:
+V23:
+   1. CC Andrew and MM ML explicitly.
+   2. Split into two parts according to the discussion in v22, and this is
+      the part-1.
 
->> +	struct pci_dev *pci_dev = efx->pci_dev;
->> +	struct efx_cxl *cxl;
->> +	struct resource res;
->> +	u16 dvsec;
->> +	int rc;
->> +
->> +	efx->efx_cxl_pio_initialised = false;
->> +
->> +	dvsec = pci_find_dvsec_capability(pci_dev, PCI_VENDOR_ID_CXL,
->> +					  CXL_DVSEC_PCIE_DEVICE);
->> +	if (!dvsec)
->> +		return 0;
->> +
->> +	pci_dbg(pci_dev, "CXL_DVSEC_PCIE_DEVICE capability found\n");
->> +
->> +	cxl = kzalloc(sizeof(*cxl), GFP_KERNEL);
-> __free magic here.
-> Assuming later changes don't make that a bad idea - I've not
-> read the whole set for a while.
+V22:
+   1. Fix some typo as noted by Bagas.
+   2. Remove page_frag_cache_page_offset() as it is not really related to
+      this patchset.
 
+V21:
+   1. Do renaming as suggested by Alexander.
+   2. Filter out the test results of dmesg in script as suggested by
+      Shuah.
 
-Remember we are in netdev territory and those free magic things are not 
-liked ...
+V20:
+   1. Rename skb_copy_to_page_nocache() to skb_add_frag_nocache().
+   2. Define the PFMEMALLOC_BIT as the ORDER_MASK + 1 as suggested by
+      Alexander.
 
+V19:
+   1. Rebased on latest net-next.
+   2. Use wait_for_completion_timeout() instead of wait_for_completion()
+      in page_frag_test.c
 
->
->> +	if (!cxl)
->> +		return -ENOMEM;
->> +
->> +	cxl->cxlds = cxl_accel_state_create(&pci_dev->dev);
-> Stash this in a local cxl_dev_state for now and use __free() for that.
->
->> +	if (IS_ERR(cxl->cxlds)) {
->> +		pci_err(pci_dev, "CXL accel device state failed");
->> +		rc = -ENOMEM;
->> +		goto err1;
->> +	}
->> +
->> +	cxl_set_dvsec(cxl->cxlds, dvsec);
->> +	cxl_set_serial(cxl->cxlds, pci_dev->dev.id);
->> +
->> +	res = DEFINE_RES_MEM(0, EFX_CTPIO_BUFFER_SIZE);
->> +	if (cxl_set_resource(cxl->cxlds, res, CXL_RES_DPA)) {
->> +		pci_err(pci_dev, "cxl_set_resource DPA failed\n");
->> +		rc = -EINVAL;
->> +		goto err2;
->> +	}
->> +
->> +	res = DEFINE_RES_MEM_NAMED(0, EFX_CTPIO_BUFFER_SIZE, "ram");
->> +	if (cxl_set_resource(cxl->cxlds, res, CXL_RES_RAM)) {
->> +		pci_err(pci_dev, "cxl_set_resource RAM failed\n");
->> +		rc = -EINVAL;
->> +		goto err2;
->> +	}
->> +
-> 	cxl->cxlds = no_free_ptr(cxlds);
-> 	efx->cxl = no_free_ptr(cxl);
->
->> +	efx->cxl = cxl;
->> +#endif
->> +
->> +	return 0;
->> +
->> +#if IS_ENABLED(CONFIG_CXL_BUS)
-> With __free changes suggest above, no need to do anything here
-> and can return directly from the error checks above.
->
->> +err2:
->> +	kfree(cxl->cxlds);
->> +err1:
->> +	kfree(cxl);
->> +	return rc;
->> +
->> +#endif
->> +}
->> +
->> +void efx_cxl_exit(struct efx_nic *efx)
->> +{
->> +#if IS_ENABLED(CONFIG_CXL_BUS)
-> IS_REACHABLE() maybe, so if this driver is built in but CXL_BUS
-> is not then this will go away.
->
->> +	if (efx->cxl) {
->> +		kfree(efx->cxl->cxlds);
->> +		kfree(efx->cxl);
->> +	}
->> +#endif
->> +}
->> +
->> +MODULE_IMPORT_NS(CXL);
->> diff --git a/drivers/net/ethernet/sfc/efx_cxl.h b/drivers/net/ethernet/sfc/efx_cxl.h
->> new file mode 100644
->> index 000000000000..f57fb2afd124
->> --- /dev/null
->> +++ b/drivers/net/ethernet/sfc/efx_cxl.h
->> @@ -0,0 +1,29 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/****************************************************************************
->> + * Driver for AMD network controllers and boards
->> + * Copyright (C) 2024, Advanced Micro Devices, Inc.
->> + *
->> + * This program is free software; you can redistribute it and/or modify it
->> + * under the terms of the GNU General Public License version 2 as published
->> + * by the Free Software Foundation, incorporated herein by reference.
->> + */
->> +
->> +#ifndef EFX_CXL_H
->> +#define EFX_CXL_H
->> +
->> +struct efx_nic;
->> +struct cxl_dev_state;
-> struct cxl_memdev;
-> struct cxl_root_decoder;
-> struct cxl_port;
-> ...
->
+V18:
+   1. Fix a typo in test_page_frag.sh pointed out by Alexander.
+   2. Move some inline helper into c file, use ternary operator and
+      move the getting of the size as suggested by Alexander.
 
-Yes. I'll do it.
+V17:
+   1. Add TEST_FILES in Makefile for test_page_frag.sh.
 
+V16:
+   1. Add test_page_frag.sh to handle page_frag_test.ko and add testing
+      for prepare API.
+   2. Move inline helper unneeded outside of the page_frag_cache.c to
+      page_frag_cache.c.
+   3. Reset nc->offset when reusing an old page.
 
->> +
->> +struct efx_cxl {
->> +	struct cxl_dev_state *cxlds;
->> +	struct cxl_memdev *cxlmd;
->> +	struct cxl_root_decoder *cxlrd;
->> +	struct cxl_port *endpoint;
->> +	struct cxl_endpoint_decoder *cxled;
->> +	struct cxl_region *efx_region;
->> +	void __iomem *ctpio_cxl;
->> +};
->> +
->> +int efx_cxl_init(struct efx_nic *efx);
->> +void efx_cxl_exit(struct efx_nic *efx);
->> +#endif
->> diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
->> index b85c51cbe7f9..77261de65e63 100644
->> --- a/drivers/net/ethernet/sfc/net_driver.h
->> +++ b/drivers/net/ethernet/sfc/net_driver.h
->> @@ -817,6 +817,8 @@ enum efx_xdp_tx_queues_mode {
->>   
->>   struct efx_mae;
->>   
->> +struct efx_cxl;
->> +
->>   /**
->>    * struct efx_nic - an Efx NIC
->>    * @name: Device name (net device name or bus id before net device registered)
->> @@ -963,6 +965,8 @@ struct efx_mae;
->>    * @tc: state for TC offload (EF100).
->>    * @devlink: reference to devlink structure owned by this device
->>    * @dl_port: devlink port associated with the PF
->> + * @cxl: details of related cxl objects
->> + * @efx_cxl_pio_initialised: clx initialization outcome.
-> cxl
+V15:
+   1. Fix the compile error pointed out by Simon.
+   2. Fix Other mistakes when using new API naming and refactoring.
 
+V14:
+   1. Drop '_va' Renaming patch and use new API naming.
+   2. Use new refactoring to enable more codes to be reusable.
+   3. And other minor suggestions from Alexander.
 
-Well spotted. I'll fix it.
+V13:
+   1. Move page_frag_test from mm/ to tools/testing/selftest/mm
+   2. Use ptr_ring to replace ptr_pool for page_frag_test.c
+   3. Retest based on the new testing ko, which shows a big different
+      result than using ptr_pool.
 
+V12:
+   1. Do not treat page_frag_test ko as DEBUG feature.
+   2. Make some improvement for the refactoring in patch 8.
+   3. Some other minor improvement as Alexander's comment.
 
-> Also, it's in a struct called efx_nic, so is the efx_ prefix
-> useful?
+RFC v11:
+   1. Fold 'page_frag_cache' moving change into patch 2.
+   2. Optimizate patch 3 according to discussion in v9.
 
+V10:
+   1. Change Subject to "Replace page_frag with page_frag_cache for sk_page_frag()".
+   2. Move 'struct page_frag_cache' to sched.h as suggested by Alexander.
+   3. Rename skb_copy_to_page_nocache().
+   4. Adjust change between patches to make it more reviewable as Alexander's comment.
+   5. Use 'aligned_remaining' variable to generate virtual address as Alexander's
+      comment.
+   6. Some included header and typo fix as Alexander's comment.
+   7. Add back the get_order() opt patch for xtensa arch
 
-I do not like to have the name as the struct ...
+V9:
+   1. Add check for test_alloc_len and change perm of module_param()
+      to 0 as Wang Wei' comment.
+   2. Rebased on latest net-next.
 
-Anyways, thanks for the review.
+V8: Remove patch 2 & 3 in V7, as free_unref_page() is changed to call
+    pcp_allowed_order() and used in page_frag API recently in:
+    commit 5b8d75913a0e ("mm: combine free_the_page() and free_unref_page()")
 
+V7: Fix doc build warning and error.
 
->>    * @mem_bar: The BAR that is mapped into membase.
->>    * @reg_base: Offset from the start of the bar to the function control window.
->>    * @monitor_work: Hardware monitor workitem
->> @@ -1148,6 +1152,8 @@ struct efx_nic {
->>   
->>   	struct devlink *devlink;
->>   	struct devlink_port *dl_port;
->> +	struct efx_cxl *cxl;
->> +	bool efx_cxl_pio_initialised;
->>   	unsigned int mem_bar;
->>   	u32 reg_base;
->>   
+V6:
+   1. Fix some typo and compiler error for x86 pointed out by Jakub and
+      Simon.
+   2. Add two refactoring and optimization patches.
+
+V5:
+   1. Add page_frag_alloc_pg() API for tls_device.c case and refactor
+      some implementation, update kernel bin size changing as bin size
+      is increased after that.
+   2. Add ack from Mat.
+
+RFC v4:
+   1. Update doc according to Randy and Mat's suggestion.
+   2. Change probe API to "probe" for a specific amount of available space,
+      rather than "nonzero" space according to Mat's suggestion.
+   3. Retest and update the test result.
+
+v3:
+   1. Use new layout for 'struct page_frag_cache' as the discussion
+      with Alexander and other sugeestions from Alexander.
+   2. Add probe API to address Mat' comment about mptcp use case.
+   3. Some doc updating according to Bagas' suggestion.
+
+v2:
+   1. reorder test module to patch 1.
+   2. split doc and maintainer updating to two patches.
+   3. refactor the page_frag before moving.
+   4. fix a type and 'static' warning in test module.
+   5. add a patch for xtensa arch to enable using get_order() in
+      BUILD_BUG_ON().
+   6. Add test case and performance data for the socket code.
+
+Yunsheng Lin (7):
+  mm: page_frag: add a test module for page_frag
+  mm: move the page fragment allocator from page_alloc into its own file
+  mm: page_frag: use initial zero offset for page_frag_alloc_align()
+  mm: page_frag: avoid caller accessing 'page_frag_cache' directly
+  xtensa: remove the get_order() implementation
+  mm: page_frag: reuse existing space for 'size' and 'pfmemalloc'
+  mm: page_frag: use __alloc_pages() to replace alloc_pages_node()
+
+ arch/xtensa/include/asm/page.h                |  18 --
+ drivers/vhost/net.c                           |   2 +-
+ include/linux/gfp.h                           |  22 --
+ include/linux/mm_types.h                      |  18 --
+ include/linux/mm_types_task.h                 |  21 ++
+ include/linux/page_frag_cache.h               |  61 ++++++
+ include/linux/skbuff.h                        |   1 +
+ mm/Makefile                                   |   1 +
+ mm/page_alloc.c                               | 136 ------------
+ mm/page_frag_cache.c                          | 171 +++++++++++++++
+ net/core/skbuff.c                             |   6 +-
+ net/rxrpc/conn_object.c                       |   4 +-
+ net/rxrpc/local_object.c                      |   4 +-
+ net/sunrpc/svcsock.c                          |   6 +-
+ tools/testing/selftests/mm/Makefile           |   3 +
+ tools/testing/selftests/mm/page_frag/Makefile |  18 ++
+ .../selftests/mm/page_frag/page_frag_test.c   | 198 ++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh     |   8 +
+ tools/testing/selftests/mm/test_page_frag.sh  | 175 ++++++++++++++++
+ 19 files changed, 665 insertions(+), 208 deletions(-)
+ create mode 100644 include/linux/page_frag_cache.h
+ create mode 100644 mm/page_frag_cache.c
+ create mode 100644 tools/testing/selftests/mm/page_frag/Makefile
+ create mode 100644 tools/testing/selftests/mm/page_frag/page_frag_test.c
+ create mode 100755 tools/testing/selftests/mm/test_page_frag.sh
+
+-- 
+2.33.0
+
