@@ -1,137 +1,78 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173DF204035
-	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 08:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA4F202F8E
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 08:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730191568; cv=none; b=V14oS4vhNpXUjUIL13iluZXHudtJTi+Hs//ZQ/+Q5toNU6HX0J7gROCsIGwnE/vwf1XTTTaxAvpsYqR+kGP/V3xfFD4ndYHsbCwqFX1V+yEafKboSI1kI+zsh9q1luZtkFYvudJahpcrRtvLWAk+eq/o3Zog/W91NaXcbypd2TU=
+	t=1730191582; cv=none; b=G5bN1OM2C7q1nrihsN5ERrGPjJe9p+JweEcSvnF3cRIVCbS6nkYo9UtCSoKhrn106f61WyBJRwPuM9+kAc4PakAnzg6tr6fkxVoQ8Jq89HwaOteaTSa4SVZ56FGMbnLSiWvaRdIFuM0puZnV3QsPWGNQhdRofgLiK6PX6SJa9LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730191568; c=relaxed/simple;
-	bh=oMsPeNDPYjX24/xrsdIKUnroAYKkElkCjISZqScZwOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pHQGERw5YPqPdYM+ZqAUDwQx/xw/VZF0MzIFizeUVcdJK7+rdh9tylRFUNBdw51yeghJo1UIWg7vbCG/w9WMV93JCfQGr4g34FBCemw6cQCpmYVhmBLpi+CgrSgE7ykLtnho57TG1oZLl562UCoerF+axlEVdL4E94TSZm1qVkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=CxNak1L5; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1730191582; c=relaxed/simple;
+	bh=wZPGIzaVxpSzU7iP5qw8KfOY6es//JAet87HXgw1HAo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gPO1e/DkTtkzPoXtHFMy8dnfxeSdaOQ8NeohA1lhO/aiZh78T8qKc6p25689KAnnOkU/L0VUA4FrGcEhoAtxpgqBHn1o7UOwhEwXdJc9WNSkSF8sUgooOgGGeF2R4JPNRDbatUpGvENZdFwuuYQIDG4tK4HPBb8Gjglra3ZPYBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=udRfiqJX; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="CxNak1L5"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a99ebb390a5so1138553066b.1
-        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 01:46:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1730191564; x=1730796364; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FgWCepazzfo33UdtIIMN3k0wsxQsDr435va3n4Xr8tQ=;
-        b=CxNak1L5JQf0Yt56A7ip3UAPeRZSXzEMbKxHWHOR0H7db/CrB8pYS/Y3PYLtDo0mmK
-         a5eBiGMuoMqqLPh1iLfAhycSWZXgC29Po0z62ifisHe89n3SbtNEO1oW/IPz5IcaC2Qi
-         jVWOLkMDuraD04+Adjqh3GXhzxOTjY1W/Cxlc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730191564; x=1730796364;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FgWCepazzfo33UdtIIMN3k0wsxQsDr435va3n4Xr8tQ=;
-        b=HhkwjG3DlRF5fYNRxz0s9cPQa3oNUPtIiasDNWQTVs17JMubpm34QWIvXVEzwUUxUj
-         DsWHsqEbBlAaC1vzlCJ76bkji7TOp+Y4CA33eX4NZQXkCfOMPcK6hUa5mt0PdTsezgRp
-         77FuN2oVqNh26Gs5HsMPHcKgmedeUAHgOyRm1SQlOJ4y30srsp9A+7Igb/pAntnycqYK
-         1Ba51PAXP+GiGBqsP+tiBSemhhJmJvc/xrq6RD5oEdYe/37In5INvcqvmGaLH6dmeHPY
-         HzoUkm1IVeW6yIOP0P2H/GUl5/oMssmBwAk/Xev2orERQnE2/wPmykTXENlDbJ0XIn/i
-         iI2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUYJ76Yj0VNASgqAVLPzYzBtL5ytIZpfrzsaH4DyjJT+I761bVbZoWFKTRhmy5OCd3wydrLIGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXCQa7noPRZq5b2Auk6h0jA0aWp9WZQCVD4XPaEm5CVKVqcRqC
-	pTfM9NiVdbhwILw0i1Cq9COBG6t9MpN7SEivPxClo2DuClkWSusop66dM2vv2U0=
-X-Google-Smtp-Source: AGHT+IEPwkX0IhV+bKZax/ZDnKCtE6vuHXhCdpPupl5TYU7s9VlSPImd24020c4tF67SdJTKa0gPiw==
-X-Received: by 2002:a17:907:1b98:b0:a9a:8263:d2c7 with SMTP id a640c23a62f3a-a9e2b347278mr87267966b.7.1730191564353;
-        Tue, 29 Oct 2024 01:46:04 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-40-68-117.business.telecomitalia.it. [79.40.68.117])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7dacsm450134166b.9.2024.10.29.01.45.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 01:46:04 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="udRfiqJX"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1730191577; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=42obp0MsqZAIYzXHKbVbAqEFN7VlFdIoHEinuFgp9dA=;
+	b=udRfiqJXE94XMrYUPe5Sg0IFN6HU9IU7K+BhsgwflQyDdKFOwJjtjh99+NYGR2PvCvXKQStGWj5h3DGl3F3Qvwn94ScWuTFPw2Z7+9FFunhrg1j8XVcuMWwVPTdVmbVzck5CVlMSMXttMMTJBQzXJmSYeoB+FrJH2MZWT8pJHwE=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WI9W1EZ_1730191575 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Oct 2024 16:46:16 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Han Xu <han.xu@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [RFC PATCH v2 0/6] can: dev: add generic function can_update_bus_error_stats()
-Date: Tue, 29 Oct 2024 09:44:44 +0100
-Message-ID: <20241029084525.2858224-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
+	virtualization@lists.linux.dev
+Subject: [PATCH net-next v1 0/4] virtio_net: enable premapped mode by default
+Date: Tue, 29 Oct 2024 16:46:11 +0800
+Message-Id: <20241029084615.91049-1-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Git-Hash: df8220a5376e
 Content-Transfer-Encoding: 8bit
 
-This series originates from some tests I ran on a CAN communication for
-one of my clients that reports sporadic errors. After enabling BERR
-reporting, I was surprised that the command:
+v1:
+    1. fix some small problems
+    2. remove commit "virtio_net: introduce vi->mode"
 
-ip -details -statistics link show can0
+In the last linux version, we disabled this feature to fix the
+regress[1].
 
-did not display the occurrence of different types of errors, but only the
-generic ones for reception and transmission. In trying to export this
-information, I felt that the code related to managing statistics and handling
-CAN errors (CRC, STUF, BIT, ACK, and FORM) was quite duplicated in the
-implementation of various drivers, and there wasn't a generic function like
-in the case of state changes (i. e. can_change_state). This led to the idea
-of adding can_update_bus_error_stats() and the helpers for setting up the
-CAN error frame.
+The patch set is try to fix the problem and re-enable it.
 
-Regarding patch 5/6 ("can: netlink: extend stats to the error types (ack,
-CRC, form, ..."), I ran
+More info: http://lore.kernel.org/all/20240820071913.68004-1-xuanzhuo@linux.alibaba.com
 
-./scripts/check-uapi.sh
+Thanks.
 
-which found
+[1]: http://lore.kernel.org/all/8b20cc28-45a9-4643-8e87-ba164a540c0a@oracle.com
 
-"error - 1/934 UAPI headers compatible with x86 appear _not_ to be backwards
-compatible."
 
-I included it in the series because I am currently interested in understanding
-whether the idea behind each of the submitted patches makes sense, and I can
-adjust them later if the response is positive, following your suggestions.
+Xuan Zhuo (4):
+  virtio-net: fix overflow inside virtnet_rq_alloc
+  virtio_net: big mode skip the unmap check
+  virtio_net: enable premapped mode for merge and small by default
+  virtio_net: rx remove premapped failover code
 
-Changes in v2:
-- Replace macros with static inline functions
-- Update the commit message
-- Replace the macros with static inline funcions calls.
-- Update the commit message
+ drivers/net/virtio_net.c | 113 +++++++++++++++++++++++----------------
+ 1 file changed, 66 insertions(+), 47 deletions(-)
 
-Dario Binacchi (6):
-  can: dev: add generic function can_update_bus_error_stats()
-  can: flexcan: use can_update_bus_error_stats()
-  can: dev: add helpers to setup an error frame
-  can: flexcan: use helpers to setup the error frame
-  can: netlink: extend stats to the error types (ack, CRC, form, ...)
-  can: dev: update the error types stats (ack, CRC, form, ...)
-
- drivers/net/can/dev/dev.c              | 45 ++++++++++++++++++++++++
- drivers/net/can/flexcan/flexcan-core.c | 29 +++++-----------
- include/linux/can/dev.h                | 47 ++++++++++++++++++++++++++
- include/uapi/linux/can/netlink.h       |  6 ++++
- 4 files changed, 106 insertions(+), 21 deletions(-)
-
--- 
-2.43.0
+--
+2.32.0.3.g01195cf9f
 
