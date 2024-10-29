@@ -1,162 +1,106 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A9E7DA82;
-	Tue, 29 Oct 2024 09:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82CE7DA82;
+	Tue, 29 Oct 2024 09:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730194779; cv=none; b=BnC07yLpl5yFK9Fufu9IXZ2w/pQiqouwhw92qbl8KbfUL3r7bzqKMpCzjo38uJevES3qqfony6mSbnHuup9KQPRHkogFhB1Mf5fQAP2wJt0ibA9hEdA6XZeYvK4RhSlOzGWkrBFGYPlHrSa63KH4GIjI9bT/4DfyO8IUcjx1nHk=
+	t=1730194805; cv=none; b=SjuVt11eFfzWIyV4/WRiez1IuG9+6mUW8z9kAJKCBgzKZYgMKRM2xm2AXnZpE8ne9OujJk4SprEEybaHHe5fLSEIirU9fkfc8RFlQuM1VRY2dsiG2deHFq//X7Q30Y91aBJG0wc+qf637vqiek4o2iDodKuNrlw5RW+69Dz5ZQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730194779; c=relaxed/simple;
-	bh=wjKh3Y/EW6aDWLY9xkwOOGoTgEC5VDgRV9BYS6shpbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPn8X4S/hZIR15MaHjRpz3v4a10n+5bDSIJAv6MHZ6I0MuDWQ/BO52zW2Nr+cY3gSblMtno8n+Zfq8cX1Rp4hzclFKshz0AHxSV8bo31lUqXWW+I6367Kyhzqg4C6JQE0hQhcyCzXUJY0tHA3oCD1tdaDcdiqDiAvMA0fUqSC94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sQ66qEAQ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sQ66qEAQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=lJgy+uS5MvZRnt5KBckuuVPIjDa4nis657tfLdv9kJQ=; t=1730194777; x=1731404377; 
-	b=sQ66qEAQOQu1UdHpacEYtT5ujVU1CFjnabbRq000BJO+SsbHb0ebz36AoNxOv2BYo9RQIJutDaq
-	x/6LQMZr+47e2h6bTIRRKbWwd+168y6JVUDGZDfo2Xc+5kjqubcNxbIRz2WZ2D04P6cnpqABBr9BL
-	EVDlMiU/BKJUn0bbhW9osY0lJ7779qZQURfg9Xa9NWGaiGAw5FuIINlNAKTChekXhoWQ3WGRd14j7
-	q1QeR1la9ke/oo7S0miZwbYbK8WUja+7B8sxFBTu17i8KIlvrk0a2epbZiEy22DmcZrPohmjyRkeb
-	vNlqeNqh1BrBNFqs0MyePjR2QAieeyi0tWgA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t5ihK-00000008AqU-2N9t;
-	Tue, 29 Oct 2024 10:39:34 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2024-10-29
-Date: Tue, 29 Oct 2024 10:06:23 +0100
-Message-ID: <20241029093926.13750-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1730194805; c=relaxed/simple;
+	bh=64GcQ2hYxd29h7Z4cbBbpVIa+hnqlUlUrU7Xbn1LDzY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=taKpYntMtHxiZo4djxDvBty4jb97EKkCJ1bCPjHoSS2atNnK8Ey4e56e26pcHg5++Oi44c+VMUaLPvWIOdM6O8KkaPZ7imVipeNriABDEfXUGKqUqOkplwm1CEU4nU743KYLn1ISHYfB/YNOB4z2qy48efKOecerX7j5Ovwewpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Xd4tg2wx9zpXb0;
+	Tue, 29 Oct 2024 17:38:03 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 314DC180064;
+	Tue, 29 Oct 2024 17:39:59 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 29 Oct 2024 17:39:58 +0800
+Message-ID: <f934af41-2902-429f-9b1b-2c469075fc23@huawei.com>
+Date: Tue, 29 Oct 2024 17:39:58 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 04/10] mm: page_frag: introduce
+ page_frag_alloc_abort() related API
+To: Alexander Duyck <alexander.duyck@gmail.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>, Jonathan Corbet
+	<corbet@lwn.net>, <linux-doc@vger.kernel.org>
+References: <20241028115850.3409893-1-linyunsheng@huawei.com>
+ <20241028115850.3409893-5-linyunsheng@huawei.com>
+ <CAKgT0UfouCZpX04yzvCrB_UBmy47p+=xm5qViYowerR9dPcCbg@mail.gmail.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <CAKgT0UfouCZpX04yzvCrB_UBmy47p+=xm5qViYowerR9dPcCbg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-Hi,
+On 2024/10/29 1:53, Alexander Duyck wrote:
+> On Mon, Oct 28, 2024 at 5:05 AM Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>>
+>> For some case as tun_build_skb() without the needing of
+>> using complicated prepare & commit API, add the abort API to
+>> abort the operation of page_frag_alloc_*() related API for
+>> error handling knowing that no one else is taking extra
+>> reference to the just allocated fragment, and add abort_ref
+>> API to only abort the reference counting of the allocated
+>> fragment if it is already referenced by someone else.
+>>
 
-A couple of important bugs were found, notably an infinite
-loop in iwlwifi but also other bugs, which is why we have
-a new pull request so soon.
+...
 
+>> +
+>> +/**
+>> + * page_frag_alloc_abort_ref - Abort the reference of allocated fragment.
+>> + * @nc: page_frag cache to which the page fragment is aborted back
+>> + * @va: virtual address of page fragment to be aborted
+>> + * @fragsz: size of the page fragment to be aborted
+>> + *
+>> + * It is expected to be called from the same context as the allocation API.
+>> + * Mostly used for error handling cases to abort the reference of allocated
+>> + * fragment if the fragment has been referenced for other usages, to aovid the
+>> + * atomic operation of page_frag_free() API.
+>> + */
+>> +void page_frag_alloc_abort_ref(struct page_frag_cache *nc, void *va,
+>> +                              unsigned int fragsz)
+>> +{
+>> +       VM_BUG_ON(va + fragsz !=
+>> +                 encoded_page_decode_virt(nc->encoded_page) + nc->offset);
+>> +
+>> +       nc->pagecnt_bias++;
+>> +}
+>> +EXPORT_SYMBOL(page_frag_alloc_abort_ref);
+> 
+> It isn't clear to me why you split this over two functions. It seems
+> like you could just update the offset in this lower function rather
+> than do it in the upper one since you are passing all the arguments
+> here anyway.
 
-Note that this unfortunately introduces two merge conflicts
-with the previous wireless-next pull request. I'm guessing
-they will land together in net-next after wireless-next is
-pulled, and then net goes into net-next.
+For the usecase in tun_build_skb(), There seems to be XDP_REDIRECT and
+XDP_TX case that the allocated fragment has been referenced for other
+usages even when xdp_do_redirect() or tun_xdp_tx() return error, so that
+caller can call page_frag_alloc_abort_ref() to abort its reference
+of the allocated fragment, but not abort the whole fragment for later
+reuse.
 
-The first conflict is in net/mac80211/cfg.c, and is just
-two new lines in the same place:
-
-@@@ -3070,7 -3046,7 +3070,8 @@@ static int ieee80211_set_tx_power(struc
-        enum nl80211_tx_power_setting txp_type = type;
-        bool update_txp_type = false;
-        bool has_monitor = false;
- +      int user_power_level;
-+       int old_power = local->user_power_level;
-
-
-The other conflict in drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-looks more complicated, but really isn't all that much,
-just take the -next version. Which I think really means
-I incorrectly did the iwlwifi changes in 188a1bf894323b
-("wifi: mac80211: re-order assigning channel in activate links")
-because that never claimed to move the iwl_mvm_link_changed()
-vs. iwl_mvm_send_ap_tx_power_constraint_cmd() calls ...
-
-
-Please pull and let us know if there's any (other) problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit e31a8219fbfcf9dc65ba1e1c10cade12b6754e00:
-
-  Merge tag 'wireless-2024-10-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2024-10-25 10:44:41 +0100)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-10-29
-
-for you to fetch changes up to cf44e745048df2c935cb37de16e0ca476003a3b1:
-
-  wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx (2024-10-26 00:42:49 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v6.12-rc6
-
-Another set of fixes, mostly iwlwifi:
- * fix infinite loop in 6 GHz scan if more than
-   255 colocated APs were reported
- * revert removal of retry loops for now to work
-   around issues with firmware initialization on
-   some devices/platforms
- * fix SAR table issues with some BIOSes
- * fix race in suspend/debug collection
- * fix memory leak in fw recovery
- * fix link ID leak in AP mode for older devices
- * fix sending TX power constraints
- * fix link handling in FW restart
-
-And also the stack:
- * fix setting TX power from userspace with the new
-   chanctx emulation code for old-style drivers
- * fix a memory corruption bug due to structure
-   embedding
- * fix CQM configuration double-free when moving
-   between net namespaces
-
-----------------------------------------------------------------
-Anjaneyulu (1):
-      wifi: iwlwifi: mvm: SAR table alignment
-
-Ben Greear (1):
-      mac80211: fix user-power when emulating chanctx
-
-Daniel Gabay (2):
-      wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
-      wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
-
-Emmanuel Grumbach (3):
-      wifi: iwlwifi: mvm: don't leak a link on AP removal
-      wifi: iwlwifi: mvm: don't add default link in fw restart flow
-      Revert "wifi: iwlwifi: remove retry loops in start"
-
-Gustavo A. R. Silva (1):
-      wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx
-
-Johannes Berg (2):
-      wifi: cfg80211: clear wdev->cqm_config pointer on free
-      wifi: iwlwifi: mvm: fix 6 GHz scan construction
-
-Miri Korenblit (1):
-      wifi: iwlwifi: mvm: really send iwl_txpower_constraints_cmd
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 96 +++++++++++++---------
- drivers/net/wireless/intel/iwlwifi/fw/init.c       |  4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       | 34 +++++---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.h       |  3 +
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  2 +
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 10 +--
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  | 12 ++-
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c  | 34 +++++---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  6 +-
- net/mac80211/ieee80211_i.h                         |  5 +-
- net/mac80211/main.c                                |  2 +
- net/wireless/core.c                                |  1 +
- 12 files changed, 134 insertions(+), 75 deletions(-)
+As the doc mentioned above page_frag_alloc_abort_ref(), it is mainly to
+avoid the atomic operation of page_frag_free() API when the caller has the
+allocation context and has the all the arguments page_frag_alloc_abort_ref()
+needs even though it might be a unlikely case if page_frag_alloc_abort() API
+is already provided.
