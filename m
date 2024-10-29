@@ -1,212 +1,68 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5D720B21B
-	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 23:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8B020A5FA;
+	Tue, 29 Oct 2024 23:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730243181; cv=none; b=kqzI0i8sy0sZp9oQ0x9YmlOznUQpKVZGD0vjn5KolzpjYQoQy1OYHc/7nid6oyUel9MB76jsPMuPQuqB7q7YFqN+QnylzHko/u3oCQZJZZh3++J7uHPDF5QgrYlUapqsB/beBEnIUaxVSpCIEXleuqvjKDAS056nhc38KzzQtws=
+	t=1730243219; cv=none; b=KEwoPvc9sqlXZSfIFwClpT7weReF+DIqM+ph9EGw6N2VUkBgBh1DQ9dhZgVsDYgrBqBzaJlKR0kNaWjb/aAVqiKRS2RlTkFFCfi337eicyY28QcvOnM3qOe6rvke/TrSL2WDPZLxsx3zuKwge/Xh+JEkOVCN+SMCe4Mq+t/Mo78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730243181; c=relaxed/simple;
-	bh=Au6AN8yfyazUUk9v9fcNH1YO+69ADNVrgDbw4mvV8HA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPHHHmn2rbZSH+rEFt7LJ+SDCSLxCF7fW358zbS/iicKaTN2GFfcLhv7i/Tr3BuSKMuOCPSlmDohZc01/cxZyj7ph4xMW+u60ZFhctwzKwAYXSUfbAw9ZNj87OTpWR+T+QBwuJve2aqbSzNLwZ1BZOM64ABhMcQZJdGecLzVwQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=R+YYehnA; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	s=arc-20240116; t=1730243219; c=relaxed/simple;
+	bh=GNALf1PTTHAUpeZX/17m1kSxP1m3t/rIPFZU42PzlXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Yr+tSQpYqt/njwVlEEbZVDvO88lFObWHrPdgKj1IqbieMUEYrR9/ItKwa1P7TVD+lUxtUPN2BgDHTp4PjKUv83E/dEaJsEhF5fDPgTK2zlWvAaPbw9O6S80GEaYJoStwvJfYq1at9P3JzjT6m2PYaCj39HeKTKFLba7JEQw5vyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1EEFZ3O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="R+YYehnA"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71e953f4e7cso4440337b3a.3
-        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 16:06:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1730243178; x=1730847978; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pqXTZJWkdTVEgjeilhHk8BZ1ynAufoDLVRHn5o54aOg=;
-        b=R+YYehnAbk2uA9/FfplEwmAwpxoe2wTqzgvT9SF9mtwbNEVnH7RUuoM26KA+rAb+Gr
-         VwL3MojnLbaCvUeEssqk3ZMtESUwXRBpazlmHLB/VGRFO/4slPGtCGqHbArw/IgIps4b
-         yyHO6evNVcGZQPvAk+HtMlv8/aKu41iwEbIVplm3S/oVQ6B5RToVjHwqMPL3JJmhsLtZ
-         jXnkhfnnzhuULP+seiGcTdtzF6jpJkLRvpTUJfyDqrMNAM91QRsguHvn/RiDHea0r2OQ
-         w8PhedHab0zw0htlrshAnEAxYb4upNrgEFJM+Nm4rEyKiku78dFx1vP61YbMDSyiMzf8
-         jrGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730243178; x=1730847978;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pqXTZJWkdTVEgjeilhHk8BZ1ynAufoDLVRHn5o54aOg=;
-        b=P3czLbpNo3sTne943WITrI33gN6aXOiPZVGgHEmwHyOp8fmh+Hkj5qH0iZB47UHnpQ
-         Kwv+SHf+rmFAVTsM6lubbi3nfyPV0SehqBP4iXGPHVWlGjYkZnq3A7yfH8m5Xb4JZ9JS
-         D6qKeMCAlsF8rFXHsUKGD8S8X3JN23wGLCBTwRCDJKmyjLUOOcZDLEY0cDY428wgSL0R
-         Cz145iLHREiToIv8ERW25GzGDzA+RsLDiqSHKuY0viif/wr66BwSB0lRQVIa4r9iGUQq
-         LtpQIkVqYCnl9dUlbaJWkgSKqEdwqO22pedUb0R6ar/0dlYteDaxvXvDXIGYcZ5Xdl2S
-         9N0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVRsPgKPph9FAOpCJwLQVUkFZ3wxuw0nCipkCZH30zydLtaEFwN+4Zk92/R/QLBixjCDNeitc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiRavjK6B/mPmBFWGuJmmWp6yYcFC8RV36Cn+ebL9RFNYOEn3E
-	r0f3IELEo6UbiEp8M0BDMoN0C/LK6MAyJGyjokhnW2cLNUC/ZPVR3b1HvRPZiTo=
-X-Google-Smtp-Source: AGHT+IFc1nfMHIuQ/hIQC+POg1TOelh10OutJBD3En13JXkTOjNIXlnvIzpbP9gO8BUDMJIRGuOdbQ==
-X-Received: by 2002:a05:6a00:3e1f:b0:720:36c5:b548 with SMTP id d2e1a72fcca58-72062fb8112mr17944813b3a.16.1730243178116;
-        Tue, 29 Oct 2024 16:06:18 -0700 (PDT)
-Received: from localhost (fwdproxy-prn-017.fbsv.net. [2a03:2880:ff:11::face:b00c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72057921619sm8136813b3a.4.2024.10.29.16.06.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 16:06:17 -0700 (PDT)
-From: David Wei <dw@davidwei.uk>
-To: io-uring@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Pedro Tammela <pctammela@mojatatu.com>
-Subject: [PATCH v7 15/15] io_uring/zcrx: throttle receive requests
-Date: Tue, 29 Oct 2024 16:05:18 -0700
-Message-ID: <20241029230521.2385749-16-dw@davidwei.uk>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241029230521.2385749-1-dw@davidwei.uk>
-References: <20241029230521.2385749-1-dw@davidwei.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1EEFZ3O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFFEC4CECD;
+	Tue, 29 Oct 2024 23:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730243218;
+	bh=GNALf1PTTHAUpeZX/17m1kSxP1m3t/rIPFZU42PzlXA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=e1EEFZ3O78RO4W0UqLNJ1fsE5Xx/wN/fQsoP8T9A5UuMGoWmwi1E4zGVE93nfbFQs
+	 MCazQRKLWrJznjhs+gCuH/TvaId/SGRPfG9poxK2FaqMe6Sv/eWQ0iEqkzs7oRSHHf
+	 qmxHiN5J1jOyzvHJKPYzGpuMXBw9U2wCU2kOsRhgJzxk1UvgXXC5GI2variImqcchD
+	 do+yGbBpiag5EbdmPD8bPjgO2cO/velWmhEpvYHF3y0lEWAk6YunItHzlILk58K12S
+	 2aFTUXrDgEQHyi99u38kuBVGMgnw0z91enzhv/6HRDbPjvwFzkUF/Cv3TriFJPgFJ8
+	 q3BV7lUKfYvQQ==
+Date: Tue, 29 Oct 2024 16:06:57 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sai Krishna <saikrishnag@marvell.com>
+Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <sgoutham@marvell.com>, <gakula@marvell.com>, <lcherian@marvell.com>,
+ <jerinj@marvell.com>, <hkelam@marvell.com>, <sbhatta@marvell.com>,
+ <kalesh-anakkur.purayil@broadcom.com>
+Subject: Re: [net-next PATCH v2 4/6] octeontx2-pf: CN20K mbox REQ/ACK
+ implementation for NIC PF
+Message-ID: <20241029160657.2a0a2c91@kernel.org>
+In-Reply-To: <20241022185410.4036100-5-saikrishnag@marvell.com>
+References: <20241022185410.4036100-1-saikrishnag@marvell.com>
+	<20241022185410.4036100-5-saikrishnag@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+On Wed, 23 Oct 2024 00:24:08 +0530 Sai Krishna wrote:
+> +/**
+> + * CN20k RVU PF MBOX Interrupt Vector Enumeration
+> + *
+> + * Vectors 0 - 3 are compatible with pre cn20k and hence
+> + * existing macros are being reused.
+> + */
 
-io_zc_rx_tcp_recvmsg() continues until it fails or there is nothing to
-receive. If the other side sends fast enough, we might get stuck in
-io_zc_rx_tcp_recvmsg() producing more and more CQEs but not letting the
-user to handle them leading to unbound latencies.
+Please don't use /** unless the comment is in kernel-doc format.
+It causes warnings for documentation extractors:
 
-Break out of it based on an arbitrarily chosen limit, the upper layer
-will either return to userspace or requeue the request.
-
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: David Wei <dw@davidwei.uk>
----
- io_uring/net.c  |  5 ++++-
- io_uring/zcrx.c | 17 ++++++++++++++---
- io_uring/zcrx.h |  6 ++++--
- 3 files changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 5c015b47582f..f44344942d32 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1261,10 +1261,13 @@ int io_recvzc(struct io_kiocb *req, unsigned int issue_flags)
- 	if (unlikely(!sock))
- 		return -ENOTSOCK;
- 
--	ret = io_zcrx_recv(req, zc->ifq, sock, zc->msg_flags | MSG_DONTWAIT);
-+	ret = io_zcrx_recv(req, zc->ifq, sock, zc->msg_flags | MSG_DONTWAIT,
-+			   issue_flags);
- 	if (unlikely(ret <= 0) && ret != -EAGAIN) {
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-+		if (ret == IOU_REQUEUE)
-+			return IOU_REQUEUE;
- 
- 		req_set_fail(req);
- 		io_req_set_res(req, ret, 0);
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 1f4db70e3370..a2c753e8e46e 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -24,10 +24,13 @@
- 
- #define IO_RQ_MAX_ENTRIES		32768
- 
-+#define IO_SKBS_PER_CALL_LIMIT	20
-+
- struct io_zcrx_args {
- 	struct io_kiocb		*req;
- 	struct io_zcrx_ifq	*ifq;
- 	struct socket		*sock;
-+	unsigned		nr_skbs;
- };
- 
- struct io_zc_refill_data {
-@@ -701,6 +704,9 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
- 	int i, copy, end, off;
- 	int ret = 0;
- 
-+	if (unlikely(args->nr_skbs++ > IO_SKBS_PER_CALL_LIMIT))
-+		return -EAGAIN;
-+
- 	if (unlikely(offset < skb_headlen(skb))) {
- 		ssize_t copied;
- 		size_t to_copy;
-@@ -778,7 +784,8 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
- }
- 
- static int io_zcrx_tcp_recvmsg(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
--				struct sock *sk, int flags)
-+				struct sock *sk, int flags,
-+				unsigned int issue_flags)
- {
- 	struct io_zcrx_args args = {
- 		.req = req,
-@@ -804,6 +811,9 @@ static int io_zcrx_tcp_recvmsg(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 			ret = -ENOTCONN;
- 		else
- 			ret = -EAGAIN;
-+	} else if (unlikely(args.nr_skbs > IO_SKBS_PER_CALL_LIMIT) &&
-+		   (issue_flags & IO_URING_F_MULTISHOT)) {
-+		ret = IOU_REQUEUE;
- 	} else if (sock_flag(sk, SOCK_DONE)) {
- 		/* Make it to retry until it finally gets 0. */
- 		ret = -EAGAIN;
-@@ -814,7 +824,8 @@ static int io_zcrx_tcp_recvmsg(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- }
- 
- int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
--		 struct socket *sock, unsigned int flags)
-+		 struct socket *sock, unsigned int flags,
-+		 unsigned int issue_flags)
- {
- 	struct sock *sk = sock->sk;
- 	const struct proto *prot = READ_ONCE(sk->sk_prot);
-@@ -823,5 +834,5 @@ int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 		return -EPROTONOSUPPORT;
- 
- 	sock_rps_record_flow(sk);
--	return io_zcrx_tcp_recvmsg(req, ifq, sk, flags);
-+	return io_zcrx_tcp_recvmsg(req, ifq, sk, flags, issue_flags);
- }
-diff --git a/io_uring/zcrx.h b/io_uring/zcrx.h
-index 5d7920972e95..45485bdce61a 100644
---- a/io_uring/zcrx.h
-+++ b/io_uring/zcrx.h
-@@ -48,7 +48,8 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx);
- void io_shutdown_zcrx_ifqs(struct io_ring_ctx *ctx);
- int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
--		 struct socket *sock, unsigned int flags);
-+		 struct socket *sock, unsigned int flags,
-+		 unsigned int issue_flags);
- #else
- static inline int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 					struct io_uring_zcrx_ifq_reg __user *arg)
-@@ -62,7 +63,8 @@ static inline void io_shutdown_zcrx_ifqs(struct io_ring_ctx *ctx)
- {
- }
- static inline int io_zcrx_recv(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
--			       struct socket *sock, unsigned int flags)
-+				struct socket *sock, unsigned int flags,
-+				unsigned int issue_flags)
- {
- 	return -EOPNOTSUPP;
- }
+ drivers/net/ethernet/marvell/octeontx2/af/cn20k/struct.h:12: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+  * CN20k RVU PF MBOX Interrupt Vector Enumeration
+ drivers/net/ethernet/marvell/octeontx2/af/cn20k/struct.h:12: warning: missing initial short description on line:
+  * CN20k RVU PF MBOX Interrupt Vector Enumeration
 -- 
-2.43.5
-
+pw-bot: cr
