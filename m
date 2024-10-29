@@ -1,87 +1,219 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238FF747F;
-	Tue, 29 Oct 2024 15:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABF4747F
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 15:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730214929; cv=none; b=Abm3WTx1cwIqi8AtcvNVpBz84jE3d7qqjT1VXZsfrcdVqem9Djn/HGTEQe8/Vr+iXtGvnIJX5Nm2LoQ/xl0mEYRmXkJGeqgsYINvyRvR5avNV3gIwfgrsJjKM2l4ft1cmDFNBu5ELX7Zj7TNVI4Gx4wqtUCJr3SyaTqmGKm2ASg=
+	t=1730214957; cv=none; b=bRa8LgQUzBUw2tc2w+S12EC8+LnrHAoO0zBXCSeiLFLgIZMN6l3x2ugB7ecNs5g8gbkZtd56CV9wIueA9EUEGFeoWqGblW5uFym/yGB1YBJ/WQ3469jSLu0gHvg8GbA81MUP5hDgf7KF/TbNe/nwv1dYeiJlx9oA/7B6mg4Jl7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730214929; c=relaxed/simple;
-	bh=XTdAOFFPHoByAW0zEX+1bZ8Eb08mn2sn6pazzDy8SQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X++KXxU52lTcxac3rGQX2ZubrPH8tC76ytnShrOGd8Ndl67z/aJHwqmjaBJ/hyvvIZXZHWs9F/O0j7BLCpBcgx3o06CX4i0bdCDpaOWLp5Sklmv4BXdkjq0d85pZsOYn+ewRRb23X7qJisaXj/9D2OzFID2+W4QTxI11Hd4+KAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tg7ldVYG; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1730214957; c=relaxed/simple;
+	bh=jaboQPYiXX7ozLbQGara9KvpZS+Ky23CqaWSccyoD2k=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=GW1NOPGnGiyqe1iLW9UDAiJuFtt+CT6prpHMPlwN+O6S/oqGZHFa7vsfABd307608bzH9k8UshwlTpMHPy+njJ1T+m7cy8JT00IfvZX0qkBVW5ccOOBceGfDwxAaajdv6DMnljeMu9JnyFMwLDxOmSXrs2Y+hzMe9YfjRg9gIRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=edt9LOi0; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tg7ldVYG"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so54990605e9.1;
-        Tue, 29 Oct 2024 08:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="edt9LOi0"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6cbf2fc28feso34726036d6.0
+        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 08:15:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730214924; x=1730819724; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1730214954; x=1730819754; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XTdAOFFPHoByAW0zEX+1bZ8Eb08mn2sn6pazzDy8SQ8=;
-        b=Tg7ldVYGvgBn5fKGsXCcm8ZLDh9Iw+JfsRTyO9Lgv+LNV3njQHAJTtT2U8g6ZiOR8F
-         E1KA5Q7JyCJs6aJD/IjgtXahXbtYv795oT5HEGuuob/K9VlOan79YtCGrlvGs2tzt6bY
-         CJhZLS8siPBZLUYv5VGjDnrgLlsrPAVR0VdahVnGc9bsvAkJ3PFyx+/25vIh+cKHAsR7
-         6C2yyTBF7vbiqYWrUzSxDEZ0iEmlfyOdSMT47uuCRUfll6pRTNX1AcVvIak2xrpumVFP
-         TpGscsfwxFcgm9JQVDm6934Mte84klYBZEMnTy6k/Hk+5vkHGpF2/C/GdpX7osoHmo8D
-         pT+Q==
+        bh=L//fnK5nh+H8L177JyDmkwJFJmpPhjaY5SHG56IWmVQ=;
+        b=edt9LOi08YRBQz+ZMM0wueOF8IbzbuDOV0YmJDsomIYLpYGLR6rIBkh9vcveE5BirB
+         +bV5oBgcDsGXA67gt51Gq1RX6lTOUSnktqHnh9XVM7oe8Cul/jutcgAOJqjJDiNm7CnS
+         ie+YyJDRifXpOUjgQG8SgqvC8OKXXl01moXH+XO5pB8EoZVP8bYPrgX356pU1T5cHB2y
+         HFRlrLugGMTvLtSggR4tzHqh0S08JZFJlpH7g6forbL3vVpxWpYJb2LkzvqrXyP2EdPE
+         R8wlUqiQLrs/QPH0PYuFYXGa2TgpF9yllWOqcyxXCqP1RqTuRMQef5j3P9v//uWM0ZVx
+         pVng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730214924; x=1730819724;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XTdAOFFPHoByAW0zEX+1bZ8Eb08mn2sn6pazzDy8SQ8=;
-        b=dHh3heFWHUPEkEbYl5AyQEumFfbkw/VCsuW/TZPQtOktoPnj1LvL9MQZ+RmGWGlBba
-         jyJIP/S8Ol5vnONCKJy3mobSO31sAHaektvYbMOCJVNesFjPKxM3YMMIHT5JKe4qX8lw
-         XHnL921vAm+OgSviAoKsKASUlcUSYT97pEYkP/J1XLzN3Gu1NTaUH587IXOrF/ZoCgGn
-         MVXRODjNSxL593KvnETmzw/340sjB0Mh4YI+DFNy1ZpfFs9qeuPtybtyZYAuUls+EpO4
-         yF243uh0xpoXxM62JaG5Oa4A+BGbN2omds/wL0BgwnKLYr02jsZUrEXIOG2eq4rRgSpP
-         Bk5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUBS2f8F07LSQGFOBrl6g2RqMtS68PIAiFuYVVCoiM6qiUBt/nXb0IKZMzcZPnCc6posXgO7wJPrQipDBs=@vger.kernel.org, AJvYcCUhvZEmudXE+7X4zf2ttZR9wExw4acebvMCAG00kWcCd7lSLUgLzIEtm+WqfdxfCgL4+IcN/SVXff0Q5CrRqBIz5Bu3@vger.kernel.org, AJvYcCVCTxzJLB01CHJKFm/TBI/9RryLUIKV1nBQob6Ny6MhENqOt/hKY2+l+BX9qNa8xXljnvDWXXAz@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+djwWjTt75RmsWKmDq2wO5tExJH2MLME8ch5xsWMPbq+OKqMY
-	OsgPkBGvKXKK9ZgDb7+nx0ZEak91/T9AD5kzG/w6eDm4M/tF9wzMjVgD/z+u0m0KWfRcJws9md/
-	vlBW9hBup7bXSJWZvI6eyqNU4CyY=
-X-Google-Smtp-Source: AGHT+IFt3LhIP+T08xuSWl2DD2ktCkrZyc5GBn2EFnoVWOdyMp9q0tyHDl7Px5ZlD2TVQmiWP3R/n24rbjSd9KDMM3M=
-X-Received: by 2002:a05:600c:3c9a:b0:431:5d14:1cae with SMTP id
- 5b1f17b1804b1-4319acb1d60mr101991675e9.19.1730214924190; Tue, 29 Oct 2024
- 08:15:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730214954; x=1730819754;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=L//fnK5nh+H8L177JyDmkwJFJmpPhjaY5SHG56IWmVQ=;
+        b=MPjjFUL1Sgy7/0oZ8+g6rmg8MzKxuu5Ypo7E+STAxQOygreMBi/AtHSqz4201zS9Qc
+         JrmCdiXVSGYgtzoq8M0Eq0ZmT13DO8sz6LmBHfzds5CcruvZj4C8SbQKfyCrNE29UjDs
+         RXmk8NSnu9y+Xrq9tdAcpExQkmeUGrv4fFoo2mngGFQ7oqI0gI54wVKFNi9ZqiymYYdL
+         TixtwECb+gMu+XOBdVEDPWarB6c0c8hksQQ38Ss4xZuiFMsJZwi3AHWuT5PJwRZdtFbb
+         6SYWS2g6P2kPt0uJcWK6r4q+Bn+oLCjr5VxRV8+/A9VDxb8T+21re7cCNm5mB/6Jtqua
+         ROzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXr5huksegZqJMt8R4WfVkixwu+bxA/EEYB45uCpx/q9kTP6ZVK6ig0oI+q5D7YlqJpsAbD5nM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPdG0q0jWG092Ub0MS+DkHFEMRr+q54xtVAsHeY6BDJ7IWJ0yD
+	qnbzEmCLHJf4F6zzkC9VlUQsoYeZbpKgMmqSBLNIVrNa7UiRsPMZvpqkXA==
+X-Google-Smtp-Source: AGHT+IFrR5WJx61G6p8FrzRiObU1VfbRhtTXaU4OhcVwJBah84M1WqzTStfqU6TjN0X8E/36UsiDMw==
+X-Received: by 2002:a05:6214:5343:b0:6cd:e38a:a91e with SMTP id 6a1803df08f44-6d1856e6a44mr149696716d6.18.1730214954309;
+        Tue, 29 Oct 2024 08:15:54 -0700 (PDT)
+Received: from localhost (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d179a2e6e1sm42475366d6.107.2024.10.29.08.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 08:15:53 -0700 (PDT)
+Date: Tue, 29 Oct 2024 11:15:53 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Anna Emese Nyiri <annaemesenyiri@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: fejes@inf.elte.hu, 
+ annaemesenyiri@gmail.com
+Message-ID: <6720fc298dd5a_2bcd7f29492@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20241029144142.31382-1-annaemesenyiri@gmail.com>
+References: <20241029144142.31382-1-annaemesenyiri@gmail.com>
+Subject: Re: [PATCH net-next] support SO_PRIORITY cmsg
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241029143445.72132-1-technoboy85@gmail.com>
-In-Reply-To: <20241029143445.72132-1-technoboy85@gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 29 Oct 2024 08:15:12 -0700
-Message-ID: <CAADnVQLdcJMddFAxVRRaySeD06eGkU+rt0x8LkSqRak0fHqNEw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2] bpf: use kfunc hooks instead of program types
-To: Matteo Croce <technoboy85@gmail.com>
-Cc: bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Network Development <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, Matteo Croce <teknoraver@meta.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 29, 2024 at 7:34=E2=80=AFAM Matteo Croce <technoboy85@gmail.com=
-> wrote:
->
-> From: Matteo Croce <teknoraver@meta.com>
->
-> Pass to register_btf_kfunc_id_set() a btf_kfunc_hook directly, instead
-> of a bpf_prog_type.
-> Many program types share the same kfunc hook, so some calls to
-> register_btf_kfunc_id_set() can be removed.
+Anna Emese Nyiri wrote:
+> The Linux socket API currently supports setting SO_PRIORITY at the sock=
+et
+> level, which applies a uniform priority to all packets sent through tha=
+t
+> socket. The only exception is IP_TOS, if that is specified as ancillary=
 
-Still nack for the same reason: let's avoid churn
-when kfunc registration needs a redesign.
+> data, the packet does not inherit the socket's priority. Instead, the
+> priority value is computed when handling the ancillary data (as impleme=
+nted
+> in commit <f02db315b8d888570cb0d4496cfbb7e4acb047cb>: "ipv4: IP_TOS
+> and IP_TTL can be specified as ancillary data").
 
-pw-bot: cr
+Please use commit format <$SHA1:12> ("subject"). Checkpatch might also
+flag this.
+ =
+
+> Currently, there is no option to set the priority directly from userspa=
+ce
+> on a per-packet basis. The following changes allow SO_PRIORITY to be se=
+t
+> through control messages (CMSG), giving userspace applications more
+> granular control over packet priorities.
+> =
+
+> This patch enables setting skb->priority using CMSG. If SO_PRIORITY is
+> specified as ancillary data, the packet is sent with the priority value=
+
+> set through sockc->priority_cmsg_value, overriding the socket-level
+> values set via the traditional setsockopt() method.
+
+Please also describe how this interacts with priority set from IP_TOS or
+IPV6_TCLASS.
+
+> This is analogous to
+> existing support for SO_MARK (as implemented in commit
+> <c6af0c227a22bb6bb8ff72f043e0fb6d99fd6515>, =E2=80=9Cip: support SO_MAR=
+K
+> cmsg=E2=80=9D).
+> =
+
+> Suggested-by: Ferenc Fejes <fejes@inf.elte.hu>
+> Signed-off-by: Anna Emese Nyiri <annaemesenyiri@gmail.com>
+> ---
+>  include/net/inet_sock.h |  2 ++
+>  include/net/sock.h      |  5 ++++-
+>  net/can/raw.c           |  6 +++++-
+>  net/core/sock.c         | 12 ++++++++++++
+>  net/ipv4/ip_output.c    | 11 ++++++++++-
+>  net/ipv4/raw.c          |  5 ++++-
+>  net/ipv6/ip6_output.c   |  8 +++++++-
+>  net/ipv6/raw.c          |  6 +++++-
+>  net/packet/af_packet.c  |  6 +++++-
+>  9 files changed, 54 insertions(+), 7 deletions(-)
+> =
+
+> diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
+> index f9ddd47dc4f8..9d4e4e2a8232 100644
+> --- a/include/net/inet_sock.h
+> +++ b/include/net/inet_sock.h
+> @@ -175,6 +175,8 @@ struct inet_cork {
+>  	__u16			gso_size;
+>  	u64			transmit_time;
+>  	u32			mark;
+> +	__u8		priority_cmsg_set;
+> +	u32			priority_cmsg_value;
+
+Just priority, drop the cmsg value.
+
+Instead of an explicit "is set" bit, preferred is to initialize the
+cookie field from the sock. See sockcm_init(), below, and also
+ipcm_init_sk(). That also avoids the branches later in the datapath.
+
+>  };
+>  =
+
+>  struct inet_cork_full {
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index cce23ac4d514..e02170977165 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -1794,13 +1794,16 @@ struct sockcm_cookie {
+>  	u64 transmit_time;
+>  	u32 mark;
+>  	u32 tsflags;
+> +	u32 priority_cmsg_value;
+> +	u8 priority_cmsg_set;
+>  };
+>  =
+
+>  static inline void sockcm_init(struct sockcm_cookie *sockc,
+>  			       const struct sock *sk)
+>  {
+>  	*sockc =3D (struct sockcm_cookie) {
+> -		.tsflags =3D READ_ONCE(sk->sk_tsflags)
+> +		.tsflags =3D READ_ONCE(sk->sk_tsflags),
+> +		.priority_cmsg_set =3D 0
+>  	};
+>  }
+>  =
+
+> diff --git a/net/can/raw.c b/net/can/raw.c
+> index 00533f64d69d..cf7e7ae64cde 100644
+> --- a/net/can/raw.c
+> +++ b/net/can/raw.c
+> @@ -962,7 +962,11 @@ static int raw_sendmsg(struct socket *sock, struct=
+ msghdr *msg, size_t size)
+>  	}
+>  =
+
+>  	skb->dev =3D dev;
+> -	skb->priority =3D READ_ONCE(sk->sk_priority);
+> +	if (sockc.priority_cmsg_set)
+> +		skb->priority =3D sockc.priority_cmsg_value;
+> +	else
+> +		skb->priority =3D READ_ONCE(sk->sk_priority);
+> +
+>  	skb->mark =3D READ_ONCE(sk->sk_mark);
+>  	skb->tstamp =3D sockc.transmit_time;
+>  =
+
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 9abc4fe25953..899bf850b52a 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -2863,6 +2863,18 @@ int __sock_cmsg_send(struct sock *sk, struct cms=
+ghdr *cmsg,
+>  	case SCM_RIGHTS:
+>  	case SCM_CREDENTIALS:
+>  		break;
+> +	case SO_PRIORITY:
+> +		if (cmsg->cmsg_len !=3D CMSG_LEN(sizeof(u32)))
+> +			return -EINVAL;
+> +
+> +		if ((*(u32 *)CMSG_DATA(cmsg) >=3D 0 && *(u32 *)CMSG_DATA(cmsg) <=3D =
+6) ||
+> +		    sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_RAW) ||
+> +		    sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN)) {
+> +			sockc->priority_cmsg_value =3D *(u32 *)CMSG_DATA(cmsg);
+> +			sockc->priority_cmsg_set =3D 1;
+> +			break;
+> +		}
+
+What is the magic constant 6 here?
+
