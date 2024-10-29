@@ -1,94 +1,84 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B89205E3F;
-	Tue, 29 Oct 2024 12:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E72F20696C
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 13:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730206595; cv=none; b=HLDFV/TNSIFkbYxWlApdOgnBkEfvIJTSVYtdO9SkSUiUlDYviyrqSm8STYNZvLPFnnUOvkRm2HItQxPGPMbahGWD3MfCfuS80QT+TfOfGW9yvBu+ccOFXqv/fYtUMB/Cq6dYTb80NQYJDRlH6dlzvQQ6tCYZMpa0EZY0NSK0ZM8=
+	t=1730206971; cv=none; b=cHVwFyvNAywu1tY079lPtDNouKyCdXFFZxN7fwAqUt0xyim02rTVp1OSk+CJg/rLjI5X35AaNd8HX/LhdT9JyB7oZRlpqzbwtT+PelzGXFDO0zEqSf2cyq+0uNgAxfviidgjyrwNPh0uqMZ0fA6SMfygXNkZXuVPt95jd3CB4EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730206595; c=relaxed/simple;
-	bh=tyo3Nc4syGk/FXCiD9NnYtlRpN5+7UlSgvNefxzTQIA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pJCbMBRcm/xlDJhVivc+4rQPUoCZIauLPXJfnmZYG51TmomjR/Ox1G9Yzltb2U7Doru6s/vfWRMw8AShOxNwOzAKpZ6yiA09e6LaRtATl6vsRIfIh7y84PlMzu8lvogfiY0p+CVEvlPc957LoyCgW6CxvrnfRMNVSxJsaMnUXmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Xd9Fm001PzyV4Z;
-	Tue, 29 Oct 2024 20:54:51 +0800 (CST)
-Received: from kwepemg200008.china.huawei.com (unknown [7.202.181.35])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1CAF7140257;
-	Tue, 29 Oct 2024 20:56:30 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemg200008.china.huawei.com
- (7.202.181.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 29 Oct
- 2024 20:56:29 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <chandrashekar.devegowda@intel.com>, <chiranjeevi.rapolu@linux.intel.com>,
-	<haijun.liu@mediatek.com>, <m.chetan.kumar@linux.intel.com>,
-	<ricardo.martinez@linux.intel.com>, <loic.poulain@linaro.org>,
-	<ryazanov.s.a@gmail.com>, <johannes@sipsolutions.net>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH net v2] net: wwan: t7xx: Fix off-by-one error in t7xx_dpmaif_rx_buf_alloc()
-Date: Tue, 29 Oct 2024 20:56:00 +0800
-Message-ID: <20241029125600.3036659-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1730206971; c=relaxed/simple;
+	bh=qNMFm6GFo1rM2XNW4vzKU8Z7nZJIhXxB66YmxgbGpSU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qDAxAwDTJ7YUwoLBCe92NmApN8qGVqeftlswmN3llKRnL84kVE2d0pItJZiTN4+iLgSp9ARABgRaFooz7lTrTznuUmGOJ+zgdeHoCqHgzOotErchHilqKK9kpcx7Kn2T/9Lx0ba1Ng5AH6/WWJiQUMumGKCGONUKOziD7nW7JRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pe9yXV4V; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pe9yXV4V"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=04DBDIK0W8nIhmPLOEcxXbV9njS61hrQN3CBVS5Q+Rw=; b=pe
+	9yXV4Ve9/wu54CAGq1STTVerjJlAnsT9tAzc4wL4LEF1MGgikfXpnsCtaxODFRmIlwD9yf4MbIPVE
+	+AY/ffnQ0OY7bhuUrIZfBbNnTPPJ+BV7PX4z6Eqd37Qd4E6YVpRVVwvDl8A+v3nvDQyFaLOGcN0Cy
+	Z5yh1Tsp+6S1pkY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t5lry-00BZt0-7b; Tue, 29 Oct 2024 14:02:46 +0100
+Date: Tue, 29 Oct 2024 14:02:46 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Gerhard Engleder <gerhard@engleder-embedded.com>
+Cc: Lee Trager <lee@trager.us>, netdev@vger.kernel.org, pabeni@redhat.com,
+	kuba@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com
+Subject: Re: [PATCH net-next 1/4] net: phy: Allow loopback speed selection
+ for PHY drivers
+Message-ID: <9f6262bf-b559-48e0-97f0-9d83b3c9c5f8@lunn.ch>
+References: <20241028203804.41689-1-gerhard@engleder-embedded.com>
+ <20241028203804.41689-2-gerhard@engleder-embedded.com>
+ <adada090-97fc-4007-a473-04251d8c091f@trager.us>
+ <436283e7-16c3-46ef-9970-13ddbf3a2de3@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemg200008.china.huawei.com (7.202.181.35)
+In-Reply-To: <436283e7-16c3-46ef-9970-13ddbf3a2de3@engleder-embedded.com>
 
-The error path in t7xx_dpmaif_rx_buf_alloc(), free and unmap the already
-allocated and mapped skb in a loop, but the loop condition terminates when
-the index reaches zero, which fails to free the first allocated skb at
-index zero.
+On Tue, Oct 29, 2024 at 06:58:12AM +0100, Gerhard Engleder wrote:
+> On 29.10.24 00:23, Lee Trager wrote:
+> > On 10/28/24 1:38 PM, Gerhard Engleder wrote:
+> > > -int genphy_loopback(struct phy_device *phydev, bool enable)
+> > > +int genphy_loopback(struct phy_device *phydev, bool enable, int speed)
+> > >   {
+> > >       if (enable) {
+> > >           u16 ctl = BMCR_LOOPBACK;
+> > >           int ret, val;
+> > > +        if (speed == SPEED_10 || speed == SPEED_100 ||
+> > > +            speed == SPEED_1000)
+> > > +            phydev->speed = speed;
+> > Why is this limited to 1000? Shouldn't the max loopback speed be limited
+> > by max hardware speed? We currently have definitions going up to
+> > SPEED_800000 so some devices should support higher than 1000.
+> 
+> This generic loopback implementation only supports those three speeds
+> currently. If there is the need for higher speed, then there should be
+> PHY specific implementations in the PHY drivers.
+> 
+> >   Why is speed defined as an int? It can never be negative, I normally
+> > see it defined as u32.
 
-Check for >= 0 so that skb at index 0 is freed as well.
+https://elixir.bootlin.com/linux/v6.11.5/source/include/uapi/linux/ethtool.h#L2172
 
-Fixes: d642b012df70 ("net: wwan: t7xx: Add data path interface")
-Suggested-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
-v2:
-- Update the commit title.
-- Declare i as signed to avoid the endless loop.
----
- drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+#define SPEED_UNKNOWN		-1
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-index 210d84c67ef9..45e7833965b1 100644
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
-@@ -166,8 +166,8 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpmaif_ctrl *dpmaif_ctrl,
- 			     const unsigned int q_num, const unsigned int buf_cnt,
- 			     const bool initial)
- {
--	unsigned int i, bat_cnt, bat_max_cnt, bat_start_idx;
--	int ret;
-+	unsigned int bat_cnt, bat_max_cnt, bat_start_idx;
-+	int ret, i;
- 
- 	if (!buf_cnt || buf_cnt > bat_req->bat_size_cnt)
- 		return -EINVAL;
-@@ -226,7 +226,7 @@ int t7xx_dpmaif_rx_buf_alloc(struct dpmaif_ctrl *dpmaif_ctrl,
- 	return 0;
- 
- err_unmap_skbs:
--	while (--i > 0)
-+	while (--i >= 0)
- 		t7xx_unmap_bat_skb(dpmaif_ctrl->dev, bat_req->bat_skb, i);
- 
- 	return ret;
--- 
-2.34.1
+It cannot be unsigned.
 
+	Andrew
