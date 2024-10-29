@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C071E204034
-	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 23:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F71620FA87
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 23:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730245827; cv=none; b=TSc94mumwLsLV2hfbq2yqcaZWtfcNuCPKISRiAkLrR9jxDj1dFLQ+T/DrO8CPLMK0wW3KPWYD5PtrlMmvwrikT7MAOFCKvELN9wY67niWtjkTKyh5/tZi+NymNPXdNIz4omfIAhCHuQ5Xdjp67yjRMeUIKprgrDG9QuFPL4enQY=
+	t=1730245828; cv=none; b=NVA0CGmvpMETRYU15eiXmmZDMDfrmoU3g/5tA70fJIAO1neDud6EzHlMLsJuH+YKRLWqoTC0Jj80D7sR46YM6KjwnpiWBUqXjzIFWVpF4RJWmaVuKSUwgPc57E3kMmG4FWCr3+f+qHL6oxKNmheV6gANfX8EVUFZu+ZAVWHULFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730245827; c=relaxed/simple;
-	bh=hxuMv4hYF15Rom8kTXP47yN8NQXYaZ6uI0CE4JtdIBI=;
+	s=arc-20240116; t=1730245828; c=relaxed/simple;
+	bh=MinWQehcDOC/MsPDK3RXLUVrx5pDMaH/eu7svFDNiU4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZUdNU3zM4HrkSF+9M3rdTwI78KKc3ODJNwls/CCbzFgR0HilJscCmSPieZaL65Zew3UB98Arlxp0EuG0P8dowOLTJjCM45/liZUUWs6DGJBhA0FcPaAN7D1P9hxKfr9sU+A2iCSfFwo1VFfcksxK1VSkr1zxMwDeDF3xcMdk0ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elXltplR; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=dVzno+g6jrnjD60KQw7tUMaq8nwtzwk8kUvOesmZBx96VqakiFiYA8uq3HgQ0Q8t2pd2jIKKTstfqJLl4VQGoHrPlY8knspZMbM2ZO7RqQ4eO4+8NPUAFDwAxauX64nBylHr8NQu/mUyrtZ9YQ28pGSKfPD+gB/w0v1f7C3LpjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvL8mTbE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elXltplR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA10C4CEE7;
-	Tue, 29 Oct 2024 23:50:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvL8mTbE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBF3C4CEE3;
+	Tue, 29 Oct 2024 23:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730245827;
-	bh=hxuMv4hYF15Rom8kTXP47yN8NQXYaZ6uI0CE4JtdIBI=;
+	s=k20201202; t=1730245826;
+	bh=MinWQehcDOC/MsPDK3RXLUVrx5pDMaH/eu7svFDNiU4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=elXltplRE2Yncv0/JqOlIyx8mOV3yLf0oSvOIMmvC/nuq3H+sFp/NvbcBNCDKE/Fa
-	 ix+hqn6I0zCu/kDZaSQgBHkdF7x8YTdksHMGAQDCQFyhyvV4kfuIG+I0thl39Te4Rn
-	 g7mkLTE9b/gpiLmXRm1qvK+54sFqS/ah/XEWv26cYaYpLW5aKrANvTJkMi3AfBK5wZ
-	 9M8bFkirdQjFlQpJURBN3sRRVWMD2yRckErXphYXcbo7XPOtL33ESgd0iHrWUaZHbm
-	 xzRlKu0zvopL79dIubOKj/j6pdNkvLSL3Fppzmo5yOA7y2cWwumVEx/vYT7d8SwUqS
-	 qrvH0Z3FFr5tA==
+	b=MvL8mTbEf10Q3BX2k6VFzUd0tBe0vJiGCyUZ4e33y4YeHVngW0wUCHE16NvjwkFd3
+	 lwk6lwzGK//JuZ1RjziPl7TOt8SNPanDevfjFXBaIoZCgusSOtGCbH/FjHL1Ne3kb0
+	 axMUluWkYRXXJ9svCwuebhwxwXburlI6/TEvQQi9StV8KrpfYDP0g9SwuveGvSl4ET
+	 f25OfnK9mZCnd/UHKINhHD1nRg2Av2YdnejgbzV/0EV+ZeOwp2Wp4xvSsxEYzu9MBG
+	 xcUUKQ48du33xkIbmuPOROximUgAy5M63ZUfaHMswyxtpQqWLPh3a8IixO23mtnWQL
+	 qADtGryhSFhdQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E3E380AC00;
-	Tue, 29 Oct 2024 23:50:36 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD45380AC00;
+	Tue, 29 Oct 2024 23:50:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,17 +37,17 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] r8169: fix inconsistent indenting in
- rtl8169_get_eth_mac_stats
+Subject: Re: [PATCH v2 net-next] socket: Print pf->create() when it does not clear
+ sock->sk on failure.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173024583502.858719.5118791991806206936.git-patchwork-notify@kernel.org>
-Date: Tue, 29 Oct 2024 23:50:35 +0000
-References: <20fd6f39-3c1b-4af0-9adc-7d1f49728fad@gmail.com>
-In-Reply-To: <20fd6f39-3c1b-4af0-9adc-7d1f49728fad@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com, andrew+netdev@lunn.ch, pabeni@redhat.com,
- kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ <173024583374.858719.8851339668616193735.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Oct 2024 23:50:33 +0000
+References: <20241024201458.49412-1-kuniyu@amazon.com>
+In-Reply-To: <20241024201458.49412-1-kuniyu@amazon.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, ignat@cloudflare.com, kuni1840@gmail.com,
  netdev@vger.kernel.org
 
 Hello:
@@ -55,19 +55,21 @@ Hello:
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 24 Oct 2024 22:48:59 +0200 you wrote:
-> This fixes an inconsistent indenting introduced with e3fc5139bd8f
-> ("r8169: implement additional ethtool stats ops").
+On Thu, 24 Oct 2024 13:14:58 -0700 you wrote:
+> I suggested to put DEBUG_NET_WARN_ON_ONCE() in __sock_create() to
+> catch possible use-after-free.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202410220413.1gAxIJ4t-lkp@intel.com/
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> But the warning itself was not useful because our interest is in
+> the callee than the caller.
+> 
+> Let's define DEBUG_NET_WARN_ONCE() and print the name of pf->create()
+> and the socket identifier.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] r8169: fix inconsistent indenting in rtl8169_get_eth_mac_stats
-    https://git.kernel.org/netdev/net-next/c/b8bd8c44a266
+  - [v2,net-next] socket: Print pf->create() when it does not clear sock->sk on failure.
+    https://git.kernel.org/netdev/net-next/c/4bbd360a5084
 
 You are awesome, thank you!
 -- 
