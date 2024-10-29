@@ -1,203 +1,162 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FAF7DA82;
-	Tue, 29 Oct 2024 09:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A9E7DA82;
+	Tue, 29 Oct 2024 09:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730194611; cv=none; b=odLsNzGz4hRWYfUo0JHc5ZQLEQeTHV2pTrQPaBRx2glC3N8PfC6gIA8MMkKL6aManv8oTaAl8cEcQbw5j0wmVAP6D9zxW7bR1I6SyQqXJBViF01cZz2O9Aqd7VEntXAvH1+g3Wh5lsAfK7KYS3EOma9BFf7Xc/y6xRcWw9SGsMo=
+	t=1730194779; cv=none; b=BnC07yLpl5yFK9Fufu9IXZ2w/pQiqouwhw92qbl8KbfUL3r7bzqKMpCzjo38uJevES3qqfony6mSbnHuup9KQPRHkogFhB1Mf5fQAP2wJt0ibA9hEdA6XZeYvK4RhSlOzGWkrBFGYPlHrSa63KH4GIjI9bT/4DfyO8IUcjx1nHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730194611; c=relaxed/simple;
-	bh=G+VUmWxJciLVhx0T+swPAwlELVHZLFqMyobDNS0zU3Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=upnVSHx3rIQ+RGTkRFnsUlsu3Pw4aCxzDMiraKFytwaTgqq56VInMtBvcYicXJZ8xdljRxJcgUHeM3eEP9D8hLVWNvgckGMcm1UMvgfrOkvr+RIiN+DbbPvyrwhGPjK06AGhY8n2KYfoeLzLga9wPJqvycuMvoqc2RlVdk4mtRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Xd4r20kl5z20r6G;
-	Tue, 29 Oct 2024 17:35:46 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4F030180019;
-	Tue, 29 Oct 2024 17:36:44 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 29 Oct 2024 17:36:44 +0800
-Message-ID: <472a7a09-387f-480d-b66c-761e0b6192ef@huawei.com>
-Date: Tue, 29 Oct 2024 17:36:43 +0800
+	s=arc-20240116; t=1730194779; c=relaxed/simple;
+	bh=wjKh3Y/EW6aDWLY9xkwOOGoTgEC5VDgRV9BYS6shpbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPn8X4S/hZIR15MaHjRpz3v4a10n+5bDSIJAv6MHZ6I0MuDWQ/BO52zW2Nr+cY3gSblMtno8n+Zfq8cX1Rp4hzclFKshz0AHxSV8bo31lUqXWW+I6367Kyhzqg4C6JQE0hQhcyCzXUJY0tHA3oCD1tdaDcdiqDiAvMA0fUqSC94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sQ66qEAQ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sQ66qEAQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=lJgy+uS5MvZRnt5KBckuuVPIjDa4nis657tfLdv9kJQ=; t=1730194777; x=1731404377; 
+	b=sQ66qEAQOQu1UdHpacEYtT5ujVU1CFjnabbRq000BJO+SsbHb0ebz36AoNxOv2BYo9RQIJutDaq
+	x/6LQMZr+47e2h6bTIRRKbWwd+168y6JVUDGZDfo2Xc+5kjqubcNxbIRz2WZ2D04P6cnpqABBr9BL
+	EVDlMiU/BKJUn0bbhW9osY0lJ7779qZQURfg9Xa9NWGaiGAw5FuIINlNAKTChekXhoWQ3WGRd14j7
+	q1QeR1la9ke/oo7S0miZwbYbK8WUja+7B8sxFBTu17i8KIlvrk0a2epbZiEy22DmcZrPohmjyRkeb
+	vNlqeNqh1BrBNFqs0MyePjR2QAieeyi0tWgA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t5ihK-00000008AqU-2N9t;
+	Tue, 29 Oct 2024 10:39:34 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2024-10-29
+Date: Tue, 29 Oct 2024 10:06:23 +0100
+Message-ID: <20241029093926.13750-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v23 0/7] Replace page_frag with page_frag_cache
- (Part-1)
-To: Alexander Duyck <alexander.duyck@gmail.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Shuah Khan
-	<skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Linux-MM <linux-mm@kvack.org>
-References: <20241028115343.3405838-1-linyunsheng@huawei.com>
- <CAKgT0UdUVo6ujupoo-hdrW95XOGQLCDzd+rHGUVB6_SEmvqFHg@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAKgT0UdUVo6ujupoo-hdrW95XOGQLCDzd+rHGUVB6_SEmvqFHg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Transfer-Encoding: 8bit
 
-On 2024/10/28 23:30, Alexander Duyck wrote:
+Hi,
 
-...
-
->>
->>
-> 
-> Is this actually the numbers for this patch set? Seems like you have
-> been using the same numbers for the last several releases. I can
-
-Yes, as recent refactoring doesn't seems big enough that the perf data is
-reused for the last several releases.
-
-> understand the "before" being mostly the same, but since we have
-
-As there is rebasing for the latest net-next tree, even the 'before'
-might not be the same as the testing seems sensitive to other changing,
-like binary size changing and page allocator changing during different
-version.
-
-So it might need both the same kernel and config for 'before' and 'after'.
-
-> factored out the refactor portion of it the numbers for the "after"
-> should have deviated as I find it highly unlikely the numbers are
-> exactly the same down to the nanosecond. from the previous patch set.
-Below is the the performance data for Part-1 with the latest net-next:
-
-Before this patchset:
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
-
-         17.990790      task-clock (msec)         #    0.003 CPUs utilized            ( +-  0.19% )
-                 8      context-switches          #    0.444 K/sec                    ( +-  0.09% )
-                 0      cpu-migrations            #    0.000 K/sec                    ( +-100.00% )
-                81      page-faults               #    0.004 M/sec                    ( +-  0.09% )
-          46712295      cycles                    #    2.596 GHz                      ( +-  0.19% )
-          34466157      instructions              #    0.74  insn per cycle           ( +-  0.01% )
-           8011755      branches                  #  445.325 M/sec                    ( +-  0.01% )
-             39913      branch-misses             #    0.50% of all branches          ( +-  0.07% )
-
-       6.382252558 seconds time elapsed                                          ( +-  0.07% )
-
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
-
-         17.638466      task-clock (msec)         #    0.003 CPUs utilized            ( +-  0.01% )
-                 8      context-switches          #    0.451 K/sec                    ( +-  0.20% )
-                 0      cpu-migrations            #    0.001 K/sec                    ( +- 70.53% )
-                81      page-faults               #    0.005 M/sec                    ( +-  0.08% )
-          45794305      cycles                    #    2.596 GHz                      ( +-  0.01% )
-          34435077      instructions              #    0.75  insn per cycle           ( +-  0.00% )
-           8004416      branches                  #  453.805 M/sec                    ( +-  0.00% )
-             39758      branch-misses             #    0.50% of all branches          ( +-  0.06% )
-
-       5.328976590 seconds time elapsed                                          ( +-  0.60% )
+A couple of important bugs were found, notably an infinite
+loop in iwlwifi but also other bugs, which is why we have
+a new pull request so soon.
 
 
-After this patchset:
-Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000' (200 runs):
+Note that this unfortunately introduces two merge conflicts
+with the previous wireless-next pull request. I'm guessing
+they will land together in net-next after wireless-next is
+pulled, and then net goes into net-next.
 
-         18.647432      task-clock (msec)         #    0.003 CPUs utilized            ( +-  1.11% )
-                 8      context-switches          #    0.422 K/sec                    ( +-  0.36% )
-                 0      cpu-migrations            #    0.005 K/sec                    ( +- 22.54% )
-                81      page-faults               #    0.004 M/sec                    ( +-  0.08% )
-          48418108      cycles                    #    2.597 GHz                      ( +-  1.11% )
-          35889299      instructions              #    0.74  insn per cycle           ( +-  0.11% )
-           8318363      branches                  #  446.086 M/sec                    ( +-  0.11% )
-             19263      branch-misses             #    0.23% of all branches          ( +-  0.13% )
+The first conflict is in net/mac80211/cfg.c, and is just
+two new lines in the same place:
 
-       5.624666079 seconds time elapsed                                          ( +-  0.07% )
+@@@ -3070,7 -3046,7 +3070,8 @@@ static int ieee80211_set_tx_power(struc
+        enum nl80211_tx_power_setting txp_type = type;
+        bool update_txp_type = false;
+        bool has_monitor = false;
+ +      int user_power_level;
++       int old_power = local->user_power_level;
 
 
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=16 test_pop_cpu=17 test_alloc_len=12 nr_test=51200000 test_align=1' (200 runs):
+The other conflict in drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+looks more complicated, but really isn't all that much,
+just take the -next version. Which I think really means
+I incorrectly did the iwlwifi changes in 188a1bf894323b
+("wifi: mac80211: re-order assigning channel in activate links")
+because that never claimed to move the iwl_mvm_link_changed()
+vs. iwl_mvm_send_ap_tx_power_constraint_cmd() calls ...
 
-         18.466768      task-clock (msec)         #    0.007 CPUs utilized            ( +-  1.23% )
-                 8      context-switches          #    0.428 K/sec                    ( +-  0.26% )
-                 0      cpu-migrations            #    0.002 K/sec                    ( +- 34.73% )
-                81      page-faults               #    0.004 M/sec                    ( +-  0.09% )
-          47949220      cycles                    #    2.597 GHz                      ( +-  1.23% )
-          35859039      instructions              #    0.75  insn per cycle           ( +-  0.12% )
-           8309086      branches                  #  449.948 M/sec                    ( +-  0.11% )
-             19246      branch-misses             #    0.23% of all branches          ( +-  0.08% )
 
-       2.573546035 seconds time elapsed                                          ( +-  0.04% )
+Please pull and let us know if there's any (other) problem.
 
-> 
-> Also it wouldn't hurt to have an explanation for the 3.4->0.9 second
-> performance change as it seems like the samples don't seem to match up
-> with the elapsed time data.
+Thanks,
+johannes
 
-As there is also a 4.6->3.4 second performance change for the 'before'
-part, I am not really thinking much at that.
 
-I am guessing some timing for implementation of ptr_ring or cpu cache
-cause the above performance change?
 
-I used the same cpu for both pop and push thread, the performance change
-doesn't seems to exist anymore, and the performance improvement doesn't
-seems to exist anymore either:
+The following changes since commit e31a8219fbfcf9dc65ba1e1c10cade12b6754e00:
 
-After this patchset:
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=0 test_pop_cpu=0 test_alloc_len=12 nr_test=512000' (10 runs):
+  Merge tag 'wireless-2024-10-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2024-10-25 10:44:41 +0100)
 
-         13.293402      task-clock (msec)         #    0.002 CPUs utilized            ( +-  5.05% )
-                 7      context-switches          #    0.534 K/sec                    ( +-  1.41% )
-                 0      cpu-migrations            #    0.015 K/sec                    ( +-100.00% )
-                80      page-faults               #    0.006 M/sec                    ( +-  0.38% )
-          34494793      cycles                    #    2.595 GHz                      ( +-  5.05% )
-           9663299      instructions              #    0.28  insn per cycle           ( +-  1.45% )
-           1767284      branches                  #  132.944 M/sec                    ( +-  1.70% )
-             19798      branch-misses             #    1.12% of all branches          ( +-  1.18% )
+are available in the Git repository at:
 
-       8.119681413 seconds time elapsed                                          ( +-  0.01% )
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-10-29
 
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=0 test_pop_cpu=0 test_alloc_len=12 nr_test=512000 test_align=1' (10 runs):
+for you to fetch changes up to cf44e745048df2c935cb37de16e0ca476003a3b1:
 
-         12.289096      task-clock (msec)         #    0.002 CPUs utilized            ( +-  0.07% )
-                 7      context-switches          #    0.570 K/sec                    ( +-  2.13% )
-                 0      cpu-migrations            #    0.033 K/sec                    ( +- 66.67% )
-                81      page-faults               #    0.007 M/sec                    ( +-  0.43% )
-          31886319      cycles                    #    2.595 GHz                      ( +-  0.07% )
-           9468850      instructions              #    0.30  insn per cycle           ( +-  0.06% )
-           1723487      branches                  #  140.245 M/sec                    ( +-  0.05% )
-             19263      branch-misses             #    1.12% of all branches          ( +-  0.47% )
+  wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx (2024-10-26 00:42:49 +0200)
 
-       8.119686950 seconds time elapsed                                          ( +-  0.01% )
+----------------------------------------------------------------
+wireless fixes for v6.12-rc6
 
-Before this patchset:
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=0 test_pop_cpu=0 test_alloc_len=12 nr_test=512000' (10 runs):
+Another set of fixes, mostly iwlwifi:
+ * fix infinite loop in 6 GHz scan if more than
+   255 colocated APs were reported
+ * revert removal of retry loops for now to work
+   around issues with firmware initialization on
+   some devices/platforms
+ * fix SAR table issues with some BIOSes
+ * fix race in suspend/debug collection
+ * fix memory leak in fw recovery
+ * fix link ID leak in AP mode for older devices
+ * fix sending TX power constraints
+ * fix link handling in FW restart
 
-         13.320328      task-clock (msec)         #    0.002 CPUs utilized            ( +-  5.00% )
-                 7      context-switches          #    0.541 K/sec                    ( +-  1.85% )
-                 0      cpu-migrations            #    0.008 K/sec                    ( +-100.00% )
-                80      page-faults               #    0.006 M/sec                    ( +-  0.36% )
-          34572091      cycles                    #    2.595 GHz                      ( +-  5.01% )
-           9664910      instructions              #    0.28  insn per cycle           ( +-  1.51% )
-           1768276      branches                  #  132.750 M/sec                    ( +-  1.80% )
-             19592      branch-misses             #    1.11% of all branches          ( +-  1.33% )
+And also the stack:
+ * fix setting TX power from userspace with the new
+   chanctx emulation code for old-style drivers
+ * fix a memory corruption bug due to structure
+   embedding
+ * fix CQM configuration double-free when moving
+   between net namespaces
 
-       8.119686381 seconds time elapsed                                          ( +-  0.01% )
+----------------------------------------------------------------
+Anjaneyulu (1):
+      wifi: iwlwifi: mvm: SAR table alignment
 
- Performance counter stats for 'insmod ./page_frag_test.ko test_push_cpu=0 test_pop_cpu=0 test_alloc_len=12 nr_test=512000 test_align=1' (10 runs):
+Ben Greear (1):
+      mac80211: fix user-power when emulating chanctx
 
-         12.306471      task-clock (msec)         #    0.002 CPUs utilized            ( +-  0.08% )
-                 7      context-switches          #    0.585 K/sec                    ( +-  1.85% )
-                 0      cpu-migrations            #    0.000 K/sec
-                80      page-faults               #    0.007 M/sec                    ( +-  0.28% )
-          31937686      cycles                    #    2.595 GHz                      ( +-  0.08% )
-           9462218      instructions              #    0.30  insn per cycle           ( +-  0.08% )
-           1721989      branches                  #  139.925 M/sec                    ( +-  0.07% )
-             19114      branch-misses             #    1.11% of all branches          ( +-  0.31% )
+Daniel Gabay (2):
+      wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
+      wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
 
-       8.118897296 seconds time elapsed                                          ( +-  0.00% )
+Emmanuel Grumbach (3):
+      wifi: iwlwifi: mvm: don't leak a link on AP removal
+      wifi: iwlwifi: mvm: don't add default link in fw restart flow
+      Revert "wifi: iwlwifi: remove retry loops in start"
+
+Gustavo A. R. Silva (1):
+      wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx
+
+Johannes Berg (2):
+      wifi: cfg80211: clear wdev->cqm_config pointer on free
+      wifi: iwlwifi: mvm: fix 6 GHz scan construction
+
+Miri Korenblit (1):
+      wifi: iwlwifi: mvm: really send iwl_txpower_constraints_cmd
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 96 +++++++++++++---------
+ drivers/net/wireless/intel/iwlwifi/fw/init.c       |  4 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       | 34 +++++---
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h       |  3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 10 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  | 12 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c  | 34 +++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  6 +-
+ net/mac80211/ieee80211_i.h                         |  5 +-
+ net/mac80211/main.c                                |  2 +
+ net/wireless/core.c                                |  1 +
+ 12 files changed, 134 insertions(+), 75 deletions(-)
