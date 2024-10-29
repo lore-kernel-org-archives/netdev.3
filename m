@@ -1,151 +1,123 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAAF204945
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414061DFE3C
 	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 08:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730191587; cv=none; b=As938vq5I+PJbvq46/1XSmoqKE9efAQ6x+OcA+2SmzOZTYGE46EVH9ATWYaYGFHgG3+dP5G1ZawWTsKjtiaqU+Qs5/4lFZt+6MbuwRECBISi2cDWszSlXCNelonyFiggQl24nyBfsI1TnfktDmg09G80ajs3GnZhdBPobSxkVvI=
+	t=1730191589; cv=none; b=E5JcYEuO7zjao2/Sfhw+wUmrE8q9jQgC0sYQGJInZ2yJfF4LTK9XfSJmMChqi31Wfs75VSVqkx0fzeR0oEpjAsUybYI4rKa67Cyy0gyNMiju2ng6meK7dTPwerJalW5U7V1dOxk/ro0GVdKluhXfqZBMkLKmjqjnVj7yzAXjC+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730191587; c=relaxed/simple;
-	bh=7jZErEgYAUH8xk9j5Uoe+tHYPD+nw3TS+qHbiMcKb80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nx9kJ1m7XQ80H8SCife4cLWVlT4dvXJn4f5rBqMo/wGnnuuHoiDv6RT29EWQDxFwcCTQjq/0Wrf30DirGnLwIBVOJgFXTe/idMZM0hhrGUjya5jp1DDrrPC5oknlzVFwmAp3yA1R1nnZVhZo8VUFEi3nCvBJATBpJSBVTE+1x/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=eCzuHOiV; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1730191589; c=relaxed/simple;
+	bh=P2c7LxZXQrJRecWyHq0eLcetewJNr61UfLHD5iBGOFw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VBJiHZVSECN91wLjTnbV/+tibQ68/b/4jwJlN80wl/TKIXy3rgAv95po1msUQtM5DilffQtxaPSVP+6+ItsU5QQtySluzDhnuYc9UWxfBqXWpuXjw/wYOq6B7gEgCbU/IdbigREDcaX0KJ4kCy6gpqTqnXbn4szuNlS9Y8RIQak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=L7phQ52a; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="eCzuHOiV"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9454f3bfaso6156386a12.2
-        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 01:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1730191584; x=1730796384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zDcquMlQbBV3XN4Io8qW6xdqDAgSIub1vLoIuhz6Z10=;
-        b=eCzuHOiVtY2ZJD4owOG5zMGPhLDlJK3w008p7yR+ZGSJYLK19d5O+ylnP5iij8uGLX
-         6nfWFoDmDmPT6cX8Qv/YIxbRIrM6uw1EsXPp9rIvp83RY/30wu0MSmd/J1NsqM4q3YaR
-         au2CeflwBhByh/bIP3kdmyU9ERTonRhuUnlfM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730191584; x=1730796384;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zDcquMlQbBV3XN4Io8qW6xdqDAgSIub1vLoIuhz6Z10=;
-        b=ijdGzCo2QgMoL3dMjuajRigYK3JLM1jF6E5+FmJVLZ3RMOHNo+FL8iVSdso+NMVNhz
-         ikYMon4LdDdqU7nKVt071JuT4VLYRtq1fA0SVPqlTNznnITKn0HqVNXHlv/WVCFbZVhN
-         DKJXiXlue4MlpkzFy1Ix92B7m/rtZiCIvRmR2Y4nIZO8g06haBFb/Evrl8pZjf6TYRJz
-         J/WSMXAaa/B4kyvv+JQ7s8GGhukz/RtCVT04W8XKEj3esTv7F1GEykojL1QvevrrN/Qm
-         NoDPsoh0sYt8DnbJiZP3pHCJUVZhDIBh3+DdcQpV9DDyOSvF0hwuAZUutH50/tGOU6tS
-         uIxg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9eZOgKBshsUQejgy4fnxVBKw8JD8dUkQ34Gqb4oZlMhuR1liVtSVuk4TuerBZ45j7CZgsXkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt5K3CJlkzmqqi2H4XwTsWQ8ILA3tYfu5hQj409vRbb171HV4H
-	SS4izK8Dr6F6KNU683d8NSAMCzfMq2Sx0w66C4MM8amVos+VwT89n5mqkkKGQAI=
-X-Google-Smtp-Source: AGHT+IGQHk3b2V3qEBkaWlzGQYJYEEX9sbx1ZZHVJ7DYIM2F1SK1zV1W2kZaoYuPp8TXT2xduyix0A==
-X-Received: by 2002:a17:906:c10d:b0:a9a:37fe:e7d0 with SMTP id a640c23a62f3a-a9de6199186mr1046662666b.64.1730191583525;
-        Tue, 29 Oct 2024 01:46:23 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-40-68-117.business.telecomitalia.it. [79.40.68.117])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7dacsm450134166b.9.2024.10.29.01.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 01:46:23 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="L7phQ52a"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1730191578; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=VCqPISeZfYcaXdcvh6yVHHXg+YVB/qLvdu3aEXx9Qao=;
+	b=L7phQ52aciHgbAlfIToiJf5x1vaZafIoxNaLsbs27J7wMS1ViNLXVt5VP3TWf8cJwZ4yyh/+RQipDzC2UhbnlkgwossfRfCEsm+702wcH8+NnyeTSY4whs6j6Sy85BnAtTkQOZHzE/4+sVw8jwjAL95GvtBru7lWhoSUST/vpMA=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WI9drjB_1730191576 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 29 Oct 2024 16:46:17 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Gal Pressman <gal@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [RFC PATCH v2 1/6] can: dev: add generic function can_update_bus_error_stats()
-Date: Tue, 29 Oct 2024 09:44:45 +0100
-Message-ID: <20241029084525.2858224-2-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241029084525.2858224-1-dario.binacchi@amarulasolutions.com>
-References: <20241029084525.2858224-1-dario.binacchi@amarulasolutions.com>
+	virtualization@lists.linux.dev,
+	"Si-Wei Liu" <si-wei.liu@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: [PATCH net-next v1 1/4] virtio-net: fix overflow inside virtnet_rq_alloc
+Date: Tue, 29 Oct 2024 16:46:12 +0800
+Message-Id: <20241029084615.91049-2-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20241029084615.91049-1-xuanzhuo@linux.alibaba.com>
+References: <20241029084615.91049-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Git-Hash: df8220a5376e
 Content-Transfer-Encoding: 8bit
 
-The function aims to generalize the statistics update by centralizing
-the related code, thus avoiding code duplication.
+When the frag just got a page, then may lead to regression on VM.
+Specially if the sysctl net.core.high_order_alloc_disable value is 1,
+then the frag always get a page when do refill.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Which could see reliable crashes or scp failure (scp a file 100M in size
+to VM).
+
+The issue is that the virtnet_rq_dma takes up 16 bytes at the beginning
+of a new frag. When the frag size is larger than PAGE_SIZE,
+everything is fine. However, if the frag is only one page and the
+total size of the buffer and virtnet_rq_dma is larger than one page, an
+overflow may occur.
+
+The commit f9dac92ba908 ("virtio_ring: enable premapped mode whatever
+use_dma_api") introduced this problem. And we reverted some commits to
+fix this in last linux version. Now we try to enable it and fix this
+bug directly.
+
+Here, when the frag size is not enough, we reduce the buffer len to fix
+this problem.
+
+Reported-by: "Si-Wei Liu" <si-wei.liu@oracle.com>
+Tested-by: Darren Kenny <darren.kenny@oracle.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 ---
+ drivers/net/virtio_net.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-(no changes since v1)
-
- drivers/net/can/dev/dev.c | 30 ++++++++++++++++++++++++++++++
- include/linux/can/dev.h   |  1 +
- 2 files changed, 31 insertions(+)
-
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 6792c14fd7eb..0a3b1aad405b 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -16,6 +16,36 @@
- #include <linux/gpio/consumer.h>
- #include <linux/of.h>
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 792e9eadbfc3..d50c1940eb23 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -926,9 +926,6 @@ static void *virtnet_rq_alloc(struct receive_queue *rq, u32 size, gfp_t gfp)
+ 	void *buf, *head;
+ 	dma_addr_t addr;
  
-+void can_update_bus_error_stats(struct net_device *dev, struct can_frame *cf)
-+{
-+	struct can_priv *priv = netdev_priv(dev);
-+	bool rx_errors = false, tx_errors = false;
-+
-+	if (!cf || !(cf->can_id & (CAN_ERR_PROT | CAN_ERR_BUSERROR)))
-+		return;
-+
-+	priv = netdev_priv(dev);
-+	priv->can_stats.bus_error++;
-+
-+	if ((cf->can_id & CAN_ERR_ACK) && cf->data[3] == CAN_ERR_PROT_LOC_ACK)
-+		tx_errors = true;
-+	else if (cf->data[2] & (CAN_ERR_PROT_BIT1 | CAN_ERR_PROT_BIT0))
-+		tx_errors = true;
-+
-+	if (cf->data[2] & (CAN_ERR_PROT_FORM | CAN_ERR_PROT_STUFF))
-+		rx_errors = true;
-+	else if ((cf->data[2] & CAN_ERR_PROT_BIT) &&
-+		 (cf->data[3] == CAN_ERR_PROT_LOC_CRC_SEQ))
-+		rx_errors = true;
-+
-+	if (rx_errors)
-+		dev->stats.rx_errors++;
-+
-+	if (tx_errors)
-+		dev->stats.tx_errors++;
-+}
-+EXPORT_SYMBOL_GPL(can_update_bus_error_stats);
-+
- static void can_update_state_error_stats(struct net_device *dev,
- 					 enum can_state new_state)
- {
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index 23492213ea35..0977656b366d 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -201,6 +201,7 @@ void can_state_get_by_berr_counter(const struct net_device *dev,
- 				   enum can_state *rx_state);
- void can_change_state(struct net_device *dev, struct can_frame *cf,
- 		      enum can_state tx_state, enum can_state rx_state);
-+void can_update_bus_error_stats(struct net_device *dev, struct can_frame *cf);
+-	if (unlikely(!skb_page_frag_refill(size, alloc_frag, gfp)))
+-		return NULL;
+-
+ 	head = page_address(alloc_frag->page);
  
- #ifdef CONFIG_OF
- void of_can_transceiver(struct net_device *dev);
+ 	if (rq->do_dma) {
+@@ -2423,6 +2420,9 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
+ 	len = SKB_DATA_ALIGN(len) +
+ 	      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+ 
++	if (unlikely(!skb_page_frag_refill(len, &rq->alloc_frag, gfp)))
++		return -ENOMEM;
++
+ 	buf = virtnet_rq_alloc(rq, len, gfp);
+ 	if (unlikely(!buf))
+ 		return -ENOMEM;
+@@ -2525,6 +2525,12 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
+ 	 */
+ 	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len, room);
+ 
++	if (unlikely(!skb_page_frag_refill(len + room, alloc_frag, gfp)))
++		return -ENOMEM;
++
++	if (!alloc_frag->offset && len + room + sizeof(struct virtnet_rq_dma) > alloc_frag->size)
++		len -= sizeof(struct virtnet_rq_dma);
++
+ 	buf = virtnet_rq_alloc(rq, len + room, gfp);
+ 	if (unlikely(!buf))
+ 		return -ENOMEM;
 -- 
-2.43.0
+2.32.0.3.g01195cf9f
 
