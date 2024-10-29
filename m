@@ -1,67 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652E11EE021;
-	Tue, 29 Oct 2024 22:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E77194A59;
+	Tue, 29 Oct 2024 23:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730242547; cv=none; b=IyuT5hSyXQVSpa/iVezELVtElucvo8Ft1R2+BORjmcgsBrF4eI0jAMZdUEUcAh6if+Fa5wnxov6gEoH648xeKqSHdnqtbSsjEbtnyKwefFYn+0wOYRioRScP4TE5l2N0kpqDCKZl1wK9a0uQrcBDWIJU1kc4SQfK8j8mrfDVnEY=
+	t=1730242823; cv=none; b=IpNNvw2TrHFtpdwBO2xYbDDWIN2VB3vE058dkqWyLXrWVo73i93+VuCGbLWq4zs6N91WqocPWrwVzY6zHkld76DWj45fOxfjfMcLCeaHLko/igNyv64mfIa+KDv/7l20FcqWs1f4HJlYA7FUd374I4A+rf9MnDVQELVJYA2vtwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730242547; c=relaxed/simple;
-	bh=93E/kZZhkMzWuW9Vt3ZfUV+m8acW3lp/+MlaAWOEx50=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RJHtvJKHOotrx4g/FsRSgwS2zaGTWScoFtDe0XZFBfTAHDoeHx9QAQVCcpMf0LdLSQJ7iEeRKbL6BS1fGd2cwC/i7g8PDXDRCP8Xk0kt1soiL3HmikFomAOp5kdT/AcI8+l0+R5VJ84CJ49qM/om8Vb9fjzd+ou9Nqe1NJXgIy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgxM+5fz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730242823; c=relaxed/simple;
+	bh=fgW9sRmVfYSLcJ/HYbNyUGNUz6ItUP4eiBZEZ4kS9js=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OmKEj7uhApTm1CdgLRBYVv0+e+UYttAsmPSHUv0xgnQdJxTS06FeaIA4HFqrvErbfpjQzHxt9sC4SNefvsN3VJfZMv8Kvijof6ocUbZi1HpC0w2ltnIVOa/12e00JVnPlfY54i+PbR9xX+weDklqmb4XuCqtKLiGGdTLEoy4qUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jn1gQzQ9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgxM+5fz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F0AC4CECD;
-	Tue, 29 Oct 2024 22:55:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jn1gQzQ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50C5C4CEE3;
+	Tue, 29 Oct 2024 23:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730242547;
-	bh=93E/kZZhkMzWuW9Vt3ZfUV+m8acW3lp/+MlaAWOEx50=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OgxM+5fzTUnVe/BU9nDms0fgGL6oQtv/37CG+foqAmC3Y29py3OBYQ2UnTHxcTcJz
-	 7d1wVHvZKERaiIRKlEop/5uwkGjK8gJ3u427SnmptaEhjJb1rHcccXECPLLFNJtAHr
-	 RnUUuaCs0FoOchAoD7+3fk1iI2KHWn9jpgo6uMvi/O5H4mWzXcWZ6lKDde2J0Fg7nc
-	 XX+OAeexOcC5UHHZOFe1VfJcvDoqow2TjJnzTk1d4i5+kGJcNKA0C6kRYObGKIp0UY
-	 p6bJhPgITdUCvn59jFD1DLA6JDvJAmDgscpFkwebCXdtprh2ZvxZHlkuUcL3qHXMuE
-	 KOr37HhUl/wFw==
-Date: Tue, 29 Oct 2024 15:55:45 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH net-next] net: fjes: use ethtool string helpers
-Message-ID: <20241029155545.55ae9e30@kernel.org>
-In-Reply-To: <20241022205431.511859-1-rosenp@gmail.com>
-References: <20241022205431.511859-1-rosenp@gmail.com>
+	s=k20201202; t=1730242823;
+	bh=fgW9sRmVfYSLcJ/HYbNyUGNUz6ItUP4eiBZEZ4kS9js=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jn1gQzQ9BhlhMxHCZB/I2lt1g8udj4v6dd1tMPr4j/clVgopyr995uL3I/2r6ZZYD
+	 RUXVIypKKVrA5b27BwQlPDdxrLbNK6qzKQlHI3P/rO5Lg3iMSIzZfN5KXv9wUAgKQ+
+	 BSFq4ShL+7TQrhzBPURlDnXR6CJex+10o1Eo2QuDlN9+1xev97SoH8vv9TWgzFKSFZ
+	 UQ68F3F8w1sTZTGL/kZKc29JaSUu3p/7QuRUKLG/8f+2xjRPq6C8qA3JNlIT59A9P4
+	 aVaigm3Jpt3PgDqLFznB9hjxnYgnV0LR1eqKpIJ70g2gu6SjWFmT71oRBvKWWTGxGn
+	 bArXAdW3VqBbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE4C380AC00;
+	Tue, 29 Oct 2024 23:00:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: mana: use ethtool string helpers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173024283052.846516.7188456547494767487.git-patchwork-notify@kernel.org>
+Date: Tue, 29 Oct 2024 23:00:30 +0000
+References: <20241022204908.511021-1-rosenp@gmail.com>
+In-Reply-To: <20241022204908.511021-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, shradhagupta@linux.microsoft.com, horms@kernel.org,
+ colin.i.king@gmail.com, ernis@linux.microsoft.com, ahmed.zaki@intel.com,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
 
-On Tue, 22 Oct 2024 13:54:31 -0700 Rosen Penev wrote:
-> -		for (i = 0; i < ARRAY_SIZE(fjes_gstrings_stats); i++) {
-> -			memcpy(p, fjes_gstrings_stats[i].stat_string,
-> -			       ETH_GSTRING_LEN);
-> -			p += ETH_GSTRING_LEN;
-> -		}
-> +		for (i = 0; i < ARRAY_SIZE(fjes_gstrings_stats); i++)
-> +			ethtool_puts(&p, fjes_gstrings_stats[i].stat_string);
-> +
->  		for (i = 0; i < hw->max_epid; i++) {
->  			if (i == hw->my_epid)
->  				continue;
-> -			sprintf(p, "ep%u_com_regist_buf_exec", i);
-> -			p += ETH_GSTRING_LEN;
+Hello:
 
-In some of the other patches you deleted the local variable called p
-and operate on data directly. I think that's better. Plus you can
-remove the indentation here and exit early if stringset != ETH_SS_STATS
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 22 Oct 2024 13:49:08 -0700 you wrote:
+> The latter is the preferred way to copy ethtool strings.
+> 
+> Avoids manually incrementing the data pointer.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  .../ethernet/microsoft/mana/mana_ethtool.c    | 55 ++++++-------------
+>  1 file changed, 18 insertions(+), 37 deletions(-)
+
+Here is the summary with links:
+  - net: mana: use ethtool string helpers
+    https://git.kernel.org/netdev/net-next/c/ae2930b0b311
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
