@@ -1,35 +1,35 @@
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D441E0DF4;
-	Tue, 29 Oct 2024 11:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822E220513C;
+	Tue, 29 Oct 2024 11:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730202874; cv=none; b=BGSSEBacANCw5NTLba9lKO6Lnp0BiRdE6Y2tHCjFJMlXbnI6cImJwVxiP7ZMgO6UBxjjFQQMO/gQu2taRmRMLNj67/wM0KmMAf+9mCUf0vASjuyxMaqKsfy9QPw3FT0NbZknOwAjIfbE9kMo+1PU741S5CuvRsejCsTTY6iGLNc=
+	t=1730202874; cv=none; b=EH/r1bG+jofXgo5dqR8Lb1Etrn0EvHUBjKFUfBPG8U3qYTHzGD/dwwNQJaq21I2RqgEuMgK/ISl6+PScbm6BrdnF5g6pmxHW2H6qWaHKfRYKjl4u0+7arbGf8iOuUbnWIoXDw78gYJynkcjR3xBwq7gv+uyIrf6HiQlqyWoJNhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730202874; c=relaxed/simple;
-	bh=RFedb7d1yVzyHiGwdyMHJM8bG3GO/6BXjfejl8KlpAg=;
+	bh=xuwOCq9DyQPSbqo5LvZGNA2RGgvT6MVEwrrD7Ioj0/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGhv5K59i3vnAF9hMug7ZiL+GDVlMEDLN8QGRkcTjvIE/+kzQUtSUEFhJ9REfry1t0E+qxVaPuXTbI1N38E2kw9e97wNpzy2W5663M6Ev5aUpnnCILiWJLE/KiERWOdLtyGCcQ02NqAg6VkmkoZNgoBtLFmGhMcvTHVVa7yfcdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Uj/zZ6Rl; arc=none smtp.client-ip=217.70.183.197
+	 MIME-Version; b=dXzyd08kK50hB8xtK1R8d846MlrstVi4Lc+U0xxshcnjHGLvJSAlb2koTIyToh7gp/xVB+l03qyWkzN8YU4UCvkmxAuISgo9Tf3C9uA5vjaF82FpAP8jm+frpGMWi+LRRioh9977R63NDAIYlamPdd+fcj8n+noVt3lXF1u1oPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mThIllOu; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Uj/zZ6Rl"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D65541C000A;
-	Tue, 29 Oct 2024 11:54:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mThIllOu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BFDE51C0009;
+	Tue, 29 Oct 2024 11:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730202863;
+	t=1730202865;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eGCWRSOQMmjS9ZFY7AhKJ0VNqkvKkp9FxTzYgROnlPc=;
-	b=Uj/zZ6Rl3V4q/IJ6WB/HHZutLTeFS1axCbwn50wEuAeNuxJNuViSCjiCNRUu6k+FY3XAM6
-	BvVqKw1NqcEjRtLhEUaaV17nma4xx26/wvwFuDzOuc8W5VaiOImCbY9xxuM1Q1h2dAvxCD
-	4bqyKXDedHQG67rVYSFgnxrtERGXWXUeI3aWYIBRxHdNUP9wIaWgdS5vN9MHmhv4g2H7vv
-	hnLM66SRFtFVFkoAOnmLsSEnCe6qWzFisCQfO2we6xv9mptZidTcCAUh5KvpoiSVQh6Dwd
-	TcVyF3pkhh/FRFNxY3OfkTPoZSGfSXcm+jklgGIhtUVglZG5rQFMOmJ0lIeQAQ==
+	bh=45yQt7jQVmAc/j0/6F9O+7BqEchGqjbIExy3yfZhK9I=;
+	b=mThIllOu6ZEzYnVW+mb+DOrx441jivQ+KXvmJ2GNedD78i8Xi64tUIt0CepQ7vSDYYerq0
+	XNDAnQjwsOksIPl/NrrA3L6Ddpa2867waA4FlPNgffWcFXzZKZuEYZqUOMVaLpJQ07J161
+	z7OfUuqpWUFDzVvXB1Po3oqQyKJIrATPMo7bq42ljil6pz8l8YnKqFQiHWZGTID1tjmt1+
+	fBgC0aBPuxo6EjTWcJGC+tm2QZhPhVNHT6jbDzeSz0I69Y6mPEiovlthHCHGDBX6HLAJQw
+	U/nmPqyNOagqfy0a4xjDPPRYtYJj2vyCq6nT36KWGU56Ol4zZi9HTdGR/04sNA==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>,
@@ -47,9 +47,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/7] net: stmmac: Don't modify the global ptp ops directly
-Date: Tue, 29 Oct 2024 12:54:09 +0100
-Message-ID: <20241029115419.1160201-2-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next 3/7] net: stmmac: Only update the auto-discovered PTP clock features
+Date: Tue, 29 Oct 2024 12:54:11 +0100
+Message-ID: <20241029115419.1160201-4-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241029115419.1160201-1-maxime.chevallier@bootlin.com>
 References: <20241029115419.1160201-1-maxime.chevallier@bootlin.com>
@@ -62,50 +62,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The stmmac_ptp_clock_ops are copied into the stmmac_priv structure
-before being registered to the PTP core. Some adjustments are made prior
-to that, such as the number of snapshots or max adjustment parameters.
-
-Instead of modifying the global definition, then copying into the local
-private data, let's first copy then modify the local parameters.
+Some DWMAC variants such as dwmac1000 don't support disovering the
+number of output pps and auxiliary snapshots. Allow these parameters to
+be defined in default ptp_clock_info, and let them be updated only when
+the feature discovery yielded a result.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index a6b1de9a251d..11ab1d6b916a 100644
+index 41581f516ea9..8ea2b4226234 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -298,20 +298,21 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
- 		priv->pps[i].available = true;
- 	}
- 
--	if (priv->plat->ptp_max_adj)
--		stmmac_ptp_clock_ops.max_adj = priv->plat->ptp_max_adj;
--
- 	/* Calculate the clock domain crossing (CDC) error if necessary */
- 	priv->plat->cdc_error_adj = 0;
+@@ -303,8 +303,14 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
  	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
  		priv->plat->cdc_error_adj = (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
  
--	stmmac_ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
--	stmmac_ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
-+	priv->ptp_clock_ops = stmmac_ptp_clock_ops;
+-	priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
+-	priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
++	/* Update the ptp clock parameters based on feature discovery, when
++	 * available
++	 */
++	if (priv->dma_cap.pps_out_num)
++		priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
 +
-+	priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
-+	priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
-+
-+	if (priv->plat->ptp_max_adj)
-+		priv->ptp_clock_ops.max_adj = priv->plat->ptp_max_adj;
++	if (priv->dma_cap.aux_snapshot_n)
++		priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
  
- 	rwlock_init(&priv->ptp_lock);
- 	mutex_init(&priv->aux_ts_lock);
--	priv->ptp_clock_ops = stmmac_ptp_clock_ops;
- 
- 	priv->ptp_clock = ptp_clock_register(&priv->ptp_clock_ops,
- 					     priv->device);
+ 	if (priv->plat->ptp_max_adj)
+ 		priv->ptp_clock_ops.max_adj = priv->plat->ptp_max_adj;
 -- 
 2.47.0
 
