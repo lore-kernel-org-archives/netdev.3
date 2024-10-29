@@ -1,353 +1,487 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24177DA82
-	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 09:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730194920; cv=none; b=OjH8O7IYK2K9CL++oKt/rftm3gr8xbEJ9XKMc24B0ZYJ36FmB/Ap2mL5IesuPO9R81E7S/Ur1JjoVvL9c6rpuDQRjJirwR3x5VaVxiygNyNywLOriSWdWNd6aBgqFlx8NbUB0RwhXNVsZKgt/O9G3pdzRmaaeNUQz0MbDcQPiT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730194920; c=relaxed/simple;
-	bh=Rk1U0Q8IPzGXyW42DR/flbGw6vgMx+pYnP4sPaLW3FY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cMssG3UOKPWnWy5qwMIStYsJNQdzljwmhsZA2Gowrgjk0nneSo7KDaT2Rhn3IeFD6wHCfZsscYHDzT4dJmpUiGrouuMJPFS9MiCFracLn3I14zSxHXHH1E+7xWHJo2pGuQtfwRiAULalqSdvXydafyBMuzXs6fQ3PA+EZZaE9vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=SRVMMa3h; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82C87464;
+	Tue, 29 Oct 2024 09:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730195359; cv=fail; b=comEZdxXXgGHyCBjBdhfg/3rLWLZ+X0UfBrCe4KHt/g8sJkifBlCSNggIKj33f5Iexo4vsr6NC0AK2Sx3iI2OKHlGTmkhhIZF1601tG0S566TkRvJFvb9QNwaUAhqT7S81mNsmOXnhEtz455cQpSI1IXP6Cqwybc/yJzKm4AeaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730195359; c=relaxed/simple;
+	bh=8UR6EXIYobpblb1cUxNkC+LW/V0mD5YNgC2LgjoRpq4=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MWsoZxkAqDwPh+7WspIE17pmfjRo37+RPt6KYjs0mLPkuyQnULC9oor4nXfS4Ta0/wyt+8avkEypxRct0mwaivbY0TRjVbJ6ysomBTbd+VZ8ppALF5UjMr6Ds++VC1NaW+JNqym2kbbSN498oaX/+Pcq5WMkp85a9WlOL3GqWMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L/B8XWJQ; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="SRVMMa3h"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d8901cb98so4253344f8f.0
-        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 02:41:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1730194915; x=1730799715; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gLtr73VHqwgdcXGBbLOcbwXiHKwoIVyQG3J6RSZ3YZs=;
-        b=SRVMMa3hn04cPq8TfRTkmFUq8h1qw6olJ5xv16506j/oS1nxovegaQk8g+hZkJdQx1
-         ON1zMTufq2aocOi5WokkMR6haIIgrvRX7jpuLQz6fjvkp70P+a0SDAQhGXLjUd9YCE+x
-         2vGROjiVfPEQoTqzdQ4l5iP7WaiXzag6okfKqGeLQVYugeHN6fAGKdDpl8uD5amaRz2v
-         CN7uuFmUGJcOcJ65xUe43PP0KFn3FiD9Ze5KHKCgqEBV7OuFRfoY3jFvwraspJI0v0Lk
-         Dt22KI16KA4L8HUJVWTegId8j/BX8GM+PXYNMngwuD8Mey+neZ7it0E29U1C432ira/8
-         QquA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730194915; x=1730799715;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gLtr73VHqwgdcXGBbLOcbwXiHKwoIVyQG3J6RSZ3YZs=;
-        b=cHvFV4Tx9S3kPZiPIwZ7eZK1K7b61Uvu+r+4ztSQhLb8A4Ny5YtGmJMXVW8+3DfAmd
-         8U/otYUpEZKdFZpK2MqMZjtdM1byr7NOgL3Yp2TVeno7RIbOJZyc4afh7eFdD2pHkGGs
-         3vmu1idkbMNgZ49tUtQ5aQyacDLutY/AUWv/guBuKgahndm/9wVTHpRINunioHZLpDcQ
-         imnKyM8KQt7rb7be53+GMM6+Y7JIGixkV4wN/WAzx7mpRpqgs/d+CahKqjs35zu/+cQk
-         mDmrIDEBW0RVvLCZd9h2olrGAy3NW/95936Hoc8gl14UNae1VOJMP0OB5cUUjQ8uwHZa
-         FhtQ==
-X-Gm-Message-State: AOJu0YzyVGugamXeIY14xI3UQT2qzWdNpLOUai4JiMHjADFyrSnAV7uu
-	FKghvG3fB2NpD0yjYblgv9aFASHi8qP7bbe8serAGH9kD5KmOXsCAcoE9X9jl6A=
-X-Google-Smtp-Source: AGHT+IGqXDwnFNH7alnVVvpJskyB5278JBHkmt0HsSMEI09m7FRSIIR7myTRb9sj6Ecl9UHEE9DuWQ==
-X-Received: by 2002:a5d:45c5:0:b0:374:bf6b:1021 with SMTP id ffacd0b85a97d-38162916869mr1208668f8f.27.1730194915081;
-        Tue, 29 Oct 2024 02:41:55 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:3dcf:a6cb:47af:d9f? ([2001:67c:2fbc:1:3dcf:a6cb:47af:d9f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935f6e47sm139676855e9.38.2024.10.29.02.41.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 02:41:54 -0700 (PDT)
-Message-ID: <2f178d43-8a40-4f1a-b8cf-85d26ad0a063@openvpn.net>
-Date: Tue, 29 Oct 2024 10:42:09 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L/B8XWJQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730195356; x=1761731356;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=8UR6EXIYobpblb1cUxNkC+LW/V0mD5YNgC2LgjoRpq4=;
+  b=L/B8XWJQjOZ8mtqsaD4PkLz+EuOPqjZK83Fie16cL/J/62OmpLH+SPZZ
+   7vmK/krD5xA6xhTjEVTy9NxOM/g+Or5lKuWvh6yZIxq4wIkuCaZxyfx5H
+   3wxmgPnkC+RtO9wgVD6tkQoaKdk30udJDSqZJzCQf0I+xtaq6zWUuehlN
+   QtStiwkT9SGMv9iNrBSs5Azw9OX4nfd4j0wWxVn8gpQf3/Uh8HA9IE5Ew
+   dzoxc2vNlisZv35v9QmZC+VzUciTySoghvBJ1m59rSQX0req573WQLV0r
+   smnOi6eUf7CQLAhYIBGH/6teKfaf5NVsfxSaOtaVEptexCCOZ4HAmf2Oa
+   g==;
+X-CSE-ConnectionGUID: 1ZWEZUk9RH2idIqYQoLh5w==
+X-CSE-MsgGUID: qPS/0aD0SK+yty3itZYrdg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="29933464"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="29933464"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 02:49:14 -0700
+X-CSE-ConnectionGUID: LGyZjXGmTvSEQerbmozNJA==
+X-CSE-MsgGUID: g+LXvNIdTPanbbtxhX74RQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="82051879"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Oct 2024 02:49:13 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 29 Oct 2024 02:49:13 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 29 Oct 2024 02:49:13 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.46) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 29 Oct 2024 02:49:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kk5PPLC5Z0I6mYRR9VfVFEtOhuxTey12FlH8KFMGVvcXA/YmdK21kXagtX8mSuD+AJgGRt0u5wIebgD6cYH5mA9DzYUXoKDfgUdZuOEpqNALgLF+DqctWsjVtptVQcOhprC77efrlCymCr1WjHD4Uw2oKn2gd9utrjJ5ESlU41PrlS17vsHR2Ve1u0/ZiMLu6vI9SexstiRoWlu3HFo1OS0yj1mDW8F/Z0lDdSLPbZ4DUYn0K0zE90GkRY5mh1RFjKhNO6GdufKfw6czs6spgpAbbfR2uKWG0vJ0YdHtdCATbYLZQuVHxRvvObo4PZIJOP6X0OBuI8uF/1zVXagKSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NEwS+qUBRaTwdEw4NqP9OytA2Z977iea0U+Biihfz8Q=;
+ b=JWwSNpG7S6yv/joaeta6Tkxhuka3cSPkAENsQQnTso8ekmCe/ALv44uzTKfG2CwRiy22nit36wc4jFhnsM0XmSYGEwToh78Wy/LF0OcfO4DX80QXt/LoIqz61qSZx5QSb++6SuvuDvc+8XAbeomjZXQhtRvrRYoztxBttBlhqETDDuqSOq/LdAY78EMBaSd+APV3kDizYAW4afKHvmIPlqtXYAHx0918DIziRex1Mg1Kmqj3wuur/eZojHYFwxg4aR2f1dctGO4/OBc4mhvNeAi0/FWPn0r6oQz8AuBypesVlUJckcgWzfUzC/nfWRwwDnKtXErexpKYHlpTcZET9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB5949.namprd11.prod.outlook.com (2603:10b6:510:144::6)
+ by BL4PR11MB8800.namprd11.prod.outlook.com (2603:10b6:208:5a7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Tue, 29 Oct
+ 2024 09:49:10 +0000
+Received: from PH0PR11MB5949.namprd11.prod.outlook.com
+ ([fe80::1c5d:e556:f779:e861]) by PH0PR11MB5949.namprd11.prod.outlook.com
+ ([fe80::1c5d:e556:f779:e861%5]) with mapi id 15.20.8093.025; Tue, 29 Oct 2024
+ 09:49:10 +0000
+Message-ID: <f02044c0-1d90-49f8-8a2d-00ec84fba27a@intel.com>
+Date: Tue, 29 Oct 2024 11:49:03 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v5 2/2] igc: Link queues to NAPI instances
+To: Joe Damato <jdamato@fastly.com>, <netdev@vger.kernel.org>
+CC: <jacob.e.keller@intel.com>, <kurt@linutronix.de>,
+	<vinicius.gomes@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"Przemek Kitszel" <przemyslaw.kitszel@intel.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "Alexei Starovoitov" <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, "Jesper Dangaard Brouer" <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, "moderated list:INTEL ETHERNET DRIVERS"
+	<intel-wired-lan@lists.osuosl.org>, open list <linux-kernel@vger.kernel.org>,
+	"open list:XDP (eXpress Data Path)" <bpf@vger.kernel.org>
+References: <20241028195243.52488-1-jdamato@fastly.com>
+ <20241028195243.52488-3-jdamato@fastly.com>
+Content-Language: en-US
+From: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+In-Reply-To: <20241028195243.52488-3-jdamato@fastly.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL2P290CA0029.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::19) To PH0PR11MB5949.namprd11.prod.outlook.com
+ (2603:10b6:510:144::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 23/23] testing/selftests: add test tool and
- scripts for ovpn module
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Donald Hunter <donald.hunter@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- sd@queasysnail.net, Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
- Eric Dumazet <edumazet@google.com>, linux-kselftest@vger.kernel.org
-References: <20241025-b4-ovpn-v10-0-b87530777be7@openvpn.net>
- <20241025-b4-ovpn-v10-23-b87530777be7@openvpn.net>
- <fe2b641f-a8aa-428c-9f04-f099015e0eb9@linuxfoundation.org>
- <feef6601-0e68-4913-b305-3be3face4a9e@openvpn.net>
- <24edee6f-9f77-43f2-8565-566668e5f697@linuxfoundation.org>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <24edee6f-9f77-43f2-8565-566668e5f697@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5949:EE_|BL4PR11MB8800:EE_
+X-MS-Office365-Filtering-Correlation-Id: adbc59ef-0e26-4ab8-863a-08dcf7feefb8
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WGdmVmptVUNzblZBMnZ1RzhSTHJLSlM4Njc0Vkl1MnJZcDAzemJrTWlPWWkv?=
+ =?utf-8?B?eXhmTlJzR0lvUmEwcVFibjhnYnlhTmgwSjlXT1JqUWxHTzExK2p2dDBsT2RI?=
+ =?utf-8?B?U1FjTTE1RmlZdzVsWm5VcDlzREhvem9CWi81Y3kzN2JIbXZKUTQ5WXZyWk4y?=
+ =?utf-8?B?WGluRHFJN3F3bWJYMGlPdUswUXdKMERSeHE3aVNObmc3NkxLN3A0VWlHNzFo?=
+ =?utf-8?B?RW9KV0JXOWxhRDU0VHhPdXY5UmJ6YlJtSUxsS01KVXFCM1NlYW1LcnVCeWFn?=
+ =?utf-8?B?VWRPWmU0QUpMcU5DYXJKRS90ZW5HbkJKRDBVa0lZQ0IzdThETkc2UFRRclQ5?=
+ =?utf-8?B?VHdiVXlNdVFENEVFTWdrRVhEVU1JL3lRRUcvY1ppaVEzTzlpNHFqdGtlQVpL?=
+ =?utf-8?B?Z0RGa2krSGE4YUdrZlV5STd1ZVllWlp5endzTHJac1pJaWozSS9qY1d4Q2dV?=
+ =?utf-8?B?ZzBSY0VEeE1aM3puZFIxZk0ycUMvdE45VVlsSmpsa29jeTdCdkc0U1U1T1RK?=
+ =?utf-8?B?YksrRS9iUlgrUGdaQUlnM1Y5WWNBeTdmZFdyTnl1OUtYdTVtSUdOSCtMVVBX?=
+ =?utf-8?B?cUZwbjhwMGpwWEpoR0pvRmJ3Q1FTdjZ4c1VjYWtGcmRRZmJvU2hFTHlMVEVo?=
+ =?utf-8?B?MHlmS2ZURHp4RDhYTUhHMG84ZExlNHZPYW5wem1BZDN5Yjc4YmZVRjBrYmhj?=
+ =?utf-8?B?NklFZVZHNlc2RXdaeDVjM3J5NDVFR0RmNTdtbkREalVkRG0vcmIyZHZOVktG?=
+ =?utf-8?B?cDdQNGxTZkw2eDVPbUJLamNWQkczMDVOWUVmVC9JY3Q0NnF3YUVNUTBPWjYw?=
+ =?utf-8?B?ZFgrQS9hckZyVWJURkYvZ0k3ekZJQTFXbHZ1YTBOR051R21Jdm94bStCMHVo?=
+ =?utf-8?B?S0huNU5mMllCaVJoak1SYmpGNHo1VEtXRTQ3REF0TjR0MlhUU3hkdG9nV2h6?=
+ =?utf-8?B?Qmx4MnZEUC9BZFdOdnlySm5qOTk0UnltaWk0cDMvZjdlNEc1OVhkTnAvQity?=
+ =?utf-8?B?N1dwc2hTZ1YzbU5jRGIxakVBU1MvRVhEdDh6S0RuSE1wM1prRkR2OFFsbXl5?=
+ =?utf-8?B?ZDY4c1lvNWxMRVo4dFNRMTdwa3hiY0pMWWg1WDljWStKT1JqTmY0NTIwdmFo?=
+ =?utf-8?B?Q1NMRnlzWktOb3U5bzlHeXNPUCtHQjYwbmRjd3FCZnBwRWVRamNjTzVJczVF?=
+ =?utf-8?B?L0RmNjU5elRGUTZlaFBtUFI2ckFnd2RSOStreGtHYk9mdU9udXdJdHlDWXlC?=
+ =?utf-8?B?VWVvRVJBZ0g4a3VQQ1Y2Qy9LVEhsYWZqdFBVR3dOcjk2NGxsaGRVSE9OZzYx?=
+ =?utf-8?B?Kzc1M3o1Sm1zeHNnajlTMHpsRWljYUpZc2FtRVFIMXpyOHI0aGNGdmpWRUZY?=
+ =?utf-8?B?ekNVOGdQWnNKTjhrakZJM3dwUEd6Q3B4SWlhN1FoODJxVWJUOEgwYnVLL0hz?=
+ =?utf-8?B?My91VWtnQ2ZoNkFJMmd4RWpUNW1Tb1BHTGJWMW44YU90UVVDTE8xazdRdkVk?=
+ =?utf-8?B?ZnJWcHNORTFBR0h1SFpFK2J6ZGdNTXJDWmliaHpYWWlvWjMwZ1Qydnp5NFZi?=
+ =?utf-8?B?UytWNGtxSmhaQ3QxNE5lOFBZRFptNEJLNmJaZmcrN2F0S0YvVk9qdU5laTNP?=
+ =?utf-8?B?Q0U1UGMxZWROajJ6TnYzNitYRERzZXNSL0IyNXZsaEhGQVhHZUlHd1lkMnUv?=
+ =?utf-8?Q?ZHzHiZe3QdgnWqX49PMz?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5949.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M2RSa2RTS1AzalVMSGZJQjMvdGtPR2ZaTmM4UHRLWEdMMm5OS1FKTW9xMzhy?=
+ =?utf-8?B?UExGQzdoVmFHN1dMR0NUTDk0RVY0SWZNNENjblhnRjNxM2ZlM0lpRXVQZE5M?=
+ =?utf-8?B?c2xIa3owTXFISm1EZU15ZzBveGRkKzBVczVwK01KS1NTbllUb0pIZTJuT3Y2?=
+ =?utf-8?B?N2ZvdUFQbHl2Y2xNVWw5TC9wZFMyZ2FBUlczSjhnYng1MDY3VmJQVUFFdDV4?=
+ =?utf-8?B?ZFBISmdjNGJrL3JxOGdhRDc5RzExclhuSFpuUUZOYXZ5NU5iRFowQmxCNmgr?=
+ =?utf-8?B?OE1CZW9xRTYybStnSWl6dHFlUVI1RlNBcDI0WnltMFZiRGd2N0tQVFZPVzlv?=
+ =?utf-8?B?aHJ0UmRCZWZvajl5Qkl4QnJBWnYyNjg3cC95Z0tCdGR1cUxEejVNMWx3Vllq?=
+ =?utf-8?B?SkF1aEpXdTNYK1VwZ3FFYjc5TlJiNUFTVFB1MmQ1anZJcVAxbFYvS3JacXFV?=
+ =?utf-8?B?RGhiOGJIb3o2R2U3QTNFWEh1QktDZTZOTWJlU3hSbWorY1FhbUE5WWx2dDQx?=
+ =?utf-8?B?VllnS0dHOE51ME9LT0xMSFZUc20wVUk0a05HbEtUN0R1UWRidlBPNHNGbkRS?=
+ =?utf-8?B?eHg4ay83aXhWVlR1L2IybkhGY0Ivb0p4V2ZPTHJ2SkdtbDMxTzhudDcyUHNl?=
+ =?utf-8?B?bjBGVGJsZEdhUS9VMTcyWXRaUWdtMTZJTUh5Y2Rmc1B1b1B0bWxQRExvQjBY?=
+ =?utf-8?B?L1lsZGF5ZllzdnRSTStlbVVBQ3oyYVFTMGoraS84M3pDUElvUWtFR2xFL3Fn?=
+ =?utf-8?B?U2kzeTlzbUw0a2JnQ3lxV1FTZ0JNcDQwcFNYalBCdnVBYmlwdVVqT0lLT1BN?=
+ =?utf-8?B?MCtzQ2xXNUpmbEFBd3JZZ012T2pBOHZWL2lSUnU5SXFlejRoeXZJakIvRHlX?=
+ =?utf-8?B?RWt4dmcrbitZUjZRd0NJbHN0Z0FmdGd0WDEyNmFPRUJsQms0UUJIOE8yVWsx?=
+ =?utf-8?B?Nkx6S0NxeVY0UWlTcU9Cb3RBM1VJWnhyNmlWYmgrdExmMXpHM3NQK2ZaWUxF?=
+ =?utf-8?B?T3lVVGdoZ25Tall2K3ZMNWtwT3pWcm1QSkp1Y3FxT0R5ZHJ4L0UxR3ZlM1Yz?=
+ =?utf-8?B?YVlFREhCeWtEMVdhSHNHS3h0Y3pldFFjckxmY3N6V0tKeHV3Njlsc0NqeThk?=
+ =?utf-8?B?NmdjajBHOVFWK2RvQ1VOL3gwRnMrclVGaGFtWkxad1lHL3Qva3dBN2JPTGZZ?=
+ =?utf-8?B?dFMvbDhUbVYwZVUzbmxsZDNpQ3ZXLzhRTkdlZXowTUNaa1JTdmdSeW93TnZU?=
+ =?utf-8?B?Z1JEM0t0Z1kyK2Jvb3VFUkF4cFdINnFJV2hXTWdvTFVHbGQ4dXlDbWFremNL?=
+ =?utf-8?B?aktRZ1JrRjcwREl3N2FoRkRSZFJ3M3dmeTdEcW9mU1Z6dU4zelVQWWxxeUtm?=
+ =?utf-8?B?NmNOOEQzWVFsdGp3dEVVZVRDcmdQOVA4bVFXMXEySEdPMVVZVDlSQy9yYjFo?=
+ =?utf-8?B?K2Q3K3l4WWIwYnlQbWNwalQwdU05NXpPay8wQkppWnJKaTc3MnpmeUhQYm5u?=
+ =?utf-8?B?NG9haURYK0RJTkhUY3VsaFVUcEZJanFuSi9TdUs0OWxTbFF3d1dGKzNUYWRV?=
+ =?utf-8?B?aC9mbDVDNzc1amR3d2dBMHpZZVJHUlBDWnlkRUNTT1RnN1Q0MVJ6OXFxRFN2?=
+ =?utf-8?B?aFdGYnZaVS9HU2hhTnNSRVQ1Y3N6eXY3L1d4eW9mQ0JwZ0hGa1R3WU50NXBH?=
+ =?utf-8?B?cHhBcGhHaitNQ25VMGtjd0RzdmtaYkxJVUZsZjRWSE5vV2ZyS01xenoyaHIw?=
+ =?utf-8?B?Y3hva1p3MjhoMFc5VG95eGR0VHYwVlZMZ1ZKTUdNcE9BN3lrTjFzNE5BczlF?=
+ =?utf-8?B?Tk44OENwdFFZcWtYeG94U1I4d0dNMnZ3cmtKRG5rSVZBbnRUQ3NiOEZRQnBh?=
+ =?utf-8?B?TGFBVFNDN1U0SnBvRXkwS2QvTGtsNEFqVURUL2x3MVh3ZTd2VDZmd3BjUjI3?=
+ =?utf-8?B?OWgwVFBYM3hzaWVUSXRZcUFCOHdIU3Z0bWdPME40alpPZjZUNVhGNFJZUVpz?=
+ =?utf-8?B?Z05wbWc3NVVDL0txeEJBNXhqdVEvdkR2WGN4bUc3T0pXaytCQSt6YmlzMjlp?=
+ =?utf-8?B?Nzl2Nlg1QU9Qc0l5bk14dDZkZVpxWDZwNWFDQjNNRFRZaEN4M3JFU05Cekdm?=
+ =?utf-8?B?U1gxNWgrWlZGQ0FFdnhxRDBjZDlVMkxTWVJvU0JuZXRFQURLQWZVcGFhRmcx?=
+ =?utf-8?B?RVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: adbc59ef-0e26-4ab8-863a-08dcf7feefb8
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5949.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 09:49:09.8456
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wZYFCUNed4CrsoMUDtAL+Lw+NnPd/wkA0JLha5jxfkDqt2TeowFal6jfgLrZcSBELQn1W6l8tpj2KzHV7oPgKaXBzh0tH0ctX1mrN9e9ZY0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR11MB8800
+X-OriginatorOrg: intel.com
 
 
 
-On 29/10/2024 03:29, Shuah Khan wrote:
-> On 10/28/24 04:13, Antonio Quartulli wrote:
->> On 27/10/2024 01:40, Shuah Khan wrote:
->>> On 10/25/24 03:14, Antonio Quartulli wrote:
->>>> The ovpn-cli tool can be compiled and used as selftest for the ovpn
->>>> kernel module.
->>>>
->>>> It implements the netlink API and can thus be integrated in any
->>>> script for more automated testing.
->>>>
->>>> Along with the tool, 4 scripts are added that perform basic
->>>> functionality tests by means of network namespaces.
->>>>
->>>> Cc: shuah@kernel.org
->>>> Cc: linux-kselftest@vger.kernel.org
->>>> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
->>>> ---
->>>>   MAINTAINERS                                        |    1 +
->>>>   tools/testing/selftests/Makefile                   |    1 +
->>>>   tools/testing/selftests/net/ovpn/.gitignore        |    2 +
->>>>   tools/testing/selftests/net/ovpn/Makefile          |   17 +
->>>>   tools/testing/selftests/net/ovpn/config            |   10 +
->>>>   tools/testing/selftests/net/ovpn/data64.key        |    5 +
->>>>   tools/testing/selftests/net/ovpn/ovpn-cli.c        | 2370 ++++++++ 
->>>> ++ ++++++++++
->>>>   tools/testing/selftests/net/ovpn/tcp_peers.txt     |    5 +
->>>>   .../testing/selftests/net/ovpn/test-chachapoly.sh  |    9 +
->>>>   tools/testing/selftests/net/ovpn/test-float.sh     |    9 +
->>>>   tools/testing/selftests/net/ovpn/test-tcp.sh       |    9 +
->>>>   tools/testing/selftests/net/ovpn/test.sh           |  183 ++
->>>>   tools/testing/selftests/net/ovpn/udp_peers.txt     |    5 +
->>>>   13 files changed, 2626 insertions(+)
->>>>
->>>
->>> What does the test output look like? Add that to the change log.
->>
->> Hi Shuan,
->>
->> is there any expected output for kselftest scripts?
->> Right now it just prints a bunch of messages about what is being 
->> tested, plus the output from `ping` and `iperf`.
->>
->> My assumption is that the output would be useful in case of failures, 
->> to understand where and what went wrong.
->>
->> I can document that, but I am not sure it is truly helpful (?).
->> What do you think?
->>
->> Is there any specific output format I should obey to?
->>
->>
->> [...]
->>
->>
->>>> +
->>>> +static void usage(const char *cmd)
->>>> +{
->>>> +    fprintf(stderr,
->>>> +        "Usage %s <command> <iface> [arguments..]\n",
->>>> +        cmd);
->>>> +    fprintf(stderr, "where <command> can be one of the 
->>>> following\n\n");
->>>> +
->>>> +    fprintf(stderr, "* new_iface <iface> [mode]: create new ovpn 
->>>> interface\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tmode:\n");
->>>> +    fprintf(stderr, "\t\t- P2P for peer-to-peer mode (i.e. 
->>>> client)\n");
->>>> +    fprintf(stderr, "\t\t- MP for multi-peer mode (i.e. server)\n");
->>>> +
->>>> +    fprintf(stderr, "* del_iface <iface>: delete ovpn interface\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* listen <iface> <lport> <peers_file> [ipv6]: listen for 
->>>> incoming peer TCP connections\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tlport: TCP port to listen to\n");
->>>> +    fprintf(stderr,
->>>> +        "\tpeers_file: file containing one peer per line: Line 
->>>> format:\n");
->>>> +    fprintf(stderr, "\t\t<peer_id> <vpnaddr>\n");
->>>> +    fprintf(stderr,
->>>> +        "\tipv6: whether the socket should listen to the IPv6 
->>>> wildcard address\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* connect <iface> <peer_id> <raddr> <rport> [key_file]: 
->>>> start connecting peer of TCP-based VPN session\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the connecting peer\n");
->>>> +    fprintf(stderr, "\traddr: peer IP address to connect to\n");
->>>> +    fprintf(stderr, "\trport: peer TCP port to connect to\n");
->>>> +    fprintf(stderr,
->>>> +        "\tkey_file: file containing the symmetric key for 
->>>> encryption\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* new_peer <iface> <peer_id> <lport> <raddr> <rport> 
->>>> [vpnaddr]: add new peer\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tlport: local UDP port to bind to\n");
->>>> +    fprintf(stderr,
->>>> +        "\tpeer_id: peer ID to be used in data packets to/from this 
->>>> peer\n");
->>>> +    fprintf(stderr, "\traddr: peer IP address\n");
->>>> +    fprintf(stderr, "\trport: peer UDP port\n");
->>>> +    fprintf(stderr, "\tvpnaddr: peer VPN IP\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* new_multi_peer <iface> <lport> <peers_file>: add 
->>>> multiple peers as listed in the file\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tlport: local UDP port to bind to\n");
->>>> +    fprintf(stderr,
->>>> +        "\tpeers_file: text file containing one peer per line. Line 
->>>> format:\n");
->>>> +    fprintf(stderr, "\t\t<peer_id> <raddr> <rport> <vpnaddr>\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* set_peer <iface> <peer_id> <keepalive_interval> 
->>>> <keepalive_timeout>: set peer attributes\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the peer to modify\n");
->>>> +    fprintf(stderr,
->>>> +        "\tkeepalive_interval: interval for sending ping messages\n");
->>>> +    fprintf(stderr,
->>>> +        "\tkeepalive_timeout: time after which a peer is timed 
->>>> out\n");
->>>> +
->>>> +    fprintf(stderr, "* del_peer <iface> <peer_id>: delete peer\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the peer to delete\n");
->>>> +
->>>> +    fprintf(stderr, "* get_peer <iface> [peer_id]: retrieve peer(s) 
->>>> status\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr,
->>>> +        "\tpeer_id: peer ID of the peer to query. All peers are 
->>>> returned if omitted\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* new_key <iface> <peer_id> <slot> <key_id> <cipher> 
->>>> <key_dir> <key_file>: set data channel key\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr,
->>>> +        "\tpeer_id: peer ID of the peer to configure the key for\n");
->>>> +    fprintf(stderr, "\tslot: either 1 (primary) or 2 (secondary)\n");
->>>> +    fprintf(stderr, "\tkey_id: an ID from 0 to 7\n");
->>>> +    fprintf(stderr,
->>>> +        "\tcipher: cipher to use, supported: aes (AES-GCM), 
->>>> chachapoly (CHACHA20POLY1305)\n");
->>>> +    fprintf(stderr,
->>>> +        "\tkey_dir: key direction, must 0 on one host and 1 on the 
->>>> other\n");
->>>> +    fprintf(stderr, "\tkey_file: file containing the pre-shared 
->>>> key\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* del_key <iface> <peer_id> [slot]: erase existing data 
->>>> channel key\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the peer to modify\n");
->>>> +    fprintf(stderr, "\tslot: slot to erase. PRIMARY if omitted\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* get_key <iface> <peer_id> <slot>: retrieve non sensible 
->>>> key data\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the peer to query\n");
->>>> +    fprintf(stderr, "\tslot: either 1 (primary) or 2 (secondary)\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* swap_keys <iface> <peer_id>: swap content of primary and 
->>>> secondary key slots\n");
->>>> +    fprintf(stderr, "\tiface: ovpn interface name\n");
->>>> +    fprintf(stderr, "\tpeer_id: peer ID of the peer to modify\n");
->>>> +
->>>> +    fprintf(stderr,
->>>> +        "* listen_mcast: listen to ovpn netlink multicast 
->>>> messages\n");
->>>> +}
->>>
->>> If this test is run from "make kselftest" as default run does this usage
->>> output show up in the report?
->>
->> No.
->> This usage is only printed when invoking ovpn-cli with wrong arguments 
->> and this can't be the case in the kselftest.
+On 10/28/2024 9:52 PM, Joe Damato wrote:
+> Link queues to NAPI instances via netdev-genl API so that users can
+> query this information with netlink. Handle a few cases in the driver:
+>    1. Link/unlink the NAPIs when XDP is enabled/disabled
+>    2. Handle IGC_FLAG_QUEUE_PAIRS enabled and disabled
 > 
-> The usage() is great and much needed. My concern is if this usage would 
-> show up
-> when we run "make kselftest" - some tests do this by adding wrapper 
-> shell script
-> to run the test with different options to cover all the cases.
+> Example output when IGC_FLAG_QUEUE_PAIRS is enabled:
 > 
->>
->>
->> Other than documenting the output, do you think there is any other 
->> critical part to be adjusted in this patch?
+> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>                           --dump queue-get --json='{"ifindex": 2}'
 > 
-> No - I don't have any other comments on the test itself. I just want to 
-> make
-> sure this usage inadvertently doesn't end up in the "make kselftest" run.
+> [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+>   {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'rx'},
+>   {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'rx'},
+>   {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'rx'},
+>   {'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'tx'},
+>   {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'tx'},
+>   {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'tx'},
+>   {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'tx'}]
 > 
-> With that
+> Since IGC_FLAG_QUEUE_PAIRS is enabled, you'll note that the same NAPI ID
+> is present for both rx and tx queues at the same index, for example
+> index 0:
 > 
-> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-
-Thanks a lot for your feedback.
-I promise no usage() output will pollute the reports :-)
-
-Ok then, I will extend the commit message with a description of the 
-output and retain your Reviewed-by in v11.
-
-I'll try to send it out today.
-
-Thanks.
-Regards,
-
+> {'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+> {'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'tx'},
 > 
-> thanks,
-> -- Shuah
+> To test IGC_FLAG_QUEUE_PAIRS disabled, a test system was booted using
+> the grub command line option "maxcpus=2" to force
+> igc_set_interrupt_capability to disable IGC_FLAG_QUEUE_PAIRS.
+> 
+> Example output when IGC_FLAG_QUEUE_PAIRS is disabled:
+> 
+> $ lscpu | grep "On-line CPU"
+> On-line CPU(s) list:      0,2
+> 
+> $ ethtool -l enp86s0  | tail -5
+> Current hardware settings:
+> RX:		n/a
+> TX:		n/a
+> Other:		1
+> Combined:	2
+> 
+> $ cat /proc/interrupts  | grep enp
+>   144: [...] enp86s0
+>   145: [...] enp86s0-rx-0
+>   146: [...] enp86s0-rx-1
+>   147: [...] enp86s0-tx-0
+>   148: [...] enp86s0-tx-1
+> 
+> 1 "other" IRQ, and 2 IRQs for each of RX and Tx, so we expect netlink to
+> report 4 IRQs with unique NAPI IDs:
+> 
+> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>                           --dump napi-get --json='{"ifindex": 2}'
+> [{'id': 8196, 'ifindex': 2, 'irq': 148},
+>   {'id': 8195, 'ifindex': 2, 'irq': 147},
+>   {'id': 8194, 'ifindex': 2, 'irq': 146},
+>   {'id': 8193, 'ifindex': 2, 'irq': 145}]
+> 
+> Now we examine which queues these NAPIs are associated with, expecting
+> that since IGC_FLAG_QUEUE_PAIRS is disabled each RX and TX queue will
+> have its own NAPI instance:
+> 
+> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+>                           --dump queue-get --json='{"ifindex": 2}'
+> [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
+>   {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'rx'},
+>   {'id': 0, 'ifindex': 2, 'napi-id': 8195, 'type': 'tx'},
+>   {'id': 1, 'ifindex': 2, 'napi-id': 8196, 'type': 'tx'}]
+> 
+> Signed-off-by: Joe Damato <jdamato@fastly.com>
+> ---
+>   v5:
+>     - Rename igc_resume to __igc_do_resume and pass in a boolean
+>       "need_rtnl" to signal whether or not rtnl should be held before
+>       caling __igc_open. Call this new function from igc_runtime_resume
+>       and igc_resume passing in false (for igc_runtime_resume) and true
+>       (igc_resume), respectively. This is done to avoid reintroducing a
+>       bug fixed in commit: 6f31d6b: "igc: Refactor runtime power
+>       management flow" where rtnl is held in runtime_resume causing a
+>       deadlock.
+> 
+>   v4:
+>     - Add rtnl_lock/rtnl_unlock in two paths: igc_resume and
+>       igc_io_error_detected. The code added to the latter is inspired by
+>       a similar implementation in ixgbe's ixgbe_io_error_detected.
+> 
+>   v3:
+>     - Replace igc_unset_queue_napi with igc_set_queue_napi(adapater, i,
+>       NULL), as suggested by Vinicius Costa Gomes
+>     - Simplify implemention of igc_set_queue_napi as suggested by Kurt
+>       Kanzenbach, with a tweak to use ring->queue_index
+> 
+>   v2:
+>     - Update commit message to include tests for IGC_FLAG_QUEUE_PAIRS
+>       disabled
+>     - Refactored code to move napi queue mapping and unmapping to helper
+>       functions igc_set_queue_napi and igc_unset_queue_napi
+>     - Adjust the code to handle IGC_FLAG_QUEUE_PAIRS disabled
+>     - Call helpers to map/unmap queues to NAPIs in igc_up, __igc_open,
+>       igc_xdp_enable_pool, and igc_xdp_disable_pool
+> 
+>   drivers/net/ethernet/intel/igc/igc.h      |  2 +
+>   drivers/net/ethernet/intel/igc/igc_main.c | 52 ++++++++++++++++++++---
+>   drivers/net/ethernet/intel/igc/igc_xdp.c  |  2 +
+>   3 files changed, 49 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+> index eac0f966e0e4..b8111ad9a9a8 100644
+> --- a/drivers/net/ethernet/intel/igc/igc.h
+> +++ b/drivers/net/ethernet/intel/igc/igc.h
+> @@ -337,6 +337,8 @@ struct igc_adapter {
+>   	struct igc_led_classdev *leds;
+>   };
+>   
+> +void igc_set_queue_napi(struct igc_adapter *adapter, int q_idx,
+> +			struct napi_struct *napi);
+>   void igc_up(struct igc_adapter *adapter);
+>   void igc_down(struct igc_adapter *adapter);
+>   int igc_open(struct net_device *netdev);
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 7964bbedb16c..051a0cdb1143 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> @@ -4948,6 +4948,22 @@ static int igc_sw_init(struct igc_adapter *adapter)
+>   	return 0;
+>   }
+>   
+> +void igc_set_queue_napi(struct igc_adapter *adapter, int vector,
+> +			struct napi_struct *napi)
+> +{
+> +	struct igc_q_vector *q_vector = adapter->q_vector[vector];
+> +
+> +	if (q_vector->rx.ring)
+> +		netif_queue_set_napi(adapter->netdev,
+> +				     q_vector->rx.ring->queue_index,
+> +				     NETDEV_QUEUE_TYPE_RX, napi);
+> +
+> +	if (q_vector->tx.ring)
+> +		netif_queue_set_napi(adapter->netdev,
+> +				     q_vector->tx.ring->queue_index,
+> +				     NETDEV_QUEUE_TYPE_TX, napi);
+> +}
+> +
+>   /**
+>    * igc_up - Open the interface and prepare it to handle traffic
+>    * @adapter: board private structure
+> @@ -4955,6 +4971,7 @@ static int igc_sw_init(struct igc_adapter *adapter)
+>   void igc_up(struct igc_adapter *adapter)
+>   {
+>   	struct igc_hw *hw = &adapter->hw;
+> +	struct napi_struct *napi;
+>   	int i = 0;
+>   
+>   	/* hardware has been reset, we need to reload some things */
+> @@ -4962,8 +4979,11 @@ void igc_up(struct igc_adapter *adapter)
+>   
+>   	clear_bit(__IGC_DOWN, &adapter->state);
+>   
+> -	for (i = 0; i < adapter->num_q_vectors; i++)
+> -		napi_enable(&adapter->q_vector[i]->napi);
+> +	for (i = 0; i < adapter->num_q_vectors; i++) {
+> +		napi = &adapter->q_vector[i]->napi;
+> +		napi_enable(napi);
+> +		igc_set_queue_napi(adapter, i, napi);
+> +	}
+>   
+>   	if (adapter->msix_entries)
+>   		igc_configure_msix(adapter);
+> @@ -5192,6 +5212,7 @@ void igc_down(struct igc_adapter *adapter)
+>   	for (i = 0; i < adapter->num_q_vectors; i++) {
+>   		if (adapter->q_vector[i]) {
+>   			napi_synchronize(&adapter->q_vector[i]->napi);
+> +			igc_set_queue_napi(adapter, i, NULL);
+>   			napi_disable(&adapter->q_vector[i]->napi);
+>   		}
+>   	}
+> @@ -6021,6 +6042,7 @@ static int __igc_open(struct net_device *netdev, bool resuming)
+>   	struct igc_adapter *adapter = netdev_priv(netdev);
+>   	struct pci_dev *pdev = adapter->pdev;
+>   	struct igc_hw *hw = &adapter->hw;
+> +	struct napi_struct *napi;
+>   	int err = 0;
+>   	int i = 0;
+>   
+> @@ -6056,8 +6078,11 @@ static int __igc_open(struct net_device *netdev, bool resuming)
+>   
+>   	clear_bit(__IGC_DOWN, &adapter->state);
+>   
+> -	for (i = 0; i < adapter->num_q_vectors; i++)
+> -		napi_enable(&adapter->q_vector[i]->napi);
+> +	for (i = 0; i < adapter->num_q_vectors; i++) {
+> +		napi = &adapter->q_vector[i]->napi;
+> +		napi_enable(napi);
+> +		igc_set_queue_napi(adapter, i, napi);
+> +	}
+>   
+>   	/* Clear any pending interrupts. */
+>   	rd32(IGC_ICR);
+> @@ -7342,7 +7367,7 @@ static void igc_deliver_wake_packet(struct net_device *netdev)
+>   	netif_rx(skb);
+>   }
+>   
+> -static int igc_resume(struct device *dev)
+> +static int __igc_do_resume(struct device *dev, bool need_rtnl)
+>   {
+>   	struct pci_dev *pdev = to_pci_dev(dev);
+>   	struct net_device *netdev = pci_get_drvdata(pdev);
+> @@ -7385,7 +7410,11 @@ static int igc_resume(struct device *dev)
+>   	wr32(IGC_WUS, ~0);
+>   
+>   	if (netif_running(netdev)) {
+> +		if (need_rtnl)
+> +			rtnl_lock();
+>   		err = __igc_open(netdev, true);
+> +		if (need_rtnl)
+> +			rtnl_unlock();
+>   		if (!err)
+>   			netif_device_attach(netdev);
+>   	}
+> @@ -7393,9 +7422,14 @@ static int igc_resume(struct device *dev)
+>   	return err;
+>   }
+>   
+> +static int igc_resume(struct device *dev)
+> +{
+> +	return __igc_do_resume(dev, true);
+> +}
+> +
+>   static int igc_runtime_resume(struct device *dev)
+>   {
+> -	return igc_resume(dev);
+> +	return __igc_do_resume(dev, false);
+>   }
+>   
+>   static int igc_suspend(struct device *dev)
+> @@ -7440,14 +7474,18 @@ static pci_ers_result_t igc_io_error_detected(struct pci_dev *pdev,
+>   	struct net_device *netdev = pci_get_drvdata(pdev);
+>   	struct igc_adapter *adapter = netdev_priv(netdev);
+>   
+> +	rtnl_lock();
+>   	netif_device_detach(netdev);
+>   
+> -	if (state == pci_channel_io_perm_failure)
+> +	if (state == pci_channel_io_perm_failure) {
+> +		rtnl_unlock();
+>   		return PCI_ERS_RESULT_DISCONNECT;
+> +	}
+>   
+>   	if (netif_running(netdev))
+>   		igc_down(adapter);
+>   	pci_disable_device(pdev);
+> +	rtnl_unlock();
+>   
+>   	/* Request a slot reset. */
+>   	return PCI_ERS_RESULT_NEED_RESET;
+> diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c b/drivers/net/ethernet/intel/igc/igc_xdp.c
+> index e27af72aada8..4da633430b80 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_xdp.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
+> @@ -84,6 +84,7 @@ static int igc_xdp_enable_pool(struct igc_adapter *adapter,
+>   		napi_disable(napi);
+>   	}
+>   
+> +	igc_set_queue_napi(adapter, queue_id, NULL);
+>   	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+>   	set_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+>   
+> @@ -133,6 +134,7 @@ static int igc_xdp_disable_pool(struct igc_adapter *adapter, u16 queue_id)
+>   	xsk_pool_dma_unmap(pool, IGC_RX_DMA_ATTR);
+>   	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &rx_ring->flags);
+>   	clear_bit(IGC_RING_FLAG_AF_XDP_ZC, &tx_ring->flags);
+> +	igc_set_queue_napi(adapter, queue_id, napi);
+>   
+>   	if (needs_reset) {
+>   		napi_enable(napi);
 
--- 
-Antonio Quartulli
-OpenVPN Inc.
+I believe that this fix should work on most cases. I have some concerns 
+that this solution might not be 100% robust as sometimes runtime resume 
+may be triggered without the rtnl being held. For example, if it is 
+initiated by a network wake event. But, for the moment I think that this 
+appoach is good enough.
+
+My main comment here is the naming conventions, I prefer using the 
+original parameters/function names for consistency, similarly to what 
+was done in the igb driver:
+https://github.com/torvalds/linux/commit/ac8c58f5b535d6272324e2b8b4a0454781c9147e
 
