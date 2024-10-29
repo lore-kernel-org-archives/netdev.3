@@ -1,100 +1,240 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E26D20B1EE;
-	Tue, 29 Oct 2024 23:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AB620C001;
+	Tue, 29 Oct 2024 23:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730245409; cv=none; b=ZZ+6r+DO3zPUQurk7y6QolhIGDnKmAs0YMmQCXp4uzw8Alf8HZG5uA/4yAfqUNP8dcitnrTvzMVMmvOAWVzoERs891ZpDE/qu0FYCrFnM3NgwQTtX0tIFh/mxapEQBWANJrcofh0bsltoiiS4noK6beqSm9/Oz1tLdvc17L6hlc=
+	t=1730245606; cv=none; b=MRkaON4RGV5wYowv1DtoXV7K7Xi2KkF2yF4M7T7VCVJBAYlZB39RpmjAX4N5HHCGzQWr1PRbV76nwQUrWHDvvv2k0Y2Qsm5Ee9hMR+ata0WVaEHWeOBwinvsb1ogHO+MUoyPm/0KXjJgi+e9NnmVRX9YU34VpIDqNobuN8TgrWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730245409; c=relaxed/simple;
-	bh=UmBG5G5U5O/XC7rj2evLQqYASV+llb8bdP99+596aPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tFrs85fi0287tM8H28mri/WmsHcmERo9rPmNDyypaeUD6d0nfix1gRj3SciULVzomWj19LhqUYTP3c6/F+LlwG8TwcAZ+7uT1FVqmjfEH7af6PlAttqzCOPcVFNEimGxNaVeLftHUxX5+YLNbxdcqXgRNg4snb5Z1/WxWfimWWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFT/fWjp; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1730245606; c=relaxed/simple;
+	bh=8XBp4F4iONR8uEUZBp+RtV28I5FbOp5N7WLMmKuu8sY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HIYjBu52s7O8P88sqrpgaHp97M9YYVmv9qS+YZ3AR+Tm3wHV2jDkTzY10IP8NoyWw09ZkC+QK7iaP5WW4XcvmQkR2v9Z0TOp1xdmq6dgPbfuAQ9dWHntYicMXbmfnpNyKb9ZgELvnQZRSTIsLM8cJTQrVgweuzrU7uPfm1BTq3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+P8g4y1; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFT/fWjp"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e9ed5e57a7so26612187b3.1;
-        Tue, 29 Oct 2024 16:43:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+P8g4y1"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20ca7fc4484so41747435ad.3;
+        Tue, 29 Oct 2024 16:46:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730245406; x=1730850206; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fzzp97jsIGOvrmOEGqCcONJDJRB+MoET/8BHyWpF7Kg=;
-        b=GFT/fWjpN/sP+ZXnbYQHbCMg87hrmS3iJ/PsTwNvo5mG57RUxLsWO9aUOktVFp9GFV
-         SeIAV07t79CUiqjqjkkPjPWm2ZU3PU2fAnfbn+ErNSaX3D7wav9lYyJvpwXgmfVe6nUT
-         QxS088F6iRUe2bQG3a9zOP3ofausl71YNxh1JvjXC5a5UC6be1jGNu1ZXw3bsiJDLQ5a
-         JPXLccPgQAMulvJCu4DaheEcktZgHRHuphDySHbM/63cLHk33z2uHASwuPK8CEEKhrlb
-         FZOr4qqC4ANiH8siLPYz/4k89tFP/ndCsT/OdmkuW7w9KrNqev1PFHg8TTxjk8uo99rA
-         lv5A==
+        d=gmail.com; s=20230601; t=1730245603; x=1730850403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h+jF7+/wy1zJKHitIOxInif26MR0AFPTEaBZnPmRRhc=;
+        b=c+P8g4y1RlEemX3lpqw+5A27s7xGkPe3EA6cEc6MMrUQdiPdiWBLpHtfp3jZOYf4Cc
+         LKeUBiF/qvFYBsxVJBTlAVUsybV90r5iZrL3lT1lFszSlLSA+bSdVCJ2WB9Fp9JKsNRs
+         Vl3Ic7vFGl3X6iw2QZ1f18MIzM1zH/GhWDrVq/GqmK4VcBbAdEGOHk73C1imb36CGVu/
+         LlnoTgk923PJ/fVRv8ZU7vnk3aDNzNhYTOs1ImjY71kmbJk3m8Sj30vzNE7S+VpgAdeC
+         D+m5nBtzFjUy3uT8AF8anW01dexb7D/E+vL0AlgnIhx5e/w9D3fqEZXDktljWQ0gwQlt
+         Ln0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730245406; x=1730850206;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fzzp97jsIGOvrmOEGqCcONJDJRB+MoET/8BHyWpF7Kg=;
-        b=A6N0ZXYXUAJu6SeNZyV+/tqob9ePRxyD9sjOvik4mRGgXhg562la5D9ZHnZ/+ytFvh
-         tK2xJfzSznywxw/3TerRYrqE0pXSEkdMVlqngELdPtmHRIyA6Gwi9T9n4YBfKSwOduBC
-         Si8b1iyrwValubT1ui12h82RvDxWmD4pPEiks4dg0LmoYm8NuBLugzQPLJLdFr8h/7Id
-         5PB9lV3vtmXJyDjfJIbYMvKTBDLyHXMAr0uL74eGc2jFa5M7WtoV7T7VYadhxsuKmHz6
-         1XZ6CePW1YQXHHbvAB75q0ZZRQviqMIOEh9iE36OjXNGWLFmE0yqG7C23TPRgaKNZOMk
-         YlMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnmA10DLNmzrq8E4VOc1n7KkhI1f71RV/RhXuDjMq/pZD+U1h5RUv6oeFHbwDoDreirCYBHs/xe9ub1q4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYq8LGXdZFh6vuAK9FrNcamsBX0c67BA/R8hd30Sg0X3yx/LDk
-	7GSfjh8INTXkJSeMOcLJbMLbdvzxlLNo/Cx18DpClCi3E0Q0RFOeiNszjZDrGiXmj0FCC28M3Ze
-	H0CV5MW0iTLih0NJARxCmZGTSSIc=
-X-Google-Smtp-Source: AGHT+IHkSdCJ/rSCFkbWQkyCT6YVbmIX6SqdIvVpccjkWyeR7IyD9RtxAyYt1Bj1DJ6ECedUsWm6k8vpRahDfeaMooU=
-X-Received: by 2002:a05:690c:18:b0:6e3:d4e3:b9ad with SMTP id
- 00721157ae682-6e9d8ab2300mr141088257b3.33.1730245406470; Tue, 29 Oct 2024
- 16:43:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730245603; x=1730850403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h+jF7+/wy1zJKHitIOxInif26MR0AFPTEaBZnPmRRhc=;
+        b=naBN2+fbEV50gZGbFy47rlf2Iz9q8hxaegg0FTow2M64MruHX/NbNEQDaz25uQXKrR
+         JQVd7TTgb6/Zw96nkIfEPCI0kJXEpRJO36f2XGFerZzESnled4Y7CGDNiJ64ei5qWTSM
+         DImD/iarJ7eSnYhNuu5bOZSS1guShCoadl7OjsQd24JMEKJCyomPb2noIVRoGw5nXt1G
+         feofADXtyKSoFMvMut/Qy9yqNsHB18B8ksF4GomN5D1Bm6aZHyxj3gMisa/EvnWVzUo4
+         IGj/s7U9fuQvkgd1Yxnc2+TZgTNZ/pEVAtJ54DDUQhwxKbB0UsCDzfKEFxbYTWzIYBYh
+         S/Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Wxj7G1hDJ1QmYGMTc5K+MUptkCVSsl9a6mxlrDBotq/2ZuEwhsMFyfJqwxmU6hagpTVrGwCa4B5AXaJA@vger.kernel.org, AJvYcCX6HzebH8RVbv3+xrE911qqZJnD/TbvvSsnLBAxrCYToNPtZ1EzVH3NKQNw7LI8EHTgE5CupjDW8WjIUQyp@vger.kernel.org
+X-Gm-Message-State: AOJu0YzktXzFKw85SwO+snYHpfm8gAikbN2wNKQe47GbkMIjKkQzEMc8
+	uW8JK6Npckmbslda9ABZMk7sJV6Uy2HVJVPwNFe+7bliTxNrWiLxwM/3zIlc
+X-Google-Smtp-Source: AGHT+IHdXUd5atdv8fKvdzCF5RNLF7tk5MBWicmuXdZ2OKMYMGZ4ZHlL5l63grziVbkHW345aIiXkg==
+X-Received: by 2002:a17:902:ecc1:b0:20c:a8cf:fa19 with SMTP id d9443c01a7336-210c68cc7a5mr205592205ad.22.1730245603503;
+        Tue, 29 Oct 2024 16:46:43 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8200:dab8::a86])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bbf4435asm72121155ad.55.2024.10.29.16.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 16:46:43 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrei Botila <andrei.botila@oss.nxp.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	linux-kernel@vger.kernel.org (open list),
+	linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM MAILING LIST)
+Subject: [PATCH net-next] net: phy: use ethtool string helpers
+Date: Tue, 29 Oct 2024 16:46:41 -0700
+Message-ID: <20241029234641.11448-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023012734.766789-1-rosenp@gmail.com> <20241029160323.532e573c@kernel.org>
-In-Reply-To: <20241029160323.532e573c@kernel.org>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Tue, 29 Oct 2024 16:43:15 -0700
-Message-ID: <CAKxU2N-5rZ3vi-bgkWA5CMorKEOv6+_a0sVDUz15o8Z7+GFLvQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: broadcom: use ethtool string helpers
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Justin Chen <justin.chen@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
-	Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra <manishc@marvell.com>, 
-	Doug Berger <opendmb@gmail.com>, Jacob Keller <jacob.e.keller@intel.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 29, 2024 at 4:03=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Tue, 22 Oct 2024 18:27:34 -0700 Rosen Penev wrote:
-> > @@ -3220,13 +3212,13 @@ static void bnx2x_get_strings(struct net_device=
- *dev, u32 stringset, u8 *buf)
-> >                       start =3D 0;
-> >               else
-> >                       start =3D 4;
-> > -             memcpy(buf, bnx2x_tests_str_arr + start,
-> > -                    ETH_GSTRING_LEN * BNX2X_NUM_TESTS(bp));
-> > +             for (i =3D start; i < BNX2X_NUM_TESTS(bp); i++)
-> > +                     ethtool_puts(&buf, bnx2x_tests_str_arr[i]);
->
-> I don't think this is equivalent.
-What's wrong here?
->
-> Also, please split bnx2x to a separate patch, the other drivers in this
-> patch IIUC are small embedded ones, the bnx2x is an "enterprise
-> product".
-> --
-> pw-bot: cr
+These are the preferred way to copy ethtool strings.
+
+Avoids incrementing pointers all over the place.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/phy/adin.c            |  6 ++----
+ drivers/net/phy/icplus.c          |  3 +--
+ drivers/net/phy/marvell.c         | 12 ++++--------
+ drivers/net/phy/micrel.c          |  6 ++----
+ drivers/net/phy/mscc/mscc_main.c  |  3 +--
+ drivers/net/phy/nxp-c45-tja11xx.c |  6 ++----
+ drivers/net/phy/nxp-cbtx.c        |  2 +-
+ drivers/net/phy/qcom/qca83xx.c    |  6 ++----
+ 8 files changed, 15 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/net/phy/adin.c b/drivers/net/phy/adin.c
+index 2e1a46e121d9..a2a862bae2ed 100644
+--- a/drivers/net/phy/adin.c
++++ b/drivers/net/phy/adin.c
+@@ -801,10 +801,8 @@ static void adin_get_strings(struct phy_device *phydev, u8 *data)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(adin_hw_stats); i++) {
+-		strscpy(&data[i * ETH_GSTRING_LEN],
+-			adin_hw_stats[i].string, ETH_GSTRING_LEN);
+-	}
++	for (i = 0; i < ARRAY_SIZE(adin_hw_stats); i++)
++		ethtool_puts(&data, adin_hw_stats[i].string);
+ }
+ 
+ static int adin_read_mmd_stat_regs(struct phy_device *phydev,
+diff --git a/drivers/net/phy/icplus.c b/drivers/net/phy/icplus.c
+index a00a667454a9..ee438b71a0b4 100644
+--- a/drivers/net/phy/icplus.c
++++ b/drivers/net/phy/icplus.c
+@@ -540,8 +540,7 @@ static void ip101g_get_strings(struct phy_device *phydev, u8 *data)
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ip101g_hw_stats); i++)
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			ip101g_hw_stats[i].name, ETH_GSTRING_LEN);
++		ethtool_puts(&data, ip101g_hw_stats[i].name);
+ }
+ 
+ static u64 ip101g_get_stat(struct phy_device *phydev, int i)
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 28aec37acd2c..cd50cd6a7f75 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -2020,10 +2020,8 @@ static void marvell_get_strings(struct phy_device *phydev, u8 *data)
+ 	int count = marvell_get_sset_count(phydev);
+ 	int i;
+ 
+-	for (i = 0; i < count; i++) {
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			marvell_hw_stats[i].string, ETH_GSTRING_LEN);
+-	}
++	for (i = 0; i < count; i++)
++		ethtool_puts(&data, marvell_hw_stats[i].string);
+ }
+ 
+ static void marvell_get_strings_simple(struct phy_device *phydev, u8 *data)
+@@ -2031,10 +2029,8 @@ static void marvell_get_strings_simple(struct phy_device *phydev, u8 *data)
+ 	int count = marvell_get_sset_count_simple(phydev);
+ 	int i;
+ 
+-	for (i = 0; i < count; i++) {
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			marvell_hw_stats_simple[i].string, ETH_GSTRING_LEN);
+-	}
++	for (i = 0; i < count; i++)
++		ethtool_puts(&data, marvell_hw_stats_simple[i].string);
+ }
+ 
+ static u64 marvell_get_stat(struct phy_device *phydev, int i)
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 65b0a3115e14..43c82a87bc3a 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2018,10 +2018,8 @@ static void kszphy_get_strings(struct phy_device *phydev, u8 *data)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(kszphy_hw_stats); i++) {
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			kszphy_hw_stats[i].string, ETH_GSTRING_LEN);
+-	}
++	for (i = 0; i < ARRAY_SIZE(kszphy_hw_stats); i++)
++		ethtool_puts(&data, kszphy_hw_stats[i].string);
+ }
+ 
+ static u64 kszphy_get_stat(struct phy_device *phydev, int i)
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 6f74ce0ab1aa..bee381200ab8 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -139,8 +139,7 @@ static void vsc85xx_get_strings(struct phy_device *phydev, u8 *data)
+ 		return;
+ 
+ 	for (i = 0; i < priv->nstats; i++)
+-		strscpy(data + i * ETH_GSTRING_LEN, priv->hw_stats[i].string,
+-			ETH_GSTRING_LEN);
++		ethtool_puts(&data, priv->hw_stats[i].string);
+ }
+ 
+ static u64 vsc85xx_get_stat(struct phy_device *phydev, int i)
+diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
+index 7e328c2a29a4..ade544bc007d 100644
+--- a/drivers/net/phy/nxp-c45-tja11xx.c
++++ b/drivers/net/phy/nxp-c45-tja11xx.c
+@@ -1140,13 +1140,11 @@ static void nxp_c45_get_strings(struct phy_device *phydev, u8 *data)
+ 
+ 	for (i = 0; i < count; i++) {
+ 		if (i < ARRAY_SIZE(common_hw_stats)) {
+-			strscpy(data + i * ETH_GSTRING_LEN,
+-				common_hw_stats[i].name, ETH_GSTRING_LEN);
++			ethtool_puts(&data, common_hw_stats[i].name);
+ 			continue;
+ 		}
+ 		idx = i - ARRAY_SIZE(common_hw_stats);
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			phy_data->stats[idx].name, ETH_GSTRING_LEN);
++		ethtool_puts(&data, phy_data->stats[idx].name);
+ 	}
+ }
+ 
+diff --git a/drivers/net/phy/nxp-cbtx.c b/drivers/net/phy/nxp-cbtx.c
+index 145703f0a406..3d25491043a3 100644
+--- a/drivers/net/phy/nxp-cbtx.c
++++ b/drivers/net/phy/nxp-cbtx.c
+@@ -182,7 +182,7 @@ static int cbtx_get_sset_count(struct phy_device *phydev)
+ 
+ static void cbtx_get_strings(struct phy_device *phydev, u8 *data)
+ {
+-	strncpy(data, "100btx_rx_err", ETH_GSTRING_LEN);
++	ethtool_puts(&data, "100btx_rx_err");
+ }
+ 
+ static void cbtx_get_stats(struct phy_device *phydev,
+diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
+index a05d0df6fa16..7a5039920b9f 100644
+--- a/drivers/net/phy/qcom/qca83xx.c
++++ b/drivers/net/phy/qcom/qca83xx.c
+@@ -42,10 +42,8 @@ static void qca83xx_get_strings(struct phy_device *phydev, u8 *data)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(qca83xx_hw_stats); i++) {
+-		strscpy(data + i * ETH_GSTRING_LEN,
+-			qca83xx_hw_stats[i].string, ETH_GSTRING_LEN);
+-	}
++	for (i = 0; i < ARRAY_SIZE(qca83xx_hw_stats); i++)
++		ethtool_puts(&data, qca83xx_hw_stats[i].string);
+ }
+ 
+ static u64 qca83xx_get_stat(struct phy_device *phydev, int i)
+-- 
+2.47.0
+
