@@ -1,190 +1,122 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61B428E7;
-	Tue, 29 Oct 2024 01:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB94E2260C
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 01:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730164724; cv=none; b=Pj2IVCiIygN8IMuMTx//NsI4qyukKd53DeE9VcPdiGdaR2ZKR0Gpr+EyZY3J+i3WiU8NKBjiWwySC8ni2ZFVQZWitOenRbsu7J20Sh+P51vzCrl3iEGLAev8NK3Q5zQRkFvPVGauyjv5dLAvKyIXajnYMdgrEo6QssFvBKXF0u0=
+	t=1730164771; cv=none; b=Gon6+dDhAt7H0XzjmK3smzJQacy3+oRWtHjZDSwxCYRGRpFzza6YpEtlafUlEbNHRYzK+z7ZZFTYI4iySxx1YSpikWii1viC6WN1HErKgFn8qAebABIGfKS2r+CFh4C+SDwKKsCAFIt2EeddmyrvfFsNSG1s6OcKtRAIIkxsrVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730164724; c=relaxed/simple;
-	bh=fqZ2SjmZlfs00oVh8h9uul+3bqpuWYEIawLvNYmwBrQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j8Bfh2d0pOphZaQ0a7lgZcRjANaONEu138XrfB0OaIr7JHpUDH/3cVZHkYN+BOs+8YqEfTH5laQosG5PxdNK5q+6HvmQhN7fDEqenQN1p/YPka2lw/K9Vg+Iogd1Hagg8o6v7PYA65oCS8abci2KR/bkA5m/HDwIS/X7PgisW1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEZ5SmSJ; arc=none smtp.client-ip=209.85.166.181
+	s=arc-20240116; t=1730164771; c=relaxed/simple;
+	bh=q4QfEo2zXCXXhBbukse6z0ugqcEoY6e8TZCDvrIjGIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E/rpZ9HPbe/4SKg0yCeUbHSEKTcWVp/x0O+4PG3FI3E4fIhwV5wp7wrLGoj9MzHYBE2uMMd613YNRH4QEfCCS6+ShC+0XxJrjMJWcgnMcDRFigtBBGSezKzK321UEjHCqFN6C5g1xAt1LljoEwJUFqeALBVkvQ2NteZI+VR8Qrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ttq0HJbJ; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEZ5SmSJ"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a4e30bffe3so14015855ab.3;
-        Mon, 28 Oct 2024 18:18:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ttq0HJbJ"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so47243945e9.3
+        for <netdev@vger.kernel.org>; Mon, 28 Oct 2024 18:19:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730164722; x=1730769522; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9SmkWiVOF8WGh+eCrw7MuFCMJ3H42oYtmYTwYmy1eOA=;
-        b=WEZ5SmSJSMMdwXpOe+wOj0gQ+HSFPJe2LGPUS+bKUf0oGy++r/SeEIFp55iK085cah
-         6k+J+5I0jc2KyvrZjmtedb0yduIqrgqVGrLhlfExUa5CBE4+cjMDrviZJLleMxkszd/I
-         4Hpi6HdONiNnh/VfXzUUxbPMEwNf6LW6xkZU89IzHwwH4pLhOWR2s1jxo1s/B2Bz7Ucz
-         vUBtr6h4RImtYIbOi5ehyqX/sptUvDO7+QTzgP4mvXtjt1c204M+RHx+tislk27e7bUN
-         x6+7Fkg/tcTeAs8sVq4F+u1VFD2vUytlpLpNiFGY3NmM7JqaD3UNm5b80UrshWVCmbQE
-         gMiQ==
+        d=gmail.com; s=20230601; t=1730164768; x=1730769568; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7NqPbYxXVoStVB+VHiCxCoEHhw26j77NLuPqeD7DmUU=;
+        b=Ttq0HJbJGEK+Rs9KCE4i4++qOBmUMob2gGvrv0IvnWuuCA5RQC9i4ZodXSUWMtcgr2
+         QAioP2I3X4v1tAlQZVJq1Ml52SCwZB1kxiMFlUaMbBcCsOD8wPhmoBh29eefpnCG3jvi
+         bQmbOpOiN31FDGcGgN2IcJu/GA2dm/OZrDc0qjmc5v7HAUAJ0hbmZ+2fNhdmR2Q/HG9F
+         T0ty1w0DK64RcIAkGT5WzK0c1Vz8W1EU2+YYSzfFu01AXgxkF8wdcU5rS2NohMqOWqzX
+         RbAz8d11JDuI2EYLQnhjW+TgRg8nQgpn8FNRlJjVITvLJ94sLJDzHsZK3rCdfXbGSMUp
+         OXLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730164722; x=1730769522;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9SmkWiVOF8WGh+eCrw7MuFCMJ3H42oYtmYTwYmy1eOA=;
-        b=W8XwCX7QIOykUa+DuADcCTahPLnkneJA1bcLi3XH7N1ldavHwU9sGJ8PjPDNj0F5Hh
-         igpzm4u8LIMyOqCG0las4+Oi/00FQUL06NTkR8X3d1jX9bBAsKBrK0HSoEtICbqmLO9d
-         M/0OpWL7k2w7OhFWQ/p0KVsEnQyNHYgKvLDpxAbjDOIMRa+3FiOWOBiTwa79KVnvylhq
-         /wMdrdj3cOjnxywai0SH8+y/Gp+bIp94tTwA2iI4QC46N3EdJFJ3SZfVNlMC4AtDKoi+
-         Yk4vfHcLZojVx2cIG5PNczQHlO1V1Zwjp+ISsoe5f+gosCjypUkZUvdv30Npc/KhBYmr
-         jUow==
-X-Forwarded-Encrypted: i=1; AJvYcCULGOy2FnjMdU92c4kMKai15RAZ1nG4h8p1uJpqlt+3+uJUO6b19SLQHBguDLTIlGe7S3OAnzTb@vger.kernel.org, AJvYcCWJnzpMIQ9vGQ/ROlJJPIljgoWacY4uSS5KSad/CmTD4/jpnf5V/IhJkEVuIPRZizgRw0s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf0vWdU4HCxyQuQ8S7WrtG/YCIVE4HX3rgKmtv1/MDe74caBlv
-	It6eVbqiyeI2zsNwmZMYyV5w2//WOEEhI+UVCje2YtNm2TQbLECh+JJV7lwuDO8c9UBEFQTeBQd
-	eTa+Q40OctRth6q9hG5PXIftPVno=
-X-Google-Smtp-Source: AGHT+IF4b52Uk8cGAi9nTW+A6hmwyD+0AXWPUcIt7EAhfETJ03Qq7i/YvrtNH+Ibyyr1gPjY/d+/BWqgfFpLn17ZJ6w=
-X-Received: by 2002:a05:6e02:174f:b0:39d:4ef6:b36d with SMTP id
- e9e14a558f8ab-3a4ed27d8d3mr73960385ab.7.1730164721714; Mon, 28 Oct 2024
- 18:18:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730164768; x=1730769568;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7NqPbYxXVoStVB+VHiCxCoEHhw26j77NLuPqeD7DmUU=;
+        b=UjhUthPNkySxx6QFIJ7FV/BGrI52NaOgtvK9wVdRXz3hqtHoUqZoyQU7Xc14EBAQGM
+         PCqxzy3zJIH8coD8fbdrBHwk6eGRroUmuEyRvrvgVwnfgXYELKeDgMydtnsqrOhDAof9
+         Jr0VvAvKvVqfn6addQPGqKXCzjgP7f+txbjN8+GKdkwmlcCKO0Ctd0FprHTwpchTtsT/
+         RfMGZ3PpQ8XWLK6qDlFqSitmHLtzcUwqDn4X7TfACYwxjABEmUFxRECsw9bL6UcJvLcz
+         GoNPVp/b9thfPUVLZQ9H4Q9SE4M4wh96r80NNiWemINR+74Qx1zxYO8ImEZaeDL398jD
+         33AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoQs5vnVXkMPECc6lD2dEP0dXn/wgOkNU3+We1HfuC+byHTIkpwJ5Kerw7UFcw4iRh8yyh2kE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXYUiSMbrQOFM9tmBNkdx+V4kydxB1t+MeTpwOSMRJSzJiX0fk
+	M5WzpfhCfg94iRG/nHNAI9K90jXbjHUePnoUega1Jriv3j+ZxrHF
+X-Google-Smtp-Source: AGHT+IGh9hDA6CEELzgUa44edYR6yHqgHJb+fWAXCUGYTW3Jt1sdl1iGkGNeWV7z4UjUW1sl8AlI6g==
+X-Received: by 2002:a05:600c:350b:b0:431:44fe:fd9a with SMTP id 5b1f17b1804b1-4319acb8a7cmr84141915e9.19.1730164767820;
+        Mon, 28 Oct 2024 18:19:27 -0700 (PDT)
+Received: from [192.168.0.2] ([69.6.8.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b1333bsm10920565f8f.14.2024.10.28.18.19.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Oct 2024 18:19:27 -0700 (PDT)
+Message-ID: <e825de58-c75c-412b-8ec8-f5792f480a51@gmail.com>
+Date: Tue, 29 Oct 2024 03:19:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241028110535.82999-1-kerneljasonxing@gmail.com>
- <20241028110535.82999-4-kerneljasonxing@gmail.com> <67203358a4016_24dce62942@willemb.c.googlers.com.notmuch>
-In-Reply-To: <67203358a4016_24dce62942@willemb.c.googlers.com.notmuch>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 29 Oct 2024 09:18:05 +0800
-Message-ID: <CAL+tcoCFBPmP7oGJSoF=_Vhaw3c7zKft8ooodNgx=S7GmVjqQw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 03/14] net-timestamp: open gate for bpf_setsockopt/_getsockopt
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, willemb@google.com, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
-	haoluo@google.com, jolsa@kernel.org, shuah@kernel.org, ykolal@fb.com, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Jason Xing <kernelxing@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [net] net: wwan: t7xx: Change PM_AUTOSUSPEND_MS to 5000
+To: wojackbb@gmail.com, netdev@vger.kernel.org
+Cc: chandrashekar.devegowda@intel.com, chiranjeevi.rapolu@linux.intel.com,
+ haijun.liu@mediatek.com, m.chetan.kumar@linux.intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@linaro.org,
+ johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ angelogioacchino.delregno@collabora.com, linux-mediatek@lists.infradead.org,
+ matthias.bgg@gmail.com
+References: <20241028073015.692794-1-wojackbb@gmail.com>
+Content-Language: en-US
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+In-Reply-To: <20241028073015.692794-1-wojackbb@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 29, 2024 at 8:59=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> Jason Xing wrote:
-> > From: Jason Xing <kernelxing@tencent.com>
-> >
-> > For now, we support bpf_setsockopt to set or clear timestamps flags.
-> >
-> > Users can use something like this in bpf program to turn on the feature=
-:
-> > flags =3D SOF_TIMESTAMPING_TX_SCHED;
-> > bpf_setsockopt(skops, SOL_SOCKET, SO_TIMESTAMPING, &flags, sizeof(flags=
-));
-> > The specific use cases can be seen in the bpf selftest in this series.
-> >
-> > Later, I will support each flags one by one based on this.
-> >
-> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > ---
-> >  include/net/sock.h              |  4 ++--
-> >  include/uapi/linux/net_tstamp.h |  7 +++++++
-> >  net/core/filter.c               |  7 +++++--
-> >  net/core/sock.c                 | 34 ++++++++++++++++++++++++++-------
-> >  net/ipv4/udp.c                  |  2 +-
-> >  net/mptcp/sockopt.c             |  2 +-
-> >  net/socket.c                    |  2 +-
-> >  7 files changed, 44 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/include/net/sock.h b/include/net/sock.h
-> > index 5384f1e49f5c..062f405c744e 100644
-> > --- a/include/net/sock.h
-> > +++ b/include/net/sock.h
-> > @@ -1775,7 +1775,7 @@ static inline void skb_set_owner_edemux(struct sk=
-_buff *skb, struct sock *sk)
-> >  #endif
-> >
-> >  int sk_setsockopt(struct sock *sk, int level, int optname,
-> > -               sockptr_t optval, unsigned int optlen);
-> > +               sockptr_t optval, unsigned int optlen, bool bpf_timetam=
-ping);
->
-> timestamping, not timetamping
+Hello Jack,
 
-Oh, right...
+On 28.10.2024 09:30, wojackbb@gmail.com wrote:
+> From: Jack Wu <wojackbb@gmail.com>
+> 
+> Because optimizing the power consumption of t7XX,
+> change auto suspend time to 5000.
+> 
+> The Tests uses a script to loop through the power_state
+> of t7XX.
+> (for example: /sys/bus/pci/devices/0000\:72\:00.0/power_state)
+> 
+> * If Auto suspend is 20 seconds,
+>    test script show power_state have 0~5% of the time was in D3 state
+>    when host don't have data packet transmission.
+> 
+> * Changed auto suspend time to 5 seconds,
+>    test script show power_state have 50%~80% of the time was in D3 state
+>    when host don't have data packet transmission.
 
->
-> More importantly, is there perhaps a cleaner way to add a BPF
-> setsockopt than to have to update the existing API and all its
-> callers?
+What negative outcomes of putting the modem into the suspended state? 
+Out of curiosity, is the chipset capable to comeback from the suspended 
+state on receiving data from a network?
 
-I've thought about that as well. As you may notice, this version
-changes the prior implementation [1] that makes the code more clear
-from my perspective.
+> Signed-off-by: Jack Wu <wojackbb@gmail.com>
+> ---
+>   drivers/net/wwan/t7xx/t7xx_pci.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
+> index e556e5bd49ab..dcadd615a025 100644
+> --- a/drivers/net/wwan/t7xx/t7xx_pci.c
+> +++ b/drivers/net/wwan/t7xx/t7xx_pci.c
+> @@ -48,7 +48,7 @@
+>   #define T7XX_INIT_TIMEOUT		20
+>   #define PM_SLEEP_DIS_TIMEOUT_MS		20
+>   #define PM_ACK_TIMEOUT_MS		1500
+> -#define PM_AUTOSUSPEND_MS		20000
+> +#define PM_AUTOSUSPEND_MS		5000
+>   #define PM_RESOURCE_POLL_TIMEOUT_US	10000
+>   #define PM_RESOURCE_POLL_STEP_US	100
+>   
 
-[1]: https://lore.kernel.org/all/20241012040651.95616-3-kerneljasonxing@gma=
-il.com/
-
-The link here didn't support the bpf_setsockopt which requires more
-strange modification in sol_socket_sockopt() and return earlier
-compared to other uses of SO_xxx. That's why I changed here.
-
->
-> >  int sock_setsockopt(struct socket *sock, int level, int op,
-> >                   sockptr_t optval, unsigned int optlen);
-> >  int do_sock_setsockopt(struct socket *sock, bool compat, int level,
-> > @@ -1784,7 +1784,7 @@ int do_sock_getsockopt(struct socket *sock, bool =
-compat, int level,
-> >                      int optname, sockptr_t optval, sockptr_t optlen);
-> >
-> >  int sk_getsockopt(struct sock *sk, int level, int optname,
-> > -               sockptr_t optval, sockptr_t optlen);
-> > +               sockptr_t optval, sockptr_t optlen, bool bpf_timetampin=
-g);
-> >  int sock_gettstamp(struct socket *sock, void __user *userstamp,
-> >                  bool timeval, bool time32);
-> >  struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long he=
-ader_len,
-> > diff --git a/include/uapi/linux/net_tstamp.h b/include/uapi/linux/net_t=
-stamp.h
-> > index 858339d1c1c4..0696699cf964 100644
-> > --- a/include/uapi/linux/net_tstamp.h
-> > +++ b/include/uapi/linux/net_tstamp.h
-> > @@ -49,6 +49,13 @@ enum {
-> >                                        SOF_TIMESTAMPING_TX_SCHED | \
-> >                                        SOF_TIMESTAMPING_TX_ACK)
-> >
-> > +#define SOF_TIMESTAMPING_BPF_SUPPPORTED_MASK (SOF_TIMESTAMPING_SOFTWAR=
-E | \
-> > +                                           SOF_TIMESTAMPING_TX_SCHED |=
- \
-> > +                                           SOF_TIMESTAMPING_TX_SOFTWAR=
-E | \
-> > +                                           SOF_TIMESTAMPING_TX_ACK | \
-> > +                                           SOF_TIMESTAMPING_OPT_ID | \
-> > +                                           SOF_TIMESTAMPING_OPT_ID_TCP=
-)
-> > +
->
-> We discussed the subtle distinction between OPT_ID and OPT_ID_TCP before.
->
-> Basically, OPT_ID_TCP is a fix for OPT_ID on TCP sockets, and should alwa=
-ys be
-> passed. On a new API like this one, we can even require this.
-
-Good idea. Will do it. Thanks.
-
->
-> Not super important, only if it does not make the code more complex.
-
-I need to ponder on this point more.
-
-Thanks,
-Jason
