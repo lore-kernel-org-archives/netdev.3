@@ -1,122 +1,109 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1C220492B
-	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 10:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F687205122
+	for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 11:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730199531; cv=none; b=nXbSWzHwZe0SPwn6SovSEWYyJwFYniHhYaGZXnJZANOFyt6uC1TozCnnvlHGUIFPJr4skorzMlp1FIS9vj+U1cHKQ2m7N6yQYGhKHZaHvZ205KWhtdPEw17hK7DATv4viCIsdYPtBHbiO1I+G2Ro3TDhEP6GwGfB8ep1Vw8PbcE=
+	t=1730200077; cv=none; b=DFPTLK0ece4MKcpGmBmnYArLqSdqRUMJ4tYze2XVa9NVCP+K6fN8vQ2tpTgo8eMDZ6n4xnFmCI0+ztLOTLsd6ZFptKE5uqQktygzdHsz/uI9+/UugnR0RAhCJXnH+BFI0VORQrQizje/ao3RIzWqbK6AyGdJMMwQX251zl49F5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730199531; c=relaxed/simple;
-	bh=jE775orIHl/zy2s+k5hOgL2vYd8qb4FFjQtfxIEvjnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SkvQHOG29R082UttI9+46Hy8m5wm0mgX5nYpndDide61baMFK7ntKfvNHdONk+8D2CDyiM92tp63ll3Zv3y/rYCqUh+dmksIYeS9ZkTLZsmkXEfesugcaE/3XnQLLsrEpMN5TZctR2b14DZ7Bk76zlMiBerWAs0G5ZgD9Ky15eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LVWfOZc4; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LVWfOZc4"
-Message-ID: <f4668e71-796d-4fcf-994a-db032c6c43b6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1730199526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ub5FWCH7w+9in2TZ/Sldo0RcMQcoiIkY60kZ41MTpU0=;
-	b=LVWfOZc49els2x+SgiBbh6tp0JJjRzY4ow7ACbe79uGPAY2QBo1i31+KXH42R1vb8Fdic+
-	AkH9FWi+QSZSMAke80T+Be8nnDHLyrJVw4zFLoWMA2P1giO0OA1u2GOyDrjwlZxPt5R1HB
-	7mKwjnfTO7ANo4gZ7SYhjK9WV3Ujzt0=
-Date: Tue, 29 Oct 2024 10:58:42 +0000
+	s=arc-20240116; t=1730200077; c=relaxed/simple;
+	bh=qNTRoQF5G+AVxjUEitU9u/c7zu7hVdJSZwMOoY40uU8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LrEhMMWG2+TNRS1PQXxE9hmvPOv1GSpcWiiimjT+TYfBfGHnIsyvDA+eCv5FBOr4c7wzfcsk824Huw2IVOjHL4wPCVva1rmhJ6LEU8n79jDlOd4V7h8LytklJHgigWe+0n9XeWSUseF0icNb7LT+7hNKjTpQsDMZBVU13b+gjBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1t5k4V-0008Eu-BW; Tue, 29 Oct 2024 12:07:35 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1t5k4T-0010yt-2U;
+	Tue, 29 Oct 2024 12:07:33 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1t5k4T-008ILK-2A;
+	Tue, 29 Oct 2024 12:07:33 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	devicetree@vger.kernel.org,
+	Marek Vasut <marex@denx.de>
+Subject: [PATCH net-next v2 4/5] net: dsa: microchip: cleanup error handling in ksz_mdio_register
+Date: Tue, 29 Oct 2024 12:07:31 +0100
+Message-Id: <20241029110732.1977064-5-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241029110732.1977064-1-o.rempel@pengutronix.de>
+References: <20241029110732.1977064-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v3 1/3] net: ipv6: ioam6_iptunnel: mitigate
- 2-realloc issue
-To: Justin Iurman <justin.iurman@uliege.be>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-kernel@vger.kernel.org
-References: <20241028223611.26599-1-justin.iurman@uliege.be>
- <20241028223611.26599-2-justin.iurman@uliege.be>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20241028223611.26599-2-justin.iurman@uliege.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On 28/10/2024 22:36, Justin Iurman wrote:
-> This patch mitigates the two-reallocations issue with ioam6_iptunnel by
-> providing the dst_entry (in the cache) to the first call to
-> skb_cow_head(). As a result, the very first iteration would still
-> trigger two reallocations (i.e., empty cache), while next iterations
-> would only trigger a single reallocation.
-> 
-> Performance tests before/after applying this patch, which clearly shows
-> the improvement:
-> - inline mode:
->    - before: https://ibb.co/LhQ8V63
->    - after: https://ibb.co/x5YT2bS
-> - encap mode:
->    - before: https://ibb.co/3Cjm5m0
->    - after: https://ibb.co/TwpsxTC
-> - encap mode with tunsrc:
->    - before: https://ibb.co/Gpy9QPg
->    - after: https://ibb.co/PW1bZFT
-> 
-> This patch also fixes an incorrect behavior: after the insertion, the
-> second call to skb_cow_head() makes sure that the dev has enough
-> headroom in the skb for layer 2 and stuff. In that case, the "old"
-> dst_entry was used, which is now fixed. After discussing with Paolo, it
-> appears that both patches can be merged into a single one -this one-
-> (for the sake of readability) and target net-next.
-> 
-> Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-> ---
->   net/ipv6/ioam6_iptunnel.c | 90 +++++++++++++++++++++------------------
->   1 file changed, 49 insertions(+), 41 deletions(-)
-> 
-> diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-> index beb6b4cfc551..07bfd557e08a 100644
-> --- a/net/ipv6/ioam6_iptunnel.c
-> +++ b/net/ipv6/ioam6_iptunnel.c
-> @@ -254,15 +254,24 @@ static int ioam6_do_fill(struct net *net, struct sk_buff *skb)
->   	return 0;
->   }
->   
-> +static inline int dev_overhead(struct dst_entry *dst, struct sk_buff *skb)
-> +{
-> +	if (likely(dst))
-> +		return LL_RESERVED_SPACE(dst->dev);
-> +
-> +	return skb->mac_len;
-> +}
+Replace repeated cleanup code with a single error path using a label.
 
-static inline functions in .c files are not welcome.
-consider to move this helper to some header, probably dev.h or dst.h
-and reuse it in other tunnels.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-And please honor 24h rule before the next submission.
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 89134e7fde93b..f9e45bba2d293 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2411,8 +2411,8 @@ static int ksz_mdio_register(struct ksz_device *dev)
+ 
+ 	bus = devm_mdiobus_alloc(ds->dev);
+ 	if (!bus) {
+-		of_node_put(mdio_np);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto put_mdio_node;
+ 	}
+ 
+ 	if (dev->dev_ops->mdio_bus_preinit) {
+@@ -2457,10 +2457,8 @@ static int ksz_mdio_register(struct ksz_device *dev)
+ 
+ 	if (dev->irq > 0) {
+ 		ret = ksz_irq_phy_setup(dev);
+-		if (ret) {
+-			of_node_put(mdio_np);
+-			return ret;
+-		}
++		if (ret)
++			goto put_mdio_node;
+ 	}
+ 
+ 	ret = devm_of_mdiobus_register(ds->dev, bus, mdio_np);
+-- 
+2.39.5
 
-
->   static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
-> -			   struct ioam6_lwt_encap *tuninfo)
-> +			   struct ioam6_lwt_encap *tuninfo,
-> +			   struct dst_entry *dst)
->   {
->   	struct ipv6hdr *oldhdr, *hdr;
->   	int hdrlen, err;
->   
->   	hdrlen = (tuninfo->eh.hdrlen + 1) << 3;
->   
-> -	err = skb_cow_head(skb, hdrlen + skb->mac_len);
-> +	err = skb_cow_head(skb, hdrlen + dev_overhead(dst, skb));
->   	if (unlikely(err))
->   		return err;
->   
-[.. snip ..]
