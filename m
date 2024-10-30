@@ -1,143 +1,246 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D0E194A68
-	for <netdev@vger.kernel.org>; Wed, 30 Oct 2024 09:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DBB1E1A2B;
+	Wed, 30 Oct 2024 09:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730278972; cv=none; b=KYGR4UnkpLiLQVSu0D49O79wk/6uqo4aFK6TR6vsPjhO3z6sEbxrXVwmDctgcl6EtQqu+7ptlpY4phY3oesr7Rb7kOyIKe3p+zBlldAxIChIR716eCZbJig43WXO/BaI5frdEEb8Eh104XKZYDr+8/K6vvuNntly0Y4tBk0UmF4=
+	t=1730280763; cv=none; b=Rr1jvs4q7BA3e3Wo/vSr1JAnSh5U+Kbc1edG7Hd/bASaYrjXFYSdYgYO0S4o5ciwbnxERONhgtqrYMaR1Oxtr+tUjYpSi+ezaHcSie9RxjjKg1IWSRXXayAyCZmrs0nFLRmSDk9/fgeSvUN5tjb3IUiASOWwHv0B55Ops2HdhUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730278972; c=relaxed/simple;
-	bh=T3PEvjzf/e/K5/nZ8AM7VNOJSfJxgN0I0YAP5WAfOfg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O3FIcvHBHnHvbr3anUfAD+wAsKX7QOPVzOsKrDH24c6vch26tbT6eYOJ1FNJNFgfOUKLZRWJkVId21UErfdJ9Q34G6RtK3ap2SHAF6CUS+wtxpRRrNSicwVv3EY2vNVKuC5w4wchE+0DeOOy2iGciDUxFw1QRrivbH10P4aKYyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mendozajonas.com; spf=pass smtp.mailfrom=mendozajonas.com; dkim=pass (2048-bit key) header.d=mendozajonas.com header.i=@mendozajonas.com header.b=ahdBr7RJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e0Pw9pib; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mendozajonas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mendozajonas.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mendozajonas.com header.i=@mendozajonas.com header.b="ahdBr7RJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e0Pw9pib"
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 2D5AF138018D;
-	Wed, 30 Oct 2024 05:02:48 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 30 Oct 2024 05:02:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	mendozajonas.com; h=cc:cc:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm2; t=1730278968; x=1730365368; bh=ZLH+Ed+NvINahKlQCDEam
-	vez+zFf/Nf/8UUcPFXyD28=; b=ahdBr7RJJ6k0x13h87lTa/n7UVdb4J/EUJVbA
-	e7Um4izphKDCTrBSdCi+iMChE1ZC9d2tz1hVB2BYNx1e0ENxP+56mYIPVhBcFc4K
-	7ktrWEElEVGK81kG6mx9B+7jlF+lYdifSjrJLxyCa6lnnq2rLjnrom4TU0qbKIso
-	n3EFbHynegdWLTFsanr9YkrqglVPVkmLFwbSFkfdmMGPQmaAhFBUFmeDQ+ob7d1V
-	+Dqsr5Z/L4p/t1EXOJp3xIPauv5vAfBJvEMMZuWK92gqdYekUkdBqT56uFANebP3
-	2S/sOCZeAW4JB3aJReL57H31o+UEjpPJ6sR7Sppr71QMUO/rw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730278968; x=
-	1730365368; bh=ZLH+Ed+NvINahKlQCDEamvez+zFf/Nf/8UUcPFXyD28=; b=e
-	0Pw9pibTs551x4Pq32l6e3cwbyWVgeqIuD0qBCsbUQU5j9fd7Fg4lX8uyxvOAf2z
-	t1v7PV6FybEwTWhW8ojckTsEfdDpNG9M7vSTTq5sXOXQ+AzhEQvVmDqSxaMv+NeW
-	tvoo3DTE1E4JWBqmvKNQIQdPMeGjHU4Q1E7rdWS8Ze4wjgHT9NO+HSfuQ4Nkj3hu
-	tt9SNgRIEDPYr90010zHsQJLcI2ah6ynWdrAcS3kBCQmqPZmNQRdgww+4gGxSB5G
-	FCE1I/OGQfrT1P+8zwNv1pJ8CsymaAWK+WihqiPYB1fhTjwtRPCg4B5H0PEeDyeR
-	m/7hW/VQAZtkr6YvSJceA==
-X-ME-Sender: <xms:NvYhZ7b1kjQzOqNw6HAriN1WxwyOXqlCVxxchhRByQzpA5uSQ5r7mw>
-    <xme:NvYhZ6Y-EgvgNTMZYlFChj2snATAnLCXFLTsUSoD7kBZPcGTRMKWebbsKjyKEr1LT
-    uzrHp2LJjVXE7Q2gQ>
-X-ME-Received: <xmr:NvYhZ98odscWSA-qpRe0UptKQP9CjOKQWVDnqbiGedoOTtNPP3D8VOpcrN81nlhl1HcGQZ1pySgIgRVanTSuNntUCDB8xDx3rbVfS_bwiB50kNU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekvddguddvjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
-    jeenucfhrhhomhepufgrmhcuofgvnhguohiirgdqlfhonhgrshcuoehsrghmsehmvghnug
-    hoiigrjhhonhgrshdrtghomheqnecuggftrfgrthhtvghrnhepvdejffdttdeuieehvdeg
-    vdekhfejtdettdevvedvveevvdelueetiedtledukeevnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepshgrmhesmhgvnhguohiirghjohhnrghs
-    rdgtohhmpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepjhhksegtohguvggtohhnshhtrhhutghtrdgtohhmrdgruhdprhgtphhtthhopehk
-    uhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtg
-    hhpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphht
-    thhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrg
-    iivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrght
-    rdgtohhmpdhrtghpthhtohepjhhovghlsehjmhhsrdhiugdrrghupdhrtghpthhtohepjh
-    grtghkhigptghhohhusegrshhpvggvughtvggthhdrtghomh
-X-ME-Proxy: <xmx:NvYhZxotf2rq9DetZy7Uv4m9Ia19XKPWgUdFkUHVPXFz60Rkllldkw>
-    <xmx:NvYhZ2pU5_Zf_NKz2U1XbBfLVXQtUuOvP_QLidABelH0k0FAhhu9aA>
-    <xmx:NvYhZ3TJ9DQpJ3-5yqCsn5j0JNeNiIZBTKGN3SqaCL7S68FvMV40lA>
-    <xmx:NvYhZ-qPxTqe8Ctd_ySUPXCnLvC8T8dHzCJJG6l5hs2ATZUdh6L84A>
-    <xmx:OPYhZzQh4GLwITAernUpw1XvcLUmvTXga6C5-FsLnrPyQlfV1LVA2Ycj>
-Feedback-ID: iab794258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Oct 2024 05:02:43 -0400 (EDT)
-Message-ID: <7e798de6-0476-4d1b-922b-51c335d6d0b1@mendozajonas.com>
-Date: Wed, 30 Oct 2024 20:02:39 +1100
+	s=arc-20240116; t=1730280763; c=relaxed/simple;
+	bh=Vz1zeao+5C1Aan/4lWHPC555V7hRfONpgEaV3FUEcZg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qwdsns8RkhioFWb/88rTGK8qel8IORo7SR2TrZSnFfZOzX9zvSG6lnXlFXf55eSyZEdHynIsHr1y9Pp1uuIB6UrtPrv/PfiQrWnfYIgitzZV4/xBA5ZpNvN51PLkW4y4qkMLOUKvOGMSnRf9yC1eYrPESBCml+V0CecNfOhIqUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Xdhhm5r80zQsLr;
+	Wed, 30 Oct 2024 17:31:36 +0800 (CST)
+Received: from kwepemg200003.china.huawei.com (unknown [7.202.181.30])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4D9C21400E3;
+	Wed, 30 Oct 2024 17:32:36 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemg200003.china.huawei.com
+ (7.202.181.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 30 Oct
+ 2024 17:32:35 +0800
+From: Liu Jian <liujian56@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <trondmy@kernel.org>, <anna@kernel.org>,
+	<chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+	<ofir.gal@volumez.com>, <geert+renesas@glider.be>, <ebiederm@xmission.com>
+CC: <netdev@vger.kernel.org>, <linux-nfs@vger.kernel.org>
+Subject: [PATCH net v2] sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+Date: Wed, 30 Oct 2024 17:49:53 +0800
+Message-ID: <20241030094953.1921574-1-liujian56@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] net: ethernet: ftgmac100: prevent use after free
- on unregister when using NCSI
-To: Jeremy Kerr <jk@codeconstruct.com.au>, Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Jacky Chou <jacky_chou@aspeedtech.com>,
- Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
-References: <20241028-ftgmac-fixes-v1-0-b334a507be6c@codeconstruct.com.au>
- <20241028-ftgmac-fixes-v1-1-b334a507be6c@codeconstruct.com.au>
- <fe5630d4-1502-45eb-a6fb-6b5bc33506a9@lunn.ch>
- <0123d308bb8577e7ccb5d99c504cec389ba8fe15.camel@codeconstruct.com.au>
- <20241029153619.1743f07e@kernel.org>
- <198a796d5855759ca8561590d848c52028378971.camel@codeconstruct.com.au>
- <040df8130f6dffc4c4e519dc9241e1c35ed819ca.camel@codeconstruct.com.au>
-Content-Language: en-US
-From: Sam Mendoza-Jonas <sam@mendozajonas.com>
-In-Reply-To: <040df8130f6dffc4c4e519dc9241e1c35ed819ca.camel@codeconstruct.com.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemg200003.china.huawei.com (7.202.181.30)
 
-On 10/30/2024 1:58 PM, Jeremy Kerr wrote:
-> Hi all,
->
-> [+Sam, as ncsi maintainer]
->
->> So, this worth a try with the _remove sequence reordered with respect
->> to the ncsi device. I'll work on a replacement patch to see if that
->> can be done without other fallout, and will send a follow-up soon.
-> OK, not so simple. ftgmac100_probe does a:
->    
->      ncsi_register_dev()
->        -> dev_add_pack()
->      register_netdev()
->
-> - where ptype.dev is the ftgmac netdev.
->
-> So we'd want to restructure the _remove to do:
->
->      unregister_netdev()
->      ncsi_unregister_dev()
->       -> dev_remove_pack()
->
-> However, we (sensibly) can't do the unregister_netdev() with a
-> packet-type handler still in place.
->
-> Sam: would it make sense to move the dev_add_pack() / dev_remove_pack()
-> to the ncsi layer's ncsi_start_dev() / ncsi_stop_dev() ? The channel
-> monitor is disabled on stop, so we shouldn't expect to receive any
-> further NCSI ethertype packets.
+BUG: KASAN: slab-use-after-free in tcp_write_timer_handler+0x156/0x3e0
+Read of size 1 at addr ffff888111f322cd by task swapper/0/0
 
-Having a quick re-read of those and ncsi_reset_dev() that looks fine on 
-the surface; as you say outside of those no packet handling is happening 
-and the link is forced down.
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc4-dirty #7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x68/0xa0
+ print_address_description.constprop.0+0x2c/0x3d0
+ print_report+0xb4/0x270
+ kasan_report+0xbd/0xf0
+ tcp_write_timer_handler+0x156/0x3e0
+ tcp_write_timer+0x66/0x170
+ call_timer_fn+0xfb/0x1d0
+ __run_timers+0x3f8/0x480
+ run_timer_softirq+0x9b/0x100
+ handle_softirqs+0x153/0x390
+ __irq_exit_rcu+0x103/0x120
+ irq_exit_rcu+0xe/0x20
+ sysvec_apic_timer_interrupt+0x76/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90
+ 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 f8 25 00 fb f4 <fa> c3 cc cc cc
+ cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffffffffa2007e28 EFLAGS: 00000242
+RAX: 00000000000f3b31 RBX: 1ffffffff4400fc7 RCX: ffffffffa09c3196
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff9f00590f
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed102360835d
+R10: ffff88811b041aeb R11: 0000000000000001 R12: 0000000000000000
+R13: ffffffffa202d7c0 R14: 0000000000000000 R15: 00000000000147d0
+ default_idle_call+0x6b/0xa0
+ cpuidle_idle_call+0x1af/0x1f0
+ do_idle+0xbc/0x130
+ cpu_startup_entry+0x33/0x40
+ rest_init+0x11f/0x210
+ start_kernel+0x39a/0x420
+ x86_64_start_reservations+0x18/0x30
+ x86_64_start_kernel+0x97/0xa0
+ common_startup_64+0x13e/0x141
+ </TASK>
 
-Cheers,
-Sam
+Allocated by task 595:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_slab_alloc+0x87/0x90
+ kmem_cache_alloc_noprof+0x12b/0x3f0
+ copy_net_ns+0x94/0x380
+ create_new_namespaces+0x24c/0x500
+ unshare_nsproxy_namespaces+0x75/0xf0
+ ksys_unshare+0x24e/0x4f0
+ __x64_sys_unshare+0x1f/0x30
+ do_syscall_64+0x70/0x180
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 100:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x54/0x70
+ kmem_cache_free+0x156/0x5d0
+ cleanup_net+0x5d3/0x670
+ process_one_work+0x776/0xa90
+ worker_thread+0x2e2/0x560
+ kthread+0x1a8/0x1f0
+ ret_from_fork+0x34/0x60
+ ret_from_fork_asm+0x1a/0x30
+
+Reproduction script:
+
+mkdir -p /mnt/nfsshare
+mkdir -p /mnt/nfs/netns_1
+mkfs.ext4 /dev/sdb
+mount /dev/sdb /mnt/nfsshare
+systemctl restart nfs-server
+chmod 777 /mnt/nfsshare
+exportfs -i -o rw,no_root_squash *:/mnt/nfsshare
+
+ip netns add netns_1
+ip link add name veth_1_peer type veth peer veth_1
+ifconfig veth_1_peer 11.11.0.254 up
+ip link set veth_1 netns netns_1
+ip netns exec netns_1 ifconfig veth_1 11.11.0.1
+
+ip netns exec netns_1 /root/iptables -A OUTPUT -d 11.11.0.254 -p tcp \
+	--tcp-flags FIN FIN  -j DROP
+
+(note: In my environment, a DESTROY_CLIENTID operation is always sent
+ immediately, breaking the nfs tcp connection.)
+ip netns exec netns_1 timeout -s 9 300 mount -t nfs -o proto=tcp,vers=4.1 \
+	11.11.0.254:/mnt/nfsshare /mnt/nfs/netns_1
+
+ip netns del netns_1
+
+The reason here is that the tcp socket in netns_1 (nfs side) has been
+shutdown and closed (done in xs_destroy), but the FIN message (with ack)
+is discarded, and the nfsd side keeps sending retransmission messages.
+As a result, when the tcp sock in netns_1 processes the received message,
+it sends the message (FIN message) in the sending queue, and the tcp timer
+is re-established. When the network namespace is deleted, the net structure
+accessed by tcp's timer handler function causes problems.
+
+To fix this problem:
+Add the sock_create_kern_getnet() helper function, add the get_net()
+ operation for the kernel socket.
+
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+---
+v1: https://lore.kernel.org/all/20241024015543.568476-1-liujian56@huawei.com/
+v1->v2: change to get netns reference count.
+ include/linux/net.h   |  1 +
+ net/socket.c          | 28 ++++++++++++++++++++++++++++
+ net/sunrpc/svcsock.c  |  2 +-
+ net/sunrpc/xprtsock.c |  2 +-
+ 4 files changed, 31 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/net.h b/include/linux/net.h
+index b75bc534c1b3..58216da3b62c 100644
+--- a/include/linux/net.h
++++ b/include/linux/net.h
+@@ -255,6 +255,7 @@ int __sock_create(struct net *net, int family, int type, int proto,
+ 		  struct socket **res, int kern);
+ int sock_create(int family, int type, int proto, struct socket **res);
+ int sock_create_kern(struct net *net, int family, int type, int proto, struct socket **res);
++int sock_create_kern_getnet(struct net *net, int family, int type, int proto, struct socket **res);
+ int sock_create_lite(int family, int type, int proto, struct socket **res);
+ struct socket *sock_alloc(void);
+ void sock_release(struct socket *sock);
+diff --git a/net/socket.c b/net/socket.c
+index 042451f01c65..e64a02445b1a 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1651,6 +1651,34 @@ int sock_create_kern(struct net *net, int family, int type, int protocol, struct
+ }
+ EXPORT_SYMBOL(sock_create_kern);
+ 
++int sock_create_kern_getnet(struct net *net, int family, int type, int proto, struct socket **res)
++{
++	struct sock *sk;
++	int ret;
++
++	if (!maybe_get_net(net))
++		return -EINVAL;
++
++	ret = sock_create_kern(net, family, type, proto, res);
++	if (ret < 0) {
++		put_net(net);
++		return ret;
++	}
++
++	sk = (*res)->sk;
++	lock_sock(sk);
++	/* Update ns_tracker to current stack trace and refcounted tracker */
++	__netns_tracker_free(net, &sk->ns_tracker, false);
++
++	sk->sk_net_refcnt = 1;
++	netns_tracker_alloc(net, &sk->ns_tracker, GFP_KERNEL);
++	sock_inuse_add(net, 1);
++	release_sock(sk);
++
++	return ret;
++}
++EXPORT_SYMBOL(sock_create_kern_getnet);
++
+ static struct socket *__sys_socket_create(int family, int type, int protocol)
+ {
+ 	struct socket *sock;
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 825ec5357691..6f272013fd9b 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1526,7 +1526,7 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	error = __sock_create(net, family, type, protocol, &sock, 1);
++	error = sock_create_kern_getnet(net, family, type, protocol, &sock);
+ 	if (error < 0)
+ 		return ERR_PTR(error);
+ 
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 110749b85040..f7734ce5eec9 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1925,7 +1925,7 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
+ 	struct socket *sock;
+ 	int err;
+ 
+-	err = __sock_create(xprt->xprt_net, family, type, protocol, &sock, 1);
++	err = sock_create_kern_getnet(xprt->xprt_net, family, type, protocol, &sock);
+ 	if (err < 0) {
+ 		dprintk("RPC:       can't create %d transport socket (%d).\n",
+ 				protocol, -err);
+-- 
+2.34.1
 
