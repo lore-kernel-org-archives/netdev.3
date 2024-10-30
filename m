@@ -1,177 +1,235 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D7C228B5D;
-	Wed, 30 Oct 2024 16:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2072296F5;
+	Wed, 30 Oct 2024 16:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307255; cv=none; b=oz/2WG1tsFuv+Db9hLLl+5bJuMRzmzc8QP+OiPj09HuWfqS/itPLPNklWTlTpK2i+gfs3WBvIlRIK77Cs9GR0mcef9Tj2wgeg98nsPfhXb+CGs4+G28JLzD8LeNqNfzPOTc7Q9HN3ESggyMPmG4Fx3J58I2g5TZxbVgXAaTemm8=
+	t=1730307257; cv=none; b=rPqxz6T4DAhGToePza3L3QLUazqsMjdI9yOWT6eDCObEqMncrWvTtVl8SLDGLh5ROONKyKTEPsLkczTZZFyKMnYR2ervmpCtw5o6bI/olHjlj7JdO/Dc6l+vxzx7RSTuIOjYyX2xKQydWQVbFw8zPjUzweiql4RDl7bM4QiFV5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730307255; c=relaxed/simple;
-	bh=OySWQItgkpNZCnLFdhIqOtG3NIEaxxgpHQmQdeD2Duk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M/26bwX46v50jZbP00w3P/xf4vzfj+pgx3nW+PPPV3JPYsF2qcko9gl8VerpteTe0u7cHPqrhmz66vUM5qqYulD+FJUO7ykPRWlSq3QrEufjwUxol6wCW2SFFCZtqSV/ggqyLY2ns4zwEyr7/DJVqxtddBFGqWW1DtHNXiJNlDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Y9whLtQM; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1730307257; c=relaxed/simple;
+	bh=DXKV5tHRVERPeEsblP/yRrq3CP6BqLAgt7hogDsb0wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jNQixfbbcbAuAcIsTT2df3zzIQAH/XOK+RBfnkOZN23yyD4czik3ZoqVPGVlQ3wywoYmYZEYcd1xZ7keKsltZHy1Sa3O69wMSJWD3pj1YhT0Xk7GLMRKFbDPqtzEe7/d4o+Y9WTYzgDJ+IyK/ShfSRG+mxFo3bb1BumKq9gkKxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z3NZVkad; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Y9whLtQM"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 763F2C0002;
-	Wed, 30 Oct 2024 16:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730307250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7dziNS10ELnVbTBvXG7mY7ScmIfQ75je25h84Kh8NZY=;
-	b=Y9whLtQMTUlGaOil42Z9dzJlwNjLmNx/6vxHQjEvAnC8RvB9oOmxZpGVQGDUqwB7u0T60/
-	HKEFyKRhsjPq6LAawMwBmZiws1honlATRmOVMKDGOMKASk4c56F8ON3vV+C+2vZ+qi5e1e
-	KT3+TJAFT/UiMmLtwio+BXPW2dGjb4sInifdR2DGCLZ4VJ3+YzEk9JyN8TZwB0vYXlAHA0
-	IZwOV2eAq/yVyOkGzjbK1QKy4l2/yZ4slox4H+wTpsljdBSJ3BGvzx+yIZG02zU7N8a9t9
-	nmYacIOkOlP35ph16YwAJlyJHFcM6oi2jz8mm6GfFtyhzGWCxhOGLTtDDs/UCQ==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 30 Oct 2024 17:53:16 +0100
-Subject: [PATCH RFC net-next v2 14/18] net: ethtool: Add support for new
- power domains index description
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z3NZVkad"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730307255; x=1761843255;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DXKV5tHRVERPeEsblP/yRrq3CP6BqLAgt7hogDsb0wQ=;
+  b=Z3NZVkad9oFjvEKtu9U4M76cylizYxnSaqMWI5OLMMrmrAPELPK7Mimr
+   G3ezBQwGAiWxsVcJr8E2yD5Yscb1O6gMkfl+1ATxeJNLy7dLcpSNO5OYb
+   BpH/8ly7w5XzCLk7GwdD6h/SzRwMbelHm73p9EUMCABoeJsrBpuZe8kS+
+   NB3hy71XP0Tjg/r85e1SvEXOR5ioT4O62WLinajlZAU3AXnrPf/mL+hxt
+   wVtJnwp34mzcirppBfbE1OD4ohVhyaT4Kc709pW51N2nmNKD8IZU2tJq3
+   VKzDooftfKaiplk+gXYgm6BueHercp+oxvZqUzEIU3XxIod1buRYH9gID
+   A==;
+X-CSE-ConnectionGUID: WPG6WRi/SZ2X+cFvUWw1Yw==
+X-CSE-MsgGUID: 8fIO26XzRN2HmoP5NK8lTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389776"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="41389776"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:54:15 -0700
+X-CSE-ConnectionGUID: hR28saU+SueVV0sGawFcpA==
+X-CSE-MsgGUID: GOOt05PJTsGNbB7T0d5Cjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="87524519"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:54:11 -0700
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 11/18] xdp: add generic xdp_buff_add_frag()
+Date: Wed, 30 Oct 2024 17:51:54 +0100
+Message-ID: <20241030165201.442301-12-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-feature_poe_port_prio-v2-14-9559622ee47a@bootlin.com>
-References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+The code piece which would attach a frag to &xdp_buff is almost
+identical across the drivers supporting XDP multi-buffer on Rx.
+Make it a generic elegant "oneliner".
+Also, I see lots of drivers calculating frags_truesize as
+`xdp->frame_sz * nr_frags`. I can't say this is fully correct, since
+frags might be backed by chunks of different sizes, especially with
+stuff like the header split. Even page_pool_alloc() can give you two
+different truesizes on two subsequent requests to allocate the same
+buffer size. Add a field to &skb_shared_info (unionized as there's no
+free slot currently on x86_64) to track the "true" truesize. It can
+be used later when updating an skb.
 
-Report the index of the newly introduced PSE power domain to the user,
-enabling improved management of the power budget for PSE devices.
-
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 ---
+ include/linux/skbuff.h | 16 ++++++--
+ include/net/xdp.h      | 90 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 101 insertions(+), 5 deletions(-)
 
-Changes in v2:
-- new patch.
----
- Documentation/networking/ethtool-netlink.rst | 4 ++++
- drivers/net/pse-pd/pse_core.c                | 1 +
- include/linux/pse-pd/pse.h                   | 2 ++
- include/uapi/linux/ethtool_netlink.h         | 1 +
- net/ethtool/pse-pd.c                         | 7 +++++++
- 5 files changed, 15 insertions(+)
-
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index bd7173d1fa4d..3573543ae5ad 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1767,6 +1767,7 @@ Kernel response contents:
-   ``ETHTOOL_A_C33_PSE_PW_LIMIT_RANGES``       nested  Supported power limit
-                                                       configuration ranges.
-   ``ETHTOOL_A_PSE_ID``                           u32  Index of the PSE
-+  ``ETHTOOL_A_PSE_PW_D_ID``                      u32  Index of the PSE power domain
-   ==========================================  ======  =============================
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index c867df5b1051..6ec78c1598fe 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -607,11 +607,19 @@ struct skb_shared_info {
+ 	 * Warning : all fields before dataref are cleared in __alloc_skb()
+ 	 */
+ 	atomic_t	dataref;
+-	unsigned int	xdp_frags_size;
  
- When set, the optional ``ETHTOOL_A_PODL_PSE_ADMIN_STATE`` attribute identifies
-@@ -1843,6 +1844,9 @@ equal.
- The ``ETHTOOL_A_PSE_ID`` attribute identifies the index of the PSE
- controller.
- 
-+The ``ETHTOOL_A_PSE_PW_D_ID`` attribute identifies the index of PSE power
-+domain.
+-	/* Intermediate layers must ensure that destructor_arg
+-	 * remains valid until skb destructor */
+-	void *		destructor_arg;
++	union {
++		struct {
++			u32		xdp_frags_size;
++			u32		xdp_frags_truesize;
++		};
 +
- PSE_SET
- =======
++		/*
++		 * Intermediate layers must ensure that destructor_arg
++		 * remains valid until skb destructor.
++		 */
++		void		*destructor_arg;
++	};
  
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 13f6ddcfca10..29374b1ce378 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1000,6 +1000,7 @@ static int _pse_ethtool_get_status(struct pse_controller_dev *pcdev,
- 	}
- 
- 	status->pse_id = pcdev->id;
-+	status->pw_d_id = pcdev->pi[id].pw_d->id;
- 	return ops->ethtool_get_status(pcdev, id, extack, status);
+ 	/* must be last field, see pskb_expand_head() */
+ 	skb_frag_t	frags[MAX_SKB_FRAGS];
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index c4b408d22669..19d2b283b845 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -167,6 +167,88 @@ xdp_get_buff_len(const struct xdp_buff *xdp)
+ 	return len;
  }
  
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index 3b35dc0f8dc3..e275ef7e1eb0 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -40,6 +40,7 @@ struct pse_control_config {
-  * struct pse_control_status - PSE control/channel status.
-  *
-  * @pse_id: index number of the PSE. Set by PSE core.
-+ * @pw_d_id: PSE power domain index. Set by PSE core.
-  * @podl_admin_state: operational state of the PoDL PSE
-  *	functions. IEEE 802.3-2018 30.15.1.1.2 aPoDLPSEAdminState
-  * @podl_pw_status: power detection status of the PoDL PSE.
-@@ -62,6 +63,7 @@ struct pse_control_config {
-  */
- struct pse_control_status {
- 	u32 pse_id;
-+	u32 pw_d_id;
- 	enum ethtool_podl_pse_admin_state podl_admin_state;
- 	enum ethtool_podl_pse_pw_d_status podl_pw_status;
- 	enum ethtool_c33_pse_admin_state c33_admin_state;
-diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
-index 526b8b099c0e..47784a165e8b 100644
---- a/include/uapi/linux/ethtool_netlink.h
-+++ b/include/uapi/linux/ethtool_netlink.h
-@@ -972,6 +972,7 @@ enum {
- 	ETHTOOL_A_C33_PSE_AVAIL_PW_LIMIT,	/* u32 */
- 	ETHTOOL_A_C33_PSE_PW_LIMIT_RANGES,	/* nest - _C33_PSE_PW_LIMIT_* */
- 	ETHTOOL_A_PSE_ID,			/* u32 */
-+	ETHTOOL_A_PSE_PW_D_ID,			/* u32 */
- 
- 	/* add new constants above here */
- 	__ETHTOOL_A_PSE_CNT,
-diff --git a/net/ethtool/pse-pd.c b/net/ethtool/pse-pd.c
-index 52df956db0ba..1288e8a2c3a7 100644
---- a/net/ethtool/pse-pd.c
-+++ b/net/ethtool/pse-pd.c
-@@ -84,6 +84,8 @@ static int pse_reply_size(const struct ethnl_req_info *req_base,
- 	int len = 0;
- 
- 	len += nla_total_size(sizeof(u32)); /* _PSE_ID */
-+	if (st->pw_d_id > 0)
-+		len += nla_total_size(sizeof(u32)); /* _PSE_PW_D_ID */
- 	if (st->podl_admin_state > 0)
- 		len += nla_total_size(sizeof(u32)); /* _PODL_PSE_ADMIN_STATE */
- 	if (st->podl_pw_status > 0)
-@@ -152,6 +154,11 @@ static int pse_fill_reply(struct sk_buff *skb,
- 	if (nla_put_u32(skb, ETHTOOL_A_PSE_ID, st->pse_id))
- 		return -EMSGSIZE;
- 
-+	if (st->pw_d_id > 0 &&
-+	    nla_put_u32(skb, ETHTOOL_A_PSE_PW_D_ID,
-+			st->pw_d_id))
-+		return -EMSGSIZE;
++/**
++ * __xdp_buff_add_frag - attach a frag to an &xdp_buff
++ * @xdp: XDP buffer to attach the frag to
++ * @page: page containing the frag
++ * @offset: page offset at which the frag starts
++ * @size: size of the frag
++ * @truesize: truesize (page / page frag size) of the frag
++ * @try_coalesce: whether to try coalescing the frags
++ *
++ * Attach a frag to an XDP buffer. If it currently has no frags attached,
++ * initialize the related fields, otherwise check that the frag number
++ * didn't reach the limit of ``MAX_SKB_FRAGS``. If possible, try coalescing
++ * the frag with the previous one.
++ * The function doesn't check/update the pfmemalloc bit. Please use the
++ * non-underscored wrapper in drivers.
++ *
++ * Return: true on success, false if there's no space for the frag in
++ * the shared info struct.
++ */
++static inline bool __xdp_buff_add_frag(struct xdp_buff *xdp, struct page *page,
++				       u32 offset, u32 size, u32 truesize,
++				       bool try_coalesce)
++{
++	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
++	skb_frag_t *prev;
++	u32 nr_frags;
 +
- 	if (st->podl_admin_state > 0 &&
- 	    nla_put_u32(skb, ETHTOOL_A_PODL_PSE_ADMIN_STATE,
- 			st->podl_admin_state))
-
++	if (!xdp_buff_has_frags(xdp)) {
++		xdp_buff_set_frags_flag(xdp);
++
++		nr_frags = 0;
++		sinfo->xdp_frags_size = 0;
++		sinfo->xdp_frags_truesize = 0;
++
++		goto fill;
++	}
++
++	nr_frags = sinfo->nr_frags;
++	if (unlikely(nr_frags == MAX_SKB_FRAGS))
++		return false;
++
++	prev = &sinfo->frags[nr_frags - 1];
++	if (try_coalesce && page == skb_frag_page(prev) &&
++	    offset == skb_frag_off(prev) + skb_frag_size(prev))
++		skb_frag_size_add(prev, size);
++	else
++fill:
++		__skb_fill_page_desc_noacc(sinfo, nr_frags++, page,
++					   offset, size);
++
++	sinfo->nr_frags = nr_frags;
++	sinfo->xdp_frags_size += size;
++	sinfo->xdp_frags_truesize += truesize;
++
++	return true;
++}
++
++/**
++ * xdp_buff_add_frag - attach a frag to an &xdp_buff
++ * @xdp: XDP buffer to attach the frag to
++ * @page: page containing the frag
++ * @offset: page offset at which the frag starts
++ * @size: size of the frag
++ * @truesize: truesize (page / page frag size) of the frag
++ *
++ * Version of __xdp_buff_add_frag() which takes care of the pfmemalloc bit.
++ *
++ * Return: true on success, false if there's no space for the frag in
++ * the shared info struct.
++ */
++static inline bool xdp_buff_add_frag(struct xdp_buff *xdp, struct page *page,
++				     u32 offset, u32 size, u32 truesize)
++{
++	if (!__xdp_buff_add_frag(xdp, page, offset, size, truesize, true))
++		return false;
++
++	if (unlikely(page_is_pfmemalloc(page)))
++		xdp_buff_set_frag_pfmemalloc(xdp);
++
++	return true;
++}
++
+ struct xdp_frame {
+ 	void *data;
+ 	u32 len;
+@@ -230,7 +312,13 @@ xdp_update_skb_shared_info(struct sk_buff *skb, u8 nr_frags,
+ 			   unsigned int size, unsigned int truesize,
+ 			   bool pfmemalloc)
+ {
+-	skb_shinfo(skb)->nr_frags = nr_frags;
++	struct skb_shared_info *sinfo = skb_shinfo(skb);
++
++	sinfo->nr_frags = nr_frags;
++	/* ``destructor_arg`` is unionized with ``xdp_frags_{,true}size``,
++	 * reset it after that these fields aren't used anymore.
++	 */
++	sinfo->destructor_arg = NULL;
+ 
+ 	skb->len += size;
+ 	skb->data_len += size;
 -- 
-2.34.1
+2.47.0
 
