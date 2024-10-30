@@ -1,180 +1,260 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13B0217448;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EC92194B5;
 	Wed, 30 Oct 2024 16:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307245; cv=none; b=aLILdBgQ2WXxBXe/v0FMC538Pt56/V+RMnu3A09cXDXLOE+AG6ncGX2g7BJD/GoPjtDUy5LSYzKM93WQEwrKA33n/WoBL23cK7Qesqug7DpsJIcsjUM/TTVNVgritl8fPqEF2seWd4OTdQkhCbl5/LVjnD34use3WDurok0hXFM=
+	t=1730307246; cv=none; b=WL/oWC5KHFAvmLQ1KIsLNHFzl6C1CA0qt5sLp/tIN/yerG4Ju1ObnxC6WUWnr5ROPKkDdkKw3LimlpDDJdLX1e5xUop2i7X8ne4EIta4BmZxbi8NlMrNu1GLm0ykc62fYErV3ZFef4F1r//d99Ic7gH1PtOGUpLLSokf3cqrwy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730307245; c=relaxed/simple;
-	bh=yEOnlTPFJcCSbb6Xd341xaD9pSZB20IAYtSOShEAm+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ9pfiwVq7gHztcklnyOtqFmlCKrUhPSoxOmAm3VwHf/2Lu5TyigiimWPmvCu+W6u1nL/0EIoHQqqrU/fc1LJPSX95WWupZITSJo1p3GK2bHIgU8y63aMJ76VdoOjj3Dou0fhY8vKqSajj2r7L22EWJQhOwF8pZLFjCXEOnJKGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R+VZ1G2a; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730307246; c=relaxed/simple;
+	bh=6YXADs66ZEo8Xd5qgtpbfltEJNbzzRkqeeQks6lC1aU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lGar2ygIB62cwpIxFvU+LOiu0LlAoSo9kQ7GU8yMsSXhLl+/+3cURDIZ+AxMxCJ69APPRjobV2ItdvPVPqWVf4RWhY8r1KmqiZsl6L3c5NPUTp+Zbu35tFI4x0ri+ymj8c/pfR+7wrQz2OZpHT8UNYyvD6lfS7qG31Hn+23pWVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NWbM+9JI; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R+VZ1G2a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730307243; x=1761843243;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yEOnlTPFJcCSbb6Xd341xaD9pSZB20IAYtSOShEAm+w=;
-  b=R+VZ1G2a2qXfwM/0hqeRmR+SYpwNXkDqP/7pF/IrmxV3WxY7JAB8FiFT
-   HKIfJyrkzlHnnBIQrOVQJi/P9o7K5Y8eSW20Foi5c2JqYVN/aC1JL0Pkg
-   zCpAlGNIItqAH1PTo8lLeErR56vDK4w9jDFV06nFfDfWRxyHx1LqbYpI9
-   bs9ccFr508APTvVXJCn92OWMPL1QaEeoEErx2O1OIIMiJdM/PGqNySF3+
-   8ppaSbY9ZdMGXdg7LTKjZY3nvCUPPC7HJP1cgWcVO+Ea4S1ZIaHx9EtSM
-   v/DIB8i1wHIJaIwXXqPTU15Pevj1llAs8f+ne95P5+zCAOuF2ap+EsU+6
-   g==;
-X-CSE-ConnectionGUID: kBZpTYQVSXqwbm00pgAGnQ==
-X-CSE-MsgGUID: STHB9DVJTLSJiDO9vTCmwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389714"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="41389714"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:54:03 -0700
-X-CSE-ConnectionGUID: 7/RZ87VnRRiWNxW8OmPKLQ==
-X-CSE-MsgGUID: KS4itE4CQVuSiFbtgPT1YQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="87524509"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:53:59 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 08/18] page_pool: make page_pool_put_page_bulk() actually handle array of pages
-Date: Wed, 30 Oct 2024 17:51:51 +0100
-Message-ID: <20241030165201.442301-9-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
-References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NWbM+9JI"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 118E7C000A;
+	Wed, 30 Oct 2024 16:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730307236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uTPLNz5yTOtn3lqPTWfyhqM47yr8HvgCllgs7jDzZNE=;
+	b=NWbM+9JI4oTCtdEnyWDljVNJoyaVGQ9zqnlpF4OPwHpPENZL2Scya9JEinu8CL8X5bkbvg
+	W4sapk/gV3c+J7Pfk+M/pHJgRT0Xj+ig+HgiNkNWwla/Z8p29gOBS5S6zRznHAoLrY6Ak+
+	hVpjvpS6jniuzpSjtwzei4NpU5qibfT2nKVihLVF5yAF1z92a/DeeS2PiDxtkhvMCMuEFs
+	9evqq/JS11iHAumyCpifglVBoJDVI6H7YucVh1fSyIPbM4wc1/UbrC+bX2KjEN7uUk3zrV
+	/2XVbBQ7UGcGvI1QkIkhAuz4ACwzcit60FJWXDwRP37fW6U1lZXH/pnHmBCKOw==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Date: Wed, 30 Oct 2024 17:53:05 +0100
+Subject: [PATCH RFC net-next v2 03/18] net: pse-pd: tps23881: Use helpers
+ to calculate bit offset for a channel
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241030-feature_poe_port_prio-v2-3-9559622ee47a@bootlin.com>
+References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
+ Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-Sasl: kory.maincent@bootlin.com
 
-Currently, page_pool_put_page_bulk() indeed takes an array of pointers
-to the data, not pages, despite the name. As one side effect, when
-you're freeing frags from &skb_shared_info, xdp_return_frame_bulk()
-converts page pointers to virtual addresses and then
-page_pool_put_page_bulk() converts them back.
-Make page_pool_put_page_bulk() actually handle array of pages. Pass
-frags directly and use virt_to_page() when freeing xdpf->data, so that
-the PP core will then get the compound head and take care of the rest.
+From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+This driver frequently follows a pattern where two registers are read or
+written in a single operation, followed by calculating the bit offset for
+a specific channel.
+
+Introduce helpers to streamline this process and reduce code redundancy,
+making the codebase cleaner and more maintainable.
+
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- include/net/page_pool/types.h | 8 ++++----
- include/net/xdp.h             | 2 +-
- net/core/page_pool.c          | 6 +++---
- net/core/xdp.c                | 4 ++--
- 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index c022c410abe3..6c1be99a5959 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -259,8 +259,8 @@ void page_pool_disable_direct_recycling(struct page_pool *pool);
- void page_pool_destroy(struct page_pool *pool);
- void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
- 			   const struct xdp_mem_info *mem);
--void page_pool_put_page_bulk(struct page_pool *pool, void **data,
--			     int count);
-+void page_pool_put_page_bulk(struct page_pool *pool, struct page **data,
-+			     u32 count);
- #else
- static inline void page_pool_destroy(struct page_pool *pool)
- {
-@@ -272,8 +272,8 @@ static inline void page_pool_use_xdp_mem(struct page_pool *pool,
- {
+Thanks to Oleksij for the design of the helpers functions.
+
+Change in v2:
+- New patch
+---
+ drivers/net/pse-pd/tps23881.c | 107 +++++++++++++++++++++++++++---------------
+ 1 file changed, 69 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
+index 20eab9857817..391b8964f687 100644
+--- a/drivers/net/pse-pd/tps23881.c
++++ b/drivers/net/pse-pd/tps23881.c
+@@ -53,6 +53,55 @@ static struct tps23881_priv *to_tps23881_priv(struct pse_controller_dev *pcdev)
+ 	return container_of(pcdev, struct tps23881_priv, pcdev);
  }
  
--static inline void page_pool_put_page_bulk(struct page_pool *pool, void **data,
--					   int count)
-+static inline void page_pool_put_page_bulk(struct page_pool *pool,
-+					   struct page **data, u32 count)
++/*
++ * Helper to extract a value from a u16 register value, which is made of two
++ * u8 registers. The function calculates the bit offset based on the channel
++ * and extracts the relevant bits using a provided field mask.
++ *
++ * @param reg_val: The u16 register value (composed of two u8 registers).
++ * @param chan: The channel number (0-7).
++ * @param field_offset: The base bit offset to apply (e.g., 0 or 4).
++ * @param field_mask: The mask to apply to extract the required bits.
++ * @return: The extracted value for the specific channel.
++ */
++static u16 tps23881_calc_val(u16 reg_val, u8 chan, u8 field_offset,
++			     u16 field_mask)
++{
++	if (chan > 4)
++		reg_val >>= 8;
++
++	return (reg_val >> field_offset) & field_mask;
++}
++
++/*
++ * Helper to combine individual channel values into a u16 register value.
++ * The function sets the value for a specific channel in the appropriate
++ * position.
++ *
++ * @param reg_val: The current u16 register value.
++ * @param chan: The channel number (0-7).
++ * @param field_offset: The base bit offset to apply (e.g., 0 or 4).
++ * @param field_mask: The mask to apply for the field (e.g., 0x0F).
++ * @param field_val: The value to set for the specific channel (masked by
++ *                   field_mask).
++ * @return: The updated u16 register value with the channel value set.
++ */
++static u16 tps23881_set_val(u16 reg_val, u8 chan, u8 field_offset,
++			    u16 field_mask, u16 field_val)
++{
++	field_val &= field_mask;
++
++	if (chan < 4) {
++		reg_val &= ~(field_mask << field_offset);
++		reg_val |= (field_val << field_offset);
++	} else {
++		reg_val &= ~(field_mask << (field_offset + 8));
++		reg_val |= (field_val << (field_offset + 8));
++	}
++
++	return reg_val;
++}
++
+ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
  {
- }
- #endif
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index 3e748bb916d3..4416cd4b5086 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -194,7 +194,7 @@ xdp_frame_is_frag_pfmemalloc(const struct xdp_frame *frame)
- struct xdp_frame_bulk {
- 	int count;
- 	void *xa;
--	void *q[XDP_BULK_QUEUE_SIZE];
-+	struct page *q[XDP_BULK_QUEUE_SIZE];
- };
+ 	struct tps23881_priv *priv = to_tps23881_priv(pcdev);
+@@ -69,17 +118,12 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
+ 		return ret;
  
- static __always_inline void xdp_frame_bulk_init(struct xdp_frame_bulk *bq)
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index a813d30d2135..ad219206ee8d 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -854,8 +854,8 @@ EXPORT_SYMBOL(page_pool_put_unrefed_page);
-  * Please note the caller must not use data area after running
-  * page_pool_put_page_bulk(), as this function overwrites it.
-  */
--void page_pool_put_page_bulk(struct page_pool *pool, void **data,
--			     int count)
-+void page_pool_put_page_bulk(struct page_pool *pool, struct page **data,
-+			     u32 count)
- {
- 	int i, bulk_len = 0;
- 	bool allow_direct;
-@@ -864,7 +864,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
- 	allow_direct = page_pool_napi_local(pool);
+ 	chan = priv->port[id].chan[0];
+-	if (chan < 4)
+-		val = (u16)(ret | BIT(chan));
+-	else
+-		val = (u16)(ret | BIT(chan + 4));
++	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
  
- 	for (i = 0; i < count; i++) {
--		netmem_ref netmem = page_to_netmem(virt_to_head_page(data[i]));
-+		netmem_ref netmem = page_to_netmem(compound_head(data[i]));
- 
- 		/* It is not the last user for the page frag case */
- 		if (!page_pool_is_last_ref(netmem))
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index bd2aa340baad..779e646f347b 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -556,12 +556,12 @@ void xdp_return_frame_bulk(struct xdp_frame *xdpf,
- 		for (i = 0; i < sinfo->nr_frags; i++) {
- 			skb_frag_t *frag = &sinfo->frags[i];
- 
--			bq->q[bq->count++] = skb_frag_address(frag);
-+			bq->q[bq->count++] = skb_frag_page(frag);
- 			if (bq->count == XDP_BULK_QUEUE_SIZE)
- 				xdp_flush_frame_bulk(bq);
- 		}
+ 	if (priv->port[id].is_4p) {
+ 		chan = priv->port[id].chan[1];
+-		if (chan < 4)
+-			val |= BIT(chan);
+-		else
+-			val |= BIT(chan + 4);
++		val = tps23881_set_val(val, chan, 0, BIT(chan % 4),
++				       BIT(chan % 4));
  	}
--	bq->q[bq->count++] = xdpf->data;
-+	bq->q[bq->count++] = virt_to_page(xdpf->data);
- }
- EXPORT_SYMBOL_GPL(xdp_return_frame_bulk);
  
+ 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
+@@ -105,17 +149,12 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
+ 		return ret;
+ 
+ 	chan = priv->port[id].chan[0];
+-	if (chan < 4)
+-		val = (u16)(ret | BIT(chan + 4));
+-	else
+-		val = (u16)(ret | BIT(chan + 8));
++	val = tps23881_set_val(ret, chan, 4, BIT(chan % 4), BIT(chan % 4));
+ 
+ 	if (priv->port[id].is_4p) {
+ 		chan = priv->port[id].chan[1];
+-		if (chan < 4)
+-			val |= BIT(chan + 4);
+-		else
+-			val |= BIT(chan + 8);
++		val = tps23881_set_val(val, chan, 4, BIT(chan % 4),
++				       BIT(chan % 4));
+ 	}
+ 
+ 	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
+@@ -127,6 +166,7 @@ static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
+ 	struct i2c_client *client = priv->client;
+ 	bool enabled;
+ 	u8 chan;
++	u16 val;
+ 	int ret;
+ 
+ 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
+@@ -134,17 +174,13 @@ static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
+ 		return ret;
+ 
+ 	chan = priv->port[id].chan[0];
+-	if (chan < 4)
+-		enabled = ret & BIT(chan);
+-	else
+-		enabled = ret & BIT(chan + 4);
++	val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
++	enabled = !!(val);
+ 
+ 	if (priv->port[id].is_4p) {
+ 		chan = priv->port[id].chan[1];
+-		if (chan < 4)
+-			enabled &= !!(ret & BIT(chan));
+-		else
+-			enabled &= !!(ret & BIT(chan + 4));
++		val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
++		enabled &= !!(val);
+ 	}
+ 
+ 	/* Return enabled status only if both channel are on this state */
+@@ -160,6 +196,7 @@ static int tps23881_ethtool_get_status(struct pse_controller_dev *pcdev,
+ 	struct i2c_client *client = priv->client;
+ 	bool enabled, delivering;
+ 	u8 chan;
++	u16 val;
+ 	int ret;
+ 
+ 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
+@@ -167,23 +204,17 @@ static int tps23881_ethtool_get_status(struct pse_controller_dev *pcdev,
+ 		return ret;
+ 
+ 	chan = priv->port[id].chan[0];
+-	if (chan < 4) {
+-		enabled = ret & BIT(chan);
+-		delivering = ret & BIT(chan + 4);
+-	} else {
+-		enabled = ret & BIT(chan + 4);
+-		delivering = ret & BIT(chan + 8);
+-	}
++	val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
++	enabled = !!(val);
++	val = tps23881_calc_val(ret, chan, 4, BIT(chan % 4));
++	delivering = !!(val);
+ 
+ 	if (priv->port[id].is_4p) {
+ 		chan = priv->port[id].chan[1];
+-		if (chan < 4) {
+-			enabled &= !!(ret & BIT(chan));
+-			delivering &= !!(ret & BIT(chan + 4));
+-		} else {
+-			enabled &= !!(ret & BIT(chan + 4));
+-			delivering &= !!(ret & BIT(chan + 8));
+-		}
++		val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
++		enabled &= !!(val);
++		val = tps23881_calc_val(ret, chan, 4, BIT(chan % 4));
++		delivering &= !!(val);
+ 	}
+ 
+ 	/* Return delivering status only if both channel are on this state */
+
 -- 
-2.47.0
+2.34.1
 
