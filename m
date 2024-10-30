@@ -1,115 +1,107 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2782192584
-	for <netdev@vger.kernel.org>; Wed, 30 Oct 2024 02:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81211BE46;
+	Wed, 30 Oct 2024 02:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730254273; cv=none; b=lyWdIeXC/YC4cBIQfkjrQ/cmyQneXDcfuNwx0D6sHxWiEMnQucToFTC415UERcnou3RyKnysDyP4J2TpyI8s5cLrzkbjBHH1TZUOFJfqqIp4erlHd/I8AZpCaKqAu1p0l0D0B8V3IUNuxsCBqBK017Svkt7I2oQT1cRmjGQUNXA=
+	t=1730255392; cv=none; b=Jk90alWxO47gz0xLfSOmc3owAT40M+J9c0f/9rc1B58aixfkKvd+bLH0kmfSzDy9nsXisO+2hUOgy7RgTfykWv1OQmoNoe6b30Ep0JxazxVhvEEyxjBihC/nCJYbQtnGdt0v41FeaO+djdGHj/qC6M95qabQTEsjalsQgZ3qxmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730254273; c=relaxed/simple;
-	bh=0ELS2+dojxRf1HfqnhDw+yJKv1qtQ97Pa011fkvnSDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s/gKNCq9Eql699QzbKeWJ9CsYFzZceY7QSZeyU4hcr8IOyT5qzT/6rmA9GXxcp0KW6GmkDmlxwPMSBczuSyx+7Ryt0zR0AL1zwMOi/9Rgdt0VDYnN/RFu70OImFTgQGd+vQclr2fmjl676DxjWbE6B9zI7PqRmz2DBLP3rLdKkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BBwwZJTA; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1730255392; c=relaxed/simple;
+	bh=9ruMqdY2bry4FJOiAjnED7TcQMhgrho6KLl9cyXbF9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jxqo4ykSvYhSU6buL4OT3xvENlr5/v2CUDvbS59Ew/hp8Ftiie4Lv7cPqvv32jtuuBX4MSE85HhZ2DgeG2CKYvZTnj0Z0cyIyDhYaf4tgqmnjwll4rO3MCb6yXx4ygGrhKpRyF3R0+sGB4AMjOs1SumIf5nYr7riasAz3V3H2sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKtDsbgN; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BBwwZJTA"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4316f3d3c21so57297605e9.3
-        for <netdev@vger.kernel.org>; Tue, 29 Oct 2024 19:11:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKtDsbgN"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2a999b287so4983197a91.0;
+        Tue, 29 Oct 2024 19:29:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730254269; x=1730859069; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1730255390; x=1730860190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GLmrUNophKyKjhd0XobNpTJJVkA9Neub6jASYgLs3YU=;
-        b=BBwwZJTA/xupEFJVsQm+D2dSqzSJfitXNuBkfqLhLWTWa2q6pV7CnxaplupD6BUdC0
-         R7F9JGpdvVWA/Oewe3fjfyEUPoe2e9nhbyXYW0E1V2BkyCeRilgDovWJEdEqsx23CIEb
-         wUVGrT/SyfwqXTAF0NgUmbggUcDF4DfADBUhvlB+IXrMjXsNFXcZb9/LLHbNws9f+a1l
-         32jgJlZuUeImOGJ54g0QDt0slYhZRhTPbz9sw+4+dwBXL5Zjep5fjD9Klk59aadxdYSU
-         9WoqqQc15vzY91z0iN7fxHnfkNf+OKX2rhQutCujcz5RCyfx0AjkIgIZjxfiKsUo1o14
-         rAWw==
+        bh=+/o5XK5OJrkzuHt0jaoQyx3CwN+lOhE6gCV0XZuBDN8=;
+        b=EKtDsbgNA+rD2AajU5fIiaIoAqhIOg+RON+oookTovOK5JPRMNxTxW5qEZhi+55nrE
+         0JB2SJC/mtZzTb5eUzqTOHTVqEjrbi0cY7nmt0PqGWtgo70K11O8neFNE9IdWdOGOms3
+         fU4Ya6/BLnXLp619Jqcpw205dRKfRzb/IExmZGZMTcWNCNdhhByE/FovmjvWb60UrIaX
+         jYs05U4Ycw61fGIiH9UmfPJ66YoXLC6kN2K6v5BxUxCfsP0hDP1qswH2ZM7B3JRWnEbO
+         S9tBpH9AqGQWVry4AjuE5vTXpiLM3qbjAu37CwgqVqEm+iZogPac1z6sPuSxlsde062U
+         naSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730254269; x=1730859069;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1730255390; x=1730860190;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GLmrUNophKyKjhd0XobNpTJJVkA9Neub6jASYgLs3YU=;
-        b=DKBk/GR+d1re/2diDHH4BDmthJiZp/4rOaFofalBVJkciUaVza5mqS/y1AMD2ty+Sb
-         Nv7jfR89K1FQ2ah/RgcBiQvA1STXTlHGp4YBV0PtGGzV9DYLBcnrBt31c2mmQyBAu77y
-         g/gDssXvFbgN+wY5CrYWzkc6VlZIZcIpVPAvh0W/+jAs9AsIbOU8S6l7Uy64yroIL1X1
-         IZl4AEgTsi9+BKmd882zwJl7V6JXpGjXDof5Rpxlu2PzAJHU1+5798eDv6DHUYyx09lY
-         2hRdfdgq/UsGR1xnkyiVDL+U797gIS6xRN0jcQozbTK3Qc62znU5SDL0aKdM7rwTao/U
-         rwHQ==
-X-Gm-Message-State: AOJu0YyIjlN4HrmW9+lyCpxcGPXiAc8bNG9pVD2cTQHiiKB9xsKWTkmE
-	9PFuDwNLL2TeiWR43aYVwNONqDTa71C1aUIWnwBZKQfJSeYyKWKpfyFwWfvEsSj13IYxSsIKO2C
-	olbTYpwSDwwOkyZwPYOgQSWKI3lJNy0PS
-X-Google-Smtp-Source: AGHT+IGsEX3Cr1NsxzeJI/nJkgBB4GnHODtL/MsPUc+IQgCZwlnHfjXnRPZRmOrzKUpGo0gn4+E01sXHaSbQO/udNf4=
-X-Received: by 2002:a05:600c:4691:b0:431:2460:5574 with SMTP id
- 5b1f17b1804b1-431bb9d1425mr11864875e9.27.1730254269011; Tue, 29 Oct 2024
- 19:11:09 -0700 (PDT)
+        bh=+/o5XK5OJrkzuHt0jaoQyx3CwN+lOhE6gCV0XZuBDN8=;
+        b=LvvpX9w2WIl6IOX76apiZFnyA9bwtGIVlhMGcyldhu7OSnLwgx/0F0BFcXmfe1z0+N
+         wEGFGq1U8GxkpQGBfwEL9uk3ay5XNrBQDIGc9DX4t77b9WoetKMpyzTekZ5jTW78pHXF
+         UHbH+InjXLUUbreqn0QRLPEpIhhACU97BvSQ9Hup0m+d54vIp3xizEPgRaeozrxrI1Tx
+         we8dskx/QW+GouaNCpAlH1B4CU+GnBzFAXgkU9sVo4AJi0HrQjZMyBMOVijHPqvEktW7
+         bzcDF2wmhWY91d3ZCbB0cdzYErh9YZj/aVTjzQtrQnTyH7WOFKH3+NnM+FksaTpu97wJ
+         NT7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWDCx+5KnSJ3EzfaQe0MtigO3GWHVRzFH4x5e0lWJ5/+fUf90OUyzVZvv1F8ECGWzpOrzziHDnu0GOIzCU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4w300XmmcBTuTiHfGHkNwEPkvk41PWocwx5HOzkWVi3AS3vEW
+	FaQarYy/aoGSGYCvpkTJLgjotqS0kyFLL2YFqvp5Ct1CTWtNF+0R
+X-Google-Smtp-Source: AGHT+IFijIy1xOySQ/m5xGQRS6VrQCf5Idul7+RyGkBFMYnlMj95XQcicMtXJGIScuTdNjzKS8VqNw==
+X-Received: by 2002:a17:90a:c703:b0:2d8:7561:db71 with SMTP id 98e67ed59e1d1-2e8f10a6eadmr14210471a91.25.1730255389397;
+        Tue, 29 Oct 2024 19:29:49 -0700 (PDT)
+Received: from localhost ([129.146.253.192])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e92fa0ed8fsm431801a91.3.2024.10.29.19.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 19:29:49 -0700 (PDT)
+Date: Wed, 30 Oct 2024 10:29:35 +0800
+From: Furong Xu <0x1207@gmail.com>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Andrew
+ Lunn <andrew@lunn.ch>, Simon Horman <horms@kernel.org>,
+ andrew+netdev@lunn.ch, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ xfr@outlook.com
+Subject: Re: [PATCH net-next v5 3/6] net: stmmac: Refactor FPE functions to
+ generic version
+Message-ID: <20241030102935.00005ad5@gmail.com>
+In-Reply-To: <20241029185231.fgy6tofi2uoslp3l@skbuf>
+References: <cover.1730084449.git.0x1207@gmail.com>
+	<0f13217c5f7a543121286f13b389b5800bde1730.1730084449.git.0x1207@gmail.com>
+	<20241029185231.fgy6tofi2uoslp3l@skbuf>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023023146.372653-1-shaw.leon@gmail.com> <20241029161722.51b86c71@kernel.org>
-In-Reply-To: <20241029161722.51b86c71@kernel.org>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Wed, 30 Oct 2024 10:10:32 +0800
-Message-ID: <CABAhCOQ60u9Bkatbg6bc7CksMTXDw8v06SDsfv77YpEQW+anZg@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/5] net: Improve netns handling in RTNL and ip_tunnel
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Ido Schimmel <idosch@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 30, 2024 at 7:17=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 23 Oct 2024 10:31:41 +0800 Xiao Liang wrote:
-> > This patch series includes some netns-related improvements and fixes fo=
-r
-> > RTNL and ip_tunnel, to make link creation more intuitive:
-> >
-> >  - Creating link in another net namespace doesn't conflict with link na=
-mes
-> >    in current one.
-> >  - Add a flag in rtnl_ops, to avoid netns change when link-netns is pre=
-sent
-> >    if possible.
-> >  - When creating ip tunnel (e.g. GRE) in another netns, use current as
-> >    link-netns if not specified explicitly.
-> >
-> > So that
-> >
-> >   # modprobe ip_gre netns_atomic=3D1
-> >   # ip link add netns ns1 link-netns ns2 tun0 type gre ...
->
-> Do you think the netns_atomic module param is really necessary?
-> I doubt anyone cares about the event popping up in the wrong
-> name space first.
+Hi Vladimir,
 
-We used FRRouting in our solution which listens to link notifications to
-set up corresponding objects in userspace. Since the events are sent
-in different namespaces (thus via different RTNL sockets), we can't
-guarantee that the events are received in the correct order, and have
-trouble processing them. The way to solve this problem I can think of is
-to have a multi-netns RTNL socket where all events are synchronized,
-or to eliminate the redundant events in the first place. The latter seems
-easier to implement.
+On Tue, 29 Oct 2024 20:52:31 +0200, Vladimir Oltean <olteanv@gmail.com> wrote:
+> Let's not change the output of stmmac_dma_cap_show() sysfs attribute if
+> we don't have to. Who knows what depends on that. It's better to
+> introduce stmmac_fpe_supported(), which tests for both conditions,
+> and use it throughout (except, of course, for the sysfs, which should
+> still print the raw DMA capability).
 
->
-> BTW would be good to have tests for this. At least the behavior
-> around name / ifindex collisions in different namespaces.
-> You can possibly extend/re-purpose netns-name.sh for this.
->
-> For notifications you could use python and subscribe to the events
-> using a YNL socket. May be easier than dealing with ip monitor
-> as a background process. But either way is fine.
+stmmac_fpe_supported() is a better option, thanks.
 
-I will try to add some tests. Thanks!
+> 
+> Which devices would those even be, which support FPE but the driver
+> doesn't deal with them (after your XGMAC addition), do you have any idea?
+> 
+
+Well, nobody can tell that but only Synopsys, as you can see that
+stmmac_hwif_entry in hwif.c defines quite a few MAC cores.
+
+Since FPE have been an optional implementation for MAC cores, so I think
+we should not convert FPE implementation from optional to mandatory for
+new MAC cores, for example, a new MAC support is pending for merge:
+https://lore.kernel.org/netdev/20240904054815.1341712-1-jitendra.vegiraju@broadcom.com/
+
+stmmac_fpe_supported() is a perfect option to handle these concerns.
