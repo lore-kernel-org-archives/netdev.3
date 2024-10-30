@@ -1,37 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1CF218D8B;
-	Wed, 30 Oct 2024 16:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F9E21730F;
+	Wed, 30 Oct 2024 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307243; cv=none; b=snfMiZdBFfUSMWcdXxOJFrRqT8jyHrLvClajxYJRMVg+Row5IlZbOaXP1d033by/e5VIC0HWVjQB39kLgpkhwCHz4uq9qo5kwf+1KGEWgC4VJ7Ah3GSCsW91lN48PKZ43MnLGIK7EXKVY9C/W1PAM53RkwGvsb9iJA0HxicGTSM=
+	t=1730307243; cv=none; b=YAdlrQiNRasqIoFz7aT9B7E+RBmmvMEta8Q7azQiR2g0AiQ7TcomFoiHwJcKvPkNvIpT19r+sZikn+NP1dArzJtUSoedONRW1HKXo3iXxMAuWxoCdqdk4ngc2dRB53oe9Z/z6BiDSH9fQyDT+V31MnnKJqbQeY5JaDRc5kYpgUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730307243; c=relaxed/simple;
-	bh=3XsbbW4sr4SJSBoaNnKi5Q9cIfnZzEuphOmXvS46jww=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=N2N3Wtp7IhJRaRX1OARJCcuznF7i57m1qSb/t7GaugROWCura/YYLt4ZPKOHyt0dN4guWuoVKOK6gr9/kDHrGKl+u+xRu9L1JA5o9Ns7o7W4Xpu+EsR/GMPEZzoesAh/93nuvIbFmnkBhGBSVm5PkEAI/KR8uZMbcYawlo3NRXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KgLcdbaY; arc=none smtp.client-ip=217.70.183.198
+	bh=q5izcH4GpPOOp7VwkYN2iMySiL7aaVw28MVRNSSIr7Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=j6qk+cB0RzGOOwC12wh+pU7Borgp4yEbWC96LG+CMwd6pX7o3S699E1uAV+sMAannJA+zbiksiNh1ZTPHSVXbtEpJsio+QwZ/H2eqjv8hcZvmQul8ZKEPAwVJs+0w1sUgw8vHY5bQ5vqlGoX0LeFx7fb3GZaFpsTUrlP+WNZKj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DuX0bbHu; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KgLcdbaY"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5EE15C0008;
-	Wed, 30 Oct 2024 16:53:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DuX0bbHu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A9226C0003;
+	Wed, 30 Oct 2024 16:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730307232;
+	t=1730307238;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7j2sBWY5RXFhC8oixeSMD8lLx9ABilvNsg/ZOsTJzYM=;
-	b=KgLcdbaY0O9EDEA0St6+bMizfFt2hty/9KKyDKFKvm1D7mttcpsmHb4W1jhqDFI/ApcrPd
-	Z6/i1SgYiEpN/i2JIzftPn5McUDpyWP7RUByh7ffkyNAvc+1/mkv6SGbJ/TdE2hE7H6I88
-	Wr25Ds1fKT9dDeB9BOa7TwSVek5j2OA9IaYsNkMmg0vyTBEKFXPufCWc805rSLKNAsIJQE
-	UYGIzrguAOKspgYKnlvgR0IqiSOslCR7fPQn5lk4Izq0C0qs0xKHghvIiHLl/lf4c5LO6D
-	4D40hjVx7fKCXvRogyUapYgSdkMFxMTX7bEWGLBbfFxhOp+Om86raqUBF53S4Q==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r0scBcKP4vZWA4og7cEvQ3Oi93wItzNm6GwrVtx1oDQ=;
+	b=DuX0bbHuNeSDAbB8rjAN/+OVVjHfVlg21ViNhLGTlwnG1T/7lEfc8RDvdjcZ83LonIcNMt
+	QXGMWBboNvKBSYTXUdQ+s2PbubTEfxhyvq1jUEahrPM/gf11uXLG6/7Rga0Hdg3w5FNHBl
+	p9ZWOB2C0F3uDtAjjCD/5WMnLAvb8xx/HtGleQ6hZADQUVn8ymjgCX5qhzG+PBsWFFswqj
+	Bu6c41L45qaJhGh1laOnmeRt4LCy0FDFCKZ7D7BpOo4tI7fQuM67q8n862quJW2d6tK31R
+	+Ha5r6dzXcrtqPuc/NaSuYPWue0tS3qBKR05uTJzTaNd+h9pifVIMKj3vunmJw==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH RFC net-next v2 00/18] Add support for PSE port priority
-Date: Wed, 30 Oct 2024 17:53:02 +0100
-Message-Id: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+Date: Wed, 30 Oct 2024 17:53:07 +0100
+Subject: [PATCH RFC net-next v2 05/18] net: pse-pd: Add support for PSE
+ device index
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,11 +41,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAG9kImcC/3WNwQrCMBBEf6Xs2UiStkQ9CYIf4FVKie3WLmi2J
- LFUSv/dtHcPcxhm5s0MAT1hgFM2g8eRArFLRu8yaHrrniioTR601IU8qlx0aOPHYz3wKh/rwRM
- LWyqLrclzjQ2k7eCxo2nj3uF2vWQOo3A4RahS2lOI7L/b6ai2zspXUuo//FEJKczByLLoTIFte
- X4wxxe5fcNvqJZl+QEZBxdzygAAAA==
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241030-feature_poe_port_prio-v2-5-9559622ee47a@bootlin.com>
+References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -57,126 +58,148 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
  Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
  Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>, 
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+ Kory Maincent <kory.maincent@bootlin.com>
 X-Mailer: b4 0.15-dev-8cb71
 X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-This series brings support for port priority in the PSE subsystem.
-PSE controllers can set priorities to decide which ports should be
-turned off in case of special events like over-current.
-
-I have added regulator maintainers to have their opinion on adding power
-budget regulator constraint see patches 11 and 12.
-
-This patch series adds support for two mode port priority modes.
-1. Static Method:
-
-   This method involves distributing power based on PD classification.
-   It’s straightforward and stable, the PSE core keeping track of the
-   budget and subtracting the power requested by each PD’s class.
-
-   Advantages: Every PD gets its promised power at any time, which
-   guarantees reliability.
-
-   Disadvantages: PD classification steps are large, meaning devices
-   request much more power than they actually need. As a result, the power
-   supply may only operate at, say, 50% capacity, which is inefficient and
-   wastes money.
-
-2. Dynamic Method:
-
-   To address the inefficiencies of the static method, vendors like
-   Microchip have introduced dynamic power budgeting, as seen in the
-   PD692x0 firmware. This method monitors the current consumption per port
-   and subtracts it from the available power budget. When the budget is
-   exceeded, lower-priority ports are shut down.
-
-   Advantages: This method optimizes resource utilization, saving costs.
-
-   Disadvantages: Low-priority devices may experience instability.
-
-The UAPI allows adding support for software port priority mode managed from
-userspace later if needed.
-
-This patch series is currently untested and still lacks driver-level
-support for port priority. I would appreciate your feedback on the current
-implementation of port priority in the PSE core before proceeding further.
-
-Several Reviewed-by have been removed due to the changes.
-
-Thanks Oleksij for your pointers.
-
-Patches 1-3: Cosmetics.
-Patch 4: Adds support for last supported features in the TPS23881 drivers.
-Patches 5,6: Add support for PSE index in PSE core and ethtool.
-Patches 7-9: Add support for interrupt event report in PSE core, ethtool
-	     and ethtool specs.
-Patch 10: Adds support for interrupt and event report in TPS23881 driver.
-Patches 11,12: Add support for power budget in regulator framework.
-Patches 13,14: Add support for PSE power domain in PSE core and ethtool.
-Patches 15-17: Add support for port priority in PSE core, ethtool and
-	       ethtool specs.
-Patches 18: Add support for port priority in PD692x0 drivers.
+Add support for a PSE device index to report the PSE controller index to
+the user through ethtool. This will be useful for future support of power
+domains and port priority management.
 
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-Changes in v2:
-- Rethink the port priority management.
-- Add PSE id.
-- Add support for PSE power domains.
-- Add get power budget regulator constraint.
-- Link to v1: https://lore.kernel.org/r/20241002-feature_poe_port_prio-v1-0-787054f74ed5@bootlin.com
 
+changes in v2:
+- new patch.
 ---
-Kory Maincent (18):
-      net: pse-pd: Remove unused pse_ethtool_get_pw_limit function declaration
-      net: pse-pd: tps23881: Simplify function returns by removing redundant checks
-      net: pse-pd: tps23881: Use helpers to calculate bit offset for a channel
-      net: pse-pd: tps23881: Add support for power limit and measurement features
-      net: pse-pd: Add support for PSE device index
-      net: ethtool: Add support for new PSE device index description
-      net: ethtool: Add support for ethnl_info_init_ntf helper function
-      net: pse-pd: Add support for reporting events
-      netlink: specs: Add support for PSE netlink notifications
-      net: pse-pd: tps23881: Add support for PSE events and interrupts
-      regulator: Add support for power budget description
-      regulator: dt-bindings: Add regulator-power-budget property
-      net: pse-pd: Add support for PSE power domains
-      net: ethtool: Add support for new power domains index description
-      net: pse-pd: Add support for getting and setting port priority
-      net: ethtool: Add PSE new port priority support feature
-      netlink: specs: Expand the PSE netlink command with newly supported features
-      net: pse-pd: pd692x0: Add support for PSE PI priority feature
+ drivers/net/pse-pd/pse_core.c | 23 ++++++++++++++++++-----
+ include/linux/pse-pd/pse.h    |  4 ++++
+ 2 files changed, 22 insertions(+), 5 deletions(-)
 
- .../devicetree/bindings/regulator/regulator.yaml   |   3 +
- Documentation/netlink/specs/ethtool.yaml           |  53 ++
- Documentation/networking/ethtool-netlink.rst       |  71 +++
- drivers/net/mdio/fwnode_mdio.c                     |  26 +-
- drivers/net/pse-pd/pd692x0.c                       |  24 +
- drivers/net/pse-pd/pse_core.c                      | 568 ++++++++++++++++++++-
- drivers/net/pse-pd/tps23881.c                      | 529 ++++++++++++++++---
- drivers/regulator/core.c                           |  11 +
- drivers/regulator/of_regulator.c                   |   3 +
- include/linux/ethtool_netlink.h                    |   9 +
- include/linux/pse-pd/pse.h                         |  75 ++-
- include/linux/regulator/consumer.h                 |   6 +
- include/linux/regulator/machine.h                  |   2 +
- include/uapi/linux/ethtool.h                       |  35 ++
- include/uapi/linux/ethtool_netlink.h               |  17 +
- net/ethtool/netlink.c                              |   5 +
- net/ethtool/netlink.h                              |   2 +
- net/ethtool/pse-pd.c                               |  93 ++++
- 18 files changed, 1442 insertions(+), 90 deletions(-)
----
-base-commit: 982a5437362e09def6c3152a9ec1392b9da16ece
-change-id: 20240913-feature_poe_port_prio-a51aed7332ec
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 2906ce173f66..68297428f6b5 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -13,6 +13,7 @@
+ 
+ static DEFINE_MUTEX(pse_list_mutex);
+ static LIST_HEAD(pse_controller_list);
++static DEFINE_IDA(pse_ida);
+ 
+ /**
+  * struct pse_control - a PSE control
+@@ -440,18 +441,22 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 
+ 	mutex_init(&pcdev->lock);
+ 	INIT_LIST_HEAD(&pcdev->pse_control_head);
++	ret = ida_alloc_max(&pse_ida, INT_MAX, GFP_KERNEL);
++	if (ret < 0)
++		return ret;
++	pcdev->id = ret;
+ 
+ 	if (!pcdev->nr_lines)
+ 		pcdev->nr_lines = 1;
+ 
+ 	ret = of_load_pse_pis(pcdev);
+ 	if (ret)
+-		return ret;
++		goto free_pse_ida;
+ 
+ 	if (pcdev->ops->setup_pi_matrix) {
+ 		ret = pcdev->ops->setup_pi_matrix(pcdev);
+ 		if (ret)
+-			return ret;
++			goto free_pse_ida;
+ 	}
+ 
+ 	/* Each regulator name len is pcdev dev name + 7 char +
+@@ -468,15 +473,17 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 			continue;
+ 
+ 		reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
+-		if (!reg_name)
+-			return -ENOMEM;
++		if (!reg_name) {
++			ret = -ENOMEM;
++			goto free_pse_ida;
++		}
+ 
+ 		snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
+ 			 dev_name(pcdev->dev), i);
+ 
+ 		ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
+ 		if (ret)
+-			return ret;
++			goto free_pse_ida;
+ 	}
+ 
+ 	mutex_lock(&pse_list_mutex);
+@@ -484,6 +491,10 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 	mutex_unlock(&pse_list_mutex);
+ 
+ 	return 0;
++
++free_pse_ida:
++	ida_free(&pse_ida, pcdev->id);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pse_controller_register);
+ 
+@@ -494,6 +505,7 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
+ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ {
+ 	pse_release_pis(pcdev);
++	ida_free(&pse_ida, pcdev->id);
+ 	mutex_lock(&pse_list_mutex);
+ 	list_del(&pcdev->list);
+ 	mutex_unlock(&pse_list_mutex);
+@@ -750,6 +762,7 @@ static int _pse_ethtool_get_status(struct pse_controller_dev *pcdev,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	status->pse_id = pcdev->id;
+ 	return ops->ethtool_get_status(pcdev, id, extack, status);
+ }
+ 
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index 85a08c349256..5312488cb3cf 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -31,6 +31,7 @@ struct pse_control_config {
+ /**
+  * struct pse_control_status - PSE control/channel status.
+  *
++ * @pse_id: index number of the PSE. Set by PSE core.
+  * @podl_admin_state: operational state of the PoDL PSE
+  *	functions. IEEE 802.3-2018 30.15.1.1.2 aPoDLPSEAdminState
+  * @podl_pw_status: power detection status of the PoDL PSE.
+@@ -52,6 +53,7 @@ struct pse_control_config {
+  *	ranges
+  */
+ struct pse_control_status {
++	u32 pse_id;
+ 	enum ethtool_podl_pse_admin_state podl_admin_state;
+ 	enum ethtool_podl_pse_pw_d_status podl_pw_status;
+ 	enum ethtool_c33_pse_admin_state c33_admin_state;
+@@ -150,6 +152,7 @@ struct pse_pi {
+  * @types: types of the PSE controller
+  * @pi: table of PSE PIs described in this controller device
+  * @no_of_pse_pi: flag set if the pse_pis devicetree node is not used
++ * @id: Index of the PSE
+  */
+ struct pse_controller_dev {
+ 	const struct pse_controller_ops *ops;
+@@ -163,6 +166,7 @@ struct pse_controller_dev {
+ 	enum ethtool_pse_types types;
+ 	struct pse_pi *pi;
+ 	bool no_of_pse_pi;
++	int id;
+ };
+ 
+ #if IS_ENABLED(CONFIG_PSE_CONTROLLER)
 
-Best regards,
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+2.34.1
 
