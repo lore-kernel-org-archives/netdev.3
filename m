@@ -1,235 +1,689 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2072296F5;
-	Wed, 30 Oct 2024 16:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F510229132;
+	Wed, 30 Oct 2024 16:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307257; cv=none; b=rPqxz6T4DAhGToePza3L3QLUazqsMjdI9yOWT6eDCObEqMncrWvTtVl8SLDGLh5ROONKyKTEPsLkczTZZFyKMnYR2ervmpCtw5o6bI/olHjlj7JdO/Dc6l+vxzx7RSTuIOjYyX2xKQydWQVbFw8zPjUzweiql4RDl7bM4QiFV5I=
+	t=1730307257; cv=none; b=sfAEEK+ApgvLJS0i00dMsm+kDpAUW/4eREZH9x4T451kgnX9vDbpf8x+z3byNIKW+8VXCD0kvweGGaEDw6ibj6ouDFuFhpV9Qh60TJWOlr7TfB/PlGHbEvv8wgdN7N9/xXlk2h/JcZ35TS09EGLtkKQfySaKLXwAWCJN2icvqqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730307257; c=relaxed/simple;
-	bh=DXKV5tHRVERPeEsblP/yRrq3CP6BqLAgt7hogDsb0wQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNQixfbbcbAuAcIsTT2df3zzIQAH/XOK+RBfnkOZN23yyD4czik3ZoqVPGVlQ3wywoYmYZEYcd1xZ7keKsltZHy1Sa3O69wMSJWD3pj1YhT0Xk7GLMRKFbDPqtzEe7/d4o+Y9WTYzgDJ+IyK/ShfSRG+mxFo3bb1BumKq9gkKxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z3NZVkad; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	bh=Aw35rarNrgyd9iIqV12PBn4CMkLCsURbgF2H3eKwo6Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QKIgsYMx4UjYSLCjnrkPB908FmBkfsEHVMfTvuhabTClFn+LjtJJXx40IS2hrbFtYLyu/t68gcDMSvpvQ8ZX3hsRsBEIdltq+CYigvB6KAuNPwyoXDEVLbQGroHyEo2d7w5iN5HqAoBQ5eyyqV9xh3Z0HRwGvr42q79L8Nv6NPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m7YNFqxL; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z3NZVkad"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730307255; x=1761843255;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DXKV5tHRVERPeEsblP/yRrq3CP6BqLAgt7hogDsb0wQ=;
-  b=Z3NZVkad9oFjvEKtu9U4M76cylizYxnSaqMWI5OLMMrmrAPELPK7Mimr
-   G3ezBQwGAiWxsVcJr8E2yD5Yscb1O6gMkfl+1ATxeJNLy7dLcpSNO5OYb
-   BpH/8ly7w5XzCLk7GwdD6h/SzRwMbelHm73p9EUMCABoeJsrBpuZe8kS+
-   NB3hy71XP0Tjg/r85e1SvEXOR5ioT4O62WLinajlZAU3AXnrPf/mL+hxt
-   wVtJnwp34mzcirppBfbE1OD4ohVhyaT4Kc709pW51N2nmNKD8IZU2tJq3
-   VKzDooftfKaiplk+gXYgm6BueHercp+oxvZqUzEIU3XxIod1buRYH9gID
-   A==;
-X-CSE-ConnectionGUID: WPG6WRi/SZ2X+cFvUWw1Yw==
-X-CSE-MsgGUID: 8fIO26XzRN2HmoP5NK8lTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389776"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="41389776"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:54:15 -0700
-X-CSE-ConnectionGUID: hR28saU+SueVV0sGawFcpA==
-X-CSE-MsgGUID: GOOt05PJTsGNbB7T0d5Cjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="87524519"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:54:11 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 11/18] xdp: add generic xdp_buff_add_frag()
-Date: Wed, 30 Oct 2024 17:51:54 +0100
-Message-ID: <20241030165201.442301-12-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
-References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m7YNFqxL"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C2CCEC0016;
+	Wed, 30 Oct 2024 16:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730307252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0IEJNg3a6UlsNz51NUXx0CUXxOrj3s8D1zu3Xp8SybM=;
+	b=m7YNFqxL5VR9RUdHp09Ptg08rCCd5ql/CSHlHXsO77lUyh9FxQ+iTR9bzh8lVahaKoxkY2
+	SZzsasZMxL0oyZOujedjE0zcdyhnJCtZpol0Su7/ZVIfpsyImZEIglU1RfSJlN4aIc4GqL
+	TvH44TeJFw87AgOGRzgnDerh9+M1xwWZuONsNuS2Zy+XMKa+TKSG2aKcq9d2EV9A3n7JQn
+	NjrjVJ9QZACzV/QfbRWyV+F6nH/GAMulqnh3Xt1QAzEognmGhJEx1KdBb2pkukCditIN8v
+	7VwFOAo2DDLlTttt8iR4KR1FIw0cnR/XmWLTfv2AQmH8+5R+deWjBK7MukMaaQ==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Date: Wed, 30 Oct 2024 17:53:17 +0100
+Subject: [PATCH RFC net-next v2 15/18] net: pse-pd: Add support for getting
+ and setting port priority
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20241030-feature_poe_port_prio-v2-15-9559622ee47a@bootlin.com>
+References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
+ Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-Sasl: kory.maincent@bootlin.com
 
-The code piece which would attach a frag to &xdp_buff is almost
-identical across the drivers supporting XDP multi-buffer on Rx.
-Make it a generic elegant "oneliner".
-Also, I see lots of drivers calculating frags_truesize as
-`xdp->frame_sz * nr_frags`. I can't say this is fully correct, since
-frags might be backed by chunks of different sizes, especially with
-stuff like the header split. Even page_pool_alloc() can give you two
-different truesizes on two subsequent requests to allocate the same
-buffer size. Add a field to &skb_shared_info (unionized as there's no
-free slot currently on x86_64) to track the "true" truesize. It can
-be used later when updating an skb.
+From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+This patch introduces the ability to configure the PSE PI port priority.
+Port priority is utilized by PSE controllers to determine which ports to
+turn off first in scenarios such as power budget exceedance.
+
+The pis_prio_max value is used to define the maximum priority level
+supported by the controller. Both the current priority and the maximum
+priority are exposed to the user through the pse_ethtool_get_status call.
+
+This patch add support for two mode of port priority modes.
+1. Static Method:
+
+   This method involves distributing power based on PD classification.
+   It’s straightforward and stable, the PSE core keeping track of the
+   budget and subtracting the power requested by each PD’s class.
+
+   Advantages: Every PD gets its promised power at any time, which
+   guarantees reliability.
+
+   Disadvantages: PD classification steps are large, meaning devices
+   request much more power than they actually need. As a result, the power
+   supply may only operate at, say, 50% capacity, which is inefficient and
+   wastes money.
+
+   Priority max value is matching the number of PSE PIs within the PSE.
+
+2. Dynamic Method:
+
+   To address the inefficiencies of the static method, vendors like
+   Microchip have introduced dynamic power budgeting, as seen in the
+   PD692x0 firmware. This method monitors the current consumption per port
+   and subtracts it from the available power budget. When the budget is
+   exceeded, lower-priority ports are shut down.
+
+   Advantages: This method optimizes resource utilization, saving costs.
+
+   Disadvantages: Low-priority devices may experience instability.
+
+   Priority max value is set by the PSE controller driver.
+
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- include/linux/skbuff.h | 16 ++++++--
- include/net/xdp.h      | 90 +++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 101 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index c867df5b1051..6ec78c1598fe 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -607,11 +607,19 @@ struct skb_shared_info {
- 	 * Warning : all fields before dataref are cleared in __alloc_skb()
- 	 */
- 	atomic_t	dataref;
--	unsigned int	xdp_frags_size;
+Change in v2:
+- Rethink the port priority support.
+---
+ drivers/net/pse-pd/pse_core.c | 305 +++++++++++++++++++++++++++++++++++++++++-
+ include/linux/pse-pd/pse.h    |  51 +++++++
+ include/uapi/linux/ethtool.h  |  28 +++-
+ 3 files changed, 375 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 29374b1ce378..25911083ff3b 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -229,6 +229,9 @@ static int pse_pi_is_enabled(struct regulator_dev *rdev)
+ 		return -EOPNOTSUPP;
  
--	/* Intermediate layers must ensure that destructor_arg
--	 * remains valid until skb destructor */
--	void *		destructor_arg;
-+	union {
-+		struct {
-+			u32		xdp_frags_size;
-+			u32		xdp_frags_truesize;
-+		};
+ 	id = rdev_get_id(rdev);
++	if (pcdev->port_prio_mode == ETHTOOL_PSE_PORT_PRIO_STATIC)
++		return pcdev->pi[id].pw_enabled;
 +
-+		/*
-+		 * Intermediate layers must ensure that destructor_arg
-+		 * remains valid until skb destructor.
+ 	mutex_lock(&pcdev->lock);
+ 	ret = ops->pi_is_enabled(pcdev, id);
+ 	mutex_unlock(&pcdev->lock);
+@@ -248,6 +251,16 @@ static int pse_pi_enable(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
++	if (pcdev->port_prio_mode == ETHTOOL_PSE_PORT_PRIO_STATIC) {
++		/* Manage enabled status by software.
++		 * Real enable process will happen after a port connected
++		 * event.
 +		 */
-+		void		*destructor_arg;
-+	};
- 
- 	/* must be last field, see pskb_expand_head() */
- 	skb_frag_t	frags[MAX_SKB_FRAGS];
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index c4b408d22669..19d2b283b845 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -167,6 +167,88 @@ xdp_get_buff_len(const struct xdp_buff *xdp)
- 	return len;
- }
- 
-+/**
-+ * __xdp_buff_add_frag - attach a frag to an &xdp_buff
-+ * @xdp: XDP buffer to attach the frag to
-+ * @page: page containing the frag
-+ * @offset: page offset at which the frag starts
-+ * @size: size of the frag
-+ * @truesize: truesize (page / page frag size) of the frag
-+ * @try_coalesce: whether to try coalescing the frags
-+ *
-+ * Attach a frag to an XDP buffer. If it currently has no frags attached,
-+ * initialize the related fields, otherwise check that the frag number
-+ * didn't reach the limit of ``MAX_SKB_FRAGS``. If possible, try coalescing
-+ * the frag with the previous one.
-+ * The function doesn't check/update the pfmemalloc bit. Please use the
-+ * non-underscored wrapper in drivers.
-+ *
-+ * Return: true on success, false if there's no space for the frag in
-+ * the shared info struct.
-+ */
-+static inline bool __xdp_buff_add_frag(struct xdp_buff *xdp, struct page *page,
-+				       u32 offset, u32 size, u32 truesize,
-+				       bool try_coalesce)
-+{
-+	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
-+	skb_frag_t *prev;
-+	u32 nr_frags;
-+
-+	if (!xdp_buff_has_frags(xdp)) {
-+		xdp_buff_set_frags_flag(xdp);
-+
-+		nr_frags = 0;
-+		sinfo->xdp_frags_size = 0;
-+		sinfo->xdp_frags_truesize = 0;
-+
-+		goto fill;
++		pcdev->pi[id].admin_state_enabled = 1;
++		mutex_unlock(&pcdev->lock);
++		return 0;
 +	}
 +
-+	nr_frags = sinfo->nr_frags;
-+	if (unlikely(nr_frags == MAX_SKB_FRAGS))
-+		return false;
+ 	ret = ops->pi_enable(pcdev, id);
+ 	if (!ret)
+ 		pcdev->pi[id].admin_state_enabled = 1;
+@@ -268,9 +281,12 @@ static int pse_pi_disable(struct regulator_dev *rdev)
+ 
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
 +
-+	prev = &sinfo->frags[nr_frags - 1];
-+	if (try_coalesce && page == skb_frag_page(prev) &&
-+	    offset == skb_frag_off(prev) + skb_frag_size(prev))
-+		skb_frag_size_add(prev, size);
-+	else
-+fill:
-+		__skb_fill_page_desc_noacc(sinfo, nr_frags++, page,
-+					   offset, size);
+ 	ret = ops->pi_disable(pcdev, id);
+-	if (!ret)
++	if (!ret) {
+ 		pcdev->pi[id].admin_state_enabled = 0;
++		pcdev->pi[id].pw_enabled = 0;
++	}
+ 	mutex_unlock(&pcdev->lock);
+ 
+ 	return ret;
+@@ -564,6 +580,7 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 	if (ret < 0)
+ 		return ret;
+ 	pcdev->id = ret;
++	pcdev->port_prio_supp_modes |= BIT(ETHTOOL_PSE_PORT_PRIO_DISABLED);
+ 
+ 	if (!pcdev->nr_lines)
+ 		pcdev->nr_lines = 1;
+@@ -704,10 +721,166 @@ pse_control_find_phy_by_id(struct pse_controller_dev *pcdev, int id)
+ 			return psec->attached_phydev;
+ 	}
+ 	mutex_unlock(&pse_list_mutex);
+-
+ 	return NULL;
+ }
+ 
++static void pse_deallocate_pw_budget(struct pse_controller_dev *pcdev, int id)
++{
++	struct pse_power_domain *pw_d = pcdev->pi[id].pw_d;
 +
-+	sinfo->nr_frags = nr_frags;
-+	sinfo->xdp_frags_size += size;
-+	sinfo->xdp_frags_truesize += truesize;
++	if (!pw_d)
++		return;
 +
-+	return true;
++	pw_d->pw_budget += pcdev->pi[id].pw_allocated;
 +}
++
++static int pse_pi_disable_isr(struct pse_controller_dev *pcdev, int id,
++			      struct netlink_ext_ack *extack)
++{
++	const struct pse_controller_ops *ops = pcdev->ops;
++	int ret;
++
++	if (!ops->pi_disable) {
++		NL_SET_ERR_MSG(extack, "PSE does not support disable control");
++		return -EOPNOTSUPP;
++	}
++
++	if (!pcdev->pi[id].admin_state_enabled ||
++	    !pcdev->pi[id].pw_enabled)
++		return 0;
++
++	ret = ops->pi_disable(pcdev, id);
++	if (ret) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "PI %d: disable error %d",
++				   id, ret);
++		return ret;
++	}
++
++	pse_deallocate_pw_budget(pcdev, id);
++	pcdev->pi[id].pw_enabled = 0;
++	return 0;
++}
++
++static int pse_disable_pis_prio(struct pse_controller_dev *pcdev, int prio)
++{
++	int i, ret;
++
++	for (i = 0; i < pcdev->nr_lines; i++) {
++		struct netlink_ext_ack extack = {};
++		struct phy_device *phydev;
++
++		if (pcdev->pi[i].prio != prio)
++			continue;
++
++		dev_dbg(pcdev->dev,
++			"Disabling PI %d to free power budget\n",
++			i);
++
++		NL_SET_ERR_MSG_FMT(&extack,
++				   "Disabling PI %d to free power budget",
++				   i);
++
++		ret = pse_pi_disable_isr(pcdev, i, &extack);
++		phydev = pse_control_find_phy_by_id(pcdev, i);
++		if (phydev)
++			ethnl_pse_send_ntf(phydev,
++					   ETHTOOL_C33_PSE_EVENT_DISCONNECTED,
++					   &extack);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int pse_allocate_pw_budget(struct pse_controller_dev *pcdev, int id,
++				  int pw_req, struct netlink_ext_ack *extack)
++{
++	struct pse_power_domain *pw_d = pcdev->pi[id].pw_d;
++	int ret, _prio;
++
++	if (!pw_d)
++		return 0;
++
++	_prio = pcdev->nr_lines;
++	while (pw_req > pw_d->pw_budget && _prio > pcdev->pi[id].prio) {
++		ret = pse_disable_pis_prio(pcdev, _prio--);
++		if (ret)
++			return ret;
++	}
++
++	if (pw_req > pw_d->pw_budget) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "PI %d: not enough power budget available",
++				   id);
++		return -ERANGE;
++	}
++
++	pw_d->pw_budget -= pw_req;
++	pcdev->pi[id].pw_allocated = pw_req;
++	return 0;
++}
++
++static int pse_pi_enable_isr(struct pse_controller_dev *pcdev, int id,
++			     struct netlink_ext_ack *extack)
++{
++	const struct pse_controller_ops *ops = pcdev->ops;
++	int ret, pw_req;
++
++	if (!ops->pi_enable || !ops->pi_get_pw_req) {
++		NL_SET_ERR_MSG(extack, "PSE does not support enable control");
++		return -EOPNOTSUPP;
++	}
++
++	if (!pcdev->pi[id].admin_state_enabled ||
++	    pcdev->pi[id].pw_enabled)
++		return 0;
++
++	ret = ops->pi_get_pw_req(pcdev, id);
++	if (ret < 0)
++		return ret;
++
++	pw_req = ret;
++	ret = pse_allocate_pw_budget(pcdev, id, pw_req, extack);
++	if (ret)
++		return ret;
++
++	ret = ops->pi_enable(pcdev, id);
++	if (ret) {
++		pse_deallocate_pw_budget(pcdev, id);
++		NL_SET_ERR_MSG_FMT(extack,
++				   "PI %d: enable error %d",
++				   id, ret);
++		return ret;
++	}
++
++	pcdev->pi[id].pw_enabled = 1;
++	return 0;
++}
++
++static int pse_set_config_isr(struct pse_controller_dev *pcdev, int id,
++			      unsigned long notifs,
++			      struct netlink_ext_ack *extack)
++{
++	int ret = 0;
++
++	if (notifs & ETHTOOL_C33_PSE_EVENT_CONNECTED &&
++	    notifs & ETHTOOL_C33_PSE_EVENT_DISCONNECTED) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "PI %d: error, connection and disconnection reported simultaneously",
++				   id);
++		return -EINVAL;
++	}
++
++	if (notifs & ETHTOOL_C33_PSE_EVENT_CONNECTED)
++		ret = pse_pi_enable_isr(pcdev, id, extack);
++	else if (notifs & ETHTOOL_C33_PSE_EVENT_DISCONNECTED)
++		ret = pse_pi_disable_isr(pcdev, id, extack);
++
++	return ret;
++}
++
+ static irqreturn_t pse_notifier_isr(int irq, void *data)
+ {
+ 	struct netlink_ext_ack extack = {};
+@@ -724,7 +897,6 @@ static irqreturn_t pse_notifier_isr(int irq, void *data)
+ 	memset(h->notifs, 0, pcdev->nr_lines * sizeof(*h->notifs));
+ 	mutex_lock(&pcdev->lock);
+ 	ret = desc->map_event(irq, pcdev, h->notifs, &notifs_mask);
+-	mutex_unlock(&pcdev->lock);
+ 	if (ret || !notifs_mask)
+ 		return IRQ_NONE;
+ 
+@@ -737,6 +909,12 @@ static irqreturn_t pse_notifier_isr(int irq, void *data)
+ 			continue;
+ 
+ 		notifs = h->notifs[i];
++		if (pcdev->port_prio_mode == ETHTOOL_PSE_PORT_PRIO_STATIC) {
++			ret = pse_set_config_isr(pcdev, i, notifs, &extack);
++			if (ret)
++				notifs |= ETHTOOL_C33_PSE_EVENT_PORT_PRIO_STATIC_ERROR;
++		}
++
+ 		dev_dbg(h->pcdev->dev,
+ 			"Sending PSE notification EVT 0x%lx\n", notifs);
+ 
+@@ -748,6 +926,8 @@ static irqreturn_t pse_notifier_isr(int irq, void *data)
+ 					      NULL);
+ 	}
+ 
++	mutex_unlock(&pcdev->lock);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1001,6 +1181,20 @@ static int _pse_ethtool_get_status(struct pse_controller_dev *pcdev,
+ 
+ 	status->pse_id = pcdev->id;
+ 	status->pw_d_id = pcdev->pi[id].pw_d->id;
++	status->c33_prio_supp_modes = pcdev->port_prio_supp_modes;
++	status->c33_prio_mode = pcdev->port_prio_mode;
++	switch (pcdev->port_prio_mode) {
++	case ETHTOOL_PSE_PORT_PRIO_STATIC:
++		status->c33_prio_max = pcdev->nr_lines;
++		status->c33_prio = pcdev->pi[id].prio;
++		break;
++	case ETHTOOL_PSE_PORT_PRIO_DYNAMIC:
++		status->c33_prio_max = pcdev->pis_prio_max;
++		break;
++	default:
++		break;
++	}
++
+ 	return ops->ethtool_get_status(pcdev, id, extack, status);
+ }
+ 
+@@ -1038,11 +1232,12 @@ static int pse_ethtool_c33_set_config(struct pse_control *psec,
+ 	case ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED:
+ 		/* We could have mismatch between admin_state_enabled and
+ 		 * state reported by regulator_is_enabled. This can occur when
+-		 * the PI is forcibly turn off by the controller. Call
+-		 * regulator_disable on that case to fix the counters state.
++		 * the PI is forcibly turn off by the controller or by the
++		 * interrupt context. Call regulator_disable on that case
++		 * to fix the counters state.
+ 		 */
+-		if (psec->pcdev->pi[psec->id].admin_state_enabled &&
+-		    !regulator_is_enabled(psec->ps)) {
++		if (!regulator_is_enabled(psec->ps) &&
++		    psec->pcdev->pi[psec->id].admin_state_enabled) {
+ 			err = regulator_disable(psec->ps);
+ 			if (err)
+ 				break;
+@@ -1149,6 +1344,102 @@ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ }
+ EXPORT_SYMBOL_GPL(pse_ethtool_set_pw_limit);
+ 
++int pse_ethtool_set_prio(struct pse_control *psec,
++			 struct netlink_ext_ack *extack,
++			 unsigned int prio)
++{
++	struct pse_controller_dev *pcdev = psec->pcdev;
++	const struct pse_controller_ops *ops;
++	int ret = 0;
++
++	switch (pcdev->port_prio_mode) {
++	case ETHTOOL_PSE_PORT_PRIO_STATIC:
++		if (prio > pcdev->nr_lines) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "priority %d exceed priority max %d",
++					   prio, pcdev->nr_lines);
++			return -ERANGE;
++		}
++
++		/* We don't want priority change in the middle of an
++		 * enable/disable call
++		 */
++		mutex_lock(&pcdev->lock);
++		pcdev->pi[psec->id].prio = prio;
++		mutex_unlock(&pcdev->lock);
++		break;
++
++	case ETHTOOL_PSE_PORT_PRIO_DYNAMIC:
++		ops = psec->pcdev->ops;
++		if (!ops->pi_set_prio) {
++			NL_SET_ERR_MSG(extack,
++				       "pse driver does not support setting port priority");
++			return -EOPNOTSUPP;
++		}
++
++		if (prio > pcdev->pis_prio_max) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "priority %d exceed priority max %d",
++					   prio, pcdev->pis_prio_max);
++			return -ERANGE;
++		}
++
++		mutex_lock(&pcdev->lock);
++		ret = ops->pi_set_prio(pcdev, psec->id, prio);
++		mutex_unlock(&pcdev->lock);
++		break;
++
++	default:
++		ret = -EOPNOTSUPP;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pse_ethtool_set_prio);
++
++int pse_ethtool_set_prio_mode(struct pse_control *psec,
++			      struct netlink_ext_ack *extack,
++			      enum pse_port_prio_modes prio_mode)
++{
++	struct pse_controller_dev *pcdev = psec->pcdev;
++	const struct pse_controller_ops *ops;
++	int ret = 0, i;
++
++	if (!(BIT(prio_mode) & pcdev->port_prio_supp_modes)) {
++		NL_SET_ERR_MSG(extack, "priority mode not supported");
++		return -EOPNOTSUPP;
++	}
++
++	ops = psec->pcdev->ops;
++
++	/* We don't want priority mode change in the middle of an
++	 * enable/disable call
++	 */
++	mutex_lock(&pcdev->lock);
++	pcdev->port_prio_mode = prio_mode;
++
++	/* Reset all priorities */
++	for (i = 0; i < psec->pcdev->nr_lines; i++) {
++		/* PI not described */
++		if (!pcdev->pi[i].rdev)
++			continue;
++
++		pcdev->pi[i].prio = 0;
++
++		if (!ops->pi_set_prio)
++			continue;
++
++		if (pcdev->port_prio_supp_modes &
++		    BIT(ETHTOOL_PSE_PORT_PRIO_DYNAMIC))
++			ret = ops->pi_set_prio(pcdev, psec->id, 0);
++	}
++
++	mutex_unlock(&psec->pcdev->lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pse_ethtool_set_prio_mode);
++
+ bool pse_has_podl(struct pse_control *psec)
+ {
+ 	return psec->pcdev->types & ETHTOOL_PSE_PODL;
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index e275ef7e1eb0..653f9e3634bb 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -9,9 +9,12 @@
+ #include <linux/list.h>
+ #include <uapi/linux/ethtool.h>
+ #include <linux/regulator/driver.h>
++#include <linux/workqueue.h>
+ 
+ /* Maximum current in uA according to IEEE 802.3-2022 Table 145-1 */
+ #define MAX_PI_CURRENT 1920000
++/* Maximum power in mW according to IEEE 802.3-2022 Table 145-16 */
++#define MAX_PI_PW 99900
+ 
+ struct phy_device;
+ struct pse_controller_dev;
+@@ -60,6 +63,12 @@ struct pse_control_config {
+  *	is in charge of the memory allocation.
+  * @c33_pw_limit_nb_ranges: number of supported power limit configuration
+  *	ranges
++ * @c33_prio_supp_modes: PSE port priority modes supported. Set by PSE core.
++ * @c33_prio_mode: PSE port priority mode selected. Set by PSE core.
++ * @c33_prio_max: max priority allowed for the c33_prio variable value. Set
++ *	by PSE core.
++ * @c33_prio: priority of the PSE. Set by PSE core in case of static port
++ *	priority mode.
+  */
+ struct pse_control_status {
+ 	u32 pse_id;
+@@ -74,6 +83,10 @@ struct pse_control_status {
+ 	u32 c33_avail_pw_limit;
+ 	struct ethtool_c33_pse_pw_limit_range *c33_pw_limit_ranges;
+ 	u32 c33_pw_limit_nb_ranges;
++	u32 c33_prio_supp_modes;
++	enum pse_port_prio_modes c33_prio_mode;
++	u32 c33_prio_max;
++	u32 c33_prio;
+ };
+ 
+ /**
+@@ -93,6 +106,8 @@ struct pse_control_status {
+  *			  set_current_limit regulator callback.
+  *			  Should not return an error in case of MAX_PI_CURRENT
+  *			  current value set.
++ * @pi_set_prio: Configure the PSE PI priority.
++ * @pi_get_pw_req: Get the power requested by a PD before enabling the PSE PI
+  */
+ struct pse_controller_ops {
+ 	int (*ethtool_get_status)(struct pse_controller_dev *pcdev,
+@@ -107,6 +122,9 @@ struct pse_controller_ops {
+ 				    int id);
+ 	int (*pi_set_current_limit)(struct pse_controller_dev *pcdev,
+ 				    int id, int max_uA);
++	int (*pi_set_prio)(struct pse_controller_dev *pcdev, int id,
++			   unsigned int prio);
++	int (*pi_get_pw_req)(struct pse_controller_dev *pcdev, int id);
+ };
+ 
+ struct module;
+@@ -141,6 +159,10 @@ struct pse_pi_pairset {
+  * @rdev: regulator represented by the PSE PI
+  * @admin_state_enabled: PI enabled state
+  * @pw_d: Power domain of the PSE PI
++ * @prio: Priority of the PSE PI. Used in static port priority mode
++ * @pw_enabled: PSE PI power status in static port priority mode
++ * @pw_allocated: Power allocated to a PSE PI to manage power budget in
++ *	static port priority mode
+  */
+ struct pse_pi {
+ 	struct pse_pi_pairset pairset[2];
+@@ -148,6 +170,9 @@ struct pse_pi {
+ 	struct regulator_dev *rdev;
+ 	bool admin_state_enabled;
+ 	struct pse_power_domain *pw_d;
++	int prio;
++	bool pw_enabled;
++	int pw_allocated;
+ };
+ 
+ /**
+@@ -165,6 +190,9 @@ struct pse_pi {
+  * @pi: table of PSE PIs described in this controller device
+  * @no_of_pse_pi: flag set if the pse_pis devicetree node is not used
+  * @id: Index of the PSE
++ * @pis_prio_max: Maximum value allowed for the PSE PIs priority
++ * @port_prio_supp_modes: Bitfield of port priority mode supported by the PSE
++ * @port_prio_mode: Current port priority mode of the PSE
+  */
+ struct pse_controller_dev {
+ 	const struct pse_controller_ops *ops;
+@@ -179,6 +207,9 @@ struct pse_controller_dev {
+ 	struct pse_pi *pi;
+ 	bool no_of_pse_pi;
+ 	int id;
++	unsigned int pis_prio_max;
++	u32 port_prio_supp_modes;
++	enum pse_port_prio_modes port_prio_mode;
+ };
+ 
+ #if IS_ENABLED(CONFIG_PSE_CONTROLLER)
+@@ -203,6 +234,12 @@ int pse_ethtool_set_config(struct pse_control *psec,
+ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 			     struct netlink_ext_ack *extack,
+ 			     const unsigned int pw_limit);
++int pse_ethtool_set_prio(struct pse_control *psec,
++			 struct netlink_ext_ack *extack,
++			 unsigned int prio);
++int pse_ethtool_set_prio_mode(struct pse_control *psec,
++			      struct netlink_ext_ack *extack,
++			      enum pse_port_prio_modes prio_mode);
+ 
+ bool pse_has_podl(struct pse_control *psec);
+ bool pse_has_c33(struct pse_control *psec);
+@@ -240,6 +277,20 @@ static inline int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static inline int pse_ethtool_set_prio(struct pse_control *psec,
++				       struct netlink_ext_ack *extack,
++				       unsigned int prio)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int pse_ethtool_set_prio_mode(struct pse_control *psec,
++					    struct netlink_ext_ack *extack,
++					    enum pse_port_prio_modes prio_mode)
++{
++	return -EOPNOTSUPP;
++}
++
+ static inline bool pse_has_podl(struct pse_control *psec)
+ {
+ 	return false;
+diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
+index a1ad257b1ec1..22664b1ea4a2 100644
+--- a/include/uapi/linux/ethtool.h
++++ b/include/uapi/linux/ethtool.h
+@@ -1002,11 +1002,35 @@ enum ethtool_c33_pse_pw_d_status {
+  * enum ethtool_c33_pse_events - event list of the C33 PSE controller.
+  * @ETHTOOL_C33_PSE_EVENT_OVER_CURRENT: PSE output current is too high.
+  * @ETHTOOL_C33_PSE_EVENT_OVER_TEMP: PSE in over temperature state.
++ * @ETHTOOL_C33_PSE_EVENT_CONNECTED: PD detected on the PSE.
++ * @ETHTOOL_C33_PSE_EVENT_DISCONNECTED: PD has been disconnected on the PSE.
++ * @ETHTOOL_C33_PSE_EVENT_PORT_PRIO_STATIC_ERROR: PSE faced an error in static
++ *	port priority management mode.
+  */
+ 
+ enum ethtool_c33_pse_events {
+-	ETHTOOL_C33_PSE_EVENT_OVER_CURRENT =	1 << 0,
+-	ETHTOOL_C33_PSE_EVENT_OVER_TEMP =	1 << 1,
++	ETHTOOL_C33_PSE_EVENT_OVER_CURRENT =		1 << 0,
++	ETHTOOL_C33_PSE_EVENT_OVER_TEMP =		1 << 1,
++	ETHTOOL_C33_PSE_EVENT_CONNECTED =		1 << 2,
++	ETHTOOL_C33_PSE_EVENT_DISCONNECTED =		1 << 3,
++	ETHTOOL_C33_PSE_EVENT_PORT_PRIO_STATIC_ERROR =	1 << 4,
++};
 +
 +/**
-+ * xdp_buff_add_frag - attach a frag to an &xdp_buff
-+ * @xdp: XDP buffer to attach the frag to
-+ * @page: page containing the frag
-+ * @offset: page offset at which the frag starts
-+ * @size: size of the frag
-+ * @truesize: truesize (page / page frag size) of the frag
-+ *
-+ * Version of __xdp_buff_add_frag() which takes care of the pfmemalloc bit.
-+ *
-+ * Return: true on success, false if there's no space for the frag in
-+ * the shared info struct.
++ * enum pse_port_prio_modes - PSE port priority modes.
++ * @ETHTOOL_PSE_PORT_PRIO_DISABLED: Port priority disabled.
++ * @ETHTOOL_PSE_PORT_PRIO_STATIC: PSE static port priority. Port priority
++ *	based on the power requested during PD classification. This mode
++ *	is managed by the PSE core.
++ * @ETHTOOL_PSE_PORT_PRIO_DYNAMIC: PSE dynamic port priority. Port priority
++ *	based on the current consumption per ports compared to the total
++ *	power budget. This mode is managed by the PSE controller.
 + */
-+static inline bool xdp_buff_add_frag(struct xdp_buff *xdp, struct page *page,
-+				     u32 offset, u32 size, u32 truesize)
-+{
-+	if (!__xdp_buff_add_frag(xdp, page, offset, size, truesize, true))
-+		return false;
 +
-+	if (unlikely(page_is_pfmemalloc(page)))
-+		xdp_buff_set_frag_pfmemalloc(xdp);
-+
-+	return true;
-+}
-+
- struct xdp_frame {
- 	void *data;
- 	u32 len;
-@@ -230,7 +312,13 @@ xdp_update_skb_shared_info(struct sk_buff *skb, u8 nr_frags,
- 			   unsigned int size, unsigned int truesize,
- 			   bool pfmemalloc)
- {
--	skb_shinfo(skb)->nr_frags = nr_frags;
-+	struct skb_shared_info *sinfo = skb_shinfo(skb);
-+
-+	sinfo->nr_frags = nr_frags;
-+	/* ``destructor_arg`` is unionized with ``xdp_frags_{,true}size``,
-+	 * reset it after that these fields aren't used anymore.
-+	 */
-+	sinfo->destructor_arg = NULL;
++enum pse_port_prio_modes {
++	ETHTOOL_PSE_PORT_PRIO_DISABLED,
++	ETHTOOL_PSE_PORT_PRIO_STATIC,
++	ETHTOOL_PSE_PORT_PRIO_DYNAMIC,
+ };
  
- 	skb->len += size;
- 	skb->data_len += size;
+ /**
+
 -- 
-2.47.0
+2.34.1
 
