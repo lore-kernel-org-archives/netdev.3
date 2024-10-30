@@ -1,149 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116F218D81;
-	Wed, 30 Oct 2024 16:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DF9218D93;
+	Wed, 30 Oct 2024 16:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307241; cv=none; b=dvqPiK7HWmBMJiv5Xi5sxKrPxUogXzh9Kf5xGKuCl6Ab0owTONV51f7bwVvv4ShVOSYzDxaJkuMi5KL3b1IMBe9H6dATPNJCu+1NWdhzPohm7OM/RqODrsCoOpZ+wzWm+TsTPeF4iaTAB3inih/NV48381fMRsjotYkwS8eLbhI=
+	t=1730307242; cv=none; b=hAKaSg8BwXtEUgRmkpA2W/ODykDRZhqxFiCSxBqWjLYYTKLhlvEIy7vMChpObBuWoqATfodhXd0El3A8c9yCYYgKhyF78qo7SG+RRyeGdeCYYDWScwAaFFF6QoT2XVcWJGujFHCoGWjxXS5+peNEU6vdmqbmOSTi91OODDxt80o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730307241; c=relaxed/simple;
-	bh=V0rf6LyOgxlvXHIs5UXsPwHDyLTya4oWuYU5lGC91sA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oCoLbCSf9d5e4PcAaeYV9t5c+NQZPQjvDZUX3C7E+aVEohkySltGgRIZLCyzUW0BWGgQaKGfmbROP9K76cE8cM1SukW8oMLSNz+L2MMAfFx5j0nsb8YfcyaNQ6wc9MPU3B+7h5bGIiL1zTZW6ASxeEO9EdqkgKaMm7Dfugzt29U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mxKuoxEE; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730307242; c=relaxed/simple;
+	bh=7J/eh52uJk71WbVQkH2eMFY49Q8W9fou8NIi2HeyyTc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lAQEtJeCUAs0g0LSkUq/ATLjWGDmYqwbt7oiWuU9YSHkdZKWFII4ZJYovdRAQOBnJLuITPTt66p2LDNSr/rLrTgvK/6wDhnYRxGpLkZ0UF5u7xIhh8ustjd2DwVqYy1k/3PJBM98dDL9uCQCm4/V/rlpusGYdQPRIdtcDEriYKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SYYg92iq; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mxKuoxEE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730307239; x=1761843239;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=V0rf6LyOgxlvXHIs5UXsPwHDyLTya4oWuYU5lGC91sA=;
-  b=mxKuoxEEtuMGqpDelJXBHFDGWkD8iHbYmcalz34Er2Uz8+R04y0fwaY2
-   gnTq4P8RE2fanF1j1x6M/nA6EQcMy24uMJWNmpLTVsrZABnqsgLysnV+O
-   UwCNwjfhMbmwQbiGk1B3xEJeF+2s2UrudgwggFhbHi0Y8N/MuUcwKkoId
-   yCHzmHz1QBWQqLiCQ3vnxrmbYpqgFupFsSKTPn7OUZDt/GSzU5ZdaM68/
-   WubpcvjhiIpSvTrrzLLwP3lHTtxK3+agh1pilcK2fu+btdh9zNCOsXkeV
-   w8E/zoZsa11RrYhFLsfAwcgRsm9TYQtQQFdfULo/Vw2NwYEuISpT0/jaG
-   g==;
-X-CSE-ConnectionGUID: uJipL4F7TjGU/sthC/sIRQ==
-X-CSE-MsgGUID: 7WUMsHMtTNa4vyUkMkj0pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389706"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="41389706"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:53:59 -0700
-X-CSE-ConnectionGUID: kBtaywZhSeeoCulfoNni9Q==
-X-CSE-MsgGUID: Rt3WLeoRSX2ROSnYc6HqCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="87524505"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:53:55 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 07/18] xdp: register system page pool as an XDP memory model
-Date: Wed, 30 Oct 2024 17:51:50 +0100
-Message-ID: <20241030165201.442301-8-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
-References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SYYg92iq"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 66B56C0007;
+	Wed, 30 Oct 2024 16:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730307233;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z4FptY7neSNIpm8/KU8J5QUzyVqJhV+phM8Nu0jRFeM=;
+	b=SYYg92iqYM6QI4WRUHBhJMciWL3wSKT/LkWq5jzxe3t089ytksV8bcb7VyKO7X+8YqEmYA
+	aQln8KVQ1Wn++4bKppblhVOp4Ig4w/3WeMUlNTWjfoUPnJ44QHYv45dv/vOQwbxkEPw+Gj
+	WLc9Bz1bDWo7MYiS+2z0YfkvsgrPxJYmtANyUFuIoSsGdESVVaBvKb74Yh+oOW2QtALQqx
+	kR115S3d8ViFUCStd0co6hPRqr+TVfnipYk7lCO22zSfQV25c+L7K/TGc7cPaRjGvLXUUH
+	q7GcT0iLgBFX18AvC+PNiknOCDu49BlmtxXlKgvhCtwjS49XCyKtZLfjEsktXw==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Date: Wed, 30 Oct 2024 17:53:03 +0100
+Subject: [PATCH RFC net-next v2 01/18] net: pse-pd: Remove unused
+ pse_ethtool_get_pw_limit function declaration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241030-feature_poe_port_prio-v2-1-9559622ee47a@bootlin.com>
+References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
+ Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-Sasl: kory.maincent@bootlin.com
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-To make the system page pool usable as a source for allocating XDP
-frames, we need to register it with xdp_reg_mem_model(), so that page
-return works correctly. This is done in preparation for using the system
-page_pool to convert XDP_PASS XSk frames to skbs; for the same reason,
-make the per-cpu variable non-static so we can access it from other
-source files as well (but w/o exporting).
+Removed the unused pse_ethtool_get_pw_limit() function declaration from
+pse.h. This function was declared but never implemented or used,
+making the declaration unnecessary.
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kyle Swenson <kyle.swenson@est.tech>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- include/linux/netdevice.h |  1 +
- net/core/dev.c            | 10 +++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ include/linux/pse-pd/pse.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 201f0c0ec62e..943945702ac6 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3305,6 +3305,7 @@ struct softnet_data {
- };
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index 591a53e082e6..85a08c349256 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -184,8 +184,6 @@ int pse_ethtool_set_config(struct pse_control *psec,
+ int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 			     struct netlink_ext_ack *extack,
+ 			     const unsigned int pw_limit);
+-int pse_ethtool_get_pw_limit(struct pse_control *psec,
+-			     struct netlink_ext_ack *extack);
  
- DECLARE_PER_CPU_ALIGNED(struct softnet_data, softnet_data);
-+DECLARE_PER_CPU(struct page_pool *, system_page_pool);
+ bool pse_has_podl(struct pse_control *psec);
+ bool pse_has_c33(struct pse_control *psec);
+@@ -222,12 +220,6 @@ static inline int pse_ethtool_set_pw_limit(struct pse_control *psec,
+ 	return -EOPNOTSUPP;
+ }
  
- #ifndef CONFIG_PREEMPT_RT
- static inline int dev_recursion_level(void)
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b857abb5c0e9..773388f26d4f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -460,7 +460,7 @@ EXPORT_PER_CPU_SYMBOL(softnet_data);
-  * PP consumers must pay attention to run APIs in the appropriate context
-  * (e.g. NAPI context).
-  */
--static DEFINE_PER_CPU(struct page_pool *, system_page_pool);
-+DEFINE_PER_CPU(struct page_pool *, system_page_pool);
- 
- #ifdef CONFIG_LOCKDEP
- /*
-@@ -12103,11 +12103,18 @@ static int net_page_pool_create(int cpuid)
- 		.nid = cpu_to_mem(cpuid),
- 	};
- 	struct page_pool *pp_ptr;
-+	int err;
- 
- 	pp_ptr = page_pool_create_percpu(&page_pool_params, cpuid);
- 	if (IS_ERR(pp_ptr))
- 		return -ENOMEM;
- 
-+	err = xdp_reg_page_pool(pp_ptr);
-+	if (err) {
-+		page_pool_destroy(pp_ptr);
-+		return err;
-+	}
-+
- 	per_cpu(system_page_pool, cpuid) = pp_ptr;
- #endif
- 	return 0;
-@@ -12241,6 +12248,7 @@ static int __init net_dev_init(void)
- 			if (!pp_ptr)
- 				continue;
- 
-+			xdp_unreg_page_pool(pp_ptr);
- 			page_pool_destroy(pp_ptr);
- 			per_cpu(system_page_pool, i) = NULL;
- 		}
+-static inline int pse_ethtool_get_pw_limit(struct pse_control *psec,
+-					   struct netlink_ext_ack *extack)
+-{
+-	return -EOPNOTSUPP;
+-}
+-
+ static inline bool pse_has_podl(struct pse_control *psec)
+ {
+ 	return false;
+
 -- 
-2.47.0
+2.34.1
 
