@@ -1,137 +1,173 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E48222A495;
-	Wed, 30 Oct 2024 16:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D351522ADA3;
+	Wed, 30 Oct 2024 16:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307260; cv=none; b=BDXlZCYOnkEwaj0FepYi7hQEdR39eNhYfFKYZmkSz01/r3vzJ9PeWS7R49bMcdxc44FzY9zopjaTAZBW+K/xVbWc8pitRJJZihiyFByf6HNpVN50jphUDA92D18TiAABrRZRMVEvyutI2HmvEtALrRgN+PoPSQa8noZy/kGTjzs=
+	t=1730307261; cv=none; b=MmOD5bqC2Jv/DG9Ub5FTpwylGhUASXs6Xu5ldQG49sf/3QG2+CaKgJPExrYedWRl+SLLhyn8KOl8iO4fvO8dxnfxWsyjKEMBTFA8wzMGeqicxbnCMIq3ZeljW3/W17FCg1lCgl0WVgYWjCJAIJ3+SADJ5BbBULfGm59z8vOZDxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730307260; c=relaxed/simple;
-	bh=EMjeSvfOC5IkeddTk73wHP7CNIy5Wf4vXWrjzp14ZzA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aWjzkxksUNvPWWr+lNT7TQUDaeeKm1X1u0lLqB8AusMkHFzJXScnacxLGvC071jsssgaEBq//mCSi/uwlPoWI1OMgoxTHIayPstkQFmB6deV1P2VCdbnTW6JPgxXCPpNebZ1J/IpJW0sVfKSb4SzS5GwgaexgrYOPa33qRSnO9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YjpHq0m/; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1730307261; c=relaxed/simple;
+	bh=ukw3P5Y+3LJIQSH+T+0Kwg0NCBSw94JEmHTMhLF+ePU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=K9vGN6iY1speGQ6d2QCZuTLHHbe6zMaSFuDmrzY8ukoyQT5vFHhxw+TWgtKDPsReuuQP5khJ7h2hT73QMz2PLdLmq/hJp39C0vPcfFfI2eydVD97xujDAWuOgYoR2BZxVt1TW6C846Fj18PjZ3ITRbvgDjmbrsqOnDjjwpAcIEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d0Tea+oT; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YjpHq0m/"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B655FC000B;
-	Wed, 30 Oct 2024 16:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730307255;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SvmAMGax6dNwCZy8+Fe42XCwON0HoTKAXTO/9PqlEtM=;
-	b=YjpHq0m/GxEuDroMzfEDPgg+YUwnojLZ8Rq74FKOypdQiJf7iCKwQfASsGvcydXS0VqW7F
-	zJ14yG1WcrEKd6xEbWLFNJkczPIGQZuso6zQvuwFzMZ5G4uF7W0+MxyZRyglteULdkxC4i
-	E0Tq4Eft30snvBIRTzZawHMsKyRYst2JxZoCD9ZjHnJfqa0PCv186Dd36lnN2avhzDiSYg
-	oaGue/7w2znr+OhM2ywZ3824K9EtpZCATZmcKEB8WOk3G52zyXRgAX6BXw1zJGegDEHtvz
-	t2J3Oe8uO2yDqIOtastSjp2OXiKLvNDBLC7v1m58u/LAI+PxjhAA29fJ45Rg3Q==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 30 Oct 2024 17:53:20 +0100
-Subject: [PATCH RFC net-next v2 18/18] net: pse-pd: pd692x0: Add support
- for PSE PI priority feature
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d0Tea+oT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730307259; x=1761843259;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ukw3P5Y+3LJIQSH+T+0Kwg0NCBSw94JEmHTMhLF+ePU=;
+  b=d0Tea+oTHRuqhO+Lc/dIQi1pBsG99lSnBLFtN0otWCou9e6RwTKYdsM4
+   JOiVQrdYWwzBVLm00W1C7XvXsOuhPxnc/SOCW7r1HTlGgcMWZ64pMwJsF
+   hIiv5wkxPcJHCHrPHrpgoSENCGhZDkJ4AfRfcGBS1GKJjH8u2I5iYSNs/
+   1zvZED36AIZbautxcj11VdsjJf5cawpTO01YFIMZEK6zV32FUQERiOE9H
+   mpRPOC1ZKzfQYeoX7AQS+T5IWPH5WgdI8X+2dZyus4AZ47gUK39AHKtNS
+   2AdB3VpTMY/yvJpKnYFYeh2GtNNe5PxaEGx5KokBMyiQYyyxvfMnX121c
+   g==;
+X-CSE-ConnectionGUID: dp6zrzfOTAGK7kcyFfaTcA==
+X-CSE-MsgGUID: d/pbATryT2aBRLpyaTXJ8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389796"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="41389796"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:54:19 -0700
+X-CSE-ConnectionGUID: QJuKj2YnSvKH6CeoOxRVng==
+X-CSE-MsgGUID: JHk3XC8FQ1qWPws4XYwmiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="87524526"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:54:15 -0700
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 12/18] xdp: add generic xdp_build_skb_from_buff()
+Date: Wed, 30 Oct 2024 17:51:55 +0100
+Message-ID: <20241030165201.442301-13-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-feature_poe_port_prio-v2-18-9559622ee47a@bootlin.com>
-References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+The code which builds an skb from an &xdp_buff keeps multiplying itself
+around the drivers with almost no changes. Let's try to stop that by
+adding a generic function.
+There's __xdp_build_skb_from_frame() already, so just convert it to take
+&xdp_buff instead, while making the original one a wrapper. The original
+one always took an already allocated skb, allow both variants here -- if
+no skb passed, which is expected when calling from a driver, pick one via
+napi_build_skb().
 
-This patch extends the PSE callbacks by adding support for the newly
-introduced pi_set_prio() callback, enabling the configuration of PSE PI
-priorities. The current port priority is now also included in the status
-information returned to users.
-
-Reviewed-by: Kyle Swenson <kyle.swenson@est.tech>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 ---
- drivers/net/pse-pd/pd692x0.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ include/net/xdp.h |  1 +
+ net/core/xdp.c    | 55 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 56 insertions(+)
 
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index 0af7db80b2f8..018b6559049f 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -685,6 +685,8 @@ static int pd692x0_ethtool_get_status(struct pse_controller_dev *pcdev,
- 	if (ret < 0)
- 		return ret;
- 	status->c33_avail_pw_limit = ret;
-+	/* PSE core priority start at 0 */
-+	status->c33_prio = buf.data[2] - 1;
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index 19d2b283b845..83e3f4648caa 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -330,6 +330,7 @@ xdp_update_skb_shared_info(struct sk_buff *skb, u8 nr_frags,
+ void xdp_warn(const char *msg, const char *func, const int line);
+ #define XDP_WARN(msg) xdp_warn(msg, __func__, __LINE__)
  
- 	memset(&buf, 0, sizeof(buf));
- 	msg = pd692x0_msg_template_list[PD692X0_MSG_GET_PORT_CLASS];
-@@ -1061,6 +1063,25 @@ static int pd692x0_pi_set_current_limit(struct pse_controller_dev *pcdev,
- 	return pd692x0_sendrecv_msg(priv, &msg, &buf);
++struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp);
+ struct xdp_frame *xdp_convert_zc_to_xdp_frame(struct xdp_buff *xdp);
+ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+ 					   struct sk_buff *skb,
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index b1b426a9b146..3a9a3c14b080 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -624,6 +624,61 @@ int xdp_alloc_skb_bulk(void **skbs, int n_skb, gfp_t gfp)
  }
+ EXPORT_SYMBOL_GPL(xdp_alloc_skb_bulk);
  
-+static int pd692x0_pi_set_prio(struct pse_controller_dev *pcdev, int id,
-+			       unsigned int prio)
++/**
++ * xdp_build_skb_from_buff - create an skb from an &xdp_buff
++ * @xdp: &xdp_buff to convert to an skb
++ *
++ * Perform common operations to create a new skb to pass up the stack from
++ * an &xdp_buff: allocate an skb head from the NAPI percpu cache, initialize
++ * skb data pointers and offsets, set the recycle bit if the buff is PP-backed,
++ * Rx queue index, protocol and update frags info.
++ *
++ * Return: new &sk_buff on success, %NULL on error.
++ */
++struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp)
 +{
-+	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
-+	struct pd692x0_msg msg, buf = {0};
-+	int ret;
++	const struct xdp_rxq_info *rxq = xdp->rxq;
++	const struct skb_shared_info *sinfo;
++	struct sk_buff *skb;
++	u32 nr_frags = 0;
++	int metalen;
 +
-+	ret = pd692x0_fw_unavailable(priv);
-+	if (ret)
-+		return ret;
++	if (unlikely(xdp_buff_has_frags(xdp))) {
++		sinfo = xdp_get_shared_info_from_buff(xdp);
++		nr_frags = sinfo->nr_frags;
++	}
 +
-+	msg = pd692x0_msg_template_list[PD692X0_MSG_SET_PORT_PARAM];
-+	msg.sub[2] = id;
-+	/* Controller priority from 1 to 3 */
-+	msg.data[4] = prio + 1;
++	skb = napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
++	if (unlikely(!skb))
++		return NULL;
 +
-+	return pd692x0_sendrecv_msg(priv, &msg, &buf);
++	skb_reserve(skb, xdp->data - xdp->data_hard_start);
++	__skb_put(skb, xdp->data_end - xdp->data);
++
++	metalen = xdp->data - xdp->data_meta;
++	if (metalen > 0)
++		skb_metadata_set(skb, metalen);
++
++	if (is_page_pool_compiled_in() && rxq->mem.type == MEM_TYPE_PAGE_POOL)
++		skb_mark_for_recycle(skb);
++
++	skb_record_rx_queue(skb, rxq->queue_index);
++
++	if (unlikely(nr_frags)) {
++		u32 tsize;
++
++		tsize = sinfo->xdp_frags_truesize ? : nr_frags * xdp->frame_sz;
++		xdp_update_skb_shared_info(skb, nr_frags,
++					   sinfo->xdp_frags_size, tsize,
++					   xdp_buff_is_frag_pfmemalloc(xdp));
++	}
++
++	skb->protocol = eth_type_trans(skb, rxq->dev);
++
++	return skb;
 +}
++EXPORT_SYMBOL_GPL(xdp_build_skb_from_buff);
 +
- static const struct pse_controller_ops pd692x0_ops = {
- 	.setup_pi_matrix = pd692x0_setup_pi_matrix,
- 	.ethtool_get_status = pd692x0_ethtool_get_status,
-@@ -1070,6 +1091,7 @@ static const struct pse_controller_ops pd692x0_ops = {
- 	.pi_get_voltage = pd692x0_pi_get_voltage,
- 	.pi_get_current_limit = pd692x0_pi_get_current_limit,
- 	.pi_set_current_limit = pd692x0_pi_set_current_limit,
-+	.pi_set_prio = pd692x0_pi_set_prio,
- };
- 
- #define PD692X0_FW_LINE_MAX_SZ 0xff
-@@ -1486,6 +1508,8 @@ static int pd692x0_i2c_probe(struct i2c_client *client)
- 	priv->pcdev.ops = &pd692x0_ops;
- 	priv->pcdev.dev = dev;
- 	priv->pcdev.types = ETHTOOL_PSE_C33;
-+	priv->pcdev.port_prio_supp_modes = BIT(ETHTOOL_PSE_PORT_PRIO_DYNAMIC);
-+	priv->pcdev.pis_prio_max = 2;
- 	ret = devm_pse_controller_register(dev, &priv->pcdev);
- 	if (ret)
- 		return dev_err_probe(dev, ret,
-
+ struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+ 					   struct sk_buff *skb,
+ 					   struct net_device *dev)
 -- 
-2.34.1
+2.47.0
 
