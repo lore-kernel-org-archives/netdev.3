@@ -1,37 +1,39 @@
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B1113FEE;
-	Wed, 30 Oct 2024 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046CB1E8844;
+	Wed, 30 Oct 2024 13:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730296513; cv=none; b=TZ5jvja/g0fERsGhca/oz8pYol5t6lShO3LfDlC6SvH1i605GIuevsicr57AWnuB8ZCChcVPEiOgwPAnjqy+5OxJOAWLIiQxrqNlgxYLiYV+QaCNtNTAgc5UEtVal9eXmI3PK9U+NZcXjkxxJ2OJG5jqDR1x0IfEsqW2YqbO0fA=
+	t=1730296514; cv=none; b=llQwixYkw9z5YgAliaPprQCEYwMB4fY0AoSmLk3EHvZpUAtORIEcY/NdipdrV/JTh9J3GbLJhWKPaISVRGPZX5VhAHZCupxVSkZuKOb8LwMurGuoGgA5oucdxNfTM0syBEm1++mvHoRXwm2s825o+folyG7WhLIPg4nV6U2sfg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730296513; c=relaxed/simple;
-	bh=TXrFoqiLIVQIm9dtPctzF9SKQnoSn+OVC4M4CCMrhB0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ti4y6lE99rTdslTVWM5N3SIQY+BzpCAcq7I1ZODDOD8BQ1+3sqvQWK2z2WBhvwtpwL87HOlnPiEoPm72T99xUYpaNOJ4C8RDSEuuQ5VCkIoZ9tm5iRkfmEbVDwZwTSAxTrFDM7qUYaUqcXtM67PhQr54Lk9hjcR0eIKMcWAKlfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RaH471zt; arc=none smtp.client-ip=217.70.183.197
+	s=arc-20240116; t=1730296514; c=relaxed/simple;
+	bh=6jVtQk9vaafx5IDCztDUJQL5QGQp6oM5pQJUKsk3A9w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rsgnCXJqyv58/G8iRQFMHKY2TzRLizGdhJLJ9BkDc8GIgybPpZOCNv+9hvW5wTqDoBkOVfPN8+K6LM7xHqjiGI7s36FxtovSQG0eTjCnreo5DATSJnZfnZYh5AKN48U0BpB7wcn9mjQAp9CHqRczvtiTu7DQmMpIU8Z6/7ikReE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=n56pkUJP; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RaH471zt"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 664A81C0010;
-	Wed, 30 Oct 2024 13:54:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="n56pkUJP"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7A86E1C0016;
+	Wed, 30 Oct 2024 13:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730296501;
+	t=1730296509;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JmPbpWhdpXF+y4ZSTK549aUGaPsOlGl6m9rI7bDobw0=;
-	b=RaH471ztX/rSBP8dwI04RvvW9KXD4zzhCLeQtr4HgA+VnZDrLx2Jv6x2GeuvJvft6TnGTE
-	yvloTWKkqrqS5LiqHKEZCufEXXmDB2huVVfWKGhgFXI79rDgDFLIEbDvnRk44724C2t2Rt
-	V5gY5YuQ3d5IHB0a7UlcPy6CTTonRBlJhMtlCGqAifq8Kf3d2/K15cpAQmbpKyhcRiMUCl
-	ZqBOP84YUJGlyyyDKVlIktUmacGh37WKeQwFZpkmdRv1IaCYAkkxg2mudbmWuC3Rcxz4g6
-	3xUhMAZk76fkeD9W10AAfq4s0Vr55zpx+kPgG5i0dkyAlKIkBB7aYE+Qt/5zUA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAAGGFryzAZtFaNoatZdrgs/ELJ40cTWsvH+XvX9HEs=;
+	b=n56pkUJPoeevev4o4suJrw/ExD3BkVBebUVYv4gfUXNwr/fgPRC/VII9j+FNqDFVV2wQdv
+	DpOpoHjN/1Fs3lxyhIV1tewJQwwpLawhqDQ9sMXWiWHd/T2mV+DdymTXF+V+UiutsldHku
+	KHk1xVKffONo4fv1F3TgxtgQzZ1TZ/0vRZNfzGNspgqVk4MJpYZuU1HcpERrTXqCAyy76H
+	Rbb3ALYfSdEh3VXMOVAWaeqgkS6DbzGVc3EwT3YfpKRxXLa/Cn+wivBTMaiDi+/cUi/s37
+	eigvlBdHfXFT3r9Uua717/ldXPSumiT9zXU7bF/8gtQMODOxcObuQ0C6lg0obg==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH net-next v19 00/10] net: Make timestamping selectable
-Date: Wed, 30 Oct 2024 14:54:42 +0100
-Message-Id: <20241030-feature_ptp_netnext-v19-0-94f8aadc9d5c@bootlin.com>
+Date: Wed, 30 Oct 2024 14:54:46 +0100
+Subject: [PATCH net-next v19 04/10] net: Add the possibility to support a
+ selected hwtstamp in netdevice
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,15 +41,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAKM6ImcC/43TzYrcMAwA4FcZct4US5H801PfoyyLncjdQJsMm
- XTYZZl3rzK0JMvY0GNs+YslSx/NRZZRLs3X00ezyHW8jPOkHxCeTk3/Gqcf0o6DLjRosAMD0Ga
- J6+9FXs7r+WWSdZK3te0yOs/Oi6fU6MnzInl8u7PfGw1qt6jmWXdex8s6L+/3/13tff+vHIry1
- bamdRBz7tElI/wtzfP6c5y+9POvu3h1uwJAZcWpQg7FucAgZB4V/08hg2DLileFwWTCTEQ5PSr
- hoGBFCdtdmC0AU8gIjwqYnSFTKQwYdUyOKJF7H2IoOHBwECsOqJNBE4KMEQZfcPDgdKbioDrYc
- 0ZKNgaggtPtDmMtr04dK0OkgTQ9ygWHdseaypNrK2jnuGSzFQ0ovTnwwYFafVidhNF4i6xcV3D
- s7jjDFWfrZB4ccKfF0fwLjjs6tfpsvRwlJh8GSkifJ+Lp9D/HE3fgMptBX7xwjX0WQKeq4mzDI
- EMgn7tkvXefndvt9geA2ixEXAQAAA==
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241030-feature_ptp_netnext-v19-4-94f8aadc9d5c@bootlin.com>
+References: <20241030-feature_ptp_netnext-v19-0-94f8aadc9d5c@bootlin.com>
+In-Reply-To: <20241030-feature_ptp_netnext-v19-0-94f8aadc9d5c@bootlin.com>
 To: Florian Fainelli <florian.fainelli@broadcom.com>, 
  Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
  Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -78,177 +75,394 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.1
 X-GND-Sasl: kory.maincent@bootlin.com
 
-Up until now, there was no way to let the user select the hardware
-PTP provider at which time stamping occurs. The stack assumed that PHY time
-stamping is always preferred, but some MAC/PHY combinations were buggy.
+Introduce the description of a hwtstamp provider, mainly defined with a
+ptp_clock pointer and a qualifier value.
 
-This series updates the default MAC/PHY default timestamping and aims to
-allow the user to select the desired hwtstamp provider administratively.
+Add a hwtstamp provider description within the netdev structure to
+allow saving the hwtstamp we want to use. This prepares for future
+support of an ethtool netlink command to select the desired hwtstamp
+provider. By default, the old API that does not support hwtstamp
+selectability is used, meaning the hwtstamp ptp_clock pointer is unset.
 
-Changes in v19:
-- Rebase on net-next
-- Link to v18: https://lore.kernel.org/r/20241023-feature_ptp_netnext-v18-0-ed948f3b6887@bootlin.com
-
-Changes in v18:
-- Few changes in the tsconfig-set ethtool command.
-- Add tsconfig-set-reply ethtool netlink socket.
-- Add missing netlink tsconfig documentation
-- Link to v17: https://lore.kernel.org/r/20240709-feature_ptp_netnext-v17-0-b5317f50df2a@bootlin.com
-
-Changes in v17:
-- Fix a documentation nit.
-- Add a missing kernel_ethtool_tsinfo update from a new MAC driver.
-- Link to v16: https://lore.kernel.org/r/20240705-feature_ptp_netnext-v16-0-5d7153914052@bootlin.com
-
-Changes in v16:
-- Add a new patch to separate tsinfo into a new tsconfig command to get
-  and set the hwtstamp config.
-- Used call_rcu() instead of synchronize_rcu() to free the hwtstamp_provider
-- Moved net core changes of patch 12 directly to patch 8.
-- Link to v15: https://lore.kernel.org/r/20240612-feature_ptp_netnext-v15-0-b2a086257b63@bootlin.com
-
-Changes in v15:
-- Fix uninitialized ethtool_ts_info structure.
-- Link to v14: https://lore.kernel.org/r/20240604-feature_ptp_netnext-v14-0-77b6f6efea40@bootlin.com
-
-Changes in v14:
-- Add back an EXPORT_SYMBOL() missing.
-- Link to v13: https://lore.kernel.org/r/20240529-feature_ptp_netnext-v13-0-6eda4d40fa4f@bootlin.com
-
-Changes in v13:
-- Add PTP builtin code to fix build errors when building PTP as a module.
-- Fix error spotted by smatch and sparse.
-- Link to v12: https://lore.kernel.org/r/20240430-feature_ptp_netnext-v12-0-2c5f24b6a914@bootlin.com
-
-Changes in v12:
-- Add missing return description in the kdoc.
-- Fix few nit.
-- Link to v11: https://lore.kernel.org/r/20240422-feature_ptp_netnext-v11-0-f14441f2a1d8@bootlin.com
-
-Changes in v11:
-- Add netlink examples.
-- Remove a change of my out of tree marvell_ptp patch in the patch series.
-- Remove useless extern.
-- Link to v10: https://lore.kernel.org/r/20240409-feature_ptp_netnext-v10-0-0fa2ea5c89a9@bootlin.com
-
-Changes in v10:
-- Move declarations to net/core/dev.h instead of netdevice.h
-- Add netlink documentation.
-- Add ETHTOOL_A_TSINFO_GHWTSTAMP netlink attributes instead of a bit in
-  ETHTOOL_A_TSINFO_TIMESTAMPING bitset.
-- Send "Move from simple ida to xarray" patch standalone.
-- Add tsinfo ntf command.
-- Add rcu_lock protection mechanism to avoid memory leak.
-- Fixed doc and kdoc issue.
-- Link to v9: https://lore.kernel.org/r/20240226-feature_ptp_netnext-v9-0-455611549f21@bootlin.com
-
-Changes in v9:
-- Remove the RFC prefix.
-- Correct few NIT fixes.
-- Link to v8: https://lore.kernel.org/r/20240216-feature_ptp_netnext-v8-0-510f42f444fb@bootlin.com
-
-Changes in v8:
-- Drop the 6 first patch as they are now merged.
-- Change the full implementation to not be based on the hwtstamp layer
-  (MAC/PHY) but on the hwtstamp provider which mean a ptp clock and a
-  phc qualifier.
-- Made some patch to prepare the new implementation.
-- Expand netlink tsinfo instead of a new ts command for new hwtstamp
-  configuration uAPI and for dumping tsinfo of specific hwtstamp provider.
-- Link to v7: https://lore.kernel.org/r/20231114-feature_ptp_netnext-v7-0-472e77951e40@bootlin.com
-
-Changes in v7:
-- Fix a temporary build error.
-- Link to v6: https://lore.kernel.org/r/20231019-feature_ptp_netnext-v6-0-71affc27b0e5@bootlin.com
-
-Changes in v6:
-- Few fixes from the reviews.
-- Replace the allowlist to default_timestamp flag to know which phy is
-  using old API behavior.
-- Rename the timestamping layer enum values.
-- Move to a simple enum instead of the mix between enum and bitfield.
-- Update ts_info and ts-set in software timestamping case.
-
-Changes in v5:
-- Update to ndo_hwstamp_get/set. This bring several new patches.
-- Add few patches to make the glue.
-- Convert macb to ndo_hwstamp_get/set.
-- Add netlink specs description of new ethtool commands.
-- Removed netdev notifier.
-- Split the patches that expose the timestamping to userspace to separate
-  the core and ethtool development.
-- Add description of software timestamping.
-- Convert PHYs hwtstamp callback to use kernel_hwtstamp_config.
-
-Changes in v4:
-- Move on to ethtool netlink instead of ioctl.
-- Add a netdev notifier to allow packet trapping by the MAC in case of PHY
-  time stamping.
-- Add a PHY whitelist to not break the old PHY default time-stamping
-  preference API.
-
-Changes in v3:
-- Expose the PTP choice to ethtool instead of sysfs.
-  You can test it with the ethtool source on branch feature_ptp of:
-  https://github.com/kmaincent/ethtool
-- Added a devicetree binding to select the preferred timestamp.
-
-Changes in v2:
-- Move selected_timestamping_layer variable of the concerned patch.
-- Use sysfs_streq instead of strmcmp.
-- Use the PHY timestamp only if available.
-
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-Kory Maincent (10):
-      net: Make dev_get_hwtstamp_phylib accessible
-      net: Make net_hwtstamp_validate accessible
-      ptp: Add phc source and helpers to register specific PTP clock or get information
-      net: Add the possibility to support a selected hwtstamp in netdevice
-      net: netdevsim: ptp_mock: Convert to netdev_ptp_clock_register
-      net: macb: Convert to netdev_ptp_clock_register
-      net: ptp: Move ptp_clock_index() to builtin symbol
-      net: ethtool: tsinfo: Add support for reading tsinfo for a specific hwtstamp provider
-      net: ethtool: Add support for tsconfig command to get/set hwtstamp config
-      netlink: specs: Enhance tsinfo netlink attributes and add a tsconfig set command
 
- Documentation/netlink/specs/ethtool.yaml     |  70 +++++
- Documentation/networking/ethtool-netlink.rst |  83 +++++-
- Documentation/networking/timestamping.rst    |  38 ++-
- drivers/net/ethernet/cadence/macb_ptp.c      |   2 +-
- drivers/net/netdevsim/netdev.c               |  19 +-
- drivers/net/phy/phy_device.c                 |  11 +
- drivers/ptp/Makefile                         |   5 +
- drivers/ptp/ptp_clock.c                      |  39 ++-
- drivers/ptp/ptp_clock_consumer.c             | 182 ++++++++++++
- drivers/ptp/ptp_mock.c                       |   4 +-
- drivers/ptp/ptp_private.h                    |   7 +
- include/linux/ethtool.h                      |   4 +
- include/linux/net_tstamp.h                   |  18 ++
- include/linux/netdevice.h                    |   5 +
- include/linux/ptp_clock_kernel.h             | 188 +++++++++++++
- include/linux/ptp_mock.h                     |   4 +-
- include/uapi/linux/ethtool_netlink.h         |  30 +-
- include/uapi/linux/net_tstamp.h              |  11 +
- net/core/dev.h                               |   3 +
- net/core/dev_ioctl.c                         |  49 +++-
- net/core/timestamping.c                      |  50 +++-
- net/ethtool/Makefile                         |   2 +-
- net/ethtool/common.c                         |  33 +++
- net/ethtool/common.h                         |   3 +
- net/ethtool/netlink.c                        |  26 +-
- net/ethtool/netlink.h                        |   8 +-
- net/ethtool/ts.h                             |  52 ++++
- net/ethtool/tsconfig.c                       | 406 +++++++++++++++++++++++++++
- net/ethtool/tsinfo.c                         | 239 +++++++++++++++-
- 29 files changed, 1532 insertions(+), 59 deletions(-)
+Change in v8:
+- New patch
+
+Change in v10:
+- Set hwtstamp in netdevice as a pointer for future use of rcu lock.
+- Fix a nit in teh order of setting phydev pointer.
+- Add a missing kdoc description.
+
+Change in v13:
+- Remove an include from netdevices.h.
+
+Change in v16:
+- Import the part of the patch 12 which belong to the hwtstamp provider
+  selectability of net core.
+
+Change in v18:
+- Fix a doc NIT.
 ---
-base-commit: 3c3db3a945f183e4e2693a730305d8a77473bdbd
-change-id: 20231011-feature_ptp_netnext-3f278578e84b
+ drivers/net/phy/phy_device.c     | 11 +++++++++
+ drivers/ptp/ptp_clock_consumer.c | 10 ++++++++
+ include/linux/net_tstamp.h       | 18 +++++++++++++++
+ include/linux/netdevice.h        |  5 ++++
+ include/linux/ptp_clock_kernel.h | 10 ++++++++
+ include/uapi/linux/net_tstamp.h  | 11 +++++++++
+ net/core/dev_ioctl.c             | 43 ++++++++++++++++++++++++++++++++--
+ net/core/timestamping.c          | 50 ++++++++++++++++++++++++++++++++++++----
+ 8 files changed, 151 insertions(+), 7 deletions(-)
 
-Best regards,
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 563497a3274c..c8440168cb09 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -32,6 +32,7 @@
+ #include <linux/phy_link_topology.h>
+ #include <linux/pse-pd/pse.h>
+ #include <linux/property.h>
++#include <linux/ptp_clock_kernel.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/sfp.h>
+ #include <linux/skbuff.h>
+@@ -1998,6 +1999,16 @@ void phy_detach(struct phy_device *phydev)
+ 
+ 	phy_suspend(phydev);
+ 	if (dev) {
++		struct hwtstamp_provider *hwtstamp;
++
++		hwtstamp = rtnl_dereference(dev->hwtstamp);
++		/* Disable timestamp if selected */
++		if (hwtstamp && ptp_clock_phydev(hwtstamp->ptp) == phydev) {
++			rcu_assign_pointer(dev->hwtstamp, NULL);
++			call_rcu(&hwtstamp->rcu_head,
++				 remove_hwtstamp_provider);
++		}
++
+ 		phydev->attached_dev->phydev = NULL;
+ 		phydev->attached_dev = NULL;
+ 		phy_link_topo_del_phy(dev, phydev);
+diff --git a/drivers/ptp/ptp_clock_consumer.c b/drivers/ptp/ptp_clock_consumer.c
+index 58b0c8948fc8..f5fab1c14b47 100644
+--- a/drivers/ptp/ptp_clock_consumer.c
++++ b/drivers/ptp/ptp_clock_consumer.c
+@@ -98,3 +98,13 @@ void ptp_clock_put(struct device *dev, struct ptp_clock *ptp)
+ 	put_device(&ptp->dev);
+ 	module_put(ptp->info->owner);
+ }
++
++void remove_hwtstamp_provider(struct rcu_head *rcu_head)
++{
++	struct hwtstamp_provider *hwtstamp;
++
++	hwtstamp = container_of(rcu_head, struct hwtstamp_provider, rcu_head);
++	ptp_clock_put(hwtstamp->dev, hwtstamp->ptp);
++	kfree(hwtstamp);
++}
++EXPORT_SYMBOL(remove_hwtstamp_provider);
+diff --git a/include/linux/net_tstamp.h b/include/linux/net_tstamp.h
+index 662074b08c94..077037f9ad0f 100644
+--- a/include/linux/net_tstamp.h
++++ b/include/linux/net_tstamp.h
+@@ -19,6 +19,22 @@ enum hwtstamp_source {
+ 	HWTSTAMP_SOURCE_PHYLIB,
+ };
+ 
++/**
++ * struct hwtstamp_provider - Description of a hwtstamp provider object
++ *
++ * @rcu_head: RCU callback used to free the struct.
++ * @dev: device attached to the hwtstamp provider used to put the ptp clock.
++ * @ptp: PTP clock pointer of the hwtstamp provider.
++ * @qualifier: hwtstamp provider qualifier.
++ */
++
++struct hwtstamp_provider {
++	struct rcu_head rcu_head;
++	struct device *dev;
++	struct ptp_clock *ptp;
++	enum hwtstamp_provider_qualifier qualifier;
++};
++
+ /**
+  * struct kernel_hwtstamp_config - Kernel copy of struct hwtstamp_config
+  *
+@@ -31,6 +47,7 @@ enum hwtstamp_source {
+  *	copied the ioctl request back to user space
+  * @source: indication whether timestamps should come from the netdev or from
+  *	an attached phylib PHY
++ * @qualifier: qualifier of the hwtstamp provider
+  *
+  * Prefer using this structure for in-kernel processing of hardware
+  * timestamping configuration, over the inextensible struct hwtstamp_config
+@@ -43,6 +60,7 @@ struct kernel_hwtstamp_config {
+ 	struct ifreq *ifr;
+ 	bool copied_to_user;
+ 	enum hwtstamp_source source;
++	enum hwtstamp_provider_qualifier qualifier;
+ };
+ 
+ static inline void hwtstamp_config_to_kernel(struct kernel_hwtstamp_config *kernel_cfg,
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 3c552b648b27..41fb9e4bf5a4 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -81,6 +81,7 @@ struct xdp_metadata_ops;
+ struct xdp_md;
+ struct ethtool_netdev_state;
+ struct phy_link_topology;
++struct hwtstamp_provider;
+ 
+ typedef u32 xdp_features_t;
+ 
+@@ -2031,6 +2032,7 @@ enum netdev_reg_state {
+  *	@gro_flush_timeout:	timeout for GRO layer in NAPI
+  *	@napi_defer_hard_irqs:	If not zero, provides a counter that would
+  *				allow to avoid NIC hard IRQ, on busy queues.
++ *	@hwtstamp: Tracks which PTP performs hardware packet time stamping.
+  *
+  *	FIXME: cleanup struct net_device such that network protocol info
+  *	moves out.
+@@ -2440,6 +2442,9 @@ struct net_device {
+ 	 */
+ 	struct net_shaper_hierarchy *net_shaper_hierarchy;
+ #endif
++
++	struct hwtstamp_provider __rcu	*hwtstamp;
++
+ 	u8			priv[] ____cacheline_aligned
+ 				       __counted_by(priv_len);
+ } ____cacheline_aligned;
+diff --git a/include/linux/ptp_clock_kernel.h b/include/linux/ptp_clock_kernel.h
+index 87d8f42b2cc1..cf6a72d2868a 100644
+--- a/include/linux/ptp_clock_kernel.h
++++ b/include/linux/ptp_clock_kernel.h
+@@ -444,6 +444,14 @@ struct ptp_clock *ptp_clock_get_by_index(struct device *dev, int index);
+ 
+ void ptp_clock_put(struct device *dev, struct ptp_clock *ptp);
+ 
++/**
++ * remove_hwtstamp_provider() - Put and free the hwtstamp provider
++ *
++ * @rcu_head:  RCU callback head.
++ */
++
++void remove_hwtstamp_provider(struct rcu_head *rcu_head);
++
+ /**
+  * ptp_find_pin() - obtain the pin index of a given auxiliary function
+  *
+@@ -532,6 +540,8 @@ static inline void ptp_clock_put(struct device *dev, struct ptp_clock *ptp)
+ static inline struct ptp_clock *ptp_clock_get_by_index(struct device *dev,
+ 						       int index)
+ { return NULL; }
++static inline void remove_hwtstamp_provider(struct rcu_head *rcu_head)
++{ return; }
+ static inline int ptp_find_pin(struct ptp_clock *ptp,
+ 			       enum ptp_pin_function func, unsigned int chan)
+ { return -1; }
+diff --git a/include/uapi/linux/net_tstamp.h b/include/uapi/linux/net_tstamp.h
+index 858339d1c1c4..55b0ab51096c 100644
+--- a/include/uapi/linux/net_tstamp.h
++++ b/include/uapi/linux/net_tstamp.h
+@@ -13,6 +13,17 @@
+ #include <linux/types.h>
+ #include <linux/socket.h>   /* for SO_TIMESTAMPING */
+ 
++/*
++ * Possible type of hwtstamp provider. Mainly "precise" the default one
++ * is for IEEE 1588 quality and "approx" is for NICs DMA point.
++ */
++enum hwtstamp_provider_qualifier {
++	HWTSTAMP_PROVIDER_QUALIFIER_PRECISE,
++	HWTSTAMP_PROVIDER_QUALIFIER_APPROX,
++
++	HWTSTAMP_PROVIDER_QUALIFIER_CNT,
++};
++
+ /* SO_TIMESTAMPING flags */
+ enum {
+ 	SOF_TIMESTAMPING_TX_HARDWARE = (1<<0),
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 1f09930fca26..2f5b2c0937f2 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -6,6 +6,7 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/net_tstamp.h>
+ #include <linux/phylib_stubs.h>
++#include <linux/ptp_clock_kernel.h>
+ #include <linux/wireless.h>
+ #include <linux/if_bridge.h>
+ #include <net/dsa_stubs.h>
+@@ -269,6 +270,22 @@ static int dev_eth_ioctl(struct net_device *dev,
+ int dev_get_hwtstamp_phylib(struct net_device *dev,
+ 			    struct kernel_hwtstamp_config *cfg)
+ {
++	struct hwtstamp_provider *hwtstamp;
++
++	hwtstamp = rtnl_dereference(dev->hwtstamp);
++	if (hwtstamp) {
++		struct ptp_clock *ptp = hwtstamp->ptp;
++
++		cfg->qualifier = hwtstamp->qualifier;
++		if (ptp_clock_from_phylib(ptp))
++			return phy_hwtstamp_get(ptp_clock_phydev(ptp), cfg);
++
++		if (ptp_clock_from_netdev(ptp))
++			return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
++
++		return -EOPNOTSUPP;
++	}
++
+ 	if (phy_is_default_hwtstamp(dev->phydev))
+ 		return phy_hwtstamp_get(dev->phydev, cfg);
+ 
+@@ -324,11 +341,33 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 			    struct netlink_ext_ack *extack)
+ {
+ 	const struct net_device_ops *ops = dev->netdev_ops;
+-	bool phy_ts = phy_is_default_hwtstamp(dev->phydev);
+ 	struct kernel_hwtstamp_config old_cfg = {};
++	struct hwtstamp_provider *hwtstamp;
++	struct phy_device *phydev;
+ 	bool changed = false;
++	bool phy_ts;
+ 	int err;
+ 
++	hwtstamp = rtnl_dereference(dev->hwtstamp);
++	if (hwtstamp) {
++		struct ptp_clock *ptp = hwtstamp->ptp;
++
++		if (ptp_clock_from_phylib(ptp)) {
++			phy_ts = true;
++			phydev = ptp_clock_phydev(ptp);
++		} else if (ptp_clock_from_netdev(ptp)) {
++			phy_ts = false;
++		} else {
++			return -EOPNOTSUPP;
++		}
++
++		cfg->qualifier = hwtstamp->qualifier;
++	} else {
++		phy_ts = phy_is_default_hwtstamp(dev->phydev);
++		if (phy_ts)
++			phydev = dev->phydev;
++	}
++
+ 	cfg->source = phy_ts ? HWTSTAMP_SOURCE_PHYLIB : HWTSTAMP_SOURCE_NETDEV;
+ 
+ 	if (phy_ts && dev->see_all_hwtstamp_requests) {
+@@ -350,7 +389,7 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 		changed = kernel_hwtstamp_config_changed(&old_cfg, cfg);
+ 
+ 	if (phy_ts) {
+-		err = phy_hwtstamp_set(dev->phydev, cfg, extack);
++		err = phy_hwtstamp_set(phydev, cfg, extack);
+ 		if (err) {
+ 			if (changed)
+ 				ops->ndo_hwtstamp_set(dev, &old_cfg, NULL);
+diff --git a/net/core/timestamping.c b/net/core/timestamping.c
+index 3717fb152ecc..f8522fefd468 100644
+--- a/net/core/timestamping.c
++++ b/net/core/timestamping.c
+@@ -9,6 +9,7 @@
+ #include <linux/ptp_classify.h>
+ #include <linux/skbuff.h>
+ #include <linux/export.h>
++#include <linux/ptp_clock_kernel.h>
+ 
+ static unsigned int classify(const struct sk_buff *skb)
+ {
+@@ -21,19 +22,38 @@ static unsigned int classify(const struct sk_buff *skb)
+ 
+ void skb_clone_tx_timestamp(struct sk_buff *skb)
+ {
++	struct hwtstamp_provider *hwtstamp;
+ 	struct mii_timestamper *mii_ts;
++	struct phy_device *phydev;
+ 	struct sk_buff *clone;
+ 	unsigned int type;
+ 
+-	if (!skb->sk || !skb->dev ||
+-	    !phy_is_default_hwtstamp(skb->dev->phydev))
++	if (!skb->sk || !skb->dev)
+ 		return;
+ 
++	rcu_read_lock();
++	hwtstamp = rcu_dereference(skb->dev->hwtstamp);
++	if (hwtstamp) {
++		if (!ptp_clock_from_phylib(hwtstamp->ptp)) {
++			rcu_read_unlock();
++			return;
++		}
++
++		phydev = ptp_clock_phydev(hwtstamp->ptp);
++	} else {
++		phydev = skb->dev->phydev;
++		if (!phy_is_default_hwtstamp(phydev)) {
++			rcu_read_unlock();
++			return;
++		}
++	}
++	rcu_read_unlock();
++
+ 	type = classify(skb);
+ 	if (type == PTP_CLASS_NONE)
+ 		return;
+ 
+-	mii_ts = skb->dev->phydev->mii_ts;
++	mii_ts = phydev->mii_ts;
+ 	if (likely(mii_ts->txtstamp)) {
+ 		clone = skb_clone_sk(skb);
+ 		if (!clone)
+@@ -45,12 +65,32 @@ EXPORT_SYMBOL_GPL(skb_clone_tx_timestamp);
+ 
+ bool skb_defer_rx_timestamp(struct sk_buff *skb)
+ {
++	struct hwtstamp_provider *hwtstamp;
+ 	struct mii_timestamper *mii_ts;
++	struct phy_device *phydev;
+ 	unsigned int type;
+ 
+-	if (!skb->dev || !phy_is_default_hwtstamp(skb->dev->phydev))
++	if (!skb->dev)
+ 		return false;
+ 
++	rcu_read_lock();
++	hwtstamp = rcu_dereference(skb->dev->hwtstamp);
++	if (hwtstamp) {
++		if (!ptp_clock_from_phylib(hwtstamp->ptp)) {
++			rcu_read_unlock();
++			return false;
++		}
++
++		phydev = ptp_clock_phydev(hwtstamp->ptp);
++	} else {
++		phydev = skb->dev->phydev;
++		if (!phy_is_default_hwtstamp(phydev)) {
++			rcu_read_unlock();
++			return false;
++		}
++	}
++	rcu_read_unlock();
++
+ 	if (skb_headroom(skb) < ETH_HLEN)
+ 		return false;
+ 
+@@ -63,7 +103,7 @@ bool skb_defer_rx_timestamp(struct sk_buff *skb)
+ 	if (type == PTP_CLASS_NONE)
+ 		return false;
+ 
+-	mii_ts = skb->dev->phydev->mii_ts;
++	mii_ts = phydev->mii_ts;
+ 	if (likely(mii_ts->rxtstamp))
+ 		return mii_ts->rxtstamp(mii_ts, skb, type);
+ 
+
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+2.34.1
 
