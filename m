@@ -1,148 +1,180 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7A02194A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13B0217448;
 	Wed, 30 Oct 2024 16:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307245; cv=none; b=VrF7UZTW7wmS3yVpbJcUTF/SWHimuHmw8pX/hAAraX4tRXDgiqC3oAvyywKyQS8ayeXvpANwjqfK5pQw/dwMtdIP85JrAXLwXXHbPykn6V1M58MQcb+vnj409w8SqEMhgNhZfpSXPATooUWgCa192FBpaQW5D6b0hGenLM8feF8=
+	t=1730307245; cv=none; b=aLILdBgQ2WXxBXe/v0FMC538Pt56/V+RMnu3A09cXDXLOE+AG6ncGX2g7BJD/GoPjtDUy5LSYzKM93WQEwrKA33n/WoBL23cK7Qesqug7DpsJIcsjUM/TTVNVgritl8fPqEF2seWd4OTdQkhCbl5/LVjnD34use3WDurok0hXFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730307245; c=relaxed/simple;
-	bh=ZsdCmW4n2LvHHk61rNgVX7raqVKq/pW4WBuFPn32Q2I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DdHPpy1nfXnxhbLyOrzCU4PvCNeMiFRKx9kDC1Kgv6gRvgRSYzzMFRgC56K+E2TUyVOS5gjK1cJCVoF+5PqyvK31puS1Lx04+qOALnwe5J1f4OH/A53W0U6jBm5fwjuL4jyyd5w8kCCFDfkNVSYZKC0L1DOdmEPpzKpFcf1mHxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OjeSwvRn; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	bh=yEOnlTPFJcCSbb6Xd341xaD9pSZB20IAYtSOShEAm+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JQ9pfiwVq7gHztcklnyOtqFmlCKrUhPSoxOmAm3VwHf/2Lu5TyigiimWPmvCu+W6u1nL/0EIoHQqqrU/fc1LJPSX95WWupZITSJo1p3GK2bHIgU8y63aMJ76VdoOjj3Dou0fhY8vKqSajj2r7L22EWJQhOwF8pZLFjCXEOnJKGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R+VZ1G2a; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OjeSwvRn"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AA3E0C0009;
-	Wed, 30 Oct 2024 16:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730307235;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZR/OQqXD89qyu5jFhAfZEfAZSUhVQIdWY1c3hbVfIMM=;
-	b=OjeSwvRnaMSFCd46de9Q7uKPnYDwn4SdDNO6fxhk/COFFuPQZIr/bFmjCzX1/tY188URQ8
-	i2lDTFUvplQEBkSnpY6IorDz30CgovV0DHKR1/qQkQlyIQ57gFy9fHdZ9BO2A1lZvAmEu8
-	+ArFQt3hY5W8vACe9oOoFbw4xrigIrmtWB+JjIAhl2l6wU1QzwWu4jUqsgsXhKo5nIw3th
-	w6cwwiw2VtAll6KP3Etwc/rPk7Hcf4/EN0nl0mHSfZHyRtuCT0zpA3bTUHtdL4eMHTCtj/
-	tOW3eHFZGXZenV87CaAXN3vZEE1uR+cFXK5k5QQkNdo6ty1JQlK+sJKyl0MOIw==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 30 Oct 2024 17:53:04 +0100
-Subject: [PATCH RFC net-next v2 02/18] net: pse-pd: tps23881: Simplify
- function returns by removing redundant checks
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R+VZ1G2a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730307243; x=1761843243;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=yEOnlTPFJcCSbb6Xd341xaD9pSZB20IAYtSOShEAm+w=;
+  b=R+VZ1G2a2qXfwM/0hqeRmR+SYpwNXkDqP/7pF/IrmxV3WxY7JAB8FiFT
+   HKIfJyrkzlHnnBIQrOVQJi/P9o7K5Y8eSW20Foi5c2JqYVN/aC1JL0Pkg
+   zCpAlGNIItqAH1PTo8lLeErR56vDK4w9jDFV06nFfDfWRxyHx1LqbYpI9
+   bs9ccFr508APTvVXJCn92OWMPL1QaEeoEErx2O1OIIMiJdM/PGqNySF3+
+   8ppaSbY9ZdMGXdg7LTKjZY3nvCUPPC7HJP1cgWcVO+Ea4S1ZIaHx9EtSM
+   v/DIB8i1wHIJaIwXXqPTU15Pevj1llAs8f+ne95P5+zCAOuF2ap+EsU+6
+   g==;
+X-CSE-ConnectionGUID: kBZpTYQVSXqwbm00pgAGnQ==
+X-CSE-MsgGUID: STHB9DVJTLSJiDO9vTCmwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="41389714"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="41389714"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:54:03 -0700
+X-CSE-ConnectionGUID: 7/RZ87VnRRiWNxW8OmPKLQ==
+X-CSE-MsgGUID: KS4itE4CQVuSiFbtgPT1YQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="87524509"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2024 09:53:59 -0700
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 08/18] page_pool: make page_pool_put_page_bulk() actually handle array of pages
+Date: Wed, 30 Oct 2024 17:51:51 +0100
+Message-ID: <20241030165201.442301-9-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241030165201.442301-1-aleksander.lobakin@intel.com>
+References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-feature_poe_port_prio-v2-2-9559622ee47a@bootlin.com>
-References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
- Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
- Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+Currently, page_pool_put_page_bulk() indeed takes an array of pointers
+to the data, not pages, despite the name. As one side effect, when
+you're freeing frags from &skb_shared_info, xdp_return_frame_bulk()
+converts page pointers to virtual addresses and then
+page_pool_put_page_bulk() converts them back.
+Make page_pool_put_page_bulk() actually handle array of pages. Pass
+frags directly and use virt_to_page() when freeing xdpf->data, so that
+the PP core will then get the compound head and take care of the rest.
 
-Cleaned up several functions in tps23881 by removing redundant checks on
-return values at the end of functions. These check has been removed, and
-the return statement now directly returns the function result, reducing
-the code's complexity and making it more concise.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Kyle Swenson <kyle.swenson@est.tech>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 ---
- drivers/net/pse-pd/tps23881.c | 26 +++++---------------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ include/net/page_pool/types.h | 8 ++++----
+ include/net/xdp.h             | 2 +-
+ net/core/page_pool.c          | 6 +++---
+ net/core/xdp.c                | 4 ++--
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 5c4e88be46ee..20eab9857817 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -118,11 +118,7 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 			val |= BIT(chan + 8);
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index c022c410abe3..6c1be99a5959 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -259,8 +259,8 @@ void page_pool_disable_direct_recycling(struct page_pool *pool);
+ void page_pool_destroy(struct page_pool *pool);
+ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
+ 			   const struct xdp_mem_info *mem);
+-void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+-			     int count);
++void page_pool_put_page_bulk(struct page_pool *pool, struct page **data,
++			     u32 count);
+ #else
+ static inline void page_pool_destroy(struct page_pool *pool)
+ {
+@@ -272,8 +272,8 @@ static inline void page_pool_use_xdp_mem(struct page_pool *pool,
+ {
+ }
+ 
+-static inline void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+-					   int count)
++static inline void page_pool_put_page_bulk(struct page_pool *pool,
++					   struct page **data, u32 count)
+ {
+ }
+ #endif
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index 3e748bb916d3..4416cd4b5086 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -194,7 +194,7 @@ xdp_frame_is_frag_pfmemalloc(const struct xdp_frame *frame)
+ struct xdp_frame_bulk {
+ 	int count;
+ 	void *xa;
+-	void *q[XDP_BULK_QUEUE_SIZE];
++	struct page *q[XDP_BULK_QUEUE_SIZE];
+ };
+ 
+ static __always_inline void xdp_frame_bulk_init(struct xdp_frame_bulk *bq)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a813d30d2135..ad219206ee8d 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -854,8 +854,8 @@ EXPORT_SYMBOL(page_pool_put_unrefed_page);
+  * Please note the caller must not use data area after running
+  * page_pool_put_page_bulk(), as this function overwrites it.
+  */
+-void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+-			     int count)
++void page_pool_put_page_bulk(struct page_pool *pool, struct page **data,
++			     u32 count)
+ {
+ 	int i, bulk_len = 0;
+ 	bool allow_direct;
+@@ -864,7 +864,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 	allow_direct = page_pool_napi_local(pool);
+ 
+ 	for (i = 0; i < count; i++) {
+-		netmem_ref netmem = page_to_netmem(virt_to_head_page(data[i]));
++		netmem_ref netmem = page_to_netmem(compound_head(data[i]));
+ 
+ 		/* It is not the last user for the page frag case */
+ 		if (!page_pool_is_last_ref(netmem))
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index bd2aa340baad..779e646f347b 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -556,12 +556,12 @@ void xdp_return_frame_bulk(struct xdp_frame *xdpf,
+ 		for (i = 0; i < sinfo->nr_frags; i++) {
+ 			skb_frag_t *frag = &sinfo->frags[i];
+ 
+-			bq->q[bq->count++] = skb_frag_address(frag);
++			bq->q[bq->count++] = skb_frag_page(frag);
+ 			if (bq->count == XDP_BULK_QUEUE_SIZE)
+ 				xdp_flush_frame_bulk(bq);
+ 		}
  	}
- 
--	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
+-	bq->q[bq->count++] = xdpf->data;
++	bq->q[bq->count++] = virt_to_page(xdpf->data);
  }
+ EXPORT_SYMBOL_GPL(xdp_return_frame_bulk);
  
- static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
-@@ -488,7 +484,7 @@ tps23881_write_port_matrix(struct tps23881_priv *priv,
- 	struct i2c_client *client = priv->client;
- 	u8 pi_id, lgcl_chan, hw_chan;
- 	u16 val = 0;
--	int i, ret;
-+	int i;
- 
- 	for (i = 0; i < port_cnt; i++) {
- 		pi_id = port_matrix[i].pi_id;
-@@ -519,11 +515,7 @@ tps23881_write_port_matrix(struct tps23881_priv *priv,
- 	}
- 
- 	/* Write hardware ports matrix */
--	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PORT_MAP, val);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return i2c_smbus_write_word_data(client, TPS23881_REG_PORT_MAP, val);
- }
- 
- static int
-@@ -572,11 +564,7 @@ tps23881_set_ports_conf(struct tps23881_priv *priv,
- 			val |= BIT(port_matrix[i].lgcl_chan[1]) |
- 			       BIT(port_matrix[i].lgcl_chan[1] + 4);
- 	}
--	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DET_CLA_EN, val);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return i2c_smbus_write_word_data(client, TPS23881_REG_DET_CLA_EN, val);
- }
- 
- static int
-@@ -602,11 +590,7 @@ tps23881_set_ports_matrix(struct tps23881_priv *priv,
- 	if (ret)
- 		return ret;
- 
--	ret = tps23881_set_ports_conf(priv, port_matrix);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return tps23881_set_ports_conf(priv, port_matrix);
- }
- 
- static int tps23881_setup_pi_matrix(struct pse_controller_dev *pcdev)
-
 -- 
-2.34.1
+2.47.0
 
