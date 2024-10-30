@@ -1,116 +1,151 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-relay.contabo.net (mail-relay.contabo.net [207.180.195.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6ED26AD0;
-	Wed, 30 Oct 2024 15:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D8212D1FA;
+	Wed, 30 Oct 2024 15:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.180.195.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730300489; cv=none; b=B/KnEuazEvYzeS2wpaG+2uFyfsbCq5aKyzHTbtqSBNeyATgXmpfmUJuRs7YikNIlHYcU2KwC2HepeU6bDidb0w3c8d++A16LvVB28VB3NBq++oHj6oTTfM/L7ZwCRc5sWGWyp0IytCmPDhX2NWuDBLNj73uBCobfI1ZVdvAz+yA=
+	t=1730300563; cv=none; b=RO8EaBEOJB32X2ara0vszYm5sdhIJkV0smNx2SpDLzkyu13FAllpRBZHzSvPmJgtHnWoZSQ+lr80Z8neB+jWJoBrcWHvL/Va53TqnI08Xyidemb53o5927xQcKbzYKA8KaA7Q4O0ge7StmLRjZA5bsFO7Bu8iLCMxdVdNAga4ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730300489; c=relaxed/simple;
-	bh=s6cBiL9Hq0Q20TzyA2dVWFduhAA/rN8bWvy+wmTLmYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lu5TaWNLp0f9lS9XQjuvqI/mJitHx2vMueCnMPb9N7GerFFxjMJNXu4TjdFfJqQFyPB36Tw9BMCFj/8RWPx3foALgV+1g4UajeKcJyei3h2/EnC5tqST0hTOLb2lYe64emq78t8ChWCyKmbPL29jN5d4mtExSoV3XctmICtfMJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9a2209bd7fso1018207766b.2;
-        Wed, 30 Oct 2024 08:01:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730300485; x=1730905285;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcefwH6DwVLO3jkdi4UJLGk29QViGQKLdm89K+/T0Ig=;
-        b=vhgBvwji8qXctqO5PlTXltxfk0wtni8iqu3I2/L03nm1GppS5EXigdKKGGPNeBXNvq
-         QaPt+vKL9PGsqbbLW1HpDdzn/qzQ5wev1FIIdpYvrCuMYfb+Uj4j/MyyZCJX6HpM6WoH
-         /u/9/higLE5A0kkV1g5toh3uP11wD7DRD9xvt6Xs+f0ogfJvFifOcX6xfPBBdWAuWjtl
-         aAqSOnnm7JkZYQB6UksqYHT4BFYHLkwH9BrXhYLeGcDjXfn8Othnb/d9FGKUQsVWQULs
-         wTtQx21ehbdy8QQ8vqb+n/UxmawRmC69AAH0CxTtAZL0GjyLN8tZspjQ732dBejAW0Gz
-         EaMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSxXDAi+4BPa+0B/tQkkDVgG1ZMKN1UUYXdP8eFiY83nV5qAWnHIj0dWrhwraxOprwpZ1nfLZ2XDDYx6g=@vger.kernel.org, AJvYcCWPqgm/cKutWfmoVSczqCTdxdtijCMWiaFUcfxyB42OYhbZ+M3XX2K3JEQgrFdAgMJk9TT2xXWt@vger.kernel.org, AJvYcCWWYxPg/x9TMVzW+CGWZ/vH0K75/AKx7HBOlP2NKKFZzTIfMh1chJDD200pFGC8C/u8gnjamqq5@vger.kernel.org
-X-Gm-Message-State: AOJu0YywTXyV7kKnuNQL8cJAC4qVq70P/QcMHQ0jnuRr7EU7i8cBiZT1
-	wa6VTCX9F4ItkDY40fl+3mXa2HYgPrDkL+L7Kh8PU+iMFxVBdkwE
-X-Google-Smtp-Source: AGHT+IE0mMeXCQD6h1yd6THZC/eiGg3fCLvdBgMNwVez6Ft/Ssxur1UOrug1MDpyzVlJbd/JIZBSlA==
-X-Received: by 2002:a17:907:1c22:b0:a99:f1aa:a71f with SMTP id a640c23a62f3a-a9de5c90d49mr1630487766b.11.1730300484919;
-        Wed, 30 Oct 2024 08:01:24 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-009.fbsv.net. [2a03:2880:30ff:9::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cbb631af22sm4800577a12.77.2024.10.30.08.01.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 08:01:23 -0700 (PDT)
-Date: Wed, 30 Oct 2024 08:01:21 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: kuba@kernel.org, horms@kernel.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, vlad.wing@gmail.com, max@kutsevol.com,
-	kernel-team@meta.com, aehkn@xenhub.one, stable@vger.kernel.org,
-	"open list:NETWORKING [MPTCP]" <mptcp@lists.linux.dev>
-Subject: Re: [PATCH net] mptcp: Ensure RCU read lock is held when calling
- mptcp_sched_find()
-Message-ID: <20241030-hospitable-sweet-chicken-f71faa@leitao>
-References: <20241030140224.972565-1-leitao@debian.org>
- <e891f590-7dd5-4207-adef-d90b90172aeb@kernel.org>
+	s=arc-20240116; t=1730300563; c=relaxed/simple;
+	bh=tisj9MRLY8sAb+Wz9LAPF3LrcExkszWJ6y5pi5FUEUg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WmRDqYp4zOoQ8jXcxiisBIzEj8e4PGgEcDRmvcrxMOT0NoI1g1cBVy227xHaAqkQmz9oZ9g/Kz8N8oaQLO/WC+FlW9nNeWLmzJdBsy4JwV3aZLtSrV9iYEE1ISlNRSM7O0+BuOBdpBFgtSzMuq6BnaC/kGUZxsquBhuF/39i9hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=odyss3us.net; spf=pass smtp.mailfrom=odyss3us.net; dkim=pass (2048-bit key) header.d=odyss3us.net header.i=@odyss3us.net header.b=LGzKhVKJ; arc=none smtp.client-ip=207.180.195.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=odyss3us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=odyss3us.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=odyss3us.net header.i=@odyss3us.net header.b="LGzKhVKJ"
+Received: from pxmg2.contabo.net (localhost.localdomain [127.0.0.1])
+	by mail-relay.contabo.net (Proxmox) with ESMTP id 2BAE07C26B8;
+	Wed, 30 Oct 2024 15:55:02 +0100 (CET)
+Received: from m2712.contaboserver.net (m2712.contaboserver.net [91.194.91.201])
+	by mail-relay.contabo.net (Proxmox) with ESMTPS id F388F7C26D0;
+	Wed, 30 Oct 2024 15:55:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=odyss3us.net; s=default; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tisj9MRLY8sAb+Wz9LAPF3LrcExkszWJ6y5pi5FUEUg=; b=LGzKhVKJ5E2qTIXPvO+Pt4seOR
+	v+FRvs0g0Qs78tpmUIZK5XJUU+aFPDvgMok5z3MHHEkVlym2rq9GGMj8lt3JAPYm4LZs2a7B3A3LU
+	pDngWut3rfZqE9TT4h6b820cX46qywqsBAQTe7RmLUD7w9suHpIagp95n99Xxms17hHknJ+i2rXhe
+	NVxE6Yv3fqQUcL+sdJrQjmBCi2UG86TI9jFo0pkgYp79YPYUahXhhrmyKs5BgkePtk5GcB+z2rX0M
+	248ZHTmFnKH3cf80A+cYxgyHvMQc9M74bVMRM/R76AFcuQ20JKMfFE6sLid7yCieAoOY6G9Z0cFYM
+	Gox1s9bA==;
+Received: from pd95ebe22.dip0.t-ipconnect.de ([217.94.190.34]:53344 helo=void-3.local)
+	by m2712.contaboserver.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <g@odyss3us.net>)
+	id 1t6A67-002j6X-1C;
+	Wed, 30 Oct 2024 15:55:01 +0100
+Message-ID: <47b0f9fe0038baabb3b0c2d489a66a554a021e92.camel@odyss3us.net>
+Subject: Re: Kernel maintainer *CENSORED* on LKML [WAS: linux: Goodbye from
+ a Linux community volunteer]
+From: Goran <g@odyss3us.net>
+To: metux <metux@gmx.de>, Dragan =?UTF-8?Q?Milivojevi=C4=87?=
+ <d.milivojevic@gmail.com>, "Enrico Weigelt, metux IT consult"
+ <info@metux.net>
+Cc: Peter Cai <peter@typeblog.net>, phoronix@phoronix.com, James Bottomley
+ <James.Bottomley@hansenpartnership.com>, Serge Semin
+ <fancer.lancer@gmail.com>,  Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, 
+ ntb@lists.linux.dev, Andy Shevchenko <andy@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Kory Maincent
+ <kory.maincent@bootlin.com>,  Cai Huoqing <cai.huoqing@linux.dev>,
+ dmaengine@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ linux-spi@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, 
+ linux-ide@vger.kernel.org, Paul Burton <paulburton@kernel.org>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Arnd Bergmann <arnd@arndb.de>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,  linux-mips@vger.kernel.org, Bjorn
+ Helgaas <bhelgaas@google.com>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>, Yoshihiro Shimoda
+ <yoshihiro.shimoda.uh@renesas.com>,  linux-pci@vger.kernel.org, "David S.
+ Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>, Russell King
+ <linux@armlinux.org.uk>, Vladimir Oltean <olteanv@gmail.com>, Keguang Zhang
+ <keguang.zhang@gmail.com>, Yanteng Si <siyanteng@loongson.cn>, 
+ netdev@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+ linux-hwmon@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Halaney
+ <ajhalaney@gmail.com>, Nikita Travkin <nikita@trvn.ru>, Ivan Kokshaysky
+ <ink@jurassic.park.msu.ru>, Alexander Shiyan <shc_work@mail.ru>, Dmitry
+ Kozlov <xeb@mail.ru>, Sergey Shtylyov <s.shtylyov@omp.ru>, Evgeniy
+ Dushistov <dushistov@mail.ru>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,  Nikita Shubin
+ <nikita.shubin@maquefel.me>, linux-renesas-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  Kexy Biscuit <kexybiscuit@aosc.io>,
+ jeffbai@aosc.io, Linus Torvalds <torvalds@linux-foundation.org>, "[DNG]"
+ <dng@lists.dyne.org>, redaktion@golem.de, dev mail list <dev@suckless.org>
+Date: Wed, 30 Oct 2024 15:54:57 +0100
+In-Reply-To: <b410a7fb-58c0-4d17-b818-54ec3476833a@gmx.de>
+References: 
+	<2m53bmuzemamzc4jzk2bj7tli22ruaaqqe34a2shtdtqrd52hp@alifh66en3rj>
+	 <e7d548a7fc835f9f3c9cb2e5ed97dfdfa164813f.camel@HansenPartnership.com>
+	 <6beb4070-1946-4387-bd0e-34608a76b19e@typeblog.net>
+	 <CALtW_agj1rurb3DRrPd9o2mkfku5fq_M3CEKY5sW+Zz7shKYHA@mail.gmail.com>
+	 <6d37175d-1b0b-4b82-80f0-c5b4e61badbf@metux.net>
+	 <2f12ee89-af9f-4af1-8ec8-ede1d5256592@metux.net>
+	 <CALtW_agiJyX3sTaBKgwPF7X920=+fFrRgXMPt4x_GCDOMfZy_w@mail.gmail.com>
+	 <CALtW_aimN531aZKSSG4hVLeQDk6bUoujopkhCh57xsaxfJrYgA@mail.gmail.com>
+	 <b410a7fb-58c0-4d17-b818-54ec3476833a@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e891f590-7dd5-4207-adef-d90b90172aeb@kernel.org>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - m2712.contaboserver.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - odyss3us.net
+X-Get-Message-Sender-Via: m2712.contaboserver.net: authenticated_id: g@odyss3us.net
+X-Authenticated-Sender: m2712.contaboserver.net: g@odyss3us.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hello Matthieu,
+Widely accepted spam lists are few and once on one it will get hard to
+get cleared.
 
-On Wed, Oct 30, 2024 at 03:45:02PM +0100, Matthieu Baerts wrote:
-> Hi Breno
-> 
-> 30 Oct 2024 15:02:45 Breno Leitao <leitao@debian.org>:
-> 
-> > The mptcp_sched_find() function must be called with the RCU read lock
-> > held, as it accesses RCU-protected data structures. This requirement was
-> > not properly enforced in the mptcp_init_sock() function, leading to a
-> > RCU list traversal in a non-reader section error when
-> > CONFIG_PROVE_RCU_LIST is enabled.
-> >
-> >     net/mptcp/sched.c:44 RCU-list traversed in non-reader section!!
-> >
-> > Fix it by acquiring the RCU read lock before calling the
-> > mptcp_sched_find() function. This ensures that the function is invoked
-> > with the necessary RCU protection in place, as it accesses RCU-protected
-> > data structures.
-> 
-> Thank you for having looked at that, but there is already a fix:
-> 
-> https://lore.kernel.org/netdev/20241021-net-mptcp-sched-lock-v1-1-637759cf061c@kernel.org/
-> 
-> This fix has even been applied in the net tree already:
-> 
-> https://git.kernel.org/netdev/net/c/3deb12c788c3
-> 
-> Did you not get conflicts when rebasing your branch on top of the
-> latest version?
+Maybe Devuan has no clue that your domain is on one or multiple spam
+list. They are just using spam lists to block.
 
-Oh, I was testing on Linus' tree when I got the problem, and net was not
-merged in Linus' tree yet.
+Spam lists can be used for such nasty things.
 
-> > Additionally, the patch breaks down the mptcp_init_sched() call into
-> > smaller parts, with the RCU read lock only covering the specific call to
-> > mptcp_sched_find(). This helps minimize the critical section, reducing
-> > the time during which RCU grace periods are blocked.
-> 
-> I agree with Eric (thank you for the review!): this creates other issues.
+Am Mittwoch, dem 30.10.2024 um 14:48 +0100 schrieb metux:
+> On 29.10.24 20:33, Dragan Milivojevi=C4=87 wrote:
+>=20
+> Hi,
+>=20
+> > > > First I've thought it's just when replying specific mails, but
+> > > > now
+> > > > turned out *all* my mails are blocked, even totally unrelated
+> > > > things.
+> > > > I can confirm it's not by the message content, but my mail
+> > > > address or
+> > > > domain. I'm blocked from whole kernel.org
+> > >=20
+> > > Same thing on my end, partial sample: https://imgur.com/a/l4Jcfhk
+> >=20
+> > And it is spreading, previous message to dng@lists.dyne.org=C2=A0was
+> > rejected with:
+> >=20
+> > "Message rejected by filter rule match"
+>=20
+> Do you have some evidence that Devuan's mail server is really
+> blocking
+> us ?
+>=20
+> If so, I'd be exceptionally surprised.
+>=20
+>=20
+> --mtx
 
-Let me comment there.
 
-> 
-> > The mptcp_sched_list_lock is not held in this case, and it is not clear
-> > if it is necessary.
-> 
-> It is not needed, the list is not modified, only read with RCU.
-
-Thanks
