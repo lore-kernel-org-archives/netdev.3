@@ -1,39 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EC92194B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F3D2194B6;
 	Wed, 30 Oct 2024 16:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730307246; cv=none; b=WL/oWC5KHFAvmLQ1KIsLNHFzl6C1CA0qt5sLp/tIN/yerG4Ju1ObnxC6WUWnr5ROPKkDdkKw3LimlpDDJdLX1e5xUop2i7X8ne4EIta4BmZxbi8NlMrNu1GLm0ykc62fYErV3ZFef4F1r//d99Ic7gH1PtOGUpLLSokf3cqrwy0=
+	t=1730307247; cv=none; b=bnKgTbMwVOCRW245XrZVg+RkiTiqtvaCLrK9B6KPCtdJEP9lDHQliCWopFxDhIpCDS5T/zvg5Kws+gNZjkoFsIq9IC+hiOh0ZSk+6FnGDXPUQpxMbGlSUK9zraPudi/6jGv2KO7/C91mBAhnX43mA3mFkEGijmeO7j3GHvZOJrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730307246; c=relaxed/simple;
-	bh=6YXADs66ZEo8Xd5qgtpbfltEJNbzzRkqeeQks6lC1aU=;
+	s=arc-20240116; t=1730307247; c=relaxed/simple;
+	bh=qJBUkU3lnCPyJtAe5siX0vwXVqtlZrqUtYudqoaYZAU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lGar2ygIB62cwpIxFvU+LOiu0LlAoSo9kQ7GU8yMsSXhLl+/+3cURDIZ+AxMxCJ69APPRjobV2ItdvPVPqWVf4RWhY8r1KmqiZsl6L3c5NPUTp+Zbu35tFI4x0ri+ymj8c/pfR+7wrQz2OZpHT8UNYyvD6lfS7qG31Hn+23pWVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NWbM+9JI; arc=none smtp.client-ip=217.70.183.198
+	 In-Reply-To:To:Cc; b=pC5gk7grNWITDBL8mPhjfxx3A/dgpSe37L2G+/946VKgZEG0sIZtjYFrUU3Notgi/SPjGyFyMqLDXt3qfYeJPQ2JvT/njbM74uuU4XWDsd9BpuCRV1aht9QpB4PwKSxrlzPnaF6M7u+JEEltjWlGCQFQLHs9FUHkFLewRd3LNNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SW7mrQCp; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NWbM+9JI"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 118E7C000A;
-	Wed, 30 Oct 2024 16:53:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SW7mrQCp"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 65166C000F;
+	Wed, 30 Oct 2024 16:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730307236;
+	t=1730307241;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uTPLNz5yTOtn3lqPTWfyhqM47yr8HvgCllgs7jDzZNE=;
-	b=NWbM+9JI4oTCtdEnyWDljVNJoyaVGQ9zqnlpF4OPwHpPENZL2Scya9JEinu8CL8X5bkbvg
-	W4sapk/gV3c+J7Pfk+M/pHJgRT0Xj+ig+HgiNkNWwla/Z8p29gOBS5S6zRznHAoLrY6Ak+
-	hVpjvpS6jniuzpSjtwzei4NpU5qibfT2nKVihLVF5yAF1z92a/DeeS2PiDxtkhvMCMuEFs
-	9evqq/JS11iHAumyCpifglVBoJDVI6H7YucVh1fSyIPbM4wc1/UbrC+bX2KjEN7uUk3zrV
-	/2XVbBQ7UGcGvI1QkIkhAuz4ACwzcit60FJWXDwRP37fW6U1lZXH/pnHmBCKOw==
+	bh=G/Vy6U/BZ9R4PCxWYE8hyZM9z4zw6/kCUK4+VjKfrOk=;
+	b=SW7mrQCppFLI9apW/NT2RNEklkyU13vHb1pVg4+QuxaRpxFoCLq89Io9Uo0I6TW+ls9U0u
+	vf0rIJ9XeiY6XjPcZJ0AvOr1B0cirZijnZ+Y9YPixD5UnCUmrTgxbGwnvqLkC0ZNkgMqhD
+	sithP+gQJlShGNd5D3UI8JV7pGPCc55VOQWkG71jSM2Z3jiPQ4eSVHdvhfgzY8cELzl3iv
+	LnMaP5lz2cx7U/wyOchOiCXtGXpva3KU6UBdgYtfcFZ/coRxuRe1nlRQwMB6iCFBFgQXNP
+	LpV2DLZcUEfF+x1+pl/jdsXr9rUa+iN18k85w6xkmxYJoXi8Nr2xsR8gQpAsRw==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Wed, 30 Oct 2024 17:53:05 +0100
-Subject: [PATCH RFC net-next v2 03/18] net: pse-pd: tps23881: Use helpers
- to calculate bit offset for a channel
+Date: Wed, 30 Oct 2024 17:53:09 +0100
+Subject: [PATCH RFC net-next v2 07/18] net: ethtool: Add support for
+ ethnl_info_init_ntf helper function
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-feature_poe_port_prio-v2-3-9559622ee47a@bootlin.com>
+Message-Id: <20241030-feature_poe_port_prio-v2-7-9559622ee47a@bootlin.com>
 References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
 In-Reply-To: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -64,196 +64,49 @@ X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-This driver frequently follows a pattern where two registers are read or
-written in a single operation, followed by calculating the bit offset for
-a specific channel.
-
-Introduce helpers to streamline this process and reduce code redundancy,
-making the codebase cleaner and more maintainable.
+Introduce support for the ethnl_info_init_ntf helper function to enable
+initialization of ethtool notifications outside of the netlink.c file.
+This change allows for more flexible notification handling.
 
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
 
-Thanks to Oleksij for the design of the helpers functions.
-
-Change in v2:
-- New patch
+changes in v2:
+- new patch.
 ---
- drivers/net/pse-pd/tps23881.c | 107 +++++++++++++++++++++++++++---------------
- 1 file changed, 69 insertions(+), 38 deletions(-)
+ net/ethtool/netlink.c | 5 +++++
+ net/ethtool/netlink.h | 2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 20eab9857817..391b8964f687 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -53,6 +53,55 @@ static struct tps23881_priv *to_tps23881_priv(struct pse_controller_dev *pcdev)
- 	return container_of(pcdev, struct tps23881_priv, pcdev);
- }
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index e3f0ef6b851b..808cc8096f93 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -805,6 +805,11 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
+ typedef void (*ethnl_notify_handler_t)(struct net_device *dev, unsigned int cmd,
+ 				       const void *data);
  
-+/*
-+ * Helper to extract a value from a u16 register value, which is made of two
-+ * u8 registers. The function calculates the bit offset based on the channel
-+ * and extracts the relevant bits using a provided field mask.
-+ *
-+ * @param reg_val: The u16 register value (composed of two u8 registers).
-+ * @param chan: The channel number (0-7).
-+ * @param field_offset: The base bit offset to apply (e.g., 0 or 4).
-+ * @param field_mask: The mask to apply to extract the required bits.
-+ * @return: The extracted value for the specific channel.
-+ */
-+static u16 tps23881_calc_val(u16 reg_val, u8 chan, u8 field_offset,
-+			     u16 field_mask)
++void ethnl_info_init_ntf(struct genl_info *info, u8 cmd)
 +{
-+	if (chan > 4)
-+		reg_val >>= 8;
-+
-+	return (reg_val >> field_offset) & field_mask;
++	genl_info_init_ntf(info, &ethtool_genl_family, cmd);
 +}
 +
-+/*
-+ * Helper to combine individual channel values into a u16 register value.
-+ * The function sets the value for a specific channel in the appropriate
-+ * position.
-+ *
-+ * @param reg_val: The current u16 register value.
-+ * @param chan: The channel number (0-7).
-+ * @param field_offset: The base bit offset to apply (e.g., 0 or 4).
-+ * @param field_mask: The mask to apply for the field (e.g., 0x0F).
-+ * @param field_val: The value to set for the specific channel (masked by
-+ *                   field_mask).
-+ * @return: The updated u16 register value with the channel value set.
-+ */
-+static u16 tps23881_set_val(u16 reg_val, u8 chan, u8 field_offset,
-+			    u16 field_mask, u16 field_val)
-+{
-+	field_val &= field_mask;
+ static const ethnl_notify_handler_t ethnl_notify_handlers[] = {
+ 	[ETHTOOL_MSG_LINKINFO_NTF]	= ethnl_default_notify,
+ 	[ETHTOOL_MSG_LINKMODES_NTF]	= ethnl_default_notify,
+diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
+index 203b08eb6c6f..d04a8e9d54db 100644
+--- a/net/ethtool/netlink.h
++++ b/net/ethtool/netlink.h
+@@ -322,6 +322,8 @@ struct ethnl_sock_priv {
+ int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
+ 			enum ethnl_sock_type type);
+ 
++void ethnl_info_init_ntf(struct genl_info *info, u8 cmd);
 +
-+	if (chan < 4) {
-+		reg_val &= ~(field_mask << field_offset);
-+		reg_val |= (field_val << field_offset);
-+	} else {
-+		reg_val &= ~(field_mask << (field_offset + 8));
-+		reg_val |= (field_val << (field_offset + 8));
-+	}
-+
-+	return reg_val;
-+}
-+
- static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- {
- 	struct tps23881_priv *priv = to_tps23881_priv(pcdev);
-@@ -69,17 +118,12 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
- 		return ret;
- 
- 	chan = priv->port[id].chan[0];
--	if (chan < 4)
--		val = (u16)(ret | BIT(chan));
--	else
--		val = (u16)(ret | BIT(chan + 4));
-+	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
- 
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
--		if (chan < 4)
--			val |= BIT(chan);
--		else
--			val |= BIT(chan + 4);
-+		val = tps23881_set_val(val, chan, 0, BIT(chan % 4),
-+				       BIT(chan % 4));
- 	}
- 
- 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-@@ -105,17 +149,12 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
- 		return ret;
- 
- 	chan = priv->port[id].chan[0];
--	if (chan < 4)
--		val = (u16)(ret | BIT(chan + 4));
--	else
--		val = (u16)(ret | BIT(chan + 8));
-+	val = tps23881_set_val(ret, chan, 4, BIT(chan % 4), BIT(chan % 4));
- 
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
--		if (chan < 4)
--			val |= BIT(chan + 4);
--		else
--			val |= BIT(chan + 8);
-+		val = tps23881_set_val(val, chan, 4, BIT(chan % 4),
-+				       BIT(chan % 4));
- 	}
- 
- 	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
-@@ -127,6 +166,7 @@ static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
- 	struct i2c_client *client = priv->client;
- 	bool enabled;
- 	u8 chan;
-+	u16 val;
- 	int ret;
- 
- 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
-@@ -134,17 +174,13 @@ static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
- 		return ret;
- 
- 	chan = priv->port[id].chan[0];
--	if (chan < 4)
--		enabled = ret & BIT(chan);
--	else
--		enabled = ret & BIT(chan + 4);
-+	val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
-+	enabled = !!(val);
- 
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
--		if (chan < 4)
--			enabled &= !!(ret & BIT(chan));
--		else
--			enabled &= !!(ret & BIT(chan + 4));
-+		val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
-+		enabled &= !!(val);
- 	}
- 
- 	/* Return enabled status only if both channel are on this state */
-@@ -160,6 +196,7 @@ static int tps23881_ethtool_get_status(struct pse_controller_dev *pcdev,
- 	struct i2c_client *client = priv->client;
- 	bool enabled, delivering;
- 	u8 chan;
-+	u16 val;
- 	int ret;
- 
- 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_PW_STATUS);
-@@ -167,23 +204,17 @@ static int tps23881_ethtool_get_status(struct pse_controller_dev *pcdev,
- 		return ret;
- 
- 	chan = priv->port[id].chan[0];
--	if (chan < 4) {
--		enabled = ret & BIT(chan);
--		delivering = ret & BIT(chan + 4);
--	} else {
--		enabled = ret & BIT(chan + 4);
--		delivering = ret & BIT(chan + 8);
--	}
-+	val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
-+	enabled = !!(val);
-+	val = tps23881_calc_val(ret, chan, 4, BIT(chan % 4));
-+	delivering = !!(val);
- 
- 	if (priv->port[id].is_4p) {
- 		chan = priv->port[id].chan[1];
--		if (chan < 4) {
--			enabled &= !!(ret & BIT(chan));
--			delivering &= !!(ret & BIT(chan + 4));
--		} else {
--			enabled &= !!(ret & BIT(chan + 4));
--			delivering &= !!(ret & BIT(chan + 8));
--		}
-+		val = tps23881_calc_val(ret, chan, 0, BIT(chan % 4));
-+		enabled &= !!(val);
-+		val = tps23881_calc_val(ret, chan, 4, BIT(chan % 4));
-+		delivering &= !!(val);
- 	}
- 
- 	/* Return delivering status only if both channel are on this state */
+ /**
+  * struct ethnl_request_ops - unified handling of GET and SET requests
+  * @request_cmd:      command id for request (GET)
 
 -- 
 2.34.1
