@@ -1,81 +1,174 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8150019E7EB;
-	Thu, 31 Oct 2024 15:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704D11A287E;
+	Thu, 31 Oct 2024 15:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730388623; cv=none; b=emlUc5D57zHg9YkZx7L3TlwWqSiLJSmDdAa4XE9xvzB/VSjHy2h6ClSI1IPPGuwe5rLn6nRuk9ywvttUjr+hkrT30Q8Hw09382gleYNBLVQy92RzXb2HHNjFeVqGnj1zPcMbXOBrWAJnlbCb6SBfN5bgcYVYY46L77sJFIp+pBM=
+	t=1730389416; cv=none; b=FAcORrKHyEm1mCriWAweW2J8JcK2aTZ4DkfRyvv3EO+/wGSDjd0Kn3ESNbLgMgmwsMBkEqjAGJ9Ku9SgvXg98MTLaHOwj/bFgVY+WUwrseBQujstiUhJd0jF6uuufZmLwbhNp+nBS3vQt0MRAN7SuNPaFiksuVGFCMtGvg4nUWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730388623; c=relaxed/simple;
-	bh=OvzSifmX4gwDA00DM+e60niTQxZ4iyWIF7c+fO+Tc60=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PZcsko+s/8LIFpNgAHblEfMmNhCXBmTC9eBymmHN/UPW0kYS26GicAs94/+tPjpyFglzeawcAwiMCdfBsbHnjgHnkv14GNgcsr/0x6UoD80viqp9I4wNlM/XL13pwoLuQtc0o7mL/XrcXr/nohcwAtJMxp/xjqGpDkN1bpdlLj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQzU+5mX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730389416; c=relaxed/simple;
+	bh=xSVSfWvupjWY+ia/O4hK4dAwK9UhjBvlZUksqXpgdlA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dLA4PVE+fNAP1xf1dI7mm7y8W6e97bW+3bOnd7VIea2FExHsyek8xXkwEZUGhmOpTzKzFbLeExXCpr7AHPzlr/ZtpfFM/+rjkH03vEKTVS/EE7QBvRo5Dyqi+uZiVmpi+VIz1cZBreU/xho3pT+QPZy+HskiPOY8XRozza1YuQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUgafuay; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQzU+5mX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A74DC4DE03;
-	Thu, 31 Oct 2024 15:30:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUgafuay"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA274C4DE00;
+	Thu, 31 Oct 2024 15:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730388623;
-	bh=OvzSifmX4gwDA00DM+e60niTQxZ4iyWIF7c+fO+Tc60=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nQzU+5mXm0F0SZGc7/g6+7JJdaxLLP4Wbt7FmYSZQNTYIxHyIdpsLQK9MG3XdbCop
-	 YckXd5jpixxbNhoU4FgJfIrgFS3CA3DBr6tjUfs3gCg6fcEdALXXa0MjsfIluZWz8x
-	 wL1xvgB8OdN7XxrhLYWY0mLj6THS5Q8t49GdOq5lS2JobgiWClE6gZO/Bg5ZASr2oV
-	 Lglip5WgThmA/lXyvEJz6M8rud1mhrMD4ezVy4k0kslngj2oo0BouPCsa6dxOducZt
-	 G7HT/ISorhuMS7Az5Kd7dkCgCjr4/LXuldqWSBazrNhdH3IoW58Vd/AloHpEq2FbaQ
-	 aNlNrg3udzlGA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D44380AC0A;
-	Thu, 31 Oct 2024 15:30:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1730389416;
+	bh=xSVSfWvupjWY+ia/O4hK4dAwK9UhjBvlZUksqXpgdlA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IUgafuayS19RYU6XbsKzq2l1iax8zc0B9iFDAzRwHKHTxXJ3g0wQegaYmNxiD774b
+	 C/Gm+WQEp3x8N6+toYU6dkYrk8XdjNGaaKaS+kU+Jqmbit3ObSJC3KQeOe4vks3pqC
+	 nCek6wa0KAx8VMf1oDGxj0HmrIM0Q6Io026f9njTmXeHVCN94d6c/AVPbwexWggLMm
+	 SFVteHXjfdEuhlrBCddcc7XdOHmHLvvfsLiVEXQv0mQ4Se1D8Q8kCou+HYSnmfWL75
+	 t8q34N80IRvlycQ15CzH4+BRrwFNC4ooNZg+rBgAFA/ojoHnXi8tz8qWHEwlgbkRhX
+	 MrNYhpRD5ABuQ==
+Message-ID: <c89d51a7-0477-471c-b4e9-0623e7b7ad67@kernel.org>
+Date: Thu, 31 Oct 2024 16:43:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf] bpf, test_run: Fix LIVE_FRAME frame update after a
- page has been recycled
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173038863101.1997785.11856320294725217143.git-patchwork-notify@kernel.org>
-Date: Thu, 31 Oct 2024 15:30:31 +0000
-References: <20241030-test-run-mem-fix-v1-1-41e88e8cae43@redhat.com>
-In-Reply-To: <20241030-test-run-mem-fix-v1-1-41e88e8cae43@redhat.com>
-To: =?utf-8?b?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2VuIDx0b2tlQHJlZGhhdC5jb20+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- hawk@kernel.org, aleksander.lobakin@intel.com, bpf@vger.kernel.org,
- netdev@vger.kernel.org, syzbot+d121e098da06af416d23@syzkaller.appspotmail.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+ Keyur Chudgar <keyur@os.amperecomputing.com>,
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-13-03618f10e3e2@oss.nxp.com>
+ <erg5zzxgy45ucqv2nq3fkcv4sr7cxqzxz6ejdikafwfpgkkmse@7eigsyq245lu>
+ <ZyOUSgMo0chsGnCa@lsv051416.swis.nl-cdc01.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <ZyOUSgMo0chsGnCa@lsv051416.swis.nl-cdc01.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to bpf/bpf.git (master)
-by Daniel Borkmann <daniel@iogearbox.net>:
-
-On Wed, 30 Oct 2024 11:48:26 +0100 you wrote:
-> The test_run code detects whether a page has been modified and
-> re-initialises the xdp_frame structure if it has, using
-> xdp_update_frame_from_buff(). However, xdp_update_frame_from_buff()
-> doesn't touch frame->mem, so that wasn't correctly re-initialised, which
-> led to the pages from page_pool not being returned correctly. Syzbot
-> noticed this as a memory leak.
+On 31/10/2024 15:29, Jan Petrous wrote:
+> On Tue, Oct 29, 2024 at 08:12:37AM +0100, Krzysztof Kozlowski wrote:
+>> On Mon, Oct 28, 2024 at 09:24:55PM +0100, Jan Petrous (OSS) wrote:
+>>> Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+>>> and S32R45 automotive series SoCs.
+>>>
+>>> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>>> ---
+>>>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 98 ++++++++++++++++++++++
+>>>  .../devicetree/bindings/net/snps,dwmac.yaml        |  3 +
+>>>  2 files changed, 101 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+>>> new file mode 100644
+>>> index 000000000000..b11ba3bc4c52
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+>>> @@ -0,0 +1,98 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +# Copyright 2021-2024 NXP
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
+>>> +
+>>> +maintainers:
+>>> +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>>> +
+>>> +description:
+>>> +  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - nxp,s32g2-dwmac
+>>> +      - nxp,s32g3-dwmac
+>>> +      - nxp,s32r-dwmac
+>>
+>> Your driver says these are fully compatible, why this is not expressed
+>> here?
+>>
 > 
-> [...]
+> They are compatible on current stage of driver implementation, the
+> RGMII interface has no any difference. But later there shall be
+> added SGMII and this provides some level of difference, at least
+> from max-speed POV.
+> 
+> The S32R allows higher speed (2G5) on SGMII, but S32G2/S32G3 has
+> 1G as maximum.
 
-Here is the summary with links:
-  - [bpf] bpf, test_run: Fix LIVE_FRAME frame update after a page has been recycled
-    https://git.kernel.org/bpf/bpf/c/c40dd8c47325
+So G2/G3 will work just fine but with lower speeds? That's the meaning
+of compatibility.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Best regards,
+Krzysztof
 
