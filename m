@@ -1,181 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCA819F47A
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 14:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D018175BF
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 14:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730384918; cv=none; b=ohRNJU/l3G2V++W+GX+JM3gZC1q43fOjyMecWasZpf1SoqZO0pWcesbiYoMYSpCFtzprEV6XmhQuPTA+X4pfTpOk+LnYpoGW6GWV4Q4INbHMR9iLXRNaqczkI9w6zG9NTRqOLP6p4K7ck04fguvBECgrNS7WwEdB9NHolERluW8=
+	t=1730385038; cv=none; b=I1kYSnf/FABS0FV47UPSiDzwNB7K6OwpxtjPt4lOFJNMsw/ngLdArCi/pluFle9sGUIruh//LzMmu4k81d/ootlw99eRUCzg3mk0oLqoQc9FsvRUQ3yVjK8vXnTasYoEYBdDWPfVAxq8ZlOe9jAUk/dD44oqUIJO3ST4RAtOazQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730384918; c=relaxed/simple;
-	bh=CaYEF7X5I1GwZVHjJ3svy21SD6o+b4obPuUVTVBlPB8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QDk/Xypl/DB3+J1LHqHYlubhUBuUMcgEGG9r/yBwBfboHLCoh1xFeSgiLBP6cCISPnmhmsoc/ra5LUYXsGI+IZAkxnudqTQ8lF+GxEeLsUDCarpxj37w38Is4l8mxJ1SS4M07+fDt7LQwHxbJB0eJVJZXJ8VOzAGZy1wAJFS1SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdDIYEW5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730385038; c=relaxed/simple;
+	bh=sf5Edl6OUhWsEI6hsK/f/VAjBnY0HljV6kRGy3xX104=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g321c3F3yf0UUkuhmNRTbYF4RJ0kSz5fPG3gvBLp+3fJA41YVd/Qj1zpR/wH056aaF0Gndg9xJ3LdUHwM+5OlLIYaioYFd4dNdR8QKhhancXdG60/fJ5ms40mzZLSp/bE2e5ktmVsiPCi9wYyAPWPp6LePb2QuGtLVkJrcoRVA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=NuSRizWg; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdDIYEW5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6A1C4CED3;
-	Thu, 31 Oct 2024 14:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730384917;
-	bh=CaYEF7X5I1GwZVHjJ3svy21SD6o+b4obPuUVTVBlPB8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=OdDIYEW5Q9ZFcC3DhB2TkUXh8M7gBaaMmyD6SSXalM5rdbslk3tn5R2NgJUBWCD+x
-	 07FV/uL/IsERrmYXog4SEg3HTScus/Gtd3s/eFvQs4R5ug8b5Sc/3hUEN3usXDT3yj
-	 6alDSnZxp1hGU7OQ4QtjfDAFFXfW96+pJFwHr9spiUqfkix7A2uwPieNdJI0BniWXZ
-	 fWutmBAsH+6tNdN9lRYVDF7YcqdEfLsO74IDh/+Er5DkM8fRXwwTZlwEuETSrNRnPN
-	 4dvgaZ9JoCeEP8Q0PUr/eV0GiGRsaVd0o4KK9oTW++3jpDl1jmBawFH1F1jUdPk5Cv
-	 q9Q4ZrBpwkBug==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 31 Oct 2024 15:28:18 +0100
-Subject: [PATCH net-next v2] net: dsa: mt7530: Add TBF qdisc offload
- support
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="NuSRizWg"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1ecbso1381324a12.0
+        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 07:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1730385034; x=1730989834; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=36vCp20jB6EpXAGLlnLrA4E+EFdE8ahvTSL6cu1oL24=;
+        b=NuSRizWgiG6mFdbkidfcnpTNduu34SvzMmoEhy6nkCsosnxRuX3+nW4hXh0oDijA7E
+         ROx6NWOqf4mAKTrdl4PyIhgrpITmx+U1MZsYAm5aA5XdSfAWiiapV4eDJ+7gL2fXBNJe
+         vurRxpG54fSX4OAL4cEs8cS2w266wEjmPU4iR80+PDUVUL/UxGZRbc1HwHlQGPdugsR7
+         /Cicsx9vYn4h1gnX5tU5KA7MHWsHtthvPBFjzxqYxnwGnFko/qwKuk7+k3iGW5RPM/mu
+         85TKBPHtQSCxAnpqU+9BAO3gTE2uiYVtu4ZLKDUni53vhas54P0TLWGby2p4h48S0S+C
+         yPzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730385034; x=1730989834;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=36vCp20jB6EpXAGLlnLrA4E+EFdE8ahvTSL6cu1oL24=;
+        b=PFxGjNAx2RNgfkEdZeofAcYdtH2JroFhH2piny6TEyTWyS8B14QC9+qLox/2dTceBS
+         tHbyrgW6hlweG8ZKUlchw69HCIPhHIPBAZ13NEO1dMiV4BEWjsruSihW61dxsWSrU86p
+         TZZBEGqfugabRu7/nIztSFmjPsT7SDwPlRgqvghDgE1zB8hjbfNR0MPW43W+KLgJ59qF
+         8YG2zLD8PjONu038nnIQUzkOhZGNpBq2n4Rz/h6Xp5FVNQzzsuqBPTtUUmN9GL40Su5g
+         LrQtsxGVLuDHt/a2vHbLZB2cBRYSu/QsKmDMdwJqt9Xm7hsQ6CoM+OQfB7HTHVwEVqpC
+         u4Mg==
+X-Gm-Message-State: AOJu0Yw+FFGP3qqXC1XQXUgYgIMm2C9q5SclSoHsyO/bTxMM7Kwfx5lg
+	NpvhBWu8YdxF9v1+Hf7HtNix37jpLK9X6Lu9MHusrkqabnNeTKoRBtu2JegqlKI=
+X-Google-Smtp-Source: AGHT+IF5Bg251mik3LoFKpoC9lOkrQj4vtOc8BKiQBo2Rp/7AcrfUz5H7OhmqB9uWxMcp5Yj9wGc0g==
+X-Received: by 2002:a17:907:9405:b0:a9a:a3a:6c58 with SMTP id a640c23a62f3a-a9de5ed3e2emr1930012666b.22.1730385034287;
+        Thu, 31 Oct 2024 07:30:34 -0700 (PDT)
+Received: from ?IPV6:2001:67c:2fbc:1:634e:2582:d0aa:ee79? ([2001:67c:2fbc:1:634e:2582:d0aa:ee79])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e564c4d98sm74941266b.66.2024.10.31.07.30.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Oct 2024 07:30:33 -0700 (PDT)
+Message-ID: <7d00738e-ad12-41e4-a0f8-eebc30c4fcda@openvpn.net>
+Date: Thu, 31 Oct 2024 15:30:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241031-mt7530-tc-offload-v2-1-cb242ad954a0@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAGUI2cC/32NQQrDIBBFrxJmXctolNCueo+ShcSZRJrGoiItw
- bvX5gBdfd6H//4OiaKnBNduh0jFJx+2BurUwbTYbSbhXWNQqLTEHsUzD6ZFnkRgXoN1Ag0p1Fp
- Lgwht94rE/n0472Pjxacc4ue4KPLX/rMVKaTggYjZcu8udHtQ3Gg9hzjDWGv9AiyW6Y2zAAAA
-X-Change-ID: 20241030-mt7530-tc-offload-05e204441500
-To: =?utf-8?q?Ar=C4=B1n=C3=A7_=C3=9CNAL?= <arinc.unal@arinc9.com>, 
- Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>, 
- Sean Wang <sean.wang@mediatek.com>, Andrew Lunn <andrew@lunn.ch>, 
- Florian Fainelli <f.fainelli@gmail.com>, 
- Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 12/23] ovpn: implement TCP transport
+To: sd@queasysnail.net
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ ryazanov.s.a@gmail.com, Andrew Lunn <andrew@lunn.ch>
+References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
+ <20241029-b4-ovpn-v11-12-de4698c73a25@openvpn.net>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <20241029-b4-ovpn-v11-12-de4698c73a25@openvpn.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Introduce port_setup_tc callback in mt7530 dsa driver in order to enable
-dsa ports rate shaping via hw Token Bucket Filter (TBF) for hw switched
-traffic.
+On 29/10/2024 11:47, Antonio Quartulli wrote:
+[...]
+> +
+> +	/* DATA_V2 packets are handled in kernel, the rest goes to user space */
+> +	if (likely(ovpn_opcode_from_skb(skb, 0) == OVPN_DATA_V2)) {
+> +		/* hold reference to peer as required by ovpn_recv().
+> +		 *
+> +		 * NOTE: in this context we should already be holding a
+> +		 * reference to this peer, therefore ovpn_peer_hold() is
+> +		 * not expected to fail
+> +		 */
+> +		if (WARN_ON(!ovpn_peer_hold(peer)))
+> +			goto err;
+> +
+> +		ovpn_recv(peer, skb);
+> +	} else {
 
-Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes in v2:
-- remove device id limitation and allow tbf qdisc configuration on each mt7530
-  compliant devices
-- rename MT7530_ERLCR_P in MT753X_ERLCR_P and MT7530_GERLCR in
-  MT753X_GERLCR
-- Link to v1: https://lore.kernel.org/r/20241030-mt7530-tc-offload-v1-1-f7eeffaf3d9e@kernel.org
----
- drivers/net/dsa/mt7530.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/net/dsa/mt7530.h | 12 ++++++++++++
- 2 files changed, 61 insertions(+)
+As pointed out by Sabrina, we are indeed sending DATA_V1 packets to 
+userspace.
+Not a big deal because userspace will likely ignore or drop them.
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index d84ee1b419a614dda5f440e6571cff5f4f27bf21..086b8b3d5b40f776815967492914bd46a04b6886 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -21,6 +21,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/driver.h>
- #include <net/dsa.h>
-+#include <net/pkt_cls.h>
- 
- #include "mt7530.h"
- 
-@@ -3146,6 +3147,53 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
- 	mt7530_rmw(priv, MT753X_MFC, MT7530_CPU_EN | MT7530_CPU_PORT_MASK, val);
- }
- 
-+static int mt753x_tc_setup_qdisc_tbf(struct dsa_switch *ds, int port,
-+				     struct tc_tbf_qopt_offload *qopt)
-+{
-+	struct tc_tbf_qopt_offload_replace_params *p = &qopt->replace_params;
-+	struct mt7530_priv *priv = ds->priv;
-+	u32 rate = 0;
-+
-+	switch (qopt->command) {
-+	case TC_TBF_REPLACE:
-+		rate = div_u64(p->rate.rate_bytes_ps, 1000) << 3; /* kbps */
-+		fallthrough;
-+	case TC_TBF_DESTROY: {
-+		u32 val, tick;
-+
-+		mt7530_rmw(priv, MT753X_GERLCR, EGR_BC_MASK,
-+			   EGR_BC_CRC_IPG_PREAMBLE);
-+
-+		/* if rate is greater than 10Mbps tick is 1/32 ms,
-+		 * 1ms otherwise
-+		 */
-+		tick = rate > 10000 ? 2 : 7;
-+		val = FIELD_PREP(ERLCR_CIR_MASK, (rate >> 5)) |
-+		      FIELD_PREP(ERLCR_EN_MASK, !!rate) |
-+		      FIELD_PREP(ERLCR_EXP_MASK, tick) |
-+		      ERLCR_TBF_MODE_MASK |
-+		      FIELD_PREP(ERLCR_MANT_MASK, 0xf);
-+		mt7530_write(priv, MT753X_ERLCR_P(port), val);
-+		break;
-+	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mt753x_setup_tc(struct dsa_switch *ds, int port,
-+			   enum tc_setup_type type, void *type_data)
-+{
-+	switch (type) {
-+	case TC_SETUP_QDISC_TBF:
-+		return mt753x_tc_setup_qdisc_tbf(ds, port, type_data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int mt7988_setup(struct dsa_switch *ds)
- {
- 	struct mt7530_priv *priv = ds->priv;
-@@ -3193,6 +3241,7 @@ const struct dsa_switch_ops mt7530_switch_ops = {
- 	.get_mac_eee		= mt753x_get_mac_eee,
- 	.set_mac_eee		= mt753x_set_mac_eee,
- 	.conduit_state_change	= mt753x_conduit_state_change,
-+	.port_setup_tc		= mt753x_setup_tc,
- };
- EXPORT_SYMBOL_GPL(mt7530_switch_ops);
- 
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 6ad33a9f6b1dff3a423baa668a8a2ca158f72b91..448200689f492dcb73ef056d7284090c1c662e67 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -248,6 +248,18 @@ enum mt7530_vlan_egress_attr {
- #define  AGE_UNIT_MAX			0xfff
- #define  AGE_UNIT(x)			(AGE_UNIT_MASK & (x))
- 
-+#define MT753X_ERLCR_P(x)		(0x1040 + ((x) * 0x100))
-+#define  ERLCR_CIR_MASK			GENMASK(31, 16)
-+#define  ERLCR_EN_MASK			BIT(15)
-+#define  ERLCR_EXP_MASK			GENMASK(11, 8)
-+#define  ERLCR_TBF_MODE_MASK		BIT(7)
-+#define  ERLCR_MANT_MASK		GENMASK(6, 0)
-+
-+#define MT753X_GERLCR			0x10e0
-+#define  EGR_BC_MASK			GENMASK(7, 0)
-+#define  EGR_BC_CRC			0x4	/* crc */
-+#define  EGR_BC_CRC_IPG_PREAMBLE	0x18	/* crc + ipg + preamble */
-+
- /* Register for port STP state control */
- #define MT7530_SSP_P(x)			(0x2000 + ((x) * 0x100))
- #define  FID_PST(fid, state)		(((state) & 0x3) << ((fid) * 2))
+However, I will change this and mirror what we do for UDP.
 
----
-base-commit: 157a4881225bd0af5444aab9510e7b6da28f2469
-change-id: 20241030-mt7530-tc-offload-05e204441500
+Thanks.
 
-Best regards,
+Regards,
+
+
+> +		/* The packet size header must be there when sending the packet
+> +		 * to userspace, therefore we put it back
+> +		 */
+> +		skb_push(skb, 2);
+> +		ovpn_tcp_to_userspace(peer, strp->sk, skb);
+> +	}
+> +
+> +	return;
+
+
+
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+Antonio Quartulli
+OpenVPN Inc.
 
