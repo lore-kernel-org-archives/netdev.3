@@ -1,242 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5980F13D8A3
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 06:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966BC13D245;
+	Thu, 31 Oct 2024 06:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730354418; cv=none; b=JcwjcujsccXxwdGk/nh3jvCR+39uMzDFTFH4jLtqCApcQfCAAin5ejq8N0Vq8pRP5fzkTK1VLeYVyKfiqm5br56g/UNpx8nEOiL2HpFaGdJF/iwKyqgT4RuLAyqQDyu0uTOjcMMn4F0M9xA2o85efIJTkphHccMqWgzw06QrvRw=
+	t=1730355437; cv=none; b=bTOv1SQR1A2kX4400B9iD2R6HKY12FJJcsEgR3QBc7XOrde8Mq2eu4TgcTwyHVcMnDrSSDttXp4a6VXr3lfm+sXBxEwn1o1Q+NZX83mZERzSQsf0p1y8vAMPv0JFVgjQH5P5ip8SwlphmLJ78nIUSuGfuwHi16UrDo9jdFNMC/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730354418; c=relaxed/simple;
-	bh=wAF3JYpaJMaVVvrRpeHUKgd/P9Xv1gBYJiwvPM/V6tg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZJHvE0YZ1T1MH8nB280N8Kgh555XL9HAQzavTqgDrHzqVeM4a/5IBsf1eyaEjTloGM6REFKd27jja4o7VW0T+Dv5eunoteayGQiSCYktG7YeGudoi3aqrEL2Xr2TsURSLbn0Sg3a/zQSKtk9cD6sB1TiGYVqCDjZnmio/UDEI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HhzQMpTA; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1730355437; c=relaxed/simple;
+	bh=8HsG/AVOvVWvjm5f5/DShlPUjg6c3lTyZvLttwf7Noc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ldCFDwYh0GlblZT5HQePYIRU5dOxcxv+UDZmzGk7/CWrib/7kndttEwUagrP76T6sR8qkOG5yssuP7Ve/OoSzZYVxli4Y/8kdCECanASbXmTpFL4Jrm7YshOQb++ohJc89wMyIje2FrfYWBIXUCkANaUkAqo9JGk0M/Id7Z7BQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bvbUe8Gu; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HhzQMpTA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730354416; x=1761890416;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wAF3JYpaJMaVVvrRpeHUKgd/P9Xv1gBYJiwvPM/V6tg=;
-  b=HhzQMpTA339PR8kcIWvWhxw5aIF5TgPmIyo4n4SXfFrj8ahVhLLekQlu
-   /EDkxkcqQrCOFiwd/Muhio+YMheAtPpgInZyNlp0m5jx1bU0RACC7g5Sg
-   Lrb0qQm846hQum5blO+YBUeDGAxmJSTTXXWnT9XMBwYZ3CIr/iYtwMAF7
-   N8gnuV+b/fOfoWpMSvJ+CtWMxIKYtnar9C0m2N/g9/gbow57rFlhGYf/b
-   H+u47jVyHSSGmh4WfQf8RvKyb2GGxvRHDsh3hYxyFn2oDywJTLAvRhH3C
-   TNGCWo2U3pMbzwP6mEY4J58ZTfdh5q7cgk9xUz9JvK0tUkmU94tcAHW0e
-   Q==;
-X-CSE-ConnectionGUID: 4fJiECLzQGSW5X5F0AYpjQ==
-X-CSE-MsgGUID: 8Hx3ymnvRA6CdCorgl5/7Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30272928"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30272928"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 23:00:15 -0700
-X-CSE-ConnectionGUID: /Vn9IotMQ1+lOF6Qy5Xjcw==
-X-CSE-MsgGUID: F746RiXBQIOi6aLYDqi3dw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
-   d="scan'208";a="82183642"
-Received: from gk3153-dr2-r750-36946.igk.intel.com ([10.102.20.192])
-  by fmviesa007.fm.intel.com with ESMTP; 30 Oct 2024 23:00:14 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	sridhar.samudrala@intel.com
-Subject: [iwl-next v1 3/3] ice: allow changing SF VSI queues number
-Date: Thu, 31 Oct 2024 07:00:09 +0100
-Message-ID: <20241031060009.38979-4-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20241031060009.38979-1-michal.swiatkowski@linux.intel.com>
-References: <20241031060009.38979-1-michal.swiatkowski@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bvbUe8Gu"
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3a4e551efdbso2286755ab.3;
+        Wed, 30 Oct 2024 23:17:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730355435; x=1730960235; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8HsG/AVOvVWvjm5f5/DShlPUjg6c3lTyZvLttwf7Noc=;
+        b=bvbUe8GuFC7Neyghs7nv7SRQt9q/7HiFXK4dh99YeKY/8vgzRNgys4ohkCBXUZ0BSI
+         ko8i1MTnJ4oJ4S6IjYBkvlefgabapB0bTiEQc36SfJQTCyI3uzM63bg/SVK+v/fB3au3
+         3LMahh2xgNZiz3m7AfD5wjlTgusVyVDz+RO+TYoPMsktgqtpWlX9OAYc9J2wU48ZLKAK
+         SymiKngMvwj8mTQDIqMr3Q/Ys/1aAYNAmDVP3cCavTOvLBDnsnQvwhZLL1bUS4/wDh8T
+         ZjP+BahC0vqSpfkqj0Y1lNgM0dLimPvkkxszp2itIfst7KjCSvoToq+3+b42v2BZIaEx
+         gKzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730355435; x=1730960235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8HsG/AVOvVWvjm5f5/DShlPUjg6c3lTyZvLttwf7Noc=;
+        b=fkR0VgMyEw1Q3OyHJuJIb1V0CaFB38mw2mCuRkCdeQMSreJ9f4yGx0Aiyds5V4sozn
+         hTqou/HWpaLb84mfJQhg7hMZ8rFbNJEe9Ze54bMEAcL8a6z/Dt2HwtivxIS4B9SjSSdU
+         sOzOP02e9vqtGFYz9lN+7URaOC/vsEq75u2Vis0m2Ic3UTVqqeFFzaoNfqnx2aVjkCf8
+         vGYvfDW97bv3XaEN0tJQBEaLRzafdNa5x8gb5wt9J7I7W4BbOFloSFgC60q7VbRU+nt5
+         J0Eygzy67uVHV6uBy/Gpy/V706jK052yTXHeeWz/JZvCaBKgXIIhWMp9RMjfDQLo0YrG
+         JFFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJEK23DQ9mqF9VECndoIBuFu7A8l4gK6JH3elGsNVMcvzU4WP2F2tAXwKI1G56PJaqRq95i1Hb@vger.kernel.org, AJvYcCW7iqa9GKaRfbDN0/c17RUo6TKdQ2aHJ+ZXHZYnKrT0DVGdtdAzKnuieIwdUJoZf2OuiAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw46qUxjyjJk94mxz/9Y4qMeWDD1mHXptBTRkC485x6/UL4XeVm
+	YitmuySkwN4pRb9CrmTI1N+C+Wleg3Nmmm2uPFZVNRvLX1ffYDL1mNjWBT/RRd1TawUZhZhYDPW
+	/Vf/rXN3f1drf9znmntJQbsPt4jh7Dg==
+X-Google-Smtp-Source: AGHT+IGbNpic/BdiijIe65L4RRBuLypikRdPmVkHo5k6kGdLInfvx8OL+9ElCBwaL1ptJeg81MY1qIiw9aC9XybLIT0=
+X-Received: by 2002:a05:6e02:1529:b0:3a4:eaae:f9f0 with SMTP id
+ e9e14a558f8ab-3a609a2adc5mr28156315ab.2.1730355434781; Wed, 30 Oct 2024
+ 23:17:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241028110535.82999-1-kerneljasonxing@gmail.com>
+ <20241028110535.82999-11-kerneljasonxing@gmail.com> <8fd16b77-b8e8-492c-ab69-8192cafa9fc7@linux.dev>
+ <CAL+tcoBNiZQr=yk_fb9eoKX1_Nr4LuDaa1kkLGbdnc=8JNKnNg@mail.gmail.com>
+ <e56f78a9-cbda-4b80-8b55-c16b36e4efb1@linux.dev> <CAL+tcoDi86GkJRd8fShGNH8CgdFu3kbfMubWxCLVdo+3O-wnfg@mail.gmail.com>
+ <0b4392ce-b10d-4103-b592-2ab7a624cae7@linux.dev>
+In-Reply-To: <0b4392ce-b10d-4103-b592-2ab7a624cae7@linux.dev>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 31 Oct 2024 14:16:38 +0800
+Message-ID: <CAL+tcoBHNbHu0i+oLA5inZg=sYXUb4+va0qd-c1TZCQFunk7Dg@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 10/14] net-timestamp: add basic support with
+ tskey offset
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com, 
+	willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, 
+	haoluo@google.com, jolsa@kernel.org, shuah@kernel.org, ykolal@fb.com, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Move setting number of Rx and Tx queues to the separate functions and
-use it in SF case.
+On Thu, Oct 31, 2024 at 1:52=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.=
+dev> wrote:
+>
+> On 10/30/24 7:41 PM, Jason Xing wrote:
+>
+> >> All that said, while looking at tcp_tx_timestamp() again, there is alw=
+ays
+> >> "shinfo->tskey =3D TCP_SKB_CB(skb)->seq + skb->len - 1;". shinfo->tske=
+y can be
+> >> used directly as-is by the bpf prog. I think now I am missing why the =
+bpf prog
+> >> needs the sk_tskey in the sk?
+> >
+> > As you said, tcp seqno could be treated as the key, but it leaks the
+> > information in TCP layer to users. Please see the commit:
+>
+> I don't think it is a concern for bpf prog running in the kernel. The soc=
+kops
+> bpf prog can already read the sk, the skb (which has seqno), and many oth=
+ers.
+>
+> The bpf prog is not a print-only logic. Only using bpf prog to do raw dat=
+a
+> dumping is not fully utilizing its capability, e.g. data aggregation. The=
+ bpf
+> prog should aggregate the data first which is to calculate the delay here=
+.
 
-Adjust getting max Rx and Tx queues for SF usecase.
+Agree, I forgot BPF is only for admin, so it's a feasible solution. It
+saves a lot of energy :)
 
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 37 +++++++-----
- drivers/net/ethernet/intel/ice/ice_lib.c     | 63 ++++++++++++--------
- 2 files changed, 60 insertions(+), 40 deletions(-)
+It looks like the thing is getting simpler and simpler, which could be
+mostly taken over by bpf itself at last. Good news!
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 9e2f20ed55d5..c68f7796b83e 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3786,22 +3786,31 @@ ice_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *info)
- 
- /**
-  * ice_get_max_txq - return the maximum number of Tx queues for in a PF
-- * @pf: PF structure
-+ * @vsi: VSI structure
-  */
--static int ice_get_max_txq(struct ice_pf *pf)
-+static int ice_get_max_txq(struct ice_vsi *vsi)
- {
--	return min3(pf->num_lan_msix, (u16)num_online_cpus(),
--		    (u16)pf->hw.func_caps.common_cap.num_txq);
-+	u16 num_queues = vsi->back->num_lan_msix;
-+
-+	if (vsi->max_io_eqs)
-+		num_queues = vsi->max_io_eqs;
-+	return min3(num_queues, (u16)num_online_cpus(),
-+		    (u16)vsi->back->hw.func_caps.common_cap.num_txq);
- }
- 
- /**
-  * ice_get_max_rxq - return the maximum number of Rx queues for in a PF
-- * @pf: PF structure
-+ * @vsi: VSI structure
-  */
--static int ice_get_max_rxq(struct ice_pf *pf)
-+static int ice_get_max_rxq(struct ice_vsi *vsi)
- {
--	return min3(pf->num_lan_msix, (u16)num_online_cpus(),
--		    (u16)pf->hw.func_caps.common_cap.num_rxq);
-+	u16 num_queues = vsi->back->num_lan_msix;
-+
-+	if (vsi->max_io_eqs)
-+		num_queues = vsi->max_io_eqs;
-+
-+	return min3(num_queues, (u16)num_online_cpus(),
-+		    (u16)vsi->back->hw.func_caps.common_cap.num_rxq);
- }
- 
- /**
-@@ -3839,8 +3848,8 @@ ice_get_channels(struct net_device *dev, struct ethtool_channels *ch)
- 	struct ice_pf *pf = vsi->back;
- 
- 	/* report maximum channels */
--	ch->max_rx = ice_get_max_rxq(pf);
--	ch->max_tx = ice_get_max_txq(pf);
-+	ch->max_rx = ice_get_max_rxq(vsi);
-+	ch->max_tx = ice_get_max_txq(vsi);
- 	ch->max_combined = min_t(int, ch->max_rx, ch->max_tx);
- 
- 	/* report current channels */
-@@ -3958,14 +3967,14 @@ static int ice_set_channels(struct net_device *dev, struct ethtool_channels *ch)
- 			   vsi->tc_cfg.numtc);
- 		return -EINVAL;
- 	}
--	if (new_rx > ice_get_max_rxq(pf)) {
-+	if (new_rx > ice_get_max_rxq(vsi)) {
- 		netdev_err(dev, "Maximum allowed Rx channels is %d\n",
--			   ice_get_max_rxq(pf));
-+			   ice_get_max_rxq(vsi));
- 		return -EINVAL;
- 	}
--	if (new_tx > ice_get_max_txq(pf)) {
-+	if (new_tx > ice_get_max_txq(vsi)) {
- 		netdev_err(dev, "Maximum allowed Tx channels is %d\n",
--			   ice_get_max_txq(pf));
-+			   ice_get_max_txq(vsi));
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 01220e21cc81..64a6152eaaef 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -157,6 +157,32 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
- 	}
- }
- 
-+static void ice_vsi_set_num_txqs(struct ice_vsi *vsi, u16 def_qs)
-+{
-+	if (vsi->req_txq) {
-+		vsi->alloc_txq = vsi->req_txq;
-+		vsi->num_txq = vsi->req_txq;
-+	} else {
-+		vsi->alloc_txq = min_t(u16, def_qs, (u16)num_online_cpus());
-+	}
-+}
-+
-+static void ice_vsi_set_num_rxqs(struct ice_vsi *vsi, bool rss_ena, u16 def_qs)
-+{
-+	/* only 1 Rx queue unless RSS is enabled */
-+	if (rss_ena) {
-+		vsi->alloc_rxq = 1;
-+		return;
-+	}
-+
-+	if (vsi->req_rxq) {
-+		vsi->alloc_rxq = vsi->req_rxq;
-+		vsi->num_rxq = vsi->req_rxq;
-+	} else {
-+		vsi->alloc_rxq = min_t(u16, def_qs, (u16)num_online_cpus());
-+	}
-+}
-+
- /**
-  * ice_vsi_set_num_qs - Set number of queues, descriptors and vectors for a VSI
-  * @vsi: the VSI being configured
-@@ -174,31 +200,13 @@ static void ice_vsi_set_num_qs(struct ice_vsi *vsi)
- 
- 	switch (vsi_type) {
- 	case ICE_VSI_PF:
--		if (vsi->req_txq) {
--			vsi->alloc_txq = vsi->req_txq;
--			vsi->num_txq = vsi->req_txq;
--		} else {
--			vsi->alloc_txq = min3(pf->num_lan_msix,
--					      ice_get_avail_txq_count(pf),
--					      (u16)num_online_cpus());
--		}
--
-+		ice_vsi_set_num_txqs(vsi, min(pf->num_lan_msix,
-+					      ice_get_avail_txq_count(pf)));
- 		pf->num_lan_tx = vsi->alloc_txq;
- 
--		/* only 1 Rx queue unless RSS is enabled */
--		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags)) {
--			vsi->alloc_rxq = 1;
--		} else {
--			if (vsi->req_rxq) {
--				vsi->alloc_rxq = vsi->req_rxq;
--				vsi->num_rxq = vsi->req_rxq;
--			} else {
--				vsi->alloc_rxq = min3(pf->num_lan_msix,
--						      ice_get_avail_rxq_count(pf),
--						      (u16)num_online_cpus());
--			}
--		}
--
-+		ice_vsi_set_num_rxqs(vsi, !test_bit(ICE_FLAG_RSS_ENA, pf->flags),
-+				     min(pf->num_lan_msix,
-+					 ice_get_avail_rxq_count(pf)));
- 		pf->num_lan_rx = vsi->alloc_rxq;
- 
- 		vsi->num_q_vectors = min_t(int, pf->num_lan_msix,
-@@ -206,9 +214,12 @@ static void ice_vsi_set_num_qs(struct ice_vsi *vsi)
- 						 vsi->alloc_txq));
- 		break;
- 	case ICE_VSI_SF:
--		vsi->alloc_txq = 1;
--		vsi->alloc_rxq = 1;
--		vsi->num_q_vectors = 1;
-+		ice_vsi_set_num_txqs(vsi, min(vsi->max_io_eqs,
-+					      ice_get_avail_txq_count(pf)));
-+		ice_vsi_set_num_rxqs(vsi, !test_bit(ICE_FLAG_RSS_ENA, pf->flags),
-+				     min(vsi->max_io_eqs,
-+					 ice_get_avail_rxq_count(pf)));
-+		vsi->num_q_vectors = max_t(int, vsi->alloc_rxq, vsi->alloc_txq);
- 		vsi->irq_dyn_alloc = true;
- 		break;
- 	case ICE_VSI_VF:
--- 
-2.42.0
-
+Thanks,
+Jason
