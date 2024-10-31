@@ -1,186 +1,216 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1FC19D080;
-	Thu, 31 Oct 2024 12:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6186719E833
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 12:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730378357; cv=none; b=UUH/pLZu3ywmoPE+cw4LwHnggjaammJ24aEHa1jmbvaYfgaBNjW6F6bPSxChZkvcI3D736rTZxvG0VBOH1hYXAGsxeW9ChwIeXmNkx6PYEyJL/ukd8pnV+NHKV+Kp/CddTndGhhimO3RRzEnfZa+6Xb/NwGq+Tf1nGoBDn64wEM=
+	t=1730378357; cv=none; b=BLeScpGe4bfCAeEowg+nJ2igVclHIYNVCPJaDuueVISzscVsXgwAd8HKcTHnV6yJNmUtGCeecDezWMktO22lpJgWJuYgtnXtOIV007KMAvTlLCv36PyZSwkJejQ1cpEYy5MvLu70ns1W/zAcVZdpJfAX1GY1SeRbHGsCbnqidIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730378357; c=relaxed/simple;
-	bh=U21Zg27i+744I1Q1Dk1gf55xF/PKKZyEln0v0ltxpQI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qzd79QaFQYtWxvfSFuOUVtK4df56KgNx9CSkxhb0uwnHngJ9eae/Vxj2/R4Q7l1XfOlloZNFGEpD+NwaL9Dd9fcKnpl7t8OgLnl7G+XSQhKVruaqbnqC22O3f7swquMhMAX+qfFBF2NtahyKqeGkA2LG01ENqZTAJHoaqb5Ei8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWRuA45Z; arc=none smtp.client-ip=209.85.210.174
+	bh=tXHcEa4AzYspL9JGtWNdzzADF+XxVdDA9yt/WCCJjXE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a8zom1DoSKTLMn47jnOkt7aUPY89/hYUSoYcR5ZSO2dieXatqfT79+JYXXlVlf4YyaYYm8iSoYmLwnRFkFGhGHNvRTdmt0N43asSW5/Vh+BBSlVPGZCzLvvga48PK4MqESJf+MEvXgwsUfKtAXCurHTX5MntVMuwsWPNf1qdSpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WpdT1kyy; arc=none smtp.client-ip=209.85.166.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWRuA45Z"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-71e3fce4a60so635140b3a.0;
-        Thu, 31 Oct 2024 05:39:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WpdT1kyy"
+Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-83aac75fcceso29132439f.0
+        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 05:39:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1730378354; x=1730983154; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gVhsPMRQqpy2OnJpha195VCCt6s/CZrRESIlVmFiY5k=;
-        b=CWRuA45Z3p0yqWKzmSITeTpL7cxMJT4Qcte5oawlDpaZh/jcyDIL2ZfvY2FNgHOyeb
-         M3vZoQU/wOjVs7y7KR0KLyLs+ztUtFsSaa6lgYkMJAEfdHObqXqG8vVRgxvurQYRypjO
-         JPiKb+hVsHTcpDi9fVSMOFx/HlWGAwRtt7qkYCO91FsZxmQpqVHvPz18VjFJy0eGmVhz
-         nmq35t+AeY7b+WdmFYtQ/zGEqcr9W4C6D7O7mzHi2Mh9SUOcTQHqYjqsLNRtSAKutPU9
-         GPakW707Srhk/xzm3u2Ed0e3S+TIb3oic00OYIIWmZd01rStZv1CSw9juLWqicRPOTHw
-         0YBw==
+        bh=sCG0ZWYScfSiTN4UbzIn6tsNqSO0qb2ol/K203hQt1U=;
+        b=WpdT1kyyExPe1nBlVbUbzCJoclPDU9Uwj1OeiR/ET9irVW09MAqTUjJLpEyq+G7zHw
+         YLXlhujYwU7Bnttuijg7lKCWnPG5Dh/uFHl1i4rTrTWOsRUXj2yXiHi61ZbbyKR5e837
+         /3bQ+4tyuXDnpjPr/QRx0ChxuuSV3BymMQrY3zuS8Kb+e9kGfTRiWS5tGdWrBAAXPCaU
+         nGNqdlMQiU20PNrrCVN8FgcHZg7SfbaJhD/eyBnOKuUlrtjJMne61FQGOEYedMRqZi6A
+         qrk5Io58WksGPJpyLMPoO8t/KFBEIce7XXOGcAlnHB/rVJj+0enkR6mZTDBPlCoPHKmn
+         mzhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1730378354; x=1730983154;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gVhsPMRQqpy2OnJpha195VCCt6s/CZrRESIlVmFiY5k=;
-        b=pracd14VQE6lPdJwr73W2rwJIVHO7aNM2IFbqn1KScXA9iuht3F3KauUGoU0vgyvSC
-         TGeBFZ1GzytWX790m2aCCduoZCYMQg76LZ1DjIAJ5oBHYxlFj0O9CA6KqGS3+Pg+SjpJ
-         JsgGMxs27Uam2/QSAytNVYxetNbpREtYadg3C0uwj626mJJ/9r29HWKHFssYKf7DyzHF
-         fFeLeYRPFjF1rK7w0C89cXF5hcoVMDCw9hcSP8kBmc7IhSjaMCrVyy4xKwIvglvuj3Je
-         xx0kqe4ToL73ZhNH9QEo/QFvzxihRJ4cgbGknY7ncn3asLx0HwaE0S99mXvIFY/xFYCj
-         C51g==
-X-Forwarded-Encrypted: i=1; AJvYcCXYl7LggR52dAvq8t9vQuu6J+Qd+JvFLAzwNDsTyLyPUW7rRtM3hpIORRS/faFC2CfiDEkekac+9Y/0/vY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXHU0oob0IB8l6iG6bVfY+3w5rB/PYq2NwyvsAP8061BkwPuaJ
-	2t0xE48zdOsdXlFabNcvrKkZawe5cphFpBt3YAEI3vVBZ77z6gdRt33n9Q==
-X-Google-Smtp-Source: AGHT+IH3Zm14ICyR7iSwgMxwf/UKQHEUEgmjsMUWQ2oRzm5QVHyY5n9VwcbYyUIviTW6vDUpdnWv/w==
-X-Received: by 2002:a05:6a21:6801:b0:1d9:3a26:4396 with SMTP id adf61e73a8af0-1d9a83d6622mr24295744637.12.1730378353991;
-        Thu, 31 Oct 2024 05:39:13 -0700 (PDT)
-Received: from localhost.localdomain ([129.146.253.192])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-720bc20f50esm1075931b3a.94.2024.10.31.05.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 05:39:13 -0700 (PDT)
-From: Furong Xu <0x1207@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	xfr@outlook.com,
-	Furong Xu <0x1207@gmail.com>
-Subject: [PATCH net-next v7 7/8] net: stmmac: xgmac: Complete FPE support
-Date: Thu, 31 Oct 2024 20:38:01 +0800
-Message-Id: <bab693ebdddffa410c3bdb34fb5d8d62d3edd156.1730376866.git.0x1207@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1730376866.git.0x1207@gmail.com>
-References: <cover.1730376866.git.0x1207@gmail.com>
+        bh=sCG0ZWYScfSiTN4UbzIn6tsNqSO0qb2ol/K203hQt1U=;
+        b=qPMe0qC7Uo0TQtQsnHdJRmq21NufSqX3FaFQlU2hN0yDU0gW31Av62hbXPRBiZexZE
+         7bFElz2NndAiIfiF2z7e9oJEjdMHQD2p9BfCG/KXfy8SCYsICDZPg4/sS78JXUUyQFW1
+         LCUkrSf7AKvELAYVG9is9CkVD91RuXtjtp1BR1ja77ZhUv+B5+4JaK85wPxxdlE8pVBn
+         HvIw9AOazFDoXghF0tnw2ts5qvqj6kAz8NDSWfcNMpRgZBu8p6GgX5LGtMFIjQdjyGkV
+         kY5MHkEE0b0I4pMFLMcOs2AlfWlXZpMNxpvXeeGj0uiI1XSCVGsw7f7go/tp2+jYsj8T
+         BmRg==
+X-Gm-Message-State: AOJu0YzGgFZXiQywAQdt14KRUmDVk2e2ktJJjDRO1tl6iZbBGTtMGiH6
+	DwZtPY6X7dzI7np23OGT+5QxqC/CduvTfFL0w/rSI6s4afuvnQu2+D2UqzEJa7/BnirwZY9s7UR
+	RZ3S8ReNAQAp+fYD9h7cpTheT4E3LE7Af
+X-Google-Smtp-Source: AGHT+IGThhM819ixlg7TjCnBlbDDDINLCFZ+Tc7tZ6uukfN8FQAYpKOB4JhYDkf4P/IGo8v0R+jZEjeX4hWL99xu1Ro=
+X-Received: by 2002:a05:6602:6b10:b0:82d:18d:bab with SMTP id
+ ca18e2360f4ac-83b1c5d4ecamr1864859339f.15.1730378354348; Thu, 31 Oct 2024
+ 05:39:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241029144142.31382-1-annaemesenyiri@gmail.com> <6720fc298dd5a_2bcd7f29492@willemb.c.googlers.com.notmuch>
+In-Reply-To: <6720fc298dd5a_2bcd7f29492@willemb.c.googlers.com.notmuch>
+From: Anna Nyiri <annaemesenyiri@gmail.com>
+Date: Thu, 31 Oct 2024 13:39:03 +0100
+Message-ID: <CAKm6_Rv2-0BgpzAKCBPsi9TJbTPq5q0maC1odUAdNEQV7GegiQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] support SO_PRIORITY cmsg
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, fejes@inf.elte.hu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement the necessary fpe_map_preemption_class callback for xgmac.
+Willem de Bruijn <willemdebruijn.kernel@gmail.com> ezt =C3=ADrta (id=C5=91p=
+ont:
+2024. okt. 29., K, 16:15):
+>
+> Anna Emese Nyiri wrote:
+> > The Linux socket API currently supports setting SO_PRIORITY at the sock=
+et
+> > level, which applies a uniform priority to all packets sent through tha=
+t
+> > socket. The only exception is IP_TOS, if that is specified as ancillary
+> > data, the packet does not inherit the socket's priority. Instead, the
+> > priority value is computed when handling the ancillary data (as impleme=
+nted
+> > in commit <f02db315b8d888570cb0d4496cfbb7e4acb047cb>: "ipv4: IP_TOS
+> > and IP_TTL can be specified as ancillary data").
+>
+> Please use commit format <$SHA1:12> ("subject"). Checkpatch might also
+> flag this.
+>
+> > Currently, there is no option to set the priority directly from userspa=
+ce
+> > on a per-packet basis. The following changes allow SO_PRIORITY to be se=
+t
+> > through control messages (CMSG), giving userspace applications more
+> > granular control over packet priorities.
+> >
+> > This patch enables setting skb->priority using CMSG. If SO_PRIORITY is
+> > specified as ancillary data, the packet is sent with the priority value
+> > set through sockc->priority_cmsg_value, overriding the socket-level
+> > values set via the traditional setsockopt() method.
+>
+> Please also describe how this interacts with priority set from IP_TOS or
+> IPV6_TCLASS.
+>
+> > This is analogous to
+> > existing support for SO_MARK (as implemented in commit
+> > <c6af0c227a22bb6bb8ff72f043e0fb6d99fd6515>, =E2=80=9Cip: support SO_MAR=
+K
+> > cmsg=E2=80=9D).
+> >
+> > Suggested-by: Ferenc Fejes <fejes@inf.elte.hu>
+> > Signed-off-by: Anna Emese Nyiri <annaemesenyiri@gmail.com>
+> > ---
+> >  include/net/inet_sock.h |  2 ++
+> >  include/net/sock.h      |  5 ++++-
+> >  net/can/raw.c           |  6 +++++-
+> >  net/core/sock.c         | 12 ++++++++++++
+> >  net/ipv4/ip_output.c    | 11 ++++++++++-
+> >  net/ipv4/raw.c          |  5 ++++-
+> >  net/ipv6/ip6_output.c   |  8 +++++++-
+> >  net/ipv6/raw.c          |  6 +++++-
+> >  net/packet/af_packet.c  |  6 +++++-
+> >  9 files changed, 54 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
+> > index f9ddd47dc4f8..9d4e4e2a8232 100644
+> > --- a/include/net/inet_sock.h
+> > +++ b/include/net/inet_sock.h
+> > @@ -175,6 +175,8 @@ struct inet_cork {
+> >       __u16                   gso_size;
+> >       u64                     transmit_time;
+> >       u32                     mark;
+> > +     __u8            priority_cmsg_set;
+> > +     u32                     priority_cmsg_value;
+>
+> Just priority, drop the cmsg value.
+>
+> Instead of an explicit "is set" bit, preferred is to initialize the
+> cookie field from the sock. See sockcm_init(), below, and also
+> ipcm_init_sk(). That also avoids the branches later in the datapath.
+>
+> >  };
+> >
+> >  struct inet_cork_full {
+> > diff --git a/include/net/sock.h b/include/net/sock.h
+> > index cce23ac4d514..e02170977165 100644
+> > --- a/include/net/sock.h
+> > +++ b/include/net/sock.h
+> > @@ -1794,13 +1794,16 @@ struct sockcm_cookie {
+> >       u64 transmit_time;
+> >       u32 mark;
+> >       u32 tsflags;
+> > +     u32 priority_cmsg_value;
+> > +     u8 priority_cmsg_set;
+> >  };
+> >
+> >  static inline void sockcm_init(struct sockcm_cookie *sockc,
+> >                              const struct sock *sk)
+> >  {
+> >       *sockc =3D (struct sockcm_cookie) {
+> > -             .tsflags =3D READ_ONCE(sk->sk_tsflags)
+> > +             .tsflags =3D READ_ONCE(sk->sk_tsflags),
+> > +             .priority_cmsg_set =3D 0
+> >       };
+> >  }
+> >
+> > diff --git a/net/can/raw.c b/net/can/raw.c
+> > index 00533f64d69d..cf7e7ae64cde 100644
+> > --- a/net/can/raw.c
+> > +++ b/net/can/raw.c
+> > @@ -962,7 +962,11 @@ static int raw_sendmsg(struct socket *sock, struct=
+ msghdr *msg, size_t size)
+> >       }
+> >
+> >       skb->dev =3D dev;
+> > -     skb->priority =3D READ_ONCE(sk->sk_priority);
+> > +     if (sockc.priority_cmsg_set)
+> > +             skb->priority =3D sockc.priority_cmsg_value;
+> > +     else
+> > +             skb->priority =3D READ_ONCE(sk->sk_priority);
+> > +
+> >       skb->mark =3D READ_ONCE(sk->sk_mark);
+> >       skb->tstamp =3D sockc.transmit_time;
+> >
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 9abc4fe25953..899bf850b52a 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -2863,6 +2863,18 @@ int __sock_cmsg_send(struct sock *sk, struct cms=
+ghdr *cmsg,
+> >       case SCM_RIGHTS:
+> >       case SCM_CREDENTIALS:
+> >               break;
+> > +     case SO_PRIORITY:
+> > +             if (cmsg->cmsg_len !=3D CMSG_LEN(sizeof(u32)))
+> > +                     return -EINVAL;
+> > +
+> > +             if ((*(u32 *)CMSG_DATA(cmsg) >=3D 0 && *(u32 *)CMSG_DATA(=
+cmsg) <=3D 6) ||
+> > +                 sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_RAW=
+) ||
+> > +                 sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADM=
+IN)) {
+> > +                     sockc->priority_cmsg_value =3D *(u32 *)CMSG_DATA(=
+cmsg);
+> > +                     sockc->priority_cmsg_set =3D 1;
+> > +                     break;
+> > +             }
+>
+> What is the magic constant 6 here?
 
-Signed-off-by: Furong Xu <0x1207@gmail.com>
----
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |  2 +
- .../net/ethernet/stmicro/stmmac/stmmac_fpe.c  | 43 +++++++++++++++++++
- .../net/ethernet/stmicro/stmmac/stmmac_fpe.h  |  3 ++
- 3 files changed, 48 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index de6ffda31a80..9a60a6e8f633 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -1545,6 +1545,7 @@ const struct stmmac_ops dwxgmac210_ops = {
- 	.config_l3_filter = dwxgmac2_config_l3_filter,
- 	.config_l4_filter = dwxgmac2_config_l4_filter,
- 	.set_arp_offload = dwxgmac2_set_arp_offload,
-+	.fpe_map_preemption_class = dwxgmac3_fpe_map_preemption_class,
- };
- 
- static void dwxlgmac2_rx_queue_enable(struct mac_device_info *hw, u8 mode,
-@@ -1601,6 +1602,7 @@ const struct stmmac_ops dwxlgmac2_ops = {
- 	.config_l3_filter = dwxgmac2_config_l3_filter,
- 	.config_l4_filter = dwxgmac2_config_l4_filter,
- 	.set_arp_offload = dwxgmac2_set_arp_offload,
-+	.fpe_map_preemption_class = dwxgmac3_fpe_map_preemption_class,
- };
- 
- int dwxgmac2_setup(struct stmmac_priv *priv)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-index b833ccf3e455..884b37ad0347 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c
-@@ -351,6 +351,49 @@ int dwmac5_fpe_map_preemption_class(struct net_device *ndev,
- 	return 0;
- }
- 
-+int dwxgmac3_fpe_map_preemption_class(struct net_device *ndev,
-+				      struct netlink_ext_ack *extack, u32 pclass)
-+{
-+	u32 val, offset, count, preemptible_txqs = 0;
-+	struct stmmac_priv *priv = netdev_priv(ndev);
-+	int num_tc = netdev_get_num_tc(ndev);
-+
-+	if (!num_tc) {
-+		/* Restore default TC:Queue mapping */
-+		for (u32 i = 0; i < priv->plat->tx_queues_to_use; i++) {
-+			val = readl(priv->ioaddr + XGMAC_MTL_TXQ_OPMODE(i));
-+			writel(u32_replace_bits(val, i, XGMAC_Q2TCMAP),
-+			       priv->ioaddr + XGMAC_MTL_TXQ_OPMODE(i));
-+		}
-+	}
-+
-+	/* Synopsys Databook:
-+	 * "All Queues within a traffic class are selected in a round robin
-+	 * fashion (when packets are available) when the traffic class is
-+	 * selected by the scheduler for packet transmission. This is true for
-+	 * any of the scheduling algorithms."
-+	 */
-+	for (u32 tc = 0; tc < num_tc; tc++) {
-+		count = ndev->tc_to_txq[tc].count;
-+		offset = ndev->tc_to_txq[tc].offset;
-+
-+		if (pclass & BIT(tc))
-+			preemptible_txqs |= GENMASK(offset + count - 1, offset);
-+
-+		for (u32 i = 0; i < count; i++) {
-+			val = readl(priv->ioaddr + XGMAC_MTL_TXQ_OPMODE(offset + i));
-+			writel(u32_replace_bits(val, tc, XGMAC_Q2TCMAP),
-+			       priv->ioaddr + XGMAC_MTL_TXQ_OPMODE(offset + i));
-+		}
-+	}
-+
-+	val = readl(priv->ioaddr + XGMAC_MTL_FPE_CTRL_STS);
-+	writel(u32_replace_bits(val, preemptible_txqs, FPE_MTL_PREEMPTION_CLASS),
-+	       priv->ioaddr + XGMAC_MTL_FPE_CTRL_STS);
-+
-+	return 0;
-+}
-+
- const struct stmmac_fpe_reg dwmac5_fpe_reg = {
- 	.mac_fpe_reg = GMAC5_MAC_FPE_CTRL_STS,
- 	.mtl_fpe_reg = GMAC5_MTL_FPE_CTRL_STS,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.h
-index 2f8bceaf7a0a..4d17302bc868 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.h
-@@ -27,6 +27,9 @@ void stmmac_fpe_set_add_frag_size(struct stmmac_priv *priv, u32 add_frag_size);
- 
- int dwmac5_fpe_map_preemption_class(struct net_device *ndev,
- 				    struct netlink_ext_ack *extack, u32 pclass);
-+int dwxgmac3_fpe_map_preemption_class(struct net_device *ndev,
-+				      struct netlink_ext_ack *extack,
-+				      u32 pclass);
- 
- extern const struct stmmac_fpe_reg dwmac5_fpe_reg;
- extern const struct stmmac_fpe_reg dwxgmac3_fpe_reg;
--- 
-2.34.1
-
+The mechanism for setting the priority value via cmsg mirrors that of
+setting the priority value through setsockopt. The control of the
+priority value is managed by the sk_setsockopt function, which allows
+setting the priority within the range of 0 to 6. However, if the user
+has CAP_NET_ADMIN or CAP_NET_RAW capability, they are permitted to set
+any priority value without restriction. The specified range of 0 to 6
+was selected to align with existing priority value check.
