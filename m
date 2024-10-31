@@ -1,205 +1,204 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF50E199238
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 14:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081CC6F06A
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 14:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385067; cv=none; b=I5K31YbRzluJ8LN2Zoef/P97ZfJEBB9n9JdHMqJDb4iyLnc5vvcGVmmB0le7NDZu4HGjZbiVPy13Ny0/RB9FSRWEr9k5/f5HrJ16noOHdOVxfRyP7bYk7OKzNFrLQ9H+far5qWZ2HGJFEEe05FXxzjYAFeQwxR2t4znMqQP7spA=
+	t=1730385434; cv=none; b=V4sVOjQT86XB+rMvdNqna4gn2VBrrsoLjZ482Zy846xLErtk6ubFyeTLrIVtYGb7EBSUkv3JutFc/KHXyhnMtq94Kliou6qc7DVX3ojuNjLPxYPQJMBVgk+oKF0Nus1YUQ7D4CNzpiLR84GjTVd/8CzZAQ+1wfLUyuq95xyRVKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385067; c=relaxed/simple;
-	bh=WFdTt+1GJ0V7ddHY81cgChe/RFVPqLw7rUm8w5GiO68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jM8jNxtDYAo8ScA1zyRQusky5LOw92oO+FumocKlrY7Zlr5eNCiUXsfOCJJfIcWb39qa1BQ4am9dWvQJhJFPuvlZlfH9pvKMlkZ03LgrNhfBgitj0tP07R8l+OJu3RH+0km1BQjXvJCEJ8hXZq1mQ0vCpKgcJNfm4i8gB4n00Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GlAIsOHH; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730385434; c=relaxed/simple;
+	bh=YEUISV/64SzjZW8yf+F9ak/Z634GVYmrT+x+0I2OYqI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eX7wplFBMRJXLQdubogn76NKu37wQKWgAsrTqVPXYjZWOH8DL9ngX9+AwlNuSZV7aqFRzJVMd+lUkeaUOJRDbS1T4GSX2MB7swGUCqub2p4bJAEW4075jI3zT7y3BufTE+L2zt8xhwGWF7YCotubSn9xYf0I+M5cmU4aiuyXSzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DRTvOd23; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GlAIsOHH"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1e63so1124248a12.0
-        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 07:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730385063; x=1730989863; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ux65onhD056AsOGZQFRmHACoME7CU+HCDiIBWmfwVzw=;
-        b=GlAIsOHHhVUvGbTujEnIrHIrrl3mtZJWoV5WBVKjTvcE2QF1eSRwLIe28k4hIylved
-         +bGeb07bfTmdtnSC0t+WDw2H3PYesDaWMchnGbWvPBrMJnws9qqocdNpql50EU1ati7b
-         J+WtRz+JBZo+ukbH0+hniUj9uVK/T0uLrMwrEvQMKUq2S3RH9E2c9GfWTvzN0eL5r/Lt
-         mB11ne9cjIOOHb2iMUQf1frCz24/AsAICySDDgbWkzvhUsmivafKCCSoFPwX5diPrYsF
-         LMyuPGsustOiyrah3KLZEAs2rm7+C3ntS7kX1eY9B0izzrXF66ISlR9/146aPLyoHflN
-         dbqw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DRTvOd23"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730385431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X6O/3GBw63p0l5BBCUi73LPu6bFx6muuGDbHydYXVPs=;
+	b=DRTvOd23LsUsnlhT8t8EmZsa91pRNSz9+alapXE80oMItZ3qLf75iX0hS4wAzF34HD5/48
+	XplLBstFUsfImuqCPs6VUdJ2S8Db4l/A+ovnEkf1Pr2BExnQufgrhqmlyW8t5JKaOlvHw+
+	R2cJmeO4CJTfUS9xR/a7bL8RwAzYioc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-295-C1LvpNOCOrex6gmheEOR6Q-1; Thu, 31 Oct 2024 10:37:09 -0400
+X-MC-Unique: C1LvpNOCOrex6gmheEOR6Q-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4314f1e0f2bso6240455e9.1
+        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 07:37:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730385063; x=1730989863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ux65onhD056AsOGZQFRmHACoME7CU+HCDiIBWmfwVzw=;
-        b=XK1pw9jVOq8tlFUfkzHVNqDiljGeED/6S6b9Hy+3TdCLGxv2ce3wNZLqmPOEy6D/oP
-         8NdYb59PdIiPrVV1eYKqTs+jl0MU95sD2DklcFoGQ+5yMeL8/p9IYtGcGgFf6wBxCGBA
-         9dMavRRAqMZUd8M+zw+lFA5PHvKh7KA3DJiEXVHRs0VNjLmIzCTpFTQ+qNG/hATu1v8Y
-         hLIpzByBcoRRNOZ0llApIIocUOM3OewcIDLgl8skUkEDFW+6fhuOuZ9nN9Q/jw84HiRQ
-         E3t/EUERDeOp/WHYSN4IFmdawGp/FMWR/AWxIbWDBYBSiKERtgLtPDeQ6aCFgm1PIxUl
-         kpIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHRnAfvg8B4mrarCYT1bb5iUD70kDHjImsEy3hqTznOrYKGud3JHYqvCHwqbrWqW1hom3fHZo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1WLsoebxy/xviIW4MkjFERa5kvnGIwBHwulQo0ZDBey4ON5e4
-	bUhqr4yv1VSxLfzDFqrLcNizF4wpGmYxuzWLLoBQgAwYTdPL2joWq8jQj1F4RnXqxHj+yTPwykL
-	M6RrxP27ZGji18+S9qW/nv5UMI4cD/23x3FKq
-X-Google-Smtp-Source: AGHT+IHoklTkQ+ukEWdkUOgFjc4mfbHRAmJAYT6Hlb24FuRHwDcQitTKMTaByxuK2zFqOIVhnxJGhOrAvc8r2r5Hfy4=
-X-Received: by 2002:a05:6402:84f:b0:5cb:b65d:2b6 with SMTP id
- 4fb4d7f45d1cf-5cea975527bmr2783582a12.32.1730385062660; Thu, 31 Oct 2024
- 07:31:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730385428; x=1730990228;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X6O/3GBw63p0l5BBCUi73LPu6bFx6muuGDbHydYXVPs=;
+        b=WXB14fq1eqtEc9hFZnHry83zw1grKFOzY3pq5O1ilnh3DJA93nAFrTiGUUnC4Sr4Op
+         SGE3+fQd+PQxk2FwFE+3XXmsc2dwHRP/1MhlUsFyeIGv8hTuUGwOkilzE9seNEsomnl0
+         luWF8cCexe9o4o6yQe/twHgMlozG3j+ve+bIB2BHuIix6w5OM80JDb7bX4sveoNTIhwO
+         EQc+fCdyProaLNQ3M2mO2F0TcmwsOC0pBwVpLuuoIKpCioHBy0GvKFCTEE+jWB/tXwss
+         DOKet4yuVICW1EDe6wWLr3X2jiu9MVV0iIJPl80xl3iET5+mR/KHAmRbY2QkIQpJjp6j
+         V/ew==
+X-Forwarded-Encrypted: i=1; AJvYcCU2nZnMG1HbVbFW2MBOKee4j8TNBzWrrrOgtDSseddu36regLrgM5ibm2xusWccS9fLUpAabQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywme5Hqovfq1TiF/OdlYNw/v9VyD4Eg81EuUEiyL0i6JIsOWc14
+	fovzDj0HWl+ubBMVFSHRKnKLbOGwsqeVBLsEghCakMFI1+hh8me/8FzJqkRHWN/RtkLhcjy7of4
+	BDbOvl0CrCR6q1Zun/qtqdC9Sm+axX1rI8Ovx2p5k6f6uO49JFPo0UQ==
+X-Received: by 2002:a05:600c:1ca9:b0:431:50cb:2398 with SMTP id 5b1f17b1804b1-4328323f576mr840055e9.2.1730385428461;
+        Thu, 31 Oct 2024 07:37:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEF4O9nwX/ru8zq05nFqcPwDY9v0i5+K7TjXF+z12dzOML3szYJAwB82EVvIHl/2zaVGkEuAw==
+X-Received: by 2002:a05:600c:1ca9:b0:431:50cb:2398 with SMTP id 5b1f17b1804b1-4328323f576mr839685e9.2.1730385428000;
+        Thu, 31 Oct 2024 07:37:08 -0700 (PDT)
+Received: from [192.168.88.248] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10e7387sm2268534f8f.51.2024.10.31.07.37.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Oct 2024 07:37:07 -0700 (PDT)
+Message-ID: <96516e40-5b1b-4bce-a041-7618c03c5de3@redhat.com>
+Date: Thu, 31 Oct 2024 15:37:05 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021221248.60378-1-chia-yu.chang@nokia-bell-labs.com>
- <20241021221248.60378-2-chia-yu.chang@nokia-bell-labs.com>
- <ea2ccad9-6a4a-48e1-8e99-0289e13d501c@redhat.com> <CANn89iKU5G-vEPkLFY9vGyNBEA-G6msGiPJqiBNAcw4nNXoSbg@mail.gmail.com>
- <CADVnQy=Gt+PHPJ+EdaXY=xcrgeDwusSBmmWV9+6-=93ZhD4SXw@mail.gmail.com>
-In-Reply-To: <CADVnQy=Gt+PHPJ+EdaXY=xcrgeDwusSBmmWV9+6-=93ZhD4SXw@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 31 Oct 2024 15:30:48 +0100
-Message-ID: <CANn89iJNi1=+gAx6P4keDb9wuHoTjZnN0DNRgBEZ5cJuUcaZHg@mail.gmail.com>
-Subject: Re: [PATCH v4 net-next 1/1] sched: Add dualpi2 qdisc
-To: Neal Cardwell <ncardwell@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, chia-yu.chang@nokia-bell-labs.com, 
-	netdev@vger.kernel.org, davem@davemloft.net, stephen@networkplumber.org, 
-	jhs@mojatatu.com, kuba@kernel.org, dsahern@kernel.org, ij@kernel.org, 
-	koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
-	ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
-	cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
-	vidhi_goel@apple.com, Olga Albisser <olga@albisser.org>, 
-	Olivier Tilmans <olivier.tilmans@nokia.com>, Henrik Steen <henrist@henrist.net>, 
-	Bob Briscoe <research@bobbriscoe.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Oct 31, 2024 at 2:28=E2=80=AFPM Neal Cardwell <ncardwell@google.com=
-> wrote:
->
-> On Tue, Oct 29, 2024 at 12:53=E2=80=AFPM Eric Dumazet <edumazet@google.co=
-m> wrote:
-> >
-> > On Tue, Oct 29, 2024 at 1:56=E2=80=AFPM Paolo Abeni <pabeni@redhat.com>=
- wrote:
-> > >
-> > > On 10/22/24 00:12, chia-yu.chang@nokia-bell-labs.com wrote:
-> > > > +/* Default alpha/beta values give a 10dB stability margin with max=
-_rtt=3D100ms. */
-> > > > +static void dualpi2_reset_default(struct dualpi2_sched_data *q)
-> > > > +{
-> > > > +     q->sch->limit =3D 10000;                          /* Max 125m=
-s at 1Gbps */
-> > > > +
-> > > > +     q->pi2.target =3D 15 * NSEC_PER_MSEC;
-> > > > +     q->pi2.tupdate =3D 16 * NSEC_PER_MSEC;
-> > > > +     q->pi2.alpha =3D dualpi2_scale_alpha_beta(41);    /* ~0.16 Hz=
- * 256 */
-> > > > +     q->pi2.beta =3D dualpi2_scale_alpha_beta(819);    /* ~3.20 Hz=
- * 256 */
-> > > > +
-> > > > +     q->step.thresh =3D 1 * NSEC_PER_MSEC;
-> > > > +     q->step.in_packets =3D false;
-> > > > +
-> > > > +     dualpi2_calculate_c_protection(q->sch, q, 10);  /* wc=3D10%, =
-wl=3D90% */
-> > > > +
-> > > > +     q->ecn_mask =3D INET_ECN_ECT_1;
-> > > > +     q->coupling_factor =3D 2;         /* window fairness for equa=
-l RTTs */
-> > > > +     q->drop_overload =3D true;        /* Preserve latency by drop=
-ping */
-> > > > +     q->drop_early =3D false;          /* PI2 drops on dequeue */
-> > > > +     q->split_gso =3D true;
-> > >
-> > > This is a very unexpected default. Splitting GSO packets earlier WRT =
-the
-> > > H/W constaints definitely impact performances in a bad way.
-> > >
-> > > Under which condition this is expected to give better results?
-> > > It should be at least documented clearly.
-> >
-> > I agree, it is very strange to see this orthogonal feature being
-> > spread in some qdisc.
->
-> IMHO it makes sense to offer this split_gso feature in the dualpi2
-> qdisc because the dualpi2 qdisc is targeted at reducing latency and
-> targeted mostly at hops in the last mile of the public Internet, where
-> there can be orders of magnitude disparities in bandwidth between
-> upstream and downstream links (e.g., packets arriving over 10G
-> ethernet and leaving destined for a 10M DSL link). In such cases, GRO
-> may aggregate many packets into a single skb receiving data on a fast
-> ingress link, and then may want to reduce latency issues on the slow
-> link by allowing smaller skbs to be enqueued on the slower egress
-> link.
->
-> > Also, it seems this qdisc could be a mere sch_prio queue, with two
-> > sch_pie children, or two sch_fq or sch_fq_codel ?
->
-> Having two independent children would not allow meeting the dualpi2
-> goal to "preserve fairness between ECN-capable and non-ECN-capable
-> traffic." (quoting text from https://datatracker.ietf.org/doc/rfc9332/
-> ). The main issue is that there may be differing numbers of flows in
-> the ECN-capable and non-ECN-capable queues, and yet dualpi2 wants to
-> maintain approximate per-flow fairness on both sides. To do this, it
-> uses a single qdisc with coupling of the ECN mark rate in the
-> ECN-capable queue and drop rate in the non-ECN-capable queue.
-
-Not sure I understand this argument.
-
-The dequeue  seems to use WRR, so this means that instead of prio,
-this could use net/sched/sch_drr.c,
-then two PIE (with different settings) as children, and a proper
-classify at enqueue to choose one queue or the other.
-
-Reviewing ~1000 lines of code, knowing that in one year another
-net/sched/sch_fq_dualpi2.c
-will follow (as net/sched/sch_fq_pie.c followed net/sched/sch_pie.c )
-is not exactly appealing to me.
-
-/* Select the queue from which the next packet can be dequeued, ensuring th=
-at
-+ * neither queue can starve the other with a WRR scheduler.
-+ *
-+ * The sign of the WRR credit determines the next queue, while the size of
-+ * the dequeued packet determines the magnitude of the WRR credit change. =
-If
-+ * either queue is empty, the WRR credit is kept unchanged.
-+ *
-+ * As the dequeued packet can be dropped later, the caller has to perform =
-the
-+ * qdisc_bstats_update() calls.
-+ */
-+static struct sk_buff *dequeue_packet(struct Qdisc *sch,
-+                                     struct dualpi2_sched_data *q,
-+                                     int *credit_change,
-+                                     u64 now)
-+{
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/4] net: hsr: Add VLAN CTAG filter support
+To: MD Danish Anwar <danishanwar@ti.com>, geliang@kernel.org,
+ liuhangbin@gmail.com, dan.carpenter@linaro.org, jiri@resnulli.us,
+ n.zhandarovich@fintech.ru, aleksander.lobakin@intel.com, lukma@denx.de,
+ horms@kernel.org, jan.kiszka@siemens.com, diogo.ivo@siemens.com,
+ shuah@kernel.org, kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+ andrew+netdev@lunn.ch
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com,
+ Vignesh Raghavendra <vigneshr@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ m-malladi@ti.com
+References: <20241024103056.3201071-1-danishanwar@ti.com>
+ <20241024103056.3201071-3-danishanwar@ti.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241024103056.3201071-3-danishanwar@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
->
-> This could probably be made more clear in the commit message.
->
-> > Many of us are using fq_codel or fq, there is no way we can switch to
-> > dualpi2 just to experiment things.
->
-> Yes, sites that are using fq_codel or fq do not need to switch to dualpi2=
-.
->
-> AFAIK the idea with dualpi2 is to offer a new qdisc for folks
-> developing hardware for the last mile of the Internet where you want
-> low latency via L4S, and want approximate per-flow fairness between
-> L4S and non-L4S traffic, even in the presence of VPN-encrypted traffic
-> (where flow identifiers are not available for fq_codel or fq fair
-> queuing).
->
-> Sites that don't have VPN traffic or don't care about the VPN issue
-> can use fq or fq_codel with the ce_threshold parameter to allow low
-> latency via L4S while achieving approximate per-flow fairness.
->
-> best regards,
-> neal
+
+On 10/24/24 12:30, MD Danish Anwar wrote:
+> From: Murali Karicheri <m-karicheri2@ti.com>
+> 
+> This patch adds support for VLAN ctag based filtering at slave devices.
+> The slave ethernet device may be capable of filtering ethernet packets
+> based on VLAN ID. This requires that when the VLAN interface is created
+> over an HSR/PRP interface, it passes the VID information to the
+> associated slave ethernet devices so that it updates the hardware
+> filters to filter ethernet frames based on VID. This patch adds the
+> required functions to propagate the vid information to the slave
+> devices.
+> 
+> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+> ---
+>  net/hsr/hsr_device.c | 71 +++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 70 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 0ca47ebb01d3..ff586bdc2bde 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -515,6 +515,68 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
+>  	}
+>  }
+>  
+> +static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
+> +				   __be16 proto, u16 vid)
+> +{
+> +	struct hsr_port *port;
+> +	struct hsr_priv *hsr;
+> +	int ret = 0;
+> +
+> +	hsr = netdev_priv(dev);
+> +
+> +	hsr_for_each_port(hsr, port) {
+> +		if (port->type == HSR_PT_MASTER)
+> +			continue;
+
+If the desired behavior is to ignore INTERLINK port, I think you should
+explicitly skip them here, otherwise you will end-up in a
+nondeterministic state.
+
+> +		ret = vlan_vid_add(port->dev, proto, vid);
+> +		switch (port->type) {
+> +		case HSR_PT_SLAVE_A:
+> +			if (ret) {
+> +				netdev_err(dev, "add vid failed for Slave-A\n");
+> +				return ret;
+> +			}
+> +			break;
+> +
+> +		case HSR_PT_SLAVE_B:
+> +			if (ret) {
+> +				/* clean up Slave-A */
+> +				netdev_err(dev, "add vid failed for Slave-B\n");
+> +				vlan_vid_del(port->dev, proto, vid);
+
+This code relies on a specific port_list order - which is actually
+respected at list creation time. Still such assumption looks fragile and
+may lead to long term bugs.
+
+I think would be better to refactor the above loop handling arbitrary
+HSR_PT_SLAVE_A, HSR_PT_SLAVE_B order. Guestimate is that the complexity
+will not increase measurably.
+
+> +				return ret;
+> +			}
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
+> +				    __be16 proto, u16 vid)
+> +{
+> +	struct hsr_port *port;
+> +	struct hsr_priv *hsr;
+> +
+> +	hsr = netdev_priv(dev);
+> +
+> +	hsr_for_each_port(hsr, port) {
+> +		if (port->type == HSR_PT_MASTER)
+> +			continue;
+
+I think it would be more consistent just removing the above statement...
+
+> +		switch (port->type) {
+> +		case HSR_PT_SLAVE_A:
+> +		case HSR_PT_SLAVE_B:
+> +			vlan_vid_del(port->dev, proto, vid);
+> +			break;
+> +		default:> +			break;
+
+... MASTER and INTERLINK port will be ignored anyway.
+
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct net_device_ops hsr_device_ops = {
+>  	.ndo_change_mtu = hsr_dev_change_mtu,
+>  	.ndo_open = hsr_dev_open,
+
+Cheers,
+
+Paolo
+
