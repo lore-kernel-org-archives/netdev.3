@@ -1,161 +1,177 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BF8199391;
-	Thu, 31 Oct 2024 10:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959AD1953A2
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 10:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730368888; cv=none; b=hR2DzqvYE1qTK0WFd+4dtEY8jakxDZPmEeHg/3gkcXiH4N99C5TSaP9ilvqFnc5mj1BhraezY5YE79OTXdNeesJWRf0jF1wLtihT1ZZ2osd9Nky4byvT3HFMGByVUXKymJsvgSgVM3IVo1I0AqXWz0lRTPJ3qFmhwYpbGuzK3oM=
+	t=1730369610; cv=none; b=BdfQSJBtrp+F6+PvuYyqVbPfShcbSHgxwoHZu/yW2rBGTOG5LouY01M7CuCsGjAwfgeRrjOC7wgTiYaD5ZW/4ycKe38TrdcjpoB0Yfh8sNTz/ufJQ0XVJzX+8GpSZ2zvyAucjA6f99vWGIyLkJSl56fwfIcUnuadjv996DvHLYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730368888; c=relaxed/simple;
-	bh=Hfg8B0RXbZ6STkQ5uJVqvG/Ap2uEcGhV6WG6rrqJI0U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bOyiIacu309CUl8ew/YC76Xdv71iTB6gdbhFqJ9+r6PBBKCFRivpUXB1N7wd5rtCXT+1Jn1vO+3mOzuSJChN3OV+fxirY3FHIecrwIU95CrlVk6l2O74op+s1a8IHvu520YuC98Y0av1ufbtcypNkuqpkn9vAmXWN/2XaIegwZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de
-Subject: [PATCH net 3/4] netfilter: nf_reject_ipv6: fix potential crash in nf_send_reset6()
-Date: Thu, 31 Oct 2024 11:01:16 +0100
-Message-Id: <20241031100117.152995-4-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20241031100117.152995-1-pablo@netfilter.org>
-References: <20241031100117.152995-1-pablo@netfilter.org>
+	s=arc-20240116; t=1730369610; c=relaxed/simple;
+	bh=fXxSVMz93g9pT9H5CH7uPNFmTLZeJHNmc6B1HbdMZts=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rTsVBwe+tVFMkGbR3heB6+2QOyqm/6axnn20wPYTDGftswld/w/NfXCWQzAzBybbqRv1rgd62s9SF7gnq6Izywb86ZJufAGubYDBoMdL2r7OvWAzW4KdZVENeCb03SlhGb1Ia3e9dII8vI6PZZAkQ2gPRLjZ6rfDWAn68WHIE+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z73tf9kf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z73tf9kf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730369607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8qpsGLSEnI+XWmBEuuVMwNo+r2BaEC8hB8NVYcY+RYc=;
+	b=Z73tf9kfBwhD5MUXKsCWATHDPPC+DxZk/BRcxIRazXqBpyRoGS9bHpDbNaR1psrlXfQdpf
+	LRyHh7yIRXnc6Gt26B48p4aRaqn+hRiCmkgd1yrbv5dfH6dn21eLBOf8fu2IF3VuqgRfbf
+	KapxgCU1j6bzIxX+AYYA6gFOLDZ9V6c=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-twTIe-xVMlusI7sLtpPFOw-1; Thu, 31 Oct 2024 06:13:26 -0400
+X-MC-Unique: twTIe-xVMlusI7sLtpPFOw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d4cf04be1so378407f8f.2
+        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 03:13:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730369605; x=1730974405;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8qpsGLSEnI+XWmBEuuVMwNo+r2BaEC8hB8NVYcY+RYc=;
+        b=vpmPE8Mbw9rOENUQwoKSvgNTK7cxF2eF699Oh/jTII6ppg99V8c4zI23WMS/78FRk1
+         dPK3fZicsPfJzpkEqS/ff1q1y71F384inBvbgFdhDtTZR4/Q0rL6Z/e4mz+DZgXj25tH
+         V8w2vbCbR7tbrHrlmJuMWScIj4tfDcMiO6CBENbVR4lLryryF5Muu8kDbStOgrH54/PN
+         GobHZzNFLsSVUQu1cE2npasgxMCuoIt0v+rKNNmKwx2bHuO0W3H8zGl9vuzig8F+ZYqY
+         DqbItTsbOTn4244keoFYbz2Ypzl5yC2trViHBWAUHW5NTnVWn41yhf/zTUqo7D5ZnFf2
+         VHnA==
+X-Forwarded-Encrypted: i=1; AJvYcCW92brW2ctRUmOcr2j+RJs0uG8zuHbYllX4GyC6OThAsXFb37u/0FwA0am4z1gc8Wu3J6NFbdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSwEhcWRnuKAkApHQJ0tHIXksQhGkUTsKHaVwFa7odCiKCJpqL
+	Vwg9XIdX0omg3UdfuidJRe3TDQshb4rpNrLa2muLFwqG4PHHkcOgt+yAwlxAFqzQEX/R0MO1Op0
+	9h7lnEEjuwJ8GL9Y5EqPXndmVACjVcSpYgZWGI6ngkax0n9LNIMw4bYcMMeujtLUh
+X-Received: by 2002:a05:6000:18a5:b0:369:9358:4634 with SMTP id ffacd0b85a97d-381be7c80a7mr2432250f8f.19.1730369604477;
+        Thu, 31 Oct 2024 03:13:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGR7Z4vtf7/u6NjtUKe9akOrVpf/NCyjOUCTQtYcxrwIu/laeojTfp3Q1NBwmWGlWwyZTZGmQ==
+X-Received: by 2002:a05:6000:18a5:b0:369:9358:4634 with SMTP id ffacd0b85a97d-381be7c80a7mr2432230f8f.19.1730369604041;
+        Thu, 31 Oct 2024 03:13:24 -0700 (PDT)
+Received: from [192.168.88.248] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10e565csm1653659f8f.48.2024.10.31.03.13.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Oct 2024 03:13:23 -0700 (PDT)
+Message-ID: <0dc8c829-23f0-4904-8017-fc98c079f0ab@redhat.com>
+Date: Thu, 31 Oct 2024 11:13:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v6] ipv6: Fix soft lockups in fib6_select_path under
+ high next hop churn
+To: Omid Ehtemam-Haghighi <omid.ehtemamhaghighi@menlosecurity.com>,
+ netdev@vger.kernel.org
+Cc: adrian.oliver@menlosecurity.com, Adrian Oliver <kernel@aoliver.ca>,
+ "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Ido Schimmel <idosch@idosch.org>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Simon Horman <horms@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241025073003.2079945-1-omid.ehtemamhaghighi@menlosecurity.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241025073003.2079945-1-omid.ehtemamhaghighi@menlosecurity.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+On 10/25/24 09:30, Omid Ehtemam-Haghighi wrote:
+> Soft lockups have been observed on a cluster of Linux-based edge routers
+> located in a highly dynamic environment. Using the `bird` service, these
+> routers continuously update BGP-advertised routes due to frequently
+> changing nexthop destinations, while also managing significant IPv6
+> traffic. The lockups occur during the traversal of the multipath
+> circular linked-list in the `fib6_select_path` function, particularly
+> while iterating through the siblings in the list. The issue typically
+> arises when the nodes of the linked list are unexpectedly deleted
+> concurrently on a different core—indicated by their 'next' and
+> 'previous' elements pointing back to the node itself and their reference
+> count dropping to zero. This results in an infinite loop, leading to a
+> soft lockup that triggers a system panic via the watchdog timer.
+> 
+> Apply RCU primitives in the problematic code sections to resolve the
+> issue. Where necessary, update the references to fib6_siblings to
+> annotate or use the RCU APIs.
+> 
+> Include a test script that reproduces the issue. The script
+> periodically updates the routing table while generating a heavy load
+> of outgoing IPv6 traffic through multiple iperf3 clients. It
+> consistently induces infinite soft lockups within a couple of minutes.
+> 
+> Kernel log:
+> 
+>  0 [ffffbd13003e8d30] machine_kexec at ffffffff8ceaf3eb
+>  1 [ffffbd13003e8d90] __crash_kexec at ffffffff8d0120e3
+>  2 [ffffbd13003e8e58] panic at ffffffff8cef65d4
+>  3 [ffffbd13003e8ed8] watchdog_timer_fn at ffffffff8d05cb03
+>  4 [ffffbd13003e8f08] __hrtimer_run_queues at ffffffff8cfec62f
+>  5 [ffffbd13003e8f70] hrtimer_interrupt at ffffffff8cfed756
+>  6 [ffffbd13003e8fd0] __sysvec_apic_timer_interrupt at ffffffff8cea01af
+>  7 [ffffbd13003e8ff0] sysvec_apic_timer_interrupt at ffffffff8df1b83d
+> -- <IRQ stack> --
+>  8 [ffffbd13003d3708] asm_sysvec_apic_timer_interrupt at ffffffff8e000ecb
+>     [exception RIP: fib6_select_path+299]
+>     RIP: ffffffff8ddafe7b  RSP: ffffbd13003d37b8  RFLAGS: 00000287
+>     RAX: ffff975850b43600  RBX: ffff975850b40200  RCX: 0000000000000000
+>     RDX: 000000003fffffff  RSI: 0000000051d383e4  RDI: ffff975850b43618
+>     RBP: ffffbd13003d3800   R8: 0000000000000000   R9: ffff975850b40200
+>     R10: 0000000000000000  R11: 0000000000000000  R12: ffffbd13003d3830
+>     R13: ffff975850b436a8  R14: ffff975850b43600  R15: 0000000000000007
+>     ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+>  9 [ffffbd13003d3808] ip6_pol_route at ffffffff8ddb030c
+> 10 [ffffbd13003d3888] ip6_pol_route_input at ffffffff8ddb068c
+> 11 [ffffbd13003d3898] fib6_rule_lookup at ffffffff8ddf02b5
+> 12 [ffffbd13003d3928] ip6_route_input at ffffffff8ddb0f47
+> 13 [ffffbd13003d3a18] ip6_rcv_finish_core.constprop.0 at ffffffff8dd950d0
+> 14 [ffffbd13003d3a30] ip6_list_rcv_finish.constprop.0 at ffffffff8dd96274
+> 15 [ffffbd13003d3a98] ip6_sublist_rcv at ffffffff8dd96474
+> 16 [ffffbd13003d3af8] ipv6_list_rcv at ffffffff8dd96615
+> 17 [ffffbd13003d3b60] __netif_receive_skb_list_core at ffffffff8dc16fec
+> 18 [ffffbd13003d3be0] netif_receive_skb_list_internal at ffffffff8dc176b3
+> 19 [ffffbd13003d3c50] napi_gro_receive at ffffffff8dc565b9
+> 20 [ffffbd13003d3c80] ice_receive_skb at ffffffffc087e4f5 [ice]
+> 21 [ffffbd13003d3c90] ice_clean_rx_irq at ffffffffc0881b80 [ice]
+> 22 [ffffbd13003d3d20] ice_napi_poll at ffffffffc088232f [ice]
+> 23 [ffffbd13003d3d80] __napi_poll at ffffffff8dc18000
+> 24 [ffffbd13003d3db8] net_rx_action at ffffffff8dc18581
+> 25 [ffffbd13003d3e40] __do_softirq at ffffffff8df352e9
+> 26 [ffffbd13003d3eb0] run_ksoftirqd at ffffffff8ceffe47
+> 27 [ffffbd13003d3ec0] smpboot_thread_fn at ffffffff8cf36a30
+> 28 [ffffbd13003d3ee8] kthread at ffffffff8cf2b39f
+> 29 [ffffbd13003d3f28] ret_from_fork at ffffffff8ce5fa64
+> 30 [ffffbd13003d3f50] ret_from_fork_asm at ffffffff8ce03cbb
+> 
+> Fixes: 66f5d6ce53e6 ("ipv6: replace rwlock with rcu and spinlock in fib6_table")
+> Reported-by: Adrian Oliver <kernel@aoliver.ca>
+> Signed-off-by: Omid Ehtemam-Haghighi <omid.ehtemamhaghighi@menlosecurity.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: David Ahern <dsahern@gmail.com>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Ido Schimmel <idosch@idosch.org>
+> Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
 
-I got a syzbot report without a repro [1] crashing in nf_send_reset6()
+Given the issue is long-standing, and the fix is somewhat invasive, I
+suggest steering this patch on net-next.
 
-I think the issue is that dev->hard_header_len is zero, and we attempt
-later to push an Ethernet header.
+Would that be ok for you?
 
-Use LL_MAX_HEADER, as other functions in net/ipv6/netfilter/nf_reject_ipv6.c.
+Thanks,
 
-[1]
-
-skbuff: skb_under_panic: text:ffffffff89b1d008 len:74 put:14 head:ffff88803123aa00 data:ffff88803123a9f2 tail:0x3c end:0x140 dev:syz_tun
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 7373 Comm: syz.1.568 Not tainted 6.12.0-rc2-syzkaller-00631-g6d858708d465 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0d 8d 48 c7 c6 60 a6 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 ba 30 38 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc900045269b0 EFLAGS: 00010282
-RAX: 0000000000000088 RBX: dffffc0000000000 RCX: cd66dacdc5d8e800
-RDX: 0000000000000000 RSI: 0000000000000200 RDI: 0000000000000000
-RBP: ffff88802d39a3d0 R08: ffffffff8174afec R09: 1ffff920008a4ccc
-R10: dffffc0000000000 R11: fffff520008a4ccd R12: 0000000000000140
-R13: ffff88803123aa00 R14: ffff88803123a9f2 R15: 000000000000003c
-FS:  00007fdbee5ff6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000005d322000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  eth_header+0x38/0x1f0 net/ethernet/eth.c:83
-  dev_hard_header include/linux/netdevice.h:3208 [inline]
-  nf_send_reset6+0xce6/0x1270 net/ipv6/netfilter/nf_reject_ipv6.c:358
-  nft_reject_inet_eval+0x3b9/0x690 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  br_nf_pre_routing_ipv6+0x63e/0x770 net/bridge/br_netfilter_ipv6.c:184
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_bridge_pre net/bridge/br_input.c:277 [inline]
-  br_handle_frame+0x9fd/0x1530 net/bridge/br_input.c:424
-  __netif_receive_skb_core+0x13e8/0x4570 net/core/dev.c:5562
-  __netif_receive_skb_one_core net/core/dev.c:5666 [inline]
-  __netif_receive_skb+0x12f/0x650 net/core/dev.c:5781
-  netif_receive_skb_internal net/core/dev.c:5867 [inline]
-  netif_receive_skb+0x1e8/0x890 net/core/dev.c:5926
-  tun_rx_batched+0x1b7/0x8f0 drivers/net/tun.c:1550
-  tun_get_user+0x3056/0x47e0 drivers/net/tun.c:2007
-  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2053
-  new_sync_write fs/read_write.c:590 [inline]
-  vfs_write+0xa6d/0xc90 fs/read_write.c:683
-  ksys_write+0x183/0x2b0 fs/read_write.c:736
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdbeeb7d1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 c9 8d 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 1c 8e 02 00 48
-RSP: 002b:00007fdbee5ff000 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fdbeed36058 RCX: 00007fdbeeb7d1ff
-RDX: 000000000000008e RSI: 0000000020000040 RDI: 00000000000000c8
-RBP: 00007fdbeebf12be R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000008e R11: 0000000000000293 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fdbeed36058 R15: 00007ffc38de06e8
- </TASK>
-
-Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/ipv6/netfilter/nf_reject_ipv6.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 7db0437140bf..9ae2b2725bf9 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -268,12 +268,12 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		    int hook)
- {
--	struct sk_buff *nskb;
--	struct tcphdr _otcph;
--	const struct tcphdr *otcph;
--	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
- 	struct dst_entry *dst = NULL;
-+	const struct tcphdr *otcph;
-+	struct sk_buff *nskb;
-+	struct tcphdr _otcph;
-+	unsigned int otcplen;
- 	struct flowi6 fl6;
- 
- 	if ((!(ipv6_addr_type(&oip6h->saddr) & IPV6_ADDR_UNICAST)) ||
-@@ -312,9 +312,8 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	if (IS_ERR(dst))
- 		return;
- 
--	hh_len = (dst->dev->hard_header_len + 15)&~15;
--	nskb = alloc_skb(hh_len + 15 + dst->header_len + sizeof(struct ipv6hdr)
--			 + sizeof(struct tcphdr) + dst->trailer_len,
-+	nskb = alloc_skb(LL_MAX_HEADER + sizeof(struct ipv6hdr) +
-+			 sizeof(struct tcphdr) + dst->trailer_len,
- 			 GFP_ATOMIC);
- 
- 	if (!nskb) {
-@@ -327,7 +326,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 
- 	nskb->mark = fl6.flowi6_mark;
- 
--	skb_reserve(nskb, hh_len + dst->header_len);
-+	skb_reserve(nskb, LL_MAX_HEADER);
- 	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
- 
--- 
-2.30.2
+Paolo
 
