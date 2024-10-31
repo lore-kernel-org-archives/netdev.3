@@ -1,241 +1,326 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A00199FB8;
-	Thu, 31 Oct 2024 12:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1319994D;
+	Thu, 31 Oct 2024 12:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730376398; cv=none; b=nQX3IwVxiouKcZeb8XWlUMPQQbe4xQRc3Euv6/zT7o8LRF0U63hQWXmBfJm0BBm0WE8l5x0dSBE/PCC3RVXqzXUeoxDLVFDP/cx8kN+3AsYSes79vRbPagZKMPW5SZgomXz/FS9b8mqlmXsJ0o0DX8U+qonIAj6pNM9Fd9BfAzM=
+	t=1730376498; cv=none; b=bs7yC1VVM3hziEzuA0L+ZwIYBPeW6W2pe94QaUBvW1POi2jLgHxgAW/nVqICQDa7hAIGilz+ktpRh77snxkL9XGhk+XCCUubbmVY/ldLNiHlPVLxVr1jMokeGs4mXO+RJEun/Xaw1CRhSKGdupQk+nLxxLP6N4GKKUQlSGHOCB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730376398; c=relaxed/simple;
-	bh=5sZBGAZdlZ8njThROCJogtID/PIdkdvJbFc6hdanMog=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Hp3ON8TRdRb2e1ui1H6i+lK5ZLQkzQpDhdQNF6CzzNgfrPHQIL1XkD5BND3XgXJjVXKHscpM2x8zjP1aLk2aLYUpwd3MTTOxJvp4Sc/W5KTT+a1Wzh2carNQrJLvFlGJQ++7ywuTl3G00rzUAt/FIiuD0IT7J8PjXDZQ4lQgMkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XfN2V3MTFz10Mxm;
-	Thu, 31 Oct 2024 20:04:18 +0800 (CST)
-Received: from kwepemg200005.china.huawei.com (unknown [7.202.181.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id EBF341800DB;
-	Thu, 31 Oct 2024 20:06:30 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemg200005.china.huawei.com
- (7.202.181.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 31 Oct
- 2024 20:06:29 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <edumazet@google.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <dsahern@kernel.org>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH net] net: fix data-races around sk->sk_forward_alloc
-Date: Thu, 31 Oct 2024 20:23:44 +0800
-Message-ID: <20241031122344.2148586-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1730376498; c=relaxed/simple;
+	bh=Y7ZW2TLiJTiFT5/GhwReuCB+a+MWFJJLE6XtbOr3WUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fciq3aO4VLLMKP3O9SZZOeh0kBt/v1iTEALe7cUtty3VSopQziYG+4+F6DPAXn+haMbARfIV8fpH79I6UZ+tEATSH3+OjMYIxVpStJxnUI1GhEUdEkxlzsSSF/WKd48pszcPrcWEGAGWDu9O8i92AyO2Zlp7zh8oIcT+ju2cP88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AYSCFYzy; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AYSCFYzy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730376497; x=1761912497;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y7ZW2TLiJTiFT5/GhwReuCB+a+MWFJJLE6XtbOr3WUk=;
+  b=AYSCFYzyy86anbR3ckROUa0kBQu9UdkFS5GRStUEW1rHYZnalSPmmICf
+   izIbb+BzNpiJlXVBUmlPDJn8dYKdoc8qnykbskzBi+vPl3H7WjnIJCMsd
+   ualxX9RNIe/fmyJ5+EYEX/xryrbG2DWfk/dIKb+oTTIurIDWpucK7k66p
+   fIdsFPqz+jVhm4up8vioh4Qabs5OoAf7BkUUnnnlfx8CbEIRgF//EsgqB
+   CUNqJIh/DIeHWkLy2qfNLG7rTBUcvU5Ju8JCrl2+8gPwUi0BMM8sB9nLT
+   76hYShIyhpKGhCWRngu2lkixYOEUBcCuoTFM0eLeQ791DHjVn+74H4P3+
+   Q==;
+X-CSE-ConnectionGUID: 1eMSi2bqQRCxV/WNBt3VBQ==
+X-CSE-MsgGUID: DYrIaaQTQDGb3BOkO4UaHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30275106"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30275106"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 05:08:16 -0700
+X-CSE-ConnectionGUID: XxIYMw2MT/mgw+un73Fgzg==
+X-CSE-MsgGUID: 2OHkfEbxTsC+Le0/PKQsPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; 
+   d="scan'208";a="113397104"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 31 Oct 2024 05:08:12 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6TyD-000g4A-1M;
+	Thu, 31 Oct 2024 12:08:09 +0000
+Date: Thu, 31 Oct 2024 20:07:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: admiyo@os.amperecomputing.com, Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>
+Subject: Re: [PATCH v6 2/2] mctp pcc: Implement MCTP over PCC Transport
+Message-ID: <202410311939.4FK9lgPt-lkp@intel.com>
+References: <20241029165414.58746-3-admiyo@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemg200005.china.huawei.com (7.202.181.32)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241029165414.58746-3-admiyo@os.amperecomputing.com>
 
-Syzkaller reported this warning:
-[   65.568203][    C0] ------------[ cut here ]------------
-[   65.569339][    C0] WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
-[   65.575017][    C0] Modules linked in:
-[   65.575699][    C0] CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
-[   65.577086][    C0] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[   65.577094][    C0] RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
-[   65.577100][    C0] Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
-[   65.577107][    C0] RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
-[   65.577113][    C0] RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
-[   65.577117][    C0] RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
-[   65.577120][    C0] RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
-[   65.577123][    C0] R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
-[   65.577125][    C0] R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
-[   65.577131][    C0] FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
-[   65.592485][    C0] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   65.592489][    C0] CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
-[   65.592491][    C0] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   65.592492][    C0] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   65.592495][    C0] Call Trace:
-[   65.596277][    C0]  <TASK>
-[   65.598171][    C0]  ? __warn+0x88/0x130
-[   65.598874][    C0]  ? inet_sock_destruct+0x1c5/0x1e0
-[   65.598879][    C0]  ? report_bug+0x18e/0x1a0
-[   65.598883][    C0]  ? handle_bug+0x53/0x90
-[   65.598886][    C0]  ? exc_invalid_op+0x18/0x70
-[   65.598888][    C0]  ? asm_exc_invalid_op+0x1a/0x20
-[   65.598893][    C0]  ? inet_sock_destruct+0x1c5/0x1e0
-[   65.598897][    C0]  __sk_destruct+0x2a/0x200
-[   65.604664][    C0]  rcu_do_batch+0x1aa/0x530
-[   65.605450][    C0]  ? rcu_do_batch+0x13b/0x530
-[   65.605456][    C0]  rcu_core+0x159/0x2f0
-[   65.605466][    C0]  handle_softirqs+0xd3/0x2b0
-[   65.607689][    C0]  ? __pfx_smpboot_thread_fn+0x10/0x10
-[   65.607695][    C0]  run_ksoftirqd+0x25/0x30
-[   65.607699][    C0]  smpboot_thread_fn+0xdd/0x1d0
-[   65.610152][    C0]  kthread+0xd3/0x100
-[   65.610158][    C0]  ? __pfx_kthread+0x10/0x10
-[   65.610160][    C0]  ret_from_fork+0x34/0x50
-[   65.610170][    C0]  ? __pfx_kthread+0x10/0x10
-[   65.610172][    C0]  ret_from_fork_asm+0x1a/0x30
-[   65.610181][    C0]  </TASK>
-[   65.610182][    C0] ---[ end trace 0000000000000000 ]---
+Hi,
 
-Its possible that two threads call tcp_v6_do_rcv()/sk_forward_alloc_add()
-concurrently when sk->sk_state == TCP_LISTEN with sk->sk_lock unlocked,
-which triggers a data-race around sk->sk_forward_alloc:
-tcp_v6_rcv
-    tcp_v6_do_rcv
-        skb_clone_and_charge_r
-            sk_rmem_schedule
-                __sk_mem_schedule
-                    sk_forward_alloc_add()
-            skb_set_owner_r
-                sk_mem_charge
-                    sk_forward_alloc_add()
-        __kfree_skb
-            skb_release_all
-                skb_release_head_state
-                    sock_rfree
-                        sk_mem_uncharge
-                            sk_forward_alloc_add()
-                            sk_mem_reclaim
-                                // set local var reclaimable
-                                __sk_mem_reclaim
-                                    sk_forward_alloc_add()
+kernel test robot noticed the following build warnings:
 
-In this syzkaller testcase, two threads call tcp_v6_do_rcv() with
-skb->truesize=768, the sk_forward_alloc changes like this:
- (cpu 1)             | (cpu 2)             | sk_forward_alloc
- ...                 | ...                 | 0
- __sk_mem_schedule() |                     | +4096 = 4096
-                     | __sk_mem_schedule() | +4096 = 8192
- sk_mem_charge()     |                     | -768  = 7424
-                     | sk_mem_charge()     | -768  = 6656
- ...                 |    ...              |
- sk_mem_uncharge()   |                     | +768  = 7424
- reclaimable=7424    |                     |
-                     | sk_mem_uncharge()   | +768  = 8192
-                     | reclaimable=8192    |
- __sk_mem_reclaim()  |                     | -4096 = 4096
-                     | __sk_mem_reclaim()  | -8192 = -4096 != 0
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge linus/master v6.12-rc5 next-20241031]
+[cannot apply to horms-ipvs/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Add lock around tcp_v6_do_rcv() in tcp_v6_rcv() will have some the
-performance impacts, only add lock when opt_skb clone occurs. In some
-scenes, tcp_v6_do_rcv() is embraced by sk->sk_lock, add
-TCP_SKB_CB(skb)->sk_lock_capability to avoid re-locking.
+url:    https://github.com/intel-lab-lkp/linux/commits/admiyo-os-amperecomputing-com/mctp-pcc-Check-before-sending-MCTP-PCC-response-ACK/20241030-005644
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20241029165414.58746-3-admiyo%40os.amperecomputing.com
+patch subject: [PATCH v6 2/2] mctp pcc: Implement MCTP over PCC Transport
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20241031/202410311939.4FK9lgPt-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241031/202410311939.4FK9lgPt-lkp@intel.com/reproduce)
 
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- include/net/tcp.h   |  3 ++-
- net/ipv6/tcp_ipv6.c | 21 ++++++++++++++++-----
- 2 files changed, 18 insertions(+), 6 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410311939.4FK9lgPt-lkp@intel.com/
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index d1948d357dad..110a23dda1eb 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -961,7 +961,8 @@ struct tcp_skb_cb {
- 	__u8		txstamp_ack:1,	/* Record TX timestamp for ack? */
- 			eor:1,		/* Is skb MSG_EOR marked? */
- 			has_rxtstamp:1,	/* SKB has a RX timestamp	*/
--			unused:5;
-+			sk_lock_capability:1, /* Avoid re-lock flag */
-+			unused:4;
- 	__u32		ack_seq;	/* Sequence number ACK'd	*/
- 	union {
- 		struct {
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index d71ab4e1efe1..a1166035fbce 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1588,6 +1588,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	struct sk_buff *opt_skb = NULL;
- 	enum skb_drop_reason reason;
- 	struct tcp_sock *tp;
-+	bool sk_lock_flag = false;
- 
- 	/* Imagine: socket is IPv6. IPv4 packet arrives,
- 	   goes to IPv4 receive handler and backlogged.
-@@ -1618,8 +1619,13 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all)
-+	if (np->rxopt.all) {
-+		if (TCP_SKB_CB(skb)->sk_lock_capability) {
-+			sk_lock_flag = true;
-+			bh_lock_sock_nested(sk);
-+		}
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
-+	}
- 
- 	if (sk->sk_state == TCP_ESTABLISHED) { /* Fast path */
- 		struct dst_entry *dst;
-@@ -1641,7 +1647,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 		tcp_rcv_established(sk, skb);
- 		if (opt_skb)
- 			goto ipv6_pktoptions;
--		return 0;
-+		goto unlock;
- 	}
- 
- 	if (tcp_checksum_complete(skb))
-@@ -1658,7 +1664,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 			}
- 			if (opt_skb)
- 				__kfree_skb(opt_skb);
--			return 0;
-+			goto unlock;
- 		}
- 	} else
- 		sock_rps_save_rxhash(sk, skb);
-@@ -1668,7 +1674,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 		goto reset;
- 	if (opt_skb)
- 		goto ipv6_pktoptions;
--	return 0;
-+	goto unlock;
- 
- reset:
- 	tcp_v6_send_reset(sk, skb, sk_rst_convert_drop_reason(reason));
-@@ -1676,7 +1682,7 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	if (opt_skb)
- 		__kfree_skb(opt_skb);
- 	sk_skb_reason_drop(sk, skb, reason);
--	return 0;
-+	goto unlock;
- csum_err:
- 	reason = SKB_DROP_REASON_TCP_CSUM;
- 	trace_tcp_bad_csum(skb);
-@@ -1715,6 +1721,9 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	consume_skb(opt_skb);
-+unlock:
-+	if (sk_lock_flag)
-+		bh_unlock_sock(sk);
- 	return 0;
- }
- 
-@@ -1900,7 +1909,9 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
- 	skb->dev = NULL;
- 
- 	if (sk->sk_state == TCP_LISTEN) {
-+		TCP_SKB_CB(skb)->sk_lock_capability = true;
- 		ret = tcp_v6_do_rcv(sk, skb);
-+		TCP_SKB_CB(skb)->sk_lock_capability = false;
- 		goto put_and_return;
- 	}
- 
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/net/mctp/mctp-pcc.c:21:
+   include/acpi/acpi_drivers.h:72:43: warning: 'struct acpi_pci_root' declared inside parameter list will not be visible outside of this definition or declaration
+      72 | struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root);
+         |                                           ^~~~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c: In function 'mctp_pcc_driver_add':
+   drivers/net/mctp/mctp-pcc.c:237:39: error: invalid use of undefined type 'struct acpi_device'
+     237 |         struct device *dev = &acpi_dev->dev;
+         |                                       ^~
+   In file included from include/linux/printk.h:599,
+                    from include/asm-generic/bug.h:22,
+                    from arch/alpha/include/asm/bug.h:23,
+                    from include/linux/bug.h:5,
+                    from include/linux/thread_info.h:13,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/alpha/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:79,
+                    from include/linux/spinlock.h:56,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:7,
+                    from include/linux/slab.h:16,
+                    from include/linux/resource_ext.h:11,
+                    from include/linux/acpi.h:13,
+                    from drivers/net/mctp/mctp-pcc.c:11:
+   drivers/net/mctp/mctp-pcc.c:246:17: error: implicit declaration of function 'acpi_device_hid'; did you mean 'acpi_device_dep'? [-Werror=implicit-function-declaration]
+     246 |                 acpi_device_hid(acpi_dev));
+         |                 ^~~~~~~~~~~~~~~
+   include/linux/dynamic_debug.h:224:29: note: in definition of macro '__dynamic_func_call_cls'
+     224 |                 func(&id, ##__VA_ARGS__);                       \
+         |                             ^~~~~~~~~~~
+   include/linux/dynamic_debug.h:250:9: note: in expansion of macro '_dynamic_func_call_cls'
+     250 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dynamic_debug.h:273:9: note: in expansion of macro '_dynamic_func_call'
+     273 |         _dynamic_func_call(fmt, __dynamic_dev_dbg,              \
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:165:9: note: in expansion of macro 'dynamic_dev_dbg'
+     165 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:245:9: note: in expansion of macro 'dev_dbg'
+     245 |         dev_dbg(dev, "Adding mctp_pcc device for HID  %s\n",
+         |         ^~~~~~~
+   drivers/net/mctp/mctp-pcc.c:245:22: warning: format '%s' expects argument of type 'char *', but argument 4 has type 'int' [-Wformat=]
+     245 |         dev_dbg(dev, "Adding mctp_pcc device for HID  %s\n",
+         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dynamic_debug.h:224:29: note: in definition of macro '__dynamic_func_call_cls'
+     224 |                 func(&id, ##__VA_ARGS__);                       \
+         |                             ^~~~~~~~~~~
+   include/linux/dynamic_debug.h:250:9: note: in expansion of macro '_dynamic_func_call_cls'
+     250 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dynamic_debug.h:273:9: note: in expansion of macro '_dynamic_func_call'
+     273 |         _dynamic_func_call(fmt, __dynamic_dev_dbg,              \
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:165:9: note: in expansion of macro 'dynamic_dev_dbg'
+     165 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:165:30: note: in expansion of macro 'dev_fmt'
+     165 |         dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                              ^~~~~~~
+   drivers/net/mctp/mctp-pcc.c:245:9: note: in expansion of macro 'dev_dbg'
+     245 |         dev_dbg(dev, "Adding mctp_pcc device for HID  %s\n",
+         |         ^~~~~~~
+   drivers/net/mctp/mctp-pcc.c:245:56: note: format string is defined here
+     245 |         dev_dbg(dev, "Adding mctp_pcc device for HID  %s\n",
+         |                                                       ~^
+         |                                                        |
+         |                                                        char *
+         |                                                       %d
+   drivers/net/mctp/mctp-pcc.c:247:22: error: implicit declaration of function 'acpi_device_handle'; did you mean 'acpi_device_dep'? [-Werror=implicit-function-declaration]
+     247 |         dev_handle = acpi_device_handle(acpi_dev);
+         |                      ^~~~~~~~~~~~~~~~~~
+         |                      acpi_device_dep
+>> drivers/net/mctp/mctp-pcc.c:247:20: warning: assignment to 'acpi_handle' {aka 'void *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     247 |         dev_handle = acpi_device_handle(acpi_dev);
+         |                    ^
+   drivers/net/mctp/mctp-pcc.c:290:17: error: invalid use of undefined type 'struct acpi_device'
+     290 |         acpi_dev->driver_data = mctp_pcc_ndev;
+         |                 ^~
+   drivers/net/mctp/mctp-pcc.c: At top level:
+   drivers/net/mctp/mctp-pcc.c:317:15: error: variable 'mctp_pcc_driver' has initializer but incomplete type
+     317 | static struct acpi_driver mctp_pcc_driver = {
+         |               ^~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:318:10: error: 'struct acpi_driver' has no member named 'name'
+     318 |         .name = "mctp_pcc",
+         |          ^~~~
+   drivers/net/mctp/mctp-pcc.c:318:17: warning: excess elements in struct initializer
+     318 |         .name = "mctp_pcc",
+         |                 ^~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:318:17: note: (near initialization for 'mctp_pcc_driver')
+   drivers/net/mctp/mctp-pcc.c:319:10: error: 'struct acpi_driver' has no member named 'class'
+     319 |         .class = "Unknown",
+         |          ^~~~~
+   drivers/net/mctp/mctp-pcc.c:319:18: warning: excess elements in struct initializer
+     319 |         .class = "Unknown",
+         |                  ^~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:319:18: note: (near initialization for 'mctp_pcc_driver')
+   drivers/net/mctp/mctp-pcc.c:320:10: error: 'struct acpi_driver' has no member named 'ids'
+     320 |         .ids = mctp_pcc_device_ids,
+         |          ^~~
+   drivers/net/mctp/mctp-pcc.c:320:16: warning: excess elements in struct initializer
+     320 |         .ids = mctp_pcc_device_ids,
+         |                ^~~~~~~~~~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:320:16: note: (near initialization for 'mctp_pcc_driver')
+   drivers/net/mctp/mctp-pcc.c:321:10: error: 'struct acpi_driver' has no member named 'ops'
+     321 |         .ops = {
+         |          ^~~
+   drivers/net/mctp/mctp-pcc.c:321:16: error: extra brace group at end of initializer
+     321 |         .ops = {
+         |                ^
+   drivers/net/mctp/mctp-pcc.c:321:16: note: (near initialization for 'mctp_pcc_driver')
+   drivers/net/mctp/mctp-pcc.c:321:16: warning: excess elements in struct initializer
+   drivers/net/mctp/mctp-pcc.c:321:16: note: (near initialization for 'mctp_pcc_driver')
+   drivers/net/mctp/mctp-pcc.c:326:1: warning: data definition has no type or storage class
+     326 | module_acpi_driver(mctp_pcc_driver);
+         | ^~~~~~~~~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:326:1: error: type defaults to 'int' in declaration of 'module_acpi_driver' [-Werror=implicit-int]
+>> drivers/net/mctp/mctp-pcc.c:326:1: warning: parameter names (without types) in function declaration
+   drivers/net/mctp/mctp-pcc.c:317:27: error: storage size of 'mctp_pcc_driver' isn't known
+     317 | static struct acpi_driver mctp_pcc_driver = {
+         |                           ^~~~~~~~~~~~~~~
+   drivers/net/mctp/mctp-pcc.c:317:27: warning: 'mctp_pcc_driver' defined but not used [-Wunused-variable]
+   cc1: some warnings being treated as errors
+
+
+vim +247 drivers/net/mctp/mctp-pcc.c
+
+   231	
+   232	static int mctp_pcc_driver_add(struct acpi_device *acpi_dev)
+   233	{
+   234		struct mctp_pcc_lookup_context context = {0, 0, 0};
+   235		struct mctp_pcc_hw_addr mctp_pcc_hw_addr;
+   236		struct mctp_pcc_ndev *mctp_pcc_ndev;
+   237		struct device *dev = &acpi_dev->dev;
+   238		struct net_device *ndev;
+   239		acpi_handle dev_handle;
+   240		acpi_status status;
+   241		int mctp_pcc_mtu;
+   242		char name[32];
+   243		int rc;
+   244	
+   245		dev_dbg(dev, "Adding mctp_pcc device for HID  %s\n",
+   246			acpi_device_hid(acpi_dev));
+ > 247		dev_handle = acpi_device_handle(acpi_dev);
+   248		status = acpi_walk_resources(dev_handle, "_CRS", lookup_pcct_indices,
+   249					     &context);
+   250		if (!ACPI_SUCCESS(status)) {
+   251			dev_err(dev, "FAILURE to lookup PCC indexes from CRS");
+   252			return -EINVAL;
+   253		}
+   254	
+   255		//inbox initialization
+   256		snprintf(name, sizeof(name), "mctpipcc%d", context.inbox_index);
+   257		ndev = alloc_netdev(sizeof(struct mctp_pcc_ndev), name, NET_NAME_ENUM,
+   258				    mctp_pcc_setup);
+   259		if (!ndev)
+   260			return -ENOMEM;
+   261	
+   262		mctp_pcc_ndev = netdev_priv(ndev);
+   263		rc =  devm_add_action_or_reset(dev, mctp_cleanup_netdev, ndev);
+   264		if (rc)
+   265			goto cleanup_netdev;
+   266		spin_lock_init(&mctp_pcc_ndev->lock);
+   267	
+   268		rc = mctp_pcc_initialize_mailbox(dev, &mctp_pcc_ndev->inbox,
+   269						 context.inbox_index);
+   270		if (rc)
+   271			goto cleanup_netdev;
+   272		mctp_pcc_ndev->inbox.client.rx_callback = mctp_pcc_client_rx_callback;
+   273	
+   274		//outbox initialization
+   275		rc = mctp_pcc_initialize_mailbox(dev, &mctp_pcc_ndev->outbox,
+   276						 context.outbox_index);
+   277		if (rc)
+   278			goto cleanup_netdev;
+   279	
+   280		mctp_pcc_hw_addr.parent_id = cpu_to_be32(0);
+   281		mctp_pcc_hw_addr.inbox_id = cpu_to_be16(context.inbox_index);
+   282		mctp_pcc_hw_addr.outbox_id = cpu_to_be16(context.outbox_index);
+   283		ndev->addr_len = sizeof(mctp_pcc_hw_addr);
+   284		dev_addr_set(ndev, (const u8 *)&mctp_pcc_hw_addr);
+   285	
+   286		mctp_pcc_ndev->acpi_device = acpi_dev;
+   287		mctp_pcc_ndev->inbox.client.dev = dev;
+   288		mctp_pcc_ndev->outbox.client.dev = dev;
+   289		mctp_pcc_ndev->mdev.dev = ndev;
+   290		acpi_dev->driver_data = mctp_pcc_ndev;
+   291	
+   292		/* There is no clean way to pass the MTU to the callback function
+   293		 * used for registration, so set the values ahead of time.
+   294		 */
+   295		mctp_pcc_mtu = mctp_pcc_ndev->outbox.chan->shmem_size -
+   296			sizeof(struct mctp_pcc_hdr);
+   297		ndev->mtu = MCTP_MIN_MTU;
+   298		ndev->max_mtu = mctp_pcc_mtu;
+   299		ndev->min_mtu = MCTP_MIN_MTU;
+   300	
+   301		/* ndev needs to be freed before the iomemory (mapped above) gets
+   302		 * unmapped,  devm resources get freed in reverse to the order they
+   303		 * are added.
+   304		 */
+   305		rc = register_netdev(ndev);
+   306		return rc;
+   307	cleanup_netdev:
+   308		free_netdev(ndev);
+   309		return rc;
+   310	}
+   311	
+   312	static const struct acpi_device_id mctp_pcc_device_ids[] = {
+   313		{ "DMT0001"},
+   314		{}
+   315	};
+   316	
+   317	static struct acpi_driver mctp_pcc_driver = {
+   318		.name = "mctp_pcc",
+   319		.class = "Unknown",
+   320		.ids = mctp_pcc_device_ids,
+   321		.ops = {
+   322			.add = mctp_pcc_driver_add,
+   323		},
+   324	};
+   325	
+ > 326	module_acpi_driver(mctp_pcc_driver);
+   327	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
