@@ -1,169 +1,68 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3031019CC0B
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 13:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7D195FF1;
+	Thu, 31 Oct 2024 13:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730381289; cv=none; b=ASX8GVAfF6c31qXNoyHVXvWHgDTJWn1hYlZA7qU3EMtF6JI2OBVS+lv6wfhgmNYZIoscIjg3Zd6szvJpbPLH4vY2gaqvEq1iHaIE3zIlJgwog0Lr7Y9dvyOUjkOo8FoUNIqLuU2r0TFGXwItU3MBAlhjViomvcA28OlI+eHKCFc=
+	t=1730381819; cv=none; b=JZ2eYnygCL3quPRY9RMM/WDP6poWpE7zXGQncGFwQ9prHPSFpO9L3RC1YZqyjzobxp9y+6a3F3OBVRJRpGCsJ0h1glG8FP1WpYsI70f9BGnm96P6HvqtTUegX+MTLby+sCZlowbrj4bjZsPXVSKPBqncbHBah8HVTRUgXjW6QQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730381289; c=relaxed/simple;
-	bh=Jjcka7E6MaSQ7nC/CFEot10Oi7cbuvv9l+tAnI2O9Ug=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XTg2MHk0V5WgkHfq158VpZcQTffsN5pFj26yjhgGWMEb7TsVnoRugC26JD5TNQ63b/ENu3jVOjvDFNyAr3n9NJIFKyOJSAWQLdL9TjxvvyRgu0oynZSt5XaVltw0biBis6Jo1Jv9hLGc+9pCXcBkRoW+BOvDoNG9i5cbkRhXTUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XGjViwhx; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730381819; c=relaxed/simple;
+	bh=g5zIDqS1lgFwlAPosIhVl0Rw/a5LszVsuLo7t4HkTbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MUI8GydFKmS38e8E07Dw2SAMrjvogehdtAf9xaTqss32fCY7/9NHi8f0lIREojLXzoZOKNG5swMPh2Rp6lokdIFxZmskIUu9daJMIb0MUvaqU6vNpnaLEa5VDJHwvxclFg3d8cv5n2yJEJDx6w/9GLwv5hV/pxDLpkZmeDSO/Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ep+llTuV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XGjViwhx"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-460b295b9eeso129871cf.1
-        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 06:28:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730381286; x=1730986086; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x+8pPFT1eOD/z3ha9J7u1uxzhaY7+UYdheZyJLi46ZI=;
-        b=XGjViwhxWUaEKhDMyq/6RvrnMokx/rK+gX3rlfnO4oVAX1qk87i58iSeav2yTrtend
-         jgN6s9D6putKTKrj7x6v0weJEOkguMIe706LeJ7deYB9IKnprZfYIYYKt9V0xagXRxG7
-         onDAWLb0dUNrzGnapGrWV6CB2G3QQWaHjv+WjyWvsiZI5TpXiaNXlLwZKM6VdmUkqgE+
-         9QjeWGAWELb4mbOVcDy4QEPLJRwknZJi4J0Z2Qgi0wcSieDxp5ShhGsOLTuIwHYOa/8e
-         mSeMn3Oe8mVnqCAUwJxob5ha87J2/2KJGZSNTfeTI3uL/FHbAMV5v3nFD+qVgUvL/ieI
-         d3ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730381286; x=1730986086;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x+8pPFT1eOD/z3ha9J7u1uxzhaY7+UYdheZyJLi46ZI=;
-        b=uUPzgm3O+1OmbOSTq20CN0UTIk3TlEj5PXyGgiMofesyaLFOZCtUVrQD+n1NxKgfBD
-         ebqCRzs7Ourem9YvXAk+VUCvEjPfJF7vfa1Z75tQn6Jh40zCakGTSiuDRlUsp3OPzu9F
-         FYOylQrx/GKcdfHVp0xUFc3nYYorSpoFQiBEK/WdV523A1m9OjrF2R1br0Filgcy2Oqq
-         J/U8D+6XoietOvZTZGBLt69it+fFpm0XH1bldfGY0Hh9m9flkjeDM5fvbU85iyb9ICcg
-         zd+Z4P/z6ooWmrFCP10og91KXTxyVMf8ovKYMYxCTK7bhq/Z48aL1ZVCLNRKQ0EnSQlo
-         2iQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpJ8rGFpf+mzscavDPPTj7mGcE7H/NTj4Ve//amhBRUHgxrObnTSkdmEQWpb/mBYAfcS2GuMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKxhExDw0khg3CkYP3g9ESQAHmt3J7/Ye0CqSkLS2IiMKsRtKx
-	c5ZrNmAZ/fHj6l7oxcPQlU5zcFsfuhehIdKJA2D67v9eyB4iaD3crtH5321S14hTB4aV1qH2Vxj
-	XQRKuarxILEy6lhyyiOj3jbkR9QC4UgOrCQU6
-X-Gm-Gg: ASbGnctMLwm1Wfo0uwPSEMT2sk0WTAeX19ZvWeqWhzAD4aaMvMb+NwNHNPo5WYlEm00
-	c8Js2dmswnVMmMwpSsy2ugDMFakJ0EEBHL7V1O9P9cnLTSo1TekMkQ7Fn0HA+gMHe
-X-Google-Smtp-Source: AGHT+IHYNqzSZym//dzOXkU1elr06MP9CUrZZFR8bYzLtv3uxrKgDmP5/hQUYFV0jUEicQkMxk2E0Cr7lCnhMQBhMsI=
-X-Received: by 2002:a05:622a:614:b0:461:4be1:c612 with SMTP id
- d75a77b69052e-462ad2da722mr2934321cf.21.1730381285738; Thu, 31 Oct 2024
- 06:28:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ep+llTuV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CC5C4E692;
+	Thu, 31 Oct 2024 13:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730381819;
+	bh=g5zIDqS1lgFwlAPosIhVl0Rw/a5LszVsuLo7t4HkTbc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ep+llTuViGIlfAGPKpvluPJ22wHAOqKb89xpX9ahi3zYhsKawF14vjcwWlQD7RFr1
+	 yxD7rwK4Bd7s46B0CBK/rOIzfFXwoza/Dwmf13ke2na85j0CZNY6Lf9TuUZ8W+sg+D
+	 VOKyy+5LXoU3t/gOInTiusL/pZM2BBODtKDVbxBW/gHoCmXi9sQ60yVgOkpTFdrqkP
+	 /dGSBmb8MOx67QaDnPO/Gdv7/Vxp4awlYui+Of84tt0XSJfsJjoL1RyYguzZElvcEv
+	 bFuXA5tmULg1OlJzI6tIQ/7LNPdseXmkJ2ZW3D96kZhUI5G5rKmKH9gSj+xPw+Cllb
+	 CzdMgzV0q1A4A==
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Chiara Meiohas <cmeiohas@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-rdma@vger.kernel.org,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH rdma-next 0/3] Fixes to set_netdev/get_netdev flow
+Date: Thu, 31 Oct 2024 15:36:49 +0200
+Message-ID: <cover.1730381292.git.leon@kernel.org>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021221248.60378-1-chia-yu.chang@nokia-bell-labs.com>
- <20241021221248.60378-2-chia-yu.chang@nokia-bell-labs.com>
- <ea2ccad9-6a4a-48e1-8e99-0289e13d501c@redhat.com> <CANn89iKU5G-vEPkLFY9vGyNBEA-G6msGiPJqiBNAcw4nNXoSbg@mail.gmail.com>
-In-Reply-To: <CANn89iKU5G-vEPkLFY9vGyNBEA-G6msGiPJqiBNAcw4nNXoSbg@mail.gmail.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Thu, 31 Oct 2024 09:27:49 -0400
-Message-ID: <CADVnQy=Gt+PHPJ+EdaXY=xcrgeDwusSBmmWV9+6-=93ZhD4SXw@mail.gmail.com>
-Subject: Re: [PATCH v4 net-next 1/1] sched: Add dualpi2 qdisc
-To: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, chia-yu.chang@nokia-bell-labs.com, 
-	netdev@vger.kernel.org, davem@davemloft.net, stephen@networkplumber.org, 
-	jhs@mojatatu.com, kuba@kernel.org, dsahern@kernel.org, ij@kernel.org, 
-	koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
-	ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
-	cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
-	vidhi_goel@apple.com, Olga Albisser <olga@albisser.org>, 
-	Olivier Tilmans <olivier.tilmans@nokia.com>, Henrik Steen <henrist@henrist.net>, 
-	Bob Briscoe <research@bobbriscoe.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 29, 2024 at 12:53=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> On Tue, Oct 29, 2024 at 1:56=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> w=
-rote:
-> >
-> > On 10/22/24 00:12, chia-yu.chang@nokia-bell-labs.com wrote:
-> > > +/* Default alpha/beta values give a 10dB stability margin with max_r=
-tt=3D100ms. */
-> > > +static void dualpi2_reset_default(struct dualpi2_sched_data *q)
-> > > +{
-> > > +     q->sch->limit =3D 10000;                          /* Max 125ms =
-at 1Gbps */
-> > > +
-> > > +     q->pi2.target =3D 15 * NSEC_PER_MSEC;
-> > > +     q->pi2.tupdate =3D 16 * NSEC_PER_MSEC;
-> > > +     q->pi2.alpha =3D dualpi2_scale_alpha_beta(41);    /* ~0.16 Hz *=
- 256 */
-> > > +     q->pi2.beta =3D dualpi2_scale_alpha_beta(819);    /* ~3.20 Hz *=
- 256 */
-> > > +
-> > > +     q->step.thresh =3D 1 * NSEC_PER_MSEC;
-> > > +     q->step.in_packets =3D false;
-> > > +
-> > > +     dualpi2_calculate_c_protection(q->sch, q, 10);  /* wc=3D10%, wl=
-=3D90% */
-> > > +
-> > > +     q->ecn_mask =3D INET_ECN_ECT_1;
-> > > +     q->coupling_factor =3D 2;         /* window fairness for equal =
-RTTs */
-> > > +     q->drop_overload =3D true;        /* Preserve latency by droppi=
-ng */
-> > > +     q->drop_early =3D false;          /* PI2 drops on dequeue */
-> > > +     q->split_gso =3D true;
-> >
-> > This is a very unexpected default. Splitting GSO packets earlier WRT th=
-e
-> > H/W constaints definitely impact performances in a bad way.
-> >
-> > Under which condition this is expected to give better results?
-> > It should be at least documented clearly.
->
-> I agree, it is very strange to see this orthogonal feature being
-> spread in some qdisc.
+This series fixes the set_netdev/get_netdev flow in mlx5 drive around LAG.
 
-IMHO it makes sense to offer this split_gso feature in the dualpi2
-qdisc because the dualpi2 qdisc is targeted at reducing latency and
-targeted mostly at hops in the last mile of the public Internet, where
-there can be orders of magnitude disparities in bandwidth between
-upstream and downstream links (e.g., packets arriving over 10G
-ethernet and leaving destined for a 10M DSL link). In such cases, GRO
-may aggregate many packets into a single skb receiving data on a fast
-ingress link, and then may want to reduce latency issues on the slow
-link by allowing smaller skbs to be enqueued on the slower egress
-link.
+Thanks
 
-> Also, it seems this qdisc could be a mere sch_prio queue, with two
-> sch_pie children, or two sch_fq or sch_fq_codel ?
+Chiara Meiohas (3):
+  RDMA/mlx5: Call dev_put() after the blocking notifier
+  RDMA/core: Implement RoCE GID port rescan and export delete function
+  RDMA/mlx5: Ensure active slave attachment to the bond IB device
 
-Having two independent children would not allow meeting the dualpi2
-goal to "preserve fairness between ECN-capable and non-ECN-capable
-traffic." (quoting text from https://datatracker.ietf.org/doc/rfc9332/
-). The main issue is that there may be differing numbers of flows in
-the ECN-capable and non-ECN-capable queues, and yet dualpi2 wants to
-maintain approximate per-flow fairness on both sides. To do this, it
-uses a single qdisc with coupling of the ECN mark rate in the
-ECN-capable queue and drop rate in the non-ECN-capable queue.
+ drivers/infiniband/core/roce_gid_mgmt.c       | 30 ++++++++++++++++---
+ drivers/infiniband/hw/mlx5/main.c             | 29 +++++++++++-------
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 ++++++++
+ include/rdma/ib_verbs.h                       |  3 ++
+ 4 files changed, 59 insertions(+), 15 deletions(-)
 
-This could probably be made more clear in the commit message.
+-- 
+2.46.2
 
-> Many of us are using fq_codel or fq, there is no way we can switch to
-> dualpi2 just to experiment things.
-
-Yes, sites that are using fq_codel or fq do not need to switch to dualpi2.
-
-AFAIK the idea with dualpi2 is to offer a new qdisc for folks
-developing hardware for the last mile of the Internet where you want
-low latency via L4S, and want approximate per-flow fairness between
-L4S and non-L4S traffic, even in the presence of VPN-encrypted traffic
-(where flow identifiers are not available for fq_codel or fq fair
-queuing).
-
-Sites that don't have VPN traffic or don't care about the VPN issue
-can use fq or fq_codel with the ce_threshold parameter to allow low
-latency via L4S while achieving approximate per-flow fairness.
-
-best regards,
-neal
