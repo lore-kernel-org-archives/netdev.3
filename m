@@ -1,112 +1,72 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669EB1B3727;
-	Thu, 31 Oct 2024 12:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ECF19E7FA
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 12:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730378363; cv=none; b=eo34+mDOvXIqbLG2FKlcGkoRKB7VALC6MLDVHrjDxSwNdIl4MRDbKLJRiL+ch05V5JVacYwsIlrv01+c+2/D7xnVEYvZ6MtP+piYpXFB/O/PI4Qcaj1sTckiqCqgl9rRr93FUxl6DCuurJ4hJeIWhD9CANxqSJlCmiR3eItmoRU=
+	t=1730378613; cv=none; b=gQErZj/DOOvdwcsCpiOkNHDML62ET0QC1U2dez58e390w0Wzy2ac133Z2TGdstAaZNB+z9vJJA5qdNBPPvoG+FftjJoUHC4KVUdX6Vtybq30j9K2U6A+ELEjW+1cTqqRZLajWJjptWERXvtYvAj0XxDBGx+zta0bPduR71gxPEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730378363; c=relaxed/simple;
-	bh=udSu0PifOzRa5GkWP7sFryWEU4fALlPs0aaNg1SJDJs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BULUr9AwPz3aqR993pRlcqNMiFuVsZAr3riYTECP8sLRady7dCl2SJNibdcfd0vSEqPhoz4CNzRqrIdfbsYm85flPH+8niFecFbmzcU96Hm8EMQR67Bfu2efW4/JlIIna56LnHkwBG9FHxY/Oz1GWJs2I7vGH0DbKOAeqtN4hXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bPxAIQZt; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730378613; c=relaxed/simple;
+	bh=bocSY7vbMicEhDBpc3OxOM6h7JPzn2rWWWwKJqgosp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bURKr7Rb0Zuy5SJI8CEk4B6ylTg5or5nLSajyblp+mwJI8mI/0V7nCZhRHS1eOdG3XwfMY7QzgXOjuqgRpWASz/9+jzzinbztybAxFgkM+pterITmu2sWJxUuboTgTJPr8eXrVtXP5SPcPlSN2jxvKXf2GiZcpJqBdFYKIalRe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=P2NEWXBW; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bPxAIQZt"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71e983487a1so671662b3a.2;
-        Thu, 31 Oct 2024 05:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730378360; x=1730983160; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XZgSPrHkP+5PHa4TM3CPdf/GMcXQ4aZTX0bTblaWKZw=;
-        b=bPxAIQZtv5kZxCLcgrXU96DKUhFmPstyCLHYjVkp9TrD8+qFgEW4oHM4hHNRhYyyIx
-         tVg2ukhTzhMMEjLch3sLYQLF4PsECQnk7bN2i8XpOc5HnEPpEbqyaclcgPMcu1ecA73U
-         2JxTXoZUSiwzWtS4Ak/ozDtGj0eJDyHLdx3IgeW9ex0Cn+Er0F20Qvi/TFkxxtmNQT72
-         10crtRRvQC6PkV44DYQMkm/DNtBEGgnKWLX3k2UjM2doVd3Ssu23NCD4vw3yUwWs8lH4
-         HI5FTxI9ZWjcuPzrRnOWTMNEZoFfUSrBP1fJFEIIgB7ZQaqw2aqlnGIoIXKBCZlCgPkE
-         ff1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730378360; x=1730983160;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XZgSPrHkP+5PHa4TM3CPdf/GMcXQ4aZTX0bTblaWKZw=;
-        b=daemF6RfuTuuUoTP6H8TYm3QVTAsQz9jLXld3BwXvipJVGb8TQ7iRhE4nLKim8VroE
-         v8YgudfBBPrSkOwp64EdINLB8Ow9Y792S/NN8i3Hd9q+dI4rvtrOTsVFJY4QKBuhCuDX
-         jZbm+U6lhrlsLRocQWYSPXetgHcx+tUx2rPOwGusPNy3VUWVywxsYSwAbgDPDXvq906M
-         31sHVsmXjBGJIV+RlhY0PAdG3Z6ziAJ+l8GlcYAvbh3aArRNHUrSYYm83CehW7i6UVSy
-         Cgj3f75ND0dZfZQWu2INfXyZm82XvEXAvBl4/gDwTQtZ/JA3LeTHsMoSo6xBAO469GBJ
-         iGqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXd+xtZK7PozA/r1rCxgRuoSs2a35uWA2r5UMrnpe/S22nAfMU+yIei0Mnl7D2r0nL+nzcagB702qAP2sM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG8N8fIiAAM83LPbM4yhJkNZgXqKFToOotify8ICIlh4ch8Onb
-	PL3F39wK2PpSRZc6DIPcstMbZOy4l4gunhudENs45J4JVH+PKLqw9w70ow==
-X-Google-Smtp-Source: AGHT+IEYepYTbWzaNjZB6/WykZo7JXNjSOPeC4faI93w6dXeeMLicqGen6Mz6ACbQEadzKBbhQtzhg==
-X-Received: by 2002:a05:6a00:1397:b0:714:15ff:a2a4 with SMTP id d2e1a72fcca58-720b9c96d0emr4011140b3a.13.1730378360174;
-        Thu, 31 Oct 2024 05:39:20 -0700 (PDT)
-Received: from localhost.localdomain ([129.146.253.192])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-720bc20f50esm1075931b3a.94.2024.10.31.05.39.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 05:39:19 -0700 (PDT)
-From: Furong Xu <0x1207@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	xfr@outlook.com,
-	Furong Xu <0x1207@gmail.com>
-Subject: [PATCH net-next v7 8/8] net: stmmac: xgmac: Enable FPE for tc-mqprio/tc-taprio
-Date: Thu, 31 Oct 2024 20:38:02 +0800
-Message-Id: <527799d9e4e28fbd51eb37754f130b037bc0f6ea.1730376866.git.0x1207@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1730376866.git.0x1207@gmail.com>
-References: <cover.1730376866.git.0x1207@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="P2NEWXBW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=2x764qeI5+g0J2JFcSYLK0w4dQfCOCuN31kxwrQrzac=; b=P2NEWXBW+fdYe/MRySXXTczCWc
+	S2qZ/PYtotVCB+lLGlvTZDDPjDwlgvkLQxGoFqImyTUcgA/22XYXOzhKAiJKGwD04yFTwCaGCwK8t
+	E4z/ooAThaqWPk+fxF1QHrXYhQkeVbnHoqR+mGfV6QbiAIpomBP6npIxE1xfzCJ1dPB4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t6UWC-00Bmd6-3n; Thu, 31 Oct 2024 13:43:16 +0100
+Date: Thu, 31 Oct 2024 13:43:16 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, kuba@kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, kernel-team@meta.com, sanmanpradhan@meta.com,
+	sdf@fomichev.me, vadim.fedorenko@linux.dev, hmohsin@meta.com
+Subject: Re: [PATCH net-next v2] eth: fbnic: Add support to write TCE TCAM
+ entries
+Message-ID: <4bc30e2c-a0ba-4ccb-baf6-c76425b7995b@lunn.ch>
+References: <20241024223135.310733-1-mohsin.bashr@gmail.com>
+ <757b4a24-f849-4dae-9615-27c86f094a2e@lunn.ch>
+ <97383310-c846-493a-a023-4d8033c5680b@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97383310-c846-493a-a023-4d8033c5680b@gmail.com>
 
-The FPE on XGMAC is ready, it is time to update dwxgmac_tc_ops to
-let user configure FPE via tc-mqprio/tc-taprio.
+On Wed, Oct 30, 2024 at 05:51:53PM -0700, Mohsin Bashir wrote:
+> Hi Andrew,
+> 
 
-Signed-off-by: Furong Xu <0x1207@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Basically, in addition to the RX TCAM (RPC) that you mentioned, we
+> also have a TCAM on the TX path that enables traffic redirection for
+> BMC. Unlike other NICs where BMC diversion is typically handled by
+> firmware, FBNIC firmware does not touch anything host-related. In
+> this patch, we are writing MACDA entries from the RPC (Rx Parser and
+> Classifier) to the TX TCAM, allowing us to reroute any host traffic
+> destined for BMC.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 75ad2da1a37f..6a79e6a111ed 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1290,8 +1290,8 @@ const struct stmmac_tc_ops dwxgmac_tc_ops = {
- 	.setup_cls_u32 = tc_setup_cls_u32,
- 	.setup_cbs = tc_setup_cbs,
- 	.setup_cls = tc_setup_cls,
--	.setup_taprio = tc_setup_taprio_without_fpe,
-+	.setup_taprio = tc_setup_taprio,
- 	.setup_etf = tc_setup_etf,
- 	.query_caps = tc_query_caps,
--	.setup_mqprio = tc_setup_mqprio_unimplemented,
-+	.setup_mqprio = tc_setup_dwmac510_mqprio,
- };
--- 
-2.34.1
+Two TCAMs, that makes a bit more sense.
 
+But why is this hooked into set_rx_mode? It is nothing to do with RX.
+I assume you have some mechanism to get the MAC address of the BMC. I
+would of thought you need to write one entry into the TCAM during
+probe, and you are done?
+
+	Andrew
