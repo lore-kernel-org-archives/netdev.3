@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436EC1C8FCF;
-	Thu, 31 Oct 2024 21:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3040B1CB50C;
+	Thu, 31 Oct 2024 21:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730410164; cv=none; b=KvYPB6CnH60cSjztDSfxO6ymtG9ZSqrXdLuu6dwaAvHZwB2sZ4YbyLu3aWbgcRHsIjoSlf9r/lwflwt0gQNbnE7fCKBGunX0aLguCDo9FwFl17TnXp9DbJ3YB8z7Krqz3/LpPKCaqA04CVtOj3BXGX9WEQexULF5MKGIEBlTU6k=
+	t=1730410802; cv=none; b=kwWTnr+0M/858pDsBR4C5xKNV35Fo/48uhfp4StGiufuoWM5ja1TU6qqgQXQ63SqBOjfhTnbZRpWQ5REouDDwDJg2ww9PSmMuGKdOz8JwKhbM7sEK0OnyrUMivfAgGPzdtyf4sXbZxk/8uRIG+4Aw7iBUBAWu0NPsDNHBsVHHVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730410164; c=relaxed/simple;
+	s=arc-20240116; t=1730410802; c=relaxed/simple;
 	bh=BA7mKwb6fhLIyezq1tTdt6iVDL1a84xL9CmDyRMXGhw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ESXCwbGjlLuAjiYtsYff9WoTmOr1cXj9Fl3TT3NO2t35ZFFWYKcUVtaXdbwELaJAtDUKa0/tcmXhJrVmKriLLDYrpKv+/fVqs37n7gdazqP68zWn4BbHWQFjjHY5j4QI+wuFGBLM2WShgFveoijvdrFL10Q8JtFobzKYDJnY7Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UEkYrWL7; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zc1KQfxpnSOz8vSkUBYTpn27X1OdJmqG363WhMJMzczHgRt4xSUemolSN+Q64QoItobvbpElcK4hYxTLVhmNAk3oR/CY2tqEtewRVyOWw/er1UXvA7I5+aBw6eBpl8pIHNC/Q1F0X8l0xH0C8Pt9lv+53Q7Nf6XnJxgHEZDXJcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Sr9G+XSv; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UEkYrWL7"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Sr9G+XSv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=mS365H68vw5lonypZKzKALxD6gdEUDKqKwISeJ1jw4Q=; b=UEkYrWL7D2ruGGPOfNUmqYD9b3
-	rBNsGr+ovflTpzYQjDhH6ALzZWY3Lrd8UgrpP6+NqjUfyqP2XfupXP+Vpz5YcVmZRciibRXV8Gh+2
-	HNEXpmTEz+163n3s+9wr1Qw+vIRMXKq+GIrm0U3JVj8qrrHVqQnn1zQWa6aMEhxBjjCA=;
+	bh=mS365H68vw5lonypZKzKALxD6gdEUDKqKwISeJ1jw4Q=; b=Sr9G+XSvyqFa9M5u1twybque0W
+	r6sO+pWp2+Ik0r3rF+WtMmNmrJqeIghCXPgD0QwXXoxqJ2G9ACQ4oSlOayOftCKGC9sSwKtPgGhOg
+	Rh0Z7dVhf1WaAWT2ayMFfS7QY9nP8niDLIFTc8POgnPDukVKLlDDCTLWEYrjjcdLb+10=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1t6cj9-00BoxI-Sf; Thu, 31 Oct 2024 22:29:11 +0100
-Date: Thu, 31 Oct 2024 22:29:11 +0100
+	id 1t6ctR-00BozS-2l; Thu, 31 Oct 2024 22:39:49 +0100
+Date: Thu, 31 Oct 2024 22:39:49 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Kory Maincent <kory.maincent@bootlin.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -50,7 +50,7 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>
 Subject: Re: [PATCH RFC net-next v2 06/18] net: ethtool: Add support for new
  PSE device index description
-Message-ID: <bedeea0e-a64a-46e3-832e-aea51b09b459@lunn.ch>
+Message-ID: <a46e47aa-ee67-4c97-bde6-428536bdee59@lunn.ch>
 References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
  <20241030-feature_poe_port_prio-v2-6-9559622ee47a@bootlin.com>
 Precedence: bulk
