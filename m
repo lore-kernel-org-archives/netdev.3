@@ -1,59 +1,62 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from sonic309-23.consmr.mail.bf2.yahoo.com (sonic309-23.consmr.mail.bf2.yahoo.com [74.6.129.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64225125D5;
-	Fri,  1 Nov 2024 00:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079D817C69
+	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 00:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.129.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730420230; cv=none; b=WHqCjphoWvGLtKgk1HxPyN5AAefi/QAD+ra9djvT+1oxdgRV2GXnJ1DZWjJYONFF7TMKv5xCVAzKeCKgvodrRXjLxb9W79Of1DFP/u2Qd9wtCn+k/XVUqUv1H1mdNT/JBEVeC24Dc3dz0TNUDsGsP5myDGsrgqyxKzauVw8EL54=
+	t=1730420325; cv=none; b=euIcTdKhRM5eRq32xLHO3FDjKnyGrXfxoF7Ggi6lEcuyx2M2DFTN0mLB0w7G0i9K+DRR+07aeLPYY8w1hGnRLmE2FvPgPicMEzgR5Ljpr7eH9BQkvycfaT4OgrvK3ao21w7NWfT/uxjJgYFTJeqTJ9V4zFHkOQlB/TA1eqgWyzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730420230; c=relaxed/simple;
-	bh=WQg0JGL8yptHRH9IRuyPlWC2E1pyfVxO5c82rqB++qY=;
+	s=arc-20240116; t=1730420325; c=relaxed/simple;
+	bh=bGeCFlDKVwcUrsRrfOolRi92r08DaTcp1HW8qctO0ig=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mj0d7gecngX4hWvCnWA9FpB/1tHw/gUA8DhXwWj3R+PAybmAS6bGY+NcTzYT41OGlbyFvVVoex+t3zSzJc8e1iou7eEE47fsV5rfdvJ5ttNuFljlgkxLOW5cRRzTrmLXPg5m7ZdF5g3ee/UiB8znYJnTzDdKRExwrTJWSdIrvG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DIsiYimV; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=CoU6femvw/bX5/VL+pBCVR/h1x+hrOKvwnKU8Qzmhp2IkkIQm+aFjYbnhfUA18dlKbQZHmxHZam9ZCiA13B6p5DcefY8SmNZpkgzL6t6rN+fCWabDw3t781lIaBeIWkrQYK1DWvEN3IcK3TjTQwOl0YoBRqypB/Abh7ariA2xxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=qx1vyEok; arc=none smtp.client-ip=74.6.129.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DIsiYimV"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4316a44d1bbso13094535e9.3;
-        Thu, 31 Oct 2024 17:17:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730420223; x=1731025023; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P2EJuEyFiN68hhK8MSxL7dIq2AKKdbwQxq43XbmG+7Y=;
-        b=DIsiYimVFQc/RkMmV3TBqV8a+ZI6le+2Gg9by2v2oYRS3Q0bFpYJ91tj+P6/vh4BnU
-         Nn/46zeMjYzWe41WlBorhfKbNK9+uuddTRNN+kek2ufvx5a/WAo6Fn3Fhyvqkl56xcQN
-         wYYU9llqyhDXXXJP9wdcJay2Fe4AJVG6+uoavq8UlyPmlOURJ0kDIGKyPCwttZLSoBP+
-         nMipbysXqxhh096J6KShCpjE/4T9nxeamp2zp6yLF5LcucMoL1Cp+YxTXg/yJ1oBSieh
-         0zc83XfGeaCNnEK9TYAD71nqw0TgeJPuBlPZyDvyDduiRNgiE5LBvWTA5FrEjbiaJyJn
-         ibZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730420223; x=1731025023;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P2EJuEyFiN68hhK8MSxL7dIq2AKKdbwQxq43XbmG+7Y=;
-        b=L1PGzhu/+pEXty1d2mhEYfhGIr4CaMvGmGvXvbCUZvQgiLfBkgagg9FMswl2gmymko
-         95tUSYxacVaC7mqZ9bM5LCPR0vV08SbyxU76jznEY2yC1O5K6JLccKix5ysIKX4QYX/W
-         dPf7Fc09+x+Z1Lj4OZcLEd8/oTUqUhTOUOMBXSWv0b26iDG+Oa2JfmZ1/OX4wgGRSfV3
-         W4mmIWJcghZngDF4JwzvZMtjnjuN4c+0PsZjMI9DSb+IQxZY5F8NeIJsTrYreCkPlqq7
-         JwG05zwep68Fm5UrlyMhBnFq4HlRCXc+3nEAqsSUWfXeSJRn8pIqbtlwasdJBkfuYDRd
-         DvXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVC/KbzSaRm+sIA18NUg+bU2bYdZ3pn1e2menvYKUn97Nhna3Wka1R9wmHS3N6B6KRmPUdV0Qw9ylrwrVbd+fqB@vger.kernel.org, AJvYcCVVSrvgnMeBbwpw3AfdCmF+onglpIa+MxWuQMB75L/nQ9SYZ5ZAfyJohScGbhPCFf3Lu1jMCPvh@vger.kernel.org, AJvYcCX4XT9kppZCalIV9Qoc7cWipFVy8YjmVVv7sCggKAqKYWcrCYOm5XhrqIobL2gnHNn7Az1jI92Tzqe1qeg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIzCQdAusDadwTT8U7glNyDGJ+I90i3s+ZmA42NMxfY7JZE01o
-	iTEYVj2GD92M7UIgpC5F9ncoXAUR13K4uK27Nnp1ad7/Qqy09gh+
-X-Google-Smtp-Source: AGHT+IEK/UPPFoOiVemODI/IruJOOPVGN2GFsiItXtbwEv0NFeSgbbNb/dKCwgxzvtGzdyUfkMZG4g==
-X-Received: by 2002:a5d:598d:0:b0:37c:d4ba:1127 with SMTP id ffacd0b85a97d-381be776e4amr4792793f8f.16.1730420222344;
-        Thu, 31 Oct 2024 17:17:02 -0700 (PDT)
-Received: from [192.168.0.2] ([69.6.8.124])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e67csm3456537f8f.75.2024.10.31.17.16.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 17:17:00 -0700 (PDT)
-Message-ID: <e05ca0a3-5573-4617-8bb9-f33c062fa519@gmail.com>
-Date: Fri, 1 Nov 2024 02:17:25 +0200
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="qx1vyEok"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730420317; bh=eu4JLi7eLmvP4ETQmNluHXDkiwbXDA/WottlZNR6SF0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=qx1vyEokGL3K2VqyZcg/JKFTcKf/FpcbdW/bQGXJyM7YzHRr5eKg5A1fbcG70t+yVOSffGZxVoNaYu4e00KXb3GBtURBgNMSZ2ND8WgNPzO6vrU1OB+/OxwVw5HzbeY6k86prqCqHwNviQEZe+vDj0KMztJLoRIhzmW90DYhjV91QCAabLemjwnJWHPo2PceJ25KSZ0UZrrdD2hGsLQFWEbU3ujOr/9FevNApYZBD9NnsqeIZm2wlksMHEzw7mvlj/0ozG5V5yMNZIPnG35+ZYeoRlSiGDk1ev7ro9120aLfh5upHpqF05hrit+EsJ4Q9XM1ecoeHBg8jytHqH5OOA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730420317; bh=irGB6gWxwr0nNDJY7/tE/WkdfO6jnsD7jExlaazHX4y=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=G1eQIK9KEgpjdHiBVUBOU+9E+dDIy9gZoJLH+LOKzSaikSf0+alT3S9nlMjPJRITHlO7MAKgbzNCIzQG6HooDSs67oQxnz8arbJNlKMY+H1g51X5NcEhejn2AcZL+bVVtq9hbB2uGb0Nv0at3ODF0UbOY+XcTwvM9xI/ksIR3bjP0WFhPvQ9BrDKbm6ivPWnYzAZ0OthQ5c4ow5/L/FNUf87XnGaHGR7j3t8oC2lYrpDs+fM82hBUiWW96vry40xWQFvlrxjv4Oj3VxaZJ13VzB4QNZByvdJeVaBeqLscCbb95T4jGtHdJ2VAlTDC33mXJJcDz5cljeif4lJKfRSzQ==
+X-YMail-OSG: JdQfgtYVM1n5tcS3SqmucOjrTFRw.RVpYkQtxq_APZq4BSI31ret4rbPS3lqWNI
+ Zd5OhcVOUzZ3jx78ZLx9KfrUstkrllRV8flBe.59bGngygJ2oE67YSEMl4a8D4obFQyRophaulhB
+ 6AO28jMh89u_thyvVdxMd1wOmJdOGFjyZlTK97Y6cy_r9BfzCiekRZTRGqaWrxdhjGP.NTC.0AkO
+ 93AHqaKpIGgoCEjtdNnqMANm8RmEXTY60df7O3TUzIsOgHwBfkbYYbvwxDD7Rn7uw6R7wafM5GLo
+ A6W21rLP2MKUtXGPxYiczuW8McJDabECNwBK3SqyHlPUrdcHoHoxKMozMRCTTReg9_ch24jCOGLH
+ 4MMPHiFHQ8Xh_Ax78SFRg8U8ol1nwJ4NRvq7E58ZT.5JGLW7omJ3BQMxvS5Sbuy8M6qay0MjVyfZ
+ qXQl7qinJrlV4fAZYkyoYJTI2iLAOEoylPh8QcxhIRFuq__f8LM72tfZvQTk2tflHlB5I6bhbU9n
+ oXG6llfg28chQGGeBJNuL9d7zfnF9deZgzQq5ublpbSQLspLdLspsiIRFA3TIdL9qoDjbhblXd1y
+ ZnBncnUolv1U8d.KzqDqJTwNQzT8gQLXUbvEevP1iGny_JLm.jIj9OJsRGL2RTcuutNMgtPzcXLO
+ diSEmB0Vw0VjaCi_BbmQvyWUbMMYUmYcJP1IFPiZJMeT1JiTEv3J6mHRPBkoUfL_xyyt87Ikjj0j
+ qIO7bWPzyazA08j_P3hNTvgfWlQves2YZBpBZgxQcQ65EobL4qn9q1XccUCxVyut.bxSb5psOqRA
+ jOMqEJATd8xES9u.EhrcjiFLk5VnpUYPE0q4k2cq3vQUVG979CNlXO8CTKVBGsVdGh7RD7M5CbQo
+ vMMUp2lcp4QKq4arnAKIwn8DNnd4epjKFltjlvM_XuTbWu2q6rf6pVEVUe63pxXsxrWhkDMkEfjE
+ Mjvd2RXbUnBV81lVKK33pJBZwcLzaPiMt01Myzl8sew6pEcmWFkjsyT0L90BiMv.Geaa7_iFVnjc
+ X7AWonIwEMIXzXkCK9MF8pGNJIn0sOnoJvE1p0ytwaEcMH4tCodNPNsDc6MuNjZgU7OAxzw7VaGf
+ 8N82sRc1M.ArbRF9wMzuZWsQ6tWJlzeBMvrn_0zBinoCbtrPFeuT3LbkyL02UnRCABf5o0nHKdkT
+ o9NP2sh0lg9gChaa9LM3CUZDwuIuiNRBSEkUj8c2vML76UNAcFf9OVTGhua6H3dK.SVZtZvybGvZ
+ BlDciz0UPENNr5MkmTzIB89xPuCNS6YIAqpTkyiufbSv9.hf8XESWuJkDq0M95tWSAt6Y1x6Q1yO
+ _xdDGjWtDs7YFaugkDgzO.fjXH4yA2uiJOWLOmHrxo39Q2c1I.bkEtMOTfuGpaB41wyJceEIk90q
+ 4uNRBhp87tTI0mT2vRJZxqLnvqaLjbTQdEZO4cCqmLyhbp1GF6rIlov9wrAOibBz8fOH_06UOfnl
+ jdnNMOclf1dphshxxvttD1lwaDZAF719yBeKJ6ZP.GsycGt6uVIX_z.90AgUH3Bz7tGIjQLoFVKH
+ usrgvEyDKDBUlb_BbYK5gGoOF3nPKh_gVV85D0.t43_hk5ippRFxAx2PEWVZfdh9FRNR2JZnaCh7
+ dV6LfLGIII0X90tGSkCxusA99woXMRs_CUXpDtr6jwHH_rE7bTjyOFwh4AMjStEO9LDm5crKvbSY
+ HX2zjZ.9Cuflnp24ZpuIcc_C_JvuTLmPWy24aVBj5grlc7pfRWzgfWEaXX7I24R5WBLTqrBFsuhH
+ h52qh6uTWhgT2ck1KKylKqDy1vH9UTHX4mAOnlhK5Fre8VHuolQGIRBs.SS5PAEL2peTcZ8J2RdC
+ O6CMZAvp5ocYn3GRR5VP17R_qmYjtXY1hzTN57T5nDfK7qTS_SymXR9C1K5hKZuEEEKDNaq0OEt_
+ qQaDoc7VP4ngkWkLU19otSZHM5EMhnOy7.VOKCC43cZ3YXQG_YBNNA6Lc88yd9M.yNzl2.8Zgekw
+ XQB6yYSclI.W6mVe0u_ZecI7NmeWaelD8ClGOk9RP7ArL4w7Wed8xyvLUuYywsIt0cupsJtWkIsj
+ drB3SskGLMIdig1UQdugwPF_GPZBubmseLta_Fi3gq0CO8KLttwt7_XxLe.EhWwS6hKq7q2_uROa
+ 6IVzUCEmug3SXNCmVW68JhI97oCtQurk.7qol.djB7GppriU.qLswG9h0i8wDQpkQv3X3Qjk_YuC
+ KpvXtBXPWykvrjFSd9Zc4nm.X2.PeEu.Xk50iHPLv712ATHW7kUi34QS36djBEp4VgyPywoAzYjh
+ WXcPrlYMObDr3SRvMyE1r
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 23c0fe68-1315-4fb8-8fd1-1cbca2149f8b
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Fri, 1 Nov 2024 00:18:37 +0000
+Received: by hermes--production-gq1-5dd4b47f46-xx4tp (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID a32cda00a9a9713e3e947b5095f6c21c;
+          Thu, 31 Oct 2024 23:58:17 +0000 (UTC)
+Message-ID: <dd727620-9823-4701-aaf1-080b03fb6ccd@schaufler-ca.com>
+Date: Thu, 31 Oct 2024 16:58:13 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,222 +64,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 03/24] ovpn: add basic netlink support
-To: Jiri Pirko <jiri@resnulli.us>, Antonio Quartulli <antonio@openvpn.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- sd@queasysnail.net
-References: <20241002-b4-ovpn-v8-0-37ceffcffbde@openvpn.net>
- <20241002-b4-ovpn-v8-3-37ceffcffbde@openvpn.net>
- <ZwP-_-qawQJIBZnv@nanopsycho.orion>
- <fd952c28-1f17-45da-bd64-48917a7db651@openvpn.net>
- <ZwT0SkGHu5VHQ9Hd@nanopsycho.orion>
- <056588a7-de1b-4416-8553-750c8d20dc97@openvpn.net>
- <ZwUrAn8xrF2BCrMp@nanopsycho.orion>
+Subject: Re: [PATCH v3 2/5] LSM: Replace context+len with lsm_context
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Paul Moore <paul@paul-moore.com>
+Cc: linux-security-module@vger.kernel.org, jmorris@namei.org,
+ serge@hallyn.com, keescook@chromium.org, john.johansen@canonical.com,
+ penguin-kernel@i-love.sakura.ne.jp, stephen.smalley.work@gmail.com,
+ linux-kernel@vger.kernel.org, selinux@vger.kernel.org, mic@digikod.net,
+ netdev@vger.kernel.org, audit@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, Todd Kjos <tkjos@google.com>,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20241023212158.18718-3-casey@schaufler-ca.com>
+ <68a956fa44249434dedf7d13cd949b35@paul-moore.com>
+ <ZyQPfFvPD72rx4ME@calendula> <ZyQRgL_jWdvKgRl-@calendula>
 Content-Language: en-US
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-In-Reply-To: <ZwUrAn8xrF2BCrMp@nanopsycho.orion>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <ZyQRgL_jWdvKgRl-@calendula>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Hello Jiri,
+On 10/31/2024 4:23 PM, Pablo Neira Ayuso wrote:
+> On Fri, Nov 01, 2024 at 12:15:16AM +0100, Pablo Neira Ayuso wrote:
+>> Hi Paul,
+>>
+>> This patch breaks nf_conntrack_netlink, Casey mentioned that he will
+>> post another series.
 
-Sorry for the late reply. Could you elaborate a bit reasons for the RTNL 
-interface implementation? Please find the questions inlined.
+I have a fix, it is pretty simple. How about I send a 6/5 patch for it?
+Or, if you want to fix it yourself, in ctnetlink_secctx_size() remove the
+declaration of "len" and replace its use in the return with "ret".
 
-On 08.10.2024 15:52, Jiri Pirko wrote:
-> Tue, Oct 08, 2024 at 11:16:01AM CEST, antonio@openvpn.net wrote:
->> On 08/10/2024 10:58, Jiri Pirko wrote:
->>> Tue, Oct 08, 2024 at 10:01:40AM CEST, antonio@openvpn.net wrote:
->>>> Hi,
+> Please, see:
+>
+> https://lore.kernel.org/netfilter-devel/ZxpxZuErvXSLApsf@calendula/
+>
+>> On Thu, Oct 31, 2024 at 06:53:38PM -0400, Paul Moore wrote:
+>>> On Oct 23, 2024 Casey Schaufler <casey@schaufler-ca.com> wrote:
+>>>> Replace the (secctx,seclen) pointer pair with a single
+>>>> lsm_context pointer to allow return of the LSM identifier
+>>>> along with the context and context length. This allows
+>>>> security_release_secctx() to know how to release the
+>>>> context. Callers have been modified to use or save the
+>>>> returned data from the new structure.
 >>>>
->>>> On 07/10/24 17:32, Jiri Pirko wrote:
->>>>> Wed, Oct 02, 2024 at 11:02:17AM CEST, antonio@openvpn.net wrote:
->>>>>
->>>>> [...]
->>>>>
->>>>>
->>>>>> +operations:
->>>>>> +  list:
->>>>>> +    -
->>>>>> +      name: dev-new
->>>>>> +      attribute-set: ovpn
->>>>>> +      flags: [ admin-perm ]
->>>>>> +      doc: Create a new interface of type ovpn
->>>>>> +      do:
->>>>>> +        request:
->>>>>> +          attributes:
->>>>>> +            - ifname
->>>>>> +            - mode
->>>>>> +        reply:
->>>>>> +          attributes:
->>>>>> +            - ifname
->>>>>> +            - ifindex
->>>>>> +    -
->>>>>> +      name: dev-del
->>>>>
->>>>> Why you expose new and del here in ovn specific generic netlink iface?
->>>>> Why can't you use the exising RTNL api which is used for creation and
->>>>> destruction of other types of devices?
+>>>> security_secid_to_secctx() and security_lsmproc_to_secctx()
+>>>> will now return the length value on success instead of 0.
 >>>>
->>>> That was my original approach in v1, but it was argued that an ovpn interface
->>>> needs a userspace program to be configured and used in a meaningful way,
->>>> therefore it was decided to concentrate all iface mgmt APIs along with the
->>>> others in the netlink family and to not expose any RTNL ops.
->>>
->>> Can you please point me to the message id?
->>
->> <CAHNKnsQnHAdxC-XhC9RP-cFp0d-E4YGb+7ie3WymXVL9N-QS6A@mail.gmail.com> from
->> Sergey and subsequent replies.
->> RTNL vs NL topic starts right after the definition of 'ovpn_link_ops'
-> 
-> Yeah, does not make sense to me. All devices should implement common
-> rtnl ops, the extra-config, if needed, could be on a separate channel.
-> I don't find Sergey's argumentation valid.
-
-Do we consider word *should* in terms of RFC 2119:
-
-    SHOULD   This word, or the adjective "RECOMMENDED", mean that there
-    may exist valid reasons in particular circumstances to ignore a
-    particular item, but the full implications must be understood and
-    carefully weighed before choosing a different course.
-
-I am asking because rtnl_link_register() allows ops without .newlink 
-implementation. What makes .newlink implementation as least optional and 
-gives a freedom in design.
-
-Let me briefly summarize my argumentation from the referenced thread. We 
-have two classes of links point-to-point and point-to-multipoint. The 
-major class is PtP and RTNL is perfectly suited to manage it. While PtMP 
-is a minor class and it is an obstacle for RTNL due to need to manage 
-multiple peers. What requires a different interface to manage these 
-peers. Lets call it GENL interface. A PtMP-class netdev without any 
-configured peer is useless, what makes GENL interface for peers 
-management mandatory. Mandatory to implement in both user- and kernel-space.
-
-Link creation can be implemented using any of these (RTNL or GENL) 
-interfaces. GENL interface is already mandatory to implement in a 
-user-space software, while RTNL can be considered optional to implement. 
-So, implementing the link creation using GENL requires only a new 
-message support implementation. While implementing the the link creation 
-using RTNL requires a whole new interface implementation (socket 
-read/write, messages demux, etc.).
-
-My point is, GENL-only management gives us consolidated and clear 
-solution, while GENL+RTNL requires code duplication and causes a 
-complexity. That's it.
-
-
-Jiri, do you see big flaws in this reasoning?
-
-
->> Recently Kuniyuki commented on this topic as well in:
->> <20240919055259.17622-1-kuniyu@amazon.com>
->> and that is why I added a default dellink implemetation.
-> 
-> Having dellink without newlink implemented is just wrong.
-
-Could you clarify this statement please? I can not recall any 
-documentation or a code block that enforces .newlink implementation in 
-case of the .dellink presence.
-
-
-Generally speaking, I can understand a feel of irregularity when looking 
-at code implementing delete operation without a link creation 
-counterpart. This confusion can be resolved taking into consideration a 
-difference in a nature of these operations. A new link can not be 
-created automatically while an existing link can be removed 
-automatically without any extra inputs.
-
-.newlink designated only for fulfilling user's requests since it 
-requires extra information unavailable inside the kernel. While .dellink 
-has two semantics: (a) user's requests fulfilling, (b) automatic cleanup 
-of unneeded remainders.
-
- From that perspective, having an option to implement .dellink without 
-.newlink implementation looks reasonable.
-
-
->>>> However, recently we decided to add a dellink implementation for better
->>>> integration with network namespaces and to allow the user to wipe a dangling
->>>> interface.
->>>
->>> Hmm, one more argument to have symmetric add/del impletentation in RTNL
->>>
->>>
->>>>
->>>> In the future we are planning to also add the possibility to create a
->>>> "persistent interface", that is an interface created before launching any
->>>> userspace program and that survives when the latter is stopped.
->>>> I can guess this functionality may be better suited for RTNL, but I am not
->>>> sure yet.
->>>
->>> That would be quite confusing to have RTNL and genetlink iface to
->>> add/del device. From what you described above, makes more sent to have
->>> it just in RTNL
->>
->> All in all I tend to agree.
->>
->>>
->>>>
->>>> @Jiri: do you have any particular opinion why we should use RTNL ops and not
->>>> netlink for creating/destroying interfaces? I feel this is mostly a matter of
->>>> taste, but maybe there are technical reasons we should consider.
->>>
->>> Well. technically, you can probabaly do both. But it is quite common
->>> that you can add/delete these kind of devices over RTNL. Lots of
->>> examples. People are used to it, aligns with existing flows.
->>
->> The only counterargument I see is the one brought by Sergey: "the ovpn
->> interface is not usable after creation, if no openvpn process is running".
->>
->> However, allowing to create "persistent interfaces" will define a use-case
->> for having an ovpn device without any userspace process.
->>
->> @Sergey what is your opinion here? I am not sure persistent interfaces were
->> discussed at the time you brought your point about RTNL vs NL.
->>
->>
->> Regards,
->>
->>
->>>
->>>>
->>>> Thanks a lot for your contribution.
->>>>
->>>> Regards,
->>>>
->>>>
->>>>>
->>>>>
->>>>> ip link add [link DEV | parentdev NAME] [ name ] NAME
->>>>> 		    [ txqueuelen PACKETS ]
->>>>> 		    [ address LLADDR ]
->>>>> 		    [ broadcast LLADDR ]
->>>>> 		    [ mtu MTU ] [index IDX ]
->>>>> 		    [ numtxqueues QUEUE_COUNT ]
->>>>> 		    [ numrxqueues QUEUE_COUNT ]
->>>>> 		    [ netns { PID | NETNSNAME | NETNSFILE } ]
->>>>> 		    type TYPE [ ARGS ]
->>>>>
->>>>> ip link delete { DEVICE | dev DEVICE | group DEVGROUP } type TYPE [ ARGS ]
->>>>>
->>>>> Lots of examples of existing types creation is for example here:
->>>>> https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking
->>>>>
->>>>>
->>>>>
->>>>>> +      attribute-set: ovpn
->>>>>> +      flags: [ admin-perm ]
->>>>>> +      doc: Delete existing interface of type ovpn
->>>>>> +      do:
->>>>>> +        pre: ovpn-nl-pre-doit
->>>>>> +        post: ovpn-nl-post-doit
->>>>>> +        request:
->>>>>> +          attributes:
->>>>>> +            - ifindex
-
---
-Sergey
+>>>> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+>>>> Cc: netdev@vger.kernel.org
+>>>> Cc: audit@vger.kernel.org
+>>>> Cc: netfilter-devel@vger.kernel.org
+>>>> Cc: Todd Kjos <tkjos@google.com>
+>>>> ---
+>>>>  drivers/android/binder.c                |  5 ++-
+>>>>  include/linux/lsm_hook_defs.h           |  5 ++-
+>>>>  include/linux/security.h                |  9 +++---
+>>>>  include/net/scm.h                       |  5 ++-
+>>>>  kernel/audit.c                          |  9 +++---
+>>>>  kernel/auditsc.c                        | 16 ++++------
+>>>>  net/ipv4/ip_sockglue.c                  |  4 +--
+>>>>  net/netfilter/nf_conntrack_netlink.c    |  8 ++---
+>>>>  net/netfilter/nf_conntrack_standalone.c |  4 +--
+>>>>  net/netfilter/nfnetlink_queue.c         | 27 +++++++---------
+>>>>  net/netlabel/netlabel_unlabeled.c       | 14 +++------
+>>>>  net/netlabel/netlabel_user.c            |  3 +-
+>>>>  security/apparmor/include/secid.h       |  5 ++-
+>>>>  security/apparmor/secid.c               | 26 +++++++--------
+>>>>  security/security.c                     | 34 +++++++++-----------
+>>>>  security/selinux/hooks.c                | 23 +++++++++++---
+>>>>  security/smack/smack_lsm.c              | 42 +++++++++++++++----------
+>>>>  17 files changed, 118 insertions(+), 121 deletions(-)
+>>> See my note on patch 1/5, merging into lsm/dev.
