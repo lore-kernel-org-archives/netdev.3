@@ -1,204 +1,152 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081CC6F06A
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 14:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA143156CF;
+	Thu, 31 Oct 2024 14:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385434; cv=none; b=V4sVOjQT86XB+rMvdNqna4gn2VBrrsoLjZ482Zy846xLErtk6ubFyeTLrIVtYGb7EBSUkv3JutFc/KHXyhnMtq94Kliou6qc7DVX3ojuNjLPxYPQJMBVgk+oKF0Nus1YUQ7D4CNzpiLR84GjTVd/8CzZAQ+1wfLUyuq95xyRVKw=
+	t=1730385586; cv=none; b=Kvec4E1kXdlSfJ2qZJMBx8G77iD2cpbRbzb7jLIVxrMGD88bJ9DjaRIzAIOFisQ35tjJYXpAd+hxZcOkuwmSnY1fgN1ntw/nSKIs4bH7dqwaeyNAia0O7+pKgRDh85PXWjDSC9efMDxVkNcVuhJxi08jnq5EVU/rr/QkioXk0HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385434; c=relaxed/simple;
-	bh=YEUISV/64SzjZW8yf+F9ak/Z634GVYmrT+x+0I2OYqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eX7wplFBMRJXLQdubogn76NKu37wQKWgAsrTqVPXYjZWOH8DL9ngX9+AwlNuSZV7aqFRzJVMd+lUkeaUOJRDbS1T4GSX2MB7swGUCqub2p4bJAEW4075jI3zT7y3BufTE+L2zt8xhwGWF7YCotubSn9xYf0I+M5cmU4aiuyXSzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DRTvOd23; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DRTvOd23"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730385431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X6O/3GBw63p0l5BBCUi73LPu6bFx6muuGDbHydYXVPs=;
-	b=DRTvOd23LsUsnlhT8t8EmZsa91pRNSz9+alapXE80oMItZ3qLf75iX0hS4wAzF34HD5/48
-	XplLBstFUsfImuqCPs6VUdJ2S8Db4l/A+ovnEkf1Pr2BExnQufgrhqmlyW8t5JKaOlvHw+
-	R2cJmeO4CJTfUS9xR/a7bL8RwAzYioc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-C1LvpNOCOrex6gmheEOR6Q-1; Thu, 31 Oct 2024 10:37:09 -0400
-X-MC-Unique: C1LvpNOCOrex6gmheEOR6Q-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4314f1e0f2bso6240455e9.1
-        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 07:37:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730385428; x=1730990228;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6O/3GBw63p0l5BBCUi73LPu6bFx6muuGDbHydYXVPs=;
-        b=WXB14fq1eqtEc9hFZnHry83zw1grKFOzY3pq5O1ilnh3DJA93nAFrTiGUUnC4Sr4Op
-         SGE3+fQd+PQxk2FwFE+3XXmsc2dwHRP/1MhlUsFyeIGv8hTuUGwOkilzE9seNEsomnl0
-         luWF8cCexe9o4o6yQe/twHgMlozG3j+ve+bIB2BHuIix6w5OM80JDb7bX4sveoNTIhwO
-         EQc+fCdyProaLNQ3M2mO2F0TcmwsOC0pBwVpLuuoIKpCioHBy0GvKFCTEE+jWB/tXwss
-         DOKet4yuVICW1EDe6wWLr3X2jiu9MVV0iIJPl80xl3iET5+mR/KHAmRbY2QkIQpJjp6j
-         V/ew==
-X-Forwarded-Encrypted: i=1; AJvYcCU2nZnMG1HbVbFW2MBOKee4j8TNBzWrrrOgtDSseddu36regLrgM5ibm2xusWccS9fLUpAabQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywme5Hqovfq1TiF/OdlYNw/v9VyD4Eg81EuUEiyL0i6JIsOWc14
-	fovzDj0HWl+ubBMVFSHRKnKLbOGwsqeVBLsEghCakMFI1+hh8me/8FzJqkRHWN/RtkLhcjy7of4
-	BDbOvl0CrCR6q1Zun/qtqdC9Sm+axX1rI8Ovx2p5k6f6uO49JFPo0UQ==
-X-Received: by 2002:a05:600c:1ca9:b0:431:50cb:2398 with SMTP id 5b1f17b1804b1-4328323f576mr840055e9.2.1730385428461;
-        Thu, 31 Oct 2024 07:37:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF4O9nwX/ru8zq05nFqcPwDY9v0i5+K7TjXF+z12dzOML3szYJAwB82EVvIHl/2zaVGkEuAw==
-X-Received: by 2002:a05:600c:1ca9:b0:431:50cb:2398 with SMTP id 5b1f17b1804b1-4328323f576mr839685e9.2.1730385428000;
-        Thu, 31 Oct 2024 07:37:08 -0700 (PDT)
-Received: from [192.168.88.248] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10e7387sm2268534f8f.51.2024.10.31.07.37.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 07:37:07 -0700 (PDT)
-Message-ID: <96516e40-5b1b-4bce-a041-7618c03c5de3@redhat.com>
-Date: Thu, 31 Oct 2024 15:37:05 +0100
+	s=arc-20240116; t=1730385586; c=relaxed/simple;
+	bh=wPyDz5ZOCbGsu9cjNU3R/aJsJzADof3DW/0MCSkhKOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FX2tFuz5HaTEL97ApCQqTIzvcZnclNdEI++SMVMY9BeD3pY2x90Jj7iRJ98hk+4VAXWtZGbWRIKd/la/0I36jdQFPrpVm6QGXV3WCPxow+TRmBVp1/MLloRd7VdVMrXPXoPVy/LK1xqtK6S1wNGZmtmq8oCYAg/pOlxztm1ar7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 28DF8201059;
+	Thu, 31 Oct 2024 15:29:30 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 10B5320102E;
+	Thu, 31 Oct 2024 15:29:30 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 719D52033F;
+	Thu, 31 Oct 2024 15:29:29 +0100 (CET)
+Date: Thu, 31 Oct 2024 15:29:30 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v4 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
+Message-ID: <ZyOUSgMo0chsGnCa@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-13-03618f10e3e2@oss.nxp.com>
+ <erg5zzxgy45ucqv2nq3fkcv4sr7cxqzxz6ejdikafwfpgkkmse@7eigsyq245lu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/4] net: hsr: Add VLAN CTAG filter support
-To: MD Danish Anwar <danishanwar@ti.com>, geliang@kernel.org,
- liuhangbin@gmail.com, dan.carpenter@linaro.org, jiri@resnulli.us,
- n.zhandarovich@fintech.ru, aleksander.lobakin@intel.com, lukma@denx.de,
- horms@kernel.org, jan.kiszka@siemens.com, diogo.ivo@siemens.com,
- shuah@kernel.org, kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
- andrew+netdev@lunn.ch
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com,
- Vignesh Raghavendra <vigneshr@ti.com>, Roger Quadros <rogerq@kernel.org>,
- m-malladi@ti.com
-References: <20241024103056.3201071-1-danishanwar@ti.com>
- <20241024103056.3201071-3-danishanwar@ti.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241024103056.3201071-3-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <erg5zzxgy45ucqv2nq3fkcv4sr7cxqzxz6ejdikafwfpgkkmse@7eigsyq245lu>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-
-
-On 10/24/24 12:30, MD Danish Anwar wrote:
-> From: Murali Karicheri <m-karicheri2@ti.com>
+On Tue, Oct 29, 2024 at 08:12:37AM +0100, Krzysztof Kozlowski wrote:
+> On Mon, Oct 28, 2024 at 09:24:55PM +0100, Jan Petrous (OSS) wrote:
+> > Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+> > and S32R45 automotive series SoCs.
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 98 ++++++++++++++++++++++
+> >  .../devicetree/bindings/net/snps,dwmac.yaml        |  3 +
+> >  2 files changed, 101 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> > new file mode 100644
+> > index 000000000000..b11ba3bc4c52
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> > @@ -0,0 +1,98 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright 2021-2024 NXP
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
+> > +
+> > +maintainers:
+> > +  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > +
+> > +description:
+> > +  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - nxp,s32g2-dwmac
+> > +      - nxp,s32g3-dwmac
+> > +      - nxp,s32r-dwmac
 > 
-> This patch adds support for VLAN ctag based filtering at slave devices.
-> The slave ethernet device may be capable of filtering ethernet packets
-> based on VLAN ID. This requires that when the VLAN interface is created
-> over an HSR/PRP interface, it passes the VID information to the
-> associated slave ethernet devices so that it updates the hardware
-> filters to filter ethernet frames based on VID. This patch adds the
-> required functions to propagate the vid information to the slave
-> devices.
+> Your driver says these are fully compatible, why this is not expressed
+> here?
 > 
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  net/hsr/hsr_device.c | 71 +++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 70 insertions(+), 1 deletion(-)
+
+They are compatible on current stage of driver implementation, the
+RGMII interface has no any difference. But later there shall be
+added SGMII and this provides some level of difference, at least
+from max-speed POV.
+
+The S32R allows higher speed (2G5) on SGMII, but S32G2/S32G3 has
+1G as maximum.
+
+> > +
+> > +  reg:
+> > +    items:
+> > +      - description: Main GMAC registers
+> > +      - description: GMAC PHY mode control register
+> >
 > 
-> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-> index 0ca47ebb01d3..ff586bdc2bde 100644
-> --- a/net/hsr/hsr_device.c
-> +++ b/net/hsr/hsr_device.c
-> @@ -515,6 +515,68 @@ static void hsr_change_rx_flags(struct net_device *dev, int change)
->  	}
->  }
->  
-> +static int hsr_ndo_vlan_rx_add_vid(struct net_device *dev,
-> +				   __be16 proto, u16 vid)
-> +{
-> +	struct hsr_port *port;
-> +	struct hsr_priv *hsr;
-> +	int ret = 0;
-> +
-> +	hsr = netdev_priv(dev);
-> +
-> +	hsr_for_each_port(hsr, port) {
-> +		if (port->type == HSR_PT_MASTER)
-> +			continue;
+> ...
+> 
+> > +        mdio {
+> > +          #address-cells = <1>;
+> > +          #size-cells = <0>;
+> > +          compatible = "snps,dwmac-mdio";
+> > +
+> > +          phy0: ethernet-phy@0 {
+> > +              reg = <0>;
+> 
+> Messed indentation. Keep it consistent.
+> 
 
-If the desired behavior is to ignore INTERLINK port, I think you should
-explicitly skip them here, otherwise you will end-up in a
-nondeterministic state.
+Thanks. I will fix it in v5.
 
-> +		ret = vlan_vid_add(port->dev, proto, vid);
-> +		switch (port->type) {
-> +		case HSR_PT_SLAVE_A:
-> +			if (ret) {
-> +				netdev_err(dev, "add vid failed for Slave-A\n");
-> +				return ret;
-> +			}
-> +			break;
-> +
-> +		case HSR_PT_SLAVE_B:
-> +			if (ret) {
-> +				/* clean up Slave-A */
-> +				netdev_err(dev, "add vid failed for Slave-B\n");
-> +				vlan_vid_del(port->dev, proto, vid);
-
-This code relies on a specific port_list order - which is actually
-respected at list creation time. Still such assumption looks fragile and
-may lead to long term bugs.
-
-I think would be better to refactor the above loop handling arbitrary
-HSR_PT_SLAVE_A, HSR_PT_SLAVE_B order. Guestimate is that the complexity
-will not increase measurably.
-
-> +				return ret;
-> +			}
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int hsr_ndo_vlan_rx_kill_vid(struct net_device *dev,
-> +				    __be16 proto, u16 vid)
-> +{
-> +	struct hsr_port *port;
-> +	struct hsr_priv *hsr;
-> +
-> +	hsr = netdev_priv(dev);
-> +
-> +	hsr_for_each_port(hsr, port) {
-> +		if (port->type == HSR_PT_MASTER)
-> +			continue;
-
-I think it would be more consistent just removing the above statement...
-
-> +		switch (port->type) {
-> +		case HSR_PT_SLAVE_A:
-> +		case HSR_PT_SLAVE_B:
-> +			vlan_vid_del(port->dev, proto, vid);
-> +			break;
-> +		default:> +			break;
-
-... MASTER and INTERLINK port will be ignored anyway.
-
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static const struct net_device_ops hsr_device_ops = {
->  	.ndo_change_mtu = hsr_dev_change_mtu,
->  	.ndo_open = hsr_dev_open,
-
-Cheers,
-
-Paolo
-
+> Best regards,
+> Krzysztof
+> 
