@@ -1,186 +1,169 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869A619CC2D
-	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 13:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3031019CC0B
+	for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 13:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730380354; cv=none; b=eS6AZvXTiCTCQuVgKnUi4KZspHi4Tuw/aThVHEBFcrX7u/5AJov3YvcHDcrV29T5+mtojyGjmHBtJUCzcN3QoWJxYcGUc+jw3DbCrA9UV4zDPR/8KNgHfVbpYlich5Swizi/kpwnV4uH7YxbS0rJ+CydBzi3Rm4z7PP2H5cd+0M=
+	t=1730381289; cv=none; b=ASX8GVAfF6c31qXNoyHVXvWHgDTJWn1hYlZA7qU3EMtF6JI2OBVS+lv6wfhgmNYZIoscIjg3Zd6szvJpbPLH4vY2gaqvEq1iHaIE3zIlJgwog0Lr7Y9dvyOUjkOo8FoUNIqLuU2r0TFGXwItU3MBAlhjViomvcA28OlI+eHKCFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730380354; c=relaxed/simple;
-	bh=ym1N7c/6t26tf3cwKfcmnn3Yn8xExbWlFoew4YMulTk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AtcYA2QJqeiaYZbblL3unFUyUZ8BnHWNRIQlPbICp7JXvoClu5fDvSbJ6ERO0bKV3MBnnmXjkLE3d6kYzFtGmdtqRoNEl4P4KUMkbe6+H5mOTjsRexn8lBlxJkQ3bwdCRSqj2+P41nL4EqF8PnUEICY9clNzSi6t4QnaJ8uVGCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=BhFxCH+I; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1730381289; c=relaxed/simple;
+	bh=Jjcka7E6MaSQ7nC/CFEot10Oi7cbuvv9l+tAnI2O9Ug=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XTg2MHk0V5WgkHfq158VpZcQTffsN5pFj26yjhgGWMEb7TsVnoRugC26JD5TNQ63b/ENu3jVOjvDFNyAr3n9NJIFKyOJSAWQLdL9TjxvvyRgu0oynZSt5XaVltw0biBis6Jo1Jv9hLGc+9pCXcBkRoW+BOvDoNG9i5cbkRhXTUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XGjViwhx; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="BhFxCH+I"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb58980711so8664971fa.0
-        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 06:12:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XGjViwhx"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-460b295b9eeso129871cf.1
+        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 06:28:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1730380350; x=1730985150; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fd/LPVoyjETqDW8hwsq6kKowR64Os6FT/cO5AcmEZkM=;
-        b=BhFxCH+Ibexl7n0cs1uXSeV2kFbkk5kp/4tOyTdkFOAPaRRShaFbecptmRRwAeB9Wg
-         FWMA9EiEN/WRhGIUG+er5HiG78dUoQUoLdiT/cEgIlIrunu1Fd/+UqbaG47mDHY3exB8
-         WilWwytvu1XiRKX5xwJi4Avgle10KXDPzwpO53SzxiH7qHr2s61e22qX06beTMZL841a
-         dfZF+sfyAT6hl6sSFLH1dJuB0thjxo5GuWZQKAq1zsMwz8TvbFr3APFbvmWwAR1ijccy
-         2wMtPY//b46PFSkGQJt5wqoBBgecsE8dzl4PRh0NikQktQMdoC8bPUUg8IHBCK08G1NI
-         /1Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730380350; x=1730985150;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1730381286; x=1730986086; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Fd/LPVoyjETqDW8hwsq6kKowR64Os6FT/cO5AcmEZkM=;
-        b=pGgZ6IlGCjbB8GPFEQTFxp6zhElaoVyR6XCI7ucDqEQVbTZpyVZOMNs30o/FwuUYrU
-         cqFzxlNx2a2T6KpPtIyAuuc5Y/lLtloQghOdkKiF89z0LkOLJR70nb31/PnowgLmyBJ2
-         YKPp39o5jJUnWxWo0cwWC4xDybO1t8RtaMeVGFQCN+jMNO4Eosjx8cyZmnYlqfn84ePL
-         N5yG4jOisitngYmfCzFkkPNc5l8TxeG4p+GT73YhMLIKbACoYJFaJcdvyAcaYggoAtZV
-         UoRhTcXIRyJIvLEDIPYJNPS1jJEeySdXBUUGkXKZNHQ9LnXXrrkHEn63JTGIb6WKxwh/
-         4ymA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZeg/CwUByUwyTHij7LKr9aoa+XCFJ/rBnPmhz91bKeqE5yLfoc8VLIBOc3j07mz1cMdruC70=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhhRWf23bjAl3NG8wsKIO9C2AkCyPymbOeU3y2ia4jDsuA0XWo
-	LQVT2hXqWl1mIKEWjiTf4UMJdztb+8sRNjyPwRC4GnrldSsnvWE1R3gWEQSZ9wA=
-X-Google-Smtp-Source: AGHT+IGwfCnMclAPIygCvndVaVYKRM/k1M1XD+ZIVh82kXsNZRIL+Dj41Kg6TyhmPNfbB7wFa7tdqQ==
-X-Received: by 2002:a05:651c:19ab:b0:2fb:8774:4412 with SMTP id 38308e7fff4ca-2fcbdfc9303mr81193491fa.24.1730380349566;
-        Thu, 31 Oct 2024 06:12:29 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:634e:2582:d0aa:ee79? ([2001:67c:2fbc:1:634e:2582:d0aa:ee79])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ceac770204sm601592a12.35.2024.10.31.06.12.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 06:12:29 -0700 (PDT)
-Message-ID: <41d80bb3-0bcc-44da-a5f0-d933d7c0e85a@openvpn.net>
-Date: Thu, 31 Oct 2024 14:12:44 +0100
+        bh=x+8pPFT1eOD/z3ha9J7u1uxzhaY7+UYdheZyJLi46ZI=;
+        b=XGjViwhxWUaEKhDMyq/6RvrnMokx/rK+gX3rlfnO4oVAX1qk87i58iSeav2yTrtend
+         jgN6s9D6putKTKrj7x6v0weJEOkguMIe706LeJ7deYB9IKnprZfYIYYKt9V0xagXRxG7
+         onDAWLb0dUNrzGnapGrWV6CB2G3QQWaHjv+WjyWvsiZI5TpXiaNXlLwZKM6VdmUkqgE+
+         9QjeWGAWELb4mbOVcDy4QEPLJRwknZJi4J0Z2Qgi0wcSieDxp5ShhGsOLTuIwHYOa/8e
+         mSeMn3Oe8mVnqCAUwJxob5ha87J2/2KJGZSNTfeTI3uL/FHbAMV5v3nFD+qVgUvL/ieI
+         d3ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730381286; x=1730986086;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x+8pPFT1eOD/z3ha9J7u1uxzhaY7+UYdheZyJLi46ZI=;
+        b=uUPzgm3O+1OmbOSTq20CN0UTIk3TlEj5PXyGgiMofesyaLFOZCtUVrQD+n1NxKgfBD
+         ebqCRzs7Ourem9YvXAk+VUCvEjPfJF7vfa1Z75tQn6Jh40zCakGTSiuDRlUsp3OPzu9F
+         FYOylQrx/GKcdfHVp0xUFc3nYYorSpoFQiBEK/WdV523A1m9OjrF2R1br0Filgcy2Oqq
+         J/U8D+6XoietOvZTZGBLt69it+fFpm0XH1bldfGY0Hh9m9flkjeDM5fvbU85iyb9ICcg
+         zd+Z4P/z6ooWmrFCP10og91KXTxyVMf8ovKYMYxCTK7bhq/Z48aL1ZVCLNRKQ0EnSQlo
+         2iQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpJ8rGFpf+mzscavDPPTj7mGcE7H/NTj4Ve//amhBRUHgxrObnTSkdmEQWpb/mBYAfcS2GuMc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKxhExDw0khg3CkYP3g9ESQAHmt3J7/Ye0CqSkLS2IiMKsRtKx
+	c5ZrNmAZ/fHj6l7oxcPQlU5zcFsfuhehIdKJA2D67v9eyB4iaD3crtH5321S14hTB4aV1qH2Vxj
+	XQRKuarxILEy6lhyyiOj3jbkR9QC4UgOrCQU6
+X-Gm-Gg: ASbGnctMLwm1Wfo0uwPSEMT2sk0WTAeX19ZvWeqWhzAD4aaMvMb+NwNHNPo5WYlEm00
+	c8Js2dmswnVMmMwpSsy2ugDMFakJ0EEBHL7V1O9P9cnLTSo1TekMkQ7Fn0HA+gMHe
+X-Google-Smtp-Source: AGHT+IHYNqzSZym//dzOXkU1elr06MP9CUrZZFR8bYzLtv3uxrKgDmP5/hQUYFV0jUEicQkMxk2E0Cr7lCnhMQBhMsI=
+X-Received: by 2002:a05:622a:614:b0:461:4be1:c612 with SMTP id
+ d75a77b69052e-462ad2da722mr2934321cf.21.1730381285738; Thu, 31 Oct 2024
+ 06:28:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 11/23] ovpn: store tunnel and transport
- statistics
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
- Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-11-de4698c73a25@openvpn.net> <ZyNsFyx3fUtVxSSy@hog>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <ZyNsFyx3fUtVxSSy@hog>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241021221248.60378-1-chia-yu.chang@nokia-bell-labs.com>
+ <20241021221248.60378-2-chia-yu.chang@nokia-bell-labs.com>
+ <ea2ccad9-6a4a-48e1-8e99-0289e13d501c@redhat.com> <CANn89iKU5G-vEPkLFY9vGyNBEA-G6msGiPJqiBNAcw4nNXoSbg@mail.gmail.com>
+In-Reply-To: <CANn89iKU5G-vEPkLFY9vGyNBEA-G6msGiPJqiBNAcw4nNXoSbg@mail.gmail.com>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Thu, 31 Oct 2024 09:27:49 -0400
+Message-ID: <CADVnQy=Gt+PHPJ+EdaXY=xcrgeDwusSBmmWV9+6-=93ZhD4SXw@mail.gmail.com>
+Subject: Re: [PATCH v4 net-next 1/1] sched: Add dualpi2 qdisc
+To: Eric Dumazet <edumazet@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, chia-yu.chang@nokia-bell-labs.com, 
+	netdev@vger.kernel.org, davem@davemloft.net, stephen@networkplumber.org, 
+	jhs@mojatatu.com, kuba@kernel.org, dsahern@kernel.org, ij@kernel.org, 
+	koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com, 
+	ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com, 
+	cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com, 
+	vidhi_goel@apple.com, Olga Albisser <olga@albisser.org>, 
+	Olivier Tilmans <olivier.tilmans@nokia.com>, Henrik Steen <henrist@henrist.net>, 
+	Bob Briscoe <research@bobbriscoe.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 29, 2024 at 12:53=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Tue, Oct 29, 2024 at 1:56=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> w=
+rote:
+> >
+> > On 10/22/24 00:12, chia-yu.chang@nokia-bell-labs.com wrote:
+> > > +/* Default alpha/beta values give a 10dB stability margin with max_r=
+tt=3D100ms. */
+> > > +static void dualpi2_reset_default(struct dualpi2_sched_data *q)
+> > > +{
+> > > +     q->sch->limit =3D 10000;                          /* Max 125ms =
+at 1Gbps */
+> > > +
+> > > +     q->pi2.target =3D 15 * NSEC_PER_MSEC;
+> > > +     q->pi2.tupdate =3D 16 * NSEC_PER_MSEC;
+> > > +     q->pi2.alpha =3D dualpi2_scale_alpha_beta(41);    /* ~0.16 Hz *=
+ 256 */
+> > > +     q->pi2.beta =3D dualpi2_scale_alpha_beta(819);    /* ~3.20 Hz *=
+ 256 */
+> > > +
+> > > +     q->step.thresh =3D 1 * NSEC_PER_MSEC;
+> > > +     q->step.in_packets =3D false;
+> > > +
+> > > +     dualpi2_calculate_c_protection(q->sch, q, 10);  /* wc=3D10%, wl=
+=3D90% */
+> > > +
+> > > +     q->ecn_mask =3D INET_ECN_ECT_1;
+> > > +     q->coupling_factor =3D 2;         /* window fairness for equal =
+RTTs */
+> > > +     q->drop_overload =3D true;        /* Preserve latency by droppi=
+ng */
+> > > +     q->drop_early =3D false;          /* PI2 drops on dequeue */
+> > > +     q->split_gso =3D true;
+> >
+> > This is a very unexpected default. Splitting GSO packets earlier WRT th=
+e
+> > H/W constaints definitely impact performances in a bad way.
+> >
+> > Under which condition this is expected to give better results?
+> > It should be at least documented clearly.
+>
+> I agree, it is very strange to see this orthogonal feature being
+> spread in some qdisc.
 
+IMHO it makes sense to offer this split_gso feature in the dualpi2
+qdisc because the dualpi2 qdisc is targeted at reducing latency and
+targeted mostly at hops in the last mile of the public Internet, where
+there can be orders of magnitude disparities in bandwidth between
+upstream and downstream links (e.g., packets arriving over 10G
+ethernet and leaving destined for a 10M DSL link). In such cases, GRO
+may aggregate many packets into a single skb receiving data on a fast
+ingress link, and then may want to reduce latency issues on the slow
+link by allowing smaller skbs to be enqueued on the slower egress
+link.
 
-On 31/10/2024 12:37, Sabrina Dubroca wrote:
-> 2024-10-29, 11:47:24 +0100, Antonio Quartulli wrote:
->> @@ -136,6 +139,10 @@ void ovpn_decrypt_post(void *data, int ret)
->>   		goto drop;
->>   	}
->>   
->> +	/* increment RX stats */
->> +	ovpn_peer_stats_increment_rx(&peer->vpn_stats, skb->len);
->> +	ovpn_peer_stats_increment_rx(&peer->link_stats, orig_len);
-> 
-> [I don't know much about the userspace implementation, so maybe this
-> is a silly question]
-> 
-> What's the value of keeping track of 2 separate stats if they are
-> incremented exactly at the same time? Packet count will be the same,
-> and the difference in bytes will be just measuring the encap overhead.
-> 
-> Should one of them be "packets/individual messages that get received
-> over the UDP/TCP link" and the other "packets that get passed up to
-> the stack"?
+> Also, it seems this qdisc could be a mere sch_prio queue, with two
+> sch_pie children, or two sch_fq or sch_fq_codel ?
 
-You're correct: link_stats if "received over the TCP/UDP socket", while 
-vpn_stats if what is passing through the ovpn virtual device.
+Having two independent children would not allow meeting the dualpi2
+goal to "preserve fairness between ECN-capable and non-ECN-capable
+traffic." (quoting text from https://datatracker.ietf.org/doc/rfc9332/
+). The main issue is that there may be differing numbers of flows in
+the ECN-capable and non-ECN-capable queues, and yet dualpi2 wants to
+maintain approximate per-flow fairness on both sides. To do this, it
+uses a single qdisc with coupling of the ECN mark rate in the
+ECN-capable queue and drop rate in the non-ECN-capable queue.
 
-Packet count may not match though, for example when something happens 
-between "received packet on the link" and "packet passed up to the 
-device" (i.e. decryption error).
+This could probably be made more clear in the commit message.
 
-This makes me wonder why we increment them at the very same place....
-link_stats should be increased upon RX from the socket, while vpn_stats 
-just before delivery. I'll double check.
+> Many of us are using fq_codel or fq, there is no way we can switch to
+> dualpi2 just to experiment things.
 
-> 
-> 
->> @@ -197,6 +206,8 @@ void ovpn_encrypt_post(void *data, int ret)
->>   		goto err;
->>   
->>   	skb_mark_not_on_list(skb);
->> +	ovpn_peer_stats_increment_tx(&peer->link_stats, skb->len);
->> +	ovpn_peer_stats_increment_tx(&peer->vpn_stats, orig_len);
->>   
->>   	switch (peer->sock->sock->sk->sk_protocol) {
->>   	case IPPROTO_UDP:
-> 
-> And on TX maybe something like "packets that the stack wants to send
-> through the tunnel" and "packets that actually make it onto the
-> UDP/TCP socket after encap/encrypt"?
+Yes, sites that are using fq_codel or fq do not need to switch to dualpi2.
 
-Correct.
+AFAIK the idea with dualpi2 is to offer a new qdisc for folks
+developing hardware for the last mile of the Internet where you want
+low latency via L4S, and want approximate per-flow fairness between
+L4S and non-L4S traffic, even in the presence of VPN-encrypted traffic
+(where flow identifiers are not available for fq_codel or fq fair
+queuing).
 
-Same issue here. Increments should not happen back to back.
+Sites that don't have VPN traffic or don't care about the VPN issue
+can use fq or fq_codel with the ce_threshold parameter to allow low
+latency via L4S while achieving approximate per-flow fairness.
 
-
-Thanks a lot for spotting these.
-
-Regards,
-
-
-> 
-
--- 
-Antonio Quartulli
-OpenVPN Inc.
-
+best regards,
+neal
