@@ -1,101 +1,204 @@
-Received: from sonic309-22.consmr.mail.bf2.yahoo.com (sonic309-22.consmr.mail.bf2.yahoo.com [74.6.129.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5E1C9B7A
-	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 16:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.129.196
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF971A2562;
+	Fri,  1 Nov 2024 16:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730477695; cv=none; b=d8fZZ9XJS+0M0KNJlezSZwOiegmC/cS6wKER1NwVwjJ5DKareFP+g2vgtf2DY/7NcLI5gs/QQ9db+IpLfrAbgEF97DT9Qgl9SRJJqblT/iZlXonqD8SDctwdM87Yz7499QhYLm20vEnjorefvPs6vN9ayUkmXYoHDlXiFJlKSOE=
+	t=1730477852; cv=none; b=JCNLRDkWzXrGWQRFJT61Cnz0w4PoDeaFKhRndlth6/zSSnYHHdHhCHUKquFRq1E9jiEfEpbcxuvp6bHnQA+zCTVG+wI33AYUZh24ULlFs9yDnxVpm7rg9HUOEf+carc1WXWgQeJEhquuk1Ds1olryO/MH14e2N+BLJBJQbE/j8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730477695; c=relaxed/simple;
-	bh=3yJQ4JN71QuLtjWEXWObJKKEc3cN49wU3UwTo+2VJh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WEBT1w0ZqOE4pIJy9oSiqLd5sv/W7g88Oi91hufaAKK5pt0Ob7IPAq9wXDePVK5zcSAEMK6EOoR9hacGMUWLA5njgPAV8wqBHwbeYKE2KeTT8HRNhXUnrqJzBUYaqrHd5kfjk2r/tvF2IfBrkWeelsxhadSZ+mdrMQGeBXJtxhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=M28WUSQ/; arc=none smtp.client-ip=74.6.129.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+	s=arc-20240116; t=1730477852; c=relaxed/simple;
+	bh=rAW4QXiFohJU1maAFUjdAif96HWy5sV1RA/bAFLS3w4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KjZBGTnWERtwv0A4npr5qJ5hibbeeI2aNtEbCKYyOwSrp8JMP5j9vy2Zq3afAtXFHFVG+glVFL1v5s7/hnRvysvAJckg995IsMEkzXZBc50AgW1pQm5EgCGBn4KuUL81+Qkxp7vH/HzZ4AX71ZiED7h8EosgMMVP/DDYob1US40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ppBnUaj7; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="M28WUSQ/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730477692; bh=3yJQ4JN71QuLtjWEXWObJKKEc3cN49wU3UwTo+2VJh4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=M28WUSQ/t7gps2rB7Xl7p35+fUa4xzqUBgmJ3a0dSaD2PIEVrdhk1p/tnZMDKPNF31nhOCsxp09IDcm/KVivd7ru5Wn8FTq+vzG1yZl6ENFsSBrL91B6o1oz2Q44ePcE0wV0a/KjnJmLmPnyZ/a617wideROzHXu5s7b0AlBl+UofOkII1IsN06xXj8C7PB/h+RM7CgHWNm93F+7yJ2RYys3k8Rh6Gd6HIz4s4ZtWXyE2S2Cs+sp8LggmjZwEsAZv/swtYGl34XDdMnczPm9w28Zb6M66gkBhWX0iM5FopoYAIFQkz8Tf2dC68/u2PzJZcUnh2Q+BAQmh7mvEE2rbQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730477692; bh=wTqxX0faMPZ7Ss1ADIwJ6YksEaqulJSJV1n7rScQPBW=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=F4vdrJDlEtQpSS7OcIPfEjORcRRRg6YnvwkBgBfq1JUzHa145WEJP34eaAQysPrKI5eZ1LErnD50HBMO3EvjvzcXbhCmf/ftJLXSYv6Q9jBu1h29vp3yQveLraAp5wAOah9TTQr7z8PcTOlAIo0vYQNuY71q9BpFUNClklJpYPUa3j4cd5R2zgFLd3b+jzyVek4YuImRc/TWpl7vTfb93HotEAbBOFx1qvxDvi3TXAjk18PMAWk0GPhj31ekKE/EZSLKt2cCWum6UwezZxTP95X50pbxqMbS+PRAzLXPtUsUdg1Oeab1p7yljAGSYOPuOIC3+oAt0KsOJhC9kdz+TQ==
-X-YMail-OSG: 1iwE8ucVM1kK.SQDICZij1S86Z14741UOMwb3j.3qNm3Yzto004hqSWFTkHb5OR
- UAqURU0cxrKGiEM.gklulFQkn44Er5twRP24vECoxahYdNRdFCRRZqySURCdHL2bklbcCEjR9HQ2
- ms.3E3QvmMQkBDwmXjxkEJDj4K2dNbQ2Jco6p.RCB7EWI3Lr5Bq2rqQAzzys5QYt8uRSG2yCHh6F
- J6m1LlwR2Jx9VvVCrEzMIj3dW1Y8J3lrbgjNvjDS65i3.DScqj6fZ.m4JlHTWWs9MDYLY6Q_rxZS
- kX.HxNKOEfX62YMntvhY9g7fy6rWkoMCuNnjIK_wWFE_O1U3vFjDN__dw6nv2ko6RMkb3fxjnRto
- _9GPAZzBMvcFqJpxrswdGMZK6qW8m69P0gtfcFpdt60LYKEfmy36JN7eskBgEtdjg5OXVC2Bskv0
- shCw_rWsd00ROKL8Tj63spuieQpZtiwEAXzN2GGkDhSry.PsYyTOo0oEHXkpaAIR5QYZ.iACCsdT
- FsCXlbfOOTmzrlupkTe_.oaCtXM69rLR.pKwETIhv7oo0c6ekW7f8at0bVD7ebPOM0UqNcCP7p_m
- .7k5NwoAM8Gik9nT9S87rZqk4c957weacgxtJUKOA57wlBTNVJJ8p7a.CYJNdOBcGC7MUH5ZSGtT
- Fxw7Cvz7jwjqun8I76_0J87oZmKFNcgL.EusDEt_uzleFS22sOwuy_8xKwefDzpdMoM9cEUg.7nG
- LyTF8jaG6nB_OcY5TYE8O8GuXzsL64MlLVenfDVObOnePTlo6xc2ut1MZNdEk5HxTNgABmb4SyRt
- VyKd8bHrCFjwd8CcsS9KH6GjerTyn_35k5nJRcGPLqGItC9q69mvYcXRLEjmzpe_SW9_3F0E36N2
- A77Jfcm1dYgw.MDGbydZMj4s1MQbdxMXjvXd7h3efHIbKpK8.i3dPHf0lsQdVF1z42bGol_5YUkf
- uAewPdy.aYsJbQzEpKLwBI1KOIzqb896Ayc0Oc1Rh4qZfRgBp5tbXS3Xfh6YRmOR60HC5zA.doEk
- 5fIMZc_JAm3EfoGRVi5rQ1fOREyh5j0FG6DJX0pnZqzB8o2BOZo3fQt1JSAv50JkxNqq2t_sQsx9
- bCzg.f1Znc8aVbyECn6weeX1n678DWjxDOuXijMJ4cb.durFiDeFbnvYPl1ue.lwQUMncwBDHKmZ
- jWKoQ415El0F8Q0lnH_iWb97nXFmj998cQu382q_WGjFUi7CUVVYNz3CEpb42h7MFYWxAen4ONdj
- NekzyzIukWrACh7uQI0dg7QnSZRsYv1JolraKYfdjsSDS78uTuVFoT50SWW.EB0ZjcVkt_WNbkiQ
- nZbQs31OvEmsB6fPOLyhn3IeFbSuPZNKhVRhhKNIOVwEfO8Rh.PfSG6GOQKAE5DhRRUF62GVbB9P
- JOKBF_qqR.29H6pqB2hO1Dle3VMk4sRJV7uVfUu2FL9FrCtiiENVyd5ZtvO5oUQNNtTgcGkEejPJ
- Dl5IMu1OK8y9VD6X1602t7HWM_17sslh2_dRyjOUhX45T_qmlbiI.Ukp6Wg12YSX_ZTcVa432vU0
- GBYzKmXz22rDBo1Aivk0ssU76izm15CvdGGFSBeaRQciFT.cm97Y17IXxIydzEDu5WFPmq6NqMPl
- TyfNy3tjELI7QSFvB3xVqTOaVaH4vl3Z5e5oI2OwZDca2qx.AITnt.ZvddKowqjDXxEUWmtfyKJM
- eOPv9al67U9C.TsZ7ytPS1t50VFdEKDFuCMLyV_XOy7z.otsbQKM0gG0CVvYAqOByDPyhaWxoEST
- Q9t8SfOdRKgo92OidzpP8wP8Ih3f0g.hjMuhBCy8KrAwMDNiErA4FWDDy0oh67a5.mMII1jAujpL
- QTyWBUFuwyXGxfZr0anT06gmVXAnZLL4McWo8Mp3e6DUEhPWDc9fBHb8UVt934DizGB2s7m_w.9e
- hFKD91CM07ZpX5dQMcS0qQ43XdaPHs5iB7rcDqo1vUK2XmReW5IQWRDIl6f1uua1hr8IRJS9Yvp0
- ZpLbvdI_z4Sv.45oopd9H9YolVyKYHkUibcKA9UEaViRv5dxVbnlF3G504pi4JMZJ6gZIwL4OxGI
- RAcW_pmDD_IxQBiSMlPGmxZTMSX9qEQeNGqIeMiOjSdMuCfFmyXBU77WQO1aTVrQHkiMNMJRKTEg
- IXlbok_Efhu22ggJNkd7aBJaZY8jPJD5CGhZWEWyABlneAh9Y2lyoYxUpdqUvU1Znf4mQZX4rack
- AZa5whkoXLWl0jzaxN8GvwCLqJM3fxHMePDXJ06ldBxtbuGihpT9.RmvyhWhNnJrBo4kWj1vkHhV
- eqR330NX1d8oqokGFCyFMvFjfeW8-
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: f2232fa5-43ff-4dfd-b0d4-b05a3d717f03
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Fri, 1 Nov 2024 16:14:52 +0000
-Received: by hermes--production-gq1-5dd4b47f46-bxhh2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 01d3a5e9c667feb2527f045654b96970;
-          Fri, 01 Nov 2024 16:14:45 +0000 (UTC)
-Message-ID: <6a405591-40c5-4db6-bed5-8133a80b55f7@schaufler-ca.com>
-Date: Fri, 1 Nov 2024 09:14:42 -0700
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ppBnUaj7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=VbP3U
+	bvphUA5k39oKEOm7yxupFsZ2rmjYYdzMH7gns4=; b=ppBnUaj7/+lHNf/cM/QYL
+	90fnKvBzs6bnrnLRvT5PxhmC5+mi1AqfCwItbgMDfQLooj4jdUNo1z4tMHuKQLBa
+	u1hDg58DujUpI5B4Fe6cVUq5DmAwDMO/xO6Wam2RdL4lo/9ib5xJT2SLnt3UgmPq
+	WEuipyz9TQTp71dULWiPG0=
+Received: from localhost.localdomain (unknown [47.252.33.72])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3H7Th_iRn6adKAA--.9355S4;
+	Sat, 02 Nov 2024 00:16:53 +0800 (CST)
+From: mrpre <mrpre@163.com>
+To: yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	edumazet@google.com,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: mrpre <mrpre@163.com>
+Subject: [PATCH v2 2/2] bpf: implement libbpf sockmap cpu affinity
+Date: Sat,  2 Nov 2024 00:16:24 +0800
+Message-ID: <20241101161624.568527-3-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241101161624.568527-1-mrpre@163.com>
+References: <20241101161624.568527-1-mrpre@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] LSM: Replace context+len with lsm_context
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Paul Moore <paul@paul-moore.com>, linux-security-module@vger.kernel.org,
- jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
- john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
- stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
- selinux@vger.kernel.org, mic@digikod.net, netdev@vger.kernel.org,
- audit@vger.kernel.org, netfilter-devel@vger.kernel.org,
- Todd Kjos <tkjos@google.com>, Casey Schaufler <casey@schaufler-ca.com>
-References: <20241023212158.18718-3-casey@schaufler-ca.com>
- <68a956fa44249434dedf7d13cd949b35@paul-moore.com>
- <ZyQPfFvPD72rx4ME@calendula> <ZyQRgL_jWdvKgRl-@calendula>
- <dd727620-9823-4701-aaf1-080b03fb6ccd@schaufler-ca.com>
- <ZySCeoe3kVqKTyUh@calendula>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <ZySCeoe3kVqKTyUh@calendula>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3H7Th_iRn6adKAA--.9355S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WrWkAr17tr47AFW3AF13urg_yoW7ArWxpF
+	9YkF4SkF4Sqay5XrWYqa1IgrW5CF4Igw1jyrsrJ3W5ArnFgw1Iqr1xtan3Ar13Xrs5Aw48
+	A34a9r4rJ348ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pNQ6JfUUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiDwCKp2ck9vdy2QABsK
 
-On 11/1/2024 12:25 AM, Pablo Neira Ayuso wrote:
-> On Thu, Oct 31, 2024 at 04:58:13PM -0700, Casey Schaufler wrote:
->> On 10/31/2024 4:23 PM, Pablo Neira Ayuso wrote:
->>> On Fri, Nov 01, 2024 at 12:15:16AM +0100, Pablo Neira Ayuso wrote:
->>>> Hi Paul,
->>>>
->>>> This patch breaks nf_conntrack_netlink, Casey mentioned that he will
->>>> post another series.
->> I have a fix, it is pretty simple. How about I send a 6/5 patch for it?
-> No idea. I don't know what is the status of this series. I would
-> suggest to repost a new series.
+implement libbpf sockmap cpu affinity
 
-I will post v4 shortly. Thanks for the feedback.
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+---
+ tools/include/uapi/linux/bpf.h                |  4 ++++
+ tools/lib/bpf/bpf.c                           | 22 +++++++++++++++++++
+ tools/lib/bpf/bpf.h                           |  9 ++++++++
+ tools/lib/bpf/libbpf.map                      |  1 +
+ .../selftests/bpf/prog_tests/sockmap_basic.c  | 19 ++++++++++++----
+ 5 files changed, 51 insertions(+), 4 deletions(-)
+
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index f28b6527e815..ba6c39f40f10 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1509,6 +1509,10 @@ union bpf_attr {
+ 			__aligned_u64 next_key;
+ 		};
+ 		__u64		flags;
++		union {
++			/* specify the CPU where sockmap job run on */
++			__aligned_u64 target_cpu;
++		};
+ 	};
+ 
+ 	struct { /* struct used by BPF_MAP_*_BATCH commands */
+diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
+index 2a4c71501a17..13c3f3cfe889 100644
+--- a/tools/lib/bpf/bpf.c
++++ b/tools/lib/bpf/bpf.c
+@@ -401,6 +401,28 @@ int bpf_map_update_elem(int fd, const void *key, const void *value,
+ 	return libbpf_err_errno(ret);
+ }
+ 
++int bpf_map_update_elem_opts(int fd, const void *key, const void *value,
++			     __u64 flags, const struct bpf_map_update_opts *opts)
++{
++	union bpf_attr attr;
++	int ret;
++	__u64 *target_cpu;
++
++	if (!OPTS_VALID(opts, bpf_map_update_opts))
++		return libbpf_err(-EINVAL);
++
++	target_cpu = OPTS_GET(opts, target_cpu, NULL);
++	memset(&attr, 0, sizeof(attr));
++	attr.map_fd = fd;
++	attr.key = ptr_to_u64(key);
++	attr.value = ptr_to_u64(value);
++	attr.flags = flags;
++	attr.target_cpu = ptr_to_u64(target_cpu);
++
++	ret = sys_bpf(BPF_MAP_UPDATE_ELEM, &attr, sizeof(attr));
++	return libbpf_err_errno(ret);
++}
++
+ int bpf_map_lookup_elem(int fd, const void *key, void *value)
+ {
+ 	const size_t attr_sz = offsetofend(union bpf_attr, flags);
+diff --git a/tools/lib/bpf/bpf.h b/tools/lib/bpf/bpf.h
+index a4a7b1ad1b63..aec6dfddf697 100644
+--- a/tools/lib/bpf/bpf.h
++++ b/tools/lib/bpf/bpf.h
+@@ -147,6 +147,15 @@ LIBBPF_API int bpf_btf_load(const void *btf_data, size_t btf_size,
+ 
+ LIBBPF_API int bpf_map_update_elem(int fd, const void *key, const void *value,
+ 				   __u64 flags);
++struct bpf_map_update_opts {
++	size_t sz;  /* size of this struct for forward/backward compatibility */
++	/* specify the CPU where the sockmap job run on */
++	__u64 *target_cpu;
++	size_t :0;
++};
++#define bpf_map_update_opts__last_field target_cpu
++LIBBPF_API int bpf_map_update_elem_opts(int fd, const void *key, const void *value,
++					__u64 flags, const struct bpf_map_update_opts *opts);
+ 
+ LIBBPF_API int bpf_map_lookup_elem(int fd, const void *key, void *value);
+ LIBBPF_API int bpf_map_lookup_elem_flags(int fd, const void *key, void *value,
+diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
+index 54b6f312cfa8..5a26a1d8624f 100644
+--- a/tools/lib/bpf/libbpf.map
++++ b/tools/lib/bpf/libbpf.map
+@@ -17,6 +17,7 @@ LIBBPF_0.0.1 {
+ 		bpf_map_lookup_and_delete_elem;
+ 		bpf_map_lookup_elem;
+ 		bpf_map_update_elem;
++                bpf_map_update_elem_opts;
+ 		bpf_obj_get;
+ 		bpf_obj_get_info_by_fd;
+ 		bpf_obj_pin;
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+index 82bfb266741c..84a35cb4b9fe 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+@@ -190,13 +190,18 @@ static void test_skmsg_helpers_with_link(enum bpf_map_type map_type)
+ 	test_skmsg_load_helpers__destroy(skel);
+ }
+ 
+-static void test_sockmap_update(enum bpf_map_type map_type)
++static void test_sockmap_update(enum bpf_map_type map_type, bool cpu_affinity)
+ {
+ 	int err, prog, src;
+ 	struct test_sockmap_update *skel;
+ 	struct bpf_map *dst_map;
+ 	const __u32 zero = 0;
+ 	char dummy[14] = {0};
++	__u64 target_cpu = 0;
++
++	LIBBPF_OPTS(bpf_map_update_opts, update_opts,
++		.target_cpu = &target_cpu,
++	);
+ 	LIBBPF_OPTS(bpf_test_run_opts, topts,
+ 		.data_in = dummy,
+ 		.data_size_in = sizeof(dummy),
+@@ -219,7 +224,11 @@ static void test_sockmap_update(enum bpf_map_type map_type)
+ 	else
+ 		dst_map = skel->maps.dst_sock_hash;
+ 
+-	err = bpf_map_update_elem(src, &zero, &sk, BPF_NOEXIST);
++	if (cpu_affinity)
++		err = bpf_map_update_elem_opts(src, &zero, &sk, BPF_NOEXIST, &update_opts);
++	else
++		err = bpf_map_update_elem(src, &zero, &sk, BPF_NOEXIST);
++
+ 	if (!ASSERT_OK(err, "update_elem(src)"))
+ 		goto out;
+ 
+@@ -896,9 +905,11 @@ void test_sockmap_basic(void)
+ 	if (test__start_subtest("sockhash sk_msg load helpers"))
+ 		test_skmsg_helpers(BPF_MAP_TYPE_SOCKHASH);
+ 	if (test__start_subtest("sockmap update"))
+-		test_sockmap_update(BPF_MAP_TYPE_SOCKMAP);
++		test_sockmap_update(BPF_MAP_TYPE_SOCKMAP, false);
++	if (test__start_subtest("sockmap update cpu affinity"))
++		test_sockmap_update(BPF_MAP_TYPE_SOCKMAP, true);
+ 	if (test__start_subtest("sockhash update"))
+-		test_sockmap_update(BPF_MAP_TYPE_SOCKHASH);
++		test_sockmap_update(BPF_MAP_TYPE_SOCKHASH, false);
+ 	if (test__start_subtest("sockmap update in unsafe context"))
+ 		test_sockmap_invalid_update();
+ 	if (test__start_subtest("sockmap copy"))
+-- 
+2.43.5
 
