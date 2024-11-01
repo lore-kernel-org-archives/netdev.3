@@ -1,79 +1,70 @@
-Received: from mail-io1-f99.google.com (mail-io1-f99.google.com [209.85.166.99])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096CF13BC18
-	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 03:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ACC4C79;
+	Fri,  1 Nov 2024 03:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730432934; cv=none; b=b/DymTBZjQpHUBOQ8jt8pFoNEJOAx1KiaFULH3D7QtgdSjqaH5zreEdv93CJyr5xsowKQHzdcskjcMIN9pz2bCIBiD4Esl23CMgIqfOIQVTUXdUSv/rvP4Wgni9GEtDqS1Ce0uIdc5z0dF6JOlpk+RKz9VnnJGHwctP4pr3p8bQ=
+	t=1730433538; cv=none; b=egVTDHXAGpZWlj6gyy58jr9Xe9t35sm+FK0gIis5x+fhDtR5LpdvnzURMu9UNbjDdae0qTnRX9IjH9HlHTSXi5CvnbwK88Xmfl+ESwACerzStrgUks596oUKf2gPBW/h1NTHt5hhTCWgFO33tsvgC9J9Tb98g4jzY0b2gsGraCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730432934; c=relaxed/simple;
-	bh=MZxHaEa7buDfvPC/4WE/aTVuUcf+xHReOo835eWZAUc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PnFmt5b/C7S0cBZ3PhxZB/NOpz3DBn4qdAeyZLpr2morI815Iiu5tnPzN0Fts0aULt+1wX+T30f4J8YRspfE614Da5S1YXPMRa+kNF6MWWvdSrUl1YEoUmBc5W/RZs0llbVOXGihBW/IptW+DmaWDGmzp4TNpBelc3roMU29lBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=HCs9zHau; arc=none smtp.client-ip=209.85.166.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+	s=arc-20240116; t=1730433538; c=relaxed/simple;
+	bh=aat2SRLBzqfpOO0tUw+f+240+XOG0Y2UqKNqUXsRKzw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qg/UQZQFoEy6eknsN8U78irbGjqnwHo6gkm+AGV6ncdzfMJHPn8ycPvRgvhzZQyJJ6xf171o6YeuLi3t5lz3cO2EM/MVFXqj4o6tPcwUz0NqlksxAusfuh/hiFyrt7F/Q3n6WxMM0nYBvJwrLeOac9wqDNZIzm80CSGTRvLBqUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFyqusHe; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="HCs9zHau"
-Received: by mail-io1-f99.google.com with SMTP id ca18e2360f4ac-83aa2188c2aso5829239f.3
-        for <netdev@vger.kernel.org>; Thu, 31 Oct 2024 20:48:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFyqusHe"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e30db524c2so1238556a91.1;
+        Thu, 31 Oct 2024 20:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1730432931; x=1731037731; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730433536; x=1731038336; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iFtIYGNmdHvtGkRyGJ94EvP76ryCIg69gweJeFB48t0=;
-        b=HCs9zHauggqjpYWcYjPW0xyxkRycf0hDSS39kyc0zHdFnydwppplgrE1wdeQ5NzVRe
-         2UL+kZaSW0UlRFBaozlQ9QGRevlzr+YOgQ51qygXXOakv7lC1ga+Bqga7JWwRXQY+643
-         AQq9+dpD8d0AyGWAWxH93XJYCQ8VQgEc3BTgmy3bKmdJKGgjOS8UGbC3L6nVO1B7dySE
-         XHBr7ShVirOqWTMv8bzzHIXE7quxivyMA9NAmTszaZz4wKBGu+rkxI2atTOwnAbjh4yO
-         TV1L0//awQova1WwEsJc0z6ZoIMswU1k1vHzkcfGP/PmP2lTcxWg+fiXfwoed5RjwdNY
-         lR0g==
+        bh=sFSmtqGbfIT/4iT0z5PLJ7AcPQYB66rGXOxJKiMBTHE=;
+        b=VFyqusHe5D7wHAonxzHvfSAkB1EKSSblWWGBY1iy191+xPdQGpn6ZjZZeMAITshw5b
+         6VE1R1bDVS1/pq0NkpbtB/KEDTRPNTRwiLtJ3DTCU8/sJu4SaKORdIwLh1G4+u5RnmUI
+         b8xhdbm4OTfUWGXasxKbkP+1PCLyuNj3C9NPyDwlomZvYrjINm8dq/vitvYOkdeO2kDM
+         zmlIjI5eBrBX0fo7M3MEkYm2951/frdLX4R6yTual+yJNgiNoWRkzYH5z2SvtsTjEZZi
+         0L4YDceXivjKvjoC9bGwKnsRLQ/js/9atHYZbvgSSedzCjw+M8QkhJT3W+ZFc5TWCuPW
+         A4iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730432931; x=1731037731;
+        d=1e100.net; s=20230601; t=1730433536; x=1731038336;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iFtIYGNmdHvtGkRyGJ94EvP76ryCIg69gweJeFB48t0=;
-        b=lkcgN8MuhBwh+z6Z506WdOmJK24TmBBA2YnwNuUDxVeLHEMlWrW9hGj8r/WU50BFXH
-         iXUhpH5e+1kKUjrkdO0GQVfh3CJrUxqUkSnhPN8z6kcIQVrCgdjXnmHOy3sM1TVOQVA0
-         mPbN5fnKt/NG5D714USEfr6sQcVJYiihST4D19jQeo/5f2ALPjERJvl2mNV8ruYzq9Fv
-         Ch/no7RPZQYlDp4vAtPC8mRUke38pZMJzikprEms9FoQVnJjvKmp5o1RadDB4dq2tBC2
-         nuGTk/7p8EAXRh/SLfx4DKmrwlyxqo8Cuq/rfJvJOrIemG+xttCdWsLwpbgdcsHX3lI3
-         MnwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnuwu02EPrX3Q/2WXM9h/zYmi2BEVEkO1PJQ90g5C2jOJsAlT2Bu3BACinhivkXwWZqa0Cb1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOvKKl7RNhOaaQhVIMwW06Sfs7XSqJgQWro0uRBT2cFICif4DK
-	teKxGP4gUNcW/pAOOPDW7o4+5aCThOArnRv10I8UflGkbYXwWv/mMyiySEJF1nRCJ95RHeaHUyi
-	lwSMqAVnnh9TY5ddaiXKNZuwOEeW+WrbC6cTGN78QHpjP6ntx
-X-Google-Smtp-Source: AGHT+IGeAIngWc5LMAF4LFYsaT5zMsZvEQP0mtRiGlcTjVrfrCa0VFOydr5yNiWCR5zgfn9ud1jX8qtLZ/w6
-X-Received: by 2002:a6b:d90c:0:b0:82a:a4f0:c95e with SMTP id ca18e2360f4ac-83b1c60c9e0mr536930939f.5.1730432931086;
-        Thu, 31 Oct 2024 20:48:51 -0700 (PDT)
-Received: from c7-smtp-2023.dev.purestorage.com ([2620:125:9017:12:36:3:5:0])
-        by smtp-relay.gmail.com with ESMTPS id ca18e2360f4ac-83b67cde42esm10054639f.35.2024.10.31.20.48.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 20:48:51 -0700 (PDT)
-X-Relaying-Domain: purestorage.com
-Received: from dev-csander.dev.purestorage.com (dev-csander.dev.purestorage.com [10.7.70.37])
-	by c7-smtp-2023.dev.purestorage.com (Postfix) with ESMTP id D22243406A8;
-	Thu, 31 Oct 2024 21:48:49 -0600 (MDT)
-Received: by dev-csander.dev.purestorage.com (Postfix, from userid 1557716354)
-	id BD92DE41EB6; Thu, 31 Oct 2024 21:48:19 -0600 (MDT)
-From: Caleb Sander Mateos <csander@purestorage.com>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
+        bh=sFSmtqGbfIT/4iT0z5PLJ7AcPQYB66rGXOxJKiMBTHE=;
+        b=I5eUw7+S8mCO/C0ILPq7tZpVYV8a9cNLRtlWWJLnClbgvhbdEQ1fiYUdGW94P0hGq4
+         jqp8M26OnjQxF9SIqDoBpSlNyp80nnUl8g8BRrRT60u2buq9nzbMLBJKReHTiL30+uAV
+         VMnD4NyllKdp178kBVduwnPKYnB8vTrzCe88eotEeLYWZ0OX1uLDPp76Wn9yxHGmEHsH
+         JkGKpeKNp2/Y65x8kv38lfdspQ6n6ehFI40zY1jjB/Jkh1YY6baZK4mkHpZnjLURYXJN
+         OXSu7pXOrDY/+bmQ5+Ycq32xTAFSh3uXosP1q0/Vm86iYQz+4MShxSPe2PT6gIZWohX3
+         SPsw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrF1IMuD1N3PRkAk75NudJ0gHwRcg2jx7SZiVQ5IligTng/X11XwttbkQFrJjBdUM/CpmXSanjuUphhvc=@vger.kernel.org, AJvYcCX+04Uj5TiZ0eixdtYyhOp1yLFa5USH1pO30zQihMbdP9AtK37x10rxyqL9BY4Q12bzy5ZlewQP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzjg2na/mznxGo3UPc97y+iRCW5yeFDEHsNlZHaSALq/waXVFOz
+	RqYYaCIDVeuLwDuaCdqgIDqh6yumS/6oNZNin2knAgt3UatkHie5
+X-Google-Smtp-Source: AGHT+IGkBJL8wRX4GxtDQsr/iacArADSVmyqrSK0Dwd0q8ln8OL6ByY2OLyV5Z2zg2+SpXa9fsi5AQ==
+X-Received: by 2002:a17:90b:2e43:b0:2e0:a77e:8305 with SMTP id 98e67ed59e1d1-2e94c533088mr2887836a91.39.1730433535731;
+        Thu, 31 Oct 2024 20:58:55 -0700 (PDT)
+Received: from localhost.localdomain ([101.94.129.40])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e92fa2603fsm4146844a91.17.2024.10.31.20.58.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 31 Oct 2024 20:58:55 -0700 (PDT)
+From: Yi Zou <03zouyi09.25@gmail.com>
+To: davem@davemloft.net
+Cc: 21210240012@m.fudan.edu.cn,
+	21302010073@m.fudan.edu.cn,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	kuba@kernel.org,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/2] mlx5/core: avoid memory barrier in eq_update_ci()
-Date: Thu, 31 Oct 2024 21:46:39 -0600
-Message-ID: <20241101034647.51590-1-csander@purestorage.com>
-X-Mailer: git-send-email 2.45.2
+	linux-kernel@vger.kernel.org,
+	Yi Zou <03zouyi09.25@gmail.com>
+Subject: [PATCH] ipv6: route: fix possible null-pointer-dereference in ip6_route_info_create
+Date: Fri,  1 Nov 2024 11:58:43 +0800
+Message-ID: <20241101035843.52230-1-03zouyi09.25@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,46 +73,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The memory barrier in eq_update_ci() after the doorbell write is a
-significant hot spot in mlx5_eq_comp_int(). Under heavy TCP load, we see
-3% of CPU time spent on the mfence. As explained in [1], this barrier is
-only needed to preserve the ordering of writes to the doorbell register.
+In the ip6_route_info_create function, the variable fib6_nh is
+assigned the return value of nexthop_fib6_nh(rt->nh), which could
+result in fib6_nh being NULL. Immediately after this assignment,
+there is a potential dereference of fib6_nh in the following code:
+if (!ipv6_addr_any(&cfg->fc_prefsrc)) {
+ struct net_device *dev = fib6_nh->fib_nh_dev;
+This lead to a null pointer dereference (NPD) risk if fib6_nh is
+NULL. The issue can be resolved by adding a NULL check before the
+deference line.
 
-Use writel() instead of __raw_writel() for the doorbell write to provide
-this ordering without the need for a full memory barrier.
-memory-barriers.txt guarantees MMIO writes using writel() appear to the
-device in the same order they were made. On strongly-ordered
-architectures like x86, writel() adds no overhead to __raw_writel();
-both translate into a single store instruction. Removing the mb() avoids
-the costly mfence instruction.
-
-[1]: https://lore.kernel.org/netdev/CALzJLG8af0SMfA1C8U8r_Fddb_ZQhvEZd6=2a97dOoBcgLA0xg@mail.gmail.com/
-
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Signed-off-by: Yi Zou <03zouyi09.25@gmail.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/ipv6/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-index 4b7f7131c560..f03736711343 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/eq.h
-@@ -68,13 +68,12 @@ static inline struct mlx5_eqe *next_eqe_sw(struct mlx5_eq *eq)
- static inline void eq_update_ci(struct mlx5_eq *eq, int arm)
- {
- 	__be32 __iomem *addr = eq->doorbell + (arm ? 0 : 2);
- 	u32 val = (eq->cons_index & 0xffffff) | (eq->eqn << 24);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index b4251915585f..919592fa4e64 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3821,7 +3821,7 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
+ 			rt->fib6_flags = RTF_REJECT | RTF_NONEXTHOP;
+ 	}
  
--	__raw_writel((__force u32)cpu_to_be32(val), addr);
--	/* We still want ordering, just not swabbing, so add a barrier */
--	mb();
-+	/* Ensure ordering of consecutive doorbell writes */
-+	writel((__force u32)cpu_to_be32(val), addr);
- }
+-	if (!ipv6_addr_any(&cfg->fc_prefsrc)) {
++	if (!ipv6_addr_any(&cfg->fc_prefsrc) && fib6_nh) {
+ 		struct net_device *dev = fib6_nh->fib_nh_dev;
  
- int mlx5_eq_table_init(struct mlx5_core_dev *dev);
- void mlx5_eq_table_cleanup(struct mlx5_core_dev *dev);
- int mlx5_eq_table_create(struct mlx5_core_dev *dev);
+ 		if (!ipv6_chk_addr(net, &cfg->fc_prefsrc, dev, 0)) {
 -- 
-2.45.2
+2.44.0
 
