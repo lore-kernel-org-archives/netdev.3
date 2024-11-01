@@ -1,147 +1,109 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2096.outbound.protection.partner.outlook.cn [139.219.146.96])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B5199FC9;
-	Fri,  1 Nov 2024 09:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730455076; cv=fail; b=PX+YH9WKG0CHC76RE/f/3Uytl2W3JSwKgOnCZco0at0ejCjRQMMVfI147NnxqoDMYB2wFrbeEWN3j06She8XcYe8yv6fBKIY3LRLwTSkme2aO6LD1azuu5nMglgPBn7cS03fUFteedOFNzmZkOdy9mR4wER2T0vz2Vx3FtawfBw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730455076; c=relaxed/simple;
-	bh=2NvD15LNkjZuc+hxij3G+HIru5sVuk2IvYTigAQ2uOg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NGftUQyuyD9qHucvBH11W463yPgKQhtPFhCVLbfJMRbfzTGH9hwnIfMHgMQPiFFvbSp6QCTBjKOzCkH2ryVxJ14rcEW2Q23jPmkJsv+RHlM86FgB3O2wWWqnVAIsC1J+vIPTaMC8tMiSof/zfa4AeG+2jZ8TlPkqZJ2Wu32D4jM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ih+s83I2zICJitjMtc/HRAt++70j4MZE/nqH9KJoDQsYc6lAaNHXuMgiRQZGGSQ7Lu0kJ88f7fyeG2hjI5SrWlsPnUrnFjF9lBh/Wb6HDLAVfLtRYKJ9ti2VOXCP+C5UJIx57LguwdeCcqzqv5ifqQtKN6u09dKUe1HQDfj41/P4HAFXdJOfXX+YF7F7QK26RlxosLhW8XeGgQP4S+IKN0LHHTmP1seDm0HsSQXBw/8BGqNDRo7Fop/whuuRh/eswLhUwapYPXSgWjo2X67eKGKfOD7kzczp70LZ14nAbfq+DjeVrvh52YuakvVgoG2uR/ZL7O09Ul+qSNA9D1+Fqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C4OJP3dG+b6jMtZirVxAkm3476iD1/vHph0fe7hIxNE=;
- b=bSzT8fbWL4TmxQPmN5JLDMXfv0HD6ETw+3GbMtlBBwldrZvg62Ky1KB46Prb94dDWCAiu+envqU0bID1zWMI4au/qdzkfOl+mJ5N9inaACVn4QAmpoxYyuAAKH9oGsI2mLkOeWXGjtC8Au8GYvbv+VM8r1pTy1HGIZs7jpZ6wEB1wA8rvTqjHPR1pj27lpNMVKqUuZRR8hDsmeIt87meAfnthCc37fgsPdjDnsdoWGlLMrKyYRbIK3PjrjLh486fCwjP1brOse/6VFXoz3KSwEfl5tOcv754IWnZgYRzMZHWqVPskj0KlNnCGuHpg3P4FWp1uhNy6aLDFJJjXbahUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12) by ZQZPR01MB1107.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.27; Fri, 1 Nov
- 2024 08:24:04 +0000
-Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- ([fe80::617c:34a2:c5bf:8095]) by
- ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::617c:34a2:c5bf:8095%4])
- with mapi id 15.20.8069.016; Fri, 1 Nov 2024 08:24:04 +0000
-From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lftan.linux@gmail.com,
-	leyfoon.tan@starfivetech.com
-Subject: [net-next v2 1/3] net: stmmac: dwmac4: Fix MTL_OP_MODE_RTC mask and shift macros
-Date: Fri,  1 Nov 2024 16:23:34 +0800
-Message-ID: <20241101082336.1552084-2-leyfoon.tan@starfivetech.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241101082336.1552084-1-leyfoon.tan@starfivetech.com>
-References: <20241101082336.1552084-1-leyfoon.tan@starfivetech.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0015.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:5::9) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:f::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21E5143C72;
+	Fri,  1 Nov 2024 10:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730455450; cv=none; b=MNCZU69LmAIQ9NyGuEaA1FaJaVj/OWhD8hYoS+UlXhYbsnimeLeMGfX1D/p558X2E3FZ1P1i7ZPa66hRDv5Jytc7S1+qby6bB5bcpBf1JIoKw3VGAWpZNV363drSMiZTv+fEjMKOJheHFGcLiFa+iaGewfeml8X6BgybG7bXkOM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730455450; c=relaxed/simple;
+	bh=Rf8bkdBlxwr+7xHtx+gq94UWKa4xBxRh3LErQfhnuCc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hbpR56kEPhBH6DK4xTipjI2o5QLD83yD6VClG8m47IFXTC8LCZpytZnaWvdMh5zVw5r25HnDvrIHN5pLnVGmdQceQuzgTaENTbPT1pz02w4+ztUkVwBqk0xjEtqrZYgzEBJM0Rz/mgf7J9LAtqUWHsvjqEyGxEjNVS3a5tTyXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxqqZnd9; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxqqZnd9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED248C4CECD;
+	Fri,  1 Nov 2024 10:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730455449;
+	bh=Rf8bkdBlxwr+7xHtx+gq94UWKa4xBxRh3LErQfhnuCc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rxqqZnd9R34nT6j2WbLQ9Llzjrb28oDhV718cg1N6M9WqGXAdPRIQ/B3bYW8g8oaI
+	 9EQprAApa5uc8pgkMNzzw+yuhaganwCOQ0PJXipRYGhm1AfaXeaDRx+QH8ZkbKZQfr
+	 f1+fk666vIC8I5Fk5pmdzFnnV/EYzQw8r4aYkoO0GGCu5vGm1wzJkO5cJYa7UTSahg
+	 ljgkwk2zKDqop6INAG6lXT7NdPUDKU9z4gAClARws8gRbtk0D8MAUlG01h138/Bcev
+	 lRfqfp2XVcWbQxmXn+WUsdNxpFFrbWT09+1fYPncDr4yl7B8ZYGgzp0V/zykAjDzNO
+	 Ywdg7zOT8oPhA==
+Date: Fri, 1 Nov 2024 10:04:04 +0000
+From: Simon Horman <horms@kernel.org>
+To: Sai Krishna <saikrishnag@marvell.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, sgoutham@marvell.com,
+	gakula@marvell.com, lcherian@marvell.com, jerinj@marvell.com,
+	hkelam@marvell.com, sbhatta@marvell.com,
+	kalesh-anakkur.purayil@broadcom.com
+Subject: Re: [net-next PATCH v2 6/6] octeontx2-pf: CN20K mbox implementation
+ between PF-VF
+Message-ID: <20241101100404.GB1838431@kernel.org>
+References: <20241022185410.4036100-1-saikrishnag@marvell.com>
+ <20241022185410.4036100-7-saikrishnag@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB1107:EE_
-X-MS-Office365-Filtering-Correlation-Id: 62a34ed3-a266-4c8c-d4c3-08dcfa4e8ba2
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|41320700013|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	GRG4iQHE1R7vsdiUBqeW/0IP2SX9LxilKEIRaucZV9PxgFdQGYS9c5sAYZgbuqTDlufrM0SRD4GQPPJAVBzkrNGSP7pfRkamH4BE1zgas6Jd/2DlyVC1pq5JnEjFzvcVSt9/5rIV9rxNCcelYeKy/YuHp5pypb9FdFCYlRhUTSV4prhDIppvcsIOw+n+aNivEghjiRH42EwGPIz73K5PakdBF54nLG4pw4Whofe4oe9GtSI4klvX4NLmk+x7WwtgEnzOEcfqEKBNaur5ycd7b/OVi2JNId3gI0KUfC8xf3qrQhnx2ORcjKr1DAIdllXOqrsruBmE5f90vQZHHpv94dZtARXL1bJ13sis6ezsBJOoIMsaFukZXlY2aRGqtYDGhcP3jrYja0izVcktmhOvvfgpFaHPg/1DG4Et/RqQuDHzMxmIQTJoLOSKaJ2Adx8NC5Pi9eXbDhvFbslJOqSJUyOW7JVoViADv3xI3DUcPpa7fHyWgZuKgWbGZaCSmoo9NH/jr2SX94hC1HLtT16vEK+uc7ZCT5P/3Aj2LN/Bm6Cu9DolQZ/CCXnklKXPhg0EVorkCBFBVrMIqMAmGXITx/5xoTKvLHLQuxHNviwijiJX+mQoPwaQN4YNyMBcWKMj
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(41320700013)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OK1t4ju2az1svnSksEF0BX/gGuneBXTiRazlhlLES7qm1LsB3j4WEn294p08?=
- =?us-ascii?Q?qCBAsyLBTVfAwYJt+HS0eJ5Tv9y3GChwopstwJRgUZUNiQLQjbSLwQ6C8C77?=
- =?us-ascii?Q?hJZq6QafY/KT6PRNMuunzJHIJfFOhHDqH7DpOf//iGeJPvlvWgbMHLv8SK/4?=
- =?us-ascii?Q?rXevej4PsfrD78GKTxRdez3hCZPct12v2ggIt9+pWCzkfg7EAltuU3Mv2c/J?=
- =?us-ascii?Q?E0DFWev0vJYpWbAC/Q1AEt8g/qGPAvyfwGr92rBIror7ZkYKreg4ZS06mEUz?=
- =?us-ascii?Q?RjIxY7ZHGFHC6qnQOfhOns9c16kAJYz1fiqvLjoYNcF6AWaOq93Ew2usD+Jh?=
- =?us-ascii?Q?lYk3jaIIIz9W7dy4Yy9nnuSryb57bSeNFmE/9DMLuod34on8IWk8fF9uSTV/?=
- =?us-ascii?Q?QAqri0AA8SYRjujHAlCuGln5jYC1QjCJbEvX7xwEgLtgE4s8sUH2JJK1YDhD?=
- =?us-ascii?Q?nv7knHpy0RhJEjoAGyk3zTV7w6ECUERaBB2w60tHKHBYf2p1qRm6c9mBcRS+?=
- =?us-ascii?Q?bpnIWFOQAkh7KNHFeIm312FMeo/NYNQMRlVSM9O5hSSFj4cBP87I3WFUOWlG?=
- =?us-ascii?Q?R3sIeSgxeSP6MO0ClC0MOR6zjZ8Crv0HwDwkQlc+0wli1NxG26Vqr3CGP7yD?=
- =?us-ascii?Q?S+tlUDvtrYNLJ/YzjtIAL2vgdW1K7Kc4BsYfaVyFNUh9t3Jsnww/AkAdotpL?=
- =?us-ascii?Q?21KCHs50JMyGoy+AA6K53LiWp7YcW2eTRxWTIoMKPt1tqseUV62jMmFQG+m2?=
- =?us-ascii?Q?EGooKUFWTEyN0yr9pOB1X5JhpphyjxLcyqcmYcQkuTLuC5ft8Uez654s94/M?=
- =?us-ascii?Q?RwDA/OYBm9kBBamhAMcyFit5efnWmnJxMtZPas5oc/fRHRKvlpggN8YglEcI?=
- =?us-ascii?Q?vmB80O1Wo76PpMPHcMAcDhDJmzocJeb+MkF6zI3Uf8aF2bokQzVNx+kRKdkC?=
- =?us-ascii?Q?sqpQEuW8vE/DS/ctnILuXZ32Gt735O3GnrI/T4h5LFbC9VTKNutub+6Ht9Bq?=
- =?us-ascii?Q?hqvJrhDJXmgLkQz3v99tqAbiZMgdUaCI1Zh9n4JdqOjBVcd0GR62qUE+TujV?=
- =?us-ascii?Q?xf7Ia4BJEG8TRKuKMyqawq/Xrv/+JevwNrT3mfQP1zQ2qYnbpo14TjUdkePj?=
- =?us-ascii?Q?Tmy5LmK1o85Hd3ez4SC1AHpZb1njmc5jEcBOZnRQLDk0HlhSzAsL051QeHJ7?=
- =?us-ascii?Q?fZ/aRnIla6HFsr38jjyadDL63WG/B1aDdjNuee1cYTDjD3XwFYhEITI/vMgL?=
- =?us-ascii?Q?+oa14Rjkgpg7e+GXwRQETWU168lZ85wDFQVXLhy5WcSGXckrq+QsHSmrKFPG?=
- =?us-ascii?Q?TxMEj8WqfTewwkFtVKYkZcpI/Z6Y4IHo5Iq4aCWyJzm3/+DpER5F8CW5aqC9?=
- =?us-ascii?Q?Gi/mECy3bwdlPfErPimtTtpNXdaLkgE6go+XICZNZMdVw5bdmSnqxbrtr6I7?=
- =?us-ascii?Q?1LuH4EGWkqATlXzdlFk+ZKsnY0MchQrS9OPF5UGy5wppdg82B7JsDnYExOQB?=
- =?us-ascii?Q?3ThNpLckkBbwFTcx+nS4dlaj/HmQiayE5n1it4ZYMk6FltYMp3kEhggAETg1?=
- =?us-ascii?Q?ZhHcTyRUuRIzUGvfUQ/483jr+auFK2wNRCadffsolC7+yrYPvR9D6ugxQSc2?=
- =?us-ascii?Q?exZbw4tEh3V5KfFm4wHQPTE=3D?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62a34ed3-a266-4c8c-d4c3-08dcfa4e8ba2
-X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2024 08:24:03.8803
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2hFhLD9lsl4h5hBRIXTtvRp2lXwXfieQekIsK6tqwmibz+H6FEb3jks76hW/LdsyG7ClINrQjOuIe5HAH04M+chOuiChhxxoecvT9wmzWto=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1107
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022185410.4036100-7-saikrishnag@marvell.com>
 
-RTC fields are located in bits [1:0]. Correct the _MASK and _SHIFT
-macros to use the appropriate mask and shift.
+On Wed, Oct 23, 2024 at 12:24:10AM +0530, Sai Krishna wrote:
+> This patch implements the CN20k MBOX communication between PF and
+> it's VFs. CN20K silicon got extra interrupt of MBOX response for trigger
+> interrupt. Also few of the CSR offsets got changed in CN20K against
+> prior series of silicons.
+> 
+> Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+> Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
 
-Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+...
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-index 28fff6cab812..dd21dcfbbab3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-@@ -394,8 +394,8 @@ static inline u32 mtl_chanx_base_addr(const struct dwmac4_addrs *addrs,
- 
- #define MTL_OP_MODE_EHFC		BIT(7)
- 
--#define MTL_OP_MODE_RTC_MASK		0x18
--#define MTL_OP_MODE_RTC_SHIFT		3
-+#define MTL_OP_MODE_RTC_MASK		GENMASK(1, 0)
-+#define MTL_OP_MODE_RTC_SHIFT		0
- 
- #define MTL_OP_MODE_RTC_32		(1 << MTL_OP_MODE_RTC_SHIFT)
- #define MTL_OP_MODE_RTC_64		0
--- 
-2.34.1
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> index 148a5c91af55..1a7920327fd5 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+> @@ -565,6 +565,23 @@ irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static void *cn20k_pfvf_mbox_alloc(struct otx2_nic *pf, int numvfs)
+> +{
+> +	struct qmem *mbox_addr;
+> +	int err;
+> +
+> +	err = qmem_alloc(&pf->pdev->dev, &mbox_addr, numvfs, MBOX_SIZE);
 
+Hi Sai and Sunil,
+
+MBOX_SIZE is 0x10000 (i.e. 2^16).
+
+But qmem_alloc() will assign this value to the entry_sz field of an
+instance of struct qmem, whose type is u16. Thus the value will be
+truncated to 0. I didn't dig further, but this doesn't seem desirable.
+
+Flagged by Sparse on x86_64.
+
+Also, not strictly related to this patchset: There Sparse flags
+a handful of warnings in .../marvell/octeontx2/nic/otx2_pf.c,
+which all seem to relate to __iomem annotations. It would be nice
+to investigate and resolve those at some point.
+
+> +	if (err) {
+> +		dev_err(pf->dev, "qmem alloc fail\n");
+> +		return ERR_PTR(-ENOMEM);
+> +	}
+> +
+> +	otx2_write64(pf, RVU_PF_VF_MBOX_ADDR, (u64)mbox_addr->iova);
+> +	pf->pfvf_mbox_addr = mbox_addr;
+> +
+> +	return mbox_addr->base;
+> +}
+> +
+>  static int otx2_pfvf_mbox_init(struct otx2_nic *pf, int numvfs)
+>  {
+>  	void __iomem *hwbase;
+
+...
