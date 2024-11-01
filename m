@@ -1,65 +1,65 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2030C166F16
-	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 11:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3B715CD42
+	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 11:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730461666; cv=none; b=fBMr5NsQcesmM1/gyWgyCxxpWkhUjXSrLVahHxBX41b66u0NA3ho8wv98JB5BZ7I7MQvs2mxH1Jxrqpau/nZx0jzEphsxD1aLvOkdegy4LR5UgshsvM2p5im1iQYUHqkP2g6Zbto3CIMGyFwJ4sHlHhkfO9zFnqCk3VepcTv0oU=
+	t=1730461898; cv=none; b=E0gzW6ZxlecQ2hTHU1Et6jTdv151wSDae4cKAwr8gmvZV7TPDOkLuZvRSjOirFF70L0oqTGYRvPffCe+ytCmKxNIJ8fIXugv5S5DhPoImIqbv6lZQHPuqS6AdDu5AQ/+t2i0qmH1+w5Zl64pJzshhYl/D9ssvIIG2XYJZiP8Gds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730461666; c=relaxed/simple;
-	bh=rFzzuYAv2SKccWouLovsdeghCh1s+OmcwrhbhkmvI6g=;
+	s=arc-20240116; t=1730461898; c=relaxed/simple;
+	bh=rsEHgKLuWcvz36/Rz5yzfsGk6AH+liwbTq1/0AfcL1w=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GWFMszJ1Hqg/rw6U24uolAIqheUKxKMDVkFtbVWUW5RcvStIZ6mBKiBYcX3bizHN6Fmwjwzz44+okW0HxqACL8RrEj60lLpFVfizVNvSXU2Y0pUle9YIGJR9Q5U8JkxR1xiaZhqeQtPz4/sEPM7QlwDxJMjLNJ/ZIp26Zj+eb2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IAangWgP; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=b7DslVy5VPBlW8morhGEB9PG1v4iYQQx+UBQjxg9nQ8G3F7OPINu38sLIO+THIyX4rrcNmhiXGhbWZUj2pY+cT5vJnNoq8xnCVY1QaGFbZeix+fPE6GCpo/OoMunJhS+imfO3/xYB2EFkTwNW9R/JbVZF9A79YJpqI1/70kNk0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CjD4sEwV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IAangWgP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CjD4sEwV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730461664;
+	s=mimecast20190719; t=1730461895;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rFzzuYAv2SKccWouLovsdeghCh1s+OmcwrhbhkmvI6g=;
-	b=IAangWgPB6bLrQjWV6qgxesAOFyZKGAXCpJlv6vckDaMA+t+qThi9a9zUCkp7RdRSlJipI
-	3Q5giknJe7esyIymB/BywYYGKlzchpX1dSIRc4PQY3xPw69K1P1wkzvY57thZHmb2E32m1
-	zt9MdvHgIKE4eM++B+wbOMmg4ictE6w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rsEHgKLuWcvz36/Rz5yzfsGk6AH+liwbTq1/0AfcL1w=;
+	b=CjD4sEwVPnIDD/Fc2XaHhqLr7dSKURPrI3RsD2a8Vjsm9Sw3G16Qk+8fT/Tx8xFmRqYcHS
+	NFHQW6Qu4JgF22u/wHqPPFlXttdpceF1/O3s5qDFIZaya4Dgb/TqN7d6woMETkJU/JBBQ0
+	IGYtoBZXzzxXkE/L9KnGL51uZvOpzrU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-8Nuj20csNDKcsctCSGWNPQ-1; Fri, 01 Nov 2024 07:47:41 -0400
-X-MC-Unique: 8Nuj20csNDKcsctCSGWNPQ-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43152cd2843so11745015e9.3
-        for <netdev@vger.kernel.org>; Fri, 01 Nov 2024 04:47:41 -0700 (PDT)
+ us-mta-618-GgHRB9qwNSmxOu-hUhY66w-1; Fri, 01 Nov 2024 07:51:33 -0400
+X-MC-Unique: GgHRB9qwNSmxOu-hUhY66w-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d5ca5bfc8so941827f8f.0
+        for <netdev@vger.kernel.org>; Fri, 01 Nov 2024 04:51:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730461660; x=1731066460;
+        d=1e100.net; s=20230601; t=1730461892; x=1731066692;
         h=content-transfer-encoding:mime-version:message-id:date:references
          :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rFzzuYAv2SKccWouLovsdeghCh1s+OmcwrhbhkmvI6g=;
-        b=SU4EyZqCtjs1gC77e0W+iRBkjzCNWs9421ZXdXM26Z2EuUqE7kertglPAMaeowJdRz
-         ncolgWEucsKzQyVoFVKYipqyHucVW0R+cXbR/MjiIi0jh7gPLmz+lBcRGRQAymKa0fjR
-         E1MPKSxSpOP0oClYh1Y6PVOEH9hpa0Nq1TUBXeqa+vT8m0iF4LBqRwGBTY5OnBG5XNYV
-         JVtK67wDgX6zuYZKhwb2dafmIrl/Uaphbx+gpM+tVdR+lC4uZEvX71kwjaxQdxYeUtRd
-         Cf7VveU0HhSRk/tZsaJiAY28V0IY21MoohNbn/1S/MhN0xROiB6mgiH7idVCCO3gSTkd
-         vcKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWk8dVw1HwY8ElzzlPLC6OvSlrSCC+TbF0i9sUZdNLgNyb6QLqgXX/Tqti82Nwb01855ztgiZo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4SJifC1KRvI1FySa1qDEZew20gMnYHrW5az5JYnMu+SSM/P5w
-	9vbTeMaOOrT/YSMWHu0X30Xl+c36FjV116w7pnrOdhxAK4Ld8Rg74mjsbRyPk1mMvNNbVq7L2yp
-	RnxvTd8jXrHOcsTV9o7bwBUH1t0tqF/+ApTs+LAZdUYmkbY7Mbbkk3w==
-X-Received: by 2002:a05:600c:1d97:b0:431:5459:33c2 with SMTP id 5b1f17b1804b1-431bb99053bmr107786655e9.17.1730461660612;
-        Fri, 01 Nov 2024 04:47:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNlCYVzQ8SAbhWfaM5n3nvXcLZFSRiXEpUvQ8tFWfAU9tvUBvRq0rnYNEnYa0nWbeMoxReGw==
-X-Received: by 2002:a05:600c:1d97:b0:431:5459:33c2 with SMTP id 5b1f17b1804b1-431bb99053bmr107786455e9.17.1730461660233;
-        Fri, 01 Nov 2024 04:47:40 -0700 (PDT)
+        bh=rsEHgKLuWcvz36/Rz5yzfsGk6AH+liwbTq1/0AfcL1w=;
+        b=cqCm6hd7Q/RvTDl2tlQv0hxoTImX/vCHL9mbIqrcT2mu6A+LzRYgI+FI221mjIy0Mn
+         7dmNnruX6zWA1NMQOffs987Gd4PuSLHkhCEl2m1URGDpWa15UR7BG9D4gzpbqkTcm0wE
+         OmmPO630vrsQh7I4xjqBg7gj41LwJOca09n1ZCYKb+lo+5/pPeuH1FI1Z4x+WXx2S64P
+         rHvGvh+NIQsy8PHB3MdgJfGFzOLt2GxEIsI3XYHhvI2/FRum1uJLExnGgWaFcnJHrKrY
+         kyWGy/+lIeZSRG4p38zw+Sf8unrFtX0v78Kd8+sWGzsGOrsgq3+6n68MJh7DUYaFs3mE
+         DQUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXXccasa3E/8WV/qa/oRcKC5Z1r7Ya8Rvdu+OJxs+wADCNocfeMUdvkv3/pqRxAviT4v/7lBxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnP400ICBnmh48+BBAXPXkYMOmJpJykueSgqFSnFIg/8kq0tVb
+	s763PEnHVkYMRTGItm9iGlZHonbPLkcihpZO/7KPJ46CtlDtXhUFYTCZSPELKS1GfABfNeIcLPZ
+	X7c4e9f9mtF/L/NYVi+P6Rmlr95aIx6T1S6Jssdd7slXwOyHRVFANhw==
+X-Received: by 2002:a05:6000:1564:b0:37d:94d6:5e20 with SMTP id ffacd0b85a97d-381be764e4amr6409652f8f.4.1730461892455;
+        Fri, 01 Nov 2024 04:51:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGS/eOEyEN3rqadpyq16ef47A5nw2zggvZfNjgqN1OyQ1xs15a45QCa7mgQruSh8w34R8VLyg==
+X-Received: by 2002:a05:6000:1564:b0:37d:94d6:5e20 with SMTP id ffacd0b85a97d-381be764e4amr6409639f8f.4.1730461892097;
+        Fri, 01 Nov 2024 04:51:32 -0700 (PDT)
 Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10e7365sm4783523f8f.54.2024.11.01.04.47.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113dd8asm4861201f8f.73.2024.11.01.04.51.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 04:47:39 -0700 (PDT)
+        Fri, 01 Nov 2024 04:51:31 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id BA4BA164B94E; Fri, 01 Nov 2024 12:47:38 +0100 (CET)
+	id 9329C164B950; Fri, 01 Nov 2024 12:51:30 +0100 (CET)
 From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To: Alexander Lobakin <aleksander.lobakin@intel.com>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
@@ -71,14 +71,14 @@ Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
  <sdf@fomichev.me>, Magnus Karlsson <magnus.karlsson@intel.com>,
  nex.sw.ncis.osdt.itp.upstreaming@intel.com, bpf@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 05/18] xdp, xsk: constify read-only
- arguments of some static inline helpers
-In-Reply-To: <20241030165201.442301-6-aleksander.lobakin@intel.com>
+Subject: Re: [PATCH net-next v3 06/18] xdp: allow attaching already
+ registered memory model to xdp_rxq_info
+In-Reply-To: <20241030165201.442301-7-aleksander.lobakin@intel.com>
 References: <20241030165201.442301-1-aleksander.lobakin@intel.com>
- <20241030165201.442301-6-aleksander.lobakin@intel.com>
+ <20241030165201.442301-7-aleksander.lobakin@intel.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date: Fri, 01 Nov 2024 12:47:38 +0100
-Message-ID: <87v7x79nvp.fsf@toke.dk>
+Date: Fri, 01 Nov 2024 12:51:30 +0100
+Message-ID: <87r07v9np9.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,10 +90,14 @@ Content-Transfer-Encoding: quoted-printable
 
 Alexander Lobakin <aleksander.lobakin@intel.com> writes:
 
-> Lots of read-only helpers for &xdp_buff and &xdp_frame, such as getting
-> the frame length, skb_shared_info etc., don't have their arguments
-> marked with `const` for no reason. Add the missing annotations to leave
-> less place for mistakes and more for optimization.
+> One may need to register memory model separately from xdp_rxq_info. One
+> simple example may be XDP test run code, but in general, it might be
+> useful when memory model registering is managed by one layer and then
+> XDP RxQ info by a different one.
+> Allow such scenarios by adding a simple helper which "attaches" an
+> already registered memory model to the desired xdp_rxq_info. As this
+> is mostly needed for Page Pool, add a special function to do that for
+> a &page_pool pointer.
 >
 > Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 
