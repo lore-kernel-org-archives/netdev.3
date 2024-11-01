@@ -1,156 +1,142 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04A0198A38;
-	Fri,  1 Nov 2024 10:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465F7839F4;
+	Fri,  1 Nov 2024 10:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730457279; cv=none; b=S/7vVCmt2qnOOyRvxSeJs07yb4ppquglMYAGRDdYe4ddiHmen6WdCM78V2H2uNdyuTiZLztUhi7fK9AI9joktxXI3EUAUi1wGfrID0Y8GDHD2jOf5lAC1gTd/f9xgcsobJz3dwe0SiTTbyfFnITB0659bwgkcf/ngPgYNaDx0P4=
+	t=1730457315; cv=none; b=lHyz4sqQaacDHbjvnNYllLD53m/9ueTY4ILSx2yr7HN9ZTr3xtbQ+IaPk16TCjd6mLbY7JL9Z+MR9Hwm0T5N/0eHkc2p59AwzfhAV1VEfYTehtTMLOY8osXIbm5s6vRjcczy62mC29O8+6Cdk5QDLd1xcmd3ajYBnrtGg1HKrxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730457279; c=relaxed/simple;
-	bh=4gVyFl3aZzu1qejuO+Sxyt3R0RGE2BEjyOzgiP3k/b8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k0HiZasyVG/XDGKZYJCbEbrBlDS0Dv2Ca/miW2EDWoV9jKE0+HjzZEGoaVzi5WiO46iz/ApOSM/jeXScpzY8qxsjJKcDqsEK+U2D83jiL8NWrJK6i4WhGikYNjNT5CIK5IfnmvacGkf1DXM9zWpnx4eeZ4cHyvWPMf1JoVDN92s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PsAV+hAE; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1730457315; c=relaxed/simple;
+	bh=mDY3sQhHHJay03QoXDGp/ZK5UPvuGf6lO1jg/cq7xSw=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=JkPBN58dyaqgbFNAJUyqbAZTIh6p1ppwdpbkG4vywnDBk+sHxLyEWasNyy0BS3DLu/jhrqfZmYwBxlnZAYy2oWOJSboKVBqvjPfvKe00tiTrBwQzgGqvzFpeFlJKQpj7X56pI4zZmJ5lOn1G6heYOuQ9MvPM+CqQGL1hmC3yNWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BpIjtGGI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PsAV+hAE"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A19DP52009586;
-	Fri, 1 Nov 2024 03:34:29 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=n
-	JVtgcRhOVSaV5xJsgcnaEkB84NlO9i8LlP+KvEcN6E=; b=PsAV+hAEocm7sMuYw
-	oGGM0dUNleRqJOaM4sjdbO4FUGTU8NFJdP6xpq845EUakvud0ICRs29LzOS/9xxg
-	XPA8vVSIK1ZW85+fqGhz51xsNiptpe/ipAKc/U3rgC30PiGtdx1BhCkw3f70VNJ2
-	j1QFWGwpcYVLmlxKxvFNrNRM+QgS4/sHjxX/YofF94+LjcsaBeAxLu/WkKC+E3vD
-	+K1yBGNY2vY0BNuZaEwuFyknzTu0IVejYKDoTP/sQ92+YUoCgR18oNnD4F5sMXVw
-	uVvykEf66yJxf+6ZtF5wCN8aOPb4EVrI2SxFLWW2AHqwcKVT7QepSJm+TVd6EgX5
-	niyUQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 42mv5ng4a6-1
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BpIjtGGI"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A15pMkj027500;
+	Fri, 1 Nov 2024 10:34:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=idB0wFf+KEHEu+GKhdfnGe
+	cqvCNGY2vxrRLBvif2tl8=; b=BpIjtGGIPi3fS+akhumUzmokk54Z84mfAkYqSE
+	Mi6baqxH5PGMvIn2sa5r83SO8aeZ+DKJ3DWsCGISV7BvDhYFqGDhEzCBmndSHthP
+	h5XoqR+Gx7YAwWLjJqv6Wj1vKkPZ2uSvPwlFm2uXMGbhcVcCEKh4rPU74h6flRvD
+	Ik+0HkrtpXkyaemxUgQuxC5s/GnF06ViGAnvkKxt8nK1UbZTmT+3gTrvCQHvtD3S
+	XGPi3Vs0LZ29xz35nlyPIuOj6+TkhHkuPG5EvJr+x5pfwwiOt3PiRv7K+aUC4q3J
+	OezFogjo/MmlPI13HrD1dOOLpHCdO35fZbrLkJmmDVr4Ux6g==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42k1p3a3dx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Nov 2024 03:34:29 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+	Fri, 01 Nov 2024 10:34:58 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A1AYhsc004189
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 1 Nov 2024 10:34:43 GMT
+Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Fri, 1 Nov 2024 03:34:27 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Fri, 1 Nov 2024 03:34:27 -0700
-Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
-	by maili.marvell.com (Postfix) with ESMTP id 1F9B23F704C;
-	Fri,  1 Nov 2024 03:34:27 -0700 (PDT)
-From: Shinas Rasheed <srasheed@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
-        <wizhao@redhat.com>, <horms@kernel.org>, <kongyen@redhat.com>,
-        <pabeni@redhat.com>, <kheib@redhat.com>, <mschmidt@redhat.com>,
-        "Shinas
- Rasheed" <srasheed@marvell.com>,
-        Veerasenareddy Burru <vburru@marvell.com>,
-        Satananda Burla <sburla@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v1 3/3] octeon_ep_vf: add checks to fix NULL pointer dereferences
-Date: Fri, 1 Nov 2024 03:34:15 -0700
-Message-ID: <20241101103416.1064930-4-srasheed@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241101103416.1064930-1-srasheed@marvell.com>
-References: <20241101103416.1064930-1-srasheed@marvell.com>
+ 15.2.1544.9; Fri, 1 Nov 2024 03:34:37 -0700
+From: Lei Wei <quic_leiwei@quicinc.com>
+Subject: [PATCH net-next 0/5] Add PCS support for Qualcomm IPQ9574 SoC
+Date: Fri, 1 Nov 2024 18:32:48 +0800
+Message-ID: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: iVv9dbxbxEkmGQNqyZJxTHocx3_7d_GN
-X-Proofpoint-GUID: iVv9dbxbxEkmGQNqyZJxTHocx3_7d_GN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFCuJGcC/x3MQQqAIBBA0avIrBMai6iuEhExTTUbM5UIxLsnL
+ d/i/wSBvXCAUSXw/EiQyxZgpYDO1R6sZSsGU5sWsUYt7l4chcUTatOtjH1DA3UNlMJ53uX9bxN
+ YjtryG2HO+QN2JvOOZwAAAA==
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
+	<andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King
+	<linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <quic_kkumarcs@quicinc.com>,
+        <quic_suruchia@quicinc.com>, <quic_pavir@quicinc.com>,
+        <quic_linchen@quicinc.com>, <quic_luoj@quicinc.com>,
+        <quic_leiwei@quicinc.com>, <srinivas.kandagatla@linaro.org>,
+        <bartosz.golaszewski@linaro.org>, <vsmuthu@qti.qualcomm.com>,
+        <john@phrozen.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730457277; l=1960;
+ i=quic_leiwei@quicinc.com; s=20240829; h=from:subject:message-id;
+ bh=mDY3sQhHHJay03QoXDGp/ZK5UPvuGf6lO1jg/cq7xSw=;
+ b=ZB2HSgnS8szv49yGy4OIy4c+EnnNgiEpPn2dBTwtoa6VxW6sk+vcXSTpSGLdfgmzqTvAWOb1b
+ 8Yb8c7N857DAsPGDWj2EJ8uIOWqZ2cHvLh2gV+oLk+KVuOpCjL9f6bP
+X-Developer-Key: i=quic_leiwei@quicinc.com; a=ed25519;
+ pk=uFXBHtxtDjtIrTKpDEZlMLSn1i/sonZepYO8yioKACM=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XL6t0DXuFUg4viHgM9e2gB6mKYjqNTeu
+X-Proofpoint-ORIG-GUID: XL6t0DXuFUg4viHgM9e2gB6mKYjqNTeu
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
+ phishscore=0 clxscore=1015 impostorscore=0 mlxlogscore=887 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411010076
 
-Add checks to avoid NULL pointer dereferences that might
-happen in rare and corner cases
+The 'UNIPHY' PCS block in the Qualcomm IPQ9574 SoC provides Ethernet
+PCS and SerDes functions. It supports 1Gbps mode PCS and 10-Gigabit
+mode PCS (XPCS) functions, and supports various interface modes for
+the connectivity between the Ethernet MAC and the external PHYs/Switch.
+There are three UNIPHY (PCS) instances in IPQ9574, supporting the six
+Ethernet ports.
 
-Fixes: cb7dd712189f ("octeon_ep_vf: Add driver framework and device initialization")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+This patch series adds base driver support for initializing the PCS,
+and PCS phylink ops for managing the PCS modes/states. Support for
+SGMII/QSGMII (PCS) and USXGMII (XPCS) modes is being added initially.
+
+The Ethernet driver which handles the MAC operations will create the
+PCS instances and phylink for the MAC, by utilizing the API exported
+by this driver.
+
+While support is being added initially for IPQ9574, the driver is
+expected to be easily extendable later for other SoCs in the IPQ
+family such as IPQ5332.
+
+Signed-off-by: Lei Wei <quic_leiwei@quicinc.com>
 ---
- .../ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c    |  8 +++++++-
- .../ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c    | 12 +++++++++++-
- .../ethernet/marvell/octeon_ep_vf/octep_vf_main.c    |  3 +++
- 3 files changed, 21 insertions(+), 2 deletions(-)
+Lei Wei (5):
+      dt-bindings: net: pcs: Add Ethernet PCS for Qualcomm IPQ9574 SoC
+      net: pcs: Add PCS driver for Qualcomm IPQ9574 SoC
+      net: pcs: qcom-ipq: Add PCS create and phylink operations for IPQ9574
+      net: pcs: qcom-ipq: Add USXGMII interface mode for IPQ9574
+      MAINTAINERS: Add maintainer for Qualcomm IPQ PCS driver
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
-index 88937fce75f1..f1b7eda3fa42 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cn9k.c
-@@ -273,8 +273,14 @@ static irqreturn_t octep_vf_ioq_intr_handler_cn93(void *data)
- 	struct octep_vf_oq *oq;
- 	u64 reg_val;
- 
--	oct = vector->octep_vf_dev;
-+	if (!vector)
-+		return IRQ_HANDLED;
-+
- 	oq = vector->oq;
-+	if (!oq)
-+		return IRQ_HANDLED;
-+
-+	oct = vector->octep_vf_dev;
- 	/* Mailbox interrupt arrives along with interrupt of tx/rx ring pair 0 */
- 	if (oq->q_no == 0) {
- 		reg_val = octep_vf_read_csr64(oct, CN93_VF_SDP_R_MBOX_PF_VF_INT(0));
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
-index 1f79dfad42c6..31c0d7c0492a 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_cnxk.c
-@@ -284,8 +284,14 @@ static irqreturn_t octep_vf_ioq_intr_handler_cnxk(void *data)
- 	struct octep_vf_oq *oq;
- 	u64 reg_val;
- 
--	oct = vector->octep_vf_dev;
-+	if (!vector)
-+		return IRQ_HANDLED;
-+
- 	oq = vector->oq;
-+	if (!oq)
-+		return IRQ_HANDLED;
-+
-+	oct = vector->octep_vf_dev;
- 	/* Mailbox interrupt arrives along with interrupt of tx/rx ring pair 0 */
- 	if (oq->q_no == 0) {
- 		reg_val = octep_vf_read_csr64(oct, CNXK_VF_SDP_R_MBOX_PF_VF_INT(0));
-@@ -294,6 +300,10 @@ static irqreturn_t octep_vf_ioq_intr_handler_cnxk(void *data)
- 			octep_vf_write_csr64(oct, CNXK_VF_SDP_R_MBOX_PF_VF_INT(0), reg_val);
- 		}
- 	}
-+
-+	if (!(oq->napi))
-+		return IRQ_HANDLED;
-+
- 	napi_schedule_irqoff(oq->napi);
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 7e6771c9cdbb..79d9ffd593eb 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -790,6 +790,9 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 		struct octep_vf_iq *iq = oct->iq[q];
- 		struct octep_vf_oq *oq = oct->oq[q];
- 
-+		if (!iq || !oq)
-+			return;
-+
- 		tx_packets += iq->stats.instr_completed;
- 		tx_bytes += iq->stats.bytes_sent;
- 		rx_packets += oq->stats.packets;
+ .../bindings/net/pcs/qcom,ipq9574-pcs.yaml         | 230 ++++++
+ MAINTAINERS                                        |   9 +
+ drivers/net/pcs/Kconfig                            |   9 +
+ drivers/net/pcs/Makefile                           |   1 +
+ drivers/net/pcs/pcs-qcom-ipq.c                     | 879 +++++++++++++++++++++
+ include/dt-bindings/net/pcs-qcom-ipq.h             |  15 +
+ include/linux/pcs/pcs-qcom-ipq.h                   |  16 +
+ 7 files changed, 1159 insertions(+)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241101-ipq_pcs_rc1-26ae183c9c63
+
+Best regards,
 -- 
-2.25.1
+Lei Wei <quic_leiwei@quicinc.com>
 
