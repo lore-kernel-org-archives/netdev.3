@@ -1,187 +1,99 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E611A4F12
-	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 14:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4513149620;
+	Fri,  1 Nov 2024 14:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730471360; cv=none; b=WEzcF9gGamYZHJ2RIH20qajK+Gms9oc+P3RE6zwY11aqlNcwKLpTfEPKIDI6pmKaCTc5EsqVI/h+95lLuRsQ/25syz3fjBiOgvdtAL5oyPj9eqewPw28yLgMIO4h1IF/OjJsosM4Pe3WU02Z6Vau1MGXmmIKicbYVdgD2xjcteU=
+	t=1730471535; cv=none; b=li8mxPbGJOcEurG0/YNyQ6EnpYkPOYxLJv5rJ6BbypstSjrexhBlRSLj/PpixPTKxTjn+nmNRorCkuB4ATV+Up1tE2rQKKey8PF0K+kgSSdC8hZHDsZ06zq8EEmsPexFkEpwVb2j3Na0qFsoTod+shL3ay0hP58eIohElpkXmtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730471360; c=relaxed/simple;
-	bh=eJVNvJnZLTG4PpxBtX9b0krF09fZgAY5tkl/hJZTlyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rcQXxPZ2kj0XiyZKBr+X3x1wvNJb0X9gqUTx0HS15Sk8Y/3CbygtF7Poh+dJEq//SLYY8P9mSvBzDiGcDAxwzZ2j3h2xWTiuyD2odJ/B18JDxsG7ssPHud5t6Wiaz7Oua4mK1lDqq6wqmePuYrnUnLMxxIOfjHy2ZrqbtBoIuwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KU9Hw65+; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730471535; c=relaxed/simple;
+	bh=Ye+OnA3pcBCvTB594Gt6ixWt++CfWAxTqEQjPllTXqA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFZJTBlGKrUB0PL5ImavFo0c5GWYMINftq9lvIf2SMCRcFKM9fxaPQwhzd7+Y6DnXNP0fD1EyW915WqmCfz/isYBAe7AgOnfNO5ad/UrT5rRpSJi0a7cyn3DKVzvQoT6wmbaNu6g3WTdCgx4JSRNCBNVZ6d9hy83CxzAYSHyNVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AtNJsz9o; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KU9Hw65+"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-460b295b9eeso138761cf.1
-        for <netdev@vger.kernel.org>; Fri, 01 Nov 2024 07:29:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AtNJsz9o"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4314c4cb752so17951725e9.2;
+        Fri, 01 Nov 2024 07:32:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730471356; x=1731076156; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=71rDrn/xSyrSel5+3YD+U/lkEjJUJKYWwLFn/ivmxck=;
-        b=KU9Hw65+obka9tr/pM5cR/jNGsgQzIcHig0dyxxDBX0kh1mHE5/auhSDDlvO4KWOZ4
-         i25/rSX7cwnOjYoE912O+SnQhhBdrNsXIdnhwuGrWrrjJnqy+0XP/kJliUymcNUCmIc7
-         Yv/lC/lztn8oZtGzzhQ/i4SP1eabCNQMyVPfdtEInRhsUQ0Lp9al8J/oONCi1pxFaxXZ
-         ArdQ0DZRylzVCkOubQ3Hia4GOf+jy2NEJgGHuJW+xWp0cxTb9rJXm2nZBwU+FPbmbqnm
-         XbIzmbjRbz3T8y4ycgNpbVmzqBSExGHH8K9LzqIGSfrJsvxtRlBLD+8cLjo/qnjk33m0
-         R6DA==
+        d=gmail.com; s=20230601; t=1730471531; x=1731076331; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BzMHOq/iCf0mTo6/esKAisiJt3XWXmE/BAGapCEWblg=;
+        b=AtNJsz9oaJgofjW7xrsYYbwZpkstg2c7c4VRyT2LyIQzGQYVSzSLIB4+0CQjmyyV22
+         p6oDMAoA5iIh5/C1qpTT3bpZMPwGXS5874n2JyNjc0xAWrFZYq5vReEJQu0gJo0n3ANg
+         6f/H10dTVUxlqzC4jld/zDuNBqzfgS3P3G7nJAdp9GPBszJvF2RH/jBgEMyj8wbcQ0om
+         d7jz/bc04Rp3IWmdxlslokr1qKkE0Hq+/LFLr3o9ig//ssYmPPDvlBHOxYtg0Xh2BU/5
+         /YDtWvLznG7PhPFNzjKCNpsf9y+yVEFXj44q8h4x1kvt1tMuDPWPZAx/5+sBknn3p2pa
+         m5gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730471356; x=1731076156;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=71rDrn/xSyrSel5+3YD+U/lkEjJUJKYWwLFn/ivmxck=;
-        b=WMopg4TB5S+332hXX7mwM8KRsQYhMnsIDHxaF4LMyPQfO/iLnLqzfvnJomIYAzucy7
-         xfcOT2NFE9jcrtEBypcep7lTjuJ9yDqYEd6gvfIm/lnMqH+FMhq1IEnBDvwLybvTlvJN
-         2x6EdvNbGsznSdW6SszVc1eBUiNcKQ3fMbl2F6bF4FS6ARi1A253CfkhJ5YrRO84ouus
-         bj+4vnCVpDxiFGQF9xvyVU0tlaHpinFPID3Homn6zvulSymFBusy5z9je1AdEwo0ZEw4
-         txW6X8zrAr5DrVVfYwWozpoCKJCzd5tlWtglwNAEdAWgbl/GXpGWmVsF0gpP5BhSrg0D
-         Rnlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhA8x5gvRpW7Po0Ahvdt08SIrMlkYt7tOTaRx9tLNYMr71g1MIg176el/1A3XA02QBIV5WUE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlcI4QDRZu5+Ev8q1tpd/ACraMkoilLXZqQ/LBYHMVP72DDW84
-	apW/tqaDuvoyBCSlLKcowvx/SfCA9V/oXyC5SKAS95/An6nMgWWzGg88absRpSWaHRrxVN+jk8H
-	pE6SjkzTdJwEhCvpwlNCt4OTVCGQW8bE8+rTx
-X-Gm-Gg: ASbGncs/Uv7t6TgshF6O6yf44/HZNYZAf7odjfs6dp/w8k1O+0qsstfcR+VKCLrCOKz
-	+0imqMZNt48BmmPDnKlrXOEwiTBEp4FQ=
-X-Google-Smtp-Source: AGHT+IHfPf4efEtalOK8WUuB9JdEhR5RMnc0VUPGI/FfzKul0egqfNyIe0EJS2sbq6VHEkHbfxIaYbjkGSJgcXA7P3I=
-X-Received: by 2002:a05:622a:614:b0:461:4be1:c612 with SMTP id
- d75a77b69052e-462ad2da722mr6592141cf.21.1730471356319; Fri, 01 Nov 2024
- 07:29:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730471531; x=1731076331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BzMHOq/iCf0mTo6/esKAisiJt3XWXmE/BAGapCEWblg=;
+        b=qU5lJKFK6nX5roFEyX77RkVKqk+i7pifqYL3ruzTFAdDHBM0/25FyiJ1+XBnFRBSOc
+         kxVlKh0Z4WqeurKbr6ujdxjfwz6b/6s+/zoUo/mbIiP9+iqs7K2ngTxtHTYn/aXZRgNd
+         EUssxOwxbev4uKVw88cIusVIliQ19bHDFzanXoAi70VQAPaIZOy4aPlueaDBIqu8wwge
+         RFPhuEStRhaxBp9WtIRAbsIo4w9430uKyie9BtqPL+xUAl4/kn4X5DZtG7PRHK61grcd
+         FN/riP7KIxMeT+49Y77VMbQ6E9PegfAqJOo8JRuPPzMxWPgIeOgCPwjyuijTlaumJlJJ
+         zDbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/MHY6bnMeGPi9AKHLmZyUj/QP/lMTnPaduh3FOuCLY31K+5hpmlfZWRSLyVPpPoLZdfBpMQk=@vger.kernel.org, AJvYcCW+hgN78Nh6+keAFHLAgFl1u6A+f0Nn9B2GvWVb+eNaa/68K2SNg89UZQX/ZtgwMpYKpv/NkO0JEIBcg9jSOrwI@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWB1D2MvGfa8+IUCnWsqlF24cC2t/4OKWdI6WmJfPrDRzfaNXG
+	RZebbxvNF5hbjT7DKgGWG2yyW9VZQvlcS2n3qtoDmsoaq74l1nr6
+X-Google-Smtp-Source: AGHT+IHvtpZn7d8vB942r4zuG2RQkp0979/qnUzdbg1tJcN0Dzoy0ix9aImEY0F4ebHBwiv1isfxug==
+X-Received: by 2002:a05:600c:5115:b0:431:7c78:b885 with SMTP id 5b1f17b1804b1-4327b6f954emr61643485e9.4.1730471531352;
+        Fri, 01 Nov 2024 07:32:11 -0700 (PDT)
+Received: from imac.lan ([2a02:8010:60a0:0:5575:fafa:8c58:48a3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9a99c8sm93675215e9.29.2024.11.01.07.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 07:32:10 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH nf v1] netfilter: netlink: Report extack policy errors for batched ops
+Date: Fri,  1 Nov 2024 14:32:07 +0000
+Message-ID: <20241101143207.42408-1-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022162359.2713094-1-ap420073@gmail.com> <20241022162359.2713094-6-ap420073@gmail.com>
-In-Reply-To: <20241022162359.2713094-6-ap420073@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 1 Nov 2024 07:29:04 -0700
-Message-ID: <CAHS8izNbS4i+ke0bK07-rNLuq6RGXD-H73DhVb1-tsUOzSCBog@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 5/8] net: devmem: add ring parameter filtering
-To: Taehee Yoo <ap420073@gmail.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	edumazet@google.com, donald.hunter@gmail.com, corbet@lwn.net, 
-	michael.chan@broadcom.com, andrew+netdev@lunn.ch, hawk@kernel.org, 
-	ilias.apalodimas@linaro.org, ast@kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, dw@davidwei.uk, sdf@fomichev.me, 
-	asml.silence@gmail.com, brett.creeley@amd.com, linux-doc@vger.kernel.org, 
-	netdev@vger.kernel.org, kory.maincent@bootlin.com, 
-	maxime.chevallier@bootlin.com, danieller@nvidia.com, hengqi@linux.alibaba.com, 
-	ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com, hkallweit1@gmail.com, 
-	ahmed.zaki@intel.com, rrameshbabu@nvidia.com, idosch@nvidia.com, 
-	jiri@resnulli.us, bigeasy@linutronix.de, lorenzo@kernel.org, 
-	jdamato@fastly.com, aleksander.lobakin@intel.com, kaiyuanz@google.com, 
-	willemb@google.com, daniel.zahka@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Taehee, sorry for the late reply. I was out on vacation and needed
-to catch up on some stuff when I got back.
+The nftables batch processing does not currently populate extack with
+policy errors. Fix this by passing extack when parsing batch messages.
 
-On Tue, Oct 22, 2024 at 9:25=E2=80=AFAM Taehee Yoo <ap420073@gmail.com> wro=
-te:
->
-> If driver doesn't support ring parameter or tcp-data-split configuration
-> is not sufficient, the devmem should not be set up.
-> Before setup the devmem, tcp-data-split should be ON and
-> header-data-split-thresh value should be 0.
->
-> Tested-by: Stanislav Fomichev <sdf@fomichev.me>
-> Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-> ---
->
-> v4:
->  - Check condition before __netif_get_rx_queue().
->  - Separate condition check.
->  - Add Test tag from Stanislav.
->
-> v3:
->  - Patch added.
->
->  net/core/devmem.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 11b91c12ee11..3425e872e87a 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -8,6 +8,8 @@
->   */
->
->  #include <linux/dma-buf.h>
-> +#include <linux/ethtool.h>
-> +#include <linux/ethtool_netlink.h>
->  #include <linux/genalloc.h>
->  #include <linux/mm.h>
->  #include <linux/netdevice.h>
-> @@ -131,6 +133,8 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device=
- *dev, u32 rxq_idx,
->                                     struct net_devmem_dmabuf_binding *bin=
-ding,
->                                     struct netlink_ext_ack *extack)
->  {
-> +       struct kernel_ethtool_ringparam kernel_ringparam =3D {};
-> +       struct ethtool_ringparam ringparam =3D {};
->         struct netdev_rx_queue *rxq;
->         u32 xa_idx;
->         int err;
-> @@ -140,6 +144,20 @@ int net_devmem_bind_dmabuf_to_queue(struct net_devic=
-e *dev, u32 rxq_idx,
->                 return -ERANGE;
->         }
->
-> +       if (!dev->ethtool_ops->get_ringparam)
-> +               return -EOPNOTSUPP;
-> +
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+---
+ net/netfilter/nfnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Maybe an error code not EOPNOTSUPP. I think that gets returned when
-NET_DEVMEM is not compiled in and other situations like that. Lets
-pick another error code? Maybe ENODEV.
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index 7784ec094097..e598a2a252b0 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -517,7 +517,7 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			err = nla_parse_deprecated(cda,
+ 						   ss->cb[cb_id].attr_count,
+ 						   attr, attrlen,
+-						   ss->cb[cb_id].policy, NULL);
++						   ss->cb[cb_id].policy, &extack);
+ 			if (err < 0)
+ 				goto ack;
+ 
+-- 
+2.47.0
 
-Also consider extack error message. But it's very unlikely to hit this
-error, so maybe not necessary.
-
-> +       dev->ethtool_ops->get_ringparam(dev, &ringparam, &kernel_ringpara=
-m,
-> +                                       extack);
-> +       if (kernel_ringparam.tcp_data_split !=3D ETHTOOL_TCP_DATA_SPLIT_E=
-NABLED) {
-> +               NL_SET_ERR_MSG(extack, "tcp-data-split is disabled");
-> +               return -EINVAL;
-> +       }
-> +       if (kernel_ringparam.hds_thresh) {
-> +               NL_SET_ERR_MSG(extack, "header-data-split-thresh is not z=
-ero");
-> +               return -EINVAL;
-> +       }
-> +
-
-Thinking about drivers that support tcp-data-split, but don't support
-any kind of hds_thresh. For us (GVE), the hds_thresh is implicitly
-always 0.
-
-Does the driver need to explicitly set hds_thresh to 0? If so, that
-adds a bit of churn to driver code. Is it possible to detect in this
-function that the driver doesn't support hds_thresh and allow the
-binding if so?
-
-I see in the previous patch you do something like:
-
-supported_ring_params & ETHTOOL_RING_USE_HDS_THRS
-
-To detect there is hds_thresh support. I was wondering if something
-like this is possible so we don't have to update GVE and all future
-drivers to explicitly set thresh to 0.
-
-Other than that, looks fine to me.
-
-
---=20
-Thanks,
-Mina
