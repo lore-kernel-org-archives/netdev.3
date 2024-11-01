@@ -1,136 +1,125 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A7F147C9B;
-	Fri,  1 Nov 2024 08:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E231F15C158;
+	Fri,  1 Nov 2024 09:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730451349; cv=none; b=X53BOw+M9b8a7rZ0/lh3f6QiXXFMnMMREUntzLPdd7nionR26kC4Y44DDdPyPXSrQZaeah2dL1BGgFWeK6aSR7xtOE136XktH6aMIPHOuubzQBS6ZpiopgWys1kGttmib0vofnENBQweWoyUX8CHWFmK0rnJ6povgWWeCWngQbo=
+	t=1730453275; cv=none; b=WbhFz+l1B+iM/Mau9R+R4Et5IPu05xpWsyIE4wS7X/oLhHm45EWaZAR+igZ+G+LsvwZizGjCURXrh3IwcdXxDI8AZsubtfXqRd8kwlhSElCb+7JN1b/xWRHKlPyKvF9PUkW9Pro9Dmc/9Taadv8BsKrDMZfe1vK9NQ5kWZdBEzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730451349; c=relaxed/simple;
-	bh=fLxGO+NXyb3lVBIx8VQdDEHOKDua9XIGAZdhiTyuwsY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Dap5xYolSI9xYvVidG84UzENTJaZWiVrTw0zhyZbNe3ctZjQbpAYsWS37el8HJxFC79BSiYaRV5yaAcjonT8y6INEEoQ/ct2PfK4/fKTCG0jFqiimlTIiq9CAxPj0/OLQT0LfSxI25cpBEopar5Xe2gczphqIedzgS3KM+k7YJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=XhTR7R+r; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="XhTR7R+r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1730451337;
-	bh=LK1BfNcDjWqjY5IAYjhatcpF/S0PKDuPZuW/7DFKhNQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XhTR7R+rWkMy7t6j1Hw+Cfy162xf8VxwNkdwTKRmlrPAcW6I4BfMr6B/Q99K/b9rh
-	 icKaOqO3a5I0Vjub/Do1b23hdcBNbSErAdYbk0VqdWykOT0RwxCdHMArGM+M4OazmC
-	 RDpvpSyAl4AyIcYjWlMj7gCqhOavqv2OkO3/M4rhnMhT51IRwiG6+VYj5fU8FJ7i/3
-	 EWMsUSP+IbvRYkcVZB7vCKxMMyIhqYzO/m/V46YHw+SCS8pQHWMd7UoHp7lHLq0xIt
-	 R+8TaQT0yguqBdjEVYx+I1t5str35nwe09Z9/V2BTx2xEGRWxl46SrlwC3SbLeJjDb
-	 SS5useDzSNe5w==
-Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 00A226A53E;
-	Fri,  1 Nov 2024 16:55:35 +0800 (AWST)
-Message-ID: <675c2760e1ed64ee8e8bcd82c74af764d48fea6c.camel@codeconstruct.com.au>
-Subject: Re: [PATCH v6 2/2] mctp pcc: Implement MCTP over PCC Transport
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Adam Young <admiyo@amperemail.onmicrosoft.com>, 
- admiyo@os.amperecomputing.com, Matt Johnston <matt@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sudeep Holla
-	 <sudeep.holla@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Huisong Li <lihuisong@huawei.com>
-Date: Fri, 01 Nov 2024 16:55:35 +0800
-In-Reply-To: <3e68ad61-8b21-4d15-bc4c-412dd2c7b53d@amperemail.onmicrosoft.com>
-References: <20241029165414.58746-1-admiyo@os.amperecomputing.com>
-	 <20241029165414.58746-3-admiyo@os.amperecomputing.com>
-	 <b614c56f007b2669f1a23bfe8a8bc6c273f81bba.camel@codeconstruct.com.au>
-	 <3e68ad61-8b21-4d15-bc4c-412dd2c7b53d@amperemail.onmicrosoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1730453275; c=relaxed/simple;
+	bh=tqSksozhg+SR5AgWX0/sEltZoCf9nCYQ8jIaVYZ/UAs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TqF96MrxjQQd5hrI5rg4I9rUG57nNwTJmG2tNDJSu2/dUtzHw3nq7MIJs8Y3SlEXyuxr/pqzSo1408Cn8HA+h8G3oUnV0FNzzXEk2QzcF+i8/DE6w+tmOWXh8zEVrpSTS/jx/N9XXpDHTmyNjLgNhCN2kSjuaDsK0116TYuDoBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XfwTX57xPzyTtX;
+	Fri,  1 Nov 2024 17:26:08 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id E4BF0140878;
+	Fri,  1 Nov 2024 17:27:49 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 1 Nov 2024 17:27:49 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <salil.mehta@huawei.com>,
+	<liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>, <shaojijie@huawei.com>,
+	<chenhao418@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net] net: hns3: fix kernel crash when uninstalling driver
+Date: Fri, 1 Nov 2024 17:15:07 +0800
+Message-ID: <20241101091507.3644584-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hi Adam,
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-Thanks for the quick response. I think the dev lladdr is the main thing
-to work out here, and it's not something we can change that post-merge.
-I'm not yet  convinced on your current approach, but a few
-comments/queries that may help us get a consensus there, one way or the
-other:
+When the driver is uninstalled and the VF is disabled concurrently, a
+kernel crash occurs. The reason is that the two actions call function
+pci_disable_sriov(). The num_VFs is checked to determine whether to
+release the corresponding resources. During the second calling, num_VFs
+is not 0 and the resource release function is called. However, the
+corresponding resource has been released during the first invoking.
+Therefore, the problem occurs:
 
-> We need a hardware address to create a socket without an EID in order
-> to know where we are sending the packets.
+[15277.839633][T50670] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+...
+[15278.131557][T50670] Call trace:
+[15278.134686][T50670]  klist_put+0x28/0x12c
+[15278.138682][T50670]  klist_del+0x14/0x20
+[15278.142592][T50670]  device_del+0xbc/0x3c0
+[15278.146676][T50670]  pci_remove_bus_device+0x84/0x120
+[15278.151714][T50670]  pci_stop_and_remove_bus_device+0x6c/0x80
+[15278.157447][T50670]  pci_iov_remove_virtfn+0xb4/0x12c
+[15278.162485][T50670]  sriov_disable+0x50/0x11c
+[15278.166829][T50670]  pci_disable_sriov+0x24/0x30
+[15278.171433][T50670]  hnae3_unregister_ae_algo_prepare+0x60/0x90 [hnae3]
+[15278.178039][T50670]  hclge_exit+0x28/0xd0 [hclge]
+[15278.182730][T50670]  __se_sys_delete_module.isra.0+0x164/0x230
+[15278.188550][T50670]  __arm64_sys_delete_module+0x1c/0x30
+[15278.193848][T50670]  invoke_syscall+0x50/0x11c
+[15278.198278][T50670]  el0_svc_common.constprop.0+0x158/0x164
+[15278.203837][T50670]  do_el0_svc+0x34/0xcc
+[15278.207834][T50670]  el0_svc+0x20/0x30
 
-Just to clarify that: for physical (ie, null-EID) addressing, you don't
-need the hardware address, you need:
+For details, see the following figure.
 
- 1) the outgoing interface's ifindex; and
- 2) the hardware address of the *remote* endpoint, in whatever=C2=A0
-    format=C2=A0is appropriate for link type
+     rmmod hclge              disable VFs
+----------------------------------------------------
+hclge_exit()            sriov_numvfs_store()
+  ...                     device_lock()
+  pci_disable_sriov()     hns3_pci_sriov_configure()
+                            pci_disable_sriov()
+                              sriov_disable()
+    sriov_disable()             if !num_VFs :
+      if !num_VFs :               return;
+        return;                 sriov_del_vfs()
+      sriov_del_vfs()             ...
+        ...                       klist_put()
+        klist_put()               ...
+        ...                     num_VFs = 0;
+      num_VFs = 0;        device_unlock();
 
-In cases where there is no hardware addressing in the tx packet (which
-looks to apply to PCC), (2) is empty.=20
+In this patch, when driver is removing, we get the device_lock()
+to protect num_VFs, just like sriov_numvfs_store().
 
-I understand that you're needing some mechanism for finding the correct
-ifindex, but I don't think using the device lladdr is the correct
-approach.
+Fixes: 0dd8a25f355b ("net: hns3: disable sriov before unload hclge layer")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hnae3.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-We have this model already for mctp-over-serial, which is another
-point-to-point link type. MCTP-over-serial devices have no hardware
-address, as there is no hardware addressing in the packet format. In
-EID-less routing, it's up to the application to determine the ifindex,
-using whatever existing device-identification mechanism is suitable.
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.c b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+index 67b0bf310daa..9a63fbc69408 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hnae3.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.c
+@@ -25,8 +25,11 @@ void hnae3_unregister_ae_algo_prepare(struct hnae3_ae_algo *ae_algo)
+ 		pci_id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
+ 		if (!pci_id)
+ 			continue;
+-		if (IS_ENABLED(CONFIG_PCI_IOV))
++		if (IS_ENABLED(CONFIG_PCI_IOV)) {
++			device_lock(&ae_dev->pdev->dev);
+ 			pci_disable_sriov(ae_dev->pdev);
++			device_unlock(&ae_dev->pdev->dev);
++		}
+ 	}
+ }
+ EXPORT_SYMBOL(hnae3_unregister_ae_algo_prepare);
+-- 
+2.33.0
 
-> The Hardware addressing is needed to be able to use the device in=20
-> point-to-point mode.=C2=A0 It is possible to have multiple devices at the=
-=20
-> hardware level, and also to not use EID based routing.=C2=A0 Thus, the
-> kernel needs to expose which device is which.
-
-Yes, that's totally fine to expect find a specific device - but the
-device's hardware address is not the conventional place to do that.
-
-> The Essential piece of information is the outbox, which identifies
-> which channel the=C2=A0message will be sent on.=C2=A0 The inbox is in the
-> hardware address as well as a confirmation of on which channel the
-> messages are expected to return.
-
-Those are the indices of the shared memory regions used for the
-transfer, right?
-
-> In the future, it is possible to reuse channels and IRQs in
-> constrained situations, and the driver would then be able to deduce
-> from the packet which remote device sent it.
-
-The spec mentions:
-
-  A single PCC instance shall serve as a communication channel=C2=A0
-  between=C2=A0at most two MCTP capable entities
-
-so how is it ambiguous which remote device has sent a packet? Am I
-misinterpreting "channel" there?
-
-In which case, how does the driver RX path do that deduction? There is
-no hardware addressing information in the DSP0292 packet format.
-
-> =C2=A0Instead, there is a portion of it on outgoing packets, and a
-> different portion on incoming packets.
->=20
-> The hardware address format is in an upcoming version of the spec not
-> yet published.
-
-I can't really comment on non-published specs, but that looks more like
-identifiers for the tx/rx channel pair (ie., maps to a device
-identifier) rather than physical packet addressing data (ie., an
-interface lladdr). Happy to be corrected on that though!
-
-Cheers,
-
-
-Jeremy
