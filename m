@@ -1,71 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4795C22615;
-	Fri,  1 Nov 2024 01:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CE634CC4;
+	Fri,  1 Nov 2024 01:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730422907; cv=none; b=ZGOWTbZqpc5vYsx+OiYX0hHxhjgy2DZTY/pLs4y6QXCW84c/2oMjLJ7w0sKSXypMBby9AGxN0rARVY8YLtx1Db1xKoVZ+QZb0m7AqL5R60z6Ewmwom0Jf1sIObdc0CS5Jlvfe1x8NO2Eyouunk8uPyRy671csGt+Rm7lBUhvzMQ=
+	t=1730422939; cv=none; b=Ii8lJHpr0YZZMR+EMabzEF8CujHq1bGN9WoN83/U4J16q2sklg4UALHxBZesvD14AdDE5GENTKxtP3Ljb/nMRdF2oPvWNGpU1t0oRG2E51Vq77J1e1KhgFkSgzLQOopE9qqKcmA0LpJFT6muAvEAdeian+wpqeBCINTo07AibbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730422907; c=relaxed/simple;
-	bh=g9AJo+IRyva5UjfrrunnTm56/Yysi7JItCsP262Jt0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RrvzTKrfQ5nfATXSftrJ1yxoPvghbEg67V+pqmqbGZNPxnHAcmHC6lskfXmL/gjUaNtlREXun/QJP9kwxN9csprbufgOB4sPxy/N+j2KTr1gDqWGK1AvF8mHntpTdsQ6CqKzyTK4lxEn/V5q9BZ3j1uRsP6mOqLmegztAWrqfBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2O1Hr1W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730422939; c=relaxed/simple;
+	bh=rpnrvQ51Pzd6TcTCFw/1JOF6TVB5Ku7URjbwIth5Njg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DHA6I/7Hhs7HgHX2amPA95Dgs8KNVMhN81rLx8N71tWvlw2n57IzoJza4UmJ4ZB8gOGxju52w1/mZISSUfMbUH2Si5R+m1yBdxaKpipyq/Vt3uSWhHxmUfQS7k8sOt4uQjOMEkgUyGys6j2EkbCRuQsSkUPA/Qw0EtxIw0IHeyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HSlMCYbD; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2O1Hr1W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FA1C4CEC3;
-	Fri,  1 Nov 2024 01:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730422906;
-	bh=g9AJo+IRyva5UjfrrunnTm56/Yysi7JItCsP262Jt0o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Q2O1Hr1WU75GypbCn1riww821dleef8Cc/Vva/PRFM7MLO40c1beyJsxpZkTlHUHH
-	 OuXZufPeJy4TjVJYaFkIMZ9Gk8BkmtEkE5kNPtiac2xDVjBBHtul9hElUVusVBACnY
-	 yGDUg5WJItiIgHB0+zeJrJU47wubtqylP+uvZUSY4gsi0Qn2Wx3zZjxz5DKfEO0TNp
-	 95+ped56WEDgAWPs4ln9o1XOIAv+B3kHi+uzly8QpvtfNJPNyx1nuF9PiqRuGZWYLt
-	 L4/OIt592oRxZMl6xd4eTHaqtusL50Qaz3/0wUl/5BQSqJixJWPMH83IRzAIwkESTo
-	 ZWot1b74nM23g==
-Date: Thu, 31 Oct 2024 18:01:45 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Johannes Berg
- <johannes@sipsolutions.net>, David Ahern <dsahern@kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Kees Cook
- <kees@kernel.org>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH v2 1/4][next] uapi: socket: Introduce struct
- sockaddr_legacy
-Message-ID: <20241031180145.01e14e38@kernel.org>
-In-Reply-To: <23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
-References: <cover.1729802213.git.gustavoars@kernel.org>
-	<23bd38a4bf024d4a92a8a634ddf4d5689cd3a67e.1729802213.git.gustavoars@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HSlMCYbD"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7eab7622b61so1217305a12.1;
+        Thu, 31 Oct 2024 18:02:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730422933; x=1731027733; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xxz2el4wbZ6G3BcKbo7KzoBLvWoRppJU2dbWS5YJA44=;
+        b=HSlMCYbDvcLnX/F5tZZdGk4ZfHzh7MKxInI3uT7sKF6vL8pvWQcgoPybFNZgAm+vNe
+         MUfHs8m04o1ulsSVdYIMJvsRAvQUTCZTa9HUChU30WrDkm40b/+VZXG9jXedIhkmVFK7
+         xIxK2xsjAEPsbifsLIiKJp2s4r5pG6wotWyLxJcoErOh9JIwXVNYOkMY1OLYhAdt4pZ1
+         F3DL4Kms+ebbVeCIW3J3VCr2OBryXKAteywVmUgJ2tSH/1JZ0vRQIUL8EKCwe9WvloS1
+         eMQ0W/+nfR2Y4iojzzmBexIbLeRZVxAOr8uuLasEafDNx2kfk5v7YZmC+UQRKBWwfkVP
+         YBJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730422933; x=1731027733;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xxz2el4wbZ6G3BcKbo7KzoBLvWoRppJU2dbWS5YJA44=;
+        b=b96t5M0dmWWFZ58si1RM5F1Zl7Id4KBbCqkP3CUsFhMFb4F0+sFlu6QgxnKxHM1F0Z
+         AhwCV05Z6TbX8CKq/R1PxbspQyeTriXyJj5ZPSESSwjwTWEwSYLeKEtY3ccKFdOhZkNV
+         Sq4npH8SMBRLTvrFBwbVVI5o6qcDIi1Y7Nonyz+KPQHVft9UJnzLwYsngfJfb9VfByG0
+         j4BFduY/N8a3lydzF3gPT3no3T6K8byXz0YmpWTo2DRVUJs02Tq/N/fmUj8bKtghw+su
+         1fRUuc6dWqKFXrlqJMBl9x5CKcmf9WPcbX3NKBKsBontAqRrFx3PHe4eIO6apLRap03j
+         IEkg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4dOBmfiKktATOpJz7Jgv3bDxt6b91u8lFamnHL8MafEtkgc5Jl1DACvMvABCEQdS5/9S7cqQW122Ll7Y=@vger.kernel.org, AJvYcCXf2SfUWdD5Ef5KqvCgoADUm1x4NnOSAw0+VDYJ6uUtvqIAh9YhKx8df/GtYfZOthxvrRB35dS59ZYAi2HMp9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSHec23uuJ6pmcZZIWiaNeKvqTa4YNsb/9kLKh/WvQQ8lNChdt
+	0hmg1GJuZjsMAlDig2OPK7ocnfYb++7Rp5ezOUkGfmTgPiTpNlMO
+X-Google-Smtp-Source: AGHT+IGZGlLwqs0no2dclauFE75oRu+pvv2rJZ5SXyzebZVJ67LKbJtJ8Xof1BVHl+beZOs6SyC9xA==
+X-Received: by 2002:a05:6a21:1796:b0:1d8:a1dc:b43 with SMTP id adf61e73a8af0-1d9a8402d85mr29843682637.24.1730422933320;
+        Thu, 31 Oct 2024 18:02:13 -0700 (PDT)
+Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc1ea6a1sm1743403b3a.74.2024.10.31.18.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 18:02:13 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	arnd@arndb.de
+Subject: [PATCH v5 0/7] rust: Add IO polling
+Date: Fri,  1 Nov 2024 10:01:14 +0900
+Message-ID: <20241101010121.69221-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 24 Oct 2024 15:11:24 -0600 Gustavo A. R. Silva wrote:
-> + * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
-> + * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
-> + * array in struct sockaddr") due to the fact that "One of the worst offenders
-> + * of "fake flexible arrays" is struct sockaddr". This means that the original
-> + * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
-> + * flexible-array member was introduced.
+polls periodically until a condition is met or a timeout is reached.
+By using the function, the 7th patch fixes QT2025 PHY driver to sleep
+until the hardware becomes ready.
 
-This isn't spelled out in the commit messages AFACT so let me ask..
-Why aren't we reverting b5f0de6df6dce, then?
-Feels like the best solution would be to have a separate type with
-the flex array to clearly annotate users who treat it as such.
-Is that not going to work?
+As a result of the past discussion, this introduces two new types,
+Instant and Delta, which represent a specific point in time and a span
+of time, respectively.
 
-My noob reading of b5f0de6df6dce is that it was a simpler workaround
-for the previous problem, avoided adding a new type (and the conversion
-churn). But now we are adding a type and another workaround on top.
-Sorry if I'm misunderstanding. No question that the struct is a mess,
-but I don't feel like this is helping the messiness...
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
+
+v5:
+- set the range of Delta for fsleep function
+- update comments
+v4: https://lore.kernel.org/lkml/20241025033118.44452-1-fujita.tomonori@gmail.com/
+- rebase on the tip tree's timers/core
+- add Instant instead of using Ktime
+- remove unused basic methods
+- add Delta as_micros_ceil method
+- use const fn for Delta from_* methods
+- add more comments based on the feedback
+- add a safe wrapper for cpu_relax()
+- add __might_sleep() macro
+v3: https://lore.kernel.org/lkml/20241016035214.2229-1-fujita.tomonori@gmail.com/
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
+
+
+FUJITA Tomonori (7):
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Introduce Instant type
+  rust: time: Add wrapper for fsleep function
+  MAINTAINERS: rust: Add TIMEKEEPING and TIMER abstractions
+  rust: Add read_poll_timeout functions
+  net: phy: qt2025: Wait until PHY becomes ready
+
+ MAINTAINERS               |  2 +
+ drivers/net/phy/qt2025.rs | 10 +++-
+ rust/helpers/helpers.c    |  2 +
+ rust/helpers/kernel.c     | 13 ++++++
+ rust/helpers/time.c       |  8 ++++
+ rust/kernel/error.rs      |  1 +
+ rust/kernel/io.rs         |  5 ++
+ rust/kernel/io/poll.rs    | 95 ++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |  2 +
+ rust/kernel/processor.rs  | 13 ++++++
+ rust/kernel/time.rs       | 97 ++++++++++++++++++++++++++++-----------
+ rust/kernel/time/delay.rs | 43 +++++++++++++++++
+ 12 files changed, 263 insertions(+), 28 deletions(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/io.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/processor.rs
+ create mode 100644 rust/kernel/time/delay.rs
+
+
+base-commit: 1d4199cbbe95efaba51304cfd844bd0ccd224e61
+-- 
+2.43.0
+
