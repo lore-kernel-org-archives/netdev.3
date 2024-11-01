@@ -1,132 +1,274 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from qs51p00im-qukt01071701.me.com (qs51p00im-qukt01071701.me.com [17.57.155.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A271A256E;
-	Fri,  1 Nov 2024 10:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6134189B8F
+	for <netdev@vger.kernel.org>; Fri,  1 Nov 2024 10:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730457330; cv=none; b=Q8LGd0Sp3b8cvIBtwJTBYRfzRUn59+XS+pQKyY1xLt5N8O4M5v7gwMpMhvp6td8rZvSthXaL/I30bgRN+DiFAb0Y/t/Tz7T7ylB/83GpolWYRM6NqB5+J6vhy/ZK5tqRty7Oh0kzRpSBUn+sNhUtS/YNvw0gUXXbi3IbeLBjxqQ=
+	t=1730458179; cv=none; b=FDqFvcdmy1NIpXP4yaNC04KNYSbVt5J/K0fK/xUup9RrOANnz8ZZsBs8HrSi7MVy87ivVWyZC7BQBJSvUlvGys8Ksw8F3DIYm5qN1yZGTAne3pZwarHtEB2gJnud9qB0p/JimoIWAsotv/mlMtncWN3uhnMgbaqoVT1mHFbksas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730457330; c=relaxed/simple;
-	bh=cCTMz0n3TufOW/nzpqclVZkXSz9b3dTWlwVdZAF6w6c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=MMJAveUoNPj3pisACJEm3Eo9RikOGsDiWx6fblZ+beluuNCHh3A54ITI1I2JJ7B08h86Nfn5qsthYVh0Vol4A3s3AEBVoUyx6u0cRd4zD32i8aHiKFZM9C8xZq8nr4XG7qaS3xj5sTqdGApwykTafcxq/L5wvljjrlqkZS/IN3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aAdkv6/s; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1730458179; c=relaxed/simple;
+	bh=+6lm4BUHHl9klVGOr736/mzHPp2s7famQ3KDDPx7cYQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZecV960NgeXKc+LnJC/OOyH9wXJY5GV0NHMoAIEvU+1lZBvgTa2BMT9VIMhZyi85BrRrdqzOvPEfmT0INtLjcyV85xAkOEejENS/V7q3MAz/vu1O6fNtwKRtwqjDP+E6bb7mPP/Xt1J/2Z3FGfWi49j+BlmR2ABu7mZZQU6yZaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg; spf=pass smtp.mailfrom=verdict.gg; dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b=IstiBmgO; arc=none smtp.client-ip=17.57.155.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aAdkv6/s"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A13Jnk5019830;
-	Fri, 1 Nov 2024 10:35:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MG6QcRdCDOsIB7rtc2QzNR/9cTeI6HRt5XW82nF1E0w=; b=aAdkv6/s5kIve4bY
-	hh8tfG4tJ0Mw5YD4L5n58OzUvk/W0RACpPKNDK092uHNz2zuEvblsKwPhF9mTnKk
-	kouQANESLF8hHGsj48gB/uhSI7G5EV11iof2gnTSFCR61cEDVSNjfX+zT0o/E9zV
-	uxDUjKrfliuTZTrBTQYT79uwcPilYRqcc/ivl7KFLpYXfD74fqk6p9yQ+PCn2Dju
-	MrZeeBlL2ByfgL7u0iNr7O/sy5FCVGOc37aHbE+nNrtI3wmpp9YTNyu175NFERLP
-	Y3ERFwVt7om3yoE45SQDHfUHYWaZGAVYdBuVvif0pl82d4cJieuYOvvERDNkLeEo
-	WZAYzg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42kmp0puqg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Nov 2024 10:35:14 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A1AZDch008294
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 1 Nov 2024 10:35:13 GMT
-Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 1 Nov 2024 03:35:07 -0700
-From: Lei Wei <quic_leiwei@quicinc.com>
-Date: Fri, 1 Nov 2024 18:32:53 +0800
-Subject: [PATCH net-next 5/5] MAINTAINERS: Add maintainer for Qualcomm IPQ
- PCS driver
+	dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b="IstiBmgO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1;
+	t=1730458174; bh=I37lDDYBBtxNa3TjybkPQc80NAx8iTVPvUq3Yd4QueE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme;
+	b=IstiBmgOpmjm0XcbyqT9HsibfQLcTJN2jUSa54WOuLZB7rTJks2ky0DsQkPfmf0t5
+	 Au+NQMmCD8lXO4MlWMR2iCQhmqv/3urDQfdSsHu1C/S8FUTZ9iJCjVYHxnEni95Iw3
+	 Dhd8eOGKFf0x+dhtXryZWiGfa7qWp/DeKkSterx7noGf5rKW6nFke68G6NGN5K0YFn
+	 udyZYE4M4NsdbwjEE+Ibnldz7RiLg5pTwaVA4lMKexZeoyMenizEqVROQJgg6BU5Oj
+	 NUuilq2g3xBKjcMUW83bLKIMnDESV1iJpy+8/tKDwJUfN0l0UTqw8KC2Bf6vgxbcWH
+	 MNZMqb8eLn9Ig==
+Received: from almalinux-std3-4-4-10gb.novalocal (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01071701.me.com (Postfix) with ESMTPSA id 68D304D002A7;
+	Fri,  1 Nov 2024 10:49:29 +0000 (UTC)
+From: Vladimir Vdovin <deliran@verdict.gg>
+To: netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	davem@davemloft.net
+Cc: Vladimir Vdovin <deliran@verdict.gg>,
+	idosch@idosch.org,
+	edumazet@google.com,
+	linux-kselftest@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	horms@kernel.org
+Subject: [PATCH v5] net: ipv4: Cache pmtu for all packet paths if multipath enabled
+Date: Fri,  1 Nov 2024 10:48:57 +0000
+Message-ID: <20241101104922.68956-1-deliran@verdict.gg>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <736cdd43-4c4b-4341-bd77-c9a365dec2e5@kernel.org>
+References: <736cdd43-4c4b-4341-bd77-c9a365dec2e5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241101-ipq_pcs_rc1-v1-5-fdef575620cf@quicinc.com>
-References: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
-In-Reply-To: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King
-	<linux@armlinux.org.uk>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_kkumarcs@quicinc.com>,
-        <quic_suruchia@quicinc.com>, <quic_pavir@quicinc.com>,
-        <quic_linchen@quicinc.com>, <quic_luoj@quicinc.com>,
-        <quic_leiwei@quicinc.com>, <srinivas.kandagatla@linaro.org>,
-        <bartosz.golaszewski@linaro.org>, <vsmuthu@qti.qualcomm.com>,
-        <john@phrozen.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730457277; l=942;
- i=quic_leiwei@quicinc.com; s=20240829; h=from:subject:message-id;
- bh=cCTMz0n3TufOW/nzpqclVZkXSz9b3dTWlwVdZAF6w6c=;
- b=7y4AbnidauEDXfLUXhW7SLPKDR/nM9ZviEmqdPJrsDVNGfwzyhMkLyEsottWDgQNrwCMep+KW
- JWX8W+C1PGVDlj7jNpMB1/s1bJFtniQAisFPMwMM7NwDOr+4NTD0gEB
-X-Developer-Key: i=quic_leiwei@quicinc.com; a=ed25519;
- pk=uFXBHtxtDjtIrTKpDEZlMLSn1i/sonZepYO8yioKACM=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: z8NdR-kpGwNaqy4L5TQFo3xtu0JcAKBf
-X-Proofpoint-ORIG-GUID: z8NdR-kpGwNaqy4L5TQFo3xtu0JcAKBf
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: dHrACLZ6F3hiDL48h_ntVIH83u_2APxG
+X-Proofpoint-GUID: dHrACLZ6F3hiDL48h_ntVIH83u_2APxG
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 mlxscore=0 suspectscore=0
- adultscore=0 clxscore=1015 phishscore=0 spamscore=0 mlxlogscore=835
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411010076
+ engine=ICAP:2.0.272,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-01_06,2024-10-31_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
+ clxscore=1030 mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2411010078
 
-Add maintainer for the Ethernet PCS driver supported for Qualcomm IPQ
-SoC such as IPQ9574.
+Check number of paths by fib_info_num_path(),
+and update_or_create_fnhe() for every path.
+Problem is that pmtu is cached only for the oif
+that has received icmp message "need to frag",
+other oifs will still try to use "default" iface mtu.
 
-Signed-off-by: Lei Wei <quic_leiwei@quicinc.com>
+V5:
+  - make self test cleaner
+
+V4:
+  - fix selftest, do route lookup before checking cached exceptions
+
+V3:
+  - added selftest
+  - fixed compile error
+
+V2:
+  - fix fib_info_num_path parameter pass
+
+An example topology showing the problem:
+
+                    |  host1
+                +---------+
+                |  dummy0 | 10.179.20.18/32  mtu9000
+                +---------+
+        +-----------+----------------+
+    +---------+                     +---------+
+    | ens17f0 |  10.179.2.141/31    | ens17f1 |  10.179.2.13/31
+    +---------+                     +---------+
+        |    (all here have mtu 9000)    |
+    +------+                         +------+
+    | ro1  |  10.179.2.140/31        | ro2  |  10.179.2.12/31
+    +------+                         +------+
+        |                                |
+---------+------------+-------------------+------
+                        |
+                    +-----+
+                    | ro3 | 10.10.10.10  mtu1500
+                    +-----+
+                        |
+    ========================================
+                some networks
+    ========================================
+                        |
+                    +-----+
+                    | eth0| 10.10.30.30  mtu9000
+                    +-----+
+                        |  host2
+
+host1 have enabled multipath and
+sysctl net.ipv4.fib_multipath_hash_policy = 1:
+
+default proto static src 10.179.20.18
+        nexthop via 10.179.2.12 dev ens17f1 weight 1
+        nexthop via 10.179.2.140 dev ens17f0 weight 1
+
+When host1 tries to do pmtud from 10.179.20.18/32 to host2,
+host1 receives at ens17f1 iface an icmp packet from ro3 that ro3 mtu=1500.
+And host1 caches it in nexthop exceptions cache.
+
+Problem is that it is cached only for the iface that has received icmp,
+and there is no way that ro3 will send icmp msg to host1 via another path.
+
+Host1 now have this routes to host2:
+
+ip r g 10.10.30.30 sport 30000 dport 443
+10.10.30.30 via 10.179.2.12 dev ens17f1 src 10.179.20.18 uid 0
+    cache expires 521sec mtu 1500
+
+ip r g 10.10.30.30 sport 30033 dport 443
+10.10.30.30 via 10.179.2.140 dev ens17f0 src 10.179.20.18 uid 0
+    cache
+
+So when host1 tries again to reach host2 with mtu>1500,
+if packet flow is lucky enough to be hashed with oif=ens17f1 its ok,
+if oif=ens17f0 it blackholes and still gets icmp msgs from ro3 to ens17f1,
+until lucky day when ro3 will send it through another flow to ens17f0.
+
+Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/ipv4/route.c                    | 13 +++++
+ tools/testing/selftests/net/pmtu.sh | 78 ++++++++++++++++++++++++++++-
+ 2 files changed, 90 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c27f3190737f..6c5599c3834b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19148,6 +19148,15 @@ F:	Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
- F:	drivers/mailbox/qcom-ipcc.c
- F:	include/dt-bindings/mailbox/qcom-ipcc.h
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 723ac9181558..41162b5cc4cb 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1027,6 +1027,19 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+ 		struct fib_nh_common *nhc;
  
-+QUALCOMM IPQ Ethernet PCS DRIVER
-+M:	Lei Wei <quic_leiwei@quicinc.com>
-+L:	netdev@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/net/pcs/qcom,ipq9574-pcs.yaml
-+F:	drivers/net/pcs/pcs-qcom-ipq.c
-+F:	include/dt-bindings/net/pcs-qcom-ipq.h
-+F:	include/linux/pcs/pcs-qcom-ipq.h
+ 		fib_select_path(net, &res, fl4, NULL);
++#ifdef CONFIG_IP_ROUTE_MULTIPATH
++		if (fib_info_num_path(res.fi) > 1) {
++			int nhsel;
 +
- QUALCOMM IPQ4019 USB PHY DRIVER
- M:	Robert Marko <robert.marko@sartura.hr>
- M:	Luka Perkov <luka.perkov@sartura.hr>
++			for (nhsel = 0; nhsel < fib_info_num_path(res.fi); nhsel++) {
++				nhc = fib_info_nhc(res.fi, nhsel);
++				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
++							  jiffies + net->ipv4.ip_rt_mtu_expires);
++			}
++			rcu_read_unlock();
++			return;
++		}
++#endif /* CONFIG_IP_ROUTE_MULTIPATH */
+ 		nhc = FIB_RES_NHC(res);
+ 		update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+ 				      jiffies + net->ipv4.ip_rt_mtu_expires);
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 569bce8b6383..a0159340fe84 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -266,7 +266,8 @@ tests="
+ 	list_flush_ipv4_exception	ipv4: list and flush cached exceptions	1
+ 	list_flush_ipv6_exception	ipv6: list and flush cached exceptions	1
+ 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
+-	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1"
++	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1
++	pmtu_ipv4_mp_exceptions		ipv4: PMTU multipath nh exceptions		0"
+ 
+ # Addressing and routing for tests with routers: four network segments, with
+ # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
+@@ -2329,6 +2330,81 @@ test_pmtu_ipv6_route_change() {
+ 	test_pmtu_ipvX_route_change 6
+ }
+ 
++test_pmtu_ipv4_mp_exceptions() {
++	setup namespaces routing || return $ksft_skip
++
++	ip nexthop ls >/dev/null 2>&1
++	if [ $? -ne 0 ]; then
++		echo "Nexthop objects not supported; skipping tests"
++		exit $ksft_skip
++	fi
++
++	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
++	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
++	      "${ns_a}"  veth_A-R2    "${ns_r2}" veth_R2-A \
++	      "${ns_r2}" veth_R2-B    "${ns_b}"  veth_B-R2
++
++	dummy0_a="192.168.99.99"
++	dummy0_b="192.168.88.88"
++
++	# Set up initial MTU values
++	mtu "${ns_a}"  veth_A-R1 2000
++	mtu "${ns_r1}" veth_R1-A 2000
++	mtu "${ns_r1}" veth_R1-B 1500
++	mtu "${ns_b}"  veth_B-R1 1500
++
++	mtu "${ns_a}"  veth_A-R2 2000
++	mtu "${ns_r2}" veth_R2-A 2000
++	mtu "${ns_r2}" veth_R2-B 1500
++	mtu "${ns_b}"  veth_B-R2 1500
++
++	fail=0
++
++	#Set up host A with multipath routes to host B dummy0_b
++	run_cmd ${ns_a} sysctl -q net.ipv4.fib_multipath_hash_policy=1
++	run_cmd ${ns_a} sysctl -q net.ipv4.ip_forward=1
++	run_cmd ${ns_a} ip link add dummy0 mtu 2000 type dummy
++	run_cmd ${ns_a} ip link set dummy0 up
++	run_cmd ${ns_a} ip addr add ${dummy0_a} dev dummy0
++	run_cmd ${ns_a} ip nexthop add id 201 via ${prefix4}.${a_r1}.2 dev veth_A-R1
++	run_cmd ${ns_a} ip nexthop add id 202 via ${prefix4}.${a_r2}.2 dev veth_A-R2
++	run_cmd ${ns_a} ip nexthop add id 203 group 201/202
++	run_cmd ${ns_a} ip route add ${dummy0_b} nhid 203
++
++	#Set up host B with multipath routes to host A dummy0_a
++	run_cmd ${ns_b} sysctl -q net.ipv4.fib_multipath_hash_policy=1
++	run_cmd ${ns_b} sysctl -q net.ipv4.ip_forward=1
++	run_cmd ${ns_b} ip link add dummy0 mtu 2000 type dummy
++	run_cmd ${ns_b} ip link set dummy0 up
++	run_cmd ${ns_b} ip addr add ${dummy0_b} dev dummy0
++	run_cmd ${ns_b} ip nexthop add id 201 via ${prefix4}.${b_r1}.2 dev veth_A-R1
++	run_cmd ${ns_b} ip nexthop add id 202 via ${prefix4}.${b_r2}.2 dev veth_A-R2
++	run_cmd ${ns_b} ip nexthop add id 203 group 201/202
++	run_cmd ${ns_b} ip route add ${dummy0_a} nhid 203
++
++	#Set up routers with routes to dummies
++	run_cmd ${ns_r1} ip route add ${dummy0_a} via ${prefix4}.${a_r1}.1
++	run_cmd ${ns_r2} ip route add ${dummy0_a} via ${prefix4}.${a_r2}.1
++	run_cmd ${ns_r1} ip route add ${dummy0_b} via ${prefix4}.${b_r1}.1
++	run_cmd ${ns_r2} ip route add ${dummy0_b} via ${prefix4}.${b_r2}.1
++
++
++	#Ping and expect two nexthop exceptions for two routes in nh group
++	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 2 -s 1800 "${dummy0_b}"
++
++	#Do route lookup before checking cached exceptions
++	run_cmd ${ns_a} ip route get ${dummy0_b} oif veth_A-R1
++	run_cmd ${ns_a} ip route get ${dummy0_b} oif veth_A-R2
++
++	#Check cached exceptions
++	if [ "$(${ns_a} ip -oneline route list cache| grep mtu | wc -l)" -ne 2 ]; then
++		err "  there are not enough cached exceptions"
++		fail=1
++	fi
++
++	return ${fail}
++}
++
+ usage() {
+ 	echo
+ 	echo "$0 [OPTIONS] [TEST]..."
 
+base-commit: 66600fac7a984dea4ae095411f644770b2561ede
 -- 
-2.34.1
+2.43.5
 
