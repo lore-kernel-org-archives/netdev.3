@@ -1,42 +1,42 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747B71C7610;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643BC1C760A;
 	Fri,  1 Nov 2024 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730474457; cv=none; b=J0HRsmbUSv+FkWR5sRPkUhTbsXvXnNkVbF7fjEXDYtLI4FUqfa1Ji3S+mjODSj1YTJhAdROSexS7R1/R98tLW2EOaz47zSIdVleJfQS59HRIT9p7q8RkM8ib/9AsZ6oXPozMLYXqlADNd01a+erZ2xkIA8bictkJP1bsevtgH3Y=
+	t=1730474457; cv=none; b=WKuE5E+FCBCofMoDZyHbNU5IpTgPw44s1H5BPV4fbIFJOketoJ5imh7S+94HR2psCSMl91oG4j50+hAysEGSdkXufHdM3vwuKC0GP9xKfzNft5ZdTMDQKwx3qnpPQ/jOti5UBEHtZzOEaOpZKW9QzzH1BZpNuCShRTLkOHo5ou0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730474457; c=relaxed/simple;
-	bh=imjx57/ZNDvazS8dVSDsfcbujxW4jgOS5y+0Xj27b1A=;
+	bh=uJk5zksfhouWGMoFsDHDsI8Z9+bLS8yFcfshC7rakqQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s+Kp0K3RxJYno1mwdngjteVdTC+jVHN6Tgcpwk91mE4+8nhZQ/9lsSuYJ+U5TttemRxrrF2yXjVDsoaKVIHblwYoY6T2BFs2OyWL3/H9+ENwHhjBQVnCM5+2t7dKlNGEXFHUsjLe0hglKO/rkLWwxA3H3QOaUCeLG/FbW8hShZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=DiBWY3Br; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=Pv7MSECP+tdb4S7VDeZoZ8DFNHgrez6lToMQLDiumyLJ2gKVUHJKuo2mj8ifVT27BNp6xBX1wBLhjGB+Hy/FUoVojlsBH8TYovWJLbnRp8+eLQPgHdr7AJIQR/XMwmXDYeSgL+kqqbKJi0Kyf8/ad8BH75JiCETNsog8wk5aZ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GHyfIKED; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="DiBWY3Br"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GHyfIKED"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1730474453;
-	bh=imjx57/ZNDvazS8dVSDsfcbujxW4jgOS5y+0Xj27b1A=;
+	s=mail; t=1730474448;
+	bh=uJk5zksfhouWGMoFsDHDsI8Z9+bLS8yFcfshC7rakqQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DiBWY3Br+WMtuY8iHqw8X2uxfL+66oWWU8GtKeAy2gbK9E7WgzgFDyCdlVPqXRahh
-	 wsLR1PzWqIEJCnRNsOLYWBKjy+/Nzvl6rIfEsqnhQO0wJ0lq1lgE6Z0HCouukObrzx
-	 RsqEADhTxwBQSiCVgtm7XOT3ylgGKepVoPj3r+kfbRoUJEGzAFtUIU/JtveSJly0NE
-	 BVL6+a3pClOQ5YD1593UGMxHnNlBj4cGaG56cOFf09Fi97SRJo8MQpJ7g1e3RpDGbB
-	 z1DMWorJ3JFuv0X0oPbsoAGMne1/kKUoijmm6nHL8s5XG7S1H7QrbqXZ5kncWFz6eU
-	 JkjolR5twN8mA==
+	b=GHyfIKEDrY9ML7tc9WCoIGPV47OSQFh43C05dV6KkyoR6m2vo/doP7LNAIMTbDxM9
+	 lchuGR8FMvGxcFHI67T8ePKCcrz/tgfjG2mAf416JOUKyR4DETOMlXjELTslVjtgxe
+	 Ca1GmZ3hTnK3ZM1YU0FBUErPV8Ok5XVwuw36FTOJau+K0H1D3S+G8YKlSoiliNndN1
+	 069IdUG0fbbInN/Lh7wR2N7uvDGxyRloossaANu+xllQPESC2rX2gEXaiEb+oE7PGe
+	 e4IYfiDV9psVm5fQVqzYPNM0r/9DAxrslLtSPedoPpO51e8XuJmWP44buY9i75RHAB
+	 AExaN4igeGs1w==
 Received: from [192.168.1.214] (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 06B0D17E0F83;
-	Fri,  1 Nov 2024 16:20:50 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6298517E0F7A;
+	Fri,  1 Nov 2024 16:20:45 +0100 (CET)
 From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
-Date: Fri, 01 Nov 2024 11:20:25 -0400
-Subject: [PATCH 3/4] arm64: dts: mediatek: mt8390-genio-700-evk: Enable
- ethernet MAC WOL
+Date: Fri, 01 Nov 2024 11:20:23 -0400
+Subject: [PATCH 1/4] net: dt-bindings: dwmac: Introduce
+ mediatek,mac-wol-noninverted
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241101-mediatek-mac-wol-noninverted-v1-3-75b81808717a@collabora.com>
+Message-Id: <20241101-mediatek-mac-wol-noninverted-v1-1-75b81808717a@collabora.com>
 References: <20241101-mediatek-mac-wol-noninverted-v1-0-75b81808717a@collabora.com>
 In-Reply-To: <20241101-mediatek-mac-wol-noninverted-v1-0-75b81808717a@collabora.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -66,28 +66,56 @@ Cc: kernel@collabora.com, netdev@vger.kernel.org,
  =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
 X-Mailer: b4 0.14.2
 
-Add the mediatek,mac-wol-noninverted property to the ethernet node to
-make the driver parse the mediatek,mac-wol property as originally
-intended: enabling the MAC WOL. This gets WOL working on the Genio 700
-EVK board.
+The mediatek,mac-wol property, as described, was intended to indicate
+that the MAC supports Wake-On-LAN (WOL) and that it should be used
+instead of the PHY WOL. However, the driver code currently handles it
+backwards: setting up PHY WOL when the property is present and vice
+versa.
+
+In order to rectify the property's handling while still maintaining
+backwards compatibility, introduce a new property to indicate that the
+mediatek,mac-wol property should be handled as it is described, not
+inverted, and make it required for new DTs.
 
 Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/net/mediatek-dwmac.yaml | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts b/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
-index 13f2e0e3fa8ab6679f843693230b9661d323a705..83c10517458d1df2f14e41baeff628f46ded1618 100644
---- a/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8390-genio-700-evk.dts
-@@ -898,6 +898,7 @@ &eth {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&eth_default_pins>;
- 	pinctrl-1 = <&eth_sleep_pins>;
-+	mediatek,mac-wol-noninverted;
- 	mediatek,mac-wol;
- 	snps,reset-gpio = <&pio 147 GPIO_ACTIVE_HIGH>;
- 	snps,reset-delays-us = <0 10000 10000>;
+diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+index ed9d845f600804964e0000dd4354898673fafe08..0f20c4e09e79ff722d53a364825da29bd6323c31 100644
+--- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
+@@ -125,6 +125,15 @@ properties:
+       3. the inside clock, which be sent to MAC, will be inversed in RMII case when
+          the reference clock is from MAC.
+ 
++  mediatek,mac-wol-noninverted:
++    type: boolean
++    description:
++      Previously the driver parsed the mediatek,mac-wol property backwards,
++      enabling the PHY WOL when the property was present, and vice versa. That
++      behavior is kept for backwards compatility, but newer DTs should specify
++      this property to have the driver handle the mediatek,mac-wol property as
++      it is described in this binding.
++
+   mediatek,mac-wol:
+     type: boolean
+     description:
+@@ -140,6 +149,7 @@ required:
+   - clock-names
+   - phy-mode
+   - mediatek,pericfg
++  - mediatek,mac-wol-noninverted
+ 
+ unevaluatedProperties: false
+ 
+@@ -181,4 +191,5 @@ examples:
+         snps,rxpbl = <1>;
+         snps,reset-gpio = <&pio 87 GPIO_ACTIVE_LOW>;
+         snps,reset-delays-us = <0 10000 10000>;
++        mediatek,mac-wol-noninverted;
+     };
 
 -- 
 2.47.0
