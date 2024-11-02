@@ -1,260 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4B718A925;
-	Sat,  2 Nov 2024 13:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11FA175D34;
+	Sat,  2 Nov 2024 13:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730554481; cv=none; b=p3Yvh0+BOoYkQn9imkZlWjHpwIRQcCl8yfKvNUGZUNzpcxZSyXQoYzfJwuxIO6hGhTM8Z+nG9oVWaRe+viCcy/o0s56YD9jdUNTLbXgz9bWTA+QtimpB/WP+9AhiemDHstpiordcN2rxZe6iEh4UKf+S+3NrQi9+FiZcY5CICPE=
+	t=1730555046; cv=none; b=sgOn8QXEtTGjXXfnS8Zkwfga+GG8h2zyoA5QvOehOK3masQenDVRmcS38Ij0hHKqewtQWdFH9BV6MNRcx8IDi/T91JmjYSE8MPzQIyz0UX9kzIjMQzIESc5FM7wel/TJ14Xbbjs8Ip1/e5VkjI0p4dm51iEl+FlZR6wocgHljD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730554481; c=relaxed/simple;
-	bh=Ra3EuFvPtdbp/nWEjcEM08kxsYNfQ+eulIhmbKu11rQ=;
+	s=arc-20240116; t=1730555046; c=relaxed/simple;
+	bh=Fh1tOp6zu5S7ndDQm3e4S5z+1IAX7J4sD51WBJXNmIQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZkbidtcID1mFvkfoNCd30/yQTyszHWnPhZbPIW1vSFgj88EhpX19cYJlIiYfFvcT3lp48FM1v4VyxL7V5C0GVBUWuoxY5RZ0X548JVgNOjAbawFpbtndIxr0P7iQqKJ2ktS81qIOWwddH5ei56NdE/+W8cTnFEyOusS1AOjGxoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+XpKPns; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bgiQPw5bQNWp52l4dSaBTq8vhnxIFDKWACjoviYmo51N3XF3vb9gxba3T8qEdaXd8DSKHGl3UHqmBC+8gx/aCBNgi3wK7Ny9nCAo4v43CDoXtBHxMfSESjOzsD41BDETsikye/lFGjhLGktvR/ddvmnK9WtJKSW1C8GdQgk9ftI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nyvx0Zlu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+XpKPns"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07A0C4CEC3;
-	Sat,  2 Nov 2024 13:34:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nyvx0Zlu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A526C4CEC3;
+	Sat,  2 Nov 2024 13:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730554481;
-	bh=Ra3EuFvPtdbp/nWEjcEM08kxsYNfQ+eulIhmbKu11rQ=;
+	s=k20201202; t=1730555046;
+	bh=Fh1tOp6zu5S7ndDQm3e4S5z+1IAX7J4sD51WBJXNmIQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f+XpKPnsKxBxXKiIZbrlBPvZwT/LNfNRO5H6qaXX6cD2wdZJXCQaaWpXjaq5U7u7h
-	 ydQ0SMUTg1pGNfL2qNNOFkjhbEnqGJqwF0/OHGs6arGK4Y686pTDzj19gUpWTANlXd
-	 4vdZIxfRzg9BB21gulVyYiYQsK2i2GjAK/auEalEwnxcpwFEltQ3UEX1aJ3+9Dk0iJ
-	 TokWLYf1MKaSjk/4HQTPPQ8t+LJD2RgfSmwlj3rzE6f2jRF9+TBs78FVjJtT5+zl4x
-	 TeK3XqPlpPEPMw5bqW1u76jbrmVSBVglBn+zM5403krrzDF1QIsemhCjSj2VzljEyk
-	 qFe5mNgLi31mw==
-Date: Sat, 2 Nov 2024 14:34:38 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Lei Wei <quic_leiwei@quicinc.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, quic_kkumarcs@quicinc.com, 
-	quic_suruchia@quicinc.com, quic_pavir@quicinc.com, quic_linchen@quicinc.com, 
-	quic_luoj@quicinc.com, srinivas.kandagatla@linaro.org, bartosz.golaszewski@linaro.org, 
-	vsmuthu@qti.qualcomm.com, john@phrozen.org
-Subject: Re: [PATCH net-next 1/5] dt-bindings: net: pcs: Add Ethernet PCS for
- Qualcomm IPQ9574 SoC
-Message-ID: <c3kdfqqcgczy3k2odbxnemmjvuaoqmli67zisyrrrdfxd5hu4v@thxnvpv5gzap>
-References: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
- <20241101-ipq_pcs_rc1-v1-1-fdef575620cf@quicinc.com>
+	b=Nyvx0ZluaFgFw0qtEwyN/1zOCzvMLn5alJ1Mp0kObq9Ud8NCOJgd9j4BkFbGOD1KR
+	 gmpwwftLbjGoSjiqNajdyptbFaGTos6NAUxy+kb24vuC4+wLUetnUlZXlni2rKfw7U
+	 nhwk55QiN/GvA3TBoEkyWaQmcNLX4Mfy13tQ8+OJOqj8Tn4nhTlcHlN39EcbAWt3cB
+	 OZNuGOBJfFRIfIvCJ0QwCPqjqCqzioXCvdegwIG/GV8argT8oF8TygLY6oum4+XU9J
+	 1r0HNdewhrtbLa2Bcon+alBeBqL3Z6XeJigT5wbpi7WPcCtYLq4JLT8LUTuE3Vixt5
+	 2ippRyRLDo1nA==
+Date: Sat, 2 Nov 2024 13:43:57 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, dsahern@kernel.org,
+	willemdebruijn.kernel@gmail.com, willemb@google.com, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+	haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
+	ykolal@fb.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: Re: [PATCH net-next v3 02/14] net-timestamp: allow two features to
+ work parallelly
+Message-ID: <20241102134357.GK1838431@kernel.org>
+References: <20241028110535.82999-1-kerneljasonxing@gmail.com>
+ <20241028110535.82999-3-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241101-ipq_pcs_rc1-v1-1-fdef575620cf@quicinc.com>
+In-Reply-To: <20241028110535.82999-3-kerneljasonxing@gmail.com>
 
-On Fri, Nov 01, 2024 at 06:32:49PM +0800, Lei Wei wrote:
-> The 'UNIPHY' PCS block in the IPQ9574 SoC includes PCS and SerDes
-> functions. It supports different interface modes to enable Ethernet
-> MAC connections to different types of external PHYs/switch. It includes
-> PCS functions for 1Gbps and 2.5Gbps interface modes and XPCS functions
-> for 10Gbps interface modes. There are three UNIPHY (PCS) instances
-> in IPQ9574 SoC which provide PCS/XPCS functions to the six Ethernet
-> ports.
+On Mon, Oct 28, 2024 at 07:05:23PM +0800, Jason Xing wrote:
+> From: Jason Xing <kernelxing@tencent.com>
 > 
-> Signed-off-by: Lei Wei <quic_leiwei@quicinc.com>
+> This patch has introduced a separate sk_tsflags_bpf for bpf
+> extension, which helps us let two feature work nearly at the
+> same time.
+> 
+> Each feature will finally take effect on skb_shinfo(skb)->tx_flags,
+> say, tcp_tx_timestamp() for TCP or skb_setup_tx_timestamp() for
+> other types, so in __skb_tstamp_tx() we are unable to know which
+> feature is turned on, unless we check each feature's own socket
+> flag field.
+> 
+> Signed-off-by: Jason Xing <kernelxing@tencent.com>
 > ---
->  .../bindings/net/pcs/qcom,ipq9574-pcs.yaml         | 230 +++++++++++++++++++++
->  include/dt-bindings/net/pcs-qcom-ipq.h             |  15 ++
->  2 files changed, 245 insertions(+)
+>  include/net/sock.h |  1 +
+>  net/core/skbuff.c  | 39 +++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 40 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/pcs/qcom,ipq9574-pcs.yaml b/Documentation/devicetree/bindings/net/pcs/qcom,ipq9574-pcs.yaml
-> new file mode 100644
-> index 000000000000..a33873c7ad73
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/pcs/qcom,ipq9574-pcs.yaml
-> @@ -0,0 +1,230 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/pcs/qcom,ipq9574-pcs.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Ethernet PCS for Qualcomm IPQ SoC
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 7464e9f9f47c..5384f1e49f5c 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -445,6 +445,7 @@ struct sock {
+>  	u32			sk_reserved_mem;
+>  	int			sk_forward_alloc;
+>  	u32			sk_tsflags;
+> +	u32			sk_tsflags_bpf;
 
-s/IPQ/IPQ9574/
+Please add sk_tsflags_bpf to the Kernel doc for this structure.
+Likewise for sk_tskey_bpf_offset which is added by a subsequent patch.
 
-> +
-> +maintainers:
-> +  - Lei Wei <quic_leiwei@quicinc.com>
+>  	__cacheline_group_end(sock_write_rxtx);
+>  
+>  	__cacheline_group_begin(sock_write_tx);
 
 ...
-
-> +    const: 0
-> +
-> +  clocks:
-> +    items:
-> +      - description: system clock
-> +      - description: AHB clock needed for register interface access
-> +
-> +  clock-names:
-> +    items:
-> +      - const: sys
-> +      - const: ahb
-> +
-> +  '#clock-cells':
-
-Use consistent quotes, either ' or "
-
-> +    const: 1
-> +    description: See include/dt-bindings/net/pcs-qcom-ipq.h for constants
-> +
-> +patternProperties:
-> +  "^pcs-mii@[0-4]$":
-> +    type: object
-> +    description: PCS MII interface.
-> +
-> +    properties:
-> +      reg:
-> +        minimum: 0
-> +        maximum: 4
-> +        description: MII index
-> +
-> +      clocks:
-> +        items:
-> +          - description: PCS MII RX clock
-> +          - description: PCS MII TX clock
-> +
-> +      clock-names:
-> +        items:
-> +          - const: mii_rx
-
-rx
-
-> +          - const: mii_tx
-
-tx
-
-> +
-> +    required:
-> +      - reg
-> +      - clocks
-> +      - clock-names
-> +
-> +    additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +  - clocks
-> +  - clock-names
-> +  - '#clock-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/qcom,ipq9574-gcc.h>
-> +
-> +    pcs0: ethernet-pcs@7a00000 {
-
-Drop unused labels here and further.
-
-> +        compatible = "qcom,ipq9574-pcs";
-> +        reg = <0x7a00000 0x10000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        clocks = <&gcc GCC_UNIPHY0_SYS_CLK>,
-> +                 <&gcc GCC_UNIPHY0_AHB_CLK>;
-> +        clock-names = "sys",
-> +                      "ahb";
-> +        #clock-cells = <1>;
-> +
-> +        pcs0_mii0: pcs-mii@0 {
-> +            reg = <0>;
-> +            clocks = <&nsscc 116>,
-> +                     <&nsscc 117>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +
-> +        pcs0_mii1: pcs-mii@1 {
-> +            reg = <1>;
-> +            clocks = <&nsscc 118>,
-> +                     <&nsscc 119>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +
-> +        pcs0_mii2: pcs-mii@2 {
-> +            reg = <2>;
-> +            clocks = <&nsscc 120>,
-> +                     <&nsscc 121>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +
-> +        pcs0_mii3: pcs-mii@3 {
-> +            reg = <3>;
-> +            clocks = <&nsscc 122>,
-> +                     <&nsscc 123>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +    };
-> +
-> +    pcs1: ethernet-pcs@7a10000 {
-
-One example is enough, drop the rest.
-
-> +        compatible = "qcom,ipq9574-pcs";
-> +        reg = <0x7a10000 0x10000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        clocks = <&gcc GCC_UNIPHY1_SYS_CLK>,
-> +                 <&gcc GCC_UNIPHY1_AHB_CLK>;
-> +        clock-names = "sys",
-> +                      "ahb";
-> +        #clock-cells = <1>;
-> +
-> +        pcs1_mii0: pcs-mii@0 {
-> +            reg = <0>;
-> +            clocks = <&nsscc 124>,
-> +                     <&nsscc 125>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +    };
-> +
-> +    pcs2: ethernet-pcs@7a20000 {
-> +        compatible = "qcom,ipq9574-pcs";
-> +        reg = <0x7a20000 0x10000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        clocks = <&gcc GCC_UNIPHY2_SYS_CLK>,
-> +                 <&gcc GCC_UNIPHY2_AHB_CLK>;
-> +        clock-names = "sys",
-> +                      "ahb";
-> +        #clock-cells = <1>;
-> +
-> +        pcs2_mii0: pcs-mii@0 {
-> +            reg = <0>;
-> +            clocks = <&nsscc 126>,
-> +                     <&nsscc 127>;
-> +            clock-names = "mii_rx",
-> +                          "mii_tx";
-> +        };
-> +    };
-> diff --git a/include/dt-bindings/net/pcs-qcom-ipq.h b/include/dt-bindings/net/pcs-qcom-ipq.h
-> new file mode 100644
-> index 000000000000..8d9124ffd75d
-> --- /dev/null
-> +++ b/include/dt-bindings/net/pcs-qcom-ipq.h
-
-Filename matching exactly binding filename.
-
-Best regards,
-Krzysztof
-
