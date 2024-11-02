@@ -1,34 +1,34 @@
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2CB153BF7;
-	Sat,  2 Nov 2024 05:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A8714A4CC;
+	Sat,  2 Nov 2024 05:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730524114; cv=none; b=nDdOZpAK9trwbQ+xIYK2Q9iV4GA3KIYawwu6nC+vcurFw8yfOeYdb9vtgOJCbIvqwFY8YchtAFry6NED/xUQHTm1lhGrmLarMghU7KTicfRNdBq6fC9+pKyJskMZB5b5XyDZdZzDI9VF5RcxF/r5ZbwIPYsoj0XPVnOD9kQuuSQ=
+	t=1730524113; cv=none; b=nmQYk7fEyHRK6G47Y0TySADY+sl7LG2pAy3KmxMZA50ncsfCivK6/yCuVBlGahZeIodksbP4uQFV/NpRkfjV9tj2pnuOobMmbXDHVJ1jMv4twPt74/nqTRk/hLWm9lbwdc7qCN67on79Lfj8hLDtdxvZOiWjY+cJ5H9zYDRO65Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730524114; c=relaxed/simple;
-	bh=yurPUE3BC0wRqLY1D8u4wRlLV+idEwKbpMZZ5rjuZWU=;
+	s=arc-20240116; t=1730524113; c=relaxed/simple;
+	bh=VjMuRl8jH0BsCDJit/URN/Su1DcBaZgchcMWnxZS9IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFexZdq4hYYJYw5ePn1/BAeSswI25QS0Gihve9OySfJ11gj7/B/TdW0pYTG0fZ2Ponqg65xK/uZctyFqdwgfD096KZBDbW4HOgNU/AGfjbJaoHfUVjGmM/TUwHRAg6MJqSX51/cl3CnHdQregQUz/PHL7N3rv0EBkjkEnNOdYaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=d8aabBWO; arc=none smtp.client-ip=62.89.141.173
+	 MIME-Version; b=D7+seS3NHfN0s9Qvx3NuEY+oocasROSUPJ6PaYRQqnX2cW+OmGDwkgzSZkLpq3jvBCBsl/x5RPhfM0EEdr8GHg6UxCxy3yvYfuX3rzHUn6nJqzVf6Ty2nwZJPmTeCYQPf1CRWzE1lvVct9qoDSYJ7qrBj9DqvqVpJaHKsJXovGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=kgqTXCf4; arc=none smtp.client-ip=62.89.141.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="d8aabBWO"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="kgqTXCf4"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=hxqFjXnH7BwPpg5y6pfARQakEFU/n1A9zdRfJDGPNUE=; b=d8aabBWOPN3NHgeyjx9apgquGh
-	5hSsBLQWfQtSokKSHnYccfabiHexKRN3g35ymSBsnDKvvGW6Dd7MZ2m2mMxVWB+4pvrrkQBUIStOS
-	R1NZrMnlXQoUy5vGiPi8SeTauF22/Uj6/vSH5fj1zN/mI7GswFWsQ/2gr++t3Bf9AN1WWCb/iswfn
-	qoxTU3Oj6OunR8gRckx6phVqRqXg1c8udvDKjCBBXDBnsKGAS5vjqlxZvL6EIxF7reMHo5f4M+5I/
-	iHkXzuqEdBo+ct6MKlcy52cFlb+OX2DbK07MjqcRs3pp583QU0UxzF9/DutFC67tP/BX3nTFunsJd
-	ocfjNgmA==;
+	bh=FAqTEvs4QORKFNFL942YuG6DNM7M7CQ0nHgpxyFsKNM=; b=kgqTXCf4naEOBJ/DPsUP1Q4Mu8
+	9KxSVRFq8S8XBLcwIXK4Y6Q4op+QZi9vQGnBlORp8eLdss3gnqzWmSXZ8p/bImMwQ2mRbvjRbbQj7
+	WgocaTGnbXpyWAQvCdgsU0qZe6vkxt1Vtbup6DKQvdVcYcSTuON7r7VyyuhbAYMP5hacUY43V0Bnr
+	I6Fva/ikvBOLvzzx2/4EgIMHbPovSbrrJRJmzaBG6QyMqc0T6D39zk+kXkrtE3slILaQ19IhobSij
+	nPuI9MZoNeCca7YbpIpl0w1lqct5WAsZpt47JxK1HN9+nVaguJdUIpwfdZ3jOiO0Do0Z9JWj+7bwf
+	cAoQrxHw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t76NC-0000000AHoE-2WfP;
-	Sat, 02 Nov 2024 05:08:30 +0000
+	id 1t76NB-0000000AHnf-3TEo;
+	Sat, 02 Nov 2024 05:08:29 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: viro@zeniv.linux.org.uk,
@@ -37,9 +37,9 @@ Cc: viro@zeniv.linux.org.uk,
 	kvm@vger.kernel.org,
 	netdev@vger.kernel.org,
 	torvalds@linux-foundation.org
-Subject: [PATCH v3 24/28] do_pollfd(): convert to CLASS(fd)
-Date: Sat,  2 Nov 2024 05:08:22 +0000
-Message-ID: <20241102050827.2451599-24-viro@zeniv.linux.org.uk>
+Subject: [PATCH v3 19/28] convert spu_run(2)
+Date: Sat,  2 Nov 2024 05:08:17 +0000
+Message-ID: <20241102050827.2451599-19-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241102050827.2451599-1-viro@zeniv.linux.org.uk>
 References: <20241102050219.GA2450028@ZenIV>
@@ -53,80 +53,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Al Viro <viro@ftp.linux.org.uk>
 
-lift setting ->revents into the caller, so that failure exits (including
-the early one) would be plain returns.
-
-We need the scope of our struct fd to end before the store to ->revents,
-since that's shared with the failure exits prior to the point where we
-can do fdget().
+all failure exits prior to fdget() are returns, fdput() is immediately
+followed by return.
 
 Reviewed-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/select.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ arch/powerpc/platforms/cell/spu_syscalls.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/fs/select.c b/fs/select.c
-index b41e2d651cc1..e223d1fe9d55 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -855,15 +855,14 @@ static inline __poll_t do_pollfd(struct pollfd *pollfd, poll_table *pwait,
- 				     __poll_t busy_flag)
+diff --git a/arch/powerpc/platforms/cell/spu_syscalls.c b/arch/powerpc/platforms/cell/spu_syscalls.c
+index 64a4c9eac6e0..000894e07b02 100644
+--- a/arch/powerpc/platforms/cell/spu_syscalls.c
++++ b/arch/powerpc/platforms/cell/spu_syscalls.c
+@@ -77,19 +77,15 @@ SYSCALL_DEFINE4(spu_create, const char __user *, name, unsigned int, flags,
+ 
+ SYSCALL_DEFINE3(spu_run,int, fd, __u32 __user *, unpc, __u32 __user *, ustatus)
  {
- 	int fd = pollfd->fd;
--	__poll_t mask = 0, filter;
--	struct fd f;
-+	__poll_t mask, filter;
+-	long ret;
+-	struct fd arg;
+ 	CLASS(spufs_calls, calls)();
+ 	if (!calls)
+ 		return -ENOSYS;
  
- 	if (fd < 0)
--		goto out;
--	mask = EPOLLNVAL;
--	f = fdget(fd);
--	if (!fd_file(f))
--		goto out;
-+		return 0;
+-	ret = -EBADF;
+-	arg = fdget(fd);
+-	if (fd_file(arg)) {
+-		ret = calls->spu_run(fd_file(arg), unpc, ustatus);
+-		fdput(arg);
+-	}
+-	return ret;
++	CLASS(fd, arg)(fd);
++	if (fd_empty(arg))
++		return -EBADF;
 +
-+	CLASS(fd, f)(fd);
-+	if (fd_empty(f))
-+		return EPOLLNVAL;
- 
- 	/* userland u16 ->events contains POLL... bitmap */
- 	filter = demangle_poll(pollfd->events) | EPOLLERR | EPOLLHUP;
-@@ -871,13 +870,7 @@ static inline __poll_t do_pollfd(struct pollfd *pollfd, poll_table *pwait,
- 	mask = vfs_poll(fd_file(f), pwait);
- 	if (mask & busy_flag)
- 		*can_busy_poll = true;
--	mask &= filter;		/* Mask out unneeded events. */
--	fdput(f);
--
--out:
--	/* ... and so does ->revents */
--	pollfd->revents = mangle_poll(mask);
--	return mask;
-+	return mask & filter;		/* Mask out unneeded events. */
++	return calls->spu_run(fd_file(arg), unpc, ustatus);
  }
  
- static int do_poll(struct poll_list *list, struct poll_wqueues *wait,
-@@ -909,6 +902,7 @@ static int do_poll(struct poll_list *list, struct poll_wqueues *wait,
- 			pfd = walk->entries;
- 			pfd_end = pfd + walk->len;
- 			for (; pfd != pfd_end; pfd++) {
-+				__poll_t mask;
- 				/*
- 				 * Fish for events. If we found one, record it
- 				 * and kill poll_table->_qproc, so we don't
-@@ -916,8 +910,9 @@ static int do_poll(struct poll_list *list, struct poll_wqueues *wait,
- 				 * this. They'll get immediately deregistered
- 				 * when we break out and return.
- 				 */
--				if (do_pollfd(pfd, pt, &can_busy_loop,
--					      busy_flag)) {
-+				mask = do_pollfd(pfd, pt, &can_busy_loop, busy_flag);
-+				pfd->revents = mangle_poll(mask);
-+				if (mask) {
- 					count++;
- 					pt->_qproc = NULL;
- 					/* found something, stop busy polling */
+ #ifdef CONFIG_COREDUMP
 -- 
 2.39.5
 
