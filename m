@@ -1,46 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981261E515;
-	Sat,  2 Nov 2024 13:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B87A18A6B7
+	for <netdev@vger.kernel.org>; Sat,  2 Nov 2024 13:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730553939; cv=none; b=S+gJg2oNvlGbja8Ho5YWUwIgrK2C+UVNs0VmMW/RhVVMotw7HYR3WjEZ3m4CErQnii5YXbrt86cV/8juS8RhQxgI4nxfjQPJuAiyQd4gbk+rytLWX0RVX7KIgDNjj4is+0/uUrWVmzsmmjAsYt+yGcWbP81Dk7qjUf36/YpAC5Y=
+	t=1730554469; cv=none; b=r5j41DcAwFKmJ0GLwBIxnLR+taDN71FJDjx9DnKLT+4HdAA/Y0+nHZ53XvCI44AV4bodNM1zMZ9l283Hchy8C/NdXR1UAN8xduaS6GWEtfvJhYGkPvN9LBqHXhFYm+xquA5zQxVHq6qjlpLUWDerjMedCA+T5pjL6uH/Ozdh4+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730553939; c=relaxed/simple;
-	bh=Brh7PCFfiHPodDSQkSEDFp8MWJQXOxvx1uid36Iwljc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3NiiJTiWRJ3ydqVW+NTAjHrYLgDkK0K4+FltDN619wly8OoMZzzupOIBlG6Nahu1ZHMN+SgitoXu+O26+68K109digyziOGC7tGRk9+D1SH7Jqad8uvc+p0mzatrkqSXrKN88HDm+FOVzjwsyQ1gJG4lPW6kahyx6rxT8Sy2Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0UT1LrD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730554469; c=relaxed/simple;
+	bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
+	h=From:Message-ID:To:Subject:Date:MIME-Version:Content-Type; b=lu2wekyEwwsB4CDJse0DpHOa996iYHRslEUDhGciPmIpogxDfxzouQgF2BuQzKHnzTmONXo7TXkA48S+gves3ZJztoGlo/EapmDeAxlyINXaBvp16XDV4RTM4UpKREXuIzbByNoFGa4VM503AbIDYNzzMKbKC1u40Ymn34oJbvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UFA/NbEz; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0UT1LrD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2D9C4CEC3;
-	Sat,  2 Nov 2024 13:25:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730553939;
-	bh=Brh7PCFfiHPodDSQkSEDFp8MWJQXOxvx1uid36Iwljc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z0UT1LrD0JnecxRQ9ghkR0Z8Mk/+S/sA2GbGMku5OkqJq8LM6KrVcsVNf04GAGuuO
-	 8sm1lhzmUyW+Brp2t4BxAbCmmcKVkZu1qgsOslVddaki6ntWlrQ08SMVoEBxaQsU8+
-	 1XrJjCqB7x9V9NwbE/Jo39qdCAXHjiyFwMCC0a7C0XJHEpbaBo9f6zsnlc9QYnAvTQ
-	 fHtsGCDX7MblpS/fhrT6j7LI6SyLrR7ZWzPJhaHQJ8dZAgq+s/97q0edTtsMsvbt2j
-	 dFPfcfvpZHJvNQ3gyDkT39hmDFTWa5hEiZ74qM3chMsvJtD6c75Ky2hQN9l8fV5qV+
-	 Ed1S1Z4ypcwiA==
-Date: Sat, 2 Nov 2024 13:25:32 +0000
-From: Simon Horman <horms@kernel.org>
-To: Michael Nemanov <michael.nemanov@ti.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Sabeeh Khan <sabeeh-khan@ti.com>
-Subject: Re: [PATCH v4 09/17] wifi: cc33xx: Add main.c
-Message-ID: <20241102132532.GJ1838431@kernel.org>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-10-michael.nemanov@ti.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UFA/NbEz"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a9e8522c10bso71212166b.1
+        for <netdev@vger.kernel.org>; Sat, 02 Nov 2024 06:34:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730554466; x=1731159266; darn=vger.kernel.org;
+        h=mime-version:date:subject:to:reply-to:message-id:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
+        b=UFA/NbEzSHhC/vALKV356JO9OU6U9TkB9zul+Na5Gqkmg2l6fwVQb6QBQgVQEx36Jp
+         EIX4EDVbN86gdqigPSJRJ3dokFWiwcAY4aXiT/z7bLKtij7fkVBEGF3BBjEggfp7cf2O
+         J97T6KRMUCJLS7HMi76Dv9Ke8ajZfNuFs4iyVBqQ8/OHaG7HG3heeeowkNet01Tf8eaR
+         n+cz3nzbzzbd/iuUA/nK6FLACxo7H1WoQ772M41mK3mfP6q8j70E/O5Sy2Ehy9PLb/UB
+         4nZbeWluW62BjgDfQsHDLLZgTjZwQzxFHAsru2dGZr/khBXt/FF5rsxrALs5LBG2lqre
+         CNug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730554466; x=1731159266;
+        h=mime-version:date:subject:to:reply-to:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YIqagV1NwTECAGQHhrIvxosUcV32d/Vxh+4ati1x+Gg=;
+        b=vKuEtQ0SmtuaDgc9GqbywFeSJVs6mTSoIuA3BMY2YiPMfX8cgB68UGIKkVaG0tKwir
+         5QMWdU1qNp317e9/MlPQk6SB2zZaM3SAioPycjboleQF5WZaf2kpI0K5Qswe7/P0znTc
+         uy0HXE1Lm/8C/Y4X2itEnqdl8wl00ZIcGj5jG9Jb2AQHThezAgwYRqiIeD5v/r3C8oEl
+         2vN4UOSH4wVnTJ2i0riXsha/09WsKII6/77o+ksM3fkRoMRfFN6b9Bdg50vfY0A6qy0n
+         JPxqK1PsFTIwOQVPhmMLgRybZUFNp6N3BoxANBukcZtlcEt2CRdcxhO7bCDrkHLidZVw
+         4ViA==
+X-Gm-Message-State: AOJu0Yz2hdGhGJSOkgKnp9wyIZbUxkVm2RUCAp9GQzLH2un1LN9EU0ke
+	XFtZswLr99Ev8UUMLz2qc25mZZdVjFFJuIdKPt7J0h0MgVhPtEdSTImCvQ==
+X-Google-Smtp-Source: AGHT+IEx5l5IlmujQClR/AqMbBYFM9FOXmzlDxbVK2hIwgvuEZl+JcCRRdI+9sAon/g85KrGT2kgFg==
+X-Received: by 2002:a17:907:7e99:b0:a99:5f45:cb69 with SMTP id a640c23a62f3a-a9e559df7f4mr949136866b.4.1730554465832;
+        Sat, 02 Nov 2024 06:34:25 -0700 (PDT)
+Received: from [87.120.84.56] ([87.120.84.56])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e5664931asm308951866b.182.2024.11.02.06.34.24
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 02 Nov 2024 06:34:25 -0700 (PDT)
+From: William Cheung <meamithila8@gmail.com>
+X-Google-Original-From: William Cheung <info@gmail.com>
+Message-ID: <8eef490fb02b0a0d20d30f4235f35d6b7b20cc28a9b148dad97f33dcbe32db76@mx.google.com>
+Reply-To: willchg@hotmail.com
+To: netdev@vger.kernel.org
+Subject: Proposal for you!
+Date: Sat, 02 Nov 2024 06:40:11 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,65 +63,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241029172354.4027886-10-michael.nemanov@ti.com>
 
-On Tue, Oct 29, 2024 at 07:23:46PM +0200, Michael Nemanov wrote:
-> General code and structures.
-> Notably:
-> 
-> cc33xx_irq - Handles IRQs received from the device.
-> 
-> process_core_status - Core status is a new concept in CC33xx.
-> it's a structure that is appended to each transfer from the device and
-> contains its most up-to-date status report (IRQs, buffers, etc.).
-> See struct core_status for details.
-> 
-> process_event_and_cmd_result - Responses to driver commands and
-> FW events both arrive asynchronously. Therefore, driver cannot know what
-> he read from HW until inspecting the payload. This code reads and
-> dispatches the data accordingly.
-> 
-> cc33xx_recovery_work - Driver supports basic recovery on FW crash and
-> other illegal conditions. This implements the recovery flow
-> (Remove all vifs, turn device off and on, download FW,
-> let ieee80211_restart_hw do the rest).
-> 
-> irq_deferred_work - Does irq-related work that requires holding the
-> cc->mutex. Thisd is mostly in response to HW's Tx/Rx IRQs.
-> 
-> cc33xx_nvs_cb - Callback for the NVS FW request API. Similar to wlcore,
-> this is where the init of the HW is performed.
-> 
-> cc33xx_load_ini_bin_file - Loads a configuration file from user-space
-> via the request FW API. The structure is described in a separate patch.
-> 
-> cc33xx_op_X - MAC80211 operation handlers.
-> 
-> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
-> ---
->  drivers/net/wireless/ti/cc33xx/main.c | 5689 +++++++++++++++++++++++++
->  1 file changed, 5689 insertions(+)
->  create mode 100644 drivers/net/wireless/ti/cc33xx/main.c
-> 
-> diff --git a/drivers/net/wireless/ti/cc33xx/main.c b/drivers/net/wireless/ti/cc33xx/main.c
+Hello Dear,
 
-...
+I have a lucratuve proposal for you, reply for more info.
 
-> +static struct ieee80211_sband_iftype_data iftype_data_2ghz[] = {{
-
-Hi Michael,
-
-Sparse seems a bit unhappy about this:
-
-.../main.c:332:24: warning: incorrect type in initializer (different address spaces)
-.../main.c:332:24:    expected struct ieee80211_sband_iftype_data const [noderef] __iftype_data *iftype_data
-.../main.c:332:24:    got struct ieee80211_sband_iftype_data *
-
-So perhaps it should be:
-
-static const struct ieee80211_sband_iftype_data __iftd iftype_data_2ghz[] = {{
-
-Likewise for iftype_data_5ghz.
-
-...
+Thank you,
+William Cheung
