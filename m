@@ -1,113 +1,95 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE2A1AC8AE;
-	Sat,  2 Nov 2024 05:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1147C2595;
+	Sat,  2 Nov 2024 05:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730524129; cv=none; b=Sjn1mflHgxrifsPZ06j0PVB/2ekH5pwyIqJCHp+abE/QzAosF7JhjhVkghgArVCKlGOEPOwaOOckIHdakYfzj9CeV7z9BC0qxWxCyaXvqI4lqn2TwPZ9Yg6LrO04+n6Q6Ao87glHUqS4HX8YTC+DvrwyebgBhCjQn/IljctHwik=
+	t=1730525648; cv=none; b=hMahDV8g/7CcHxX4UWgfIrX9Pmj1YHIIy6cZwaI4gMh1bdH0RWUis19ReXIdFyk3oq7eyvDwrmxs53yy8zspbor1E1koy5l3ZN5jE48K5fVWWW0FguGU6HivbIuSR1AO3mCZo8LokrsLdqs7VMPOoOeyekkL9rsZfi/4CzAjqdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730524129; c=relaxed/simple;
-	bh=sIsbHOCdc77aqOwzZ9NdzfWbaJOX5esYl6OGr+8g17w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs65So6NS46gMA01gAFBbNAmaIiEJ3BbahXTfGEA7FG4G+po29VYXZKA3bGZRPHuF7ld5cyrMgiXYMKivoXpYV3PVhTYQjMpNAz5LY6nOPsXJhF25r+MJLgwNOLiOjnGiQDgvCFE7ORIf40znZSytPxii1/n9jVtPqXmckyMjRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=a4xaumWi; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1730525648; c=relaxed/simple;
+	bh=7ZWq3c6xaRl+h6ragkZhBKlh/9oJe6LqL4h5CFwBSm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y5k9QOBUO2ajQOVIrS2hRwMCR65gCjcW08JrUSPiuvPej6hLrMz2HMmT3Wvyo6sTmIqbSkmZZF9bjPiMLv622VZlox1eh+NrHQsZilyaIgAShPDGyogClB2Xh2jlvLPT3GtGPz5qXg6owSRR4TTSEN3CuQzegSN77T9jSLD3Ih4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHZzgP7r; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="a4xaumWi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=EYGEzTbzCwoX59fmg/fy+A0M2cH27/fC1+I1UrCmDZc=; b=a4xaumWihzxkWK0sSVMGC09NKL
-	/EsiX3Dv1qIhCPhGLJUqveSVG6gtBNZ1U93ayc7VzB9EgmgXdfbFST0I3zU+9qpSPpj/EUeuXlqIx
-	Fnyp/bs4rZTmQ47+xzgW7rRAjr5j8FEseJlNADJiY/fv/BDNRH88f6gSL6KPdvBBzDlVBBsLyjzkk
-	fP/fibZTx0A/vhFAcheY5lQxujutQNbon/Mm236ocUpZruF+bKXt0TmhNhrHVYo7eVv/SeGQ8KH+4
-	g+uQWinRficKJPYDWd7Q4JFj+CvmXIztzmdlGYHSgtOgVi4dL5DA4p08buP+34xGVLU0PPh/KaS/U
-	hXCzdZ5Q==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t76N9-0000000AHmC-3giW;
-	Sat, 02 Nov 2024 05:08:27 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	cgroups@vger.kernel.org,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	torvalds@linux-foundation.org
-Subject: [PATCH v3 06/28] do_mq_notify(): saner skb freeing on failures
-Date: Sat,  2 Nov 2024 05:08:04 +0000
-Message-ID: <20241102050827.2451599-6-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241102050827.2451599-1-viro@zeniv.linux.org.uk>
-References: <20241102050219.GA2450028@ZenIV>
- <20241102050827.2451599-1-viro@zeniv.linux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHZzgP7r"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20c714cd9c8so27879275ad.0;
+        Fri, 01 Nov 2024 22:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730525646; x=1731130446; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yl0ZSjV2wwdG7v/jul86kkIeCsNbggoH1Vd4XqoR3yw=;
+        b=nHZzgP7rI1VPJGWhCiV36tJBJNQnINDs7YkZC8ifKiGdsy3QIGCAkdjh3l1aJNAuba
+         WrP9K/V7f7OV4OkNmXg463iYkHGDSiZ/vwzwme+i5JokmSVZoGYLeZsRl2m3oh4UwAMp
+         3O2iDGm5Z5z7edDtUvPJeEQyCrgGnc5vEapDkh6I0hABkxOXbGZ0Psifv+WmlOWjxZ/5
+         XabIdr+SBIBR0B0EBvDIBJzTAeAbfE7guzNFF6Q93JITPFnUJeIjMXiPAP3V6BTG/Wu6
+         1SPz3AoCmjCJjR1oXq2G4xtg7NykVKc2MjtQGxL3ZPR+UgZcJqEYtdkHV5DjOOgKIvZ0
+         0C4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730525646; x=1731130446;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Yl0ZSjV2wwdG7v/jul86kkIeCsNbggoH1Vd4XqoR3yw=;
+        b=qVCY4JqPs1Hyb1NUJRLbFJBlzHS2xHNe5eo3tYQUItPEQWmwl9dD2j98chBPtzemN+
+         upMgX6HMtPjvHbynHiE+CWKh9SbTh6zUqxqPivUXijfq6qb28N0IaQM0llDHlhAdhVAi
+         EdIyTStyVUqUbQjlNDcE1BA6PqeidHdbWd1uqb3uBYF0L5at5GPpam5ef6cxFKecU0Uu
+         SHJN0iwEvwNPmS+TkKHz6riEofSXmBptLYooS6T4C39FYknkNnZ3eP9/FtE59CUReQGb
+         +GoNc0t03/qEyY0Q1apHN/hdRBKb+N4Qhh/qF4wzE2WmyNCcT9mUgxGQJAa1X/8rtYzb
+         03kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWz+6l6WATI1FUr/138fP4kzRoGfTC4DwsHNpm/inpTaA0Isu875MafNUbqeY1MQ95RR68hr3tBiGRatD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZTyUKy/298vOS8eDVLOTjK0nQvCNWAo/ygS43V0PgbPT+Y0jq
+	jbLNL39fl+Uj+qHHcMY+8GU1ktij+9CYWM09WJZVjAnBffCBMVux
+X-Google-Smtp-Source: AGHT+IFSBLSRmWr+ADqlQojeA6O0wCRf+1EVr8y7UIwQWNNJ4vrlbCerMlqoHCiFATN78RepdHZAyA==
+X-Received: by 2002:a17:902:ce85:b0:20c:a1a3:5373 with SMTP id d9443c01a7336-2111b01c640mr83003945ad.55.1730525646080;
+        Fri, 01 Nov 2024 22:34:06 -0700 (PDT)
+Received: from localhost ([129.146.253.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057a63f2sm28700365ad.168.2024.11.01.22.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 22:34:05 -0700 (PDT)
+Date: Sat, 2 Nov 2024 13:33:54 +0800
+From: Furong Xu <0x1207@gmail.com>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Andrew
+ Lunn <andrew@lunn.ch>, Simon Horman <horms@kernel.org>,
+ andrew+netdev@lunn.ch, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ xfr@outlook.com
+Subject: Re: [PATCH net-next v8 0/8] net: stmmac: Refactor FPE as a separate
+ module
+Message-ID: <20241102133354.00002357@gmail.com>
+In-Reply-To: <20241101142908.ohdxsokygout5mfs@skbuf>
+References: <cover.1730449003.git.0x1207@gmail.com>
+	<20241101142908.ohdxsokygout5mfs@skbuf>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-cleanup is convoluted enough as it is; it's easier to have early
-failure outs do explicit kfree_skb(nc), rather than going to
-contortions needed to reuse the cleanup from late failures.
+Hi Vladimir,
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- ipc/mqueue.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+On Fri, 1 Nov 2024 16:29:08 +0200, Vladimir Oltean <olteanv@gmail.com> wrote:
 
-diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index fd05e3d4f7b6..48640a362637 100644
---- a/ipc/mqueue.c
-+++ b/ipc/mqueue.c
-@@ -1347,8 +1347,8 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- 			if (copy_from_user(nc->data,
- 					notification->sigev_value.sival_ptr,
- 					NOTIFY_COOKIE_LEN)) {
--				ret = -EFAULT;
--				goto free_skb;
-+				kfree_skb(nc);
-+				return -EFAULT;
- 			}
- 
- 			/* TODO: add a header? */
-@@ -1357,16 +1357,14 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- retry:
- 			sock = netlink_getsockbyfd(notification->sigev_signo);
- 			if (IS_ERR(sock)) {
--				ret = PTR_ERR(sock);
--				goto free_skb;
-+				kfree_skb(nc);
-+				return PTR_ERR(sock);
- 			}
- 
- 			timeo = MAX_SCHEDULE_TIMEOUT;
- 			ret = netlink_attachskb(sock, nc, &timeo, NULL);
--			if (ret == 1) {
--				sock = NULL;
-+			if (ret == 1)
- 				goto retry;
--			}
- 			if (ret)
- 				return ret;
- 		}
-@@ -1425,10 +1423,6 @@ static int do_mq_notify(mqd_t mqdes, const struct sigevent *notification)
- out:
- 	if (sock)
- 		netlink_detachskb(sock, nc);
--	else
--free_skb:
--		dev_kfree_skb(nc);
--
- 	return ret;
- }
- 
--- 
-2.39.5
+> For the series:
+> 
+> Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
 
+Much appreciated for your valuable comments on this series and also the
+previous series that moves stmmac FPE over to the new standard
+ethtool-mm/tc-mqprio/tc-taprio.
+The FPE support on stmmac would never be so complete and so soon without your help.
+
+Have a nice weekend :)
