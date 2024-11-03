@@ -1,90 +1,81 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633D4E552
-	for <netdev@vger.kernel.org>; Sun,  3 Nov 2024 15:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FFF187342;
+	Sun,  3 Nov 2024 16:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730649497; cv=none; b=NUWZot4W4i89gsZ1kbTugs6E89dVl2/px9jE7Fr7ay+Zst/0Yovz7kkgENFwbxFdRktdkmGw6vfFfw0aqZ4LF23GkkQg/zLPIYYW5KwdMFjqCosoBU5jMnQqz6d1i1Rtzjloajsk4z6PhWaKctRbvRmkwOtVbI9ys8lhmzJ9l8Q=
+	t=1730650220; cv=none; b=FvnMs5rtNMwHjbFtWtv4gO5vVc/3CY9y49wpzVU6SxTjZ9anxXvsbUw66czmgigan7w3HMXN2GeGQJ+5DyqYxGnVLqR5gFaxSV4qIwL2/eI9sjGKh0m76zkoBKaujqbGLsWSoelpLOO+mI79S92EnBX0+XF/qKn9z+Xb0Zpeqnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730649497; c=relaxed/simple;
-	bh=HWBgZkUmPVzrloXfNapbzp7PFPfVFmC8qPxNcKxNmu4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c5htJknQCW90HRVAWK4usmNo2UkeLYgIuNOQ7j5+GV9+qSWrPP8KBWnW05lghSq3gBLKn4+n4GpuVcXvQ9fnOs6G4U1GxsVoZ+qwNME08xHWZGg9f4Wf3W+g2L0xn7DeDhNTz1HgpNigNdq0Gx8HiND+4vuL7RPTryIvUknFnPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=Fa7bho5a; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1730650220; c=relaxed/simple;
+	bh=h5SwN9QtlupBN2TmSX7ULAcRqNku5r5cgGPMrZqzkY0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cK2uBTY2ouDbhBa/VXrLsjMA3/Gen+GArEQNd+BZ9Dnb4qVES7aD7m3dw7ccnbJrpSKq5evHMxU0kWLDPSSPBIt42RF+XiGGd4xh+I2uSVGclg7nWidMNXcmGWyeg7jznwlGHK1tK/BGjRIME5bL+1XSng1OcCvHTxwT1PXdJDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5sGKsW0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="Fa7bho5a"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-72097a5ca74so3193787b3a.3
-        for <netdev@vger.kernel.org>; Sun, 03 Nov 2024 07:58:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1730649495; x=1731254295; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3383YEtkHYFgNHw9+P2FH1a9C7KzEvqX5tXyfqkibcg=;
-        b=Fa7bho5aw53/PZxi2uHqebCTKZWR8mPuXRS81TQmb8HihlkqkZ93WzoqEarrXZd4tq
-         NbmaEMK2/iovxdj4L//NFzRXdMbSS5gsKla9d4aIk2vErkucoe2twIRWUA2ei3xAyrIm
-         G30xijey/VD0NW9pkVEq7Tdkvws/51QDv+7NSksFzYGBoC5guhrmTqjeOks+DYCacDqi
-         BIIxEFJrL0tjo9sxYbQlN8C7U1ABB9M9z22GIE7XZC8jX8t6zpScM/CRAzL0zorzVcrk
-         gMjckBywJo+WzFYFIgG+UtKrjwtlo1yVxoxcigGkXQfcK2pXzHjUffS0RUnqvXseya8O
-         jajg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730649495; x=1731254295;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3383YEtkHYFgNHw9+P2FH1a9C7KzEvqX5tXyfqkibcg=;
-        b=MmcymaFA2FLYNBrmAvhf9fP4YcMvqegomLa+Tbd4AmgrVw/IFBfKxLVcfw211Vd8H/
-         meigoEavLOm6G2qlRo6sJlg763mrHMMJHgPjR9VCibsJd8jblXYP8UUPQYnSPbyCl3Vb
-         8RMnRN6ktmG3g/s57Oh4P7+WoJp6cvc3c4DCNn0/og3vvd2afcvT4/SVUl7svOy1i/R1
-         /6ocXI8yWYpEzB3uLEQLxcXuLcbnbCdR4x0QLmvkMIVTMcOGxXOEH3pNHj6kh+gr5fMY
-         fkh9/XOrOmsrXeRvwcsytwecWcdB+84Upz+ZrkrWKdhWn4+hWsUeeOU0pZ7N0vAxbp6c
-         uYow==
-X-Gm-Message-State: AOJu0YwjNY11ESKJDVC2bDWq1jO5lYSzeD4gejvYT9h96KAl2UGfolmI
-	1ZhVsWTobClZde24Oagk7jv+hdXCshp6chaRXEvKZ5P8RX+tsQDcHW9aD8SkU3g=
-X-Google-Smtp-Source: AGHT+IED6uEn6rcGyC9hFTv8HSaQG/xUwUPikcWeNYMIyCKjcFTuPEbFtWPZ1K866xL2UTbIWlls2g==
-X-Received: by 2002:a05:6a00:a8c:b0:71e:13ac:d835 with SMTP id d2e1a72fcca58-720c98d0dabmr14344348b3a.11.1730649494734;
-        Sun, 03 Nov 2024 07:58:14 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc31b40csm5667334b3a.209.2024.11.03.07.58.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Nov 2024 07:58:14 -0800 (PST)
-Date: Sun, 3 Nov 2024 07:58:09 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Bjarni Ingi Gislason <bjarniig@simnet.is>
-Cc: netdev@vger.kernel.org
-Subject: Re: dcb.8: some remarks and editorial changes for this manual
-Message-ID: <20241103075809.199df5bd@hermes.local>
-In-Reply-To: <ZybRdNeIHWohpWYN@kassi.invalid.is>
-References: <ZybRdNeIHWohpWYN@kassi.invalid.is>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5sGKsW0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C827FC4CECD;
+	Sun,  3 Nov 2024 16:10:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730650219;
+	bh=h5SwN9QtlupBN2TmSX7ULAcRqNku5r5cgGPMrZqzkY0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=V5sGKsW0r/fTuvNfOt3Axwvzy3KK4d+o0XCqlHKjqDFS7+z9O1ZvQ8FAI9NVeIHIw
+	 x9qsRV39NFfqrzOCX4fAXroZsfNDHW7IEHFxzrgWPlKAAt866COkxx+lHqDOtuP8Nb
+	 t3ot4hRY9telHFHctjS1rj0EM9vWx6vm7uk7y6fZbbT59pheuVxYWv2zkHS7tU/XbD
+	 cmBJuMfjrMpp84LC0MNEmJnyxgSDB0JPYQk4RUeTOcZ54XkqgGI7VleTW7rsgfZp+G
+	 6tvnP9uy7dPyCaI/USwHZw8xi50KZFihbhr+IXkPIoag/PopZS4oER3ZngnyRFpi8X
+	 oLvS4Eyak7PnA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7107D38363C3;
+	Sun,  3 Nov 2024 16:10:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: wwan: t7xx: Fix off-by-one error in
+ t7xx_dpmaif_rx_buf_alloc()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173065022826.3205552.17881311291289594759.git-patchwork-notify@kernel.org>
+Date: Sun, 03 Nov 2024 16:10:28 +0000
+References: <20241101025316.3234023-1-ruanjinjie@huawei.com>
+In-Reply-To: <20241101025316.3234023-1-ruanjinjie@huawei.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: chandrashekar.devegowda@intel.com, chiranjeevi.rapolu@linux.intel.com,
+ haijun.liu@mediatek.com, m.chetan.kumar@linux.intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@linaro.org,
+ ryazanov.s.a@gmail.com, johannes@sipsolutions.net, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ilpo.jarvinen@linux.intel.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Sun, 3 Nov 2024 01:27:16 +0000
-Bjarni Ingi Gislason <bjarniig@simnet.is> wrote:
+Hello:
 
->   The man page is from Debian:
-> 
-> Package: iproute2
-> Version: 6.11.0-1
-> Severity: minor
-> Tags: patch
-> 
->   Improve the layout of the man page according to the "man-page(7)"
-> guidelines, the output of "mandoc -lint T", the output of
-> "groff -mandoc -t -ww -b -z", that of a shell script, and typographical
-> conventions.
-> 
-> -.-
-> 
-> Signed-off-by: Bjarni Ingi Gislason <bjarniig@simnet.is>
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Thanks will pick this up in iproute2 release
+On Fri, 1 Nov 2024 10:53:16 +0800 you wrote:
+> The error path in t7xx_dpmaif_rx_buf_alloc(), free and unmap the already
+> allocated and mapped skb in a loop, but the loop condition terminates when
+> the index reaches zero, which fails to free the first allocated skb at
+> index zero.
+> 
+> Check with i-- so that skb at index 0 is freed as well.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] net: wwan: t7xx: Fix off-by-one error in t7xx_dpmaif_rx_buf_alloc()
+    https://git.kernel.org/netdev/net/c/3b557be89fc6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
