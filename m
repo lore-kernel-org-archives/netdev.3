@@ -1,102 +1,93 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED5323A6;
-	Mon,  4 Nov 2024 05:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5F216EB5D
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 05:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730698240; cv=none; b=jp1L7HN9uW69jcgJD/YYlyrilobR8LuJmp+Xc0lK0hCg/aTH2DvnDHx5oJH/Xh2O7nAcoPmCk8iQZq1VZEE/aqGGAgtjXfM+KruQE5/nZgFlYYf64OjB17oO12OsbQn39VIfOj9rAKZdr//Dz9WYZV56k0SEXuBAjonDupGpKkE=
+	t=1730698286; cv=none; b=rURsdHhDhWOZ9R4pAzQ2GRUkI99K8giRF5dmTYL2K0nxP8ZujLTGkOy1AYrDGZmYRikF2Rr4MyE1g9ufpTE10MX9qQzTQD7Z+CJ+G6U3/Un7nZGT7tQ4gCVByUSugbIYHvnQrJ6VnGQXS529f9RyTI+CDOd0W56y934pmN268tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730698240; c=relaxed/simple;
-	bh=qvywv4i84HAZLPotuvJYvDl4s71VUQ8CS52LsQUJl90=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Gd1u75Q10ib+JeKoMTR27EjaZ3f00xKHt+12qNKLncoEG7RWDwyra4srnjtQ6hJBACvOUSliU9D9XvgAYnUz5ZO9/5qWFhgB7hN9f702BQk5jcfpr9GmJ6V1M/f+3kRIJ1pVvSAY4f669TbJoRQUK8l17DHcCI82e3QAjEpDp3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=FzDv4pgy; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+	s=arc-20240116; t=1730698286; c=relaxed/simple;
+	bh=eAscMrBtxFJNjQaJHm5mLwqn013BMV7IjcX21gR4UVU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jTDqt3m3B+gLr455xXGHZlC+7YDIpceN9lBdvJGKR4o0SLjbB4at/TNPWB0yynJ0WUGcEcwOSV7Ye2EIYILEH2AvahB6NfGZvFhgb79cOJqQexWZDAVJEjvUGfWxPz1uO5n9ger0RIJO3TNlOqEsmdyar46rZ2sHSld1yFWpZ8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=YyBFsnk5; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="FzDv4pgy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1730698231;
-	bh=LdGLsZfaRCHdLDyP+nbDEj6UUqJgvbVO4i4FE6dRPm0=;
-	h=Date:From:To:Cc:Subject:From;
-	b=FzDv4pgyYj4vjp3MRzTtp58Uijlw1kwJXr6IkRw3UdMOKOlGM8zmWCr7+vasGT8ym
-	 w16vGsN+7eWVdjVVWboP0F4aaYuTOgnVEEKXAzYHAMXIGcGTPejzCuewgh1SFd3bPd
-	 Qsqs8488JDAPsL+FL3xB3OdokDZMDuS2d7fvfbs1qqcmIVVFotw8FmwZL+py8R79xi
-	 MHEkcaBVVDEpmhlPXXz+uPi4o2eEotn6T8xoZn+1j0kKdNv1gbIMIfxkXuF9A7Y2AQ
-	 kAjxtnig+BQLjknrXY0YJVe7mMT4+LooyvfX+2XuMYTtAwA4imeQh1ZTDE+0L1RotD
-	 Rknxm2rXCH7YQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xhg6G1SFZz4wbv;
-	Mon,  4 Nov 2024 16:30:29 +1100 (AEDT)
-Date: Mon, 4 Nov 2024 16:30:29 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Networking <netdev@vger.kernel.org>
-Cc: Jiri Pirko <jiri@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, Linux
- Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: linux-next: build warnings after merge of the net-next tree
-Message-ID: <20241104163029.73e65994@canb.auug.org.au>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="YyBFsnk5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1730698284; x=1762234284;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eAscMrBtxFJNjQaJHm5mLwqn013BMV7IjcX21gR4UVU=;
+  b=YyBFsnk5jGQU/30Vz1MZNDlbqhHRoOzYfEV+tIL31iWQUkxam6Da3kVV
+   ct4sk4MCmFMnM3YgUOxjNrNhVq7Z64b6Xz6j/eVXLQydmfF/CkCGIYn/R
+   lu5EfThYYr9QjA0TiUkazRGfOlf/SPokge4uS02qFnUaanYLMnusTvJKX
+   dOAO8XU7pWS9p5Ne1B/NfKTwYy/lgl2a2LGu3Rhf2XjWydnmuG/ZdiZZZ
+   /eFLV7IiXCgHvKboT9+5F7XStZZwIE4LZb1t7ckRY8Y1Re0nL21wj3aL7
+   bmTgyAiQJjso0W4YiSkvbegAEzQMl9R7EqK2U9J6xRDwwFqysdTMM/ngU
+   A==;
+X-CSE-ConnectionGUID: RBSmdqnPT4+THByMDZKx9Q==
+X-CSE-MsgGUID: GHqoPKDFS+eCo3Mzq7PASw==
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="201254695"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Nov 2024 22:31:17 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 3 Nov 2024 22:31:14 -0700
+Received: from nisar-OptiPlex-9020.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Sun, 3 Nov 2024 22:31:11 -0700
+From: Mohan Prasad J <mohan.prasad@microchip.com>
+To: <f.pfitzner@pengutronix.de>, <mkubecek@suse.cz>, <netdev@vger.kernel.org>,
+	<kory.maincent@bootlin.com>, <davem@davemloft.net>
+CC: <kuba@kernel.org>, <andrew@lunn.ch>, <Anbazhagan.Sakthivel@microchip.com>,
+	<Nisar.Sayed@microchip.com>, <mohan.prasad@microchip.com>
+Subject: [PATCH ethtool v2] netlink: settings: Fix for wrong auto-negotiation state
+Date: Mon, 4 Nov 2024 04:04:07 +0530
+Message-ID: <20241103223408.26274-1-mohan.prasad@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/ErO2t_M7Ic+YdiztVBPF4rT";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
---Sig_/ErO2t_M7Ic+YdiztVBPF4rT
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Auto-negotiation state in json format showed the
+opposite state due to wrong comparison.
+Fix for returning the correct auto-neg state implemented.
 
-Hi all,
+Signed-off-by: Mohan Prasad J <mohan.prasad@microchip.com>
+---
+Changes in v2:
+    Used simpler comparison statement for checking
+auto-negotiation.
+Link to v1:https://patchwork.kernel.org/project/netdevbpf/patch/20241016035848.292603-1-mohan.prasad@microchip.com/
+---
+---
+ netlink/settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-After merging the net-next tree, today's linux-next build (htmldocs)
-produced these warnings:
+diff --git a/netlink/settings.c b/netlink/settings.c
+index dbfb520..b9b3ba9 100644
+--- a/netlink/settings.c
++++ b/netlink/settings.c
+@@ -546,7 +546,7 @@ int linkmodes_reply_cb(const struct nlmsghdr *nlhdr, void *data)
+ 						(autoneg == AUTONEG_DISABLE) ? "off" : "on");
+ 		else
+ 			print_bool(PRINT_JSON, "auto-negotiation", NULL,
+-				   autoneg == AUTONEG_DISABLE);
++				   autoneg != AUTONEG_DISABLE);
+ 	}
+ 	if (tb[ETHTOOL_A_LINKMODES_MASTER_SLAVE_CFG]) {
+ 		uint8_t val;
+-- 
+2.43.0
 
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_PRC' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_SSU_A' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_SSU_B' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_EEC1' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_PRTC' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_EPRTC' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_EEEC' not described in enum 'dpll_clock_quality_level'
-include/uapi/linux/dpll.h:103: warning: Enum value 'DPLL_CLOCK_QUALITY_LEVE=
-L_ITU_OPT1_EPRC' not described in enum 'dpll_clock_quality_level'
-
-Introduced by commit
-
-  a1afb959add1 ("dpll: add clock quality level attribute and op")
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/ErO2t_M7Ic+YdiztVBPF4rT
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmcoW/UACgkQAVBC80lX
-0GwFkQgAkh2G3fUKKV49+3wAQqDz20IZZz+ZAnLUGsO3FrCwmAgtgRmiLH+zGHCK
-cmzeEELRDGcoUMhufkPq/39VCkwKRXSc0FlB3so+x/z0SdLjFrYkBVjskqQU2d9Y
-joBSeP3L59FiUc0LGGXjqgzcgzO+MuENHmSta5drE7x3TenZU5bgAy0B2fc5DT/j
-89biyYzYjQgejYaQw2EXGo+I7MnzJ4f2QWnnKvDdZ8BmKcNCUTiOoakKaB7ad1ub
-SDaIT8Xj0n34qKn00rsweF+KGgV6mbZKAyjr2d/iNMbKoWIV7xtShYDraICX4tqX
-EIz5fefg+ZPyGhqDTSVIwoJqT5RDiA==
-=VMw1
------END PGP SIGNATURE-----
-
---Sig_/ErO2t_M7Ic+YdiztVBPF4rT--
