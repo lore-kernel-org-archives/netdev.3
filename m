@@ -1,117 +1,276 @@
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+Received: from natrix.sarinay.com (natrix.sarinay.com [159.100.251.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1502615E5CA
-	for <netdev@vger.kernel.org>; Sun,  3 Nov 2024 11:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C52A50
+	for <netdev@vger.kernel.org>; Sun,  3 Nov 2024 12:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.251.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730633541; cv=none; b=pn6obenhygTdIsrEbYkcjq5s4z7AHDZwMiNZQ5yHFeyWgK/TF8Yr4GNLCIzvihdcC8PkBCGwenSjUWX68PAHF88fleZ+cSM58hVryyl8MSh8Wi5XS3/PjMcLgarnhN+5N8meSZNTIGuqeU3yez3IRnrqqzBJE7Dy/+woSNzCWBk=
+	t=1730637935; cv=none; b=sEdw/cXI8liIEWbQ1h9dHuy9LQ9vcblax6afP/3tv7t4YNvzIvS8gLSZXeSoNUHDf67Vy1qN1KjsyuqDyTrQRBw5P0l85HEQGc+fuV0kXxD6Sxe5a2R8ivBCK6tGhfQkuDMgTj390uXv39Ap+9URGwHA95fo/+DRpC6xNPeN5mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730633541; c=relaxed/simple;
-	bh=ON2dZjB9BfejXK663XSmeNdV79sw6IXHV0upg7oAcSk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qi2qdl8LUOcVaZHSrwOlhjixApbQhUVzAc9HqGXPVRJsGVZ6PiI70mUypUYN8BVK3gneEd6CbR96PT5br0dPkNOPFL+bI6bP3VwWsQ0YdNzYFWrax+q7ay4uNUw4c+aqBjWB3mFzPX8y5yiss4+h8QVmZX8VPV6A1UJ5qTR0pzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=WFMnKLrM; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1730637935; c=relaxed/simple;
+	bh=axG7UUWgL6+y8w3rR5thrd92/BueE/DU71S1yOBFF+U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jxylB1APVGNzs9LVlXUEMfv8VKCx2JQrG4E7RTEnKZKtVcpw6gtMZmWVF/GB2kGOrHakwEB98EozKqatDSI6l7j/FAfKIazxJO9LJVMwyQongm/s/eM/R52M07PYB9VgErvtZ1blKTb7Ufs6c4I3NRrjUTtREnCkmMzwabmBSDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sarinay.com; spf=pass smtp.mailfrom=sarinay.com; dkim=pass (2048-bit key) header.d=sarinay.com header.i=@sarinay.com header.b=oM0U+ltR; arc=none smtp.client-ip=159.100.251.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sarinay.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sarinay.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="WFMnKLrM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1730633540; x=1762169540;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mMIvSPFEcueT4GbDYbJ2VvlPPnoB9V/T5tMqr5XWfIM=;
-  b=WFMnKLrMRSLBaDr0CKMmEIQmHaFQsHtx1BcpHbah5GMFiUAZH6brYDXw
-   3Om59xnGiLjtLuS2qquTJ+1aAgoL5OjDTuJXMXc+EE7amqer/9N4T08Zg
-   GQFVuuJnYrAJaMo4KW/busjRU50VjqS6eyhGWoDJ8L7MD0ZF006yHStw9
-   4=;
-X-IronPort-AV: E=Sophos;i="6.11,255,1725321600"; 
-   d="scan'208";a="772415724"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2024 11:31:57 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:52919]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.10.37:2525] with esmtp (Farcaster)
- id 148acabf-93f2-40a6-9330-ee956f00d682; Sun, 3 Nov 2024 11:31:56 +0000 (UTC)
-X-Farcaster-Flow-ID: 148acabf-93f2-40a6-9330-ee956f00d682
-Received: from EX19D010UWA004.ant.amazon.com (10.13.138.204) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Sun, 3 Nov 2024 11:31:53 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D010UWA004.ant.amazon.com (10.13.138.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Sun, 3 Nov 2024 11:31:53 +0000
-Received: from email-imr-corp-prod-iad-1box-1a-9bbde7a3.us-east-1.amazon.com
- (10.25.36.214) by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Sun, 3 Nov 2024 11:31:53 +0000
-Received: from HFA15-G9FV5D3.amazon.com (unknown [10.85.143.174])
-	by email-imr-corp-prod-iad-1box-1a-9bbde7a3.us-east-1.amazon.com (Postfix) with ESMTP id AA97F405DD;
-	Sun,  3 Nov 2024 11:31:48 +0000 (UTC)
-From: David Arinzon <darinzon@amazon.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	<netdev@vger.kernel.org>
-CC: David Arinzon <darinzon@amazon.com>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
-	"Woodhouse, David" <dwmw@amazon.com>, "Machulsky, Zorik" <zorik@amazon.com>,
-	"Matushevsky, Alexander" <matua@amazon.com>, Saeed Bshara
-	<saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, "Liguori, Anthony"
-	<aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, "Schmeilin,
- Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>,
-	"Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin"
-	<benh@amazon.com>, "Kiyanovski, Arthur" <akiyano@amazon.com>, "Dagan, Noam"
-	<ndagan@amazon.com>, "Bernstein, Amit" <amitbern@amazon.com>, "Agroskin,
- Shay" <shayagr@amazon.com>, "Abboud, Osama" <osamaabb@amazon.com>,
-	"Ostrovsky, Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir"
-	<ofirt@amazon.com>, "Machnikowski, Maciek" <maciek@machnikowski.net>
-Subject: [PATCH v3 net-next 0/3] PHC support in ENA driver
-Date: Sun, 3 Nov 2024 13:31:36 +0200
-Message-ID: <20241103113140.275-1-darinzon@amazon.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=sarinay.com header.i=@sarinay.com header.b="oM0U+ltR"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=sarinay.com; s=2023;
+	t=1730637931; bh=axG7UUWgL6+y8w3rR5thrd92/BueE/DU71S1yOBFF+U=;
+	h=From:To:Cc:Subject:Date;
+	b=oM0U+ltRx30xN6FvWA/DeIgAXa6w7Fb7Mluup9c+FO1Ayaruc4Gmuq5kasNI63Qyv
+	 S1f3UfZ/ugfEN6EizoYaTY5HMRULVzlFtzmwW31SGOdTh13WdsrCibGzohBbpMNWL7
+	 F0OF5bDRSVe3fc+cjQhqc3m4cEvSAP9TuZ7bje2nWbVNz3UAgJvR2aijhUX5sVTyIw
+	 Q5uSFZxNj62JXwNdePdQM4Jahk+iItioZQ5r0RFAQAjDtYNK2J9+ynvoB7lQ1o/xHB
+	 tKuYnvZN9ZlCdk5hnGbZxYHgrUbKpmirlNSv9/HyesazqvLAjBydL+SgcyDnZsIOid
+	 ClEH1Si/UNzyQ==
+From: =?UTF-8?q?Juraj=20=C5=A0arinay?= <juraj@sarinay.com>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Juraj=20=C5=A0arinay?= <juraj@sarinay.com>,
+	krzk@kernel.org,
+	kuba@kernel.org
+Subject: [PATCH net-next v2] net: nfc: Propagate ISO14443 type A target ATS to userspace via netlink
+Date: Sun,  3 Nov 2024 13:45:25 +0100
+Message-Id: <20241103124525.8392-1-juraj@sarinay.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes in v3:
-- Resolve a compilation error
+Add a 20-byte field ats to struct nfc_target and expose it as
+NFC_ATTR_TARGET_ATS via the netlink interface. The payload contains
+'historical bytes' that help to distinguish cards from one another.
+The information is commonly used to assemble an emulated ATR similar
+to that reported by smart cards with contacts.
 
-Changes in v2:
-- CCd PTP maintainer
-- Fixed style issues
-- Fixed documentation warning
+Add a 20-byte field target_ats to struct nci_dev to hold the payload
+obtained in nci_rf_intf_activated_ntf_packet() and copy it to over to
+nfc_target.ats in nci_activate_target(). The approach is similar
+to the handling of 'general bytes' within ATR_RES.
 
-This patchset adds the support for PHC (PTP Hardware Clock)
-in the ENA driver. The documentation part of the patchset
-includes additional information, including statistics,
-utilization and invocation examples through the testptp
-utility.
+Replace the hard-coded size of rats_res within struct
+activation_params_nfca_poll_iso_dep by the equal constant NFC_ATS_MAXSIZE
+now defined in nfc.h
 
-David Arinzon (3):
-  net: ena: Add PHC support in the ENA driver
-  net: ena: PHC silent reset
-  net: ena: Add PHC documentation
+Within NCI, the information corresponds to the 'RATS Response' activation
+parameter that omits the initial length byte TL. This loses no
+information and is consistent with our handling of SENSB_RES that
+also drops the first (constant) byte.
 
- .../device_drivers/ethernet/amazon/ena.rst    |  78 ++++++
- drivers/net/ethernet/amazon/Kconfig           |   1 +
- drivers/net/ethernet/amazon/ena/Makefile      |   2 +-
- .../net/ethernet/amazon/ena/ena_admin_defs.h  |  63 ++++-
- drivers/net/ethernet/amazon/ena/ena_com.c     | 247 ++++++++++++++++++
- drivers/net/ethernet/amazon/ena/ena_com.h     |  83 ++++++
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 102 ++++++--
- drivers/net/ethernet/amazon/ena/ena_netdev.c  |  28 +-
- drivers/net/ethernet/amazon/ena/ena_netdev.h  |   4 +
- drivers/net/ethernet/amazon/ena/ena_phc.c     | 230 ++++++++++++++++
- drivers/net/ethernet/amazon/ena/ena_phc.h     |  37 +++
- .../net/ethernet/amazon/ena/ena_regs_defs.h   |   8 +
- 12 files changed, 859 insertions(+), 24 deletions(-)
- create mode 100644 drivers/net/ethernet/amazon/ena/ena_phc.c
- create mode 100644 drivers/net/ethernet/amazon/ena/ena_phc.h
+Tested with nxp_nci_i2c on a few type A targets including an
+ICAO 9303 compliant passport.
 
+I refrain from the corresponding change to digital_in_recv_ats()
+to have the few drivers based on digital.h fill nfc_target.ats,
+as I have no way to test it. That class of drivers appear not to set
+NFC_ATTR_TARGET_SENSB_RES either. Consider a separate patch to propagate
+(all) the parameters.
+
+Signed-off-by: Juraj Šarinay <juraj@sarinay.com>
+---
+v2:
+  - add kdoc to new entries in struct nfc_target as suggested by Jakub Kicinski
+  - use NFC_ATS_MAXSIZE as the length of the relevant buffer within
+    struct activation_params_nfca_poll_iso_dep instead of the integer 20
+v1: https://lore.kernel.org/netdev/20241027143710.5345-1-juraj@sarinay.com/
+
+ include/net/nfc/nci.h      |  2 +-
+ include/net/nfc/nci_core.h |  4 ++++
+ include/net/nfc/nfc.h      |  4 ++++
+ include/uapi/linux/nfc.h   |  3 +++
+ net/nfc/nci/core.c         | 13 ++++++++++++-
+ net/nfc/nci/ntf.c          | 32 +++++++++++++++++++++++++++++++-
+ net/nfc/netlink.c          |  5 +++++
+ 7 files changed, 60 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/nfc/nci.h b/include/net/nfc/nci.h
+index dc36519d16aa..09efcaed7c3f 100644
+--- a/include/net/nfc/nci.h
++++ b/include/net/nfc/nci.h
+@@ -475,7 +475,7 @@ struct nci_rf_discover_ntf {
+ #define NCI_OP_RF_INTF_ACTIVATED_NTF	nci_opcode_pack(NCI_GID_RF_MGMT, 0x05)
+ struct activation_params_nfca_poll_iso_dep {
+ 	__u8	rats_res_len;
+-	__u8	rats_res[20];
++	__u8	rats_res[NFC_ATS_MAXSIZE];
+ };
+ 
+ struct activation_params_nfcb_poll_iso_dep {
+diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
+index ea8595651c38..e180bdf2f82b 100644
+--- a/include/net/nfc/nci_core.h
++++ b/include/net/nfc/nci_core.h
+@@ -265,6 +265,10 @@ struct nci_dev {
+ 	/* stored during intf_activated_ntf */
+ 	__u8 remote_gb[NFC_MAX_GT_LEN];
+ 	__u8 remote_gb_len;
++
++	/* stored during intf_activated_ntf */
++	__u8 target_ats[NFC_ATS_MAXSIZE];
++	__u8 target_ats_len;
+ };
+ 
+ /* ----- NCI Devices ----- */
+diff --git a/include/net/nfc/nfc.h b/include/net/nfc/nfc.h
+index 3a3781838c67..127e6c7d910d 100644
+--- a/include/net/nfc/nfc.h
++++ b/include/net/nfc/nfc.h
+@@ -86,6 +86,8 @@ struct nfc_ops {
+  *	is a type A one. The %sens_res most significant byte must be byte 2
+  *	as described by the NFC Forum digital specification (i.e. the platform
+  *	configuration one) while %sens_res least significant byte is byte 1.
++ * @ats_len: length of Answer To Select in bytes
++ * @ats: Answer To Select returned by an ISO 14443 Type A target upon activation
+  */
+ struct nfc_target {
+ 	u32 idx;
+@@ -105,6 +107,8 @@ struct nfc_target {
+ 	u8 is_iso15693;
+ 	u8 iso15693_dsfid;
+ 	u8 iso15693_uid[NFC_ISO15693_UID_MAXSIZE];
++	u8 ats_len;
++	u8 ats[NFC_ATS_MAXSIZE];
+ };
+ 
+ /**
+diff --git a/include/uapi/linux/nfc.h b/include/uapi/linux/nfc.h
+index 4fa4e979e948..2f5b4be25261 100644
+--- a/include/uapi/linux/nfc.h
++++ b/include/uapi/linux/nfc.h
+@@ -164,6 +164,7 @@ enum nfc_commands {
+  * @NFC_ATTR_VENDOR_SUBCMD: Vendor specific sub command
+  * @NFC_ATTR_VENDOR_DATA: Vendor specific data, to be optionally passed
+  *	to a vendor specific command implementation
++ * @NFC_ATTR_TARGET_ATS: ISO 14443 type A target Answer To Select
+  */
+ enum nfc_attrs {
+ 	NFC_ATTR_UNSPEC,
+@@ -198,6 +199,7 @@ enum nfc_attrs {
+ 	NFC_ATTR_VENDOR_ID,
+ 	NFC_ATTR_VENDOR_SUBCMD,
+ 	NFC_ATTR_VENDOR_DATA,
++	NFC_ATTR_TARGET_ATS,
+ /* private: internal use only */
+ 	__NFC_ATTR_AFTER_LAST
+ };
+@@ -225,6 +227,7 @@ enum nfc_sdp_attr {
+ #define NFC_GB_MAXSIZE			48
+ #define NFC_FIRMWARE_NAME_MAXSIZE	32
+ #define NFC_ISO15693_UID_MAXSIZE	8
++#define NFC_ATS_MAXSIZE			20
+ 
+ /* NFC protocols */
+ #define NFC_PROTO_JEWEL		1
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index f456a5911e7d..1ec5955fe469 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -757,6 +757,14 @@ int nci_core_conn_close(struct nci_dev *ndev, u8 conn_id)
+ }
+ EXPORT_SYMBOL(nci_core_conn_close);
+ 
++static void nci_set_target_ats(struct nfc_target *target, struct nci_dev *ndev)
++{
++	if (ndev->target_ats_len > 0) {
++		target->ats_len = ndev->target_ats_len;
++		memcpy(target->ats, ndev->target_ats, target->ats_len);
++	}
++}
++
+ static int nci_set_local_general_bytes(struct nfc_dev *nfc_dev)
+ {
+ 	struct nci_dev *ndev = nfc_get_drvdata(nfc_dev);
+@@ -939,8 +947,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 				 msecs_to_jiffies(NCI_RF_DISC_SELECT_TIMEOUT));
+ 	}
+ 
+-	if (!rc)
++	if (!rc) {
+ 		ndev->target_active_prot = protocol;
++		if (protocol == NFC_PROTO_ISO14443)
++			nci_set_target_ats(target, ndev);
++	}
+ 
+ 	return rc;
+ }
+diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
+index 994a0a1efb58..a818eff27e6b 100644
+--- a/net/nfc/nci/ntf.c
++++ b/net/nfc/nci/ntf.c
+@@ -402,7 +402,7 @@ static int nci_extract_activation_params_iso_dep(struct nci_dev *ndev,
+ 	switch (ntf->activation_rf_tech_and_mode) {
+ 	case NCI_NFC_A_PASSIVE_POLL_MODE:
+ 		nfca_poll = &ntf->activation_params.nfca_poll_iso_dep;
+-		nfca_poll->rats_res_len = min_t(__u8, *data++, 20);
++		nfca_poll->rats_res_len = min_t(__u8, *data++, NFC_ATS_MAXSIZE);
+ 		pr_debug("rats_res_len %d\n", nfca_poll->rats_res_len);
+ 		if (nfca_poll->rats_res_len > 0) {
+ 			memcpy(nfca_poll->rats_res,
+@@ -531,6 +531,28 @@ static int nci_store_general_bytes_nfc_dep(struct nci_dev *ndev,
+ 	return NCI_STATUS_OK;
+ }
+ 
++static int nci_store_ats_nfc_iso_dep(struct nci_dev *ndev,
++				     const struct nci_rf_intf_activated_ntf *ntf)
++{
++	ndev->target_ats_len = 0;
++
++	if (ntf->activation_params_len <= 0)
++		return NCI_STATUS_OK;
++
++	if (ntf->activation_params.nfca_poll_iso_dep.rats_res_len > NFC_ATS_MAXSIZE) {
++		pr_debug("ATS too long\n");
++		return NCI_STATUS_RF_PROTOCOL_ERROR;
++	}
++
++	if (ntf->activation_params.nfca_poll_iso_dep.rats_res_len > 0) {
++		ndev->target_ats_len = ntf->activation_params.nfca_poll_iso_dep.rats_res_len;
++		memcpy(ndev->target_ats, ntf->activation_params.nfca_poll_iso_dep.rats_res,
++		       ndev->target_ats_len);
++	}
++
++	return NCI_STATUS_OK;
++}
++
+ static void nci_rf_intf_activated_ntf_packet(struct nci_dev *ndev,
+ 					     const struct sk_buff *skb)
+ {
+@@ -660,6 +682,14 @@ static void nci_rf_intf_activated_ntf_packet(struct nci_dev *ndev,
+ 			if (err != NCI_STATUS_OK)
+ 				pr_err("unable to store general bytes\n");
+ 		}
++
++		/* store ATS to be reported later in nci_activate_target */
++		if (ntf.rf_interface == NCI_RF_INTERFACE_ISO_DEP &&
++		    ntf.activation_rf_tech_and_mode == NCI_NFC_A_PASSIVE_POLL_MODE) {
++			err = nci_store_ats_nfc_iso_dep(ndev, &ntf);
++			if (err != NCI_STATUS_OK)
++				pr_err("unable to store ATS\n");
++		}
+ 	}
+ 
+ 	if (!(ntf.activation_rf_tech_and_mode & NCI_RF_TECH_MODE_LISTEN_MASK)) {
+diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
+index dd2ce73a24fb..6a40b8d0350d 100644
+--- a/net/nfc/netlink.c
++++ b/net/nfc/netlink.c
+@@ -96,6 +96,11 @@ static int nfc_genl_send_target(struct sk_buff *msg, struct nfc_target *target,
+ 			goto nla_put_failure;
+ 	}
+ 
++	if (target->ats_len > 0 &&
++	    nla_put(msg, NFC_ATTR_TARGET_ATS, target->ats_len,
++		    target->ats))
++		goto nla_put_failure;
++
+ 	genlmsg_end(msg, hdr);
+ 	return 0;
+ 
 -- 
-2.40.1
+2.39.5
 
