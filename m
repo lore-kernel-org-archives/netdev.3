@@ -1,189 +1,126 @@
-Received: from mail.falix.de (mail.falix.de [37.120.163.83])
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A7317BEA4
-	for <netdev@vger.kernel.org>; Sun,  3 Nov 2024 16:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.120.163.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190ED185B7B
+	for <netdev@vger.kernel.org>; Sun,  3 Nov 2024 16:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730650694; cv=none; b=e8J5W7xD2Kx0ciC7q3eslpWOlxIknfA3/uZQZ401I2sdaZRUI6VxzA2Hrtz885VsCtBKLExi4L9+9nq8vxxFq7dEV6T6O2iur+4/02ND6tuCq3sa/BC4OTYySLgrq0OgI/ZTMzMWINj/YGa4ZZBF6NypihU9IutzsUzwmopVpjs=
+	t=1730651159; cv=none; b=t7eIp3zGR0wxIY90B7xM4DWATB6Gb/JRq2bJXB3IafYW1EdYx/EIe7N2ZuW62hBE+4liP6qWIuL4+KveM0FH1CRlPTbl/zPY2UZ8gMKZ3g3xTVGB5we7WJfmhRGG0t4T4irhXIaZHVJj7dyVMAG3+qfwXSUPh3+rlrVnjpilQzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730650694; c=relaxed/simple;
-	bh=nQYn6gFGl9woROxHe/Gi2jSjHjIlAquR2tgY5Nvt2ZY=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=pu8TSTrXKIgdS27fLGNKmQD/WN5sEIFcoDN441RvgX0daBuKCdWe4EdxCCvOh5USAa/Lkr6edgEDLQILdRr5pqOkE0zrIB/GJSNEp+mN4COJckJOKeU4uMHLRMo1aFhN19swCAcroiXvW7wsdN+VtPE6MFUjc36P3ll1Y8W+9e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=falix.de; spf=pass smtp.mailfrom=falix.de; dkim=pass (2048-bit key) header.d=falix.de header.i=@falix.de header.b=H8lb6lno; arc=none smtp.client-ip=37.120.163.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=falix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=falix.de
+	s=arc-20240116; t=1730651159; c=relaxed/simple;
+	bh=YwTQ9j5iQttLa6olf1aekppLGlucGpR666jUAjtNtRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JUnAOM+9k4hFgD4xBR0HYgGLMmX2mjMxnRJ8b1jL7eQM88Wq00lLRW6mTy92SJA6BwXF8IWHZqHTEd/YccyWVenl0O7DVR/wBCKHd/y9Gfxs9I8LsEeXFc5KVhGqrHh/bKZsQ5QAv/tvy3+9amu9vN4SuaZGpRKy/2rLh3ut4qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g7tWqc8h; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=falix.de header.i=@falix.de header.b="H8lb6lno"
-Received: from [192.168.221.20] (ppp-82-135-68-177.dynamic.mnet-online.de [82.135.68.177])
-	by mail.falix.de (Postfix) with ESMTPSA id 238DF6123A;
-	Sun, 03 Nov 2024 17:08:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=falix.de;
-	s=trustedmail; t=1730650103;
-	bh=nQYn6gFGl9woROxHe/Gi2jSjHjIlAquR2tgY5Nvt2ZY=;
-	h=Subject:From:To:Cc:Date;
-	b=H8lb6lnoOby4fu+9cIVktlR7mflljQqvE6w5e2OKSXl6GhlKp/0sj9+2OdMPi9Dvu
-	 9+xc9z4gP8h68EarqEXb0A23UbNJ8FvgiftEPq6HRPHzD/CEnCoTRZcC+mTEWDeS6g
-	 3gvFsiJSA4HYkLbmFhPRENYLIFRXFFuYuC/2KUn/slae8EI9wocFL0sDWZR3H00p+s
-	 LoE8naXNlGVgIUY3ywXswzm8mtcYgReDUtKTYbfnB1XIawZI9Rl2+XlFDNKuUJcQwm
-	 oJLWNx58uS3JK6ORLkxxVXAfbX700lXWkidMNKoBBpxWIi0t1rqRQHvvIl0i72DSlG
-	 Sw5jkWNTsY6zA==
-Message-ID: <ff6d9c69c2a09de5baf2f01f25e3faf487278dbb.camel@falix.de>
-Subject: r8169: regression in connection speed with kernels 6.2+ (interrupt
- coalescing)
-From: Felix Braun <f.braun@falix.de>
-To: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com
-Cc: netdev@vger.kernel.org
-Date: Sun, 03 Nov 2024 17:08:22 +0100
-Organization: Vectrix -- Legal Dept.
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g7tWqc8h"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id DA7031140081;
+	Sun,  3 Nov 2024 11:25:55 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Sun, 03 Nov 2024 11:25:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1730651155; x=1730737555; bh=TXhBYn6xKl1Q3WRdH+tX/2Z2Q1++GW8TghT
+	3LA7EcWo=; b=g7tWqc8hEXXg1k9BJOFdOb+Sjg2Nz9dkGyXmyrtMOkLr5ulR0fQ
+	O99Td5PJ8W0lxYpMmP/QsUiEN7G3frCqE8KLP4ZEz6FPdKdaBVgNMYHLNHaL71Tm
+	6vNZw82xZ9cKXLlY2pIiPAxfCuyOU+Zx3hkAPumYsBTUgnb8x0nud3wMIcNi8Msd
+	huvImvJ0qvOc58sBG/trnQvJQL0470CJ3eNy00li9jpzjIFvQ46bVAmoZcOhKfMW
+	UD8nOX/yfyoJHs+7bBBfLeINuxhxQem8NZzER4SxErNlBYSGgroxkbm81CwhDBxc
+	XBBMWp2PtsxLV5F9OSIZYWjF4w5sP+QfDRA==
+X-ME-Sender: <xms:EqQnZ7kY-_ATLRam0TRrwXCPxCQVYhkKYLVcrjLBSH1JFGHPENHqUg>
+    <xme:EqQnZ-3YobNv_4wRZctmd_P2gKEF1y-tCJaKs5rZbyXRvIMVMsEBxIZYlH1-ma9_R
+    M7z_XhEu_9B5bk>
+X-ME-Received: <xmr:EqQnZxqjqlyEvTVA7KyvtEu5f_qvrAexDUQlOPM-P-P12jz6NDKkkn0Atp41>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdelgedgkeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdroh
+    hrgheqnecuggftrfgrthhtvghrnhephefhtdejvdeiffefudduvdffgeetieeigeeugfdu
+    ffdvffdtfeehieejtdfhjeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhes
+    ihguohhstghhrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopegrnhhnrggvmhgvshgvnhihihhrihesghhmrghilhdrtghomhdprhgt
+    phhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hfvghjvghssehinhhfrdgvlhhtvgdrhhhupdhrtghpthhtohepvgguuhhmrgiivghtsehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopeifihhllhgv
+    mhguvggsrhhuihhjnhdrkhgvrhhnvghlsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:EqQnZzk6DPCFZdnvgTCKBv4asuqX3qmdXwAkPHUYFBmcKKPvTrVNXQ>
+    <xmx:EqQnZ53EU4hbFO_egtG-cyVP8Mp2XcDQQSmAMdXwN1X54CKUfKtHTw>
+    <xmx:EqQnZyth8jW49lWQ4ryR022hfF3aR56kEyuxE100axrTWwxrQ8xuFw>
+    <xmx:EqQnZ9WSwQvaL9ChhMe18VoslVWRIeCykr1bD3BokKy2b-b_m8kS1g>
+    <xmx:E6QnZzoeNGVyrDWptu0RUzKfsqkh-F2jYK1v7kQjMT6TUUZkxHiMvAQ5>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 3 Nov 2024 11:25:54 -0500 (EST)
+Date: Sun, 3 Nov 2024 18:25:52 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Anna Emese Nyiri <annaemesenyiri@gmail.com>
+Cc: netdev@vger.kernel.org, fejes@inf.elte.hu, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, willemdebruijn.kernel@gmail.com
+Subject: Re: [PATCH net-next v2 0/2] support SO_PRIORITY cmsg
+Message-ID: <ZyekEJHEzJnyX6_j@shredder>
+References: <20241102125136.5030-1-annaemesenyiri@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241102125136.5030-1-annaemesenyiri@gmail.com>
 
-Hi there,
+On Sat, Nov 02, 2024 at 01:51:34PM +0100, Anna Emese Nyiri wrote:
+> The changes introduce a new helper function,
+> `sk_set_prio_allowed`, which centralizes the logic for validating
+> priority settings. This series adds support for the `SO_PRIORITY`
+> control message, allowing user-space applications to set socket
+> priority via control messages (cmsg).
+> 
+> Patch Overview:
+> Patch 1/2: Introduces `sk_set_prio_allowed` helper function.
+> Patch 2/2: Implements support for setting `SO_PRIORITY` via control
+> messages.
+> 
+> v2:
+> - Suggested by Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+>   introduce "sk_set_prio_allowed" helper to check priority setting
+>   capability
+> - drop new fields and change sockcm_cookie::priority from "char" to
+>   "u32" to match with sk_buff::priority
+> - cork->tos value check before priority setting
+>   moved from __ip_make_skb() to ip_setup_cork()
+> - rebased on net-next
+> 
+> v1:
+> https://lore.kernel.org/all/20241029144142.31382-1-annaemesenyiri@gmail.com/
+> 
+> Anna Emese Nyiri (2):
+>   Introduce sk_set_prio_allowed helper function
+>   support SO_PRIORITY cmsg
+> 
+>  include/net/inet_sock.h |  2 +-
+>  include/net/ip.h        |  3 ++-
+>  include/net/sock.h      |  4 +++-
+>  net/can/raw.c           |  2 +-
+>  net/core/sock.c         | 19 ++++++++++++++++---
+>  net/ipv4/ip_output.c    |  7 +++++--
+>  net/ipv4/raw.c          |  2 +-
+>  net/ipv6/ip6_output.c   |  3 ++-
+>  net/ipv6/raw.c          |  2 +-
+>  net/packet/af_packet.c  |  2 +-
+>  10 files changed, 33 insertions(+), 13 deletions(-)
 
-commit 42f66a44d83715bef810a543dfd66008b883a7a5 to Linus' kernel tree ("r81=
-69: enable GRO software interrupt coalescing per default") introduces a spe=
-ed regression on my hardware. With that commit applied I get net throughput=
- of 10.5 MB/s, without that commit I get around 100 MB/s on my setup.
-
-I've verified that just commenting out the one line in r8169_main.c
-
-```
---- a/drivers/net/ethernet/realtek/r8169_main.c =20
-+++ b/drivers/net/ethernet/realtek/r8169_main.c =20
-@@ -5505,6 +5505,8 @@ static int rtl_init_one(struct pci_dev *pdev, const s=
-truct pci_device_id *ent) =20
-dev->hw_features |=3D NETIF_F_RXALL; =20
-dev->hw_features |=3D NETIF_F_RXFCS;
-
-dev->pcpu_stat_type =3D NETDEV_PCPU_STAT_TSTATS;
-
-- netdev_sw_irq_coalesce_default_on(dev); =20
-+ //netdev_sq_irq_coalesc_default_on(dev);
-
-/* configure chip for default features */ =20
-rtl8169_set_features(dev, dev->features);
-```
-
-restores the speed with kernel 6.11.6. Is there perhaps a more elegant way =
-to fix this regression for other people too?
-
-Regards =20
-Felix
-
-This is my lspci -vvxx output:
-
-```
-03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8=
-211/8411 PCI Express Gigabit Ethernet Controller (rev 15)
-DeviceName: Onboard - RTK Ethernet
-Subsystem: ASRock Incorporation Motherboard (one of many)
-Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Steppin=
-g- SERR- FastB2B- DisINTx+
-Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <TAbort- <=
-MAbort- >SERR- <PERR- INTx-
-Latency: 0, Cache Line Size: 64 bytes
-Interrupt: pin A routed to IRQ 20
-IOMMU group: 11
-Region 0: I/O ports at e000 [size=3D256]
-Region 2: Memory at a1204000 (64-bit, non-prefetchable) [size=3D4K]
-Region 4: Memory at a1200000 (64-bit, non-prefetchable) [size=3D16K]
-Capabilities: [40] Power Management version 3
-Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+,D2+,D3hot+,D3col=
-d+)
-Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-Capabilities: [50] MSI: Enable- Count=3D1/1 Maskable- 64bit+
-Address: 0000000000000000  Data: 0000
-Capabilities: [70] Express (v2) Endpoint, IntMsgNum 1
-DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <512ns, L1 <64us
-ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- SlotPowerLimit 10W TEE-IO-
-DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop-
-MaxPayload 128 bytes, MaxReadReq 4096 bytes
-DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ TransPend-
-LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s unl=
-imited, L1 <64us
-ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
-LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk+
-ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-LnkSta: Speed 2.5GT/s, Width x1
-TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-DevCap2: Completion Timeout: Range ABCD, TimeoutDis+ NROPrPrP- LTR+
-10BitTagComp- 10BitTagReq- OBFF Via message/WAKE#, ExtFmt- EETLPPrefix-
-EmergencyPowerReduction Not Supported, EmergencyPowerReductionInit-
-FRS- TPHComp- ExtTPHComp-
-AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-AtomicOpsCtl: ReqEn-
-IDOReq- IDOCompl- LTR+ EmergencyPowerReductionReq-
-10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
-LnkCap2: Supported Link Speeds: 2.5GT/s, Crosslink- Retimer- 2Retimers- DRS=
--
-LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
-Transmit Margin: Normal Operating Range, EnterModifiedCompliance- Complianc=
-eSOS-
-Compliance Preset/De-emphasis: -6dB de-emphasis, 0dB preshoot
-LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete- Equalizatio=
-nPhase1-
-EqualizationPhase2- EqualizationPhase3- LinkEqualizationRequest-
-Retimer- 2Retimers- CrosslinkRes: unsupported
-Capabilities: [b0] MSI-X: Enable+ Count=3D4 Masked-
-Vector table: BAR=3D4 offset=3D00000000
-PBA: BAR=3D4 offset=3D00000800
-Capabilities: [100 v2] Advanced Error Reporting
-UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP-
-ECRC- UnsupReq- ACSViol- UncorrIntErr- BlockedTLP- AtomicOpBlocked- TLPBloc=
-kedErr-
-PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP- PCRC_CHECK- TLPXlatB=
-locked-
-UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP-
-ECRC- UnsupReq+ ACSViol- UncorrIntErr+ BlockedTLP- AtomicOpBlocked- TLPBloc=
-kedErr-
-PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP- PCRC_CHECK- TLPXlatB=
-locked-
-UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+
-ECRC- UnsupReq- ACSViol- UncorrIntErr+ BlockedTLP- AtomicOpBlocked- TLPBloc=
-kedErr-
-PoisonTLPBlocked- DMWrReqBlocked- IDECheck- MisIDETLP- PCRC_CHECK- TLPXlatB=
-locked-
-CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr- CorrIntE=
-rr- HeaderOF-
-CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- AdvNonFatalErr+ CorrIntE=
-rr+ HeaderOF-
-AERCap: First Error Pointer: 00, ECRCGenCap+ ECRCGenEn- ECRCChkCap+ ECRCChk=
-En-
-MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-HeaderLog: 00000000 00000000 00000000 00000000
-Capabilities: [140 v1] Virtual Channel
-Caps:   LPEVC=3D0 RefClk=3D100ns PATEntryBits=3D1
-Arb:    Fixed- WRR32- WRR64- WRR128-
-Ctrl:   ArbSelect=3DFixed
-Status: InProgress-
-VC0:    Caps:   PATOffset=3D00 MaxTimeSlots=3D1 RejSnoopTrans-
-Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR256-
-Ctrl:   Enable+ ID=3D0 ArbSelect=3DFixed TC/VC=3Dff
-Status: NegoPending- InProgress-
-Capabilities: [160 v1] Device Serial Number 39-79-71-c2-85-70-00-00
-Capabilities: [170 v1] Latency Tolerance Reporting
-Max snoop latency: 3145728ns
-Max no snoop latency: 3145728ns
-Capabilities: [178 v1] L1 PM Substates
-L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+ L1_PM_Substates+
-PortCommonModeRestoreTime=3D150us PortTPowerOnTime=3D150us
-L1SubCtl1: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+ ASPM_L1.1+
-T_CommonMode=3D0us LTR1.2_Threshold=3D163840ns
-L1SubCtl2: T_PwrOn=3D150us
-Kernel driver in use: r8169
-Kernel modules: r8169
-00: ec 10 68 81 07 04 10 00 15 00 00 02 10 00 00 00
-10: 01 e0 00 00 00 00 00 00 04 40 20 a1 00 00 00 00
-20: 04 00 20 a1 00 00 00 00 00 00 00 00 49 18 68 81
-30: 00 00 00 00 40 00 00 00 00 00 00 00 ff 01 00 00
-```
+Please consider adding a selftest for this feature. Willem already
+extended tools/testing/selftests/net/cmsg_sender.c so that it could be
+used to set SO_PRIORITY via setsockopt. You can extend it to set
+SO_PRIORITY via cmsg and then use it in a test like
+tools/testing/selftests/net/cmsg_so_mark.sh is doing for SO_MARK.
