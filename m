@@ -1,196 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBA11FDFBD
-	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 22:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE23A1ABEBA;
+	Mon,  4 Nov 2024 23:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730759809; cv=none; b=K5HVAu/agTVPKiBz1OiD0kAmmam7OO5nbIWLK9+Sk754fWM8lNcI8TUwlEA3uoAxSiya/t3633eF6NhnMEXgSc7YPWA2nnxpDSeUczX0ZS9KRpuSXHlSoKCCEA8h4nhL8pWdZ50GMz31y4FplGtgGoOrkWInwVzti8A7LeBsEqc=
+	t=1730763166; cv=none; b=UW3WwEDlpMmDV1MEsEeOn3KBBbun4TbPIx1gunsPB4+RIbNxk38NMlk08Uk1GV3Tk9gNIhmySky0vsZTXjAHRYRYVb21gxK7+F1CmSCrjl8v4ewPbpxSDffnw/yDXKFtgZl4iMJcBoJWxNymvSgWW/TXaxe3o3DPzSTM/x6ccFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730759809; c=relaxed/simple;
-	bh=PakvhkEE6JEvuCwa4DDvrWq7PrbhGi7gRwSzf85AW18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBt67WKgb+ob0ccebYnOaPatMJuW8Egk0quKsBEI1rwWrMw0kNA6SU4/7BBkwA+M8QNi9fjCZ5dP3KQ3GRylIu8PCN09UQNZG2yN2FZ15rvP+4OtRWinnFhBmf65Ad3RdN37M4TfOE6N2DRT1DpHFHKeEyCMiYlaDA/UDqBgVdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CZMA1fTn; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730763166; c=relaxed/simple;
+	bh=afPelZ8VyWWH0OiQ+4/wNEh8CyXxinnqLvrJ2XbsNjQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jB4XWr+Yam9E09Z0ESwHRFD4+h5xgtRV6inQGqv5oHjcdCDB2yUXcYy7D1NmaseTpHo0VBVvLiF0PRJK2J6Djn/kZHgJyWAsWI5AmSlZgvl31FpSz55dy6g4OFzl6E9G1P+uVwaoc1Tlef4YZDRownxg6S1nMWv9Iq7/ib2wDF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFo1vkE5; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CZMA1fTn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730759807; x=1762295807;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PakvhkEE6JEvuCwa4DDvrWq7PrbhGi7gRwSzf85AW18=;
-  b=CZMA1fTnApMcbW3jidaYRW1zYTZTbi+7PoL33rkxF7C2Olp5QPdmZNCU
-   HaKEvlnWGNez++axnT9IzFobXgnTJfnGcwL7oiJwNKXCClgVY7SRxtNd8
-   zWybBT5o+0qdUguj77DoACWsYusOem4bLyf9Jx/lTePbnYJoUcstOTb+B
-   gMVY0TWm4xp1s73ojIM8AyR5dZ51kFjZ/C0aKMF7QOOsqwO9fvOLQNMVZ
-   NKAtZoqQ65mdocDJConmY4Z4y4HWdXFokKBz/G1avK8o9EAOJq91tIAW+
-   mMOc/4nsPZr3cNlncX8jS4npx+Q+7wJLXLTbq0gG7+iNck4aRqdgItbf7
-   Q==;
-X-CSE-ConnectionGUID: 1No4192fSHGouqnpXRU/WA==
-X-CSE-MsgGUID: /giTx7luRXC7Q1/5JVNF1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="29901663"
-X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
-   d="scan'208";a="29901663"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 14:36:45 -0800
-X-CSE-ConnectionGUID: pGxhx5McSAqjGjp17WA97w==
-X-CSE-MsgGUID: B5i9R5ZYQpmfu5R5the9/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
-   d="scan'208";a="83316985"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa006.fm.intel.com with ESMTP; 04 Nov 2024 14:36:44 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	anthony.l.nguyen@intel.com,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>
-Subject: [PATCH net 5/6] i40e: fix race condition by adding filter's intermediate sync state
-Date: Mon,  4 Nov 2024 14:36:33 -0800
-Message-ID: <20241104223639.2801097-6-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
-In-Reply-To: <20241104223639.2801097-1-anthony.l.nguyen@intel.com>
-References: <20241104223639.2801097-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFo1vkE5"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5ceb75f9631so4757719a12.0;
+        Mon, 04 Nov 2024 15:32:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730763163; x=1731367963; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9in4eV8N1cjsDiDa/ULRRnTwuLUg5ORmTZvy/FTnXI=;
+        b=BFo1vkE5rdQNOPIRrzy6hB8htvt8VBBCrvwIUiGk9fzrmJL5qlUChChIZYWe+Xs6av
+         Q1pfxZUPddtAVCWNOSSAVL7zu460O4YQfdY4E2MIAHHs0QeCMnHSv4U9oPP7zSZHNaFN
+         vUtzHrcWt8Op5whIaUbiXYQY+H/IMltHwzCL0BqxErHiP46Y1Z2c4o595/qe0TAqIUr5
+         v5tbGeRmygQ9YS45wbBolC1qexGdAx6qpOMorCeGzotR41oF0J4Xoprd+CdPvDtxyYS9
+         Nw1AHp+29A+qV/bgz/SC86RHgmqD+js9y2IOxlduQfvLdisGzVWScKJcXQrI8cbw6QDl
+         Fspg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730763163; x=1731367963;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y9in4eV8N1cjsDiDa/ULRRnTwuLUg5ORmTZvy/FTnXI=;
+        b=YfkrV1YyrHjrOMQTbB69PLNlRCcjiYnJXh1vEj6X79/LJMHhwJt+gDluC/HuD2ooXR
+         sMv32mqxesZwCtFxPS0l/LFEQt591owArtUh0eGLowOxRTzpvCbQxJq3j+ssQuc3s9By
+         1Y17QGdeyIuJqkGqCW0lecb2oJdUJ15VZ+IKXfZvHuT6EhyXtvQczDy7Pde9XNY2s173
+         tpZi7Mt4Z0uW7wF5vRIeuaZxC1LCt8bPiqMvrv2BAuNTM0jMor9I1XbZMe502f1Uy5Pm
+         HaF9eBKpoPH9iy6npBxjNxGoY/mo+IExv2BUoHCanMAA0snjRXQFVAH+1c1Y+z0xF0uy
+         0Ncw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8ReWC6udTUYGqnSG/YTUU6Ocf1G3bv8A+dYlOdGn3bG5NSLuoqZ+lkvlTUi2ji80gXfj0i91o@vger.kernel.org, AJvYcCXXbxVnaqtr72FZt9QWgYPQxAq+ASPoGLzyuGLuo+kDtaQraJAsFxF/03fJ7Pptra8yPIaSxVvdU9oGzCw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg4OscdH5XryKVnpgFgEW+VDSaHf3Ov/l1j/1wFkfZZzVoC6sP
+	E7bKBtbz9Z5Dxbp1GURkWvpwqL4qtNPZKyGubuOPhuVWi1Yx5yNUZLFAoQJ9Xo6tKNrOFpo/OqA
+	EAKPnguz9vB7pQFVfl9ORkpsqmYA=
+X-Google-Smtp-Source: AGHT+IGLp85RzkJpg9pQBMxfkYCOE4MPLzw6hNSqKUAeqsqgJVrVLYWKANQHz1xBPLmA5/U8sau1iyxAeJigPjsGRR4=
+X-Received: by 2002:a05:6402:268e:b0:5ce:d53e:f258 with SMTP id
+ 4fb4d7f45d1cf-5ced53ef5acmr4655851a12.26.1730763162841; Mon, 04 Nov 2024
+ 15:32:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241030132352.154488-1-islituo@gmail.com> <20241104160713.GE2118587@kernel.org>
+In-Reply-To: <20241104160713.GE2118587@kernel.org>
+From: Tuo Li <islituo@gmail.com>
+Date: Tue, 5 Nov 2024 07:32:31 +0800
+Message-ID: <CADm8TemexVr3gcuhKJ9M4PLDg2bF85nhT17a8J1uf_qqj_fKiQ@mail.gmail.com>
+Subject: Re: [PATCH] chcr_ktls: fix a possible null-pointer dereference in chcr_ktls_dev_add()
+To: Simon Horman <horms@kernel.org>
+Cc: ayush.sawal@chelsio.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	almasrymina@google.com, dtatulea@nvidia.com, jacob.e.keller@intel.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, baijiaju1990@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Hi Simon,
 
-Fix a race condition in the i40e driver that leads to MAC/VLAN filters
-becoming corrupted and leaking. Address the issue that occurs under
-heavy load when multiple threads are concurrently modifying MAC/VLAN
-filters by setting mac and port VLAN.
+Thanks for your reply! It is very helpful.
+Any further feedback will be appreciated.
 
-1. Thread T0 allocates a filter in i40e_add_filter() within
-        i40e_ndo_set_vf_port_vlan().
-2. Thread T1 concurrently frees the filter in __i40e_del_filter() within
-        i40e_ndo_set_vf_mac().
-3. Subsequently, i40e_service_task() calls i40e_sync_vsi_filters(), which
-        refers to the already freed filter memory, causing corruption.
+Thank you very much!
 
-Reproduction steps:
-1. Spawn multiple VFs.
-2. Apply a concurrent heavy load by running parallel operations to change
-        MAC addresses on the VFs and change port VLANs on the host.
-3. Observe errors in dmesg:
-"Error I40E_AQ_RC_ENOSPC adding RX filters on VF XX,
-	please set promiscuous on manually for VF XX".
+Sincerely,
+Tuo Li
 
-Exact code for stable reproduction Intel can't open-source now.
 
-The fix involves implementing a new intermediate filter state,
-I40E_FILTER_NEW_SYNC, for the time when a filter is on a tmp_add_list.
-These filters cannot be deleted from the hash list directly but
-must be removed using the full process.
 
-Fixes: 278e7d0b9d68 ("i40e: store MAC/VLAN filters in a hash with the MAC Address as key")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Tested-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/i40e/i40e.h         |  1 +
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c |  1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c    | 12 ++++++++++--
- 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 2089a0e172bf..d4255c2706fa 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -755,6 +755,7 @@ enum i40e_filter_state {
- 	I40E_FILTER_ACTIVE,		/* Added to switch by FW */
- 	I40E_FILTER_FAILED,		/* Rejected by FW */
- 	I40E_FILTER_REMOVE,		/* To be removed */
-+	I40E_FILTER_NEW_SYNC,		/* New, not sent yet, is in i40e_sync_vsi_filters() */
- /* There is no 'removed' state; the filter struct is freed */
- };
- struct i40e_mac_filter {
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index abf624d770e6..208c2f0857b6 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -89,6 +89,7 @@ static char *i40e_filter_state_string[] = {
- 	"ACTIVE",
- 	"FAILED",
- 	"REMOVE",
-+	"NEW_SYNC",
- };
- 
- /**
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 25295ae370b2..55fb362eb508 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -1255,6 +1255,7 @@ int i40e_count_filters(struct i40e_vsi *vsi)
- 
- 	hash_for_each_safe(vsi->mac_filter_hash, bkt, h, f, hlist) {
- 		if (f->state == I40E_FILTER_NEW ||
-+		    f->state == I40E_FILTER_NEW_SYNC ||
- 		    f->state == I40E_FILTER_ACTIVE)
- 			++cnt;
- 	}
-@@ -1441,6 +1442,8 @@ static int i40e_correct_mac_vlan_filters(struct i40e_vsi *vsi,
- 
- 			new->f = add_head;
- 			new->state = add_head->state;
-+			if (add_head->state == I40E_FILTER_NEW)
-+				add_head->state = I40E_FILTER_NEW_SYNC;
- 
- 			/* Add the new filter to the tmp list */
- 			hlist_add_head(&new->hlist, tmp_add_list);
-@@ -1550,6 +1553,8 @@ static int i40e_correct_vf_mac_vlan_filters(struct i40e_vsi *vsi,
- 				return -ENOMEM;
- 			new_mac->f = add_head;
- 			new_mac->state = add_head->state;
-+			if (add_head->state == I40E_FILTER_NEW)
-+				add_head->state = I40E_FILTER_NEW_SYNC;
- 
- 			/* Add the new filter to the tmp list */
- 			hlist_add_head(&new_mac->hlist, tmp_add_list);
-@@ -2437,7 +2442,8 @@ static int
- i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
- 			  struct i40e_mac_filter *f)
- {
--	bool enable = f->state == I40E_FILTER_NEW;
-+	bool enable = f->state == I40E_FILTER_NEW ||
-+		      f->state == I40E_FILTER_NEW_SYNC;
- 	struct i40e_hw *hw = &vsi->back->hw;
- 	int aq_ret;
- 
-@@ -2611,6 +2617,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 
- 				/* Add it to the hash list */
- 				hlist_add_head(&new->hlist, &tmp_add_list);
-+				f->state = I40E_FILTER_NEW_SYNC;
- 			}
- 
- 			/* Count the number of active (current and new) VLAN
-@@ -2762,7 +2769,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 		spin_lock_bh(&vsi->mac_filter_hash_lock);
- 		hlist_for_each_entry_safe(new, h, &tmp_add_list, hlist) {
- 			/* Only update the state if we're still NEW */
--			if (new->f->state == I40E_FILTER_NEW)
-+			if (new->f->state == I40E_FILTER_NEW ||
-+			    new->f->state == I40E_FILTER_NEW_SYNC)
- 				new->f->state = new->state;
- 			hlist_del(&new->hlist);
- 			netdev_hw_addr_refcnt(new->f, vsi->netdev, -1);
--- 
-2.42.0
-
+On 2024/11/5 0:07, Simon Horman wrote:
+> On Thu, Oct 31, 2024 at 12:23:52AM +1100, Tuo Li wrote:
+>> There is a possible null-pointer dereference related to the wait-completion
+>> synchronization mechanism in the function chcr_ktls_dev_add().
+>>
+>> Consider the following execution scenario:
+>>
+>>   chcr_ktls_cpl_act_open_rpl()   //641
+>>     u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;   //686
+>>     if (u_ctx) {  //687
+>>     complete(&tx_info->completion);  //704
+>>
+>> The variable u_ctx is checked by an if statement at Line 687, which means
+>> it can be NULL. Then, complete() is called at Line 704, which will wake
+>> up wait_for_completion_xxx().
+>>
+>> Consider the wait_for_completion_timeout() in chcr_ktls_dev_add():
+>>
+>>   chcr_ktls_dev_add()  //412
+>>     u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;  //432
+>>     wait_for_completion_timeout(&tx_info->completion, 30 * HZ); //551
+>>     xa_erase(&u_ctx->tid_list, tx_info->tid);  //580
+>>
+>> The variable u_ctx is dereferenced without being rechecked at Line 580
+>> after the wait_for_completion_timeout(), which can introduce a null-pointer
+>> dereference. Besides, the variable u_ctx is also checked at Line 442 in
+>> chcr_ktls_dev_add(), which indicates that u_ctx is likely to be NULL in
+>> some execution contexts.
+>>
+>> To fix this possible null-pointer dereference, a NULL check is put ahead of
+>> the call to xa_erase().
+>>
+>> This potential bug was discovered using an experimental static analysis
+>> tool developed by our team. The tool deduces complete() and
+>> wait_for_completion() pairs using alias analysis. It then applies data
+>> flow analysis to detect null-pointer dereferences across synchronization
+>> points.
+>>
+>> Fixes: 65e302a9bd57 ("cxgb4/ch_ktls: Clear resources when pf4 device is removed")
+>> Signed-off-by: Tuo Li <islituo@gmail.com>
+>
+> Hi Tuo Li,
+>
+> I do see that the checking of u_ctx is inconsistent,
+> but it is not clear to me that is because one part is too defensive
+> or, OTOH, there is a bug as you suggest. And I think that we need
+> more analysis to determine which case it is.
+>
+> Also, if it is the case that there is a bug as you suggest, after a quick
+> search, I think it also exists in at least one other place in this file.
+>
+> ...
