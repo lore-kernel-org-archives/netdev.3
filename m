@@ -1,168 +1,119 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13B31AC458;
-	Mon,  4 Nov 2024 09:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D7214B06C;
+	Mon,  4 Nov 2024 09:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730711333; cv=none; b=aQY3n2kUElqNdTtShYI5KJOWL+ukXHOkiKd/sXyx1RLBIQZ5c4UGyE/9tfjTUNWsEgOJ9W/QB6fDXwfePxV5c0kgF5WdaF2GaTU7a0iBpxIP5GzSZmHurtuntDQVjcjiAQMc6vOzeJUxOvAYZ38r7IxhFggfN70n7ZpLdWnnEAM=
+	t=1730711380; cv=none; b=qYnOL9iW/H+1xVTRcezTplTVi0vceOw8zgJo091rNfA8jTBiken1fyVfvgki3VYj2LY/Ffwx1nyDigBYvZbDjYTYdSTf9gTepyse/9IuS0xt62PawbHo7EVSuGup/wsIJ4XwyxW7dOT6y9vxk2tvk5UG0Y4kENDorHO7ZhAbzdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730711333; c=relaxed/simple;
-	bh=/cFKz9ZTZlBH6GEhxrrNisrcY1Sf2JsbEbTGGhMslJQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mKissKVZNbU89E2m++oURL3lGhna/2begdSXxFNVLia2/J1f4gECWcBj42ogKOVOh8Z7LG2BenWOKx8MXyaJgTbxGy8OipoxSouqjwC8rXFadZk8JynAjiWrMeLCRbBm+hhYK2obylnw4Kpq47gg7x112bPC/GLpU28vGOmFiVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qmESNuTL; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1730711380; c=relaxed/simple;
+	bh=p7qpbaqhbmJX447uOtF7GuF2HIEGbTdNCNoq7ws8jQA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Orp6jtk5Ykjn20aTLHgMQMIb73ZjWjbVwuHu8vSWnvuSEcO9QRNltDKrj3LNHbNZu5AWB+KizAkcjwb8rz/uU3P6ehPdQkuJO4SAj+oWsrhJNTYPTpQCwgArkdL2Z95keew1z7CmJgs7SSH+F87arKbNtbLfHfV3VvPlHaKDV38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uADB5x8t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qmESNuTL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1730711332; x=1762247332;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version;
-  bh=/cFKz9ZTZlBH6GEhxrrNisrcY1Sf2JsbEbTGGhMslJQ=;
-  b=qmESNuTLfTQDKy1ZOJZ8ePxS7Di1cMCuVGTXAZgYYWk5EIoOfq+NCuo4
-   GGsxufjDdGfMnJPVMpk6kk7RmwkNeJ3N4D2l848r6mwwe+m683967wUTa
-   njQ+WLZ7xxEj85mCu/c4Xi1pPLfCpqKUlrjzmjkd8tvP5nrvS6awj9/S4
-   85zExVxM8KYnrZpaScqexTBoN2mbyFDLLez9XtzW6Pb9hXkAWTSmA//Zz
-   8bu8eUgTAlpY1OhkjqK+tD3jr+a/q2i12VrWF2HWfZ/RE8y8cXYIb8cha
-   UTjuluxPbxbfngQ4EU7DCiOGVr3vyVILb0WhLAAxHNjC71uOw9+san7US
-   g==;
-X-CSE-ConnectionGUID: 76DCBbJASTWMbmfvXbdxcw==
-X-CSE-MsgGUID: hKMK2P+cSB+EcZckZ4PJgQ==
-X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="33830845"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Nov 2024 02:08:50 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 4 Nov 2024 02:08:19 -0700
-Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Mon, 4 Nov 2024 02:08:15 -0700
-From: Divya Koppera <divya.koppera@microchip.com>
-To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>
-Subject: [PATCH net-next 5/5] net: phy: microchip_t1 : Add initialization of ptp for lan887x
-Date: Mon, 4 Nov 2024 14:37:50 +0530
-Message-ID: <20241104090750.12942-6-divya.koppera@microchip.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20241104090750.12942-1-divya.koppera@microchip.com>
-References: <20241104090750.12942-1-divya.koppera@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uADB5x8t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB01EC4CED2;
+	Mon,  4 Nov 2024 09:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730711380;
+	bh=p7qpbaqhbmJX447uOtF7GuF2HIEGbTdNCNoq7ws8jQA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uADB5x8tNubvrip+tz64HMnF6pICxVFPqHkGz28LXDAB86sIIFBeVd47+F77Hx1hC
+	 NScSHbsDyOaMbNuTo5TVKN2EfWwWpLhFjEyKLDvf2u3ami6WLFoVLWCY5ihS25Rdpz
+	 WSfLaCh0PUa4EEMdLlDwrGOGDuJpbLuNH01vblr3R/HGYm/G9UD/blx6GmX4QHhWNG
+	 F6SMux90BWyBhsRrmkkX5Ihae5k9oVB8S/5LRtyv1D4FA5iDhcPjbG7p9KBV3T1wdx
+	 Ev+G9A00teqFDq1tv1q2jx1BH2VTv3hhxhr0UwrRUG5mDamA60PiRefOmg/dYbvrE5
+	 S6QH84RTsJmVA==
+Message-ID: <5ba048b4-f621-4dc5-8ba6-58d95e224fe1@kernel.org>
+Date: Mon, 4 Nov 2024 10:09:36 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1 1/1] nfc: mrvl: Don't use "proxy" headers
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241101083910.3362945-1-andriy.shevchenko@linux.intel.com>
+ <2dc98d01-6353-478c-b6ad-d6eac63c53da@kernel.org>
+ <ZyiA0Hx6z4hHqwe0@smile.fi.intel.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <ZyiA0Hx6z4hHqwe0@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add initialization of ptp for lan887x.
+On 04/11/2024 09:07, Andy Shevchenko wrote:
+> On Sat, Nov 02, 2024 at 09:00:04AM +0100, Krzysztof Kozlowski wrote:
+>> On 01/11/2024 09:39, Andy Shevchenko wrote:
+>>> Update header inclusions to follow IWYU (Include What You Use)
+>>> principle.
+> 
+> ...
+> 
+>>> -#include <linux/module.h>
+>>>  #include <linux/delay.h>
+>>> -#include <linux/of_gpio.h>
+>>> +#include <linux/device.h>
+>>> +#include <linux/err.h>
+>>> +#include <linux/module.h>
+>>> +#include <linux/of.h>
+>>> +#include <linux/printk.h>
+>>
+>> Do we really include printk?
+> 
+> Yes, we use it here.
 
-Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
----
- drivers/net/phy/microchip_t1.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+Yes, I know, I meant if this is actual practice and coding style,
+regardless of IWYU.
 
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 71d6050b2833..0a8b88d577c3 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -10,11 +10,15 @@
- #include <linux/ethtool.h>
- #include <linux/ethtool_netlink.h>
- #include <linux/bitfield.h>
-+#include "microchip_ptp.h"
- 
- #define PHY_ID_LAN87XX				0x0007c150
- #define PHY_ID_LAN937X				0x0007c180
- #define PHY_ID_LAN887X				0x0007c1f0
- 
-+#define MCHP_PTP_LTC_BASE_ADDR			0xe000
-+#define MCHP_PTP_PORT_BASE_ADDR			(MCHP_PTP_LTC_BASE_ADDR + 0x800)
-+
- /* External Register Control Register */
- #define LAN87XX_EXT_REG_CTL                     (0x14)
- #define LAN87XX_EXT_REG_CTL_RD_CTL              (0x1000)
-@@ -229,6 +233,7 @@
- 
- #define LAN887X_INT_STS				0xf000
- #define LAN887X_INT_MSK				0xf001
-+#define LAN887X_INT_MSK_P1588_MOD_INT_MSK	BIT(3)
- #define LAN887X_INT_MSK_T1_PHY_INT_MSK		BIT(2)
- #define LAN887X_INT_MSK_LINK_UP_MSK		BIT(1)
- #define LAN887X_INT_MSK_LINK_DOWN_MSK		BIT(0)
-@@ -319,6 +324,7 @@ struct lan887x_regwr_map {
- 
- struct lan887x_priv {
- 	u64 stats[ARRAY_SIZE(lan887x_hw_stats)];
-+	struct mchp_ptp_clock *clock;
- };
- 
- static int lan937x_dsp_workaround(struct phy_device *phydev, u16 ereg, u8 bank)
-@@ -1472,6 +1478,12 @@ static int lan887x_probe(struct phy_device *phydev)
- 
- 	phydev->priv = priv;
- 
-+	priv->clock = mchp_ptp_probe(phydev, MDIO_MMD_VEND1,
-+				     MCHP_PTP_LTC_BASE_ADDR,
-+				     MCHP_PTP_PORT_BASE_ADDR);
-+	if (IS_ERR(priv->clock))
-+		return PTR_ERR(priv->clock);
-+
- 	return lan887x_phy_setup(phydev);
- }
- 
-@@ -1518,6 +1530,7 @@ static void lan887x_get_strings(struct phy_device *phydev, u8 *data)
- 
- static int lan887x_config_intr(struct phy_device *phydev)
- {
-+	struct lan887x_priv *priv = phydev->priv;
- 	int rc;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-@@ -1538,11 +1551,18 @@ static int lan887x_config_intr(struct phy_device *phydev)
- 		rc = phy_read_mmd(phydev, MDIO_MMD_VEND1, LAN887X_INT_STS);
- 	}
- 
--	return rc < 0 ? rc : 0;
-+	if (rc < 0)
-+		return rc;
-+
-+	return mchp_config_ptp_intr(priv->clock, LAN887X_INT_MSK,
-+				    LAN887X_INT_MSK_P1588_MOD_INT_MSK,
-+				    (phydev->interrupts == PHY_INTERRUPT_ENABLED));
- }
- 
- static irqreturn_t lan887x_handle_interrupt(struct phy_device *phydev)
- {
-+	struct lan887x_priv *priv = phydev->priv;
-+	int rc = IRQ_NONE;
- 	int irq_status;
- 
- 	irq_status = phy_read_mmd(phydev, MDIO_MMD_VEND1, LAN887X_INT_STS);
-@@ -1553,10 +1573,13 @@ static irqreturn_t lan887x_handle_interrupt(struct phy_device *phydev)
- 
- 	if (irq_status & LAN887X_MX_CHIP_TOP_LINK_MSK) {
- 		phy_trigger_machine(phydev);
--		return IRQ_HANDLED;
-+		rc = IRQ_HANDLED;
- 	}
- 
--	return IRQ_NONE;
-+	if (irq_status & LAN887X_INT_MSK_P1588_MOD_INT_MSK)
-+		rc = mchp_ptp_handle_interrupt(priv->clock);
-+
-+	return rc;
- }
- 
- static int lan887x_cd_reset(struct phy_device *phydev,
--- 
-2.17.1
+Best regards,
+Krzysztof
 
