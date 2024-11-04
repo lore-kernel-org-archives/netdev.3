@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F4A1FDFAC;
-	Mon,  4 Nov 2024 22:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBFF1FE0ED
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 22:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730759808; cv=none; b=HCeb6o7fqFi0LOPAX3/TQZKHKiT6H4zNv7s6mYZ+A+sCzl7nNH5ZL93LeHejGLXhri3ygOSabP6UOBa2iMqnvn7N2TRMUJEnAakdwvJqxsMNgHsGORBPjQp4xT9iVDVdT7NsPx4olawXiUpOTxoZ+CZMJQScJxqlnUJRb1LnhUQ=
+	t=1730759809; cv=none; b=slU5rEVH+HCG+w7VPFZiUHcMuc7KCFTb8HmKYTb3ezl9SZeykczlXIFqVWcyWnQEksPycfhbNL8P+8fwxxbhjOsxiXvP/9LcXkXeXM0xr0/t41UOqwZ71kkwbM9uijHN50I1woHdkv/+U0thDijE8mvoZyXREC51inIAyXTsNKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730759808; c=relaxed/simple;
-	bh=s25n+lGXySaaa5BNfdNG6reGej0xd8Kh1yklFjZEAaI=;
+	s=arc-20240116; t=1730759809; c=relaxed/simple;
+	bh=EiKJf1+KTD45R2F3QILUk43HCVQm6LiEQvLOq8hnLTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyV+Us7bfj0vN5VEUxIYOL/0eVbwoC7a2UUMNauxbJEayVXYJkgLMDfRIZQF6Jyto8enaQfFZ4TAhZtGEK+wOe9U2axEMQxy1Kg6Eo7cQqpGyTf1fPDfEHkFXFCkZuPJDUHKld48sRYjjuhmWRE9CK2y4x77VEbVPrhDOJ2dyw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1iFxLiX; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=ag6TFXH30dwLO+j6YMMXFMjrDWkTpVHRaipfiDPpginwF305PStMVIKnqmRMk8hW8UhFlIO/aJnvnKxBus9uK/4p/d5j/HBUSuH1iInBcdDECFBURDuyJBLXZNxhHeONX1yXeLhBxVfLG3ik/docDM26Tb8pjdWHK0KvnuBu/bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lqzZua8G; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1iFxLiX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lqzZua8G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1730759807; x=1762295807;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=s25n+lGXySaaa5BNfdNG6reGej0xd8Kh1yklFjZEAaI=;
-  b=h1iFxLiX0PK1FIpLrTVDOtn180+xgCdZFiqEyjxxErmERP04pWHLtuo5
-   4ycY6RUhcKdLDNdddfBY/bJux2RiqJf8v+qw0YBafsFJB2j8blQOCGrbG
-   s6jmqfvynrHreR4bAk9SH7RJoqB6khCX2QDGEiBlntW3wK1wpnjgdgnF8
-   1G5ebgTEiviF/s7JhLZI8rlr/KACc3OJkwP/rfYOb7WWI88W8uN28Jv2a
-   6YFmG25Yz/0tA7Tr20ERqR3NOd616w8Fpq7dl/ILeDWWKMk0QIF9v8Hv4
-   K/vIcMOVZ4QG4psxlZxD9JhnwUPQbYWtQ3OiXD8LXW8cwAjhXKKDqBUax
-   w==;
-X-CSE-ConnectionGUID: lD3no64SRg2afAnk9wTtRg==
-X-CSE-MsgGUID: xkyg9h7mQE2Wc/rCo7smfw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="29901657"
+  bh=EiKJf1+KTD45R2F3QILUk43HCVQm6LiEQvLOq8hnLTk=;
+  b=lqzZua8GXEWs3gBRozRzdJMtRjzf2POAhB6gs8E3M3dhDyg2NPsWIZbK
+   Tnce1wcup00BuYMQhmGCa4nsVZz/ZukU2W4D4KB1OVkPVjBOREiT+njlu
+   /Jcz9flt6Yi3x372yy5Pouu0UIUOztj/0z6ygsFqWlZVY9civIpgRvxFW
+   ptBe9qpGNoPdmil/dSbjAPN1FXY5rdkm3/d8VIvPfvUlVSsi777m2XX1d
+   9A781tumFHXTfj2mKFyRYluDeRr67j0HireyOnkK736U56Rsxu7KjBulB
+   jR+tIN0650wGqQeb8NJW1LJSLiKsygSd4uywYBXkPfKCNtphSIhTc3ZsC
+   g==;
+X-CSE-ConnectionGUID: ku/adgSwSHCx55oBQjiiIw==
+X-CSE-MsgGUID: 65DavpZ9StWn1LlUKwcGxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="29901669"
 X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
-   d="scan'208";a="29901657"
+   d="scan'208";a="29901669"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 14:36:44 -0800
-X-CSE-ConnectionGUID: Bo7c++GbRVanT2tiItashg==
-X-CSE-MsgGUID: KeTma+axRRKBV2sP6pVO0A==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 14:36:45 -0800
+X-CSE-ConnectionGUID: I3zQZecoTqGYujXdghq0jA==
+X-CSE-MsgGUID: LThFhj4gSoGPZIlXFrhO5A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
-   d="scan'208";a="83316982"
+   d="scan'208";a="83316988"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa006.fm.intel.com with ESMTP; 04 Nov 2024 14:36:44 -0800
+  by fmviesa006.fm.intel.com with ESMTP; 04 Nov 2024 14:36:45 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,14 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
+Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
 	anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org,
+	dima.ruinskiy@intel.com,
 	horms@kernel.org,
-	Tarun K Singh <tarun.k.singh@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>
-Subject: [PATCH net 4/6] idpf: fix idpf_vc_core_init error path
-Date: Mon,  4 Nov 2024 14:36:32 -0800
-Message-ID: <20241104223639.2801097-5-anthony.l.nguyen@intel.com>
+	Avigail Dahan <avigailx.dahan@intel.com>
+Subject: [PATCH net 6/6] e1000e: Remove Meteor Lake SMBUS workarounds
+Date: Mon,  4 Nov 2024 14:36:34 -0800
+Message-ID: <20241104223639.2801097-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20241104223639.2801097-1-anthony.l.nguyen@intel.com>
 References: <20241104223639.2801097-1-anthony.l.nguyen@intel.com>
@@ -70,59 +69,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-In an event where the platform running the device control plane
-is rebooted, reset is detected on the driver. It releases
-all the resources and waits for the reset to complete. Once the
-reset is done, it tries to build the resources back. At this
-time if the device control plane is not yet started, then
-the driver timeouts on the virtchnl message and retries to
-establish the mailbox again.
+This is a partial revert to commit 76a0a3f9cc2f ("e1000e: fix force smbus
+during suspend flow"). That commit fixed a sporadic PHY access issue but
+introduced a regression in runtime suspend flows.
+The original issue on Meteor Lake systems was rare in terms of the
+reproduction rate and the number of the systems affected.
 
-In the retry flow, mailbox is deinitialized but the mailbox
-workqueue is still alive and polling for the mailbox message.
-This results in accessing the released control queue leading to
-null-ptr-deref. Fix it by unrolling the work queue cancellation
-and mailbox deinitialization in the reverse order which they got
-initialized.
+After the integration of commit 0a6ad4d9e169 ("e1000e: avoid failing the
+system during pm_suspend"), PHY access loss can no longer cause a
+system-level suspend failure. As it only occurs when the LAN cable is
+disconnected, and is recovered during system resume flow. Therefore, its
+functional impact is low, and the priority is given to stabilizing
+runtime suspend.
 
-Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
-Cc: stable@vger.kernel.org # 6.9+
-Reviewed-by: Tarun K Singh <tarun.k.singh@intel.com>
-Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Fixes: 76a0a3f9cc2f ("e1000e: fix force smbus during suspend flow")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c      | 1 +
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index c3848e10e7db..b4fbb99bfad2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1786,6 +1786,7 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
- 	 */
- 	err = idpf_vc_core_init(adapter);
- 	if (err) {
-+		cancel_delayed_work_sync(&adapter->mbx_task);
- 		idpf_deinit_dflt_mbx(adapter);
- 		goto unlock_mutex;
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index ce227b56cf72..2f9655cf5dd9 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -1205,12 +1205,10 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	if (ret_val)
+ 		goto out;
+ 
+-	if (hw->mac.type != e1000_pch_mtp) {
+-		ret_val = e1000e_force_smbus(hw);
+-		if (ret_val) {
+-			e_dbg("Failed to force SMBUS: %d\n", ret_val);
+-			goto release;
+-		}
++	ret_val = e1000e_force_smbus(hw);
++	if (ret_val) {
++		e_dbg("Failed to force SMBUS: %d\n", ret_val);
++		goto release;
  	}
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index ce217e274506..d46c95f91b0d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3063,7 +3063,6 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
- 	adapter->state = __IDPF_VER_CHECK;
- 	if (adapter->vcxn_mngr)
- 		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
--	idpf_deinit_dflt_mbx(adapter);
- 	set_bit(IDPF_HR_DRV_LOAD, adapter->flags);
- 	queue_delayed_work(adapter->vc_event_wq, &adapter->vc_event_task,
- 			   msecs_to_jiffies(task_delay));
+ 
+ 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
+@@ -1273,13 +1271,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
+ 	}
+ 
+ release:
+-	if (hw->mac.type == e1000_pch_mtp) {
+-		ret_val = e1000e_force_smbus(hw);
+-		if (ret_val)
+-			e_dbg("Failed to force SMBUS over MTL system: %d\n",
+-			      ret_val);
+-	}
+-
+ 	hw->phy.ops.release(hw);
+ out:
+ 	if (ret_val)
 -- 
 2.42.0
 
