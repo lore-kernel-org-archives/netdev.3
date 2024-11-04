@@ -1,33 +1,35 @@
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0419DF8B;
-	Mon,  4 Nov 2024 17:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFC11CD15;
+	Mon,  4 Nov 2024 17:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730739779; cv=none; b=sPzhISy9lwBHjMZ1Ogx2POETJ8QpdFhxrvtdYH2XRaSTPkTwblurSdSCvT1wBtrD9YtPwLtY37+HDQtd/Awna7lrSyrWWOwjn3LCxJ9rGpoa/TnklK+Z98Iy4/BuvtlrtKJ6WsZUY+B3L0pUEKbnUN12epRRiLrErGEggGVPwjM=
+	t=1730739781; cv=none; b=bFIONHQQmLOu9knSC5UgFlq6OpbNPjUWI2tn+WpsLt/dY/i7OwIBjcScnZdSe5WqPfQ13RyDD4IpJ3oyP8YNJvy8pwblzqw9drtqUPU7y6dHXAkEn3BKJKjMDE+qeYBQn3ZCUikBUWk0ybE+H5IppzuBgoBmfHMxFr8UnBXCPHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730739779; c=relaxed/simple;
-	bh=Wkd9xXMOcBoBgVklyUcoGvu9VG7On+8GRcrLnyYucc8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rieA94ZJOp0yIHR2/IP+gIwXrYaYiTAlkwG363tVlJKvhwNHyUJi9MXbb4kUkkyAEs8YVO/rjJbIlDZQKlcHZ6ehx8WWkGWUhE6S3VckIAgmsjl6E8JuhuUbTlyanIHe6DtEely2bznFYWM4Ewwhx1j2N011NXz8kjEcCmeCuwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L1WCxFcA; arc=none smtp.client-ip=217.70.183.195
+	s=arc-20240116; t=1730739781; c=relaxed/simple;
+	bh=h0ET1UOrL/Rv2bl967sK/TaJGPwryi3uBWVbrLf1dGo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nswOHJyDO2S3ek4/YTOVqUIbVARUzugsEjmwJ6ztBilr5uh6wvTZoEHquFGRGYcjCrM8yvLYu+2FR6OVY6Oha6hNqhHF5piz+8mlqvOuohobWGbps//kQJSvQzreCS2w1N9XoPy/DYdC1kgGs3jhl0etqDl7qN5QfWBLAnNJC0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=P/ylVa50; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L1WCxFcA"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F00EE60005;
-	Mon,  4 Nov 2024 17:02:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="P/ylVa50"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 67A0260003;
+	Mon,  4 Nov 2024 17:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730739775;
+	t=1730739778;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oI5s8asFDWE8LgW78P2vcd6xNJ1YtBMsqU066l+ZeeQ=;
-	b=L1WCxFcACUgATE0tjjEcTfaN33vuYwaz+WIrUnD5/83xyUJMVJiiyB7T/3nRmy9hOVxJ9B
-	hVo1p8HAmVCdN6DRXx/EDJ1s9G+aTazR3Us24cKKrUsndash/oD28BRxLPslTIBglFL78p
-	pk/Pr4sBRU07vYMX8orosVcWpBCfowNfyeLVrN88s6Mk39d2ka/lDkNQDWvYnodP2JlTIu
-	IN4c+TMmuAH0Lr/tUzdrCwKdJVA0zFfnTojebSCnxGYi01DT/k0+TyRBtzokMkRZW0WZjt
-	u+138GZMj6GP4WFGAdN3NqkdSZPDzgkUYErLjFsa8TWfu33HC8w8T/fGbP6KIA==
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/SPSBRQipSII7hd35ejo1FRCOBIsfi2Df67vBJxKStA=;
+	b=P/ylVa50a+BLdkHAgE7RjPYnPZ2RVCr9fPAnphAuuCYjYTKraswaYmWf0aDEbPzaYSLzrm
+	XsFpX1Fl0SPyWabDsuWUXldUhR8/MIbP3DTaB9Q1cabYNyxOLeKeOwLUmsbcIGXWH1xCwn
+	ZhK9tofPBP/dFq5TX9mBsdbyYNAdxVBZ6UczkW6HnnlFmRa56RJZeCPmZHH8qtUtt5RMLI
+	2/8BcVWO0ERuUpFB4OHm6NKrj+xIKToRjV5E1IVg2o4b46eFNHSDj6FzsHRoxBjsMI2EnA
+	SBX2dSDqxbVKNqRgRnDrd1L9+QB3y5PvPqI2tYPADfiNX8B1Qqsr5P8GHvc9+g==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jose Abreu <joabreu@synopsys.com>,
@@ -45,72 +47,54 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 0/9] Support external snapshots on dwmac1000
-Date: Mon,  4 Nov 2024 18:02:40 +0100
-Message-ID: <20241104170251.2202270-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 3/9] net: stmmac: Only update the auto-discovered PTP clock features
+Date: Mon,  4 Nov 2024 18:02:43 +0100
+Message-ID: <20241104170251.2202270-4-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241104170251.2202270-1-maxime.chevallier@bootlin.com>
+References: <20241104170251.2202270-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Hi,
+Some DWMAC variants such as dwmac1000 don't support discovering the
+number of output pps and auxiliary snapshots. Allow these parameters to
+be defined in default ptp_clock_info, and let them be updated only when
+the feature discovery yielded a result.
 
-This series is another take on the pervious work [1] done by
-Alexis Lothoré, that fixes the support for external snapshots
-timestamping in GMAC3-based devices.
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+V2: No changes
 
-Details on why this is needed are mentionned on the cover [2] from V1.
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-This V2 addresses multiple issues found in V1 :
-
- - The PTP_TCR register is configured from multiple places, as reported
-   by Alexis, so we need to make sure that the extts configuration
-   doesn't interfere with the hwtstamp configuration.
-
- - The interrupt management in V1 was incomplete, as the interrupt
-   wasn't correctly acked.
-
- - This series also makes so that we only enable the extts interrupt
-   when necessary.
-
-[1]: https://lore.kernel.org/netdev/20230616100409.164583-1-alexis.lothore@bootlin.com/
-[2]: https://lore.kernel.org/netdev/20241029115419.1160201-1-maxime.chevallier@bootlin.com/
-
-Thanks Alexis for laying the groundwork for this,
-
-Best regards,
-
-Maxime
-
-Link to V1: https://lore.kernel.org/netdev/20241029115419.1160201-1-maxime.chevallier@bootlin.com/
-
-Maxime Chevallier (9):
-  net: stmmac: Don't modify the global ptp ops directly
-  net: stmmac: Use per-hw ptp clock ops
-  net: stmmac: Only update the auto-discovered PTP clock features
-  net: stmmac: Introduce dwmac1000 ptp_clock_info and operations
-  net: stmmac: Introduce dwmac1000 timestamping operations
-  net: stmmac: Enable timestamping interrupt on dwmac1000
-  net: stmmac: Don't include dwmac4 definitions in stmmac_ptp
-  net: stmmac: Configure only the relevant bits for timestamping setup
-  net: stmmac: dwmac_socfpga: This platform has GMAC
-
- drivers/net/ethernet/stmicro/stmmac/common.h  |   4 +
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   1 +
- .../net/ethernet/stmicro/stmmac/dwmac1000.h   |  12 +++
- .../ethernet/stmicro/stmmac/dwmac1000_core.c  | 101 ++++++++++++++++++
- drivers/net/ethernet/stmicro/stmmac/hwif.c    |  15 ++-
- .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c |  26 ++++-
- .../net/ethernet/stmicro/stmmac/stmmac_ptp.c  |  38 +++++--
- .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  10 ++
- 8 files changed, 196 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+index 41581f516ea9..8ea2b4226234 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+@@ -303,8 +303,14 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
+ 	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
+ 		priv->plat->cdc_error_adj = (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
+ 
+-	priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
+-	priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
++	/* Update the ptp clock parameters based on feature discovery, when
++	 * available
++	 */
++	if (priv->dma_cap.pps_out_num)
++		priv->ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
++
++	if (priv->dma_cap.aux_snapshot_n)
++		priv->ptp_clock_ops.n_ext_ts = priv->dma_cap.aux_snapshot_n;
+ 
+ 	if (priv->plat->ptp_max_adj)
+ 		priv->ptp_clock_ops.max_adj = priv->plat->ptp_max_adj;
 -- 
 2.47.0
 
