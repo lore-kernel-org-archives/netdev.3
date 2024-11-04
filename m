@@ -1,325 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A390B1779BD;
-	Mon,  4 Nov 2024 05:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730698978; cv=fail; b=Zx774hQCUTg0oXCQmZ5udt5z/xp4fbWVXRVVrgq70ynYUppulmQTKbSi5EGxiULianzIlD2pnVN/CrSYDlHkFeydnpUCmTqP91hWBunx2+73jEJZanPrFxY0TzEqN6E1e2fJ7Za0FCO+CgkHa7ZIKOXBVisFibH+6WtKqVBnVek=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730698978; c=relaxed/simple;
-	bh=Q1g7su0TNDpjG997xXMTF9jXl/S/+2dPUS9fX6C7aIk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZrBnF+NyYwmOZl3xudz7cIigZHCIuqK/eUwMUbMbW6T5nTf0Sp14BMsnf/llVmciUywEMsHs2xsNsZkvSwVF9Z1nzVdIBt30wL35A1tTy6ZgQwXcgOn7hJt1S56ueU7ZzE0zY4MhGBoZIcLKYB2cTxqqJXM/D7lRSkC6M3dLRPc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VP0iF9D2; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E4718BC2C;
+	Mon,  4 Nov 2024 05:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730699321; cv=none; b=tTHwBw8BA7OHSvnLsw7nPzWrfSTraDsc41rSQ4kCvDYUDvxqWe3YpON1IQe2oCPBxvZf07i3Zu+nS17tveHuleN3oYG0KLnlNPUTaxo8gTVSkMzcFPNSFPchX+orPI+7YrokjPKOyCwsnH/mLHM22d+b0lNebV2reZy+m5y4JBs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730699321; c=relaxed/simple;
+	bh=5fy6xKs7vhmUZBinU8ERiLTywxLCmF+rAnpbE/Um2aQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aIqyFLaiZRRkIXtvBQCXGbdTQPoGoeUFkk39vA3uKe+zmAvoHrHx36RhhD5xi8hsvBGw1MA98cYjIJA5QOu+hO3Jc3k9EI0Hcp9l4tkgh8b234PdsJXj5C7eY3lSB33xFS9VxE7fowVENyZdqh7wV6HiBxRbhJr5yY79M4o6C7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l2PahRp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VP0iF9D2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730698976; x=1762234976;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Q1g7su0TNDpjG997xXMTF9jXl/S/+2dPUS9fX6C7aIk=;
-  b=VP0iF9D2MHgYa7Vi4+DugjOQyr+vNY5+RbDAI3Lrmx8qtiPf64e7w+U+
-   36pz7k7SYJs2NUWGbQhaCxJdPlMpv4v6oToW+ECT6EuYHXl0DEVcnPIL7
-   GkHQk3zJe655kOG6v9wVHy6oq1KHLs8JkDy6M4M0yvMloOgjTr8ySMM9N
-   3mU2UoYPTUQD8fMYw5xLYunm+Gm82OW8Qtl72+6CbA4AYODGFlTD0Bp51
-   00PFF8Fe7vke1LhfVKUV91P0AfTLcLUqeZL4takqBxnrb6mPcfDdx6Oe4
-   sqbSWWJAjAC5q2n9he8xLU7EJFF/CzTUNrIleYJubLFpR2J5g5J4Yk6/i
-   A==;
-X-CSE-ConnectionGUID: aTd6x7+dTd2VUlV1jDk/0A==
-X-CSE-MsgGUID: F7EQtLmTS8+pSi9jyCtuMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30559098"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30559098"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2024 21:42:55 -0800
-X-CSE-ConnectionGUID: qC1jThQcQem6GFFO2PVvZg==
-X-CSE-MsgGUID: mOWfJcKMR3WoP93n0b/VBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="84359118"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Nov 2024 21:42:54 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Sun, 3 Nov 2024 21:42:54 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Sun, 3 Nov 2024 21:42:54 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.48) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sun, 3 Nov 2024 21:42:54 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UXLhW6i8zAY0tdi9eoILjWsM7jhu7vSHoFJ0D2xgzA0EPFgYQ2OFGs2xeoA9PbthPPjlIGB3h23rt/lLfUq7Rw5og65v4eKmPpNAg/A6DWgtCmOjuk+EmPva/NtlruYZx+x6PzIsOSo272hMP0tCns7lH02ePCv7sXAGQ8hHy74VtN1njAKd9lpbQ8+/6HZqv3d71fVALyuaRRZKLaOPoQmD2gFr3AlQ74gqoglVtjQR5OV2SLRtPS23/qXrrTqTV3d32jesogIs9NwmWJZWu4EmMuK99KU/LZU29KaebOKvJhf+36/qUV6E6/en/HpjR89gx5der5hXo15EgvzQuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8glZJldve0DQTxmrMjC7NWwPCjnMCvUgF80pGfUV0O0=;
- b=xTVcc6RDzl6FkGcZUTLPl+QTWWe/eRyMW6foV1aWw+M1qkWxeL2RSxPTmv4XvhE/ybtXHOq0BL7eVagmEYv9GzFH90uL3Mg64A8DwZTLyKc1IBbSoVxTUM1D/lkforyktzr98f55ptMNwJ0rJZJu6lT7ZhIPVZAuyboBbQld4OmNkQlTrClFINSQUV5YBx32+BDcU2O+3cQdA18takAMrNxc+dx+owiRiEaxOtRDsmHrwdrCVJzT2TguondnX11wtFsTnJkLX3c9mGmKOgu2wDWW6FmnlZy7nDq+II6pxWaZRwqO7QeXkn7P03bxH997KVtKAI0c2YYPHG+NEr/KQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA0PR11MB8419.namprd11.prod.outlook.com (2603:10b6:208:48b::22)
- by DM4PR11MB7279.namprd11.prod.outlook.com (2603:10b6:8:109::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
- 2024 05:42:45 +0000
-Received: from IA0PR11MB8419.namprd11.prod.outlook.com
- ([fe80::f1cb:2c2f:e082:c0d]) by IA0PR11MB8419.namprd11.prod.outlook.com
- ([fe80::f1cb:2c2f:e082:c0d%2]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
- 05:42:45 +0000
-From: "Pucha, HimasekharX Reddy" <himasekharx.reddy.pucha@intel.com>
-To: "Damato, Joe" <jdamato@fastly.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Damato, Joe" <jdamato@fastly.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "moderated
- list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>, open list
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH intel-next] ice: Add support for
- persistent NAPI config
-Thread-Topic: [Intel-wired-lan] [PATCH intel-next] ice: Add support for
- persistent NAPI config
-Thread-Index: AQHbJAmkDhWGOD6U3k+eTTF5bGjATbKmr20A
-Date: Mon, 4 Nov 2024 05:42:45 +0000
-Message-ID: <IA0PR11MB8419CB331AECAA4FBC593C13BD512@IA0PR11MB8419.namprd11.prod.outlook.com>
-References: <20241021223551.508030-1-jdamato@fastly.com>
-In-Reply-To: <20241021223551.508030-1-jdamato@fastly.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA0PR11MB8419:EE_|DM4PR11MB7279:EE_
-x-ms-office365-filtering-correlation-id: 4ab9c644-d6bb-47e6-e11a-08dcfc938255
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?Wu7IttC4a6M8w5TZz94+f2QJ88yMq88EtZ3enBMmbIju6aOXZkDWNUQaZT3c?=
- =?us-ascii?Q?8ZSntRBo4YOPVuADBu4p3yFz1gCFdGjl5VJa+SJF3BHbdSs/crTiToZ92tKm?=
- =?us-ascii?Q?a/eHuV+bBsX1QID2bPQLivTWjkxUA9XrjZsYM6AeYIZSaNn95+dBUr6CYYkx?=
- =?us-ascii?Q?JUIRIeAAjfJOqCou7M0H52r/ZIcZ67dpJGafn27uzUqfr1Evx9kVpLS5BYVa?=
- =?us-ascii?Q?HNjeSXhQxp+EWZMmA9NRQ7Xz5U17q7B2+83l5EuEgLuyDuNNveIQGUCtewJJ?=
- =?us-ascii?Q?kMowWRJoVVbNkFx/WvuGRMZnLUWzBiNhlztTyLPSHgIvUULI+BVmYopTu2zy?=
- =?us-ascii?Q?/vO45fzYmBmcHR3wRFzlj/0FUzkMmZVjtWzOpocloORX4OMpk5yugIo/ftha?=
- =?us-ascii?Q?9bdKmSF37nS30l3tbGcyrOYtvCvBw8y988b80ejozc7Zq7garEWa3sNQ5cGf?=
- =?us-ascii?Q?D4UqqU7ci/JSMV4ZkiC5nNmgLy2S4dq/nCerdXOlkNChUF4nfE+jDUJD5Ocm?=
- =?us-ascii?Q?gUirj8Y3VJI0duxev88JLXN6vkMgC3WnBN8fJGs2PfG/f7KKE8/0cgIkd8mU?=
- =?us-ascii?Q?u8u1mJpfae/r6shHxH5AGDC/jAJgkqlNx6mB+kJqYfnVr6XPUvnbblK2Vg3p?=
- =?us-ascii?Q?2bTlw6RJUXv4fkCb22sjITVG3dvgPk2W+E/dNu9vvwYGwt2kjMtI20k9d8Nw?=
- =?us-ascii?Q?/oSJyWaLvaityuFVfEiqFOuJ/iL/eCNd7xHeN3ec9nC1f3gCfBV7R7rcBcAz?=
- =?us-ascii?Q?eqZtWwqZPziVJv7UMnUT/PnexpHSAUoilDK/jdvDylkggUjLCSCAYFBOwpVb?=
- =?us-ascii?Q?hdPopC2keiWoMUJQRdoS2rsaS4rgSCpbN5pynCa+OJX9nvDMVbUxzCKDL3C6?=
- =?us-ascii?Q?zbcAsY0p4p6XrL9O1t52sjVqnyBdReRqBSnhXgTJg8wRD1TW+ThZnXjy2NHb?=
- =?us-ascii?Q?W3DgBgt9IEOurvHt26tS5h9BcvEtsjnSZK0wA3s+SaayU3yo82oO84W2S2sZ?=
- =?us-ascii?Q?BqHJZZWr0d2yR+1IdJcBteNNfRsQ1sqCjiv52pxyxmvWbq1jWRCAuFI39ACu?=
- =?us-ascii?Q?Yw9k3VsyMx3dkAR0G7DlBo37a4tIt7lXZbbQeeNs77j64qKwxFhzx+8rGmiN?=
- =?us-ascii?Q?xiCDvs7F9MpuQrD2S1ARJgl7cpuWyfcQ+Mq7VQOBiJwnj6pR8c2v5DzMDPCF?=
- =?us-ascii?Q?FVqK7hvAk9x85OzQYrzPJdtmOMaW6eokBJaFqKvZOVCVVOLZQ3LygMMBC5+n?=
- =?us-ascii?Q?XszTd7WcSivCBRN94N5SIAcxyEEO5rIklcrD5SrGhgp0L2Ul1K1smjMb6cme?=
- =?us-ascii?Q?ncps3IKfSGpSjFWHKcHk9WX5BYspLHRE0HU0mUgNn3oidJQdBeIcR3NHx8xF?=
- =?us-ascii?Q?tZ+cBOk=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR11MB8419.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?6rOYWdVVH/gSM38jyiZfF/uzx1f5Y3/AYxnt5qbRLX+hj3gVJmh0n5sHcg6s?=
- =?us-ascii?Q?VZv4IIZXGEK+Jp4QtbWpwHehe+XVthtQVTI2xjd1Ynt6fkcLdORrimGTHukt?=
- =?us-ascii?Q?PPr27hM92LjlidbiJoKCYjlo1OP5TkmGEvOavHC+0uK9QyDqLWHkJ+u6gxI4?=
- =?us-ascii?Q?zTgxWuiDpqt4n/2x6CcgicKn8RitdpyFdFuLy+1hmQ6da3fEDXEJtIIBTsz+?=
- =?us-ascii?Q?+RWd/QUoeK2pdMHoKCbY0IWqh47P5SM7wji/dfXOe4NrV3bpMDiq7E5KMOad?=
- =?us-ascii?Q?4gV76mz/izbY/IXWGDsjr0KdmVQJaTcIoidCuePDMUQMCoYA5wcSl9xOwYcS?=
- =?us-ascii?Q?udHpqmr+AqXbSTjdlWHW15bK1IDhdNcT6v8LnfMMgyAdk+NaXytdQoKoX8FQ?=
- =?us-ascii?Q?QXHtYdfPJlgpYyEPCxypD1qRsMe2HE6B02jzU/AN8cFsKDT3cHHz4ZCkLEcD?=
- =?us-ascii?Q?5v+J5Ksnz97phourB+vRMjFIh8QFe3GyBTy42n62fcOCYek4PihJ/Npo4yiJ?=
- =?us-ascii?Q?Mop1bSoeNPR0wxBCTaIf9LccW3+lwKsP5tzxeahag4TZmbo/eEPZe1+YfSjN?=
- =?us-ascii?Q?D2E+fWv4vsqFffseHPwZcdT6Da4kIJj9EGuLfHIhVjDK6EccZBqj/n4OC9Wi?=
- =?us-ascii?Q?qMe4JEDLI3jFYVLAOwhUzC33R7leZF30WFsNafzrHpOPVUn0eBzPthFTQ5/+?=
- =?us-ascii?Q?dGSqSzlvPCMk6SfjXl+3jZ2eVgN/Si2cVR2vYN7l8fy/ygvOZRnjyOT1+TjB?=
- =?us-ascii?Q?UPsj4K5xqktstpvw2gu2zh3S7ASiKqEkSuW8deYaI6WR9eCjEoqebOGzzWcR?=
- =?us-ascii?Q?v+yYA5smbZWkD39ne9npny/8YogpSbZxbnW3Qo0/SVldvh0L74NxW8LVrYRS?=
- =?us-ascii?Q?ZXhos/EMY/QnC0d8+Ljois9TKiFFMykgwxns34gCmeDbpZtBigDperce6loR?=
- =?us-ascii?Q?pJI/Il8ITjkVEmKHGAcZDSAHYn+SsZu8Qsr4HEHOG4CBvRYNolAZK4q1SkjS?=
- =?us-ascii?Q?HTL5l5KeMeN6qogMeIgjDZKdouVU3KzXEs3vK5M/mXQHFRPE65Z+Ks0tOiql?=
- =?us-ascii?Q?+LwNckOVyPwTDy842/SW7jctMMjX3oFUWxYaHRSqVsowID5fwW7kasuRUoz5?=
- =?us-ascii?Q?ltZAffUoApvbrzPzYn8I1lFf+IOzNNPQ5upVNRb7r7M8KSW8WrZcWSC9vAmR?=
- =?us-ascii?Q?EAr0ldkNgNDkmGBNdgR5Do7SRJ7Uac+5ZkS0BYEmBSnqwf91spjpRl2aX6a1?=
- =?us-ascii?Q?HIqL34y1UzA74OhXS2gHOnI6bn5NL8FVymOblbc2+3Z5wsjVkoeVvOk6T98D?=
- =?us-ascii?Q?PAcnRt0tYuXmUtFMdGZmL0v7co3TaL9/L5+61Ig6xaO7dOaG/FNgpzR1mu8c?=
- =?us-ascii?Q?uKGpkPkBXXuuGZF/xWvP8qacbvm19Ua2zK1LX91u+1cG0Mq+ss8sZ9Cg7TMg?=
- =?us-ascii?Q?YWVR1LtAVTOBRdCvLNIekdlI2Z0CiaXi6nXJJUzI3APHAqqLDUMwURA3Ez+i?=
- =?us-ascii?Q?kSo9Xi2lXSfcQAq6YTtKEvqPqO1xXsIqsOaLuwJ2S1+/RBks8gEW+j95KugT?=
- =?us-ascii?Q?Fg64MpezlBdsIsj/iynR/Fox0yBq/K/PAsU8I4jo05A2KkZJvmWp3Uy7P2cz?=
- =?us-ascii?Q?4A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l2PahRp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BD5C4CECE;
+	Mon,  4 Nov 2024 05:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1730699320;
+	bh=5fy6xKs7vhmUZBinU8ERiLTywxLCmF+rAnpbE/Um2aQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0l2PahRptpiEAyN4wodVq4nyyBKrG2iT6AhSssgSZs12x9aXjOxFaAP3N0pwTcizi
+	 0hjt3vxUg4eg/t6fBn4ehlSbmIKddGTVTRJHCIzG8Xp/Y9VybmzsMblzQ7dGLO4WKI
+	 QD7fOU4iUdeofngSjTc8KUEXUZUkpAG2PYLruDZQ=
+Date: Mon, 4 Nov 2024 01:34:19 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH/RFC] MAINTAINERS: Re-add cancelled Renesas driver sections
+Message-ID: <2024110457-enhance-arrive-b781@gregkh>
+References: <0a189e2c4090a1b308e18005d2552e335bac354f.1729511337.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB8419.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ab9c644-d6bb-47e6-e11a-08dcfc938255
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2024 05:42:45.6196
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aLkq1lAj/6G2sMnSLtQlVt9sX3VN+lARwYin37ktebYuu0dG/Wc9/nbNtx5DYki6Er7uRxK7yRWGgDKUxr7NhNJ0ESIlDToy6UeWrVZaK5POdbkeqhfHQvS43TGS6qHR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7279
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a189e2c4090a1b308e18005d2552e335bac354f.1729511337.git.geert+renesas@glider.be>
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of J=
-oe Damato
-> Sent: 22 October 2024 04:06
-> To: netdev@vger.kernel.org
-> Cc: Damato, Joe <jdamato@fastly.com>; Nguyen, Anthony L <anthony.l.nguyen=
-@intel.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lun=
-n <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric Duma=
-zet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <p=
-abeni@redhat.com>; moderated list:INTEL ETHERNET DRIVERS <intel-wired-lan@l=
-ists.osuosl.org>; open list <linux-kernel@vger.kernel.org>
-> Subject: [Intel-wired-lan] [PATCH intel-next] ice: Add support for persis=
-tent NAPI config
->
-> Use netif_napi_add_config to assign persistent per-NAPI config when initi=
-alizing NAPIs. This preserves NAPI config settings when queue counts are ad=
-justed.
->
-> Tested with an E810-2CQDA2 NIC.
->
-> Begin by setting the queue count to 4:
->
-> $ sudo ethtool -L eth4 combined 4
->
-> Check the queue settings:
->
-> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
->                          --dump napi-get --json=3D'{"ifindex": 4}'
-> [{'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8452,
->   'ifindex': 4,
->   'irq': 2782},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8451,
->   'ifindex': 4,
->   'irq': 2781},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8450,
->   'ifindex': 4,
->   'irq': 2780},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8449,
->   'ifindex': 4,
->   'irq': 2779}]
->
-> Now, set the queue with NAPI ID 8451 to have a gro-flush-timeout of
-> 1111:
->
-> $ sudo ./tools/net/ynl/cli.py \
->             --spec Documentation/netlink/specs/netdev.yaml \
->             --do napi-set --json=3D'{"id": 8451, "gro-flush-timeout": 111=
-1}'
-> None
->
-> Check that worked:
->
-> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
->                          --dump napi-get --json=3D'{"ifindex": 4}'
-> [{'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8452,
->   'ifindex': 4,
->   'irq': 2782},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 1111,
->   'id': 8451,
->   'ifindex': 4,
->   'irq': 2781},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8450,
->   'ifindex': 4,
->   'irq': 2780},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8449,
->   'ifindex': 4,
->   'irq': 2779}]
->
-> Now reduce the queue count to 2, which would destroy the queue with NAPI =
-ID 8451:
->
-> $ sudo ethtool -L eth4 combined 2
->
-> Check the queue settings, noting that NAPI ID 8451 is gone:
->
-> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
->                         --dump napi-get --json=3D'{"ifindex": 4}'
-> [{'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8450,
->   'ifindex': 4,
->   'irq': 2780},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8449,
->   'ifindex': 4,
->   'irq': 2779}]
->
-> Now, increase the number of queues back to 4:
->
-> $ sudo ethtool -L eth4 combined 4
->
-> Dump the settings, expecting to see the same NAPI IDs as above and for NA=
-PI ID 8451 to have its gro-flush-timeout set to 1111:
->=20
-> $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
->                          --dump napi-get --json=3D'{"ifindex": 4}'
-> [{'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8452,
->   'ifindex': 4,
->   'irq': 2782},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 1111,
->   'id': 8451,
->   'ifindex': 4,
->   'irq': 2781},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8450,
->   'ifindex': 4,
->   'irq': 2780},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 8449,
->   'ifindex': 4,
->   'irq': 2779}]
->
-> Signed-off-by: Joe Damato <jdamato@fastly.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_base.c | 3 ++-  drivers/net/ethernet/=
-intel/ice/ice_lib.c  | 6 ++++--
->  2 files changed, 6 insertions(+), 3 deletions(-)
->
+On Mon, Oct 21, 2024 at 01:56:51PM +0200, Geert Uytterhoeven wrote:
+> +RENESAS R-CAR SATA DRIVER
+> +L:	linux-ide@vger.kernel.org
+> +L:	linux-renesas-soc@vger.kernel.org
+> +S:	Supported
+> +F:	Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+> +F:	drivers/ata/sata_rcar.c
 
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Co=
-ntingent worker at Intel)
-
+You can't have a "Supported" entry with no person assigned to it :(
