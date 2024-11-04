@@ -1,165 +1,84 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from mail03.siengine.com (mail03.siengine.com [43.240.192.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE851B0F37;
-	Mon,  4 Nov 2024 08:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F611AB507;
+	Mon,  4 Nov 2024 08:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.240.192.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730710639; cv=none; b=CWw8xulL1pj5CuK1HQbrXPL1rgACbLeVTWr1DxDI+evQRiUQvebJBZvQbwNnWglN8pUoQnY9F1nMxqalfm0k31BdeyUxM6y3NFt+VNeO0Oji7Z840f2LbWb6BHoTdz/dZgQD1C8LNVcygrtnUxqbeIKOq+fT0PouWDJiJCK147Q=
+	t=1730710799; cv=none; b=UyKreLMsg/56HG1Um/W9/883e9COC7U9Fynapwka3iPONnZJU5AFO0M6a2KlMI4RicvFMmXLQum8RWZiw2Z+kyex0yiTYVQqJ8BW3J6TrSl5ETuz61azea16GsA3o8WRZLvUDnFNuaK2n728QLVlBtCoC1eoQO4gR2aZMdZx6kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730710639; c=relaxed/simple;
-	bh=V0vrMzecjWvIpMgfph0nBk8GvqOF2Yh7vCTbp9INH8A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jC8RewudzEQqKXOBD6gBy5KMNA5ip5q8EQ9XIE+Hh+TuXLVHtmrN+i/+Z8DPD7wzw5SFxZidBxjJ491+y3ZzS5y4e11XzSfje8iaFsYU43XbnVMp4W0+6woXUksKp12hW5TPTXUAI+r6opCnHKSpScxbwm3FCbBwq2NY0nQANV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ZOWnFvD+; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ZOWnFvD+"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730710628; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=lnK0M8sGNi7Ztg3Tp3oZ1uuQpBKHXJRvIdF7FPbRKQ0=;
-	b=ZOWnFvD+wmZb1T8oMvx2HXFchIY8MS9jV24REYRvLTqbe/+mqKx/dZ8H5jsVlJt/wDkMQr63fTXjc9uiA2+8IxKliS/JGsIkO8uTWGUbN5wlRQxdp8kD8J0+imVkQsyYqTnYrRCQjn2x+NWF8V6fK6++rHlKZEMKuFlOc5tkLu0=
-Received: from localhost(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WIdoIds_1730710627 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 04 Nov 2024 16:57:08 +0800
-From: Philo Lu <lulie@linux.alibaba.com>
-To: netdev@vger.kernel.org
-Cc: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew@daynix.com,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 1/4] virtio_net: Support dynamic rss indirection table size
-Date: Mon,  4 Nov 2024 16:57:03 +0800
-Message-Id: <20241104085706.13872-2-lulie@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20241104085706.13872-1-lulie@linux.alibaba.com>
-References: <20241104085706.13872-1-lulie@linux.alibaba.com>
+	s=arc-20240116; t=1730710799; c=relaxed/simple;
+	bh=LL47etnmzWJJki/OsiG0tCx1tTBob14vUbzMkhMrRNk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XF7VBaksyhu6S/g9mjDkM16IbYFvxzsxXo0nI6dhdDzLOo/FmOXe5RqDKIJFsv0z4n63PWemZpJxAejEhLFuZSnVWaid7MzqR8eddhEQ6B3KBlb0WsxEwSkXGfCrGZ2xcKGBy2rijeAuV2BvpVZWnb4tQP04A7V185XObEWRfg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com; spf=pass smtp.mailfrom=siengine.com; arc=none smtp.client-ip=43.240.192.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siengine.com
+Received: from mail03.siengine.com (localhost [127.0.0.2] (may be forged))
+	by mail03.siengine.com with ESMTP id 4A48mDCN027577;
+	Mon, 4 Nov 2024 16:48:13 +0800 (+08)
+	(envelope-from lucas.liu@siengine.com)
+Received: from dsgsiengine01.siengine.com ([10.8.1.61])
+	by mail03.siengine.com with ESMTPS id 4A48lApu027481
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 4 Nov 2024 16:47:10 +0800 (+08)
+	(envelope-from lucas.liu@siengine.com)
+Received: from SEEXMB03-2019.siengine.com (SEEXMB03-2019.siengine.com [10.8.1.33])
+	by dsgsiengine01.siengine.com (SkyGuard) with ESMTPS id 4XhlT93YMLz7ZMvT;
+	Mon,  4 Nov 2024 16:47:09 +0800 (CST)
+Received: from SEEXMB03-2019.siengine.com (10.8.1.33) by
+ SEEXMB03-2019.siengine.com (10.8.1.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1544.11; Mon, 4 Nov 2024 16:47:09 +0800
+Received: from localhost (10.12.6.21) by SEEXMB03-2019.siengine.com
+ (10.8.1.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.2.1544.11 via Frontend
+ Transport; Mon, 4 Nov 2024 16:47:09 +0800
+From: "baozhu.liu" <lucas.liu@siengine.com>
+To: <mkl@pengutronix.de>
+CC: <wg@grandegger.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <linux-can@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        "baozhu.liu"
+	<lucas.liu@siengine.com>
+Subject: [PATCH] can: flexcan: simplify the calculation of priv->mb_count
+Date: Mon, 4 Nov 2024 16:47:05 +0800
+Message-ID: <20241104084705.5005-1-lucas.liu@siengine.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-DKIM-Results: [10.8.1.61]; dkim=none;
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:mail03.siengine.com 4A48mDCN027577
 
-When reading/writing virtio_net_ctrl_rss, we get the indirection table
-size from vi->rss_indir_table_size, which is initialized in
-virtnet_probe(). However, the actual size of indirection_table was set
-as VIRTIO_NET_RSS_MAX_TABLE_LEN=128. This collision may cause issues if
-the vi->rss_indir_table_size exceeds 128.
+Since mb is a fixed-size two-dimensional array (u8 mb[2][512]),
+"priv->mb_count = sizeof(priv->regs->mb)/priv->mb_size;",
+this expression calculates mb_count correctly and is more concise.
 
-This patch instead uses dynamic indirection table, allocated with
-vi->rss after vi->rss_indir_table_size initialized. And free it in
-virtnet_remove().
-
-In virtnet_commit_rss_command(), sgs for rss is initialized differently
-with hash_report. So indirection_table is not used if !vi->has_rss, and
-then we don't need to alloc indirection_table for hash_report only uses.
-
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: baozhu.liu <lucas.liu@siengine.com>
 ---
- drivers/net/virtio_net.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ drivers/net/can/flexcan/flexcan-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 869586c17ffd..75c1ff4efd13 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -368,15 +368,16 @@ struct receive_queue {
-  * because table sizes may be differ according to the device configuration.
-  */
- #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
--#define VIRTIO_NET_RSS_MAX_TABLE_LEN    128
- struct virtio_net_ctrl_rss {
- 	u32 hash_types;
- 	u16 indirection_table_mask;
- 	u16 unclassified_queue;
--	u16 indirection_table[VIRTIO_NET_RSS_MAX_TABLE_LEN];
-+	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
- 	u16 max_tx_vq;
- 	u8 hash_key_length;
- 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-+
-+	u16 *indirection_table;
- };
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index 6d638c939..e3a8bad21 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -1371,8 +1371,7 @@ static int flexcan_rx_offload_setup(struct net_device *dev)
+ 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_MB_16)
+ 		priv->mb_count = 16;
+ 	else
+-		priv->mb_count = (sizeof(priv->regs->mb[0]) / priv->mb_size) +
+-				 (sizeof(priv->regs->mb[1]) / priv->mb_size);
++		priv->mb_count = sizeof(priv->regs->mb) / priv->mb_size;
  
- /* Control VQ buffers: protected by the rtnl lock */
-@@ -512,6 +513,25 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
- 					       struct page *page, void *buf,
- 					       int len, int truesize);
- 
-+static int rss_indirection_table_alloc(struct virtio_net_ctrl_rss *rss, u16 indir_table_size)
-+{
-+	if (!indir_table_size) {
-+		rss->indirection_table = NULL;
-+		return 0;
-+	}
-+
-+	rss->indirection_table = kmalloc_array(indir_table_size, sizeof(u16), GFP_KERNEL);
-+	if (!rss->indirection_table)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static void rss_indirection_table_free(struct virtio_net_ctrl_rss *rss)
-+{
-+	kfree(rss->indirection_table);
-+}
-+
- static bool is_xdp_frame(void *ptr)
- {
- 	return (unsigned long)ptr & VIRTIO_XDP_FLAG;
-@@ -3828,11 +3848,15 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
- 	/* prepare sgs */
- 	sg_init_table(sgs, 4);
- 
--	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, indirection_table);
-+	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, hash_cfg_reserved);
- 	sg_set_buf(&sgs[0], &vi->rss, sg_buf_size);
- 
--	sg_buf_size = sizeof(uint16_t) * (vi->rss.indirection_table_mask + 1);
--	sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
-+	if (vi->has_rss) {
-+		sg_buf_size = sizeof(uint16_t) * vi->rss_indir_table_size;
-+		sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
-+	} else {
-+		sg_set_buf(&sgs[1], &vi->rss.hash_cfg_reserved, sizeof(uint16_t));
-+	}
- 
- 	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, key)
- 			- offsetof(struct virtio_net_ctrl_rss, max_tx_vq);
-@@ -6420,6 +6444,9 @@ static int virtnet_probe(struct virtio_device *vdev)
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
- 	}
-+	err = rss_indirection_table_alloc(&vi->rss, vi->rss_indir_table_size);
-+	if (err)
-+		goto free;
- 
- 	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
-@@ -6674,6 +6701,8 @@ static void virtnet_remove(struct virtio_device *vdev)
- 
- 	remove_vq_common(vi);
- 
-+	rss_indirection_table_free(&vi->rss);
-+
- 	free_netdev(vi->dev);
- }
- 
+ 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX)
+ 		priv->tx_mb_reserved =
 -- 
-2.32.0.3.g01195cf9f
+2.17.1
 
