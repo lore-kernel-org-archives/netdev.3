@@ -1,126 +1,91 @@
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCC81C32E2;
-	Mon,  4 Nov 2024 22:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F021C32E2;
+	Mon,  4 Nov 2024 22:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730759095; cv=none; b=m12ZWiP6smGaX5Yt1VjI0lOjdM+E9/1Ke/bfFlwFNiNg3EBUPhJS1RCJmQT3MMiVbw6SF0UEYoy3wyFdAJwbvbr5ZNNjqXtur+Bg1vYT8lQs2JUtW5YiCeBmQ7g8srxFEI97PXlD4inG9sg8ooIpvp78/z1YEkPr9uwnos5o9oY=
+	t=1730759116; cv=none; b=fB0G+B/UHcuozlA0VdBmVk8uYjjOw9itQyU8SfPSZuNaX4+UiVC1cdEjrfZmQTEwxh7OJ2N0PWKF+P89Qsx82ozmH9MOij51lFG3gfzXaGf5SW007J0H1UJSxsfXkCny0dV9F6k4HzAEvfdYjCFEPiV4Hh85D8zVcE7diJznQwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730759095; c=relaxed/simple;
-	bh=nff+0X6wUn0J5FjDC8Mc9FUmffHWMVD2NvEYEF5dm8Y=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=uD2oZcROHV4cfpb6nzTHE7jmDxaueyGsiF+6W7rQD6AQvAOjuKdkN2c1H7TKi2L/Ur/AtBjpDfPOkSYmloLXrWMYmUxA1UFd9QPlvDEHNnXr0MUhVYiRTlm/4NepblMUViuUsWqwRFCuj/PQbkuQ4BVKU3sHUmpGSO3NyH9lZiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=M8Yuslqw; arc=none smtp.client-ip=192.134.164.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
+	s=arc-20240116; t=1730759116; c=relaxed/simple;
+	bh=nnathdskUxGu/VhOcY1X1w1dugmZGedEo3+8ThGIWak=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FVm+XKmadRQe8L9YVo9nUdNVH7RhzZ9FsgWt1URPgRgxKHjXXir8vAOB31Bvi2sPff+utQXUxDmOKaPLNoLKw5gc2JAaYcX5CtX+XCHsRFbqmf7RoYYXjbJCSXdog8S/O0gEQzoVeyFQPM9hQQkwMW5/NXbkawsllQ8DibEoQZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6iEvdNX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="M8Yuslqw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=5Q/Mzuj7Ex5wTNv3IgObo2Af/emJv/xPYy2+oH55Pz4=;
-  b=M8YuslqwooPyRUY165Wt/IgXxfzTy432aWKMJXPg2kcor2duO+VHGI9S
-   v29PFXF3r5opWmArMFTiSJpG0ayWzoCwgQsU6fyTBs7U0Kx0D+3fatLAG
-   UG/xqJZxNFzbOKjx3yXcsStora0sNkjpjaF00ZRHQzhcNFkZR7Hf5q+S8
-   k=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=keisuke.nishimura@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.11,258,1725314400"; 
-   d="scan'208";a="100727236"
-Received: from unknown (HELO [10.20.176.70]) ([193.52.24.23])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 23:24:44 +0100
-Message-ID: <e004c360-0325-4bab-953d-58376fdbd634@inria.fr>
-Date: Mon, 4 Nov 2024 23:24:42 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6iEvdNX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8160EC4CED0;
+	Mon,  4 Nov 2024 22:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730759116;
+	bh=nnathdskUxGu/VhOcY1X1w1dugmZGedEo3+8ThGIWak=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=F6iEvdNXK1P9b+EeoDpbBDRPc5nyEPF25BUX2NtZe+r1mN4d1dKP997O5Wu39g2nW
+	 SJVR8Hbc3B40s9MzXVCDy0NlbgaLBFE5fIboQOsATCBlRzRkB0sa3sqNt2eINQlqSZ
+	 iO6e5f4PsGSNUgMpS53nrsiZZKkgvvJbcHfBfgxI2x65pL8rchlm0SYBDYvZqQnNd4
+	 TJbT9/7+4dhk8KOSa1xO1FrnQZLEU433bwhPwwwqKj7Z1F+iI2HcAsv2B0i0Ix1/3M
+	 j4domQUn4WsCn8rNXdP87d/JM9oMq2d7AMztS+NriQ5F2Hf7rLvtyeDfz6nR5RLWw1
+	 xirX9VQ5tdQ1A==
+From: Kees Cook <kees@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH RFC 2/5] net: core: dev.c confirmed to use classic sockaddr
+Date: Mon,  4 Nov 2024 14:25:04 -0800
+Message-Id: <20241104222513.3469025-2-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241104221450.work.053-kees@kernel.org>
+References: <20241104221450.work.053-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Subject: Re: [PATCH] ieee802154: ca8210: Add missing check for kfifo_alloc()
- in ca8210_probe()
-To: Simon Horman <horms@kernel.org>
-Cc: Alexander Aring <alex.aring@gmail.com>,
- Stefan Schmidt <stefan@datenfreihafen.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- Marcel Holtmann <marcel@holtmann.org>
-References: <20241029182712.318271-1-keisuke.nishimura@inria.fr>
- <20241104121216.GD2118587@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20241104121216.GD2118587@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1411; i=kees@kernel.org; h=from:subject; bh=nnathdskUxGu/VhOcY1X1w1dugmZGedEo3+8ThGIWak=; b=owGbwMvMwCVmps19z/KJym7G02pJDOmangcXe0/zuTZ9zjqzEOlFk17VPHGVKPP7/FnKSNH9n Nd0jr2NHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABPJf8bIsFto5mf+rK9ehbds Dn/0cdfbtURj05z80LDIKaYfCyou5jAy3Jq4QGP9t/1MRtNsNzncdflxWXFazmadFsaeB5f/Gqh 1MgIA
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 
+Add comments about the sockaddr arguments being actual classic "max 14
+bytes in sa_data" sockaddr.
 
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+ net/core/dev.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-On 04/11/2024 13:12, Simon Horman wrote:
-> + Marcel
-> 
-> On Tue, Oct 29, 2024 at 07:27:12PM +0100, Keisuke Nishimura wrote:
->> ca8210_test_interface_init() returns the result of kfifo_alloc(),
->> which can be non-zero in case of an error. The caller, ca8210_probe(),
->> should check the return value and do error-handling if it fails.
->>
->> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
->> Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
->> ---
->>   drivers/net/ieee802154/ca8210.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
->> index e685a7f946f0..753215ebc67c 100644
->> --- a/drivers/net/ieee802154/ca8210.c
->> +++ b/drivers/net/ieee802154/ca8210.c
->> @@ -3072,7 +3072,11 @@ static int ca8210_probe(struct spi_device *spi_device)
->>   	spi_set_drvdata(priv->spi, priv);
->>   	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
->>   		cascoda_api_upstream = ca8210_test_int_driver_write;
->> -		ca8210_test_interface_init(priv);
->> +		ret = ca8210_test_interface_init(priv);
->> +		if (ret) {
->> +			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
->> +			goto error;
-> 
-> Hi Nishimura-san,
-> 
-> I see that this will conditionally call kfifo_free().
-> Is that safe here? And in branches to error above this point?
-> 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 582466a0176a..c95779cb42a6 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9075,7 +9075,8 @@ EXPORT_SYMBOL(dev_pre_changeaddr_notify);
+ /**
+  *	dev_set_mac_address - Change Media Access Control Address
+  *	@dev: device
+- *	@sa: new address
++ *	@sa: new address in a classic "struct sockaddr", which will never
++ *	     have more than 14 bytes in @sa::sa_data
+  *	@extack: netlink extended ack
+  *
+  *	Change the hardware (MAC) address of the device
+@@ -9109,6 +9110,7 @@ EXPORT_SYMBOL(dev_set_mac_address);
+ 
+ DECLARE_RWSEM(dev_addr_sem);
+ 
++/* "sa" is a classic sockaddr: it will only ever use 14 bytes from sa_data. */
+ int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+ 			     struct netlink_ext_ack *extack)
+ {
+@@ -9121,6 +9123,7 @@ int dev_set_mac_address_user(struct net_device *dev, struct sockaddr *sa,
+ }
+ EXPORT_SYMBOL(dev_set_mac_address_user);
+ 
++/* "sa" is a classic sockaddr: it will only ever use 14 bytes from sa_data. */
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+ {
+ 	size_t size = sizeof(sa->sa_data);
+-- 
+2.34.1
 
-Hi Horman-san,
-
-Thank you for taking a look at this patch.
-
-> Is that safe here?
-
-Yes, it is safe. The failure of kfifo_alloc(&test->up_fifo,
-CA8210_TEST_INT_FIFO_SIZE, GFP_KERNEL) sets test->up_fifo.data to NULL,
-and kfifo_free() will then do kfree(test->up_fifo.data) with some minor
-clean-up.
-
-> And in branches to error above this point?
-
-Are you referring to the error handling for ieee802154_alloc_hw()? To my
-understanding, since spi_get_drvdata() in ca8210_remove() returns NULL
-if there's an error, we shouldn’t need to call
-ca8210_test_interface_clear(). However, I’m not familiar with this code,
-so please correct me if I'm mistaken.
-
-best,
-Keisuke
-
->> +		}
->>   	} else {
->>   		cascoda_api_upstream = NULL;
->>   	}
->> -- 
->> 2.34.1
->>
->>
