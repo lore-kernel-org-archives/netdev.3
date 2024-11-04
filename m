@@ -1,110 +1,234 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA1D469D;
-	Mon,  4 Nov 2024 14:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730731805; cv=none; b=CSyleboOvpZwyfVn3mj9fTbSUxBAdcnncOIC8WUhl62UnjE8TyDZa1cDahAWDe0sh0vKFtrGt3E/DefVMJ35gUouiVscixODncoza9qz0v8bSzIyITlN1lgBkcnT0RhxSnDqG9S77vsptYckG+ilkMgp1Uw28UwnjtyyWE/NU84=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730731805; c=relaxed/simple;
-	bh=4Vv+jv+4Oi8uyoG6jRMsYWTy2VoFnc8oaLa2+MimbdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DEJ7OwMeru536pcyCYLAJ32iWQxrE3v5EP8x9mhVd6ihiGl1ifxJbSZqKS9OVDvySHz/iAb1M0sO//ThWkndXS2UdIXDK2af2TY3hxrHNUqLit2+abnjJTnfDyMs78R95O32aolbYlh75QxvnLQ/Q/HmSWznT/jp+f3OXiZFTog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Xhv8J72RNz9sSR;
-	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id bWfhLmnpm9tF; Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xhv8J6736z9sSN;
-	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B3EE88B770;
-	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id X3XWHlYHgmaK; Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 811948B763;
-	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
-Message-ID: <34c972b7-ba53-46ba-ada9-df741bc21e47@csgroup.eu>
-Date: Mon, 4 Nov 2024 15:33:03 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2706D469D
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 14:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730732190; cv=fail; b=VH1CA0lFjjixj6sGWdoTXDBy9TCcjpoc/WI+2KJ+eEV+nz3q4r4MeZS+x9GxlncjdhylzxXZX7PzF/kcz9XQqwUmlaloJECSgtxNoqn1cfzdFsrJbbn+VfbG0jve7euyMncZFr1Jaj0WxxXbpvRVbraf19xT8zkKVNlDEL7dbH8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730732190; c=relaxed/simple;
+	bh=O1yQVSZBuT1Qy9hWXovhefLGSfY33ZG/Twwa+U8uubc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DNqycp+xvIzj5LM77p/Zl7UGM7Q1bkUlsxAXTIGFYiZZMQCt6qWOFi191SnhhMluwfRunGtP6EhJ3AJZ1WtIb92hWpP8pb5CA+G3NBEAL9D1aocrnsFjpX/+9LopUD3FCEW/qdbgeduBDjzh9mFSVWOC2VbGzCAWq/Vu9NtcGAk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M+Mij7EJ; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M+Mij7EJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730732188; x=1762268188;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=O1yQVSZBuT1Qy9hWXovhefLGSfY33ZG/Twwa+U8uubc=;
+  b=M+Mij7EJC8y7YXg0J7rwxluLo+pB4hvZCfmSw3hn/GRwNS91acuxGkq5
+   ZQgFnP970v4OdXIh76EbBs/nwHF+GCegv5oPcIsX0LhSC3cr6C+maMvvq
+   JZZXkNLdGentTChfSkbvySDRSwm7sT7VAjr/+xtM4zA10M+kSwJAWmreq
+   gX7YgcLo0NtGDMbl1y+tMGAsUbqwWMR5jY770059H4+EmmuG0f8ETOB/Z
+   mro9zV0ys0NWuunyKZOtb4jsxFKFw4asFuj2RndcbKegV34TviFc5WZ/F
+   oeWEY0KdzRM34jViE7Yk1iV+DceX6qNp/MewwiPaxIMfyiO52266WKd9S
+   w==;
+X-CSE-ConnectionGUID: TIJpq5I+Qpaf/XbtmN6GTQ==
+X-CSE-MsgGUID: HBLDToSTRVmCgpY20278Cg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30378107"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30378107"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 06:56:26 -0800
+X-CSE-ConnectionGUID: m6qzcaHvRyWZ1H1VCtE1Bg==
+X-CSE-MsgGUID: kyhmRtdmSjO/14Qu99K4rA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,257,1725346800"; 
+   d="scan'208";a="114482097"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Nov 2024 06:56:25 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 4 Nov 2024 06:56:25 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 4 Nov 2024 06:56:25 -0800
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.46) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 4 Nov 2024 06:56:24 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LUJilxFnqLfe6uzsUFIqsjAuHwLryZQsRSuS9RxVmq0+hXZfjZQ3GCjcSaRhNSBLHosJh1Btw17wXrqo7ClpTEhIVarENcbQBh029o90O/Aezb4AHJIZ9Omk1Heii4PtYlEmOrHEoQArMIFVocO0o8+hpC/YR0Gd7Hxuy2Oy+sLVvbb/S5eoZe6RXs/jyCkkpWlSltRUyHtbcZ6o4MT2QPgw2fFx+8Qy8+6jOcorr/zVaXIUvsm9H9ZtOp7LXzR7IK+2nfbPiWuXtiSq6YitFrYouEXVxE3j3/LmOqU27gyVG125Y71rSHEOWGF+0A9cjPZmzw/oHctPzdLL0f6jwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YTqK7gmDUjPyS+6eWvoKYCAIkTIMa1t0BCu2uUGRunI=;
+ b=KgbzlXgfLmGlNf9LiGXOlg81uK8zDXS68Qxgy+cEisQVc8i/nZ0WwjiuBjtqcpNewDaQ+mbhjVu599yJjE+sDrEzt0Vl8fEYzs1aybAlchNcfJjfdiL3jWEFNDGVFZatEzli9j70tin0tTPWw9tW68nXUgJcban802uqvjEh/okKM9w70UaIJrFwpD99NwICS1yA+x80qjHjusNcZ0OVzIutjGp3q4FLnvvP9Sz7oBPhWEKoGeffWy1VMlbrP2Spi8gWaeYsIhrly9sEBz+ufSliZ/dPitxYyAqAInC0Ea7O2KDfgrXvgMzRmPfAG2F6KWD9JNaW+ByvlqMqFp64+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
+ by PH7PR11MB7004.namprd11.prod.outlook.com (2603:10b6:510:20b::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
+ 2024 14:56:22 +0000
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::f302:c534:2d71:822b]) by IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::f302:c534:2d71:822b%4]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
+ 14:56:22 +0000
+From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
+To: Simon Horman <horms@kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Kolacinski, Karol"
+	<karol.kolacinski@intel.com>, "Kubalewski, Arkadiusz"
+	<arkadiusz.kubalewski@intel.com>
+Subject: RE: [PATCH v3 iwl-net 2/4] ice: Fix quad registers read on E825
+Thread-Topic: [PATCH v3 iwl-net 2/4] ice: Fix quad registers read on E825
+Thread-Index: AQHbLTln6479DBd9P0SDv30WSDU03LKnOENQ
+Date: Mon, 4 Nov 2024 14:56:22 +0000
+Message-ID: <IA1PR11MB621956F4A8D8A33D5B33B04592512@IA1PR11MB6219.namprd11.prod.outlook.com>
+References: <20241028204543.606371-1-grzegorz.nitka@intel.com>
+ <20241028204543.606371-3-grzegorz.nitka@intel.com>
+ <20241102151033.GP1838431@kernel.org>
+In-Reply-To: <20241102151033.GP1838431@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|PH7PR11MB7004:EE_
+x-ms-office365-filtering-correlation-id: 82437dab-8ab3-43cc-37e1-08dcfce0d8e6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?4ZHie8o7kCPgOB+2tLSI2+IlpaCy3kV+a7C0LBGVBX0Xg+nTA4vvn6ep32HB?=
+ =?us-ascii?Q?ecHMHPvscLdpn+dh7P612c8veV9c6MF/4F2Y2NAevZzYiYMWRiwKi/2Vm4KF?=
+ =?us-ascii?Q?tewWsPyULDrZQBAsVhR246Q3DiNsMct8wzfcB/DTkbwoejisNasvclg+1f8L?=
+ =?us-ascii?Q?VwJX0VaLszi/emJhzKylTUq7Hyn+y1UFutalBZAKL0NZLodnqWuQy/ma1B+h?=
+ =?us-ascii?Q?6rM2ik1Kmox6fwbJIqScv9yf4yRwJ7GEEca8y6AJQAfxolnFl4IuLTUcUj9d?=
+ =?us-ascii?Q?g7ra6i0D6QheMdithFzDj5y2CcS+AzZ8VgyKd4DC0CNrasH/XqtA12VgSjQQ?=
+ =?us-ascii?Q?qLqv1xKoj/FEYFzdPF3UuAM/r+3jRNtgjgVfw3Pa3Q23HWVBpi5mXVXW0I9U?=
+ =?us-ascii?Q?STtzfBMmjyMtAUKTcLg7QNksP8PSD0DtDanwnWLbFjV+fvvgH7+E71IQRW7V?=
+ =?us-ascii?Q?u3qnSgaF5fgFCoN+2yzgCbY1knjyAM1urlY4h0OK1/RqCb+9B12pP8Sx6dVJ?=
+ =?us-ascii?Q?jKscszcbInO0I7meUxQ34XTEHbzZfrLwDq07eyJxImGCugyQbohOn6KV3fZW?=
+ =?us-ascii?Q?1bzF2D8AiJL1P67wZSf1Ai6dF9aXx6pmfIHtLYZVybOx7X/It4XtdghGBl1G?=
+ =?us-ascii?Q?++IPoYNcy19/udV5hGktFRExxtZM+eXLC5DG64M/lppR/gHfgDmo5KGY2u21?=
+ =?us-ascii?Q?VvC7urep/ZpUxSTMXc3umR9ot1rYG2y8vfb189mb1agvNHdQXIt8x7WLt2GR?=
+ =?us-ascii?Q?vlprh7d5TJCc9wsU60zad8I5y3HiOPDRRHdz+nKAb4UVzbp4vYgAivEQz885?=
+ =?us-ascii?Q?md8pTcZ5Wrnsu92kiLOUZGxryHYt4MsGGdtErh45Talw4D96UaNCOE5ORlUR?=
+ =?us-ascii?Q?z4Ltu5CClpCl8VrJ6dj+PfGIaixXiECeFSBYHyoLrS+XKnk/pFBrPeqHT8Ew?=
+ =?us-ascii?Q?PsFFAEpRHLv4IDb8o5nROWJdSQ6FhXmahAip2VEzK4H6k/6aJn6xk3D0lHu2?=
+ =?us-ascii?Q?tqzhhD/E34fsNaJ2kVUQkHAO42rz5VjNzyeWldwB7VqfWp9QOIy0n7GXxVCZ?=
+ =?us-ascii?Q?9ovIBP6xKeFvnnhxlT2sg3v9jvTC0JuK6E6JqScCVLkIGmrCoYeest15fEOp?=
+ =?us-ascii?Q?76MUGxjPt4W9p5vXlPpwuCs5WPiUeqfyVQtL2lk4ilGaUjFTmOQCXDZwmtGW?=
+ =?us-ascii?Q?vAPp4E+Nu9vpJq0B5EFkxcoL5R74+HaVdxfUYnTHbVgj3tiOoGbauHiYnbxP?=
+ =?us-ascii?Q?cGCrFdKPf9JyMyZ3y6zUjv33jBr0WUM2evZ1lT7HttoT0nfOU72Jbea1m4gt?=
+ =?us-ascii?Q?VXyAaV29QNzxWjcXpqMXJyRFfgq0ecGD+lV+ka5KL6zFcWn6OpnI2t41HsZO?=
+ =?us-ascii?Q?rGh81uo=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?91VVjWmbwLLPQ+aXYR6qE57PoiV4q0Y7AzDgLu4WAREof66JOLyZiYKgpC3T?=
+ =?us-ascii?Q?lql41fd8KvfVAire0Fa4u5AnBU3uchi1AP9XY9aHyCaEcEPXUIEYc1KBzkce?=
+ =?us-ascii?Q?uhmYM89m5shjxGb4gMxDISPq06R6rTzOwF18NbwjvFaYjWLCe0J26RH9605o?=
+ =?us-ascii?Q?Lb+ft9uEPGWTRLVx2O0oU7wsTopbMxalYuaOozaeFj76dvtIjJuYwIJRxR1g?=
+ =?us-ascii?Q?R/Y2C5jA6NaMk2yFRokRRMeCtoI4Ri/fR6kPX0fJgFMS57V7yBJnZz4ewyAo?=
+ =?us-ascii?Q?pTeod9BIG4ea2DeFXxJvt6q+l7s2QgJNksnwtVyFq7gdM4nu5zBVQJXxUVRx?=
+ =?us-ascii?Q?g3QYg+5BHAgJP9AT64SFgRIQ4bwU3UTA6hEYuxgmc1PymoLYlzntUAG9qs4H?=
+ =?us-ascii?Q?Gw/ypB7L7rgl1t6Zxh1/3KvpsARVFjALj/uIQr8iwySQCAHRYqkSOWgpqumo?=
+ =?us-ascii?Q?T4yQbV0BfO/WzCSPL2KRQkx6H1HdhCt964pPcrbzi61hj/fDxurYT72jWykt?=
+ =?us-ascii?Q?4eOAeAqCrxuEX6ekxkdra0CM/5I87XWUW2HcZiCHnQstwDZE27WbLnJrxV6B?=
+ =?us-ascii?Q?wTaYTjsX7QtxjfUO8XKMqdDUy8YyLdWHQx/d3NSvNMPBM/P1JqOMwHH/h22L?=
+ =?us-ascii?Q?uv1NaRul3prhXUwMaRL47VMgkeyE/JTqfVaIC9kOozkHl3qlnfO77bULMf3L?=
+ =?us-ascii?Q?S/+dWI3VDMWqdi7pCICmnT27ABDlnqcsfN/BM/KHd7dPdKHQpRdpjOD2MO34?=
+ =?us-ascii?Q?Xaq/ARdwiojCCYhjfc/A5xyFVKRrk/5UNyj415H8bEYXD0TukjTanBaJmG9g?=
+ =?us-ascii?Q?V/AmD6IxOx+X9yhZ3U9y/TbGEJS5QrZMKTvy3AIX1k3nS7c3EK7Gy3CMPPEg?=
+ =?us-ascii?Q?bs3007Wdbs2pQ+YIB6sk8sMb91GacWaYfu8DQJOrgQeH5QV32wyWkc50jd36?=
+ =?us-ascii?Q?hcf/B4lahL3vLULURAtqJ0MURtvkPxwW/BfpKBklbDTd3XxM70uH/mQ5haMG?=
+ =?us-ascii?Q?5AgNUAOkBsC88A4XmOrHtVc7AsJpAmpCPuyWptvnLRIWxRI7qQMNayTbmtlM?=
+ =?us-ascii?Q?odsdmgZaFaKOXxKtYi2CCFJXzkDQj8XHxd4B8xlNzmqLapAjGKfy8vL1UVXB?=
+ =?us-ascii?Q?45EuKCUudMMDHu7l/zpf1loMTM3OrS45jEStRfwHLQScit6NMwix14O+bKQ/?=
+ =?us-ascii?Q?dtILf2oVonF6X/OVkbdBaylzzU47burQtQUppj95AgRuTI0D2C5+HxRpmyku?=
+ =?us-ascii?Q?QUgOpTuoNJFdR46lkxqU+tJkrCfRO8jQqk/l8T139HU5AU2OwzdfChBR4+/C?=
+ =?us-ascii?Q?2KPlKUX1UhxnDF+p/l6hWyYIT5B67iJbvcphZaRaAHTyO4m+5JDicen/52I6?=
+ =?us-ascii?Q?2kP/797ynv4MPhmppA6zs7RkyHvdQtvlOAzJqrGVygxMtSoB9gHiJ/VtBc84?=
+ =?us-ascii?Q?/KUTSbj9jkHq+xMAqeApNKmkn0PoxHqp3ZNnGv7eHcTxzVuLJz3EY7zuuC0E?=
+ =?us-ascii?Q?gj3OM3s09Pf1/RKHGhS6GJKeQWrTqUOk+pl7aVOvX20rztiCZvKEDfxP/FPU?=
+ =?us-ascii?Q?MfqpNGoV/scF9fVgsLc2bDqoG4I8IKxYzW9ih2Y9?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] soc: fsl_qbman: use be16_to_cpu() in
- qm_sg_entry_get_off()
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Breno Leitao <leitao@debian.org>,
- Madalin Bucur <madalin.bucur@nxp.com>, Ioana Ciornei
- <ioana.ciornei@nxp.com>, Radu Bulie <radu-andrei.bulie@nxp.com>,
- Sean Anderson <sean.anderson@linux.dev>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
- <20241029164317.50182-2-vladimir.oltean@nxp.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241029164317.50182-2-vladimir.oltean@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82437dab-8ab3-43cc-37e1-08dcfce0d8e6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2024 14:56:22.1171
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6P/oBNJ/FQDRLe6o75LNODWuuD9+IXL9n6UUJnIn9bL406TnXVN2/dt6WJpfPAP/RUjjCRIW43mUe8afflktDM+E4qcAAQfVesDISefvDRs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7004
+X-OriginatorOrg: intel.com
 
 
+> -----Original Message-----
+> From: Simon Horman <horms@kernel.org>
+> Sent: Saturday, November 2, 2024 4:11 PM
+> To: Nitka, Grzegorz <grzegorz.nitka@intel.com>
+> Cc: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org; Nguyen,
+> Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Kolacinski, Karol
+> <karol.kolacinski@intel.com>; Kubalewski, Arkadiusz
+> <arkadiusz.kubalewski@intel.com>
+> Subject: Re: [PATCH v3 iwl-net 2/4] ice: Fix quad registers read on E825
+>=20
+> On Mon, Oct 28, 2024 at 09:45:41PM +0100, Grzegorz Nitka wrote:
+> > From: Karol Kolacinski <karol.kolacinski@intel.com>
+> >
+> > Quad registers are read/written incorrectly. E825 devices always use
+> > quad 0 address and differentiate between the PHYs by changing SBQ
+> > destination device (phy_0 or phy_0_peer).
+> >
+> > Add helpers for reading/writing PTP registers shared per quad and use
+> > correct quad address and SBQ destination device based on port.
+> >
+> > Rename rmn_0 to phy_0 and remove rmn_1 and rmn_2 as E82X HW does
+> not
+> > support it. Rename eth56g_phy_1 to phy_0_peer.
+> >
+> > Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C
+> products")
+> > Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+> > Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+> > ---
+> > V2 -> V3: Replaced lower/upper_32_bits calls with lower/upper_16_bits
+> > V1 -> V2: Fixed kdoc issues
+> >
+> >  drivers/net/ethernet/intel/ice/ice_common.c   |   2 +-
+> >  .../net/ethernet/intel/ice/ice_ptp_consts.h   |  75 ++----
+> >  drivers/net/ethernet/intel/ice/ice_ptp_hw.c   | 237 +++++++++++-------
+> >  drivers/net/ethernet/intel/ice/ice_ptp_hw.h   |  37 ++-
+> >  drivers/net/ethernet/intel/ice/ice_sbq_cmd.h  |   7 +-
+> >  drivers/net/ethernet/intel/ice/ice_type.h     |   1 -
+> >  6 files changed, 177 insertions(+), 182 deletions(-)
+>=20
+> This patch seems to mix bug fixes and cleanup.
+> Which leads to a rather large patch - larger than is desirable for stable=
+ IMHO.
+>=20
+> Could we consider a more minimal fix for iwl-net.
+> And then follow-up with clean-ups for iwl?
+>=20
+> ...
 
-Le 29/10/2024 à 17:43, Vladimir Oltean a écrit :
-> struct qm_sg_entry :: offset is a 13-bit field, declared as __be16.
-> 
-> When using be32_to_cpu(), a wrong value will be calculated on little
-> endian systems (Arm), because type promotion from 16-bit to 32-bit,
-> which is done before the byte swap and always in the CPU native
-> endianness, changes the value of the scatter/gather list entry offset in
-> big-endian interpretation (adds two zero bytes in the LSB interpretation).
-> The result of the byte swap is ANDed with GENMASK(12, 0), so the result
-> is always zero, because only those bytes added by type promotion remain
-> after the application of the bit mask.
-> 
-> The impact of the bug is that scatter/gather frames with a non-zero
-> offset into the buffer are treated by the driver as if they had a zero
-> offset. This is all in theory, because in practice, qm_sg_entry_get_off()
-> has a single caller, where the bug is inconsequential, because at that
-> call site the buffer offset will always be zero, as will be explained in
-> the subsequent change.
-> 
-> Flagged by sparse:
-> 
-> warning: cast to restricted __be32
-> warning: cast from restricted __be16
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Thanks Simon for reviewing this.
+Sure, will try to adjust this patch to include only minimum changes to addr=
+ess
+the original issue.
 
-Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
->   include/soc/fsl/qman.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-> index 0d3d6beb7fdb..7f7a4932d7f1 100644
-> --- a/include/soc/fsl/qman.h
-> +++ b/include/soc/fsl/qman.h
-> @@ -242,7 +242,7 @@ static inline void qm_sg_entry_set_f(struct qm_sg_entry *sg, int len)
->   
->   static inline int qm_sg_entry_get_off(const struct qm_sg_entry *sg)
->   {
-> -	return be32_to_cpu(sg->offset) & QM_SG_OFF_MASK;
-> +	return be16_to_cpu(sg->offset) & QM_SG_OFF_MASK;
->   }
->   
->   /* "Frame Dequeue Response" */
