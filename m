@@ -1,226 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D18F1D63CC
-	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 10:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717628; cv=fail; b=QxjHHLcG3dkh5iDdYOIvJOQPXf9EI88OAR04sS9dAMsshIsOtBa6B6e3CyOxp0+EedDKm/NWLMw3o9+LNNDLkcaykPrDaquyatXAfogP2Xrsn6wODhfWjhRTCt5QXE4/eufQ2aW/O47G0vYIqSK2Hytk1A/98iq5HQCz8Vpnx5E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717628; c=relaxed/simple;
-	bh=fGCJ4t8+FwOh1j03KE1mYyEE0htNJxx3J0LZuI2jk5M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Kqgc1TAFKzOfp2sjjLMEdynBbkyl+HHAazbLuz/UCO2IMF4P+NrgmUvRvzzBToURDfEgU2QTy/kVsRmd1ks1G9p0RxIIyH0JA18ZgmJpiyUlS9cg3JaPIJDP8aeHn7xkZIXQGEt2gTV2iFNRwzWI4aT5mFPTYNa36XHgQvDMN+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lx6T7RP6; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8831D88D0;
+	Mon,  4 Nov 2024 10:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730717637; cv=none; b=ebfuI1R3ClLpFNa1+xJO+X5LvzE6tUhsOaqVIMq39n5wr3/kowf0xdRNSj9z53SBqNdJaaRT4gq/lrFPyjK0wyh6nFAqLA8vJpb0Y7YTMcTh2mddjgaGwcKU0Y3DJcL5ZrLH2nBsA9VQLHkDksV/aUnJ/A+UtRC12iYMIJkEJGw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730717637; c=relaxed/simple;
+	bh=M17UFKuQXLwyH4RUZSo9NLj/fpjaDLtaPCNoxViMqt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hjqORzZLC/8jyVpT5Zj9knsaMBJSRiuW4w9DJGLgLWwZpzSBR+1Qmj8+KEapHNWxXC/C/uBt7kgwhcilcKmtI+6+wIWlnKzuZr7mO8ckIyc01qQZV8OuV0OmA3QLcZ38qIlkU2GNE4fFJEZdTss4oKsRQifaQ2XtggfxQIHFUBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVJKSEYY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lx6T7RP6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730717627; x=1762253627;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=fGCJ4t8+FwOh1j03KE1mYyEE0htNJxx3J0LZuI2jk5M=;
-  b=Lx6T7RP65rMuVvNFZpSPltVXLiPiOrfCXsaRo8RHraOInFh5qMcDNijr
-   3t7qmyTOHVXeK6xcSu88WVw1N76sc9FtrzG26/TVM/8SLE/NIKHb4aoCG
-   eoYvIqj+VMl3Kp9QT9DT5dJNLcaRa4bw0w+t2fzuU3L22RLb9VVfTU7bM
-   kcezCZjZIhdQwc6Rl6wTwP/P4Ewal6ut64WJT7vlSSD2vyzQx8GWD0IYW
-   S+kNPzYuEbOE7DPZUqPNdUwMf1nRh4/MTjUhUJK5b6Dr5H/rcW1hKtGG6
-   TLxSNy98URvgr/bAC2c7ohgAUOALUzV7Fwo5zSxvag6+8t/kwRsvIjkrH
-   Q==;
-X-CSE-ConnectionGUID: p8z3qhaySlem0jG5E3lDbw==
-X-CSE-MsgGUID: bRrJJcKVT86sZYMp7mHjpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11245"; a="41799681"
-X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
-   d="scan'208";a="41799681"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 02:53:46 -0800
-X-CSE-ConnectionGUID: Qy6O53AdTZuxRlCeYxCBSw==
-X-CSE-MsgGUID: JoujOm4MR1iWcaztyZeUTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="88386699"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Nov 2024 02:53:46 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 4 Nov 2024 02:53:46 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 4 Nov 2024 02:53:46 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 4 Nov 2024 02:53:45 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ho4AzPwqCa10q7Z7gkqf0AO4YJ2k7nHJRjARF6Fs6dAn+SBg16p57nKISQop4bJ0nbgTEgnjC5yYsBvMsRIcEX72UK6E/Cyb+wQ/meR3Rxnf04QSy73pnAfagt6EpGX4kUrObiryUAr6LaeuPQxqbMYOs/1peMPKCOd0YABMUyIWttKvfK1ROb8JA/DMCS9N1DQ5P9iVNwiDT9QUAYCvUonU0/IxWtzn8Jt2MxSLT6rKY+3OdDu1/o0Uk1wS8XlLrAV7lBbwXW6f1CiXzVxXifbkEtp7tVO/3CQXYiWW2elvFcUH6XJzGaVHV9TPbrH4uAFUKZHkh0Gvpl1nGCR3NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fGCJ4t8+FwOh1j03KE1mYyEE0htNJxx3J0LZuI2jk5M=;
- b=b/JbMcoOABlDABLhrvSbs1KJrSe/uhUzDu4PsnrC7+95F59TLsehD0jDAur4KwfdM5kFyNq1d0EPXK04AVFLDSXV1p+lSsAzc9uj6b/IO98Qg/mdDkqB/L0ITwbQ6N5p/hWcdeZBhkSiKGC/H+ECHW6LL4OjHlLNTcQw5CGO1mCdbHCO5X/nDSuSRdkIdlRn1UudUrUp/JObgvs+K/3+pirUPkv15BzmbPKb6BupBVVDZgtewP+A7gpd6vrXhJ3X0wcLv9u1W6510L2MTuOzy/rZ9wV9vv2CyTpkkpVvFxaKgGbo4NuHB7yCDeazlwhtqCyUWo1g4offnBUKbxZPDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB5865.namprd11.prod.outlook.com (2603:10b6:a03:428::13)
- by IA0PR11MB7791.namprd11.prod.outlook.com (2603:10b6:208:401::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
- 2024 10:53:43 +0000
-Received: from SJ0PR11MB5865.namprd11.prod.outlook.com
- ([fe80::b615:4475:b6d7:8bc5]) by SJ0PR11MB5865.namprd11.prod.outlook.com
- ([fe80::b615:4475:b6d7:8bc5%5]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
- 10:53:36 +0000
-From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
-To: "Polchlopek, Mateusz" <mateusz.polchlopek@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, "Drewek, Wojciech" <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>, "Polchlopek, Mateusz"
-	<mateusz.polchlopek@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v12 04/14] iavf: add support
- for negotiating flexible RXDID format
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v12 04/14] iavf: add support
- for negotiating flexible RXDID format
-Thread-Index: AQHbJEUby3tMi8aWUUCIWt67y7Fmb7KnBvOw
-Date: Mon, 4 Nov 2024 10:53:36 +0000
-Message-ID: <SJ0PR11MB58659F3730355FCAC5C8DBBA8F512@SJ0PR11MB5865.namprd11.prod.outlook.com>
-References: <20241022114121.61284-1-mateusz.polchlopek@intel.com>
- <20241022114121.61284-5-mateusz.polchlopek@intel.com>
-In-Reply-To: <20241022114121.61284-5-mateusz.polchlopek@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB5865:EE_|IA0PR11MB7791:EE_
-x-ms-office365-filtering-correlation-id: e3ed0b94-d6fb-4be5-4cdb-08dcfcbeef52
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?sA0RncJm9ya48dX2lUF0jXCP5wCu8am/l+SoOsQmUzqELXH0Sjt2y01esOlO?=
- =?us-ascii?Q?Ef1pTHrCIU/Rqn7WzfwKiUDaTCEgXGQaqrHaZhqfgEjKtABslU49cnoS/1GY?=
- =?us-ascii?Q?3zAO7rnLYWZ6P0nn6FiR38mq3uwaeWzgax0jIuZmqH2J2oVuipYJ2Xr0uJ0P?=
- =?us-ascii?Q?ySn38DtFSldjddbVqxhUqyUqwe7yMdOmU2osIBaeaR2l9YkHhWk+Z9spjtsd?=
- =?us-ascii?Q?7qEYso29z2HlgaKpVBO8rHbJXKqc64vkLzeHnonLZC/jvOZtf/C3XiPpsk+3?=
- =?us-ascii?Q?/EOmdzeZ2y2YnhDnUV3G/zvBR/Ds7w63HYjF0tfPOHzltf3IliAY5kN6CpEo?=
- =?us-ascii?Q?FXjco9NSP+d4A8A1iIjLYzYSbbtm/hgAWe2j6HFlUQO0/Jc4tLu9Tfo8q6zf?=
- =?us-ascii?Q?GW999R3KCnj/bQbrldsoZpZNZH5YLgxx+anVc9KK2PcnjuScZXY8cWDnnrA3?=
- =?us-ascii?Q?oID14GEVVt5P6w1TManIypYZTTl29ERkC3tYlu3lbUlU4idmOCJQjnuiyHNV?=
- =?us-ascii?Q?3JrxiMf11SKgaxMr0IjpKBHS/jh43alvR3LEHQfbAvjKH/nzTK6YKcRsMoCf?=
- =?us-ascii?Q?vebgvKqo8PWLjZTPd8OQT4LywlEyUZGtTbB+vFCkZMJvAGwvWhsbJMHP5Ea5?=
- =?us-ascii?Q?uKgdWcONCb3Du1Uk/C/RUUOz32+nctlLMYPCkAdh4zT+hOeL3QBlpmh8/XPY?=
- =?us-ascii?Q?Luj+sfaMBypvT7Et2ZlhSdopNkb8snse/BUN25KsCCJhHF5cA8s3zrMT5eOA?=
- =?us-ascii?Q?3/kWz2/RZFe/s553u/9NyW8NICO1io0C/GOtCbUh04pGDiTfenn9N/9KtcuW?=
- =?us-ascii?Q?H1KF3/DVnBPEJ/AKM+qBfSeZ96Jfjwfyzu1wTwHYLnFL016ft71HYxJxlJ0k?=
- =?us-ascii?Q?X9f2/VMWuNf03yMlqLsmSyNIDFIrldjvDwj33W6pleKeoOem3m6N4RXOzM6Z?=
- =?us-ascii?Q?YJcDkQ/FG5o54xzL8iQhavmcZy+qBjqi18uRBM8f4xd3LBn/suQh/O0eou/a?=
- =?us-ascii?Q?b7mu96sBT012LOqQXx5VLzmmwcRBoiL3vDTZZLpUGUoHoMvIh/J1o2t2wab7?=
- =?us-ascii?Q?pXzFQz3gAjhCExsFk9SLiHBqaY0Chl2ugLeYo5kHFeowueWnWdNucoxZvK+r?=
- =?us-ascii?Q?3mFVTkZVOc9XXwp0pyDSKDdgvcW+NgX/xDdFyTwOARoaXQ0r4qoIHivStgtr?=
- =?us-ascii?Q?hYvirYmAaZGE99gaYdTpHNDUKZyF2xIY9vck+VvkuDSrBLyOBVSWhEJ1AdPx?=
- =?us-ascii?Q?3Wte8Nm0372nblaSw59Nv0vCQ3PWXFkiJt5jNWIz4koAcx2sAKl1TjX/bhjd?=
- =?us-ascii?Q?bJ4+Glwvj5rG2qvJFo4fYevEZQM1WAcFtrM0VXQehi2NrguqYrPh9trO9ejQ?=
- =?us-ascii?Q?shWE6w0=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5865.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3JTzwsySIj9ij7F0br/t8Eyhs0lI+shfN/hDvrvqUNwz7nfaI+N5LUF8Sc+7?=
- =?us-ascii?Q?YlmJvNeGl8/rAN2ErAyySzjyJpNf2rbabJjyxROgk+CYnoV32g/GxnEaqgjp?=
- =?us-ascii?Q?OKGhKa+jATYwRHkm3do/0ytpUmWKNXUVrqP3V+mjDO8pc/zyplHxxVBpnGP4?=
- =?us-ascii?Q?E4Q4WMfk9KRO/UMeZjLC2hr/L+s5L2o3Y5C9ufphfhZOI4cFYX10Bm4RhO7M?=
- =?us-ascii?Q?aFFXa/GzJLWKF1i4UB6YBQLuKKPrbqFCl9b70PH4ZKr/T92kYPuEkLPqQc7M?=
- =?us-ascii?Q?etTdIAecqBaYllL5dKfGdIH/65sXBF5OteXghfWr9WeiKqmGoBElJL/hF65D?=
- =?us-ascii?Q?WkaVCYxsAw26WO/SB55TRNDh2dN4hGIIl310ScqheGQcs15Xc3sqB8Ci6OVk?=
- =?us-ascii?Q?Iorq/ahRf/RQKEEnHKLZR5S7m3DUINBgqWYsPQry5SJ/SpIpbWzPd6YiKA7B?=
- =?us-ascii?Q?1/Zxe1+lvOD6KSCcJVUj6b/85hvE9lgg55bvM+4wGJ+Rx7AlPSjACNq2n3Cu?=
- =?us-ascii?Q?q/TuB8Obyb0P/8Y3f9WxBYocwd+ZeXxjKdWPRWDyEn1xFDI5+Rlp3RCcvKRJ?=
- =?us-ascii?Q?nP/MegYn0WBbDQxkLI3GOlzZZXu6ZMOQqMRxhaYp3mKJ8NnxMtz6Pmty6mtG?=
- =?us-ascii?Q?8fYX3/zPNVsmKsZxYPOrHHiVuLhq7Cn0jRGtnpMIbFFQPo6sm0i3BJFM+b/4?=
- =?us-ascii?Q?pMnxIUhVK0ZGr+QyPyeJibdDo3LB6avKWCiwb9gknqpmU8dHBLfX/hA7aQx3?=
- =?us-ascii?Q?UTMbKhjtj2vVdVc7Z6x8kzVTKYcgwCzDgyONcXhIxolXiGvFMx0zX9Y6mJEx?=
- =?us-ascii?Q?Z5EZs0PXB2D9y995MZDaZYCNRzM1RIms2/n4iQrenWHI4ifb11EyOSSEoLaU?=
- =?us-ascii?Q?qy+c6SwYjBTwX+JDF0tPnq9KDmqWCoxIvVc/+zruSHeWX2GYUCMpxIu9cU+D?=
- =?us-ascii?Q?F++v8R+2NFO7RBty2tGElj1+yZdJ32yQoE9r5XDTNnneTsBJ/KlQTffcUvjE?=
- =?us-ascii?Q?hydhRUY16ATjPaVrWsIBLBlsFKKoGKsYX8OtT+7Z+/ydMe/IFzT8PWPRy9zQ?=
- =?us-ascii?Q?PLNuWHsrGVrjy6voCJGtXfBUfJtqCSBccQiFu/MMmchhmku969W0QQwHHG0x?=
- =?us-ascii?Q?O1daxS0cPinDv6Ga+fI/BaSk+xncugEVScdrJ+6o+B/LMhqgUDsGMfc21iTL?=
- =?us-ascii?Q?ZJy2reJt/LsjZUEVSRZwFnAayNqYl9lKa6hbyGT2EfUWRzwfty0z83HgD2NJ?=
- =?us-ascii?Q?SlnAbO8qpid1NrVtQKWfRLVETpK0fZfbujdWzyarTq5Gju4GVleQFspnpTqC?=
- =?us-ascii?Q?VG4taUWVbFybJIZiyGjEtBOqVqK6qz6jrHuJ4yLrJ9PUHkq6jEaL/bUM3FBt?=
- =?us-ascii?Q?gUkczAh6vL6ROOxZLYBRYYnMyJFjTnt0qzkCotC8axkeHr5ZX+2nnSS0YsFR?=
- =?us-ascii?Q?O4OofiJcCD95EQXXcWKaNh2Wjl2v0/iU+bR+uYs23DZttdvnA7DVlKmOmN5o?=
- =?us-ascii?Q?Ss19cbCR94gLeyatHwaG+0xqAoWHbHov8QiDErvg6he9FGI8XgatoFazRNkP?=
- =?us-ascii?Q?aypuP6pi0/pGzrFeSl+qpPPCQ8ibJd0pYqyF559AmfYGu79186CBTFa92pHk?=
- =?us-ascii?Q?nw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVJKSEYY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D870C4CED1;
+	Mon,  4 Nov 2024 10:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730717637;
+	bh=M17UFKuQXLwyH4RUZSo9NLj/fpjaDLtaPCNoxViMqt8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DVJKSEYYHg2I1QPNNUyqjrTuthWJil75WScS3jxhuHCdAP9k7NoJ666+5XNtyFP/X
+	 B3bR6CSgmdCZWnL3RnFHGGchdZGhNkeQaNnBrfVI+d93FkRwdUYvUCLSD3MN28zsud
+	 jepKK09AP96aLL6yVFbsL1r3uDilgyIkCbzHBbS/ZpdPKK1f9kEsDBV6BrxIym8p99
+	 Q4sqqQEhQD7cXp0IpVeApN2UjIXI0+fCPpXFRAavedBPlw8H6uTR4uCEQeHfe2G52u
+	 Xv/XU7CLyIW4rtFfdhdCf6Ioedt2UspLml972ybRqf+rzjGIRBUnyyvWrRhoLvIiXU
+	 P+gXYBI3zJspQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Jiayuan Chen <mrpre@163.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 10/11] bpf: fix filed access without lock
+Date: Mon,  4 Nov 2024 05:53:08 -0500
+Message-ID: <20241104105324.97393-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241104105324.97393-1-sashal@kernel.org>
+References: <20241104105324.97393-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5865.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3ed0b94-d6fb-4be5-4cdb-08dcfcbeef52
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2024 10:53:36.8434
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: N9sC2j9Baqh8adNx+0FTbWmurFTiOpY1QUXhVA+aM/CN0Yh+eWLKMsbUssjA/N8D49RrpxMXPW7TuVRBpn1KTEikCuDwvsxCB7fwk1+x6I0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7791
-X-OriginatorOrg: intel.com
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.115
+Content-Transfer-Encoding: 8bit
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Mateusz Polchlopek
-> Sent: Tuesday, October 22, 2024 1:41 PM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Keller, Jacob E <jacob.e.keller@intel.com>; D=
-rewek,
-> Wojciech <wojciech.drewek@intel.com>; Simon Horman <horms@kernel.org>;
-> Polchlopek, Mateusz <mateusz.polchlopek@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v12 04/14] iavf: add support f=
-or
-> negotiating flexible RXDID format
->=20
-> From: Jacob Keller <jacob.e.keller@intel.com>
->=20
-> Enable support for VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC, to enable the VF
-> driver the ability to determine what Rx descriptor formats are available.=
- This
-> requires sending an additional message during initialization and reset, t=
-he
-> VIRTCHNL_OP_GET_SUPPORTED_RXDIDS. This operation requests the supported
-> Rx descriptor IDs available from the PF.
->=20
-> This is treated the same way that VLAN V2 capabilities are handled. Add a=
- new
-> set of extended capability flags, used to process send and receipt of the
-> VIRTCHNL_OP_GET_SUPPORTED_RXDIDS message.
->=20
-> This ensures we finish negotiating for the supported descriptor formats p=
-rior to
-> beginning configuration of receive queues.
->=20
-> This change stores the supported format bitmap into the iavf_adapter stru=
-cture.
-> Additionally, if VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC is enabled by the PF, w=
-e
-> need to make sure that the Rx queue configuration specifies the format.
->=20
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Co-developed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-> Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+From: Jiayuan Chen <mrpre@163.com>
 
+[ Upstream commit a32aee8f0d987a7cba7fcc28002553361a392048 ]
 
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+The tcp_bpf_recvmsg_parser() function, running in user context,
+retrieves seq_copied from tcp_sk without holding the socket lock, and
+stores it in a local variable seq. However, the softirq context can
+modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
+
+As a result, the seq value is stale when it is assigned back to
+tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
+incorrect behavior.
+
+Due to concurrency, the copied_seq field in tcp_bpf_recvmsg_parser()
+might be set to an incorrect value (less than the actual copied_seq) at
+the end of function: 'WRITE_ONCE(tcp->copied_seq, seq)'. This causes the
+'offset' to be negative in tcp_read_sock()->tcp_recv_skb() when
+processing new incoming packets (sk->copied_seq - skb->seq becomes less
+than 0), and all subsequent packets will be dropped.
+
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Link: https://lore.kernel.org/r/20241028065226.35568-1-mrpre@163.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/ipv4/tcp_bpf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 07a896685d0d3..f67e4c9f8d40e 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -216,11 +216,11 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 				  int flags,
+ 				  int *addr_len)
+ {
+-	struct tcp_sock *tcp = tcp_sk(sk);
+ 	int peek = flags & MSG_PEEK;
+-	u32 seq = tcp->copied_seq;
+ 	struct sk_psock *psock;
++	struct tcp_sock *tcp;
+ 	int copied = 0;
++	u32 seq;
+ 
+ 	if (unlikely(flags & MSG_ERRQUEUE))
+ 		return inet_recv_error(sk, msg, len, addr_len);
+@@ -233,7 +233,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
+ 
+ 	lock_sock(sk);
+-
++	tcp = tcp_sk(sk);
++	seq = tcp->copied_seq;
+ 	/* We may have received data on the sk_receive_queue pre-accept and
+ 	 * then we can not use read_skb in this context because we haven't
+ 	 * assigned a sk_socket yet so have no link to the ops. The work-around
+-- 
+2.43.0
 
