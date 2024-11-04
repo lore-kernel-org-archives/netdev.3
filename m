@@ -1,119 +1,139 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805AE1D3195
-	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 20:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23B41CACD0
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 20:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730750447; cv=none; b=Ni4ZfBrH5oHz9UWbE4pmbOno78JZHjyXTty9PHR3ireTnvX5kaRyA8pOESNmABgra2MfudzCi9cE1gX3mYrbpiFDwylh6adhdzBEiDfYhXgfGvWDRAoNWdNjLb6Pfxfl8zq+91j3ONFHeaaIZ3FCrwSMkK88kXuKstxWfHYQ4Sk=
+	t=1730750488; cv=none; b=W94MDXm5U58g8WrU1JfnJwDmVkw0Y/quiWLBLWMmafaPncSMhzm10FhyM3CRvBXKlenybeqXpt4YCzOern2U8QNCgeIYeYUD/WUWYu01CZybmb/BDV8m4mWdm5jxoBGhDaQXJ3aZZ6TnufRv/ONAe3sgSBDJyj78L8FtkpKkuqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730750447; c=relaxed/simple;
-	bh=Cpg3B8hodUewEtvhoEucmrqhdHeU0oL39fsPPIGp+Aw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oi/lsiEqhZNCxIEhbQoDU2FXqRb9AYzrPAsAnSK+0EjhaAXFx5acHA0X3X0snyTzHubnGCdl1Ep4Ua29w2t08diQDnvhlBCYKUfSUMjBJH0AUBUhZXNuSy1bHTZ6oJObdUeCsU+LLSsTqUb1uAETz7r10z0zaBPwzYVSh1BBkRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=DWzlXt17; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="DWzlXt17"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2e6a1042dso3546621a91.2
-        for <netdev@vger.kernel.org>; Mon, 04 Nov 2024 12:00:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1730750445; x=1731355245; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TMEQlN1IEjZdYabCRX4ehOZgAy1jqQ6lORiEMfo+VFs=;
-        b=DWzlXt17+hgKWSup7gWCVi1mePSazgM7Qj7gFaa7PvzOcxiCJBl0ER2E8c+qhHkdIf
-         RTl4jmw/ibA8pgC7CuSPhJknNXLDame0amEGKwVCmt3biy6KL4XZhgDrL8fI0Uj+/9fU
-         j0b3XwiT0CEFfZ9IOzzZ2m21MkQnSQs91tQbI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730750445; x=1731355245;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TMEQlN1IEjZdYabCRX4ehOZgAy1jqQ6lORiEMfo+VFs=;
-        b=WTFq6EY8GDSKUGxuUe1nN2VdQqEWoRSOOtHVPJX3825HntKJwAb/WpF/6ADm4NcKey
-         ZUuqdJDleuN18qdgOrOaWJjnZgEpLlN4rP9xQdUIq1Zh20BL8trI17NuFN5ZGPRxq5Hp
-         H07tLgR6isI4r/D6bxEUzpd9D09mA2oEFIXQBTZcBxQHGGvnBLn//QnF5DzhDHJENMhW
-         6PofIPZ+5UsAwsAjeXOmzHevTXwjPFkxRnTwy8Hxndca7xvLgbeSRijG9uu1Aq1U/KKt
-         9AKt/wj0Hjc44n3QBxe8R4VY4eqGJNiIP6U7Wcl3Bec5hwb63R7soGMDRlVbnJxQ6mHV
-         Qg+A==
-X-Forwarded-Encrypted: i=1; AJvYcCV+SNWKPpiw6AE1gdSbZJL2dVfxhX+Leog7SGaYOqP18bZHAL9rfl5jyToQ33dANnD1903R+IY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzlDpWy98KU+W0WcmfZx/1QNXGIspuK3D3+LAnSTpH44ySQiTa
-	2+rKzb8RPLpk77VXmLoTIMcCF7OCzEdVYfeN5alryaG0FXguESTReH0L2wt4V6U=
-X-Google-Smtp-Source: AGHT+IEOGcBNPTKJTMRsT64uhkirLvN3Mx9+dG4Ws1sfY/DuzgIEkl83SOeG4mXfBHlfrlmT3ps81w==
-X-Received: by 2002:a17:90b:3886:b0:2e2:ebbb:760c with SMTP id 98e67ed59e1d1-2e94c2bd744mr19442434a91.11.1730750444760;
-        Mon, 04 Nov 2024 12:00:44 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e92fa262fasm10496720a91.21.2024.11.04.12.00.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 12:00:44 -0800 (PST)
-Date: Mon, 4 Nov 2024 12:00:40 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Bagas Sanjaya <bagasdotme@gmail.com>, netdev@vger.kernel.org,
-	hdanton@sina.com, pabeni@redhat.com, namangulati@google.com,
-	edumazet@google.com, amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com, sdf@fomichev.me, peter@typeblog.net,
-	m2shafiei@uwaterloo.ca, bjorn@rivosinc.com, hch@infradead.org,
-	willy@infradead.org, willemdebruijn.kernel@gmail.com,
-	skhawaja@google.com, kuba@kernel.org,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux BPF <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next v5 7/7] docs: networking: Describe irq suspension
-Message-ID: <Zykn6Hr0lpqyPBPR@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Bagas Sanjaya <bagasdotme@gmail.com>, netdev@vger.kernel.org,
-	hdanton@sina.com, pabeni@redhat.com, namangulati@google.com,
-	edumazet@google.com, amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com, sdf@fomichev.me, peter@typeblog.net,
-	m2shafiei@uwaterloo.ca, bjorn@rivosinc.com, hch@infradead.org,
-	willy@infradead.org, willemdebruijn.kernel@gmail.com,
-	skhawaja@google.com, kuba@kernel.org,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux BPF <bpf@vger.kernel.org>
-References: <20241103052421.518856-1-jdamato@fastly.com>
- <20241103052421.518856-8-jdamato@fastly.com>
- <ZyinhIlMIrK58ABF@archie.me>
- <ZykRdK6WgfR_4p5X@LQ3V64L9R2>
- <87v7x296wq.fsf@trenco.lwn.net>
- <ZykXnG8M7qXsQcYq@LQ3V64L9R2>
- <87msie955t.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1730750488; c=relaxed/simple;
+	bh=eN6yMsFrtsKmQ8EIPxXbpSyqyXM43tLF4wJxRtSMsgY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JSDilwv6uEuEmtSPz+pBQfein5x6iwyRXPKLaz4KbUZcee7oScKVQtaONlMurSoGcFTfbfMYIhsgycTut0s3id3ZXdBpby/E2k8g+eTqIozTwpJ8rK4XuyH/W/7aMVKBuOsUYvyIlLOij71e2NrXsm4kjaypwZOL9ngjU0DsNfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t83GO-0001X4-7h
+	for netdev@vger.kernel.org; Mon, 04 Nov 2024 21:01:24 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t83GN-00223c-2R
+	for netdev@vger.kernel.org;
+	Mon, 04 Nov 2024 21:01:23 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 6D541367F7B
+	for <netdev@vger.kernel.org>; Mon, 04 Nov 2024 20:01:23 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3D0A8367F5F;
+	Mon, 04 Nov 2024 20:01:22 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id aeb109b5;
+	Mon, 4 Nov 2024 20:01:21 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/8] pull-request: can 2024-11-04
+Date: Mon,  4 Nov 2024 20:53:23 +0100
+Message-ID: <20241104200120.393312-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87msie955t.fsf@trenco.lwn.net>
+Content-Type: text/plain; charset=utf8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Mon, Nov 04, 2024 at 12:21:02PM -0700, Jonathan Corbet wrote:
-> Joe Damato <jdamato@fastly.com> writes:
-> 
-> > Thanks for the feedback. I had been preparing a v6 based on Bagas'
-> > comments below where you snipped about in the documentation, etc.
-> >
-> > Should I continue to prepare a v6? It would only contain
-> > documentation changes in this patch; I can't really tell if a v6 is
-> > necessary or not.
-> 
-> Look at the generated docs and be sure that results are what you expect;
-> the enumerated-list change may be necessary.
+Hello netdev-team,
 
-Right, of course. I just did that and taking Bagas' suggestion does
-make the enumerated list look better, so I'll send a v6 with that
-change shortly.
+this is a pull request of 8 patches for net/master.
 
-Thanks for the guidance.
+Alexander Hölzl contributes a patch to fix an error in the CAN j1939
+documentation.
+
+Thomas Mühlbacher's patch allows building of the {cc770,sja1000}_isa
+drivers on x86_64 again.
+
+A patch by me targets the m_can driver and limits the call to
+free_irq() to devices with IRQs.
+
+Dario Binacchi's patch fixes the RX and TX error counters in the c_can
+driver.
+
+The next 2 patches target the rockchip_canfd driver. Geert
+Uytterhoeven's patch lets the driver depend on ARCH_ROCKCHIP. Jean
+Delvare's patch drops the obsolete dependency on COMPILE_TEST.
+
+The last 2 patches are by me and fix 2 regressions in the mcp251xfd
+driver: fix broken coalescing configuration when switching CAN modes
+and fix the length calculation of the Transmit Event FIFO (TEF) on
+full TEF.
+
+regards,
+Marc
+
+---
+
+The following changes since commit 5ccdcdf186aec6b9111845fd37e1757e9b413e2f:
+
+  net: xilinx: axienet: Enqueue Tx packets in dql before dmaengine starts (2024-11-03 14:35:11 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.12-20241104
+
+for you to fetch changes up to 3c1c18551e6ac1b988d0a05c5650e3f6c95a1b8a:
+
+  can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation (2024-11-04 18:01:07 +0100)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.12-20241104
+
+----------------------------------------------------------------
+Alexander Hölzl (1):
+      can: j1939: fix error in J1939 documentation.
+
+Dario Binacchi (1):
+      can: c_can: fix {rx,tx}_errors statistics
+
+Geert Uytterhoeven (1):
+      can: rockchip_canfd: CAN_ROCKCHIP_CANFD should depend on ARCH_ROCKCHIP
+
+Jean Delvare (1):
+      can: rockchip_canfd: Drop obsolete dependency on COMPILE_TEST
+
+Marc Kleine-Budde (3):
+      can: m_can: m_can_close(): don't call free_irq() for IRQ-less devices
+      can: mcp251xfd: mcp251xfd_ring_alloc(): fix coalescing configuration when switching CAN modes
+      can: mcp251xfd: mcp251xfd_get_tef_len(): fix length calculation
+
+Thomas Mühlbacher (1):
+      can: {cc770,sja1000}_isa: allow building on x86_64
+
+ Documentation/networking/j1939.rst             |  2 +-
+ drivers/net/can/c_can/c_can_main.c             |  7 ++++++-
+ drivers/net/can/cc770/Kconfig                  |  2 +-
+ drivers/net/can/m_can/m_can.c                  |  3 ++-
+ drivers/net/can/rockchip/Kconfig               |  3 ++-
+ drivers/net/can/sja1000/Kconfig                |  2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c |  8 +++++---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c  | 10 +++++++---
+ 8 files changed, 25 insertions(+), 12 deletions(-)
+
