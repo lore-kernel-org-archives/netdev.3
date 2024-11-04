@@ -1,170 +1,149 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47C91FCC6B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47691F584E;
 	Mon,  4 Nov 2024 22:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730759116; cv=none; b=l3DJgCgbE/nxrafHKFTnmOYrRfpTXegXK7ypRlewMdl9x34UE2MvyFiiaq/Vt8BTPTtIBRpujBv3wmnP1NspOKhTzRuItwVRDOjnySEHfp/mBt7C21hkbhQ5B87j0M2xNjZBPWE1Prl54qZTAXdZj7o8sV4dlP9kkAvfp9HnL3w=
+	t=1730759116; cv=none; b=I0ak4Sh+d8AsjdriVHFKE3l6sS2bTngeZOsc4+QCs8TT9Q0RSd96Gp5JAyVlPBo3Qtx07Ry+axUMe9rAAmU7r3rcukl81aT6IYRUrMRpI7fHYuWsmAvF95dbS+C0CgDJ9kQyBj+Ma9Je1zlL3yQDLQHsgNzavfa4CiTohNpKFiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730759116; c=relaxed/simple;
-	bh=IQDWNN9AzscOd/onsKj9XQgejdQOpQ2hRjYTq++U6Ys=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MjWKbv+fbhuutBfLuSO1iU4pmSDx9OBHG8VRoluY+odXPA9NnB6J/PSJKx3/yg38KnOYklVXjmTsAIBlbSEroDaxdVyPGhNWCk1hYgMy9AnXFrWw1ulJQZu54PzKe7VPxL6sDqNfqxnpVSn44fx77yxe3hctTrkc7pVmbshQ0O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQsSAVr+; arc=none smtp.client-ip=10.30.226.201
+	bh=EMMCpsdODJVzRgCRGNjxUyPSk2UohbpGVbsSjg+is+c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HP9zJe8yhU/wVdqSk0bex95LLGPruzUjV41IH9TkdZqToTiKcteSB2XdXMlOuDi5hayPpyMf0IHUNjvdi1YGdap5JfihEZCMkDYaZ6f7ED+ROpSINt7TV9frsCzG6nkJvesK2kuFZCNprRUCDrfpHgApALtleaP4Ffnq8LZWY3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1dwDCRd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQsSAVr+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7E0C4CED1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1dwDCRd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7770FC4CECE;
 	Mon,  4 Nov 2024 22:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1730759116;
-	bh=IQDWNN9AzscOd/onsKj9XQgejdQOpQ2hRjYTq++U6Ys=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CQsSAVr+eRCjiKaz3rfTz/05RVTgOf4KlVnvd/7UQ4jSuCqB5p/I5HW7BaRqk/Lo0
-	 Y/K7zsW07n3Rlgu88P/hqWufPVhhy9D47N/WbvBSI/Ytuh2jxeOzg9mtRcY5ErxgCw
-	 i6hXNLQ1Rle/Lj8b9mOTQ6ilmbZo1IcpA9rzoAGoi02te5Fm6NNooC4mVyl85WUU+Z
-	 w1+SyglKXb5tRgjyjINkWCKpvxl4rx1KMihjgyOkp/W4E2s089QRhn64zD2NMLHBfT
-	 ZIQqYgSmXCHGAo0hiGgmOGm7DGVKmuUwkmisxkn4ZkRVv0H5wPqCeQFcblfBS1HuJQ
-	 DgAFKjpXBzSxw==
+	bh=EMMCpsdODJVzRgCRGNjxUyPSk2UohbpGVbsSjg+is+c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p1dwDCRdo1YDA3tV8OP+eYNHOnBsfSWG9AKWcWpOZw762dgquzTpseCWiiR+XUGPM
+	 XNSU2ro1fLMIcbzOqU0o8Ca5MUaq9bOwIM7PRBcbU+um4zp2i0J54R3amvd8QLpsmY
+	 YhU7JMeAAAmdZoMGKfYpMjSOl0o1WZO77itIY1PSb4gQdNHgjmfBON13l7kpz7o5Vc
+	 y27mNiGvZRpAEmIhiqIWQ2AClRipbxJcHRgf4YNSOSqt8wtvvCp/dtLfWLgZ/ojQhD
+	 YTRkGHoKQiZq+Tn0dT9SdMpMTADzgrO8SNWnYI3md/iJOH+rGflS1zWkV9TVto2j6m
+	 8AlJkjXVxt/VQ==
 From: Kees Cook <kees@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
 Cc: Kees Cook <kees@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH RFC 0/5] sockaddr usage removal
-Date: Mon,  4 Nov 2024 14:25:02 -0800
-Message-Id: <20241104221450.work.053-kees@kernel.org>
+Subject: [PATCH RFC 4/5] net: core: Convert inet_addr_is_any() to sockaddr_storage
+Date: Mon,  4 Nov 2024 14:25:06 -0800
+Message-Id: <20241104222513.3469025-4-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241104221450.work.053-kees@kernel.org>
+References: <20241104221450.work.053-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5838; i=kees@kernel.org; h=from:subject:message-id; bh=IQDWNN9AzscOd/onsKj9XQgejdQOpQ2hRjYTq++U6Ys=; b=owGbwMvMwCVmps19z/KJym7G02pJDOmange5zdILLoUGrcm8n3iV7e6vgFsrrHtSnt5fWjch3 13g0d5dHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABOx/cXw3/nflfA9t42una3l rXqjxzTn1B7jdEEjy80rXn65oSTpeoOR4W/MU7lv1440ta+zyL6fPW3V/M8yCSqFoROjHude+Th jMgcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3869; i=kees@kernel.org; h=from:subject; bh=EMMCpsdODJVzRgCRGNjxUyPSk2UohbpGVbsSjg+is+c=; b=owGbwMvMwCVmps19z/KJym7G02pJDOmanofKHSb3yEnXLfHgmHdLM/yfcSTvnP/Gn2fohWixf 12rqzKto5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCLaiYwMp1X4rorbOaxubj+7 6LB23upUS/GQpaf85HWZHlzdzdB+n5FhS2fRTIbrBbH18101q6LKLbx75cR0Zp7dYvvky9xVc1K YAA==
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 
-(I removed the explicit CC list because it was huge...)
+All the callers of inet_addr_is_any() have a sockaddr_storage-backed
+sockaddr. Avoid casts and switch prototype to the actual object being
+used.
 
-Hi,
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+ drivers/nvme/target/rdma.c          | 2 +-
+ drivers/nvme/target/tcp.c           | 2 +-
+ drivers/target/iscsi/iscsi_target.c | 2 +-
+ include/linux/inet.h                | 2 +-
+ net/core/utils.c                    | 8 ++++----
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-This is strictly an RFC -- it's not a complete removal of sockaddr at
-all, but it explores what's involved. Some things are easy (e.g. the
-first 3 patches), and some is very involved (last patch).
-
-For the most part, the proto_ops::getname() switching from sockaddr
-to sockaddr_storage is mostly mechanical (and mostly just removes
-sockaddr casts). There are, however, cases where we still end up lying
-to the compiler about object sizes (in the case where the backing
-object is smaller than sockaddr_storage, but large enough to hold the
-protocol-specific address). These remain just as safe as they used to
-be. :)
-
-I think for getname() (and similar interfaces) we *do* want to use
-sockaddr_storage, but there is kind of an argument to instead use
-a struct with a flexible array, e.g.:
-
-struct sockaddr_unspec {
-        sa_family_t	sa_family;
-	char		sa_data[];
-};
-
-If this was done, then all these APIs would switch their casts from
-"(struct sockaddr *)" to "(struct sockaddr_unspec *)", even though in
-most cases the object is actully a struct sockaddr_storage.
-
-What do folks think?
-
--Kees
-
-
-Kees Cook (5):
-  Revert "net: dev: Convert sa_data to flexible array in struct
-    sockaddr"
-  net: core: dev.c confirmed to use classic sockaddr
-  rtnetlink: do_setlink: Use sockaddr_storage
-  net: core: Convert inet_addr_is_any() to sockaddr_storage
-  net: Convert proto_ops::getname to sockaddr_storage
-
- drivers/infiniband/hw/erdma/erdma_cm.h        |  4 +-
- drivers/infiniband/hw/usnic/usnic_transport.c | 16 +++---
- drivers/infiniband/sw/siw/siw_cm.h            |  4 +-
- drivers/isdn/mISDN/socket.c                   |  2 +-
- drivers/net/ppp/pppoe.c                       |  2 +-
- drivers/net/ppp/pptp.c                        |  2 +-
- drivers/nvme/host/tcp.c                       |  2 +-
- drivers/nvme/target/rdma.c                    |  2 +-
- drivers/nvme/target/tcp.c                     |  8 ++-
- drivers/scsi/iscsi_tcp.c                      | 18 +++----
- drivers/soc/qcom/qmi_interface.c              |  2 +-
- drivers/target/iscsi/iscsi_target.c           |  2 +-
- drivers/target/iscsi/iscsi_target_login.c     | 51 +++++++++----------
- fs/dlm/lowcomms.c                             |  2 +-
- fs/nfs/nfs4client.c                           |  4 +-
- fs/ocfs2/cluster/tcp.c                        | 25 +++++----
- fs/smb/server/connection.h                    |  2 +-
- fs/smb/server/mgmt/tree_connect.c             |  2 +-
- fs/smb/server/transport_ipc.c                 |  4 +-
- fs/smb/server/transport_ipc.h                 |  4 +-
- fs/smb/server/transport_tcp.c                 |  6 +--
- include/linux/inet.h                          |  2 +-
- include/linux/net.h                           |  6 +--
- include/linux/socket.h                        |  5 +-
- include/linux/sunrpc/clnt.h                   |  2 +-
- include/net/inet_common.h                     |  2 +-
- include/net/ipv6.h                            |  2 +-
- include/net/sock.h                            |  2 +-
- net/appletalk/ddp.c                           |  2 +-
- net/atm/pvc.c                                 |  2 +-
- net/atm/svc.c                                 |  2 +-
- net/ax25/af_ax25.c                            |  2 +-
- net/bluetooth/hci_sock.c                      |  2 +-
- net/bluetooth/iso.c                           |  6 +--
- net/bluetooth/l2cap_sock.c                    |  6 +--
- net/bluetooth/rfcomm/sock.c                   |  3 +-
- net/bluetooth/sco.c                           |  6 +--
- net/can/isotp.c                               |  3 +-
- net/can/j1939/socket.c                        |  2 +-
- net/can/raw.c                                 |  2 +-
- net/core/dev.c                                |  7 ++-
- net/core/dev_ioctl.c                          |  2 +-
- net/core/rtnetlink.c                          | 12 ++---
- net/core/sock.c                               |  4 +-
- net/core/utils.c                              |  8 +--
- net/ipv4/af_inet.c                            |  2 +-
- net/ipv4/arp.c                                |  2 +-
- net/ipv6/af_inet6.c                           |  2 +-
- net/iucv/af_iucv.c                            |  6 +--
- net/l2tp/l2tp_ip.c                            |  2 +-
- net/l2tp/l2tp_ip6.c                           |  2 +-
- net/l2tp/l2tp_ppp.c                           |  2 +-
- net/llc/af_llc.c                              |  2 +-
- net/netlink/af_netlink.c                      |  4 +-
- net/netrom/af_netrom.c                        |  2 +-
- net/nfc/llcp_sock.c                           |  4 +-
- net/packet/af_packet.c                        | 21 ++++----
- net/phonet/socket.c                           | 10 ++--
- net/qrtr/af_qrtr.c                            |  2 +-
- net/qrtr/ns.c                                 |  2 +-
- net/rds/af_rds.c                              |  2 +-
- net/rose/af_rose.c                            |  2 +-
- net/sctp/ipv6.c                               |  2 +-
- net/smc/af_smc.c                              |  2 +-
- net/smc/smc.h                                 |  2 +-
- net/smc/smc_clc.c                             |  2 +-
- net/socket.c                                  | 10 ++--
- net/sunrpc/clnt.c                             |  9 ++--
- net/sunrpc/svcsock.c                          |  8 +--
- net/sunrpc/xprtsock.c                         |  4 +-
- net/tipc/socket.c                             |  2 +-
- net/unix/af_unix.c                            |  9 ++--
- net/vmw_vsock/af_vsock.c                      |  2 +-
- net/x25/af_x25.c                              |  2 +-
- security/tomoyo/network.c                     |  3 +-
- 75 files changed, 189 insertions(+), 193 deletions(-)
-
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index ade285308450..6e4f76711142 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -1988,7 +1988,7 @@ static void nvmet_rdma_disc_port_addr(struct nvmet_req *req,
+ 	struct nvmet_rdma_port *port = nport->priv;
+ 	struct rdma_cm_id *cm_id = port->cm_id;
+ 
+-	if (inet_addr_is_any((struct sockaddr *)&cm_id->route.addr.src_addr)) {
++	if (inet_addr_is_any(&cm_id->route.addr.src_addr)) {
+ 		struct nvmet_rdma_rsp *rsp =
+ 			container_of(req, struct nvmet_rdma_rsp, req);
+ 		struct rdma_cm_id *req_cm_id = rsp->queue->cm_id;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 7c51c2a8c109..df24244fb820 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -2158,7 +2158,7 @@ static void nvmet_tcp_disc_port_addr(struct nvmet_req *req,
+ {
+ 	struct nvmet_tcp_port *port = nport->priv;
+ 
+-	if (inet_addr_is_any((struct sockaddr *)&port->addr)) {
++	if (inet_addr_is_any(&port->addr)) {
+ 		struct nvmet_tcp_cmd *cmd =
+ 			container_of(req, struct nvmet_tcp_cmd, req);
+ 		struct nvmet_tcp_queue *queue = cmd->queue;
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 6002283cbeba..1ce68eda0090 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -3471,7 +3471,7 @@ iscsit_build_sendtargets_response(struct iscsit_cmd *cmd,
+ 					}
+ 				}
+ 
+-				if (inet_addr_is_any((struct sockaddr *)&np->np_sockaddr))
++				if (inet_addr_is_any(&np->np_sockaddr))
+ 					sockaddr = &conn->local_sockaddr;
+ 				else
+ 					sockaddr = &np->np_sockaddr;
+diff --git a/include/linux/inet.h b/include/linux/inet.h
+index bd8276e96e60..d59e3013b0e2 100644
+--- a/include/linux/inet.h
++++ b/include/linux/inet.h
+@@ -55,6 +55,6 @@ extern int in6_pton(const char *src, int srclen, u8 *dst, int delim, const char
+ 
+ extern int inet_pton_with_scope(struct net *net, unsigned short af,
+ 		const char *src, const char *port, struct sockaddr_storage *addr);
+-extern bool inet_addr_is_any(struct sockaddr *addr);
++extern bool inet_addr_is_any(struct sockaddr_storage *addr);
+ 
+ #endif	/* _LINUX_INET_H */
+diff --git a/net/core/utils.c b/net/core/utils.c
+index 27f4cffaae05..e47feeaa5a49 100644
+--- a/net/core/utils.c
++++ b/net/core/utils.c
+@@ -399,9 +399,9 @@ int inet_pton_with_scope(struct net *net, __kernel_sa_family_t af,
+ }
+ EXPORT_SYMBOL(inet_pton_with_scope);
+ 
+-bool inet_addr_is_any(struct sockaddr *addr)
++bool inet_addr_is_any(struct sockaddr_storage *addr)
+ {
+-	if (addr->sa_family == AF_INET6) {
++	if (addr->ss_family == AF_INET6) {
+ 		struct sockaddr_in6 *in6 = (struct sockaddr_in6 *)addr;
+ 		const struct sockaddr_in6 in6_any =
+ 			{ .sin6_addr = IN6ADDR_ANY_INIT };
+@@ -409,13 +409,13 @@ bool inet_addr_is_any(struct sockaddr *addr)
+ 		if (!memcmp(in6->sin6_addr.s6_addr,
+ 			    in6_any.sin6_addr.s6_addr, 16))
+ 			return true;
+-	} else if (addr->sa_family == AF_INET) {
++	} else if (addr->ss_family == AF_INET) {
+ 		struct sockaddr_in *in = (struct sockaddr_in *)addr;
+ 
+ 		if (in->sin_addr.s_addr == htonl(INADDR_ANY))
+ 			return true;
+ 	} else {
+-		pr_warn("unexpected address family %u\n", addr->sa_family);
++		pr_warn("unexpected address family %u\n", addr->ss_family);
+ 	}
+ 
+ 	return false;
 -- 
 2.34.1
 
