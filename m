@@ -1,54 +1,54 @@
 Received: from dispatch1-eu1.ppe-hosted.com (dispatch1-eu1.ppe-hosted.com [185.183.29.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02C19D8B2
-	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 08:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492E8198E81
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 08:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.29.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730707509; cv=fail; b=uxAsP7db5tV0VXhVCnrvroeSOjhrb1Ewx13s19bYSZFZiTaOn5T2W+7CWlLXKbU96AvY5hbkKt06xeqYhClNkIlYZgApUPfaXkCBkn6VO501WmtQxo8IOk0MXHsjfl4luW5gZ1u03OOC6abE/XDMuWUKPq1+SesRATmzv6GzHUY=
+	t=1730707510; cv=fail; b=pm0PAUNWd3OemHdN/uos8Q7uFlEys9cFqPIBjrvxv04PGjX6k/7NL+6pQ8bLZaG7wFGs1gR1FdaJ8shH0nWDS7R3OdBecGsJQQI2+fzcf+Zr0b34r3IbsydpT9ZZMjR05p4rq/OfYiiOwcEylCwn1kOohDTKXl2E0WdG+TwfHu0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730707509; c=relaxed/simple;
-	bh=unQClmdb7DhPMqlNnd9Q0r05kE24XEkl/yMpvtJGAOk=;
+	s=arc-20240116; t=1730707510; c=relaxed/simple;
+	bh=vVrFD+mYj8KaLwn71l4y1PgIZG/YTtZWZ4x8ILga3K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gJMFfknV8w4K5AH0BLL6+ryPs0E2bqyxj2dXhDZqrtOs50g8EDxxYY35BmQ8FAqAJ9bKoAVia7T7aje7c6I9UzhYTeNBpsu6OIF5CrTqJ7b8ZTV03xQrFDmg5fyye6T3siljKh2dvV7Y8+IWHMU+IXu2hZeDvy+C86vDsTOadCo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com; spf=pass smtp.mailfrom=drivenets.com; dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b=LCNmWTb1; arc=fail smtp.client-ip=185.183.29.33
+	 Content-Type:MIME-Version; b=gwEQDUPo/SggrzP+N8knlVB3PqFhW6146NrIjkTWtr1b0TNAHrqoVL4sGV9sIQzatWcQs82pNQ5e34Um6ZRGcgFuxMxb0EGwFp4rwMLA5GDZ04s7zl2UREZhrY9+HJI/Z4Vi5vZVsNmeDBb5rTiMYFsaytE5brqvaXXqFZb87H4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com; spf=pass smtp.mailfrom=drivenets.com; dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b=ZYu8t/su; arc=fail smtp.client-ip=185.183.29.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=drivenets.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b="LCNmWTb1"
+	dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b="ZYu8t/su"
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05lp2173.outbound.protection.outlook.com [104.47.17.173])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05lp2168.outbound.protection.outlook.com [104.47.17.168])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 33E62340065;
-	Mon,  4 Nov 2024 08:04:58 +0000 (UTC)
+	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 8EB1E200059;
+	Mon,  4 Nov 2024 08:05:00 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HgR5T6R78pAMQghEYw4Aj6SdsEWgMjLSTZ6CikOA4MQqHSiT3ziHCbgH2rNziKRLMRvKV7fUQ9QOWb6vdWdV9XzHoI82C4hc6axxfGiA/+bARwFnHd3f6i5hEK3iUGvn+QYjpMafX2fI/Go+4FbulTZilWfrA30VTdIXcdEaTUXP0dCkrgo8seNhtdEE/uxlbLuLomS8CoDISrEow2WQydyaMHfuuKcLuLAJGZ6l12AEhy/phLOGoqfuEX7o6EG711sTsAz6NwfdqXLV9w/zE6GGXME1GmwPrRPQdrJ3FSRtABqujnGuBg+tliwObYfgLLnNfuigvOWOrztkmyMWhw==
+ b=AvBJA03RaKe5KIx7dAmLc7JrjKzkHUB/cG5K1qyFIHPjwinyMEAs5d60yYE/BewKc+ktLnvKxHcc+AiL7zhbQ5GP+xY6XKeaX8WiCGwacks1ENScSGlOxnPq75QOEy+nN6pGxFPR0bhtfqI897vTQ5dlmCa1Gpy/GWpaP+GqnxFAqpVSTxobrOzdixY6LtZNgDqxH64grRXgcDvQEw6EolTJ3l6jKV82DFVM7g2fmBx+oQ/Bx+sUyq77T0/R8Es5WfiDA84SnPNKfxp65mCe8cXYZftHgVt8cPMcGrX4NcwO4EYSRo77/V8RTEUQUTXEPCrG7ISKfeFfB5JKoMYBIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RLEf7WzQYguIPSRloqAzAB+4WoiA2ddyb8jtyIftuyk=;
- b=beNgjBxfHyDl3FBhfO21moysORStoJyQ1Z6Q75+ESNKSoOPOiRWShf6+tGm4yIostN4xp3W3fDExCXjUttwH24rIcS346uyw6RXwYRXn4Nf7CXGhqw9GUHpln7LrhBRI0B9goDONj01N25ddHQQJPdyUVL008h9RkXQuBwB2ux+EYYzE7tkM6tdGCNtJV+BmttSt0jvO7oATPqujoXvb/afvQzb3QeetVIia8smbCnFUKk5yOOTwE//fcUJRjPTdk7GOnD5/RSWAyxw6X1Yukf2yTvNUjIGO06oBXHc2z12ewnA/EGyAVM5hJMyXF0VH/eOPpLGNfxjx/dkNUo13BQ==
+ bh=ZbgFucxQvEkfPX3c4BS+jKyeG6S9cBJLgvhxhFnned4=;
+ b=v5o+56qKYgQrYiQK4liwovnCggOQkztvfBDbYKJCgHpmCgBcAEGHptlSovRKxU27WapgOMwfdWlE6+/8HepSfYL41QcDXPsuyFtKAg7M4a3LCAujn3Pd2nMX0Q8Jzj55MpJDHqTHtDuhr1XJXuzGXR/2WQro9Fry5QHMMAOAKsetYjXWlYeJA7XMT1WcLJEmGpffQtj9RuVrVUMhfiMVbOzYzKP8AEcBmtm7aNdHptB6a7szOjW8HT88hQO3VXkUI+VsD5iEQqRwgZoxPpKvGMmQC0b1WzlftVBm7UulP91mTUriEnzNBpsTk9at6Z2Z7eGDBtdV7mlWSTWexouuag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=drivenets.com; dmarc=pass action=none
  header.from=drivenets.com; dkim=pass header.d=drivenets.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=drivenets.onmicrosoft.com; s=selector2-drivenets-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RLEf7WzQYguIPSRloqAzAB+4WoiA2ddyb8jtyIftuyk=;
- b=LCNmWTb1qz/d4pEq1BzncBJNrD8YFhdhR6i6TVHYrLWB15dbwqDq/0sl7FhA9Rl7xDG434EOSj1MLuk2oEULJWzI8wmZpoeCSEUc/QCS40asegsLJkYSuNfuqpNhNDbqvaT8ctEY7i3GTOnfX2DCcYcLjupor4wuc29yM9FaSeI=
+ bh=ZbgFucxQvEkfPX3c4BS+jKyeG6S9cBJLgvhxhFnned4=;
+ b=ZYu8t/su4CCOxg5ZzwNaisHqHPNsnB42xZHm70NiNYq61okIrzSoV1KZKLL1ZMZwqthFrrtPSAFAXiyhIBpQSt6kdyhZ8QXt8dg/4aUdaYnDJ0vCrFpMxK0yryL0UfL1MeukjWDPDStmOdZ9XC1KqgSFlJjn7kUFyk6wAhKdX2c=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=drivenets.com;
 Received: from DB8PR08MB5388.eurprd08.prod.outlook.com (2603:10a6:10:11c::7)
  by AM8PR08MB5553.eurprd08.prod.outlook.com (2603:10a6:20b:1da::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.30; Mon, 4 Nov
- 2024 08:04:56 +0000
+ 2024 08:04:59 +0000
 Received: from DB8PR08MB5388.eurprd08.prod.outlook.com
  ([fe80::29dd:6773:4977:dc4e]) by DB8PR08MB5388.eurprd08.prod.outlook.com
  ([fe80::29dd:6773:4977:dc4e%6]) with mapi id 15.20.8114.028; Mon, 4 Nov 2024
- 08:04:56 +0000
+ 08:04:59 +0000
 From: Gilad Naaman <gnaaman@drivenets.com>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -57,9 +57,9 @@ To: netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>
 Cc: Gilad Naaman <gnaaman@drivenets.com>
-Subject: [PATCH net-next v8 1/6] neighbour: Add hlist_node to struct neighbour
-Date: Mon,  4 Nov 2024 08:04:29 +0000
-Message-ID: <20241104080437.103-2-gnaaman@drivenets.com>
+Subject: [PATCH net-next v8 4/6] neighbour: Convert iteration to use hlist+macro
+Date: Mon,  4 Nov 2024 08:04:32 +0000
+Message-ID: <20241104080437.103-5-gnaaman@drivenets.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241104080437.103-1-gnaaman@drivenets.com>
 References: <20241104080437.103-1-gnaaman@drivenets.com>
@@ -76,209 +76,238 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB8PR08MB5388:EE_|AM8PR08MB5553:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e7225e6-5af6-4122-60a3-08dcfca75ee3
+X-MS-Office365-Filtering-Correlation-Id: ce8a3e5d-5af4-4d71-8242-08dcfca7609d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iaPXklG4L5aL04chtclWgOyk58UAZU/k2tw31gPLcliJlCu0X+5rq+ioLA3m?=
- =?us-ascii?Q?COi6RxCW70WEqQOvc37TTzsPoLJUKolJz1OMPKRFQ3yLmGPXLBXeMXz0WPZ2?=
- =?us-ascii?Q?Kho/cRMR65yCuHfnpUjNCWAMLLvE3Ym70wkI3mDj7X5mHuCtvnc8yEgy7uT/?=
- =?us-ascii?Q?1p+PpMgicjTw6hSZVWFmWEttu/Gpp2poFjwj+Bz1NrUDK3WmfA1Rk2ytEQ8b?=
- =?us-ascii?Q?ZSd75Bcd+oX6tfEO8N04ARDXIxlz5RGywgw7TZRDgJ+7SjkBzSvPSya2e3tJ?=
- =?us-ascii?Q?P5+/JmjWwYK5dBimHccvlUT/d7JaoMtEY4peLIJFrlmzSa7jzrf+0EVv1FX8?=
- =?us-ascii?Q?R78/QeGmOvUvJrEYSsQgCaH+7jUoTmEh2gSzPuIhEKGjH+bDsweprPHYg4rS?=
- =?us-ascii?Q?lshyuz2Q7W4+lXS5WKBTOuAp6Qb4PXPGg0Vn7WXjxzuFh9KNlbzlQagZmcOp?=
- =?us-ascii?Q?SyKdEZFDdQJn5mLLgeCcYWQXt3Xxc+QOtgAKYYSh8OeaqOsc3Vg+Ve6yhUo/?=
- =?us-ascii?Q?VA2YNXGVF7pocURH9o65dSnN82nJLRcr79cch5uBx1TeKKMCQNPUFsYQvjGo?=
- =?us-ascii?Q?eZnLbp2I3cSOy+8y70BKt0Zqqx8lAm0HFGORGv6PWSvm2S+eZBAeVl0SZiJ5?=
- =?us-ascii?Q?NZYJNmRrPfMVKFDUmOlS1YWvAovYk3nAJEkTic5kNIFVn530A9VPXPkE77XY?=
- =?us-ascii?Q?luDTSqLud+6/aycseDge8Ue4vGGgZXPKWN+IHetP1Vc0zT+PQCtQcoXgoQPX?=
- =?us-ascii?Q?HHR9ywmHZTjc36r4WZCMZqZGDxzeIicufByUBbJl8esQ5bIjBA2bSdLFwTO8?=
- =?us-ascii?Q?ePY19rH5cDYsblrtWrK9TI4ISkIEEpKOhzvEx4903izw+/pYiF3JhD/lCq8M?=
- =?us-ascii?Q?0kF28CfmUUxOBt6yLePgwYH4SxJoZ3jskJEEBaFG99qJwuKpIEbPALhUAfhH?=
- =?us-ascii?Q?0akXQnnFEULaAG+iIp+tpEvPbMHjejLXQ37offdX3LI0AEq3HtwgLBVN2WvU?=
- =?us-ascii?Q?O4ypYdNbNSbXu8+uOY9ypKdGpd3S0EiHmmwjx9as41tu9zsnVkqcb/wbeLqB?=
- =?us-ascii?Q?tv8SpsxVixh/vd4+1CcomY/GVGvrSdgfMKgg9hdvHn6f5HpPbFUfZP7lBBrd?=
- =?us-ascii?Q?doHLobs8rZJJgnIGCz/krTT2Ov+bxjLJKZpyvr+Krsva2HMCyc72o+gKU12g?=
- =?us-ascii?Q?wM4iI8coN8/P5gmRPR12pAOtAVs1oY2acVAwXnQgM3yPUaomX7L+3tYm96FB?=
- =?us-ascii?Q?ZGgDx1Q1qTpETn0NIwNhbqY5ORn9UX3K1GhXiOrmcigM1sAM+uKVcR9QDPPH?=
- =?us-ascii?Q?hDH0u97RJ5lc9nv6/1S4vPaa4YBU3r3a8JUDMBfrMAQ5J7xtQ731Xe/tuR9K?=
- =?us-ascii?Q?hCmcaTE=3D?=
+	=?us-ascii?Q?h3MEMcyCIqHyZRFikKudxShbJ8lJUf264ooy73vsOF//N9fAnGJHmropQXKL?=
+ =?us-ascii?Q?KTQs3bjsHk5jZ3d2jRqiXgM8VFRkoSylHlByVnXOF0MEVX5TcaZ/wT9H2YoL?=
+ =?us-ascii?Q?E/9YWfN0gl2mDcILsRuoHoIMueZLE+wdteVWPmh2L3Eduwmi2oXZek8ZTgrv?=
+ =?us-ascii?Q?jidiay9CHppu3sSDdW5B7Mi7lNI8S1/faDQGbu8+GwSo7Brd6h08+2XvJJCv?=
+ =?us-ascii?Q?1UY222XK9dqJ51fsb4S6xPudFFvHmGyrDIhv2S8qUo1+o9piUV5N2BxXqxCO?=
+ =?us-ascii?Q?A4Md5g10P9O3vuS3ORZBTLnRvnW6hAvVBcxfhTi+RApt2AR+vKK8AfJf99mE?=
+ =?us-ascii?Q?i3/gWybvsulOPZo2Q323vU16WNih6LryZD/Eub3vo9hvHgawaBkBR+4jNEFz?=
+ =?us-ascii?Q?b8H4BfUmnHMyZeV/GAAHv5aYsOkWMhPTuWI6gTdwW5nQkATiEbdp/BeEqTQV?=
+ =?us-ascii?Q?+3CIwSoIkypNOltvSXL+KbTVXWLFNCjzPvAXKYCThvxY6DHXLPj1KmWn7imd?=
+ =?us-ascii?Q?AFj2O5wSDJevkXOabcp48cJj6SzYUj/P7RYs4PPbW6yw8R1BuubAZLKiAz79?=
+ =?us-ascii?Q?Ph29tWesRZXbYKZvgsoqyc/xBqJriF6NAHrC8NM8g+g3HhkMJCjAnrp/9WVb?=
+ =?us-ascii?Q?dYp1dlRIfiNlO3HryS9PkikZi+hd0MLLmJnivi8gzg9QneqD6f8uP09GDRWr?=
+ =?us-ascii?Q?8fg28ZLaK/eStzVAK2UdhRUaJmdVx2tvPOaGz+yqvSwjTxn9aZCTu7NFsln1?=
+ =?us-ascii?Q?Kg4haoLjz3XYMPFvz2Y0SH8QF2f0rNVw2cCrC00+IRQRcD54udMZL2mwJir7?=
+ =?us-ascii?Q?4WknXmMCJbZpjjF5rNmuEU4tP1mhXOAWcwlf1fOovnJtPXyBMZ1XpiTJHX6Q?=
+ =?us-ascii?Q?44FxAKhVugSjNQcCodc0Tndjav4vkJ6UD8+Imu/qbg3FIzkCJXVIxfMCeThW?=
+ =?us-ascii?Q?o/G8FL12HKawGYmQt6fRu7EoM+sOm4tn5s2Qb5JE4MxhNqMefJDK5VLpF6Eq?=
+ =?us-ascii?Q?auXjkiXB8eqTKK24U+FFh5WziXF9LpFpARqzE41eSlZ3cB1s8TK9ARc/w7kB?=
+ =?us-ascii?Q?j31IloeodJoLx/NVmByYnwey1V2MFsV00fHoHKRRGSkasJeDo0dL6DR/Dk7v?=
+ =?us-ascii?Q?dAh42KA+U5wzIybRQUevcf7G1emF0eLDHL8nxwecb3uGorsKkTKKUVlVBd0b?=
+ =?us-ascii?Q?/rZW0ZixO2GHDignU5ni+f7j78G6LlAc/iO+HmUnbdpQc9K2YTDX9a6e1x9J?=
+ =?us-ascii?Q?obHQuXLJFlULA8MFRiGR4S7hymZVlRFR4zZsuGZ+wfb5pl/6vjiSLME0cWBw?=
+ =?us-ascii?Q?C2/xu8MM2j2D/IqRmjqlkiZFfd/R9pB5fiGwxMIRxHd3qj5urGwtDx5sKfg3?=
+ =?us-ascii?Q?mVarbI8=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB5388.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nnMhkFSEFse3SGfnSec28+r9gDq/+frNh7FZO7fkyzoR0m1ecCN9fPfVX4sj?=
- =?us-ascii?Q?knenIiu4cj+coQBTE9kt7w1hkmVizfnRgB0l/Pvmo7QadRANt84jnvAR4Y/+?=
- =?us-ascii?Q?f3s7ApzTChjx8mqUgHD9glp+U3HBNRDPi5xyIRrZ/ruq4FXDiX4GPJYZCJt7?=
- =?us-ascii?Q?EjH0Q+h9QqG/YRGra7kt/QdswGFBiYOg0xMsXyTjur+WNidT4+wi3jBRMqEN?=
- =?us-ascii?Q?WBeFWTuVKa0oVgCoNi5p8V5ytvDYvlndNvfXpEMK/jTui9i9PxLsAjRWnKhf?=
- =?us-ascii?Q?j6DrM5Rc8BCWIwjU4h1vaXYoqJkuwiISOsaJj6wKiCnKUsEbhP4o0Nc9Uokx?=
- =?us-ascii?Q?TtSaBIFTS5QT/jBWGxBQk6uWbd0wgcSmZF86u7UF7UfudLRrgc2ctfGhmjuM?=
- =?us-ascii?Q?/3qF7dBQqJOI18opnfGerua3vxY1X1KINVAqdv0YfjSZS5ND9xuekEmZPm05?=
- =?us-ascii?Q?aTMtI8jiQru9ZMqf8VvgT+Iv9gjdd7X6HTMcmH80qjkLUOmXJjWbUCGBQGYK?=
- =?us-ascii?Q?1EcuD2sViF7MIqwoAeI96YcWIDOXp7xF65ENMySyVIMzxYOCoX+tF/8GnOkp?=
- =?us-ascii?Q?qWPZxkNRceHvdB8HlS6BtmafqCITPHKF/463MrdtuZRt2hXExq+2qgViw5mY?=
- =?us-ascii?Q?rmwA7D1ls78uyScL0/kUsrAqbt4CTHH7qd4lF1wcSqjYlYQgZ0FQZjQodWdo?=
- =?us-ascii?Q?2huycOcAuRT34kHU0pwpo+oi1AXxkY5rk4eNMinc3/a7BWhpX7X1TmWXgHXN?=
- =?us-ascii?Q?7KR6dE7OaEAA0iWe4j+1Z7ZGfyUKN9mtQCuHP4YToVcJn80pzf6LaZ/c6jht?=
- =?us-ascii?Q?4eoy4K4DnxwQ4hirvSBLhiRsFM9CXDxzhOG5HKz5m2JqhOmiGsVWsv1rKsHi?=
- =?us-ascii?Q?sHQ1UhxcFOHF/PH9CYDpoOHGfpDjfH2NEuDzhtUdM0jdtHE4OxCIbMfwl87/?=
- =?us-ascii?Q?8GIXDdd0COtP/d1vLruSa32J15R9wu5NA6Q6ucsOrX3kkvBCgiKMdaWuPI4A?=
- =?us-ascii?Q?P6mRX7QHsy4B/ZdIu7d2G0JJylLlDHxkSZAM5pNYRisLO88s3HmDFoYp3rGs?=
- =?us-ascii?Q?NH99cOLuBGMR/MP7Mh5CaZpCSVVEjVkR4gi6cBa1JNt7F2VWTBBMqNZpviPT?=
- =?us-ascii?Q?FB9wGNiqkoL6W7c2tZvfnCMplg5fiM8M/2KHNycIHf/TEtg7aU60ZXEFe31J?=
- =?us-ascii?Q?96Iudw+Kz5yMpWj3rOFrdvOYvqZuDC20pufF/KIhBJspQtsHBxzwKxWRcEGX?=
- =?us-ascii?Q?OpNupoK/iJ23RSLFrwg1VZ7mm64s/SWiXGGcYMXdm9LlreUIaMhyQInuNcFV?=
- =?us-ascii?Q?1YiJYZqFD3JCTh2rlQyeJcQBSAikeTJ+nxOfI6MAUqDfa3G9FyQvRFmrisAy?=
- =?us-ascii?Q?wGtoYBFFxh4AzWb62bZu6mnq2lxpY4CcOY2flL5JW8iAHCvg0TjW72lUGrv/?=
- =?us-ascii?Q?dS/nUNMISvu9A3tZJZhbTRFvMJgTy3/Ej1KrQljqJrNpGVyvyyUb9xrJMtET?=
- =?us-ascii?Q?qbu7caHzMPQxwA6Id9jWcfqOUal9MyQdg180YHaSyRhLvxuDS45e611ssLto?=
- =?us-ascii?Q?nPJDTa5JwlfWQ1t+acoVdRc7zXi1ku8IMtCfqRN6mkxJK0XJ6yigkWsQZUqI?=
- =?us-ascii?Q?jQ=3D=3D?=
+	=?us-ascii?Q?j45KtvoJ1UKZVP5+3dUxzWwxW42XXbsfUiqPzzmG7O6R0A4Zbt459ogCIdqL?=
+ =?us-ascii?Q?MgTKu1GZtqNFscOs1ZBVyWcq09qilL8AqTC1hFjcx+HxLbX2BjHDb7JwpjHF?=
+ =?us-ascii?Q?3BN/PYLW1lFeFnrFrwgz/rIshtjrVqUrWZMT90JLEmBSiVAp/KYMUcO+CjOn?=
+ =?us-ascii?Q?JxyMTGbQbQdp3Ny+pIt1B+5N8x3kF2YVCxbjBxVTuWtsJ7E1UxYVun8UWXme?=
+ =?us-ascii?Q?vajVu+C/xVa2vcDAURC7Gc2FEvSBz+ETnfshH24aGMxZUcbQkSoHGAXljp4g?=
+ =?us-ascii?Q?/QFV8+r2OZYVlPkVXJ54/Ej/L7OwzNLxap7jup83FlOvvPew5xNq6IQ1SXul?=
+ =?us-ascii?Q?X0GKW0OpOlwhyS7sl5RTCwICHchk5b3iKKvDS3tkFCADx3hYYkbOsKlzhQMF?=
+ =?us-ascii?Q?pdUEZ8xP08yKQCQ2z0DNlqwsfWyV1JOE857uqwi6LYD4++7retqS0hikFy2+?=
+ =?us-ascii?Q?jJhcBXac5NeoRtKsANkwgYf2RpwB5v3zqecRJnAPAZhWnZZwdnjK74Q6uer4?=
+ =?us-ascii?Q?XbT3PCdBLwGGI/gi/0IqYrii7Rsa0v4qTOfUVTZkeCa2VAMWYEBePpZC+M4n?=
+ =?us-ascii?Q?yjMMWRaYBhx4yI+R8NpSGztvarhJgV9sOcjGjKtlnNYsZhEFLDxZpLMfW95z?=
+ =?us-ascii?Q?WFP/2tdLBnThOYEAgxmg9V2QV+vLdXWNdIzYn21fpOYbSRLQAhl4t5Htt/gv?=
+ =?us-ascii?Q?42949m/kfexWgll2CkDP8qzWJiTx9SsyK6li4cylVWfIvH0mw6dAKxCUMkNR?=
+ =?us-ascii?Q?cwF2ym9z+rt9em0kt8l+KQg65js+nJSbXnnr/fYSJRdeIKMrGZkKr27sExg4?=
+ =?us-ascii?Q?sa1A96Qsy1HvE36gQK8GCEYiOh4dJqWwTB+K/idcpJYbpMxpIcxhRMVL2FNg?=
+ =?us-ascii?Q?2SthhVjx+bmEYXM6Uek5LljG7W8IEYO5EqyGVImjhysUwVmooghUC3Z842ov?=
+ =?us-ascii?Q?g4DkfAlW2yU/LJgE+2TC+dUxKjjjqhPnR/TSrQymjSq9d0N2B9eOWoek/hQ/?=
+ =?us-ascii?Q?xjS3VyE8Y+dYQCBj0Qf51VAPaOuWAMvU3AIzNVI9o4GqN92SurdBWvcU+PD4?=
+ =?us-ascii?Q?w3TBweoUXqjjlcTo17u9ggip6W2gcNLQBeN8ovKqMJx403BhBv9MoCr+Acvh?=
+ =?us-ascii?Q?luvIDklL+GYkzL91ZxK1QUMGVMbYM5aB3TT6Jt1ujmj4m+TYpNtxGCjorNuL?=
+ =?us-ascii?Q?08Iaf15Uy3BuZStg1TBaE4XUiLWnmTYZg3FaKDdU+pTevPhXm0vImom+TP8Q?=
+ =?us-ascii?Q?djlseO0fduFd52EeW8+CvDDpcAovS7nNvSQb9qU5kDmxiHY20Cl5LfHFiyzM?=
+ =?us-ascii?Q?A1wfmIQ0QozZS3Rsd9O/q7rx8gEPfSirUh+fCqsBYxJiTvpMfP4/Bxn9pyzn?=
+ =?us-ascii?Q?8Uj5EPRORe5bagGnhCDSy9BWfXaf8Tcb6H8wcpCHBsBF/8/g1+trlvMlHGsF?=
+ =?us-ascii?Q?AgpSVrj/2FD8/mweC+omSBH/CQS5bX/NzodYBBHxWdVpifysSg2ePnJFoGVo?=
+ =?us-ascii?Q?tIvOKiFtxDo9wx+LATCZ98C9+gBRpl8ai8lHWQ19UvAQz9XjmKLpyCDkJDTD?=
+ =?us-ascii?Q?Rg8vWzntsJViS/po4ZU5/7ZM49kIJsG1gt5w5jc00crhmCcwOySLVhKX6/Dk?=
+ =?us-ascii?Q?Sg=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	N0zV/3gHhcuR9F2CEM7kLeWJJ8SJt3I581hOrCwb6Zrp4v8LTujZzMPVc6alwiKuYmgR425P4LhqMJBA1mip05R9/iWiJBAnk3sa5LhXQfyVgnbS5lQSEw2kwRynms384mTLStIfhZE/niBaUUlqHY+GbXB9K7BSMI/moL6jyLIUNvA4i+B9a+Vi/1Ew5FX2w+OHGuI8ykAZewCfGJyXGvxNkNK1kHkEeuFniArfZGece2XUc1BUM+8XBxtAYjMkp/ErMrP9J6tSZsB04+2DzGqPHeVj/V9uPVelmaACz9Fj9Y/o0k9fFB8kkRQCKzj2aUnxDPpFdd6ROU6P6HoADWdz11mridjeoNHAb/RXX0xh1jQqzJz5aid5NOHpzF0CM659m/YwAYq7AkDSM/IXH/ffrgINuNA1JuvhFNYSZiDG8R3grvMqn73a1LyCypjN8WaarKyPgOg1rBUP+fAddyVNWI+tPrTXYgSmFN4KZ5kcgNDol/kSez4YMmnW/TD2R9sVtHSkQe42LGVo0vRO4A4TbwmF+9egaa/jDdSXbsHIp38eISNC1R+eVmcxf6yr1Okc4U5cs1psKpPazItNkkN/5E0cIMZ23rYvyShyRauPxnJhV/cudNKGbXTkBTLA
+	C23KLylbM5pyCuxA9UzREpB94zVs7dR/yfPHqb3zdDzXboIEm6/27bG1HlOT/w3xmYYDRHLSlkZEZBCEqibaS75TltmFGudfB7DdPXcFk1oZB3XOBBSZYVMW1DJ3k8dUO2VpwnG7wllae8XmdDmFrz+1F03xdyrOieoIweG7W8xEojh/snRpYj4DaukTAanmO6ODkhQUDRUCgJsyDq0SKCAUKRMyD0nulkQHfGY1WrZu4pcSdn/aXKgAUcp2qBVQivG0WUvwVYJ1NKZMVHlp4vwKmc3y/3qhGpeGiVa+NzGGZkncsmjAZfxteALaWFXu+VBHg3KhAbfS/2eVsfXhqbv/6F7elC8XMhz8+n7QhFa4t5bSbuYJ633KCOhjG8YIjY73j/u02kst6mz3ZEVxkyuqijgIiaGE69NS2D1fE4T/WJxxPChUTA2BbT8H0URhA/k6n6OULwE898z5oh6eEaD1RWd+22X9bkM4q40P6lHPN2IrUe73TpOxc/C3tkly/YPKseOntqZUefcusf0LjY6MtWdpdt/A2DyRut5VhPIvmSY+xql+oWoI9zSbB1+TwRDhx4+m31/upQXVVkbCj3WozW+B1ziTbrZxNBtfesfnrxqYv45h0EwPTBiFPMrX
 X-OriginatorOrg: drivenets.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e7225e6-5af6-4122-60a3-08dcfca75ee3
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce8a3e5d-5af4-4d71-8242-08dcfca7609d
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR08MB5388.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 08:04:56.3133
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2024 08:04:59.1943
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 662f82da-cf45-4bdf-b295-33b083f5d229
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nnKd4JUcGKjSLZBcHprFAmurv1pS4XtUxwy75QqY+PmmSJaYX2ZyBtbWvh5HE0vffOgQGofqVTGct9YlULdz0g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: v/TMbZ/1lm8b2AW8Cy05t4km2Ic0hJaf3M4Po50OzGBlMdmYXRU72si4rlAJ8sZCLNq5w7zOzXFyetHiPkNgWw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5553
-X-MDID: 1730707499-5q1XUtbhKssC
+X-MDID: 1730707501-bVQLl_P179bN
 X-MDID-O:
- eu1;ams;1730707499;5q1XUtbhKssC;<gnaaman@drivenets.com>;495c1e7a27a6c3e35a5fabc922783896
+ eu1;ams;1730707501;bVQLl_P179bN;<gnaaman@drivenets.com>;495c1e7a27a6c3e35a5fabc922783896
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Add a doubly-linked node to neighbours, so that they
-can be deleted without iterating the entire bucket they're in.
+Remove all usage of the bare neighbour::next pointer,
+replacing them with neighbour::hash and its for_each macro.
 
 Signed-off-by: Gilad Naaman <gnaaman@drivenets.com>
 ---
- include/net/neighbour.h |  2 ++
- net/core/neighbour.c    | 20 +++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ include/net/neighbour.h |  5 +----
+ net/core/neighbour.c    | 47 ++++++++++++++++-------------------------
+ 2 files changed, 19 insertions(+), 33 deletions(-)
 
 diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 3887ed9e5026..0402447854c7 100644
+index 69aaacd1419f..68b1970d9045 100644
 --- a/include/net/neighbour.h
 +++ b/include/net/neighbour.h
-@@ -136,6 +136,7 @@ struct neigh_statistics {
+@@ -309,12 +309,9 @@ static inline struct neighbour *___neigh_lookup_noref(
+ 	u32 hash_val;
  
- struct neighbour {
- 	struct neighbour __rcu	*next;
-+	struct hlist_node	hash;
- 	struct neigh_table	*tbl;
- 	struct neigh_parms	*parms;
- 	unsigned long		confirmed;
-@@ -191,6 +192,7 @@ struct pneigh_entry {
+ 	hash_val = hash(pkey, dev, nht->hash_rnd) >> (32 - nht->hash_shift);
+-	for (n = rcu_dereference(nht->hash_buckets[hash_val]);
+-	     n != NULL;
+-	     n = rcu_dereference(n->next)) {
++	neigh_for_each_in_bucket(n, &nht->hash_heads[hash_val])
+ 		if (n->dev == dev && key_eq(n, pkey))
+ 			return n;
+-	}
  
- struct neigh_hash_table {
- 	struct neighbour __rcu	**hash_buckets;
-+	struct hlist_head	*hash_heads;
- 	unsigned int		hash_shift;
- 	__u32			hash_rnd[NEIGH_NUM_HASH_RND];
- 	struct rcu_head		rcu;
+ 	return NULL;
+ }
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 4b871cecd2ce..5552e6b05c82 100644
+index 3485d6b3ba99..f7119380d983 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -216,6 +216,7 @@ static bool neigh_del(struct neighbour *n, struct neighbour __rcu **np,
- 		neigh = rcu_dereference_protected(n->next,
- 						  lockdep_is_held(&tbl->lock));
- 		rcu_assign_pointer(*np, neigh);
-+		hlist_del_rcu(&n->hash);
- 		neigh_mark_dead(n);
- 		retval = true;
- 	}
-@@ -402,6 +403,7 @@ static void neigh_flush_dev(struct neigh_table *tbl, struct net_device *dev,
- 			rcu_assign_pointer(*np,
- 				   rcu_dereference_protected(n->next,
- 						lockdep_is_held(&tbl->lock)));
-+			hlist_del_rcu(&n->hash);
- 			write_lock(&n->lock);
- 			neigh_del_timer(n);
- 			neigh_mark_dead(n);
-@@ -529,20 +531,30 @@ static void neigh_get_hash_rnd(u32 *x)
+@@ -387,11 +387,11 @@ static void neigh_flush_dev(struct neigh_table *tbl, struct net_device *dev,
+ 					lockdep_is_held(&tbl->lock));
  
- static struct neigh_hash_table *neigh_hash_alloc(unsigned int shift)
- {
-+	size_t hash_heads_size = (1 << shift) * sizeof(struct hlist_head);
- 	size_t size = (1 << shift) * sizeof(struct neighbour *);
--	struct neigh_hash_table *ret;
- 	struct neighbour __rcu **buckets;
-+	struct hlist_head *hash_heads;
-+	struct neigh_hash_table *ret;
- 	int i;
+ 	for (i = 0; i < (1 << nht->hash_shift); i++) {
+-		struct neighbour *n;
+ 		struct neighbour __rcu **np = &nht->hash_buckets[i];
++		struct hlist_node *tmp;
++		struct neighbour *n;
  
- 	ret = kmalloc(sizeof(*ret), GFP_ATOMIC);
- 	if (!ret)
- 		return NULL;
-+
- 	buckets = kvzalloc(size, GFP_ATOMIC);
- 	if (!buckets) {
- 		kfree(ret);
- 		return NULL;
- 	}
-+	hash_heads = kvzalloc(hash_heads_size, GFP_ATOMIC);
-+	if (!hash_heads) {
-+		kvfree(buckets);
-+		kfree(ret);
-+		return NULL;
-+	}
- 	ret->hash_buckets = buckets;
-+	ret->hash_heads = hash_heads;
- 	ret->hash_shift = shift;
- 	for (i = 0; i < NEIGH_NUM_HASH_RND; i++)
- 		neigh_get_hash_rnd(&ret->hash_rnd[i]);
-@@ -556,6 +568,7 @@ static void neigh_hash_free_rcu(struct rcu_head *head)
- 						    rcu);
- 
- 	kvfree(nht->hash_buckets);
-+	kvfree(nht->hash_heads);
- 	kfree(nht);
- }
- 
-@@ -592,6 +605,8 @@ static struct neigh_hash_table *neigh_hash_grow(struct neigh_table *tbl,
- 						new_nht->hash_buckets[hash],
- 						lockdep_is_held(&tbl->lock)));
- 			rcu_assign_pointer(new_nht->hash_buckets[hash], n);
-+			hlist_del_rcu(&n->hash);
-+			hlist_add_head_rcu(&n->hash, &new_nht->hash_heads[hash]);
- 		}
- 	}
- 
-@@ -702,6 +717,7 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
- 			   rcu_dereference_protected(nht->hash_buckets[hash_val],
- 						     lockdep_is_held(&tbl->lock)));
- 	rcu_assign_pointer(nht->hash_buckets[hash_val], n);
-+	hlist_add_head_rcu(&n->hash, &nht->hash_heads[hash_val]);
- 	write_unlock_bh(&tbl->lock);
- 	neigh_dbg(2, "neigh %p is created\n", n);
- 	rc = n;
-@@ -987,6 +1003,7 @@ static void neigh_periodic_work(struct work_struct *work)
- 				rcu_assign_pointer(*np,
- 					rcu_dereference_protected(n->next,
- 						lockdep_is_held(&tbl->lock)));
-+				hlist_del_rcu(&n->hash);
- 				neigh_mark_dead(n);
- 				write_unlock(&n->lock);
- 				neigh_cleanup_and_release(n);
-@@ -3116,6 +3133,7 @@ void __neigh_for_each_release(struct neigh_table *tbl,
- 				rcu_assign_pointer(*np,
- 					rcu_dereference_protected(n->next,
- 						lockdep_is_held(&tbl->lock)));
-+				hlist_del_rcu(&n->hash);
- 				neigh_mark_dead(n);
- 			} else
+-		while ((n = rcu_dereference_protected(*np,
+-					lockdep_is_held(&tbl->lock))) != NULL) {
++		neigh_for_each_in_bucket_safe(n, tmp, &nht->hash_heads[i]) {
+ 			if (dev && n->dev != dev) {
  				np = &n->next;
+ 				continue;
+@@ -587,18 +587,14 @@ static struct neigh_hash_table *neigh_hash_grow(struct neigh_table *tbl,
+ 		return old_nht;
+ 
+ 	for (i = 0; i < (1 << old_nht->hash_shift); i++) {
+-		struct neighbour *n, *next;
++		struct hlist_node *tmp;
++		struct neighbour *n;
+ 
+-		for (n = rcu_dereference_protected(old_nht->hash_buckets[i],
+-						   lockdep_is_held(&tbl->lock));
+-		     n != NULL;
+-		     n = next) {
++		neigh_for_each_in_bucket_safe(n, tmp, &old_nht->hash_heads[i]) {
+ 			hash = tbl->hash(n->primary_key, n->dev,
+ 					 new_nht->hash_rnd);
+ 
+ 			hash >>= (32 - new_nht->hash_shift);
+-			next = rcu_dereference_protected(n->next,
+-						lockdep_is_held(&tbl->lock));
+ 
+ 			rcu_assign_pointer(n->next,
+ 					   rcu_dereference_protected(
+@@ -693,11 +689,7 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 		goto out_tbl_unlock;
+ 	}
+ 
+-	for (n1 = rcu_dereference_protected(nht->hash_buckets[hash_val],
+-					    lockdep_is_held(&tbl->lock));
+-	     n1 != NULL;
+-	     n1 = rcu_dereference_protected(n1->next,
+-			lockdep_is_held(&tbl->lock))) {
++	neigh_for_each_in_bucket(n1, &nht->hash_heads[hash_val]) {
+ 		if (dev == n1->dev && !memcmp(n1->primary_key, n->primary_key, key_len)) {
+ 			if (want_ref)
+ 				neigh_hold(n1);
+@@ -949,10 +941,11 @@ static void neigh_connect(struct neighbour *neigh)
+ static void neigh_periodic_work(struct work_struct *work)
+ {
+ 	struct neigh_table *tbl = container_of(work, struct neigh_table, gc_work.work);
+-	struct neighbour *n;
++	struct neigh_hash_table *nht;
+ 	struct neighbour __rcu **np;
++	struct hlist_node *tmp;
++	struct neighbour *n;
+ 	unsigned int i;
+-	struct neigh_hash_table *nht;
+ 
+ 	NEIGH_CACHE_STAT_INC(tbl, periodic_gc_runs);
+ 
+@@ -979,8 +972,7 @@ static void neigh_periodic_work(struct work_struct *work)
+ 	for (i = 0 ; i < (1 << nht->hash_shift); i++) {
+ 		np = &nht->hash_buckets[i];
+ 
+-		while ((n = rcu_dereference_protected(*np,
+-				lockdep_is_held(&tbl->lock))) != NULL) {
++		neigh_for_each_in_bucket_safe(n, tmp, &nht->hash_heads[i]) {
+ 			unsigned int state;
+ 
+ 			write_lock(&n->lock);
+@@ -2730,9 +2722,8 @@ static int neigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
+ 	for (h = s_h; h < (1 << nht->hash_shift); h++) {
+ 		if (h > s_h)
+ 			s_idx = 0;
+-		for (n = rcu_dereference(nht->hash_buckets[h]), idx = 0;
+-		     n != NULL;
+-		     n = rcu_dereference(n->next)) {
++		idx = 0;
++		neigh_for_each_in_bucket(n, &nht->hash_heads[h]) {
+ 			if (idx < s_idx || !net_eq(dev_net(n->dev), net))
+ 				goto next;
+ 			if (neigh_ifindex_filtered(n->dev, filter->dev_idx) ||
+@@ -3099,9 +3090,7 @@ void neigh_for_each(struct neigh_table *tbl, void (*cb)(struct neighbour *, void
+ 	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
+ 		struct neighbour *n;
+ 
+-		for (n = rcu_dereference(nht->hash_buckets[chain]);
+-		     n != NULL;
+-		     n = rcu_dereference(n->next))
++		neigh_for_each_in_bucket(n, &nht->hash_heads[chain])
+ 			cb(n, cookie);
+ 	}
+ 	read_unlock_bh(&tbl->lock);
+@@ -3113,18 +3102,18 @@ EXPORT_SYMBOL(neigh_for_each);
+ void __neigh_for_each_release(struct neigh_table *tbl,
+ 			      int (*cb)(struct neighbour *))
+ {
+-	int chain;
+ 	struct neigh_hash_table *nht;
++	int chain;
+ 
+ 	nht = rcu_dereference_protected(tbl->nht,
+ 					lockdep_is_held(&tbl->lock));
+ 	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
+-		struct neighbour *n;
+ 		struct neighbour __rcu **np;
++		struct hlist_node *tmp;
++		struct neighbour *n;
+ 
+ 		np = &nht->hash_buckets[chain];
+-		while ((n = rcu_dereference_protected(*np,
+-					lockdep_is_held(&tbl->lock))) != NULL) {
++		neigh_for_each_in_bucket_safe(n, tmp, &nht->hash_heads[chain]) {
+ 			int release;
+ 
+ 			write_lock(&n->lock);
 -- 
 2.34.1
 
