@@ -1,205 +1,95 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29894430;
-	Mon,  4 Nov 2024 11:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974481B3937
+	for <netdev@vger.kernel.org>; Mon,  4 Nov 2024 11:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730720419; cv=none; b=HE27RnomprWI+RPfqfuQ7ejOOsJ50uP9+3ejQHYAb6V3MedtrrTvQ8wkUxzenzAadANlr+ObyZsK4Kr2W//C4cI0oIfdZkvZzdthtZhIU4nKg9FrP/jgPodOyb2i2KrA62M1MNBxWW10yK2I44wyZm37LrPWTg9m6gZtjvpnrGw=
+	t=1730720782; cv=none; b=JuDjIv7jjYIVeHY/K/rJa6Kb+VuMtBBpc/gkC9ApTJKJJpVIkXNyVQV9OWBwUZH/EsjVERRyjONPRsfp1nk+zuw7hswiOFjfp5gddBjwm/y1dcvINQ+SsEeNdNjJGnI6yVDVRv4xUnsAlSVA25dQqMm7Cr/oShQZxYSGCjkNik4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730720419; c=relaxed/simple;
-	bh=oP6HlThFxLs4XFbw1JoNa2rJAAq8xNotdQDdTtnEFns=;
+	s=arc-20240116; t=1730720782; c=relaxed/simple;
+	bh=6fyI+TJeacaVlmMYQ3fai+EmFug2NS3CEbFwoFVH6TI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LboYw5V2xzw31ztTlp3GZbx6aoaPH6yDvPkPU0X4NGlqhTsd/z7rSEnF1+ERLSPUhda7IZP5KIGbgGasvwo+451RpR3psNJNS7nlKlpHxjaT0mGUlH+A9kln1MCXj/WCTfstk/Zu8ETdv7YJu0ME+Ur2oiVHcg78A7b32pdPoAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=ZfRTK+nS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ngpzT2Ro; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ig492xen7XNiXvqDy3jMNs0nk1nNHPPsJKX29kcG3f+HayIn+U7a1zciESITpl1/26EGwF4NE6INF7Sa+uNKjaYhqhoUFcfHk1Z6iPyvoJOEMnYkTtb/XSlqiMAtAVKsJWhinWJSYmQxlAmGWlpDUZE1x2msFwFUsnkChH+oWQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBTxvycZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="ZfRTK+nS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ngpzT2Ro"
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id E67941380245;
-	Mon,  4 Nov 2024 06:40:15 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Mon, 04 Nov 2024 06:40:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1730720415;
-	 x=1730806815; bh=9NvuvEGu3Y4fTmutyF3/3Q9gfOSQU+11sjoTRbXFud0=; b=
-	ZfRTK+nSkeMx3RXf2XQuFpxvYZRGie/5Yhg+B5CtJfTucY3IJkVu3Kr3mhGseIkt
-	TixKhMIb86u0Rab4gw0osHZhrsLu0QAVUbCIWlK+n2Cqb77OeCMf3zzFTrZc4Usy
-	1fxqVFs6X2dp7GRLu+0LyCNiXyy2vzu7t4n/m3qZ16e9MqXfT3NImd36OHUbvcer
-	ervWrXQJz2ojyenuEon0CPfootIEDLAvM1rNbvjajiCPVTB8RD/4RxsMu3zCp36h
-	eDFFr21BUtciOS6b4jFVve97URoOgoBFreaIqxMgOVTuob9xcdQiyoa7H8KDZAR0
-	UgTbh3HkiYaZD859+Yszmw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730720415; x=
-	1730806815; bh=9NvuvEGu3Y4fTmutyF3/3Q9gfOSQU+11sjoTRbXFud0=; b=n
-	gpzT2RoN5LgOBPo4CP6HmzwHuBuDrljq7eAbe8iGsFgP5F/rKfKarrPoQoUBqnp3
-	ldpWdKOE9tvXclshdKIfnUTQ7ixVUW5aDmB8vum5TbhbEhZxuUFX1zrivLIWI4Zh
-	6JfclzyyagDG6yp3NYoeJ0jnW8KjtiNVx4giaCIKHUDuETs7SL0XoJao9msFNZPZ
-	13gUptKidOuSRYyqD7wlmSLTkensrV3hsVPRW1Fg+Q3uz6dYCuSLK/CM2zmy6jWZ
-	awE2NIPRkZFHrWr//tAf7DgJGrwK6E/C9syrKXGf06h8+P5XEM1bJ7ow6n97mlbA
-	fw9I0a4klDEYZvYE4NBPA==
-X-ME-Sender: <xms:nrIoZ7d4JISUqqkav6FmE-wqB6wSDq6F22AkNIry-Qf-OaZoaeVkUQ>
-    <xme:nrIoZxPspUrmFkH5lK1zsoF0oMbWrS2swMWew6Rm7iHV-Eh3nabzNsO82553Fdph_
-    xpLhsdXEnsNfIeWtpE>
-X-ME-Received: <xmr:nrIoZ0juou1mKZgcYByeqTTIhcNp_h5JcNcDcuC41Fsxq1y9c0_KtLGbCljgJac2qeDnqPNYWy-H2Bbf9yMkvfoCvcbYQlyfBA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeliedgvdelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
-    necuhfhrohhmpefpihhklhgrshcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhoug
-    gvrhhluhhnugdorhgvnhgvshgrshesrhgrghhnrghtvggthhdrshgvqeenucggtffrrght
-    thgvrhhnpeefhfellefhffejgfefudfggeejlefhveehieekhfeulefgtdefueehffdtvd
-    elieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehn
-    ihhklhgrshdrshhouggvrhhluhhnugdorhgvnhgvshgrshesrhgrghhnrghtvggthhdrsh
-    gvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    ghgvvghrthdorhgvnhgvshgrshesghhlihguvghrrdgsvgdprhgtphhtthhopehgrhgvgh
-    hkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehprghulhdr
-    sggrrhhkvghrrdgtthessghprdhrvghnvghsrghsrdgtohhmpdhrtghpthhtoheptghlrg
-    huughiuhdrsggviihnvggrrdhujhessghprdhrvghnvghsrghsrdgtohhmpdhrtghpthht
-    ohephihoshhhihhhihhrohdrshhhihhmohgurgdruhhhsehrvghnvghsrghsrdgtohhmpd
-    hrtghpthhtohepjhgrmhgvshdrsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgv
-    rhhshhhiphdrtghomhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpth
-    htohepshgvrhhgvghirdhshhhthihlhihovhesghhmrghilhdrtghomhdprhgtphhtthho
-    pehlihhnuhigqdhrvghnvghsrghsqdhsohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:nrIoZ8-Qt--vfk6ocNKhaE2m9iIqgy5Or-xTJcI4Znqw0g397x1SqA>
-    <xmx:nrIoZ3tmWjpoifNQagnMtALxGSF5h3PFQmtMem72VRrb-VbocTltHQ>
-    <xmx:nrIoZ7HA2rTC_fVIIfShUX_HS6JENNCo51ydAAyh6BB2t8t-a2mfkQ>
-    <xmx:nrIoZ-OiDB4x6VOq20qOMa4w5I1eMB4pyV6G2od5Pxii6fyddHANVA>
-    <xmx:n7IoZ_Mf5HCqw0hwfyhdJXRFB_Djjzp0i-u8Arfxko5kdqc4I9okRsf9>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Nov 2024 06:40:14 -0500 (EST)
-Date: Mon, 4 Nov 2024 12:40:07 +0100
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH/RFC v2] MAINTAINERS: Re-add cancelled Renesas driver
- sections
-Message-ID: <20241104114007.GA1412590@ragnatech.se>
-References: <90447fa332b6f73bffcb486ccfe2515c59546253.1730717649.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBTxvycZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EE9C4CECE;
+	Mon,  4 Nov 2024 11:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730720782;
+	bh=6fyI+TJeacaVlmMYQ3fai+EmFug2NS3CEbFwoFVH6TI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cBTxvycZy7eAxoKgZqgCUjhTNk8sMbRO0QReK3SIv5C5MZrWeBYxfvYQTBlHYYIyH
+	 LNPcmzuqYYJCS3/wOFi3SyrFAyUptyX7vSpNBMHGG+lpWxxqC/3VdekDVtZN/bWyg0
+	 CwQoKEyW/tTvBzz8U1cqjWGMw6omcepJ+imb9u4QLd3081/h4Qnq5jwAEdHXvbsu63
+	 7+sBRVhZSa831KRVJhCQe4UNOnKkt6B05S21tWYqEwe8HOB3ErfFtEvCsKtM49OrM+
+	 a4CYyb+XiZDvbzpLOcPmJvmdF7S0VDQaPv9sZ9WucuMI1KUtG4Dq55CXbHey5fObra
+	 rlfiLAYm7pwqg==
+Date: Mon, 4 Nov 2024 11:46:19 +0000
+From: Simon Horman <horms@kernel.org>
+To: Wojciech Drewek <wojciech.drewek@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] ice: Fix NULL pointer dereference in switchdev
+Message-ID: <20241104114619.GB2118587@kernel.org>
+References: <20241029094259.77738-1-wojciech.drewek@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <90447fa332b6f73bffcb486ccfe2515c59546253.1730717649.git.geert+renesas@glider.be>
+In-Reply-To: <20241029094259.77738-1-wojciech.drewek@intel.com>
 
-Hi Geert,
+On Tue, Oct 29, 2024 at 10:42:59AM +0100, Wojciech Drewek wrote:
+> Commit ("virtchnl: support queue rate limit and quanta size
 
-Thanks for sorting this out.
+It would be nice to include 12 characters of sha1 hash immediately
+after "Commit".
 
-On 2024-11-04 12:05:07 +0100, Geert Uytterhoeven wrote:
-> Removing full driver sections also removed mailing list entries, causing
-> submitters of future patches to forget CCing these mailing lists.
+> configuration") introduced new virtchnl ops:
+> - get_qos_caps
+> - cfg_q_bw
+> - cfg_q_quanta
 > 
-> Hence re-add the sections for the Renesas Ethernet AVB, R-Car SATA, and
-> SuperH Ethernet drivers.  Add people who volunteered to maintain these
-> drivers (thanks a lot!).
+> New ops were added to ice_virtchnl_dflt_ops but not to the
+> ice_virtchnl_repr_ops. Because of that, if we get one of those
+> messages in switchdev mode we end up with NULL pointer dereference:
 > 
-> Fixes: 6e90b675cf942e50 ("MAINTAINERS: Remove some entries due to various compliance requirements.")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Acked-by: Niklas Cassel <cassel@kernel.org>
-> ---
-> To be applied to renesas-fixes for v6.12 after v6.12-rc7, unless a
-> better solution is found.
+> [ 1199.794701] BUG: kernel NULL pointer dereference, address: 0000000000000000
+> [ 1199.794804] Workqueue: ice ice_service_task [ice]
+> [ 1199.794878] RIP: 0010:0x0
+> [ 1199.795027] Call Trace:
+> [ 1199.795033]  <TASK>
+> [ 1199.795039]  ? __die+0x20/0x70
+> [ 1199.795051]  ? page_fault_oops+0x140/0x520
+> [ 1199.795064]  ? exc_page_fault+0x7e/0x270
+> [ 1199.795074]  ? asm_exc_page_fault+0x22/0x30
+> [ 1199.795086]  ice_vc_process_vf_msg+0x6e5/0xd30 [ice]
+> [ 1199.795165]  __ice_clean_ctrlq+0x734/0x9d0 [ice]
+> [ 1199.795207]  ice_service_task+0xccf/0x12b0 [ice]
+> [ 1199.795248]  process_one_work+0x21a/0x620
+> [ 1199.795260]  worker_thread+0x18d/0x330
+> [ 1199.795269]  ? __pfx_worker_thread+0x10/0x10
+> [ 1199.795279]  kthread+0xec/0x120
+> [ 1199.795288]  ? __pfx_kthread+0x10/0x10
+> [ 1199.795296]  ret_from_fork+0x2d/0x50
+> [ 1199.795305]  ? __pfx_kthread+0x10/0x10
+> [ 1199.795312]  ret_from_fork_asm+0x1a/0x30
+> [ 1199.795323]  </TASK>
+
+It seems that the cited commit is present in net-next but not Linus's tree.
+But, regardless, I think a Fixes tag is warranted.
+
 > 
-> v2:
->   - Add Acked-by, Reviewed-by,
->   - Add M:-entries.
-> ---
->  MAINTAINERS | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 13f4c23281f89332..b04d678240e80ec9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -19578,6 +19578,16 @@ S:	Supported
->  F:	Documentation/devicetree/bindings/i2c/renesas,iic-emev2.yaml
->  F:	drivers/i2c/busses/i2c-emev2.c
->  
-> +RENESAS ETHERNET AVB DRIVER
-> +M:	Paul Barker <paul.barker.ct@bp.renesas.com>
-> +M:	Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
 
-I'm happy to look after the RAVB driver together with Paul. However 
-please don't add my +renesas tag email for new entries in the 
-MAINTAINERS file.
+The fix itself looks good to me, thanks.
 
-With this fixed for RAVB and SUPERH ETHERNET,
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Acked-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-
-> +L:	netdev@vger.kernel.org
-> +L:	linux-renesas-soc@vger.kernel.org
-> +F:	Documentation/devicetree/bindings/net/renesas,etheravb.yaml
-> +F:	drivers/net/ethernet/renesas/Kconfig
-> +F:	drivers/net/ethernet/renesas/Makefile
-> +F:	drivers/net/ethernet/renesas/ravb*
-> +
->  RENESAS ETHERNET SWITCH DRIVER
->  R:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
->  L:	netdev@vger.kernel.org
-> @@ -19627,6 +19637,14 @@ F:	Documentation/devicetree/bindings/i2c/renesas,rmobile-iic.yaml
->  F:	drivers/i2c/busses/i2c-rcar.c
->  F:	drivers/i2c/busses/i2c-sh_mobile.c
->  
-> +RENESAS R-CAR SATA DRIVER
-> +M:	Geert Uytterhoeven <geert+renesas@glider.be>
-> +L:	linux-ide@vger.kernel.org
-> +L:	linux-renesas-soc@vger.kernel.org
-> +S:	Supported
-> +F:	Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-> +F:	drivers/ata/sata_rcar.c
-> +
->  RENESAS R-CAR THERMAL DRIVERS
->  M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
->  L:	linux-renesas-soc@vger.kernel.org
-> @@ -19702,6 +19720,16 @@ S:	Supported
->  F:	Documentation/devicetree/bindings/i2c/renesas,rzv2m.yaml
->  F:	drivers/i2c/busses/i2c-rzv2m.c
->  
-> +RENESAS SUPERH ETHERNET DRIVER
-> +M:	Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-> +L:	netdev@vger.kernel.org
-> +L:	linux-renesas-soc@vger.kernel.org
-> +F:	Documentation/devicetree/bindings/net/renesas,ether.yaml
-> +F:	drivers/net/ethernet/renesas/Kconfig
-> +F:	drivers/net/ethernet/renesas/Makefile
-> +F:	drivers/net/ethernet/renesas/sh_eth*
-> +F:	include/linux/sh_eth.h
-> +
->  RENESAS USB PHY DRIVER
->  M:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
->  L:	linux-renesas-soc@vger.kernel.org
-> -- 
-> 2.34.1
-> 
-
--- 
-Kind Regards,
-Niklas Söderlund
+...
