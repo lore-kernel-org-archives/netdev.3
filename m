@@ -1,51 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB811D45FE;
-	Mon,  4 Nov 2024 10:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152501B3931;
+	Mon,  4 Nov 2024 10:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717588; cv=none; b=KvkWU0BlhyIruJBQHv1F82RMV59nMrWsx20qp26aCc93/5jYI/AC01dsLvc1s5Ojx4yatMB5CRNAPjU6ZQo9HVJrna1y5/UTQTTXnvVvTvQAATbX188JWP7pA86d6Ho79BAa/KZh+y85h/eqVx0YjzRNnAfu8qH9TcQPDknaiu8=
+	t=1730717626; cv=none; b=bA63E8/zJuugBAe61/O0bczZjVmIJ10O2RmcEjCazoec9ZHcCOm4/IrqpKF+H4qbZgIkYyAoZFXwlXHgxLIu9DnmrUwn9tzWTccsoDVMe2zOOMBjVuMc6ttgnPQEDPx21Ni4XXt/rnG3TK8oX+xreGMAshje1ex0zDAlJ8JCVLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717588; c=relaxed/simple;
-	bh=D2bnAICpH5w/m2F+hbXh5PJUoLd2C/twiCxDE4eGzu4=;
+	s=arc-20240116; t=1730717626; c=relaxed/simple;
+	bh=KizG53mSjVV9c+TAEcmOTJlBxB5Rta3JhTzUoOkOGsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EWKyPaPx6lvCf0bHL9+hgQMiuvhzc7U91x9naW+cnUstb6ItKW8F2g+qxVVpK6DjzrcgKio38CbNHXcVr51L6BAfQvGeu+Hagkqs7HMR1NhlCg6faTqzNgac1omU/LPeLR5ZdElJDS0dI7SdFNGKHYaGivGVqy6vcogKS8l1MFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBpLQas+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=XelFZWUAkeI2wYqvFkaiwNDBeYZ40pV7S59etjJa2ZaRcQ2eIYhcBg2gcKcyhsrUqg1EzLeUxprK3uJFwgm7ETJkeapMOnYNPTOHzG35r1b2uFvpdkY5uXIrLUY0+ddrt++pOzNayUOm8T+AGArM2SNFijAsa3jIqGG/OkFiyug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTPeUNQ2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBpLQas+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2F5C4CED6;
-	Mon,  4 Nov 2024 10:53:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTPeUNQ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76ECC4CED1;
+	Mon,  4 Nov 2024 10:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717588;
-	bh=D2bnAICpH5w/m2F+hbXh5PJUoLd2C/twiCxDE4eGzu4=;
+	s=k20201202; t=1730717625;
+	bh=KizG53mSjVV9c+TAEcmOTJlBxB5Rta3JhTzUoOkOGsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBpLQas+tY4dWEehLVtH/rC0l5fJfUOlU+smmgkxKI7RHAM+9XkcVtvI9KEqbZEH+
-	 SBOI2Cnf7rhIDXLVc1wKKHzHzKqWv1TnQGs+2oJKpzDiLyiYtOPT6Mt0HyQDF5jmjY
-	 +1A3muiCN11KopaddMwhbpJy8lmrguUS7sHXTos62G93H8QqMDFYclvBnY62PYCuzw
-	 /e8dACw8z8ZDLQ9vz2RjdaRrFz/mKmR+ASIdr4o8gRkI+08CVI9NRwWtfxxbcuL5cf
-	 YHS+gR6HTZUg5NkoaoZZTSKVNurLTGsucU/nhAjm7WVeMPijZDP1pLLaOvhMK44/mg
-	 AtunsLqfxaLSw==
+	b=HTPeUNQ22I6Zx4Pp3E+06BHa/OXBsa24e9vrulX9vHGzrIOYv2HWThmDNY5T4oEcq
+	 4q44+BOeBLddNK0GX2yZoIxBQlWyqjwBZ6hmtLaLSoQPfD+L3jfiO3aQ4yq1WYBRcJ
+	 Dyfx/mJgkaNS1dX8wFNtWx4aizsWlqqhNwOYUXGn7UXIWsZq2gslOEIKC/SpRrsSbX
+	 3yAw5UvqxoS+KGtinnXT5NY7XduN6ac05vieKwskb2eTQzYg//roxFIB+75ZYr8IKl
+	 8CZUWkuV8H9zCNVVHxvAgTiF0v5goYcLlpmvucNPlTtV26lNyb+WSSMUES1xlrwZLC
+	 5BnlhZDUjAI7A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+Cc: =?UTF-8?q?Benjamin=20Gro=C3=9Fe?= <ste3ls@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 14/14] net: usb: qmi_wwan: add Quectel RG650V
-Date: Mon,  4 Nov 2024 05:52:06 -0500
-Message-ID: <20241104105228.97053-14-sashal@kernel.org>
+	hayeswang@realtek.com,
+	dianders@chromium.org,
+	grundler@chromium.org,
+	hkallweit1@gmail.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/11] usb: add support for new USB device ID 0x17EF:0x3098 for the r8152 driver
+Date: Mon,  4 Nov 2024 05:53:04 -0500
+Message-ID: <20241104105324.97393-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241104105228.97053-1-sashal@kernel.org>
-References: <20241104105228.97053-1-sashal@kernel.org>
+In-Reply-To: <20241104105324.97393-1-sashal@kernel.org>
+References: <20241104105324.97393-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,63 +58,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.59
+X-stable-base: Linux 6.1.115
 Content-Transfer-Encoding: 8bit
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Benjamin Große <ste3ls@gmail.com>
 
-[ Upstream commit 6b3f18a76be6bbd237c7594cf0bf2912b68084fe ]
+[ Upstream commit 94c11e852955b2eef5c4f0b36cfeae7dcf11a759 ]
 
-Add support for Quectel RG650V which is based on Qualcomm SDX65 chip.
-The composition is DIAG / NMEA / AT / AT / QMI.
+This patch adds support for another Lenovo Mini dock 0x17EF:0x3098 to the
+r8152 driver. The device has been tested on NixOS, hotplugging and sleep
+included.
 
-T: Bus=02 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000 MxCh= 0
-D: Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P: Vendor=2c7c ProdID=0122 Rev=05.15
-S: Manufacturer=Quectel
-S: Product=RG650V-EU
-S: SerialNumber=xxxxxxx
-C: #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I: If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E: Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I: If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=9ms
-I: If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E: Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=87(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E: Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=9ms
-
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Signed-off-by: Benjamin Große <ste3ls@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241024151113.53203-1-benoit.monin@gmx.fr
+Link: https://patch.msgid.link/20241020174128.160898-1-ste3ls@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
+ drivers/net/usb/r8152.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 92c1500fa7c44..f88f7c972a9c0 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1084,6 +1084,7 @@ static const struct usb_device_id products[] = {
- 		USB_DEVICE_AND_INTERFACE_INFO(0x03f0, 0x581d, USB_CLASS_VENDOR_SPEC, 1, 7),
- 		.driver_info = (unsigned long)&qmi_wwan_info,
- 	},
-+	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0122)},	/* Quectel RG650V */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0125)},	/* Quectel EC25, EC20 R2.0  Mini PCIe */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0306)},	/* Quectel EP06/EG06/EM06 */
- 	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0512)},	/* Quectel EG12/EM12 */
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 958a02b19554d..061a7a9afad04 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9870,6 +9870,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3062) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3069) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3082) },
++	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x3098) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7205) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x720c) },
+ 	{ USB_DEVICE(VENDOR_ID_LENOVO,  0x7214) },
 -- 
 2.43.0
 
