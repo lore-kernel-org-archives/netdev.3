@@ -1,104 +1,110 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EDE469D;
-	Mon,  4 Nov 2024 14:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA1D469D;
+	Mon,  4 Nov 2024 14:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730731602; cv=none; b=ik0aLIFoVgbfiW6V2KY7gWmXWFkY/6TB4OZAhHrmrxesutouxgIXdoUT/HpwMenIfF/PT7TlOFoE8wYMJEucU3FsFu9IQzgImM/OJuuoeoHL+91YhrudKl0d6NTT8xe6uihY3v3fD3ssWy9Tblhv/aEurmRLdCwcjCvSpw9SCEY=
+	t=1730731805; cv=none; b=CSyleboOvpZwyfVn3mj9fTbSUxBAdcnncOIC8WUhl62UnjE8TyDZa1cDahAWDe0sh0vKFtrGt3E/DefVMJ35gUouiVscixODncoza9qz0v8bSzIyITlN1lgBkcnT0RhxSnDqG9S77vsptYckG+ilkMgp1Uw28UwnjtyyWE/NU84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730731602; c=relaxed/simple;
-	bh=OuS/4i+oygUwsdbc+DVGxua1yWNGYXVWyfGEWNFamiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bDth8n8HrTXcVtvfSVqDEV4j6A2BRCZILZe96Z1xF8kaVVUwqJAY4aCzMqjnD4n/o40KkNOiT/u7MpO5P8+gRw+RFvx6soZmYeWogfPqND5Uep8dnx3PUR5GjqfPXo++K8m7FXHWD6ijOKrJA9xownZD8QHlpgr1zO+4T5E8Rgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=lTSHtLS8; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="lTSHtLS8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1730731597;
-	bh=OuS/4i+oygUwsdbc+DVGxua1yWNGYXVWyfGEWNFamiw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lTSHtLS836wcVaZJDpm8Yf8qGI47kjv7/IUuPAG4uEwoXmnGr4LDmIN2uQk2Iv82m
-	 Sm178fUyf/ZN8sJLsAA7CvSLgf48cQnCFrVbdors/KoZ1eCTtw4ktA/s/eA6d4ynYF
-	 OrpfuFm+okUH1/UIcJNuasDi4zp1oYo8hqDKZAnRQceI1Fba9HH6pBRRyygKWkuxdl
-	 xRXOUCV6dj8n0bzWIZdH6oqV12rZSeKcW6sXSjzBSNVH1N86162i8PGA5pHbMen/e9
-	 yG3hm8vszU5yTpruquqB0J5+PqIppIXloKC69s6VLbQEJBzlcFvgXe1rsM0kA5VYve
-	 msFOR5HntBqDA==
-Received: from notapiano (pool-100-2-116-133.nycmny.fios.verizon.net [100.2.116.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nfraprado)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1F2AF17E3696;
-	Mon,  4 Nov 2024 15:46:35 +0100 (CET)
-Date: Mon, 4 Nov 2024 09:46:33 -0500
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Biao Huang <biao.huang@mediatek.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, kernel@collabora.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 0/4] net: stmmac: dwmac-mediatek: Fix inverted logic for
- mediatek,mac-wol
-Message-ID: <c6fec04a-7eed-4c61-85bf-a11542df441b@notapiano>
-References: <20241101-mediatek-mac-wol-noninverted-v1-0-75b81808717a@collabora.com>
- <9a1ce320-e1ce-4d2f-a8d1-7680155ef71f@collabora.com>
+	s=arc-20240116; t=1730731805; c=relaxed/simple;
+	bh=4Vv+jv+4Oi8uyoG6jRMsYWTy2VoFnc8oaLa2+MimbdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DEJ7OwMeru536pcyCYLAJ32iWQxrE3v5EP8x9mhVd6ihiGl1ifxJbSZqKS9OVDvySHz/iAb1M0sO//ThWkndXS2UdIXDK2af2TY3hxrHNUqLit2+abnjJTnfDyMs78R95O32aolbYlh75QxvnLQ/Q/HmSWznT/jp+f3OXiZFTog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Xhv8J72RNz9sSR;
+	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id bWfhLmnpm9tF; Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xhv8J6736z9sSN;
+	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B3EE88B770;
+	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id X3XWHlYHgmaK; Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 811948B763;
+	Mon,  4 Nov 2024 15:33:04 +0100 (CET)
+Message-ID: <34c972b7-ba53-46ba-ada9-df741bc21e47@csgroup.eu>
+Date: Mon, 4 Nov 2024 15:33:03 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] soc: fsl_qbman: use be16_to_cpu() in
+ qm_sg_entry_get_off()
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Breno Leitao <leitao@debian.org>,
+ Madalin Bucur <madalin.bucur@nxp.com>, Ioana Ciornei
+ <ioana.ciornei@nxp.com>, Radu Bulie <radu-andrei.bulie@nxp.com>,
+ Sean Anderson <sean.anderson@linux.dev>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
+ <20241029164317.50182-2-vladimir.oltean@nxp.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20241029164317.50182-2-vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9a1ce320-e1ce-4d2f-a8d1-7680155ef71f@collabora.com>
 
-On Mon, Nov 04, 2024 at 11:18:48AM +0100, AngeloGioacchino Del Regno wrote:
-> Il 01/11/24 16:20, Nícolas F. R. A. Prado ha scritto:
-> > This series fixes the inverted handling of the mediatek,mac-wol DT
-> > property while keeping backward compatibility. It does so by introducing
-> > a new property on patch 1 and updating the driver to handle it on patch
-> > 2. Patch 3 adds this property on the Genio 700 EVK DT, where this issue
-> > was noticed, to get WOL working on that platform. Patch 4 adds the new
-> > property on all DTs with the MediaTek DWMAC ethernet node enabled
-> > and inverts the presence of mediatek,mac-wol to maintain the
-> > current behavior and have it match the description in the binding.
-> > 
+
+
+Le 29/10/2024 Ã  17:43, Vladimir Oltean a Ã©critÂ :
+> struct qm_sg_entry :: offset is a 13-bit field, declared as __be16.
 > 
-> Actually, I'm sure that all of these boards *do* need MAC WOL and *not* PHY WOL.
+> When using be32_to_cpu(), a wrong value will be calculated on little
+> endian systems (Arm), because type promotion from 16-bit to 32-bit,
+> which is done before the byte swap and always in the CPU native
+> endianness, changes the value of the scatter/gather list entry offset in
+> big-endian interpretation (adds two zero bytes in the LSB interpretation).
+> The result of the byte swap is ANDed with GENMASK(12, 0), so the result
+> is always zero, because only those bytes added by type promotion remain
+> after the application of the bit mask.
 > 
-> The only one I'm unsure about is MT2712, but that's an evaluation board and not
-> a retail product with "that kind of diffusion".
+> The impact of the bug is that scatter/gather frames with a non-zero
+> offset into the buffer are treated by the driver as if they had a zero
+> offset. This is all in theory, because in practice, qm_sg_entry_get_off()
+> has a single caller, where the bug is inconsequential, because at that
+> call site the buffer offset will always be zero, as will be explained in
+> the subsequent change.
 > 
-> I think you can just fix the bug in the driver without getting new properties
-> and such. One commit, two lines.
+> Flagged by sparse:
+> 
+> warning: cast to restricted __be32
+> warning: cast from restricted __be16
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Alright, since you're sure all the boards need MAC WOL this is simpler: I can
-just fix the driver handling, and also update all the DTs to make sure they use
-MAC WOL. (Right now some are enabling PHY WOL, mt8395-genio-1200-evk.dts and
-mt8395-radxa-nio-12l.dts, while the others are enabling the MAC WOL)
+Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-The MT2712 EVB currently enables MAC WOL, so even though you're not sure about
-that one, I think it makes sense to keep the current behavior ie add the
-mediatek,mac-wol property just like for the others, so it keeps using MAC WOL.
-
-I'll wait a couple days in case there are more comments and then I'll send v2
-with those changes.
-
-Thanks,
-Nícolas
+> ---
+>   include/soc/fsl/qman.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+> index 0d3d6beb7fdb..7f7a4932d7f1 100644
+> --- a/include/soc/fsl/qman.h
+> +++ b/include/soc/fsl/qman.h
+> @@ -242,7 +242,7 @@ static inline void qm_sg_entry_set_f(struct qm_sg_entry *sg, int len)
+>   
+>   static inline int qm_sg_entry_get_off(const struct qm_sg_entry *sg)
+>   {
+> -	return be32_to_cpu(sg->offset) & QM_SG_OFF_MASK;
+> +	return be16_to_cpu(sg->offset) & QM_SG_OFF_MASK;
+>   }
+>   
+>   /* "Frame Dequeue Response" */
