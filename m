@@ -1,48 +1,55 @@
-Received: from mail03.siengine.com (mail03.siengine.com [43.240.192.165])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F611AB507;
-	Mon,  4 Nov 2024 08:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.240.192.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666E219D8BE;
+	Mon,  4 Nov 2024 09:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730710799; cv=none; b=UyKreLMsg/56HG1Um/W9/883e9COC7U9Fynapwka3iPONnZJU5AFO0M6a2KlMI4RicvFMmXLQum8RWZiw2Z+kyex0yiTYVQqJ8BW3J6TrSl5ETuz61azea16GsA3o8WRZLvUDnFNuaK2n728QLVlBtCoC1eoQO4gR2aZMdZx6kE=
+	t=1730711283; cv=none; b=RhnnYCYJPeIg7HhjvxJADo60+hjxkluOCroG/0qWpZv1oZSxqR4hCqPUCFrsrUPPJHgcyo2ZfGr24y/F4F/cVvBKiY36syJTLn4TJdpxdsYHuRcX3BSqd19Sm4ARtAGQQqffZlYPi5fs8iSZn2m4hCoeUK6oCTXhDTsrhTG29uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730710799; c=relaxed/simple;
-	bh=LL47etnmzWJJki/OsiG0tCx1tTBob14vUbzMkhMrRNk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XF7VBaksyhu6S/g9mjDkM16IbYFvxzsxXo0nI6dhdDzLOo/FmOXe5RqDKIJFsv0z4n63PWemZpJxAejEhLFuZSnVWaid7MzqR8eddhEQ6B3KBlb0WsxEwSkXGfCrGZ2xcKGBy2rijeAuV2BvpVZWnb4tQP04A7V185XObEWRfg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com; spf=pass smtp.mailfrom=siengine.com; arc=none smtp.client-ip=43.240.192.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siengine.com
-Received: from mail03.siengine.com (localhost [127.0.0.2] (may be forged))
-	by mail03.siengine.com with ESMTP id 4A48mDCN027577;
-	Mon, 4 Nov 2024 16:48:13 +0800 (+08)
-	(envelope-from lucas.liu@siengine.com)
-Received: from dsgsiengine01.siengine.com ([10.8.1.61])
-	by mail03.siengine.com with ESMTPS id 4A48lApu027481
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 4 Nov 2024 16:47:10 +0800 (+08)
-	(envelope-from lucas.liu@siengine.com)
-Received: from SEEXMB03-2019.siengine.com (SEEXMB03-2019.siengine.com [10.8.1.33])
-	by dsgsiengine01.siengine.com (SkyGuard) with ESMTPS id 4XhlT93YMLz7ZMvT;
-	Mon,  4 Nov 2024 16:47:09 +0800 (CST)
-Received: from SEEXMB03-2019.siengine.com (10.8.1.33) by
- SEEXMB03-2019.siengine.com (10.8.1.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.1544.11; Mon, 4 Nov 2024 16:47:09 +0800
-Received: from localhost (10.12.6.21) by SEEXMB03-2019.siengine.com
- (10.8.1.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.2.1544.11 via Frontend
- Transport; Mon, 4 Nov 2024 16:47:09 +0800
-From: "baozhu.liu" <lucas.liu@siengine.com>
-To: <mkl@pengutronix.de>
-CC: <wg@grandegger.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <linux-can@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        "baozhu.liu"
-	<lucas.liu@siengine.com>
-Subject: [PATCH] can: flexcan: simplify the calculation of priv->mb_count
-Date: Mon, 4 Nov 2024 16:47:05 +0800
-Message-ID: <20241104084705.5005-1-lucas.liu@siengine.com>
+	s=arc-20240116; t=1730711283; c=relaxed/simple;
+	bh=nvTvcMq87NAEajnxg84zXbjs+exdQHrT/KIDHDbHkJA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=alJtBdFh2/1E/4iukVNZV10AsS6/USk1LM0vYynxZg3QUqhap2KISKqZ+fUfusqdwh0wfmd+9fgd+/w4f0UAYFtJHiDzM1RS7TkH6m4GKG4xjBc1qzmFxSorZUIt5ArSpU63faic4/DveQRjmt7V+8WaJJqXKn/eZkmYjmYSmO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ojaM3Bx2; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ojaM3Bx2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1730711281; x=1762247281;
+  h=from:to:subject:date:message-id:mime-version;
+  bh=nvTvcMq87NAEajnxg84zXbjs+exdQHrT/KIDHDbHkJA=;
+  b=ojaM3Bx2FoINjEIqF1QRHxDctgIhmVliOYwLfDs7OL7scajBF+1IlJZR
+   Lk2kMNvRVdxw0ZnWlrPPd3YygkKhp2m2RicM08v9my2PLA99ZAtXjHWiO
+   GZXXMFgN9bIDAJeVKJGBamMi3S7oLiLqnEIbRqthu7w+7QLmX+hM7o63D
+   cCQ35ZsyNJ3lH+cIMP0x2VyW8sywPGFV42Cg/pYfHM8oRIVaOuDY+CIQz
+   dwYusMqZ5GaivkBTguHFcJntIG2TvY2S5HQ94X5s1jguTjLVPzZhsFDXF
+   aQ8hUa/yhFiwnW+FHfUkKxiNg2MlxsIimHXEIabvk+SNRRZy4Ree252UB
+   Q==;
+X-CSE-ConnectionGUID: b8mzosZWTB24zVJMTbB3MA==
+X-CSE-MsgGUID: vs7EqtfEQX2zAGjHUUNH8Q==
+X-IronPort-AV: E=Sophos;i="6.11,256,1725346800"; 
+   d="scan'208";a="201261156"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Nov 2024 02:08:00 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 4 Nov 2024 02:07:56 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Mon, 4 Nov 2024 02:07:52 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>
+Subject: [PATCH net-next 0/5] Add ptp library for Microchip phys
+Date: Mon, 4 Nov 2024 14:37:45 +0530
+Message-ID: <20241104090750.12942-1-divya.koppera@microchip.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -51,34 +58,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-DKIM-Results: [10.8.1.61]; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:mail03.siengine.com 4A48mDCN027577
 
-Since mb is a fixed-size two-dimensional array (u8 mb[2][512]),
-"priv->mb_count = sizeof(priv->regs->mb)/priv->mb_size;",
-this expression calculates mb_count correctly and is more concise.
+Adds support of ptp library in Microchip phys
 
-Signed-off-by: baozhu.liu <lucas.liu@siengine.com>
----
- drivers/net/can/flexcan/flexcan-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Divya Koppera (5):
+  net: phy: microchip_ptp : Add header file for Microchip ptp library
+  net: phy: microchip_ptp : Add ptp library for Microchip phys
+  net: phy: Kconfig: Add ptp library support and  1588 optional flag in
+    Microchip phys
+  net: phy: Makefile: Add makefile support for ptp in Microchip phys
+  net: phy: microchip_t1 : Add initialization of ptp for lan887x
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 6d638c939..e3a8bad21 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -1371,8 +1371,7 @@ static int flexcan_rx_offload_setup(struct net_device *dev)
- 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_MB_16)
- 		priv->mb_count = 16;
- 	else
--		priv->mb_count = (sizeof(priv->regs->mb[0]) / priv->mb_size) +
--				 (sizeof(priv->regs->mb[1]) / priv->mb_size);
-+		priv->mb_count = sizeof(priv->regs->mb) / priv->mb_size;
- 
- 	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_USE_RX_MAILBOX)
- 		priv->tx_mb_reserved =
+ drivers/net/phy/Kconfig         |   9 +-
+ drivers/net/phy/Makefile        |   1 +
+ drivers/net/phy/microchip_ptp.c | 990 ++++++++++++++++++++++++++++++++
+ drivers/net/phy/microchip_ptp.h | 217 +++++++
+ drivers/net/phy/microchip_t1.c  |  29 +-
+ 5 files changed, 1242 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/phy/microchip_ptp.c
+ create mode 100644 drivers/net/phy/microchip_ptp.h
+
 -- 
 2.17.1
 
