@@ -1,225 +1,193 @@
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2078.outbound.protection.outlook.com [40.107.96.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F4C18BC37
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 09:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730800654; cv=none; b=G0GLXSHplj2+VK74lik7dmT+HSY93GM1GNYYF13tK5/fU0X3gMtPKA9Fefb/f0FRyjdmcPXAGzKQve4Ge/lAAvgJNhqtLVixWhMKNQnDpKxB2kcKqv14qI1LS9wruFDGfxJCGQHo1Hyc/cJEQveBMVlueefhMUVfXJMuEVNXckA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730800654; c=relaxed/simple;
-	bh=nNVGc/rhRklZRqYSV1oE4AGTffLhZg2PzPVzkoe02jw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d1Ve5fAcatAqFV/q4+5AtvhrG/yD1cT8QdWOlcFutS2ESZrADm0Fv2iD654lecRUZbGz6/bgZd1acWA8hPpPfIHyuhN12f5epuyyaq4ewEknkjh8cbsC/NzMCngrL8u6ik44kXRggo+sMtDkBsrHhUjM+tdgl6qMZu+deGm0JoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KdKz8vFM; arc=none smtp.client-ip=209.85.166.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B990F1D0F60
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730800839; cv=fail; b=i7PovkAWVP18JEJqG4ubGBtmxwmThqLYI+PTZAjBasy+m19gO+4lqZQqsX38e93G2rs5qjzIb9StBGTahruaHC6qUtjCvcf5n4y4hZWrXsXD25DByz5yqGnmRjso57aRoIlxFrC1AEtMkMgb1EXD00PZs/vEiG4u/h+P9OSOLMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730800839; c=relaxed/simple;
+	bh=DknoO9kwT/CxcLQO2oSM5F7D326/q6hXBf2xcRAissc=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=pXGZWLbT4poQ67XwewvByjqIFZ7I26t0924M2MYw2WAz4nUYkjSbnKtp8DEDvwAfCMDfJl0ntfNuvYLMvaRVc8scpUijJMLRaMRko8GCIJpnin6wl3XCAk3ubfhNMVqjRf2aS6nQ8WlG3bdeJBpYO4bBjM2wV6DFbm7XboxW2Vc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UFvkuVJF; arc=fail smtp.client-ip=40.107.96.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdKz8vFM"
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-83ab5b4b048so244758839f.2
-        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 01:57:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730800652; x=1731405452; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SeL6fcN9rRSq3sdQ+Z+wb9j0vzRd9WimUVH85Elv+88=;
-        b=KdKz8vFMRd8GEFrJzUjwXJzIo8Nj+HbV6LH7EBGUieX83ZxaIqA1ZCFDmvRGJq90uO
-         48eA7tCHYRHfw67VRvdNbdkcgnU1K3DTo2XjBibvVcUpZ3b/kMukXBuzFI+vnF+eSOqZ
-         wHpUCSMSk9RogZ1I3GU5owCbyZ0PelMRCkBSZVDPAjbu0iszORXBtrdGfc5kj4aSzdCV
-         oUjaDwwd8i6eME8RqHUl/hxF0r/xxV1BSD9Kn93p3LOPsezNqNemBagL+lWQghZbJ0S5
-         Dag/k3YnixOoAgSMrqGOj+nYP2ummM/Anx50l2BWAiQfJckrQjtsa75MERwgbTkKxnUu
-         0KGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730800652; x=1731405452;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SeL6fcN9rRSq3sdQ+Z+wb9j0vzRd9WimUVH85Elv+88=;
-        b=NQSMIvCp7w9UkhsGOUpgvPNVdvn3bOkhR7vbOh+JX8StOZKp4HCOlIZgyiGMgoRbZg
-         sBAks2xy1UK2K/DUZGneWOulfTPwllb1ZhX7EZUmUJriSscx05pFiZOE/qnmpeeFn8+7
-         1WTzmfPkcNf3q189aMpE3iqm3vwdkA6Oe7+m8MCT6ER5kcp0fKUdxwI7VM5LO+MU8AMG
-         RzFoqOyE4kLnjaZmdUDQ5vFm+HeMHhgmj65eZzEWF6YkS7cbWfFLCeUZEhAwX14xKVkM
-         jC0EoijpK2O5m7Myh82zttVU+6jz90akkg9xQs3PtYYMsHmexRVjxHuDTm33RdlYkBcO
-         JOiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdUR/UhvacODclXiUXd5jEBG4EK0oXYiXEadi6uBpqxjiTNRzdYP4fZkaH0ILqn8m0vTY3Dtw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd1mmMbP/LbBXGKlSeLSrxaA+Nb8z/J8d1UeyKY27ezUBoIvxo
-	ZuDkIBBLBsUWF1SW+YnLVopWpKaN1/3R6/0JVLyJ3THS6toTlnELLzO3anWeIpIknwpod5J1BJq
-	apPo9gjEbE3ptlg8k9KtfldRe/ow=
-X-Google-Smtp-Source: AGHT+IEi0ZSNWt4gs1LkprwdYUKHDCuKG0t2k3/YBUeIpAqP3nPnbfHlaEx6Zbz2y/MygF0Lkz8pRv/OIYXumsH15sE=
-X-Received: by 2002:a05:6e02:1b07:b0:3a5:e5cf:c5b6 with SMTP id
- e9e14a558f8ab-3a5e5cfc68bmr221263265ab.10.1730800652151; Tue, 05 Nov 2024
- 01:57:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UFvkuVJF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QjfxMmOmUH92JgpNyEZ1hO7+4gJCtOYCr2wayiwjiKqtMAM+6XiCgM6RSC8YXHxtTfT+IBi5jOTlrzSyoq8o153342I6CsLi6gspRsWb6SFDwwk1luJJzuqMuqDNCwSEDorxffaDeRqZF5BFxsaKb8mAjOiSfkyh3XdB53mbAmFr/ZRlPatvWZ2RtzicQIPeR7gTfDkKv7EvMtYI+YgN6oNC0a+WlgpHNMvkwF104KWhIdhQ0E3L4PMYso0Wo641Djgu0kHSpXrQWrt8FgKzorr2FRXlelXVqOleVx06i5RUI3VyMnnN82tm8yNvKpiawG5g3fvR2UPosD8yJpeBxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L2wzk7KaQ+UJVuRGs2A1fFmXB3/Dl5DEeZ2hUjqo8W0=;
+ b=d75ofBCQU1suhbfmmPFIM9wPgKNbs+BjHaj8DnbNAtqqV9wKdovH0d74SavZTHnkFLcIJJwE9214U4D3A/+PfKH1oiOsi2OIx92NszClRYnUpKH17VMN0qfLuYNk7cnRxfNQ6Vr+bNCjWNsKQCPCwTfH7UUX/mcliFr/ubCD5Cg58XP+FyQsvvDD15DU+9qjxagcPbbVEkwhYNqT1Mk7wHmmn46Ut94u3UlqlyqNPPF3XSZRWkzFwEf88ycru/kb5h5NClyp6S7j5ZtxID7xJ26qFb/dRYtPogqJRVrvaVekvXG4f3ua4RT7EQ7Wf3FKRTU+pH/MlkcZwrtVw1SEMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=nxp.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L2wzk7KaQ+UJVuRGs2A1fFmXB3/Dl5DEeZ2hUjqo8W0=;
+ b=UFvkuVJFv26AT2FlCf+opaHmeLPe7PWUK3ud6ffuCvkByRZeusurgDcfisOgf17A85kICf2OheZ7AwcMFtwt6qYdPSB/6XGeZUS6AAh83zb2KH6uzZtIwUj8KN+zpnJEGW0TJMta/DF25FQGxJUboQ/PpUAT3cOmU51d/VJWMQAajf3/mgxpMTv1lfIUZjBTrlXMFXdcRwkyarQXNTkKnD/O1UFJIb+nP0WTmMqtE1NGt1ilH52gUSeHDC063TDR/GXea+i+n6HgMnuKucJrSuzeyHMzLVPsfSo3Eo1IGoRK19NZOzJR2qXgQbqNsMBShGM4QxUfj7gBJsD9FAOZRg==
+Received: from MW4P223CA0003.NAMP223.PROD.OUTLOOK.COM (2603:10b6:303:80::8) by
+ SA1PR12MB8143.namprd12.prod.outlook.com (2603:10b6:806:333::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.31; Tue, 5 Nov
+ 2024 10:00:34 +0000
+Received: from MWH0EPF000A6734.namprd04.prod.outlook.com
+ (2603:10b6:303:80:cafe::a9) by MW4P223CA0003.outlook.office365.com
+ (2603:10b6:303:80::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18 via Frontend
+ Transport; Tue, 5 Nov 2024 10:00:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000A6734.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8137.17 via Frontend Transport; Tue, 5 Nov 2024 10:00:33 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 5 Nov 2024
+ 02:00:11 -0800
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 5 Nov 2024
+ 02:00:05 -0800
+References: <cover.1729786087.git.petrm@nvidia.com>
+ <20241029121807.1a00ae7d@kernel.org> <87ldxzky77.fsf@nvidia.com>
+ <7426480f-6443-497f-8d37-b11f8f22069e@redhat.com>
+User-agent: mu4e 1.8.14; emacs 29.4
+From: Petr Machata <petrm@nvidia.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: Petr Machata <petrm@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	<netdev@vger.kernel.org>, Ido Schimmel <idosch@nvidia.com>, Amit Cohen
+	<amcohen@nvidia.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Andy Roulin
+	<aroulin@nvidia.com>, <mlxsw@nvidia.com>
+Subject: Re: [PATCH net-next v2 0/8] net: Shift responsibility for FDB
+ notifications to drivers
+Date: Tue, 5 Nov 2024 10:45:04 +0100
+In-Reply-To: <7426480f-6443-497f-8d37-b11f8f22069e@redhat.com>
+Message-ID: <874j4mknkv.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105025511.42652-1-kerneljasonxing@gmail.com>
- <20241105074916.75107-1-kuniyu@amazon.com> <CAL+tcoAgSBMtFcDx6MfCAhYMVKERCx2d7YUjquT6Pa8jm0bXWA@mail.gmail.com>
- <CANn89iKhSnTJUadpEBpkKYoRVP2GEJZ1ftzH7AqF4oXMF3QEZA@mail.gmail.com>
- <CAL+tcoCBvbR_=c_SxKmAyAE4U5wTgr=hp08yNxm0QUSWdgge5Q@mail.gmail.com> <CANn89i+h4zbgju1KSfTZi2R1bnQ4=Q1EThJ9y8e5XCOocLNzMw@mail.gmail.com>
-In-Reply-To: <CANn89i+h4zbgju1KSfTZi2R1bnQ4=Q1EThJ9y8e5XCOocLNzMw@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 5 Nov 2024 17:56:55 +0800
-Message-ID: <CAL+tcoBV2AYZwjVFEEfPahKnFKJ-tZmkUCKF0k0hy6iFnCQWAQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: avoid RST in 3-way shakehands due to
- failure in tcp_timewait_state_process
-To: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, davem@davemloft.net, dsahern@kernel.org, 
-	horms@kernel.org, kernelxing@tencent.com, kuba@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6734:EE_|SA1PR12MB8143:EE_
+X-MS-Office365-Filtering-Correlation-Id: 778ca58f-9ed2-4b43-950c-08dcfd80b084
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wMzP2g74XX5RIIdHOyAJDU4VK83SKxgmIer96fXOyN+t4RTF5/jxpJTaxhn/?=
+ =?us-ascii?Q?F7+46xOU17OHsQJ4EpW7/OMH1DQFMAF1OMaViD6imnEAdIUdhkAY3VCMci8r?=
+ =?us-ascii?Q?BYEJD5rTVNZiOq/BkdEa4WgX31CLka0rg9GEWGeDVNdGRnthZrqfnueoENl4?=
+ =?us-ascii?Q?9eNY2pjNgk1wrxkAH3rXGEwX/52Vgdn+4TSCtiaNgigJ2zS1mCsbPpqflZZC?=
+ =?us-ascii?Q?5xkpby4SN9PTCRiui2FYhw6igTrVljYx/OXu5VuNsfjJ/e+pgvspUs5CfSnq?=
+ =?us-ascii?Q?HrwYqV7JjuPcFLLUTPVd6QXwtFHVGQyHizcMNr7XkUcy3JCIIaBe4nOlE+AZ?=
+ =?us-ascii?Q?eNDPA/5MqAqPAn7YXggibQ7Uc0ZGwk6G+OH/OkpdmQzY7QLUHXdGEXhhWzM8?=
+ =?us-ascii?Q?0jbaWU622btsPNl9tWQcLgZfqFtp5nyMDuooXupmsti/rn0p+PqCaCK+ijPA?=
+ =?us-ascii?Q?FHsIHtRT+MCHKcwrSh91RpCsGpvRa2Pmdfmr8FCc5mEcsHgQ68JonsiOeLr0?=
+ =?us-ascii?Q?TIKWxVT3KjaumDtlwT2iei7GxCOhry7MrbGkt1LU36IBaSQSW83nHbB6qJqf?=
+ =?us-ascii?Q?ze8eg5vFbgHHj2l4a4iB6FFMdmSfjrErZQFQhDy+lPL0OFzyHqeST1GUzGq5?=
+ =?us-ascii?Q?eE//ebXY/gyjcKR8FPTV+ua2Wf7MspXAjfyTc46nhdfR29wuqzdZCjkL5jg0?=
+ =?us-ascii?Q?jcmtibuyKKRP8nN5l2FNNguNa5+Wc2Kckze2A03K8tS2LuLKM28/HtBnuuvy?=
+ =?us-ascii?Q?fSJ7mDuTdhkQ1ndR++cLMo90DtXehssXulSXYumEFtFilDmRoQ3v7esoTGcb?=
+ =?us-ascii?Q?v8uaw+Vt8F9KOTt8marlRI92xrNAHxXuX07AL8sA3IR3U7zokvCo6QRKAggp?=
+ =?us-ascii?Q?A1tCXxKHtzYcMWVSCOBSnA6yseuKxdDiRIwmy/1eow4FvhBFRA6n+Slw2Eyw?=
+ =?us-ascii?Q?cT8YwjcX2aSsqqcRWOK4629rkpPJrR8Fgq9u+GJZnbREuze+IqRMif0jO2ot?=
+ =?us-ascii?Q?sIwjVPpTkY/62FE89q25ZGQJ/R5DMHf6rcMnpnHxJQlcv6T11nM8aTe/bycV?=
+ =?us-ascii?Q?3AQvD4zXUpVAxf37Uotj3JDaP97YxuDl3VZT1qPLmzs5JMPECZzJxj+ZVePQ?=
+ =?us-ascii?Q?wPxAGX7dTb9wERL7V+uUjA4oaqXb5ZL4l4VjBgcviRd6uZqEY03D1BM/CUS5?=
+ =?us-ascii?Q?YQh5jwCDVA1GDqAWXJfKrJZudHTwfBkISS6cRUGcS3j/PL3HzUBg39lMIhEp?=
+ =?us-ascii?Q?Ds9sWJpRcJx3H69bVbD3GsgFSsFepn53PLZZrx8oDl5qqTCcVGRvFF+BRJqu?=
+ =?us-ascii?Q?fmPfZNOpXtsxZ8R9DnZHfVGQSEw8TyFtowj826f68ZUsiS3WRv7JYPOw0ceU?=
+ =?us-ascii?Q?T1N6Rff0aYRrJEti9Bjuw9Pku6cBCQdVGJfgOMoWfe0AQRNI1w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 10:00:33.7950
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 778ca58f-9ed2-4b43-950c-08dcfd80b084
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A6734.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8143
 
-On Tue, Nov 5, 2024 at 5:50=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
+
+Paolo Abeni <pabeni@redhat.com> writes:
+
+> On 11/4/24 12:43, Petr Machata wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>>> On Thu, 24 Oct 2024 18:57:35 +0200 Petr Machata wrote:
+>>>> Besides this approach, we considered just passing a boolean back from the
+>>>> driver, which would indicate whether the notification was done. But the
+>>>> approach presented here seems cleaner.
+>>>
+>>> Oops, I missed the v2, same question:
+>>>
+>>>   What about adding a bit to the ops struct to indicate that 
+>>>   the driver will generate the notification? Seems smaller in 
+>>>   terms of LoC and shifts the responsibility of doing extra
+>>>   work towards more complex users.
+>>>
+>>> https://lore.kernel.org/all/20241029121619.1a710601@kernel.org/
+>> 
+>> Sorry for only responding now, I was out of office last week.
+>> 
+>> The reason I went with outright responsibility shift is that the
+>> alternatives are more complex.
+>> 
+>> For the flag in particular, first there's no place to set the flag
+>> currently, we'd need a field in struct net_device_ops. But mainly, then
+>> you have a code that needs to corrently handle both states of the flag,
+>> and new-style drivers need to remember to set the flag, which is done in
+>> a different place from the fdb_add/del themselves. It might be fewer
+>> LOCs, but it's a harder to understand system.
+>> 
+>> Responsibility shift is easy. "Thou shalt notify." Done, easy to
+>> understand, easy to document. When cut'n'pasting, you won't miss it.
+>> 
+>> Let me know what you think.
 >
-> On Tue, Nov 5, 2024 at 10:42=E2=80=AFAM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Tue, Nov 5, 2024 at 5:35=E2=80=AFPM Eric Dumazet <edumazet@google.co=
-m> wrote:
-> > >
-> > > On Tue, Nov 5, 2024 at 10:08=E2=80=AFAM Jason Xing <kerneljasonxing@g=
-mail.com> wrote:
-> > > >
-> > > > On Tue, Nov 5, 2024 at 3:49=E2=80=AFPM Kuniyuki Iwashima <kuniyu@am=
-azon.com> wrote:
-> > > > >
-> > > > > From: Jason Xing <kerneljasonxing@gmail.com>
-> > > > > Date: Tue,  5 Nov 2024 10:55:11 +0800
-> > > > > > From: Jason Xing <kernelxing@tencent.com>
-> > > > > >
-> > > > > > We found there are rare chances that some RST packets appear du=
-ring
-> > > > > > the shakehands because the timewait socket cannot accept the SY=
-N and
-> > > > >
-> > > > > s/shakehands/handshake/
-> > > > >
-> > > > > same in the subject.
-> > > > >
-> > > > > > doesn't return TCP_TW_SYN in tcp_timewait_state_process().
-> > > > > >
-> > > > > > Here is how things happen in production:
-> > > > > > Time        Client(A)        Server(B)
-> > > > > > 0s          SYN-->
-> > > > > > ...
-> > > > > > 132s                         <-- FIN
-> > > > > > ...
-> > > > > > 169s        FIN-->
-> > > > > > 169s                         <-- ACK
-> > > > > > 169s        SYN-->
-> > > > > > 169s                         <-- ACK
-> > > > > > 169s        RST-->
-> > > > > > As above picture shows, the two flows have a start time differe=
-nce
-> > > > > > of 169 seconds. B starts to send FIN so it will finally enter i=
-nto
-> > > > > > TIMEWAIT state. Nearly at the same time A launches a new connec=
-tion
-> > > > > > that soon is reset by itself due to receiving a ACK.
-> > > > > >
-> > > > > > There are two key checks in tcp_timewait_state_process() when t=
-imewait
-> > > > > > socket in B receives the SYN packet:
-> > > > > > 1) after(TCP_SKB_CB(skb)->seq, rcv_nxt)
-> > > > > > 2) (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_tsval) < =
-0)
-> > > > > >
-> > > > > > Regarding the first rule, it fails as expected because in the f=
-irst
-> > > > > > connection the seq of SYN sent from A is 1892994276, then 169s =
-have
-> > > > > > passed, the second SYN has 239034613 (caused by overflow of s32=
-).
-> > > > > >
-> > > > > > Then how about the second rule?
-> > > > > > It fails again!
-> > > > > > Let's take a look at how the tsval comes out:
-> > > > > > __tcp_transmit_skb()
-> > > > > >     -> tcp_syn_options()
-> > > > > >         -> opts->tsval =3D tcp_skb_timestamp_ts(tp->tcp_usec_ts=
-, skb) + tp->tsoffset;
-> > > > > > The timestamp depends on two things, one is skb->skb_mstamp_ns,=
- the
-> > > > > > other is tp->tsoffset. The latter value is fixed, so we don't n=
-eed
-> > > > > > to care about it. If both operations (sending FIN and then star=
-ting
-> > > > > > sending SYN) from A happen in 1ms, then the tsval would be the =
-same.
-> > > > > > It can be clearly seen in the tcpdump log. Notice that the tsva=
-l is
-> > > > > > with millisecond precision.
-> > > > > >
-> > > > > > Based on the above analysis, I decided to make a small change t=
-o
-> > > > > > the check in tcp_timewait_state_process() so that the second fl=
-ow
-> > > > > > would not fail.
-> > > > > >
-> > > > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > > > > > ---
-> > > > > >  net/ipv4/tcp_minisocks.c | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.=
-c
-> > > > > > index bb1fe1ba867a..2b29d1bf5ca0 100644
-> > > > > > --- a/net/ipv4/tcp_minisocks.c
-> > > > > > +++ b/net/ipv4/tcp_minisocks.c
-> > > > > > @@ -234,7 +234,7 @@ tcp_timewait_state_process(struct inet_time=
-wait_sock *tw, struct sk_buff *skb,
-> > > > > >       if (th->syn && !th->rst && !th->ack && !paws_reject &&
-> > > > > >           (after(TCP_SKB_CB(skb)->seq, rcv_nxt) ||
-> > > > > >            (tmp_opt.saw_tstamp &&
-> > > > > > -           (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_=
-tsval) < 0))) {
-> > > > >
-> > > > > I think this follows RFC 6191 and such a change requires a formal
-> > > > > discussion at IETF.
-> > > > >
-> > > > > https://datatracker.ietf.org/doc/html/rfc6191#section-2
-> > > > >
-> > > > > ---8<---
-> > > > >       *  If TCP Timestamps would be enabled for the new incarnati=
-on of
-> > > > >          the connection, and the timestamp contained in the incom=
-ing SYN
-> > > > >          segment is greater than the last timestamp seen on the p=
-revious
-> > > >
-> > > > The true thing is that the timestamp of the SYN packet is greater t=
-han
-> > > > that of the last packet, but the kernel implementation uses ms
-> > > > precision (please see tcp_skb_timestamp_ts()). That function makes
-> > > > those two timestamps the same.
-> > > >
-> > > > This case happens as expected, so the second connection should be
-> > > > established. My confusion just popped out of my mind: what rules
-> > > > should we follow to stop the second flow?
-> > >
-> > > Note that linux TCP stack can use usec resolution for TCP TS values.
-> > >
-> > > You might adopt it, and no longer care about this ms granularity.
-> >
-> > Right, I noticed this feature. I wonder if we can change the check in
-> > tcp_timewait_state_process() like this patch if it has no side
-> > effects? I'm worried that some programs don't use this feature. It's
-> > the reason why I try to propose this patch to you.
+> I think that keeping as much action/responsibilities as possible in the
+> core code is in general a better option - at very least to avoid
+> duplicate code.
 >
-> Breaking RFC ? I do not think so.
+> I don't think that the C&P is a very good argument, as I would argue
+> against C&P without understanding of the underlying code. Still I agree
+> that keeping all the relevant info together is better, and a separate
+> flag would be not so straight-forward.
+>
+> What about using the return value of fbd_add/fdb_del to tell the core
+> that the driver did the notification? a positive value means 'already
+> notified', a negative one error, zero 'please notify.
 
-Oh right, I just can't figure it out why since we've already lost the
-fine-grained timestamp in each skb. I spent a few days investigating
-the bad cases this patch may bring, but I failed.
+That would work.
 
-> Instead, use a usec clock and voila, the problem is solved.
+How about passing an explicit bool* argument for the callee to set? I'm
+suspicious of these one-off errno protocols. Most of the time the return
+value is an errno, these aberrations feel easy to miss.
 
-Sure, it can work :)
-
-Thanks,
-Jason
+We decided against a dedicated argument originally, because it's not
+very pretty, but if the callback itself should somehow carry the
+please-notify interface (and I think it should), an argument is a more
+explicit and obvious way to do it.
