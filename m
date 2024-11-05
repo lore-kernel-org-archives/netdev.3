@@ -1,143 +1,145 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2B21D2B0F;
-	Tue,  5 Nov 2024 10:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD681D319F
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730802023; cv=none; b=DwWfZfSAuN7nSTo5aIACEOjbbTnOt65AYzTjC+Fe4V4GnTUvBaPAEZzC5fGa/TyetCgCXH9hMpDFyWsUXCdETf71LY66JPqexspfzGV4ZisSyCiZJhIcgcMMoe+oRAy51gWWYNnmggVXabqoe9fkboBZo4um6baVxrzIgfOBrIQ=
+	t=1730802026; cv=none; b=ItgxO/Mcy3d1BLDyvvuq/KdH8zj6bBr7Zf31gMbFY98eCbvzF7TC7YEOKcxorBHQkTZwVcANpcwCcoMVKW9BbqDXd+Ytw2GT8MJ2upODlkmCDY5DTWigl0tQHZBa/rci2M5gLlvdrbaNuUY82fG4J2ND7L8xtewyKYE1z0ysFHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730802023; c=relaxed/simple;
-	bh=v3ndVqHP3JRvh4yNpNPFvc9eMbj704RDjLO3v5uk7+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e26rrBfzB6B6HiQp28RWFiuk03P/dTcHZQmr+Fb+4t/doe1R81lafrOmn/dfEBnkQbHr62Y0o8KXfJ03X3jujXro66/x0hUa5cao8Yqq39AsvaBwW3RCCVbwE4cwrd3EigW6vGN5dlIXIFv/EU677muNfM5nd/uI8mrj41JpX08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Yba7nZWr; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1730802026; c=relaxed/simple;
+	bh=Paw3NHGBKcpYWKx6/8kixwuXZd4axLGz+zE8p3Aik4E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=gHoYklwCLdv2fFhiumOcMB9S4yDMreuDr00suquj3+errcSNW7rhabR4eN5g5sUh3JCJ2HsYLtwORBsmd1rOB2qhqRqG4CQbZEwOEPgDvbSwwn+yAeQJgPtBobFM+gu9/rTsdCUpuvQKIziqer4IEeHA6S60hgV4092nTDG5cOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gphwC22X; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Yba7nZWr"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3360540006;
-	Tue,  5 Nov 2024 10:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730802012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=frgUE9MhZvamkR8/ewj/FH/e6YcRGcG2QNQN+94jcNI=;
-	b=Yba7nZWr2CAkTBIK7Mj2OKyXuhW8Vz19vTFCdmac8rpbineGSAFFAtemZixk7v1lofDUVW
-	luBANgbVN0srjxsnSOZk7Q40+m6qUWTLnzyCTFhG9+TRKyP0isbXXDHCKq+4zN06GyCBK+
-	ukmpXaBubgFe/Gfuuns8mYFAiWNKxzisXVyZI7HbFavAJcVmM+B7/Kw+8tKXNJZEMW1lnP
-	uXZ4O9NKC6LTV64+z3m7H6bBg7NVGUn9WqvOGe5M8lPlqJR1/ii2o9FJLjLETwoydNQXe5
-	icwpNbRbw7nQwZQSQBhp2raay6/zXxorSgG7rlAnLUq0dm/2j5gH+O5jTIrtYw==
-Date: Tue, 5 Nov 2024 11:20:10 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Donald Hunter
- <donald.hunter@gmail.com>, Rob Herring <robh@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org, Kyle Swenson
- <kyle.swenson@est.tech>, Dent Project <dentproject@linuxfoundation.org>,
- kernel@pengutronix.de, Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH RFC net-next v2 15/18] net: pse-pd: Add support for
- getting and setting port priority
-Message-ID: <20241105112010.17d6f40b@kmaincent-XPS-13-7390>
-In-Reply-To: <ZySsCuOvSnVZnIwq@pengutronix.de>
-References: <20241030-feature_poe_port_prio-v2-0-9559622ee47a@bootlin.com>
-	<20241030-feature_poe_port_prio-v2-15-9559622ee47a@bootlin.com>
-	<ZyMpkJRHZWYsszh2@pengutronix.de>
-	<20241031121104.6f7d669c@kmaincent-XPS-13-7390>
-	<ZySR75i3BEzNbjnv@pengutronix.de>
-	<ZySsCuOvSnVZnIwq@pengutronix.de>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gphwC22X"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20cdda5cfb6so51295965ad.3
+        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 02:20:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1730802024; x=1731406824; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KpyF7OfeG3D1SjYyfRqhBhCivmBUEISeT2uU0LeHwvU=;
+        b=gphwC22XoX9jAEwWZkDO9Pu0tryY9k4lG9StauzgTFCFW7g+W+7kR+aykHTbUed56v
+         VnzOZIq+/HJXlzh2OcqrVIpAFIQA4H51q2zoKxPd1sDxoOeJ8CuW9SAdsfPw8P4OacDi
+         Ff9tl7d5j9hJ5MLwh6g7WgvjVqFIM5wyN0Udw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730802024; x=1731406824;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KpyF7OfeG3D1SjYyfRqhBhCivmBUEISeT2uU0LeHwvU=;
+        b=vYQaf3cffBMFSoGjzIvDz9A454/nDaXXTZgiNQZjGPB157CJ7m1p3FuZmIWEijFODn
+         +FHpRnmHTedGVb9dBzCm1IqzWLiVxxHfr1tEfYWXmQfGOW0qpbpWnjMlck2qcxNHgjl1
+         ddUm3JVLV6JNMtcH0ik3+t8KE+v5UvB4A/04eZ3MAgja0TupXQTFlPCGrH3msdcNDwyX
+         crIaiGyVPhL4CNVRy+6slFvqj6KxDw8v2HWPC/6RcstKRZ2Rpk/k6wzdq3xvk9yRTyr2
+         HBPCxJV99Hyg9/V66If2f7zL6jmFam1miOO5mhgDotQ5eQHY5H+LXhcbdZIsfuJ23/WW
+         A8Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVvLCmeDIRFglzTwqRzUI3G8FzP5M8NzWKVsodSB1qissX+/AeVQahLpN8TQCjcqMNOHLcgWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWhM2dduwQkQ0jY0Gk5RppcxVk4C0YxYWFO4A4xihW5qITFRC4
+	bxUko6yCbHSbj4gXyEDFlVkSEwwoa8q7UPK0NJiknWFbYc9ViYbtloS37u+Djg==
+X-Google-Smtp-Source: AGHT+IGDA/T6jNMV6isflQdNhX8z5d4jQN6lHmbWf0KOf1PRzPJ2hcQhVufloO0CQOiqBtfzV2pATQ==
+X-Received: by 2002:a17:902:ea12:b0:20c:dd71:c94f with SMTP id d9443c01a7336-21103c5c8a1mr263586265ad.41.1730802024616;
+        Tue, 05 Nov 2024 02:20:24 -0800 (PST)
+Received: from sxavier-dev.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21105707132sm75306615ad.96.2024.11.05.02.20.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 Nov 2024 02:20:23 -0800 (PST)
+From: Selvin Xavier <selvin.xavier@broadcom.com>
+To: leon@kernel.org,
+	jgg@ziepe.ca
+Cc: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	michael.chan@broadcom.com,
+	andrew.gospodarek@broadcom.com,
+	kalesh-anakkur.purayil@broadcom.com,
+	Selvin Xavier <selvin.xavier@broadcom.com>
+Subject: [PATCH rdma-next 3/3] RDMA/bnxt_re: Add set_func_resources support for P5/P7 adapters
+Date: Tue,  5 Nov 2024 01:59:12 -0800
+Message-Id: <1730800752-29925-4-git-send-email-selvin.xavier@broadcom.com>
+X-Mailer: git-send-email 2.5.5
+In-Reply-To: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
+References: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: kory.maincent@bootlin.com
 
-On Fri, 1 Nov 2024 11:23:06 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-> On Fri, Nov 01, 2024 at 09:31:43AM +0100, Oleksij Rempel wrote:
-> > On Thu, Oct 31, 2024 at 12:11:04PM +0100, Kory Maincent wrote: =20
-> > > On Thu, 31 Oct 2024 07:54:08 +0100
-> > > Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> > >  =20
->  [...] =20
->  [...] =20
-> > >=20
-> > > Ack. So we assume PoDL could have the same interruption events.
-> > >  =20
->  [...] =20
-> >=20
-> > After thinking about it more overnight, I wanted to revisit the idea of
-> > having a priority strategy per port. Right now, if one port is set to
-> > static or dynamic mode, all disabled ports seem to have to follow it
-> > somehow too. This makes it feel like we should have a strategy for the
-> > whole power domain, not just for each port.
-> >=20
-> > I'm having trouble imagining how a per-port priority strategy would wor=
-k in
-> > this setup.
+Enable set_func_resources for P5 and P7 adapters to handle
+VF resource distribution. Remove setting max resources per VF
+during PF initialization. This change is required for firmwares
+which does not support RoCE VF resource management by NIC driver.
+The code is same for all adapters now.
 
-Indeed you are right. I was first thinking of using the same port priority =
-for
-all the ports of a PSE but it seems indeed better to have it by Power domai=
-n.
+Reviewed-by: Stephen Shi <stephen.shi@broadcom.com>
+Reviewed-by: Rukhsana Ansari <rukhsana.ansari@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+---
+ drivers/infiniband/hw/bnxt_re/main.c       | 11 ++++++-----
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 11 +----------
+ 2 files changed, 7 insertions(+), 15 deletions(-)
 
-> > Another point that came to mind is that we might have two different
-> > components here, and we need to keep these two parts separate in follow=
--up
-> > discussions:
-> >=20
-> > - **Budget Evaluation Strategy**: The static approach seems
-> > straightforward=E2=80=94if a class requests more than available, approp=
-riate
-> > actions are taken. However, the dynamic approach has more complexity, s=
-uch
-> > as determining the threshold, how long violations can be tolerated, and
-> > whether a safety margin should be maintained before exceeding maximum l=
-oad.
-> >=20
-> > - **Disconnection Policy**: Once a budget violation is detected, this
-> > decides how to react, like which ports should be disconnected and in wh=
-at
-> > order.
-> >=20
-> > Would it make more sense to have a unified strategy for power domains,
-> > where we apply the same budget evaluation mode (static or dynamic) and
-> > disconnection policy to all ports in that domain? This could make the
-> > configuration simpler and the power management more predictable. =20
+diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+index dd528dd..cb61941 100644
+--- a/drivers/infiniband/hw/bnxt_re/main.c
++++ b/drivers/infiniband/hw/bnxt_re/main.c
+@@ -291,11 +291,12 @@ static void bnxt_re_vf_res_config(struct bnxt_re_dev *rdev)
+ 	 * available at this point.
+ 	 */
+ 	rdev->num_vfs = pci_sriov_get_totalvfs(rdev->en_dev->pdev);
+-	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx)) {
+-		bnxt_re_set_resource_limits(rdev);
+-		bnxt_qplib_set_func_resources(&rdev->qplib_res, &rdev->rcfw,
+-					      &rdev->qplib_ctx);
+-	}
++	if (!rdev->num_vfs)
++		return;
++
++	bnxt_re_set_resource_limits(rdev);
++	bnxt_qplib_set_func_resources(&rdev->qplib_res, &rdev->rcfw,
++				      &rdev->qplib_ctx);
+ }
+ 
+ static void bnxt_re_shutdown(struct auxiliary_device *adev)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 005079b..7072991 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -851,10 +851,8 @@ int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
+ 	 * shall setup this area for VF. Skipping the
+ 	 * HW programming
+ 	 */
+-	if (is_virtfn)
++	if (is_virtfn || bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx))
+ 		goto skip_ctx_setup;
+-	if (bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx))
+-		goto config_vf_res;
+ 
+ 	lvl = ctx->qpc_tbl.level;
+ 	pgsz = bnxt_qplib_base_pg_size(&ctx->qpc_tbl);
+@@ -898,13 +896,6 @@ int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
+ 	req.number_of_srq = cpu_to_le32(ctx->srqc_tbl.max_elements);
+ 	req.number_of_cq = cpu_to_le32(ctx->cq_tbl.max_elements);
+ 
+-config_vf_res:
+-	req.max_qp_per_vf = cpu_to_le32(ctx->vf_res.max_qp_per_vf);
+-	req.max_mrw_per_vf = cpu_to_le32(ctx->vf_res.max_mrw_per_vf);
+-	req.max_srq_per_vf = cpu_to_le32(ctx->vf_res.max_srq_per_vf);
+-	req.max_cq_per_vf = cpu_to_le32(ctx->vf_res.max_cq_per_vf);
+-	req.max_gid_per_vf = cpu_to_le32(ctx->vf_res.max_gid_per_vf);
+-
+ skip_ctx_setup:
+ 	if (BNXT_RE_HW_RETX(rcfw->res->dattr->dev_cap_flags))
+ 		flags |= CMDQ_INITIALIZE_FW_FLAGS_HW_REQUESTER_RETX_SUPPORTED;
+-- 
+2.5.5
 
-Yes, these policies and the port priority mode should be per power domains.=
-=20
-
-> Except of user reports, do we have documented confirmation about dynamic
-> Budget Evaluation Strategy in PD692x0 firmware?
->=20
-> Do this configuration bits are what I called Budget Evaluation Strategy?
-> Version 3.55:
-> Bits [3..0]=E2=80=94BT port PM mode
-> 0x0: The port power that is used for power management purposes is
->      dynamic (Iport x Vmain).
-
-Yes it seems so. I can't find any more configurations on the budget evaluat=
-ion
-strategy than the power limit.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
