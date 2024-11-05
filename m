@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6094A216A07
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608EC216A06
 	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730845445; cv=none; b=LdHkIB9dFQtH64g2+VnKR06cpQhyb6MqIJ9zzrv+CMYBiX/lOTmP+XBH+pkaSFj1Wss87uUyWi2DFKDBzV/OISsF31RqDyZztjfKh2emZ/YtkgUo3rOgIJnhO1xJUxJiDKess2IgmiFZllqINlPi3YOc5tr5QEVEuoRT6HTMF+4=
+	t=1730845446; cv=none; b=JDFbhraHJxfklYfrd3uVwcTm2U7cpAE84NMJke10IR84df7LNSLvpXTQ4HyiU6HJLooUNugFFuNRmu0cEtOSeFmWdkxjIrQJqNGMiFZW3bfBlDMp1PbGs27+MCrUCQ4v3SOEHF7KHFce9Iq1FpSwa5axgym/DmUhBbEt5DworEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730845445; c=relaxed/simple;
-	bh=L9EaD1mXSy6ejHghcmSLw+ooOGvXJHcTlnffJFTLCWk=;
+	s=arc-20240116; t=1730845446; c=relaxed/simple;
+	bh=ThtlHQN1luKHq6EgjWnKTRenP6Rh2gMCL+wwfWuQu5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMnqaC66ZEVE7/J05UaGvbTYAbZe9nf4S/NrAw0LTCqJca9v9G3AWldeeG/kCTYJEXLBWTg3q9IaYiB+5v6Cj+IfqRJzAcDPp0BeRIgRXSMyRXAEIegf3SUN+s3piST9+8Bg74me8uujkxAhJdnTPoYY69NdAIDAppKpg5e3QTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGMNTEMo; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=PGxL/GSX3ckonnTa089y4IFq0FOAixHg/kDDOVObkF1L5iDYQrHYDATZaTaQvfxOywqGSwNr4qlkLbIWRmBVJSUeq1wW03Kmf4X+gew626zuoCnNy2Gm4D9augUqxucPrN2sLUFhixglEQS6Mh84wNBBfQGe8E0jpeZ51xUuE6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MCFvVoBS; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGMNTEMo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MCFvVoBS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1730845444; x=1762381444;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=L9EaD1mXSy6ejHghcmSLw+ooOGvXJHcTlnffJFTLCWk=;
-  b=HGMNTEMohuJcA09d5V2ZOIsH9KIuTUu1L3yVuUY2B9dvdcETcL+A5lxS
-   vzDDqf01MMQ22ejRZYcnMQ8PWuHVm2ASs5MBcT5mnVDOkUBlYlfBR9qNt
-   uQ7W3TqJwDA2vRK47xyILu3CnLxCKrgXz3zWz+ZTPBhjbU2kIcCFO8f/1
-   HMWuQpvum0NGd7GlPMzP9THaLEJTLfOpMS+rAVmNfd01MEbcEnpbUh4N5
-   8GvH+ZrliVhQXKwby6UsO4QjXojYB/W7+IUjsx1jekdECusV2WMYrhwuM
-   kTA73fLYErWfIs9Erpa2bC/Le8vG9g6T0t+uYIiQTa6Q50qiKwCkkh6v8
+  bh=ThtlHQN1luKHq6EgjWnKTRenP6Rh2gMCL+wwfWuQu5c=;
+  b=MCFvVoBShozpFJ08CaCcMEmBOwnif2GyGwnZdgz3NG7fgRHAH5rC2CpB
+   YbHZ0xim+N6N1TWOOZeF2CAaeSv5IIpAb6cGixRGPB/tSdfH2SjNNYSFK
+   u+ay6Cwetp1LxP6KPNrGWU4UcYTEO43pnx4RlWmJReuCuAlD7JFwyXlzl
+   PQXjrL/ZfmObdyK5q5in8Uf5+Phg1A5Dk88eEphtyS/89OgnkAo5x+dBr
+   5UYnPBoIsz5PaOWEHorDEdSAb2qHe0azpiILf9eOO4RE1pGyIDYEJvwJx
+   DUkisrd4gMEOPfMWOT33ElZw51/KYwH4INEJT3sLTW8ILNcblbDZ/O8DX
    Q==;
-X-CSE-ConnectionGUID: JMMRuKA8RP6TBxak2EeQ3w==
-X-CSE-MsgGUID: RH2RUi5nR7KkqW6Z9nxDYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314302"
+X-CSE-ConnectionGUID: 5U3u1twfQx+K/oSqZyZjkA==
+X-CSE-MsgGUID: JcHP8aCOTX+DareELGPJkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314292"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="34314302"
+   d="scan'208";a="34314292"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:24:01 -0800
-X-CSE-ConnectionGUID: lixNti0HQTOEUwKiqHxvig==
-X-CSE-MsgGUID: 1ASa+u/AQg2ngtpac0lzeA==
+X-CSE-ConnectionGUID: gnl157D5QSO0qbcLdk2y/g==
+X-CSE-MsgGUID: t9T3V0gLTxK33bchyQT5Kg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84322460"
+   d="scan'208";a="84322452"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:24:00 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,12 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jacob Keller <jacob.e.keller@intel.com>,
+Cc: Brett Creeley <brett.creeley@intel.com>,
 	anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next 09/15] ice: use stack variable for virtchnl_supported_rxdids
-Date: Tue,  5 Nov 2024 14:23:43 -0800
-Message-ID: <20241105222351.3320587-10-anthony.l.nguyen@intel.com>
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net-next 07/15] ice: only allow Tx promiscuous for multicast
+Date: Tue,  5 Nov 2024 14:23:41 -0800
+Message-ID: <20241105222351.3320587-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
 References: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
@@ -67,74 +70,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Brett Creeley <brett.creeley@intel.com>
 
-The ice_vc_query_rxdid() function allocates memory to store the
-virtchnl_supported_rxdids structure used to communicate the bitmap of
-supported RXDIDs to a VF.
+Currently when any VF is trusted and true promiscuous mode is enabled on
+the PF, the VF will receive all unicast traffic directed to the device's
+internal switch. This includes traffic external to the NIC and also from
+other VSI (i.e. VFs). This does not match the expected behavior as
+unicast traffic should only be visible from external sources in this
+case. Disable the Tx promiscuous mode bits for unicast promiscuous mode.
 
-This structure is only 8 bytes in size. The function must hold the
-allocated length on the stack as well as the pointer to the structure which
-itself is 8 bytes. Allocating this storage on the heap adds unnecessary
-overhead including a potential error path that must be handled in case
-kzalloc fails. Because this structure is so small, we're not saving stack
-space. Additionally, because we must ensure that we free the allocated
-memory, the return value from ice_vc_send_msg_to_vf() must also be saved in
-the stack ret variable. Depending on compiler optimization, this means
-allocating the 8-byte structure is requiring up to 16-bytes of stack
-memory!
-
-Simplify this function to keep the rxdid variable on the stack, saving
-memory and removing a potential failure exit path from this function.
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Brett Creeley <brett.creeley@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 20 ++++---------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h          |  6 ++---
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 23 ++++++++++++++-----
+ 2 files changed, 19 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 1f30274624b2..0d2c80578633 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -181,11 +181,9 @@
+ #define ice_for_each_chnl_tc(i)	\
+ 	for ((i) = ICE_CHNL_START_TC; (i) < ICE_CHNL_MAX_TC; (i)++)
+ 
+-#define ICE_UCAST_PROMISC_BITS (ICE_PROMISC_UCAST_TX | ICE_PROMISC_UCAST_RX)
++#define ICE_UCAST_PROMISC_BITS ICE_PROMISC_UCAST_RX
+ 
+-#define ICE_UCAST_VLAN_PROMISC_BITS (ICE_PROMISC_UCAST_TX | \
+-				     ICE_PROMISC_UCAST_RX | \
+-				     ICE_PROMISC_VLAN_TX  | \
++#define ICE_UCAST_VLAN_PROMISC_BITS (ICE_PROMISC_UCAST_RX | \
+ 				     ICE_PROMISC_VLAN_RX)
+ 
+ #define ICE_MCAST_PROMISC_BITS (ICE_PROMISC_MCAST_TX | ICE_PROMISC_MCAST_RX)
 diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index bc9fadaccad0..f445e33b2028 100644
+index aa2080747714..cc070c467fdd 100644
 --- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
 +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -3031,10 +3031,8 @@ static int ice_vc_set_rss_hena(struct ice_vf *vf, u8 *msg)
- static int ice_vc_query_rxdid(struct ice_vf *vf)
- {
- 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
--	struct virtchnl_supported_rxdids *rxdid = NULL;
-+	struct virtchnl_supported_rxdids rxdid = {};
- 	struct ice_pf *pf = vf->pf;
--	int len = 0;
--	int ret;
- 
- 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states)) {
- 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-@@ -3046,21 +3044,11 @@ static int ice_vc_query_rxdid(struct ice_vf *vf)
- 		goto err;
- 	}
- 
--	len = sizeof(struct virtchnl_supported_rxdids);
--	rxdid = kzalloc(len, GFP_KERNEL);
--	if (!rxdid) {
--		v_ret = VIRTCHNL_STATUS_ERR_NO_MEMORY;
--		len = 0;
--		goto err;
--	}
--
--	rxdid->supported_rxdids = pf->supported_rxdids;
-+	rxdid.supported_rxdids = pf->supported_rxdids;
- 
- err:
--	ret = ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_GET_SUPPORTED_RXDIDS,
--				    v_ret, (u8 *)rxdid, len);
--	kfree(rxdid);
--	return ret;
-+	return ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_GET_SUPPORTED_RXDIDS,
-+				     v_ret, (u8 *)&rxdid, sizeof(rxdid));
- }
+@@ -2554,17 +2554,27 @@ static bool ice_is_vlan_promisc_allowed(struct ice_vf *vf)
  
  /**
+  * ice_vf_ena_vlan_promisc - Enable Tx/Rx VLAN promiscuous for the VLAN
++ * @vf: VF to enable VLAN promisc on
+  * @vsi: VF's VSI used to enable VLAN promiscuous mode
+  * @vlan: VLAN used to enable VLAN promiscuous
+  *
+  * This function should only be called if VLAN promiscuous mode is allowed,
+  * which can be determined via ice_is_vlan_promisc_allowed().
+  */
+-static int ice_vf_ena_vlan_promisc(struct ice_vsi *vsi, struct ice_vlan *vlan)
++static int ice_vf_ena_vlan_promisc(struct ice_vf *vf, struct ice_vsi *vsi,
++				   struct ice_vlan *vlan)
+ {
+-	u8 promisc_m = ICE_PROMISC_VLAN_TX | ICE_PROMISC_VLAN_RX;
++	u8 promisc_m = 0;
+ 	int status;
+ 
++	if (test_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states))
++		promisc_m |= ICE_UCAST_VLAN_PROMISC_BITS;
++	if (test_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states))
++		promisc_m |= ICE_MCAST_VLAN_PROMISC_BITS;
++
++	if (!promisc_m)
++		return 0;
++
+ 	status = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx, promisc_m,
+ 					  vlan->vid);
+ 	if (status && status != -EEXIST)
+@@ -2583,7 +2593,7 @@ static int ice_vf_ena_vlan_promisc(struct ice_vsi *vsi, struct ice_vlan *vlan)
+  */
+ static int ice_vf_dis_vlan_promisc(struct ice_vsi *vsi, struct ice_vlan *vlan)
+ {
+-	u8 promisc_m = ICE_PROMISC_VLAN_TX | ICE_PROMISC_VLAN_RX;
++	u8 promisc_m = ICE_UCAST_VLAN_PROMISC_BITS | ICE_MCAST_VLAN_PROMISC_BITS;
+ 	int status;
+ 
+ 	status = ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx, promisc_m,
+@@ -2738,7 +2748,7 @@ static int ice_vc_process_vlan_msg(struct ice_vf *vf, u8 *msg, bool add_v)
+ 					goto error_param;
+ 				}
+ 			} else if (vlan_promisc) {
+-				status = ice_vf_ena_vlan_promisc(vsi, &vlan);
++				status = ice_vf_ena_vlan_promisc(vf, vsi, &vlan);
+ 				if (status) {
+ 					v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 					dev_err(dev, "Enable Unicast/multicast promiscuous mode on VLAN ID:%d failed error-%d\n",
+@@ -3575,7 +3585,7 @@ ice_vc_add_vlans(struct ice_vf *vf, struct ice_vsi *vsi,
+ 				return err;
+ 
+ 			if (vlan_promisc) {
+-				err = ice_vf_ena_vlan_promisc(vsi, &vlan);
++				err = ice_vf_ena_vlan_promisc(vf, vsi, &vlan);
+ 				if (err)
+ 					return err;
+ 			}
+@@ -3603,7 +3613,8 @@ ice_vc_add_vlans(struct ice_vf *vf, struct ice_vsi *vsi,
+ 			 */
+ 			if (!ice_is_dvm_ena(&vsi->back->hw)) {
+ 				if (vlan_promisc) {
+-					err = ice_vf_ena_vlan_promisc(vsi, &vlan);
++					err = ice_vf_ena_vlan_promisc(vf, vsi,
++								      &vlan);
+ 					if (err)
+ 						return err;
+ 				}
 -- 
 2.42.0
 
