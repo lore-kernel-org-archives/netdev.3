@@ -1,89 +1,105 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACD61CC881
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F88418BC21
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730801943; cv=none; b=AoBOkBevy66RwX0NYTL1Alu90DBRjHGK7AaNEj7R798S/i/O1fp0MisHf0ls1vYeOx8gLOoP+v/2ybh4rNAHVrLRgQuu/9E6QTCI0gA60skLY+PMfjaO/0IFS0/OripbmIcb+fK+db7MuIgzNLjjCCDNzaaOBcCceqQ3d6Mw1Pc=
+	t=1730802015; cv=none; b=g+MTcVpDJXX32m6Fhf+Xi0M+MS2xR+4y8PSdIJ0qGKxcPPFK9oYFCcXhsPPhZgv/zjPQS6kUrW0BINSDEsldL6sP4gDE+tcUrlg8BRhei+Rhrpv7RvgMoICrxhw/oMLiWJdzT/bpdg+yfnNuVsCtqt5UN/yFeEdSuOTiDrRlliE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730801943; c=relaxed/simple;
-	bh=7bAQRPv5AWFcK044DEMTSFsVD3HsIKFysrUuV9ZwaFI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c58jlu7ZRb5OlR0iGDY7YzcMjdZfDh/2OBTrfjW7l4Kl57dutak0q3V1Q+UTv54SZaf6QCYz8jRLvowNB1zIt4ordpcqlNaCSSfHSFCgDQzLoYpPD7W/HC9VgcReOZ5Yo9uO4TWpeeU4D76cc53wFmuBMPduMGbSfP/vX0CPNzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RkBZDC4q; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730802015; c=relaxed/simple;
+	bh=6nw6ijKpq+gJsxL4Ty2fRH6JptU2ieialFH3jNp6qvY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=J2joF3UOl8URTTJ7W4E6e0q0i93yHdaoYIssD5/w2KZYV66oFYgQd/JJhvUaFqJ+VPmw2Rbb6gVkWToQlkwDTNyOCufOMYYjOLqIIsubjUzAUReE/LlikUgsM3GlEF4A5SCT+goezqXwOHxpc845Qh3o5meA3piPMBIiYr+ErAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=f5Z8SXhQ; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RkBZDC4q"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5ceb03aadb1so5656928a12.0
-        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 02:19:01 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="f5Z8SXhQ"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20cd76c513cso40700105ad.3
+        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 02:20:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730801940; x=1731406740; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=broadcom.com; s=google; t=1730802013; x=1731406813; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7bAQRPv5AWFcK044DEMTSFsVD3HsIKFysrUuV9ZwaFI=;
-        b=RkBZDC4q+EIFBd/dHVONpDqA7IL0CoD3T+21fn7Iceq9RDzPPPJY5oABOlZdqA8lYZ
-         JrRM1008NSHLpY3k2wG7n7fnSaPBFPt0EMiw1HnbPM5ut9bOjkojpQF6Ft6bd61epQ82
-         S6MSwfjhnqLA6tqU3xy5fnb3QcW0pmoJN5SzOOGYwLGcCyNVZyVfBtTh2dXBQowvPQRt
-         NgRC0BBCHnuFtPOSXab13ltN3exBWkKUU4L4fqJI7NfbhH8F9lC0QIWwJdyd3+LQkLeP
-         S5Qhp5O39G9e9nDcvMBnRAhHxiq6A1Y3QltbIr1V5fuPGjUeU2FhYnQaW47DssOxYqYf
-         YVJg==
+        bh=Tl8xPC5nMv+lK8i7s5d0f3zT49bzbVgtjgtDBZtUy+8=;
+        b=f5Z8SXhQUy0Me2GX8uGC9Uf7S5I9/o4WsyNuTXyyY/qhdvSV74KcINehuCWmEfN2RZ
+         2D5oKGesy0PZScKuur/cwa8uOfKBymMCOl3pSOLbzyKG0bWns2Li/4R1yBeEtAsouiEY
+         Lo7bjNKt9Sr6ayRpPB8aYK7xIpuimCrwnQqgU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730801940; x=1731406740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1730802013; x=1731406813;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7bAQRPv5AWFcK044DEMTSFsVD3HsIKFysrUuV9ZwaFI=;
-        b=OVRMe7iCwG/ew4bv0PlJVetoZJBGfZGNfyz5K4AWLf1U0n5Kc/DxHgJsRCGOgIcUVE
-         3HTU3HRsCrxi2V+VIVQ+WEYrD4e7vC67SDPUplFM/llIuljkMPgcxsf0ay+64OB2/y2i
-         23bCuGcYVGpdfMn3g3j4NN2whikszhtnua2gGwB64nEm16Tmkj7ST1ADdvPmyaFrgbe5
-         BHA2hmnFF8oeHxmDKekG7o+6ed3nhfXqq7/dJ/Nb/tAjLYS+at/t+Y1ecmfUkp7mMbWB
-         07UqQojp5YgWoO512WUCsTxrEeLeuvtMdW9ubBI3dHh1IXuX+lacb/VkHF9ZRGpn1C2R
-         oGQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSux9zsc26JGTbGk+xoTFBa9wYjMfcuS3xVvAoNcgPLdO3Pz+TtLD+DWsFtvptzB58rEhJXWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0IRRibT6Vaph8IPJypJCraHBO9njEy9wmoCT2Hlsa4tGEQBk6
-	akGSnC2lk/+HLZewVvHqEMEqDyhnOiLGmqFWSTbfk31PIXfE7lMrkH8nYVDNf7oF+YlMJZfDLh2
-	CWkT5XPdGSjq1fxp1cGPKkJUT+BQY8LXKqWFa
-X-Google-Smtp-Source: AGHT+IETs/uXUXCPOTeqLs+Xu8KfURlVE53kGyOl1zoYFEvbboXiWPhtd6yr12XW54bYXfxek2EV0uuHiqCx385TQfI=
-X-Received: by 2002:a05:6402:84f:b0:5ce:d43c:70a8 with SMTP id
- 4fb4d7f45d1cf-5ced43c71a5mr5336014a12.25.1730801940133; Tue, 05 Nov 2024
- 02:19:00 -0800 (PST)
+        bh=Tl8xPC5nMv+lK8i7s5d0f3zT49bzbVgtjgtDBZtUy+8=;
+        b=weU++XyCnWwGAd7/WYlGxmZtUpNn+dkhulUHmgtzHrAQuT6/4f+cLSyUBHTRdliQNG
+         To5uJPlwbJMdOOXlsXczfgSLlwkM4BPsGG05iXE8MKb0TCicVD3rZSFTQwcgWt9qZy6E
+         Rbztfsma6WHJirrxQatIsIIo1jMDe7J7FKclv0fFUiKbNUMFh3c7Tk9nLNqEEsKOeygu
+         5Amd0Rgpb6/gqwE6xoGehl8IbKPiUH5SRxGTVUmRI69dE2sCk9IUj2bPVnhXQPUExwAi
+         iLJjUNB0XqB4nnAVhFyrRteS8vm/7lrFrMYBbR6+4OD2hHds8pHKFfX8pu+i0k2upw5u
+         TNHg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8VvSy8+/Rvy4lpA2G2+mUxOu1Nid9pgTfzlXpp4rYsx8+YU+CFZ6pEElCF2MG/Q2vo7gb5WY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgkpDVYWudwzZ47dckEQBObj963MSo9pgMsWNOh9DKkmdSS41Y
+	0MYyGRhIAIiFV5m2NJrFKi/vRmBeT8HqudEVjhNu+/BS4KpwJvY7zergx+bBaw==
+X-Google-Smtp-Source: AGHT+IEfOuBtKJRnI3DvnmykiMzaWZQzR6zk1HTgE5uBwDAMOa4C81xwnTJXzqmndU8xgm1alzn9TA==
+X-Received: by 2002:a17:902:fb4b:b0:20c:5533:36da with SMTP id d9443c01a7336-210f76d678bmr233553575ad.42.1730802012913;
+        Tue, 05 Nov 2024 02:20:12 -0800 (PST)
+Received: from sxavier-dev.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21105707132sm75306615ad.96.2024.11.05.02.20.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 Nov 2024 02:20:12 -0800 (PST)
+From: Selvin Xavier <selvin.xavier@broadcom.com>
+To: leon@kernel.org,
+	jgg@ziepe.ca
+Cc: linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	michael.chan@broadcom.com,
+	andrew.gospodarek@broadcom.com,
+	kalesh-anakkur.purayil@broadcom.com,
+	Selvin Xavier <selvin.xavier@broadcom.com>
+Subject: [PATCH rdma-next 0/3] bnxt: Enhance the resource distribution for RoCE VFs
+Date: Tue,  5 Nov 2024 01:59:09 -0800
+Message-Id: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
+X-Mailer: git-send-email 2.5.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241105020514.41963-1-kuniyu@amazon.com> <20241105020514.41963-3-kuniyu@amazon.com>
-In-Reply-To: <20241105020514.41963-3-kuniyu@amazon.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 5 Nov 2024 11:18:48 +0100
-Message-ID: <CANn89iJX8fQXCqRcuaTw1VN+dOh5oURtYBW=Ag3=GpeLBPFWXw@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 2/8] rtnetlink: Factorise rtnl_link_get_net_tb().
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Marc Kleine-Budde <mkl@pengutronix.de>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 5, 2024 at 3:06=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.com=
-> wrote:
->
-> In ops->newlink(), veth, vxcan, and netkit call rtnl_link_get_net() with
-> a net pointer, which is the first argument of ->newlink().
->
-> rtnl_link_get_net() could return another netns based on IFLA_NET_NS_PID
-> and IFLA_NET_NS_FD in the peer device's attributes.
->
-> We want to get it and fill rtnl_nets->nets[] in advance.
->
-> Let's factorise the peer netns part from rtnl_link_get_net().
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Implements the mechanism to distribute the RoCE VF resource
+based on the active VFs. If the firmware support the feature,
+NIC driver will distribute the resources for Active VFs. For
+older Firmware, the driver will continue to distribute the
+resources across the total number of VFs.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Please review and apply.
+
+Thanks,
+Selvin
+
+Bhargava Chenna Marreddy (1):
+  RDMA/bnxt_re: Enhance RoCE SRIOV resource configuration design
+
+Kalesh AP (1):
+  RDMA/bnxt_re: Add set_func_resources support for P5/P7 adapters
+
+Vikas Gupta (1):
+  bnxt_en: Add support for RoCE sriov configuration
+
+ drivers/infiniband/hw/bnxt_re/main.c            | 24 ++++++-----
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c      | 13 ++----
+ drivers/infiniband/hw/bnxt_re/qplib_res.h       |  3 ++
+ drivers/infiniband/hw/bnxt_re/roce_hsi.h        |  1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c       |  6 +++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h       |  6 +++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c | 53 +++++++++++++++++++++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c   |  2 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h   |  1 +
+ 9 files changed, 89 insertions(+), 20 deletions(-)
+
+-- 
+2.5.5
+
