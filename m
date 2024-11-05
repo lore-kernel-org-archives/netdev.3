@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0431A216A01
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6094A216A07
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730845445; cv=none; b=LwQAp5183BqxZihMrW/zlQ+xpbLYHLog1Eh4WVZe2Tooc1yB3MgxiP9lDUS3FtiDaLkH5zxRh0vfitTvYors9ze6KNw/7QRvbi30yG+jutoVViOU2UyZUZznVGWNHMkfrKlOFeILoF+tSjVd87Ih3TiIo4IdpBJZVe9zUs3oSlE=
+	t=1730845445; cv=none; b=LdHkIB9dFQtH64g2+VnKR06cpQhyb6MqIJ9zzrv+CMYBiX/lOTmP+XBH+pkaSFj1Wss87uUyWi2DFKDBzV/OISsF31RqDyZztjfKh2emZ/YtkgUo3rOgIJnhO1xJUxJiDKess2IgmiFZllqINlPi3YOc5tr5QEVEuoRT6HTMF+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730845445; c=relaxed/simple;
-	bh=3ObS2I38sOxLiM8rzu5QGPeegsjxVbthWHQW7AcyVu4=;
+	bh=L9EaD1mXSy6ejHghcmSLw+ooOGvXJHcTlnffJFTLCWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8W9yBq+/Jkv7I0hNpauRib8gJdpcgiXCzwhCMwmW4fkzuP6ju7Yo5rNhfbBr+Dj+pk0if55uH4/zI8EjN3O0u3fTt5bIvIp892dfWvE2krM8sZ7I4nKziJ1zrjqt8Yf6dta6b4rh97f0ZCGUZcnH+9UHXlEbF8DRHkLlWMhct8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hG/eOp+w; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=XMnqaC66ZEVE7/J05UaGvbTYAbZe9nf4S/NrAw0LTCqJca9v9G3AWldeeG/kCTYJEXLBWTg3q9IaYiB+5v6Cj+IfqRJzAcDPp0BeRIgRXSMyRXAEIegf3SUN+s3piST9+8Bg74me8uujkxAhJdnTPoYY69NdAIDAppKpg5e3QTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGMNTEMo; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hG/eOp+w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGMNTEMo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1730845444; x=1762381444;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3ObS2I38sOxLiM8rzu5QGPeegsjxVbthWHQW7AcyVu4=;
-  b=hG/eOp+wK9mPEFd1wHltFFRp2sMsTYpTcfjlXWEKoPBsa3Mj283D4l6n
-   NolMjMXe9ePBnYAqEzkZ8RQ96jySmzwojb2YwRRYsoq1jTVEg2+OamsWx
-   cxzLriveBzAEINSEAoyNPaLoPJgPazwuZ7IaJwtrC2i+1xryoylkS9y8Q
-   y0HZLuZHQJXlO/Pb8gs7DCfUBHIhi9VYb6dnGZrCgH9p//fUWWMyHYT1L
-   ixMHYY0K4t/qI3OLE6WX+UgBx5gsVUjyHeQsHvm/6OJGMrkViJnBgz1lc
-   LRkahiQpTL9qTtPCAGFN8AXH7lLokmGJOh/sJyPy3mRHo+Ecay9FaSnRn
+  bh=L9EaD1mXSy6ejHghcmSLw+ooOGvXJHcTlnffJFTLCWk=;
+  b=HGMNTEMohuJcA09d5V2ZOIsH9KIuTUu1L3yVuUY2B9dvdcETcL+A5lxS
+   vzDDqf01MMQ22ejRZYcnMQ8PWuHVm2ASs5MBcT5mnVDOkUBlYlfBR9qNt
+   uQ7W3TqJwDA2vRK47xyILu3CnLxCKrgXz3zWz+ZTPBhjbU2kIcCFO8f/1
+   HMWuQpvum0NGd7GlPMzP9THaLEJTLfOpMS+rAVmNfd01MEbcEnpbUh4N5
+   8GvH+ZrliVhQXKwby6UsO4QjXojYB/W7+IUjsx1jekdECusV2WMYrhwuM
+   kTA73fLYErWfIs9Erpa2bC/Le8vG9g6T0t+uYIiQTa6Q50qiKwCkkh6v8
    Q==;
-X-CSE-ConnectionGUID: ieDAE5tQRpO/cdOe0kkVKA==
-X-CSE-MsgGUID: hyppjYfATlWtWXxfufkJaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314279"
+X-CSE-ConnectionGUID: JMMRuKA8RP6TBxak2EeQ3w==
+X-CSE-MsgGUID: RH2RUi5nR7KkqW6Z9nxDYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314302"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="34314279"
+   d="scan'208";a="34314302"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:24:00 -0800
-X-CSE-ConnectionGUID: wrQaZHwJRmm509UcZU4kKQ==
-X-CSE-MsgGUID: FcTnYH7uS1CHIFN3QcqceA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:24:01 -0800
+X-CSE-ConnectionGUID: lixNti0HQTOEUwKiqHxvig==
+X-CSE-MsgGUID: 1ASa+u/AQg2ngtpac0lzeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84322449"
+   d="scan'208";a="84322460"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:23:59 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:24:00 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,14 +50,12 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Joe Damato <jdamato@fastly.com>,
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Simon Horman <horms@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH net-next 06/15] ice: Add support for persistent NAPI config
-Date: Tue,  5 Nov 2024 14:23:40 -0800
-Message-ID: <20241105222351.3320587-7-anthony.l.nguyen@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next 09/15] ice: use stack variable for virtchnl_supported_rxdids
+Date: Tue,  5 Nov 2024 14:23:43 -0800
+Message-ID: <20241105222351.3320587-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
 References: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
@@ -69,163 +67,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Joe Damato <jdamato@fastly.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-Use netif_napi_add_config to assign persistent per-NAPI config when
-initializing NAPIs. This preserves NAPI config settings when queue
-counts are adjusted.
+The ice_vc_query_rxdid() function allocates memory to store the
+virtchnl_supported_rxdids structure used to communicate the bitmap of
+supported RXDIDs to a VF.
 
-Tested with an E810-2CQDA2 NIC.
+This structure is only 8 bytes in size. The function must hold the
+allocated length on the stack as well as the pointer to the structure which
+itself is 8 bytes. Allocating this storage on the heap adds unnecessary
+overhead including a potential error path that must be handled in case
+kzalloc fails. Because this structure is so small, we're not saving stack
+space. Additionally, because we must ensure that we free the allocated
+memory, the return value from ice_vc_send_msg_to_vf() must also be saved in
+the stack ret variable. Depending on compiler optimization, this means
+allocating the 8-byte structure is requiring up to 16-bytes of stack
+memory!
 
-Begin by setting the queue count to 4:
+Simplify this function to keep the rxdid variable on the stack, saving
+memory and removing a potential failure exit path from this function.
 
-$ sudo ethtool -L eth4 combined 4
-
-Check the queue settings:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Now, set the queue with NAPI ID 8451 to have a gro-flush-timeout of
-1111:
-
-$ sudo ./tools/net/ynl/cli.py \
-            --spec Documentation/netlink/specs/netdev.yaml \
-            --do napi-set --json='{"id": 8451, "gro-flush-timeout": 1111}'
-None
-
-Check that worked:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 1111,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Now reduce the queue count to 2, which would destroy the queue with NAPI
-ID 8451:
-
-$ sudo ethtool -L eth4 combined 2
-
-Check the queue settings, noting that NAPI ID 8451 is gone:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Now, increase the number of queues back to 4:
-
-$ sudo ethtool -L eth4 combined 4
-
-Dump the settings, expecting to see the same NAPI IDs as above and for
-NAPI ID 8451 to have its gro-flush-timeout set to 1111:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 1111,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_base.c | 3 ++-
- drivers/net/ethernet/intel/ice/ice_lib.c  | 6 ++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 20 ++++---------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index 3a8e156d7d86..82a9cd4ec7ae 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -156,7 +156,8 @@ static int ice_vsi_alloc_q_vector(struct ice_vsi *vsi, u16 v_idx)
- 	 * handler here (i.e. resume, reset/rebuild, etc.)
- 	 */
- 	if (vsi->netdev)
--		netif_napi_add(vsi->netdev, &q_vector->napi, ice_napi_poll);
-+		netif_napi_add_config(vsi->netdev, &q_vector->napi,
-+				      ice_napi_poll, v_idx);
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index bc9fadaccad0..f445e33b2028 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3031,10 +3031,8 @@ static int ice_vc_set_rss_hena(struct ice_vf *vf, u8 *msg)
+ static int ice_vc_query_rxdid(struct ice_vf *vf)
+ {
+ 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
+-	struct virtchnl_supported_rxdids *rxdid = NULL;
++	struct virtchnl_supported_rxdids rxdid = {};
+ 	struct ice_pf *pf = vf->pf;
+-	int len = 0;
+-	int ret;
  
- out:
- 	/* tie q_vector and VSI together */
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 78f2d124601c..2093ca01195a 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2785,8 +2785,10 @@ void ice_napi_add(struct ice_vsi *vsi)
- 		return;
+ 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states)) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+@@ -3046,21 +3044,11 @@ static int ice_vc_query_rxdid(struct ice_vf *vf)
+ 		goto err;
+ 	}
  
- 	ice_for_each_q_vector(vsi, v_idx)
--		netif_napi_add(vsi->netdev, &vsi->q_vectors[v_idx]->napi,
--			       ice_napi_poll);
-+		netif_napi_add_config(vsi->netdev,
-+				      &vsi->q_vectors[v_idx]->napi,
-+				      ice_napi_poll,
-+				      v_idx);
+-	len = sizeof(struct virtchnl_supported_rxdids);
+-	rxdid = kzalloc(len, GFP_KERNEL);
+-	if (!rxdid) {
+-		v_ret = VIRTCHNL_STATUS_ERR_NO_MEMORY;
+-		len = 0;
+-		goto err;
+-	}
+-
+-	rxdid->supported_rxdids = pf->supported_rxdids;
++	rxdid.supported_rxdids = pf->supported_rxdids;
+ 
+ err:
+-	ret = ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_GET_SUPPORTED_RXDIDS,
+-				    v_ret, (u8 *)rxdid, len);
+-	kfree(rxdid);
+-	return ret;
++	return ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_GET_SUPPORTED_RXDIDS,
++				     v_ret, (u8 *)&rxdid, sizeof(rxdid));
  }
  
  /**
