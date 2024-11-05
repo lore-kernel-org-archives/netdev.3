@@ -1,53 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD98D1CB53F;
-	Tue,  5 Nov 2024 13:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449601D362B;
+	Tue,  5 Nov 2024 13:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730813448; cv=none; b=qg7gX1amzJPBvnJ+OMkkCYz7elmTSfxhKbA05vQhIAGsdIPz1UB7VtxvCM1OqgxtmqdmNUYUM1zrQHCicTim8wk2DFPF2VkfFkdHnwp98QuWae2s7xHyD2Mq9hN4lCglnnFgJyM1PyoklPwhNpmXWNXZy7v9ETN507rszQ8IjTI=
+	t=1730814001; cv=none; b=UToxdvH4yKgBvAO5hkG3ZyYvL6XBbR4COBYVeT3vlrxndWt99i8MFfz1upevLEcoZ0GNgJsapimfdiN0YlDZ+MhNn28kLTwCw/sIh4p+iScENWWPmwVgiMAJ69zMIWMaBr69CrS2dJKR4qNz9FLr3AjRty3F3jN9IhHJOJzt4MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730813448; c=relaxed/simple;
-	bh=Fi5OBe+H2dD2yZvTh/WNAXkg+PHAKQE103t4mSCoE6I=;
+	s=arc-20240116; t=1730814001; c=relaxed/simple;
+	bh=X+jkMNJf202J2qCII6QtiwBjooGAeSjJ1FivbkrQ/d0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pyw5fw3AqqA1x5rVUS1+nee91PrAIpBqseXFAO4SOe0wXsH6Fbmc4bhY+F6X5m+jTeR/utErTCTYJYZwIxcL4uDp2/dkXZ6sDC4J6XWStzwJDBwS5nlqMhjZ2M/Rc0mobMizHe/Vla2seqzYfQIHOI7uSvpTbpC1Df2nM6ig5Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/8+X5R8; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QoSTOKlfPp5Hq5Ei2oPdNuw0wYbYMkcEXlHP16s549abaWAa8ZSKobizJpgnrJtDCUKfjhwO05es0ra+B26oE604CfF/d80PHMXvBnC52Sz9Nvzj1rDw15I1WgbmSikl0YbD1fpAXiXmLRBqQDmPBLXlWdvTFQqmWzItOy36mB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxznB3XN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/8+X5R8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCD2C4CECF;
-	Tue,  5 Nov 2024 13:30:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxznB3XN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290FFC4CECF;
+	Tue,  5 Nov 2024 13:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730813448;
-	bh=Fi5OBe+H2dD2yZvTh/WNAXkg+PHAKQE103t4mSCoE6I=;
+	s=k20201202; t=1730814001;
+	bh=X+jkMNJf202J2qCII6QtiwBjooGAeSjJ1FivbkrQ/d0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g/8+X5R8bxGCoooBLzpt/xpMED05V65S/xyQ0tJuGzrOV4+ZBlbqwla7dpb2n9/mE
-	 SN54rlxrraTZsqkP8hConwzM83tEDPL6q8drBGnOYy/U8GUDQANFEibVCt0/PDIYMm
-	 xWiG3EHjFMK9HXzHQwabfGTNYxmgRiXu41u+Mq3QK20D/1lqtkQ2aGHKGJVQqU1WTv
-	 JSRMcJ8QF89s+gM5rqps7hCyInfWGGvTdyMWJGQo3AGZEby4Jva4+FjWsaU/D5L37+
-	 OhVxj1+eMYgZGL30lSy7pkXq7sQ8l0YxzDjASZhw82FcDeItpcXEelEZ9g79X1MnPA
-	 A1vPGeXvQZjfw==
-Date: Tue, 5 Nov 2024 13:30:42 +0000
-From: Simon Horman <horms@kernel.org>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Md Danish Anwar <danishanwar@ti.com>,
-	Govindarajan Sriramakrishnan <srk@ti.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net v3 2/2] net: ethernet: ti: am65-cpsw: fix warning in
- am65_cpsw_nuss_remove_rx_chns()
-Message-ID: <20241105133042.GD4507@kernel.org>
-References: <20241101-am65-cpsw-multi-rx-j7-fix-v3-0-338fdd6a55da@kernel.org>
- <20241101-am65-cpsw-multi-rx-j7-fix-v3-2-338fdd6a55da@kernel.org>
+	b=DxznB3XNa4vSg81xiTd126Ga2cYMH4eJmxgA+UrsT35LqYbnBJAcre2w+sNMcA1kz
+	 Fui4F3KUj/muw3CweyuZLGcaVLtaB7IIzjfcYXAXFtE+vRvpmdxKboOp6OUj9APMZL
+	 oJqiBpus//Kok5GG9yLpJLa9+po7ExY1uF0jBRP0AcY8ddRSR8u69yDhxQKSr2UH/h
+	 TeKwFZXRU1KO5XN8DQpvG6Rb9avbf55CxHEKkgDdaiWVHfvE+LY/SExhlSWf+0aIMq
+	 qSXR+51W+/JVvCpCpH5sgsfhF66SApK3g+L2TtpILpsMMSS538baIiV5lF6SKvpyA4
+	 i/cQKYjzwCG5w==
+Date: Tue, 5 Nov 2024 15:39:55 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+	Jan Karcher <jaka@linux.ibm.com>, Gerd Bayer <gbayer@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Nils Hoppmann <niho@linux.ibm.com>,
+	Niklas Schnell <schnelle@linux.ibm.com>,
+	Thorsten Winkler <twinkler@linux.ibm.com>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	Stefan Raspl <raspl@linux.ibm.com>, Aswin K <aswin@linux.ibm.com>
+Subject: Re: [PATCH net] net/smc: Fix lookup of netdev by using
+ ib_device_get_netdev()
+Message-ID: <20241105133955.GF311159@unreal>
+References: <20241025072356.56093-1-wenjia@linux.ibm.com>
+ <20241027201857.GA1615717@unreal>
+ <8d17b403-aefa-4f36-a913-7ace41cf2551@linux.ibm.com>
+ <20241105112313.GE311159@unreal>
+ <e88d6049-6be1-4967-b88d-94d437900c3d@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,54 +61,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241101-am65-cpsw-multi-rx-j7-fix-v3-2-338fdd6a55da@kernel.org>
+In-Reply-To: <e88d6049-6be1-4967-b88d-94d437900c3d@linux.ibm.com>
 
-On Fri, Nov 01, 2024 at 12:18:51PM +0200, Roger Quadros wrote:
-> flow->irq is initialized to 0 which is a valid IRQ. Set it to -EINVAL
-> in error path of am65_cpsw_nuss_init_rx_chns() so we do not try
-> to free an unallocated IRQ in am65_cpsw_nuss_remove_rx_chns().
+On Tue, Nov 05, 2024 at 01:30:24PM +0100, Wenjia Zhang wrote:
 > 
-> If user tried to change number of RX queues and am65_cpsw_nuss_init_rx_chns()
-> failed due to any reason, the warning will happen if user tries to change
-> the number of RX queues after the error condition.
 > 
-> root@am62xx-evm:~# ethtool -L eth0 rx 3
-> [   40.385293] am65-cpsw-nuss 8000000.ethernet: set new flow-id-base 19
-> [   40.393211] am65-cpsw-nuss 8000000.ethernet: Failed to init rx flow2
-> netlink error: Invalid argument
-> root@am62xx-evm:~# ethtool -L eth0 rx 2
-> [   82.306427] ------------[ cut here ]------------
-> [   82.311075] WARNING: CPU: 0 PID: 378 at kernel/irq/devres.c:144 devm_free_irq+0x84/0x90
-> [   82.469770] Call trace:
-> [   82.472208]  devm_free_irq+0x84/0x90
-> [   82.475777]  am65_cpsw_nuss_remove_rx_chns+0x6c/0xac [ti_am65_cpsw_nuss]
-> [   82.482487]  am65_cpsw_nuss_update_tx_rx_chns+0x2c/0x9c [ti_am65_cpsw_nuss]
-> [   82.489442]  am65_cpsw_set_channels+0x30/0x4c [ti_am65_cpsw_nuss]
-> [   82.495531]  ethnl_set_channels+0x224/0x2dc
-> [   82.499713]  ethnl_default_set_doit+0xb8/0x1b8
-> [   82.504149]  genl_family_rcv_msg_doit+0xc0/0x124
-> [   82.508757]  genl_rcv_msg+0x1f0/0x284
-> [   82.512409]  netlink_rcv_skb+0x58/0x130
-> [   82.516239]  genl_rcv+0x38/0x50
-> [   82.519374]  netlink_unicast+0x1d0/0x2b0
-> [   82.523289]  netlink_sendmsg+0x180/0x3c4
-> [   82.527205]  __sys_sendto+0xe4/0x158
-> [   82.530779]  __arm64_sys_sendto+0x28/0x38
-> [   82.534782]  invoke_syscall+0x44/0x100
-> [   82.538526]  el0_svc_common.constprop.0+0xc0/0xe0
-> [   82.543221]  do_el0_svc+0x1c/0x28
-> [   82.546528]  el0_svc+0x28/0x98
-> [   82.549578]  el0t_64_sync_handler+0xc0/0xc4
-> [   82.553752]  el0t_64_sync+0x190/0x194
-> [   82.557407] ---[ end trace 0000000000000000 ]---
+> On 05.11.24 12:23, Leon Romanovsky wrote:
+> > On Tue, Nov 05, 2024 at 10:50:45AM +0100, Wenjia Zhang wrote:
+> > > 
+> > > 
+> > > On 27.10.24 21:18, Leon Romanovsky wrote:
+> > > > On Fri, Oct 25, 2024 at 09:23:55AM +0200, Wenjia Zhang wrote:
+> > > > > Commit c2261dd76b54 ("RDMA/device: Add ib_device_set_netdev() as an
+> > > > > alternative to get_netdev") introduced an API ib_device_get_netdev.
+> > > > > The SMC-R variant of the SMC protocol continued to use the old API
+> > > > > ib_device_ops.get_netdev() to lookup netdev.
+> > > > 
+> > > > I would say that calls to ibdev ops from ULPs was never been right
+> > > > thing to do. The ib_device_set_netdev() was introduced for the drivers.
+> > > > 
+> > > > So the whole commit message is not accurate and better to be rewritten.
+> > > > 
+> > > > > As this commit 8d159eb2117b
+> > > > > ("RDMA/mlx5: Use IB set_netdev and get_netdev functions") removed the
+> > > > > get_netdev callback from mlx5_ib_dev_common_roce_ops, calling
+> > > > > ib_device_ops.get_netdev didn't work any more at least by using a mlx5
+> > > > > device driver.
+> > > > 
+> > > > It is not a correct statement too. All modern drivers (for last 5 years)
+> > > > don't have that .get_netdev() ops, so it is not mlx5 specific, but another
+> > > > justification to say that SMC-R was doing it wrong.
+> > > > 
+> > > > > Thus, using ib_device_set_netdev() now became mandatory.
+> > > > 
+> > > > ib_device_set_netdev() is mandatory for the drivers, it is nothing to do
+> > > > with ULPs.
+> > > > 
+> > > > > 
+> > > > > Replace ib_device_ops.get_netdev() with ib_device_get_netdev().
+> > > > 
+> > > > It is too late for me to do proper review for today, but I would say
+> > > > that it is worth to pay attention to multiple dev_put() calls in the
+> > > > functions around the ib_device_get_netdev().
+> > > > 
+> > > > > 
+> > > > > Fixes: 54903572c23c ("net/smc: allow pnetid-less configuration")
+> > > > > Fixes: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev functions")
+> > > > 
+> > > > It is not related to this change Fixes line.
+> > > > 
+> > > 
+> > > Hi Leon,
+> > > 
+> > > Thank you for the review! I agree that SMC could do better. However, we
+> > > should fix it and give enough information and reference on the changes,
+> > > since the code has already existed and didn't work with the old way.
+> > 
+> > The code which you change worked by chance and was wrong from day one.
+> > 
+> > > I can rewrite the commit message.
+> > > 
+> > > What about:
+> > > "
+> > > The SMC-R variant of the SMC protocol still called
+> > > ib_device_ops.get_netdev() to lookup netdev. As we used mlx5 device driver
+> > > to run SMC-R, it failed to find a device, because in mlx5_ib the internal
+> > > net device management for retrieving net devices was replaced by a common
+> > > interface ib_device_get_netdev() in commit 8d159eb2117b ("RDMA/mlx5: Use IB
+> > > set_netdev and get_netdev functions"). Thus, replace
+> > > ib_device_ops.get_netdev() with ib_device_get_netdev() in SMC.
+> > > "
+> > 
+> >   The SMC-R variant of the SMC protocol used direct call to ib_device_ops.get_netdev()
+> >   function to lookup netdev. Such direct accesses are not correct for any
+> >   usage outside of RDMA core code.
+> > 
+> Is such an absolute statement documented somewhere? If not, I don't think
+> it's convenient that I use it. Maybe you guys as RDMA core maintainer can,
+> not I.
+
+You can too as it is very clear. All functions which can be used have
+EXPORT_SYMBOL near them, ops.get_netdev() has nothing like that.
+
+> >   RDMA subsystem provides ib_device_get_netdev() function that works on
+> >   all RDMA drivers returns valid netdev with proper locking an reference
+> >   counting. The commit 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev
+> >   functions") exposed that SMC-R didn't use that function.
+> > 
+> >   So update the SMC-R to use proper API,
+> > 
+> > Thanks
+> > 
+> mhhh, I'd like to stick to my version, which sounds more neutral IMO. I
+> think the purpose is the same.
+
+I don't want to argue about the words, my point is that get_netdev() was
+never been the right interface.
+
+Thanks
+
 > 
-> Fixes: da70d184a8c3 ("net: ethernet: ti: am65-cpsw: Introduce multi queue Rx")
-
-Hi Roger,
-
-I wonder if the problem predates the cited commit and was, rather,
-introduced by:
-
-Fixes: 24bc19b05f1f ("net: ethernet: ti: am65-cpsw: Add suspend/resume support")
-
-...
+> Thanks,
+> Wenjia
