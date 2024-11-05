@@ -1,101 +1,177 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D148315380B
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 16:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE5514EC56
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 16:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730822778; cv=none; b=t0zz8RbdgGQE969xYctgMf1x0J6bPMCY8j694RCTDG2viKRbmplG0ePMFIUwO5trCQC6hUKM3MuYH5B3HlT/GtLPlVde++lov6933gST6VuxW74xszOy0LqJMA+PS1FtqbPqRB86k38Pzc2osCZMRTlBusuWxRzAFzFX9vBdhjw=
+	t=1730822799; cv=none; b=quRmaaGSLH0Fi/g0j8E3HIPsOUF5QvF4iOMgbV4uxpG1V2SFVyoOJfv08MvisaS1nt3i5r9TwWiaqDzFsGGcG1ia7k8DsI0CZfPxTyNOayGd7fQZhB4Bfcyx5rvfP+ec+aIPaiTAKePYVHYgo6BSaXIy3LgxUsfzfUTYGqJUWXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730822778; c=relaxed/simple;
-	bh=2Yd25+AzkVFGhjL2YsJvZFz27QCOqGzzjXdhKQillXg=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=fu9X/u6H5srDolnrQGlNNzjLGgEhAUUmvGbFrH+E0RgU1ihwERG44PNys6MVTXgI8Nxd6bYX4tChvSqYBKubid5FJVfO2+aJn/m/8UMzP6PEroZ9x5P+LvGnEqoewnw9KvoBHDgGS3iwoReo+g7lXD+fFz8iGrf6dVX+Mrw+zFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mf7/8l7a; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730822799; c=relaxed/simple;
+	bh=YRiHww1+NhlFVyCrv9IfzoyKUfIeSR3WjAcec84h3z0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GOi0oN1AQZ30RNgFF1drlFPvwD2JDPbRurxSQNbnNlvzpb3V5H5v8NOXSMh9L75G8/0GzJn0x1A4KJDCoFV3HP2J8KxeAwkg8+LFKwAArrhRsPWq4JV+cEyyN0tiWbgNMaaqxxxm/0107gfGrcVPOEEdxVhVuMGqBYyAJ+lX/PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=OvaeSaCR; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mf7/8l7a"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so50237745e9.1
-        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 08:06:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="OvaeSaCR"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e2c2a17aa4so869294a91.0
+        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 08:06:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730822775; x=1731427575; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IFa62HHOLc47yazK3lP26lvHtNm60ih86PmZv2WPlRw=;
-        b=Mf7/8l7a/4pze+Ar07pH4vhda+n38RrfAXXwplQmAJOBYGmHscgnObMPEcGFg13vVY
-         oIZlNv6iywTmbP6S1uL3sy9MZcRYlDBP3/SK1YSoRZ34Fh+g0JfEdSxha0NtLGmrzb+O
-         MGFFdmjD6o27s3R4aDSW8Fgre0cDnr97qfJqVBoxOVsBiD6rhM3xEDzAX8y7BV2aMsUb
-         a48Q+Jjru9ICA7FJ0HwNexZJoiuys2XQ8v3JhLNM4ccmwWFOieubx62VQj6urwTmQ+O6
-         B8WOorr7U9SJ/+MDYPxCa32zOEyrz/PTEb//DkKjwI8Z1NFRv+ka12lG+P9JMnLvogeZ
-         Y1xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730822775; x=1731427575;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=purestorage.com; s=google2022; t=1730822797; x=1731427597; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IFa62HHOLc47yazK3lP26lvHtNm60ih86PmZv2WPlRw=;
-        b=F0V2KU+nZ/45JTaiw+uEKNXgqeGVA7eT/8d/ykqALuyJCU8134FaKMzoN0eDG2O7wF
-         ZefzGVMZGE5jajzu1+3f4EiZf4+1nhvPBbRLsKOXs564/ODWAZXT6Ozr1rpCjIdZybBv
-         hKTEn4c5ODrZdK3RbntVVA/uMuSJj6M+jASblHXThdM+cbgxm8ypKPUgg3fA79wzBEPS
-         uR5W+zHxHh+J6l8cCx6MTUsBQGAm10SLg2mzTFIyZB+/O8NNBSPla/YsfS/2Iggip7YE
-         KzLPT/v0kRiajlsH5VU/zpmYg3gOPNBuZnUme73rr1ULpEf+Hd7R0rlWfK79TlP7VFX8
-         Lhkw==
-X-Gm-Message-State: AOJu0YyzDIHz24QC406DJHSiGqteW3NE54Agep1Ot7KX0xINV8hdMkdY
-	ujEME1w45+CECDdQuuG2xOm44x5zF8+sfnu7un35cVbKSW9i06YJ
-X-Google-Smtp-Source: AGHT+IHPzZft5gIMD5zle+LAvprQn063dVKkrEpHnRLLulU/VQxgl6vJOF3x0v0CqNxsK1P7G+j0Ow==
-X-Received: by 2002:a05:600c:1f91:b0:426:66a2:b200 with SMTP id 5b1f17b1804b1-4327b6c79f7mr185726285e9.0.1730822774902;
-        Tue, 05 Nov 2024 08:06:14 -0800 (PST)
-Received: from imac ([2a02:8010:60a0:0:e89b:101d:ffaa:c8dd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5e7c51sm191612105e9.25.2024.11.05.08.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 08:06:14 -0800 (PST)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,  "David S.
- Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
-  donald.hunter@redhat.com,  Stanislav Fomichev <sdf@fomichev.me>
-Subject: Re: [PATCH net-next v2 2/2] netlink: specs: Add a spec for FIB rule
- management
-In-Reply-To: <ZyotMdGb23YbCBiK@shredder> (Ido Schimmel's message of "Tue, 5
-	Nov 2024 16:35:29 +0200")
-Date: Tue, 05 Nov 2024 15:28:29 +0000
-Message-ID: <m2ldxxvgwy.fsf@gmail.com>
-References: <20241105122831.85882-1-donald.hunter@gmail.com>
-	<20241105122831.85882-3-donald.hunter@gmail.com>
-	<ZyotMdGb23YbCBiK@shredder>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        bh=Pe6tzS7Jefr2wBTMmepj7J7ch7Fwi7LgaTG2DrXOEMs=;
+        b=OvaeSaCRQACEi+CdUZKNh+b5NywDO9h4uldWJOlonufc4UvO/TT11SJbIE9n24lfH3
+         UltYT2VUgdl5UA17HZjN0T+/ciBzzFtTRHUhg2u+RYw2FDrykZAWSaeBF0KDOOQHHCWj
+         FYb9tnGVCaZB/ocld80GdaD9Usi4jf+0FG7SWz3qmiWnCy3thoFEBVDqsjcIFYlCe228
+         mNdphrY1MB4PKzU2q9mv+8EomkGPT0uNLhvGaRUN4klO3odB//gxn4FQ68iyhfM7VkRr
+         kBcdTQ6ZQCHS031u9wqQNWnIH+G1WjFtNPSeFD36ubvmn1gUDYiHKmM0tGtXfbZIYPK7
+         X5OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730822797; x=1731427597;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Pe6tzS7Jefr2wBTMmepj7J7ch7Fwi7LgaTG2DrXOEMs=;
+        b=XmiXo6VF3E+k1P7hK3WJWZTEQne65seHSwHliwDS1X5ag1BxLKV1cLrgh/d741b0UP
+         04rGJ5+pHqj/9k8Gsj/V1YaD5lfYMhhb1v5ccH1gDTF8xyMPdb/aAONKLENQrIWMUahI
+         GSPCrt9IORpOQmVglqW5/i9S1coB1TyR8XnU263KsEPuw2vSyKufXfIXscKbHiJdiexK
+         1Q+fbam1brSOKzn76u4VCeRm3wQbPiZA8lnnC4Zb1dhmA4glxfWzWyNKThZO1wqP3vkw
+         0mliZiVJWQlGahssjoQE6L48TWOHg7jZbGXX4LzlckJpKbomoanZ2pjsjy4KcB6vigq+
+         C+MA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpKlQdzIoNsVVuf/a1yWXGJ8T3kqQESPCtc6mR6X4BGJDzD0PpYY4qGmo6U/WRBfQMl7ZmNQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBUpw5/YjgorD0xGp6QtG6l1Ets/5Um1WQm+nrSUF8OhTONrcX
+	qXxVShapeDKMQHhs/maPnKBPZIxlPCjqHGRVbdHXTM0hvyzG+Z9kPcHSUJkclLwbpktwJV8aO/T
+	W8qNQWrx1yPjxlzties9TWT6aEAILEgYB+dIqOA==
+X-Google-Smtp-Source: AGHT+IFzsqY6OWMTeowTywyKfQhYAOXP+M/+Yjr6GgpGfWTfSDkoFlv1jXVRkyP3zd7O8FLbk4JHiwux2suOsS1uRP4=
+X-Received: by 2002:a17:90b:1d84:b0:2e2:de92:2d52 with SMTP id
+ 98e67ed59e1d1-2e8f11d607amr18357252a91.9.1730822796788; Tue, 05 Nov 2024
+ 08:06:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241101034647.51590-1-csander@purestorage.com>
+ <20241101034647.51590-2-csander@purestorage.com> <CY8PR12MB71958512F168E2C172D0BE05DC502@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <CADUfDZofFwy12oZYTmm3TE314RM79EGsxV6bKEBRMVFv8C3jNg@mail.gmail.com> <CY8PR12MB71953FD36C70ACACEBE3DBA1DC522@CY8PR12MB7195.namprd12.prod.outlook.com>
+In-Reply-To: <CY8PR12MB71953FD36C70ACACEBE3DBA1DC522@CY8PR12MB7195.namprd12.prod.outlook.com>
+From: Caleb Sander <csander@purestorage.com>
+Date: Tue, 5 Nov 2024 08:06:25 -0800
+Message-ID: <CADUfDZqanDo+v_jap7pQire86QkfaDQE4HvhvVBb64YqKNgRHg@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] mlx5/core: deduplicate {mlx5_,}eq_update_ci()
+To: Parav Pandit <parav@nvidia.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ido Schimmel <idosch@nvidia.com> writes:
+On Mon, Nov 4, 2024 at 9:22=E2=80=AFPM Parav Pandit <parav@nvidia.com> wrot=
+e:
+>
+>
+>
+> > From: Caleb Sander <csander@purestorage.com>
+> > Sent: Monday, November 4, 2024 3:49 AM
+> >
+> > On Sat, Nov 2, 2024 at 8:55=E2=80=AFPM Parav Pandit <parav@nvidia.com> =
+wrote:
+> > >
+> > >
+> > >
+> > > > From: Caleb Sander Mateos <csander@purestorage.com>
+> > > > Sent: Friday, November 1, 2024 9:17 AM
+> > > >
+> > > > The logic of eq_update_ci() is duplicated in mlx5_eq_update_ci().
+> > > > The only additional work done by mlx5_eq_update_ci() is to incremen=
+t
+> > > > eq->cons_index. Call eq_update_ci() from mlx5_eq_update_ci() to
+> > > > eq->avoid
+> > > > the duplication.
+> > > >
+> > > > Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+> > > > ---
+> > > >  drivers/net/ethernet/mellanox/mlx5/core/eq.c | 9 +--------
+> > > >  1 file changed, 1 insertion(+), 8 deletions(-)
+> > > >
+> > > > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+> > > > b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+> > > > index 859dcf09b770..078029c81935 100644
+> > > > --- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+> > > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+> > > > @@ -802,19 +802,12 @@ struct mlx5_eqe *mlx5_eq_get_eqe(struct
+> > > > mlx5_eq *eq, u32 cc)  }  EXPORT_SYMBOL(mlx5_eq_get_eqe);
+> > > >
+> > > >  void mlx5_eq_update_ci(struct mlx5_eq *eq, u32 cc, bool arm)  {
+> > > > -     __be32 __iomem *addr =3D eq->doorbell + (arm ? 0 : 2);
+> > > > -     u32 val;
+> > > > -
+> > > >       eq->cons_index +=3D cc;
+> > > > -     val =3D (eq->cons_index & 0xffffff) | (eq->eqn << 24);
+> > > > -
+> > > > -     __raw_writel((__force u32)cpu_to_be32(val), addr);
+> > > > -     /* We still want ordering, just not swabbing, so add a barrie=
+r */
+> > > > -     wmb();
+> > > > +     eq_update_ci(eq, arm);
+> > > Long ago I had similar rework patches to get rid of __raw_writel(),
+> > > which I never got chance to push,
+> > >
+> > > Eq_update_ci() is using full memory barrier.
+> > > While mlx5_eq_update_ci() is using only write memory barrier.
+> > >
+> > > So it is not 100% deduplication by this patch.
+> > > Please have a pre-patch improving eq_update_ci() to use wmb().
+> > > Followed by this patch.
+> >
+> > Right, patch 1/2 in this series is changing eq_update_ci() to use
+> > writel() instead of __raw_writel() and avoid the memory barrier:
+> > https://lore.kernel.org/lkml/20241101034647.51590-1-
+> > csander@purestorage.com/
+> This patch has two bugs.
+> 1. writel() writes the MMIO space in LE order. EQ updates are in BE order=
+.
+> So this will break on ppc64 BE.
 
-> On Tue, Nov 05, 2024 at 12:28:31PM +0000, Donald Hunter wrote:
->
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
->
-> One question below (didn't notice it before)
->
-> [...]
->
->> +    -
->> +      name: getrule
->> +      doc: Dump all FIB rules
->> +      attribute-set: fib-rule-attrs
->> +      dump:
->> +        request:
->> +          value: 34
->> +          attributes:
->> +            - nsid
->
-> What is the significance of 'nsid' here?
+Okay, so this should be writel(cpu_to_le32(val), addr)?
 
-Hmm, looks like a couple of lines I need to remove.
+>
+> 2. writel() issues the barrier BEFORE the raw_writel().
+> As opposed to that eq update needs to have a barrier AFTER the writel().
+> Likely to synchronize with other CQ related pointers update.
 
-Thanks for catching this!
+I was referencing this prior discussion about the memory barrier:
+https://lore.kernel.org/netdev/CALzJLG8af0SMfA1C8U8r_Fddb_ZQhvEZd6=3D2a97dO=
+oBcgLA0xg@mail.gmail.com/
+From Saeed's message, it sounds like the memory barrier is only used
+to ensure the ordering of writes to the doorbell register, not the
+ordering of the doorbell write relative to any other writes. If some
+other write needs to be ordered after the doorbell write, please
+explain what it is. As Gal Pressman pointed out, a wmb() at the end of
+a function doesn't make much sense, as there are no further writes in
+the function to order. If the doorbell write needs to be ordered
+before some other write in a caller function, the memory barrier
+should probably move to the caller.
+
+>
+> > Are you suggesting something different? If so, it would be great if you=
+ could
+> > clarify what you mean.
+> >
+> So I was suggesting to keep __raw_writel() as is and replace mb() with wm=
+b().
+
+wmb() would certainly be cheaper than mb(), but I would like to
+understand the requirement for the barrier in the first place. The
+fence instruction is very expensive.
+
+Thanks,
+Caleb
