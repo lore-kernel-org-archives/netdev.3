@@ -1,233 +1,110 @@
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+Received: from sonic314-13.consmr.mail.bf2.yahoo.com (sonic314-13.consmr.mail.bf2.yahoo.com [74.6.132.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C871D45EF
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 11:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96301D3590
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 11:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.132.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730807331; cv=none; b=NaLvaotpOKw0uYGWnNCYVksDxJ8ScbY704xroHW4PF4zwY+/ZH/FpUX8ubnJE409/dgbhZhSRtv9edzWzLR0jS0HROFTeL2NfNQywSRAUOrFSy7Wj+l4XYrvkae3mpmvFFY48Jl6PZDSgBmZkPRyYxwi8izBzD0JlUkxFjqGCr4=
+	t=1730807413; cv=none; b=UrxV5KPTVHAYt9D9QTFk1mSgo98OId6Aghq+Qm48YxBhjZkh68O6BvHk0RmkTPuwILv1nDMcNgMj4P+2z/Db0v1lh6NqXtYupCczP1mBKDPkhyTztiggn/Ki69gYZTGVyFLBAlI32ykj+ypqE6EGU2WT+oKwOaobLbcBbUzHqKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730807331; c=relaxed/simple;
-	bh=xxMH70Lth7P7/I57PA9uHTmoxZrexSifPU1Cs0oebsc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L1vKsEYeoGPujnxIkoDiIW6wM/iC1IkOfk0Fo2KqKAGF0KpMJ6UP9rEbczf7yTTzMkHy6VZDGK30B4cIsOvlBEVp2kOKY9XhahqQRfaPJ/RS+3Ht6P1Tfoa8B/VWt/3EyXvY9kk3nY+iQYOC50ksJ+UlOxvhVlEjSWerWGlUHPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hU/Uc4zn; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730807413; c=relaxed/simple;
+	bh=tS52rCBrcpWKiTeTm9uSHpHse+DERy5VYTWONFcwv6A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx3apsage0926ctRIm+0UELgdEDmv975ZJxni3oB8zhwWmx8Z9e+7rQXhUrVfp6tiBgqBgmQeFNAkxAwfCUoeHJ1ly48YLUiolzvBWGUx6Sbb8uZrMzZ/1uO7zq0FPKTzGW/eZPp2fvqcg7np73uS8IOKKB+WWaP6w0casPUYt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=sP0WG0k/; arc=none smtp.client-ip=74.6.132.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hU/Uc4zn"
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-83abcfb9f39so154658139f.1
-        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 03:48:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730807329; x=1731412129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=amUSUVKnbmHOvo0eMlcPK5IbGzdzqhYeiSYK4D5HEDk=;
-        b=hU/Uc4znEGPCF9o1LR269y6eY/DI+MfTDSIJr6UJJY3gHz7mxqmY8oY7ssJlBG7uEZ
-         SVA5qZqUv/H3y8hoyzLcP9tnufbrIKazeQLzuNhx0o4YRcz3bQXNHBgswMCPO6CTROSJ
-         yN1zuCeoxK2DxBFvwu0hx5dNvIseK25JQ4JI5rkLyKnG0o4iN4gg28VaiDAe6bdNR7WD
-         kM6XtQR2JdW/ZcGZ1J2OUe6gV0yGop6ukOyzPP1tce89UYqDD1e9OQylbqWZ8lvOZLKr
-         YpAunZQCjgwv/iXzoT+pM/fbjBzokl3V0QH7SsBLJLxsXsbd3Kdj6dmI09JuDBzKc6/Z
-         F7hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730807329; x=1731412129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=amUSUVKnbmHOvo0eMlcPK5IbGzdzqhYeiSYK4D5HEDk=;
-        b=rmju9qKulqqCAzSzJfwE9p6Ml2KSnRgva+zCU5XfDLeoGAaU8eDdNUTx7vx7IgBfNV
-         TFZ2a83Ld+/G314z8zDdi/Bb0D9QjX5aFSwAwrMil0aaLWkAon1E3SVHgabylMx8bkdn
-         cRKLGZ/YS8LD2uv3tlJ6dwKWGvsKrO6Zzdd0eUdHS6nhcWrcjwHUuH0sta+rWC5bogJ7
-         ADA/mSSeP/XuuDfxMgKADZWYybw990F1Nzpl8Kc8hTK7hRU2EudL2GMvwPqlAeCAGw9w
-         X8DpK7rVhkxK01dmDHEuJPe9SZAuHyOSSJUHEDy1hPZRy/Vw0jjbrPikaRKLzKWNuMMF
-         Dg5w==
-X-Forwarded-Encrypted: i=1; AJvYcCX6ci4HQixVaCPWb/gL5GVToNbzaGj4RR6Vv5fvTLKNy0u2Ram7lcQcQk1iSTG8ZPH5wWMJlZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+TQsJ0r7nHvNLiWV5VMphALqxmKV0w9qagCIExDI+k3a14hfM
-	5yCKxT144UimNcRoDjyjK26rI1qSTOfxhAVwAtZKRoZrNrtJFdFivnVt03rkDp/FWLCUkJ2JOBY
-	xp586LZeE1emsZzGYAUSD39zW6Y0=
-X-Google-Smtp-Source: AGHT+IEB8wibB6PaBTfIIcujwOAKk7FEMnaWRr0/CtTyJ9kOcenZZS4n2dzMxWabLvOSL8UUjI8E8gQKX7YNS0MSEZw=
-X-Received: by 2002:a05:6e02:308c:b0:3a6:c000:4490 with SMTP id
- e9e14a558f8ab-3a6c0004a17mr96029275ab.1.1730807328781; Tue, 05 Nov 2024
- 03:48:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="sP0WG0k/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730807410; bh=bNr+bsCtJR4SIgIfMdfvQHVugZNrzCt1K5Rqs3mhcTo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=sP0WG0k/7nqTMGQalF0han+aO87y1zT5y7MUJKrZplk5m/XwJKont5X4fTAuvKb26Xsz1Cq0tY8IMcWRXSO/6gJnyzNPPwqqca7LM2iF9ycPoN6vPvBsqpK6HNa3EooSs5PR7XfIqf1JY25g5g6JW3zLmSFxhC8oP7KMTdLZX0wDd1MjAg8At3G5DST0c/nU2Q086muqZfI0gvA8l8I0YYYu7YAMEh5ZJpFQiZamSKkPU5rKzNj9CnC32ahRNCxGRrZIaG/1RvwqNqLXUylGCYuPotzzhUbQb25TiMc9bJk/DqIMWottExyUx6tJdudRktxdHrwrocDgkq8UgKctXA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730807410; bh=W6KJRUUrEvtwqRfOAb61LJxRui90JiJrJTCwM3FHS3e=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mBf/dekcvFfuP7Fj2663A22hxtOhcIKF3FDQJEY4KL7P1b/4II1zHikIh1KDPqCD/EdUVrnTobY8vakDJH4TyXV+wD8kQ+u7kEP1cHYc5iGqZnKw5m3wlKXssh0IcCNpsVfMMUtTwtZMSc96CCH90hgPFmcNLjD4P6ilpOfcuS0O4SOUh1Ttx/uY8mJcHAzdZtUPTwvzuGxtKNLPZswpu+ykVXYtggbOgxQ07D9QMC/AmQ5zum6dpoQyFc6cQGvbEN6i6tq4cFHZ9n5MtjxsX6qY6uEpGp90uV6s6RUtr9PJ7/lwTJc3IlsI7eWaXkEKNdEaKu+s7r58rvkBU+fLDA==
+X-YMail-OSG: .4bp9vYVM1mBG4ZRlN5fnnxXbf6lwfm.gADtuzMr38atsW58evNmxNvnJ5pDHCY
+ RhwO6lYUL338upam1tP9LbW49ET0GiCXuhKVyiUMCygAXzShGIXEyutAY7u1XT0alEJV1itGNDrn
+ Lwnlf8HJrbxC4ekUuR36UIntptC8WDH7aahsqayn_XUVQyyNIVvWqPbKBcB0WYHucI5j6rSy64_3
+ vLZljeGzVFZayQ5.xPzlcZh3bmaZIb3qK6zFY2gZC.MpxM.Lod5gtrzHRyTrQW5R2tLlGfJktcI_
+ YD2BopmWC9Dk7GVpirFhsVnIS_xGM.FnhGCTGbkwGli0IzGLhNoQ3fp1cPb6EhkjWBPi71tMMxbJ
+ goEYmPMMWL0wx887jDMxDj5eh4DcO0rh7iWewMjjrh_6IX5bGsvHeQsJp3Ken_1zQjyGS33.c7ma
+ lIAujE96T3XH0f66qSjWP9Ju0IjCSVMavMOKFnJtB2S9C0_UEklfwMElJDjrE31VYUzdLclsWXIT
+ SjHWmn79Phxu3ne41XiznQT_4OOO6rQo_Oyfhv5HybnPfjEp42AuxrXCu1B_a3cxI1_zFGgvouFZ
+ DYCi9aiUMqqaZLj9DiTzD9enir6.2oe2GRch8o7JV5oX.XzsiMdgZHxODsM8_tegj0uPQEwQ7EkP
+ IedJNR4YZp7dzVTCbTBInsHqI5gqA4zqvN4la.mWv2ScEHyJCrUkhPW9TKwOClWcD9QBY64.IZ4Z
+ 5x.6hji7GlorfXILzzDSKkCiZDTf__SZEjz5OOGyoQbh4PoyYdOyglX.B4VHsg38BS3HpSt27QfH
+ sngZEyaWBuEB7D6yD99pnS_p08_clg4DiIV1PsPZ4KSa0j3BkoY9mhLK3Ame0Zde_drEYhwfmVPg
+ yJa6hXtVuQvEwz3gG9XE7BYUsnkpZuyF7XG_.HptPGhMcSToSOK43RnTFAXyIEvHf6cYsiv_ZJSe
+ Nl7.4F9Kj6WVcX_DAbLQChL1H_L_A77T2R.S6ZlvNmuYxrHg6bwqfcvxBRci7_Gmr1wywbmxHDCb
+ NJtF2x3tFJEYCLbrNkzM5KODw.ONuxz6wD6x.85xZy9JAaP4MwmaiSwOJKR.tDXQ988E8JIHk6Fg
+ KtpKHfoh6yH8YbX8zB6DjgOTWh320h7SGFexb2QSg9vjAqNHTfrKFjb999IQ1Gtz7AQHMl5VOqpm
+ JEosbQxLkyv0NLMBtfgtzBM5ubPkKGrIx9RplLiZu6Z8MioUqGLPIQ0zujqFSyTztaf5.Xh2xotJ
+ PbslYhg1rb53KO7KheaE3ae8Ot6th3EY.lMBcemuoaRG0IGiokyZqUAqXuUW1l7mrDQZyGFmZRSu
+ bTRFmF8BHw6RgX.lJbILMeNpd2cqm2Rdmc6o.SF_Y_QKb8Sa7SIxL.Kt3opEvxVkr1XGK5fJ4KzF
+ UaWKFhzw6_wcrXG8nHSsqGsbjCM_tJ9F5mB6_EAzxJ5pnL0gfnk4MkdrEIXh.lzILIx8gNch8wNr
+ m7dc80m6Mpj8UD7mIFu.VOUsEu9KK_YHRghLZ9l.WfTO5kxpQs5gGeUCvmT6xeI7QqJPAW8b36vp
+ v6vw4fuje30xvvsSoZf_wWgljI3LrJlbzROq0Ns02xGxvtUj9Nx8afUgkcILmKj63E5ptzSyEuKB
+ Is02WRBY.iG3.s9LbYEOeGPV8i9PwmiyCJEgXLi76s3yH6Xg_sA58RrWwH8UWj.kZM0U4IDHmxnA
+ aXbocrW7MItD6bP9rUNNHGIiRVQIx7CyUZuJ0aa5dqiEJRIPp8i5KU5oUVUaVSf2FQA1aHeLLucr
+ oO5oCdQeEcLjkc0cATSqIimpfOjv_rCTYWprzXIqooKh3S..PbqyGTdrQywGBvKVe6LhPOv1kT32
+ _SVz2mDffSYnQt_kJ4jimoqPwXkj.PMbqXPvWl.7OLz_NAU99ee8QIDBWXiUnG2Dc5ppxur0VZYK
+ VT3N4Sl0HcXmFL95XZac_Ts2Mkg_RsTh73WrWwwFRLnzd2SfneBzGhK5ClUcYzuqD9JhM9wd.Rvw
+ FxN2HDZ4yF3gWAelndaTlDG0Qu.j.0Ze4qELnPhNc2CVfHakP73YFsv4awK6poCbVWAntP4695ml
+ yYEY.AHR1Yo80jk6rEl6srik2uFy1n_CMnlC2IriRMiP80Y_gZ6tk_eWsPdsNoRaZ_RLP99n89q1
+ kzTvSGnpVzUyJ6Vd3t9JED6AFJMIoV.aUwlv.7q2Rx9bAodiM_rlaNWvTUyM8_qjpYSmhCXMfy_q
+ MW1V6GIBFhJ9GZcP6NzcwPD6kQwFlDAHtsrB2dJlMOG._BQwsJ3K_ptCzzJ6_AclaQts-
+X-Sonic-MF: <dullfire@yahoo.com>
+X-Sonic-ID: 393d9c79-1674-40ac-9170-95035d8fe9f1
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.bf2.yahoo.com with HTTP; Tue, 5 Nov 2024 11:50:10 +0000
+Received: by hermes--production-ne1-bfc75c9cd-n46s2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 25849c82f1c1524deb6cfb87a0930b74;
+          Tue, 05 Nov 2024 11:40:02 +0000 (UTC)
+Message-ID: <02ec93d6-3cf6-410d-a887-1a625fb7be82@yahoo.com>
+Date: Tue, 5 Nov 2024 05:24:42 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105025511.42652-1-kerneljasonxing@gmail.com>
- <20241105074916.75107-1-kuniyu@amazon.com> <CAL+tcoAgSBMtFcDx6MfCAhYMVKERCx2d7YUjquT6Pa8jm0bXWA@mail.gmail.com>
- <CANn89iKhSnTJUadpEBpkKYoRVP2GEJZ1ftzH7AqF4oXMF3QEZA@mail.gmail.com>
- <CAL+tcoCBvbR_=c_SxKmAyAE4U5wTgr=hp08yNxm0QUSWdgge5Q@mail.gmail.com> <CANn89i+h4zbgju1KSfTZi2R1bnQ4=Q1EThJ9y8e5XCOocLNzMw@mail.gmail.com>
-In-Reply-To: <CANn89i+h4zbgju1KSfTZi2R1bnQ4=Q1EThJ9y8e5XCOocLNzMw@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 5 Nov 2024 19:48:12 +0800
-Message-ID: <CAL+tcoBVbL+tRsHZpLQro1gEoAUn11ZWG3=AL-5XxFVCAxZ5fg@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: avoid RST in 3-way shakehands due to
- failure in tcp_timewait_state_process
-To: Eric Dumazet <edumazet@google.com>, Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, davem@davemloft.net, dsahern@kernel.org, 
-	horms@kernel.org, kernelxing@tencent.com, kuba@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Kernel panic with niu module
+Content-Language: en-US
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: davem@davemloft.net, sparclinux@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+References: <20241104234412.GA1446170@bhelgaas>
+From: Dullfire <dullfire@yahoo.com>
+In-Reply-To: <20241104234412.GA1446170@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Hello Eric, Martin
+On 11/4/24 17:44, Bjorn Helgaas wrote:
+> [+cc Thomas, author of 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X
+> entries")]
+> 
+> On Mon, Nov 04, 2024 at 05:34:42AM -0600, Dullfire wrote:
+>> I have also bisected the kernel, and determined that  upstream commit
+>> 7d5ec3d3612396dc6d4b76366d20ab9fc06f399f revealed this issue. This commit
+>> adds read to the mask status before any write to PCI_MSIX_ENTRY_DATA, thus
+>> provoking the issue.
+> 
+> 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries") appeared in
+> v5.14 in 2021.  Surely other drivers use MSI-X and would have been
+> tested on sparcv9 since then?  Just based on the age of 7d5ec3d36123,
+> I would guess some kind of niu issue.  But Thomas will know much more.
 
-On Tue, Nov 5, 2024 at 5:50=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Tue, Nov 5, 2024 at 10:42=E2=80=AFAM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Tue, Nov 5, 2024 at 5:35=E2=80=AFPM Eric Dumazet <edumazet@google.co=
-m> wrote:
-> > >
-> > > On Tue, Nov 5, 2024 at 10:08=E2=80=AFAM Jason Xing <kerneljasonxing@g=
-mail.com> wrote:
-> > > >
-> > > > On Tue, Nov 5, 2024 at 3:49=E2=80=AFPM Kuniyuki Iwashima <kuniyu@am=
-azon.com> wrote:
-> > > > >
-> > > > > From: Jason Xing <kerneljasonxing@gmail.com>
-> > > > > Date: Tue,  5 Nov 2024 10:55:11 +0800
-> > > > > > From: Jason Xing <kernelxing@tencent.com>
-> > > > > >
-> > > > > > We found there are rare chances that some RST packets appear du=
-ring
-> > > > > > the shakehands because the timewait socket cannot accept the SY=
-N and
-> > > > >
-> > > > > s/shakehands/handshake/
-> > > > >
-> > > > > same in the subject.
-> > > > >
-> > > > > > doesn't return TCP_TW_SYN in tcp_timewait_state_process().
-> > > > > >
-> > > > > > Here is how things happen in production:
-> > > > > > Time        Client(A)        Server(B)
-> > > > > > 0s          SYN-->
-> > > > > > ...
-> > > > > > 132s                         <-- FIN
-> > > > > > ...
-> > > > > > 169s        FIN-->
-> > > > > > 169s                         <-- ACK
-> > > > > > 169s        SYN-->
-> > > > > > 169s                         <-- ACK
-> > > > > > 169s        RST-->
-> > > > > > As above picture shows, the two flows have a start time differe=
-nce
-> > > > > > of 169 seconds. B starts to send FIN so it will finally enter i=
-nto
-> > > > > > TIMEWAIT state. Nearly at the same time A launches a new connec=
-tion
-> > > > > > that soon is reset by itself due to receiving a ACK.
-> > > > > >
-> > > > > > There are two key checks in tcp_timewait_state_process() when t=
-imewait
-> > > > > > socket in B receives the SYN packet:
-> > > > > > 1) after(TCP_SKB_CB(skb)->seq, rcv_nxt)
-> > > > > > 2) (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_tsval) < =
-0)
-> > > > > >
-> > > > > > Regarding the first rule, it fails as expected because in the f=
-irst
-> > > > > > connection the seq of SYN sent from A is 1892994276, then 169s =
-have
-> > > > > > passed, the second SYN has 239034613 (caused by overflow of s32=
-).
-> > > > > >
-> > > > > > Then how about the second rule?
-> > > > > > It fails again!
-> > > > > > Let's take a look at how the tsval comes out:
-> > > > > > __tcp_transmit_skb()
-> > > > > >     -> tcp_syn_options()
-> > > > > >         -> opts->tsval =3D tcp_skb_timestamp_ts(tp->tcp_usec_ts=
-, skb) + tp->tsoffset;
-> > > > > > The timestamp depends on two things, one is skb->skb_mstamp_ns,=
- the
-> > > > > > other is tp->tsoffset. The latter value is fixed, so we don't n=
-eed
-> > > > > > to care about it. If both operations (sending FIN and then star=
-ting
-> > > > > > sending SYN) from A happen in 1ms, then the tsval would be the =
-same.
-> > > > > > It can be clearly seen in the tcpdump log. Notice that the tsva=
-l is
-> > > > > > with millisecond precision.
-> > > > > >
-> > > > > > Based on the above analysis, I decided to make a small change t=
-o
-> > > > > > the check in tcp_timewait_state_process() so that the second fl=
-ow
-> > > > > > would not fail.
-> > > > > >
-> > > > > > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > > > > > ---
-> > > > > >  net/ipv4/tcp_minisocks.c | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.=
-c
-> > > > > > index bb1fe1ba867a..2b29d1bf5ca0 100644
-> > > > > > --- a/net/ipv4/tcp_minisocks.c
-> > > > > > +++ b/net/ipv4/tcp_minisocks.c
-> > > > > > @@ -234,7 +234,7 @@ tcp_timewait_state_process(struct inet_time=
-wait_sock *tw, struct sk_buff *skb,
-> > > > > >       if (th->syn && !th->rst && !th->ack && !paws_reject &&
-> > > > > >           (after(TCP_SKB_CB(skb)->seq, rcv_nxt) ||
-> > > > > >            (tmp_opt.saw_tstamp &&
-> > > > > > -           (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_=
-tsval) < 0))) {
-> > > > >
-> > > > > I think this follows RFC 6191 and such a change requires a formal
-> > > > > discussion at IETF.
-> > > > >
-> > > > > https://datatracker.ietf.org/doc/html/rfc6191#section-2
-> > > > >
-> > > > > ---8<---
-> > > > >       *  If TCP Timestamps would be enabled for the new incarnati=
-on of
-> > > > >          the connection, and the timestamp contained in the incom=
-ing SYN
-> > > > >          segment is greater than the last timestamp seen on the p=
-revious
-> > > >
-> > > > The true thing is that the timestamp of the SYN packet is greater t=
-han
-> > > > that of the last packet, but the kernel implementation uses ms
-> > > > precision (please see tcp_skb_timestamp_ts()). That function makes
-> > > > those two timestamps the same.
-> > > >
-> > > > This case happens as expected, so the second connection should be
-> > > > established. My confusion just popped out of my mind: what rules
-> > > > should we follow to stop the second flow?
-> > >
-> > > Note that linux TCP stack can use usec resolution for TCP TS values.
-> > >
-> > > You might adopt it, and no longer care about this ms granularity.
-> >
-> > Right, I noticed this feature. I wonder if we can change the check in
-> > tcp_timewait_state_process() like this patch if it has no side
-> > effects? I'm worried that some programs don't use this feature. It's
-> > the reason why I try to propose this patch to you.
->
-> Breaking RFC ? I do not think so.
->
-> Instead, use a usec clock and voila, the problem is solved.
+Yeah, I wasn't very clear: I believe this problem is specific to the niu
+module. My suspicion is hardware errata and/or an issue in the builtin
+hypervisor.
 
-I wonder if it is necessary to use BPF to extend the usec clock. Since
-I started investigating the BPF part, I found it can help us extend
-many useful features in TCP to the most extent.
+My T5240 has several other PCIe devices, none of which exhibit this issue.
+I will have to check later if any use MSIX.
 
-Using it with the BPF program can make the feature take effect and
-widely used in future.
+Speaking of test cases: It is worth pointing out that any write to ENTRY_DATA
+appears to be sufficient to allow subsequent reads to that MSIX table entry
+to work. Notably, booting into a pre 7d5ec3d36123 kernel, and then rebooting
+into a newer kernel will succeed, because the registers were written to under
+the old kernel. I had to power off the unit to reproduce the issue if a
+kernel successfully initialized the device.
 
-I'm asking because I somehow have a feeling that someday the majority
-of traditional sockopts could be replaced by BPF. After all, requiring
-application modification for those kernel features is a bit heavy. I'm
-not sure if I'm right about it :S
 
-Thanks,
-Jason
+Regards,
+Jonathan Currier
+
