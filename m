@@ -1,184 +1,141 @@
-Received: from 1.mo560.mail-out.ovh.net (1.mo560.mail-out.ovh.net [46.105.63.121])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E271D1500
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 11:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.63.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8491CB53A;
+	Tue,  5 Nov 2024 11:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730804731; cv=none; b=GjEKxasFYaXx2Mel4g8o4U1UileHIITFc7Gn+9s+o6usQKqHI7/gJlWhPCwpWo2BAB8GZUpoAuMSbQR527+ilohAGwootFlBflPq3bCw2qZHS9HAAalMihdxGiYSY1AzmF7NwZ4mfnQ1pf9AQsXuuHk+IH9QoYeedMgeB3D7wBU=
+	t=1730805317; cv=none; b=LQJdk3/Z68V3kPYr8OADQoQ5cgw2wwOHUwTGTMUYoSLmOjeGbNqApEspZtGRPrd/Eq0PDpnFdr+dXrVRn1WsNx680VsPXK5kDnXR1jZ0Sb8SgWVvKvrEI/SzOiuSbz5Fx147QMBgYiTbo8FG/4gv5UJQDGMCfVd3u4qlShjkRkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730804731; c=relaxed/simple;
-	bh=alB18K499Ij8E0qPZfo2zb3hFUtvrsjw2BWfWyJxJKs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=JSSvS72OESeHnGDUrUvgqoI66xRDvUTs/9T/Oa26nJkVuBhImYGD3kQGQw+KDaL1+7SQq6OCiRXttyrsO/CWfUKZ3ajxbL9kOy4QqchJ12LqdJMb2OKYENzWtdazsmcOyyj7ZFOnr5HzJb7goCYR2hIXPGb4jChhv72WFHNE2II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=46.105.63.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
-Received: from director4.ghost.mail-out.ovh.net (unknown [10.109.139.225])
-	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4XjQV62RT2z1Svv
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 11:05:18 +0000 (UTC)
-Received: from ghost-submission-5b5ff79f4f-zcssp (unknown [10.111.174.63])
-	by director4.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 27CE01FDC5;
-	Tue,  5 Nov 2024 11:05:10 +0000 (UTC)
-Received: from courmont.net ([37.59.142.104])
-	by ghost-submission-5b5ff79f4f-zcssp with ESMTPSA
-	id czs2Keb7KWercAAARAn4fw
-	(envelope-from <remi@remlab.net>); Tue, 05 Nov 2024 11:05:10 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-104R00535e08229-f436-4d53-82b5-a0da44792e43,
-                    EE834E3B50A23AFC85B510F492F9176D607159AB) smtp.auth=postmaster@courmont.net
-X-OVh-ClientIp:87.95.77.48
-Date: Tue, 05 Nov 2024 13:03:49 +0200
-From: =?ISO-8859-1?Q?R=E9mi_Denis-Courmont?= <remi@remlab.net>
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot <syzkaller@googlegroups.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- Remi Denis-Courmont <courmisch@gmail.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next=5D_phonet=3A_do_not_call_?=
- =?US-ASCII?Q?synchronize=5Frcu=28=29_from_phonet=5Froute=5Fdel=28=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20241104152622.3580037-1-edumazet@google.com>
-References: <20241104152622.3580037-1-edumazet@google.com>
-Message-ID: <D2067CE4-F300-4DED-8012-9718FD6AB67F@remlab.net>
+	s=arc-20240116; t=1730805317; c=relaxed/simple;
+	bh=EblLCXndhY7BlXo9nQxU03D0v5JKO7gEA6yL291a3+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R/qZbtVoSRAQVfNzt1zsZOOBxJ6xwfyc5gomSHwMplPb9VDYvBzGcifLOGgPiatzBtSbVfinyre/mf0pDDUF5uSAX+6WGE3hobU7M+K81wGgfW1O/DB2fGRehYjpsqudUr/R6xBsGhRHUf/CJhHKQ5jbUeGop7qd8DymbPKaJoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Fma2B8rF; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Fma2B8rF"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A5BEoLO077893;
+	Tue, 5 Nov 2024 05:14:50 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1730805290;
+	bh=IDVspZ71dq5KAcHVIgTOcoCEUMJxMrE5sWF08fN2h6M=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=Fma2B8rFAMihl8HSEt6dH/hwvCAhjtKL0pZxJ6P6Sd/SiSnxOMvQ4lwG3q8vaz188
+	 cUNIcr3/59gJcDG263VwRYIO5DeI79gi6YWqz8GFe0gxXlCaV7hJKULF3dmrC0l7Vo
+	 6YOKf5LjSguE/EPmarxXMH0JW/nuUBbdx9LkotI0=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A5BEoHX052462
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 5 Nov 2024 05:14:50 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 5
+ Nov 2024 05:14:50 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 5 Nov 2024 05:14:50 -0600
+Received: from [10.24.69.25] (danish-tpc.dhcp.ti.com [10.24.69.25])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A5BEhKc094758;
+	Tue, 5 Nov 2024 05:14:44 -0600
+Message-ID: <9dbaae62-fc18-4f87-a6a9-8226e7266473@ti.com>
+Date: Tue, 5 Nov 2024 16:44:43 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Ovh-Tracer-Id: 18153447150167005470
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrvdelkedgvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevufgfjghfkfggtgfgsehtqhhmtddtreejnecuhfhrohhmpeftrohmihcuffgvnhhishdqvehouhhrmhhonhhtuceorhgvmhhisehrvghmlhgrsgdrnhgvtheqnecuggftrfgrthhtvghrnheptdehtedtheegfeejfeetheetgedvveekkeejhffggefgieevveffffelgfehueejnecukfhppeduvdejrddtrddtrddupdekjedrleehrdejjedrgeekpdefjedrheelrddugedvrddutdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehrvghmihesrhgvmhhlrggsrdhnvghtpdhnsggprhgtphhtthhopedupdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehiedtpdhmohguvgepshhmthhpohhuth
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 4/4] selftests: hsr: Add test for VLAN
+To: Paolo Abeni <pabeni@redhat.com>, <geliang@kernel.org>,
+        <liuhangbin@gmail.com>, <dan.carpenter@linaro.org>, <jiri@resnulli.us>,
+        <n.zhandarovich@fintech.ru>, <aleksander.lobakin@intel.com>,
+        <lukma@denx.de>, <horms@kernel.org>, <jan.kiszka@siemens.com>,
+        <diogo.ivo@siemens.com>, <shuah@kernel.org>, <kuba@kernel.org>,
+        <edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+        Roger Quadros
+	<rogerq@kernel.org>, <m-malladi@ti.com>
+References: <20241024103056.3201071-1-danishanwar@ti.com>
+ <20241024103056.3201071-5-danishanwar@ti.com>
+ <3e443eb4-d15f-45ff-8b41-a8215fb4032b@redhat.com>
+Content-Language: en-US
+From: MD Danish Anwar <danishanwar@ti.com>
+In-Reply-To: <3e443eb4-d15f-45ff-8b41-a8215fb4032b@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
 
-Le 4 novembre 2024 17:26:22 GMT+02:00, Eric Dumazet <edumazet@google=2Ecom=
-> a =C3=A9crit=C2=A0:
->Calling synchronize_rcu() while holding rcu_read_lock() is not
->permitted [1]
->
->Move the synchronize_rcu() to route_doit()=2E
->
->[1]
->WARNING: suspicious RCU usage
->6=2E12=2E0-rc5-syzkaller-01056-gf07a6e6ceb05 #0 Not tainted
->-----------------------------
->kernel/rcu/tree=2Ec:4092 Illegal synchronize_rcu() in RCU read-side criti=
-cal section!
->
->other info that might help us debug this:
->
->rcu_scheduler_active =3D 2, debug_locks =3D 1
->1 lock held by syz-executor427/5840:
->  #0: ffffffff8e937da0 (rcu_read_lock){=2E=2E=2E=2E}-{1:2}, at: rcu_lock_=
-acquire include/linux/rcupdate=2Eh:337 [inline]
->  #0: ffffffff8e937da0 (rcu_read_lock){=2E=2E=2E=2E}-{1:2}, at: rcu_read_=
-lock include/linux/rcupdate=2Eh:849 [inline]
->  #0: ffffffff8e937da0 (rcu_read_lock){=2E=2E=2E=2E}-{1:2}, at: route_doi=
-t+0x3d6/0x640 net/phonet/pn_netlink=2Ec:264
->
->stack backtrace:
->CPU: 1 UID: 0 PID: 5840 Comm: syz-executor427 Not tainted 6=2E12=2E0-rc5-=
-syzkaller-01056-gf07a6e6ceb05 #0
->Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 09/13/2024
->Call Trace:
-> <TASK>
->  __dump_stack lib/dump_stack=2Ec:94 [inline]
->  dump_stack_lvl+0x241/0x360 lib/dump_stack=2Ec:120
->  lockdep_rcu_suspicious+0x226/0x340 kernel/locking/lockdep=2Ec:6821
->  synchronize_rcu+0xea/0x360 kernel/rcu/tree=2Ec:4089
->  phonet_route_del+0xc6/0x140 net/phonet/pn_dev=2Ec:409
->  route_doit+0x514/0x640 net/phonet/pn_netlink=2Ec:275
->  rtnetlink_rcv_msg+0x791/0xcf0 net/core/rtnetlink=2Ec:6790
->  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink=2Ec:2551
->  netlink_unicast_kernel net/netlink/af_netlink=2Ec:1331 [inline]
->  netlink_unicast+0x7f6/0x990 net/netlink/af_netlink=2Ec:1357
->  netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink=2Ec:1901
->  sock_sendmsg_nosec net/socket=2Ec:729 [inline]
->  __sock_sendmsg+0x221/0x270 net/socket=2Ec:744
->  sock_write_iter+0x2d7/0x3f0 net/socket=2Ec:1165
->  new_sync_write fs/read_write=2Ec:590 [inline]
->  vfs_write+0xaeb/0xd30 fs/read_write=2Ec:683
->  ksys_write+0x183/0x2b0 fs/read_write=2Ec:736
->  do_syscall_x64 arch/x86/entry/common=2Ec:52 [inline]
->  do_syscall_64+0xf3/0x230 arch/x86/entry/common=2Ec:83
-> entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
->Fixes: 17a1ac0018ae ("phonet: Don't hold RTNL for route_doit()=2E")
->Reported-by: syzbot <syzkaller@googlegroups=2Ecom>
->Signed-off-by: Eric Dumazet <edumazet@google=2Ecom>
->Cc: Kuniyuki Iwashima <kuniyu@amazon=2Ecom>
->Cc: Remi Denis-Courmont <courmisch@gmail=2Ecom>
->---
-> net/phonet/pn_dev=2Ec     |  4 +++-
-> net/phonet/pn_netlink=2Ec | 10 ++++++++--
-> 2 files changed, 11 insertions(+), 3 deletions(-)
->
->diff --git a/net/phonet/pn_dev=2Ec b/net/phonet/pn_dev=2Ec
->index 19234d664c4fb537eba0267266efbb226cf103c3=2E=2E578d935f2b11694fd1004=
-c5f854ec344b846eeb2 100644
->--- a/net/phonet/pn_dev=2Ec
->+++ b/net/phonet/pn_dev=2Ec
->@@ -406,7 +406,9 @@ int phonet_route_del(struct net_device *dev, u8 daddr=
-)
->=20
-> 	if (!dev)
-> 		return -ENOENT;
->-	synchronize_rcu();
->+
->+	/* Note : our caller must call synchronize_rcu() */
->+
-> 	dev_put(dev);
-> 	return 0;
-> }
->diff --git a/net/phonet/pn_netlink=2Ec b/net/phonet/pn_netlink=2Ec
->index ca1f04e4a2d9eb3b2a6d6cc5b299aee28d569b08=2E=2E24930733ac572ed3ec5fd=
-142d347c115346a28fa 100644
->--- a/net/phonet/pn_netlink=2Ec
->+++ b/net/phonet/pn_netlink=2Ec
->@@ -233,6 +233,7 @@ static int route_doit(struct sk_buff *skb, struct nlm=
-sghdr *nlh,
-> {
-> 	struct net *net =3D sock_net(skb->sk);
-> 	struct nlattr *tb[RTA_MAX+1];
->+	bool sync_needed =3D false;
-> 	struct net_device *dev;
-> 	struct rtmsg *rtm;
-> 	u32 ifindex;
->@@ -269,16 +270,21 @@ static int route_doit(struct sk_buff *skb, struct n=
-lmsghdr *nlh,
-> 		return -ENODEV;
-> 	}
->=20
->-	if (nlh->nlmsg_type =3D=3D RTM_NEWROUTE)
->+	if (nlh->nlmsg_type =3D=3D RTM_NEWROUTE) {
-> 		err =3D phonet_route_add(dev, dst);
->-	else
->+	} else {
-> 		err =3D phonet_route_del(dev, dst);
->+		if (!err)
->+			sync_needed =3D true;
->+	}
->=20
-> 	rcu_read_unlock();
->=20
-> 	if (!err)
-> 		rtm_phonet_notify(net, nlh->nlmsg_type, ifindex, dst);
->=20
->+	if (sync_needed)
->+		synchronize_rcu();
+On 31/10/24 8:11 pm, Paolo Abeni wrote:
+> On 10/24/24 12:30, MD Danish Anwar wrote:
+>> @@ -183,9 +232,21 @@ trap cleanup_all_ns EXIT
+>>  setup_hsr_interfaces 0
+>>  do_complete_ping_test
+>>  
+>> +# Run VLAN Test
+>> +if $vlan; then
+>> +	setup_vlan_interfaces
+>> +	hsr_vlan_ping
+>> +fi
+>> +
+>>  setup_ns ns1 ns2 ns3
+>>  
+>>  setup_hsr_interfaces 1
+>>  do_complete_ping_test
+>>  
+>> +# Run VLAN Test
+>> +if $vlan; then
+>> +	setup_vlan_interfaces
+>> +	hsr_vlan_ping
+>> +fi
+> 
+> The new tests should be enabled by default. Indeed ideally the test
+> script should be able to run successfully on kernel not supporting such
+> feature; you could cope with that looking for the hsr exposed feature
+> and skipping the vlan test when the relevant feature is not present.
+> 
 
-Synchronising after sending notifications sounds a bit iffy=2E Whatever a =
-given notification is about should be fully committed so we don't create a =
-user-visible race here=2E
+Sure Paolo, I will make the new tests enabled by default. During the
+test I will check the exposed feature `ethtool -k hsr1 | grep
+"vlan-challenged"` and if vlan is not supported, skip the vlan test.
 
-Can't we reorder here?
+Below will be my API to run VLAN tests,
 
-> 	return err;
-> }
->=20
+run_vlan_tests() {
+	vlan_challenged_hsr1=$(ip net exec "$ns1" ethtool -k hsr1 | grep
+"vlan-challenged" | awk '{print $2}')
+	vlan_challenged_hsr2=$(ip net exec "$ns1" ethtool -k hsr2 | grep
+"vlan-challenged" | awk '{print $2}')
+	vlan_challenged_hsr3=$(ip net exec "$ns1" ethtool -k hsr3 | grep
+"vlan-challenged" | awk '{print $2}')
+
+	if [[ "$vlan_challenged_hsr1" = "off" || "$vlan_challenged_hsr2" =
+"off" || "$vlan_challenged_hsr3" = "off" ]]; then
+		setup_vlan_interfaces
+		hsr_vlan_ping
+	else
+		echo "INFO: Not Running VLAN tests as the device does not support VLAN"
+	fi
+}
+
+I will call this function after the ping test.
+Let me know if this looks okay to you.
+
+Thanks for the review.
+
+> Cheers,
+> 
+> Paolo
+> 
+
+-- 
+Thanks and Regards,
+Danish
