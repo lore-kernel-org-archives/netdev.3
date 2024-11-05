@@ -1,84 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A455E1D5CCC;
-	Tue,  5 Nov 2024 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDED13C8F9;
+	Tue,  5 Nov 2024 15:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730819422; cv=none; b=fm+wRqGMo3eq5o/9cTOLuDKavUaazpK0BgE2AHgtdh5Mxd0mS7bbtNpoipK2GtfBuCpOQtJy/2CtspYbxHIoS/tsDfVHEnCG+E2MnD81ieNoIFF/RHmwzojeZ42YPuWT0Ofa8Ka9JtkzCOtD6xXl58gSevlfXjMdf2f1X+Apet0=
+	t=1730821452; cv=none; b=o6ictEVxE8rF4WeihUAkIntVFp/NbDpl1HgccaX92+2JNDGRM2b9HBmiqeVUSqLEI0ZSRkPlNJdL7nAgIUDrswtic5h0KrB4CTtoLvbcANu/6dVBSbZk6W0YyMCzxjM/5DGFrIi7dezaJmZEd6gwR80/BK5FMToWkra3boDI0Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730819422; c=relaxed/simple;
-	bh=o99dfV4SMS3XtqCdnRdfpVyfvsH8r6+Drt0G7+D2AOo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ALKc6JMiVxFTU76WSohP99FEtPGuPsR/0741eXflOOmV172OWPAR2+byFXHjZ9vpXTBQyo+mntJRz7jT1taJNqJ21FG35rzEVNnZaoC0ySIed+SismY8An8j/mjjzfhRiMtEakf1TtSv/NaLJ/Nq/ft9uPTR+KJj4iL2iya5fRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drmVIaMt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730821452; c=relaxed/simple;
+	bh=A8g3p/LCl0KxQtsa6vCzZw7KyoH0lh2MRWGvZAzkJ8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M26xOzailDHvMCaxiXweC4qHRraDnmgYTXnWfjPCkuLjNAWdGk28D8lqQiCIJYlnbKtyzVQKDRsdUEK3iaqjzVfbfZyq7sY/ds0kHU4JyBdlHWd/JaPRfbAzYIJ+R47PmH/gxWRhtcV8hTexMqw0InOKRRoAlkQ/ZIKBHRLsx8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErB6775z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drmVIaMt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FFDC4CECF;
-	Tue,  5 Nov 2024 15:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErB6775z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E251C4CECF;
+	Tue,  5 Nov 2024 15:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730819422;
-	bh=o99dfV4SMS3XtqCdnRdfpVyfvsH8r6+Drt0G7+D2AOo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=drmVIaMtr4fU7FK8ZHZ6Q9CLlAOl+AHwp63zRSfw2XBzXp/zVkrmljBzJVyPcqLRa
-	 5POMJLoKiwoc6qSkLZRtQdN2hQrLiUfhN8r72IeVVFKO17eMx0XDsPPCfdDtrdzDd1
-	 qsS0QmmT2ECPcqhkEGE6Yl2rAQceCYcY9yzsqn7VmW8VP1I/AA1pN6Q4xaiWR92dkt
-	 DpUKK9OX7wiiH68kd7gX4amc8nb+FbqY9WVEVUwrumabi9uKYzSkT8BQr+ob3ertBe
-	 FVidrrFldjaxnzrMH+CuyxqcL728W0S4M0fRE0+UksaHu6IAtGGKz1ihil6mqzNoHi
-	 e5MGBuYnUDa+w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DC03809A80;
-	Tue,  5 Nov 2024 15:10:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1730821451;
+	bh=A8g3p/LCl0KxQtsa6vCzZw7KyoH0lh2MRWGvZAzkJ8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ErB6775zaIPLlM70+2FRzP+rKgAp2F6drZLM1xGF1JHOLBj+Lry6lgmIGg88zAlZY
+	 qwZmq/eUPS62Ys2FWbueJjPP4XPOrcjKBbIny9H7I51+FTmXYPPfOBNXHRgnnKItjB
+	 xzu+nA7JphG9fmHSLdipKEp90j7vujJnGcL6b30b1PN92rrqlFlhjfaAk0J88aB3/M
+	 Z820Np6FITtWBKOsdUZJCfscN01bgLaIeMdKbwHWNw4yQ0X+9qYrfvHxTsN9Hl6fwT
+	 YCcxd8Z/ONeAn5Is4c9fbp82t8Ih3XMuM4ifcMTpyWPRdt99GfOP4vM94c69vcOJCw
+	 NENEJQ0w6KHag==
+Message-ID: <17db0b5f-a0aa-448a-8fdf-a1264dcf95d0@kernel.org>
+Date: Tue, 5 Nov 2024 08:44:10 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: ethernet: ti: am65-cpsw: Fixes to multi
- queue RX feature
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173081943101.587715.9518854111392182116.git-patchwork-notify@kernel.org>
-Date: Tue, 05 Nov 2024 15:10:31 +0000
-References: <20241101-am65-cpsw-multi-rx-j7-fix-v3-0-338fdd6a55da@kernel.org>
-In-Reply-To: <20241101-am65-cpsw-multi-rx-j7-fix-v3-0-338fdd6a55da@kernel.org>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, horms@kernel.org, vigneshr@ti.com,
- maxime.chevallier@bootlin.com, s-vadapalli@ti.com, danishanwar@ti.com,
- srk@ti.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ipv6: ip6_fib: fix possible null-pointer-dereference in
+ ipv6_route_native_seq_show
+Content-Language: en-US
+To: Paolo Abeni <pabeni@redhat.com>, Yi Zou <03zouyi09.25@gmail.com>,
+ davem@davemloft.net
+Cc: 21210240012@m.fudan.edu.cn, 21302010073@m.fudan.edu.cn,
+ edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241101044828.55960-1-03zouyi09.25@gmail.com>
+ <68f209ba-2979-4a15-b344-4613c465b005@redhat.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <68f209ba-2979-4a15-b344-4613c465b005@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 01 Nov 2024 12:18:49 +0200 you wrote:
-> On J7 platforms, setting up multiple RX flows was failing
-> as the RX free descriptor ring 0 is shared among all flows
-> and we did not allocate enough elements in the RX free descriptor
-> ring 0 to accommodate for all RX flows. Patch 1 fixes this.
+On 11/5/24 5:28 AM, Paolo Abeni wrote:
 > 
-> The second patch fixes a warning if there was any error in
-> am65_cpsw_nuss_init_rx_chns() and am65_cpsw_nuss_cleanup_rx_chns()
-> was called after that.
 > 
-> [...]
+> On 11/1/24 05:48, Yi Zou wrote:
+>> In the ipv6_route_native_seq_show function, the fib6_nh variable
+>> is assigned the value from nexthop_fib6_nh(rt->nh), which could
+>> return NULL. This creates a risk of a null-pointer-dereference
+>> when accessing fib6_nh->fib_nh_gw_family. This can be resolved by
+>> checking if fib6_nh is non-NULL before accessing fib6_nh->fib_nh_gw_family
+>>  and assign dev using dev = fib6_nh ? fib6_nh->fib_nh_dev : NULL;
+>> to prevent null-pointer dereference errors.
+>>
+>> Signed-off-by: Yi Zou <03zouyi09.25@gmail.com>
+> 
+> Please send a new revision, including a the target tree in the subj
+> prefix - in this case 'net' and a suitable Fixes tag.
+> 
+> /P
+> 
 
-Here is the summary with links:
-  - [net,v3,1/2] net: ethernet: ti: am65-cpsw: Fix multi queue Rx on J7
-    https://git.kernel.org/netdev/net/c/de794169cf17
-  - [net,v3,2/2] net: ethernet: ti: am65-cpsw: fix warning in am65_cpsw_nuss_remove_rx_chns()
-    https://git.kernel.org/netdev/net/c/ba3b7ac4f714
+I would also like to understand why you believe NULL can really happen -
+excluding memory corruption or custom patches to a kernel. If you look
+at the make up of nexthop_fib6_nh it is defensive around bugs elsewhere
+(nhsel > number of nexthops) and future changes (support for ipv6
+nexthops that are not IPV6 addresses).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+That comment applies to all of these patches around nexthop_fib6_nh
+possibly returning NULL.
