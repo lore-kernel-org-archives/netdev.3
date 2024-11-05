@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924711DD0D2
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F4B215F50
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730845440; cv=none; b=i3DXNmIr4IoVtWPDP81KkPFFKDwBfwJdm93GAM8XhDC1KZc9sLDKgoq0lA3q3WJQAU6MH1uI1sQi32sQf4FjE8EcwI6UIEvpvYivYj/C9HPBk25M4C2O9EHMJfXGxiHe+A32aVSXkO+g7CMnH/liITCnpzWN2Z+xAEeEF7ZDlcM=
+	t=1730845442; cv=none; b=aNntbBMUE9s/Tr/jKLZcKsSW7mVHq3RCZucFu/Xw7hnFu+FbX9TQDEJKrQ1CZypq/4HOTgRMJ/uY1oNvacP+VZegoyIxT7YbUAPCZYBdHHvEtVCYrwSAIyWDQYhkVl0Q4olEP/eUyu2+5NlwCfaE51ec/OSrscgk7L6EHs4Xzvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730845440; c=relaxed/simple;
-	bh=a8wydvfd3IcPhabsIUcJy8VdzASonw3weScWlCOkVWE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MhLXDJZmD1YOsB2YDmvnuFryaohDj4lPkkcWC4ToCHfu4luZLNgraWHCdWMbs4JnLHXVG3ecvfXvb6ejIguHR9eHsMLs1U4u+IHAgyNhLtaRCf05fbv8itgwlGfZzf4Gm4IMSwv+4oBaPKwL0GVWQtmO75oHYBu+g+F6tCuWy2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kMjAXePL; arc=none smtp.client-ip=198.175.65.15
+	s=arc-20240116; t=1730845442; c=relaxed/simple;
+	bh=TIC2QdQx5U34H3HB0pxT4WJopJ2DGZhTuzBYTpfa7Kk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HBAyJnU4QJ5leh6LY1Dx8a+Laeic7qu/4gtAIzX86B7nIRd97nvYe9RgJ/RjVrTi3B8AE/zpx/Gf7u/EJOpC+KnLI3hWci0ODRDD+vsUWUdPtFUP//We5t4Q5xBoaiGDdUhcJAY8P3Sc+jgXsPe2dBUJQ9QjKZirQpN5o9lJHUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ta08ODYP; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kMjAXePL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ta08ODYP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730845439; x=1762381439;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=a8wydvfd3IcPhabsIUcJy8VdzASonw3weScWlCOkVWE=;
-  b=kMjAXePLmz/AwOc23JYZxFF0hZcC/JO4Jqbo2m/OKvu7wy/34LbNET7I
-   3fi3HLpnVpVIzSAwpbnloionVaZ77OQbiMvj5KnEiXUTwdtLPZUhZKtzr
-   g6RW1fZVWTN0idI2PkCVZtboqdkRgGPD69UqXaYU7WuRPzVKPleQGy065
-   uD0f5qclKc9eO9pXlDfwiThKPR+PO55PcAEcLUImKe6mY1i9UgehnDemO
-   mQkl5aEDjpFI/40VXXTWAsm07VtN57Wcv95B2yopGWXUbg0GntckEpjix
-   EAq3Sa52ZkOpwU0y16opMFfHDyCI9eVbTlvwip3gm4m4rQhmtX0o3mA4C
-   A==;
-X-CSE-ConnectionGUID: MnELafHtQpaoyan5BBmDdA==
-X-CSE-MsgGUID: hxtQ945jQ72uVLzS+M5ZSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314243"
+  t=1730845441; x=1762381441;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=TIC2QdQx5U34H3HB0pxT4WJopJ2DGZhTuzBYTpfa7Kk=;
+  b=Ta08ODYP/9P4sB7s4nwfhp7UTzoXGWo8dXTAlIGVdkvbbO1lqT3pLtlx
+   BKUhOBDKil6GnbPxuo0bE9K/lWoG/wC0wAB23nd7sv3tWgfT9QFLnx0sD
+   0TYqWTMzV1MFiSpHGq1zLOG5C7P/xMKNNPAYbt5uKoBdJQs0m48n4JJ8I
+   oSxCGLRMd/SwXPEB7wVzbnM9aFhG+0vN0K3Kbq1wSALH3LJkIMaERQz1f
+   nYj66IR44FEJ1BM02Bxwd3VC/QpT0mDQE25wUyLkWqiRgdMk3dnau0OCg
+   mV7ccuYzsCwZl/Uwvrfg9qS/viqh3wqu8OtEjPmWnSzCHG5LJ7+io2w71
+   g==;
+X-CSE-ConnectionGUID: 8OynX5InQPawkTDYvnAxCQ==
+X-CSE-MsgGUID: kr3XCkF4T/aFrTbo9n8YMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314249"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="34314243"
+   d="scan'208";a="34314249"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:23:58 -0800
-X-CSE-ConnectionGUID: Gd4NBX3WTbixqVzF1UpxvQ==
-X-CSE-MsgGUID: ONoflcyHQyujr8tgoM5ESA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:24:00 -0800
+X-CSE-ConnectionGUID: J5K9bWKUT2Oz/jv/XCa3kQ==
+X-CSE-MsgGUID: vxEDRJm7QeebLimyFCEmvA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84322424"
+   d="scan'208";a="84322430"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:23:56 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:23:57 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -49,11 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH net-next 00/15][pull request] Intel Wired LAN Driver Updates 2024-11-05 (ice, ixgbe, igc. igb, igbvf, e1000)
-Date: Tue,  5 Nov 2024 14:23:34 -0800
-Message-ID: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
+Cc: Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	anthony.l.nguyen@intel.com,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next 02/15] ice: rework of dump serdes equalizer values feature
+Date: Tue,  5 Nov 2024 14:23:36 -0800
+Message-ID: <20241105222351.3320587-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
+In-Reply-To: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
+References: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,121 +69,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For ice:
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 
-Paul adds generic checksum support for E830 devices.
+Refactor function ice_get_tx_rx_equa() to iterate over new table of
+params instead of multiple calls to ice_aq_get_phy_equalization().
 
-Mateusz refactors and adds additional SerDes configuration values to be
-output.
+Subsequent commit will extend that function by add more serdes equalizer
+values to dump.
 
-Przemek refactors processing of DDP and adds support for a flag field in
-the DDP's signature segment header.
+Shorten the fields of struct ice_serdes_equalization_to_ethtool for
+readability purposes.
 
-Joe Damato adds support for persistent NAPI config.
-
-Brett adjusts setting of Tx promiscuous based on unicast/multicast
-setting.
-
-Jake moves setting of pf->supported_rxdids to occur directly after DDP
-load and changes a small struct to use stack memory.
-
-Frederic Weisbecker adds WQ_UNBOUND flag to the workqueue.
-
-For ixgbe:
-
-Diomidis Spinellis removes a circular dependency.
-
-For igc:
-
-Vitaly removes an unneeded autoneg parameter.
-
-For igb:
-
-Johnny Park fixes a couple of typos.
-
-For igbvf:
-
-Wander Lairson Costa removes and unused spinlock.
-
-For e1000:
-
-Joe Damato adds RTNL lock to some calls where it is expected to be held.
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
-The following are changes since commit ccb35037c48a16dfa377e3af3be2c164e73d54f0:
-  Merge branch 'net-lan969x-add-vcap-functionality'
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 93 ++++++--------------
+ drivers/net/ethernet/intel/ice/ice_ethtool.h | 22 ++---
+ 2 files changed, 38 insertions(+), 77 deletions(-)
 
-Brett Creeley (1):
-  ice: only allow Tx promiscuous for multicast
-
-Diomidis Spinellis (1):
-  ixgbe: Break include dependency cycle
-
-Frederic Weisbecker (1):
-  ice: Unbind the workqueue
-
-Jacob Keller (2):
-  ice: initialize pf->supported_rxdids immediately after loading DDP
-  ice: use stack variable for virtchnl_supported_rxdids
-
-Joe Damato (2):
-  ice: Add support for persistent NAPI config
-  e1000: Hold RTNL when e1000_down can be called
-
-Johnny Park (1):
-  igb: Fix 2 typos in comments in igb_main.c
-
-Mateusz Polchlopek (2):
-  ice: rework of dump serdes equalizer values feature
-  ice: extend dump serdes equalizer values feature
-
-Paul Greenwalt (1):
-  ice: Add E830 checksum offload support
-
-Przemek Kitszel (2):
-  ice: refactor "last" segment of DDP pkg
-  ice: support optional flags in signature segment header
-
-Vitaly Lifshits (1):
-  igc: remove autoneg parameter from igc_mac_info
-
-Wander Lairson Costa (1):
-  igbvf: remove unused spinlock
-
- drivers/net/ethernet/intel/e1000/e1000_main.c |  10 +-
- drivers/net/ethernet/intel/ice/ice.h          |   7 +-
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  17 +
- drivers/net/ethernet/intel/ice/ice_base.c     |   3 +-
- drivers/net/ethernet/intel/ice/ice_ddp.c      | 302 +++++++++--------
- drivers/net/ethernet/intel/ice/ice_ddp.h      |   5 +-
- drivers/net/ethernet/intel/ice/ice_ethtool.c  | 110 +++---
- drivers/net/ethernet/intel/ice/ice_ethtool.h  |  39 ++-
- .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |   9 +-
- drivers/net/ethernet/intel/ice/ice_lib.c      |  18 +-
- drivers/net/ethernet/intel/ice/ice_main.c     |  76 ++++-
- drivers/net/ethernet/intel/ice/ice_txrx.c     |  26 +-
- drivers/net/ethernet/intel/ice/ice_txrx.h     |   3 +
- drivers/net/ethernet/intel/ice/ice_txrx_lib.c |  26 ++
- drivers/net/ethernet/intel/ice/ice_virtchnl.c |  59 ++--
- drivers/net/ethernet/intel/igb/igb_main.c     |   4 +-
- drivers/net/ethernet/intel/igbvf/igbvf.h      |   3 -
- drivers/net/ethernet/intel/igbvf/netdev.c     |   3 -
- drivers/net/ethernet/intel/igc/igc_diag.c     |   3 +-
- drivers/net/ethernet/intel/igc/igc_ethtool.c  |  13 +-
- drivers/net/ethernet/intel/igc/igc_hw.h       |   1 -
- drivers/net/ethernet/intel/igc/igc_mac.c      | 316 +++++++++---------
- drivers/net/ethernet/intel/igc/igc_main.c     |   1 -
- drivers/net/ethernet/intel/igc/igc_phy.c      |  24 +-
- .../net/ethernet/intel/ixgbe/ixgbe_82598.c    |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h  |  16 +-
- .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  15 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |   1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c |   1 +
- 31 files changed, 629 insertions(+), 485 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 2924ac61300d..19e7a9d93928 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -693,75 +693,36 @@ static int ice_get_port_topology(struct ice_hw *hw, u8 lport,
+ static int ice_get_tx_rx_equa(struct ice_hw *hw, u8 serdes_num,
+ 			      struct ice_serdes_equalization_to_ethtool *ptr)
+ {
++	static const int tx = ICE_AQC_OP_CODE_TX_EQU;
++	static const int rx = ICE_AQC_OP_CODE_RX_EQU;
++	struct {
++		int data_in;
++		int opcode;
++		int *out;
++	} aq_params[] = {
++		{ ICE_AQC_TX_EQU_PRE1, tx, &ptr->tx_equ_pre1 },
++		{ ICE_AQC_TX_EQU_PRE3, tx, &ptr->tx_equ_pre3 },
++		{ ICE_AQC_TX_EQU_ATTEN, tx, &ptr->tx_equ_atten },
++		{ ICE_AQC_TX_EQU_POST1, tx, &ptr->tx_equ_post1 },
++		{ ICE_AQC_TX_EQU_PRE2, tx, &ptr->tx_equ_pre2 },
++		{ ICE_AQC_RX_EQU_PRE2, rx, &ptr->rx_equ_pre2 },
++		{ ICE_AQC_RX_EQU_PRE1, rx, &ptr->rx_equ_pre1 },
++		{ ICE_AQC_RX_EQU_POST1, rx, &ptr->rx_equ_post1 },
++		{ ICE_AQC_RX_EQU_BFLF, rx, &ptr->rx_equ_bflf },
++		{ ICE_AQC_RX_EQU_BFHF, rx, &ptr->rx_equ_bfhf },
++		{ ICE_AQC_RX_EQU_DRATE, rx, &ptr->rx_equ_drate },
++	};
+ 	int err;
+ 
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_TX_EQU_PRE1,
+-					  ICE_AQC_OP_CODE_TX_EQU, serdes_num,
+-					  &ptr->tx_equalization_pre1);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_TX_EQU_PRE3,
+-					  ICE_AQC_OP_CODE_TX_EQU, serdes_num,
+-					  &ptr->tx_equalization_pre3);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_TX_EQU_ATTEN,
+-					  ICE_AQC_OP_CODE_TX_EQU, serdes_num,
+-					  &ptr->tx_equalization_atten);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_TX_EQU_POST1,
+-					  ICE_AQC_OP_CODE_TX_EQU, serdes_num,
+-					  &ptr->tx_equalization_post1);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_TX_EQU_PRE2,
+-					  ICE_AQC_OP_CODE_TX_EQU, serdes_num,
+-					  &ptr->tx_equalization_pre2);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_PRE2,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_pre2);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_PRE1,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_pre1);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_POST1,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_post1);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_BFLF,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_bflf);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_BFHF,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_bfhf);
+-	if (err)
+-		return err;
+-
+-	err = ice_aq_get_phy_equalization(hw, ICE_AQC_RX_EQU_DRATE,
+-					  ICE_AQC_OP_CODE_RX_EQU, serdes_num,
+-					  &ptr->rx_equalization_drate);
+-	if (err)
+-		return err;
++	for (int i = 0; i < ARRAY_SIZE(aq_params); i++) {
++		err = ice_aq_get_phy_equalization(hw, aq_params[i].data_in,
++						  aq_params[i].opcode,
++						  serdes_num, aq_params[i].out);
++		if (err)
++			break;
++	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.h b/drivers/net/ethernet/intel/ice/ice_ethtool.h
+index 9acccae38625..98eb9c51d687 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.h
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.h
+@@ -10,17 +10,17 @@ struct ice_phy_type_to_ethtool {
+ };
+ 
+ struct ice_serdes_equalization_to_ethtool {
+-	int rx_equalization_pre2;
+-	int rx_equalization_pre1;
+-	int rx_equalization_post1;
+-	int rx_equalization_bflf;
+-	int rx_equalization_bfhf;
+-	int rx_equalization_drate;
+-	int tx_equalization_pre1;
+-	int tx_equalization_pre3;
+-	int tx_equalization_atten;
+-	int tx_equalization_post1;
+-	int tx_equalization_pre2;
++	int rx_equ_pre2;
++	int rx_equ_pre1;
++	int rx_equ_post1;
++	int rx_equ_bflf;
++	int rx_equ_bfhf;
++	int rx_equ_drate;
++	int tx_equ_pre1;
++	int tx_equ_pre3;
++	int tx_equ_atten;
++	int tx_equ_post1;
++	int tx_equ_pre2;
+ };
+ 
+ struct ice_regdump_to_ethtool {
 -- 
 2.42.0
 
