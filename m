@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01A4216439
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B647216440
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 22:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730845443; cv=none; b=ffGEHqlaQU+NM39RAzwPPuZrZ60DYd4cpFvM6YWj9ooJwpOEyI5oLR//qShfJUTHnQnt3V3JL2lW9yM1+MxAHfShxA3xR8GtQqHF8pt+0z8/iZP7rFEQx+3kp+rNwsiLBgCNBO0S/4HPsy/edVVoKxiOU74gV4XeOCtELS29HU8=
+	t=1730845444; cv=none; b=UIF5d8DLz5L5f7ALFaqVIrORqdGqDxtqu0oN9hCznFzWNilpHhLE73Xs8PwURuzEOADv+N2QtqD8JbxmsBHrAUH+f+WO2Sgv/ILq2emGyVjKI/M4ftaOUXzyqFeP8tCihzMzzXe83PtOxqOxKoNv4wG+l3pbjm7LJVll6iCzkcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730845443; c=relaxed/simple;
-	bh=v5PKNP1gkSUm5bpeFErvCQfDAUJ42S/R425sMZ7hg0k=;
+	s=arc-20240116; t=1730845444; c=relaxed/simple;
+	bh=UB1BKs1NFcAJOY2+bDKUzdHQt3Fu6qA38RZCd3GAWI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHS5i74yOZJ37tApiI8pE3CSoGB26x+IOpZJIvtoEXoGnS0OKpht91FAKWv41k8sXKag468OzR568qS9FkriFDjU9rBjciSyoSrNyyixIkO1GWqfOnX3gOhrNLTOOfHyMg173RVDJXHvxHDeSWjj7jrB/qKkvCDQVdxRrpjiY1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OgoGvZQM; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=YMUNfToxEixfc7CSGT9nolPFqECtewTr0x2cPiFl6IpiV30JMPHfZEm8Se2e4OQp/G0lXtpqIKXTwRq65BEV+22b+OqfxEfjwcg+oICTv35LtGnPUrnT3ajGPb0Muikxba2cTMasSUIvdKkSeTD58PwCCvO7sPoeCvbWL8vj2ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DYTQIJEa; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OgoGvZQM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DYTQIJEa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1730845442; x=1762381442;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=v5PKNP1gkSUm5bpeFErvCQfDAUJ42S/R425sMZ7hg0k=;
-  b=OgoGvZQMMzUVJj5BvREqw/lhhFpKP5fA1SarTlHGMTGgXe62u2s/mJ6+
-   rtRM8JHRcoxJicWt+uJWMh+PhzKIxEjijkzjiqYVoIivtI5ksgFxHZcWj
-   x767p7VeyRc4SWsmk/+dyHlgFe/GgcCqCgNAOUUgYh8jVyAuIGWVBm0GI
-   LKYxGAGRKKfv2s9JEMZS2lx0GIcx8tUr2RosPHkn73yjzyzUylaHNgisq
-   8u5HJNbOK+KcVahdbCzFJ9F91bZJ30ldfGQbzQf+5Yodiyp0VsuFP1zy3
-   84mGdHUHvTEhwhmRadKJAIKDb5Va+tRWD9tTzOp+Ov8mYtTfDLU40/5IO
-   g==;
-X-CSE-ConnectionGUID: fhnMGyU8SX+fyQ0hRbeTCQ==
-X-CSE-MsgGUID: 118Uk0InTv6yO1OGurAj7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314264"
+  bh=UB1BKs1NFcAJOY2+bDKUzdHQt3Fu6qA38RZCd3GAWI0=;
+  b=DYTQIJEaXSnfw8ideNf/yXotMOPLSUuBkfDArJ/R9C4ML9JpL6Pbuu7X
+   nKMcltCPcew41jpku/T9FtFov1YTModLaeYxDWRtjEC6gg6emyRTs+CR8
+   SGRATUnL0uIEmNvnoTqDLMtlEAVFTc/HzfBBcMGBmEhZD62jWYZmqf1MA
+   wzGkZ/J9whYZBeWjyHs7p6j4AcnhuYpO7r192Hj+Myylb/bY8Ba6F51R4
+   nF2DvMwoKn0dLxUdL668OtMBDkcOKMaFLrGySW/tByci+I9ICcWPDQDNu
+   2MaiB9xySOU4h2VTJjsIec9knviG7mgRnaWVTip781r8KGffFSscOsB6y
+   Q==;
+X-CSE-ConnectionGUID: GB06rV0FQt6FoJSFAAZM4A==
+X-CSE-MsgGUID: PkIxZwKsSOuSaEPSjUUMcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="34314267"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="34314264"
+   d="scan'208";a="34314267"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 14:24:00 -0800
-X-CSE-ConnectionGUID: vKoz08//TQ6MOqK4Nwlkdg==
-X-CSE-MsgGUID: 7og3+o4XSba/cySHTru6lg==
+X-CSE-ConnectionGUID: 8OEOOppQSReGxvh9cpVPQQ==
+X-CSE-MsgGUID: nJAHV4PUSMeAkeeDcAtuEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84322427"
+   d="scan'208";a="84322438"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:23:57 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2024 14:23:58 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	anthony.l.nguyen@intel.com,
-	Alice Michael <alice.michael@intel.com>,
-	Eric Joyner <eric.joyner@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Dan Nowlin <dan.nowlin@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH net-next 01/15] ice: Add E830 checksum offload support
-Date: Tue,  5 Nov 2024 14:23:35 -0800
-Message-ID: <20241105222351.3320587-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 04/15] ice: refactor "last" segment of DDP pkg
+Date: Tue,  5 Nov 2024 14:23:38 -0800
+Message-ID: <20241105222351.3320587-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
 References: <20241105222351.3320587-1-anthony.l.nguyen@intel.com>
@@ -70,340 +72,425 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-E830 supports raw receive and generic transmit checksum offloads.
+Add ice_ddp_send_hunk() that buffers "sent FW hunk" calls to AQ in order
+to mark the "last" one in more elegant way. Next commit will add even
+more complicated "sent FW" flow, so it's better to untangle a bit before.
 
-Raw receive checksum support is provided by hardware calculating the
-checksum over the whole packet, regardless of type. The calculated
-checksum is provided to driver in the Rx flex descriptor. Then the driver
-assigns the checksum to skb->csum and sets skb->ip_summed to
-CHECKSUM_COMPLETE.
+Note that metadata buffers were not skipped for NOT-@indicate_last
+segments, this is fixed now.
 
-Generic transmit checksum support is provided by hardware calculating the
-checksum given two offsets: the start offset to begin checksum calculation,
-and the offset to insert the calculated checksum in the packet. Support is
-advertised to the stack using NETIF_F_HW_CSUM feature.
+Minor:
+ + use ice_is_buffer_metadata() instead of open coding it in
+   ice_dwnld_cfg_bufs();
+ + ice_dwnld_cfg_bufs_no_lock() + dependencies were moved up a bit to have
+   better git-diff, as this function was rewritten (in terms of git-blame)
 
-E830 has the following limitations when both generic transmit checksum
-offload and TCP Segmentation Offload (TSO) are enabled:
-
-1. Inner packet header modification is not supported. This restriction
-   includes the inability to alter TCP flags, such as the push flag. As a
-   result, this limitation can impact the receiver's ability to coalesce
-   packets, potentially degrading network throughput.
-2. The Maximum Segment Size (MSS) is limited to 1023 bytes, which prevents
-   support of Maximum Transmission Unit (MTU) greater than 1063 bytes.
-
-Therefore NETIF_F_HW_CSUM and NETIF_F_ALL_TSO features are mutually
-exclusive. NETIF_F_HW_CSUM hardware feature support is indicated but is not
-enabled by default. Instead, IP checksums and NETIF_F_ALL_TSO are the
-defaults. Enforcement of mutual exclusivity of NETIF_F_HW_CSUM and
-NETIF_F_ALL_TSO is done in ice_fix_features_tso_gcs(). Mutual exclusivity
-of IP checksums and NETIF_F_HW_CSUM is handled by netdev_fix_features().
-
-When NETIF_F_HW_CSUM is requested the provided skb->csum_start and
-skb->csum_offset are passed to hardware in the Tx context descriptor
-generic checksum (GCS) parameters. Hardware calculates the 1's complement
-from skb->csum_start to the end of the packet, and inserts the result in
-the packet at skb->csum_offset.
-
-Co-developed-by: Alice Michael <alice.michael@intel.com>
-Signed-off-by: Alice Michael <alice.michael@intel.com>
-Co-developed-by: Eric Joyner <eric.joyner@intel.com>
-Signed-off-by: Eric Joyner <eric.joyner@intel.com>
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+CC: Paul Greenwalt <paul.greenwalt@intel.com>
+CC: Dan Nowlin <dan.nowlin@intel.com>
+CC: Ahmed Zaki <ahmed.zaki@intel.com>
+CC: Simon Horman <horms@kernel.org>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice.h          |  1 +
- .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |  9 +++-
- drivers/net/ethernet/intel/ice/ice_lib.c      | 12 +++++-
- drivers/net/ethernet/intel/ice/ice_main.c     | 43 +++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_txrx.c     | 26 ++++++++++-
- drivers/net/ethernet/intel/ice/ice_txrx.h     |  3 ++
- drivers/net/ethernet/intel/ice/ice_txrx_lib.c | 26 +++++++++++
- 7 files changed, 116 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ddp.c | 288 ++++++++++++-----------
+ 1 file changed, 151 insertions(+), 137 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 680a81961ba1..1f30274624b2 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -205,6 +205,7 @@ enum ice_feature {
- 	ICE_F_SMA_CTRL,
- 	ICE_F_CGU,
- 	ICE_F_GNSS,
-+	ICE_F_GCS,
- 	ICE_F_ROCE_LAG,
- 	ICE_F_SRIOV_LAG,
- 	ICE_F_MBX_LIMIT,
-diff --git a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-index 611577ebc29d..b419933da63c 100644
---- a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-@@ -229,7 +229,7 @@ struct ice_32b_rx_flex_desc_nic {
- 	__le16 status_error1;
- 	u8 flexi_flags2;
- 	u8 ts_low;
--	__le16 l2tag2_1st;
-+	__le16 raw_csum;
- 	__le16 l2tag2_2nd;
- 
- 	/* Qword 3 */
-@@ -500,10 +500,15 @@ enum ice_tx_desc_len_fields {
- struct ice_tx_ctx_desc {
- 	__le32 tunneling_params;
- 	__le16 l2tag2;
--	__le16 rsvd;
-+	__le16 gcs;
- 	__le64 qw1;
- };
- 
-+#define ICE_TX_GCS_DESC_START_M		GENMASK(7, 0)
-+#define ICE_TX_GCS_DESC_OFFSET_M	GENMASK(11, 8)
-+#define ICE_TX_GCS_DESC_TYPE_M		GENMASK(14, 12)
-+#define ICE_TX_GCS_DESC_CSUM_PSH	BIT(12)
-+
- #define ICE_TXD_CTX_QW1_CMD_S	4
- #define ICE_TXD_CTX_QW1_CMD_M	(0x7FUL << ICE_TXD_CTX_QW1_CMD_S)
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index d4e74f96a8ad..78f2d124601c 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1401,6 +1401,10 @@ static int ice_vsi_alloc_rings(struct ice_vsi *vsi)
- 			ring->flags |= ICE_TX_FLAGS_RING_VLAN_L2TAG2;
- 		else
- 			ring->flags |= ICE_TX_FLAGS_RING_VLAN_L2TAG1;
-+
-+		if (ice_is_feature_supported(pf, ICE_F_GCS))
-+			ring->flags |= ICE_TX_FLAGS_RING_GCS;
-+
- 		WRITE_ONCE(vsi->tx_rings[i], ring);
- 	}
- 
-@@ -1420,6 +1424,10 @@ static int ice_vsi_alloc_rings(struct ice_vsi *vsi)
- 		ring->dev = dev;
- 		ring->count = vsi->num_rx_desc;
- 		ring->cached_phctime = pf->ptp.cached_phc_time;
-+
-+		if (ice_is_feature_supported(pf, ICE_F_GCS))
-+			ring->flags |= ICE_RX_FLAGS_RING_GCS;
-+
- 		WRITE_ONCE(vsi->rx_rings[i], ring);
- 	}
- 
-@@ -3881,8 +3889,10 @@ void ice_init_feature_support(struct ice_pf *pf)
- 		break;
- 	}
- 
--	if (pf->hw.mac_type == ICE_MAC_E830)
-+	if (pf->hw.mac_type == ICE_MAC_E830) {
- 		ice_set_feature_support(pf, ICE_F_MBX_LIMIT);
-+		ice_set_feature_support(pf, ICE_F_GCS);
-+	}
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index a6f586f9bfd1..c96feb292f84 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3666,6 +3666,12 @@ void ice_set_netdev_features(struct net_device *netdev)
- 	 */
- 	netdev->hw_features |= NETIF_F_RXFCS;
- 
-+	/* Mutual exclusivity for TSO and GCS is enforced by the fix features
-+	 * ndo callback.
-+	 */
-+	if (ice_is_feature_supported(pf, ICE_F_GCS))
-+		netdev->hw_features |= NETIF_F_HW_CSUM;
-+
- 	netif_set_tso_max_size(netdev, ICE_MAX_TSO_SIZE);
- }
- 
-@@ -6188,6 +6194,38 @@ ice_fdb_del(struct ndmsg *ndm, __always_unused struct nlattr *tb[],
- 	return err;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index 272fd823a825..3e1173ef4b5c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -1210,6 +1210,131 @@ ice_aq_download_pkg(struct ice_hw *hw, struct ice_buf_hdr *pkg_buf,
+ 	return status;
  }
  
 +/**
-+ * ice_fix_features_gcs - enforce  Generic Checksum (GCS) feature restrictions
-+ * @netdev: ptr to the netdev that flags are being fixed on
-+ * @features: features that need to be checked and possibly fixed
-+ *
-+ * Due to E830 hardware limitations on TSO (NETIF_F_ALL_TSO) with GCS
-+ * (NETIF_F_HW_CSUM), inner packet header modification is not supported and
-+ * maximum segment size is limited to 1023 bytes, make TSO and GCS mutually
-+ * exclusive. If both TSO and GCS are requested, then choose TSO and drop
-+ * GCS, else preserve existing settings.
-+ *
-+ * Note: IP checksums enforcement is handled by netdev_fix_features().
-+ *
-+ * Return: updated features based on device GCS limitations.
++ * ice_is_buffer_metadata - determine if package buffer is a metadata buffer
++ * @buf: pointer to buffer header
++ * Return: whether given @buf is a metadata one.
 + */
-+static netdev_features_t
-+ice_fix_features_gcs(struct net_device *netdev, netdev_features_t features)
++static bool ice_is_buffer_metadata(struct ice_buf_hdr *buf)
 +{
-+	if (!((features & NETIF_F_HW_CSUM) && (features & NETIF_F_ALL_TSO)))
-+		return features;
-+
-+	if (netdev->features & NETIF_F_HW_CSUM) {
-+		netdev_warn(netdev, "Dropping TSO. TSO and HW checksum are mutually exclusive.\n");
-+		features &= ~NETIF_F_ALL_TSO;
-+	} else {
-+		netdev_warn(netdev, "Dropping HW checksum. TSO and HW checksum are mutually exclusive.\n");
-+		features &= ~NETIF_F_HW_CSUM;
-+	}
-+
-+	return features;
++	return le32_to_cpu(buf->section_entry[0].type) & ICE_METADATA_BUF;
 +}
 +
- #define NETIF_VLAN_OFFLOAD_FEATURES	(NETIF_F_HW_VLAN_CTAG_RX | \
- 					 NETIF_F_HW_VLAN_CTAG_TX | \
- 					 NETIF_F_HW_VLAN_STAG_RX | \
-@@ -6235,6 +6273,8 @@ ice_fdb_del(struct ndmsg *ndm, __always_unused struct nlattr *tb[],
-  *	These are mutually exclusive as there is currently no way to
-  *	enable/disable VLAN filtering based on VLAN ethertype when using VLAN
-  *	prune rules.
++/**
++ * struct ice_ddp_send_ctx - sending context of current DDP segment
++ * @hw: pointer to the hardware struct
 + *
-+ * Return: updated features list.
-  */
- static netdev_features_t
- ice_fix_features(struct net_device *netdev, netdev_features_t features)
-@@ -6290,6 +6330,9 @@ ice_fix_features(struct net_device *netdev, netdev_features_t features)
- 		features &= ~NETIF_VLAN_STRIPPING_FEATURES;
- 	}
- 
-+	if (ice_is_feature_supported(np->vsi->back, ICE_F_GCS))
-+		features = ice_fix_features_gcs(netdev, features);
++ * Keeps current sending state (header, error) for the purpose of proper "last"
++ * bit setting in ice_aq_download_pkg(). Use via calls to ice_ddp_send_hunk().
++ */
++struct ice_ddp_send_ctx {
++	struct ice_hw *hw;
++/* private: only for ice_ddp_send_hunk() */
++	struct ice_buf_hdr *hdr;
++	int err;
++};
 +
- 	return features;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 5d2d7736fd5f..0e274eca574d 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -1753,6 +1753,7 @@ ice_tx_map(struct ice_tx_ring *tx_ring, struct ice_tx_buf *first,
- static
- int ice_tx_csum(struct ice_tx_buf *first, struct ice_tx_offload_params *off)
- {
-+	const struct ice_tx_ring *tx_ring = off->tx_ring;
- 	u32 l4_len = 0, l3_len = 0, l2_len = 0;
- 	struct sk_buff *skb = first->skb;
- 	union {
-@@ -1902,6 +1903,29 @@ int ice_tx_csum(struct ice_tx_buf *first, struct ice_tx_offload_params *off)
- 	l3_len = l4.hdr - ip.hdr;
- 	offset |= (l3_len / 4) << ICE_TX_DESC_LEN_IPLEN_S;
- 
-+	if ((tx_ring->netdev->features & NETIF_F_HW_CSUM) &&
-+	    !(first->tx_flags & ICE_TX_FLAGS_TSO) &&
-+	    !skb_csum_is_sctp(skb)) {
-+		/* Set GCS */
-+		u16 csum_start = (skb->csum_start - skb->mac_header) / 2;
-+		u16 csum_offset = skb->csum_offset / 2;
-+		u16 gcs_params;
++static void ice_ddp_send_ctx_set_err(struct ice_ddp_send_ctx *ctx, int err)
++{
++	ctx->err = err;
++}
 +
-+		gcs_params = FIELD_PREP(ICE_TX_GCS_DESC_START_M, csum_start) |
-+			     FIELD_PREP(ICE_TX_GCS_DESC_OFFSET_M, csum_offset) |
-+			     FIELD_PREP(ICE_TX_GCS_DESC_CSUM_PSH, 1);
++/**
++ * ice_ddp_send_hunk - send one hunk of data to FW
++ * @ctx: current segment sending context
++ * @hunk: next hunk to send, size is always ICE_PKG_BUF_SIZE
++ *
++ * Send the next hunk of data to FW, retrying if needed.
++ *
++ * Notice: must be called once more with a NULL @hunk to finish up; such call
++ * will set up the "last" bit of an AQ request. After such call @ctx.hdr is
++ * cleared, @hw is still valid.
++ *
++ * Return: %ICE_DDP_PKG_SUCCESS if there were no problems; a sticky @err
++ *         otherwise.
++ */
++static enum ice_ddp_state ice_ddp_send_hunk(struct ice_ddp_send_ctx *ctx,
++					    struct ice_buf_hdr *hunk)
++{
++	struct ice_buf_hdr *prev_hunk = ctx->hdr;
++	struct ice_hw *hw = ctx->hw;
++	bool prev_was_last = !hunk;
++	enum ice_aq_err aq_err;
++	u32 offset, info;
++	int attempt, err;
 +
-+		/* Unlike legacy HW checksums, GCS requires a context
-+		 * descriptor.
++	if (ctx->err)
++		return ctx->err;
++
++	ctx->hdr = hunk;
++	if (!prev_hunk)
++		return ICE_DDP_PKG_SUCCESS; /* no problem so far */
++
++	for (attempt = 0; attempt < 5; attempt++) {
++		if (attempt)
++			msleep(20);
++
++		err = ice_aq_download_pkg(hw, prev_hunk, ICE_PKG_BUF_SIZE,
++					  prev_was_last, &offset, &info, NULL);
++
++		aq_err = hw->adminq.sq_last_status;
++		if (aq_err != ICE_AQ_RC_ENOSEC && aq_err != ICE_AQ_RC_EBADSIG)
++			break;
++	}
++
++	if (err) {
++		ice_debug(hw, ICE_DBG_PKG, "Pkg download failed: err %d off %d inf %d\n",
++			  err, offset, info);
++		ctx->err = ice_map_aq_err_to_ddp_state(aq_err);
++	} else if (attempt) {
++		dev_dbg(ice_hw_to_dev(hw),
++			"ice_aq_download_pkg number of retries: %d\n", attempt);
++	}
++
++	return ctx->err;
++}
++
++/**
++ * ice_dwnld_cfg_bufs_no_lock
++ * @ctx: context of the current buffers section to send
++ * @bufs: pointer to an array of buffers
++ * @start: buffer index of first buffer to download
++ * @count: the number of buffers to download
++ *
++ * Downloads package configuration buffers to the firmware. Metadata buffers
++ * are skipped, and the first metadata buffer found indicates that the rest
++ * of the buffers are all metadata buffers.
++ */
++static enum ice_ddp_state
++ice_dwnld_cfg_bufs_no_lock(struct ice_ddp_send_ctx *ctx, struct ice_buf *bufs,
++			   u32 start, u32 count)
++{
++	struct ice_buf_hdr *bh;
++	enum ice_ddp_state err;
++
++	if (!bufs || !count) {
++		ice_ddp_send_ctx_set_err(ctx, ICE_DDP_PKG_ERR);
++		return ICE_DDP_PKG_ERR;
++	}
++
++	bufs += start;
++
++	for (int i = 0; i < count; i++, bufs++) {
++		bh = (struct ice_buf_hdr *)bufs;
++		/* Metadata buffers should not be sent to FW,
++		 * their presence means "we are done here".
 +		 */
-+		off->cd_qw1 |= ICE_TX_DESC_DTYPE_CTX;
-+		off->cd_gcs_params = gcs_params;
-+		/* Fill out CSO info in data descriptors */
-+		off->td_offset |= offset;
-+		off->td_cmd |= cmd;
-+		return 1;
++		if (ice_is_buffer_metadata(bh))
++			break;
++
++		err = ice_ddp_send_hunk(ctx, bh);
++		if (err)
++			return err;
 +	}
 +
- 	/* Enable L4 checksum offloads */
- 	switch (l4_proto) {
- 	case IPPROTO_TCP:
-@@ -2383,7 +2407,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 		/* setup context descriptor */
- 		cdesc->tunneling_params = cpu_to_le32(offload.cd_tunnel_params);
- 		cdesc->l2tag2 = cpu_to_le16(offload.cd_l2tag2);
--		cdesc->rsvd = cpu_to_le16(0);
-+		cdesc->gcs = cpu_to_le16(offload.cd_gcs_params);
- 		cdesc->qw1 = cpu_to_le64(offload.cd_qw1);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index cb347c852ba9..1fc341b30d9c 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -193,6 +193,7 @@ struct ice_tx_offload_params {
- 	u32 td_l2tag1;
- 	u32 cd_tunnel_params;
- 	u16 cd_l2tag2;
-+	u16 cd_gcs_params;
- 	u8 header_len;
- };
- 
-@@ -367,6 +368,7 @@ struct ice_rx_ring {
- #define ICE_RX_FLAGS_RING_BUILD_SKB	BIT(1)
- #define ICE_RX_FLAGS_CRC_STRIP_DIS	BIT(2)
- #define ICE_RX_FLAGS_MULTIDEV		BIT(3)
-+#define ICE_RX_FLAGS_RING_GCS		BIT(4)
- 	u8 flags;
- 	/* CL5 - 5th cacheline starts here */
- 	struct xdp_rxq_info xdp_rxq;
-@@ -405,6 +407,7 @@ struct ice_tx_ring {
- #define ICE_TX_FLAGS_RING_XDP		BIT(0)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
-+#define ICE_TX_FLAGS_RING_GCS		BIT(3)
- 	u8 flags;
- 	u8 dcb_tc;			/* Traffic class of ring */
- 	u16 quanta_prof_id;
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-index 2719f0e20933..45cfaabc41cb 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.c
-@@ -80,6 +80,23 @@ ice_rx_hash_to_skb(const struct ice_rx_ring *rx_ring,
- 		libeth_rx_pt_set_hash(skb, hash, decoded);
- }
- 
-+/**
-+ * ice_rx_gcs - Set generic checksum in skb
-+ * @skb: skb currently being received and modified
-+ * @rx_desc: receive descriptor
-+ */
-+static void ice_rx_gcs(struct sk_buff *skb,
-+		       const union ice_32b_rx_flex_desc *rx_desc)
-+{
-+	const struct ice_32b_rx_flex_desc_nic *desc;
-+	u16 csum;
-+
-+	desc = (struct ice_32b_rx_flex_desc_nic *)rx_desc;
-+	skb->ip_summed = CHECKSUM_COMPLETE;
-+	csum = (__force u16)desc->raw_csum;
-+	skb->csum = csum_unfold((__force __sum16)swab16(csum));
++	return 0;
 +}
 +
  /**
-  * ice_rx_csum - Indicate in skb if checksum is good
-  * @ring: the ring we care about
-@@ -107,6 +124,15 @@ ice_rx_csum(struct ice_rx_ring *ring, struct sk_buff *skb,
- 	rx_status0 = le16_to_cpu(rx_desc->wb.status_error0);
- 	rx_status1 = le16_to_cpu(rx_desc->wb.status_error1);
+  * ice_get_pkg_seg_by_idx
+  * @pkg_hdr: pointer to the package header to be searched
+@@ -1269,137 +1394,21 @@ ice_is_signing_seg_type_at_idx(struct ice_pkg_hdr *pkg_hdr, u32 idx,
+ 	return false;
+ }
  
-+	if ((ring->flags & ICE_RX_FLAGS_RING_GCS) &&
-+	    rx_desc->wb.rxdid == ICE_RXDID_FLEX_NIC &&
-+	    (decoded.inner_prot == LIBETH_RX_PT_INNER_TCP ||
-+	     decoded.inner_prot == LIBETH_RX_PT_INNER_UDP ||
-+	     decoded.inner_prot == LIBETH_RX_PT_INNER_ICMP)) {
-+		ice_rx_gcs(skb, rx_desc);
-+		return;
-+	}
-+
- 	/* check if HW has decoded the packet and checksum */
- 	if (!(rx_status0 & BIT(ICE_RX_FLEX_DESC_STATUS0_L3L4P_S)))
- 		return;
+-/**
+- * ice_is_buffer_metadata - determine if package buffer is a metadata buffer
+- * @buf: pointer to buffer header
+- */
+-static bool ice_is_buffer_metadata(struct ice_buf_hdr *buf)
+-{
+-	if (le32_to_cpu(buf->section_entry[0].type) & ICE_METADATA_BUF)
+-		return true;
+-
+-	return false;
+-}
+-
+-/**
+- * ice_is_last_download_buffer
+- * @buf: pointer to current buffer header
+- * @idx: index of the buffer in the current sequence
+- * @count: the buffer count in the current sequence
+- *
+- * Note: this routine should only be called if the buffer is not the last buffer
+- */
+-static bool
+-ice_is_last_download_buffer(struct ice_buf_hdr *buf, u32 idx, u32 count)
+-{
+-	struct ice_buf *next_buf;
+-
+-	if ((idx + 1) == count)
+-		return true;
+-
+-	/* A set metadata flag in the next buffer will signal that the current
+-	 * buffer will be the last buffer downloaded
+-	 */
+-	next_buf = ((struct ice_buf *)buf) + 1;
+-
+-	return ice_is_buffer_metadata((struct ice_buf_hdr *)next_buf);
+-}
+-
+-/**
+- * ice_dwnld_cfg_bufs_no_lock
+- * @hw: pointer to the hardware structure
+- * @bufs: pointer to an array of buffers
+- * @start: buffer index of first buffer to download
+- * @count: the number of buffers to download
+- * @indicate_last: if true, then set last buffer flag on last buffer download
+- *
+- * Downloads package configuration buffers to the firmware. Metadata buffers
+- * are skipped, and the first metadata buffer found indicates that the rest
+- * of the buffers are all metadata buffers.
+- */
+-static enum ice_ddp_state
+-ice_dwnld_cfg_bufs_no_lock(struct ice_hw *hw, struct ice_buf *bufs, u32 start,
+-			   u32 count, bool indicate_last)
+-{
+-	enum ice_ddp_state state = ICE_DDP_PKG_SUCCESS;
+-	struct ice_buf_hdr *bh;
+-	enum ice_aq_err err;
+-	u32 offset, info, i;
+-
+-	if (!bufs || !count)
+-		return ICE_DDP_PKG_ERR;
+-
+-	/* If the first buffer's first section has its metadata bit set
+-	 * then there are no buffers to be downloaded, and the operation is
+-	 * considered a success.
+-	 */
+-	bh = (struct ice_buf_hdr *)(bufs + start);
+-	if (le32_to_cpu(bh->section_entry[0].type) & ICE_METADATA_BUF)
+-		return ICE_DDP_PKG_SUCCESS;
+-
+-	for (i = 0; i < count; i++) {
+-		bool last = false;
+-		int try_cnt = 0;
+-		int status;
+-
+-		bh = (struct ice_buf_hdr *)(bufs + start + i);
+-
+-		if (indicate_last)
+-			last = ice_is_last_download_buffer(bh, i, count);
+-
+-		while (1) {
+-			status = ice_aq_download_pkg(hw, bh, ICE_PKG_BUF_SIZE,
+-						     last, &offset, &info,
+-						     NULL);
+-			if (hw->adminq.sq_last_status != ICE_AQ_RC_ENOSEC &&
+-			    hw->adminq.sq_last_status != ICE_AQ_RC_EBADSIG)
+-				break;
+-
+-			try_cnt++;
+-
+-			if (try_cnt == 5)
+-				break;
+-
+-			msleep(20);
+-		}
+-
+-		if (try_cnt)
+-			dev_dbg(ice_hw_to_dev(hw),
+-				"ice_aq_download_pkg number of retries: %d\n",
+-				try_cnt);
+-
+-		/* Save AQ status from download package */
+-		if (status) {
+-			ice_debug(hw, ICE_DBG_PKG, "Pkg download failed: err %d off %d inf %d\n",
+-				  status, offset, info);
+-			err = hw->adminq.sq_last_status;
+-			state = ice_map_aq_err_to_ddp_state(err);
+-			break;
+-		}
+-
+-		if (last)
+-			break;
+-	}
+-
+-	return state;
+-}
+-
+ /**
+  * ice_download_pkg_sig_seg - download a signature segment
+- * @hw: pointer to the hardware structure
++ * @ctx: context of the current buffers section to send
+  * @seg: pointer to signature segment
+  */
+ static enum ice_ddp_state
+-ice_download_pkg_sig_seg(struct ice_hw *hw, struct ice_sign_seg *seg)
++ice_download_pkg_sig_seg(struct ice_ddp_send_ctx *ctx, struct ice_sign_seg *seg)
+ {
+-	return  ice_dwnld_cfg_bufs_no_lock(hw, seg->buf_tbl.buf_array, 0,
+-					   le32_to_cpu(seg->buf_tbl.buf_count),
+-					   false);
++	return ice_dwnld_cfg_bufs_no_lock(ctx, seg->buf_tbl.buf_array, 0,
++					  le32_to_cpu(seg->buf_tbl.buf_count));
+ }
+ 
+ /**
+  * ice_download_pkg_config_seg - download a config segment
+- * @hw: pointer to the hardware structure
++ * @ctx: context of the current buffers section to send
+  * @pkg_hdr: pointer to package header
+  * @idx: segment index
+  * @start: starting buffer
+@@ -1408,8 +1417,9 @@ ice_download_pkg_sig_seg(struct ice_hw *hw, struct ice_sign_seg *seg)
+  * Note: idx must reference a ICE segment
+  */
+ static enum ice_ddp_state
+-ice_download_pkg_config_seg(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+-			    u32 idx, u32 start, u32 count)
++ice_download_pkg_config_seg(struct ice_ddp_send_ctx *ctx,
++			    struct ice_pkg_hdr *pkg_hdr, u32 idx, u32 start,
++			    u32 count)
+ {
+ 	struct ice_buf_table *bufs;
+ 	struct ice_seg *seg;
+@@ -1425,21 +1435,20 @@ ice_download_pkg_config_seg(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+ 	if (start >= buf_count || start + count > buf_count)
+ 		return ICE_DDP_PKG_ERR;
+ 
+-	return  ice_dwnld_cfg_bufs_no_lock(hw, bufs->buf_array, start, count,
+-					   true);
++	return ice_dwnld_cfg_bufs_no_lock(ctx, bufs->buf_array, start, count);
+ }
+ 
+ /**
+  * ice_dwnld_sign_and_cfg_segs - download a signing segment and config segment
+- * @hw: pointer to the hardware structure
++ * @ctx: context of the current buffers section to send
+  * @pkg_hdr: pointer to package header
+  * @idx: segment index (must be a signature segment)
+  *
+  * Note: idx must reference a signature segment
+  */
+ static enum ice_ddp_state
+-ice_dwnld_sign_and_cfg_segs(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+-			    u32 idx)
++ice_dwnld_sign_and_cfg_segs(struct ice_ddp_send_ctx *ctx,
++			    struct ice_pkg_hdr *pkg_hdr, u32 idx)
+ {
+ 	enum ice_ddp_state state;
+ 	struct ice_sign_seg *seg;
+@@ -1450,21 +1459,20 @@ ice_dwnld_sign_and_cfg_segs(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr,
+ 	seg = (struct ice_sign_seg *)ice_get_pkg_seg_by_idx(pkg_hdr, idx);
+ 	if (!seg) {
+ 		state = ICE_DDP_PKG_ERR;
+-		goto exit;
++		ice_ddp_send_ctx_set_err(ctx, state);
++		return state;
+ 	}
+ 
+ 	count = le32_to_cpu(seg->signed_buf_count);
+-	state = ice_download_pkg_sig_seg(hw, seg);
++	state = ice_download_pkg_sig_seg(ctx, seg);
+ 	if (state || !count)
+-		goto exit;
++		return state;
+ 
+ 	conf_idx = le32_to_cpu(seg->signed_seg_idx);
+ 	start = le32_to_cpu(seg->signed_buf_start);
+ 
+-	state = ice_download_pkg_config_seg(hw, pkg_hdr, conf_idx, start,
++	state = ice_download_pkg_config_seg(ctx, pkg_hdr, conf_idx, start,
+ 					    count);
+-
+-exit:
+ 	return state;
+ }
+ 
+@@ -1519,6 +1527,7 @@ ice_download_pkg_with_sig_seg(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr)
+ {
+ 	enum ice_aq_err aq_err = hw->adminq.sq_last_status;
+ 	enum ice_ddp_state state = ICE_DDP_PKG_ERR;
++	struct ice_ddp_send_ctx ctx = { .hw = hw };
+ 	int status;
+ 	u32 i;
+ 
+@@ -1539,7 +1548,9 @@ ice_download_pkg_with_sig_seg(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr)
+ 						    hw->pkg_sign_type))
+ 			continue;
+ 
+-		state = ice_dwnld_sign_and_cfg_segs(hw, pkg_hdr, i);
++		ice_dwnld_sign_and_cfg_segs(&ctx, pkg_hdr, i);
++		/* finish up by sending last hunk with "last" flag set */
++		state = ice_ddp_send_hunk(&ctx, NULL);
+ 		if (state)
+ 			break;
+ 	}
+@@ -1564,6 +1575,7 @@ ice_download_pkg_with_sig_seg(struct ice_hw *hw, struct ice_pkg_hdr *pkg_hdr)
+ static enum ice_ddp_state
+ ice_dwnld_cfg_bufs(struct ice_hw *hw, struct ice_buf *bufs, u32 count)
+ {
++	struct ice_ddp_send_ctx ctx = { .hw = hw };
+ 	enum ice_ddp_state state;
+ 	struct ice_buf_hdr *bh;
+ 	int status;
+@@ -1576,7 +1588,7 @@ ice_dwnld_cfg_bufs(struct ice_hw *hw, struct ice_buf *bufs, u32 count)
+ 	 * considered a success.
+ 	 */
+ 	bh = (struct ice_buf_hdr *)bufs;
+-	if (le32_to_cpu(bh->section_entry[0].type) & ICE_METADATA_BUF)
++	if (ice_is_buffer_metadata(bh))
+ 		return ICE_DDP_PKG_SUCCESS;
+ 
+ 	status = ice_acquire_global_cfg_lock(hw, ICE_RES_WRITE);
+@@ -1586,7 +1598,9 @@ ice_dwnld_cfg_bufs(struct ice_hw *hw, struct ice_buf *bufs, u32 count)
+ 		return ice_map_aq_err_to_ddp_state(hw->adminq.sq_last_status);
+ 	}
+ 
+-	state = ice_dwnld_cfg_bufs_no_lock(hw, bufs, 0, count, true);
++	ice_dwnld_cfg_bufs_no_lock(&ctx, bufs, 0, count);
++	/* finish up by sending last hunk with "last" flag set */
++	state = ice_ddp_send_hunk(&ctx, NULL);
+ 	if (!state)
+ 		state = ice_post_dwnld_pkg_actions(hw);
+ 
 -- 
 2.42.0
 
