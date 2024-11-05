@@ -1,408 +1,360 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023106.outbound.protection.outlook.com [40.107.201.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244171714A0;
-	Tue,  5 Nov 2024 06:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730789625; cv=none; b=Qtu+lrwO01SKaQsGsSluKc0XYLWCEruU4sKI+LELV3IcoxNrvSxTALnFVlD7POjDq165P1/BC6+Xl6Te5KSj2679e/UV+pxf4IpFeVzusAXPcGBvlas0UEJzCSteOPCRrLGHPCXmq7ynvbWljFnlU6RnHDmIebXmlNKJ281mRVU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730789625; c=relaxed/simple;
-	bh=3g70oboNxf9ic+u/JXav+rhEYJ1+/hLAaKwYFrKxbb0=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
-	 Content-Type; b=iw/XEb2rgYUIszRB/9RhZolG7MyYJKQnLORz39UxCSHNzbigK4Lm9wPDI6xgnJaZhJItm5z5YMcRYurpUpMPULJlY8nlH6S+1lV3TZcIxMppGJ9MvtfwJ9J5lcDEPDNKlya1u7W7RGmeL1G2oehJtucQquVo1rRIYKyoy/ZPWf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tNhl0CGf; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2150618132A;
+	Tue,  5 Nov 2024 07:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.106
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730791226; cv=fail; b=tlwd/ss68TLS4TpB6iIDCYQvaqfUhhcLIlS2NcY71V/ktOvqvFzW+Kb/WSNmSa4VhiBT2gDJh+LMD4Fn1lBMX5PHV5y2IBkt9OWIIeHemwanHmqE1S0AYe3fimkr7Btsqegrbs5AbOljPQTTBBGnfY0lhgMkxdB9GM+2x8ZHgKQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730791226; c=relaxed/simple;
+	bh=wP7RB/ZZbrAxM7dUI4fc4JjgDaMkZb211YLsDyezJfA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PR6Lg6GhIDtsOgNXL9c45l5zS7NliZmTSdzApNXlj5mVDMwxd3TZDaCZfMsB5zfOlE1fI3FuHlbKSIao6GHSKG8ziovSxUiRUseMVx++lduKSq1w/PKMb4xY0mVXzgD2BAJkXI9KHizKgKfNki6XRnWl4sivOxFfOuSjL4PtS24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=s6ZSepf9; arc=fail smtp.client-ip=40.107.201.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tNhl0CGf"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730789613; h=Message-ID:Subject:Date:From:To:Content-Type;
-	bh=eie5OBxH14u+is3YHNIr3XaDhvx263iB9jHWR5vY3VE=;
-	b=tNhl0CGflFfOk2jb5VYmubOLEztB7nc1lOJZ4QfR11obyETj5DK54rEPvjHbhrGooLU7rpJM5ucH4HjAnBoCYfWMcF1uPRiI3Cwa9TmAEot7TJYhr6kEaY60VERCaPWnX43Z4jnmd+cMe3J1YtqXdWAU3FNjCzAtdWPfck4KzTI=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WIm5lp3_1730789612 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 05 Nov 2024 14:53:33 +0800
-Message-ID: <1730789499.0809722-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v2 02/13] virtio_ring: split: record extras for indirect buffers
-Date: Tue, 5 Nov 2024 14:51:39 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: netdev@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- virtualization@lists.linux.dev,
- bpf@vger.kernel.org
-References: <20241030082453.97310-1-xuanzhuo@linux.alibaba.com>
- <20241030082453.97310-3-xuanzhuo@linux.alibaba.com>
- <CACGkMEtP7tdxxLOtDArNCqO5b=A=a7X2NimK8be2aWuaKG6Xfw@mail.gmail.com>
-In-Reply-To: <CACGkMEtP7tdxxLOtDArNCqO5b=A=a7X2NimK8be2aWuaKG6Xfw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="s6ZSepf9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s03Q48QiwoXQdHV27RL2tEB5T5EfieLjl4816/CFJJxkEpxjVQ9I7CwykVTSzuskjhQGgeDhT+lOh5lpQ+d88RymrNmlMsmKgyYYDfdpybCoo7gZcsvtJQCp10FeWUUEdDMXBWvanZcygVtTwmhJwzaEDknSbNdyZ9l1iRQRq5lyo7vGXpvU++I4wgghYKUfQGZngzE56PP1jk/iUrZhKj6NyROmP9n/TcRAr5ZnIGoV34Rl0i4Rt38ybiN63p4IHu/20YUicOPW0pgGxJkw56DvGkjvR7qCnOVMJcz0ZZ5u1IzGaLzQP3r/D0DkRuvrDUXugh//nzN6X8EQgTfPoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+8mq9RVForkhwdRG+WdzcXxEIvUUVBFxdPanxWt8X0Q=;
+ b=Joihc4mfzc0xAfAdMkODLglHKJYLPxWUBbBsIYWfECpdS2i0pZToQB531ba07B9xrZama8Nn5VmvEFQayUqwbLiOR+9L/Z6SXxnisEiB70r6U/KD+Rgt+oH1xZjWjRzdS6uIHjO2JYFK66irreHn1o1v+rhN7vzKdgM1dMApCWYV2pT/AXoznmd1x+rlMpp/5ScowC12cxzQZ9FG9nkilO9E3KG4tZxmoJSXRzkhsl0E/B9VAtawZF5DzBB0yjZuCcPTnUF2KbEEt5UaDFW9Z7JVU3qRVIYF1AAb2xS+wW2IXlb0rpIlg9CPW01yFWF/KUAdSW62zWahyKHh5R35SQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+8mq9RVForkhwdRG+WdzcXxEIvUUVBFxdPanxWt8X0Q=;
+ b=s6ZSepf9KFtr2ijWo2m4KrPApyPszCB0qnE8y/BwXNr7VKstYda3dCbizt4OiccuP78hmRerhDoYutEFjHdtwjcz9TxALUlDwq3Y0irQpNhPV5JPdY1GMlW/d1XdBIKzffvfBHYITeCGCZJFIYjLkzpamBKy22TmZ5bW+wEwLXk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SN4PR01MB7520.prod.exchangelabs.com (2603:10b6:806:207::19) by
+ BN0PR01MB7133.prod.exchangelabs.com (2603:10b6:408:150::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8137.15; Tue, 5 Nov 2024 07:20:20 +0000
+Received: from SN4PR01MB7520.prod.exchangelabs.com
+ ([fe80::3ad8:b11:de24:6087]) by SN4PR01MB7520.prod.exchangelabs.com
+ ([fe80::3ad8:b11:de24:6087%4]) with mapi id 15.20.8137.014; Tue, 5 Nov 2024
+ 07:20:20 +0000
+From: Khang Nguyen <khangng@os.amperecomputing.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ampere-linux-kernel@lists.amperecomputing.com,
+	Phong Vo <phong@os.amperecomputing.com>,
+	Thang Nguyen <thang@os.amperecomputing.com>,
+	Khanh Pham <khpham@amperecomputing.com>,
+	Phong Vo <pvo@amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Chanh Nguyen <chanh@os.amperecomputing.com>,
+	Thu Nguyen <thu@os.amperecomputing.com>,
+	Hieu Le <hieul@amperecomputing.com>,
+	openbmc@lists.ozlabs.org,
+	patches@amperecomputing.com,
+	Khang Nguyen <khangng@os.amperecomputing.com>
+Subject: [PATCH net-next] net: mctp: Expose transport binding identifier via IFLA attribute
+Date: Tue,  5 Nov 2024 14:19:15 +0700
+Message-ID: <20241105071915.821871-1-khangng@os.amperecomputing.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0007.apcprd02.prod.outlook.com
+ (2603:1096:4:194::23) To SN4PR01MB7520.prod.exchangelabs.com
+ (2603:10b6:806:207::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN4PR01MB7520:EE_|BN0PR01MB7133:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f5c98b3-c5af-459f-87d7-08dcfd6a4df4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?RQF311FRQUipGlXBEMo/UWCveB+hpQCGABcQdFQzyHfqGRHDWv6BR3LkL6qE?=
+ =?us-ascii?Q?MGTTeMbooTuvpfP0O7JlHn+O7nQWV+OvsfCdgma1WQkN17vVjuXHDlUCE2ee?=
+ =?us-ascii?Q?VpsWU8hNPjuHZVIuvsoEGQKRURzpr/OMmvHuJGCEGn+VqorJCwvZULxeP9DJ?=
+ =?us-ascii?Q?K3gcirTs8pWJ7rVqVlpDzZmKQ5D75ykdBPJDxXUv5+fC7tWTRlONGnXSmWeA?=
+ =?us-ascii?Q?XCeAI5hCRVYPvC5+Nuj7mVxgoVLwjwDTDhS33Br6nrMI4IruhNxxtHElLmiU?=
+ =?us-ascii?Q?QZOKl07vcdetOiGKnGnFvHD7QfIDO/qutpblIMyih2FXtr1DlX/W2w5Dpcrn?=
+ =?us-ascii?Q?JmZ8dsFinznoMz32BtW8dQCsTdA1DSN6cewqZ1CgR90Mp8tbFJ6lrXr17AdW?=
+ =?us-ascii?Q?XsXRk0ACkCjvtYlyInu4p1OfyjUr08DIV0vavUVpn+IOsQIFa2E8leKDbTH0?=
+ =?us-ascii?Q?myztZ/EMEV9iiv2WsWSbWEPtNyVvxlUux3WphMNLe4uWRPE2kaU/GLQGIIEq?=
+ =?us-ascii?Q?tgQjvLeI4GJTBmrQgZ9JJcpEeaMAjqsqW4cMuw47Nf2NuTyNJ61fTp61PlyQ?=
+ =?us-ascii?Q?rHVhAzuAeSGZYyXXSjemufAJ3WymV/MzgBvUgB1ikNIS3ug6HwRRCUUQaUrq?=
+ =?us-ascii?Q?ub3gaaYOai6pVBtEAcr1jTxCumEx/Kwc3/opKidXrIZ+hdRetc0Y8LOzU6cW?=
+ =?us-ascii?Q?5WnObsOzsY6O/AYNhK3WTOmWumuKZZrQc4+L0gQCsGnzTBlam2jLfRTiV45D?=
+ =?us-ascii?Q?35RJAVCWdX+ipkq6zm7SWLJOHY6/RivzzQJRg14IusTIba4loqEqIvCYynin?=
+ =?us-ascii?Q?BCsgbZXwwSI/wndzV+it24761WENz6Ew+yRl1KPrRcWd5JqxynaA92M9A15V?=
+ =?us-ascii?Q?zkpNBHqTnZ9nxB1r9cpYR3d0/gyPuCdW8l2/thq8GntTyAeOswdGAYCSnEvX?=
+ =?us-ascii?Q?gfB3Vhp25DKUrBAPbxpD3pCcTYQxqgF+CD4jhrFeKJNH1FhgYuCMRayXnFdG?=
+ =?us-ascii?Q?UK24H5Ypj8X0NZJqP+AAQ8qLNG9oNQ/IhNB2yKjHh0smzVaw19rM8gwQL2in?=
+ =?us-ascii?Q?mRrua1MAy6hpIdE41bRKtOZ08vBqvBG0oKp2E/R/lkddlUlRllf5zbfihRdT?=
+ =?us-ascii?Q?Nt96LQxiUt+nmoW5Hvy3ZFKu7PPI1h1d3MFOk6BUY0FhQ5rF2BrBJ8fV73O2?=
+ =?us-ascii?Q?FQjSMa0yQSdEUiSB1IzjJVCl0RFdwulEbEI9jsOzpgS1XupiOI459Fsfm6J8?=
+ =?us-ascii?Q?QVVlH/woeHHS4yt78XGLg+PuYkLBnRBG7vhXJu8FQDNj5vHaCUDtKHjbl5sL?=
+ =?us-ascii?Q?K3pSTmyn+V8XzhkjH6IzhYbtUE9CSvpNwUE+AJNY3lZqvQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN4PR01MB7520.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fzzfKWWfm2SBaa7v54mSzse4giwc+NQBEJgOxGZTvbqLuZx3g57Tq4MWS+oM?=
+ =?us-ascii?Q?vDgd8Q7ViB7xdcJ4fXZKQ2+xcm6EoBSlcOIP3Silu0jyRdDLBPydFqtQagEk?=
+ =?us-ascii?Q?1ls34pBhzkX/ycmwdPtsdGA6L4VERvbK80PunnTt1hNlKT34IeyyjJXvwMp6?=
+ =?us-ascii?Q?sJF3YKzag3L9BYYFV0CUdfe7yRIY1DZkz0A/w2xK2dnvxd6hL+8KhtN96nt9?=
+ =?us-ascii?Q?tVjJEVmnbX3ufqCuKRQhiekOJ8bdWwwxYtOGjKs/AmM1cG+g3BdPRnrwhEKq?=
+ =?us-ascii?Q?REWYdeg1M0tXVvCpGC5l7PJNMw9sj4rk+P2bLB3PSrfWmA6yPVsdiaVXlO8e?=
+ =?us-ascii?Q?0DeBsm6balw5Bt7s5+8PRNnT/G+4+5YDWDKtA+WKRyT/GzReHWlpAIfbQrla?=
+ =?us-ascii?Q?XVoE0VRJ7BpCmB9unboazh67pRG0h1On0g8RqF5hkvK8s3VlI0rq52iq2hgH?=
+ =?us-ascii?Q?IZT2W+1U30L5lOm/yKGd0Y0BWaYPtJCQCwkluziaXdJ84Gf5TA8IqduqknNA?=
+ =?us-ascii?Q?WXsVoD5IfwEADicCq29hiM5nCjsowr/XC7nYlGCB1JYsQKouJ2j151cAsL60?=
+ =?us-ascii?Q?Wlwb+NYG+pVv3Yq0JvN/bQ78pN1EFEs7Xtsk4JJ6yvSMNZ2t6mhGh6j3/6LK?=
+ =?us-ascii?Q?qAFxsrXd+hLcs6S1+HZmW4FOcMVhcTXdOxSn3PifCjtZKbWVoeCq98K9w5M4?=
+ =?us-ascii?Q?Qj8MTOt0iCIonkKTJcWAyawsK3LQwOqdPVaf86wNNiwL9g0/2ZiJGoiW7a3t?=
+ =?us-ascii?Q?1stiO0Y4X0LOb8PqnEIiLfGq93o5+iLpwHd5b47mBEGQ6e2gP5bQn2Ssbxe+?=
+ =?us-ascii?Q?nMG/QaCUHIQK+2fNg8A56hVKqGX+XBDDrg41zXR+Hzb3hY09p/sM3/y0L6tf?=
+ =?us-ascii?Q?GAW+wMjDJgVQbkZWUvcG5ur5MpfxpBUlN81gmf9oZzRmCTGd6s+zZeJZFnXW?=
+ =?us-ascii?Q?w3YSMkWooqCHrmMe1IGitcjvfFzByEezzdlvYByA9TZ3E/KH1jDrC3/N7XHI?=
+ =?us-ascii?Q?7RiZ/GrCjfDeAQts/YpSTGrfmo9hMXBIRQTJ6YMtlQhxfGxFtaDHLKQd47p4?=
+ =?us-ascii?Q?SbmrRABVTDAfeY3Z+gNf2qfM9IjKfH2KT8ZlyTWWs5k97JmBwi0Mzr0kC5xQ?=
+ =?us-ascii?Q?CTY65eDWIHkCaj8FqrWRVJa9OJfBwXyPC5TWPafvctEKbveiuBvO8SehIMVI?=
+ =?us-ascii?Q?qCNUhGSYx31AWFn74yQyyDAZWVfUaEU3Kd9QhGg5RaDQEgF0sJQnq7uWv4tW?=
+ =?us-ascii?Q?q6ZUu1eZXb2wqVvYgRDFQ12JyGmsjfgg7k/zaQLlmpsY17/0T/jw8KEIxRAu?=
+ =?us-ascii?Q?Zo4tb6Od9tpE70WhEjgltFzxe2Iz7vNl2/AXhQPbTRAGWE2JkT0sQRVF6V07?=
+ =?us-ascii?Q?dudDk4rL4zapmdrMTl4wpOASgwExWxCPWSKLa/oXyYoVuhcdwWzbJikPktNC?=
+ =?us-ascii?Q?xuF7c5F/YrYWXcuS9ej3LUPAYdySQJe3hOrZ5iF87P1T+qgc/cl+cmv9HqrU?=
+ =?us-ascii?Q?fNypyBvCDOrI62jQhQZal0ENZJhszIfTl+nLOKpLBDjhXMXSkECkz8yFH9Zj?=
+ =?us-ascii?Q?34HzRLFVr6KKi8318aDSqIa+dXgwloADiwyYXLIgEz7LlBp4wMBSMGazEyZ0?=
+ =?us-ascii?Q?GdA+SRQCXKCzPMygqcmpkJ4=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f5c98b3-c5af-459f-87d7-08dcfd6a4df4
+X-MS-Exchange-CrossTenant-AuthSource: SN4PR01MB7520.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2024 07:20:20.0595
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7spihQyNUg9s0QaaaoAwZvT6wZGlpfSTIzWkWtC3TGGh+eDmPThXNMexF/0NLDzX7yIl4po7IF2YStIqmuyu7FDgtrnC6faK/OZgiy/Gv2T5zfxjl9HTj8c7VA124uf9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR01MB7133
 
-On Tue, 5 Nov 2024 11:42:09 +0800, Jason Wang <jasowang@redhat.com> wrote:
-> On Wed, Oct 30, 2024 at 4:25=E2=80=AFPM Xuan Zhuo <xuanzhuo@linux.alibaba=
-.com> wrote:
-> >
-> > The subsequent commit needs to know whether every indirect buffer is
-> > premapped or not. So we need to introduce an extra struct for every
-> > indirect buffer to record this info.
-> >
-> > Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> > ---
-> >  drivers/virtio/virtio_ring.c | 112 ++++++++++++++++-------------------
-> >  1 file changed, 52 insertions(+), 60 deletions(-)
->
-> Do we have a performance impact for this patch?
->
-> >
-> > diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-> > index 97590c201aa2..dca093744fe1 100644
-> > --- a/drivers/virtio/virtio_ring.c
-> > +++ b/drivers/virtio/virtio_ring.c
-> > @@ -69,7 +69,11 @@
-> >
-> >  struct vring_desc_state_split {
-> >         void *data;                     /* Data for callback. */
-> > -       struct vring_desc *indir_desc;  /* Indirect descriptor, if any.=
- */
-> > +
-> > +       /* Indirect extra table and desc table, if any. These two will =
-be
-> > +        * allocated together. So we won't stress more to the memory al=
-locator.
-> > +        */
-> > +       struct vring_desc *indir_desc;
->
-> So it looks like we put a descriptor table after the extra table. Can
-> this lead to more crossing page mappings for the indirect descriptors?
->
-> If yes, it seems expensive so we probably need to make the descriptor
-> table come first.
+MCTP control protocol implementations are transport binding dependent.
+Endpoint discovery is mandatory based on transport binding.
+Message timing requirements are specified in each respective transport
+binding specification.
 
-No, the descriptors are before extra table.
-So, there is not performance impact.
+However, we currently have no means to get this information from MCTP
+links.
 
+Add a IFLA_MCTP_PHYS_BINDING netlink link attribute, which represents
+the transport type using the DMTF DSP0239-defined type numbers, returned
+as part of RTM_GETLINK data.
 
->
-> >  };
-> >
-> >  struct vring_desc_state_packed {
-> > @@ -440,38 +444,20 @@ static void virtqueue_init(struct vring_virtqueue=
- *vq, u32 num)
-> >   * Split ring specific functions - *_split().
-> >   */
-> >
-> > -static void vring_unmap_one_split_indirect(const struct vring_virtqueu=
-e *vq,
-> > -                                          const struct vring_desc *des=
-c)
-> > -{
-> > -       u16 flags;
-> > -
-> > -       if (!vring_need_unmap_buffer(vq))
-> > -               return;
-> > -
-> > -       flags =3D virtio16_to_cpu(vq->vq.vdev, desc->flags);
-> > -
-> > -       dma_unmap_page(vring_dma_dev(vq),
-> > -                      virtio64_to_cpu(vq->vq.vdev, desc->addr),
-> > -                      virtio32_to_cpu(vq->vq.vdev, desc->len),
-> > -                      (flags & VRING_DESC_F_WRITE) ?
-> > -                      DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> > -}
-> > -
-> >  static unsigned int vring_unmap_one_split(const struct vring_virtqueue=
- *vq,
-> > -                                         unsigned int i)
-> > +                                         struct vring_desc_extra *extr=
-a)
-> >  {
-> > -       struct vring_desc_extra *extra =3D vq->split.desc_extra;
-> >         u16 flags;
-> >
-> > -       flags =3D extra[i].flags;
-> > +       flags =3D extra->flags;
-> >
-> >         if (flags & VRING_DESC_F_INDIRECT) {
-> >                 if (!vq->use_dma_api)
-> >                         goto out;
-> >
-> >                 dma_unmap_single(vring_dma_dev(vq),
-> > -                                extra[i].addr,
-> > -                                extra[i].len,
-> > +                                extra->addr,
-> > +                                extra->len,
-> >                                  (flags & VRING_DESC_F_WRITE) ?
-> >                                  DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> >         } else {
-> > @@ -479,22 +465,23 @@ static unsigned int vring_unmap_one_split(const s=
-truct vring_virtqueue *vq,
-> >                         goto out;
-> >
-> >                 dma_unmap_page(vring_dma_dev(vq),
-> > -                              extra[i].addr,
-> > -                              extra[i].len,
-> > +                              extra->addr,
-> > +                              extra->len,
-> >                                (flags & VRING_DESC_F_WRITE) ?
-> >                                DMA_FROM_DEVICE : DMA_TO_DEVICE);
-> >         }
-> >
-> >  out:
-> > -       return extra[i].next;
-> > +       return extra->next;
-> >  }
-> >
-> >  static struct vring_desc *alloc_indirect_split(struct virtqueue *_vq,
-> >                                                unsigned int total_sg,
-> >                                                gfp_t gfp)
-> >  {
-> > +       struct vring_desc_extra *extra;
-> >         struct vring_desc *desc;
-> > -       unsigned int i;
-> > +       unsigned int i, size;
-> >
-> >         /*
-> >          * We require lowmem mappings for the descriptors because
-> > @@ -503,40 +490,41 @@ static struct vring_desc *alloc_indirect_split(st=
-ruct virtqueue *_vq,
-> >          */
-> >         gfp &=3D ~__GFP_HIGHMEM;
-> >
-> > -       desc =3D kmalloc_array(total_sg, sizeof(struct vring_desc), gfp=
-);
-> > +       size =3D sizeof(*desc) * total_sg + sizeof(*extra) * total_sg;
-> > +
-> > +       desc =3D kmalloc(size, gfp);
-> >         if (!desc)
-> >                 return NULL;
-> >
-> > +       extra =3D (struct vring_desc_extra *)&desc[total_sg];
-> > +
-> >         for (i =3D 0; i < total_sg; i++)
-> > -               desc[i].next =3D cpu_to_virtio16(_vq->vdev, i + 1);
-> > +               extra[i].next =3D i + 1;
-> > +
-> >         return desc;
-> >  }
-> >
-> >  static inline unsigned int virtqueue_add_desc_split(struct virtqueue *=
-vq,
-> >                                                     struct vring_desc *=
-desc,
-> > +                                                   struct vring_desc_e=
-xtra *extra,
-> >                                                     unsigned int i,
-> >                                                     dma_addr_t addr,
-> >                                                     unsigned int len,
-> > -                                                   u16 flags,
-> > -                                                   bool indirect)
-> > +                                                   u16 flags)
-> >  {
-> > -       struct vring_virtqueue *vring =3D to_vvq(vq);
-> > -       struct vring_desc_extra *extra =3D vring->split.desc_extra;
-> >         u16 next;
-> >
-> >         desc[i].flags =3D cpu_to_virtio16(vq->vdev, flags);
-> >         desc[i].addr =3D cpu_to_virtio64(vq->vdev, addr);
-> >         desc[i].len =3D cpu_to_virtio32(vq->vdev, len);
-> >
-> > -       if (!indirect) {
-> > -               next =3D extra[i].next;
-> > -               desc[i].next =3D cpu_to_virtio16(vq->vdev, next);
-> > +       extra[i].addr =3D addr;
-> > +       extra[i].len =3D len;
-> > +       extra[i].flags =3D flags;
-> > +
-> > +       next =3D extra[i].next;
-> >
-> > -               extra[i].addr =3D addr;
-> > -               extra[i].len =3D len;
-> > -               extra[i].flags =3D flags;
-> > -       } else
-> > -               next =3D virtio16_to_cpu(vq->vdev, desc[i].next);
-> > +       desc[i].next =3D cpu_to_virtio16(vq->vdev, next);
-> >
-> >         return next;
-> >  }
-> > @@ -551,6 +539,7 @@ static inline int virtqueue_add_split(struct virtqu=
-eue *_vq,
-> >                                       gfp_t gfp)
-> >  {
-> >         struct vring_virtqueue *vq =3D to_vvq(_vq);
-> > +       struct vring_desc_extra *extra;
-> >         struct scatterlist *sg;
-> >         struct vring_desc *desc;
-> >         unsigned int i, n, avail, descs_used, prev, err_idx;
-> > @@ -586,9 +575,11 @@ static inline int virtqueue_add_split(struct virtq=
-ueue *_vq,
-> >                 /* Set up rest to use this indirect table. */
-> >                 i =3D 0;
-> >                 descs_used =3D 1;
-> > +               extra =3D (struct vring_desc_extra *)&desc[total_sg];
-> >         } else {
-> >                 indirect =3D false;
-> >                 desc =3D vq->split.vring.desc;
-> > +               extra =3D vq->split.desc_extra;
-> >                 i =3D head;
-> >                 descs_used =3D total_sg;
-> >         }
-> > @@ -618,9 +609,8 @@ static inline int virtqueue_add_split(struct virtqu=
-eue *_vq,
-> >                         /* Note that we trust indirect descriptor
-> >                          * table since it use stream DMA mapping.
-> >                          */
-> > -                       i =3D virtqueue_add_desc_split(_vq, desc, i, ad=
-dr, sg->length,
-> > -                                                    VRING_DESC_F_NEXT,
-> > -                                                    indirect);
-> > +                       i =3D virtqueue_add_desc_split(_vq, desc, extra=
-, i, addr, sg->length,
-> > +                                                    VRING_DESC_F_NEXT);
-> >                 }
-> >         }
-> >         for (; n < (out_sgs + in_sgs); n++) {
-> > @@ -634,11 +624,10 @@ static inline int virtqueue_add_split(struct virt=
-queue *_vq,
-> >                         /* Note that we trust indirect descriptor
-> >                          * table since it use stream DMA mapping.
-> >                          */
-> > -                       i =3D virtqueue_add_desc_split(_vq, desc, i, ad=
-dr,
-> > +                       i =3D virtqueue_add_desc_split(_vq, desc, extra=
-, i, addr,
-> >                                                      sg->length,
-> >                                                      VRING_DESC_F_NEXT |
-> > -                                                    VRING_DESC_F_WRITE,
-> > -                                                    indirect);
-> > +                                                    VRING_DESC_F_WRITE=
-);
-> >                 }
-> >         }
-> >         /* Last one doesn't continue. */
-> > @@ -660,10 +649,10 @@ static inline int virtqueue_add_split(struct virt=
-queue *_vq,
-> >                 }
-> >
-> >                 virtqueue_add_desc_split(_vq, vq->split.vring.desc,
-> > +                                        vq->split.desc_extra,
-> >                                          head, addr,
-> >                                          total_sg * sizeof(struct vring=
-_desc),
-> > -                                        VRING_DESC_F_INDIRECT,
-> > -                                        false);
-> > +                                        VRING_DESC_F_INDIRECT);
-> >         }
-> >
-> >         /* We're using some buffers from the free list. */
-> > @@ -716,11 +705,8 @@ static inline int virtqueue_add_split(struct virtq=
-ueue *_vq,
-> >         for (n =3D 0; n < total_sg; n++) {
-> >                 if (i =3D=3D err_idx)
-> >                         break;
-> > -               if (indirect) {
-> > -                       vring_unmap_one_split_indirect(vq, &desc[i]);
-> > -                       i =3D virtio16_to_cpu(_vq->vdev, desc[i].next);
-> > -               } else
-> > -                       i =3D vring_unmap_one_split(vq, i);
-> > +
-> > +               i =3D vring_unmap_one_split(vq, &extra[i]);
-> >         }
-> >
-> >  free_indirect:
-> > @@ -765,22 +751,25 @@ static bool virtqueue_kick_prepare_split(struct v=
-irtqueue *_vq)
-> >  static void detach_buf_split(struct vring_virtqueue *vq, unsigned int =
-head,
-> >                              void **ctx)
-> >  {
-> > +       struct vring_desc_extra *extra;
-> >         unsigned int i, j;
-> >         __virtio16 nextflag =3D cpu_to_virtio16(vq->vq.vdev, VRING_DESC=
-_F_NEXT);
-> >
-> >         /* Clear data ptr. */
-> >         vq->split.desc_state[head].data =3D NULL;
-> >
-> > +       extra =3D vq->split.desc_extra;
-> > +
-> >         /* Put back on free list: unmap first-level descriptors and fin=
-d end */
-> >         i =3D head;
-> >
-> >         while (vq->split.vring.desc[i].flags & nextflag) {
-> > -               vring_unmap_one_split(vq, i);
-> > +               vring_unmap_one_split(vq, &extra[i]);
->
-> Not sure if I've asked this before. But this part seems to deserve an
-> independent fix for -stable.
+We get an IFLA_MCTP_PHYS_BINDING attribute for each MCTP link, for
+example:
 
-What fix?
+- 0x00 (unspec) for loopback interface;
+- 0x01 (SMBus/I2C) for mctpi2c%d interfaces; and
+- 0x05 (serial) for mctpserial%d interfaces.
 
-Thanks.
+Signed-off-by: Khang Nguyen <khangng@os.amperecomputing.com>
+---
+ drivers/net/mctp/mctp-i2c.c    |  3 ++-
+ drivers/net/mctp/mctp-i3c.c    |  2 +-
+ drivers/net/mctp/mctp-serial.c |  5 +++--
+ include/net/mctp.h             | 18 ++++++++++++++++++
+ include/net/mctpdevice.h       |  4 +++-
+ include/uapi/linux/if_link.h   |  1 +
+ net/mctp/device.c              | 12 +++++++++---
+ 7 files changed, 37 insertions(+), 8 deletions(-)
 
->
-> >                 i =3D vq->split.desc_extra[i].next;
-> >                 vq->vq.num_free++;
-> >         }
-> >
-> > -       vring_unmap_one_split(vq, i);
-> > +       vring_unmap_one_split(vq, &extra[i]);
-> >         vq->split.desc_extra[i].next =3D vq->free_head;
-> >         vq->free_head =3D head;
-> >
-> > @@ -790,21 +779,24 @@ static void detach_buf_split(struct vring_virtque=
-ue *vq, unsigned int head,
-> >         if (vq->indirect) {
-> >                 struct vring_desc *indir_desc =3D
-> >                                 vq->split.desc_state[head].indir_desc;
-> > -               u32 len;
-> > +               u32 len, num;
-> >
-> >                 /* Free the indirect table, if any, now that it's unmap=
-ped. */
-> >                 if (!indir_desc)
-> >                         return;
-> > -
-> >                 len =3D vq->split.desc_extra[head].len;
-> >
-> >                 BUG_ON(!(vq->split.desc_extra[head].flags &
-> >                                 VRING_DESC_F_INDIRECT));
-> >                 BUG_ON(len =3D=3D 0 || len % sizeof(struct vring_desc));
-> >
-> > +               num =3D len / sizeof(struct vring_desc);
-> > +
-> > +               extra =3D (struct vring_desc_extra *)&indir_desc[num];
-> > +
-> >                 if (vring_need_unmap_buffer(vq)) {
-> > -                       for (j =3D 0; j < len / sizeof(struct vring_des=
-c); j++)
-> > -                               vring_unmap_one_split_indirect(vq, &ind=
-ir_desc[j]);
-> > +                       for (j =3D 0; j < num; j++)
-> > +                               vring_unmap_one_split(vq, &extra[j]);
-> >                 }
-> >
-> >                 kfree(indir_desc);
-> > --
-> > 2.32.0.3.g01195cf9f
-> >
->
-> Thanks
->
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 4dc057c121f5..86151a03570e 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -877,7 +877,8 @@ static int mctp_i2c_add_netdev(struct mctp_i2c_client *mcli,
+ 		goto err;
+ 	}
+ 
+-	rc = mctp_register_netdev(ndev, &mctp_i2c_mctp_ops);
++	rc = mctp_register_netdev(ndev, &mctp_i2c_mctp_ops,
++				  MCTP_PHYS_BINDING_SMBUS);
+ 	if (rc < 0) {
+ 		dev_err(&mcli->client->dev,
+ 			"register netdev \"%s\" failed %d\n",
+diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
+index 1bc87a062686..9adad59b8676 100644
+--- a/drivers/net/mctp/mctp-i3c.c
++++ b/drivers/net/mctp/mctp-i3c.c
+@@ -607,7 +607,7 @@ __must_hold(&busdevs_lock)
+ 		goto err_free_uninit;
+ 	}
+ 
+-	rc = mctp_register_netdev(ndev, NULL);
++	rc = mctp_register_netdev(ndev, NULL, MCTP_PHYS_BINDING_I3C);
+ 	if (rc < 0) {
+ 		dev_warn(&ndev->dev, "netdev register failed: %d\n", rc);
+ 		goto err_free_netdev;
+diff --git a/drivers/net/mctp/mctp-serial.c b/drivers/net/mctp/mctp-serial.c
+index e63720ec3238..26c9a33fd636 100644
+--- a/drivers/net/mctp/mctp-serial.c
++++ b/drivers/net/mctp/mctp-serial.c
+@@ -23,6 +23,7 @@
+ 
+ #include <linux/mctp.h>
+ #include <net/mctp.h>
++#include <net/mctpdevice.h>
+ #include <net/pkt_sched.h>
+ 
+ #define MCTP_SERIAL_MTU		68 /* base mtu (64) + mctp header */
+@@ -470,7 +471,7 @@ static int mctp_serial_open(struct tty_struct *tty)
+ 	spin_lock_init(&dev->lock);
+ 	INIT_WORK(&dev->tx_work, mctp_serial_tx_work);
+ 
+-	rc = register_netdev(ndev);
++	rc = mctp_register_netdev(ndev, NULL, MCTP_PHYS_BINDING_SERIAL);
+ 	if (rc)
+ 		goto free_netdev;
+ 
+@@ -492,7 +493,7 @@ static void mctp_serial_close(struct tty_struct *tty)
+ 	struct mctp_serial *dev = tty->disc_data;
+ 	int idx = dev->idx;
+ 
+-	unregister_netdev(dev->netdev);
++	mctp_unregister_netdev(dev->netdev);
+ 	ida_free(&mctp_serial_ida, idx);
+ }
+ 
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index 28d59ae94ca3..1ecbff7116f6 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -298,4 +298,22 @@ void mctp_routes_exit(void);
+ int mctp_device_init(void);
+ void mctp_device_exit(void);
+ 
++/* MCTP IDs and Codes from DMTF specification
++ * "DSP0239 Management Component Transport Protocol (MCTP) IDs and Codes"
++ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0239_1.11.1.pdf
++ */
++enum mctp_phys_binding {
++	MCTP_PHYS_BINDING_UNSPEC	= 0x00,
++	MCTP_PHYS_BINDING_SMBUS		= 0x01,
++	MCTP_PHYS_BINDING_PCIE_VDM	= 0x02,
++	MCTP_PHYS_BINDING_USB		= 0x03,
++	MCTP_PHYS_BINDING_KCS		= 0x04,
++	MCTP_PHYS_BINDING_SERIAL	= 0x05,
++	MCTP_PHYS_BINDING_I3C		= 0x06,
++	MCTP_PHYS_BINDING_MMBI		= 0x07,
++	MCTP_PHYS_BINDING_PCC		= 0x08,
++	MCTP_PHYS_BINDING_UCIE		= 0x09,
++	MCTP_PHYS_BINDING_VENDOR	= 0xFF,
++};
++
+ #endif /* __NET_MCTP_H */
+diff --git a/include/net/mctpdevice.h b/include/net/mctpdevice.h
+index 5c0d04b5c12c..957d9ef924c5 100644
+--- a/include/net/mctpdevice.h
++++ b/include/net/mctpdevice.h
+@@ -22,6 +22,7 @@ struct mctp_dev {
+ 	refcount_t		refs;
+ 
+ 	unsigned int		net;
++	enum mctp_phys_binding	binding;
+ 
+ 	const struct mctp_netdev_ops *ops;
+ 
+@@ -44,7 +45,8 @@ struct mctp_dev *mctp_dev_get_rtnl(const struct net_device *dev);
+ struct mctp_dev *__mctp_dev_get(const struct net_device *dev);
+ 
+ int mctp_register_netdev(struct net_device *dev,
+-			 const struct mctp_netdev_ops *ops);
++			 const struct mctp_netdev_ops *ops,
++			 enum mctp_phys_binding binding);
+ void mctp_unregister_netdev(struct net_device *dev);
+ 
+ void mctp_dev_hold(struct mctp_dev *mdev);
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 8516c1ccd57a..2575e0cd9b48 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1958,6 +1958,7 @@ struct ifla_rmnet_flags {
+ enum {
+ 	IFLA_MCTP_UNSPEC,
+ 	IFLA_MCTP_NET,
++	IFLA_MCTP_PHYS_BINDING,
+ 	__IFLA_MCTP_MAX,
+ };
+ 
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index 3d75b919995d..26ce34b7e88e 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -371,6 +371,8 @@ static int mctp_fill_link_af(struct sk_buff *skb,
+ 		return -ENODATA;
+ 	if (nla_put_u32(skb, IFLA_MCTP_NET, mdev->net))
+ 		return -EMSGSIZE;
++	if (nla_put_u8(skb, IFLA_MCTP_PHYS_BINDING, mdev->binding))
++		return -EMSGSIZE;
+ 	return 0;
+ }
+ 
+@@ -385,6 +387,7 @@ static size_t mctp_get_link_af_size(const struct net_device *dev,
+ 	if (!mdev)
+ 		return 0;
+ 	ret = nla_total_size(4); /* IFLA_MCTP_NET */
++	ret += nla_total_size(1); /* IFLA_MCTP_PHYS_BINDING */
+ 	mctp_dev_put(mdev);
+ 	return ret;
+ }
+@@ -480,7 +483,8 @@ static int mctp_dev_notify(struct notifier_block *this, unsigned long event,
+ }
+ 
+ static int mctp_register_netdevice(struct net_device *dev,
+-				   const struct mctp_netdev_ops *ops)
++				   const struct mctp_netdev_ops *ops,
++				   enum mctp_phys_binding binding)
+ {
+ 	struct mctp_dev *mdev;
+ 
+@@ -489,17 +493,19 @@ static int mctp_register_netdevice(struct net_device *dev,
+ 		return PTR_ERR(mdev);
+ 
+ 	mdev->ops = ops;
++	mdev->binding = binding;
+ 
+ 	return register_netdevice(dev);
+ }
+ 
+ int mctp_register_netdev(struct net_device *dev,
+-			 const struct mctp_netdev_ops *ops)
++			 const struct mctp_netdev_ops *ops,
++			 enum mctp_phys_binding binding)
+ {
+ 	int rc;
+ 
+ 	rtnl_lock();
+-	rc = mctp_register_netdevice(dev, ops);
++	rc = mctp_register_netdevice(dev, ops, binding);
+ 	rtnl_unlock();
+ 
+ 	return rc;
+-- 
+2.43.0
+
