@@ -1,438 +1,135 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8F61D31A5
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 09:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB641C3025
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 09:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730797815; cv=none; b=JfIeBNyDj9bjkEUuM5ok+ydL9GsUd2Du/25DRVZ+w1E+tEuVHCTh9EZTg7z8l62p32JVuJzFOoAooBs3U5T2AUmJ+n9MJ7G0YDUHt1a07NLdMRKR9a+yJX3DwZtSAcQDaUyjKOHWLzJZBrw0IaAUdMiu2sMQGrnN1S/+d1k1Ji8=
+	t=1730797927; cv=none; b=kED01a5LHyuzrBrf0aOKNqDCTFxzvZjUx7QWu5FwcNE+U1dOkjIeE437ycfZejhq7281VoSwXowAKxnPtIYV7+mMIsHbnI2qRaQGx/b8X8fU5h33MUa+uungJ5ptjY2CugvzuDJimcgrpOm6XZWbwYODsb3b5VvrxMsiHmSqXD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730797815; c=relaxed/simple;
-	bh=fLVejrweCJ+8b30QNnZyTJO7BJbU+jvXbyAUmR8L38Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o7ZatCoJQ9JIyWBHX/iBXgXb9GPMeTkep5dlkra08Th2U1G+XCeCUHiJnqO2H59T/NCGwmsVLoCJooPUfwieKC3A+IyPAvL6/KXWQHJ9ILdpq67939vwgQkHsQn5Qcubz+mPY9OIMrH96GiioW7bXznYs5hqfZVTEN/TJyNrRIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZL-0003oQ-Rq; Tue, 05 Nov 2024 10:09:47 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZK-0027Ya-1a;
-	Tue, 05 Nov 2024 10:09:46 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZK-002ogF-1I;
-	Tue, 05 Nov 2024 10:09:46 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org,
-	Marek Vasut <marex@denx.de>
-Subject: [PATCH net-next v3 5/6] net: dsa: microchip: add support for side MDIO interface in LAN937x
-Date: Tue,  5 Nov 2024 10:09:43 +0100
-Message-Id: <20241105090944.671379-6-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241105090944.671379-1-o.rempel@pengutronix.de>
-References: <20241105090944.671379-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1730797927; c=relaxed/simple;
+	bh=7qxoYeh0UNTIQAvpcHLzqALNi2h3AYcCDoYkGPVhrps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p+9cCTCyCwYJASWsJiVYpI40njFcq5hHszqzCu7L0xeA+2b1l9JI4LO/TqC5OWOhyccHlCPCmo0LECKkVtrSqu/4KSGkGVsSYBP0DtUnnirh6S07uS/9Zu/9ggSeXOZYcSKL6IoBmX4ZZCKsMYo6xCnmXskmERnjxUI6fubbgCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bbK0VwdV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bbK0VwdV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730797923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TPboAr9Vrbfot/ZtNUHg+u5qHvWpgmD4jh6l9COaVZY=;
+	b=bbK0VwdVFH45NFzIZRSu7+U+YGIIlLNAuCUEyyA1wRqTdc6ODfoQz4aHT++10dcYZwUd2D
+	QqZeSuKUkdKLA1cXpoDbThWZ3c47rG5q5ToSFe2CNgmSx5566zKQW+SjeNufb4z+Fw4W2q
+	RmA8wqa6GibKTZ3s/la8W379tXtZnH8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-hEFAJLJCOiSDDBxX-w0MjA-1; Tue, 05 Nov 2024 04:12:02 -0500
+X-MC-Unique: hEFAJLJCOiSDDBxX-w0MjA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-431604a3b47so33006935e9.3
+        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 01:12:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730797921; x=1731402721;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TPboAr9Vrbfot/ZtNUHg+u5qHvWpgmD4jh6l9COaVZY=;
+        b=Hypx35T79nEgcdAaIgZnZ9dLIUJHM0qG+NUzFEMW8GHKU6SiBQLDGdsGHVrRrEKqEz
+         mgEf6Ge6ienPFmRzdQ6KgKFg2DB/VRfwuEf/YES14CGS9a0YI+29Pn3bANS9h4wgoIfE
+         IR5pXsjaxv8MCvoiAOC0TX0d/WzPT170/+oU6oMRUiSXzActS1WGYMjd+ckGRTV5n88w
+         Xrtv+UPAnGoOhz6+MTp/qtE0uPBgy8wUBKksGsf285S2MdmM1dHPootDvrqp13/227pW
+         xT6+zuif/ltNOhkA0mzOg2UQFodduXQvGy0YyuBPsaooNAWjpYLFf8hnXKVVy/kYWrTc
+         X7lg==
+X-Forwarded-Encrypted: i=1; AJvYcCX8S/P+xj+Z98mvorz+Wfw7pSeSZayJHBSQ/nKlmPQ3XZ/J3PiS2inO9TLtF82grRUgxffVhmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVOvLTGgd+TxE0OJ/wMtWkDfHYnMTrhjBdWonhqueGQ7QEiJUx
+	4/OLueUlBuKucF513c0+mxN37D2GVss1NNQEAUf27DhLiG8vdkjPK40HKLIy5NLaoo/VH7Hz8X/
+	9nkeeun6QvlTqzwvP7SicMxBzxl0y8rlySmMg4lNJCi+RFJxmOd3FZg==
+X-Received: by 2002:a05:600c:5249:b0:431:6052:48c3 with SMTP id 5b1f17b1804b1-4319acacd6amr331592535e9.16.1730797921067;
+        Tue, 05 Nov 2024 01:12:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfEmxPafpgpApl5hDQwr9QfRtM5jAmJU2SuJZkjt4o3ri5KW8DZmqElmalUu2LjqH1BonBkQ==
+X-Received: by 2002:a05:600c:5249:b0:431:6052:48c3 with SMTP id 5b1f17b1804b1-4319acacd6amr331592255e9.16.1730797920687;
+        Tue, 05 Nov 2024 01:12:00 -0800 (PST)
+Received: from [192.168.88.24] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d4991sm15606801f8f.29.2024.11.05.01.11.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Nov 2024 01:12:00 -0800 (PST)
+Message-ID: <7426480f-6443-497f-8d37-b11f8f22069e@redhat.com>
+Date: Tue, 5 Nov 2024 10:11:58 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/8] net: Shift responsibility for FDB
+ notifications to drivers
+To: Petr Machata <petrm@nvidia.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, Amit Cohen <amcohen@nvidia.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Andy Roulin <aroulin@nvidia.com>,
+ mlxsw@nvidia.com
+References: <cover.1729786087.git.petrm@nvidia.com>
+ <20241029121807.1a00ae7d@kernel.org> <87ldxzky77.fsf@nvidia.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <87ldxzky77.fsf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Implement side MDIO channel support for LAN937x switches, providing an
-alternative to SPI for PHY management alongside existing SPI-based
-switch configuration. This is needed to reduce SPI load, as SPI can be
-relatively expensive for small packets compared to MDIO support.
+On 11/4/24 12:43, Petr Machata wrote:
+> Jakub Kicinski <kuba@kernel.org> writes:
+>> On Thu, 24 Oct 2024 18:57:35 +0200 Petr Machata wrote:
+>>> Besides this approach, we considered just passing a boolean back from the
+>>> driver, which would indicate whether the notification was done. But the
+>>> approach presented here seems cleaner.
+>>
+>> Oops, I missed the v2, same question:
+>>
+>>   What about adding a bit to the ops struct to indicate that 
+>>   the driver will generate the notification? Seems smaller in 
+>>   terms of LoC and shifts the responsibility of doing extra
+>>   work towards more complex users.
+>>
+>> https://lore.kernel.org/all/20241029121619.1a710601@kernel.org/
+> 
+> Sorry for only responding now, I was out of office last week.
+> 
+> The reason I went with outright responsibility shift is that the
+> alternatives are more complex.
+> 
+> For the flag in particular, first there's no place to set the flag
+> currently, we'd need a field in struct net_device_ops. But mainly, then
+> you have a code that needs to corrently handle both states of the flag,
+> and new-style drivers need to remember to set the flag, which is done in
+> a different place from the fdb_add/del themselves. It might be fewer
+> LOCs, but it's a harder to understand system.
+> 
+> Responsibility shift is easy. "Thou shalt notify." Done, easy to
+> understand, easy to document. When cut'n'pasting, you won't miss it.
+> 
+> Let me know what you think.
 
-Also, implemented static mappings for PHY addresses for various LAN937x
-models to support different internal PHY configurations. Since the PHY
-address mappings are not equal to the port indexes, this patch also
-provides PHY address calculation based on hardware strapping
-configuration.
+I think that keeping as much action/responsibilities as possible in the
+core code is in general a better option - at very least to avoid
+duplicate code.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v2:
-- add lan9371_phy_addr map
-- add comments
-- add define LAN937X_NO_PHY
----
- drivers/net/dsa/microchip/ksz_common.c   |   7 +
- drivers/net/dsa/microchip/lan937x.h      |   2 +
- drivers/net/dsa/microchip/lan937x_main.c | 226 +++++++++++++++++++++--
- drivers/net/dsa/microchip/lan937x_reg.h  |   4 +
- 4 files changed, 223 insertions(+), 16 deletions(-)
+I don't think that the C&P is a very good argument, as I would argue
+against C&P without understanding of the underlying code. Still I agree
+that keeping all the relevant info together is better, and a separate
+flag would be not so straight-forward.
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index f9e45bba2d293..3909b55857430 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -411,6 +411,8 @@ static const struct ksz_dev_ops lan937x_dev_ops = {
- 	.flush_dyn_mac_table = ksz9477_flush_dyn_mac_table,
- 	.port_setup = lan937x_port_setup,
- 	.set_ageing_time = lan937x_set_ageing_time,
-+	.mdio_bus_preinit = lan937x_mdio_bus_preinit,
-+	.create_phy_addr_map = lan937x_create_phy_addr_map,
- 	.r_phy = lan937x_r_phy,
- 	.w_phy = lan937x_w_phy,
- 	.r_mib_cnt = ksz9477_r_mib_cnt,
-@@ -1762,6 +1764,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1790,6 +1793,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1818,6 +1822,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1850,6 +1855,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1882,6 +1888,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-diff --git a/drivers/net/dsa/microchip/lan937x.h b/drivers/net/dsa/microchip/lan937x.h
-index 3388d91dbc44e..df13ebbd356f9 100644
---- a/drivers/net/dsa/microchip/lan937x.h
-+++ b/drivers/net/dsa/microchip/lan937x.h
-@@ -13,6 +13,8 @@ void lan937x_port_setup(struct ksz_device *dev, int port, bool cpu_port);
- void lan937x_config_cpu_port(struct dsa_switch *ds);
- int lan937x_switch_init(struct ksz_device *dev);
- void lan937x_switch_exit(struct ksz_device *dev);
-+int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio);
-+int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio);
- int lan937x_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data);
- int lan937x_w_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 val);
- int lan937x_change_mtu(struct ksz_device *dev, int port, int new_mtu);
-diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
-index 824d9309a3d35..b7652efd632ea 100644
---- a/drivers/net/dsa/microchip/lan937x_main.c
-+++ b/drivers/net/dsa/microchip/lan937x_main.c
-@@ -18,6 +18,87 @@
- #include "ksz9477.h"
- #include "lan937x.h"
- 
-+/* marker for ports without built-in PHY */
-+#define LAN937X_NO_PHY U8_MAX
-+
-+/*
-+ * lan9370_phy_addr - Mapping of LAN9370 switch ports to PHY addresses.
-+ *
-+ * Each entry corresponds to a specific port on the LAN9370 switch,
-+ * where ports 1-4 are connected to integrated 100BASE-T1 PHYs, and
-+ * Port 5 is connected to an RGMII interface without a PHY. The values
-+ * are based on the documentation (DS00003108E, section 3.3).
-+ */
-+static const u8 lan9370_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 6, /* Port 4, T1 AFE4 */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+};
-+
-+/*
-+ * lan9371_phy_addr - Mapping of LAN9371 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003109E, section 3.3).
-+ */
-+static const u8 lan9371_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 8, /* Port 4, TX PHY */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+};
-+
-+/*
-+ * lan9372_phy_addr - Mapping of LAN9372 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9372_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 8, /* Port 4, TX PHY */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
-+/*
-+ * lan9373_phy_addr - Mapping of LAN9373 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9373_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = LAN937X_NO_PHY, /* Port 4, SGMII */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
-+/*
-+ * lan9374_phy_addr - Mapping of LAN9374 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9374_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 7, /* Port 4, T1 AFE5 */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
- static int lan937x_cfg(struct ksz_device *dev, u32 addr, u8 bits, bool set)
- {
- 	return regmap_update_bits(ksz_regmap_8(dev), addr, bits, set ? bits : 0);
-@@ -30,24 +111,144 @@ static int lan937x_port_cfg(struct ksz_device *dev, int port, int offset,
- 				  bits, set ? bits : 0);
- }
- 
--static int lan937x_enable_spi_indirect_access(struct ksz_device *dev)
-+/**
-+ * lan937x_create_phy_addr_map - Create port-to-PHY address map for MDIO bus.
-+ * @dev: Pointer to device structure.
-+ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
-+ *
-+ * This function sets up the PHY address mapping for the LAN937x switches,
-+ * which support two access modes for internal PHYs:
-+ * 1. **SPI Access**: A straightforward one-to-one port-to-PHY address
-+ *    mapping is applied.
-+ * 2. **MDIO Access**: The PHY address mapping varies based on chip variant
-+ *    and strap configuration. An offset is calculated based on strap settings
-+ *    to ensure correct PHY addresses are assigned. The offset calculation logic
-+ *    is based on Microchip's Article Number 000015828, available at:
-+ *    https://microchip.my.site.com/s/article/LAN9374-Virtual-PHY-PHY-Address-Mapping
-+ *
-+ * The function first checks if side MDIO access is disabled, in which case a
-+ * simple direct mapping (port number = PHY address) is applied. If side MDIO
-+ * access is enabled, it reads the strap configuration to determine the correct
-+ * offset for PHY addresses.
-+ *
-+ * The appropriate mapping table is selected based on the chip ID, and the
-+ * `phy_addr_map` is populated with the correct addresses for each port. Any
-+ * port with no PHY is assigned a `LAN937X_NO_PHY` marker.
-+ *
-+ * Return: 0 on success, error code on failure.
-+ */
-+int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio)
-+{
-+	static const u8 *phy_addr_map;
-+	u32 strap_val;
-+	u8 offset = 0;
-+	size_t size;
-+	int ret, i;
-+
-+	if (!side_mdio) {
-+		/* simple direct mapping */
-+		for (i = 0; i < dev->info->port_cnt; i++)
-+			dev->phy_addr_map[i] = i;
-+
-+		return 0;
-+	}
-+
-+	ret = ksz_read32(dev, REG_SW_CFG_STRAP_VAL, &strap_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!(strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
-+		offset = 0;
-+	else if (!(strap_val & SW_CASCADE_ID_CFG) && (strap_val & SW_VPHY_ADD_CFG))
-+		offset = 7;
-+	else if ((strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
-+		offset = 15;
-+	else
-+		offset = 22;
-+
-+	switch (dev->info->chip_id) {
-+	case LAN9370_CHIP_ID:
-+		phy_addr_map = lan9370_phy_addr;
-+		size = ARRAY_SIZE(lan9370_phy_addr);
-+		break;
-+	case LAN9371_CHIP_ID:
-+		phy_addr_map = lan9371_phy_addr;
-+		size = ARRAY_SIZE(lan9371_phy_addr);
-+		break;
-+	case LAN9372_CHIP_ID:
-+		phy_addr_map = lan9372_phy_addr;
-+		size = ARRAY_SIZE(lan9372_phy_addr);
-+		break;
-+	case LAN9373_CHIP_ID:
-+		phy_addr_map = lan9373_phy_addr;
-+		size = ARRAY_SIZE(lan9373_phy_addr);
-+		break;
-+	case LAN9374_CHIP_ID:
-+		phy_addr_map = lan9374_phy_addr;
-+		size = ARRAY_SIZE(lan9374_phy_addr);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (size < dev->info->port_cnt)
-+		return -EINVAL;
-+
-+	for (i = 0; i < dev->info->port_cnt; i++) {
-+		if (phy_addr_map[i] == LAN937X_NO_PHY)
-+			dev->phy_addr_map[i] = phy_addr_map[i];
-+		else
-+			dev->phy_addr_map[i] = phy_addr_map[i] + offset;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * lan937x_mdio_bus_preinit - Pre-initialize MDIO bus for accessing PHYs.
-+ * @dev: Pointer to device structure.
-+ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
-+ *
-+ * This function configures the LAN937x switch for PHY access either through
-+ * SPI or the side MDIO bus, unlocking the necessary registers for each access
-+ * mode.
-+ *
-+ * Operation Modes:
-+ * 1. **SPI Access**: Enables SPI indirect access to address clock domain
-+ *    crossing issues when SPI is used for PHY access.
-+ * 2. **MDIO Access**: Grants access to internal PHYs over the side MDIO bus,
-+ *    required when using the MDIO bus for PHY management.
-+ *
-+ * Return: 0 on success, error code on failure.
-+ */
-+int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio)
- {
- 	u16 data16;
- 	int ret;
- 
--	/* Enable Phy access through SPI */
-+	/* Unlock access to the PHYs, needed for SPI and side MDIO access */
- 	ret = lan937x_cfg(dev, REG_GLOBAL_CTRL_0, SW_PHY_REG_BLOCK, false);
- 	if (ret < 0)
--		return ret;
-+		goto print_error;
- 
--	ret = ksz_read16(dev, REG_VPHY_SPECIAL_CTRL__2, &data16);
--	if (ret < 0)
--		return ret;
-+	if (side_mdio)
-+		/* Allow access to internal PHYs over MDIO bus */
-+		data16 = VPHY_MDIO_INTERNAL_ENABLE;
-+	else
-+		/* Enable SPI indirect access to address clock domain crossing
-+		 * issue
-+		 */
-+		data16 = VPHY_SPI_INDIRECT_ENABLE;
- 
--	/* Allow SPI access */
--	data16 |= VPHY_SPI_INDIRECT_ENABLE;
-+	ret = ksz_rmw16(dev, REG_VPHY_SPECIAL_CTRL__2,
-+			VPHY_SPI_INDIRECT_ENABLE | VPHY_MDIO_INTERNAL_ENABLE,
-+			data16);
-+
-+print_error:
-+	if (ret < 0)
-+		dev_err(dev->dev, "failed to preinit the MDIO bus\n");
- 
--	return ksz_write16(dev, REG_VPHY_SPECIAL_CTRL__2, data16);
-+	return ret;
- }
- 
- static int lan937x_vphy_ind_addr_wr(struct ksz_device *dev, int addr, int reg)
-@@ -363,13 +564,6 @@ int lan937x_setup(struct dsa_switch *ds)
- 	struct ksz_device *dev = ds->priv;
- 	int ret;
- 
--	/* enable Indirect Access from SPI to the VPHY registers */
--	ret = lan937x_enable_spi_indirect_access(dev);
--	if (ret < 0) {
--		dev_err(dev->dev, "failed to enable spi indirect access");
--		return ret;
--	}
--
- 	/* The VLAN aware is a global setting. Mixed vlan
- 	 * filterings are not supported.
- 	 */
-diff --git a/drivers/net/dsa/microchip/lan937x_reg.h b/drivers/net/dsa/microchip/lan937x_reg.h
-index 2f22a9d01de36..4ec93e421da45 100644
---- a/drivers/net/dsa/microchip/lan937x_reg.h
-+++ b/drivers/net/dsa/microchip/lan937x_reg.h
-@@ -37,6 +37,10 @@
- #define SW_CLK125_ENB			BIT(1)
- #define SW_CLK25_ENB			BIT(0)
- 
-+#define REG_SW_CFG_STRAP_VAL		0x0200
-+#define SW_CASCADE_ID_CFG		BIT(15)
-+#define SW_VPHY_ADD_CFG			BIT(0)
-+
- /* 2 - PHY Control */
- #define REG_SW_CFG_STRAP_OVR		0x0214
- #define SW_VPHY_DISABLE			BIT(31)
--- 
-2.39.5
+What about using the return value of fbd_add/fdb_del to tell the core
+that the driver did the notification? a positive value means 'already
+notified', a negative one error, zero 'please notify.
+
+Cheers,
+
+Paolo
 
