@@ -1,49 +1,45 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A35E1FF7A5;
-	Tue,  5 Nov 2024 21:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132E81D9A48
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 21:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730840431; cv=none; b=ou1z+uDFnajbsJDqIA6lUdqisjnrW82JBd5wcmSwMapT83BxgqZ2qvU46VLdTHNT+mrEztdxQ/LwOFqAS/FFauDdUM3ZQePlkDP+thaH8FwQ6LWcNyw5AXceXUS4cHtg+iBuz/EECozbq2T6fln2fZ3WT3ufE01GCSzd8iX3r64=
+	t=1730840828; cv=none; b=QdXc5YShC5+m62p3CaapyawnFfFkvJgz2pVSCB9gRMslqkT6OaWIJYZTofQ46XtMFYbiy8IJ2E4+tGFuIFtGNZ1DgGzSnDF7fEQGOM8fRmkx8Mv0fPA3U9/tp5dZeWo9XFazd7fwdtUKjpiizkSpPiJYCG3SD3JBt+6J76Q8ItQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730840431; c=relaxed/simple;
-	bh=48s0hy2LXyleJBmoMFvBJ/haU4AH8PKwJ+78RGfmwac=;
+	s=arc-20240116; t=1730840828; c=relaxed/simple;
+	bh=TJzk4F76g4LwZ3I9ALBWjxagp05Gyn66gsgAWCo8kLM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KeZdZv4yQpPcrBTKNASXggXWsnOmj551TN+N6EESMTsIO5yQZxA+L8G8kBcSG0PA15LPK/33Gk1phF+OKhBl0Al638mhSFkN3mvq9Rqsj8qj9FgH41NbkKpAncHHj4Fpfm2A5KX8IC1NP5eCusNdiGIfQAE4NAyLTppj6r/Oi1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EMLOHdhR; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=PNoMjtlo7J93QBJp5eXWlO8yG/e5tOvwtOxG1lTqijO5ZSGxB3s4tIHoG+wz7FCJekvhdbISjUeIL5rx/UEukaCCYdGYmHk9TXUWoA3VEAtHdudz5G4GiRGTpVISPcQ5E/bc13A+qR//6s7NzouaBzNj0qguOZF5HkMmsKLvdDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Op8vJOlo; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EMLOHdhR"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Op8vJOlo"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=V+vyhukru1uIeE+kCfGRSTvksfHKtqzKauF6SWXFu/M=; b=EMLOHdhRqzpI6dSuwpLRH3iGqb
-	RGYoKlpFPRnoA/Fh6kyX2tOZFXigDkaI5v/cE074EzYFnfmnOMeNfPJezJL1wdDi/FPpPP9frAKCr
-	V+sL7N38ufFpzmbopw4WvkugHzE9+gEX7oFn7DqYGOYhAWj42L4FDV34AIZoEZw7j4q8=;
+	bh=RijrwSR996jc8zmkXUnW0yxsceb4awN7BsqNEiuedsc=; b=Op8vJOloiZnKstWUxcBR+7p7SB
+	k52V+ldeS0VaTOhRJQpWshz2Bon6/o3AFOGP0S02tF9+Cmeux6QY96R+d1AryZivrKrqckbEP45sI
+	C2fznfiR641VN9+IdHq6HiYjO5RhFr4+MyEcZhgF9eIaGJ+0Fn87mUpaanzCPzTmV9QA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1t8Qex-00CFpl-6A; Tue, 05 Nov 2024 22:00:19 +0100
-Date: Tue, 5 Nov 2024 22:00:19 +0100
+	id 1t8QlK-00CFrk-Sh; Tue, 05 Nov 2024 22:06:54 +0100
+Date: Tue, 5 Nov 2024 22:06:54 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: "Malladi, Meghana" <m-malladi@ti.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, vigneshr@ti.com, horms@kernel.org,
-	jan.kiszka@siemens.com, diogo.ivo@siemens.com, pabeni@redhat.com,
-	edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, srk@ti.com,
-	Roger Quadros <rogerq@kernel.org>, danishanwar@ti.com,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH net v3] net: ti: icssg-prueth: Fix 1 PPS sync
-Message-ID: <6a230b28-9298-410b-b873-21000af4c0f3@lunn.ch>
-References: <20241028111051.1546143-1-m-malladi@ti.com>
- <20241031185905.610c982f@kernel.org>
- <7c3318f4-a2d4-4cbf-8a93-33c6a8afd6c4@ti.com>
- <20241104185031.0c843951@kernel.org>
- <e5c5c9ba-fca1-4fa3-a416-1fc972ebd258@ti.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Realtek linux nic maintainers <nic_swsd@realtek.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	David Miller <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next] r8169: copy vendor driver 2.5G/5G EEE
+ advertisement constraints
+Message-ID: <5cd6ccf1-8641-4bd5-9199-b250115b844c@lunn.ch>
+References: <4677d3c4-60e2-4094-81a8-adae42ca46bb@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,13 +48,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e5c5c9ba-fca1-4fa3-a416-1fc972ebd258@ti.com>
+In-Reply-To: <4677d3c4-60e2-4094-81a8-adae42ca46bb@gmail.com>
 
-> > I think you need to write a custom one. Example:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/tree/drivers/net/ethernet/meta/fbnic/fbnic_time.c#n40
-> Ok thank you. I will add custom function for this and update the patch.
+On Mon, Nov 04, 2024 at 11:07:20PM +0100, Heiner Kallweit wrote:
+> Vendor driver r8125 doesn't advertise 2.5G EEE on RTL8125A, and r8126
+> doesn't advertise 5G EEE. Likely there are compatibility issues,
+> therefore do the same in r8169.
+> With this change we don't have to disable 2.5G EEE advertisement in
+> rtl8125a_config_eee_phy() any longer.
+> Note: We don't remove the potentially problematic modes from the
+> supported modes, so users can re-enable advertisement of these modes
+> if they work fine in their setup.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>  drivers/net/ethernet/realtek/r8169_main.c       |  7 +++++++
+>  drivers/net/ethernet/realtek/r8169_phy_config.c | 16 ++++------------
+>  2 files changed, 11 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index e83c4841b..4f37d25e0 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -5318,6 +5318,13 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+>  		phy_support_eee(tp->phydev);
+>  	phy_support_asym_pause(tp->phydev);
+>  
+> +	/* mimic behavior of r8125/r8126 vendor drivers */
+> +	if (tp->mac_version == RTL_GIGA_MAC_VER_61)
+> +		linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
+> +				   tp->phydev->advertising_eee);
+> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT,
+> +			   tp->phydev->advertising_eee);
 
-Maybe look around and see if they could be reused by other drivers. If
-so, they should be put somewhere central.
+Hi Heiner
+
+phy_device.c has:
+
+/**
+ * phy_remove_link_mode - Remove a supported link mode
+ * @phydev: phy_device structure to remove link mode from
+ * @link_mode: Link mode to be removed
+ *
+ * Description: Some MACs don't support all link modes which the PHY
+ * does.  e.g. a 1G MAC often does not support 1000Half. Add a helper
+ * to remove a link mode.
+ */
+void phy_remove_link_mode(struct phy_device *phydev, u32 link_mode)
+{
+        linkmode_clear_bit(link_mode, phydev->supported);
+        phy_advertise_supported(phydev);
+}
+EXPORT_SYMBOL(phy_remove_link_mode);
+
+Maybe we need a phy_remove_eee_link_mode()? That could also remove it
+from supported? At minimum, it would stop MAC drivers poking around
+the insides of phylib.
 
 	Andrew
