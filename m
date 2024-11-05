@@ -1,145 +1,91 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD681D319F
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61641D172E
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 10:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730802026; cv=none; b=ItgxO/Mcy3d1BLDyvvuq/KdH8zj6bBr7Zf31gMbFY98eCbvzF7TC7YEOKcxorBHQkTZwVcANpcwCcoMVKW9BbqDXd+Ytw2GT8MJ2upODlkmCDY5DTWigl0tQHZBa/rci2M5gLlvdrbaNuUY82fG4J2ND7L8xtewyKYE1z0ysFHM=
+	t=1730802244; cv=none; b=JMLeXfW310L10Xd703gc+7kLSVRtt1It1g+j6SHp4tMF4KpfDILy5ymhTlsM3qfnqL5DA9iQrCXM73WQ9VvhSuCzfplL6FEwmIOOX8C2l+Qb/7/WZuXHv54xQE2wOsTuDc17MQGj3Mq3I5micLqGJEObvNfmI058aPjU+SsQcoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730802026; c=relaxed/simple;
-	bh=Paw3NHGBKcpYWKx6/8kixwuXZd4axLGz+zE8p3Aik4E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=gHoYklwCLdv2fFhiumOcMB9S4yDMreuDr00suquj3+errcSNW7rhabR4eN5g5sUh3JCJ2HsYLtwORBsmd1rOB2qhqRqG4CQbZEwOEPgDvbSwwn+yAeQJgPtBobFM+gu9/rTsdCUpuvQKIziqer4IEeHA6S60hgV4092nTDG5cOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gphwC22X; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1730802244; c=relaxed/simple;
+	bh=PNoVND3bnc8f75lQllrFXS0FGhD4nHhYki2QododBTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YKrFElom8xEetaHukG38+QwHDGd2Y3W9xj+JnE5VQJGaKu5UIBadw/1+LkAcYP9D655EGKUQxQIXFM8I43WfM232b6X4bXgDqTb0Cp/KppwB7S0wLuyLL1SVuYhMSIZgVA9V3OrlhBE15norFeZCSxxfQEUQqIsLrTPcy/uFTWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tH8Zg5q8; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gphwC22X"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20cdda5cfb6so51295965ad.3
-        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 02:20:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tH8Zg5q8"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c903f5bd0eso9704883a12.3
+        for <netdev@vger.kernel.org>; Tue, 05 Nov 2024 02:24:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1730802024; x=1731406824; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KpyF7OfeG3D1SjYyfRqhBhCivmBUEISeT2uU0LeHwvU=;
-        b=gphwC22XoX9jAEwWZkDO9Pu0tryY9k4lG9StauzgTFCFW7g+W+7kR+aykHTbUed56v
-         VnzOZIq+/HJXlzh2OcqrVIpAFIQA4H51q2zoKxPd1sDxoOeJ8CuW9SAdsfPw8P4OacDi
-         Ff9tl7d5j9hJ5MLwh6g7WgvjVqFIM5wyN0Udw=
+        d=google.com; s=20230601; t=1730802241; x=1731407041; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8aJTIVUX3AEmT8fiu0foSVXA6Zv2teqAMQYr57Q+vUw=;
+        b=tH8Zg5q8nfsQBZJgr2fIe1edv5A2WjDrSs2dN4FzEOZmwZJyZhuY9CVw2+L8He3Tuv
+         I1CeJWCD4tI5wnOYB7OpxD7Xi2XJiLIkazeFjHX5ahtsoh6BrmasYtqPJhkrxv3yJFe3
+         cMX4qhWAUVVC9/u9a3PP7NK1y38nQeG4al99M+Hdoleu3niB0E2tcjbLowayZ+R2aIUO
+         /a3Aq2I6xfLrrgnGFyeAdyNbpt6B5/lLr5pju6NcCkT2ijNmVsbrYRksjWxHQxIFgyLB
+         JKZrkLCfuPPm+1MvKumVS+9Sk/YDSMqsIng3AjU2HygJZLI0lBTyMcS/DpYZ7xyVvQXq
+         sAvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730802024; x=1731406824;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KpyF7OfeG3D1SjYyfRqhBhCivmBUEISeT2uU0LeHwvU=;
-        b=vYQaf3cffBMFSoGjzIvDz9A454/nDaXXTZgiNQZjGPB157CJ7m1p3FuZmIWEijFODn
-         +FHpRnmHTedGVb9dBzCm1IqzWLiVxxHfr1tEfYWXmQfGOW0qpbpWnjMlck2qcxNHgjl1
-         ddUm3JVLV6JNMtcH0ik3+t8KE+v5UvB4A/04eZ3MAgja0TupXQTFlPCGrH3msdcNDwyX
-         crIaiGyVPhL4CNVRy+6slFvqj6KxDw8v2HWPC/6RcstKRZ2Rpk/k6wzdq3xvk9yRTyr2
-         HBPCxJV99Hyg9/V66If2f7zL6jmFam1miOO5mhgDotQ5eQHY5H+LXhcbdZIsfuJ23/WW
-         A8Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCVVvLCmeDIRFglzTwqRzUI3G8FzP5M8NzWKVsodSB1qissX+/AeVQahLpN8TQCjcqMNOHLcgWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWhM2dduwQkQ0jY0Gk5RppcxVk4C0YxYWFO4A4xihW5qITFRC4
-	bxUko6yCbHSbj4gXyEDFlVkSEwwoa8q7UPK0NJiknWFbYc9ViYbtloS37u+Djg==
-X-Google-Smtp-Source: AGHT+IGDA/T6jNMV6isflQdNhX8z5d4jQN6lHmbWf0KOf1PRzPJ2hcQhVufloO0CQOiqBtfzV2pATQ==
-X-Received: by 2002:a17:902:ea12:b0:20c:dd71:c94f with SMTP id d9443c01a7336-21103c5c8a1mr263586265ad.41.1730802024616;
-        Tue, 05 Nov 2024 02:20:24 -0800 (PST)
-Received: from sxavier-dev.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21105707132sm75306615ad.96.2024.11.05.02.20.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 05 Nov 2024 02:20:23 -0800 (PST)
-From: Selvin Xavier <selvin.xavier@broadcom.com>
-To: leon@kernel.org,
-	jgg@ziepe.ca
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	michael.chan@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	kalesh-anakkur.purayil@broadcom.com,
-	Selvin Xavier <selvin.xavier@broadcom.com>
-Subject: [PATCH rdma-next 3/3] RDMA/bnxt_re: Add set_func_resources support for P5/P7 adapters
-Date: Tue,  5 Nov 2024 01:59:12 -0800
-Message-Id: <1730800752-29925-4-git-send-email-selvin.xavier@broadcom.com>
-X-Mailer: git-send-email 2.5.5
-In-Reply-To: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
-References: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
+        d=1e100.net; s=20230601; t=1730802241; x=1731407041;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8aJTIVUX3AEmT8fiu0foSVXA6Zv2teqAMQYr57Q+vUw=;
+        b=pBsZxA8C5WZPgqLSQFWXlxhMbPhhLAjOYaHUYkwZNylNhduplkxwkVjAur9ZEHbzY+
+         F8PC8Vmrct1xXbLRsR2ohFkcIeO2YBFr1wuTRa0ZhCxLTCNyglpRlOzG2trQYte6Cz5V
+         Jh2n7mo0AeS1jyT5yPi8CwUYhZTSGXFrmdtZ0O3uIDuZ32NBWO5Vs6xkf0INy91HLswA
+         EWXlIe33VY0ny3nPEwV5eGAGh8WmPkcK1ymgdgX7soaRO+eINMxRvxvqIvriRj49qL/H
+         BK637Da30QTbiV0cV81tM9+1RHw+6L97BuxCIz4ERPyVqtib+HNLpoAZ8lZy7cZRPqdH
+         oncA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU8j5efwsz1wKmd4mECSybI6TfV03yMrSfcYY0A6lq8nLIpxXP2V9wX1oDYJh6aQwvwBStxZw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0Gnahw+57wGNhprdmqH/iQW1wRJS30m5xgZk9Q6PLPMLMQILj
+	Zc/Q/pmdgMt2zvtNVysxbh225Y3XsufZG4sINsGQIpjtaxLE4Z8eO4dB7koU7+QMIld/5WitjLu
+	tfLOslU6UYuaKwCaLljY5Wv52/bJo8Vn7Lirr
+X-Google-Smtp-Source: AGHT+IEtbYHQesiaNQogsvFxCPH2FaJT9RAjXN/UkzFGtvYmzWZNL30eeYn++rDGjQTLrFWxgljLlnkY+qZN7g7IJtk=
+X-Received: by 2002:a05:6402:1ed6:b0:5ce:aec7:8802 with SMTP id
+ 4fb4d7f45d1cf-5ceaec78b80mr13497766a12.7.1730802241188; Tue, 05 Nov 2024
+ 02:24:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20241105020514.41963-1-kuniyu@amazon.com> <20241105020514.41963-4-kuniyu@amazon.com>
+In-Reply-To: <20241105020514.41963-4-kuniyu@amazon.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 5 Nov 2024 11:23:50 +0100
+Message-ID: <CANn89iJNYT004pYCApzjqezcJ-UbzvSzNbD8MGMb7OLt_Rjt3A@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 3/8] rtnetlink: Add peer_type in struct rtnl_link_ops.
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+On Tue, Nov 5, 2024 at 3:06=E2=80=AFAM Kuniyuki Iwashima <kuniyu@amazon.com=
+> wrote:
+>
+> For veth, vxcan, and netkit, we need to prefetch the peer device's
+> netns in rtnl_newlink() for per-netns RTNL.
+>
+> All of the three get the netns in the same way peer netlink attr tb:
+>
+>   1. Call rtnl_nla_parse_ifinfomsg()
+>   2. Call ops->validate() (vxcan doesn't have)
+>   3. Call rtnl_link_get_net_tb()
+>
+> Let's add a new field peer_type to struct rtnl_link_ops and fetch
+> netns in peer attrbutes to add it to rtnl_nets in rtnl_newlink().
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Enable set_func_resources for P5 and P7 adapters to handle
-VF resource distribution. Remove setting max resources per VF
-during PF initialization. This change is required for firmwares
-which does not support RoCE VF resource management by NIC driver.
-The code is same for all adapters now.
-
-Reviewed-by: Stephen Shi <stephen.shi@broadcom.com>
-Reviewed-by: Rukhsana Ansari <rukhsana.ansari@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
----
- drivers/infiniband/hw/bnxt_re/main.c       | 11 ++++++-----
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 11 +----------
- 2 files changed, 7 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index dd528dd..cb61941 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -291,11 +291,12 @@ static void bnxt_re_vf_res_config(struct bnxt_re_dev *rdev)
- 	 * available at this point.
- 	 */
- 	rdev->num_vfs = pci_sriov_get_totalvfs(rdev->en_dev->pdev);
--	if (!bnxt_qplib_is_chip_gen_p5_p7(rdev->chip_ctx)) {
--		bnxt_re_set_resource_limits(rdev);
--		bnxt_qplib_set_func_resources(&rdev->qplib_res, &rdev->rcfw,
--					      &rdev->qplib_ctx);
--	}
-+	if (!rdev->num_vfs)
-+		return;
-+
-+	bnxt_re_set_resource_limits(rdev);
-+	bnxt_qplib_set_func_resources(&rdev->qplib_res, &rdev->rcfw,
-+				      &rdev->qplib_ctx);
- }
- 
- static void bnxt_re_shutdown(struct auxiliary_device *adev)
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 005079b..7072991 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -851,10 +851,8 @@ int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
- 	 * shall setup this area for VF. Skipping the
- 	 * HW programming
- 	 */
--	if (is_virtfn)
-+	if (is_virtfn || bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx))
- 		goto skip_ctx_setup;
--	if (bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx))
--		goto config_vf_res;
- 
- 	lvl = ctx->qpc_tbl.level;
- 	pgsz = bnxt_qplib_base_pg_size(&ctx->qpc_tbl);
-@@ -898,13 +896,6 @@ int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
- 	req.number_of_srq = cpu_to_le32(ctx->srqc_tbl.max_elements);
- 	req.number_of_cq = cpu_to_le32(ctx->cq_tbl.max_elements);
- 
--config_vf_res:
--	req.max_qp_per_vf = cpu_to_le32(ctx->vf_res.max_qp_per_vf);
--	req.max_mrw_per_vf = cpu_to_le32(ctx->vf_res.max_mrw_per_vf);
--	req.max_srq_per_vf = cpu_to_le32(ctx->vf_res.max_srq_per_vf);
--	req.max_cq_per_vf = cpu_to_le32(ctx->vf_res.max_cq_per_vf);
--	req.max_gid_per_vf = cpu_to_le32(ctx->vf_res.max_gid_per_vf);
--
- skip_ctx_setup:
- 	if (BNXT_RE_HW_RETX(rcfw->res->dattr->dev_cap_flags))
- 		flags |= CMDQ_INITIALIZE_FW_FLAGS_HW_REQUESTER_RETX_SUPPORTED;
--- 
-2.5.5
-
+ Reviewed-by: Eric Dumazet <edumazet@google.com>
