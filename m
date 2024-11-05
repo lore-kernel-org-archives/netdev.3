@@ -1,14 +1,14 @@
 Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ABD1D042D
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA531D0950
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730795913; cv=none; b=NbqG8OA8H3OGL2bAwydVneeyQb6/hiJD2KI25MvTQk8dr7WpXC0FNuKDwCHGcXJKpBfn0oHxjFFovWHfav2J/DJsDd7OLQ38dcPvGhJWcERtEB+Xn27YNHnvHXRyioIYgngP7C0zFKzQF1pd9xMt5VJ9D7PzjxTdYCgGn2QO/ks=
+	t=1730795914; cv=none; b=YqLlbGbT/FaBdewf0obaaLm9Edq7IPbWYICCAxY4FiVU3EzLzrkil2LozUB+yB0UnifnIxAuky7mOcn2wTP8iGHb4/vJRUnh+h/R63V9y4WH/3uXY0/xMoAGtfmhV1vDdnryDpy7V1AXEGI+df2grKITSU3ZJvF9cMhEQaINdVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730795913; c=relaxed/simple;
-	bh=KY2VIHgpofXIw7Iuket5iaRjY//BGxu3gzuDbd9SCto=;
+	s=arc-20240116; t=1730795914; c=relaxed/simple;
+	bh=fDzy+C7YxJd2LGKM7jgMBpLhklnbr3MnLu2KkIHBNjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hW/6E2D9Mfqz06FSQc7n0sLxSZewjwypSlpKWYLkSYPlaArF0uTH+vWnbkAGxwZ5OiagvlrOT698F+dsmme01k44FA8CYOcNpgSbkF/2RmMbvIJF2tb5BGfj8O4lxHmchoM4cZqTycxi3/c2E01uvf+46RXhF3lgJyjvqZelIj4=
+	 MIME-Version; b=JB5eK0mzacwQt3f7gkbKrgFF+X8q/1nb5Gixwps6y0fnvEo9Ba0MRuK37HfQ5VtOqtcKfcncazaFXBtgNgdBukeYEvAX+Mu3gh4cp0tTC5Itu35neb4zZic1+zWRtCPGVuQQ51UE9M58WeX33McD5Tp/aIzwAzRPkEz8nGI6qbw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
@@ -16,8 +16,8 @@ Received: from labnh.big (syn-172-222-091-149.res.spectrum.com [172.222.91.149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by smtp.chopps.org (Postfix) with ESMTPSA id 674FD7D12C;
-	Tue,  5 Nov 2024 08:38:30 +0000 (UTC)
+	by smtp.chopps.org (Postfix) with ESMTPSA id 87E007D0E5;
+	Tue,  5 Nov 2024 08:38:31 +0000 (UTC)
 From: Christian Hopps <chopps@chopps.org>
 To: devel@linux-ipsec.org
 Cc: Steffen Klassert <steffen.klassert@secunet.com>,
@@ -28,9 +28,9 @@ Cc: Steffen Klassert <steffen.klassert@secunet.com>,
 	Antony Antony <antony@phenome.org>,
 	Christian Hopps <chopps@chopps.org>,
 	Christian Hopps <chopps@labn.net>
-Subject: [PATCH ipsec-next v13 06/15] xfrm: iptfs: add new iptfs xfrm mode impl
-Date: Tue,  5 Nov 2024 03:37:50 -0500
-Message-ID: <20241105083759.2172771-7-chopps@chopps.org>
+Subject: [PATCH ipsec-next v13 08/15] xfrm: iptfs: share page fragments of inner packets
+Date: Tue,  5 Nov 2024 03:37:52 -0500
+Message-ID: <20241105083759.2172771-9-chopps@chopps.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241105083759.2172771-1-chopps@chopps.org>
 References: <20241105083759.2172771-1-chopps@chopps.org>
@@ -44,257 +44,158 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Hopps <chopps@labn.net>
 
-Add a new xfrm mode implementing AggFrag/IP-TFS from RFC9347.
-
-This utilizes the new xfrm_mode_cbs to implement demand-driven IP-TFS
-functionality. This functionality can be used to increase bandwidth
-utilization through small packet aggregation, as well as help solve PMTU
-issues through it's efficient use of fragmentation.
-
-  Link: https://www.rfc-editor.org/rfc/rfc9347.txt
-
-Multiple commits follow to build the functionality into xfrm_iptfs.c
+When possible rather than appending secondary (aggregated) inner packets
+to the fragment list, share their page fragments with the outer IPTFS
+packet. This allows for more efficient packet transmission.
 
 Signed-off-by: Christian Hopps <chopps@labn.net>
 ---
- net/xfrm/Makefile     |   1 +
- net/xfrm/xfrm_iptfs.c | 216 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 217 insertions(+)
- create mode 100644 net/xfrm/xfrm_iptfs.c
+ net/xfrm/xfrm_iptfs.c | 85 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 77 insertions(+), 8 deletions(-)
 
-diff --git a/net/xfrm/Makefile b/net/xfrm/Makefile
-index 512e0b2f8514..5a1787587cb3 100644
---- a/net/xfrm/Makefile
-+++ b/net/xfrm/Makefile
-@@ -21,5 +21,6 @@ obj-$(CONFIG_XFRM_USER) += xfrm_user.o
- obj-$(CONFIG_XFRM_USER_COMPAT) += xfrm_compat.o
- obj-$(CONFIG_XFRM_IPCOMP) += xfrm_ipcomp.o
- obj-$(CONFIG_XFRM_INTERFACE) += xfrm_interface.o
-+obj-$(CONFIG_XFRM_IPTFS) += xfrm_iptfs.o
- obj-$(CONFIG_XFRM_ESPINTCP) += espintcp.o
- obj-$(CONFIG_DEBUG_INFO_BTF) += xfrm_state_bpf.o
 diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-new file mode 100644
-index 000000000000..e7cb8734fc0f
---- /dev/null
+index c4cff005ea9a..7bf18f472fed 100644
+--- a/net/xfrm/xfrm_iptfs.c
 +++ b/net/xfrm/xfrm_iptfs.c
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* xfrm_iptfs: IPTFS encapsulation support
-+ *
-+ * April 21 2022, Christian Hopps <chopps@labn.net>
-+ *
-+ * Copyright (c) 2022, LabN Consulting, L.L.C.
-+ *
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/icmpv6.h>
-+#include <net/gro.h>
-+#include <net/icmp.h>
-+#include <net/ip6_route.h>
-+#include <net/inet_ecn.h>
-+#include <net/xfrm.h>
-+
-+#include <crypto/aead.h>
-+
-+#include "xfrm_inout.h"
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/icmpv6.h>
++#include <linux/skbuff_ref.h>
+ #include <net/gro.h>
+ #include <net/icmp.h>
+ #include <net/ip6_route.h>
+@@ -90,6 +91,23 @@ struct xfrm_iptfs_data {
+ static u32 iptfs_get_inner_mtu(struct xfrm_state *x, int outer_mtu);
+ static enum hrtimer_restart iptfs_delay_timer(struct hrtimer *me);
+ 
++/* ======================= */
++/* IPTFS SK_BUFF Functions */
++/* ======================= */
 +
 +/**
-+ * struct xfrm_iptfs_config - configuration for the IPTFS tunnel.
-+ * @pkt_size: size of the outer IP packet. 0 to use interface and MTU discovery,
-+ *	otherwise the user specified value.
++ * iptfs_skb_head_to_frag() - initialize a skb_frag_t based on skb head data
++ * @skb: skb with the head data
++ * @frag: frag to initialize
 + */
-+struct xfrm_iptfs_config {
-+	u32 pkt_size;	    /* outer_packet_size or 0 */
-+};
-+
-+/**
-+ * struct xfrm_iptfs_data - mode specific xfrm state.
-+ * @cfg: IPTFS tunnel config.
-+ * @x: owning SA (xfrm_state).
-+ * @payload_mtu: max payload size.
-+ */
-+struct xfrm_iptfs_data {
-+	struct xfrm_iptfs_config cfg;
-+
-+	/* Ingress User Input */
-+	struct xfrm_state *x;	    /* owning state */
-+	u32 payload_mtu;	    /* max payload size */
-+};
-+
-+/* ========================== */
-+/* State Management Functions */
-+/* ========================== */
-+
-+/**
-+ * iptfs_get_inner_mtu() - return inner MTU with no fragmentation.
-+ * @x: xfrm state.
-+ * @outer_mtu: the outer mtu
-+ */
-+static u32 iptfs_get_inner_mtu(struct xfrm_state *x, int outer_mtu)
++static void iptfs_skb_head_to_frag(const struct sk_buff *skb, skb_frag_t *frag)
 +{
-+	struct crypto_aead *aead;
-+	u32 blksize;
++	struct page *page = virt_to_head_page(skb->data);
++	unsigned char *addr = (unsigned char *)page_address(page);
 +
-+	aead = x->data;
-+	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
-+	return ((outer_mtu - x->props.header_len - crypto_aead_authsize(aead)) &
-+		~(blksize - 1)) - 2;
++	skb_frag_fill_page_desc(frag, page, skb->data - addr, skb_headlen(skb));
 +}
 +
-+/**
-+ * iptfs_user_init() - initialize the SA with IPTFS options from netlink.
-+ * @net: the net data
-+ * @x: xfrm state
-+ * @attrs: netlink attributes
-+ * @extack: extack return data
-+ *
-+ * Return: 0 on success or a negative error code on failure
-+ */
-+static int iptfs_user_init(struct net *net, struct xfrm_state *x,
-+			   struct nlattr **attrs,
-+			   struct netlink_ext_ack *extack)
+ /* ================================= */
+ /* IPTFS Sending (ingress) Functions */
+ /* ================================= */
+@@ -297,14 +315,44 @@ static struct sk_buff **iptfs_rehome_fraglist(struct sk_buff **nextp, struct sk_
+ 	return nextp;
+ }
+ 
++static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
 +{
-+	struct xfrm_iptfs_data *xtfs = x->mode_data;
-+	struct xfrm_iptfs_config *xc;
++	struct skb_shared_info *fromi = skb_shinfo(from);
++	struct skb_shared_info *toi = skb_shinfo(to);
++	unsigned int new_truesize;
 +
-+	xc = &xtfs->cfg;
-+
-+	if (attrs[XFRMA_IPTFS_PKT_SIZE]) {
-+		xc->pkt_size = nla_get_u32(attrs[XFRMA_IPTFS_PKT_SIZE]);
-+		if (!xc->pkt_size) {
-+			xtfs->payload_mtu = 0;
-+		} else if (xc->pkt_size > x->props.header_len) {
-+			xtfs->payload_mtu = xc->pkt_size - x->props.header_len;
-+		} else {
-+			NL_SET_ERR_MSG(extack,
-+				       "Packet size must be 0 or greater than IPTFS/ESP header length");
-+			return -EINVAL;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static unsigned int iptfs_sa_len(const struct xfrm_state *x)
-+{
-+	struct xfrm_iptfs_data *xtfs = x->mode_data;
-+	struct xfrm_iptfs_config *xc = &xtfs->cfg;
-+	unsigned int l = 0;
-+
-+	if (x->dir == XFRM_SA_DIR_OUT)
-+		l += nla_total_size(sizeof(xc->pkt_size));
-+
-+	return l;
-+}
-+
-+static int iptfs_copy_to_user(struct xfrm_state *x, struct sk_buff *skb)
-+{
-+	struct xfrm_iptfs_data *xtfs = x->mode_data;
-+	struct xfrm_iptfs_config *xc = &xtfs->cfg;
-+	int ret = 0;
-+
-+	if (x->dir == XFRM_SA_DIR_OUT)
-+		ret = nla_put_u32(skb, XFRMA_IPTFS_PKT_SIZE, xc->pkt_size);
-+
-+	return ret;
-+}
-+
-+static void __iptfs_init_state(struct xfrm_state *x,
-+			       struct xfrm_iptfs_data *xtfs)
-+{
-+	/* Modify type (esp) adjustment values */
-+
-+	if (x->props.family == AF_INET)
-+		x->props.header_len += sizeof(struct iphdr) + sizeof(struct ip_iptfs_hdr);
-+	else if (x->props.family == AF_INET6)
-+		x->props.header_len += sizeof(struct ipv6hdr) + sizeof(struct ip_iptfs_hdr);
-+	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
-+
-+	/* Always keep a module reference when x->mode_data is set */
-+	__module_get(x->mode_cbs->owner);
-+
-+	x->mode_data = xtfs;
-+	xtfs->x = x;
-+}
-+
-+static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
-+{
-+	struct xfrm_iptfs_data *xtfs;
-+
-+	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
-+	if (!xtfs)
-+		return -ENOMEM;
-+
-+	x->mode_data = xtfs;
-+	xtfs->x = x;
-+
-+	return 0;
-+}
-+
-+static int iptfs_init_state(struct xfrm_state *x)
-+{
-+	struct xfrm_iptfs_data *xtfs;
-+
-+	if (x->mode_data) {
-+		/* We have arrived here from xfrm_state_clone() */
-+		xtfs = x->mode_data;
++	/* If we have data in a head page, grab it */
++	if (!skb_headlen(from)) {
++		new_truesize = SKB_TRUESIZE(skb_end_offset(from));
 +	} else {
-+		xtfs = kzalloc(sizeof(*xtfs), GFP_KERNEL);
-+		if (!xtfs)
-+			return -ENOMEM;
++		iptfs_skb_head_to_frag(from, &toi->frags[toi->nr_frags]);
++		skb_frag_ref(to, toi->nr_frags++);
++		new_truesize = SKB_DATA_ALIGN(sizeof(struct sk_buff));
 +	}
 +
-+	__iptfs_init_state(x, xtfs);
++	/* Move any other page fragments rather than copy */
++	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
++	       sizeof(fromi->frags[0]) * fromi->nr_frags);
++	toi->nr_frags += fromi->nr_frags;
++	fromi->nr_frags = 0;
++	from->data_len = 0;
++	from->len = 0;
++	to->truesize += from->truesize - new_truesize;
++	from->truesize = new_truesize;
 +
-+	return 0;
++	/* We are done with this SKB */
++	consume_skb(from);
 +}
 +
-+static void iptfs_destroy_state(struct xfrm_state *x)
-+{
-+	struct xfrm_iptfs_data *xtfs = x->mode_data;
+ static void iptfs_output_queued(struct xfrm_state *x, struct sk_buff_head *list)
+ {
+ 	struct xfrm_iptfs_data *xtfs = x->mode_data;
+ 	struct sk_buff *skb, *skb2, **nextp;
+-	struct skb_shared_info *shi;
++	struct skb_shared_info *shi, *shi2;
+ 
+ 	while ((skb = __skb_dequeue(list))) {
+ 		u32 mtu = iptfs_get_cur_pmtu(x, xtfs, skb);
++		bool share_ok = true;
+ 		int remaining;
+ 
+ 		/* protocol comes to us cleared sometimes */
+@@ -349,7 +397,7 @@ static void iptfs_output_queued(struct xfrm_state *x, struct sk_buff_head *list)
+ 
+ 		/* Re-home (un-nest) nested fragment lists. We need to do this
+ 		 * b/c we will simply be appending any following aggregated
+-		 * inner packets to the frag list.
++		 * inner packets using the frag list.
+ 		 */
+ 		shi = skb_shinfo(skb);
+ 		nextp = &shi->frag_list;
+@@ -360,6 +408,9 @@ static void iptfs_output_queued(struct xfrm_state *x, struct sk_buff_head *list)
+ 				nextp = &(*nextp)->next;
+ 		}
+ 
++		if (shi->frag_list || skb_cloned(skb) || skb_shared(skb))
++			share_ok = false;
 +
-+	if (!xtfs)
-+		return;
+ 		/* See if we have enough space to simply append.
+ 		 *
+ 		 * NOTE: Maybe do not append if we will be mis-aligned,
+@@ -386,17 +437,35 @@ static void iptfs_output_queued(struct xfrm_state *x, struct sk_buff_head *list)
+ 				}
+ 			}
+ 
++			/* skb->pp_recycle is passed to __skb_flag_unref for all
++			 * frag pages so we can only share pages with skb's who
++			 * match ourselves.
++			 */
++			shi2 = skb_shinfo(skb2);
++			if (share_ok &&
++			    (shi2->frag_list ||
++			     (!skb2->head_frag && skb_headlen(skb)) ||
++			     skb->pp_recycle != skb2->pp_recycle ||
++			     skb_zcopy(skb2) ||
++			     (shi->nr_frags + shi2->nr_frags + 1 > MAX_SKB_FRAGS)))
++				share_ok = false;
 +
-+	kfree_sensitive(xtfs);
-+
-+	module_put(x->mode_cbs->owner);
-+}
-+
-+static const struct xfrm_mode_cbs iptfs_mode_cbs = {
-+	.owner = THIS_MODULE,
-+	.init_state = iptfs_init_state,
-+	.clone_state = iptfs_clone_state,
-+	.destroy_state = iptfs_destroy_state,
-+	.user_init = iptfs_user_init,
-+	.copy_to_user = iptfs_copy_to_user,
-+	.sa_len = iptfs_sa_len,
-+	.get_inner_mtu = iptfs_get_inner_mtu,
-+};
-+
-+static int __init xfrm_iptfs_init(void)
-+{
-+	int err;
-+
-+	pr_info("xfrm_iptfs: IPsec IP-TFS tunnel mode module\n");
-+
-+	err = xfrm_register_mode_cbs(XFRM_MODE_IPTFS, &iptfs_mode_cbs);
-+	if (err < 0)
-+		pr_info("%s: can't register IP-TFS\n", __func__);
-+
-+	return err;
-+}
-+
-+static void __exit xfrm_iptfs_fini(void)
-+{
-+	xfrm_unregister_mode_cbs(XFRM_MODE_IPTFS);
-+}
-+
-+module_init(xfrm_iptfs_init);
-+module_exit(xfrm_iptfs_fini);
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("IP-TFS support for xfrm ipsec tunnels");
+ 			/* Do accounting */
+ 			skb->data_len += skb2->len;
+ 			skb->len += skb2->len;
+ 			remaining -= skb2->len;
+ 
+-			/* Append to the frag_list */
+-			*nextp = skb2;
+-			nextp = &skb2->next;
+-			if (skb_has_frag_list(skb2))
+-				nextp = iptfs_rehome_fraglist(nextp, skb2);
+-			skb->truesize += skb2->truesize;
++			if (share_ok) {
++				iptfs_consume_frags(skb, skb2);
++			} else {
++				/* Append to the frag_list */
++				*nextp = skb2;
++				nextp = &skb2->next;
++				if (skb_has_frag_list(skb2))
++					nextp = iptfs_rehome_fraglist(nextp,
++								      skb2);
++				skb->truesize += skb2->truesize;
++			}
+ 		}
+ 
+ 		xfrm_output(NULL, skb);
 -- 
 2.47.0
 
