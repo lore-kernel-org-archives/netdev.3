@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9CC1CF7AA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF95A1CF5EE
 	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 09:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730797809; cv=none; b=r1NVASuQ9iAwhnobfuA+UbVCd3cN1BdR/gbzkr/yEUBOsZ8M4oZWjl322u33DqiiV9dSxJtx13beiEvHNPudxDHqPy7nFnMO87G7GS6Z57vJmvKiBAFseRIYD+JKbMNYTcrXwHmNO+nKXI5KsyUN1SaubFcnRLQnI21bDkAelr0=
+	t=1730797809; cv=none; b=AW6Pr6wQB1SHNs6BvL3knKp1VAl/wuopAWg+1V+A+3oAzv5GuJQccDfhCQdlCvQqBgyvQDcRHfIxGfsgd1s25lgMvXAAVIvxjttVD+dgwpN0m1D4kRJGNp8o7mQYrGVfeh5NINQ6j5RWZgfNnihmIOnAaElW/Uz46QMEh9xvsZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730797809; c=relaxed/simple;
-	bh=s78LXm8oVlRxWfFmr0IdFkBYHf7fRypjYC9GfgbS9lI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hY5v6Z21G8v1nfFRi4OwR0U148VH3NZh8IPVkRxdblFnceRmsTAf7JmPUePcNfI+kmXiFVphRSSNQN1H2EECs29QxoJvpoc9fcomsMFgVfbOn2Z2qjMj3wmZkXpK0Ohgm+uPQ/zf0AtkD4YwzPDygsuAv0x8gmrE6oPNp6w/KCA=
+	bh=UGvGBoQjhb5/qwftI5v5FRQl/ddwR/37BXspqE1zSDI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t2WE+MnxdsrZkqn2N6h1I1j/jKY2ghv4tpF69v23JzPL0kFouCeT9y5uPusmrdjcCs4S7iYv3DOUILyViFRb0V0ta6Rwu9ExzU/K3Sfyvby55Xk/D9nSSZYs8JDCa/1rXeeTuT5H8CnQmnwyh33GJgDNR7n5+GL2dUJ8bHRUv3E=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZL-0003oL-Rq; Tue, 05 Nov 2024 10:09:47 +0100
+	id 1t8FZL-0003oR-Rq; Tue, 05 Nov 2024 10:09:47 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZK-0027YS-18;
+	id 1t8FZK-0027Yb-1g;
 	Tue, 05 Nov 2024 10:09:46 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8FZK-002ofR-0s;
+	id 1t8FZK-002ogQ-1M;
 	Tue, 05 Nov 2024 10:09:46 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -49,10 +50,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	devicetree@vger.kernel.org,
 	Marek Vasut <marex@denx.de>
-Subject: [PATCH net-next v3 0/6] Side MDIO Support for LAN937x Switches
-Date: Tue,  5 Nov 2024 10:09:38 +0100
-Message-Id: <20241105090944.671379-1-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v3 6/6] net: dsa: microchip: parse PHY config from device tree
+Date: Tue,  5 Nov 2024 10:09:44 +0100
+Message-Id: <20241105090944.671379-7-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241105090944.671379-1-o.rempel@pengutronix.de>
+References: <20241105090944.671379-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,32 +68,123 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch set introduces support for an internal MDIO bus in LAN937x
-switches, enabling the use of a side MDIO channel for PHY management
-while keeping SPI as the main interface for switch configuration.
+Introduce ksz_parse_dt_phy_config() to validate and parse PHY
+configuration from the device tree for KSZ switches. This function
+ensures proper setup of internal PHYs by checking `phy-handle`
+properties, verifying expected PHY IDs, and handling parent node
+mismatches. Sets the PHY mask on the MII bus if validation is
+successful. Returns -EINVAL on configuration errors.
 
-changes v3:
-- add "net: dsa: microchip: parse PHY config from device tree" patch
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 80 ++++++++++++++++++++++++--
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
-other changelogs are added to separate patches.
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 3909b55857430..cd1a466504180 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2373,6 +2373,77 @@ static void ksz_irq_phy_free(struct ksz_device *dev)
+ 			irq_dispose_mapping(ds->user_mii_bus->irq[phy]);
+ }
 
-Oleksij Rempel (6):
-  dt-bindings: net: dsa: ksz: add internal MDIO bus description
-  dt-bindings: net: dsa: ksz: add mdio-parent-bus property for internal
-    MDIO
-  net: dsa: microchip: Refactor MDIO handling for side MDIO access
-  net: dsa: microchip: cleanup error handling in ksz_mdio_register
-  net: dsa: microchip: add support for side MDIO interface in LAN937x
-  net: dsa: microchip: parse PHY config from device tree
++/**
++ * ksz_parse_dt_phy_config - Parse and validate PHY configuration from DT
++ * @dev: pointer to the KSZ device structure
++ * @bus: pointer to the MII bus structure
++ * @mdio_np: pointer to the MDIO node in the device tree
++ *
++ * This function parses and validates PHY configurations for each user port
++ * defined in the device tree for a KSZ switch device. It verifies that the
++ * `phy-handle` properties are correctly set and that the internal PHYs match
++ * expected IDs and parent nodes. Sets up the PHY mask in the MII bus if all
++ * validations pass. Logs error messages for any mismatches or missing data.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int ksz_parse_dt_phy_config(struct ksz_device *dev, struct mii_bus *bus,
++				   struct device_node *mdio_np)
++{
++	struct device_node *phy_node, *phy_parent_node;
++	bool phys_are_valid = true;
++	struct dsa_port *dp;
++	u32 phy_id;
++	int ret;
++
++	dsa_switch_for_each_user_port(dp, dev->ds) {
++		if (!dev->info->internal_phy[dp->index])
++			continue;
++
++		phy_node = of_parse_phandle(dp->dn, "phy-handle", 0);
++		if (!phy_node) {
++			dev_err(dev->dev, "failed to parse phy-handle for port %d.\n",
++				dp->index);
++			phys_are_valid = false;
++			continue;
++		}
++
++		phy_parent_node = of_get_parent(phy_node);
++		if (!phy_parent_node) {
++			dev_err(dev->dev, "failed to get PHY-parent node for port %d\n",
++				dp->index);
++			phys_are_valid = false;
++		} else if (dev->info->internal_phy[dp->index] &&
++			   phy_parent_node != mdio_np) {
++			dev_err(dev->dev, "PHY-parent node mismatch for port %d, expected %pOF, got %pOF\n",
++				dp->index, mdio_np, phy_parent_node);
++			phys_are_valid = false;
++		} else {
++			ret = of_property_read_u32(phy_node, "reg", &phy_id);
++			if (ret < 0) {
++				dev_err(dev->dev, "failed to read PHY ID for port %d. Error %d\n",
++					dp->index, ret);
++				phys_are_valid = false;
++			} else if (phy_id != dev->phy_addr_map[dp->index]) {
++				dev_err(dev->dev, "PHY ID mismatch for port %d, expected 0x%x, got 0x%x\n",
++					dp->index, dev->phy_addr_map[dp->index],
++					phy_id);
++				phys_are_valid = false;
++			} else {
++				bus->phy_mask |= BIT(phy_id);
++			}
++		}
++
++		of_node_put(phy_node);
++		of_node_put(phy_parent_node);
++	}
++
++	if (!phys_are_valid)
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * ksz_mdio_register - Register and configure the MDIO bus for the KSZ device.
+  * @dev: Pointer to the KSZ device structure.
+@@ -2392,7 +2463,6 @@ static int ksz_mdio_register(struct ksz_device *dev)
+ 	struct dsa_switch *ds = dev->ds;
+ 	struct device_node *mdio_np;
+ 	struct mii_bus *bus;
+-	struct dsa_port *dp;
+ 	int ret, i;
 
- .../bindings/net/dsa/microchip,ksz.yaml       |  20 ++
- drivers/net/dsa/microchip/ksz_common.c        | 260 ++++++++++++++++--
- drivers/net/dsa/microchip/ksz_common.h        |  59 ++++
- drivers/net/dsa/microchip/lan937x.h           |   2 +
- drivers/net/dsa/microchip/lan937x_main.c      | 226 +++++++++++++--
- drivers/net/dsa/microchip/lan937x_reg.h       |   4 +
- 6 files changed, 539 insertions(+), 32 deletions(-)
+ 	mdio_np = of_get_child_by_name(dev->dev->of_node, "mdio");
+@@ -2451,11 +2521,9 @@ static int ksz_mdio_register(struct ksz_device *dev)
+ 		snprintf(bus->id, MII_BUS_ID_SIZE, "SMI-%d", ds->index);
+ 	}
 
+-	dsa_switch_for_each_user_port(dp, dev->ds) {
+-		if (dev->info->internal_phy[dp->index] &&
+-		    dev->phy_addr_map[dp->index] < PHY_MAX_ADDR)
+-			bus->phy_mask |= BIT(dev->phy_addr_map[dp->index]);
+-	}
++	ret = ksz_parse_dt_phy_config(dev, bus, mdio_np);
++	if (ret)
++		goto put_mdio_node;
+
+ 	ds->phys_mii_mask = bus->phy_mask;
+ 	bus->parent = ds->dev;
 --
 2.39.5
 
