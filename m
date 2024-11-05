@@ -1,14 +1,13 @@
 Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9E81C233C
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860F413633F
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730795911; cv=none; b=BBN4L2/UGHam+oXevY/jghiCJp4KNo3vfcJdFHTPhIrGN7Nn//kDr1pVCXaIxBh4B0wUFOYXUjmxpHg66tDDsj+LcQi1+4C/WVsS/WkjN77+CsSbEZjmgXdZj7O0wy72egZ/+nn5U7xEm3EEsZPynTV2seAVtKfdHKR65eaTLAM=
+	t=1730795911; cv=none; b=U0y2DQe8BafT7xiwsk6YAHNGxDHMECnOk+57BnNlyTkDaBWqratcF7Xo3d7mIWMt3H8mgPVjsWJixnROA4iBiH8Ae2IV8OM0TJB23lg5Xx0Qc7kWYAhHiRtKnORmqF2NphzxYU74dRSLtyrc3pCZb13gMjYmtOUkDlNpwYbkWZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730795911; c=relaxed/simple;
-	bh=3dZ6lE+241yXH658707KweYx75dkkPuH1aXqkfqImYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJVlUhzzT6goNWbqvsKveBzfEi8ETPnn/fFm0rTu3i0rC2kZcbWEmwjwLXg8aMxyAOp7EiN+XlYQWpubkW+Hwfhk+N2o6WDWFhiP8dh+D0lH+fH4rQfHetWL1rf2CEL3TOTcjEIDl1GO55CDC/NN5Jgp6zhpXeG3bjpyqDmRitQ=
+	bh=xesErViyi3xjC7jxBFte8NoyGGgvxSI+jxdpRC4R0a8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pb/ehOtolPylLChg547UusvqoSri+kx5TJN/kzPDUgGCbw4HVY7R6+N4ocN4fW819NuGsnHIQ1d0el0M5tBSFA6glCvlC4Qx8hXvzh9WKI8lFy1FExJ0KY+9OXOmiCqA3c6YlMdjua/NXLayT52qH8XTlGqaX9ONU4WdoMUH+W0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
@@ -16,8 +15,8 @@ Received: from labnh.big (syn-172-222-091-149.res.spectrum.com [172.222.91.149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by smtp.chopps.org (Postfix) with ESMTPSA id C1D747D128;
-	Tue,  5 Nov 2024 08:38:28 +0000 (UTC)
+	by smtp.chopps.org (Postfix) with ESMTPSA id 4333C7D0E5;
+	Tue,  5 Nov 2024 08:38:20 +0000 (UTC)
 From: Christian Hopps <chopps@chopps.org>
 To: devel@linux-ipsec.org
 Cc: Steffen Klassert <steffen.klassert@secunet.com>,
@@ -26,14 +25,11 @@ Cc: Steffen Klassert <steffen.klassert@secunet.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Simon Horman <horms@kernel.org>,
 	Antony Antony <antony@phenome.org>,
-	Christian Hopps <chopps@chopps.org>,
-	Christian Hopps <chopps@labn.net>
-Subject: [PATCH ipsec-next v13 03/15] xfrm: netlink: add config (netlink) options
-Date: Tue,  5 Nov 2024 03:37:47 -0500
-Message-ID: <20241105083759.2172771-4-chopps@chopps.org>
+	Christian Hopps <chopps@chopps.org>
+Subject: [PATCH ipsec-next v13 00/15] Add IP-TFS mode to xfrm
+Date: Tue,  5 Nov 2024 03:37:44 -0500
+Message-ID: <20241105083759.2172771-1-chopps@chopps.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241105083759.2172771-1-chopps@chopps.org>
-References: <20241105083759.2172771-1-chopps@chopps.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,158 +38,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christian Hopps <chopps@labn.net>
+* Summary of Changes:
 
-Add netlink options for configuring IP-TFS SAs.
+This patchset adds a new xfrm mode implementing on-demand IP-TFS. IP-TFS
+(AggFrag encapsulation) has been standardized in RFC9347.
 
-Signed-off-by: Christian Hopps <chopps@labn.net>
----
- include/uapi/linux/xfrm.h |  9 ++++++-
- net/xfrm/xfrm_compat.c    | 10 ++++++--
- net/xfrm/xfrm_user.c      | 52 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+), 3 deletions(-)
+  Link: https://www.rfc-editor.org/rfc/rfc9347.txt
 
-diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-index d73a97e3030a..a23495c0e0a1 100644
---- a/include/uapi/linux/xfrm.h
-+++ b/include/uapi/linux/xfrm.h
-@@ -158,7 +158,8 @@ enum {
- #define XFRM_MODE_ROUTEOPTIMIZATION 2
- #define XFRM_MODE_IN_TRIGGER 3
- #define XFRM_MODE_BEET 4
--#define XFRM_MODE_MAX 5
-+#define XFRM_MODE_IPTFS 5
-+#define XFRM_MODE_MAX 6
- 
- /* Netlink configuration messages.  */
- enum {
-@@ -323,6 +324,12 @@ enum xfrm_attr_type_t {
- 	XFRMA_SA_DIR,		/* __u8 */
- 	XFRMA_NAT_KEEPALIVE_INTERVAL,	/* __u32 in seconds for NAT keepalive */
- 	XFRMA_SA_PCPU,		/* __u32 */
-+	XFRMA_IPTFS_DROP_TIME,	/* __u32 in: usec to wait for next seq */
-+	XFRMA_IPTFS_REORDER_WINDOW, /* __u16 in: reorder window size (pkts) */
-+	XFRMA_IPTFS_DONT_FRAG,	/* out: don't use fragmentation */
-+	XFRMA_IPTFS_INIT_DELAY,	/* __u32 out: initial packet wait delay (usec) */
-+	XFRMA_IPTFS_MAX_QSIZE,	/* __u32 out: max ingress queue size (octets) */
-+	XFRMA_IPTFS_PKT_SIZE,	/* __u32 out: size of outer packet, 0 for PMTU */
- 	__XFRMA_MAX
- 
- #define XFRMA_OUTPUT_MARK XFRMA_SET_MARK	/* Compatibility */
-diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
-index 5b9ee63e30b6..b8d2e6930041 100644
---- a/net/xfrm/xfrm_compat.c
-+++ b/net/xfrm/xfrm_compat.c
-@@ -284,9 +284,15 @@ static int xfrm_xlate64_attr(struct sk_buff *dst, const struct nlattr *src)
- 	case XFRMA_SA_DIR:
- 	case XFRMA_NAT_KEEPALIVE_INTERVAL:
- 	case XFRMA_SA_PCPU:
-+	case XFRMA_IPTFS_DROP_TIME:
-+	case XFRMA_IPTFS_REORDER_WINDOW:
-+	case XFRMA_IPTFS_DONT_FRAG:
-+	case XFRMA_IPTFS_INIT_DELAY:
-+	case XFRMA_IPTFS_MAX_QSIZE:
-+	case XFRMA_IPTFS_PKT_SIZE:
- 		return xfrm_nla_cpy(dst, src, nla_len(src));
- 	default:
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_PCPU);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_IPTFS_PKT_SIZE);
- 		pr_warn_once("unsupported nla_type %d\n", src->nla_type);
- 		return -EOPNOTSUPP;
- 	}
-@@ -441,7 +447,7 @@ static int xfrm_xlate32_attr(void *dst, const struct nlattr *nla,
- 	int err;
- 
- 	if (type > XFRMA_MAX) {
--		BUILD_BUG_ON(XFRMA_MAX != XFRMA_SA_PCPU);
-+		BUILD_BUG_ON(XFRMA_MAX != XFRMA_IPTFS_PKT_SIZE);
- 		NL_SET_ERR_MSG(extack, "Bad attribute");
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index b6ce2b3c6b87..e9b0f7a5804e 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -301,6 +301,16 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			NL_SET_ERR_MSG(extack, "TFC padding can only be used in tunnel mode");
- 			goto out;
- 		}
-+		if ((attrs[XFRMA_IPTFS_DROP_TIME] ||
-+		     attrs[XFRMA_IPTFS_REORDER_WINDOW] ||
-+		     attrs[XFRMA_IPTFS_DONT_FRAG] ||
-+		     attrs[XFRMA_IPTFS_INIT_DELAY] ||
-+		     attrs[XFRMA_IPTFS_MAX_QSIZE] ||
-+		     attrs[XFRMA_IPTFS_PKT_SIZE]) &&
-+		    p->mode != XFRM_MODE_IPTFS) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS options can only be used in IP-TFS mode");
-+			goto out;
-+		}
- 		break;
- 
- 	case IPPROTO_COMP:
-@@ -421,6 +431,18 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			goto out;
- 		}
- 
-+		if (attrs[XFRMA_IPTFS_DROP_TIME]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS drop time should not be set for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_IPTFS_REORDER_WINDOW]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS reorder window should not be set for output SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
- 		if (attrs[XFRMA_REPLAY_VAL]) {
- 			struct xfrm_replay_state *replay;
- 
-@@ -458,6 +480,30 @@ static int verify_newsa_info(struct xfrm_usersa_info *p,
- 			}
- 
- 		}
-+
-+		if (attrs[XFRMA_IPTFS_DONT_FRAG]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS don't fragment should not be set for input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_IPTFS_INIT_DELAY]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS initial delay should not be set for input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_IPTFS_MAX_QSIZE]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS max queue size should not be set for input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (attrs[XFRMA_IPTFS_PKT_SIZE]) {
-+			NL_SET_ERR_MSG(extack, "IP-TFS packet size should not be set for input SA");
-+			err = -EINVAL;
-+			goto out;
-+		}
- 	}
- 
- 	if (!sa_dir && attrs[XFRMA_SA_PCPU]) {
-@@ -3219,6 +3265,12 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_SA_DIR]          = NLA_POLICY_RANGE(NLA_U8, XFRM_SA_DIR_IN, XFRM_SA_DIR_OUT),
- 	[XFRMA_NAT_KEEPALIVE_INTERVAL] = { .type = NLA_U32 },
- 	[XFRMA_SA_PCPU]		= { .type = NLA_U32 },
-+	[XFRMA_IPTFS_DROP_TIME]		= { .type = NLA_U32 },
-+	[XFRMA_IPTFS_REORDER_WINDOW]	= { .type = NLA_U16 },
-+	[XFRMA_IPTFS_DONT_FRAG]		= { .type = NLA_FLAG },
-+	[XFRMA_IPTFS_INIT_DELAY]	= { .type = NLA_U32 },
-+	[XFRMA_IPTFS_MAX_QSIZE]		= { .type = NLA_U32 },
-+	[XFRMA_IPTFS_PKT_SIZE]	= { .type = NLA_U32 },
- };
- EXPORT_SYMBOL_GPL(xfrma_policy);
- 
--- 
-2.47.0
+This feature supports demand driven (i.e., non-constant send rate)
+IP-TFS to take advantage of the AGGFRAG ESP payload encapsulation. This
+payload type supports aggregation and fragmentation of the inner IP
+packet stream which in turn yields higher small-packet bandwidth as well
+as reducing MTU/PMTU issues. Congestion control is unimplementated as
+the send rate is demand driven rather than constant.
 
+In order to allow loading this fucntionality as a module a set of
+callbacks xfrm_mode_cbs has been added to xfrm as well.
+
+Patchset Structure:
+-------------------
+
+The first 5 commits are changes to the net and xfrm infrastructure to
+support the callbacks as well as more generic IP-TFS additions that
+may be used outside the actual IP-TFS implementation.
+
+  - xfrm: config: add CONFIG_XFRM_IPTFS
+  - include: uapi: protocol number and packet structs for AGGFRAG in ESP
+  - xfrm: netlink: add config (netlink) options
+  - xfrm: add mode_cbs module functionality
+  - xfrm: add generic iptfs defines and functionality
+
+The last 10 commits constitute the IP-TFS implementation constructed in
+layers to make review easier. The first 9 commits all apply to a single
+file `net/xfrm/xfrm_iptfs.c`, the last commit adds a new tracepoint
+header file along with the use of these new tracepoint calls.
+
+  - xfrm: iptfs: add new iptfs xfrm mode impl
+  - xfrm: iptfs: add user packet (tunnel ingress) handling
+  - xfrm: iptfs: share page fragments of inner packets
+  - xfrm: iptfs: add fragmenting of larger than MTU user packets
+  - xfrm: iptfs: add basic receive packet (tunnel egress) handling
+  - xfrm: iptfs: handle received fragmented inner packets
+  - xfrm: iptfs: add reusing received skb for the tunnel egress packet
+  - xfrm: iptfs: add skb-fragment sharing code
+  - xfrm: iptfs: handle reordering of received packets
+  - xfrm: iptfs: add tracepoint functionality
+
+Patchset History:
+-----------------
+
+v12->v13 (11/5/2024)
+  - rebase on updated ipsec-next
+  - remove non-standard WARN_ON usages
+  - remove non-standard (void) prefix use which indicated ignored return value.
+  - move 2 structure fields to compact in-core layout
+  - refactor loop out of iptfs_input_ordered() to improve code readability
+  - a few format cleanup changes.
+
+v11->v12 (9/14/2024)
+  - fix for SA migration, dont alloc over top of newly cloned data 
+
+v10->v11 (9/6/2024)
+  - fix double init when xfrm_migrate_state (clone) is called.
+  - rename create_state, clone, and delete_state callbacks to
+    init_state, clone_state, and destroy_state.
+  - skb_orphan skbs prior to aggregation
+
+v9->v10 (8/23/2024)
+  - use relocated skb_copy_seq_read now in skbuff.[ch]
+  - be thoughtful about skb reserve space in new skbs, use existing #defines and
+    skb meta-data to calculate new skb reserve and alignment.
+  - only copy dst (on in/out) and dev, ext (on resume input) values from
+    existing skb header to new skb's -- drop use of rejected new
+    ___copy_skb_header() function.
+  - update other iptfs specific skb function names
+
+v8->v9 (8/7/2024)
+  - factor common code from skbuff.c:__copy_skb_header into
+    ___copy_skb_header and use in iptfs rather that copying any code.
+  - change all BUG_ON to WARN_ON_ONCE
+  - remove unwanted new NOSKB xfrm MIB error counter
+  - remove unneeded copy or share choice function
+  - ifdef CONFIG_IPV6 around IPv6 function
+
+v7->v8 (8/4/2024)
+  - Use lock and rcu to load iptfs module -- copy existing use pattern
+  - fix 2 warnings from the kernel bot
+
+v6->v7 (8/1/2024)
+  - Rebased on latest ipsec-next
+
+v5->v6 (7/31/2024)
+  * sysctl: removed IPTFS sysctl additions
+  - xfrm: use array of pointers vs structs for mode callbacks
+  - iptfs: eliminate a memleak during state alloc failure
+  - iptfs: free send queue content on SA delete
+  - add some kdoc and comments
+  - cleanup a couple formatting choices per Steffen
+
+v4->v5 (7/14/2024)
+  - uapi: add units to doc comments
+  - iptfs: add MODULE_DESCRIPTION()
+  - squash nl-direction-update commit
+
+v2->v4 (6/17/2024)
+
+  - iptfs: copy only the netlink attributes to user based on the
+    direction of the SA.
+
+  - xfrm: stats: in the output path check for skb->dev == NULL prior to
+    setting xfrm statistics on dev_net(skb->dev) as skb->dev may be NULL
+    for locally generated packets.
+
+  - xfrm: stats: fix an input use case where dev_net(skb->dev) is used
+    to inc stats after skb is possibly NULL'd earlier. Switch to using
+    existing saved `net` pointer.
+
+v2->v3
+  - Git User Glitch
+
+v1 -> v2 (5/19/2024)
+
+  Updates based on feedback from Sabrina Dubroca, Simon Horman, Antony.
+
+  o Add handling of new netlink SA direction attribute (Antony).
+  o Split single patch/commit of xfrm_iptfs.c (the actual IP-TFS impl)
+    into 9+1 distinct layered functionality commits for aiding review.
+  - xfrm: fix return check on clone() callback
+  - xfrm: add sa_len() callback in xfrm_mode_cbs for copy to user
+  - iptfs: remove unneeded skb free count variable
+  - iptfs: remove unused variable and "breadcrumb" for future code.
+  - iptfs: use do_div() to avoid "__udivd13 missing" link failure.
+  - iptfs: remove some BUG_ON() assertions questioned in review.
+
+RFCv2 -> v1 (2/19/2024)
+
+  Updates based on feedback from Sabrina Dubroca, kernel test robot
+
+RFCv1 -> RFCv2 (11/12/2023)
+
+  Updates based on feedback from Simon Horman, Antony,
+  Michael Richardson, and kernel test robot.
+
+RFCv1 (11/10/2023)
+
+Patchset Changes:
+-----------------
+
+ include/net/xfrm.h         |   44 +
+ include/uapi/linux/in.h    |    2 +
+ include/uapi/linux/ip.h    |   16 +
+ include/uapi/linux/ipsec.h |    3 +-
+ include/uapi/linux/snmp.h  |    2 +
+ include/uapi/linux/xfrm.h  |    9 +-
+ net/ipv4/esp4.c            |    3 +-
+ net/ipv6/esp6.c            |    3 +-
+ net/netfilter/nft_xfrm.c   |    3 +-
+ net/xfrm/Kconfig           |   16 +
+ net/xfrm/Makefile          |    1 +
+ net/xfrm/trace_iptfs.h     |  218 ++++
+ net/xfrm/xfrm_compat.c     |   10 +-
+ net/xfrm/xfrm_device.c     |    4 +-
+ net/xfrm/xfrm_input.c      |   18 +-
+ net/xfrm/xfrm_iptfs.c      | 2762 ++++++++++++++++++++++++++++++++++++++++++++
+ net/xfrm/xfrm_output.c     |    6 +
+ net/xfrm/xfrm_policy.c     |   26 +-
+ net/xfrm/xfrm_proc.c       |    2 +
+ net/xfrm/xfrm_state.c      |   84 ++
+ net/xfrm/xfrm_user.c       |   77 ++
+ 21 files changed, 3290 insertions(+), 19 deletions(-)
