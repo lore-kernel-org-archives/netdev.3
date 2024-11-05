@@ -1,13 +1,14 @@
 Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860F413633F
-	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541EB1CDFB8
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 08:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730795911; cv=none; b=U0y2DQe8BafT7xiwsk6YAHNGxDHMECnOk+57BnNlyTkDaBWqratcF7Xo3d7mIWMt3H8mgPVjsWJixnROA4iBiH8Ae2IV8OM0TJB23lg5Xx0Qc7kWYAhHiRtKnORmqF2NphzxYU74dRSLtyrc3pCZb13gMjYmtOUkDlNpwYbkWZI=
+	t=1730795911; cv=none; b=iqySEWmh8zzZ4YdPojgoy24RAxX1T55s0UEwpcuH96YNO93b1IUhwa5FwY+aH3RoaLYwDa/2/asZI3MYZ33D5up75wDhQnla21KVH5Ttv3w1jjOlZIMNFxe52MX890ihmRmRDdu+TVtpSSYalHdvTIAPptFuMncIZ+s87Y0YwS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730795911; c=relaxed/simple;
-	bh=xesErViyi3xjC7jxBFte8NoyGGgvxSI+jxdpRC4R0a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pb/ehOtolPylLChg547UusvqoSri+kx5TJN/kzPDUgGCbw4HVY7R6+N4ocN4fW819NuGsnHIQ1d0el0M5tBSFA6glCvlC4Qx8hXvzh9WKI8lFy1FExJ0KY+9OXOmiCqA3c6YlMdjua/NXLayT52qH8XTlGqaX9ONU4WdoMUH+W0=
+	bh=AuHAEdtf6fahFQAihssX2HoAL0Qyt7aKXaUfT3AD++o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Pow8BgbtVgqM8yKlIdEqSaGHJf4SSLVs47huF89Ob6XfFDi1eNKzJUIfqw8C+JGhQMrMgeq6RWLv8AkESAhDu316aQ4cx5xr6eC+2yIpLmqw9hDv2izhiy0qzKD57OvruR/wsr1gVe2SW73hWJHdduStSzLt3rrqxlp0iVvkL4s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
@@ -15,8 +16,8 @@ Received: from labnh.big (syn-172-222-091-149.res.spectrum.com [172.222.91.149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by smtp.chopps.org (Postfix) with ESMTPSA id 4333C7D0E5;
-	Tue,  5 Nov 2024 08:38:20 +0000 (UTC)
+	by smtp.chopps.org (Postfix) with ESMTPSA id 546437D129;
+	Tue,  5 Nov 2024 08:38:29 +0000 (UTC)
 From: Christian Hopps <chopps@chopps.org>
 To: devel@linux-ipsec.org
 Cc: Steffen Klassert <steffen.klassert@secunet.com>,
@@ -25,11 +26,14 @@ Cc: Steffen Klassert <steffen.klassert@secunet.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Simon Horman <horms@kernel.org>,
 	Antony Antony <antony@phenome.org>,
-	Christian Hopps <chopps@chopps.org>
-Subject: [PATCH ipsec-next v13 00/15] Add IP-TFS mode to xfrm
-Date: Tue,  5 Nov 2024 03:37:44 -0500
-Message-ID: <20241105083759.2172771-1-chopps@chopps.org>
+	Christian Hopps <chopps@chopps.org>,
+	Christian Hopps <chopps@labn.net>
+Subject: [PATCH ipsec-next v13 04/15] xfrm: add mode_cbs module functionality
+Date: Tue,  5 Nov 2024 03:37:48 -0500
+Message-ID: <20241105083759.2172771-5-chopps@chopps.org>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241105083759.2172771-1-chopps@chopps.org>
+References: <20241105083759.2172771-1-chopps@chopps.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,172 +42,356 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-* Summary of Changes:
+From: Christian Hopps <chopps@labn.net>
 
-This patchset adds a new xfrm mode implementing on-demand IP-TFS. IP-TFS
-(AggFrag encapsulation) has been standardized in RFC9347.
+Add a set of callbacks xfrm_mode_cbs to xfrm_state. These callbacks
+enable the addition of new xfrm modes, such as IP-TFS to be defined
+in modules.
 
-  Link: https://www.rfc-editor.org/rfc/rfc9347.txt
+Signed-off-by: Christian Hopps <chopps@labn.net>
+---
+ include/net/xfrm.h     | 43 +++++++++++++++++++++++++
+ net/xfrm/xfrm_device.c |  3 +-
+ net/xfrm/xfrm_input.c  | 18 +++++++++--
+ net/xfrm/xfrm_output.c |  2 ++
+ net/xfrm/xfrm_policy.c | 18 +++++++----
+ net/xfrm/xfrm_state.c  | 72 ++++++++++++++++++++++++++++++++++++++++++
+ net/xfrm/xfrm_user.c   | 13 ++++++++
+ 7 files changed, 159 insertions(+), 10 deletions(-)
 
-This feature supports demand driven (i.e., non-constant send rate)
-IP-TFS to take advantage of the AGGFRAG ESP payload encapsulation. This
-payload type supports aggregation and fragmentation of the inner IP
-packet stream which in turn yields higher small-packet bandwidth as well
-as reducing MTU/PMTU issues. Congestion control is unimplementated as
-the send rate is demand driven rather than constant.
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 2b87999bd5aa..945d14568a16 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -212,6 +212,7 @@ struct xfrm_state {
+ 		u16		family;
+ 		xfrm_address_t	saddr;
+ 		int		header_len;
++		int		enc_hdr_len;
+ 		int		trailer_len;
+ 		u32		extra_flags;
+ 		struct xfrm_mark	smark;
+@@ -302,6 +303,9 @@ struct xfrm_state {
+ 	 * interpreted by xfrm_type methods. */
+ 	void			*data;
+ 	u8			dir;
++
++	const struct xfrm_mode_cbs	*mode_cbs;
++	void				*mode_data;
+ };
+ 
+ static inline struct net *xs_net(struct xfrm_state *x)
+@@ -459,6 +463,45 @@ struct xfrm_type_offload {
+ int xfrm_register_type_offload(const struct xfrm_type_offload *type, unsigned short family);
+ void xfrm_unregister_type_offload(const struct xfrm_type_offload *type, unsigned short family);
+ 
++/**
++ * struct xfrm_mode_cbs - XFRM mode callbacks
++ * @owner: module owner or NULL
++ * @init_state: Add/init mode specific state in `xfrm_state *x`
++ * @clone_state: Copy mode specific values from `orig` to new state `x`
++ * @destroy_state: Cleanup mode specific state from `xfrm_state *x`
++ * @user_init: Process mode specific netlink attributes from user
++ * @copy_to_user: Add netlink attributes to `attrs` based on state in `x`
++ * @sa_len: Return space required to store mode specific netlink attributes
++ * @get_inner_mtu: Return avail payload space after removing encap overhead
++ * @input: Process received packet from SA using mode
++ * @output: Output given packet using mode
++ * @prepare_output: Add mode specific encapsulation to packet in skb. On return
++ *	`transport_header` should point at ESP header, `network_header` should
++ *	point at outer IP header and `mac_header` should opint at the
++ *	protocol/nexthdr field of the outer IP.
++ *
++ * One should examine and understand the specific uses of these callbacks in
++ * xfrm for further detail on how and when these functions are called. RTSL.
++ */
++struct xfrm_mode_cbs {
++	struct module	*owner;
++	int	(*init_state)(struct xfrm_state *x);
++	int	(*clone_state)(struct xfrm_state *x, struct xfrm_state *orig);
++	void	(*destroy_state)(struct xfrm_state *x);
++	int	(*user_init)(struct net *net, struct xfrm_state *x,
++			     struct nlattr **attrs,
++			     struct netlink_ext_ack *extack);
++	int	(*copy_to_user)(struct xfrm_state *x, struct sk_buff *skb);
++	unsigned int (*sa_len)(const struct xfrm_state *x);
++	u32	(*get_inner_mtu)(struct xfrm_state *x, int outer_mtu);
++	int	(*input)(struct xfrm_state *x, struct sk_buff *skb);
++	int	(*output)(struct net *net, struct sock *sk, struct sk_buff *skb);
++	int	(*prepare_output)(struct xfrm_state *x, struct sk_buff *skb);
++};
++
++int xfrm_register_mode_cbs(u8 mode, const struct xfrm_mode_cbs *mode_cbs);
++void xfrm_unregister_mode_cbs(u8 mode);
++
+ static inline int xfrm_af2proto(unsigned int family)
+ {
+ 	switch(family) {
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index b33c4591e09a..1fe1b07d879d 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -42,7 +42,8 @@ static void __xfrm_mode_tunnel_prep(struct xfrm_state *x, struct sk_buff *skb,
+ 		skb->transport_header = skb->network_header + hsize;
+ 
+ 	skb_reset_mac_len(skb);
+-	pskb_pull(skb, skb->mac_len + x->props.header_len);
++	pskb_pull(skb,
++		  skb->mac_len + x->props.header_len - x->props.enc_hdr_len);
+ }
+ 
+ static void __xfrm_mode_beet_prep(struct xfrm_state *x, struct sk_buff *skb,
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 841a60a6fbfe..2c4ae61e7e3a 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -446,6 +446,9 @@ static int xfrm_inner_mode_input(struct xfrm_state *x,
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	default:
++		if (x->mode_cbs && x->mode_cbs->input)
++			return x->mode_cbs->input(x, skb);
++
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	}
+@@ -453,6 +456,10 @@ static int xfrm_inner_mode_input(struct xfrm_state *x,
+ 	return -EOPNOTSUPP;
+ }
+ 
++/* NOTE: encap_type - In addition to the normal (non-negative) values for
++ * encap_type, a negative value of -1 or -2 can be used to resume/restart this
++ * function after a previous invocation early terminated for async operation.
++ */
+ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ {
+ 	const struct xfrm_state_afinfo *afinfo;
+@@ -489,6 +496,10 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 
+ 		family = x->props.family;
+ 
++		/* An encap_type of -2 indicates reconstructed inner packet */
++		if (encap_type == -2)
++			goto resume_decapped;
++
+ 		/* An encap_type of -1 indicates async resumption. */
+ 		if (encap_type == -1) {
+ 			async = 1;
+@@ -679,11 +690,14 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 
+ 		XFRM_MODE_SKB_CB(skb)->protocol = nexthdr;
+ 
+-		if (xfrm_inner_mode_input(x, skb)) {
++		err = xfrm_inner_mode_input(x, skb);
++		if (err == -EINPROGRESS)
++			return 0;
++		else if (err) {
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEMODEERROR);
+ 			goto drop;
+ 		}
+-
++resume_decapped:
+ 		if (x->outer_mode.flags & XFRM_MODE_FLAG_TUNNEL) {
+ 			decaps = 1;
+ 			break;
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index e5722c95b8bb..ef81359e4038 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -472,6 +472,8 @@ static int xfrm_outer_mode_output(struct xfrm_state *x, struct sk_buff *skb)
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	default:
++		if (x->mode_cbs && x->mode_cbs->prepare_output)
++			return x->mode_cbs->prepare_output(x, skb);
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	}
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 8a1b83191a6c..7f5176b2a7b1 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -2748,13 +2748,17 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+ 
+ 		dst1->input = dst_discard;
+ 
+-		rcu_read_lock();
+-		afinfo = xfrm_state_afinfo_get_rcu(inner_mode->family);
+-		if (likely(afinfo))
+-			dst1->output = afinfo->output;
+-		else
+-			dst1->output = dst_discard_out;
+-		rcu_read_unlock();
++		if (xfrm[i]->mode_cbs && xfrm[i]->mode_cbs->output) {
++			dst1->output = xfrm[i]->mode_cbs->output;
++		} else {
++			rcu_read_lock();
++			afinfo = xfrm_state_afinfo_get_rcu(inner_mode->family);
++			if (likely(afinfo))
++				dst1->output = afinfo->output;
++			else
++				dst1->output = dst_discard_out;
++			rcu_read_unlock();
++		}
+ 
+ 		xdst_prev = xdst;
+ 
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index e3266a5d4f90..55e8ba0a4244 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -515,6 +515,60 @@ static const struct xfrm_mode *xfrm_get_mode(unsigned int encap, int family)
+ 	return NULL;
+ }
+ 
++static const struct xfrm_mode_cbs  __rcu *xfrm_mode_cbs_map[XFRM_MODE_MAX];
++static DEFINE_SPINLOCK(xfrm_mode_cbs_map_lock);
++
++int xfrm_register_mode_cbs(u8 mode, const struct xfrm_mode_cbs *mode_cbs)
++{
++	if (mode >= XFRM_MODE_MAX)
++		return -EINVAL;
++
++	spin_lock_bh(&xfrm_mode_cbs_map_lock);
++	rcu_assign_pointer(xfrm_mode_cbs_map[mode], mode_cbs);
++	spin_unlock_bh(&xfrm_mode_cbs_map_lock);
++
++	return 0;
++}
++EXPORT_SYMBOL(xfrm_register_mode_cbs);
++
++void xfrm_unregister_mode_cbs(u8 mode)
++{
++	if (mode >= XFRM_MODE_MAX)
++		return;
++
++	spin_lock_bh(&xfrm_mode_cbs_map_lock);
++	RCU_INIT_POINTER(xfrm_mode_cbs_map[mode], NULL);
++	spin_unlock_bh(&xfrm_mode_cbs_map_lock);
++	synchronize_rcu();
++}
++EXPORT_SYMBOL(xfrm_unregister_mode_cbs);
++
++static const struct xfrm_mode_cbs *xfrm_get_mode_cbs(u8 mode)
++{
++	const struct xfrm_mode_cbs *cbs;
++	bool try_load = true;
++
++	if (mode >= XFRM_MODE_MAX)
++		return NULL;
++
++retry:
++	rcu_read_lock();
++
++	cbs = rcu_dereference(xfrm_mode_cbs_map[mode]);
++	if (cbs && !try_module_get(cbs->owner))
++		cbs = NULL;
++
++	rcu_read_unlock();
++
++	if (mode == XFRM_MODE_IPTFS && !cbs && try_load) {
++		request_module("xfrm-iptfs");
++		try_load = false;
++		goto retry;
++	}
++
++	return cbs;
++}
++
+ void xfrm_state_free(struct xfrm_state *x)
+ {
+ 	kmem_cache_free(xfrm_state_cache, x);
+@@ -523,6 +577,8 @@ EXPORT_SYMBOL(xfrm_state_free);
+ 
+ static void ___xfrm_state_destroy(struct xfrm_state *x)
+ {
++	if (x->mode_cbs && x->mode_cbs->destroy_state)
++		x->mode_cbs->destroy_state(x);
+ 	hrtimer_cancel(&x->mtimer);
+ 	del_timer_sync(&x->rtimer);
+ 	kfree(x->aead);
+@@ -682,6 +738,7 @@ struct xfrm_state *xfrm_state_alloc(struct net *net)
+ 		x->replay_maxdiff = 0;
+ 		x->pcpu_num = UINT_MAX;
+ 		spin_lock_init(&x->lock);
++		x->mode_data = NULL;
+ 	}
+ 	return x;
+ }
+@@ -1944,6 +2001,12 @@ static struct xfrm_state *xfrm_state_clone(struct xfrm_state *orig,
+ 	x->new_mapping_sport = 0;
+ 	x->dir = orig->dir;
+ 
++	x->mode_cbs = orig->mode_cbs;
++	if (x->mode_cbs && x->mode_cbs->clone_state) {
++		if (x->mode_cbs->clone_state(x, orig))
++			goto error;
++	}
++
+ 	return x;
+ 
+  error:
+@@ -2985,6 +3048,9 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 	case XFRM_MODE_TUNNEL:
+ 		break;
+ 	default:
++		if (x->mode_cbs && x->mode_cbs->get_inner_mtu)
++			return x->mode_cbs->get_inner_mtu(x, mtu);
++
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	}
+@@ -3085,6 +3151,12 @@ int __xfrm_init_state(struct xfrm_state *x, bool init_replay, bool offload,
+ 		}
+ 	}
+ 
++	x->mode_cbs = xfrm_get_mode_cbs(x->props.mode);
++	if (x->mode_cbs) {
++		if (x->mode_cbs->init_state)
++			err = x->mode_cbs->init_state(x);
++		module_put(x->mode_cbs->owner);
++	}
+ error:
+ 	return err;
+ }
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index e9b0f7a5804e..b8da81e80027 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -934,6 +934,12 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
+ 			goto error;
+ 	}
+ 
++	if (x->mode_cbs && x->mode_cbs->user_init) {
++		err = x->mode_cbs->user_init(net, x, attrs, extack);
++		if (err)
++			goto error;
++	}
++
+ 	return x;
+ 
+ error:
+@@ -1349,6 +1355,10 @@ static int copy_to_user_state_extra(struct xfrm_state *x,
+ 		if (ret)
+ 			goto out;
+ 	}
++	if (x->mode_cbs && x->mode_cbs->copy_to_user)
++		ret = x->mode_cbs->copy_to_user(x, skb);
++	if (ret)
++		goto out;
+ 	if (x->mapping_maxage) {
+ 		ret = nla_put_u32(skb, XFRMA_MTIMER_THRESH, x->mapping_maxage);
+ 		if (ret)
+@@ -3605,6 +3615,9 @@ static inline unsigned int xfrm_sa_len(struct xfrm_state *x)
+ 	if (x->nat_keepalive_interval)
+ 		l += nla_total_size(sizeof(x->nat_keepalive_interval));
+ 
++	if (x->mode_cbs && x->mode_cbs->sa_len)
++		l += x->mode_cbs->sa_len(x);
++
+ 	return l;
+ }
+ 
+-- 
+2.47.0
 
-In order to allow loading this fucntionality as a module a set of
-callbacks xfrm_mode_cbs has been added to xfrm as well.
-
-Patchset Structure:
--------------------
-
-The first 5 commits are changes to the net and xfrm infrastructure to
-support the callbacks as well as more generic IP-TFS additions that
-may be used outside the actual IP-TFS implementation.
-
-  - xfrm: config: add CONFIG_XFRM_IPTFS
-  - include: uapi: protocol number and packet structs for AGGFRAG in ESP
-  - xfrm: netlink: add config (netlink) options
-  - xfrm: add mode_cbs module functionality
-  - xfrm: add generic iptfs defines and functionality
-
-The last 10 commits constitute the IP-TFS implementation constructed in
-layers to make review easier. The first 9 commits all apply to a single
-file `net/xfrm/xfrm_iptfs.c`, the last commit adds a new tracepoint
-header file along with the use of these new tracepoint calls.
-
-  - xfrm: iptfs: add new iptfs xfrm mode impl
-  - xfrm: iptfs: add user packet (tunnel ingress) handling
-  - xfrm: iptfs: share page fragments of inner packets
-  - xfrm: iptfs: add fragmenting of larger than MTU user packets
-  - xfrm: iptfs: add basic receive packet (tunnel egress) handling
-  - xfrm: iptfs: handle received fragmented inner packets
-  - xfrm: iptfs: add reusing received skb for the tunnel egress packet
-  - xfrm: iptfs: add skb-fragment sharing code
-  - xfrm: iptfs: handle reordering of received packets
-  - xfrm: iptfs: add tracepoint functionality
-
-Patchset History:
------------------
-
-v12->v13 (11/5/2024)
-  - rebase on updated ipsec-next
-  - remove non-standard WARN_ON usages
-  - remove non-standard (void) prefix use which indicated ignored return value.
-  - move 2 structure fields to compact in-core layout
-  - refactor loop out of iptfs_input_ordered() to improve code readability
-  - a few format cleanup changes.
-
-v11->v12 (9/14/2024)
-  - fix for SA migration, dont alloc over top of newly cloned data 
-
-v10->v11 (9/6/2024)
-  - fix double init when xfrm_migrate_state (clone) is called.
-  - rename create_state, clone, and delete_state callbacks to
-    init_state, clone_state, and destroy_state.
-  - skb_orphan skbs prior to aggregation
-
-v9->v10 (8/23/2024)
-  - use relocated skb_copy_seq_read now in skbuff.[ch]
-  - be thoughtful about skb reserve space in new skbs, use existing #defines and
-    skb meta-data to calculate new skb reserve and alignment.
-  - only copy dst (on in/out) and dev, ext (on resume input) values from
-    existing skb header to new skb's -- drop use of rejected new
-    ___copy_skb_header() function.
-  - update other iptfs specific skb function names
-
-v8->v9 (8/7/2024)
-  - factor common code from skbuff.c:__copy_skb_header into
-    ___copy_skb_header and use in iptfs rather that copying any code.
-  - change all BUG_ON to WARN_ON_ONCE
-  - remove unwanted new NOSKB xfrm MIB error counter
-  - remove unneeded copy or share choice function
-  - ifdef CONFIG_IPV6 around IPv6 function
-
-v7->v8 (8/4/2024)
-  - Use lock and rcu to load iptfs module -- copy existing use pattern
-  - fix 2 warnings from the kernel bot
-
-v6->v7 (8/1/2024)
-  - Rebased on latest ipsec-next
-
-v5->v6 (7/31/2024)
-  * sysctl: removed IPTFS sysctl additions
-  - xfrm: use array of pointers vs structs for mode callbacks
-  - iptfs: eliminate a memleak during state alloc failure
-  - iptfs: free send queue content on SA delete
-  - add some kdoc and comments
-  - cleanup a couple formatting choices per Steffen
-
-v4->v5 (7/14/2024)
-  - uapi: add units to doc comments
-  - iptfs: add MODULE_DESCRIPTION()
-  - squash nl-direction-update commit
-
-v2->v4 (6/17/2024)
-
-  - iptfs: copy only the netlink attributes to user based on the
-    direction of the SA.
-
-  - xfrm: stats: in the output path check for skb->dev == NULL prior to
-    setting xfrm statistics on dev_net(skb->dev) as skb->dev may be NULL
-    for locally generated packets.
-
-  - xfrm: stats: fix an input use case where dev_net(skb->dev) is used
-    to inc stats after skb is possibly NULL'd earlier. Switch to using
-    existing saved `net` pointer.
-
-v2->v3
-  - Git User Glitch
-
-v1 -> v2 (5/19/2024)
-
-  Updates based on feedback from Sabrina Dubroca, Simon Horman, Antony.
-
-  o Add handling of new netlink SA direction attribute (Antony).
-  o Split single patch/commit of xfrm_iptfs.c (the actual IP-TFS impl)
-    into 9+1 distinct layered functionality commits for aiding review.
-  - xfrm: fix return check on clone() callback
-  - xfrm: add sa_len() callback in xfrm_mode_cbs for copy to user
-  - iptfs: remove unneeded skb free count variable
-  - iptfs: remove unused variable and "breadcrumb" for future code.
-  - iptfs: use do_div() to avoid "__udivd13 missing" link failure.
-  - iptfs: remove some BUG_ON() assertions questioned in review.
-
-RFCv2 -> v1 (2/19/2024)
-
-  Updates based on feedback from Sabrina Dubroca, kernel test robot
-
-RFCv1 -> RFCv2 (11/12/2023)
-
-  Updates based on feedback from Simon Horman, Antony,
-  Michael Richardson, and kernel test robot.
-
-RFCv1 (11/10/2023)
-
-Patchset Changes:
------------------
-
- include/net/xfrm.h         |   44 +
- include/uapi/linux/in.h    |    2 +
- include/uapi/linux/ip.h    |   16 +
- include/uapi/linux/ipsec.h |    3 +-
- include/uapi/linux/snmp.h  |    2 +
- include/uapi/linux/xfrm.h  |    9 +-
- net/ipv4/esp4.c            |    3 +-
- net/ipv6/esp6.c            |    3 +-
- net/netfilter/nft_xfrm.c   |    3 +-
- net/xfrm/Kconfig           |   16 +
- net/xfrm/Makefile          |    1 +
- net/xfrm/trace_iptfs.h     |  218 ++++
- net/xfrm/xfrm_compat.c     |   10 +-
- net/xfrm/xfrm_device.c     |    4 +-
- net/xfrm/xfrm_input.c      |   18 +-
- net/xfrm/xfrm_iptfs.c      | 2762 ++++++++++++++++++++++++++++++++++++++++++++
- net/xfrm/xfrm_output.c     |    6 +
- net/xfrm/xfrm_policy.c     |   26 +-
- net/xfrm/xfrm_proc.c       |    2 +
- net/xfrm/xfrm_state.c      |   84 ++
- net/xfrm/xfrm_user.c       |   77 ++
- 21 files changed, 3290 insertions(+), 19 deletions(-)
