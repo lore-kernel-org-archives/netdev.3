@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7467D51C4A;
-	Tue,  5 Nov 2024 02:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79577DA66
+	for <netdev@vger.kernel.org>; Tue,  5 Nov 2024 02:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730773226; cv=none; b=ZDsF1PZiHp2ynsOhMjNpjh3crEvcJ7LReK0xRuVZC+ad296gx5TsYY2qb1rwyeT5aqcoH6ZxPLhc7rFnIJXz+LqEYBU2uVMTuZYN9zIVBmRwho3OG8eW82bgyZVPnaTslTq4CbH6n93gPr7S2g6kJ3BWkGCrpLDVluuprG9It0E=
+	t=1730773227; cv=none; b=DILa87zE4Si79vJVHFoPlCewC3YbHHOw9/lEjHUURBhynVKUCI5yYBx3RpHq2zQeCQcCIfvgfyjnjRkppn5OeTF1zPSmUK9GSTnntTpbmUZZrzshXgMzq+MXh/uSfEHjJHC3A2hoOc+8fWosGHWrQzk8abF0WgCCgvoxoXmzoxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730773226; c=relaxed/simple;
-	bh=H7DITtRwtsNLWdS6hpi1Dq1VgEaFbuMZ06KvxC6YoWs=;
+	s=arc-20240116; t=1730773227; c=relaxed/simple;
+	bh=J/OHXoj/cFEnAswZ/YKHOa4ic2fiLGLQQeYxPn38OSs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SZizjX8uGeAfhaUR5RSFwRMomXAxCS5EUgpzcma/MOacr+bz1tQqJi/4XnRxydmkAgcK5mG2IyVjWGIH+rJrJe2BVAV3vmQJ6xvygUNXRV4OgYpe67hh6Crz+HEXQwdWZvCOuGoI06JR5nEAwU0bf881SpD2yGYlFCMVtM3qvxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpFh/7Eh; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=GHHBPjqy8gezBtJhPlq8PSD+UuwsG4X21+a4T7ji2eoK8I0rJahyQtOpHbkCO/UlBl2awPjNKJPToJ1DNYCycMDMUDPGsjbC1iZKvfe2uLqs9fCx9m9mV5bVkNVIrLZW2aa9gKDkT11PiYKcOb4CXWHW2Dt/+m8gWftd89bxMMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/KDLTdt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpFh/7Eh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49996C4CECE;
-	Tue,  5 Nov 2024 02:20:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/KDLTdt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860C0C4CED4;
+	Tue,  5 Nov 2024 02:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730773226;
-	bh=H7DITtRwtsNLWdS6hpi1Dq1VgEaFbuMZ06KvxC6YoWs=;
+	s=k20201202; t=1730773227;
+	bh=J/OHXoj/cFEnAswZ/YKHOa4ic2fiLGLQQeYxPn38OSs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BpFh/7Ehgn9ARUYp1fdOf8SxLiBRY2aBW0N7E1q9IzeEZIOt7K4hEJdyp+pe6US8Z
-	 uIyNHtDk4FANEE6YLIIWaqyy2WSAMBucrhSdie4jQJqi5CI6+gvS2RTiEw6/2F3m5H
-	 MaUIe+x0XFTN/YfVkfHLg84xg6XCqVop8eUycfERc2fJrF05xDsfxslKnSMQoMkbYF
-	 Uxa4eZ+hJuELXSKtHaX2Jf2azkq+aC0FP8IlyixSRgqtudHMwDHXit5qi0fTWlCMpL
-	 jZo34LnPV8ZdXr1T7q8TSW1kBpNOw9XkK4noVxRP/qylQMnK1+j0r0+hO9nM1oe1LS
-	 cGZU2YX9017Fg==
+	b=H/KDLTdtbDEFKPT/hjK31aaYbAUkyondai6xiOByfeypNvTuWdqKfQ+exSr53OFOp
+	 o5tNg4Nzwp1Rybn48JbkkxLrb23VauGv+5lY/eyl5VcnsKpSwcWcpWEoEoiqE+9oKu
+	 XXZXupSfQ3n4y8mPYpBQ94hHdcGde4pFJ6Z1+GENcjYWZUi2Y95a9697eQWgMtxj/g
+	 NnvcqixqIHQx7UZ62ibkJO0XyS3rlUpRblnDiLDiZEQPmtTfCPgBT1cHJpE76xsThX
+	 Uk5Kg9oHe+2Qa6HAA7pSW77jhiZj+f/n01x4pbKKMkLkO1b4w/QIG5Y7XCgIGM8e4E
+	 C0WrW9i8CYI7g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F203809A80;
-	Tue,  5 Nov 2024 02:20:36 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CEE3809A80;
+	Tue,  5 Nov 2024 02:20:37 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ptp: Remove 'default y' for VMCLOCK PTP device
+Subject: Re: [PATCH net-next] tools: ynl-gen: de-kdocify enums with no doc for
+ entries
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173077323501.89867.2401311053737596737.git-patchwork-notify@kernel.org>
-Date: Tue, 05 Nov 2024 02:20:35 +0000
-References: <89955b74d225129d6e3d79b53aa8d81d1b50560f.camel@infradead.org>
-In-Reply-To: <89955b74d225129d6e3d79b53aa8d81d1b50560f.camel@infradead.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: kuba@kernel.org, richardcochran@gmail.com, peter.hilber@opensynergy.com,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-rtc@vger.kernel.org,
- ridouxj@amazon.com, virtio-dev@lists.linux.dev, rluu@amazon.com,
- chashper@amazon.com, abuehaze@amazon.com, pabeni@redhat.com,
- christopher.s.hall@intel.com, jasowang@redhat.com, jstultz@google.com,
- mst@redhat.com, netdev@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
- xuanzhuo@linux.alibaba.com, maz@kernel.org, mark.rutland@arm.com,
- daniel.lezcano@linaro.org, a.zummo@towertech.it,
- alexandre.belloni@bootlin.com, qemu-devel@nongnu.org, horms@kernel.org
+ <173077323626.89867.10240447180731437605.git-patchwork-notify@kernel.org>
+Date: Tue, 05 Nov 2024 02:20:36 +0000
+References: <20241103165314.1631237-1-kuba@kernel.org>
+In-Reply-To: <20241103165314.1631237-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com,
+ jiri@resnulli.us, donald.hunter@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 02 Nov 2024 16:52:17 -0500 you wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On Sun,  3 Nov 2024 08:53:14 -0800 you wrote:
+> Sometimes the names of the enum entries are self-explanatory
+> or come from standards. Forcing authors to write trivial kdoc
+> for each of such entries seems unreasonable, but kdoc would
+> complain about undocumented entries.
 > 
-> The VMCLOCK device gives support for accurate timekeeping even across
-> live migration, unlike the KVM PTP clock. To help ensure that users can
-> always use ptp_vmclock where it's available in preference to ptp_kvm,
-> set it to 'default PTP_1588_CLOCK_VMCLOCK' instead of 'default y'.
+> Detect enums which only have documentation for the entire
+> type and no documentation for entries. Render their doc
+> as a plain comment.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] ptp: Remove 'default y' for VMCLOCK PTP device
-    https://git.kernel.org/netdev/net-next/c/18ec5491a495
+  - [net-next] tools: ynl-gen: de-kdocify enums with no doc for entries
+    https://git.kernel.org/netdev/net-next/c/690e50dd69ee
 
 You are awesome, thank you!
 -- 
