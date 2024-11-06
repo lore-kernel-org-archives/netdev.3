@@ -1,51 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9942920721D;
-	Wed,  6 Nov 2024 19:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914F720821A;
+	Wed,  6 Nov 2024 19:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730920647; cv=none; b=Z8fpgWo230SwqELpJNdg4eK3xKRUbngMzh0G3h7BjVfQJu94JZqpWxASvyvkwia3RRBZutxiRtJFhoNk8TufwBzfuGkfnB/qcfFQgLe5QiBWYp8Nnl8qUj+c3rBtNx4EPPddaUebRotJN0z2ia1ye2LA2wRfd6rR3skbgm6DQA0=
+	t=1730920674; cv=none; b=sEW70yo7VU8ks8K+7H/JO7euB5bDj6j0XqvkUE63fTjeab3VTb3Mbps918CaP3EWJiNJdd2Qjf7OTmWkrZ22QtiFX+zCR/5f6B6dadmBYFgzzFa+gD1cwuIlRQdWuZSd1R95j212kxT6TCIBYLh080RhNexY1z3Tzj3qs6RBswk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730920647; c=relaxed/simple;
-	bh=SiQEeSRkNADgB7z1FpkMKnsPf6At/dTxDrBLVodmNgk=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=oG6/MS/0EQrIDj5OJ3GcciysS8+Qefv2knytHsujgDLMh95+7kqmmzt/+XBoWPws+mZrg5GI+c5DrcqnLaR89ahmuojGx09pz6ygIFx7BYRJCkbwI8aETvoxX04ooqnFpjrjmUAl09sLZgoqItRcM6rnNiwFHiVP+dO0TnHebLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=zQPEz+6t; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1730920674; c=relaxed/simple;
+	bh=cgom0XLVb7MaTSRccOyx5KEK7+2ZljOgMuvXNaIHKOc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=a3H82t8FpO6sSB7gxpy4aXomScE/NY+2X0HkwlI3ULV0ZLo/UAdBxMhcQhyOyQb1rPRfhSU3YQVfoA1BwOwhXgifgjBGpTwmMoHKDDgwLLxyr17BXM4saXV7nlodIXMpq1XJz6nZnjSyMkELOhQqkyAPgcPLob3T//35Uo607ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rRGtTFbL; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="zQPEz+6t"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rRGtTFbL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1730920645; x=1762456645;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=SiQEeSRkNADgB7z1FpkMKnsPf6At/dTxDrBLVodmNgk=;
-  b=zQPEz+6t17r38vEkWMY2ztteUYxvz3849ikdNGtUolzQchWVygbaqQwV
-   ag3n1mMAIfNFNhqgDw/dlbtUlppeZLp96FOYQpWLo4m+fxjtZgpzloDUE
-   CLekBC2+cCeJ41yxt1Jrp0w6gyK2blxiuO7UEkYpzyTITmpm5btlSvaTS
-   KYyQkkfAwkbkxloqNVTq6H0TgupqUu/zHoRsj2wDmkDTBIkR0fGeOfi5G
-   WAfnZNg8HhWwJUCgij/kRFfEr0Z2uvm/qm3i5gg50ocwqgJ9i6LZRnONz
-   daMRbh0VBZ9bbt7WsblTw+sLg8vxCW7IiQ4dySi64k39HYeIf78P4hOcP
+  t=1730920672; x=1762456672;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=cgom0XLVb7MaTSRccOyx5KEK7+2ZljOgMuvXNaIHKOc=;
+  b=rRGtTFbL6X5vQ/IhYXhtYyKwQEtErcMZbhIk8Lqd+tdOmocFNmUuzQrO
+   37UXUK2oLRA4Ll+yYt/3G8jG2lETzn3m1NCcKPEpgxNIO9z8orGRnagbY
+   /74Rxam3QyAW83z08rVRjlvUt6y1Em23FKr+nKOvcHAws3fboRNWXuURj
+   bEaoDRG9LN97OK6JVmKi+pX2qaNEE9/Ckr383cnGm8QB8EYKN+whDKYf3
+   OwDa/RqtrVNSULFX+0KODdxL5Y4FB1VWaURlikg0xoGtZ7nnbjQaxivB2
+   E/eOcr8u++Q0TiMTJw8EbC4p6J34d5i3XlO8eGvoWpzCk75kTvilK54PI
    A==;
-X-CSE-ConnectionGUID: Pj5H9ORUSlaljgmVr541Mw==
-X-CSE-MsgGUID: FNMV5KrAQpmxk4FeLuDC3w==
+X-CSE-ConnectionGUID: R5B6jnU1TTWc0t0C0FxLpw==
+X-CSE-MsgGUID: w0A8VUaBTi6K7IcrHbqf9g==
 X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
-   d="scan'208";a="34481046"
+   d="scan'208";a="37447981"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Nov 2024 12:17:19 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Nov 2024 12:17:45 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 6 Nov 2024 12:17:03 -0700
+ 15.1.2507.35; Wed, 6 Nov 2024 12:17:08 -0700
 Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Wed, 6 Nov 2024 12:17:00 -0700
+ 15.1.2507.35 via Frontend Transport; Wed, 6 Nov 2024 12:17:06 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Subject: [PATCH net-next 0/7] net: lan969x: add RGMII support
-Date: Wed, 6 Nov 2024 20:16:38 +0100
-Message-ID: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
+Date: Wed, 6 Nov 2024 20:16:40 +0100
+Subject: [PATCH net-next 2/7] net: sparx5: add function for RGMII port
+ check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,9 +55,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJbAK2cC/x2N0QrCMAwAf2Xk2UBXOt38FdlDtkYb0DjSMQtj/
- 2718Ti42yGzCWe4NjsYb5LlrRXaUwNzIn0wSqwM3vnQti5gXshKh0/S4TwUzB9Z54TRZGPDgLE
- bpkvvXeg7ghpZjO9S/oMbKK+oXFYYq5koM05GOqff4EWicBxf+ExRcJEAAAA=
+Message-ID: <20241106-sparx5-lan969x-switch-driver-4-v1-2-f7f7316436bd@microchip.com>
+References: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
+In-Reply-To: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lars
@@ -68,88 +69,91 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>
 X-Mailer: b4 0.14-dev
 
-== Description:
+The lan969x device contains two RGMII interfaces, sitting at port 28 and
+29. Add function: is_port_rgmii() to the match data ops, that checks if
+a given port is an RGMII port or not. For Sparx5, this function always
+returns false.
 
-This series is the fourth of a multi-part series, that prepares and adds
-support for the new lan969x switch driver.
-
-The upstreaming efforts is split into multiple series (might change a
-bit as we go along):
-
-        1) Prepare the Sparx5 driver for lan969x (merged)
-
-        2) Add support for lan969x (same basic features as Sparx5
-           provides excl. FDMA and VCAP, merged).
-
-        3) Add lan969x VCAP functionality (merged).
-
-    --> 4) Add RGMII support.
-
-        5) Add FDMA support.
-
-== RGMII support:
-
-The lan969x switch device includes two RGMII interfaces (port 28 and 29)
-supporting data speeds of 1 Gbps, 100 Mbps and 10 Mbps.
-
-Details are in the commit description of the patches.
-
-== Patch breakdown:
-
-Patch #1 does some preparation work.
-
-Patch #2 adds new function: is_port_rgmii() to the match data ops.
-
-Patch #3 uses the is_port_rgmii() in a number of places.
-
-Patch #4 uses the phy_interface_mode_is_rgmii() in a number of places.
-
-Patch #5 adds checks for RGMII PHY modes in sparx5_verify_speeds().
-
-Patch #6 adds registers required to configure RGMII.
-
-Patch #7 adds RGMII configuration function and uses it.
-
-To: UNGLinuxDriver@microchip.com
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: David S. Miller <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Lars Povlsen <lars.povlsen@microchip.com>
-To: Steen Hegelund <Steen.Hegelund@microchip.com>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Russell King <linux@armlinux.org.uk>
-To: jacob.e.keller@intel.com
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-
+Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
-Daniel Machon (7):
-      net: sparx5: do some preparation work
-      net: sparx5: add function for RGMII port check
-      net: sparx5: use is_port_rgmii() throughout
-      net: sparx5: use phy_interface_mode_is_rgmii()
-      net: sparx5: verify RGMII speeds
-      net: lan969x: add RGMII registers
-      net: lan969x: add function for configuring RGMII port devices
+ drivers/net/ethernet/microchip/lan969x/lan969x.c    | 1 +
+ drivers/net/ethernet/microchip/lan969x/lan969x.h    | 5 +++++
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.h | 5 +++++
+ 5 files changed, 13 insertions(+)
 
- drivers/net/ethernet/microchip/lan969x/lan969x.c   | 109 ++++++++++++++++
- drivers/net/ethernet/microchip/lan969x/lan969x.h   |   5 +
- .../net/ethernet/microchip/sparx5/sparx5_main.c    |  29 +++--
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |   6 +
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 145 +++++++++++++++++++++
- .../net/ethernet/microchip/sparx5/sparx5_phylink.c |   3 +
- .../net/ethernet/microchip/sparx5/sparx5_port.c    |  57 ++++----
- .../net/ethernet/microchip/sparx5/sparx5_port.h    |   5 +
- 8 files changed, 329 insertions(+), 30 deletions(-)
----
-base-commit: 157a4881225bd0af5444aab9510e7b6da28f2469
-change-id: 20241104-sparx5-lan969x-switch-driver-4-d59b7820485a
+diff --git a/drivers/net/ethernet/microchip/lan969x/lan969x.c b/drivers/net/ethernet/microchip/lan969x/lan969x.c
+index 79e5bcefbd73..8ac2652ef22c 100644
+--- a/drivers/net/ethernet/microchip/lan969x/lan969x.c
++++ b/drivers/net/ethernet/microchip/lan969x/lan969x.c
+@@ -326,6 +326,7 @@ static const struct sparx5_ops lan969x_ops = {
+ 	.is_port_5g              = &lan969x_port_is_5g,
+ 	.is_port_10g             = &lan969x_port_is_10g,
+ 	.is_port_25g             = &lan969x_port_is_25g,
++	.is_port_rgmii           = &lan969x_port_is_rgmii,
+ 	.get_port_dev_index      = &lan969x_port_dev_mapping,
+ 	.get_port_dev_bit        = &lan969x_get_dev_mode_bit,
+ 	.get_hsch_max_group_rate = &lan969x_get_hsch_max_group_rate,
+diff --git a/drivers/net/ethernet/microchip/lan969x/lan969x.h b/drivers/net/ethernet/microchip/lan969x/lan969x.h
+index 7ce047ad9ca4..47e2adce1bbb 100644
+--- a/drivers/net/ethernet/microchip/lan969x/lan969x.h
++++ b/drivers/net/ethernet/microchip/lan969x/lan969x.h
+@@ -51,6 +51,11 @@ static inline bool lan969x_port_is_25g(int portno)
+ 	return false;
+ }
+ 
++static inline bool lan969x_port_is_rgmii(int portno)
++{
++	return portno == 28 || portno == 29;
++}
++
+ /* lan969x_calendar.c */
+ int lan969x_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
+ 			      struct sparx5_calendar_data *data);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 4f2d5413a64f..1c12ea0e6fd3 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -1070,6 +1070,7 @@ static const struct sparx5_ops sparx5_ops = {
+ 	.is_port_5g              = &sparx5_port_is_5g,
+ 	.is_port_10g             = &sparx5_port_is_10g,
+ 	.is_port_25g             = &sparx5_port_is_25g,
++	.is_port_rgmii           = &sparx5_port_is_rgmii,
+ 	.get_port_dev_index      = &sparx5_port_dev_mapping,
+ 	.get_port_dev_bit        = &sparx5_port_dev_mapping,
+ 	.get_hsch_max_group_rate = &sparx5_get_hsch_max_group_rate,
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+index 91ae383a5555..a622c01930e7 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+@@ -313,6 +313,7 @@ struct sparx5_ops {
+ 	bool (*is_port_5g)(int portno);
+ 	bool (*is_port_10g)(int portno);
+ 	bool (*is_port_25g)(int portno);
++	bool (*is_port_rgmii)(int portno);
+ 	u32  (*get_port_dev_index)(struct sparx5 *sparx5, int port);
+ 	u32  (*get_port_dev_bit)(struct sparx5 *sparx5, int port);
+ 	u32  (*get_hsch_max_group_rate)(int grp);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.h b/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
+index 9b9bcc6834bc..c8a37468a3d1 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
+@@ -40,6 +40,11 @@ static inline bool sparx5_port_is_25g(int portno)
+ 	return portno >= 56 && portno <= 63;
+ }
+ 
++static inline bool sparx5_port_is_rgmii(int portno)
++{
++	return false;
++}
++
+ static inline u32 sparx5_to_high_dev(struct sparx5 *sparx5, int port)
+ {
+ 	const struct sparx5_ops *ops = sparx5->data->ops;
 
-Best regards,
 -- 
-Daniel Machon <daniel.machon@microchip.com>
+2.34.1
 
