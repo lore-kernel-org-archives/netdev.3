@@ -1,73 +1,58 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C27B646;
-	Wed,  6 Nov 2024 11:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E493657333
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 11:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730892328; cv=none; b=uIQSzNf/kNcDgn+OdSATz7BpR2YLiGKY466dmECi4UcXDpSPZWt/r++Ia+CDTtlMfqZ5qHVqUOqpHZjs9egF643Mmt0YxY0y1ri+Lx/OS3gRLOcdg/hU79KfAS3PenLlpkNgh3ifB0AnHCHKhn4A8AKuMlevmkN8ppU43QqOu64=
+	t=1730893071; cv=none; b=ISTjblv5FCwIwbPnTEx2WyHrk5m10EwuDYRsdGQDxrfS+g1lDfks59TJxn+w1ic4XvOEyEUNv0SWaZrSfPJrAHpeutwHjrLhBnAlEfoDUEMGlBzi5Hig2yZQdoPE2hfU42sMjdiOxza20fercdP6km9fB97WbKFBfg4IOy8TC9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730892328; c=relaxed/simple;
-	bh=GVMNZrKHnqKRvmphZXkLgY/ueAMpsUn34Uncn1P0ILM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xf3TWr0CXVrYMtK2wP0OVqhyt5M98nv4HMNSfu/Bh7glBHULarKaYzehJYTD4s021456iJPlcNbWaG7GFl4QHUb/xw41IVEtFuV/DbAuxsDO7k6qMeJGy6nL9Kx5wbaRvQ8Bca1tAHc8t42a8CbXT3w7i/8DqLmY12dvmR7lsWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nlSG3EDq; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730893071; c=relaxed/simple;
+	bh=R3UcfVcEoY2Q3PMzAqNdlN8eSsaPRv6104q206PTkcE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PgGRAcuHY4a4NFXnPtTAzqXFSNuc3AXVqWz2lUJLUVAR51JcJLcH+4hkk9ITdzHjR3ceYEM556tuCtkxjFVuOwe0dYtnGq+u//Tc2BjxC3ZvUZR1hnfMfbTdf6f6YHLGlPC4rQXEu2EEM5iXedWLkOGmyv0GyBcGmaJxlrSzbss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaZZLia3; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nlSG3EDq"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so4559174f8f.2;
-        Wed, 06 Nov 2024 03:25:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730892325; x=1731497125; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=91I/y3wjbBNWvrHPr3/8/6Qvv/qZ19kFsf+7A0QbbUc=;
-        b=nlSG3EDqZBArmIyqz2cXFxv+/ov26gtqHGiHRDp8vZ9MIqKfRJjSQvve9kVECISmEx
-         ayR9WjmbdbhB0husNg/mDi+hEjexCNGOtNg9bc1cqdf4DWmK9Pjdz0OBtLaKCwJKjdVW
-         UfLmSQEmb8bvqdQxKM5uKqzVhknNLvSIfBo0SaE/Pw9ksR7EcauF6tcSS5h/pafEM+cG
-         8OFThoTaoAz6GslemVyy4lGMxTfeUGnLt9zyWKFZ6nXRhrWao3y+lATio77O4gUjTgpl
-         sTY8sdudSjw+uB9sXcZn/0uHhHicc1S0pBZRJPc2EPoitD1uEkktTc3LP/IAqfkuhzTL
-         aMfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730892325; x=1731497125;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=91I/y3wjbBNWvrHPr3/8/6Qvv/qZ19kFsf+7A0QbbUc=;
-        b=HjqM9X90hn1gX7u+GAKgGcoNEYhTgOWgTQbMZcCmJM9T7Tib9K83IyUQZsKEKacvr2
-         2cPaeCeNupXL/LgnPbHRi5E9dPL2jPb8fOP8yEKaHBP7TYdsb36aaFtT/M6QRyZZjwrt
-         QAfy6hxvJMMuHmJSCd3LcQZdCxUi2XQaTCyLiN5XwcUEse78xqyk+coPeNF9eEIZJjL8
-         g1r9/KRcwun8WYRM28FOQlhkwpgyEZ3GZoXcxBwerKzYK8VG7p2/KwsHwBQJTHZv+WqY
-         CeEMLbNTM9A97N7pO2euvrb4BmdgujyUZiZbYBxbymBJNpsI9FoXOenDa/jgMo0fIi6T
-         Kt9A==
-X-Forwarded-Encrypted: i=1; AJvYcCU8ygEJR+B0lbtVV7Eg7l16kmvjluAMh+qBvigeWzDYxNNwj4JcMLwCrKFfISKd6m4NfG8I/p9LqtjaNc78FSs=@vger.kernel.org, AJvYcCWNp9TIbYUqaNjkVWM4A2hG9p33flXT7GIEygDuen3PuQkW3WM7R9pv6la88ewgXdahOAGr2ZtfHmxCKrRD@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyUo2zWu0dOAiay8fz7nyVNWaeyQnlpnd0Q+rg+5wa49swccIa
-	hgO4fQKm1KnRWO6cGNl/YWNnqdnHqqOQTxElsSYtLSI/XnxgtPOy
-X-Google-Smtp-Source: AGHT+IF+BajsbEorQUT96QOOZ7pdB5zvo3TNqjISc8k04NVfiqyVN0QicXWJNeNcuiC8p5fMg2piJg==
-X-Received: by 2002:a05:6000:4027:b0:37d:4ebe:164a with SMTP id ffacd0b85a97d-381c7ac7704mr17052032f8f.50.1730892324575;
-        Wed, 06 Nov 2024 03:25:24 -0800 (PST)
-Received: from void.void ([31.210.177.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d40casm18816533f8f.27.2024.11.06.03.25.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 03:25:24 -0800 (PST)
-From: Andrew Kreimer <algonell@gmail.com>
-To: Karsten Keil <isdn@linux-pingi.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaZZLia3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730893069; x=1762429069;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=R3UcfVcEoY2Q3PMzAqNdlN8eSsaPRv6104q206PTkcE=;
+  b=SaZZLia3dSDM3132mmvBu0cJynh8MWkk6hj8mqOaCEb1WX0ZofcqUITX
+   3fMhA2IcSzeGy4hpSOoibZ45xZmlpGuXdK6V3r0EaHsTB9i3ma3Z8q27F
+   1XVdUNQVNtkAV4HAQDyhCX4yi1RpM//Zqt5heKyzH92YhprXbaE4hCMnr
+   UBCmwxaSZHiAVuafHbNKthdMWAZN+bxsXufAh9sGy/JwboiLS02yndacV
+   TPz30CmF2+ghfeke1QPh+9OfOIpbKCNG7WVcX/GIUI2qVty8txDdqwJUB
+   UWhwpb8F1EyaV+Qf455t+87v86ntMqeKu7YPudsLu0p75BJAh0fux7iwM
+   w==;
+X-CSE-ConnectionGUID: lxeJ6RPzRNukWriVyZ8zcQ==
+X-CSE-MsgGUID: 7KWor9ANTtie1gjc8l1AYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30455485"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30455485"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 03:37:48 -0800
+X-CSE-ConnectionGUID: RhJ+TEa5TQW3T1QhyE3xsQ==
+X-CSE-MsgGUID: YpE/fHIgRUi/cVDYXGUg3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,262,1725346800"; 
+   d="scan'208";a="122020108"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa001.jf.intel.com with ESMTP; 06 Nov 2024 03:37:46 -0800
+Received: from fedora.igk.intel.com (Metan_eth.igk.intel.com [10.123.220.124])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 8AAA228169;
+	Wed,  6 Nov 2024 11:37:45 +0000 (GMT)
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Andrew Kreimer <algonell@gmail.com>
-Subject: [PATCH net-next v2] mISDN: Fix typos
-Date: Wed,  6 Nov 2024 13:24:20 +0200
-Message-ID: <20241106112513.9559-1-algonell@gmail.com>
-X-Mailer: git-send-email 2.47.0.229.g8f8d6eee53
-In-Reply-To: <20241102134856.11322-1-algonell@gmail.com>
-References: <20241102134856.11322-1-algonell@gmail.com>
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-next v13 00/14] Add support for Rx timestamping for both ice and iavf drivers
+Date: Wed,  6 Nov 2024 12:37:17 -0500
+Message-Id: <20241106173731.4272-1-mateusz.polchlopek@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,213 +61,166 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix typos:
-  - syncronized -> synchronized
-  - interfacs -> interface
-  - otherwhise -> otherwise
-  - ony -> only
-  - busses -> buses
-  - maxinum -> maximum
+Initially, during VF creation it registers the PTP clock in
+the system and negotiates with PF it's capabilities. In the
+meantime the PF enables the Flexible Descriptor for VF.
+Only this type of descriptor allows to receive Rx timestamps.
 
-Via codespell.
+Enabling virtual clock would be possible, though it would probably
+perform poorly due to the lack of direct time access.
 
-Reported-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+Enable timestamping should be done using userspace tools, e.g.
+hwstamp_ctl -i $VF -r 14
+
+In order to report the timestamps to userspace, the VF extends
+timestamp to 40b.
+
+To support this feature the flexible descriptors and PTP part
+in iavf driver have been introduced.
 ---
-v1:
-  - Fix typos in printk messages.
-  - https://lore.kernel.org/netdev/20241102134856.11322-1-algonell@gmail.com/
+v13:
+- cosmetic changes - added dependency to PTP_1588_CLOCK_OPTIONAL in Kconfig
+  (patch 6) to prevent compilation warnings and added Tested-by tags. No logical
+  and deeper changes in code.
+
+v12:
+- small changes versus v11, fixed compilation warnings and errors and covered
+  Vadim's request about ptp_read_system_prets and ptp_read_system_postts()
+  in iavf_read_phc_indirect() function. Added stubs in iavf_ptp.h file depends
+  on CONFIG_PTP_1588_CLOCK config option.
+https://lore.kernel.org/netdev/20241022114121.61284-1-mateusz.polchlopek@intel.com/
+
+v11:
+- addressed all comments from v10 done by Alexander L. Short list: changed some
+  logging functions (like pci_warn instead of dev_warn), fix RCT, fix indentation,
+  remove unnecessary comments and casts, change error codes where applicable,
+  remove ptp.initialized field in struct (now check for ptp.clock as Olek
+  suggested), invert condition in few places to avoid +1 indent level, function
+  iavf_ptp_do_aux_work made as static, add more descriptive kdoc for libeth
+  struct fields, restore ptype as a field in libeth struct, remove unused
+  defines, pass to specific functions quad word of descriptor instead of pass
+  rx_desc, add asserts to structs where applicable, return from fields extracting
+  functions when !fields.eop, refactor get VLAN tags, remove unnecessary empty
+  initialization of structs and few more. Please see v10 to compare all changes.
+https://lore.kernel.org/netdev/20241013154415.20262-1-mateusz.polchlopek@intel.com/
+
+v10:
+- only cosmetic changes, make every patch compile, fixing checkpatch issues
+https://lore.kernel.org/netdev/20240821121539.374343-1-wojciech.drewek@intel.com/
+
+v9:
+- another big refactor of code, again the list is too long to describe each change. Only
+  patch1 and patch12 has not been changed AFAIR. Please take a look on v8 and changes
+  requests from Alexander L. (in short - fixed structs paddings, aligns, optimized rx hot
+  path, renamed few structs, added "const" keyword where applicable, added kdoc comments
+  to newly introduced structs and defines, removed unnecessary casts, simplified few
+  functions and few more).
+https://lore.kernel.org/netdev/20240813125513.8212-1-mateusz.polchlopek@intel.com/
+
+v8:
+- big refactor to make code more optimised (too many changes to list them here, please
+  take a look on v7 patch9 and comments from Alexander L) - patch 11. Because of that I
+  decided to remove all gathered RB tags.
+- changed newly introduced spinlock aq_cmd_lock to mutex type to avoid deadlock - patch 7
+- adjusted function iavf_is_descriptor_done() to extract fields from descriptor in a new
+  way - patch 12
+- changed (and removed unused) defines that describe specific fields and bits in
+  descriptor
+https://lore.kernel.org/netdev/20240730091509.18846-1-mateusz.polchlopek@intel.com/
+
+v7:
+- changed .ndo_eth_ioctl to .ndo_hwtstamp_get and .ndo_hwtstamp_set
+  (according to Kuba's suggestion) - patch 11
+https://lore.kernel.org/netdev/20240604131400.13655-1-mateusz.polchlopek@intel.com/
+
+v6:
+- reordered tags
+- added RB tags where applicable
+- removed redundant instructions in ifs - patch 4 and patch 5
+- changed teardown to LIFO, adapter->ptp.initialized = false
+  moved to the top of function - patch 6
+- changed cpu-endianess for testing - patch 9
+- aligned to libeth changes - patch 9
+https://lore.kernel.org/netdev/20240528112301.5374-1-mateusz.polchlopek@intel.com/
+
+v5:
+- fixed all new issues generated by this series in kernel-doc
+https://lore.kernel.org/netdev/20240418052500.50678-1-mateusz.polchlopek@intel.com/
+
+v4:
+- fixed duplicated argument in iavf_virtchnl.c reported by coccicheck
+https://lore.kernel.org/netdev/20240410121706.6223-1-mateusz.polchlopek@intel.com/
+
+v3:
+- added RB in commit 6
+- removed inline keyword in commit 9
+- fixed sparse issues in commit 9 and commit 10
+- used GENMASK_ULL when possible in commit 9
+https://lore.kernel.org/netdev/20240403131927.87021-1-mateusz.polchlopek@intel.com/
 
 v2:
-  - Address all non-false-positive suggestions, including comments.
-  - The syncronized ==> synchronized suggestions for struct hfc_multi were skipped.
+- fixed warning related to wrong specifier to dev_err_once in commit 7
+- fixed warnings related to unused variables in commit 9
+https://lore.kernel.org/netdev/20240327132543.15923-1-mateusz.polchlopek@intel.com/
 
- drivers/isdn/hardware/mISDN/hfcmulti.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+v1:
+- initial series
+https://lore.kernel.org/netdev/20240326115116.10040-1-mateusz.polchlopek@intel.com/
+---
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index e5a483fd9ad8..45ff0e198f8f 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -25,8 +25,8 @@
-  *	Bit 8     = 0x00100 = uLaw (instead of aLaw)
-  *	Bit 9     = 0x00200 = Disable DTMF detect on all B-channels via hardware
-  *	Bit 10    = spare
-- *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwhise auto)
-- * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwhise auto)
-+ *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwise auto)
-+ * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwise auto)
-  *	Bit 13	  = spare
-  *	Bit 14    = 0x04000 = Use external ram (128K)
-  *	Bit 15    = 0x08000 = Use external ram (512K)
-@@ -41,7 +41,7 @@
-  * port: (optional or required for all ports on all installed cards)
-  *	HFC-4S/HFC-8S only bits:
-  *	Bit 0	  = 0x001 = Use master clock for this S/T interface
-- *			    (ony once per chip).
-+ *			    (only once per chip).
-  *	Bit 1     = 0x002 = transmitter line setup (non capacitive mode)
-  *			    Don't use this unless you know what you are doing!
-  *	Bit 2     = 0x004 = Disable E-channel. (No E-channel processing)
-@@ -82,7 +82,7 @@
-  *	By default (0), the PCM bus id is 100 for the card that is PCM master.
-  *	If multiple cards are PCM master (because they are not interconnected),
-  *	each card with PCM master will have increasing PCM id.
-- *	All PCM busses with the same ID are expected to be connected and have
-+ *	All PCM buses with the same ID are expected to be connected and have
-  *	common time slots slots.
-  *	Only one chip of the PCM bus must be master, the others slave.
-  *	-1 means no support of PCM bus not even.
-@@ -930,7 +930,7 @@ hfcmulti_resync(struct hfc_multi *locked, struct hfc_multi *newmaster, int rm)
- 	if (newmaster) {
- 		hc = newmaster;
- 		if (debug & DEBUG_HFCMULTI_PLXSD)
--			printk(KERN_DEBUG "id=%d (0x%p) = syncronized with "
-+			printk(KERN_DEBUG "id=%d (0x%p) = synchronized with "
- 			       "interface.\n", hc->id, hc);
- 		/* Enable new sync master */
- 		plx_acc_32 = hc->plx_membase + PLX_GPIOC;
-@@ -949,7 +949,7 @@ hfcmulti_resync(struct hfc_multi *locked, struct hfc_multi *newmaster, int rm)
- 			hc = pcmmaster;
- 			if (debug & DEBUG_HFCMULTI_PLXSD)
- 				printk(KERN_DEBUG
--				       "id=%d (0x%p) = PCM master syncronized "
-+				       "id=%d (0x%p) = PCM master synchronized "
- 				       "with QUARTZ\n", hc->id, hc);
- 			if (hc->ctype == HFC_TYPE_E1) {
- 				/* Use the crystal clock for the PCM
-@@ -2001,7 +2001,7 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
- 	if (Zspace <= 0)
- 		Zspace += hc->Zlen;
- 	Zspace -= 4; /* keep not too full, so pointers will not overrun */
--	/* fill transparent data only to maxinum transparent load (minus 4) */
-+	/* fill transparent data only to maximum transparent load (minus 4) */
- 	if (bch && test_bit(FLG_TRANSPARENT, &bch->Flags))
- 		Zspace = Zspace - hc->Zlen + hc->max_trans;
- 	if (Zspace <= 0) /* no space of 4 bytes */
-@@ -4672,7 +4672,7 @@ init_e1_port_hw(struct hfc_multi *hc, struct hm_map *m)
- 			if (debug & DEBUG_HFCMULTI_INIT)
- 				printk(KERN_DEBUG
- 				       "%s: PORT set optical "
--				       "interfacs: card(%d) "
-+				       "interface: card(%d) "
- 				       "port(%d)\n",
- 				       __func__,
- 				       HFC_cnt + 1, 1);
+Jacob Keller (10):
+  virtchnl: add support for enabling PTP on iAVF
+  virtchnl: add enumeration for the rxdid format
+  iavf: add support for negotiating flexible RXDID format
+  iavf: negotiate PTP capabilities
+  iavf: add initial framework for registering PTP clock
+  iavf: add support for indirect access to PHC time
+  iavf: periodically cache PHC time
+  iavf: refactor iavf_clean_rx_irq to support legacy and flex
+    descriptors
+  iavf: handle set and get timestamps ops
+  iavf: add support for Rx timestamps to hotpath
 
-Interdiff against v1:
-  diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-  index f3af73ea34ae..45ff0e198f8f 100644
-  --- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-  +++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-  @@ -25,8 +25,8 @@
-    *	Bit 8     = 0x00100 = uLaw (instead of aLaw)
-    *	Bit 9     = 0x00200 = Disable DTMF detect on all B-channels via hardware
-    *	Bit 10    = spare
-  - *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwhise auto)
-  - * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwhise auto)
-  + *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwise auto)
-  + * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwise auto)
-    *	Bit 13	  = spare
-    *	Bit 14    = 0x04000 = Use external ram (128K)
-    *	Bit 15    = 0x08000 = Use external ram (512K)
-  @@ -41,7 +41,7 @@
-    * port: (optional or required for all ports on all installed cards)
-    *	HFC-4S/HFC-8S only bits:
-    *	Bit 0	  = 0x001 = Use master clock for this S/T interface
-  - *			    (ony once per chip).
-  + *			    (only once per chip).
-    *	Bit 1     = 0x002 = transmitter line setup (non capacitive mode)
-    *			    Don't use this unless you know what you are doing!
-    *	Bit 2     = 0x004 = Disable E-channel. (No E-channel processing)
-  @@ -82,7 +82,7 @@
-    *	By default (0), the PCM bus id is 100 for the card that is PCM master.
-    *	If multiple cards are PCM master (because they are not interconnected),
-    *	each card with PCM master will have increasing PCM id.
-  - *	All PCM busses with the same ID are expected to be connected and have
-  + *	All PCM buses with the same ID are expected to be connected and have
-    *	common time slots slots.
-    *	Only one chip of the PCM bus must be master, the others slave.
-    *	-1 means no support of PCM bus not even.
-  @@ -2001,7 +2001,7 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
-   	if (Zspace <= 0)
-   		Zspace += hc->Zlen;
-   	Zspace -= 4; /* keep not too full, so pointers will not overrun */
-  -	/* fill transparent data only to maxinum transparent load (minus 4) */
-  +	/* fill transparent data only to maximum transparent load (minus 4) */
-   	if (bch && test_bit(FLG_TRANSPARENT, &bch->Flags))
-   		Zspace = Zspace - hc->Zlen + hc->max_trans;
-   	if (Zspace <= 0) /* no space of 4 bytes */
+Mateusz Polchlopek (3):
+  libeth: move idpf_rx_csum_decoded and idpf_rx_extracted
+  iavf: define Rx descriptors as qwords
+  iavf: Implement checking DD desc field
 
-Range-diff against v1:
-1:  e27df5ca2655 ! 1:  69784b0d548a mISDN: Fix typos
-    @@ Commit message
-         mISDN: Fix typos
-     
-         Fix typos:
-    -      - syncronized -> synchronized.
-    -      - interfacs -> interface.
-    +      - syncronized -> synchronized
-    +      - interfacs -> interface
-    +      - otherwhise -> otherwise
-    +      - ony -> only
-    +      - busses -> buses
-    +      - maxinum -> maximum
-     
-    +    Via codespell.
-    +
-    +    Reported-by: Simon Horman <horms@kernel.org>
-         Signed-off-by: Andrew Kreimer <algonell@gmail.com>
-     
-      ## drivers/isdn/hardware/mISDN/hfcmulti.c ##
-    +@@
-    +  *	Bit 8     = 0x00100 = uLaw (instead of aLaw)
-    +  *	Bit 9     = 0x00200 = Disable DTMF detect on all B-channels via hardware
-    +  *	Bit 10    = spare
-    +- *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwhise auto)
-    +- * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwhise auto)
-    ++ *	Bit 11    = 0x00800 = Force PCM bus into slave mode. (otherwise auto)
-    ++ * or   Bit 12    = 0x01000 = Force PCM bus into master mode. (otherwise auto)
-    +  *	Bit 13	  = spare
-    +  *	Bit 14    = 0x04000 = Use external ram (128K)
-    +  *	Bit 15    = 0x08000 = Use external ram (512K)
-    +@@
-    +  * port: (optional or required for all ports on all installed cards)
-    +  *	HFC-4S/HFC-8S only bits:
-    +  *	Bit 0	  = 0x001 = Use master clock for this S/T interface
-    +- *			    (ony once per chip).
-    ++ *			    (only once per chip).
-    +  *	Bit 1     = 0x002 = transmitter line setup (non capacitive mode)
-    +  *			    Don't use this unless you know what you are doing!
-    +  *	Bit 2     = 0x004 = Disable E-channel. (No E-channel processing)
-    +@@
-    +  *	By default (0), the PCM bus id is 100 for the card that is PCM master.
-    +  *	If multiple cards are PCM master (because they are not interconnected),
-    +  *	each card with PCM master will have increasing PCM id.
-    +- *	All PCM busses with the same ID are expected to be connected and have
-    ++ *	All PCM buses with the same ID are expected to be connected and have
-    +  *	common time slots slots.
-    +  *	Only one chip of the PCM bus must be master, the others slave.
-    +  *	-1 means no support of PCM bus not even.
-     @@ drivers/isdn/hardware/mISDN/hfcmulti.c: hfcmulti_resync(struct hfc_multi *locked, struct hfc_multi *newmaster, int rm)
-      	if (newmaster) {
-      		hc = newmaster;
-    @@ drivers/isdn/hardware/mISDN/hfcmulti.c: hfcmulti_resync(struct hfc_multi *locked
-      				       "with QUARTZ\n", hc->id, hc);
-      			if (hc->ctype == HFC_TYPE_E1) {
-      				/* Use the crystal clock for the PCM
-    +@@ drivers/isdn/hardware/mISDN/hfcmulti.c: hfcmulti_tx(struct hfc_multi *hc, int ch)
-    + 	if (Zspace <= 0)
-    + 		Zspace += hc->Zlen;
-    + 	Zspace -= 4; /* keep not too full, so pointers will not overrun */
-    +-	/* fill transparent data only to maxinum transparent load (minus 4) */
-    ++	/* fill transparent data only to maximum transparent load (minus 4) */
-    + 	if (bch && test_bit(FLG_TRANSPARENT, &bch->Flags))
-    + 		Zspace = Zspace - hc->Zlen + hc->max_trans;
-    + 	if (Zspace <= 0) /* no space of 4 bytes */
-     @@ drivers/isdn/hardware/mISDN/hfcmulti.c: init_e1_port_hw(struct hfc_multi *hc, struct hm_map *m)
-      			if (debug & DEBUG_HFCMULTI_INIT)
-      				printk(KERN_DEBUG
+Simei Su (1):
+  ice: support Rx timestamp on flex descriptor
+
+ drivers/net/ethernet/intel/Kconfig            |   1 +
+ drivers/net/ethernet/intel/iavf/Makefile      |   2 +
+ drivers/net/ethernet/intel/iavf/iavf.h        |  35 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 228 +++++++-
+ drivers/net/ethernet/intel/iavf/iavf_ptp.c    | 485 ++++++++++++++++++
+ drivers/net/ethernet/intel/iavf/iavf_ptp.h    |  47 ++
+ drivers/net/ethernet/intel/iavf/iavf_trace.h  |   6 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   | 433 ++++++++++++----
+ drivers/net/ethernet/intel/iavf/iavf_txrx.h   |  24 +-
+ drivers/net/ethernet/intel/iavf/iavf_type.h   | 239 ++++-----
+ drivers/net/ethernet/intel/iavf/iavf_types.h  |  34 ++
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 203 ++++++++
+ drivers/net/ethernet/intel/ice/ice_base.c     |   3 -
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   5 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c      |   4 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h      |   8 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |   3 +
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  77 ++-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.h |   6 +
+ .../intel/ice/ice_virtchnl_allowlist.c        |   7 +
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  51 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  16 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  19 -
+ include/linux/avf/virtchnl.h                  | 135 ++++-
+ include/net/libeth/rx.h                       |  47 ++
+ 25 files changed, 1787 insertions(+), 331 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_ptp.c
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_ptp.h
+ create mode 100644 drivers/net/ethernet/intel/iavf/iavf_types.h
+
+
+base-commit: 2c2b80f0ad2ff47a6e56baad9381442e5dae3054
 -- 
-2.47.0.229.g8f8d6eee53
+2.38.1
 
