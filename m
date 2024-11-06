@@ -1,175 +1,81 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE70207A2F;
-	Wed,  6 Nov 2024 19:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF5B208235;
+	Wed,  6 Nov 2024 19:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730920695; cv=none; b=uZ3aAej3OVB5gp0aeBjEwoag8kk/rEXVJHe9NgQkZoeKf4EYG+WQU7do0pXCWMaFIM/Pz3z+YonYnmg06xRMVG1zoC1kS0rhcZxtHP6AICF4BeeVWmfd4/ZjvhitdfEgHQUsYBTGsFhiV2RanfanXn78MugBxzKMngfDsxX/I5U=
+	t=1730920825; cv=none; b=SsZCclQFwGPKaRIw/IvY4D8+M06WnVb9w+vKZNEqlpAfYYvWm9wU7G19q8dN0RutJOqgMRuQ8dvzhjKQIujZcrb0IAAldMH3sgfMFG0Wwn4iPls7t0p2YmHaDMANfbLtqq54dIlSLFx+pW8F3myJ4wWVLlaPk6HzMsD2GMA/1T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730920695; c=relaxed/simple;
-	bh=oU863Kwn7GFPSRJfsJTS+xW4A//cqLjSy0be7pAvEak=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=IMjU6MdZkJ1vFABB8pGs7WAgyajyGgDyFjgHZYRwzkSvnmZ7ow604UfwMv11PKeGolBIjzdYztrDrs1bydSGsFV3t7SeHEHsI1n5DTwGNt7gRhfi3GCEG5Qfnc3CUMILG5wATXMNNBowaWZFHpyxOJQSYGctw/Ixps3RnApN8Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=b1kIuSeU; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1730920825; c=relaxed/simple;
+	bh=qozOId3Q0EdX6r2H9lzLIWZR1gOwHp8hWjvcEnPNL/Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=uNcLeuw74MhEihrs6oQYV3eOk1xIM0AKvRjRfwSW6wd4/nE0FCOTeMVJdeSeCR39J1Wam7ZdRxA77XMrutB1VtnGRyd+IIXvyMIIDzwts9pp60P+ARABylWu0C/Tr50AisrUbgzus7SK+83DktGDmG6DBEKmZ7PmGwDKA+Wruv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dfe0B7R+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="b1kIuSeU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1730920694; x=1762456694;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=oU863Kwn7GFPSRJfsJTS+xW4A//cqLjSy0be7pAvEak=;
-  b=b1kIuSeU2EaCzwbAreO5ZZNTxKDwKuHYDtNQ8Wn61GAnax2pp70RzTBM
-   oXe7zhD5RIt6+SuZ29b7wSz/d+RQ/Ki/qmt5b7w/BRVF8KDyNRGfeFBVH
-   ogEHdOwnjS0IG9cL4pk4LY+HE2k40kcropTn+M9gmZ+w7fyXDHd6cuonY
-   U+xex99UYFRvY4mZ4BJKy/XRRc2VGG98i37C+7q4GHKUI7nsM6k9Ahbnl
-   ZZcBRQp4otxGCIVPaYgGIOkeFwEdaP6OL0mX6ra5hswsMM+aV5rWp0vy0
-   wEFApHJFipGS/08BgFezJJffqSORGx6slggzeyRNQs7viCf/vRVuHNKfa
-   w==;
-X-CSE-ConnectionGUID: ZmZl/QlxSRaWd1IoElCqFw==
-X-CSE-MsgGUID: tmB5CBhDRj+1r6TTcTSFkQ==
-X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
-   d="scan'208";a="34481087"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Nov 2024 12:18:13 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 6 Nov 2024 12:17:05 -0700
-Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Wed, 6 Nov 2024 12:17:03 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 6 Nov 2024 20:16:39 +0100
-Subject: [PATCH net-next 1/7] net: sparx5: do some preparation work
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dfe0B7R+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE858C4CECD;
+	Wed,  6 Nov 2024 19:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730920824;
+	bh=qozOId3Q0EdX6r2H9lzLIWZR1gOwHp8hWjvcEnPNL/Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Dfe0B7R+2DeGaEecTGgrwVFW8txkU9IAZOK9XH2BlUCcjuG4O+oazhqZUNN1PHUva
+	 uuMgq0ma8vqRak/YQMp0oxp0n98G8tMK1nHlXJNGUGTew9CNIwwj2mlLd0BlAsHDJU
+	 kFDC25bgjNzr50UE/ZoWPvd4CVERklcaFXtEtZKsAgmUl42pB01TloSmhZBaemfRyy
+	 o5ERb70AB6OjpI0uBMBRjr9J02R3TcxKbhVanBBu/U+I68QI5xmsBZTRy3o0P2C+u2
+	 XJgFjKSNU98KTNLzYafavh9xakQtFNY2KCPyo7lbeEP+Xyf4oEkng0jrapglRBferk
+	 q5ZCZAuc4xkQg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB0543809A80;
+	Wed,  6 Nov 2024 19:20:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241106-sparx5-lan969x-switch-driver-4-v1-1-f7f7316436bd@microchip.com>
-References: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
-In-Reply-To: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
-To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lars
- Povlsen" <lars.povlsen@microchip.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Russell King <linux@armlinux.org.uk>,
-	<jacob.e.keller@intel.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14-dev
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 bpf] bpf: Add sk_is_inet and IS_ICSK check in
+ tls_sw_has_ctx_tx/rx
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173092083379.1386690.4462289480078199478.git-patchwork-notify@kernel.org>
+Date: Wed, 06 Nov 2024 19:20:33 +0000
+References: <20241106003742.399240-1-zijianzhang@bytedance.com>
+In-Reply-To: <20241106003742.399240-1-zijianzhang@bytedance.com>
+To: Zijian Zhang <zijianzhang@bytedance.com>
+Cc: bpf@vger.kernel.org, martin.lau@linux.dev, borisp@nvidia.com,
+ john.fastabend@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ sgarzare@redhat.com, bobby.eshleman@bytedance.com, jakub@cloudflare.com,
+ andrii@kernel.org, cong.wang@bytedance.com, jiang.wang@bytedance.com,
+ netdev@vger.kernel.org, sdf@fomichev.me
 
-The sparx5_port_init() does initial configuration of a variety of
-different features and options for each port. Some are shared for all
-types of devices, some are not. As it is now, common configuration is
-done after configuration of low-speed devices. This will not work when
-adding RGMII support in a subsequent patch.
+Hello:
 
-In preparation for lan969x RGMII support, move a block of code, that
-configures 2g5 devices, down. This ensures that the configuration common
-to all devices is done before configuration of 2g5, 5g, 10g and 25g
-devices.
+This patch was applied to bpf/bpf.git (master)
+by Martin KaFai Lau <martin.lau@kernel.org>:
 
-Also, expose the two symbols: SPX5_ETYPE_TAG_C and SPX5_ETYPE_TAG_S,
-which will be needed by the lan969x RGMII configuration in a subsequent
-patch.
+On Wed,  6 Nov 2024 00:37:42 +0000 you wrote:
+> From: Zijian Zhang <zijianzhang@bytedance.com>
+> 
+> As the introduction of the support for vsock and unix sockets in sockmap,
+> tls_sw_has_ctx_tx/rx cannot presume the socket passed in must be IS_ICSK.
+> vsock and af_unix sockets have vsock_sock and unix_sock instead of
+> inet_connection_sock. For these sockets, tls_get_ctx may return an invalid
+> pointer and cause page fault in function tls_sw_ctx_rx.
+> 
+> [...]
 
-Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |  3 ++
- .../net/ethernet/microchip/sparx5/sparx5_port.c    | 39 ++++++++++------------
- 2 files changed, 21 insertions(+), 21 deletions(-)
+Here is the summary with links:
+  - [v3,bpf] bpf: Add sk_is_inet and IS_ICSK check in tls_sw_has_ctx_tx/rx
+    https://git.kernel.org/bpf/bpf/c/44d0469f79bd
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index 146bdc938adc..91ae383a5555 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -134,6 +134,9 @@ enum sparx5_feature {
- 
- #define SPARX5_MAX_PTP_ID	512
- 
-+#define SPX5_ETYPE_TAG_C     0x8100
-+#define SPX5_ETYPE_TAG_S     0x88a8
-+
- struct sparx5;
- 
- struct sparx5_calendar_data {
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 1401761c6251..bb04c2ccf112 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -12,9 +12,6 @@
- #include "sparx5_main.h"
- #include "sparx5_port.h"
- 
--#define SPX5_ETYPE_TAG_C     0x8100
--#define SPX5_ETYPE_TAG_S     0x88a8
--
- #define SPX5_WAIT_US         1000
- #define SPX5_WAIT_MAX_US     2000
- 
-@@ -1067,24 +1064,6 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 	if (err)
- 		return err;
- 
--	/* Configure MAC vlan awareness */
--	err = sparx5_port_max_tags_set(sparx5, port);
--	if (err)
--		return err;
--
--	/* Set Max Length */
--	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
--		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
--		 sparx5,
--		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
--
--	/* 1G/2G5: Signal Detect configuration */
--	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
--		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
--		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
--		sparx5,
--		DEV2G5_PCS1G_SD_CFG(port->portno));
--
- 	/* Set Pause WM hysteresis */
- 	spx5_rmw(QSYS_PAUSE_CFG_PAUSE_START_SET(pause_start) |
- 		 QSYS_PAUSE_CFG_PAUSE_STOP_SET(pause_stop) |
-@@ -1108,6 +1087,24 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 		 ANA_CL_FILTER_CTRL_FILTER_SMAC_MC_DIS,
- 		 sparx5, ANA_CL_FILTER_CTRL(port->portno));
- 
-+	/* Configure MAC vlan awareness */
-+	err = sparx5_port_max_tags_set(sparx5, port);
-+	if (err)
-+		return err;
-+
-+	/* Set Max Length */
-+	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
-+		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
-+		 sparx5,
-+		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
-+
-+	/* 1G/2G5: Signal Detect configuration */
-+	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
-+		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
-+		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
-+		sparx5,
-+		DEV2G5_PCS1G_SD_CFG(port->portno));
-+
- 	if (conf->portmode == PHY_INTERFACE_MODE_QSGMII ||
- 	    conf->portmode == PHY_INTERFACE_MODE_SGMII) {
- 		err = sparx5_serdes_set(sparx5, port, conf);
-
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
