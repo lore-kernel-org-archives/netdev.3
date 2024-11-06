@@ -1,169 +1,131 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF34C1DB534
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 09:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.65.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEBD188CAE;
+	Wed,  6 Nov 2024 09:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730886966; cv=none; b=V4egHQz3aDit5pBAS4EF5VlzfNxrEOd8+gt6/u5E5SoV7ZtECy5jY62Xh1jpk8VU4QBZE3IOuSiqfWqkCD4avgVvkoDUDnQgIij58P6Wg60hk/4yKEK44dWCw4Xf8v0THK5W0DJhIdM+3wvl/hpMC8exL6N7xHZzgBA7FSqqm0g=
+	t=1730886994; cv=none; b=s4ramVTZsCjLUlbclcmqxf2umxsUVyC9BoyodHk3R8OuSG9iAMeSIXcmjXQehPdE4zTprBKfrCLLpJS0xxlwI1SKj/ZnF9WnZmLG+TDS3AvLhTvpdDyMhn1xa7GTnrs4x+sWvAInuSFAxxB2EN13Q7SphWAGZJ/6OehNvVcyvXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730886966; c=relaxed/simple;
-	bh=9dwQDhVzhLwWtbWg1gHR+oxrxdmUqKJz2JlkUlMcS6o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ffwu6fPI8UAHK9keFNwO/fj1eDUTrpnpx4st5yrND1zRsW1XyUIQOUc2q8UmCAnnH7YBTzCzz56LbBVrlNWXoOAAlRvTiOFUy0njuGjqg36rDfC8Z+pf7SHcUvnY+HxMHqX9P+XR4pe/xzjW9HVNLPstNBLwskj067ZDekXP8TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.65.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtpsz2t1730886853tmx0uz0
-X-QQ-Originating-IP: PVHHeg6ySFW9GMXm0ZVtjeL5F3taVW64Ez9qO2k7ZPc=
-Received: from wxdbg.localdomain.com ( [60.186.23.108])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 06 Nov 2024 17:54:04 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 2965427873250228838
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	horms@kernel.org,
-	netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com,
-	duanqiangwen@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net] net: txgbe: fix lost GPIO interrupt
-Date: Wed,  6 Nov 2024 18:17:17 +0800
-Message-Id: <20241106101717.981850-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1730886994; c=relaxed/simple;
+	bh=HkVhGI4V+9ZYnzFk4gRhjN2tqhW0tCVvOg40yK2mBv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JxfvFobgdAN7vNCfaPyYeT+0O1rmqpWQZT+c5VBEOiw500nBncXHfq97wUUx2/xw0v7RgaEvU8VKvMkrQUl6dLPOtvpSa3XsniG/FDTXKAFYRZss6fcQ9kJOaKxHSsJCMsKrSKafNOAcTxAofs9UvlfrX8mJpkmKACKMypJeh2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjDNpPeo; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjDNpPeo"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d50fad249so4717377f8f.1;
+        Wed, 06 Nov 2024 01:56:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730886990; x=1731491790; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QNeN9v8gxmrlphcLSsXaboQE4lTekxQXl96Uo8SWbLY=;
+        b=jjDNpPeooPwiwhnvt9XNunGUVTBB3MsQg9NDs+VJ8k4BcTWrGqjS2qWTiLxCm6foDC
+         CYlVLdT+bhx9NE+SXbZb/Ie21IhyemYLYmUK/9DQxbC/WrSB5VNYl2W3gTLBF58iFXev
+         j4T2W6g5pS9pv/OLN3Y2Ft9F0NLDafA9OJn1Vh7CkvvbM7SiHkndc0gSra0E6Kta3ty8
+         AYyaqORGTt3aey2+McONCs/ff0SRIEvIo2zFwt6e3R8cXVqj5iYR7w8k+aUiCmO/O2LO
+         tEeSMUaqu0tM5T7mCn4f0Pr3lC7eO9xAsjDk2hrxNpFWPWtHtgNHS0npB4wEq5wvYN3h
+         vBXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730886990; x=1731491790;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QNeN9v8gxmrlphcLSsXaboQE4lTekxQXl96Uo8SWbLY=;
+        b=E0XUaYuZ9vDaPpQhvOlNtt9pNBaFGBgInDtSa5KbmGq5BTWjg9WbwZS83aEYfJIeiY
+         TYhgSdmixpqlt3I6YfH5pslizZTCIVIxSN/cPJWSdU1jseH+5w2Mva+n5AjVyWoSGLqA
+         T+bUUpicDWBSnN3uOx+ZTvFc/zDBLY7vZ/Fwng0puRGIylUkMonk28Nucu5lzQyXbD55
+         2nNrj2u83lKNK0EX1Z6z3AFbwnq6aBSaSHS9SvzbhiK37W7BEj8Gu/yKdUrTD26RJiI0
+         xmKdVWoBLZDNZpuftkIFqQ90Nnndx9+y3xCARC2ohFA0AtAR+09KEru+vMNowqL8j5mD
+         OsZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYeMWt9oKVKFfUcH5BGV3bP1I+mK95c/34kiZDhZcwtoG59lpLJXiEhrxwAypp9sWgcNI78FNZb5Rg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6PACgmFZDZ3OZgGsMI0myQg9/RWx42Kbbvb8URZvW3rkjyXGu
+	HpNOZp3ON6Tl3rCrWBomAooQHYfF9PSjH97os4n9GPluSsKMND0R
+X-Google-Smtp-Source: AGHT+IGt4XIRJwi34wWyvZSpwtb0nT5zhPZsrRvgknnXzczX6WckHHcW037tfIzcV7RzQ9xstwj6qQ==
+X-Received: by 2002:a05:6000:e88:b0:374:c847:852 with SMTP id ffacd0b85a97d-3806115ac8fmr29281013f8f.29.1730886990174;
+        Wed, 06 Nov 2024 01:56:30 -0800 (PST)
+Received: from [172.27.60.131] ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10b7e1bsm18792787f8f.1.2024.11.06.01.56.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 01:56:29 -0800 (PST)
+Message-ID: <b3c6601b-9108-49cb-a090-247d2d56e64b@gmail.com>
+Date: Wed, 6 Nov 2024 11:56:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: M+0YV038q5N1AbEcloW9ueVHc9OFxNsCCw30+EW6id2Kl5eq/MBN+u6/
-	8uEZrpHYuqDN5pAZe+knJYpoyCCiyIKynHMdDJiLb4i8sOsPVX0qMedsLVJwjBWLNrjfKww
-	JvpTC2zaNAefK3c8xoCtuZEEkkWYqrxyqmNtl7jMUpluP1vJVWYxWQ9Igz5CxDr/Hddx3E+
-	Oicwb0WoNamY040khv3QSkpaG6l2xMrcPQQrZPG1Cds6cJvCYWLDmvrnN0pUVWLzRUP/PY2
-	IJWQxtM3lXnIx71czc5nx73t1IU2bb6Mu762ZvwcEsKW+UM7XR/sSr2c7tv6wpIsSlMFdTn
-	AVV3vRxI+UOiAMPjwONirmnmElFDLjR78FfKi5zYAJlDWzw5ReiJ32jfmA0bRKt+xHX7gZX
-	ZG7Nri2Sg4guBQ81VhWplzizjpY2RfUQgdgF+wGb4Y5/qJT/hFayI3X9biayDrdaoedRLJz
-	dUzpCZFT3zATfEDKEjbJeqSf2v0R6sp1LKJ8ZITJR9/oND3zQMfvFcqgw3IM1FO9x4pSG69
-	1rRURPojy0ndKLX4QKVA+uN055oZP0jUSfmFsoMkWJGEU7D9daQqBWwWPd1jWFjW7u35yuQ
-	VvIJJkXb2x5M7UwpfBaMy4w2Xzc85/Kx3QYpitbi0EYRdBZbK9rXCuhHpT87WrIYyUDyuDk
-	w77JwlEkvMlZMVHJIT+BH4hKAvHM+GbY+3mFxThrcOK5ffyZu87b5XrZ3GRFabnbELmzCDi
-	VTat1ww2aOlh+tPDUfcoTDWw1BPpv9JSPK1NJF9NueJWVA9R6W4IeWui7L/pxoFi495ZcRy
-	p2CSxHErHV2psh31nraKqKneLN5/zNHoeT20i16NhG9xA9gMtT0bPkTvPH92AHAUJ2dTxKB
-	SFlgOtn3No+NY5pvnkbb0Sqywo2YNoCf0thMOVOXhPmKya+26nlW0cTgxZISjfVXguIbWFY
-	HhIEZd0yX2Fel0LaAFcS3gnW5AkwVgpgOQwH5ReZ9+wC/TBXLLdTHFIooEqCeUJmQ7lk=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/mlx5e: Report rx_discards_phy via rx_missed_errors
+To: Yafang Shao <laoar.shao@gmail.com>, saeedm@nvidia.com, tariqt@nvidia.com,
+ leon@kernel.org
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20241106064015.4118-1-laoar.shao@gmail.com>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20241106064015.4118-1-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Sometimes when clearing interrupts for workaround in txgbe_up_complete(),
-the GPIO interrupt is lost once due to the interrupt polarity is
-consistent with the GPIO state. It causes the SFP state cannot be updated
-immediately. That is, SFP driver can only get into the correct state if
-the GPIO state changes again.
 
-So mannually trigger the GPIO interrupt while clearing it in
-txgbe_reinit_gpio_intr(), causing SFP driver to update to the correct
-state. And also clear GPIO interrupts in txgbe_down() to ensure that the
-interrupt polarity is consistent with the GPIO state.
 
-Fixes: b4a2496c17ed ("net: txgbe: fix GPIO interrupt blocking")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_type.h    |  1 +
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c |  5 ++++-
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c  | 15 ++++++++++-----
- 3 files changed, 15 insertions(+), 6 deletions(-)
+On 06/11/2024 8:40, Yafang Shao wrote:
+> We observed a high number of rx_discards_phy events on some servers when
+> running `ethtool -S`. However, this important counter is not currently
+> reflected in the /proc/net/dev statistics file, making it challenging to
+> monitor effectively.
+> 
+> Since rx_missed_errors represents packets dropped due to buffer exhaustion,
+> it makes sense to include rx_discards_phy in this counter to enhance
+> monitoring visibility. This change will help administrators track these
+> events more effectively through standard interfaces.
+> 
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index b54bffda027b..bf4285db605e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1078,6 +1078,7 @@ struct wx {
- 	bool wol_hw_supported;
- 	bool ncsi_enabled;
- 	bool gpio_ctrl;
-+	bool gpio_trigger;
- 	raw_spinlock_t gpio_lock;
- 
- 	/* Tx fast path data */
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 93180225a6f1..0e6129dcff8f 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -82,7 +82,6 @@ static void txgbe_up_complete(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
--	txgbe_reinit_gpio_intr(wx);
- 	wx_control_hw(wx, true);
- 	wx_configure_vectors(wx);
- 
-@@ -97,6 +96,9 @@ static void txgbe_up_complete(struct wx *wx)
- 	rd32(wx, WX_PX_IC(1));
- 	rd32(wx, WX_PX_MISC_IC);
- 	txgbe_irq_enable(wx, true);
-+	wx->gpio_trigger = true;
-+	txgbe_reinit_gpio_intr(wx);
-+	wx->gpio_trigger = false;
- 
- 	/* enable transmits */
- 	netif_tx_start_all_queues(netdev);
-@@ -169,6 +171,7 @@ void txgbe_down(struct wx *wx)
- 	txgbe_disable_device(wx);
- 	txgbe_reset(wx);
- 	phylink_stop(wx->phylink);
-+	txgbe_reinit_gpio_intr(wx);
- 
- 	wx_clean_all_tx_rings(wx);
- 	wx_clean_all_rx_rings(wx);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 67b61afdde96..361dcb362d42 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -401,17 +401,21 @@ static void txgbe_gpio_irq_unmask(struct irq_data *d)
- static void txgbe_toggle_trigger(struct gpio_chip *gc, unsigned int offset)
- {
- 	struct wx *wx = gpiochip_get_data(gc);
--	u32 pol, val;
-+	u32 pol_r, pol_w, val;
- 
--	pol = rd32(wx, WX_GPIO_POLARITY);
-+	pol_r = rd32(wx, WX_GPIO_POLARITY);
- 	val = rd32(wx, WX_GPIO_EXT);
- 
- 	if (val & BIT(offset))
--		pol &= ~BIT(offset);
-+		pol_w = pol_r & ~BIT(offset);
- 	else
--		pol |= BIT(offset);
-+		pol_w = pol_r | BIT(offset);
- 
--	wr32(wx, WX_GPIO_POLARITY, pol);
-+	wr32(wx, WX_GPIO_POLARITY, pol_w);
-+
-+	/* manually trigger the lost inpterrupt */
-+	if (wx->gpio_trigger)
-+		wr32(wx, WX_GPIO_POLARITY, pol_r);
- }
- 
- static int txgbe_gpio_set_type(struct irq_data *d, unsigned int type)
-@@ -560,6 +564,7 @@ static int txgbe_gpio_init(struct txgbe *txgbe)
- 		return ret;
- 
- 	txgbe->gpio = gc;
-+	wx->gpio_trigger = false;
- 
- 	return 0;
- }
--- 
-2.27.0
+Hi,
+
+Thanks for your patch.
+
+It's a matter of interpretation...
+The documentation in 
+Documentation/ABI/testing/sysfs-class-net-statistics refers to the 
+driver for the exact meaning.
+
+rx_discards_phy counts packet drops due to exhaustion of the physical 
+port memory (not in the host), this happen way before steering the 
+packet to any receive queue.
+Today, rx_missed_errors counts SW/host memory buffer exhaustion of the 
+receive queues.
+I don't think that rx_missed_errors should mix both.
+
+Maybe some other counter can be used for rx_discards_phy, like 
+rx_fifo_errors?
+
+
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Saeed Mahameed <saeedm@nvidia.com>
+> Cc: Tariq Toukan <tariqt@nvidia.com>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 6f686fabed44..42c1b791a74c 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -3903,7 +3903,8 @@ mlx5e_get_stats(struct net_device *dev, struct rtnl_link_stats64 *stats)
+>   		mlx5e_fold_sw_stats64(priv, stats);
+>   	}
+>   
+> -	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer;
+> +	stats->rx_missed_errors = priv->stats.qcnt.rx_out_of_buffer +
+> +				  PPORT_2863_GET(pstats, if_in_discards);
+>   
+>   	stats->rx_length_errors =
+>   		PPORT_802_3_GET(pstats, a_in_range_length_errors) +
 
