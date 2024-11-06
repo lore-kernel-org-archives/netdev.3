@@ -1,123 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB76D1D7E41
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 09:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B1C1D7E41;
+	Wed,  6 Nov 2024 09:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730883634; cv=none; b=WU2iq3G5BVIyyxy+Cv2bMPhfBOQtd3AApyG7ALxltM7FYIJYVLUy9jm2SP5IL6YqdjaaKtyR5AYau9VbzCiCkF3dBDjyTi5Ni6HvpT8ieP61DuKweE00L8c5RR4Tav9zuRMEdR26gxRh4LwxO1MD0ob0iJv5lMRdKWmBYJIG098=
+	t=1730883642; cv=none; b=KoK4qPbznYkvkCadCI4djIiJ2BtM2CA1V47GOCI3nve9ie6lrYSjcu8I+Ravl234tCMLDg76jMbzymzpNtO9gZrEIiPELMpeRPwI7qBdro4pjJ+8/l4r8oO7KIaMns2Tu9zZckzpOWPXp8He1wPBuOZzwbeizWS9fCZNf6xhSXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730883634; c=relaxed/simple;
-	bh=1wtoUZb7igWwGCo1hay5S1pPcP/6zxMqXWLRqUFMUdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AnzgbOV5lNMtDiq5N9Wowb1Uj1ZsVQS5WAKWRHsIdDMIYJJhdXjfKGXHddNliq/J7THrMYHpwAebWNvWXssNrqHlH+JZmdDo0OdouIANI40uJY82qvo2pyCUMvXLvru8yfMENp49beie2zSr3n/R0LyvCkUwx9JZWZGmrfoZAHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JqavcIha; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JqavcIha"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730883631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=axmudicGVO9Q8nAMhCbiq7Bd/A0GPd5u5/poYVKGHUY=;
-	b=JqavcIhagX5kC9T67B3Zy5VLU7h0KX9yqkzljzcmOHe8mBE208WbzQQZ1mpMP1hVJXGYX8
-	0FJps2hCOrcc0GQe+OowPFbB9vK+I0wjAQWVJw1r7SUWyxabvtqQsSG3lEUpSACoNLpF8t
-	VD2U28axgIFK7tzSBzoLGZsNOH5aP9s=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-461-6RyaLB-QMI6aJS9HHzKiUQ-1; Wed, 06 Nov 2024 04:00:30 -0500
-X-MC-Unique: 6RyaLB-QMI6aJS9HHzKiUQ-1
-X-Mimecast-MFC-AGG-ID: 6RyaLB-QMI6aJS9HHzKiUQ
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d589138a9so3108246f8f.1
-        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 01:00:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730883629; x=1731488429;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=axmudicGVO9Q8nAMhCbiq7Bd/A0GPd5u5/poYVKGHUY=;
-        b=Gbvhy5061AFrrOn+RLKle20y43yL8XsMUKtFUu8oxLM9CUVKOAyZqjexWqkoZUqVA+
-         sNTjizNJdThzQTaszqZURhJfXu2JO+nhLjsM3OodNaaaF0DBuKVrfTDr1qXyW7X+Y773
-         ssTEYXutmXi9VC91zytU/4LtEQSKq8lGL1OTdq+BBQLIhRE704jchgkNaBaF7A/IBG3V
-         H6O/ynBBKhq8JtDPFvEX1Lo5qvD6J4yy5zY82S7AAEMaqc5E6HFfUivITz1nEIZY3N3x
-         PkQBCa5vDGNqDkTRuyaN0yHC6rrlD1fKZLz184t6UeQtjL1QwYdXat2MUqrV8UsyfW1i
-         9YGg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9QhhNFFLvOhfsaggePqlDHdWf6xyS6H4bQ4CJTdzkKIykXg/UuxvXpEKjtT29xQT1L1VZRqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSxKbe/qgIKrqhCfbh+1qKr0qzK2wJk7JbDAOSbEgB2yYSCPPG
-	YjX++DNFXb5A/M3V1Nx2A1IvevshfBK+wRjW6M7gcJ10lJAFXD8afyUhBUl1rlbyBhKtO0p+JHy
-	oTgRrtQzGt8QWSogg3gKrDLNPnYzar1Qhi0av7O9yomdeH2MNWarbWw==
-X-Received: by 2002:adf:ea06:0:b0:37d:45f0:dd08 with SMTP id ffacd0b85a97d-380610f212emr27582136f8f.11.1730883629176;
-        Wed, 06 Nov 2024 01:00:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzSve2i8nJTVTdQXB+tYxgDLFKDgtRDiPfZLOVO8eLpftF9UVDzXD5lddlaFIfxonpXuBSXA==
-X-Received: by 2002:adf:ea06:0:b0:37d:45f0:dd08 with SMTP id ffacd0b85a97d-380610f212emr27582117f8f.11.1730883628793;
-        Wed, 06 Nov 2024 01:00:28 -0800 (PST)
-Received: from [192.168.88.24] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d4bc8sm18559825f8f.39.2024.11.06.01.00.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2024 01:00:28 -0800 (PST)
-Message-ID: <0ce3e4aa-a091-4d83-b3f3-222b9eaf05c5@redhat.com>
-Date: Wed, 6 Nov 2024 10:00:26 +0100
+	s=arc-20240116; t=1730883642; c=relaxed/simple;
+	bh=fDSS5Ot/nGR8QnyVF4ghfmLTy2d8XgfWck2llWDoaH4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ricIpTrA5OOE7/CHNiLa0tJuTMw74xqXCd+1rJqEpay65xKVcO1THJq3/N8JnjZPJXkoJrYYNyAueuI1MzAF80rVxbvVS4Y1ivVWx3/8kCGTdPm9leRYhMEnqvC8jru/CU2GgXKsr5IjisJTaROMzA9fl4+ww3SjRDYTvZGJPUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.247])
+	by APP-05 (Coremail) with SMTP id zQCowACHbrmkLitnyXFqAA--.1291S2;
+	Wed, 06 Nov 2024 16:53:58 +0800 (CST)
+From: Wentao Liang <liangwentao@iscas.ac.cn>
+To: shannon.nelson@amd.com,
+	brett.creeley@amd.com,
+	davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Wentao Liang <Wentao_liang_g@163.com>,
+	Wentao Liang <liangwentao@iscas.ac.cn>
+Subject: [PATCH v2] drivers: net: ionic: fix a memory leak bug
+Date: Wed,  6 Nov 2024 16:53:07 +0800
+Message-ID: <20241106085307.1783-1-liangwentao@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 6/7] rtnetlink: Convert RTM_NEWLINK to
- per-netns RTNL.
-To: Kuniyuki Iwashima <kuniyu@amazon.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-References: <20241106022432.13065-1-kuniyu@amazon.com>
- <20241106022432.13065-7-kuniyu@amazon.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241106022432.13065-7-kuniyu@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACHbrmkLitnyXFqAA--.1291S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XFWkCw48tw1xCr4fXr1fJFb_yoW8JrW5pw
+	s8JFyYvrn5Xr4UGw1DAw18ZF98ZaySkrW8Grnru3yF9wsxAry8JF17ta47tr97WrWUJF1S
+	qr129w15XF98C37anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5iihUU
+	UUU
+X-CM-SenderInfo: xold0wxzhq3t3r6l2u1dvotugofq/
 
-On 11/6/24 03:24, Kuniyuki Iwashima wrote:
-> @@ -7001,7 +7021,8 @@ static struct pernet_operations rtnetlink_net_ops = {
->  };
->  
->  static const struct rtnl_msg_handler rtnetlink_rtnl_msg_handlers[] __initconst = {
-> -	{.msgtype = RTM_NEWLINK, .doit = rtnl_newlink},
-> +	{.msgtype = RTM_NEWLINK, .doit = rtnl_newlink,
-> +	 .flags = RTNL_FLAG_DOIT_PERNET},
->  	{.msgtype = RTM_DELLINK, .doit = rtnl_dellink},
->  	{.msgtype = RTM_GETLINK, .doit = rtnl_getlink,
->  	 .dumpit = rtnl_dump_ifinfo, .flags = RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
+From: Wentao Liang <Wentao_liang_g@163.com>
 
-It looks like this still causes look problems - srcu/rtnl acquired in
-both orders:
+In line 334, the ionic_setup_one() creates a debugfs entry for
+ionic upon successful execution. However, the ionic_probe() does
+not release the dentry before returning, resulting in a memory
+leak. To fix this bug, we add the ionic_debugfs_del_dev() before
+line 397 to release the resources before the function returns.
 
-https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/847881/12-rtnetlink-sh/stderr
+Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
+Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-It looks like __rtnl_link_unregister() should release the rtnl lock
-around synchronize_srcu(). I'm unsure if would cause other problems, too.
-
-Please have a self-tests run with lockdep enabled before the next iteration:
-
-https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style
-
-The whole test suite could be quite cumbersome, but the rtnetlink.sh
-test should give a good coverage.
-
-Thanks.
-
-Paolo
-
-p.s. kudos to Jakub for the extra miles to create and maintain the CI
-infra: it's really catching up non trivial things.
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index b93791d6b593..f5dc876eb500 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -394,6 +394,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ err_out_pci:
+ 	ionic_dev_teardown(ionic);
+ 	ionic_clear_pci(ionic);
++	ionic_debugfs_del_dev(ionic);
+ err_out:
+ 	mutex_destroy(&ionic->dev_cmd_lock);
+ 	ionic_devlink_free(ionic);
+-- 
+2.42.0.windows.2
 
