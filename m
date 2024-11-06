@@ -1,89 +1,110 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59447502B1
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 14:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456931CF2A0
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 14:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730902714; cv=none; b=KR1VBrCCWHSrfCgNC+zogqN5juuM4MnuGL1uBxx6JFw2rmwH9P0uE+rk/NxE1mkvbxWw+q6S6gmtUtYd4SJU87mj+hJfnRjxommDQnIkdcNjZsXG4zh9MAIlpMjB0qBegS1JzJWCnP/i94xcUpr29qMrOHFsQau6aXpXzhLq5DY=
+	t=1730902772; cv=none; b=CCFOAPxnBf+LE3dxvcCR5MsMwErLs9pgm1ngfV1TDQPCuc10YzHfuPzxA01WxuexH9LqAhObEVwkSfAl35XXkoOY4+sM3joQnKveYglnRvBgg9lFVIqhuvoYAZv7TJCITZst9+3o1eoSFfQWV4pnFzc4RRGKBf9Ee11882D+mfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730902714; c=relaxed/simple;
-	bh=gseoWO0JQZsLmnir8Uc4wp8eGzpFf9nBuPM1Y79guJM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=URX4xvCT/p/776Eicw8iHa8/oTNhJKXgdDlfuugYhxL+Q5grnyS74KJVCO3NJCxzw/Gml0lAd5qz424/tiBQUx//Ydjvv5DrvzKl4jQ7OIHkNFQ5R5RK+JErl4EAAh90G9RZ2q/vqPFNe7+6+pAIynHb8L15KN/O/jrH38WoimI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.247])
-	by APP-03 (Coremail) with SMTP id rQCowAAHqe5BeStnagZ6AA--.36946S2;
-	Wed, 06 Nov 2024 22:12:21 +0800 (CST)
-From: Wentao Liang <liangwentao@iscas.ac.cn>
-To: viro@zeniv.linux.org.uk
-Cc: netdev@vger.kernel.org,
-	Wentao Liang <liangwentao@iscas.ac.cn>
-Subject: [PATCH] net: ethernet: miss media cleanup behavior
-Date: Wed,  6 Nov 2024 22:11:52 +0800
-Message-ID: <20241106141152.1943-1-liangwentao@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1730902772; c=relaxed/simple;
+	bh=oiZFuhIF4QoiUNWgqbOD3mWFkvRKU+gcd45dtB8AByk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MnufdCCB2brPbMBxrJF3hSeFB3wcj3Bz5uTQND58KELizSnJvMaaXRjKGAFHw8I9kGRvSLd14bHUOmdvrGgXeCfF3hwwLFS0f+99fdxb3CkmyaifQOB+VS1FqmLrGYvMAkp/pJ9FkSg8cELnnEA9577nHK3Vt7JweFfl6CEfAps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JgFBXw8x; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JgFBXw8x"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5ced377447bso4926424a12.1
+        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 06:19:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730902769; x=1731507569; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yoVh6I+sgW0HCrktUilyDaZ92RmL1a324ePT2UFI6EI=;
+        b=JgFBXw8x9mF5/e6K+oxgHwi3o4wdM74FUZLFszm5J8Bt9t2ma1KidckzXZ62XDRURe
+         vD9d0AU57gF6cB55rIpyL36GX4lnSVUUp19Q/zyNVE6qNaPGQ9VXtjErgAVi4X/fbFfP
+         Exe4CDhLcdQ3SBYnx6UR5XnTOzM0d5GD7Ds6sR3MxIUtLW4d1tbQf3oA+xFsIoWh1O81
+         38qhcbBYwa+Mi+q0n9sJ6Sbla/qTLcBYVIzj3JgyimNSrRDqiDXrK8ueLSWWjvyn/ysC
+         8laWeE5K4VVXLYJJAQxrsRxWhLyBjMVTe4GMoKxMnWO+K1wv/T5xve76xiEBgZvFWTyA
+         Vq5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730902769; x=1731507569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yoVh6I+sgW0HCrktUilyDaZ92RmL1a324ePT2UFI6EI=;
+        b=VaMZEPiMQPYvX8v+DLf3iBaP/SVqzkjoZnTIfZ1PRSB6xzfe8ICtdW124y/lclreMA
+         idjOhDh7tq6MnNyDYrb93lcgMac7QeL+L7yz64PP2aoORV2NrFytB/zPKS0Fjc+8I1Zu
+         tQ2YzFqw7DSrfkLJjj00829pQAdGkRSC+l2dQPBzlESQiwJqabfYOWK6x9HzB9IyNQ4Y
+         GGdYUwu0ctSfoeAANdTADFDqGLP39KQ4/5RgAcbKFkRIjiufsii0r4fzvRTQfpTlloXg
+         L2QnAM71nwaz0js+SgDb/852e1KeMKhPmultMmpC1gjRks8VwjmJ8YaJSxBulvEkXG3z
+         53qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ0QX+kvgG1Asv+jCca1eDrRfzuo2MR89WDoKBso5SM/0Bwbb19fnjW0bcI1OyVuYfRpBM+r8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw88ZpQ+vIfYXXHEXSS+udSfE+2Afe3rOe6kwLvsz2N1V5lcgAq
+	G2fQ38uiRVqfr35xx/qjzuUNQMS0rm1Yv2f/9/MgGCR6GEs30gy2KzUi2iE8cH0UJdEjpx3GTw6
+	bwszCON08jCq2EVgUXOzkbQ/ohGEam48NtADd
+X-Google-Smtp-Source: AGHT+IELMvKRoMEathSk4KOTxObc01aIRc3ra1YOgb4K//tGX1ypzTzZjAVLCjuGJUG5SFy6NgXKdHxD+C4kM3oB2Jg=
+X-Received: by 2002:a05:6402:2187:b0:5cb:6718:7326 with SMTP id
+ 4fb4d7f45d1cf-5cd54a958f5mr18429867a12.21.1730902768471; Wed, 06 Nov 2024
+ 06:19:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAHqe5BeStnagZ6AA--.36946S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uryDtrW3CF4kAr43tFWxCrg_yoW8Gry8pF
-	4jgF9rC34kXF1Yqa1UZw1vqFW3uas5Kryxurn3X395Zr9Iyr12va4Fyay5KFWUtrWxu3sx
-	Xr1rZry5uan8XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUym14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUVMKAUUUUU=
-X-CM-SenderInfo: xold0wxzhq3t3r6l2u1dvotugofq/
+References: <20241106135357.280942-1-alexandre.ferrieux@orange.com>
+In-Reply-To: <20241106135357.280942-1-alexandre.ferrieux@orange.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 6 Nov 2024 15:19:17 +0100
+Message-ID: <CANn89i+Lu_2q7_onZcrZhqu6NY9=rxAi9jopZW053dRH_7qojQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] Fix u32's systematic failure to free IDR entries
+ for hnodes.
+To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
+Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us, 
+	alexandre.ferrieux@orange.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the de21041_media_timer(), line 1081, when media type is locked,
-the code jumps to line 1136 to perform cleanup operations. However,
-in the de21040_media_timer(), line 991, the same condition leads to
-an immediate return without any cleanup.
+On Wed, Nov 6, 2024 at 2:54=E2=80=AFPM Alexandre Ferrieux
+<alexandre.ferrieux@gmail.com> wrote:
+>
+> To generate hnode handles (in gen_new_htid()), u32 uses IDR and
+> encodes the returned small integer into a structured 32-bit
+> word. Unfortunately, at disposal time, the needed decoding
+> is not done. As a result, idr_remove() fails, and the IDR
+> fills up. Since its size is 2048, the following script ends up
+> with "Filter already exists":
+>
+>   tc filter add dev myve $FILTER1
+>   tc filter add dev myve $FILTER2
+>   for i in {1..2048}
+>   do
+>     echo $i
+>     tc filter del dev myve $FILTER2
+>     tc filter add dev myve $FILTER2
+>   done
+>
+> This patch adds the missing decoding logic for handles that
+> deserve it.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
+> ---
+> v2: use u32 type in handle encoder/decoder
 
-To address this inconsistency, we have added a jump statement to the
-de21040_media_timer() to ensure that cleanup operations are executed
-before the function returns.
+Note that the patch title should be more like
 
-Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
----
- drivers/net/ethernet/dec/tulip/de2104x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+[PATCH v2 net] net: sched: cls_u32: Fix u32's systematic failure to
+free IDR entries for hnodes.
 
-diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
-index 0a161a4db242..724c0b3b3966 100644
---- a/drivers/net/ethernet/dec/tulip/de2104x.c
-+++ b/drivers/net/ethernet/dec/tulip/de2104x.c
-@@ -988,7 +988,7 @@ static void de21040_media_timer (struct timer_list *t)
- 	de_link_down(de);
- 
- 	if (de->media_lock)
--		return;
-+		goto set_media;
- 
- 	if (de->media_type == DE_MEDIA_AUI) {
- 		static const u32 next_state = DE_MEDIA_TP;
-@@ -998,6 +998,7 @@ static void de21040_media_timer (struct timer_list *t)
- 		de_next_media(de, &next_state, 1);
- 	}
- 
-+set_media:
- 	spin_lock_irqsave(&de->lock, flags);
- 	de_stop_rxtx(de);
- 	spin_unlock_irqrestore(&de->lock, flags);
--- 
-2.42.0.windows.2
+ie include some tags to identify the subsystem [1]
 
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+[1] One way to get some common patterns is to look at the output of
+
+git log --oneline net/sched/cls_u32.c
