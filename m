@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DAA1D5AB5
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 08:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D861D63F8
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 08:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730880010; cv=none; b=ejZkLY8+/lvq8mDp/m2cH7MTEVuL5ui0mvGeZnTPI/DziMq6bJxrx3NuEF99rb6I66+tFOU4Xjehzf4s966M2KDtTUYQ6KRKmg8pdLEiVzHYDDnpChsLCgm/CfPXBJrYYpXMbhr0/j/mwdizg2QieXhZP2nTSUOr0H5oNfGIXlY=
+	t=1730880011; cv=none; b=Y3pJJrpAyFoEPQZKyXZfyw6Ht3uHRSqYNR+6PptTaSgiU0VFysc+kwbN8YCp84ajPevyuIBl7zjANO5Ex9afD+dFYxJe3bzf5nW5Hs/CQexxMKYbpwnCnBB8uK5KtGm2fEYHNaaidOFv5daH5iBpTbJoPZZnoCMXHWpdUjpy3VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730880010; c=relaxed/simple;
-	bh=XfyTAQa+XSyqkdFh9qJ64RLPb4jY0ssbC51Qc3HzkRs=;
+	s=arc-20240116; t=1730880011; c=relaxed/simple;
+	bh=buNi4DQBdEkwbBm44GMfkxOPGPQEsGKgKHOL4hj/ZwA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qy7RKRbxcXv/HRhGstArsuUiXFZ+Cbo23zAaC5tprI4WJNfnBh8bui6rjvZvsOm5QOQyE+mgByGfCqLN3qm43/Pf3Z0HMx/uexURFmKxEL08YDQwvXYBdEy7pwE6GwC366MeRr+EqDwS8DSfEfdcH72qZd8s9WxNnRUdh2+xsPE=
+	 MIME-Version; b=dejXpkP0aTGXbaNOZOp2nfeb1R3YPFuJROK5zzGhpsmgfSZenDWwezh5TOKMcqj/NNGw1+rntejDzsOyYyWQrTlOOwXXPrHvVpuE/LTi6c/0liOYFHCsSGyAGU3Iff4ufAT3yD/ZfUMfsjAVMlmS36SZEXa1VuUD2G6aJwbzWKI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax6-0000ng-AV; Wed, 06 Nov 2024 08:59:44 +0100
+	id 1t8ax6-0000ni-AW; Wed, 06 Nov 2024 08:59:44 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax5-002Gdi-03;
+	id 1t8ax5-002Gdn-0H;
 	Wed, 06 Nov 2024 08:59:43 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax4-006rsB-2z;
+	id 1t8ax4-006rsW-3B;
 	Wed, 06 Nov 2024 08:59:42 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -50,9 +50,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	devicetree@vger.kernel.org,
 	Marek Vasut <marex@denx.de>
-Subject: [PATCH net-next v4 3/6] net: dsa: microchip: Refactor MDIO handling for side MDIO access
-Date: Wed,  6 Nov 2024 08:59:38 +0100
-Message-Id: <20241106075942.1636998-4-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v4 5/6] net: dsa: microchip: add support for side MDIO interface in LAN937x
+Date: Wed,  6 Nov 2024 08:59:40 +0100
+Message-Id: <20241106075942.1636998-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241106075942.1636998-1-o.rempel@pengutronix.de>
 References: <20241106075942.1636998-1-o.rempel@pengutronix.de>
@@ -62,29 +62,22 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Add support for accessing PHYs via a side MDIO interface in LAN937x
-switches. The existing code already supports accessing PHYs via main
-management interfaces, which can be SPI, I2C, or MDIO, depending on the
-chip variant. This patch enables using a side MDIO bus, where SPI is
-used for the main switch configuration and MDIO for managing the
-integrated PHYs. On LAN937x, this is optional, allowing them to operate
-in both configurations: SPI only, or SPI + MDIO. Typically, the SPI
-interface is used for switch configuration, while MDIO handles PHY
-management.
+Implement side MDIO channel support for LAN937x switches, providing an
+alternative to SPI for PHY management alongside existing SPI-based
+switch configuration. This is needed to reduce SPI load, as SPI can be
+relatively expensive for small packets compared to MDIO support.
 
-Additionally, update interrupt controller code to support non-linear
-port to PHY address mapping, enabling correct interrupt handling for
-configurations where PHY addresses do not directly correspond to port
-indexes. This change ensures that the interrupt mechanism properly
-aligns with the new, flexible PHY address mappings introduced by side
-MDIO support.
+Also, implemented static mappings for PHY addresses for various LAN937x
+models to support different internal PHY configurations. Since the PHY
+address mappings are not equal to the port indexes, this patch also
+provides PHY address calculation based on hardware strapping
+configuration.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
@@ -92,333 +85,357 @@ Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 changes v4:
 - add Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 changes v2:
-- fail on phy_side_mdio_supported
-- add of_node_put(parent_bus_node)
+- add lan9371_phy_addr map
 - add comments
+- add define LAN937X_NO_PHY
 ---
- drivers/net/dsa/microchip/ksz_common.c | 175 +++++++++++++++++++++++--
- drivers/net/dsa/microchip/ksz_common.h |  59 +++++++++
- 2 files changed, 224 insertions(+), 10 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c   |   7 +
+ drivers/net/dsa/microchip/lan937x.h      |   2 +
+ drivers/net/dsa/microchip/lan937x_main.c | 226 +++++++++++++++++++++--
+ drivers/net/dsa/microchip/lan937x_reg.h  |   4 +
+ 4 files changed, 223 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index f73833e24622a..e9460650d46e0 100644
+index 26a4a8b49dc83..19fb090c09ab7 100644
 --- a/drivers/net/dsa/microchip/ksz_common.c
 +++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2236,16 +2236,100 @@ static int ksz_sw_mdio_write(struct mii_bus *bus, int addr, int regnum,
- 	return dev->dev_ops->w_phy(dev, addr, regnum, val);
+@@ -411,6 +411,8 @@ static const struct ksz_dev_ops lan937x_dev_ops = {
+ 	.flush_dyn_mac_table = ksz9477_flush_dyn_mac_table,
+ 	.port_setup = lan937x_port_setup,
+ 	.set_ageing_time = lan937x_set_ageing_time,
++	.mdio_bus_preinit = lan937x_mdio_bus_preinit,
++	.create_phy_addr_map = lan937x_create_phy_addr_map,
+ 	.r_phy = lan937x_r_phy,
+ 	.w_phy = lan937x_w_phy,
+ 	.r_mib_cnt = ksz9477_r_mib_cnt,
+@@ -1762,6 +1764,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.num_tx_queues = 8,
+ 		.num_ipms = 8,
+ 		.tc_cbs_supported = true,
++		.phy_side_mdio_supported = true,
+ 		.ops = &lan937x_dev_ops,
+ 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
+ 		.mib_names = ksz9477_mib_names,
+@@ -1790,6 +1793,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.num_tx_queues = 8,
+ 		.num_ipms = 8,
+ 		.tc_cbs_supported = true,
++		.phy_side_mdio_supported = true,
+ 		.ops = &lan937x_dev_ops,
+ 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
+ 		.mib_names = ksz9477_mib_names,
+@@ -1818,6 +1822,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.num_tx_queues = 8,
+ 		.num_ipms = 8,
+ 		.tc_cbs_supported = true,
++		.phy_side_mdio_supported = true,
+ 		.ops = &lan937x_dev_ops,
+ 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
+ 		.mib_names = ksz9477_mib_names,
+@@ -1850,6 +1855,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.num_tx_queues = 8,
+ 		.num_ipms = 8,
+ 		.tc_cbs_supported = true,
++		.phy_side_mdio_supported = true,
+ 		.ops = &lan937x_dev_ops,
+ 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
+ 		.mib_names = ksz9477_mib_names,
+@@ -1882,6 +1888,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
+ 		.num_tx_queues = 8,
+ 		.num_ipms = 8,
+ 		.tc_cbs_supported = true,
++		.phy_side_mdio_supported = true,
+ 		.ops = &lan937x_dev_ops,
+ 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
+ 		.mib_names = ksz9477_mib_names,
+diff --git a/drivers/net/dsa/microchip/lan937x.h b/drivers/net/dsa/microchip/lan937x.h
+index 3388d91dbc44e..df13ebbd356f9 100644
+--- a/drivers/net/dsa/microchip/lan937x.h
++++ b/drivers/net/dsa/microchip/lan937x.h
+@@ -13,6 +13,8 @@ void lan937x_port_setup(struct ksz_device *dev, int port, bool cpu_port);
+ void lan937x_config_cpu_port(struct dsa_switch *ds);
+ int lan937x_switch_init(struct ksz_device *dev);
+ void lan937x_switch_exit(struct ksz_device *dev);
++int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio);
++int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio);
+ int lan937x_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data);
+ int lan937x_w_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 val);
+ int lan937x_change_mtu(struct ksz_device *dev, int port, int new_mtu);
+diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
+index 824d9309a3d35..b7652efd632ea 100644
+--- a/drivers/net/dsa/microchip/lan937x_main.c
++++ b/drivers/net/dsa/microchip/lan937x_main.c
+@@ -18,6 +18,87 @@
+ #include "ksz9477.h"
+ #include "lan937x.h"
+ 
++/* marker for ports without built-in PHY */
++#define LAN937X_NO_PHY U8_MAX
++
++/*
++ * lan9370_phy_addr - Mapping of LAN9370 switch ports to PHY addresses.
++ *
++ * Each entry corresponds to a specific port on the LAN9370 switch,
++ * where ports 1-4 are connected to integrated 100BASE-T1 PHYs, and
++ * Port 5 is connected to an RGMII interface without a PHY. The values
++ * are based on the documentation (DS00003108E, section 3.3).
++ */
++static const u8 lan9370_phy_addr[] = {
++	[0] = 2, /* Port 1, T1 AFE0 */
++	[1] = 3, /* Port 2, T1 AFE1 */
++	[2] = 5, /* Port 3, T1 AFE3 */
++	[3] = 6, /* Port 4, T1 AFE4 */
++	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
++};
++
++/*
++ * lan9371_phy_addr - Mapping of LAN9371 switch ports to PHY addresses.
++ *
++ * The values are based on the documentation (DS00003109E, section 3.3).
++ */
++static const u8 lan9371_phy_addr[] = {
++	[0] = 2, /* Port 1, T1 AFE0 */
++	[1] = 3, /* Port 2, T1 AFE1 */
++	[2] = 5, /* Port 3, T1 AFE3 */
++	[3] = 8, /* Port 4, TX PHY */
++	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
++	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
++};
++
++/*
++ * lan9372_phy_addr - Mapping of LAN9372 switch ports to PHY addresses.
++ *
++ * The values are based on the documentation (DS00003110F, section 3.3).
++ */
++static const u8 lan9372_phy_addr[] = {
++	[0] = 2, /* Port 1, T1 AFE0 */
++	[1] = 3, /* Port 2, T1 AFE1 */
++	[2] = 5, /* Port 3, T1 AFE3 */
++	[3] = 8, /* Port 4, TX PHY */
++	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
++	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
++	[6] = 6, /* Port 7, T1 AFE4 */
++	[7] = 4, /* Port 8, T1 AFE2 */
++};
++
++/*
++ * lan9373_phy_addr - Mapping of LAN9373 switch ports to PHY addresses.
++ *
++ * The values are based on the documentation (DS00003110F, section 3.3).
++ */
++static const u8 lan9373_phy_addr[] = {
++	[0] = 2, /* Port 1, T1 AFE0 */
++	[1] = 3, /* Port 2, T1 AFE1 */
++	[2] = 5, /* Port 3, T1 AFE3 */
++	[3] = LAN937X_NO_PHY, /* Port 4, SGMII */
++	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
++	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
++	[6] = 6, /* Port 7, T1 AFE4 */
++	[7] = 4, /* Port 8, T1 AFE2 */
++};
++
++/*
++ * lan9374_phy_addr - Mapping of LAN9374 switch ports to PHY addresses.
++ *
++ * The values are based on the documentation (DS00003110F, section 3.3).
++ */
++static const u8 lan9374_phy_addr[] = {
++	[0] = 2, /* Port 1, T1 AFE0 */
++	[1] = 3, /* Port 2, T1 AFE1 */
++	[2] = 5, /* Port 3, T1 AFE3 */
++	[3] = 7, /* Port 4, T1 AFE5 */
++	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
++	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
++	[6] = 6, /* Port 7, T1 AFE4 */
++	[7] = 4, /* Port 8, T1 AFE2 */
++};
++
+ static int lan937x_cfg(struct ksz_device *dev, u32 addr, u8 bits, bool set)
+ {
+ 	return regmap_update_bits(ksz_regmap_8(dev), addr, bits, set ? bits : 0);
+@@ -30,24 +111,144 @@ static int lan937x_port_cfg(struct ksz_device *dev, int port, int offset,
+ 				  bits, set ? bits : 0);
  }
  
+-static int lan937x_enable_spi_indirect_access(struct ksz_device *dev)
 +/**
-+ * ksz_parent_mdio_read - Read data from a PHY register on the parent MDIO bus.
-+ * @bus: MDIO bus structure.
-+ * @addr: PHY address on the parent MDIO bus.
-+ * @regnum: Register number to read.
-+ *
-+ * This function provides a direct read operation on the parent MDIO bus for
-+ * accessing PHY registers. By bypassing SPI or I2C, it uses the parent MDIO bus
-+ * to retrieve data from the PHY registers at the specified address and register
-+ * number.
-+ *
-+ * Return: Value of the PHY register, or a negative error code on failure.
-+ */
-+static int ksz_parent_mdio_read(struct mii_bus *bus, int addr, int regnum)
-+{
-+	struct ksz_device *dev = bus->priv;
-+
-+	return mdiobus_read_nested(dev->parent_mdio_bus, addr, regnum);
-+}
-+
-+/**
-+ * ksz_parent_mdio_write - Write data to a PHY register on the parent MDIO bus.
-+ * @bus: MDIO bus structure.
-+ * @addr: PHY address on the parent MDIO bus.
-+ * @regnum: Register number to write to.
-+ * @val: Value to write to the PHY register.
-+ *
-+ * This function provides a direct write operation on the parent MDIO bus for
-+ * accessing PHY registers. Bypassing SPI or I2C, it uses the parent MDIO bus
-+ * to modify the PHY register values at the specified address.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+static int ksz_parent_mdio_write(struct mii_bus *bus, int addr, int regnum,
-+				 u16 val)
-+{
-+	struct ksz_device *dev = bus->priv;
-+
-+	return mdiobus_write_nested(dev->parent_mdio_bus, addr, regnum, val);
-+}
-+
-+/**
-+ * ksz_phy_addr_to_port - Map a PHY address to the corresponding switch port.
++ * lan937x_create_phy_addr_map - Create port-to-PHY address map for MDIO bus.
 + * @dev: Pointer to device structure.
-+ * @addr: PHY address to map to a port.
++ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
 + *
-+ * This function finds the corresponding switch port for a given PHY address by
-+ * iterating over all user ports on the device. It checks if a port's PHY
-+ * address in `phy_addr_map` matches the specified address and if the port
-+ * contains an internal PHY. If a match is found, the index of the port is
-+ * returned.
++ * This function sets up the PHY address mapping for the LAN937x switches,
++ * which support two access modes for internal PHYs:
++ * 1. **SPI Access**: A straightforward one-to-one port-to-PHY address
++ *    mapping is applied.
++ * 2. **MDIO Access**: The PHY address mapping varies based on chip variant
++ *    and strap configuration. An offset is calculated based on strap settings
++ *    to ensure correct PHY addresses are assigned. The offset calculation logic
++ *    is based on Microchip's Article Number 000015828, available at:
++ *    https://microchip.my.site.com/s/article/LAN9374-Virtual-PHY-PHY-Address-Mapping
 + *
-+ * Return: Port index on success, or -EINVAL if no matching port is found.
++ * The function first checks if side MDIO access is disabled, in which case a
++ * simple direct mapping (port number = PHY address) is applied. If side MDIO
++ * access is enabled, it reads the strap configuration to determine the correct
++ * offset for PHY addresses.
++ *
++ * The appropriate mapping table is selected based on the chip ID, and the
++ * `phy_addr_map` is populated with the correct addresses for each port. Any
++ * port with no PHY is assigned a `LAN937X_NO_PHY` marker.
++ *
++ * Return: 0 on success, error code on failure.
 + */
-+static int ksz_phy_addr_to_port(struct ksz_device *dev, int addr)
++int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio)
 +{
-+	struct dsa_switch *ds = dev->ds;
-+	struct dsa_port *dp;
-+
-+	dsa_switch_for_each_user_port(dp, ds) {
-+		if (dev->info->internal_phy[dp->index] &&
-+		    dev->phy_addr_map[dp->index] == addr)
-+			return dp->index;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+/**
-+ * ksz_irq_phy_setup - Configure IRQs for PHYs in the KSZ device.
-+ * @dev: Pointer to the KSZ device structure.
-+ *
-+ * Sets up IRQs for each active PHY connected to the KSZ switch by mapping the
-+ * appropriate IRQs for each PHY and assigning them to the `user_mii_bus` in
-+ * the DSA switch structure. Each IRQ is mapped based on the port's IRQ domain.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
- static int ksz_irq_phy_setup(struct ksz_device *dev)
- {
- 	struct dsa_switch *ds = dev->ds;
--	int phy;
-+	int phy, port;
- 	int irq;
- 	int ret;
- 
--	for (phy = 0; phy < KSZ_MAX_NUM_PORTS; phy++) {
-+	for (phy = 0; phy < PHY_MAX_ADDR; phy++) {
- 		if (BIT(phy) & ds->phys_mii_mask) {
--			irq = irq_find_mapping(dev->ports[phy].pirq.domain,
-+			port = ksz_phy_addr_to_port(dev, phy);
-+			if (port < 0) {
-+				ret = port;
-+				goto out;
-+			}
-+
-+			irq = irq_find_mapping(dev->ports[port].pirq.domain,
- 					       PORT_SRC_PHY_INT);
- 			if (irq < 0) {
- 				ret = irq;
-@@ -2263,40 +2347,109 @@ static int ksz_irq_phy_setup(struct ksz_device *dev)
- 	return ret;
- }
- 
-+/**
-+ * ksz_irq_phy_free - Release IRQ mappings for PHYs in the KSZ device.
-+ * @dev: Pointer to the KSZ device structure.
-+ *
-+ * Releases any IRQ mappings previously assigned to active PHYs in the KSZ
-+ * switch by disposing of each mapped IRQ in the `user_mii_bus` structure.
-+ */
- static void ksz_irq_phy_free(struct ksz_device *dev)
- {
- 	struct dsa_switch *ds = dev->ds;
- 	int phy;
- 
--	for (phy = 0; phy < KSZ_MAX_NUM_PORTS; phy++)
-+	for (phy = 0; phy < PHY_MAX_ADDR; phy++)
- 		if (BIT(phy) & ds->phys_mii_mask)
- 			irq_dispose_mapping(ds->user_mii_bus->irq[phy]);
- }
- 
-+/**
-+ * ksz_mdio_register - Register and configure the MDIO bus for the KSZ device.
-+ * @dev: Pointer to the KSZ device structure.
-+ *
-+ * This function sets up and registers an MDIO bus for the KSZ switch device,
-+ * allowing access to its internal PHYs. If the device supports side MDIO,
-+ * the function will configure the external MDIO controller specified by the
-+ * "mdio-parent-bus" device tree property to directly manage internal PHYs.
-+ * Otherwise, SPI or I2C access is set up for PHY access.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
- static int ksz_mdio_register(struct ksz_device *dev)
- {
-+	struct device_node *parent_bus_node;
-+	struct mii_bus *parent_bus = NULL;
- 	struct dsa_switch *ds = dev->ds;
- 	struct device_node *mdio_np;
- 	struct mii_bus *bus;
--	int ret;
-+	struct dsa_port *dp;
++	static const u8 *phy_addr_map;
++	u32 strap_val;
++	u8 offset = 0;
++	size_t size;
 +	int ret, i;
- 
- 	mdio_np = of_get_child_by_name(dev->dev->of_node, "mdio");
- 	if (!mdio_np)
- 		return 0;
- 
-+	parent_bus_node = of_parse_phandle(mdio_np, "mdio-parent-bus", 0);
-+	if (parent_bus_node && !dev->info->phy_side_mdio_supported) {
-+		dev_err(dev->dev, "Side MDIO bus is not supported for this HW, ignoring 'mdio-parent-bus' property.\n");
-+		ret = -EINVAL;
 +
-+		goto put_mdio_node;
-+	} else if (parent_bus_node) {
-+		parent_bus = of_mdio_find_bus(parent_bus_node);
-+		if (!parent_bus) {
-+			ret = -EPROBE_DEFER;
-+
-+			goto put_mdio_node;
-+		}
-+
-+		dev->parent_mdio_bus = parent_bus;
-+	}
-+
- 	bus = devm_mdiobus_alloc(ds->dev);
- 	if (!bus) {
- 		of_node_put(mdio_np);
- 		return -ENOMEM;
- 	}
- 
-+	if (dev->dev_ops->mdio_bus_preinit) {
-+		ret = dev->dev_ops->mdio_bus_preinit(dev, !!parent_bus);
-+		if (ret)
-+			goto put_mdio_node;
-+	}
-+
-+	if (dev->dev_ops->create_phy_addr_map) {
-+		ret = dev->dev_ops->create_phy_addr_map(dev, !!parent_bus);
-+		if (ret)
-+			goto put_mdio_node;
-+	} else {
++	if (!side_mdio) {
++		/* simple direct mapping */
 +		for (i = 0; i < dev->info->port_cnt; i++)
 +			dev->phy_addr_map[i] = i;
++
++		return 0;
 +	}
 +
- 	bus->priv = dev;
--	bus->read = ksz_sw_mdio_read;
--	bus->write = ksz_sw_mdio_write;
--	bus->name = "ksz user smi";
--	snprintf(bus->id, MII_BUS_ID_SIZE, "SMI-%d", ds->index);
-+	if (parent_bus) {
-+		bus->read = ksz_parent_mdio_read;
-+		bus->write = ksz_parent_mdio_write;
-+		bus->name = "KSZ side MDIO";
-+		snprintf(bus->id, MII_BUS_ID_SIZE, "ksz-side-mdio-%d",
-+			 ds->index);
-+	} else {
-+		bus->read = ksz_sw_mdio_read;
-+		bus->write = ksz_sw_mdio_write;
-+		bus->name = "ksz user smi";
-+		snprintf(bus->id, MII_BUS_ID_SIZE, "SMI-%d", ds->index);
++	ret = ksz_read32(dev, REG_SW_CFG_STRAP_VAL, &strap_val);
++	if (ret < 0)
++		return ret;
++
++	if (!(strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
++		offset = 0;
++	else if (!(strap_val & SW_CASCADE_ID_CFG) && (strap_val & SW_VPHY_ADD_CFG))
++		offset = 7;
++	else if ((strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
++		offset = 15;
++	else
++		offset = 22;
++
++	switch (dev->info->chip_id) {
++	case LAN9370_CHIP_ID:
++		phy_addr_map = lan9370_phy_addr;
++		size = ARRAY_SIZE(lan9370_phy_addr);
++		break;
++	case LAN9371_CHIP_ID:
++		phy_addr_map = lan9371_phy_addr;
++		size = ARRAY_SIZE(lan9371_phy_addr);
++		break;
++	case LAN9372_CHIP_ID:
++		phy_addr_map = lan9372_phy_addr;
++		size = ARRAY_SIZE(lan9372_phy_addr);
++		break;
++	case LAN9373_CHIP_ID:
++		phy_addr_map = lan9373_phy_addr;
++		size = ARRAY_SIZE(lan9373_phy_addr);
++		break;
++	case LAN9374_CHIP_ID:
++		phy_addr_map = lan9374_phy_addr;
++		size = ARRAY_SIZE(lan9374_phy_addr);
++		break;
++	default:
++		return -EINVAL;
 +	}
 +
-+	dsa_switch_for_each_user_port(dp, dev->ds) {
-+		if (dev->info->internal_phy[dp->index] &&
-+		    dev->phy_addr_map[dp->index] < PHY_MAX_ADDR)
-+			bus->phy_mask |= BIT(dev->phy_addr_map[dp->index]);
++	if (size < dev->info->port_cnt)
++		return -EINVAL;
++
++	for (i = 0; i < dev->info->port_cnt; i++) {
++		if (phy_addr_map[i] == LAN937X_NO_PHY)
++			dev->phy_addr_map[i] = phy_addr_map[i];
++		else
++			dev->phy_addr_map[i] = phy_addr_map[i] + offset;
 +	}
 +
-+	ds->phys_mii_mask = bus->phy_mask;
- 	bus->parent = ds->dev;
--	bus->phy_mask = ~ds->phys_mii_mask;
++	return 0;
++}
++
++/**
++ * lan937x_mdio_bus_preinit - Pre-initialize MDIO bus for accessing PHYs.
++ * @dev: Pointer to device structure.
++ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
++ *
++ * This function configures the LAN937x switch for PHY access either through
++ * SPI or the side MDIO bus, unlocking the necessary registers for each access
++ * mode.
++ *
++ * Operation Modes:
++ * 1. **SPI Access**: Enables SPI indirect access to address clock domain
++ *    crossing issues when SPI is used for PHY access.
++ * 2. **MDIO Access**: Grants access to internal PHYs over the side MDIO bus,
++ *    required when using the MDIO bus for PHY management.
++ *
++ * Return: 0 on success, error code on failure.
++ */
++int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio)
+ {
+ 	u16 data16;
+ 	int ret;
  
- 	ds->user_mii_bus = bus;
+-	/* Enable Phy access through SPI */
++	/* Unlock access to the PHYs, needed for SPI and side MDIO access */
+ 	ret = lan937x_cfg(dev, REG_GLOBAL_CTRL_0, SW_PHY_REG_BLOCK, false);
+ 	if (ret < 0)
+-		return ret;
++		goto print_error;
  
-@@ -2316,7 +2469,9 @@ static int ksz_mdio_register(struct ksz_device *dev)
- 			ksz_irq_phy_free(dev);
- 	}
+-	ret = ksz_read16(dev, REG_VPHY_SPECIAL_CTRL__2, &data16);
+-	if (ret < 0)
+-		return ret;
++	if (side_mdio)
++		/* Allow access to internal PHYs over MDIO bus */
++		data16 = VPHY_MDIO_INTERNAL_ENABLE;
++	else
++		/* Enable SPI indirect access to address clock domain crossing
++		 * issue
++		 */
++		data16 = VPHY_SPI_INDIRECT_ENABLE;
  
-+put_mdio_node:
- 	of_node_put(mdio_np);
-+	of_node_put(parent_bus_node);
+-	/* Allow SPI access */
+-	data16 |= VPHY_SPI_INDIRECT_ENABLE;
++	ret = ksz_rmw16(dev, REG_VPHY_SPECIAL_CTRL__2,
++			VPHY_SPI_INDIRECT_ENABLE | VPHY_MDIO_INTERNAL_ENABLE,
++			data16);
++
++print_error:
++	if (ret < 0)
++		dev_err(dev->dev, "failed to preinit the MDIO bus\n");
  
- 	return ret;
+-	return ksz_write16(dev, REG_VPHY_SPECIAL_CTRL__2, data16);
++	return ret;
  }
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index bec846e20682f..bbb548af201ef 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -65,6 +65,12 @@ struct ksz_chip_data {
- 	u8 num_tx_queues;
- 	u8 num_ipms; /* number of Internal Priority Maps */
- 	bool tc_cbs_supported;
-+
-+	/**
-+	 * @phy_side_mdio_supported: Indicates if the chip supports an additional
-+	 * side MDIO channel for accessing integrated PHYs.
-+	 */
-+	bool phy_side_mdio_supported;
- 	const struct ksz_dev_ops *ops;
- 	const struct phylink_mac_ops *phylink_mac_ops;
- 	bool phy_errata_9477;
-@@ -191,6 +197,22 @@ struct ksz_device {
- 	struct ksz_switch_macaddr *switch_macaddr;
- 	struct net_device *hsr_dev;     /* HSR */
- 	u8 hsr_ports;
-+
-+	/**
-+	 * @phy_addr_map: Array mapping switch ports to their corresponding PHY
-+	 * addresses.
-+	 */
-+	u8 phy_addr_map[KSZ_MAX_NUM_PORTS];
-+
-+	/**
-+	 * @parent_mdio_bus: Pointer to the external MDIO bus controller.
-+	 *
-+	 * This points to an external MDIO bus controller that is used to access
-+	 * the  PHYs integrated within the switch. Unlike an integrated MDIO
-+	 * bus, this external controller provides a direct path for managing
-+	 * the switch’s internal PHYs, bypassing the main SPI interface.
-+	 */
-+	struct mii_bus *parent_mdio_bus;
- };
  
- /* List of supported models */
-@@ -326,6 +348,43 @@ struct ksz_dev_ops {
- 	void (*port_cleanup)(struct ksz_device *dev, int port);
- 	void (*port_setup)(struct ksz_device *dev, int port, bool cpu_port);
- 	int (*set_ageing_time)(struct ksz_device *dev, unsigned int msecs);
+ static int lan937x_vphy_ind_addr_wr(struct ksz_device *dev, int addr, int reg)
+@@ -363,13 +564,6 @@ int lan937x_setup(struct dsa_switch *ds)
+ 	struct ksz_device *dev = ds->priv;
+ 	int ret;
+ 
+-	/* enable Indirect Access from SPI to the VPHY registers */
+-	ret = lan937x_enable_spi_indirect_access(dev);
+-	if (ret < 0) {
+-		dev_err(dev->dev, "failed to enable spi indirect access");
+-		return ret;
+-	}
+-
+ 	/* The VLAN aware is a global setting. Mixed vlan
+ 	 * filterings are not supported.
+ 	 */
+diff --git a/drivers/net/dsa/microchip/lan937x_reg.h b/drivers/net/dsa/microchip/lan937x_reg.h
+index 2f22a9d01de36..4ec93e421da45 100644
+--- a/drivers/net/dsa/microchip/lan937x_reg.h
++++ b/drivers/net/dsa/microchip/lan937x_reg.h
+@@ -37,6 +37,10 @@
+ #define SW_CLK125_ENB			BIT(1)
+ #define SW_CLK25_ENB			BIT(0)
+ 
++#define REG_SW_CFG_STRAP_VAL		0x0200
++#define SW_CASCADE_ID_CFG		BIT(15)
++#define SW_VPHY_ADD_CFG			BIT(0)
 +
-+	/**
-+	 * @mdio_bus_preinit: Function pointer to pre-initialize the MDIO bus
-+	 *                    for accessing PHYs.
-+	 * @dev: Pointer to device structure.
-+	 * @side_mdio: Boolean indicating if the PHYs are accessed over a side
-+	 *             MDIO bus.
-+	 *
-+	 * This function pointer is used to configure the MDIO bus for PHY
-+	 * access before initiating regular PHY operations. It enables either
-+	 * SPI/I2C or side MDIO access modes by unlocking necessary registers
-+	 * and setting up access permissions for the selected mode.
-+	 *
-+	 * Return:
-+	 *  - 0 on success.
-+	 *  - Negative error code on failure.
-+	 */
-+	int (*mdio_bus_preinit)(struct ksz_device *dev, bool side_mdio);
-+
-+	/**
-+	 * @create_phy_addr_map: Function pointer to create a port-to-PHY
-+	 *                       address map.
-+	 * @dev: Pointer to device structure.
-+	 * @side_mdio: Boolean indicating if the PHYs are accessed over a side
-+	 *             MDIO bus.
-+	 *
-+	 * This function pointer is responsible for mapping switch ports to PHY
-+	 * addresses according to the configured access mode (SPI or side MDIO)
-+	 * and the device’s strap configuration. The mapping setup may vary
-+	 * depending on the chip variant and configuration. Ensures the correct
-+	 * address mapping for PHY communication.
-+	 *
-+	 * Return:
-+	 *  - 0 on success.
-+	 *  - Negative error code on failure (e.g., invalid configuration).
-+	 */
-+	int (*create_phy_addr_map)(struct ksz_device *dev, bool side_mdio);
- 	int (*r_phy)(struct ksz_device *dev, u16 phy, u16 reg, u16 *val);
- 	int (*w_phy)(struct ksz_device *dev, u16 phy, u16 reg, u16 val);
- 	void (*r_mib_cnt)(struct ksz_device *dev, int port, u16 addr,
+ /* 2 - PHY Control */
+ #define REG_SW_CFG_STRAP_OVR		0x0214
+ #define SW_VPHY_DISABLE			BIT(31)
 -- 
 2.39.5
 
