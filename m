@@ -1,52 +1,51 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70553207A12;
-	Wed,  6 Nov 2024 19:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE70207A2F;
+	Wed,  6 Nov 2024 19:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730920679; cv=none; b=hxNf3NwRKY4rx6DoY+ZN69m6NEDKUJtLMzOWefhqCmGGy9tXTwNb41ZAh+0usupXMHJLEbdlS3WBBQdHq6BpTMsDpxBg/C0Qoy2ZAqglQziCSFRTk9fm5n0s4Jaq9IGxsjdol1bLTRER6gyFmZcsg1rswt1gPDfdCwgeqDI5Kg4=
+	t=1730920695; cv=none; b=uZ3aAej3OVB5gp0aeBjEwoag8kk/rEXVJHe9NgQkZoeKf4EYG+WQU7do0pXCWMaFIM/Pz3z+YonYnmg06xRMVG1zoC1kS0rhcZxtHP6AICF4BeeVWmfd4/ZjvhitdfEgHQUsYBTGsFhiV2RanfanXn78MugBxzKMngfDsxX/I5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730920679; c=relaxed/simple;
-	bh=oUwJ+FCZePBc7/upX3mDxs2QlaWyc4n9jjTguyvbq64=;
+	s=arc-20240116; t=1730920695; c=relaxed/simple;
+	bh=oU863Kwn7GFPSRJfsJTS+xW4A//cqLjSy0be7pAvEak=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ugu2W0xCvpFhzkvkkgEhZ/nJP9E8+WieEQhsM66pG4e+rYgMCYJc0NQgAMc1kftxCqG/uK/LIymNPzE5rdm8md64oh2SvSwT1QXTdAM+mKHs4jJEEcYTmNIJYgoZJA47vLJxOXSkrjB8O7d/dPzJEZEr3KSyzGUDu0RGGiCghCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Z6iRigtx; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=IMjU6MdZkJ1vFABB8pGs7WAgyajyGgDyFjgHZYRwzkSvnmZ7ow604UfwMv11PKeGolBIjzdYztrDrs1bydSGsFV3t7SeHEHsI1n5DTwGNt7gRhfi3GCEG5Qfnc3CUMILG5wATXMNNBowaWZFHpyxOJQSYGctw/Ixps3RnApN8Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=b1kIuSeU; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z6iRigtx"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="b1kIuSeU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1730920676; x=1762456676;
+  t=1730920694; x=1762456694;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=oUwJ+FCZePBc7/upX3mDxs2QlaWyc4n9jjTguyvbq64=;
-  b=Z6iRigtxzG5ZH5RENnUUB8On81bGjGe60VehX5ayJNQny2AoUvs3/yVm
-   B9QyLYZ7EL7ZdgH3y1PyQJYoyInBnAWIL2fb+S+zZ5yLSQkvJE5LLsKF/
-   Vhd8b1yV3p9pXxv+AsBCfHrG1GZHW1b1NYKwJmZ/WtRXXL+CmlIkU5FhE
-   wYnOq57/S5XRnLVWWQNzOUKSK9OIPkfmFjMcqmzw0V+jtsk9K9bPQfnp3
-   y5yQE9/ixfCwRSCOY1jZ5kdkqvL41SwyRwaKhdXbNOb+7xJWIP04PoxUo
-   2IqMvPkJkpW+CVCh3Ga1cVPde5EkyPMm4WulCa85WCJ1l6DQPNyNXDhh6
-   Q==;
-X-CSE-ConnectionGUID: R5B6jnU1TTWc0t0C0FxLpw==
-X-CSE-MsgGUID: PpcyY+1cRIa5I2fT9W4UDQ==
+  bh=oU863Kwn7GFPSRJfsJTS+xW4A//cqLjSy0be7pAvEak=;
+  b=b1kIuSeU2EaCzwbAreO5ZZNTxKDwKuHYDtNQ8Wn61GAnax2pp70RzTBM
+   oXe7zhD5RIt6+SuZ29b7wSz/d+RQ/Ki/qmt5b7w/BRVF8KDyNRGfeFBVH
+   ogEHdOwnjS0IG9cL4pk4LY+HE2k40kcropTn+M9gmZ+w7fyXDHd6cuonY
+   U+xex99UYFRvY4mZ4BJKy/XRRc2VGG98i37C+7q4GHKUI7nsM6k9Ahbnl
+   ZZcBRQp4otxGCIVPaYgGIOkeFwEdaP6OL0mX6ra5hswsMM+aV5rWp0vy0
+   wEFApHJFipGS/08BgFezJJffqSORGx6slggzeyRNQs7viCf/vRVuHNKfa
+   w==;
+X-CSE-ConnectionGUID: ZmZl/QlxSRaWd1IoElCqFw==
+X-CSE-MsgGUID: tmB5CBhDRj+1r6TTcTSFkQ==
 X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
-   d="scan'208";a="37447987"
+   d="scan'208";a="34481087"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Nov 2024 12:17:47 -0700
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Nov 2024 12:18:13 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 6 Nov 2024 12:17:23 -0700
+ 15.1.2507.35; Wed, 6 Nov 2024 12:17:05 -0700
 Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Wed, 6 Nov 2024 12:17:19 -0700
+ 15.1.2507.35 via Frontend Transport; Wed, 6 Nov 2024 12:17:03 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 6 Nov 2024 20:16:45 +0100
-Subject: [PATCH net-next 7/7] net: lan969x: add function for configuring
- RGMII port devices
+Date: Wed, 6 Nov 2024 20:16:39 +0100
+Subject: [PATCH net-next 1/7] net: sparx5: do some preparation work
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20241106-sparx5-lan969x-switch-driver-4-v1-7-f7f7316436bd@microchip.com>
+Message-ID: <20241106-sparx5-lan969x-switch-driver-4-v1-1-f7f7316436bd@microchip.com>
 References: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
 In-Reply-To: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -69,180 +68,107 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>
 X-Mailer: b4 0.14-dev
 
-The lan969x switch device includes two RGMII interfaces (port 28 and 29)
-supporting data speeds of 1 Gbps, 100 Mbps and 10 Mbps.
+The sparx5_port_init() does initial configuration of a variety of
+different features and options for each port. Some are shared for all
+types of devices, some are not. As it is now, common configuration is
+done after configuration of low-speed devices. This will not work when
+adding RGMII support in a subsequent patch.
 
-Add new function: rgmii_config() to the match data ops, and use it to
-configure RGMII port devices when doing a port config.  On Sparx5, the
-RGMII configuration will always be skipped, as the is_port_rgmii() will
-return false.
+In preparation for lan969x RGMII support, move a block of code, that
+configures 2g5 devices, down. This ensures that the configuration common
+to all devices is done before configuration of 2g5, 5g, 10g and 25g
+devices.
+
+Also, expose the two symbols: SPX5_ETYPE_TAG_C and SPX5_ETYPE_TAG_S,
+which will be needed by the lan969x RGMII configuration in a subsequent
+patch.
 
 Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/lan969x/lan969x.c   | 105 +++++++++++++++++++++
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |   2 +
- .../net/ethernet/microchip/sparx5/sparx5_port.c    |   3 +
- 3 files changed, 110 insertions(+)
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |  3 ++
+ .../net/ethernet/microchip/sparx5/sparx5_port.c    | 39 ++++++++++------------
+ 2 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan969x/lan969x.c b/drivers/net/ethernet/microchip/lan969x/lan969x.c
-index cfd57eb42c04..0681913a05d4 100644
---- a/drivers/net/ethernet/microchip/lan969x/lan969x.c
-+++ b/drivers/net/ethernet/microchip/lan969x/lan969x.c
-@@ -9,6 +9,17 @@
- #define LAN969X_SDLB_GRP_CNT 5
- #define LAN969X_HSCH_LEAK_GRP_CNT 4
- 
-+#define LAN969X_RGMII_TX_CLK_DISABLE 0  /* Disable TX clock generation*/
-+#define LAN969X_RGMII_TX_CLK_125MHZ 1   /* 1000Mbps */
-+#define LAN969X_RGMII_TX_CLK_25MHZ  2   /* 100Mbps */
-+#define LAN969X_RGMII_TX_CLK_2M5MHZ 3   /* 10Mbps */
-+#define LAN969X_RGMII_PORT_START_IDX 28 /* Index of the first RGMII port */
-+#define LAN969X_RGMII_PORT_RATE 2       /* 1000Mbps  */
-+#define LAN969X_RGMII_SHIFT_90DEG 3     /* Phase shift 90deg. (2 ns @ 125MHz) */
-+#define LAN969X_RGMII_IFG_TX 4          /* TX Inter Frame Gap value */
-+#define LAN969X_RGMII_IFG_RX1 5         /* RX1 Inter Frame Gap value */
-+#define LAN969X_RGMII_IFG_RX2 1         /* RX2 Inter Frame Gap value */
-+
- static const struct sparx5_main_io_resource lan969x_main_iomap[] =  {
- 	{ TARGET_CPU,                   0xc0000, 0 }, /* 0xe00c0000 */
- 	{ TARGET_FDMA,                  0xc0400, 0 }, /* 0xe00c0400 */
-@@ -293,6 +304,99 @@ static irqreturn_t lan969x_ptp_irq_handler(int irq, void *args)
- 	return IRQ_HANDLED;
- }
- 
-+static int lan969x_port_config_rgmii(struct sparx5 *sparx5,
-+				     struct sparx5_port *port,
-+				     struct sparx5_port_config *conf)
-+{
-+	int tx_clk_freq, idx = port->portno - LAN969X_RGMII_PORT_START_IDX;
-+	enum sparx5_port_max_tags max_tags = port->max_vlan_tags;
-+	enum sparx5_vlan_port_type vlan_type = port->vlan_type;
-+	bool dtag, dotag, tx_delay = false, rx_delay = false;
-+	u32 etype;
-+
-+	tx_clk_freq = (conf->speed == SPEED_10	? LAN969X_RGMII_TX_CLK_2M5MHZ :
-+		       conf->speed == SPEED_100 ? LAN969X_RGMII_TX_CLK_25MHZ :
-+						  LAN969X_RGMII_TX_CLK_125MHZ);
-+
-+	etype = (vlan_type == SPX5_VLAN_PORT_TYPE_S_CUSTOM ?
-+		 port->custom_etype :
-+		 vlan_type == SPX5_VLAN_PORT_TYPE_C ?
-+		 SPX5_ETYPE_TAG_C : SPX5_ETYPE_TAG_S);
-+
-+	dtag = max_tags == SPX5_PORT_MAX_TAGS_TWO;
-+	dotag = max_tags != SPX5_PORT_MAX_TAGS_NONE;
-+
-+	if (conf->phy_mode == PHY_INTERFACE_MODE_RGMII ||
-+	    conf->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
-+		rx_delay = true;
-+
-+	if (conf->phy_mode == PHY_INTERFACE_MODE_RGMII ||
-+	    conf->phy_mode == PHY_INTERFACE_MODE_RGMII_RXID)
-+		tx_delay = true;
-+
-+	/* Take the RGMII clock domains out of reset and set tx clock
-+	 * frequency.
-+	 */
-+	spx5_rmw(HSIO_WRAP_RGMII_CFG_TX_CLK_CFG_SET(tx_clk_freq) |
-+		HSIO_WRAP_RGMII_CFG_RGMII_TX_RST_SET(0) |
-+		HSIO_WRAP_RGMII_CFG_RGMII_RX_RST_SET(0),
-+		HSIO_WRAP_RGMII_CFG_TX_CLK_CFG |
-+		HSIO_WRAP_RGMII_CFG_RGMII_TX_RST |
-+		HSIO_WRAP_RGMII_CFG_RGMII_RX_RST,
-+		sparx5, HSIO_WRAP_RGMII_CFG(idx));
-+
-+	/* Enable the RGMII0 on the GPIOs */
-+	spx5_wr(HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG_SET(1),
-+		sparx5, HSIO_WRAP_XMII_CFG(!idx));
-+
-+	/* Configure rx delay, the signal is shifted 90 degrees. */
-+	spx5_rmw(HSIO_WRAP_DLL_CFG_DLL_RST_SET(0) |
-+		 HSIO_WRAP_DLL_CFG_DLL_ENA_SET(1) |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_ENA_SET(rx_delay) |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_SEL_SET(LAN969X_RGMII_SHIFT_90DEG),
-+		 HSIO_WRAP_DLL_CFG_DLL_RST |
-+		 HSIO_WRAP_DLL_CFG_DLL_ENA |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_ENA |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_SEL,
-+		 sparx5, HSIO_WRAP_DLL_CFG(idx, 0));
-+
-+	/* Configure tx delay, the signal is shifted 90 degrees. */
-+	spx5_rmw(HSIO_WRAP_DLL_CFG_DLL_RST_SET(0) |
-+		 HSIO_WRAP_DLL_CFG_DLL_ENA_SET(1) |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_ENA_SET(tx_delay) |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_SEL_SET(LAN969X_RGMII_SHIFT_90DEG),
-+		 HSIO_WRAP_DLL_CFG_DLL_RST |
-+		 HSIO_WRAP_DLL_CFG_DLL_ENA |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_ENA |
-+		 HSIO_WRAP_DLL_CFG_DLL_CLK_SEL,
-+		 sparx5, HSIO_WRAP_DLL_CFG(idx, 1));
-+
-+	/* Configure the port now */
-+	spx5_wr(DEVRGMII_MAC_ENA_CFG_RX_ENA_SET(1) |
-+		DEVRGMII_MAC_ENA_CFG_TX_ENA_SET(1),
-+		sparx5, DEVRGMII_MAC_ENA_CFG(idx));
-+
-+	/* Configure the Inter Frame Gap */
-+	spx5_wr(DEVRGMII_MAC_IFG_CFG_TX_IFG_SET(LAN969X_RGMII_IFG_TX) |
-+		DEVRGMII_MAC_IFG_CFG_RX_IFG1_SET(LAN969X_RGMII_IFG_RX1) |
-+		DEVRGMII_MAC_IFG_CFG_RX_IFG2_SET(LAN969X_RGMII_IFG_RX2),
-+		sparx5, DEVRGMII_MAC_IFG_CFG(idx));
-+
-+	/* Configure port data rate */
-+	spx5_wr(DEVRGMII_DEV_RST_CTRL_SPEED_SEL_SET(LAN969X_RGMII_PORT_RATE),
-+		sparx5, DEVRGMII_DEV_RST_CTRL(idx));
-+
-+	/* Configure VLAN awareness */
-+	spx5_wr(DEVRGMII_MAC_TAGS_CFG_TAG_ID_SET(etype) |
-+		DEVRGMII_MAC_TAGS_CFG_PB_ENA_SET(dtag) |
-+		DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA_SET(dotag) |
-+		DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA_SET(dotag),
-+		sparx5,
-+		DEVRGMII_MAC_TAGS_CFG(idx));
-+
-+	return 0;
-+}
-+
- static const struct sparx5_regs lan969x_regs = {
- 	.tsize = lan969x_tsize,
- 	.gaddr = lan969x_gaddr,
-@@ -337,6 +441,7 @@ static const struct sparx5_ops lan969x_ops = {
- 	.set_port_mux            = &lan969x_port_mux_set,
- 	.ptp_irq_handler         = &lan969x_ptp_irq_handler,
- 	.dsm_calendar_calc       = &lan969x_dsm_calendar_calc,
-+	.rgmii_config            = &lan969x_port_config_rgmii,
- };
- 
- const struct sparx5_match_data lan969x_desc = {
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index a622c01930e7..763c827c01f3 100644
+index 146bdc938adc..91ae383a5555 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -324,6 +324,8 @@ struct sparx5_ops {
- 	irqreturn_t (*ptp_irq_handler)(int irq, void *args);
- 	int (*dsm_calendar_calc)(struct sparx5 *sparx5, u32 taxi,
- 				 struct sparx5_calendar_data *data);
-+	int (*rgmii_config)(struct sparx5 *sparx5, struct sparx5_port *port,
-+			    struct sparx5_port_config *conf);
- };
+@@ -134,6 +134,9 @@ enum sparx5_feature {
  
- struct sparx5_main_io_resource {
+ #define SPARX5_MAX_PTP_ID	512
+ 
++#define SPX5_ETYPE_TAG_C     0x8100
++#define SPX5_ETYPE_TAG_S     0x88a8
++
+ struct sparx5;
+ 
+ struct sparx5_calendar_data {
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index bd1fa5da47d7..ef61e8164e21 100644
+index 1401761c6251..bb04c2ccf112 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -1009,6 +1009,9 @@ int sparx5_port_config(struct sparx5 *sparx5,
+@@ -12,9 +12,6 @@
+ #include "sparx5_main.h"
+ #include "sparx5_port.h"
+ 
+-#define SPX5_ETYPE_TAG_C     0x8100
+-#define SPX5_ETYPE_TAG_S     0x88a8
+-
+ #define SPX5_WAIT_US         1000
+ #define SPX5_WAIT_MAX_US     2000
+ 
+@@ -1067,24 +1064,6 @@ int sparx5_port_init(struct sparx5 *sparx5,
  	if (err)
  		return err;
  
-+	if (rgmii)
-+		ops->rgmii_config(sparx5, port, conf);
+-	/* Configure MAC vlan awareness */
+-	err = sparx5_port_max_tags_set(sparx5, port);
+-	if (err)
+-		return err;
+-
+-	/* Set Max Length */
+-	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
+-		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
+-		 sparx5,
+-		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
+-
+-	/* 1G/2G5: Signal Detect configuration */
+-	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
+-		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
+-		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
+-		sparx5,
+-		DEV2G5_PCS1G_SD_CFG(port->portno));
+-
+ 	/* Set Pause WM hysteresis */
+ 	spx5_rmw(QSYS_PAUSE_CFG_PAUSE_START_SET(pause_start) |
+ 		 QSYS_PAUSE_CFG_PAUSE_STOP_SET(pause_stop) |
+@@ -1108,6 +1087,24 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 		 ANA_CL_FILTER_CTRL_FILTER_SMAC_MC_DIS,
+ 		 sparx5, ANA_CL_FILTER_CTRL(port->portno));
+ 
++	/* Configure MAC vlan awareness */
++	err = sparx5_port_max_tags_set(sparx5, port);
++	if (err)
++		return err;
 +
- 	/* high speed device is already configured */
- 	if (!rgmii && !high_speed_dev)
- 		sparx5_port_config_low_set(sparx5, port, conf);
++	/* Set Max Length */
++	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
++		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
++		 sparx5,
++		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
++
++	/* 1G/2G5: Signal Detect configuration */
++	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
++		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
++		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
++		sparx5,
++		DEV2G5_PCS1G_SD_CFG(port->portno));
++
+ 	if (conf->portmode == PHY_INTERFACE_MODE_QSGMII ||
+ 	    conf->portmode == PHY_INTERFACE_MODE_SGMII) {
+ 		err = sparx5_serdes_set(sparx5, port, conf);
 
 -- 
 2.34.1
