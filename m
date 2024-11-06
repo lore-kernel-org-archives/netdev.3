@@ -1,84 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105F0207A1A
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 18:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DC207A1A
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 18:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730919448; cv=none; b=GnMXzAw/Afa8JlJg0z85Jv9BOpT5VJTXrl0lEXJYdeoNSR4PUrIw1R/orPR2nMjksbKjzNruhUJl5EmJtG5ICWnx1G3Ifecec850yUgSYczIuUVplOMSNxUdiW8HfjjhcsG1eV5x1OAXCBWrnP38JVrDIhq2nIVMSqu0fzN1NFg=
+	t=1730919532; cv=none; b=n0YVkymPZMf0lGXhCVYBUVO2+eBqoMo95GFcJSQxCC1xkzwn0krG2ZV23mV8biQ+7DGxmXHFfbCVAeZSR6Wx9NG8FHz3Ed6ShSJOWedXN3DlpXU0wsbnwOjzEFYDmcOBkIQqzuaWjtmFPWQoEARp6M64RaW/GbMUFt2F7qQZkqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730919448; c=relaxed/simple;
-	bh=iaztL4lgaGUJOJlSqhcJDyDAEevvmS1wjxAiJLl1feE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jq1We1Du3pc+8KvbKyp2aa4ljRUp2qLmBYl0400zCTn0StyEjHQhfJaQuthhb9guYmQYr8jaOuRpJDsyNO5Wo3CrzFxghRLGMqycANfNcdeAPIvfjaLg+QusSF49zX6A0FzwtkTyG2MZKXE1D3E95xefHdru9KnGjs2DXI4mTuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6mg0gNm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730919532; c=relaxed/simple;
+	bh=SDI/0rzwiJm+GJEizqtwZHkTsAwZppo4C3xkG2bUSXM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lwaFAqjwC+TbrCjjgSmtQMdyBbibsO3smDQYFM4qrylXY9axrnMM3gla92Vh0hyuDPlq9cupm4nn7bsjwhmwfMeu8CoDiUU4xJfOyeCMcbXyq1mx1Si3xoSr/eV+56OPe4ES8fq2puALMK3i2rIojmgTym6awf1tEYenW7Ing2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iau+yy8U; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6mg0gNm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA44C4CEC6;
-	Wed,  6 Nov 2024 18:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730919446;
-	bh=iaztL4lgaGUJOJlSqhcJDyDAEevvmS1wjxAiJLl1feE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l6mg0gNm0iwKFxjL09lsAnrycoLjFHTcq5NyF6TtvTAhiJwMRhLSEIA9k96ejQ+TC
-	 0MFBC1BEjQ2K41XHcGO7tT/HHRPhxEV7LjH+Ljz2LDVHU8+hQyFtU6xJWnV7Gss4XI
-	 kshSOeGMyuPBo/EFbeXQgS19fSSIL9ici17qSH8MZ2GWBlREwKOowCXlfyyVvbP2K2
-	 lw6e2yeAlOUzlm3Ux3FSnC4TajinCTvWISLYGDCP80wtT7y6cMPpm8iiB9WLEiJCxk
-	 d5KFKAs7jLLTPttyEx/VFhzfHKmP8/CSYi2sFINAQXELNkZqf2rC1F9ZPtTst2NyI+
-	 Iwq59erSm2eFQ==
-Message-ID: <ad29493c-9e48-4a94-b327-e47af3a9d137@kernel.org>
-Date: Wed, 6 Nov 2024 11:57:25 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iau+yy8U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730919531; x=1762455531;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SDI/0rzwiJm+GJEizqtwZHkTsAwZppo4C3xkG2bUSXM=;
+  b=iau+yy8UbafMNtOG/q2zowJeV55gKRNM5O0svFBJrgHk/DjRBJkwGHtZ
+   UQWfalT7ydduDNfqxlrTdxdczVVKIk83C8Xk3+u6J+xwwThRIjMhMsXw1
+   oTk6bxXYWFfG74F1IWQB0bu3OwKrjoDXXs1Zj0Y03Dnjs5lShsDGiN6hq
+   H5F8iYRO9LQ2Q+wimt5LOSrqbwTts3t6szKg2Zsl4Owb09FiMIyQlxiT8
+   h67khtFyBeGf1KZ3kamh2y2rDsvICxl2IN+G2rPRUCzSTbiTV+haVHC6h
+   h4usHNqWxXk3OXyIFV3SaNLcL089yOGyXA4tKNd8dt9Um1D1STRxDT1eM
+   w==;
+X-CSE-ConnectionGUID: 6TXAnKamTq6/Zt98Gby2lQ==
+X-CSE-MsgGUID: ygwjpc4TRTy3oH6gQ0as6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="30959457"
+X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
+   d="scan'208";a="30959457"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 10:58:50 -0800
+X-CSE-ConnectionGUID: Ph0lnBW0T2eTSVFoAPMMTQ==
+X-CSE-MsgGUID: HVxW13hSRaykkM1ysO4ItA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
+   d="scan'208";a="89813788"
+Received: from timelab-spr11.ch.intel.com ([143.182.136.151])
+  by orviesa004.jf.intel.com with ESMTP; 06 Nov 2024 10:56:39 -0800
+From: Christopher S M Hall <christopher.s.hall@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: david.zage@intel.com,
+	vinicius.gomes@intel.com,
+	netdev@vger.kernel.org,
+	rodrigo.cadore@l-acoustics.com,
+	vinschen@redhat.com
+Subject: [PATCH iwl-net v3 0/6] igc: Fix PTM timeout
+Date: Wed,  6 Nov 2024 18:47:16 +0000
+Message-Id: <20241106184722.17230-1-christopher.s.hall@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: ipv4: Cache pmtu for all packet paths if multipath
- enabled
-Content-Language: en-US
-To: Vladimir Vdovin <deliran@verdict.gg>, Ido Schimmel <idosch@idosch.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net
-References: <20241029152206.303004-1-deliran@verdict.gg>
- <736cdd43-4c4b-4341-bd77-c9a365dec2e5@kernel.org>
- <ZyJo1561ADF_e2GO@shredder.mtl.com> <D5BTVREQGREW.3RSUZQK6LDN60@verdict.gg>
- <59b0acc7-196c-4ab8-9033-336136a47212@kernel.org>
- <D5F9OJYSMFXS.2HOGXNFVKTOLL@verdict.gg>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <D5F9OJYSMFXS.2HOGXNFVKTOLL@verdict.gg>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/6/24 10:20 AM, Vladimir Vdovin wrote:
-> On Tue Nov 5, 2024 at 6:52 AM MSK, David Ahern wrote:
->> On 11/2/24 10:20 AM, Vladimir Vdovin wrote:
->>>>
->>>> Doesn't IPv6 suffer from a similar problem?
->>
->> I believe the answer is yes, but do not have time to find a reproducer
->> right now.
->>
->>>
->>> I am not very familiar with ipv6,
->>> but I tried to reproduce same problem with my tests with same topology.
->>>
->>> ip netns exec ns_a-AHtoRb ip -6 r g fc00:1001::2:2 sport 30003 dport 443
->>> fc00:1001::2:2 via fc00:2::2 dev veth_A-R2 src fc00:1000::1:1 metric 1024 expires 495sec mtu 1500 pref medium
->>>
->>> ip netns exec ns_a-AHtoRb ip -6 r g fc00:1001::2:2 sport 30013 dport 443
->>> fc00:1001::2:2 via fc00:1::2 dev veth_A-R1 src fc00:1000::1:1 metric 1024 expires 484sec mtu 1500 pref medium
+There have been sporadic reports of PTM timeouts using i225/i226 devices
 
-you should dump the cache to see the full exception list.
+These timeouts have been root caused to:
 
->>>
->>> It seems that there are no problems with ipv6. We have nhce entries for both paths.
->>
->> Does rt6_cache_allowed_for_pmtu return true or false for this test?
-> It returns true.
-> 
-> 
+1) Manipulating the PTM status register while PTM is enabled and triggered
+2) The hardware retrying too quickly when an inappropriate response is
+   received from the upstream device
 
-Looking at the code, it is creating a single exception - not one per
-path. I am fine with deferring the ipv6 patch until someone with time
-and interest can work on it.
+The issue can be reproduced with the following:
+
+$ sudo phc2sys -R 1000 -O 0 -i tsn0 -m
+
+Note: 1000 Hz (-R 1000) is unrealistically large, but provides a way to
+quickly reproduce the issue.
+
+PHC2SYS exits with:
+
+"ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
+  fails
+
+Additional problem description tested by:
+Corinna Vinschen <vinschen@redhat.com>
+
+  This patch also fixes a hang in igc_probe() when loading the igc
+  driver in the kdump kernel on systems supporting PTM.
+
+  The igc driver running in the base kernel enables PTM trigger in
+  igc_probe().  Therefore the driver is always in PTM trigger mode,
+  except in brief periods when manually triggering a PTM cycle.
+
+  When a crash occurs, the NIC is reset while PTM trigger is enabled.
+  Due to a hardware problem, the NIC is subsequently in a bad busmaster
+  state and doesn't handle register reads/writes.  When running
+  igc_probe() in the kdump kernel, the first register access to a NIC
+  register hangs driver probing and ultimately breaks kdump.
+
+  With this patch, igc has PTM trigger disabled most of the time,
+  and the trigger is only enabled for very brief (10 - 100 us) periods
+  when manually triggering a PTM cycle.  Chances that a crash occurs
+  during a PTM trigger are not zero, but extremly reduced.
+
+
+Changelog:
+
+v1 -> v2: -Removed patch modifying PTM retry loop count
+      	  -Moved PTM mutex initialization from igc_reset() to igc_ptp_init()
+	   called once in igc_probe()
+v2 -> v3: -Added mutex_destroy() to clean up PTM lock
+	  -Added missing checks for PTP enabled flag called from igc_main.c
+	  -Cleanup PTP module if probe fails
+	  -Wrap all access to PTM registers with PTM lock/unlock
+
+Christopher S M Hall (6):
+  igc: Ensure the PTM cycle is reliably triggered
+  igc: Lengthen the hardware retry time to prevent timeouts
+  igc: Move ktime snapshot into PTM retry loop
+  igc: Handle the IGC_PTP_ENABLED flag correctly
+  igc: Cleanup PTP module if probe fails
+  igc: Add lock preventing multiple simultaneous PTM transactions
+
+ drivers/net/ethernet/intel/igc/igc.h         |   1 +
+ drivers/net/ethernet/intel/igc/igc_defines.h |   3 +-
+ drivers/net/ethernet/intel/igc/igc_main.c    |   1 +
+ drivers/net/ethernet/intel/igc/igc_ptp.c     | 113 ++++++++++++-------
+ 4 files changed, 78 insertions(+), 40 deletions(-)
+
+-- 
+2.34.1
+
