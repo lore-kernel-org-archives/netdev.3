@@ -1,150 +1,154 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A317BB0F;
-	Wed,  6 Nov 2024 18:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D8F206E69;
+	Wed,  6 Nov 2024 18:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730917027; cv=none; b=V1sF3sKLKiRBol0N/Q0BhSbcBnWCoyr3KTXD/667IaWU2UyG0iLt/cKJdXyrsvCM+YHHjH2ZTWlxLj9EzQ8XI8Tio0sQ0wApVjUarOrtIpMrzBULrprPNQIA0G8jBchp62a2EAmFkyX7vXONLUYT/6/xnyHDEPPUeENS2jI1tMk=
+	t=1730917088; cv=none; b=ov6kvdbXI+23g2eLA4Tk5LvL3ndl9oFiF/enNiD5C2ErFkbesCsM7xPIsYYEvMc4PeIZwFu/H+wfC0vFll0JMig9adC3G44Vb6mUmWY4OBjIQbkxiMHJ43Ap7+t7UKG0qZODRhPCQf8ChculkyrVOWvKSWzYyfMkoDd+nNppimM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730917027; c=relaxed/simple;
-	bh=7JRzx1UgEQQWBP6Jr+1QV83wR6xUeWOjkJYXM4uWv3Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ixPcQjDTk5/YaThT7e5XgT7KbT8i7vS77DUVFYH5tIOvIQw8y6Eccov5xVhx+Eev1sk3qQGlHxqnYx4NghX5Wer2Ilp0QWPINaeUYxSfuM1ttMHQKL9+oWrpTzAp3io4IFQgnML/XPz6jnhkQ5+FLfumtVggpE63co8E8aD2XDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=k3pff0QC; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1730917088; c=relaxed/simple;
+	bh=JOqzxSLeHWD0n7cfTKM/sSVhPy5OUMMkSiGbDTUDwEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qi7G8oQYKqHmXpP15UFPQYMzZiGZAhMDSzBwLiv3dUutLkgpUTCbMKh14YIKzNSlqO7qWNtF1+W6tn2WqMtW0Z7zWCkXsR5PGz8krPJXUh7QtDr7pvZb2YzxOmiQMYA7G3+106HJOomVa6rb4/crsLBHVJWuX0PGAX1IX0n8ZdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ai2G6Qr+; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="k3pff0QC"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1t8kCT-00GBen-B3; Wed, 06 Nov 2024 18:52:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=LBac3zL9ZPZQLfgdHj+CoiRzpyIdxumYQNZim816CMc=; b=k3pff0QC4zOecxiIeK12Ts7Hgb
-	174ZP04mieJ5KwiHE3EvQe2BG+/CuMM/xqsYHt/QTtivl3wNTqOafKT6w+3OhZOaKPku7zzDASJek
-	30JO8LHkUWL2DL0BMZVf6ZIW5U0soIr1ZvrIxHlXJzCBnnJC6bJuE0ZomoJ+Z+FsZ16t1LPvWTet2
-	dWnxd50XuejmChBQVP+hh6mde3j7nvQAeEzl7ElNyUvZIDhdl+87X+7mHn6TM8zNj0Hzasa829ZZG
-	1S4XQ1ZDlSlH4MuVlMv2CsfPdtn+dnfP1BTg/UoFLVYCdnFnTXv5D75pNZ9+9qEt5mrKUk8LSLCml
-	964E/QuA==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1t8kCS-0001o6-Lh; Wed, 06 Nov 2024 18:52:13 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1t8kCH-002ver-Vw; Wed, 06 Nov 2024 18:52:02 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 06 Nov 2024 18:51:18 +0100
-Subject: [PATCH net 1/4] virtio/vsock: Fix accept_queue memory leak
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ai2G6Qr+"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-460b2e4c50fso702781cf.0;
+        Wed, 06 Nov 2024 10:18:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730917085; x=1731521885; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wQwj/GWrTbMpB2h+csAzG3gf0YiNR+Wiy6DXEYYkKXY=;
+        b=ai2G6Qr+EAGWmaamyvc8iGjPbv7UaLcEg7apI6IJ2PceWcFN2BGiQRuzmtsUEcvEL8
+         gRwOF4g2FRNT1Dg3lpgfs5mbhYpCUHsT5eppefr5gzTjSVcJ1Vd/sUdkXnIKL67C49kZ
+         3THM3LY135EhMwOcKxcF/Yw09iIjk+puF4wP/JCk/PbOeIOfuau6kWfuFbeiaZEGv8vi
+         I2Q9ngnvAYGyA1AUkxk6vRH5gJZq4YdNucnein0Ug6sjtuHPOqdrrnbvJ/QKv+wxyHXA
+         7qW4ejhA662cCXK7Txi1vCtVa4rA4wyhubdrmELX0UYIbWPTl1yf4tG18nXmRYm1/JQV
+         jZVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730917085; x=1731521885;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wQwj/GWrTbMpB2h+csAzG3gf0YiNR+Wiy6DXEYYkKXY=;
+        b=vy1BW9i1GxSdFvyYsxrWleXtxMfuxggpUrthm9abiQFXvRo3IVv5vj7N9ztEXkt9H4
+         ulJJl7HPJVpWElM9KbASS8X1YswOgHpcyHXMWV/f0h6gF1X5NDw35J/aml1U8ZG8upOC
+         yI1Cb5HSaM7sGNwXtMyGm2HYWFY+D5vaBMJhJ+d8KJ7eNjQxjTQFO59a0SHdx8yVUXko
+         RnxBYdOUhbRDwfmV0fUIpEgcXYOLmtXlRS3LldR2PboT9RgnHS0Dr7wysKzrjB5insHJ
+         ioJnSiJB2RAwLDvIlDcKHw6JFBWqrElboxQxvirz0OLI6v9eN5PNXjGbv0YOVJXNWHit
+         b+zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVC6jN5MmDdhzxMg0Z3st9qxN0fG2FrRXDT8/09wW0P5CgTdEUp1uxO+h3YkFltfZH2QieOItg0jmEtkGrMHYk=@vger.kernel.org, AJvYcCWgu8r3CDf/KPmEGAHVvVFz+bxxPwdmskz/tSTo+VwpKDg6Qs7s2wGqvFXlV5nzsx2PYyqBL588@vger.kernel.org, AJvYcCXDWaO2MbjvjO6t0r8AAPyzgkjPbqLcEvD9k/o1TjG76REmvg6iGLBDFdaDzq3MfsnV2G20Ow94+kvBn+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKDzKAYmzN1zZPtKabax5ITE5+sSupUfYo7AtrhEzf3tSEKCwU
+	VzuM18hG93nH815dEizk31hpnIU3Wez9nfgcS5S5Tk+Yh2U0YwBl
+X-Google-Smtp-Source: AGHT+IHbd+iWdp0AZ8TZAWXa3c1ZwOS+r/2JbXndDVsoOY5g+73G1rcnWC8pcgBWuIsZYJpy7tWZaA==
+X-Received: by 2002:a05:622a:58d:b0:460:8e3b:6790 with SMTP id d75a77b69052e-4613c1a74d0mr605708961cf.48.1730917085472;
+        Wed, 06 Nov 2024 10:18:05 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462f18fd044sm10816751cf.10.2024.11.06.10.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 10:18:05 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 900D31200066;
+	Wed,  6 Nov 2024 13:18:04 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 06 Nov 2024 13:18:04 -0500
+X-ME-Sender: <xms:3LIrZ5iOrx11gTigcukRQ9RCdoyQ5QS-SUMptEgYY2SqHgf8L7yK_A>
+    <xme:3LIrZ-Bi8unVoVxdPGOUiydSiOZODHd6xhK2ITehAzXrgG6d0iYQuLjzzz10A2mpR
+    LJHpON45QmX5U54FQ>
+X-ME-Received: <xmr:3LIrZ5Gx6b7BZ6D4jaUhOg1QKwHvkEif7xgKZakAwmVOvr882lDxWocY4F0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddvgddutdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmh
+    grihhlrdgtohhmpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehlihhnuhhtrhhonhhi
+    gidruggvpdhrtghpthhtohepfhhrvgguvghrihgtsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehjshhtuhhl
+    thiisehgohhoghhlvgdrtghomhdprhgtphhtthhopehssghohigusehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhr
+    gh
+X-ME-Proxy: <xmx:3LIrZ-RMmPNreF3mQ-rm_liTbjo8K15_Ha_ng8vPkpcCnxDqxjlj_A>
+    <xmx:3LIrZ2xZYWPV9VsH7ErEuXbJe71BCIt_Rt7sVypp4JZddLcxj_5liw>
+    <xmx:3LIrZ063QF9vCZSMWjv3QVLsYSZnXYMdDOXWcsnk0PyKXsoa5DBzVg>
+    <xmx:3LIrZ7yxw8WgkFqywVN1zpxISPc7_sgTv93r1RO766Uxv648ZOZCKQ>
+    <xmx:3LIrZ-hhAvDFEDwuCXnVU61RZ_ke3YwDGwvkfoKWlIwAbl_434YbyEik>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 6 Nov 2024 13:18:04 -0500 (EST)
+Date: Wed, 6 Nov 2024 10:18:03 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de
+Subject: Re: [PATCH v5 6/7] rust: Add read_poll_timeout functions
+Message-ID: <Zyuy25viG51DDRk7@Boquns-Mac-mini.local>
+References: <20241101010121.69221-1-fujita.tomonori@gmail.com>
+ <20241101010121.69221-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241106-vsock-mem-leaks-v1-1-8f4ffc3099e6@rbox.co>
-References: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
-In-Reply-To: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
-To: Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jia He <justin.he@arm.com>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>, 
- Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
- George Zhang <georgezhang@vmware.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241101010121.69221-7-fujita.tomonori@gmail.com>
 
-As the final stages of socket destruction may be delayed, it is possible
-that virtio_transport_recv_listen() will be called after the accept_queue
-has been flushed, but before the SOCK_DONE flag has been set. As a result,
-sockets enqueued after the flush would remain unremoved, leading to a
-memory leak.
+On Fri, Nov 01, 2024 at 10:01:20AM +0900, FUJITA Tomonori wrote:
+[...]
+> @@ -44,6 +45,7 @@
+>  pub mod page;
+>  pub mod prelude;
+>  pub mod print;
+> +pub mod processor;
+>  pub mod sizes;
+>  pub mod rbtree;
+>  mod static_assert;
+> diff --git a/rust/kernel/processor.rs b/rust/kernel/processor.rs
+> new file mode 100644
+> index 000000000000..eeeff4be84fa
+> --- /dev/null
+> +++ b/rust/kernel/processor.rs
 
-vsock_release
-  __vsock_release
-    lock
-    virtio_transport_release
-      virtio_transport_close
-        schedule_delayed_work(close_work)
-    sk_shutdown = SHUTDOWN_MASK
-(!) flush accept_queue
-    release
-                                        virtio_transport_recv_pkt
-                                          vsock_find_bound_socket
-                                          lock
-                                          if flag(SOCK_DONE) return
-                                          virtio_transport_recv_listen
-                                            child = vsock_create_connected
-                                      (!)   vsock_enqueue_accept(child)
-                                          release
-close_work
-  lock
-  virtio_transport_do_close
-    set_flag(SOCK_DONE)
-    virtio_transport_remove_sock
-      vsock_remove_sock
-        vsock_remove_bound
-  release
+What else would we put into this file? `smp_processor_id()` and IPI
+functionality? If so, I would probably want to rename this to cpu.rs.
 
-Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
-socket destruction.
+Regards,
+Boqun
 
-unreferenced object 0xffff888109e3f800 (size 2040):
-  comm "kworker/5:2", pid 371, jiffies 4294940105
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
-  backtrace (crc 9e5f4e84):
-    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
-    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
-    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
-    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
-    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
-    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
-    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
-    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
-    [<ffffffff811070dd>] kthread+0xdd/0x110
-    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
-    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
-
-Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/vmw_vsock/virtio_transport_common.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index ccbd2bc0d2109aea4f19e79a0438f85893e1d89c..cd075f608d4f6f48f894543e5e9c966d3e5f22df 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1512,6 +1512,14 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 		return -ENOMEM;
- 	}
- 
-+	/* __vsock_release() might have already flushed accept_queue.
-+	 * Subsequent enqueues would lead to a memory leak.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK) {
-+		virtio_transport_reset_no_sock(t, skb);
-+		return -ESHUTDOWN;
-+	}
-+
- 	child = vsock_create_connected(sk);
- 	if (!child) {
- 		virtio_transport_reset_no_sock(t, skb);
-
--- 
-2.46.2
-
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Processor related primitives.
+> +//!
+> +//! C header: [`include/linux/processor.h`](srctree/include/linux/processor.h).
+> +
+> +/// Lower CPU power consumption or yield to a hyperthreaded twin processor.
+> +///
+> +/// It also happens to serve as a compiler barrier.
+> +pub fn cpu_relax() {
+> +    // SAFETY: FFI call.
+> +    unsafe { bindings::cpu_relax() }
+> +}
+> -- 
+> 2.43.0
+> 
+> 
