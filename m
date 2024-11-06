@@ -1,441 +1,167 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D861D63F8
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 08:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CF01D3648
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 08:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730880011; cv=none; b=Y3pJJrpAyFoEPQZKyXZfyw6Ht3uHRSqYNR+6PptTaSgiU0VFysc+kwbN8YCp84ajPevyuIBl7zjANO5Ex9afD+dFYxJe3bzf5nW5Hs/CQexxMKYbpwnCnBB8uK5KtGm2fEYHNaaidOFv5daH5iBpTbJoPZZnoCMXHWpdUjpy3VU=
+	t=1730880783; cv=none; b=DVmsdrirU/saeqbrOhLdLS8NFsAFBFiFuC8wo6qqxvB5603DHRvAUsDX4srCiZF/y333Knqlr+IV3HZNmsbv3xgDdw6V0yX8YXRKqAJhcrWEagHKwtrQl6GqC4mvXkHdzUagpMi8aeGCS0qZaEQknkHnY5gdZTIal06u/EEEknQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730880011; c=relaxed/simple;
-	bh=buNi4DQBdEkwbBm44GMfkxOPGPQEsGKgKHOL4hj/ZwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dejXpkP0aTGXbaNOZOp2nfeb1R3YPFuJROK5zzGhpsmgfSZenDWwezh5TOKMcqj/NNGw1+rntejDzsOyYyWQrTlOOwXXPrHvVpuE/LTi6c/0liOYFHCsSGyAGU3Iff4ufAT3yD/ZfUMfsjAVMlmS36SZEXa1VuUD2G6aJwbzWKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax6-0000ni-AW; Wed, 06 Nov 2024 08:59:44 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax5-002Gdn-0H;
-	Wed, 06 Nov 2024 08:59:43 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1t8ax4-006rsW-3B;
-	Wed, 06 Nov 2024 08:59:42 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org,
-	Marek Vasut <marex@denx.de>
-Subject: [PATCH net-next v4 5/6] net: dsa: microchip: add support for side MDIO interface in LAN937x
-Date: Wed,  6 Nov 2024 08:59:40 +0100
-Message-Id: <20241106075942.1636998-6-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241106075942.1636998-1-o.rempel@pengutronix.de>
-References: <20241106075942.1636998-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1730880783; c=relaxed/simple;
+	bh=Rhz6ihfM+i16fBigbjXWy5cHtEcmwTY9u4Ha1RUbTfE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Au4BzsPzQuzLRon0CHNsZBy/InoiGbgYW/N+q3PLCKw4e5mecnbowAlHAigoDmotT6yf4ieYeHB7n2lEo9DHe1rbyhx0cvKIulewLXXpBUTVKWC8dHTdyjT0D3HeJlNcVyTZNVvGJlDUrpOKpI+zGYYMXAmNbCcU0ahDAN+/gB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FwYh/nQ7; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FwYh/nQ7"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6e330b7752cso4452957b3.1
+        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 00:13:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1730880780; x=1731485580; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BDlGodGOqmjtWxU183rIwXdaD+HsQI5jPMT8gNxYRj0=;
+        b=FwYh/nQ7kCg35DYHkSwNxmMYA6K4OWUwVpgbq+a2ZfwirSV0vt4EC6SSgW4fifw3lI
+         3IuXKMh88NPv4UhsfTL6x2gHPyX1uQfWR2E9+O/Yo84Cw5DpZajTJoBOY7qlcCuomJlQ
+         sXmn5K/poqm80D3hjujG+6FKJdPtG93eO6XXc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730880780; x=1731485580;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BDlGodGOqmjtWxU183rIwXdaD+HsQI5jPMT8gNxYRj0=;
+        b=rkOTL7Dmm7qQ+VxYWe59fzzEzYaGbLxnM+f50606Y1PNoQJEn13TvmcuLVWGOi/7sk
+         xaQR2z3fpe5XRK1zd04MK7go3pcCmiEIW/opiogoTnEJIFpRqPeKJ75KR6n33Z2W6SCG
+         nPYoga5F+tjZ2XAUh361+xD98tNtya1CTZsf2RyL3/2ALqLe5WyA2wvyAUytqB1vn7cW
+         SMtldsVqcZdfgpmLVotkuD6gf3Wk008O2gssEZiaqjcMarbthIrFlenyL2kxnV8/THIF
+         tou/ajNPMCKvXvJxcj/9hzopt7MEuwNxLsUY4m9bRtI3DLY/rXjWbkRUr7Lg2kQDpTsG
+         pyBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWw+tDXVeShGx3iCLAtL3UpRD+ZHP4/sCh1TcKGMbjYsiUlqSB8kU0r4cCvBjbFPDSM35N0O/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpcBl1910aqnyJzHWc7HMQfY4ettJ+KWKd5Ol9VlLxmirCQCD0
+	qjiUKLJHoDFSaDTApVyCqVScvuBT+aDKUeox8+ijpFfps2xMlNKG7ezTr8gThyizCK8OC0uvOlv
+	bbIydN74FQzOP2aoaj+YR/Q8NIYZ6C9rZj58o
+X-Google-Smtp-Source: AGHT+IFa/lF5ngdQbP7vQJMsvJqUaM5kVpn73wpQyGUYWvX81VwsE0amKXj2CGJF7F8qP+xNaIAvS1BBD8vDdI+ujQA=
+X-Received: by 2002:a05:690c:6504:b0:6db:da0e:d166 with SMTP id
+ 00721157ae682-6eabf00b51fmr10777277b3.12.1730880780494; Wed, 06 Nov 2024
+ 00:13:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+References: <1730800752-29925-1-git-send-email-selvin.xavier@broadcom.com>
+ <1730800752-29925-2-git-send-email-selvin.xavier@broadcom.com> <20241105161637.77cbfeb8@kernel.org>
+In-Reply-To: <20241105161637.77cbfeb8@kernel.org>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
+Date: Wed, 6 Nov 2024 13:42:47 +0530
+Message-ID: <CA+sbYW1E2UGfYZz=G5rBuvtd3ZTiWOUAXxZ1pDzkgkCR+nzo=w@mail.gmail.com>
+Subject: Re: [PATCH rdma-next 1/3] bnxt_en: Add support for RoCE sriov configuration
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: leon@kernel.org, jgg@ziepe.ca, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, michael.chan@broadcom.com, andrew.gospodarek@broadcom.com, 
+	kalesh-anakkur.purayil@broadcom.com, Vikas Gupta <vikas.gupta@broadcom.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000017d6e906263a16b6"
 
-Implement side MDIO channel support for LAN937x switches, providing an
-alternative to SPI for PHY management alongside existing SPI-based
-switch configuration. This is needed to reduce SPI load, as SPI can be
-relatively expensive for small packets compared to MDIO support.
+--00000000000017d6e906263a16b6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Also, implemented static mappings for PHY addresses for various LAN937x
-models to support different internal PHY configurations. Since the PHY
-address mappings are not equal to the port indexes, this patch also
-provides PHY address calculation based on hardware strapping
-configuration.
+On Wed, Nov 6, 2024 at 5:46=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Tue,  5 Nov 2024 01:59:10 -0800 Selvin Xavier wrote:
+> > On firmwares which support RoCE VF resource management by the
+> > NIC driver, configure RoCE sriov resources while resources for
+> > the VFs are allotted.
+>
+> Rewrite this, please, into multiple sentences.
+> Its incomprehensible.
+Sure. will post v2.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-changes v4:
-- add Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-changes v2:
-- add lan9371_phy_addr map
-- add comments
-- add define LAN937X_NO_PHY
----
- drivers/net/dsa/microchip/ksz_common.c   |   7 +
- drivers/net/dsa/microchip/lan937x.h      |   2 +
- drivers/net/dsa/microchip/lan937x_main.c | 226 +++++++++++++++++++++--
- drivers/net/dsa/microchip/lan937x_reg.h  |   4 +
- 4 files changed, 223 insertions(+), 16 deletions(-)
+--00000000000017d6e906263a16b6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 26a4a8b49dc83..19fb090c09ab7 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -411,6 +411,8 @@ static const struct ksz_dev_ops lan937x_dev_ops = {
- 	.flush_dyn_mac_table = ksz9477_flush_dyn_mac_table,
- 	.port_setup = lan937x_port_setup,
- 	.set_ageing_time = lan937x_set_ageing_time,
-+	.mdio_bus_preinit = lan937x_mdio_bus_preinit,
-+	.create_phy_addr_map = lan937x_create_phy_addr_map,
- 	.r_phy = lan937x_r_phy,
- 	.w_phy = lan937x_w_phy,
- 	.r_mib_cnt = ksz9477_r_mib_cnt,
-@@ -1762,6 +1764,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1790,6 +1793,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1818,6 +1822,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1850,6 +1855,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-@@ -1882,6 +1888,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.num_tx_queues = 8,
- 		.num_ipms = 8,
- 		.tc_cbs_supported = true,
-+		.phy_side_mdio_supported = true,
- 		.ops = &lan937x_dev_ops,
- 		.phylink_mac_ops = &lan937x_phylink_mac_ops,
- 		.mib_names = ksz9477_mib_names,
-diff --git a/drivers/net/dsa/microchip/lan937x.h b/drivers/net/dsa/microchip/lan937x.h
-index 3388d91dbc44e..df13ebbd356f9 100644
---- a/drivers/net/dsa/microchip/lan937x.h
-+++ b/drivers/net/dsa/microchip/lan937x.h
-@@ -13,6 +13,8 @@ void lan937x_port_setup(struct ksz_device *dev, int port, bool cpu_port);
- void lan937x_config_cpu_port(struct dsa_switch *ds);
- int lan937x_switch_init(struct ksz_device *dev);
- void lan937x_switch_exit(struct ksz_device *dev);
-+int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio);
-+int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio);
- int lan937x_r_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 *data);
- int lan937x_w_phy(struct ksz_device *dev, u16 addr, u16 reg, u16 val);
- int lan937x_change_mtu(struct ksz_device *dev, int port, int new_mtu);
-diff --git a/drivers/net/dsa/microchip/lan937x_main.c b/drivers/net/dsa/microchip/lan937x_main.c
-index 824d9309a3d35..b7652efd632ea 100644
---- a/drivers/net/dsa/microchip/lan937x_main.c
-+++ b/drivers/net/dsa/microchip/lan937x_main.c
-@@ -18,6 +18,87 @@
- #include "ksz9477.h"
- #include "lan937x.h"
- 
-+/* marker for ports without built-in PHY */
-+#define LAN937X_NO_PHY U8_MAX
-+
-+/*
-+ * lan9370_phy_addr - Mapping of LAN9370 switch ports to PHY addresses.
-+ *
-+ * Each entry corresponds to a specific port on the LAN9370 switch,
-+ * where ports 1-4 are connected to integrated 100BASE-T1 PHYs, and
-+ * Port 5 is connected to an RGMII interface without a PHY. The values
-+ * are based on the documentation (DS00003108E, section 3.3).
-+ */
-+static const u8 lan9370_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 6, /* Port 4, T1 AFE4 */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+};
-+
-+/*
-+ * lan9371_phy_addr - Mapping of LAN9371 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003109E, section 3.3).
-+ */
-+static const u8 lan9371_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 8, /* Port 4, TX PHY */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+};
-+
-+/*
-+ * lan9372_phy_addr - Mapping of LAN9372 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9372_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 8, /* Port 4, TX PHY */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
-+/*
-+ * lan9373_phy_addr - Mapping of LAN9373 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9373_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = LAN937X_NO_PHY, /* Port 4, SGMII */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
-+/*
-+ * lan9374_phy_addr - Mapping of LAN9374 switch ports to PHY addresses.
-+ *
-+ * The values are based on the documentation (DS00003110F, section 3.3).
-+ */
-+static const u8 lan9374_phy_addr[] = {
-+	[0] = 2, /* Port 1, T1 AFE0 */
-+	[1] = 3, /* Port 2, T1 AFE1 */
-+	[2] = 5, /* Port 3, T1 AFE3 */
-+	[3] = 7, /* Port 4, T1 AFE5 */
-+	[4] = LAN937X_NO_PHY, /* Port 5, RGMII 2 */
-+	[5] = LAN937X_NO_PHY, /* Port 6, RGMII 1 */
-+	[6] = 6, /* Port 7, T1 AFE4 */
-+	[7] = 4, /* Port 8, T1 AFE2 */
-+};
-+
- static int lan937x_cfg(struct ksz_device *dev, u32 addr, u8 bits, bool set)
- {
- 	return regmap_update_bits(ksz_regmap_8(dev), addr, bits, set ? bits : 0);
-@@ -30,24 +111,144 @@ static int lan937x_port_cfg(struct ksz_device *dev, int port, int offset,
- 				  bits, set ? bits : 0);
- }
- 
--static int lan937x_enable_spi_indirect_access(struct ksz_device *dev)
-+/**
-+ * lan937x_create_phy_addr_map - Create port-to-PHY address map for MDIO bus.
-+ * @dev: Pointer to device structure.
-+ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
-+ *
-+ * This function sets up the PHY address mapping for the LAN937x switches,
-+ * which support two access modes for internal PHYs:
-+ * 1. **SPI Access**: A straightforward one-to-one port-to-PHY address
-+ *    mapping is applied.
-+ * 2. **MDIO Access**: The PHY address mapping varies based on chip variant
-+ *    and strap configuration. An offset is calculated based on strap settings
-+ *    to ensure correct PHY addresses are assigned. The offset calculation logic
-+ *    is based on Microchip's Article Number 000015828, available at:
-+ *    https://microchip.my.site.com/s/article/LAN9374-Virtual-PHY-PHY-Address-Mapping
-+ *
-+ * The function first checks if side MDIO access is disabled, in which case a
-+ * simple direct mapping (port number = PHY address) is applied. If side MDIO
-+ * access is enabled, it reads the strap configuration to determine the correct
-+ * offset for PHY addresses.
-+ *
-+ * The appropriate mapping table is selected based on the chip ID, and the
-+ * `phy_addr_map` is populated with the correct addresses for each port. Any
-+ * port with no PHY is assigned a `LAN937X_NO_PHY` marker.
-+ *
-+ * Return: 0 on success, error code on failure.
-+ */
-+int lan937x_create_phy_addr_map(struct ksz_device *dev, bool side_mdio)
-+{
-+	static const u8 *phy_addr_map;
-+	u32 strap_val;
-+	u8 offset = 0;
-+	size_t size;
-+	int ret, i;
-+
-+	if (!side_mdio) {
-+		/* simple direct mapping */
-+		for (i = 0; i < dev->info->port_cnt; i++)
-+			dev->phy_addr_map[i] = i;
-+
-+		return 0;
-+	}
-+
-+	ret = ksz_read32(dev, REG_SW_CFG_STRAP_VAL, &strap_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!(strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
-+		offset = 0;
-+	else if (!(strap_val & SW_CASCADE_ID_CFG) && (strap_val & SW_VPHY_ADD_CFG))
-+		offset = 7;
-+	else if ((strap_val & SW_CASCADE_ID_CFG) && !(strap_val & SW_VPHY_ADD_CFG))
-+		offset = 15;
-+	else
-+		offset = 22;
-+
-+	switch (dev->info->chip_id) {
-+	case LAN9370_CHIP_ID:
-+		phy_addr_map = lan9370_phy_addr;
-+		size = ARRAY_SIZE(lan9370_phy_addr);
-+		break;
-+	case LAN9371_CHIP_ID:
-+		phy_addr_map = lan9371_phy_addr;
-+		size = ARRAY_SIZE(lan9371_phy_addr);
-+		break;
-+	case LAN9372_CHIP_ID:
-+		phy_addr_map = lan9372_phy_addr;
-+		size = ARRAY_SIZE(lan9372_phy_addr);
-+		break;
-+	case LAN9373_CHIP_ID:
-+		phy_addr_map = lan9373_phy_addr;
-+		size = ARRAY_SIZE(lan9373_phy_addr);
-+		break;
-+	case LAN9374_CHIP_ID:
-+		phy_addr_map = lan9374_phy_addr;
-+		size = ARRAY_SIZE(lan9374_phy_addr);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (size < dev->info->port_cnt)
-+		return -EINVAL;
-+
-+	for (i = 0; i < dev->info->port_cnt; i++) {
-+		if (phy_addr_map[i] == LAN937X_NO_PHY)
-+			dev->phy_addr_map[i] = phy_addr_map[i];
-+		else
-+			dev->phy_addr_map[i] = phy_addr_map[i] + offset;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * lan937x_mdio_bus_preinit - Pre-initialize MDIO bus for accessing PHYs.
-+ * @dev: Pointer to device structure.
-+ * @side_mdio: Boolean indicating if the PHYs are accessed over a side MDIO bus.
-+ *
-+ * This function configures the LAN937x switch for PHY access either through
-+ * SPI or the side MDIO bus, unlocking the necessary registers for each access
-+ * mode.
-+ *
-+ * Operation Modes:
-+ * 1. **SPI Access**: Enables SPI indirect access to address clock domain
-+ *    crossing issues when SPI is used for PHY access.
-+ * 2. **MDIO Access**: Grants access to internal PHYs over the side MDIO bus,
-+ *    required when using the MDIO bus for PHY management.
-+ *
-+ * Return: 0 on success, error code on failure.
-+ */
-+int lan937x_mdio_bus_preinit(struct ksz_device *dev, bool side_mdio)
- {
- 	u16 data16;
- 	int ret;
- 
--	/* Enable Phy access through SPI */
-+	/* Unlock access to the PHYs, needed for SPI and side MDIO access */
- 	ret = lan937x_cfg(dev, REG_GLOBAL_CTRL_0, SW_PHY_REG_BLOCK, false);
- 	if (ret < 0)
--		return ret;
-+		goto print_error;
- 
--	ret = ksz_read16(dev, REG_VPHY_SPECIAL_CTRL__2, &data16);
--	if (ret < 0)
--		return ret;
-+	if (side_mdio)
-+		/* Allow access to internal PHYs over MDIO bus */
-+		data16 = VPHY_MDIO_INTERNAL_ENABLE;
-+	else
-+		/* Enable SPI indirect access to address clock domain crossing
-+		 * issue
-+		 */
-+		data16 = VPHY_SPI_INDIRECT_ENABLE;
- 
--	/* Allow SPI access */
--	data16 |= VPHY_SPI_INDIRECT_ENABLE;
-+	ret = ksz_rmw16(dev, REG_VPHY_SPECIAL_CTRL__2,
-+			VPHY_SPI_INDIRECT_ENABLE | VPHY_MDIO_INTERNAL_ENABLE,
-+			data16);
-+
-+print_error:
-+	if (ret < 0)
-+		dev_err(dev->dev, "failed to preinit the MDIO bus\n");
- 
--	return ksz_write16(dev, REG_VPHY_SPECIAL_CTRL__2, data16);
-+	return ret;
- }
- 
- static int lan937x_vphy_ind_addr_wr(struct ksz_device *dev, int addr, int reg)
-@@ -363,13 +564,6 @@ int lan937x_setup(struct dsa_switch *ds)
- 	struct ksz_device *dev = ds->priv;
- 	int ret;
- 
--	/* enable Indirect Access from SPI to the VPHY registers */
--	ret = lan937x_enable_spi_indirect_access(dev);
--	if (ret < 0) {
--		dev_err(dev->dev, "failed to enable spi indirect access");
--		return ret;
--	}
--
- 	/* The VLAN aware is a global setting. Mixed vlan
- 	 * filterings are not supported.
- 	 */
-diff --git a/drivers/net/dsa/microchip/lan937x_reg.h b/drivers/net/dsa/microchip/lan937x_reg.h
-index 2f22a9d01de36..4ec93e421da45 100644
---- a/drivers/net/dsa/microchip/lan937x_reg.h
-+++ b/drivers/net/dsa/microchip/lan937x_reg.h
-@@ -37,6 +37,10 @@
- #define SW_CLK125_ENB			BIT(1)
- #define SW_CLK25_ENB			BIT(0)
- 
-+#define REG_SW_CFG_STRAP_VAL		0x0200
-+#define SW_CASCADE_ID_CFG		BIT(15)
-+#define SW_VPHY_ADD_CFG			BIT(0)
-+
- /* 2 - PHY Control */
- #define REG_SW_CFG_STRAP_OVR		0x0214
- #define SW_VPHY_DISABLE			BIT(31)
--- 
-2.39.5
-
+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
+FYMZp2DojLAq9f4Oi2OBetbnWxo0WGycXpmq/jC4PUx2u9mazQ79i80VLagGRshWniESXuf+SYG8
++zBimjld9ZZnwm7itHAZdtme4YYFxx+EHa4PUxPV8t+hPHhsiIjirPa1pVXPbQIDAQABo4IB2zCC
+AdcwDgYDVR0PAQH/BAQDAgWgMIGjBggrBgEFBQcBAQSBljCBkzBOBggrBgEFBQcwAoZCaHR0cDov
+L3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAu
+Y3J0MEEGCCsGAQUFBzABhjVodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29u
+YWxzaWduMmNhMjAyMDBNBgNVHSAERjBEMEIGCisGAQQBoDIBKAowNDAyBggrBgEFBQcCARYmaHR0
+cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wCQYDVR0TBAIwADBJBgNVHR8EQjBA
+MD6gPKA6hjhodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24yY2Ey
+MDIwLmNybDAlBgNVHREEHjAcgRpzZWx2aW4ueGF2aWVyQGJyb2FkY29tLmNvbTATBgNVHSUEDDAK
+BggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU3TaH
+dsgUhTW3LwObmZ20fj+8Xj8wDQYJKoZIhvcNAQELBQADggEBAAbt6Sptp6ZlTnhM2FDhkVXks68/
+iqvfL/e8wSPVdBxOuiP+8EXGLV3E72KfTTJXMbkcmFpK2K11poBDQJhz0xyOGTESjXNnN6Eqq+iX
+hQtF8xG2lzPq8MijKI4qXk5Vy5DYfwsVfcF0qJw5AhC32nU9uuIPJq8/mQbZfqmoanV/yadootGr
+j1Ze9ndr+YDXPpCymOsynmmw0ErHZGGW1OmMpAEt0A+613glWCURLDlP8HONi1wnINV6aDiEf0ad
+9NMGxDsp+YWiRXD3txfo2OMQbpIxM90QfhKKacX8t1J1oAAWxDrLVTJBXBNvz5tr+D1sYwuye93r
+hImmkM1unboxggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWdu
+IG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIw
+Agxy+Cu4x/7lM0zxY7cwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIBKnklCMHcqU
+vPNXncGKe1trG7N68O2Rd+hLwwrLvm7zMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
+hvcNAQkFMQ8XDTI0MTEwNjA4MTMwMFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJ
+YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcN
+AQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBLGaIKR16GDCXL93sH4GN43TLlxn3Y
+0pNdaYXUCW8XgRcI1fRJ3qrrHT0YFjxdDrFQBcvPva6ZFz4gCLoF3gYfUnKOrKDUjM82OmzAih4f
+RiTm9AOn2V1Do7MW/fKcq6Xb0SYgchh9nOy2llHlQ+V5Y28Ijkp8hsj37a3YD+DD45k7SBPRjLLd
+11H3eObalIF0Zi7elB9I6vhY1XkgQjnUuiLtfBXv6GPAgUsJQ+5+ftSxlcYGOTh2GZcK2GbxBpUn
+Xn0dIxvkczLIfdznpK4dr95aBwzxifXivcXxbYSKqbIM5HNdI5rSa020jETiqppX2PlyQS35iY+6
+5C9zl1+x
+--00000000000017d6e906263a16b6--
