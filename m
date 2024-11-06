@@ -1,86 +1,120 @@
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B1C1D7E41;
-	Wed,  6 Nov 2024 09:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2741D223C;
+	Wed,  6 Nov 2024 09:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730883642; cv=none; b=KoK4qPbznYkvkCadCI4djIiJ2BtM2CA1V47GOCI3nve9ie6lrYSjcu8I+Ravl234tCMLDg76jMbzymzpNtO9gZrEIiPELMpeRPwI7qBdro4pjJ+8/l4r8oO7KIaMns2Tu9zZckzpOWPXp8He1wPBuOZzwbeizWS9fCZNf6xhSXg=
+	t=1730883819; cv=none; b=ApQigFJ8Zsb//yGvTtluFifSb5cA6jiCtqMoLgCr6RIeYauTq+hjLDRe0JhVdZLxgQiI30pywdsjiPuOLmaBBQVMxgQXeGDV9XPTM0/tDfsV5pNM7nnJx4jbytvLUOI5xamCc5fF28ahNFhepupIT1owqJ7FKmzQJ9e0lsyyHHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730883642; c=relaxed/simple;
-	bh=fDSS5Ot/nGR8QnyVF4ghfmLTy2d8XgfWck2llWDoaH4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ricIpTrA5OOE7/CHNiLa0tJuTMw74xqXCd+1rJqEpay65xKVcO1THJq3/N8JnjZPJXkoJrYYNyAueuI1MzAF80rVxbvVS4Y1ivVWx3/8kCGTdPm9leRYhMEnqvC8jru/CU2GgXKsr5IjisJTaROMzA9fl4+ww3SjRDYTvZGJPUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.247])
-	by APP-05 (Coremail) with SMTP id zQCowACHbrmkLitnyXFqAA--.1291S2;
-	Wed, 06 Nov 2024 16:53:58 +0800 (CST)
-From: Wentao Liang <liangwentao@iscas.ac.cn>
-To: shannon.nelson@amd.com,
-	brett.creeley@amd.com,
+	s=arc-20240116; t=1730883819; c=relaxed/simple;
+	bh=dmQfccvppQsU9x9MtMI9asFu7FLuTFvIa1TI+NFg3PA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ckyjGODdKDH4WZUZP7yxrBSl1DoyZ21mmoBY4sD3M1wRiPtLA4J3GxbPdzugSfHuBifk105dz7HTm1RLVAVdjfTmwpSNktbEedL29Om70IxRipGWo+MPxTrf0m+KgAwuOcTVdPUQNxd6cApqMPMNEmmR8DQLU8jZnEMxP/fGYF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ldkTn1Wo; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ldkTn1Wo"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 79A17C000A;
+	Wed,  6 Nov 2024 09:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730883815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=weAShtrkUjDQdfMxGlmfAtR3B6mS0OXtPZsSWC+b/z4=;
+	b=ldkTn1WoOO9SvTFEUWcjuPQCtXxvyw7jTELOwmzgwIdIz66jwYiqHFVPL2tex2nHynBJUk
+	nufYR2gX8SJ5mL0WfDURhYbIRWUCCW0u28jEUZ7pwoJ0G3Rb7E63oS8k0uxz3H3vqiNEgE
+	uxzE9lkzJ1LvoiZNlqqTmBtD99o6T/5TtXKBeS+Y2fe9hc+CAbkJccXVkKxQl+QO6ecdn5
+	lW6wEUVnxZyvC98yDVn9/WuwHn/puJxD23ikNPCN99dlfmGWuDxK/mLcpmAa3Y07Szl09v
+	idOND9U472puCw6guVr0XxQcvbu6zloJqyxqTTujTlvv3ECNw8eXY6QEzt4lQg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-kernel@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	netdev@vger.kernel.org,
-	Wentao Liang <Wentao_liang_g@163.com>,
-	Wentao Liang <liangwentao@iscas.ac.cn>
-Subject: [PATCH v2] drivers: net: ionic: fix a memory leak bug
-Date: Wed,  6 Nov 2024 16:53:07 +0800
-Message-ID: <20241106085307.1783-1-liangwentao@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/9] Support external snapshots on dwmac1000
+Date: Wed,  6 Nov 2024 10:03:21 +0100
+Message-ID: <20241106090331.56519-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACHbrmkLitnyXFqAA--.1291S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7XFWkCw48tw1xCr4fXr1fJFb_yoW8JrW5pw
-	s8JFyYvrn5Xr4UGw1DAw18ZF98ZaySkrW8Grnru3yF9wsxAry8JF17ta47tr97WrWUJF1S
-	qr129w15XF98C37anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
-	Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfU5iihUU
-	UUU
-X-CM-SenderInfo: xold0wxzhq3t3r6l2u1dvotugofq/
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-From: Wentao Liang <Wentao_liang_g@163.com>
+Hi,
 
-In line 334, the ionic_setup_one() creates a debugfs entry for
-ionic upon successful execution. However, the ionic_probe() does
-not release the dentry before returning, resulting in a memory
-leak. To fix this bug, we add the ionic_debugfs_del_dev() before
-line 397 to release the resources before the function returns.
+This V3 is just a rebase a V2 on top of net-next to address some minor
+conflicts. No changes were made.
 
-Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
-Signed-off-by: Wentao Liang <liangwentao@iscas.ac.cn>
----
- drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+This series is another take on the pervious work [1] done by
+Alexis Lothoré, that fixes the support for external snapshots
+timestamping in GMAC3-based devices.
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index b93791d6b593..f5dc876eb500 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -394,6 +394,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_out_pci:
- 	ionic_dev_teardown(ionic);
- 	ionic_clear_pci(ionic);
-+	ionic_debugfs_del_dev(ionic);
- err_out:
- 	mutex_destroy(&ionic->dev_cmd_lock);
- 	ionic_devlink_free(ionic);
+Details on why this is needed are mentionned on the cover [2] from V1.
+
+This V2 addresses multiple issues found in V1 :
+
+ - The PTP_TCR register is configured from multiple places, as reported
+   by Alexis, so we need to make sure that the extts configuration
+   doesn't interfere with the hwtstamp configuration.
+
+ - The interrupt management in V1 was incomplete, as the interrupt
+   wasn't correctly acked.
+
+ - This series also makes so that we only enable the extts interrupt
+   when necessary.
+
+[1]: https://lore.kernel.org/netdev/20230616100409.164583-1-alexis.lothore@bootlin.com/
+[2]: https://lore.kernel.org/netdev/20241029115419.1160201-1-maxime.chevallier@bootlin.com/
+
+Thanks Alexis for laying the groundwork for this,
+
+Best regards,
+
+Maxime
+
+Link to V1: https://lore.kernel.org/netdev/20241029115419.1160201-1-maxime.chevallier@bootlin.com/
+Link to V2: https://lore.kernel.org/netdev/20241104170251.2202270-1-maxime.chevallier@bootlin.com/
+
+Maxime Chevallier (9):
+  net: stmmac: Don't modify the global ptp ops directly
+  net: stmmac: Use per-hw ptp clock ops
+  net: stmmac: Only update the auto-discovered PTP clock features
+  net: stmmac: Introduce dwmac1000 ptp_clock_info and operations
+  net: stmmac: Introduce dwmac1000 timestamping operations
+  net: stmmac: Enable timestamping interrupt on dwmac1000
+  net: stmmac: Don't include dwmac4 definitions in stmmac_ptp
+  net: stmmac: Configure only the relevant bits for timestamping setup
+  net: stmmac: dwmac_socfpga: This platform has GMAC
+
+ drivers/net/ethernet/stmicro/stmmac/common.h  |   4 +
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   1 +
+ .../net/ethernet/stmicro/stmmac/dwmac1000.h   |  12 +++
+ .../ethernet/stmicro/stmmac/dwmac1000_core.c  | 101 ++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.c    |  15 ++-
+ .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c |  26 ++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.c  |  38 +++++--
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  10 ++
+ 8 files changed, 196 insertions(+), 11 deletions(-)
+
 -- 
-2.42.0.windows.2
+2.47.0
 
