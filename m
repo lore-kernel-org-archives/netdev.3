@@ -1,97 +1,73 @@
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D77320C307
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 20:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E2C1DAC88
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 20:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730924769; cv=none; b=OF50B5e9PNSMWZWh/nX3HZtWX0iodeWkyOcQBhV9EFCnD039mT7yDUDPHcNdFHY7gs77M84wROVnbshKcFolixlJtsKNoGySnh4z372kec13hXByDvlXL0jWXuYEHWzFMCoMCJBGmyup/CTqTAZDghxE69J4iR2/hImlD2DiIDM=
+	t=1730924784; cv=none; b=JeS4viS1rc1XwhMtygSeBXAlHv0x9cCE7hffuSTzx+fhc1Bmyr2uc2A/4tkXg4Xwgd3IgMEmmV/WUc6ZLqdIjFVhBzxIkVDWUQQjf0IYVa3z4Ii7MXbi6MrLIwgcFDUWhPgZ4VuhHDF288BMHCsDNkphpUN+f0mrlGjrhpt5cXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730924769; c=relaxed/simple;
-	bh=wm5auVu7lepT1RgCi1Ph+VnsmSMAsE1lH7xAq+00fyo=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=n7w891U5+q/rmdD6OglL7aElsRMap97FWMtszLOGDuo2qj39eK9bvDujg7B2cDVXU+6RbICVnxyFbDtsBngxSLxwcSpSjzq/9l49+foHGyI/zX9UrbyZWpdyS5LJ7ihadqwXPuoMYKnlHkzO61y+0DJvXjJdFrTBx+38x7s1HBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-139-Y9pSwt7JNfKftukdoehEKg-1; Wed, 06 Nov 2024 20:24:39 +0000
-X-MC-Unique: Y9pSwt7JNfKftukdoehEKg-1
-X-Mimecast-MFC-AGG-ID: Y9pSwt7JNfKftukdoehEKg
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 6 Nov
- 2024 20:24:37 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Wed, 6 Nov 2024 20:24:37 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Gilad Naaman' <gnaaman@drivenets.com>, Marcelo Ricardo Leitner
-	<marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>,
-	"linux-sctp@vger.kernel.org" <linux-sctp@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: Solving address deletion bottleneck in SCTP
-Thread-Topic: Solving address deletion bottleneck in SCTP
-Thread-Index: AQHbKTfUlFxD3u3SLUymStEPmRsdV7KqvpHA
-Date: Wed, 6 Nov 2024 20:24:37 +0000
-Message-ID: <f94c0197f6c74d7db1f56b82c459c42a@AcuMS.aculab.com>
-References: <20241028124845.3866469-1-gnaaman@drivenets.com>
-In-Reply-To: <20241028124845.3866469-1-gnaaman@drivenets.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1730924784; c=relaxed/simple;
+	bh=dq4T6DDVby43a81FHhZNd4AQehoM9GI28l9/MpOmHCg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H0SMfH2TXRRbcr1PSOSs80IbPeK8pLh50urPnxW0OLhZtdeobgpv40kw2QHnhoJqPp8TJXT04UPUCvTGeqre6rjHUWjcA9tP2D2KGMJwhWZ/tXral23VGOmmi70fOc+yOvg8NB+88BE14XODVBiteizSZAofnsxOMo9bAZYo2Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dPPAuBAn; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dPPAuBAn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1730924782; x=1762460782;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=d52lqdmdiQ6Pi4n+9nENh96+SpX0Y4voSesLcWRCw+c=;
+  b=dPPAuBAnN3T5v+gy6HjEdYfjKyZccTMeGTaF9I6q+2eCwvnU6XDmxxoN
+   J5GGxXvmCEX7OcCVOHOJ1WC30P1LLDdBfrIaN4SIEi23I+UJQCw/sBZK1
+   bSkMGeljFhrVIWiYakvfFCxZ+K9xkEWxtC5X4YRM7QQMtRivVitskhVDb
+   A=;
+X-IronPort-AV: E=Sophos;i="6.11,263,1725321600"; 
+   d="scan'208";a="349962065"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 20:26:21 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:39085]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.28.15:2525] with esmtp (Farcaster)
+ id 6dff6e60-af96-44b2-8a27-bd203325642c; Wed, 6 Nov 2024 20:26:20 +0000 (UTC)
+X-Farcaster-Flow-ID: 6dff6e60-af96-44b2-8a27-bd203325642c
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 6 Nov 2024 20:26:20 +0000
+Received: from 6c7e67c6786f.amazon.com (10.106.101.27) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 6 Nov 2024 20:26:17 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <gnaaman@drivenets.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<kuniyu@amazon.com>, <netdev@vger.kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v8 1/6] neighbour: Add hlist_node to struct neighbour
+Date: Wed, 6 Nov 2024 12:26:14 -0800
+Message-ID: <20241106202614.32517-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241104080437.103-2-gnaaman@drivenets.com>
+References: <20241104080437.103-2-gnaaman@drivenets.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: yMqsmPSco9uzbi2ZGjKn8DDWtpfspODLNbQKYPZsFYQ_1730924677
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D038UWC003.ant.amazon.com (10.13.139.209) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Gilad Naaman
-> Sent: 28 October 2024 12:49
-...
-> the list `net->sctp.local_addr_list` gets obscenely long.
->=20
-> This list contains both IPv4 and IPv6 addresses, of all scopes, and it is
-> a single long list, instead of a hashtable.
->=20
-> In our case we had 12K interfaces, each with an IPv4 and 2 IPv6 addresses
-> (GUA+LLA), which made deletion of a single address pretty expensive, sinc=
-e
-> it requires a linear search through 36K addresses.
-...
+From: Gilad Naaman <gnaaman@drivenets.com>
+Date: Mon,  4 Nov 2024 08:04:29 +0000
+> Add a doubly-linked node to neighbours, so that they
+> can be deleted without iterating the entire bucket they're in.
+> 
+> Signed-off-by: Gilad Naaman <gnaaman@drivenets.com>
 
-Is that the list that SCTP uses in order to pass all of its local addresses
-to the remote system during connection establishment?
-
-In which case it really makes no sense to have the list at all if it contai=
-ns
-more than a handful of addresses.
-
-Indeed the whole notion of 'send ALL my addresses' is just plain broken.
-What happens in practise is that applications pretty much always have to
-bind to all (typically both) the relevant addresses to stop the system
-sending IP addresses that are unroutable from the remote system - and
-may even refer to an entirely different local network.
-
-Passing this buck to the application isn't really right either.
-It ought to be a property of the network topology.
-But that is hard to describe.
-The two systems 10.1.1.1 and 10.1.1.2 could both have private 192.168.1.x
-networks (without IP forwarding) and other 10.1.1.x hosts could be
-randomly connected to either network.
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
