@@ -1,61 +1,60 @@
-Received: from sonic317-27.consmr.mail.bf2.yahoo.com (sonic317-27.consmr.mail.bf2.yahoo.com [74.6.129.82])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA271D363D
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 22:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.129.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C8118FDD0;
+	Wed,  6 Nov 2024 22:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730932092; cv=none; b=YDqCDjTAGAce7sLRkXD3cXdnQLvpaITWqLLwk5YOmgA689a1BEXCj5B5MIX1RXj4ptlSeFGAui9t5FXSE1kVysWEHsLrmu46HaH/C+WpWHTt20TNiSxyNZJUoE0sKntXm/5GopybxszTVmjPMbn1mES45nVRJXNRAnNQNM1mzlE=
+	t=1730933031; cv=none; b=oAGz3vW2Xyd0nq0sAjvd0BhC3r0hY29FYpVUT3uQwUfhpWnWpa6mkZ1X9/EY56REtAJLtWVmSs2w7thnnwZocvrLED4oyZzjOT8LvJvxfqDOG2nyhO9KKAN4FiDGObMwg2UBxYtfxasw2CJ6gzzq/gkNUaI5cyOHHaRpEtv29WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730932092; c=relaxed/simple;
-	bh=EA/lPnH9otYvl6FzA9VYaQsrRcEk6OlWnGxMmdvL1iw=;
+	s=arc-20240116; t=1730933031; c=relaxed/simple;
+	bh=FBTvWNE2TeX/KQa5Fyv0OYNFJwcY1QIXJEey9FxLavw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WIZxTjLun3K7HdUh1YJ0P1pNSV4V9nZWwhyMiUqIJ5/BINChEp1K6Qb4I/1t9aCusKMoaTX87AbFhewTGlqhFh++NVhLnAapiWx1NI/ldqMq3xcdlOdRuBolB5BuwR3sLT6fvmtg72Vfwa32RfIKhnMvaopENuHz3gDeCh/vB5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=SwVTNY+t; arc=none smtp.client-ip=74.6.129.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	 In-Reply-To:Content-Type; b=jbLWvZmJaB5VeR27LE3D5mPNdNwcKSU7YaKK4zP6gt/nzm81IlX13rEl0DHmZ0g4Kem5PEw4nVIeD7zhntIq53+0Rvsy/7kEZTTNWhnrygPEudnWzWAcH/5bKMZ3YGsYBnWt2VWrp33CDFFpSAN9X2dLAX0mzMzaIPNLeBp0qvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NZ6X3DYH; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="SwVTNY+t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730932084; bh=DOcyxH1IqBNtp7YaPG/qJu/pI2g+2zU5YxvnVc7S7F4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=SwVTNY+tuQEypjxDwyajrITEyORypK/7D1MsHvxEzW35/2mz1i7g9uM3RhU6fBQrOCAP16CLMU9teKGnu9IGm/KgZJ7nwXVHd1rQVxEfeFMiK8/bVCLyTMPNxRx6YRPwuzBnueGP/1Bir17hQnHyXrRB6BWQHdlEvCO/SBn/mXx7Q4DapBIcX3EfHH/oUYgcf1KqwZOkapSLdm9tXelFmYSyVFhNBWmKRcRiyrYtOUfYW9jZPyR5RhrEL5Jeuc337p6jAIliqQB6+wwpyDvcVe2J23E+2IrBJlOpZ9dRb/sdWQZfSFxZZ9tRG0yTYN9dFI5aYtjTsncsU9GRay0M5w==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1730932084; bh=0k0gNQHepEzXS2AJpinzGANb3JwLvwujlOkmR8fiR9c=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=f1IPgPBLe6ulCmgGzN3F5BcI4COpxk8yzFVRRIeODXFX5FcipBfB7RDd6qlzWtY4pGDeso1A1XMH/kzIw5ffZ6l0f/2b2VToE86DtxJJTuiEyYrDGB9hz7b2S2J2dyc0G5l2H0PUeRkbREo9RUBE8H5VGBWqE7lOLL72lJGQZt9OMiVVYBO1rh1+fuzdp24bVBt4y+CzM64mPlVWYtz3gsjq03l/hRv4Nuo7TT6RYfp1MEo4NSjcwN5MNv8ByZLGvXDn+F8Ufai8KEkMSaEEnHApszXw6Gv8C5QL0Ylvk/uZ13oa7lu/aWw2CTeDbjePx2DHKF/K1/QGHLfPshb3iQ==
-X-YMail-OSG: QK3bPe8VM1nBD3IkcVqKcE1CeEqkoBbcQD_g2dlMLxvI3pEPFr_qgTEq6GKr8zI
- njy2XlzfXG6Do.RT4iLWQAUNUIQcO660FpFaIIcmQaaheSJ8Uo29F72_BZrXFaPdc9cQYBLKCy2P
- KIhhY4SDX2jI2dC.BK__OlNwCd7iC4KCg1xYZRrGsxK_yyHM_aElRBdu0vOL3AHxHWQ80xfyGr5t
- AedjrCQ9lF4Qove.jnkzT544XUZXYkFM.uh0wVy4q59YtqcgQkNLR81YdJljXyVhE_U5XVgWEC.a
- uA8D4PN1JgbnB7fwSktM06VRjWIjFIV4hNOv9bth848uHF4J7IOUyRqus4QrKcSQRKXxrgeXDRYB
- vZtH13Fusz9.3s7aGtZsq1ubKFPcMFEeKfScQ5oRBJhTZvqYKUHlNgWZlgMrVWZ0DuXxqlpmHE55
- tlNL6aejuyoFjpSza0R8f8VHPhLTrRXYx_vmE.8Wy4aIsweASHVnViLHNwHRZbt1kpuJieXhC40J
- 8zPmW23XcgEjia9LX1.JHGjeGqF55NHpClzSKvtn.mS.UagBEDcrOMzclHIYTNX6l2EH0YQlWURE
- PwdTsZfAIUZ7AChHR6J2JyTkZlPUk5A1CE9P6udd9PX.7SzOpDO6fPnP61no_yxXstWfaOY2cHIK
- iYfT29l2m1Z9Sl3luokeN3drzN419QJKl1vd6oXkKDHraqBZpbABVqQSuVFYmW6Ehslq3ug5Z3UV
- 7bAH4qBC9N0B8W801Rmsh4LxkUKJ8HoQYOP9Ls4LH6D.Bx6TQ_K1a6L7_S0azqDbtgiZbOJ.9HTO
- V4GbNS7AAN.syhqah2o0hR_DAQ.zxX.6o9iF2nt0mUhJR5Wn7AgcHCUsci.jJDaAMWvdT6HHb5eP
- mkUfQYpaf096ekIDcvEBv3p3Av2N_S3gDqvQOzXHUKnY92wKDoDR9ZcVoeiaNVqUa.QkVVUecVTU
- peNrNGFXAYajjq9V17vtkUmbII_MG7MtQkgnd4QkBuQBPRiRcgmZ6Elz0VONitZtZ1oatKr7x5K1
- ARcHSi82YDLwy4rSAAdn1I2sF1vMIA5UzOCzsS6uuQPos4GEAgm6uzVEXTfCaBgdC7GUrOnLawTS
- gBJhsRzeuiyctoLQTatOxvPu9QdlbutSpy1ICqvAkWYLmg6ufFC4U.1fbSZ6IT66sd34gb2D0f39
- qmxhNpTEYeu1LWCr8vaHmHCfu4jTMIZdXmXlhzNGoHNAApL2Q7s7icyJ3vYMQOZwyMNN7.SSQIwP
- O2DYMnXw8mEcZq6HbkigHtRn.5kDYLTRZlrRoZd3LGFT52I8SwifchIGMt_cK1K0p4BDMVNMmxA0
- 9_PcSb2aO2r8SOGZ2oIW_TikmX7BAbwp8qaA4qHTTnw3S9AC.00RjZD5VpBQpS7Q9Bx3NROiA3YX
- 0s0gfMjodmRPlBWrAf09ZiLq0FFU_yx1TdSOPOhrGM20s6D4qAfjkO4.6YlRRxFHwO_y4Yd4v5rO
- 0AbZk5SlQ9UD03gHvHiZul.Qoi9jjUEABx6ZibUCi50Udrimc.bI0A4L4_UYmx0HU4bOcHZU9WFc
- x7xBjaShENG2Bk7U2ePgRt41DBn24hgKfIQoTqzw0SNmTtlkLRq2G9T_VQ1Qm3F_vcmh3mqBIsXG
- A_KSwwHgg2YUGHZ7Jh217RrT7od_v0bMZdDm2sOS84M_nTpDjVqwHyhJrQ7V8K17HEAHmcmIgJCF
- n.RJHTwvNFG3AUgsqgx_XPjUYP6AIYjxKeSg3N4sVKfaS_QyPZmAgO5LCb6NXi5Hk42SeaYKtZ5D
- 8efjOjA70m962uLQengNIpvQTllkH3ji6YLEgXe8OAlnEhxLjXdaGvVA46.Xzb_hB7O9y038XRhx
- fZbqmXVgp8TjhxHSe.iUMfOur79c1H1ixe2bYWVhJseDYVjTNPtgSSLNjq5la5BT2QJIS6gBxBDM
- 5Aqwrh7DfX_nMyS5MyYXK0P187gIWY0DyoCcPCB_taBbfb6tYLRqpED1KMKn_Edo3Cd495rapaXp
- 602OiOLKNdBnmMv9N8Cdoc6J0bybpI0PYNiIrLORQTCYDLbqnIhYt2DgDLwgsK3WZWPyDfic2KPU
- IpF47J6DHuVc.rgg96CvowFYZHnjAF6kROS9zqK0B3k2YpsgjjfX7643H4jgH5jmJ9FRyeCsQuSH
- dvAmqzX_huQF3WesQ1j3220hNFazYm5aG2EFeYkzql3A0XABUmHEdRLX4FRowQ.bTTpXgO5Z2RWm
- P5o43Abd9viKjJ._TJqpQNojELUTwtB.h55KarLT5hBbHyjVaeGdJbTcciTEnzqbaxw--
-X-Sonic-MF: <dullfire@yahoo.com>
-X-Sonic-ID: cb7628ac-bc01-4a3e-b309-f3da2994350c
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Wed, 6 Nov 2024 22:28:04 +0000
-Received: by hermes--production-ne1-bfc75c9cd-7d68l (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1b186cb4fb272125cf52ebbf6efc75e0;
-          Wed, 06 Nov 2024 22:28:03 +0000 (UTC)
-Message-ID: <7de14cca-e2fa-49f7-b83e-5f8322cc9e56@yahoo.com>
-Date: Wed, 6 Nov 2024 16:12:48 -0600
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZ6X3DYH"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a99f1fd20c4so39049266b.0;
+        Wed, 06 Nov 2024 14:43:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730933028; x=1731537828; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=NOc3O+ElkTxjtl4bxgDHpwSjBIXenEJh1lp/Lx9rnaM=;
+        b=NZ6X3DYHp9lOIW5YvGByDrCbRfN3DbL6/xEC4gd6Q2JnzYOebKEkCGcRmqipGllKS0
+         x2m6Vr3d2V6RmT4QWJ2ylJFnIxZcUMPpiT+0qFnoxtlzh0oZ/EMuhxbY/Hl9NnxdacFx
+         ZrxwbfRsVdd2k+2nh/PSy4lzYbHNDx5wxO1Bg/78sMKGBQpiAhlMHvDLfFRGrZKi9yng
+         RKHXgF/vW4yC0ZsQGdisZqMfntfKuJ7UQp1UWjVcq/xWeRabHy0ceGHIfFWL55QtIpMA
+         GOIU1Uq2GlC1CJd2L7BfBNpkVFVBQpBt/dSjClNoXqJgk7zJlzXFq2BTY746sIQaFPCo
+         Mv8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730933028; x=1731537828;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NOc3O+ElkTxjtl4bxgDHpwSjBIXenEJh1lp/Lx9rnaM=;
+        b=rmG9S3TkIDzY77De1dGnLX9p3Q2XHE7YwxWkvGMnMdjBToJy4qedW4Y8K8v0dI9ehH
+         wpDOF27C9lVDZw5voIoBwhOGj5qF0yxbegaag+8P7PozvhyTOTC/J3rmt1DBYde+wpqs
+         NQNl7zkOG4iFe6Y3hF5+ciIc1LMJJLl+m8MOvhwKaquDSyq/UYoPpU26mlCK+M5l+aNL
+         XjEsTnU1LMYnnfj9X47vD7X3nQcTjtg/Fx4bw6oa4Ki6SftQZC5Tq3t/I/+PZKWvjFJK
+         KryCDNmkiPUH0OFXvIUnSlTNp9pHHIAVQaJtGdhK7MfbxyJn+hupVQgHG6wTHKWtjnlL
+         skLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmYSpG5A0qaIgOsiBj8Pqr1gqXQRRFQXk/0bFmeu52rGEvvFgV6ygVSfhS1FGB8suLe4/+45md@vger.kernel.org, AJvYcCXUVW0Y50ZwAuYYXI1jS4O0DijoBLQW4UDgfT8zU2Ba/FQndrmgIiso7gztKMBRxa5NVrvE7MOPS1eXKXc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW2/Rz+oaDURdtoGHmDK3pX3sskZtrMYzA3CVamojdRE1q7zrJ
+	38Lt3ir9QoD+naLnOKo8HNmBPXByIAFJuyr3FhfM9aLeWMD4qgV+r7br7Q==
+X-Google-Smtp-Source: AGHT+IHkb0ZZh2sAXYDFiQNOYtirEWZWulBBy5CvWRLH29l/x4UIo8Rx4Mw9id5FtLvg1uqkxkfitQ==
+X-Received: by 2002:a17:907:72d6:b0:a9a:14fc:9868 with SMTP id a640c23a62f3a-a9e5089b6b2mr2162650566b.4.1730933027885;
+        Wed, 06 Nov 2024 14:43:47 -0800 (PST)
+Received: from ?IPV6:2a02:3100:a488:4700:cc12:ac39:a3b8:6ff6? (dynamic-2a02-3100-a488-4700-cc12-ac39-a3b8-6ff6.310.pool.telefonica.de. [2a02:3100:a488:4700:cc12:ac39:a3b8:6ff6])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9eb1813b1asm339283766b.194.2024.11.06.14.43.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 14:43:46 -0800 (PST)
+Message-ID: <0328420b-6031-4595-ab5d-fe6dc7ffd42c@gmail.com>
+Date: Wed, 6 Nov 2024 23:43:45 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,56 +62,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel panic with niu module
+Subject: Re: [PATCH net-next v2] net: phy: aquantia: Add mdix config and
+ reporting
+To: Paul Davey <paul.davey@alliedtelesis.co.nz>, Andrew Lunn <andrew@lunn.ch>
+Cc: Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241106222057.3965379-1-paul.davey@alliedtelesis.co.nz>
 Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <helgaas@kernel.org>
-Cc: davem@davemloft.net, sparclinux@vger.kernel.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20241104234412.GA1446170@bhelgaas> <87fro4pe6i.ffs@tglx>
- <973e2e20-51d9-4fe4-a361-0e07bcf95bab@yahoo.com> <87cyj8p8tq.ffs@tglx>
-From: Dullfire <dullfire@yahoo.com>
-In-Reply-To: <87cyj8p8tq.ffs@tglx>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+In-Reply-To: <20241106222057.3965379-1-paul.davey@alliedtelesis.co.nz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On 11/6/24 11:32, Thomas Gleixner wrote:
-> On Wed, Nov 06 2024 at 10:04, dullfire@yahoo.com wrote:
->>> 7d5ec3d36123 had the mask_all() invocation _before_ setting up the the
->>> entries and reading back the descriptors. So that commit cannot break
->>> the niu device when your problem analysis is correct.
->>
->> In 7d5ec3d36123 (and later) msix_mask_all() only writes to
->> PCI_MSIX_ENTRY_VECTOR_CTRL. I have tried all the MSIX registers, and only
->> writes to PCI_MSIX_ENTRY_DATA were able to prevent a fatal trap on a read.
->> However the only write to PCI_MSIX_ENTRY_DATA I see is in
->> __pci_write_msi_msg() for 7d5ec3d36123, or pci_write_msg_msix(), in 6.11.5.
->
-> Yuck. They really went a great lenght to make this hard to handle.
->
-> Something like the obviously uncompiled below should work.
->
-> Thanks,
->
->         tglx
+On 06.11.2024 23:20, Paul Davey wrote:
+> Add support for configuring MDI-X state of PHY.
+> Add reporting of resolved MDI-X state in status information.
+> 
+I wonder how relevant this is nowadays. Is there any PHY out there w/o auto MDI-X?
+What would be a use case for manually dealing with MDI, and who would do what based
+on the MDI-X status information?
+
+> Tested on AQR113C.
+> 
+> Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
 > ---
-> --- a/drivers/pci/msi/msi.c
-> +++ b/drivers/pci/msi/msi.c
-> @@ -611,6 +611,8 @@ void msix_prepare_msi_desc(struct pci_de
->  	if (desc->pci.msi_attrib.can_mask) {
->  		void __iomem *addr = pci_msix_desc_addr(desc);
->
-> +		if (dev->dev_flags & PCI_MSIX_TOUCH_ENTRY_DATA_FIRST)
-> +			writel(0x0, addr + PCI_MSIX_ENTRY_DATA);
->  		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
->  	}
->  }
->
-Great. Thanks for the recommendation. That is similar to my first patch
-approach. I had see struct pci_dev's bit field members, but missed the
-dev_flags member. I'll probably have a patch set out in the next few days,
-mostly pending my schedule, and reviewing the patch submission process.
-
-
-Regards,
-Jonathan Currier
+> v2:
+>  - Renamed aqr_set_polarity to aqr_set_mdix
+>  - Guard MDI-X state reporting on genphy_c45_aneg_done
+>  - Link to v1: https://lore.kernel.org/netdev/20241017015407.256737-1-paul.davey@alliedtelesis.co.nz/
+> ---
+[...]
