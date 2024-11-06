@@ -1,59 +1,59 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ECF20C035
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 20:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A3020BB46
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 20:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730924663; cv=none; b=av7v4W7QBzYG2oihI5uyo7nLvxXYK5Upv3EzU1Gjfz1iGtoC8uyBqNzbrAIdXyuoDRNY2Y2e4pN/02rA3a1itK2tXvNVpf7kZ5O33B4cSQxTUtzRaCuIkrHFNBXvyTIXLgSfZYI0ulDqstCu6QDgCMLm4ppYa97dxlwZRfa0IBM=
+	t=1730924718; cv=none; b=Cfc40qabmMacNAkGNZbQcSkunbjRKmb3KTAiYTOCWEL1DOK9xVvQIe//hIIEf8l0JgXqG9PV9I8eS+ZOg5GZsinYqDy6PsxxRb2PiwA6VeQYyvcEas1rx1q8ufT3km0eqXW3XTf25bGty6RJYd4ftp9kFHbVBn2Sl05xFxUZnh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730924663; c=relaxed/simple;
-	bh=XP7gtWRmLC6IVaRKgKkFQPvGbgvZ/GcRBzSQ87UxztE=;
+	s=arc-20240116; t=1730924718; c=relaxed/simple;
+	bh=m4v2xLP1maIzhczF4mKLM8kdd/0M768SZcOKbXAGYlU=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YMI1np82TtY99sLjKExmULqsEBNgXR0Mbv6x7gvcrFV3gOSur31ZUnT485s7ybm2dnvbRAs8dy2m9Q1dk01LxbZ8j++WZjDb3ZvbnZpOVZcgJUReSFm2/OUC4y4hValgjfPomGiPzXoFVGaxqxvlbxox2Ba5o0sMrrgZDV/qF4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBGxXMg1; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:Content-Type; b=ucuY0oF9pToSrUXY2E7s6eZ+UxF0VAaupBTms8hCRHDZUWf6LzjoKW9ccRVyNMCZaPXJMZnIFua50qrugvYfkW6Wpb2KAKD8cC6v5AGTa8zCoDlSjc5Mt7k3zbtihozREd4nCVw63E7urM8hhghF31ywUTpM9TMEq/dediWzp2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIGUOjMU; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBGxXMg1"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a99f1fd20c4so24115066b.0
-        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 12:24:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIGUOjMU"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5ceccffadfdso184065a12.2
+        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 12:25:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730924660; x=1731529460; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730924715; x=1731529515; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZBGHeFLUrLAN4TC3i/0UDGuR4pzS24blFM2WCdSekck=;
-        b=LBGxXMg1zTUV92Jf0q/JolEsbq+i5Grbfk+vg1VIiT4hbHDvMr/ZiyvHorvlAK58HU
-         QKyM4zc8FtZudswKatvi8zw0v3marPggOnrvJQpUc8oK4l1YL4R3lkSif0FpTpdjSmdB
-         me6m70zffpL0pmYbPxeoRf4PAxqiAwjp7J9kEqQjibWJsyNYNqr1o3vjbRMu0Rbaz8Av
-         l5DkwRbhhjb2rMiG0uvQQ47GQytFkw5anLon1Jf4Cqg8mjTf7rLP2q5hsUzyl/HgFqwl
-         FUw2FrXiE/mvYM1ur2a700G2hhWHPGMYpiFGHR+iiWB/1TXkV29waLjKpMRSj4520Ij/
-         X5Iw==
+        bh=xJ6LKY3tJMAexyqo8j030RiLll74Bu8U55fYkKhVu1Y=;
+        b=iIGUOjMUGSev7N9tJtHVPXGSWWzBssf9VvFmL10F77qNGbkXt2gVLgAPwdCoDZllb0
+         JcjgyBBk9f3nlFZjUEpQv5faBHkwruQ4dh+HWPd7lCgZNvx3Es69ZKmt3uR2CCyxQSKX
+         nIEMGA8jJv2eiqq3CEKLXj5raVxHK5kppb7snEKPEkouJt1uDIkiFK7/eTPU6pxxWWEv
+         XlbUsUWv5bda1m9h2PSJwegDy7kIu4XzYPIGkowDGGWc+2DUZA+ZuvMrJjMNcenqVWTO
+         Mzce9vZurWY6tOldRR9JDtKYn28LhigeXvXRRSu6qjmGsFZG+j3hekVSnaty1ryhSRIE
+         r/hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730924660; x=1731529460;
+        d=1e100.net; s=20230601; t=1730924715; x=1731529515;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZBGHeFLUrLAN4TC3i/0UDGuR4pzS24blFM2WCdSekck=;
-        b=RV2r9ek/ppD4W3u/mJc4j3HzsYeEdY9P4An0A9iinIGzjLm3PCCrJlkUndZoQ1HIFa
-         sD6EokoxDNqF8M1q9s5aVWWF63cpye/MY7lYYfCrz1ld3tyd4MbS5RIy+ZLp2BxdAnid
-         e+XoYCWFN7W5XR31eQd2Ftl9GFsmDqBu2fTC47aTBkCtkgsikvxkPw0bAQ/UAJ580uWC
-         5B7HqdB/z75Yp9aei6TOAU45Ero24XqVjqoA1d4w3WYQwgMbI/yrhYUW/qfxN7JWtoU3
-         mQlYlkN5SCck/TkohhN+scOpFcF9fvrNdq1O2KwOPCcGQUZBWwAm4CUGUtWtDZrSfyZ2
-         Sz2g==
-X-Gm-Message-State: AOJu0YwAZVf5o8jImVAk/qh+DtWwRL9l62fBaYyReHFzAMYJi+i5XlVY
-	n6CwZ3vtooSkYTedo2LZ5IiUiLcoNR5Y+g4Zz6GDxOpXLKw3bnts
-X-Google-Smtp-Source: AGHT+IEZw/j82ox7zD21W2T0dxsoRnimSIUy/KT8fvwhGr0R3BoEBt5CM5mS19HpRuQX0JjgEW63qQ==
-X-Received: by 2002:a17:907:8693:b0:a9a:e6:a031 with SMTP id a640c23a62f3a-a9e50ba22d9mr2146651066b.59.1730924659985;
-        Wed, 06 Nov 2024 12:24:19 -0800 (PST)
+        bh=xJ6LKY3tJMAexyqo8j030RiLll74Bu8U55fYkKhVu1Y=;
+        b=GmzIZlAEb0WTp0A+wpYl+A8DtA+FpP6tvKHMRwrd6RfhNxJkb+UyJ7V6JjiPV9owAw
+         4RCxqswQsupxPp+oojle44WxDpEhwCxBFSh19wiSE2SAAqimt4TBc8IKNqt5E5sTEqyN
+         kB70edHmSK8kGh+rNPtSvyV2fzt77YjmHw5d6kRelQz262I3z5iMjN9t57OU9ptYAiGU
+         ZcUdq+QRv8XMjR9wKNlYqHcY4Xx+dYJ+PkjsOVZL5/W7IypFzCQiK2gE+ozzsHHx5hM6
+         uNps+rRNpjrAQzV3xAEbNvFzpke24Sc+Iy7WN9TkyjiSzg6P06QqiPOfe3H/BIDCA1mB
+         fTgA==
+X-Gm-Message-State: AOJu0YyLxk+YEXZzd3+aESh57EXvW3tV+qlXQyVwG8KAtAywSMGdgd6v
+	20WojPEkGM7zUHM3gWFt8LBAkFw5tyV27IsSki2a3/I9hod1g86k5jjTgA==
+X-Google-Smtp-Source: AGHT+IEG2hPkWUQsAwDflXljRf3YHsfzmgsF2W/7wpW9biOvt1TBm6NzinfBE3g980Sogw/sbqp8ng==
+X-Received: by 2002:a05:6402:2105:b0:5c9:5ac1:df6c with SMTP id 4fb4d7f45d1cf-5cea9732262mr20103193a12.33.1730924714817;
+        Wed, 06 Nov 2024 12:25:14 -0800 (PST)
 Received: from ?IPV6:2a02:3100:a488:4700:cc12:ac39:a3b8:6ff6? (dynamic-2a02-3100-a488-4700-cc12-ac39-a3b8-6ff6.310.pool.telefonica.de. [2a02:3100:a488:4700:cc12:ac39:a3b8:6ff6])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9eb16a324fsm336733866b.23.2024.11.06.12.24.18
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cee6aafc8dsm3279991a12.24.2024.11.06.12.25.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2024 12:24:19 -0800 (PST)
-Message-ID: <6e5cd4ab-28bb-4d82-b449-fec85f3d1e8a@gmail.com>
-Date: Wed, 6 Nov 2024 21:24:18 +0100
+        Wed, 06 Nov 2024 12:25:13 -0800 (PST)
+Message-ID: <37da7f3e-b883-4c07-9881-b8c0516822b7@gmail.com>
+Date: Wed, 6 Nov 2024 21:25:12 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,8 +61,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next 3/4] net: phy: broadcom: use
- genphy_c45_an_config_eee_aneg in bcm_config_lre_aneg
+Subject: [PATCH net-next 4/4] net: phy: remove genphy_config_eee_advert
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
  Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew@lunn.ch>,
@@ -120,32 +119,61 @@ In-Reply-To: <69d22b31-57d1-4b01-bfde-0c6a1df1e310@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-bcm_config_lre_aneg() is the only user of genphy_config_eee_advert(),
-therefore use genphy_c45_an_config_eee_aneg() instead. The resulting
-functionality is equivalent, and bcm_config_lre_aneg() follows the
-structure of __genphy_config_aneg().
-In a follow-up step genphy_config_eee_advert() can be removed.
-
-Note: We preserve the current behavior to ignore errors.
+bcm_config_lre_aneg() doesn't use genphy_config_eee_advert() any longer.
+As this was the only user, we can remove genphy_config_eee_advert() now.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/phy/bcm-phy-lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 23 -----------------------
+ include/linux/phy.h          |  1 -
+ 2 files changed, 24 deletions(-)
 
-diff --git a/drivers/net/phy/bcm-phy-lib.c b/drivers/net/phy/bcm-phy-lib.c
-index 6c52f7dda..a923ccc52 100644
---- a/drivers/net/phy/bcm-phy-lib.c
-+++ b/drivers/net/phy/bcm-phy-lib.c
-@@ -1137,7 +1137,7 @@ int bcm_config_lre_aneg(struct phy_device *phydev, bool changed)
- {
- 	int err;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 563497a32..bc24c9f27 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2239,29 +2239,6 @@ static int genphy_c37_config_advert(struct phy_device *phydev)
+ 				  adv);
+ }
  
--	if (genphy_config_eee_advert(phydev))
-+	if (genphy_c45_an_config_eee_aneg(phydev) > 0)
- 		changed = true;
- 
- 	err = bcm_setup_lre_master_slave(phydev);
+-/**
+- * genphy_config_eee_advert - disable unwanted eee mode advertisement
+- * @phydev: target phy_device struct
+- *
+- * Description: Writes MDIO_AN_EEE_ADV after disabling unsupported energy
+- *   efficent ethernet modes. Returns 0 if the PHY's advertisement hasn't
+- *   changed, and 1 if it has changed.
+- */
+-int genphy_config_eee_advert(struct phy_device *phydev)
+-{
+-	int err;
+-
+-	/* Nothing to disable */
+-	if (!phydev->eee_broken_modes)
+-		return 0;
+-
+-	err = phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV,
+-				     phydev->eee_broken_modes, 0);
+-	/* If the call failed, we assume that EEE is not supported */
+-	return err < 0 ? 0 : err;
+-}
+-EXPORT_SYMBOL(genphy_config_eee_advert);
+-
+ /**
+  * genphy_setup_forced - configures/forces speed/duplex from @phydev
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 517f6e0d3..d1a4f3f86 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1886,7 +1886,6 @@ int genphy_read_abilities(struct phy_device *phydev);
+ int genphy_setup_forced(struct phy_device *phydev);
+ int genphy_restart_aneg(struct phy_device *phydev);
+ int genphy_check_and_restart_aneg(struct phy_device *phydev, bool restart);
+-int genphy_config_eee_advert(struct phy_device *phydev);
+ int __genphy_config_aneg(struct phy_device *phydev, bool changed);
+ int genphy_aneg_done(struct phy_device *phydev);
+ int genphy_update_link(struct phy_device *phydev);
 -- 
 2.47.0
 
