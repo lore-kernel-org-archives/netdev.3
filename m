@@ -1,125 +1,135 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42621D0E23;
-	Wed,  6 Nov 2024 22:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E44824A3
+	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 22:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730930656; cv=none; b=YR2zAMSXvwGa7AK+RTELIKpCEaUIl188AKQuAIcRitHL10X+r1OJja/fN8gaiOcdgt6TN61If7vNg1dR55G9Upp/JDN/2fHIKUU8cZjEtEnmhhjp7i+Afb+tFsP/zSa7zpI1tI0FHxhUFJY0gcEmfx8oe4+bmqe3SGXmTfNSPnk=
+	t=1730931153; cv=none; b=uCVJ5EWkfmb1mnMk58JWOmIbBlztQG5kZSPRE9T+p8RD8DCZDl3PfhEN/BhJ6aZsJD3T89fWjdeV+sFmdN/Ax5vcr5Ryz9QYlPOWpN3uJj6eXnWYgDhqdvoveyqnoxcaX28Nd1uqeS3LiTRDOJDa4WfkFqr0RxNNrQTW0EOmk0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730930656; c=relaxed/simple;
-	bh=XWlE48RqZQ5truz2JBDBGqsYLK+eKE8hxeJQAdnWLKw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B1BwLn8aNqV2xr1a75WhtL68vMjd0appGTPPxjDMFvlD1gCMpvn1cEynW+ErP16SQki03JY6uObJkB1s7ZpHeFXUkcjm5vil1QHiuHZ39L9BbrWw+6KRPEAQxnnDS6Z/2OzqsGhByItbMFqYL/7K/alsk6171Oqc1lWGy7uhhI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MNPSqa5n; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1730931153; c=relaxed/simple;
+	bh=NKbVcCCZIiM0sX+WdXRuDBBSQbhN5H6+3jGmAYxxA6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p/9FmTonaEK1SMg4NFINyIu1ZPWmpDh6ZwTwon2qQuI1sF0BT4rEmdi81gvi+c6vGVdV8x1HCtW3bj+Ft2yHz6BU1l6kma2859iRT1T24lCip8bu8EEGDpWT8p/1xhTuitt5tjDocKhKhg6dV/xie945G8xNSWE+setkMJAUY5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mSjQ3KnV; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MNPSqa5n"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2e2cc469c62so218563a91.2;
-        Wed, 06 Nov 2024 14:04:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mSjQ3KnV"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4315baec69eso2759475e9.2
+        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 14:12:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730930653; x=1731535453; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PfGNi4Eab08D4rDIFJXSfdEQm138IE7MugUyEGUzqSg=;
-        b=MNPSqa5n7uio5spmm4M5r4BGlaadv+jD90XL8G1DjwCeWuiS0qzkOWDUplXPKwesf5
-         jvplQ5zkvDa+E9GLbAoKGgM6JbxqUKosoVnXp8P2qXINrN8EQzlD0+/FyDIrhk3fBcqt
-         z2JQb1Mcgv7y8/uLRa3CX7hS9ABCzRHr7oVTFwnfo8hH34mtKPkQPQRtAQoJTrkHM+Zm
-         DZpysl9y453gKuUmcAO7Uzc2tHNNTyqYiw1kmS5/YMzch2VgyLC/2HuyV4dr2Az5GPDc
-         eY/Jh46e2icruY4ZhKmK4biU/FHwkO9mFVRWegEXwtHZHGNxuPIO+IfZNDkbjZVh+zSG
-         8VtQ==
+        d=gmail.com; s=20230601; t=1730931150; x=1731535950; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YB3xeY071IgcEnEiq3AVPEiyG5ZVXfdzV1Ck//Skg7M=;
+        b=mSjQ3KnVWsFAxpSuOoszlwW0jBf1LlkN/Z3ShI4zXGlTkCfLvKHTHQYLP0cFOypwyK
+         cTYnaFQ9JyzNNA0iQ++TicCxNlmeMJGjlX9XqID+nPrCqMvXxlU3C1H9WPOHlVM337lE
+         4d9Yz4aIiX1GnKLfUYFisSld2xcgZ1L811roIGTInUFo1IsnCaL6bOGeW40Iq1RVugQ2
+         Z+CgXpN1sVNVghxu7i5PmWlZ7SwQ2mbK3n6g6XGPVUn7Po4Lgk6SpObClC0I/3ngSeMo
+         WoTng8h4vg6szHApDGpg0cDxAO2djM42x0vkbpfDaGswzfmEh0WbRSxCRT9OjaRWB/vU
+         mY/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730930654; x=1731535454;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PfGNi4Eab08D4rDIFJXSfdEQm138IE7MugUyEGUzqSg=;
-        b=B+/VH5MloSnyyrngddiXckFYi65fdLc0RixQhIN6OIIZi5o82GpVej2Pw4hgyan+J1
-         cvPy3m9NF/yfShWf6mt4LHp5JF5xraVcDu2l//pf0rgUQnd3csHnetECZsJvJCEt2BP+
-         Ry2NrQeoeOO4wall9gel0szWmzQEiOsYLZz8AyRbGwwajaRWC+5gv0vNPF9Ct9eYtiF7
-         SrtXL/jlq9eQ7jn9ao3kbREqkzE2RxIer8RW00v6cmLhE/F6fq0jiXObq6o1AkLVQQXH
-         xRvZCOPH5eCPYzTDTx+5cTx3DyLZbsZ5C6jKtI/n9X6O1efZHpdb8iAByUIU2NJdcz7y
-         uYZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoHb1z2D4FDIxUIYaIaVxIqXzmyCdBbFPFgrPg+Hfk/VJ/AXAeTvwFIo0CCh+/9PLUuMDlyHUUIKXFqpD3EPO2@vger.kernel.org, AJvYcCVrDZfBya1QPXrRxpeXtU/mGaPqJxSwJ8dJpQAxznNgxp78K2lPrbEdKdHVb9iNTV/hNmQ=@vger.kernel.org, AJvYcCWz3A5bKYnqMoM1JiPeZKVbdeZnlJ9/YZjIwvbuMFZqlU0cGbq7dxBiyQcoXk0xktgtXAWWC8cy@vger.kernel.org, AJvYcCX83aeFlDOFJq/pk595YTtyWRGZV9pXYnpQCFa6Cx/I8jN64mlmevYPGTbl6u8og+D3XN/j+XftPYAmudkZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxiF16u5DZHjizrTwzM9G+bkkHNGWlghx8PNWQB8NcGrSB76XC
-	6IObvYVlYKMXcp/GbpzfCA45j6vMCyaDjWOZro2L/fuopoyFjjudmZA6TdR4zCIBZP52vhGzUBZ
-	mQJTFeuJWiIIaYrfgaQrgZrST/5I=
-X-Google-Smtp-Source: AGHT+IHiIFN3vV3i+lrEACl/mdE0HQWZtzx800XFbju733sBmVhjjP4bbDv2RZKt8j7XpLWja7xZVa0f8ftoFXrmJPw=
-X-Received: by 2002:a17:90b:4a49:b0:2e2:b64e:f506 with SMTP id
- 98e67ed59e1d1-2e94c2afe78mr30385346a91.13.1730930653594; Wed, 06 Nov 2024
- 14:04:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730931150; x=1731535950;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YB3xeY071IgcEnEiq3AVPEiyG5ZVXfdzV1Ck//Skg7M=;
+        b=Ab6sXmSVT4C72JTgRTkkpzAH/tIHZFaqyM3VCKjzJ84V/w+liF36WS0W/1jnvfTepA
+         +XJ9KaoCAPzwmRw1gBpztemkTzg5Fmk2lEUXf9trdCGS4/WuJzYsyfXrgydKpQWAj60l
+         7TiXM91KGLMJCBkIGHmUs+Fm9ZeuVBuJxNcvU397j/a9j7T1z5R/yY69k5Z1wJ7HwFQq
+         mO+WMZFH1HDALMEpSLtwtw2HNhHcDVnNekYwTqR5epNiKdmKiQ/TNvWJZM6XKlFqfDZF
+         LiuTBv6zfNvtlgr7qxJQHUe/aHpOmx2fe8x4Fdc3+F2hY/slbzRiOr/UVC2EXECarEi7
+         CNXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqgwvBRgKPp4tQbD2AkuY2LqPT0/paI3JjTPeCr6nPF8cCZfzK+FAgGbLHaxgyBdov5w37+Lo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4r1qVEQEsVec4vrjJsA/iI094I8/bTDfp4Uhl5W8u96X8UbBv
+	rtL3I1ZJ7NLXxRAvI9fs5LE5LhfMl9XjfcdxoalfO7Go3cbLW/6G
+X-Google-Smtp-Source: AGHT+IFfw5uAMtdU1Om11dpYAnWEuvswlrvP8MXiZx6I0NsIQwFcLiPX5mXS4Yxg1s/Iptb9rEr+Hw==
+X-Received: by 2002:a05:6000:4009:b0:37d:4e80:516 with SMTP id ffacd0b85a97d-381c7a5f773mr18655654f8f.34.1730931150127;
+        Wed, 06 Nov 2024 14:12:30 -0800 (PST)
+Received: from [192.168.0.2] ([69.6.8.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e771sm20526409f8f.81.2024.11.06.14.12.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 14:12:28 -0800 (PST)
+Message-ID: <3d17cd64-46c5-427f-b24f-9091546e2edf@gmail.com>
+Date: Thu, 7 Nov 2024 00:12:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240927131355.350918-1-bjorn@kernel.org> <172835823300.66789.3704854116445399222.git-patchwork-notify@kernel.org>
- <87bjyvpa6h.fsf@all.your.base.are.belong.to.us>
-In-Reply-To: <87bjyvpa6h.fsf@all.your.base.are.belong.to.us>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 6 Nov 2024 14:04:01 -0800
-Message-ID: <CAEf4BzZbq9OwSGi4pdb5_q8YkErfFiQFKYXg3g1rjpdejafx+Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 1/2] libbpf: Add missing per-arch include path
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: patchwork-bot+netdevbpf@kernel.org, andrii@kernel.org, eddyz87@gmail.com, 
-	mykolal@fb.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	bjorn@rivosinc.com, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	charlie@rivosinc.com, Andreas Schwab <schwab@suse.de>, Anand Moon <linux.amoon@gmail.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [net] net: wwan: t7xx: Change PM_AUTOSUSPEND_MS to 5000
+To: =?UTF-8?B?5ZCz6YC86YC8?= <wojackbb@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ chandrashekar.devegowda@intel.com, chiranjeevi.rapolu@linux.intel.com,
+ haijun.liu@mediatek.com, m.chetan.kumar@linux.intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@linaro.org,
+ johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ angelogioacchino.delregno@collabora.com, linux-mediatek@lists.infradead.org,
+ matthias.bgg@gmail.com
+References: <20241028073015.692794-1-wojackbb@gmail.com>
+ <20241031185150.6ef22ce0@kernel.org>
+ <CAAQ7Y6an8ZkxYpJehd8cBRPHjqyQofc6A4QdPzM_dhh1Sn0nng@mail.gmail.com>
+Content-Language: en-US
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+In-Reply-To: <CAAQ7Y6an8ZkxYpJehd8cBRPHjqyQofc6A4QdPzM_dhh1Sn0nng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 4, 2024 at 2:26=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.=
-org> wrote:
->
-> patchwork-bot+netdevbpf@kernel.org writes:
->
-> > Hello:
-> >
-> > This series was applied to bpf/bpf-next.git (master)
-> > by Andrii Nakryiko <andrii@kernel.org>:
-> >
-> > On Fri, 27 Sep 2024 15:13:52 +0200 you wrote:
-> >> From: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-> >>
-> >> libbpf does not include the per-arch tools include path, e.g.
-> >> tools/arch/riscv/include. Some architectures depend those files to
-> >> build properly.
-> >>
-> >> Include tools/arch/$(SUBARCH)/include in the libbpf build.
-> >>
-> >> [...]
-> >
-> > Here is the summary with links:
-> >   - [bpf-next,1/2] libbpf: Add missing per-arch include path
-> >     https://git.kernel.org/bpf/bpf-next/c/710fbca820c7
-> >   - [bpf-next,2/2] selftests: bpf: Add missing per-arch include path
-> >     https://git.kernel.org/bpf/bpf-next/c/19090f0306f1
->
-> Andrii, I just noted that this landed into bpf-next, and not bpf
-> (fixes).
+Hello Jack,
 
-Hi Bjorn,
+On 06.11.2024 13:10, 吳逼逼 wrote:
+> If the PCIE connection remains in the D0 state, It will consume more power.
 
-Yes, libbpf and selftests fixes are generally applied through
-bpf-next, unless the issue is pretty bad and immediate.
+True. Keeping device active causes battery drainage and the idea to put 
+inactive device into the power saving mode is clear. My question was not 
+about power consumption. I am trying to understand what other 
+consequences of keeping modem suspended. More specifically, how the 
+suspend mode influences user data communication?
 
-I'm sorry, but unfortunately it's too late now to move those patches
-as it's now been more than a month since they landed. For the future,
-please let us know ASAP if you think patches were misrouted. I think
-we are stuck with the need to do a stable backport for these, sorry.
+> Receiving or sending data will cause PCIE to change D3 Cold to D0 state.
 
->
-> RISC-V libbpf/perf needs this fix in 6.12 to properly build. Would it be
-> possible to have it in the bpf tree, and have it land in 6.12-rc7?
->
-> Andreas that has a similar fix [1].
->
->
-> Bj=C3=B6rn
->
-> [1] https://lore.kernel.org/linux-riscv/mvm5xq44bqh.fsf@suse.de/
+Am I understand it correctly that even receiving IP packets on downlink 
+will cause PCIe link re-activation?
+
+
+I am concerned about a TCP connection that can be idle for a long period 
+of time. For example, an established SSH connection can stay idle for 
+minutes. If I connected to a server and execute something like this:
+
+user@host$ sleep 20 && echo "Done"
+
+Will I eventually see the "Done" message or will the autosuspended modem 
+effectively block any incoming traffic? And how long does it take for 
+the modem to wake up and deliver a downlink packet to the host? Have you 
+measured StDev change?
+
+> Jakub Kicinski <kuba@kernel.org> 於 2024年11月1日 週五 上午9:51寫道：
+>>
+>> On Mon, 28 Oct 2024 15:30:15 +0800 wojackbb@gmail.com wrote:
+>>> Because optimizing the power consumption of t7XX,
+>>> change auto suspend time to 5000.
+>>>
+>>> The Tests uses a script to loop through the power_state
+>>> of t7XX.
+>>> (for example: /sys/bus/pci/devices/0000\:72\:00.0/power_state)
+>>>
+>>> * If Auto suspend is 20 seconds,
+>>>    test script show power_state have 0~5% of the time was in D3 state
+>>>    when host don't have data packet transmission.
+>>>
+>>> * Changed auto suspend time to 5 seconds,
+>>>    test script show power_state have 50%~80% of the time was in D3 state
+>>>    when host don't have data packet transmission.
+>>
+>> I'm going to drop this from PW while we wait for your reply to Sergey
+>> If the patch is still good after answering his questions please update
+>> the commit message and resend with a [net-next] tag (we use [net] to
+>> designate fixes for current release and stable)
+
+--
+Sergey
