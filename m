@@ -1,102 +1,115 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91E61D63D2
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 09:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3B01D27BA;
+	Wed,  6 Nov 2024 09:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730885772; cv=none; b=nyScfybk7+Xxx81tdZG5vNlf5QPNNnm8mfCqfLJSpHanrK+sZYMmwYSfwDvfdSoGD/bS1PzDngYMQbZs2pOtOJtsAx5WYagBsQMtdzeSyXhJctSZcxNUreZeTJ0U6zBYuYwUOfb5/1hOxBJ445gnxAzLUeozQPA1O1LJW+mnpz0=
+	t=1730885951; cv=none; b=sZuiTz1E6JP6t5zJi1zGpaEyvo/lSSL5G5xY7vkUW7SMn/bWy4iQnjDhKD6VuXOkOX9n6Po4caeigC+d+5TBM8do2nobAItKEjxMjnGRugebnUiWLahTwVVtfJRS4x+2dloHFXeiMklbl93k1kYCJ0H+waJuTWx6uN9l8WWYgZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730885772; c=relaxed/simple;
-	bh=3vOUKvnOfreuFAxHGPUcHTCrhg6SWNX1a08DlVUzJGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pb2I1sX39HNqLEwA/gas2QUImdam+6u2W8lmEEbmiIQeHgNQwuhfceljjS5CDPYiJWHzvepNOJEscpcOsGxwjFh4b/XyVIwHEAHKJwiRaEqVS89PBqEtGvjxcNaK5UDsty4NfuFHI1Ex2hulJWjMBDzu7sd+4kOERJUBj8r61E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=YOcV5DRv; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
+	s=arc-20240116; t=1730885951; c=relaxed/simple;
+	bh=xFq6H5Gss2PaZCwqeYcPrMJ1Mp9+Lm1NpbULI16e1Nc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jir7OxL5Q2ZqOzvhxMBl4wSJ7d8mjyhr5EE2EGdl/DSEu8NlhKUACxn23k36MB8SuN2a3N5onzt31cn/n0TDuV9EitPYUGPIuo8koN4tl1Vf+fXg4LOzC93NnQONyVBi6ores8AsM/UEGvnajV3/mLwa0ltjdaZOgwYZFPopDQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QB3QrXhO; arc=none smtp.client-ip=209.85.128.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="YOcV5DRv"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3e607556c83so3647674b6e.1
-        for <netdev@vger.kernel.org>; Wed, 06 Nov 2024 01:36:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QB3QrXhO"
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-6e9ed5e57a7so51155167b3.1;
+        Wed, 06 Nov 2024 01:39:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google; t=1730885770; x=1731490570; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S/l5vH8OJnrqRXgkQA/vYQVnL0JscbhG9csXji1nC/4=;
-        b=YOcV5DRvCBlhn3+10ibksZzXYkOv2ThrYTK6JyFe4j/DKVMZWcrzFtYmkwureWUi4p
-         KAIEciPX5DiQNZ862UCFPYq493wYD77oKKE1iq2cvqr+nZ23guV7bU1xcIYjj2i0Y5QG
-         TeVOmbzLIO3LZhAe38xclsU7LzLI3zaJmnaxQ=
+        d=gmail.com; s=20230601; t=1730885949; x=1731490749; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oinRG9+NhYdFlC3tEh227zzGakOwtuLOqwW6sGXxLbc=;
+        b=QB3QrXhOgkAC2cRPZrG5sYF/qNjvbnr/4+1SIoPxb3uwbh3nRhqrMziWafMCMPSvJg
+         umx4M7GqQuF+CvXTAAl3bWL65jbOVbnhW8fvjbqmIrLhsDnxEYdnmfnUPnspneeNkZI6
+         NcqvaujujOi6TZo45GPKXDzUOkDj/+PvS8YPeRXaQCDGb/szr/1CYP9yPSzfB6UO28ac
+         AbXV0LrfOx6/KuVAQUwzQceWPBoH+GlyO28Q6umK/uH9KEX35BQtLve5AgCCqifOdMWv
+         HzR7nKIHGZvk/2R9N6nkoRM93d0ZCJE6FnXf7cTN8FxaUo8v3ssSV4GH556VVHzuNWOV
+         gRzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730885770; x=1731490570;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S/l5vH8OJnrqRXgkQA/vYQVnL0JscbhG9csXji1nC/4=;
-        b=KKffR0Xpn3IzqfPOq9UxTrqcNbWc5zqG3qBlaIKTwkZc57DQe0/tou6i2aaWCH/JII
-         lm92kcg06Pz8/5ZmCyBTSipVS0XlOP0i88FOJPJv4072sN5Pgei56VypNybMfPibmYtt
-         08URSGkG4nVk2ze0y2sXaet4ATOwSt/EOaCiYSX6nFWgYyTElEszYGbCEtUxrGrl2sXU
-         ylzx14fSFa2EHS6TVANwdN8d7g0qR4o5qOHknPuTiuYUo1k4Z4jqpkNI8LBwwLWxdV9O
-         B1IoFimekSwidBYMp5t8bwIp/1zRAJCT/yjSCbZO+gElo8NMv0OyGKOAzNH63sSasfC7
-         /+YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEWHoqj7+0hiN8UiNfAFHArrj6cnlfaniZVledVS8BcJcRjJO6deJuLvQrFSkxxjBiyIjAMBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0cP97l2mU+yaEoc8Fml0130E6EAHLG9IIiCBeP53VwLQYgNvT
-	mBw5svBc+5WJr+kFTwCpcArK+bO339RoiSO3sXFThs+TRZHXm/+WYKsi60/Ab0Y=
-X-Google-Smtp-Source: AGHT+IGnZVoXgrwerKZgrBNt1b4IWnW5Xukz4laU24ynvt1xYZWptXEc1nUA2wrR6Tk6AjrbeFK86A==
-X-Received: by 2002:a05:6808:10d0:b0:3e6:25df:2604 with SMTP id 5614622812f47-3e6384432c6mr34382974b6e.14.1730885769706;
-        Wed, 06 Nov 2024 01:36:09 -0800 (PST)
-Received: from v4bel-B760M-AORUS-ELITE-AX ([211.219.71.65])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ee459f9050sm10850494a12.74.2024.11.06.01.36.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 01:36:09 -0800 (PST)
-Date: Wed, 6 Nov 2024 04:36:04 -0500
-From: Hyunwoo Kim <v4bel@theori.io>
-To: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Stefano Garzarella <sgarzare@redhat.com>, mst@redhat.com,
-	jasowang@redhat.com
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-hyperv@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	gregkh@linuxfoundation.org, imv4bel@gmail.com, v4bel@theori.io
-Subject: [PATCH v2] hv_sock: Initializing vsk->trans to NULL to prevent a
- dangling pointer
-Message-ID: <Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX>
+        d=1e100.net; s=20230601; t=1730885949; x=1731490749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oinRG9+NhYdFlC3tEh227zzGakOwtuLOqwW6sGXxLbc=;
+        b=rKgCjKEuUNGMaWy5Qe1EF6UoTNeCJ5t0GQutmVLroG8Ph9Vl6l3OOouNf9kTdaN4PQ
+         2mnINb1Q8q+tP9k35q5BygMsGANouup1X41PFBxa5LAtHomEPLRsT++miVHKojJ9dp6k
+         lO0reDTUYQqcXCqmkyVpNcVPI3ouhsmPPetXyaBANm4T6uE4FXE1wKLpyvo185oAfgsW
+         tJcBLJ9htlWY6uJgjLlI7giZjPQQBlHAgHetSVGE89lOa4UP1W6ugJ8nmFPeTN+WxcDm
+         CgE6UcYWOmIywFyMnRfr4Zj3ydGHysYHIYvrrhJ5Ti8p2TVg2VUNV3puCVgNWETaPiBJ
+         K9IA==
+X-Forwarded-Encrypted: i=1; AJvYcCUz+Y1P5H946S3Iv5dXySFGTRzAH6M4/EeIp8AZjk/+cJKSHlCA6KN5d6Em18eFfPFXCa0=@vger.kernel.org, AJvYcCVCbYmsDKTR3i9D+FVcTVfyvapLzmCThxaccu1WbQYk/5P/VgrnTV4vuFfq+HJX6RP4yjomm2UpF47e5KWI@vger.kernel.org, AJvYcCX8Aps4ajDdlR2Z3xfFAPWTiRQHGvl0QNiN4TuNcsmgzHAQ0ZM+9cYzAzCUoW37q5haFFKtIB+7Jx5lV0BlcX9h@vger.kernel.org, AJvYcCXuMFj4e2FAUoF0eN3M5rKGs201i+d7k/816ixtGvx2lVBaiUhXMykzrO8LGxu05MufRN9/E7gD@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLUm/IhjzT7RUA2gvlwQDpUNeRx5BCsv5uHRv5gUp+PDPX2WH+
+	Sen71CD1PXtEL9Aj3sEi3hRxmEeQJ+IavmQKLMuD5BJF3qMJYZS81MywiWMAO7NaMblVVSHRbrO
+	08PYlacwc6+gTxQROH3P0cBiFx9Zf+bas
+X-Google-Smtp-Source: AGHT+IG/bK8cqy34pOh5Zq5wDFPLa4wQ66r575ctEahwLJo1FJD3pLmUhRA44FtaVQRpsttX0rv0AKr6C/8eLs3MBlw=
+X-Received: by 2002:a05:690c:dd2:b0:6dd:d5b7:f35d with SMTP id
+ 00721157ae682-6ea52525cebmr213814677b3.30.1730885948671; Wed, 06 Nov 2024
+ 01:39:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20241030014145.1409628-1-dongml2@chinatelecom.cn>
+ <20241030014145.1409628-7-dongml2@chinatelecom.cn> <62773e8f-884c-4bfe-b412-97ad976f9cb8@redhat.com>
+In-Reply-To: <62773e8f-884c-4bfe-b412-97ad976f9cb8@redhat.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
+Date: Wed, 6 Nov 2024 17:40:16 +0800
+Message-ID: <CADxym3adJA1rEHc1GVCmA0_CvuBvMyEF8GOJjm_69uvXhgu9GQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND net-next v4 6/9] net: ip: make ip_route_input_noref()
+ return drop reasons
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	horms@kernel.org, dsahern@kernel.org, pablo@netfilter.org, 
+	kadlec@netfilter.org, roopa@nvidia.com, razor@blackwall.org, 
+	gnault@redhat.com, bigeasy@linutronix.de, hawk@kernel.org, idosch@nvidia.com, 
+	dongml2@chinatelecom.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	bridge@lists.linux.dev, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When hvs is released, there is a possibility that vsk->trans may not
-be initialized to NULL, which could lead to a dangling pointer.
-This issue is resolved by initializing vsk->trans to NULL.
+On Tue, Nov 5, 2024 at 7:22=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wrot=
+e:
+>
+> Hi,
+>
+> On 10/30/24 02:41, Menglong Dong wrote:
+> > @@ -175,10 +175,12 @@ static void ip_expire(struct timer_list *t)
+> >
+> >       /* skb has no dst, perform route lookup again */
+> >       iph =3D ip_hdr(head);
+> > -     err =3D ip_route_input_noref(head, iph->daddr, iph->saddr, ip4h_d=
+scp(iph),
+> > -                                head->dev);
+> > -     if (err)
+> > +     reason =3D ip_route_input_noref(head, iph->daddr, iph->saddr,
+> > +                                   ip4h_dscp(iph), head->dev);
+> > +     if (reason)
+> >               goto out;
+> > +     else
+> > +             reason =3D SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
+>
+> I think the else branch above is confusing - and unneeded.
 
-Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
----
-v1 -> v2: Add fixes and cc tags
----
- net/vmw_vsock/hyperv_transport.c | 1 +
- 1 file changed, 1 insertion(+)
+Yeah, that makes sense.
 
-diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index e2157e387217..56c232cf5b0f 100644
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -549,6 +549,7 @@ static void hvs_destruct(struct vsock_sock *vsk)
- 		vmbus_hvsock_device_unregister(chan);
- 
- 	kfree(hvs);
-+	vsk->trans = NULL;
- }
- 
- static int hvs_dgram_bind(struct vsock_sock *vsk, struct sockaddr_vm *addr)
--- 
-2.34.1
+> Please move the assignment after the comment below, so it's clear why we
+> get a TIMEOUT drop reason.
 
+Okay!
+
+Thanks!
+Menglong Dong
+
+>
+> Thanks,
+>
+> Paolo
+>
