@@ -1,482 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BDD1DFD82
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 12:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9C01F76B7;
+	Wed,  6 Nov 2024 12:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730896657; cv=none; b=LD/ZwXeapz2f7wWJmUPlWspBD36dZqmXlVneE1+kYEe5WZcIhWY9Sa51tWqKbJ89UyHxd6VG/jgsdUycH4XghrFtrdhu3xdj0ZcFEiKL4/sSwaY2n/rg7mz5b4o5Z1m0Mqa35ut52FS22rHv2smCIC2Cnt850oWNGZZA3e5vSM8=
+	t=1730896665; cv=none; b=ta4Rq4TBhzMV0mXglgxBTsL+UKqoyAN0LUnWVzL4GxBl8QAlcI2kxrHBlrnqeSwgyyR/TIbYmxyYJADok7PRGuxEIgerihEbQ4baVzF19jLrspoJ4YKbZN1oEhu23qAyQgVRbEv8hjBJW2wugrhjyMS8omXvZvC9GI1V/5zCgoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730896657; c=relaxed/simple;
-	bh=UY4FIAOMecd1RPE2VIilbpsjd5hNpaTgiF0vreIZSAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSg6+o8sp7pkCXmTzp9C0Iw7muJsrPMpNLrKrnG5r0YX3ZMYzeNZKgihl81QoRSEGQ8eopKeJQm9345eAzQ3FYn7jIgLzmy+l+uHNWC9FLxqxBoggpMAlAUIkQadeCZZXVPMwyaLfRgpiUjpBNwijE2miyMU7rZ92TPD+PR5jdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Us6hvrRL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730896665; c=relaxed/simple;
+	bh=PK6WGWIzzUxygDZyxgAl8NGzW2USJnn+khK0DoMIIho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RoqiggxhkuBt4qJmebiAUQyEshrOtNJTpUauZoTHNZi01FjwOUQzIcmu0Y5mCZcMOGSaKIOy+QtVuSJuFdEfsiWEXZDK2L6axquiYyx0CDpxv+mVaLmoBrgMD8wfLfI60WPwKOFcnXfUxDeY2cK6Hns5g3nBA8ijmHIMEw1FRlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FFeZj506; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Us6hvrRL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730896654;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aGYosp/+kMXcNDFlu6f+dSAs1+3gA++sooPoxXEtOf0=;
-	b=Us6hvrRLKFRgnJP6tIL8+KdVyrKOzPPSUKUAXcCRBJJzfDiFGTjgS8scIBQZ8/JN2ocZfN
-	diyy8kXwFDyDlplfECBPhBuBPrhaXFr0ceL5rmzlHN1RFaysLb+wGR1b0xtHL+tE6vuDHn
-	gGVLMJqLA4IziOcLGRIbRp4W3lrj+BA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-Pw8bHDAGNUC9C0Z3AfaC1w-1; Wed,
- 06 Nov 2024 07:37:31 -0500
-X-MC-Unique: Pw8bHDAGNUC9C0Z3AfaC1w-1
-X-Mimecast-MFC-AGG-ID: Pw8bHDAGNUC9C0Z3AfaC1w
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8CA531955F08;
-	Wed,  6 Nov 2024 12:37:28 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C8DBF1955F40;
-	Wed,  6 Nov 2024 12:37:22 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 10/33] netfs: Drop the error arg from netfs_read_subreq_terminated()
-Date: Wed,  6 Nov 2024 12:35:34 +0000
-Message-ID: <20241106123559.724888-11-dhowells@redhat.com>
-In-Reply-To: <20241106123559.724888-1-dhowells@redhat.com>
-References: <20241106123559.724888-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FFeZj506"
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id 6B470114018D;
+	Wed,  6 Nov 2024 07:37:41 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 06 Nov 2024 07:37:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1730896661; x=1730983061; bh=/jLOtRJkzelCEg/A2YxeNiDuCCzg/r1GPN8
+	Ngxasi5k=; b=FFeZj5063QyYvANJ4SJWcaaccy8A0bFk2OeCPZAtb39xWa5aOns
+	+cEa6SbJsOxnEPskn5onyWCbYpH5W7IVjtV66Uh02dq35Zc4Uwzwp+a6LaChdaNa
+	vjEq45pwoMreBFAU2kyLSt4vX0WWBxZ98mjqisGdnZGkETAAk4C0lQGNC6DhS4dQ
+	tByZ7oRPA+CVwzZwAB8oajs6SFQxYuXSUJVMe2X6ctCzrZPZ92Zwr0Qc2pwf5SYY
+	kPaEBW9a6u7dsBfqDee0IFgMGvYJ2tTc5NSR0Wru7AKp02/W+CMp+ww5xHeEk6Gd
+	WtT5sT/ky8hJgCEk9uIjDqinTLlqqeN+/PA==
+X-ME-Sender: <xms:FGMrZ4NFfZ6crfnV-B9ekqcuwkjQ8yrVSIlhRcpGRH5itQgw2y9JRA>
+    <xme:FGMrZ-9mhP4QXLq1v2NQt5KI2MqVNfIbdVmPuB03qMWw8Fs1tk88HfaEpcRFGfzCB
+    KonPhaJF_bGW6U>
+X-ME-Received: <xmr:FGMrZ_TljnC-Qc0vrGjE6VE5WDIW-QWDw2ixI0aQHpvU5DIlTR_Gs36tYqOedxhFVXEpDGBv4kCv5dsUtLut5R0wdMo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddvgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudeifefg
+    leekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthho
+    peduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrthhtrdhmuhhgghgvrh
+    hiughgvgeshhhpvgdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhht
+    rdhnvghtpdhrtghpthhtohepughsrghhvghrnheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehhohhrmhhs
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhinhhugidqrghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:FGMrZwuNRCmqAIpboIuYM4JVhlJRXvM4DPmvtZcQeDjorxdF-ZT9RQ>
+    <xmx:FGMrZwe0T_WEWhy6cmI1Btx4gLkFG5pU7E29HW0dQJfJ9TpRfXs9lQ>
+    <xmx:FGMrZ02NCJhF4HGMFPPIbKN3sQcQzQW263kKfXeUoadTa--BxnVxqw>
+    <xmx:FGMrZ0_pMOapVd5zf7lFE_QlIN6UmH_1-Ztbqy-a7gRdWpeLa1ilzw>
+    <xmx:FWMrZxVWN6yUr9Fvec4ds_qFDMWUZ40di6V-w1thbEHbzxS8kXh8TcyX>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 6 Nov 2024 07:37:39 -0500 (EST)
+Date: Wed, 6 Nov 2024 14:37:36 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Matt Muggeridge <Matt.Muggeridge@hpe.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+	horms@kernel.org, kuba@kernel.org, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net/ipv6: Netlink flag for new IPv6 Default
+ Routes
+Message-ID: <ZytjEINNRmtpadr_@shredder>
+References: <Zypgu5l7F1FpIpqo@shredder>
+ <20241106025056.11241-1-Matt.Muggeridge@hpe.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106025056.11241-1-Matt.Muggeridge@hpe.com>
 
-Drop the error argument from netfs_read_subreq_terminated() in favour of
-passing the value in subreq->error.
+On Tue, Nov 05, 2024 at 09:50:56PM -0500, Matt Muggeridge wrote:
+> Thank you for your review and feedback, Ido.
+> 
+> >> Without this flag, when there are mutliple default routers, the kernel
+> >> coalesces multiple default routes into an ECMP route. The ECMP route
+> >> ignores per-route REACHABILITY information. If one of the default
+> >> routers is unresponsive, with a Neighbor Cache entry of INCOMPLETE, then
+> >> it can still be selected as the nexthop for outgoing packets. This
+> >> results in an inability to communicate with remote hosts, even though
+> >> one of the default routers remains REACHABLE. This violates RFC4861
+> >> section 6.3.6, bullet 1.
+> >
+> >Do you have forwarding disabled (it causes RT6_LOOKUP_F_REACHABLE to be
+> >set)?
+> 
+> Yes, forwarding is disabled on our embedded system. Though, this needs to
+> work on systems regardless of the state of forwarding.
+> 
+> >  Is the problem that fib6_table_lookup() chooses a reachable
+> >nexthop and then fib6_select_path() overrides it with an unreachable
+> >one?
+> 
+> I'm afraid I don't know.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/9p/vfs_addr.c         |  3 ++-
- fs/afs/file.c            | 15 ++++++++-----
- fs/ceph/addr.c           | 13 +++++++----
- fs/netfs/buffered_read.c | 16 +++++++-------
- fs/netfs/objects.c       | 15 ++++++++++++-
- fs/netfs/read_collect.c  | 47 +++++++++++++++++++++++++---------------
- fs/nfs/fscache.c         |  6 +++--
- fs/nfs/fscache.h         |  3 ++-
- fs/smb/client/cifssmb.c  | 10 +--------
- fs/smb/client/file.c     |  3 ++-
- fs/smb/client/smb2pdu.c  | 10 +--------
- include/linux/netfs.h    |  7 +++---
- 12 files changed, 86 insertions(+), 62 deletions(-)
+We need to understand the current behavior before adding a new interface
+that we will never be able to remove. It is possible we can improve /
+fix the current code. I won't have time to look into it myself until
+next week.
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 819c75233235..58a6bd284d88 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -83,7 +83,8 @@ static void v9fs_issue_read(struct netfs_io_subrequest *subreq)
- 	if (!err)
- 		subreq->transferred += total;
- 
--	netfs_read_subreq_terminated(subreq, err, false);
-+	subreq->error = err;
-+	netfs_read_subreq_terminated(subreq, false);
- }
- 
- /**
-diff --git a/fs/afs/file.c b/fs/afs/file.c
-index 6762eff97517..56248a078bca 100644
---- a/fs/afs/file.c
-+++ b/fs/afs/file.c
-@@ -246,7 +246,8 @@ static void afs_fetch_data_notify(struct afs_operation *op)
- 		subreq->rreq->i_size = req->file_size;
- 		if (req->pos + req->actual_len >= req->file_size)
- 			__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
--		netfs_read_subreq_terminated(subreq, error, false);
-+		subreq->error = error;
-+		netfs_read_subreq_terminated(subreq, false);
- 		req->subreq = NULL;
- 	} else if (req->done) {
- 		req->done(req);
-@@ -301,8 +302,10 @@ int afs_fetch_data(struct afs_vnode *vnode, struct afs_read *req)
- 
- 	op = afs_alloc_operation(req->key, vnode->volume);
- 	if (IS_ERR(op)) {
--		if (req->subreq)
--			netfs_read_subreq_terminated(req->subreq, PTR_ERR(op), false);
-+		if (req->subreq) {
-+			req->subreq->error = PTR_ERR(op);
-+			netfs_read_subreq_terminated(req->subreq, false);
-+		}
- 		return PTR_ERR(op);
- 	}
- 
-@@ -320,8 +323,10 @@ static void afs_read_worker(struct work_struct *work)
- 	struct afs_read *fsreq;
- 
- 	fsreq = afs_alloc_read(GFP_NOFS);
--	if (!fsreq)
--		return netfs_read_subreq_terminated(subreq, -ENOMEM, false);
-+	if (!fsreq) {
-+		subreq->error = -ENOMEM;
-+		return netfs_read_subreq_terminated(subreq, false);
-+	}
- 
- 	fsreq->subreq	= subreq;
- 	fsreq->pos	= subreq->start + subreq->transferred;
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index c2a9e2cc03de..459249ba6319 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -253,8 +253,9 @@ static void finish_netfs_read(struct ceph_osd_request *req)
- 		subreq->transferred = err;
- 		err = 0;
- 	}
-+	subreq->error = err;
- 	trace_netfs_sreq(subreq, netfs_sreq_trace_io_progress);
--	netfs_read_subreq_terminated(subreq, err, false);
-+	netfs_read_subreq_terminated(subreq, false);
- 	iput(req->r_inode);
- 	ceph_dec_osd_stopping_blocker(fsc->mdsc);
- }
-@@ -314,7 +315,9 @@ static bool ceph_netfs_issue_op_inline(struct netfs_io_subrequest *subreq)
- 
- 	ceph_mdsc_put_request(req);
- out:
--	netfs_read_subreq_terminated(subreq, err, false);
-+	subreq->error = err;
-+	trace_netfs_sreq(subreq, netfs_sreq_trace_io_progress);
-+	netfs_read_subreq_terminated(subreq, false);
- 	return true;
- }
- 
-@@ -426,8 +429,10 @@ static void ceph_netfs_issue_read(struct netfs_io_subrequest *subreq)
- 	ceph_osdc_start_request(req->r_osdc, req);
- out:
- 	ceph_osdc_put_request(req);
--	if (err)
--		netfs_read_subreq_terminated(subreq, err, false);
-+	if (err) {
-+		subreq->error = err;
-+		netfs_read_subreq_terminated(subreq, false);
-+	}
- 	doutc(cl, "%llx.%llx result %d\n", ceph_vinop(inode), err);
- }
- 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 4cacb46e0cf7..82c3b9957958 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -148,14 +148,13 @@ static void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error
- {
- 	struct netfs_io_subrequest *subreq = priv;
- 
--	if (transferred_or_error < 0) {
--		netfs_read_subreq_terminated(subreq, transferred_or_error, was_async);
--		return;
--	}
--
--	if (transferred_or_error > 0)
-+	if (transferred_or_error > 0) {
- 		subreq->transferred += transferred_or_error;
--	netfs_read_subreq_terminated(subreq, 0, was_async);
-+		subreq->error = 0;
-+	} else {
-+		subreq->error = transferred_or_error;
-+	}
-+	netfs_read_subreq_terminated(subreq, was_async);
- }
- 
- /*
-@@ -261,7 +260,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 			netfs_stat(&netfs_n_rh_zero);
- 			slice = netfs_prepare_read_iterator(subreq);
- 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
--			netfs_read_subreq_terminated(subreq, 0, false);
-+			subreq->error = 0;
-+			netfs_read_subreq_terminated(subreq, false);
- 			goto done;
- 		}
- 
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 5cdddaf1f978..f10fd56efa17 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -191,7 +191,20 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	}
- 
- 	memset(subreq, 0, kmem_cache_size(cache));
--	INIT_WORK(&subreq->work, NULL);
-+
-+	switch (rreq->origin) {
-+	case NETFS_READAHEAD:
-+	case NETFS_READPAGE:
-+	case NETFS_READ_GAPS:
-+	case NETFS_READ_FOR_WRITE:
-+	case NETFS_DIO_READ:
-+		INIT_WORK(&subreq->work, netfs_read_subreq_termination_worker);
-+		break;
-+	default:
-+		INIT_WORK(&subreq->work, NULL);
-+		break;
-+	}
-+
- 	INIT_LIST_HEAD(&subreq->rreq_link);
- 	refcount_set(&subreq->ref, 2);
- 	subreq->rreq = rreq;
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 214f06bba2c7..00358894fac4 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -450,28 +450,26 @@ EXPORT_SYMBOL(netfs_read_subreq_progress);
- /**
-  * netfs_read_subreq_terminated - Note the termination of an I/O operation.
-  * @subreq: The I/O request that has terminated.
-- * @error: Error code indicating type of completion.
-- * @was_async: The termination was asynchronous
-+ * @was_async: True if we're in an asynchronous context.
-  *
-  * This tells the read helper that a contributory I/O operation has terminated,
-  * one way or another, and that it should integrate the results.
-  *
-- * The caller indicates the outcome of the operation through @error, supplying
-- * 0 to indicate a successful or retryable transfer (if NETFS_SREQ_NEED_RETRY
-- * is set) or a negative error code.  The helper will look after reissuing I/O
-- * operations as appropriate and writing downloaded data to the cache.
-+ * The caller indicates the outcome of the operation through @subreq->error,
-+ * supplying 0 to indicate a successful or retryable transfer (if
-+ * NETFS_SREQ_NEED_RETRY is set) or a negative error code.  The helper will
-+ * look after reissuing I/O operations as appropriate and writing downloaded
-+ * data to the cache.
-  *
-  * Before calling, the filesystem should update subreq->transferred to track
-  * the amount of data copied into the output buffer.
-- *
-- * If @was_async is true, the caller might be running in softirq or interrupt
-- * context and we can't sleep.
-  */
--void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
--				  int error, bool was_async)
-+void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq, bool was_async)
- {
- 	struct netfs_io_request *rreq = subreq->rreq;
- 
-+	might_sleep();
-+
- 	switch (subreq->source) {
- 	case NETFS_READ_FROM_CACHE:
- 		netfs_stat(&netfs_n_rh_read_done);
-@@ -489,7 +487,7 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
- 		 * If the read completed validly short, then we can clear the
- 		 * tail before going on to unlock the folios.
- 		 */
--		if (error == 0 && subreq->transferred < subreq->len &&
-+		if (subreq->error == 0 && subreq->transferred < subreq->len &&
- 		    (test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags) ||
- 		     test_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags))) {
- 			netfs_clear_unread(subreq);
-@@ -509,7 +507,7 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
- 	/* Deal with retry requests, short reads and errors.  If we retry
- 	 * but don't make progress, we abandon the attempt.
- 	 */
--	if (!error && subreq->transferred < subreq->len) {
-+	if (!subreq->error && subreq->transferred < subreq->len) {
- 		if (test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags)) {
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_hit_eof);
- 		} else {
-@@ -523,16 +521,15 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
- 				set_bit(NETFS_RREQ_NEED_RETRY, &rreq->flags);
- 			} else {
- 				__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
--				error = -ENODATA;
-+				subreq->error = -ENODATA;
- 			}
- 		}
- 	}
- 
--	subreq->error = error;
- 	trace_netfs_sreq(subreq, netfs_sreq_trace_terminated);
- 
--	if (unlikely(error < 0)) {
--		trace_netfs_failure(rreq, subreq, error, netfs_fail_read);
-+	if (unlikely(subreq->error < 0)) {
-+		trace_netfs_failure(rreq, subreq, subreq->error, netfs_fail_read);
- 		if (subreq->source == NETFS_READ_FROM_CACHE) {
- 			netfs_stat(&netfs_n_rh_read_failed);
- 		} else {
-@@ -548,3 +545,19 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
- 	netfs_put_subrequest(subreq, was_async, netfs_sreq_trace_put_terminated);
- }
- EXPORT_SYMBOL(netfs_read_subreq_terminated);
-+
-+/**
-+ * netfs_read_subreq_termination_worker - Workqueue helper for read termination
-+ * @work: The subreq->work in the I/O request that has been terminated.
-+ *
-+ * Helper function to jump to netfs_read_subreq_terminated() from the
-+ * subrequest work item.
-+ */
-+void netfs_read_subreq_termination_worker(struct work_struct *work)
-+{
-+	struct netfs_io_subrequest *subreq =
-+		container_of(work, struct netfs_io_subrequest, work);
-+
-+	netfs_read_subreq_terminated(subreq, false);
-+}
-+EXPORT_SYMBOL(netfs_read_subreq_termination_worker);
-diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-index 810269ee0a50..e585a7bcfe4d 100644
---- a/fs/nfs/fscache.c
-+++ b/fs/nfs/fscache.c
-@@ -307,8 +307,10 @@ static void nfs_netfs_issue_read(struct netfs_io_subrequest *sreq)
- 			     &nfs_async_read_completion_ops);
- 
- 	netfs = nfs_netfs_alloc(sreq);
--	if (!netfs)
--		return netfs_read_subreq_terminated(sreq, -ENOMEM, false);
-+	if (!netfs) {
-+		sreq->error = -ENOMEM;
-+		return netfs_read_subreq_terminated(sreq, false);
-+	}
- 
- 	pgio.pg_netfs = netfs; /* used in completion */
- 
-diff --git a/fs/nfs/fscache.h b/fs/nfs/fscache.h
-index 772d485e96d3..1d86f7cc7195 100644
---- a/fs/nfs/fscache.h
-+++ b/fs/nfs/fscache.h
-@@ -74,7 +74,8 @@ static inline void nfs_netfs_put(struct nfs_netfs_io_data *netfs)
- 	 */
- 	netfs->sreq->transferred = min_t(s64, netfs->sreq->len,
- 					 atomic64_read(&netfs->transferred));
--	netfs_read_subreq_terminated(netfs->sreq, netfs->error, false);
-+	netfs->sreq->error = netfs->error;
-+	netfs_read_subreq_terminated(netfs->sreq, false);
- 	kfree(netfs);
- }
- static inline void nfs_netfs_inode_init(struct nfs_inode *nfsi)
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index c6f15dbe860a..bdf1933cb0e2 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1261,14 +1261,6 @@ CIFS_open(const unsigned int xid, struct cifs_open_parms *oparms, int *oplock,
- 	return rc;
- }
- 
--static void cifs_readv_worker(struct work_struct *work)
--{
--	struct cifs_io_subrequest *rdata =
--		container_of(work, struct cifs_io_subrequest, subreq.work);
--
--	netfs_read_subreq_terminated(&rdata->subreq, rdata->result, false);
--}
--
- static void
- cifs_readv_callback(struct mid_q_entry *mid)
- {
-@@ -1334,8 +1326,8 @@ cifs_readv_callback(struct mid_q_entry *mid)
- 	}
- 
- 	rdata->credits.value = 0;
-+	rdata->subreq.error = rdata->result;
- 	rdata->subreq.transferred += rdata->got_bytes;
--	INIT_WORK(&rdata->subreq.work, cifs_readv_worker);
- 	queue_work(cifsiod_wq, &rdata->subreq.work);
- 	release_mid(mid);
- 	add_credits(server, &credits, 0);
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index a58a3333ecc3..10dd440f8178 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -227,7 +227,8 @@ static void cifs_issue_read(struct netfs_io_subrequest *subreq)
- 	return;
- 
- failed:
--	netfs_read_subreq_terminated(subreq, rc, false);
-+	subreq->error = rc;
-+	netfs_read_subreq_terminated(subreq, false);
- }
- 
- /*
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 6584b5cddc28..0166eb42ce94 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4513,14 +4513,6 @@ smb2_new_read_req(void **buf, unsigned int *total_len,
- 	return rc;
- }
- 
--static void smb2_readv_worker(struct work_struct *work)
--{
--	struct cifs_io_subrequest *rdata =
--		container_of(work, struct cifs_io_subrequest, subreq.work);
--
--	netfs_read_subreq_terminated(&rdata->subreq, rdata->result, false);
--}
--
- static void
- smb2_readv_callback(struct mid_q_entry *mid)
- {
-@@ -4633,9 +4625,9 @@ smb2_readv_callback(struct mid_q_entry *mid)
- 			      server->credits, server->in_flight,
- 			      0, cifs_trace_rw_credits_read_response_clear);
- 	rdata->credits.value = 0;
-+	rdata->subreq.error = rdata->result;
- 	rdata->subreq.transferred += rdata->got_bytes;
- 	trace_netfs_sreq(&rdata->subreq, netfs_sreq_trace_io_progress);
--	INIT_WORK(&rdata->subreq.work, smb2_readv_worker);
- 	queue_work(cifsiod_wq, &rdata->subreq.work);
- 	release_mid(mid);
- 	trace_smb3_rw_credits(rreq_debug_id, subreq_debug_index, 0,
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 0d4ed1229024..a3aa36c1869f 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -428,10 +428,9 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp);
- vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_group);
- 
- /* (Sub)request management API. */
--void netfs_read_subreq_progress(struct netfs_io_subrequest *subreq,
--				bool was_async);
--void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq,
--				  int error, bool was_async);
-+void netfs_read_subreq_progress(struct netfs_io_subrequest *subreq, bool was_async);
-+void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq, bool was_async);
-+void netfs_read_subreq_termination_worker(struct work_struct *work);
- void netfs_get_subrequest(struct netfs_io_subrequest *subreq,
- 			  enum netfs_sreq_ref_trace what);
- void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
+> 
+> The objective is to allow IPv6 Netlink clients to be able to create default
+> routes from RAs in the same way the kernel creates default routes from RAs.
+> Essentially, I'm trying to have Netlink and Kernel behaviors match.
 
+I understand, but it's essentially an extension for the legacy IPv6
+multipath API which we are trying to move away from towards the nexthop
+API (see more below).
+
+> 
+> My analysis led me to the need for Netlink clients to set the kernel's
+> fib6_config flags RTF_RA_ROUTER, where:
+> 
+>     #define RTF_RA_ROUTER		(RTF_ADDRCONF | RTF_DEFAULT)
+> 
+> >> +	if (rtm->rtm_flags & RTM_F_RA_ROUTER)
+> >> +		cfg->fc_flags |= RTF_RA_ROUTER;
+> >> +
+> > 
+> > It is possible there are user space programs out there that set this bit
+> > (knowingly or not) when sending requests to the kernel and this change
+> > will result in a behavior change for them. So, if we were to continue in
+> > this path, this would need to be converted to a new netlink attribute to
+> > avoid such potential problems.
+> > 
+> 
+> Is this a mandated approach to implementing unspecified bits in a flag?
+> 
+> I'm a little surprised by this consideration. If we account for poorly
+> written buggy user-programs, doesn't this open any API to an explosion
+> of new attributes or other odd extensions? I'd imagine the same argument
+> would be applicable to ioctl flags, socket flags, and so on. Why would we
+> treat implementing unspecified Netlink bits differently to implementing
+> unspecified ioctl bits, etc.
+> 
+> Naturally, if this is the mandated approach, then I'll reimplement it with
+> a new Netlink attribute. I'm just trying to understand what is the
+> Linux-lore, here?
+
+Using this bit could have been valid if previously the kernel rejected
+requests with this bit set, but as evident by your patch the kernel does
+not do it. It is therefore possible that there are user space programs
+out there that are working perfectly fine right now and they will break
+/ misbehave after this change.
+
+> 
+> > BTW, you can avoid the coalescing problem by using the nexthop API (man
+> > ip-nexthop).
+> 
+> I'm not sure how that would help in this case. We need the nexthop to be
+> determined according to its REACHABILITY and other considerations described
+> in RFC4861.
+
+Using your example:
+
+# ip nexthop add id 1 via fe80::200:10ff:fe10:1060 dev enp0s9
+# ip -6 route add default nhid 1 expires 600 proto ra
+# ip nexthop add id 2 via fe80::200:10ff:fe10:1061 dev enp0s9
+# ip -6 route append default nhid 2 expires 600 proto ra
+# ip -6 route
+fe80::/64 dev enp0s9 proto kernel metric 256 pref medium
+default nhid 1 via fe80::200:10ff:fe10:1060 dev enp0s9 proto ra metric 1024 expires 563sec pref medium
+default nhid 2 via fe80::200:10ff:fe10:1061 dev enp0s9 proto ra metric 1024 expires 594sec pref medium
