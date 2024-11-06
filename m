@@ -1,272 +1,150 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1232076DE;
-	Wed,  6 Nov 2024 18:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A317BB0F;
+	Wed,  6 Nov 2024 18:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730916843; cv=none; b=NNJJ8Fq3Nne1S6jzGaJLUscxItwSF5pTTkB6fuuCOTTx8TQ6VyiHr43649QiISUh8bMbI+mFNRHx5UrxLcaDqLpYtmH6DgtKs39eA0Us6Aparwk7QML24/fGJYkrlbgJ0HQVqh5CTSD0Q+VeW7OskPVxkvbdv31urPK5vlN5Po0=
+	t=1730917027; cv=none; b=V1sF3sKLKiRBol0N/Q0BhSbcBnWCoyr3KTXD/667IaWU2UyG0iLt/cKJdXyrsvCM+YHHjH2ZTWlxLj9EzQ8XI8Tio0sQ0wApVjUarOrtIpMrzBULrprPNQIA0G8jBchp62a2EAmFkyX7vXONLUYT/6/xnyHDEPPUeENS2jI1tMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730916843; c=relaxed/simple;
-	bh=SWOk01sSn5fcWujCF706YNaxwojISAUDKCKuNCysStw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PnASYX2aiuEPJDswjMstM/jLt2nYCzmOWvomealFsfK37V4YM2C5PBLBBWDiPl/MjzJYT1KzjMfEK+Od+mp0bIe0iTkbbWDEDYOsvAG1ahCV0qkBGR/qR5xhWxbgEVgkJlq269BAvg18cuTvDAc62aRTRdOBHe3tCQ4P+6lvpTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VRPzPFUr; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730917027; c=relaxed/simple;
+	bh=7JRzx1UgEQQWBP6Jr+1QV83wR6xUeWOjkJYXM4uWv3Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ixPcQjDTk5/YaThT7e5XgT7KbT8i7vS77DUVFYH5tIOvIQw8y6Eccov5xVhx+Eev1sk3qQGlHxqnYx4NghX5Wer2Ilp0QWPINaeUYxSfuM1ttMHQKL9+oWrpTzAp3io4IFQgnML/XPz6jnhkQ5+FLfumtVggpE63co8E8aD2XDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=k3pff0QC; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VRPzPFUr"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cbf2fc28feso733656d6.0;
-        Wed, 06 Nov 2024 10:14:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730916841; x=1731521641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=87iZqhnI6xalUo1meCuWOUsEAO+KfuLV+7vVOEk+Izk=;
-        b=VRPzPFUr8vx9E9GqpmDEEyc5nYWFYOmVdy9tl6yCB2XUBzeDYORWtO9YttvChLLyKc
-         Ab5RxkUzrM3xBh3UrQIHqJsZgLWFBA62Gkpx/ZP+CyUjwfJx32k4C0CFmUlwgq7047B5
-         5nBtUORZ3WYBWBVS75yJeHb8mFyR00ShrfjpsFtH9tFFSdTlRrIQyqXKHOa/ZBouMCyS
-         igy7l7g46oDoTM7AlI1aDtTE05d4eZgJ5pihg+VdH+GCh9eEiUhSD5QA7bh/uF/K1INv
-         8AT42S8/fXGGPIKGxdESFreSf6a1MuC0iv8XLFwja9DrljAUFjyOcR0Lsr7BPKJDGGk9
-         pBsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730916841; x=1731521641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=87iZqhnI6xalUo1meCuWOUsEAO+KfuLV+7vVOEk+Izk=;
-        b=VdGRRNjOLF7WM0H7dBFjU5jhsauqBKZmJk04E6orrAVMAqNHh75It9TCa8Sm4IwWPl
-         CbjJNphRYVTzhEtSKYLWLfUDmt/Szts3mXJJVjolFYwusO0PorTyhfv/P1BqfuijBzcZ
-         s/jswYVSbNCSWCpPMW7OCCctkN4lFkCUhvm75cz/Nv9whCVxgmfg3TzaWgzqkpdbK1M8
-         0WOOq1FVmRxEfdYJ0vy0LYmypfj8lKCnDBH/NeP39XJ0vl4M/nsWSasv535LUR7dYtVq
-         XmW5idBoEBa2tvMYQol+YMZS6N0TBbreWfil4XNsyAIYG10bjm2A1vq0gKsn/oXg1ecp
-         4/Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCUi8y4iyiBuR2kAsGz1hToebpV3NPoLwuWA2PxayJHCxkJq/TKIUDMT3aWOLc3t1qxzuGzQwdlcXIGjphRtlFs=@vger.kernel.org, AJvYcCVGoTWkyfuVbu0xiloOkTT7qhQkcwnjpd7Di/zOmUUwdFK+qwX7Tptsq6S8S1cEP9NhRD26EAMH@vger.kernel.org, AJvYcCXG7SsI2g9zLZx8FaorA7KepJvY7yo443TgktEZpLsKykgut2pcstcghmK2NpsmCdktmL7dcMaOHdoDPMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFVopdZCDGppJR+vAQ4EdGqQ3s7niOCIHVZQZ3SyyANAy9hRt/
-	TdHaiqkwNQYTASE4DCy/G02AXjm3movdedhZlW2mcv+mh+5dAyBX
-X-Google-Smtp-Source: AGHT+IELmHNOBqTODCZEVDIbuggwbEra42wa6wcQaohzH1OeZQt39OEQO8TXd+RI+rVEN72j5Tk+kg==
-X-Received: by 2002:a05:6214:5543:b0:6cc:37bb:40b with SMTP id 6a1803df08f44-6d185841246mr687937996d6.37.1730916840901;
-        Wed, 06 Nov 2024 10:14:00 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d353f9ef91sm75169446d6.4.2024.11.06.10.13.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 10:14:00 -0800 (PST)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9B9C21200070;
-	Wed,  6 Nov 2024 13:13:59 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 06 Nov 2024 13:13:59 -0500
-X-ME-Sender: <xms:57ErZ1UHjSQaqi-7Kmff2C-nu4iAAQGtBxVGu3S1rPtwjCTx6w8w6w>
-    <xme:57ErZ1mZ9ASoK6nzy3NgG1bHgr98fUXitnEN75PphOuFZLTxphTu3cBow2rVI6wXB
-    uI8GK7NayAuoa9qbg>
-X-ME-Received: <xmr:57ErZxaZV2Gd43Uos5xWUaunOeAEy2r2BDoq7VyjEfyKPU9gEOOeJUEgfZU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddvgddutdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeevieeujefgtdetveevieevudegvefhvddvkeei
-    vefhgfejgedtgedvhfekveeufeenucffohhmrghinheprhhushhtqdhfohhrqdhlihhnuh
-    igrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
-    mhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghe
-    dtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhes
-    fhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegrnhhnrgdqmhgrrhhirgeslhhinhhuthhrohhnihigrdguvgdprhgtph
-    htthhopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhig
-    sehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepjhhsthhulhhtiiesghhoohhglh
-    gvrdgtohhmpdhrtghpthhtohepshgsohihugeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhu
-    shhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:57ErZ4VeAZ9REZ3c305-p18plbt7l4R8479YUjtbyO6wAOa8qLZa4w>
-    <xmx:57ErZ_mAYKMNlwaGnuSz1-5QY-mJy_8fwkwQOtbPs7YTuWk5LJOzJg>
-    <xmx:57ErZ1c8aZgqyu5CKRaRIuttOb_pCX1qJfTt2iaznVnwzehoT3XRfQ>
-    <xmx:57ErZ5Fs1vU7LwKyHlimKPUPcJ13Crnb7OB0TnV0koSUko2hahKbTg>
-    <xmx:57ErZ5lMMy6JWdgya1NzO_-h6LJ-48HWbWIjeBErvQPnMzTnYu0E4ZSQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 Nov 2024 13:13:59 -0500 (EST)
-Date: Wed, 6 Nov 2024 10:13:57 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de
-Subject: Re: [PATCH v5 4/7] rust: time: Add wrapper for fsleep function
-Message-ID: <Zyux5d33Kt6qFdaH@Boquns-Mac-mini.local>
-References: <20241101010121.69221-1-fujita.tomonori@gmail.com>
- <20241101010121.69221-5-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="k3pff0QC"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1t8kCT-00GBen-B3; Wed, 06 Nov 2024 18:52:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=LBac3zL9ZPZQLfgdHj+CoiRzpyIdxumYQNZim816CMc=; b=k3pff0QC4zOecxiIeK12Ts7Hgb
+	174ZP04mieJ5KwiHE3EvQe2BG+/CuMM/xqsYHt/QTtivl3wNTqOafKT6w+3OhZOaKPku7zzDASJek
+	30JO8LHkUWL2DL0BMZVf6ZIW5U0soIr1ZvrIxHlXJzCBnnJC6bJuE0ZomoJ+Z+FsZ16t1LPvWTet2
+	dWnxd50XuejmChBQVP+hh6mde3j7nvQAeEzl7ElNyUvZIDhdl+87X+7mHn6TM8zNj0Hzasa829ZZG
+	1S4XQ1ZDlSlH4MuVlMv2CsfPdtn+dnfP1BTg/UoFLVYCdnFnTXv5D75pNZ9+9qEt5mrKUk8LSLCml
+	964E/QuA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1t8kCS-0001o6-Lh; Wed, 06 Nov 2024 18:52:13 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1t8kCH-002ver-Vw; Wed, 06 Nov 2024 18:52:02 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 06 Nov 2024 18:51:18 +0100
+Subject: [PATCH net 1/4] virtio/vsock: Fix accept_queue memory leak
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241101010121.69221-5-fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241106-vsock-mem-leaks-v1-1-8f4ffc3099e6@rbox.co>
+References: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
+In-Reply-To: <20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co>
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jia He <justin.he@arm.com>, 
+ Arseniy Krasnov <avkrasnov@salutedevices.com>, 
+ Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
+ George Zhang <georgezhang@vmware.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Fri, Nov 01, 2024 at 10:01:18AM +0900, FUJITA Tomonori wrote:
-> Add a wrapper for fsleep, flexible sleep functions in
-> `include/linux/delay.h` which typically deals with hardware delays.
-> 
-> The kernel supports several `sleep` functions to handle various
-> lengths of delay. This adds fsleep, automatically chooses the best
-> sleep method based on a duration.
-> 
-> `sleep` functions including `fsleep` belongs to TIMERS, not
-> TIMEKEEPING. They are maintained separately. rust/kernel/time.rs is an
-> abstraction for TIMEKEEPING. To make Rust abstractions match the C
-> side, add rust/kernel/time/delay.rs for this wrapper.
-> 
-> fsleep() can only be used in a nonatomic context. This requirement is
-> not checked by these abstractions, but it is intended that klint [1]
-> or a similar tool will be used to check it in the future.
-> 
-> Link: https://rust-for-linux.com/klint [1]
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/helpers/helpers.c    |  1 +
->  rust/helpers/time.c       |  8 ++++++++
->  rust/kernel/time.rs       |  4 +++-
->  rust/kernel/time/delay.rs | 43 +++++++++++++++++++++++++++++++++++++++
->  4 files changed, 55 insertions(+), 1 deletion(-)
->  create mode 100644 rust/helpers/time.c
->  create mode 100644 rust/kernel/time/delay.rs
-> 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 30f40149f3a9..c274546bcf78 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -21,6 +21,7 @@
->  #include "slab.c"
->  #include "spinlock.c"
->  #include "task.c"
-> +#include "time.c"
->  #include "uaccess.c"
->  #include "wait.c"
->  #include "workqueue.c"
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> new file mode 100644
-> index 000000000000..7ae64ad8141d
-> --- /dev/null
-> +++ b/rust/helpers/time.c
-> @@ -0,0 +1,8 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/delay.h>
-> +
-> +void rust_helper_fsleep(unsigned long usecs)
-> +{
-> +	fsleep(usecs);
-> +}
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index e4f0a0f34d6d..9395739b51e0 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -2,12 +2,14 @@
->  
->  //! Time related primitives.
->  //!
-> -//! This module contains the kernel APIs related to time and timers that
-> +//! This module contains the kernel APIs related to time that
->  //! have been ported or wrapped for usage by Rust code in the kernel.
->  //!
->  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
->  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
->  
-> +pub mod delay;
-> +
->  /// The number of nanoseconds per microsecond.
->  pub const NSEC_PER_USEC: i64 = bindings::NSEC_PER_USEC as i64;
->  
-> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
-> new file mode 100644
-> index 000000000000..c3c908b72a56
-> --- /dev/null
-> +++ b/rust/kernel/time/delay.rs
-> @@ -0,0 +1,43 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Delay and sleep primitives.
-> +//!
-> +//! This module contains the kernel APIs related to delay and sleep that
-> +//! have been ported or wrapped for usage by Rust code in the kernel.
-> +//!
-> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
-> +
-> +use crate::time::Delta;
+As the final stages of socket destruction may be delayed, it is possible
+that virtio_transport_recv_listen() will be called after the accept_queue
+has been flushed, but before the SOCK_DONE flag has been set. As a result,
+sockets enqueued after the flush would remain unremoved, leading to a
+memory leak.
 
-Nit: I think it's better to use:
+vsock_release
+  __vsock_release
+    lock
+    virtio_transport_release
+      virtio_transport_close
+        schedule_delayed_work(close_work)
+    sk_shutdown = SHUTDOWN_MASK
+(!) flush accept_queue
+    release
+                                        virtio_transport_recv_pkt
+                                          vsock_find_bound_socket
+                                          lock
+                                          if flag(SOCK_DONE) return
+                                          virtio_transport_recv_listen
+                                            child = vsock_create_connected
+                                      (!)   vsock_enqueue_accept(child)
+                                          release
+close_work
+  lock
+  virtio_transport_do_close
+    set_flag(SOCK_DONE)
+    virtio_transport_remove_sock
+      vsock_remove_sock
+        vsock_remove_bound
+  release
 
-use super::Delta;
+Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
+socket destruction.
 
-here to refer a definition in the super mod.
+unreferenced object 0xffff888109e3f800 (size 2040):
+  comm "kworker/5:2", pid 371, jiffies 4294940105
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
+  backtrace (crc 9e5f4e84):
+    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
+    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
+    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
+    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
+    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
+    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
+    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
+    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
+    [<ffffffff811070dd>] kthread+0xdd/0x110
+    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
+    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
 
-> +use core::ffi::c_ulong;
-> +
-> +/// Sleeps for a given duration at least.
-> +///
-> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
-> +/// which automatically chooses the best sleep method based on a duration.
-> +///
-> +/// `delta` must be 0 or greater and no more than u32::MAX / 2 microseconds.
+Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/vmw_vsock/virtio_transport_common.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Adding backquotes on "u32::MAX / 2" would make it easier to read and
-generates better documentation. For example.
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index ccbd2bc0d2109aea4f19e79a0438f85893e1d89c..cd075f608d4f6f48f894543e5e9c966d3e5f22df 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1512,6 +1512,14 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+ 		return -ENOMEM;
+ 	}
+ 
++	/* __vsock_release() might have already flushed accept_queue.
++	 * Subsequent enqueues would lead to a memory leak.
++	 */
++	if (sk->sk_shutdown == SHUTDOWN_MASK) {
++		virtio_transport_reset_no_sock(t, skb);
++		return -ESHUTDOWN;
++	}
++
+ 	child = vsock_create_connected(sk);
+ 	if (!child) {
+ 		virtio_transport_reset_no_sock(t, skb);
 
-/// `delta` must be 0 or greater and no more than `u32::MAX / 2` microseconds.
+-- 
+2.46.2
 
-
-> +/// If a value outside the range is given, the function will sleep
-> +/// for u32::MAX / 2 microseconds at least.
-
-Same here.
-
-I would also add the converted result in seconds of `u32::MAX / 2`
-microseconds to give doc readers some intuitions, like:
-
-the function will sleep for `u32::MAX / 2` (= ~2147 seconds or ~36
-minutes) at least.
-
-> +///
-> +/// This function can only be used in a nonatomic context.
-> +pub fn fsleep(delta: Delta) {
-> +    // The argument of fsleep is an unsigned long, 32-bit on 32-bit architectures.
-> +    // Considering that fsleep rounds up the duration to the nearest millisecond,
-> +    // set the maximum value to u32::MAX / 2 microseconds.
-> +    const MAX_DURATION: Delta = Delta::from_micros(u32::MAX as i64 >> 1);
-> +
-> +    let duration = if delta > MAX_DURATION || delta.as_nanos() < 0 {
-
-I think it would be helpful if `Delta` has a `is_negative()` function.
-
-The rest looks good to me. Thanks!
-
-Regards,
-Boqun
-
-> +        // TODO: add WARN_ONCE() when it's supported.
-> +        MAX_DURATION
-> +    } else {
-> +        delta
-> +    };
-> +
-> +    // SAFETY: FFI call.
-> +    unsafe {
-> +        // Convert the duration to microseconds and round up to preserve
-> +        // the guarantee; fsleep sleeps for at least the provided duration,
-> +        // but that it may sleep for longer under some circumstances.
-> +        bindings::fsleep(duration.as_micros_ceil() as c_ulong)
-> +    }
-> +}
-> -- 
-> 2.43.0
-> 
-> 
