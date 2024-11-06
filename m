@@ -1,177 +1,237 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7E11D319C
-	for <netdev@vger.kernel.org>; Wed,  6 Nov 2024 02:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46BA18CBEC;
+	Wed,  6 Nov 2024 02:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730860021; cv=none; b=i7TwK4iXaY53bPDE632GjKF0N8MOB3RW4puHvmgsrqiglPMWAmJvukvqbwKh/jEF4Fvq1dxyXu8nCyqSVhh890bNerGETp1erN2wXWBUdqPtqM3sFl2HGDfx6mkWywTI22rwV1oFW9tHEyRO3wvNTALSGW0MQm4JRIQY9vkXOzk=
+	t=1730860711; cv=none; b=Gslskg1L2w2aHvl3IwyQJrC7auiPKR+mm7UrKo2LQAfOaPhE5RZ6dEOuyp60AnpYGR0a4z19CQAVh+YWxGjzX/A3JgjCa/aLDS4jWcAIZlI8Ae5D/TiYpSc5xSUXfrZv7KpCRV09/3iiTma83PqmrY74LebX5RQuDomaDMUKVNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730860021; c=relaxed/simple;
-	bh=8gMZLLnSc32kMDO7afSuHkyae7EVmkx6ELFm/PuHsAc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUzDIBgV7oQt3cQvXziGSrDtrUFWQWS+a9iaRK8R7kK9MOSDDtCLdwTjncT1A0TA3cEJ6sIeVscqWU3C/JxHdRDXGrTKXHaWWCnPmwLbDobjcP4pCWHpWmrzEJhZFZ+56ajs0c0VyCByqVIvmzJ2K0dMhx6v+lDy4qNWP3ngHn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kBpuq/TE; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1730860711; c=relaxed/simple;
+	bh=qoJaqRb83sZPujyIsKU8q8MqSySsJCHzRVLvgis4QK4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pcq/es2hscgJwwzc3WD0uxCHiOphTUpbHmadYIpen+rZv30rMgN4NXV+YZ5QHSq29Lrpy2XLZjRTbtbZ266uRtEComOvtP28Dn7tKHDQjnIPCoKyzjQw4H5wipzSxkpv80Sfpxw6LQgb8A/GGBu4KkyBE0fbDCwDfTRZsdzDjw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8ARRX/j; arc=none smtp.client-ip=209.85.166.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kBpuq/TE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8ARRX/j"
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a6c7bede1aso10672235ab.0;
+        Tue, 05 Nov 2024 18:38:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1730860019; x=1762396019;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g5s3iGchZbi9ph9xRF5r4XOxT6tRcpnaDCpWlUh7pGM=;
-  b=kBpuq/TEo5vrLjNLJR+OwwMB85eEJ5/lLbDbnrTbmtEy7BUQgUCzv2XO
-   2pWAB/rRHmpUhSOnKs+BChEBuAp27aWQk4lt3zqWtvR4Ub1pSeazdG7cg
-   g9WAZni04uqMGPMwx/5sTBHtLaFS4eqbrUxZ+oVYfvdvdImJL5g+5YvR+
-   k=;
-X-IronPort-AV: E=Sophos;i="6.11,261,1725321600"; 
-   d="scan'208";a="440597725"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 02:26:57 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:9560]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.121:2525] with esmtp (Farcaster)
- id 1d709028-2d92-4460-8354-99dae9fc8649; Wed, 6 Nov 2024 02:26:56 +0000 (UTC)
-X-Farcaster-Flow-ID: 1d709028-2d92-4460-8354-99dae9fc8649
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 6 Nov 2024 02:26:56 +0000
-Received: from 6c7e67c6786f.amazon.com (10.187.170.17) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 6 Nov 2024 02:26:53 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Marc Kleine-Budde
-	<mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, "Daniel
- Borkmann" <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH v2 net-next 7/7] rtnetlink: Register rtnl_dellink() and rtnl_setlink() with RTNL_FLAG_DOIT_PERNET_WIP.
-Date: Tue, 5 Nov 2024 18:24:32 -0800
-Message-ID: <20241106022432.13065-8-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241106022432.13065-1-kuniyu@amazon.com>
-References: <20241106022432.13065-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1730860709; x=1731465509; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qoJaqRb83sZPujyIsKU8q8MqSySsJCHzRVLvgis4QK4=;
+        b=U8ARRX/jw9QWSOTC98JmT229FVo02V0yIefg5FajNZZxZrKw0n4cVKrMJYYkiEfIeD
+         CCEH/ZHYk7NaMki606lo7eDAvdynKjCONzo135ekirw99+Ggj1sBPJmQcFtgQy/UEB0X
+         aCldd3cs9etPARrZfPJvXHLLawNdczf0QB7tnI/eA8XyTYHQTH4KUHvNm3YTAcVw8EfH
+         Qb0VAmkTABRpM9S6QwwpbSRACGJN98IwR4OzqOijy9rsMO/elIb3S586tZKTdYRRSswZ
+         Q6PKf/8qvLK4oz3jwzqERwjv4M71CdbKWE+2PEtyWj40t8B4WF4WCw8GB6+PBR34SBL3
+         WEoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730860709; x=1731465509;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qoJaqRb83sZPujyIsKU8q8MqSySsJCHzRVLvgis4QK4=;
+        b=KFS8kcBwo3/WgPvyTqk3NojUcWctleI5lFac9WT/finLzrDoDZm6K9i/faxtO95Ie3
+         +lhTs7GLwyr97Lvw6SaOsHeUP+aCyZVjzKTBlGzYxSMnb8+ABNaUbCSim3sixlpOFkgl
+         LhzHqmLJHUaQJLc3SqbZR3Ih826e6yeq31f+1xCgTN0/eLUGxwdLRKRRwn42AgkOTlVD
+         1fZaTMDeekqjGECtgG6PPeA0hXToAU6aqJIjiBhsW9M0CrCHSZPu72lAc7w17JXvycsx
+         9I1fT3xKOzsIKGOgDSItZc19A3EeRgua9vHI6DdELPK3+YItOe+p8txvFu4AIU9Irpjv
+         x1iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdMqumNZa55mTwMdDn74Uc9q4XlKkjsqkroJkFauQDsAvTfc9E2aKn7T7wWxJW3HBJ+Hg=@vger.kernel.org, AJvYcCWIGy/5glBEZi/EabjvJe78mofYF/vCTqFp67bZF/RnWP9ytGcyLWR5v7NA+wk2B2NXYncNuQp9@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoIhQ2EmU9SO/ZcjanFHfJDptJLCmOmYJ8VyVM8EwN/YCxPYoQ
+	UsbRs4Ret844nRcJ1VU6Bxc6xtlQBaNOUtmwEAXFbLVXSowjnJea4o7LwcqkmT3TEQEk7RX1aQl
+	BIIvdYHFoq1gT0QcVKmOQJYiygow=
+X-Google-Smtp-Source: AGHT+IHYXaazaAXzo0tq4MZvq28dE7OUoHGNkaMeZ8DIyRN+LzH8PAqDzM1up3FJxG3NJjLLKT8S1w1AZsAnuxtMFc4=
+X-Received: by 2002:a05:6e02:1988:b0:3a6:ca38:6862 with SMTP id
+ e9e14a558f8ab-3a6ca386d1fmr120153425ab.19.1730860708780; Tue, 05 Nov 2024
+ 18:38:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D046UWA004.ant.amazon.com (10.13.139.76) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+References: <20241028110535.82999-1-kerneljasonxing@gmail.com>
+ <67219e5562f8c_37251929465@willemb.c.googlers.com.notmuch>
+ <CAL+tcoDonudsr800HmhDir7f0B6cx0RPwmnrsRmQF=yDUJUszg@mail.gmail.com>
+ <3c7c5f25-593f-4b48-9274-a18a9ea61e8f@linux.dev> <CAL+tcoAy2ryOpLi2am=T68GaFG1ACCtYmcJzDoEOan-0u3aaWw@mail.gmail.com>
+ <672269c08bcd5_3c834029423@willemb.c.googlers.com.notmuch>
+ <CAL+tcoA7Uddjx3OJzTB3+kqmKRt6KQN4G1VDCbE+xwEhATQpQQ@mail.gmail.com>
+ <CAL+tcoDL0by6epqExL0VVMqfveA_awZ3PE9mfwYi3OmovZf3JQ@mail.gmail.com>
+ <d138a81d-f9f5-4d51-bedd-3916d377699d@linux.dev> <CAL+tcoBfuFL7-EOBY4RLMdDZJcUSyq20pJW13OqzNazUP7=gaw@mail.gmail.com>
+ <67237877cd08d_b246b2942b@willemb.c.googlers.com.notmuch> <CAL+tcoBpdxtz5GHkTp6e52VDCtyZWvU7+1hTuEo1CnUemj=-eQ@mail.gmail.com>
+ <65968a5c-2c67-4b66-8fe0-0cebd2bf9c29@linux.dev> <6724d85d8072_1a157829475@willemb.c.googlers.com.notmuch>
+ <1c8ebc16-f8e7-4a98-9518-865db3952f8f@linux.dev> <CAL+tcoBf+kQ3_kc9x62KnHx9O+6c==_DN+6EheL82UKQ3xQN1A@mail.gmail.com>
+ <f27ab4ce-02df-464e-90ed-852652fb7e3e@linux.dev> <CAL+tcoDEMJGYNw01QnEUZwtG5BMj3AyLwtp1m1_hJfY2bG=-dQ@mail.gmail.com>
+ <672ac23732699_cde4729460@willemb.c.googlers.com.notmuch>
+In-Reply-To: <672ac23732699_cde4729460@willemb.c.googlers.com.notmuch>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Wed, 6 Nov 2024 10:37:52 +0800
+Message-ID: <CAL+tcoAPYSkPW27nxr9_Xbc3oGToMZ=D=jyTr=x=XEWa8mKq3A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 02/14] net-timestamp: allow two features to
+ work parallelly
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>, willemb@google.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, 
+	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com, 
+	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, 
+	shuah@kernel.org, ykolal@fb.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently, rtnl_setlink() and rtnl_dellink() cannot be fully converted
-to per-netns RTNL due to a lack of handling peer/lower/upper devices in
-different netns.
+On Wed, Nov 6, 2024 at 9:11=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> Jason Xing wrote:
+> > On Wed, Nov 6, 2024 at 3:22=E2=80=AFAM Martin KaFai Lau <martin.lau@lin=
+ux.dev> wrote:
+> > >
+> > > On 11/4/24 10:22 PM, Jason Xing wrote:
+> > > > On Tue, Nov 5, 2024 at 10:09=E2=80=AFAM Martin KaFai Lau <martin.la=
+u@linux.dev> wrote:
+> > > >>
+> > > >> On 11/1/24 6:32 AM, Willem de Bruijn wrote:
+> > > >>>> In udp/raw/..., I don't know how likely is the user space having=
+ "cork->tx_flags
+> > > >>>> & SKBTX_ANY_TSTAMP" set but has neither "READ_ONCE(sk->sk_tsflag=
+s) &
+> > > >>>> SOF_TIMESTAMPING_OPT_ID" nor "cork->flags & IPCORK_TS_OPT_ID" se=
+t.
+> > > >>> This is not something to rely on. OPT_ID was added relatively rec=
+ently.
+> > > >>> Older applications, or any that just use the most straightforward=
+ API,
+> > > >>> will not set this.
+> > > >>
+> > > >> Good point that the OPT_ID per cmsg is very new.
+> > > >>
+> > > >> The datagram support on SOF_TIMESTAMPING_OPT_ID in sk->sk_tsflags =
+had
+> > > >> been there for quite some time now. Is it a safe assumption that
+> > > >> most applications doing udp tx timestamping should have
+> > > >> the SOF_TIMESTAMPING_OPT_ID set to be useful?
+> > > >>
+> > > >>>
+> > > >>>> If it is
+> > > >>>> unlikely, may be we can just disallow bpf prog from directly set=
+ting
+> > > >>>> skb_shinfo(skb)->tskey for this particular skb.
+> > > >>>>
+> > > >>>> For all other cases, in __ip[6]_append_data, directly call a bpf=
+ prog and also
+> > > >>>> pass the kernel decided tskey to the bpf prog.
+> > > >>>>
+> > > >>>> The kernel passed tskey could be 0 (meaning the user space has n=
+ot used it). The
+> > > >>>> bpf prog can give one for the kernel to use. The bpf prog can st=
+ore the
+> > > >>>> sk_tskey_bpf in the bpf_sk_storage now. Meaning no need to add o=
+ne to the struct
+> > > >>>> sock. The bpf prog does not have to start from 0 (e.g. start fro=
+m U32_MAX
+> > > >>>> instead) if it helps.
+> > > >>>>
+> > > >>>> If the kernel passed tskey is not 0, the bpf prog can just use t=
+hat one
+> > > >>>> (assuming the user space is doing something sane, like the value=
+ in
+> > > >>>> SCM_TS_OPT_ID won't be jumping back and front between 0 to U32_M=
+AX). I hope this
+> > > >>>> is very unlikely also (?) but the bpf prog can probably detect t=
+his and choose
+> > > >>>> to ignore this sk.
+> > > >>> If an applications uses OPT_ID, it is unlikely that they will tog=
+gle
+> > > >>> the feature on and off on a per-packet basis. So in the common ca=
+se
+> > > >>> the program could use the user-set counter or use its own if user=
+space
+> > > >>> does not enable the feature. In the rare case that an application=
+ does
+> > > >>> intermittently set an OPT_ID, the numbering would be erratic. Thi=
+s
+> > > >>> does mean that an actively malicious application could mess with =
+admin
+> > > >>> measurements.
+> > > >>
+> > > >> All make sense. Given it is reasonable to assume the user space sh=
+ould either
+> > > >> has SOF_TIMESTAMPING_OPT_ID always on or always off. When it is of=
+f, the bpf
+> > > >> prog can directly provide its own tskey to be used in shinfo->tske=
+y. The bpf
+> > > >> prog can generate the id itself without using the sk->sk_tskey, e.=
+g. store an
+> > > >> atomic int in the bpf_sk_storage.
+> > > >
+> > > > I wonder, how can we correlate the key with each skb in the bpf
+> > > > program for non-TCP type without implementing a bpf extension for
+> > > > SCM_TS_OPT_ID? Every time the timestamp is reported, we cannot know
+> > > > which sendmsg() the skb belongs to for non-TCP cases.
+> > >
+> > > SCM_TS_OPT_ID is eventually setting the shinfo->tskey.
+> > > If the shinfo->tskey is not set by the user space, the bpf prog can d=
+irectly set
+> > > the shinfo->tskey. There is no need to use the sk->sk_tskey as the ID=
+ generator
+> > > also. The bpf prog can have its own id generator.
+> > >
+> > > If the user space has already set the shinfo->tskey (either by sk->sk=
+_tskey or
+> > > SCM_TS_OPT_ID), the bpf prog can just use the user space one.
+> > >
+> > > If there is a weird application that flips flops between OPT_ID on/of=
+f, the bpf
+> > > prog will get confused which is fine. The bpf prog can detect this an=
+d choose to
+> > > ignore measuring this sk/skb.
+>
+> That will skew measurement and is under control of the process.
+>
+> I don't immediately foresee this being used to measure untrusted
+> processes that would have an incentive to game this.
+>
+> But the caveat should be stated explicitly.
+>
+> > > The bpf prog can also choose to be on the very
+> > > safe side and ignore all skb with SKBTX_ANY_TSTAMP set in txflags but=
+ with no
+> > > OPT_ID. The bpf prog can look into the details of the sk and skb to d=
+ecide what
+> > > makes the most sense for its deployment.
+> > >
+> > > I don't know whether it makes more sense to call the bpf prog to deci=
+de the
+> > > shinfo->{tx_flags,tskey} just before the "while (length > 0)" in
+> > > __ip[6]_append_data or it is better to call the bpf prog in ip[6]_set=
+up_cork.
+> > > I admittedly less familiar with this code path than the tcp one.
+>
+> Probably the current spot, mainly because no skb exists yet in
+> ip_setup_cork.
+>
+> > Now I feel it could be complicated for a software engineer to consider
+> > how they will handle the key if they don't read the kernel code very
+> > carefully. They are facing different situations. Being user-friendly
+> > lets this feature have more chances to get widely used. As I insisted
+> > before, I still would like to know if it is possible that we can try
+> > to introduce sk_tskey_bpf_offset (like patch 10-12) to calculate a bpf
+> > exclusive tskey for bpf use? Only exporting one key. It will be really
+> > simple and easy-to-use :)
+>
+> That has complications of its own. It also has to deal with the user
+> enabling/disabling/resetting its key, and with OPT_ID passed by cmsg.
+> Multiple skbs may be in flight, derived from each of these sources.
+> A single sk flag can only offset against one of them.
+>
+> I think Martin's approach is more workable. Use the tskey that is set,
+> if any. Else, set one.
 
-For example, when we change a device in rtnl_setlink() and need to
-propagate that to its upper devices, we want to avoid acquiring all netns
-locks, for which we do not know the upper limit.
-
-The same situation happens when we remove a device.
-
-rtnl_dellink() could be transformed to remove a single device in the
-requested netns and delegate other devices to per-netns work, and
-rtnl_setlink() might be ?
-
-Until we come up with a better idea, let's use a new flag
-RTNL_FLAG_DOIT_PERNET_WIP for rtnl_dellink() and rtnl_setlink().
-
-This will unblock converting RTNL users where such devices are not related.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/net/rtnetlink.h |  1 +
- net/core/rtnetlink.c    | 19 ++++++++++++++++---
- 2 files changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index f17208323c08..64b0c18651b5 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -13,6 +13,7 @@ typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
- enum rtnl_link_flags {
- 	RTNL_FLAG_DOIT_UNLOCKED		= BIT(0),
- #define RTNL_FLAG_DOIT_PERNET		RTNL_FLAG_DOIT_UNLOCKED
-+#define RTNL_FLAG_DOIT_PERNET_WIP	RTNL_FLAG_DOIT_UNLOCKED
- 	RTNL_FLAG_BULK_DEL_SUPPORTED	= BIT(1),
- 	RTNL_FLAG_DUMP_UNLOCKED		= BIT(2),
- 	RTNL_FLAG_DUMP_SPLIT_NLM_DONE	= BIT(3),	/* legacy behavior */
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 1b58a7c4c912..28af19cc36a8 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3408,6 +3408,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct net *net = sock_net(skb->sk);
- 	struct nlattr *tb[IFLA_MAX+1];
- 	struct net_device *dev = NULL;
-+	struct rtnl_nets rtnl_nets;
- 	struct net *tgt_net;
- 	int err;
- 
-@@ -3426,6 +3427,12 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		goto errout;
- 	}
- 
-+	rtnl_nets_init(&rtnl_nets);
-+	rtnl_nets_add(&rtnl_nets, get_net(net));
-+	rtnl_nets_add(&rtnl_nets, tgt_net);
-+
-+	rtnl_nets_lock(&rtnl_nets);
-+
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
-@@ -3438,7 +3445,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	else if (!err)
- 		err = -ENODEV;
- 
--	put_net(tgt_net);
-+	rtnl_nets_unlock(&rtnl_nets);
- errout:
- 	return err;
- }
-@@ -3523,6 +3530,8 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			return PTR_ERR(tgt_net);
- 	}
- 
-+	rtnl_net_lock(tgt_net);
-+
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
-@@ -3537,6 +3546,8 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	else
- 		err = -EINVAL;
- 
-+	rtnl_net_unlock(tgt_net);
-+
- 	if (netnsid >= 0)
- 		put_net(tgt_net);
- 
-@@ -7023,10 +7034,12 @@ static struct pernet_operations rtnetlink_net_ops = {
- static const struct rtnl_msg_handler rtnetlink_rtnl_msg_handlers[] __initconst = {
- 	{.msgtype = RTM_NEWLINK, .doit = rtnl_newlink,
- 	 .flags = RTNL_FLAG_DOIT_PERNET},
--	{.msgtype = RTM_DELLINK, .doit = rtnl_dellink},
-+	{.msgtype = RTM_DELLINK, .doit = rtnl_dellink,
-+	 .flags = RTNL_FLAG_DOIT_PERNET_WIP},
- 	{.msgtype = RTM_GETLINK, .doit = rtnl_getlink,
- 	 .dumpit = rtnl_dump_ifinfo, .flags = RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
--	{.msgtype = RTM_SETLINK, .doit = rtnl_setlink},
-+	{.msgtype = RTM_SETLINK, .doit = rtnl_setlink,
-+	 .flags = RTNL_FLAG_DOIT_PERNET_WIP},
- 	{.msgtype = RTM_GETADDR, .dumpit = rtnl_dump_all},
- 	{.msgtype = RTM_GETROUTE, .dumpit = rtnl_dump_all},
- 	{.msgtype = RTM_GETNETCONF, .dumpit = rtnl_dump_all},
--- 
-2.39.5 (Apple Git-154)
-
+Got it. Thanks!
