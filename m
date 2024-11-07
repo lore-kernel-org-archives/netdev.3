@@ -1,247 +1,218 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C0E176FB0;
-	Thu,  7 Nov 2024 09:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730970880; cv=fail; b=EWV7MMcHk9V+A/mj1lTahzURuwwibF/hW26RVJtUgCXH2QwLBh8B0W7QiQCmDEbsS8zoZCA7dWjjiph10h3MS0YKnW0I0ehxglgauWoF2nwG0lLGYIAWzfBhWG39wx0+4d+NcBbx8byeGo+bcL3nbPUTctYoyOaQBE9o68FzNus=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730970880; c=relaxed/simple;
-	bh=n7oS6BXYl70xJ6Eyas9znhpifI8kaBw4enTy9ErpmkY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K60bOqH0BAiPHbHfLO4xyZNMPW4J+I6QBaf5AnhMi4unev5B9t7EIYIbp9I4O259LuGzsNGkoseQsPQ7qHwNFCHMDw7Iq4qLXB6SkYw5c2T23GSgx3eBzl3l/Fx0h264eDpcxq2Cvr22INRjmk929WcOxcyg89lRlAtx5Vpn5ho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcLkRIv1; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8C192B73
+	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 09:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730971028; cv=none; b=MYw2SgmVzOcMhu7oDkQQ9sZNfOutb6+Eh41RHdJwOgZBHeYu/elgLz4ObgEjlAE9iufdTlPBKxK47mer04bTjbW4/fck1n8Ctlf1IOcDOp4LIZhYAYlMAynuwmjZ75WwIM0czNG8UQbnRkcJgdHkMmJ/wXYCethNM1u3Al4/6j8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730971028; c=relaxed/simple;
+	bh=blNHLzKVHO6DcrVFuLeTQ+4ekd4YcIcxVGOQTIuPzLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EIVg3ijetkGN+S+p2XORlDoOVl6qCG74S3yZwD8SXWW/MNLbPJJ6msg4Bjbu8qOxvuJ6+1WupkP4a5f+xGPvyCjYotWFuGwsCY9zhfvzny0uBlj2euEBX6eFX3qNAqeec+XIq1uCFjSFa6fl51b7q7ndyx+7ODqzxoUsxLT0JwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0h5XFmM1; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcLkRIv1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730970878; x=1762506878;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=n7oS6BXYl70xJ6Eyas9znhpifI8kaBw4enTy9ErpmkY=;
-  b=gcLkRIv1PP4efmrSxYlSe/HjtIa4fM5CXPozeunEJ5ZAXCmD598sXUIo
-   tWV6csQBrvFXKTfOyRfI5xN4NXpt4kYRDaPRiFXgoLUwHIt1JCEoZbcGT
-   ECOgGI58J6+2NF2QoIi0PLJeh9sKMn/TacJF46T5Eoz7Xz142mgaYC5Rz
-   oOQzPnsaPrclvGDNXExoNf0hUk6mPkqG2eQ6h8/IknRwZ4f9Djzk2lW9j
-   gPEGGPNd3SimkRV0YT3wX/VQ30kg7wJfM/YBUPmERTYd4TxG0K/9J2Rk7
-   QT3Rs7v92UuXelbyA4GGUbHqVl3LoNk+zn0548t23PeoYxkTKG20nRJrP
-   A==;
-X-CSE-ConnectionGUID: 0bDoYTu2QIuqQgQxRrcHNw==
-X-CSE-MsgGUID: vBnH5t20SDSC7ATB1+kLsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="18425891"
-X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; 
-   d="scan'208";a="18425891"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 01:14:15 -0800
-X-CSE-ConnectionGUID: JuiWTXjmS4eGxYrlJM+e2Q==
-X-CSE-MsgGUID: pBKDdAHOQyWtp7yxoLuhGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; 
-   d="scan'208";a="85414601"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 07 Nov 2024 01:14:10 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 7 Nov 2024 01:14:09 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 7 Nov 2024 01:14:09 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 7 Nov 2024 01:14:09 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a1rcwRIw22wTVd6cJxih6bD6CtGv2XZnRwEuU7K3QNYvfs+i5WApQeZ8CMtotLedsvJnYMIrvBCwB42Q095XI+7GSOWn+777RdKctcaIaYzLe/wL6DIzxIwQfBC++d+nj6sODEuy4/yz/1mlUa7jWtNtjnl89dcaqkdza+w+wUgmjF8sM5hENmHwrvPGMFXJyk1Z4s/SaFvVLcenC+mpJ7kwGLDJ+JzdlPT4cX5C5JbGIEe/QoV0xamM+4e1K6YQoubYQoN6oZdLDyKuu0gSCpPquGCt9icKmicAwXdNZwDDBOnlc4NJ+yXa9iuAXN7mV6OWk898M2y/YHl9imdbKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sxJawpQr4jnzl3vkEhRZ1jzlfUI19TTRsmrzk+xQK7Y=;
- b=SX7Kct6mn5VaCJEekFXyxSmSwf8GMP/bgcoXzEaI7dFXtlxcevV86jaOsCJKL71TA8U/vA7ejQo6rDIMCx3WsZG7bnDbOAYWKA1lR7pboXJApqpJs+0NA3uaLAkU/7wBPGjU/dBrbL3jAqJQH8Sab9o1HcsIxMgVmxjg86eaizZHSQXkaeTFql5UeDPdhKz64dKT7lsb2+lPJAAPwfGSgcJJxcqrl9T4yEH9iKJLKnkdpWpwD+u2sqIu6WytrhWZVcrPxLHU8zGM/GWbWek6T9xn/CX0ELAL+ZdmfV2DCLWao7+ExKNKllA+IENA2/5qjXdFJaQkloX1B29M5ux/EA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB4664.namprd11.prod.outlook.com (2603:10b6:208:26e::24)
- by LV2PR11MB6046.namprd11.prod.outlook.com (2603:10b6:408:17a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 09:14:06 +0000
-Received: from MN2PR11MB4664.namprd11.prod.outlook.com
- ([fe80::85d0:c2bd:72cd:dcb7]) by MN2PR11MB4664.namprd11.prod.outlook.com
- ([fe80::85d0:c2bd:72cd:dcb7%6]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 09:14:06 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH net-next v3 1/2] ptp: add control over
- HW timestamp latch point
-Thread-Topic: [Intel-wired-lan] [PATCH net-next v3 1/2] ptp: add control over
- HW timestamp latch point
-Thread-Index: AQHbL+kBdxMULec3CUCOhZKxJSm9MrKqh3cAgAEAEJA=
-Date: Thu, 7 Nov 2024 09:14:06 +0000
-Message-ID: <MN2PR11MB466499CCAF0540D25A5DF7689B5C2@MN2PR11MB4664.namprd11.prod.outlook.com>
-References: <20241106010756.1588973-1-arkadiusz.kubalewski@intel.com>
- <20241106010756.1588973-2-arkadiusz.kubalewski@intel.com>
- <d20d8265-4263-4408-8448-4338a268d537@lunn.ch>
-In-Reply-To: <d20d8265-4263-4408-8448-4338a268d537@lunn.ch>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN2PR11MB4664:EE_|LV2PR11MB6046:EE_
-x-ms-office365-filtering-correlation-id: 8ffce732-46a5-446f-9937-08dcff0c87d6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?xqikkd26hjjqz94HEZQ0SDEZTSEpcPfu88LfpRFy7gpfMN70SczRjyhPoVfo?=
- =?us-ascii?Q?2Ksc8MDGfBsktYC64vyhiePSBV8lNG0s4exntU1rhi+XvR0wzvJK7/TNxm4y?=
- =?us-ascii?Q?DBOUqeb6pXRckyqUgI7RmAMCH2N/f7EOwCeJM0vfarI9A2iIxST2ynQUe5yz?=
- =?us-ascii?Q?+4T8gONNXnPsLI1p3fYUghbqKlZUsQZybsym2BHclVzyTpeaenrg5IXBd9pT?=
- =?us-ascii?Q?hU67XV/EsTvUBYRv6HF2mLIxLr9kcIiaAKTiTObGKYXfkjf7sSayW1COQo3/?=
- =?us-ascii?Q?i/obk865+O+XTXJWic2eZpO1krRUrM8b6L8zI2dit7zJX8cjPICBj29gYXbK?=
- =?us-ascii?Q?JgxNUJPeno2iUlMz7Ydv2kRGfLvPr2kRkP8KmloqWyuC85ypeclRexaupWZn?=
- =?us-ascii?Q?elKOqHM9x8eKI7lRH2a71FBFN8pJ8Q9UvzRz9JKC/P1rjGXbGliTEEGhSEl0?=
- =?us-ascii?Q?JAU9Qd9Y16tdZ4PvqsjmNMikxCSa01t8yTRi2WBr6kcERhBUqvfz84VQJ3EY?=
- =?us-ascii?Q?lGOjgMQ6Vjo8uqc5sfasq0TvqIgxfCZQmqlPybS5n4ZmGLCIntzeP8XbL5pC?=
- =?us-ascii?Q?G85BZpnVYf+PATs4hFrF2WmwBjRoBKOr8CImVlZ112zlx32ZkcRaHPCFDrcU?=
- =?us-ascii?Q?9bVIsG69Nc9jrKWYImE8YVIZ6sfq+dIIjSYVBvV5YFFTPuDFH3q/Ly25l2Ra?=
- =?us-ascii?Q?oTon8ulb0/OHFL7q2tT10ZiTxlStsEIrNNbMiG+qFkr5B1mx5UWvOLvZpa1w?=
- =?us-ascii?Q?Gx/cP/f0+hElWuNK5tCtSW/7kYd0Gd4/vZ3U+qPXk4o2QUWEwNMddIUwLqCA?=
- =?us-ascii?Q?Khfciwzi/4yIJAIQnBqSb+E4r2clLIefDepKkTYGbg3jur4ZE4e3aK+VaywS?=
- =?us-ascii?Q?eGCkofJUYH4z3hLAYKBKuC8Dss/6DI0rL06N97W/Jk/jTPpXsLgJO+h+fEBd?=
- =?us-ascii?Q?wKvRASDYOl4AtI2uBSCB/Dr1EWpzDy+X1zT9RRFrSzBoftdjV5cjut8dgSR3?=
- =?us-ascii?Q?hANctet7o8WbC0pze0D/CTsLiCkRJTSa+yiGJY7WHhmxdRKZc8guEJ6PksCw?=
- =?us-ascii?Q?RqCTrsGlrNDbreQzylTUKpV4azonPhIF+exsirdyD/OdhZZSEMCwWIx67iOi?=
- =?us-ascii?Q?EwDYmeAkp1ZB4hyXyNLLMpuaIJcUv2HORDU32/1rMqrTre5GsmhK7VAUo8lt?=
- =?us-ascii?Q?TW/05vieuLv6vSWlZQQRXzfHCW1uOGP9v8VHY8Z1bkaGBLGLWh/dkAHxFsJa?=
- =?us-ascii?Q?gaRbJmSvoJuvP983uK/0eTYa6iCeVZXeBTxdeNgvaJliXbK3BWIECPM16rpS?=
- =?us-ascii?Q?FQjySp20T+zBTc2HsmxMsQnevnlObsMuu4lJ/CEUtO0uhx8KgdpSak+/tF3o?=
- =?us-ascii?Q?ILLkxFY=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4664.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TWnIWKijPOOsbn0iLgCLC/ZefQH4RtEGaSzqFqCuo0MZCzUdkH5Gxc3i4sic?=
- =?us-ascii?Q?VOLOER1XmvOuI0NtO7kl4yLy+X/rj67b8wVWbnDcXJUUI4IllzvxTocEvWko?=
- =?us-ascii?Q?CfVy4vqk8koHkhBuKsxBzz8LMrpkQP6zG/LvZTss0XjlpGmXCZjY0xwGMbiE?=
- =?us-ascii?Q?99Wr/JVzE0oBxl1NR2dTT8NwBPYnv7h91i2Ko5ZpaMLL9OSQMFZtSrzM0Q4/?=
- =?us-ascii?Q?kKQtjeyBa314Gd833tLZRrALJWbferaucVTWMelbpmiVpgdyMkbOceAConio?=
- =?us-ascii?Q?pGR7dJDoV5azKscSDv8Z2/YaP8/dGdcnkm4phcyrkASf5KS9BXoBqp4c5fqp?=
- =?us-ascii?Q?6FFreqTt9wIYtgljV57RAWCgY7Ad3LzUfsdieKb0Z2eeYxix7Px74zDg0gu1?=
- =?us-ascii?Q?aI0cRLSJKm6/Fs625721pfGz6fvqpiZ+E85kTjhGbkFJOrkyJqsZqTQl8SY9?=
- =?us-ascii?Q?GUjd9DZkfGrxvvUw8RS2mSBAijXY8rkN//fwLu0yT9yQR5n0d7RmyHKdUZ00?=
- =?us-ascii?Q?Rp12aoACztlzfPvJU234I55A2PALTZ5xsTYDc0Rup9DLW1xtMmlTsdIyCNNG?=
- =?us-ascii?Q?lfmykAMtLN3UMX0mVozoZ7O996mtprssBlbbPxiCjHRfcFB50An36MuOwTEW?=
- =?us-ascii?Q?pEPm0ZlIq0yoIIgKnuaWuSI2mZGwS4tV9slC7/kPBXmp/WkZvG2EKyg4bcoj?=
- =?us-ascii?Q?OtbU/F1xxKQ6Zf4pzoYSzGibfK7kcLFZPTZEkD6hOg9MHrS4BjBNgTK0mCwB?=
- =?us-ascii?Q?T5+vUOrC6xDB5uZ44ZrOjY3+l6xE1icpLH16P5Z+WknLHgtf3jKpm29DDTGO?=
- =?us-ascii?Q?RgKFX/WGuTMEFjw5kC5EHJuXdvYGBCKi2ci787HCa7xwz53bcJ1oyBR7MYdV?=
- =?us-ascii?Q?PMvr3qs0ySzmcrzocHcAXiGsiYXj7mjYPyaxk2GTPMPwlwoOc+iaOBrjFMNY?=
- =?us-ascii?Q?ppZigCr+HoDfoTbVot0I35kKDkkTzg70FvJl1ERZz2WmtoS8zsuW+dKhFAQP?=
- =?us-ascii?Q?jCxmsoaV/8Jz1b4Y3Wiiebrv63dR6pB7GEsX5H8L0cIxZpjgVsJy7ekxEvCv?=
- =?us-ascii?Q?F7Vf/gsZDiXWl/417eJ6i0PJtZYRBGaF/WqVIxIAAiAF9W+iP72CGOx8Q13N?=
- =?us-ascii?Q?UfePI6OBjkfHGi6WazRBU78ZgGHQ6OolK6CKuLdSbFMxAGz+pMaQgwfpZEO+?=
- =?us-ascii?Q?KBoG687sNZAg7WV160T1bVIjPtuPetNT1rHapDI3irj/kC8ludIpyw1M6q3/?=
- =?us-ascii?Q?0fnBo5t2b/cTPjhAfGE4ZplNdZfQ6dDDToALsKUnolWfMfv3xb9rfDIJEex9?=
- =?us-ascii?Q?37SU+ZVeIMj//sKUaXP6NbzsQHlO6U8tKtWcog2UTl2TrMcig50yelpoT0iW?=
- =?us-ascii?Q?9ujHpmVfvM8KKF7UdzyrIl7pp0ogr5bO6MQq25MElAHTbtz25nl2aMR5loI9?=
- =?us-ascii?Q?u+HhzIGXMBMIyRrFBtU5X/gjJO0ao+kLGgw+0yh0NVmPRwFuJ/k3pGx0J+gl?=
- =?us-ascii?Q?S0ViwqX6JaVIgbAfTvBtxe9QhgEzpzlgU2DLLlw1+miAJPJFFLerDxKivbQs?=
- =?us-ascii?Q?UTqXKzowACFWUyf0P28Qb5yVz2Vturtah72sqfI00n5+k0s04fco3xg4T4M8?=
- =?us-ascii?Q?BA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0h5XFmM1"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5cb6ca2a776so1016945a12.0
+        for <netdev@vger.kernel.org>; Thu, 07 Nov 2024 01:17:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730971025; x=1731575825; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v9FLGSqjaPcXujXKKAaAvnKAQR1QYT3B2QZtTLdsg1E=;
+        b=0h5XFmM1jta0Y9ptMD/xbmNQHvOAvMa86DcfnoxQdKZQGSCdSbxCUrFCCcFs/o2Pmp
+         Tt1m31l4MY11gvz72/IsPnNs8n0F22J0bDZ4uVmyF/sXEhXfOIMiGH2qvg3Zcy45YGfX
+         7NNJQTRyPyruvefaunbD4nbURsdqtACYCdpmS6h4SUmtKcBkAnfgZJeGAEFSk+Y+kxMM
+         feup+g0+MAG141oXJfXz5XfbCyEkTRUJ4mMvFly8WLEKhGHzN3NCFAK2pb7di/QBJsVW
+         gQpmp0pz7K4J7L9Y0YPk5tF0kRkxglj+5JuyJo+Gi2Oo65+N12LtTrqaG9xQ74AHrT+W
+         sRtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730971025; x=1731575825;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v9FLGSqjaPcXujXKKAaAvnKAQR1QYT3B2QZtTLdsg1E=;
+        b=kBkNswva+PEtG7NNE8T9/apJ9SnqRl0o+Q+/0z9W/oaChiR9W/v/7FD9uKLunGUL+f
+         uvjX73ZCQVWwXT84r09S+6pfHlIj/xjAAkDj3KN5zphCqvyeHSLXvraZpAo/AccRl3L7
+         f2CSvb+s7cF1tNa0HKRXhDIvc7Sk61fgThMjXVjC2S239enKjWEEhFzPfDOV/zDfq7ry
+         2nC3OGJYI58aC6t9z87PvvQTPGWlulRwoC43WryBt4jIEG4f4Pdmx+O5yj6++7kHub6/
+         JQplF624hFTwqdM9Eh2lucsKzXM0ck3ae0G0nTIyE9NEIgOGM6LwfV58WmenNKbJ/uGP
+         IQKA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNA8swZBawJ7Qz4u1rHP78Ghz+JfZmhAjf5tiKxapRDozB4woGeww/OasX42hV3ZUblYdxMDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPbZxQEP/3DLUTrMd7ElqTF6hPOYyG+TUXknZvfhxCHvXSRtmG
+	dCNHycM+Sh5Amq5yy1kinDOnhPk2HbhL45W7RQnKJiauIaYhzEsS3Xmaote22p4fh3BXZkSurVL
+	KecUKNGk2eEKrwJ1fzJuJDOIoI+nbK9jPJqpe
+X-Google-Smtp-Source: AGHT+IEErrzgWdUaiwRmJHBzKA9roe+yPrpt0k5jO/ApQGdcegrjtkKP/rlIte6g6AUajWJnpXkoioocBr9tJVj6zUs=
+X-Received: by 2002:a05:6402:2554:b0:5ce:acf1:e667 with SMTP id
+ 4fb4d7f45d1cf-5cf05a33e5cmr424338a12.26.1730971024685; Thu, 07 Nov 2024
+ 01:17:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB4664.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ffce732-46a5-446f-9937-08dcff0c87d6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2024 09:14:06.2931
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eVpuFEIXS5QdxN8R4bAA0MpfxmF36U/rLWx9iZjUm/ARSr7NhKDF2aMd8SQXXTE6mYnQh3moPvVzEdKYRHz7/f0awK1lnByppDRLOVqsNVE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6046
-X-OriginatorOrg: intel.com
+References: <20241105025511.42652-1-kerneljasonxing@gmail.com>
+ <92c1d976-7bb6-49ff-9131-edba30623f76@linux.alibaba.com> <CAL+tcoBZaDhBuSKHzGEqgxkzOazX3K-Vo2=mCdOy+iLp4sPAhg@mail.gmail.com>
+ <75708260-7eb4-42fe-9d9b-605f8eef488b@linux.alibaba.com> <CAL+tcoBA78svT_vTMOLV-pbwKM1o_SDbjs7AAZLhHOtrd8akBg@mail.gmail.com>
+ <CANn89iL5df5_EiDX7JxaFbfmZ9gDo=8ZyLXhbZs+-yp8zVD=GA@mail.gmail.com> <CAL+tcoBCqXiQ33XZv61vCes7_XV83DC0HSPy_w6eCn4pzzJeqA@mail.gmail.com>
+In-Reply-To: <CAL+tcoBCqXiQ33XZv61vCes7_XV83DC0HSPy_w6eCn4pzzJeqA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 7 Nov 2024 10:16:53 +0100
+Message-ID: <CANn89iLEPSBnvVe+qPZ1SeQ86JYh3CoR_LioDGwdPNumqyYWLw@mail.gmail.com>
+Subject: Re: [PATCH net-next] tcp: avoid RST in 3-way shakehands due to
+ failure in tcp_timewait_state_process
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Philo Lu <lulie@linux.alibaba.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, 
+	netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
->Andrew Lunn
->Sent: Wednesday, November 6, 2024 6:45 PM
+On Thu, Nov 7, 2024 at 10:01=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
 >
->On Wed, Nov 06, 2024 at 02:07:55AM +0100, Arkadiusz Kubalewski wrote:
->> Currently HW support of ptp/timesync solutions in network PHY chips can
->>be
->> implemented with two different approaches, the timestamp maybe latched
->> either at the beginning or after the Start of Frame Delimiter (SFD) [1].
->>
->> Allow ptp device drivers to provide user with control over the HW
->> timestamp latch point with ptp sysfs ABI. Provide a new file under sysfs
->> ptp device (/sys/class/ptp/ptp<N>/ts_point). The file is available for
->>the
->> user, if the device driver implements at least one of newly provided
->> callbacks. If the file is not provided the user shall find a PHY
->>timestamp
->> latch point within the HW vendor specification.
->>
->> The file is designed for root user/group access only, as the read for
->> regular user could impact performance of the ptp device.
->>
->> Usage, examples:
->>
->> ** Obtain current state:
->> $ cat /sys/class/ptp/ptp<N>/ts_point
->> Command returns enum/integer:
->> * 1 - timestamp latched by PHY at the beginning of SFD,
->> * 2 - timestamp latched by PHY after the SFD,
->> * None - callback returns error to the user.
+> On Thu, Nov 7, 2024 at 4:37=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > On Thu, Nov 7, 2024 at 9:27=E2=80=AFAM Jason Xing <kerneljasonxing@gmai=
+l.com> wrote:
+> > >
+> > > On Thu, Nov 7, 2024 at 4:22=E2=80=AFPM Philo Lu <lulie@linux.alibaba.=
+com> wrote:
+> > > >
+> > > >
+> > > >
+> > > > On 2024/11/7 16:01, Jason Xing wrote:
+> > > > > On Thu, Nov 7, 2024 at 3:51=E2=80=AFPM Philo Lu <lulie@linux.alib=
+aba.com> wrote:
+> > > > >>
+> > > > >> Hi Jason,
+> > > > >>
+> > > > >> On 2024/11/5 10:55, Jason Xing wrote:
+> > > > >>> From: Jason Xing <kernelxing@tencent.com>
+> > > > >>>
+> > > > >>> We found there are rare chances that some RST packets appear du=
+ring
+> > > > >>> the shakehands because the timewait socket cannot accept the SY=
+N and
+> > > > >>> doesn't return TCP_TW_SYN in tcp_timewait_state_process().
+> > > > >>>
+> > > > >>> Here is how things happen in production:
+> > > > >>> Time        Client(A)        Server(B)
+> > > > >>> 0s          SYN-->
+> > > > >>> ...
+> > > > >>> 132s                         <-- FIN
+> > > > >>> ...
+> > > > >>> 169s        FIN-->
+> > > > >>> 169s                         <-- ACK
+> > > > >>> 169s        SYN-->
+> > > > >>> 169s                         <-- ACK
+> > > > >>> 169s        RST-->
+> > > > >>> As above picture shows, the two flows have a start time differe=
+nce
+> > > > >>> of 169 seconds. B starts to send FIN so it will finally enter i=
+nto
+> > > > >>> TIMEWAIT state. Nearly at the same time A launches a new connec=
+tion
+> > > > >>> that soon is reset by itself due to receiving a ACK.
+> > > > >>>
+> > > > >>> There are two key checks in tcp_timewait_state_process() when t=
+imewait
+> > > > >>> socket in B receives the SYN packet:
+> > > > >>> 1) after(TCP_SKB_CB(skb)->seq, rcv_nxt)
+> > > > >>> 2) (s32)(READ_ONCE(tcptw->tw_ts_recent) - tmp_opt.rcv_tsval) < =
+0)
+> > > > >>>
+> > > > >>> Regarding the first rule, it fails as expected because in the f=
+irst
+> > > > >>> connection the seq of SYN sent from A is 1892994276, then 169s =
+have
+> > > > >>> passed, the second SYN has 239034613 (caused by overflow of s32=
+).
+> > > > >>>
+> > > > >>> Then how about the second rule?
+> > > > >>> It fails again!
+> > > > >>> Let's take a look at how the tsval comes out:
+> > > > >>> __tcp_transmit_skb()
+> > > > >>>       -> tcp_syn_options()
+> > > > >>>           -> opts->tsval =3D tcp_skb_timestamp_ts(tp->tcp_usec_=
+ts, skb) + tp->tsoffset;
+> > > > >>> The timestamp depends on two things, one is skb->skb_mstamp_ns,=
+ the
+> > > > >>> other is tp->tsoffset. The latter value is fixed, so we don't n=
+eed
+> > > > >>> to care about it. If both operations (sending FIN and then star=
+ting
+> > > > >>> sending SYN) from A happen in 1ms, then the tsval would be the =
+same.
+> > > > >>> It can be clearly seen in the tcpdump log. Notice that the tsva=
+l is
+> > > > >>> with millisecond precision.
+> > > > >>>
+> > > > >>> Based on the above analysis, I decided to make a small change t=
+o
+> > > > >>> the check in tcp_timewait_state_process() so that the second fl=
+ow
+> > > > >>> would not fail.
+> > > > >>>
+> > > > >>
+> > > > >> I wonder what a bad result the RST causes. As far as I know, the=
+ client
+> > > > >> will not close the connect and return. Instead, it re-sends an S=
+YN in
+> > > > >> TCP_TIMEOUT_MIN(2) jiffies (implemented in
+> > > > >> tcp_rcv_synsent_state_process). So the second connection could s=
+till be
+> > > > >> established successfully, at the cost of a bit more delay. Like:
+> > > > >>
+> > > > >>    Time        Client(A)        Server(B)
+> > > > >>    0s          SYN-->
+> > > > >>    ...
+> > > > >>    132s                         <-- FIN
+> > > > >>    ...
+> > > > >>    169s        FIN-->
+> > > > >>    169s                         <-- ACK
+> > > > >>    169s        SYN-->
+> > > > >>    169s                         <-- ACK
+> > > > >>    169s        RST-->
+> > > > >> ~2jiffies    SYN-->
 >
->-EOPNOTSUPP would be more conventional, not None.
+> It doesn't happen. I dare to say the SYN will not be retransmitted
+> soon which I can tell from many tcpdump logs I captured.
 >
+> > > > >>                                 <-- SYN,ACK
+> > > > >
+> > > > > That's exactly what I meant here :) Originally I didn't expect th=
+e
+> > > > > application to relaunch a connection in this case.
+> > > >
+> > > > s/application/kernel/, right?
+> > >
+> > > No. Perhaps I didn't make myself clear. If the kernel doesn't silentl=
+y
+> > > drop the SYN and then send back an ACK, the application has to call
+> > > the connect() syscall again.
+> >
+> > My suggestion to stop the confusion:
+>
+> Oh, right now, I realized that Philo and I are not on the same page :(
+> Please forget that conversation.
+>
+> My points are:
+> 1) If B silently drops the SYN packet, A will retransmit an SYN packet
+> and then the connection will be established. It's what I tried to
+> propose and would like to see. It also adheres to the RFC 6191.
+> 2) As kuniyuki pointed out on the contrary, sending an ACK (like the
+> current implementation) instead of silently dropping the SYN packet is
+> actually a challenge ack. If so, I think we need to consider this ACK
+> as a challenge ack like what tcp_send_challenge_ack() does.
 
-Sure, I can change it if new version is needed (Kuba's other thread on this=
-)
+Like where ? Again, a packetdrill test will clarify all of this.
 
->>
->> ** Configure timestamp latch point at the beginning of SFD:
->> $ echo 1 > /sys/class/ptp/ptp<N>/ts_point
->>
->> ** Configure timestamp latch point after the SFD:
->> $ echo 2 > /sys/class/ptp/ptp<N>/ts_point
 >
->and i assume these also return -EOPNOTSUPP if it is not supported.
->
->And a dumb question, why should i care where the latch point is? Why
->would i want to change it? Richard always says that you cannot trust
->the kernel to have the same latency from kernel to kernel version
->because driver developers like to tweak the latency, invalidating all
->measurements the user has done when setting up their ptp4l
->daemon. This just seems like yet another way to break my ptp4l
->configuration.
->
->	Andrew
-
-Well, making control knob available to the users.
-
-The explanation/rationale/problem statement is available under provided
-Link, and patch allows part of IEEE 802_3cx standard to be controlled.
-
-Thank you!
-Arkadiusz
+> I'd like to hear more about your opinions on the above conclusion.
