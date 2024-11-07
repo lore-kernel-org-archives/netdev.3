@@ -1,144 +1,93 @@
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845921018C;
-	Thu,  7 Nov 2024 11:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8DC20F5B7
+	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 11:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730980235; cv=none; b=toiyYcGTMaJP8BRSkkxlNckFB6wnGTAGwUNAuYTKLTBCtaTbWeU7PLSB9cax+NGn45ICAgUJ73ewRD3KA2888zcK+VDykGlsBQC/rivGGrmSbI9zTYBTjLLBcaiyLwA5Ku/yAvp3dImT/JrGsL1EkpMX33UcNZVqd5CHRICGKm0=
+	t=1730980237; cv=none; b=VFGMVMXV8bOMOXMFFEcNCy3V3tFNUQmI7aioJnvu2W7dxv9ZfPLnkWbHSsRmZtfNfelHBTPOUMEsdXGh0I97Z4iy+0VB8e3ud7X9UC58so7jf0+4JYct+/6y3Fx6zT10xIGPbxbIa4vcdqVqHCVG3Bqq0dBMO6xZ4gAKpN17l8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730980235; c=relaxed/simple;
-	bh=unrDUK7EuHXUPbfJ13rQqin9fhrr9yIkm6BHGuTqL9I=;
+	s=arc-20240116; t=1730980237; c=relaxed/simple;
+	bh=1m5HdAq6sHmragQQ341Wnq6mMbOs5y6f0TYrU3HekcY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GT8zPcpl8uW7/48jk1zIxuUXN+UCAPQm3+SiAYZtHvuoc91XXJSlpN8/+ysZd8aw27WqM53Zx1DPZwMltHSELKTKssP6T7CaaXEc3LI9TMPHxq6/ieb2QMchSnvvwMF+Q7ccFcWeDF9HgwTrg9QPvxCcwVWahYZ1XcuZhrZ7SCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=42192 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1t90eT-00ECKH-GN; Thu, 07 Nov 2024 12:26:15 +0100
-Date: Thu, 7 Nov 2024 12:26:12 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
-	fw@strlen.de
-Subject: Re: [PATCH net 1/1] netfilter: nf_tables: wait for rcu grace period
- on net_device removal
-Message-ID: <Zyyj1KUDDJXEJjkd@calendula>
-References: <20241106235853.169747-1-pablo@netfilter.org>
- <20241106235853.169747-2-pablo@netfilter.org>
- <362a90d1-a331-4bcc-8f14-495baf5c2309@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nAltg27Z2nvO7V8Rw4+TTbgvGSvC2UKVdIAWbk+wNMU3YbvDjkR8ZUsq5JUfHbHof/XbYITgqIogAeitM92peKb3JwoATPPe7n7sos/6YNK95oq+GWKj0hXo8eAFyy55STF5bFIsVtbIoYywi3cC9dygIA7LgUnx6jn5OCD0R7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1QHwT/x; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1QHwT/x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C23FC4CECE;
+	Thu,  7 Nov 2024 11:50:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730980237;
+	bh=1m5HdAq6sHmragQQ341Wnq6mMbOs5y6f0TYrU3HekcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n1QHwT/xvXw+JpDdumR7qN/tnlMAyvJHEkcOWybO2S3vzY8D/KNVAPuRzBC3pXY52
+	 aP9g2o7tV6+5yR1LsQczEZ460qNvs93PGWiohtwbyj2vOLCy9gKEjGOsLAWjwSa0rR
+	 DQI1q20+PVz7Xg7JUiAwU2WmnpU+0yagsp8kdsSmFvIqQ9xuTjge653R7dV/LzPfjy
+	 H0cNovd3Up8sbNcxrZ2WRwe4VoUlmf2V9YUTJD94Yja4+4C7o0AI8PHJUBKWA30T5D
+	 vCYnNTsBsQ3YRf97wO8pXBgne5cPeHAIedp33t2NzFuD8ugf7VmJrSybU/FtO0eJu7
+	 /lwiJsi9k5hPw==
+Date: Thu, 7 Nov 2024 13:50:31 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Antony Antony <antony.antony@secunet.com>
+Cc: Feng Wang <wangfe@google.com>, netdev@vger.kernel.org,
+	steffen.klassert@secunet.com
+Subject: Re: [PATCH 1/2] xfrm: add SA information to the offloaded packet
+Message-ID: <20241107115031.GK5006@unreal>
+References: <20241104233251.3387719-1-wangfe@google.com>
+ <20241105073248.GC311159@unreal>
+ <CADsK2K9seSq=OYXsgrqUGHKp+YJy5cDR1vqDCVBmF3-AV3obcg@mail.gmail.com>
+ <20241106121724.GB5006@unreal>
+ <Zytx9xmqgHQ7eMPa@moon.secunet.de>
+ <CADsK2K9mgZ=GSQQaNq_nBWCvGP41GQfwu2F0xUw48KWcCEaPEQ@mail.gmail.com>
+ <Zyx/ueeoeBdq/FXj@moon.secunet.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <362a90d1-a331-4bcc-8f14-495baf5c2309@redhat.com>
-X-Spam-Score: -1.9 (-)
+In-Reply-To: <Zyx/ueeoeBdq/FXj@moon.secunet.de>
 
-On Thu, Nov 07, 2024 at 11:55:47AM +0100, Paolo Abeni wrote:
-> Hi,
-> On 11/7/24 00:58, Pablo Neira Ayuso wrote:
-> > 8c873e219970 ("netfilter: core: free hooks with call_rcu") removed
-> > synchronize_net() call when unregistering basechain hook, however,
-> > net_device removal event handler for the NFPROTO_NETDEV was not updated
-> > to wait for RCU grace period.
+On Thu, Nov 07, 2024 at 09:52:09AM +0100, Antony Antony wrote:
+> On Wed, Nov 06, 2024 at 16:14:36 -0800, Feng Wang wrote:
+> > Antony brought out an important function xfrm_lookup_with_ifid(), this
+> > function returns the next dst_entry.
 > > 
-> > Note that 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks
-> > on net_device removal") does not remove basechain rules on device
-> > removal, I was hinted to remove rules on net_device removal later, see
-> > 5ebe0b0eec9d ("netfilter: nf_tables: destroy basechain and rules on
-> > netdevice removal").
-> > 
-> > Although NETDEV_UNREGISTER event is guaranteed to be handled after
-> > synchronize_net() call, this path needs to wait for rcu grace period via
-> > rcu callback to release basechain hooks if netns is alive because an
-> > ongoing netlink dump could be in progress (sockets hold a reference on
-> > the netns).
-> > 
-> > Note that nf_tables_pre_exit_net() unregisters and releases basechain
-> > hooks but it is possible to see NETDEV_UNREGISTER at a later stage in
-> > the netns exit path, eg. veth peer device in another netns:
-> > 
-> >  cleanup_net()
-> >   default_device_exit_batch()
-> >    unregister_netdevice_many_notify()
-> >     notifier_call_chain()
-> >      nf_tables_netdev_event()
-> >       __nft_release_basechain()
-> > 
-> > In this particular case, same rule of thumb applies: if netns is alive,
-> > then wait for rcu grace period because netlink dump in the other netns
-> > could be in progress. Otherwise, if the other netns is going away then
-> > no netlink dump can be in progress and basechain hooks can be released
-> > inmediately.
-> > 
-> > While at it, turn WARN_ON() into WARN_ON_ONCE() for the basechain
-> > validation, which should not ever happen.
-> > 
-> > Fixes: 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks on net_device removal")
-> > Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> > ---
-> >  include/net/netfilter/nf_tables.h |  2 ++
-> >  net/netfilter/nf_tables_api.c     | 41 +++++++++++++++++++++++++------
-> >  2 files changed, 36 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-> > index 91ae20cb7648..8dd8e278843d 100644
-> > --- a/include/net/netfilter/nf_tables.h
-> > +++ b/include/net/netfilter/nf_tables.h
-> > @@ -1120,6 +1120,7 @@ struct nft_chain {
-> >  	char				*name;
-> >  	u16				udlen;
-> >  	u8				*udata;
-> > +	struct rcu_head			rcu_head;
+> > The xfrm_lookup_with_ifid() function utilizes xfrm_sk_policy_lookup()
 > 
-> I'm sorry to be pedantic but the CI is complaining about the lack of
-> kdoc for this field...
-> 
-> >  
-> >  	/* Only used during control plane commit phase: */
-> >  	struct nft_rule_blob		*blob_next;
-> > @@ -1282,6 +1283,7 @@ struct nft_table {
-> >  	struct list_head		sets;
-> >  	struct list_head		objects;
-> >  	struct list_head		flowtables;
-> > +	possible_net_t			net;
-> 
-> ... and this one ...
-> 
-> >  	u64				hgenerator;
-> >  	u64				handle;
-> >  	u32				use;
-> 
-> [...]
-> > +static void nft_release_basechain_rcu(struct rcu_head *head)
-> > +{
-> > +	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
-> > +	struct nft_ctx ctx = {
-> > +		.family	= chain->table->family,
-> > +		.chain	= chain,
-> > +		.net	= read_pnet(&chain->table->net),
-> > +	};
-> > +
-> > +	__nft_release_basechain_now(&ctx);
-> > +	put_net(ctx.net);
-> 
-> ... and also about deprecated API usage here, the put_net_tracker()
-> version should be preferred.
->
-> Given this change will likely land on very old trees I guess the tracker
-> conversion is better handled as a follow-up net-next patch.
+> would the output packet, looked up using xfrm_lookup_with_ifid ,
+> match xfrm policy with "offload packet" set?
 
-Agreed.
+According to my understanding, no.
 
-> Would you mind addressing the kdoc above? Today PR will be handled by
-> Jakub quite later, so there is a bit of time.
+> When lookup is in the xfrm device.
+> 
+> ip xfrm policy .... offload packet dev <if-name>
+> 
+> 
+> > to find a matching policy based on the given if_id. The if_id checking
+> > is handled in it.
+> > Once the policy is found, xfrm_resolve_and_create_bundle() determines
+> > the correct Security Association (SA) and associates it with the
+> > destination entry (dst->xfrm).
+> 
+> If the output packet got this far, dst is set in skb?
+> And when the packet reach the driver dst = skb_dst(skb);
+> dst->xfrm is the state?
+> If this is the case  why add state to skb as your patch proose?
+> May be I am missing something in the packet path.
+> 
+> > This SA information is then passed directly to the driver. Since the
+> > kernel has already performed the necessary if_id checks for policy,
+> > there's no need for the driver to duplicate this effort.
+> 
+> Is this how packet offload would work? My guess was in packet offload
+> policy look happens in the driver.
 
-I will fix kdoc and resubmit.
+You are right, this is not how packet offload works.
+The expectation is that HW sees and catches same selectors as SW.
+It ensures that if SW finds policy/SA, HW will find the same.
+
+Thanks
