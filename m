@@ -1,276 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82F2101AE
-	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 11:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D718FDAF;
+	Thu,  7 Nov 2024 11:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730980255; cv=none; b=VosvcV/vsguRlGZUzdu8sK+eVmc8gikaG36Dx6wRgXKnr2whs3i7XCeobeEspALg2aJXX/6cJDYPDNsa/e2vNs6opglYu19eNOWkcN1X6qJf1OZDk2mPrOEpSMdKO0Yp79jWRdiFr1wrrm9RSF91uJPIodsaK1vns3RABDJUNZs=
+	t=1730980619; cv=none; b=VembSVvZEIBl+OYMh3wLjIm0H+RgrcEQWoC+2IayFOAIEk5I4YtTZJALbeQSLo5mO+YvTTTW0qcW99/qckt+mTt366PrjQ/oHBzBH7AHD3NxQ8sQ7ysS1cQUZuWznJeG+2VYDRrkW+58zjVhR/9o5psq/AX+EZTc5VktSl80Sj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730980255; c=relaxed/simple;
-	bh=n0QCEHl2jaF3c2bkOmUtYZCm3S+xz14biBzyHvcU+EQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSbHAR7hMWbvUqXnYsm1kVqRV/jTnGl85wCjEXJMpYetgYK3dPAr3hMHFuj94cB6T5vAgUF9DTBRon1RuRl4bzv5GiJq6iTOQunG71jehZy8kVfoNBYdNJx+SS0913ASXhgiwfgN/W7J5Ky4LFI6m3ghoipnZYi1fDe3aRhtmNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HAOhShBF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730980619; c=relaxed/simple;
+	bh=4pwJUW7QPMkOtc6HwpDYlGs/K22/GegT4OlM7GsMWGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pjhSf+cJe52KH2po6XIigtOIu2xpKLASq/p2714aV7CGG88HRXsLzgRcM1va/RSL8lUDNKXwoDiGzdf0z+dou5Uim8E6Q36osmpTy9gyFFvUmew5t6iXzvgOi4DOQf9iCKIrZWb6Yqy6gRZ0EJFtYoixSbJAn/NWeZrYJqNx8SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=No8l+H17; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HAOhShBF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730980252;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=648oAdh71ykdlsYI2PO1sVV/3rqyVjApi3Xls/dCZBk=;
-	b=HAOhShBF9rLeBZnIcvzXxb+R9JMwTMmHjPs1Ceus8dKLHYxmNSOJicEdmJxPCcl1nlXrIc
-	DZWKlfUbyhClynG1DUFWpYUxzAr1rp7SoQkCiQlV9roADMt99QJ81QdhTAqs0sBaBAqsMF
-	PakSyBfXcxqIz5kyEBqq76rH3V9cCGg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-220-7nxohZpfPQGPiK8eEsEwYA-1; Thu, 07 Nov 2024 06:50:51 -0500
-X-MC-Unique: 7nxohZpfPQGPiK8eEsEwYA-1
-X-Mimecast-MFC-AGG-ID: 7nxohZpfPQGPiK8eEsEwYA
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a99ea3e1448so73966766b.3
-        for <netdev@vger.kernel.org>; Thu, 07 Nov 2024 03:50:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730980250; x=1731585050;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=648oAdh71ykdlsYI2PO1sVV/3rqyVjApi3Xls/dCZBk=;
-        b=WtUWQt0Qu1KX8XlZa1DtRbbY/Bc8SgwA/O9WBi+V+reTHXoCPl9E8cj0jSSKcJWj3h
-         AEFOipuWePYYzFUcdeY3GNoG/WltZqYIEy03QbR+RmbWs8rt+qBrKNhvZ/sVzXKlVwa9
-         PZeONomjQugJXfq2NWzJOteHJ8If7LJaUCL9hRGBkQeJ5L/UJS5bqlCnV9gv0aHj1341
-         d55rgghlv0jfnX5yAvKs0v5PVkWYZCS7gH+1IIQzbtx9uDen3obUz/se9N3f0/lwnNil
-         dmD4KlK19B3atg4m0NjtZaKioHblPnJ1pwX9NnCrOfpq8GGwkG2D2RORnU+/vS/5r4Nk
-         pKXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJMhncq9m7tPy2CnPK6xuYtQ4GR2Cxq690s3IUUtH+5z1GtrOrf6GYW9jVCsbr8Mu50hkbaVY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgNJUPxJ/dXTiAgQ6xqhGAmod+blrhs4tXbZ4wAFSTYT189kQ5
-	6eAjYxyl7CyNmLtkNeG7eLRKSLw7govY0v+W8y1lWU0/hNiPSkAFPCPMCbL1iv9fhVQw58NTgdh
-	dQSsyvCthJe3be7UCaT3lTZlhoYw4QjelwzwM6OlwSB8vUBKwF2gA+BEFCgqYnrApVHD0dExrKE
-	c2+QfGjnDHb3mnEgmuhwv5iSQdxft8
-X-Received: by 2002:a17:907:728d:b0:a86:8e3d:86e2 with SMTP id a640c23a62f3a-a9de5d6e1f2mr4840613466b.11.1730980250168;
-        Thu, 07 Nov 2024 03:50:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFPfRWKKC2Mmw7qsLwNWsUWk9YcB3oP04KpCrk49fXxZ1eFzL9rc53cMZIp1x03OUPvMyR3Ccw7QTwYX9l0OHc=
-X-Received: by 2002:a17:907:728d:b0:a86:8e3d:86e2 with SMTP id
- a640c23a62f3a-a9de5d6e1f2mr4840608566b.11.1730980249462; Thu, 07 Nov 2024
- 03:50:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="No8l+H17"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7BjSZJ002624;
+	Thu, 7 Nov 2024 11:56:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=c+qNo6
+	yMcqwgT34P54tk473Xr4TkpvXiT2oLlxbaqSs=; b=No8l+H17lMoEA/y6O5PlJS
+	rC4PuGmalvx6wKMz//ol5rm2+dxKBL7Ib9Hlr3gg5zgiSY/UWhfwlL9RWTS7emBR
+	E7N9euDH6pACRlXzTg4Zfx5rnVhsH8HE1w10ys7Oj4Nbqbh0/Jhnrd5BLk7Yt5UI
+	ZpVHisCRmLQ7grxdpLr+hBtdcX7IpSZ3Y40ErmCdXBws/jEB1dUFqUpgK/C4HoGk
+	fAtDAb/r7bCar8VpET9KoAMgh78NAWR1DYPIX4n6eRuA+dvUrV15JaZeQBhDKs+6
+	UA0yBOU610IuCGhsqc/djEUpvu3BUts6/IKZQ6lsW/jw7DSxwowUQgjjF/PLFsQA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rvy2815g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 11:56:52 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A7BupCa027204;
+	Thu, 7 Nov 2024 11:56:51 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rvy2815d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 11:56:51 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7ADL5L008430;
+	Thu, 7 Nov 2024 11:56:50 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nywm5tn1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 11:56:50 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A7Bukwh54788376
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Nov 2024 11:56:46 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C45A62004B;
+	Thu,  7 Nov 2024 11:56:46 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F46F20040;
+	Thu,  7 Nov 2024 11:56:45 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.179.13.246])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu,  7 Nov 2024 11:56:45 +0000 (GMT)
+Date: Thu, 7 Nov 2024 12:56:43 +0100
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Wenjia Zhang <wenjia@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Tony Lu <tonylu@linux.alibaba.com>, David Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Eric
+ Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Jan Karcher
+ <jaka@linux.ibm.com>,
+        Gerd Bayer <gbayer@linux.ibm.com>,
+        Alexandra Winter
+ <wintera@linux.ibm.com>,
+        Nils Hoppmann <niho@linux.ibm.com>,
+        Niklas Schnell
+ <schnelle@linux.ibm.com>,
+        Thorsten Winkler <twinkler@linux.ibm.com>,
+        Karsten Graul <kgraul@linux.ibm.com>,
+        Stefan Raspl <raspl@linux.ibm.com>, Aswin K <aswin@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH net] net/smc: Fix lookup of netdev by using
+ ib_device_get_netdev()
+Message-ID: <20241107125643.04f97394.pasic@linux.ibm.com>
+In-Reply-To: <20241106135910.GF5006@unreal>
+References: <20241025072356.56093-1-wenjia@linux.ibm.com>
+	<20241027201857.GA1615717@unreal>
+	<8d17b403-aefa-4f36-a913-7ace41cf2551@linux.ibm.com>
+	<20241105112313.GE311159@unreal>
+	<20241106102439.4ca5effc.pasic@linux.ibm.com>
+	<20241106135910.GF5006@unreal>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105072642.898710-1-lulu@redhat.com> <20241105072642.898710-8-lulu@redhat.com>
- <6dtic6ld6p6kyzbjjewj4cxkc6h6r5t6y2ztazrgozdanz6gkm@vlj3ubpam6ih>
- <CACLfguVNM_b9LdiMyj+pZH0WHu=-Nrit8-cr+QH9=f7tMLDd4w@mail.gmail.com> <zkamzruq5e3diahm7vyjansnaowkw42toh5evwgq6vqal7h4pk@3w4e47ggogyr>
-In-Reply-To: <zkamzruq5e3diahm7vyjansnaowkw42toh5evwgq6vqal7h4pk@3w4e47ggogyr>
-From: Cindy Lu <lulu@redhat.com>
-Date: Thu, 7 Nov 2024 19:50:12 +0800
-Message-ID: <CACLfguXH7oEgjaOYWC05742n0dsUGaFWM-i7Fykuzbxv9xQ9HA@mail.gmail.com>
-Subject: Re: [PATCH v3 7/9] vhost: Add new UAPI to support change to task mode
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, michael.christie@oracle.com, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: q-k8qkSNdHBA__T88Xb-YjymiaM95i7D
+X-Proofpoint-GUID: oPIbzZlpAq3pL_m2OVcWioYUNsMcK2h-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 clxscore=1011
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2411070086
 
-On Thu, Nov 7, 2024 at 6:03=E2=80=AFPM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->
-> On Thu, Nov 07, 2024 at 03:12:49PM +0800, Cindy Lu wrote:
-> >On Tue, Nov 5, 2024 at 6:32=E2=80=AFPM Stefano Garzarella <sgarzare@redh=
-at.com> wrote:
-> >>
-> >> On Tue, Nov 05, 2024 at 03:25:26PM +0800, Cindy Lu wrote:
-> >> >Add a new UAPI to enable setting the vhost device to task mode.
-> >> >The userspace application can use VHOST_SET_INHERIT_FROM_OWNER
-> >> >to configure the mode if necessary.
-> >> >This setting must be applied before VHOST_SET_OWNER, as the worker
-> >> >will be created in the VHOST_SET_OWNER function
-> >> >
-> >> >Signed-off-by: Cindy Lu <lulu@redhat.com>
-> >> >---
-> >> > drivers/vhost/vhost.c      | 15 ++++++++++++++-
-> >> > include/uapi/linux/vhost.h |  2 ++
-> >> > 2 files changed, 16 insertions(+), 1 deletion(-)
-> >> >
-> >> >diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> >> >index c17dc01febcc..70c793b63905 100644
-> >> >--- a/drivers/vhost/vhost.c
-> >> >+++ b/drivers/vhost/vhost.c
-> >> >@@ -2274,8 +2274,9 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsig=
-ned int ioctl, void __user *argp)
-> >> > {
-> >> >       struct eventfd_ctx *ctx;
-> >> >       u64 p;
-> >> >-      long r;
-> >> >+      long r =3D 0;
-> >>
-> >> I don't know if something is missing in this patch, but I am confused:
-> >>
-> >> `r` is set few lines below...
-> >>
-> >> >       int i, fd;
-> >> >+      bool inherit_owner;
-> >> >
-> >> >       /* If you are not the owner, you can become one */
-> >> >       if (ioctl =3D=3D VHOST_SET_OWNER) {
-> >> ...
-> >>
-> >>         /* You must be the owner to do anything else */
-> >>         r =3D vhost_dev_check_owner(d);
-> >>         if (r)
-> >>                 goto done;
-> >>
-> >> So, why we are now initializing it to 0?
-> >>
-> >r =3D 0 mean return successfully here.
-> >Therefore, in the case VHOST_SET_INHERIT_FROM_OWNER function, I don't
-> >need to set it again and can simply return.
-> >....
-> >    if (vhost_dev_has_owner(d))
-> >       break;
-> >.....
->
-> Okay, but vhost_dev_check_owner() already set it to 0, so we can avoid
-> that, no?
->
-> >> >@@ -2332,6 +2333,18 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsi=
-gned int ioctl, void __user *argp)
-> >> >               if (ctx)
-> >> >                       eventfd_ctx_put(ctx);
-> >> >               break;
-> >> >+      case VHOST_SET_INHERIT_FROM_OWNER:
-> >> >+              /*inherit_owner can only be modified before owner is s=
-et*/
-> >> >+              if (vhost_dev_has_owner(d))
-> >>
-> >> And here, how this check can be false, if at the beginning of the
-> >> function we call vhost_dev_check_owner()?
-> >>
-> >> Maybe your intention was to add this code before the
-> >> `vhost_dev_check_owner()` call, so this should explain why initialize
-> >> `r` to 0, but I'm not sure.
-> >>
-> >Yes, in the function beginning, the code is
-> >if (ioctl =3D=3D VHOST_SET_OWNER) {
-> >r =3D vhost_dev_set_owner(d);
-> >goto done;
-> >}
-> >if the ioctl is not VHOST_SET_OWNER,  then the  code will not run the
-> >function vhost_dev_set_owner.
->
-> Sorry, I meant vhost_dev_check_owner(), not vhost_dev_set_owner().
->
-> I'll try to explain again.
->
-> After applying this series we have this code:
->
-> long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user=
- *argp)
-> {
->         struct eventfd_ctx *ctx;
->         u64 p;
->         long r =3D 0;
->         int i, fd;
->         bool inherit_owner;
->
->         /* If you are not the owner, you can become one */
->         if (ioctl =3D=3D VHOST_SET_OWNER) {
->                 r =3D vhost_dev_set_owner(d);
->                 goto done;
->         }
->
->         /* You must be the owner to do anything else */
->         r =3D vhost_dev_check_owner(d);
->         if (r)
->                 goto done;
->
->         switch (ioctl) {
->         ...
->         case VHOST_SET_INHERIT_FROM_OWNER:
->                 /*inherit_owner can only be modified before owner is
->                  * set*/
->                 if (vhost_dev_has_owner(d))
->                         break;
->
-> IIUC this check is always true, so we always call `break` because at
-> the beginning of this function we call vhost_dev_check_owner() which
-> if `dev->mm !=3D current->mm` (so it can't be null I guess) jumps directl=
-y
-> into `done`, returning an error.
->
-> So I still don't understand in which condition we can run the code after
-> this check.
->
-oh sorry I missed that check. I will move the new case back to the top
-of function,
-I didn't think it through before making this change; I just wanted to
-clean up the code but forgot about the status.
-Thanks
-cindy
-> Thanks,
-> Stefano
->
->                 if (copy_from_user(&inherit_owner, argp,
->                                    sizeof(inherit_owner))) {
->                         r =3D -EFAULT;
->                         break;
->                 }
->                 d->inherit_owner =3D inherit_owner;
->                 break;
->
->
-> >This ioctl is used by userspace applications, so we cannot be certain
-> >of the type and sequence of their calls; therefore, I added this
-> >check.
-> >
-> >> >+                      break;
-> >>
-> >> Should we return an error (e.g. -EPERM) in this case?
-> >>
-> >sure=EF=BC=8Cwill add this back
-> >thanks
-> >Cindy
-> >> >+
-> >> >+              if (copy_from_user(&inherit_owner, argp,
-> >> >+                                 sizeof(inherit_owner))) {
-> >> >+                      r =3D -EFAULT;
-> >> >+                      break;
-> >> >+              }
-> >> >+              d->inherit_owner =3D inherit_owner;
-> >> >+              break;
-> >> >       default:
-> >> >               r =3D -ENOIOCTLCMD;
-> >> >               break;
-> >> >diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-> >> >index b95dd84eef2d..1e192038633d 100644
-> >> >--- a/include/uapi/linux/vhost.h
-> >> >+++ b/include/uapi/linux/vhost.h
-> >> >@@ -235,4 +235,6 @@
-> >> >  */
-> >> > #define VHOST_VDPA_GET_VRING_SIZE     _IOWR(VHOST_VIRTIO, 0x82,     =
-  \
-> >> >                                             struct vhost_vring_state=
-)
-> >> >+
-> >>
-> >> Please add a documentation here, this is UAPI, so the user should
-> >> know what this ioctl does based on the parameter.
-> >>
-> >> Thanks,
-> >> Stefano
-> >>
-> >> >+#define VHOST_SET_INHERIT_FROM_OWNER _IOW(VHOST_VIRTIO, 0x83, bool)
-> >> > #endif
-> >> >--
-> >> >2.45.0
-> >> >
-> >>
-> >
->
+On Wed, 6 Nov 2024 15:59:10 +0200
+Leon Romanovsky <leon@kernel.org> wrote:
 
+> > Does  fs/smb/server/transport_rdma.c qualify as inside of RDMA core code?  
+> 
+> RDMA core code is drivers/infiniband/core/*.
+
+Understood. So this is a violation of the no direct access to the
+callbacks rule.
+
+> 
+> > I would guess it is not, and I would not actually mind sending a patch
+> > but I have trouble figuring out the logic behind  commit ecce70cf17d9
+> > ("ksmbd: fix missing RDMA-capable flag for IPoIB device in
+> > ksmbd_rdma_capable_netdev()").  
+> 
+> It is strange version of RDMA-CM. All other ULPs use RDMA-CM to avoid
+> GID, netdev and fabric complexity.
+
+I'm not familiar enough with either of the subsystems. Based on your
+answer my guess is that it ain't outright bugous but still a layering 
+violation. Copying linux-cifs@vger.kernel.org so that 
+the smb are aware.
+
+Thank you very much for all the explanations!
+
+Regards,
+Halil 
