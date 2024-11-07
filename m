@@ -1,69 +1,75 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ECB213ECC;
-	Thu,  7 Nov 2024 13:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B8F1EE019;
+	Thu,  7 Nov 2024 13:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986162; cv=none; b=HmBQJJXRlr/VXnkqUhUMXDiWKE1tILfGx9RPcAqwqq46lEbQvJxfbYKXpsnxsJt0dKICkq6nkOXaWuY32+G41tLPAdxfQe1IyAV/OgStDPbfgtda9MPEIANAwaafw2+CldGHTDn0R0xzwIfC1gKdinoKg/eu0XOFG+JrOYfFFQY=
+	t=1730986223; cv=none; b=ITuGUVCTdAMR8sPif+BaUGMyvYovNMHCWNBOyPCHSuYdwaYk9sGyz7hBNX9GobF+XzTnOFkXjwFUToHNIrzVs72W7s3aQp90MdjntrjARtTV22ou6T5kVbMOdMrJn3Gb1e93MCe5Cp+9faeC+1PYlduo2o+LfhRx26rUwFkGy+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986162; c=relaxed/simple;
-	bh=oYMTDUpQKwAiuegxgWjVOkp+luvlh3tBlqqQhPmIv1k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UYNbTiqmvc4MirGnZoq9OQdwiY1JHSvu/EGE5Sq4l0MSMUOiIS0WqD59t8+aXTL+PdznSrxAspYySTlUPxzBl/2XLe5ML8eJnH7Y5l2EuiZM5gK775JHS5m/YbG4pDOe94hd1HRpxNsgJhxzPFXWdfSd5zOZfmY7cawOAcY6KVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=TvDsO0Mk; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1730986223; c=relaxed/simple;
+	bh=qRs2QLy5RFoOno8jhB1SgonJez5Q4hYoRoGt5zea3oA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qHLzQiFSVwMhCktW/EDrnjibLFEEnIq9XhcDsHCmo2iKr589a/98sT2zufbPh9g/fADDyOzcbxLvlgMH9k1bPx/0INu9uXK8oSQgZWdRjDg26iLZBCFgB++VRaeh5uS69pIhjE0mdJJWQQdM1QziwppejGAJ3JT8ieojy7r9Guc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HB/vk+ZC; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="TvDsO0Mk"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7Ca4a2018104;
-	Thu, 7 Nov 2024 05:29:05 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
-	mSw1KER3ojqKjXN9Rv3WdQo2LFZamVC5UDTRcqdJSs=; b=TvDsO0MkIrYR25y4G
-	dHrfKpyrb5RZvDF9pULOkpVbi3Chn0HmWieMGHrdUGmGUxrAP3uo0mA6ueEBWxNK
-	IeAB47MDOfuN4WWYhb5kdsYpu/zl5f35aHibIQoJbunAFW0Z6y7WF7rmCL+o/c+d
-	u9LU0YPJagoRMApbCKHbfj/7N2y9dhoedw2SgckK0zvktQ7T/8+AT2v1yx24BkVC
-	p/TDg8suEi+t9P9zzB6eoT4ZZH1vafUou66OlP+Iu/wZRlQpXXnjiZdK1cD4eG2a
-	MXNAI6q906GB8p3Vo1+7gOcX4qhYBLtplfMUclJ1KoBFIELIu7xcL0mhvPW/c9vI
-	jskdQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 42rwpng3hu-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 05:29:04 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 7 Nov 2024 05:29:04 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 7 Nov 2024 05:29:04 -0800
-Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
-	by maili.marvell.com (Postfix) with ESMTP id 6F4263F708C;
-	Thu,  7 Nov 2024 05:29:03 -0800 (PST)
-From: Shinas Rasheed <srasheed@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
-        <thaller@redhat.com>, <wizhao@redhat.com>, <kheib@redhat.com>,
-        <egallen@redhat.com>, <konguyen@redhat.com>, <horms@kernel.org>,
-        <frank.feng@synaxg.com>, Shinas Rasheed <srasheed@marvell.com>,
-        Veerasenareddy Burru <vburru@marvell.com>,
-        Satananda Burla
-	<sburla@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net v2 5/7] octeon_ep_vf: Fix null dereferences to IQ/OQ pointers
-Date: Thu, 7 Nov 2024 05:28:44 -0800
-Message-ID: <20241107132846.1118835-6-srasheed@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241107132846.1118835-1-srasheed@marvell.com>
-References: <20241107132846.1118835-1-srasheed@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HB/vk+ZC"
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e602a73ba1so603636b6e.2;
+        Thu, 07 Nov 2024 05:30:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730986220; x=1731591020; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uR7EliZ8HIjdIJ/1+gSceKWANQc9uwIkd6+yt06yH/o=;
+        b=HB/vk+ZCloSEHdBiyZbiOVjiUsxBesaO2wRF0jOB8NtElxz9dz1yYW0RL61w6S3XSp
+         Rrrrm6lk04YIugVyYWo0JU8Ooi0u27V7+rg5Xt6c70z4L2NlB/TODVkJHEdaX3HQBQli
+         yGzL819dWlcU8h8JugX/SJCBDeH4xtuSRoPXUXnMW63R+hnf8TduO4HRgbwDVmG/i1/C
+         eB06d7+V87Z4WvIsdmV6fVnlP0dFwM/szu9+QIbM2UoZCoOzzlLPFk7KSJrdgD1J3rYa
+         N8ypOuQdDby5YZjN2s/yxCOXZao1t4JiI/xxNA9EyMYkXTUKs6sqLDyxrZmSZx+jPgaU
+         q9FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730986220; x=1731591020;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uR7EliZ8HIjdIJ/1+gSceKWANQc9uwIkd6+yt06yH/o=;
+        b=XLGIq0dEoWNWSnbeXmwqmx68OvT3lTsEZPouqzivHwyWoR1jAZtiWzTAEFDwAt/4CW
+         QZ2MdBa1yc/rDCFfntkbAjufBx3r9N0HW7+/jVbqNWiWDgm5cSFFfq7YqOt+k8wwvLhF
+         eVNrVLOycXFf76/NVJTDbsveLBofoMAPy1w7ng+hp76MA+fOjhU9AvjDBN7LhG2zV0s+
+         Gh+oLkdDvZtCBcDta8PS+5raDVx7wCjlxn0YfOrXg6i7YAhFcFcjv+j2PLE1FqDIqXrS
+         AowAV0bgoJuhgIK4hOOjhj8SEaE9xi/A8iEJCVz71sSKxVQ6uFiya+A278cn2Jl64d2J
+         5UCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxjHi7KjscTRc3oi76RNPa1+uZSldKsMB+Mz79Vma55A5mGeaPjbjHT6M4uS2wrpfomZ+Hq+shOIJahhMHryA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFkY8cd2aHSWyCEEaUsgHZUq287o9Ekw5Vg/Jt8ygRc4R9fd/m
+	4fg2YclWeZTwKBjrGOYffGrM9RJE44HNyOkZ4WFNbgZeB/SvuMXH91RI178/onA=
+X-Google-Smtp-Source: AGHT+IEvkqaPEtWSW95fupk1k9ZpNhqP0he9eUltgV5yntcun78itAlESPiOjZjItpmXTd1p9D4cgw==
+X-Received: by 2002:a05:6808:1528:b0:3e6:14a6:4288 with SMTP id 5614622812f47-3e78fcb757dmr1270125b6e.11.1730986219898;
+        Thu, 07 Nov 2024 05:30:19 -0800 (PST)
+Received: from nova-ws.. ([103.167.140.11])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f41f65b5afsm1359303a12.76.2024.11.07.05.30.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 05:30:19 -0800 (PST)
+From: Xiao Liang <shaw.leon@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: [PATCH net-next v2 0/8] net: Improve netns handling in RTNL and ip_tunnel
+Date: Thu,  7 Nov 2024 21:29:55 +0800
+Message-ID: <20241107133004.7469-1-shaw.leon@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,45 +77,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: EvKLcglebSe3BXe5zh0_bAfKslgJn85u
-X-Proofpoint-ORIG-GUID: EvKLcglebSe3BXe5zh0_bAfKslgJn85u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
 
-During unload, sometimes race scenarios are seen wherein
-the get stats callback proceeds to retrieve the IQ/OQ stats,
-but by then the IQ/OQ might have been already freed.
+This patch series includes some netns-related improvements and fixes for
+RTNL and ip_tunnel, to make link creation more intuitive:
 
-Protect against such conditions by defensively checking if
-the IQ/OQ pointers are null before dereference.
+ - Creating link in another net namespace doesn't conflict with link names
+   in current one.
+ - Add a flag in rtnl_ops, to avoid netns change when link-netns is present
+   if possible.
+ - When creating ip tunnel (e.g. GRE) in another netns, use current as
+   link-netns if not specified explicitly.
 
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+So that
+
+  # modprobe ip_gre netns_atomic=1
+  # ip link add netns ns1 link-netns ns2 tun0 type gre ...
+
+will create tun0 in ns1, rather than create it in ns2 and move to ns1.
+And don't conflict with another interface named "tun0" in current netns.
+
 ---
-V2:
-  - Split into a separate patch
-  - Added more context
 
-V1: https://lore.kernel.org/all/20241101103416.1064930-4-srasheed@marvell.com/
+v2:
+ - Check NLM_F_EXCL to ensure only link creation is affected.
+ - Add self tests for link name/ifindex conflict and notifications
+   in different netns.
+ - Changes in dummy driver and ynl in order to add the test case.
 
- drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+v1:
+ link: https://lore.kernel.org/all/20241023023146.372653-1-shaw.leon@gmail.com/
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 7e6771c9cdbb..79d9ffd593eb 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -790,6 +790,9 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 		struct octep_vf_iq *iq = oct->iq[q];
- 		struct octep_vf_oq *oq = oct->oq[q];
- 
-+		if (!iq || !oq)
-+			return;
-+
- 		tx_packets += iq->stats.instr_completed;
- 		tx_bytes += iq->stats.bytes_sent;
- 		rx_packets += oq->stats.packets;
+
+Xiao Liang (8):
+  rtnetlink: Lookup device in target netns when creating link
+  rtnetlink: Add netns_atomic flag in rtnl_link_ops
+  net: ip_tunnel: Build flow in underlay net namespace
+  net: ip_tunnel: Add source netns support for newlink
+  net: ip_gre: Add netns_atomic module parameter
+  net: dummy: Set netns_atomic in rtnl ops for testing
+  tools/net/ynl: Add retry limit for async notification
+  selftests: net: Add two test cases for link netns
+
+ drivers/net/dummy.c                         |  1 +
+ include/net/ip_tunnels.h                    |  3 ++
+ include/net/rtnetlink.h                     |  3 ++
+ net/core/rtnetlink.c                        | 17 +++++--
+ net/ipv4/ip_gre.c                           | 15 +++++-
+ net/ipv4/ip_tunnel.c                        | 27 +++++++----
+ tools/net/ynl/lib/ynl.py                    |  7 ++-
+ tools/testing/selftests/net/Makefile        |  1 +
+ tools/testing/selftests/net/netns-name.sh   | 10 ++++
+ tools/testing/selftests/net/netns_atomic.py | 54 +++++++++++++++++++++
+ 10 files changed, 121 insertions(+), 17 deletions(-)
+ create mode 100755 tools/testing/selftests/net/netns_atomic.py
+
 -- 
-2.25.1
+2.47.0
 
