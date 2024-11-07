@@ -1,109 +1,155 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FC219CC36;
-	Thu,  7 Nov 2024 09:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166DD194ACF;
+	Thu,  7 Nov 2024 09:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730970767; cv=none; b=BkSG3NOcdW9tU8w++uJqoJ+GtKGaQIZXzUkMg3zAHbdSKFuDrtKAG4eZv6FwdVH5bxoRWe+tJLa6U2UguWmTHSc3OgYq7ilVX2REQJHFlVN20/1iwNOaIaKPyTZAAlhleDwi5GFazBn+yRSMW9Dpe3JVWt2b8Yny/eKZM6satug=
+	t=1730970859; cv=none; b=TsEOlbQEiKt1FQs0B7rrVbm8pCrEnqZSJQBNhNbaiBzvS71feBEyu9WRwT44z3wX/JtF7RH7yRMBZSEwf4mol3orgQDdjJK5721frePRr+YeutkoQTkZqqjZBU+Mopl+LlOHQXnuuwJhHrgX2aiGnq3htHrY2qxInSJ7H841DEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730970767; c=relaxed/simple;
-	bh=/dyb7qFLx2EvxC0lQ1P/4TvXTZIOenT38YkyOrdCuJ0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r37w9o3UIFapxCcyf7vkMk9OI2Gs4iS0InM6p2DrbjgPXqOhuP6SZY4E0ckBmPAtFqIJScEluMxnobhxuGKmsf3IP2jJkAbcu49BhPLuAPy2gBRsaWtQxSVqgI/tvdO+NJsNKmZgtWqHS9AVJ5nlN36KwbwmKyuTXJjKziYySFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LIHD+jdH; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1730970859; c=relaxed/simple;
+	bh=dBnYIq502zMVsyq0uatRnoVEE+yQENT9Zt1omk4lYJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=csKt4BdmMKrpa2eiIJhcFJuoH9ghjl0J+OEjW/NvDEhJ6+HQR7jGcavDokWqhVslQRiKUL1hz+y6H6qkmTuVBETDgf8NzrBZFOpMrx5kEyAEpPiBvvIW8kLAyDXzYdUAcjfd5/2kyeT3l5qoJCMQCzm3qmrDzqlI1n11sy5ksVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=awK5+qr4; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LIHD+jdH"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A76tkQ7007341;
-	Thu, 7 Nov 2024 01:12:25 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=Kl7S0JXpKvyVm+9beracpWgeu
-	VI9VzfXcK/4zszh2+4=; b=LIHD+jdHJ7WzDv+zPxy+LjVK7szCiLTgBK8OFS9Ud
-	dd8ehs4Q3w3iZAvR7jAfhNR2PqWwD+Do6EHoJpAvFguZq6cNhqZYQdT46459++Tb
-	11/GOUy9doj4ers98QXhHge9nJ+aRcZ1fFJUcxX43FyOF83AVolmjC9Q4Fi0plgO
-	GelFTkPB6o/vvwhaBYt0RKlT3izTx2vM/5Ua7Cn9TfNlAwy3VrDxj9/ySoL0JUva
-	OqtXofG1m51qq8sPgYqd6Ai7h/cY0Ggy4syrqhWwhy7giGJJ0oGnEyVyyx98+lAz
-	zDgZu8i7AvT6SzmjInETBjonUwV83vfaRBoJUAT95FfzQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 42rrqa87jp-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 01:12:24 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 7 Nov 2024 01:12:22 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 7 Nov 2024 01:12:21 -0800
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id 3339E3F7050;
-	Thu,  7 Nov 2024 01:12:17 -0800 (PST)
-Date: Thu, 7 Nov 2024 14:42:12 +0530
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>,
-        <xiaoning.wang@nxp.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>
-Subject: Re: [PATCH net-next 0/5] Add more feautues for ENETC v4 - round 1
-Message-ID: <ZyyEbCKxjkVFXUMB@test-OptiPlex-Tower-Plus-7010>
-References: <20241107033817.1654163-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="awK5+qr4"
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1F1641380391;
+	Thu,  7 Nov 2024 04:14:16 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 07 Nov 2024 04:14:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1730970856; x=1731057256; bh=UVVys8cK8r99yXLUwC33/W0C1OEMDsWowc+
+	d+GobAPU=; b=awK5+qr4E11Fi5E34detT5LFxOUq692OhBocGYABEKY5WFl5I5j
+	YpLXVkWLi7O3Tqu5YfWSSI4HEMIdSNrCPKSsuicuqDTv/jINoGTILNh1QlTc5wb7
+	vCUekHYMTY4UTL+MkhXZNUICAO9Xaa6uXtHFCCtf4kRozs4vFvrRPauHG5o088l3
+	RQG1VPxH83733ayRa63MYm14YBp4g6eH6t8KoYjEE0kG4RoJt7FpLsHB+bJc3+J4
+	9Pd3fEgUg2Vvn0tBfLhdSWJx8EyzBVuOiyu35PukvFeA6LK2Y8434DFpMikgT5YP
+	UACCTvIzjhGWmofhQlYhBhpyc0RhAx9jyPQ==
+X-ME-Sender: <xms:54QsZzDAptP3LqguuKjmR6PEH5GiNSalsaOCbpL5ZVnSyhhARI7RVQ>
+    <xme:54QsZ5gQ4QKs5U86KcgoiHlNKBQTDnbV3u8fyBE7dIDwWldFeWXcysUo5HuUwzPJm
+    RFOMDeyI7jvQOs>
+X-ME-Received: <xmr:54QsZ-n4PIJmB3zNcal6wYOh1sjcu5Z_ZPJ-8RoHXPylTmCNAWs6EkHtseVmt1xfzExmTwqvB7MUOIzTbEhJk6ICqX4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdeggddtudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuf
+    fkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgthhhimhhmvghluceo
+    ihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvghrnhepvddufeevke
+    ehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeggefhnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehiughosh
+    gthhdrohhrghdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopeguvghlihhrrghnsehvvghrughitghtrdhgghdprhgtphhtthhopehnvghtug
+    gvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegushgrhhgvrhhnsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvg
+    htpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthho
+    pehlihhnuhigqdhkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihes
+    rhgvughhrghtrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:54QsZ1y9RgVk0MrMfI4uANFHNeEI44sgpvfM8ah0CSb3pRMQASfsKQ>
+    <xmx:54QsZ4QMU2IG1PeyKEZ4UdMlexBc2HzfClJ1QLbCz98ogbsMa_bozg>
+    <xmx:54QsZ4aIMf0wl1FkGJ_ek9NKrUX3J_r9XYdDrK0DxUgo-QQligvcsw>
+    <xmx:54QsZ5QW5dB-8BV4sZYXIYGhDOHt-gqHFGeIlXU__M9nTSYKbiANLQ>
+    <xmx:6IQsZ9LHZVmRLWfGmx6nsBi7tREAB15ExtnTcVLJRq3-JuxkshED1oRm>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Nov 2024 04:14:14 -0500 (EST)
+Date: Thu, 7 Nov 2024 11:14:11 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Vladimir Vdovin <deliran@verdict.gg>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@google.com, linux-kselftest@vger.kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+	horms@kernel.org, gnault@redhat.com
+Subject: Re: [PATCH net-next v8] net: ipv4: Cache pmtu for all packet paths
+ if multipath enabled
+Message-ID: <ZyyE473qDbLiPgx7@shredder>
+References: <20241106133012.289861-1-deliran@verdict.gg>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241107033817.1654163-1-wei.fang@nxp.com>
-X-Proofpoint-ORIG-GUID: LhRfencOvJt1EKve0myO96XLecv8uDpu
-X-Proofpoint-GUID: LhRfencOvJt1EKve0myO96XLecv8uDpu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+In-Reply-To: <20241106133012.289861-1-deliran@verdict.gg>
 
-On 2024-11-07 at 09:08:12, Wei Fang (wei.fang@nxp.com) wrote:
-> Compared to ENETC v1 (LS1028A), ENETC v4 (i.MX95) adds more features, and
-> some features are configured completely differently from v1. In order to
-> more fully support ENETC v4, these features will be added through several
-> rounds of patch sets. This round adds these features, such as Tx and Rx
-> checksum offload, increase maximum chained Tx BD number and Large send
-> offload (LSO).
-> 
-> Wei Fang (5):
->   net: enetc: add Rx checksum offload for i.MX95 ENETC
->   net: enetc: add Tx checksum offload for i.MX95 ENETC
->   net: enetc: update max chained Tx BD number for i.MX95 ENETC
->   net: enetc: add LSO support for i.MX95 ENETC PF
->   net: enetc: add UDP segmentation offload support
->
+On Wed, Nov 06, 2024 at 01:30:07PM +0000, Vladimir Vdovin wrote:
+> +test_pmtu_ipv4_mp_exceptions() {
+> +	setup namespaces routing multipath || return $ksft_skip
+> +
+> +	trace "${ns_a}"  veth_A-R1    "${ns_r1}" veth_R1-A \
+> +	      "${ns_r1}" veth_R1-B    "${ns_b}"  veth_B-R1 \
+> +	      "${ns_a}"  veth_A-R2    "${ns_r2}" veth_R2-A \
+> +	      "${ns_r2}" veth_R2-B    "${ns_b}"  veth_B-R2
+> +
+> +	# Set up initial MTU values
+> +	mtu "${ns_a}"  veth_A-R1 2000
+> +	mtu "${ns_r1}" veth_R1-A 2000
+> +	mtu "${ns_r1}" veth_R1-B 1500
+> +	mtu "${ns_b}"  veth_B-R1 1500
+> +
+> +	mtu "${ns_a}"  veth_A-R2 2000
+> +	mtu "${ns_r2}" veth_R2-A 2000
+> +	mtu "${ns_r2}" veth_R2-B 1500
+> +	mtu "${ns_b}"  veth_B-R2 1500
+> +
+> +	fail=0
+> +
+> +	# Ping and expect two nexthop exceptions for two routes in nh group
+> +	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 1 -s 1800 "${host4_b_addr}"
+> +
+> +	# Do route lookup before checking cached exceptions.
+> +	# The following commands are needed for dst entries to be cached
+> +	# in both paths exceptions and therefore dumped to user space
+> +	# Check that exceptions have been created with the correct PMTU
+> +	pmtu="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R1)"
+> +	pmtu="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R2)"
 
-Can you refactor the patches in a way that "ndev->hw_features" set 
-in corresponding patch.
+This overrides the first PMTU
 
+> +
+> +	check_pmtu_value "1500" "${pmtu}" "exceeding MTU (veth_A-R2)" || return 1
+> +	check_pmtu_value "1500" "${pmtu}" "exceeding MTU (veth_A-R1)" || return 1
+> +
+> +	return ${fail}
 
-Setting NETIF_F_HW_CSUM in "net: enetc: add UDP segmentation offload
-support" does not look good to me.
+And "fail" does not seem to be used anymore.
 
-Thanks,
-Hariprasad k
+Can you squash the following diff to v9?
 
-
->  drivers/net/ethernet/freescale/enetc/enetc.c  | 345 ++++++++++++++++--
->  drivers/net/ethernet/freescale/enetc/enetc.h  |  32 +-
->  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  22 ++
->  .../net/ethernet/freescale/enetc/enetc_hw.h   |  31 +-
->  .../freescale/enetc/enetc_pf_common.c         |  16 +-
->  .../net/ethernet/freescale/enetc/enetc_vf.c   |   7 +-
->  6 files changed, 419 insertions(+), 34 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
-> 
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 9e34b54d9c15..1b4d4c598d66 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -2396,22 +2396,14 @@ test_pmtu_ipv4_mp_exceptions() {
+ 	mtu "${ns_r2}" veth_R2-B 1500
+ 	mtu "${ns_b}"  veth_B-R2 1500
+ 
+-	fail=0
+-
+ 	# Ping and expect two nexthop exceptions for two routes in nh group
+ 	run_cmd ${ns_a} ping -q -M want -i 0.1 -c 1 -s 1800 "${host4_b_addr}"
+ 
+-	# Do route lookup before checking cached exceptions.
+-	# The following commands are needed for dst entries to be cached
+-	# in both paths exceptions and therefore dumped to user space
+ 	# Check that exceptions have been created with the correct PMTU
+ 	pmtu="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R1)"
++	check_pmtu_value "1500" "${pmtu}" "exceeding MTU (veth_A-R1)" || return 1
+ 	pmtu="$(route_get_dst_pmtu_from_exception "${ns_a}" "${host4_b_addr}" oif veth_A-R2)"
+-
+ 	check_pmtu_value "1500" "${pmtu}" "exceeding MTU (veth_A-R2)" || return 1
+-	check_pmtu_value "1500" "${pmtu}" "exceeding MTU (veth_A-R1)" || return 1
+-
+-	return ${fail}
+ }
+ 
+ usage() {
