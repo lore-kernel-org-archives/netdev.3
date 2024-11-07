@@ -1,53 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C064E1E1048
-	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 11:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C42F20F5B7;
+	Thu,  7 Nov 2024 11:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730980215; cv=none; b=T8ap5Us4I6kYjl2IwrX6pRTPvpTKFw3PKd2hoo91PKWR/K5DcTIrmcyJ1pfp5veQlVfrfP/XoIy0nhjqZVROfkDbhkrs1nD4f6U/wIfwfkEAyGueKtkEaPTOsJbOHAzrTnlzRVwcJ4Yy7f/ZLQ+Vx9Vm8rBQRqWO6lBJBp0Vft8=
+	t=1730980221; cv=none; b=pKBXHa6r8eXkdgJ2KAoECfh+Ps/+J8zbMpBmLtS6FfRtO1B4a6hC+hg7I8rhzfmthqpC7IEhGyySNNIIR4iCHzEJc/oLGUHYpKKaXlXciWnIc8lfMGF1Z+y4y8m5SvnXF4J2Z+IocmNqvPF4KnBIMrcLZLmpIHmv3JR+WvAwiMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730980215; c=relaxed/simple;
-	bh=TmLNVfAn83sJo6dyYoeIvyKWI8wwLjOjZ/md2hOnBYo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qhold5DFkITs3VLQVw0jO/afHD90/gjOBGoTf3lLTxEXJbBW2jiI3bSesj/36r4+WqJqoThwg6QJr2BC5ZixLA5bQ//d8lBH0CJyLnsgyM0/wXYtIyqVwDLKkO3QpXop3iPgqnQsC3gNY1Q8ugoXmdBX1TERUaoxojYueAEfRQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wr3dtCax; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730980221; c=relaxed/simple;
+	bh=2UyNdy4qGbpUbTVMh2TIe9zeckWHBjwyMeyiAort2yU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kwRtj5LCVlyFRV2QfmRZ57KhyyUmpIAsHor4DIRDpAAwhFq0Cb2JfsPp12p7nezKV+6wZBnKsX/ByGKpL/XNdqLr56/4cMvbRTwnR5zZh007WgRY/XtlDhwRqinKuNORKiLF/TdPqzzC/jhouyNY5KDIDkHq2W3Q3OjDyjemGIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ft1ItOfw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wr3dtCax"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730980212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XelEzEaUIkt9lsCzh2lI9eYg3SJvIyf2KXkRX7QzSaw=;
-	b=Wr3dtCaxq8y4Ww7s4um9E7cDPGaARitymx0ESNXnx/zx3RZznR0aKk0DunqfFJoopmSsgo
-	yNTC0ixZJprSf1B/qo+VQjWSkUJVZtGz9KG0TeQmwerBKyTco+c8IHva8Oc8j5axEP4rVS
-	+Z39DuSD2Bjl6WqGSnY+mtfg4x91beI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-uPXkRypyOLuKvLbdHGNxdw-1; Thu,
- 07 Nov 2024 06:50:09 -0500
-X-MC-Unique: uPXkRypyOLuKvLbdHGNxdw-1
-X-Mimecast-MFC-AGG-ID: uPXkRypyOLuKvLbdHGNxdw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AECE91956069;
-	Thu,  7 Nov 2024 11:50:08 +0000 (UTC)
-Received: from mheiblap.localdomain.com (unknown [10.47.238.111])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D7BD61953880;
-	Thu,  7 Nov 2024 11:50:06 +0000 (UTC)
-From: Mohammad Heib <mheib@redhat.com>
-To: netdev@vger.kernel.org,
-	oss-drivers@corigine.com,
-	louis.peens@corigine.com
-Cc: Mohammad Heib <mheib@redhat.com>
-Subject: [PATCH net] nfp: use irq_update_affinity_hint()
-Date: Thu,  7 Nov 2024 13:50:02 +0200
-Message-Id: <20241107115002.413358-1-mheib@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ft1ItOfw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC6CC4CECC;
+	Thu,  7 Nov 2024 11:50:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730980220;
+	bh=2UyNdy4qGbpUbTVMh2TIe9zeckWHBjwyMeyiAort2yU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ft1ItOfwxHkMQKyX70arcU/rXPkwfnXSyhbEgW/RMtmJ3FT2RwpvpPvj4V9vEz88H
+	 1Sd69JLNxeZq5q5ZylouwJv8dQGGD10jp6AF0wmBmZcAo0Sfsx60X0e7h1aU/3ACrj
+	 BRqIhHa5mD2G0MNbkVodhsYWQZ7QSU8wCuhqoPmjr1DQlZ1adTpK9Kb6IXt5GqQQ+q
+	 wr+GCl1mGGEOsCb3tcaowjiYXvZWiCEFiuDiSsUJBYkj7scgpz0MKlAWFflVULbc9k
+	 VL+RolwZSpsyFz2hKKmO4ck6HA9ikZOPQC1VJFcBDvewFhcp2gHKKNG9EMGy2D7bgI
+	 u/cI442my2eOg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 343863809A80;
+	Thu,  7 Nov 2024 11:50:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,52 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Subject: Re: [PATCH net 0/4] virtio_net: Make RSS interact properly with queue
+ number
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173098023002.1629022.1863004983853146136.git-patchwork-notify@kernel.org>
+Date: Thu, 07 Nov 2024 11:50:30 +0000
+References: <20241104085706.13872-1-lulie@linux.alibaba.com>
+In-Reply-To: <20241104085706.13872-1-lulie@linux.alibaba.com>
+To: Philo Lu <lulie@linux.alibaba.com>
+Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew@daynix.com, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org
 
-irq_set_affinity_hint() is deprecated, Use irq_update_affinity_hint()
-instead. This removes the side-effect of actually applying the affinity.
+Hello:
 
-The driver does not really need to worry about spreading its IRQs across
-CPUs. The core code already takes care of that. when the driver applies the
-affinities by itself, it breaks the users' expectations:
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-1. The user configures irqbalance with IRQBALANCE_BANNED_CPULIST in
-   order to prevent IRQs from being moved to certain CPUs that run a
-   real-time workload.
+On Mon,  4 Nov 2024 16:57:02 +0800 you wrote:
+> With this patch set, RSS updates with queue_pairs changing:
+> - When virtnet_probe, init default rss and commit
+> - When queue_pairs changes _without_ user rss configuration, update rss
+>   with the new queue number
+> - When queue_pairs changes _with_ user rss configuration, keep rss as user
+>   configured
+> 
+> [...]
 
-2. nfp device reopening will resets the affinity
-   in nfp_net_netdev_open().
+Here is the summary with links:
+  - [net,1/4] virtio_net: Support dynamic rss indirection table size
+    https://git.kernel.org/netdev/net/c/86a48a00efdf
+  - [net,2/4] virtio_net: Add hash_key_length check
+    https://git.kernel.org/netdev/net/c/3f7d9c1964fc
+  - [net,3/4] virtio_net: Sync rss config to device when virtnet_probe
+    https://git.kernel.org/netdev/net/c/dc749b7b0608
+  - [net,4/4] virtio_net: Update rss when set queue
+    https://git.kernel.org/netdev/net/c/50bfcaedd78e
 
-3. nfp has no idea about irqbalance's config, so it may move an IRQ to
-   a banned CPU. The real-time workload suffers unacceptable latency.
-
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
----
- drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-index 6e0929af0f72..98e098c09c03 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -829,7 +829,7 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
- 		return err;
- 	}
- 
--	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
-+	irq_update_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
- 
- 	nn_dbg(nn, "RV%02d: irq=%03d/%03d\n", idx, r_vec->irq_vector,
- 	       r_vec->irq_entry);
-@@ -840,7 +840,7 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
- static void
- nfp_net_cleanup_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec)
- {
--	irq_set_affinity_hint(r_vec->irq_vector, NULL);
-+	irq_update_affinity_hint(r_vec->irq_vector, NULL);
- 	nfp_net_napi_del(&nn->dp, r_vec);
- 	free_irq(r_vec->irq_vector, r_vec);
- }
+You are awesome, thank you!
 -- 
-2.34.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
