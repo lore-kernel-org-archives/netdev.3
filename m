@@ -1,121 +1,123 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542081F1303
-	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 11:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B91F4FAC;
+	Thu,  7 Nov 2024 11:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730978645; cv=none; b=Ofa9bqk06RULKSdOemeisM4glyyxxQwJCd5j8Kn//NcwUjDuDROKdy3M5QzlXi4puWtJzl8s+PdlMQbKE8udvi0JcekSYhg2Bh/cmk3YFsxgzEdIyha6n6SZ2wGM894UbPfo5hp/qOXpqpRI5I62YlRND4hY6uIgm08glLWjkM4=
+	t=1730978860; cv=none; b=koikzLzG/O9Ms5E0a7WLHfep6Ou26pHpPQHGE63Y06CONOV54bL2uq9FP1AhFDtrdUBq74g/LYEsFB7y1VkXkApARS6u21tm202dCGHeNoBc5v5zPphoigUbj2FItpUzw46HRXFg/ybV+c9sBDtrJ0mRK8cjgUCjlZwZ/mRF/Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730978645; c=relaxed/simple;
-	bh=2GsD4FM0iXQ9ZQgHNEDuqIySpEr5mZ0z+3AwGF26ZN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZUE4Qt4blIaJ57+OYhnduBIdlULcDc9pfyfiZ5+G12ZsxPR8r1CNvtI8bk4bV1h3zU3qFrQJxOXXGIux2K7hae5l5+O+dlz0TXf798p0HUfGuXhnwHQV0kvzwYYVN8ycEn0IBq/jnRQ1iPeFNqoeBV+g5dxcILjesP+KnIwwF0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q9N3pgzM; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q9N3pgzM"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-431481433bdso7308385e9.3
-        for <netdev@vger.kernel.org>; Thu, 07 Nov 2024 03:24:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730978642; x=1731583442; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YI7D6pYZ3MPTsBn2X/3v3EZ17avH4kCX3waBbepnJPk=;
-        b=q9N3pgzMl+08HrP2oztqOAiyP+GdciMnoXp7lczrBtg7CJgL/Qp4UndsP/zgWaPcB8
-         BNUUNu69hWMITP8u0Y8hQRq0gZUHuPzHMEUYQfjcvws6RoxgO8/mFSf/vAjhNptjJWBR
-         nz0DEfjOk7lwOq/xTfobA/u2gKqkS6Z0nPlU2KpJuiwlLOLtkRtdLzDsoXSobm2aK0V7
-         XrUd3fbDDF0lCXfUkWvBz40BrqP2+zlbK5o15C5H+u2luwNDV6BiOD+QEPorvNlBCtj3
-         t0XFYuTWdFEjhoPb2DdXJ4kyTNsIn5g4mJsJ6q/e4WnqJFoIkgTuEyM7yMXove6AIfG+
-         VRPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730978642; x=1731583442;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YI7D6pYZ3MPTsBn2X/3v3EZ17avH4kCX3waBbepnJPk=;
-        b=JrKlNyM5D4nerjLgX/6WEIh2NZNPWmojtMj/vkePq7cUw5ZfnedDvu9ueoJzpcKT86
-         OY6V4ZPCZGhPkfD6tocpl3oEueMfR3w+MyKInj2G1lBGqhiFCN+pDzHLyxMsphYD2ZyX
-         WML3MnNoUUghv46o8Ip4WQ5HFGvSIhL5iXzAzD3CUgm++JOS0n+33KitbTf1wQfOhAFG
-         10lBK2Xx/SGWpNO6SxYgUjJ6Hi4Y9GInLyqi9GoBkHKaZ2gkcQ3xsYdOWjDm6RQzRGSU
-         R8SUn3W3pMi4IMWsnEafr6sQLIjBUJrRzZyRP8pGVmrASi9wJl7LTUjqLKnB+lBhYOLP
-         U/QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWITJFbLBZOZq5rOziKMkyonc0QjMSkw9flN950OPDJsyLzEDrd0e1ow/c1aaJQSA6qb8VcKXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLBs/LIEv3We1St9FKxXz9usbePcC5/sKXSLqU8WZrRDVocuN4
-	o+z2aBwSPFhhtDKiPtsSeMPzbmPmoG5es+E97CMuTOISeLCziduN8/9NVspRFKw=
-X-Google-Smtp-Source: AGHT+IFBpowv+bSWYC6j4VAMIQVR8u8yrWok5kaYTtpzwW5CbfWm5qUgpBko8chZf+PgyCz8MppP4g==
-X-Received: by 2002:a05:600c:348e:b0:42c:b74c:d8c3 with SMTP id 5b1f17b1804b1-432b30a15femr7963805e9.32.1730978641744;
-        Thu, 07 Nov 2024 03:24:01 -0800 (PST)
-Received: from localhost ([154.14.63.34])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa5b5e56sm59261885e9.2.2024.11.07.03.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 03:24:01 -0800 (PST)
-Date: Thu, 7 Nov 2024 14:24:00 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Cindy Lu <lulu@redhat.com>,
-	jasowang@redhat.com, mst@redhat.com, michael.christie@oracle.com,
-	sgarzare@redhat.com, linux-kernel@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 6/9] vhost: Add kthread support in function
- vhost_worker_destroy()
-Message-ID: <ed23b4b1-1aa8-414a-856c-15e072541dee@suswa.mountain>
+	s=arc-20240116; t=1730978860; c=relaxed/simple;
+	bh=CiRRGlsT3dDhWyONtG/CZiwwSxcdju77JCm6fWfpbFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mRe/oLd+5ynKTxWX8lKKDbPIBUGOLFnvap8TGuCQMekbovGMKQi6w15DZGFzG/nguDnVKpfetBMTthZwbov+kUL5I7OQ3ywKxIPZdCRiGNWE/2xzeUmeQUC4Q+e0kdbS2oNtWdAIQMsPGM/m6RldmzcBaBIsmGxakJZvV+KQ5hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB575C4CECC;
+	Thu,  7 Nov 2024 11:27:36 +0000 (UTC)
+Date: Thu, 7 Nov 2024 11:27:34 +0000
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Chris Lew <quic_clew@quicinc.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Hemant Kumar <quic_hemantk@quicinc.com>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Maxim Kochetkov <fido_max@inbox.ru>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Bhaumik Bhatt <bbhatt@codeaurora.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: Re: [PATCH] net: qrtr: mhi: synchronize qrtr and mhi preparation
+Message-ID: <20241107112734.v2ik6ipnebetjene@thinkpad>
+References: <20241104-qrtr_mhi-v1-1-79adf7e3bba5@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241105072642.898710-7-lulu@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241104-qrtr_mhi-v1-1-79adf7e3bba5@quicinc.com>
 
-Hi Cindy,
+On Mon, Nov 04, 2024 at 05:29:37PM -0800, Chris Lew wrote:
+> From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> 
+> The call to qrtr_endpoint_register() was moved before
+> mhi_prepare_for_transfer_autoqueue() to prevent a case where a dl
+> callback can occur before the qrtr endpoint is registered.
+> 
+> Now the reverse can happen where qrtr will try to send a packet
+> before the channels are prepared. Add a wait in the sending path to
+> ensure the channels are prepared before trying to do a ul transfer.
+> 
+> Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com/
+> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> Signed-off-by: Chris Lew <quic_clew@quicinc.com>
 
-kernel test robot noticed the following build warnings:
+I think we need to have the check in 'mhi_queue()' instead of waiting for the
+channels in client drivers. Would it be a problem if qrtr returns -EAGAIN from
+qcom_mhi_qrtr_send() instead of waiting for the channel?
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+- Mani
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Cindy-Lu/vhost-Add-a-new-parameter-to-allow-user-select-kthread/20241105-153254
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git linux-next
-patch link:    https://lore.kernel.org/r/20241105072642.898710-7-lulu%40redhat.com
-patch subject: [PATCH v3 6/9] vhost: Add kthread support in function vhost_worker_destroy()
-config: x86_64-randconfig-161-20241106 (https://download.01.org/0day-ci/archive/20241107/202411071945.ExiEHgoX-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202411071945.ExiEHgoX-lkp@intel.com/
-
-New smatch warnings:
-drivers/vhost/vhost.c:721 vhost_worker_destroy() error: we previously assumed 'worker' could be null (see line 721)
-
-Old smatch warnings:
-drivers/vhost/vhost.c:241 vhost_worker_queue() error: we previously assumed 'worker' could be null (see line 241)
-
-vim +/worker +721 drivers/vhost/vhost.c
-
-1cdaafa1b8b4ef Mike Christie 2023-06-26  718  static void vhost_worker_destroy(struct vhost_dev *dev,
-1cdaafa1b8b4ef Mike Christie 2023-06-26  719  				 struct vhost_worker *worker)
-1a5f8090c6de99 Mike Christie 2023-03-10  720  {
-e4dec2edddbd54 Cindy Lu      2024-11-05 @721  	if (!worker && !worker->fn)
-
-Same thing.  && vs ||.
-
-1a5f8090c6de99 Mike Christie 2023-03-10  722  		return;
-1a5f8090c6de99 Mike Christie 2023-03-10  723  
-1cdaafa1b8b4ef Mike Christie 2023-06-26  724  	WARN_ON(!llist_empty(&worker->work_list));
-1cdaafa1b8b4ef Mike Christie 2023-06-26  725  	xa_erase(&dev->worker_xa, worker->id);
-e4dec2edddbd54 Cindy Lu      2024-11-05  726  	worker->fn->stop(dev->inherit_owner ? (void *)worker->vtsk :
-e4dec2edddbd54 Cindy Lu      2024-11-05  727  					      (void *)worker->task);
-e4dec2edddbd54 Cindy Lu      2024-11-05  728  	kfree(worker->fn);
-1cdaafa1b8b4ef Mike Christie 2023-06-26  729  	kfree(worker);
-1cdaafa1b8b4ef Mike Christie 2023-06-26  730  }
+> ---
+>  net/qrtr/mhi.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
+> index 69f53625a049..5b7268868bbd 100644
+> --- a/net/qrtr/mhi.c
+> +++ b/net/qrtr/mhi.c
+> @@ -15,6 +15,7 @@ struct qrtr_mhi_dev {
+>  	struct qrtr_endpoint ep;
+>  	struct mhi_device *mhi_dev;
+>  	struct device *dev;
+> +	struct completion prepared;
+>  };
+>  
+>  /* From MHI to QRTR */
+> @@ -53,6 +54,10 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
+>  	if (skb->sk)
+>  		sock_hold(skb->sk);
+>  
+> +	rc = wait_for_completion_interruptible(&qdev->prepared);
+> +	if (rc)
+> +		goto free_skb;
+> +
+>  	rc = skb_linearize(skb);
+>  	if (rc)
+>  		goto free_skb;
+> @@ -85,6 +90,7 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+>  	qdev->mhi_dev = mhi_dev;
+>  	qdev->dev = &mhi_dev->dev;
+>  	qdev->ep.xmit = qcom_mhi_qrtr_send;
+> +	init_completion(&qdev->prepared);
+>  
+>  	dev_set_drvdata(&mhi_dev->dev, qdev);
+>  	rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
+> @@ -97,6 +103,7 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+>  		qrtr_endpoint_unregister(&qdev->ep);
+>  		return rc;
+>  	}
+> +	complete_all(&qdev->prepared);
+>  
+>  	dev_dbg(qdev->dev, "Qualcomm MHI QRTR driver probed\n");
+>  
+> 
+> ---
+> base-commit: 1ffec08567f426a1c593e038cadc61bdc38cb467
+> change-id: 20241104-qrtr_mhi-dfec353030af
+> 
+> Best regards,
+> -- 
+> Chris Lew <quic_clew@quicinc.com>
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+மணிவண்ணன் சதாசிவம்
