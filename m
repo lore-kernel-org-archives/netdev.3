@@ -1,105 +1,115 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002351BD007;
-	Thu,  7 Nov 2024 16:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C659217F2B;
+	Thu,  7 Nov 2024 17:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730998473; cv=none; b=mHYJ/q0jpu2ULc+PWJnOEWEwf44kaWdCSoMSUTFgMZOzT7UUVt63En6CPoSMOXAqlbE9gNZo2a2RSTBNNpcoHi9QhKkS8xABHcvtRM58qj1+vq5Hr8McgdnPp45VQju9cfMuxtStXc6vskv2Grdd+dW3rpd6AqgaljOgoIaQnhQ=
+	t=1730998989; cv=none; b=Wb802WhawrbLPj+4pahbZI0lkuKSt5KmXUaVWrG6rCpKK4//HqnN1AJFeaba9+ir43/VdyveqpNGf8OTl48sTyNW92kUionl2nWvBP15VfrFka9RQqSTcASAelttvKKj8Qa1aqECbSjtQhEcsISbO/wvYIkw913w/pEW+YFThLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730998473; c=relaxed/simple;
-	bh=YjR9XgoTaD6j/UmnPPlZ7iV9/VGfZG8Hi/1ZKtVLbcw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ruR6krTRpO+zws58Cnow/vxXNYVqB6m1gthw+4wX2+p9/KTMMLqXvcUcu6ovSFcB1w4IkwSkvudKHosO+dGfajMYUhhMHlIXhL10WgR5w70B9jBQbODuK1uADszSI9ZeOXZwnCloTJSalg+49v2/Tl/BFoe1MmtiyCFU2baujc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=guuUxMAb; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730998989; c=relaxed/simple;
+	bh=lnhfGsBPijdLmSTBoDTvyHj+rnR4uumf0PNicJs+/7A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sJDF+ldHR68yR87WiNg8XK9FCmOGLj/eEg0Jxr5TpeiLh/lcLUODaJHd2AuUhno0rDkBKgRH3ExhDeexwGwEolgIoNibTHdnvaQXD7NJA+NEiqZqmWIUzB+ApRrvFbTg19i/k0TnhXA36Pli88I/1oBsV8WzL0mGF0jRezMJ5Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hCMAkpqu; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="guuUxMAb"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d6a2aa748so725073f8f.1;
-        Thu, 07 Nov 2024 08:54:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730998470; x=1731603270; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YjR9XgoTaD6j/UmnPPlZ7iV9/VGfZG8Hi/1ZKtVLbcw=;
-        b=guuUxMAbZ/fZBhVXjph1XsOVGgPFRLIunKP9beqA0Q9j7CyVvXw60LZYPYn/CtjHTt
-         XB1IjQSzo6eMIsAAF4XYJw07bCv/X+xr2JzmNUlAQ+lNI6EaZckXYouVByP0R0tnwUmI
-         9hYa0q7tovX4Ic03dwckue7oLgObLO1lP5JR7iQhFgn71JS4LNjpG2haFOqHXKM0ZByZ
-         hsfhEKFzguvw6VHwjHjwQA7TdxPpNMzr8K+JwJIrMfYstpj2rfNnbkNBZDg6DOiXxByB
-         wXqvi+vcD2/FZp5VDPOKfUV/jZUz4UFSu6UjCoZStbVixlBEMWeEx9bkS96Ass5iY+MG
-         UdvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730998470; x=1731603270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YjR9XgoTaD6j/UmnPPlZ7iV9/VGfZG8Hi/1ZKtVLbcw=;
-        b=Cad2kdeCPciIV7ECDZaaSnp0qDhf3ighY1W23oZnDRtZfO2vu/RztKXIZkgjp5/rwF
-         yfV5FzPpk2qU4QIyu5SfCGJfOrRqRnFnF3M5Y/7D0/kWfMjPhIAnhqxzAeICY2Jw/8qQ
-         EwAery/tihBZnOE5N5geJzEIkxTd3mbQBHCWtHqj24YS9s8ZJMICZu1oO/+kZlk5CUOQ
-         MO1pcObrMm8kBjg8GDZoJnZJ0ak0c9pKxkj2mmJi1YHMDHz70WKHWGcj6Ua22R+yXEQm
-         V0Kni3yL/8zCzJ4ItN7ygG9sjhkwrsapqtIf7W1APjWo5Yt8p4/NFW7INnEERuvWtN3g
-         atwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFJad/D8yNnhTaehmL0NXT/Jp036K6mXYoyZcLvpJvQ0sIpsQ+w39jPZk66EC9JEUx8tflAbdA+Kf292fKRxQ=@vger.kernel.org, AJvYcCWpiBV1CS/PXrCBlZm0f50KSDQNHW8oNmlnBhTTkP1cXn9W9MpemO4StgzuBkphiokp45m03JL6@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdphoxSuwj9MAiehL2ScjrdYgyWJp0TGFYhsUj/uOcPW833Ri7
-	+akDrwZBcunMz6+0F4Sr19y0mh5++HpAR5h5bjBb1nmbELO+uIg5qjBINbLgZM7s1B2/xTrG5Rm
-	KF4exMg0i72w3drxtZPsznUL9k/0=
-X-Google-Smtp-Source: AGHT+IFbC+Sb2iP0XOwEMN7bNiSSUnyt16wp7V2RLOlj6Qx5ox4TKWGJWhoIHGCKICdvmlbDEjyuTeJwi+2y2XBLp20=
-X-Received: by 2002:a05:6000:1f8e:b0:37d:3301:9891 with SMTP id
- ffacd0b85a97d-381c7a4c0e6mr17589877f8f.17.1730998470087; Thu, 07 Nov 2024
- 08:54:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hCMAkpqu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BBB50240007;
+	Thu,  7 Nov 2024 17:03:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730998984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Cp1IlwuXxuG3hVq1umEFzCMyS7Q+bM6rBW7jwZeMmgI=;
+	b=hCMAkpqulm8WFtwNz9p/rJ6c5xyIR6Yt5pwkQVIQEvKoehCjYKLmaI2KMeC5YScXVkGK/Y
+	4NYd/fMztQeBdkO9mv4nrEkULHwWlneZWnGmb9PGpDJ0GHxm/vRqIhCaYN6QTTjBG+X0Oj
+	scxVELlEWOUEAsaalcEBe20LsxUW+gEceXA/+6bUFog+C/GZ1AiewiiZc8AsktcgIKll/L
+	p9GURarjdeovSV44Sa/tJSDkksKWsLZNh4ZOZ+nghk9jhMxs2if4hbS9Z22nEoZX55hBYn
+	Sb2Ksun51D0DOfrVf2l7vp9dd/Zru8vA/krrQP8IK2yKFc8pJimj03R/QqWHIQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH net-next 0/7] net: freescale: ucc_geth: Phylink conversion
+Date: Thu,  7 Nov 2024 18:02:47 +0100
+Message-ID: <20241107170255.1058124-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107133004.7469-1-shaw.leon@gmail.com> <20241107133004.7469-6-shaw.leon@gmail.com>
- <CANn89iLvC0H+eb1q1c9X6M1Cr296oLTWYyBhqTAyGW_BusHA_A@mail.gmail.com>
- <CABAhCOS8WUqOsPCzQFcgeJbz-mkEV92OVXaH3E1tFe7=HRiuGg@mail.gmail.com> <20241107075943.78bb160c@kernel.org>
-In-Reply-To: <20241107075943.78bb160c@kernel.org>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Fri, 8 Nov 2024 00:53:55 +0800
-Message-ID: <CABAhCOSvhUZE_FE4xFsOimzVBQpQYLNk51uYNLw+46fibzfM2Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 5/8] net: ip_gre: Add netns_atomic module parameter
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Kuniyuki Iwashima <kuniyu@amazon.com>, 
-	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Jiri Pirko <jiri@resnulli.us>, Hangbin Liu <liuhangbin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Thu, Nov 7, 2024 at 11:59=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Thu, 7 Nov 2024 22:11:24 +0800 Xiao Liang wrote:
-> > > Instead, add new rtnetlink attributes ?
-> >
-> > It is to control driver behavior at rtnl_ops registration time. I
-> > think rtnetlink
-> > attributes are too late for that, maybe? Can't think of a way other tha=
-n
-> > module parameters or register separate ops. Any suggestions?
->
-> Step back from the implementation you have a little, forget that there
-> is a boolean in rtnl_link_ops. User makes a request to spawn an
-> interface, surely a flag inside that request can dictate how the netns
-> attrs are interpreted.
+Hello everyone,
 
-IMO, this is about driver capability, not about user requests.
-As you've pointed out earlier, probably no one would actually want
-the old behavior whenever the driver supports the new one.
-I added the module parameter just for compatibility, because ip_tunnels
-was not implemented to support src_net properly. Yes it's possible to
-add an extra flag in user request, but I don't think it's a good approach.
+This series aims at converting ucc_geth to phylink, one one part for
+better SFP handling, and on the other hand as a preparation for complex
+topology support with multiple PHYs being attached, which could involve
+phylink. Even without considering the multi-phy case, this series brings
+proper SFP support for that driver.
 
-BTW, I didn't find what's going on with module parameters, is there
-any documentation?
+This driver is pretty old, which shows in the coding style. I did not
+include a cleanup pass to get checkpatch happy, so a few patches will
+complain about the CamelCase used in some internal structure
+attrubutes...
 
-Thanks.
+The first 6 patches are preparation for the phylink conversion that's
+done in patch 7.
+
+The first patch removes support for the "interface" DT property which
+has been deprecated for 17 years, allowing to simplify the phy mode
+parsing.
+
+The second patch splits the adjust_link function, as advised in the
+phylink porting guide. This makes patch 7 easier to process.
+
+Patches 3, 5 and 6 perform some cleanup on unsued or leftover constructs
+to again make patch 7 easier to process.
+
+Patch 5 addresses the WoL configuration in that driver.
+
+Finally, patch 7 does the phylink conversion.
+
+Note that there are some things that I wasn't able to test, namely the
+TBI/RTBI handling. I did my best to replicate the existing logic, but I
+don't have the hardware to test it.
+
+Thanks,
+
+Maxime
+
+Maxime Chevallier (7):
+  net: freescale: ucc_geth: Drop support for the "interface" DT property
+  net: freescale: ucc_geth: split adjust_link for phylink conversion
+  net: freescale: ucc_geth: Use netdev->phydev to access the PHY
+  net: freescale: ucc_geth: Fix WOL configuration
+  net: freescale: ucc_geth: Simplify frame length check
+  net: freescale: ucc_geth: Hardcode the preamble length to 7 bytes
+  net: freescale: ucc_geth: phylink conversion
+
+ drivers/net/ethernet/freescale/Kconfig        |   3 +-
+ drivers/net/ethernet/freescale/ucc_geth.c     | 600 +++++++-----------
+ drivers/net/ethernet/freescale/ucc_geth.h     |  19 +-
+ .../net/ethernet/freescale/ucc_geth_ethtool.c |  57 +-
+ 4 files changed, 247 insertions(+), 432 deletions(-)
+
+-- 
+2.47.0
+
