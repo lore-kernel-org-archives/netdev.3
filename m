@@ -1,83 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B5C21859E;
-	Thu,  7 Nov 2024 19:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E3A186E58;
+	Thu,  7 Nov 2024 19:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731008425; cv=none; b=c6sfnSQVmhG/0fm8ZTFT/o78iOAbF5A8bGH3JxUuvQAW7F/mtEqiHw/wXKVyzv3HFMfzV740Jv4FGEg1tSKAZu7IlRxW2XJtObDJoXLLFFP404kXXOKfS4eleC1+D0TbyYAyfGPnQhkaqLYWW/ryU8FBbc3l6zbyufz9NM9Lawc=
+	t=1731008675; cv=none; b=emAL3YpD8TjYaJYOmhUS50Brrm5Hu1WhZQxnDcTdukalCuBpOSVOPl0Kl+QJN2o1NzsnhJWGts5WnBJ74FHODuMOH9EXXycj8/4Mm4F/jbGXrUPfhudSxPfqOOLOcZXUpbMiURNXUPdLSDssIId9iB+ajY+Ykhld6fdgfguGNOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731008425; c=relaxed/simple;
-	bh=sTmizrCUjlvYCQAiHErIWBZ84osWqGQ3MzmDSa7wwyM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=n7UqBEnPLB6z9Z352a9T/GfSxKpy94GLJrPKJf51WRefVSEKtAWm6+OhhcUiqwD4t3QSmaKSuQt7CKKZ5HLhwdg+QPcuKj9fe4M6+PdY2KpBTXV3N2XKPxuugTHttGMhBGgHtN7Dl0hjCKs5ZJjChihMStOa/E5vble2Zo8G7WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibUGZtWH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731008675; c=relaxed/simple;
+	bh=Lm1VbNzcJYV38ew2xCXXcRVdevnaodY907xW8j0a740=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q+oi6106Sp4vdm69Dsq6mt4gFMUsk+bYW0yq/JGnm2t8Te4TA2InxyChJTWRuB124+95oiYIyHAffCA7EJrVglJktHgTyAAK3b1Xq2/PFZOoKo599+vQBipircLqtff4YmnLCM8TazKB2tP8ZdgPjJfV/geFOgqSJfu0xrz5RVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFODgOoj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibUGZtWH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03715C4CECC;
-	Thu,  7 Nov 2024 19:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFODgOoj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165C1C4CECC;
+	Thu,  7 Nov 2024 19:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731008425;
-	bh=sTmizrCUjlvYCQAiHErIWBZ84osWqGQ3MzmDSa7wwyM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ibUGZtWHi0/35oOoJRYTNPPRDl198+FHWBVrDk4vtZVzw33Q42t3zuXyYOmUoyj2i
-	 VmdCR5XRDkMWWDmSojuXEmo2CxyC4Qyqie2PYs6O35sgeceruKYR3LAwSKyx4rpCXA
-	 0lgAoTMzVNf4gLvfCheaLayb08GK0DYp62QiY9diODtxeXT2s/Px7rVvmIiMQALRbF
-	 PEwxrCM+w2wVbzl8rooxyxswKhpnnKYRmDxiJ7Na4hqvbFTxynZqvgmgQm3OEB71vd
-	 OPgJyFlLinVML+W8jncJlZsofhapDQLwzUn3dicF1pRGxSEcmCWZFCDeobrGSj0+MG
-	 WzmxYwNk48BCQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7169B3809A80;
-	Thu,  7 Nov 2024 19:40:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1731008675;
+	bh=Lm1VbNzcJYV38ew2xCXXcRVdevnaodY907xW8j0a740=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cFODgOojKut0CCnQIUfFzCYR+5UG5cWqmL1LQr2ZY9xqG+p4Av+JgxHdV4Fmkqgtw
+	 zvs15wgpazMCwa2ygyC/Kskwlm7ZEgvSukkGkDRVHdk7ADbJOBY/PkJZxEfl1LYIS2
+	 Hx1+Ycq+qydo0e9X52tPVNFJKLTa3FrGQgjXragfz/c/LiPKAS4wUF2iQbDNgCB+9J
+	 EAJOCgZsqsA8uReH4L5LO+e5PiC07J2o+B/MGA0LYWlJosWvVSRiyElknHlx1TGsEg
+	 ywHgDxOCgvsZ01alDC6GEsuYUG1upaX+6eWmt7cHCA2ZEFKuCgvJ4hy1iYDM2Uck+l
+	 jEVDqrk3HageA==
+Date: Thu, 7 Nov 2024 11:44:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Nelson, Shannon" <shannon.nelson@amd.com>
+Cc: Wentao Liang <liangwentao@iscas.ac.cn>, brett.creeley@amd.com,
+ davem@davemloft.net, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Wentao Liang <Wentao_liang_g@163.com>
+Subject: Re: [PATCH net v3] drivers: net: ionic: add missed debugfs cleanup
+ to ionic_probe() error path
+Message-ID: <20241107114434.05e6b875@kernel.org>
+In-Reply-To: <79f0ce60-58a5-4757-88eb-1cdc8a80388b@amd.com>
+References: <20241107021756.1677-1-liangwentao@iscas.ac.cn>
+	<79f0ce60-58a5-4757-88eb-1cdc8a80388b@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/smc: Fix lookup of netdev by using
- ib_device_get_netdev()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173100843399.2072933.10805730213693897963.git-patchwork-notify@kernel.org>
-Date: Thu, 07 Nov 2024 19:40:33 +0000
-References: <20241106082612.57803-1-wenjia@linux.ibm.com>
-In-Reply-To: <20241106082612.57803-1-wenjia@linux.ibm.com>
-To: Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-rdma@vger.kernel.org, horms@kernel.org, leon@kernel.org,
- michaelgur@nvidia.com, hca@linux.ibm.com, guwen@linux.alibaba.com,
- alibuda@linux.alibaba.com, tonylu@linux.alibaba.com, jaka@linux.ibm.com,
- gbayer@linux.ibm.com, wintera@linux.ibm.com, pasic@linux.ibm.com,
- niho@linux.ibm.com, schnelle@linux.ibm.com, twinkler@linux.ibm.com,
- kgraul@linux.ibm.com, raspl@linux.ibm.com, aswin@linux.ibm.com,
- dust.li@linux.alibaba.com, yanjun.zhu@linux.dev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed,  6 Nov 2024 09:26:12 +0100 you wrote:
-> The SMC-R variant of the SMC protocol used direct call to function
-> ib_device_ops.get_netdev() to lookup netdev. As we used mlx5 device
-> driver to run SMC-R, it failed to find a device, because in mlx5_ib the
-> internal net device management for retrieving net devices was replaced
-> by a common interface ib_device_get_netdev() in commit 8d159eb2117b
-> ("RDMA/mlx5: Use IB set_netdev and get_netdev functions").
+On Thu, 7 Nov 2024 11:31:50 -0800 Nelson, Shannon wrote:
+> On 11/6/2024 6:17 PM, Wentao Liang wrote:
+> > 
+> > From: Wentao Liang <Wentao_liang_g@163.com>
+> > 
+> > The ionic_setup_one() creates a debugfs entry for ionic upon
+> > successful execution. However, the ionic_probe() does not
+> > release the dentry before returning, resulting in a memory
+> > leak.
+> > 
+> > To fix this bug, we add the ionic_debugfs_del_dev() to release
+> > the resources in a timely manner before returning.
+> > 
+> > Fixes: 0de38d9f1dba ("ionic: extract common bits from ionic_probe")
+> > Signed-off-by: Wentao Liang <Wentao_liang_g@163.com>  
 > 
-> [...]
+> Thanks!  -sln
+> 
+> Acked-by: Shannon Nelson <shannon.nelson@amd.com>
 
-Here is the summary with links:
-  - [net,v2] net/smc: Fix lookup of netdev by using ib_device_get_netdev()
-    https://git.kernel.org/netdev/net/c/de88df01796b
+Just in time to still make today's PR ;)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+This change looks fine but as a future refactoring perhaps there should
+be a wrapper for:
 
+        ionic_dev_teardown(ionic);                                              
+        ionic_clear_pci(ionic);                                                 
+        ionic_debugfs_del_dev(ionic);
 
+which pairs with ionic_setup() ?
