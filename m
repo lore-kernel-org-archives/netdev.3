@@ -1,155 +1,91 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15241219C9A;
-	Thu,  7 Nov 2024 18:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C37F188A3B;
+	Thu,  7 Nov 2024 18:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731003150; cv=none; b=Iqp1jvkQ0ayRmopIx5EKxeE5IKcpq9WVne8Dfaajlo8uU64sk/TtClaWJq4LBKlWfLmx4kfslHXIdCOhyGLlYIntU94aZDNnR2zK0tTuu9fdiRTnO/OLLUNktiVzojmDw3qLywA8U2H1pxDpY/CAnmn2UJmcDZFWfG+a9CXSFjU=
+	t=1731003382; cv=none; b=ZqiF/ePPeRtFX8PkGKMnBkUqRUIafhM582OmgNB3Ay/Dzs9Bq3XKGSv8yRYOFaOywqPeQYF/0AU9Eu9VfxEFFni7P+cJWSlIiAMS4MQ+MK9t2EB1yH138f2sBFUJ2v6dXO4iCd3c8TFYVu6lbJk+cyqQt8xb7eIkAqOHzk4GKRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731003150; c=relaxed/simple;
-	bh=QNIVoaUG6HoJ02+8aCHTzhZtbDvKJFEGC7k27W7G0/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqdaVlJNdiWvkKbpq2CD/tCtAwfNOKsFd3NAFYbNZhug/xnl5UJAnZs8PPStyjRnsQcyO1hoXdGLKYtGCgEG6zmX7jm7EpoTFF/SUZv44aNt64sKz6tn0pRfm66pefxqIyut8wc1bBsNLn0Fyu33iKMexdq3WyCM4UeUfMcXmrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-71ec997ad06so1007038b3a.3;
-        Thu, 07 Nov 2024 10:12:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731003148; x=1731607948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WLuAo808h43hPUqDZon7CMUoTgxLTq7GJOn3Y6RziyQ=;
-        b=qNhE4YRfShJkdt2GI/0tkrKLcEcEwniPhDcX9YpyZao5z7jpq5++XE+Pfymxr9X+a2
-         jpuDUhJH2Wjhe7OXw5fGWFUZjIGRtFXIOmZLrRnSyetTk+sQIN6k2sK+OSfNHV9M+KNa
-         DpUKlbO2Z8ldpNREdAR9E1/fjajEfM1HlJcVEZVeF2ImYjRPZbvhUn+dhNTpBJjUR4Vn
-         CHeZlOMyfX8LCV1y64pjkYYWBhh7pQ9Lpg4iG9SLDZntX7Y+gYfd1MrOJofFjScF+g3B
-         z5Cil8GsnfGXiISD9+SHKCV9roDV6r50WYNdoihsk+S1FW1+PNG+s2/yh0xMWYQgSzgn
-         xBlg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5+UjBUVPbxxn3f/9XuQU6dKw1C5oEpyj6QNAXbjhlK1N7ZkRfERrg4IcYqzpVtK4nHZGq4E6Vtw9NMhw=@vger.kernel.org, AJvYcCXZJ8WHvh9YiGe8NcMSper6mD8gYBlyJWEnyG07nW84amCxcvt476RvgbkAN1EwmhUF5jCt1JzRNSyZeRT5oLLg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Qwtf1+1PsQL3To8D12eSYEyPVH8LdU6RkmEKhDYM591xq7xG
-	Z7MEc8XjN3RDTOf55DWR5kM8g0pYoGu8bP94GF/59tbPpEaLdJjBhnr9
-X-Google-Smtp-Source: AGHT+IESI5ADNbsaRUr7r3ros762SVgz2pZbG8VO9M6J7g7TP8uIBZYhDBr0hDVOk+2GV2slkwIgQA==
-X-Received: by 2002:a05:6a20:a913:b0:1d9:29ab:9b49 with SMTP id adf61e73a8af0-1dc1e4d388amr898810637.32.1731003146542;
-        Thu, 07 Nov 2024 10:12:26 -0800 (PST)
-Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407860a4dsm1940874b3a.29.2024.11.07.10.12.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 10:12:26 -0800 (PST)
-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	shuah@kernel.org,
-	horms@kernel.org,
-	almasrymina@google.com,
-	sdf@fomichev.me,
-	willemb@google.com,
-	petrm@nvidia.com,
-	jdamato@fastly.com
-Subject: [PATCH net-next v8 11/12] selftests: ncdevmem: Move ncdevmem under drivers/net/hw
-Date: Thu,  7 Nov 2024 10:12:10 -0800
-Message-ID: <20241107181211.3934153-12-sdf@fomichev.me>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241107181211.3934153-1-sdf@fomichev.me>
-References: <20241107181211.3934153-1-sdf@fomichev.me>
+	s=arc-20240116; t=1731003382; c=relaxed/simple;
+	bh=tFHO/BZcxZoVyiqklKE/cJRqRtT8jk9I2aIRLc+QAd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dQgesZxYWKiF0yzN7MEIgE7CRkpm1GWPZKWLauPpu4rBXrSpP7oA6BHvs3avg543eVb4lcTqgmW4NCHkxVPVpf41RAmnaFmZhyIFaOrpUGOu0qc2JNiwa2rOTnJfmNvfHQclLcg7EIGVPaVBUdVJYWWXF9YE9xyIi33lnDK6150=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pGQCKrzF; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pGQCKrzF"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C9DFC20005;
+	Thu,  7 Nov 2024 18:16:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1731003378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7aH+YamaB5+L+7dV8UCOYyw7UnZu/8epHdr5FqD/+g8=;
+	b=pGQCKrzFC4Tjz/QbNUrWfas+lfJ3l8p0TO7a+cS3Gul4L9PmHWkojBPeePUxqTIJ/5vZAn
+	OI2nE0iQF6m/GX8JOHjO7uJ6l+5pYUD8TBv1t9X9Tnu/HZIE8u1AvZlLADNHO8LL52BYkz
+	PPliKyEPVRFd5ozDa+i4qYFJDKcw4OPHMVfL3HmBe/sk1Dcbb1BoIDoUZ9cwpfq4yhlGRL
+	AQ8o8YKibuEqD18udqEyR1c37RkMjKGSvtmy5NLSMb5Jo/AYJB0B+kHBynMUCqszF1FW9r
+	9Wz+STl+q0eTekgOIUwiIzhK+IoDBfD/Cj5CYOSer3yqGJIcUBmnEPQlkvSQjQ==
+Date: Thu, 7 Nov 2024 19:16:17 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Herve Codina
+ <herve.codina@bootlin.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@baylibre.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 4/7] net: freescale: ucc_geth: Fix WOL
+ configuration
+Message-ID: <20241107191617.00e0584a@fedora.home>
+In-Reply-To: <83151aa4-62e9-4be9-ae64-a728be004dae@lunn.ch>
+References: <20241107170255.1058124-1-maxime.chevallier@bootlin.com>
+	<20241107170255.1058124-5-maxime.chevallier@bootlin.com>
+	<83151aa4-62e9-4be9-ae64-a728be004dae@lunn.ch>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-This is where all the tests that depend on the HW functionality live in
-and this is where the automated test is gonna be added in the next
-patch.
+Hello Andrew,
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- tools/testing/selftests/drivers/net/hw/.gitignore         | 1 +
- tools/testing/selftests/drivers/net/hw/Makefile           | 8 ++++++++
- .../testing/selftests/{net => drivers/net/hw}/ncdevmem.c  | 0
- tools/testing/selftests/net/.gitignore                    | 1 -
- tools/testing/selftests/net/Makefile                      | 8 --------
- 5 files changed, 9 insertions(+), 9 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/hw/.gitignore
- rename tools/testing/selftests/{net => drivers/net/hw}/ncdevmem.c (100%)
+On Thu, 7 Nov 2024 18:49:00 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-diff --git a/tools/testing/selftests/drivers/net/hw/.gitignore b/tools/testing/selftests/drivers/net/hw/.gitignore
-new file mode 100644
-index 000000000000..e9fe6ede681a
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/.gitignore
-@@ -0,0 +1 @@
-+ncdevmem
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index c9f2f48fc30f..182348f4bd40 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -26,4 +26,12 @@ TEST_INCLUDES := \
- 	../../../net/forwarding/tc_common.sh \
- 	#
- 
-+# YNL files, must be before "include ..lib.mk"
-+YNL_GEN_FILES := ncdevmem
-+TEST_GEN_FILES += $(YNL_GEN_FILES)
-+
- include ../../../lib.mk
-+
-+# YNL build
-+YNL_GENS := ethtool netdev
-+include ../../../net/ynl.mk
-diff --git a/tools/testing/selftests/net/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-similarity index 100%
-rename from tools/testing/selftests/net/ncdevmem.c
-rename to tools/testing/selftests/drivers/net/hw/ncdevmem.c
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index 217d8b7a7365..a78debbd1fe7 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -18,7 +18,6 @@ ipv6_flowlabel_mgr
- log.txt
- msg_oob
- msg_zerocopy
--ncdevmem
- nettest
- psock_fanout
- psock_snd
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 759b1d2dc8b4..22a5d6a7c3f3 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -97,10 +97,6 @@ TEST_PROGS += fq_band_pktlimit.sh
- TEST_PROGS += vlan_hw_filter.sh
- TEST_PROGS += bpf_offload.py
- 
--# YNL files, must be before "include ..lib.mk"
--YNL_GEN_FILES := ncdevmem
--TEST_GEN_FILES += $(YNL_GEN_FILES)
--
- TEST_FILES := settings
- TEST_FILES += in_netns.sh lib.sh net_helper.sh setup_loopback.sh setup_veth.sh
- 
-@@ -110,10 +106,6 @@ TEST_INCLUDES := forwarding/lib.sh
- 
- include ../lib.mk
- 
--# YNL build
--YNL_GENS := ethtool netdev
--include ynl.mk
--
- $(OUTPUT)/epoll_busy_poll: LDLIBS += -lcap
- $(OUTPUT)/reuseport_bpf_numa: LDLIBS += -lnuma
- $(OUTPUT)/tcp_mmap: LDLIBS += -lpthread -lcrypto
--- 
-2.47.0
+> > +	if (phydev)
+> > +		phy_ethtool_get_wol(phydev, wol);
+> > +
+> >  	if (qe_alive_during_sleep())
+> >  		wol->supported |= WAKE_MAGIC;  
+> 
+> So get WoL will return whatever methods the PHY supports, plus
+> WAKE_MAGIC is added because i assume the MAC can do that. So depending
+> on the PHY, it could be the full list:
 
+> > +	if (wol->wolopts & WAKE_PHY)
+> > +		ret = phy_ethtool_set_wol(phydev, wol);  
+> 
+> Here, the code only calls into the PHY for WAKE_PHY, when in fact the
+> PHY could be handling WAKE_UCAST, WAKE_MCAST, WAKE_ARP etc.
+> 
+> So these conditions are wrong. It could we be that X years ago when
+> this code was added only WAKE_PHY and WAKE_MAGIC existed?
+
+Ah that's right indeed. So yeah my changes aren't enough, I'll go over
+that patch again.
+
+Thanks for spotting this,
+
+Maxime
