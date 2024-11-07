@@ -1,46 +1,44 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747BE186E58
-	for <netdev@vger.kernel.org>; Thu,  7 Nov 2024 20:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24161D88C3;
+	Thu,  7 Nov 2024 20:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731012412; cv=none; b=KC4Gvyr4zxRaB0NWpYwrz/4b+TUXn+gkf2W88RJUTDCe3EbPtgaGwafU/B0YMXmqN8K/8Q7YXC2LGCCtq+SfzFQynz61j/7bcy/apuPgwcGPqTqP2YOIDlHBf/k7L3xbAqoBq2cwtscP8zy/z+YQ6GyMQO7jpZufJmMTDCpdHDI=
+	t=1731012414; cv=none; b=N9fBazJOwQfotYmgTLKb1mVI+swmekgBp8VJIM5L//vBkbffvrWT3NbJjmVfO2m4feoONrKPAg4tHFDLUFCfXldMpkZdIxv+AX6qh+cquUkxvZBrvLk61AxmCdd4vPCpetun27VTjDEMHwuN5EySyWgGvv3z/e831YnWf2j44PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731012412; c=relaxed/simple;
-	bh=kLr7cOclroyf5zVvYnQrQ2CcjkVEuNICECl91R8pvZA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L7aQXKAoTvDd/N8qgWBYPyugqWhniKFD4l2DV0IpZP4IlSvycsYNk2oZVmBONNTIuCQlTMM9x+sRf1v/xHM26bmp533q0m2UUVxoJ9vqxlr1SldYkQYaMU9DCQPtJmeP5ufo7Ta0PqhbMfgcXQnvhoO0piyB9QevK4Yt0Irx4WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Dz6r7CR5; arc=none smtp.client-ip=185.226.149.38
+	s=arc-20240116; t=1731012414; c=relaxed/simple;
+	bh=mhU9jxgV9z83Hv+GVH2dKHtzgraCtM5ha8gUXXnGMKc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nmmULW1KC3T6BlHnO+Bf2wcppYaQXj4CNY8cWhBbZUE588BBovfGM6Y4XaviehsOTpxwGQjgOIOAl8CFuJvqOves89GFM40ijNzYTR5fGrQHOTiRapPBwLWXvzAFCDAiUodq7Ap/UzXzUdgNuEEpoYHlgrcTFzb2A5oldYckhPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=JaLsUXbY; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Dz6r7CR5"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="JaLsUXbY"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1t99Op-001amC-6z; Thu, 07 Nov 2024 21:46:39 +0100
+	id 1t99Oo-001cxv-AC; Thu, 07 Nov 2024 21:46:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=s52+eMLfek4vBrlWTawS+NMGo3ZdEqQlahGa6OYNJF4=; b=Dz6r7CR5wDT+ZtZF595bhaKEfu
-	kxWO6bfhAifZPleGJZEVQnhhTLbkv7BOBwxQR6uRRqGc0JiSNyC6rD0D9rPAZ+hQ0YQEM6cKgE6tA
-	Efh6l8A1R+UTDU2I3Gmm5smLxeHTy//+e7QI6LFYewxLd4ypnaT68Th8jnJNymp4Hh7WAZhze+MjE
-	F07BANiCiLO+Vp1ktYqX2WUcSBRYD3oBzrY7Cf8sznfXeZeSIjiXvDslUmB9xY1eoiMtf5qkHzviC
-	LWF14FB6SvpByieEJ1cA47rMERqKYxwTSa0QsVdn6H5LMcZkuumHSrgdMHeu/1B6h/psFTtbzK3IU
-	ct5REk3A==;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=Gv34US8GRBXtP87nryXTAC5SJFGYHzg1EnEJGs1AL7c=
+	; b=JaLsUXbYo1BLPH5dPn7t3I2nPNXUpR6T63/pWZMSytcC/nf2gecrpBqNWQ0206nGzmGDFbKdd
+	0+4YQyR2ykkTOWNc1TGWiujY2QdgiMZQlGijDO2t3fWHg38eJQMbAZPbDfmdSyB2XkKD9A3Cod4XW
+	S5Tu6icjDQRfXCKFP68ozbJ7E27qiPbFhMrBrvPz1Bv9qZdc709iazkq5/A4wa0ZV3xRxAZKOc+hV
+	guy9eJSCLGcLvUgbnfvR5Gkl+tP/GbIwMcYldXSY3XNTZWnLVQT6LWyQXZLqzq1m9j5p/5SJsViqc
+	sMrWTyPjetKYGEbhKP0wE1ecdOzAQTxmtijjOw==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1t99Oj-0003F0-T5; Thu, 07 Nov 2024 21:46:34 +0100
+	id 1t99Oh-0002fi-47; Thu, 07 Nov 2024 21:46:31 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1t99Oi-00303e-3b; Thu, 07 Nov 2024 21:46:32 +0100
+	id 1t99Of-00303e-44; Thu, 07 Nov 2024 21:46:29 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Thu, 07 Nov 2024 21:46:14 +0100
-Subject: [PATCH net v2 3/3] virtio/vsock: Improve MSG_ZEROCOPY error
- handling
+Subject: [PATCH net v2 0/3] virtio/vsock: Fix memory leaks
+Date: Thu, 07 Nov 2024 21:46:11 +0100
+Message-Id: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,9 +47,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-vsock-mem-leaks-v2-3-4e21bfcfc818@rbox.co>
-References: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
-In-Reply-To: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
+X-B4-Tracking: v=1; b=H4sIABMnLWcC/3WNQQ7CIBREr9L8td8ArURceQ/TBcWPJbVgoCE1D
+ XeXsHf5ZjJvDkgUHSW4dQdEyi654CuIUwdm1v5F6J6VQTAxcM4k5hTMgiut+Ca9JFST7ElxcZF
+ MQ119Ilm3N+MDPG0w1nB2aQvx214yb9VfYebI8GoHa03PlCJ5j1PYzybAWEr5ASJqsVyxAAAA
+X-Change-ID: 20241106-vsock-mem-leaks-9b63e912560a
 To: Stefan Hajnoczi <stefanha@redhat.com>, 
  Stefano Garzarella <sgarzare@redhat.com>, 
  "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
@@ -67,28 +66,31 @@ Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
  netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Add a missing kfree_skb() to prevent memory leaks.
+Short series fixing some memory leaks that I've stumbled upon while toying
+with the selftests.
 
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/vmw_vsock/virtio_transport_common.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+- Remove the refactoring patch from the series [Stefano]
+- PATCH 2: Drop "virtio" from the commit title [Stefano]
+- Collect Reviewed-by [Stefano]
+- Link to v1: https://lore.kernel.org/r/20241106-vsock-mem-leaks-v1-0-8f4ffc3099e6@rbox.co
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index cd075f608d4f6f48f894543e5e9c966d3e5f22df..e2e6a30b759bdc6371bb0d63ee2e77c0ba148fd2 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -400,6 +400,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 			if (virtio_transport_init_zcopy_skb(vsk, skb,
- 							    info->msg,
- 							    can_zcopy)) {
-+				kfree_skb(skb);
- 				ret = -ENOMEM;
- 				break;
- 			}
+---
+Michal Luczaj (3):
+      virtio/vsock: Fix accept_queue memory leak
+      vsock: Fix sk_error_queue memory leak
+      virtio/vsock: Improve MSG_ZEROCOPY error handling
 
+ net/vmw_vsock/af_vsock.c                | 3 +++
+ net/vmw_vsock/virtio_transport_common.c | 9 +++++++++
+ 2 files changed, 12 insertions(+)
+---
+base-commit: 71712cf519faeed529549a79559c06c7fc250a15
+change-id: 20241106-vsock-mem-leaks-9b63e912560a
+
+Best regards,
 -- 
-2.46.2
+Michal Luczaj <mhal@rbox.co>
 
