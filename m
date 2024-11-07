@@ -1,131 +1,279 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F2B1EF0A2;
-	Thu,  7 Nov 2024 12:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A786820F5BB;
+	Thu,  7 Nov 2024 12:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730981600; cv=none; b=eNvFnjUvTvso+BEWc5TMh2MbHBR5Iga0/Fxujf+fzkOvNBTEU40ouq4VTOKqThP+8v+fkUUJXUx3soXCu5f+fFuL+YvSvVIa070DJUsp41PPhfngqkNVTigpO7guN9kyNt/zZclEYHR9NTHemBE55xp7GjhrYPhoA+vR3hz3a5I=
+	t=1730981826; cv=none; b=VyeGdQvw/KWUCw6bW3h+hWkfddQQF7SNuDx+20PULOkij9ypwziJjZEta0kvQPgbFecZ0qryOrkpCx+4+8CFkxGKBddFn9l0Nh7w9pGkEastYqWVF+77CIvFFISoh7YuEetP05pSOAJHpiae0Y9B3aNe++qIlZknPRuxSAngeKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730981600; c=relaxed/simple;
-	bh=5HkENyU/mXnI0vymwFwn4toNd8urotXCsTDg5G3NN4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FjOfgndzHy/fhqgXlsfKS3Lf5ReYWLE8ndZlyXTrZvq9Z7ixNCBwsC+WHi7VFvXTNnnf46ffi/Ww6jE85mYzxk5EfgfK3Do9KCzlqyM/w5389jlagO+BkkGDEiSLgh/M1vGdUxDA7plv027H19lOyFZXde9oYqYG/ti4pLR4lIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dJc8nwBW; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1730981826; c=relaxed/simple;
+	bh=sZV0qxLvua5r1mJgF5G3A+imFVLb9qzB7bIzJ7vDtWI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=twRg0VTpwQ3JVJTYvoZlhr7rQ+QjoTQAhNC3Fp8VVGgv9lQdnemzJCczlOnalYOrRiktXN5wTnFQPM4HxTpkrPMJwNNuK9miOzbYjxETulIDliPXJC3J+u0SOxN3GG6eCxnv4Hl5gsnBlIH51qchKY86Ad3WyFyDsBfGMPODsJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=F/s6hjXr; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dJc8nwBW"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A77lu5d024485;
-	Thu, 7 Nov 2024 12:13:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZGrvKO6WetQbAviRFql6yE789UtuDEEjlFlK9GG7xJc=; b=dJc8nwBW+Xqp9ui5
-	7tZI2M/jti/iRHERq1kOUhlHsI2+e8382wIZzZ7Kl44UG8ogxE2jHnQiiCKuE1RQ
-	16js4JZH71QeC4g+KYfQDl9E7rRywYZ+OL3CsgeTbFrM/+J+bUlwpjZlLa1TaJ7i
-	yGIu5oNBH0epCZnjJg8tcFJHjjzVmfGwP9fSJRZifkcxW3TSprUg9jumbv96YUtN
-	L7bFl9V92/YKUEz5lhAMYgr5TqecKPAIoLgu3iZsL+AxUWWjEJFp90lx/RWBXPvV
-	VIBXRNAZwaGPErjuA599kn6Cdk2u1C0qQN+oLvEJ7KS1M4V221i2jOXnOmQLjEcT
-	Ta9MnQ==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42r2ugvbtt-1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="F/s6hjXr"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A76ukrb008408;
+	Thu, 7 Nov 2024 04:16:44 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=exzzD5vdwISfgk/7qU0wg54
+	0Ri7ikeozSsfwwvDRcXQ=; b=F/s6hjXrjcazqhZGJq3PIvY2PqkEyM9H5e1EP0z
+	7biXOb5UoCAt2x7CqTeos6gjUtVjVzw+yD5NiFFH1hYqi/pxnchN3P63knJCvuIV
+	vUA/yu36EWCNQVLPib2uc2eDidIPn+dW2E/b8sdQJ8HGRu+XqK3AxLjAs0tpf0bc
+	02MYLdhdOj8Vh0QqCshQ8LJ8laC5Cv1OQqUT9BCPklZFVWoFcM3GDXpNG4xsAOHC
+	+JiV2vBWC0yBLX01V6vuwp72yMP1ikkFJlqMwSQyYUp3OiAD1GSTgPDdwqlQ2Iio
+	IjF6wMKZdghX0+e3bOZv+H8ime1zn/Q32OLON27KTyl47nA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 42rrqa8j2g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 12:13:02 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A7CD16s018925
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 7 Nov 2024 12:13:01 GMT
-Received: from [10.253.8.252] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 7 Nov 2024
- 04:12:56 -0800
-Message-ID: <9b2c6c35-cb72-4680-a59e-8515a3995b53@quicinc.com>
-Date: Thu, 7 Nov 2024 20:12:54 +0800
+	Thu, 07 Nov 2024 04:16:44 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 7 Nov 2024 04:16:43 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Thu, 7 Nov 2024 04:16:43 -0800
+Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
+	by maili.marvell.com (Postfix) with ESMTP id ED9433F7050;
+	Thu,  7 Nov 2024 04:16:42 -0800 (PST)
+From: Shinas Rasheed <srasheed@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
+        <thaller@redhat.com>, <wizhao@redhat.com>, <kheib@redhat.com>,
+        <egallen@redhat.com>, <konguyen@redhat.com>, <horms@kernel.org>,
+        <frank.feng@synaxg.com>, Shinas Rasheed <srasheed@marvell.com>,
+        Veerasenareddy Burru <vburru@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric
+ Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>
+Subject: [PATCH net-next] octeon_ep: add ndo ops for VFs in PF driver
+Date: Thu, 7 Nov 2024 04:16:37 -0800
+Message-ID: <20241107121637.1117089-1-srasheed@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/5] net: pcs: Add PCS driver for Qualcomm
- IPQ9574 SoC
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Heiner Kallweit
-	<hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_kkumarcs@quicinc.com>, <quic_suruchia@quicinc.com>,
-        <quic_pavir@quicinc.com>, <quic_linchen@quicinc.com>,
-        <quic_luoj@quicinc.com>, <srinivas.kandagatla@linaro.org>,
-        <bartosz.golaszewski@linaro.org>, <vsmuthu@qti.qualcomm.com>,
-        <john@phrozen.org>
-References: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
- <20241101-ipq_pcs_rc1-v1-2-fdef575620cf@quicinc.com>
- <8f55f21e-134e-4aa8-b1d5-fd502f05a022@lunn.ch>
- <ec76fc73-79e5-4d09-ac4a-65efa60874fe@quicinc.com>
- <3677dee8-f04f-45f0-8bfd-dd197ec71616@lunn.ch>
-Content-Language: en-US
-From: Lei Wei <quic_leiwei@quicinc.com>
-In-Reply-To: <3677dee8-f04f-45f0-8bfd-dd197ec71616@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: BKT4tY0CMCeKZLvKV3u4ijDo1OTf-Omg
-X-Proofpoint-GUID: BKT4tY0CMCeKZLvKV3u4ijDo1OTf-Omg
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: dDrU9BrqxZD2ywOcd8DlwqmkHbG2ap4Q
+X-Proofpoint-GUID: dDrU9BrqxZD2ywOcd8DlwqmkHbG2ap4Q
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0 mlxlogscore=556
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411070094
 
+These APIs are needed to support applicaitons that use netlink to get VF
+information from a PF driver.
 
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+---
+ .../ethernet/marvell/octeon_ep/octep_main.c   | 98 +++++++++++++++++++
+ .../ethernet/marvell/octeon_ep/octep_main.h   |  1 +
+ .../marvell/octeon_ep/octep_pfvf_mbox.c       | 22 ++++-
+ .../marvell/octeon_ep/octep_pfvf_mbox.h       |  3 +
+ 4 files changed, 122 insertions(+), 2 deletions(-)
 
-On 11/4/2024 9:43 PM, Andrew Lunn wrote:
-> On Mon, Nov 04, 2024 at 07:14:59PM +0800, Lei Wei wrote:
->>
->>
->> On 11/1/2024 9:00 PM, Andrew Lunn wrote:
->>>> +config PCS_QCOM_IPQ
->>>> +	tristate "Qualcomm IPQ PCS"
->>>
->>> Will Qualcomm only ever have one PCS driver?
->>>
->>> You probably want a more specific name so that when the next PCS
->>> driver comes along, you have a reasonable consistent naming scheme.
->>>
->>
->> We expect one PCS driver to support the 'IPQ' family of Qualcomm processors.
->> While we are initially adding support for IPQ9574 SoC, this driver will be
->> easily extendable later to other SoC in the IPQ family such as IPQ5332,
->> IPQ5424 and others. Therefore we used the name with suffix '_IPQ'. Hope it
->> is fine.
-> 
-> So are you saying after IPQ comes IPR? And then IPS? In order to have
-> a new PCS design, Marketing will allow you to throw away the whole IPQ
-> branding?
-> 
-
-OK. We will convert the name to make it more specific to the 
-architecture. 'PCS_QCOM_IPQ9574' can be used to signify this type of PCS 
-within IPQ SoC family. The driver will be re-used later for other IPQ 
-SoC using same architecture, with minimal driver extensions.
-
-> 	Andrew
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index 549436efc204..129c68f5a4ba 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -1137,6 +1137,95 @@ static int octep_set_features(struct net_device *dev, netdev_features_t features
+ 	return err;
+ }
+ 
++static int octep_get_vf_config(struct net_device *dev, int vf, struct ifla_vf_info *ivi)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	ivi->vf = vf;
++	ether_addr_copy(ivi->mac, oct->vf_info[vf].mac_addr);
++	ivi->vlan = 0;
++	ivi->qos = 0;
++	ivi->spoofchk = 0;
++	ivi->linkstate = IFLA_VF_LINK_STATE_ENABLE;
++	ivi->trusted = true;
++	ivi->max_tx_rate = 10000;
++	ivi->min_tx_rate = 0;
++
++	return 0;
++}
++
++static int octep_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
++{
++	struct octep_device *oct = netdev_priv(dev);
++	int i, err;
++
++	if (!is_valid_ether_addr(mac)) {
++		dev_err(&oct->pdev->dev, "Invalid  MAC Address %pM\n", mac);
++		return -EADDRNOTAVAIL;
++	}
++
++	dev_dbg(&oct->pdev->dev, "set vf-%d mac to %pM\n", vf, mac);
++	for (i = 0; i < ETH_ALEN; i++)
++		oct->vf_info[vf].mac_addr[i] = mac[i];
++	oct->vf_info[vf].flags |=  OCTEON_PFVF_FLAG_MAC_SET_BY_PF;
++
++	err = octep_ctrl_net_set_mac_addr(oct, vf, mac, true);
++	if (err) {
++		dev_err(&oct->pdev->dev, "Set VF%d MAC address failed via host control Mbox\n", vf);
++		return err;
++	}
++
++	return 0;
++}
++
++static int octep_set_vf_vlan(struct net_device *dev, int vf, u16 vlan, u8 qos, __be16 vlan_proto)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Setting VF VLAN not supported\n");
++	return 0;
++}
++
++static int octep_set_vf_spoofchk(struct net_device *dev, int vf, bool setting)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Setting VF spoof check not supported\n");
++	return 0;
++}
++
++static int octep_set_vf_trust(struct net_device *dev, int vf, bool setting)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Setting VF trust not supported\n");
++	return 0;
++}
++
++static int octep_set_vf_rate(struct net_device *dev, int vf, int min_tx_rate, int max_tx_rate)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Setting VF rate not supported\n");
++	return 0;
++}
++
++static int octep_set_vf_link_state(struct net_device *dev, int vf, int link_state)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Setting VF link state not supported\n");
++	return 0;
++}
++
++static int octep_get_vf_stats(struct net_device *dev, int vf, struct ifla_vf_stats *vf_stats)
++{
++	struct octep_device *oct = netdev_priv(dev);
++
++	dev_err(&oct->pdev->dev, "Getting VF stats not supported\n");
++	return 0;
++}
++
+ static const struct net_device_ops octep_netdev_ops = {
+ 	.ndo_open                = octep_open,
+ 	.ndo_stop                = octep_stop,
+@@ -1146,6 +1235,15 @@ static const struct net_device_ops octep_netdev_ops = {
+ 	.ndo_set_mac_address     = octep_set_mac,
+ 	.ndo_change_mtu          = octep_change_mtu,
+ 	.ndo_set_features        = octep_set_features,
++	/* for VFs */
++	.ndo_get_vf_config       = octep_get_vf_config,
++	.ndo_set_vf_mac          = octep_set_vf_mac,
++	.ndo_set_vf_vlan         = octep_set_vf_vlan,
++	.ndo_set_vf_spoofchk     = octep_set_vf_spoofchk,
++	.ndo_set_vf_trust        = octep_set_vf_trust,
++	.ndo_set_vf_rate         = octep_set_vf_rate,
++	.ndo_set_vf_link_state   = octep_set_vf_link_state,
++	.ndo_get_vf_stats        = octep_get_vf_stats,
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.h b/drivers/net/ethernet/marvell/octeon_ep/octep_main.h
+index fee59e0e0138..3b56916af468 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.h
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.h
+@@ -220,6 +220,7 @@ struct octep_iface_link_info {
+ /* The Octeon VF device specific info data structure.*/
+ struct octep_pfvf_info {
+ 	u8 mac_addr[ETH_ALEN];
++	u32 flags;
+ 	u32 mbox_version;
+ };
+ 
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+index e6eb98d70f3c..be21ad5ec75e 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.c
+@@ -156,12 +156,23 @@ static void octep_pfvf_set_mac_addr(struct octep_device *oct,  u32 vf_id,
+ {
+ 	int err;
+ 
++	if (oct->vf_info[vf_id].flags & OCTEON_PFVF_FLAG_MAC_SET_BY_PF) {
++		dev_err(&oct->pdev->dev,
++			"VF%d attampted to override administrative set MAC address\n",
++			vf_id);
++		rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_NACK;
++		return;
++	}
++
+ 	err = octep_ctrl_net_set_mac_addr(oct, vf_id, cmd.s_set_mac.mac_addr, true);
+ 	if (err) {
+ 		rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_NACK;
+-		dev_err(&oct->pdev->dev, "Set VF MAC address failed via host control Mbox\n");
++		dev_err(&oct->pdev->dev, "Set VF%d MAC address failed via host control Mbox\n",
++			vf_id);
+ 		return;
+ 	}
++
++	ether_addr_copy(oct->vf_info[vf_id].mac_addr, cmd.s_set_mac.mac_addr);
+ 	rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_ACK;
+ }
+ 
+@@ -171,10 +182,17 @@ static void octep_pfvf_get_mac_addr(struct octep_device *oct,  u32 vf_id,
+ {
+ 	int err;
+ 
++	if (oct->vf_info[vf_id].flags & OCTEON_PFVF_FLAG_MAC_SET_BY_PF) {
++		dev_dbg(&oct->pdev->dev, "VF%d MAC address set by PF\n", vf_id);
++		ether_addr_copy(rsp->s_set_mac.mac_addr, oct->vf_info[vf_id].mac_addr);
++		rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_ACK;
++		return;
++	}
+ 	err = octep_ctrl_net_get_mac_addr(oct, vf_id, rsp->s_set_mac.mac_addr);
+ 	if (err) {
+ 		rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_NACK;
+-		dev_err(&oct->pdev->dev, "Get VF MAC address failed via host control Mbox\n");
++		dev_err(&oct->pdev->dev, "Get VF%d MAC address failed via host control Mbox\n",
++			vf_id);
+ 		return;
+ 	}
+ 	rsp->s_set_mac.type = OCTEP_PFVF_MBOX_TYPE_RSP_ACK;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.h b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.h
+index 0dc6eead292a..339977c7131a 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.h
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_pfvf_mbox.h
+@@ -23,6 +23,9 @@ enum octep_pfvf_mbox_version {
+ 
+ #define OCTEP_PFVF_MBOX_VERSION_CURRENT	OCTEP_PFVF_MBOX_VERSION_V2
+ 
++/* VF flags */
++#define OCTEON_PFVF_FLAG_MAC_SET_BY_PF  BIT_ULL(0) /* PF has set VF MAC address */
++
+ enum octep_pfvf_mbox_opcode {
+ 	OCTEP_PFVF_MBOX_CMD_VERSION,
+ 	OCTEP_PFVF_MBOX_CMD_SET_MTU,
+-- 
+2.25.1
 
