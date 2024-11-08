@@ -1,44 +1,44 @@
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B6C19E99F
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 03:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DD11C6882
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 03:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731038155; cv=none; b=kYhkf1nvxnKyoE5ZFpxGmzNGasxhh0wNjlHp9q9IvFrdv4D8ZLIGLgO71UHO1L+ODdmkoXDdaPncM1azDhpwIKpclshzdaCJpUDgGwC4T5NHf4CdqkTWw96XGTZ5RLcZOUZnhsPw0WvPzGsGU7+IC/jFcClCixZ548u5Pq2KSNA=
+	t=1731038155; cv=none; b=r46jNdZVHqUskNZS9K6MKWCpn3PQ66LQj8D7l540GApPdu3ArVBhdWFtxvuZ72s/RQb2TcGqxMM0yskZrLPGB+71lMx39dm3xAm8QqStC/B7YsViuZDIcXuO2hq4E17h2PNQ0/xaPpeLC/2ac+q3JI7mwqwPRDgtVxDeXrSQakc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731038155; c=relaxed/simple;
-	bh=YMrctbw1c8R3RzPTQDDEZOuhyCBaOYgqjBxZGhv4cQ0=;
+	bh=rrlpa2EfaD1v4W4s1kcW7rUHx6iyeY+PqPoCCEoIstg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tf/+pgIbPy5OCZzDp7CCqLFOhc1CEPK1v6plu6nEswTkJTjpa4fEkyoGq68aQXuKjAOiVzKirJYq0BUTyPeWe7tBwZvsH0kezxJaMk5qfS6/Lz6LDecRSsD4eX4rR+EHDdq5JrmGeKn+3XpHpyAQDS/W0RJ1lSsWIvvMqmJrRKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=ud4zCwLA; arc=none smtp.client-ip=202.36.163.20
+	 MIME-Version; b=LAJzTlRc8gR5boFvmBAhKDH3XKUDbrBSqy2gMm94/qUfA58P2cnvTH9lx1EDHc6mgZ8it4kEV+K/kPI408O1DDNufLdBdImxSW2wAVEbBGTyYnN61siW7bhOlgmyAt/g1zW6A3Zhha0+8DEOqUjRqpGDCn4AD/mcCjMNlqIWuwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=0AiOdWf9; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="ud4zCwLA"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="0AiOdWf9"
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id E79D12C0540;
-	Fri,  8 Nov 2024 16:55:49 +1300 (NZDT)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 8B14D2C0613;
+	Fri,  8 Nov 2024 16:55:51 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1731038149;
-	bh=FH4TyhrfFCr/gDhS0N2GNEgDrOb8sb3PDbcTgaa0Rho=;
+	s=mail181024; t=1731038151;
+	bh=KUc7PnPF5kFIMD0pZLX6wkw6c4UzwDmWHga1YlzKITM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ud4zCwLAm6RpHq6cdsjdbfO5NIkqHdsulsp1PRqaYF5XUaspMLfrr7t4ZfkJ7XqHH
-	 ihq+JFxjqy+oZMEeXhawU/XlF7Ub5l7mYnUm+s7PDOY9HNan2ZTIBGzYKP28B76ILa
-	 M85FBX6YdcFhGz8+bp3pURxV7QnyeEGoLyDrgcHmkpUlVwjrlyMvIpCiARnnQ7a0uL
-	 prpkqkkC4WVWXzR/HbrlDHRLfqMGhAwpMmcjpdSJO6irzLe9E87Mxt5DIXO4icOb1j
-	 owpmtm4hIrDWApAiGi4a8HsW7eZD6OLKF00eoy+4CHKIUV473zJWgabkDtF5BYkxal
-	 skANzJdYca1Aw==
+	b=0AiOdWf9dNiLaoaX0+uAqYBbO6kIEWjQTIoZwNh+foHdb1gO0xRrSwj0UIgkQZVqP
+	 7waU5N5vofdhRDTClIV2rn/LEB2DGm0qw+JLsFzKhMmqKO/cr3UM4Y9gWmyKr/zxV1
+	 x0LJ39mWvHr9lLeg+1cuTrc0YLzXY0kzMI5Zq9nyWCOBzJkycKFXjldfUkSb2dv0Vz
+	 gQYbb7iGG9qGRLdnAJ0FmX51+JHgDf8QicHl58O2Is5BV3vLknNgoqkTMdybBDGyBq
+	 xIU4b9kOZxk3sbiTxynZxm3DPcwZoDRR9Q2R7DIhcWUPrhfMDTWFW3tq3/5oC22IhW
+	 ega5P+ysEJBuA==
 Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B672d8bc50000>; Fri, 08 Nov 2024 16:55:49 +1300
+	id <B672d8bc70000>; Fri, 08 Nov 2024 16:55:51 +1300
 Received: from elliota2-dl.ws.atlnz.lc (elliota-dl.ws.atlnz.lc [10.33.23.28])
-	by pat.atlnz.lc (Postfix) with ESMTP id BBD4813ECD2;
-	Fri,  8 Nov 2024 16:55:49 +1300 (NZDT)
+	by pat.atlnz.lc (Postfix) with ESMTP id 5CC9713ECD2;
+	Fri,  8 Nov 2024 16:55:51 +1300 (NZDT)
 Received: by elliota2-dl.ws.atlnz.lc (Postfix, from userid 1775)
-	id B9A033C0263; Fri,  8 Nov 2024 16:55:49 +1300 (NZDT)
+	id 5A4553C0263; Fri,  8 Nov 2024 16:55:51 +1300 (NZDT)
 From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
 To: "David S . Miller" <davem@davemloft.net>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -54,9 +54,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	bridge@lists.linux.dev,
 	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
-Subject: [RFC net-next (resend) 1/4] net: bridge: respect sticky flag on external learn
-Date: Fri,  8 Nov 2024 16:55:43 +1300
-Message-ID: <20241108035546.2055996-2-elliot.ayrey@alliedtelesis.co.nz>
+Subject: [RFC net-next (resend) 4/4] net: dsa: mv88e6xxx: cache fid-to-vid association
+Date: Fri,  8 Nov 2024 16:55:46 +1300
+Message-ID: <20241108035546.2055996-5-elliot.ayrey@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241108035546.2055996-1-elliot.ayrey@alliedtelesis.co.nz>
 References: <20241108035546.2055996-1-elliot.ayrey@alliedtelesis.co.nz>
@@ -67,35 +67,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=672d8bc5 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=VlfZXiiP6vEA:10 a=m422leTbPw5OI5gFfpkA:9 a=3ZKOabzyN94A:10 a=ZXulRonScM0A:10
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=672d8bc7 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=VlfZXiiP6vEA:10 a=cYZQHHvv430f9PQrUU0A:9 a=3ZKOabzyN94A:10
 X-SEG-SpamProfiler-Score: 0
 x-atlnz-ls: pat
 
-The fdb sticky flag is used to stop a host from roaming to another
-port. However upon receiving a switchdev notification to update an fdb
-entry the sticky flag is not respected and as long as the new entry is
-not locked the host will be allowed to roam to the new port.
+When servicing ATU violations we need to walk the VTU to find the vlan
+id for the ATU's FID which is inefficient.
 
-Fix this by considering the sticky flag before allowing an externally
-learned host to roam.
+Add a cache for this association and replace the VTU walk so we don't
+have to do this costly operation all the time.
 
 Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
 ---
- net/bridge/br_fdb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.h        |  2 ++
+ drivers/net/dsa/mv88e6xxx/global1_vtu.c |  6 ++++-
+ drivers/net/dsa/mv88e6xxx/switchdev.c   | 35 ++-----------------------
+ 3 files changed, 9 insertions(+), 34 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 1cd7bade9b3b..72663ca824d3 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -1457,7 +1457,8 @@ int br_fdb_external_learn_add(struct net_bridge *br=
-, struct net_bridge_port *p,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx=
+/chip.h
+index 48399ab5355a..91c3e4b304cf 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -445,6 +445,8 @@ struct mv88e6xxx_chip {
 =20
- 		fdb->updated =3D jiffies;
+ 	/* FID map */
+ 	DECLARE_BITMAP(fid_bitmap, MV88E6XXX_N_FID);
++
++	u16 vid_cache[MV88E6XXX_N_FID];
+ };
 =20
--		if (READ_ONCE(fdb->dst) !=3D p) {
-+		if (READ_ONCE(fdb->dst) !=3D p &&
-+		    !test_bit(BR_FDB_STICKY, &fdb->flags)) {
- 			WRITE_ONCE(fdb->dst, p);
- 			modified =3D true;
- 		}
+ struct mv88e6xxx_bus_ops {
+diff --git a/drivers/net/dsa/mv88e6xxx/global1_vtu.c b/drivers/net/dsa/mv=
+88e6xxx/global1_vtu.c
+index b524f27a2f0d..af1c40480303 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1_vtu.c
++++ b/drivers/net/dsa/mv88e6xxx/global1_vtu.c
+@@ -464,7 +464,11 @@ int mv88e6390_g1_vtu_loadpurge(struct mv88e6xxx_chip=
+ *chip,
+ 	}
+=20
+ 	/* Load/Purge VTU entry */
+-	return mv88e6xxx_g1_vtu_op(chip, MV88E6XXX_G1_VTU_OP_VTU_LOAD_PURGE);
++	err =3D mv88e6xxx_g1_vtu_op(chip, MV88E6XXX_G1_VTU_OP_VTU_LOAD_PURGE);
++	if (err =3D=3D 0)
++		chip->vid_cache[entry->fid] =3D entry->valid ? entry->vid : 0;
++
++	return err;
+ }
+=20
+ int mv88e6xxx_g1_vtu_flush(struct mv88e6xxx_chip *chip)
+diff --git a/drivers/net/dsa/mv88e6xxx/switchdev.c b/drivers/net/dsa/mv88=
+e6xxx/switchdev.c
+index 88761677ff10..e96daa2dcaf4 100644
+--- a/drivers/net/dsa/mv88e6xxx/switchdev.c
++++ b/drivers/net/dsa/mv88e6xxx/switchdev.c
+@@ -12,42 +12,11 @@
+ #include "global1.h"
+ #include "switchdev.h"
+=20
+-struct mv88e6xxx_fid_search_ctx {
+-	u16 fid_search;
+-	u16 vid_found;
+-};
+-
+-static int __mv88e6xxx_find_vid(struct mv88e6xxx_chip *chip,
+-				const struct mv88e6xxx_vtu_entry *entry,
+-				void *priv)
+-{
+-	struct mv88e6xxx_fid_search_ctx *ctx =3D priv;
+-
+-	if (ctx->fid_search =3D=3D entry->fid) {
+-		ctx->vid_found =3D entry->vid;
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ static int mv88e6xxx_find_vid(struct mv88e6xxx_chip *chip, u16 fid, u16 =
+*vid)
+ {
+-	struct mv88e6xxx_fid_search_ctx ctx;
+-	int err;
+-
+-	ctx.fid_search =3D fid;
+-	mv88e6xxx_reg_lock(chip);
+-	err =3D mv88e6xxx_vtu_walk(chip, __mv88e6xxx_find_vid, &ctx);
+-	mv88e6xxx_reg_unlock(chip);
+-	if (err < 0)
+-		return err;
+-	if (err =3D=3D 1)
+-		*vid =3D ctx.vid_found;
+-	else
+-		return -ENOENT;
++	*vid =3D chip->vid_cache[fid];
+=20
+-	return 0;
++	return *vid ? 0 : -ENOENT;
+ }
+=20
+ int mv88e6xxx_handle_miss_violation(struct mv88e6xxx_chip *chip, int por=
+t,
