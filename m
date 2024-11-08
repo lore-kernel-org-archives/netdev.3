@@ -1,108 +1,252 @@
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374CE1D0400;
-	Fri,  8 Nov 2024 15:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424E1F4702
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 15:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731078404; cv=none; b=i8icngcNAmh+uV/lqa1CmH3L4Zd4fRUqXCMsALJ+kfwg4g6WERTlzKLlCXvIMcqgXV7YFyuyLsI7n88DTRSeDt9ox9jfU2Ht/DpfsZeS3iRy3I0aX7zfkJZm6jQWYSqPFE9ClNZNbVTboW5vMRpsB+nwcF/9KfHZ7cXF0Ci9lv4=
+	t=1731078625; cv=none; b=r58dMr9oCcN/igwZylwhG0kybPsbtzRftack7C/ob7MBreawj1rEzZMjVYHt3VlBGcAZdhdxWsEXrUhBIcG/QpBZdykhAndtbWFz7wKpXlkWBZD6QRM6jkS5ePb7C8/2p1vsd0yNfi99icwb/nWrkA/JdfJbR5j9X7yXBkGeTpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731078404; c=relaxed/simple;
-	bh=vF2G2XyACIvsSkulftA7rR72gJvegVGLforyIY18JvQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=M27MEtyikZrnaOX4jrD/cfGiHbueZ6d4MUscm2P0c/v1EuGpYQSMk3ba6fmKuVnMJyYZr0Csk7bHXkvc8LPGAHep9mvMrt4l3JL+dKzjsdmZF/qz+LJf99jJxQgM9o/U9pLWsQJG+QRqRgZGFJYmAKZ8lvUuZ8ESF/wgn2XpsBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WMfNLYFx; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WMfNLYFx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1731078400; x=1731683200; i=markus.elfring@web.de;
-	bh=JOfARLVE38xdD4X7k3gE07eqaFjFkpilj720vzhEGcA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=WMfNLYFxJt79OBg7HkwD9xCYTn7lv8QV5hpwi8JBH9mnCYTkGy/Nha5thIlnVow8
-	 fw8hg6aEa5OXrnRj6eJtKVSWGJFpBsgevFzWVZp5KzDx06eaE+3Hg1/gkNxFQ6hT7
-	 wyzFyjKM46E3/n+EnMJAJoBpqU2rI7HUTwyFtOX2i6+tdk5hNgAhH7nEKM2mrCEgh
-	 GU6q+2HLdEq6nwwydz2iqHw47Zh9y/6B9ga8hB+f0Z8fF07oGVQqrY1e1/tsStpf8
-	 yneLqv1cyKVC4rx60XjapTqw/+meNrM/uO5v/mABe5SLiVv3GK/M6OMyoeAYWXgiG
-	 ZUPrsuIleKKbc7Cjxw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MI3ox-1t3cv40MOF-002hgR; Fri, 08
- Nov 2024 16:00:37 +0100
-Message-ID: <55a08c90-df62-41cd-8ab9-89dc8199fbfb@web.de>
-Date: Fri, 8 Nov 2024 16:00:22 +0100
+	s=arc-20240116; t=1731078625; c=relaxed/simple;
+	bh=bH6FFgTxmqkn0hT9sBUQG8HCNVpGUO5eEIDp3xRX7EY=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=ZLrdD7/K6sqo+VEBw7fpEm9OZObn9K0gHggcY0SpzWXvRVavvjACmYwHhri8+j0r1fy+uVoNn+vn4fx4DCDcxd1D76X9zG3u7Ibt8djmOtnNli6LONYTAM3TgOluOCtO1tD3VRn/vpmDVcmWYNR3GDMaME2uWX1iB4BTPTZzkkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a3fa97f09cso29006665ab.0
+        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 07:10:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731078622; x=1731683422;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yb7jdZSha+BmQFM62PKABMMReWo6t+QSwbbNWs+C1mA=;
+        b=U+FbuxYbQs7tvUuzJ9THr5nGalAamEwzw5oVjitB5PvZLuEJAMWxsmdgtPzprHH4Ke
+         lWfLF0s5eVQm6QNMuiVFzWpgDp9aq5xP4xbeS/RLGolH0tqAuMjzglT7pCQ1wxfZIUKs
+         rEaVxibDUZ+gxM15IS3ihMRhJpVrDkZ+xk7Z79phOvgf0auv/J2AmwstIk1nnM7z/636
+         tj+2+T3TYYaOJw0AsFsJUDqmfRclI+2ukDXwCnuhPzGEyrQHaYrDd/P0MS0bPsP4E4PY
+         R1wyc/IzHfS3ZSoK3O9Tl9vAtBv/24cfWubB73PxpS8SIy5N7TGl0ielkZAaupz3Xqvy
+         WurQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAgOQBT5SQnnC8eucdc2a8Q7CpeVGzKVIQW/A62s2ExHskBkxPwpcu36BPtsH07GpV/qUx3fE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze/lLZWXsEhYuv17R4W9YII9ppn8ZjKNaxzSPh4fsWhOdPObd2
+	sk+z4nS5AQIM+Nr28kMTTVp0VTwhldTqHAdIdiqMGm4mkpGnWfPZS+D9tqq8l+iIHmEgfEEItmL
+	tB06DawoIu6LIIlnabZAeEt+rErWd0jtrF5fgLfXzrxjDZSEN3vX4dto=
+X-Google-Smtp-Source: AGHT+IFeXEQBxvCHql7zgQ2f0c8TnJfEh+lA845yjuY0rpgm/pcZIyvcBlQU498eIYqSEWPKoFRBdN4rmHdbmyOYzKsOGayvtdAE
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Tuo Li <islituo@gmail.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew@lunn.ch>, Ayush Sawal <ayush.sawal@chelsio.com>,
- "David S. Miller" <davem@davemloft.net>, Dragos Tatulea
- <dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Mina Almasry <almasrymina@google.com>,
- Simon Horman <horms@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Jia-Ju Bai <baijiaju1990@gmail.com>
-References: <20241030132352.154488-1-islituo@gmail.com>
-Subject: Re: [PATCH] chcr_ktls: fix a possible null-pointer dereference in
- chcr_ktls_dev_add()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241030132352.154488-1-islituo@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kRizR2CE4fCzYtaFmdK6fWkzWaTNaKl5lETEg6b12oEuk2Qc7YX
- zHg7YkYxYUEQaWnzrVwDHRYaChkBWMzsOkpJ2ZgP8tsas765caPMtTbVD0haqetVWJlndUr
- GxtixE/xPVEWW1Jq56bxRroXjmvbbprn50/89r/e2U7cL9ZgUgfOUt36zIpGaBq9bacMUrb
- FMeV0kvgi3G0cHAp2EIOg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:p1ayU724K4s=;MI7hy6W1jp1yuzGTwEYRVY4vKga
- AzQ09Bs+nlaJnb+4CgTdKZSSDE2pdqCi9fvCgT/RSv86UzRLOwlveKI3YdDCK5OigTT+i1M8a
- UWCmi5708lmqigm+o8ISJ5bWpBQmLCSywKRXoBzJNckyldLWLACV6swOnTmZ2RusY6dMmb2Ma
- ABlGDjW17Wf1X+mkkKOm2haj0wJtCvyZbwHxYct/d0nRw1BI8gRLsXjb75V7fTXCpAwna3x5u
- 76cN4uGmZ2ItCc+3hVO6JShk5PnbW8tLhbnGcV58YqIkH7zHlIwhmwLKNJzkMwbYxF3oFlpOU
- PDGbet6P5r3MRy0Hz9qnVogFeJZPHxZ9WfauwpYspFFL/a1Z2zWI0R7TEuqKhJvVEUyq6FOZV
- Iesw9fwQIWyo942WRMXBDfEdqQao43jVlruM+5zqiKXL3QiJnoyrfp1aBOhGgenv37TN5uVgq
- zj0VdC5uqX0dY3YzfqKdQqsx+nIdCwDlGgZfR1qniChUj5pryZBg/rGAa39o+2hVjG+HvOIhO
- 7FeOu5kKpmwMtRHihQigc2Mf8rYelKPMoozjQJMQWWwY5AZ616Q9gnU1ZpsUMGmwfIpXJ8vod
- waPmSZAwP0cECbMoM19WaJp3Veu5aQys67n5avnPWlAZAQ5gCdpnJrtzHTvQaAWRrTSZ3P6Xo
- HDDqFzvShjPepU6hCv2XR/id3Beqg0GbzoTfSuqitXdU7yDzsljFVrX4vt6lDrtlfWXPN1sjr
- tjON3rwZjsNu7y+dLBYEPHBtwOUNC7eaTOJVanCIbc/TndB5eo1ch8n8D8GcHyg16LcLrVU4V
- P7XY7cfT4k5ZGYlAA4zvp/aw==
+X-Received: by 2002:a05:6e02:1b07:b0:3a6:af3c:56ae with SMTP id
+ e9e14a558f8ab-3a6f1a09adamr43995055ab.11.1731078622275; Fri, 08 Nov 2024
+ 07:10:22 -0800 (PST)
+Date: Fri, 08 Nov 2024 07:10:22 -0800
+In-Reply-To: <000000000000e364c9061f621a56@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <672e29de.050a0220.69fce.0018.GAE@google.com>
+Subject: Re: [syzbot] [rdma?] possible deadlock in sock_set_reuseaddr
+From: syzbot <syzbot+af5682e4f50cd6bce838@syzkaller.appspotmail.com>
+To: jgg@ziepe.ca, leon@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-=E2=80=A6
-> Consider the following execution scenario:
->
->   chcr_ktls_cpl_act_open_rpl()   //641
->     u_ctx =3D adap->uld[CXGB4_ULD_KTLS].handle;   //686
->     if (u_ctx) {  //687
->     complete(&tx_info->completion);  //704
->
-> The variable u_ctx is checked by an if statement at Line 687, which mean=
-s
-> it can be NULL. Then, complete() is called at Line 704, which will wake
-> up wait_for_completion_xxx().
-=E2=80=A6
+syzbot has found a reproducer for the following issue on:
 
-To which software revision would you like to refer here?
+HEAD commit:    2696e451dfb0 Merge git://git.kernel.org/pub/scm/linux/kern..
+git tree:       net-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=110a3d87980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ea5200d154f868aa
+dashboard link: https://syzkaller.appspot.com/bug?extid=af5682e4f50cd6bce838
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17f7cea7980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13bbee30580000
 
-How does the presented information fit to a statement like the following?
-https://elixir.bootlin.com/linux/v6.12-rc6/source/drivers/net/ethernet/che=
-lsio/inline_crypto/ch_ktls/chcr_ktls.c#L442
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/d35511e1cf15/disk-2696e451.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a547f0432d8f/vmlinux-2696e451.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9d3fb709c982/bzImage-2696e451.xz
 
-	if (u_ctx && u_ctx->detach)
-		goto out;
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+af5682e4f50cd6bce838@syzkaller.appspotmail.com
+
+iwpm_register_pid: Unable to send a nlmsg (client = 2)
+======================================================
+WARNING: possible circular locking dependency detected
+6.12.0-rc6-syzkaller-01219-g2696e451dfb0 #0 Not tainted
+------------------------------------------------------
+syz-executor331/5847 is trying to acquire lock:
+ffff888024303558 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1617 [inline]
+ffff888024303558 (sk_lock-AF_INET){+.+.}-{0:0}, at: sock_set_reuseaddr+0x17/0x60 net/core/sock.c:781
+
+but task is already holding lock:
+ffffffff8fa64d48 (lock#7){+.+.}-{3:3}, at: cma_add_one+0x6bc/0xcd0 drivers/infiniband/core/cma.c:5354
+
+which lock already depends on the new lock.
 
 
-Would you eventually like to trace the control flow back any further
-for the data structure member =E2=80=9Chandle=E2=80=9D?
+the existing dependency chain (in reverse order) is:
 
-Regards,
-Markus
+-> #3 (lock#7){+.+.}-{3:3}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+       __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+       cma_init+0x1e/0x140 drivers/infiniband/core/cma.c:5438
+       do_one_initcall+0x248/0x880 init/main.c:1269
+       do_initcall_level+0x157/0x210 init/main.c:1331
+       do_initcalls+0x3f/0x80 init/main.c:1347
+       kernel_init_freeable+0x435/0x5d0 init/main.c:1580
+       kernel_init+0x1d/0x2b0 init/main.c:1469
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+-> #2 (rtnl_mutex){+.+.}-{3:3}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+       __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+       do_ip_setsockopt+0x127d/0x3cd0 net/ipv4/ip_sockglue.c:1077
+       ip_setsockopt+0x63/0x100 net/ipv4/ip_sockglue.c:1417
+       smc_setsockopt+0x275/0xe50 net/smc/af_smc.c:3064
+       do_sock_setsockopt+0x3af/0x720 net/socket.c:2336
+       __sys_setsockopt+0x1a2/0x250 net/socket.c:2359
+       __do_sys_setsockopt net/socket.c:2368 [inline]
+       __se_sys_setsockopt net/socket.c:2365 [inline]
+       __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2365
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&smc->clcsock_release_lock){+.+.}-{3:3}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+       __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
+       smc_switch_to_fallback+0x35/0xdb0 net/smc/af_smc.c:902
+       smc_sendmsg+0x11f/0x530 net/smc/af_smc.c:2771
+       sock_sendmsg_nosec net/socket.c:729 [inline]
+       __sock_sendmsg+0x221/0x270 net/socket.c:744
+       __sys_sendto+0x39b/0x4f0 net/socket.c:2216
+       __do_sys_sendto net/socket.c:2228 [inline]
+       __se_sys_sendto net/socket.c:2224 [inline]
+       __x64_sys_sendto+0xde/0x100 net/socket.c:2224
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (sk_lock-AF_INET){+.+.}-{0:0}:
+       check_prev_add kernel/locking/lockdep.c:3161 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3280 [inline]
+       validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
+       __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5202
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+       lock_sock_nested+0x48/0x100 net/core/sock.c:3616
+       lock_sock include/net/sock.h:1617 [inline]
+       sock_set_reuseaddr+0x17/0x60 net/core/sock.c:781
+       siw_create_listen+0x196/0xfe0 drivers/infiniband/sw/siw/siw_cm.c:1776
+       iw_cm_listen+0x15e/0x230 drivers/infiniband/core/iwcm.c:585
+       cma_iw_listen drivers/infiniband/core/cma.c:2668 [inline]
+       rdma_listen+0x941/0xd60 drivers/infiniband/core/cma.c:3953
+       cma_listen_on_dev+0x3e3/0x6f0 drivers/infiniband/core/cma.c:2727
+       cma_add_one+0x7d7/0xcd0 drivers/infiniband/core/cma.c:5357
+       add_client_context+0x536/0x8b0 drivers/infiniband/core/device.c:727
+       enable_device_and_get+0x1e6/0x440 drivers/infiniband/core/device.c:1338
+       ib_register_device+0x10d4/0x13e0 drivers/infiniband/core/device.c:1449
+       siw_device_register drivers/infiniband/sw/siw/siw_main.c:72 [inline]
+       siw_newlink+0x9d9/0xe50 drivers/infiniband/sw/siw/siw_main.c:452
+       nldev_newlink+0x5c0/0x640 drivers/infiniband/core/nldev.c:1795
+       rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+       rdma_nl_rcv+0x6dd/0x9e0 drivers/infiniband/core/netlink.c:259
+       netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+       netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+       netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+       sock_sendmsg_nosec net/socket.c:729 [inline]
+       __sock_sendmsg+0x221/0x270 net/socket.c:744
+       ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2609
+       ___sys_sendmsg net/socket.c:2663 [inline]
+       __sys_sendmsg+0x292/0x380 net/socket.c:2692
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  sk_lock-AF_INET --> rtnl_mutex --> lock#7
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(lock#7);
+                               lock(rtnl_mutex);
+                               lock(lock#7);
+  lock(sk_lock-AF_INET);
+
+ *** DEADLOCK ***
+
+6 locks held by syz-executor331/5847:
+ #0: ffffffff9a7a1918 (&rdma_nl_types[idx].sem){.+.+}-{3:3}, at: rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:164 [inline]
+ #0: ffffffff9a7a1918 (&rdma_nl_types[idx].sem){.+.+}-{3:3}, at: rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ #0: ffffffff9a7a1918 (&rdma_nl_types[idx].sem){.+.+}-{3:3}, at: rdma_nl_rcv+0x32d/0x9e0 drivers/infiniband/core/netlink.c:259
+ #1: ffffffff8fa50fb0 (link_ops_rwsem){++++}-{3:3}, at: nldev_newlink+0x42a/0x640 drivers/infiniband/core/nldev.c:1785
+ #2: ffffffff8fa43bd0 (devices_rwsem){++++}-{3:3}, at: enable_device_and_get+0x12e/0x440 drivers/infiniband/core/device.c:1328
+ #3: ffffffff8fa43ed0 (clients_rwsem){++++}-{3:3}, at: enable_device_and_get+0x196/0x440 drivers/infiniband/core/device.c:1336
+ #4: ffff88807fc405d0 (&device->client_data_rwsem){++++}-{3:3}, at: add_client_context+0x4f4/0x8b0 drivers/infiniband/core/device.c:725
+ #5: ffffffff8fa64d48 (lock#7){+.+.}-{3:3}, at: cma_add_one+0x6bc/0xcd0 drivers/infiniband/core/cma.c:5354
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5847 Comm: syz-executor331 Not tainted 6.12.0-rc6-syzkaller-01219-g2696e451dfb0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
+ check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2206
+ check_prev_add kernel/locking/lockdep.c:3161 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3280 [inline]
+ validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
+ __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5202
+ lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
+ lock_sock_nested+0x48/0x100 net/core/sock.c:3616
+ lock_sock include/net/sock.h:1617 [inline]
+ sock_set_reuseaddr+0x17/0x60 net/core/sock.c:781
+ siw_create_listen+0x196/0xfe0 drivers/infiniband/sw/siw/siw_cm.c:1776
+ iw_cm_listen+0x15e/0x230 drivers/infiniband/core/iwcm.c:585
+ cma_iw_listen drivers/infiniband/core/cma.c:2668 [inline]
+ rdma_listen+0x941/0xd60 drivers/infiniband/core/cma.c:3953
+ cma_listen_on_dev+0x3e3/0x6f0 drivers/infiniband/core/cma.c:2727
+ cma_add_one+0x7d7/0xcd0 drivers/infiniband/core/cma.c:5357
+ add_client_context+0x536/0x8b0 drivers/infiniband/core/device.c:727
+ enable_device_and_get+0x1e6/0x440 drivers/infiniband/core/device.c:1338
+ ib_register_device+0x10d4/0x13e0 drivers/infiniband/core/device.c:1449
+ siw_device_register drivers/infiniband/sw/siw/siw_main.c:72 [inline]
+ siw_newlink+0x9d9/0xe50 drivers/infiniband/sw/siw/siw_main.c:452
+ nldev_newlink+0x5c0/0x640 drivers/infiniband/core/nldev.c:1795
+ rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+ rdma_nl_rcv+0x6dd/0x9e0 drivers/infiniband/core/netlink.c:259
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2609
+ ___sys_sendmsg net/socket.c:2663 [inline]
+ __sys_sendmsg+0x292/0x380 net/socket.c:2692
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6a537db819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe43eb0c48 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f6a53829482 RCX: 00007f6a537db819
+RDX: 00000000200040c0 RSI: 00000000200004c0 RDI: 0000000000000005
+RBP: 00007f6a53829460 R08: 0000555500000000 R09: 0000555500000000
+R10: 0000555500000000 R11: 000000
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
