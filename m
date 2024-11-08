@@ -1,62 +1,44 @@
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6D8F54
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 00:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB21EC0
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 01:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731027111; cv=none; b=ckg3aF3XZwXTXTHX2fxr3q1Am2faQHDcvnRJwEnibmwAQwfZM5D6Y2NRCsSXTPBduao2+IyKiOtnLerQud0+81GhBKLpyhNIH6ADrs5xv5/QQTC8maMXgO2582cJgxOAu2Vn/1Vvt4WL+IiLjPR2veiVKF+U7UuSaXXlQ6MxKdE=
+	t=1731027777; cv=none; b=WEbmOztxffcT8WbtbeJEk5UTQqq0bxlakLmDbI/hRRxdFq8GgEwI6kICr7Kqx8AO4UKlLcgbVEgYJQ+1QAbX+MEhMwI0Dhe2+E64CO3nLwAvLcrbb71m7AdGyc59yfrvxueVdsQN4ibFloTsUaESYzMm7BGbt0h6ff/U4BCNyOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731027111; c=relaxed/simple;
-	bh=fTARUZ3ZILInUUsrkJBfuQhScBlFEd3RAb8zIlziWbM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SEhY8MYH1v3/k4Wghge3Wah/fic/Z7YxW+js7EJGz6LxC3PFZ1R1tz07GwxISwtL5Si01qEavMjfE+dSm0SCpjFZFY97PCNfreWQ1bVy+ZNe2/ofQxDo78vMfvt6xrnJF+LlxqmWRFs8bKsNRIvdnvfyP/HW5BbpqmgpiUaRCcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=TkXsKCqa; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1731027777; c=relaxed/simple;
+	bh=2OZRCx61sQHAFAXdvLON086QS03dsE6saKCPhFO1i78=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uHpNx9QQWv64keysmAEnJddznRrprPp6QnBJIeKuikY1VGAgrn8/1LahBy2JMhjAMv7iqUnxoNy5CdZ+nqk7ai6MeaBueg7R4Y3RABcJ4s4aWhv8jBedhx2LgFUCGonxrSqwQCuvwNFXRogolOIlNbqC/b8v0t3Yot1M4PadYYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R57QeacQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="TkXsKCqa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731027110; x=1762563110;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mdE2xsovL/Gdzg41RfMTlIRQQ7jyDqdkbwXU5Oagrdc=;
-  b=TkXsKCqajcz52XDWG9v/5/s2IkXKiY1+S0qKt9EqUriHlXHFT0a6+5Ob
-   YP1y5Fe56JhyTX6YgCICTWndAg4vqR1Px/OfbvxAoY9WsDT3j6drzZt/3
-   fYCMFRasc9N2IuaJCnrhbCVGXDl1PHgAXsQOgTuThG4t2LsbwTSjkQVOF
-   c=;
-X-IronPort-AV: E=Sophos;i="6.12,136,1728950400"; 
-   d="scan'208";a="39875630"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 00:51:49 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:60598]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.34.224:2525] with esmtp (Farcaster)
- id 18252978-f2dd-45fd-89a1-77b9171a27c2; Fri, 8 Nov 2024 00:51:48 +0000 (UTC)
-X-Farcaster-Flow-ID: 18252978-f2dd-45fd-89a1-77b9171a27c2
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Fri, 8 Nov 2024 00:51:47 +0000
-Received: from 6c7e67c6786f.amazon.com (10.187.170.59) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Fri, 8 Nov 2024 00:51:44 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Marc Kleine-Budde
-	<mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, "Daniel
- Borkmann" <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
-	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH RESEND v3 net-next 10/10] rtnetlink: Register rtnl_dellink() and rtnl_setlink() with RTNL_FLAG_DOIT_PERNET_WIP.
-Date: Thu, 7 Nov 2024 16:48:23 -0800
-Message-ID: <20241108004823.29419-11-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241108004823.29419-1-kuniyu@amazon.com>
-References: <20241108004823.29419-1-kuniyu@amazon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R57QeacQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFE3C4CECC;
+	Fri,  8 Nov 2024 01:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731027776;
+	bh=2OZRCx61sQHAFAXdvLON086QS03dsE6saKCPhFO1i78=;
+	h=From:To:Cc:Subject:Date:From;
+	b=R57QeacQUb7lBZBONORty9I7jvrr5S9W4CGNgJyMRzNbvpC443hCObBZ1OILdO0pY
+	 mUv/XzVFY3xrQvSv5YPsNYDPCcq3ee+bRgXe5WM8P09TSCCxuFr48Z1hvdS0eJWaem
+	 PKECgsCMfzHWLnWF6veo/V8aPGA5EFiMWEzyH/pB6NRuZq8hhZKicZyLEMip0L0ecP
+	 LnEEsVoCXOijqzUp4Lq4JEfoWgrSuLNYgDkzTece6nVt+Cl66oLIVmrS7D/G/6ODK7
+	 hvokaWgElK1c1vHK9ZwupcE/bIMnr4z3SBxAYwUs/+cbJxb7D9mO5nDz50CMatzGRy
+	 MSc/PhYObKFww==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us
+Subject: [PATCH net-next v2] net: sched: cls_api: improve the error message for ID allocation failure
+Date: Thu,  7 Nov 2024 17:02:54 -0800
+Message-ID: <20241108010254.2995438-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,116 +46,146 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Currently, rtnl_setlink() and rtnl_dellink() cannot be fully converted
-to per-netns RTNL due to a lack of handling peer/lower/upper devices in
-different netns.
+We run into an exhaustion problem with the kernel-allocated filter IDs.
+Our allocation problem can be fixed on the user space side,
+but the error message in this case was quite misleading:
 
-For example, when we change a device in rtnl_setlink() and need to
-propagate that to its upper devices, we want to avoid acquiring all netns
-locks, for which we do not know the upper limit.
+  "Filter with specified priority/protocol not found" (EINVAL)
 
-The same situation happens when we remove a device.
+Specifically when we can't allocate a _new_ ID because filter with
+lowest ID already _exists_, saying "filter not found", is confusing.
 
-rtnl_dellink() could be transformed to remove a single device in the
-requested netns and delegate other devices to per-netns work, and
-rtnl_setlink() might be ?
+Kernel allocates IDs in range of 0xc0000 -> 0x8000, giving out ID one
+lower than lowest existing in that range. The error message makes sense
+when tcf_chain_tp_find() gets called for GET and DEL but for NEW we
+need to provide more specific error messages for all three cases:
 
-Until we come up with a better idea, let's use a new flag
-RTNL_FLAG_DOIT_PERNET_WIP for rtnl_dellink() and rtnl_setlink().
+ - user wants the ID to be auto-allocated but filter with ID 0x8000
+   already exists
 
-This will unblock converting RTNL users where such devices are not related.
+ - filter already exists and can be replaced, but user asked
+   for a protocol change
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+ - filter doesn't exist
+
+Caller of tcf_chain_tp_insert_unique() doesn't set extack today,
+so don't bother plumbing it in.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/net/rtnetlink.h |  1 +
- net/core/rtnetlink.c    | 19 ++++++++++++++++---
- 2 files changed, 17 insertions(+), 3 deletions(-)
+v1 was sent a while back, I realized this is sitting in my tree
+I think I just forgot to send v2.
 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index bef76abcff8d..bc0069a8b6ea 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -13,6 +13,7 @@ typedef int (*rtnl_dumpit_func)(struct sk_buff *, struct netlink_callback *);
- enum rtnl_link_flags {
- 	RTNL_FLAG_DOIT_UNLOCKED		= BIT(0),
- #define RTNL_FLAG_DOIT_PERNET		RTNL_FLAG_DOIT_UNLOCKED
-+#define RTNL_FLAG_DOIT_PERNET_WIP	RTNL_FLAG_DOIT_UNLOCKED
- 	RTNL_FLAG_BULK_DEL_SUPPORTED	= BIT(1),
- 	RTNL_FLAG_DUMP_UNLOCKED		= BIT(2),
- 	RTNL_FLAG_DUMP_SPLIT_NLM_DONE	= BIT(3),	/* legacy behavior */
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index cac94fb4be18..5d13b39f884b 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3382,6 +3382,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct net *net = sock_net(skb->sk);
- 	struct nlattr *tb[IFLA_MAX+1];
- 	struct net_device *dev = NULL;
-+	struct rtnl_nets rtnl_nets;
- 	struct net *tgt_net;
- 	int err;
+v2:
+ - don't add the extack if we don't find the filter during NEW
+v1: https://lore.kernel.org/20240912215306.2060709-1-kuba@kernel.org
+
+CC: jhs@mojatatu.com
+CC: xiyou.wangcong@gmail.com
+CC: jiri@resnulli.us
+---
+ net/sched/cls_api.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
+
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 2a7d856cc334..5c8d39b6b107 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -1933,7 +1933,8 @@ static void tcf_chain_tp_remove(struct tcf_chain *chain,
+ static struct tcf_proto *tcf_chain_tp_find(struct tcf_chain *chain,
+ 					   struct tcf_chain_info *chain_info,
+ 					   u32 protocol, u32 prio,
+-					   bool prio_allocate);
++					   bool prio_allocate,
++					   struct netlink_ext_ack *extack);
  
-@@ -3400,6 +3401,12 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ /* Try to insert new proto.
+  * If proto with specified priority already exists, free new proto
+@@ -1957,8 +1958,7 @@ static struct tcf_proto *tcf_chain_tp_insert_unique(struct tcf_chain *chain,
+ 		return ERR_PTR(-EAGAIN);
+ 	}
+ 
+-	tp = tcf_chain_tp_find(chain, &chain_info,
+-			       protocol, prio, false);
++	tp = tcf_chain_tp_find(chain, &chain_info, protocol, prio, false, NULL);
+ 	if (!tp)
+ 		err = tcf_chain_tp_insert(chain, &chain_info, tp_new);
+ 	mutex_unlock(&chain->filter_chain_lock);
+@@ -2018,7 +2018,8 @@ static void tcf_chain_tp_delete_empty(struct tcf_chain *chain,
+ static struct tcf_proto *tcf_chain_tp_find(struct tcf_chain *chain,
+ 					   struct tcf_chain_info *chain_info,
+ 					   u32 protocol, u32 prio,
+-					   bool prio_allocate)
++					   bool prio_allocate,
++					   struct netlink_ext_ack *extack)
+ {
+ 	struct tcf_proto **pprev;
+ 	struct tcf_proto *tp;
+@@ -2029,9 +2030,14 @@ static struct tcf_proto *tcf_chain_tp_find(struct tcf_chain *chain,
+ 	     pprev = &tp->next) {
+ 		if (tp->prio >= prio) {
+ 			if (tp->prio == prio) {
+-				if (prio_allocate ||
+-				    (tp->protocol != protocol && protocol))
++				if (prio_allocate) {
++					NL_SET_ERR_MSG(extack, "Lowest ID from auto-alloc range already in use");
++					return ERR_PTR(-ENOSPC);
++				}
++				if (tp->protocol != protocol && protocol) {
++					NL_SET_ERR_MSG(extack, "Protocol mismatch for filter with specified priority");
+ 					return ERR_PTR(-EINVAL);
++				}
+ 			} else {
+ 				tp = NULL;
+ 			}
+@@ -2312,9 +2318,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 
+ 	mutex_lock(&chain->filter_chain_lock);
+ 	tp = tcf_chain_tp_find(chain, &chain_info, protocol,
+-			       prio, prio_allocate);
++			       prio, prio_allocate, extack);
+ 	if (IS_ERR(tp)) {
+-		NL_SET_ERR_MSG(extack, "Filter with specified priority/protocol not found");
+ 		err = PTR_ERR(tp);
+ 		goto errout_locked;
+ 	}
+@@ -2539,10 +2544,13 @@ static int tc_del_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 
+ 	mutex_lock(&chain->filter_chain_lock);
+ 	tp = tcf_chain_tp_find(chain, &chain_info, protocol,
+-			       prio, false);
+-	if (!tp || IS_ERR(tp)) {
++			       prio, false, extack);
++	if (!tp) {
++		err = -ENOENT;
+ 		NL_SET_ERR_MSG(extack, "Filter with specified priority/protocol not found");
+-		err = tp ? PTR_ERR(tp) : -ENOENT;
++		goto errout_locked;
++	} else if (IS_ERR(tp)) {
++		err = PTR_ERR(tp);
+ 		goto errout_locked;
+ 	} else if (tca[TCA_KIND] && nla_strcmp(tca[TCA_KIND], tp->ops->kind)) {
+ 		NL_SET_ERR_MSG(extack, "Specified filter kind does not match existing one");
+@@ -2679,11 +2687,14 @@ static int tc_get_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 
+ 	mutex_lock(&chain->filter_chain_lock);
+ 	tp = tcf_chain_tp_find(chain, &chain_info, protocol,
+-			       prio, false);
++			       prio, false, extack);
+ 	mutex_unlock(&chain->filter_chain_lock);
+-	if (!tp || IS_ERR(tp)) {
++	if (!tp) {
++		err = -ENOENT;
+ 		NL_SET_ERR_MSG(extack, "Filter with specified priority/protocol not found");
+-		err = tp ? PTR_ERR(tp) : -ENOENT;
++		goto errout;
++	} else if (IS_ERR(tp)) {
++		err = PTR_ERR(tp);
  		goto errout;
- 	}
- 
-+	rtnl_nets_init(&rtnl_nets);
-+	rtnl_nets_add(&rtnl_nets, get_net(net));
-+	rtnl_nets_add(&rtnl_nets, tgt_net);
-+
-+	rtnl_nets_lock(&rtnl_nets);
-+
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
-@@ -3412,7 +3419,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	else if (!err)
- 		err = -ENODEV;
- 
--	put_net(tgt_net);
-+	rtnl_nets_unlock(&rtnl_nets);
- errout:
- 	return err;
- }
-@@ -3497,6 +3504,8 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			return PTR_ERR(tgt_net);
- 	}
- 
-+	rtnl_net_lock(tgt_net);
-+
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
-@@ -3511,6 +3520,8 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	else
- 		err = -EINVAL;
- 
-+	rtnl_net_unlock(tgt_net);
-+
- 	if (netnsid >= 0)
- 		put_net(tgt_net);
- 
-@@ -6997,10 +7008,12 @@ static struct pernet_operations rtnetlink_net_ops = {
- static const struct rtnl_msg_handler rtnetlink_rtnl_msg_handlers[] __initconst = {
- 	{.msgtype = RTM_NEWLINK, .doit = rtnl_newlink,
- 	 .flags = RTNL_FLAG_DOIT_PERNET},
--	{.msgtype = RTM_DELLINK, .doit = rtnl_dellink},
-+	{.msgtype = RTM_DELLINK, .doit = rtnl_dellink,
-+	 .flags = RTNL_FLAG_DOIT_PERNET_WIP},
- 	{.msgtype = RTM_GETLINK, .doit = rtnl_getlink,
- 	 .dumpit = rtnl_dump_ifinfo, .flags = RTNL_FLAG_DUMP_SPLIT_NLM_DONE},
--	{.msgtype = RTM_SETLINK, .doit = rtnl_setlink},
-+	{.msgtype = RTM_SETLINK, .doit = rtnl_setlink,
-+	 .flags = RTNL_FLAG_DOIT_PERNET_WIP},
- 	{.msgtype = RTM_GETADDR, .dumpit = rtnl_dump_all},
- 	{.msgtype = RTM_GETROUTE, .dumpit = rtnl_dump_all},
- 	{.msgtype = RTM_GETNETCONF, .dumpit = rtnl_dump_all},
+ 	} else if (tca[TCA_KIND] && nla_strcmp(tca[TCA_KIND], tp->ops->kind)) {
+ 		NL_SET_ERR_MSG(extack, "Specified filter kind does not match existing one");
 -- 
-2.39.5 (Apple Git-154)
+2.47.0
 
