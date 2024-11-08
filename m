@@ -1,577 +1,237 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-eu1.ppe-hosted.com (dispatch1-eu1.ppe-hosted.com [185.183.29.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467521CEE9C;
-	Fri,  8 Nov 2024 04:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731041888; cv=none; b=R7xRz+lBFYw/DOcmOUs9f4UDmuXSW5y3IBvCmurTdB2lWOiNdSPW5zmAUNZO1VIVGQvh9DyxSrHk1PUyw0zWtzuPQbL/JWKGoVxHEKkgNJEgEFFW+W51NioEzh8Ho8JEgpTL1JvH/owAZArDMewCHs7T3lAGfyt3exwHX29689U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731041888; c=relaxed/simple;
-	bh=MDrCUQIUxp25JuN8OLzFxmRtfjfErLyzwPyb+ng0K4k=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCBD+xc1Wl22bg9Z2f6aR0uetgHGtkjUq5u8F/AfOqpm5BhMGMBtHuIH7AraeT9jfgH1UmcRhXsELsEfoWomKaqM3hDp5BZjeu9O0jy8bBb4yBNsevliCnWz2eK78U2PkcD5XOEx/ObyRtK2AJtWU/JlZKObeVydtZ91juUogq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=j8B6z1+T; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709D61CABF
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 05:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.29.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731043582; cv=fail; b=VStTtWxIDv+8kbfPNB7Hk9A8GHVM2Ncal7y4aQtx47e+4Acl9n8VGZ05tQVw4NT17A5r4FhTBlFWHtcDgPMRdhKCHdNfCMuZYSEO3V8QbX3WrICtyQywHdm0pyRDO209O8jGqxRcjb0wwseRZJoLAMtDD9oadDledE81Tl9i3ks=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731043582; c=relaxed/simple;
+	bh=AdTvBHNPou++MKnjPpwSAYAuw801yB/i1FyCNaDBKkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=GfKBm5D5oe0+chds0rVCXob8UyuCud7ZcJEsCetMI9GXQD8gpJPTGxKBsrvNdahnTLdct6+JF1wc8Xd8t6k5Yh6CRwYYPzlRhFmBvZ2Kik1xVw6qFn6wmtnVDVa830mkTJd/B3EKaK2F0HPC439cxW0S9GqvI2ATY0A/IFIMAw8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com; spf=pass smtp.mailfrom=drivenets.com; dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b=upgZhTsc; arc=fail smtp.client-ip=185.183.29.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=drivenets.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=drivenets.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="j8B6z1+T"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A84EBWK027930;
-	Thu, 7 Nov 2024 20:57:59 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=4
-	QBWvbf2SJRxDlaCv0e5UfZu7KXHToueF/hPf+RTcLE=; b=j8B6z1+TkfnSQNg7W
-	dhl6jwefZ6OZUoPAzP4Irlcs3MdBbsc/0ZGGQOGwnjdB7POCMti5qlIvz80yWvYc
-	MZ40G5mtuzUNOIrFIINRApZbM1RTm+xH8S1SfZXGRQ48J2oJ9XPyNea2Fz10jr8Y
-	MGEy80hCBWvIFp7tFL/YzuQ49dcDLRx0SjGcjgL3RJfC+u13v6FZBZgI48uVEF/A
-	i3yfFJWJssbZT1AWFZkEvdOskGFAD83Lv0VtTfZwd5b9VKNq1IGEBjf5ZfqFSHqQ
-	GBZgRn6cI288G50xVuwGpJBV00Bs3vc5MG6X0/0L6b+Gsx3rONjIhjtw2ICV9w3M
-	zXjEA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 42sbdq021w-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 20:57:58 -0800 (PST)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 7 Nov 2024 20:57:43 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 7 Nov 2024 20:57:43 -0800
-Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
-	by maili.marvell.com (Postfix) with ESMTP id B3DB93F7044;
-	Thu,  7 Nov 2024 20:57:39 -0800 (PST)
-From: Bharat Bhushan <bbhushan2@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
-        <hkelam@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <jerinj@marvell.com>,
-        <lcherian@marvell.com>, <ndabilpuram@marvell.com>,
-        <sd@queasysnail.net>, <bbhushan2@marvell.com>
-Subject: [net-next PATCH v9 6/8] cn10k-ipsec: Process outbound ipsec crypto offload
-Date: Fri, 8 Nov 2024 10:27:06 +0530
-Message-ID: <20241108045708.1205994-7-bbhushan2@marvell.com>
+	dkim=pass (1024-bit key) header.d=drivenets.onmicrosoft.com header.i=@drivenets.onmicrosoft.com header.b="upgZhTsc"
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05lp2107.outbound.protection.outlook.com [104.47.18.107])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 7A9B134005C;
+	Fri,  8 Nov 2024 05:26:17 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YPKK022+66tCDuSjK7XrSMkepDElXJvYTH1BA/OhhEWY7WQEeZKDgGVYifAjdXykuj8c8CF6PXxnayvsB9ZPxISbmTfUuHQUi1govAcU19gcE3clPgueMhwenVMtPB1/rf+Atm0mB2Gg2XPtlPPT4ltm+TnQJvp0kScxqICxbuDBiacWX27cXzLADmE5jX9hva/7eA0LvNl8SANok9aXCTz+uE4cJWKmfeaYDL6CvFvmhq6pPBKMvoUbfUEbReiFZNDOArzXWIW3vvPF3by1MwCSt357oXWX0nKpWQlV5zRpipcm9dglGabGEnwIxUfSHP/0UDHDLoigxQJSsoq7Kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JUUJxUNsjA8ER48Bh3Rgg/pXpal4/2IrLcVOD3XriQQ=;
+ b=Z4lifnG4zCUz7ZIyVAevVYqxdhieEwCBY69KqdxsiVw30w6saA9Rq9BS92JZYY/2K6kLpLDXgy17m61rK4XNv7ZkIo/y8Dv8WhOHitavwUwcZarch9Naj9NVp+nCovvNHjcOGWkfMujVM0aHpfCqHFIjjiGFEH6ErMzBazyQEwPajkU4nCHX6b+jfqk894ZrQdfVlvcgt7n1AlZzHumIw/dDJz9ayeOlfa4rWMr6cgSg28t/XNwOiMScs7g8McDPvEatkjtdbPBXxNwG6RwniaWnsal3ZtV5SAwKsnW0Gbpthy3BoszB09zz7BQHxWCm9Rrni4g8cpe1bIFJCEnZbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=drivenets.com; dmarc=pass action=none
+ header.from=drivenets.com; dkim=pass header.d=drivenets.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=drivenets.onmicrosoft.com; s=selector2-drivenets-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JUUJxUNsjA8ER48Bh3Rgg/pXpal4/2IrLcVOD3XriQQ=;
+ b=upgZhTscN5CvJr6HTYEHheOv7kmDNIb7BAWNtaUhaBb+tUDYac651fAtqvMuXEJO6+LJ2xwcW93BC8bLlrfEPIedzfsgy2xYcU/zxjI/c+TJ6pLv03eegVpNGkj1wTJbp3Vu+voQhBLD7L+hQWVG3V3lCYbFNXcYxu65Zn72CQc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=drivenets.com;
+Received: from DB8PR08MB5388.eurprd08.prod.outlook.com (2603:10a6:10:11c::7)
+ by PAXPR08MB6431.eurprd08.prod.outlook.com (2603:10a6:102:157::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20; Fri, 8 Nov
+ 2024 05:26:15 +0000
+Received: from DB8PR08MB5388.eurprd08.prod.outlook.com
+ ([fe80::29dd:6773:4977:dc4e]) by DB8PR08MB5388.eurprd08.prod.outlook.com
+ ([fe80::29dd:6773:4977:dc4e%6]) with mapi id 15.20.8137.019; Fri, 8 Nov 2024
+ 05:26:15 +0000
+From: Gilad Naaman <gnaaman@drivenets.com>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Gilad Naaman <gnaaman@drivenets.com>
+Subject: [PATCH net-next v2] Avoid traversing addrconf hash on ifdown
+Date: Fri,  8 Nov 2024 05:25:59 +0000
+Message-Id: <20241108052559.2926114-1-gnaaman@drivenets.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241108045708.1205994-1-bbhushan2@marvell.com>
-References: <20241108045708.1205994-1-bbhushan2@marvell.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO6P123CA0057.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:310::14) To DB8PR08MB5388.eurprd08.prod.outlook.com
+ (2603:10a6:10:11c::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: qqOkAidz4ky7At31SKS4h7U7XAoCY5QK
-X-Proofpoint-GUID: qqOkAidz4ky7At31SKS4h7U7XAoCY5QK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR08MB5388:EE_|PAXPR08MB6431:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2841071-b50c-40f6-80d4-08dcffb5dd86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?UkVLZEk1NlXAgWCZ8zsZWyGLv/gBIKqVm00987Yna/UwqX+LGyflzkL88ynA?=
+ =?us-ascii?Q?2EAwMrLJJ8KiqN311y0L8Ds4+ZdqezRSVe47M5I27vjAMOtK+xiyFQFl79vF?=
+ =?us-ascii?Q?j3QqjT5VLsElZzl5OXJksg9NVrOkRKUGa+ev03Dij23cE+z5QTpiCWYgK+BH?=
+ =?us-ascii?Q?2U/0BmI/22+nLpG/nqEXK2WCEZVXZJorDiMojrvPtFcqh4R7slpN9eo7qSid?=
+ =?us-ascii?Q?qlGUV3m6be6DpoNew2jlMiUUA53itqmEjt2wUXyLmrcMWBawuCiNAtdhXXv5?=
+ =?us-ascii?Q?z0Qd2TEbUQzoFAC9BL4M4O6XhFJmjo+OBJZjoEiYOU1HtqRwVm4X3vtu5lYy?=
+ =?us-ascii?Q?QnPAl/TUVpi9s/J3E+Fv5h6rjrjnS2KV7s/dN4bvHOLZ5vLIFZg7E+EgWSYa?=
+ =?us-ascii?Q?WzroJrnApVwblv7A9PaDx2/CIlOk4IMxBrFMCL3MvQwmr/502SranlsD+DWJ?=
+ =?us-ascii?Q?Q8ialGrRvi8gM5bbLjiEqzP3KMY9NQM3Z8TCmKS5q5h5yPrLUeRszeukIcQI?=
+ =?us-ascii?Q?I3osKdDQw/GlOKljkHV02WT7DZbmobTMKMOYqNvXr26p/vVyqG33xxLL3tM9?=
+ =?us-ascii?Q?ehoJ/hQuNcPyFSIkPMLaFrHMMqjE49UmvDMRhcKoskep48Tl/lBl10hU4I3V?=
+ =?us-ascii?Q?4femwhkPgoJRqxli3+R60DgpLAzckmKBv3OZcvJSjjE2jEtdtMBiG5Zl9orc?=
+ =?us-ascii?Q?RNCNeI5XXNP62Bimu1tAy6Hm3dwddzL6IsTe75zTp92OgTnirS4hRWVIFIZs?=
+ =?us-ascii?Q?3SpilJCaKu+ydksEqdduEZ/JnaJDfwNytBLPIipRteJhSNzzf+LZlrqyR0rM?=
+ =?us-ascii?Q?Md9dUdMvx4bKnUSAcsVtr1ruU996Wl/5O2p4Wn4Zs2ERx3+S0DRpUcxqdWjo?=
+ =?us-ascii?Q?MnWYD/6Qu6RCt/19+O6ZQvWVntM2WFIqziKxJDlWyJafjjFWXasmKPaVhCyv?=
+ =?us-ascii?Q?CmDjiydJY1Xu8zC+T7GW5cIfUg/mXHKw7z3xEGz61LO8JXcT4qRN5bipk0RD?=
+ =?us-ascii?Q?ZhV6dpLM30/ayg4tFAFJbBPzYf8FnQQGvoNHvQrUPe2PPdXY/C1Ti2345Hfv?=
+ =?us-ascii?Q?xcnuOprjyDw1CbbZfxutciJmonqPCo4oV7IBLobiGsYqx3qvvJyzLCRZfjqg?=
+ =?us-ascii?Q?cMnrSHhRpM+coeGXo3b3bNLQBXHNh77vdU9T1S8/W6fAJUcPFNaI73ZdVZZ+?=
+ =?us-ascii?Q?c0dxgjWggoZ9Azz25O2gHtGW9mol7ZMEuOeH2RybvW9iAttbi0gDGORw6dUq?=
+ =?us-ascii?Q?7A39SK/6L1HZz8cb6BKnoGNBAI9clERcHbJ70pbGu38elWLbEfpq033kkhnh?=
+ =?us-ascii?Q?sTD6AwaM9seWw0dJPKpAqCMuO9luLcOMsWgen6lHBLJUe6phGTwhDLBoUmZq?=
+ =?us-ascii?Q?gzqBCXI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB5388.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wZDswWwITIpnKUOy7ARgOqNcsSKY+10GLHAo0MAhH9KmiGJT7yLCbuONWr3Y?=
+ =?us-ascii?Q?ouxw+XYPYD7fjYll8AR8Uykn9FrNT0idGMYfxejCf9Z2ugotHg81JxKv3ayn?=
+ =?us-ascii?Q?i/Ks/KbdyIcpad/ksoyqY5UtdkT/f/OzUHMM8q1xEA9PDOQ/fkrGz+SQ3Pki?=
+ =?us-ascii?Q?Z6aA+2kld9i8Gk4Ce0SWh64nRqvOr1ezSEZ5oyzbkD0qlMqnCjbBSQ+qbzqE?=
+ =?us-ascii?Q?XEcd/PVG1OkhUcC+pgt2WQhTZMntQo9akX1LdMOHXNB8319adAFF0FNRUl9E?=
+ =?us-ascii?Q?tyNf91yFA3Zc5BtlcZlrZfuCtLZ9ui7cePtifJQ5oeddNAE3mAM8SvdRGXXr?=
+ =?us-ascii?Q?bjUkgXk967cbExGBFLlfIXfxmwxzMttQS1+ccQPsRhI1TOtqqPyfUU9JZqMu?=
+ =?us-ascii?Q?uZQMBmQ47n3oqNGOzdSc5/Rz3eJLVDGJFBGdwSP/JInykMtD7bQ6sR92OgaK?=
+ =?us-ascii?Q?l963+eOHrv/6WYHgcrlvLH3djveKGLA8oCxxdwzkJtJGOcPEeGdMMNFeEMzz?=
+ =?us-ascii?Q?pa3yjuk9bLSqMTItNZJ3ONWyNVTyuJUVq6wOksFJwZ5MF3TfmbQC1pbLwPXf?=
+ =?us-ascii?Q?8NuaztbbaneQrp9hybsexy0eXm3D47Ay3tqgTzQAmJ4yWm4J1XUW0RJ3KeXp?=
+ =?us-ascii?Q?tfmj4WzlAMqniSoxbVcM1e5uswrjSuIgSztpZSZoKy7GA6EVAoUy9Iq6wIAN?=
+ =?us-ascii?Q?pge5Jwa1D4CVhR7wtp23BbSbue64C2o8cPfoQAxoIGAUik9sK7FrU/mHZDpm?=
+ =?us-ascii?Q?PaXj0/lQ9xfYZ+wvwmk7RcggqHZuwnuxuAQuML4dlaX99mVZiXo4C9XWMkEe?=
+ =?us-ascii?Q?BECZB/sjp+FWz/WQmYb4hLKWmM9HplquC959YQyDpC7NUhB3C4s9krwaerA+?=
+ =?us-ascii?Q?I4gGYBKSUYMuA43ftgzOCS1KyAmVhsjsBYeyG2bJ3c+aCqlT45S8CkMVBYoO?=
+ =?us-ascii?Q?TGUb6OrCxADFXTzLHDdKOloLdZhcSE/x1v1jmKrj2k2tig6mXEfy8HgK8YFI?=
+ =?us-ascii?Q?ivt9APiU170HjyphkpjAClfSb1k6MaUvvEF4hdNjtw6+XwL0BR/9u6l40SoS?=
+ =?us-ascii?Q?XrROdcl+Zn3ymNr3WtAim0zYObPJY8nM1uOMuxLHOue4GvYLKoIUavos1FsE?=
+ =?us-ascii?Q?RhBWnUOlu0p9DImDxh0uPm/lgBnay+wJVofW6r38OkDI81qDblFQkmZDT8vs?=
+ =?us-ascii?Q?smWM5VZKfLh4n6KUMSyKqTTosmPfgYVA5iXl7J+dVk3OeK4LpX458bZPS+eE?=
+ =?us-ascii?Q?lpruRhWFTudwarumq5Y/WNwroUUBTYGNfhkhP0neXtsK2CBj9lTYILnZExpP?=
+ =?us-ascii?Q?4SPQbTmAu/FTpUt/dYbTMzrVljIrVb6kqPakEs4F779wvN8ArRg62g2trN+q?=
+ =?us-ascii?Q?VhIv1sNVw2KVmkdQXeZrOX5zDY7eY1W2v9XYhJJ6ycc3GKVdMmzfrQtPsJUz?=
+ =?us-ascii?Q?PGLNLm/sjQCyJqllcOjHkNGgnyhkrcFWwWXjCciyTG84k6BoZkBJnhNWz0LU?=
+ =?us-ascii?Q?prGeX8SMLe7xkhEwpDgaSG6lFHKTyqdoyJDvJrfZ1Obab1qSOD4FzOMDE/6O?=
+ =?us-ascii?Q?NeNnRROLop7hK1wvDFR1BkwFazePwZBhaoIxwB6mgrtmhByMoB0CTPu6gbZl?=
+ =?us-ascii?Q?yg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	msJNpq67+4BVoYE6eDtd+jLFECCOpfiEtSGza5qBdmGVLQ55m0gjjdaCUHqUscNyXqCqH42Ge4Uau3b/PRwu6mN9UlDK+/bMNWp6g11/e0DH7J2H7MHv1z+6CORCN/BoohSoEmxyoBfxXmJiJQUA3uA3NcdDD4NIFbowzKZJb7VN6kb8HCioD/1VgUTpHmM+QAaT7QudDlkSjLR1znqpE1AO36IsqYF6VkCSe1YpWhwKj88dxnc3SvouvBv1wbd/e+s6ZbH/JG9RLTNlWbdRlDzDUVs1u4QNLU5hkMqAwFWCEIM3IHotpf0ZXSWP8oPWs6BhGBta96Db4SDPp0BoFEt88hzJdMK2orKHdbofEs8lhusBiKscN9Opt8Kh+29sSONH4lj2Eb6pt4UT3b7dCBR4086Ygim3vG36FjFao2tcIWodRi36xu/bXgcZWIL2xBJmbsgW7GmH0qKcPxOrXdyklI2DtQLATb4pJek9ecyDxl4kOcRpTZaSHGiZcD19jArZG+3nR2N/CJHvxN6+UkOxSHCC68rA+VRSOhCt9FdmPd8zS5PWrCTBlQhJrEYDBJda+b77K7LqcbkeIR3aus/1YpiY6K5/PGHWAGAeEHrbZm8C8OkdNrhD53l/SJ9C
+X-OriginatorOrg: drivenets.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2841071-b50c-40f6-80d4-08dcffb5dd86
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR08MB5388.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2024 05:26:15.2333
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 662f82da-cf45-4bdf-b295-33b083f5d229
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RgtihQFB7zxjzyfkfS8Gr70BIRCkKDvTXO594qE1ecx4fJ0yxTFw8s82vpgDCcmJwyaZNBuyBbpglqb0fpwzjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6431
+X-MDID: 1731043578-n64g4K_PuzBg
+X-MDID-O:
+ eu1;ams;1731043578;n64g4K_PuzBg;<gnaaman@drivenets.com>;3d1c658def2edc17f2dc3c0c0047d85f
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Prepare and submit crypto hardware (CPT) instruction for
-outbound ipsec crypto offload. The CPT instruction have
-authentication offset, IV offset and encapsulation offset
-in input packet. Also provide SA context pointer which have
-details about algo, keys, salt etc. Crypto hardware encrypt,
-authenticate and provide the ESP packet to networking hardware.
+struct inet6_dev already has a list of addresses owned by the device,
+enabling us to traverse this much shorter list, instead of scanning
+the entire hash-table.
 
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Gilad Naaman <gnaaman@drivenets.com>
 ---
-v3->v4:
- - Few error messages in datapath removed and some moved
-   under netif_msg_tx_err().
- - Fixed codespell error as per comment from Simon Horman
+Changes in v2:
+ - Remove double BH sections
+ - Styling fixes (extra {}, extra newline)
+---
+ net/ipv6/addrconf.c | 38 +++++++++++++++++---------------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
- .../marvell/octeontx2/nic/cn10k_ipsec.c       | 212 ++++++++++++++++++
- .../marvell/octeontx2/nic/cn10k_ipsec.h       |  40 ++++
- .../marvell/octeontx2/nic/otx2_common.c       |  23 ++
- .../marvell/octeontx2/nic/otx2_common.h       |   3 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +
- .../marvell/octeontx2/nic/otx2_txrx.c         |  33 ++-
- .../marvell/octeontx2/nic/otx2_txrx.h         |   3 +
- 7 files changed, 313 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-index ccbcc5001431..3ab0dc7ef66a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.c
-@@ -7,8 +7,11 @@
- #include <net/xfrm.h>
- #include <linux/netdevice.h>
- #include <linux/bitfield.h>
-+#include <crypto/aead.h>
-+#include <crypto/gcm.h>
- 
- #include "otx2_common.h"
-+#include "otx2_struct.h"
- #include "cn10k_ipsec.h"
- 
- static bool is_dev_support_ipsec_offload(struct pci_dev *pdev)
-@@ -828,3 +831,212 @@ void cn10k_ipsec_clean(struct otx2_nic *pf)
- 	cn10k_outb_cpt_clean(pf);
- }
- EXPORT_SYMBOL(cn10k_ipsec_clean);
-+
-+static u16 cn10k_ipsec_get_ip_data_len(struct xfrm_state *x,
-+				       struct sk_buff *skb)
-+{
-+	struct ipv6hdr *ipv6h;
-+	struct iphdr *iph;
-+	u8 *src;
-+
-+	src = (u8 *)skb->data + ETH_HLEN;
-+
-+	if (x->props.family == AF_INET) {
-+		iph = (struct iphdr *)src;
-+		return ntohs(iph->tot_len);
-+	}
-+
-+	ipv6h = (struct ipv6hdr *)src;
-+	return ntohs(ipv6h->payload_len) + sizeof(struct ipv6hdr);
-+}
-+
-+/* Prepare CPT and NIX SQE scatter/gather subdescriptor structure.
-+ * SG of NIX and CPT are same in size.
-+ * Layout of a NIX SQE and CPT SG entry:
-+ *      -----------------------------
-+ *     |     CPT Scatter Gather      |
-+ *     |       (SQE SIZE)            |
-+ *     |                             |
-+ *      -----------------------------
-+ *     |       NIX SQE               |
-+ *     |       (SQE SIZE)            |
-+ *     |                             |
-+ *      -----------------------------
-+ */
-+bool otx2_sqe_add_sg_ipsec(struct otx2_nic *pfvf, struct otx2_snd_queue *sq,
-+			   struct sk_buff *skb, int num_segs, int *offset)
-+{
-+	struct cpt_sg_s *cpt_sg = NULL;
-+	struct nix_sqe_sg_s *sg = NULL;
-+	u64 dma_addr, *iova = NULL;
-+	u64 *cpt_iova = NULL;
-+	u16 *sg_lens = NULL;
-+	int seg, len;
-+
-+	sq->sg[sq->head].num_segs = 0;
-+	cpt_sg = (struct cpt_sg_s *)(sq->sqe_base - sq->sqe_size);
-+
-+	for (seg = 0; seg < num_segs; seg++) {
-+		if ((seg % MAX_SEGS_PER_SG) == 0) {
-+			sg = (struct nix_sqe_sg_s *)(sq->sqe_base + *offset);
-+			sg->ld_type = NIX_SEND_LDTYPE_LDD;
-+			sg->subdc = NIX_SUBDC_SG;
-+			sg->segs = 0;
-+			sg_lens = (void *)sg;
-+			iova = (void *)sg + sizeof(*sg);
-+			/* Next subdc always starts at a 16byte boundary.
-+			 * So if sg->segs is whether 2 or 3, offset += 16bytes.
-+			 */
-+			if ((num_segs - seg) >= (MAX_SEGS_PER_SG - 1))
-+				*offset += sizeof(*sg) + (3 * sizeof(u64));
-+			else
-+				*offset += sizeof(*sg) + sizeof(u64);
-+
-+			cpt_sg += (seg / MAX_SEGS_PER_SG) * 4;
-+			cpt_iova = (void *)cpt_sg + sizeof(*cpt_sg);
-+		}
-+		dma_addr = otx2_dma_map_skb_frag(pfvf, skb, seg, &len);
-+		if (dma_mapping_error(pfvf->dev, dma_addr))
-+			return false;
-+
-+		sg_lens[seg % MAX_SEGS_PER_SG] = len;
-+		sg->segs++;
-+		*iova++ = dma_addr;
-+		*cpt_iova++ = dma_addr;
-+
-+		/* Save DMA mapping info for later unmapping */
-+		sq->sg[sq->head].dma_addr[seg] = dma_addr;
-+		sq->sg[sq->head].size[seg] = len;
-+		sq->sg[sq->head].num_segs++;
-+
-+		*cpt_sg = *(struct cpt_sg_s *)sg;
-+		cpt_sg->rsvd_63_50 = 0;
-+	}
-+
-+	sq->sg[sq->head].skb = (u64)skb;
-+	return true;
-+}
-+
-+static u16 cn10k_ipsec_get_param1(u8 iv_offset)
-+{
-+	u16 param1_val;
-+
-+	/* Set Crypto mode, disable L3/L4 checksum */
-+	param1_val = CN10K_IPSEC_INST_PARAM1_DIS_L4_CSUM |
-+		      CN10K_IPSEC_INST_PARAM1_DIS_L3_CSUM;
-+	param1_val |= (u16)iv_offset << CN10K_IPSEC_INST_PARAM1_IV_OFFSET_SHIFT;
-+	return param1_val;
-+}
-+
-+bool cn10k_ipsec_transmit(struct otx2_nic *pf, struct netdev_queue *txq,
-+			  struct otx2_snd_queue *sq, struct sk_buff *skb,
-+			  int num_segs, int size)
-+{
-+	struct cpt_inst_s inst;
-+	struct cpt_res_s *res;
-+	struct xfrm_state *x;
-+	struct qmem *sa_info;
-+	dma_addr_t dptr_iova;
-+	struct sec_path *sp;
-+	u8 encap_offset;
-+	u8 auth_offset;
-+	u8 gthr_size;
-+	u8 iv_offset;
-+	u16 dlen;
-+
-+	/* Check for IPSEC offload enabled */
-+	if (!(pf->flags & OTX2_FLAG_IPSEC_OFFLOAD_ENABLED))
-+		goto drop;
-+
-+	sp = skb_sec_path(skb);
-+	if (unlikely(!sp->len))
-+		goto drop;
-+
-+	x = xfrm_input_state(skb);
-+	if (unlikely(!x))
-+		goto drop;
-+
-+	if (x->props.mode != XFRM_MODE_TRANSPORT &&
-+	    x->props.mode != XFRM_MODE_TUNNEL)
-+		goto drop;
-+
-+	dlen = cn10k_ipsec_get_ip_data_len(x, skb);
-+	if (dlen == 0 && netif_msg_tx_err(pf)) {
-+		netdev_err(pf->netdev, "Invalid IP header, ip-length zero\n");
-+		goto drop;
-+	}
-+
-+	/* Check for valid SA context */
-+	sa_info = (struct qmem *)x->xso.offload_handle;
-+	if (!sa_info)
-+		goto drop;
-+
-+	memset(&inst, 0, sizeof(struct cpt_inst_s));
-+
-+	/* Get authentication offset */
-+	if (x->props.family == AF_INET)
-+		auth_offset = sizeof(struct iphdr);
-+	else
-+		auth_offset = sizeof(struct ipv6hdr);
-+
-+	/* IV offset is after ESP header */
-+	iv_offset = auth_offset + sizeof(struct ip_esp_hdr);
-+	/* Encap will start after IV */
-+	encap_offset = iv_offset + GCM_RFC4106_IV_SIZE;
-+
-+	/* CPT Instruction word-1 */
-+	res = (struct cpt_res_s *)(sq->cpt_resp->base + (64 * sq->head));
-+	res->compcode = 0;
-+	inst.res_addr = sq->cpt_resp->iova + (64 * sq->head);
-+
-+	/* CPT Instruction word-2 */
-+	inst.rvu_pf_func = pf->pcifunc;
-+
-+	/* CPT Instruction word-3:
-+	 * Set QORD to force CPT_RES_S write completion
-+	 */
-+	inst.qord = 1;
-+
-+	/* CPT Instruction word-4 */
-+	/* inst.dlen should not include ICV length */
-+	inst.dlen = dlen + ETH_HLEN - (x->aead->alg_icv_len / 8);
-+	inst.opcode_major = CN10K_IPSEC_MAJOR_OP_OUTB_IPSEC;
-+	inst.param1 = cn10k_ipsec_get_param1(iv_offset);
-+
-+	inst.param2 = encap_offset <<
-+		       CN10K_IPSEC_INST_PARAM2_ENC_DATA_OFFSET_SHIFT;
-+	inst.param2 |= (u16)auth_offset <<
-+			CN10K_IPSEC_INST_PARAM2_AUTH_DATA_OFFSET_SHIFT;
-+
-+	/* CPT Instruction word-5 */
-+	gthr_size = num_segs / MAX_SEGS_PER_SG;
-+	gthr_size = (num_segs % MAX_SEGS_PER_SG) ? gthr_size + 1 : gthr_size;
-+
-+	gthr_size &= 0xF;
-+	dptr_iova = (sq->sqe_ring->iova + (sq->head * (sq->sqe_size * 2)));
-+	inst.dptr = dptr_iova | ((u64)gthr_size << 60);
-+
-+	/* CPT Instruction word-6 */
-+	inst.rptr = inst.dptr;
-+
-+	/* CPT Instruction word-7 */
-+	inst.cptr = sa_info->iova;
-+	inst.ctx_val = 1;
-+	inst.egrp = CN10K_DEF_CPT_IPSEC_EGRP;
-+
-+	/* CPT Instruction word-0 */
-+	inst.nixtxl = (size / 16) - 1;
-+	inst.dat_offset = ETH_HLEN;
-+	inst.nixtx_offset = sq->sqe_size;
-+
-+	netdev_tx_sent_queue(txq, skb->len);
-+
-+	/* Finally Flush the CPT instruction */
-+	sq->head++;
-+	sq->head &= (sq->sqe_cnt - 1);
-+	cn10k_cpt_inst_flush(pf, &inst, sizeof(struct cpt_inst_s));
-+	return true;
-+drop:
-+	dev_kfree_skb_any(skb);
-+	return false;
-+}
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.h b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.h
-index 490b75b81234..2851ea53ccbd 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_ipsec.h
-@@ -53,6 +53,7 @@
- /* IPSEC Instruction opcodes */
- #define CN10K_IPSEC_MAJOR_OP_WRITE_SA 0x01UL
- #define CN10K_IPSEC_MINOR_OP_WRITE_SA 0x09UL
-+#define CN10K_IPSEC_MAJOR_OP_OUTB_IPSEC 0x2AUL
- 
- enum cn10k_cpt_comp_e {
- 	CN10K_CPT_COMP_E_NOTDONE = 0x00,
-@@ -142,6 +143,16 @@ struct cn10k_tx_sa_s {
- 	u64 hw_ctx[6];		/* W31 - W36 */
- };
- 
-+/* CPT instruction parameter-1 */
-+#define CN10K_IPSEC_INST_PARAM1_DIS_L4_CSUM		0x1
-+#define CN10K_IPSEC_INST_PARAM1_DIS_L3_CSUM		0x2
-+#define CN10K_IPSEC_INST_PARAM1_CRYPTO_MODE		0x20
-+#define CN10K_IPSEC_INST_PARAM1_IV_OFFSET_SHIFT		8
-+
-+/* CPT instruction parameter-2 */
-+#define CN10K_IPSEC_INST_PARAM2_ENC_DATA_OFFSET_SHIFT	0
-+#define CN10K_IPSEC_INST_PARAM2_AUTH_DATA_OFFSET_SHIFT	8
-+
- /* CPT Instruction Structure */
- struct cpt_inst_s {
- 	u64 nixtxl		: 3; /* W0 */
-@@ -181,6 +192,15 @@ struct cpt_res_s {
- 	u64 esn;		/* W1 */
- };
- 
-+/* CPT SG structure */
-+struct cpt_sg_s {
-+	u64 seg1_size	: 16;
-+	u64 seg2_size	: 16;
-+	u64 seg3_size	: 16;
-+	u64 segs	: 2;
-+	u64 rsvd_63_50	: 14;
-+};
-+
- /* CPT LF_INPROG Register */
- #define CPT_LF_INPROG_INFLIGHT	GENMASK_ULL(8, 0)
- #define CPT_LF_INPROG_GRB_CNT	GENMASK_ULL(39, 32)
-@@ -203,6 +223,11 @@ struct cpt_res_s {
- int cn10k_ipsec_init(struct net_device *netdev);
- void cn10k_ipsec_clean(struct otx2_nic *pf);
- int cn10k_ipsec_ethtool_init(struct net_device *netdev, bool enable);
-+bool otx2_sqe_add_sg_ipsec(struct otx2_nic *pfvf, struct otx2_snd_queue *sq,
-+			   struct sk_buff *skb, int num_segs, int *offset);
-+bool cn10k_ipsec_transmit(struct otx2_nic *pf, struct netdev_queue *txq,
-+			  struct otx2_snd_queue *sq, struct sk_buff *skb,
-+			  int num_segs, int size);
- #else
- static inline __maybe_unused int cn10k_ipsec_init(struct net_device *netdev)
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index d0a99710d65d..c6fbd634912a 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3846,12 +3846,12 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
  {
-@@ -218,5 +243,20 @@ int cn10k_ipsec_ethtool_init(struct net_device *netdev, bool enable)
- {
- 	return 0;
- }
-+
-+static inline bool __maybe_unused
-+otx2_sqe_add_sg_ipsec(struct otx2_nic *pfvf, struct otx2_snd_queue *sq,
-+		      struct sk_buff *skb, int num_segs, int *offset)
-+{
-+	return true;
-+}
-+
-+static inline bool __maybe_unused
-+cn10k_ipsec_transmit(struct otx2_nic *pf, struct netdev_queue *txq,
-+		     struct otx2_snd_queue *sq, struct sk_buff *skb,
-+		     int num_segs, int size)
-+{
-+	return true;
-+}
- #endif
- #endif // CN10K_IPSEC_H
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index e52950a2e54d..54b29fad8a49 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -942,6 +942,29 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 	if (err)
- 		return err;
+ 	unsigned long event = unregister ? NETDEV_UNREGISTER : NETDEV_DOWN;
+ 	struct net *net = dev_net(dev);
+-	struct inet6_dev *idev;
+ 	struct inet6_ifaddr *ifa;
+ 	LIST_HEAD(tmp_addr_list);
++	struct inet6_dev *idev;
+ 	bool keep_addr = false;
+ 	bool was_ready;
+-	int state, i;
++	int state;
  
-+	/* Allocate memory for NIX SQE (which includes NIX SG) and CPT SG.
-+	 * SG of NIX and CPT are same in size. Allocate memory for CPT SG
-+	 * same as NIX SQE for base address alignment.
-+	 * Layout of a NIX SQE and CPT SG entry:
-+	 *      -----------------------------
-+	 *     |     CPT Scatter Gather      |
-+	 *     |       (SQE SIZE)            |
-+	 *     |                             |
-+	 *      -----------------------------
-+	 *     |       NIX SQE               |
-+	 *     |       (SQE SIZE)            |
-+	 *     |                             |
-+	 *      -----------------------------
-+	 */
-+	err = qmem_alloc(pfvf->dev, &sq->sqe_ring, qset->sqe_cnt,
-+			 sq->sqe_size * 2);
-+	if (err)
-+		return err;
-+
-+	err = qmem_alloc(pfvf->dev, &sq->cpt_resp, qset->sqe_cnt, 64);
-+	if (err)
-+		return err;
-+
- 	if (qidx < pfvf->hw.tx_queues) {
- 		err = qmem_alloc(pfvf->dev, &sq->tso_hdrs, qset->sqe_cnt,
- 				 TSO_HEADER_SIZE);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index 5b4bbca86b0e..ae188b1ed830 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -54,6 +54,9 @@
- #define NIX_PF_PFC_PRIO_MAX			8
- #endif
+ 	ASSERT_RTNL();
  
-+/* Number of segments per SG structure */
-+#define MAX_SEGS_PER_SG 3
-+
- enum arua_mapped_qtypes {
- 	AURA_NIX_RQ,
- 	AURA_NIX_SQ,
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c3bc9ea75a2f..2358466ff6ab 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1447,6 +1447,8 @@ static void otx2_free_sq_res(struct otx2_nic *pf)
- 		if (!sq->sqe)
- 			continue;
- 		qmem_free(pf->dev, sq->sqe);
-+		qmem_free(pf->dev, sq->sqe_ring);
-+		qmem_free(pf->dev, sq->cpt_resp);
- 		qmem_free(pf->dev, sq->tso_hdrs);
- 		kfree(sq->sg);
- 		kfree(sq->sqb_ptrs);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 61029813a94d..607ca7d923d1 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -11,6 +11,7 @@
- #include <linux/bpf.h>
- #include <linux/bpf_trace.h>
- #include <net/ip6_checksum.h>
-+#include <net/xfrm.h>
- 
- #include "otx2_reg.h"
- #include "otx2_common.h"
-@@ -32,6 +33,16 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				     struct otx2_cq_queue *cq,
- 				     bool *need_xdp_flush);
- 
-+static void otx2_sq_set_sqe_base(struct otx2_snd_queue *sq,
-+				 struct sk_buff *skb)
-+{
-+	if (unlikely(xfrm_offload(skb)))
-+		sq->sqe_base = sq->sqe_ring->base + sq->sqe_size +
-+				(sq->head * (sq->sqe_size * 2));
-+	else
-+		sq->sqe_base = sq->sqe->base;
-+}
-+
- static int otx2_nix_cq_op_status(struct otx2_nic *pfvf,
- 				 struct otx2_cq_queue *cq)
- {
-@@ -580,7 +591,6 @@ void otx2_sqe_flush(void *dev, struct otx2_snd_queue *sq,
- 	sq->head &= (sq->sqe_cnt - 1);
- }
- 
--#define MAX_SEGS_PER_SG	3
- /* Add SQE scatter/gather subdescriptor structure */
- static bool otx2_sqe_add_sg(struct otx2_nic *pfvf, struct otx2_snd_queue *sq,
- 			    struct sk_buff *skb, int num_segs, int *offset)
-@@ -1116,6 +1126,11 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 	int offset, num_segs, free_desc;
- 	struct nix_sqe_hdr_s *sqe_hdr;
-+	int ipsec = 0;
-+	bool ret;
-+
-+	if (unlikely(xfrm_offload(skb)))
-+		ipsec = 1;
- 
- 	/* Check if there is enough room between producer
- 	 * and consumer index.
-@@ -1132,6 +1147,7 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
- 	/* If SKB doesn't fit in a single SQE, linearize it.
- 	 * TODO: Consider adding JUMP descriptor instead.
- 	 */
-+
- 	if (unlikely(num_segs > OTX2_MAX_FRAGS_IN_SQE)) {
- 		if (__skb_linearize(skb)) {
- 			dev_kfree_skb_any(skb);
-@@ -1151,6 +1167,9 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
- 		return true;
+@@ -3890,28 +3890,24 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
  	}
  
-+	/* Set sqe base address */
-+	otx2_sq_set_sqe_base(sq, skb);
-+
- 	/* Set SQE's SEND_HDR.
- 	 * Do not clear the first 64bit as it contains constant info.
- 	 */
-@@ -1163,7 +1182,12 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
- 	otx2_sqe_add_ext(pfvf, sq, skb, &offset);
+ 	/* Step 2: clear hash table */
+-	for (i = 0; i < IN6_ADDR_HSIZE; i++) {
+-		struct hlist_head *h = &net->ipv6.inet6_addr_lst[i];
++	read_lock_bh(&idev->lock);
++	spin_lock(&net->ipv6.addrconf_hash_lock);
  
- 	/* Add SG subdesc with data frags */
--	if (!otx2_sqe_add_sg(pfvf, sq, skb, num_segs, &offset)) {
-+	if (unlikely(ipsec))
-+		ret = otx2_sqe_add_sg_ipsec(pfvf, sq, skb, num_segs, &offset);
-+	else
-+		ret = otx2_sqe_add_sg(pfvf, sq, skb, num_segs, &offset);
+-		spin_lock_bh(&net->ipv6.addrconf_hash_lock);
+-restart:
+-		hlist_for_each_entry_rcu(ifa, h, addr_lst) {
+-			if (ifa->idev == idev) {
+-				addrconf_del_dad_work(ifa);
+-				/* combined flag + permanent flag decide if
+-				 * address is retained on a down event
+-				 */
+-				if (!keep_addr ||
+-				    !(ifa->flags & IFA_F_PERMANENT) ||
+-				    addr_is_local(&ifa->addr)) {
+-					hlist_del_init_rcu(&ifa->addr_lst);
+-					goto restart;
+-				}
+-			}
+-		}
+-		spin_unlock_bh(&net->ipv6.addrconf_hash_lock);
++	list_for_each_entry(ifa, &idev->addr_list, if_list) {
++		addrconf_del_dad_work(ifa);
 +
-+	if (!ret) {
- 		otx2_dma_unmap_skb_frags(pfvf, &sq->sg[sq->head]);
- 		return false;
++		/* combined flag + permanent flag decide if
++		 * address is retained on a down event
++		 */
++		if (!keep_addr ||
++		    !(ifa->flags & IFA_F_PERMANENT) ||
++		    addr_is_local(&ifa->addr))
++			hlist_del_init_rcu(&ifa->addr_lst);
  	}
-@@ -1172,11 +1196,14 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
  
- 	sqe_hdr->sizem1 = (offset / 16) - 1;
- 
-+	if (unlikely(ipsec))
-+		return cn10k_ipsec_transmit(pfvf, txq, sq, skb, num_segs,
-+					    offset);
++	spin_unlock(&net->ipv6.addrconf_hash_lock);
++	read_unlock_bh(&idev->lock);
 +
- 	netdev_tx_sent_queue(txq, skb->len);
+ 	write_lock_bh(&idev->lock);
  
- 	/* Flush SQE to HW */
- 	pfvf->hw_ops->sqe_flush(pfvf, sq, offset, qidx);
--
- 	return true;
- }
- EXPORT_SYMBOL(otx2_sq_append_skb);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-index 3f1d2655ff77..248fd78ef0e9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
-@@ -101,6 +101,9 @@ struct otx2_snd_queue {
- 	struct queue_stats	stats;
- 	u16			sqb_count;
- 	u64			*sqb_ptrs;
-+	/* SQE ring and CPT response queue for Inline IPSEC */
-+	struct qmem		*sqe_ring;
-+	struct qmem		*cpt_resp;
- } ____cacheline_aligned_in_smp;
- 
- enum cq_type {
+ 	addrconf_del_rs_timer(idev);
 -- 
 2.34.1
 
