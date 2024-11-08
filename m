@@ -1,98 +1,108 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05111E411C;
-	Fri,  8 Nov 2024 11:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99951E47D1
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 11:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731066275; cv=none; b=DfiJts6dbznKmqBZpxvH3pba1S4S/HqWWRW6+2KU5eSr2Bf/gfJugFzRQBgT7DVLCWx9SF9gUkvfpPDolO2yhiotiECO1yXep0FrsfAja6VlH5u3x3j38agOcWmXkNbYMPmQidCRbuTiK4OLljsD/spOO+HOVVrJ/giAJyu/tHI=
+	t=1731066276; cv=none; b=KiCh32/2LSDt7m+PpCIHEL5f4ZMrpwrvxlYMAEpofhgOkrwGz3H7shpik3tRtI7+PRsMjVAvqN7SGSQDL+cXA+xawxAGgNdFHF1G4ZhjLM6uyeZ2DBVZ4p0/bHFzUeyawTnrKJOAYIoiGcul5ExGzjukNJ0rZGtH6Kpmb4k2idI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731066275; c=relaxed/simple;
-	bh=ET0Gze8UybLDnkwy0IpjRPcSFYxnsiDuor290UOR6Ko=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KskwNapCyDMnvUyZ7p1BwGQzCv3wyw9GZTVKtHSn9CGvjZF/PWxgfhdOiMBJGB7tbiU2n5e8/dKLI5J8/SyCMlDR4SONPNoiyqWUW2k0r/qUA6W60K6tyIndlx14dCIE/WF3shptuBpdrqohCMX3lh+DhrwDzKJD82vs2sl0Qz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=SYWN0siX; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1731066276; c=relaxed/simple;
+	bh=+lU6GBkmCPFmCNwxSrgrgIkwiITyF6fl4wchytIL1fU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jaBNq7hCVUg1d619vKwGsRu0Cv9dxWSdQjt+9L+aI2HltDo6slsxPpD9ti9Cc0Dyr8SyVE+oZDKCBOWwAeH6/r8qxmtgQtjhuJRa/7qoaXJipp6dM83AnqS1SekNQj7yo3/Ur8bhVhV3XaGR41BLcP49SDoIszBlHdXk2Q5bNOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hVSCtydw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="SYWN0siX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1731066257; x=1731671057; i=wahrenst@gmx.net;
-	bh=6+biLB2vyBnJg099YjFn/sMIkw5aGC948JMXqyUDMIY=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=SYWN0siXazfn5QHdURtBn8gTFWjKmjMlzGcJfWItWc2VHUJtYsFrDxupqwif1ITA
-	 0PzES3iRbNPyjSZdWZV/sAnu3NyDhQAgwLDflzWyxkbHJK5VSgsmezLesJR2XdqE+
-	 04SPnUDGez82HXZrl4JCgLg7dgQ39ugDOT7ki1kzb/oFaWVVpG/JrqZjJzq91IBMm
-	 t0XOyOI7UqU429HIdqstMu3FOmKfAfWlGDMqLAurN3KRIvc3AdBSPA6m83xmNhw1Q
-	 yBmfxwy5hihjopFsYF3I1cHbnJUs9II5KG/XePe7Sp8/8KqnJy+G2RxRDGa31qXxq
-	 olt7J/9ie6jqAxzDcw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M1Hdw-1t7iih32wE-006ImT; Fri, 08
- Nov 2024 12:44:17 +0100
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 0/2 net V3] net: vertexcom: mse102x: Fix mse102x_tx_work
-Date: Fri,  8 Nov 2024 12:43:41 +0100
-Message-Id: <20241108114343.6174-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hVSCtydw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731066274;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+lU6GBkmCPFmCNwxSrgrgIkwiITyF6fl4wchytIL1fU=;
+	b=hVSCtydwz50YxxfowPm7sHvuEl1gDU0HJpIJ/OmxOSVN5AA02m02JA9g/xdYSzWAfmzubl
+	/pgvHRMG6njOy9eUE0SIFcrYuFLaatUgXpzuusN7G/mfuZ3uEFRldynarQx9RoYsYPXSTT
+	BcFw4Mty8MqhbWh2aFEhLZcdRsu98WE=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-377-rNTGkcTmNxmLmpDFfhWxRw-1; Fri, 08 Nov 2024 06:44:32 -0500
+X-MC-Unique: rNTGkcTmNxmLmpDFfhWxRw-1
+X-Mimecast-MFC-AGG-ID: rNTGkcTmNxmLmpDFfhWxRw
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2e9b5209316so501450a91.1
+        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 03:44:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731066272; x=1731671072;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+lU6GBkmCPFmCNwxSrgrgIkwiITyF6fl4wchytIL1fU=;
+        b=shkdseaFFBLpmFLjn0cpPDOP08GMFNcJwEpejFJZaxoLvjWoN109zThpi/vWw9Jqz+
+         lx4V/FIGXc8ReLkEteoVwmoR0cpYBdDblfnadwHwJpc42t5XulXirPfsMgrHxkUZiuLQ
+         cNTUZ/PracMIvP6ECMJIO6zr/AHn2uvMvpzZr32qHWJFeta0v3TrhYt6RJbIy28jjyUM
+         2xUNGUwONylxUIIsFjlaywCwjbFgdY3ZYfu5j+hWi0SIq7GdmwegA5vV6Wo/KQhWb9kw
+         Fo6rIySk4nSR4jAH55fjNWCWl0i/y0PTRphnm5/imNp8tQQN9duxZW/X3peTqJfAHZ3Y
+         L6Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmsHwMT5TVLZGlNaQwR11RgWYeQhP1l44D8kILXUmNi5v5n85sVl9xf16RKghRqjEz8lM+oSg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyddUbHWzwPrkLn3slNJs0Yv48nb1MszbBtDL1zuM0dpp9vKXOt
+	cIa6dsn7O/7YoyGVcAKnIrYrQvosIvO86BzjunogKydATJCFkIRRQWb0cTAfGvkTseoD1kbuQzK
+	ZbpYNU7+JIttfzEgE3f98cyq4EUy7xLeijelkVeyfHKU0euiZxAi/OVJWGR6DmWb3wSXD2EdLPq
+	3c68IQmwKL3wVbyLPSkoKd9rmkaOkl
+X-Received: by 2002:a17:90b:1f8f:b0:2e2:b02a:1229 with SMTP id 98e67ed59e1d1-2e9b178fe37mr2922941a91.35.1731066271837;
+        Fri, 08 Nov 2024 03:44:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHxIMFhFEJaXhMKyQro+WyOM48KyqyrmXQzVcAxRO+eiRvB7RVIYRHANvMBBHAupPuqRNnBIAp5H2+HfwwyoV0=
+X-Received: by 2002:a17:90b:1f8f:b0:2e2:b02a:1229 with SMTP id
+ 98e67ed59e1d1-2e9b178fe37mr2922923a91.35.1731066271591; Fri, 08 Nov 2024
+ 03:44:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20241106111427.7272-1-wander@redhat.com> <20241108072003.jJDpdq9u@linutronix.de>
+In-Reply-To: <20241108072003.jJDpdq9u@linutronix.de>
+From: Wander Lairson Costa <wander@redhat.com>
+Date: Fri, 8 Nov 2024 08:44:20 -0300
+Message-ID: <CAAq0SUnrtYadVZb=2G5PW0dBJxovzS2F2841-gCHqSp_5VgsPg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] Revert "igb: Disable threaded IRQ for igb_msix_other"
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, 
+	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>, 
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT" <linux-rt-devel@lists.linux.dev>, tglx@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2IqqhzABu7eQtaqe+l6Jab/0sgkUNniKw+7jJYZbfhrEsZ8UEU9
- 0FXgnxIZnQlTSVAwleBPRSHqFayAYVFo5ApyyEq8gqu/anoWabAOssR1jAQZXFhUPBfZMuy
- v6FOYM/ZyWziJLMqECymuJNHDx2R56I73Q51hPeU3XUo1Hc8MP/DVSQ5tMNdsm4XdDHPwTw
- mqLnMsCrZYLmSjTI6QhcQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:BCnJ9HftvfE=;gwpFbdIPjIpMDzZCVlOQ0r+sfE5
- GwaJAaW/2RTDS4wH9V0CCIe3S7zxQWgo02GykfgT8/BwnMcWoS4LuLPSZ+oNT+NORU69kvb/l
- db2i0/+pgNyXSjqyrEsRt/aMfyk9gStqVcFqMdIZ0S++Nr64e7gaGkdLdu8hrNuMRpxvqzkS0
- CVm4YeT4TwxaxO0gn6KPfgYTM2wOXk2F2cIm/R5M5SLavIbe3tOeGTF5T9TanNHp5Pf/LQhww
- pTr0/iGo/lISmrjhDQKohOqFrlGzed93KCP+htv9B+WR7WiEwdAB93SjCxvLnuLwNAHrT/1cf
- M7Bha2/AwJXoZSfRxr8FNLvxjzpisRUpldqakCdeBJxB9n2qD2303eZ5QeMkUsYgt9DhUZtey
- tnk8iLJoA1lXgmMDuyNUJpHhGNlHh4iY430xxnTvU4LbSOv7uI+/luq0faANrg94n8JuigR+J
- pekquenf2dxvjgeXjxVJUGBGZeoZ7siDktG8IaKuxFxAxEG9HZPn0rMxv/+3My5qoQyp4DS7c
- 1r2v8efuFXkWtzxAmYv7Tj0E9HQPEyXpX5J/8QfarZau822mxe+tDZGYnpwRcMU1A4wst/cC/
- XnPPoTAGx9/+d4vJFNxmlmW2XyFSFRMFEtnDG2BVSBuAg8AtJcdXAcfWOsPGzw0YbQqfkUkDe
- BF0xn35NT/SN7Scw9zDNSABVMHP7P7B4iMjdF4KB1YozhIUiuo0GkjrAWTYnf3IXUe+3VhaDq
- Nm8TmIG9YPEdxrupSIZ4PMJ/e+gFbp//xS8OG+5o/YWUHmDy+lRITx1SV5faPGXaUpBYTn5Kl
- M8WIJA3XJDLDPag3NcgHWJbQ==
 
-This fixes two issue in the TX path of the Vertexcom MSE102x driver.
+On Fri, Nov 8, 2024 at 4:20=E2=80=AFAM Sebastian Andrzej Siewior
+<bigeasy@linutronix.de> wrote:
+>
+> On 2024-11-06 08:14:26 [-0300], Wander Lairson Costa wrote:
+> > This reverts commit 338c4d3902feb5be49bfda530a72c7ab860e2c9f.
+> >
+> > Sebastian noticed the ISR indirectly acquires spin_locks, which are
+> > sleeping locks under PREEMPT_RT, which leads to kernel splats.
+> >
+> > Fixes: 338c4d3902feb ("igb: Disable threaded IRQ for igb_msix_other")
+> > Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> > Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+>
+> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+>
+> This is the only patch.
 
-Initial version:
-https://lore.kernel.org/netdev/20241022155242.33729-1-wahrenst@gmx.net/
+Hrm, I had other unrelated .patch files in my directory,
+git-send-email might have gotten confused because of that.
 
-Changes in V3:
-- use a temporary variable to store the "original" skb len in
-  patch 2 as suggested by Jakub Kicinski
-
-Changes in V2:
-- free the temporary skb in patch 1 in order to minimize changes
-  as suggested by Jakub Kicinski
-- add patch 2 to also fix the tx_bytes calculation
-
-Stefan Wahren (2):
-  net: vertexcom: mse102x: Fix possible double free of TX skb
-  net: vertexcom: mse102x: Fix tx_bytes calculation
-
- drivers/net/ethernet/vertexcom/mse102x.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-=2D-
-2.34.1
+>
+> Sebastian
+>
 
