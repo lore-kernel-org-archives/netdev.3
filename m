@@ -1,215 +1,219 @@
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD1B13A24A
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 03:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5838126C0A;
+	Fri,  8 Nov 2024 03:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731036287; cv=none; b=PmoQ4hLPbouaou9izETvLBQBda5mg51TVzfjxVh6viiSo6nnzzOnIPsjViteN5RDDNVRt3vkhEp5GRZaNwBJfDQVHvHUjOBrY2pDWF2Pcu+n/+P4A7ojOGVw3wb7tQ//z6WkfsSA71HOHIiqoMiSTaCQjUOiK3PWsd0pM2/kUPg=
+	t=1731036804; cv=none; b=baGCSSlLyWJdXijeQ++1omFXEVuTZWL+2hFEa9s17lNJiSH/D/9Ch4yV8CGBj63X8qwHSG4JtAxYgfR26M9jgV+CKVkIzun3PPc9kF7Wr6NcsNrwKhh0nkyuhHGythA2XYy0Auh7te2YQ0Es6IJBTMlV5Hq+v1UNZltfOSYqq9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731036287; c=relaxed/simple;
-	bh=eBgAq/qDGNP/dpK5Fb4HKu3Lz5EllCeHK+xKD73ije0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlp/anCbpEpVTHcGCQ/YvHWIxDAzlG2nMfPdpepf5J8wEWXJfvC31o3Suo0RqcJsdcxkNL4RPYxP1xxshRG1Duy8+itasy9sC0Fmkjm2vypw+Pqn7g2hVjt5yGq2Hn6VJwumNmjZyi5gPU1deJ7IvsexSD+T/tSepI156AUbLA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=l01Clcoi; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	s=arc-20240116; t=1731036804; c=relaxed/simple;
+	bh=1oelaTEkSV+bSCefqXbPHDw+t94mMNUMg7MsV6tgbeM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzcsOBcTy0w/1x8QHMVFCSc/hcA+gJki+iS7kKTBewaIosEqMDZJP9cqhJMBalBRWMDFbn019IMI/fzh22l4KZllXMyBZI97newq8Vs5eP+ndrfnMC+v1IooBWyc6oHBGPDsArTth9j/C0cAASZMbR0tt1uGkmQ1Bu3diRKI4c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azByI88q; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="l01Clcoi"
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 019E32C054A;
-	Fri,  8 Nov 2024 16:24:39 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1731036279;
-	bh=ftrLcPlz9V3DRDChzBL87+QFEXscgHbCfuL/ZkuXTEY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l01ClcoiD0J1gatlTFQWtSRXHQhTFmbpVL158v4OqN0PtOBkXhlrAzaJv3l/6PWYX
-	 Gp6LK8Zlj6AM5iMKtowrT7CN9CXcsKPUEY4ALkrfaveiqXxHvFXfNYRmSfmWS6gvG0
-	 djVoyrwjWmbqb9gYp6hbobUvUUOdLBJsNva/eC878nWZO5zLGRiAemanZlwlnsQU/R
-	 VleTRt+48r2fczO7i0sDrM6l+1mh9/hdFtCY4T9ZrCw5pmIoeUNE3sHcwBBpup7PLC
-	 AYlFi/W+rEdVKo9IrNpLGBrOYKPFCTg73q72dEeUKume/Uie2YY0cNhL06Eq+XDVbq
-	 cRS4qpByKh21g==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B672d84760000>; Fri, 08 Nov 2024 16:24:38 +1300
-Received: from elliota2-dl.ws.atlnz.lc (elliota-dl.ws.atlnz.lc [10.33.23.28])
-	by pat.atlnz.lc (Postfix) with ESMTP id 95A0213ECD2;
-	Fri,  8 Nov 2024 16:24:38 +1300 (NZDT)
-Received: by elliota2-dl.ws.atlnz.lc (Postfix, from userid 1775)
-	id 93ABB3C0261; Fri,  8 Nov 2024 16:24:38 +1300 (NZDT)
-From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
-To: davem@davemloft.net
-Cc: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azByI88q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731036803; x=1762572803;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1oelaTEkSV+bSCefqXbPHDw+t94mMNUMg7MsV6tgbeM=;
+  b=azByI88qVoqPxlLNB5A0Sccey1AacW91WfTFr5yg8F6U4NxmFBSfXg1T
+   TprmvpZLvGtepTED8I+pdrkwBPyPG7UnLbZi8R6mJlcR8NumpY/XWEpEs
+   Wm1hMGWoH5DmNZfkLFpdeoleaVBrNCzDg/v61kOdic3B2/tIH2XDTgotT
+   G2FyeyUUcjrXXDtG1JCU+4frKOUHLUN7RS70PjfypiI+PtL5cGAkrX7Vi
+   ohtK82A2ie5T5wEgEHkZK4UOgfU9+ZY7esKtQnvnqXeCfaCEz5V9t9Tip
+   gNj2pu5/6iI1pjJjU7WtbTJ3F5tKv5Zo5tzmXWqLotLvWPWn7PpS7Ui91
+   A==;
+X-CSE-ConnectionGUID: 6f/CUk7pQ7ON35jTP3+mEg==
+X-CSE-MsgGUID: Lk2nl6ZiS86rAgEAIRqFXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="33765719"
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
+   d="scan'208";a="33765719"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 19:33:22 -0800
+X-CSE-ConnectionGUID: 7M2WknmYTU6N9FOKmXmD5A==
+X-CSE-MsgGUID: mxBUZzZUQNODDs5vTfCchQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,136,1728975600"; 
+   d="scan'208";a="84873096"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Nov 2024 19:29:47 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t9Fgv-000qyk-0m;
+	Fri, 08 Nov 2024 03:29:45 +0000
+Date: Fri, 8 Nov 2024 11:29:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Kaiyuan Zhang <kaiyuanz@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 3/4] net: dsa: mv88e6xxx: handle member-violations
-Date: Fri,  8 Nov 2024 16:24:20 +1300
-Message-ID: <20241108032422.2011802-4-elliot.ayrey@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241108032422.2011802-1-elliot.ayrey@alliedtelesis.co.nz>
-References: <20241108032422.2011802-1-elliot.ayrey@alliedtelesis.co.nz>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: Re: [PATCH net-next v2 5/5] netmem: add netmem_prefetch
+Message-ID: <202411081105.Z1kEMaBE-lkp@intel.com>
+References: <20241107212309.3097362-6-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=ca1xrWDM c=1 sm=1 tr=0 ts=672d8476 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=VlfZXiiP6vEA:10 a=8i6-b8GgAAAA:8 a=WYMWzFLixRnFLzZ6b-kA:9 a=3ZKOabzyN94A:10 a=XAGLwFu5sp1jj7jejlXE:22
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107212309.3097362-6-almasrymina@google.com>
 
-Add a handler for servicing member-violations to the mv88e6xxx switch
-driver.
+Hi Mina,
 
-When we receive a member-violation from the hardware first check the
-ATU for the corresponding entry and only service the interrupt if the
-ATU entry has a non-zero DPV and the new port that raised the
-interrupt is not in the DPV.
+kernel test robot noticed the following build errors:
 
-Servicing this interrupt will send a switchdev notification for the
-new port.
+[auto build test ERROR on net-next/main]
 
-Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
----
- drivers/net/dsa/mv88e6xxx/global1_atu.c | 38 +++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/switchdev.c   | 33 ++++++++++++++++++++-
- drivers/net/dsa/mv88e6xxx/switchdev.h   |  2 ++
- 3 files changed, 72 insertions(+), 1 deletion(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Mina-Almasry/net-page_pool-rename-page_pool_alloc_netmem-to-_netmems/20241108-052530
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241107212309.3097362-6-almasrymina%40google.com
+patch subject: [PATCH net-next v2 5/5] netmem: add netmem_prefetch
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20241108/202411081105.Z1kEMaBE-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081105.Z1kEMaBE-lkp@intel.com/reproduce)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv=
-88e6xxx/global1_atu.c
-index c47f068f56b3..5c5c53cb2ad0 100644
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -399,12 +399,36 @@ int mv88e6xxx_g1_atu_remove(struct mv88e6xxx_chip *=
-chip, u16 fid, int port,
- 	return mv88e6xxx_g1_atu_move(chip, fid, from_port, to_port, all);
- }
-=20
-+static int mv88e6xxx_g1_atu_entry_check(struct mv88e6xxx_chip *chip, u16=
- fid, u8 mac[ETH_ALEN],
-+					bool *in_atu, u16 *dpv)
-+{
-+	struct mv88e6xxx_atu_entry entry;
-+	int err;
-+
-+	entry.state =3D 0;
-+	ether_addr_copy(entry.mac, mac);
-+	eth_addr_dec(entry.mac);
-+
-+	mv88e6xxx_reg_lock(chip);
-+	err =3D mv88e6xxx_g1_atu_getnext(chip, fid, &entry);
-+	mv88e6xxx_reg_unlock(chip);
-+	if (err)
-+		return err;
-+
-+	*in_atu =3D ether_addr_equal(entry.mac, mac);
-+	if (dpv)
-+		*dpv =3D entry.portvec;
-+
-+	return err;
-+}
-+
- static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *de=
-v_id)
- {
- 	struct mv88e6xxx_chip *chip =3D dev_id;
- 	struct mv88e6xxx_atu_entry entry;
- 	int err, spid;
- 	u16 val, fid;
-+	bool in_atu =3D false;
-=20
- 	mv88e6xxx_reg_lock(chip);
-=20
-@@ -437,6 +461,20 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_=
-fn(int irq, void *dev_id)
- 						     entry.portvec, entry.mac,
- 						     fid);
- 		chip->ports[spid].atu_member_violation++;
-+
-+		if (fid !=3D MV88E6XXX_FID_STANDALONE && chip->ports[spid].mab) {
-+			u16 dpv =3D 0;
-+
-+			err =3D mv88e6xxx_g1_atu_entry_check(chip, fid, entry.mac, &in_atu, &=
-dpv);
-+			if (err)
-+				goto out;
-+
-+			if (in_atu && dpv !=3D 0 && !(dpv & BIT(spid))) {
-+				err =3D mv88e6xxx_handle_member_violation(chip, spid, &entry, fid);
-+				if (err)
-+					goto out;
-+			}
-+		}
- 	}
-=20
- 	if (val & MV88E6XXX_G1_ATU_OP_MISS_VIOLATION) {
-diff --git a/drivers/net/dsa/mv88e6xxx/switchdev.c b/drivers/net/dsa/mv88=
-e6xxx/switchdev.c
-index 4c346a884fb2..88761677ff10 100644
---- a/drivers/net/dsa/mv88e6xxx/switchdev.c
-+++ b/drivers/net/dsa/mv88e6xxx/switchdev.c
-@@ -79,5 +79,36 @@ int mv88e6xxx_handle_miss_violation(struct mv88e6xxx_c=
-hip *chip, int port,
- 				       brport, &info.info, NULL);
- 	rtnl_unlock();
-=20
--	return err;
-+	return notifier_to_errno(err);
-+}
-+
-+int mv88e6xxx_handle_member_violation(struct mv88e6xxx_chip *chip, int p=
-ort,
-+				      struct mv88e6xxx_atu_entry *entry, u16 fid)
-+{
-+	struct switchdev_notifier_fdb_info info =3D {
-+		.addr =3D entry->mac,
-+	};
-+	struct net_device *brport;
-+	struct dsa_port *dp;
-+	u16 vid;
-+	int err;
-+
-+	err =3D mv88e6xxx_find_vid(chip, fid, &vid);
-+	if (err)
-+		return err;
-+
-+	info.vid =3D vid;
-+	dp =3D dsa_to_port(chip->ds, port);
-+
-+	rtnl_lock();
-+	brport =3D dsa_port_to_bridge_port(dp);
-+	if (!brport) {
-+		rtnl_unlock();
-+		return -ENODEV;
-+	}
-+	err =3D call_switchdev_notifiers(SWITCHDEV_FDB_ADD_TO_BRIDGE,
-+				       brport, &info.info, NULL);
-+	rtnl_unlock();
-+
-+	return notifier_to_errno(err);
- }
-diff --git a/drivers/net/dsa/mv88e6xxx/switchdev.h b/drivers/net/dsa/mv88=
-e6xxx/switchdev.h
-index 62214f9d62b0..f718dbfaf45d 100644
---- a/drivers/net/dsa/mv88e6xxx/switchdev.h
-+++ b/drivers/net/dsa/mv88e6xxx/switchdev.h
-@@ -15,5 +15,7 @@
- int mv88e6xxx_handle_miss_violation(struct mv88e6xxx_chip *chip, int por=
-t,
- 				    struct mv88e6xxx_atu_entry *entry,
- 				    u16 fid);
-+int mv88e6xxx_handle_member_violation(struct mv88e6xxx_chip *chip, int p=
-ort,
-+				      struct mv88e6xxx_atu_entry *entry, u16 fid);
-=20
- #endif /* _MV88E6XXX_SWITCHDEV_H_ */
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411081105.Z1kEMaBE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:16:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:19:
+   In file included from include/linux/msi.h:24:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/s390/include/asm/io.h:95:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:37:59: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:102:54: note: expanded from macro '__swab16'
+     102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
+         |                                                      ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:19:
+   In file included from include/linux/msi.h:24:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/s390/include/asm/io.h:95:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/big_endian.h:35:59: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
+         |                                                           ^
+   include/uapi/linux/swab.h:115:54: note: expanded from macro '__swab32'
+     115 | #define __swab32(x) (__u32)__builtin_bswap32((__u32)(x))
+         |                                                      ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:19:
+   In file included from include/linux/msi.h:24:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/s390/include/asm/io.h:95:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     693 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     701 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     709 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     718 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     727 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     736 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:41:
+   In file included from include/linux/kvm_para.h:5:
+   In file included from include/uapi/linux/kvm_para.h:37:
+   In file included from arch/s390/include/asm/kvm_para.h:25:
+   In file included from arch/s390/include/asm/diag.h:12:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:40:
+>> include/net/netmem.h:179:2: error: call to undeclared function 'prefetch'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     179 |         prefetch(netmem_to_page(netmem));
+         |         ^
+   16 warnings and 1 error generated.
+   make[3]: *** [scripts/Makefile.build:102: arch/s390/kernel/asm-offsets.s] Error 1
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1203: prepare0] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:224: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:224: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+
+vim +/prefetch +179 include/net/netmem.h
+
+   173	
+   174	static inline void netmem_prefetch(netmem_ref netmem)
+   175	{
+   176		if (netmem_is_net_iov(netmem))
+   177			return;
+   178	
+ > 179		prefetch(netmem_to_page(netmem));
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
