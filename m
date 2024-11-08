@@ -1,171 +1,130 @@
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EEE3BBF2;
-	Fri,  8 Nov 2024 15:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B501F4FA2;
+	Fri,  8 Nov 2024 15:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731078960; cv=none; b=NqxQCWDwsX0tmciSPlDCnjUtsINkTDsLFT75nKni5XTyEq4+x/nQUAi3C/mtA89jYqfqh9no1XtT2V2jssu9D8reKJtYwB9JEMzgI/q6fkn3mWma39FsbOdn2C5H4oiRaiSd+NbRnJf8yHZfDOnsiQiQbM3BveeEK/j1hz4Rlvo=
+	t=1731081160; cv=none; b=YOOpgWbAjbN9oar4QTnJUlJbCmderGvxQx9RypFXOMjoY50gVxNokesVFIgvF2WO1fcuTszgXXWjDZLgk82sL5i/Ev5rcba2FOrntZFYA+E9FLR9YjKLzWnY2KgIriVKhaaAa0woqrdfY9g+lY6V8Rz2JSTCZpVNKopUTErV8yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731078960; c=relaxed/simple;
-	bh=QGfQlgMdHx/sKHVCjVmoWUa2gOQ4QNTeJSs7AzC1b/A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DNaDPKgFPYS5lotKMbe7xlly082vZpYLLM9aCwq48EdvUTTrUn9a4xJh7U7/NcURhkCdnAv1I2vc5fqPIKX/GssGEwZoUteyXQnsGIKuuOyW62QhTaG/BTXye3gXF13zjMajqoS4Vbc7aguSQe2mePeR8K3wiL1DQyWppmwG7XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8Bo1Us004301;
-	Fri, 8 Nov 2024 14:54:26 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42s6g5gq9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 08 Nov 2024 14:54:25 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 8 Nov 2024 06:54:24 -0800
-Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.39 via Frontend Transport; Fri, 8 Nov 2024 06:54:21 -0800
-From: Lizhi Xu <lizhi.xu@windriver.com>
-To: <syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com>
-CC: <alex.aring@gmail.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <horms@kernel.org>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <linux-wpan@vger.kernel.org>,
-        <miquel.raynal@bootlin.com>, <netdev@vger.kernel.org>,
-        <pabeni@redhat.com>, <stefan@datenfreihafen.org>,
-        <syzkaller-bugs@googlegroups.com>
-Subject: [PATCH] mac802154: add a check for slave data list before delete
-Date: Fri, 8 Nov 2024 22:54:20 +0800
-Message-ID: <20241108145420.2445641-1-lizhi.xu@windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <672b9f03.050a0220.350062.0276.GAE@google.com>
-References: <672b9f03.050a0220.350062.0276.GAE@google.com>
+	s=arc-20240116; t=1731081160; c=relaxed/simple;
+	bh=sdc3Fgw7LkfomUsNgXiGHABPYcdaemtYhM218MhnbrY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=f00B+bRjBojFJqahoyH/SyIwi4dHAcfLlUCTVz5lTCz6XdRw0HMS+DU0MQo8TljoEsO6WtQezPTrJygdTQ7Y/HjbcG8A14/ebjQtnPuuRr61n8/nT5x+UrOu+R1h67CG+ggGMr7WEQOOsxTGXu14X6+zaXP4RMTjDUgy6briQXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVF2Mhej; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVF2Mhej"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C05CC4CECD;
+	Fri,  8 Nov 2024 15:52:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731081159;
+	bh=sdc3Fgw7LkfomUsNgXiGHABPYcdaemtYhM218MhnbrY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=dVF2Mhej9QfKJ/9TEblk7mKwHVPMUW5pNv+8/P+uwnflxyDrpekEK9f0NKGO1H+70
+	 qbSSOxeljRxCStyQXUEveLM6JtNjdVDKudn9BP3L28M+aDxEmhAKDHRVAvx4H0g/RQ
+	 8I3UQpCmghcJ6WcEWDRYlSRvt8puLjEN2Sb9uvC4FSOKve3tX/npyndbxek9/FHAGm
+	 /WzLrsdgNj6KNlbtqUApwKQRU1I/ZFyAYskSRlknhFZo+9fRm9tuh5m5u26NBIA0A3
+	 Po0fnUIF2aI7C1IWDEuLtAkI5XAq4rutb9q4j6UpQL9/btld/qra/Cs9He1RhHQygm
+	 Pcd9yL5b0EZUw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH bpf-next/net 0/5] bpf: Add mptcp_subflow bpf_iter support
+Date: Fri, 08 Nov 2024 16:52:29 +0100
+Message-Id: <20241108-bpf-next-net-mptcp-bpf_iter-subflows-v1-0-cf16953035c1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: 91hp4j1d9HElIMzUHIlD19Q1Jegf0Vlw
-X-Authority-Analysis: v=2.4 cv=JoCjr94C c=1 sm=1 tr=0 ts=672e2622 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VlfZXiiP6vEA:10 a=hSkVLCK3AAAA:8 a=edf1wS77AAAA:8 a=t7CeM3EgAAAA:8 a=2YZDpE0dDemZ_0IDS0YA:9 a=cQPPKAXgyycSBL8etih5:22
- a=DcSpbTIhAlouE1Uv7lRv:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: 91hp4j1d9HElIMzUHIlD19Q1Jegf0Vlw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-08_12,2024-11-08_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- mlxlogscore=576 spamscore=0 clxscore=1011 impostorscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 suspectscore=0
- phishscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2409260000 definitions=main-2411080124
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL0zLmcC/zWNQQqDMBBFryKz7mASxEivUkqpOrEDbQyZtAri3
+ TstuPnw/uK9DYQyk8C52iDTh4XnqGBPFQyPe5wIeVQGZ1xjremwTwEjrUWn4CuVIf2uGxfKKO8
+ +POdF0Dgf2rHz3hsCVaVMgdd/5gKHoVYDXPf9CyjX0w2EAAAA
+X-Change-ID: 20241108-bpf-next-net-mptcp-bpf_iter-subflows-027f6d87770e
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Martin KaFai Lau <martin.lau@kernel.org>, Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2242; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=sdc3Fgw7LkfomUsNgXiGHABPYcdaemtYhM218MhnbrY=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnLjPBjZN5EcSfU/EHBM8jdcW35EZVVAxOqy/uh
+ SkdhLSn2Z6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZy4zwQAKCRD2t4JPQmmg
+ c4AXD/0RQOk9yO9wBoSuoXMD6ZQOtQVE84dm9KfGvktTJN9GofrHZ9fIkNaFGS/raQl03Sgx0i/
+ eZ08XnxOoPU9Fan3ENYo/ZIYUY3XVUCqcLpNQHWNJItqZkQSwvioOQwwhsKbHGF7ERtHVlqYSOf
+ ekCGbR0hnn3jEJftTpkL8QvHK8UMGqibTSFAhFDvtzK46hJs7nKoQLE4LMly6EXwfLXG/ux16n7
+ gcxBz3Bfk5m/tyDEegPZDd9w3LuhhTYhMei0XZVkhm5pttsiT08haPJAZGZgijWxKiQEf1ct8KT
+ qmHfzR5x5S9QXhHON8or9MiQOpXZ1aASJqNfBh69hWdLpBTItFWOItnbP/1uUOtI3uQ48i+1/E2
+ MK0ZpgL0f6TR6gOJ7YHNpTDXP6xiZiKPYM5pW1ki+rGj5uhWHgKAcZBRO+YUiuOHgbZ8IkGhnK+
+ 0kEo3dZnUliN88MyTnVPOU2zog+LhA1rZEgfj/n5iVUj7iiyfg6BV/gIfCBoMHPzY1P6JTRQSn+
+ 8xhcUaz4NvBxbXnQaiFFXYm9in9Ux54XjJJC+jkB2KqjZ95I2k3ccH4PemJ3rfkP8YWlAmfpUWi
+ cR76WgeWJEId+LzlB6REOgpfR82ylDdizgii/yUb+K2g8ms3GU5JAza5Nf7qYOjTDtySmvBRDuf
+ SqpK9WsgOeC2RXg==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-syzkaller reported a corrupted list in ieee802154_if_remove. [1]
+Here is a series from Geliang, adding mptcp_subflow bpf_iter support.
 
-Remove an IEEE 802.15.4 network interface after unregister an IEEE 802.15.4
-hardware device from the system.
+We are working on extending MPTCP with BPF, e.g. to control the path
+manager -- in charge of the creation, deletion, and announcements of
+subflows (paths) -- and the packet scheduler -- in charge of selecting
+which available path the next data will be sent to. These extensions
+need to iterate over the list of subflows attached to an MPTCP
+connection, and do some specific actions via some new kfunc that will be
+added later on.
 
-CPU0					CPU1
-====					====
-genl_family_rcv_msg_doit		ieee802154_unregister_hw
-ieee802154_del_iface			ieee802154_remove_interfaces
-rdev_del_virtual_intf_deprecated	list_del(&sdata->list)
-ieee802154_if_remove
-list_del_rcu
+This preparation work is split in different patches:
 
-Avoid this issue, by adding slave data state bit SDATA_STATE_LISTDONE, set
-SDATA_STATE_LISTDONE when unregistering the hardware from the system, and
-add state bit SDATA_STATE_LISTDONE judgment before removing the interface
-to delete the list. 
+- Patch 1: register some "basic" MPTCP kfunc.
 
-[1]
-kernel BUG at lib/list_debug.c:58!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
-Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
-RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
-RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
-R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
-R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
-FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:124 [inline]
- __list_del_entry include/linux/list.h:215 [inline]
- list_del_rcu include/linux/rculist.h:157 [inline]
- ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
- rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
- ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
- genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
- netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
- netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
- sock_sendmsg_nosec net/socket.c:729 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:744
- ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
- ___sys_sendmsg net/socket.c:2661 [inline]
- __sys_sendmsg+0x292/0x380 net/socket.c:2690
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+- Patch 2: add mptcp_subflow bpf_iter support. Note that previous
+           versions of this single patch have already been shared to the
+           BPF mailing list. The changelog has been kept with a comment,
+           but the version number has been reset to avoid confusions.
 
-Reported-and-tested-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+- Patch 3: add kfunc to make sure the msk is valid
+
+- Patch 4: add more MPTCP endpoints in the selftests, in order to create
+           more than 2 subflows.
+
+- Patch 5: add a very simple test validating mptcp_subflow bpf_iter
+           support. This test could be written without the new bpf_iter,
+           but it is there only to make sure this specific feature works
+           as expected.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mac802154/ieee802154_i.h | 1 +
- net/mac802154/iface.c        | 4 ++++
- 2 files changed, 5 insertions(+)
+Geliang Tang (5):
+      bpf: Register mptcp common kfunc set
+      bpf: Add mptcp_subflow bpf_iter
+      bpf: Acquire and release mptcp socket
+      selftests/bpf: More endpoints for endpoint_init
+      selftests/bpf: Add mptcp_subflow bpf_iter subtest
 
-diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
-index 08dd521a51a5..6771c0569516 100644
---- a/net/mac802154/ieee802154_i.h
-+++ b/net/mac802154/ieee802154_i.h
-@@ -101,6 +101,7 @@ enum {
- 
- enum ieee802154_sdata_state_bits {
- 	SDATA_STATE_RUNNING,
-+	SDATA_STATE_LISTDONE,
- };
- 
- /* Slave interface definition.
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index c0e2da5072be..aed2fc63395d 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -683,6 +683,9 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
- {
- 	ASSERT_RTNL();
- 
-+	if (test_bit(SDATA_STATE_LISTDONE, &sdata->state))
-+		return;
-+
- 	mutex_lock(&sdata->local->iflist_mtx);
- 	list_del_rcu(&sdata->list);
- 	mutex_unlock(&sdata->local->iflist_mtx);
-@@ -698,6 +701,7 @@ void ieee802154_remove_interfaces(struct ieee802154_local *local)
- 	mutex_lock(&local->iflist_mtx);
- 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
- 		list_del(&sdata->list);
-+		set_bit(SDATA_STATE_LISTDONE, &sdata->state);
- 
- 		unregister_netdevice(sdata->dev);
- 	}
+ net/mptcp/bpf.c                                    | 104 ++++++++++++++++-
+ tools/testing/selftests/bpf/bpf_experimental.h     |   8 ++
+ tools/testing/selftests/bpf/prog_tests/mptcp.c     | 129 ++++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/mptcp_bpf.h      |  10 ++
+ .../testing/selftests/bpf/progs/mptcp_bpf_iters.c  |  64 ++++++++++
+ 5 files changed, 308 insertions(+), 7 deletions(-)
+---
+base-commit: 141b4d6a8049cecdc8124f87e044b83a9e80730d
+change-id: 20241108-bpf-next-net-mptcp-bpf_iter-subflows-027f6d87770e
+
+Best regards,
 -- 
-2.43.0
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
