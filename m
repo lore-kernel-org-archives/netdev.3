@@ -1,116 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F93C1EABA9;
-	Fri,  8 Nov 2024 13:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6FAC8CE;
+	Fri,  8 Nov 2024 13:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731071509; cv=none; b=DRFcuwxfTeOjmguFNJ68oQO1kZeey6yxGgLfMhExS9o8jejJxjkGQNvcPhyEoCRvxpFYpxPhhaXn1l0gy/V434iO9NlCdoyj5U3HbSrafihfccr1l2+PnyzXwGpJgdjvV/Z95oCm8MOJ3jxILjClJdRSAmeI/5sIt/7KNj2K+As=
+	t=1731072295; cv=none; b=UYJPgQ2Rj6NGy9ktNBuojvhncjii9WkbSVLXJTdtBvie41lYj2qOMiHUDm85K4EvzYO1VMVbACsgaXRfcmJasfLjBVj2fByIswXt58dmXEkbzuAGGtBdDPAMzNUObRNiHh/0aSJxFyOAbcSC6ZDG9uu6/ea0PRVIqa4EHLjsdnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731071509; c=relaxed/simple;
-	bh=zK0GRqp/V3HoI4yu30aVffYgP16alBb/iJp52nxyaXc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HFa1NR4nWxBlcG2qcKa6hbIa3Zjhi9au2yvOZHxeXBeLs2UmEyJror8jzoARtxcoV+FbPfsY/FK1irP52V5tpWOtOVf5arfvNz3dmQPPHysgP37+nLaZ1aw6vzKyUWax4YvAh3nA+IBfDGtjMJPjwTOHA55OsdMavMBFmHH7F0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyLcjKLL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731072295; c=relaxed/simple;
+	bh=ni/3Cy7kPWYuIGCIJydi7FQcXqijVJBAUEa+rtreWcc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGMXjF5Q01YtmWy5nYBj0ndetAcJuLQAh9gXIszvJz6dCxd9/y4tZkcvE7G2ZQt+Bf8xFM/h7zXDl4IS1bqTal8nKZAGDx54lB6pPqd+t6WUh+Fa+h1moMINyPUeyFsGJ7vGPMwc2fm47/W+TyDxeYKDVuCTKgPx7Ux2+1tXyxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=q3YB+sO+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyLcjKLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0CAC4CECD;
-	Fri,  8 Nov 2024 13:11:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731071509;
-	bh=zK0GRqp/V3HoI4yu30aVffYgP16alBb/iJp52nxyaXc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DyLcjKLLq/dqNJkHXkzMFBK0EoQQqXkZypILttHc3BZu+/UrHNom00DprSYwwoNO9
-	 6D6ZesOOA4nN+dCP77wMpJ9cg8TgtIw7fiUcJ4KPQkXfbFA96okJEf0sSEVnqIMLcS
-	 DgMSnLpeyBLKsltzYLJriHP1lLxXyRfhK6m6+gChBTZVWQEhCqsGqk8Z0c7/aM6+d4
-	 ffzgG5FUSj48K5dBr7gbRqDvNkA41oNcVAWhooL7b5Gq/51mu/OoQSh+tmJ1CQNcWZ
-	 pnU/A3FP8JgGxsn1BWUU9nxvgyiSBiu/QfKCmnaYEGQwEoHKtGhvgd4Xe2JZgLucG4
-	 Zy8dIyBQW7m4Q==
-Message-ID: <c26abf19-782b-400c-9c06-c26edcb4c00b@kernel.org>
-Date: Fri, 8 Nov 2024 07:11:47 -0600
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="q3YB+sO+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=vvvyONin7h/t95ubAs9xamFBdLK+MiSmvm8Jv+ehdeA=; b=q3YB+sO+hKnqZTMOjD62N6GRbK
+	1huZvN1EZ4iocqZxzc173+4wvX/r1JaU2S4XTV2yXxCevMO2AuEFjdCXN/Gb3R5wyX94oi3wiQ0Ms
+	cTz6PrLs8DXJES2jgM3WcxyUxWl7n203SX0n9RmdMUd+ZqYuRCGCCQkgkmnjCiECtSxE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t9Oyb-00Cb5D-37; Fri, 08 Nov 2024 14:24:37 +0100
+Date: Fri, 8 Nov 2024 14:24:37 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lei Wei <quic_leiwei@quicinc.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	quic_kkumarcs@quicinc.com, quic_suruchia@quicinc.com,
+	quic_pavir@quicinc.com, quic_linchen@quicinc.com,
+	quic_luoj@quicinc.com, srinivas.kandagatla@linaro.org,
+	bartosz.golaszewski@linaro.org, vsmuthu@qti.qualcomm.com,
+	john@phrozen.org
+Subject: Re: [PATCH net-next 3/5] net: pcs: qcom-ipq: Add PCS create and
+ phylink operations for IPQ9574
+Message-ID: <17ae9ace-55a6-4e09-ba1a-889b5381fb0f@lunn.ch>
+References: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
+ <20241101-ipq_pcs_rc1-v1-3-fdef575620cf@quicinc.com>
+ <d7782a5e-2f67-4f62-a594-0f52144a368f@lunn.ch>
+ <9b3a4f00-59f2-48d1-8916-c7d7d65df063@quicinc.com>
+ <a0826aa8-703c-448d-8849-47808f847774@lunn.ch>
+ <9b7def00-e900-4c5e-ba95-671bd1ef9240@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] arm: dts: socfpga: use reset-name "stmmaceth-ocp"
- instead of "ahb"
-To: Mamta Shukla <mamta.shukla@leica-geosystems.com>,
- alexandre.torgue@foss.st.com, joabreu@synopsys.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, a.fatoum@pengutronix.de
-Cc: bsp-development.geo@leica-geosystems.com
-References: <20241028145907.1698960-1-mamta.shukla@leica-geosystems.com>
-Content-Language: en-US
-From: Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20241028145907.1698960-1-mamta.shukla@leica-geosystems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b7def00-e900-4c5e-ba95-671bd1ef9240@quicinc.com>
 
-
-
-On 10/28/24 09:59, Mamta Shukla wrote:
-> The ahb reset is deasserted in probe before first register access, while the
-> stmmacheth-ocp reset needs to be asserted every time before changing the phy
-> mode in Arria10[1].
+> > Another artefact of not have a child-parent relationship. I wounder if
+> > it makes sense to change the architecture. Have the PCS driver
+> > instantiate the PCS devices as its children. They then have a device
+> > structure for calls like clk_bulk_get(), and a more normal
+> > consumer/provider setup.
+> > 
 > 
-> Changed in Upstream to "ahb"(331085a423b  arm64: dts: socfpga: change the
-> reset-name of "stmmaceth-ocp" to "ahb" ).This change was intended for arm64
-> socfpga and it is not applicable to Arria10.
-> 
-> Further with STMMAC-SELFTEST Driver enabled, ethtool test also FAILS.
-> $ ethtool -t eth0
-> [  322.946709] socfpga-dwmac ff800000.ethernet eth0: entered promiscuous mode
-> [  323.374558] socfpga-dwmac ff800000.ethernet eth0: left promiscuous mode
-> The test result is FAIL
-> The test extra info:
->   1. MAC Loopback                 0
->   2. PHY Loopback                 -110
->   3. MMC Counters                 -110
->   4. EEE                          -95
->   5. Hash Filter MC               0
->   6. Perfect Filter UC            -110
->   7. MC Filter                    -110
->   8. UC Filter                    0
->   9. Flow Control                 -110
-> 10. RSS                          -95
-> 11. VLAN Filtering               -95
-> 12. VLAN Filtering (perf)        -95
-> 13. Double VLAN Filter           -95
-> 14. Double VLAN Filter (perf)    -95
-> 15. Flexible RX Parser           -95
-> 16. SA Insertion (desc)          -95
-> 17. SA Replacement (desc)        -95
-> 18. SA Insertion (reg)           -95
-> 19. SA Replacement (reg)         -95
-> 20. VLAN TX Insertion            -95
-> 21. SVLAN TX Insertion           -95
-> 22. L3 DA Filtering              -95
-> 23. L3 SA Filtering              -95
-> 24. L4 DA TCP Filtering          -95
-> 25. L4 SA TCP Filtering          -95
-> 26. L4 DA UDP Filtering          -95
-> 27. L4 SA UDP Filtering          -95
-> 28. ARP Offload                  -95
-> 29. Jumbo Frame                  -110
-> 30. Multichannel Jumbo           -95
-> 31. Split Header                 -95
-> 32. TBS (ETF Scheduler)          -95
-> 
-> [  324.881327] socfpga-dwmac ff800000.ethernet eth0: Link is Down
-> [  327.995360] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
-> 
-> Link:[1] https://www.intel.com/content/www/us/en/docs/programmable/683711/21-2/functional-description-of-the-emac.html
-> Fixes: 331085a423b ("arm64: dts: socfpga: change the reset-name of "stmmaceth-ocp" to "ahb")
-> Signed-off-by: Mamta Shukla <mamta.shukla@leica-geosystems.com>
-> Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->
+> I think you may be suggesting to drop the child node usage in the DTS, so
+> that we can attach all the MII clocks to the single PCS node, to facilitate
+> usage of bulk get() API to retrieve the MII clocks for that PCS.
 
-Applied, thanks!
+I would keep the child nodes. They describe the cookie-cutter nature
+of the hardware. The problem is with the clk_bulk API, not allowing
+you to pass a device_node. of_clk_bulk_get() appears to do what you
+want, but it is not exported. What we do have is:
 
-Dinh
+/**
+ * devm_get_clk_from_child - lookup and obtain a managed reference to a
+ *                           clock producer from child node.
+ * @dev: device for clock "consumer"
+ * @np: pointer to clock consumer node
+ * @con_id: clock consumer ID
+ *
+ * This function parses the clocks, and uses them to look up the
+ * struct clk from the registered list of clock providers by using
+ * @np and @con_id
+ *
+ * The clock will automatically be freed when the device is unbound
+ * from the bus.
+ */
+struct clk *devm_get_clk_from_child(struct device *dev,
+                                    struct device_node *np, const char *con_id);
+
+So maybe a devm_get_clk_bulk_from_child() would be accepted?
+
+However, it might not be worth the effort. Using the bulk API was just
+a suggestion to make the code simpler, not a strong requirement.
+
+	Andrew
