@@ -1,81 +1,99 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C9D29CF4;
-	Fri,  8 Nov 2024 21:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA1219A28D;
+	Fri,  8 Nov 2024 21:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731102195; cv=none; b=tL59/H324cUK0Fg8OCy6rqEwGMykOqE0UFak3g/HtA9uYPJ52wSjVpkPzZUgjGKq1CxU8luVF8wCTwQGAOrkfDJdUkL8LogsSyuLcifAd2Dwrik/WymUsVTRhIsiUHvN7x6zkSJ82jLwlxzkShWlxAcOJLFJiROEUmvXZyC5Nj8=
+	t=1731102510; cv=none; b=Q5aDQd+Beyk43GExhevc1GwSCTbC6Cqwl4BEU0WuESWSV/WoyUDzrFNcF6Rc06AP+88MJ23YKzoTiBW+V7PqGU0dU7L/pN7FGJg0Z4za7hfhj1ZKzbwYWWUbosl506+gLzAeJgnsfHaCkM8Bdn1bvhpobDXiLAbdZsHDooZgyrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731102195; c=relaxed/simple;
-	bh=7ai3EhDD8kivSiHjwakaxR65JIFCmPtHFjyNVoxcZRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQ1hOcxyUE5nGS14QmYooeIafVDP41c8zmAdZpyUXwDj3VILa1EYH351YGAqbgNnSbF+1LGLrbMF3mlF0RLVN8tiI3y3HQB0vXHkyf+xcweHZ0ACfVSEWVWVTed8d/w3WqN7/+eKhpcQZtXePt6q9VPRWEigjTTqLIbfN5yAfuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f0clrftO; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1731102510; c=relaxed/simple;
+	bh=GP+aNFuzeZxf8AIUpmSRgChb1qq1acmXPgtRUgNJTSo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=idtvi9xt9Mi/mDVIttRv6px/VvHTpWlSZLOtVAWBJdOyFhUu4b7F2CBp/pXbYmA/VOHKD7Lzzez1P12cLKX7dQxAOdbjWozcWBKIL3TXlcXeftUuOyXHu/HV8qquERg3WUKbAa4aGFTGI39LEW1v9VVxXZm7yH+B0vQLUa8iRdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTUxbY5J; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f0clrftO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=a3sPOVQXRa4B3JPzvGMyA57zRKiA5BOrPR46D7NL24U=; b=f0clrftORSp8KdyrJxGYM6ROVz
-	c1kNeDAlvnMt5V6JFgaOaHYe0zVOIfJv8Guw3MPRPH6lMcsE2vxhjhR5ued0GEhBrY5By1j2p0h0+
-	NkSSZGjlNmPMb2OaHK9CnjxVA3cQINikQ+C8Atk0PonLIJCPtfBD+6j7zGYJKHe0FcIc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t9Wky-00CeZe-23; Fri, 08 Nov 2024 22:43:04 +0100
-Date: Fri, 8 Nov 2024 22:43:04 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [net-next PATCH] net: dsa: add devm_dsa_register_switch()
-Message-ID: <9cf08624-cd84-41bf-beef-ca3b3573303e@lunn.ch>
-References: <20241108200217.2761-1-ansuelsmth@gmail.com>
- <af968377-d4c4-4561-8dc6-6f92ff1ebbf4@lunn.ch>
- <672e7a61.050a0220.1d1399.6d31@mx.google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTUxbY5J"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9a0ec0a94fso408771966b.1;
+        Fri, 08 Nov 2024 13:48:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731102507; x=1731707307; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GP+aNFuzeZxf8AIUpmSRgChb1qq1acmXPgtRUgNJTSo=;
+        b=jTUxbY5Jpc9JO8+aH6vHXJNiB7qBFSsAcOWFBVKF1rPc0Y2g/+UWWqNzFvVcuJTK0H
+         wpoeKMLo8MntY6CFA5ZMYRC/7eERh9j1Fd63YNsGT1z7leQhBORRCoGUdZ4bPEsSmwc6
+         +NBOpy/rJNfRP+Zx3l5IPzHaunwgxcYbLZQ8mm5HN68zoGueWALKghF52aTcACIoyFfO
+         fL1qESOcI4rIRUSTSEFsXUXNY3LCpQOGdtbfRpq8IX1E0I3rVzucQHskyBXNyaImBqu2
+         GizHfjOzARUQwyut+HlHoi7bwGvRNxGkb5UruEaZH2SjD3W+QtF3RXhdJ15SscLgddl1
+         zFyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731102507; x=1731707307;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GP+aNFuzeZxf8AIUpmSRgChb1qq1acmXPgtRUgNJTSo=;
+        b=KN/gICodClwK0b3qrshNzo2fz+1aJPNIdwrIWw6vhnaaBMqRRXNtNoJZyAUQw38Kx+
+         A97txzVHsn+pqSEc5Cb/JB+zNa31xZT1g4LSIyIawIqZUWqJY31VSpkZzbpn7xY5gbtV
+         cvCf9qWPcw6xMFu8xLZJw+qbUcg/y+EUG2dlT40Kqd6IY0gKIVYRLBlamBJqquj/86pI
+         FLegvBRu4jwr3LyQXFR2k+OW3DcrcKNI9SF1ULyAefFuKPLA/psPwp7OCDoQEm7CwGFZ
+         yQsrPoQ8F8NxrdelQxXZAk+IDsTfUBiKzJm6/bS6CiHYpDlc8AZ6JtDO3Dy5Tie57ciO
+         2Prg==
+X-Forwarded-Encrypted: i=1; AJvYcCVt1z45x+mQe8FBZ5EnuVgrwGp19lPIkqtymSoERJ08qJj8dhebnLwg6TlVh/SJTXw7gwWOLvIG@vger.kernel.org, AJvYcCWjzc9ampzag9xQ4YkeuceHSJaqmi0I84qudyBC7m91HZmC6cGxbi0siRRdZlbXAlj0Usmv5PF8M0pXG68=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxztw34TnNn0Mm+qA1EwPYCiyD1Udk0rEA9UXhWDxhaw1D+f8ir
+	9z3YMwwfz7wKc1GZqx/HlwNEoSHINQ2LKCxxuKPUM+WIBpVBMeJj
+X-Google-Smtp-Source: AGHT+IEG5cDvSOVCs9ynxIGvmmsbmKZSD3BMOea1HVHFXjaQycEqkxgoM52ODN/KzQHBiHEUGaf4Rw==
+X-Received: by 2002:a17:906:d551:b0:a99:61f7:8413 with SMTP id a640c23a62f3a-a9eefee66femr429507166b.23.1731102506644;
+        Fri, 08 Nov 2024 13:48:26 -0800 (PST)
+Received: from lapsy144.cern.ch (lapsy144.cern.ch. [2001:1458:202:99::100:4b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0abe369sm280210066b.83.2024.11.08.13.48.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 13:48:26 -0800 (PST)
+From: vtpieter@gmail.com
+To: tharvey@gateworks.com,
+	o.rempel@pengutronix.de,
+	pabeni@redhat.com
+Cc: UNGLinuxDriver@microchip.com,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	f.fainelli@gmail.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	lukma@denx.de,
+	netdev@vger.kernel.org,
+	olteanv@gmail.com,
+	woojung.huh@microchip.com,
+	Pieter Van Trappen <pieter.van.trappen@cern.ch>
+Subject: [PATCH net v4] net: dsa: microchip: disable EEE for KSZ879x/KSZ877x/KSZ876x
+Date: Fri,  8 Nov 2024 22:48:15 +0100
+Message-ID: <20241108214815.3874964-1-vtpieter@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241018160658.781564-1-tharvey@gateworks.com>
+References: <20241018160658.781564-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <672e7a61.050a0220.1d1399.6d31@mx.google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 08, 2024 at 09:53:48PM +0100, Christian Marangi wrote:
-> On Fri, Nov 08, 2024 at 09:35:32PM +0100, Andrew Lunn wrote:
-> > > +int devm_dsa_register_switch(struct device *dev, struct dsa_switch *ds)
-> > > +{
-> > > +	int err;
-> > > +
-> > > +	err = dsa_register_switch(ds);
-> > > +	if (err)
-> > > +		return err;
-> > > +
-> > > +	return devm_add_action_or_reset(dev, devm_dsa_unregister_switch, ds);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(dsa_register_switch);
-> > 
-> > This looks to be the wrong function name.
-> >
-> 
-> Ah... Anyway aside from this, is the feature OK? Questioning why it
-> wasn't proposed early...
+From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 
-Some people blindly make use of devm_ without thinking about
-ordering. These helpers can introduce bugs. So they are not always
-liked.
+Hi Tim, all,
 
-It would be best if you added the helper at the same time as its user.
+Sorry I'm a bit late to the party but I think this patch is not doing
+much since most if not all KSZ8 switches don't have MMD
+registers. They do have EEE registers but these require indirect
+access that's not compatible with PHY MMD (indirect) registers as far
+as I understand. So your patch does no harm but is not doing anything
+useful either I reckon.
 
-	Andrew
+For the KSZ8 devices, the EEE errata is handled from the DSA switch
+driver ksz8.c, ksz8_handle_global_errata.
+
+Cheers, Pieter
