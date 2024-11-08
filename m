@@ -1,104 +1,168 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6FAC8CE;
-	Fri,  8 Nov 2024 13:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF551E7C19;
+	Fri,  8 Nov 2024 13:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731072295; cv=none; b=UYJPgQ2Rj6NGy9ktNBuojvhncjii9WkbSVLXJTdtBvie41lYj2qOMiHUDm85K4EvzYO1VMVbACsgaXRfcmJasfLjBVj2fByIswXt58dmXEkbzuAGGtBdDPAMzNUObRNiHh/0aSJxFyOAbcSC6ZDG9uu6/ea0PRVIqa4EHLjsdnI=
+	t=1731072345; cv=none; b=eEnwgEd93w65n8UsFO0h0WPCpeHx5/KfpTGTqF0UosGfB4Z7nwfA0TTrMdfVO4zhYi3KPSrOLti1y5BUNnKJcibs9orFQ0GBwLYjLECx8KYBEM/MrmLhw2W2/kYXMXXE2ygJdD6qdWWcK24zdfgmmcndYmIjINN2z/d5DMwIHjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731072295; c=relaxed/simple;
-	bh=ni/3Cy7kPWYuIGCIJydi7FQcXqijVJBAUEa+rtreWcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UGMXjF5Q01YtmWy5nYBj0ndetAcJuLQAh9gXIszvJz6dCxd9/y4tZkcvE7G2ZQt+Bf8xFM/h7zXDl4IS1bqTal8nKZAGDx54lB6pPqd+t6WUh+Fa+h1moMINyPUeyFsGJ7vGPMwc2fm47/W+TyDxeYKDVuCTKgPx7Ux2+1tXyxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=q3YB+sO+; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1731072345; c=relaxed/simple;
+	bh=X7uTdUC8RCJEpiMuCTYdtAAWLiu+WQ7JoHtmxB/FEcM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=K9oZ/aeicfCExxx/duMqrjZW47apIaq31edFl7ru6XC1v6MZyTOpcDAu3eanFqiijkdgJDnU0myRxcXzTyVnuA/s9voCvLmDV8q1cpZzZvjBH2qlfP9oIm70FZJHYSRwlgFECZ7tMim7Om7Ba9QInt8pObnGGTUsXJrKO7V4qMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZXLzyNWc; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="q3YB+sO+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vvvyONin7h/t95ubAs9xamFBdLK+MiSmvm8Jv+ehdeA=; b=q3YB+sO+hKnqZTMOjD62N6GRbK
-	1huZvN1EZ4iocqZxzc173+4wvX/r1JaU2S4XTV2yXxCevMO2AuEFjdCXN/Gb3R5wyX94oi3wiQ0Ms
-	cTz6PrLs8DXJES2jgM3WcxyUxWl7n203SX0n9RmdMUd+ZqYuRCGCCQkgkmnjCiECtSxE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t9Oyb-00Cb5D-37; Fri, 08 Nov 2024 14:24:37 +0100
-Date: Fri, 8 Nov 2024 14:24:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lei Wei <quic_leiwei@quicinc.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZXLzyNWc"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4314b316495so17812445e9.2;
+        Fri, 08 Nov 2024 05:25:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731072342; x=1731677142; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=g5rDU6VZuerI6+GmmjiOWykpHLX1KujOwsEgmoRFXlc=;
+        b=ZXLzyNWcLe8SWYIbrZ3LJjywwJbcprYmd3FjmxrC4+vwy/2Viac1byEZRpNaVSBgCh
+         UtfglXaXfijk18eHfKIb2/PczgEOWiHleay9yId4xyvVh/poZKvyBsdovG1gRlCnoHCU
+         XX4W8ZzVna386x27ZZQaO+/LWGp0W4uPTnOpMmVg64a1yg7w72eM3asLJ31l3z7N5+XH
+         eY42OP7CQg7yB+p5cCTpWqu8NBA75C/M7pqd3fBGR4bkBrCFbbdb1l5kqtsjpserEcC1
+         uW4tSOAkKmK1rBCkuzCuuOVjtHadL2P73FmIg0DWw74JyClzFGiJhC9upH7HmAmHRMBe
+         3D/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731072342; x=1731677142;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g5rDU6VZuerI6+GmmjiOWykpHLX1KujOwsEgmoRFXlc=;
+        b=bQqe/iTvmz6DTsvR9Nc4O1xIVw7u6rDbHTDgAmO99IKviYjK4asPBI95zoxt/XxrPJ
+         nIRC+EH4R79wnjNjf4KNGtT1q2A7Eep38z85NFC/BjkelbwosOY+n0Al/43EULHXxHQm
+         3OQSc/9/ZBzk6IN4zbkR9c3GVcZbU0rsYvi95ZM4PII+YS32ng7JKD1rmOsVpBXWJ/PM
+         DPMaOoV7ac6DLjxIPcGOv1s8FUQcNTbWvMPJuEWoRJ/gr+ZeaLQInEhLdpHmraEkbq8D
+         EbBG8fTTxWvv9qH07vsKvbEwuWC4GKaKsWIDVuDBLXdO2XrxRLlLxG7JhcHzlomyAXX6
+         wpFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcg7MeShX7BI66oFJMUyXnyKFL7DWL9eA6thupZ/TcDCOth9vQm2+O6Q1LOW5Jy501lLgyQldm@vger.kernel.org, AJvYcCX1JWJ7NcM+NZKCIlKNMGaQOVr/QWpjpA2q8XPHG2KBpX5Zvb407zy6Qgx37KRlUfyOJJM24RENrY5a@vger.kernel.org, AJvYcCX4FhzlzX0/fFTKyRlLXGeKxLyxVhNhhWZ6u+pcGXzq7sU1oF/uYyBY+m8SrK+UMMSWKhTRWoo4v3xLIE8Q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6kZhRHE0qom3Jpl7jSINTPEFD3efqAjrT5QYeAGPl+aD9pE1L
+	VcuW9l+WI6zj7Ny1jrOwGP2rWo/klsPCyhtmzhfjOgHADwNM6Nwb
+X-Google-Smtp-Source: AGHT+IGKVneiDpqEWsTNmdvn/OrWcqsgiRdsDLQNHy+NjEyqjVUMx/4HlFOvPZs0rVxTDt3Hp0EB4w==
+X-Received: by 2002:a05:600c:138a:b0:431:5c17:d575 with SMTP id 5b1f17b1804b1-432b750274fmr20953615e9.11.1731072341963;
+        Fri, 08 Nov 2024 05:25:41 -0800 (PST)
+Received: from localhost.localdomain (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-432b05c1f61sm69746705e9.35.2024.11.08.05.25.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 05:25:41 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	quic_kkumarcs@quicinc.com, quic_suruchia@quicinc.com,
-	quic_pavir@quicinc.com, quic_linchen@quicinc.com,
-	quic_luoj@quicinc.com, srinivas.kandagatla@linaro.org,
-	bartosz.golaszewski@linaro.org, vsmuthu@qti.qualcomm.com,
-	john@phrozen.org
-Subject: Re: [PATCH net-next 3/5] net: pcs: qcom-ipq: Add PCS create and
- phylink operations for IPQ9574
-Message-ID: <17ae9ace-55a6-4e09-ba1a-889b5381fb0f@lunn.ch>
-References: <20241101-ipq_pcs_rc1-v1-0-fdef575620cf@quicinc.com>
- <20241101-ipq_pcs_rc1-v1-3-fdef575620cf@quicinc.com>
- <d7782a5e-2f67-4f62-a594-0f52144a368f@lunn.ch>
- <9b3a4f00-59f2-48d1-8916-c7d7d65df063@quicinc.com>
- <a0826aa8-703c-448d-8849-47808f847774@lunn.ch>
- <9b7def00-e900-4c5e-ba95-671bd1ef9240@quicinc.com>
+	Russell King <linux@armlinux.org.uk>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	upstream@airoha.com
+Subject: [net-next PATCH v4 0/3] net: dsa: Add Airoha AN8855 support
+Date: Fri,  8 Nov 2024 14:24:13 +0100
+Message-ID: <20241108132511.18801-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b7def00-e900-4c5e-ba95-671bd1ef9240@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-> > Another artefact of not have a child-parent relationship. I wounder if
-> > it makes sense to change the architecture. Have the PCS driver
-> > instantiate the PCS devices as its children. They then have a device
-> > structure for calls like clk_bulk_get(), and a more normal
-> > consumer/provider setup.
-> > 
-> 
-> I think you may be suggesting to drop the child node usage in the DTS, so
-> that we can attach all the MII clocks to the single PCS node, to facilitate
-> usage of bulk get() API to retrieve the MII clocks for that PCS.
+This small series add the initial support for the Airoha AN8855 Switch.
 
-I would keep the child nodes. They describe the cookie-cutter nature
-of the hardware. The problem is with the clk_bulk API, not allowing
-you to pass a device_node. of_clk_bulk_get() appears to do what you
-want, but it is not exported. What we do have is:
+It's a 5 port Gigabit Switch with SGMII/HSGMII upstream port.
 
-/**
- * devm_get_clk_from_child - lookup and obtain a managed reference to a
- *                           clock producer from child node.
- * @dev: device for clock "consumer"
- * @np: pointer to clock consumer node
- * @con_id: clock consumer ID
- *
- * This function parses the clocks, and uses them to look up the
- * struct clk from the registered list of clock providers by using
- * @np and @con_id
- *
- * The clock will automatically be freed when the device is unbound
- * from the bus.
- */
-struct clk *devm_get_clk_from_child(struct device *dev,
-                                    struct device_node *np, const char *con_id);
+This is starting to get in the wild and there are already some router
+having this switch chip.
 
-So maybe a devm_get_clk_bulk_from_child() would be accepted?
+It's conceptually similar to mediatek switch but register and bits
+are different. And there is that massive Hell that is the PCS
+configuration.
+Saddly for that part we have absolutely NO documentation currently.
 
-However, it might not be worth the effort. Using the bulk API was just
-a suggestion to make the code simpler, not a strong requirement.
+There is this special thing where PHY needs to be calibrated with values
+from the switch efuse. (the thing have a whole cpu timer and MCU)
 
-	Andrew
+Changes v4:
+- Set regmap readable_table static (mute compilation warning)
+- Add support for port_bridge flags (LEARNING, FLOOD)
+- Reset fdb struct in fdb_dump
+- Drop support_asym_pause in port_enable
+- Add define for get_phy_flags
+- Fix bug for port not inititially part of a bridge
+  (in an8855_setup the port matrix was always cleared but
+   the CPU port was never initially added)
+- Disable learning and flood for user port by default
+- Set CPU port to flood and learning by default
+- Correctly AND force duplex and flow control in an8855_phylink_mac_link_up
+- Drop RGMII from pcs_config
+- Check ret in "Disable AN if not in autoneg"
+- Use devm_mutex_init
+- Fix typo for AN8855_PORT_CHECK_MODE
+- Better define AN8855_STP_LISTENING = AN8855_STP_BLOCKING
+- Fix typo in AN8855_PHY_EN_DOWN_SHIFT
+- Use paged helper for PHY
+- Skip calibration in config_init if priv not defined
+Changes v3:
+- Out of RFC
+- Switch PHY code to select_page API
+- Better describe masks and bits in PHY driver for ADC register
+- Drop raw values and use define for mii read/write
+- Switch to absolute PHY address
+- Replace raw values with mask and bits for pcs_config
+- Fix typo for ext-surge property name
+- Drop support for relocating Switch base PHY address on the bus
+Changes v2:
+- Drop mutex guard patch
+- Drop guard usage in DSA driver
+- Use __mdiobus_write/read
+- Check return condition and return errors for mii read/write
+- Fix wrong logic for EEE
+- Fix link_down (don't force link down with autoneg)
+- Fix forcing speed on sgmii autoneg
+- Better document link speed for sgmii reg
+- Use standard define for sgmii reg
+- Imlement nvmem support to expose switch EFUSE
+- Rework PHY calibration with the use of NVMEM producer/consumer
+- Update DT with new NVMEM property
+- Move aneg validation for 2500-basex in pcs_config
+- Move r50Ohm table and function to PHY driver
+
+Christian Marangi (3):
+  dt-bindings: net: dsa: Add Airoha AN8855 Gigabit Switch documentation
+  net: dsa: Add Airoha AN8855 5-Port Gigabit DSA Switch driver
+  net: phy: Add Airoha AN8855 Internal Switch Gigabit PHY
+
+ .../bindings/net/dsa/airoha,an8855.yaml       |  242 ++
+ MAINTAINERS                                   |   11 +
+ drivers/net/dsa/Kconfig                       |    9 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/an8855.c                      | 2138 +++++++++++++++++
+ drivers/net/dsa/an8855.h                      |  638 +++++
+ drivers/net/phy/Kconfig                       |    5 +
+ drivers/net/phy/Makefile                      |    1 +
+ drivers/net/phy/air_an8855.c                  |  268 +++
+ 9 files changed, 3313 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/airoha,an8855.yaml
+ create mode 100644 drivers/net/dsa/an8855.c
+ create mode 100644 drivers/net/dsa/an8855.h
+ create mode 100644 drivers/net/phy/air_an8855.c
+
+-- 
+2.45.2
+
