@@ -1,237 +1,506 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A06192D7C;
-	Fri,  8 Nov 2024 16:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D150019884C
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 16:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731083799; cv=none; b=PGpa43YRqqih5uR+sCSRV/D8MwaWMx3cQOOQ3qmiVi+sZS+dgCWNzAN7QX1z5QwbNbZnuL2+uL/x5iHeOHdWQnVlbi3V1D1JjJ9ZXZP/QEnfp1ros8mn2S9OGUH8bR6yNg86UInzzfICyfU8jaYzWxCSX2lBF5pnneecf2C+ZaA=
+	t=1731083808; cv=none; b=jTcHHmlfOhmRr+MItHMhyW84lQ1h0qtgosQs6qz6HqJPVbK8tW+GU419ccCwHCTgC8O91sGGNTRCtd4EdVk47DqTuBFkSB/4ERquoFlVzwnQrOQtClbIsVLgI9JDu1QFUozUowgMb1m95ZsbKsSi1lzu945qO87jzHJwd3yCl/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731083799; c=relaxed/simple;
-	bh=2uBKFxiCHSWhfcSR5laYdzzcPouWWONbpinvDRLEeS4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZuttwBZNTU/fNwQxLQlNgbp9QxXhaiKVC/BLAFV3hq8rz6Ecpa2aIHjdpYqsRS0KuwGiAfNgkrYmB7KPVJJbXFs9WULvQ//cz9uqjHplR0i9h+wiIVDLpOrUXFivVPQDjXbKk11iTpfkM/TDnCb5dyCDCqRH6prf9Mhv+sT/k90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=OZsIxOLr; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	s=arc-20240116; t=1731083808; c=relaxed/simple;
+	bh=LzNaxM9KrhW3ZrGh4NBFhruLWuJnUnJPx1+8qsqWMT0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G4F7sw/9vte21/nv0X89qjQ22ePPUFW6iK5TWn9U6gprghFcSPuRrTrEky9yz5lLdNaol8lqZn2Igc9+qR+/I87nIV4npRKzEGLefwPGgqT+888UyiOuBtb7mVH8xQSZz1uuOb72F1qLGrDUr0CJ6zASMSsC1k9l6NCjYiVWZqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=eEncoVXW; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="OZsIxOLr"
-X-UUID: 9bb8c12a9def11efb88477ffae1fc7a5-20241109
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=b07c5L65e1fDCmBLNUsmwIbkGZaepsev1ZLUMA9efJ8=;
-	b=OZsIxOLrg10zmo3t4t4UwxybLccwy/r5sllSwE5lmRKfImgJiCLUsNbcxtqY8Rt/0XDjFcbw4aCVQi4SwcnjRk74JRIQpZOpXN8vfzn82mj/+/CFcUcSnnIAbxD4v8th+58KP5ogjOJ2RS7w80gp+Lh/yMlrPkHDGtoC4sOQFQQ=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.42,REQID:66429bc9-cab2-4f77-9e31-bd6dde302bad,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:b0fcdc3,CLOUDID:dbfbd91b-4f51-4e1d-bb6a-1fd98b6b19d2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 9bb8c12a9def11efb88477ffae1fc7a5-20241109
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <skylake.huang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 844067379; Sat, 09 Nov 2024 00:36:30 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sat, 9 Nov 2024 00:36:29 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sat, 9 Nov 2024 00:36:29 +0800
-From: Sky Huang <SkyLake.Huang@mediatek.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
-	<daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
-	<SkyLake.Huang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: Steven Liu <Steven.Liu@mediatek.com>, SkyLake.Huang
-	<skylake.huang@mediatek.com>
-Subject: [PATCH net-next v3 4/5] net: phy: mediatek: Integrate read/write page helper functions
-Date: Sat, 9 Nov 2024 00:34:54 +0800
-Message-ID: <20241108163455.885-5-SkyLake.Huang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20241108163455.885-1-SkyLake.Huang@mediatek.com>
-References: <20241108163455.885-1-SkyLake.Huang@mediatek.com>
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="eEncoVXW"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71e49ad46b1so2074985b3a.1
+        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 08:36:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1731083805; x=1731688605; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QS8BQ3gfR6RtS75Ov9p2KtjtH2EnXJjrhkRBjJ4mnSg=;
+        b=eEncoVXWYdU+kDkqCZiuZ+bWpJ/bOSVyTlhVaQognIexchwUXBAdRujyUacQLyFuVR
+         kAG+ke1C4lajqYY3u25fWFYHwsc//ju4nV6dsSLxSjX8zucSYtB7IYOioy8w7VWWJC/S
+         XcK6oFcJpJnCCGmqYjWCrR2WQHMHNSKhshvOM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731083805; x=1731688605;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QS8BQ3gfR6RtS75Ov9p2KtjtH2EnXJjrhkRBjJ4mnSg=;
+        b=LK89aOmrd/52vqKXiPCqDduJXrCJtAPyNiqlaq/7U+fg/OIU+RkhK9CxODLp7A3msB
+         Q8qRporCf8x/IW3RqhGKGTiSNvLe9tXyikv04eMlEqVAymqbtDoGyEHnWuifKi29tHl4
+         16jrpCg5VuCS0tpJPPkH83fquLWpaJCd6GhMB8bSPbkmA5u4MuqruhK/pIRZbBXY+ZCn
+         GfvTEBIjQmBn7vuzxYHQ7kbGOmPdnXIqvIP5OqTBCyGbTGKnBTksmBOZqZQlGGNghvyG
+         DiMiUlORAQ/Z41bIs2MpSP9cjyI/Ugctl28iJgCCYF88/mWlWz5X++KzEYB60DjKu8bk
+         p6DA==
+X-Gm-Message-State: AOJu0YxnVXDguGTiqYfWcSziC/1jAOgaTqPeQ5dirKhyHa/MTmV4cFkz
+	fRmAMuhuUM0n2FDdrQRnslDleEsJ+UcU97LFqtBBSfrQVy4ptueZIJl1cNci2IM=
+X-Google-Smtp-Source: AGHT+IENVoppqlgQEkiFWw8GRLaPHzp+XloRM/QJxLirGsjy5scrJWwhXJj0ZUqMtjbRh7P2GKdm+g==
+X-Received: by 2002:a05:6a20:7faa:b0:1d0:2531:b2b9 with SMTP id adf61e73a8af0-1dc22b00bd8mr4855041637.36.1731083804985;
+        Fri, 08 Nov 2024 08:36:44 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a5ebaasm3911351b3a.191.2024.11.08.08.36.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 08:36:44 -0800 (PST)
+Date: Fri, 8 Nov 2024 08:36:41 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, corbet@lwn.net, hdanton@sina.com,
+	bagasdotme@gmail.com, pabeni@redhat.com, namangulati@google.com,
+	edumazet@google.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, sdf@fomichev.me, peter@typeblog.net,
+	m2shafiei@uwaterloo.ca, bjorn@rivosinc.com, hch@infradead.org,
+	willy@infradead.org, skhawaja@google.com, kuba@kernel.org,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next v8 5/6] selftests: net: Add busy_poll_test
+Message-ID: <Zy4-GUoYKBo_inRc@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	netdev@vger.kernel.org, corbet@lwn.net, hdanton@sina.com,
+	bagasdotme@gmail.com, pabeni@redhat.com, namangulati@google.com,
+	edumazet@google.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, sdf@fomichev.me, peter@typeblog.net,
+	m2shafiei@uwaterloo.ca, bjorn@rivosinc.com, hch@infradead.org,
+	willy@infradead.org, skhawaja@google.com, kuba@kernel.org,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
+References: <20241108045337.292905-1-jdamato@fastly.com>
+ <20241108045337.292905-6-jdamato@fastly.com>
+ <672e26ec429be_2a4cd22944c@willemb.c.googlers.com.notmuch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <672e26ec429be_2a4cd22944c@willemb.c.googlers.com.notmuch>
 
-From: "SkyLake.Huang" <skylake.huang@mediatek.com>
+On Fri, Nov 08, 2024 at 09:57:48AM -0500, Willem de Bruijn wrote:
+> Joe Damato wrote:
+> > Add an epoll busy poll test using netdevsim.
+> > 
+> > This test is comprised of:
+> >   - busy_poller (via busy_poller.c)
+> >   - busy_poll_test.sh which loads netdevsim, sets up network namespaces,
+> >     and runs busy_poller to receive data and socat to send data.
+> > 
+> > The selftest tests two different scenarios:
+> >   - busy poll (the pre-existing version in the kernel)
+> >   - busy poll with suspend enabled (what this series adds)
+> > 
+> > The data transmit is a 1MiB temporary file generated from /dev/urandom
+> > and the test is considered passing if the md5sum of the input file to
+> > socat matches the md5sum of the output file from busy_poller.
+> 
+> Nice test.
+> 
+> Busy polling does not affect data integrity. Is the goal of this test
+> mainly to get coverage, maybe observe if the process would stall
+> indefinitely?
 
-This patch integrates read/write page helper functions as MTK phy lib.
-They are basically the same in mtk-ge.c & mtk-ge-soc.c.
+Just to get coverage and make sure data makes it from point A to
+point B intact despite suspend being enabled.
 
-Signed-off-by: SkyLake.Huang <skylake.huang@mediatek.com>
----
-Change in v3:
-- Fix kernel test robot error by adding missing MTK_NET_PHYLIB.
----
- drivers/net/phy/mediatek/Kconfig       |  1 +
- drivers/net/phy/mediatek/mtk-ge-soc.c  | 18 ++++--------------
- drivers/net/phy/mediatek/mtk-ge.c      | 20 ++++++--------------
- drivers/net/phy/mediatek/mtk-phy-lib.c | 12 ++++++++++++
- drivers/net/phy/mediatek/mtk.h         |  3 +++
- 5 files changed, 26 insertions(+), 28 deletions(-)
+The last paragraph of the commit message highlights that netdevsim
+functionality is limited, so the test uses what is available. It can
+be extended in the future, when netdevsim supports more
+functionality.
 
-diff --git a/drivers/net/phy/mediatek/Kconfig b/drivers/net/phy/mediatek/Kconfig
-index 19b5d23..2a8ac5a 100644
---- a/drivers/net/phy/mediatek/Kconfig
-+++ b/drivers/net/phy/mediatek/Kconfig
-@@ -4,6 +4,7 @@ config MTK_NET_PHYLIB
- 
- config MEDIATEK_GE_PHY
- 	tristate "MediaTek Gigabit Ethernet PHYs"
-+	select MTK_NET_PHYLIB
- 	help
- 	  Supports the MediaTek non-built-in Gigabit Ethernet PHYs.
- 
-diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.c b/drivers/net/phy/mediatek/mtk-ge-soc.c
-index d3a8b39..38dc898 100644
---- a/drivers/net/phy/mediatek/mtk-ge-soc.c
-+++ b/drivers/net/phy/mediatek/mtk-ge-soc.c
-@@ -271,16 +271,6 @@ struct mtk_socphy_shared {
- 	struct mtk_socphy_priv	priv[4];
- };
- 
--static int mtk_socphy_read_page(struct phy_device *phydev)
--{
--	return __phy_read(phydev, MTK_EXT_PAGE_ACCESS);
--}
--
--static int mtk_socphy_write_page(struct phy_device *phydev, int page)
--{
--	return __phy_write(phydev, MTK_EXT_PAGE_ACCESS, page);
--}
--
- /* One calibration cycle consists of:
-  * 1.Set DA_CALIN_FLAG high to start calibration. Keep it high
-  *   until AD_CAL_COMP is ready to output calibration result.
-@@ -1337,8 +1327,8 @@ static struct phy_driver mtk_socphy_driver[] = {
- 		.probe		= mt7981_phy_probe,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
--		.read_page	= mtk_socphy_read_page,
--		.write_page	= mtk_socphy_write_page,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
- 		.led_blink_set	= mt798x_phy_led_blink_set,
- 		.led_brightness_set = mt798x_phy_led_brightness_set,
- 		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
-@@ -1354,8 +1344,8 @@ static struct phy_driver mtk_socphy_driver[] = {
- 		.probe		= mt7988_phy_probe,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
--		.read_page	= mtk_socphy_read_page,
--		.write_page	= mtk_socphy_write_page,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
- 		.led_blink_set	= mt798x_phy_led_blink_set,
- 		.led_brightness_set = mt798x_phy_led_brightness_set,
- 		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
-diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-index 54ea64a..9122899 100644
---- a/drivers/net/phy/mediatek/mtk-ge.c
-+++ b/drivers/net/phy/mediatek/mtk-ge.c
-@@ -3,6 +3,8 @@
- #include <linux/module.h>
- #include <linux/phy.h>
- 
-+#include "mtk.h"
-+
- #define MTK_EXT_PAGE_ACCESS		0x1f
- #define MTK_PHY_PAGE_STANDARD		0x0000
- #define MTK_PHY_PAGE_EXTENDED		0x0001
-@@ -11,16 +13,6 @@
- #define MTK_PHY_PAGE_EXTENDED_2A30	0x2a30
- #define MTK_PHY_PAGE_EXTENDED_52B5	0x52b5
- 
--static int mtk_gephy_read_page(struct phy_device *phydev)
--{
--	return __phy_read(phydev, MTK_EXT_PAGE_ACCESS);
--}
--
--static int mtk_gephy_write_page(struct phy_device *phydev, int page)
--{
--	return __phy_write(phydev, MTK_EXT_PAGE_ACCESS, page);
--}
--
- static void mtk_gephy_config_init(struct phy_device *phydev)
- {
- 	/* Enable HW auto downshift */
-@@ -77,8 +69,8 @@ static struct phy_driver mtk_gephy_driver[] = {
- 		.handle_interrupt = genphy_handle_interrupt_no_ack,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
--		.read_page	= mtk_gephy_read_page,
--		.write_page	= mtk_gephy_write_page,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
- 	},
- 	{
- 		PHY_ID_MATCH_EXACT(0x03a29441),
-@@ -91,8 +83,8 @@ static struct phy_driver mtk_gephy_driver[] = {
- 		.handle_interrupt = genphy_handle_interrupt_no_ack,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
--		.read_page	= mtk_gephy_read_page,
--		.write_page	= mtk_gephy_write_page,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
- 	},
- };
- 
-diff --git a/drivers/net/phy/mediatek/mtk-phy-lib.c b/drivers/net/phy/mediatek/mtk-phy-lib.c
-index 8d795bc..98a09d6 100644
---- a/drivers/net/phy/mediatek/mtk-phy-lib.c
-+++ b/drivers/net/phy/mediatek/mtk-phy-lib.c
-@@ -6,6 +6,18 @@
- 
- #include "mtk.h"
- 
-+int mtk_phy_read_page(struct phy_device *phydev)
-+{
-+	return __phy_read(phydev, MTK_EXT_PAGE_ACCESS);
-+}
-+EXPORT_SYMBOL_GPL(mtk_phy_read_page);
-+
-+int mtk_phy_write_page(struct phy_device *phydev, int page)
-+{
-+	return __phy_write(phydev, MTK_EXT_PAGE_ACCESS, page);
-+}
-+EXPORT_SYMBOL_GPL(mtk_phy_write_page);
-+
- int mtk_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
- 				unsigned long rules,
- 				unsigned long supported_triggers)
-diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
-index 9aaff2c..63d9fe1 100644
---- a/drivers/net/phy/mediatek/mtk.h
-+++ b/drivers/net/phy/mediatek/mtk.h
-@@ -66,6 +66,9 @@ struct mtk_socphy_priv {
- 	unsigned long		led_state;
- };
- 
-+int mtk_phy_read_page(struct phy_device *phydev);
-+int mtk_phy_write_page(struct phy_device *phydev, int page);
-+
- int mtk_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
- 				unsigned long rules,
- 				unsigned long supported_triggers);
--- 
-2.45.2
+Paolo wanted a test and this is the best test we can provide given
+the limitations of the testing environment.
 
+> > netdevsim was chosen instead of veth due to netdevsim's support for
+> > netdev-genl.
+> > 
+> > For now, this test uses the functionality that netdevsim provides. In the
+> > future, perhaps netdevsim can be extended to emulate device IRQs to more
+> > thoroughly test all pre-existing kernel options (like defer_hard_irqs)
+> > and suspend.
+
+[...]
+
+The rest of the feedback below seems pretty minor; I don't think
+it's worth spinning a v9 and re-sending just for this.
+
+If anything this can be handled with a clean up commit in the
+future.
+
+Jakub: please let me know if you prefer to see a v9 for this?
+
+> > diff --git a/tools/testing/selftests/net/busy_poll_test.sh b/tools/testing/selftests/net/busy_poll_test.sh
+> > new file mode 100755
+> > index 000000000000..ffc74bc62e5a
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/net/busy_poll_test.sh
+> > @@ -0,0 +1,164 @@
+> > +#!/bin/bash
+> > +# SPDX-License-Identifier: GPL-2.0-only
+> 
+> Why the different SPDX between the two files?
+> 
+> > +source net_helper.sh
+> > +
+> > +NSIM_DEV_1_ID=$((256 + RANDOM % 256))
+> > +NSIM_DEV_1_SYS=/sys/bus/netdevsim/devices/netdevsim$NSIM_DEV_1_ID
+> > +NSIM_DEV_2_ID=$((512 + RANDOM % 256))
+> > +NSIM_DEV_2_SYS=/sys/bus/netdevsim/devices/netdevsim$NSIM_DEV_2_ID
+> > +
+> > +NSIM_DEV_SYS_NEW=/sys/bus/netdevsim/new_device
+> > +NSIM_DEV_SYS_DEL=/sys/bus/netdevsim/del_device
+> > +NSIM_DEV_SYS_LINK=/sys/bus/netdevsim/link_device
+> > +NSIM_DEV_SYS_UNLINK=/sys/bus/netdevsim/unlink_device
+> > +
+> > +setup_ns()
+> > +{
+> > +	set -e
+> > +	ip netns add nssv
+> > +	ip netns add nscl
+> > +
+> > +	NSIM_DEV_1_NAME=$(find $NSIM_DEV_1_SYS/net -maxdepth 1 -type d ! \
+> > +		-path $NSIM_DEV_1_SYS/net -exec basename {} \;)
+> > +	NSIM_DEV_2_NAME=$(find $NSIM_DEV_2_SYS/net -maxdepth 1 -type d ! \
+> > +		-path $NSIM_DEV_2_SYS/net -exec basename {} \;)
+> > +
+> > +	# ensure the server has 1 queue
+> > +	ethtool -L $NSIM_DEV_1_NAME combined 1 2>/dev/null
+> > +
+> > +	ip link set $NSIM_DEV_1_NAME netns nssv
+> > +	ip link set $NSIM_DEV_2_NAME netns nscl
+> > +
+> > +	ip netns exec nssv ip addr add '192.168.1.1/24' dev $NSIM_DEV_1_NAME
+> > +	ip netns exec nscl ip addr add '192.168.1.2/24' dev $NSIM_DEV_2_NAME
+> > +
+> > +	ip netns exec nssv ip link set dev $NSIM_DEV_1_NAME up
+> > +	ip netns exec nscl ip link set dev $NSIM_DEV_2_NAME up
+> > +
+> > +	set +e
+> > +}
+> > +
+> > +cleanup_ns()
+> > +{
+> > +	ip netns del nscl
+> > +	ip netns del nssv
+> > +}
+> > +
+> > +test_busypoll()
+> > +{
+> > +	tmp_file=$(mktemp)
+> > +	out_file=$(mktemp)
+> > +
+> > +	# fill a test file with random data
+> > +	dd if=/dev/urandom of=${tmp_file} bs=1M count=1 2> /dev/null
+> > +
+> > +	timeout -k 1s 30s ip netns exec nssv ./busy_poller -p48675 -b192.168.1.1 -m8 -u0 -P1 -g16 -i${NSIM_DEV_1_IFIDX} -o${out_file}&
+> 
+> nit: consider variables for all repeated constants, including IP addresses and ports
+> > +
+> > +	wait_local_port_listen nssv 48675 tcp
+> > +
+> > +	ip netns exec nscl socat -u $tmp_file TCP:192.168.1.1:48675
+> > +
+> > +	wait
+> > +
+> > +	tmp_file_md5sum=$(md5sum $tmp_file | cut -f1 -d' ')
+> > +	out_file_md5sum=$(md5sum $out_file | cut -f1 -d' ')
+> > +
+> > +	if [ "$tmp_file_md5sum" = "$out_file_md5sum" ]; then
+> > +		res=0
+> > +	else
+> > +		echo "md5sum mismatch"
+> > +		echo "input file md5sum: ${tmp_file_md5sum}";
+> > +		echo "output file md5sum: ${out_file_md5sum}";
+> > +		res=1
+> > +	fi
+> > +
+> > +	rm $out_file $tmp_file
+> 
+> Delete these in cleanup()?
+> 
+> > +
+> > +	return $res
+> > +}
+> > +
+> > +test_busypoll_with_suspend()
+> > +{
+> 
+> Main feedback: this function is practically a duplicate of the prev.
+> Consider deduplicating them with one optional argument that enables
+> suspend mode in busy_poller.
+> 
+> > +	tmp_file=$(mktemp)
+> > +	out_file=$(mktemp)
+> > +
+> > +	# fill a test file with random data
+> > +	dd if=/dev/urandom of=${tmp_file} bs=1M count=1 2> /dev/null
+> > +
+> > +	timeout -k 1s 30s ip netns exec nssv ./busy_poller -p48675 -b192.168.1.1 -m8 -u0 -P1 -g16 -d100 -r50000 -s20000000 -i${NSIM_DEV_1_IFIDX} -o${out_file}&
+> > +
+> > +	wait_local_port_listen nssv 48675 tcp
+> > +
+> > +	ip netns exec nscl socat -u $tmp_file TCP:192.168.1.1:48675
+> > +
+> > +	wait
+> > +
+> > +	tmp_file_md5sum=$(md5sum $tmp_file | cut -f1 -d' ')
+> > +	out_file_md5sum=$(md5sum $out_file | cut -f1 -d' ')
+> > +
+> > +	if [ "$tmp_file_md5sum" = "$out_file_md5sum" ]; then
+> > +		res=0
+> > +	else
+> > +		echo "md5sum mismatch"
+> > +		echo "input file md5sum: ${tmp_file_md5sum}";
+> > +		echo "output file md5sum: ${out_file_md5sum}";
+> > +		res=1
+> > +	fi
+> > +
+> > +	rm $out_file $tmp_file
+> > +
+> > +	return $res
+> > +}
+> > +
+> > +###
+> > +### Code start
+> > +###
+> > +
+> > +modprobe netdevsim
+> > +
+> > +# linking
+> > +
+> > +echo $NSIM_DEV_1_ID > $NSIM_DEV_SYS_NEW
+> > +echo $NSIM_DEV_2_ID > $NSIM_DEV_SYS_NEW
+> > +udevadm settle
+> 
+> is this generally available on systems under test?
+> 
+> > +
+> > +setup_ns
+> > +
+> > +NSIM_DEV_1_FD=$((256 + RANDOM % 256))
+> 
+> repeated magic constants
+> 
+> > +exec {NSIM_DEV_1_FD}</var/run/netns/nssv
+> > +NSIM_DEV_1_IFIDX=$(ip netns exec nssv cat /sys/class/net/$NSIM_DEV_1_NAME/ifindex)
+> > +
+> > +NSIM_DEV_2_FD=$((256 + RANDOM % 256))
+> > +exec {NSIM_DEV_2_FD}</var/run/netns/nscl
+> > +NSIM_DEV_2_IFIDX=$(ip netns exec nscl cat /sys/class/net/$NSIM_DEV_2_NAME/ifindex)
+> > +
+> > +echo "$NSIM_DEV_1_FD:$NSIM_DEV_1_IFIDX $NSIM_DEV_2_FD:$NSIM_DEV_2_IFIDX" > $NSIM_DEV_SYS_LINK
+> > +if [ $? -ne 0 ]; then
+> > +	echo "linking netdevsim1 with netdevsim2 should succeed"
+> > +	cleanup_ns
+> > +	exit 1
+> > +fi
+> > +
+> > +test_busypoll
+> > +if [ $? -ne 0 ]; then
+> > +	echo "test_busypoll failed"
+> > +	cleanup_ns
+> > +	exit 1
+> > +fi
+> > +
+> > +test_busypoll_with_suspend
+> > +if [ $? -ne 0 ]; then
+> > +	echo "test_busypoll_with_suspend failed"
+> > +	cleanup_ns
+> > +	exit 1
+> > +fi
+> > +
+> > +echo "$NSIM_DEV_1_FD:$NSIM_DEV_1_IFIDX" > $NSIM_DEV_SYS_UNLINK
+> > +
+> > +echo $NSIM_DEV_2_ID > $NSIM_DEV_SYS_DEL
+> > +
+> > +cleanup_ns
+> > +
+> > +modprobe -r netdevsim
+> > +
+> > +exit 0
+> > diff --git a/tools/testing/selftests/net/busy_poller.c b/tools/testing/selftests/net/busy_poller.c
+> > new file mode 100644
+> > index 000000000000..8d8aa9e5939a
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/net/busy_poller.c
+> > @@ -0,0 +1,328 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#include <assert.h>
+> > +#include <errno.h>
+> > +#include <error.h>
+> > +#include <fcntl.h>
+> > +#include <inttypes.h>
+> > +#include <limits.h>
+> > +#include <stdlib.h>
+> > +#include <stdio.h>
+> > +#include <string.h>
+> > +#include <unistd.h>
+> > +
+> > +#include <arpa/inet.h>
+> > +#include <netinet/in.h>
+> > +
+> > +#include <sys/ioctl.h>
+> > +#include <sys/epoll.h>
+> > +#include <sys/socket.h>
+> > +#include <sys/types.h>
+> > +
+> > +#include <linux/netlink.h>
+> > +#include <linux/genetlink.h>
+> > +#include "netdev-user.h"
+> > +#include <ynl.h>
+> > +
+> > +/* if the headers haven't been updated, we need to define some things */
+> 
+> This should not be needed, as headers are taken from $KERNELSRC/usr after
+> make headers_install.
+> 
+> Generally discouraged for tests (else every new feature test for a new
+> features is forced to adds such checks).
+> 
+> > +#if !defined(EPOLL_IOC_TYPE)
+> > +struct epoll_params {
+> > +	uint32_t busy_poll_usecs;
+> > +	uint16_t busy_poll_budget;
+> > +	uint8_t prefer_busy_poll;
+> > +
+> > +	/* pad the struct to a multiple of 64bits */
+> > +	uint8_t __pad;
+> > +};
+> > +
+> > +#define EPOLL_IOC_TYPE 0x8A
+> > +#define EPIOCSPARAMS _IOW(EPOLL_IOC_TYPE, 0x01, struct epoll_params)
+> > +#define EPIOCGPARAMS _IOR(EPOLL_IOC_TYPE, 0x02, struct epoll_params)
+> > +#endif
+> > +
+> > +static uint32_t cfg_port = 8000;
+> > +static struct in_addr cfg_bind_addr = { .s_addr = INADDR_ANY };
+> > +static char *cfg_outfile;
+> > +static int cfg_max_events = 8;
+> > +static int cfg_ifindex;
+> > +
+> > +/* busy poll params */
+> > +static uint32_t cfg_busy_poll_usecs;
+> > +static uint16_t cfg_busy_poll_budget;
+> > +static uint8_t cfg_prefer_busy_poll;
+> > +
+> > +/* IRQ params */
+> > +static uint32_t cfg_defer_hard_irqs;
+> > +static uint64_t cfg_gro_flush_timeout;
+> > +static uint64_t cfg_irq_suspend_timeout;
+> > +
+> > +static void usage(const char *filepath)
+> > +{
+> > +	error(1, 0,
+> > +	      "Usage: %s -p<port> -b<addr> -m<max_events> -u<busy_poll_usecs> -P<prefer_busy_poll> -g<busy_poll_budget> -o<outfile> -d<defer_hard_irqs> -r<gro_flush_timeout> -s<irq_suspend_timeout> -i<ifindex>",
+> > +	      filepath);
+> > +}
+> > +
+> > +static void parse_opts(int argc, char **argv)
+> > +{
+> > +	int ret;
+> > +	int c;
+> > +
+> > +	if (argc <= 1)
+> > +		usage(argv[0]);
+> > +
+> > +	while ((c = getopt(argc, argv, "p:m:b:u:P:g:o:d:r:s:i:")) != -1) {
+> > +		switch (c) {
+> > +		case 'u':
+> > +			cfg_busy_poll_usecs = strtoul(optarg, NULL, 0);
+> > +			if (cfg_busy_poll_usecs == ULONG_MAX ||
+> > +			    cfg_busy_poll_usecs > UINT32_MAX)
+> > +				error(1, ERANGE, "busy_poll_usecs too large");
+> > +			break;
+> > +		case 'P':
+> > +			cfg_prefer_busy_poll = strtoul(optarg, NULL, 0);
+> > +			if (cfg_prefer_busy_poll == ULONG_MAX ||
+> 
+> Here and elsewhere: not possible due to size of var (here: uint8_t)
+> I'm surprised that the compiler does not mention this.
+> 
+> > +			    cfg_prefer_busy_poll > 1)
+> > +				error(1, ERANGE,
+> > +				      "prefer busy poll should be 0 or 1");
+> > +			break;
+> > +		case 'g':
+> > +			cfg_busy_poll_budget = strtoul(optarg, NULL, 0);
+> > +			if (cfg_busy_poll_budget == ULONG_MAX ||
+> > +			    cfg_busy_poll_budget > UINT16_MAX)
+> > +				error(1, ERANGE,
+> > +				      "busy poll budget must be [0, UINT16_MAX]");
+> > +			break;
+> > +		case 'p':
+> > +			cfg_port = strtoul(optarg, NULL, 0);
+> > +			if (cfg_port > UINT16_MAX)
+> > +				error(1, ERANGE, "port must be <= 65535");
+> > +			break;
+> > +		case 'b':
+> > +			ret = inet_aton(optarg, &cfg_bind_addr);
+> > +			if (ret == 0)
+> > +				error(1, errno,
+> > +				      "bind address %s invalid", optarg);
+> > +			break;
+> > +		case 'o':
+> > +			cfg_outfile = strdup(optarg);
+> > +			if (!cfg_outfile)
+> > +				error(1, 0, "outfile invalid");
+> > +			break;
+> > +		case 'm':
+> > +			cfg_max_events = strtol(optarg, NULL, 0);
+> > +
+> > +			if (cfg_max_events == LONG_MIN ||
+> > +			    cfg_max_events == LONG_MAX ||
+> > +			    cfg_max_events <= 0)
+> > +				error(1, ERANGE,
+> > +				      "max events must be > 0 and < LONG_MAX");
+> > +			break;
+> > +		case 'd':
+> > +			cfg_defer_hard_irqs = strtoul(optarg, NULL, 0);
+> > +
+> > +			if (cfg_defer_hard_irqs == ULONG_MAX ||
+> > +			    cfg_defer_hard_irqs > INT32_MAX)
+> > +				error(1, ERANGE,
+> > +				      "defer_hard_irqs must be <= INT32_MAX");
+> > +			break;
+> > +		case 'r':
+> > +			cfg_gro_flush_timeout = strtoull(optarg, NULL, 0);
+> > +
+> > +			if (cfg_gro_flush_timeout == ULLONG_MAX)
+> > +				error(1, ERANGE,
+> > +				      "gro_flush_timeout must be < ULLONG_MAX");
+> > +			break;
+> > +		case 's':
+> > +			cfg_irq_suspend_timeout = strtoull(optarg, NULL, 0);
+> > +
+> > +			if (cfg_irq_suspend_timeout == ULLONG_MAX)
+> > +				error(1, ERANGE,
+> > +				      "irq_suspend_timeout must be < ULLONG_MAX");
+> > +			break;
+> > +		case 'i':
+> > +			cfg_ifindex = strtoul(optarg, NULL, 0);
+> > +			if (cfg_ifindex == ULONG_MAX)
+> > +				error(1, ERANGE,
+> > +				      "ifindex must be < ULONG_MAX");
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (!cfg_ifindex)
+> > +		usage(argv[0]);
+> > +
+> > +	if (optind != argc)
+> > +		usage(argv[0]);
+> > +}
