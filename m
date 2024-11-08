@@ -1,130 +1,106 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4122198E6E;
-	Fri,  8 Nov 2024 16:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB28187FE4;
+	Fri,  8 Nov 2024 16:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731083810; cv=none; b=p5e9AQRQGyDAnlI4/EVjZDrWDHnM29y0nGlD7T/rF8e5xs6xxoTlRIm7AEi+ie7Sx+YR+/xom5kQtD9bmekfw2XsnE6hbgUaavolnCJYw5/BjEwbX0O0yV3E9BJJcjZLN10Q+Gqeu8+hcnK+HkxCxdUhlmnLyy2MxnruHc1i2Ws=
+	t=1731083932; cv=none; b=pcOUkSbKhwyzi7X7Qb6zL1hg4U23E33MnGIYEj1NiDR5vgAYARaSdfoMalcO239xKTfjdPr1O9hhVIZznEdOdQLulkjPdC6oUDC526r6Se3gBXjleMKZ9M5YDqnFJxPjNei0ZF+hNQqdhENu4HCg1V5ULxIy5tZ7HPRULtXLfiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731083810; c=relaxed/simple;
-	bh=GgXqbrgnjscz1GJY/vuo3+8bT02sjpcVS4HHPzVjjeI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sp1DVC+DolsfMajlle57rqGTelj8rxHcHVI5P83XH/u9VBGPzAhzaz8elGgHBvKpgT7ITzA/mZUOJq6rflSzc0vwXnmuTGZiv5UKil9lNlNOb1RRxwqtzM3sp2GqTjPIKtbdc3rGZNgf7tztUZ8eC39SGgzL0HtaB/lg2MwM/F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tHt9+qY4; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	s=arc-20240116; t=1731083932; c=relaxed/simple;
+	bh=7y4w4g6pgWRAHU+RtQvNlJKKobnxl/GwhamPedecqyE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qHaq6+WZznIPl6deCmndkS3VKHqiIcAJ5RwyZc48UeVXlymZ8cE18+tiqMz8MSslkTCVFqz5pZv6nNSil9E7DvVaq+9hVqEIZAbtVwrdFI0K6SCywjwOEdk80cM+fmT/vR98Dfc5h8o9kwtI33gn4J8PbwDXkv41N7CLNvrhAuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IxXCSOX2; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tHt9+qY4"
-X-UUID: a2882f4a9def11efbd192953cf12861f-20241109
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=K2LlcVPkVu2AiR+BkVm1jRgLTSzsLTgqctnGu+62FH4=;
-	b=tHt9+qY44y0nXuwkEmvsZ3DneuPdCf6+8+wX0/CvEm/7aC7y26cBacfZj7vgU1g37PtkZm5kZlJh8S+/4s/yiIN2eHqD2P13pzk0CsQHi0+aM1EQBrV09XIXCE7OtbVmAxaNaNgx+hunRc/cEjM3T/IjorULbTxwWcGvocJ5B4s=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.42,REQID:14b8040a-79ae-46cc-b631-fcca190ef1b7,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:b0fcdc3,CLOUDID:37fcd91b-4f51-4e1d-bb6a-1fd98b6b19d2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: a2882f4a9def11efbd192953cf12861f-20241109
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
-	(envelope-from <skylake.huang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1926155311; Sat, 09 Nov 2024 00:36:42 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sat, 9 Nov 2024 00:36:40 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sat, 9 Nov 2024 00:36:40 +0800
-From: Sky Huang <SkyLake.Huang@mediatek.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
-	<daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang
-	<SkyLake.Huang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: Steven Liu <Steven.Liu@mediatek.com>, SkyLake.Huang
-	<skylake.huang@mediatek.com>
-Subject: [PATCH net-next v3 5/5] net: phy: mediatek: add MT7530 & MT7531's PHY ID macros
-Date: Sat, 9 Nov 2024 00:34:55 +0800
-Message-ID: <20241108163455.885-6-SkyLake.Huang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20241108163455.885-1-SkyLake.Huang@mediatek.com>
-References: <20241108163455.885-1-SkyLake.Huang@mediatek.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IxXCSOX2"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5c95a962c2bso3458878a12.2;
+        Fri, 08 Nov 2024 08:38:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731083929; x=1731688729; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jlsZwZjrrzoO7w76Bo0+/+iTbPjQm3oJ8vaYxJX0b9M=;
+        b=IxXCSOX2ruTUyTu3ZV5Z9wn4+jxeElpvTwYjRIEZT2K4LLoNl6uqkvhx+Ai1NPl5Bw
+         2yP5SQfP4Eb8UQnctn7cxH4YJRXWtLPOb6tcxVjf0+mon83e50ZaPAvZUAHWQWojeW1N
+         /kNKV0OzpRmHLJA6Y6JfgCOHTuyWRl/9lA1RZcDw1gg/B/ValG4YO32EwBlKykccxwVj
+         fw4D0gWmJqZYSELKMmPX5XwoZ17x20mZkS9z+sAE3B5562ISETBeDHN3KOdaDYhXhRTa
+         jiw4lIcEJ+UytQ/ly+uvsg+T2KW3rHS5Yg4Nk5p+X27WW3cVA9wIID19hHCUH47oiZRW
+         IpAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731083929; x=1731688729;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jlsZwZjrrzoO7w76Bo0+/+iTbPjQm3oJ8vaYxJX0b9M=;
+        b=BKs7cY17oOaPVoJuquTGG5i2hQyNSPY6ZPRl4xXAvahZmNJzJFMHMMo5NSAID1Pzbk
+         eeZBJxY59khS7iBT817OvciAl8VzRL7r9qYfcTvm+fv/9fGxZU4T5FK30mikwNO3cdWd
+         4HCJy0P9UewFfVA5ywNNBX/IpN2y44fmwhWsL2plbZQ8LHoqQoJIc/ypYlx8SU+Dg3XZ
+         e1hR1uEv7y4Y3WJ1m+rixKV2fVerZb9WrzZx1cfMcJ2J8L9ohRT7yfDgJjx8kup6ed1U
+         vhPRmbQu5AnWhsjH94950btemYLJ70kgAP8vr8mTvl4Zlayf19UHeZaPg84OTLJtGGMl
+         zFDg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5Kcsqa5uVVkEz1TabfB0vq24LacfRbyCOPk8n6PjuRjZwb+iGbNaAteG5cuvhtLO3uru42yhb@vger.kernel.org, AJvYcCXoYNpg8TDk0Hpv/KeZDL5/dt1tgZDYCzsEpYRLwpCX4IpGR8RVIyk81pZBz6Zoa4MLpG5xYxDpTuFszaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhnWIrjAXUbetOjkZiXpoyZzJf3c+VU4TLXzGAxIjKIwlkqqIJ
+	3nbHbuSrz/OArOB+/A4UPvZBc3pEZVjw/fwqctHs983oDuARORtV
+X-Google-Smtp-Source: AGHT+IET5sHmbMXQeci2ReHEWkG02ZQBs2HtSFnqm6Pl/jyBOM5N3GMLbQdvlK6FGBhPgQ34FisNiA==
+X-Received: by 2002:a50:d5c7:0:b0:5cf:f82:edfd with SMTP id 4fb4d7f45d1cf-5cf0f82eebdmr2490202a12.3.1731083929280;
+        Fri, 08 Nov 2024 08:38:49 -0800 (PST)
+Received: from [192.168.42.14] ([85.255.233.6])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c4ecaesm2141142a12.70.2024.11.08.08.38.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Nov 2024 08:38:48 -0800 (PST)
+Message-ID: <39597ca8-11e4-4c1d-9970-1c73f1f5c62d@gmail.com>
+Date: Fri, 8 Nov 2024 16:39:34 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 4/5] page_pool: disable sync for cpu for
+ dmabuf memory provider
+To: Stanislav Fomichev <stfomichev@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>, Samiullah Khawaja
+ <skhawaja@google.com>, linux-kernel@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <20241107212309.3097362-1-almasrymina@google.com>
+ <20241107212309.3097362-5-almasrymina@google.com>
+ <20241108141812.GL35848@ziepe.ca> <Zy41HkR5dDmjVJwl@mini-arch>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <Zy41HkR5dDmjVJwl@mini-arch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "SkyLake.Huang" <skylake.huang@mediatek.com>
+On 11/8/24 15:58, Stanislav Fomichev wrote:
+> On 11/08, Jason Gunthorpe wrote:
+>> On Thu, Nov 07, 2024 at 09:23:08PM +0000, Mina Almasry wrote:
+>>> dmabuf dma-addresses should not be dma_sync'd for CPU/device. Typically
+>>> its the driver responsibility to dma_sync for CPU, but the driver should
+>>> not dma_sync for CPU if the netmem is actually coming from a dmabuf
+>>> memory provider.
+>>
+>> This is not completely true, it is not *all* dmabuf, just the parts of
+>> the dmabuf that are actually MMIO.
+>>
+>> If you do this you may want to block accepting dmabufs that have CPU
+>> pages inside them.
+> 
+> We still want udmabufs to work, so probably need some new helper to test
+> whether a particular netmem is backed by the cpu memory?
 
-This patch adds MT7530 & MT7531's PHY ID macros in mtk-ge.c so that
-it follows the same rule of mtk-ge-soc.c.
+Agree. I guess it's fair to assume that page pool is backed either
+by one or another, so could be a page pool flag that devmem.c can set
+on init.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: SkyLake.Huang <skylake.huang@mediatek.com>
----
- drivers/net/phy/mediatek/mtk-ge.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-index 9122899..ed2617b 100644
---- a/drivers/net/phy/mediatek/mtk-ge.c
-+++ b/drivers/net/phy/mediatek/mtk-ge.c
-@@ -5,6 +5,9 @@
- 
- #include "mtk.h"
- 
-+#define MTK_GPHY_ID_MT7530		0x03a29412
-+#define MTK_GPHY_ID_MT7531		0x03a29441
-+
- #define MTK_EXT_PAGE_ACCESS		0x1f
- #define MTK_PHY_PAGE_STANDARD		0x0000
- #define MTK_PHY_PAGE_EXTENDED		0x0001
-@@ -59,7 +62,7 @@ static int mt7531_phy_config_init(struct phy_device *phydev)
- 
- static struct phy_driver mtk_gephy_driver[] = {
- 	{
--		PHY_ID_MATCH_EXACT(0x03a29412),
-+		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
- 		.name		= "MediaTek MT7530 PHY",
- 		.config_init	= mt7530_phy_config_init,
- 		/* Interrupts are handled by the switch, not the PHY
-@@ -73,7 +76,7 @@ static struct phy_driver mtk_gephy_driver[] = {
- 		.write_page	= mtk_phy_write_page,
- 	},
- 	{
--		PHY_ID_MATCH_EXACT(0x03a29441),
-+		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7531),
- 		.name		= "MediaTek MT7531 PHY",
- 		.config_init	= mt7531_phy_config_init,
- 		/* Interrupts are handled by the switch, not the PHY
-@@ -91,8 +94,8 @@ static struct phy_driver mtk_gephy_driver[] = {
- module_phy_driver(mtk_gephy_driver);
- 
- static struct mdio_device_id __maybe_unused mtk_gephy_tbl[] = {
--	{ PHY_ID_MATCH_EXACT(0x03a29441) },
--	{ PHY_ID_MATCH_EXACT(0x03a29412) },
-+	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530) },
-+	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7531) },
- 	{ }
- };
- 
 -- 
-2.45.2
-
+Pavel Begunkov
