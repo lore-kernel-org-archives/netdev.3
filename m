@@ -1,105 +1,149 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97D213D278
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 04:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76DE2BB15;
+	Fri,  8 Nov 2024 04:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731041825; cv=none; b=ldnEPFVehc8Ly3OKoo3kWlQaUvjZr6p50sA0GtLQGlJC9CEh4UF+rl6G4lLr919LiwbKe8NAZGrO3UxCDmq6c8PN8uyQkPF5EpV+yr6A9uuhjdW1fIlxOjndR0nMo6YcSy5b3c8VF+ifoWnjDdulGDYcTtGqgUzwHcw+hLtM/jw=
+	t=1731041864; cv=none; b=C5iRLwMsxpJmrnjNgTYpgp1Q/vvaD5jSGh2H8ODmQrP0HwYhX5ag7zdCKdBZvnBc5hMF+E9798Q2+EW/qsl95Hq3pog2a295Dd8dnYxOJTHWbRUSKJjIApu1yqJ1dh4eF2ZMotBINBDMhfJpWRo0sGbry940hXevk4jzNWnlwZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731041825; c=relaxed/simple;
-	bh=Ab3HMO3eKLgARO53MMIiVeWUY/vd9IniSh9diIM+Mdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Busq8buG2YmkXOcGxnoviThdpXk9seEUBLfxgmt2ff9RPoAxAWQnPrh5CaSVN9fWtOwXI1rWLLLu6Y0TnBLdr43J1I+G3AjJi0LEm2onxgPvwKDMulHD9YdW7PS7yrUAuTXWpbHl6y2OfPXhRIcsc59ustmoEeiHP6scoP9616s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=pgIRNKS4; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1731041864; c=relaxed/simple;
+	bh=CgmbEOe7b3AX51Ivgp4ZdWo3olrU9H+EIj0YlBsUSU4=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZC0m00TZGhhbp/049NE+l7Or0f4QhSNYUqrMjRWI1O1KLu1GlyelC8myGyBU4UDYHFIINqYuzTwaSNaNdXuigvMnQoCaGrkyIwIJETCQjRYAF0Y06cE6UjOG5N7qx0KUBE4yeDOLfDCHoj2/s9/q4bHHTWhtXh06qUMegm7cwzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EN+ORXgM; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="pgIRNKS4"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20cdbe608b3so18285825ad.1
-        for <netdev@vger.kernel.org>; Thu, 07 Nov 2024 20:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1731041823; x=1731646623; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BYxs/iAi9D4dvnBjz30eD6LEjanF6nsQbGyEsY5CVZU=;
-        b=pgIRNKS4DWeyFj+2b90+hmhe6s1K8XXOkNl4xkjcN2F+Fz1tIrelvarYFnCClu9mP1
-         o2S6W4g9eHMIsPK0PssaFXiDEnBx298qMwc4c6asvZx2MMCebD8UAH3LpNAD4qJsdy0E
-         9MReD98VogMc7x5kzL6mQfGGWjfch2mk41gD4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731041823; x=1731646623;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BYxs/iAi9D4dvnBjz30eD6LEjanF6nsQbGyEsY5CVZU=;
-        b=rP1q+MLb13uW+rqlU+jd4/WYYTjjrAjbvxUTNj+okMBRdwxpOZnQEHzKo/DqA35tN3
-         FA9i/10TfpwbyjK61sDORsBbUnMgRb2I4BkxfZjkRfJ9685QtZ/S24D8Gu/wHp9Mzodx
-         F2QhwH522MmBAWT9yc4lcyqcF6vgxrsDeIa5unrZKJfbL29YV2pMTvgjvdDPdmApJNoE
-         uWBVuuf52nqIxUbed+wuigyJmk/Oj+IT9ZthmIykGxHh4f5eFBvaHQkBKkv0BFGJ6UBN
-         G76zSz3a7wXDpC2p4WTUlen3lPFmRxoocc9A83o9oIIzuQ3sLnFpGlmSf+F7XoXOIXZo
-         yuMQ==
-X-Gm-Message-State: AOJu0YwhXEpmeDDREaR1JR4t99v1FmWOnniToLNenb09MQEXBXhVzslQ
-	5qHxyXCljKZPFgu5PfYXXGrDEBlWxA88QpjFoCvp49DjiQIfBGM15heSbIKexDE=
-X-Google-Smtp-Source: AGHT+IHSJD2nYvmtst0NABiKe+u1fp77FUf9fw5OcmO5zZDo1U9OgoqPCXRncmfsc4fru4WgRiaSKA==
-X-Received: by 2002:a17:902:e890:b0:20c:b0c7:92c9 with SMTP id d9443c01a7336-21183589b2dmr19384295ad.34.1731041823027;
-        Thu, 07 Nov 2024 20:57:03 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dde2f7sm21743925ad.77.2024.11.07.20.57.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 20:57:02 -0800 (PST)
-Date: Thu, 7 Nov 2024 20:56:59 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, corbet@lwn.net, hdanton@sina.com,
-	bagasdotme@gmail.com, pabeni@redhat.com, namangulati@google.com,
-	edumazet@google.com, amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com, sdf@fomichev.me, peter@typeblog.net,
-	m2shafiei@uwaterloo.ca, bjorn@rivosinc.com, hch@infradead.org,
-	willy@infradead.org, willemdebruijn.kernel@gmail.com,
-	skhawaja@google.com, Martin Karsten <mkarsten@uwaterloo.ca>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v7 2/6] net: Add control functions for irq
- suspension
-Message-ID: <Zy2aG_ObPOIGKU0g@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	corbet@lwn.net, hdanton@sina.com, bagasdotme@gmail.com,
-	pabeni@redhat.com, namangulati@google.com, edumazet@google.com,
-	amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
-	sdf@fomichev.me, peter@typeblog.net, m2shafiei@uwaterloo.ca,
-	bjorn@rivosinc.com, hch@infradead.org, willy@infradead.org,
-	willemdebruijn.kernel@gmail.com, skhawaja@google.com,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20241108023912.98416-1-jdamato@fastly.com>
- <20241108023912.98416-3-jdamato@fastly.com>
- <20241107202119.525a3b76@kernel.org>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EN+ORXgM"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A81ghcm019269;
+	Thu, 7 Nov 2024 20:57:34 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=K
+	BfLRKB3KPRWp1lnPfPGqpUnZQVYA37jDoWl/5xc9xI=; b=EN+ORXgML/xSm6Uui
+	e6Zk7wT+/bpWSMYCrhcmoazvAlk6ccx5F5Dnmk9GbnxKiQbvgRq6Px2BgzhEY28R
+	+JuN5y2w4U7/Jtu/T5ZhKJt1QMzUL4n5vMkOTQnJycmo/xbpVIHt0B2zyCRRkBpn
+	Prd6vZEw0rkozFIPhPgtM5Z5LAtsd3pCyUojJ6g/F3ovQ/7FTqhS+unbk5sY/JIn
+	lGmoUF7H19gM5BLwJVzNHEpENI9XAuA4v8js+HtghaU7ZCecM2wtdVAn8qglps5S
+	CAt0iDzSFEjEIELx19WUQpSYHGF2ab9KwGBwboe46Pfr4ES4zesBGXtBt3FRx4Kr
+	OoCjQ==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 42s97hra0y-4
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 20:57:34 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 7 Nov 2024 20:57:20 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Thu, 7 Nov 2024 20:57:20 -0800
+Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
+	by maili.marvell.com (Postfix) with ESMTP id 140973F7044;
+	Thu,  7 Nov 2024 20:57:15 -0800 (PST)
+From: Bharat Bhushan <bbhushan2@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <hkelam@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <jerinj@marvell.com>,
+        <lcherian@marvell.com>, <ndabilpuram@marvell.com>,
+        <sd@queasysnail.net>, <bbhushan2@marvell.com>
+Subject: [net-next PATCH v9 1/8] octeontx2-pf: map skb data as device writeable
+Date: Fri, 8 Nov 2024 10:27:01 +0530
+Message-ID: <20241108045708.1205994-2-bbhushan2@marvell.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241108045708.1205994-1-bbhushan2@marvell.com>
+References: <20241108045708.1205994-1-bbhushan2@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241107202119.525a3b76@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: zO1bbcXRAN6dJwOsACZKvH4v8J4GV4IN
+X-Proofpoint-GUID: zO1bbcXRAN6dJwOsACZKvH4v8J4GV4IN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
 
-On Thu, Nov 07, 2024 at 08:21:19PM -0800, Jakub Kicinski wrote:
-> On Fri,  8 Nov 2024 02:38:58 +0000 Joe Damato wrote:
-> > +EXPORT_SYMBOL(napi_suspend_irqs);
-> 
-> One more nit after all.. please drop the exports, epoll code can't
-> be a module. Feel free to repost without the 24h wait.
+Crypto hardware need write permission for in-place encrypt
+or decrypt operation on skb-data to support IPsec crypto
+offload. That patch uses skb_unshare to make skb data writeable
+for ipsec crypto offload and map skb fragment memory as
+device read-write.
 
-Done. Thanks for catching that and letting me re-send so quickly.
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+---
+v7->v8:
+ - spell correction (s/sdk/skb) in description
+
+v6->v7:
+ - skb data was mapped as device writeable but it was not ensured
+   that skb is writeable. This version calls skb_unshare() to make
+   skb data writeable.
+
+ .../ethernet/marvell/octeontx2/nic/otx2_txrx.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index 7aaf32e9aa95..49b6b091ba41 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -11,6 +11,7 @@
+ #include <linux/bpf.h>
+ #include <linux/bpf_trace.h>
+ #include <net/ip6_checksum.h>
++#include <net/xfrm.h>
+ 
+ #include "otx2_reg.h"
+ #include "otx2_common.h"
+@@ -83,10 +84,17 @@ static unsigned int frag_num(unsigned int i)
+ static dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+ 					struct sk_buff *skb, int seg, int *len)
+ {
++	enum dma_data_direction dir = DMA_TO_DEVICE;
+ 	const skb_frag_t *frag;
+ 	struct page *page;
+ 	int offset;
+ 
++	/* Crypto hardware need write permission for ipsec crypto offload */
++	if (unlikely(xfrm_offload(skb))) {
++		dir = DMA_BIDIRECTIONAL;
++		skb = skb_unshare(skb, GFP_ATOMIC);
++	}
++
+ 	/* First segment is always skb->data */
+ 	if (!seg) {
+ 		page = virt_to_page(skb->data);
+@@ -98,16 +106,22 @@ static dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+ 		offset = skb_frag_off(frag);
+ 		*len = skb_frag_size(frag);
+ 	}
+-	return otx2_dma_map_page(pfvf, page, offset, *len, DMA_TO_DEVICE);
++	return otx2_dma_map_page(pfvf, page, offset, *len, dir);
+ }
+ 
+ static void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg)
+ {
++	enum dma_data_direction dir = DMA_TO_DEVICE;
++	struct sk_buff *skb = NULL;
+ 	int seg;
+ 
++	skb = (struct sk_buff *)sg->skb;
++	if (unlikely(xfrm_offload(skb)))
++		dir = DMA_BIDIRECTIONAL;
++
+ 	for (seg = 0; seg < sg->num_segs; seg++) {
+ 		otx2_dma_unmap_page(pfvf, sg->dma_addr[seg],
+-				    sg->size[seg], DMA_TO_DEVICE);
++				    sg->size[seg], dir);
+ 	}
+ 	sg->num_segs = 0;
+ }
+-- 
+2.34.1
+
