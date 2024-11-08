@@ -1,147 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527231E0DDC;
-	Fri,  8 Nov 2024 09:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156231D356C
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 09:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731057065; cv=none; b=jZPhR9OvO+ToLLeJtchf0/bWDGCP4Lr+oB3xUG1vSl8WFsvlP2HH9ZPbAdNaeL8Ia4CbFTfCK0KeK+UiQ7ZEBVG8v3MM8r/18T+VzXlxsCneSf8XEPmqEgT4NVT5kLLgqnAmDEt/cLuUhGW7K68rUI/Qu7i7TxP0NB7LkbfOAUI=
+	t=1731057211; cv=none; b=Mk6HJH/8Ze3ASmM4LGdclRW52qU+bOxNdrv0Hn6htWkVkH3YoSHss7ZncIg5T/NINTg3TPHWGzNMK3Vt/udBkc7iQRGTY4bzgL56C9GntmLkqeVyg9IjHpUR0MYJ/wg2OmOvcYvPhbu8T9+2wDpoq0DvouvIo80NxIa+GLz2EYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731057065; c=relaxed/simple;
-	bh=BDOzONkZ2cgnFx3zIeWH6wdDGJPqgkivPauC1vIWhrw=;
+	s=arc-20240116; t=1731057211; c=relaxed/simple;
+	bh=HEAsdYLwkrtGtogdvIBPZEXWue42gncPQ87YECUk5kY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bt3OHsUzr5KQMe/UCJEI7ezt5ZH5oihIvPXzGhObWQl6bwPOUYlNk9RuEta+eEvskPP0ay2z9wIx8bR1O+oU+7VsQ6QefTSE28R5CEK1kjFjZiRyhsFrJOv2jN/VGVxId3jQj2VZAxOoMlfWOYHaTmbnjeQOqpVStCB6v3RQLY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FSifCGmH; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qGwjJ4hYnWQvoH4vZR4VRbXmC2o7gdj7FreR0soVLSNrziVPT6cs/dQ8mY5dtnw+n2PQUbIhfiCo4kopZManBc9YALGvbzMO00PVLcMDkVEEucdUnVWFAZRYyHjS15BooPvsuFFgdCB5lxhO1hmg7pOZSMyGRFq6jMfvCnjLeWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RNzik05j; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FSifCGmH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731057063; x=1762593063;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BDOzONkZ2cgnFx3zIeWH6wdDGJPqgkivPauC1vIWhrw=;
-  b=FSifCGmHYam4RO1fAcYpXxyVfOzfHbjkjFGIf8Dly8+83Q+xwgd9bo6S
-   fJwbLmMawWJN8SmTKfOnYGa0TI/xJFpDBQenw/fZKD8poalXuBwNts230
-   IE1ZrALxNPHmz+Xu71fYm6FEfAILHxTJE49pUAhC0swSgu1xEI10bHhLn
-   bZGZwAoF0bPzluf8/SPuGu6pRN8RudbyaLacj9V7lpdYAldWIN5kVUal5
-   1meOHTI8LLMHwnXVfAirj+HDkhz7vz82tUIaaveeGdrYgx08jgAIATq2b
-   SbY1Ae/JCFCM6EmVMvNrcAODDQpLRnA6dWHDhaJJOhRilVgCG3yY3Q9rD
-   w==;
-X-CSE-ConnectionGUID: mqLuNnxwTo6ayfy2f8QhkQ==
-X-CSE-MsgGUID: PdmuqxMGQEamojW94UXxyg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41548438"
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="41548438"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:10:59 -0800
-X-CSE-ConnectionGUID: 5NUzoZ0uS2ms29zG29vpKA==
-X-CSE-MsgGUID: odqMnD4oQCi3mDgiENhthQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="85372045"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 08 Nov 2024 01:10:57 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t9L14-000rFE-2Q;
-	Fri, 08 Nov 2024 09:10:54 +0000
-Date: Fri, 8 Nov 2024 17:10:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Saru2003 <sarvesh20123@gmail.com>, johannes@sipsolutions.net
-Cc: oe-kbuild-all@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Saru2003 <sarvesh20123@gmail.com>
-Subject: Re: [PATCH] Fix: Ensure auth_data and ap_addr are properly set
- before marking STA as authenticated
-Message-ID: <202411081625.6Qy8h3Mu-lkp@intel.com>
-References: <20241108022828.6571-1-sarvesh20123@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RNzik05j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731057208;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GO0OGIRGWxKfjRBGTtqAfw57F84sGfgBv8XkGbO8UBE=;
+	b=RNzik05jnXLZqJ9feI2reYharozV0DXk7KH98pr8XHdBcBqGH/60AwaZdKEvN81o5iym+k
+	2RaeS+mfqN8Kpka9g8R6FqfpKtyFu1aeaOhEP9L9WNJ5N57Kf7OYJzsynwTHbOE27aoLHx
+	0Ey55xd+g7TxmtYRUS7BfAvM0E9hbEs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-PegD51joP_S2ygn3bxAVUw-1; Fri, 08 Nov 2024 04:13:26 -0500
+X-MC-Unique: PegD51joP_S2ygn3bxAVUw-1
+X-Mimecast-MFC-AGG-ID: PegD51joP_S2ygn3bxAVUw
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4315b7b0c16so13550155e9.1
+        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 01:13:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731057205; x=1731662005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GO0OGIRGWxKfjRBGTtqAfw57F84sGfgBv8XkGbO8UBE=;
+        b=Ihstk7q6gIsa3beYcmiS9+u2VBBFgQDiWwLTXgf74nQ3yxzHi0k4YyUWFnHst8Mted
+         2pz2Heco06HIItlpA58n00W+w822iG5wcmW7No6hjeaekasFHcLOaRZ5ZeyscI9hlOgT
+         j//hpNUAjSPqjCkdMFRXt4S9wa0FvZ0w5gCkTmAr6nt46v4GA3XOiipRCiso0NYH2KGq
+         S6qEY5xFScg2LtLQa5GEFeubWlO9ZJqPmkJGjAOTWURZDmNemFHMbANzw5JriUgY/0cw
+         oULacVIADfv54tMVFIhgxAEYkqYONUFeX10sGCaOj8WON96Hqd/Dbi/HWeJoGWiywiRa
+         ekpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmIgeGpGBExSsWCVNxjZJq5NFCZZl45GSHLVIswWDx9v1H4B61A39nPfXw4U8wvShpj1FVQZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUZxLu1jM2NAFQdwwteFI0cNbkNiJPzxhoEYMgob2/sWQ5t3SQ
+	9DOMurpSNQzLdNXdPnyGYGdzNb2JSTxKIdeRfw2QE5D8x86cCOSDZLJ8oLbB/GfLq5FZESk5ueY
+	jx8SXTZG/jGrFfxjEETO6XeROtbrS28hW1WmX5qUIoZyO18NqXZwSfQ==
+X-Received: by 2002:a05:600c:1c88:b0:42c:de34:34be with SMTP id 5b1f17b1804b1-432b74fa92amr16075675e9.3.1731057205636;
+        Fri, 08 Nov 2024 01:13:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFAK5vTncKeqE+EzHOeYy/PGvMNPyTWcejCYkWGsZcXDWCK4COat90VpxuJseJwMBr3OSiYWQ==
+X-Received: by 2002:a05:600c:1c88:b0:42c:de34:34be with SMTP id 5b1f17b1804b1-432b74fa92amr16075165e9.3.1731057205008;
+        Fri, 08 Nov 2024 01:13:25 -0800 (PST)
+Received: from sgarzare-redhat ([193.207.101.111])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05c1c81sm56640315e9.32.2024.11.08.01.13.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 01:13:24 -0800 (PST)
+Date: Fri, 8 Nov 2024 10:13:17 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jia He <justin.he@arm.com>, Arseniy Krasnov <avkrasnov@salutedevices.com>, 
+	Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
+	George Zhang <georgezhang@vmware.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net v2 2/3] vsock: Fix sk_error_queue memory leak
+Message-ID: <qjib7qrjxitohmdyjdvnxh7pavzkqohzthwn3mxiaot5copoh2@yg4dstc2fx5w>
+References: <20241107-vsock-mem-leaks-v2-0-4e21bfcfc818@rbox.co>
+ <20241107-vsock-mem-leaks-v2-2-4e21bfcfc818@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241108022828.6571-1-sarvesh20123@gmail.com>
+In-Reply-To: <20241107-vsock-mem-leaks-v2-2-4e21bfcfc818@rbox.co>
 
-Hi Saru2003,
+On Thu, Nov 07, 2024 at 09:46:13PM +0100, Michal Luczaj wrote:
+>Kernel queues MSG_ZEROCOPY completion notifications on the error queue.
+>Where they remain, until explicitly recv()ed. To prevent memory leaks,
+>clean up the queue when the socket is destroyed.
+>
+>unreferenced object 0xffff8881028beb00 (size 224):
+>  comm "vsock_test", pid 1218, jiffies 4294694897
+>  hex dump (first 32 bytes):
+>    90 b0 21 17 81 88 ff ff 90 b0 21 17 81 88 ff ff  ..!.......!.....
+>    00 00 00 00 00 00 00 00 00 b0 21 17 81 88 ff ff  ..........!.....
+>  backtrace (crc 6c7031ca):
+>    [<ffffffff81418ef7>] kmem_cache_alloc_node_noprof+0x2f7/0x370
+>    [<ffffffff81d35882>] __alloc_skb+0x132/0x180
+>    [<ffffffff81d2d32b>] sock_omalloc+0x4b/0x80
+>    [<ffffffff81d3a8ae>] msg_zerocopy_realloc+0x9e/0x240
+>    [<ffffffff81fe5cb2>] virtio_transport_send_pkt_info+0x412/0x4c0
+>    [<ffffffff81fe6183>] virtio_transport_stream_enqueue+0x43/0x50
+>    [<ffffffff81fe0813>] vsock_connectible_sendmsg+0x373/0x450
+>    [<ffffffff81d233d5>] ____sys_sendmsg+0x365/0x3a0
+>    [<ffffffff81d246f4>] ___sys_sendmsg+0x84/0xd0
+>    [<ffffffff81d26f47>] __sys_sendmsg+0x47/0x80
+>    [<ffffffff820d3df3>] do_syscall_64+0x93/0x180
+>    [<ffffffff8220012b>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+>Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> net/vmw_vsock/af_vsock.c | 3 +++
+> 1 file changed, 3 insertions(+)
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.12-rc6 next-20241107]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 35681adedd9aaec3565495158f5342b8aa76c9bc..dfd29160fe11c4675f872c1ee123d65b2da0dae6 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -836,6 +836,9 @@ static void vsock_sk_destruct(struct sock *sk)
+> {
+> 	struct vsock_sock *vsk = vsock_sk(sk);
+>
+>+	/* Flush MSG_ZEROCOPY leftovers. */
+>+	__skb_queue_purge(&sk->sk_error_queue);
+>+
+> 	vsock_deassign_transport(vsk);
+>
+> 	/* When clearing these addresses, there's no need to set the family and
+>
+>-- 
+>2.46.2
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Saru2003/Fix-Ensure-auth_data-and-ap_addr-are-properly-set-before-marking-STA-as-authenticated/20241108-103338
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20241108022828.6571-1-sarvesh20123%40gmail.com
-patch subject: [PATCH] Fix: Ensure auth_data and ap_addr are properly set before marking STA as authenticated
-config: x86_64-rhel-8.3 (https://download.01.org/0day-ci/archive/20241108/202411081625.6Qy8h3Mu-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081625.6Qy8h3Mu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411081625.6Qy8h3Mu-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/mac80211/mlme.c: In function 'ieee80211_mark_sta_auth':
->> net/mac80211/mlme.c:4341:34: warning: the comparison will always evaluate as 'true' for the address of 'ap_addr' will never be NULL [-Waddress]
-    4341 |         if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
-         |                                  ^
-   In file included from net/mac80211/mlme.c:28:
-   net/mac80211/ieee80211_i.h:414:12: note: 'ap_addr' declared here
-     414 |         u8 ap_addr[ETH_ALEN] __aligned(2);
-         |            ^~~~~~~
-
-
-vim +4341 net/mac80211/mlme.c
-
-  4334	
-  4335	static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
-  4336	{
-  4337		struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
-  4338		const u8 *ap_addr;
-  4339		struct sta_info *sta;
-  4340		
-> 4341		if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
-  4342			sdata_info(sdata, "auth_data not set or ap_addr missing\n");
-  4343			return false;
-  4344		}
-  4345	
-  4346		ap_addr = ifmgd->auth_data->ap_addr;
-  4347	
-  4348		lockdep_assert_wiphy(sdata->local->hw.wiphy);
-  4349	
-  4350		sdata_info(sdata, "authenticated\n");
-  4351		ifmgd->auth_data->done = true;
-  4352		ifmgd->auth_data->timeout = jiffies + IEEE80211_AUTH_WAIT_ASSOC;
-  4353		ifmgd->auth_data->timeout_started = true;
-  4354		run_again(sdata, ifmgd->auth_data->timeout);
-  4355	
-  4356		/* move station state to auth */
-  4357		sta = sta_info_get(sdata, ap_addr);
-  4358		if (!sta) {
-  4359		        sdata_info(sdata, "STA %pM not found, skipping authentication mark\n", ap_addr);
-  4360			return false;
-  4361		}
-  4362		if (sta_info_move_state(sta, IEEE80211_STA_AUTH)) {
-  4363			sdata_info(sdata, "failed moving %pM to auth\n", ap_addr);
-  4364			return false;
-  4365		}
-  4366	
-  4367		return true;
-  4368	}
-  4369	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
