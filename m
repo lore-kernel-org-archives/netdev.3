@@ -1,75 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1421E3772;
-	Fri,  8 Nov 2024 15:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374CE1D0400;
+	Fri,  8 Nov 2024 15:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731078195; cv=none; b=JbgJBwpPJgY9EknIo4kMglfP9Fnby2xTviNRCOWIrQWeDCJYJR8aSj/xE5bQuRN2XL3i8gAlw4cIr9VYMqp3a+pEzShqpokjctZIcDbQytzsb8Uq/9DoiVu39LkmukFqhbKyZ71/tY1XVz14Q7Y7duGWDdeNH78HQmRm2HJYueI=
+	t=1731078404; cv=none; b=i8icngcNAmh+uV/lqa1CmH3L4Zd4fRUqXCMsALJ+kfwg4g6WERTlzKLlCXvIMcqgXV7YFyuyLsI7n88DTRSeDt9ox9jfU2Ht/DpfsZeS3iRy3I0aX7zfkJZm6jQWYSqPFE9ClNZNbVTboW5vMRpsB+nwcF/9KfHZ7cXF0Ci9lv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731078195; c=relaxed/simple;
-	bh=eO/169y/RDrJ9YFf2P0i4jCDwhotL6vp5e4BQUh08Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aktn2EKYLLKqcjxwdg0HNOSfZwOTe4P5tBaIJWsnsQp4/86Eh0jK937s/60eDujswFb5/IvybMy34+cJbUsiTTNKKqCV11R/nAa5jGNC+2XLXoQLJWIgUw3e0FIIANIs9RXa5ShPBP5O0Mcom+C2K74b1HV9ApaanxJAa3mY10I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMuNQ79/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731078404; c=relaxed/simple;
+	bh=vF2G2XyACIvsSkulftA7rR72gJvegVGLforyIY18JvQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=M27MEtyikZrnaOX4jrD/cfGiHbueZ6d4MUscm2P0c/v1EuGpYQSMk3ba6fmKuVnMJyYZr0Csk7bHXkvc8LPGAHep9mvMrt4l3JL+dKzjsdmZF/qz+LJf99jJxQgM9o/U9pLWsQJG+QRqRgZGFJYmAKZ8lvUuZ8ESF/wgn2XpsBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WMfNLYFx; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMuNQ79/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A969C4CECD;
-	Fri,  8 Nov 2024 15:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731078194;
-	bh=eO/169y/RDrJ9YFf2P0i4jCDwhotL6vp5e4BQUh08Iw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QMuNQ79/27UY+78SPsaXOTUTgmChvQM1sblExDs2MyIo6gzVtaOi2/9tPROLhgGDp
-	 VfooZ1SU52Oywiofrvj8hqvaQBuzX/Dcpxbcj9crqQInridQQ52kWefAH8j0TKw0oi
-	 R4B03kzPPX1Up+LhfpReqgOC+ev6RaVpW7DyhhyRehZp8W/y+QLfrhFFgPGyiCagww
-	 eHXDnXSKW0MRrA20zjE2X7rWz2T/s8A2E/Bw8cIh8xaR3k9W1nSGfm8m9ieEm3t9+R
-	 IEDKCjgMTXGkmc8F4OFfTk70gA1NYEXcpvkRe7EgZuILCmDk5syHZY004KBNh4/S2o
-	 BjEUbKAThKgIQ==
-Date: Fri, 8 Nov 2024 15:03:10 +0000
-From: Simon Horman <horms@kernel.org>
-To: Andrew Kreimer <algonell@gmail.com>
-Cc: Karsten Keil <isdn@linux-pingi.de>, Jakub Kicinski <kuba@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next v2] mISDN: Fix typos
-Message-ID: <20241108150310.GE4507@kernel.org>
-References: <20241102134856.11322-1-algonell@gmail.com>
- <20241106112513.9559-1-algonell@gmail.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WMfNLYFx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1731078400; x=1731683200; i=markus.elfring@web.de;
+	bh=JOfARLVE38xdD4X7k3gE07eqaFjFkpilj720vzhEGcA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WMfNLYFxJt79OBg7HkwD9xCYTn7lv8QV5hpwi8JBH9mnCYTkGy/Nha5thIlnVow8
+	 fw8hg6aEa5OXrnRj6eJtKVSWGJFpBsgevFzWVZp5KzDx06eaE+3Hg1/gkNxFQ6hT7
+	 wyzFyjKM46E3/n+EnMJAJoBpqU2rI7HUTwyFtOX2i6+tdk5hNgAhH7nEKM2mrCEgh
+	 GU6q+2HLdEq6nwwydz2iqHw47Zh9y/6B9ga8hB+f0Z8fF07oGVQqrY1e1/tsStpf8
+	 yneLqv1cyKVC4rx60XjapTqw/+meNrM/uO5v/mABe5SLiVv3GK/M6OMyoeAYWXgiG
+	 ZUPrsuIleKKbc7Cjxw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MI3ox-1t3cv40MOF-002hgR; Fri, 08
+ Nov 2024 16:00:37 +0100
+Message-ID: <55a08c90-df62-41cd-8ab9-89dc8199fbfb@web.de>
+Date: Fri, 8 Nov 2024 16:00:22 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106112513.9559-1-algonell@gmail.com>
+User-Agent: Mozilla Thunderbird
+To: Tuo Li <islituo@gmail.com>, netdev@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Ayush Sawal <ayush.sawal@chelsio.com>,
+ "David S. Miller" <davem@davemloft.net>, Dragos Tatulea
+ <dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Mina Almasry <almasrymina@google.com>,
+ Simon Horman <horms@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jia-Ju Bai <baijiaju1990@gmail.com>
+References: <20241030132352.154488-1-islituo@gmail.com>
+Subject: Re: [PATCH] chcr_ktls: fix a possible null-pointer dereference in
+ chcr_ktls_dev_add()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241030132352.154488-1-islituo@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:kRizR2CE4fCzYtaFmdK6fWkzWaTNaKl5lETEg6b12oEuk2Qc7YX
+ zHg7YkYxYUEQaWnzrVwDHRYaChkBWMzsOkpJ2ZgP8tsas765caPMtTbVD0haqetVWJlndUr
+ GxtixE/xPVEWW1Jq56bxRroXjmvbbprn50/89r/e2U7cL9ZgUgfOUt36zIpGaBq9bacMUrb
+ FMeV0kvgi3G0cHAp2EIOg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:p1ayU724K4s=;MI7hy6W1jp1yuzGTwEYRVY4vKga
+ AzQ09Bs+nlaJnb+4CgTdKZSSDE2pdqCi9fvCgT/RSv86UzRLOwlveKI3YdDCK5OigTT+i1M8a
+ UWCmi5708lmqigm+o8ISJ5bWpBQmLCSywKRXoBzJNckyldLWLACV6swOnTmZ2RusY6dMmb2Ma
+ ABlGDjW17Wf1X+mkkKOm2haj0wJtCvyZbwHxYct/d0nRw1BI8gRLsXjb75V7fTXCpAwna3x5u
+ 76cN4uGmZ2ItCc+3hVO6JShk5PnbW8tLhbnGcV58YqIkH7zHlIwhmwLKNJzkMwbYxF3oFlpOU
+ PDGbet6P5r3MRy0Hz9qnVogFeJZPHxZ9WfauwpYspFFL/a1Z2zWI0R7TEuqKhJvVEUyq6FOZV
+ Iesw9fwQIWyo942WRMXBDfEdqQao43jVlruM+5zqiKXL3QiJnoyrfp1aBOhGgenv37TN5uVgq
+ zj0VdC5uqX0dY3YzfqKdQqsx+nIdCwDlGgZfR1qniChUj5pryZBg/rGAa39o+2hVjG+HvOIhO
+ 7FeOu5kKpmwMtRHihQigc2Mf8rYelKPMoozjQJMQWWwY5AZ616Q9gnU1ZpsUMGmwfIpXJ8vod
+ waPmSZAwP0cECbMoM19WaJp3Veu5aQys67n5avnPWlAZAQ5gCdpnJrtzHTvQaAWRrTSZ3P6Xo
+ HDDqFzvShjPepU6hCv2XR/id3Beqg0GbzoTfSuqitXdU7yDzsljFVrX4vt6lDrtlfWXPN1sjr
+ tjON3rwZjsNu7y+dLBYEPHBtwOUNC7eaTOJVanCIbc/TndB5eo1ch8n8D8GcHyg16LcLrVU4V
+ P7XY7cfT4k5ZGYlAA4zvp/aw==
 
-On Wed, Nov 06, 2024 at 01:24:20PM +0200, Andrew Kreimer wrote:
-> Fix typos:
->   - syncronized -> synchronized
->   - interfacs -> interface
->   - otherwhise -> otherwise
->   - ony -> only
->   - busses -> buses
->   - maxinum -> maximum
-> 
-> Via codespell.
-> 
-> Reported-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Andrew Kreimer <algonell@gmail.com>
-> ---
-> v1:
->   - Fix typos in printk messages.
->   - https://lore.kernel.org/netdev/20241102134856.11322-1-algonell@gmail.com/
-> 
-> v2:
->   - Address all non-false-positive suggestions, including comments.
->   - The syncronized ==> synchronized suggestions for struct hfc_multi were skipped.
+=E2=80=A6
+> Consider the following execution scenario:
+>
+>   chcr_ktls_cpl_act_open_rpl()   //641
+>     u_ctx =3D adap->uld[CXGB4_ULD_KTLS].handle;   //686
+>     if (u_ctx) {  //687
+>     complete(&tx_info->completion);  //704
+>
+> The variable u_ctx is checked by an if statement at Line 687, which mean=
+s
+> it can be NULL. Then, complete() is called at Line 704, which will wake
+> up wait_for_completion_xxx().
+=E2=80=A6
 
-Thanks Andrew.
+To which software revision would you like to refer here?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+How does the presented information fit to a statement like the following?
+https://elixir.bootlin.com/linux/v6.12-rc6/source/drivers/net/ethernet/che=
+lsio/inline_crypto/ch_ktls/chcr_ktls.c#L442
 
+	if (u_ctx && u_ctx->detach)
+		goto out;
+
+
+Would you eventually like to trace the control flow back any further
+for the data structure member =E2=80=9Chandle=E2=80=9D?
+
+Regards,
+Markus
