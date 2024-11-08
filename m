@@ -1,84 +1,121 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D88EBE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA3A1C36
 	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 00:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731027072; cv=none; b=CCcfBPTePuf9NHCNJtx0il4TocoEhPtlmvr7k7WkPAKVatZH0vIO5zo2/xTJSegMngxWFR2n4CgPjGxSCwHvXH98DpWZ45JtpZitp75gwViFxJCOwAjFzkFWXNv9lBRMWY5y4hkDjTzzxF7FIU0hgo/KkUbgwbPNNwKbnq/7fYY=
+	t=1731027072; cv=none; b=WYDFcjStYlgbFkNTATdqZhrVixXgh4XkkDqSWDIILwjrFLrr+oSCf0MGfgeTL7b4f3mG2+Dp+0cZpMrEgMVhViUbPF78Ly1bqV4DrH1XObFuCFEkCQOjaf3IAdY+xsGkqgVx5m+Ki1V6G5WS0qNtwM3ANcmXUqTHu/nMeh5tQ1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731027072; c=relaxed/simple;
-	bh=EkvZN+fvO8IPHhMIs/eiPJd3rH5DKawZfnHv8lL32rY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VzXUw3HHVBApZPZ+ovwxP3GH1rp/vsqh46p5wug/pexQx1V85Tggh5WhsmR1u7O4PBcxxt5/1bq7DkbaWsHItkj0zdCDaDA5eijh2F3baKW/5ijL3BYwAyWKrReCWdWSYJM9SsU/3kTiK3C8I1DWy3ybW2qy+Exco7wp/E/qFi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=MsKfIE2e; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	bh=TipeN/Zwk+vqXfiwTMHk+ohfesChlz1qMgMCwG0qgCI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RB1VvdiskYGQvacwswA/YpFCkfAvPvc3qDJzLBTxjI25FniVdhPqNcLv4NdFEkxhet6MBEmSFufRTMa5QaqUb80iPds3H6p/fctR1n61R1BTZThnWIVJQThRa4awnSOLLTPBvgwqGLe8PJtpgd3DOBXbinPdecwrR6VtW4FTVg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=qhs3Z0/2; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="MsKfIE2e"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-720cb6ac25aso1377906b3a.3
-        for <netdev@vger.kernel.org>; Thu, 07 Nov 2024 16:51:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="qhs3Z0/2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1731027069; x=1731631869; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t27cfroJH9TB7hdPF1HXEo14qpInzcrC+NjZSGpkhsY=;
-        b=MsKfIE2eQ6Ixmxke7GuYPBz/pzN7SH22dJGHPTww0gICxOhzb3riOGBU6RAGJcHvkB
-         HUzxIWT8qJ8Rkkt4LzUg5+hIQ+MT8ZEnR4phKYKfc4cVRt6NdtKBnWAzKu9qIHDIWRQK
-         5nscjoVb+LW4g1J3uNCNDaqptxLu5cWjmIJ1w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731027069; x=1731631869;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t27cfroJH9TB7hdPF1HXEo14qpInzcrC+NjZSGpkhsY=;
-        b=c5xRSnRl2A2IHJMe7V8LRcyJJ/4wSZ4m3ZrrimdcekfzJ7D39tTMglt4MTK56jevrs
-         Wh8Txp143DxUwSh8z+Im6EgeBkBreLJ2gcpWT1slEXWKFtoXD2vfZki7Fd4Rd6ki3/Dk
-         rG80ViO5Kwg2HHdCgb8htFf3GAPVd40dXf2dtEX4+mlYFCDfBpUlolka84k1nh4oXJy2
-         7zS/jvO4y6+9bnunuFP5TmCWH6+abmxaW4V2WO/zq3f7HVm2at1hBNS6y7BOH+QRoYVG
-         oeLe4rvqgyVtGeGJnLf1EgoPze0DBRkDuyqkglLoBaJv9mEcaTCBU+LqtACVf5aHp6hr
-         ZmGg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3dK/dewj9V4GYl3M4TLRSS7pWykyd1R6ad+R16ZsGiboShv16tL7a5CQl86liDbrq3LTZp1c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGtABPf1xt6KfJpOAbWZPsyiLDEaC+blO5e+BBybHUocEPLE+Y
-	+MunRG1UT2Nbe+PznB2r13/Vy5UETgOni86RoSjhszFEOrN62/UiXMSlxaUtzDg=
-X-Google-Smtp-Source: AGHT+IHzdIIPWkhaAcJNvQciv1I9zIZrwsClPf3ctLTBzdJQTyACpRdQesFQwnWyhOfFjXzjcmFLVA==
-X-Received: by 2002:aa7:8882:0:b0:71e:6c67:2ebf with SMTP id d2e1a72fcca58-724132bff58mr1432070b3a.11.1731027069522;
-        Thu, 07 Nov 2024 16:51:09 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724078ce1cbsm2391043b3a.87.2024.11.07.16.51.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 16:51:09 -0800 (PST)
-Date: Thu, 7 Nov 2024 16:51:06 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH net] selftests: net: add netlink-dumps to .gitignore
-Message-ID: <Zy1geqWubYmrYGjk@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com
-References: <20241108004731.2979878-1-kuba@kernel.org>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1731027072; x=1762563072;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=aGI/kgULl8F92GmH6o8NgXptxFo5MZCAVjnjSbjhhz4=;
+  b=qhs3Z0/2gDQsK4GtcHwrkXNgM9pQOeB93rbdaNcorIZtVo1X/7dFDvFt
+   2/IXa0MW+Q3GrhuNeCrXNfYZMb+tc2jKwUY9gzOjzqKaQeHGgQWlW5YG9
+   xsKmfDpfBpICrlZhj/aEw5OWxScwpOMoUeiebLni2Nn4+EpZBojPRrwhH
+   8=;
+X-IronPort-AV: E=Sophos;i="6.12,136,1728950400"; 
+   d="scan'208";a="39875554"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 00:51:10 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:7242]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.1.168:2525] with esmtp (Farcaster)
+ id 96dfa6a4-5b6d-40a3-ac22-efe39daf5528; Fri, 8 Nov 2024 00:51:08 +0000 (UTC)
+X-Farcaster-Flow-ID: 96dfa6a4-5b6d-40a3-ac22-efe39daf5528
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Fri, 8 Nov 2024 00:51:08 +0000
+Received: from 6c7e67c6786f.amazon.com (10.187.170.59) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Fri, 8 Nov 2024 00:51:05 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Marc Kleine-Budde
+	<mkl@pengutronix.de>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: [PATCH RESEND v3 net-next 08/10] netkit: Set IFLA_NETKIT_PEER_INFO to netkit_link_ops.peer_type.
+Date: Thu, 7 Nov 2024 16:48:21 -0800
+Message-ID: <20241108004823.29419-9-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241108004823.29419-1-kuniyu@amazon.com>
+References: <20241108004823.29419-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241108004731.2979878-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Thu, Nov 07, 2024 at 04:47:31PM -0800, Jakub Kicinski wrote:
-> Commit 55d42a0c3f9c ("selftests: net: add a test for closing
-> a netlink socket ith dump in progress") added a new test
-> but did not add it to gitignore.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  tools/testing/selftests/net/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
-> 
+For per-netns RTNL, we need to prefetch the peer device's netns.
 
-Reviewed-by: Joe Damato <jdamato@fastly.com> 
+Let's set rtnl_link_ops.peer_type and accordingly remove duplicated
+validation in ->newlink().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ drivers/net/netkit.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+index cd8360b9bbde..bb07725d1c72 100644
+--- a/drivers/net/netkit.c
++++ b/drivers/net/netkit.c
+@@ -351,12 +351,7 @@ static int netkit_new_link(struct net *src_net, struct net_device *dev,
+ 		if (data[IFLA_NETKIT_PEER_INFO]) {
+ 			attr = data[IFLA_NETKIT_PEER_INFO];
+ 			ifmp = nla_data(attr);
+-			err = rtnl_nla_parse_ifinfomsg(peer_tb, attr, extack);
+-			if (err < 0)
+-				return err;
+-			err = netkit_validate(peer_tb, NULL, extack);
+-			if (err < 0)
+-				return err;
++			rtnl_nla_parse_ifinfomsg(peer_tb, attr, extack);
+ 			tbp = peer_tb;
+ 		}
+ 		if (data[IFLA_NETKIT_SCRUB])
+@@ -391,9 +386,6 @@ static int netkit_new_link(struct net *src_net, struct net_device *dev,
+ 		return -EOPNOTSUPP;
+ 
+ 	net = rtnl_link_get_net(src_net, tbp);
+-	if (IS_ERR(net))
+-		return PTR_ERR(net);
+-
+ 	peer = rtnl_create_link(net, ifname, ifname_assign_type,
+ 				&netkit_link_ops, tbp, extack);
+ 	if (IS_ERR(peer)) {
+@@ -978,6 +970,7 @@ static struct rtnl_link_ops netkit_link_ops = {
+ 	.fill_info	= netkit_fill_info,
+ 	.policy		= netkit_policy,
+ 	.validate	= netkit_validate,
++	.peer_type	= IFLA_NETKIT_PEER_INFO,
+ 	.maxtype	= IFLA_NETKIT_MAX,
+ };
+ 
+-- 
+2.39.5 (Apple Git-154)
+
