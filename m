@@ -1,88 +1,86 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D517DA95;
-	Fri,  8 Nov 2024 08:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B141F5FA;
+	Fri,  8 Nov 2024 08:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731053462; cv=none; b=MKyIVmY+BsvDXhrJUhavLLlJJ7SGFtu6/XOTvOwTTSEZPsIZr+gFDT+c3D2H5ThoOS14CIsSkjZ9kB5EqrtWBKCDcQTYfNVc9nKdJauAz8dCbXm1D5hMUuLkd4cwNfFu3IFr6g1tNCf9j149eQTt6sCYGrZPp9kNuoP9lXLSJyg=
+	t=1731053738; cv=none; b=WTIy7aDYECh++A9MnJiRlcsiiKp2R9z/tUjnSQ+Djixq1YAhD+9ZhPRoJElxhQyTwM7SnlZA4PhFyFgmZQPtaIhbZYIBeWGsRe35CAMa8q0ub6OGxR3n71P6w/i4x2urGBQjZ7Y8pXBvegAhxAtLnoC4huULJSOjF9iJWxQGs8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731053462; c=relaxed/simple;
-	bh=cRdY/ye+3agJ02o6hil39dpSqzUS9DutLmgp5HUYkK0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GCu/JJuacVoT8yyZKwGyaygmRkAgXFnKXn6GtvtUvu2HEftsXpFkhDa4yfZQerblelFBmQ+1lXXn2stGo1w6Lhq5LFEn3AQxiJ9UI/tv6Wlp2QCm3OHf74/N/oc636ZckW1XxlVdmZx/syvhbU/ke1A2nb3TfCcAgM3ICAZ1my8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=bNaTsDHG; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="bNaTsDHG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1731053452;
-	bh=cRdY/ye+3agJ02o6hil39dpSqzUS9DutLmgp5HUYkK0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bNaTsDHG8znmHdUOCeji9LJUUP5buLzrb+QyOLt8KeKMSW3Fs7JljiTlwu/wOqPcR
-	 6SLwGgUnqnjkXM1z+GigY+LdYu7I2TRx4lGbqr+aOQ3PGxyjeO6MKRBQsREiTK99mD
-	 KA6F1fb4a+yWvCjD00z/nQtxQJDTa8+DY2aF4e4nnXP3ayM4FL7eA+5cwWUVrBPoGz
-	 38LrpWziZCeGHnBf08uBN+VWUBmkRvQDzWDK33K8rmBRg1mPiuItnRG1xecuqEQVSk
-	 nUnXZAZ6qjY5a4DjtLhjWWI8gfqEdHlDAR/pa1B8Vlfg4zvyMWUQ3MCpuaq05szE6E
-	 fL7VIAcuqCztQ==
-Received: from pecola.lan (unknown [159.196.93.152])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 4B2ED6A95A;
-	Fri,  8 Nov 2024 16:10:50 +0800 (AWST)
-Message-ID: <84fa07f08bce8af2018e4f81949d227c9b97fe0c.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next] net: mctp: Expose transport binding identifier
- via IFLA attribute
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: Jakub Kicinski <kuba@kernel.org>, Khang Nguyen
-	 <khangng@os.amperecomputing.com>
-Cc: Matt Johnston <matt@codeconstruct.com.au>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, 
- ampere-linux-kernel@lists.amperecomputing.com, Phong Vo
- <phong@os.amperecomputing.com>, Thang Nguyen
- <thang@os.amperecomputing.com>,  Khanh Pham <khpham@amperecomputing.com>,
- Phong Vo <pvo@amperecomputing.com>, Quan Nguyen
- <quan@os.amperecomputing.com>, Chanh Nguyen <chanh@os.amperecomputing.com>,
-  Thu Nguyen <thu@os.amperecomputing.com>, Hieu Le
- <hieul@amperecomputing.com>, openbmc@lists.ozlabs.org, 
- patches@amperecomputing.com
-Date: Fri, 08 Nov 2024 16:10:49 +0800
-In-Reply-To: <20241107204157.683bca11@kernel.org>
-References: <20241105071915.821871-1-khangng@os.amperecomputing.com>
-	 <20241107204157.683bca11@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1731053738; c=relaxed/simple;
+	bh=HHHyiUWdL+mT8XT8mOSl8Zd9IRBTVbg2Xlu2B1EnlZM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tzuTDkyW29VIMiKVMJgluWR9YkPpqmrOrQZVvhiFrsihLsBqZ+kfp3b5yJSI+2MtFkos3nUj+eGX72u6GDZmAB6hRtNqj1mpJhw7OhJ2Xs07cBLClnaxdhTWjFAZbSG2FsuNTJ7nKJai5URS0qkDSXhXnU08cky/ej7u5yu+Cik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XlBZP31Qnz4f3jXc;
+	Fri,  8 Nov 2024 16:15:09 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 77D8A1A07BA;
+	Fri,  8 Nov 2024 16:15:27 +0800 (CST)
+Received: from k01.huawei.com (unknown [10.67.174.197])
+	by APP1 (Coremail) with SMTP id cCh0CgAXDK6eyC1nOEOhBA--.5950S2;
+	Fri, 08 Nov 2024 16:15:27 +0800 (CST)
+From: Xu Kuohai <xukuohai@huaweicloud.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Kui-Feng Lee <thinker.li@gmail.com>
+Subject: [PATCH bpf-next 0/2] Fix release of struct_ops map
+Date: Fri,  8 Nov 2024 16:26:31 +0800
+Message-Id: <20241108082633.2338543-1-xukuohai@huaweicloud.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgAXDK6eyC1nOEOhBA--.5950S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruFy3tF43KF1kWr48Xw4DCFg_yoW3urbE9w
+	43KrykGw43G3WFyFW5Cr13WFZ2g39xKryUZF1DXasrXrn8trn8AF4kCrsxKa45ZrWfGFya
+	vw1kX34I9r1aqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbaxYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVWUtVW8ZwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
+	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
+	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
+	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYx
+	BIdaVFxhVjvjDU0xZFpf9x07jeLvtUUUUU=
+X-CM-SenderInfo: 50xn30hkdlqx5xdzvxpfor3voofrz/
 
-Hi Jakub,
+From: Xu Kuohai <xukuohai@huawei.com>
 
-> > However, we currently have no means to get this information from
-> > MCTP links.
->=20
-> I'm not opposed to the netlink attribute, but to be clear this info=20
-> is indirectly available in sysfs, right? We link the netdev to=20
-> the parent device so the type of /sys/class/net/$your_ifc/device
-> should reveal what the transport is?
+This series fix a bug I found when doing rcu waiting cleanup for struct_ops
+map. When there is sleepable prog in struct_ops map, the map risks being
+released while the prog is still running.
 
-It's likely derivable from the parent device, but requires some
-heuristics in userspace to map this to a transport type.
+Xu Kuohai (2):
+  bpf: Fix release of struct_ops map
+  selftests/bpf: Add test for struct_ops map release
 
-Having a well-defined place to provide the DMTF-specified transport
-identifier makes this a little more straightforward to determine which
-spec we're dealing with, for any transport-specific behaviour. For
-example, some bus types require endpoints to announce their presence,
-others do not.
+ kernel/bpf/bpf_struct_ops.c                   |  37 +++--
+ kernel/bpf/syscall.c                          |   7 +-
+ .../selftests/bpf/bpf_testmod/bpf_testmod.c   |  78 ++++++---
+ .../bpf/bpf_testmod/bpf_testmod_kfunc.h       |   2 +-
+ .../bpf/prog_tests/test_struct_ops_module.c   | 154 ++++++++++++++++++
+ .../bpf/progs/struct_ops_map_release.c        |  30 ++++
+ 6 files changed, 267 insertions(+), 41 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_map_release.c
 
-Cheers,
-
-
-Jeremy
+-- 
+2.39.5
 
