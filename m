@@ -1,52 +1,78 @@
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899E53DABE4;
-	Fri,  8 Nov 2024 17:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB6D1AA1DC
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 17:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731087228; cv=none; b=sIYZq7QARBdWcsH556cUYo223dKrlajZ4/HDqIywdl9COOxEFwQ8j/D2u8Pxl8aczg+B3VJGslsVZ/PI9o7jKegqRMXdMcoiODoKlejG6NNsJAGrG1BJdgQ6RJNwq5ycf+vvYzu6ZCmZfWbMlclfIJbH2rsbUwHtxPNG/VFVG8g=
+	t=1731087235; cv=none; b=N/218ecPJAoSzmqIz2B6Yj85/+1pelrNzNjDMs+18TjxGi/vKX96g+GYyqLWvs59j++jsiMYnCjy/vSuyL4vfKW2VFDKWOeqN6x0TkQpEqRZqoIsHZXA8JemFVE7qQQYd8LCF48tlpAG4o7bkoJgzifwWEo4LBPTo/s2+gh67HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731087228; c=relaxed/simple;
-	bh=uRcRjz02RjtoR9Frpy86rs9dJ32/WD+uzrhERUyBgzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IJCknYDWI8STkNPpBhNc8DWB7duZ0m4GO6E8b1Ut3T++RmXg4NDl+P+nG0b15yyIQnW/1Zz1bDfokJL2cjpmuYqhxJoIYctb5Sb+GBW5sSMw5UT/vfUGK1WIeq53IhN9Nxs8yFYC8O7z2maNUln2cBKx+A1YiHznA2TR88GZtG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=F5kOF/Oa; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+	s=arc-20240116; t=1731087235; c=relaxed/simple;
+	bh=9SCEKbNtvAFB8fJZcHIRQXCI/OprF81chlgQt47QcC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lTyCJL+GbOzDZ7inK8fFm9qHvZ4/4dG7cfEpVLgciTQvuwWJaxQkU2honWmkMVJxqQAjU0TrsX/RKR0iPwjsv5MyplCYUyxYxjE3hKLfUz9LQ4oDT2dOrXQFXBTpz2+1n55VpY6oHo0YzINOACq/X2g4H6bDyPGW4nxSyFYCOHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d4A1VYLl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="F5kOF/Oa"
-Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
-	by mail.ispras.ru (Postfix) with ESMTPSA id E969740B2274;
-	Fri,  8 Nov 2024 17:33:40 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru E969740B2274
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1731087221;
-	bh=3QYrsrBPYW43jQDvfadZZ/SbvlgS981KQOnirhhBRvU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=F5kOF/OaGdZSfFauj5TVSIstfJVU3lTPNTDHweGefjpPXpJ0XtnIpVTv1ULCVKRov
-	 PD1zkrsBF3jPlQfslBxcFO3SizMaSk+ggashI9VbDmg/EmGK1EJbDK9lz0pdeW5tyC
-	 jdFv4KDgaz8GCIsg5WJfS3SLQjxa0Lw0gdMSRuwE=
-From: Vitalii Mordan <mordan@ispras.ru>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d4A1VYLl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731087231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X3twVFG043O59vporSoGB49KW0yXOb7j0HiRw4sYWo4=;
+	b=d4A1VYLlHYmdWopWybETbdOWBK/wmF7lbpips5wh5b1033GJdru8H4gPmmM0vB6GrIpyVE
+	SfdsRjpeuwnhxKY63CEbOKwCubXujpK4p8oA901EtstD63kmfOcQHWLhaIwgN3tRzhjoSw
+	RlhQ0mSskTcsRQUPCldTQy4NqTQm0h0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-FSV-RnZqPOKXNkdbjeBNgw-1; Fri,
+ 08 Nov 2024 12:33:48 -0500
+X-MC-Unique: FSV-RnZqPOKXNkdbjeBNgw-1
+X-Mimecast-MFC-AGG-ID: FSV-RnZqPOKXNkdbjeBNgw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 56B4C19541AE;
+	Fri,  8 Nov 2024 17:33:45 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C24C41956054;
+	Fri,  8 Nov 2024 17:33:38 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Vadim Mutilin <mutilin@ispras.ru>
-Subject: [PATCH net v2]: stmmac: dwmac-intel-plat: fix call balance of tx_clk handling routines
-Date: Fri,  8 Nov 2024 20:33:34 +0300
-Message-Id: <20241108173334.2973603-1-mordan@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+	linux-cachefs@redhat.com
+Subject: [PATCH v4 08/33] netfs: Make netfs_advance_write() return size_t
+Date: Fri,  8 Nov 2024 17:32:09 +0000
+Message-ID: <20241108173236.1382366-9-dhowells@redhat.com>
+In-Reply-To: <20241108173236.1382366-1-dhowells@redhat.com>
+References: <20241108173236.1382366-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,89 +80,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-If the clock dwmac->tx_clk was not enabled in intel_eth_plat_probe,
-it should not be disabled in any path.
+netfs_advance_write() calculates the amount of data it's attaching to a
+stream with size_t, but then returns this as an int.  Switch the return
+value to size_t for consistency.
 
-Conversely, if it was enabled in intel_eth_plat_probe, it must be disabled
-in all error paths to ensure proper cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: 9efc9b2b04c7 ("net: stmmac: Add dwmac-intel-plat for GBE driver")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cachefs@redhat.com
+cc: linux-fsdevel@vger.kernel.org
+cc: linux-mm@kvack.org
 ---
-v2: Unwind using a goto label, as per Simon Horman's request.
+ fs/netfs/internal.h    | 6 +++---
+ fs/netfs/write_issue.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
- .../stmicro/stmmac/dwmac-intel-plat.c         | 25 +++++++++++++------
- 1 file changed, 17 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-index d68f0c4e7835..9739bc9867c5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
-@@ -108,7 +108,12 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 			if (IS_ERR(dwmac->tx_clk))
- 				return PTR_ERR(dwmac->tx_clk);
- 
--			clk_prepare_enable(dwmac->tx_clk);
-+			ret = clk_prepare_enable(dwmac->tx_clk);
-+			if (ret) {
-+				dev_err(&pdev->dev,
-+					"Failed to enable tx_clk\n");
-+				return ret;
-+			}
- 
- 			/* Check and configure TX clock rate */
- 			rate = clk_get_rate(dwmac->tx_clk);
-@@ -119,7 +124,7 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 				if (ret) {
- 					dev_err(&pdev->dev,
- 						"Failed to set tx_clk\n");
--					return ret;
-+					goto err_tx_clk_disable;
- 				}
- 			}
- 		}
-@@ -133,7 +138,7 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 			if (ret) {
- 				dev_err(&pdev->dev,
- 					"Failed to set clk_ptp_ref\n");
--				return ret;
-+				goto err_tx_clk_disable;
- 			}
- 		}
- 	}
-@@ -149,12 +154,15 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
--	if (ret) {
--		clk_disable_unprepare(dwmac->tx_clk);
--		return ret;
--	}
-+	if (ret)
-+		goto err_tx_clk_disable;
- 
- 	return 0;
-+
-+err_tx_clk_disable:
-+	if (dwmac->data->tx_clk_en)
-+		clk_disable_unprepare(dwmac->tx_clk);
-+	return ret;
- }
- 
- static void intel_eth_plat_remove(struct platform_device *pdev)
-@@ -162,7 +170,8 @@ static void intel_eth_plat_remove(struct platform_device *pdev)
- 	struct intel_dwmac *dwmac = get_stmmac_bsp_priv(&pdev->dev);
- 
- 	stmmac_pltfr_remove(pdev);
--	clk_disable_unprepare(dwmac->tx_clk);
-+	if (dwmac->data->tx_clk_en)
-+		clk_disable_unprepare(dwmac->tx_clk);
- }
- 
- static struct platform_driver intel_eth_plat_driver = {
--- 
-2.25.1
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index ccd9058acb61..6aa2a8d49b37 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -178,9 +178,9 @@ void netfs_reissue_write(struct netfs_io_stream *stream,
+ 			 struct iov_iter *source);
+ void netfs_issue_write(struct netfs_io_request *wreq,
+ 		       struct netfs_io_stream *stream);
+-int netfs_advance_write(struct netfs_io_request *wreq,
+-			struct netfs_io_stream *stream,
+-			loff_t start, size_t len, bool to_eof);
++size_t netfs_advance_write(struct netfs_io_request *wreq,
++			   struct netfs_io_stream *stream,
++			   loff_t start, size_t len, bool to_eof);
+ struct netfs_io_request *netfs_begin_writethrough(struct kiocb *iocb, size_t len);
+ int netfs_advance_writethrough(struct netfs_io_request *wreq, struct writeback_control *wbc,
+ 			       struct folio *folio, size_t copied, bool to_page_end,
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 993cc6def38e..c186221b45c0 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -271,9 +271,9 @@ void netfs_issue_write(struct netfs_io_request *wreq,
+  * we can avoid overrunning the credits obtained (cifs) and try to parallelise
+  * content-crypto preparation with network writes.
+  */
+-int netfs_advance_write(struct netfs_io_request *wreq,
+-			struct netfs_io_stream *stream,
+-			loff_t start, size_t len, bool to_eof)
++size_t netfs_advance_write(struct netfs_io_request *wreq,
++			   struct netfs_io_stream *stream,
++			   loff_t start, size_t len, bool to_eof)
+ {
+ 	struct netfs_io_subrequest *subreq = stream->construct;
+ 	size_t part;
 
