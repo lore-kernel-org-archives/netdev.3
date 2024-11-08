@@ -1,99 +1,131 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7141E0B82;
-	Fri,  8 Nov 2024 09:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A2B1E00AC
+	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 09:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731056418; cv=none; b=NcznuYTNo4X7hC68SEpYCWECHvZkSpqhpJflq5CpMLbmjDoGfT5XunSN75q4x7UVRei2G7jtxEVlZJndTRLiRm5gboVyjqIl5gtTK05xEXLsXmkfnoVf50dyKQkt8x4sRW8cfkt/tXQ715ofoeqFn6NGMgx4gfJPqZVZk5ayrBg=
+	t=1731056827; cv=none; b=HMrDXO+4ZqwoWu7OSsKic5oi77CdIAXyl7k/glFqqG44sVyg9oBuoxgrdy8XpfRxjuf6q0crGjlux/21DVyFXjV4Gg+Zmw8vK/bjGKpU6vVTHkbsLrglGPD1yi13qEmBAWnxYesHleH14gvXFBEFflocIZGqFw/cy7OUIxux/q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731056418; c=relaxed/simple;
-	bh=0RV4BRrDPu9fzqimtYkCGhm8dxWaki2Xe2w2Vb0cDQM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rkvxAxdtMWV05xBcJaegTbk6XrUZ+txkMCjoe5hd+GpwskqHrhlJVoEIByidTizlGRu5TZRwgFtX/1SKIc2k1qPnNfq4NcUpRfJukeWD9Fd0yv90vgO/hky81acQl5pik9ldJiBLm66cDPcWcRrzv2flrLkio1Aipi5nNqL9cj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UNnxvySE; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1731056827; c=relaxed/simple;
+	bh=tCRTECuS56PuG0XEhbPkWcB/4w7m3WsRYVRHywqp/mM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOMRRFubacb95jtNYLWrJlZJwIJj2gAsmgIrICsRjNHLcDvlp0QkRmEP7k/qEcVB6uYNEiHXy1H4mIFvHLrULNQgk8DFIgNnED+OzSbdJjreXl7eewZQkJfk0uyU58ALP9SVB/BmhQuU3mMludlce6urhhG8D7uRBoox1M+YuKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=MlPkkLpg; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UNnxvySE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731056416; x=1762592416;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0RV4BRrDPu9fzqimtYkCGhm8dxWaki2Xe2w2Vb0cDQM=;
-  b=UNnxvySE+dSEzp8niNbW5zasK//WIdY/LnxTERRzVakH/T8hX8mn/C1h
-   8WEOcthRml8ykI2tfdjiUlfbGKxGkXS3gAk+RPK145MOhW8MxezyGUa66
-   OHIOhGuJZ4GR7hOM+x2LNyiU6mVYN3Ol07YeoRj11VNng5yZZ8gJxpawd
-   1UY5zZU8piRXUJORAFBHNNtMUHRVu0pRbibEGmg2hcjdBZBozou4C/shG
-   nFTaJgNxhv67ZkkMMuaamyB5YwlfwmaomuD2dgD1Myw4CyShVxyh33Tfz
-   gS+X3apw53IT/59ew12rsVSoHV10c7tXVdBdCrfEABd5bDqvNWBxakNXt
-   A==;
-X-CSE-ConnectionGUID: HVTPMN6wSQqpa45vmMRqjw==
-X-CSE-MsgGUID: +GH327iKRSSLSExU7iDt1w==
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="34564944"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Nov 2024 02:00:15 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Nov 2024 01:59:59 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Fri, 8 Nov 2024 01:59:56 -0700
-Date: Fri, 8 Nov 2024 08:59:56 +0000
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lars
- Povlsen" <lars.povlsen@microchip.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Russell King <linux@armlinux.org.uk>,
-	<jacob.e.keller@intel.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next 3/7] net: sparx5: use is_port_rgmii() throughout
-Message-ID: <20241108085956.pr23rcnkhleoesnl@DEN-DL-M70577>
-References: <20241106-sparx5-lan969x-switch-driver-4-v1-0-f7f7316436bd@microchip.com>
- <20241106-sparx5-lan969x-switch-driver-4-v1-3-f7f7316436bd@microchip.com>
- <4748d3a9-55e8-48f9-b281-60ec619bf304@lunn.ch>
+	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="MlPkkLpg"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71e4e481692so1753322b3a.1
+        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 01:07:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=theori.io; s=google; t=1731056825; x=1731661625; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=44W+od+4Yj44lPCffhrCXmOWnGyYVQpu4XgVvCES24c=;
+        b=MlPkkLpgSosJb6IgmfmHVjZzGWpWDjipU3ZqOkQNMKaboMaZQYfEUVKBGcZLY972/V
+         ox5J5mxyjAV8AdD49lOkGaW7YaCz+UGcGvaAb+mUG75k42vZygRFF2r1GwdKSm0Ju45/
+         Two6B1eGRrFtzZJUkuwKYrSyp2CaPcnawHHq0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731056825; x=1731661625;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=44W+od+4Yj44lPCffhrCXmOWnGyYVQpu4XgVvCES24c=;
+        b=lrRR9eL8KCCpwCL/6FjYZG/IDViTPm/2y9umge4KVm+cZVor5R1gHGN5l52hZbJEHg
+         l0nnbkuyGymA5D2Hsk/vISUF7XMRyWBkYlIhgK4dK8TMZsFIfZmoX8d6BoccjO4fmKhs
+         5EMjhD01uKL2Nvo0ZQXJXI5zGUMTlwlxANlyI1Ky0YaB15q4TCeHIUmp+jUOvDDGrYfG
+         Ib+0mbv/wgpoGXZwffvqevcqfmHlwYbXcx+JNINpMEu7zvkdIBZRNfS34Jo30Od8I/27
+         G504m2toh/jCv7LsDOWjgMAgEvzGKGb7icRaF/4gbsgSIoAxLXspTVxU5kk4ZAIIhcMY
+         w3DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUzM7Phbbg2Dxr0jt1yklb/f/BOaeWSeGRyl0rvYvlJQy/bumia+NN0MAvs6+GV/bUGI/76ss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFu/asGsBbjndSkvpcM++xv7EhNJj/hhRWwRdeYqjoZYItzGDA
+	VDDVR38XP9Lh/rXGrR51oTSrUWl5MQDxlF3VTLVkZZUJ8GQAZCAn0efgLbwk1IU=
+X-Google-Smtp-Source: AGHT+IGs2h9aoaNLPBgS2eNHAD6WOasiHa5cVuBEaFX3KEKt97iNL+blz8xVKFhfPMU3uRT2FvPq3Q==
+X-Received: by 2002:a05:6a20:9146:b0:1db:eb82:b22f with SMTP id adf61e73a8af0-1dc2289cf20mr2498608637.5.1731056825165;
+        Fri, 08 Nov 2024 01:07:05 -0800 (PST)
+Received: from v4bel-B760M-AORUS-ELITE-AX ([211.219.71.65])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a151ddsm3224445b3a.146.2024.11.08.01.07.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 01:07:04 -0800 (PST)
+Date: Fri, 8 Nov 2024 04:06:59 -0500
+From: Hyunwoo Kim <v4bel@theori.io>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Stefano Garzarella <sgarzare@redhat.com>, jasowang@redhat.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	gregkh@linuxfoundation.org, imv4bel@gmail.com, v4bel@theori.io
+Subject: Re: [PATCH v2] hv_sock: Initializing vsk->trans to NULL to prevent a
+ dangling pointer
+Message-ID: <Zy3Us4AV9DsgWAQO@v4bel-B760M-AORUS-ELITE-AX>
+References: <Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX>
+ <20241107112942.0921eb65@kernel.org>
+ <20241107163942-mutt-send-email-mst@kernel.org>
+ <20241107135233.225de6d6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4748d3a9-55e8-48f9-b281-60ec619bf304@lunn.ch>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241107135233.225de6d6@kernel.org>
 
-Hi Andrew,
+Dear,
 
-> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-> > @@ -1087,6 +1087,9 @@ int sparx5_port_init(struct sparx5 *sparx5,
-> >                ANA_CL_FILTER_CTRL_FILTER_SMAC_MC_DIS,
-> >                sparx5, ANA_CL_FILTER_CTRL(port->portno));
-> >
-> > +     if (ops->is_port_rgmii(port->portno))
-> > +             return 0;
-> > +
-> >       /* Configure MAC vlan awareness */
-> >       err = sparx5_port_max_tags_set(sparx5, port);
-> >       if (err)
+On Thu, Nov 07, 2024 at 01:52:33PM -0800, Jakub Kicinski wrote:
+> On Thu, 7 Nov 2024 16:41:02 -0500 Michael S. Tsirkin wrote:
+> > On Thu, Nov 07, 2024 at 11:29:42AM -0800, Jakub Kicinski wrote:
+> > > On Wed, 6 Nov 2024 04:36:04 -0500 Hyunwoo Kim wrote:  
+> > > > When hvs is released, there is a possibility that vsk->trans may not
+> > > > be initialized to NULL, which could lead to a dangling pointer.
+> > > > This issue is resolved by initializing vsk->trans to NULL.
+> > > > 
+> > > > Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
+> > > > Cc: stable@vger.kernel.org  
+> > > 
+> > > I don't see the v1 on netdev@, nor a link to it in the change log
+> > > so I may be missing the context, but the commit message is a bit
+> > > sparse.
+> > > 
+> > > The stable and Fixes tags indicate this is a fix. But the commit
+> > > message reads like currently no such crash is observed, quote:
+> > > 
+> > >                           which could lead to a dangling pointer.
+> > >                                 ^^^^^
+> > >                                      ?
+> > > 
+> > > Could someone clarify?  
+> > 
+> > I think it's just an accent, in certain languages/cultures expressing
+> > uncertainty is considered polite. Should be "can".
 > 
-> That looks odd. What has RGMII to do with MAC VLAN awareness?
-> Maybe it just needs a comment?
+> You're probably right, the issue perhaps isn't the phrasing as much 
+> as the lack of pointing out the code path in which the dangling pointer
+> would be deferenced.  Hyunwoo Kim, can you provide one?
 
-The sparx5_port_init() function initializes the RGMII port device (and
-the other types of devices too). After the common configuration is done,
-we bail out, as we do not want to configure any 2g5, 5g, 10g or 25g
-stuff.
+This is a potential issue.
 
-I can add a comment, sure.
+Initially, I reported a patch for a dangling pointer in 
+virtio_transport_destruct() within virtio_transport_common.c to the security team.
+The vulnerability in virtio_transport_destruct() was actually exploited for 
+root privilege escalation, and its exploitability was confirmed (Google kernelCTF). 
+Afterward, the maintainers recommended patching the hvs_destruct() function, which 
+has a similar form to virtio_transport_destruct(), so I created and submitted this patch. 
+Unlike virtio_transport_destruct(), this has not been actually triggered, so there 
+is no call stack available.
 
-> 
->         Andrew
+However, I still believe it’s good to patch it since it is a potential issue.
+Additionally, the v1 patch only exists in the security mailing list, which is why it might not be visible.
 
-/Daniel
+Best Regards,
+Hyunwoo Kim
