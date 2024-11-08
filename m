@@ -1,69 +1,47 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3724A1E0DE2
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 09:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A40F1DFE3F;
+	Fri,  8 Nov 2024 09:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731058936; cv=none; b=dpBnEdoqDXy9ryf0fax14oGuaRq7YslD4qh7oQI2WUsn7YWSh48VifSKffMkhekBkTzWOx3NqeIE2UZZfKTWV4WA4Ggg7AwFu78kUo+7n9DN3d/xtbsQ2Fm6WvPJ8zc6sqgvDHiaO1rq5/QuY82l2ioJdZT16IKEM67q0G+RHiQ=
+	t=1731059495; cv=none; b=mN52w84Pe0Xvh1DlqWL0d+Am5TDd4LjDV8+zuiLFiPUmB8lce/A0VSMVYCzhNund20EC4BR+2IjDs/jG5wCphBNgytWrVHi1lZgwe2qD5PNWslnp8RG2cU9QU8l9+dwQKbb8HF/k/kaKxL3bwdpjWXYl+W8IJr6QJonsGcWtkF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731058936; c=relaxed/simple;
-	bh=+eP/vcqaNzokUp6cjLnVBBHiJRRLVRpuYTF+IIIoO0U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rMVS6vRlqumprdyor2Sc8xmg93Y07Hyj7Qmsrh7K+gd6wY259bQLVxm4zx2fxSy6GO4JUgQ7lWuGcdZk3Q3SO09ueNyQtALa48q9G0jBJnCEYwhlS6vjlIvG+f2pER74g3RL03FoteRt3YdozRLwSajGo7qFqh/26z4l/T13G/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=L+UlUgr4; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="L+UlUgr4"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20e6981ca77so22648935ad.2
-        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 01:42:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1731058933; x=1731663733; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ca2TdIiKwWZF1eqEUaePHRgoBLNi1vfBOb48mxhddGY=;
-        b=L+UlUgr4g5bwZsMhn9i4YzmOTjQnhiASN7hIMfwWUwRZXlJTpKjZjocKRPcKtks5NI
-         8m70yGo8HTIvAwqBzAuzvosUWB+WH//AsjZcV1h84SkkNQGL+wTij648kQCn8W3Ik98F
-         /2xzEV/kTCnnfKV7tUPEh8OzFJWXQy2aoKdltxVLDEtm0RkWO9KXprcUOnGotwspYzwe
-         k4lRSIhioUbER9XV6F8kGYedIfZxOmNvhIUAOQSIH4qeq/CyxwsoeOr6yUJsWcN2/qOv
-         Xm9Zj9hkdXLVD/CZWIgqipnnGDsQoPlAAcAHVvazcj3eXuWsVQGIepDLy4Rvx/hNX9uP
-         vslA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731058933; x=1731663733;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ca2TdIiKwWZF1eqEUaePHRgoBLNi1vfBOb48mxhddGY=;
-        b=rHGhvp/YmonIgWPq5id3DT8uuzqQrTl0KE2eQQwHSy1onog3sOxQrZxUIpEhOmUAxx
-         SW3Q1VaCyO6jgZiUn4+NrbpY0CFg6kJCEkhDxQkmziOih7sWkmsMMDFcH6AUNHjxKll3
-         1vxjSurFjVV9Ne5mk0dnMqWZb8HhpGYxlEiypyLhhjuj5qhQSgc//fTCzkrkv8gnCkA7
-         +RnE8KelmxrJVjE5MKeiO3l6HIhl5xLxStX1F1VWFXjRAtbMtJXdVB8YHINiwJyAvu+K
-         qGYm3MJ2mgxakNc0qj+ywV1lOy052F42i2rFjoRvU+YKip3pD26DIXu34eIVFZsYZDf4
-         jktw==
-X-Gm-Message-State: AOJu0YwLo3kccGhj/+LqFLRcy0aP58eSGgp/xNX5TjgOdY1Var2kz59V
-	3VxwzlvC6Q4IweakkKQ/n68jv1qwlFyWL2LsPNLfdUINH7eV6I6bbyqp4URXNAkh1o3cAnFG7lP
-	/OSo=
-X-Google-Smtp-Source: AGHT+IHJaqY7CpnOjmx21Vtn/dox+6VYyb5PPSRH/wKo8sslUsDpZCDMWRowhL4+E2s/DAq8UCWDeQ==
-X-Received: by 2002:a17:903:1d1:b0:20c:f261:2516 with SMTP id d9443c01a7336-211834f3842mr26435005ad.8.1731058933057;
-        Fri, 08 Nov 2024 01:42:13 -0800 (PST)
-Received: from localhost ([106.38.221.124])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177de041dsm26255915ad.103.2024.11.08.01.42.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 01:42:12 -0800 (PST)
-From: Jian Zhang <zhangjian.3032@bytedance.com>
-To: netdev@vger.kernel.org
-Cc: openbmc@lists.ozlabs.org,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] mctp i2c: notify user space on TX failure
-Date: Fri,  8 Nov 2024 17:42:06 +0800
-Message-Id: <20241108094206.2808293-1-zhangjian.3032@bytedance.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1731059495; c=relaxed/simple;
+	bh=9cQyIJ1YJFFU3Y5nhSzwbDXYprxwfBeAgUZvfFci0v8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HGNRUJUjbB4FvZDskxGw94Ut7bBCKZiDPsyY9AHuxajWUS1rzGwefQQ/O+SUPGcHq80dTbZ5zklwmBtseuuELDKWSLuYaQJEGAIN9PYefbNTq1vJ1hE4tqxsGuTOhTiA8GzAZKOCTS6NSlJ1NVVOHL5bcrZfAqVNmnUFRqc1o8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee7672ddf1539e-f23b4;
+	Fri, 08 Nov 2024 17:51:19 +0800 (CST)
+X-RM-TRANSID:2ee7672ddf1539e-f23b4
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee7672ddf0c9dd-9a40f;
+	Fri, 08 Nov 2024 17:51:19 +0800 (CST)
+X-RM-TRANSID:2ee7672ddf0c9dd-9a40f
+From: guanjing <guanjing@cmss.chinamobile.com>
+To: pablo@netfilter.org,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	guanjing <guanjing@cmss.chinamobile.com>
+Subject: [PATCH] selftests: netfilter: Fix the bug of missing return values
+Date: Fri,  8 Nov 2024 16:13:58 +0800
+Message-Id: <20241108081358.184546-1-guanjing@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,46 +50,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, there is no error handling mechanism for TX failures, causing
-user space to remain unaware of these failures until a timeout occurs.
-This leads to unnecessary waiting and delays.
+Fixed the bug of some functions were missing return values.
 
-This update sends an immediate error notification to user space upon TX
-failure, reducing wait times and improving response handling for failed
-tx.
-
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Fixes: eff3c558bb7e ("netfilter: ctnetlink: support filtering by zone")
+Signed-off-by: Guan Jing <guanjing@cmss.chinamobile.com>
 ---
- drivers/net/mctp/mctp-i2c.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../testing/selftests/net/netfilter/conntrack_dump_flush.c  | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index 4dc057c121f5..e9a835606dfc 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -485,6 +485,7 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 	struct mctp_i2c_hdr *hdr;
- 	struct i2c_msg msg = {0};
- 	u8 *pecp;
-+	struct sock *sk;
- 	int rc;
+diff --git a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+index 254ff03297f0..5f827e10717d 100644
+--- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
++++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+@@ -43,6 +43,8 @@ static int build_cta_tuple_v4(struct nlmsghdr *nlh, int type,
+ 	mnl_attr_nest_end(nlh, nest_proto);
  
- 	fs = mctp_i2c_get_tx_flow_state(midev, skb);
-@@ -551,6 +552,14 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 		dev_warn_ratelimited(&midev->adapter->dev,
- 				     "__i2c_transfer failed %d\n", rc);
- 		stats->tx_errors++;
+ 	mnl_attr_nest_end(nlh, nest);
 +
-+		sk = skb->sk;
-+		if (sk) {
-+			sk->sk_err = -rc;
-+			if (!sock_flag(sk, SOCK_DEAD))
-+				sk_error_report(sk);
-+		}
++	return 0;
+ }
+ 
+ static int build_cta_tuple_v6(struct nlmsghdr *nlh, int type,
+@@ -71,6 +73,8 @@ static int build_cta_tuple_v6(struct nlmsghdr *nlh, int type,
+ 	mnl_attr_nest_end(nlh, nest_proto);
+ 
+ 	mnl_attr_nest_end(nlh, nest);
 +
- 	} else {
- 		stats->tx_bytes += skb->len;
- 		stats->tx_packets++;
++	return 0;
+ }
+ 
+ static int build_cta_proto(struct nlmsghdr *nlh)
+@@ -90,6 +94,8 @@ static int build_cta_proto(struct nlmsghdr *nlh)
+ 	mnl_attr_nest_end(nlh, nest_proto);
+ 
+ 	mnl_attr_nest_end(nlh, nest);
++
++	return 0;
+ }
+ 
+ static int conntrack_data_insert(struct mnl_socket *sock, struct nlmsghdr *nlh,
 -- 
-2.30.2
+2.33.0
+
+
 
