@@ -1,102 +1,113 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4131DACA1;
-	Fri,  8 Nov 2024 08:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8841A2631;
+	Fri,  8 Nov 2024 08:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731053950; cv=none; b=f5UGPk9jS0ohws4EX57QmrGDB4sZWCjjbXktly+kbAW8wVbHD+NEJGwZk51CK93ceqjBq88KjzVpkjFE8Ifo2d+1SHDSGrA7dmdYiB93EKDG/aZOSLfmQ6R9aLxM78z1cG/RktYdh8DjIUumxe5QBZugZ++gv0Vx/eIRNHiVng0=
+	t=1731055097; cv=none; b=k7zFTog/87n6icVSamdI3vlvCy7QiTibgj+Tb44lhWTT5Z30YiaEWXqNcu3Qiw7FNUgpeqbnOOXJ6eQlhKDLjzK9BsmHr0iOeEdkqncNim1IBSAjbyYDmvLk0dRRiU9mOqcjKX9iSxS36bFq9t2PBFGqZHARtT0ICSUpLh73+5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731053950; c=relaxed/simple;
-	bh=iXHrBL4LQP1zfCQw9hd4nGFRXBxeQitQM7MrOkznPzc=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UsHfPaDE+xjH4Sd8KyYp8p7yQwvAr3bBIpcjxCDefjzLZP4zDjXIfOIgZX0yiNRXR9PaaVQT0yFx8skd12af5feueo0lFaiw8JPT8Ye4dyAPrF5mbK4YlQJJZ5AH7O3WcYK7j46RHBppaD7QFbtSBIpX4GF40WS3ddt2SdKnZGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=smORHAsT; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1731055097; c=relaxed/simple;
+	bh=iwamr/dMh3k2/I46HgUh3becGE1nHJi92Buqgn3qoZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DBGj944GOXKGbag3aqgYXnGCyDCjQxotGq16PBG86r5Tudv5IvypKqTAKmIqEuR8ZAnaDW7AfrqDuuyAVK+m8X/RZrO4Ixo20qqnx3Uu3YAJF+w+iCUlNXdPtqoCeG7BlaUsyXIGZYjDSn6bgY48ol2CycaZQG+P9SkXQGuqEp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWCJbZGu; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="smORHAsT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1731053935;
-	bh=G5AasHwJUPIvWba5jjKssBCTEs7Viz1urDez9UtIGzc=;
-	h=From:To:Cc:Subject:Date;
-	b=smORHAsTdH+SaYHmUQE6XY8GXKLweSmecF3RMEPV+3Dw6wMLRHW3LU4hVjPtFkmns
-	 ouvugG75fFU1qt6xs3KcPEOgO6ieoP6UdWYqXybBMlQ5YEHCKaPICDZhnW1jsPDxnX
-	 8UIwpKHCoV/+jqWS/7riFW07/5XZViW5iettoZzI=
-Received: from localhost.localdomain ([114.246.200.160])
-	by newxmesmtplogicsvrszc25-0.qq.com (NewEsmtp) with SMTP
-	id 4B4A2013; Fri, 08 Nov 2024 16:18:52 +0800
-X-QQ-mid: xmsmtpt1731053932tsxe9qji1
-Message-ID: <tencent_CFD3D1C3D68B45EA9F52D8EC76D2C4134306@qq.com>
-X-QQ-XMAILINFO: MvTK+AXQ7a4FRRnkPllYZNdQ/lMUxf8qYP61N+F2M9eOeuDg+Aj2hJ9HXQwA+p
-	 gNx7R6MEjXFKeDh0fJ9SZ3e1PIvZf3SAhotqftLNRborP5RWDmdt+H3SPw6dvoGk5yniv+j2VQym
-	 yf6XWlLOfBDgueGwlt+T1p2ncskLXiY6bLp98czjmafHe4yLNRLqWzY7HQaW2d0khiYjNfBgTk13
-	 VQNoJ/QyFdzJWhcsLWjSJmtOVGX/cRzq3qkiGQnJQrcRymn2gTJDNLAULQkrWxwHX8R5DxD+xek6
-	 plyuNE093/ypGQotP4QrcqTIba3vsahKnKAdv+AdFV7KOLOptM8heC2rp8hu1NaSmhfTuX+Mndky
-	 RSuG5e+7XpjBxcBS8prgBSTUezTPPgRpCHh/VdSF7fGLBRKdAVTPwAMpRPa3wU5m8RLkBmoQ4S9Z
-	 VOeC2GuvJSHTQr21AG8rJlZ1YBPsbDS+zMAazYSB5oIfAXAIkmlKFiNlPjRLGNWRx4TeSMSjjjNS
-	 zTsLdfr2PZ1zd06BEl/BG5b5GpaSJoBObGjJ7cOXoauKO2TbfUlja1d2f8hyx2Ng8GR4aRdTVYCK
-	 No+1LvEp0foOqU0OM2CSPa11eKbCWh2ZTN7cQVc+nNqJJIjJ4vtIfvXfgqwHv9xGVMN1MfAOqHtb
-	 R2tUKk18MJf829paRMGMGGW9m+kC3rzRuZYMX/9KUbUCbAB0F7R/zHKVwmWNtRVHKimhxtiibZ5P
-	 GwtNAtycL6SU0R7cDubYNGrL/LR0jo1OHgLAvMJmAnKCtEbsamYwIIXWN6EGo0UZJQQVPp4ARO2C
-	 QBkjD8cYJ4xk++MvLUCN2LXVlgGLLElYcW2Rn85jgd5KGikxypShUyuWBd8Xtd+/9hp3zr54l/cJ
-	 Fb6+hoOAfi8GNf8DFq3TdH0MWFYdYxWcYiPVDSxxzHViZY/ZWENcq0B5WSVfNAk8CAMl+NXRg5JR
-	 k8bKpgnYEvdkLHLK0Bti4MUvirFOyLtHQFCt8PWUhRIHXO0lxIZkBpiZDh42deZ2+0Dz1CofWwk9
-	 0u17MGAzyCkMSr2sO/orLwcy1Og7D7qWXsVfvgtw==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-From: Jiawei Ye <jiawei.ye@foxmail.com>
-To: martin.lau@linux.dev,
-	daniel@iogearbox.net,
-	edumazet@google.com,
-	kuba@kernel.org
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] bpf: Fix mismatched RCU unlock flavour in bpf_out_neigh_v6
-Date: Fri,  8 Nov 2024 08:18:52 +0000
-X-OQ-MSGID: <20241108081852.2188323-1-jiawei.ye@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWCJbZGu"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-460ad0440ddso10536941cf.3;
+        Fri, 08 Nov 2024 00:38:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731055095; x=1731659895; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iwamr/dMh3k2/I46HgUh3becGE1nHJi92Buqgn3qoZw=;
+        b=YWCJbZGuVbjBXT0xlu4KmYlmGPZWpDWgcQkoxfAq7r3v5Vp9bC8LuNCW2K3WesWSC9
+         K7q56OiDzPzSB5kPUVykxQ83SzOYHwPjH9w03qLjdkhGeO4cz6yAI7ecYZYnfGAkc4oz
+         1y7HMCx+cLT6wpmIOnEJtN4Phj9/lwoFTp9tJbMKx7cSVfJ5UvZLmY9Z7h+UbZz8HNIO
+         fLk3qTcfau8zfi+vudjwVSJNu64LBdF2slAmKmpczNfa6iVW9gVMNKk5uIiTIOM8CGR4
+         HCcHahmT4mekSL5Y5QP1aJCrizBH2hoBndDto/aZXs5jX60HSWP5+wozfobTf6EzabOQ
+         P6vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731055095; x=1731659895;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iwamr/dMh3k2/I46HgUh3becGE1nHJi92Buqgn3qoZw=;
+        b=lb03cwwNn/9tUHfjjmDUJh+9dVMpeAbzjmE0/Gp9r1dywUjZ40I1gNv98GLSSFt83b
+         WxeKgRByq9DQMratGyYq7fEtJcPs0bKjo+8V2LlyxnJjGqj32Vm2eECXOHjhDocqmlNW
+         3/iDh/mptVWL2jifLX4KuNH26cKFxn5Jig3JJcazIs89oV0ryCCgjFE26USvCK2BNHGw
+         gkAr6lGyUnFHSw6tVAp0FCk3ZJrVdH2or3oUmO4rfUq27yaBRpchaO4PMcYCk4XL/W1v
+         bvdgjZm4A0UtdSyMn6/BhL9oWAVMiOow+H64YTG7mMegsff951e7ASEoCDzSSI/M6bKy
+         q1dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjt/bypDUw3mZWndYCotdsqCiqtoX3O0sT1Cv89TFtYNlgz2yghU7TTZmp/EEoPJg4y4yk1lf/@vger.kernel.org, AJvYcCVxQd+wKMiIPyFYIADyrk4nLMcBkjpyYJ3DiGsLbiqxS8ikze3hBbKtEN4HuoTl7u7Ig3h15fRVEYGw@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWNl4MTszfaP8mEN5HUC2ba2Cy02aue3I+0MTIqaPZ4pIHU8pX
+	Ct/BAHwQUnwqCES4Tlq1J0Dcg42E+Hv/QuFE1wwVj/kN583YiVtD4qkaOYiRdtosfB6PqNSTxdk
+	QTmOOvS2Gue3JBrHSHUHhylHt52Pm5gEeiqH0fA==
+X-Google-Smtp-Source: AGHT+IGhoswV9CyClzsmwJWWeJCEpKP1BBghvYfzoL8xrIBaRdW4iXi2wVUZFGb+pRZmIxxuds/TTLNfe98hd/xQhFA=
+X-Received: by 2002:a0c:f207:0:b0:6cc:b4:5dcb with SMTP id 6a1803df08f44-6d39e1f49e6mr22689246d6.47.1731055095293;
+ Fri, 08 Nov 2024 00:38:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241106064015.4118-1-laoar.shao@gmail.com> <b3c6601b-9108-49cb-a090-247d2d56e64b@gmail.com>
+ <CALOAHbDPbwH7vqV2_NAm=_YnN2KnmVLOe7avWOYG+Rynd295Vg@mail.gmail.com> <9b3af2dd-8b56-4817-b223-c6a85ba80562@nvidia.com>
+In-Reply-To: <9b3af2dd-8b56-4817-b223-c6a85ba80562@nvidia.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Fri, 8 Nov 2024 16:37:38 +0800
+Message-ID: <CALOAHbCPDFs1D_XxoTmPushq70unz6UDn978Ati2sMV4fZ_MHg@mail.gmail.com>
+Subject: Re: [PATCH] net/mlx5e: Report rx_discards_phy via rx_missed_errors
+To: Gal Pressman <gal@nvidia.com>
+Cc: Tariq Toukan <ttoukan.linux@gmail.com>, saeedm@nvidia.com, tariqt@nvidia.com, 
+	leon@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the bpf_out_neigh_v6 function, rcu_read_lock() is used to begin an RCU
-read-side critical section. However, when unlocking, one branch
-incorrectly uses a different RCU unlock flavour rcu_read_unlock_bh()
-instead of rcu_read_unlock(). This mismatch in RCU locking flavours can
-lead to unexpected behavior and potential concurrency issues.
+On Thu, Nov 7, 2024 at 3:23=E2=80=AFAM Gal Pressman <gal@nvidia.com> wrote:
+>
+> On 06/11/2024 13:49, Yafang Shao wrote:
+> > On Wed, Nov 6, 2024 at 5:56=E2=80=AFPM Tariq Toukan <ttoukan.linux@gmai=
+l.com> wrote:
+> >>
+> >>
+> >>
+> >> On 06/11/2024 8:40, Yafang Shao wrote:
+> >>> We observed a high number of rx_discards_phy events on some servers w=
+hen
+> >>> running `ethtool -S`. However, this important counter is not currentl=
+y
+> >>> reflected in the /proc/net/dev statistics file, making it challenging=
+ to
+> >>> monitor effectively.
+> >>>
+> >>> Since rx_missed_errors represents packets dropped due to buffer exhau=
+stion,
+> >>> it makes sense to include rx_discards_phy in this counter to enhance
+> >>> monitoring visibility. This change will help administrators track the=
+se
+> >>> events more effectively through standard interfaces.
+> >>>
+> >>
+> >> Hi,
+> >>
+> >> Thanks for your patch.
+> >>
+> >> It's a matter of interpretation...
+> >> The documentation in
+> >> Documentation/ABI/testing/sysfs-class-net-statistics refers to the
+> >> driver for the exact meaning.
+>
+> I think this documentation is outdated, a more recent one is in if_link.h=
+:
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
+Should we sync the documentation in if_link.h with
+Documentation/ABI/testing/sysfs-class-net-statistics?
 
-This patch corrects the mismatched unlock flavour by replacing the
-incorrect rcu_read_unlock_bh() with the appropriate rcu_read_unlock(),
-ensuring that the RCU critical section is properly exited. This change
-prevents potential synchronization issues and aligns with proper RCU
-usage patterns.
-
-Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
----
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 64248d0ac4ad..44bbc1dbfb50 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2232,7 +2232,7 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
- 		rcu_read_unlock();
- 		return ret;
- 	}
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 	if (dst)
- 		IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
- out_drop:
--- 
-2.34.1
-
+--=20
+Regards
+Yafang
