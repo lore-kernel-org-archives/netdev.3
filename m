@@ -1,131 +1,170 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A2B1E00AC
-	for <netdev@vger.kernel.org>; Fri,  8 Nov 2024 09:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595D1E00AC;
+	Fri,  8 Nov 2024 09:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731056827; cv=none; b=HMrDXO+4ZqwoWu7OSsKic5oi77CdIAXyl7k/glFqqG44sVyg9oBuoxgrdy8XpfRxjuf6q0crGjlux/21DVyFXjV4Gg+Zmw8vK/bjGKpU6vVTHkbsLrglGPD1yi13qEmBAWnxYesHleH14gvXFBEFflocIZGqFw/cy7OUIxux/q8=
+	t=1731057063; cv=none; b=ZoIsYgFcdA/HyPMdm7UrdVgCJbfZNSC5PuglMZeJefd9kN9SCUi/tmK0eLkP7odHDkNKia4Y0ZnbU2c9v7f9jlGiAVAyMrShD0mG0lRqOc1+F5qerLNbA29KS32ylBwWs4X6wB608VJNx7P1sqsE9ggjDVn/41PnZIFW1FFkxhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731056827; c=relaxed/simple;
-	bh=tCRTECuS56PuG0XEhbPkWcB/4w7m3WsRYVRHywqp/mM=;
+	s=arc-20240116; t=1731057063; c=relaxed/simple;
+	bh=7y7+2Fk1QIr+WK3Rimae+4gKnLT1X/9v8Uy+PYWgLr8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tOMRRFubacb95jtNYLWrJlZJwIJj2gAsmgIrICsRjNHLcDvlp0QkRmEP7k/qEcVB6uYNEiHXy1H4mIFvHLrULNQgk8DFIgNnED+OzSbdJjreXl7eewZQkJfk0uyU58ALP9SVB/BmhQuU3mMludlce6urhhG8D7uRBoox1M+YuKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=MlPkkLpg; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theori.io
+	 Content-Type:Content-Disposition:In-Reply-To; b=biUZ+27v7+kd+JAfQFMGlxd8QqZHvCxqiFdV65i1buFP4eNlS+MC9liUNodc/n00LQbkBk1zQL7x1pkeUdKJwbc73D4ucKXoDYe+Hbw7DePLGCIG21XaEyHbYuq9oAodRodr529uwUF9GP/EpmbJFu8r7Em4pJEaJ9hEHe6PfYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UK9qYCqF; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b="MlPkkLpg"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71e4e481692so1753322b3a.1
-        for <netdev@vger.kernel.org>; Fri, 08 Nov 2024 01:07:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=theori.io; s=google; t=1731056825; x=1731661625; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=44W+od+4Yj44lPCffhrCXmOWnGyYVQpu4XgVvCES24c=;
-        b=MlPkkLpgSosJb6IgmfmHVjZzGWpWDjipU3ZqOkQNMKaboMaZQYfEUVKBGcZLY972/V
-         ox5J5mxyjAV8AdD49lOkGaW7YaCz+UGcGvaAb+mUG75k42vZygRFF2r1GwdKSm0Ju45/
-         Two6B1eGRrFtzZJUkuwKYrSyp2CaPcnawHHq0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731056825; x=1731661625;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=44W+od+4Yj44lPCffhrCXmOWnGyYVQpu4XgVvCES24c=;
-        b=lrRR9eL8KCCpwCL/6FjYZG/IDViTPm/2y9umge4KVm+cZVor5R1gHGN5l52hZbJEHg
-         l0nnbkuyGymA5D2Hsk/vISUF7XMRyWBkYlIhgK4dK8TMZsFIfZmoX8d6BoccjO4fmKhs
-         5EMjhD01uKL2Nvo0ZQXJXI5zGUMTlwlxANlyI1Ky0YaB15q4TCeHIUmp+jUOvDDGrYfG
-         Ib+0mbv/wgpoGXZwffvqevcqfmHlwYbXcx+JNINpMEu7zvkdIBZRNfS34Jo30Od8I/27
-         G504m2toh/jCv7LsDOWjgMAgEvzGKGb7icRaF/4gbsgSIoAxLXspTVxU5kk4ZAIIhcMY
-         w3DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUzM7Phbbg2Dxr0jt1yklb/f/BOaeWSeGRyl0rvYvlJQy/bumia+NN0MAvs6+GV/bUGI/76ss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFu/asGsBbjndSkvpcM++xv7EhNJj/hhRWwRdeYqjoZYItzGDA
-	VDDVR38XP9Lh/rXGrR51oTSrUWl5MQDxlF3VTLVkZZUJ8GQAZCAn0efgLbwk1IU=
-X-Google-Smtp-Source: AGHT+IGs2h9aoaNLPBgS2eNHAD6WOasiHa5cVuBEaFX3KEKt97iNL+blz8xVKFhfPMU3uRT2FvPq3Q==
-X-Received: by 2002:a05:6a20:9146:b0:1db:eb82:b22f with SMTP id adf61e73a8af0-1dc2289cf20mr2498608637.5.1731056825165;
-        Fri, 08 Nov 2024 01:07:05 -0800 (PST)
-Received: from v4bel-B760M-AORUS-ELITE-AX ([211.219.71.65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a151ddsm3224445b3a.146.2024.11.08.01.07.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 01:07:04 -0800 (PST)
-Date: Fri, 8 Nov 2024 04:06:59 -0500
-From: Hyunwoo Kim <v4bel@theori.io>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Stefano Garzarella <sgarzare@redhat.com>, jasowang@redhat.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-hyperv@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	gregkh@linuxfoundation.org, imv4bel@gmail.com, v4bel@theori.io
-Subject: Re: [PATCH v2] hv_sock: Initializing vsk->trans to NULL to prevent a
- dangling pointer
-Message-ID: <Zy3Us4AV9DsgWAQO@v4bel-B760M-AORUS-ELITE-AX>
-References: <Zys4hCj61V+mQfX2@v4bel-B760M-AORUS-ELITE-AX>
- <20241107112942.0921eb65@kernel.org>
- <20241107163942-mutt-send-email-mst@kernel.org>
- <20241107135233.225de6d6@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UK9qYCqF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731057061; x=1762593061;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7y7+2Fk1QIr+WK3Rimae+4gKnLT1X/9v8Uy+PYWgLr8=;
+  b=UK9qYCqFTOzNNIlGyXJf4b8NfcCFt5JoleQyhee4vRHV4Nn8j3ASqSmE
+   Ek3PE7wPmEUQee4kcbjqBhFp5AibzVX0LJQHPGAjxK1jzjOnWo8Rj5wZm
+   VkfHa6T9ZUaNoU5MfiRAfulWPnGh51JmpqFghUzVyOYXXN6mM8JEuuVBs
+   bCw5y4SkACU78p2l6ZiKdr0Xw+LS2FXGQ7pSA9/4JmcKEiK6xvVK/MWPl
+   eshDFqs7jiVsLBBkS1v2uc7KJDX7PnS/apVa4ZBLVqlxo/5FhJP2vxWVL
+   xR8ggzcAQgWU3PPqEyFOoXVlP/gQWERgOvCQ9TZDAK+Ngrkz7kpu/+AHM
+   w==;
+X-CSE-ConnectionGUID: yDxoNjsRQK2EtN92jtHwfw==
+X-CSE-MsgGUID: aI5QNHB1RxCCakStMb6m4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41548451"
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="41548451"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:11:00 -0800
+X-CSE-ConnectionGUID: jeHofmArRXenqQOFeDXg/w==
+X-CSE-MsgGUID: BXQKvnMKR1KcbmQqyN1xUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
+   d="scan'208";a="85372043"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 08 Nov 2024 01:10:57 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t9L14-000rFC-2N;
+	Fri, 08 Nov 2024 09:10:54 +0000
+Date: Fri, 8 Nov 2024 17:10:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Saru2003 <sarvesh20123@gmail.com>, johannes@sipsolutions.net
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Saru2003 <sarvesh20123@gmail.com>
+Subject: Re: [PATCH] Fix: Ensure auth_data and ap_addr are properly set
+ before marking STA as authenticated
+Message-ID: <202411081640.YeO04UUX-lkp@intel.com>
+References: <20241108022828.6571-1-sarvesh20123@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241107135233.225de6d6@kernel.org>
+In-Reply-To: <20241108022828.6571-1-sarvesh20123@gmail.com>
 
-Dear,
+Hi Saru2003,
 
-On Thu, Nov 07, 2024 at 01:52:33PM -0800, Jakub Kicinski wrote:
-> On Thu, 7 Nov 2024 16:41:02 -0500 Michael S. Tsirkin wrote:
-> > On Thu, Nov 07, 2024 at 11:29:42AM -0800, Jakub Kicinski wrote:
-> > > On Wed, 6 Nov 2024 04:36:04 -0500 Hyunwoo Kim wrote:  
-> > > > When hvs is released, there is a possibility that vsk->trans may not
-> > > > be initialized to NULL, which could lead to a dangling pointer.
-> > > > This issue is resolved by initializing vsk->trans to NULL.
-> > > > 
-> > > > Fixes: ae0078fcf0a5 ("hv_sock: implements Hyper-V transport for Virtual Sockets (AF_VSOCK)")
-> > > > Cc: stable@vger.kernel.org  
-> > > 
-> > > I don't see the v1 on netdev@, nor a link to it in the change log
-> > > so I may be missing the context, but the commit message is a bit
-> > > sparse.
-> > > 
-> > > The stable and Fixes tags indicate this is a fix. But the commit
-> > > message reads like currently no such crash is observed, quote:
-> > > 
-> > >                           which could lead to a dangling pointer.
-> > >                                 ^^^^^
-> > >                                      ?
-> > > 
-> > > Could someone clarify?  
-> > 
-> > I think it's just an accent, in certain languages/cultures expressing
-> > uncertainty is considered polite. Should be "can".
-> 
-> You're probably right, the issue perhaps isn't the phrasing as much 
-> as the lack of pointing out the code path in which the dangling pointer
-> would be deferenced.  Hyunwoo Kim, can you provide one?
+kernel test robot noticed the following build warnings:
 
-This is a potential issue.
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.12-rc6 next-20241107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Initially, I reported a patch for a dangling pointer in 
-virtio_transport_destruct() within virtio_transport_common.c to the security team.
-The vulnerability in virtio_transport_destruct() was actually exploited for 
-root privilege escalation, and its exploitability was confirmed (Google kernelCTF). 
-Afterward, the maintainers recommended patching the hvs_destruct() function, which 
-has a similar form to virtio_transport_destruct(), so I created and submitted this patch. 
-Unlike virtio_transport_destruct(), this has not been actually triggered, so there 
-is no call stack available.
+url:    https://github.com/intel-lab-lkp/linux/commits/Saru2003/Fix-Ensure-auth_data-and-ap_addr-are-properly-set-before-marking-STA-as-authenticated/20241108-103338
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20241108022828.6571-1-sarvesh20123%40gmail.com
+patch subject: [PATCH] Fix: Ensure auth_data and ap_addr are properly set before marking STA as authenticated
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20241108/202411081640.YeO04UUX-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081640.YeO04UUX-lkp@intel.com/reproduce)
 
-However, I still believe it’s good to patch it since it is a potential issue.
-Additionally, the v1 patch only exists in the security mailing list, which is why it might not be visible.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411081640.YeO04UUX-lkp@intel.com/
 
-Best Regards,
-Hyunwoo Kim
+All warnings (new ones prefixed by >>):
+
+   In file included from net/mac80211/mlme.c:16:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/x86/include/asm/cacheflush.h:5:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> net/mac80211/mlme.c:4341:46: warning: address of array 'ifmgd->auth_data->ap_addr' will always evaluate to 'true' [-Wpointer-bool-conversion]
+    4341 |         if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
+         |                                  ~~~~~~~~~~~~~~~~~~~^~~~~~~
+   5 warnings generated.
+
+
+vim +4341 net/mac80211/mlme.c
+
+  4334	
+  4335	static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
+  4336	{
+  4337		struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+  4338		const u8 *ap_addr;
+  4339		struct sta_info *sta;
+  4340		
+> 4341		if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
+  4342			sdata_info(sdata, "auth_data not set or ap_addr missing\n");
+  4343			return false;
+  4344		}
+  4345	
+  4346		ap_addr = ifmgd->auth_data->ap_addr;
+  4347	
+  4348		lockdep_assert_wiphy(sdata->local->hw.wiphy);
+  4349	
+  4350		sdata_info(sdata, "authenticated\n");
+  4351		ifmgd->auth_data->done = true;
+  4352		ifmgd->auth_data->timeout = jiffies + IEEE80211_AUTH_WAIT_ASSOC;
+  4353		ifmgd->auth_data->timeout_started = true;
+  4354		run_again(sdata, ifmgd->auth_data->timeout);
+  4355	
+  4356		/* move station state to auth */
+  4357		sta = sta_info_get(sdata, ap_addr);
+  4358		if (!sta) {
+  4359		        sdata_info(sdata, "STA %pM not found, skipping authentication mark\n", ap_addr);
+  4360			return false;
+  4361		}
+  4362		if (sta_info_move_state(sta, IEEE80211_STA_AUTH)) {
+  4363			sdata_info(sdata, "failed moving %pM to auth\n", ap_addr);
+  4364			return false;
+  4365		}
+  4366	
+  4367		return true;
+  4368	}
+  4369	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
