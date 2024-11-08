@@ -1,194 +1,169 @@
-Received: from forward203b.mail.yandex.net (forward203b.mail.yandex.net [178.154.239.154])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F121E32B6;
-	Fri,  8 Nov 2024 12:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E361D0F5C;
+	Fri,  8 Nov 2024 12:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731070120; cv=none; b=BpshmlwcFlKMtEpbva287PFRZhnY1SgmCK5fensi5kCaauS7uv9le8IqJwoJeYKnNf7EuOXcKVClYMP19S2kl3EF4k5PqhGgFIoa8W41hkEa2roEpeOTNodnpdqBnsbLCvZAIeoo21O5fqdtTElQK1Yg8LkvLVWfECAA1O0LA+M=
+	t=1731070420; cv=none; b=aHdDDI0ia4KuWNbXhb874xqKh1uEO0rjJG3H2rYmB8TIbknKSyMjVrv/62Wlb2k0JhDYTPUPCwPaO4MuXq/w1C9PSguWAY87+2yqmMgQ0R6NfSq4lAsLTiNYdRbBC9nnh7KNiwM4Z9mif8mG/L//vWwdfFySY3kGyTqgo2ndqWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731070120; c=relaxed/simple;
-	bh=BrM+QekzMB2T8860EPHWnK0U+ToiG8m9uCbPJhCJYXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mupp99or/27a+/1U7i3mqONnLlnKLIr1DrBvL5MW1OQsxjkyQ7rShv1qa3nMPMKS8jzX0KwZj4F6RDCw9/XvT+33LQtSSe+3CptUmPfGr4CPOdmedpOfMPLzSL4dWHZ5AJWrSfSt0uOkZ9HTQUHno2S9EVrogJ4+gKToWO0oxcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=JSY1eLGR; arc=none smtp.client-ip=178.154.239.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1731070420; c=relaxed/simple;
+	bh=rr/x3ww89sV9jqWghsW5iDpF0nmqWuGzXO+2uSnHi0g=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aRqQERkzD1ZhFwXyWftNi14HHZ0CVPD1hYopEL8m+buITyw7dlCrAGOK7PshKMZA21pUggCaqxrms2mShUhf6fpVPOz66g3tMlK4UOGIQOfhXNTfqTk/2BbQruOudVTPSYZaEx/J10CbQjXMBMgHMUfwzJHbbT3maScyMVotixk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NbiyaICU; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="JSY1eLGR"
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
-	by forward203b.mail.yandex.net (Yandex) with ESMTPS id 04C256B738;
-	Fri,  8 Nov 2024 15:42:28 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:2d9f:0:640:f6ce:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTPS id EF63B60AA0;
-	Fri,  8 Nov 2024 15:42:18 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id HgiwQ5RXpeA0-owJRxKUK;
-	Fri, 08 Nov 2024 15:42:18 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1731069738; bh=1DnT2TQayxFeydxyvNIUVRqNEl2DB4hWlBNBuik8Qns=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=JSY1eLGR1rRtuO+2JScsHIjXXci90Rv07R4roaHf0fBhVUU/hbjRRQ7MYcFxBXwh2
-	 LX5l3Wdl80h8Mh9nVcRkW/f9R1aX7txXA2Qs2tnK2vz94qqZ0TxNORmp96i5N7x2LX
-	 cvTWFhoGMUbCRek2vIAYzAohe80MR1q71Y/4b39Q=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
-Subject: [PATCH] mac802154: fix interface deletion
-Date: Fri,  8 Nov 2024 15:40:51 +0300
-Message-ID: <20241108124051.415090-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.47.0
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NbiyaICU"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8CbrOY2072987
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Nov 2024 06:37:53 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1731069473;
+	bh=+LZTSCJ82I2AofMnItCbVv3OHQLGWQAtNHwmmy7zLRs=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=NbiyaICU0pKnJSpnYAw+VgK/VAEfbDB6EmiwA+pZ4eDgtuV8MTi0sCS0MWy+HKsq/
+	 ISyc4vvHot5lJrGu3s7HsMYM/RyLPkZPvj1h8q1HcQpKWcHpkwr4FihL5o3p76dw3z
+	 UZB0YXjelxnYtUWJA5b4/z9kagjqt9+gAwrBuOyQ=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8CbrpK039671
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 8 Nov 2024 06:37:53 -0600
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 8
+ Nov 2024 06:37:52 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 8 Nov 2024 06:37:52 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Cbpes012878;
+	Fri, 8 Nov 2024 06:37:52 -0600
+Date: Fri, 8 Nov 2024 18:07:51 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Roger Quadros <rogerq@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
+        Pekka Varis <p-varis@ti.com>
+Subject: Re: [PATCH net-next v2 2/2] net: ethernet: ti: am65-cpsw: enable
+ DSCP to priority map for RX
+Message-ID: <908cc747-18a1-49c0-9b06-1c2f64e4c84e@ti.com>
+References: <20241107-am65-cpsw-multi-rx-dscp-v2-0-9e9cd1920035@kernel.org>
+ <20241107-am65-cpsw-multi-rx-dscp-v2-2-9e9cd1920035@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241107-am65-cpsw-multi-rx-dscp-v2-2-9e9cd1920035@kernel.org>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Syzbot has reported the following BUG:
-kernel BUG at lib/list_debug.c:58!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
-Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
-Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
-RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
-RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
-R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
-R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
-FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:124 [inline]
- __list_del_entry include/linux/list.h:215 [inline]
- list_del_rcu include/linux/rculist.h:157 [inline]
- ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
- rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
- ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
- genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
- netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
- netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
- sock_sendmsg_nosec net/socket.c:729 [inline]
- __sock_sendmsg+0x221/0x270 net/socket.c:744
- ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
- ___sys_sendmsg net/socket.c:2661 [inline]
- __sys_sendmsg+0x292/0x380 net/socket.c:2690
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd094c32309
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 71 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffec50063a8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fd094c32309
-RDX: 0000000004000000 RSI: 0000000020000b00 RDI: 0000000000000004
-RBP: 00000000000f4240 R08: 0000000000000000 R09: 00000000000000a0
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000161b7
-R13: 00007ffec50063bc R14: 00007ffec50063d0 R15: 00007ffec50063c0
- </TASK>
+On Thu, Nov 07, 2024 at 02:29:30PM +0200, Roger Quadros wrote:
 
-Since 'ieee802154_remove_interfaces()' and 'ieee802154_if_remove()' may try
-to process the same 'struct ieee802154_sub_if_data' object concurrently,
-there are two problems:
+Hello Roger,
 
-1) list of 'struct ieee802154_sub_if_data' objects linked via 'interfaces'
-   field of 'struct ieee802154_local' should remain consistent;
-2) 'unregister_netdevice()' should not be called for the same
-   'struct net_device' concurrently.
+I accidentally reviewed and replied to the patch from the v1 series, but
+the comments still hold for this patch. For the sake of convenience, I
+am providing the same feedback as the v1 patch below.
 
-IIUC RCU can guarantee 1) but not 2), so discard RCU quirks and prefer
-explicit SDATA_STATE_REMOVED flag used via atomic and fully-ordered
-'test_and_set_bit()' to mark 'struct ieee802154_sub_if_data' instance
-which has entered the reclamation.
+> AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
+> appropriate priority queue via DSCP to Priority mapping registers
+> (CPSW_PN_RX_PRI_MAP_REG).
+> 
+> We use the upper 3 bits of the DSCP field that indicate IP Precedence
+> to map traffic to 8 priority queues.
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 50 ++++++++++++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> index 0520e9f4bea7..65fbf6727e02 100644
+> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+> @@ -71,6 +71,8 @@
+>  #define AM65_CPSW_PORT_REG_RX_PRI_MAP		0x020
+>  #define AM65_CPSW_PORT_REG_RX_MAXLEN		0x024
+>  
+> +#define AM65_CPSW_PORTN_REG_CTL			0x004
 
-Reported-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
-Fixes: b210b18747cb ("mac802154: move interface del handling in iface")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- net/mac802154/ieee802154_i.h |  6 +++---
- net/mac802154/iface.c        | 10 +++++++---
- 2 files changed, 10 insertions(+), 6 deletions(-)
+nitpick: indentation needs to be fixed here to align with the macros
+below.
 
-diff --git a/net/mac802154/ieee802154_i.h b/net/mac802154/ieee802154_i.h
-index 08dd521a51a5..7afcea3447c1 100644
---- a/net/mac802154/ieee802154_i.h
-+++ b/net/mac802154/ieee802154_i.h
-@@ -40,9 +40,8 @@ struct ieee802154_local {
- 	int open_count;
- 
- 	/* As in mac80211 slaves list is modified:
--	 * 1) under the RTNL
--	 * 2) protected by slaves_mtx;
--	 * 3) in an RCU manner
-+	 * 1) under the RTNL;
-+	 * 2) protected by iflist_mtx.
- 	 *
- 	 * So atomic readers can use any of this protection methods.
- 	 */
-@@ -101,6 +100,7 @@ enum {
- 
- enum ieee802154_sdata_state_bits {
- 	SDATA_STATE_RUNNING,
-+	SDATA_STATE_REMOVED,
- };
- 
- /* Slave interface definition.
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index c0e2da5072be..700c80e94bb2 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -669,7 +669,7 @@ ieee802154_if_add(struct ieee802154_local *local, const char *name,
- 		goto err;
- 
- 	mutex_lock(&local->iflist_mtx);
--	list_add_tail_rcu(&sdata->list, &local->interfaces);
-+	list_add_tail(&sdata->list, &local->interfaces);
- 	mutex_unlock(&local->iflist_mtx);
- 
- 	return ndev;
-@@ -683,11 +683,13 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
- {
- 	ASSERT_RTNL();
- 
-+	if (test_and_set_bit(SDATA_STATE_REMOVED, &sdata->state))
-+		return;
-+
- 	mutex_lock(&sdata->local->iflist_mtx);
--	list_del_rcu(&sdata->list);
-+	list_del(&sdata->list);
- 	mutex_unlock(&sdata->local->iflist_mtx);
- 
--	synchronize_rcu();
- 	unregister_netdevice(sdata->dev);
- }
- 
-@@ -697,6 +699,8 @@ void ieee802154_remove_interfaces(struct ieee802154_local *local)
- 
- 	mutex_lock(&local->iflist_mtx);
- 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
-+		if (test_and_set_bit(SDATA_STATE_REMOVED, &sdata->state))
-+			continue;
- 		list_del(&sdata->list);
- 
- 		unregister_netdevice(sdata->dev);
--- 
-2.47.0
+> +#define AM65_CPSW_PORTN_REG_DSCP_MAP		0x120
+>  #define AM65_CPSW_PORTN_REG_SA_L		0x308
+>  #define AM65_CPSW_PORTN_REG_SA_H		0x30c
+>  #define AM65_CPSW_PORTN_REG_TS_CTL              0x310
+> @@ -94,6 +96,10 @@
+>  /* AM65_CPSW_PORT_REG_PRI_CTL */
+>  #define AM65_CPSW_PORT_REG_PRI_CTL_RX_PTYPE_RROBIN	BIT(8)
+>  
+> +/* AM65_CPSW_PN_REG_CTL */
+> +#define AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN	BIT(1)
+> +#define AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN	BIT(2)
+> +
+>  /* AM65_CPSW_PN_TS_CTL register fields */
+>  #define AM65_CPSW_PN_TS_CTL_TX_ANX_F_EN		BIT(4)
+>  #define AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN	BIT(5)
+> @@ -176,6 +182,49 @@ static void am65_cpsw_port_set_sl_mac(struct am65_cpsw_port *slave,
+>  	writel(mac_lo, slave->port_base + AM65_CPSW_PORTN_REG_SA_L);
+>  }
+>  
+> +#define AM65_CPSW_DSCP_MAX	GENMASK(5, 0)
+> +#define AM65_CPSW_PRI_MAX	GENMASK(2, 0)
+> +static int am65_cpsw_port_set_dscp_map(struct am65_cpsw_port *slave, u8 dscp, u8 pri)
+> +{
+> +	int reg_ofs;
+> +	int bit_ofs;
+> +	u32 val;
+> +
+> +	if (dscp > AM65_CPSW_DSCP_MAX)
+> +		return -EINVAL;
 
+am65_cpsw_port_set_dscp_map() seems to be invoked by
+am65_cpsw_port_enable_dscp_map() below, where the above check is guaranteed
+to be satisfied. Is the check added for future-proofing this function?
+
+> +
+> +	if (pri > AM65_CPSW_PRI_MAX)
+> +		return -EINVAL;
+> +
+> +	reg_ofs = (dscp / 8) * 4;	/* reg offset to this dscp */
+> +	bit_ofs = 4 * (dscp % 8);	/* bit offset to this dscp */
+
+Maybe a macro can be used for the "4" since it is not clear what it
+corresponds to. Or maybe two macros can be used for "reg_ofs" and
+"bit_ofs".
+
+> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+> +	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
+> +	val |= pri << bit_ofs;			/* set */
+> +	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+
+The above readback seems to be just to flush the writel(). A comment of
+the form:
+/* flush */
+might help, considering that other drivers do the same. Also, assigning
+the returned value to "val" might not be required unless it is intended to
+be checked.
+
+[...]
+
+Regards,
+Siddharth.
