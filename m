@@ -1,842 +1,271 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FAA6A019;
-	Sat,  9 Nov 2024 01:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E2E17C7C
+	for <netdev@vger.kernel.org>; Sat,  9 Nov 2024 01:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731115843; cv=none; b=HjTBlYE7aM6fLFK801j8+bjWcEcIrz5N7FlpBaIJkyBFfXJuvIX2NNcWabe7236h0PRkn150pazcoevV28mA416puaOXaIyKuQXLjKlkBOSnAFx7x5V9pBWy/oX2PoOevnYtj/eMFg80aGfDioI88qp88r+n3VAaz4VAaVHpjWk=
+	t=1731116622; cv=none; b=BYGSBJc+z0Zn5vDmNYiaPelbMAY0fmDoQwVGH74HfWXs5hmZ4xuYhHYUAqdDBQ9rA1vc8Yd7+hkuQdkuU2yi0hklPQUIhshiF1IWKq6JG96C8m+uVaTcbEFxktAwch8PFlrOKkDHvKlIbH5TUb9qXCfiXUaqafJf+HNMNwwpvSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731115843; c=relaxed/simple;
-	bh=Cc2NqzA+FI+q5IMFkAXsqNGk0a8j1sQRRgxJcN+OVpY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lxBF8JFVeIgqL/SqTEL2evITwt3yCeJ87YFoasac2C4l3GLOCbqT4cGwyPbW6t0qUkJyMDgAB6BSvHmsn+FprNhHtLyZCCH70odsr8c3Skuc39239LfVtMgWowyIr02x26xqx9mBMHhEpoYyluAc0RNkv9P6OvWQcx59RxMGbIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AljTz70W; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1731116622; c=relaxed/simple;
+	bh=mepBhE3QmCYYwE8gAVm0Jk8Zx28/5Z4vGXsLLl7XKnY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBk+woLtEdu6EF/jm+2FfDf03/+w0E8bA6htRGPUpcIAWNfryLKTN6KxioG2/TMdC0+eR5c3rDFrhrHEY6hTbrcZpgSM/xomucbyP6Ge1GYrDGcp3ErJ63Zya5nma8lLGwiNcRir06iK2qvfOOR5Xu5vtVCfm1Z9eaRQ/5vwnRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A+TufE6w; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AljTz70W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731115841; x=1762651841;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=Cc2NqzA+FI+q5IMFkAXsqNGk0a8j1sQRRgxJcN+OVpY=;
-  b=AljTz70Wk4odsno/poVmBnYCzhcAwL6bkuVTjeHdIrLxz/NUfCVIBqS9
-   bbk1NFNEfhDSjVA/T+my7kJMkcW9ydp6zGmREV0HgmEr+JWXV2PYVsgCY
-   GgkvrWLB03+AqMcvFiytBrzEZ7YaWkBZxTFT0lqyTu5m+hPddDa+ytK0E
-   oRyb2xHsbQcQu+6Rua525pSEny0elEBCQ6n6eKL/oOiqvXIibQ7fNnhOM
-   l5VKBtvo5Gx8BXag62aa2j7nilKrjfFMRXifqiTuk9iozKmiPXlqXIgv4
-   9aGNFk+W+JyEDq7AB+eFJu3t6mrePKcZZI51TPxguykdzbZLnNQTESFwK
-   A==;
-X-CSE-ConnectionGUID: 0ClaBB69RI+dlSKPknnB6Q==
-X-CSE-MsgGUID: qLF/hBf6RM2SDFbBGNAqUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11250"; a="18637356"
-X-IronPort-AV: E=Sophos;i="6.12,139,1728975600"; 
-   d="scan'208";a="18637356"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 17:30:34 -0800
-X-CSE-ConnectionGUID: iVwEKvbXQEKbjj7ceqNlUA==
-X-CSE-MsgGUID: FR5PTnozRdy5SWv/6mfNRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="90646176"
-Received: from jekeller-desk.jf.intel.com ([10.166.241.20])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 17:30:33 -0800
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Fri, 08 Nov 2024 17:30:16 -0800
-Subject: [PATCH net-next v4 3/9] lib: packing: add pack_fields() and
- unpack_fields()
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A+TufE6w"
+Message-ID: <955dde4b-b4ba-439f-b7d4-f64d90c58d55@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1731116617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u4FAc6Pkq+6FU2hrV3MhybCMa3MxiYPHACi+H+viGfc=;
+	b=A+TufE6wrdG/LbPUcsCkbV9Ak152iUtqi5gOoPEgJbLbRhJ61vGQFsp/2aBwneQwGzrmlU
+	Bx7xjU8q1EF9lUk3aicKMhYiy2r+KGji1N5lpa1iPPOUj3K8P33ftMvHqH7lNqfJc97EC3
+	KusIBxM/n5NQ/gvK8aeSLcuOmuKgNiQ=
+Date: Sat, 9 Nov 2024 01:43:30 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH net-next v19 09/10] net: ethtool: Add support for tsconfig
+ command to get/set hwtstamp config
+To: Kory Maincent <kory.maincent@bootlin.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ Radu Pirea <radu-nicolae.pirea@oss.nxp.com>,
+ Jay Vosburgh <j.vosburgh@gmail.com>, Andy Gospodarek <andy@greyhouse.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com,
+ Simon Horman <horms@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ donald.hunter@gmail.com, danieller@nvidia.com, ecree.xilinx@gmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+ Willem de Bruijn <willemb@google.com>,
+ Shannon Nelson <shannon.nelson@amd.com>,
+ Alexandra Winter <wintera@linux.ibm.com>
+References: <20241030-feature_ptp_netnext-v19-0-94f8aadc9d5c@bootlin.com>
+ <20241030-feature_ptp_netnext-v19-9-94f8aadc9d5c@bootlin.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20241030-feature_ptp_netnext-v19-9-94f8aadc9d5c@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241108-packing-pack-fields-and-ice-implementation-v4-3-81a9f42c30e5@intel.com>
-References: <20241108-packing-pack-fields-and-ice-implementation-v4-0-81a9f42c30e5@intel.com>
-In-Reply-To: <20241108-packing-pack-fields-and-ice-implementation-v4-0-81a9f42c30e5@intel.com>
-To: Vladimir Oltean <olteanv@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, netdev <netdev@vger.kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>
-X-Mailer: b4 0.14.1
+X-Migadu-Flow: FLOW_OUT
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On 30/10/2024 13:54, Kory Maincent wrote:
+> Introduce support for ETHTOOL_MSG_TSCONFIG_GET/SET ethtool netlink socket
+> to read and configure hwtstamp configuration of a PHC provider. Note that
+> simultaneous hwtstamp isn't supported; configuring a new one disables the
+> previous setting.
+> 
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-This is new API which caters to the following requirements:
+[ ... ]
 
-- Pack or unpack a large number of fields to/from a buffer with a small
-  code footprint. The current alternative is to open-code a large number
-  of calls to pack() and unpack(), or to use packing() to reduce that
-  number to half. But packing() is not const-correct.
+> +static int ethnl_set_tsconfig(struct ethnl_req_info *req_base,
+> +			      struct genl_info *info)
+> +{
+> +	struct kernel_hwtstamp_config hwtst_config = {0}, _hwtst_config = {0};
+> +	unsigned long mask = 0, req_rx_filter, req_tx_type;
+> +	struct hwtstamp_provider *hwtstamp = NULL;
+> +	struct net_device *dev = req_base->dev;
+> +	struct nlattr **tb = info->attrs;
+> +	bool mod = false;
+> +	int ret;
+> +
+> +	BUILD_BUG_ON(__HWTSTAMP_TX_CNT > 32);
+> +	BUILD_BUG_ON(__HWTSTAMP_FILTER_CNT > 32);
+> +
+> +	if (!netif_device_present(dev))
+> +		return -ENODEV;
+> +
+> +	if (tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER]) {
+> +		struct hwtst_provider __hwtst = {.index = -1};
+> +		struct hwtstamp_provider *__hwtstamp;
+> +
+> +		__hwtstamp = rtnl_dereference(dev->hwtstamp);
+> +		if (__hwtstamp) {
+> +			__hwtst.index = ptp_clock_index(__hwtstamp->ptp);
+> +			__hwtst.qualifier = __hwtstamp->qualifier;
+> +		}
+> +
+> +		ret = ts_parse_hwtst_provider(tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER],
+> +					      &__hwtst, info->extack,
+> +					      &mod);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if (mod) {
+> +			hwtstamp = kzalloc(sizeof(*hwtstamp), GFP_KERNEL);
+> +			if (!hwtstamp)
+> +				return -ENOMEM;
+> +
+> +			hwtstamp->ptp = ptp_clock_get_by_index(&dev->dev,
+> +							       __hwtst.index);
+> +			if (!hwtstamp->ptp) {
+> +				NL_SET_ERR_MSG_ATTR(info->extack,
+> +						    tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER],
+> +						    "no phc at such index");
+> +				ret = -ENODEV;
+> +				goto err_free_hwtstamp;
+> +			}
+> +			hwtstamp->qualifier = __hwtst.qualifier;
+> +			hwtstamp->dev = &dev->dev;
+> +
+> +			/* Does the hwtstamp supported in the netdev topology */
+> +			if (!netdev_support_hwtstamp(dev, hwtstamp)) {
+> +				NL_SET_ERR_MSG_ATTR(info->extack,
+> +						    tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_PROVIDER],
+> +						    "phc not in this net device topology");
+> +				ret = -ENODEV;
+> +				goto err_clock_put;
+> +			}
+> +		}
+> +	}
+> +
+> +	/* Get the hwtstamp config from netlink */
+> +	if (tb[ETHTOOL_A_TSCONFIG_TX_TYPES]) {
+> +		ret = ethnl_parse_bitset(&req_tx_type, &mask,
+> +					 __HWTSTAMP_TX_CNT,
+> +					 tb[ETHTOOL_A_TSCONFIG_TX_TYPES],
+> +					 ts_tx_type_names, info->extack);
+> +		if (ret < 0)
+> +			goto err_clock_put;
+> +
+> +		/* Select only one tx type at a time */
+> +		if (ffs(req_tx_type) != fls(req_tx_type)) {
+> +			ret = -EINVAL;
+> +			goto err_clock_put;
+> +		}
+> +
+> +		hwtst_config.tx_type = ffs(req_tx_type) - 1;
+> +	}
+> +	if (tb[ETHTOOL_A_TSCONFIG_RX_FILTERS]) {
+> +		ret = ethnl_parse_bitset(&req_rx_filter, &mask,
+> +					 __HWTSTAMP_FILTER_CNT,
+> +					 tb[ETHTOOL_A_TSCONFIG_RX_FILTERS],
+> +					 ts_rx_filter_names, info->extack);
+> +		if (ret < 0)
+> +			goto err_clock_put;
+> +
+> +		/* Select only one rx filter at a time */
+> +		if (ffs(req_rx_filter) != fls(req_rx_filter)) {
+> +			ret = -EINVAL;
+> +			goto err_clock_put;
+> +		}
+> +
+> +		hwtst_config.rx_filter = ffs(req_rx_filter) - 1;
+> +	}
+> +	if (tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_FLAGS]) {
+> +		ret = nla_get_u32(tb[ETHTOOL_A_TSCONFIG_HWTSTAMP_FLAGS]);
+> +		if (ret < 0)
+> +			goto err_clock_put;
+> +		hwtst_config.flags = ret;
+> +	}
+> +
+> +	ret = net_hwtstamp_validate(&hwtst_config);
+> +	if (ret)
+> +		goto err_clock_put;
+> +
+> +	if (mod) {
+> +		struct kernel_hwtstamp_config zero_config = {0};
+> +		struct hwtstamp_provider *__hwtstamp;
+> +
+> +		/* Disable current time stamping if we try to enable
+> +		 * another one
+> +		 */
+> +		ret = dev_set_hwtstamp_phylib(dev, &zero_config, info->extack);
+		
+_hwtst_config is still inited to 0 here, maybe it can be used to avoid
+another stack allocation?
 
-- Use unpacked numbers stored in variables smaller than u64. This
-  reduces the rodata footprint of the stored field arrays.
+> +		if (ret < 0)
+> +			goto err_clock_put;
+> +
+> +		/* Change the selected hwtstamp source */
+> +		__hwtstamp = rcu_replace_pointer_rtnl(dev->hwtstamp, hwtstamp);
+> +		if (__hwtstamp)
+> +			call_rcu(&__hwtstamp->rcu_head,
+> +				 remove_hwtstamp_provider);
+> +	} else {
+> +		/* Get current hwtstamp config if we are not changing the
+> +		 * hwtstamp source
+> +		 */
+> +		ret = dev_get_hwtstamp_phylib(dev, &_hwtst_config);
 
-- Perform error checking at compile time, rather than runtime, and return
-  void from the API functions. Because the C preprocessor can't generat
-  variable length code (loops), we can't easily use macros to implement the
-  overlap checks at compile time.
+This may be tricky whithout ifr set properly. But it should force
+drivers to be converted.
 
-  Instead, check for field ordering and overlap in modpost. This allows
-  writing C code to validate the data. Enable this by marking the packed
-  field arrays in a special data section via use of __section() as part of
-  DECLARE_PACKED_FIELD_S and DECLARE_PACKED_FIELD_M macros.
+> +		if (ret < 0 && ret != -EOPNOTSUPP)
+> +			goto err_clock_put;
+> +	}
+> +
+> +	if (memcmp(&hwtst_config, &_hwtst_config, sizeof(hwtst_config))) {
 
-  While modpost can easily check ordering of the packed fields and ensure
-  no fields overlap, it is tricky to check that the fields all fit within
-  the intended buffer. This is instead handled by BUILD_BUG_ON in the
-  pack_fields and unpack_fields() macros. To enable this, the macros
-  require that the buffers be represented by a type which has a size. Users
-  of the API will need to ensure their buffers are represented by pointers
-  to a type of the appropriate size, such as with a struct typedef.
+better to use kernel_hwtstamp_config_changed() helper here
 
-  The use of modpost keeps the logic for size checking contained to one
-  place, without requiring drivers to invoke a separate macro like the
-  previous C pre-processor solution. It also avoids the need for thousands
-  of generated lines of macro.
-
-- Reduced rodata footprint for the storage of the packed field arrays.
-  To that end, we have struct packed_field_s (small) and packed_field_m
-  (medium). More can be added as needed (unlikely for now). On these
-  types, the same generic pack_fields() and unpack_fields() API can be
-  used, thanks to the new C11 _Generic() selection feature, which can
-  call pack_fields_s() or pack_fields_m(), depending on the type of the
-  "fields" array - a simplistic form of polymorphism. It is evaluated at
-  compile time which function will actually be called.
-
-Over time, packing() is expected to be completely replaced either with
-pack() or with pack_fields().
-
-Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- include/linux/packing.h            |  43 ++++++++
- include/linux/packing_types.h      |  48 +++++++++
- scripts/mod/modpost.h              |   5 +
- lib/packing.c                      | 145 +++++++++++++++++++++++++++
- lib/packing_test.c                 |  61 ++++++++++++
- scripts/mod/modpost.c              |   3 +-
- scripts/mod/packed_fields.c        | 199 +++++++++++++++++++++++++++++++++++++
- Documentation/core-api/packing.rst |  59 +++++++++++
- MAINTAINERS                        |   2 +
- scripts/mod/Makefile               |   4 +-
- 10 files changed, 566 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/packing.h b/include/linux/packing.h
-index 5d36dcd06f60..18e59102ef47 100644
---- a/include/linux/packing.h
-+++ b/include/linux/packing.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/types.h>
- #include <linux/bitops.h>
-+#include <linux/packing_types.h>
- 
- #define QUIRK_MSB_ON_THE_RIGHT	BIT(0)
- #define QUIRK_LITTLE_ENDIAN	BIT(1)
-@@ -26,4 +27,46 @@ int pack(void *pbuf, u64 uval, size_t startbit, size_t endbit, size_t pbuflen,
- int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
- 	   size_t pbuflen, u8 quirks);
- 
-+void pack_fields_s(void *pbuf, size_t pbuflen, const void *ustruct,
-+		   const struct packed_field_s *fields, size_t num_fields,
-+		   u8 quirks);
-+
-+void pack_fields_m(void *pbuf, size_t pbuflen, const void *ustruct,
-+		   const struct packed_field_m *fields, size_t num_fields,
-+		   u8 quirks);
-+
-+void unpack_fields_s(const void *pbuf, size_t pbuflen, void *ustruct,
-+		     const struct packed_field_s *fields, size_t num_fields,
-+		     u8 quirks);
-+
-+void unpack_fields_m(const void *pbuf, size_t pbuflen, void *ustruct,
-+		     const struct packed_field_m *fields, size_t num_fields,
-+		     u8 quirks);
-+
-+#define pack_fields(pbuf, ustruct, fields, quirks) \
-+	({ \
-+		typeof(fields[0]) *__f = fields; \
-+		size_t pbuflen = sizeof(*pbuf); \
-+		size_t num_fields = ARRAY_SIZE(fields); \
-+		BUILD_BUG_ON(__f[0].startbit >= BITS_PER_BYTE * pbuflen); \
-+		BUILD_BUG_ON(__f[num_fields - 1].startbit >= BITS_PER_BYTE * pbuflen); \
-+		_Generic((fields), \
-+			 const struct packed_field_s * : pack_fields_s, \
-+			 const struct packed_field_m * : pack_fields_m \
-+			)(pbuf, pbuflen, ustruct, __f, num_fields, quirks); \
-+	})
-+
-+#define unpack_fields(pbuf, ustruct, fields, quirks) \
-+	({ \
-+		typeof(fields[0]) *__f = fields; \
-+		size_t pbuflen = sizeof(*pbuf); \
-+		size_t num_fields = ARRAY_SIZE(fields); \
-+		BUILD_BUG_ON(__f[0].startbit >= BITS_PER_BYTE * pbuflen); \
-+		BUILD_BUG_ON(__f[num_fields - 1].startbit >= BITS_PER_BYTE * pbuflen); \
-+		_Generic((fields), \
-+			 const struct packed_field_s * : unpack_fields_s, \
-+			 const struct packed_field_m * : unpack_fields_m \
-+			)(pbuf, pbuflen, ustruct, __f, num_fields, quirks); \
-+	})
-+
- #endif
-diff --git a/include/linux/packing_types.h b/include/linux/packing_types.h
-new file mode 100644
-index 000000000000..e0fa5d38ca48
---- /dev/null
-+++ b/include/linux/packing_types.h
-@@ -0,0 +1,48 @@
-+/* SPDX-License-Identifier: BSD-3-Clause
-+ * Copyright (c) 2024, Intel Corporation
-+ * Copyright (c) 2024, Vladimir Oltean <olteanv@gmail.com>
-+ */
-+#ifndef _LINUX_PACKING_TYPES_H
-+#define _LINUX_PACKING_TYPES_H
-+
-+#include <linux/types.h>
-+
-+/* If you add another packed field type, please update
-+ * scripts/mod/packed_fields.c to enable compile time sanity checks.
-+ */
-+
-+#define GEN_PACKED_FIELD_MEMBERS(__type) \
-+	__type startbit; \
-+	__type endbit; \
-+	__type offset; \
-+	__type size;
-+
-+/* Small packed field. Use with bit offsets < 256, buffers < 32B and
-+ * unpacked structures < 256B.
-+ */
-+struct packed_field_s {
-+	GEN_PACKED_FIELD_MEMBERS(u8);
-+};
-+
-+#define DECLARE_PACKED_FIELDS_S(name) \
-+	const struct packed_field_s name[] __section(".rodata.packed_fields_s")
-+
-+/* Medium packed field. Use with bit offsets < 65536, buffers < 8KB and
-+ * unpacked structures < 64KB.
-+ */
-+struct packed_field_m {
-+	GEN_PACKED_FIELD_MEMBERS(u16);
-+};
-+
-+#define DECLARE_PACKED_FIELDS_M(name) \
-+	const struct packed_field_m name[] __section(".rodata.packed_fields_m")
-+
-+#define PACKED_FIELD(start, end, struct_name, struct_field) \
-+{ \
-+	(start), \
-+	(end), \
-+	offsetof(struct_name, struct_field), \
-+	sizeof_field(struct_name, struct_field), \
-+}
-+
-+#endif
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index ada3a36cc4bc..01e678626531 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -175,12 +175,17 @@ void add_moddevtable(struct buffer *buf, struct module *mod);
- /* sumversion.c */
- void get_src_version(const char *modname, char sum[], unsigned sumlen);
- 
-+/* packed_fields.c */
-+void handle_packed_field_symbol(struct module *mod, struct elf_info *info,
-+				Elf_Sym *sym, const char *symname);
-+
- /* from modpost.c */
- extern bool target_is_big_endian;
- extern bool host_is_big_endian;
- char *read_text_file(const char *filename);
- char *get_line(char **stringp);
- void *sym_get_data(const struct elf_info *info, const Elf_Sym *sym);
-+const char *sec_name(const struct elf_info *info, unsigned int secindex);
- 
- void __attribute__((format(printf, 2, 3)))
- modpost_log(bool is_error, const char *fmt, ...);
-diff --git a/lib/packing.c b/lib/packing.c
-index 09a2d195b943..45164f73fe5b 100644
---- a/lib/packing.c
-+++ b/lib/packing.c
-@@ -5,10 +5,37 @@
- #include <linux/packing.h>
- #include <linux/module.h>
- #include <linux/bitops.h>
-+#include <linux/bits.h>
- #include <linux/errno.h>
- #include <linux/types.h>
- #include <linux/bitrev.h>
- 
-+#define __pack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks)	\
-+	({									\
-+		for (size_t i = 0; i < (num_fields); i++) {			\
-+			typeof(&(fields)[0]) field = &(fields)[i];		\
-+			u64 uval;						\
-+										\
-+			uval = ustruct_field_to_u64(ustruct, field->offset, field->size); \
-+										\
-+			__pack(pbuf, uval, field->startbit, field->endbit,	\
-+			       pbuflen, quirks);				\
-+		}								\
-+	})
-+
-+#define __unpack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks)	\
-+	({									\
-+		for (size_t i = 0; i < (num_fields); i++) {			\
-+			typeof(&(fields)[0]) field = &fields[i];		\
-+			u64 uval;						\
-+										\
-+			__unpack(pbuf, &uval, field->startbit, field->endbit,	\
-+				 pbuflen, quirks);				\
-+										\
-+			u64_to_ustruct_field(ustruct, field->offset, field->size, uval); \
-+		}								\
-+	})
-+
- /**
-  * calculate_box_addr - Determine physical location of byte in buffer
-  * @box: Index of byte within buffer seen as a logical big-endian big number
-@@ -322,4 +349,122 @@ int packing(void *pbuf, u64 *uval, int startbit, int endbit, size_t pbuflen,
- }
- EXPORT_SYMBOL(packing);
- 
-+static u64 ustruct_field_to_u64(const void *ustruct, size_t field_offset,
-+				size_t field_size)
-+{
-+	switch (field_size) {
-+	case 1:
-+		return *((u8 *)(ustruct + field_offset));
-+	case 2:
-+		return *((u16 *)(ustruct + field_offset));
-+	case 4:
-+		return *((u32 *)(ustruct + field_offset));
-+	default:
-+		return *((u64 *)(ustruct + field_offset));
-+	}
-+}
-+
-+static void u64_to_ustruct_field(void *ustruct, size_t field_offset,
-+				 size_t field_size, u64 uval)
-+{
-+	switch (field_size) {
-+	case 1:
-+		*((u8 *)(ustruct + field_offset)) = uval;
-+		break;
-+	case 2:
-+		*((u16 *)(ustruct + field_offset)) = uval;
-+		break;
-+	case 4:
-+		*((u32 *)(ustruct + field_offset)) = uval;
-+		break;
-+	default:
-+		*((u64 *)(ustruct + field_offset)) = uval;
-+		break;
-+	}
-+}
-+
-+/**
-+ * pack_fields_s - Pack array of small fields
-+ *
-+ * @pbuf: Pointer to a buffer holding the packed value.
-+ * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
-+ * @ustruct: Pointer to CPU-readable structure holding the unpacked value.
-+ *	     It is expected (but not checked) that this has the same data type
-+ *	     as all struct packed_field_s definitions.
-+ * @fields: Array of small packed fields definition. They must not overlap.
-+ * @num_fields: Length of @fields array.
-+ * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
-+ *	    QUIRK_MSB_ON_THE_RIGHT.
-+ */
-+void pack_fields_s(void *pbuf, size_t pbuflen, const void *ustruct,
-+		   const struct packed_field_s *fields, size_t num_fields,
-+		   u8 quirks)
-+{
-+	__pack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks);
-+}
-+EXPORT_SYMBOL(pack_fields_s);
-+
-+/**
-+ * pack_fields_m - Pack array of medium fields
-+ *
-+ * @pbuf: Pointer to a buffer holding the packed value.
-+ * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
-+ * @ustruct: Pointer to CPU-readable structure holding the unpacked value.
-+ *	     It is expected (but not checked) that this has the same data type
-+ *	     as all struct packed_field_s definitions.
-+ * @fields: Array of medium packed fields definition. They must not overlap.
-+ * @num_fields: Length of @fields array.
-+ * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
-+ *	    QUIRK_MSB_ON_THE_RIGHT.
-+ */
-+void pack_fields_m(void *pbuf, size_t pbuflen, const void *ustruct,
-+		   const struct packed_field_m *fields, size_t num_fields,
-+		   u8 quirks)
-+{
-+	__pack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks);
-+}
-+EXPORT_SYMBOL(pack_fields_m);
-+
-+/**
-+ * unpack_fields_s - Unpack array of small fields
-+ *
-+ * @pbuf: Pointer to a buffer holding the packed value.
-+ * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
-+ * @ustruct: Pointer to CPU-readable structure holding the unpacked value.
-+ *	     It is expected (but not checked) that this has the same data type
-+ *	     as all struct packed_field_s definitions.
-+ * @fields: Array of small packed fields definition. They must not overlap.
-+ * @num_fields: Length of @fields array.
-+ * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
-+ *	    QUIRK_MSB_ON_THE_RIGHT.
-+ */
-+void unpack_fields_s(const void *pbuf, size_t pbuflen, void *ustruct,
-+		     const struct packed_field_s *fields, size_t num_fields,
-+		     u8 quirks)
-+{
-+	__unpack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks);
-+}
-+EXPORT_SYMBOL(unpack_fields_s);
-+
-+/**
-+ * unpack_fields_m - Unpack array of medium fields
-+ *
-+ * @pbuf: Pointer to a buffer holding the packed value.
-+ * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
-+ * @ustruct: Pointer to CPU-readable structure holding the unpacked value.
-+ *	     It is expected (but not checked) that this has the same data type
-+ *	     as all struct packed_field_s definitions.
-+ * @fields: Array of medium packed fields definition. They must not overlap.
-+ * @num_fields: Length of @fields array.
-+ * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
-+ *	    QUIRK_MSB_ON_THE_RIGHT.
-+ */
-+void unpack_fields_m(const void *pbuf, size_t pbuflen, void *ustruct,
-+		     const struct packed_field_m *fields, size_t num_fields,
-+		     u8 quirks)
-+{
-+	__unpack_fields(pbuf, pbuflen, ustruct, fields, num_fields, quirks);
-+}
-+EXPORT_SYMBOL(unpack_fields_m);
-+
- MODULE_DESCRIPTION("Generic bitfield packing and unpacking");
-diff --git a/lib/packing_test.c b/lib/packing_test.c
-index b38ea43c03fd..d8693e797d9b 100644
---- a/lib/packing_test.c
-+++ b/lib/packing_test.c
-@@ -396,9 +396,70 @@ static void packing_test_unpack(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, uval, params->uval);
- }
- 
-+#define PACKED_BUF_SIZE 8
-+
-+typedef struct __packed { u8 buf[PACKED_BUF_SIZE]; } packed_buf_t;
-+
-+struct test_data {
-+	u32 field3;
-+	u16 field2;
-+	u16 field4;
-+	u16 field6;
-+	u8 field1;
-+	u8 field5;
-+};
-+
-+static DECLARE_PACKED_FIELDS_S(test_fields) = {
-+	PACKED_FIELD(63, 61, struct test_data, field1),
-+	PACKED_FIELD(60, 52, struct test_data, field2),
-+	PACKED_FIELD(51, 28, struct test_data, field3),
-+	PACKED_FIELD(27, 14, struct test_data, field4),
-+	PACKED_FIELD(13, 9, struct test_data, field5),
-+	PACKED_FIELD(8, 0, struct test_data, field6),
-+};
-+
-+static void packing_test_pack_fields(struct kunit *test)
-+{
-+	const struct test_data data = {
-+		.field1 = 0x2,
-+		.field2 = 0x100,
-+		.field3 = 0xF00050,
-+		.field4 = 0x7D3,
-+		.field5 = 0x9,
-+		.field6 = 0x10B,
-+	};
-+	packed_buf_t expect = {
-+		.buf = { 0x50, 0x0F, 0x00, 0x05, 0x01, 0xF4, 0xD3, 0x0B },
-+	};
-+	packed_buf_t buf = {};
-+
-+	pack_fields(&buf, &data, test_fields, 0);
-+
-+	KUNIT_EXPECT_MEMEQ(test, &expect, &buf, sizeof(buf));
-+}
-+
-+static void packing_test_unpack_fields(struct kunit *test)
-+{
-+	const packed_buf_t buf = {
-+		.buf = { 0x17, 0x28, 0x10, 0x19, 0x3D, 0xA9, 0x07, 0x9C },
-+	};
-+	struct test_data data = {};
-+
-+	unpack_fields(&buf, &data, test_fields, 0);
-+
-+	KUNIT_EXPECT_EQ(test, 0, data.field1);
-+	KUNIT_EXPECT_EQ(test, 0x172, data.field2);
-+	KUNIT_EXPECT_EQ(test, 0x810193, data.field3);
-+	KUNIT_EXPECT_EQ(test, 0x36A4, data.field4);
-+	KUNIT_EXPECT_EQ(test, 0x3, data.field5);
-+	KUNIT_EXPECT_EQ(test, 0x19C, data.field6);
-+}
-+
- static struct kunit_case packing_test_cases[] = {
- 	KUNIT_CASE_PARAM(packing_test_pack, packing_gen_params),
- 	KUNIT_CASE_PARAM(packing_test_unpack, packing_gen_params),
-+	KUNIT_CASE(packing_test_pack_fields),
-+	KUNIT_CASE(packing_test_unpack_fields),
- 	{},
- };
- 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 107393a8c48a..5425a2afc2d8 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -327,7 +327,7 @@ static const char *sech_name(const struct elf_info *info, Elf_Shdr *sechdr)
- 				      sechdr->sh_name);
- }
- 
--static const char *sec_name(const struct elf_info *info, unsigned int secindex)
-+const char *sec_name(const struct elf_info *info, unsigned int secindex)
- {
- 	/*
- 	 * If sym->st_shndx is a special section index, there is no
-@@ -1602,6 +1602,7 @@ static void read_symbols(const char *modname)
- 
- 		handle_symbol(mod, &info, sym, symname);
- 		handle_moddevtable(mod, &info, sym, symname);
-+		handle_packed_field_symbol(mod, &info, sym, symname);
- 	}
- 
- 	check_sec_ref(mod, &info);
-diff --git a/scripts/mod/packed_fields.c b/scripts/mod/packed_fields.c
-new file mode 100644
-index 000000000000..c1c656cec372
---- /dev/null
-+++ b/scripts/mod/packed_fields.c
-@@ -0,0 +1,199 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2024, Intel Corporation. */
-+
-+/* Code to validate struct packed_field_[sm] data, and perform sanity checks
-+ * to ensure the packed field data is laid out correctly and fits into the
-+ * relevant buffer size.
-+ */
-+
-+#include <fnmatch.h>
-+#include <hashtable.h>
-+#include <inttypes.h>
-+#include <stdint.h>
-+#include <xalloc.h>
-+
-+#include "modpost.h"
-+
-+typedef uint16_t	u16;
-+typedef uint8_t		u8;
-+
-+#define BITS_PER_BYTE	8
-+
-+/* Big exception to the "don't include kernel headers into userspace", which
-+ * even potentially has different endianness and word sizes, since we handle
-+ * those differences explicitly below
-+ */
-+#include "../../include/linux/packing_types.h"
-+
-+#define max(a, b) ({\
-+		typeof(a) _a = a;\
-+		typeof(b) _b = b;\
-+		_a > _b ? _a : _b; })
-+
-+#define min(a, b) ({\
-+		typeof(a) _a = a;\
-+		typeof(b) _b = b;\
-+		_a < _b ? _a : _b; })
-+
-+struct packed_field_elem {
-+	uint64_t startbit;
-+	uint64_t endbit;
-+	uint64_t offset;
-+	uint64_t size;
-+};
-+
-+enum field_type {
-+	UNKNOWN_SECTION,
-+	PACKED_FIELD_S,
-+	PACKED_FIELD_M,
-+};
-+
-+enum element_order {
-+	FIRST_ELEMENT,
-+	SECOND_ELEMENT,
-+	ASCENDING_ORDER,
-+	DESCENDING_ORDER,
-+};
-+
-+static size_t field_type_to_size(enum field_type type)
-+{
-+	switch (type) {
-+	case PACKED_FIELD_S:
-+		return sizeof(struct packed_field_s);
-+	case PACKED_FIELD_M:
-+		return sizeof(struct packed_field_m);
-+	default:
-+		error("attempted to get field size for unknown packed field type %u\n",
-+		      type);
-+		return 0;
-+	}
-+}
-+
-+static void get_field_contents(const void *data, enum field_type type,
-+			       struct packed_field_elem *elem)
-+{
-+	switch (type) {
-+	case PACKED_FIELD_S: {
-+		const struct packed_field_s *data_field = data;
-+
-+		elem->startbit = TO_NATIVE(data_field->startbit);
-+		elem->endbit = TO_NATIVE(data_field->endbit);
-+		elem->offset = TO_NATIVE(data_field->offset);
-+		elem->size = TO_NATIVE(data_field->size);
-+		return;
-+	}
-+	case PACKED_FIELD_M: {
-+		const struct packed_field_m *data_field = data;
-+
-+		elem->startbit = TO_NATIVE(data_field->startbit);
-+		elem->endbit = TO_NATIVE(data_field->endbit);
-+		elem->offset = TO_NATIVE(data_field->offset);
-+		elem->size = TO_NATIVE(data_field->size);
-+		return;
-+	}
-+	default:
-+		error("attempted to get field contents for unknown packed field type %u\n",
-+		      type);
-+	}
-+}
-+
-+void handle_packed_field_symbol(struct module *mod, struct elf_info *info,
-+				Elf_Sym *sym, const char *symname)
-+{
-+	unsigned int secindex = get_secindex(info, sym);
-+	struct packed_field_elem elem = {}, prev = {};
-+	enum element_order order = FIRST_ELEMENT;
-+	enum field_type type = UNKNOWN_SECTION;
-+	size_t field_size, count;
-+	const void *data, *ptr;
-+	const char *section;
-+
-+	/* Skip symbols without a name */
-+	if (*symname == '\0')
-+		return;
-+
-+	/* Skip symbols with invalid sections */
-+	if (secindex >= info->num_sections)
-+		return;
-+
-+	section = sec_name(info, secindex);
-+
-+	if (strcmp(section, ".rodata.packed_fields_s") == 0)
-+		type = PACKED_FIELD_S;
-+	else if (strcmp(section, ".rodata.packed_fields_m") == 0)
-+		type = PACKED_FIELD_M;
-+
-+	/* Other sections don't relate to packed fields */
-+	if (type == UNKNOWN_SECTION)
-+		return;
-+
-+	field_size = field_type_to_size(type);
-+
-+	/* check that the data is a multiple of the size */
-+	if (sym->st_size % field_size != 0) {
-+		error("[%s.ko] \"%s\" has size %zu which is not a multiple of the field size (%zu)\n",
-+		      mod->name, symname, sym->st_size, field_size);
-+		return;
-+	}
-+
-+	data = sym_get_data(info, sym);
-+
-+	for (ptr = data, count = 0;
-+	     ptr < data + sym->st_size;
-+	     ptr += field_size, count++, prev = elem) {
-+		get_field_contents(ptr, type, &elem);
-+
-+		if (elem.size != 1 && elem.size != 2 &&
-+		    elem.size != 4 && elem.size != 8)
-+			error("[%s.ko] \"%s\" field %zu unpacked size (%" PRIu64 ") must be 1, 2, 4, or 8\n",
-+			      mod->name, symname, count, elem.size);
-+
-+		if (elem.startbit < elem.endbit)
-+			error("[%s.ko] \"%s\" field %zu (%" PRIu64 "-%" PRIu64 "): start bit must be >= end bit\n",
-+			      mod->name, symname, count,
-+			      elem.startbit, elem.endbit);
-+
-+		if (elem.startbit - elem.endbit + 1 > BITS_PER_BYTE * elem.size)
-+			error("[%s.ko] \"%s\" field %zu (%" PRIu64 "-%" PRIu64 ") has a width of %" PRIu64 " bits which does not fit into the unpacked structure field (%" PRIu64 " bytes)\n",
-+			      mod->name, symname, count,
-+			      elem.startbit, elem.endbit,
-+			      elem.startbit - elem.endbit + 1,
-+			      elem.size);
-+
-+		if (order != FIRST_ELEMENT &&
-+		    max(elem.endbit, prev.endbit) <=
-+		    min(elem.startbit, prev.startbit))
-+			error("[%s.ko] \"%s\" field %zu (%" PRIu64 "-%" PRIu64 ") overlaps with previous field (%" PRIu64 "-%" PRIu64 ")\n",
-+			      mod->name, symname, count,
-+			      elem.startbit, elem.endbit,
-+			      prev.startbit, prev.endbit);
-+
-+		switch (order) {
-+		case FIRST_ELEMENT:
-+			order = SECOND_ELEMENT;
-+			break;
-+		case SECOND_ELEMENT:
-+			order = prev.startbit < elem.startbit ?
-+				ASCENDING_ORDER : DESCENDING_ORDER;
-+			break;
-+		case ASCENDING_ORDER:
-+			if (prev.startbit >= elem.startbit ||
-+			    prev.endbit >= elem.endbit)
-+				error("[%s.ko] \"%s\" field %zu (%" PRIu64 "-%" PRIu64") not in ascending order with previous field (%" PRIu64 "-%" PRIu64 ")\n",
-+				      mod->name, symname, count,
-+				      elem.startbit, elem.endbit,
-+				      prev.startbit, prev.endbit);
-+			break;
-+		case DESCENDING_ORDER:
-+			if (prev.startbit <= elem.startbit ||
-+			    prev.endbit <= elem.endbit)
-+				error("[%s.ko] \"%s\" field %zu (%" PRIu64 "-%" PRIu64") not in descending order with previous field (%" PRIu64 "-%" PRIu64 ")\n",
-+				      mod->name, symname, count,
-+				      elem.startbit, elem.endbit,
-+				      prev.startbit, prev.endbit);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-diff --git a/Documentation/core-api/packing.rst b/Documentation/core-api/packing.rst
-index 821691f23c54..d4cdc287704d 100644
---- a/Documentation/core-api/packing.rst
-+++ b/Documentation/core-api/packing.rst
-@@ -235,3 +235,62 @@ programmer against incorrect API use.  The errors are not expected to occur
- during runtime, therefore it is reasonable for xxx_packing() to return void
- and simply swallow those errors. Optionally it can dump stack or print the
- error description.
-+
-+The pack_fields() and unpack_fields() macros automatically select the
-+appropriate function at compile time based on the type of the fields array
-+passed in.
-+
-+Packed Fields
-+-------------
-+
-+Drivers are encouraged to use the ``pack_fields()`` and ``unpack_fields()``
-+APIs over using ``pack()``, ``unpack()``, or ``packing()``.
-+
-+These APIs use field definitions in arrays of ``struct packed_field_s`` or
-+``struct packed_field_m`` stored as ``.rodata``. This significantly reduces
-+the code footprint required to pack or unpack many fields. In addition,
-+sanity checks on the field definitions are handled at compile time via
-+``modpost`` warnings, rather than only when the offending code is executed.
-+
-+The ``pack_fields()`` and ``unpack_fields()`` macros determine the size of
-+the packed buffer by its type. Thus, you must ensure the buffer is a pointer
-+to a type with the desired size. This is typically achieved by creating a
-+typedef with a packed structure.
-+
-+Here is an example of how to use the fields APIs:
-+
-+.. code-block:: c
-+
-+   struct data {
-+        u64 field3;
-+        u32 field4;
-+        u16 field1;
-+        u8 field2;
-+   };
-+
-+   #define SIZE 13
-+
-+   typdef struct __packed { u8 buf[SIZE]; } packed_buf_t;
-+
-+   DECLARE_PACKED_FIELDS_S(fields, SIZE) = {
-+           PACKED_FIELD(100, 90, struct data, field1),
-+           PACKED_FIELD(90, 87, struct data, field2),
-+           PACKED_FIELD(86, 30, struct data, field3),
-+           PACKED_FIELD(29, 0, struct data, field4),
-+   };
-+
-+   void unpack_your_data(const packed_buf_t *buf, struct data *unpacked)
-+   {
-+           BUILD_BUG_ON(sizeof(*buf) != SIZE;
-+
-+           unpack_fields(buf, sizeof(*buf), unpacked, fields,
-+                         QUIRK_LITTLE_ENDIAN);
-+   }
-+
-+   void pack_your_data(const struct data *unpacked, packed_buf_t *buf)
-+   {
-+           BUILD_BUG_ON(sizeof(*buf) != SIZE;
-+
-+           pack_fields(buf, sizeof(*buf), unpacked, fields,
-+                       QUIRK_LITTLE_ENDIAN);
-+   }
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c51fd742cbc8..5649263504c2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17391,8 +17391,10 @@ L:	netdev@vger.kernel.org
- S:	Supported
- F:	Documentation/core-api/packing.rst
- F:	include/linux/packing.h
-+F:	include/linux/packing_types.h
- F:	lib/packing.c
- F:	lib/packing_test.c
-+F:	scripts/mod/packed_fields.c
- 
- PADATA PARALLEL EXECUTION MECHANISM
- M:	Steffen Klassert <steffen.klassert@secunet.com>
-diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
-index c729bc936bae..aa729b6000b6 100644
---- a/scripts/mod/Makefile
-+++ b/scripts/mod/Makefile
-@@ -4,7 +4,7 @@ CFLAGS_REMOVE_empty.o += $(CC_FLAGS_LTO)
- hostprogs-always-y	+= modpost mk_elfconfig
- always-y		+= empty.o
- 
--modpost-objs	:= modpost.o file2alias.o sumversion.o symsearch.o
-+modpost-objs	:= modpost.o file2alias.o sumversion.o symsearch.o packed_fields.o
- 
- devicetable-offsets-file := devicetable-offsets.h
- 
-@@ -15,7 +15,7 @@ targets += $(devicetable-offsets-file) devicetable-offsets.s
- 
- # dependencies on generated files need to be listed explicitly
- 
--$(obj)/modpost.o $(obj)/file2alias.o $(obj)/sumversion.o $(obj)/symsearch.o: $(obj)/elfconfig.h
-+$(obj)/modpost.o $(obj)/file2alias.o $(obj)/sumversion.o $(obj)/symsearch.o $(obj)/packed_fields.o: $(obj)/elfconfig.h
- $(obj)/file2alias.o: $(obj)/$(devicetable-offsets-file)
- 
- quiet_cmd_elfconfig = MKELF   $@
-
--- 
-2.47.0.265.g4ca455297942
+> +		ret = dev_set_hwtstamp_phylib(dev, &hwtst_config,
+> +					      info->extack);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = tsconfig_send_reply(dev, info);
+> +		if (ret && ret != -EOPNOTSUPP) {
+> +			NL_SET_ERR_MSG(info->extack,
+> +				       "error while reading the new configuration set");
+> +			return ret;
+> +		}
+> +
+> +		return 1;
+> +	}
+> +
+> +	if (mod)
+> +		return 1;
+> +
+> +	return 0;
+> +
+> +err_clock_put:
+> +	if (hwtstamp)
+> +		ptp_clock_put(&dev->dev, hwtstamp->ptp);
+> +err_free_hwtstamp:
+> +	kfree(hwtstamp);
+> +
+> +	return ret;
+> +}
+> +
+> +const struct ethnl_request_ops ethnl_tsconfig_request_ops = {
+> +	.request_cmd		= ETHTOOL_MSG_TSCONFIG_GET,
+> +	.reply_cmd		= ETHTOOL_MSG_TSCONFIG_GET_REPLY,
+> +	.hdr_attr		= ETHTOOL_A_TSCONFIG_HEADER,
+> +	.req_info_size		= sizeof(struct tsconfig_req_info),
+> +	.reply_data_size	= sizeof(struct tsconfig_reply_data),
+> +
+> +	.prepare_data		= tsconfig_prepare_data,
+> +	.reply_size		= tsconfig_reply_size,
+> +	.fill_reply		= tsconfig_fill_reply,
+> +
+> +	.set_validate		= ethnl_set_tsconfig_validate,
+> +	.set			= ethnl_set_tsconfig,
+> +	.set_ntf_cmd		= ETHTOOL_MSG_TSCONFIG_NTF,
+> +};
+> 
 
