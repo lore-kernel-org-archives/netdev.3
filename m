@@ -1,65 +1,45 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE85286A8;
-	Sat,  9 Nov 2024 01:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A65436124
+	for <netdev@vger.kernel.org>; Sat,  9 Nov 2024 02:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731117489; cv=none; b=eKs6JqWfEKStojSRNzzOoM2zBntqWJub2wFgW0/A007ClxDMG/7OJdh1MWlZS6ms9NhPzk/3CTK/LOdrUi0S7AXqfIefE+O+UD4wrx4YJoFgTYwf/VFS56vf5CMSWBOkcqLV2ZtQ9XvJajc9GBCy4Ocrl7w09I4MqHCXUmCAIf8=
+	t=1731119586; cv=none; b=LiH/AiNISLJINlqAjDOQ3GCKo5jJ70QVm/XyiDLenG/7SC9MFZAzH/EcX4itJrKcB5lnS7hi8sSDY0+IB4JKnjNl4x9WIPntC+RmcACTM1DpXsRgxRI7FoQhh7Qt+ltokfqIEb0tT/Ar+W8L4ilF777SWKEQIlkyTliOaIrsNIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731117489; c=relaxed/simple;
-	bh=bZOmlMjKP7+1DfMV69BCjR8Sth8+h7dMnby4tGDo/6o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=krpfwFCK49ZPR1DnaTx0AC6T1HMF6I0xF3ul+7R2h0l51rXdqkFcwW2kT7tWwpT1HIDWpwC1Gj/Q0Ukw4Vyj9Jm3jm8BVWWZBYtu2tEOKulAwNo6+y4hoiuKcuN1tTN/We+9ctr3GST8gpvE71DF0DmzX8lFXEFVPIOX0yhsmQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=DxrgbW0D; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1731119586; c=relaxed/simple;
+	bh=D4geBik0PQtO/GewgrLBIKe+2jD/TisPMo+Sej7oGXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N8S/ZmVmzmOWSGz5O1atplSfTUn2wUOSkPL/qxIMjW2gIpJpGl2Hk63n1rnDGIHiOSTL7M8ZvcDHSjfpkZe/XsMOXMriz76KTzdgCy2ClgocDWeLZq/Hl9rh0pVn/Ck+/HskzYKALo1Nq9Ba1MJ9LpJdXJILB+GDWvoUPrcEq4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muLAsyOa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="DxrgbW0D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731117488; x=1762653488;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bZOmlMjKP7+1DfMV69BCjR8Sth8+h7dMnby4tGDo/6o=;
-  b=DxrgbW0DCEtQcM/lrBwUdF+LgmmcGd9oMt4r8YSolmIpAgu2Wpo6id/o
-   bRlszfEuyIGxE6EfIVKPqbt48j1zly4GZ4KTLpcoQPpPEQOvLIbaZaFJQ
-   c34SzpdfFHkwtV/XWiVZ9xit9GzL4EOi4kGD/QfR4ULZt8cCqj0HFUlFo
-   oUrGeS6d4PuQT/PFT0Qax7FhiTdcGotRbHDEizX4hHw1pHaeJ21KHffYF
-   i+m9JCkmxIRt+1BmvYFqWtrxnBLRS4r3VFGbX8TayMd92czmVxkqYJFxl
-   UfCZ33CtvZpCNznCHy7rMQdwziX51b9qQv6fP9CqPHUQeeTTJhUtPY3EO
-   w==;
-X-CSE-ConnectionGUID: iTjjvxg9S12uJG/WmNjJDA==
-X-CSE-MsgGUID: tPl8DJvAQCm4DlFA+GFW/w==
-X-IronPort-AV: E=Sophos;i="6.12,139,1728975600"; 
-   d="scan'208";a="37590998"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Nov 2024 18:58:07 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 8 Nov 2024 18:57:06 -0700
-Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Fri, 8 Nov 2024 18:57:06 -0700
-From: <Tristram.Ha@microchip.com>
-To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
-	"Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-	<UNGLinuxDriver@microchip.com>, <devicetree@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Tristram Ha
-	<tristram.ha@microchip.com>
-Subject: [PATCH net-next 1/2] dt-bindings: net: dsa: microchip: Add LAN9646 switch support
-Date: Fri, 8 Nov 2024 17:57:04 -0800
-Message-ID: <20241109015705.82685-2-Tristram.Ha@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241109015705.82685-1-Tristram.Ha@microchip.com>
-References: <20241109015705.82685-1-Tristram.Ha@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muLAsyOa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E75AC4CECD;
+	Sat,  9 Nov 2024 02:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731119585;
+	bh=D4geBik0PQtO/GewgrLBIKe+2jD/TisPMo+Sej7oGXQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=muLAsyOascTv8clai4ExJDA8fqSnJ3wXxaxVcPaoq9r7/i99X2tr4NCCx8iaGtXJO
+	 W7iPZWXOqcQFlnrp8brYxoYh90rT4B3SKrMRh/ElPjGfPvNpEjQQFFAHAUnra15mMQ
+	 7cVMXGCgAU9jGOQWlGx2CgIqHNkPL/l0yWvXuhElTebuctgccg3pUM8bpCjR24EJfz
+	 XDwRfIzDh5lUsjZgzYK9erCDfgiUoVeSwKygqiDJ1f35FrnvCwvQqsUz/ckLLZyFHM
+	 FqfivOtVxoEryK4MsBMH1SLHvupaieSqLTpfyBHYssxE+3DaWlJKIRBgR6/HxjQUwp
+	 2j17a/1XeVC5w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	hawk@kernel.org,
+	ilias.apalodimas@linaro.org,
+	lorenzo@kernel.org,
+	wangjie125@huawei.com,
+	huangguangbin2@huawei.com
+Subject: [PATCH net-next] net: page_pool: do not count normal frag allocation in stats
+Date: Fri,  8 Nov 2024 18:33:03 -0800
+Message-ID: <20241109023303.3366500-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,30 +47,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Tristram Ha <tristram.ha@microchip.com>
+Commit 0f6deac3a079 ("net: page_pool: add page allocation stats for
+two fast page allocate path") added increments for "fast path"
+allocation to page frag alloc. It mentions performance degradation
+analysis but the details are unclear. Could be that the author
+was simply surprised by the alloc stats not matching packet count.
 
-LAN9646 switch is a 6-port switch with functions like KSZ9897.  It has
-4 internal PHYs and 1 SGMII port.
+In my experience the key metric for page pool is the recycling rate.
+Page return stats, however, count returned _pages_ not frags.
+This makes it impossible to calculate recycling rate for drivers
+using the frag API. Here is example output of the page-pool
+YNL sample for a driver allocating 1200B frags (4k pages)
+with nearly perfect recycling:
 
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+  $ ./page-pool
+    eth0[2]	page pools: 32 (zombies: 0)
+		refs: 291648 bytes: 1194590208 (refs: 0 bytes: 0)
+		recycling: 33.3% (alloc: 4557:2256365862 recycle: 200476245:551541893)
+
+The recycling rate is reported as 33.3% because we give out
+4096 // 1200 = 3 frags for every recycled page.
+
+Effectively revert the aforementioned commit. This also aligns
+with the stats we would see for drivers which do the fragmentation
+themselves, although that's not a strong reason in itself.
+
+On the (very unlikely) path where we can reuse the current page
+let's bump the "cached" stat. The fact that we don't put the page
+in the cache is just an optimization.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml | 1 +
- 1 file changed, 1 insertion(+)
+CC: hawk@kernel.org
+CC: ilias.apalodimas@linaro.org
+CC: lorenzo@kernel.org
+CC: wangjie125@huawei.com
+CC: huangguangbin2@huawei.com
+---
+ net/core/page_pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-index 30c0c3e6f37a..c3502876276d 100644
---- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-@@ -34,6 +34,7 @@ properties:
-       - microchip,ksz9563
-       - microchip,ksz8563
-       - microchip,ksz8567
-+      - microchip,lan9646
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a813d30d2135..f89cf93f6eb4 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -950,6 +950,7 @@ netmem_ref page_pool_alloc_frag_netmem(struct page_pool *pool,
+ 	if (netmem && *offset + size > max_size) {
+ 		netmem = page_pool_drain_frag(pool, netmem);
+ 		if (netmem) {
++			recycle_stat_inc(pool, cached);
+ 			alloc_stat_inc(pool, fast);
+ 			goto frag_reset;
+ 		}
+@@ -974,7 +975,6 @@ netmem_ref page_pool_alloc_frag_netmem(struct page_pool *pool,
  
-   reset-gpios:
-     description:
+ 	pool->frag_users++;
+ 	pool->frag_offset = *offset + size;
+-	alloc_stat_inc(pool, fast);
+ 	return netmem;
+ }
+ EXPORT_SYMBOL(page_pool_alloc_frag_netmem);
 -- 
-2.34.1
+2.47.0
 
