@@ -1,41 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584B519C552
-	for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 13:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6BD19E826;
+	Mon, 11 Nov 2024 13:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731333501; cv=none; b=U0caHhfywrmPZkcvnTLgu5K/jY20vNySSbchhKP52HPE0ercu3FNCx8H2cAkQjTSVhzsT9fgBRhnBmSn2Tje59UfnX/7tF9VuQOgYZUEW6QTtUbUjDqZiIGlfvJ//nGrlXcydZWQHNfTxBHITJm3fP6t/ItHwTrVlFTSDTS4dbA=
+	t=1731333587; cv=none; b=UogAxzXCOc0ob1Drq42m8j6t6PWPILG3HikzexGUyeHiggx85ym7l0vm9SjV7TyuRIpbY/JlyrYLN5xJlp5gbSKB0QIOouzEb4Rh3Oi+Pe1alAqXama/lLrsKbFRILSMwRQOD8AHh7JrFq317HGXAEG/iL8tR/rdVi8JfGEiLiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731333501; c=relaxed/simple;
-	bh=qCjXrvzUOOdu3h0mQcfyR6CSxHGWBH3xRNzG2Y2nKmI=;
+	s=arc-20240116; t=1731333587; c=relaxed/simple;
+	bh=ls6xR7OPifllcfidwmSCJFTPyb+sk+NFmXo7wqIxFt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oUEuk7aO1J9N9Iw8rczfD66NG7XPRtXFyBypZ10YIx8HT/EfaClt+EUFPNoKgWp7r6utXfACsOxeI3co2RfgjdWURJ6hhtOlWve3N+M6fvxFWhCJ9B6DEtwwEeYXI6eo0oIdh9Huosaoks9v9fN0ypKCaQGHMOrZIuR68vVtRVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tykzY2Hu; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tykzY2Hu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89555C4CECF;
-	Mon, 11 Nov 2024 13:58:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731333500;
-	bh=qCjXrvzUOOdu3h0mQcfyR6CSxHGWBH3xRNzG2Y2nKmI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tykzY2Hun1j6bIUSOXgrPWL/aQX494OLYSNUFMrgp9+2oISPgej2lWlrhp6luzEsD
-	 Vy0TYKiTpSS5QskWNfNAXcTql91NktfI6RWPABa1L2NYG0sIEdpq1By+/3hpRwWJb8
-	 KeeH7DHn8R4IlbmKWQWB1E+dvhsKk0I/lZxWDf/mnDGr24gIeQxgudyWfP+Y83Z3h2
-	 hL3uD4SFtXWeOd4XoRtgA/1SMuD2UXDoehHWyiT40XMaYu22EQmBwOOzzFogHhFeiX
-	 MDnodvZN9qZQIAQlYGVyvI1jxre0HjsT61bwEK253DJxTflBEsc2LXLCaaQLaFPHmQ
-	 /KYKgDm9hQlPA==
-Date: Mon, 11 Nov 2024 13:58:16 +0000
-From: Simon Horman <horms@kernel.org>
-To: Mohsin Bashir <mohsin.bashr@gmail.com>
-Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, kuba@kernel.org,
-	andrew@lunn.ch, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, kernel-team@meta.com,
-	sanmanpradhan@meta.com, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH net-next] eth: fbnic: Add support to dump registers
-Message-ID: <20241111135816.GD4507@kernel.org>
-References: <20241108013253.3934778-1-mohsin.bashr@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJ4tNnSdgOSMJcknfa5XirHjWj4BAq90DS8mA3+GIABGD41I5oJ6Y9VUTSVa7W+icbO5V9brWAEJuMOx4LwbRQVSKKopyV1O8WxfgLAbQCWj/2khg+5kIowGKZK3Vq4UJlVOP5uAeKBNCn3BImQvN7qNTmBWOOnFeIz9GUgl0+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 58C102010CF;
+	Mon, 11 Nov 2024 14:50:35 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 52B662010C6;
+	Mon, 11 Nov 2024 14:50:35 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 10FFE20326;
+	Mon, 11 Nov 2024 14:50:35 +0100 (CET)
+Date: Mon, 11 Nov 2024 14:50:35 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Simon Horman <horms@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>
+Subject: Re: [PATCH v4 05/16] net: dwmac-dwc-qos-eth: Use helper rgmii_clock
+Message-ID: <ZzILq99H/Zj4I/6Q@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20241028-upstream_s32cc_gmac-v4-0-03618f10e3e2@oss.nxp.com>
+ <20241028-upstream_s32cc_gmac-v4-5-03618f10e3e2@oss.nxp.com>
+ <20241105134206.GE4507@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,17 +70,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241108013253.3934778-1-mohsin.bashr@gmail.com>
+In-Reply-To: <20241105134206.GE4507@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Thu, Nov 07, 2024 at 05:32:53PM -0800, Mohsin Bashir wrote:
-> Add support for the 'ethtool -d <dev>' command to retrieve and print
-> a register dump for fbnic. The dump defaults to version 1 and consists
-> of two parts: all the register sections that can be dumped linearly, and
-> an RPC RAM section that is structured in an interleaved fashion and
-> requires special handling. For each register section, the dump also
-> contains the start and end boundary information which can simplify parsing.
+On Tue, Nov 05, 2024 at 01:42:06PM +0000, Simon Horman wrote:
+> On Mon, Oct 28, 2024 at 09:24:47PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > Utilize a new helper function rgmii_clock().
+> > 
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c | 11 +++--------
+> >  1 file changed, 3 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> > index ec924c6c76c6..5080891c33e0 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
+> > @@ -181,24 +181,19 @@ static void dwc_qos_remove(struct platform_device *pdev)
+> >  static void tegra_eqos_fix_speed(void *priv, unsigned int speed, unsigned int mode)
+> >  {
+> >  	struct tegra_eqos *eqos = priv;
+> > -	unsigned long rate = 125000000;
+> > +	long rate = 125000000;
+> >  	bool needs_calibration = false;
+> >  	u32 value;
+> >  	int err;
 > 
-> Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+> Hi Jan,
+> 
+> As it seems that there will be another revision anyway,
+> please update the above so that the local variable declarations
+> are in reverse xmas tree order - longest line to shortest.
+> 
+> Likewise in s32_dwmac_probe() in the patch
+> "net: stmmac: dwmac-s32: add basic NXP S32G/S32R glue driver".
+> 
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Hi Simon,
+thanks for review, I will add those formating fixes in v5.
 
+BR.
+/Jan
