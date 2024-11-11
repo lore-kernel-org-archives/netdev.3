@@ -1,635 +1,173 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2040.outbound.protection.outlook.com [40.107.22.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EED31BF58;
-	Mon, 11 Nov 2024 01:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731290063; cv=none; b=nkRJuXmio0r/28w5WA+VibEQXbzdugWjZhxKgFvAqjTJl7qYVo4+X62JrcA61JE1VAaXY127Z6TliBZgYAQOYWhmjKfgY0HOqqHpoV1xgZ94iMqPM1Vp8pHJowraJe7TygyUAlgROCqspmDQIuicDB+gsMmsUDGNrjCSikeKWJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731290063; c=relaxed/simple;
-	bh=fO7Ul0gpLMDqhZRQacDpOn6tVYWe88jDPPeRdtqPbx0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A+A1Z7aceNA2IHrqJpDlXgMxn/9D7oetw6uuawq41vMrrH0H4WCzPDSKuW0My71DTU+S1AS65ZZexABalhqNceWxM+FcyQn1xsPqihI5I2aKPDzyTWHta9b6ZE2qK0JISDPh+9eHcfpSgxSGvaOXikh957kz0/lhY8MwaYWzIuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CB8HSaPG; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83193C3C;
+	Mon, 11 Nov 2024 02:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731290882; cv=fail; b=hiGf/ZUbpuwSrNb11BuwhVyF6JuyIPMJK2VtaWj+TWmhIGTPHuUdzJdtUgkfhAmf+HEPbkDmJLJLXJOh8RTPFv0wex1r5MbbTUgKwsm4XRwvFeL3C3MuNDf8Ckrbd0PIZl1SW5D6VXYqSknHysT2BtjDYWEfJIOpmX9n2TqhWdI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731290882; c=relaxed/simple;
+	bh=fyseDxdf1XFDXTXV2lLmKQ5Ejpft/6eT/nbUBzxrthg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=cVIMm0QV6TJfck7AiIrrnQwwMo+PA6xKDvuByP9erUKP42Xxu/HERy4N5Ec2cELPVAfoosJqPn1xVYefLPfHhRHiXFKayqzxIGxjZ1F9npQVfTXrZouxoZ54dtEquVs5Tr9pIzw9J9gPRSO40m480JSNtpAMTpQGzAvwfaEcBms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hPuQRxFZ; arc=fail smtp.client-ip=40.107.22.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CB8HSaPG"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d47eff9acso2331235f8f.3;
-        Sun, 10 Nov 2024 17:54:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731290059; x=1731894859; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yM3JS4xzDpHaz+p/mnRLIiLH9B4buoiK4LZuHmhFcTI=;
-        b=CB8HSaPGmI4rIYJw6VQus13F/5P5J7+y8uRjOp9LccjMQpODdQmdqrKvCbixqQIe06
-         oHv7iHx1P2kcq6L1iTrXaY0dD21I08VPIFpSuSgOutHXOXLAddKYqplsnbeVgLhz6vtU
-         VBPRFvP88Bt1MXQ6JL/hAkiPjss86EJNj3JA2vBFpbGhX5ndjkW0bMTW0bC6ZPr5yGNW
-         x4KxRS+yOwkwFNiaYb6nrQTy5Qx0K00zOfYZAv6wWJQ02gb99KOSZM6fsK40wjxpo5zp
-         HzgCjUfYQ8tvNik+LhbuZrnDx2PiTsk/tnq5H+LFTWBRPH3yGPrD32mu2q1tX5JXs6Yg
-         LejA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731290059; x=1731894859;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yM3JS4xzDpHaz+p/mnRLIiLH9B4buoiK4LZuHmhFcTI=;
-        b=HgR5WUNcEdJT8ZeplJNpzkFpz6pMAtr+ZpD/1RoG8if6AvYSkTBNVNW74GNJ8RMAoV
-         NhX3HVNLn0U7Dr1f+F9PDkYOU1ttehgfk5OvcfLw2W3wb7Ybl+tHPcYIjkdt58EbT3cZ
-         0JV4MBNZFN8azubvXV0IH0xclV6a7zW9TixzYucCqnsHjnWNBKXgvj24QwB7ttN9SJno
-         mXbFhoLLlvpHIikXMHRo/XKFkaA9tIK6sWFVP+TOos+8xh2OReyILH98M4VGnUS3LBPc
-         44ze7mgipJ/qVmqmyHdYja+bJl3Rnaike6tAMwSUdbHqi9GLKk9Z6uV12WH3aU+1e4F0
-         whyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUK3N5pEF3bww2TVwWuCLILtB4i2CEU31I8aYVOVN+WP8Iv6yUrhv2vHAiXrP4eLGlHhp8Lmc0e@vger.kernel.org, AJvYcCVqL4T4cJAzJ1VmbZ9Gd2TC9Ob2is8AOsNOZN4osRNWj2XyyUbYLZ8SbW0JWFUaTWSslU3t91e6Ka/01jM=@vger.kernel.org, AJvYcCW/89isJsuY+LazDYBmfdu1YaP21TkcLJOoNFuIRuGYYmIjP6PdSQbW5Cx52SMTVwdFWRp2+YNT3F2VAMQScgX0@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrzzEWewd7/e3E9TT43WRGBNKxYhWL5AFoGyC/2d4XBGx0JIBi
-	IYaQzlcFWnHu9lsuYde6KYgSMt8nhvGcVR1lSjR4W56UWPOiQXy8
-X-Google-Smtp-Source: AGHT+IGc4zBIaP8LIGH+JiTFCPnYacLovb3ytb6PDr12kSbH5LpxfaYVB6dBlyM9jcQbS4JWsqhowg==
-X-Received: by 2002:a05:6000:699:b0:37d:5046:571 with SMTP id ffacd0b85a97d-381f1866f82mr8305674f8f.22.1731290059044;
-        Sun, 10 Nov 2024 17:54:19 -0800 (PST)
-Received: from [192.168.0.2] ([69.6.8.124])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432bb8c3b15sm101595115e9.2.2024.11.10.17.54.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 10 Nov 2024 17:54:17 -0800 (PST)
-Message-ID: <eabe28f9-d6a4-4bdc-a988-418e5137f3cb@gmail.com>
-Date: Mon, 11 Nov 2024 03:54:46 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hPuQRxFZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cg5ASjSTFEyoXUO/ZmR3eXgL8Tn6573zSTj+wSWxTVPfIzrV8lwKK224yVaSXIakaoM/fjTTAXeyhRiXYsCIVRXN45r4wGo6K6ZyFOpm1xaRwg6UoHOAqcQWpi46oTkAafP09u1CyaxDJS9eY9oe7ApNO6MN92lLyMWISSOAJQdToWU4y4Mgxchn0MLDwSDgYzUrz3DULfRBuwuDY/3xkvO2PEPnYhmTxHAaYaTz9EXv0kSejxMAK6bEnw+jg7rF5v6XpbiNF8d6Sa7WxGZ2TsF1zCfLqGEX6Ebrm0a/I9DcSd5FvRGixhEPhlsl/1VzhN8Ry/I+psbjCUj/tXV78Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xHW1vOkm5Swy4eSdky976EolrI3FzsFChXY0atI0SQc=;
+ b=vZ8fpSNqqcdqGawrMFg3OamUh1m8cBXn644B5fnQfjy1IjmHMaBmcMCryP1AkeWWeN3VjLV+08/eRmJJy7JmFcBnmFIBDQX1fIjuwAtjfc9BGeNUOoLXnF8X0ikCzJtekzydO/xH8oQcOgokAC/N5+tI0gmCY0fQWjpYjOnJjNoF3POvyZFG5DHRktHMVIfaHkWFKUNPGzmSLNwW9Omena3lnT4cww/2hhEeCBYn+meAWED4crcPRQfWshWU0lbnzlTQhG85/ZOehgrko+e+Ydo+KlgGB0Anau3TcMNuIaB4FcbtpdiBRkGh98kYVCjx1Jv+ag8lzT3pAYsrBcIZEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xHW1vOkm5Swy4eSdky976EolrI3FzsFChXY0atI0SQc=;
+ b=hPuQRxFZA3ckoGT6Iy6n9ax9Mo1+0yASq+IZAemkFpF5hIDpKStKITeXWwbSNsMqqsQaWwterJ5qUosV4N+radYjO03QGsd8h6IUSTYVYGvg5KXyRhWwQLrxriCeWHPQTkFLcnbRZ7wx7vlgLVHhgWsK2Ha+Wql3C0STT5WmZbhNWGatMm0TDQIHCAC8wH2/NsgLsPWj2PsrrZIRNmlXkJ4Vk2Bynth+krM7rp5Kii0ganY7XfVTw/f7qCDbpsw6I1+5jN5lhfeU6I8Z0Hch6tCThmQqoqY2D0HrsZyoyUqQV/Xc5/jurlLUu6MfB5TpQmxbS3vVlxWwZXAhyCwckA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM8PR04MB7745.eurprd04.prod.outlook.com (2603:10a6:20b:234::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Mon, 11 Nov
+ 2024 02:07:58 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
+ 02:07:57 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	frank.li@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 net-next 0/5] Add more feautues for ENETC v4 - round 1
+Date: Mon, 11 Nov 2024 09:52:11 +0800
+Message-Id: <20241111015216.1804534-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0023.APCP153.PROD.OUTLOOK.COM (2603:1096:4:190::6)
+ To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 09/23] ovpn: implement basic RX path (UDP)
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- sd@queasysnail.net, Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-9-de4698c73a25@openvpn.net>
-Content-Language: en-US
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-In-Reply-To: <20241029-b4-ovpn-v11-9-de4698c73a25@openvpn.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AM8PR04MB7745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 438607bb-bb0b-4efa-39be-08dd01f5a92c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?UOR1fqD5WBp00IlR6gpR8wOQBixnAM9Lv8wWdiftet1sasAdcrMyQfvyQlQE?=
+ =?us-ascii?Q?k773lforpBVa3rM651OfXBFJgdpOcYQyL5zQRpCbBR2EMenSyxcsab+atc9O?=
+ =?us-ascii?Q?yH9lAIqjPlwAtSCWW+4pokBa639E8KTcX33ixMVpLqOh3DydjXGRAhF59inB?=
+ =?us-ascii?Q?8IvQjXRgCC1Daa3XiqXpv7QX4sBaIKNnlYKwKdPOTagGB0mAZipZsZhOqgDD?=
+ =?us-ascii?Q?AuwBdpuB0MjLJOuLfLbJJvBmTJDhNDcxKLbtn29mWVamF8sDEOVXX6/qcltU?=
+ =?us-ascii?Q?njIGO4hIFIqUhrmpeByNgreQ+pZdixjGsZo71PeKTnFtkFb6M49xnd4W0DMb?=
+ =?us-ascii?Q?VvZVu98ULGl184EGX31nG3rLy3AeIzeZqmp0D079/YnM8LhNBS8Mo3isCucN?=
+ =?us-ascii?Q?k3dpGlYWhJge65TIifBWo0lAgQ7Zg2Pk3SxhBohWnSXiUitTEoNFGFUcaRPB?=
+ =?us-ascii?Q?HO+g7MR5qx70Cfoaq2+IIp55+ljKmPhNX5JeMhGaa6rm2Kl2hseyDPbirrmq?=
+ =?us-ascii?Q?+VxjCTmPh3NH6cjGA7wegyJGT30OVN08Hp3ut89OKXRZ0LO4DJo3LkDGjW1y?=
+ =?us-ascii?Q?l0/YaUCl2nEhtMWuP5QzoiPFC3D3+CEaDqrSPifYfrbkfjznv6MjYOTTGF13?=
+ =?us-ascii?Q?nN42eVpW9GRtvi/k2tudFanFc2Mn2Jpq//gS0ujcBYZtGCAarssm/k7l8Qt+?=
+ =?us-ascii?Q?DAvZ/VCRfEfEc7l9SciBNsXM3DYV4Cqo86KjRl3c44Qrwv7KXt3I57Gjv3pe?=
+ =?us-ascii?Q?TixXqFB8YGtoX2+kQat6sec3G8E3tvMedYziiCtlve0LWZQQZnGtQjlBZT3n?=
+ =?us-ascii?Q?E46qQhpAu4/XW4RnQUwlZvLR1mLgxfVVM7X92scXMNw6qJYgwBNLf5txo3aI?=
+ =?us-ascii?Q?boZ7K01t+eQ0DZDtQNy1fBfNm6rJuDdmNjhx5+Umm9jdVNm45YgigiQY7S4q?=
+ =?us-ascii?Q?IquiF7/U3/skui/GIEGSg3SZkMbWhwannOAb12d2u7annejfF34Sdw+r+4Ut?=
+ =?us-ascii?Q?JbmyP/NX08QsCran8cqvcLe9oFTfxF+UEx3tJEu8xSAENqPYC5hmjLPi8Jnm?=
+ =?us-ascii?Q?KTpM7y/WUVs6BGpF0H35qtsSMXDHvXL2hANhZLiyADo5/ylfqfEuPpfNafvP?=
+ =?us-ascii?Q?VT+BbOsC/sgcpeoYquFTeJCXytpFYTBnDkZ+i5ZSHfd/GdmQMc/3L/e59QSF?=
+ =?us-ascii?Q?uxwZJxoHHnVnIg+6CCBjopnR1hlqnvAzL4nHZmfYhhTTQJvqT5l0WUZ9577W?=
+ =?us-ascii?Q?z+JGO7tBzpbP8EXcyjMm51sB8XlNa2j9LckVmBXn6uoVAw8VBPIulj8FwcwL?=
+ =?us-ascii?Q?aIGZ2w1QSsxXyA0bBxOWxxfTarhKwDIYw6oP3o3++zhfJoeex00TtnbyMaXk?=
+ =?us-ascii?Q?Xm1SbVQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?b4azrEzFi/bqEKSsiq5YnJb8pILF+ngCouE4I2SEPKFVVTjRsNJN4KKeepro?=
+ =?us-ascii?Q?KZWuxgjFNd6CdQ6wgqb7hSARquWQjlhuEhrhW3YXTZszjUqzfABMV2930YMX?=
+ =?us-ascii?Q?UPlfddQbkpq/gkLrdTG3sSu0z3P10rVf0iIyw93DPIiq0gZWPX/Ecwvpk93F?=
+ =?us-ascii?Q?JnK5noc9o2PMVbkixelgPZZPjzfybdMueaEy8jAm69vAvd0pwN7BS/Q/YJ3Q?=
+ =?us-ascii?Q?JeS+EgRIMVg6bPAs6TDAK3AwBms8g6lg/pujIlmvsOQD5c4aJUNYd7TT5EkK?=
+ =?us-ascii?Q?+7HYcNGG0/2Qvz3YXs/DdBrmcJWErejl+ojMQpvngy+2creowOYyiriLFb1y?=
+ =?us-ascii?Q?mOYz2pHrXO/OJV8sciAqmIbTimzqXLB9yBvFItWuOhdaOVmj+Dphf8FrHJjD?=
+ =?us-ascii?Q?DvN1sZGtlD/9wlKqGwRpPRGu4iLrCPPp1+C3lwj5ZKizb6mitty/BVqcwNXV?=
+ =?us-ascii?Q?rWhuN5wp29iTsC15zzKvTNGU5e+bPtRer4+2c/6I3Y3pzbBT4Ja8cTwjc+bX?=
+ =?us-ascii?Q?eqWEnZtNDFGFKJy1p7g8iHYTwkYaIEoAcXHeliJWtmkm1Pjb57fE1ZAlV+eo?=
+ =?us-ascii?Q?7Mw/yQ1hTopT6s/Cu9d7NlSfvvuABR13jowxsEsWbhMl+7/woIFZ4XioblB0?=
+ =?us-ascii?Q?2HSU1j0dwcSuLJiQoNnSkQwjrZMnyR050u46JaXC23HnVFWsBRiHLxEa1A7d?=
+ =?us-ascii?Q?lu27FvVhPN2Ug5x7x66HyuGjk1fSXDaFyd0PUtNfqpZcPAfNUS4zdvkp8Zoj?=
+ =?us-ascii?Q?5tvITS6ruHL7+tf/cAAgAOEe//uqNckENe0I1mtp3cqtF68wj72bKIAyXLg/?=
+ =?us-ascii?Q?mvoLO3Le0WpkiwMwQ0kYcLHZ8jDr5WpmZwkFoie8Pd9UTK/fanjCrH0+qptL?=
+ =?us-ascii?Q?qbeVRzsZH68kD1cv8rVtUE4MVINCHxeLgm/RF8WTKqMh7383U3kiN4tPLDfj?=
+ =?us-ascii?Q?G895MyiXbj0FAPv4Rj/0mT1KISI4rwqJguuYde3Q4gCHi+Q0C7ucQykpx1q5?=
+ =?us-ascii?Q?AM8BUfKqz+EW+6QrvKnH/Lqh/1a2hd9qRZbDgMgY9MAVYlsJh2JEBiMD/mJf?=
+ =?us-ascii?Q?Fp+nhclvrON0hTI6l4MhdPtuBpQS1Sim3vnJbHxsyYLwI7qCXCnr90QWm1EE?=
+ =?us-ascii?Q?+w471BO0A6LK7BsKxwd83omwOoXanj0AFR/kXh+l42ydr1+L5xfUPB3SpQOB?=
+ =?us-ascii?Q?/IYQLVKMFTWIPmQ8m6d6MBSVzXJhIK0HCWcpJUWYQZ8MnchENdNtIySbk5yv?=
+ =?us-ascii?Q?8dOibKONvL4h8VG8/af1dpadD5WO2BkNfUKy5jPdHI1ErbXeMsIQDps2kmJv?=
+ =?us-ascii?Q?cHYiPlNEBR2cr0Rvalh7lFNsMYaroA9luPqKAT2VIXiECaQiv4wJea1xVlla?=
+ =?us-ascii?Q?d+hdei7D8ykZv/Fa2lMAmQJMEe2rkz+J8gGc6cSyg7YXxWGxaqHX7dVm6n5g?=
+ =?us-ascii?Q?bRV8+De8lo4op+u52zFIN7rsQ/VhdTDswsH71KGNV1JLM/Unl/MhyOldb2IH?=
+ =?us-ascii?Q?yZHPuofY7DJc0ncntLm/P3dpn7nbtIUFzQkkAKdedIYq3RYIpM9exh4z4C5a?=
+ =?us-ascii?Q?xnngBGUZ0FwtS5aSl9NsEoyeZpu5qXDGyQ7dJXPG?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 438607bb-bb0b-4efa-39be-08dd01f5a92c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2024 02:07:57.9126
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JVr2Xvbfjl7Xh24M4DBGjFQ2RJq7uCn5tNOOnjUZqbRCf1uUlUM82xNOTJj4ECQJRDgozPOk1lh8YpSp/vcO2g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7745
 
-On 29.10.2024 12:47, Antonio Quartulli wrote:
-> Packets received over the socket are forwarded to the user device.
-> 
-> Implementation is UDP only. TCP will be added by a later patch.
-> 
-> Note: no decryption/decapsulation exists yet, packets are forwarded as
-> they arrive without much processing.
-> 
-> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-> ---
->   drivers/net/ovpn/io.c         |  66 ++++++++++++++++++++++++++-
->   drivers/net/ovpn/io.h         |   2 +
->   drivers/net/ovpn/main.c       |  13 +++++-
->   drivers/net/ovpn/ovpnstruct.h |   3 ++
->   drivers/net/ovpn/proto.h      |  75 ++++++++++++++++++++++++++++++
->   drivers/net/ovpn/socket.c     |  24 ++++++++++
->   drivers/net/ovpn/udp.c        | 104 +++++++++++++++++++++++++++++++++++++++++-
->   drivers/net/ovpn/udp.h        |   3 +-
->   8 files changed, 286 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-> index 77ba4d33ae0bd2f52e8bd1c06a182d24285297b4..791a1b117125118b179cb13cdfd5fbab6523a360 100644
-> --- a/drivers/net/ovpn/io.c
-> +++ b/drivers/net/ovpn/io.c
-> @@ -9,15 +9,79 @@
->   
->   #include <linux/netdevice.h>
->   #include <linux/skbuff.h>
-> +#include <net/gro_cells.h>
->   #include <net/gso.h>
->   
-> -#include "io.h"
->   #include "ovpnstruct.h"
->   #include "peer.h"
-> +#include "io.h"
-> +#include "netlink.h"
-> +#include "proto.h"
->   #include "udp.h"
->   #include "skb.h"
->   #include "socket.h"
->   
-> +/* Called after decrypt to write the IP packet to the device.
-> + * This method is expected to manage/free the skb.
-> + */
-> +static void ovpn_netdev_write(struct ovpn_peer *peer, struct sk_buff *skb)
-> +{
-> +	unsigned int pkt_len;
-> +
-> +	/* we can't guarantee the packet wasn't corrupted before entering the
-> +	 * VPN, therefore we give other layers a chance to check that
-> +	 */
-> +	skb->ip_summed = CHECKSUM_NONE;
-> +
-> +	/* skb hash for transport packet no longer valid after decapsulation */
-> +	skb_clear_hash(skb);
-> +
-> +	/* post-decrypt scrub -- prepare to inject encapsulated packet onto the
-> +	 * interface, based on __skb_tunnel_rx() in dst.h
-> +	 */
-> +	skb->dev = peer->ovpn->dev;
-> +	skb_set_queue_mapping(skb, 0);
-> +	skb_scrub_packet(skb, true);
-> +
+Compared to ENETC v1 (LS1028A), ENETC v4 (i.MX95) adds more features, and
+some features are configured completely differently from v1. In order to
+more fully support ENETC v4, these features will be added through several
+rounds of patch sets. This round adds these features, such as Tx and Rx
+checksum offload, increase maximum chained Tx BD number and Large send
+offload (LSO).
 
-The skb->protocol field is going to be updated in the upcoming patch in 
-the caller (ovpn_decrypt_post). Shall we put a comment here clarifying, 
-why do not touch the protocol field here?
+---
+v1 Link: https://lore.kernel.org/imx/20241107033817.1654163-1-wei.fang@nxp.com/
+---
 
-> +	skb_reset_network_header(skb);
+Wei Fang (5):
+  net: enetc: add Rx checksum offload for i.MX95 ENETC
+  net: enetc: add Tx checksum offload for i.MX95 ENETC
+  net: enetc: update max chained Tx BD number for i.MX95 ENETC
+  net: enetc: add LSO support for i.MX95 ENETC PF
+  net: enetc: add UDP segmentation offload support
 
-ovpn_decrypt_post() already reseted the network header. Why do we need 
-it here again?
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 346 ++++++++++++++++--
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  32 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  22 ++
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  31 +-
+ .../freescale/enetc/enetc_pf_common.c         |  16 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   7 +-
+ 6 files changed, 420 insertions(+), 34 deletions(-)
 
-> +	skb_reset_transport_header(skb);
-> +	skb_probe_transport_header(skb);
-> +	skb_reset_inner_headers(skb);
-> +
-> +	memset(skb->cb, 0, sizeof(skb->cb));
-
-Why do we need to zero the control buffer here?
-
-> +	/* cause packet to be "received" by the interface */
-> +	pkt_len = skb->len;
-> +	if (likely(gro_cells_receive(&peer->ovpn->gro_cells,
-> +				     skb) == NET_RX_SUCCESS))
-> +		/* update RX stats with the size of decrypted packet */
-> +		dev_sw_netstats_rx_add(peer->ovpn->dev, pkt_len);
-> +}
-> +
-> +static void ovpn_decrypt_post(struct sk_buff *skb, int ret)
-> +{
-> +	struct ovpn_peer *peer = ovpn_skb_cb(skb)->peer;
-> +
-> +	if (unlikely(ret < 0))
-> +		goto drop;
-> +
-> +	ovpn_netdev_write(peer, skb);
-> +	/* skb is passed to upper layer - don't free it */
-> +	skb = NULL;
-> +drop:
-> +	if (unlikely(skb))
-> +		dev_core_stats_rx_dropped_inc(peer->ovpn->dev);
-> +	ovpn_peer_put(peer);
-> +	kfree_skb(skb);
-> +}
-> +
-> +/* pick next packet from RX queue, decrypt and forward it to the device */
-
-The function now receives packets from externel callers. Should we 
-update the above comment?
-
-> +void ovpn_recv(struct ovpn_peer *peer, struct sk_buff *skb)
-> +{
-> +	ovpn_skb_cb(skb)->peer = peer;
-> +	ovpn_decrypt_post(skb, 0);
-> +}
-> +
->   static void ovpn_encrypt_post(struct sk_buff *skb, int ret)
->   {
->   	struct ovpn_peer *peer = ovpn_skb_cb(skb)->peer;
-> diff --git a/drivers/net/ovpn/io.h b/drivers/net/ovpn/io.h
-> index aa259be66441f7b0262f39da12d6c3dce0a9b24c..9667a0a470e0b4b427524fffb5b9b395007e5a2f 100644
-> --- a/drivers/net/ovpn/io.h
-> +++ b/drivers/net/ovpn/io.h
-> @@ -12,4 +12,6 @@
->   
->   netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev);
->   
-> +void ovpn_recv(struct ovpn_peer *peer, struct sk_buff *skb);
-> +
->   #endif /* _NET_OVPN_OVPN_H_ */
-> diff --git a/drivers/net/ovpn/main.c b/drivers/net/ovpn/main.c
-> index 5492ce07751d135c1484fe1ed8227c646df94969..73348765a8cf24321aa6be78e75f607d6dbffb1d 100644
-> --- a/drivers/net/ovpn/main.c
-> +++ b/drivers/net/ovpn/main.c
-> @@ -11,6 +11,7 @@
->   #include <linux/module.h>
->   #include <linux/netdevice.h>
->   #include <linux/inetdevice.h>
-> +#include <net/gro_cells.h>
->   #include <net/ip.h>
->   #include <net/rtnetlink.h>
->   #include <uapi/linux/if_arp.h>
-> @@ -32,7 +33,16 @@ static void ovpn_struct_free(struct net_device *net)
->   
->   static int ovpn_net_init(struct net_device *dev)
->   {
-> -	return 0;
-> +	struct ovpn_struct *ovpn = netdev_priv(dev);
-> +
-> +	return gro_cells_init(&ovpn->gro_cells, dev);
-> +}
-> +
-> +static void ovpn_net_uninit(struct net_device *dev)
-> +{
-> +	struct ovpn_struct *ovpn = netdev_priv(dev);
-> +
-> +	gro_cells_destroy(&ovpn->gro_cells);
->   }
->   
->   static int ovpn_net_open(struct net_device *dev)
-> @@ -56,6 +66,7 @@ static int ovpn_net_stop(struct net_device *dev)
->   
->   static const struct net_device_ops ovpn_netdev_ops = {
->   	.ndo_init		= ovpn_net_init,
-> +	.ndo_uninit		= ovpn_net_uninit,
->   	.ndo_open		= ovpn_net_open,
->   	.ndo_stop		= ovpn_net_stop,
->   	.ndo_start_xmit		= ovpn_net_xmit,
-> diff --git a/drivers/net/ovpn/ovpnstruct.h b/drivers/net/ovpn/ovpnstruct.h
-> index a22c5083381c131db01a28c0f51e661d690d4998..4a48fc048890ab1cda78bc104fe3034b4a49d226 100644
-> --- a/drivers/net/ovpn/ovpnstruct.h
-> +++ b/drivers/net/ovpn/ovpnstruct.h
-> @@ -10,6 +10,7 @@
->   #ifndef _NET_OVPN_OVPNSTRUCT_H_
->   #define _NET_OVPN_OVPNSTRUCT_H_
->   
-> +#include <net/gro_cells.h>
->   #include <net/net_trackers.h>
->   #include <uapi/linux/if_link.h>
->   #include <uapi/linux/ovpn.h>
-> @@ -23,6 +24,7 @@
->    * @lock: protect this object
->    * @peer: in P2P mode, this is the only remote peer
->    * @dev_list: entry for the module wide device list
-> + * @gro_cells: pointer to the Generic Receive Offload cell
->    */
->   struct ovpn_struct {
->   	struct net_device *dev;
-> @@ -32,6 +34,7 @@ struct ovpn_struct {
->   	spinlock_t lock; /* protect writing to the ovpn_struct object */
->   	struct ovpn_peer __rcu *peer;
->   	struct list_head dev_list;
-> +	struct gro_cells gro_cells;
->   };
->   
->   #endif /* _NET_OVPN_OVPNSTRUCT_H_ */
-> diff --git a/drivers/net/ovpn/proto.h b/drivers/net/ovpn/proto.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..69604cf26bbf82539ee5cd5a7ac9c23920f555de
-> --- /dev/null
-> +++ b/drivers/net/ovpn/proto.h
-> @@ -0,0 +1,75 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*  OpenVPN data channel offload
-> + *
-> + *  Copyright (C) 2020-2024 OpenVPN, Inc.
-> + *
-> + *  Author:	Antonio Quartulli <antonio@openvpn.net>
-> + *		James Yonan <james@openvpn.net>
-> + */
-> +
-> +#ifndef _NET_OVPN_OVPNPROTO_H_
-> +#define _NET_OVPN_OVPNPROTO_H_
-> +
-> +#include "main.h"
-> +
-> +#include <linux/skbuff.h>
-> +
-> +/* Methods for operating on the initial command
-> + * byte of the OpenVPN protocol.
-> + */
-> +
-> +/* packet opcode (high 5 bits) and key-id (low 3 bits) are combined in
-> + * one byte
-> + */
-> +#define OVPN_KEY_ID_MASK 0x07
-> +#define OVPN_OPCODE_SHIFT 3
-> +#define OVPN_OPCODE_MASK 0x1F
-
-Instead of defining mask(s) and shift(s), we can define only masks and 
-use bitfield API (see below).
-
-> +/* upper bounds on opcode and key ID */
-> +#define OVPN_KEY_ID_MAX (OVPN_KEY_ID_MASK + 1)
-> +#define OVPN_OPCODE_MAX (OVPN_OPCODE_MASK + 1)
-> +/* packet opcodes of interest to us */
-> +#define OVPN_DATA_V1 6 /* data channel V1 packet */
-> +#define OVPN_DATA_V2 9 /* data channel V2 packet */
-> +/* size of initial packet opcode */
-> +#define OVPN_OP_SIZE_V1 1
-> +#define OVPN_OP_SIZE_V2	4
-> +#define OVPN_PEER_ID_MASK 0x00FFFFFF
-> +#define OVPN_PEER_ID_UNDEF 0x00FFFFFF
-> +/* first byte of keepalive message */
-> +#define OVPN_KEEPALIVE_FIRST_BYTE 0x2a
-> +/* first byte of exit message */
-> +#define OVPN_EXPLICIT_EXIT_NOTIFY_FIRST_BYTE 0x28
-
- From the above list of macros, OVPN_KEY_ID_MAX, OVPN_OPCODE_MAX, 
-OVPN_OP_SIZE_V1, OVPN_KEEPALIVE_FIRST_BYTE, and 
-OVPN_EXPLICIT_EXIT_NOTIFY_FIRST_BYTE are unused and looks like should be 
-removed.
-
-> +/**
-> + * ovpn_opcode_from_skb - extract OP code from skb at specified offset
-> + * @skb: the packet to extract the OP code from
-> + * @offset: the offset in the data buffer where the OP code is located
-> + *
-> + * Note: this function assumes that the skb head was pulled enough
-> + * to access the first byte.
-> + *
-> + * Return: the OP code
-> + */
-> +static inline u8 ovpn_opcode_from_skb(const struct sk_buff *skb, u16 offset)
-> +{
-> +	u8 byte = *(skb->data + offset);
-> +
-> +	return byte >> OVPN_OPCODE_SHIFT;
-
-For example here, the shift can be replaced with bitfield macro:
-
-#define OVPN_OPCODE_PKTTYPE_MSK  0xf8000000
-#define OVPN_OPCODE_KEYID_MSK    0x07000000
-#define OVPN_OPCODE_PEERID_MSK   0x00ffffff
-
-static inline u8 ovpn_opcode_from_skb(...)
-{
-     u32 opcode = be32_to_cpu(*(__be32 *)(skb->data + offset));
-
-     return FIELD_GET(OVPN_OPCODE_PKTTYPE_MSK, opcode);
-}
-
-And the upcoming ovpn_opcode_compose() can be implemented like this:
-
-static inline u32 ovpn_opcode_compose(u8 opcode, u8 key_id, u32 peer_id)
-{
-     return FIELD_PREP(OVPN_OPCODE_PKTTYPE_MSK, opcode) |
-            FIELD_PREP(OVPN_OPCODE_KEYID_MSK, key_id) |
-            FIELD_PREP(OVPN_OPCODE_PEERID_MSK, peer_id);
-}
-
-And with this size can be even embedded into ovpn_aead_encrypt() to make 
-the header composing more clear.
-
-> +}
-> +
-> +/**
-> + * ovpn_peer_id_from_skb - extract peer ID from skb at specified offset
-> + * @skb: the packet to extract the OP code from
-> + * @offset: the offset in the data buffer where the OP code is located
-> + *
-> + * Note: this function assumes that the skb head was pulled enough
-> + * to access the first 4 bytes.
-> + *
-> + * Return: the peer ID.
-> + */
-> +static inline u32 ovpn_peer_id_from_skb(const struct sk_buff *skb, u16 offset)
-> +{
-> +	return ntohl(*(__be32 *)(skb->data + offset)) & OVPN_PEER_ID_MASK;
-> +}
-> +
-> +#endif /* _NET_OVPN_OVPNPROTO_H_ */
-> diff --git a/drivers/net/ovpn/socket.c b/drivers/net/ovpn/socket.c
-> index 090a3232ab0ec19702110f1a90f45c7f10889f6f..964b566de69f4132806a969a455cec7f6059a0bd 100644
-> --- a/drivers/net/ovpn/socket.c
-> +++ b/drivers/net/ovpn/socket.c
-> @@ -22,6 +22,9 @@ static void ovpn_socket_detach(struct socket *sock)
->   	if (!sock)
->   		return;
->   
-> +	if (sock->sk->sk_protocol == IPPROTO_UDP)
-> +		ovpn_udp_socket_detach(sock);
-> +
->   	sockfd_put(sock);
->   }
->   
-> @@ -71,6 +74,27 @@ static int ovpn_socket_attach(struct socket *sock, struct ovpn_peer *peer)
->   	return ret;
->   }
->   
-> +/* Retrieve the corresponding ovpn object from a UDP socket
-> + * rcu_read_lock must be held on entry
-> + */
-> +struct ovpn_struct *ovpn_from_udp_sock(struct sock *sk)
-> +{
-> +	struct ovpn_socket *ovpn_sock;
-> +
-> +	if (unlikely(READ_ONCE(udp_sk(sk)->encap_type) != UDP_ENCAP_OVPNINUDP))
-> +		return NULL;
-> +
-> +	ovpn_sock = rcu_dereference_sk_user_data(sk);
-> +	if (unlikely(!ovpn_sock))
-> +		return NULL;
-> +
-> +	/* make sure that sk matches our stored transport socket */
-> +	if (unlikely(!ovpn_sock->sock || sk != ovpn_sock->sock->sk))
-> +		return NULL;
-> +
-> +	return ovpn_sock->ovpn;
-
-Now, returning of this pointer is safe. But the following TCP transport 
-support calls the socket release via a scheduled work. What extends 
-socket lifetime and makes it possible to receive a UDP packet way after 
-the interface private data release. Is it correct assumption?
-
-If the above is right then shall we set ->ovpn = NULL before scheduling 
-the socket releasing work or somehow else mark the socket as half-destroyed?
-
-> +}
-> +
->   /**
->    * ovpn_socket_new - create a new socket and initialize it
->    * @sock: the kernel socket to embed
-> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-> index d26d7566e9c8dfe91fa77f49c34fb179a9fb2239..d1e88ae83843f02d591e67a7995f2d6868720695 100644
-> --- a/drivers/net/ovpn/udp.c
-> +++ b/drivers/net/ovpn/udp.c
-> @@ -21,9 +21,95 @@
->   #include "bind.h"
->   #include "io.h"
->   #include "peer.h"
-> +#include "proto.h"
->   #include "socket.h"
->   #include "udp.h"
->   
-> +/**
-> + * ovpn_udp_encap_recv - Start processing a received UDP packet.
-> + * @sk: socket over which the packet was received
-> + * @skb: the received packet
-> + *
-> + * If the first byte of the payload is DATA_V2, the packet is further processed,
-> + * otherwise it is forwarded to the UDP stack for delivery to user space.
-> + *
-> + * Return:
-> + *  0 if skb was consumed or dropped
-> + * >0 if skb should be passed up to userspace as UDP (packet not consumed)
-> + * <0 if skb should be resubmitted as proto -N (packet not consumed)
-> + */
-> +static int ovpn_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
-> +{
-> +	struct ovpn_peer *peer = NULL;
-> +	struct ovpn_struct *ovpn;
-> +	u32 peer_id;
-> +	u8 opcode;
-> +
-> +	ovpn = ovpn_from_udp_sock(sk);
-> +	if (unlikely(!ovpn)) {
-> +		net_err_ratelimited("%s: cannot obtain ovpn object from UDP socket\n",
-> +				    __func__);
-
-Probably we should zero ovpn pointer in the ovpn_sock to survive 
-scheduled socket release (see comment in ovpn_from_udp_sock). So, this 
-print should be removed to avoid printing misguiding errors.
-
-> +		goto drop_noovpn;
-> +	}
-> +
-> +	/* Make sure the first 4 bytes of the skb data buffer after the UDP
-> +	 * header are accessible.
-> +	 * They are required to fetch the OP code, the key ID and the peer ID.
-> +	 */
-> +	if (unlikely(!pskb_may_pull(skb, sizeof(struct udphdr) +
-> +				    OVPN_OP_SIZE_V2))) {
-> +		net_dbg_ratelimited("%s: packet too small\n", __func__);
-> +		goto drop;
-> +	}
-> +
-> +	opcode = ovpn_opcode_from_skb(skb, sizeof(struct udphdr));
-> +	if (unlikely(opcode != OVPN_DATA_V2)) {
-> +		/* DATA_V1 is not supported */
-> +		if (opcode == OVPN_DATA_V1)
-> +			goto drop;
-
-This packet dropping makes protocol accelerator, intendent to speed up 
-the data packets processing, a protocol enforcement entity, isn't it? 
-Shall we follow the principle of beeing liberal in what we accept and 
-just forward everything besides data packets upstream to a userspace 
-application?
-
-> +
-> +		/* unknown or control packet: let it bubble up to userspace */
-> +		return 1;
-> +	}
-> +
-> +	peer_id = ovpn_peer_id_from_skb(skb, sizeof(struct udphdr));
-> +	/* some OpenVPN server implementations send data packets with the
-> +	 * peer-id set to undef. In this case we skip the peer lookup by peer-id
-> +	 * and we try with the transport address
-> +	 */
-> +	if (peer_id != OVPN_PEER_ID_UNDEF) {
-> +		peer = ovpn_peer_get_by_id(ovpn, peer_id);
-> +		if (!peer) {
-> +			net_err_ratelimited("%s: received data from unknown peer (id: %d)\n",
-> +					    __func__, peer_id);
-
-Why do we consider a peer sending us garbage our problem? Meaning, this 
-peer miss can be not our fault but a malformed packet from a 3rd party 
-side. E.g. nowdays I can see a lot of traces of these "active probers" 
-in my OpenVPN logs. Shall remove this message or at least make it debug 
-to avoid bothering users with garbage traveling Internet? Anyway we can 
-not do anything regarding incoming traffic.
-
-> +			goto drop;
-> +		}
-> +	}
-> +
-> +	if (!peer) {
-
-AFAIU, this condition can true only in case of peer_id beeing equal to 
-OVPN_PEER_ID_UNDEF, right? In this case the condition check can be 
-replaced by simple 'else' statement.
-
-And to make code more corresponding to the above comment regarding 
-implementations that send undefined peer-id, can we swap sides of the 
-lookup method selection? E.g.
-
-/* Comment about fancy implementations sending undefined peer-id */
-if (peer_id == OVPN_PEER_ID_UNDEF) {
-   /* Do transport address based loockup */
-} else {
-   /* Do peer-id based loockup */
-}
-
-> +		/* data packet with undef peer-id */
-> +		peer = ovpn_peer_get_by_transp_addr(ovpn, skb);
-> +		if (unlikely(!peer)) {
-> +			net_dbg_ratelimited("%s: received data with undef peer-id from unknown source\n",
-> +					    __func__);
-> +			goto drop;
-> +		}
-> +	}
-> +
-> +	/* pop off outer UDP header */
-> +	__skb_pull(skb, sizeof(struct udphdr));
-> +	ovpn_recv(peer, skb);
-> +	return 0;
-> +
-> +drop:
-> +	if (peer)
-> +		ovpn_peer_put(peer);
-
-AFAIU, the peer is alway NULL here. Shall we remove the above check?
-
-> +	dev_core_stats_rx_dropped_inc(ovpn->dev);
-> +drop_noovpn:
-> +	kfree_skb(skb);
-> +	return 0;
-> +}
-> +
->   /**
->    * ovpn_udp4_output - send IPv4 packet over udp socket
->    * @ovpn: the openvpn instance
-> @@ -259,8 +345,12 @@ void ovpn_udp_send_skb(struct ovpn_struct *ovpn, struct ovpn_peer *peer,
->    */
->   int ovpn_udp_socket_attach(struct socket *sock, struct ovpn_struct *ovpn)
->   {
-> +	struct udp_tunnel_sock_cfg cfg = {
-> +		.encap_type = UDP_ENCAP_OVPNINUDP,
-> +		.encap_rcv = ovpn_udp_encap_recv,
-> +	};
->   	struct ovpn_socket *old_data;
-> -	int ret = 0;
-> +	int ret;
->   
->   	/* sanity check */
->   	if (sock->sk->sk_protocol != IPPROTO_UDP) {
-> @@ -274,6 +364,7 @@ int ovpn_udp_socket_attach(struct socket *sock, struct ovpn_struct *ovpn)
->   	if (!old_data) {
->   		/* socket is currently unused - we can take it */
->   		rcu_read_unlock();
-> +		setup_udp_tunnel_sock(sock_net(sock->sk), sock, &cfg);
->   		return 0;
->   	}
->   
-> @@ -302,3 +393,14 @@ int ovpn_udp_socket_attach(struct socket *sock, struct ovpn_struct *ovpn)
->   
->   	return ret;
->   }
-> +
-> +/**
-> + * ovpn_udp_socket_detach - clean udp-tunnel status for this socket
-> + * @sock: the socket to clean
-> + */
-> +void ovpn_udp_socket_detach(struct socket *sock)
-> +{
-> +	struct udp_tunnel_sock_cfg cfg = { };
-> +
-> +	setup_udp_tunnel_sock(sock_net(sock->sk), sock, &cfg);
-> +}
-> diff --git a/drivers/net/ovpn/udp.h b/drivers/net/ovpn/udp.h
-> index e60f8cd2b4ac8f910aabcf8ed546af59d6ca4be4..fecb68464896bc1228315faf268453f9005e693d 100644
-> --- a/drivers/net/ovpn/udp.h
-> +++ b/drivers/net/ovpn/udp.h
-> @@ -18,8 +18,9 @@ struct sk_buff;
->   struct socket;
->   
->   int ovpn_udp_socket_attach(struct socket *sock, struct ovpn_struct *ovpn);
-> -
-> +void ovpn_udp_socket_detach(struct socket *sock);
->   void ovpn_udp_send_skb(struct ovpn_struct *ovpn, struct ovpn_peer *peer,
->   		       struct sk_buff *skb);
-> +struct ovpn_struct *ovpn_from_udp_sock(struct sock *sk);
->   
->   #endif /* _NET_OVPN_UDP_H_ */
-> 
+-- 
+2.34.1
 
