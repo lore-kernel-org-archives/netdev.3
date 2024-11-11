@@ -1,556 +1,156 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1E1374D1;
-	Mon, 11 Nov 2024 15:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349291B95B
+	for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 15:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731337384; cv=none; b=nqte5rb8G2ksWIRwqDb7zlpaRzXtTwkGo3IybfyM3gdOM7/pbJkNSxmX01PuEzBYynJ0wQexOXNOP/79Ng67B+cu9+BqCVSClBoNfVBkoFhQkp/bs2xVdzQymlC12ENnySOEwRhhrTrdzMmWfnaR7mP9XE92LcZPtQRaoaBVDqY=
+	t=1731337633; cv=none; b=kDQgpJe5qOh682JGEip2/btYwJIuL1QA6hTcSNsvioyZ5j8aOo13m2iNf94+86pVAUT90/HhWwcDOORkAW2Tv6SCYkQyYKmysqBEiNfM3QYBrH2GESvNt0g1EHuG4hqfFW374KQc0qhcGH6XBEpiiBKcFmMXvND/gHtBb621K60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731337384; c=relaxed/simple;
-	bh=Lq9/GtDIdJfUFxrTDnIlHjOrNIb/+S4E1kf4JgAHY6g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWQhERC/ax2I7DP6yDkO2kNtExulm7VYwie2ohZ6o/DFDYVFWSfy/GsYOLMfBZzZJIeZyKcKfaie7PdOFGvXzn8zYARwWxZn+F82bOD7yPLakG5LEUjfEsQ5iMAaIB1T4xKwgn5k+Ih75k8v5kA/EqXhBR5tKrev81Bl4+43YlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XnCTh4DlGz1ynk6;
-	Mon, 11 Nov 2024 23:03:04 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6280F1402D0;
-	Mon, 11 Nov 2024 23:02:53 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 11 Nov 2024 23:02:52 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V3 net-next 6/7] net: hibmcge: Add reset supported in this module
-Date: Mon, 11 Nov 2024 22:55:57 +0800
-Message-ID: <20241111145558.1965325-7-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241111145558.1965325-1-shaojijie@huawei.com>
-References: <20241111145558.1965325-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1731337633; c=relaxed/simple;
+	bh=urF7+ZrvJb01w3jQbw0zJapXP5NGYyamAOImQFBwpt4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YyiCpnNQBLquHxmiA0z8o5uUrVwrZQmrVatRvsw+6bbur3H84QiD8FNzOBgJ3MR/wNlv4VUK8OwmtrBnfyA7tgg4b+SbISRN7RWJKwBNCR2m2wwXQwC+WeR9Kpm1c+sPho5sJ88wkGimJcSq+aiGK2c0rj2nQSDP0NUWBYsGRF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in; spf=pass smtp.mailfrom=iiitd.ac.in; dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b=PV4pGUhd; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iiitd.ac.in
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b="PV4pGUhd"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20cb47387ceso47301495ad.1
+        for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 07:07:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=iiitd.ac.in; s=google; t=1731337630; x=1731942430; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pv2dsGLy5hlCQCQMw0mRaxqTomq041o04AFI/16zT3I=;
+        b=PV4pGUhddsHcFzJ+vyyAQ6giPL2F6lEud7GBrzsakFXnILW/NKNMVNZGnV55iihicZ
+         SosT9KiLWr2TgAlfC/J6o+ttbeZTjGLHg6YhsgGolVjZj1jyIwe5+PBe4Y61IaN3pnjq
+         QkwRsWvB0j/wa+lx5S35TYk+IFBtCzNX78qmw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731337630; x=1731942430;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pv2dsGLy5hlCQCQMw0mRaxqTomq041o04AFI/16zT3I=;
+        b=C9p0HPgLBOtoieOv0MM9p9Q9R168tWJ07iedM0RybuAQVH68+FhWGhl/sgXdviknpI
+         /zuWUMOmP3YEWtp5krSzZayOAG7aQalZJIrpglpLRde7+YPYX7SZ4yGmdqAeJ/IuW47K
+         giilI45Su8VUbVAPRaIEP53OoIZDkNdIgwESzL0FAxLNuQ9c5ilzmzAkIHHDaAtd9zDp
+         +7UqJtdUthdP6C2xW3Bzxv60483QRsCue7ttUDvZygyPNHdG5n6FHIVfhhSgp/rViPRs
+         ahbfiJ9WFsAup27kUMIPgR0r95SuJHYCUh7e4adw7e3iM1bd3ZSd7Zk6v5orONbJH/x/
+         DjrA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/1b1lXvbL5GNLsg4qvy8En/oBGfk+wzw+WCD/1RMaHiYHaB5J487hCeOFI96GaXVLSc8pYZY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySz7Hnbdzi4+NnNIdYr9bORTHYCozAMQNiOIj76v+qJ7jvOM3W
+	zv391O+ke1QlJd4jiEXo06Q4y3NszXgFuJnh6OkFVo4G4OtRWRkkjqb1sEYiE3Q=
+X-Google-Smtp-Source: AGHT+IE/3RHLj44jfPFU+OP+sItz5ZLYB/FRD/A5nKaMuQaTLI3Nu/IGfIXNjgRWqWRSQGrK7OssHg==
+X-Received: by 2002:a17:903:110c:b0:211:6b31:2f30 with SMTP id d9443c01a7336-211835ccb20mr180272005ad.50.1731337630325;
+        Mon, 11 Nov 2024 07:07:10 -0800 (PST)
+Received: from fedora ([103.3.204.81])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc8287sm77078295ad.48.2024.11.11.07.07.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2024 07:07:09 -0800 (PST)
+Date: Mon, 11 Nov 2024 20:36:58 +0530
+From: Manas <manas18244@iiitd.ac.in>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: devnull+manas18244.iiitd.ac.in@kernel.org, alibuda@linux.alibaba.com, 
+	anupnewsmail@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	guwen@linux.alibaba.com, horms@kernel.org, jaka@linux.ibm.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, shuah@kernel.org, tonylu@linux.alibaba.com, wenjia@linux.ibm.com
+Subject: Re: [PATCH] Remove unused function parameter in __smc_diag_dump
+Message-ID: <p2b37jlmexphoab2fohx6npcwfxx3cgajbn67taxbpqhh2qn42@m4fmmkihgm53>
+References: <20241109-fix-oops-__smc_diag_dump-v1-1-1c55a3e54ad4@iiitd.ac.in>
+ <20241111130439.7536-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241111130439.7536-1-aha310510@gmail.com>
 
-Sometimes, if the port doesn't work, we can try to fix it by resetting it.
+On 11.11.2024 22:04, Jeongjun Park wrote:
+>Manas <devnull+manas18244.iiitd.ac.in@kernel.org> wrote:
+>> The last parameter in __smc_diag_dump (struct nlattr *bc) is unused.
+>> There is only one instance of this function being called and its passed
+>> with a NULL value in place of bc.
+>>
+>> Signed-off-by: Manas <manas18244@iiitd.ac.in>
+>> ---
+>> The last parameter in __smc_diag_dump (struct nlattr *bc) is unused.
+>> There is only one instance of this function being called and its passed
+>> with a NULL value in place of bc.
+>>
+>> Though, the compiler (gcc) optimizes it. Looking at the object dump of
+>> vmlinux (via `objdump -D vmlinux`), a new function clone
+>> (__smc_diag_dump.constprop.0) is added which removes this parameter from
+>> calling convention altogether.
+>>
+>> ffffffff8a701770 <__smc_diag_dump.constprop.0>:
+>> ffffffff8a701770:       41 57                   push   %r15
+>> ffffffff8a701772:       41 56                   push   %r14
+>> ffffffff8a701774:       41 55                   push   %r13
+>> ffffffff8a701776:       41 54                   push   %r12
+>>
+>> There are 5 parameters in original function, but in the cloned function
+>> only 4.
+>>
+>> I believe this patch also fixes this oops bug[1], which arises in the
+>> same function __smc_diag_dump. But I couldn't verify it further. Can
+>> someone please test this?
+>>
+>> [1] https://syzkaller.appspot.com/bug?extid=271fed3ed6f24600c364
+>
+>Unfortunately, I tested it myself and this bug is still triggering. Basically,
+>this bug is not triggered in normal situations, but triggered when a race
+>condition occurs, so I think the root cause is somewhere else.
+>
+Thank you Jeongjun for reviewing this.
 
-This patch supports reset triggered by ethtool or FLR of PCIe, For example:
- ethtool --reset eth0 dedicated
- echo 1 > /sys/bus/pci/devices/0000\:83\:00.1/reset
+>> ---
+>>  net/smc/smc_diag.c | 6 ++----
+>>  1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+>> index 6fdb2d96777ad704c394709ec845f9ddef5e599a..8f7bd40f475945171a0afa5a2cce12d9aa2b1eb4 100644
+>> --- a/net/smc/smc_diag.c
+>> +++ b/net/smc/smc_diag.c
+>> @@ -71,8 +71,7 @@ static int smc_diag_msg_attrs_fill(struct sock *sk, struct sk_buff *skb,
+>>
+>>  static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>>  			   struct netlink_callback *cb,
+>> -			   const struct smc_diag_req *req,
+>> -			   struct nlattr *bc)
+>> +			   const struct smc_diag_req *req)
+>>  {
+>>  	struct smc_sock *smc = smc_sk(sk);
+>>  	struct smc_diag_fallback fallback;
+>> @@ -199,7 +198,6 @@ static int smc_diag_dump_proto(struct proto *prot, struct sk_buff *skb,
+>>  	struct smc_diag_dump_ctx *cb_ctx = smc_dump_context(cb);
+>>  	struct net *net = sock_net(skb->sk);
+>>  	int snum = cb_ctx->pos[p_type];
+>> -	struct nlattr *bc = NULL;
+>>  	struct hlist_head *head;
+>>  	int rc = 0, num = 0;
+>>  	struct sock *sk;
+>> @@ -214,7 +212,7 @@ static int smc_diag_dump_proto(struct proto *prot, struct sk_buff *skb,
+>>  			continue;
+>>  		if (num < snum)
+>>  			goto next;
+>> -		rc = __smc_diag_dump(sk, skb, cb, nlmsg_data(cb->nlh), bc);
+>> +		rc = __smc_diag_dump(sk, skb, cb, nlmsg_data(cb->nlh));
+>>  		if (rc < 0)
+>>  			goto out;
+>>  next:
+>>
+>> ---
+>> base-commit: 59b723cd2adbac2a34fc8e12c74ae26ae45bf230
+>> change-id: 20241109-fix-oops-__smc_diag_dump-06ab3e9d39f4
+>>
+>> Best regards,
+>> --
+>> Manas <manas18244@iiitd.ac.in>
 
-We hope that the reset can be performed only when the port is down,
-and the port cannot be up during the reset.
-Therefore, the entire reset process is protected by the rtnl lock.
-But the ethtool command already holds the rtnl lock in the dev_ethtool().
-So, the reset operation is not directly performed in
-ethtool_ops.reset() function. Instead, the reset operation
-is triggered by a scheduled task.
-
-After the reset is complete, the hardware registers are restored
-to their default values. Therefore, some rebuild operations are
-required to rewrite the user configuration to the registers.
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- .../net/ethernet/hisilicon/hibmcge/Makefile   |   2 +-
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |  20 +++
- .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  |  23 +++
- .../net/ethernet/hisilicon/hibmcge/hbg_err.c  | 138 ++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_err.h  |  13 ++
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  |  15 ++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  10 +-
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  63 +++++---
- 8 files changed, 262 insertions(+), 22 deletions(-)
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/Makefile b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-index 1a0ec2fb8c24..7ea15f9ef849 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-@@ -6,4 +6,4 @@
- obj-$(CONFIG_HIBMCGE) += hibmcge.o
- 
- hibmcge-objs = hbg_main.o hbg_hw.o hbg_mdio.o hbg_irq.o hbg_txrx.o hbg_ethtool.o \
--		hbg_debugfs.o
-+		hbg_debugfs.o hbg_err.o
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index e071f77754fe..490a12d32e8c 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -4,6 +4,7 @@
- #ifndef __HBG_COMMON_H
- #define __HBG_COMMON_H
- 
-+#include <linux/ethtool.h>
- #include <linux/netdevice.h>
- #include <linux/pci.h>
- #include "hbg_reg.h"
-@@ -33,6 +34,15 @@ enum hbg_tx_state {
- 
- enum hbg_nic_state {
- 	HBG_NIC_STATE_EVENT_HANDLING = 0,
-+	HBG_NIC_STATE_NEED_RESET,
-+	HBG_NIC_STATE_RESETTING,
-+	HBG_NIC_STATE_RESET_FAIL,
-+};
-+
-+enum hbg_reset_type {
-+	HBG_RESET_TYPE_NONE = 0,
-+	HBG_RESET_TYPE_FLR,
-+	HBG_RESET_TYPE_FUNCTION,
- };
- 
- struct hbg_buffer {
-@@ -128,6 +138,11 @@ struct hbg_mac_filter {
- 	bool enabled;
- };
- 
-+/* saved for restore after rest */
-+struct hbg_user_def {
-+	struct ethtool_pauseparam pause_param;
-+};
-+
- struct hbg_priv {
- 	struct net_device *netdev;
- 	struct pci_dev *pdev;
-@@ -139,6 +154,11 @@ struct hbg_priv {
- 	struct hbg_ring tx_ring;
- 	struct hbg_ring rx_ring;
- 	struct hbg_mac_filter filter;
-+	struct delayed_work service_task;
-+	struct hbg_user_def user_def;
-+	enum hbg_reset_type reset_type;
- };
- 
-+void hbg_reset_task_schedule(struct hbg_priv *priv);
-+
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-index 2f9d30a51f62..1284d1d431c3 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-@@ -19,6 +19,7 @@ struct hbg_dbg_info {
- };
- 
- #define hbg_get_bool_str(state) ((state) ? "true" : "false")
-+#define hbg_get_state_str(p, s) hbg_get_bool_str(test_bit(s, &(p)->state))
- 
- static void hbg_dbg_ring(struct hbg_priv *priv, struct hbg_ring *ring,
- 			 struct seq_file *s)
-@@ -101,11 +102,33 @@ static int hbg_dbg_mac_table(struct seq_file *s, void *unused)
- 	return 0;
- }
- 
-+static const char * const reset_type_str[] = {"None", "FLR", "Function"};
-+
-+static int hbg_dbg_nic_state(struct seq_file *s, void *unused)
-+{
-+	struct net_device *netdev = dev_get_drvdata(s->private);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	seq_printf(s, "event handling state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_EVENT_HANDLING));
-+	seq_printf(s, "need reset state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_NEED_RESET));
-+	seq_printf(s, "resetting state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_RESETTING));
-+	seq_printf(s, "reset fail state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_RESET_FAIL));
-+	seq_printf(s, "last reset type: %s\n",
-+		   reset_type_str[priv->reset_type]);
-+
-+	return 0;
-+}
-+
- static const struct hbg_dbg_info hbg_dbg_infos[] = {
- 	{ "tx_ring", hbg_dbg_tx_ring },
- 	{ "rx_ring", hbg_dbg_rx_ring },
- 	{ "irq_info", hbg_dbg_irq_info },
- 	{ "mac_talbe", hbg_dbg_mac_table },
-+	{ "nic_state", hbg_dbg_nic_state },
- };
- 
- static void hbg_debugfs_uninit(void *data)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-new file mode 100644
-index 000000000000..fd12a396baf0
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// Copyright (c) 2024 Hisilicon Limited.
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/phy.h>
-+#include <linux/rtnetlink.h>
-+#include "hbg_common.h"
-+#include "hbg_err.h"
-+#include "hbg_hw.h"
-+
-+static void hbg_restore_mac_table(struct hbg_priv *priv)
-+{
-+	struct hbg_mac_filter *filter = &priv->filter;
-+	u64 addr;
-+	u32 i;
-+
-+	for (i = 0; i < filter->table_max_len; i++)
-+		if (!is_zero_ether_addr(filter->mac_table[i].addr)) {
-+			addr = ether_addr_to_u64(filter->mac_table[i].addr);
-+			hbg_hw_set_uc_addr(priv, addr, i);
-+		}
-+
-+	hbg_hw_set_mac_filter_enable(priv, priv->filter.enabled);
-+}
-+
-+static void hbg_restore_user_def_settings(struct hbg_priv *priv)
-+{
-+	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
-+
-+	hbg_restore_mac_table(priv);
-+
-+	hbg_hw_set_mtu(priv, priv->netdev->mtu);
-+	hbg_hw_set_pause_enable(priv, !!pause_param->tx_pause,
-+				!!pause_param->rx_pause);
-+}
-+
-+int hbg_rebuild(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	ret = hbg_hw_init(priv);
-+	if (ret)
-+		return ret;
-+
-+	hbg_restore_user_def_settings(priv);
-+	return 0;
-+}
-+
-+static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
-+{
-+	int ret = -EBUSY;
-+
-+	rtnl_lock();
-+
-+	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+
-+	if (netif_running(priv->netdev)) {
-+		dev_warn(&priv->pdev->dev,
-+			 "failed to reset because port is up\n");
-+		goto unlock;
-+	}
-+
-+	priv->reset_type = type;
-+	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
-+	if (!ret)
-+		return 0;
-+
-+	set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+
-+unlock:
-+	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+	rtnl_unlock();
-+	return ret;
-+}
-+
-+static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
-+{
-+	int ret;
-+
-+	if (!test_bit(HBG_NIC_STATE_RESETTING, &priv->state) ||
-+	    type != priv->reset_type)
-+		return 0;
-+
-+	ASSERT_RTNL();
-+
-+	ret = hbg_rebuild(priv);
-+	if (ret) {
-+		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
-+		goto unlock;
-+	}
-+
-+	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+	dev_info(&priv->pdev->dev, "reset done\n");
-+
-+unlock:
-+	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+	rtnl_unlock();
-+	return ret;
-+}
-+
-+int hbg_reset(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
-+	if (ret)
-+		return ret;
-+
-+	return hbg_reset_done(priv, HBG_RESET_TYPE_FUNCTION);
-+}
-+
-+static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
-+}
-+
-+static void hbg_pci_err_reset_done(struct pci_dev *pdev)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
-+}
-+
-+static const struct pci_error_handlers hbg_pci_err_handler = {
-+	.reset_prepare = hbg_pci_err_reset_prepare,
-+	.reset_done = hbg_pci_err_reset_done,
-+};
-+
-+void hbg_set_pci_err_handler(struct pci_driver *pdrv)
-+{
-+	pdrv->err_handler = &hbg_pci_err_handler;
-+}
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-new file mode 100644
-index 000000000000..d7828e446308
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (c) 2024 Hisilicon Limited. */
-+
-+#ifndef __HBG_ERR_H
-+#define __HBG_ERR_H
-+
-+#include <linux/pci.h>
-+
-+void hbg_set_pci_err_handler(struct pci_driver *pdrv);
-+int hbg_reset(struct hbg_priv *priv);
-+int hbg_rebuild(struct hbg_priv *priv);
-+
-+#endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index edad07826b94..14df8fb5cd91 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -4,6 +4,7 @@
- #include <linux/ethtool.h>
- #include <linux/phy.h>
- #include "hbg_common.h"
-+#include "hbg_err.h"
- #include "hbg_ethtool.h"
- #include "hbg_hw.h"
- 
-@@ -160,6 +161,19 @@ static int hbg_ethtool_set_pauseparam(struct net_device *net_dev,
- 		return -EOPNOTSUPP;
- 
- 	hbg_hw_set_pause_enable(priv, !!param->tx_pause, !!param->rx_pause);
-+	priv->user_def.pause_param = *param;
-+	return 0;
-+}
-+
-+static int hbg_ethtool_reset(struct net_device *netdev, u32 *flags)
-+{
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	if (*flags != ETH_RESET_DEDICATED)
-+		return -EOPNOTSUPP;
-+
-+	hbg_reset_task_schedule(priv);
-+	*flags = 0;
- 	return 0;
- }
- 
-@@ -171,6 +185,7 @@ static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_regs		= hbg_ethtool_get_regs,
- 	.get_pauseparam         = hbg_ethtool_get_pauseparam,
- 	.set_pauseparam         = hbg_ethtool_set_pauseparam,
-+	.reset			= hbg_ethtool_reset,
- };
- 
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 0cbe9f7229b3..e7798f213645 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -3,6 +3,7 @@
- 
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
-+#include <linux/if_vlan.h>
- #include <linux/iopoll.h>
- #include <linux/minmax.h>
- #include "hbg_common.h"
-@@ -167,8 +168,13 @@ static void hbg_hw_set_mac_max_frame_len(struct hbg_priv *priv,
- 
- void hbg_hw_set_mtu(struct hbg_priv *priv, u16 mtu)
- {
--	hbg_hw_set_pcu_max_frame_len(priv, mtu);
--	hbg_hw_set_mac_max_frame_len(priv, mtu);
-+	u32 frame_len;
-+
-+	frame_len = mtu + VLAN_HLEN * priv->dev_specs.vlan_layers +
-+		    ETH_HLEN + ETH_FCS_LEN;
-+
-+	hbg_hw_set_pcu_max_frame_len(priv, frame_len);
-+	hbg_hw_set_mac_max_frame_len(priv, frame_len);
- }
- 
- void hbg_hw_mac_enable(struct hbg_priv *priv, u32 enable)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index a45a63856e61..5e5e5caab74c 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -6,6 +6,7 @@
- #include <linux/netdevice.h>
- #include <linux/pci.h>
- #include "hbg_common.h"
-+#include "hbg_err.h"
- #include "hbg_ethtool.h"
- #include "hbg_hw.h"
- #include "hbg_irq.h"
-@@ -13,8 +14,6 @@
- #include "hbg_txrx.h"
- #include "hbg_debugfs.h"
- 
--static void hbg_change_mtu(struct hbg_priv *priv, int new_mtu);
--
- static void hbg_all_irq_enable(struct hbg_priv *priv, bool enabled)
- {
- 	struct hbg_irq_info *info;
-@@ -56,11 +55,7 @@ static int hbg_hw_txrx_clear(struct hbg_priv *priv)
- 		return ret;
- 
- 	/* After reset, regs need to be reconfigured */
--	hbg_hw_init(priv);
--	hbg_hw_set_uc_addr(priv, ether_addr_to_u64(priv->netdev->dev_addr), 0);
--	hbg_change_mtu(priv, priv->netdev->mtu);
--
--	return 0;
-+	return hbg_rebuild(priv);
- }
- 
- static int hbg_net_stop(struct net_device *netdev)
-@@ -209,15 +204,6 @@ static int hbg_net_set_mac_address(struct net_device *netdev, void *addr)
- 	return 0;
- }
- 
--static void hbg_change_mtu(struct hbg_priv *priv, int new_mtu)
--{
--	u32 frame_len;
--
--	frame_len = new_mtu + VLAN_HLEN * priv->dev_specs.vlan_layers +
--		    ETH_HLEN + ETH_FCS_LEN;
--	hbg_hw_set_mtu(priv, frame_len);
--}
--
- static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	struct hbg_priv *priv = netdev_priv(netdev);
-@@ -225,7 +211,7 @@ static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (netif_running(netdev))
- 		return -EBUSY;
- 
--	hbg_change_mtu(priv, new_mtu);
-+	hbg_hw_set_mtu(priv, new_mtu);
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
- 	dev_dbg(&priv->pdev->dev,
-@@ -283,6 +269,41 @@ static int hbg_mac_filter_init(struct hbg_priv *priv)
- 	return 0;
- }
- 
-+void hbg_reset_task_schedule(struct hbg_priv *priv)
-+{
-+	set_bit(HBG_NIC_STATE_NEED_RESET, &priv->state);
-+
-+	schedule_delayed_work(&priv->service_task, 0);
-+}
-+
-+static void hbg_service_task(struct work_struct *work)
-+{
-+	struct hbg_priv *priv = container_of(work, struct hbg_priv,
-+					     service_task.work);
-+
-+	if (test_and_clear_bit(HBG_NIC_STATE_NEED_RESET, &priv->state))
-+		hbg_reset(priv);
-+}
-+
-+static void hbg_delaywork_init(struct hbg_priv *priv)
-+{
-+	INIT_DELAYED_WORK(&priv->service_task, hbg_service_task);
-+	schedule_delayed_work(&priv->service_task, 0);
-+}
-+
-+static void hbg_delaywork_uninit(void *data)
-+{
-+	cancel_delayed_work_sync(data);
-+}
-+
-+static void hbg_init_user_def(struct hbg_priv *priv)
-+{
-+	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
-+
-+	hbg_hw_get_pause_enable(priv, &pause_param->tx_pause,
-+				&pause_param->rx_pause);
-+}
-+
- static int hbg_init(struct hbg_priv *priv)
- {
- 	int ret;
-@@ -308,7 +329,10 @@ static int hbg_init(struct hbg_priv *priv)
- 		return ret;
- 
- 	hbg_debugfs_init(priv);
--	return 0;
-+	hbg_init_user_def(priv);
-+	hbg_delaywork_init(priv);
-+	return devm_add_action_or_reset(&priv->pdev->dev, hbg_delaywork_uninit,
-+					&priv->service_task);
- }
- 
- static int hbg_pci_init(struct pci_dev *pdev)
-@@ -372,7 +396,7 @@ static int hbg_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	netdev->netdev_ops = &hbg_netdev_ops;
- 	netdev->watchdog_timeo = 5 * HZ;
- 
--	hbg_change_mtu(priv, ETH_DATA_LEN);
-+	hbg_hw_set_mtu(priv, ETH_DATA_LEN);
- 	hbg_net_set_mac_address(priv->netdev, &priv->dev_specs.mac_addr);
- 	hbg_ethtool_set_ops(netdev);
- 
-@@ -401,6 +425,7 @@ static int __init hbg_module_init(void)
- 	int ret;
- 
- 	hbg_debugfs_register();
-+	hbg_set_pci_err_handler(&hbg_driver);
- 	ret = pci_register_driver(&hbg_driver);
- 	if (ret)
- 		hbg_debugfs_unregister();
 -- 
-2.33.0
-
+Manas
