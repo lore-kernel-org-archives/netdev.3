@@ -1,122 +1,145 @@
-Received: from smtp-out.freemail.hu (fmfe28.freemail.hu [46.107.16.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA1C8468;
-	Mon, 11 Nov 2024 20:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.107.16.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FCB1AD5D8;
+	Mon, 11 Nov 2024 20:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731357442; cv=none; b=ZWYVpvUdj6oE0cFwt9gCJVhVcHXLLKeOUiXo9EFUIGUB7dFTfLlo0oZjtcc7qXNqyBw4m0MhfwK6uXyVHaOjvHcLYKhH3SHZ5wdLEBxd1vmN8oAdgSwz3LDsDGmpsZER5OgggjO69JRqK2hFpeBr/jE6kiUXCZMUkg4fSlbg1Ow=
+	t=1731357666; cv=none; b=Cf6wIxiEt2Wg8+dnMjcWVamlGBK2KONwrpqlc7dvmowTRn2uwZBnQdxC2fO6i4Uw//NcOBepMN14woZr1yhMJq2qWwjdJsXxUmAbKGaprKgKgZha2uZpzAkJ0ww1R+ho0grTj8g5p3mm7t97uixlM0WTTuZZg4TYuepEsFM8mNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731357442; c=relaxed/simple;
-	bh=Gmogja/cDdKp/sSar/DZuJv8d1D/g9ALttb3MTCX7X8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kncp3VE7xPHxuvrUk6ezae7D8XjGu6rxkjt2vBr6usrppQQUV3aUn9nWRLqKmxeRgwd445zi02ogo3/6xYs0d+c5++saZWV7ajXsfQdiOu3zvlPlMFv38bSx0pjYeCkw3MUxl9qya6nZHYI958tM+zvkUWZYIEh902SsWgyMI8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu; spf=pass smtp.mailfrom=freemail.hu; dkim=fail (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b=p+EaXxd+ reason="signature verification failed"; arc=none smtp.client-ip=46.107.16.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freemail.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freemail.hu
+	s=arc-20240116; t=1731357666; c=relaxed/simple;
+	bh=PZaCN9EPbcxDm/Qe14VyzI6oXNbmlunaeGU2DgI/vbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=YGiG1yEtrIyM6v0p10Iyl193OdF+59ub9TcnTLPDJ/A3QMiHKY6IDF01O2I36mDowMbHJq56S6kPeI4e8VLGWpKc3UBYA0Kn4aswHDFH9y9Rabf1gWJHHc1MsVlmsPhhOwVMRTeNnu+z/d4eetvGbeRpEh1uk6L9K1i3IieVBjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fadq8Ssa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=freemail.hu header.i=@freemail.hu header.b="p+EaXxd+"
-Received: from [192.168.0.16] (catv-178-48-208-49.catv.fixed.vodafone.hu [178.48.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.freemail.hu (Postfix) with ESMTPSA id 4XnLly4dFszsql;
-	Mon, 11 Nov 2024 21:30:54 +0100 (CET)
-Message-ID: <5f28d3d4-fa55-425c-9dd2-5616f5d4c0ac@freemail.hu>
-Date: Mon, 11 Nov 2024 21:28:48 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fadq8Ssa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F634C4CECF;
+	Mon, 11 Nov 2024 20:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731357665;
+	bh=PZaCN9EPbcxDm/Qe14VyzI6oXNbmlunaeGU2DgI/vbw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=fadq8SsatNNa8beqtst3Wmd9WWa0zD8pa70OmBHd4IaIBfrI6TcTwSaDeX2RcUuVl
+	 NAywBadU8GdGP6nCM83Fg0WryPN8VMSVRgUAM3QDzwfMVhUMWPoyun5q3MmnXLq0Qq
+	 zQLPPZ8W2Jpdklhb/5niCu3iFDj+4FVVskAmVwsURfBAqxS2vMPOiMknXtzAXyLw+1
+	 yzbMgZsD960kpgQEPWWlaqpRQIS9QWtfOhQnqIv5xT0AdlngVBtPkLJxdkSh2irrEF
+	 GqTycp11XGNvm6jFMRKk+xA4RmvANwl3zw67jJgaBgw/KukWHbeseBv+Qn3GBZ2Fqt
+	 x8QsQ0gooK36g==
+Date: Mon, 11 Nov 2024 14:41:04 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-pci@vger.kernel.org, Ariel Almog <ariela@nvidia.com>,
+	Aditya Prabhune <aprabhune@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Arun Easi <aeasi@marvell.com>, Jonathan Chocron <jonnyc@amazon.com>,
+	Bert Kenward <bkenward@solarflare.com>,
+	Matt Carlson <mcarlson@broadcom.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] PCI/sysfs: Change read permissions for VPD
+ attributes
+Message-ID: <20241111204104.GA1817395@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] netfilter: uapi: Fix file names for case-insensitive
- filesystem.
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>, kadlec@netfilter.org,
- davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20241111163634.1022-1-egyszeregy@freemail.hu>
- <20241111165606.GA21253@breakpoint.cc> <ZzJORY4eWl4xEiMG@calendula>
-Content-Language: hu
-From: =?UTF-8?Q?Sz=C5=91ke_Benjamin?= <egyszeregy@freemail.hu>
-In-Reply-To: <ZzJORY4eWl4xEiMG@calendula>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/relaxed; t=1731357055;
-	s=20181004; d=freemail.hu;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=2684; bh=I/fsxw1x4bWN9ougYPy1wE6Zy6ScLkgxwwxi4txHsY8=;
-	b=p+EaXxd+Xl2WQ76AfbJ+QIMltF95vherQMohmpDmlSHLW88pc/ZEbrD1PEQqsquL
-	rH3XLlhIekESYnt0DwFS2/vFfyPctZjNdyR0Br3PGyBdaQ7FA7opg0wzq+jT51oLwkH
-	yOC2azGiGqqoWKk1dLf7IkJ1VuM3WWm90tr2plNL3zluBJkMBrXsSFjRZOes6jpKXJT
-	VtIndpDGzSdElngrn2LKGE30CeQGzqC7uUVoZl0LaUTa2YhvOh4YDH5nCG5tqattV3V
-	PVJTCmbvqdV1zhqTQAs1uTRZoBSIQW5f5b2HqJuUQ54k3pa5rt+eDYRxkXj1bttAhOG
-	jAWKfQef8w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f93e6b2393301df6ac960ef6891b1b2812da67f3.1731005223.git.leonro@nvidia.com>
 
-2024. 11. 11. 19:34 keltezéssel, Pablo Neira Ayuso írta:
-> On Mon, Nov 11, 2024 at 05:56:06PM +0100, Florian Westphal wrote:
->> egyszeregy@freemail.hu <egyszeregy@freemail.hu> wrote:
->>>   rename net/ipv4/netfilter/{ipt_ECN.c => ipt_ECN_TARGET.c} (98%)
->>>   rename net/netfilter/{xt_DSCP.c => xt_DSCP_TARGET.c} (98%)
->>>   rename net/netfilter/{xt_HL.c => xt_HL_TARGET.c} (100%)
->>>   rename net/netfilter/{xt_RATEEST.c => xt_RATEEST_TARGET.c} (99%)
->>>   rename net/netfilter/{xt_TCPMSS.c => xt_TCPMSS_TARGET.c} (99%)
->>
->> No, please, if we have to do this, then lets merge the targets
->> (uppercase name) into the match (lowercase), i.e. most of the contents
->> of xt_DSCP.c go into xt_dscp.c.
+On Thu, Nov 07, 2024 at 08:56:56PM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> Agreed, please don't do this.
+> The Vital Product Data (VPD) attribute is not readable by regular
+> user without root permissions. Such restriction is not really needed
+> for many devices in the world, as data presented in that VPD is not
+> sensitive and access to the HW is safe and tested.
 > 
-> We have seen people sending patches like this one for several years,
-> this breaks stuff.
+> This change aligns the permissions of the VPD attribute to be accessible
+> for read by all users, while write being restricted to root only.
+> 
+> For the driver, there is a need to opt-in in order to allow this
+> functionality.
 
-These all files are broken in case-insensitive filesystem.
+I don't think the use case is very strong (and not included at all
+here).
 
-warning: the following paths have collided (e.g. case-sensitive paths
-on a case-insensitive filesystem) and only one from the same
-colliding group is in the working tree:
+If we do need to do this, I think it's a property of the device, not
+the driver.
 
-   'include/uapi/linux/netfilter/xt_CONNMARK.h'
-   'include/uapi/linux/netfilter/xt_connmark.h'
-   'include/uapi/linux/netfilter/xt_DSCP.h'
-   'include/uapi/linux/netfilter/xt_dscp.h'
-   'include/uapi/linux/netfilter/xt_MARK.h'
-   'include/uapi/linux/netfilter/xt_mark.h'
-   'include/uapi/linux/netfilter/xt_RATEEST.h'
-   'include/uapi/linux/netfilter/xt_rateest.h'
-   'include/uapi/linux/netfilter/xt_TCPMSS.h'
-   'include/uapi/linux/netfilter/xt_tcpmss.h'
-   'include/uapi/linux/netfilter_ipv4/ipt_ECN.h'
-   'include/uapi/linux/netfilter_ipv4/ipt_ecn.h'
-   'include/uapi/linux/netfilter_ipv4/ipt_TTL.h'
-   'include/uapi/linux/netfilter_ipv4/ipt_ttl.h'
-   'include/uapi/linux/netfilter_ipv6/ip6t_HL.h'
-   'include/uapi/linux/netfilter_ipv6/ip6t_hl.h'
-   'net/netfilter/xt_DSCP.c'
-   'net/netfilter/xt_dscp.c'
-   'net/netfilter/xt_HL.c'
-   'net/netfilter/xt_hl.c'
-   'net/netfilter/xt_RATEEST.c'
-   'net/netfilter/xt_rateest.c'
-   'net/netfilter/xt_TCPMSS.c'
-   'net/netfilter/xt_tcpmss.c'
-
-
-What is your detailed plans to solve it? Maybe the contents of both upper and 
-lower case *.h files can be merged to a common header files like 
-"xt_dscp_common.h" but what about the *.c sources? For example if xt_DSCP.c 
-removed and its content merged to xt_dscp.c before, what is the plan with kernel 
-config options of CONFIG_NETFILTER_XT_TARGET_DSCP which was made for only 
-xt_DSCP.c source to use in Makefile? Can we remove all of 
-CONFIG_NETFILTER_XT_TARGET* config in the future which will lost their *.c 
-source files?
-
-obj-$(CONFIG_NETFILTER_XT_TARGET_DSCP) += xt_DSCP.o
-...
-obj-$(CONFIG_NETFILTER_XT_MATCH_DSCP) += xt_dscp.o
-
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/pci/vpd.c   | 9 ++++++++-
+>  include/linux/pci.h | 7 ++++++-
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/vpd.c b/drivers/pci/vpd.c
+> index e4300f5f304f..7c70930abaa0 100644
+> --- a/drivers/pci/vpd.c
+> +++ b/drivers/pci/vpd.c
+> @@ -156,6 +156,7 @@ static ssize_t pci_vpd_read(struct pci_dev *dev, loff_t pos, size_t count,
+>  			    void *arg, bool check_size)
+>  {
+>  	struct pci_vpd *vpd = &dev->vpd;
+> +	struct pci_driver *drv;
+>  	unsigned int max_len;
+>  	int ret = 0;
+>  	loff_t end = pos + count;
+> @@ -167,6 +168,12 @@ static ssize_t pci_vpd_read(struct pci_dev *dev, loff_t pos, size_t count,
+>  	if (pos < 0)
+>  		return -EINVAL;
+>  
+> +	if (!capable(CAP_SYS_ADMIN)) {
+> +		drv = to_pci_driver(dev->dev.driver);
+> +		if (!drv || !drv->downgrade_vpd_read)
+> +			return -EPERM;
+> +	}
+> +
+>  	max_len = check_size ? vpd->len : PCI_VPD_MAX_SIZE;
+>  
+>  	if (pos >= max_len)
+> @@ -317,7 +324,7 @@ static ssize_t vpd_write(struct file *filp, struct kobject *kobj,
+>  
+>  	return ret;
+>  }
+> -static BIN_ATTR(vpd, 0600, vpd_read, vpd_write, 0);
+> +static BIN_ATTR_RW(vpd, 0);
+>  
+>  static struct bin_attribute *vpd_attrs[] = {
+>  	&bin_attr_vpd,
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 573b4c4c2be6..b8fed74e742e 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -943,6 +943,10 @@ struct module;
+>   *		how to manage the DMA themselves and set this flag so that
+>   *		the IOMMU layer will allow them to setup and manage their
+>   *		own I/O address space.
+> + * @downgrade_vpd_read: Device doesn't require root permissions from the users
+> + *              to read VPD information. The driver doesn't expose any sensitive
+> + *              information through that interface and safe to be accessed by
+> + *              unprivileged users.
+>   */
+>  struct pci_driver {
+>  	const char		*name;
+> @@ -960,7 +964,8 @@ struct pci_driver {
+>  	const struct attribute_group **dev_groups;
+>  	struct device_driver	driver;
+>  	struct pci_dynids	dynids;
+> -	bool driver_managed_dma;
+> +	bool driver_managed_dma : 1;
+> +	bool downgrade_vpd_read : 1;
+>  };
+>  
+>  #define to_pci_driver(__drv)	\
+> -- 
+> 2.47.0
+> 
