@@ -1,171 +1,197 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2067.outbound.protection.outlook.com [40.107.249.67])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B404D8CB;
-	Mon, 11 Nov 2024 07:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731310130; cv=fail; b=gM6GNNqeReSwiNqfCLM00lhHUu45dS3ZNd7m9rUcbzyaQxBJ8t3PTBBVCocIITIT7ur3m0C7hX7qZzyFogMZbEtJGZfYL8Crzb+2a/LhBmxj4JGPsRjDcN/iV/SR1UBNyDWKxgtPQpt7Er6QNQ99j16mxHyQR/Z/s5tp9CH4TQM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731310130; c=relaxed/simple;
-	bh=EB6UhGB2NsOpsrEUuLNPQvlJ84bp2C6hpFCY7PCHoJQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Bk/4d4xIiF4vCURsxJDz3AQUGK09F67G8h41fK2xWO9umdTP3il3+01eqqgFgxOwnxmq1BdAefNauffxxQQwpY+iMt4FwgpV5w0e3zPjwcIu58paivgJ8XC/xSqpHTB6NciZehmSxLkvAHbW+dGmmDZIzhgfM+FiYhy4LPM6GvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AV5g3dX5; arc=fail smtp.client-ip=40.107.249.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AV5g3dX5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wSwz7eEEMGxdDKVzmCHDidxLacFKvy3jitosd9bDf2+Np4NX82pRyS5x3PK1kPfMEIIHElIUPfgDsTOLNdS2Gfs15rVds+9R7mQeuIBNUiK/lW+bPhU5ObM4MtxTpkgkg+lLN6u+3f32X3CKrt2Ias6h/MAs9b0kSlaf8wH8kbK59Ej9DZeGbVYRi4RixR4Vdn9qBtYe/IRo5zJc4CC7vC/9iVvPt5L3/XS+J0BxIT2UM4fLRUV2Kvohp5WbifYRkICv/s1A73s7XC0buq/fzigFhiMfISeSg4G1J43YJVnobI5JLFZH+4muru06Ny3Aeub5tQONulKxi3wZf3tI7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EB6UhGB2NsOpsrEUuLNPQvlJ84bp2C6hpFCY7PCHoJQ=;
- b=Z5JZbUPm8DBawFTU1Y+oD9lVw3pFmRBjLvdEblzbCU1S83578DwQJrLmek3UIknwaapU60XajZV5po8zq+KecWeCCYgmLPYEIky83CUxeOfQCGN70xN5LknZpdHTH9tsGf5Voz7nC2MNjsz51rOml0vqwLcCXynTuqNJ+FihpwXY8/bJW2+gP0hIS1BNCFrSDcLWr3D5xyZVXgpjzzGtCns/rRk6WIofltbXGxJMnT+Bl48xAqn9WF/Fe6TzKvl0gauPhehKaLhbRMsO0UWJ3uJUx9KbGVNKyJ9HUyD4RRZsWkBTi/RDW/FlabBnDuSw9quWgscjgZC3OFoXMiITEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EB6UhGB2NsOpsrEUuLNPQvlJ84bp2C6hpFCY7PCHoJQ=;
- b=AV5g3dX53DqGarknuydZ7vDa6n0cdAPASv5agvjNO8FuHL3Cr0sIoDkhen0fBtDW9ujaAAIG4WQmZM+34kdeBg+qRPlQVujpR7DsRUFLqzswGfjB9lDH5X9rjenfoW7xh7cIVVVeekZFvAEcPsaUwoXKsBweDPvd8DF31e7dhdm8ISHtTMVH/mLo63wwxYL6Aj+32/aH6zy3OpJXE8O6GoxDvnH0ZIolGJM2p97FmNlI9Bw0B2j57yg26z9F7Qsd0YB61KUJfj4vAHmKNP8t5es+jk3gGQEeuRkc/KvfI9bsw91VYWQKk25DnQ2g2Ceu0sXrOSDMyoxs3+A0P6BeHw==
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com (2603:10a6:20b:42c::17)
- by DBAPR04MB7477.eurprd04.prod.outlook.com (2603:10a6:10:1a9::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Mon, 11 Nov
- 2024 07:28:45 +0000
-Received: from AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684]) by AS8PR04MB8849.eurprd04.prod.outlook.com
- ([fe80::d8e2:1fd7:2395:b684%7]) with mapi id 15.20.8137.027; Mon, 11 Nov 2024
- 07:28:45 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Frank Li
-	<frank.li@nxp.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH v2 net-next 1/5] net: enetc: add Rx checksum offload for
- i.MX95 ENETC
-Thread-Topic: [PATCH v2 net-next 1/5] net: enetc: add Rx checksum offload for
- i.MX95 ENETC
-Thread-Index: AQHbM96K3RveBsHlx0mg/hdPKFgO+bKxrpNQ
-Date: Mon, 11 Nov 2024 07:28:44 +0000
-Message-ID:
- <AS8PR04MB8849441B5718183BE61BDA8E96582@AS8PR04MB8849.eurprd04.prod.outlook.com>
-References: <20241111015216.1804534-1-wei.fang@nxp.com>
- <20241111015216.1804534-2-wei.fang@nxp.com>
-In-Reply-To: <20241111015216.1804534-2-wei.fang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8849:EE_|DBAPR04MB7477:EE_
-x-ms-office365-filtering-correlation-id: dd556984-c083-426c-127b-08dd022279af
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?kfANetHSpWIfw3CjkSgbq7IiswNA8J7aJUYJGnKyu3hhHg5yuwZsow5yfcEa?=
- =?us-ascii?Q?743VwUdg7EeHMnpL281CKA3CUdgwbURGxXe50dMXqFJjL7JP2oo7b3p0PLzi?=
- =?us-ascii?Q?Vyp9TzhIfQIyVuxYwB/n6d9fViK9VJ4H8c5BMvMRsojmwn8q8Dz7uH27a6C/?=
- =?us-ascii?Q?7PjpumQpkLdIBLI/OpropZP85H5z5xhidyXipQoA+mypqWKhJbqyDA/VS3uk?=
- =?us-ascii?Q?elGg576V5AmjwCLREUT2tnyHDtw1lRMFeG7j/KZW02g/hvtwSRaHJDt3QKij?=
- =?us-ascii?Q?FuhuiDQDqiSQMgOZ5YrTQxQhuMXw+9oaksNcAomDILg+yBOdgaSKTmKfb/De?=
- =?us-ascii?Q?6SwLcq9Hmv8oULavtZLocfFJ9jFDz5j+r5w4KAYxUFp4zozLOe1F4Txnw6x4?=
- =?us-ascii?Q?HIoCar+z7qigwZf8yYymQNHVpFt5K04MDxfxmGuNUAfJhJ7zoYZUPHruMMj7?=
- =?us-ascii?Q?EVwbLwZJvVLxMmR2mTlrCU3DcSRFEI+ZBhaK3LyXHU2ZpA704TxUlfRcOMBU?=
- =?us-ascii?Q?LbsXI9WTrwNqilgWuEUplrqiOOOfUXqFBtAcK9CgspjAynIv1ZBrq+B22t6o?=
- =?us-ascii?Q?pS6o/CenY+Yi0CPEhm/Li9MV3h5Ko+IlbeqUqVm9SJj3S0LOJVPG3ipxZ/oT?=
- =?us-ascii?Q?YtD982tLjz9gOJMWBFpvX/RkMo4EQwHp1El0eZxr5SS3WfREyzYH6dcF/U1K?=
- =?us-ascii?Q?43qIMCmCpI1G78uma5ERlieqJG7c4HpMdrqlrdD4M/uA4CWIgLBY9G144OAM?=
- =?us-ascii?Q?/9MOTOUR8VYdXJUKPD6ljSCpX2G5gXKTzEXtifEeqDg7vn6UWOWCILCjIKcJ?=
- =?us-ascii?Q?BSOYueU/VrWOw4UPvdeJdYqXOfPDUv/O6XEfTBP+St3Q0llPrmt8HMFoqat+?=
- =?us-ascii?Q?Q3yIUHS95DWOzKyGZNAN3MSuJMkGZFIvad69HpybnRTCBdHB3GRTqbzb0xGM?=
- =?us-ascii?Q?tcZrT1VEdTiocEfz2pPeDW0UGb2NXsKGOSKpKajw+rKuin3uOMGBq7Bgsnwj?=
- =?us-ascii?Q?zz0NmLnCiMMQSLTMZzkwmB8BtyJ9lTHZLINgrS4JPG+QB/IzP2+n/U6pobjZ?=
- =?us-ascii?Q?goV1G7w+Q27azqpVtwv1eAUwuMe+5VGPWgRa4h5O34SJ1AX8zKIgKUgrqhN/?=
- =?us-ascii?Q?o1BX0GJg7F8Xtk2nQ5k2FPVuwZ5ylVzgxxma246MTBhNnYS67fvFBnw97Zxt?=
- =?us-ascii?Q?R/1EvJt+NUuCPHvVR3mgvFvFgHkQBcRkoPH/+FBBFqMf9schemh/GLbfRLQW?=
- =?us-ascii?Q?M07XySPMxdhzWet5MkzsGyCtIhku7Z0tWTyT16n2SIdmK19lswHfF3bArpMu?=
- =?us-ascii?Q?IkxKbrdzIFMbUIjqRzTYu+UpaTzt48RdTfw4i4qh3MQXgTyKEq4D5G7G9LNl?=
- =?us-ascii?Q?o4+T5Y4=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8849.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?v/P61u/TDYM72CaWkn9vp2uH8NvADK0e7rVKv/ed0dOhCebQwDbsQvGKScEp?=
- =?us-ascii?Q?wRKhLxM7wl3wFjCJP0U3NbxCstltrrQYPiA9tdFWb7wmLtrG3vWjjSgO7B15?=
- =?us-ascii?Q?OP1lLi2aQGmV3KUK9tUdeplQCDv2P2mPvR3x0En/fVzl2/eSbDicGqzWCAQg?=
- =?us-ascii?Q?8+1AOl+geseMLiaogR6u6fqEG37yvWb44jkP3in+83bbg2op1nixA891jV1m?=
- =?us-ascii?Q?Mhjcxo8oFizGAUNDLqd/1J/iuaSZR2NPqjnDIvpKvrCh4reae8cbJ3ctUYEB?=
- =?us-ascii?Q?+GIZF1bVUOcn3uunHLmPvpK9c2+Xuca1zpH6M+a2gA+DJJKezkMvJc6wpZ/P?=
- =?us-ascii?Q?MyucqLhntVgg1he4OTprgCY5UnsYySmOHfaNbG+Mjp14qNQfpONoFGict/Pp?=
- =?us-ascii?Q?MYqv8tCFZHTcP4vz/nJL0ATGsjYsW9RjJJSs78nrUWPEyBbS5Slh4hyZjMiG?=
- =?us-ascii?Q?eurhroKNtowOahGyMlDQ2zatocLon0pP9T3+m7ei6HHj1zcQ+aSyvgTuywvy?=
- =?us-ascii?Q?ugA7OttvfAyr4A/5b/Y3NClHj7lehMVYXHhhcamNcfslgtvds6SD6T9xBuuL?=
- =?us-ascii?Q?lEZZegEe7k1R4VG7eaNLThpEbZEtwE/bNFyOhf/pJcIED4CoTPjD53UIAdPp?=
- =?us-ascii?Q?acFhT3Zko77M7Gc9HhxYcea3ndQL6nTYJMJ62gKnunpghZVw9eb2RO8ySsPf?=
- =?us-ascii?Q?AEYYfw5eBU/H4N+uV+r8HzBVAwSQEeAOEQWwlj8qbUXYyTWKXb0yn6k9SR1q?=
- =?us-ascii?Q?mNRPfWBpRI/rbyjBzosIyPyRgEWZsFxuECWVQHHCzxVxKKZXnD5YfIdaEGvD?=
- =?us-ascii?Q?CIzoS69oQ96qE0VayQSpzuSUZF+/mgqUATu9XjhOLR/EqzV5gCXOqhzibJCg?=
- =?us-ascii?Q?b9haaVWX2JfYN5SQ2m1JZOen67b9FmvKT+gNovMDSSFOU02xnJoVdM4Iv1M4?=
- =?us-ascii?Q?+r2D0m/ow870kAmVdDgYNnSxyGSz+OF2E7UILb6EGIeIbLpB9lPqb7kgDYza?=
- =?us-ascii?Q?Ce3Zrw2iYBt+KIWC65bdqZEC6MxbXvhqyH9OatBhV7K6GuHjTzPHgDUil9SN?=
- =?us-ascii?Q?9qR6DNgRv0JSN69YgFXS9nmYwajDTZy2IDx6FOxoZhPHQJsCEGHPcdnXve/9?=
- =?us-ascii?Q?JsvWFricC8TVrsHJIPZkOSnppJl3CBgV9mSCVHYOiwUa6EOWMX+uy+zwEF5l?=
- =?us-ascii?Q?7bHciGDQOHAOD3UXVgAGujXxUIy8Dvb5d8T0QY+MJbrRwCPDlfG/N0oxE2l9?=
- =?us-ascii?Q?4rsSKXKTh14Pe3AjcE7E/aRHqlqVFWzG48STlAhbCkJJc0jgjC6HhSlalT5Y?=
- =?us-ascii?Q?/Dy7YEQP+qIgvMxLdONHje8spHIPYxZmYqCQWQ1Gj1NT4+gsMwYR/zrwPtIB?=
- =?us-ascii?Q?pjbkpL3HBbL1WpgMnKSwK50a2So5OMaF9axbxDXKv02cOniLbmXT1cXB7c4B?=
- =?us-ascii?Q?csi65JUjRKTNCFwjogWMMWfT9hgey4gO7hy6PWNF+/+ZcX3ZdA2HBpMFp4P+?=
- =?us-ascii?Q?iiuG71wp84h1YE/d/E1GuVkuwSQiDbYOQDRQHS60bjSLdbI4H662xu7HIVNn?=
- =?us-ascii?Q?hEB1NOxQpnL0YQYn/40Nf4vV/YX4kXT3uVjGdU/p?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA0620B22;
+	Mon, 11 Nov 2024 08:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731312066; cv=none; b=SWpIdQI4yqKC038D2um7nPM/zlfYcbibxSXhK0YpMVKnDU8yKLv2wtlcraexJ1YVA8qarSzTDOFMG6VhaDIpHJlBqPyIIlsExQE55R0ZY7kLWoRKOZTXxj8mCHmopQ3MnxoNDIl4OyjQN9QNE7RkJjFNKYU9/eYN92dX9ITs1fI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731312066; c=relaxed/simple;
+	bh=D4fxEffkdD+TzHlLOXdHYFcAXrCaBK85rwbWQ8pFt2Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NCIOMkJBPdKi1Txh+LlGMCes8PcFoqNF0xq6A1RhSMlBScDbz1qgWSLzSY3ALbjfRJfMhKUZIxiYrQNImYwzxSs/4qz/dHAZAMe8wcCBcMoIuUYXPQSvcKSFLLMRnSPKfhQRxJuW3SY3diK7f/LGFV0rrfYw/psv0UZePI+7pqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Xn24N5RtLz10V7P;
+	Mon, 11 Nov 2024 15:59:00 +0800 (CST)
+Received: from kwepemg200003.china.huawei.com (unknown [7.202.181.30])
+	by mail.maildlp.com (Postfix) with ESMTPS id B7515140257;
+	Mon, 11 Nov 2024 16:00:52 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemg200003.china.huawei.com
+ (7.202.181.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 11 Nov
+ 2024 16:00:51 +0800
+From: Liu Jian <liujian56@huawei.com>
+To: <chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+	<trondmy@kernel.org>, <anna@kernel.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <ebiederm@xmission.com>, <kuniyu@amazon.com>,
+	<liujian56@huawei.com>
+CC: <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH net v3] sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+Date: Mon, 11 Nov 2024 16:17:36 +0800
+Message-ID: <20241111081736.526093-1-liujian56@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8849.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd556984-c083-426c-127b-08dd022279af
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2024 07:28:44.9793
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Zyzkr0h3LIwCICARq9MEZgqwRfVgwRzqzDYx2B5LcRMz1iA2PlwJCGDleMpOLA3Ud/G4ZXYovdpeTXdTBoSeJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7477
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemg200003.china.huawei.com (7.202.181.30)
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Monday, November 11, 2024 3:52 AM
-[...]
-> Subject: [PATCH v2 net-next 1/5] net: enetc: add Rx checksum offload for
-> i.MX95 ENETC
->=20
-> ENETC rev 4.1 supports TCP and UDP checksum offload for receive, the bit
-> 108 of the Rx BD will be set if the TCP/UDP checksum is correct. Since th=
-is
-> capability is not defined in register, the rx_csum bit is added to struct
-> enetc_drvdata to indicate whether the device supports Rx checksum offload=
-.
->=20
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> v2: no changes
-> ---
+BUG: KASAN: slab-use-after-free in tcp_write_timer_handler+0x156/0x3e0
+Read of size 1 at addr ffff888111f322cd by task swapper/0/0
 
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc4-dirty #7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x68/0xa0
+ print_address_description.constprop.0+0x2c/0x3d0
+ print_report+0xb4/0x270
+ kasan_report+0xbd/0xf0
+ tcp_write_timer_handler+0x156/0x3e0
+ tcp_write_timer+0x66/0x170
+ call_timer_fn+0xfb/0x1d0
+ __run_timers+0x3f8/0x480
+ run_timer_softirq+0x9b/0x100
+ handle_softirqs+0x153/0x390
+ __irq_exit_rcu+0x103/0x120
+ irq_exit_rcu+0xe/0x20
+ sysvec_apic_timer_interrupt+0x76/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90
+ 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 f8 25 00 fb f4 <fa> c3 cc cc cc
+ cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffffffffa2007e28 EFLAGS: 00000242
+RAX: 00000000000f3b31 RBX: 1ffffffff4400fc7 RCX: ffffffffa09c3196
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff9f00590f
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed102360835d
+R10: ffff88811b041aeb R11: 0000000000000001 R12: 0000000000000000
+R13: ffffffffa202d7c0 R14: 0000000000000000 R15: 00000000000147d0
+ default_idle_call+0x6b/0xa0
+ cpuidle_idle_call+0x1af/0x1f0
+ do_idle+0xbc/0x130
+ cpu_startup_entry+0x33/0x40
+ rest_init+0x11f/0x210
+ start_kernel+0x39a/0x420
+ x86_64_start_reservations+0x18/0x30
+ x86_64_start_kernel+0x97/0xa0
+ common_startup_64+0x13e/0x141
+ </TASK>
+
+Allocated by task 595:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_slab_alloc+0x87/0x90
+ kmem_cache_alloc_noprof+0x12b/0x3f0
+ copy_net_ns+0x94/0x380
+ create_new_namespaces+0x24c/0x500
+ unshare_nsproxy_namespaces+0x75/0xf0
+ ksys_unshare+0x24e/0x4f0
+ __x64_sys_unshare+0x1f/0x30
+ do_syscall_64+0x70/0x180
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 100:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x54/0x70
+ kmem_cache_free+0x156/0x5d0
+ cleanup_net+0x5d3/0x670
+ process_one_work+0x776/0xa90
+ worker_thread+0x2e2/0x560
+ kthread+0x1a8/0x1f0
+ ret_from_fork+0x34/0x60
+ ret_from_fork_asm+0x1a/0x30
+
+Reproduction script:
+
+mkdir -p /mnt/nfsshare
+mkdir -p /mnt/nfs/netns_1
+mkfs.ext4 /dev/sdb
+mount /dev/sdb /mnt/nfsshare
+systemctl restart nfs-server
+chmod 777 /mnt/nfsshare
+exportfs -i -o rw,no_root_squash *:/mnt/nfsshare
+
+ip netns add netns_1
+ip link add name veth_1_peer type veth peer veth_1
+ifconfig veth_1_peer 11.11.0.254 up
+ip link set veth_1 netns netns_1
+ip netns exec netns_1 ifconfig veth_1 11.11.0.1
+
+ip netns exec netns_1 /root/iptables -A OUTPUT -d 11.11.0.254 -p tcp \
+	--tcp-flags FIN FIN  -j DROP
+
+(note: In my environment, a DESTROY_CLIENTID operation is always sent
+ immediately, breaking the nfs tcp connection.)
+ip netns exec netns_1 timeout -s 9 300 mount -t nfs -o proto=tcp,vers=4.1 \
+	11.11.0.254:/mnt/nfsshare /mnt/nfs/netns_1
+
+ip netns del netns_1
+
+The reason here is that the tcp socket in netns_1 (nfs side) has been
+shutdown and closed (done in xs_destroy), but the FIN message (with ack)
+is discarded, and the nfsd side keeps sending retransmission messages.
+As a result, when the tcp sock in netns_1 processes the received message,
+it sends the message (FIN message) in the sending queue, and the tcp timer
+is re-established. When the network namespace is deleted, the net structure
+accessed by tcp's timer handler function causes problems.
+
+To fix this problem, let's hold netns refcnt for the tcp kernel socket as
+ done in other modules.
+
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+---
+ net/sunrpc/svcsock.c  | 4 ++++
+ net/sunrpc/xprtsock.c | 6 ++++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 6f272013fd9b..d4330aaadc23 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1551,6 +1551,10 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+ 	newlen = error;
+ 
+ 	if (protocol == IPPROTO_TCP) {
++		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
++		sock->sk->sk_net_refcnt = 1;
++		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
++		sock_inuse_add(net, 1);
+ 		if ((error = kernel_listen(sock, 64)) < 0)
+ 			goto bummer;
+ 	}
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index d2f31b59457b..0f0b9f9283d9 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1942,6 +1942,12 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
+ 		goto out;
+ 	}
+ 
++	if (protocol == IPPROTO_TCP) {
++		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
++		sock->sk->sk_net_refcnt = 1;
++		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
++		sock_inuse_add(xprt->xprt_net, 1);
++	}
+ 	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
+ 	if (IS_ERR(filp))
+ 		return ERR_CAST(filp);
+-- 
+2.34.1
+
