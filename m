@@ -1,80 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDCA1A2C04;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28321586CB;
 	Mon, 11 Nov 2024 23:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731369169; cv=none; b=igSAs207iI8qynsMmnmVx/ENDMVMQC0M5fqiLKSQvo1XLZ8nvQHKWMKm8R73xSsaWq91F2IcjLDGjMPWpiwMZjbpOY7x2xntrlRflK4hYZs+qHUXTp2lmHJomo6n9hk41C+XfRWuXGSf820sbwy3WFVg5+est+OarEcdVgaz1yc=
+	t=1731369171; cv=none; b=T990Cy742/R50sKCZDVaRhzIZaubPV201qYCKlh6+U5+1AMEbVZt1x566UTvAe89MOls2c483IIffcVYYjKCI+ezsWtMvJls7Klj7oAy9K2gMrbS6SjRxpggUGSK17yYEWtFlgYpOcycbxUtVz2mzKa53cFo3elyprzu6XVZ1tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731369169; c=relaxed/simple;
-	bh=umxN0ACvG3ZC59nfOPsgtgdIF5Zx1AZFD1djdLZI77I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dbPcSxk5+HwgvMsqQZdEiSP0I9a7EbfbIJTeEHUZlvEvILQPL+gjc+fu/QrYJYkZ4w/FZYrMIPNeB60gr0RPFIGE4POom+oWHOxeBWaSA+yfN+k+3axyfX553PgzinhTRgVImYVoCvnAx/BAEB6KPV9ExJEEOdj/ct29sr/hC2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRt/ZtkI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731369171; c=relaxed/simple;
+	bh=jlAmQRZrJ2ZxcDYDXp3ea4ffAwt67+Lvb9k02TzY9ZY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=cOUuz0aUfNGLD3kMVrxtZZkXOnWWoAob+Dc9hAYEmS72pFdJHsBvCAdSx0n3PL/c2jet7qT0RAYIsYIMIyXgCo2rcE0mIMyRyQOpDJFmsj+A3lYgTNPt9EHs7Obfi5qp17/Swn7oefkKNxAMe6nVcXJVZs5jzzcdkRgHA2HtQNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YvNu/gRt; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRt/ZtkI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A089C4CECF;
-	Mon, 11 Nov 2024 23:52:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731369168;
-	bh=umxN0ACvG3ZC59nfOPsgtgdIF5Zx1AZFD1djdLZI77I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rRt/ZtkI06cCA0SDjlWMvkc8SknPkcvR2frvqsNs/3kcEJgKU4A59X9slyzafTZmq
-	 C8dISUT7gpjHEAM2ukXVAtsj1TRv89deE65v+jwdFKjrCgieHXZ8NSikirDlZLpt5B
-	 cPgMio+imNoPpk60Yi+fPILQw7ai4ZdsZUKfjAEk/Vk2mB9mlrAAKMt7W+iGWwJaLo
-	 g0qxEKJJh1AvSt09h74Ww6cX+tskzkmTGp811/FMhgzPlIpRNZ9w3t5Y2Rs3nIlnKL
-	 c9g2saNEpF3KfBpKDXGglTPjWBbADmy5t5p2z00psa2p27dPTuc9xG0GzdKQj0u3mI
-	 KCwsXFOPU0SEA==
-Date: Mon, 11 Nov 2024 15:52:46 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jan Stancek <jstancek@redhat.com>
-Cc: donald.hunter@gmail.com, pabeni@redhat.com, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] tools: ynl: two patches to ease building with
- rpmbuild
-Message-ID: <20241111155246.17aa0199@kernel.org>
-In-Reply-To: <cover.1730976866.git.jstancek@redhat.com>
-References: <cover.1730976866.git.jstancek@redhat.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YvNu/gRt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=jX484nqoDiY+8og5lcWFPnkxz2lRqxD21umrzFzFsPY=; b=YvNu/gRte/AYvNsl0rEVHUBHV+
+	bn7B+KonplxN9lOStu3de41szebkiWjpD/ObqKscNTIC6uWufO2qdgvID2Nuvn9EjHhDgdi+kcAxU
+	qdNc3VKl5DOuBpMQ9IzIiaf3UNKudl0HQfSENo6d53YDjlIm5FIbTuIBz9nR0sJazPJc4h4kSqbfv
+	EjiKnzqgmv/ZC3umNnGFGOPHRxyRKdhCRFsUcK2qVW2G0lo4vtvpSqNWhoDvQoSysNu3Csx5mSuya
+	0Jj20l/1FALg2SCZ2VQkUA4mUK2CxQyP0D+ckNEx9E5H9m3JiQQJRP/G9IuRo1C9+WqGng4nj2Yj9
+	XZ+AjdsA==;
+Received: from [50.53.2.24] (helo=[192.168.254.17])
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tAeD8-0000000DVrk-0Q9a;
+	Mon, 11 Nov 2024 23:52:46 +0000
+Message-ID: <a405a8e6-7420-468d-be16-2bf1d73b7cbd@infradead.org>
+Date: Mon, 11 Nov 2024 15:52:34 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 12/12] net: homa: create Makefile and Kconfig
+To: John Ousterhout <ouster@cs.stanford.edu>, netdev@vger.kernel.org,
+ linux-api@vger.kernel.org
+References: <20241111234006.5942-1-ouster@cs.stanford.edu>
+ <20241111234006.5942-13-ouster@cs.stanford.edu>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20241111234006.5942-13-ouster@cs.stanford.edu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Nov 2024 14:04:43 +0100 Jan Stancek wrote:
-> I'm looking to build and package ynl for Fedora and Centos Stream users.
+Hi John,
 
-Great to hear!
+On 11/11/24 3:40 PM, John Ousterhout wrote:
+> diff --git a/net/homa/Kconfig b/net/homa/Kconfig
+> new file mode 100644
+> index 000000000000..8ba81b00d35f
+> --- /dev/null
+> +++ b/net/homa/Kconfig
+> @@ -0,0 +1,19 @@
+> +# SPDX-License-Identifier: BSD-2-Clause
+> +#
+> +# Homa transport protocol
+> +#
+> +
+> +menuconfig HOMA
+> +	tristate "The Homa transport protocol"
+> +	depends on INET
+> +	depends on IPV6
+> +
+> +	help
+> +	Homa is a network transport protocol for communication within
+> +	a datacenter. It provides significantly lower latency than TCP,
+> +	particularly for workloads containing a mixture of large and small
+> +	messages operating at high network utilization. For more information
+> +	see the homa(7) man page or checkout the Homa Wiki at
+> +	https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview.
+> +
+> +	If unsure, say N.
 
-> Default rpmbuild has couple hardening options enabled by default [1][2],
-> which currently prevent ynl from building.
+Kconfig help text should be indented with one tab + 2 spaces, please. (Everything
+below the "help" line.) This is in Documentation/process/coding-style.rst.
 
-Could you rebase on:
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
-and resend? I see some fuzz:
+-- 
+~Randy
 
-Applying: tools: ynl: add script dir to sys.path
-Using index info to reconstruct a base tree...
-M	tools/net/ynl/cli.py
-M	tools/net/ynl/ynl-gen-c.py
-Falling back to patching base and 3-way merge...
-Auto-merging tools/net/ynl/ynl-gen-c.py
-Auto-merging tools/net/ynl/cli.py
-Applying: tools: ynl: extend CFLAGS to keep options from environment
-
-
-With that fixed feel free to add to the patches:
-
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-
-
-One thing I keep thinking about, maybe you already read this, is to
-add  some sort of spec search path and install the specs under /usr.
-So the user can simply say --family X on the CLI without specifying 
-the fs full path to the YAML file. Would you be willing to send a patch
-for this?
