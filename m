@@ -1,120 +1,155 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B4C1A2C04;
-	Mon, 11 Nov 2024 16:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46011A257A
+	for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 16:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731342605; cv=none; b=sycg75o6XNJWrXogJoIeZxslxrah6BsEDGcAz7L0uwOyFO7vlPRZf4NrSjcjitawBdDikyYkoU+2nEL0h9A8rmw5LRn1EyFwosE2F6vE+tUxekRQQiza13+I+cWMosMTZJGLCjK04TUmVZ001iAr+hdi3Gj/HGucaKdaO6U1NsI=
+	t=1731343198; cv=none; b=j34xxSbnUchR/ddMhZfSYxHZHKuMlwIfulfhaQwfXvkLSsCBhJ8oM9u9ZOlLiZDal+ZvhESsy3+eRLYLY+XSuK10I99EOc+dEKbo8AW8L9FuF26AgZFzOWizRjvWIxyq/euHvHKMB0bdvySX/hy7ZroommndsmZ3vZGSpKWraWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731342605; c=relaxed/simple;
-	bh=9fDruoMlfXUHmwmsvf9FAXDWc9/JlJxAuM/fbaROEu4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=JQZp5G9Y8VKUjoESepONxAc3l/wNMkSMaAvAWKYHZvQ1NRZ5gANKCLBh91FNNFZlS+6BQl4YFlK7a3115U5+0tShEOgx08p/33YCCF2kOlTen5JFy4GLD1JwJWJjyVz37yilLbGi7xHbVW7E6vBLn5wcMPnfd8xgtf7Y5K6aSCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei-partners.com; spf=pass smtp.mailfrom=huawei-partners.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei-partners.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XnFPg3pY4z6L6yR;
-	Tue, 12 Nov 2024 00:29:43 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id A2A3114022E;
-	Tue, 12 Nov 2024 00:29:53 +0800 (CST)
-Received: from [10.123.123.159] (10.123.123.159) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Mon, 11 Nov 2024 19:29:51 +0300
-Message-ID: <ea026af8-bc29-709c-7e04-e145d01fd825@huawei-partners.com>
-Date: Mon, 11 Nov 2024 19:29:49 +0300
+	s=arc-20240116; t=1731343198; c=relaxed/simple;
+	bh=o486AYVqM7xqcbFT+XOIbCGL5DWZlP8FUBorEWAX/zg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QIqO7YJ/JPjAoatL7+gfh7gRHbMOGIeRVs43XTegVHH1f8tK8tdjrFTw3VkXTnpekRQQfo7qqFeKqJEO0ISOjousbLJdg3oOiEhHaVKDK5r8SOlh1dU/orHH5XzewIV1SXbzAc6A5crmK8pJXwvORjp5XSNyS86or8qOmoysN5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g6e+7tA8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g6e+7tA8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731343195;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aKgW3LE84SWafFn65FDrfQSl/9TIfSGFANwG6EcBo18=;
+	b=g6e+7tA82qUbsn1vSi6WRiQu9U3y7/OlKeesJHINF7aYSHkj6aZdhOTTzWU7zNfKrQHWmX
+	wnxNqeHS5NKOLRPalz5qOa5y1JlclaBkSOFdGi3N3oHefk/F1nNXGfYweJMaHXubRIp98j
+	pF0tUFsHNh9QViTMB0sDIHRgKX9Vzvc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-45gy0RBdMZWr3PcZmp005A-1; Mon, 11 Nov 2024 11:39:54 -0500
+X-MC-Unique: 45gy0RBdMZWr3PcZmp005A-1
+X-Mimecast-MFC-AGG-ID: 45gy0RBdMZWr3PcZmp005A
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a9adb271de7so407265866b.0
+        for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 08:39:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731343193; x=1731947993;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKgW3LE84SWafFn65FDrfQSl/9TIfSGFANwG6EcBo18=;
+        b=vnbLH0SjlLxesggGpkmDyo27feY6YSYU9zytoLlLln8QCO92aME7jEabzhwoBphD3w
+         6autnVomC/vivBsfZYru4D2Y5JLOezL6KR5Cpgo/YYdW2eXzWjvWzMvrM9d20529hLyk
+         iQwaGGEcBRBVQfZspklEZkshmU5OEpC+5VnK92GNqSghxH96uvMqXaWJ35VATY3yFPuL
+         BNgI5orN7aXyLZF0329XeYS/MTRweTG1bBi5QKpzghL/l3nCpZPHv1v/Qj/zpM9YvvWz
+         0sZ77QGKbqw3rntxl9D6VMCmqNmOCiYGrVF2ZgwlamqULSueDKW1vQOHerqtuVJhNSI+
+         rsSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGZ18mzB5+jowgkpxwR/t0Kd/kAJi9/oMYNajULXFvTY/1NLCU1gOyQQZAQ4Y5yDELUiq9Iew=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfsGiitx2UguR4y+tVzK8oWldH34WgFCWgw5bDLjiDRf6EDgPZ
+	clHHdV0oKxmaGGApp7oihmv9DedTvy1hhtxS+GoGwC36IbhsDAk9i2Mql9qJv7u5qq7Vqd9Duoe
+	INJQymY8K7tUTI02EZHxooxqziv+5fRkzQO57RRzmsaVshX+7J7hnJQ==
+X-Received: by 2002:a17:906:ef08:b0:a99:e939:d69e with SMTP id a640c23a62f3a-a9ef0024349mr1298335666b.51.1731343193110;
+        Mon, 11 Nov 2024 08:39:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH3n8Roc+Mnu9kSawt8yE+qVV+ccGpVO4yEHKrFfI04/JcX8ndj08Z6F74oPMyb6gsKndsDZA==
+X-Received: by 2002:a17:906:ef08:b0:a99:e939:d69e with SMTP id a640c23a62f3a-a9ef0024349mr1298333066b.51.1731343192716;
+        Mon, 11 Nov 2024 08:39:52 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0ad2d9dsm610552266b.91.2024.11.11.08.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2024 08:39:52 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 2D95E164CC6E; Mon, 11 Nov 2024 17:39:51 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend
+ <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Maciej
+ Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev
+ <sdf@fomichev.me>, Magnus Karlsson <magnus.karlsson@intel.com>,
+ nex.sw.ncis.osdt.itp.upstreaming@intel.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 12/19] xdp: add generic
+ xdp_build_skb_from_buff()
+In-Reply-To: <20241107161026.2903044-13-aleksander.lobakin@intel.com>
+References: <20241107161026.2903044-1-aleksander.lobakin@intel.com>
+ <20241107161026.2903044-13-aleksander.lobakin@intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 11 Nov 2024 17:39:51 +0100
+Message-ID: <875xot67xk.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 01/19] landlock: Support socket access-control
-Content-Language: ru
-From: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-To: <mic@digikod.net>
-CC: <willemdebruijn.kernel@gmail.com>, <gnoack3000@gmail.com>,
-	<linux-security-module@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<netfilter-devel@vger.kernel.org>, <yusongping@huawei.com>,
-	<artem.kuzin@huawei.com>, <konstantin.meskhidze@huawei.com>
-References: <20240904104824.1844082-1-ivanov.mikhail1@huawei-partners.com>
- <20240904104824.1844082-2-ivanov.mikhail1@huawei-partners.com>
-In-Reply-To: <20240904104824.1844082-2-ivanov.mikhail1@huawei-partners.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- mscpeml500004.china.huawei.com (7.188.26.250)
+Content-Type: text/plain
 
-On 9/4/2024 1:48 PM, Mikhail Ivanov wrote:
-> Landlock implements the `LANDLOCK_RULE_NET_PORT` rule type, which provides
-> fine-grained control of actions for a specific protocol. Any action or
-> protocol that is not supported by this rule can not be controlled. As a
-> result, protocols for which fine-grained control is not supported can be
-> used in a sandboxed system and lead to vulnerabilities or unexpected
-> behavior.
-> 
-> Controlling the protocols used will allow to use only those that are
-> necessary for the system and/or which have fine-grained Landlock control
-> through others types of rules (e.g. TCP bind/connect control with
-> `LANDLOCK_RULE_NET_PORT`, UNIX bind control with
-> `LANDLOCK_RULE_PATH_BENEATH`). Consider following examples:
-> 
-> * Server may want to use only TCP sockets for which there is fine-grained
->    control of bind(2) and connect(2) actions [1].
-> * System that does not need a network or that may want to disable network
->    for security reasons (e.g. [2]) can achieve this by restricting the use
->    of all possible protocols.
-> 
-> This patch implements such control by restricting socket creation in a
-> sandboxed process.
-> 
-> Add `LANDLOCK_RULE_SOCKET` rule type that restricts actions on sockets.
-> This rule uses values of address family and socket type (Cf. socket(2))
-> to determine sockets that should be restricted. This is represented in a
-> landlock_socket_attr struct:
-> 
->    struct landlock_socket_attr {
->      __u64 allowed_access;
->      int family; /* same as domain in socket(2) */
->      int type; /* see socket(2) */
->    };
+Alexander Lobakin <aleksander.lobakin@intel.com> writes:
 
-Hello! I'd like to consider another approach to define this structure
-before sending the next version of this patchset.
+> The code which builds an skb from an &xdp_buff keeps multiplying itself
+> around the drivers with almost no changes. Let's try to stop that by
+> adding a generic function.
+> Unlike __xdp_build_skb_from_frame(), always allocate an skbuff head
+> using napi_build_skb() and make use of the available xdp_rxq pointer to
+> assign the Rx queue index. In case of PP-backed buffer, mark the skb to
+> be recycled, as every PP user's been switched to recycle skbs.
+>
+> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> ---
+>  include/net/xdp.h |  1 +
+>  net/core/xdp.c    | 55 +++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 56 insertions(+)
+>
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index 4c19042adf80..b0a25b7060ff 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
+> @@ -330,6 +330,7 @@ xdp_update_skb_shared_info(struct sk_buff *skb, u8 nr_frags,
+>  void xdp_warn(const char *msg, const char *func, const int line);
+>  #define XDP_WARN(msg) xdp_warn(msg, __func__, __LINE__)
+>  
+> +struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp);
+>  struct xdp_frame *xdp_convert_zc_to_xdp_frame(struct xdp_buff *xdp);
+>  struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+>  					   struct sk_buff *skb,
+> diff --git a/net/core/xdp.c b/net/core/xdp.c
+> index b1b426a9b146..3a9a3c14b080 100644
+> --- a/net/core/xdp.c
+> +++ b/net/core/xdp.c
+> @@ -624,6 +624,61 @@ int xdp_alloc_skb_bulk(void **skbs, int n_skb, gfp_t gfp)
+>  }
+>  EXPORT_SYMBOL_GPL(xdp_alloc_skb_bulk);
+>  
+> +/**
+> + * xdp_build_skb_from_buff - create an skb from an &xdp_buff
+> + * @xdp: &xdp_buff to convert to an skb
+> + *
+> + * Perform common operations to create a new skb to pass up the stack from
+> + * an &xdp_buff: allocate an skb head from the NAPI percpu cache, initialize
+> + * skb data pointers and offsets, set the recycle bit if the buff is PP-backed,
+> + * Rx queue index, protocol and update frags info.
+> + *
+> + * Return: new &sk_buff on success, %NULL on error.
+> + */
+> +struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp)
+> +{
+> +	const struct xdp_rxq_info *rxq = xdp->rxq;
+> +	const struct skb_shared_info *sinfo;
+> +	struct sk_buff *skb;
+> +	u32 nr_frags = 0;
+> +	int metalen;
+> +
+> +	if (unlikely(xdp_buff_has_frags(xdp))) {
+> +		sinfo = xdp_get_shared_info_from_buff(xdp);
+> +		nr_frags = sinfo->nr_frags;
+> +	}
 
-Currently, it has following possible issues:
+Why this separate branch at the start of the function? nr_frags is no
+used until the other branch below, so why not just make that branch on
+xdp_buff_has_frags() and keep everything frags-related together in one
+block?
 
-First of all, there is a lack of protocol granularity. It's impossible
-to (for example) deny creation of ICMP and SCTP sockets and allow TCP
-and UDP. Since the values of address family and socket type do not
-completely define the protocol for the restriction, we may gain
-incomplete control of the network actions. AFAICS, this is limited to
-only a couple of IP protocol cases (e.g. it's impossible to deny SCTP
-and SMC sockets to only allow TCP, deny ICMP and allow UDP).
+-Toke
 
-But one of the main advantages of socket access rights is the ability to
-allow only those protocols for which there is a fine-grained control
-over their actions (TCP bind/connect). It can be inconvenient
-(and unsafe) for SCTP to be unrestricted, while sandboxed process only
-needs TCP sockets.
-
-Adding protocol (Cf. socket(2)) field was considered a bit during the
-initial discussion:
-https://lore.kernel.org/all/CABi2SkVWU=Wxb2y3fP702twyHBD3kVoySPGSz2X22VckvcHeXw@mail.gmail.com/
-
-Secondly, I'm not really sure if socket type granularity is required
-for most of the protocols. It may be more convenient for the end user
-to be able to completely restrict the address family without specifying
-whether restriction is dedicated to stream or dgram sockets (e.g. for
-BLUETOOTH, VSOCK sockets). However, this is not a big issue for the
-current design, since address family can be restricted by specifying
-type = SOCK_TYPE_MASK.
-
-I suggest implementing something close to selinux socket classes for the
-struct landlock_socket_attr (Cf. socket_type_to_security_class()). This
-will provide protocol granularity and may be simpler and more convenient
-in the terms of determining access rights. WDYT?
