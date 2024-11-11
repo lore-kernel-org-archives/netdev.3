@@ -1,35 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4801A76B5;
-	Mon, 11 Nov 2024 23:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6B5198A38
+	for <netdev@vger.kernel.org>; Mon, 11 Nov 2024 23:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731368420; cv=none; b=J89BI+JIsC+EiTAzHKwS42tp0kRdiCLX+Kun7oet5PhZQGCFfEKVYp3AnQxUNYDohkKmelhkRioqD6uqVWMZ2rWodlMSVPUNmfWnr2tuUo9Dp8PCwNVzTpv0PekiyhjgTlAq8xH5a+tedaL2GutZ3Bxp1mOdfyFSS2KE3WE/5wI=
+	t=1731368448; cv=none; b=NRMtasUqAf48b3N+t7E1U6yTkx7pDVBuEkunFpQoVkXIbyklzi1YHiFHO+G/B+3kZ3svYAKc0E4Efw59hIulSp4f/CUqgDYgg/LX54vQrcK8h5Q1kQI+lPQbA3eKSksrT5DX9ZJMSxhi0RkSobY4Fv1SNDNzo7m1gw8xilkDERI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731368420; c=relaxed/simple;
-	bh=JWfY8vRiaeGiZyo8ym4Cw687a+ggxiOYz9I4JEIqKEs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XDa23JaL/34YnrpRiMMbkEk/bPAIbn301tyUZDuJOOoexl2x5AyFsj2Nb6Bx47/wIMQu8G9A3HMySgFFQSDN6MFPk0rTFM7WiNwjzqiH8/2Q9qDUOygwkJ5sH57foxLerrREm/5aRV7ByoScH7iSa2I2aUBXuhItij3R4VfWKlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6xpfNgp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731368448; c=relaxed/simple;
+	bh=ziWOXnRCJxMMKPnW+LHPgsfMWHjD0j5x9JsG0zok8cE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JLVczHmzFrtZ4RUr1OWrXgeOTCJYomT0SAWdlWXdbI/J6riqgQbyg7002we5piu0fXGtCxnUeUplagCBUG/vwZGsFgpzdgrSxboqmevFV5dStPWxJMl3LfgfUi6up7jNndUutK/KIYVQumPWBsblkby6BB3X4Z4m34efxA+0U+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=BNKMqxnO; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6xpfNgp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBBDC4CECF;
-	Mon, 11 Nov 2024 23:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731368418;
-	bh=JWfY8vRiaeGiZyo8ym4Cw687a+ggxiOYz9I4JEIqKEs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=R6xpfNgpEFl5mLSRBtEL2KzLbmyDf95vC3evgiHpWgy58OOQ7Ey7yyWu/BrAdcjNk
-	 MZHXltvIpodO061AwJCwcTGvAgjp1jxVd6gyoJI6jVRUWZAXbJ6DI8Amtp2+/7ZbSZ
-	 AVM5bvzEOiOu0pL//KSGEHpHOCRmfq9acnBaV9VdJzVg8qLiQkKy/Z2dOacjzMlKTk
-	 qt15K5YmDnYKQiAK8K+xlfO4y8EYYzlVB7K0vHpHuePdCZa9dVKuNdv8GvqlU5lT3/
-	 WRF4BsloPHql4FelXzIRjVb7CuYWwCHNrdMtJUyj7YyMzfmyq/s9rxQtl62thKQQvi
-	 kopSTxBsKmysA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BF93809A80;
-	Mon, 11 Nov 2024 23:40:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="BNKMqxnO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=fyYMgF7rVq5RKjxt6RJsiqUQAsp6ww5q/ZVu2GP31pA=; t=1731368446; x=1732232446; 
+	b=BNKMqxnO5gkFElELx9daTZ53oqJIO66iU0WA31qCTfNWr5LLEkvAhVAvqHkVS+6wBP42YI26r54
+	5YxFvUTIFodoH7MObQXyt8BiCpXt3/L/jdbdy5ZfQyYrCYzNsRql5eM5mzj3MdI79RtWutgnBboTd
+	TluxJ9lunTJlfXFumGpVQ2fEMUAp58ejxJNQOYaFNg6D/sE93jnmfD4BTzvY9VztV+QJdBLBg/MTU
+	y2cRI/Rd3Sfx+qq8wwfLyJYEQsye1k1RigXvjWGhu/T/qa3e/HweoPfl9olPSc87K6tJayS4f/xlk
+	8sQbIzB9Ds7al0svGu26JrCcGW1jKaAfwxcQ==;
+Received: from ouster448.stanford.edu ([172.24.72.71]:54467 helo=localhost.localdomain)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1tAe1P-0002NP-SK; Mon, 11 Nov 2024 15:40:40 -0800
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org,
+	linux-api@vger.kernel.org
+Cc: John Ousterhout <ouster@cs.stanford.edu>
+Subject: [PATCH net-next v2 00/12] Begin upstreaming Homa transport protocol
+Date: Mon, 11 Nov 2024 15:39:53 -0800
+Message-ID: <20241111234006.5942-1-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,78 +47,106 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: fix data-races around sk->sk_forward_alloc
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173136842901.12816.12710817241689086556.git-patchwork-notify@kernel.org>
-Date: Mon, 11 Nov 2024 23:40:29 +0000
-References: <20241107023405.889239-1-wangliang74@huawei.com>
-In-Reply-To: <20241107023405.889239-1-wangliang74@huawei.com>
-To: Wang Liang <wangliang74@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, kuniyu@amazon.com,
- luoxuanqiang@kylinos.cn, kernelxing@tencent.com, kirjanov@gmail.com,
- yuehaibing@huawei.com, zhangchangzhong@huawei.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+X-Spam-Score: -101.0
+X-Scan-Signature: dfe9a19d2d5d3f4658608889c96f7beb
 
-Hello:
+This patch series begins the process of upstreaming the Homa transport
+protocol. Homa is an alternative to TCP for use in datacenter
+environments. It provides 10-100x reductions in tail latency for short
+messages relative to TCP. Its benefits are greatest for mixed workloads
+containing both short and long messages running under high network loads.
+Homa is not API-compatible with TCP: it is connectionless and message-
+oriented (but still reliable and flow-controlled). Homa's new API not
+only contributes to its performance gains, but it also eliminates the
+massive amount of connection state required by TCP for highly connected
+datacenter workloads.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+For more details on Homa, please consult the Homa Wiki:
+https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
+The Wiki has pointers to two papers on Homa (one of which describes
+this implementation) as well as man pages describing the application
+API and other information.
 
-On Thu, 7 Nov 2024 10:34:05 +0800 you wrote:
-> Syzkaller reported this warning:
->  ------------[ cut here ]------------
->  WARNING: CPU: 0 PID: 16 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x1c5/0x1e0
->  Modules linked in:
->  CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-rc5 #26
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
->  RIP: 0010:inet_sock_destruct+0x1c5/0x1e0
->  Code: 24 12 4c 89 e2 5b 48 c7 c7 98 ec bb 82 41 5c e9 d1 18 17 ff 4c 89 e6 5b 48 c7 c7 d0 ec bb 82 41 5c e9 bf 18 17 ff 0f 0b eb 83 <0f> 0b eb 97 0f 0b eb 87 0f 0b e9 68 ff ff ff 66 66 2e 0f 1f 84 00
->  RSP: 0018:ffffc9000008bd90 EFLAGS: 00010206
->  RAX: 0000000000000300 RBX: ffff88810b172a90 RCX: 0000000000000007
->  RDX: 0000000000000002 RSI: 0000000000000300 RDI: ffff88810b172a00
->  RBP: ffff88810b172a00 R08: ffff888104273c00 R09: 0000000000100007
->  R10: 0000000000020000 R11: 0000000000000006 R12: ffff88810b172a00
->  R13: 0000000000000004 R14: 0000000000000000 R15: ffff888237c31f78
->  FS:  0000000000000000(0000) GS:ffff888237c00000(0000) knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 00007ffc63fecac8 CR3: 000000000342e000 CR4: 00000000000006f0
->  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->  Call Trace:
->   <TASK>
->   ? __warn+0x88/0x130
->   ? inet_sock_destruct+0x1c5/0x1e0
->   ? report_bug+0x18e/0x1a0
->   ? handle_bug+0x53/0x90
->   ? exc_invalid_op+0x18/0x70
->   ? asm_exc_invalid_op+0x1a/0x20
->   ? inet_sock_destruct+0x1c5/0x1e0
->   __sk_destruct+0x2a/0x200
->   rcu_do_batch+0x1aa/0x530
->   ? rcu_do_batch+0x13b/0x530
->   rcu_core+0x159/0x2f0
->   handle_softirqs+0xd3/0x2b0
->   ? __pfx_smpboot_thread_fn+0x10/0x10
->   run_ksoftirqd+0x25/0x30
->   smpboot_thread_fn+0xdd/0x1d0
->   kthread+0xd3/0x100
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork+0x34/0x50
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork_asm+0x1a/0x30
->   </TASK>
-> 
-> [...]
+There is also a GitHub repo for Homa:
+https://github.com/PlatformLab/HomaModule
+The GitHub repo contains a superset of this patch set, including:
+* Additional source code that will eventually be upstreamed
+* Extensive unit tests (which will also be upstreamed eventually)
+* Application-level library functions (which need to go in glibc?)
+* Man pages (which need to be upstreamed as well)
+* Benchmarking and instrumentation code
 
-Here is the summary with links:
-  - [net] net: fix data-races around sk->sk_forward_alloc
-    https://git.kernel.org/netdev/net/c/073d89808c06
+For this patch series, Homa has been stripped down to the bare minimum
+functionality capable of actually executing remote procedure calls. (about
+7500 lines of source code, compared to 15000 in the complete Homa). The
+remaining code will be upstreamed in smaller batches once this patch
+series has been accepted. Note: the code in this patch series is
+functional but its performance is not very interesting (about the same
+as TCP).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The patch series is arranged to introduce the major functional components
+of Homa. Until the last patch has been applied, the code is inert (it
+will not be compiled).
 
+Note: this implementation of Homa supports both IPv4 and IPv6.
+
+John Ousterhout (12):
+  net: homa: define user-visible API for Homa
+  net: homa: define Homa packet formats
+  net: homa: create shared Homa header files
+  net: homa: create homa_pool.h and homa_pool.c
+  net: homa: create homa_rpc.h and homa_rpc.c
+  net: homa: create homa_peer.h and homa_peer.c
+  net: homa: create homa_sock.h and homa_sock.c
+  net: homa: create homa_incoming.c
+  net: homa: create homa_outgoing.c
+  net: homa: create homa_timer.c
+  net: homa: create homa_plumbing.c homa_utils.c
+  net: homa: create Makefile and Kconfig
+
+ MAINTAINERS               |    7 +
+ include/uapi/linux/homa.h |  165 ++++++
+ net/Kconfig               |    1 +
+ net/Makefile              |    1 +
+ net/homa/Kconfig          |   19 +
+ net/homa/Makefile         |   14 +
+ net/homa/homa_impl.h      |  767 ++++++++++++++++++++++++++
+ net/homa/homa_incoming.c  | 1076 +++++++++++++++++++++++++++++++++++++
+ net/homa/homa_outgoing.c  |  854 +++++++++++++++++++++++++++++
+ net/homa/homa_peer.c      |  319 +++++++++++
+ net/homa/homa_peer.h      |  234 ++++++++
+ net/homa/homa_plumbing.c  |  965 +++++++++++++++++++++++++++++++++
+ net/homa/homa_pool.c      |  420 +++++++++++++++
+ net/homa/homa_pool.h      |  152 ++++++
+ net/homa/homa_rpc.c       |  488 +++++++++++++++++
+ net/homa/homa_rpc.h       |  446 +++++++++++++++
+ net/homa/homa_sock.c      |  380 +++++++++++++
+ net/homa/homa_sock.h      |  426 +++++++++++++++
+ net/homa/homa_stub.h      |   80 +++
+ net/homa/homa_timer.c     |  156 ++++++
+ net/homa/homa_utils.c     |  150 ++++++
+ net/homa/homa_wire.h      |  378 +++++++++++++
+ 22 files changed, 7498 insertions(+)
+ create mode 100644 include/uapi/linux/homa.h
+ create mode 100644 net/homa/Kconfig
+ create mode 100644 net/homa/Makefile
+ create mode 100644 net/homa/homa_impl.h
+ create mode 100644 net/homa/homa_incoming.c
+ create mode 100644 net/homa/homa_outgoing.c
+ create mode 100644 net/homa/homa_peer.c
+ create mode 100644 net/homa/homa_peer.h
+ create mode 100644 net/homa/homa_plumbing.c
+ create mode 100644 net/homa/homa_pool.c
+ create mode 100644 net/homa/homa_pool.h
+ create mode 100644 net/homa/homa_rpc.c
+ create mode 100644 net/homa/homa_rpc.h
+ create mode 100644 net/homa/homa_sock.c
+ create mode 100644 net/homa/homa_sock.h
+ create mode 100644 net/homa/homa_stub.h
+ create mode 100644 net/homa/homa_timer.c
+ create mode 100644 net/homa/homa_utils.c
+ create mode 100644 net/homa/homa_wire.h
+
+--
+2.34.1
 
