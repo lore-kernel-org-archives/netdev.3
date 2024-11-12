@@ -1,71 +1,70 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0885C1ABEC2
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 09:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E014D20DD72;
+	Tue, 12 Nov 2024 09:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731404118; cv=none; b=l0hPK8RawhuUfiyfA7dQl/ynvlHlYQ8s/l3efkjxEvg1CX/0wDcPIL/+or8tyka0aGc9k1m5YBbGXQvBAkqcYwmOc3x8QtLY5qMPhJ1nE0pB4tX2s1AZw6rSEVYx6UTBL27rUQh0BZauWYyQeCHy7laz9mNhAGEmjMQMQs/FVio=
+	t=1731404120; cv=none; b=bN5YICvHSQAG/7IJSBiVN2tPG9G+F2gibgl3rdyLepxuOSfe6JyNu27gy92shxR9zNSmeH7frRLMU6DZUGifZ2q4iiFNS9Tw16hbIUGDE3sqkEiGce/uN52PdayKVCgX5DxhjFnKHnb/HUfsM+8XZQle+b4kqtaoyGM4qPSnXyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731404118; c=relaxed/simple;
-	bh=acpUqKrG6oG+MrKIaONUC+S4Jt1zravuQFGpRfNRTEk=;
+	s=arc-20240116; t=1731404120; c=relaxed/simple;
+	bh=bI9jM4fM/qrZMNswUV8/w2E5EoB21/DlDLMUd7obgKs=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=MHtlM/KPqJLG1lA2OlOOuFaTZAn5lumG6V/PCXDHGX8FdtAaqn9K/bopMqLZl0K4Fvl0OEmcK4Y4AGxp3H9C2hJ0rOeOkcHpCcL59gErPLlPuyojGR3MM06sGyHhgqwi1JVt3kkrwRki2eS8fim4xZ1Jsu2qsuF7IBrHQ+oNbuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JV8+96jX; arc=none smtp.client-ip=209.85.208.172
+	 MIME-Version:Content-Type; b=ZkudZLcrDCUgrs/FmplgHUeGzUVRxN23vPEAwLMojVFm62MjjGwASKq2QY6hw+21yE0vDoy6EeCh0AGN9ui0PA7A8BzJGlrOlBT7G9J5Fq0Lrf94r8xBlCTBFJZ6QeRLUumB9EV7q7W4o32rqBGZX0weHHU+klQ67KRSWRdKLnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R0nHnUxR; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JV8+96jX"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb561f273eso42911511fa.2
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 01:35:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R0nHnUxR"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e7e73740so5040521e87.3;
+        Tue, 12 Nov 2024 01:35:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731404115; x=1732008915; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VFmQSlmnwPj5fiFnpMrZXHSIn6sq7fUF/d7EDDE3cFw=;
-        b=JV8+96jXXITYK2qTPO9qTp/k1IoOvDmUr3fGeA4lNczTZ0dV1MsWrsx7KAlFqLwMY9
-         YPqAINIqhMqa7QefL2PSoxsN3svzp/nfDQjdBTB9siB/Ng4+vHf0DjmB/3GStILB8z8V
-         QCV26jIpYVbfDbPRHtRaZCo53QaC//vHmxmMaQ1T7Ntldt+R91Xph5cVx7pQEBNRDlXL
-         ZS37vy0k2CGSBHUHbOe1waBalQa5WyitEjNHnd7XZKviv7RT7VSniESRZAQCOtge/VJS
-         0JhMG2EiYIdz90bpNtjuaEiMSpA/c2UJYLGnlMmkZq1euidIB420vG4qbnnlab/mph32
-         DLcQ==
+        d=gmail.com; s=20230601; t=1731404117; x=1732008917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QwUs+aMkdkwpkiVWNCOrQgRTu0W2Xnb6aJtMbSxwnYg=;
+        b=R0nHnUxRZ3FciysD/BZetXxiw4ulpdP/7E8MrEDLNpOoVs4XlvIEqxaWeyI3bCsCvK
+         eC9aXRSizCiP8uouAlkGwX1RtISuGkC+S3BPJCCp234Mr+SCSUyZrZT8ONi+HDiynzHp
+         qBMFrO7b+x3zc2Fo6mJ197htvQkzM5+nlnRc+h+qBWLmjmJ5UNJAC2XRPJt5LTR/ILoU
+         55FTx8L4QEtEwolQgKDXPq8oUI+53MzL+Jy+bSlgJ9ItU9ml3PAs9cDNJjrPdJOHX5t+
+         KSZIefFEur9pQUDdYOWggyeWM5qa9chLdazP+YfAwSsE1vDu+tMf8ViweIIvBFjNlcbr
+         q4qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731404115; x=1732008915;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VFmQSlmnwPj5fiFnpMrZXHSIn6sq7fUF/d7EDDE3cFw=;
-        b=YkS510osgvDJS0aX0SlVazh/PgEzgKSrMdh0wmnHUCaj7U9ZJT8OOuYSkhqJ+pfKig
-         7xzOZzDHF029oAPQEcO4Pm0XQEFWAYCAknNtZ70Yx2nacO7/dlbIOMeWcNT4xbbVUXH7
-         pyjwLT9RKHQs/6HhT4EN3T8A7/zDTWqEEv7m1p9EGOg107uJpRwRQmU5q5jAtbzVJVYC
-         AOJb4S4nATH4yXESyJ146Gj6HAN3EpPrHc6a8YUnUl6NbEgQR6f1clKohul16ki1dU3A
-         VqzzbnFn0f3D+cMQ8WAYmn+rg2Dxpj/hSMXBF3kwK7+BFXyz4zfNS6qxTYSQMapcjr6k
-         3+Pg==
-X-Gm-Message-State: AOJu0YzKqgWfmH9SRaQHtJsGM03p0ADn3SitkssO0C7JQsMCQO4VRycF
-	WpcICdSHIXxRyGym3UmfqJCYR1a7pcYs0ceSrS7ZM1dFxC7v1bGc
-X-Google-Smtp-Source: AGHT+IHb12pvf9AX4EnaCWH7xChoqL2/zmn3A+E9Bs381DHtVvGdKaHDfMYSLVMBfCFvyEJiCBTb7A==
-X-Received: by 2002:a05:651c:54a:b0:2fa:c0fc:e3d8 with SMTP id 38308e7fff4ca-2ff4271fc74mr11531781fa.38.1731404114660;
-        Tue, 12 Nov 2024 01:35:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731404117; x=1732008917;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QwUs+aMkdkwpkiVWNCOrQgRTu0W2Xnb6aJtMbSxwnYg=;
+        b=eqXA3v5lftXtTaKPMurATaCYRlrnEgwB+mIM++xMwY/GSFLEVLap+99R+j0kJq5pWi
+         RkSve62h8xOsUQsX31D45V4ZujMFDuGxzaW1HkBhR2tsYwntbtxh9fSUOz72sEbGkiO3
+         +lOjr885eMltoOIa0XZPgev6cpU8cYWjJz8U7tFPzNo4Rh1QoQtNx+Qd7Pk0ezdZa2DS
+         Od83MgIOfyDdicYHxlGYcadFWwe61LZWdM1gTzWFyrlB3ct7ZoAyEx1EM43H7kcWEumc
+         f/AtZesUKYi70jNtcPj22EghDRfy4/8SKq6dSZDNllPukDciQklfNoFfm7p4VZcy9brj
+         gCKA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/B0GP+QAozs/eYQb09IWsL+rDyvNRC7eqSC+tQKQGQTKoDx+TSPJmpK2Zcv2D6f9MpX6faw4c@vger.kernel.org, AJvYcCWnepKflc2y/1ZGxLnNMshM+hsCCQU5bz7ZpwexaYRnyfcbhjKOyuMFeqm2RTHyHDSFZPpVLSpYrIhWAqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDIcD4Pvj9maIttrBwcmwXCQh3dSa+tnr0D6GS7fR5IH9sJfiO
+	TFfEWBQxCvmIJ5MHrmdebUmh02eBC+2XFGyi88AHjnvJ/a8zDbBaErKcxw==
+X-Google-Smtp-Source: AGHT+IGVkROvgPTuaXcye6PfO0q+/Im+e2txwVXXStZ+KU27XlkGrkShXQKuD4JasR3jJVcGh3tfbw==
+X-Received: by 2002:a05:6512:280c:b0:539:d428:fbf2 with SMTP id 2adb3069b0e04-53d9a40b5c5mr1127524e87.13.1731404116336;
+        Tue, 12 Nov 2024 01:35:16 -0800 (PST)
 Received: from imac ([2a02:8010:60a0:0:a1ef:92f5:9114:b131])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b053069fsm206814925e9.4.2024.11.12.01.35.13
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97075fsm14744416f8f.14.2024.11.12.01.35.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 01:35:14 -0800 (PST)
+        Tue, 12 Nov 2024 01:35:15 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon
- Horman <horms@kernel.org>,  Xiao Liang <shaw.leon@gmail.com>,  Jiri Pirko
- <jiri@resnulli.us>,  donald.hunter@redhat.com
-Subject: Re: [PATCH net-next v1 2/2] tools/net/ynl: add async notification
- handling
-In-Reply-To: <20241111100325.3b09ccb8@kernel.org> (Jakub Kicinski's message of
-	"Mon, 11 Nov 2024 10:03:25 -0800")
-Date: Tue, 12 Nov 2024 09:16:02 +0000
-Message-ID: <m24j4cvmlp.fsf@gmail.com>
-References: <20241108123816.59521-1-donald.hunter@gmail.com>
-	<20241108123816.59521-3-donald.hunter@gmail.com>
-	<20241109134011.560db783@kernel.org> <m2cyj2uj11.fsf@gmail.com>
-	<20241111100325.3b09ccb8@kernel.org>
+To: Jan Stancek <jstancek@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,  pabeni@redhat.com,
+  davem@davemloft.net,  edumazet@google.com,  horms@kernel.org,
+  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] tools: ynl: two patches to ease building with rpmbuild
+In-Reply-To: <CAASaF6zsC59x-wCRKNmdPEB7NOwtqLf6=AgJ-UO1xFYxCG11gQ@mail.gmail.com>
+	(Jan Stancek's message of "Tue, 12 Nov 2024 09:16:07 +0100")
+Date: Tue, 12 Nov 2024 09:26:57 +0000
+Message-ID: <m2wmh8u7j2.fsf@gmail.com>
+References: <cover.1730976866.git.jstancek@redhat.com>
+	<20241111155246.17aa0199@kernel.org>
+	<CAASaF6zsC59x-wCRKNmdPEB7NOwtqLf6=AgJ-UO1xFYxCG11gQ@mail.gmail.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -73,57 +72,34 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Jan Stancek <jstancek@redhat.com> writes:
 
-> On Mon, 11 Nov 2024 11:06:18 +0000 Donald Hunter wrote:
->> > On Fri,  8 Nov 2024 12:38:16 +0000 Donald Hunter wrote:  
->> >> +    def poll_ntf(self, interval=0.1, duration=None):
->> >> +        endtime = time.time() + duration if duration else None  
->> >
->> > could we default duration to 0 and always check endtime?
->> > I think we can assume that time doesn't go back for simplicity  
->> 
->> I don't follow; what are you suggesting I initialise endtime to when
->> duration is 0 ?
+> On Tue, Nov 12, 2024 at 12:52=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
+ wrote:
+>>
+>> One thing I keep thinking about, maybe you already read this, is to
+>> add  some sort of spec search path and install the specs under /usr.
+>> So the user can simply say --family X on the CLI without specifying
+>> the fs full path to the YAML file. Would you be willing to send a patch
+>> for this?
 >
-> I was suggesting:
+> I can look at adding--family option (atm. for running ynl in-tree).
 >
-> 	def poll_nft([...], duration=0)
+> One thing I wasn't sure about (due to lacking install target) was whether
+> you intend to run ynl always from linux tree.
 >
-> 	endtime = time.time() + duration
+> If you're open to adding 'install' target, I think that should be somethi=
+ng
+> to look at as well. It would make packaging less fragile, as I'm currently
+> handling all that on spec side.
 
-I want it to run forever if a duration is not provided, but here
-endtime == starttime so it would exit immediately.
+Hi Jan,
 
-I thought the original approach was fairly pythonic - if duration is not
-specified (None) then there would be no endtime (None).
+I am happy to work with you on adding an install target, plus some other
+UX improvements like --family.
 
->> >> +        while True:
->> >> +            try:
->> >> +                self.check_ntf()
->> >> +                yield self.async_msg_queue.get_nowait()
->> >> +            except queue.Empty:
->> >> +                try:
->> >> +                    time.sleep(interval)  
->> >
->> > Maybe select or epoll would be better that periodic checks?  
->> 
->> This was the limit of my python knowledge TBH. I can try using python
->> selectors but I suspect periodic checks will still be needed to reliably
->> check the endtime.
->
-> I thought select is pretty trivial to use in python, basically:
->
-> 	sock, _, _ = select.select([sock], [], [], timeout=to)
-> 	if sock:
-> 		handle_sock()
-> 	to = endtime - time.time()
-> 	if to <= 0:
-> 		return
-
-Yep, thanks. I sketched out roughly this, but using the selectors module
-which will use epoll under the covers.
-
-https://docs.python.org/3/library/selectors.html
+Thanks,
+Donald.
