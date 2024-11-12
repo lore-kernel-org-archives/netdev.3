@@ -1,104 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F35219E47;
-	Tue, 12 Nov 2024 19:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D8021832A
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 19:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731439140; cv=none; b=sw2B52P1tan6P3J6kf1ooKe5Q6XttcM66qsxOn52QP8RDng4NV/ujxJc3rJzy9YQ8xL1yXMaGQR3Ayz/qSBC6FsTFy7DnFMJM0pYAazi2Bd0mgbYXgXVG9/dyvikCM7g0XLU820XPBptXlyuPpeD9XGJITPTP/fy3rKG+bD09gA=
+	t=1731439277; cv=none; b=jZsw9X/RVJBhbYC0tvS0DT3lzhseoEZEsNUE7vTvlmUBe0jvCzO3+NA1N0s8rSN2PIvdmKwtXG+m45YkVh3skFxpyODKS/ZtmDETco317bZA1Uq8JBCaGZMWqY/NjfIpT8CrN/s+BJ57ZetHLcLydSXcDXPjw3mGWlo322pBQyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731439140; c=relaxed/simple;
-	bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=f3jKLc027CNxmdUu4lL6tncuVD8JBFfF1K3VwUkF6jSxBUs8TzBrC6R9LL2J7iats0faBReJZP0ha7oTNi71odobZtKpEqCD/e/mLYgh7ScUInm/mya/QlCu8/aoJbrXdHS2Wfw4nd1NhUUctRz9toTSiP49P34TBdtKF73ZwCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9y5NWEC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731439277; c=relaxed/simple;
+	bh=HzTz+zkDjCfyc0Xw+jURVPdAEW/0cXyh7yElhXrCzl8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pLTrh+2ZY2qOROSlyb6uiURVhqvp7+yx8/727udvT8qZSNCEK3Derc2/a0mP9188cOL3RelunVBIm7oCBh+INFxnASQFAomKWmd04wLHhFjY4ctveixpRD5mj9Eno4MlynWQVndUYmQ/FZ02mL1PYTk0PROu+AF1nqQBi9+oQvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=UuGMq0mE; arc=none smtp.client-ip=136.144.140.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9y5NWEC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5074CC4CECD;
-	Tue, 12 Nov 2024 19:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731439140;
-	bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=c9y5NWECVt36S1pJfBpPMEgQ4r6v24VWQqWiQCh1gjGgYOJtgHXP173JqLIJFUxyR
-	 rnMaku86UVgZ29QODrrqjblg3G81yN0cJxfIAVSf7mQPXZ1JLb8LGU3oVZ1pbh0EaC
-	 mdWR6nZUYvrF+KDCHutWiAZavyj6xwiRmCo7cS0n2oELX8kCYcIY41lS95AZXUMpAs
-	 a3bO+inqETiJdzJBhywr4zRqIVvrLG4xuScnzcLPP+5Czt6KO4rMY2ydo/KP8oeta6
-	 AMFMeEMQSZ8gDu9S4hNVNPkosPj5qkgGcsl8E014jjbrmBaP305nfdMGzKAZFCQFaY
-	 PrHb3roZ1Qp+A==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 12 Nov 2024 20:18:35 +0100
-Subject: [PATCH net 3/3] mptcp: pm: use _rcu variant under rcu_read_lock
+	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="UuGMq0mE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
+	t=1731439270; bh=HzTz+zkDjCfyc0Xw+jURVPdAEW/0cXyh7yElhXrCzl8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UuGMq0mEHzoELSMWvDoXVB5iqUxmh2n6eBqGYYlIZ/s2ZCbi2raAR29zEW3kPRe4X
+	 0+lsBNVgYi8ZiU0jJcMD8Y/FHzwoQiwGENpb5BxzY+CAO4H/TqeR/vhsZn+Om2m3vU
+	 Xgi90AEw4hGI+yU7rC8KxjdfUzg5stuU5wefwgvo+YPz/Hc9fp6I3GJ5UI/RvXWc5z
+	 jUeAcojvZzALF0JRxcf6eQ3pFR/Tf/IJN2HpyUZHM/d3IJzAOjKEQnNTg4o3yoPLJs
+	 SpMUe1JSJ2U9al3ii/1QFGk/xoeT2BAqkptkPRfKTzWB9wH2FI7LlQQiB7XEOtqeGJ
+	 vmvkMjn2zEe4SPbKifDA5yC6dVe3s4Pzfs+I4B40AC+Y05Jh6NodR9MiFmZ4FxXsK7
+	 PB3bMXLBabRmobTgcAo+3i4ev2InOF4SOcTkHBGiTB+D3WAljnRAs4K/mrIdxNnQaU
+	 GfANYXE5f2NIRYaGM5n8/tpnFoQTJtmSCsNvJdDAD+KBpfxGLbySDNrpx5Wukzi3zo
+	 aq5gT1RoeonAmv0EJnhbvW+5QCB8MH/An8wiU/ndlPcvd14Q+n2PZPC1ponpgJBatK
+	 lU5DgxihmfI0AXWFQx0+CEFffsQVzCKXuU55wn3/OSBBOKUd7f9LT7iqb8ecaiW9P7
+	 zmbhSDC6eZlcONmD4de66SSI=
+Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
+	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id 41A3C1683CF;
+	Tue, 12 Nov 2024 20:21:10 +0100 (CET)
+Message-ID: <d514ef1a-bf56-4949-91f1-c64e3f599922@ijzerbout.nl>
+Date: Tue, 12 Nov 2024 20:21:07 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-net-mptcp-misc-6-12-pm-v1-3-b835580cefa8@kernel.org>
-References: <20241112-net-mptcp-misc-6-12-pm-v1-0-b835580cefa8@kernel.org>
-In-Reply-To: <20241112-net-mptcp-misc-6-12-pm-v1-0-b835580cefa8@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Kishen Maloor <kishen.maloor@intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1565; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=g/gbsWd8fhwoyqT2FxBJClkryyLXaAzRPJ4kz1+rAQs=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnM6oVWI78RYZjhBSzAJ9i43Zzj6B5XBHtI+8u7
- jRX8SWKoV6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZzOqFQAKCRD2t4JPQmmg
- c/DTEACPJSoP9uUyllHdYQNBOBZ5L87YTE9Uw76HQCk3yT2kV6najF7R8gd4edofctVsmIZ09j1
- 7FGtDWFgvMAFZU/KWBA0zZcz4vgJuaIyDwdBCZn6tsLN4ivym3lc+Exwvwy0l3ffUyCkyiBNV+h
- bEhgT0GfR8i2qDi5k+jNSWWMZZX7dAqoWH0IM5mgwvS7kRdENi6YG4BN5oSzBw0ViqcAXdebCo5
- 7fuoZRFS8DY3w4dBDDj6QM3MWZOJNuUryhoCp96q5hNShz6yf5K1V0+DKZPbb8LWlCUWwxQ73wK
- VgIzJla0pCqqqO4VgKG/4TRgjAsboWlGWDbAhqvyu0FbgG/r9QD93FQUq+8GLv7pHcDovTnr5D/
- XD3KpeS1kw0xN3l2UGrC4ycaOiFuSJrebxYCjCfhUkNra5VkVoOlI/f33FlCStmZcNJz9HAGivC
- dktMkSY1uaktqbHzw1IeQIly6Joku7ZWCC6YShBwoE+LmBRNqsG1SmI9naJETFtG9DY7hRtyJwr
- yhDkGrS+HkmX0sz4T8IPVLmxnEmAZhYjdGNtnN1gy+qdy/fSeEKKAXlH6dkflIB0dJ2j8LhTpnN
- Bb6oXqhvpwpsSYUljx3BjobnamLs1vRfJ7D9KF2jCv0IVw+hJo22L2bFy16C3nWh6wqE2FjoG05
- DV18/19kehirnBg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] xfrm: Add support for per cpu xfrm state handling.
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: netdev@vger.kernel.org
+References: <f9eb1025-9a3d-42b3-a3e4-990a0fadbeaf@ijzerbout.nl>
+ <ZzM1/S72Qj0tBCC0@gauss3.secunet.de>
+Content-Language: en-US
+From: Kees Bakker <kees@ijzerbout.nl>
+In-Reply-To: <ZzM1/S72Qj0tBCC0@gauss3.secunet.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-In mptcp_pm_create_subflow_or_signal_addr(), rcu_read_(un)lock() are
-used as expected to iterate over the list of local addresses, but
-list_for_each_entry() was used instead of list_for_each_entry_rcu() in
-__lookup_addr(). It is important to use this variant which adds the
-required READ_ONCE() (and diagnostic checks if enabled).
-
-Because __lookup_addr() is also used in mptcp_pm_nl_set_flags() where it
-is called under the pernet->lock and not rcu_read_lock(), an extra
-condition is then passed to help the diagnostic checks making sure
-either the associated spin lock or the RCU lock is held.
-
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index db586a5b3866f66a24431d7f2cab566f89102885..45a2b5f05d38b0e7f334578f5ee6923a8ff8f7b2 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -524,7 +524,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
- {
- 	struct mptcp_pm_addr_entry *entry;
- 
--	list_for_each_entry(entry, &pernet->local_addr_list, list) {
-+	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list,
-+				lockdep_is_held(&pernet->lock)) {
- 		if (mptcp_addresses_equal(&entry->addr, info, entry->addr.port))
- 			return entry;
- 	}
-
--- 
-2.45.2
+Op 12-11-2024 om 12:03 schreef Steffen Klassert:
+> On Mon, Nov 11, 2024 at 09:42:02PM +0100, Kees Bakker wrote:
+>> Hi Steffen,
+>>
+>> Sorry for the direct email. Did you perhaps forgot a "goto out_cancel" here?
+> Yes, looks like that. Do you want to send a patch?
+I prefer that you create the patch.
+>
+>> diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+>> [...]
+>> @@ -2576,6 +2603,8 @@ static int build_aevent(struct sk_buff *skb, struct
+>> xfrm_state *x, const struct
+>>       err = xfrm_if_id_put(skb, x->if_id);
+>>       if (err)
+>>           goto out_cancel;
+>> +    if (x->pcpu_num != UINT_MAX)
+>> +        err = nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num);
+>>
+>>       if (x->dir) {
+>>           err = nla_put_u8(skb, XFRMA_SA_DIR, x->dir);
+>>
+>> -- 
+>> Kees Bakker
 
