@@ -1,159 +1,106 @@
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9192101A9;
-	Tue, 12 Nov 2024 17:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D22123F5;
+	Tue, 12 Nov 2024 17:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731432495; cv=none; b=HLlUFi5r3ShisdVObU3q9ftvQ6rS/Ny8/ZffwPkWSbSqG6Hyea0FmosAw0j8iQrgWlnwQQTXuabH5p6d1vz4uOZRQ+3A2rPVT+VnTlKb8zpkhTrcXErnj1TXyFfxnP8UklZxqsmb3XNT5xPeE5fGwwZCoec7ZzoO1RUNmCftyGs=
+	t=1731432503; cv=none; b=biH9dUbaxmZBTiyaIZriKJVDZMr1D81dtct303cuEETzBUrwqa0ltRlQIqRe75WgYbAiJIMMACho+9Imbh2FkZ/pcv+eTEBrDM2eP47KQ5HfP0tO48bXX7O3RQgtiQVzhKFO8rSrlEATq2nvZVp+tiw4Q8zQXvGu1mWxtREw1SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731432495; c=relaxed/simple;
-	bh=Yj+jvWwQRa4Ssk3kPK/9T3xPTVSRmlrCHJKydBYYUbY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SoaQK7hHfDNlRvQz/Y3uU1YWhMynKpc0doTHYdXpVBGXnXNsutlHXxJsVxgYPuNzEwtcFH3tdfZThFv1OwLDs/2zQcdup4WRS3jokUFwcb4gCLQwMQG9e6c64BlEttOJC8TLtkA394faX692Z1Ocf6Y/+TVjM5RQg4q1U1ZqVLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=VOt3XJDE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cOGec7Zy; arc=none smtp.client-ip=202.12.124.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="VOt3XJDE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cOGec7Zy"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 10B8E1D4038E;
-	Tue, 12 Nov 2024 12:28:11 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 12 Nov 2024 12:28:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1731432490; x=
-	1731436090; bh=o1+HpOSf0pvwVmkS/ACXVJ+8V0VJ7ttlb7CCUALgPvE=; b=V
-	Ot3XJDEArKHlYIVmRr4Y4zcYCCqjwYgntmJ2nRx8d0f9CVC0pyCdJYTk4ae/+a5Z
-	I6erhXpfx8EMQb3wkjW/GS9Fkyv1bfbPoOmNOmiTeONYHdGz2aOBvQox/lh3XU5v
-	N0eUeUcN4uZwfsTDw11//U6ro3FTnBydZh1in6S3gX6Qufm2cYqnpiCMPLik6pRA
-	2LS7qmGMGFy8rTkOFlkSBD3UHNBTriYKQGMbkyeK/N6qiFpD78ULmScSfE004GHJ
-	Rd3alaEhSW+JTvisGQVA4iyZghuROMGINVXilKm2jhq+W4APQSMzON+eKHq46b8E
-	/qBuO52BD2zeb6q7yd1mg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1731432490; x=1731436090; bh=o1+HpOSf0pvwVmkS/ACXVJ+8V0VJ7ttlb7C
-	CUALgPvE=; b=cOGec7ZyjaUKZBkwrESsGlT6Yye4kzTWbwXTY2SvbarAm67zpQe
-	KckOpLNZ17QtfP0gyhMp6PaqhQ8fCWO8c2oyCmCX7bL7RoOBy4I4TRZpV24eNPJs
-	YbuBYLQwDpJ+qFff4suWMaXIDCK1mU1wci27iBpWNWzYojeBxpXSMCbn9Ay5Oq7e
-	9eJMuWMA085icjFM0TW/wKpbUOuRkC5xU79UcjP6ebcOCSD3pydUwQMBPel/TTmb
-	Bu/m5i2Zbg8UL/D18RnI4gsLqIUjcXODTXAa9qTFIG31q29NiuEMO2ukqoWgFuOg
-	V5Efxr87YNUwHp0Y2OLsoK48R/StkVUgbow==
-X-ME-Sender: <xms:KpAzZ2_yHsAIOlPurRebXRyLTjJW0Fovqkx9gsrMNrc449nSOIij1g>
-    <xme:KpAzZ2sPR6MW3d_X_FIeqnbw0WRp2ZwZKOG7U6PKymllBF3XbtwNRjuEWg-fQyI4M
-    oBdE9eDQ5ZXHByuT24>
-X-ME-Received: <xmr:KpAzZ8AKIFXDKX8KwuF30QjWgNwLwgfokv80_jW7IJAEGzlfncplsSGMrSOt>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeggdeljecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecu
-    hfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrih
-    hlrdhnvghtqeenucggtffrrghtthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeeg
-    teehgeehieffgfeuvdeuffefgfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghr
-    tghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrhigriigrnh
-    hovhdrshdrrgesghhmrghilhdrtghomhdprhgtphhtthhopegrnhhtohhnihhosehophgv
-    nhhvphhnrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopeguohhnrghlugdrhhhunhhtvghrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepnhgvthguvghvse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:KpAzZ-d_MLZltDajcFgRoRSUIjTuBYqyarwY4qmPSGCY4JBWLtiMfg>
-    <xmx:KpAzZ7PDx5yTfmMaYQC5Qm1swClcRtROBABbjPcECUeZZdU2oSNkVQ>
-    <xmx:KpAzZ4nBy159I_Vk0QMNbGfTPcc_jcyAvh6Sc8HkpOLWSXQjmHj93Q>
-    <xmx:KpAzZ9sOjBdfu3LD-Twr8GTr3laKwVnZqmGR_kWvfq1gkkSbN_oFOw>
-    <xmx:KpAzZ0gj5_Mq0NtzaVjbNwVZTnh_65gyDVdTUmwvmtfIoh6nK4j1v2Rj>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Nov 2024 12:28:10 -0500 (EST)
-Date: Tue, 12 Nov 2024 18:28:08 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v11 08/23] ovpn: implement basic TX path (UDP)
-Message-ID: <ZzOQKPHjWsG9TNEU@hog>
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-8-de4698c73a25@openvpn.net>
- <85858c63-4dc5-468e-8335-6ac77f314e33@gmail.com>
+	s=arc-20240116; t=1731432503; c=relaxed/simple;
+	bh=kEmLs7AIl4KJJoNpvkYxbCc+VQHOTRK6HDlX8ATSTRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKAwfHSCeQGWhAKQvrrePqVqHhO8wXFq2YfjmCLzWy9OFhFfoEyojHrRCSci0vT4s0bMdO4NJaMyn7lHKQwrFRXurQx6C36/X5X2sgwqVKN4UhO1lgA49Rl2s+T7M3zOkDk43e2tQWs0uoQd9dkfGpNE5jAJ6vN40MugK5udZRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7240d93fffdso5044517b3a.2;
+        Tue, 12 Nov 2024 09:28:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731432500; x=1732037300;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xg9pGeBfbXErAt5ozvpbmhu71gFQk0MAcz2grEfEcLE=;
+        b=lWmFL5umhkvQKwjg6haVPhPFQ9GYPy/CZte9B5YbDUUQ+OfAF3pD63ENxrwVSDm6Rc
+         f9lEZTdwpjQpdx5NKlR5GO0FfnnaLD94IHz8FTA4oGK50FiYMRCmPQwe++Tbco5Hdzh2
+         ADSQpukt7kk4DEgX/OOCJbcIwZ2ShyOFF85x+1DV8aCV6qoIFdAGb/BNQ7h+gcGv5jl9
+         QEkmUULPgQMXhbRcz7fsBIQAKS9DoaM7vDCeBWLx7eJHUGGaUdjYckV8CV1NY4XLKW/B
+         41KQDbhlXoIudHf2DkoD548I3Nm7qavO3OCi2L2AE96dRsqSl0IQEUJMxltdJw2JVs8d
+         lx9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVKYrq9RW2BbwJGz4JroaQPgK9GJ81hOmhViO6VSNmITP1rezHstl5N/UhyHu5SKzeJKuNupnd81wk=@vger.kernel.org, AJvYcCVdA4eX5b4OoIUC7T0R/MoSvHdit3io51mWrVx0Vc0m3YgspGhWdohIxC2snq770KhIRGxmKJQBUQA9V7+b@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXys9b7p34FHH27tTanvdOeYodfXzIzMzECW9p2S4Ywv+M+S8g
+	gXQhRHfBnX63lJB/N/OtpIg/CPajqZ1YZ/u97DcE3j52L83yqTLiWgYy/lJc
+X-Google-Smtp-Source: AGHT+IFSunQvXfmcX8mlC7Ch0sFxtf0+GmtXz1ws6fo3/szgAe5Cr5U9YY5KZIzLSUIgq2jfj5+hkQ==
+X-Received: by 2002:a05:6a00:2e9c:b0:71e:8049:4730 with SMTP id d2e1a72fcca58-72413261790mr21385325b3a.3.1731432499524;
+        Tue, 12 Nov 2024 09:28:19 -0800 (PST)
+Received: from localhost.localdomain (124x33x176x97.ap124.ftth.ucom.ne.jp. [124.33.176.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407864f78sm11481439b3a.33.2024.11.12.09.28.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 09:28:19 -0800 (PST)
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+To: netdev@vger.kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	David Ahern <dsahern@gmail.com>,
+	linux-can@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: Robert Nawrath <mbro1689@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Subject: [PATCH iproute2-next v1 0/6] iplink_can: preparation before introduction of CAN XL
+Date: Wed, 13 Nov 2024 02:27:50 +0900
+Message-ID: <20241112172812.590665-8-mailhol.vincent@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <85858c63-4dc5-468e-8335-6ac77f314e33@gmail.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1611; i=mailhol.vincent@wanadoo.fr; h=from:subject; bh=kEmLs7AIl4KJJoNpvkYxbCc+VQHOTRK6HDlX8ATSTRI=; b=owGbwMvMwCV2McXO4Xp97WbG02pJDOnGE3SSn24SnyKnHjixe/sC/n0td2INNlQ5dV1QfzSvN a/aKbC3o5SFQYyLQVZMkWVZOSe3Qkehd9ihv5Ywc1iZQIYwcHEKwERSTjP8r/3fbZK6c8eqGt6L 73dOi/JcolVwR/VS02uXlxIlF7Zm/2Rk6FTb0fqWe+pe3+sm0plPvy6IT0+7yWublbaUU/3Cpem n2QA=
+X-Developer-Key: i=mailhol.vincent@wanadoo.fr; a=openpgp; fpr=ED8F700574E67F20E574E8E2AB5FEB886DBB99C2
+Content-Transfer-Encoding: 8bit
 
-2024-11-11, 00:32:51 +0200, Sergey Ryazanov wrote:
-> On 29.10.2024 12:47, Antonio Quartulli wrote:
-> > +static void ovpn_encrypt_post(struct sk_buff *skb, int ret)
-> > +{
-> > +	struct ovpn_peer *peer = ovpn_skb_cb(skb)->peer;
-> > +
-> > +	if (unlikely(ret < 0))
-> > +		goto err;
-> > +
-> > +	skb_mark_not_on_list(skb);
-> > +
-> > +	switch (peer->sock->sock->sk->sk_protocol) {
-> > +	case IPPROTO_UDP:
-> > +		ovpn_udp_send_skb(peer->ovpn, peer, skb);
-> > +		break;
-> > +	default:
-> > +		/* no transport configured yet */
-> > +		goto err;
-> > +	}
-> 
-> Did you consider calling protocol specific sending function indirectly?
-> E.g.:
-> 
->         peer->sock->send(peer, skb);
+An RFC was sent last weekend to kick-off the discussion of the
+introduction of CAN XL: [1] for the kernel side and [2] for the
+iproute2 interface. While the series received some positive feedback,
+it is far from completion. Some work is still needed to:
 
-In a case where
- - only 2 implementations exist
- - no other implementation is likely to be added in the future
- - both implementations are part of the same module
+  - adjust the nesting of the IFLA_CAN_XL_DATA_BITTIMING_CONST in the
+    netlink interface
 
-I don't think indirect calls are beneficial (especially after the
-meltdown/etc mitigations, see for example 4f24ed77dec9 ("udp: use
-indirect call wrappers for GRO socket lookup"), 0e219ae48c3b ("net:
-use indirect calls helpers for L3 handler hooks"), and many others
-similar patches).
+  - add the CAN XL PWM configuration
 
+and this TODO list may grow if more feedback is received.
 
-[...]
-> > +	ovpn_send(ovpn, skb_list.next, NULL);
-> > +
-> > +	return NETDEV_TX_OK;
-> > +
-> > +drop:
-> >   	skb_tx_error(skb);
-> > -	kfree_skb(skb);
-> > +	kfree_skb_list(skb);
-> >   	return NET_XMIT_DROP;
-> >   }
-> > diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-> > index d9788a0cc99b5839c466c35d1b2266cc6b95fb72..aff3e9e99b7d2dd2fa68484d9a396d43f75a6d0b 100644
-> > --- a/drivers/net/ovpn/peer.c
-> > +++ b/drivers/net/ovpn/peer.c
+Regardless of this, the RFC started with a set of trivial patches to
+do some clean-up and some renaming in preparation of the introduction
+of CAN XL.
 
-[very long chunk of Antonio's patch quoted without comments]
+This series just contains those preparation patches which were cherry
+picked from the RFC.
 
-Please trim your replies to only the necessary context.
+The goal is to have those merged first to remove some overhead from
+the netlink CAN XL main series before tacking care of the other
+comments.
+
+[1] [RFC] can: netlink: add CAN XL
+Link: https://lore.kernel.org/linux-can/20241110155902.72807-16-mailhol.vincent@wanadoo.fr/
+
+[2] [RFC] iplink_can: add CAN XL
+Link: https://lore.kernel.org/linux-can/20241110160406.73584-10-mailhol.vincent@wanadoo.fr/
+
+Vincent Mailhol (6):
+  iplink_can: remove unused FILE *f parameter in three functions
+  iplink_can: reduce the visibility of tdc in can_parse_opt()
+  iplink_can: remove newline at the end of invarg()'s messages
+  iplink_can: use invarg() instead of fprintf()
+  iplink_can: add struct can_tdc
+  iplink_can: rename dbt into fd_dbt in can_parse_opt()
+
+ ip/iplink_can.c | 107 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 56 insertions(+), 51 deletions(-)
 
 -- 
-Sabrina
+2.45.2
+
