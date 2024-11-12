@@ -1,111 +1,124 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7F1FEFA8;
-	Tue, 12 Nov 2024 15:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441402022CB
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731425994; cv=none; b=WWQkbWaWc1fjU3NvqUBhYJePTCWGppcqbRE/dnseAFnXslOX9KuhQTMFEwgNZwxEe+sc4CIC+zcIzHBHrunSN7ZPAmhEcxFXAaBck0AL8qPUYGdt35hAHkxeOWEv6VXdIIDc2DZWHa86qYAYqsrbDHnE5LUALHgTgNfTYZxnF4E=
+	t=1731425997; cv=none; b=NLkX9iwrbtGv2NwEhPksGACpNGUJMEbhOMuugr8xmvKzKu62e/dzm60xEkeHp2FycxrmM+/7rV+eaLtWMkYxFKdAiw9mSAwsFMFt1pGI0tzhAH2+rZLG3mGAuhbhKH3IZNw3x9eT17pmOUDq4iTakupAKZAnqiT/U43PY+RWmfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731425994; c=relaxed/simple;
-	bh=fvrNxzwDp2P3iPosrFRowJKvdfK7Cu3AryWdKt0N3Ls=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eiCp7cBwobU3vo5wU7Oz8Wk7qNMvBr63xuPwkwFsyC6GpfjFpFMBexEh696PyvIkbHydEzLqKyIhE+PpfByQPTPwmBcI2BIlM33k0fpxO/t3xH4pwGq9+SJ1+ZNOIvbvIlYF4NRowj3MtxIHnFrj4UjYcqEDG/3KRPODh+vyd6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n+25dFhC; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1731425997; c=relaxed/simple;
+	bh=9Jy0+1aVwHE0Ay2fyDM5dF9xZ6v9CPRpC7jsyy/euz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PaIu3i54mXckS6zkGO0DwUm4qJsXe2+eIpqLyVHMQyhemKGSjFfT5gw+OqBHdVM3xhQlPBme2cpudNfwRb1SD0tHvh33TPF4TgT4F6JQsfj5L4BMBTyxFuUQ3Uqw127t0gtAY4BYvcqgH6GOVVmV9NMXTnyZSuI5tnzDOn41udc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MtNGWWyX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n+25dFhC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=yC4PgO0iUg1E/9QX5QiVdbAl0FhMlHnWwAy+hx8zLyU=;
-	t=1731425993; x=1732635593; b=n+25dFhCEMsvZSJ+77KWS4+QeyK3HpzmWVj3lDZbVhXkBVK
-	iw9POVHy/1O36NwC8m1YrTkNw3NHwxlqSP4OnvNlw1HVcJrhFevAeT1Zzw0BH9QJCIARISV+Mpfc4
-	MXLu/wyejOcVmwSzslUW3HyOeo2xwD920oTB+yRrnbU3e8DALso3CO/h62kbtIoE19sMz88YsiMwu
-	GrMRaMlywOCenNPEtD8R76dNEr9QyRTPe4dsCq0HfLImkZgdwpwDnnl/5Z9GgdAwrhxuo9Z3EsHku
-	RzmrbxbfjTCFOtw5f059uYS4yw7gpTSYHLSMD6Epp+51Y+YKGO9IdivU7Wk7wpIQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tAszb-000000031hp-0UTN;
-	Tue, 12 Nov 2024 16:39:47 +0100
-Message-ID: <59b318b2d6719a009189e10949df35f855790d63.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 09/17] wifi: cc33xx: Add main.c
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Nemanov, Michael" <michael.nemanov@ti.com>, Kalle Valo
- <kvalo@kernel.org>,  "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Sabeeh Khan <sabeeh-khan@ti.com>
-Date: Tue, 12 Nov 2024 16:39:45 +0100
-In-Reply-To: <2dbf1cba-0b16-413b-947e-dacf32c85687@ti.com>
-References: <20241107125209.1736277-1-michael.nemanov@ti.com>
-	 <20241107125209.1736277-10-michael.nemanov@ti.com>
-	 <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
-	 <2dbf1cba-0b16-413b-947e-dacf32c85687@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MtNGWWyX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731425994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=COWxCBk/xn+lK69v98IsMcjt5CTY0uE+IGQAJjbnHp0=;
+	b=MtNGWWyX3cQLUtPOPz3iCqq5OmkBKhiAkkQ3HixLEqHEXGErifSKf10PjTm7CLuw2HUSeh
+	Dth3XX9+DBbEC7Upy13g/oGSeczQiPzpzELgCJIS4Q65c9lTcEDwWtrqTWei8QT84m3tNe
+	UspH0rebqRb5ZdX8e0IxS5fdrAE76c8=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-BLH5ZvVuMKyH4KDX32kVTg-1; Tue,
+ 12 Nov 2024 10:39:48 -0500
+X-MC-Unique: BLH5ZvVuMKyH4KDX32kVTg-1
+X-Mimecast-MFC-AGG-ID: BLH5ZvVuMKyH4KDX32kVTg
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 702141955F43;
+	Tue, 12 Nov 2024 15:39:47 +0000 (UTC)
+Received: from calimero.vinschen.de (unknown [10.39.193.40])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EE271955F3C;
+	Tue, 12 Nov 2024 15:39:47 +0000 (UTC)
+Received: by calimero.vinschen.de (Postfix, from userid 500)
+	id A9E71A806B7; Tue, 12 Nov 2024 16:39:44 +0100 (CET)
+Date: Tue, 12 Nov 2024 16:39:44 +0100
+From: Corinna Vinschen <vinschen@redhat.com>
+To: Christopher S M Hall <christopher.s.hall@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, david.zage@intel.com,
+	vinicius.gomes@intel.com, netdev@vger.kernel.org,
+	rodrigo.cadore@l-acoustics.com
+Subject: Re: [PATCH iwl-net v3 0/6] igc: Fix PTM timeout
+Message-ID: <ZzN2wIg6qE3_gAm4@calimero.vinschen.de>
+Mail-Followup-To: Christopher S M Hall <christopher.s.hall@intel.com>,
+	intel-wired-lan@lists.osuosl.org, david.zage@intel.com,
+	vinicius.gomes@intel.com, netdev@vger.kernel.org,
+	rodrigo.cadore@l-acoustics.com
+References: <20241106184722.17230-1-christopher.s.hall@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241106184722.17230-1-christopher.s.hall@intel.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Tue, 2024-11-12 at 17:34 +0200, Nemanov, Michael wrote:
->=20
-> > > +static int parse_control_message(struct cc33xx *cc,
-> > > +				 const u8 *buffer, size_t buffer_length)
-> > > +{
-> > > +	u8 *const end_of_payload =3D (u8 *const)buffer + buffer_length;
-> > > +	u8 *const start_of_payload =3D (u8 *const)buffer;
-> >=20
-> > I don't think the "u8 *const" is useful here, and the cast is awkward.
-> > If anything you'd want "const u8 *const" (which should make it not need
-> > the cast), but the const you have adds no value... do you even know wha=
-t
-> > it means? ;-)
-> >=20
->=20
-> My intent was to express that start and end pointers are fixed and will=
-=20
-> not change in the loop below. When reading this again I agree this hurts=
-=20
-> more than it helps, I'll drop it.
+Hi Chris,
 
-Well, I don't even mind the const so much rather than the cast, I'd
-probably not have commented on it if it were
+On Nov  6 18:47, Christopher S M Hall wrote:
+> There have been sporadic reports of PTM timeouts using i225/i226 devices
+> 
+> These timeouts have been root caused to:
+> 
+> 1) Manipulating the PTM status register while PTM is enabled and triggered
+> 2) The hardware retrying too quickly when an inappropriate response is
+>    received from the upstream device
+> 
+> The issue can be reproduced with the following:
+> 
+> $ sudo phc2sys -R 1000 -O 0 -i tsn0 -m
+> 
+> Note: 1000 Hz (-R 1000) is unrealistically large, but provides a way to
+> quickly reproduce the issue.
+> 
+> PHC2SYS exits with:
+> 
+> "ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
+>   fails
+> 
+> Additional problem description tested by:
+> Corinna Vinschen <vinschen@redhat.com>
+> 
+>   This patch also fixes a hang in igc_probe() when loading the igc
+>   driver in the kdump kernel on systems supporting PTM.
+> 
+>   The igc driver running in the base kernel enables PTM trigger in
+>   igc_probe().  Therefore the driver is always in PTM trigger mode,
+>   except in brief periods when manually triggering a PTM cycle.
+> 
+>   When a crash occurs, the NIC is reset while PTM trigger is enabled.
+>   Due to a hardware problem, the NIC is subsequently in a bad busmaster
+>   state and doesn't handle register reads/writes.  When running
+>   igc_probe() in the kdump kernel, the first register access to a NIC
+>   register hangs driver probing and ultimately breaks kdump.
+> 
+>   With this patch, igc has PTM trigger disabled most of the time,
+>   and the trigger is only enabled for very brief (10 - 100 us) periods
+>   when manually triggering a PTM cycle.  Chances that a crash occurs
+>   during a PTM trigger are not zero, but extremly reduced.
 
-	const u8 *const end_of_payload =3D buffer + buffer_length;
-	const u8 *const start_of_payload =3D buffer;
+The patchset looks good to me, but I don't see that this description
+will make it into the commit message of patch 1.  Was that intended?
 
-I'd still think the second const (for the variable) isn't all that
-useful, but really the lack of first const (for the object pointed to)
-makes the casts necessary and (IMHO) that's what hurts.
+Other than that...
 
-> const u8 *buffer in the prototype illustrates that parse_control_message=
-=20
-> will not change the data so I'll keep it if there a re no objections.
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
 
-Sure.
 
-> > > +	struct NAB_header *nab_header;
-> >=20
-> > surely checkpatch complained about CamelCase or so with the struct name
-> > like that?
-> >=20
->=20
-> Double-checked, no warnings from checkpatch:
+Thanks,
+Corinna
 
-Hah, ok :) I'm surprised because it complained about _Generic in my
-patch, and that's something you really can't even change since it's C11
-standard ...
-
-johannes
