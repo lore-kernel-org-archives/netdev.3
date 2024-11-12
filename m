@@ -1,68 +1,69 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9074620E015;
-	Tue, 12 Nov 2024 09:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364620E329;
+	Tue, 12 Nov 2024 09:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731404122; cv=none; b=WPvQm+q8qwRI8eozvz7HgMS/C/aS0s9qqFloCdumSwgYQ5n5gOUuKNs6KLeO2aSa6W5vON2JrQ+0ZJwPgtVsEIfcKRVCBx5m1CmKLtBMxktRluy8SgnQReeT2YjuL89PRi1cUeOEdh7G1a59J75uHHNWn4B4t3ReyekDPtAddQA=
+	t=1731404123; cv=none; b=t1OUDmLp48snFMq3ukgW44oV37qxhoXr5NC2ViwoqkGG0x/KpyeRX4Fs0ah6+pTV57kazY5/k8pzrB5QctOIWKwApAJq0WEX7aZ7Vbz08nDbgttL43Wok2ETDo/VT5gEgFGaSBt14gLulwhFmutixAZSdCne7Gz3Oxs3fB6il7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731404122; c=relaxed/simple;
-	bh=Ulfos9jKmMp9FRRzcWaNP9pRqcDXWjbtCIFpVe+BjzM=;
+	s=arc-20240116; t=1731404123; c=relaxed/simple;
+	bh=vGPlqcSPU1Ljbo6MVJlNin87hJ6NVZcYBJCBN5t2cvw=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=hyw1hNQnYceJ5ZkdA5ot1EKTUcTDUeb92P9ihiFv+5nyuNReb+FCN0AtoA2G68hjShiaZA9zeGgNzW5lifGA/04pdnBSarI4Dyw6Cyvaf6nwNcw/7XuNQ1o7Q3QIoMX4XhqXx+gbVkAwTsBSpRxtq5wWE0vxn1i4G+NMYOm5qrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZTbm41fY; arc=none smtp.client-ip=209.85.167.54
+	 MIME-Version:Content-Type; b=RBemWSUJgAebJy5fNygTCXvOXaL3Nr/T6EK43bosGithike9B2X/lxSmDcimRm5fjJO9YS+y3LQ7UJ0XY8yehhIKz1kTqpRFSqPa5uq69j0grhqZR4Gl7qGgc4YAjUruUdAU3vHrVkix71Kjf6O3Mr7phGJbU4veJaGNiWKsWwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IOLYUtt9; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZTbm41fY"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539f1292a9bso6639130e87.2;
-        Tue, 12 Nov 2024 01:35:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IOLYUtt9"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e7e73740so5040563e87.3;
+        Tue, 12 Nov 2024 01:35:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731404118; x=1732008918; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731404120; x=1732008920; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/2dA/CSJ1mXRX1iIfc9wkyf+fvE+0vTa/19Nc9jWmsE=;
-        b=ZTbm41fY3Pmam8B76DmvYzU3cM+OWaoDi3t8FpZEzqCjUkJwtQuU/iFB7Z0RKQMJSR
-         RzfWGBVXmHYvt/jqXtU1ZdASeFztqDIB5dBXUgDYznGiGX/BJ3ytyHTfKDvdFxyUdN6i
-         gq2aL9gOxUmzK9d5LAzUEa/mVrOiJveLjgaS2u/Ahs4fQb2l2LQ5a8Pxe1VgS4y2B4Xg
-         v6/nFfBud0UvsVjX7MNiHtqu4Z1rIHq/TC7fbTl/RLNctwEzQhlCB4zrwoBKC7EFM+dc
-         BkCnfxawOgR4fb5VL7mfYbrTc/GK2/Gj1X9X8n+yGiVPZmoAIYd2/fqA4RvDbVxcKegd
-         ogCQ==
+        bh=ze8znBzx95/1mVbeSUuR2PwFDl3INI4uOBO4YGJc4h8=;
+        b=IOLYUtt9cU1RWbP2zeeAoBSgMn/9lSE/Ieb0HFKSmHxFd6z8ald4PWY2SA+t15CPuM
+         VcCv4roT9JCwvkyPl+8yShwLU6bdb3c/VeyfN0RaHlkBqkCjgHJdo5z0wKHWNza778Z3
+         2+oQl2kSjtOAzvKqNeVp2xpVNnJsaYNo3WDGCeNJbs/H6SW6l+0UIN8i7xuCpl2QcEoM
+         VszYbBFNN9ifQdI5RvaOrOOC4XpjusDrwpBKUF45/B90k+x3S9vn9W9AJjtnKVLG2y5U
+         ezitR/xJcGzW01RrsqDf4cpRHHaFMiRq2w9ygqVZSGTTDmLsPVMxyR2GlEb+7Hp4Wqvq
+         nb/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731404118; x=1732008918;
+        d=1e100.net; s=20230601; t=1731404120; x=1732008920;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/2dA/CSJ1mXRX1iIfc9wkyf+fvE+0vTa/19Nc9jWmsE=;
-        b=dgsF0ofNAAyAV6u/W5dq3Z+KedpKo7EfyHAn0zT80PU+w8nlv9GWTww2/7NrMiibO9
-         qKq0DAKmNe1VWb5kpwKxXQymQ1tCxUOg3i7ZlevXlX2/NWoIeLE6hAnN3rF/JTNBE/eK
-         0ySUP3nevtcnQBU4ySP14zICWA7bUFlh7sB/jI+qdGtzVlDkO1bmdmDMvtTH+opKJ36O
-         KBH4CyCTXrVBUDaFyZOUR/PF7IbVUbM4QaAku0+fKCIMoLL0Si03yWuDAD9N5Ru95/Hv
-         LOTzIDO+BpwiPStsw1Y4eVvyJ22zhZScnJx01vqmlkpVzpzDqhfdYgnXVode/LoRuAWL
-         huDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9nmffQ0hnN3RiZrTYEbi7UgeLJwllrf7Mx732oCYMul3zfwWA8+1wfHc7C8d/KsDLol534FpoRAAOpUo=@vger.kernel.org, AJvYcCWy7w9OP5oXfbKu/7lWHKTudiLEKj7k/tfnwouhPF6mqW+9oK3R1Vwqqlxi/Gozq/LxMFBDQ9p/@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXCGBsh1jtVwIkp53DpBe3kp9JB1Lv/kRMhMjlKWtx2knsz4TM
-	gUSuAXpQ3YsL0FQ14eZhn9sO6uDFf74jUgyW+bOGf4l0FIoZgw41vLKbug==
-X-Google-Smtp-Source: AGHT+IFIhvdsWxGDaHpDPZFOhDaxNLymcA5oHrHaD/i0n7/b4Fl+3DYEGfak+N0uLU404q5aq+Dp0Q==
-X-Received: by 2002:a05:6512:2389:b0:539:ebb6:7b36 with SMTP id 2adb3069b0e04-53d862c587dmr7358493e87.25.1731404117991;
-        Tue, 12 Nov 2024 01:35:17 -0800 (PST)
+        bh=ze8znBzx95/1mVbeSUuR2PwFDl3INI4uOBO4YGJc4h8=;
+        b=o9YOC4lnd2fy6bYrWpzzecihw/V14upXy8FZeYnvIJKOqkCI06wZb1sZnG6VX7xTsm
+         2wrsrJy0RZbx6NVAtYcjz7j5vSs6O/wTew2HLhimWye+TW8lee2Se05ftkhV0oZ3cQJD
+         5KO5B99PJaZ1m4mO/H+Pc/7h7lgNZsHj9EcA/s/cLOb7HQ1E3xq7GZj9UVmxF+nTVIyu
+         c2llw6z+AVy//lAF9z95W/EhdAJ+LVwmOQSG+LW9qbUghApOUtLxqz/dL7W1R+adsDw1
+         Cf+zCJdX1kDvjnpSqQ0iqcLiXrfm2AxMK6apB5xn939PQ03+L1Bt8k0SYdZ6EJWy/oY3
+         PhPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWT41xB+9N9iBHmLnLWooHarm2OlEksFBzHum+f8t0Eui1P5DsZ69sJM0xDTSWcChU6rfYXzOFD@vger.kernel.org, AJvYcCWpu2W8BEvj02xpuJ8C6VZEqS8reeMK9gFWUcm2PlHT4ytlXaE+sW83uNn5qAhwKeD8UWc7R5hqxBRZarI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5YA0BHrJhyF/G/BPmkn/ZCNRZ62504cL8OjVbIYkjwI3xQGlq
+	KvIVYQvo37+w0Q1h6tUj9yvLdoB6k00J66gQKkyRv4ce87GWg/7eZ/QS5g==
+X-Google-Smtp-Source: AGHT+IEEwipBRRYM44kkvqb98L+jAuiJoiwiqXDsJ0QQclEcwHZVZq2c6ZQMj2haKU6x12FIyFifGA==
+X-Received: by 2002:a05:6512:39ca:b0:53c:6999:1782 with SMTP id 2adb3069b0e04-53d9a42e0demr915826e87.37.1731404119558;
+        Tue, 12 Nov 2024 01:35:19 -0800 (PST)
 Received: from imac ([2a02:8010:60a0:0:a1ef:92f5:9114:b131])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05c18e0sm206352035e9.28.2024.11.12.01.35.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa737721sm243242925e9.36.2024.11.12.01.35.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 01:35:17 -0800 (PST)
+        Tue, 12 Nov 2024 01:35:19 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Jan Stancek <jstancek@redhat.com>
 Cc: kuba@kernel.org,  pabeni@redhat.com,  davem@davemloft.net,
   edumazet@google.com,  horms@kernel.org,  netdev@vger.kernel.org,
   linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] tools: ynl: add script dir to sys.path
-In-Reply-To: <b26537cdb6e1b24435b50b2ef81d71f31c630bc1.1731399562.git.jstancek@redhat.com>
-	(Jan Stancek's message of "Tue, 12 Nov 2024 09:21:32 +0100")
-Date: Tue, 12 Nov 2024 09:34:54 +0000
-Message-ID: <m2serwu75t.fsf@gmail.com>
+Subject: Re: [PATCH v2 2/2] tools: ynl: extend CFLAGS to keep options from
+ environment
+In-Reply-To: <265b2d5d3a6d4721a161219f081058ed47dc846a.1731399562.git.jstancek@redhat.com>
+	(Jan Stancek's message of "Tue, 12 Nov 2024 09:21:33 +0100")
+Date: Tue, 12 Nov 2024 09:35:07 +0000
+Message-ID: <m2o72ku75g.fsf@gmail.com>
 References: <cover.1731399562.git.jstancek@redhat.com>
-	<b26537cdb6e1b24435b50b2ef81d71f31c630bc1.1731399562.git.jstancek@redhat.com>
+	<265b2d5d3a6d4721a161219f081058ed47dc846a.1731399562.git.jstancek@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -74,11 +75,18 @@ Content-Type: text/plain
 
 Jan Stancek <jstancek@redhat.com> writes:
 
-> Python options like PYTHONSAFEPATH or -P [1] do not add script
-> directory to PYTHONPATH. ynl depends on this path to build and run.
+> Package build environments like Fedora rpmbuild introduced hardening
+> options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
+> and LDFLAGS.
 >
-> [1] This option is default for Fedora rpmbuild since introduction of
->     https://fedoraproject.org/wiki/Changes/PythonSafePath
+> ynl Makefiles currently override CFLAGS but not LDFLAGS, which leads
+> to a mismatch and build failure:
+>         CC sample devlink
+>   /usr/bin/ld: devlink.o: relocation R_X86_64_32 against symbol `ynl_devlink_family' can not be used when making a PIE object; recompile with -fPIE
+>   /usr/bin/ld: failed to set dynamic section sizes: bad value
+>   collect2: error: ld returned 1 exit status
+>
+> Extend CFLAGS to support hardening options set by build environment.
 >
 > Signed-off-by: Jan Stancek <jstancek@redhat.com>
 > Acked-by: Jakub Kicinski <kuba@kernel.org>
