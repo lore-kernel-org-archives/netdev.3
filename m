@@ -1,277 +1,82 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC480202624
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D08201261
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731425999; cv=none; b=CT9iFh3WjaJdsNHZ1BYGM4aIecS6/p/tEw+HiOkscf8sz9dxAxTDbN2pOT8ZQrb4+1ESqMxrjaD/s/FfBfss99CRs34IZTPY3Z6r5ER9lKYJLLQfV3zpleyvY1lp8nm/4j3IJxXTnUYUpP54Be/I5njhNc2uK1AY0MrDZb5ERdE=
+	t=1731426048; cv=none; b=fPKtBnkfFrvJrUyEirsh3pKCTD3WNmO8YAuwI2MPX4bO5ZHBknR9auzrBpoDXTXgFDpwfJ1gou5BcioQWmNrZxZEcS5ES+IOaqW5pbmG2CAOMNSwkouLOSByBOO7MKtdo+OyBN02yPELm7BUNsup1h81cMMQnLnkZFBBseQv00g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731425999; c=relaxed/simple;
-	bh=lSn9tZqbXXMm4ytAopoRf2rbmRp9OS2LoZx9rzlMOSE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hUq0Jvz0eN5iqB/mhl0orh8DLujoRmEyy8X65MoeFM3DrPvSibd6NwjqshzlAz7ZxuU2QH7l5CuLCzZn+JsxHV8k0RzxSeX3YKS+ZTDSLciAyVyLSyAYCxaIUJbRzkTdoluDCnbM7a8bXLWNpWd8kIa+vUPkbx/3GIg7cxTiaUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=LNDR2sPw; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1731426048; c=relaxed/simple;
+	bh=L0dpDiJMmjdlYAOKDC9wZA7FJpWTTw9cN5/dys5aQAM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=efIn/rcZGuJ66vJwT8Gk0/Ss7W/Qy//ZHcr4V8rX5xUcPXPZrf5PsMRoq01Dn/ullDv3/Hli5ipae0UvTuf4WoTdrH1rUMJN730G1NJPiv6pZK/HfSq03LP4yAZdGF/NtlOd65jZggPt+fQnrmsRczcnQOTaeIR9yqkOR5U06po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usFj0Rco; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="LNDR2sPw"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9a4031f69fso953426066b.0
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 07:39:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1731425996; x=1732030796; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tkqstsrPp4KySdsvdodgkejaPTUdxNGqUhtM7D3Jo5A=;
-        b=LNDR2sPwvCuVp+/9rgigDnzZ9RLW+z9jU4Pr/pOVGRL89BPe0cSL7SqkEX5lqp4Ije
-         gsExYuYoI7UR5ftGdc+jemBt7MB44wGRF8wV5kQx1mTv4SUXDa650BN1tnjUH/xQ5/sB
-         +afpsnhU6eRBjwp5J9jA8pzVJqVFDKypQSV7xFQt2eBdGDVoGHHLhsaFJx5xEh3Pn30U
-         LRlqbjQwER0VgsqGDcNnyAwVD5w5H+K3vzrGFw+XRCiMYbjX9igMBTm3BDQK2Wdd4MuM
-         4lONrY9wgEkzikkYKuBZGtWzxUg+IWydNrtHc/dRtTM5rp5t12Aoy/yQCzKGDHhKQJuj
-         Rx7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731425996; x=1732030796;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tkqstsrPp4KySdsvdodgkejaPTUdxNGqUhtM7D3Jo5A=;
-        b=mmpDSqIXptuV1RO2Y4bIAITsP8xeZedtusTC2tqjBOiOKfg+m7dmEbrbp08Acz9hGV
-         34IZ8EwIUSKnY+eXnc17K9BOizMFh1sAO6UhOp7q42ArIB3954vDigydpK4EB9mHTn1W
-         SGvuq6BepTwDpQVan57r06IAuqlX79EoBaXWzaaIh73Gqy8Mi6cbS8YC6dnIJBF/1Ew/
-         YWu5MAnvKH0ZPQhteNsWKYohHOMSHcJglOwxiBODfu1SfDxQkFmCXrPgmCuRNCnk6WkT
-         IhDSeanfTVMuPT7cTmjnKGeHnKLQIQ2vNoob/TLQzoTQwc19M7qdoxJXdXUc80B01WYy
-         +1pA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrrA5vSVHxHcQjQfJrA9RCsCQBmt8uHsLsDo3ItNbXMEQR4qs2uSMEzmhb4xUXLVMkRFRVtYw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLWdCY9CgULLw5UOiLsl5PefYJYF9zhR8nOQdQy1G0DtZAWxF2
-	8qEkSRutEpY12RWkY16LdxZS9gS913w03FBPJWAGEM1gv2gAQjRmeX6N5OWI4DQ=
-X-Google-Smtp-Source: AGHT+IHevdpcDT+9UCMSKbtTe0SiY9drSWARd9dhjS8G5D91gUBoqMjSSVFPcqZZ7ncLNNwGkLrisQ==
-X-Received: by 2002:a17:906:f597:b0:a9a:13dd:2734 with SMTP id a640c23a62f3a-a9eeff44839mr1773883266b.36.1731425996131;
-        Tue, 12 Nov 2024 07:39:56 -0800 (PST)
-Received: from ?IPV6:2001:67c:2fbc:1:e829:c484:5241:93b2? ([2001:67c:2fbc:1:e829:c484:5241:93b2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a4a988sm728455166b.59.2024.11.12.07.39.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 07:39:55 -0800 (PST)
-Message-ID: <8ed53007-cc7c-4747-a690-f27915f2be8d@openvpn.net>
-Date: Tue, 12 Nov 2024 16:40:19 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usFj0Rco"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AFFC4CECD;
+	Tue, 12 Nov 2024 15:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731426048;
+	bh=L0dpDiJMmjdlYAOKDC9wZA7FJpWTTw9cN5/dys5aQAM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=usFj0RcoEtTJbxf1XytUTrwzSFNq7aHN41N+HYkipJFNEOATDmH6RVeStyv0AyOHi
+	 S399BYfxGK1C80zI0XoeQfvetYlNgPO9n9EkhnFqPaBY4ph1E0tv8Xqk8sIyZ2KccN
+	 NN+z6LJqqSMimuHAuNvLcPJZhcp8NGkjj1FxQSfupUcsKaUKGqlNO/IbA4nbXVs5sj
+	 pTWaKgLHetBCoS78XwbNq6KsDMgoQ6lHYDw+E4C59h0AXAWZzp7xaGOUCGT/qSG5fh
+	 eO19wkLWB4qFJWDlxfOn/U07H1bYmtX1EkND9pXXUvRKmJOjr/hV9N+0p1UXbigrr3
+	 C8HjVwAcaaLfw==
+Date: Tue, 12 Nov 2024 07:40:47 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Xu <dxu@dxuuu.xyz>
+Cc: ecree.xilinx@gmail.com, jdamato@fastly.com, davem@davemloft.net,
+ mkubecek@suse.cz, martin.lau@linux.dev, netdev@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH ethtool-next v2] rxclass: Make output for RSS context
+ action explicit
+Message-ID: <20241112074047.44490c6e@kernel.org>
+In-Reply-To: <978e1192c07e970b8944c2a729ae42bf97667a53.1731107871.git.dxu@dxuuu.xyz>
+References: <978e1192c07e970b8944c2a729ae42bf97667a53.1731107871.git.dxu@dxuuu.xyz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 19/23] ovpn: implement key add/get/del/swap
- via netlink
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
- Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-19-de4698c73a25@openvpn.net> <ZynwjJNz6kLa4p7x@hog>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <ZynwjJNz6kLa4p7x@hog>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 05/11/2024 11:16, Sabrina Dubroca wrote:
-> 2024-10-29, 11:47:32 +0100, Antonio Quartulli wrote:
->> This change introduces the netlink commands needed to add, get, delete
->> and swap keys for a specific peer.
->>
->> Userspace is expected to use these commands to create, inspect (non
->> sensible data only), destroy and rotate session keys for a specific
-> 
-> nit: s/sensible/sensitive/
-> 
->> +int ovpn_crypto_config_get(struct ovpn_crypto_state *cs,
->> +			   enum ovpn_key_slot slot,
->> +			   struct ovpn_key_config *keyconf)
->> +{
-> [...]
->> +
->> +	rcu_read_lock();
->> +	ks = rcu_dereference(cs->slots[idx]);
->> +	if (!ks || (ks && !ovpn_crypto_key_slot_hold(ks))) {
->> +		rcu_read_unlock();
->> +		return -ENOENT;
->> +	}
->> +	rcu_read_unlock();
-> 
-> You could stay under rcu_read_lock a little bit longer and avoid
-> taking a reference just to release it immediately.
+On Mon, 11 Nov 2024 12:05:38 -0700 Daniel Xu wrote:
+> -	if (fsp->flow_type & FLOW_RSS)
+> -		fprintf(stdout, "\tRSS Context ID: %u\n", rss_context);
+> -
+>  	if (fsp->ring_cookie == RX_CLS_FLOW_DISC) {
+>  		fprintf(stdout, "\tAction: Drop\n");
+>  	} else if (fsp->ring_cookie == RX_CLS_FLOW_WAKE) {
+>  		fprintf(stdout, "\tAction: Wake-on-LAN\n");
+> +	} else if (fsp->flow_type & FLOW_RSS) {
+> +		u64 queue = ethtool_get_flow_spec_ring(fsp->ring_cookie);
+> +
+> +		fprintf(stdout, "\tAction: Direct to RSS context id %u", rss_context);
 
-ACK.
+Do you have strong feelings about the change in formatting?
+Looking at Ed's comment on the new test made me wonder if the change 
+in capitalization is for the better.
 
-> 
->> +	keyconf->cipher_alg = ovpn_aead_crypto_alg(ks);
->> +	keyconf->key_id = ks->key_id;
->> +
->> +	ovpn_crypto_key_slot_put(ks);
->> +
->> +	return 0;
->> +}
-> 
-> 
-> [...]
->>   int ovpn_nl_key_get_doit(struct sk_buff *skb, struct genl_info *info)
->>   {
-> [...]
->> +	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_KEYCONF], attrs,
->> +			      OVPN_A_KEYCONF_PEER_ID))
->> +		return -EINVAL;
->> +
->> +	peer_id = nla_get_u32(attrs[OVPN_A_KEYCONF_PEER_ID]);
->> +
->> +	peer = ovpn_peer_get_by_id(ovpn, peer_id);
->> +	if (!peer) {
->> +		NL_SET_ERR_MSG_FMT_MOD(info->extack,
->> +				       "cannot find peer with id %u", 0);
-> 
->                                                                         peer_id?
-> 
->> +		return -ENOENT;
->> +	}
->> +
->> +	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_KEYCONF], attrs,
->> +			      OVPN_A_KEYCONF_SLOT))
->> +		return -EINVAL;
-> 
-> Move this check before ovpn_peer_get_by_id? We're leaking a reference
-> on the peer.
+Action: Direct to RSS context id 1 (queue base offset: 2)
 
-ACK
+vs
 
-> 
-> 
->> +
->> +	slot = nla_get_u32(attrs[OVPN_A_KEYCONF_SLOT]);
->> +
->> +	ret = ovpn_crypto_config_get(&peer->crypto, slot, &keyconf);
->> +	if (ret < 0) {
->> +		NL_SET_ERR_MSG_FMT_MOD(info->extack,
->> +				       "cannot extract key from slot %u for peer %u",
->> +				       slot, peer_id);
->> +		goto err;
->> +	}
->> +
->> +	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
->> +	if (!msg) {
->> +		ret = -ENOMEM;
->> +		goto err;
->> +	}
->> +
->> +	ret = ovpn_nl_send_key(msg, info, peer->id, slot, &keyconf,
->> +			       info->snd_portid, info->snd_seq, 0);
-> 
-> info->snd_portid and info->snd_seq can be extracted from info directly
-> in ovpn_nl_send_key since there's no other caller, and flags=0 can be
-> skipped as well.
+Action: Direct to RSS Context ID: 1 (queue base offset: 2)
 
-I tried to keep the signature similar to send_peer, but indeed they can 
-both be simplified.
+Given "id" is a word (: I like the ID format, the extra colon is
+annoying but OTOH if we retain it your regexp in the other patch
+would match before and after..
 
-> 
->> +	if (ret < 0) {
->> +		nlmsg_free(msg);
->> +		goto err;
->> +	}
->> +
->> +	ret = genlmsg_reply(msg, info);
->> +err:
->> +	ovpn_peer_put(peer);
->> +	return ret;
->>   }
-> 
-> 
-> 
-> [...]
->>   int ovpn_nl_key_del_doit(struct sk_buff *skb, struct genl_info *info)
->>   {
->> -	return -EOPNOTSUPP;
->> +	struct nlattr *attrs[OVPN_A_KEYCONF_MAX + 1];
->> +	struct ovpn_struct *ovpn = info->user_ptr[0];
->> +	enum ovpn_key_slot slot;
->> +	struct ovpn_peer *peer;
->> +	u32 peer_id;
->> +	int ret;
->> +
->> +	if (GENL_REQ_ATTR_CHECK(info, OVPN_A_KEYCONF))
->> +		return -EINVAL;
->> +
->> +	ret = nla_parse_nested(attrs, OVPN_A_KEYCONF_MAX,
->> +			       info->attrs[OVPN_A_KEYCONF],
->> +			       ovpn_keyconf_nl_policy, info->extack);
->> +	if (ret)
->> +		return ret;
->> +
->> +	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_KEYCONF], attrs,
->> +			      OVPN_A_KEYCONF_PEER_ID))
->> +		return -EINVAL;
->> +
->> +	if (ret)
->> +		return ret;
-> 
-> leftover?
+Actually the best formatting IMHO would be to skip the ID altogether:
 
-very likely.
+Action: Direct to RSS Context 1 (queue base offset: 2)
 
-Thanks a lot
-
-Regards,
-
-> 
-> 
->> +	if (NL_REQ_ATTR_CHECK(info->extack, info->attrs[OVPN_A_KEYCONF], attrs,
->> +			      OVPN_A_KEYCONF_SLOT))
->> +		return -EINVAL;
-> 
-
--- 
-Antonio Quartulli
-OpenVPN Inc.
-
+So please respin this, either set the ID to upper case or skip it.
+And depending on the decision here respin the test (feel free to
+repost before 24h passes, if you do).
