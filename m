@@ -1,46 +1,46 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95EF1A256C;
-	Tue, 12 Nov 2024 10:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4FC20A5FE;
+	Tue, 12 Nov 2024 10:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406360; cv=none; b=mPqrdB5FTpwuPf00iNM5ydtA9gFmWnaJuLBNMk+hNziA+awoE0ZZke8uVLXIvbXDkmFj+SFvgUqur9vUBRcHJ2ACS39+AfCxoXgo/S6Ur5OTU2WvDWvxcrGoH5kwpv0rowDiV5AM/eAktGFaXKV7j5rP1jmzS3yyhrhwpazK3kU=
+	t=1731406606; cv=none; b=A8dp/A2X7Y2Tt9IIkFWxXRUqhvhbN6zwxXpHWllP/yt6TrrQMCvbD0un4sr68yZuzezTPyEBOpKQCa+DNIp2mpUPezaMuZfUcCCk8FqdxdLZgodPyEALccou7JNHsNOxfuDjZVEug5l/P35zKvBFMq8TYtFmjaHmjC41m/q0+5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406360; c=relaxed/simple;
-	bh=10Vohnv0zoyoiQfJYw14Zr7DLSul2HBIMs87Qfknm0g=;
+	s=arc-20240116; t=1731406606; c=relaxed/simple;
+	bh=C/BP9FVcPJ1uezwVLOwwlYDX1qvfG5XzghUAvz0KXaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fOW11d+oPUzcpnabDtyZrS4OVVUDj4bPWjjlIOK1GHaOjKdJpKhdBUkPGcvsitS5kqW0QJM0Oi+PCRC90I8BlSnwaGdiIApmNvc98Pw3e7YOKyVb9YHX0xax/PzG34Nh8O5jkcQEVhB7TmzLQ9dIyCe7+a0iel9UG6R5er49zWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=HjlcHIwc; arc=none smtp.client-ip=217.70.183.196
+	 MIME-Version:Content-Type; b=ZC1ULCLCFNg1y8CsGsmNZM2FHZxyaIvJYPaL77pncYLnt7y1jfXAJ4wzyOdAqFfi4KxVA7tjDBVwGFlgetVPNtIQEwtzVVnd9mZnP7iUZ2HWp7mnjwlka9kydu/S8A2h4w2Z0W/+m5QGIO4iBEX7ihcgpzNi/skKp+iQXGJ+YGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=l+BejFZe; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="HjlcHIwc"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2BB89E0008;
-	Tue, 12 Nov 2024 10:12:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="l+BejFZe"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F15A3E0005;
+	Tue, 12 Nov 2024 10:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731406356;
+	t=1731406601;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BfZKRXZxR++lyRy1azbMldOQBrgpbj6acG83Qn22+g4=;
-	b=HjlcHIwcSXIt5eP+c7DKoz7xXiQIL5UUSMNhPCw2ksAJBF/yqWMqI9Q97zAQl1cZz/HD+V
-	lOcqojQQdH7J4OL+eBF7XCZcUPt5VZzX0gp9XAV11+8drcphQo2rM4/hF4M3Yl69VrJaTw
-	RFGNjndrOA4a0CxBcVnQxvDAa/w2gryISher10lChmLvuu/qDkCvR2uaq0TzKDOPv++YbQ
-	0zyj1Cp/TweI5jCJlvc3D6QQYFrWHkoAyLibTJujri2mJ/0Fm31jHCynHN8WnSUrDDhO6w
-	dfuwGkjQg+mLAr3+I5NQiukXWPgDkI8a0YJPWT1SbBNIoPbJ9V7ZitprBIQ/dQ==
-Date: Tue, 12 Nov 2024 11:12:32 +0100
+	bh=QWhd/u5s3s71+O5VjXaZ+pcPf116rHmE/Ep6H484160=;
+	b=l+BejFZeIVc+7HYLOrj+Xc2sUzOC4LJBDtFiRfKihLiEmtGfjJ76JuT/rcBynIU3hOTOKM
+	Qvo5UuWQHIxgFMukSzazjyuv+kXC81xRTN8r+kbvY8hyIB3Jls/AWgmyt3KP1bVOMCKv7O
+	3tYkS+RRckNrhGSIXi7xBxv2za58F3LsJYNXuOO2q8VU4vR6E7V6ejWHJXafbJ8EjBXmIQ
+	wAWHltNP6B/umXy4uzlGmIdlQ3RuNUDwfK9P64sANy0E4xk9ZBotIB6S0a+vPcQujYmyAD
+	JncZbpa7CGss0Jic41O+Wo2E0Y9tJoZBk+JHnqDbFHrnudi6FL5e+GzXWldj6w==
+Date: Tue, 12 Nov 2024 11:16:39 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Broadcom internal
  kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
  <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
  <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Richard
- Cochran <richardcochran@gmail.com>, Radu Pirea
- <radu-nicolae.pirea@oss.nxp.com>, Jay Vosburgh <j.vosburgh@gmail.com>, Andy
- Gospodarek <andy@greyhouse.net>, Nicolas Ferre
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Radu
+ Pirea <radu-nicolae.pirea@oss.nxp.com>, Jay Vosburgh
+ <j.vosburgh@gmail.com>, Andy Gospodarek <andy@greyhouse.net>, Nicolas Ferre
  <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Jonathan Corbet
  <corbet@lwn.net>, Horatiu Vultur <horatiu.vultur@microchip.com>,
@@ -52,15 +52,14 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Broadcom internal
  linux-doc@vger.kernel.org, Maxime Chevallier
  <maxime.chevallier@bootlin.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
  Willem de Bruijn <willemb@google.com>, Shannon Nelson
- <shannon.nelson@amd.com>, Alexandra Winter <wintera@linux.ibm.com>, Jacob
- Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net-next v19 03/10] ptp: Add phc source and helpers to
- register specific PTP clock or get information
-Message-ID: <20241112111232.1637f814@kmaincent-XPS-13-7390>
-In-Reply-To: <20241111150609.2b0425f6@kernel.org>
+ <shannon.nelson@amd.com>, Alexandra Winter <wintera@linux.ibm.com>
+Subject: Re: [PATCH net-next v19 09/10] net: ethtool: Add support for
+ tsconfig command to get/set hwtstamp config
+Message-ID: <20241112111639.5261b3cf@kmaincent-XPS-13-7390>
+In-Reply-To: <955dde4b-b4ba-439f-b7d4-f64d90c58d55@linux.dev>
 References: <20241030-feature_ptp_netnext-v19-0-94f8aadc9d5c@bootlin.com>
-	<20241030-feature_ptp_netnext-v19-3-94f8aadc9d5c@bootlin.com>
-	<20241111150609.2b0425f6@kernel.org>
+	<20241030-feature_ptp_netnext-v19-9-94f8aadc9d5c@bootlin.com>
+	<955dde4b-b4ba-439f-b7d4-f64d90c58d55@linux.dev>
 Organization: bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -73,81 +72,63 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-GND-Sasl: kory.maincent@bootlin.com
 
-On Mon, 11 Nov 2024 15:06:09 -0800
-Jakub Kicinski <kuba@kernel.org> wrote:
+On Sat, 9 Nov 2024 01:43:30 +0000
+Vadim Fedorenko <vadim.fedorenko@linux.dev> wrote:
 
-> On Wed, 30 Oct 2024 14:54:45 +0100 Kory Maincent wrote:
-> > @@ -41,6 +43,11 @@ struct ptp_clock {
-> >  	struct ptp_clock_info *info;
-> >  	dev_t devid;
-> >  	int index; /* index into clocks.map */
-> > +	enum hwtstamp_source phc_source;
-> > +	union { /* Pointer of the phc_source device */
-> > +		struct net_device *netdev;
-> > +		struct phy_device *phydev;
-> > +	}; =20
->=20
-> Storing the info about the "user" (netdev, phydev) in the "provider"
-> (PHC) feels too much like a layering violation. Why do you need this?
-
-The things is that, the way to manage the phc depends on the "user".
-ndo_hwtstamp_set for netdev and phy_hwtstamp_set for phydev.
-https://elixir.bootlin.com/linux/v6.11.6/source/net/core/dev_ioctl.c#L323
-
-Before PHC was managed by the driver "user" so there was no need for this
-information as the core only gives the task to the single "user". This didn=
-'t
-really works when there is more than one user possible on the net topology.
-
-> In general I can't shake the feeling that we're trying to configure=20
-> the "default" PHC for a narrow use case, while the goal should be=20
-> to let the user pick the PHC per socket.
-
-Indeed PHC per socket would be neat but it would need a lot more work and I=
- am
-even not sure how it should be done. Maybe with a new cmsg structure contai=
-ning
-the information of the PHC provider?
-In any case the new ETHTOOL UAPI is ready to support multiple PHC at the sa=
-me
-time when it will be supported.
-This patch series is something in the middle, being able to enable all the =
-PHC
-on a net topology but only one at a time.
-
-> > +/**
-> > + * netdev_ptp_clock_register() - Register a PTP hardware clock driver =
-for
-> > + *				 a net device
-> > + *
-> > + * @info: Structure describing the new clock.
-> > + * @dev:  Pointer of the net device. =20
->=20
-> > +/**
-> > + * ptp_clock_from_netdev() - Does the PTP clock comes from netdev
-> > + *
-> > + * @ptp:  The clock obtained from net/phy_ptp_clock_register().
-> > + *
-> > + * Return: True if the PTP clock comes from netdev, false otherwise. =
-=20
->=20
-> > +/**
-> > + * ptp_clock_netdev() - Obtain the net_device reference of PTP clock =
-=20
->=20
-> nit: pick one way to spell netdev ?
-
-Yup indeed.
-=20
-> > +	ret =3D ptp_clock_get(dev, ptp);
+> > +	ret =3D net_hwtstamp_validate(&hwtst_config);
 > > +	if (ret)
-> > +		return ERR_PTR(ret); =20
+> > +		goto err_clock_put;
+> > +
+> > +	if (mod) {
+> > +		struct kernel_hwtstamp_config zero_config =3D {0};
+> > +		struct hwtstamp_provider *__hwtstamp;
+> > +
+> > +		/* Disable current time stamping if we try to enable
+> > +		 * another one
+> > +		 */
+> > +		ret =3D dev_set_hwtstamp_phylib(dev, &zero_config,
+> > info->extack); =20
+> 	=09
+> _hwtst_config is still inited to 0 here, maybe it can be used to avoid
+> another stack allocation?
+
+You are right, thanks!
+
 >=20
-> why do you take references on the ptp device?
+> > +		if (ret < 0)
+> > +			goto err_clock_put;
+> > +
+> > +		/* Change the selected hwtstamp source */
+> > +		__hwtstamp =3D rcu_replace_pointer_rtnl(dev->hwtstamp,
+> > hwtstamp);
+> > +		if (__hwtstamp)
+> > +			call_rcu(&__hwtstamp->rcu_head,
+> > +				 remove_hwtstamp_provider);
+> > +	} else {
+> > +		/* Get current hwtstamp config if we are not changing the
+> > +		 * hwtstamp source
+> > +		 */
+> > +		ret =3D dev_get_hwtstamp_phylib(dev, &_hwtst_config); =20
+>=20
+> This may be tricky whithout ifr set properly. But it should force
+> drivers to be converted.
 
-Because we only select one PHC at a time on the net topology.
-We need to avoid the selected PTP pointer being freed.
+It is the point, it even return not supported error if ndo_hwtstamp_set/get=
+ are
+not defined.
+=20
+> > +		if (ret < 0 && ret !=3D -EOPNOTSUPP)
+> > +			goto err_clock_put;
+> > +	}
+> > +
+> > +	if (memcmp(&hwtst_config, &_hwtst_config, sizeof(hwtst_config))) {
+> > =20
+>=20
+> better to use kernel_hwtstamp_config_changed() helper here
 
+Oh yes, thanks for pointing it out.
+
+Regards,
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
