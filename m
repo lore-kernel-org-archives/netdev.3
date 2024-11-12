@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F9E204933;
-	Tue, 12 Nov 2024 01:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582D204F69;
+	Tue, 12 Nov 2024 01:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731373224; cv=none; b=DiCfknQW1qp6tX6+gY4SkSQ5jguWy2/Ick6iQsrb75Rk0hyuuGQLWpmvkU8nDdhFAA8VvjTZgFOaWne0rM4HL8PeSN3NCqcd7HjDKlxifH57OTLHhL8RKG8UlXiasTsyXhnXBzLV8XRgan0fPgzPjAozPpikIoEfESAZjbDtN+M=
+	t=1731373226; cv=none; b=fKHYBtNr47vf7jfozdruyr4ONvnqSm7FVjslxK4UH+U1dOli/tzzQMMvViZBJWdF3ouy0PM27JoCnDN4LeI6DNUkkLj6GEVvOAZ4GpxzaxPZz5ajiIYBrPOERlPf0fX/URnCuJSKspp6FCVSTF+KElEP4giFl9ezlBSCpLpXTW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731373224; c=relaxed/simple;
-	bh=f6WJXrTRDikhQIj250Wnzzvx7X2r/wsegb+H7jPT+kI=;
+	s=arc-20240116; t=1731373226; c=relaxed/simple;
+	bh=XDi78O8LiEB1ZSRs5hsMzJJBiHT6fO/M3EM+IrAkdKM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OYD6mIivpk8dlC9VHOVrw2L9YibwrUi48LoK7oNEy/zPMfmwKBRG3k8oClg2qT64AIzKmoMiqAsf9lYkBDxDCQ3WDJ51q91SXIx6VMeiFu/MVpov3Ac05hGvTWKF99hO+VFy33TFOwrLuyxAsxHHFp0BOx/sYeKY3b8V11oMlBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6/rJx87; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cGX2BqCn8vccfvHIGZo1Mya5BMoFUxfcQTKk7l0DUknltjJAq1skzmDjyF+l6557EM8tLO7z11fzdi3nP2MUDuzfMw6Ns7LsMhc4yJbfvA1ZLZ0gv9lZpBPkip8DqzEfaPC8DT5Wxa6IsQgJo0W8aE5uXZ9Krkj8aOD4Xmlr0dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pf6cRdZm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6/rJx87"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2983BC4CECF;
-	Tue, 12 Nov 2024 01:00:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pf6cRdZm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6362DC4CED5;
+	Tue, 12 Nov 2024 01:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731373224;
-	bh=f6WJXrTRDikhQIj250Wnzzvx7X2r/wsegb+H7jPT+kI=;
+	s=k20201202; t=1731373225;
+	bh=XDi78O8LiEB1ZSRs5hsMzJJBiHT6fO/M3EM+IrAkdKM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=h6/rJx871zpDPJ/Ca+zhF31lB5gWaSHsaGBByy/qf9lBzMVz/FA54LKkzkyQaJzAA
-	 /WVvk2D3IVfWM3SxynRcoJE76y/cmj05JlJOKdSb4g6aJVKJTyF6kx7jUFrSXmJ6Xj
-	 f2Sn7mBMusNAIx5bkndiAOcbe0ppwU2FA+NN/AHisv+0FcTeM3XdFSPcY7TCwb/QWD
-	 6SrlUl/zhqqW8lrliuzaaDNeW/9s95UQHj2CeB7oakRaDVUx5kh42Zpaql3QWJ0GO0
-	 C9LaOGiNlkgzDumvtaaNjrPy6rUTojDbeUGuCGzG2Xq8+n3bDL+VNpM6HAIsmLEAvK
-	 sLKRGur/fWJgw==
+	b=pf6cRdZmhk9zhPBxud3yJwYkNUQD5R7YP0y4CyHGnfmcy7jsQPs/x9Biz8QUR4edj
+	 +vgdYqYn34aBeH/TSUQtgJpsGAaZRlC1BPZSJKu/E+hUt7n1bL6gQCPGsFuSdyAM1W
+	 sQpJ925a5xD7WqRlGvwx3SyUAZ9t4gzueOBK5+E+JbhlS1A9Z9RSwvPOAmq1z47RSn
+	 6TtJdKgqdBzX9Xu83EAdcz+f3gLdBGUEWeBenjWS6LIailVivLn6n/zYUjHUmL4Otp
+	 0388Lxt5tKhoYkjwk0hBZp0NuBQDb8SBONkbSCatVub36YgP7TYVTvg4uaG+SgrqvQ
+	 NryKJGaXBXZAA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 713313809A80;
-	Tue, 12 Nov 2024 01:00:35 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE983809A80;
+	Tue, 12 Nov 2024 01:00:36 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,55 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/4] Introduce VLAN support in HSR
+Subject: Re: [PATCH net-next v2] net: phy: aquantia: Add mdix config and reporting
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173137323399.33228.10298561607881644376.git-patchwork-notify@kernel.org>
-Date: Tue, 12 Nov 2024 01:00:33 +0000
-References: <20241106091710.3308519-1-danishanwar@ti.com>
-In-Reply-To: <20241106091710.3308519-1-danishanwar@ti.com>
-To: MD Danish Anwar <danishanwar@ti.com>
-Cc: geliang@kernel.org, liuhangbin@gmail.com, jiri@resnulli.us,
- w-kwok2@ti.com, aleksander.lobakin@intel.com, lukma@denx.de,
- jan.kiszka@siemens.com, diogo.ivo@siemens.com, shuah@kernel.org,
- horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com, vigneshr@ti.com,
- rogerq@kernel.org
+ <173137323550.33228.294651309025242322.git-patchwork-notify@kernel.org>
+Date: Tue, 12 Nov 2024 01:00:35 +0000
+References: <20241106222057.3965379-1-paul.davey@alliedtelesis.co.nz>
+In-Reply-To: <20241106222057.3965379-1-paul.davey@alliedtelesis.co.nz>
+To: Paul Davey <paul.davey@alliedtelesis.co.nz>
+Cc: andrew@lunn.ch, daniel@makrotopia.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 6 Nov 2024 14:47:06 +0530 you wrote:
-> This series adds VLAN support to HSR framework.
-> This series also adds VLAN support to HSR mode of ICSSG Ethernet driver.
+On Thu,  7 Nov 2024 11:20:57 +1300 you wrote:
+> Add support for configuring MDI-X state of PHY.
+> Add reporting of resolved MDI-X state in status information.
 > 
-> Changes from v2 to v3:
-> *) Modified hsr_ndo_vlan_rx_add_vid() to handle arbitrary HSR_PT_SLAVE_A,
-> HSR_PT_SLAVE_B order and skip INTERLINK port in patch 2/4 as suggested by
-> Paolo Abeni <pabeni@redhat.com>
-> *) Removed handling of HSR_PT_MASTER in hsr_ndo_vlan_rx_kill_vid() as MASTER
-> and INTERLINK port will be ignored anyway in the default switch case as
-> suggested by Paolo Abeni <pabeni@redhat.com>
-> *) Modified the selftest in patch 4/4 to use vlan by default. The test will
-> check the exposed feature `vlan-challenged` and if vlan is not supported, skip
-> the vlan test as suggested by Paolo Abeni <pabeni@redhat.com>. Test logs can be
-> found at [1]
+> Tested on AQR113C.
+> 
+> Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/4] net: hsr: Add VLAN support
-    https://git.kernel.org/netdev/net-next/c/d977d7eb09fe
-  - [net-next,v3,2/4] net: hsr: Add VLAN CTAG filter support
-    https://git.kernel.org/netdev/net-next/c/1a8a63a5305e
-  - [net-next,v3,3/4] net: ti: icssg-prueth: Add VLAN support for HSR mode
-    https://git.kernel.org/netdev/net-next/c/e6bf1f7aea4d
-  - [net-next,v3,4/4] selftests: hsr: Add test for VLAN
-    https://git.kernel.org/netdev/net-next/c/75e3f12fa51b
+  - [net-next,v2] net: phy: aquantia: Add mdix config and reporting
+    https://git.kernel.org/netdev/net-next/c/bc3d60bd4c91
 
 You are awesome, thank you!
 -- 
