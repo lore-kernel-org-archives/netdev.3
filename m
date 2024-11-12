@@ -1,198 +1,201 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D1314F114;
-	Tue, 12 Nov 2024 13:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1BE170A16;
+	Tue, 12 Nov 2024 13:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731418675; cv=none; b=Nz8BKocLIRLH8vF/k5MHIXUisEJuVpwfwi8wYlg5/KSgNMCJqJTPeEds6lBs2/qUz/8XA9nsZIeD1p/humc1zsrReeuWR5tYFt+rGEBY+Pe45xVgRW20wTpgXHdM0L+53RDA5UQB9v002AdsfXuUN6IuVWaGDATjLR4S5uKjiog=
+	t=1731418679; cv=none; b=FFfRVIHY9eRSeJLYB6NUFF+M1dNzKrKCkLcfQDfiLE1t4X+yls7rFt7edXAk4H3LWwkyWwd6XfpZ4MtxBPlNUZczT2wpC01Ra3GxlIzKFo3gm8gyyAEfAi7Wk/D88dtav2+9BUImNr36IZtYJGWLh+x+5eRYuG8vvRkfvqUDGRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731418675; c=relaxed/simple;
-	bh=M22kBCoViF2oiFHSYv/LdDbplNtw0xPr17RcYl8I/8M=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UcoLfo4R9UULv9yWoIIs8StzjHFttCSDt7gukD/Y9YwsrTqC/Muw0/nLEBavJPuhi01uVFetFefLTkEE5Ut0LgXTbUD7/1bceAUlDSusHJQ4R+gHD4njVnKErVuiiUd87WP9/egJbtgndId7g0mJl5KupmyF8E2rd4EjU1I+whM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=t/dj9K9d; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="t/dj9K9d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731418675; x=1762954675;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version;
-  bh=M22kBCoViF2oiFHSYv/LdDbplNtw0xPr17RcYl8I/8M=;
-  b=t/dj9K9dNxzCypomC5jzcot1WXgHJjgtYM0vsnxvnlaU5x4UikIXdDcT
-   OIuW9vras6bWwLXIUOpoH7heja6lN5Q0crhlNezQsc3UQJpX3J/bGIoUV
-   bebqEMuzPQ5aiqYhY+dVEFG0K606DSjnp93aw3lLTr36lpCtCm7O74F2U
-   2X7YG7IWzjjc6NhWqf2f6MLnwgPukPA70Vd2KlfDnkqZAWTFYXqGx+AJx
-   5pU5hUc8aPVBbU2CErXl4PX5NrNzCYvhfNxqCJwIzHFrZnZxyP+GFI53I
-   7aPk9Kd1BcKxvk0ZVx60XQGihfuB+UNyJeCt9PogC7IWA266q82fOH3Jl
-   A==;
-X-CSE-ConnectionGUID: Z+lqW6AuToqQiDfZr0WV1g==
-X-CSE-MsgGUID: kASvUUYyTz21D5rDXtDTBA==
-X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; 
-   d="scan'208";a="34197677"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Nov 2024 06:37:47 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Nov 2024 06:37:31 -0700
-Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Tue, 12 Nov 2024 06:37:27 -0700
-From: Divya Koppera <divya.koppera@microchip.com>
-To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
-	<vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v3 5/5] net: phy: microchip_t1 : Add initialization of ptp for lan887x
-Date: Tue, 12 Nov 2024 19:07:24 +0530
-Message-ID: <20241112133724.16057-6-divya.koppera@microchip.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20241112133724.16057-1-divya.koppera@microchip.com>
-References: <20241112133724.16057-1-divya.koppera@microchip.com>
+	s=arc-20240116; t=1731418679; c=relaxed/simple;
+	bh=TSyPJiUvgWDien+nBNbzWulNav57EULL9d5qPuadKYU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K+kERgDa0JkmM5LdKAVvplrzZdOGmnmXjskQIJjOjv8FKY9ykJTVdVJrk8iITUNKbmiJYSCXoW2SIPGPhaELo64q+yNkVD/aRbF67fY6HJHR5oV6YqlDMOt0Je0DiU60qVmgFotHJOxgfnMQK+yv6aK4ICEotE18MScjCWC1kZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XnnRW2TLYz28fR2;
+	Tue, 12 Nov 2024 21:33:11 +0800 (CST)
+Received: from kwepemg200003.china.huawei.com (unknown [7.202.181.30])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1958C14011D;
+	Tue, 12 Nov 2024 21:37:54 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by kwepemg200003.china.huawei.com
+ (7.202.181.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 12 Nov
+ 2024 21:37:52 +0800
+From: Liu Jian <liujian56@huawei.com>
+To: <chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+	<okorniev@redhat.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+	<trondmy@kernel.org>, <anna@kernel.org>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <ebiederm@xmission.com>, <kuniyu@amazon.com>,
+	<liujian56@huawei.com>
+CC: <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH net v4] sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+Date: Tue, 12 Nov 2024 21:54:34 +0800
+Message-ID: <20241112135434.803890-1-liujian56@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemg200003.china.huawei.com (7.202.181.30)
 
-Add initialization of ptp for lan887x.
+BUG: KASAN: slab-use-after-free in tcp_write_timer_handler+0x156/0x3e0
+Read of size 1 at addr ffff888111f322cd by task swapper/0/0
 
-Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc4-dirty #7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x68/0xa0
+ print_address_description.constprop.0+0x2c/0x3d0
+ print_report+0xb4/0x270
+ kasan_report+0xbd/0xf0
+ tcp_write_timer_handler+0x156/0x3e0
+ tcp_write_timer+0x66/0x170
+ call_timer_fn+0xfb/0x1d0
+ __run_timers+0x3f8/0x480
+ run_timer_softirq+0x9b/0x100
+ handle_softirqs+0x153/0x390
+ __irq_exit_rcu+0x103/0x120
+ irq_exit_rcu+0xe/0x20
+ sysvec_apic_timer_interrupt+0x76/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90
+ 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 f8 25 00 fb f4 <fa> c3 cc cc cc
+ cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffffffffa2007e28 EFLAGS: 00000242
+RAX: 00000000000f3b31 RBX: 1ffffffff4400fc7 RCX: ffffffffa09c3196
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff9f00590f
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed102360835d
+R10: ffff88811b041aeb R11: 0000000000000001 R12: 0000000000000000
+R13: ffffffffa202d7c0 R14: 0000000000000000 R15: 00000000000147d0
+ default_idle_call+0x6b/0xa0
+ cpuidle_idle_call+0x1af/0x1f0
+ do_idle+0xbc/0x130
+ cpu_startup_entry+0x33/0x40
+ rest_init+0x11f/0x210
+ start_kernel+0x39a/0x420
+ x86_64_start_reservations+0x18/0x30
+ x86_64_start_kernel+0x97/0xa0
+ common_startup_64+0x13e/0x141
+ </TASK>
+
+Allocated by task 595:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_slab_alloc+0x87/0x90
+ kmem_cache_alloc_noprof+0x12b/0x3f0
+ copy_net_ns+0x94/0x380
+ create_new_namespaces+0x24c/0x500
+ unshare_nsproxy_namespaces+0x75/0xf0
+ ksys_unshare+0x24e/0x4f0
+ __x64_sys_unshare+0x1f/0x30
+ do_syscall_64+0x70/0x180
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 100:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x54/0x70
+ kmem_cache_free+0x156/0x5d0
+ cleanup_net+0x5d3/0x670
+ process_one_work+0x776/0xa90
+ worker_thread+0x2e2/0x560
+ kthread+0x1a8/0x1f0
+ ret_from_fork+0x34/0x60
+ ret_from_fork_asm+0x1a/0x30
+
+Reproduction script:
+
+mkdir -p /mnt/nfsshare
+mkdir -p /mnt/nfs/netns_1
+mkfs.ext4 /dev/sdb
+mount /dev/sdb /mnt/nfsshare
+systemctl restart nfs-server
+chmod 777 /mnt/nfsshare
+exportfs -i -o rw,no_root_squash *:/mnt/nfsshare
+
+ip netns add netns_1
+ip link add name veth_1_peer type veth peer veth_1
+ifconfig veth_1_peer 11.11.0.254 up
+ip link set veth_1 netns netns_1
+ip netns exec netns_1 ifconfig veth_1 11.11.0.1
+
+ip netns exec netns_1 /root/iptables -A OUTPUT -d 11.11.0.254 -p tcp \
+	--tcp-flags FIN FIN  -j DROP
+
+(note: In my environment, a DESTROY_CLIENTID operation is always sent
+ immediately, breaking the nfs tcp connection.)
+ip netns exec netns_1 timeout -s 9 300 mount -t nfs -o proto=tcp,vers=4.1 \
+	11.11.0.254:/mnt/nfsshare /mnt/nfs/netns_1
+
+ip netns del netns_1
+
+The reason here is that the tcp socket in netns_1 (nfs side) has been
+shutdown and closed (done in xs_destroy), but the FIN message (with ack)
+is discarded, and the nfsd side keeps sending retransmission messages.
+As a result, when the tcp sock in netns_1 processes the received message,
+it sends the message (FIN message) in the sending queue, and the tcp timer
+is re-established. When the network namespace is deleted, the net structure
+accessed by tcp's timer handler function causes problems.
+
+To fix this problem, let's hold netns refcnt for the tcp kernel socket as
+done in other modules. This is an ugly hack which can easily be backported
+to earlier kernels. A proper fix which cleans up the interfaces will
+follow, but may not be so easy to backport.
+
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
 ---
-v2 -> v3
-- No changes
+v3->v4: Add the commit message suggested by NeilBrown.
+ net/sunrpc/svcsock.c  | 4 ++++
+ net/sunrpc/xprtsock.c | 7 +++++++
+ 2 files changed, 11 insertions(+)
 
-v1 -> v2
-Fixed below review comment
-  Added ptp support only if interrupts are supported as interrupts are mandatory
-  for ptp.
----
- drivers/net/phy/microchip_t1.c | 40 +++++++++++++++++++++++++++++++---
- 1 file changed, 37 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 71d6050b2833..63206ae8075d 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -10,11 +10,15 @@
- #include <linux/ethtool.h>
- #include <linux/ethtool_netlink.h>
- #include <linux/bitfield.h>
-+#include "microchip_ptp.h"
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 6f272013fd9b..d4330aaadc23 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1551,6 +1551,10 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+ 	newlen = error;
  
- #define PHY_ID_LAN87XX				0x0007c150
- #define PHY_ID_LAN937X				0x0007c180
- #define PHY_ID_LAN887X				0x0007c1f0
+ 	if (protocol == IPPROTO_TCP) {
++		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
++		sock->sk->sk_net_refcnt = 1;
++		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
++		sock_inuse_add(net, 1);
+ 		if ((error = kernel_listen(sock, 64)) < 0)
+ 			goto bummer;
+ 	}
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index d2f31b59457b..906a1b563aee 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1942,6 +1942,13 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
+ 		goto out;
+ 	}
  
-+#define MCHP_PTP_LTC_BASE_ADDR			0xe000
-+#define MCHP_PTP_PORT_BASE_ADDR			(MCHP_PTP_LTC_BASE_ADDR + 0x800)
-+
- /* External Register Control Register */
- #define LAN87XX_EXT_REG_CTL                     (0x14)
- #define LAN87XX_EXT_REG_CTL_RD_CTL              (0x1000)
-@@ -229,6 +233,7 @@
- 
- #define LAN887X_INT_STS				0xf000
- #define LAN887X_INT_MSK				0xf001
-+#define LAN887X_INT_MSK_P1588_MOD_INT_MSK	BIT(3)
- #define LAN887X_INT_MSK_T1_PHY_INT_MSK		BIT(2)
- #define LAN887X_INT_MSK_LINK_UP_MSK		BIT(1)
- #define LAN887X_INT_MSK_LINK_DOWN_MSK		BIT(0)
-@@ -319,6 +324,8 @@ struct lan887x_regwr_map {
- 
- struct lan887x_priv {
- 	u64 stats[ARRAY_SIZE(lan887x_hw_stats)];
-+	struct mchp_ptp_clock *clock;
-+	bool init_done;
- };
- 
- static int lan937x_dsp_workaround(struct phy_device *phydev, u16 ereg, u8 bank)
-@@ -1269,8 +1276,19 @@ static int lan887x_get_features(struct phy_device *phydev)
- 
- static int lan887x_phy_init(struct phy_device *phydev)
- {
-+	struct lan887x_priv *priv = phydev->priv;
- 	int ret;
- 
-+	if (!priv->init_done && phy_interrupt_is_valid(phydev)) {
-+		priv->clock = mchp_ptp_probe(phydev, MDIO_MMD_VEND1,
-+					     MCHP_PTP_LTC_BASE_ADDR,
-+					     MCHP_PTP_PORT_BASE_ADDR);
-+		if (IS_ERR(priv->clock))
-+			return PTR_ERR(priv->clock);
-+
-+		priv->init_done = true;
++	if (protocol == IPPROTO_TCP) {
++		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
++		sock->sk->sk_net_refcnt = 1;
++		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
++		sock_inuse_add(xprt->xprt_net, 1);
 +	}
 +
- 	/* Clear loopback */
- 	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
- 				 LAN887X_MIS_CFG_REG2,
-@@ -1470,6 +1488,7 @@ static int lan887x_probe(struct phy_device *phydev)
- 	if (!priv)
- 		return -ENOMEM;
- 
-+	priv->init_done = false;
- 	phydev->priv = priv;
- 
- 	return lan887x_phy_setup(phydev);
-@@ -1518,6 +1537,7 @@ static void lan887x_get_strings(struct phy_device *phydev, u8 *data)
- 
- static int lan887x_config_intr(struct phy_device *phydev)
- {
-+	struct lan887x_priv *priv = phydev->priv;
- 	int rc;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-@@ -1537,12 +1557,23 @@ static int lan887x_config_intr(struct phy_device *phydev)
- 
- 		rc = phy_read_mmd(phydev, MDIO_MMD_VEND1, LAN887X_INT_STS);
- 	}
-+	if (rc < 0)
-+		return rc;
- 
--	return rc < 0 ? rc : 0;
-+	if (phy_is_default_hwtstamp(phydev)) {
-+		return mchp_config_ptp_intr(priv->clock, LAN887X_INT_MSK,
-+					    LAN887X_INT_MSK_P1588_MOD_INT_MSK,
-+					    (phydev->interrupts ==
-+					     PHY_INTERRUPT_ENABLED));
-+	}
-+
-+	return 0;
- }
- 
- static irqreturn_t lan887x_handle_interrupt(struct phy_device *phydev)
- {
-+	struct lan887x_priv *priv = phydev->priv;
-+	int rc = IRQ_NONE;
- 	int irq_status;
- 
- 	irq_status = phy_read_mmd(phydev, MDIO_MMD_VEND1, LAN887X_INT_STS);
-@@ -1553,10 +1584,13 @@ static irqreturn_t lan887x_handle_interrupt(struct phy_device *phydev)
- 
- 	if (irq_status & LAN887X_MX_CHIP_TOP_LINK_MSK) {
- 		phy_trigger_machine(phydev);
--		return IRQ_HANDLED;
-+		rc = IRQ_HANDLED;
- 	}
- 
--	return IRQ_NONE;
-+	if (irq_status & LAN887X_INT_MSK_P1588_MOD_INT_MSK)
-+		rc = mchp_ptp_handle_interrupt(priv->clock);
-+
-+	return rc;
- }
- 
- static int lan887x_cd_reset(struct phy_device *phydev,
+ 	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
+ 	if (IS_ERR(filp))
+ 		return ERR_CAST(filp);
 -- 
-2.17.1
+2.34.1
 
