@@ -1,74 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8784A0C
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 00:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD954409;
+	Tue, 12 Nov 2024 00:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731370222; cv=none; b=oINvJOClAUyeRl+Fzgw0mLIkDJpdtM93Fqkl80HCaokugqaO9ZSfl+tlgWerKFAZw49mmpofZ2b2q4L9WUxhZK1iQegtvF7EHPehjtebmWx39QMxxfHsXRbTxm3umOfvuRNrKgCUdgiGLYSv9FuGVKM7x32MDN0MSXelj4kKZ+E=
+	t=1731370327; cv=none; b=ilHE1VyUbD0dtdMSVCJzLAouV2veYmRKzqG/XuH/H9G1VDjOkpTKX0N6xmMlRTn4NaZFb4phbfMl0U2lSkinnYpnY3Q2F1kynR2Z/PfqPP8aXsiEkq22d7ECL/MCK4JfwmP91a8RHby+14eql1jTP8K9IaB/bahl+k4PGNW5zPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731370222; c=relaxed/simple;
-	bh=PS9jL9dwJGkLa8IjRtRFd8sIQX3uCbX3fx5I+wxyVio=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jjld1EqP2/QEU301eyGQrA1MuqMLM6tQXHD9cYHJLCT0AWMXoL64u8RdzNXjCHSzeHhexPvKYJvS+fIshk14cyXtNuSTuumQIynuwcHHW/t5CHxAyABuMK0Sc3QPIe/yazAvRC4F0BjiS+qH1whp753PdXkcM0mq33LmfP+s81g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1jvEKcK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731370327; c=relaxed/simple;
+	bh=F6KtVDx7kefgsDbbvSvre0SI4ek2HJre6EpkN5nZLpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O1OQkdDdsZ8a2XjqEkj3dpe+WC9a5T2/bMe9sEhjRLo2Yqv5REDVRUzhThcUZRHGfwv5DQ/3I3Fysi19wyREP4pf0U9PX+wtAkxIJgN6vUJdk16Obfv9UrviFxEJ8yN9olzelEaSY0NH0PMFnVMUMiOV2HtwhiNpjFB45Vq1+v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYtWjqgo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1jvEKcK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3D6C4CECF;
-	Tue, 12 Nov 2024 00:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYtWjqgo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB5FC4CECF;
+	Tue, 12 Nov 2024 00:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731370222;
-	bh=PS9jL9dwJGkLa8IjRtRFd8sIQX3uCbX3fx5I+wxyVio=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=P1jvEKcKn9os4x0ubGZC0DfdoMZC1XB2BoVMhZsSkSPOVJsE5jZ82Kh28njs+/HkK
-	 qXKaNOk+ycXXeimd325ktl89RIC9HE64xZ3GjFfHV6rTP4/ozqR/BXjrYnJLg6wyn5
-	 jBovT711PiT9qlN4/XEOmEqKq+N6fp8woDAbG2RL99QlMuzfli92rjni4NYPqBsf93
-	 YPGkHz4UPnO3y+w6mFCDq3FlFM+o4I8jpQoJbb14lMn03Xs9LDbXe2Hf5IlmlewAUW
-	 QZPts8s8+zz7oqtSZOxIU3hykXnZBoAy9VdxhzkrIiQsSgU2hLwVjWnWv/xh64f7/D
-	 s42fNFjbLi8Yg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70B4F3809A80;
-	Tue, 12 Nov 2024 00:10:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1731370327;
+	bh=F6KtVDx7kefgsDbbvSvre0SI4ek2HJre6EpkN5nZLpw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FYtWjqgoyYor2KQxuCduFyVPGGug7Lae6Zmq//DBd3J775HaM3IaD89LNwlzGfzg8
+	 OTbdTKXJNxQ7RyTm/Uf3WjPXmMeT5O+324PbmckBkAIr+vu3Hisv/RQ+px6riH/ew9
+	 EvzwcyclN8+IzKBkfEDqUbK5gE4mrRnEDF5MObJoeQoQxwuk1cOoO6ls0My5yu96wx
+	 AslbCPGQqKPkw4swgS1D4SPmEY0D2GeJvPbvqytMxbsfghFSySvHDlc7/qImqc3ZgG
+	 frjtrVU+2NYAa3e1d2JYggboGUkn5HZd4Q36XxubIDtQnn2ie3QdpX7feyV1rmruUu
+	 dFA/HxKRYepAQ==
+Date: Mon, 11 Nov 2024 16:12:05 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
+ <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Richard
+ Cochran <richardcochran@gmail.com>, Alexis =?UTF-8?B?TG90aG9yw6k=?=
+ <alexis.lothore@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 4/9] net: stmmac: Introduce dwmac1000
+ ptp_clock_info and operations
+Message-ID: <20241111161205.25c53c62@kernel.org>
+In-Reply-To: <20241106090331.56519-5-maxime.chevallier@bootlin.com>
+References: <20241106090331.56519-1-maxime.chevallier@bootlin.com>
+	<20241106090331.56519-5-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] nfp: use irq_update_affinity_hint()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173137023199.20619.9050750562320638869.git-patchwork-notify@kernel.org>
-Date: Tue, 12 Nov 2024 00:10:31 +0000
-References: <20241107115002.413358-1-mheib@redhat.com>
-In-Reply-To: <20241107115002.413358-1-mheib@redhat.com>
-To: Mohammad Heib <mheib@redhat.com>
-Cc: netdev@vger.kernel.org, oss-drivers@corigine.com, louis.peens@corigine.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed,  6 Nov 2024 10:03:25 +0100 Maxime Chevallier wrote:
+> +		mutex_unlock(&priv->aux_ts_lock);
+> +
+> +		/* wait for auxts fifo clear to finish */
+> +		ret = readl_poll_timeout(ptpaddr + PTP_TCR, tcr_val,
+> +					 !(tcr_val & GMAC_PTP_TCR_ATSFC),
+> +					 10, 10000);
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu,  7 Nov 2024 13:50:02 +0200 you wrote:
-> irq_set_affinity_hint() is deprecated, Use irq_update_affinity_hint()
-> instead. This removes the side-effect of actually applying the affinity.
-> 
-> The driver does not really need to worry about spreading its IRQs across
-> CPUs. The core code already takes care of that. when the driver applies the
-> affinities by itself, it breaks the users' expectations:
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] nfp: use irq_update_affinity_hint()
-    https://git.kernel.org/netdev/net-next/c/d9e2e290f714
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Is there a good reason to wait for the flush to complete outside of 
+the mutex? 
