@@ -1,48 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AE2200109
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CDC1FF5F4
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731424481; cv=none; b=GfQckF6Fhnqr228vXigov7u3zSb9m8pokxLaLDpRPwyiSN8YrwlMXfbR8DcE/GvbL23dgiSH5G+bZ2cD++cgr9pIcZd/2WuSOzMu82hmA39xNMJO69DP8QKYNMTbX+P2B8aCpXrUpBrCN6oYp3lnK1DSCUDyxorVH+aJsy+ycSk=
+	t=1731424703; cv=none; b=aA3ZaYKNlSgE5niV9niRUyfi3/wL61qDgIMnSrKGD7JmHcfIMs9FW0ylSTwarD17+l+fwJCwTZXQu5Vm7etvEKRNdQiiNaLXR7ofXz+xUsVE1pTVTiIlDM70EhQhvrrgojbNuQq65JTcKZFAMyVW7d/yW7ual1rbmGni1tKwT3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731424481; c=relaxed/simple;
-	bh=Kjv+dUaivCeMePY/kXKpPE1hNCsyMGa18kwndOgnkNA=;
+	s=arc-20240116; t=1731424703; c=relaxed/simple;
+	bh=nth3J6FETCjuT0ZhgJ2WbzVPX+r5vZ9cXKeYs8Mwt5c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bd8RZtm9u+zAWBdIkTa2a9jofqHe9r6CAb+nq8dgUNWr5rVc5ldYA0esfMH0Sz+m5jzs+QUZjcLEMrWn4AZik1WLajql6DwOpnkBAWosPWJlWiGP9bRjbY/fWFd8g+9G6uPpsgjqzGxFYGeN9/APoXO0tzd9GedJN7m1TmqdTMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXYmr9Eb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=FDzJgUDF+sOF6B5Y8yj8dzMVoLj+vchOu+lOACTIu6Bp4NRtCg8mKVfgJQRK3kE1aucBy0uYfmT+rjB9qJWLy1TFWfMe4t6vM89ILfpRard7uvS6DYP7dw7ToVQ7Uy+tfytIda95RIH+5XvvTc+O0uBgmf3ReI7v0SCrZdFWBRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GP2Ua2uY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXYmr9Eb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE8DC4CECD;
-	Tue, 12 Nov 2024 15:14:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GP2Ua2uY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF89C4CED0;
+	Tue, 12 Nov 2024 15:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731424480;
-	bh=Kjv+dUaivCeMePY/kXKpPE1hNCsyMGa18kwndOgnkNA=;
+	s=k20201202; t=1731424703;
+	bh=nth3J6FETCjuT0ZhgJ2WbzVPX+r5vZ9cXKeYs8Mwt5c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aXYmr9EbHDeMHEtFIwln2PyNLjlE9oNgPM5Hr7SD6rrKLuQCz18eXeVfotWGLwdDR
-	 r0JUjbQv0qTnAKYvqcBrBKz9Z6rZOUdEZpbkgHvSZtmh3SARIQ2enUeN3JfbZUmPXi
-	 m2Gp6vIrImW3PKBhlhfOSLviJsgl6mrdD+QmRtQ+cmhnPCNaIDQO+evVwM9uEd8F+e
-	 UKPz7CBjL7Ecbi/obzU4aKgPmQB692hFF5wlhoFUXmBdBCg1u1aN3tPMVw17dl8ZrF
-	 QNyJgL9T02y/yvr2sqpabWQ2rCfgDRFwl/oMVZ6w9vf4Gexr4WsU7miL1w5Bq/mI4q
-	 6wPQ2aKVKP8gA==
-Date: Tue, 12 Nov 2024 07:14:39 -0800
+	b=GP2Ua2uY0cnb3MK4O/2GZKsIBKct+UZyU3hCcHaX1CQG22At/E9vXMZdlcXPRLZ/w
+	 bJk3vd2emzym1+PsQeNzfSee0G0eFJ04I2jbSjkjyqppebh50A7TveSlWQOCcfkoeu
+	 K+nGli3BanOjIis7VJio547h92+1ohhB7k3KqIlw8VvCjnAgJCJ94O6dQYA00f92t0
+	 ikGEIuhD0Xa0Hz2NAIT6RapO5o+LEN+EFMHFPS3gLHnKSwGsIA0714doTdLBiDhGHN
+	 0IgHcmAZHgE8gbrDt5oVPimIbZ3CpjyLh0APp+KkjQHd+4oD8qCuatMDjEbn+77DBT
+	 qWH8fdTOvWXkQ==
+Date: Tue, 12 Nov 2024 07:18:22 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, Jiri Pirko
- <jiri@resnulli.us>, donald.hunter@redhat.com
-Subject: Re: [PATCH net-next v1 2/2] tools/net/ynl: add async notification
- handling
-Message-ID: <20241112071439.5ade3b1d@kernel.org>
-In-Reply-To: <m24j4cvmlp.fsf@gmail.com>
-References: <20241108123816.59521-1-donald.hunter@gmail.com>
-	<20241108123816.59521-3-donald.hunter@gmail.com>
-	<20241109134011.560db783@kernel.org>
-	<m2cyj2uj11.fsf@gmail.com>
-	<20241111100325.3b09ccb8@kernel.org>
-	<m24j4cvmlp.fsf@gmail.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>, Eric Dumazet
+ <edumazet@google.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko
+ <jiri@resnulli.us>, alexandre.ferrieux@orange.com, Linux Kernel Network
+ Developers <netdev@vger.kernel.org>
+Subject: Re: [PATCH net v6] net: sched: cls_u32: Fix u32's systematic
+ failure to free IDR entries for hnodes.
+Message-ID: <20241112071822.1a6f3c9a@kernel.org>
+In-Reply-To: <CAM0EoMk=1dsi1C02si9MV_E-wX5hu01bi5yTfyMmL9i2FLys1g@mail.gmail.com>
+References: <20241108141159.305966-1-alexandre.ferrieux@orange.com>
+	<CAM0EoMn+7tntXK10eT5twh6Bc62Gx2tE+3beVY99h6EMnFs6AQ@mail.gmail.com>
+	<20241111102632.74573faa@kernel.org>
+	<CAM0EoMk=1dsi1C02si9MV_E-wX5hu01bi5yTfyMmL9i2FLys1g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,20 +50,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 12 Nov 2024 09:16:02 +0000 Donald Hunter wrote:
-> >> I don't follow; what are you suggesting I initialise endtime to when
-> >> duration is 0 ?  
-> >
-> > I was suggesting:
-> >
-> > 	def poll_nft([...], duration=0)
-> >
-> > 	endtime = time.time() + duration  
+On Tue, 12 Nov 2024 07:23:29 -0500 Jamal Hadi Salim wrote:
+> > Separate patch - okay, but why are you asking people to send the tests
+> > to net-next? These sort of requests lead people to try to run
+> > linux-next tests on stable trees.  
 > 
-> I want it to run forever if a duration is not provided, but here
-> endtime == starttime so it would exit immediately.
-> 
-> I thought the original approach was fairly pythonic - if duration is not
-> specified (None) then there would be no endtime (None).
+> AFAIK, those are the rules.
 
-Ah, makes perfect sense in hindsight, I misread the code.
+Do you have more info, or this is more of a "your understanding" thing?
+E.g. rules for which subsystem? are they specified somewhere?
+I'm used to merging the fix with the selftest, two minor reasons pro:
+ - less burden on submitter
+ - backporters can see and use the test to validate, immediately
+con:
+ - higher risk of conflicts, but that's my problem (we really need to
+   alpha-sort the makefiles, sigh)
