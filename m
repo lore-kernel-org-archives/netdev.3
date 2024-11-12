@@ -1,224 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725F8158DB9;
-	Tue, 12 Nov 2024 13:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC1142AA4;
+	Tue, 12 Nov 2024 13:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731418522; cv=none; b=tsJI1b1HHkfdVC6fRMts6rMwsoK5RKePp2DwcbcN73cwYT4SiL2P8OGn0Tst6lalI9QkYVEXxZp65be+uTjXzjcyNReC1AUVe6Rxh5e7XpfoNr3OYv+8Lm0uyvxbUA1HjU6CS+kBsj2DziVoZeThuEfVV4s9n41ORo6XZ7BB9I4=
+	t=1731418644; cv=none; b=Jsdm5mKLGt2tatlVJSDvDGyYpXXadBIEtVWObCIozC1BvzJf6LxCX2Vr5oFRxThlH+ONyzRYkjrHmP33CKrbivRjTdyCA71L7F3JudLTEmsAiOBTmtY9qvv/rAzwLMk+Q2ZEOMgpNTHmsZAFsyAmobJWb4PiWbLIvrs5FUCklZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731418522; c=relaxed/simple;
-	bh=anrwzrXOnjIAZZpGQQGNMBfN1xGtzIuPmbNrKiYeAjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ccCJIUTlmoxfcBdPL9k+w8ESQqjAVm7J+vqHDG6Wc/Fk0ZWgwAe3ICXdTqs1UelSdhospHsGTq2b96KLPOKp2JfM4NzxN1MEhfzTO4PFxS+cFyfktnFCns6CsKzliN35kRppztF2R5beHvAgHfV80lOhfDnlSBZl7H/QNMDQTTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmqDwuq0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731418644; c=relaxed/simple;
+	bh=EVYtzQGT3MSF63g4iCllL2nKr5PUl0YgthsgBXSWCjo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P9WB9Wq5a388qZBtqqE3FMG09iLo2ZwRQdbaapuM/L0KqQULCzrXKT1v+tdg4becMu6N3zb24QeGrSd0JWm3nppKnxoCc3RJBETfVGTPio/DiOiBEQGT5h7YPdX2cCTBqgWMsWBmFPdjkXgrLKY4iX0saYhlGS4OEIXK8ieh0Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=uY2tL0PP; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmqDwuq0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F838C4CECD;
-	Tue, 12 Nov 2024 13:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731418522;
-	bh=anrwzrXOnjIAZZpGQQGNMBfN1xGtzIuPmbNrKiYeAjM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nmqDwuq0ho0MwAco2d13WUsQ5/eG4NTqoUkhUpYedkAG/eSFy4KZsq+ADu5NXT1Ej
-	 ftZzF0e8fuFhbQNcGJ75hY9T9/hEOyzZB9RdqcoVz21luXDjKJmac3XnKv9fynWHIv
-	 RvfHWD/SvY1yDjbC7t4cQm0OibpAFud1VB3N0euF5BctRlRAx2g+hd4xMJ194lMYz9
-	 QDo/hEtbXtQfpSf1BbIV+O7ww6jR3JUGve2hdsPj/RiDvDpBH6iFasBknPz1h/ngDD
-	 DxzymgMola6YXRcNLAs8kfJTxbtnRYpc5cls+f+PpboBQ5uoE1YuHFoNMyK2q5PRc9
-	 6+gMnJ6q8PY3Q==
-Date: Tue, 12 Nov 2024 13:35:18 +0000
-From: Lee Jones <lee@kernel.org>
-To: Robert Joslyn <robert_joslyn@selinc.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RFC PATCH 1/2] mfd: Add SEL PCI Virtual Multifunction (PVMF)
- support
-Message-ID: <20241112133518.GF8552@google.com>
-References: <20241028223509.935-1-robert_joslyn@selinc.com>
- <20241028223509.935-2-robert_joslyn@selinc.com>
- <20241105173035.GE1807686@google.com>
- <PH0PR22MB3809DE8446E7EAEFB0F6103FE55C2@PH0PR22MB3809.namprd22.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="uY2tL0PP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731418642; x=1762954642;
+  h=from:to:subject:date:message-id:mime-version;
+  bh=EVYtzQGT3MSF63g4iCllL2nKr5PUl0YgthsgBXSWCjo=;
+  b=uY2tL0PPtCMJhMNZ2jWuI0Y/ABpZN0GlP9IGS4yi/sCb9TXxtE76TbP/
+   /H0esl3SVGNLDvsCACts8jzUqvfT8Few7OE4FkH0sGO+Qq4aKuyoLxBXJ
+   ktXs+rNZW2QXTG8OSgC3r/sUk5SC9rfW1cuKQ+OA2RtnwVU3QRf1DzCHP
+   SXJSftW/uvWPDLOSUeA8SM9XUAMqqz9XT1aQZbjMqC1vDGSri4mBq7ETy
+   IO6qOr1h7gqKrUTVtwWyUUSLw+Q0KMlqLW2FPMrdEGfpLDNFzrEewfa5/
+   SFCyM38X+gfz0dSRXh8toP91rC574h830e6OxcBQyB+oiazuC1nHWoE2A
+   w==;
+X-CSE-ConnectionGUID: MrNChj17QCGoNOgRM4DkTw==
+X-CSE-MsgGUID: pxuDztyERIyMkw3B1dHC1w==
+X-IronPort-AV: E=Sophos;i="6.12,148,1728975600"; 
+   d="scan'208";a="201634987"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Nov 2024 06:37:21 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 12 Nov 2024 06:37:05 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Tue, 12 Nov 2024 06:37:01 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v3 0/5] Add ptp library for Microchip phys
+Date: Tue, 12 Nov 2024 19:07:19 +0530
+Message-ID: <20241112133724.16057-1-divya.koppera@microchip.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PH0PR22MB3809DE8446E7EAEFB0F6103FE55C2@PH0PR22MB3809.namprd22.prod.outlook.com>
+Content-Type: text/plain
 
-On Thu, 07 Nov 2024, Robert Joslyn wrote:
+Adds support of ptp library in Microchip phys
 
-> > -----Original Message-----
-> > From: Lee Jones <lee@kernel.org>
-> > Sent: Tuesday, November 5, 2024 9:31 AM
-> > To: Robert Joslyn <robert_joslyn@selinc.com>
-> > Cc: linux-kernel@vger.kernel.org; netdev@vger.kernel.org
-> > Subject: Re: [RFC PATCH 1/2] mfd: Add SEL PCI Virtual Multifunction (PVMF)
+Divya Koppera (5):
+  net: phy: microchip_ptp : Add header file for Microchip ptp library
+  net: phy: microchip_ptp : Add ptp library for Microchip phys
+  net: phy: Kconfig: Add ptp library support and 1588 optional flag in
+    Microchip phys
+  net: phy: Makefile: Add makefile support for ptp in Microchip phys
+  net: phy: microchip_t1 : Add initialization of ptp for lan887x
 
-These should not end up in the mail's body.
-
-> > support
-> > 
-> > [Caution - External]
-> > 
-> > On Mon, 28 Oct 2024, Robert Joslyn wrote:
-> > 
-> > > Add support for SEL FPGA based PCIe devices. These expose a single PCI
-> > > BAR with multiple IP cores for various functions, such as serial
-> > > ports, ethernet, and time (PTP/IRIG). This initial driver supports
-> > > Ethernet on the SEL-3350 mainboard, SEL-3390E4 ethernet card, and
-> > > SEL-3390T ethernet and time card.
-> > >
-> > > Signed-off-by: Robert Joslyn <robert_joslyn@selinc.com>
-> > > ---
-> > >  MAINTAINERS                |   8 +
-> > >  drivers/mfd/Kconfig        |  16 ++
-> > >  drivers/mfd/Makefile       |   3 +
-> > >  drivers/mfd/selpvmf-core.c | 482
-> > > +++++++++++++++++++++++++++++++++++++
-> > >  drivers/mfd/selpvmf-cvp.c  | 431
-> > +++++++++++++++++++++++++++++++++
-> > > drivers/mfd/selpvmf-cvp.h  |  18 ++
-> > >  6 files changed, 958 insertions(+)
-> > >  create mode 100644 drivers/mfd/selpvmf-core.c  create mode 100644
-> > > drivers/mfd/selpvmf-cvp.c  create mode 100644
-> > > drivers/mfd/selpvmf-cvp.h
-
-[...]
-
-> > > +/**
-> > > + * sel_create_cell() - Create an MFD cell and add it to the device.
-> > > + * @pdev: The PCI device to operate on
-> > > + * @name: MFD cell name
-> > > + * @start: Start address of memory resource
-> > > + * @length: Length of memory resource
-> > > + * @msix_start: MSIX vector number to start from.
-> > > + * @resources: Pointer to resources to add to the cell.
-> > > + * @num_resources: Number of resources. The first resource is assumed to
-> > > + *                 be memory, all other resources are IRQs.
-> > > + */
-> > > +static int sel_create_cell(struct pci_dev *pdev,
-> > 
-> > This is misleading.  It should be sel_register_device.
-> 
-> I'll rename the function.
-
-Please refrain from responding to comments that you agree with, then
-trim the rest.  It will save multiple people a lot of time.
-
-> 
-> > 
-> > > +                        const char *name,
-> > 
-> > This never changes.  Why supply it as a variable?
-> > 
-> > > +                        unsigned int start, +
-> > > unsigned int length,
-> > 
-> > This never changes.  Why supply it as a variable?
-> > 
-> > > +                        unsigned int msix_start,
-> > 
-> > This never changes.  Why supply it as a variable?
-> > 
-> > > +                        struct resource *resources, +
-> > > unsigned int num_resources)
-> > 
-> > This never changes.  Why supply it as a variable?
-> 
-> This patch only enables ethernet, but we have additional functionality
-> that we will enable in subsequent patches, such as serial ports, a
-> time component, and a firmware upgrade mechanism. Those components
-> have different names, lengths, interrupt counts, etc. If you prefer, I
-> can remove this abstraction until we have another cell type to add.
-
-I can only review what I see before me.
-
-Add the extra pieces when/if you upstream the additional functionality.
-
-[...]
-
-> > > +     if (rc != 0) +             return rc; + +     /* Perform CvP
-> > > program if necessary */ +     cvp_capable =
-> > > pci_find_ext_capability(pdev, CVP_CAPABILITY_ID); +     if
-> > > (!skipcvp && cvp_capable) {
-> > 
-> > The '_' inconsistency is bothering me.
-> > 
-> > As is the placement of "cvp".
-> 
-> Would you prefer to see skipcvp called skip_cvp? Or cvp_skip? I'm
-> happy to change it.
-
-The latter seems more consistent.
-
-[...]
-
-> > > +             rc = cvp_start(pdev); +             if (rc != 0) { +
-> > > dev_err(&pdev->dev, "Error: CvP failed: 0x%x\n", + rc);
-> > 
-> > This is a user facing error message and I still don't know what CvP
-> > is.
-> > 
-> > Please be more forthcoming.
-> 
-> CvP is Configuration via Protocol. It's a method for loading firmware
-> into Altera FPGAs. If CvP fails, it means we're unable to load
-> firmware into the FPGA and the card is basically dead. I can improve
-> the error message. Maybe something like, "Loading FPGA firmware
-> failed"?
-
-Sounds good.
-
-[...] 
-
-> > 
-> > > +                     goto out_disable; +             } +     } +
-> > > +     rc = alloc_fn(pdev);
-> > 
-> > These call-backs are horrible.  Please don't do this.
-> 
-> Ok, we'll do something else. Would you prefer to pass in a constant
-> and use a switch statement to select which function to call?
-
-That sort of thing, yes.
-
-[...]
-
-> > > + +             pci_restore_state(pdev); +     } + +
-> > > pci_set_master(pdev); + +     return 0; +} + +static const struct
-> > > dev_pm_ops selpvmf_pm_ops = { +
-> > > SYSTEM_SLEEP_PM_OPS(selpvmf_suspend, selpvmf_resume) }; + +static
-> > > struct pci_device_id selpvmf_pci_tbl[] = { +     { +
-> > > PCI_DEVICE(PCI_VENDOR_ID_SEL, PCI_DEVICE_ID_B1190), +
-> > > .driver_data = (kernel_ulong_t)b1190_alloc_mfd_cells,
-> > 
-> > Pass an identifier here instead of call-back functions.
-> 
-> Do you have a preference for the type of construct we use? Just a
-> #define integer with a switch statement in probe? Something else?
-
-Probably an enum.  Take a look at some other drivers.
-
-> > > +     }, +     { +             PCI_DEVICE(PCI_VENDOR_ID_SEL,
-> > > PCI_DEVICE_ID_B2077), +             .driver_data =
-> > > (kernel_ulong_t)b2077_alloc_mfd_cells, +     }, +     { +
-> > > PCI_DEVICE(PCI_VENDOR_ID_SEL, PCI_DEVICE_ID_B2091), +
-> > > .driver_data = (kernel_ulong_t)b2091_alloc_mfd_cells, +     }, +
-> > > { +             PCI_DEVICE(PCI_VENDOR_ID_SEL,
-> > > PCI_DEVICE_ID_B2093), +             .driver_data =
-> > > (kernel_ulong_t)b2093_alloc_mfd_cells, +     }, +     {0,}
-> > 
-> > What is this?  Where have you seen that before?
-> 
-> The {0,} is how to signal the end of this array. I don't think the
-> comma is required though. Random example:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/lpc_sch.c?h=v6.12-rc6#n66
-
-{} is fine.
+ drivers/net/phy/Kconfig         |   9 +-
+ drivers/net/phy/Makefile        |   1 +
+ drivers/net/phy/microchip_ptp.c | 997 ++++++++++++++++++++++++++++++++
+ drivers/net/phy/microchip_ptp.h | 217 +++++++
+ drivers/net/phy/microchip_t1.c  |  40 +-
+ 5 files changed, 1260 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/phy/microchip_ptp.c
+ create mode 100644 drivers/net/phy/microchip_ptp.h
 
 -- 
-Lee Jones [李琼斯]
+2.17.1
+
