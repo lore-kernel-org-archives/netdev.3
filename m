@@ -1,36 +1,66 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F85120C02B;
-	Tue, 12 Nov 2024 09:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675891AAE06
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 09:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731402690; cv=none; b=Lt/G/u8Xt6pBY/RmOUt3Az3Bbiqhzjjs6RXWYhCvc6Jy8VNDZtuMCSofZ4qVsgZhNXZh+27i4WZovVOrZ2wVeZbfYBifwRKB3feFM9uwGJBDazw7ilx5sDrWNiClivPixcfC6IRCuqm+9mLE/aHauy4VFhSE8rprW/qdb0GePC4=
+	t=1731403067; cv=none; b=FrVbrvU9v0RK9rl41X46xHF7JE6BkDTSv5IF96Mhhzm0RxKPKJ8O8PQC4sohppNJJlVGsHMji9e+kunNE2vrtZ5pmSuPeY6ErZiQ2HRVFtJYb89qqIuwEaMowRhkWw9XMDml51CXiKybc+hpzR7RQ8XFNBcExfAIlDOXB9R0JBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731402690; c=relaxed/simple;
-	bh=3b93khVocMMeVT+rtt18GVq9XmGBbDvPS2abcBoLWMY=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:References:Subject:
-	 In-Reply-To:Content-Type; b=jO37dpNu8khNk6tkbnUDPN8hFoy1TJwO3i0QbffNsGlh1T1sh0fvEGkTe8E9/ClA6ET6VXiAxSRKuVt04RHJkGeJcyWGQzQ7IxLE/EmOPWuq2ry4sRM76y+gDHZrAXvQ1zC892Th2GQGoHhtx9KhZIi5vx/fXuS+cjWpTUYD/vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=AGpu0wd/; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1731403067; c=relaxed/simple;
+	bh=zNRRtlMozq1Ozj48r4nNeYVh9O6jV/fhcr+TQIMkblE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jb+a7CvTI765/vkXxcgFHNlAQ7GXIHWhrdtsPxY0vJlbAeMweoQhUUeLyHtFOHw5OKGNnauosVCuRgjvT+CO9+c3r2eKvWVwu2nvV6ffO2rrBkC4/5+ivz6WpHYy75fSWIhSpCY1fHp+pna7qAaVOtJ9dSgQwd/fJM3h6wAwQUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xq2W3XCi; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="AGpu0wd/"
-Received: from mail-nwsmtp-smtp-production-main-46.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-46.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:98e:0:640:650f:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 8095A615F2;
-	Tue, 12 Nov 2024 12:11:18 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-46.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GBjglJ9OpKo0-xEMzxQYd;
-	Tue, 12 Nov 2024 12:11:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1731402677; bh=3b93khVocMMeVT+rtt18GVq9XmGBbDvPS2abcBoLWMY=;
-	h=In-Reply-To:Subject:Cc:Date:References:To:From:Message-ID;
-	b=AGpu0wd/C3e/MjHDHcMPu6zR9OazxuAQYsrNQoF6KAP2zkDxKAwrmLU+offcbeEkF
-	 4dsYT/XViMWkD+JCSRm0WIN6XQcSZ5jQnotPU3xYyzqBexNdcWU6CIp98cvI72d3n/
-	 xcN0pbyk5VbC8NgQp4WrVjLLHoryNAPIL7SQ+xAw=
-Authentication-Results: mail-nwsmtp-smtp-production-main-46.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <6f5d9c1c-cc13-47fa-871d-156f33d595a5@yandex.ru>
-Date: Tue, 12 Nov 2024 12:11:16 +0300
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xq2W3XCi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731403065;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUZmO2vrf7r83bzqg6GoPGcZR6uwpTYKCCT8l9l6ZYI=;
+	b=Xq2W3XCiFO9+fn1kmDdCfMC30wnWIBjrhadPchVt/LNb5BwjXQx+156YxaYk+nIP4f8/um
+	oA5zOPH7Krqo/vzHa7a18dCiUkkXwOeoxIpvgNRxfPGY3pkTmhPzZ4BIva0vnMhV0fnZUu
+	nHLlEGxMBK1GrWreJjTWflKtz8pBXl4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-202-hZF6cq5XOsqvD_ZQVbPNcQ-1; Tue, 12 Nov 2024 04:17:44 -0500
+X-MC-Unique: hZF6cq5XOsqvD_ZQVbPNcQ-1
+X-Mimecast-MFC-AGG-ID: hZF6cq5XOsqvD_ZQVbPNcQ
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4314c6ca114so42051765e9.1
+        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 01:17:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731403063; x=1732007863;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LUZmO2vrf7r83bzqg6GoPGcZR6uwpTYKCCT8l9l6ZYI=;
+        b=YTheLf6J0LiFj39gSvlA87B2jpn3zua8JqFiq2gQbhAiuHae/ILTSg7InzzqB/1+Cx
+         dr3rsT8FtgS6vkhbvQx0iEy7swZwZIDNZlkB3SbgN3ys+gl49AVozMSX+YfUb85gn+wk
+         ufxITnSi/i16aAF2qoywkPxUM41Hcq9qcpjdAxDwmgNvgEzc76WBolT7w6Gnu+l8XjLM
+         Xhhxlxjz5rXVPSybExaq/lO24VfBokHq4ed92x3iuxWZk38ckP2IxQZ4vtsQk5IPzk7d
+         Z4Y++h4ad/c0ElJzsj7Trp/3LwENeJDpHeX4jxQUFC0lAIp0P3DqVc2dzdBr+EVBb7I+
+         eMCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRyAKEbZkWMdYj41qF22zDdmKqIyGJcCpKBlNHlTaEBFnYcXBlRAnaVwV6ptzRIG51B6YV3Oc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKIMWCCknwfV0iSIuo6TwvjVSBiktRgfw/MCIpA3/+vqOX310e
+	ZR0K/WGZ/dRAgU7wj6Z12RCjImDqfYT+enqWj88G+WoF+i1SBQQl3oP5L1YZIML42K4/VLInr9w
+	vXTcf3uYE9HG3/d6W7CsCju4278iOf06is9PozuOcHEDto0PLH2ES9A==
+X-Received: by 2002:a05:600c:35cc:b0:431:1512:743b with SMTP id 5b1f17b1804b1-432b751b715mr124837105e9.21.1731403062706;
+        Tue, 12 Nov 2024 01:17:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFsEMbxjSuTsRJEpYPVXjdyVvt4My9F/LAOdJf0xB4KchwsKYoZbPB3oV8tuqhizUwJMdOXhg==
+X-Received: by 2002:a05:600c:35cc:b0:431:1512:743b with SMTP id 5b1f17b1804b1-432b751b715mr124836865e9.21.1731403062360;
+        Tue, 12 Nov 2024 01:17:42 -0800 (PST)
+Received: from [192.168.88.24] (146-241-44-112.dyn.eolo.it. [146.241.44.112])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381edc1104asm15134228f8f.88.2024.11.12.01.17.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 01:17:41 -0800 (PST)
+Message-ID: <719083c2-e277-447b-b6ea-ca3acb293a03@redhat.com>
+Date: Tue, 12 Nov 2024 10:17:40 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,64 +68,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Alexander Aring <alex.aring@gmail.com>,
- Stefan Schmidt <stefan@datenfreihafen.org>, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, lvc-project@linuxtesting.org,
- syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
-References: <20241108124051.415090-1-dmantipov@yandex.ru>
- <87v7wtpngj.fsf@bootlin.com>
-Content-Language: en-MW
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-Subject: Re: [PATCH] mac802154: fix interface deletion
-In-Reply-To: <87v7wtpngj.fsf@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [net-next v6 6/9] netdev-genl: Support setting per-NAPI config
+ values
+To: Joe Damato <jdamato@fastly.com>, netdev@vger.kernel.org
+Cc: mkarsten@uwaterloo.ca, skhawaja@google.com, sdf@fomichev.me,
+ bjorn@rivosinc.com, amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
+ willemdebruijn.kernel@gmail.com, edumazet@google.com,
+ Jakub Kicinski <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Mina Almasry <almasrymina@google.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, open list <linux-kernel@vger.kernel.org>
+References: <20241011184527.16393-1-jdamato@fastly.com>
+ <20241011184527.16393-7-jdamato@fastly.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241011184527.16393-7-jdamato@fastly.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/11/24 10:41 PM, Miquel Raynal wrote:
+On 10/11/24 20:45, Joe Damato wrote:
+> +int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info)
+> +{
+> +	struct napi_struct *napi;
+> +	unsigned int napi_id;
+> +	int err;
+> +
+> +	if (GENL_REQ_ATTR_CHECK(info, NETDEV_A_NAPI_ID))
+> +		return -EINVAL;
+> +
+> +	napi_id = nla_get_u32(info->attrs[NETDEV_A_NAPI_ID]);
+> +
+> +	rtnl_lock();
+> +
+> +	napi = napi_by_id(napi_id);
 
-> Why not just enclose this list_del() within a mutex_lock(iflist_mtx)
-> like the others? Would probably make more sense and prevent the use of
-> yet another protection mechanism? Is there anything preventing the use
-> of this mutex here?
+AFAICS the above causes a RCU splat in the selftests:
 
-Moreover, if we manage interfaces list with RCU and device status with
-an extra status bit, do we need 'iflist_mtx' at all? I've tried this
-in https://syzkaller.appspot.com/text?tag=Patch&x=17b1f4e8580000 and
-it looks good.
+https://netdev-3.bots.linux.dev/vmksft-net-dbg/results/856342/61-busy-poll-test-sh/stderr
 
-Dmitry
+because napi_by_id() only checks for the RCU lock.
+
+Could you please have a look?
+
+Thanks!
+
+Paolo
+
