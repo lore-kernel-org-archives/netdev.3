@@ -1,368 +1,204 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2045.outbound.protection.outlook.com [40.107.22.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0216820ADE5;
-	Tue, 12 Nov 2024 01:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731374992; cv=none; b=TbdnJJL+V4EnpXPetzM1kzE+va48MS4WIHlQe3cGg597kGB/prCKgoPdF3TLiR9zxqia3fsDUyonkRLPqFf+lmE7wHvY7wcPnN6/nM9ZOsyd7eNqefAyRzRM61Y8L8iCpkAF/3wP9Bkjlpca8+M4lFWKGFSoxWqJPX0tSk2cAOA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731374992; c=relaxed/simple;
-	bh=nsRnayahamcVc7qCaSPryyCvf15emOHP4AAqBb8/9PE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kxKc7o8T7UsQ0T3n7CWgp/LQtpE7+h/rAbFXVBlzrabuPvBuTC0pJBH75UYTfsdX+yuF26/B252oMnBewWSdPKZfX1UWKwM3wOfcRQeAuD36BPne9cRsCo5JtRazGaI7CmJ4Dgj+VxtyqPU8+Au7xfp31Mq/IFxAlTZIM1YmfHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VJ1py6k+; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60510204F75;
+	Tue, 12 Nov 2024 01:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731375065; cv=fail; b=DikyyQYSj47PZB0W7kGi8KxaGuvjWiiXUMJ9ntpBJLz0p/j1olmSiaI5C9Q43m8814PpN+yFri7+DzmGaqIPx7sE3TpiNnqGAMY/vXz+u6ZP+CrmfiHsnoBpdk/SGBfFwRk2wkahTkzeyAj5acZ6OLaiNFbpiMeoL9COL7DVyec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731375065; c=relaxed/simple;
+	bh=GZGE4WqX0esIDcr2fuNuyxPRnI2FaqArx2M7jm2yIYo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qcvdGjG65qdBYqlvi9g1arNWKkW12mcHm1ZlAMiY/b8zDqSOQN71V1VKJC91M0pveydUeuFScOXU0STKBWMC4KI9gzeFu+pcOiyfro3dcInNd8+RxuO6AkkUxE9VuBRcTTX96qphaMsvmVNlfhgQShrnKqJ5eYR58j8mt9lSCso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b92ViMn8; arc=fail smtp.client-ip=40.107.22.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VJ1py6k+"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1731374982; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=JWft6HfMcuGu89D6wPnlIr7IK28NxAcs/7saARORgwY=;
-	b=VJ1py6k+Q8JKeF/rYsql6q0xyGSG/9WmU9ceodgtKK6C8PL3PpHqBK6zrSudmPOws2c5kKmqoznX+XNpX5mibFCWseVKAlMBd4X+2ssIdSbBxdXHKpk/zzaRmly07hzQda76yWCjUJH7yUMC411NGUQJW9EQzHVw47Ztg5s44E0=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WJF2Wv8_1731374980 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 12 Nov 2024 09:29:40 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	virtualization@lists.linux.dev,
-	bpf@vger.kernel.org
-Subject: [PATCH net-next v4 11/13] virtio_net: xsk: tx: support xmit xsk buffer
-Date: Tue, 12 Nov 2024 09:29:26 +0800
-Message-Id: <20241112012928.102478-12-xuanzhuo@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20241112012928.102478-1-xuanzhuo@linux.alibaba.com>
-References: <20241112012928.102478-1-xuanzhuo@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b92ViMn8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n/AoBmNb3WnxaknIUa3/dZvPSO5fXGKf2KltvZkw85cmdrDAaauBYrN61MfZSoJh9dmYhldd+9Na+c/Y6F7AQ21AYrfkIRSZIDKVthREz1QnTjr0Ap251OiWui3ultbVF7M0ki2x/lJALXQiUQ75EnETyRArJgrOz4Y7c1zOWE7ZaSX+nk+noqD83VFkxxrJh3ZgQesRp/LGDVBZh30FpiVCU7xcJ4O+X0qa2gfBMmt/e7TApcoQCa3Vdfbz7bwpTA3sa0UpkuCBTetQoSFfuyHahFa3UIhi159GGN+4d9JeR4PUqfs8eKq1adPffi5VMEs9QZGDIiJiREq4PgSACQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GZGE4WqX0esIDcr2fuNuyxPRnI2FaqArx2M7jm2yIYo=;
+ b=WldxB/Q5uI6bucN2hb5weZi87nX0PX6EejzukYa76h1eBcGRJkGfqVaCHdBWnK8h6oovPAZ/ZPN36GhqlQ0+SlzMLE6oBFcDMdDl1eovhbc2H+Lu66RotGyY8z9Dia2zh8yAaEvIGENmCT1ff6Kd89rNLwFLAy8fxSPuo0eZEGf/finPoNw/5yYRJMIThh8bIVPyvWDyHu3I9ab/PY4vq0/0f/gD/VAnosd8lF9NHjmkLrEkJ2FwzFz4VJQ2PnmjAKEBsHHAFuPGR8cQQBy97Rz6SHRnMyg69UU6ns8G7lCYu3l4BHB4/xN68amNUshxHe0mW4WUfYu7QHFpCHiE7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GZGE4WqX0esIDcr2fuNuyxPRnI2FaqArx2M7jm2yIYo=;
+ b=b92ViMn8UO164x5/PPr4WI9nmyL70i+m6UB95Y9+vlOY4GY4po5LFJTDwt8b+Jd2ChEs67fQRSqTyYJ4yIQTgVkV83N3kAB3b76eLHgWL7hLhTl2x6/gIm1NqAGsEfIYnPEFjVtg989gm6IMWC7RXcZ7IVLQKTcVm6MXjKw+a9A4Y14IPJ6R2CA5y0GDJ7wbW0BC/wZIjdCWPYOrfoINcnClYJz+4Cnw8aIlhkooEIgPbfZSOguBbEgV9z2L88xL0YIK6HTM75nhE9dqpi+YbFJxMB0kie+78HuaBdtIAurE2cD6AD3uqC556NJgmypxAl1STAiw1cvlh2OSqFCleg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU2PR04MB9524.eurprd04.prod.outlook.com (2603:10a6:10:2f7::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Tue, 12 Nov
+ 2024 01:30:57 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
+ 01:30:57 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	Frank Li <frank.li@nxp.com>
+Subject: RE: [PATCH v2 net-next 2/5] net: enetc: add Tx checksum offload for
+ i.MX95 ENETC
+Thread-Topic: [PATCH v2 net-next 2/5] net: enetc: add Tx checksum offload for
+ i.MX95 ENETC
+Thread-Index: AQHbM96Mok4WQFp4gEq5F3KBlp1btLKxrksAgAAekwCAAHPkgIAAmrDg
+Date: Tue, 12 Nov 2024 01:30:57 +0000
+Message-ID:
+ <PAXPR04MB85102BB0EC0EB736AEECA29B88592@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241111015216.1804534-1-wei.fang@nxp.com>
+ <20241111015216.1804534-3-wei.fang@nxp.com>
+ <AS8PR04MB8849F3B0EA663C281EA4EEE696582@AS8PR04MB8849.eurprd04.prod.outlook.com>
+ <PAXPR04MB8510F82040BCB60A8774A6CA88582@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <AS8PR04MB88493050E61FC7F1EB18973596582@AS8PR04MB8849.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <AS8PR04MB88493050E61FC7F1EB18973596582@AS8PR04MB8849.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DU2PR04MB9524:EE_
+x-ms-office365-filtering-correlation-id: 7fa8bde1-0e0f-446c-572c-08dd02b9a86d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?aGt6V3FSUFdqbm5EZEc2dHQvVGx4SVd0czV1bnM1VGwyTEhSdFJ4bTUyaEVi?=
+ =?utf-8?B?dXZYc2dhN1orSCthQlN0c2FHQmVzMkpRZFNjb1ZnS0t0THlYalZJMXpIOVls?=
+ =?utf-8?B?ZHlXZGdsQnZ4VjVZYzU5bFVQTFdEUm5VOWdrZkVyWEF0cEZvSHFHSFZJMGVm?=
+ =?utf-8?B?MWp6UXlSU1BQTUJwZWV5c1RORGZtMm4vby9JanJwemZ1bE9uN3ZlOUZQajYv?=
+ =?utf-8?B?SU10dXdYSlZyelBZTXBlMTgrZ2l3ZkNEZjBHVE9TbmZQZitqbVVQNGRnck9M?=
+ =?utf-8?B?NWdMQW1xR1VzNUtHSmF5U3l1NTVrd0ExZVJRZ1o3UlRDSnFYNFdXN2lSOW43?=
+ =?utf-8?B?SEtsb1V2T2pSNytuMmg2b20reTJZV0luM3dpa1p2OTBhMHh2eWU2WnZnTUVH?=
+ =?utf-8?B?L3h5ODg0MDNRdEdQVnh6N1FwOU1raE1TT1RUajhRQ1FyNFVCREpTQ0w2RUM1?=
+ =?utf-8?B?U0xVVHNVYytBTUlVcW05Zy9Odm51bG9tM3k0SjlZNFVxNWEvVXdtUURhZG5F?=
+ =?utf-8?B?di9iY0lYdzhhd3pMK1JuNEY2YzFVekg3bVloZFpJK3prUDVvZmRpci9yNmwv?=
+ =?utf-8?B?Ymp4S09XTVJNVm8zUHZiVVJPWUdvMHNLOUNaM3M3QnVZdkcxRmlSYVJkaGVD?=
+ =?utf-8?B?bkUwakU4ZEIrVFdqdVZtWFRZTUw2aGdacUplVk9sR1NIUWxOdUJLYnh4L1Fp?=
+ =?utf-8?B?M1AyVVdhVzhFVDlCY25PYkVSem1mZmJoeVVhalNxUXF5RUNpQTR3UnhjckIv?=
+ =?utf-8?B?d3Q4SCs1KzluY2xaL0VYYkROZlgzTnRmT1hvTk9adkZZNENuRGwwZ2YzTUZB?=
+ =?utf-8?B?UWtmU1V1dHJMc0dIMnZEaC92MncyWTB1dkM3anRFTU1LUHNlSDFXUnpIdFNq?=
+ =?utf-8?B?clAzdisyaVBMTE9wdGY5MVBtK0JlMjBSS2dyYXZqdGFXdFRrRWdRdzZJYXAz?=
+ =?utf-8?B?WmNYMjEzNXBlN0RDRzAwLzFHVE9nUDhJczQwNURGekYxVzZjSHIwLzNXN1Bn?=
+ =?utf-8?B?OHU5cTMvalY5WStuM1k0Zm03NEJIeEdIc1RUZWFKeDNlQ3RXSkFBTXBLbGN0?=
+ =?utf-8?B?M0Z2allrWENzL1JqQTUzZlVkQ1BwTWJUOGpsVVBrRXZhWXltTlNlbVVCRXlC?=
+ =?utf-8?B?SzdEamRvcUk1MzloaG9NL3ovK2JVTWxFbitHOUJLVzlBa0JPcFpwcy9lV3FF?=
+ =?utf-8?B?Y05Pc0o5NmRQeXlzSHBIV0I0RHhkUWtoU05zdDZJN2lOL1V1K0FUakdKS0xk?=
+ =?utf-8?B?YUpqMUJkRUtwcGxRVG8zZVlwdzhIZkd1bkY4cy9USzQxN2JTUVk2OTNtQnZQ?=
+ =?utf-8?B?cjlkQlBHWWswWW4waEVodDBnMXoyQlpQVG5OcGg1bHMwaEN1NlFFWlNoRVRl?=
+ =?utf-8?B?SlBMUmdXdWFNWkxXY0FKSkptUmtwckN3TDI0cFJ5a1hlN0EzVUo2MWhMQlNu?=
+ =?utf-8?B?SElZOTJ3aXRKallxb21SNmJza1ZlSG5WTkdBdklUdU91YkxObzJ3eTJDZUpT?=
+ =?utf-8?B?eUJrR2hVQ1c3NVZiQTBrdVkwMVB0MlZwWEpQMllQK0NsWlYyV3NtT3ZybTYx?=
+ =?utf-8?B?dzdZMUdwOUxhWGI4TXdxN09tSnphQnZ2RXRhd2ZtOVUyZFgra3NGZmdCSU8r?=
+ =?utf-8?B?VHI4Mk94U0RNbzlDM3BEUkV6dUVoZmtHdTQ1MUFVRDhLSWhsRm9lbmNYSWsv?=
+ =?utf-8?B?VWNwN2Y0YXJkS0k5THloWXM0N3U4ZEJ6UVhhTW9KNCszY0VOeVJLMmVDTXEv?=
+ =?utf-8?B?bGE1L0NaYzVpRVFJZ205NTZEV2pPUmZTMFpzZEVyYXJwSTVlTHIzVTdUYXVv?=
+ =?utf-8?Q?oHxa3u6RZHdm6n2SPCIWsjuJbNTlgovuragGU=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?WkRxcUx6WXRFK0hKcU5MRnNGcTlMM0hVWTgrTlBBSUxPLzV0b3pEd1NtMlVK?=
+ =?utf-8?B?TDVEY1Nhd3FNTDZXR2FuaDlHN1VSWkN0dGpnTnFiOERqYWRiRlhUNWhEaHBI?=
+ =?utf-8?B?dzNXdFZJVlpsWStvZ1N4YU1HMmNjK2EzYk9PVlB5eWNOTVZmNktzRU5xRHRQ?=
+ =?utf-8?B?clMvZWorTlZPTE1DZ3Z5VEx1TUV3c0FwdU82QnJDcG5VeEQzcHRkSDBoVllo?=
+ =?utf-8?B?V21OVmc3OEttT0NCQjVubmkvcWo1K1VIcnB1UzBsRkZBaTFZYllRSEJmNWp2?=
+ =?utf-8?B?cm04U0lxbi81QXZZMVdVTEJMMVNReEFOUGpiWVVTRTlocnVkY09ZMnFUOXhk?=
+ =?utf-8?B?eHBjcGRQdUdrbGxyUEJTc2xpNCtqSmtvWHZvUDUzM0RqNEpYQTZSeDVGK3Zv?=
+ =?utf-8?B?TktiN1U5TTF6WU5EOVd4VDNvN2NDWEJGeElGaDYzVGZYa1hBWml5bUxEVTAy?=
+ =?utf-8?B?eUV5SmZaaHdLYXN6WWlBcUVWV2NONmZVeHJBdnlaanNSUDlPK1VvbWZWclAw?=
+ =?utf-8?B?bTJiVFRBais2akloaFR1bHI4K3c4YjlGdlVFbHhIakFMNkNLZktma2lNZU90?=
+ =?utf-8?B?WWtiZnErZHVEVWlEY2VBUzUrYWlyYVBERnhwdkIrRVZBRVl0dWJsRCtGamNB?=
+ =?utf-8?B?QVBOMStwMlNyOU56Z1QvNmtTaHowZGhaNVR2QU5GbERCejJzYU9rbnE2S05G?=
+ =?utf-8?B?K1BsTGxWTEdzTDdZWE5aR1Z3Mm92OStTZTJDOWJBNFA2NEVZdlNlKzFmNnNl?=
+ =?utf-8?B?N1JRNXRhZnd4QiszOVRNQ1pMVXNPaWNkZ2I2aFBhalJQOGJBU0piTEszMUtH?=
+ =?utf-8?B?QlN5OFdEN0Nwc1FDS0ZPYkNhWVRqcWhrZURHSlh0MXYxOUJVbVZ5NEhaUE9l?=
+ =?utf-8?B?V0htYUpndExqVWgySzhHRXo0Y09sbC9kdTNpZ3dPeUI2dm44SVF3SnNpbmV3?=
+ =?utf-8?B?MUFuMXJnOG54eTVpdjVvc3Q2Sk5pOGZ2aU9mcWM0M2RLaS9xZUovYVJ1OUt5?=
+ =?utf-8?B?QjUyYXUyYlc3SGtqQWQ2T1JFZng4dVg4d29iMUZ0RytvQnB1Vkx5MWxSZTBj?=
+ =?utf-8?B?WUlyaEpmSHQwMkV0NTV6SUZCbXM1K0duRXNjS09KZDJCTVdDdjhjZFhkSXdx?=
+ =?utf-8?B?cXNldS9WRndDZER4Qzg0b1I2RjA5TDhrU2VoVHNxc1h0QTkzS0lWV29nQlJu?=
+ =?utf-8?B?UGpYOWVObElFc1d6WTJQVjNjaDc0TDF6WUdLNkhRQTh0QlJENzlWbXZZc0lm?=
+ =?utf-8?B?dXhFK29hMVpzQm94QjlaMDdwRUtpVHFJVmhObUpMR0JLK3NkaExVZjkvaG1Z?=
+ =?utf-8?B?clVzZkFYVHY2RHdCWlVZaiszd2tWWmMxMG0wTk9XZ3NGSTc0STVqREt1REo5?=
+ =?utf-8?B?ZXRHWXVGd3A3a3dnVHlkdmpwZy83SWZhcVBOYWcwRmlZSEhUeGhYdjhrYTV5?=
+ =?utf-8?B?ODN0NUt5Vm50dDB1emtSdGpKRnFmRUsrSUV3b2VtK2ZiN2pNRnV0ZEhQc0k2?=
+ =?utf-8?B?SGRhc1lFOE1qc1AyLzk0YkRQL0NiUXhnZlhONXJOdCtjUm1pOTFXa3lwN1dZ?=
+ =?utf-8?B?Y2o5blpLd3ZiWEFJbUduUE1KTzFOdnNBbW12dUdFYmxoZjY1Sld6ck1zNkZB?=
+ =?utf-8?B?dzFncjZMWHpxTTVUSS9WdzYya3RiNzJLdWJqeGVXUkkxdXhrdFZSeE1NbUI2?=
+ =?utf-8?B?RU8zbVo5UlYyWU12dkRwbTZ6dVAyeHlLVUtpUkJrWkQzQjJPR0M0VmxtZlJI?=
+ =?utf-8?B?OGJWeUxLZlBpd2NXUStWM1NpaXhLWVZjcWNvYmYxMmNOZDJCUG9iRlp6d2Ix?=
+ =?utf-8?B?VjRtc2xVdHpMMG1Ta0ppTjFqRG94b0h5YzZ3bGQ4QkNBSzRpOU0vWnhCdU9C?=
+ =?utf-8?B?VStJOG9vcDBIeSs2L0VHNWJnSGtVMGp3eUwydTFzRWRDWmI1VVBEM1hGMVFV?=
+ =?utf-8?B?RFFKWVZyRmRJVmg2UWd1anNTeUE2bmh3SjFIOEVlRUlCRDdpVVg5WXJ5SVQ1?=
+ =?utf-8?B?c2tvRElYYkU2Qk9XOXFEVjROL0c2aXJrUUFXRFd4ZEhxdEREUGM5V2tRbTdX?=
+ =?utf-8?B?bUtaSXpwbXUvZjFoY2ZKTnN3YTllT0xtK05lTlVYSktVdzJFdEZBNnBmS2Vl?=
+ =?utf-8?Q?G1Uk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Git-Hash: ee9bd377a389
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa8bde1-0e0f-446c-572c-08dd02b9a86d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Nov 2024 01:30:57.4139
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: sitxEJOFJa+Ncn9jI16XDYtXDKKgVZiikmjtpAGS5aLE1rySM7KeSrsCLzuUw+JPB03FjUsvBprV0apuMvoZpg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9524
 
-The driver's tx napi is very important for XSK. It is responsible for
-obtaining data from the XSK queue and sending it out.
-
-At the beginning, we need to trigger tx napi.
-
-virtnet_free_old_xmit distinguishes three type ptr(skb, xdp frame, xsk
-buffer) by the last bits of the pointer.
-
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
----
- drivers/net/virtio_net.c | 179 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 168 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index d5b8567f77d0..57642bd83b7b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -83,6 +83,7 @@ struct virtnet_sq_free_stats {
- 	u64 bytes;
- 	u64 napi_packets;
- 	u64 napi_bytes;
-+	u64 xsk;
- };
- 
- struct virtnet_sq_stats {
-@@ -512,11 +513,13 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
- 					       struct sk_buff *curr_skb,
- 					       struct page *page, void *buf,
- 					       int len, int truesize);
-+static void virtnet_xsk_completed(struct send_queue *sq, int num);
- 
- enum virtnet_xmit_type {
- 	VIRTNET_XMIT_TYPE_SKB,
- 	VIRTNET_XMIT_TYPE_SKB_ORPHAN,
- 	VIRTNET_XMIT_TYPE_XDP,
-+	VIRTNET_XMIT_TYPE_XSK,
- };
- 
- static int rss_indirection_table_alloc(struct virtio_net_ctrl_rss *rss, u16 indir_table_size)
-@@ -541,6 +544,8 @@ static void rss_indirection_table_free(struct virtio_net_ctrl_rss *rss)
- /* We use the last two bits of the pointer to distinguish the xmit type. */
- #define VIRTNET_XMIT_TYPE_MASK (BIT(0) | BIT(1))
- 
-+#define VIRTIO_XSK_FLAG_OFFSET 2
-+
- static enum virtnet_xmit_type virtnet_xmit_ptr_unpack(void **ptr)
- {
- 	unsigned long p = (unsigned long)*ptr;
-@@ -563,6 +568,11 @@ static int virtnet_add_outbuf(struct send_queue *sq, int num, void *data,
- 				    GFP_ATOMIC);
- }
- 
-+static u32 virtnet_ptr_to_xsk_buff_len(void *ptr)
-+{
-+	return ((unsigned long)ptr) >> VIRTIO_XSK_FLAG_OFFSET;
-+}
-+
- static void sg_fill_dma(struct scatterlist *sg, dma_addr_t addr, u32 len)
- {
- 	sg_dma_address(sg) = addr;
-@@ -603,11 +613,27 @@ static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
- 			stats->bytes += xdp_get_frame_len(frame);
- 			xdp_return_frame(frame);
- 			break;
-+
-+		case VIRTNET_XMIT_TYPE_XSK:
-+			stats->bytes += virtnet_ptr_to_xsk_buff_len(ptr);
-+			stats->xsk++;
-+			break;
- 		}
- 	}
- 	netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
- }
- 
-+static void virtnet_free_old_xmit(struct send_queue *sq,
-+				  struct netdev_queue *txq,
-+				  bool in_napi,
-+				  struct virtnet_sq_free_stats *stats)
-+{
-+	__free_old_xmit(sq, txq, in_napi, stats);
-+
-+	if (stats->xsk)
-+		virtnet_xsk_completed(sq, stats->xsk);
-+}
-+
- /* Converting between virtqueue no. and kernel tx/rx queue no.
-  * 0:rx0 1:tx0 2:rx1 3:tx1 ... 2N:rxN 2N+1:txN 2N+2:cvq
-  */
-@@ -1037,7 +1063,7 @@ static void free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
- {
- 	struct virtnet_sq_free_stats stats = {0};
- 
--	__free_old_xmit(sq, txq, in_napi, &stats);
-+	virtnet_free_old_xmit(sq, txq, in_napi, &stats);
- 
- 	/* Avoid overhead when no packets have been processed
- 	 * happens when called speculatively from start_xmit.
-@@ -1399,6 +1425,113 @@ static int virtnet_add_recvbuf_xsk(struct virtnet_info *vi, struct receive_queue
- 	return err;
- }
- 
-+static void *virtnet_xsk_to_ptr(u32 len)
-+{
-+	unsigned long p;
-+
-+	p = len << VIRTIO_XSK_FLAG_OFFSET;
-+
-+	return virtnet_xmit_ptr_pack((void *)p, VIRTNET_XMIT_TYPE_XSK);
-+}
-+
-+static int virtnet_xsk_xmit_one(struct send_queue *sq,
-+				struct xsk_buff_pool *pool,
-+				struct xdp_desc *desc)
-+{
-+	struct virtnet_info *vi;
-+	dma_addr_t addr;
-+
-+	vi = sq->vq->vdev->priv;
-+
-+	addr = xsk_buff_raw_get_dma(pool, desc->addr);
-+	xsk_buff_raw_dma_sync_for_device(pool, addr, desc->len);
-+
-+	sg_init_table(sq->sg, 2);
-+	sg_fill_dma(sq->sg, sq->xsk_hdr_dma_addr, vi->hdr_len);
-+	sg_fill_dma(sq->sg + 1, addr, desc->len);
-+
-+	return virtqueue_add_outbuf_premapped(sq->vq, sq->sg, 2,
-+					      virtnet_xsk_to_ptr(desc->len),
-+					      GFP_ATOMIC);
-+}
-+
-+static int virtnet_xsk_xmit_batch(struct send_queue *sq,
-+				  struct xsk_buff_pool *pool,
-+				  unsigned int budget,
-+				  u64 *kicks)
-+{
-+	struct xdp_desc *descs = pool->tx_descs;
-+	bool kick = false;
-+	u32 nb_pkts, i;
-+	int err;
-+
-+	budget = min_t(u32, budget, sq->vq->num_free);
-+
-+	nb_pkts = xsk_tx_peek_release_desc_batch(pool, budget);
-+	if (!nb_pkts)
-+		return 0;
-+
-+	for (i = 0; i < nb_pkts; i++) {
-+		err = virtnet_xsk_xmit_one(sq, pool, &descs[i]);
-+		if (unlikely(err)) {
-+			xsk_tx_completed(sq->xsk_pool, nb_pkts - i);
-+			break;
-+		}
-+
-+		kick = true;
-+	}
-+
-+	if (kick && virtqueue_kick_prepare(sq->vq) && virtqueue_notify(sq->vq))
-+		(*kicks)++;
-+
-+	return i;
-+}
-+
-+static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
-+			     int budget)
-+{
-+	struct virtnet_info *vi = sq->vq->vdev->priv;
-+	struct virtnet_sq_free_stats stats = {};
-+	struct net_device *dev = vi->dev;
-+	u64 kicks = 0;
-+	int sent;
-+
-+	/* Avoid to wakeup napi meanless, so call __free_old_xmit instead of
-+	 * free_old_xmit().
-+	 */
-+	__free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), true, &stats);
-+
-+	if (stats.xsk)
-+		xsk_tx_completed(sq->xsk_pool, stats.xsk);
-+
-+	sent = virtnet_xsk_xmit_batch(sq, pool, budget, &kicks);
-+
-+	if (!is_xdp_raw_buffer_queue(vi, sq - vi->sq))
-+		check_sq_full_and_disable(vi, vi->dev, sq);
-+
-+	u64_stats_update_begin(&sq->stats.syncp);
-+	u64_stats_add(&sq->stats.packets, stats.packets);
-+	u64_stats_add(&sq->stats.bytes,   stats.bytes);
-+	u64_stats_add(&sq->stats.kicks,   kicks);
-+	u64_stats_add(&sq->stats.xdp_tx,  sent);
-+	u64_stats_update_end(&sq->stats.syncp);
-+
-+	if (xsk_uses_need_wakeup(pool))
-+		xsk_set_tx_need_wakeup(pool);
-+
-+	return sent;
-+}
-+
-+static void xsk_wakeup(struct send_queue *sq)
-+{
-+	if (napi_if_scheduled_mark_missed(&sq->napi))
-+		return;
-+
-+	local_bh_disable();
-+	virtqueue_napi_schedule(&sq->napi, sq->vq);
-+	local_bh_enable();
-+}
-+
- static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-@@ -1412,14 +1545,19 @@ static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
- 
- 	sq = &vi->sq[qid];
- 
--	if (napi_if_scheduled_mark_missed(&sq->napi))
--		return 0;
-+	xsk_wakeup(sq);
-+	return 0;
-+}
- 
--	local_bh_disable();
--	virtqueue_napi_schedule(&sq->napi, sq->vq);
--	local_bh_enable();
-+static void virtnet_xsk_completed(struct send_queue *sq, int num)
-+{
-+	xsk_tx_completed(sq->xsk_pool, num);
- 
--	return 0;
-+	/* If this is called by rx poll, start_xmit and xdp xmit we should
-+	 * wakeup the tx napi to consume the xsk tx queue, because the tx
-+	 * interrupt may not be triggered.
-+	 */
-+	xsk_wakeup(sq);
- }
- 
- static int __virtnet_xdp_xmit_one(struct virtnet_info *vi,
-@@ -1535,8 +1673,8 @@ static int virtnet_xdp_xmit(struct net_device *dev,
- 	}
- 
- 	/* Free up any pending old buffers before queueing new ones. */
--	__free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq),
--			false, &stats);
-+	virtnet_free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq),
-+			      false, &stats);
- 
- 	for (i = 0; i < n; i++) {
- 		struct xdp_frame *xdpf = frames[i];
-@@ -2993,7 +3131,7 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
- 	struct virtnet_info *vi = sq->vq->vdev->priv;
- 	unsigned int index = vq2txq(sq->vq);
- 	struct netdev_queue *txq;
--	int opaque;
-+	int opaque, xsk_done = 0;
- 	bool done;
- 
- 	if (unlikely(is_xdp_raw_buffer_queue(vi, index))) {
-@@ -3005,7 +3143,11 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
- 	txq = netdev_get_tx_queue(vi->dev, index);
- 	__netif_tx_lock(txq, raw_smp_processor_id());
- 	virtqueue_disable_cb(sq->vq);
--	free_old_xmit(sq, txq, !!budget);
-+
-+	if (sq->xsk_pool)
-+		xsk_done = virtnet_xsk_xmit(sq, sq->xsk_pool, budget);
-+	else
-+		free_old_xmit(sq, txq, !!budget);
- 
- 	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS) {
- 		if (netif_tx_queue_stopped(txq)) {
-@@ -3016,6 +3158,11 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
- 		netif_tx_wake_queue(txq);
- 	}
- 
-+	if (xsk_done >= budget) {
-+		__netif_tx_unlock(txq);
-+		return budget;
-+	}
-+
- 	opaque = virtqueue_enable_cb_prepare(sq->vq);
- 
- 	done = napi_complete_done(napi, 0);
-@@ -6058,6 +6205,12 @@ static void free_receive_page_frags(struct virtnet_info *vi)
- 
- static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
- {
-+	struct virtnet_info *vi = vq->vdev->priv;
-+	struct send_queue *sq;
-+	int i = vq2rxq(vq);
-+
-+	sq = &vi->sq[i];
-+
- 	switch (virtnet_xmit_ptr_unpack(&buf)) {
- 	case VIRTNET_XMIT_TYPE_SKB:
- 	case VIRTNET_XMIT_TYPE_SKB_ORPHAN:
-@@ -6067,6 +6220,10 @@ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
- 	case VIRTNET_XMIT_TYPE_XDP:
- 		xdp_return_frame(buf);
- 		break;
-+
-+	case VIRTNET_XMIT_TYPE_XSK:
-+		xsk_tx_completed(sq->xsk_pool, 1);
-+		break;
- 	}
- }
- 
--- 
-2.32.0.3.g01195cf9f
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDbGF1ZGl1IE1hbm9pbCA8Y2xh
+dWRpdS5tYW5vaWxAbnhwLmNvbT4NCj4gU2VudDogMjAyNOW5tDEx5pyIMTLml6UgMDoxMQ0KPiBU
+bzogV2VpIEZhbmcgPHdlaS5mYW5nQG54cC5jb20+DQo+IENjOiBuZXRkZXZAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBpbXhAbGlzdHMubGludXguZGV2Ow0K
+PiBWbGFkaW1pciBPbHRlYW4gPHZsYWRpbWlyLm9sdGVhbkBueHAuY29tPjsgQ2xhcmsgV2FuZw0K
+PiA8eGlhb25pbmcud2FuZ0BueHAuY29tPjsgYW5kcmV3K25ldGRldkBsdW5uLmNoOyBkYXZlbUBk
+YXZlbWxvZnQubmV0Ow0KPiBlZHVtYXpldEBnb29nbGUuY29tOyBrdWJhQGtlcm5lbC5vcmc7IHBh
+YmVuaUByZWRoYXQuY29tOyBGcmFuayBMaQ0KPiA8ZnJhbmsubGlAbnhwLmNvbT4NCj4gU3ViamVj
+dDogUkU6IFtQQVRDSCB2MiBuZXQtbmV4dCAyLzVdIG5ldDogZW5ldGM6IGFkZCBUeCBjaGVja3N1
+bSBvZmZsb2FkIGZvcg0KPiBpLk1YOTUgRU5FVEMNCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNz
+YWdlLS0tLS0NCj4gPiBGcm9tOiBXZWkgRmFuZyA8d2VpLmZhbmdAbnhwLmNvbT4NCj4gPiBTZW50
+OiBNb25kYXksIE5vdmVtYmVyIDExLCAyMDI0IDExOjI2IEFNDQo+IFsuLi5dDQo+ID4gU3ViamVj
+dDogUkU6IFtQQVRDSCB2MiBuZXQtbmV4dCAyLzVdIG5ldDogZW5ldGM6IGFkZCBUeCBjaGVja3N1
+bSBvZmZsb2FkIGZvcg0KPiA+IGkuTVg5NSBFTkVUQw0KPiA+DQo+ID4gPiA+IC0tLSBhL2RyaXZl
+cnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9lbmV0Yy9lbmV0Yy5jDQo+ID4gPiA+ICsrKyBiL2Ry
+aXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9lbmV0Yy9lbmV0Yy5jDQo+ID4gPiA+IEBAIC0x
+NDMsNiArMTQzLDI3IEBAIHN0YXRpYyBpbnQgZW5ldGNfcHRwX3BhcnNlKHN0cnVjdCBza19idWZm
+ICpza2IsDQo+ID4gPiA+IHU4ICp1ZHAsDQo+ID4gPiA+ICAJcmV0dXJuIDA7DQo+ID4gPiA+ICB9
+DQo+ID4gPiA+DQo+ID4gPiA+ICtzdGF0aWMgYm9vbCBlbmV0Y190eF9jc3VtX29mZmxvYWRfY2hl
+Y2soc3RydWN0IHNrX2J1ZmYgKnNrYikgew0KPiA+ID4gPiArCWlmIChpcF9oZHIoc2tiKS0+dmVy
+c2lvbiA9PSA0KQ0KPiA+ID4NCj4gPiA+IEkgd291bGQgYXZvaWQgdXNpbmcgaXBfaGRyKCksIG9y
+IGFueSBmb3JtIG9mIHRvdWNoaW5nIHBhY2tlZCBkYXRhIGFuZA0KPiA+ID4gdHJ5IGV4dHJhY3Qg
+dGhpcyBraW5kIG9mIGluZm8gZGlyZWN0bHkgZnJvbSB0aGUgc2tiIG1ldGFkYXRhIGluc3RlYWQs
+DQo+ID4gPiBzZWUgYWxzbyBjb21tZW50IGJlbG93Lg0KPiA+ID4NCj4gPiA+IGkuZS4sIHdoeSBu
+b3Q6DQo+ID4gPiBpZiAoc2tiLT5wcm90b2NvbCA9PSBodG9ucyhFVEhfUF9JUFY2KSkgLi4gIGV0
+Yy4gPw0KPiA+DQo+ID4gc2tiLT5wcm90b2NvbCBtYXkgYmUgVkxBTiBwcm90b2NvbCwgc3VjaCBh
+cyBFVEhfUF84MDIxUSwNCj4gRVRIX1BfODAyMUFELg0KPiA+IElmIHNvLCBpdCBpcyBpbXBvc3Np
+YmxlIHRvIGRldGVybWluZSB3aGV0aGVyIGl0IGlzIGFuIElQdjQgb3IgSVB2NiBmcmFtZXMNCj4g
+dGhyb3VnaA0KPiA+IHByb3RvY29sLg0KPiA+DQo+IA0KPiB2bGFuX2dldF9wcm90b2NvbCgpIHRo
+ZW4/DQo+IEkgc2VlIHlvdSdyZSB1c2luZyB0aGlzIGhlbHBlciBpbiB0aGUgTFNPIHBhdGNoLCBz
+byBsZXQncyBiZSBjb25zaXN0ZW50IHRoZW4uIDopDQo+IEkgc3RpbGwgdGhpbmsgaXQncyBiZXR0
+ZXIgdGhhbiB0aGUgaXBfaGRyKHNrYikgYXBwcm9hY2guDQoNClllcywgdmxhbl9nZXRfcHJvdG9j
+b2woKSBjYW4gYWxzbyBoZWxwIHVzIGdldCB0aGUgSVAgdmVyc2lvbiwgc28gbGV0J3MgYmUNCmNv
+bnNpc3RlbnQuIFRoYW5rcy4NCg0K
