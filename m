@@ -1,123 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50BC20B1FD
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 09:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEB020B1FE;
+	Tue, 12 Nov 2024 09:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731402093; cv=none; b=B+uuJTYyaJIzofx1IYZ7KbMV9CGa8sn0ZDr1bRZe6jMA4BvU2L77WHHdHH8b4WuzHOsicwhge324HKsLbB0NPHXLWdcop7t9kdnGYbT67UizLXe2rcYHwfr+iTqsWD7KiIIOVClK7mqcusejFFxY4OGmzOAGtD1x8sAHBYnJ6Fk=
+	t=1731402358; cv=none; b=IWPFro4YQtqNGToZpsU7ux6SkWAlYvuuyxzefbI0p0NZwOO27xNf1spvt9sXbJnKau+rwoYH6/LXLxfdJEN8eyufolrn9Eb2Fj4UlfvLZEgVRokZwrxOh1Prg3Xv4eMa8jU9O7SglwdxPVkbgDMRwvdNIYPkeUFI/Zp/ziklKLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731402093; c=relaxed/simple;
-	bh=J4YLsSb0ADwVaiqdgi3gHn5573IyKZUBPT1DevJVQzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bSLNJmhKjvAGvLRBRxAOEtQA6MRWvv2/YgWt29v7YHhO/VrsSd/xOceRB6sIBIGY01wO1VocnZfN7RvRGvs2vlawTQ9SI1e03pSWhx8ZTKb52S4ru8BiAkqKJWRPuDgtrarbix9KGsuaFcJAxYLi3E/z/V4zRAMewTlaUWxFWh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LsKXuoI1; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1731402358; c=relaxed/simple;
+	bh=AZC05Uzba0AlI9besS5fYRqu00InKYWMIt/mMX71LNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rNCl5Hq+f8jsFektiYCavIJAJs7GNpaqAEbG28zqB8pMdKRSMMA3Kg15TpeHK8DGXZnssEwoF1z17NbwXNLX9FBqNuiGLS5IYt5M1BHkKdu0L4kV0r23sfp4D4Gi+JJP9EHOhqxk6pSLaKiAz0IifdqIrl6WgK05rJuf1dhW8a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=L6GVNo83; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LsKXuoI1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731402092; x=1762938092;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=J4YLsSb0ADwVaiqdgi3gHn5573IyKZUBPT1DevJVQzk=;
-  b=LsKXuoI1C1Mu7vnokLk/CziM86kV6FzpQ2Uh8dvPG0iwCbvAsbgaFKcA
-   IO6/jSvasK8dmflL4Ga50+/eyqZw2kBnxVSq6k+1Yb3kabpJji0mLUAji
-   b0sgvPW1c/yz6qobpNMXPt6OQ+V8mOddCmGTJaIQsuZsxrcTaqI4EuJIK
-   Rta4/DsUIuydLR+WdInx9eCSEFZhm+68iKSYwBeO+z9xckF9Xe79xTJzI
-   FGVqKTdJO9s0HFCh+dcHhyhV3f9CMb24D/DmRGsxyPjnu3RIHlO/WZ3hT
-   jbvNNnahxGsx5uAo6KFpPyWjyRi5FI/2Ej9kRt55voSBPOmTQNDzc7wji
-   g==;
-X-CSE-ConnectionGUID: +Z37rsq7QK+CMa/yVjgDKg==
-X-CSE-MsgGUID: D5eb+1hOSRa9Kc5EnzMEYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11253"; a="31318151"
-X-IronPort-AV: E=Sophos;i="6.12,147,1728975600"; 
-   d="scan'208";a="31318151"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 01:01:03 -0800
-X-CSE-ConnectionGUID: e6kJCa25TRuj03V01nh0DA==
-X-CSE-MsgGUID: ojG1P6OdTSyzEGAAibmwaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,147,1728975600"; 
-   d="scan'208";a="118291844"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 01:00:59 -0800
-Date: Tue, 12 Nov 2024 09:58:18 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Michal Schmidt <mschmidt@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	pawel.chmielewski@intel.com, sridhar.samudrala@intel.com,
-	jacob.e.keller@intel.com, pio.raczynski@gmail.com,
-	konrad.knitter@intel.com, marcin.szycik@intel.com,
-	wojciech.drewek@intel.com, nex.sw.ncis.nat.hpm.dev@intel.com,
-	przemyslaw.kitszel@intel.com, jiri@resnulli.us, horms@kernel.org,
-	David.Laight@aculab.com, pmenzel@molgen.mpg.de
-Subject: Re: [iwl-next v7 2/9] ice: devlink PF MSI-X max and min parameter
-Message-ID: <ZzMYqp8A59lfnLa9@mev-dev.igk.intel.com>
-References: <20241104121337.129287-1-michal.swiatkowski@linux.intel.com>
- <20241104121337.129287-3-michal.swiatkowski@linux.intel.com>
- <CADEbmW2=9s8iGJibWpPnVUraMOr7ecE6Hbpb1n3d9es-aUvA7Q@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="L6GVNo83"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4AC9554p034817;
+	Tue, 12 Nov 2024 03:05:05 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1731402305;
+	bh=QpwOasLTNVyfbMQfZUeCUaJpf2akxr+PlTXQ9gkq8Vc=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=L6GVNo83Zj3PECMkOR/yawBo1Hixy3y0w4uRhzEKPQmW6kNdAT0q9efJ+iZFtFh+P
+	 LUJd0o3t2DiUzw5S/ZCb+qrPxlmRRV/egl4hk4Pao7je+dZy++5qGP4Qmg5rgCB43m
+	 LDKzOLYIIwlj0KPO8+Boo5rbgIoiBkKWE5JJ749Q=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4AC955DS003156
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 12 Nov 2024 03:05:05 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 12
+ Nov 2024 03:05:05 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 12 Nov 2024 03:05:05 -0600
+Received: from [10.24.69.13] (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AC950BE010639;
+	Tue, 12 Nov 2024 03:05:00 -0600
+Message-ID: <db77a358-a4d3-444e-971e-aa348ad8c8b7@ti.com>
+Date: Tue, 12 Nov 2024 14:34:59 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADEbmW2=9s8iGJibWpPnVUraMOr7ecE6Hbpb1n3d9es-aUvA7Q@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] net: ti: icssg-prueth: Fix clearing of
+ IEP_CMP_CFG registers during iep_init
+To: Roger Quadros <rogerq@kernel.org>, <vigneshr@ti.com>,
+        <m-karicheri2@ti.com>, <jan.kiszka@siemens.com>,
+        <javier.carrasco.cruz@gmail.com>, <jacob.e.keller@intel.com>,
+        <horms@kernel.org>, <diogo.ivo@siemens.com>, <pabeni@redhat.com>,
+        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
+        <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        <danishanwar@ti.com>
+References: <20241106074040.3361730-1-m-malladi@ti.com>
+ <20241106074040.3361730-3-m-malladi@ti.com>
+ <f28bf97c-783d-489c-9549-0dd0f576497e@kernel.org>
+Content-Language: en-US
+From: Meghana Malladi <m-malladi@ti.com>
+In-Reply-To: <f28bf97c-783d-489c-9549-0dd0f576497e@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, Nov 11, 2024 at 12:44:11PM +0100, Michal Schmidt wrote:
-> On Mon, Nov 4, 2024 at 1:13 PM Michal Swiatkowski
-> <michal.swiatkowski@linux.intel.com> wrote:
-> >
-> > Use generic devlink PF MSI-X parameter to allow user to change MSI-X
-> > range.
-> >
-> > Add notes about this parameters into ice devlink documentation.
-> >
-> > Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > ---
-> >  Documentation/networking/devlink/ice.rst      | 11 +++
-> >  .../net/ethernet/intel/ice/devlink/devlink.c  | 83 ++++++++++++++++++-
-> >  drivers/net/ethernet/intel/ice/ice.h          |  7 ++
-> >  drivers/net/ethernet/intel/ice/ice_irq.c      |  7 ++
-> >  4 files changed, 107 insertions(+), 1 deletion(-)
-> >
-> [...]
-> > @@ -1648,6 +1710,7 @@ void ice_devlink_unregister(struct ice_pf *pf)
-> >  int ice_devlink_register_params(struct ice_pf *pf)
-> >  {
-> >         struct devlink *devlink = priv_to_devlink(pf);
-> > +       union devlink_param_value value;
-> >         struct ice_hw *hw = &pf->hw;
-> >         int status;
-> >
-> > @@ -1656,11 +1719,27 @@ int ice_devlink_register_params(struct ice_pf *pf)
-> >         if (status)
-> >                 return status;
-> >
-> > +       status = devl_params_register(devlink, ice_dvl_msix_params,
-> > +                                     ARRAY_SIZE(ice_dvl_msix_params));
-> > +       if (status)
-> > +               return status;
-> > +
-> >         if (hw->func_caps.common_cap.tx_sched_topo_comp_mode_en)
-> >                 status = devl_params_register(devlink, ice_dvl_sched_params,
-> >                                               ARRAY_SIZE(ice_dvl_sched_params));
-> > +       if (status)
-> > +               return status;
+
+On 11/11/24 19:23, Roger Quadros wrote:
+> Hi,
 > 
-> Error handling looks wrong in this function.
-> You have to unwind the registration of the params from above or they will leak.
-> Sorry I did not notice this earlier.
+> On 06/11/2024 09:40, Meghana Malladi wrote:
+>> When ICSSG interfaces are brought down and brought up again, the
+>> pru cores are shut down and booted again, flushing out all the memories
+>> and start again in a clean state. Hence it is expected that the
+>> IEP_CMP_CFG register needs to be flushed during iep_init() to ensure
+>> that the existing residual configuration doesn't cause any unusual
+>> behavior. If the register is not cleared, existing IEP_CMP_CFG set for
+>> CMP1 will result in SYNC0_OUT signal based on the SYNC_OUT register values.
+>>
+>> After bringing the interface up, calling PPS enable doesn't work as
+>> the driver believes PPS is already enabled, (iep->pps_enabled is not
+>> cleared during interface bring down) and driver  will just return true
+>> even though there is no signal. Fix this by setting the iep->pps_enable
+>> and iep->perout_enable flags to false during the link down.
+>>
+>> Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+>> Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+>> ---
+>>   drivers/net/ethernet/ti/icssg/icss_iep.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+>> index 5d6d1cf78e93..03abc25ced12 100644
+>> --- a/drivers/net/ethernet/ti/icssg/icss_iep.c
+>> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+>> @@ -195,6 +195,12 @@ static void icss_iep_enable_shadow_mode(struct icss_iep *iep)
+>>   
+>>   	icss_iep_disable(iep);
+>>   
+>> +	/* clear compare config */
+>> +	for (cmp = IEP_MIN_CMP; cmp < IEP_MAX_CMP; cmp++) {
+>> +		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+>> +				   IEP_CMP_CFG_CMP_EN(cmp), 0);
+>> +	}
+>> +
+> 
+> A bit later we are clearing compare status. Can clearing CMP be done in same for loop?
 > 
 
-Right, I  will send fixed version.
-Thanks for reviewing,
-Michal
+Yes it can be done in the same loop, I will update that.
 
-> Michal
+>>   	/* disable shadow mode */
+>>   	regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+>>   			   IEP_CMP_CFG_SHADOW_EN, 0);
+>> @@ -778,6 +784,10 @@ int icss_iep_exit(struct icss_iep *iep)
+>>   		ptp_clock_unregister(iep->ptp_clock);
+>>   		iep->ptp_clock = NULL;
+>>   	}
+>> +
+>> +	iep->pps_enabled = false;
+>> +	iep->perout_enabled = false;
+>> +
+> 
+> But how do you keep things in sync with user space?
+> User might have enabled PPS or PEROUT and then put SLICE0 interface down.
+> Then if SLICE0 is brought up should PPS/PEROUT keep working like before?
+
+No, why? Because either both SLICE0 and SLICE1 run when atleast one 
+interface is up and both SLICE0 and SLICE1 are stopped when both the 
+interfaces are brought down. So when SLICE0 is brought down, SLICE1 is 
+also brought down. Next time you bring an interface up, it is a fresh 
+boot for both SLICE1 and SLICE0. In this case, just like how we register 
+for ptp clock (this is handled by the driver in icss_iep_init(),
+pps also needs to be enabled (this has to be done by the user).
+
+> We did call ptp_clock_unregister() so it should unregister the PPS as well.
+> What I'm not sure is if it calls the ptp->enable() hook to disable the PPS/PEROUT.
+> 
+> If yes then that should take care of the flags as well.
+> 
+
+No, ptp_clock_unregister() doesn't unregister PPS.
+
+> If not then you need to call the relevant hooks explicitly but just after
+> ptp_clock_unregister().
+> e.g.
+> 	if (iep->pps_enabled)
+> 		icss_iep_pps_enable(iep, false);
+> 	else if (iep->perout_enabled)
+> 		icss_iep_perout_enable(iep, NULL, false);
+> 
+
+This doesn't work because if pps_enabled is already true, it goes to 
+icss_iep_pps_enable(), but inside it checks if pps_enabled is true, if 
+so it returns 0, without acutally enabling pps. Which is why we need to 
+set pps_enable and perout_enable to false.
+
+> But this means that user has to again setup PPS/PEROUT.	
+> 
+
+So yes, this is the expected behavior for user to setup PPS/PEROUT after 
+bringing up an interface. To clarify when user needs to again setup PPS:
+
+1. eth1 and eth2 are up, and one interface is brought down -> PPS/PEROUT 
+will be working the same
+2. No interface is up, and one interface is brought up -> PPS/PEROUT 
+needs to be enabled
+
+>>   	icss_iep_disable(iep);
+>>   
+>>   	return 0;
 > 
