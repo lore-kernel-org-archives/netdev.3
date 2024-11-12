@@ -1,120 +1,71 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1BF1FF053;
-	Tue, 12 Nov 2024 15:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AE2200109
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 15:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731424344; cv=none; b=pCYWuglR8RAsS75avrHmcjChcC87nMiHFiR2eQgiXTDQ/Ww6g85nCifuxX4BHy6JvGt3+cKzWlVrscVDnbnCvi3ps380hIrR+cxI8XnxRLnU4DuDydAP+vmq9XfdmFHEtpcHe73gO2RFhLACNkPO81ZW3312uyVhEXS+t55kMYI=
+	t=1731424481; cv=none; b=GfQckF6Fhnqr228vXigov7u3zSb9m8pokxLaLDpRPwyiSN8YrwlMXfbR8DcE/GvbL23dgiSH5G+bZ2cD++cgr9pIcZd/2WuSOzMu82hmA39xNMJO69DP8QKYNMTbX+P2B8aCpXrUpBrCN6oYp3lnK1DSCUDyxorVH+aJsy+ycSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731424344; c=relaxed/simple;
-	bh=FvYDxemAYWoX77GN8sFeA7OVWjIqbPCJa5r4+zu85Rg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U591I1JSHk12rAWW9ctAYHwxo6F0aP3/glU0tVudP243BZCXAF5tGw/cJfzv/VYhu9WBT8VKWtT0aWP02h4AEE9kDMgnsN1awVjXNvXUWu+xSNuXJ3pFKhkyMDm8VEt3fdR2pFWBydDbr7TC8HqOkvFKFDHMh4fU6I+pyduJ1FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gN8R0y5r; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1731424481; c=relaxed/simple;
+	bh=Kjv+dUaivCeMePY/kXKpPE1hNCsyMGa18kwndOgnkNA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bd8RZtm9u+zAWBdIkTa2a9jofqHe9r6CAb+nq8dgUNWr5rVc5ldYA0esfMH0Sz+m5jzs+QUZjcLEMrWn4AZik1WLajql6DwOpnkBAWosPWJlWiGP9bRjbY/fWFd8g+9G6uPpsgjqzGxFYGeN9/APoXO0tzd9GedJN7m1TmqdTMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXYmr9Eb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gN8R0y5r"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5AAF7240006;
-	Tue, 12 Nov 2024 15:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731424339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7/ZZ+GzA9JnknmCSiZ4KAoFAxIWZALm0qPy9dvBIJSk=;
-	b=gN8R0y5rBADWu+wo+lGHeMRwjS1282FydlI9vD3kgvpHQWTYsItwv0ODr3pyxeUUL9/IZL
-	szxsyvU9qROe3EZH29OPtqpzNY1CGgw47LbshgwpkgUVX6VO2bWsajgC4TmMcGHH7r9LlY
-	G33EvbRmjGx8br4vfR0EeyZkdPYjWhhRewSY/WUDxk+ZEvI08pmAojF8qfmADEABnJxIG+
-	qoyc+4hqVEjd2XnEyLTv/JnKdPv8cfU++ryF0rzS0cTh8FTuDEnlZfczRSAd+U2jb3EZf+
-	mfFl/EYf15RQtHk91p5j5TX+qAfHgPZIWoTiawRO5TblLOHnhgPxrTSLqjvRdg==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: cathycai0714@gmail.com, Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Avi Fishman <avifishman70@gmail.com>
-Cc: cathy.cai@unisoc.com, cixi.geng1@unisoc.com,
- David Miller <davem@davemloft.net>, edumazet@google.com, kuba@kernel.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
- Network Development <netdev@vger.kernel.org>, pabeni@redhat.com,
- wade.shu@unisoc.com, xuewen.yan94@gmail.com, zhiguo.niu@unisoc.com,
- Alexandre Torgue <alexandre.torgue@st.com>,
- Murali <murali.somarouthu@dell.com>, Tomer Maimon <tmaimon77@gmail.com>,
- "Silva, L Antonio" <Luis.A.Silva@dell.com>,
- Arias Pablo <Pablo_Arias@dell.com>,
- Somarouthu Murali <Murali_Somarouthu@dell.com>, uri.trichter@nuvoton.com
-Subject: Re: [RFC PATCH] net: stmmac: Fix the problem about interrupt storm
-Date: Tue, 12 Nov 2024 16:12:17 +0100
-Message-ID: <7732873.EvYhyI6sBW@fw-rgant>
-In-Reply-To:
- <CAKKbWA6zRee9Rzee-ebLnEAvwLqnmsPswGaUo_ineyzw-b=EgQ@mail.gmail.com>
-References:
- <CAKKbWA7e0TmU4z4O8tHfwE=dvqPFaZbSPjxR-==fQSsNq6ELCQ@mail.gmail.com>
- <CAKKbWA6zRee9Rzee-ebLnEAvwLqnmsPswGaUo_ineyzw-b=EgQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXYmr9Eb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE8DC4CECD;
+	Tue, 12 Nov 2024 15:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731424480;
+	bh=Kjv+dUaivCeMePY/kXKpPE1hNCsyMGa18kwndOgnkNA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aXYmr9EbHDeMHEtFIwln2PyNLjlE9oNgPM5Hr7SD6rrKLuQCz18eXeVfotWGLwdDR
+	 r0JUjbQv0qTnAKYvqcBrBKz9Z6rZOUdEZpbkgHvSZtmh3SARIQ2enUeN3JfbZUmPXi
+	 m2Gp6vIrImW3PKBhlhfOSLviJsgl6mrdD+QmRtQ+cmhnPCNaIDQO+evVwM9uEd8F+e
+	 UKPz7CBjL7Ecbi/obzU4aKgPmQB692hFF5wlhoFUXmBdBCg1u1aN3tPMVw17dl8ZrF
+	 QNyJgL9T02y/yvr2sqpabWQ2rCfgDRFwl/oMVZ6w9vf4Gexr4WsU7miL1w5Bq/mI4q
+	 6wPQ2aKVKP8gA==
+Date: Tue, 12 Nov 2024 07:14:39 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Donald Hunter <donald.hunter@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, Jiri Pirko
+ <jiri@resnulli.us>, donald.hunter@redhat.com
+Subject: Re: [PATCH net-next v1 2/2] tools/net/ynl: add async notification
+ handling
+Message-ID: <20241112071439.5ade3b1d@kernel.org>
+In-Reply-To: <m24j4cvmlp.fsf@gmail.com>
+References: <20241108123816.59521-1-donald.hunter@gmail.com>
+	<20241108123816.59521-3-donald.hunter@gmail.com>
+	<20241109134011.560db783@kernel.org>
+	<m2cyj2uj11.fsf@gmail.com>
+	<20241111100325.3b09ccb8@kernel.org>
+	<m24j4cvmlp.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-GND-Sasl: romain.gantois@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On Tue, 12 Nov 2024 09:16:02 +0000 Donald Hunter wrote:
+> >> I don't follow; what are you suggesting I initialise endtime to when
+> >> duration is 0 ?  
+> >
+> > I was suggesting:
+> >
+> > 	def poll_nft([...], duration=0)
+> >
+> > 	endtime = time.time() + duration  
+> 
+> I want it to run forever if a duration is not provided, but here
+> endtime == starttime so it would exit immediately.
+> 
+> I thought the original approach was fairly pythonic - if duration is not
+> specified (None) then there would be no endtime (None).
 
-On dimanche 3 novembre 2024 20:00:54 heure normale d=E2=80=99Europe central=
-e Avi=20
-=46ishman wrote:
-> Hi all,
->=20
-=2E..
-> >  Yes. It could also happen between the dev_open() and
-> >=20
-> > clear_bit(STMMAC_DOWN) calls.
-> > Although we did not reproduce this scenario, it should have happened
-> > if we had increased
-> > the number of test samples. In addition, I found that other people had
-> > similar problems before.
-> > The link is:
-> > https://lore.kernel.org/all/20210208140820.10410-11-Sergey.Semin@baikal=
-ele
-> > ctronics.ru/>=20
-> > > Moreover, it seems strange to me that stmmac_interrupt()
-> > > unconditionnally
-> > > ignores interrupts when the driver is in STMMAC_DOWN state. This seems
-> > > like
-> > > dangerous behaviour, since it could cause IRQ storm issues whenever
-> > > something in the driver sets this state. I'm not too familiar with the
-> > > interrupt handling in this driver, but maybe stmmac_interrupt() could
-> > > clear interrupts unconditionnally in the STMMAC_DOWN state?
-> >=20
-> > Clear interrupts unconditionally in the STMMAC_DOWN state directly
-> > certainly won't cause this problem.
-> > This may be too rough, maybe this design has other considerations.
->=20
-> But then after the dev_open() you might miss interrupt, no?
-
-Indeed, but in any case, unconditionally returning from an IRQ handler with=
-out=20
-clearing any interrupt flags seems like very strange behavior to me.
-
-Disabling and reenabling interrupts as you suggested does seem like a
-good solution for this particular scenario, but it doesn't solve the more
-general issue of the dangerous way stmmac_interrupt handles this.
-
-Maybe the setting and clearing of this STMMAC_DOWN bit should
-be wrapped in some kind of handler which also disables all interrupts?
-
-Best Regards
-
-=2D-=20
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-
+Ah, makes perfect sense in hindsight, I misread the code.
