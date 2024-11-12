@@ -1,319 +1,224 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BFD13A879
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 13:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725F8158DB9;
+	Tue, 12 Nov 2024 13:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731417627; cv=none; b=KAvC+ZQ66ZuRb5PAQ+zfRMThiwyiK2zsKD1mpAum+NXHV9vJ7LTts5CHIN3NOBxNqokOMN07MqSIFFCbpmjDU6Ker9xtfPHUnrh7FwhPX4hzt1pSDGtKFZ2SSs8/B7sF8QIsXLQnNrkZO2W5Zft6LCoLFhcSLiDOAYYhsQgrnH4=
+	t=1731418522; cv=none; b=tsJI1b1HHkfdVC6fRMts6rMwsoK5RKePp2DwcbcN73cwYT4SiL2P8OGn0Tst6lalI9QkYVEXxZp65be+uTjXzjcyNReC1AUVe6Rxh5e7XpfoNr3OYv+8Lm0uyvxbUA1HjU6CS+kBsj2DziVoZeThuEfVV4s9n41ORo6XZ7BB9I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731417627; c=relaxed/simple;
-	bh=4uQQKVnJVNkYxj3Jf3V9uXYx3Kw1s6pIzZwwAp0Wiaw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hlOtRCq9pTtVYGZ0cuxTnRTJnQwOjABU05zha310O6B4jpwZajEfop2CONfnYcwmXIBclqJuJKoIQsol5Geh0rwXkc51E/6x/wKKGz4jWTh8qxyHVlCAypBipxCOQX46uSO+gknOeoOfPAzgdUmJ7OPEgidycgJBhbyOES/RzO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=R1fGFGwp; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1731418522; c=relaxed/simple;
+	bh=anrwzrXOnjIAZZpGQQGNMBfN1xGtzIuPmbNrKiYeAjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ccCJIUTlmoxfcBdPL9k+w8ESQqjAVm7J+vqHDG6Wc/Fk0ZWgwAe3ICXdTqs1UelSdhospHsGTq2b96KLPOKp2JfM4NzxN1MEhfzTO4PFxS+cFyfktnFCns6CsKzliN35kRppztF2R5beHvAgHfV80lOhfDnlSBZl7H/QNMDQTTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmqDwuq0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="R1fGFGwp"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9aa8895facso1046127266b.2
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 05:20:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1731417622; x=1732022422; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1t9Ib/aPHDdfQvoVKx/Fp+uYeREslGX9huBdxy8D5w=;
-        b=R1fGFGwpLwBuY22360zqHCFEnrtfk2hrVbS8OpLp+AYP9e1SySpJPTZcqrWxCqjgQ/
-         CtHDSrQDdNVPvhM5cgIaKBv7pEJ+ceYEGN73V32Wfbw2LSEYL8GXVKLgTd2f1dTVKjlb
-         7cJP/UpEaUm9iCVWwOeaRM/5blXj5ML6D/5rnW7T5ihfPCRHQkLa84+kpZzgs72NaKPl
-         qZreU/NfePX9GRTF1xtg/hOZG6UftZ/8/l5Vht+eGmpS7GH7ZcDslLA3jJQgN+GRvURF
-         pEaJfvO7RiXhmdLWXoAntXxo4lxPwlL9XW+SFeCoI2TUk/hVty3Sokumt1vFjrzV5x3t
-         GT1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731417622; x=1732022422;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A1t9Ib/aPHDdfQvoVKx/Fp+uYeREslGX9huBdxy8D5w=;
-        b=SxGpvvtDf0zXa/5drOuMigHg4PCWRdl9bZXg2xKiPkEQ7PHFo6uC+rgWcTSISR/2iB
-         J8qSClDhNKOXijNim7OQiz5c6cQubnt7wJSJIRH/HgAd7es/RmzFr2ATrurro0x1VK7F
-         tCFViombhJlq7sVJIvJEiHvpAlqFhSRbiNDsp9Yjwg+R78gbtxHt+BVeVFK9ZQQMC0JG
-         TCWwEaoYnO7Lz9JlMlUXWUFBRMfSoAcuWvsvP0GxMVBPNcKY7wOFxgTUWr8TwkYsLZ/R
-         2nxhDvvtOnyqNzpos5g2vVZTMl8E+RWqWWSkY+TIiL91UmqEUytGudP/GNcMq/tpwBVK
-         i+fw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCMdAbItcgos/RTtP9mRkQYD+MfSpb40ySD+O4Dh2Os/pjjDr8CD+btHussYGZ+8CqGj8hJjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFleqE1ELSvhKV3IwFZOPDlrt7AgdgV2rkx45F/j4phFCsr8Dt
-	znskFevFDyUDgu+hBUrQ75irCy88ZWrTy2ILjZcakLyQa2ybysgZlsZ8TmQC1PM=
-X-Google-Smtp-Source: AGHT+IHxDEAm5J4fyPiYBfUUcx8JGUKH/71W41+JakmzEd92mmK3cHWQHCGpTj47KLde3aEZt1tLWg==
-X-Received: by 2002:a17:907:72c8:b0:a9a:1739:91e9 with SMTP id a640c23a62f3a-a9eefeebe72mr1631965066b.24.1731417622152;
-        Tue, 12 Nov 2024 05:20:22 -0800 (PST)
-Received: from ?IPV6:2001:67c:2fbc:1:e829:c484:5241:93b2? ([2001:67c:2fbc:1:e829:c484:5241:93b2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0dc5112sm718813966b.112.2024.11.12.05.20.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 05:20:21 -0800 (PST)
-Message-ID: <189dbeea-127a-47e8-84f8-c8cf1cc03536@openvpn.net>
-Date: Tue, 12 Nov 2024 14:20:45 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmqDwuq0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F838C4CECD;
+	Tue, 12 Nov 2024 13:35:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731418522;
+	bh=anrwzrXOnjIAZZpGQQGNMBfN1xGtzIuPmbNrKiYeAjM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nmqDwuq0ho0MwAco2d13WUsQ5/eG4NTqoUkhUpYedkAG/eSFy4KZsq+ADu5NXT1Ej
+	 ftZzF0e8fuFhbQNcGJ75hY9T9/hEOyzZB9RdqcoVz21luXDjKJmac3XnKv9fynWHIv
+	 RvfHWD/SvY1yDjbC7t4cQm0OibpAFud1VB3N0euF5BctRlRAx2g+hd4xMJ194lMYz9
+	 QDo/hEtbXtQfpSf1BbIV+O7ww6jR3JUGve2hdsPj/RiDvDpBH6iFasBknPz1h/ngDD
+	 DxzymgMola6YXRcNLAs8kfJTxbtnRYpc5cls+f+PpboBQ5uoE1YuHFoNMyK2q5PRc9
+	 6+gMnJ6q8PY3Q==
+Date: Tue, 12 Nov 2024 13:35:18 +0000
+From: Lee Jones <lee@kernel.org>
+To: Robert Joslyn <robert_joslyn@selinc.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/2] mfd: Add SEL PCI Virtual Multifunction (PVMF)
+ support
+Message-ID: <20241112133518.GF8552@google.com>
+References: <20241028223509.935-1-robert_joslyn@selinc.com>
+ <20241028223509.935-2-robert_joslyn@selinc.com>
+ <20241105173035.GE1807686@google.com>
+ <PH0PR22MB3809DE8446E7EAEFB0F6103FE55C2@PH0PR22MB3809.namprd22.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 15/23] ovpn: implement keepalive mechanism
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
- Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-15-de4698c73a25@openvpn.net> <ZypfnyfToF1b6YAZ@hog>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <ZypfnyfToF1b6YAZ@hog>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PH0PR22MB3809DE8446E7EAEFB0F6103FE55C2@PH0PR22MB3809.namprd22.prod.outlook.com>
 
-On 05/11/2024 19:10, Sabrina Dubroca wrote:
-> 2024-10-29, 11:47:28 +0100, Antonio Quartulli wrote:
->> @@ -105,6 +132,9 @@ void ovpn_decrypt_post(void *data, int ret)
->>   		goto drop;
->>   	}
->>   
->> +	/* keep track of last received authenticated packet for keepalive */
->> +	peer->last_recv = ktime_get_real_seconds();
+On Thu, 07 Nov 2024, Robert Joslyn wrote:
+
+> > -----Original Message-----
+> > From: Lee Jones <lee@kernel.org>
+> > Sent: Tuesday, November 5, 2024 9:31 AM
+> > To: Robert Joslyn <robert_joslyn@selinc.com>
+> > Cc: linux-kernel@vger.kernel.org; netdev@vger.kernel.org
+> > Subject: Re: [RFC PATCH 1/2] mfd: Add SEL PCI Virtual Multifunction (PVMF)
+
+These should not end up in the mail's body.
+
+> > support
+> > 
+> > [Caution - External]
+> > 
+> > On Mon, 28 Oct 2024, Robert Joslyn wrote:
+> > 
+> > > Add support for SEL FPGA based PCIe devices. These expose a single PCI
+> > > BAR with multiple IP cores for various functions, such as serial
+> > > ports, ethernet, and time (PTP/IRIG). This initial driver supports
+> > > Ethernet on the SEL-3350 mainboard, SEL-3390E4 ethernet card, and
+> > > SEL-3390T ethernet and time card.
+> > >
+> > > Signed-off-by: Robert Joslyn <robert_joslyn@selinc.com>
+> > > ---
+> > >  MAINTAINERS                |   8 +
+> > >  drivers/mfd/Kconfig        |  16 ++
+> > >  drivers/mfd/Makefile       |   3 +
+> > >  drivers/mfd/selpvmf-core.c | 482
+> > > +++++++++++++++++++++++++++++++++++++
+> > >  drivers/mfd/selpvmf-cvp.c  | 431
+> > +++++++++++++++++++++++++++++++++
+> > > drivers/mfd/selpvmf-cvp.h  |  18 ++
+> > >  6 files changed, 958 insertions(+)
+> > >  create mode 100644 drivers/mfd/selpvmf-core.c  create mode 100644
+> > > drivers/mfd/selpvmf-cvp.c  create mode 100644
+> > > drivers/mfd/selpvmf-cvp.h
+
+[...]
+
+> > > +/**
+> > > + * sel_create_cell() - Create an MFD cell and add it to the device.
+> > > + * @pdev: The PCI device to operate on
+> > > + * @name: MFD cell name
+> > > + * @start: Start address of memory resource
+> > > + * @length: Length of memory resource
+> > > + * @msix_start: MSIX vector number to start from.
+> > > + * @resources: Pointer to resources to add to the cell.
+> > > + * @num_resources: Number of resources. The first resource is assumed to
+> > > + *                 be memory, all other resources are IRQs.
+> > > + */
+> > > +static int sel_create_cell(struct pci_dev *pdev,
+> > 
+> > This is misleading.  It should be sel_register_device.
 > 
-> It doesn't look like we're locking the peer here so that should be a
-> WRITE_ONCE() (and READ_ONCE(peer->last_recv) for all reads).
+> I'll rename the function.
 
-Is that because last_recv is 64 bit long (and might be more than one 
-word on certain architectures)?
-
-I don't remember having to do so for reading/writing 32 bit long integers.
-
-I presume we need a WRITE_ONCE also upon initialization in 
-ovpn_peer_keepalive_set() right?
-We still want to coordinate that with other reads/writes.
+Please refrain from responding to comments that you agree with, then
+trim the rest.  It will save multiple people a lot of time.
 
 > 
->> +
->>   	/* point to encapsulated IP packet */
->>   	__skb_pull(skb, payload_offset);
->>   
->> @@ -121,6 +151,12 @@ void ovpn_decrypt_post(void *data, int ret)
->>   			goto drop;
->>   		}
->>   
->> +		if (ovpn_is_keepalive(skb)) {
->> +			net_dbg_ratelimited("%s: ping received from peer %u\n",
->> +					    peer->ovpn->dev->name, peer->id);
->> +			goto drop;
+> > 
+> > > +                        const char *name,
+> > 
+> > This never changes.  Why supply it as a variable?
+> > 
+> > > +                        unsigned int start, +
+> > > unsigned int length,
+> > 
+> > This never changes.  Why supply it as a variable?
+> > 
+> > > +                        unsigned int msix_start,
+> > 
+> > This never changes.  Why supply it as a variable?
+> > 
+> > > +                        struct resource *resources, +
+> > > unsigned int num_resources)
+> > 
+> > This never changes.  Why supply it as a variable?
 > 
-> To help with debugging connectivity issues, maybe keepalives shouldn't
-> be counted as drops? (consume_skb instead of kfree_skb, and not
-> incrementing rx_dropped)
-> The packet was successfully received and did all it had to do.
+> This patch only enables ethernet, but we have additional functionality
+> that we will enable in subsequent patches, such as serial ports, a
+> time component, and a firmware upgrade mechanism. Those components
+> have different names, lengths, interrupt counts, etc. If you prefer, I
+> can remove this abstraction until we have another cell type to add.
 
-you're absolutely right. Will change that.
+I can only review what I see before me.
 
-> 
->> +		}
->> +
->>   		net_info_ratelimited("%s: unsupported protocol received from peer %u\n",
->>   				     peer->ovpn->dev->name, peer->id);
->>   		goto drop;
->> @@ -221,6 +257,10 @@ void ovpn_encrypt_post(void *data, int ret)
->>   		/* no transport configured yet */
->>   		goto err;
->>   	}
->> +
->> +	/* keep track of last sent packet for keepalive */
->> +	peer->last_sent = ktime_get_real_seconds();
-> 
-> And another WRITE_ONCE() here (also paired with READ_ONCE() on the
-> read side).
+Add the extra pieces when/if you upstream the additional functionality.
 
-Yap
+[...]
 
+> > > +     if (rc != 0) +             return rc; + +     /* Perform CvP
+> > > program if necessary */ +     cvp_capable =
+> > > pci_find_ext_capability(pdev, CVP_CAPABILITY_ID); +     if
+> > > (!skipcvp && cvp_capable) {
+> > 
+> > The '_' inconsistency is bothering me.
+> > 
+> > As is the placement of "cvp".
 > 
-> 
->> +static int ovpn_peer_del_nolock(struct ovpn_peer *peer,
->> +				enum ovpn_del_peer_reason reason)
->> +{
->> +	switch (peer->ovpn->mode) {
->> +	case OVPN_MODE_MP:
-> 
-> I think it would be nice to add
-> 
->      lockdep_assert_held(&peer->ovpn->peers->lock);
-> 
->> +		return ovpn_peer_del_mp(peer, reason);
->> +	case OVPN_MODE_P2P:
-> 
-> and here
-> 
->      lockdep_assert_held(&peer->ovpn->lock);
+> Would you prefer to see skipcvp called skip_cvp? Or cvp_skip? I'm
+> happy to change it.
 
-Yeah, good idea.
-__must_hold() can't work here, so lockdep_assert_held is definitely the 
-way to go.
+The latter seems more consistent.
 
-> 
-> (I had to check that ovpn_peer_del_nolock is indeed called with those
-> locks held since they're taken by ovpn_peer_keepalive_work_{mp,p2p},
-> adding these assertions would make it clear that ovpn_peer_del_nolock
-> is not an unsafe version of ovpn_peer_del)
+[...]
 
-Right, it makes sense.
+> > > +             rc = cvp_start(pdev); +             if (rc != 0) { +
+> > > dev_err(&pdev->dev, "Error: CvP failed: 0x%x\n", + rc);
+> > 
+> > This is a user facing error message and I still don't know what CvP
+> > is.
+> > 
+> > Please be more forthcoming.
+> 
+> CvP is Configuration via Protocol. It's a method for loading firmware
+> into Altera FPGAs. If CvP fails, it means we're unable to load
+> firmware into the FPGA and the card is basically dead. I can improve
+> the error message. Maybe something like, "Loading FPGA firmware
+> failed"?
 
-> 
->> +		return ovpn_peer_del_p2p(peer, reason);
->> +	default:
->> +		return -EOPNOTSUPP;
->> +	}
->> +}
->> +
->>   /**
->>    * ovpn_peers_free - free all peers in the instance
->>    * @ovpn: the instance whose peers should be released
->> @@ -830,3 +871,150 @@ void ovpn_peers_free(struct ovpn_struct *ovpn)
->>   		ovpn_peer_unhash(peer, OVPN_DEL_PEER_REASON_TEARDOWN);
->>   	spin_unlock_bh(&ovpn->peers->lock);
->>   }
->> +
->> +static time64_t ovpn_peer_keepalive_work_single(struct ovpn_peer *peer,
->> +						time64_t now)
->> +{
->> +	time64_t next_run1, next_run2, delta;
->> +	unsigned long timeout, interval;
->> +	bool expired;
->> +
->> +	spin_lock_bh(&peer->lock);
->> +	/* we expect both timers to be configured at the same time,
->> +	 * therefore bail out if either is not set
->> +	 */
->> +	if (!peer->keepalive_timeout || !peer->keepalive_interval) {
->> +		spin_unlock_bh(&peer->lock);
->> +		return 0;
->> +	}
->> +
->> +	/* check for peer timeout */
->> +	expired = false;
->> +	timeout = peer->keepalive_timeout;
->> +	delta = now - peer->last_recv;
-> 
-> I'm not sure that's always > 0 if we finish decrypting a packet just
-> as the workqueue starts:
-> 
->    ovpn_peer_keepalive_work
->      now = ...
-> 
->                                         ovpn_decrypt_post
->                                           peer->last_recv = ...
-> 
->    ovpn_peer_keepalive_work_single
->      delta: now < peer->last_recv
-> 
+Sounds good.
 
-Yeah, there is nothing preventing this from happening...but is this 
-truly a problem? The math should still work, no?
+[...] 
 
-However:
+> > 
+> > > +                     goto out_disable; +             } +     } +
+> > > +     rc = alloc_fn(pdev);
+> > 
+> > These call-backs are horrible.  Please don't do this.
+> 
+> Ok, we'll do something else. Would you prefer to pass in a constant
+> and use a switch statement to select which function to call?
 
-> 
-> 
->> +	if (delta < timeout) {
->> +		peer->keepalive_recv_exp = now + timeout - delta;
-> 
-> I'd shorten that to
-> 
->      peer->keepalive_recv_exp = peer->last_recv + timeout;
-> 
-> it's a bit more readable to my eyes and avoids risks of wrapping
-> values.
-> 
-> So I'd probably get rid of delta and go with:
-> 
->      last_recv = READ_ONCE(peer->last_recv)
->      if (now < last_recv + timeout) {
->      	peer->keepalive_recv_exp = last_recv + timeout;
->      	next_run1 = peer->keepalive_recv_exp;
->      } else if ...
-> 
->> +		next_run1 = peer->keepalive_recv_exp;
->> +	} else if (peer->keepalive_recv_exp > now) {
->> +		next_run1 = peer->keepalive_recv_exp;
->> +	} else {
->> +		expired = true;
->> +	}
+That sort of thing, yes.
 
-I agree this is simpler to read and gets rid of some extra operations.
+[...]
 
-[note: I took inspiration from nat_keepalive_work_single() - it could be 
-simplified as well I guess]
-
+> > > + +             pci_restore_state(pdev); +     } + +
+> > > pci_set_master(pdev); + +     return 0; +} + +static const struct
+> > > dev_pm_ops selpvmf_pm_ops = { +
+> > > SYSTEM_SLEEP_PM_OPS(selpvmf_suspend, selpvmf_resume) }; + +static
+> > > struct pci_device_id selpvmf_pci_tbl[] = { +     { +
+> > > PCI_DEVICE(PCI_VENDOR_ID_SEL, PCI_DEVICE_ID_B1190), +
+> > > .driver_data = (kernel_ulong_t)b1190_alloc_mfd_cells,
+> > 
+> > Pass an identifier here instead of call-back functions.
 > 
-> [...]
->> +	/* check for peer keepalive */
->> +	expired = false;
->> +	interval = peer->keepalive_interval;
->> +	delta = now - peer->last_sent;
->> +	if (delta < interval) {
->> +		peer->keepalive_xmit_exp = now + interval - delta;
->> +		next_run2 = peer->keepalive_xmit_exp;
+> Do you have a preference for the type of construct we use? Just a
+> #define integer with a switch statement in probe? Something else?
+
+Probably an enum.  Take a look at some other drivers.
+
+> > > +     }, +     { +             PCI_DEVICE(PCI_VENDOR_ID_SEL,
+> > > PCI_DEVICE_ID_B2077), +             .driver_data =
+> > > (kernel_ulong_t)b2077_alloc_mfd_cells, +     }, +     { +
+> > > PCI_DEVICE(PCI_VENDOR_ID_SEL, PCI_DEVICE_ID_B2091), +
+> > > .driver_data = (kernel_ulong_t)b2091_alloc_mfd_cells, +     }, +
+> > > { +             PCI_DEVICE(PCI_VENDOR_ID_SEL,
+> > > PCI_DEVICE_ID_B2093), +             .driver_data =
+> > > (kernel_ulong_t)b2093_alloc_mfd_cells, +     }, +     {0,}
+> > 
+> > What is this?  Where have you seen that before?
 > 
-> and same here
+> The {0,} is how to signal the end of this array. I don't think the
+> comma is required though. Random example:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/mfd/lpc_sch.c?h=v6.12-rc6#n66
 
-Yeah, will change both. Thanks!
-
-
-Regards,
-
+{} is fine.
 
 -- 
-Antonio Quartulli
-OpenVPN Inc.
-
+Lee Jones [李琼斯]
