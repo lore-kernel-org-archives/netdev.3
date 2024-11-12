@@ -1,158 +1,200 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC532141DC
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 17:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960512144D8
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 18:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731434028; cv=none; b=J3F1fyPmN5YeseBvyopY9Vttt4CXV5S4PxIoW+hev9OwDI3mz2bYWYlyySESaNYSaxC1dwaTqe/DtKRkIR5S6184TspLJbO180mmPSw/bgsW1pxkGBYBowqvOsew0zpiwcQQMZ7MtyoElcKvL1+k+J7scJl3auIVe4nPt3mwa1c=
+	t=1731434766; cv=none; b=cClHfiKu13FWMfonUxREflg+FxpvdNFHA3NQelyAqtWr1x/YofswZOy0LyLp5jWvE25NpPefBFAsd4tNCaTlKHaifsBrC86MhJ88/k0gMhV9GJWqmySVOdvhcdmKLki05KwejQNdzDB8mBaeTpxsvGnS0hjBgcMVGDK5D3gBiIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731434028; c=relaxed/simple;
-	bh=UYX2O1h2AvLoRdjFa5niV/SAHORHbQlFVhftdFs2wYs=;
-	h=Subject:From:To:CC:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ExvrvnQsmrW+OipLOhJ4Ym3HWaBf+KfG5UCsUUulHkWIE8ICCwyXmr+1por8L9ptZK8ymuuIbhDEzMupIWf170+ql77wA6OXSZ9AfWlo9OF3MPvizeLf7z6QlDGid060rdzOW8znZRQbEjyUpZruAeS0Fyc+EkJcuqdBcp7aO4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ob/wfwxl; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1731434766; c=relaxed/simple;
+	bh=IPn3w6FlcPPnQtogbrfijGOKo+oJ/fxeZF/GzzeEcWY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ldaclJbYBoDQ2BkjBJ19HLXDwOxB9WQ7dLPkb//hk4W744OtyfVslbxMactsvMZR8dyAjwanYiob+1rtP1d5h8z0Ni61pheHahTigo/pwHkbRK6siOvxkeOaBEC/Q0CFC0MKQSE68pxW7VNuUbNAb+xL3yqgHKxUli9/RmJjs+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iOs/dDdr; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ob/wfwxl"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iOs/dDdr"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5cf0810f5f9so3870958a12.0
+        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 10:06:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731434028; x=1762970028;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version:subject;
-  bh=vgUV/OWM1rcXFGmTAMLYM2PDx47Hl1iykASf7BDAkg8=;
-  b=ob/wfwxlEz35qWzSBph7f9heQ3c9xXwUuQbIf3aRVoh6Nny5Rey3yDP+
-   ofTUuhgx0J4Ow+q7oeWbVnc0qRIISTjsN+0C05NoekHxZ1nSzMOe+Bj9j
-   Mjpgnxl52kQFa0RG8+UhIVC0e0ZKjpVqxPp0/UxE0QuXAVZH+mNqjhaK8
-   E=;
-X-IronPort-AV: E=Sophos;i="6.12,148,1728950400"; 
-   d="scan'208";a="351726582"
-Subject: RE: [PATCH v3 net-next 3/3] net: ena: Add PHC documentation
-Thread-Topic: [PATCH v3 net-next 3/3] net: ena: Add PHC documentation
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2024 17:53:45 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.43.254:29367]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.11.224:2525] with esmtp (Farcaster)
- id 50424793-4fea-4c12-ad0a-678039f5021f; Tue, 12 Nov 2024 17:53:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 50424793-4fea-4c12-ad0a-678039f5021f
-Received: from EX19D006EUA002.ant.amazon.com (10.252.50.65) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 12 Nov 2024 17:53:42 +0000
-Received: from EX19D005EUA002.ant.amazon.com (10.252.50.11) by
- EX19D006EUA002.ant.amazon.com (10.252.50.65) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Tue, 12 Nov 2024 17:53:41 +0000
-Received: from EX19D005EUA002.ant.amazon.com ([fe80::6aa4:b4a3:92f6:8e9]) by
- EX19D005EUA002.ant.amazon.com ([fe80::6aa4:b4a3:92f6:8e9%3]) with mapi id
- 15.02.1258.035; Tue, 12 Nov 2024 17:53:41 +0000
-From: "Arinzon, David" <darinzon@amazon.com>
-To: Jakub Kicinski <kuba@kernel.org>, Rahul Rameshbabu
-	<rrameshbabu@nvidia.com>, Gal Pressman <gal@nvidia.com>
-CC: David Miller <davem@davemloft.net>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, "Woodhouse,
- David" <dwmw@amazon.co.uk>, "Machulsky, Zorik" <zorik@amazon.com>,
-	"Matushevsky, Alexander" <matua@amazon.com>, "Bshara, Saeed"
-	<saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, "Liguori, Anthony"
-	<aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, "Schmeilin,
- Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>,
-	"Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin"
-	<benh@amazon.com>, "Kiyanovski, Arthur" <akiyano@amazon.com>, "Dagan, Noam"
-	<ndagan@amazon.com>, "Bernstein, Amit" <amitbern@amazon.com>, "Agroskin,
- Shay" <shayagr@amazon.com>, "Abboud, Osama" <osamaabb@amazon.com>,
-	"Ostrovsky, Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir"
-	<ofirt@amazon.com>, "Machnikowski, Maciek" <maciek@machnikowski.net>
-Thread-Index: AQHbLeQGl7kxu2fA00SYfY6yxcXfg7Kn9ekAgABNu5CAATcUAIAKf5Ww
-Date: Tue, 12 Nov 2024 17:53:41 +0000
-Message-ID: <baf0fe9c0a1741a6883768e816346123@amazon.com>
-References: <20241103113140.275-1-darinzon@amazon.com>
-	<20241103113140.275-4-darinzon@amazon.com>
-	<20241104181722.4ee86665@kernel.org>
-	<4ce957d04f6048f9bf607826e9e0be5b@amazon.com>
- <20241105172858.273df3fd@kernel.org>
-In-Reply-To: <20241105172858.273df3fd@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        d=broadcom.com; s=google; t=1731434763; x=1732039563; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iyj5EzBtlB9KInIgYQyTtITXbQnJM5uspkTSALLjm9A=;
+        b=iOs/dDdr2BN6s4CKNV5hol2oNmI2EN9CDeFRyiUoG/rEAqILGl9td2QbuA3CcoF2yJ
+         nHJWpbf0yprmlIs7L+py436XSg70hj+C6MSmq6kEygeVGSD/+Bdq6YWk4WqlIYB7e9bJ
+         7156kmbx4d0+K/Fw+mser2MaMUaVOMGm1FOhs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731434763; x=1732039563;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Iyj5EzBtlB9KInIgYQyTtITXbQnJM5uspkTSALLjm9A=;
+        b=w0wATg3/N4QjtrvSJn45qM5im9lap1eG9kLIFj4b5GRdmgji0oBQrpZtzKyAUxI5Ll
+         oEqGmJpcMcJqVZOdPZ6+LXYJ4jpG2Mv5BJ/MC6xqPrsM6gRpxYbTYN/LcR39XrAe54ok
+         udIxx2Qts4UyVOg1XXBH2WbDcZyfQlH+sdxUVGQAEGQCz2rarLDtp/kVYlSpIU05sGvN
+         N+wn7FkeX6HPWK/8dUzOHmcqw7f7dj/w0ngiZNVmk6KPsiHMKB2pBNQ0dSHKfe0FmvXs
+         Lg5LCNWIZZwsVz6tTTt6fAEUS2xm3qvy8Zlb1oQIQSAiJHLIEh6+43oNO4TOtb393MUz
+         yYOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNdXBOYHh55p+wvU7vyZTfFftcSP95aJPpmvEklGLBSajWTKFL+R2S2xLO2AZBxsgve2lWiqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdrTprrjf2VRz1TAQiTt2KZmj2jm3+i3Wr5rdmuC59DRZjTEph
+	UM9uZcnIqGWsDUJFEP4egzK6vIwfgJAYnAnHg0KwMLBfMTnZcPcgZ386l23ffWUuwbvTvyDvvKX
+	JxOyZ6utGJTWBl0UXHwdYwrhWZDeA4mNktn2Y
+X-Google-Smtp-Source: AGHT+IGJ8DSQ/OU/oHuj71Sp5gp3muu1mF5QpL2T7KmbIxRuU2fzslkQsMFpAT/NtCpiJV3tMT889N7LOxuCluJraHg=
+X-Received: by 2002:a05:6402:13ca:b0:5cf:4655:fe7e with SMTP id
+ 4fb4d7f45d1cf-5cf4655feb3mr7570222a12.24.1731434762878; Tue, 12 Nov 2024
+ 10:06:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20241112110522.141924-1-vadfed@meta.com>
+In-Reply-To: <20241112110522.141924-1-vadfed@meta.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Tue, 12 Nov 2024 10:05:50 -0800
+Message-ID: <CACKFLi=eTekiVDLzaJ4dYJ5EG-wRS7-sJdYF=aDCW2jONVCXCw@mail.gmail.com>
+Subject: Re: [PATCH net-next] bnxt_en: optimize gettimex64
+To: Vadim Fedorenko <vadfed@meta.com>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Simon Horman <horms@kernel.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000003a4610626bb1234"
 
-Thank you Rahul for the detailed explanations
+--00000000000003a4610626bb1234
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jakub,
+On Tue, Nov 12, 2024 at 3:06=E2=80=AFAM Vadim Fedorenko <vadfed@meta.com> w=
+rote:
+>
+> Current implementation of gettimex64() makes at least 3 PCIe reads to
+> get current PHC time. It takes at least 2.2us to get this value back to
+> userspace. At the same time there is cached value of upper bits of PHC
+> available for packet timestamps already. This patch reuses cached value
+> to speed up reading of PHC time.
+>
+> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
 
-> > Just wanted to clarify that this feature and the associated
-> > documentation are specifically intended for reading a HW timestamp,
-> > not for TX/RX packet timestamping.
->=20
-> Oh, so you're saying you can only read the clock from the device?
-> The word timestamp means time associated with an event.
->=20
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/=
+ethernet/broadcom/bnxt/bnxt_ptp.c
+> index 91e7e08fabb1..8764ce412f7b 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
 
-Based on the documentation of gettimex64 API
-The ts parameter holds the PHC timestamp.
-We are using the same terminology
-https://elixir.bootlin.com/linux/v6.11.6/source/include/linux/ptp_clock_ker=
-nel.h#L97
+> @@ -162,13 +184,19 @@ static int bnxt_ptp_gettimex(struct ptp_clock_info =
+*ptp_info,
+>  {
+>         struct bnxt_ptp_cfg *ptp =3D container_of(ptp_info, struct bnxt_p=
+tp_cfg,
+>                                                 ptp_info);
+> -       u64 ns, cycles;
+> +       u64 ns, cycles, time;
+> +       u32 low;
+>         int rc;
+>
+> -       rc =3D bnxt_refclk_read(ptp->bp, sts, &cycles);
+> +       rc =3D bnxt_refclk_read_low(ptp->bp, sts, &low);
+>         if (rc)
+>                 return rc;
+>
+> +       time =3D (u64)READ_ONCE(ptp->old_time) << BNXT_HI_TIMER_SHIFT;
+> +       cycles =3D (time & BNXT_HI_TIMER_MASK) | low;
+> +       if (low < (time & BNXT_LO_TIMER_MASK))
+> +               cycles +=3D BNXT_LO_TIMER_MASK + 1;
+> +
 
- * @gettimex64:  Reads the current time from the hardware clock and optiona=
-lly
- *               also the system clock.
- *               parameter ts: Holds the PHC timestamp.
- *               parameter sts: If not NULL, it holds a pair of timestamps =
-from
- *               the system clock. The first reading is made right before
- *               reading the lowest bits of the PHC timestamp and the secon=
-d
- *               reading immediately follows that.
+Looks good to me.  I think this logic here to get the upper bits and
+check for overflow is identical to the RX timestamp logic.  It may be
+worthwhile to have a common helper function to do this.  Other than
+that,
 
-> In the doc you talk about:
->=20
-> > +PHC support and capabilities can be verified using ethtool:
-> > +
-> > +.. code-block:: shell
-> > +
-> > +  ethtool -T <interface>
->=20
-> which is for packet timestamping
->=20
+Reviewed-by: Michael Chan <michael.chan@broadocm.com>
 
-ethtool -T shows all timestamping capabilities, which indeed include
-packet timestamping but also the PTP Hardware Clock (PHC) index
-If the value is `none`, it means that there's no PHC support
-This is done by implementing the `get_ts_info` hook, which is
-part of this patchset.
+--00000000000003a4610626bb1234
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-https://elixir.bootlin.com/linux/v6.11.6/source/include/linux/ethtool.h#L72=
-0
-
-> also:
->=20
-> > ENA Linux driver supports PTP hardware clock providing timestamp
-> > reference to achieve nanosecond accuracy.
->=20
-> You probably want to double check the definitions of accuracy and
-> resolution.
->=20
-
-Thank you, will be changed in the next patchset
-
-> We recently merged an Amazon PTP clock driver from David Woodhouse,
-> see commit 20503272422693. If you're not timestamping packets why not use
-> that driver?
-
-The AMZNC10C vmclock device driver is intended to be used in systems where =
-there's an hypervisor.
-The PHC driver in this patchset is intended for virtual and non-virtual (me=
-tal) instances in AWS.
-The AMZNC10C might not be available in the future on the same instances whe=
-re PHC is available.
+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
+OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
+/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
+AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
+c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
+AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
+TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
+bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
+L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
+L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
+kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
+5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
+hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
+E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJtMIIC
+aQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
+EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
+DQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIGQQcuJLzRokMX2m6B2GcKCVR3rhpvFH
+a0zGZmHB4u+FMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MTEx
+MjE4MDYwM1owaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
+SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQC
+ATANBgkqhkiG9w0BAQEFAASCAQCz0gKn91OB2Ril2rS7wbKjNcP6cq6LNBjI9HnHdSdQlz5aMuir
+ICcS4Sux6cuBSnfGvmcd+Q1Pp05ufGFGLYW0IkHv9TmjyufJhqiqRxFY3ouIrAG0wdAuHfmIG7IK
+CRg2049emctw+84g794pQP37740bmZnrH2j4DynpcnLkC9GHamtdJJ0Yd8YO0mKQF2y/cj6ygeAz
+P9x6XvVgCtv7cDlJ0a0t+KvJQBgqy21a7lKWUM4a8zg4IxLW+VYz++iwDWjWfYf8Sy9UTw5kEMa7
+P0zvRWXBRiDQdskuO+fT5/wlOngRCAzqx53WbVgDw7ESk1qMW3+xPKulQU116ARO
+--00000000000003a4610626bb1234--
