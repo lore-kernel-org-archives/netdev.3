@@ -1,174 +1,97 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84ACB230981
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 11:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730CF207A14;
+	Tue, 12 Nov 2024 11:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731409590; cv=none; b=VHo29BZSneT8fm7Veye79YT0CE0S6nukEJN+JzamWeeTAnHBCiQ5CIH6F/+hfBiLwYQ9REPLJtRcjN9MMEtmV1rBiokROnU9T0rrCvTt3aWQQEY+DKwvOyFKPzZWkcK3PdQHgLheimzQRQqw9atXd0uat6a6BKygVYFiOZ45CQs=
+	t=1731409827; cv=none; b=juTZCaWQKmQIqmbvSN9KiwZiFqNrQKLwEhBP273RhbRZr/dzzq2q5rMta1JQZ9gYXWteyE3m9LsjaOU2T+shMcfDt7byEKAYkH/c5mApl4DeEP9qwQawYWOSDTpk55sp4exQ68dFIFvadfL5r5PvuGLH+yX6JKF0P4FFVQov4JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731409590; c=relaxed/simple;
-	bh=nmBc1paTAdIIY8F0RiybLycXRApPl8Ogge7DpSO4/Ew=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a1GtfC1LiOJDMoa2IYjWKygRhlAPv61Va96Az7en0AzQ+aDXNReROuasp4TIjfU9xnav8s2CRVTth3C1TxSwCMjavpozjvSVveVuE4whGngt95152xwmbjM8YQURfBETgsn+kfUw1SJAMtvE8LxaKDJUXOHnBERnHq5hO/xFv5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=innycBL3; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1731409827; c=relaxed/simple;
+	bh=o8LZzyAO/xN+J7whax3nwX9FC+5PPxdMxkeJ5j8tX94=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=tXRdooX25gOMhdLrmwudQoA7iZfG9x+wH43G+L7x0cuNhfoiy/3sHGqIQ1+zHo43kKxs1aZJDovQ3Qzb5ufyQv7ZKF7bq6fdYuYECk9GEDF7oRwaF7WqTb4ji0eMdd2TMzlwFY0NCbm3UnL/vgXP2WPMbKi/F6r1var9umCpwvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J5j1qAz8; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="innycBL3"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 4AC8hOTq005316;
-	Tue, 12 Nov 2024 03:06:11 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2021-q4; bh=uHsDP+sbpuBI/ZID7Q
-	UKNvkeJ6eArH/mrecB/O27kg4=; b=innycBL3uqcJiqjyhHpG/Z6Ai70EI/FEWN
-	rXlKsVScr18AxbvuZ0Wa01E7m3NLPd7wg6E6PrwDnc42HUUZ6MlWRtFgFKpaF+e3
-	LsmRMlzQjAvWoZAhVKlGH7XFCMMT3k89UFL8a/C/FYTzzx9hIwIIwqjAdaGnXmOV
-	1rq+YoHG6S2u9rgmmr7m25lsLRPEMIPfANK3/irqrtkNwDEq1hUoyks2XQ+Z6cuI
-	i/Xc/fDzox3KShcNSmWS7G34BtdoENf9OBsTBdyTod6G7eF0owNM7Zle7qS4Q9rP
-	l7hrkgLdC18ZZl1IZ4qgQy3jjhpzrzO86AF9dAzqJrJBpRD8cvig==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 42v3rjrnxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 12 Nov 2024 03:06:11 -0800 (PST)
-Received: from devvm4158.cln0.facebook.com (2620:10d:c085:108::150d) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server id
- 15.2.1544.11; Tue, 12 Nov 2024 11:05:42 +0000
-From: Vadim Fedorenko <vadfed@meta.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        Pavan Chebbi
-	<pavan.chebbi@broadcom.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Jakub Kicinski
-	<kuba@kernel.org>
-CC: Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Vadim Fedorenko <vadfed@meta.com>,
-        Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next] bnxt_en: optimize gettimex64
-Date: Tue, 12 Nov 2024 03:05:22 -0800
-Message-ID: <20241112110522.141924-1-vadfed@meta.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J5j1qAz8"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4315df7b43fso47979885e9.0;
+        Tue, 12 Nov 2024 03:10:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731409825; x=1732014625; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=12Wq6vbO+PmZNrMZHIYjaXdLl5X7Jrekdu8wXlL99nM=;
+        b=J5j1qAz8dWsHagHbtRezLxOE8QJI5IO1F6onqTg3tcOs9WaVNLrBWl/W+SYGnTEbPc
+         xBstKpbG/OL3DxnGAGCbGWZatHOdHvRWH6OMFB+JCwGM4ES/be7esHBH9zYfRqtHbcoN
+         O0/6ZcNslZ/78UW+/80510SCvR86QzdOfUJGTB5saIq4cuGqR2YKRKmCUdxHSUKOmDIX
+         vKUY2D7MuYQrUNvPchaWmPnFbFAtoDtZG1GnbosSbUTT0x65jt6rjG9l/it0tD2/TUyZ
+         wFgQ9nfooVVNB9NJXyG0JWze4Ic/hLhvu7NSZiRj6WeeR81fIVAUqlFe5fZO2V8/qAae
+         OnyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731409825; x=1732014625;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=12Wq6vbO+PmZNrMZHIYjaXdLl5X7Jrekdu8wXlL99nM=;
+        b=PuYwcwm8YVfnOn5jRZYLDM4Ot/Y6q8+CrJHB9302DdoTF16R7fqRwhXU5k1tpCqTsx
+         KD86ZHdQAtanxGcauyhQXbGvbMQtrdI/7JgyYjpXhyB8mMJeunc5r/hES9j9yosOYnVo
+         ElBvhDGLCyeat6bKN+0Dpd9ES9ydALxVndjAukhUhT0NbaBJbfWzIpWnrKdlhXwhkuMr
+         DU7LCerJq3aCHB1ZAGgwEKJXqlzj8LR17QJnyE+Iq9SL4aVFigfcJ8/Ukf+ONYTGctZy
+         CLNZSVhkVsDU4xhaKtru+uaTVa4CR4d6rfjJtXf2Q7+PHIXUhQmuIjj+QTDoXUqew7cw
+         NihA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6eOLcI0TpIufl7KA07k8T3MJqZszEmrSpWQb+s1fiOoDmw61K2GDxunANeR1SCKgCphouGZIflk53hwivCPnt@vger.kernel.org, AJvYcCXPqHCZBh1paTah2kp3LaTjMgwKlqErzRcnDng1DG2YokaMDt7LtN/7H6LXBwtRSl+yg/sx2JytkUTeUUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL3eq0RFjLn+xj2Si1Ummpo0S6emXQMaAkEovX1Nfs3cQqOPxw
+	cEXHniHW+dXT7mtMkPptdo3GWdlaXmup6QnYioLx0mm4cTtGsuTA
+X-Google-Smtp-Source: AGHT+IHRIaT0FZC5Pj0wqmsuEq+/h6AALz3VNQ6OSJ6NTKX+W8stMuUJKvex0YIQKbXLuCAFtUHcow==
+X-Received: by 2002:a05:600c:46c5:b0:42c:bc22:e074 with SMTP id 5b1f17b1804b1-432b7519776mr135380495e9.29.1731409824467;
+        Tue, 12 Nov 2024 03:10:24 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6b35c0sm249228225e9.16.2024.11.12.03.10.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Nov 2024 03:10:24 -0800 (PST)
+Subject: Re: [PATCH net v2 2/2] selftests: drv-net: rss_ctx: Add test for
+ ntuple rule
+To: Daniel Xu <dxu@dxuuu.xyz>, pabeni@redhat.com, edumazet@google.com,
+ davem@davemloft.net, shuah@kernel.org, andrew+netdev@lunn.ch,
+ kuba@kernel.org, michael.chan@broadcom.com, martin.lau@linux.dev,
+ pavan.chebbi@broadcom.com
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <cover.1731377399.git.dxu@dxuuu.xyz>
+ <dc4398dfe9a8e959245d2a8ffe5c2fcefbdd67f7.1731377399.git.dxu@dxuuu.xyz>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <93831343-03c3-d540-369d-fe82eb480c58@gmail.com>
+Date: Tue, 12 Nov 2024 11:10:23 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: 5fwdvibUc_P0_dDMl9qo---N6Fv1OjJB
-X-Proofpoint-ORIG-GUID: 5fwdvibUc_P0_dDMl9qo---N6Fv1OjJB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-05_03,2024-10-04_01,2024-09-30_01
+In-Reply-To: <dc4398dfe9a8e959245d2a8ffe5c2fcefbdd67f7.1731377399.git.dxu@dxuuu.xyz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-Current implementation of gettimex64() makes at least 3 PCIe reads to
-get current PHC time. It takes at least 2.2us to get this value back to
-userspace. At the same time there is cached value of upper bits of PHC
-available for packet timestamps already. This patch reuses cached value
-to speed up reading of PHC time.
+On 12/11/2024 02:23, Daniel Xu wrote:
+> Extend the rss_ctx test suite to test that an ntuple action that
+> redirects to an RSS context contains that information in `ethtool -n`.
+> Otherwise the output from ethtool is highly deceiving. This test helps
+> ensure drivers are compliant with the API.
+> 
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+...
+> +def _ntuple_rule_check(cfg, rule_id, ctx_id):
+> +    """Check that ntuple rule references RSS context ID"""
+> +    text = ethtool(f"-n {cfg.ifname} rule {rule_id}").stdout
+> +    pattern = f"RSS Context ID: {ctx_id}"
+> +    ksft_true(re.search(pattern, text, re.IGNORECASE),
 
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
----
-I did some benchmarks on host with Broadcom Thor NIC trying to build
-histogram of time spent to call clock_gettime() to query PTP device
-over million iterations.
-With current implementation the result is (long tail is cut):
-
-2200ns: 902624
-2300ns: 87404
-2400ns: 4025
-2500ns: 1307
-2600ns: 581
-2700ns: 261
-2800ns: 104
-2900ns: 36
-3000ns: 32
-3100ns: 24
-3200ns: 16
-3300ns: 29
-3400ns: 29
-3500ns: 23
-
-Optimized version on the very same machine and NIC gives next values:
-
-900ns: 865436
-1000ns: 128630
-1100ns: 2671
-1200ns: 727
-1300ns: 397
-1400ns: 178
-1500ns: 92
-1600ns: 16
-1700ns: 15
-1800ns: 11
-1900ns: 6
-2000ns: 20
-2100ns: 11
-
-That means pct(99) improved from 2300ns to 1000ns.
----
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 32 +++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index 91e7e08fabb1..8764ce412f7b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -112,6 +112,28 @@ static int bnxt_refclk_read(struct bnxt *bp, struct ptp_system_timestamp *sts,
- 	return rc;
- }
- 
-+static int bnxt_refclk_read_low(struct bnxt *bp, struct ptp_system_timestamp *sts,
-+				u32 *low)
-+{
-+	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-+	unsigned long flags;
-+
-+	/* We have to serialize reg access and FW reset */
-+	read_seqlock_excl_irqsave(&ptp->ptp_lock, flags);
-+
-+	if (test_bit(BNXT_STATE_IN_FW_RESET, &bp->state)) {
-+		read_sequnlock_excl_irqrestore(&ptp->ptp_lock, flags);
-+		return -EIO;
-+	}
-+
-+	ptp_read_system_prets(sts);
-+	*low = readl(bp->bar0 + ptp->refclk_mapped_regs[0]);
-+	ptp_read_system_postts(sts);
-+
-+	read_sequnlock_excl_irqrestore(&ptp->ptp_lock, flags);
-+	return 0;
-+}
-+
- static void bnxt_ptp_get_current_time(struct bnxt *bp)
- {
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-@@ -162,13 +184,19 @@ static int bnxt_ptp_gettimex(struct ptp_clock_info *ptp_info,
- {
- 	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
- 						ptp_info);
--	u64 ns, cycles;
-+	u64 ns, cycles, time;
-+	u32 low;
- 	int rc;
- 
--	rc = bnxt_refclk_read(ptp->bp, sts, &cycles);
-+	rc = bnxt_refclk_read_low(ptp->bp, sts, &low);
- 	if (rc)
- 		return rc;
- 
-+	time = (u64)READ_ONCE(ptp->old_time) << BNXT_HI_TIMER_SHIFT;
-+	cycles = (time & BNXT_HI_TIMER_MASK) | low;
-+	if (low < (time & BNXT_LO_TIMER_MASK))
-+		cycles += BNXT_LO_TIMER_MASK + 1;
-+
- 	ns = bnxt_timecounter_cyc2time(ptp, cycles);
- 	*ts = ns_to_timespec64(ns);
- 
--- 
-2.43.5
-
+This won't match the output from your ethtool patch, because that
+ removes the colon.  Probably want to wait until the patch is
+ finalised and then write a regex that matches both versions.
