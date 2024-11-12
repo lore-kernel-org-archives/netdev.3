@@ -1,46 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843521531C4;
-	Tue, 12 Nov 2024 22:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2484521A4DC;
+	Tue, 12 Nov 2024 22:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731450016; cv=none; b=RZI3WdgAaGY8VYNNY4jSqLa4fw+0U/XL9c/FAHwO/4bIkUlESDdrgypvMWU2fQMz3eOGaWf7g9ouR+F1v7OKJDN4c6syO2h8ubH6swlqGuPeABPN7fg4SEmhMptXUATClXfJ7ouIehk6J80nCAnuuSJSqTWJeibGrP4T1L/Q+DM=
+	t=1731450156; cv=none; b=S8GfkZI46YMzE1v+ohbev7qFxhndqObm+9u1honpDRPYrC3ZqgWn3FH1a9lL4I4jj0cdSQReOxpgklTYKKRPmgraggZgI2H//WF3SAobZwGPWTxxp17s/o0LVOE3jlrW3ErduUbzWbpD3MAXk8U/XrdAv+AGrHIsG8bxcug+hnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731450016; c=relaxed/simple;
-	bh=klX9tSm44oZ4Uwy+ZftuZnphfa1B39CET5lUR+vLvSs=;
+	s=arc-20240116; t=1731450156; c=relaxed/simple;
+	bh=bpnvZgynbZJWrVPSVnPx2nxPP7J6ZsKWQPKfECy9rNs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pgoma1MNJ0Ny0cWcIwh5vtqYHnsWx5IvKVkeZQrk4/2djDtndAlBR4BGdALZodjFQUJEOLObmHu1bGaTA55SbT+XU3Gh8jRAXjOir0dnCU9/NW8kmCCNk02BqBvxkTE6lBo89z16ukZIFxDbzywJzq/ecq39NsTR9jf2xdQ/F34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMtjvmdN; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nq6wLrMwC2j6ZyaiKims4vxAlguWOo6eRpZT2S1XJgebA71L7KmbR1JOeH5F3HAckOXunUHiFFZAasIm0SyyzgjTkuAXAbP+fHnfDJ+LUxbiRcARXCNPlh85AYEjqfV1508OLL+8HX+z6HkB8Jaf/NhoOyMi6ULUUc47THULX0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlW0KoBH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMtjvmdN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EC0C4CECD;
-	Tue, 12 Nov 2024 22:20:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlW0KoBH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24395C4CECD;
+	Tue, 12 Nov 2024 22:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731450016;
-	bh=klX9tSm44oZ4Uwy+ZftuZnphfa1B39CET5lUR+vLvSs=;
+	s=k20201202; t=1731450155;
+	bh=bpnvZgynbZJWrVPSVnPx2nxPP7J6ZsKWQPKfECy9rNs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JMtjvmdNsOXuPlf727jQvSl9Xp+aLwblSURYuN8i5sKBwR7VxwLXsWtyHkkSFi52K
-	 DiiVHJtGi9gE2JAzt6u7zxU/OuRlDce/ahXrfYq0t34t6gZwOAW2B9FF/zT3LKhNqb
-	 dBuVPaDzU4+rU9gyHBSjqP4fh/UwG3aMdaRZjinXvancr6WgehCLuuHfZ3KkupM3/0
-	 xzbASAHi//b03JkcB+63BreX8wy0OGA2y9lxsKAkJG+okVvrOOxKh4fJj8wxYn9HXd
-	 rymkTSFSP2tyAwPkQ5clFzhB8XeujRYJBeXOEUQ2fDI3POKsbEWijKBamHB++W8M28
-	 5JBfFfatnW0Vg==
-Date: Tue, 12 Nov 2024 14:20:14 -0800
+	b=AlW0KoBHKGA7XXh4lhPlfzBzxMocAhRwvVAGeRrzisMBNkSJ4GIWMrrSitnPIqpKQ
+	 g7XNBRafGf1DZFSu2+jbvxS/iy5DJgGESszChKjGCl/u3AVhsy89WSEcMBxvsAvz1B
+	 DkKrUGgTzkf46S3FmyLr6hCBWfcndaek0QWGYzrB9jhh8Ohr3D4Pk/N7nkQ2Z9OvCY
+	 Vyu7w23ILK7JmXAfvZyOd6Oh4riWC0IvHM/MIfruclKE0u2Cb8MGWv6XvHFvTmj8jq
+	 5rIwKYlLX8Ix9iw6xivr3Vx4P+6I9U6DJpzF4jgsd3NoPuWW6+PKMZpanNhZo7smM3
+	 L6esAPUeCTXkw==
+Date: Tue, 12 Nov 2024 14:22:34 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Divya Koppera <divya.koppera@microchip.com>
-Cc: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
- <UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
- <linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
- <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH net-next v3 2/5] net: phy: microchip_ptp : Add ptp
- library for Microchip phys
-Message-ID: <20241112142014.044ec21c@kernel.org>
-In-Reply-To: <20241112133724.16057-3-divya.koppera@microchip.com>
-References: <20241112133724.16057-1-divya.koppera@microchip.com>
-	<20241112133724.16057-3-divya.koppera@microchip.com>
+To: Petr Machata <petrm@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ <netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Amit Cohen <amcohen@nvidia.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Andy Roulin <aroulin@nvidia.com>,
+ <mlxsw@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
+ <shuah@kernel.org>, Benjamin Poirier <bpoirier@nvidia.com>, Hangbin Liu
+ <liuhangbin@gmail.com>, <linux-kselftest@vger.kernel.org>, Jiri Pirko
+ <jiri@resnulli.us>
+Subject: Re: [PATCH net-next v3 7/7] selftests: net: fdb_notify: Add a test
+ for FDB notifications
+Message-ID: <20241112142234.7abf2232@kernel.org>
+In-Reply-To: <baf2abd6af2e88f8874d14c97da1554b7e7a710e.1731342342.git.petrm@nvidia.com>
+References: <cover.1731342342.git.petrm@nvidia.com>
+	<baf2abd6af2e88f8874d14c97da1554b7e7a710e.1731342342.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,37 +53,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 12 Nov 2024 19:07:21 +0530 Divya Koppera wrote:
-> +	/* Iterate over all RX timestamps and match it with the received skbs */
-> +	spin_lock_irqsave(&ptp_clock->rx_ts_lock, flags);
-> +	list_for_each_entry_safe(rx_ts, tmp, &ptp_clock->rx_ts_list, list) {
-> +		/* Check if we found the signature we were looking for. */
-> +		if (skb_sig != rx_ts->seq_id)
-> +			continue;
-> +
-> +		match = true;
-> +		break;
-> +	}
-> +	spin_unlock_irqrestore(&ptp_clock->rx_ts_lock, flags);
-> +
-> +	if (match) {
-> +		shhwtstamps = skb_hwtstamps(skb);
-> +		shhwtstamps->hwtstamp = ktime_set(rx_ts->seconds, rx_ts->nsec);
-> +		netif_rx(skb);
-> +
-> +		list_del(&rx_ts->list);
-> +		kfree(rx_ts);
-> +	} else {
-> +		skb_queue_tail(&ptp_clock->rx_queue, skb);
-> +	}
+On Mon, 11 Nov 2024 18:09:01 +0100 Petr Machata wrote:
+> Check that only one notification is produced for various FDB edit
+> operations.
+> 
+> Regarding the ip_link_add() and ip_link_master() helpers. This pattern of
+> action plus corresponding defer is bound to come up often, and a dedicated
+> vocabulary to capture it will be handy. tunnel_create() and vlan_create()
+> from forwarding/lib.sh are somewhat opaque and perhaps too kitchen-sinky,
+> so I tried to go in the opposite direction with these ones, and wrapped
+> only the bare minimum to schedule a corresponding cleanup.
 
-coccicheck complains that you are using rx_ts after the loop, 
-even though it's a loop iterator. Instead of using bool match
-make that variable a pointer, set it to NULL and act on it only 
-if set. That will make the code easier for static checkers.
+Looks like it fails about half of the time :(
 
-Coincidentally, I haven't looked closely, but you seem to have
-a spin lock protecting the list, and yet you list_del() without
-holding that spin lock? Sus.
+https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=fdb-notify&br-cnt=200
 -- 
 pw-bot: cr
