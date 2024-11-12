@@ -1,60 +1,61 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACDD1F669B
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 13:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86511FBCAF
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 13:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731419116; cv=none; b=BGybM/bRjklwd8it2vE8UVxO0KmWJEBDClPly1+JfGTCgnumQUUlKpCTfCecSwccefgTGKvCbVR8HyY8oJZ/IHRdgP+GuEkzL3tCBUZrmw3JwX4ixXdX5nkzAPDNJRWHBFvvlhSKOUin9xrDfWbtgR3zEbCuh2A69Vz+PTUzB3g=
+	t=1731419294; cv=none; b=umSppdlx7aan3hEFwkeP6+p9Xhrinhf/Xx2O9NoZBeE05OKIbA7fQbWcTF1NtT2qhstYNJJoIQe0RNt1wbX4o2ujiB7RnsJO2JG4Z0mkcXklAvrb3Ro2foDu106VNssFfqQ7y37Tjl8DoNvAyaP88W6gtdOUAiu2EAK4PYl3vyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731419116; c=relaxed/simple;
-	bh=eK0JgUnvdI4BgI9OFi4xRyjtO2I7lWU2ZUIx9sD+CkA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fqVnsmgxoEBkJttG5wjXn3Ezi51CKL2/s1boGYv26anZ7oDHi8fIL5MiBIT65jbXfFRycNLmFX6cYEK2Be/ZwFgmHH5NtlO3+0vSLIowPx5xogtSvMfvwTAal8oSu+Dc7axDXQfJh071hdCV+AjXVa4maZhDQmC59yjtyKg/5AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=Nqw7WWGM; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1731419294; c=relaxed/simple;
+	bh=gobI2zzmxZSRmHIZoSZOi3pQaQmNw0thgwqLUgDbafY=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FN436T6ItWTodDniIgkWFR51lyebX5utRyeeZ2G6fh/Dyq1IV6k+V6DzWdjQ2JoyLc+Y0HJPi2PaXpEKmdV/peUyD9mfAgGGGqaAcHBAVJwy5RnZDnXG6gAQptucFLzLkio0tVUAai85M/sM5LqOGEr3DBsPzC9RsxakpRiW4mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tvp+9rGq; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="Nqw7WWGM"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d7351883aso30190f8f.0
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 05:45:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tvp+9rGq"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9ed7d8c86cso1014959666b.2
+        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 05:48:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1731419113; x=1732023913; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731419291; x=1732024091; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=XUKWYCOEO8JraKmH92gxAesW35gt2ceY4seF2B0tcR8=;
-        b=Nqw7WWGMM8U/R0fD6E+hae70VWlLXnqB3kRuZtlb7LzAxW3CbCn+kRKF72RFXEB2Rj
-         ncL1cqOG3JvN7tIjaAQAxzRErk8nmx4vltKd2ZT16BhiQ2gf/PzYxW13o3GTi3HY54OH
-         zY+c252/N2nzxsj87/zGjtl+drmimtD5iyRz7BRSHhkapT+0C0z1gdH3681hatC9sI2Q
-         iFHR9LEMy3oz2IVgMHvssMo2pvVDtfG/0wgEkrIZCLEjcVOJR31vDlWeAmWfBCNa8oCy
-         VWzkMVNW+x3Z7/sQMLCsc6R9Z1VN70pTKUf2KNZwChlWKYKFVsWfslC98mlIUnTXtHvZ
-         JQrQ==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gobI2zzmxZSRmHIZoSZOi3pQaQmNw0thgwqLUgDbafY=;
+        b=Tvp+9rGqIiA/sfVyMEyaE/iswwHYTHrwgJe9J/EovsbB74A/eTaoBmotPO6pK7m7/G
+         E9J6mk6D8ruHlyaiZP2YEpjcczjHV704GXpfIhSkegVhNr2t/08CmOyswAnI+VZd9Trb
+         T4c0aEnbXr48133IQHveGU4onGA5SIJlsvReRZds6fwT15EixOiiOZMc6f6Q3mPTgY2h
+         oEfZ+62jSMVJok79AnBqOEIY8DMfrmuCJSDMWRJBl+rOcoOvISYE7YaY/p+uilJXEbD9
+         2LIqT45LS6tACE77GDxjnrK3aClX/xQ51y4fJbmz+thVDg4O32FEuL3f7M5Yx4h/IIvV
+         wIrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731419113; x=1732023913;
+        d=1e100.net; s=20230601; t=1731419291; x=1732024091;
         h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XUKWYCOEO8JraKmH92gxAesW35gt2ceY4seF2B0tcR8=;
-        b=s1gS/l5mGdvMHWlB28mqENYq2TS9QPfqdNPfyDuRCNKR3n8QRaVJBcAXZSEj6KVTBD
-         0jGMZo+XmM81VIytB6NnvtoWj84C/uwGjbmilxwq4o8lr/ryDjT4Y8JzkgWnouH1hUP0
-         5uFVeaO9cdJNSprsO64iWoJl2JB7bz/+XJgo9LU5V9fOpTiX3gS2Fg/efcR1pEr17CUO
-         qNk/+zYrKDN+AxXPlwuTuX0sY+Gflc3xidtizYdo/KpvN1OHXJCmx+RBiRiAqP6gk/Lm
-         iRcGXM5D5vg4BDAe/YpnMJb75Smoj0+GkDpWj1U484QLMeKUdhXa1+oFr3xWjF+NmMdi
-         jKXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6op+ExWNWefRylNF04j7nbzcLFY8YPI+3Yi8PWF6zgeU+8s/9GurfQGMnUkiedvFRX7c+JYY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6ie2aNN1CelXLEsswVrX/x3Ov7dLXy03QuEalxKJfc4OvSNzj
-	nCJVIAF7xzJj0Arr3r+MbmsYTy2ly0hob3vECm6A9aAFrxO8pEYg7iULUg8gEMs=
-X-Google-Smtp-Source: AGHT+IFC2uvQTtCNvqM6F1wITvf7NEB509E6RV01YibxNqNR7lMwXczEkawL6IQkI+EJe4oTWh7oyA==
-X-Received: by 2002:a5d:6d04:0:b0:37d:54d0:1f15 with SMTP id ffacd0b85a97d-381f1838d7cmr5393970f8f.7.1731419112750;
-        Tue, 12 Nov 2024 05:45:12 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:b41:c160:e183:c608:12da:8b26? ([2a01:e0a:b41:c160:e183:c608:12da:8b26])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed9706e2sm15782062f8f.7.2024.11.12.05.45.11
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gobI2zzmxZSRmHIZoSZOi3pQaQmNw0thgwqLUgDbafY=;
+        b=cdf9PnRK40dBKL4E5l/gq6X6SWJP5nepcRGdw9JBACGmDR0G+DvgwOCmgsh7/b2W3X
+         Gv0pmJI8vyJu/xMONrqegS5LTRKvDm1RqRl05x8bcsCUrC/3Anw2AIpTb7N3mLMN2TZn
+         iFymWltKgv0l/kH/GL0ql7WZc4VeMZpSKpyva6TaaYqj2ryMghjf45YGXjrCHAGumZAa
+         /vjUdti7v0EMLhBoe/SrG8wDQXscBoxQinmc828qYKU5n8vhXouYGiL4LN89xbperbYP
+         3lQVFcSUY94CCCo5SoxqJYPJkfPmXsfTK1gJ0B2uFC6dhmUOOhfZVk5bJCH/lsVNEjX0
+         dcUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhMVVfy0ZINcKL7Es9yHbYH8mEFXlSUbxxTGDcuWQwMFXBkiJ6fBpv1626TXnZg9RwLRNDsVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOl2JpS188QxAmTLdzY8FKD0tqrCvZoDs8ZRGPbPxesxsfKRB1
+	UpHBNKbbkdNGApYZV7MfUa2xl59ZFZWHfGiQ5UJjAzG8IkqHXOmv
+X-Google-Smtp-Source: AGHT+IEpoBRXk9g0jzDL58+21ujwewz/SOjo7BP2BOb0QuAJyp5cjeF6gVP9BU06vx5r5A3iugr48A==
+X-Received: by 2002:a17:906:d542:b0:a9a:67aa:31f5 with SMTP id a640c23a62f3a-a9eefeb1511mr1608189766b.10.1731419290928;
+        Tue, 12 Nov 2024 05:48:10 -0800 (PST)
+Received: from [127.0.0.1] ([193.252.113.11])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0def47esm714835766b.160.2024.11.12.05.48.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 05:45:11 -0800 (PST)
-Message-ID: <ef98012b-559c-42fc-831f-d8f54ca65b1b@6wind.com>
-Date: Tue, 12 Nov 2024 14:45:10 +0100
+        Tue, 12 Nov 2024 05:48:10 -0800 (PST)
+From: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
+X-Google-Original-From: Alexandre Ferrieux <alexandre.ferrieux@orange.com>
+Message-ID: <67ac8505-a08b-40b1-89ec-18d5b4e255bb@orange.com>
+Date: Tue, 12 Nov 2024 14:48:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,82 +63,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next] netlink: add igmp join/leave notifications
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, roopa@cumulusnetworks.com,
- jiri@resnulli.us, stephen@networkplumber.org, netdev@vger.kernel.org,
- =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
- Lorenzo Colitti <lorenzo@google.com>,
- Patrick Ruddy <pruddy@vyatta.att-mail.com>
-References: <20241110081953.121682-1-yuyanghuang@google.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20241110081953.121682-1-yuyanghuang@google.com>
+Subject: Re: [PATCH net v6] net: sched: cls_u32: Fix u32's systematic failure
+ to free IDR entries for hnodes.
+To: Jamal Hadi Salim <jhs@mojatatu.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>
+Cc: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Cong Wang <xiyou.wangcong@gmail.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Linux Kernel Network Developers <netdev@vger.kernel.org>
+References: <20241108141159.305966-1-alexandre.ferrieux@orange.com>
+ <CAM0EoMn+7tntXK10eT5twh6Bc62Gx2tE+3beVY99h6EMnFs6AQ@mail.gmail.com>
+ <20241111102632.74573faa@kernel.org>
+ <CAM0EoMk=1dsi1C02si9MV_E-wX5hu01bi5yTfyMmL9i2FLys1g@mail.gmail.com>
+Content-Language: fr, en-US
+Organization: Orange
+In-Reply-To: <CAM0EoMk=1dsi1C02si9MV_E-wX5hu01bi5yTfyMmL9i2FLys1g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Le 10/11/2024 à 09:19, Yuyang Huang a écrit :
-> This change introduces netlink notifications for multicast address
-> changes, enabling components like the Android Packet Filter to implement
-> IGMP offload solutions.
-> 
-> The following features are included:
-> * Addition and deletion of multicast addresses are reported using
->   RTM_NEWMULTICAST and RTM_DELMULTICAST messages with AF_INET.
-> * A new notification group, RTNLGRP_IPV4_MCADDR, is introduced for
->   receiving these events.
-> 
-> This enhancement allows user-space components to efficiently track
-> multicast group memberships and program hardware offload filters
-> accordingly.
-> 
-> Cc: Maciej Żenczykowski <maze@google.com>
-> Cc: Lorenzo Colitti <lorenzo@google.com>
-> Co-developed-by: Patrick Ruddy <pruddy@vyatta.att-mail.com>
-> Signed-off-by: Patrick Ruddy <pruddy@vyatta.att-mail.com>
-> Link: https://lore.kernel.org/r/20180906091056.21109-1-pruddy@vyatta.att-mail.com
-> Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> ---
->  include/uapi/linux/rtnetlink.h |  6 ++++
->  net/ipv4/igmp.c                | 58 ++++++++++++++++++++++++++++++++++
->  2 files changed, 64 insertions(+)
-> 
-> diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
-> index 3b687d20c9ed..354a923f129d 100644
-> --- a/include/uapi/linux/rtnetlink.h
-> +++ b/include/uapi/linux/rtnetlink.h
-> @@ -93,6 +93,10 @@ enum {
->  	RTM_NEWPREFIX	= 52,
->  #define RTM_NEWPREFIX	RTM_NEWPREFIX
->  
-> +	RTM_NEWMULTICAST,
-> +#define RTM_NEWMULTICAST RTM_NEWMULTICAST
-> +	RTM_DELMULTICAST,
-> +#define RTM_DELMULTICAST RTM_DELMULTICAST
-These names are misleading, they are very generic, but in fact, specialized to igmp.
+On 12/11/2024 13:23, Jamal Hadi Salim wrote:
+> On Mon, Nov 11, 2024 at 1:26=E2=80=AFPM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+>>
+>> On Sat, 9 Nov 2024 07:50:53 -0500 Jamal Hadi Salim wrote:
+>> > Please split the test into a separate patch targeting net-next.
+>>
+>> Separate patch - okay, but why are you asking people to send the tests=
 
-Are there plans to add more notifications later?
-What about ipv6?
+>> to net-next? These sort of requests lead people to try to run
+>> linux-next tests on stable trees.
+>=20
+> AFAIK, those are the rules.
+> The test case is not a fix therefore cant go to -net.
+> You wait until the fix shows up in net-next then you push the test
+> case into net-next.
+> I should have clarified to Alexandre the "wait until the fix shows up
+> in net-next" part.
 
->  	RTM_GETMULTICAST = 58,>  #define RTM_GETMULTICAST RTM_GETMULTICAST
-The RTM_GETMULTICAST works only for with IPv6 and the NEW/DEL will work for IPv4
-only.
+OK, thank you fro the clarification, will do that :)
 
-Regards,
-Nicolas
+The v7 I posted includes all the remarks received so far:
+ - static [inline]
+ - test split apart
+ - u32 type
+ - Fixes: with proper commitid
+ - Acked-by you ;)
 
->  
-> @@ -774,6 +778,8 @@ enum rtnetlink_groups {
->  #define RTNLGRP_TUNNEL		RTNLGRP_TUNNEL
->  	RTNLGRP_STATS,
->  #define RTNLGRP_STATS		RTNLGRP_STATS
-> +	RTNLGRP_IPV4_MCADDR,
-> +#define RTNLGRP_IPV4_MCADDR	RTNLGRP_IPV4_MCADDR
->  	__RTNLGRP_MAX
->  };
->  #define RTNLGRP_MAX	(__RTNLGRP_MAX - 1)
+Please tell me about any remaining issue.
+
