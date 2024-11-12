@@ -1,406 +1,530 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CCC20C000
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 08:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446DC20C00A
+	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 08:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731401825; cv=none; b=dzKk3F/gB8aLqc5saaJmO5cDlFGVPJqhZGJkGiRD1fXjV09/F6BnQ1ZfQI8JxQ9dbL1mR2uFPHjohBQQgLB9KeJlE1LX1HBplLN86ekYCNerZrOmko67x+e7QWZABlmVhnkgTDtWJ5JAoe6YzFgEB7WKPhDfqfEuoTZ0PPC7MCA=
+	t=1731401932; cv=none; b=mIAjKRyLFJrFUXN7NoKnPyuRCXL6EHgQmK30YJ6uu5SghmD4SXn6nIZ1bQnrDnZTfJLaYSQX3zB8K3NTQMDxuYQ7jr4PbDwIL4NFo1Imffomg10f2XTWBtGKcqzZ0h5pCS0I6B9xE7RoYu3xLG3v7WV6+5Es+HVaV+WsJClcfyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731401825; c=relaxed/simple;
-	bh=xHCfaELrEaBYK9mxOLePtDQGUmCp5gWwtkPRtv/CKic=;
+	s=arc-20240116; t=1731401932; c=relaxed/simple;
+	bh=reEMUAi1QnDqIWb4QcQl+4DP5qs65V5sOCNGSMiDabU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MxLZwSa8pxNSDpsWbM9lMTpQQ4f+/jIUTMR3c93GWOTNaKCSml7S6dU8LE+SpIUKpNtjORtVX8nvEO8pZ5H79Rb1ViaVgigUhx/+SM9jdfQXp0IRb+ekvZ0uBuFiUzGWhsGtxT41OX8xqT3AwpbsWY2QNp+glNKUwo4uw6sCbWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BnAehZw1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ln6TGg/n; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lEGADL6E; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wrMTumnS; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEDiXGcrRpVeOua6y8kuYYjw6mnxo2MlKsZ9A2PtJNh/+tpQEWhH0bTR8NIelQQpAi2P/uEYRKyzKnaE8aGXLAyaNMqama3FQhbC5mFbbYUE7WP07yTReokjLGydAJM5v/nJSvDFRuZiZ+xIGAhBwBcW0kX976loCx0TY8Ow8pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAYKfXPQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BnAehZw1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ln6TGg/n";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lEGADL6E";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wrMTumnS"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EEE841F396;
-	Tue, 12 Nov 2024 08:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731401820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAYKfXPQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731401928;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Bwa+pBamx6WwgJJPJPYfJre2lQemc2GGnZehwF0QHyM=;
-	b=BnAehZw102ZM2JWbRbZOicwAk9uAi95Egfr1UMrrggGL2Thsw+U2TzTokGFZhhBmRvPnOP
-	rx/wS9Twj6sR+Nu4Twga+i0g8b0EpfUoWbTF+aQQZZDnvmUC4g4jys1FfjulACuBG7tmUb
-	PYdxor2ivweykzax9iexOE/JFGiNZCY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731401820;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bwa+pBamx6WwgJJPJPYfJre2lQemc2GGnZehwF0QHyM=;
-	b=Ln6TGg/nny3yRAX0GWufXgtMDYDEK4YiakuhLsP1UVTfHwWguIFozTcxDaq/Hk/tke+SU0
-	iGi0Npu4Gf6hIMBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lEGADL6E;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wrMTumnS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1731401819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bwa+pBamx6WwgJJPJPYfJre2lQemc2GGnZehwF0QHyM=;
-	b=lEGADL6EvOSqVB9TrmhCLlYz9h+lcjbc/ZaQ+ViWOu0W28DGG1q7dmpvsstaeH3xv4547U
-	lJqeYZ6IgTbhJB58tQZUdP/f82kefLL7CMck6ao62okYScc0bo+1DoY/pRCCPxhnl81Gxy
-	MQTjn9dqDwVVNwwY3XpcDBMY0ZtCZkE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1731401819;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bwa+pBamx6WwgJJPJPYfJre2lQemc2GGnZehwF0QHyM=;
-	b=wrMTumnSMwFQ2yvK3isVXv4V7DaPNEt3bcwy9O0AiqY5S48M3YJa/e02q4gypoqnIKoFw6
-	6El3lkJpViOZBuCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E329A13301;
-	Tue, 12 Nov 2024 08:56:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rLdxN1sYM2erEgAAD6G6ig
-	(envelope-from <jwiesner@suse.de>); Tue, 12 Nov 2024 08:56:59 +0000
-Received: by incl.suse.cz (Postfix, from userid 1000)
-	id 98687B6EA7; Tue, 12 Nov 2024 09:56:55 +0100 (CET)
-Date: Tue, 12 Nov 2024 09:56:55 +0100
-From: Jiri Wiesner <jwiesner@suse.de>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC PATCH] ipv6: route: release reference of dsts cached in
- sockets
-Message-ID: <20241112085655.GA19776@incl>
-References: <20240930180916.GA24637@incl>
- <CANn89iJQDWEyTC5Xc77PEXyxbbvKjm=exb5jKB0-O3ZzZ=W1Hg@mail.gmail.com>
- <20241001152609.GA24007@incl>
- <CADvbK_cmi_ppJyPwmh77dHgkm=Lh52vtEWddwSAFNhZpmmev6Q@mail.gmail.com>
- <20241003170126.GA20362@incl>
- <CADvbK_e_Etot3nzMC=FEt-cqoWfnER4SVOC5dOm6aH43iME1iA@mail.gmail.com>
+	bh=LPptTmbxDsypCGvPECMl6oSCV1GXbmYdDQ4GWXHyOFo=;
+	b=XAYKfXPQGpblegpWquQrNzAM9i4oOQN4Cn/NwcIg0M4U6zYtj8AAsekbP8QNJCHCcYktKu
+	kHSnp4XRjghk+z7FdtGZh6kvulqE/o098LqD4MN5ua44VvoeMehfi+BC/Ub5i+jLXT/2X8
+	lvg+v1+TcWuJ2zvanGHH2o3U3iSeGtw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-XTAferi1NPet9058UQgw0Q-1; Tue, 12 Nov 2024 03:58:46 -0500
+X-MC-Unique: XTAferi1NPet9058UQgw0Q-1
+X-Mimecast-MFC-AGG-ID: XTAferi1NPet9058UQgw0Q
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-539e0fa6f3dso4064089e87.1
+        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 00:58:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731401925; x=1732006725;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LPptTmbxDsypCGvPECMl6oSCV1GXbmYdDQ4GWXHyOFo=;
+        b=T/jytd+S7cOo7OBYYgPTg4ncgw1cE615nY2Nd20hYZDdl0BQl2fTQA1s47eRTcDV7a
+         FjtdI5XFC0Xf7qSBIqfRJvd8T9wONCRQAOXsaeuBlyPnm7sD0mY8EPt5IqcrvvDnblNy
+         o9l7NQbFLX+VKQ/7Mcgt3lz/eUp8bMLsdQpnp+AHcd9w1b+fhyQKUtzHiEoWPLHB8hsZ
+         zEC7KbcSpdD4A1122ASQkk7HD6uxDLoGjtjLAwWIjw4j22JQayCXmtdhMaOTXh4QEGxl
+         8/vc6Bt1Q76UCCpxQqVj8LuWjjkBbnCuWtIrr3KMtxm6EgTDGHTgf8OH0KZau29iObwu
+         SNEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmOUWDfRHKfm9Xkix1qhUSFuMtwGwMMZoSgUDPawdOLzvMIkYe0E3pW0wTR4n+R5AQLQGwqr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMyYcLH6VsHyzWkAtaLyL7YIlYp+UFMa5msAvvrW2A5Vfco0Z1
+	1P/oOqmVpbPl6zC9vZKwEiZLvQG7FBEu4a0YeeJMvqJIUDsxdTErg8WKzeo9J8Pbu9qRyVDoMAT
+	28fAWMShgJ7kT0GkOgohSLTN42myvlBftXgYvn8frLEwO4GW4o7PLPw==
+X-Received: by 2002:a05:6512:230e:b0:536:a4f1:d214 with SMTP id 2adb3069b0e04-53d862c6e44mr11355537e87.19.1731401924687;
+        Tue, 12 Nov 2024 00:58:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHESdaruTqKXD8wNS5cPcSQBu3Jt/KOIsg2NV8sVzgjBpgWNkRHfN86pa3KSfybNzE1Ut550w==
+X-Received: by 2002:a05:6512:230e:b0:536:a4f1:d214 with SMTP id 2adb3069b0e04-53d862c6e44mr11355505e87.19.1731401923910;
+        Tue, 12 Nov 2024 00:58:43 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-129.retail.telecomitalia.it. [79.46.200.129])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a4ab89sm701336966b.64.2024.11.12.00.58.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 00:58:43 -0800 (PST)
+Date: Tue, 12 Nov 2024 09:58:39 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com
+Subject: Re: [PATCH v5 3/3] vsock/test: verify socket options after setting
+ them
+Message-ID: <bltkmoxf6xsknimf6ccrxuritfc3ipxhbqkibq7jzddg6yewcv@ijcc44qmqsm3>
+References: <20241108011726.213948-1-kshk@linux.ibm.com>
+ <20241108011726.213948-4-kshk@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CADvbK_e_Etot3nzMC=FEt-cqoWfnER4SVOC5dOm6aH43iME1iA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Rspamd-Queue-Id: EEE841F396
-X-Spam-Score: -2.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+In-Reply-To: <20241108011726.213948-4-kshk@linux.ibm.com>
 
-On Sun, Oct 06, 2024 at 02:25:25PM -0400, Xin Long wrote:
-> We recently also encountered this
+On Thu, Nov 07, 2024 at 07:17:26PM -0600, Konstantin Shkolnyy wrote:
+>Replace setsockopt() calls with calls to functions that follow
+>setsockopt() with getsockopt() and check that the returned value and its
+>size are the same as have been set.
 >
->   'unregister_netdevice: waiting for lo to become free. Usage count =3D X'
+>Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+>---
+> tools/testing/vsock/Makefile              |   8 +-
+> tools/testing/vsock/control.c             |   8 +-
+> tools/testing/vsock/msg_zerocopy_common.c |   8 +-
+> tools/testing/vsock/util_socket.c         | 149 ++++++++++++++++++++++
+> tools/testing/vsock/util_socket.h         |  19 +++
+> tools/testing/vsock/vsock_perf.c          |  24 ++--
+> tools/testing/vsock/vsock_test.c          |  40 +++---
+> 7 files changed, 208 insertions(+), 48 deletions(-)
+> create mode 100644 tools/testing/vsock/util_socket.c
+> create mode 100644 tools/testing/vsock/util_socket.h
 >
-> problem on our customer env after backporting
->
->   Commit 92f1655aa2b22 ("net: fix __dst_negative_advice() race"). [1]
->
-> The commit looks correct to me, so I guess it may uncover some existing
-> issues.
->
-> As it took a very long time to get reproduced on our customer env, which
-> made it impossible to debug. Also the issue existed even after
-> disabling IPv6.
->
-> It seems much easier to reproduce it on your customer env. So I'm wonderi=
-ng
->
-> - Was the testing on your customer env related to IPv6 ?
-> - Does the issue still exist after reverting the commit [1] ?
+>diff --git a/tools/testing/vsock/Makefile b/tools/testing/vsock/Makefile
+>index 6e0b4e95e230..1ec0b3a67aa4 100644
+>--- a/tools/testing/vsock/Makefile
+>+++ b/tools/testing/vsock/Makefile
+>@@ -1,12 +1,12 @@
+> # SPDX-License-Identifier: GPL-2.0-only
+> all: test vsock_perf
+> test: vsock_test vsock_diag_test vsock_uring_test
+>-vsock_test: vsock_test.o vsock_test_zerocopy.o timeout.o control.o util.o msg_zerocopy_common.o
+>-vsock_diag_test: vsock_diag_test.o timeout.o control.o util.o
+>-vsock_perf: vsock_perf.o msg_zerocopy_common.o
+>+vsock_test: vsock_test.o vsock_test_zerocopy.o timeout.o control.o util.o msg_zerocopy_common.o util_socket.o
+>+vsock_diag_test: vsock_diag_test.o timeout.o control.o util.o util_socket.o
+>+vsock_perf: vsock_perf.o msg_zerocopy_common.o util_socket.o
 
-The customer tried reproducing the issue with 92f1655aa2b22 ("net: fix __ds=
-t_negative_advice() race") reverted and the issue appeared again. My next s=
-tep was capturing more points within the stacktraces when dst refcounts are=
- changed (I do not have full stack traces - the trace entries I store in th=
-e hash contain only the instruction pointer and the parent function). This =
-is the trace for the leaked dst object:
-> dst ff1c4157413bf900
-> alloc: 1 destroy:  obj diff: 1
-> hold ops: 5 put ops: 4 refcnt diff: 1
-> Function                            Parent                           Op  =
-Net            Device Dst              Number of Calls
-> inet6_csk_route_socket+0x1c2/0x2d0: inet6_csk_update_pmtu+0x58/0x90: dst =
-ff1c4151bcac1080 eth0 ff1c4157413bf900 1
-> __ip6_rt_update_pmtu+0x183/0x3c0: inet6_csk_update_pmtu+0x4b/0x90: dst ff=
-1c4151bcac1080 eth0 ff1c4157413bf900 1
-> ip6_dst_lookup_flow+0x4f/0x1d0: inet6_csk_route_socket+0x198/0x2d0: dst f=
-f1c4151bcac1080 eth0 ff1c4157413bf900 1
-> ip6_dst_ifdown+0x5/0x250: dst_dev_put+0x2d/0xd0: dst ff1c4151bcac1080 eth=
-0 ff1c4157413bf900 1
-> tcp_v6_connect+0x37e/0x790: __inet_stream_connect+0x2c8/0x3a0: dst ff1c41=
-51bcac1080 eth0 ff1c4157413bf900 2
-> ip6_dst_lookup_flow+0x4f/0x1d0: tcp_v6_connect+0x320/0x790: dst ff1c4151b=
-cac1080 eth0 ff1c4157413bf900 2
-> __dev_queue_xmit+0x1af/0xd20: ip6_finish_output2+0x1f1/0x6e0: dst ff1c415=
-1bcac1080 eth0 ff1c4157413bf900 675
-> inet6_csk_xmit+0xa1/0x150: __tcp_transmit_skb+0x5f8/0xd40: dst ff1c4151bc=
-ac1080 eth0 ff1c4157413bf900 675
-> Function                            Parent                           Op  =
-    Net            Device Dst              Refcount Diff
-> ip6_route_output_flags+0x76/0x230: ip6_dst_lookup_tail+0x215/0x250: dst_h=
-old ff1c4151bcac1080 eth0 ff1c4157413bf900 1
-> ip6_negative_advice+0x66/0x2d0: tcp_retransmit_timer+0x5ed/0xac0: dst_hol=
-d ff1c4151bcac1080 eth0 ff1c4157413bf900 1
-> dst_alloc+0x5e/0x180: ip6_dst_alloc+0x27/0x60: dst_hold ff1c4151bcac1080 =
-eth0 ff1c4157413bf900 1
-> ip6_route_output_flags+0x76/0x230: ip6_dst_lookup_tail+0x10f/0x250: dst_h=
-old ff1c4151bcac1080 eth0 ff1c4157413bf900 2
-> dst_release+0x32/0x140: ip6_negative_advice+0x137/0x2d0: dst_put ff1c4151=
-bcac1080 eth0 ff1c4157413bf900 1
-> dst_release+0x32/0x140: inet_sock_destruct+0x146/0x1c0: dst_put ff1c4151b=
-cac1080 eth0 ff1c4157413bf900 2
-> dst_release+0x32/0x140: rt6_remove_exception.part.53+0x7f/0xe0: dst_put f=
-fffffff90ee2a80 blackhole_dev ff1c4157413bf900 1
-> Function                 Parent                      Op     Net          =
-    Dst              Socket           Number of Calls
-> sk_setup_caps+0x5/0x200: tcp_v6_connect+0x428/0x790: sk_dst ff1c4151bcac1=
-080 ff1c4157413bf900 ff1c4158c07aaf80 1
-> sk_setup_caps+0x5/0x200: tcp_v6_connect+0x428/0x790: sk_dst ff1c4151bcac1=
-080 ff1c4157413bf900 ff1c418e49bac280 1
-> sk_setup_caps+0x5/0x200: inet6_csk_route_socket+0x23c/0x2d0: sk_dst ff1c4=
-151bcac1080 ff1c4157413bf900 ff1c418ea04f7200 1
+I would add the new functions to check setsockopt in util.c
 
-The refcount of the dst was changed only when a dst_hold or dst_put operati=
-on was logged. The hold in dst_alloc() is balanced by the dst_release() in =
-rt6_remove_exception(). The three holds in ip6_route_output_flags() belonge=
-d to the references held by sockets which were balanced by the dst_release(=
-) in inet_sock_destruct(). But that leaves one hold operation outstanding a=
-nd unbalanced. There is a put operation for expired cached dst objects in i=
-p6_negative_advice() but that one is intentionally balanced by a hold in th=
-e same function.
+vsock_perf is more of a tool to measure performance than a test, so
+we can avoid calling these checks there, tests should cover all
+cases regardless of vsock_perf.
 
-Accoding to the sk_dst trace entries, three sockets held a reference to the=
- leaked dst. All of these sockets were eventually distroyed so there was no=
- socket leak causing the dst leak, which rules out one of the possbile hypo=
-theses. The dst was stored in the socket object while a connect() sycall wa=
-s being executed for two of the sockets. An IMCPv6 packet carrying a Packet=
- Too Big message was received by the third socket, which lead to the execut=
-ion of routines changing the MTU for the dst and storing a reference to the=
- dst in the socket object. As for races, sockets are locked in inet_stream_=
-connect, tcp_write_timer() and tcp_v6_err(), and the mutual exclusion preve=
-nts races when reference to dst objects are set and reset for sockets. The =
-put operation executed from dst_release() in inet_sock_destruct() is not pa=
-rt of a critical section protected by mutual exclusion but it is guaranteed=
- to run only after the refcount of the socket has reached zero. All the oth=
-er code paths in the trace increment the refcount of the socket while they =
-manipulate dsts (the connect() syscall uses the refcount incremented by the=
- socket() syscall).
-
-This is a trace for the socket for which ip6_negative_advice() was executed=
- for an expired cached dst:
-> socket ff1c4158c07aaf80
-> alloc: 1 destroy: 1 obj diff: 0
-> hold ops: 9 put ops: 9 refcnt diff: 0
-> ip6_negative_advice+0xcd/0x2d0: tcp_retransmit_timer+0x5ed/0xac0: sk_dst =
-ff1c4151bcac1080 0 ff1c4158c07aaf80 1
-> tcp_retransmit_timer+0x50d/0xac0: tcp_write_timer_handler+0xba/0x1f0: sk_=
-dst ff1c4151bcac1080 0 ff1c4158c07aaf80 2
-> ip6_negative_advice+0x169/0x2d0: tcp_retransmit_timer+0x5ed/0xac0: sk_dst=
- ff1c4151bcac1080 0 ff1c4158c07aaf80 3
-> sk_setup_caps+0x5/0x200: inet6_sk_rebuild_header+0x1f9/0x2a0: sk_dst ff1c=
-4151bcac1080 ff1c4153a762d500 ff1c4158c07aaf80 5
-> sk_setup_caps+0x5/0x200: tcp_v6_connect+0x428/0x790: sk_dst ff1c4151bcac1=
-080 ff1c4157413bf900 ff1c4158c07aaf80 1
-> sk_free+0x5/0x100: tcp_close+0x100/0x120: sk ff1c4151bcac1080 0 ff1c4158c=
-07aaf80 1
-> __sk_free+0x5/0x190: sk_free+0xe3/0x100: sk ff1c4151bcac1080 0 ff1c4158c0=
-7aaf80 1
-> sk_destruct+0x5/0x150: __sk_free+0x83/0x190: sk ff1c4151bcac1080 0 ff1c41=
-58c07aaf80 1
-> sk_alloc+0x195/0x2a0: inet6_create+0xd5/0x450: sk ff1c4151bcac1080 0 ff1c=
-4158c07aaf80 1
-> sk_free+0x5/0x100: ip6_rcv_core.isra.25+0x27c/0x440: sk ff1c4151bcac1080 =
-0 ff1c4158c07aaf80 7
-> sk_reset_timer+0x7b/0x130: tcp_connect+0x83f/0xe00: sk_hold ff1c4151bcac1=
-080 0 ff1c4158c07aaf80 1
-> __tcp_close+0x15d/0x4c0: tcp_close+0x35/0x120: sk_hold ff1c4151bcac1080 0=
- ff1c4158c07aaf80 1
-> sock_init_data_uid+0x107/0x2d0: inet6_create+0xec/0x450: sk_hold ff1c4151=
-bcac1080 0 ff1c4158c07aaf80 1
-> sk_reset_timer+0x7b/0x130: tcp_retransmit_timer+0x4e3/0xac0: sk_hold ff1c=
-4151bcac1080 0 ff1c4158c07aaf80 6
-> tcp_close+0x5/0x120: inet_release+0x3c/0x80: sk_put ff1c4151bcac1080 0 ff=
-1c4158c07aaf80 1
-> inet_csk_destroy_sock+0x90/0x1e0: __tcp_close+0x2ca/0x4c0: sk_put ff1c415=
-1bcac1080 0 ff1c4158c07aaf80 1
-> tcp_write_timer+0x61/0x260: call_timer_fn+0x27/0x130: sk_put ff1c4151bcac=
-1080 0 ff1c4158c07aaf80 7
-
-Besides dst ff1c4157413bf900, this sockets held a reference to another dst =
-- ff1c4153a762d500. Regardless of the order in which the dst references wer=
-e held, the extra dst_hold() in ip6_negative_advice() would preserve the re=
-fcount increment owned by the socket while also resetting the sk_dst_cache =
-member of the socket to NULL, rendering it impossible for the socket to dec=
-rement the refcount in the future. We see that the socket was destroyed but=
- the sk_dst_cache member was most probably NULL at the time because all the=
- dst references were reset in tcp_retransmit_timer() and ip6_negative_advic=
-e().
-
-Based on this data, I went back to recheck the kprobe module that was meant=
- to implement a dst_release() in ip6_negative_advice(). I found a mistake i=
-n the module that resulted in executing:
-> static void ip6_negative_advice(struct sock *sk, struct dst_entry *dst)
+>
+> vsock_uring_test: LDLIBS = -luring
+>-vsock_uring_test: control.o util.o vsock_uring_test.o timeout.o msg_zerocopy_common.o
+>+vsock_uring_test: control.o util.o vsock_uring_test.o timeout.o msg_zerocopy_common.o util_socket.o
+>
+> CFLAGS += -g -O2 -Werror -Wall -I. -I../../include 
+> -I../../../usr/include -Wno-pointer-sign -fno-strict-overflow 
+> -fno-strict-aliasing -fno-common -MMD -U_FORTIFY_SOURCE -D_GNU_SOURCE
+> .PHONY: all test clean
+>diff --git a/tools/testing/vsock/control.c b/tools/testing/vsock/control.c
+>index d2deb4b15b94..f1fd809ac9d5 100644
+>--- a/tools/testing/vsock/control.c
+>+++ b/tools/testing/vsock/control.c
+>@@ -27,6 +27,7 @@
+>
+> #include "timeout.h"
+> #include "control.h"
+>+#include "util_socket.h"
+>
+> static int control_fd = -1;
+>
+>@@ -50,7 +51,6 @@ void control_init(const char *control_host,
+>
+> 	for (ai = result; ai; ai = ai->ai_next) {
+> 		int fd;
+>-		int val = 1;
+>
+> 		fd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+> 		if (fd < 0)
+>@@ -65,11 +65,9 @@ void control_init(const char *control_host,
+> 			break;
+> 		}
+>
+>-		if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR,
+>-			       &val, sizeof(val)) < 0) {
+>-			perror("setsockopt");
+>+		if (!setsockopt_int_check(fd, SOL_SOCKET, SO_REUSEADDR, 1,
+>+				"setsockopt SO_REUSEADDR"))
+> 			exit(EXIT_FAILURE);
+>-		}
+>
+> 		if (bind(fd, ai->ai_addr, ai->ai_addrlen) < 0)
+> 			goto next;
+>diff --git a/tools/testing/vsock/msg_zerocopy_common.c b/tools/testing/vsock/msg_zerocopy_common.c
+>index 5a4bdf7b5132..4edb1b6974c0 100644
+>--- a/tools/testing/vsock/msg_zerocopy_common.c
+>+++ b/tools/testing/vsock/msg_zerocopy_common.c
+>@@ -13,15 +13,13 @@
+> #include <linux/errqueue.h>
+>
+> #include "msg_zerocopy_common.h"
+>+#include "util_socket.h"
+>
+> void enable_so_zerocopy(int fd)
 > {
->         struct rt6_info *rt =3D (struct rt6_info *) dst;
->         if (rt->rt6i_flags & RTF_CACHE) {
->                 rcu_read_lock();
->                 if (rt6_check_expired(rt)) {
->                         /* counteract the dst_release() in sk_dst_reset()=
- */
->                         dst_hold(dst);
->                         sk_dst_reset(sk);
->                         rt6_remove_exception_rt(rt);
->                 }
-> --->		  kprobe_calls_dst_release;
->                 rcu_read_unlock();
->                 return;
->         }
->         sk_dst_reset(sk);
+>-	int val = 1;
+>-
+>-	if (setsockopt(fd, SOL_SOCKET, SO_ZEROCOPY, &val, sizeof(val))) {
+>-		perror("setsockopt");
+>+	if (!setsockopt_int_check(fd, SOL_SOCKET, SO_ZEROCOPY, 1,
+>+			"setsockopt SO_ZEROCOPY"))
+> 		exit(EXIT_FAILURE);
+>-	}
 > }
-instead of this:
-> static void ip6_negative_advice(struct sock *sk, struct dst_entry *dst)
+>
+> void vsock_recv_completion(int fd, const bool *zerocopied)
+>diff --git a/tools/testing/vsock/util_socket.c b/tools/testing/vsock/util_socket.c
+>new file mode 100644
+>index 000000000000..e791da160624
+>--- /dev/null
+>+++ b/tools/testing/vsock/util_socket.c
+>@@ -0,0 +1,149 @@
+>+// SPDX-License-Identifier: GPL-2.0-only
+>+/*
+>+ * Socket utility functions.
+>+ *
+>+ * Copyright IBM Corp. 2024
+>+ */
+>+#include <errno.h>
+>+#include <inttypes.h>
+>+#include <stdio.h>
+>+#include <string.h>
+>+#include <sys/socket.h>
+>+#include "util_socket.h"
+>+
+>+/* Set "unsigned long long" socket option and check that it's indeed set */
+>+bool setsockopt_ull_check(int fd, int level, int optname,
+>+	unsigned long long val, char const *errmsg)
+>+{
+>+	unsigned long long chkval;
+>+	socklen_t chklen;
+>+	int err;
+>+
+>+	err = setsockopt(fd, level, optname, &val, sizeof(val));
+>+	if (err) {
+>+		fprintf(stderr, "setsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	chkval = ~val; /* just make storage != val */
+>+	chklen = sizeof(chkval);
+>+
+>+	err = getsockopt(fd, level, optname, &chkval, &chklen);
+>+	if (err) {
+>+		fprintf(stderr, "getsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	if (chklen != sizeof(chkval)) {
+>+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
+>+				chklen);
+>+		goto fail;
+>+	}
+>+
+>+	if (chkval != val) {
+>+		fprintf(stderr, "value mismatch: set %llu got %llu\n", val,
+>+				chkval);
+>+		goto fail;
+>+	}
+>+	return true;
+>+fail:
+>+	fprintf(stderr, "%s  val %llu\n", errmsg, val);
+>+	return false;
+>+}
+>+
+>+/* Set "int" socket option and check that it's indeed set */
+>+bool setsockopt_int_check(int fd, int level, int optname, int val,
+>+		char const *errmsg)
+>+{
+>+	int chkval;
+>+	socklen_t chklen;
+>+	int err;
+>+
+>+	err = setsockopt(fd, level, optname, &val, sizeof(val));
+>+	if (err) {
+>+		fprintf(stderr, "setsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	chkval = ~val; /* just make storage != val */
+>+	chklen = sizeof(chkval);
+>+
+>+	err = getsockopt(fd, level, optname, &chkval, &chklen);
+>+	if (err) {
+>+		fprintf(stderr, "getsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	if (chklen != sizeof(chkval)) {
+>+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
+>+				chklen);
+>+		goto fail;
+>+	}
+>+
+>+	if (chkval != val) {
+>+		fprintf(stderr, "value mismatch: set %d got %d\n",
+>+				val, chkval);
+>+		goto fail;
+>+	}
+>+	return true;
+>+fail:
+>+	fprintf(stderr, "%s val %d\n", errmsg, val);
+>+	return false;
+>+}
+>+
+>+static void mem_invert(unsigned char *mem, size_t size)
+>+{
+>+	size_t i;
+>+
+>+	for (i = 0; i < size; i++)
+>+		mem[i] = ~mem[i];
+>+}
+>+
+>+/* Set "timeval" socket option and check that it's indeed set */
+>+bool setsockopt_timeval_check(int fd, int level, int optname,
+>+		struct timeval val, char const *errmsg)
+>+{
+>+	struct timeval chkval;
+>+	socklen_t chklen;
+>+	int err;
+>+
+>+	err = setsockopt(fd, level, optname, &val, sizeof(val));
+>+	if (err) {
+>+		fprintf(stderr, "setsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	 /* just make storage != val */
+>+	chkval = val;
+>+	mem_invert((unsigned char *) &chkval, sizeof(chkval));
+>+	chklen = sizeof(chkval);
+>+
+>+	err = getsockopt(fd, level, optname, &chkval, &chklen);
+>+	if (err) {
+>+		fprintf(stderr, "getsockopt err: %s (%d)\n",
+>+				strerror(errno), errno);
+>+		goto fail;
+>+	}
+>+
+>+	if (chklen != sizeof(chkval)) {
+>+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
+>+				chklen);
+>+		goto fail;
+>+	}
+>+
+>+	if (memcmp(&chkval, &val, sizeof(val)) != 0) {
+>+		fprintf(stderr, "value mismatch: set %ld:%ld got %ld:%ld\n",
+>+				val.tv_sec, val.tv_usec,
+>+				chkval.tv_sec, chkval.tv_usec);
+>+		goto fail;
+>+	}
+>+	return true;
+>+fail:
+>+	fprintf(stderr, "%s val %ld:%ld\n", errmsg, val.tv_sec, val.tv_usec);
+>+	return false;
+>+}
+>diff --git a/tools/testing/vsock/util_socket.h b/tools/testing/vsock/util_socket.h
+>new file mode 100644
+>index 000000000000..38cf3decb15c
+>--- /dev/null
+>+++ b/tools/testing/vsock/util_socket.h
+>@@ -0,0 +1,19 @@
+>+/* SPDX-License-Identifier: GPL-2.0-only */
+>+/*
+>+ * Socket utility functions.
+>+ *
+>+ * Copyright IBM Corp. 2024
+>+ */
+>+#ifndef UTIL_SOCKET_H
+>+#define UTIL_SOCKET_H
+>+
+>+#include <stdbool.h>
+>+
+>+bool setsockopt_ull_check(int fd, int level, int optname,
+>+		unsigned long long val, char const *errmsg);
+>+bool setsockopt_int_check(int fd, int level, int optname, int val,
+>+		char const *errmsg);
+>+bool setsockopt_timeval_check(int fd, int level, int optname,
+>+		struct timeval val, char const *errmsg);
+
+We call of them in the same way in the tests:
+
+if (!setsockopt...check(...))
+     exit(EXIT_FAILURE);
+
+So, what about making them void and calling exit in the functions?
+
+We already do this in other functions.
+
+Thanks for this work!
+Stefano
+
+>+
+>+#endif /* UTIL_SOCKET_H */
+>diff --git a/tools/testing/vsock/vsock_perf.c b/tools/testing/vsock/vsock_perf.c
+>index 8e0a6c0770d3..b117e043b87b 100644
+>--- a/tools/testing/vsock/vsock_perf.c
+>+++ b/tools/testing/vsock/vsock_perf.c
+>@@ -21,6 +21,7 @@
+> #include <sys/mman.h>
+>
+> #include "msg_zerocopy_common.h"
+>+#include "util_socket.h"
+>
+> #define DEFAULT_BUF_SIZE_BYTES	(128 * 1024)
+> #define DEFAULT_TO_SEND_BYTES	(64 * 1024)
+>@@ -88,13 +89,16 @@ static unsigned long memparse(const char *ptr)
+>
+> static void vsock_increase_buf_size(int fd)
 > {
->         struct rt6_info *rt =3D (struct rt6_info *) dst;
->         if (rt->rt6i_flags & RTF_CACHE) {
->                 rcu_read_lock();
->                 if (rt6_check_expired(rt)) {
->                         /* counteract the dst_release() in sk_dst_reset()=
- */
->                         dst_hold(dst);
-> --->			  kprobe_calls_dst_release;
->                         sk_dst_reset(sk);
->                         rt6_remove_exception_rt(rt);
->                 }
->                 rcu_read_unlock();
->                 return;
->         }
->         sk_dst_reset(sk);
+>-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+>-		       &vsock_buf_bytes, sizeof(vsock_buf_bytes)))
+>-		error("setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)");
+>+	if (!setsockopt_ull_check(fd, AF_VSOCK,
+>+			SO_VM_SOCKETS_BUFFER_MAX_SIZE, vsock_buf_bytes,
+>+			"setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)"))
+>+		exit(EXIT_FAILURE);
+>+
+>+	if (!setsockopt_ull_check(fd, AF_VSOCK,
+>+			SO_VM_SOCKETS_BUFFER_SIZE, vsock_buf_bytes,
+>+			"setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)"))
+>+		exit(EXIT_FAILURE);
+>
+>-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>-		       &vsock_buf_bytes, sizeof(vsock_buf_bytes)))
+>-		error("setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
 > }
-which clearly shows why the test with the module resulted in negative overf=
-low of dst refcounts. I fixed the module and further testing showed the iss=
-ue is no longer reproducible.
+>
+> static int vsock_connect(unsigned int cid, unsigned int port)
+>@@ -183,10 +187,10 @@ static void run_receiver(int rcvlowat_bytes)
+>
+> 	vsock_increase_buf_size(client_fd);
+>
+>-	if (setsockopt(client_fd, SOL_SOCKET, SO_RCVLOWAT,
+>-		       &rcvlowat_bytes,
+>-		       sizeof(rcvlowat_bytes)))
+>-		error("setsockopt(SO_RCVLOWAT)");
+>+
+>+	if (!setsockopt_int_check(client_fd, SOL_SOCKET, SO_RCVLOWAT,
+>+			rcvlowat_bytes, "setsockopt(SO_RCVLOWAT)"))
+>+		exit(EXIT_FAILURE);
+>
+> 	data = malloc(buf_size_bytes);
+>
+>diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+>index c7af23332e57..3764dca1118e 100644
+>--- a/tools/testing/vsock/vsock_test.c
+>+++ b/tools/testing/vsock/vsock_test.c
+>@@ -27,6 +27,7 @@
+> #include "timeout.h"
+> #include "control.h"
+> #include "util.h"
+>+#include "util_socket.h"
+>
+> static void test_stream_connection_reset(const struct test_opts *opts)
+> {
+>@@ -444,17 +445,14 @@ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
+>
+> 	sock_buf_size = SOCK_BUF_SIZE;
+>
+>-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+>-		       &sock_buf_size, sizeof(sock_buf_size))) {
+>-		perror("setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)");
+>+	if (!setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+>+			sock_buf_size,
+>+			"setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)"))
+> 		exit(EXIT_FAILURE);
+>-	}
+>
+>-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>-		       &sock_buf_size, sizeof(sock_buf_size))) {
+>-		perror("setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
+>+	if (!setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>+		       sock_buf_size, "setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)"))
+> 		exit(EXIT_FAILURE);
+>-	}
+>
+> 	/* Ready to receive data. */
+> 	control_writeln("SRVREADY");
+>@@ -586,10 +584,9 @@ static void test_seqpacket_timeout_client(const struct test_opts *opts)
+> 	tv.tv_sec = RCVTIMEO_TIMEOUT_SEC;
+> 	tv.tv_usec = 0;
+>
+>-	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (void *)&tv, sizeof(tv)) == -1) {
+>-		perror("setsockopt(SO_RCVTIMEO)");
+>+	if (!setsockopt_timeval_check(fd, SOL_SOCKET, SO_RCVTIMEO, tv,
+>+			"setsockopt(SO_RCVTIMEO)"))
+> 		exit(EXIT_FAILURE);
+>-	}
+>
+> 	read_enter_ns = current_nsec();
+>
+>@@ -855,9 +852,8 @@ static void test_stream_poll_rcvlowat_client(const struct test_opts *opts)
+> 		exit(EXIT_FAILURE);
+> 	}
+>
+>-	if (setsockopt(fd, SOL_SOCKET, SO_RCVLOWAT,
+>-		       &lowat_val, sizeof(lowat_val))) {
+>-		perror("setsockopt(SO_RCVLOWAT)");
+>+	if (!setsockopt_int_check(fd, SOL_SOCKET, SO_RCVLOWAT,
+>+		       lowat_val, "setsockopt(SO_RCVLOWAT)")) {
+> 		exit(EXIT_FAILURE);
+> 	}
+>
+>@@ -1383,11 +1379,9 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+> 	/* size_t can be < unsigned long long */
+> 	sock_buf_size = buf_size;
+>
+>-	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>-		       &sock_buf_size, sizeof(sock_buf_size))) {
+>-		perror("setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
+>+	if (!setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>+		       sock_buf_size, "setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)"))
+> 		exit(EXIT_FAILURE);
+>-	}
+>
+> 	if (low_rx_bytes_test) {
+> 		/* Set new SO_RCVLOWAT here. This enables sending credit
+>@@ -1396,9 +1390,8 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+> 		 */
+> 		recv_buf_size = 1 + VIRTIO_VSOCK_MAX_PKT_BUF_SIZE;
+>
+>-		if (setsockopt(fd, SOL_SOCKET, SO_RCVLOWAT,
+>-			       &recv_buf_size, sizeof(recv_buf_size))) {
+>-			perror("setsockopt(SO_RCVLOWAT)");
+>+		if (!setsockopt_int_check(fd, SOL_SOCKET, SO_RCVLOWAT,
+>+			       recv_buf_size, "setsockopt(SO_RCVLOWAT)")) {
+> 			exit(EXIT_FAILURE);
+> 		}
+> 	}
+>@@ -1442,9 +1435,8 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+> 		recv_buf_size++;
+>
+> 		/* Updating SO_RCVLOWAT will send credit update. */
+>-		if (setsockopt(fd, SOL_SOCKET, SO_RCVLOWAT,
+>-			       &recv_buf_size, sizeof(recv_buf_size))) {
+>-			perror("setsockopt(SO_RCVLOWAT)");
+>+		if (!setsockopt_int_check(fd, SOL_SOCKET, SO_RCVLOWAT,
+>+			       recv_buf_size, "setsockopt(SO_RCVLOWAT)")) {
+> 			exit(EXIT_FAILURE);
+> 		}
+> 	}
+>-- 
+>2.34.1
+>
 
-I have managed to put together a minimal set of steps needed to reproduce t=
-he issue:
-ip link add veth1 mtu 65535 type veth peer veth0 mtu 65535
-ip netns add ns0
-ip link set veth1 netns ns0
-ip addr add fd00::1/24 dev veth0
-ip -n ns0 addr add fd00::2/24 dev veth1
-ip link set up dev veth0
-ip -n ns0 link set up dev lo
-ip -n ns0 link set up dev veth1
-ip -n ns0 route add default via fd00::1 dev veth1
-
-ip link add veth3 mtu 65535 type veth peer veth2 mtu 65535
-ip netns add ns2
-ip link set veth3 netns ns2
-ip addr add fd02::1/24 dev veth2
-ip -n ns2 addr add fd02::2/24 dev veth3
-ip link set up dev veth2
-ip -n ns2 link set up dev lo
-ip -n ns2 link set up dev veth3
-ip -n ns2 route add default via fd02::1 dev veth3
-
-ip netns exec ns0 bash -c "echo 6 > /proc/sys/net/ipv6/route/mtu_expires"
-#ip netns exec ns2 bash -c "echo 6 > /proc/sys/net/ipv6/route/mtu_expires"
-ip netns exec ns0 bash -c "echo 900 > /proc/sys/net/ipv6/route/gc_interval"
-#ip netns exec ns2 bash -c "echo 900 > /proc/sys/net/ipv6/route/gc_interval"
-sleep 30
-
-ip6tables -F
-ip6tables -A FORWARD -i veth0 -d fd02::/24 -j ACCEPT
-ip6tables -A FORWARD -i veth2 -d fd00::/24 -j ACCEPT
-echo 1 > /proc/sys/net/ipv6/conf/all/forwarding
-ip6tables -L -v
-
-(ip netns exec ns2 netcat -6 -l -s fd02::2 -p 1234 &> /dev/null) & serv=3D$!
-sleep 1
-dd if=3D/dev/zero bs=3D1M count=3D100 | ip netns exec ns0 netcat -6 fd02::2=
- 1234 & clnt=3D$!
-sleep 1
-kill $clnt $serv
-wait $serv
-
-(ip netns exec ns2 netcat -6 -l -s fd02::2 -p 1234 &> /dev/null) & serv=3D$!
-sleep 1
-dd if=3D/dev/zero bs=3D1M | ip netns exec ns0 netcat -6 fd02::2 1234 & clnt=
-=3D$!
-sleep 1
-ip link set veth2 mtu 2000
-sleep 1
-ip6tables -D FORWARD -i veth2 -d fd00::/24 -j ACCEPT
-ip6tables -A FORWARD -i veth2 -d fd00::/24 -j DROP
-
-sleep 10
-kill $clnt $serv
-wait $serv
-
-ip -n ns0 link set down dev lo
-ip -n ns0 link set down dev veth1
-ip -n ns0 link delete dev veth1
-ip netns delete ns0
-
-ip -n ns2 link set down dev lo
-ip -n ns2 link set down dev veth3
-ip -n ns2 link delete dev veth3
-ip netns delete ns2
-
-I was able to reproduce the dst leak under 6.12-rc7. I will submit a fix sh=
-ortly.
---=20
-Jiri Wiesner
-SUSE Labs
