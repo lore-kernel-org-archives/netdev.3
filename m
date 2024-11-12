@@ -1,99 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5C7E574;
-	Tue, 12 Nov 2024 03:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0612C19DF62;
+	Tue, 12 Nov 2024 03:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731380423; cv=none; b=XXukFjrp0MJXcY2pgNinDlMhof8bDDdgLgE9PDg7Vruln4xlU8WOu16Zhv9K6BJ267hNTVDtXAGNmvULOWvZ3P09EF1eR3Jyx7CL9PsfIh1wE8nd6VRlGyqwlvg0oR3I3pA4Xzq5kgF3LmNumB8SCHefV8vBCdz8uNTtgcMC6WM=
+	t=1731380639; cv=none; b=VYhly20WWf1NpBe4jqsKG4VU4tH521DgMMHHpbmlCVWVnZH9kU4Tt27/xIh26SoRk+t9A4MZccHRr1bLTyoiW/v4Vez38KbvZx1dk9OrHIQvTPcOe2RM3aDRjjfH0aIQaXP947nVJxjUhy7HkuoV6/5Bzr7y2kCnIPEkcseagC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731380423; c=relaxed/simple;
-	bh=5wk4mK60EoHVsMCvX1Li3jR8LsNWik4rErnD/bTn/LU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Fw65HqTs5NoLcbrxug0Va0oXtthMAH36tPV5uzUaQ228OfFuEDq1R7+UgAbvtohRbHZtxT3pRrTaVOvqM0+O7b0mmUCPy/M90klbj0cr2nCtwcKbSlxTL4fMXnGpGcAb8bJYB3wYL/P4Sq0C7s8tSiWOXZ9e3pm97RcWPP4/PpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfG2EWvN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731380639; c=relaxed/simple;
+	bh=zEuVEOYuXvXUfujcZ5GqwkoABFSLMXkGDWxAsMEEFyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KPQ4PKEAcpwzd/38+TCK7clpdu9L2MA3WOG5O6wH8rVAkDSQoG3L0KqNDymsBH8QA5AEHquIOCHv071jFh1PopvEXVmV+X0xoS9oi/YPDud7c0Sw2FztD8pG+Zv+HE0Z/YmyK5GHfiahmVYk6r6ZmJyTX+2Cmw16XTaT3dd16dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mv8wTLYb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfG2EWvN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ADFC4CECF;
-	Tue, 12 Nov 2024 03:00:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mv8wTLYb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E022C4CECF;
+	Tue, 12 Nov 2024 03:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731380422;
-	bh=5wk4mK60EoHVsMCvX1Li3jR8LsNWik4rErnD/bTn/LU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YfG2EWvNsFWWKrvzuehWMvYVI5NSsA9yfl9Mmw1poL3yT1T5Z98T/1UsZAvy88Q87
-	 mgmweCLkvt/0tZLID1W4dZgyH+F8qxriU+QyzTMAH/4dJmOG7+12zuWLPd6OuL56vV
-	 TaMP3XYWjwh3gRTQQnBqIqz5MvceYGUAOIUZ25ZxQ1h31GkR7+LejDQNZvl5hQZFlS
-	 Xd/mXG1lMIa9fVZRu3grLBYy+GbB/SLa/dkHAf2bLWhJTe/VBJCvoWbXFh08kC/qqe
-	 2BH/5qk0diSp/Qj6tUdjEl8UTui+udO52HKcUDVFMZx6ZFeH5aGBueoj7vN2PFshnn
-	 yt1zAzaPPFMsQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE563809A80;
-	Tue, 12 Nov 2024 03:00:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1731380638;
+	bh=zEuVEOYuXvXUfujcZ5GqwkoABFSLMXkGDWxAsMEEFyE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Mv8wTLYbB0/mepIUwLysLWZSQHKkWGgpvMXFU6/G85HdVDVTKuOTFLGFdZ8lHm1PN
+	 gjzljxT8jQfbK2oQi4AwJfeNeMe6gcl8LWLwDttcFpDTEysNKxnpOAGAWVp89XLm8R
+	 eVuH4Tpzdj1asuMS0pcb8r/DNNY59gjMasG1ZAHzYiJpjDjWdhHOpORXc+gqQEu2Vw
+	 3BMkcFunnkZfW232l3DHw+y90hFNBw8+tOiaRSbMHJhrFUcLnijjpLF7Ab+Ul3HN7U
+	 AnYMdTA1ZyLFxpPSlf5Ht5f686gvLoH1V0TnzUGdNtZ4cWa4Pp+jOkiMpo1mBq1cMn
+	 PDgDB910rl6Bg==
+Date: Mon, 11 Nov 2024 19:03:56 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Abhinav Saxena <xandfury@gmail.com>
+Cc: linux-kernel-mentees@lists.linuxfoundation.org,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+ <tariqt@nvidia.com>, Allison Henderson <allison.henderson@oracle.com>,
+ Russell King <linux@armlinux.org.uk>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Subject: Re: [PATCH 1/2] docs: net: Fix text in eth/intel, mlx5 and
+ switchdev docs
+Message-ID: <20241111190356.0aefe1b9@kernel.org>
+In-Reply-To: <20241108202548.140511-1-xandfury@gmail.com>
+References: <20241108202548.140511-1-xandfury@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v9 0/6] Suspend IRQs during application busy periods
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173138043276.62607.2860647577086593902.git-patchwork-notify@kernel.org>
-Date: Tue, 12 Nov 2024 03:00:32 +0000
-References: <20241109050245.191288-1-jdamato@fastly.com>
-In-Reply-To: <20241109050245.191288-1-jdamato@fastly.com>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, corbet@lwn.net, hdanton@sina.com,
- bagasdotme@gmail.com, pabeni@redhat.com, namangulati@google.com,
- edumazet@google.com, amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
- sdf@fomichev.me, peter@typeblog.net, m2shafiei@uwaterloo.ca,
- bjorn@rivosinc.com, hch@infradead.org, willy@infradead.org,
- willemdebruijn.kernel@gmail.com, skhawaja@google.com, kuba@kernel.org,
- aleksander.lobakin@intel.com, viro@zeniv.linux.org.uk, andrew+netdev@lunn.ch,
- bpf@vger.kernel.org, brauner@kernel.org, danielj@nvidia.com,
- dsahern@kernel.org, davem@davemloft.net, donald.hunter@gmail.com,
- jack@suse.cz, hawk@kernel.org, jiri@resnulli.us, johannes.berg@intel.com,
- linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- lorenzo@kernel.org, mkarsten@uwaterloo.ca, almasrymina@google.com,
- bigeasy@linutronix.de, shuah@kernel.org, horms@kernel.org,
- xuanzhuo@linux.alibaba.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri,  8 Nov 2024 13:25:47 -0700 Abhinav Saxena wrote:
+> diff --git a/Documentation/networking/switchdev.rst b/Documentation/networking/switchdev.rst
+> index f355f0166f1b..df4b4c4a15d5 100644
+> --- a/Documentation/networking/switchdev.rst
+> +++ b/Documentation/networking/switchdev.rst
+> @@ -162,7 +162,7 @@ The switchdev driver can know a particular port's position in the topology by
+>  monitoring NETDEV_CHANGEUPPER notifications.  For example, a port moved into a
+>  bond will see its upper master change.  If that bond is moved into a bridge,
+>  the bond's upper master will change.  And so on.  The driver will track such
+> -movements to know what position a port is in in the overall topology by
+> +movements to know what position a port is in the overall topology by
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Are you sure? The first 'in' is for position, the second for topology.
+Equivalent to:
 
-On Sat,  9 Nov 2024 05:02:30 +0000 you wrote:
-> Greetings:
-> 
-> Welcome to v9, see changelog below.
-> 
-> This revision addresses feedback Willem gave on the selftests. No
-> functional or code changes to the implementation were made and
-> performance tests were not re-run.
-> 
-> [...]
+ movements to know in what position a port is in the overall topology by
+                   ^^                         ^^
 
-Here is the summary with links:
-  - [net-next,v9,1/6] net: Add napi_struct parameter irq_suspend_timeout
-    https://git.kernel.org/netdev/net-next/c/5dc51ec86df6
-  - [net-next,v9,2/6] net: Add control functions for irq suspension
-    https://git.kernel.org/netdev/net-next/c/3fcbecbdeb04
-  - [net-next,v9,3/6] eventpoll: Trigger napi_busy_loop, if prefer_busy_poll is set
-    https://git.kernel.org/netdev/net-next/c/ab5b28b007a7
-  - [net-next,v9,4/6] eventpoll: Control irq suspension for prefer_busy_poll
-    https://git.kernel.org/netdev/net-next/c/8a6de2627fd3
-  - [net-next,v9,5/6] selftests: net: Add busy_poll_test
-    (no matching commit)
-  - [net-next,v9,6/6] docs: networking: Describe irq suspension
-    https://git.kernel.org/netdev/net-next/c/a90a91e24b48
+We can rephrase to avoid the double in:
 
-You are awesome, thank you!
+  The driver will track such movements to know the position of a port
+  within the overall topology by registering for netdevice events and
+  acting on NETDEV_CHANGEUPPER.
+
+>  registering for netdevice events and acting on NETDEV_CHANGEUPPER.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
