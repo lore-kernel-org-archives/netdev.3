@@ -1,71 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2484521A4DC;
-	Tue, 12 Nov 2024 22:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C6218335;
+	Tue, 12 Nov 2024 22:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731450156; cv=none; b=S8GfkZI46YMzE1v+ohbev7qFxhndqObm+9u1honpDRPYrC3ZqgWn3FH1a9lL4I4jj0cdSQReOxpgklTYKKRPmgraggZgI2H//WF3SAobZwGPWTxxp17s/o0LVOE3jlrW3ErduUbzWbpD3MAXk8U/XrdAv+AGrHIsG8bxcug+hnk=
+	t=1731450424; cv=none; b=s9d+eghoEp+pjkXG7YbyLLtTUVKfDYglKxSFLIy0cxNLtrx7Fz6bM/KwOl476InsaLKJsPDGhGM6Ui/TsqChOQX+ZxTWJ/Dom2bMv9joYIDOu7xt6zvjNOsCM3QFYJc5W9DxaVSu4Lo2fpjKKq2YVxNE/Rif2KjWB+shinJ3YGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731450156; c=relaxed/simple;
-	bh=bpnvZgynbZJWrVPSVnPx2nxPP7J6ZsKWQPKfECy9rNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nq6wLrMwC2j6ZyaiKims4vxAlguWOo6eRpZT2S1XJgebA71L7KmbR1JOeH5F3HAckOXunUHiFFZAasIm0SyyzgjTkuAXAbP+fHnfDJ+LUxbiRcARXCNPlh85AYEjqfV1508OLL+8HX+z6HkB8Jaf/NhoOyMi6ULUUc47THULX0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlW0KoBH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731450424; c=relaxed/simple;
+	bh=QyKjGhc/LiH6qXL92TWk4AycrwmNV4ge/bHG2jksKek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tTNlByDsRU0TPGINvS0kEWxVo6Luwll4xNMq3Yw2jOjB3O4p8A4fn1EsC4Hb+9THAXDj6lB+SIXJjvuiAA0kOcyF+RnG5gIn9dcWeYkd+Hau6dHLIQl57ov8tQERT/l1LcyxKKQn6+Qm1aWpdP2rRD3CtRIU089eE6lg4ObZGtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YOZ0HGR+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlW0KoBH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24395C4CECD;
-	Tue, 12 Nov 2024 22:22:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731450155;
-	bh=bpnvZgynbZJWrVPSVnPx2nxPP7J6ZsKWQPKfECy9rNs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AlW0KoBHKGA7XXh4lhPlfzBzxMocAhRwvVAGeRrzisMBNkSJ4GIWMrrSitnPIqpKQ
-	 g7XNBRafGf1DZFSu2+jbvxS/iy5DJgGESszChKjGCl/u3AVhsy89WSEcMBxvsAvz1B
-	 DkKrUGgTzkf46S3FmyLr6hCBWfcndaek0QWGYzrB9jhh8Ohr3D4Pk/N7nkQ2Z9OvCY
-	 Vyu7w23ILK7JmXAfvZyOd6Oh4riWC0IvHM/MIfruclKE0u2Cb8MGWv6XvHFvTmj8jq
-	 5rIwKYlLX8Ix9iw6xivr3Vx4P+6I9U6DJpzF4jgsd3NoPuWW6+PKMZpanNhZo7smM3
-	 L6esAPUeCTXkw==
-Date: Tue, 12 Nov 2024 14:22:34 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Petr Machata <petrm@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- <netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, Amit Cohen <amcohen@nvidia.com>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, Andy Roulin <aroulin@nvidia.com>,
- <mlxsw@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
- <shuah@kernel.org>, Benjamin Poirier <bpoirier@nvidia.com>, Hangbin Liu
- <liuhangbin@gmail.com>, <linux-kselftest@vger.kernel.org>, Jiri Pirko
- <jiri@resnulli.us>
-Subject: Re: [PATCH net-next v3 7/7] selftests: net: fdb_notify: Add a test
- for FDB notifications
-Message-ID: <20241112142234.7abf2232@kernel.org>
-In-Reply-To: <baf2abd6af2e88f8874d14c97da1554b7e7a710e.1731342342.git.petrm@nvidia.com>
-References: <cover.1731342342.git.petrm@nvidia.com>
-	<baf2abd6af2e88f8874d14c97da1554b7e7a710e.1731342342.git.petrm@nvidia.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YOZ0HGR+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=s0UdRsicpoVTDAuGsmFohQLpfAXGAQppr0GRBNzIM8I=; b=YOZ0HGR+B3c134eJR92ia9yRie
+	lnZHb5Gz9jBAVV21fqjqQzf+Tib2CGKpEj8SzaGgH3obV9TsFbcxAcyyAI8g+pzrMqKDIdafkd7LS
+	w4FcJX3sXjRPgEDGXny4bNU5JKPhuqy7TSdaucUkJfx4+1Wj7GFfUC+NEh+8DmCta4FQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tAzLV-00D5bz-Gl; Tue, 12 Nov 2024 23:26:49 +0100
+Date: Tue, 12 Nov 2024 23:26:49 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Divya Koppera <divya.koppera@microchip.com>,
+	arun.ramadoss@microchip.com, UNGLinuxDriver@microchip.com,
+	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	richardcochran@gmail.com
+Subject: Re: [PATCH net-next v3 1/5] net: phy: microchip_ptp : Add header
+ file for Microchip ptp library
+Message-ID: <53c8b505-f992-4c2e-b2c0-616152b447c3@lunn.ch>
+References: <20241112133724.16057-1-divya.koppera@microchip.com>
+ <20241112133724.16057-2-divya.koppera@microchip.com>
+ <37bba7bc-0d6f-4655-abd7-b6c86b12193a@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <37bba7bc-0d6f-4655-abd7-b6c86b12193a@linux.dev>
 
-On Mon, 11 Nov 2024 18:09:01 +0100 Petr Machata wrote:
-> Check that only one notification is produced for various FDB edit
-> operations.
+> I believe, the current design of mchp_ptp_clock has some issues:
 > 
-> Regarding the ip_link_add() and ip_link_master() helpers. This pattern of
-> action plus corresponding defer is bound to come up often, and a dedicated
-> vocabulary to capture it will be handy. tunnel_create() and vlan_create()
-> from forwarding/lib.sh are somewhat opaque and perhaps too kitchen-sinky,
-> so I tried to go in the opposite direction with these ones, and wrapped
-> only the bare minimum to schedule a corresponding cleanup.
+> struct mchp_ptp_clock {
+>         struct mii_timestamper     mii_ts;             /*     0    48 */
+>         struct phy_device *        phydev;             /*    48     8 */
+>         struct sk_buff_head        tx_queue;           /*    56    24 */
+>         /* --- cacheline 1 boundary (64 bytes) was 16 bytes ago --- */
+>         struct sk_buff_head        rx_queue;           /*    80    24 */
+>         struct list_head           rx_ts_list;         /*   104    16 */
+>         spinlock_t                 rx_ts_lock          /*   120     4 */
+>         int                        hwts_tx_type;       /*   124     4 */
+>         /* --- cacheline 2 boundary (128 bytes) --- */
+>         enum hwtstamp_rx_filters   rx_filter;          /*   128     4 */
+>         int                        layer;              /*   132     4 */
+>         int                        version;            /*   136     4 */
+> 
+>         /* XXX 4 bytes hole, try to pack */
+> 
+>         struct ptp_clock *         ptp_clock;          /*   144     8 */
+>         struct ptp_clock_info      caps;               /*   152   184 */
+>         /* --- cacheline 5 boundary (320 bytes) was 16 bytes ago --- */
+>         struct mutex               ptp_lock;           /*   336    32 */
+>         u16                        port_base_addr;     /*   368     2 */
+>         u16                        clk_base_addr;      /*   370     2 */
+>         u8                         mmd;                /*   372     1 */
+> 
+>         /* size: 376, cachelines: 6, members: 16 */
+>         /* sum members: 369, holes: 1, sum holes: 4 */
+>         /* padding: 3 */
+>         /* last cacheline: 56 bytes */
+> };
+> 
+> tx_queue will be splitted across 2 cache lines and will have spinlock on the
+> cache line next to `struct sk_buff * next`. That means 2 cachelines
+> will have to fetched to have an access to it - may lead to performance
+> issues.
+> 
+> Another issue is that locks in tx_queue and rx_queue, and rx_ts_lock
+> share the same cache line which, again, can have performance issues on
+> systems which can potentially have several rx/tx queues/irqs.
+> 
+> It would be great to try to reorder the struct a bit.
 
-Looks like it fails about half of the time :(
+Dumb question: How much of this is in the hot patch? If this is only
+used for a couple of PTP packets per second, do we care about a couple
+of cache misses per second? Or will every single packet the PHY
+processes be affected by this?
 
-https://netdev.bots.linux.dev/flakes.html?min-flip=0&tn-needle=fdb-notify&br-cnt=200
--- 
-pw-bot: cr
+	Andrew
