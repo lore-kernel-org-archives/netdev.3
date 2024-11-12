@@ -1,171 +1,136 @@
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF6C20720E;
-	Tue, 12 Nov 2024 16:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD198200C87;
+	Tue, 12 Nov 2024 16:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731430065; cv=none; b=egj3vNTz1gEq8PN4HZ3hTAnk8StSvBuSNrjs7Jh4O09E5l86+zmgEaRWyrN4+/Gnsa3LNLGfDq9cEpxcscKajJLRy6flpbKGPX0r8ewLporOq3xjGidXOz88ZoOfjQP2XYSpXCCDBK16f6afsvXb0Z8ckAeu+gRl5VRRqFmxVuw=
+	t=1731430296; cv=none; b=jrc6vIPYvh5JNp151PPBKN69TY87fxsb8GKZFCh3S4rYGsNp6Qtk5ROKw5rOM+KOIMkX0396to7y5GYX0Q2T9jPfqjfkJkmu/rqXFvXlKo8Uvz9rpoBqQMqrwScAlgV1CkID/nx28TtvwTWyvWnv9aKS/rYKJ2QyBsr/WorUbRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731430065; c=relaxed/simple;
-	bh=ZzNKDiqf8EYHXh9cVoPgd9CqqlRUC39S0XXWU70zxBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=teLINO6urYjRWg07aLt5bd8SNbwXz1aEhT0CS5vQV51qQriWq9jjCVTQst6pscUbD+zLIuZVPtxO2eGlkqVk/2W8eYej5qkWTvmejG/nWTwT1fjtMt96ddpGHSaHx7o8ovdfk0TVMqd1qVRLEt9g9Z3k+sPwRJS1sLPl+4t5U3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=kNKy5euu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A0JPWRgg; arc=none smtp.client-ip=202.12.124.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="kNKy5euu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="A0JPWRgg"
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailflow.stl.internal (Postfix) with ESMTP id AB0891D40362;
-	Tue, 12 Nov 2024 11:47:39 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 12 Nov 2024 11:47:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1731430059; x=
-	1731433659; bh=mjBh6lGGOL7kWEbog/DbMVJwFE+VluwZ4NBVspvbpMw=; b=k
-	NKy5euuQ8i7BZ8C6Ou12k4jHPmW4m4flIL3kN9vP5OgHVzNVJKel2xAcJABV9rP2
-	u8O6ueDs9I7aUX9zlSJLCpTtd3hO7ofAv6+80cLWb//nh921/918u+rxkKiToxoh
-	mJaNlixa9mvMebn6HNvipMonezODj/4b7A1I/sf6v2LDAG9M+zVUeUntjb8paPw4
-	271/VWFUJgBaY6uvT4xCeaKHYdiaw6krsACB8qUxhihTFN7MF38aE0YmJ9GndG14
-	ROyFWqCO2WBcs1JOyK3vIvJvGKAYu75ttbtmakWeCOS93WMmdkkY3npXeAoCU3a/
-	Z5TtmB9OPqhtO+2NghGDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1731430059; x=1731433659; bh=mjBh6lGGOL7kWEbog/DbMVJwFE+VluwZ4NB
-	VspvbpMw=; b=A0JPWRggkrMoDEVemxz5qTyCDdHISEpvb+9X+fqax2w1YRTCwD6
-	BilUHEm24CtlgFe6yQC4tW5XNMQ89GL06i1Kq880UXXA9g6tKIe0rvw+glYiLCVL
-	oVp5plN7Ax+UJG/Pmgtd8GGbklTses8qnQsYrkWAQoJvY2lLh6sn4EShK6Wu2FEy
-	qiOSGqJ8qx/pa/KE9RMXh3zOOaUyHRPz1qQWrLjyH2xEVtSrPe/isA9p8wZ0D7G8
-	cG7IP+v1j5z3EYKLKYxtW2EusaunE5JKHBAC9AENhxmzQIZvNE54kwB/UnU6ZtPC
-	ghgDKIdi+kWc4tx+waFqn6lt2vaVPsd4NWQ==
-X-ME-Sender: <xms:qoYzZxc-ivRYtK3nSBtzv-3sRHAoL5pMI7VqBcna_piHufK8clabOw>
-    <xme:qoYzZ_M1z8lKvlD5b6IhBEOE_hPqtAxwaSFObXkMkEQWOahSBdzl9Byx7HxL-5Gbo
-    05M7zubpcVR9o9i7AE>
-X-ME-Received: <xmr:qoYzZ6iiFoU1XeNoAkwqQdwWLabzSNbWBoni1OYRxBQMXd5UWRuMeBSdTZB1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeggdeklecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecu
-    hfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrih
-    hlrdhnvghtqeenucggtffrrghtthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeeg
-    teehgeehieffgfeuvdeuffefgfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghr
-    tghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrhigriigrnh
-    hovhdrshdrrgesghhmrghilhdrtghomhdprhgtphhtthhopegrnhhtohhnihhosehophgv
-    nhhvphhnrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopeguohhnrghlugdrhhhunhhtvghrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepnhgvthguvghvse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:qoYzZ6-dieiEvbKm0WW98CgSdGFNo0L3QUdDpD9wwGJM45kf4LA5PA>
-    <xmx:qoYzZ9sh2wEkundcfu3zccUkDVvBB8BaSxAgAINeXFZLIxn97s6RLQ>
-    <xmx:qoYzZ5HIgkupaP9q0HX6cTf0xzdCEC53yg2eYjaJHSBenvTIDVDruQ>
-    <xmx:qoYzZ0M9K72F9mbvbLa_xcutkknhVU6Wfx16gmn_Cwhs4W7rxKji6Q>
-    <xmx:q4YzZzCF0-MX0hHel1r4J3IZnbHGDzDsE8699IyjdqpYcJn6UuIMkfCv>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Nov 2024 11:47:38 -0500 (EST)
-Date: Tue, 12 Nov 2024 17:47:36 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v11 04/23] ovpn: add basic interface
- creation/destruction/management routines
-Message-ID: <ZzOGqP9AAGSN2E7y@hog>
-References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
- <20241029-b4-ovpn-v11-4-de4698c73a25@openvpn.net>
- <2fd3dc9c-9d6a-494c-a4d8-a45221bf250d@gmail.com>
+	s=arc-20240116; t=1731430296; c=relaxed/simple;
+	bh=5L8TLzDnEKEudv9igBq/b9E4Nv43fTN0oLzftiA7l6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZnkKwLHwiaQdfDssFhzhEZQGFI0RuS7p0d7EmmCDoDJJiNrqSo17ENjZe4jjhgnoWn6bU6xcNiZWhqbDnDRoD8a/DUX3Pu3ywMBVgrLmm67rjrrp5lmEP2znLrixjIRD264xCJ6YzPcpzpSsXND1heQ05rOJm+EercKtgZ91IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e467c3996so4788651b3a.2;
+        Tue, 12 Nov 2024 08:51:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731430291; x=1732035091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bdC+2ptOlEEBQJc78TU3705ZfrXiufGPNTtOUFuAO1w=;
+        b=UNg7t0Q/UdNFe8l1oIeTy3Eym7/gCsrqnQcIVufhUw4IhmgCPEKd7ImBSFKZTo+j/7
+         A+Iu72xv+hcTw0al5L9TFuB2iDSG3htV4yXyUgFqWLHyAbusvx3co4AsPIm0g0YYA9Kn
+         5iZAYIqYvIAMJw2xxzTBhVlvJisX3dc6qpTPx7ri1GvcuDGIjazbhRe0EaRvgXXuq45/
+         66qOe2Lks1WbsmoFy49woyAt0dUtcFhfYjjYWZmQ78xDdDDgPyfU8dR2TxFXbxHD7i1g
+         V7kbv7SxWEsEVVIgCW1CNbS8lYuQQOP+M9FJan09GPBMmEisqQOCt3CrqyFvILtGTRzA
+         RHJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEkNFU8E84trCrUtYCh19W/W+VdW6Sf9kx9BDTU9Z2CIkLXjjrEiIZOlSQnv2ZYPuUMJHRcFnxLVifoTQ=@vger.kernel.org, AJvYcCXuJmn90pm3dfubxiOZ1j4GhhMqbJTZ3Tc89NXcf5URsRXbDxDktjuuObi8UEZy4FbO22CfrfJl@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSpeAtu8GKtbOdBJXn4lEzBVztpVxDfLM2fdl7DpWhcE/PbAcl
+	dQ7ztGrbpeLHcDB+RnZrjaZUpfgD3e4U7Id2fNsPoARwcpCPEXtsyXx9oQ==
+X-Google-Smtp-Source: AGHT+IHYBjYvEyVc2jsgZ84ia1IHup+yDI8zBd3Dh+zAuD7+sws+ZXUn0Te+QeMmdVcPeLFDyqyitg==
+X-Received: by 2002:a05:6a20:c998:b0:1db:f53c:f501 with SMTP id adf61e73a8af0-1dc22b95a3emr22550553637.44.1731430291278;
+        Tue, 12 Nov 2024 08:51:31 -0800 (PST)
+Received: from localhost.localdomain (124x33x176x97.ap124.ftth.ucom.ne.jp. [124.33.176.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407860aa5sm11271260b3a.32.2024.11.12.08.51.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 08:51:30 -0800 (PST)
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+To: linux-can@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: Robert Nawrath <mbro1689@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Subject: [PATCH v1 0/5] can: netlink: preparation before introduction of CAN XL
+Date: Wed, 13 Nov 2024 01:50:15 +0900
+Message-ID: <20241112165118.586613-7-mailhol.vincent@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2fd3dc9c-9d6a-494c-a4d8-a45221bf250d@gmail.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3285; i=mailhol.vincent@wanadoo.fr; h=from:subject; bh=5L8TLzDnEKEudv9igBq/b9E4Nv43fTN0oLzftiA7l6Y=; b=owGbwMvMwCV2McXO4Xp97WbG02pJDOnG7W2ec9pOTll15PWBj/f37XP79N7IKje8VbQq4IFKs VLGqounO0pZGMS4GGTFFFmWlXNyK3QUeocd+msJM4eVCWQIAxenAEykOZ2R4bLwz9bOmcJWSaf+ r7irsONpseZU7t0tl/Nsl5/l97B+osLwV/LsEym26Tv0/3A+szRr3Gb58Qqvyo3E2ZZXjz6PKlQ 8wQQA
+X-Developer-Key: i=mailhol.vincent@wanadoo.fr; a=openpgp; fpr=ED8F700574E67F20E574E8E2AB5FEB886DBB99C2
+Content-Transfer-Encoding: 8bit
 
-2024-11-09, 03:01:21 +0200, Sergey Ryazanov wrote:
-> On 29.10.2024 12:47, Antonio Quartulli wrote:
-> > +/* When the OpenVPN protocol is ran in AEAD mode, use
-> > + * the OpenVPN packet ID as the AEAD nonce:
-> > + *
-> > + *    00000005 521c3b01 4308c041
-> > + *    [seq # ] [  nonce_tail   ]
-> > + *    [     12-byte full IV    ] -> NONCE_SIZE
-> > + *    [4-bytes                   -> NONCE_WIRE_SIZE
-> > + *    on wire]
-> > + */
-> 
-> Nice diagram! Can we go futher and define the OpenVPN packet header as a
-> stucture? Referencing the structure instead of using magic sizes and offsets
-> can greatly improve the code readability. Especially when it comes to header
-> construction/parsing in the encryption/decryption code.
-> 
-> E.g. define a structures like this:
-> 
-> struct ovpn_pkt_hdr {
->   __be32 op;
->   __be32 pktid;
->   u8 auth[];
-> } __attribute__((packed));
-> 
-> struct ovpn_aead_iv {
->   __be32 pktid;
->   u8 nonce[OVPN_NONCE_TAIL_SIZE];
-> } __attribute__((packed));
+An RFC was sent last weekend to kick-off the discussion of the
+introduction of CAN XL [1]. While the series received some positive
+feedback, it is far from completion. Some work is still needed to:
 
-__attribute__((packed)) should not be needed here as the fields in
-both structs look properly aligned, and IIRC using packed can cause
-the compiler to generate worse code.
+  - adjust the nesting of the IFLA_CAN_XL_DATA_BITTIMING_CONST in the
+    netlink interface
+
+  - add the CAN XL PWM configuration
+
+and this TODO list may grow if more feedback is received.
+
+Regardless of this, the RFC started with a tree wide refactor followed
+by a set of trivial patches to do some clean-up and some renaming in
+preparation of the introduction of CAN XL.
+
+This series just contains those preparation patch which were cherry
+picked from the RFC and rebased on of top of linux-can-next/main:
+
+  - the first patch group all the CAN FD parameters into a new
+    structure. The plan is to reuse that same structure for CAN XL.
+
+  - the second patch is purely cosmetic and fixes a trivial tabulation
+    mistake.
+
+  - the last three patches do some renaming: both the CAN FD and the
+    CAN XL have databittiming parameters. In order not to get confused
+    once CAN XL will be introduced, many symbols are modified to
+    explicitly add CAN FD in their names.
+
+The goal is to have those merged first to remove some overhead from
+the netlink CAN XL main series before tacking care of the other
+comments.
 
 
-> > diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-> > index 8516c1ccd57a7c7634a538fe3ac16c858f647420..84d294aab20b79b8e9cb9b736a074105c99338f3 100644
-> > --- a/include/uapi/linux/if_link.h
-> > +++ b/include/uapi/linux/if_link.h
-> > @@ -1975,4 +1975,19 @@ enum {
-> >   #define IFLA_DSA_MAX	(__IFLA_DSA_MAX - 1)
-> > +/* OVPN section */
-> > +
-> > +enum ovpn_mode {
-> > +	OVPN_MODE_P2P,
-> > +	OVPN_MODE_MP,
-> > +};
-> 
-> Mode min/max values can be defined here and the netlink policy can reference
-> these values:
-> 
-> enum ovpn_mode {
->   OVPN_MODE_P2P,
->   OVPN_MODE_MP,
->   __OVPN_MODE_MAX
-> };
-> 
-> #define OVPN_MODE_MIN OVPN_MODE_P2P
-> #define OVPN_MODE_MAX (__OVPN_MODE_MAX - 1)
-> 
-> ... = NLA_POLICY_RANGE(NLA_U8, OVPN_MODE_MIN, OVPN_MODE_MAX)
+[1] [RFC] can: netlink: add CAN XL
+Link: https://lore.kernel.org/linux-can/20241110155902.72807-16-mailhol.vincent@wanadoo.fr/
 
-I don't think there's much benefit to that, other than making the diff
-smaller on a (very unlikely) patch that would add a new mode in the
-future. It even looks more inconvenient to me when reading the code
-("ok what are _MIN and _MAX?  the code is using _P2P and _MP, do they
-match?").
+Vincent Mailhol (5):
+  can: dev: add struct data_bittiming_params to group FD parameters
+  can: netlink: replace tabulation by space in assignment
+  can: bittiming: rename CAN_CTRLMODE_TDC_MASK into
+    CAN_CTRLMODE_FD_TDC_MASK
+  can: bittiming: rename can_tdc_is_enabled() into
+    can_fd_tdc_is_enabled()
+  can: netlink: can_changelink(): rename tdc_mask into
+    fd_tdc_flag_provided
+
+ drivers/net/can/ctucanfd/ctucanfd_base.c      |   8 +-
+ drivers/net/can/dev/calc_bittiming.c          |   2 +-
+ drivers/net/can/dev/dev.c                     |  12 +--
+ drivers/net/can/dev/netlink.c                 | 100 +++++++++---------
+ drivers/net/can/flexcan/flexcan-core.c        |   4 +-
+ drivers/net/can/ifi_canfd/ifi_canfd.c         |  10 +-
+ drivers/net/can/kvaser_pciefd.c               |   6 +-
+ drivers/net/can/m_can/m_can.c                 |   8 +-
+ drivers/net/can/peak_canfd/peak_canfd.c       |   6 +-
+ drivers/net/can/rcar/rcar_canfd.c             |   4 +-
+ .../net/can/rockchip/rockchip_canfd-core.c    |   4 +-
+ .../can/rockchip/rockchip_canfd-timestamp.c   |   2 +-
+ .../net/can/spi/mcp251xfd/mcp251xfd-core.c    |   4 +-
+ drivers/net/can/usb/esd_usb.c                 |   6 +-
+ drivers/net/can/usb/etas_es58x/es58x_core.c   |   4 +-
+ drivers/net/can/usb/etas_es58x/es58x_fd.c     |   8 +-
+ drivers/net/can/usb/gs_usb.c                  |   8 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb.h   |   2 +-
+ .../net/can/usb/kvaser_usb/kvaser_usb_core.c  |   6 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c  |   6 +-
+ drivers/net/can/xilinx_can.c                  |  18 ++--
+ include/linux/can/bittiming.h                 |   2 +-
+ include/linux/can/dev.h                       |  32 +++---
+ 23 files changed, 133 insertions(+), 129 deletions(-)
 
 -- 
-Sabrina
+2.45.2
+
