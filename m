@@ -1,308 +1,177 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D71D2259C2;
-	Tue, 12 Nov 2024 10:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767C4226B88;
+	Tue, 12 Nov 2024 10:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731408959; cv=none; b=ou/SSe1ykNGzA3RkDYvD5pTu0NKRF5Nb2wWosLKVPWgbuRKIoSAYrSDK5mOfLnA6415+4YHwlfKCya4YRa9MF6u+NzLzPd8EsQ8oL0lFXhy1ocWeIo1hIL2OhzCKCyZodK+SC2LD4viCkVNCsWi1bnosXkC/3m7aRCI9BWD7+90=
+	t=1731408986; cv=none; b=uviVlLrjjb8Mv4KXSZ590NNhlYfO8WIsTi8k+9+4pglpdEpu/EgZZK2lQOdda4/JiOrG8TUuoBf8JzXIRKo/pMNlYn61t+Y49iTvLLEqIGvNkEgG+RnHdzBBKe78bDNZX1MbE1Y62VUNKVo8gpCuaQi37IhyfcrozjSdm3PleBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731408959; c=relaxed/simple;
-	bh=dYUTeNmtAQ8X8gMz0q9BALSEM0DhK8omLem364dEbWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqOIVAObSLglswjyoILj4YRRpeCcRmPSNFL2t/rn+frt8BgUYrCw9WBBBoTaiEvt12a2hUz8Fiqlzr8/TEj8l5pco3jr6uF6OlXcSwTXmHKil6rp0Awhv9CrwFtueWSUASrYNH6bZvetEXImNBvCGA+Y/vQtb0KMdLHISgWSxLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=IRdPVpSC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ifEJK3xL; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
+	s=arc-20240116; t=1731408986; c=relaxed/simple;
+	bh=cw+MfT95YAhX/0hs0XJcoCzuCnfI/HJJ/hHCJeYPspY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biyGJRSgClPwyHfJDaa9+nrY3IOWUq1uiauTQ+pO03q4OwuadamRz6NWgYgUvA8BXr7C5yQMLszWp5NLA3ZQyg4WCsO3FeTDg3QwrNeSHOp35a05I9j0rIoyyOKpv3HssFw1E8m4XCni45qvqyIHNcEID/JYe4GznsTTuLqPlEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=jxjmmB5Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OrZrs7Ii; arc=none smtp.client-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="IRdPVpSC";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ifEJK3xL"
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 9916D25401D0;
-	Tue, 12 Nov 2024 05:55:56 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 12 Nov 2024 05:55:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1731408956; x=
-	1731495356; bh=7RBDUfleD6Ixf368mtQOm0zVnbqIdDQIGho2QbrKN5A=; b=I
-	RdPVpSCWvOc2+LNyPsl1BKtw7avQj+Okw5pUIIuyhv448UVd2Yqxu4sUcQHhUatO
-	V9PynE2GQKkIpC28SlkKroTN21tazmjv+JlR4iOFz5UX59VJXclFNrb39pNgBijp
-	acYWHUXZqIIzzusQ+JPKE7CPEmDANWsP9zTMd5q8EIvCfriR81OJCnm/h7iBWbJB
-	dTbAsVknu7zN3zVHTDxU9qxmu6rehARccrXT12gHJW9aha1evNxx/X9YIKjbr+92
-	hH0IxBlGie4weOxKYhoCgCUBaKULjID5sqZD2tZZVDOiynNLPg+s42jp91R3f4MT
-	7c4LPjCj81RYujXqT0sbg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="jxjmmB5Z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OrZrs7Ii"
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailflow.phl.internal (Postfix) with ESMTP id 61318200A6E;
+	Tue, 12 Nov 2024 05:56:22 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Tue, 12 Nov 2024 05:56:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1731408956; x=1731495356; bh=7
-	RBDUfleD6Ixf368mtQOm0zVnbqIdDQIGho2QbrKN5A=; b=ifEJK3xLRkDAIbXqy
-	VsJixwXvY75DzN02ptdxaZml8Wfss7KO0SxBOzDpH36aPQs+z8p5A0YqGhADl+In
-	enViNYpMrBr40jgFOhrcKdAl9RjmwUmJSSiZGk11N+1ISzDMpEy0Zg7+OPPfP9jq
-	SXpRmkrUoihNrciZOu5NJr0EwkDZImB18DDAAOhQbBCerql++5vNvkPIHh8TMpxN
-	5HQ/MVXNloyIlXSG1+YwmBfoPpbVx1azQH7BsXTFmxwx3fbN8k/C6C1DWxyxn11+
-	qPqzLi8depLgpmyym4tZ9oGTQc6FkyryW1V1ZgVJhg5LoLBINBKQy+J2j54pEPvb
-	g3lOg==
-X-ME-Sender: <xms:PDQzZ5uz17B_fRDuJ4bG7QEbk1Mcp466nhzMdYec3KZkOYJ_KjPaAA>
-    <xme:PDQzZyfXDlzn3GdVAeWPpo9ugBNWEGTySoXVgQqIL4eACUa9vg90y-uGGvK2odPWV
-    xptXQ5lhUH2upJfavI>
-X-ME-Received: <xmr:PDQzZ8z98qiDzVkacve5BMEMWDiCf-yeAbcDC27oOV7-8dide6PC2UGxedFE2rWms2LIoe8-U3dT>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeggddukecutefuodetggdotefrodftvf
+	:reply-to:subject:subject:to:to; s=fm1; t=1731408982; x=
+	1731412582; bh=ZwYYSGG6zgmMQwyFMLiLhe2O5PD1kFprIqbGRmWdxuo=; b=j
+	xjmmB5ZUM7qDMfgY1FEN8CLjjH4rn0yxmf6F1ReTlHL/T8sqC/+GNphKTbV2miiS
+	HUYcgNpk1sX6GYvqRR0srsuxgLX97IbWJkfjgqLp/BIu0cL55ONWZduTObLwWZFr
+	GQ9VPf1q49sL+DxIkQC4pwqsKqoRTpM7LK49tZfXInyNpvlF5BZLbl7fWexG+ru1
+	cRm4rmSxuU6JbEdh5B+noI6JqZZv4RAdGIMTQZ9lHhZA+bahMYt7R4fOYMAWSyUO
+	eQCcLagtHZ2i+zsAxW4d997GWaIuik6m+StdmZxaf2tv3b6CTivofM0TLX69iSYW
+	wwa/mILkuXUx8wvfPBoHw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1731408982; x=1731412582; bh=ZwYYSGG6zgmMQwyFMLiLhe2O5PD1kFprIqb
+	GRmWdxuo=; b=OrZrs7IiHfEF0GABQUZ3lNjqpd4ix9WQzbsoGPanfxaawaUNcL+
+	R091V9fvCdDJANt26C3CLipgqPUJLzm3bk69ESuUoDS7B3ozN3qej65/rFBiBdn4
+	N46N55+wGxegHjY3YQ5je1mfq+j8wKCQXVGZFFPzPfmJ55hORDt+rLfnKSya+JJ5
+	NAptGviUAWhnyYFKvgUQQUlCNNOKF8SAOXb9UHY8TSwrT3zcL70uwqP3vsIxKvCv
+	Fu1UVp2oUdEvq9eIZZjWr5yCMzgK/Peq9o/CyKbO6NED/r2g76oeOGUn0SVnuNdo
+	P3tWMwUXXWIvMLnao1LLQ2en68iAix8SpoA==
+X-ME-Sender: <xms:VTQzZ6LSOJzHcwsAXQ8YnEjnH4mlivfcxJPbnXBzwmph2nvcqvzH8w>
+    <xme:VTQzZyJXvYIhFkd0a4lfobcQ-8zYAMup23PaoZyKz2ePDuZM_Se_gu82PnGHoFfL9
+    DZHgN5pUfuQLmBoB6M>
+X-ME-Received: <xmr:VTQzZ6v9no1MkrL897MBqETcqvOXYChz-PfOITIJByQO06g-dJ9xCJpJ-k54>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeggddulecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhephffvvefuff
-    fkofgjfhgggfestdekredtredttdenucfhrhhomheptehlihhsthgrihhrucfhrhgrnhgt
-    ihhsuceorghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvqeenucggtffrrghtth
-    gvrhhnpeeitdefkeetledvleevveeuueejffeugfeuvdetkeevjeejueetudeftefhgfeh
-    heenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
-    hishhtrghirhesrghlihhsthgrihhrvdefrdhmvgdpnhgspghrtghpthhtohepjedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukh
-    dprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthho
-    pegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegrlhhishhtrghirhdvfeesgh
-    hmrghilhdrtghomhdprhgtphhtthhopegrlhhishhtrghirhdrfhhrrghntghishesfigu
-    tgdrtghomh
-X-ME-Proxy: <xmx:PDQzZwPEbmRfjjrkyIhHTQH5CJQ9LXhOy4_5-ynRo97SjSc4NdIwDQ>
-    <xmx:PDQzZ5_rS9DlvktTkm9hiog5MUc6Fx8LMewHN9KAhC8HMur8A_qeiQ>
-    <xmx:PDQzZwXJfn-AtTWlvNy8GPjbHVSnXN4nJ18LaMiZj1X7qhkC2g2E-A>
-    <xmx:PDQzZ6emz0r7saIODLwUy7gY5a81VmZvcz0V1_6o8qSctYGrXBeIfA>
-    <xmx:PDQzZyN5iI1YzfgW7re2jfUUqLqeWRLMsxSAaXaUDbE9oYYJgxPKxGQH>
-Feedback-ID: ifd214418:Fastmail
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecu
+    hfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrih
+    hlrdhnvghtqeenucggtffrrghtthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeeg
+    teehgeehieffgfeuvdeuffefgfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghr
+    tghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhtohhnih
+    hosehophgvnhhvphhnrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopeguohhnrghlugdrhhhu
+    nhhtvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprhihrgiirghnohhvrdhsrdgrsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepnhgvthguvghvse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:VTQzZ_YPIY0Ym-BJMFUogFpGBHhLBk20ACPap7NhQgyFzOVRkh2Pwg>
+    <xmx:VTQzZxaUdhKyt1q-unCxsqfwpnXBH-QTfQTsTHDpyCYbpHlSla_T9w>
+    <xmx:VTQzZ7Btt360WfzZcr3BTtS0x3AcQPx0aHQo3tH-HwFenSJKT5PMrg>
+    <xmx:VTQzZ3Zlg_FEeUgCQgzulKGdkQXzHg_ZTrI6b3X_IOLxlAM11XRFYw>
+    <xmx:VTQzZ_OmhHzrwY-lyBQdNyg2XZKMVTnhvlrCu8guNqFvlw62TkzDOJRx>
+Feedback-ID: i934648bf:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Nov 2024 05:55:53 -0500 (EST)
-From: Alistair Francis <alistair@alistair23.me>
-To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linux@armlinux.org.uk,
-	hkallweit1@gmail.com,
-	andrew@lunn.ch,
-	alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH 2/2] mdio: Remove mdio45_ethtool_gset_npage()
-Date: Tue, 12 Nov 2024 20:54:30 +1000
-Message-ID: <20241112105430.438491-2-alistair@alistair23.me>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241112105430.438491-1-alistair@alistair23.me>
-References: <20241112105430.438491-1-alistair@alistair23.me>
+ 12 Nov 2024 05:56:21 -0500 (EST)
+Date: Tue, 12 Nov 2024 11:56:19 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v11 17/23] ovpn: add support for peer floating
+Message-ID: <ZzM0U81dmvdEWqdF@hog>
+References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
+ <20241029-b4-ovpn-v11-17-de4698c73a25@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241029-b4-ovpn-v11-17-de4698c73a25@openvpn.net>
 
-From: Alistair Francis <alistair.francis@wdc.com>
+2024-10-29, 11:47:30 +0100, Antonio Quartulli wrote:
+> diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
+> index 63c140138bf98e5d1df79a2565b666d86513323d..0e8a6f2c76bc7b2ccc287ad1187cf50f033bf261 100644
+> --- a/drivers/net/ovpn/io.c
+> +++ b/drivers/net/ovpn/io.c
+> @@ -135,6 +135,15 @@ void ovpn_decrypt_post(void *data, int ret)
+>  	/* keep track of last received authenticated packet for keepalive */
+>  	peer->last_recv = ktime_get_real_seconds();
+>  
+> +	if (peer->sock->sock->sk->sk_protocol == IPPROTO_UDP) {
 
-The mdio45_ethtool_gset_npage() function isn't called, so let's remove
-it.
+What prevents peer->sock from being replaced and released
+concurrently?
 
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- drivers/net/mdio.c   | 172 -------------------------------------------
- include/linux/mdio.h |   3 -
- 2 files changed, 175 deletions(-)
+Or possibly reading the error value that ovpn_socket_new can return
+before peer->sock is reset to NULL, just noticed this in
+ovpn_nl_peer_modify:
 
-diff --git a/drivers/net/mdio.c b/drivers/net/mdio.c
-index e08c90ac0c6e..f67a4d4005e7 100644
---- a/drivers/net/mdio.c
-+++ b/drivers/net/mdio.c
-@@ -166,178 +166,6 @@ static u32 mdio45_get_an(const struct mdio_if_info *mdio, u16 addr)
- 	return result;
- }
- 
--/**
-- * mdio45_ethtool_gset_npage - get settings for ETHTOOL_GSET
-- * @mdio: MDIO interface
-- * @ecmd: Ethtool request structure
-- * @npage_adv: Modes currently advertised on next pages
-- * @npage_lpa: Modes advertised by link partner on next pages
-- *
-- * The @ecmd parameter is expected to have been cleared before calling
-- * mdio45_ethtool_gset_npage().
-- *
-- * Since the CSRs for auto-negotiation using next pages are not fully
-- * standardised, this function does not attempt to decode them.  The
-- * caller must pass them in.
-- */
--void mdio45_ethtool_gset_npage(const struct mdio_if_info *mdio,
--			       struct ethtool_cmd *ecmd,
--			       u32 npage_adv, u32 npage_lpa)
--{
--	int reg;
--	u32 speed;
--
--	BUILD_BUG_ON(MDIO_SUPPORTS_C22 != ETH_MDIO_SUPPORTS_C22);
--	BUILD_BUG_ON(MDIO_SUPPORTS_C45 != ETH_MDIO_SUPPORTS_C45);
--
--	ecmd->transceiver = XCVR_INTERNAL;
--	ecmd->phy_address = mdio->prtad;
--	ecmd->mdio_support =
--		mdio->mode_support & (MDIO_SUPPORTS_C45 | MDIO_SUPPORTS_C22);
--
--	reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--			      MDIO_CTRL2);
--	switch (reg & MDIO_PMA_CTRL2_TYPE) {
--	case MDIO_PMA_CTRL2_10GBT:
--	case MDIO_PMA_CTRL2_1000BT:
--	case MDIO_PMA_CTRL2_100BTX:
--	case MDIO_PMA_CTRL2_10BT:
--		ecmd->port = PORT_TP;
--		ecmd->supported = SUPPORTED_TP;
--		reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--				      MDIO_SPEED);
--		if (reg & MDIO_SPEED_10G)
--			ecmd->supported |= SUPPORTED_10000baseT_Full;
--		if (reg & MDIO_PMA_SPEED_1000)
--			ecmd->supported |= (SUPPORTED_1000baseT_Full |
--					    SUPPORTED_1000baseT_Half);
--		if (reg & MDIO_PMA_SPEED_100)
--			ecmd->supported |= (SUPPORTED_100baseT_Full |
--					    SUPPORTED_100baseT_Half);
--		if (reg & MDIO_PMA_SPEED_10)
--			ecmd->supported |= (SUPPORTED_10baseT_Full |
--					    SUPPORTED_10baseT_Half);
--		ecmd->advertising = ADVERTISED_TP;
--		break;
--
--	case MDIO_PMA_CTRL2_10GBCX4:
--		ecmd->port = PORT_OTHER;
--		ecmd->supported = 0;
--		ecmd->advertising = 0;
--		break;
--
--	case MDIO_PMA_CTRL2_10GBKX4:
--	case MDIO_PMA_CTRL2_10GBKR:
--	case MDIO_PMA_CTRL2_1000BKX:
--		ecmd->port = PORT_OTHER;
--		ecmd->supported = SUPPORTED_Backplane;
--		reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--				      MDIO_PMA_EXTABLE);
--		if (reg & MDIO_PMA_EXTABLE_10GBKX4)
--			ecmd->supported |= SUPPORTED_10000baseKX4_Full;
--		if (reg & MDIO_PMA_EXTABLE_10GBKR)
--			ecmd->supported |= SUPPORTED_10000baseKR_Full;
--		if (reg & MDIO_PMA_EXTABLE_1000BKX)
--			ecmd->supported |= SUPPORTED_1000baseKX_Full;
--		reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--				      MDIO_PMA_10GBR_FECABLE);
--		if (reg & MDIO_PMA_10GBR_FECABLE_ABLE)
--			ecmd->supported |= SUPPORTED_10000baseR_FEC;
--		ecmd->advertising = ADVERTISED_Backplane;
--		break;
--
--	/* All the other defined modes are flavours of optical */
--	default:
--		ecmd->port = PORT_FIBRE;
--		ecmd->supported = SUPPORTED_FIBRE;
--		ecmd->advertising = ADVERTISED_FIBRE;
--		break;
--	}
--
--	if (mdio->mmds & MDIO_DEVS_AN) {
--		ecmd->supported |= SUPPORTED_Autoneg;
--		reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_AN,
--				      MDIO_CTRL1);
--		if (reg & MDIO_AN_CTRL1_ENABLE) {
--			ecmd->autoneg = AUTONEG_ENABLE;
--			ecmd->advertising |=
--				ADVERTISED_Autoneg |
--				mdio45_get_an(mdio, MDIO_AN_ADVERTISE) |
--				npage_adv;
--		} else {
--			ecmd->autoneg = AUTONEG_DISABLE;
--		}
--	} else {
--		ecmd->autoneg = AUTONEG_DISABLE;
--	}
--
--	if (ecmd->autoneg) {
--		u32 modes = 0;
--		int an_stat = mdio->mdio_read(mdio->dev, mdio->prtad,
--					      MDIO_MMD_AN, MDIO_STAT1);
--
--		/* If AN is complete and successful, report best common
--		 * mode, otherwise report best advertised mode. */
--		if (an_stat & MDIO_AN_STAT1_COMPLETE) {
--			ecmd->lp_advertising =
--				mdio45_get_an(mdio, MDIO_AN_LPA) | npage_lpa;
--			if (an_stat & MDIO_AN_STAT1_LPABLE)
--				ecmd->lp_advertising |= ADVERTISED_Autoneg;
--			modes = ecmd->advertising & ecmd->lp_advertising;
--		}
--		if ((modes & ~ADVERTISED_Autoneg) == 0)
--			modes = ecmd->advertising;
--
--		if (modes & (ADVERTISED_10000baseT_Full |
--			     ADVERTISED_10000baseKX4_Full |
--			     ADVERTISED_10000baseKR_Full)) {
--			speed = SPEED_10000;
--			ecmd->duplex = DUPLEX_FULL;
--		} else if (modes & (ADVERTISED_1000baseT_Full |
--				    ADVERTISED_1000baseT_Half |
--				    ADVERTISED_1000baseKX_Full)) {
--			speed = SPEED_1000;
--			ecmd->duplex = !(modes & ADVERTISED_1000baseT_Half);
--		} else if (modes & (ADVERTISED_100baseT_Full |
--				    ADVERTISED_100baseT_Half)) {
--			speed = SPEED_100;
--			ecmd->duplex = !!(modes & ADVERTISED_100baseT_Full);
--		} else {
--			speed = SPEED_10;
--			ecmd->duplex = !!(modes & ADVERTISED_10baseT_Full);
--		}
--	} else {
--		/* Report forced settings */
--		reg = mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--				      MDIO_CTRL1);
--		speed = (((reg & MDIO_PMA_CTRL1_SPEED1000) ? 100 : 1)
--			 * ((reg & MDIO_PMA_CTRL1_SPEED100) ? 100 : 10));
--		ecmd->duplex = (reg & MDIO_CTRL1_FULLDPLX ||
--				speed == SPEED_10000);
--	}
--
--	ethtool_cmd_speed_set(ecmd, speed);
--
--	/* 10GBASE-T MDI/MDI-X */
--	if (ecmd->port == PORT_TP
--	    && (ethtool_cmd_speed(ecmd) == SPEED_10000)) {
--		switch (mdio->mdio_read(mdio->dev, mdio->prtad, MDIO_MMD_PMAPMD,
--					MDIO_PMA_10GBT_SWAPPOL)) {
--		case MDIO_PMA_10GBT_SWAPPOL_ABNX | MDIO_PMA_10GBT_SWAPPOL_CDNX:
--			ecmd->eth_tp_mdix = ETH_TP_MDI;
--			break;
--		case 0:
--			ecmd->eth_tp_mdix = ETH_TP_MDI_X;
--			break;
--		default:
--			/* It's complicated... */
--			ecmd->eth_tp_mdix = ETH_TP_MDI_INVALID;
--			break;
--		}
--	}
--}
--EXPORT_SYMBOL(mdio45_ethtool_gset_npage);
--
- /**
-  * mdio45_ethtool_ksettings_get_npage - get settings for ETHTOOL_GLINKSETTINGS
-  * @mdio: MDIO interface
-diff --git a/include/linux/mdio.h b/include/linux/mdio.h
-index c63f43645d50..3c3deac57894 100644
---- a/include/linux/mdio.h
-+++ b/include/linux/mdio.h
-@@ -165,9 +165,6 @@ extern int mdio_set_flag(const struct mdio_if_info *mdio,
- 			 bool sense);
- extern int mdio45_links_ok(const struct mdio_if_info *mdio, u32 mmds);
- extern int mdio45_nway_restart(const struct mdio_if_info *mdio);
--extern void mdio45_ethtool_gset_npage(const struct mdio_if_info *mdio,
--				      struct ethtool_cmd *ecmd,
--				      u32 npage_adv, u32 npage_lpa);
- extern void
- mdio45_ethtool_ksettings_get_npage(const struct mdio_if_info *mdio,
- 				   struct ethtool_link_ksettings *cmd,
+	if (attrs[OVPN_A_PEER_SOCKET]) {
+		// ...
+		peer->sock = ovpn_socket_new(sock, peer);
+		if (IS_ERR(peer->sock)) {
+			// ...
+			peer->sock = NULL;
+
+
+(ovpn_encrypt_post has a similar check on
+peer->sock->sock->sk->sk_protocol that I don't think is safe either)
+
+
+> +		/* check if this peer changed it's IP address and update
+> +		 * state
+> +		 */
+> +		ovpn_peer_float(peer, skb);
+> +		/* update source endpoint for this peer */
+> +		ovpn_peer_update_local_endpoint(peer, skb);
+
+Why not do both in the same function? They're not called anywhere else
+(at least in this version of the series). They both modify peer->bind
+depending on skb_protocol_to_family(skb), and operate under
+peer->lock.
+
+
+> +void ovpn_peer_float(struct ovpn_peer *peer, struct sk_buff *skb)
+> +{
+> +	struct hlist_nulls_head *nhead;
+> +	struct sockaddr_storage ss;
+> +	const u8 *local_ip = NULL;
+> +	struct sockaddr_in6 *sa6;
+> +	struct sockaddr_in *sa;
+> +	struct ovpn_bind *bind;
+> +	sa_family_t family;
+> +	size_t salen;
+> +
+> +	rcu_read_lock();
+> +	bind = rcu_dereference(peer->bind);
+> +	if (unlikely(!bind)) {
+> +		rcu_read_unlock();
+> +		return;
+> +	}
+> +
+> +	spin_lock_bh(&peer->lock);
+
+You could take the lock from the start, instead of using rcu_read_lock
+to get peer->bind. It would guarantee that the bind we got isn't
+already being replaced just as we wait to update it. And same in
+ovpn_peer_update_local_endpoint, it would make sure we're updating the
+local IP for the active bind.
+
+(sorry I didn't think about that last time we discussed this)
+
+> +	if (likely(ovpn_bind_skb_src_match(bind, skb)))
+> +		goto unlock;
+> +
+> +	family = skb_protocol_to_family(skb);
+> +
+
 -- 
-2.47.0
-
+Sabrina
