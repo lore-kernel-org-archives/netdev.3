@@ -1,81 +1,104 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F8C219C89
-	for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 19:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D5920B218;
+	Tue, 12 Nov 2024 19:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731440977; cv=none; b=qFx03zHkROV28l7p8/vH9DxdtEoU6wwIkxkOBi/GZUuz9UntCiZ0/eWdOW1eTknzuoulzyZxx0Pe/BDEcOStZhFmRSt8Rqpsx9iQG51QRpY4clgh8vwO6Lt6gHq30xSABJ4Ir5CAN45DPD262uzo6aJTBX0xw9jfo4GLQvPqIj8=
+	t=1731441578; cv=none; b=vEbUWnCwc0lmHWFWGOGdNdx697YNUiYTq7RFaUAYsNAc9OVeESo1oQ1MS+lww+RuJlYqZ7In8fgdHQTXIrl13fiUacnuDk5YVtiHUi2AbGxYEcOzdshIIwO9+MPqI65P38RYF56tzihSb3SjBR/VfSCHvcxbLyT90SLHVQx6ZIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731440977; c=relaxed/simple;
-	bh=ROEKZwcjfPoFsAyKX+keZg4EVAszmoTI9P0VxnZj+P0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Egp0/B0fjDpU9kq1hp+NpKKy/VdUqWjzw1podKCkxsxg/Ybso13iXaDgnYXuv71lLmLgBqM53VJ0rNMwDeUbNulE8JyUzr3LFXDtQbGCx3tKFfkugVQSkKabYlZtjAiDgVhFDiTGvhNT0Dn/c75lTF7f8sKSTS6nxiPBPgdtPbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qgPuv3By; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qgPuv3By"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa1f73966a5so19820866b.2
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 11:49:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731440974; x=1732045774; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6NA8uAj1cVJkjjtOVQkEyoz64zoAQPhiIwxOuuleueY=;
-        b=qgPuv3BywtIhL5pm/UuwfJMgGcxZE+cL3WOIkWXF6GCH3hPrf3VkuxGEwMbhSjACGq
-         BLeReqD2ZY7b1vT5JIzjWqLGH9AWJZiErxN+EpcxsRss2N9gyN0G2Gb4mYpwCKMziuQp
-         ClWGCYjMia6/lSou8iKXs4gsptmpuFc/HeRFwm3AY0rtJeIHR0s5vr3MsXSONxaR34Lt
-         totHMnKkGC7opx7efQR27jatC5fFjdiqxSh98fiyjI+SzMH9veqVtKBWqp4nEXj52I5c
-         /ojZbXaBwV5D6nSdwEvfni+az1rUjbgbXPJmJBd3hmk+kRax5lYQpRVJyk47UeIOVQvG
-         k7DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731440974; x=1732045774;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6NA8uAj1cVJkjjtOVQkEyoz64zoAQPhiIwxOuuleueY=;
-        b=kVlz7rl70WW392hM5gndnbhkvekpRbMMegUuugl9arCnJ7cspRTreEF2iIGLbHRdH3
-         XYDiI28fb1wYJmLEU3GMxirjvr6dDoiA92AhMwhMOBLyDPnjfd+VYyklA5KGjBp3rn3I
-         gxXthmr4LMMJUsT5z3XbBQCko8wVkv6h3uiMdqrUfGECkTNYzoZE/UytqwPnhYAVisB1
-         QSK/yAkKyDh+HsVP9pnq+/4WZ7AalJ4RNJqk2YNMq5hRX8f49tVXNw/urNWNIynq8y/x
-         CBf7xBWzq94RmHlinyoui2T3ps4NN6ZvTSAQVSTUZZk8GaMgXpPwZM23nMvb1cd3GkE0
-         Q4oQ==
-X-Gm-Message-State: AOJu0YzppWKVKI4ghlRzF2lzdU8gcqzjP2M1dPnfVrqf01K1TNyJzeaD
-	Q6HUp3OmC2ExIu2EDUVVI+/PuMtSS5gLaN/W7WIinK4o1C8/4Y/mufM7JbUNfdI03Annf6QT45m
-	uhPn+9E5vtikITJZ03NimJDCW1ZkDCWqPrrRcg8bRq0+r8qxATj5P
-X-Google-Smtp-Source: AGHT+IEWd6x+Tan5+f/ne9TchNv31H7K2uiWWt7/55DofMHIPXP1vprN5IdxeoGKCR77UaNKo4f8HB0SBsX8iYEskYw=
-X-Received: by 2002:a17:907:9281:b0:a99:77f0:51f7 with SMTP id
- a640c23a62f3a-a9ef0044506mr1542728066b.61.1731440973679; Tue, 12 Nov 2024
- 11:49:33 -0800 (PST)
+	s=arc-20240116; t=1731441578; c=relaxed/simple;
+	bh=rC+0ugHNvw01z7Q9STlYyR40J3xB/OsK/Djp3RNVyos=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=gba/tHTmyP82ppiqIDekJA3hML+b7cXYTfJtZPzRf7kFBWTKUUBgeZ9SleC2EbnEZh0bWXrf5QNiCDq8B/PfISQDrq2V8VDxcwXL5ciqXliXv7rzqF9WwCWiIDvWywt7HYgaQPQqYwtLqoABT1powfmVhX7DMF45NYaJ9A0zcrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=148.6.0.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.kfki.hu (Postfix) with ESMTP id B5C8432E01CF;
+	Tue, 12 Nov 2024 20:50:23 +0100 (CET)
+X-Virus-Scanned: Debian amavis at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+ by localhost (smtp2.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id ytOsMQz8XMno; Tue, 12 Nov 2024 20:50:21 +0100 (CET)
+Received: from mentat.rmki.kfki.hu (94-21-33-116.pool.digikabel.hu [94.21.33.116])
+	(Authenticated sender: kadlecsik.jozsef@wigner.hu)
+	by smtp2.kfki.hu (Postfix) with ESMTPSA id 5FB7E32E01CD;
+	Tue, 12 Nov 2024 20:50:21 +0100 (CET)
+Received: by mentat.rmki.kfki.hu (Postfix, from userid 1000)
+	id F05421428C3; Tue, 12 Nov 2024 20:50:20 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by mentat.rmki.kfki.hu (Postfix) with ESMTP id ECDFC1401AE;
+	Tue, 12 Nov 2024 20:50:20 +0100 (CET)
+Date: Tue, 12 Nov 2024 20:50:20 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
+To: Jeongjun Park <aha310510@gmail.com>
+cc: pablo@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+    kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kaber@trash.net, 
+    netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org, 
+    syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] netfilter: ipset: add missing range check in
+ bitmap_ip_uadt
+In-Reply-To: <20241112113434.58975-1-aha310510@gmail.com>
+Message-ID: <85b3a08c-f148-ef3c-6489-e34aadc4e735@netfilter.org>
+References: <20241112113434.58975-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104233315.3387982-1-wangfe@google.com> <20241104172612.6e5c1a14@kernel.org>
- <20241104172739.2993c325@kernel.org>
-In-Reply-To: <20241104172739.2993c325@kernel.org>
-From: Feng Wang <wangfe@google.com>
-Date: Tue, 12 Nov 2024 11:49:21 -0800
-Message-ID: <CADsK2K_wc9f4BrnGW-HMcjD5SgNb8oLU=jE4QEJqFumx3dXstA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selftests: rtnetlink: add ipsec packet offload test
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, 
-	antony.antony@secunet.com, leonro@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-deepspam: ham 1%
 
-Hi Jakub,
+Hello Jeongjun,
 
-Thanks for your information, I am able to reproduce the test
-environment and run the test.  The main reason for failure is that
-this patch relies on the previous
-patch(https://lore.kernel.org/all/20241112192249.341515-1-wangfe@google.com/),
- and it is not checked in yet.
-And there is another routing issue that I will fix too, and I will
-upstream it again when the previous patch is checked in.
+On Tue, 12 Nov 2024, Jeongjun Park wrote:
 
-Thanks again for your help.
+> In the bitmap_ip_uadt function, if ip is greater than ip_to, they are swapped.
+> However, there is no check to see if ip is smaller than map->first, which
+> causes an out-of-bounds vulnerability. Therefore, you need to add a missing
+> bounds check to prevent out-of-bounds.
 
-Feng
+It's a good catch, thanks! However, with the patch below the 
+
+                        if (ip < map->first_ip)
+                                return -IPSET_ERR_BITMAP_RANGE;
+
+lines in the branch just after swapping the from/to addresses becomes 
+unnecessary. Could you send a second version of the patch with the lines
+above removed?
+
+Best regards,
+Jozsef
+
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+> Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+>  net/netfilter/ipset/ip_set_bitmap_ip.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/ipset/ip_set_bitmap_ip.c b/net/netfilter/ipset/ip_set_bitmap_ip.c
+> index e4fa00abde6a..705c316b001a 100644
+> --- a/net/netfilter/ipset/ip_set_bitmap_ip.c
+> +++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+> @@ -178,7 +178,7 @@ bitmap_ip_uadt(struct ip_set *set, struct nlattr *tb[],
+>  		ip_to = ip;
+>  	}
+>  
+> -	if (ip_to > map->last_ip)
+> +	if (ip < map->first_ip || ip_to > map->last_ip)
+>  		return -IPSET_ERR_BITMAP_RANGE;
+>  
+>  	for (; !before(ip_to, ip); ip += map->hosts) {
+> --
+> 
+
+-- 
+E-mail : kadlec@netfilter.org, kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+Address: Wigner Research Centre for Physics
+         H-1525 Budapest 114, POB. 49, Hungary
