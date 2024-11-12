@@ -1,105 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095EC83A14;
-	Tue, 12 Nov 2024 14:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43FE1FA829;
+	Tue, 12 Nov 2024 14:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731422768; cv=none; b=MYs/EktSD/AXT15yu/Ffwsbu72/an94LuBoZWBAX1nl20NC8Fz+xSq43UsFFERETleZeM5COsG0khEDfuCA/ghARjpien41MDy9CbA11fhL8TBIJ5XsFC859FtY69E/Hp5OXeiACmPtYxXjvMWkHlQoIwpgWY/m6hIotxWH4iyI=
+	t=1731422897; cv=none; b=gjK3338PmhW2xFe5gYcERxnNa8ZUYWvfFNGPZsm9uKJ0/WD71b3FgwIemhOMVSrL4be7cs50tFQVJzZJg3CwaHE68GRBT30RcjwAgHEHAMTE9cJqVQPqgIhHefEXBxP+PpeJNW0XSRSqQZWpXv55xxPSvGPabCh1F33dfPtDjTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731422768; c=relaxed/simple;
-	bh=LiEzYE5YhQqrv+RfGuvo4CDTDcIkTz63uEM7XySiVWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tM97ScdbKlDi7WZWI+oGmbUBBGyavkEXLo1WteYhaPDeliZc9giLEtRiWFlsaJDATfoUFROmB87KEnMpZWj53n5kk6f8ZDDk0LAVS4iDtPu8c2YHnbZnyxbO5Uo0t/c9CZTmVGEgmC0JTiC41s5pV155QzdXOhdOxQc1z8lal7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZikcAF5F; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZikcAF5F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6328FC4CECD;
-	Tue, 12 Nov 2024 14:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731422767;
-	bh=LiEzYE5YhQqrv+RfGuvo4CDTDcIkTz63uEM7XySiVWk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZikcAF5F7z87EB8RqDg4be2FNvQCfot7kckTNd0g3mZiU1sB8/NHpNvA3OQr+1MmM
-	 qGoDIw6qzbDdgQK7+DAacw3v8lN97SYiPy3h6I4/wVGqtxPveJsydZMqd6cwCC6hno
-	 qZSoRa9CuTf53vSLhowwqo8+ljkZSWFZ3xjHg8EKADK/9r5Hs5A2iQc1fYlihrjspT
-	 x3/sj8hj3N/n6YMr620nB4DS5HIhmk2RDuhL4XTh/JxuUNb8LkYfYEktKmQZDVzxiZ
-	 ppBmpEk/b7lJvKDeHVQvJ+WqD2IU6n68RSrA+vxZfiBnKWDP8jvFGQNZD8RqZjljK/
-	 /GxH4EjFWzjkw==
-Date: Tue, 12 Nov 2024 14:46:03 +0000
-From: Simon Horman <horms@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Chandrasekar Ramakrishnan <rcsekar@samsung.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-can@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] can: m_can: add deinit callback
-Message-ID: <20241112144603.GR4507@kernel.org>
-References: <20241111-tcan-standby-v1-0-f9337ebaceea@geanix.com>
- <20241111-tcan-standby-v1-1-f9337ebaceea@geanix.com>
+	s=arc-20240116; t=1731422897; c=relaxed/simple;
+	bh=qvxsp/kvbvOmwOwaUHOdGkie+rhfTIR6lIg6k/ZLU0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=msLLeDryYzvl8a+futH0zmmyHAhHuWYXwoOxDedrdDwFvAGS75A/ETCHGMeJivrs93WtOhw7xNooQG4WNNzGTsEQq1c+dQQXAB9RpfYZ3Ofq3aD+ATSyacQUv9GS+wdoVwgfuYxgIa0LmqFztollutjvJ6RqTqlsg1ttJC/0sS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Xnq5j424lz4f3jtG;
+	Tue, 12 Nov 2024 22:47:53 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id A7B2E1A0196;
+	Tue, 12 Nov 2024 22:48:06 +0800 (CST)
+Received: from k01.huawei.com (unknown [10.67.174.197])
+	by APP4 (Coremail) with SMTP id gCh0CgBnjoKhajNnscdXBg--.33841S3;
+	Tue, 12 Nov 2024 22:48:06 +0800 (CST)
+From: Xu Kuohai <xukuohai@huaweicloud.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Kui-Feng Lee <thinker.li@gmail.com>
+Subject: [PATCH bpf-next v4 1/3] bpf: Remove unused member rcu from bpf_struct_ops_map
+Date: Tue, 12 Nov 2024 22:58:47 +0800
+Message-Id: <20241112145849.3436772-2-xukuohai@huaweicloud.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241112145849.3436772-1-xukuohai@huaweicloud.com>
+References: <20241112145849.3436772-1-xukuohai@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241111-tcan-standby-v1-1-f9337ebaceea@geanix.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgBnjoKhajNnscdXBg--.33841S3
+X-Coremail-Antispam: 1UD129KBjvdXoWruFyfAr4xCr4kGFyxWFyUZFb_yoW3ZrbEkr
+	WIyr18Wrn8G34rGr4rCr13uaykZw15tr18uw1jgFWkt3s8tw4rArs5JFy3tFy5urZ7JF17
+	Z3Z8WwsF9F13WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbvkYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r18M2
+	8IrcIa0xkI8VCY1x0267AKxVWUCVW8JwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK
+	021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r
+	4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx
+	0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWU
+	JVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxV
+	WUtVW8ZwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
+	z7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
+	AF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4l
+	IxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
+	CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnI
+	WIevJa73UjIFyTuYvjxU4cTmUUUUU
+X-CM-SenderInfo: 50xn30hkdlqx5xdzvxpfor3voofrz/
 
-On Mon, Nov 11, 2024 at 11:51:23AM +0100, Sean Nyekjaer wrote:
-> This is added in preparation for calling standby mode in the tcan4x5x
-> driver or other users of m_can.
-> For the tcan4x5x; If Vsup is 12V, standby mode will save 7-8mA, when
-> the interface is down.
-> 
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->  drivers/net/can/m_can/m_can.c | 3 +++
->  drivers/net/can/m_can/m_can.h | 1 +
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-> index a7b3bc439ae596527493a73d62b4b7a120ae4e49..a171ff860b7c6992846ae8d615640a40b623e0cb 100644
-> --- a/drivers/net/can/m_can/m_can.c
-> +++ b/drivers/net/can/m_can/m_can.c
-> @@ -1756,6 +1756,9 @@ static void m_can_stop(struct net_device *dev)
->  
->  	/* set the state as STOPPED */
->  	cdev->can.state = CAN_STATE_STOPPED;
-> +
-> +	if (cdev->ops->deinit)
-> +		cdev->ops->deinit(cdev);
+From: Xu Kuohai <xukuohai@huawei.com>
 
-Hi Sean,
+The rcu member in bpf_struct_ops_map is not used after commit
+b671c2067a04 ("bpf: Retire the struct_ops map kvalue->refcnt.")
 
-Perhaps this implementation is in keeping with other m_can code, but
-I am wondering if either the return value of the callback be returned to
-the caller, or the return type of the callback be changed to void?
+Remove it.
 
-Similarly for calls to callbacks in in patch 3/3.
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+---
+ kernel/bpf/bpf_struct_ops.c | 1 -
+ 1 file changed, 1 deletion(-)
 
->  }
->  
->  static int m_can_close(struct net_device *dev)
-> diff --git a/drivers/net/can/m_can/m_can.h b/drivers/net/can/m_can/m_can.h
-> index 92b2bd8628e6b31370f4accbc2e28f3b2257a71d..6206535341a22a68d7c5570f619e6c4d05e6fcf4 100644
-> --- a/drivers/net/can/m_can/m_can.h
-> +++ b/drivers/net/can/m_can/m_can.h
-> @@ -68,6 +68,7 @@ struct m_can_ops {
->  	int (*write_fifo)(struct m_can_classdev *cdev, int addr_offset,
->  			  const void *val, size_t val_count);
->  	int (*init)(struct m_can_classdev *cdev);
-> +	int (*deinit)(struct m_can_classdev *cdev);
->  };
->  
->  struct m_can_tx_op {
-> 
-> -- 
-> 2.46.2
-> 
-> 
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index fda3dd2ee984..40a93e690473 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -23,7 +23,6 @@ struct bpf_struct_ops_value {
+ 
+ struct bpf_struct_ops_map {
+ 	struct bpf_map map;
+-	struct rcu_head rcu;
+ 	const struct bpf_struct_ops_desc *st_ops_desc;
+ 	/* protect map_update */
+ 	struct mutex lock;
+-- 
+2.39.5
+
