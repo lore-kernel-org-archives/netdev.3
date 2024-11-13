@@ -1,148 +1,158 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE691F8EE0;
-	Wed, 13 Nov 2024 09:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E301F8190;
+	Wed, 13 Nov 2024 09:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731491319; cv=none; b=f8B9T4QeIBewFF3A1dLqmnEgLeSdJP+fkv8YqO/8txgkeF1QYLoTwk9AOWnCCPcGu/xKbhy1eYczhFUo2+xBq45eG+c9arClo0Krb1l+vfoxeDEbZaaDXqxtyExI08w/9W7tHBdSlcQnl4GhV0M/Gw5u0ZNujes13nj2mT2CIoY=
+	t=1731491521; cv=none; b=JhGL2Rm4G1bi1zOl7anSOa5zpyggZDWUVQ8HvfzKE6Gvds+p5eNgUSqjLsZj3tYcFbLwmR3fBEfe45pbIlCp5YJzAW1NyJgmEUJzGQkjbTqpPSk+LeKjb0FHvsBnb2pAx44eUX66E8N0tp6+ZoRvxjtUMRmAkZvbz/DZMYRgJVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731491319; c=relaxed/simple;
-	bh=ks90hqffQrT0BE2v4o9sOT2myXod5HsJJ8zUteV+gKw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K1xlrCZdPbyJU8tAWWlIb/ZhZZF2Lrf4MT+c5MRGczffU2H0nolIG3t9nEW1pYN2OWmVqcruwXKaR6m1lEOsEdI+yL7vn+j0nbD7DE7nryJeY6CXdl/e8gtAXa2DZFitbOeANieJk8pUchC3+q486W/lict05J0lGjVWAy/QytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GxhMy+G2; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GxhMy+G2"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cbcc2bd800so4951406d6.0;
-        Wed, 13 Nov 2024 01:48:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731491317; x=1732096117; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XaSnfzm/t5DivDcI8TYnD0ZfKr8uwA2J8rw6CZWmB2k=;
-        b=GxhMy+G2e7m9E9ytfeJJ2FRRKn+k4bJAGKLETXozgLmocakpkFT5uyuDtnI9Cae28w
-         lxZarTXvw/JeT9JP0M5fqpeVyv2dyL8yEBN8OKjhZjHkObsMdTMzbi8kQyxCBelYHJ8u
-         Z7+SvCoez3MuBHDd/Z7LpIOHmHuvn0LXVVea9JQk7L6MKeqM5ziHDJtpTUV9ycGifhiN
-         0palZwvpiTGnMMZDZ+449vKiB2hmFDKUYs4huMMT4C2m0ED9WBVYbaLtiMkFpYnjfdDc
-         lV56rInoCSoa4kG1AAWSSHYdrD/wx3wf8LCcf6y71O8t+jAMidGhF5gVVE8Q0F+Q6SFE
-         UzyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731491317; x=1732096117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XaSnfzm/t5DivDcI8TYnD0ZfKr8uwA2J8rw6CZWmB2k=;
-        b=Ae6HJRla1DsHSvj0RxQBzBONZ4NyPWv+J1K5+7e5u7OELlCw02fgRBWQrA+isu2nzv
-         obz32OadNftrJqGDwSp6h+5JVw0OmsbL5dR6awBF/0LJccxAI0EQ8Am/w0jkHfpzZGz3
-         UtRCxY3u4Wv6poitir/ZpQUUBxXhVnNyK+vKbOQr8Tqt83fkACGglVYFB+8QWOjiD2pd
-         sAb7SJ7ZQMWQc6ZoWWT2SvnHl+eVddpqMeQsoj34iB8fWzz7l/uP4ZQMNIMxgbON396j
-         tS+2oRow72YPbrRoo9eaqEfAUGTN610Nc6VLC0TERDRA56EE7zx+qyUyMGbgLTDVnaf/
-         dhfA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMYpJqTV1XmAfLCswE6kxtRRwUuiPWrhXnrB78QSbAUNRbVnxo1ja7k49dSuEjDIX080uawWEVg3I=@vger.kernel.org, AJvYcCWeUu/96Pd+X4nzduKCWJu721eujbaFlArZiEjXB8UKWt0mrL0w9yrAjbmo2sWHHStKAfTOUWRftP3b3sui@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG+7NqEzELHHz+fHi7RhQQxDwGWda7ZBXTnfCq304R9SFAs+ra
-	UVKUH1ARhi69QZUONQaBuyNEm3EUSo/XSyvybNDKyd4Dzu1aFSGiqOoMe5vc5WPlnznPug4ylkS
-	W4pY+ao3ImnAAjAf7c3oxtzbcJnE=
-X-Google-Smtp-Source: AGHT+IHcLy8AEacbQGHGgfaEwyTub+t1gLTfFsAT9DwCgvxu+gX32+4tA6aRof7gwejihIaPx+ov6qt1kZkNWsKHlks=
-X-Received: by 2002:ad4:5d49:0:b0:6d3:5be3:e711 with SMTP id
- 6a1803df08f44-6d39d57c179mr302997596d6.9.1731491316900; Wed, 13 Nov 2024
- 01:48:36 -0800 (PST)
+	s=arc-20240116; t=1731491521; c=relaxed/simple;
+	bh=D8GFblYwuD1IbjittRzD0iz8VM57aln/zQ8SunXo8CQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EKS9/mN6BBb8NfxFzlp1dHK+kIO69bsgEIVcKkOX4FPAG5GFXwguyeP7MmW1/qpnoZ2Cjhr+XMeOB6q7jrXf19tTY69hPCHXf4IunzCtR7YsmDpCPwcQgIqTRtf/Nc0StE9/GzFt7ND3Qkv2ckTBwIVnnXtR4Jk7s1tRk/fDIyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AD9Jv2u019485;
+	Wed, 13 Nov 2024 09:51:36 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42uwv49u4w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 13 Nov 2024 09:51:35 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Wed, 13 Nov 2024 01:51:34 -0800
+Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Wed, 13 Nov 2024 01:51:30 -0800
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <miquel.raynal@bootlin.com>
+CC: <alex.aring@gmail.com>, <davem@davemloft.net>, <dmantipov@yandex.ru>,
+        <edumazet@google.com>, <horms@kernel.org>, <kuba@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <linux-wpan@vger.kernel.org>, <lizhi.xu@windriver.com>,
+        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+        <stefan@datenfreihafen.org>,
+        <syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com>,
+        <syzkaller-bugs@googlegroups.com>
+Subject: [PATCH V2] mac802154: check local interfaces before deleting sdata list
+Date: Wed, 13 Nov 2024 17:51:29 +0800
+Message-ID: <20241113095129.1457225-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <87plmzsfog.fsf@bootlin.com>
+References: <87plmzsfog.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112211442.7205-1-rosenp@gmail.com>
-In-Reply-To: <20241112211442.7205-1-rosenp@gmail.com>
-From: Julian Calaby <julian.calaby@gmail.com>
-Date: Wed, 13 Nov 2024 20:48:24 +1100
-Message-ID: <CAGRGNgXhtPy_G9O0n7dEhcAX3sWN=08tF9tgFpLs8V---uELYg@mail.gmail.com>
-Subject: Re: [PATCHv3 net-next] net: modernize IRQ resource acquisition
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Vladimir Oltean <olteanv@gmail.com>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Pantelis Antoniou <pantelis.antoniou@gmail.com>, 
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>, Byungho An <bh74.an@samsung.com>, 
-	Kevin Brace <kevinbrace@bracecomputerlab.com>, Francois Romieu <romieu@fr.zoreil.com>, 
-	Michal Simek <michal.simek@amd.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Zhao Qiang <qiang.zhao@nxp.com>, 
-	"open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, 
-	"open list:FREESCALE SOC FS_ENET DRIVER" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: lFNnjX-toqGJjg-QE3CWoGjK2nXcCq2D
+X-Authority-Analysis: v=2.4 cv=Ke6AshYD c=1 sm=1 tr=0 ts=673476a7 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VlfZXiiP6vEA:10 a=hSkVLCK3AAAA:8 a=edf1wS77AAAA:8 a=t7CeM3EgAAAA:8 a=P-IC7800AAAA:8 a=wX8mhN7qUvqu7bC2lWAA:9
+ a=cQPPKAXgyycSBL8etih5:22 a=DcSpbTIhAlouE1Uv7lRv:22 a=FdTzh2GWekK77mhwV6Dw:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-ORIG-GUID: lFNnjX-toqGJjg-QE3CWoGjK2nXcCq2D
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-12_09,2024-11-12_02,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ spamscore=0 mlxlogscore=693 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ phishscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2411130086
 
-Hi Rosen,
+syzkaller reported a corrupted list in ieee802154_if_remove. [1]
 
-On Wed, Nov 13, 2024 at 8:14=E2=80=AFAM Rosen Penev <rosenp@gmail.com> wrot=
-e:
->
-> In probe, np =3D=3D pdev->dev.of_node. It's easier to pass pdev directly.
->
-> Replace irq_of_parse_and_map() by platform_get_irq() to do so. Requires
-> removing the error message as well as fixing the return type.
->
-> Replace of_address_to_resource() with platform_get_resource() for the
-> same reason.
+Remove an IEEE 802.15.4 network interface after unregister an IEEE 802.15.4
+hardware device from the system.
 
-Sorry for the drive-by review, but I have to question the utility of
-this conversion.
+CPU0					CPU1
+====					====
+genl_family_rcv_msg_doit		ieee802154_unregister_hw
+ieee802154_del_iface			ieee802154_remove_interfaces
+rdev_del_virtual_intf_deprecated	list_del(&sdata->list)
+ieee802154_if_remove
+list_del_rcu
 
-> diff --git a/drivers/net/can/grcan.c b/drivers/net/can/grcan.c
-> index cdf0ec9fa7f3..48e93c3445e7 100644
-> --- a/drivers/net/can/grcan.c
-> +++ b/drivers/net/can/grcan.c
-> @@ -1673,9 +1673,8 @@ static int grcan_probe(struct platform_device *ofde=
-v)
->                 goto exit_error;
->         }
->
-> -       irq =3D irq_of_parse_and_map(np, GRCAN_IRQIX_IRQ);
-> -       if (!irq) {
-> -               dev_err(&ofdev->dev, "no irq found\n");
-> +       irq =3D platform_get_irq(ofdev, GRCAN_IRQIX_IRQ);
-> +       if (irq < 0) {
+The net device has been unregistered, since the rcu grace period,
+unregistration must be run before ieee802154_if_remove.
 
-In this change and a lot of the others, you're not removing the "np"
-variable, so you're basically replacing one wrapper with another.
+To avoid this issue, add a check for local->interfaces before deleting
+sdata list.
 
->                 err =3D -ENODEV;
->                 goto exit_error;
->         }
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c b/drivers/n=
-et/ethernet/freescale/fs_enet/mac-fcc.c
-> index be63293511d9..9006137e3a55 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-> @@ -83,8 +83,8 @@ static int do_pd_setup(struct fs_enet_private *fep)
->         struct fs_platform_info *fpi =3D fep->fpi;
->         int ret =3D -EINVAL;
->
-> -       fep->interrupt =3D irq_of_parse_and_map(ofdev->dev.of_node, 0);
-> -       if (!fep->interrupt)
-> +       fep->interrupt =3D platform_get_irq(ofdev, 0);
-> +       if (fep->interrupt < 0)
+[1]
+kernel BUG at lib/list_debug.c:58!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6277 Comm: syz-executor157 Not tainted 6.12.0-rc6-syzkaller-00005-g557329bcecc2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:__list_del_entry_valid_or_report+0xf4/0x140 lib/list_debug.c:56
+Code: e8 a1 7e 00 07 90 0f 0b 48 c7 c7 e0 37 60 8c 4c 89 fe e8 8f 7e 00 07 90 0f 0b 48 c7 c7 40 38 60 8c 4c 89 fe e8 7d 7e 00 07 90 <0f> 0b 48 c7 c7 a0 38 60 8c 4c 89 fe e8 6b 7e 00 07 90 0f 0b 48 c7
+RSP: 0018:ffffc9000490f3d0 EFLAGS: 00010246
+RAX: 000000000000004e RBX: dead000000000122 RCX: d211eee56bb28d00
+RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+RBP: ffff88805b278dd8 R08: ffffffff8174a12c R09: 1ffffffff2852f0d
+R10: dffffc0000000000 R11: fffffbfff2852f0e R12: dffffc0000000000
+R13: dffffc0000000000 R14: dead000000000100 R15: ffff88805b278cc0
+FS:  0000555572f94380(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000056262e4a3000 CR3: 0000000078496000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __list_del_entry_valid include/linux/list.h:124 [inline]
+ __list_del_entry include/linux/list.h:215 [inline]
+ list_del_rcu include/linux/rculist.h:157 [inline]
+ ieee802154_if_remove+0x86/0x1e0 net/mac802154/iface.c:687
+ rdev_del_virtual_intf_deprecated net/ieee802154/rdev-ops.h:24 [inline]
+ ieee802154_del_iface+0x2c0/0x5c0 net/ieee802154/nl-phy.c:323
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
+ ___sys_sendmsg net/socket.c:2661 [inline]
+ __sys_sendmsg+0x292/0x380 net/socket.c:2690
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This one and others like it are fine: it's much cleaner to use the
-"platform_irq()" function instead of reaching deep into the structure
-to grab the "of_node" property.
+Reported-and-tested-by: syzbot+985f827280dc3a6e7e92@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=985f827280dc3a6e7e92
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+V1 -> V2: remove state bit and add a check for local interfaces before
+          deleting sdata list
 
-That said, in this case and probably a few others this is a driver for
-an OF device so I'm still not sure this actually makes sense.
+ net/mac802154/iface.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks,
+diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
+index c0e2da5072be..9e4631fade90 100644
+--- a/net/mac802154/iface.c
++++ b/net/mac802154/iface.c
+@@ -684,6 +684,10 @@ void ieee802154_if_remove(struct ieee802154_sub_if_data *sdata)
+ 	ASSERT_RTNL();
+ 
+ 	mutex_lock(&sdata->local->iflist_mtx);
++	if (list_empty(&sdata->local->interfaces)) {
++		mutex_unlock(&sdata->local->iflist_mtx);
++		return;
++	}
+ 	list_del_rcu(&sdata->list);
+ 	mutex_unlock(&sdata->local->iflist_mtx);
+ 
+-- 
+2.43.0
 
---=20
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
