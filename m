@@ -1,160 +1,105 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD018201106;
-	Wed, 13 Nov 2024 17:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538802AD04;
+	Wed, 13 Nov 2024 17:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731519222; cv=none; b=tCVQcf26+ecyxzzwSX7/hHmsK4VNe2EZPlet9HEv/uYalaaO1DPbcSUdhUfDjMRpvbEQchqfTlFWIseD/R7rr0iTtm2MOnhjor+8F+dOwse5z3fAIwUkmnBKQlQ83hh5JRMzw49uMu+qXY8Cs42TZDNqENF6jaLuRnxBv+3cBf8=
+	t=1731519937; cv=none; b=nBVR6sDNlNB7FV7tfOqB97Vyr7KJMMbf+OLsPs07gyar/AOsSIV3Ah4HTgEhS/qZ1AkutQKPDPruF2HuCX6UO2WbIl1PknkDQLL3G7ta6uF3TeTGg8h8ZX9qTBQPDLwHjh0BXmGJsBa/R/dpvVu4hjrdbw9+ZsBIK+vluy2S0hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731519222; c=relaxed/simple;
-	bh=Y7ggVn65s34L44hclSWqs9L7XSAELwhqhlkJzs+KwKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UbMXmeBx/BWIJ7nOt7wE6DTsWaj8f+XxgFC5CeYO8sYCC5IhhY23ZxSNpOKsLC9a59/ehjqmD5q0HatEbI0U5rQP7bghBrQw2ElIGbupnCGR0oY6GJuBCmXj3DGZFbymwruNy3peN0CiilO9q6AtiAx53RBaAkVBjJvN+QjNmwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BEFv15SS; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731519937; c=relaxed/simple;
+	bh=ouU8nt3JsXlK78zj5uuwL+vjo5Uce23CbeGxmbr8B9U=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kVeEkShVuYBrgrm1F9XXkBnT3dbnK+uZpvel+FCLHvr8mAn4XB/b9uc1CuvbG/uP+78uTBlBV+0LvkvjMSGFjy9UG3SPbjth8BBp2+lr85zQ2Y+/Rrt3zpuiC4+76FWQZ79UeETbmlffEXSImhqAwlXrUOhXUd9CuULDKJWhBCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=YDmPfawC; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BEFv15SS"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2113da91b53so53235335ad.3;
-        Wed, 13 Nov 2024 09:33:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731519220; x=1732124020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=deUvSBZGMk9qIorja3waJc0OCGFfAoFCRG4VLMZ1kFI=;
-        b=BEFv15SSOiuUM1+HjAJ9+eU7K8oCZP9JV1mCnAoloQPBhoORJ+N0frjJL8zpvu7jVy
-         zxgaUNQHzxgNUi8Qp8JYw8fkTCPtLzFBVBY/0ZlQgJ9Df2ek8vvFyElZAydGKh1Ys3h/
-         8yT8OEMXZ27c73UVTxflXyK521jjxYMUsR68Nyo1a8tDYaMMw8cPCqImweb/xe9mCHP2
-         s/boXxnR6GLglGeVSLfxualVNIbgJG+fXVBjY8Mb6jElOc4L7eHdhIWiex/JL8CqAYxc
-         AMI5+aJC2EFZCZcmJ/8A0CxtpA+wXXKGYcvEa52WyYkNFC7qDOlQ/lPEgqxLucEEfQlt
-         O2JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731519220; x=1732124020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=deUvSBZGMk9qIorja3waJc0OCGFfAoFCRG4VLMZ1kFI=;
-        b=YoevnbyjY0yzGh3Ctlh3AYc28Dfo7/4ffyKz+Jjna/VGmZb6xrz23dM0FPUAkpt6Q0
-         DN7CQrxPllGs1YDvwK4djJSodecoy9VGDYfDCwr9Z+0YnuHDUGsEhizFlCzeBLz4QYdY
-         O8ibRAHrZg3VwrTJhrEcuNaTrBeUvatdNiOp6OGNoQLj7mMhAgAPaDhLR9ROFCdnwDCg
-         DUBbvI1Y9g8RIybrGHBppQE6MwZ0pkfgrk+KKexFrEcYHrugYNUlZeCwZGiO5+KD49lk
-         EV7gbmZcfW6WUGi1oyf2bbkOcHkr4nd+Wf+n3qVppjvGN5kpeZsvVMXLwqkPfMrYVGrd
-         JE5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZH6Mz6pNqBWHv1MUcYIazl2/mUxPJmgCnW2pQBOL5FUMt1J0A0ygwQFJDywdJ714BAkMCWesUwAQ=@vger.kernel.org, AJvYcCWVtrNraUpO3t4EpKYlIZnl02BfIVgvJCKWwNwNgsGDKmEWQnYErqBTN9yCd85xDrUFk/GE02/p@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+cmk++ltHeEdYlz1SBpckUb3kLLSacLhFHNkgbnJ5a1EGmA3p
-	pW1aG2z+0ddY79zAt5KdptANvULJ7tLRWoucW+7JSSbr7nBF6QG2
-X-Google-Smtp-Source: AGHT+IHdtEHciLFUClZY3RmcxL/NP2gFz+MEQyuFDZ5wCx0AxuicbQIW+OPt+YDqasSDlEUze0hIpA==
-X-Received: by 2002:a17:902:ce89:b0:20b:a10c:9bdf with SMTP id d9443c01a7336-21183d67d05mr307268665ad.32.1731519220204;
-        Wed, 13 Nov 2024 09:33:40 -0800 (PST)
-Received: from ap.. ([182.213.254.91])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc7df5sm113140765ad.19.2024.11.13.09.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 09:33:39 -0800 (PST)
-From: Taehee Yoo <ap420073@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	almasrymina@google.com,
-	donald.hunter@gmail.com,
-	corbet@lwn.net,
-	michael.chan@broadcom.com,
-	andrew+netdev@lunn.ch,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	dw@davidwei.uk,
-	sdf@fomichev.me,
-	asml.silence@gmail.com,
-	brett.creeley@amd.com,
-	linux-doc@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: kory.maincent@bootlin.com,
-	maxime.chevallier@bootlin.com,
-	danieller@nvidia.com,
-	hengqi@linux.alibaba.com,
-	ecree.xilinx@gmail.com,
-	przemyslaw.kitszel@intel.com,
-	hkallweit1@gmail.com,
-	ahmed.zaki@intel.com,
-	rrameshbabu@nvidia.com,
-	idosch@nvidia.com,
-	jiri@resnulli.us,
-	bigeasy@linutronix.de,
-	lorenzo@kernel.org,
-	jdamato@fastly.com,
-	aleksander.lobakin@intel.com,
-	kaiyuanz@google.com,
-	willemb@google.com,
-	daniel.zahka@gmail.com,
-	ap420073@gmail.com
-Subject: [PATCH net-next v5 7/7] net: ethtool: add ring parameter filtering
-Date: Wed, 13 Nov 2024 17:32:21 +0000
-Message-Id: <20241113173222.372128-8-ap420073@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241113173222.372128-1-ap420073@gmail.com>
-References: <20241113173222.372128-1-ap420073@gmail.com>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="YDmPfawC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1731519928; x=1731779128;
+	bh=qDkledNX1dxRvLVNlPVfDD+QPBH5mY67kbum7HJWB1Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=YDmPfawCaoWGBXmqGK5KGNw/r5lK9U5otzQE1fRqahIxUf+POVqG4f39EkE4jxyK/
+	 oTZVwxTmOUwKSNZXyI+smlrwqPefcxxxZvhItphUUgPgTJAd2C649ZBeWBE/M/D7sb
+	 QJrVmIZNB3nU5sQbwekBA7FPhRzWkbl54SfnFK7N08ee3RnJEVq5S+07XyJ0A3zTNX
+	 MsnLGn/+IARfE+/ptCZr29KFp+kEf9zF/RY6WEVgP1J1pAxvQX6dJHxpjj47dvswyM
+	 antIUwLS+ZvgopIhBaYnRt25hN3nmP8ux+isSXPbrv8xeiq13n6a+1EkPTKleIJh/v
+	 ds2ysnSY+1Enw==
+Date: Wed, 13 Nov 2024 17:45:22 +0000
+To: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [PATCH net] rust: net::phy scope ThisModule usage in the module_phy_driver macro
+Message-ID: <20241113174438.327414-3-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 991b5249b217713fec86a807ffc22bea6c61dfff
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-While the devmem is running, the tcp-data-split and
-header-data-split-thresh configuration should not be changed.
-If user tries to change tcp-data-split and threshold value while the
-devmem is running, it fails and shows extack message.
+Similar to the use of $crate::Module, ThisModule should be referred to as
+$crate::ThisModule in the macro evaluation. The reason the macro previously
+did not cause any errors is because all the users of the macro would use
+kernel::prelude::*, bringing ThisModule into scope.
 
-Tested-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 ---
 
-v5:
- - Change extack message.
- - Add Review tag from Mina.
+Notes:
+    How I came up with this change:
+   =20
+    I was working on my own rust bindings and rust driver when I compared m=
+y
+    macro_rule to the one used for module_phy_driver. I noticed, if I made =
+a
+    driver that does not use kernel::prelude::*, that the ThisModule type
+    identifier used in the macro would cause an error without being scoped =
+in
+    the macro_rule. I believe the correct implementation for the macro is o=
+ne
+    where the types used are correctly expanded with needed scopes.
 
-v4:
- - Check condition before __netif_get_rx_queue().
- - Separate condition check.
- - Add Test tag from Stanislav.
+ rust/kernel/net/phy.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v3:
- - Patch added.
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 910ce867480a..80f9f571b88c 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
+ ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
+ ///
+ ///     impl ::kernel::Module for Module {
+-///         fn init(module: &'static ThisModule) -> Result<Self> {
++///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self>=
+ {
+ ///             let drivers =3D unsafe { &mut DRIVERS };
+ ///             let mut reg =3D ::kernel::net::phy::Registration::register=
+(
+ ///                 module,
+@@ -899,7 +899,7 @@ struct Module {
+                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+=20
+             impl $crate::Module for Module {
+-                fn init(module: &'static ThisModule) -> Result<Self> {
++                fn init(module: &'static $crate::ThisModule) -> Result<Sel=
+f> {
+                     // SAFETY: The anonymous constant guarantees that nobo=
+dy else can access
+                     // the `DRIVERS` static. The array is used only in the=
+ C side.
+                     let drivers =3D unsafe { &mut DRIVERS };
 
- net/ethtool/rings.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
+--=20
+2.44.1
 
-diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
-index ca836aad3fa9..3f3be806c6c8 100644
---- a/net/ethtool/rings.c
-+++ b/net/ethtool/rings.c
-@@ -258,6 +258,19 @@ ethnl_set_rings(struct ethnl_req_info *req_info, struct genl_info *info)
- 		return -ERANGE;
- 	}
- 
-+	if (dev_get_min_mp_channel_count(dev)) {
-+		if (kernel_ringparam.tcp_data_split !=
-+		    ETHTOOL_TCP_DATA_SPLIT_ENABLED) {
-+			NL_SET_ERR_MSG(info->extack,
-+				       "can't disable tcp-data-split while device has memory provider enabled");
-+			return -EINVAL;
-+		} else if (kernel_ringparam.hds_thresh) {
-+			NL_SET_ERR_MSG(info->extack,
-+				       "can't set non-zero hds_thresh while device is memory provider enabled");
-+			return -EINVAL;
-+		}
-+	}
-+
- 	/* ensure new ring parameters are within limits */
- 	if (ringparam.rx_pending > ringparam.rx_max_pending)
- 		err_attr = tb[ETHTOOL_A_RINGS_RX];
--- 
-2.34.1
 
