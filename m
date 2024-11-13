@@ -1,271 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4985A20604A;
-	Wed, 13 Nov 2024 18:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4065201113
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 18:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731523628; cv=none; b=Lx1p5mLT6qt0Fr2nxrOX7UL5Mm0pvznh6DkNujI7Swuv6sJ1jQg6NWEBg9bTj9buPYb2AWw3xzVBYhi2B0NGx1EkESvtIAYEpUuPGBVqSbJ9XIJ0KfT5ExAa1g/VFa7bgy0HThSpFfm8pwVzFEQxg124M+cjhrErRcQoS+3z+sc=
+	t=1731524079; cv=none; b=ouX7VH3M4A37MsJiJxmk5x7U3Jy9RX2Wudou27ElWK76cZ8MGJJuem4j5fqYNTv7wEbMy34+cpIrtmwU9RltDDhjtpfS/0YG4mlmyTfae/LXxqsSQHvkZEEBjFE3PnSxkV+FdJ5mwcWJv9JIMzc8Dd8BFc6NvFZbCnT0pJ18v3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731523628; c=relaxed/simple;
-	bh=XH0qkdNR0QBB6FiNGo6STrZOuWlMPbxkb9Gv9AHIz3g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m+NyYQPrO1K3UQCSRpv9PNjX6bbDl32wXbT/45zqnOHdRl99YObhQj2JznLO7Fa9ySc5LFnHDeaylTVDVlJO7i+xn4MhzhYt1vwomAI2EfmY8ceDPbrLIIDj0wnyT+56PhW70vw+UpkSJqiA137mEg0HjJHE1D03yuKxKDRKul4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sz+Mm7r4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731524079; c=relaxed/simple;
+	bh=TpDMKmRcnpDthQ5xv9cMlcaoHaq5BVwFbZ250lRCp10=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlfyXZ7AAU+F384JI4P3TNYfqfdVbQphRCR0axpfJ9cdsZk60tfC3/PbSzxgspuLY5snvXxrB0zSkd2Z/AQKlFwEaftE+okyc0I6LWBgLdBsQe9fJk0+Dl06hmChzfJEAY35M0l+h71r2v/gihGH0/lNL1vndFk/Sut6bo+eQxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JkrVX0sA; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sz+Mm7r4"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CB4A1C4CEDE;
-	Wed, 13 Nov 2024 18:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731523627;
-	bh=XH0qkdNR0QBB6FiNGo6STrZOuWlMPbxkb9Gv9AHIz3g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sz+Mm7r4FKXnOvTkArJdqAiI5Q46EjdqQtuww37JQzx6fhElIN2C82v3uZ2bn/zdY
-	 fyFzWlgBR8twAQLZMZRX6YLOPb0xBIzQ2GtE2wNZ6KZgtdQK/VRXBPbbbfVqoI814F
-	 HJcKOi8Lep1QK4sx7eeNyumrrc7znB0q38eY17kGL3LzmVyJGoa2nMeQPx/Danf5mf
-	 mhF5YIY7AvI8OxsVCMMukT/gel0NbZ85g801KJq2Up2ztK6J7Qcz9N6EU9CRcdM+0H
-	 WVzWFW6cbGApbYQR2AditUKJ7DcSBWsh1uIJzhIuU+vTIwJAhrj/LO9VyG65JBw5hk
-	 sT0Uowl1ABjpw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD4F4D637AB;
-	Wed, 13 Nov 2024 18:47:07 +0000 (UTC)
-From: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>
-Date: Wed, 13 Nov 2024 18:46:43 +0000
-Subject: [PATCH net v2 4/5] net/diag: Always pre-allocate tcp_ulp info
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JkrVX0sA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731524078; x=1763060078;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TpDMKmRcnpDthQ5xv9cMlcaoHaq5BVwFbZ250lRCp10=;
+  b=JkrVX0sAI+OuFIwWrvQx0xr6TSRtnNSjIC1STstrMlvB0e+gylPfocsX
+   W8a/B+60ACq7416J+OwST7UJpv61B10Ad8WcwtISb8HbO9IQaouuFDehg
+   j707p/NALP4y80TzTFIvfdCVxtEj8Dk52jiseuYNE76LCpKLbepsJrhu6
+   HK4oEbZnE2UMxFS4DNtksC6XWnXAMNcUk+JixiXu5uZcInRxBP0ob5jJB
+   2eJgEi4va7gM8eNjLP7xQpsS+Y6ojmQD/i4jGgTuI+y4cWfx3QEhXSB9O
+   XSIp3qkmbs9rY/ucfN2lz6zyJ3rPCxiOLLHNiSOu5zpvxGdNzkQnOutNB
+   A==;
+X-CSE-ConnectionGUID: 3dGR8LxjRGmO5PqlwzcjSg==
+X-CSE-MsgGUID: ql0zHzoRQE27h9tAbxlXiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31589465"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="31589465"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 10:54:37 -0800
+X-CSE-ConnectionGUID: bh8GbJRoTGeF/98UVrB9Dw==
+X-CSE-MsgGUID: Of+iyZ2oRFOH4VtD1W4JdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="87520717"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2024 10:54:36 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v2 00/14][pull request] Intel Wired LAN Driver Updates 2024-11-05 (ice, ixgbe, igc. igb, igbvf, e1000)
+Date: Wed, 13 Nov 2024 10:54:15 -0800
+Message-ID: <20241113185431.1289708-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-tcp-md5-diag-prep-v2-4-00a2a7feb1fa@gmail.com>
-References: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
-In-Reply-To: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ivan Delalande <colona@arista.com>, 
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Davide Caratti <dcaratti@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- mptcp@lists.linux.dev, Dmitry Safonov <0x7f454c46@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731523626; l=6947;
- i=0x7f454c46@gmail.com; s=20240410; h=from:subject:message-id;
- bh=qfevk1ng2p0MU67TYs7ChEKHqMGys1hoYMjl1SqfztY=;
- b=R0xCpHQCzeM/K00aJqY6yGIdN38COcrV56h3NQO+Vnl0+o1/tgCMI0kdztDExYjqPbKT5eNUl
- GPQNw98NBvxBhqJhHhpzMulRNC46j+M+nn58RE/fGs4+74YKHnRTm5X
-X-Developer-Key: i=0x7f454c46@gmail.com; a=ed25519;
- pk=cFSWovqtkx0HrT5O9jFCEC/Cef4DY8a2FPeqP4THeZQ=
-X-Endpoint-Received: by B4 Relay for 0x7f454c46@gmail.com/20240410 with
- auth_id=152
-X-Original-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Reply-To: 0x7f454c46@gmail.com
+Content-Transfer-Encoding: 8bit
 
-From: Dmitry Safonov <0x7f454c46@gmail.com>
+For ice:
 
-Currently there is a theoretical race between netlink one-socket dump
-and allocating icsk->icsk_ulp_ops.
+Mateusz refactors and adds additional SerDes configuration values to be
+output.
 
-Simplify the expectations by always allocating maximum tcp_ulp-info.
-With the previous patch the typical netlink message allocation was
-decreased for kernel replies on requests without idiag_ext flags,
-so let's use it.
+Przemek refactors processing of DDP and adds support for a flag field in
+the DDP's signature segment header.
 
-Fixes: 61723b393292 ("tcp: ulp: add functions to dump ulp-specific information")
-Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Joe Damato adds support for persistent NAPI config.
+
+Brett adjusts setting of Tx promiscuous based on unicast/multicast
+setting.
+
+Jake moves setting of pf->supported_rxdids to occur directly after DDP
+load and changes a small struct to use stack memory.
+
+Frederic Weisbecker adds WQ_UNBOUND flag to the workqueue.
+
+For ixgbe:
+
+Diomidis Spinellis removes a circular dependency.
+
+For igc:
+
+Vitaly removes an unneeded autoneg parameter.
+
+For igb:
+
+Johnny Park fixes a couple of typos.
+
+For igbvf:
+
+Wander Lairson Costa removes an unused spinlock.
+
+For e1000:
+
+Joe Damato adds RTNL lock to some calls where it is expected to be held.
 ---
- include/net/tcp.h    |  1 -
- net/ipv4/inet_diag.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
- net/ipv4/tcp_diag.c  | 13 -------------
- net/mptcp/diag.c     | 20 --------------------
- net/tls/tls_main.c   | 17 -----------------
- 5 files changed, 50 insertions(+), 51 deletions(-)
+v1: https://lore.kernel.org/netdev/20241105222351.3320587-1-anthony.l.nguyen@intel.com/
+- Drop, previous, patch 1 while it's being discussed
+- Move conditional OR operator up a line (now patch 4)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index d1948d357dade0842777265d3397842919f9eee0..757711aa5337ae7e6abee62d303eb66d37082e19 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2568,7 +2568,6 @@ struct tcp_ulp_ops {
- 	void (*release)(struct sock *sk);
- 	/* diagnostic */
- 	int (*get_info)(struct sock *sk, struct sk_buff *skb);
--	size_t (*get_info_size)(const struct sock *sk);
- 	/* clone ulp */
- 	void (*clone)(const struct request_sock *req, struct sock *newsk,
- 		      const gfp_t priority);
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 2dd173a73bd1e2657957e5e4ecb70401cc85dfda..ac6d9ee8e2cc21fc97d6018547d33b540712e780 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -97,6 +97,55 @@ void inet_diag_msg_common_fill(struct inet_diag_msg *r, struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(inet_diag_msg_common_fill);
- 
-+static size_t tls_get_info_size(void)
-+{
-+	size_t size = 0;
-+
-+#ifdef CONFIG_TLS
-+	size += nla_total_size(0) +		/* INET_ULP_INFO_TLS */
-+		nla_total_size(sizeof(u16)) +	/* TLS_INFO_VERSION */
-+		nla_total_size(sizeof(u16)) +	/* TLS_INFO_CIPHER */
-+		nla_total_size(sizeof(u16)) +	/* TLS_INFO_RXCONF */
-+		nla_total_size(sizeof(u16)) +	/* TLS_INFO_TXCONF */
-+		nla_total_size(0) +		/* TLS_INFO_ZC_RO_TX */
-+		nla_total_size(0) +		/* TLS_INFO_RX_NO_PAD */
-+		0;
-+#endif
-+
-+	return size;
-+}
-+
-+static size_t subflow_get_info_size(void)
-+{
-+	size_t size = 0;
-+
-+#ifdef CONFIG_MPTCP
-+	size += nla_total_size(0) +		/* INET_ULP_INFO_MPTCP */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_TOKEN_REM */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_TOKEN_LOC */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_RELWRITE_SEQ */
-+		nla_total_size_64bit(8) +	/* MPTCP_SUBFLOW_ATTR_MAP_SEQ */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_MAP_SFSEQ */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
-+		nla_total_size(2) +		/* MPTCP_SUBFLOW_ATTR_MAP_DATALEN */
-+		nla_total_size(4) +		/* MPTCP_SUBFLOW_ATTR_FLAGS */
-+		nla_total_size(1) +		/* MPTCP_SUBFLOW_ATTR_ID_REM */
-+		nla_total_size(1) +		/* MPTCP_SUBFLOW_ATTR_ID_LOC */
-+		0;
-+#endif
-+
-+	return size;
-+}
-+
-+static size_t tcp_ulp_ops_size(void)
-+{
-+	size_t size = max(tls_get_info_size(), subflow_get_info_size());
-+
-+	return size +
-+	       nla_total_size(0) +			/* INET_DIAG_ULP_INFO */
-+	       nla_total_size(TCP_ULP_NAME_MAX);	/* INET_ULP_INFO_NAME */
-+}
-+
- static size_t inet_sk_attr_size(struct sock *sk,
- 				const struct inet_diag_req_v2 *req,
- 				bool net_admin)
-@@ -115,6 +164,7 @@ static size_t inet_sk_attr_size(struct sock *sk,
- 	ret += nla_total_size(sizeof(struct tcp_info))
- 	     + nla_total_size(sizeof(struct inet_diag_msg))
- 	     + inet_diag_msg_attrs_size()
-+	     + tcp_ulp_ops_size()
- 	     + 64;
- 
- 	if (ext & (1 << (INET_DIAG_MEMINFO - 1)))
-diff --git a/net/ipv4/tcp_diag.c b/net/ipv4/tcp_diag.c
-index d752dc5de3536303aeb075c10fbdc2c9fc417cd5..a60968ceb1553b2d219290b84a36b05a2d1fa8d2 100644
---- a/net/ipv4/tcp_diag.c
-+++ b/net/ipv4/tcp_diag.c
-@@ -154,7 +154,6 @@ static int tcp_diag_get_aux(struct sock *sk, bool net_admin,
- 
- static size_t tcp_diag_get_aux_size(struct sock *sk, bool net_admin)
- {
--	struct inet_connection_sock *icsk = inet_csk(sk);
- 	size_t size = 0;
- 
- #ifdef CONFIG_TCP_MD5SIG
-@@ -174,18 +173,6 @@ static size_t tcp_diag_get_aux_size(struct sock *sk, bool net_admin)
- 				       sizeof(struct tcp_diag_md5sig));
- 	}
- #endif
--
--	if (net_admin && sk_fullsock(sk)) {
--		const struct tcp_ulp_ops *ulp_ops;
--
--		ulp_ops = icsk->icsk_ulp_ops;
--		if (ulp_ops) {
--			size += nla_total_size(0) +
--				nla_total_size(TCP_ULP_NAME_MAX);
--			if (ulp_ops->get_info_size)
--				size += ulp_ops->get_info_size(sk);
--		}
--	}
- 	return size;
- }
- 
-diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
-index 2d3efb405437d85c0bca70d7a92ca3a7363365e1..8b36867e4ddd5f45cebcf60e9093a061d5208756 100644
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -84,27 +84,7 @@ static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
- 	return err;
- }
- 
--static size_t subflow_get_info_size(const struct sock *sk)
--{
--	size_t size = 0;
--
--	size += nla_total_size(0) +	/* INET_ULP_INFO_MPTCP */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_TOKEN_REM */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_TOKEN_LOC */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_RELWRITE_SEQ */
--		nla_total_size_64bit(8) +	/* MPTCP_SUBFLOW_ATTR_MAP_SEQ */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_MAP_SFSEQ */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
--		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_MAP_DATALEN */
--		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_FLAGS */
--		nla_total_size(1) +	/* MPTCP_SUBFLOW_ATTR_ID_REM */
--		nla_total_size(1) +	/* MPTCP_SUBFLOW_ATTR_ID_LOC */
--		0;
--	return size;
--}
--
- void mptcp_diag_subflow_init(struct tcp_ulp_ops *ops)
- {
- 	ops->get_info = subflow_get_info;
--	ops->get_info_size = subflow_get_info_size;
- }
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 6b4b9f2749a6fd6de495940c5cb3f2154a5a451e..f3491c4e942e08dc882cb81eef071203384b2b37 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -1072,22 +1072,6 @@ static int tls_get_info(struct sock *sk, struct sk_buff *skb)
- 	return err;
- }
- 
--static size_t tls_get_info_size(const struct sock *sk)
--{
--	size_t size = 0;
--
--	size += nla_total_size(0) +		/* INET_ULP_INFO_TLS */
--		nla_total_size(sizeof(u16)) +	/* TLS_INFO_VERSION */
--		nla_total_size(sizeof(u16)) +	/* TLS_INFO_CIPHER */
--		nla_total_size(sizeof(u16)) +	/* TLS_INFO_RXCONF */
--		nla_total_size(sizeof(u16)) +	/* TLS_INFO_TXCONF */
--		nla_total_size(0) +		/* TLS_INFO_ZC_RO_TX */
--		nla_total_size(0) +		/* TLS_INFO_RX_NO_PAD */
--		0;
--
--	return size;
--}
--
- static int __net_init tls_init_net(struct net *net)
- {
- 	int err;
-@@ -1123,7 +1107,6 @@ static struct tcp_ulp_ops tcp_tls_ulp_ops __read_mostly = {
- 	.init			= tls_init,
- 	.update			= tls_update,
- 	.get_info		= tls_get_info,
--	.get_info_size		= tls_get_info_size,
- };
- 
- static int __init tls_register(void)
+The following are changes since commit 31a1f8752f7df7e3d8122054fbef02a9a8bff38f:
+  Merge branch 'phy-mediatek-reorg'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
+
+Brett Creeley (1):
+  ice: only allow Tx promiscuous for multicast
+
+Diomidis Spinellis (1):
+  ixgbe: Break include dependency cycle
+
+Frederic Weisbecker (1):
+  ice: Unbind the workqueue
+
+Jacob Keller (2):
+  ice: initialize pf->supported_rxdids immediately after loading DDP
+  ice: use stack variable for virtchnl_supported_rxdids
+
+Joe Damato (2):
+  ice: Add support for persistent NAPI config
+  e1000: Hold RTNL when e1000_down can be called
+
+Johnny Park (1):
+  igb: Fix 2 typos in comments in igb_main.c
+
+Mateusz Polchlopek (2):
+  ice: rework of dump serdes equalizer values feature
+  ice: extend dump serdes equalizer values feature
+
+Przemek Kitszel (2):
+  ice: refactor "last" segment of DDP pkg
+  ice: support optional flags in signature segment header
+
+Vitaly Lifshits (1):
+  igc: remove autoneg parameter from igc_mac_info
+
+Wander Lairson Costa (1):
+  igbvf: remove unused spinlock
+
+ drivers/net/ethernet/intel/e1000/e1000_main.c |  10 +-
+ drivers/net/ethernet/intel/ice/ice.h          |   6 +-
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  17 +
+ drivers/net/ethernet/intel/ice/ice_base.c     |   3 +-
+ drivers/net/ethernet/intel/ice/ice_ddp.c      | 302 +++++++++--------
+ drivers/net/ethernet/intel/ice/ice_ddp.h      |   5 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  | 110 +++---
+ drivers/net/ethernet/intel/ice/ice_ethtool.h  |  39 ++-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   6 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     |  33 +-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  59 ++--
+ drivers/net/ethernet/intel/igb/igb_main.c     |   4 +-
+ drivers/net/ethernet/intel/igbvf/igbvf.h      |   3 -
+ drivers/net/ethernet/intel/igbvf/netdev.c     |   3 -
+ drivers/net/ethernet/intel/igc/igc_diag.c     |   3 +-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c  |  13 +-
+ drivers/net/ethernet/intel/igc/igc_hw.h       |   1 -
+ drivers/net/ethernet/intel/igc/igc_mac.c      | 316 +++++++++---------
+ drivers/net/ethernet/intel/igc/igc_main.c     |   1 -
+ drivers/net/ethernet/intel/igc/igc_phy.c      |  24 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_82598.c    |   1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |   1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h  |  16 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    |   1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  15 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |   1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c |   1 +
+ 27 files changed, 513 insertions(+), 481 deletions(-)
 
 -- 
-2.42.2
-
+2.42.0
 
