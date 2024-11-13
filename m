@@ -1,109 +1,154 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B973A158A2E
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 15:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2F913B29B;
+	Wed, 13 Nov 2024 15:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731510968; cv=none; b=QZ5CGX+iTJ0ewx3ukU/7kAvBd8Ti6DfrYdh47goTrqtIyd2SvmPXlTcPUV32omf891hxzpKIc19uudBR9ZzXS/7x53BIYwpdXMWry+1bpv5Ymo9PDBZ3atNLDxCpH4yC5x4Iw+y5zxZi80vJ82Zt0isgAl8KWnJPBoX6e4jYa/s=
+	t=1731511475; cv=none; b=UxDgmxzn8mYByoUX0EX0IWb6/SBoKSpxbvA4do0GiWmw5e5gmlUYjlsS5fj6AdJlu2xQMcEXcuqW3Sf6XIXGbx9TkHewpLuKrcpXk+nVmbxqSVHlIhc3D/B6A30tDKFYZEbUV98Zm/UQkFV6d4IE0+vCVT1HcD7JLdCxy+7kRbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731510968; c=relaxed/simple;
-	bh=1zoS8rDp5x/H924HIa6uR4Khr2qMXmzRoI9O7XGyd2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8KKf8qFj7UrpLBXT9qHgt2FgVW7fni0fVZ49cKANnVcQxqagRLbymJSfa+2kWjjrH1Sk+pGw9lA7rC5u55dMUEPRBefkFSbgWiu8rcSDC584ZUXU0EQxwiHZYe37XGegOnugoEaaI5huNCLAGW5eTHIc8rqk3ZsUkp9a1I/IyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V9Gx51Pd; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1731511475; c=relaxed/simple;
+	bh=/Qs+Z4ETO6HBDD0/r4vq50xWIIZZXaOFQHJesHfkTbA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VvKg0AVMOaRLlep0RkdBiY0X4Q6nH3jsF7yXOs960sZI2JzosBYHmLqsHZvHvR+UXxYLuUy+0stepgPrh/9RYxke833rjN9JqM/K8ODeSykfNmro5WvRndl46LgonJFTxdjSTlww0D7tbRnbYL909kzmLZMhV95NdRJX81lFIq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jEpL3axQ; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V9Gx51Pd"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A7D99E000B;
-	Wed, 13 Nov 2024 15:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731510963;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1zoS8rDp5x/H924HIa6uR4Khr2qMXmzRoI9O7XGyd2A=;
-	b=V9Gx51PdYcAS1GkT8U+2dlq4tJO2sjR9rSexzCOOuwxnXltRbnozX7BuDHeCHE7EFxK6QL
-	pA11QWQYGhvUaWXutV4as49N2iVAQ2H9+YjMWrUD5DkAoX4kcO6SunW/5+ETr+SdXmqhIG
-	2jwiNC1J5qRtVuPi20O3tixfyUjeTt5qn2UgFfPCpCONDjChE9DL8PQxll/BHgz+Dh9eRi
-	N/BxoXYG5BW+tSpoV3vjRTXOVbe4jTik5bs3MsIwMlVTfilfsFvsWRuSpO4esJekhZ1B9t
-	BtSUtEFSsqrvNxaCYoiZG3ZC6pzt3jKbaKnwiT2ytes0JcHY6R7LfVqR+RvZzw==
-Date: Wed, 13 Nov 2024 16:16:02 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Subject: Re: Testing selectable timestamping - where are the tools for this
- feature?
-Message-ID: <20241113161602.2d36080c@kmaincent-XPS-13-7390>
-In-Reply-To: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
-References: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jEpL3axQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731511474; x=1763047474;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/Qs+Z4ETO6HBDD0/r4vq50xWIIZZXaOFQHJesHfkTbA=;
+  b=jEpL3axQI5kZQvhWzQW1WgefqUXhGYEPMJsFyBsVRq8L/IJvsGg1iz6Y
+   wQ/G7eyoNLWHaUiZ5DjzPmVkGItHyIEMyFw0fbpmY0P70iZbtj2gEwVOE
+   56qnSDVS3DT8Dv5v44zSLn/aKTMUDFp439beeHamqBguNpZVolUEmPi3H
+   TCq2GsCIrsO/LxsXJzhzX/vRhmw6hW5weE3a1/QSc5cTVdVyDsSFunPCy
+   OHq+bbOUMDd6pdCoSPtZGD0QG1KqJntWOcyGIZ+GxQhN83Po/VPtDpz0R
+   PHOXz1N+GmYHe69Dt9+vgc/2IaiKX8luo5nkRLDt8GtnZ0Ly66Zp1f3sO
+   w==;
+X-CSE-ConnectionGUID: hufD5M6HQ5ahAp19Uixp0A==
+X-CSE-MsgGUID: N/JRjFZKROO6Qy00GI0UCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="42038092"
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="42038092"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:24:33 -0800
+X-CSE-ConnectionGUID: Eu78RBWmRsK0vvilN+bwhQ==
+X-CSE-MsgGUID: u7LspSQgTTqwqS7xt+wrPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
+   d="scan'208";a="111214069"
+Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.111.237]) ([10.125.111.237])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:24:28 -0800
+Message-ID: <decf5296-1c9b-49ab-8556-55a199e214ed@intel.com>
+Date: Wed, 13 Nov 2024 08:24:27 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/11] net/ntb: Use never-managed version of pci_intx()
+To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Basavaraj Natikar <basavaraj.natikar@amd.com>, Jiri Kosina
+ <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
+ <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>,
+ Manish Chopra <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+ Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Juergen Gross
+ <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>,
+ Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Mostafa Saleh <smostafa@google.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>,
+ Kunwu Chan <chentao@kylinos.cn>, Ankit Agrawal <ankita@nvidia.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-input@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20241113124158.22863-2-pstanner@redhat.com>
+ <20241113124158.22863-6-pstanner@redhat.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20241113124158.22863-6-pstanner@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 7bit
 
-Hello Russell,
 
-On Wed, 13 Nov 2024 14:46:25 +0000
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
 
-> Hi Kory,
->=20
-> I've finally found some cycles (and time when I'm next to the platform)
-> to test the selectable timestamping feature. However, I'm struggling to
-> get it to work.
->=20
-> In your email
-> https://lore.kernel.org/20240709-feature_ptp_netnext-v17-0-b5317f50df2a@b=
-ootlin.com/
-> you state that "You can test it with the ethtool source on branch
-> feature_ptp of: https://github.com/kmaincent/ethtool". I cloned this
-> repository, checked out the feature_ptp branch, and while building
-> I get the following warnings:
->=20
-> My conclusion is... your ethtool sources for testing this feature are
-> broken, or this is no longer the place to test this feature.
+On 11/13/24 5:41 AM, Philipp Stanner wrote:
+> pci_intx() is a hybrid function which can sometimes be managed through
+> devres. To remove this hybrid nature from pci_intx(), it is necessary to
+> port users to either an always-managed or a never-managed version.
+> 
+> hw/amd and how/intel enable their PCI-Device with pci_enable_device().
+> Thus, they need the never-managed version.
+> 
+> Replace pci_intx() with pci_intx_unmanaged().
+> 
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com> #for ntb_hw_amd.c
 
-Yeah, it was for v3 of the patch series. It didn't follow up to v19, I am u=
-sing
-ynl tool which is the easiest way to test it.
-As there were a lot of changes along the way, updating ethtool every time w=
-as
-not a good idea.
+Acked-by: Dave Jiang <dave.jiang@intel.com> # for ntb_hw_gen1.c
+> ---
+>  drivers/ntb/hw/amd/ntb_hw_amd.c    | 4 ++--
+>  drivers/ntb/hw/intel/ntb_hw_gen1.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ntb/hw/amd/ntb_hw_amd.c b/drivers/ntb/hw/amd/ntb_hw_amd.c
+> index d687e8c2cc78..b146f170e839 100644
+> --- a/drivers/ntb/hw/amd/ntb_hw_amd.c
+> +++ b/drivers/ntb/hw/amd/ntb_hw_amd.c
+> @@ -791,7 +791,7 @@ static int ndev_init_isr(struct amd_ntb_dev *ndev,
+>  err_msi_enable:
+>  
+>  	/* Try to set up intx irq */
+> -	pci_intx(pdev, 1);
+> +	pci_intx_unmanaged(pdev, 1);
+>  
+>  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
+>  			 "ndev_irq_isr", ndev);
+> @@ -831,7 +831,7 @@ static void ndev_deinit_isr(struct amd_ntb_dev *ndev)
+>  		if (pci_dev_msi_enabled(pdev))
+>  			pci_disable_msi(pdev);
+>  		else
+> -			pci_intx(pdev, 0);
+> +			pci_intx_unmanaged(pdev, 0);
+>  	}
+>  }
+>  
+> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> index 079b8cd79785..9ad9d7fe227e 100644
+> --- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> +++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> @@ -445,7 +445,7 @@ int ndev_init_isr(struct intel_ntb_dev *ndev,
+>  
+>  	/* Try to set up intx irq */
+>  
+> -	pci_intx(pdev, 1);
+> +	pci_intx_unmanaged(pdev, 1);
+>  
+>  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
+>  			 "ndev_irq_isr", ndev);
 
-Use ynl tool. Commands are described in the last patch of the series:
-https://lore.kernel.org/all/20241030-feature_ptp_netnext-v19-10-94f8aadc9d5=
-c@bootlin.com/
-
-You simply need to install python python-yaml and maybe others python
-subpackages.
-Copy the tool "tools/net/ynl" and the specs "Documentation/netlink/" on the
-board.
-
-Then run the ynl commands.
-
-> Presumably there _is_ something somewhere that allows one to exercise
-> this new code that Jakub merged on July 15th (commit 30b356005048)?
-
-You can indeed test this merge with mainline ethtool.
-Specially the commit 2dd356005901 which changes the default hwtstamp to MAC=
- for
-newly supported PHY PTP as you requested.
-With your marvell PTP support patch it should still report and use ts info =
-from
-the MAC.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
