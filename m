@@ -1,98 +1,124 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBD57346F
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 02:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF0BC2FB;
+	Wed, 13 Nov 2024 02:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731463510; cv=none; b=EqxiWlFOquWzpRBy/+wrP77W7LM76lOOOynbbIDtiLdZcUKhBuGQejh/6sEJGmQp9Od3/khfX+qQnQcreJZdCJ0oSjnhpheoiMx4J3Ch+QFelq0xoL63qlxXKn+9QMrD78njzGrxJkEcpaD1scCc5fnh07khQp2FuZWzDh78pBg=
+	t=1731463729; cv=none; b=OXPQdtMDjzkPavn8JEVKRc+pH6NmAhYjA3fyXqvOfIlDnmzgYhw5vBO7kWN4rvhLsITviP51DN2VSwYkQsWJml/BIBvjqnpOFcDxSg5D1C8g5cNUvlYo+qwGLWxlS1NXZ99OaOV80POsRh7oHr43zg4PZI7bfF+nMyiYRsG8xP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731463510; c=relaxed/simple;
-	bh=cZnw/3d3PzrW45LyARayO0lNM4W6T7F7djT+bgWr9KM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ocAYJIdmCRSUbj8Gpnmm37QvqpLhKuS0y4IRaeU0Z1nvHjC6C+/LwkxPRSul0jeiu/4mXpiEHjwdOSNHC+MD7vKvEOw8lRZH6TKvjxB9rTn1SpZJg3+Jr2vbES1cMMk4jbxjcarfkDYDIcnEXSAlNWkbywnj4PBPKHeEyxFQu5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=v+WPt11r; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1731463729; c=relaxed/simple;
+	bh=+hrdXFbO7N2VDw8DvmEgshdFI+lLDLFlb8jv1xnAsJw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=UMNcNsmxnQYKjoEm9G3KU3tBatwgWpcKbJFUe4Aru+EHf8nRfK8gNIUH9qRKGw/Z67MGmBM+JF1/NxmPHaHoThsvD6U3l5dpB6ZFkkIOySM3ZdLX3Yaol0ZUsH+BjyaEG3iZIO+NzZ3QYotcLeKX8WSkVaSfE4Ztxp21aKvRtVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=D7hthHVq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="v+WPt11r"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e30fb8cb07so4952671a91.3
-        for <netdev@vger.kernel.org>; Tue, 12 Nov 2024 18:05:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1731463508; x=1732068308; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SMHgs78kJCT59kXAGyaHtemSt2oZrSdkOMKAYsOBJwg=;
-        b=v+WPt11rn6f+WywNl7fcGBmz9BUQ4BjOvHs1RgyfVhq8no4RyR07DlUua0XokrWrxC
-         hOYiFQICXQrzHKAJsjMoYkQ3m2dgcDGsjv9jXrpruxy9tzUTzb+czjo+gVxHnRge7krr
-         4tfUUrSHvP67kiVHvwrpkYnMTBuS27QZt6lY8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731463508; x=1732068308;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMHgs78kJCT59kXAGyaHtemSt2oZrSdkOMKAYsOBJwg=;
-        b=jGXn/YDQBztXzwZTwyomCjbF7MPQtLyHFWooIKvl5GFdd6mfuV1gDjRYuy/cm1hPT+
-         IY+25eJJoGpMO9P1X3lkHphtxema0MBUO1h+MpTkw18ZQd0v4nMDt7AJ9KG7eT3D/ZDP
-         D1CfG5Md7yUhLa1pMgTlnek9BqNC/sVG6523A1zMGaugDXvCqQJF+lhhfEGP85tfQm9q
-         p4XwgB01vegr29J6QBuvDrySUlu3usZr2spYA37kBOPK6xBXzFMTTOUMG+FW25nY2l8W
-         6gCCe8cqgpkFaSHMZofJovgLbe/3tAA4Pmwoj3zC5IxrhuunAskJZYMGlLUa6aAAFbLd
-         WdpA==
-X-Gm-Message-State: AOJu0YxmyYa6XojTB9te038a3vxNBoP3BteXCNLZ/sbrQG2z7H0DszPV
-	rhI0D2eLXl/c9TMPR0Rxe1vXl9A/7a6gCrH9yJNqUmqF64R7ZL3DDZjcGIBClZQ=
-X-Google-Smtp-Source: AGHT+IE3BGRjmhR0ZvvRxux2FPKe4+dk1Cle8rzXMHK76AdSLTy/P4WM0poxY1ZTUsslRuA+89mD9Q==
-X-Received: by 2002:a17:90b:1d11:b0:2e3:171e:3b8c with SMTP id 98e67ed59e1d1-2e9e4c73c42mr6334898a91.25.1731463508401;
-        Tue, 12 Nov 2024 18:05:08 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e9f3eca101sm275665a91.14.2024.11.12.18.05.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2024 18:05:07 -0800 (PST)
-Date: Tue, 12 Nov 2024 18:05:05 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	amritha.nambiar@intel.com, sridhar.samudrala@intel.com,
-	mkarsten@uwaterloo.ca, stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC net 1/2] netdev-genl: Hold rcu_read_lock in napi_get
-Message-ID: <ZzQJUdjWDGqbm2QQ@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	pabeni@redhat.com, edumazet@google.com, amritha.nambiar@intel.com,
-	sridhar.samudrala@intel.com, mkarsten@uwaterloo.ca,
-	stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20241112181401.9689-1-jdamato@fastly.com>
- <20241112181401.9689-2-jdamato@fastly.com>
- <20241112172840.0cf9731f@kernel.org>
- <ZzQFeivicJPnxzzx@LQ3V64L9R2>
- <20241112180102.465dd909@kernel.org>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D7hthHVq"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACMRc74006727;
+	Wed, 13 Nov 2024 02:08:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=wrS5V6QqQdjAm1CJE52Yfz
+	EYxOapXl5moYDQhB+kuK8=; b=D7hthHVqsWDnTv6qlOeJcLceiYytUOgvmfQQkz
+	8tyrVoqr35Y9z4mbzXLzZlhq18ugKPPFEExo4rb8mbm2wMgw9K+lSebo+YVmtuBn
+	Z/KZrTHyTWNvpKsOD6rrzZey5hLaH9wxEeZV9shGLYUjmJmVxw1VaMdfGaic/3bt
+	UxLldz3LYGxfACFHcVKge8v3KjjGYniqMYTya+RgjbCx+gXbtJvXA6gpaOpVmyxH
+	rXKBB+NesYgXQBXaif+0MKG5eEgkGErOgvSdBEf7sPKqdRt5QGjibgeiLsv2K+G7
+	4e7CoziDRwiYqqRXeIAXChvzSqAFnqFddFBYgR8cXZqHtAMw==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42sxpqham1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Nov 2024 02:08:22 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AD28MKT031728
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Nov 2024 02:08:22 GMT
+Received: from hu-scheluve-lv.qualcomm.com (10.49.16.6) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 12 Nov 2024 18:08:18 -0800
+From: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+Date: Tue, 12 Nov 2024 18:08:10 -0800
+Subject: [PATCH] net: stmmac: dwmac-qcom-ethqos: Enable support for XGMAC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241112180102.465dd909@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20241112-fix_qcom_ethqos_to_support_xgmac-v1-1-f0c93b27f9b2@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAAkKNGcC/x2NMQrDMAwAvxI011CZDm2/UopwFSXRkMixnBII+
+ XtNxxvu7gCXouLw7A4o8lVXWxrgpQOe0jJK0L4xxGu8IWIMg+60ss0kdVrNqRr5lrOVSvs4Jw4
+ 9pjtKevBnYGiZXKQ5/8XrfZ4/4ZsP8nIAAAA=
+To: Vinod Koul <vkoul@kernel.org>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "Andrew
+ Lunn" <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric
+ Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+CC: <linux-arm-msm@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel@quicinc.com>, Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: JmDc_Ndj2oTaDky6KH4Ep2BtCJEGIwsk
+X-Proofpoint-ORIG-GUID: JmDc_Ndj2oTaDky6KH4Ep2BtCJEGIwsk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411130017
 
-On Tue, Nov 12, 2024 at 06:01:02PM -0800, Jakub Kicinski wrote:
-> On Tue, 12 Nov 2024 17:48:42 -0800 Joe Damato wrote:
-> > Sorry for the noob question: should I break it up into two patches
-> > with one CCing stable and the other not like I did for this RFC?
-> > 
-> > Patch 1 definitely "feels" like a fixes + CC stable
-> > Patch 2 could be either net-next or a net + "fixes" without stable?
-> 
-> Oh, sorry, I didn't comment on that because that part is correct.
-> The split is great, will make backporting easier.
+All Qualcomm platforms have only supported EMAC version 4 until
+now whereas in future we will also be supporting XGMAC version
+which has higher capabilities than its peer. As both has_gmac4
+and has_xgmac fields cannot co-exist, make sure to disable the
+former flag when has_xgmac  is enabled.
 
-OK, cool, that's what I figured. Thanks for the guidance; will
-repost shortly.
+We want to keep the default capabilities as EMAC4 and enable
+XGMAC support from the dtsi based on the platform needs.
+
+Signed-off-by: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 901a3c1959fa..2f813f7ab196 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -872,6 +872,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 	plat_dat->dump_debug_regs = rgmii_dump;
+ 	plat_dat->ptp_clk_freq_config = ethqos_ptp_clk_freq_config;
+ 	plat_dat->has_gmac4 = 1;
++	if (plat_dat->has_xgmac)
++		plat_dat->has_gmac4 = 0;
+ 	if (ethqos->has_emac_ge_3)
+ 		plat_dat->dwmac4_addrs = &data->dwmac4_addrs;
+ 	plat_dat->pmt = 1;
+
+---
+base-commit: 28955f4fa2823e39f1ecfb3a37a364563527afbc
+change-id: 20241112-fix_qcom_ethqos_to_support_xgmac-d1a81ea9cbfc
+
+Best regards,
+-- 
+Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+
