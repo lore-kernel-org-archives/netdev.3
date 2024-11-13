@@ -1,110 +1,123 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EFD7083F
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 17:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40081FF7BD
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 17:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731517358; cv=none; b=nHmlXl8CrupC+RUVAC/UzoYqDvUptx7eYpEUFFfqk6COfTRWMQ0HgS2XZP7d04wKkyRusYOtcc05bNf89IIKEuJmiu1QbEM+imnky+NEypDpis6tUnJFJnN67GaVIkkpp/v3t0WmC/9uSBAZgjbb33g9owHxznq9JhXQEt6+27c=
+	t=1731517700; cv=none; b=WtMB2p6Cm9DBeUkfElqNe/3VZC2q9H6hFzxCKSb/n/i3NuuymmG8MFFl+BIftmkmuvPD73aYN9sLnAKI/7BaBzUSEPXL7TP0vZtcCAa0i2pqtml0qpq7/3hB6sltxQY/FZLbYaBV49ucnAhlhGKl5YW7Fr4MtxJq3fw2ChqA/W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731517358; c=relaxed/simple;
-	bh=pnJUadk3cwWU+ddCYRgwonnlPinumuSzBdk8sV/RQzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PodDcOBWiH6pyq17n//gWHhyXKu+1icBSjGzUIp0MhCsQgGZIYgIIm2X18jn+E6PRK8HZrRYrsQKojJANRl1qwlALyAvscHq0rGfFbSNpFPtrtkgXhooe10VDEIVwoEo9bP9RtuDuoWi3+EhgMUTzL0BCmpOwt6s0xUCvwEeGmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a9TuTW53; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1731517700; c=relaxed/simple;
+	bh=MwTDjeCUUuvtEqRz3jfVu5/q3d7xdDWCUuJsQkbpCU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V0BOeKPBB/++qRNYwvAOZsAiqcR/pGKuwaB/7Bz9ZiCtz8WfckSSGUrREPjqQudFw0TsyFDoUl0Jwc6IlToH1kinb4jxgTjnBHM3ynq5OGXrX7PTPhOREoSlAddsQuBf7v7Vw+u0Y4ZaCZ0Ym20my2T2DemJ+d3vCw8ZddmnqXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QfrnQqoI; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a9TuTW53"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AD209240002;
-	Wed, 13 Nov 2024 17:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731517347;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y0ybhIePpsVTq2cCVODT5U3P8JE0djKapmhgh6aKusc=;
-	b=a9TuTW53nJGnvPVifZcIUIGkDxmL5By3uqhZLt9Dxa/kOzIMMBHyqK+D2y9TC7zEbQAwno
-	DDUqiGRkcBbpO2gxixBWUf4ncczeZsDu713j2cKyrcVjPr2Nwf2AZWSmtmfMuZtnkZqoZE
-	gYt6Up6oIzwvvKqZhowVek9w2a2H2gaD86btAMe+AAgVaWQkyrvh2cbaGwKopIOoSJknz1
-	zMI8MDPkPTbKyjdSuhpzmRJBKeJ6eSWPpphAoNy73OQWnUiqTZRj9aRQA8rNl3YpgYtW3e
-	RdNI06jEAIj23Sh0EtNxv3g+wfoQX5zRKtGxE2r/ShLbR+oDuo7+SppTzUHdng==
-Date: Wed, 13 Nov 2024 18:02:26 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Subject: Re: Testing selectable timestamping - where are the tools for this
- feature?
-Message-ID: <20241113180226.78d8d1ab@kmaincent-XPS-13-7390>
-In-Reply-To: <ZzTZRCWLxHZ_WDhW@shell.armlinux.org.uk>
-References: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
-	<20241113161602.2d36080c@kmaincent-XPS-13-7390>
-	<ZzTMhGDoi3WcY6MR@shell.armlinux.org.uk>
-	<20241113171443.697ac278@kmaincent-XPS-13-7390>
-	<ZzTZRCWLxHZ_WDhW@shell.armlinux.org.uk>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QfrnQqoI"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa1e51ce601so352298766b.3
+        for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 09:08:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731517697; x=1732122497; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9rL7o/PvlGWFQw5XVVoTFVbdNmHL9RGbywRCyJvRDw=;
+        b=QfrnQqoInwCYfsdcua1c8ggRL0Dg37DcQy5iHDfHfFk7yamWnxoUiywrhe3mwj3d+q
+         hkH1yN2DZdS0GvnOlC/GvWW0+lI3iTkajVrFNGhpbYhUVmLt/wxC9UNRq6D7GYdRZwmg
+         8JYIbQj/f8OuRlu+m7NMwmPG2Vn1BGfL3WWmJfSsnh9P6KNJanIVE4Nf/Ze/NcJyGNHN
+         XpcvCpaDl9tA5NMjxrq0RtAJ4bpOETW/n7G69edtOjNKqQ7AmYN2WKyy/7xnXsQweoqM
+         TtkcjhcVmX6sL6DZnc9IYNe+j+VC+m96bF8h82M1uXgNhoRGWI70T1U16APTsoyKcC6d
+         hQoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731517697; x=1732122497;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o9rL7o/PvlGWFQw5XVVoTFVbdNmHL9RGbywRCyJvRDw=;
+        b=ahLr7Sy6mJ5R83VerKX7q2kWX313wA3Cy6BBc4RdfLe7dPAcx1fNKKiPBgsgiRE/bY
+         VKmefa5vOa3bDpGEFJYFxuW2xyASCjxlkAsKaWJnv9elzJsxbEc0Pm6w13qVXk+AN0Kg
+         NWSOwQDsPZxcJRUaU55q38R+1iETed9+4q9vBl7hWx/d21ieDnmcAIpu0mgtazqWQoBQ
+         DR18fZ+YY8wYl3VAc7ZUWRIZoXkm6SmalTXG3Ul4ud/0jOhlgH2i5KKNCCUzCL50ORUn
+         A8GQLJ5JNy14uXMaeh79SAxJAGj+3+wiYh1WsKNwe+nrmRPsLVggqNuebIpoYSkYz8yy
+         zFng==
+X-Forwarded-Encrypted: i=1; AJvYcCUJBq1vhF/rGILE9TBi+odXpMFmG01tZdyVA/eo/lcyItOPH02ZvsjIqaZEjNbDtdPtt4o83hU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIOltVu/I+DPsURiEzW0QKI2LgXD90aX8PKwKzrIwxTEf3n8+7
+	z3U8rqRbqpDr6h8FG1jsn8y7g0ZqWU1eKLCUClGaNFqwZMGOTIwPkMjhF9OfFl4=
+X-Google-Smtp-Source: AGHT+IFHDCrNqllb0ktO340z3QbZiHkoWYqo0nZOFt2gofDRgTZmVfkFehiSYjXNelnICUHjddaKaw==
+X-Received: by 2002:a17:906:3406:b0:aa1:dd58:aeb6 with SMTP id a640c23a62f3a-aa1dd58b0damr578341566b.57.1731517696816;
+        Wed, 13 Nov 2024 09:08:16 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a4c3f5sm895702066b.76.2024.11.13.09.08.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 09:08:16 -0800 (PST)
+Date: Wed, 13 Nov 2024 20:08:12 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: Linux Kernel Functional Testing <lkft@linaro.org>,
+	Kernel Selftests <linux-kselftest@vger.kernel.org>,
+	Netdev <netdev@vger.kernel.org>,
+	Linux Kernel <linux-kernel@vger.kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Ido Schimmel <idosch@nvidia.com>, stable@vger.kernel.org
+Subject: Re: LKFT CI: improving Networking selftests results when validating
+ stable kernels
+Message-ID: <1bda012e-817a-45be-82e2-03ac78c58034@stanley.mountain>
+References: <ff870428-6375-4125-83bd-fc960b3c109b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff870428-6375-4125-83bd-fc960b3c109b@kernel.org>
 
-On Wed, 13 Nov 2024 16:52:20 +0000
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Fri, Nov 08, 2024 at 07:21:59PM +0100, Matthieu Baerts wrote:
+> KSelftests from the same version
+> --------------------------------
+> 
+> According to the doc [2], kselftests should support all previous kernel
+> versions. The LKFT CI is then using the kselftests from the last stable
+> release to validate all stable versions. Even if there are good reasons
+> to do that, we would like to ask for an opt-out for this policy for the
+> networking tests: this is hard to maintain with the increased
+> complexity, hard to validate on all stable kernels before applying
+> patches, and hard to put in place in some situations. As a result, many
+> tests are failing on older kernels, and it looks like it is a lot of
+> work to support older kernels, and to maintain this.
+> 
+> Many networking tests are validating the internal behaviour that is not
+> exposed to the userspace. A typical example: some tests look at the raw
+> packets being exchanged during a test, and this behaviour can change
+> without modifying how the userspace is interacting with the kernel. The
+> kernel could expose capabilities, but that's not something that seems
+> natural to put in place for internal behaviours that are not exposed to
+> end users. Maybe workarounds could be used, e.g. looking at kernel
+> symbols, etc. Nut that doesn't always work, increase the complexity, and
+> often "false positive" issue will be noticed only after a patch hits
+> stable, and will cause a bunch of tests to be ignored.
+> 
+> Regarding fixes, ideally they will come with a new or modified test that
+> can also be backported. So the coverage can continue to grow in stable
+> versions too.
+> 
+> Do you think that from the kernel v6.12 (or before?), the LKFT CI could
+> run the networking kselftests from the version that is being validated,
+> and not from a newer one? So validating the selftests from v6.12.1 on a
+> v6.12.1, and not the ones from a future v6.16.y on a v6.12.42.
+> 
 
-> On Wed, Nov 13, 2024 at 05:14:43PM +0100, Kory Maincent wrote:
-> > On Wed, 13 Nov 2024 15:57:56 +0000
-> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >  =20
-> > > On Wed, Nov 13, 2024 at 04:16:02PM +0100, Kory Maincent wrote: =20
->  [...] =20
->  [...] =20
->  [...] =20
-> > >=20
-> > > Thanks... fairly unweildly but at least it's functional. However,
-> > > running the first, I immediately find a problem:
-> > >=20
-> > > # ./ynl/cli.py --spec netlink/specs/ethtool.yaml --no-schema --dump
-> > > tsinfo-get --json '{"header":{"dev-name":"eth0"}}'
-> > >=20
-> > > One would expect this to only return results for eth0 ? =20
-> >=20
-> > Indeed it should! That's weird, I will investigate.
-> >  =20
-> > > Also, I don't see more than one timestamper on any interface - there
-> > > should be two on eth2, one for the MAC and one for the PHY. I see the
-> > > timestamper for the mvpp2 MAC, but nothing for the PHY. The PTP clock
-> > > on the PHY is definitely registered (/dev/ptp0), which means
-> > > phydev->mii_ts should be pointing to the MII timestamper for the PHY.
-> > >=20
-> > > I've also tried with --json '{"header":{"dev-name":"eth2"}}' but no
-> > > difference - it still reports all interfaces and only one timestamper
-> > > for eth2. =20
-> >=20
-> > Sorry forgot to explain that you need to register PTP clock with the
-> > function phydev_ptp_clock_register() in the PHY driver. =20
->=20
-> That is certainly inconvenient. Marvell's PHY PTP/TAI implementation is
-> used elsewhere, so the TAI driver is not specific to it being on a PHY.
-> The drivers/ptp/marvell*.c that you find in my patches is meant to
-> eventually replace drivers/net/dsa/mv88e6xxx/ptp.c - the same hardware
-> block is in Marvell's DSA switches.
->=20
-> > It will be changed in v20 as request by Jakub. I will save the hwtstamp
-> > source and phydev pointer in the netdev core instead. =20
->=20
-> I think I'll shelve this until that happens, hopefully that will mean
-> my existing code will work and remain a re-usable library.
+These kinds of decisions are something that Greg and Shuah need to decide on.
 
-Ack, Thanks anyway.
+You would still need some way to automatically detect that kselftest is running
+on an old kernel and disable the networking checks.  Otherwise when random
+people on the internet try to run selftests they would run into issues.
 
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+regards,
+dan carpenter
+
