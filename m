@@ -1,105 +1,108 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538802AD04;
-	Wed, 13 Nov 2024 17:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D349C20514D;
+	Wed, 13 Nov 2024 17:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731519937; cv=none; b=nBVR6sDNlNB7FV7tfOqB97Vyr7KJMMbf+OLsPs07gyar/AOsSIV3Ah4HTgEhS/qZ1AkutQKPDPruF2HuCX6UO2WbIl1PknkDQLL3G7ta6uF3TeTGg8h8ZX9qTBQPDLwHjh0BXmGJsBa/R/dpvVu4hjrdbw9+ZsBIK+vluy2S0hc=
+	t=1731520754; cv=none; b=LHvHmYYBHqCGJHFiTKR/vrnahtHsvB2otDDCs+hhyiQb8mQ4y49E12GJMl5CexCAvAf7yxEms8F4qlzgbUE8WlxjDduGp4YspsWTQK3AiOsGkasLZZan05L8hOhj5/xwujFA6f3StRC9IHqJh3bO2cYVKjfziOJKLJQop1ttPlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731519937; c=relaxed/simple;
-	bh=ouU8nt3JsXlK78zj5uuwL+vjo5Uce23CbeGxmbr8B9U=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kVeEkShVuYBrgrm1F9XXkBnT3dbnK+uZpvel+FCLHvr8mAn4XB/b9uc1CuvbG/uP+78uTBlBV+0LvkvjMSGFjy9UG3SPbjth8BBp2+lr85zQ2Y+/Rrt3zpuiC4+76FWQZ79UeETbmlffEXSImhqAwlXrUOhXUd9CuULDKJWhBCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=YDmPfawC; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1731520754; c=relaxed/simple;
+	bh=kvruL1GdSBx8iandcR56wwKSMO8JMiEGXVsrb7k0A/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zjc8sbl1Bk+E8Z5KXyTfivJUzKs6mfVnosJ3P9226myyw22YLRmEHFAOdL5vf8xACeuFK4Dttft3PFXd8z6Y/IA0mvPQeAhZ0U32OyPmf6+opQzhqkEvGiaHfuka4/4bJVbaHJ+3oya5gnrrA+ViRm1mqenMmljhpKam8Iz834c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfR47I9n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="YDmPfawC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1731519928; x=1731779128;
-	bh=qDkledNX1dxRvLVNlPVfDD+QPBH5mY67kbum7HJWB1Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=YDmPfawCaoWGBXmqGK5KGNw/r5lK9U5otzQE1fRqahIxUf+POVqG4f39EkE4jxyK/
-	 oTZVwxTmOUwKSNZXyI+smlrwqPefcxxxZvhItphUUgPgTJAd2C649ZBeWBE/M/D7sb
-	 QJrVmIZNB3nU5sQbwekBA7FPhRzWkbl54SfnFK7N08ee3RnJEVq5S+07XyJ0A3zTNX
-	 MsnLGn/+IARfE+/ptCZr29KFp+kEf9zF/RY6WEVgP1J1pAxvQX6dJHxpjj47dvswyM
-	 antIUwLS+ZvgopIhBaYnRt25hN3nmP8ux+isSXPbrv8xeiq13n6a+1EkPTKleIJh/v
-	 ds2ysnSY+1Enw==
-Date: Wed, 13 Nov 2024 17:45:22 +0000
-To: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH net] rust: net::phy scope ThisModule usage in the module_phy_driver macro
-Message-ID: <20241113174438.327414-3-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 991b5249b217713fec86a807ffc22bea6c61dfff
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfR47I9n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462DDC4CEC3;
+	Wed, 13 Nov 2024 17:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731520753;
+	bh=kvruL1GdSBx8iandcR56wwKSMO8JMiEGXVsrb7k0A/M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JfR47I9ni6SRUhA2VcKNUa5Zv8rMdbJKqQZKpEUklGnFSHV1zpUdFP04UKVVYMSrN
+	 HAn68Cp+Txg8bxLkRDJ5We6Iv8sJmUarkZxB0S3QXIjeS26xx4+15G7UwuMIOIhTvc
+	 6sMIJha7+nJckfN9I8P5C0ecmtlnSLP5yoLHstQ9Pt0TELguTk8PB5dKOfiDTZqXJG
+	 yhE0EoKXNfyr3n7zHkxUtJRIuPWn1MtOZKKUeVw1E+V4Yj1NSrgs9TT8E3dYp2VW5v
+	 ICCciIufsu6mPdGr70zrhBAkdDtkNr58hKK+JEhM9aDbDt1kqedQHXCe4PbTUlSrNc
+	 zygohYDtkZqAw==
+Date: Wed, 13 Nov 2024 17:59:09 +0000
+From: Simon Horman <horms@kernel.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: "Everest K.C." <everestkc@everestkc.com.np>,
+	steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] xfrm: Add error handling when nla_put_u32()
+ returns an error
+Message-ID: <20241113175909.GB4507@kernel.org>
+References: <20241112233613.6444-1-everestkc@everestkc.com.np>
+ <20241113105939.GY4507@kernel.org>
+ <81088611-41d9-4472-94e6-3170418156c9@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81088611-41d9-4472-94e6-3170418156c9@stanley.mountain>
 
-Similar to the use of $crate::Module, ThisModule should be referred to as
-$crate::ThisModule in the macro evaluation. The reason the macro previously
-did not cause any errors is because all the users of the macro would use
-kernel::prelude::*, bringing ThisModule into scope.
+On Wed, Nov 13, 2024 at 04:10:15PM +0300, Dan Carpenter wrote:
+> On Wed, Nov 13, 2024 at 10:59:39AM +0000, Simon Horman wrote:
+> > On Tue, Nov 12, 2024 at 04:36:06PM -0700, Everest K.C. wrote:
+> > > Error handling is missing when call to nla_put_u32() fails.
+> > > Handle the error when the call to nla_put_u32() returns an error.
+> > > 
+> > > The error was reported by Coverity Scan.
+> > > Report:
+> > > CID 1601525: (#1 of 1): Unused value (UNUSED_VALUE)
+> > > returned_value: Assigning value from nla_put_u32(skb, XFRMA_SA_PCPU, x->pcpu_num)
+> > > to err here, but that stored value is overwritten before it can be used
+> > > 
+> > > Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
+> > > Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
+> > 
+> > Reviewed-by: Simon Horman <horms@kernel.org>
+> > 
+> > For future reference, I think the appropriate target for this tree
+> > is ipsec-next rather than next.
+> > 
+> > 	Subject: [PATCH ipsec-next] xfrm: ...
+> 
+> All these trees are a pain in the butt to track.  It's fine for people who only
+> work in one tree but for people doing static checker stuff, then we have to
+> deal with all 388 trees in linux-next.
+> 
+> I've changed my scripts to add [next] to my patches if Linus hasn't merged the
+> commit from the Fixes tag.  I still add net and net-next by hand but I'm going
+> to just automate that as well because doing it by hand has been failure prone.
+> 
+> But then if we try to add all the ipsec or whatever trees, it just becomes
+> unworkable.  I started to write a script which would look do the --is-ancestor
+> check based on the Fixes tag, but it take forever to update the git trees.  I
+> wasn't able to figure out a way to make this work.
+> 
+> Also once Linus merges the commit, there is no way to tell which tree the commit
+> goes to so it only applies to linux-next.  For networking, I already have the
+> script that greps the patch for -w net and grep -vw wireless.  But I don't want
+> to maintain a list greps for everyone's tree.
+> 
+> A lot of this scripting could be built into the CI system.  The CI system is
+> already doing some scripting based on the subject but we could do it based on
+> the Fixes tag instead.  If there isn't a Fixes tag, then it should go to
+> net-next.
 
-Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
----
+Hi Dan,
 
-Notes:
-    How I came up with this change:
-   =20
-    I was working on my own rust bindings and rust driver when I compared m=
-y
-    macro_rule to the one used for module_phy_driver. I noticed, if I made =
-a
-    driver that does not use kernel::prelude::*, that the ThisModule type
-    identifier used in the macro would cause an error without being scoped =
-in
-    the macro_rule. I believe the correct implementation for the macro is o=
-ne
-    where the types used are correctly expanded with needed scopes.
+I take your point that this is not very friendly to people sending
+the occasional patch (towards Networking). And certainly there
+is room to improve the CI.
 
- rust/kernel/net/phy.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+FWIIW, my goto when preparing patches is something like the following.
+Because at least for Networking, we do try to make MAINTAINERS reflect
+reality:
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 910ce867480a..80f9f571b88c 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
- ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
- ///
- ///     impl ::kernel::Module for Module {
--///         fn init(module: &'static ThisModule) -> Result<Self> {
-+///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self>=
- {
- ///             let drivers =3D unsafe { &mut DRIVERS };
- ///             let mut reg =3D ::kernel::net::phy::Registration::register=
-(
- ///                 module,
-@@ -899,7 +899,7 @@ struct Module {
-                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
-=20
-             impl $crate::Module for Module {
--                fn init(module: &'static ThisModule) -> Result<Self> {
-+                fn init(module: &'static $crate::ThisModule) -> Result<Sel=
-f> {
-                     // SAFETY: The anonymous constant guarantees that nobo=
-dy else can access
-                     // the `DRIVERS` static. The array is used only in the=
- C side.
-                     let drivers =3D unsafe { &mut DRIVERS };
-
-base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
---=20
-2.44.1
-
-
+./scripts/get_maintainer.pl --scm net/xfrm/xfrm_user.c
