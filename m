@@ -1,97 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABF21632F2
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 15:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDF8137C35
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 15:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731512974; cv=none; b=Icf2GAVPLvVOzJD7xWeXU0G9zqUotPT8oP6K/p1unapQ5ZJXGZI5J/NC6QN4P46DrrFg9OuxqpZaiRonbQm/KuxI1fPSUzrM84h8y4I7jjQ8MJAn5bNA0CUtrImJq8fQgUdstEqGogw3zC4LTJgOC/Mm8NNiX5hiCsFykigSupE=
+	t=1731513489; cv=none; b=eQJEhPs6Jz69nyH5aG2ZD6UdQXZpz+I6F9ZeSVUj6QCCkuNfNyvglXbSYhnCetJmJ/Rg/S8OjotfSPD1x/4EkOyLbmqOebYQDDgAtJdLZ0V+iE7/ZK9p9sEA15bkcV2F1dqUeJicDBVR7T8kBBRDTbKuzqhna8fg22Uvdxp32Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731512974; c=relaxed/simple;
-	bh=rL0Rj5BohAoFW1JXrmppR3BKs8WOPEHIQVuBaPVC7kU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=shGf+w6H+EChCQHE99/gvDCr6po1D7KNQeYzFqjDlttr3DvjU6U0NTpYkjDvpfksxxuU8VyhAS5K8ZJ5Q+5XsTjF5M/krxqzRT429pj9TUeO27qCAnMch+lndU6CQos6H/Pzjgi4vUeNHSpuf9WVRXD6z6GFAre+uNNjX6QH7RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UAoK1ORO; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1731513489; c=relaxed/simple;
+	bh=R+8c/mFVaGfzFWKnKLxWbnQEk+zfkh5pKuYb2TvdNTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aBAcZMgt3rUo/buK8zsowB69fHT1Jy2c/iwindgZgv21j57ZVpWo9u1+SkE3ImO/exQPBcI5PWRxI4+HToSrxKIRoIAM6vCHL5bEKJUFCIfyE0s62HPQmmUIROe2TvinXiYtKYh6udCJBdULWR7cLrUF6R7rM+T3YNqZw/8YCqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=YM3DRoqR; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UAoK1ORO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731512972; x=1763048972;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rL0Rj5BohAoFW1JXrmppR3BKs8WOPEHIQVuBaPVC7kU=;
-  b=UAoK1OROGxK6xBtwmLvIrk7i2B3RyghFuvivINciRM4TsuQCmxQIZh7t
-   fc/owI1Y+tAC6iHj18cKjg2eD14XO6Po6TN9PjUtk0r11BZ4Y9ZfpOasd
-   fdeGIMl8S4Nbg+CDbP7Rw9cNUaE9GDacowjMhRx9QKA9y30+O65Dtreys
-   nwajlsGcqp4nWLcAXpOPkcgnT3ZXdsWktNfa6nV00pFs3Of2u+gFaFXJX
-   HdHkVXnj+EQ5RJKFvdYXQL6/MAdjukvsi9axsoJERXdezczToQzNHFrpg
-   cD+bg85Bxge6I7WHrdBPn3Ee6+3v9mv4szSnti0OCpTVQYfSS71Ejze9r
-   g==;
-X-CSE-ConnectionGUID: QUbcfwQRRjupa9D4cT8sCA==
-X-CSE-MsgGUID: GfwBPOoQSpWzUbotBghIGA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="48919108"
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="48919108"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:49:32 -0800
-X-CSE-ConnectionGUID: BnI3RWUpQxu+9MHlN9r2uQ==
-X-CSE-MsgGUID: niPavKQcQ6ODjmWInptQlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="92869407"
-Received: from unknown (HELO localhost.igk.intel.com) ([10.102.22.54])
-  by orviesa005.jf.intel.com with ESMTP; 13 Nov 2024 07:49:31 -0800
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH iwl-net 10/10] idpf: change the method for mailbox workqueue allocation
-Date: Wed, 13 Nov 2024 16:46:25 +0100
-Message-Id: <20241113154616.2493297-11-milena.olech@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20241113154616.2493297-1-milena.olech@intel.com>
-References: <20241113154616.2493297-1-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="YM3DRoqR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dgnBqIZbxHp2r6NZfh04F67eD1rjlvGLxGBw//piS7k=; b=YM3DRoqRJ64dd3qTTujtMwW5LM
+	p9d3YFHv3U7IDRkkGqzwAD3TTYrVlZYF2jTRFtLx0NAxKKEnFTz2HjaQmuxGAcug0yHADofqth9ma
+	yb9LaBUmc8MB1p6IrfxgmD/VtAqlLzYALcAZS+I3mLZ/J3vpae+5543DueR81rYLWG5yRz9BzQYrp
+	YQ+mJBut139ckPpPc0BVQvn4wvHmqzbFl686DPL2RcaYSw9zqeZ48UH/Kodr2oZeHel+XVJsd2yES
+	NH4qCjCMnPIYlkWegy7FyNkgJMrtyD4rbnv+xZThbR8zxOPbVNn9LFLvhii7MlsTJ3clrc/eVc1lf
+	pLrJ5n7Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40622)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tBFkj-0006UI-27;
+	Wed, 13 Nov 2024 15:57:58 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tBFki-00009Q-2G;
+	Wed, 13 Nov 2024 15:57:56 +0000
+Date: Wed, 13 Nov 2024 15:57:56 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Subject: Re: Testing selectable timestamping - where are the tools for this
+ feature?
+Message-ID: <ZzTMhGDoi3WcY6MR@shell.armlinux.org.uk>
+References: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
+ <20241113161602.2d36080c@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241113161602.2d36080c@kmaincent-XPS-13-7390>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Since workqueues are created per CPU, the works scheduled to this
-workqueues are run on the CPU they were assigned. It may result in
-overloaded CPU that is not able to handle virtchnl messages in
-relatively short time. Allocating workqueue with WQ_UNBOUND and
-WQ_HIGHPRI flags allows scheduler to queue virtchl messages on less loaded
-CPUs, what eliminates delays.
+On Wed, Nov 13, 2024 at 04:16:02PM +0100, Kory Maincent wrote:
+> Hello Russell,
+> 
+> On Wed, 13 Nov 2024 14:46:25 +0000
+> "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> 
+> > Hi Kory,
+> > 
+> > I've finally found some cycles (and time when I'm next to the platform)
+> > to test the selectable timestamping feature. However, I'm struggling to
+> > get it to work.
+> > 
+> > In your email
+> > https://lore.kernel.org/20240709-feature_ptp_netnext-v17-0-b5317f50df2a@bootlin.com/
+> > you state that "You can test it with the ethtool source on branch
+> > feature_ptp of: https://github.com/kmaincent/ethtool". I cloned this
+> > repository, checked out the feature_ptp branch, and while building
+> > I get the following warnings:
+> > 
+> > My conclusion is... your ethtool sources for testing this feature are
+> > broken, or this is no longer the place to test this feature.
+> 
+> Yeah, it was for v3 of the patch series. It didn't follow up to v19, I am using
+> ynl tool which is the easiest way to test it.
+> As there were a lot of changes along the way, updating ethtool every time was
+> not a good idea.
+> 
+> Use ynl tool. Commands are described in the last patch of the series:
+> https://lore.kernel.org/all/20241030-feature_ptp_netnext-v19-10-94f8aadc9d5c@bootlin.com/
+> 
+> You simply need to install python python-yaml and maybe others python
+> subpackages.
+> Copy the tool "tools/net/ynl" and the specs "Documentation/netlink/" on the
+> board.
+> 
+> Then run the ynl commands.
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks... fairly unweildly but at least it's functional. However,
+running the first, I immediately find a problem:
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 22d9e2646444..31fe3e4b8162 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -196,8 +196,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
- 
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", 0, 0,
--					  dev_driver_string(dev),
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", WQ_UNBOUND | WQ_HIGHPRI,
-+					  0, dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
- 		dev_err(dev, "Failed to allocate mailbox workqueue\n");
+# ./ynl/cli.py --spec netlink/specs/ethtool.yaml --no-schema --dump tsinfo-get --json '{"header":{"dev-name":"eth0"}}'
+
+One would expect this to only return results for eth0 ? I get:
+
+[{'header': {'dev-index': 1, 'dev-name': 'lo'},
+  'timestamping': {'bits': {'bit': [{'index': 1, 'name': 'software-transmit'},
+                                    {'index': 3, 'name': 'software-receive'},
+                                    {'index': 4,
+                                     'name': 'software-system-clock'}]},
+                   'nomask': True,
+                   'size': 17}},
+... one entry per network device ...
+
+Also, I don't see more than one timestamper on any interface - there
+should be two on eth2, one for the MAC and one for the PHY. I see the
+timestamper for the mvpp2 MAC, but nothing for the PHY. The PTP clock
+on the PHY is definitely registered (/dev/ptp0), which means
+phydev->mii_ts should be pointing to the MII timestamper for the PHY.
+
+I've also tried with --json '{"header":{"dev-name":"eth2"}}' but no
+difference - it still reports all interfaces and only one timestamper
+for eth2.
+
+I'm waiting for a kernel to build with nlmon modular to investigate
+further.
+
 -- 
-2.31.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
