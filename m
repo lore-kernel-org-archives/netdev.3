@@ -1,84 +1,176 @@
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892121C8776
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 11:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2508513F435
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 11:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731496046; cv=none; b=GultEodGv6PMnKo8AiY4IrK6BQIsTubBSi5lD9EypschfRl9WnaP3ugW9v8mTX+ReKhX9wKZSBn8KtibrsYv230oTOiaMG0MnnnFAs0D5uU0lx7lterJJF7lpRIMUnkymcB3Wespe0on+8uxpfM+0tzLbbdo5Ej9YtaGcWnoI58=
+	t=1731496416; cv=none; b=STS7vfVMCmdQsVF9CigCVY0EDhfb2aQQ9i0PyK3XYKjlwFy9B/Jw6wcsIAJtWJq9vBgnwHjwSGAZw93tvA4KaEMkYSXDN125yz93mK+roIjUjwTOLQwEYKLKtMR+W2I41hAk+lOyW4DlkT3uNEjYBtOOiByiS/iAZa0vcqrmHMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731496046; c=relaxed/simple;
-	bh=3nNM0RWOHRwOh7vCR5bAGUb3yt8DqN9rgmZNmyv+1dA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DYCjLAO9xvGHhNhDb7ItOmlaPNTlb9IymRURLw1KT0Avz/QAH3kCbieAkD66ce9mVCkPXB6wETHVHavN/AEItETMbXQc985O19tH5wi5jzB5EGcOWc9iAyWNP2cr/+zfHiaeElQ/pimOR0OpH9HPWKrxXzbvG7hxa76huR34/lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-83abad6594fso748967239f.3
-        for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 03:07:24 -0800 (PST)
+	s=arc-20240116; t=1731496416; c=relaxed/simple;
+	bh=22tXa6W66/9VsYnPQrGRCitE2eppvQQ0IMbf6+LEBjc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eEcVXCyHtxTO1jodw9x3BVM5itlKNfoI5zIiF+pTTDgcq4eOMp/BDXQ8lg7vpPdKynoPjdC6ZvnJ6m1D9DdO3Dbs10uCH6QSb/mFZl4BqQumd8R0pmqAnpk07BkWPxObVnQZd1HR+rqxSrTDNJTlg15ysm5aigeqad5gp944Do0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IZrIaotl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IZrIaotl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731496412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7KH3jFAzHQ+vGvm3mHBwhCVY2i7N56HbwqH72OHd34o=;
+	b=IZrIaotl/w6Gbj5ZnWhfjgOPptZuQQ89t20n4qwYkDZttFzVl2AnFeZ4fOXMT79iCd1Hql
+	ClEam7/tFiqonUd7RaYZqCqVXydwYiehG3N3K1ooFaNLMWSEwBqd6Ij1/H8JTCIFgCNVJp
+	isZbNjBrZF7xg+A9OiCuyPiuLtPdBAo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-qx_saWzTOQm2iqXCMJKzrQ-1; Wed, 13 Nov 2024 06:13:31 -0500
+X-MC-Unique: qx_saWzTOQm2iqXCMJKzrQ-1
+X-Mimecast-MFC-AGG-ID: qx_saWzTOQm2iqXCMJKzrQ
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4315eaa3189so62429455e9.1
+        for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 03:13:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731496044; x=1732100844;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DwSOEAvBktMgftzuxBHvBD9aUQ+nzTMLZyoeTaPM0CE=;
-        b=QPbxljzsiAyrF6Z1p+4iURyhfo2nf0iSp1ubha9yFTiMdnPwRMVRcSxUuL5rruttlY
-         VMeRFM0FoBPu7woZbaQjDffN05p4p0A+H433OegoLSIDF11WIcgGQLQ6/CaG1zcbtg8N
-         NDXhZgQCfISlyP1aCNzR9+869fyUTtFP8sy9cz84i9L0ukKraIv6EzTbL2SJBj1moy6k
-         d8LKx/cDsC7vTvWfiVcSk+Xv+HB/nljfnldGAMlPCjG/9WFp8JZpS4nULCom83jxgQbv
-         Op4szVkC/kCdJh10u/m5XOGXsmyLYbiXig5OVRKLyG0txo2Wd69Xzs6nDGKBC9jMCcLQ
-         WLQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdXQUGEc/oC4xKlyytEQk02hwhW3tMO5wDpzcGEXBY5/QL7QDYFmtBfEBxlNrZkOdZFR5u0Pg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEZyrZxNJFdKccHxOHlFpSq+QNmODK+rIYXdfq4uH9snIEAVXh
-	D0491W1G3Js9apJlUpi8oJ1UM9q+cNunPGcX/aea+R2bW+etGjiJfbZD2pvOHgkZYh9JSmIIt4j
-	7ZD1XwfEOKD4hHB5b9S1gNBnFLTjHoLPhSswSfwpu3ibbToV0yitPMTg=
-X-Google-Smtp-Source: AGHT+IHc+ihD1CVYxIdzETMaxBkZllwA44W9mPFRV4QkVI/dOD/r9sngDbwP1exuFO+kJoaz8wB0v7JQPSv6nZFBRR6bZVgtedxn
+        d=1e100.net; s=20230601; t=1731496410; x=1732101210;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7KH3jFAzHQ+vGvm3mHBwhCVY2i7N56HbwqH72OHd34o=;
+        b=ohpOLVJU4q2AylvjTdCKD8pKhQh/qvst5agMVqAmiHkinctOPYBJWWZv+UdD3SsrOH
+         7T0hyHXc1AWbbHI3lOWIzXwI36vy3fUQlif+PucNvhXQkhAwOg4Ucsx379LOKmRc029w
+         zwl/0CeMltdIrZ7C8tOpVVlGw4gqGRWeXLrxCfyNP+a8dThvdtKqNKXsLzZE6+ZiQhjO
+         RXtTfl5roHcWVIhpW4chbS0KDfnwZ0cs5Fb7ZWXyqiA+oQOiNwNjnafC48KOQF7NxGNr
+         NAH+yvoBSbetNa4aZvxaBpZeoaNDWhGIsVBDMGE/B7uYmW7R+uF29NYYyAEa2fU3YOdz
+         x7PA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEoJGR+5MFLE6NiJ4TdzxFMlC/3TrrAijIHLsdPgJMLpHN0aLC4EUFsAgQUo0pT821ma72n2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9HRQdbagFaN1Ab6xSdj2hdJAqcBaJkG8OUZPil03gtWyZUwX9
+	bNLCX50rcAeNZmQnoDMnt0efcFFf335lH+10cPXrx+1iHISaIfY1eNrxSKPTMHNhcvT82LjMDV6
+	H+VfjrC4BwPTkjd3aj0g3ai7qoknho77wKtG6O5wqmKJDTSOvUL8reA==
+X-Received: by 2002:a05:600c:35c4:b0:431:5f8c:ccb9 with SMTP id 5b1f17b1804b1-432b750b51fmr240149555e9.17.1731496409751;
+        Wed, 13 Nov 2024 03:13:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF9RucFV9Ew08qPy5i1G8sCR+OaEbhk/PQOtNp5R4sHWFEKUlGZQkpKroCT+e+qPw1wj5q18g==
+X-Received: by 2002:a05:600c:35c4:b0:431:5f8c:ccb9 with SMTP id 5b1f17b1804b1-432b750b51fmr240149255e9.17.1731496409386;
+        Wed, 13 Nov 2024 03:13:29 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda05f89sm17970671f8f.98.2024.11.13.03.13.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 03:13:28 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id B9F7B164CF1D; Wed, 13 Nov 2024 12:13:27 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Andrii
+ Nakryiko <andrii@kernel.org>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Magnus Karlsson <magnus.karlsson@intel.com>,
+ nex.sw.ncis.osdt.itp.upstreaming@intel.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 12/19] xdp: add generic
+ xdp_build_skb_from_buff()
+In-Reply-To: <e35afda3-a64a-432e-a69d-80519eb0ff33@intel.com>
+References: <20241107161026.2903044-1-aleksander.lobakin@intel.com>
+ <20241107161026.2903044-13-aleksander.lobakin@intel.com>
+ <875xot67xk.fsf@toke.dk> <e35afda3-a64a-432e-a69d-80519eb0ff33@intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Wed, 13 Nov 2024 12:13:27 +0100
+Message-ID: <87zfm3wfmw.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:680d:0:b0:3a7:18ac:1fd1 with SMTP id
- e9e14a558f8ab-3a718ac209fmr10563875ab.2.1731496043720; Wed, 13 Nov 2024
- 03:07:23 -0800 (PST)
-Date: Wed, 13 Nov 2024 03:07:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6734886b.050a0220.2a2fcc.0008.GAE@google.com>
-Subject: [syzbot] Monthly netfilter report (Nov 2024)
-From: syzbot <syzbot+lista609c7c1ef075b5cd57f@syzkaller.appspotmail.com>
-To: kadlec@netfilter.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello netfilter maintainers/developers,
+Alexander Lobakin <aleksander.lobakin@intel.com> writes:
 
-This is a 31-day syzbot report for the netfilter subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfilter
+> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Date: Mon, 11 Nov 2024 17:39:51 +0100
+>
+>> Alexander Lobakin <aleksander.lobakin@intel.com> writes:
+>>=20
+>>> The code which builds an skb from an &xdp_buff keeps multiplying itself
+>>> around the drivers with almost no changes. Let's try to stop that by
+>>> adding a generic function.
+>>> Unlike __xdp_build_skb_from_frame(), always allocate an skbuff head
+>>> using napi_build_skb() and make use of the available xdp_rxq pointer to
+>>> assign the Rx queue index. In case of PP-backed buffer, mark the skb to
+>>> be recycled, as every PP user's been switched to recycle skbs.
+>>>
+>>> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+>>> ---
+>>>  include/net/xdp.h |  1 +
+>>>  net/core/xdp.c    | 55 +++++++++++++++++++++++++++++++++++++++++++++++
+>>>  2 files changed, 56 insertions(+)
+>>>
+>>> diff --git a/include/net/xdp.h b/include/net/xdp.h
+>>> index 4c19042adf80..b0a25b7060ff 100644
+>>> --- a/include/net/xdp.h
+>>> +++ b/include/net/xdp.h
+>>> @@ -330,6 +330,7 @@ xdp_update_skb_shared_info(struct sk_buff *skb, u8 =
+nr_frags,
+>>>  void xdp_warn(const char *msg, const char *func, const int line);
+>>>  #define XDP_WARN(msg) xdp_warn(msg, __func__, __LINE__)
+>>>=20=20
+>>> +struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp);
+>>>  struct xdp_frame *xdp_convert_zc_to_xdp_frame(struct xdp_buff *xdp);
+>>>  struct sk_buff *__xdp_build_skb_from_frame(struct xdp_frame *xdpf,
+>>>  					   struct sk_buff *skb,
+>>> diff --git a/net/core/xdp.c b/net/core/xdp.c
+>>> index b1b426a9b146..3a9a3c14b080 100644
+>>> --- a/net/core/xdp.c
+>>> +++ b/net/core/xdp.c
+>>> @@ -624,6 +624,61 @@ int xdp_alloc_skb_bulk(void **skbs, int n_skb, gfp=
+_t gfp)
+>>>  }
+>>>  EXPORT_SYMBOL_GPL(xdp_alloc_skb_bulk);
+>>>=20=20
+>>> +/**
+>>> + * xdp_build_skb_from_buff - create an skb from an &xdp_buff
+>>> + * @xdp: &xdp_buff to convert to an skb
+>>> + *
+>>> + * Perform common operations to create a new skb to pass up the stack =
+from
+>>> + * an &xdp_buff: allocate an skb head from the NAPI percpu cache, init=
+ialize
+>>> + * skb data pointers and offsets, set the recycle bit if the buff is P=
+P-backed,
+>>> + * Rx queue index, protocol and update frags info.
+>>> + *
+>>> + * Return: new &sk_buff on success, %NULL on error.
+>>> + */
+>>> +struct sk_buff *xdp_build_skb_from_buff(const struct xdp_buff *xdp)
+>>> +{
+>>> +	const struct xdp_rxq_info *rxq =3D xdp->rxq;
+>>> +	const struct skb_shared_info *sinfo;
+>>> +	struct sk_buff *skb;
+>>> +	u32 nr_frags =3D 0;
+>>> +	int metalen;
+>>> +
+>>> +	if (unlikely(xdp_buff_has_frags(xdp))) {
+>>> +		sinfo =3D xdp_get_shared_info_from_buff(xdp);
+>>> +		nr_frags =3D sinfo->nr_frags;
+>>> +	}
+>>=20
+>> Why this separate branch at the start of the function? nr_frags is no
+>> used until the other branch below, so why not just make that branch on
+>> xdp_buff_has_frags() and keep everything frags-related together in one
+>> block?
+>
+> Because napi_build_skb() will call build_skb_around() which will
+> memset() a piece of shared info including nr_frags.
+> xdp_build_skb_from_frame() has the same logic. I'd be happy to have only
+> one block, but I can't =3D\
 
-During the period, 2 new issues were detected and 1 were fixed.
-In total, 10 issues are still open and 177 have already been fixed.
+Ah, right. Annoying, but OK :)
 
-Some of the still happening issues:
+-Toke
 
-Ref Crashes Repro Title
-<1> 117     Yes   INFO: rcu detected stall in gc_worker (3)
-                  https://syzkaller.appspot.com/bug?extid=eec403943a2a2455adaa
-<2> 47      Yes   INFO: rcu detected stall in NF_HOOK (2)
-                  https://syzkaller.appspot.com/bug?extid=34c2df040c6cfa15fdfe
-<3> 45      Yes   BUG: soft lockup in batadv_iv_send_outstanding_bat_ogm_packet
-                  https://syzkaller.appspot.com/bug?extid=572f6e36bc6ee6f16762
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
