@@ -1,67 +1,102 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA531FF7D0
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 11:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302461FF5E5;
+	Wed, 13 Nov 2024 11:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731498245; cv=none; b=omvBy2inFOQC450ujMfM4eD+wNHq6fgS2mTR7/gzggN16TYdCfCOKWQSs7Yh+lMpItq5Ac98BtHQtvRun5QBTD3l6H5jaLlG+6N/vdeOYmVX53UDDJV8+a9vqQ6hjqOuwByPqhfk+WZpHc/Yoblul/0UvV8tJsNblb6/ks9YyZY=
+	t=1731498942; cv=none; b=iVFfoT9Jt2Hh2QkvBHvg0k0+gn/SuTMQeJJanmdKLNzqYoFQ3crnLrouUmAOv0xcMVhz5s9O7iMk0X3iXARNG87VvQIMBOgjmUwnvsLHw0MvY/cpCWABFKytUr6ajDl8XobZGN0DkA2E71RjtvBVRWVSmzPimn9BYqHlVcfzkJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731498245; c=relaxed/simple;
-	bh=mqk98GP19dZ+Ay7HEP68kLZER2bT/NkIqYTu8jMJ4BE=;
-	h=From:Message-ID:To:Subject:Date:MIME-Version:Content-Type; b=kwY4/zF0CgkAY9t0P83oX3hVKC5+BxP9Fzwlz/L9KUZLxfPVOYRHxv8yNOSho8BxIgh3gzmPNSsHOXmGAlL8/3F65s5ABto0e1RMihryHmgwygOQp8tcRMXvy25kVk39frp1BuIm8IRngJvM22CInwWqMmVyNJ6mX8aGVqF760g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCDLeUee; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731498942; c=relaxed/simple;
+	bh=iovqs40/iE4xWRqK075NczG6y3maZGipRgITa/sx7jo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fYOLSMtbffFozryxKf1u4N445vS0AoG8M+BNNrdYr7AzGxz6HF6gSg+0hD4yucze1/JulV5VNxnOucsanQjj8VfE9ox1RmDpW9DPyVsp454uXaSnW7ufewbj2bdEPnAwhEjejwplFSGpku9oDO1KR4pX1BxOd30hZCiN2oV/ypA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKseVK6G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCDLeUee"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d41894a32so362189f8f.1
-        for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 03:44:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731498242; x=1732103042; darn=vger.kernel.org;
-        h=mime-version:date:subject:to:reply-to:message-id:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mqk98GP19dZ+Ay7HEP68kLZER2bT/NkIqYTu8jMJ4BE=;
-        b=LCDLeUeeIfn93k+5MQy4RzSIpnrkiCb1ufxaXP694zQfInuXIxo6QviZlshBlGR87B
-         RUEVxt8EkCgaa9EjgCufgGx6hhSlfdbNlM0r/RJKW1E6Lcxc7t/gUrIuNkeyn+V7n+/e
-         xTtZ+qE1oFBQ5eG2dJkwu0upJ24N2HPe2ePXkOGtsFWcFcTEWqbhaXP1HZlgFd3FTStW
-         KbsW1uMPXbWPqlnKhbHmjB9Y3Xhqey1Kgi/A+evup3MAr2zv21osa3s9FpkPSZpTONT2
-         bFcaC+uPi0fBG7zfRbSuVpiEP0aEnnwR6TsD2nngwYOQojNSzf3QbT8ShzeNISYj4Vuq
-         4Z8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731498242; x=1732103042;
-        h=mime-version:date:subject:to:reply-to:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mqk98GP19dZ+Ay7HEP68kLZER2bT/NkIqYTu8jMJ4BE=;
-        b=mfgk3/QqvYytkSk4xtG4gzIlgI7Q5QfBBpy+EhLS0T0GpYHNcc2ljC8ZJuMmYMZPns
-         AFHmvgNDhJExFBiGsV3wtAOWXvTfMJPhdElrc6JOJVcCuYKACHWUNm+v3fZPly6ObR45
-         gXOkSgUtygeQf78oXQrHUPVNpsqHJXQvC4wzM7LBWn67xnO8v/R/lO8nHy03a0Z3atQJ
-         w1ObsZGJ7zKF/Wpbc+Ukl+phvykWMUGcrcfuRX0x7+oABWX5dE5hwVjbR8bHXy8LNpvO
-         h8SOfQNczNKhtvv9qGVd46wXCbQr+0QzlZSDwoFjfwGiOsbJV8yWOwwgy5TUbKUHWwat
-         LF4g==
-X-Gm-Message-State: AOJu0Ywih2IdxIKCboOet2pr4Tk2/chRl9RasPyXOBkxGj/quGysoMzv
-	aaclFmY7RKWa51/nbnBC1T5gl9uwa5X01kptSib05vxoTQd/BcrKzDJovQ==
-X-Google-Smtp-Source: AGHT+IH7jbtsI83/aLmJhxnh5t4z6je6AjZkJ5FgPBOhbgW1GSTH/jsBaJnBZ4kLKKUQjREEAIxvWg==
-X-Received: by 2002:a05:6000:1f87:b0:37d:443b:7ca4 with SMTP id ffacd0b85a97d-381f0f5e2ddmr18126167f8f.14.1731498242195;
-        Wed, 13 Nov 2024 03:44:02 -0800 (PST)
-Received: from [87.120.84.56] ([87.120.84.56])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed9ea4f6sm18095283f8f.64.2024.11.13.03.44.01
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 13 Nov 2024 03:44:01 -0800 (PST)
-From: William Cheung <tammywoodhdhfsg84432@gmail.com>
-X-Google-Original-From: William Cheung <info@gmail.com>
-Message-ID: <425f1f46778e430fcc91915419dc794a12275ef864301c1d15ff1faef6b3fb3e@mx.google.com>
-Reply-To: willchg@hotmail.com
-To: netdev@vger.kernel.org
-Subject: Lucrative Proposal
-Date: Wed, 13 Nov 2024 03:43:29 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKseVK6G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6815FC4CECD;
+	Wed, 13 Nov 2024 11:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731498941;
+	bh=iovqs40/iE4xWRqK075NczG6y3maZGipRgITa/sx7jo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kKseVK6GqYZSQxXYO7M3Kj6KL4/hHMkOadZJhAJ/KQYXYd6Tch/8w95y+bvrOriR+
+	 paL99S/geuZAP1SkdktXmcULash3X/TPn0N0OU1bm/WRKxMYiBvFKe1VewEffBaOiT
+	 eNPnm5P903eGiGCQqo2t/Vb0m+hrcGO3GWfkFaS3cPVwAeQWNmBcnxJFDK8Cvzs60I
+	 xy44X1Y+0R918u9jT00W26mJPb6jcRM3ryoM4j4fsJU1aQrx1uZ7mU2ED20t+/LGC4
+	 PDzXWHbr5495V9y+Tz5qv/4Ebeev/MTpBxkmtLZaIZrPcZ7gic4KkogQauzXPmVMQm
+	 txvQ62ttSmwlQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Jens=20Emil=20Schulz=20=C3=98stergaard?= <jensemil.schulzostergaard@microchip.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: sparx5: add missing lan969x Kconfig dependency
+Date: Wed, 13 Nov 2024 12:55:08 +0100
+Message-Id: <20241113115513.4132548-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 
-I have a lucratuve proposal for you, reply for more info.
+From: Arnd Bergmann <arnd@arndb.de>
+
+The sparx5 switchdev driver can be built either with or without support
+for the Lan969x switch. However, it cannot be built-in when the lan969x
+driver is a loadable module because of a link-time dependency:
+
+arm-linux-gnueabi-ld: drivers/net/ethernet/microchip/sparx5/sparx5_main.o:(.rodata+0xd44): undefined reference to `lan969x_desc'
+
+Add a Kconfig dependency to reflect this in Kconfig, allowing all
+the valid configurations but forcing sparx5 to be a loadable module
+as well if lan969x is.
+
+Fixes: 98a01119608d ("net: sparx5: add compatible string for lan969x")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+Side note: given that lan969x is always built as part of sparx5,
+wouldn't it make more sense to move all of it into the sparx5
+subdirectory?
+---
+ drivers/net/ethernet/microchip/lan969x/Kconfig  | 2 +-
+ drivers/net/ethernet/microchip/lan969x/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microchip/lan969x/Kconfig b/drivers/net/ethernet/microchip/lan969x/Kconfig
+index 728180d3fa33..c5c6122ae2ec 100644
+--- a/drivers/net/ethernet/microchip/lan969x/Kconfig
++++ b/drivers/net/ethernet/microchip/lan969x/Kconfig
+@@ -1,5 +1,5 @@
+ config LAN969X_SWITCH
+-	tristate "Lan969x switch driver"
++	bool "Lan969x switch driver"
+ 	depends on SPARX5_SWITCH
+ 	help
+ 	  This driver supports the lan969x family of network switch devices.
+diff --git a/drivers/net/ethernet/microchip/lan969x/Makefile b/drivers/net/ethernet/microchip/lan969x/Makefile
+index 9a2351b4f111..316405cbbc71 100644
+--- a/drivers/net/ethernet/microchip/lan969x/Makefile
++++ b/drivers/net/ethernet/microchip/lan969x/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for the Microchip lan969x network device drivers.
+ #
+ 
+-obj-$(CONFIG_LAN969X_SWITCH) += lan969x-switch.o
++obj-$(CONFIG_SPARX5_SWITCH) += lan969x-switch.o
+ 
+ lan969x-switch-y := lan969x_regs.o lan969x.o lan969x_calendar.o \
+  lan969x_vcap_ag_api.o lan969x_vcap_impl.o
+-- 
+2.39.5
+
