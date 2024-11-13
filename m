@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A787204F69
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 18:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B89E20606A
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 18:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731524085; cv=none; b=ToQl/zXmUYbUmo9dxRxY9MMmGAbhb+m1QnVX+JdwSY2HlBwKTluqjawsIo5e62dRRegvQznDQVgMAMS6kdtBetYoPXLuUhZ8PK8M9/bi74TUW9nQ6TF45vy2x2s/CWL8z1yBM2RtqaxOxl3rPaNBvg9YfRUd4/JINSKkBnNzePE=
+	t=1731524085; cv=none; b=YWg1oy3hrUT+dOinP8sdzs7OOufD9x0BdlXdFwP2UYdG42NWxlNX0nrbCd3mU58Cc6OQQc/c7v3d64fsweMvduWjF3yyzn+ji52CYZdEotfulN1K9nmKUdNE6fOk1PTm+Slm4h+uE2iti2jePx/xB8OWmw8Y7CF1uzxkG+r8OEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731524085; c=relaxed/simple;
-	bh=ppk2G7Bqdir/e0yTTe0JiMOlgYrNrLj3k4CMbMwuW18=;
+	bh=ecj3XHOK5cgunpSzViNZ/HoFJd3O3rUFLeJ663rSyxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4v9Pw/Q9Vtg3/JuoVanOSI9W7MHLdBk1RNTtbioKTytc45ESG+iVn+NCXNcTaDaFIc5gH0A/OSqkDbosrTrNAU4I5x2LeRcEkT/kG3jWPGziGONsysAYEK0OEh3AnR7tvacM99SFLUUukGdI43r5+MvcQ0zlCltSqRwEShnVOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=abMaAXU9; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=c5BgYbC3eUiemr5bl0dpBvnWvngcQYzZB3KkNe07jaYx5Ucv56uDsqfTLzNeYQxdybowJzpVvaL4VCl+LOz1Na5pFyLsYLvytp+6ejR9O9ShU86AjoTIXTEtjyOxLGbNyiC+HyMr7NVqc8OagBVMfHRYmeW/6/vb1IQth84GwYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PeIW6OMp; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="abMaAXU9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PeIW6OMp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731524082; x=1763060082;
+  t=1731524084; x=1763060084;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ppk2G7Bqdir/e0yTTe0JiMOlgYrNrLj3k4CMbMwuW18=;
-  b=abMaAXU9WEpoXPFLJtTvNMTRycw0sxlBLwPRaRk3VyJAqbwO8Brq3iLw
-   sb9NGb2i4dZaAUYrD/rxpz6/0IhqiorZFnx5FFjFNRgBIF5d92e0xyAzP
-   +hFJgu5OSpTeXsl+3549PUltU2mLiJX5Ku5mY4gGRqKMB0xa2MUmjw4zO
-   IPlkgICPEkpbACdJnaRqkSsFmJ2fQyLO35A7nHupJJIpsEJQ0iQzdZjuG
-   tsw2Z065dZ7ZS3GXXV4cJmcqYnHxGUbximzpBxnOnc9wLRozZAn+NxPeT
-   MNaUpJuJPrFz/uTnwM+p1R/sygkqgWC9mOKI1WpKp7qMyyM3ZmiVMao6s
-   A==;
-X-CSE-ConnectionGUID: Rqp2C/yAT8+LPyMekYEc5g==
-X-CSE-MsgGUID: WN36cRZiSVaZ1mn44gtXGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31589495"
+  bh=ecj3XHOK5cgunpSzViNZ/HoFJd3O3rUFLeJ663rSyxA=;
+  b=PeIW6OMpp80GXdxmFYegV/H9xX56fRqPdG8/7nfnh1gPOuH5brJeP9Ki
+   XA/iTOymn+y2XaM8MNTEbp2bZ7D8fanJ6wDNVtBtBGgB4GS/kUVC5gbNz
+   QiZZ8tAgLK9cjFty9SvxR3LAFeFv9jgNsU1s05cdrlJOKnCQnnudSY0+i
+   GhXPZSevEo49dJNkh1bv9ebluKcW9DoC/N4DFVr+oe90Xsfu3SOAqEFWa
+   FPGDILGnCSm07sabyiq1NYTE7UIhGFkv493K/nQTVubokAbaD1xxmP5Tv
+   PIXIo1qzlIVLl+oi7HOmqr6UKHrY91QmRvdsfEAfb+8yqSttLl/jiR7io
+   Q==;
+X-CSE-ConnectionGUID: TenSn6M3R8u3ng1+7BxHOg==
+X-CSE-MsgGUID: iK7NTPXwTH2y+BAM4FMhxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31589508"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31589495"
+   d="scan'208";a="31589508"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 10:54:40 -0800
-X-CSE-ConnectionGUID: ZmnrkKs2SjOndQrsqCxsow==
-X-CSE-MsgGUID: joIIn/DXSOSW5Z+uXEUA9Q==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 10:54:41 -0800
+X-CSE-ConnectionGUID: AgDrRi9cTo+b+Jh1WuYWkQ==
+X-CSE-MsgGUID: T8vlN0vPTnWpbD/5VDBPIQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="87520736"
+   d="scan'208";a="87520744"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2024 10:54:39 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,14 +50,12 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Joe Damato <jdamato@fastly.com>,
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Simon Horman <horms@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH net-next v2 05/14] ice: Add support for persistent NAPI config
-Date: Wed, 13 Nov 2024 10:54:20 -0800
-Message-ID: <20241113185431.1289708-6-anthony.l.nguyen@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v2 07/14] ice: initialize pf->supported_rxdids immediately after loading DDP
+Date: Wed, 13 Nov 2024 10:54:22 -0800
+Message-ID: <20241113185431.1289708-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20241113185431.1289708-1-anthony.l.nguyen@intel.com>
 References: <20241113185431.1289708-1-anthony.l.nguyen@intel.com>
@@ -69,166 +67,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Joe Damato <jdamato@fastly.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-Use netif_napi_add_config to assign persistent per-NAPI config when
-initializing NAPIs. This preserves NAPI config settings when queue
-counts are adjusted.
+The pf->supported_rxdids field is used to populate the list of valid RXDIDs
+that a VF may use when negotiating VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC.
 
-Tested with an E810-2CQDA2 NIC.
+The set of supported RXDIDs is dependent on the DDP, and can be read from
+the GLXFLXP_RXDID_FLAGS register. The PF needs to send this list to the
+VF upon receiving the VIRTCHNL_OP_GET_SUPPORTED_RXDIDs. It also needs to
+use this list to validate the requested descriptor ID from the VF when
+programming the Rx queues.
 
-Begin by setting the queue count to 4:
+A future update to support VF live migration will also want to validate
+that the target VF can support the same descriptor ID when migrating.
 
-$ sudo ethtool -L eth4 combined 4
+Currently, pf->supported_rxdids is initialized inside the
+ice_vc_query_rxdid() function. This means that it is only ever initialized
+if at least one VF actually tries to negotiate
+VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC. It is also unnecessarily re-initialized
+every time the VF loads and requests the descriptor list. This worked
+before because the PF only checks pf->suppported_rxdids when programming
+the Rx queue if the VF actually negotiates the
+VIRTCHNL_VF_OFFLOAD_RX_FLEX_DESC feature.
 
-Check the queue settings:
+This will be problematic for VF live migration. We need the list of
+supported Rx descriptor IDs when migrating. It is possible that no VF on
+the target PF has ever actually issued a VIRTCHNL_OP_GET_SUPPORTED_RXDIDs.
 
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
+Refactor the driver to initialize pf->supported_rxdids during driver
+initialization after the DDP is loaded. This is simpler, avoids unnecessary
+duplicate work, and avoids issues with the live migration process.
 
-Now, set the queue with NAPI ID 8451 to have a gro-flush-timeout of
-1111:
-
-$ sudo ./tools/net/ynl/cli.py \
-            --spec Documentation/netlink/specs/netdev.yaml \
-            --do napi-set --json='{"id": 8451, "gro-flush-timeout": 1111}'
-None
-
-Check that worked:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 1111,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Now reduce the queue count to 2, which would destroy the queue with NAPI
-ID 8451:
-
-$ sudo ethtool -L eth4 combined 2
-
-Check the queue settings, noting that NAPI ID 8451 is gone:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Now, increase the number of queues back to 4:
-
-$ sudo ethtool -L eth4 combined 4
-
-Dump the settings, expecting to see the same NAPI IDs as above and for
-NAPI ID 8451 to have its gro-flush-timeout set to 1111:
-
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                         --dump napi-get --json='{"ifindex": 4}'
-[{'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8452,
-  'ifindex': 4,
-  'irq': 2782},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 1111,
-  'id': 8451,
-  'ifindex': 4,
-  'irq': 2781},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8450,
-  'ifindex': 4,
-  'irq': 2780},
- {'defer-hard-irqs': 0,
-  'gro-flush-timeout': 0,
-  'id': 8449,
-  'ifindex': 4,
-  'irq': 2779}]
-
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_base.c | 3 ++-
- drivers/net/ethernet/intel/ice/ice_lib.c  | 6 ++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c     | 31 +++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 20 ++----------
+ 2 files changed, 33 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index 3a8e156d7d86..82a9cd4ec7ae 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -156,7 +156,8 @@ static int ice_vsi_alloc_q_vector(struct ice_vsi *vsi, u16 v_idx)
- 	 * handler here (i.e. resume, reset/rebuild, etc.)
- 	 */
- 	if (vsi->netdev)
--		netif_napi_add(vsi->netdev, &q_vector->napi, ice_napi_poll);
-+		netif_napi_add_config(vsi->netdev, &q_vector->napi,
-+				      ice_napi_poll, v_idx);
- 
- out:
- 	/* tie q_vector and VSI together */
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index d4e74f96a8ad..a7d45a8ce7ac 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2777,8 +2777,10 @@ void ice_napi_add(struct ice_vsi *vsi)
- 		return;
- 
- 	ice_for_each_q_vector(vsi, v_idx)
--		netif_napi_add(vsi->netdev, &vsi->q_vectors[v_idx]->napi,
--			       ice_napi_poll);
-+		netif_napi_add_config(vsi->netdev,
-+				      &vsi->q_vectors[v_idx]->napi,
-+				      ice_napi_poll,
-+				      v_idx);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index a6f586f9bfd1..f9301493e92d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4554,6 +4554,34 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
+ 	return 0;
  }
  
++/**
++ * ice_init_supported_rxdids - Initialize supported Rx descriptor IDs
++ * @hw: pointer to the hardware structure
++ * @pf: pointer to pf structure
++ *
++ * The pf->supported_rxdids bitmap is used to indicate to VFs which descriptor
++ * formats the PF hardware supports. The exact list of supported RXDIDs
++ * depends on the loaded DDP package. The IDs can be determined by reading the
++ * GLFLXP_RXDID_FLAGS register after the DDP package is loaded.
++ *
++ * Note that the legacy 32-byte RXDID 0 is always supported but is not listed
++ * in the DDP package. The 16-byte legacy descriptor is never supported by
++ * VFs.
++ */
++static void ice_init_supported_rxdids(struct ice_hw *hw, struct ice_pf *pf)
++{
++	pf->supported_rxdids = BIT(ICE_RXDID_LEGACY_1);
++
++	for (int i = ICE_RXDID_FLEX_NIC; i < ICE_FLEX_DESC_RXDID_MAX_NUM; i++) {
++		u32 regval;
++
++		regval = rd32(hw, GLFLXP_RXDID_FLAGS(i, 0));
++		if ((regval >> GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_S)
++			& GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_M)
++			pf->supported_rxdids |= BIT(i);
++	}
++}
++
  /**
+  * ice_init_ddp_config - DDP related configuration
+  * @hw: pointer to the hardware structure
+@@ -4588,6 +4616,9 @@ static int ice_init_ddp_config(struct ice_hw *hw, struct ice_pf *pf)
+ 	ice_load_pkg(firmware, pf);
+ 	release_firmware(firmware);
+ 
++	/* Initialize the supported Rx descriptor IDs after loading DDP */
++	ice_init_supported_rxdids(hw, pf);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index cc070c467fdd..bc9fadaccad0 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3032,11 +3032,9 @@ static int ice_vc_query_rxdid(struct ice_vf *vf)
+ {
+ 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
+ 	struct virtchnl_supported_rxdids *rxdid = NULL;
+-	struct ice_hw *hw = &vf->pf->hw;
+ 	struct ice_pf *pf = vf->pf;
+ 	int len = 0;
+-	int ret, i;
+-	u32 regval;
++	int ret;
+ 
+ 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states)) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+@@ -3056,21 +3054,7 @@ static int ice_vc_query_rxdid(struct ice_vf *vf)
+ 		goto err;
+ 	}
+ 
+-	/* RXDIDs supported by DDP package can be read from the register
+-	 * to get the supported RXDID bitmap. But the legacy 32byte RXDID
+-	 * is not listed in DDP package, add it in the bitmap manually.
+-	 * Legacy 16byte descriptor is not supported.
+-	 */
+-	rxdid->supported_rxdids |= BIT(ICE_RXDID_LEGACY_1);
+-
+-	for (i = ICE_RXDID_FLEX_NIC; i < ICE_FLEX_DESC_RXDID_MAX_NUM; i++) {
+-		regval = rd32(hw, GLFLXP_RXDID_FLAGS(i, 0));
+-		if ((regval >> GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_S)
+-			& GLFLXP_RXDID_FLAGS_FLEXIFLAG_4N_M)
+-			rxdid->supported_rxdids |= BIT(i);
+-	}
+-
+-	pf->supported_rxdids = rxdid->supported_rxdids;
++	rxdid->supported_rxdids = pf->supported_rxdids;
+ 
+ err:
+ 	ret = ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_GET_SUPPORTED_RXDIDS,
 -- 
 2.42.0
 
