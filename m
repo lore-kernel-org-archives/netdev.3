@@ -1,42 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8269A22081
-	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 02:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9601822081;
+	Wed, 13 Nov 2024 02:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731463325; cv=none; b=GzdYpUfb3c3RAgh1AbXd4ut3nufHQs5uJYxtqIi/zyy6+W0E62KpxOBCEii8qf+JIGq4jIumfVjKSG9soE/dqLAk1dhmDkNPaFq6nJ52zFrZzScwOy/fUon+sWUHUHs9yWZpR/tgWTwW3KkS8DOhBoZzEW7I3p5Abqqe/Jk7y8Q=
+	t=1731463508; cv=none; b=oJ10Cvz7SZgw1ezE4P3hxbSAwFf3UjPpqiYoM4bJg11kxxu7RJjlu/C6QzAfkPrAGKeqMxatZpUE28s0FwiklJ9RDD9sLBDuTRe1m9I0XRwGumiLRMRQliNurKTjKmPCnzarmlk0/7sXE0VYBrX4bARfPCCFcydaKAuF6dyGbDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731463325; c=relaxed/simple;
-	bh=Ccj/sftJI+jCz7TIn1xy2GhHA1TGP8Ab/BXDPPUhX84=;
+	s=arc-20240116; t=1731463508; c=relaxed/simple;
+	bh=2Yw/P3dld0TRMWGFQWeFVLNCPXWyzavy3QmAvNv1Li8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hr3gxQJ9ARH0je8IS5bWsFUn3gr8LOZ7eDqpVKfBdm0WTO2zkcCr/oB50k8eTv1nYz24ZFT5L+yuiokztYE5QdUpt5lf5G457QaSc9TdZr3j0fKMnZ5CBxLXcU+xjMKMNuOZqTH/kfaxlcfsDWZ+u0M4olBbD6gwotP2T1pLznM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brBwWDNV; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=V+nifte8msd9Ccvh1NqzQlg4u7FOip5QZkvb4AAhSeAUQgsa3zK42IfECOCSBImTwCjypMMWcs5eAtef/t2U4ct/7a0xRKZVCwrNRR5lvW68lWaMmpkrLQQpcWV4zXMn5XK2BawonsfG29cfl4ee2N/YsIGy3U4vJu+8sIqdz/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2F8zcTZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brBwWDNV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAD7C4CECD;
-	Wed, 13 Nov 2024 02:02:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2F8zcTZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64311C4CECD;
+	Wed, 13 Nov 2024 02:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731463324;
-	bh=Ccj/sftJI+jCz7TIn1xy2GhHA1TGP8Ab/BXDPPUhX84=;
+	s=k20201202; t=1731463508;
+	bh=2Yw/P3dld0TRMWGFQWeFVLNCPXWyzavy3QmAvNv1Li8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=brBwWDNVS67i0zBVgccKcK+zNMlNTg8YPZtQZJZN5IXytbKXfHv9Jc8hce9bOZ+ZR
-	 fWRh5hJSGJ4PrrxSQVfGZ1GnSGn7LBMmi2PcnW7nwgqCOnLE7xsr9YYaFVFytKYShd
-	 p00hH5w4aL0PDYfBHkBMbzs3eWMijj+ub3uIpJiGejc6Kj16xRq8PWrSsePR0YoPt+
-	 X94rxuyUvVzw9m6XZWjku4SiHo2FSTCkuJ5w0aAxZGxUkcUo/6Qwhm540c8sOnyTtk
-	 lw/F1rNp8tiR+DTaLRcPld4zzNa0xPHsIbZYJMiQ5B/ISA5+e5BYMnVWX8pCixQ5cf
-	 XUltLyeDMvCjw==
-Date: Tue, 12 Nov 2024 18:02:03 -0800
+	b=N2F8zcTZJ1tGo8LXCCbXh12frl1tAbpOW/W04qSDul14Wm+5pzGSxYWgnCjeSQrF7
+	 jLl3mFxlV4rt/0aklw50Iq4iKXZMfp0G07jOXHsCifFz48rP9lo9lWm5xWRkfEzI2f
+	 puioUhmUqm4gRzOUq9UmsFp6chPKUpQxmGlxNMfd0PYXtwMKhcwPeZZwWCbxGt1fo1
+	 groxDQgaOXva9UpnXztKwv5oyIIO0iyUuDDr3K0U/B4QxvnCXQHaso9ANGuzsEUjsF
+	 eR002jAy2bsxgCIcXW8oMgRBVWln/2mlamlMBibDdfamo9Niaf++/PqsgrQXZgzlwG
+	 bPvHibv5P5JRg==
+Date: Tue, 12 Nov 2024 18:05:06 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Xu <dxu@dxuuu.xyz>
-Cc: ecree.xilinx@gmail.com, jdamato@fastly.com, davem@davemloft.net,
- mkubecek@suse.cz, martin.lau@linux.dev, netdev@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH ethtool-next v3] rxclass: Make output for RSS context
- action explicit
-Message-ID: <20241112180203.42d34eb7@kernel.org>
-In-Reply-To: <e9de21b76807da310658dbfd46d6177c1c592fe7.1731462244.git.dxu@dxuuu.xyz>
-References: <e9de21b76807da310658dbfd46d6177c1c592fe7.1731462244.git.dxu@dxuuu.xyz>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Toke
+ =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>, Andrii Nakryiko
+ <andrii@kernel.org>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Magnus Karlsson
+ <magnus.karlsson@intel.com>, <nex.sw.ncis.osdt.itp.upstreaming@intel.com>,
+ <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 00/19] xdp: a fistful of generic changes
+ (+libeth_xdp)
+Message-ID: <20241112180506.3c523f63@kernel.org>
+In-Reply-To: <32c8ef18-8c9b-4580-b064-2ed9ba25772b@intel.com>
+References: <20241107161026.2903044-1-aleksander.lobakin@intel.com>
+	<20241108082741.43bf10e7@kernel.org>
+	<32c8ef18-8c9b-4580-b064-2ed9ba25772b@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,15 +55,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 12 Nov 2024 18:45:43 -0700 Daniel Xu wrote:
->     # ./ethtool -n eth0 rule 0
->     Filter: 0
->             Rule Type: Raw IPv6
->             Src IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
->             Dest IP addr: <redacted> mask: ::
->             Traffic Class: 0x0 mask: 0xff
->             Protocol: 0 mask: 0xff
->             L4 bytes: 0x0 mask: 0xffffffff
->             Action: Direct to RSS context id 1
+On Tue, 12 Nov 2024 16:23:28 +0100 Alexander Lobakin wrote:
+> > include/net/libeth/xsk.h:93:2-3: Unneeded semicolon
+> > include/net/libeth/xdp.h:660:2-3: Unneeded semicolon
+> > include/net/libeth/xdp.h:957:2-3: Unneeded semicolon
+> > 
+> > :(  
+> 
+> OMG, shame on me >_<
+> How did you catch that? IIRC I didn't have anything in
+> `checkpatch --strict`...
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+It's coccicheck, make coccicheck. Which takes a year and a half to run.
+Filtering down the files to run on helps a little bit:
+https://github.com/linux-netdev/nipa/blob/main/contest/tests/cocci-check.sh
+
+TBH I don't expect people to run this, it's too slow and noisy.
