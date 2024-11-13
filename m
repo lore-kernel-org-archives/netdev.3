@@ -1,97 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B28178CC8;
-	Wed, 13 Nov 2024 09:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C56E1F892E;
+	Wed, 13 Nov 2024 09:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731491079; cv=none; b=ggViguZsW8LpK+MazAJ5rSfW/EzsrnYcvDMhOmoWe0Rbmk1dIvtjyP/hiaJqqM6FHhQ1EMk+achHji0wow0wTFdprklkyb2uJZzm4eT4y7q88s4zXxr2THcdnLsbJ08z4VPYe13jwI8hTqAevNnPpWAnHYc0SJXKJR1XOkraDxo=
+	t=1731491317; cv=none; b=I3TU46nmnLTjFSFieVdm+QseqJzmhrf+vMZUjASDWyoIp4fPADPH6Z0G7wLUC5NYBxsmtE6o/7EOxTmL6Rf+6zMu73p3vBeHGU8GccfWt8XfMwa6MksR4HiSeqwBRSBr5I8yD+xwDvGA/LjdJ+rMxg8g0gIiuP+h6s2iFryvKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731491079; c=relaxed/simple;
-	bh=G60SOJCRCee6VpKMWDHKShG2kyMomKULAjFj4Z0HY5E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sVAvXK+rnydlOkSH/eaBsdc2+K2J/u2VfhmfjT8GNpEBGKZP5FZ3k+4HHQAEa+uvJk6cuZFIeuiPBQJQ+cJgE7sMZYPxoqs+8yKltKk7eISsP2D+nlx7zhTgUfhUq3E7S9jmL2zPpjEzIN9ADdAuSfZ595d1HrDqlZ8jvxDhhLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4Jm4hXL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731491317; c=relaxed/simple;
+	bh=8t44CRZWa3doc2wAxlLVoy8bUIcjfDDp+F/2ou0Sv0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mSA7eZ+0OrqXGpbLbS13b5JZkT+F7eA6AVym6RpE3qDDwEzG+kuhzjSM7SdSYSeLNnleVlhj6r5ASqrq9APSd/3rvyAjCYPkZuHcutSTK92PAFgAlwi/WQ0DCYGN2WsfAd0SJzIwqpFZusi+ZM0O+7yvTkpQWynKrsiqoyHr24w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCq4k/oa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4Jm4hXL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692CDC4CECD;
-	Wed, 13 Nov 2024 09:44:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCq4k/oa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3174CC4CECD;
+	Wed, 13 Nov 2024 09:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731491078;
-	bh=G60SOJCRCee6VpKMWDHKShG2kyMomKULAjFj4Z0HY5E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M4Jm4hXLo+c4whd2dCrDaM4pZncZ9lPC18qo/U30v0jCa1owQ9JRzhd5SW+TkpR46
-	 tgSYr4tnk6QKnK5zn5kTqvrcYaWQL8WbZDy1Zi2+F+D4RtSzPmH8tqzFBpdwx0uS38
-	 t/yTolTMWzkQ1XDjeaj7bX6JnyQFzEq+/z0ZNS4ZyphTqPGk9AvOxUjezL4N8K9XYf
-	 Gbe2egurnLrshqUS40KKOsjhZYBpB7RgloJoWn1MPrigH8BeOYS5OhT5pSl7rUYcyp
-	 l5+9Ud7n1NwT5cV5FkZuc/NCFD6KZBMibDx2eYR2Xcepl+X9BIdmIFmfKrEe67dEVf
-	 OqzY8/nIyJ5vw==
-Message-ID: <0cde0236-c539-487d-a212-b660331d3683@kernel.org>
-Date: Wed, 13 Nov 2024 10:44:33 +0100
+	s=k20201202; t=1731491316;
+	bh=8t44CRZWa3doc2wAxlLVoy8bUIcjfDDp+F/2ou0Sv0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WCq4k/oaRPAfo0bKlHX/aBbhyOuwXs9dLVkudKyrJ14/dhiSpVeiBfryjf+lwI4OT
+	 BBh9iur7GEQZgXxABVrZEvzBrbarrADEvX4Ple8UvYoyajcluP5Vfzrmgdtgifg32V
+	 GkFB5NhPmFS+txRoMqLdB+9kWIuzJuhgDUushu6iMZip8o1bnnq8BL7xxqr2hDTmXg
+	 783Q+xSXWu5vCgl9wVRFama2gvErvqJrb+HN1lldnSJ4mPsNFQeMdp2IgnDDrk8y+r
+	 b4vo9bWiHKJF0AJHfrTnGqyVsz0ecuCNT/bpHOAfd+hr/Gv0XDdZ+otYrWOt83c7sT
+	 52kYJ9zWVnCGg==
+Date: Wed, 13 Nov 2024 09:48:32 +0000
+From: Simon Horman <horms@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Shuah Khan <shuah@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, wireguard@lists.zx2c4.com,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 net] selftests: wireguard: load nf_conntrack if it's
+ not present
+Message-ID: <20241113094832.GW4507@kernel.org>
+References: <20241112094828.391002-1-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] samples: pktgen: correct dev to DEV
-To: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, lorenzo@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-References: <20241112030347.1849335-1-wei.fang@nxp.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20241112030347.1849335-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241112094828.391002-1-liuhangbin@gmail.com>
 
-
-
-On 12/11/2024 04.03, Wei Fang wrote:
-> In the pktgen_sample01_simple.sh script, the device variable is uppercase
-> 'DEV' instead of lowercase 'dev'. Because of this typo, the script cannot
-> enable UDP tx checksum.
+On Tue, Nov 12, 2024 at 09:48:27AM +0000, Hangbin Liu wrote:
+> Some distros may not load nf_conntrack by default, which will cause
+> subsequent nf_conntrack settings to fail. Let's load this module if it's
+> not loaded by default.
 > 
-> Fixes: 460a9aa23de6 ("samples: pktgen: add UDP tx checksum support")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
 > ---
->   samples/pktgen/pktgen_sample01_simple.sh | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/samples/pktgen/pktgen_sample01_simple.sh b/samples/pktgen/pktgen_sample01_simple.sh
-> index cdb9f497f87d..66cb707479e6 100755
-> --- a/samples/pktgen/pktgen_sample01_simple.sh
-> +++ b/samples/pktgen/pktgen_sample01_simple.sh
+> v2: load the mode directly in case nf_conntrack is build in (Simon Horman)
 
-Why are you only fixing one script?
+Thanks for the update.
 
-The fixes commit 460a9aa23de6 changes many files, introducing this bug.
-
-> @@ -76,7 +76,7 @@ if [ -n "$DST_PORT" ]; then
->       pg_set $DEV "udp_dst_max $UDP_DST_MAX"
->   fi
->   
-> -[ ! -z "$UDP_CSUM" ] && pg_set $dev "flag UDPCSUM"
-> +[ ! -z "$UDP_CSUM" ] && pg_set $DEV "flag UDPCSUM"
->   
-
-This fix looks correct, but we also need to fix other scripts
-
->   # Setup random UDP port src range
->   pg_set $DEV "flag UDPSRC_RND"
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
-$ git whatchanged -1 460a9aa23de6 | grep 'M     samples'| awk -FM 
-'{print $2}'
-	samples/pktgen/parameters.sh
-	samples/pktgen/pktgen_sample01_simple.sh
-	samples/pktgen/pktgen_sample02_multiqueue.sh
-	samples/pktgen/pktgen_sample03_burst_single_flow.sh
-	samples/pktgen/pktgen_sample04_many_flows.sh
-	samples/pktgen/pktgen_sample05_flow_per_thread.sh
-	samples/pktgen/pktgen_sample06_numa_awared_queue_irq_affinity.sh
-
-Thanks for spotting this, but please also fix the other scripts :-)
-
---Jesper
