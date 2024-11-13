@@ -1,57 +1,57 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADD3201262;
-	Wed, 13 Nov 2024 17:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD018201106;
+	Wed, 13 Nov 2024 17:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731519213; cv=none; b=H15HKBGf1XghPQU+P8goRXeuDQX0PcDm97Qf/64FpUeFmonQY8MulP1EpOcG/dUKTTlV8dT8GUoRF1lckcydfrBcLnC9i5JliG+9TF/kO/NIC+U8yHpbXbmYHzKD/gSUDl1M47UEy3K0q8rJOtyJnzzKtxjV5Ke52KjwlMyRuQc=
+	t=1731519222; cv=none; b=tCVQcf26+ecyxzzwSX7/hHmsK4VNe2EZPlet9HEv/uYalaaO1DPbcSUdhUfDjMRpvbEQchqfTlFWIseD/R7rr0iTtm2MOnhjor+8F+dOwse5z3fAIwUkmnBKQlQ83hh5JRMzw49uMu+qXY8Cs42TZDNqENF6jaLuRnxBv+3cBf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731519213; c=relaxed/simple;
-	bh=KY5nGQ1sAVQr0Mkg7C/TwvPl2QkKuJt5o7PKF8OQLTA=;
+	s=arc-20240116; t=1731519222; c=relaxed/simple;
+	bh=Y7ggVn65s34L44hclSWqs9L7XSAELwhqhlkJzs+KwKU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LflH2j4RsNke3ajVCuBPDL2mba0HMCKWKzGthAv1UzP5xeWk/mX1Xn8KAo7ekoh/4lF3cmKK+Wi+oa4EVFRR4/H3ftQo+t9ubNBvhp8C4uYD9WJMyuNY0m3uraDn1+jjGncAvhFL8qzjCp66HFrEBZpN0lIXtxG5reTdWW8/Wws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z23cE10e; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=UbMXmeBx/BWIJ7nOt7wE6DTsWaj8f+XxgFC5CeYO8sYCC5IhhY23ZxSNpOKsLC9a59/ehjqmD5q0HatEbI0U5rQP7bghBrQw2ElIGbupnCGR0oY6GJuBCmXj3DGZFbymwruNy3peN0CiilO9q6AtiAx53RBaAkVBjJvN+QjNmwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BEFv15SS; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z23cE10e"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20c7edf2872so8455725ad.1;
-        Wed, 13 Nov 2024 09:33:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BEFv15SS"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2113da91b53so53235335ad.3;
+        Wed, 13 Nov 2024 09:33:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731519212; x=1732124012; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731519220; x=1732124020; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mJlRBJcEwuvQhT4VeRCSmuKVjYnGZXZ9h57evQsgFog=;
-        b=Z23cE10eEQjryEyWEqYIMBnKei6cO290c7X5/w/1QG4Dm90O2Q99Erh8yIAkVQoOAH
-         d9XlwLiHaQbzUvxKTFmB235LGDWKb1F9p9me9RZIIJ4bxmPNpeQ+blwIC/H6MRtjwUmL
-         A/178+atd6dI7XT4d7gvF5IreXS4jlyjjk4hgOXI8e0v54Ugk3kfM++FmkccdGN7pPWI
-         cfV/gP7twdJFvRkr8CzDYz93ZckYBq8hJmYvuVtwAq60UnOTINnFxy4BejogYrTyEwNe
-         fqll0eCB40CpXBZpjQRlO1jPxVDQw592/r3ACwZ9VQ8S0ZUYXOvuQzyly2KXhk71btCy
-         mwzg==
+        bh=deUvSBZGMk9qIorja3waJc0OCGFfAoFCRG4VLMZ1kFI=;
+        b=BEFv15SSOiuUM1+HjAJ9+eU7K8oCZP9JV1mCnAoloQPBhoORJ+N0frjJL8zpvu7jVy
+         zxgaUNQHzxgNUi8Qp8JYw8fkTCPtLzFBVBY/0ZlQgJ9Df2ek8vvFyElZAydGKh1Ys3h/
+         8yT8OEMXZ27c73UVTxflXyK521jjxYMUsR68Nyo1a8tDYaMMw8cPCqImweb/xe9mCHP2
+         s/boXxnR6GLglGeVSLfxualVNIbgJG+fXVBjY8Mb6jElOc4L7eHdhIWiex/JL8CqAYxc
+         AMI5+aJC2EFZCZcmJ/8A0CxtpA+wXXKGYcvEa52WyYkNFC7qDOlQ/lPEgqxLucEEfQlt
+         O2JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731519212; x=1732124012;
+        d=1e100.net; s=20230601; t=1731519220; x=1732124020;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mJlRBJcEwuvQhT4VeRCSmuKVjYnGZXZ9h57evQsgFog=;
-        b=TiZCCCpaawxxyVOSVT+V/7pkszlZyybEceOL2iLacnFZgbflO82/5n3waOyNRZABCS
-         XdNTvvw420roKJSlbySO1H0QBzQ/SWHPn9JiDXcDg73PWqshoLzJRODdELMFVFdBV2T2
-         xKC9+KQbRWs6V28ohYNrNOGprmUEd4uR6IUh//wxvYVsGQ7ygAj8j9WuoGZNk2iFQ3eY
-         sooTo4RO7KYMKbdVC0pm0Vh6dvJeRsmwhqTub6635oDuAoc/KA4vNeBMijgF3euTOPhj
-         EpJl9c/VCQL0EhsW9tFO5ojc58qPg3bO7bXMYveBdg+y06iAtezr9U90Gc2S+ewoE6Dy
-         ohYw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1BOiJcZttm4br/GeCy9Zxj176zMr/vXEyJCIPiD5FP9LIuyMEhS9ozgk5aunTPyyY8M0CXpkS@vger.kernel.org, AJvYcCXLdyFrVk4Uk4sCHs7HR1YwnLISFIcQ2SqS9STB9VW0WCuGaBziEXEdg4Bnkzt4if3XGebvJ7g0nCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDDvak+s+FhQle08PkZUPnv5LI/vysPgShHbe/+lXmWvOx5m5n
-	PQaXtfDfzvmIvSBkt9iRdpUGALRGdyfyXMNkR62kBqL9EgL7KEEy3OW2wUfH
-X-Google-Smtp-Source: AGHT+IFU7UFJttX+KcE1oTziNc1qZYNE+s3S6bAIjvB4oNoLvLtEpLVN5RPTmcWc7kAdxo+cVTXAfQ==
-X-Received: by 2002:a17:902:ce86:b0:20c:cd01:79ae with SMTP id d9443c01a7336-211c0fc12a4mr2331485ad.24.1731519211658;
-        Wed, 13 Nov 2024 09:33:31 -0800 (PST)
+        bh=deUvSBZGMk9qIorja3waJc0OCGFfAoFCRG4VLMZ1kFI=;
+        b=YoevnbyjY0yzGh3Ctlh3AYc28Dfo7/4ffyKz+Jjna/VGmZb6xrz23dM0FPUAkpt6Q0
+         DN7CQrxPllGs1YDvwK4djJSodecoy9VGDYfDCwr9Z+0YnuHDUGsEhizFlCzeBLz4QYdY
+         O8ibRAHrZg3VwrTJhrEcuNaTrBeUvatdNiOp6OGNoQLj7mMhAgAPaDhLR9ROFCdnwDCg
+         DUBbvI1Y9g8RIybrGHBppQE6MwZ0pkfgrk+KKexFrEcYHrugYNUlZeCwZGiO5+KD49lk
+         EV7gbmZcfW6WUGi1oyf2bbkOcHkr4nd+Wf+n3qVppjvGN5kpeZsvVMXLwqkPfMrYVGrd
+         JE5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVZH6Mz6pNqBWHv1MUcYIazl2/mUxPJmgCnW2pQBOL5FUMt1J0A0ygwQFJDywdJ714BAkMCWesUwAQ=@vger.kernel.org, AJvYcCWVtrNraUpO3t4EpKYlIZnl02BfIVgvJCKWwNwNgsGDKmEWQnYErqBTN9yCd85xDrUFk/GE02/p@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+cmk++ltHeEdYlz1SBpckUb3kLLSacLhFHNkgbnJ5a1EGmA3p
+	pW1aG2z+0ddY79zAt5KdptANvULJ7tLRWoucW+7JSSbr7nBF6QG2
+X-Google-Smtp-Source: AGHT+IHdtEHciLFUClZY3RmcxL/NP2gFz+MEQyuFDZ5wCx0AxuicbQIW+OPt+YDqasSDlEUze0hIpA==
+X-Received: by 2002:a17:902:ce89:b0:20b:a10c:9bdf with SMTP id d9443c01a7336-21183d67d05mr307268665ad.32.1731519220204;
+        Wed, 13 Nov 2024 09:33:40 -0800 (PST)
 Received: from ap.. ([182.213.254.91])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc7df5sm113140765ad.19.2024.11.13.09.33.23
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc7df5sm113140765ad.19.2024.11.13.09.33.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 09:33:30 -0800 (PST)
+        Wed, 13 Nov 2024 09:33:39 -0800 (PST)
 From: Taehee Yoo <ap420073@gmail.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -92,9 +92,9 @@ Cc: kory.maincent@bootlin.com,
 	willemb@google.com,
 	daniel.zahka@gmail.com,
 	ap420073@gmail.com
-Subject: [PATCH net-next v5 6/7] net: devmem: add ring parameter filtering
-Date: Wed, 13 Nov 2024 17:32:20 +0000
-Message-Id: <20241113173222.372128-7-ap420073@gmail.com>
+Subject: [PATCH net-next v5 7/7] net: ethtool: add ring parameter filtering
+Date: Wed, 13 Nov 2024 17:32:21 +0000
+Message-Id: <20241113173222.372128-8-ap420073@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241113173222.372128-1-ap420073@gmail.com>
 References: <20241113173222.372128-1-ap420073@gmail.com>
@@ -106,10 +106,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If driver doesn't support ring parameter or tcp-data-split configuration
-is not sufficient, the devmem should not be set up.
-Before setup the devmem, tcp-data-split should be ON and
-header-data-split-thresh value should be 0.
+While the devmem is running, the tcp-data-split and
+header-data-split-thresh configuration should not be changed.
+If user tries to change tcp-data-split and threshold value while the
+devmem is running, it fails and shows extack message.
 
 Tested-by: Stanislav Fomichev <sdf@fomichev.me>
 Reviewed-by: Mina Almasry <almasrymina@google.com>
@@ -117,6 +117,7 @@ Signed-off-by: Taehee Yoo <ap420073@gmail.com>
 ---
 
 v5:
+ - Change extack message.
  - Add Review tag from Mina.
 
 v4:
@@ -127,52 +128,33 @@ v4:
 v3:
  - Patch added.
 
- net/core/devmem.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/ethtool/rings.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 11b91c12ee11..3425e872e87a 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -8,6 +8,8 @@
-  */
- 
- #include <linux/dma-buf.h>
-+#include <linux/ethtool.h>
-+#include <linux/ethtool_netlink.h>
- #include <linux/genalloc.h>
- #include <linux/mm.h>
- #include <linux/netdevice.h>
-@@ -131,6 +133,8 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
- 				    struct net_devmem_dmabuf_binding *binding,
- 				    struct netlink_ext_ack *extack)
- {
-+	struct kernel_ethtool_ringparam kernel_ringparam = {};
-+	struct ethtool_ringparam ringparam = {};
- 	struct netdev_rx_queue *rxq;
- 	u32 xa_idx;
- 	int err;
-@@ -140,6 +144,20 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
+index ca836aad3fa9..3f3be806c6c8 100644
+--- a/net/ethtool/rings.c
++++ b/net/ethtool/rings.c
+@@ -258,6 +258,19 @@ ethnl_set_rings(struct ethnl_req_info *req_info, struct genl_info *info)
  		return -ERANGE;
  	}
  
-+	if (!dev->ethtool_ops->get_ringparam)
-+		return -EOPNOTSUPP;
-+
-+	dev->ethtool_ops->get_ringparam(dev, &ringparam, &kernel_ringparam,
-+					extack);
-+	if (kernel_ringparam.tcp_data_split != ETHTOOL_TCP_DATA_SPLIT_ENABLED) {
-+		NL_SET_ERR_MSG(extack, "tcp-data-split is disabled");
-+		return -EINVAL;
++	if (dev_get_min_mp_channel_count(dev)) {
++		if (kernel_ringparam.tcp_data_split !=
++		    ETHTOOL_TCP_DATA_SPLIT_ENABLED) {
++			NL_SET_ERR_MSG(info->extack,
++				       "can't disable tcp-data-split while device has memory provider enabled");
++			return -EINVAL;
++		} else if (kernel_ringparam.hds_thresh) {
++			NL_SET_ERR_MSG(info->extack,
++				       "can't set non-zero hds_thresh while device is memory provider enabled");
++			return -EINVAL;
++		}
 +	}
-+	if (kernel_ringparam.hds_thresh) {
-+		NL_SET_ERR_MSG(extack, "header-data-split-thresh is not zero");
-+		return -EINVAL;
-+	}
 +
- 	rxq = __netif_get_rx_queue(dev, rxq_idx);
- 	if (rxq->mp_params.mp_priv) {
- 		NL_SET_ERR_MSG(extack, "designated queue already memory provider bound");
+ 	/* ensure new ring parameters are within limits */
+ 	if (ringparam.rx_pending > ringparam.rx_max_pending)
+ 		err_attr = tb[ETHTOOL_A_RINGS_RX];
 -- 
 2.34.1
 
