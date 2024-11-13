@@ -1,148 +1,109 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CFF201036;
-	Wed, 13 Nov 2024 15:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B973A158A2E
+	for <netdev@vger.kernel.org>; Wed, 13 Nov 2024 15:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731510685; cv=none; b=YHy8NbPOkPGMn2ixNivEZHrVHqO+ucM368DesHX62OoqT1uQP/NyFXMwOiAqBmvPYoxyB3ibyY9250S4jUtymjpJu0a8ccD/30AH0TTdDuYK7SZufJyQ+aoeQGDUufxQ9tsDDboPK3leg4aOFL8nx3sF/9yJvIfHmtWAq9lzvW0=
+	t=1731510968; cv=none; b=QZ5CGX+iTJ0ewx3ukU/7kAvBd8Ti6DfrYdh47goTrqtIyd2SvmPXlTcPUV32omf891hxzpKIc19uudBR9ZzXS/7x53BIYwpdXMWry+1bpv5Ymo9PDBZ3atNLDxCpH4yC5x4Iw+y5zxZi80vJ82Zt0isgAl8KWnJPBoX6e4jYa/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731510685; c=relaxed/simple;
-	bh=7wSSxIUiXUM5F3CnS/GS0ih6ZK6ssmZ3fx3f8y0jNi0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZzaqvfRx/jb+XDM15ZkPQDWC7maU9jqMnfDLNFuVnxw99MWJCBrnuJRZOa768nenrH7jLmda5fwXN0YuxYvyVhYP2Rkd0Y4o59cECHgKSsJtcPVLHLHY+v2tWQO9ph2pFdmHwuTf+lk3kJK4Mz7IoSqY00B2P3dampf2oMTikHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa1f1f2d508so185377566b.2;
-        Wed, 13 Nov 2024 07:11:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731510682; x=1732115482;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zxJL6/w7ib7tor6B/awKjwacI8QkLWn7spqQywUygr4=;
-        b=T7hIDV4+icgtau/zZ/DMVhNWSUcjXpD6yNKrrTyCQh1JuIifz/GgBVwh4Ohmi/7Uaz
-         15E5Ni34rDzseG9DxuRLxlFUBJFuqpwO+j5DwpUVx+GiJdT80q2EAT33+5SnTTXwPW6q
-         EdKWsfF20FTZaQ11V2PoplhxL9a7W2+AkAN7jlRYLKG++e6lyVB2MPJH1PaTPr4jlUEC
-         45/ZRpZmZaQc2F3V+TEyhYU68/BbXC4CmjiFpNUnv29kHMjVDpcHdHozG/7MBjt71zjw
-         iJQGJnQ56zVT50NMfWxOit1T4TogWn/vFwQV81gjWtDnP/v6yLENpvdjtUBmF+Bv2G57
-         bPwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYEoqF8+0qwDEI4DL8KKPobYd2DOebmCbE2wxd/mHsVGr6KmR0uN+ir3hN7LbX0kOx8nOEM2yTwlAckGdRuMbs@vger.kernel.org, AJvYcCVkFUgNHgMu0zF0uEXKbQzR0C647JqglOBtl+5Cb/Hh7NoqXVZSmnf8twdM9gJUOwZIbNl4LrHnUmX3s+CH@vger.kernel.org, AJvYcCWdolYDYnLssxrwbHPFhCIhKCcC0Nx4e3NegcjJguwGLTQNsRLD3kImSIHI7SvkOCh+mXdeGhOi0f0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCxHhrpWiqxZaBoQCC7U8NWBM2JoWy4BUyu1jPT/z8ooPzhszL
-	fjZWGlB3E9f0rMnxf3eb8FrE6WIHYaQs54u+zCj2S30Xhrlm6Qvb
-X-Google-Smtp-Source: AGHT+IEoLyfigi2UbiHSBtCcn9AV7B2W8zEBzkfRzr2dXQX1hG/gGL44SEj+d1F3HrwKO/03w2g9Ag==
-X-Received: by 2002:a17:907:944c:b0:a9a:8a4:e079 with SMTP id a640c23a62f3a-a9eeff44660mr2145146866b.31.1731510681944;
-        Wed, 13 Nov 2024 07:11:21 -0800 (PST)
-Received: from localhost (fwdproxy-lla-002.fbsv.net. [2a03:2880:30ff:2::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03c7cabbsm7293671a12.79.2024.11.13.07.11.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 07:11:21 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 13 Nov 2024 07:10:55 -0800
-Subject: [PATCH net-next 4/4] netconsole: selftest: Validate CPU number
- auto-population in userdata
+	s=arc-20240116; t=1731510968; c=relaxed/simple;
+	bh=1zoS8rDp5x/H924HIa6uR4Khr2qMXmzRoI9O7XGyd2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S8KKf8qFj7UrpLBXT9qHgt2FgVW7fni0fVZ49cKANnVcQxqagRLbymJSfa+2kWjjrH1Sk+pGw9lA7rC5u55dMUEPRBefkFSbgWiu8rcSDC584ZUXU0EQxwiHZYe37XGegOnugoEaaI5huNCLAGW5eTHIc8rqk3ZsUkp9a1I/IyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V9Gx51Pd; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V9Gx51Pd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A7D99E000B;
+	Wed, 13 Nov 2024 15:16:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1731510963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1zoS8rDp5x/H924HIa6uR4Khr2qMXmzRoI9O7XGyd2A=;
+	b=V9Gx51PdYcAS1GkT8U+2dlq4tJO2sjR9rSexzCOOuwxnXltRbnozX7BuDHeCHE7EFxK6QL
+	pA11QWQYGhvUaWXutV4as49N2iVAQ2H9+YjMWrUD5DkAoX4kcO6SunW/5+ETr+SdXmqhIG
+	2jwiNC1J5qRtVuPi20O3tixfyUjeTt5qn2UgFfPCpCONDjChE9DL8PQxll/BHgz+Dh9eRi
+	N/BxoXYG5BW+tSpoV3vjRTXOVbe4jTik5bs3MsIwMlVTfilfsFvsWRuSpO4esJekhZ1B9t
+	BtSUtEFSsqrvNxaCYoiZG3ZC6pzt3jKbaKnwiT2ytes0JcHY6R7LfVqR+RvZzw==
+Date: Wed, 13 Nov 2024 16:16:02 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Subject: Re: Testing selectable timestamping - where are the tools for this
+ feature?
+Message-ID: <20241113161602.2d36080c@kmaincent-XPS-13-7390>
+In-Reply-To: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
+References: <ZzS7wWx4lREiOgL3@shell.armlinux.org.uk>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-netcon_cpu-v1-4-d187bf7c0321@debian.org>
-References: <20241113-netcon_cpu-v1-0-d187bf7c0321@debian.org>
-In-Reply-To: <20241113-netcon_cpu-v1-0-d187bf7c0321@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, max@kutsevol.com, thepacketgeek@gmail.com, 
- vlad.wing@gmail.com, davej@codemonkey.org.uk
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2328; i=leitao@debian.org;
- h=from:subject:message-id; bh=7wSSxIUiXUM5F3CnS/GS0ih6ZK6ssmZ3fx3f8y0jNi0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnNMGOZOdLZzudSzkfczgpbLOO/6uj8tFPcG7Of
- HLb1ouaDDGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZzTBjgAKCRA1o5Of/Hh3
- belgD/9MXc6rZacHAL5a6Pw8kYf5u9hon846XtxERP1sNGQjSjmWiMP2V0KfSMLk5ZvHoFKKcQR
- bpP9ExABuvB3TKLEPd5Foldv7UOybHnj+255l5mHYh8zBBsDDlj2r0KSkegI0+dRyJnom7L87+e
- B7QJGapMQOZiXWoVeuFPb4dlp/ls0f/ZMyIynfJC4VV/G/mnAIPjdQYE9XiQK9b5ISbxGL1EYds
- zLZA9vmS9sw75WXjIGrXBX86UFxtK1pZ1vDqDYxA61YFjucv8fYw/gQrGZQ7DJMFLljNuur1Qcs
- KhEqfNOMCSLJ1/zQbFlCDrB3dvJJREFS02hY+q7bWnygKouaOsZVTY2l9qiZsiSg+FIKuJ3ilWI
- 3EXX3o163FxKuWTJOqRXv5/N9Pe5jEKYfhoQ6O12eYuDJoUKLj2pmx1GpxeG2zUdrJB+0GqFDWk
- U4m+hcSpOwcCXP3CLGfAC7DgmsIhYA5jmtXBQc8wpNt6UC/mZCQg/z1pqTF4sw/W71I4du91WO2
- cZCFn76yqO+5ZgSSqnWM/JelQE0IYWjCGFVPDL+vBZi+jceioXYMZLl4S1tBGo+/FIwFNA1Z+9I
- x+5FnBSn27Hb8LXecNdZiaMt+bXo+8LpZFsxZmfYte/n3jIbvbww6kFfhbEJdSRE3fRyOdWzgVR
- 0gtaa+bvWxbtz2w==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: kory.maincent@bootlin.com
 
-Expand the existing netconsole selftest to verify the functionality of
-the recently added CPU number auto-population feature in the netconsole
-userdata.
+Hello Russell,
 
-The changes include enabling the "populate_cpu_nr" option on the
-netconsole target before sending the test data, and validating that the
-received data on the listener side contains a "cpu=" entry in the
-userdata, indicating that the CPU number was successfully
-auto-populated.
+On Wed, 13 Nov 2024 14:46:25 +0000
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
 
-This addition to the netconsole selftest ensures that the new CPU number
-auto-population feature works as expected and helps catch any
-regressions in this functionality.
+> Hi Kory,
+>=20
+> I've finally found some cycles (and time when I'm next to the platform)
+> to test the selectable timestamping feature. However, I'm struggling to
+> get it to work.
+>=20
+> In your email
+> https://lore.kernel.org/20240709-feature_ptp_netnext-v17-0-b5317f50df2a@b=
+ootlin.com/
+> you state that "You can test it with the ethtool source on branch
+> feature_ptp of: https://github.com/kmaincent/ethtool". I cloned this
+> repository, checked out the feature_ptp branch, and while building
+> I get the following warnings:
+>=20
+> My conclusion is... your ethtool sources for testing this feature are
+> broken, or this is no longer the place to test this feature.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- tools/testing/selftests/drivers/net/netcons_basic.sh | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Yeah, it was for v3 of the patch series. It didn't follow up to v19, I am u=
+sing
+ynl tool which is the easiest way to test it.
+As there were a lot of changes along the way, updating ethtool every time w=
+as
+not a good idea.
 
-diff --git a/tools/testing/selftests/drivers/net/netcons_basic.sh b/tools/testing/selftests/drivers/net/netcons_basic.sh
-index b175f4d966e5056ddb62e335f212c03e55f50fb0..92538a188f0696b3e54071d1d32c7b2e523db839 100755
---- a/tools/testing/selftests/drivers/net/netcons_basic.sh
-+++ b/tools/testing/selftests/drivers/net/netcons_basic.sh
-@@ -153,6 +153,16 @@ function set_user_data() {
- 	echo "${USERDATA_VALUE}" > "${VALUE_PATH}"
- }
- 
-+function set_cpu_nr() {
-+	if [[ ! -f "${NETCONS_PATH}""/userdata/populate_cpu_nr" ]]
-+	then
-+		echo "Populate CPU configfs path not available in ${NETCONS_PATH}/userdata/populate_cpu_nr" >&2
-+		exit "${ksft_skip}"
-+	fi
-+
-+	echo 1 > "${NETCONS_PATH}""/userdata/populate_cpu_nr"
-+}
-+
- function listen_port_and_save_to() {
- 	local OUTPUT=${1}
- 	# Just wait for 2 seconds
-@@ -185,6 +195,12 @@ function validate_result() {
- 		exit "${ksft_fail}"
- 	fi
- 
-+	if ! grep -q "cpu=[0-9]\+" "${TMPFILENAME}"; then
-+		echo "FAIL: 'cpu=' not found in ${TMPFILENAME}" >&2
-+		cat "${TMPFILENAME}" >&2
-+		exit "${ksft_fail}"
-+	fi
-+
- 	# Delete the file once it is validated, otherwise keep it
- 	# for debugging purposes
- 	rm "${TMPFILENAME}"
-@@ -254,6 +270,8 @@ set_network
- create_dynamic_target
- # Set userdata "key" with the "value" value
- set_user_data
-+# Auto populate CPU number
-+set_cpu_nr
- # Listed for netconsole port inside the namespace and destination interface
- listen_port_and_save_to "${OUTPUT_FILE}" &
- # Wait for socat to start and listen to the port.
+Use ynl tool. Commands are described in the last patch of the series:
+https://lore.kernel.org/all/20241030-feature_ptp_netnext-v19-10-94f8aadc9d5=
+c@bootlin.com/
 
--- 
-2.43.5
+You simply need to install python python-yaml and maybe others python
+subpackages.
+Copy the tool "tools/net/ynl" and the specs "Documentation/netlink/" on the
+board.
 
+Then run the ynl commands.
+
+> Presumably there _is_ something somewhere that allows one to exercise
+> this new code that Jakub merged on July 15th (commit 30b356005048)?
+
+You can indeed test this merge with mainline ethtool.
+Specially the commit 2dd356005901 which changes the default hwtstamp to MAC=
+ for
+newly supported PHY PTP as you requested.
+With your marvell PTP support patch it should still report and use ts info =
+from
+the MAC.
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
