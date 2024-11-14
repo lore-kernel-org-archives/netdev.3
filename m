@@ -1,110 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6220133987;
-	Thu, 14 Nov 2024 16:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937CA133987
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 16:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731600137; cv=none; b=V0Vc0ZrEEc/TsFaRVtdiuV2FqVWYubn4NXKlPku7XYYMeGmTqiTcA/meFEIk5O7kc8QAtpK4toOmu7zqYbehDArPQTwvQ3QXfaA8L188uq5XmzTmqs2YJZH0Bf5fyaYIAj3piU9uyGDLScpcp7Mk84giV4iWGAaASchZ05XaKu8=
+	t=1731600211; cv=none; b=u3Wq9CYPKkQqWgA6SV+oedwZyasDS6lE9lBmyEXQQaVTotPJJsTgbEWTbAfpBzObaX8zSjtEbbdTf+mzWIFtixOf4xzFfS084rnnQ4d/Ho04h8feiFmHpLJts9KWLfVrzWHhTmXBPd2hFzBQkqt/8U/fPMqmq9tyDdbMQrrn9to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731600137; c=relaxed/simple;
-	bh=CLE+gdbwkUGWxgVL/DfhT8L9omEJZAlZq2aorhrIAow=;
+	s=arc-20240116; t=1731600211; c=relaxed/simple;
+	bh=jcb9INSeS+o4efk8lCAVbHCe4vqWALUQyWP3Atueu9w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WCw92uAqMMxAeQjVl7ZwDSElJ4Y4L27dkhcxL2TT4msyHKnTUWDa5EXHLO7OZtQPRNeBGggQnl6Ju2msH0kl58DyWkH9LHzsXNVU0S6c9f+YjgQISgSd49GuQh+57f1ykdguk0OaIEDd37A4k/A9jjRteBpEAWSmGWZpE1Iop6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VDl0yqS3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=S50o5DSf2fCSOCnmZiAu+xWMZ/ScE/tNEaKt3cKnJhGFlNsYo4/oD8tVLRpsVaOxDLbPQcRknBEdMk4anStGYjr6wJ5rHh0ASskXPEQTi6Mu19aQ7KuZlf/ao2+Pps2obpAI6r1VclTqBFhhvNiRvceDw6UoZMTPnqESs01xMW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SAK9fHz1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VDl0yqS3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFA7C4CECD;
-	Thu, 14 Nov 2024 16:02:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731600137;
-	bh=CLE+gdbwkUGWxgVL/DfhT8L9omEJZAlZq2aorhrIAow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VDl0yqS3yS2D3oGna4mh6TH6YC/T+22WILn0j6PiK4E7vghIzflz4uhXyAxYY5MdO
-	 LepEXXmlDxd/tK5YiwY7HdF4AyACk96C4NUIejRVytBSvbjAgT5S3CQfiW0F8Kn53X
-	 nhQyOFRN8pDPhsPLIGw+6GlBua7KrYfVpn2BvTc6NtLXBBzQWOxPrZXYik8pGYJ8PA
-	 Phv6GsuBnRJ/37Z4T+oec6kp6EZnrOg0XfN1b1sMvPkgz3QYNKpAk9ygqJDqw4ioyB
-	 DKOex+tJkIkeH0PENmcrUV6H20f3ukmgesA+H18Td0NpeTTV7LdkZ2qsksxiC6hi53
-	 4jgMoE1+vSIlg==
-Date: Thu, 14 Nov 2024 16:02:14 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	Linux-MM <linux-mm@kvack.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
-	Aishwarya.TCV@arm.com
-Subject: Re: [PATCH net-next v23 1/7] mm: page_frag: add a test module for
- page_frag
-Message-ID: <ZzYfBp0IO1WW6Cao@finisterre.sirena.org.uk>
-References: <20241028115343.3405838-1-linyunsheng@huawei.com>
- <20241028115343.3405838-2-linyunsheng@huawei.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SAK9fHz1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731600208;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PAq1VgZl8277b2O0WHyEF4cn1whtIrQG1NG+aLkeoAA=;
+	b=SAK9fHz1Uhkt5Fa8Mmsnr9abs8aa8jiTC8vKerH1w0IG7i70tXAaEUwKWUV8FpSOKjttiv
+	2jHEX+tCdecEFoE8gkxB1sryTLIzNrXx/aKJXceiaZyKzMu52KywfWRboR8sPtOf9cKjXb
+	ya94qOcW/gtPgNMOwme9DfXiZC1zhEI=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-179-3lLaw1ZJNCuMUKDDMbLqag-1; Thu, 14 Nov 2024 11:03:26 -0500
+X-MC-Unique: 3lLaw1ZJNCuMUKDDMbLqag-1
+X-Mimecast-MFC-AGG-ID: 3lLaw1ZJNCuMUKDDMbLqag
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-53da09b1ca1so671448e87.3
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 08:03:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731600205; x=1732205005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PAq1VgZl8277b2O0WHyEF4cn1whtIrQG1NG+aLkeoAA=;
+        b=wzlT95fVQgqJ3gDQ20FJJAtbqs1u3nQh5qyHKXUKmLn1a3DSe4GhK+P5syfDUmX3nx
+         NO7PXo87o5vT58gKy8k32M+wRLAvhExtwkTw1sf7VMjDFTuAzUveJIk59R/PfHnv9neH
+         /Jsf2TeMWsFl9mwPbQZoXEbTlGBO7VvYAny7wUo2PijMKQzlDPKtk/2yGBn14Yq4bBsw
+         44xpSUkZ+OgyPATWTiBiKynp+VXGbs+4Mgp4bUIXUX8MYTUttOsGz/UAHIO1VHBNcLPN
+         laN9qRLdvllOqVBxtiwlAKfumm0/7+azZ9mr3GINJ4Q5iuXs3xHd205uMZEG2UNaAJGy
+         xI+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXzjrXK6fh+jafvkvaJhAnTfnVVPy7c8XHK3xRMWtFAPUqpPCbaafj+oIRKwRKOYuH5IBKSEhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfi+9LDVzcKOrec17yBLDQE9Mr3kdb2eDhXO2iMPAaOYwIOoKZ
+	z+1KVCANReh7z0UYLAa1v0knFcR8GNu+dTAhqIVsmoWlGJhiXE0jD/lAdgZenefQAUQSw255O8E
+	EgsAjwZ8gMipZxyqQzdAePbW1+/QGZO1d1A/fbdK8lnZNaLE11iPYPQ==
+X-Received: by 2002:ac2:4c4f:0:b0:53a:16b:f14f with SMTP id 2adb3069b0e04-53d862c5a61mr12562605e87.19.1731600204442;
+        Thu, 14 Nov 2024 08:03:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvbxPIAEHdn1mPbERhtCD7kSP6yeYuHglo67Z1qmJWvSZ/FPH+ZbCoGPmAtUoM379TrofBvw==
+X-Received: by 2002:ac2:4c4f:0:b0:53a:16b:f14f with SMTP id 2adb3069b0e04-53d862c5a61mr12562551e87.19.1731600203888;
+        Thu, 14 Nov 2024 08:03:23 -0800 (PST)
+Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da265f28sm28577095e9.17.2024.11.14.08.03.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 08:03:23 -0800 (PST)
+Date: Thu, 14 Nov 2024 17:03:21 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, coreteam@netfilter.org,
+	netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH nf-next 1/5] netfilter: ipv4: Convert ip_route_me_harder() to
+ dscp_t.
+Message-ID: <799ab09e1cbd8b2070f8891518647352c82c3b02.1731599482.git.gnault@redhat.com>
+References: <cover.1731599482.git.gnault@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0MyQI+clfZpBVvMG"
-Content-Disposition: inline
-In-Reply-To: <20241028115343.3405838-2-linyunsheng@huawei.com>
-X-Cookie: System checkpoint complete.
-
-
---0MyQI+clfZpBVvMG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1731599482.git.gnault@redhat.com>
 
-On Mon, Oct 28, 2024 at 07:53:36PM +0800, Yunsheng Lin wrote:
-> The testing is done by ensuring that the fragment allocated
-> from a frag_frag_cache instance is pushed into a ptr_ring
-> instance in a kthread binded to a specified cpu, and a kthread
-> binded to a specified cpu will pop the fragment from the
-> ptr_ring and free the fragment.
+Use ip4h_dscp()instead of reading iph->tos directly.
 
-This is breaking the build in -next on at least arm64 and x86_64 since
-it's trying to build an out of tree kernel module which is included in
-the selftests directory, the kselftest build system just isn't set up to
-do that in a sensible and robust fashion.  The module should probably be
-in the main kernel tree and enabled by the config file for the mm tests.
+ip4h_dscp() returns a dscp_t value which is temporarily converted back
+to __u8 with inet_dscp_to_dsfield(). When converting ->flowi4_tos to
+dscp_t in the future, we'll only have to remove that
+inet_dscp_to_dsfield() call.
 
-KernelCI sees:
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+---
+ net/ipv4/netfilter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-***
-*** Configuration file ".config" not found!
-***
-*** Please run some configurator (e.g. "make oldconfig" or
-*** "make menuconfig" or "make xconfig").
-***
-Makefile:810: include/config/auto.conf.cmd: No such file or directory
+diff --git a/net/ipv4/netfilter.c b/net/ipv4/netfilter.c
+index e0aab66cd925..08bc3f2c0078 100644
+--- a/net/ipv4/netfilter.c
++++ b/net/ipv4/netfilter.c
+@@ -44,7 +44,7 @@ int ip_route_me_harder(struct net *net, struct sock *sk, struct sk_buff *skb, un
+ 	 */
+ 	fl4.daddr = iph->daddr;
+ 	fl4.saddr = saddr;
+-	fl4.flowi4_tos = iph->tos & INET_DSCP_MASK;
++	fl4.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(iph));
+ 	fl4.flowi4_oif = sk ? sk->sk_bound_dev_if : 0;
+ 	fl4.flowi4_l3mdev = l3mdev_master_ifindex(dev);
+ 	fl4.flowi4_mark = skb->mark;
+-- 
+2.39.2
 
-(see https://storage.kernelci.org/next/master/next-20241114/x86_64/x86_64_defconfig%2Bkselftest/gcc-12/logs/kselftest.log)
-
-and I've seen:
-
-  ERROR: Kernel configuration is invalid.
-         include/generated/autoconf.h or include/config/auto.conf are missing.
-         Run 'make oldconfig && make prepare' on kernel src to fix it.
-
-make[3]: *** [Makefile:788: include/config/auto.conf] Error 1
-
---0MyQI+clfZpBVvMG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmc2HwUACgkQJNaLcl1U
-h9Db9gf8Cr2HGJXLOLGXW8Noo9DxYlVt3elXI60b8tNmifJUKessfHXguQp3P1N4
-zOEibYMbPJb1psJo7B0xpb50i4BML30rUBm2vH4ZILQX8IMafE/y2L0vfJ4+kbhz
-HMMaZtkYMlePGIK25hApP53VfsEPDwdqOkTBJTksOxf0xLG3ZIQcguwnlZldxrZu
-5YfGkL85wLRoiOrNdqUR5lhl7hrV1YpLsrSeKfFs3fhAMgTrcmHLEpTYHtjo/caz
-+V2b6+5SlF46vd0d0h8hz92i26LSTt/14K4ZXGQHGCVd2NmO7rmu6Bd6YbwGPVLA
-e17YBlDrGC1jnnuLNiDpZtBtN6VdJA==
-=MZrU
------END PGP SIGNATURE-----
-
---0MyQI+clfZpBVvMG--
