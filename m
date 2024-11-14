@@ -1,100 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB411F8917
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 11:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FA31F8934
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 11:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731583980; cv=none; b=JuNGXKdrikqhpp00006gzAyxMywxG7GG3J+krxQpaXVgRWxb0b0VzDqCzHgtrxJ1zNSrQg1wXpBbUQc0YK4zSWIjtZNA1c+YzI4KIRo286IKyWSpNgay5+HFsbklHyM1kMwqx0i6U6IeLuM9YMYALQcsxBVOQiwnVpANsDNMdPU=
+	t=1731584183; cv=none; b=tQGfxEHt5dHT76o1HUdLTlDVLNqSeTJVQpmC8aH6zaVwHw+d0u24bTYRNUO9iNqHJzw8PFfhmPdulLMP5XCSG/boLDFlohPXjWqSV2WZALUVJnu1/wmKlQEnYXxamLymu/KWJNAiFCwgd2WazDMi0/r0VaikgT4gqNW12w7iQcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731583980; c=relaxed/simple;
-	bh=V39RIN2jCDCxaKnoONcb8DL4UIqTets440Hul9Wz37k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KBT4owtXQC4ffpRoR7Hx15EkeWqNuB+EyL4WsB0urXSQH+Dd/BQkKfmpf+ZGz7pehuNRu1ZJAKVX5DFIDw1EA/LX+/wn/RkoTfK6OAfhb+u4OmorQoOuHFIF6JFm8A2UhM6ue0462mhOTrppCtMK7mEojFmhAGh4ZoG2PW+JTmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPDDBUwb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731584183; c=relaxed/simple;
+	bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YCpZKKq3FStS5QjnvExGmLt8QmU6UWaCAnSOXyq2INbvDArhTNyusjT4+SnvEZPIRGRvL9m//qN6QSmLvq0UqXPUGGfjxo1DS71MnQ7dhlstnZOmzFjVnqhHUyWPBnUrH4+NRXj4UriHYTcaMOLHEICwMo+2E5DrmnEDqIymMQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzDdfY+o; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPDDBUwb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ED0C4CECD;
-	Thu, 14 Nov 2024 11:32:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731583979;
-	bh=V39RIN2jCDCxaKnoONcb8DL4UIqTets440Hul9Wz37k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FPDDBUwbVx22gySud/IB4lNvx0g7sPasPnMBo8rV0XdQukYHmMMzK0rmjmmmAzt/c
-	 AriG3AaWS+nCttT+1J+FOlNg9dXpXQ5U7Id2a0Bb0ik1SYpFnH6/XmdisEwgJHNWJ4
-	 z4ImRmMOr4wRsGWtUl7SgWIhs6j+hrl+83FZBnECVF1o69oxKyxYEQmMM5zZzKyquH
-	 vdUsqYadiCcyjAFqXFppKCJENcTd+junAjWBjnJ4K3Sl5ni2cdLcFvNF7+bKa2YF3q
-	 +AEaX7l11qU7kkDuJ4nsrV8AKV46kn431GxDbWt3YimYs4d442QG+P86NUTozv0WaP
-	 Jn77kLKfRq5ow==
-Date: Thu, 14 Nov 2024 13:32:52 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: jbrandeb@kernel.org
-Cc: netdev@vger.kernel.org, jbrandeburg@cloudflare.com,
-	intel-wired-lan@lists.osuosl.org,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net v1] ice: do not reserve resources for RDMA when
- disabled
-Message-ID: <20241114113252.GC499069@unreal>
-References: <20241114000105.703740-1-jbrandeb@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzDdfY+o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731584181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
+	b=OzDdfY+ok5NpvFPNXGK4N6VdEfmVNtvUAMOq/g9xKphdC4noUi3efSt0W9qF+S1V+4zorU
+	BzosuEBgD7aduNSpv8ybGm75cO68BDpv8ac8kHhC3OcGGka5iGGLFcHQ2bLoOCdSmEpWtL
+	asODZciWH+YbEkZoH0o2tENQpk1pj28=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-sgsr1yrWNbq-XTYX9KB1Rg-1; Thu, 14 Nov 2024 06:36:19 -0500
+X-MC-Unique: sgsr1yrWNbq-XTYX9KB1Rg-1
+X-Mimecast-MFC-AGG-ID: sgsr1yrWNbq-XTYX9KB1Rg
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-71e65e09f8bso576216b3a.2
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 03:36:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731584178; x=1732188978;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
+        b=MCiHGCj4loiEyfhDhV7lG5lJkAg3cWh2lwux3HJSWrqC02cIC9JhRWe7qGv2xSVk6Z
+         ooL9mCsImR+XC+nWepGInomAS565Kd5km3q+jycz0yubye5ot71DpTNOLFvaQ3xUBJbo
+         T8mRMWd+KAWtezHFDsk+D1ijYcGu4DY/wYc1ZoP8T+aT+JDj1kMSKyEKuM7Re6FjLOAN
+         Uy9uY9gEEC9x8e0BycB/9ORp7P8yrQWDDarXYFCbPdSrps60m70Pz+YETOQudjPzID5S
+         gYXL67ECMrfDL6DClL5mfQdW3xMcThv16WsDo+jOa+vJ6LQJAy7kScHTRVL+UHDftgou
+         9vBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmPqSdXPFPCLEUTKRQ7vn7Qzo9PT3zIijBIKa2vlqEEXC2pL5wYnd6WGHJrpv6zwmiqjha6NQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcJ26cROHIxnaRDA64HW3ibheZ+WtzwufN9iG1dD3OgCbeQ47S
+	CFci+419MXbmEpa8KMic3hY6LR0u93qS4Qrp02FcIQrcV66liA400on/Qpg0X6glorpBsmtmNeu
+	9e+42khv1WpXzR7JcTk6MJMi1J3LJr/vn434wisBL5+B3SjzoG2fmxPg+w+ftzX0fmbnISsrp2Z
+	KvX1lKENt9x2E9nzigZE2IeeNHkcTK
+X-Received: by 2002:a17:90b:3844:b0:2cc:ef14:89e3 with SMTP id 98e67ed59e1d1-2e9b171f673mr31216636a91.15.1731584178545;
+        Thu, 14 Nov 2024 03:36:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IExuV+TbL+YmJjDMn/kfycNbr3nby6kVioBRi1E0LoIsnbQXwIyHxbbgHEph7qX0YA7wy8rA6BhJIVhbcG87D0=
+X-Received: by 2002:a17:90b:3844:b0:2cc:ef14:89e3 with SMTP id
+ 98e67ed59e1d1-2e9b171f673mr31216615a91.15.1731584178248; Thu, 14 Nov 2024
+ 03:36:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241114000105.703740-1-jbrandeb@kernel.org>
+References: <20241113185431.1289708-1-anthony.l.nguyen@intel.com>
+ <20241113185431.1289708-14-anthony.l.nguyen@intel.com> <5f190ef3-7801-4678-a9e4-7a44f704b6f2@molgen.mpg.de>
+In-Reply-To: <5f190ef3-7801-4678-a9e4-7a44f704b6f2@molgen.mpg.de>
+From: Wander Lairson Costa <wander@redhat.com>
+Date: Thu, 14 Nov 2024 08:36:07 -0300
+Message-ID: <CAAq0SUn4MXKoJUjNv2-HO_2fMThdG5bKFrSzfmpn45u=t=LeTg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 13/14] igbvf: remove unused spinlock
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, 
+	netdev@vger.kernel.org, przemyslaw.kitszel@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 13, 2024 at 04:00:56PM -0800, jbrandeb@kernel.org wrote:
-> From: Jesse Brandeburg <jbrandeb@kernel.org>
-> 
-> If the CONFIG_INFINIBAND_IRDMA symbol is not enabled as a module or a
-> built-in, then don't let the driver reserve resources for RDMA.
-> 
-> Do this by avoiding enabling the capability when scanning hardware
-> capabilities.
-> 
-> Fixes: d25a0fc41c1f ("ice: Initialize RDMA support")
-> CC: Dave Ertman <david.m.ertman@intel.com>
-> Signed-off-by: Jesse Brandeburg <jbrandeb@kernel.org>
-> ---
->  drivers/net/ethernet/intel/ice/ice_common.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-> index 009716a12a26..70be07ad2c10 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_common.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
-> @@ -2174,7 +2174,8 @@ ice_parse_common_caps(struct ice_hw *hw, struct ice_hw_common_caps *caps,
->  			  caps->nvm_unified_update);
->  		break;
->  	case ICE_AQC_CAPS_RDMA:
-> -		caps->rdma = (number == 1);
-> +		if (IS_ENABLED(CONFIG_INFINIBAND_IRDMA))
+On Thu, Nov 14, 2024 at 5:04=E2=80=AFAM Paul Menzel <pmenzel@molgen.mpg.de>=
+ wrote:
+>
+> Dear Wander, dear Linux folks,
+>
+>
+> Thank you for your patch.
+>
+>
+> Am 13.11.24 um 19:54 schrieb Tony Nguyen:
+> > From: Wander Lairson Costa <wander@redhat.com>
+> >
+> > tx_queue_lock and stats_lock are declared and initialized, but never
+> > used. Remove them.
+> >
+> > Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+> > Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> > Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+>
+> Would a Fixes: tag be handy?
+>
 
-ice_eth is not dependent on CONFIG_INFINIBAND_IRDMA and can be built
-perfectly without irdma. So technically, you disabled RDMA for such
-kernels and users won't be able to load out-of-tree built module.
+Hrm, this is not fixing anything, actually. It is just a cleanup.
 
-I don't care about out-of-tree code, but it is worth to add into commit
-message, so users will know what to do it IRDMA stopped to work for them.
+>
+> Kind regards,
+>
+> Paul
+>
 
-Thanks
-
-> +			caps->rdma = (number == 1);
->  		ice_debug(hw, ICE_DBG_INIT, "%s: rdma = %d\n", prefix, caps->rdma);
->  		break;
->  	case ICE_AQC_CAPS_MAX_MTU:
-> 
-> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
-> -- 
-> 2.39.5
-> 
-> 
