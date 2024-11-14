@@ -1,101 +1,88 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE331B3926;
-	Thu, 14 Nov 2024 23:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8395674E
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 23:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731627213; cv=none; b=CVWBUtvAG401ikW2Lb9BUJh+1xJa5kDF4S8C54kya+2GLDQKmvC93Lo/4rRQZjKBU/A8n9/7SBhCvtHg9lPUYPbB8zOp2DIWU5J1jmMbfUdV09wLwzxuZPjnx39aNroLgZutbqmYKjXtd11VQ1McW1mOTNBWg8iDBdnzbWK4L7o=
+	t=1731627407; cv=none; b=kEeZv5t3MxdXg8I8+TIQg4r5hWE2OE1Y195TN2SvbTX65HlLiJKLuLEm5pWEWlGZxdUE2mQ1TcXe7fx7bFOKR/VeMTEEPKNjsqVnW9wCER/k10rUOLaOXA85ulRM87kA/tNuIPNWUpu5X9cTD2bPebtsiYE/paLPGOvQfUxkG3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731627213; c=relaxed/simple;
-	bh=pcSF3r0Xnb8b++okrlCE3Ouh7HXBN/stkb1R5yymVug=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CXBxgVi10YJYQUOlAzYj3lKdoKt9DjtddiNm9rnf4AByswHTdySrYMsbOYjhiIFAC++SCX8zb/wV1kryu2crVsZE2ninc3Ay07dSdwPQGk2/G1deTrXbBVK+f+dvy5FlYxbOgvtXFx33nvC1Rw5nRqwqDIJmZsHK1FpEptyP7MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=EHexBvrz; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1731627407; c=relaxed/simple;
+	bh=kbJLT/qMDdSWDsoUBhaua+4Cy3c5O1rs5oyoM6SanBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d21IqAm/yH0MiXJX/tbMnyTTfO16gjNSMrY0dcir6YbUHtUFmE9XdYLlXukBjgzzUlvAVhO3UYL6YFwqL6iFfDy/TRAoB+ck7zE/4c05jrzwXRXgZZzHWV7JSzJnuLPiLMvsDeUNYtBTZ+R9bpupOqAlrSC+P3YV0n1pxf3snzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=OlUtC1IW; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="EHexBvrz"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="OlUtC1IW"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tBjKm-0066Ok-9w; Fri, 15 Nov 2024 00:33:08 +0100
+	id 1tBjOE-005zIs-Us; Fri, 15 Nov 2024 00:36:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=gGT1nK2qyfbvCaMiTzhiUzJdb1/qiwY28p26tECcJ2g=
-	; b=EHexBvrzYDqmXWDBXznjbqKWY/LSEM6PdQYPmoN6+/7VsGGfAZmqGlSAOq+3FpX0Qwwb1ESNh
-	6yrQpilhPygreFau9eET0FFkX3ps94lRqwnpa/KRVPBqAdjzT586u47r3jDy2f+Heywr5+F0ZvabN
-	Vb6zw66Uz+iDaH2SL9Q+hWO5R+S8weoVPx3HenKwBY5gYdYnh4xG9aACD8TVI/JIEZ/Saezd+y0yh
-	atRun9WkQIU3cPTNRhBOgxPF3QgModDEQBLiaT0opBDbUxLUhP5h3N+IQGNiwROGAsoHRqlxpDyzc
-	04v4B1Yl1MjpDnflRDsah/IdwQxz6iDewWtB1Q==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=xpYonVJg0vhVI01Htvc+fv0/qPa7fqTcqhpYqG6MZ8g=; b=OlUtC1IWxs5O8wcfhR0IZ31KFD
+	S4o/4FeBmchL5NT0zUVwIfbTklMD4wYnBfreyBpPB62fscYb6knX57dLrp3WoY7G0Y2Og1whSIk2J
+	xxxjQGwveCvt2sky+rbrraAEYVp7N22uCEyybsVoPtYt0TkqxodJShUA5pZmRHvIByxuISI7X6Ijk
+	FxtxHBmihaIiqlXMHS0AWioqn0uMv4aOkXD4b07hSb27YhQ1Mi3RS5UzfO6WYTytbrXvsiqZjTRzr
+	mM+hb5FPNr35qKEgUn53sOZ3Mwe40Nd/5P9RdiSQxSS1K9atACNvOkJxmu4SSdFqmMSIByNVISHv5
+	JrV7h+ig==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tBjKe-0005m5-1O; Fri, 15 Nov 2024 00:33:01 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	id 1tBjOE-00064z-Iz; Fri, 15 Nov 2024 00:36:42 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tBjKO-008nXm-U2; Fri, 15 Nov 2024 00:32:44 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH net 0/4] net: Fix some callers of copy_from_sockptr()
-Date: Fri, 15 Nov 2024 00:27:23 +0100
-Message-Id: <20241115-sockptr-copy-fixes-v1-0-d183c87fcbd5@rbox.co>
+	id 1tBjO8-00B7Cw-V9; Fri, 15 Nov 2024 00:36:37 +0100
+Message-ID: <535b4ef7-3cfb-4816-bd7e-c0fa8725c7f8@rbox.co>
+Date: Fri, 15 Nov 2024 00:36:35 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: Make copy_safe_from_sockptr() match
+ documentation
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org
+References: <20241111-sockptr-copy-ret-fix-v1-1-a520083a93fb@rbox.co>
+ <20241113192924.4f931147@kernel.org>
+From: Michal Luczaj <mhal@rbox.co>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <20241113192924.4f931147@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFuHNmcC/x3LwQqDMAyA4VeRnBcwrgfrq8gOocs0CG1pZExK3
- 92y48fPX8GkqBgsQ4UiXzVNsYMeA4Sd4yao726YxskRkUNL4chnwZDyhR/9ieHTey/MMzET9DE
- X+Yf+rRDlhFdrN+n9RJNpAAAA
-X-Change-ID: 20241114-sockptr-copy-fixes-3999eaa81aa1
-To: Marcel Holtmann <marcel@holtmann.org>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
- linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
- linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
 
-Some callers misinterpret copy_from_sockptr()'s return value. The function
-follows copy_from_user(), i.e. returns 0 for success, or the number of
-bytes not copied on error. Simply returning the result in a non-zero case
-isn't usually what was intended.
+On 11/14/24 04:29, Jakub Kicinski wrote:
+> On Mon, 11 Nov 2024 00:17:34 +0100 Michal Luczaj wrote:
+>> copy_safe_from_sockptr()
+>>   return copy_from_sockptr()
+>>     return copy_from_sockptr_offset()
+>>       return copy_from_user()
+>>
+>> copy_from_user() does not return an error on fault. Instead, it returns a
+>> number of bytes that were not copied. Have it handled.
+>>
+>> Fixes: 6309863b31dd ("net: add copy_safe_from_sockptr() helper")
+>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>> ---
+>> Patch has a side effect: it un-breaks garbage input handling of
+>> nfc_llcp_setsockopt() and mISDN's data_sock_setsockopt().
+> 
+> I'll move this to the commit message, it's important.
+> 
+> Are you planning to scan callers of copy_from_sockptr() ?
+> I looked at 3 callers who save the return value, 2 of them are buggy :S
 
-Compile tested with CONFIG_LLC, CONFIG_AF_RXRPC, CONFIG_BT enabled.
+Sure, I took a look:
+https://lore.kernel.org/netdev/20241115-sockptr-copy-fixes-v1-0-d183c87fcbd5@rbox.co/
+Have I missed anything?
 
-Last patch probably belongs more to net-next, if any. Here as a RFC.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Michal Luczaj (4):
-      bluetooth: Improve setsockopt() handling of malformed user input
-      llc: Improve setsockopt() handling of malformed user input
-      rxrpc: Improve setsockopt() handling of malformed user input
-      net: Comment copy_from_sockptr() explaining its behaviour
-
- include/linux/sockptr.h           |  2 ++
- include/net/bluetooth/bluetooth.h |  9 ---------
- net/bluetooth/hci_sock.c          | 14 +++++++-------
- net/bluetooth/iso.c               | 10 +++++-----
- net/bluetooth/l2cap_sock.c        | 20 +++++++++++---------
- net/bluetooth/rfcomm/sock.c       |  9 ++++-----
- net/bluetooth/sco.c               | 11 ++++++-----
- net/llc/af_llc.c                  | 15 ++++++++-------
- net/rxrpc/af_rxrpc.c              |  8 ++++----
- 9 files changed, 47 insertions(+), 51 deletions(-)
----
-base-commit: cfaaa7d010d1fc58f9717fcc8591201e741d2d49
-change-id: 20241114-sockptr-copy-fixes-3999eaa81aa1
-
-Best regards,
--- 
-Michal Luczaj <mhal@rbox.co>
+Thanks,
+Michal
 
