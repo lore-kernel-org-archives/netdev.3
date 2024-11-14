@@ -1,109 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FA31F8934
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 11:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE7918C02F;
+	Thu, 14 Nov 2024 11:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731584183; cv=none; b=tQGfxEHt5dHT76o1HUdLTlDVLNqSeTJVQpmC8aH6zaVwHw+d0u24bTYRNUO9iNqHJzw8PFfhmPdulLMP5XCSG/boLDFlohPXjWqSV2WZALUVJnu1/wmKlQEnYXxamLymu/KWJNAiFCwgd2WazDMi0/r0VaikgT4gqNW12w7iQcI=
+	t=1731584717; cv=none; b=TKg9cmy33Xg+qVu2xz4Rs0p5fzg7n64U8MzR8E6TEIwoDx9NiwdWpyPtm2xpZKrU2X3vR23I0bhWq4BK0LdiEaWYxQE/VAktCIUvA0qdmk7WwcpvV96fr95PDFlv3JgBBHDe5/DwmPkN4grJmq1fanW3TodqcdiOB5gG+nylejo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731584183; c=relaxed/simple;
-	bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YCpZKKq3FStS5QjnvExGmLt8QmU6UWaCAnSOXyq2INbvDArhTNyusjT4+SnvEZPIRGRvL9m//qN6QSmLvq0UqXPUGGfjxo1DS71MnQ7dhlstnZOmzFjVnqhHUyWPBnUrH4+NRXj4UriHYTcaMOLHEICwMo+2E5DrmnEDqIymMQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzDdfY+o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzDdfY+o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731584181;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
-	b=OzDdfY+ok5NpvFPNXGK4N6VdEfmVNtvUAMOq/g9xKphdC4noUi3efSt0W9qF+S1V+4zorU
-	BzosuEBgD7aduNSpv8ybGm75cO68BDpv8ac8kHhC3OcGGka5iGGLFcHQ2bLoOCdSmEpWtL
-	asODZciWH+YbEkZoH0o2tENQpk1pj28=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-sgsr1yrWNbq-XTYX9KB1Rg-1; Thu, 14 Nov 2024 06:36:19 -0500
-X-MC-Unique: sgsr1yrWNbq-XTYX9KB1Rg-1
-X-Mimecast-MFC-AGG-ID: sgsr1yrWNbq-XTYX9KB1Rg
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-71e65e09f8bso576216b3a.2
-        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 03:36:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731584178; x=1732188978;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o4UczN6B+k6jQ0nIaM6DaoOgTJ/NdJrplC5O3gC59hU=;
-        b=MCiHGCj4loiEyfhDhV7lG5lJkAg3cWh2lwux3HJSWrqC02cIC9JhRWe7qGv2xSVk6Z
-         ooL9mCsImR+XC+nWepGInomAS565Kd5km3q+jycz0yubye5ot71DpTNOLFvaQ3xUBJbo
-         T8mRMWd+KAWtezHFDsk+D1ijYcGu4DY/wYc1ZoP8T+aT+JDj1kMSKyEKuM7Re6FjLOAN
-         Uy9uY9gEEC9x8e0BycB/9ORp7P8yrQWDDarXYFCbPdSrps60m70Pz+YETOQudjPzID5S
-         gYXL67ECMrfDL6DClL5mfQdW3xMcThv16WsDo+jOa+vJ6LQJAy7kScHTRVL+UHDftgou
-         9vBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVmPqSdXPFPCLEUTKRQ7vn7Qzo9PT3zIijBIKa2vlqEEXC2pL5wYnd6WGHJrpv6zwmiqjha6NQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcJ26cROHIxnaRDA64HW3ibheZ+WtzwufN9iG1dD3OgCbeQ47S
-	CFci+419MXbmEpa8KMic3hY6LR0u93qS4Qrp02FcIQrcV66liA400on/Qpg0X6glorpBsmtmNeu
-	9e+42khv1WpXzR7JcTk6MJMi1J3LJr/vn434wisBL5+B3SjzoG2fmxPg+w+ftzX0fmbnISsrp2Z
-	KvX1lKENt9x2E9nzigZE2IeeNHkcTK
-X-Received: by 2002:a17:90b:3844:b0:2cc:ef14:89e3 with SMTP id 98e67ed59e1d1-2e9b171f673mr31216636a91.15.1731584178545;
-        Thu, 14 Nov 2024 03:36:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExuV+TbL+YmJjDMn/kfycNbr3nby6kVioBRi1E0LoIsnbQXwIyHxbbgHEph7qX0YA7wy8rA6BhJIVhbcG87D0=
-X-Received: by 2002:a17:90b:3844:b0:2cc:ef14:89e3 with SMTP id
- 98e67ed59e1d1-2e9b171f673mr31216615a91.15.1731584178248; Thu, 14 Nov 2024
- 03:36:18 -0800 (PST)
+	s=arc-20240116; t=1731584717; c=relaxed/simple;
+	bh=bnUVSsfKIRxnPADJrEdSRzBo/u/NdOCZ9jbg111mOBA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=cf+Ym2L6uZyQhQAYGQdVTOd+XRj3eCRGgwYHCabpb7DCXv6q2SO4GV5elIyVUjFnYzg5+gtOzxDy2MwFNC0A97QqenUIR5ruLqwpMTZnch6iu+dchjBuLkj07LQmjlFo46KQDKMDQtjO9LmrsLqm0W+wZQHf5uNJ4ewYbyq2lJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=148.6.0.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.kfki.hu (Postfix) with ESMTP id 1FCAC32E01C3;
+	Thu, 14 Nov 2024 12:45:05 +0100 (CET)
+X-Virus-Scanned: Debian amavis at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+ by localhost (smtp2.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id hI9TfCIXrCvY; Thu, 14 Nov 2024 12:45:03 +0100 (CET)
+Received: from mentat.rmki.kfki.hu (254C26AF.nat.pool.telekom.hu [37.76.38.175])
+	(Authenticated sender: kadlecsik.jozsef@wigner.hu)
+	by smtp2.kfki.hu (Postfix) with ESMTPSA id B51AC32E01B7;
+	Thu, 14 Nov 2024 12:45:02 +0100 (CET)
+Received: by mentat.rmki.kfki.hu (Postfix, from userid 1000)
+	id CDDAD1428CC; Thu, 14 Nov 2024 12:45:01 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by mentat.rmki.kfki.hu (Postfix) with ESMTP id CB601142175;
+	Thu, 14 Nov 2024 12:45:01 +0100 (CET)
+Date: Thu, 14 Nov 2024 12:45:01 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
+To: Jeongjun Park <aha310510@gmail.com>
+cc: Pablo Neira Ayuso <pablo@netfilter.org>, 
+    David Miller <davem@davemloft.net>, edumazet@google.com, kuba@kernel.org, 
+    pabeni@redhat.com, horms@kernel.org, Patrick McHardy <kaber@trash.net>, 
+    netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org, 
+    syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v2] netfilter: ipset: add missing range check in
+ bitmap_ip_uadt
+In-Reply-To: <20241113130209.22376-1-aha310510@gmail.com>
+Message-ID: <de96a3be-deeb-efc0-dd64-8468598f15b0@netfilter.org>
+References: <20241113130209.22376-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241113185431.1289708-1-anthony.l.nguyen@intel.com>
- <20241113185431.1289708-14-anthony.l.nguyen@intel.com> <5f190ef3-7801-4678-a9e4-7a44f704b6f2@molgen.mpg.de>
-In-Reply-To: <5f190ef3-7801-4678-a9e4-7a44f704b6f2@molgen.mpg.de>
-From: Wander Lairson Costa <wander@redhat.com>
-Date: Thu, 14 Nov 2024 08:36:07 -0300
-Message-ID: <CAAq0SUn4MXKoJUjNv2-HO_2fMThdG5bKFrSzfmpn45u=t=LeTg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 13/14] igbvf: remove unused spinlock
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, przemyslaw.kitszel@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-deepspam: ham 1%
 
-On Thu, Nov 14, 2024 at 5:04=E2=80=AFAM Paul Menzel <pmenzel@molgen.mpg.de>=
- wrote:
->
-> Dear Wander, dear Linux folks,
->
->
-> Thank you for your patch.
->
->
-> Am 13.11.24 um 19:54 schrieb Tony Nguyen:
-> > From: Wander Lairson Costa <wander@redhat.com>
-> >
-> > tx_queue_lock and stats_lock are declared and initialized, but never
-> > used. Remove them.
-> >
-> > Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-> > Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> > Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
->
-> Would a Fixes: tag be handy?
->
+On Wed, 13 Nov 2024, Jeongjun Park wrote:
 
-Hrm, this is not fixing anything, actually. It is just a cleanup.
+> When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+> the values of ip and ip_to are slightly swapped. Therefore, the range check
+> for ip should be done later, but this part is missing and it seems that the
+> vulnerability occurs.
+> 
+> So we should add missing range checks and remove unnecessary range checks.
+> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+> Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 
->
-> Kind regards,
->
-> Paul
->
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
 
+The patch should be applied to the stable branches too. Thanks!
+
+Best regards,
+Jozsef
+
+> ---
+>  net/netfilter/ipset/ip_set_bitmap_ip.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/netfilter/ipset/ip_set_bitmap_ip.c b/net/netfilter/ipset/ip_set_bitmap_ip.c
+> index e4fa00abde6a..5988b9bb9029 100644
+> --- a/net/netfilter/ipset/ip_set_bitmap_ip.c
+> +++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+> @@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struct nlattr *tb[],
+>  		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+>  		if (ret)
+>  			return ret;
+> -		if (ip > ip_to) {
+> +		if (ip > ip_to)
+>  			swap(ip, ip_to);
+> -			if (ip < map->first_ip)
+> -				return -IPSET_ERR_BITMAP_RANGE;
+> -		}
+>  	} else if (tb[IPSET_ATTR_CIDR]) {
+>  		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
+>  
+> @@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struct nlattr *tb[],
+>  		ip_to = ip;
+>  	}
+>  
+> -	if (ip_to > map->last_ip)
+> +	if (ip < map->first_ip || ip_to > map->last_ip)
+>  		return -IPSET_ERR_BITMAP_RANGE;
+>  
+>  	for (; !before(ip_to, ip); ip += map->hosts) {
+> --
+> 
+
+-- 
+E-mail : kadlec@netfilter.org, kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+Address: Wigner Research Centre for Physics
+         H-1525 Budapest 114, POB. 49, Hungary
