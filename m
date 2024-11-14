@@ -1,94 +1,127 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70241FF7A5;
-	Thu, 14 Nov 2024 10:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B51D1F80CC
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 10:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731579604; cv=none; b=XxioMupGNrkmVHw8WnCyHj2U3DXl0hkjWQyzU23RgVjxCkAqmj0h9fsbkAHczLBQ7YhSNLtpblaAbl6mMD0tSBhBcAsYn5cjC1SE1FGp06F+nD1efWuiLZJhw3x+5kPriWpXC0vKUcJcORC/xMvj4aGWVEJLmKR6gGAiqEM2vec=
+	t=1731579616; cv=none; b=FXfZPDK6YVZQtL4UWz6ERna+ZOF3/PTV4aMFrKJ5QkUibQMyAAezCXPQqq+/r+VU1rw/Os88jb3h6gexdheCFY732+T9QTCTk1Fe2lm+Mm+/DBUA06CC34eNx56b0ojy6oDqnDhmpp/MFi3vE2kseSsDBC7sYh/Kg9d7PYkyv14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731579604; c=relaxed/simple;
-	bh=T9MOKMhMLZp9/wLwCovRSnGb/6bqj0NzuswbvjubVD4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=FeJx9UFCZ2tujo5L+hDu95Zs8JLNokWUqxKvj4pCcrNEXEsh3/7WUnUvueU54UCYX8f5rZASyk4ZvKT3Ub3Pb3rKJSarA3Jrz8Fq31WtuxDeP8LXww1xlEDlh/z2juKdfHxOR4PyqM44F/8RynE1dUcI4+Zj2CwO5IDmLH3Btpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=ZxtRjLdW reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1731579616; c=relaxed/simple;
+	bh=vLE63ELEvQr26uuqEyP/8j3Xi0tXnpNu1bfp7UAA7xQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MNutDPgteLprNCOxrclHbhTuX2QINCqqN4KLH3Hg2Fpx3K1GclexOu7QWBaY4RZuqDEB7tOGingAQK4cdkxU1v2GBI2g1LyD7aUmHe+HFjTreXA0Ob+J/M4aKcVoXmqnbii2w9piBClVjdkDwRsv+59iPSIzNf5da82EbLMQySc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dbi/Z2OF; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="ZxtRjLdW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=imDIG354HXXyW9aAYPK92UMoL0TanLrHN8vw4Nrw9BU=; b=Z
-	xtRjLdWRNdB1viPvt0clEYZzsnxaU0i6HHwFAdeKeGzyuXCNrPFl4XtkRBJ72boJ
-	MByYLIKrKcEtXj6vwezOeOKMz079Ul+ESB9T3G9Aj6mdNdoZA3ec6LKJGxDAdiI+
-	2zp4yffEH9x8s5T4GiyUZaVhUYgbAIqm9SJ+m1gLYM=
-Received: from 00107082$163.com ( [111.35.191.191] ) by
- ajax-webmail-wmsvr-40-106 (Coremail) ; Thu, 14 Nov 2024 18:19:27 +0800
- (CST)
-Date: Thu, 14 Nov 2024 18:19:27 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Paolo Abeni" <pabeni@redhat.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	kuba@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/ipv4/proc: Avoid usage for seq_printf() when
- reading /proc/net/snmp
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-In-Reply-To: <406c545e-8c00-406a-98f0-0e545c427b25@redhat.com>
-References: <20241111045623.10229-1-00107082@163.com>
- <406c545e-8c00-406a-98f0-0e545c427b25@redhat.com>
-X-NTES-SC: AL_Qu2YA/mctk0t4SObZukXn0oTju85XMCzuv8j3YJeN500uCTo1SQ7cm9xHF/0+s6kCymhoAiRfBJQzsBob6pgeYn2JpyS9o8Hk/XIHGDAdbTn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dbi/Z2OF"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20c70abba48so3984845ad.0
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 02:20:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731579615; x=1732184415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YpBSOtueICApbmp1KfKlEaeRkXCsULfiG4miYoF8lTM=;
+        b=Dbi/Z2OF1OWMDz6rrLpep7np9DU//0Q//9PCDSFkjpFQhgBn7P6yBV/dKIOCDaXAvF
+         cniawbjRrAdg6n2k0k0msUx/xg9QNtcfVLSL/hjlkzUgCmMv2VW97piH7eAVgGMtFG+V
+         lNbFnHmRy6pyZhxSGbXFqF/lrbMofMVXvgIgm5Om5kpbIZEr8jeG3QDGe9Iu2W9Pj8Ok
+         4oKDWuXoZAa9qBJqWSkMtIbObVKB5U+TupnJNkkIUtogNLRbSGv+XuhlPMa8Ah3LTkdX
+         cmwtAkoX2ukFGGwG9cYVFMpXDofkdTiNah45OZy6dbRlM7c5R13ZNihhQ2j1VcVts7Ub
+         nP/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731579615; x=1732184415;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YpBSOtueICApbmp1KfKlEaeRkXCsULfiG4miYoF8lTM=;
+        b=t5nN9q8aELmTbISKhd/CAOx5bQXCp8Gb77iVrtrK9TfL01068ht2sjOjvmZLbjDcYe
+         r19qzMSkSr96Z4km9+DNUUHeg6wWRNw1rsQq0W3tiUe0Cyh8s/fX5oU/72llzE+gzp2L
+         cFo1qBIP67jm2vcKHlolEp8tdKeDxnxo7yTjxLUa0fyeDLEDfYO8/EQ7s+af5sRudBHf
+         eRkU9SFSWxQ+qTowadkr94bRzw1bEcXi2yXuXkFxPW5vwc2tv+1QpLRTJEeMAwRCIx26
+         Sbv0fYIEsalG5Qc3oXetaBuoE8nKkkgwDMdbFzFH+WJyFYI3SjJAvQYEoWDYGMPv0KkL
+         yYyw==
+X-Gm-Message-State: AOJu0Ywv1LqHiIpUUuzNV6OwDWXIgFkLcnSFnXU+2ncYcXBZbF5vma6G
+	a02qF7+KtTTXrMLBck5lxP3FeBsxNHtTBuphv3Buh63T0z7wuqoFW5+3m+ZC
+X-Google-Smtp-Source: AGHT+IGmgU+mBxzLc6QNDijGpeoZEQ3ldaKJ/xxCJolxNrmQLA624fTfj+KnuVFiMsFaBXvHB17Omg==
+X-Received: by 2002:a17:902:c950:b0:20c:93c2:9175 with SMTP id d9443c01a7336-211c502b5f7mr20482795ad.30.1731579614613;
+        Thu, 14 Nov 2024 02:20:14 -0800 (PST)
+Received: from localhost ([2402:7500:56b:5617:bc95:bb12:95c0:c1f4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211c7c4a55dsm7553545ad.69.2024.11.14.02.20.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 02:20:14 -0800 (PST)
+From: wojackbb@gmail.com
+To: netdev@vger.kernel.org
+Cc: chandrashekar.devegowda@intel.com,
+	chiranjeevi.rapolu@linux.intel.com,
+	haijun.liu@mediatek.com,
+	m.chetan.kumar@linux.intel.com,
+	ricardo.martinez@linux.intel.com,
+	loic.poulain@linaro.org,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	angelogioacchino.delregno@collabora.com,
+	linux-mediatek@lists.infradead.org,
+	matthias.bgg@gmail.com,
+	Jack Wu <wojackbb@gmail.com>
+Subject: [net-next,v2] [PATCH net-next v2] net: wwan: t7xx: Change PM_AUTOSUSPEND_MS to 5000
+Date: Thu, 14 Nov 2024 18:20:02 +0800
+Message-Id: <20241114102002.481081-1-wojackbb@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5db8d6bc.9fe1.1932a2f5ce9.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:aigvCgD3X6SwzjVnj_ImAA--.43762W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqQmXqmc1u4ZyjgAKsE
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CkF0IDIwMjQtMTEtMTQgMTc6MzA6MzQsICJQYW9sbyBBYmVuaSIgPHBhYmVuaUByZWRoYXQuY29t
-PiB3cm90ZToKPk9uIDExLzExLzI0IDA1OjU2LCBEYXZpZCBXYW5nIHdyb3RlOgo+PiBzZXFfcHJp
-bnRmKCkgaXMgY29zdHksIHdoZW4gcmVhZGluZyAvcHJvYy9uZXQvc25tcCwgcHJvZmlsaW5nIGlu
-ZGljYXRlcwo+PiBzZXFfcHJpbnRmKCkgdGFrZXMgbW9yZSB0aGFuIDUwJSBzYW1wbGVzIG9mIHNu
-bXBfc2VxX3Nob3coKToKPj4gCXNubXBfc2VxX3Nob3coOTcuNzUxJSAxNTg3MjIvMTYyMzczKQo+
-PiAJICAgIHNubXBfc2VxX3Nob3dfdGNwX3VkcC5pc3JhLjAoNDAuMDE3JSA2MzUxNS8xNTg3MjIp
-Cj4+IAkJc2VxX3ByaW50Zig4My40NTElIDUzMDA0LzYzNTE1KQo+PiAJCXNlcV93cml0ZSgxLjE3
-MCUgNzQzLzYzNTE1KQo+PiAJCV9maW5kX25leHRfYml0KDAuNzI3JSA0NjIvNjM1MTUpCj4+IAkJ
-Li4uCj4+IAkgICAgc2VxX3ByaW50ZigyNC43NjIlIDM5MzAzLzE1ODcyMikKPj4gCSAgICBzbm1w
-X3NlcV9zaG93X2lwc3RhdHMuaXNyYS4wKDIxLjQ4NyUgMzQxMDQvMTU4NzIyKQo+PiAJCXNlcV9w
-cmludGYoODUuNzg4JSAyOTI1Ny8zNDEwNCkKPj4gCQlfZmluZF9uZXh0X2JpdCgwLjMzMSUgMTEz
-LzM0MTA0KQo+PiAJCXNlcV93cml0ZSgwLjIzNSUgODAvMzQxMDQpCj4+IAkJLi4uCj4+IAkgICAg
-aWNtcG1zZ19wdXQoNy4yMzUlIDExNDgzLzE1ODcyMikKPj4gCQlzZXFfcHJpbnRmKDQxLjcxNCUg
-NDc5MC8xMTQ4MykKPj4gCQlzZXFfd3JpdGUoMi42MzAlIDMwMi8xMTQ4MykKPj4gCQkuLi4KPj4g
-VGltZSBmb3IgYSBtaWxsaW9uIHJvdW5kcyBvZiBzdHJlc3MgcmVhZGluZyAvcHJvYy9uZXQvc25t
-cDoKPj4gCXJlYWwJMG0yNC4zMjNzCj4+IAl1c2VyCTBtMC4yOTNzCj4+IAlzeXMJMG0yMy42Nzlz
-Cj4+IE9uIGF2ZXJhZ2UsIHJlYWRpbmcgL3Byb2MvbmV0L3NubXAgdGFrZXMgMC4wMjNtcy4KPj4g
-V2l0aCB0aGlzIHBhdGNoLCBleHRyYSBjb3N0cyBvZiBzZXFfcHJpbnRmKCkgaXMgYXZvaWRlZCwg
-YW5kIGEgbWlsbGlvbgo+PiByb3VuZHMgb2YgcmVhZGluZyAvcHJvYy9uZXQvc25tcCBub3cgdGFr
-ZXMgb25seSB+MTUuODUzczoKPj4gCXJlYWwJMG0xNi4zODZzCj4+IAl1c2VyCTBtMC4yODBzCj4+
-IAlzeXMJMG0xNS44NTNzCj4+IE9uIGF2ZXJhZ2UsIG9uZSByZWFkIHRha2VzIDAuMDE1bXMsIGEg
-fjQwJSBpbXByb3ZlbWVudC4KPj4gCj4+IFNpZ25lZC1vZmYtYnk6IERhdmlkIFdhbmcgPDAwMTA3
-MDgyQDE2My5jb20+Cj4KPklmIHRoZSB1c2VyIHNwYWNlIGlzIHJlYWxseSBjb25jZXJuZWQgd2l0
-aCBzbm1wIGFjY2VzcyBwZXJmb3JtYW5jZXMsIEkKPnRoaW5rIHN1Y2ggaW5mb3JtYXRpb24gc2hv
-dWxkIGJlIGV4cG9zZWQgdmlhIG5ldGxpbmsuCj4KPlN0aWxsIHRoZSBnb2FsIG9mIHRoZSBvcHRp
-bWl6YXRpb24gbG9va3MgZG91YnRmdWwuIFRoZSB0b3RhbCBudW1iZXIgb2YKPm1pYnMgZG9tYWlu
-IGlzIGNvbnN0YW50IGFuZCBsaW1pdGVkIChkaWZmZXJlbnRseSBmcm9tIHRoZSBuZXR3b3JrCj5k
-ZXZpY2VzIG51bWJlciB0aGF0IGluIHNwZWNpZmljIHNldHVwIGNhbiBncm93IGEgbG90KS4gU3Rh
-dHMgcG9sbGluZwo+c2hvdWxkIGJlIGEgbG93IGZyZXF1ZW5jeSBvcGVyYXRpb24uIFdoeSB5b3Ug
-bmVlZCB0byBvcHRpbWl6ZSBpdD8KCldlbGwsIG9uZSB0aGluZyBJIHRoaW5rIHdvcnRoIG1lbnRp
-b24sIG9wdGltaXplIC9wcm9jIGVudHJpZXMgY2FuIGhlbHAKaW5jcmVhc2Ugc2FtcGxlIGZyZXF1
-ZW5jeSwgaGVuY2UgbW9yZSBhY2N1cmF0ZSByYXRlIGFuYWx5c2lzLAogZm9yIG1vbml0b3Jpbmcg
-dG9vbHMgd2l0aCBhIGZpeGVkL2xpbWl0ZWQgY3B1IHF1b3RhLgoKQW5kIGZvciAvcHJvYy9uZXQv
-KiwgdGhlIG9wdGltaXphdGlvbiB3b3VsZCBiZSBhbXBsaWZpZWQgd2hlbiBjb25zaWRlcmluZyBu
-ZXR3b3JrIG5hbWVzcGFjZXMuCgpJIHRoaW5rIGl0IHdvcnRoIHRvIG9wdGltaXplLiAgIAoKPgo+
-SSBkb24ndCB0aGluayB3ZSBzaG91bGQgYWNjZXB0IHRoaXMgY2hhbmdlLCB0b28uIEFuZCBhIHNv
-bGlkIGV4cGxhbmF0aW9uCj5zaG91bGQgYmUgbmVlZCB0byBpbnRyb2R1Y2UgYSBuZXRsaW5rIE1J
-QiBpbnRlcmZhY2UuCj4KPj4gLS0tCj4+ICBuZXQvaXB2NC9wcm9jLmMgfCAxMTYgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tCj4KPkZUUiB5b3UgbWlzc2Vk
-IG1wdGNwLgo+Cj4vUAo=
+From: Jack Wu <wojackbb@gmail.com>
+
+Because optimizing the power consumption of t7XX,
+change auto suspend time to 5000.
+
+The Tests uses a script to loop through the power_state
+of t7XX.
+(for example: /sys/bus/pci/devices/0000\:72\:00.0/power_state)
+
+* If Auto suspend is 20 seconds,
+  test script show power_state have 0~5% of the time was in D3 state
+  when host don't have data packet transmission.
+
+* Changed auto suspend time to 5 seconds,
+  test script show power_state have 50%~80% of the time was in D3 state
+  when host don't have data packet transmission.
+
+We tested Fibocom FM350 and our products using the t7xx and they all
+benefited from this.
+
+Signed-off-by: Jack Wu <wojackbb@gmail.com>
+---
+V2:
+ * supplementary commit information
+---
+---
+ drivers/net/wwan/t7xx/t7xx_pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
+index e556e5bd49ab..dcadd615a025 100644
+--- a/drivers/net/wwan/t7xx/t7xx_pci.c
++++ b/drivers/net/wwan/t7xx/t7xx_pci.c
+@@ -48,7 +48,7 @@
+ #define T7XX_INIT_TIMEOUT		20
+ #define PM_SLEEP_DIS_TIMEOUT_MS		20
+ #define PM_ACK_TIMEOUT_MS		1500
+-#define PM_AUTOSUSPEND_MS		20000
++#define PM_AUTOSUSPEND_MS		5000
+ #define PM_RESOURCE_POLL_TIMEOUT_US	10000
+ #define PM_RESOURCE_POLL_STEP_US	100
+ 
+-- 
+2.34.1
+
