@@ -1,149 +1,113 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997A7603A
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 14:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BC11C6BE;
+	Thu, 14 Nov 2024 14:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731594012; cv=none; b=hlTRo7ScEOZ+fdVP3Wbqh+JKYn+QDsJt76dGwlF4ZYSwajXqpR3WP0/et7FMlZF+8WZUjTLgMAiVqbLqvkd8SNNa5vqNhLPDJv1xQiLpxmCHGADjOmjr+0na2hACeeEfu4G628Ul5eGGJbUVxkqbUu2t3VZM3I4V2b5bhuvbVPc=
+	t=1731594139; cv=none; b=lPmlmxinW5dka4co3A50zmn7cyF7NzXHDXkczyMeQ6bMYXueKIgwAJPOoXWo6tD50d/pTXm+2j1RcQCijJMegZu+4ZlmKbcB/2bSGMxi5J6WvGUfh200auvvvQM1BYEXMpm+2PCuC5SHYRkv5sqRxImyVK5D1KMbEGW5zgzhKMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731594012; c=relaxed/simple;
-	bh=KUI7cEMy24n5t6R9zkWnGm3n60uUoV5jg5b0EnpKUds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mGgqbhU0S5vpHO76gex0GBJzE52INnVh07Nm/Xbv3GEu7EWjKmMctGRLbEIB7vSSWie4aRB/lE26zLrw6YJ9XQWi6i2nRUZ6zRHOwQMa/LxwEpGVKO1DEx20O4TtKbEDUL67G3iDaeKxACgjiBAyw0DmeoL2NAuPgdv9/Lq8O5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cU2fPGeH; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1731594139; c=relaxed/simple;
+	bh=woW4Dbr79nNaGTSt2wV1jo+nBLcBDKnKm3vhJmk7v4o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FcyIUBoU88VfYTZBdBzoMXKFHSeao9IVB74wQXCvvTEUpvHKmY5curBDkVStGAOY3eMj84tZNWybrIV8qGtilSziWupg/aQN1EtN1UdCKpHHuE71rnvTqROLy0r6fHcy6TlscGkFvHmz1rdrlpON79ELQXGoiTeyCRmuFTPrlag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxpQSlqp; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cU2fPGeH"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e044d4f7so4e87.0
-        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 06:20:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxpQSlqp"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20c8b557f91so7093335ad.2;
+        Thu, 14 Nov 2024 06:22:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731594008; x=1732198808; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p4v/jG2aRUZnL5YZ465ulr/WON0zCfI7mJCLVKy7MkI=;
-        b=cU2fPGeHRHOhnScVroeWPY4BVxXknlvQ/yhQQJAWCi6h/0sm5TBuG/hmOlsisYkgQ/
-         jpNy8hFhkDiKdMNGbt9cNYypfn40PBdAJxo5tJjrN8nlNNlXIPBXL1CRsSeFiTGOBvF4
-         rIsRJzYhx22okJ2ptjPGRycX+jJg0gRlvhkn8Y56zIp1Wn4XcGxE+YeFW5gLfRkL2fSM
-         uuzelABTG5HYXlpvRTKp4RV7apt8WCJhTLEkz2ukUq5ctyYl/AzqCE2ENTmjvsFW7IYU
-         ujMg1E3WUsBM0rI6ZafjiDmTQPHaf4gVvG5KVzwSGKUVcJ047wXlv+R0ilWLnlJX2C+N
-         8Img==
+        d=gmail.com; s=20230601; t=1731594137; x=1732198937; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rcCCps3bA0DT5Vig5v3Q+cOzEWKwyoNxFgVPNNONgVA=;
+        b=kxpQSlqpgQWVGJIGRoxHUHlqEencziowKhEuZunr204jycE3/kIIZJQRhLhjqzphMF
+         X709Y0QwpIqD/bkI/uoivMiVY2bjyc9LAPl1tI3JXyCKfjGTEHscjQed+rH424FJm7MF
+         m6zFjk6EH8vwAVwMy8HjOVlGyBo6OdlS4jC295ZNhuZM1hz9GbN3jaAQrYGrkvA/5RTV
+         dJdlM5PQcTdoZqCkccEXd4VYT21LevQFrsaOsQsYD+aJV9b52aL8R4eKNNu4GuTUmL6Z
+         q8K/Q+eeiUdwQodsgmL8z97OVnJ0f5o8vHa7dFQ9wFuM1QrQtKVftJEOeNQrUOC07ImC
+         tYQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731594008; x=1732198808;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p4v/jG2aRUZnL5YZ465ulr/WON0zCfI7mJCLVKy7MkI=;
-        b=hQIrGqU7XsCZ+g5cR4bW/JzhcsYnpPhabIrDrUMGghJigWsHb9zRBNeArTWhCxE79f
-         2BqiARBBTHgro2G/nVJ+/e7rP7pmeoX9VJDPHPIZti9TNEY+HXCIpv/bn9B3k1T8AyKu
-         HVyI3y8SZ1sOphctIsvYViDwtIEOf5cSyY7JOW+A3m08yy6E8sjAIMotfPpNRND7AO92
-         l70vXb7/ehjSP1NGxy2/GUwqYfWKjY24WXPaiBsoTKeGrWO6nVomMy0DLkVrBNwM2qx6
-         MSvJW2UhpA6A6AtzX3l4pO8db4N6AXgWR3QOI7uvm0fxo8Dl99Eaq2QOnU498Mv2kVmp
-         FHUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpF+vcWqJsdzuUnTrbcNrPNemd69gQUMoimmEwwnd7oW7yhJQ5xWR3LWhrMMMW2RceJ8v2TMk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybuKpDmTOz6a9zAi3MacoHGgSkD1lK1fAkvY+w0k79bYJ1G/F9
-	G92YFNxdaWttrQ9S+PaHJ6Zy53oifryyGY1DmPuKiftB+861lm0bOTyaLiTzHnLVTj1tDPvCW+P
-	X5uE0/EHQ7keLk6I8SDsGCGGPNDKabrzrjOxu
-X-Gm-Gg: ASbGncvaGbCiR9lZ8R1b7w3OKtHZjKiQidKhvJ7QNP/kNmXIQXgnRDEiH2Ur2ZqAIcd
-	GATCEiQE9LhVCYshjPEeOMS4tSfgRM824rDHkYrc0Jf+2cAaKBEbPDOg5AZayTVA=
-X-Google-Smtp-Source: AGHT+IFLCAmwa3E6unLd67bDmoGhuoM0jI7u4P5imEH/bfK+rOIGIQ6R2iu1oEteuUXXbejuWDIdiiIMP0qJwbqsRXc=
-X-Received: by 2002:ac2:538b:0:b0:53d:a866:ff6e with SMTP id
- 2adb3069b0e04-53da9e99e8emr626e87.2.1731594007559; Thu, 14 Nov 2024 06:20:07
- -0800 (PST)
+        d=1e100.net; s=20230601; t=1731594137; x=1732198937;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rcCCps3bA0DT5Vig5v3Q+cOzEWKwyoNxFgVPNNONgVA=;
+        b=bJF8KUGiaxIfOGo+83qj0eCgmSNs5jy+miA5SgRMJoaDXXleVQBUBryYhiHVOVEaCE
+         YZdFxcQjV6v8zgbus4mgN2ZOLZcuXBeZdDcSQTS+xAuzAv30uj2IqzqBn/fTnuvSiK16
+         ia6yWSsyauYjdBT1QGhJK2reWc5jBB4NzWQqUwTyjRPLKULesQmhWjhqr9otKRLsKgkD
+         YiBn8lHqPNjFzO/6/rSzPLdTDYCcvv2lfUMPIrFNzz8BXtoqGfhBacf5Xb/A+Ch7uoKV
+         9rpL9lklLV74rsPuy5J4Wg502n3VVvjWAFWZdAxiviLWi5KiC1nSfXoLQTzjVjCREaPK
+         Yl6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWPVTT6y1La/xnZmY/wW2m0Lg50Eal+lQdwwtgj37atsrqEmglcgY6PQIyyeRutZr+aB1BanmA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQPITpA2Qgavs7dImARH3TBUFvrwzp/YqWCCmSFcw7c3UFQp8H
+	LR/87L3hF0GnWdiYj2F7dn8urWATUc4/KTii6TnrIlv2EL/LitIm
+X-Google-Smtp-Source: AGHT+IGdNC026LNcUMicDzqTvZcNB8zfVKvkb6Hdu7BwOtmmO2FSU037zQZdQAhxv1dA13Kf6UjwAg==
+X-Received: by 2002:a17:903:2451:b0:20c:7409:bd00 with SMTP id d9443c01a7336-21183c4268dmr353165635ad.5.1731594137360;
+        Thu, 14 Nov 2024 06:22:17 -0800 (PST)
+Received: from ?IPV6:2402:f000:3:800:19f0:968c:fe6e:97bf? ([2402:f000:3:800:19f0:968c:fe6e:97bf])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211c7c28f64sm11341595ad.31.2024.11.14.06.22.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 06:22:16 -0800 (PST)
+Message-ID: <a33a3a58-ae24-464e-874b-bb924fa32f69@gmail.com>
+Date: Thu, 14 Nov 2024 22:22:12 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110081953.121682-1-yuyanghuang@google.com>
- <ZzMlvCA4e3YhYTPn@fedora> <b47b1895-76b9-42bc-af29-e54a20d71a52@lunn.ch>
- <CADXeF1HMvDnKNSNCh1ULsspC+gR+S0eTE40MRhA+OH16zJKM6A@mail.gmail.com>
- <ce2359c3-a6eb-4ef3-b2cf-321c5c282fab@lunn.ch> <CADXeF1FYoXTixLFFhESDkCo2HXG3JAzzdMCfkFrr2dqmRVQcWg@mail.gmail.com>
- <9fa93b71-cd81-44ce-b7cc-24b12be8cb24@lunn.ch> <CADXeF1HQH=bhNWAtafUKD3-WoHhQEB-=TpwN9GdOOZ9PSaLktQ@mail.gmail.com>
- <dd54d1ac-cc53-43cb-a42e-d255ac688e6f@lunn.ch>
-In-Reply-To: <dd54d1ac-cc53-43cb-a42e-d255ac688e6f@lunn.ch>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Thu, 14 Nov 2024 23:19:29 +0900
-Message-ID: <CADXeF1F7nR02ZDKBEa=SXDbfgP9ZGumuzZkf3WSeomhrsntfDw@mail.gmail.com>
-Subject: Re: [PATCH net-next] netlink: add igmp join/leave notifications
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Hangbin Liu <liuhangbin@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, roopa@cumulusnetworks.com, 
-	jiri@resnulli.us, stephen@networkplumber.org, netdev@vger.kernel.org, 
-	=?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
->You are still focused or your narrow use case. Why is this only for
->WiFi? Why cannot i use it for other systems using IGMP? Switches? VPN
->servers? etc. We want a generic solution for all use cases, not just
->some obscure niche.
-
->And Linux does not care about commercial devices. And you would never
->implement this in the driver itself, that would immediately gets
->NACKed because it is not generic, but the concept should be generic.
-
-Thanks for the further feedback! I've revised the commit message to
-discuss more generic use cases without mentioning specific drivers or
-devices. I also removed the discussion about commercial devices.
-Please take another look and let me know if it needs further
-adjustments.
+User-Agent: Mozilla Thunderbird
+Subject: Re: chcr_ktls: fix a possible null-pointer dereference in
+ chcr_ktls_dev_add()
+To: Markus Elfring <Markus.Elfring@web.de>, netdev@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Ayush Sawal <ayush.sawal@chelsio.com>,
+ "David S. Miller" <davem@davemloft.net>, Dragos Tatulea
+ <dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Mina Almasry <almasrymina@google.com>,
+ Simon Horman <horms@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jia-Ju Bai <baijiaju1990@gmail.com>
+References: <20241030132352.154488-1-islituo@gmail.com>
+ <55a08c90-df62-41cd-8ab9-89dc8199fbfb@web.de>
+ <1fcd2645-e280-4505-aa75-f5a6510b5940@gmail.com>
+ <7f5b2359-c549-4de2-b4c3-977e66a1c1fa@web.de>
+Content-Language: en-US
+From: Tuo Li <islituo@gmail.com>
+In-Reply-To: <7f5b2359-c549-4de2-b4c3-977e66a1c1fa@web.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-```
-netlink: add IGMP/MLD join/leave notifications
 
-This change introduces netlink notifications for multicast address
-changes. The following features are included:
-* Addition and deletion of multicast addresses are reported using
-  RTM_NEWMULTICAST and RTM_DELMULTICAST messages with AF_INET and
-  AF_INET6.
-* Two new notification groups: RTNLGRP_IPV4_MCADDR and
-  RTNLGRP_IPV6_MCADDR are introduced for receiving these events.
+On 2024/11/14 20:26, Markus Elfring wrote:
+>> We have run our tool on Linux 6.11, and the line numbers correspond to the
+>> code in that version.
+> 
+> Would you like to share any source code analysis results for more recent software versions?
 
-This change allows user space applications (e.g., ip monitor) to
-efficiently track multicast group memberships by listening for netlink
-events. Previously, applications relied on inefficient polling of
-procfs, introducing delays. With netlink notifications, applications
-receive realtime updates on multicast group membership changes,
-enabling more precise metrics collection and system monitoring.
+Hi Elfring,
 
-This change also unlocks the potential for implementing a wide range
-of sophisticated multicast related features in user space by allowing
-applications to combine kernel provided multicast address information
-with user space data and communicate decisions back to the kernel for
-more fine grained control. This mechanism can be used for various
-purposes, including multicast filtering, IGMP/MLD offload, and
-IGMP/MLD snooping.
-```
+Thanks for your reply.
 
-Thanks,
-Yuyang
+I ran our tool on Linux 6.12-rc7
+(https://elixir.bootlin.com/linux/v6.12-rc7/source), and the same issue
+persists. The line number is identical to that on Linux 6.11.
 
-On Thu, Nov 14, 2024 at 10:26=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote=
-:
->
-> > This change also empowers user space applications to manage multicast
-> > filters and IGMP/MLD offload rules using the same netlink notification
-> > mechanism. This allows applications to dynamically adjust rules and
-> > configurations via generic netlink communication with the Wi-Fi driver,
-> > offering greater flexibility and updatability compared to implementing
-> > all logic within the driver itself. This is a key consideration for som=
-e
-> > commercial devices.
->
-> You are still focused or your narrow use case. Why is this only for
-> WiFi? Why cannot i use it for other systems using IGMP? Switches? VPN
-> servers? etc. We want a generic solution for all use cases, not just
-> some obscure niche.
->
-> And Linux does not care about commercial devices. And you would never
-> implement this in the driver itself, that would immediately gets
-> NACKed because it is not generic, but the concept should be generic.
->
->         Andrew
+  chcr_ktls_cpl_act_open_rpl()   //641
+    u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;   //686
+    if (u_ctx) {  //687
+    complete(&tx_info->completion);  //704
+
+  chcr_ktls_dev_add()  //412
+    u_ctx = adap->uld[CXGB4_ULD_KTLS].handle;  //432
+    wait_for_completion_timeout(&tx_info->completion, 30 * HZ); //551
+    xa_erase(&u_ctx->tid_list, tx_info->tid);  //580
+
+Any further feedback would be appreciated!
+
+Sincerely,
+Tuo Li
