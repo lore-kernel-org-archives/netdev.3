@@ -1,191 +1,186 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8106D1F76D6
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 10:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677E314EC47;
+	Thu, 14 Nov 2024 10:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731578424; cv=none; b=PsdnBT0PHeC/nqLEocLnJ0ia/qsqaE+CtAr+abuA1WjzhQa/5pvrf8ytI7r9WSL9KtE6a8v5sEhFyeplvC8640Emwk57vnc08wLOFnbg7kHgdM7T4U7FzmT1N/3N2l4BONwA1+mBIrM2/57yStRTC6vCarNbrNwpqJnGcZ4uwxU=
+	t=1731578778; cv=none; b=aWCNnLXdyXv+7WVZpbD6uoF/U51c8Fw0MFd84OzbU46JCUnzzk/Bivsxv0ikJOs3kt1HvoU+DtQk/WYVNlReLrJXWVE+fNr3MxnIu7ZA64r3zV9IqvGPLxhCd/SP/yQ0VgQwkP91NFvErALJIHiXavLsvad+qIS6ww4btvu7v3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731578424; c=relaxed/simple;
-	bh=IWRDNEJGtorkKJClEVpqVKqfdWoRUU6d9OpeaNaJZk4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jed2Nij0sAx6cHYqMZNOs8iOVSadUJrv+yPHvQZ5XH4fHhpV2U6c8vz9u97ZXNpFK3IAvEoTGKIAzB8iShVx3FXE/WWTG8+naBQz4kQYJ9Dr4HnlGOLtyxtBmUu2FFGmkNVxbOqAO1+B2eAFDidsgTlfFqZ5BbkIL+IDoBGBEGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ot/KTZZR; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1731578778; c=relaxed/simple;
+	bh=Pnc0qNHkdPR0PA5sax719eiAyaQU67fymQB+8rJyElo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RICmgQNeZ4rvDhjJlD3l8K7bJStMVHYTNf0we531sB68lIwwhs5b2cWyeM/LHH8TLDkC3s6UyExN+4ylc2AICb3By5t6RxVxEdZaI++tPixiI+r1TTyWh4oKxLQCNRsl1Xk2LX1U+9WokhlkFzVDZZ26B+Zcs2ydPIEV52igAIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CA0uCSYs; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ot/KTZZR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1731578423; x=1763114423;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Sk6p9PgliEub32hg6O+islq6mXCm3h6z8IujnE4zmCc=;
-  b=ot/KTZZR/FcdfFOvlVuZIDZHm+Uh5NRvozw50c+B9ZvZ7s3+7rUPP5S2
-   d4IYDusVLmHc9RjoYoyibJsTT1EOpS57R0+FVi3vCiT2rbM2E1VpQLT58
-   ofgJvIDIqLR7KWE7dL8iZ0r2G3ZadC018xqheJNgD2fUjb62RBuW4RXcz
-   k=;
-X-IronPort-AV: E=Sophos;i="6.12,153,1728950400"; 
-   d="scan'208";a="442752850"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.124.125.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 10:00:22 +0000
-Received: from EX19MTAUEB002.ant.amazon.com [10.0.44.209:42098]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.12.16:2525] with esmtp (Farcaster)
- id 95721b88-5d87-451f-9c93-fffd68bbb44b; Thu, 14 Nov 2024 10:00:21 +0000 (UTC)
-X-Farcaster-Flow-ID: 95721b88-5d87-451f-9c93-fffd68bbb44b
-Received: from EX19D008UEA001.ant.amazon.com (10.252.134.62) by
- EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 14 Nov 2024 10:00:15 +0000
-Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
- EX19D008UEA001.ant.amazon.com (10.252.134.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 14 Nov 2024 10:00:15 +0000
-Received: from email-imr-corp-prod-pdx-all-2b-22fa938e.us-west-2.amazon.com
- (10.124.125.2) by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1258.34 via Frontend Transport; Thu, 14 Nov 2024 10:00:15 +0000
-Received: from HFA15-G9FV5D3.amazon.com (unknown [10.85.143.176])
-	by email-imr-corp-prod-pdx-all-2b-22fa938e.us-west-2.amazon.com (Postfix) with ESMTP id D9227C0209;
-	Thu, 14 Nov 2024 10:00:08 +0000 (UTC)
-From: David Arinzon <darinzon@amazon.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	<netdev@vger.kernel.org>
-CC: David Arinzon <darinzon@amazon.com>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
-	"Woodhouse, David" <dwmw@amazon.com>, "Machulsky, Zorik" <zorik@amazon.com>,
-	"Matushevsky, Alexander" <matua@amazon.com>, Saeed Bshara
-	<saeedb@amazon.com>, "Wilson, Matt" <msw@amazon.com>, "Liguori, Anthony"
-	<aliguori@amazon.com>, "Bshara, Nafea" <nafea@amazon.com>, "Schmeilin,
- Evgeny" <evgenys@amazon.com>, "Belgazal, Netanel" <netanel@amazon.com>,
-	"Saidi, Ali" <alisaidi@amazon.com>, "Herrenschmidt, Benjamin"
-	<benh@amazon.com>, "Kiyanovski, Arthur" <akiyano@amazon.com>, "Dagan, Noam"
-	<ndagan@amazon.com>, "Bernstein, Amit" <amitbern@amazon.com>, "Agroskin,
- Shay" <shayagr@amazon.com>, "Abboud, Osama" <osamaabb@amazon.com>,
-	"Ostrovsky, Evgeny" <evostrov@amazon.com>, "Tabachnik, Ofir"
-	<ofirt@amazon.com>, "Machnikowski, Maciek" <maciek@machnikowski.net>, "Rahul
- Rameshbabu" <rrameshbabu@nvidia.com>, Gal Pressman <gal@nvidia.com>
-Subject: [PATCH v4 net-next 3/3] net: ena: Add PHC documentation
-Date: Thu, 14 Nov 2024 11:59:30 +0200
-Message-ID: <20241114095930.200-4-darinzon@amazon.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241114095930.200-1-darinzon@amazon.com>
-References: <20241114095930.200-1-darinzon@amazon.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CA0uCSYs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gIPrSHgQCALCepHl6R+DTYzMov4UgSjk+ZA9/KyL5Qc=; b=CA0uCSYsodv0SQpUQLPg+KwV1j
+	EOlFv+wYDpcRDgp2xP9fYXhBS0UkslmAeNFxvc/UPX/QDM9nTvMHb+Rb6cUcq/zTfCKsxIGlFmrwM
+	TyoKtRmwlH4+WcAcpfp+TwMMEyi0UTdTrCScZJ7tnbJ1Df18lW2N/W4W/S3JgmLXtJlNWq7uXid7o
+	aOQsjDZCkpZNfzjalZOEcIqNmHnBv3jRuVfiCkBdf6nz8dnJb1nv/+OzBsWBGtX8Sl0mRWh2ozlpd
+	GBjeExq32+6wAshDmMRV/EWWV1+oJyy3Pn30P4STwNRs68DsewdJaRfxtzYgjEOaiziLFeokGZHMe
+	8LukeCIg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58434)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tBWje-0007mr-2u;
+	Thu, 14 Nov 2024 10:05:59 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tBWjY-000113-2H;
+	Thu, 14 Nov 2024 10:05:52 +0000
+Date: Thu, 14 Nov 2024 10:05:52 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net v1 1/2] net: phy: set eee_cfg based on PHY
+ configuration
+Message-ID: <ZzXLgEjElnJD1445@shell.armlinux.org.uk>
+References: <20241114081653.3939346-1-yong.liang.choong@linux.intel.com>
+ <20241114081653.3939346-2-yong.liang.choong@linux.intel.com>
+ <ZzXBpEHs0y2_elqK@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZzXBpEHs0y2_elqK@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Provide the relevant information and guidelines
-about the feature support in the ENA driver.
+On Thu, Nov 14, 2024 at 09:23:48AM +0000, Russell King (Oracle) wrote:
+> On Thu, Nov 14, 2024 at 04:16:52PM +0800, Choong Yong Liang wrote:
+> > Not all PHYs have EEE enabled by default. For example, Marvell PHYs are
+> > designed to have EEE hardware disabled during the initial state, and it
+> > needs to be configured to turn it on again.
+> > 
+> > This patch reads the PHY configuration and sets it as the initial value for
+> > eee_cfg.tx_lpi_enabled and eee_cfg.eee_enabled instead of having them set to
+> > true by default.
+> 
+> eee_cfg.tx_lpi_enabled is something phylib tracks, and it merely means
+> that LPI needs to be enabled at the MAC if EEE was negotiated:
+> 
+>  * @tx_lpi_enabled: Whether the interface should assert its tx lpi, given
+>  *      that eee was negotiated.
+> 
+> eee_cfg.eee_enabled means that EEE mode was enabled - which is user
+> configuration:
+> 
+>  * @eee_enabled: EEE configured mode (enabled/disabled).
+> 
+> phy_probe() reads the initial PHY state and sets things up
+> appropriately.
+> 
+> However, there is a point where the EEE configuration (advertisement,
+> and therefore eee_enabled state) is written to the PHY, and that should
+> be config_aneg(). Looking at the Marvell driver, it's calling
+> genphy_config_aneg() which eventually calls
+> genphy_c45_an_config_eee_aneg() which does this (via
+> __genphy_config_aneg()).
+> 
+> Please investigate why the hardware state is going out of sync with the
+> software state.
 
-Signed-off-by: Amit Bernstein <amitbern@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
----
- .../device_drivers/ethernet/amazon/ena.rst    | 78 +++++++++++++++++++
- 1 file changed, 78 insertions(+)
+I think I've found the issue.
 
-diff --git a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-index 4561e8ab..12b13da0 100644
---- a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-+++ b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-@@ -56,6 +56,7 @@ ena_netdev.[ch]     Main Linux kernel driver.
- ena_ethtool.c       ethtool callbacks.
- ena_xdp.[ch]        XDP files
- ena_pci_id_tbl.h    Supported device IDs.
-+ena_phc.[ch]        PTP hardware clock infrastructure (see `PHC`_ for more info)
- =================   ======================================================
+We have phydev->eee_enabled and phydev->eee_cfg.eee_enabled, which looks
+like a bug to me. We write to phydev->eee_cfg.eee_enabled in
+phy_support_eee(), leaving phydev->eee_enabled untouched.
+
+However, most other places are using phydev->eee_enabled.
+
+This is (a) confusing and (b) wrong, and having the two members leads
+to this confusion, and makes the code more difficult to follow (unless
+one has already clocked that there are these two different things both
+called eee_enabled).
+
+This is my untested prototype patch to fix this - it may cause breakage
+elsewhere:
+
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index c1b3576c307f..2d64d3f293e5 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -943,7 +943,7 @@ EXPORT_SYMBOL_GPL(genphy_c45_read_eee_abilities);
+  */
+ int genphy_c45_an_config_eee_aneg(struct phy_device *phydev)
+ {
+-	if (!phydev->eee_enabled) {
++	if (!phydev->eee_cfg.eee_enabled) {
+ 		__ETHTOOL_DECLARE_LINK_MODE_MASK(adv) = {};
  
- Management Interface:
-@@ -221,6 +222,83 @@ descriptor it was received on would be recycled. When a packet smaller
- than RX copybreak bytes is received, it is copied into a new memory
- buffer and the RX descriptor is returned to HW.
+ 		return genphy_c45_write_eee_adv(phydev, adv);
+@@ -1576,8 +1576,6 @@ int genphy_c45_ethtool_set_eee(struct phy_device *phydev,
+ 		}
+ 	}
  
-+.. _`PHC`:
-+
-+PTP Hardware Clock (PHC)
-+========================
-+.. _`ptp-userspace-api`: https://docs.kernel.org/driver-api/ptp.html#ptp-hardware-clock-user-space-api
-+.. _`testptp`: https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/ptp/testptp.c
-+
-+ENA Linux driver supports PTP hardware clock providing timestamp reference to achieve nanosecond resolution.
-+
-+**PHC support**
-+
-+PHC depends on the PTP module, which needs to be either loaded as a module or compiled into the kernel.
-+
-+Verify if the PTP module is present:
-+
-+.. code-block:: shell
-+
-+  grep -w '^CONFIG_PTP_1588_CLOCK=[ym]' /boot/config-`uname -r`
-+
-+- If no output is provided, the ENA driver cannot be loaded with PHC support.
-+
-+- ``CONFIG_PTP_1588_CLOCK=y``: the PTP module is already compiled and loaded inside the kernel binary file.
-+
-+- ``CONFIG_PTP_1588_CLOCK=m``: the PTP module needs to be loaded prior to loading the ENA driver:
-+
-+Load PTP module:
-+
-+.. code-block:: shell
-+
-+  sudo modprobe ptp
-+
-+All available PTP clock sources can be tracked here:
-+
-+.. code-block:: shell
-+
-+  ls /sys/class/ptp
-+
-+PHC support and capabilities can be verified using ethtool:
-+
-+.. code-block:: shell
-+
-+  ethtool -T <interface>
-+
-+**PHC timestamp**
-+
-+To retrieve PHC timestamp, use `ptp-userspace-api`_, usage example using `testptp`_:
-+
-+.. code-block:: shell
-+
-+  testptp -d /dev/ptp$(ethtool -T <interface> | awk '/PTP Hardware Clock:/ {print $NF}') -k 1
-+
-+PHC get time requests should be within reasonable bounds,
-+avoid excessive utilization to ensure optimal performance and efficiency.
-+The ENA device restricts the frequency of PHC get time requests to a maximum
-+of 125 requests per second. If this limit is surpassed, the get time request
-+will fail, leading to an increment in the phc_err statistic.
-+
-+**PHC statistics**
-+
-+PHC can be monitored using :code:`ethtool -S` counters:
-+
-+=================   ======================================================
-+**phc_cnt**         Number of successful retrieved timestamps (below expire timeout).
-+**phc_exp**         Number of expired retrieved timestamps (above expire timeout).
-+**phc_skp**         Number of skipped get time attempts (during block period).
-+**phc_err**         Number of failed get time attempts (entering into block state).
-+=================   ======================================================
-+
-+PHC timeouts:
-+
-+=================   ======================================================
-+**expire**          Max time for a valid timestamp retrieval, passing this threshold will fail
-+                    the get time request and block new requests until block timeout.
-+**block**           Blocking period starts once get time request expires or fails, all get time
-+                    requests during block period will be skipped.
-+=================   ======================================================
-+
- Statistics
- ==========
+-	phydev->eee_enabled = data->eee_enabled;
+-
+ 	ret = genphy_c45_an_config_eee_aneg(phydev);
+ 	if (ret > 0) {
+ 		ret = phy_restart_aneg(phydev);
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index bc24c9f2786b..b26bb33cd1d4 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3589,12 +3589,12 @@ static int phy_probe(struct device *dev)
+ 	/* There is no "enabled" flag. If PHY is advertising, assume it is
+ 	 * kind of enabled.
+ 	 */
+-	phydev->eee_enabled = !linkmode_empty(phydev->advertising_eee);
++	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
  
+ 	/* Some PHYs may advertise, by default, not support EEE modes. So,
+ 	 * we need to clean them.
+ 	 */
+-	if (phydev->eee_enabled)
++	if (phydev->eee_cfg.eee_enabled)
+ 		linkmode_and(phydev->advertising_eee, phydev->supported_eee,
+ 			     phydev->advertising_eee);
+ 
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 1e4127c495c0..33905e9672a7 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -601,7 +601,6 @@ struct macsec_ops;
+  * @adv_old: Saved advertised while power saving for WoL
+  * @supported_eee: supported PHY EEE linkmodes
+  * @advertising_eee: Currently advertised EEE linkmodes
+- * @eee_enabled: Flag indicating whether the EEE feature is enabled
+  * @enable_tx_lpi: When True, MAC should transmit LPI to PHY
+  * @eee_cfg: User configuration of EEE
+  * @lp_advertising: Current link partner advertised linkmodes
+@@ -721,7 +720,6 @@ struct phy_device {
+ 	/* used for eee validation and configuration*/
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_eee);
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising_eee);
+-	bool eee_enabled;
+ 
+ 	/* Host supported PHY interface types. Should be ignored if empty. */
+ 	DECLARE_PHY_INTERFACE_MASK(host_interfaces);
+
 -- 
-2.40.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
