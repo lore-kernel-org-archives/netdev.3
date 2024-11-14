@@ -1,92 +1,39 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937551F81B1;
-	Thu, 14 Nov 2024 07:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68511F4FBF
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 07:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731568042; cv=none; b=bGNHAqf+k+/LEGQj5NWC/0b3BoIpe/YaGKlaQoXgKH3oRaj2gCrMn8Jd++t9s29NDEXVFuv7W2ixIqR1aT/A/1oql1sQCVZwUrIefoRM1bKUbJ1td85oC6kVEhQ7vRDToUqeb/bWIqHonCFc4ejTKJifX6wZhGRsd+hgvACX6Qc=
+	t=1731568056; cv=none; b=Bk6qnJDWJJO4JAdmfjBEU+ijGkwf44NcGHpKy//sYHMLr7CObvfXCo6JCfDnnvuzkwbqAk2hR7EKXZI85IwyuR3T6Y3a7j07ZSKJWHG0oIcxXmDZJS262hbZe8n6SPma/YGz4aD/fvyckjlSXCuczfyEc3oWey5YocJiHgz9liM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731568042; c=relaxed/simple;
-	bh=s1fGkXCbAOyGJfqqcT0sczwpfVFOxllsZIzn+hXFv54=;
+	s=arc-20240116; t=1731568056; c=relaxed/simple;
+	bh=KY2VIHgpofXIw7Iuket5iaRjY//BGxu3gzuDbd9SCto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drBW4fWTEIvSc5MqvOMGdVS1cX1eEK9INFgl7/3lKPK/zMJ/QkaVON1yIrsrr81yurTdqufDaFBRkYwficeocLLy+enz4hbD8Rk1uB0PCJQRN6qtMi15Fz5/RCf06+TCo8e1Z3hB+4pAiNWnoaD13M25JVHzxK5h8f1ccWFzfNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E8mtXEMl; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E8mtXEMl"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2118dfe6042so1892925ad.2;
-        Wed, 13 Nov 2024 23:07:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731568040; x=1732172840; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I0qB0dHVK4fkbUBFWgw/OXByiy+cGpd6DkNTPsTFikE=;
-        b=E8mtXEMl+eWsrwWA+yP90+TfCvFPjP+LAsdEMW6I5NZaceny6HoJKjyRZQkx+5E1Do
-         c6F2/7HvArwnkc6EM+2HfizOfwshR5ZX22IVuBiQKEFnAuvn5irR30p5tJmYT+aaMP4c
-         pXo0IjmxDqTybslQCPvR6R6fi1fvumJNzP9/uOVTVbeOeiNubUHtlRke0JgqCN7Tp+w5
-         +g1g9p/7CdNaaz3s/Q/awkJrjhe02vlp3F1SNPatBX/iXtz++a/bOQyG2zNc2E0DQeyE
-         toWf4CQhkzAZSusAG50yVzAWUUCh/Ev6TyLkWapHUVvLc+zf1zucsxPHyf830DlRmj+a
-         gAPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731568040; x=1732172840;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I0qB0dHVK4fkbUBFWgw/OXByiy+cGpd6DkNTPsTFikE=;
-        b=umBCX68TblXrbTVdGVhNANKfaSe82RrWy8jqT6a3Tr0CH0guPwv+YQnEhwbA+76f9Y
-         SIgU25RrZSBuTFTjDY5NsQiV8M0vdp59ElNU/8tw2WWPBXQmEMinvDMHFrRW7AyKyjVx
-         WQAfD5edK0OISjMoMyFvjhVdKtR+HCS/GC3Shnw+wYlCvg0Dt6ZRGtIaPhWz7XNByjUa
-         MdgoC04RBFf5M4EaFjubabN5qzLeAP6mcFVCRfhBdByHcbQxzWriZNbU9JJB081hJzgK
-         lNcql22b4+Lkyrh4/NBHpfuWJrlDNyRoVDceMQVaipP74cLVhjJESYqw+zwmz4FtlXkH
-         lVpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAwLQtwiT/XCG996mcgWeGlWMqlIIF9uqk0etMcbqOCvXLdmfoi8m/zQlDA3wSAmlTgt4DbRVzWKq67wfk1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZBAck/MaSEQEhal3gst2H6OI+OXJ5JM3WKL+OWbkrYnCvCA0E
-	ka54qKBs2lwQGHUsZgxilzQKgRp32rzg5dXT5THIT3MapfteJCmfc25JwSQE
-X-Google-Smtp-Source: AGHT+IEJem3Kp38rXmgL6DAz6s4FPxX/o78x5w0/1Bw6VftwfbcnCG7GRH7kBNbdt2lBkrBrIW5i6A==
-X-Received: by 2002:a17:902:d488:b0:20b:65d6:d268 with SMTP id d9443c01a7336-211aba446f2mr134652305ad.53.1731568040612;
-        Wed, 13 Nov 2024 23:07:20 -0800 (PST)
-Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211c7d24a00sm4260315ad.244.2024.11.13.23.07.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 23:07:20 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	tmgross@umich.edu,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	tglx@linutronix.de,
-	arnd@arndb.de,
-	jstultz@google.com,
-	sboyd@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com
-Subject: [PATCH v6 7/7] net: phy: qt2025: Wait until PHY becomes ready
-Date: Thu, 14 Nov 2024 16:02:34 +0900
-Message-ID: <20241114070234.116329-8-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241114070234.116329-1-fujita.tomonori@gmail.com>
-References: <20241114070234.116329-1-fujita.tomonori@gmail.com>
+	 MIME-Version; b=Fyev2r6G56DITzU+Jfgcig7OT+uhKugG9LCtyzrgwzAZj/1tW/7wOkseSHR8u1Wpa/tkb1thmRd7X08dlKGdMCP74387EGQTi6BEi00CCvxiBNJ+91GJrWrKKwDMz1GmcnmYdwu2zTEd1gcCdQnoYbyykSM+QRsMhi/R2U9CGxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
+Received: from labnh.big (syn-172-222-091-149.res.spectrum.com [172.222.91.149])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.chopps.org (Postfix) with ESMTPSA id F2D077D12C;
+	Thu, 14 Nov 2024 07:07:31 +0000 (UTC)
+From: Christian Hopps <chopps@chopps.org>
+To: devel@linux-ipsec.org
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	netdev@vger.kernel.org,
+	Florian Westphal <fw@strlen.de>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Antony Antony <antony@phenome.org>,
+	Christian Hopps <chopps@chopps.org>,
+	Christian Hopps <chopps@labn.net>
+Subject: [PATCH ipsec-next v14 06/15] xfrm: iptfs: add new iptfs xfrm mode impl
+Date: Thu, 14 Nov 2024 02:07:03 -0500
+Message-ID: <20241114070713.3718740-7-chopps@chopps.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241114070713.3718740-1-chopps@chopps.org>
+References: <20241114070713.3718740-1-chopps@chopps.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,49 +42,259 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Wait until a PHY becomes ready in the probe callback by
-using read_poll_timeout function.
+From: Christian Hopps <chopps@labn.net>
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Add a new xfrm mode implementing AggFrag/IP-TFS from RFC9347.
+
+This utilizes the new xfrm_mode_cbs to implement demand-driven IP-TFS
+functionality. This functionality can be used to increase bandwidth
+utilization through small packet aggregation, as well as help solve PMTU
+issues through it's efficient use of fragmentation.
+
+  Link: https://www.rfc-editor.org/rfc/rfc9347.txt
+
+Multiple commits follow to build the functionality into xfrm_iptfs.c
+
+Signed-off-by: Christian Hopps <chopps@labn.net>
 ---
- drivers/net/phy/qt2025.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/xfrm/Makefile     |   1 +
+ net/xfrm/xfrm_iptfs.c | 216 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 217 insertions(+)
+ create mode 100644 net/xfrm/xfrm_iptfs.c
 
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-index 28d8981f410b..c042f2f82bb9 100644
---- a/drivers/net/phy/qt2025.rs
-+++ b/drivers/net/phy/qt2025.rs
-@@ -12,6 +12,7 @@
- use kernel::c_str;
- use kernel::error::code;
- use kernel::firmware::Firmware;
-+use kernel::io::poll::read_poll_timeout;
- use kernel::net::phy::{
-     self,
-     reg::{Mmd, C45},
-@@ -19,6 +20,7 @@
- };
- use kernel::prelude::*;
- use kernel::sizes::{SZ_16K, SZ_8K};
-+use kernel::time::Delta;
- 
- kernel::module_phy_driver! {
-     drivers: [PhyQT2025],
-@@ -93,7 +95,13 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
-         // The micro-controller will start running from SRAM.
-         dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
- 
--        // TODO: sleep here until the hw becomes ready.
-+        read_poll_timeout(
-+            || dev.read(C45::new(Mmd::PCS, 0xd7fd)),
-+            |val| val != 0x00 && val != 0x10,
-+            Delta::from_millis(50),
-+            Delta::from_secs(3),
-+        )?;
+diff --git a/net/xfrm/Makefile b/net/xfrm/Makefile
+index 512e0b2f8514..5a1787587cb3 100644
+--- a/net/xfrm/Makefile
++++ b/net/xfrm/Makefile
+@@ -21,5 +21,6 @@ obj-$(CONFIG_XFRM_USER) += xfrm_user.o
+ obj-$(CONFIG_XFRM_USER_COMPAT) += xfrm_compat.o
+ obj-$(CONFIG_XFRM_IPCOMP) += xfrm_ipcomp.o
+ obj-$(CONFIG_XFRM_INTERFACE) += xfrm_interface.o
++obj-$(CONFIG_XFRM_IPTFS) += xfrm_iptfs.o
+ obj-$(CONFIG_XFRM_ESPINTCP) += espintcp.o
+ obj-$(CONFIG_DEBUG_INFO_BTF) += xfrm_state_bpf.o
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+new file mode 100644
+index 000000000000..e7cb8734fc0f
+--- /dev/null
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0
++/* xfrm_iptfs: IPTFS encapsulation support
++ *
++ * April 21 2022, Christian Hopps <chopps@labn.net>
++ *
++ * Copyright (c) 2022, LabN Consulting, L.L.C.
++ *
++ */
 +
-         Ok(())
-     }
- 
++#include <linux/kernel.h>
++#include <linux/icmpv6.h>
++#include <net/gro.h>
++#include <net/icmp.h>
++#include <net/ip6_route.h>
++#include <net/inet_ecn.h>
++#include <net/xfrm.h>
++
++#include <crypto/aead.h>
++
++#include "xfrm_inout.h"
++
++/**
++ * struct xfrm_iptfs_config - configuration for the IPTFS tunnel.
++ * @pkt_size: size of the outer IP packet. 0 to use interface and MTU discovery,
++ *	otherwise the user specified value.
++ */
++struct xfrm_iptfs_config {
++	u32 pkt_size;	    /* outer_packet_size or 0 */
++};
++
++/**
++ * struct xfrm_iptfs_data - mode specific xfrm state.
++ * @cfg: IPTFS tunnel config.
++ * @x: owning SA (xfrm_state).
++ * @payload_mtu: max payload size.
++ */
++struct xfrm_iptfs_data {
++	struct xfrm_iptfs_config cfg;
++
++	/* Ingress User Input */
++	struct xfrm_state *x;	    /* owning state */
++	u32 payload_mtu;	    /* max payload size */
++};
++
++/* ========================== */
++/* State Management Functions */
++/* ========================== */
++
++/**
++ * iptfs_get_inner_mtu() - return inner MTU with no fragmentation.
++ * @x: xfrm state.
++ * @outer_mtu: the outer mtu
++ */
++static u32 iptfs_get_inner_mtu(struct xfrm_state *x, int outer_mtu)
++{
++	struct crypto_aead *aead;
++	u32 blksize;
++
++	aead = x->data;
++	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
++	return ((outer_mtu - x->props.header_len - crypto_aead_authsize(aead)) &
++		~(blksize - 1)) - 2;
++}
++
++/**
++ * iptfs_user_init() - initialize the SA with IPTFS options from netlink.
++ * @net: the net data
++ * @x: xfrm state
++ * @attrs: netlink attributes
++ * @extack: extack return data
++ *
++ * Return: 0 on success or a negative error code on failure
++ */
++static int iptfs_user_init(struct net *net, struct xfrm_state *x,
++			   struct nlattr **attrs,
++			   struct netlink_ext_ack *extack)
++{
++	struct xfrm_iptfs_data *xtfs = x->mode_data;
++	struct xfrm_iptfs_config *xc;
++
++	xc = &xtfs->cfg;
++
++	if (attrs[XFRMA_IPTFS_PKT_SIZE]) {
++		xc->pkt_size = nla_get_u32(attrs[XFRMA_IPTFS_PKT_SIZE]);
++		if (!xc->pkt_size) {
++			xtfs->payload_mtu = 0;
++		} else if (xc->pkt_size > x->props.header_len) {
++			xtfs->payload_mtu = xc->pkt_size - x->props.header_len;
++		} else {
++			NL_SET_ERR_MSG(extack,
++				       "Packet size must be 0 or greater than IPTFS/ESP header length");
++			return -EINVAL;
++		}
++	}
++	return 0;
++}
++
++static unsigned int iptfs_sa_len(const struct xfrm_state *x)
++{
++	struct xfrm_iptfs_data *xtfs = x->mode_data;
++	struct xfrm_iptfs_config *xc = &xtfs->cfg;
++	unsigned int l = 0;
++
++	if (x->dir == XFRM_SA_DIR_OUT)
++		l += nla_total_size(sizeof(xc->pkt_size));
++
++	return l;
++}
++
++static int iptfs_copy_to_user(struct xfrm_state *x, struct sk_buff *skb)
++{
++	struct xfrm_iptfs_data *xtfs = x->mode_data;
++	struct xfrm_iptfs_config *xc = &xtfs->cfg;
++	int ret = 0;
++
++	if (x->dir == XFRM_SA_DIR_OUT)
++		ret = nla_put_u32(skb, XFRMA_IPTFS_PKT_SIZE, xc->pkt_size);
++
++	return ret;
++}
++
++static void __iptfs_init_state(struct xfrm_state *x,
++			       struct xfrm_iptfs_data *xtfs)
++{
++	/* Modify type (esp) adjustment values */
++
++	if (x->props.family == AF_INET)
++		x->props.header_len += sizeof(struct iphdr) + sizeof(struct ip_iptfs_hdr);
++	else if (x->props.family == AF_INET6)
++		x->props.header_len += sizeof(struct ipv6hdr) + sizeof(struct ip_iptfs_hdr);
++	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
++
++	/* Always keep a module reference when x->mode_data is set */
++	__module_get(x->mode_cbs->owner);
++
++	x->mode_data = xtfs;
++	xtfs->x = x;
++}
++
++static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
++{
++	struct xfrm_iptfs_data *xtfs;
++
++	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
++	if (!xtfs)
++		return -ENOMEM;
++
++	x->mode_data = xtfs;
++	xtfs->x = x;
++
++	return 0;
++}
++
++static int iptfs_init_state(struct xfrm_state *x)
++{
++	struct xfrm_iptfs_data *xtfs;
++
++	if (x->mode_data) {
++		/* We have arrived here from xfrm_state_clone() */
++		xtfs = x->mode_data;
++	} else {
++		xtfs = kzalloc(sizeof(*xtfs), GFP_KERNEL);
++		if (!xtfs)
++			return -ENOMEM;
++	}
++
++	__iptfs_init_state(x, xtfs);
++
++	return 0;
++}
++
++static void iptfs_destroy_state(struct xfrm_state *x)
++{
++	struct xfrm_iptfs_data *xtfs = x->mode_data;
++
++	if (!xtfs)
++		return;
++
++	kfree_sensitive(xtfs);
++
++	module_put(x->mode_cbs->owner);
++}
++
++static const struct xfrm_mode_cbs iptfs_mode_cbs = {
++	.owner = THIS_MODULE,
++	.init_state = iptfs_init_state,
++	.clone_state = iptfs_clone_state,
++	.destroy_state = iptfs_destroy_state,
++	.user_init = iptfs_user_init,
++	.copy_to_user = iptfs_copy_to_user,
++	.sa_len = iptfs_sa_len,
++	.get_inner_mtu = iptfs_get_inner_mtu,
++};
++
++static int __init xfrm_iptfs_init(void)
++{
++	int err;
++
++	pr_info("xfrm_iptfs: IPsec IP-TFS tunnel mode module\n");
++
++	err = xfrm_register_mode_cbs(XFRM_MODE_IPTFS, &iptfs_mode_cbs);
++	if (err < 0)
++		pr_info("%s: can't register IP-TFS\n", __func__);
++
++	return err;
++}
++
++static void __exit xfrm_iptfs_fini(void)
++{
++	xfrm_unregister_mode_cbs(XFRM_MODE_IPTFS);
++}
++
++module_init(xfrm_iptfs_init);
++module_exit(xfrm_iptfs_fini);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("IP-TFS support for xfrm ipsec tunnels");
 -- 
-2.43.0
+2.47.0
 
