@@ -1,104 +1,162 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02F013CFA8
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 15:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B07A1850B5
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 15:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731598972; cv=none; b=UvdUS4tNNzwmHmhC+YjrMuo7Ugy5bW1UyxMFQ2xL9XHMlRJhYZ5lDqMB41wjHhPuCKr7FomZLukYv3U0GMfUQS7A4yaRK9cFQjqIsqgOaT6vz48RBXFXo1KuMJQtCld7KNeEUaD4rnpxCEzswZpxd5vZf7O8sfhZyzOED7nDqNk=
+	t=1731599003; cv=none; b=Nk4yp8hywKQs8J/iLv98eUYFh+8bbZERMsGjBoPUc8T+3KDKh4lxsiwMFQV138hQk4wRpConfOdgJC+0eXF8fF+wfFwiCi6B4rgLEoi9J8PTYuY5A76qJeVhf2kdkyKF3yAaQ4mxz0u5/D8SI36bITJbDcG+ViirJTn+zUq+qPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731598972; c=relaxed/simple;
-	bh=5lKBuQID5A6V/TtMNiFrE0dY9fXYPxM6odgRZVO7MTc=;
+	s=arc-20240116; t=1731599003; c=relaxed/simple;
+	bh=cpkpvcI4nnZ6IoTG09tDrpa0CY5qnKUuAFVyTovamKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dVd+mMyp+bE5h2nuujkIHAUSOGjsk03GUfNExe4AuO0OCmeyzBEXD5pZdE+3YzxHurQek5CxkONoImXQAFqZzFYZqACEyU9ZjOjG8TwbCSc+V7b0xwwxPOAqLOszoEVZq9I9TEuHf+Os0iL+QwCUvyd6RM8Yx10Mzg9PCA6RJX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KrT4PnQx; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=r6Kk7gElyYsgs1bjFRyAynj4GnRvFwdfeS8PNRi2Y63EzDtEpHXQxaH75zPQJCcR3RcO7LKEd2fZ4/T0Y4Vaohe74JF+1zUDAOE7jZaxXtQiPS/h7uCJNH7lJfcVhmkfFW2Z2+NXLUvgrmsTRBwDTmx8i7BvB8lFkpnVTn4oEKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cS4oQUap; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KrT4PnQx"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38221306992so245741f8f.3
-        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 07:42:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731598969; x=1732203769; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KX2+fSGUfmeU6/csaLeMCbckFU11xR4X8/Q/gUEL7bI=;
-        b=KrT4PnQxoDYvO1FRefk8ODtVOUxQ7ZbFskSH+D2in0nNXs+ZM+MtbiqyT8K1PGBy60
-         gmI1AKFwhC+o2KYldz/JTLzgtPqMVXHF0RvOd8hZurBhamyebjwVeKqT00+6VT5Wwu65
-         0qFg/bYjbgAaZjlOTWR2PXzQsijT64gY0cKpq0tPErGyu+an2t6foEwmKMv6LJK85Dmd
-         doBsrTIXFlxTHINLeCEQgPRWBz3bjEobcQxT60Jt4fB3spsEhG+HlgohZRn48uRYux4V
-         /QLl07+UOmTvWa/Tr541buEpS3HsotG9Gau4Oo+zbAm0YC94nV3krLJPGbhlRPnn+S40
-         Jd4Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cS4oQUap"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731599000;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KXhPhd6T64qopenKzDTr2VAsOd523bKkU/nV0+x9Uek=;
+	b=cS4oQUaphP6oXO4Z68oq2PFfqmvaLwgfQinOQme+9Wvjg0FTu0QnJNnr9va+NYWQDZs4dg
+	gl/B1IBLnvmGXPm5cEv/l5Ye5k5zNUIHBDHYwjAznnkHu1bjXPoVh39dtUuowTKvnrVAYT
+	vNAoU03Xn/5hAah0gp/FyBEzcE4MTxs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-VndQnvGlMsOTcWCudlfI3A-1; Thu, 14 Nov 2024 10:43:19 -0500
+X-MC-Unique: VndQnvGlMsOTcWCudlfI3A-1
+X-Mimecast-MFC-AGG-ID: VndQnvGlMsOTcWCudlfI3A
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38218576e86so469172f8f.0
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 07:43:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731598969; x=1732203769;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KX2+fSGUfmeU6/csaLeMCbckFU11xR4X8/Q/gUEL7bI=;
-        b=gLGKEwIeQpab+B26EbCJ4GM8DGSZVhgaaCMv4fPiMnz6vVb3uWujaUQFiu/5MEu+Mj
-         L/7zcpOVxePZqd761JeABE7Ez85FhWK4Do+gWhPFkDB/DkJhos4XACrMDWdZptefpckQ
-         PmB64v4iXPJgfFASxw9mVo9dyd8Anv+hT7K9+OpEYFMXj7PUbJT64uEeTGafw+D3zyON
-         u+XsgRL6T/2NRl59CVVZjiazV7DIKeEWBexTTAR+ISbyexFsMzT6c2W0+V5ZRrPGlMPU
-         4iWnpMDrQsrg1c4AoD10DMDkDX18NE1m50dm3emXYhWC1JQiwD2o5ycAPPqqt9XqGHQ8
-         npNw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4aBXMBx6ukU6qqNET70uW4dnVbJsNZWnM7LzUjsVVceYe54G4U0K1S06I2J9yerdUAv3dQM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+wYuUqP47dm5iwgFDl7tV2uVBQ0q/BEKOGyNL82lmEvjVLyAk
-	9BL+tjPJciXf9VydNrr2yAjw+gJxqVVDHRfSWbGTdVmR0IZfprgKxPeDCEtKeGo=
-X-Google-Smtp-Source: AGHT+IFinWny9gPHiwjHi0Xnjp+VmawkDv8LOfWqaLaGRLkw5Fwzg9gT4mhRC/81ZoQXRB3xpi7PiA==
-X-Received: by 2002:a5d:5f92:0:b0:378:89d8:8242 with SMTP id ffacd0b85a97d-3821851c3d0mr2406983f8f.26.1731598968872;
-        Thu, 14 Nov 2024 07:42:48 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-382200fe00esm1093677f8f.42.2024.11.14.07.42.47
+        d=1e100.net; s=20230601; t=1731598998; x=1732203798;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KXhPhd6T64qopenKzDTr2VAsOd523bKkU/nV0+x9Uek=;
+        b=CnsMyUnCp2hMzt/8Vmwxe7EABdShKqn7SqJ28K/Zq7I1zz2eEve5IG9zZK6nRgG3ob
+         RaRLCJ/FXPUmYOGXWIO/iYu+/yOX7oA4mIqYQIR7c0kcWVNBr31wccODtcHKvwyyIqvy
+         VxsOOioAMtg0oMnY9loG8NBbLvrv+sS/eMK4cTKendKxAbgFKR/zGn4W4oz89O1gEVZa
+         KWspfXIsSqqGAH49/isknzZ6lB1HbeWqiNCqFdPpnt6xtb6DlKFBzCgpdH5bSfklYyM/
+         bknuShTqGaPYqLLTo9FohxTs5IvMoWKk7fPoUbuYYFK98dE5XoD3ChcVrTleJkYFhqQc
+         4clw==
+X-Forwarded-Encrypted: i=1; AJvYcCXE4tRiKW2gy3UY6wrU7xT9ciA9ka9fYjxbHQqbg0Glbg03/hUxQPiig1fTs+RZlCf2IwOLv0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy358v0vI0PXcLjBSKMrrGIo0HDcGE1CjI8dARH3RAYq1+w/y4f
+	Ao9CkjUWLiJGuzBhjuuuLsK88gzN7FsNq1WDEi5o/i8SFsUXsjER5YvqrFrIUWdCrITpfcpbRLZ
+	7c3YdOTZnu/RNcpQHxYx+zkjTklD+TnW82Vsu+S65qE0469UxhyXvcA==
+X-Received: by 2002:a05:6000:184f:b0:381:e771:e6dc with SMTP id ffacd0b85a97d-382140752femr3138943f8f.28.1731598998151;
+        Thu, 14 Nov 2024 07:43:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHoMlXHEHIIIf/8vuBedCySo4LpdsmnKwwPgZlfZJLBlokpUPY1g/zGswFuAox/GMsDltKRSg==
+X-Received: by 2002:a05:6000:184f:b0:381:e771:e6dc with SMTP id ffacd0b85a97d-382140752femr3138917f8f.28.1731598997736;
+        Thu, 14 Nov 2024 07:43:17 -0800 (PST)
+Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab7206csm24235755e9.7.2024.11.14.07.43.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 07:42:48 -0800 (PST)
-Date: Thu, 14 Nov 2024 18:42:45 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Max Staudt <max@enpas.org>,
+        Thu, 14 Nov 2024 07:43:17 -0800 (PST)
+Date: Thu, 14 Nov 2024 16:43:15 +0100
+From: Guillaume Nault <gnault@redhat.com>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-can@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] can: can327: fix snprintf() limit in
- can327_handle_prompt()
-Message-ID: <e5572514-83d7-4b7e-b4f0-5318c6722250@stanley.mountain>
-References: <c896ba5d-7147-4978-9e25-86cfd88ff9dc@stanley.mountain>
- <6db4d783-6db2-4b86-887c-3c95d6763774@wanadoo.fr>
- <4ff913b9-93b3-4636-b0f6-6e874f813d2f@stanley.mountain>
- <9d6837c1-6fd1-4cc6-8315-c1ede8f20add@wanadoo.fr>
- <20241114-olive-petrel-of-culture-5ae519-mkl@pengutronix.de>
- <7841268c-c8dc-4db9-b2dd-c2c5fc366022@wanadoo.fr>
- <0c4ebaf0-a6c5-4852-939b-e7ac135f6f32@stanley.mountain>
- <7d4b176b-6b44-450b-ab2d-847e5199d1b9@wanadoo.fr>
+	Simon Horman <horms@kernel.org>, linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
+	Pekka Varis <p-varis@ti.com>
+Subject: Re: [PATCH net-next v4 1/2] net: ethernet: ti: am65-cpsw: update
+ pri_thread_map as per IEEE802.1Q-2014
+Message-ID: <ZzYak49k8fQC76/+@debian>
+References: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
+ <20241114-am65-cpsw-multi-rx-dscp-v4-1-93eaf6760759@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7d4b176b-6b44-450b-ab2d-847e5199d1b9@wanadoo.fr>
+In-Reply-To: <20241114-am65-cpsw-multi-rx-dscp-v4-1-93eaf6760759@kernel.org>
 
-On Fri, Nov 15, 2024 at 12:24:17AM +0900, Vincent Mailhol wrote:
-> On 15/11/2024 at 00:08, Dan Carpenter wrote:
-> > I'm happy to re-write the commit message.  Changing snprintf to sprintf() makes
-> > me so much less happy...
-> 
-> OK. Let me amend my previous message. I kind of understood from the past
-> exchanges that Max will take the ownership of this patch and credit you
-> a with a Reported-by: tag.
-> 
-> If you keep the ownership of the patch, then that's a different story :)
-> 
-> I do not want to make you sad and I am fine with your preferred approach.
+On Thu, Nov 14, 2024 at 03:36:52PM +0200, Roger Quadros wrote:
+> IEEE802.1Q-2014 supersedes IEEE802.1D-2004. Now Priority Code Point (PCP)
+> 2 is no longer at a lower priority than PCP 0. PCP 1 (Background) is still
+> at a lower priority than PCP 0 (Best Effort).
 
-Then I can just resend this tomorrow.
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
 
-regards,
-dan carpenter
+> Reference:
+> IEEE802.1Q-2014, Standard for Local and metropolitan area networks
+>   Table I-2 - Traffic type acronyms
+>   Table I-3 - Defining traffic types
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+>  drivers/net/ethernet/ti/cpsw_ale.c | 36 ++++++++++++++++++++++--------------
+>  1 file changed, 22 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index 8d02d2b21429..9f79056b3f48 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+> @@ -1692,26 +1692,34 @@ static void cpsw_ale_policer_reset(struct cpsw_ale *ale)
+>  void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
+>  {
+>  	int pri, idx;
+> -	/* IEEE802.1D-2004, Standard for Local and metropolitan area networks
+> -	 *    Table G-2 - Traffic type acronyms
+> -	 *    Table G-3 - Defining traffic types
+> -	 * User priority values 1 and 2 effectively communicate a lower
+> -	 * priority than 0. In the below table 0 is assigned to higher priority
+> -	 * thread than 1 and 2 wherever possible.
+> -	 * The below table maps which thread the user priority needs to be
+> +
+> +	/* Reference:
+> +	 * IEEE802.1Q-2014, Standard for Local and metropolitan area networks
+> +	 *    Table I-2 - Traffic type acronyms
+> +	 *    Table I-3 - Defining traffic types
+> +	 * Section I.4 Traffic types and priority values, states:
+> +	 * "0 is thus used both for default priority and for Best Effort, and
+> +	 *  Background is associated with a priority value of 1. This means
+> +	 * that the value 1 effectively communicates a lower priority than 0."
+> +	 *
+> +	 * In the table below, Priority Code Point (PCP) 0 is assigned
+> +	 * to a higher priority thread than PCP 1 wherever possible.
+> +	 * The table maps which thread the PCP traffic needs to be
+>  	 * sent to for a given number of threads (RX channels). Upper threads
+>  	 * have higher priority.
+>  	 * e.g. if number of threads is 8 then user priority 0 will map to
+> -	 * pri_thread_map[8-1][0] i.e. thread 2
+> +	 * pri_thread_map[8-1][0] i.e. thread 1
+>  	 */
+> -	int pri_thread_map[8][8] = {	{ 0, 0, 0, 0, 0, 0, 0, 0, },
+> +
+> +	int pri_thread_map[8][8] = {   /* BK,BE,EE,CA,VI,VO,IC,NC */
+> +					{ 0, 0, 0, 0, 0, 0, 0, 0, },
+>  					{ 0, 0, 0, 0, 1, 1, 1, 1, },
+>  					{ 0, 0, 0, 0, 1, 1, 2, 2, },
+> -					{ 1, 0, 0, 1, 2, 2, 3, 3, },
+> -					{ 1, 0, 0, 1, 2, 3, 4, 4, },
+> -					{ 1, 0, 0, 2, 3, 4, 5, 5, },
+> -					{ 1, 0, 0, 2, 3, 4, 5, 6, },
+> -					{ 2, 0, 1, 3, 4, 5, 6, 7, } };
+> +					{ 0, 0, 1, 1, 2, 2, 3, 3, },
+> +					{ 0, 0, 1, 1, 2, 2, 3, 4, },
+> +					{ 1, 0, 2, 2, 3, 3, 4, 5, },
+> +					{ 1, 0, 2, 3, 4, 4, 5, 6, },
+> +					{ 1, 0, 2, 3, 4, 5, 6, 7 } };
+>  
+>  	cpsw_ale_policer_reset(ale);
+>  
+> 
+> -- 
+> 2.34.1
+> 
 
