@@ -1,56 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE55284D02;
-	Fri, 15 Nov 2024 02:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF7F10F2;
+	Fri, 15 Nov 2024 02:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731637326; cv=none; b=ELSzweky0etVIOzpaqAK3GWY2wNh9TmBMsEOcXuVbTZ3bSocXMRxF5NBFJY2IRmnGK+TRw/tdtNNZQOOR6z/EB0oCiBd04CZPVIS/yQP3uDTuOW+F+/3pswz8orsk1smSUEaHBSQiuzpmj+a64gV8VH7gKOmbctwMfkXZHuMEMY=
+	t=1731637437; cv=none; b=XqLk45RNlwbPd7D9Lbhic4onmhrlb0L+pNo31R0XfosyadQDb8es+oT6VbvLUYT6leOaT+1eo6pGzdtyjM6Ab2ilCAgFplXaWLIququEhG3qjxWhnEENd7AHkNB5EPuoRmyN3WT9HGJ1CQUk4lbJxPa343Ou/GCn4pQSxGaWKVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731637326; c=relaxed/simple;
-	bh=g0xEvCzZMMSK2UulgwKL9aXd0SK9uImX1WbO+gn7Y8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JgWbMVOAWCRNMBQnAJ/UopseSHWi1ncZ9zUx1Api5h1DOXxSsr1yIWnnlMF0G5uyuN02mg2Gd6mo96xFshjetTGK4yhaHAHemOzNms4XL/sc76WfwE6JHK+QQV9rAPRKX4d/z57n1KuqOQtHN37DscHmjKNzx0/Ey6B5refSEiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MifU1ft7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731637437; c=relaxed/simple;
+	bh=6v8yAyykXcLDyigDOO8TiKdwsErNtmjzZuT0f8z9eKs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A+kxd0CUUTYIGCrw4izOdiQgwElJ1hc8No6uE4uu5+tsUk3IPJk87ueVDG3HWNiQEbfILzQS9ssxGt/pVnolYlsWjlLhRq6h4I6rkGeVG1Ca6RHBlpgXz2t/nv4Fm2DlKQrBa5DDSjOSd7v+GYzSpCHJhUS/9WXfclU1u6kq1s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=DNmXZJCA; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MifU1ft7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDD9C4CECD;
-	Fri, 15 Nov 2024 02:22:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731637325;
-	bh=g0xEvCzZMMSK2UulgwKL9aXd0SK9uImX1WbO+gn7Y8M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MifU1ft7lEj//tgGs7+dEnAVKWnLiBxKJtTrefRMjcsFWNvVIEqHnaIqcPJgTKsbX
-	 b3Z3bS3n/hPN6WMmVcAaacj0uwHI9pmsj83HpWGmAc2aJmFVHAn9sv/ItPN4UAoDWZ
-	 fFs4Bf3YvkVi456ShakW8z6uISJ7OFb3CkdYNHNiK+/hVc8YPrrgjIEXXPw46R0WXS
-	 QTg5pvzLTUzj/ehPxnqUYhGHZRyaGqJBbT7Fta57nP8jOOZEIC3m9OByusXm6Z4zEU
-	 i33q35Xq6MaPGNvJ2NQ06NwU1mCmaUNrblt5Ok7W3AarBEfALQmPbcVnfl6jU+GlE9
-	 zmz1nDK57jVxQ==
-Date: Thu, 14 Nov 2024 18:22:03 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Felix Maurer <fmaurer@redhat.com>, bjorn@kernel.org,
- magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
- jonathan.lemon@gmail.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, yoong.siang.song@intel.com,
- sdf@fomichev.me, netdev@vger.kernel.org, Michal Schmidt
- <mschmidt@redhat.com>, bpf@vger.kernel.org
-Subject: Re: [PATCH bpf] xsk: Free skb when TX metadata options are invalid
-Message-ID: <20241114182203.2f6353d2@kernel.org>
-In-Reply-To: <e5edc796-7ae3-4b57-b8ee-223f2c26f936@linux.dev>
-References: <edb9b00fb19e680dff5a3350cd7581c5927975a8.1731581697.git.fmaurer@redhat.com>
-	<e5edc796-7ae3-4b57-b8ee-223f2c26f936@linux.dev>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="DNmXZJCA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731637435; x=1763173435;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6v8yAyykXcLDyigDOO8TiKdwsErNtmjzZuT0f8z9eKs=;
+  b=DNmXZJCAnPMmLrXlHZZYTXGE8NLO5/i2TKi22P04gOZ7mJEkU6sa7DBn
+   tDR02nEWNCBkCF/vPAGM4zqpKh5ufjAm5tWD4NVs2fuBk0I8HFQAw+hKD
+   jnYlAdIC/7pgLObpDcI+ntoBvzkZ5cEvja46APSxrFAUSi15it8F8Zkk8
+   Kq27coc/UJIZCszQa6nmtEhO/ZXoyihHor9dbbS9yFIV6Dt51mmx7p3w/
+   Swd1qdEvxdndWXIg8PZicRzCy/hzXr0mDAbNYANnLoLSVRHhPT5FpBdt9
+   j5/lqjqALDfToSE0BzTXUjMoRr9UzEcHle6XcUWJwyqRDcuzCJTF+YPIn
+   w==;
+X-CSE-ConnectionGUID: 44dLkhyPQcCnPJiBO6oYOQ==
+X-CSE-MsgGUID: xT4XYc7wTdGwk/vZ3GM7Pw==
+X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; 
+   d="scan'208";a="34348659"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Nov 2024 19:23:48 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 14 Nov 2024 19:23:07 -0700
+Received: from nisar-OptiPlex-9020.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Thu, 14 Nov 2024 19:23:02 -0700
+From: Mohan Prasad J <mohan.prasad@microchip.com>
+To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<andrew@lunn.ch>
+CC: <edumazet@google.com>, <pabeni@redhat.com>, <shuah@kernel.org>,
+	<mohan.prasad@microchip.com>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <horms@kernel.org>,
+	<brett.creeley@amd.com>, <rosenp@gmail.com>, <UNGLinuxDriver@microchip.com>,
+	<willemb@google.com>, <petrm@nvidia.com>
+Subject: [PATCH net-next v4 0/3] selftests: Add selftest for link layer and performance testing
+Date: Fri, 15 Nov 2024 00:55:17 +0530
+Message-ID: <20241114192545.1742514-1-mohan.prasad@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Thu, 14 Nov 2024 13:43:22 -0800 Martin KaFai Lau wrote:
-> Jakub, can you help to take it directly to the net tree? Thanks!
+The series of patches are for doing basic tests
+of NIC driver. Test comprises checks for auto-negotiation,
+speed, duplex state and throughput between local NIC and
+partner. Tools such as ethtool, iperf3 are used.
 
-Ack, will do!
+Signed-off-by: Mohan Prasad J <mohan.prasad@microchip.com>
+---
+Changes in v4:
+- Type hints are added for arguments and return types.
+- Test values can be modified through command line.
+- Minor code improvements.
+- GenerateTraffic class extended for throughput test.
+- Protocol testcases separated.
+
+Changes in v3:
+Link to v3: https://patchwork.kernel.org/project/netdevbpf/cover/20241016215014.401476-1-mohan.prasad@microchip.com/
+- LinkConfig class is included in the hw library. This contains
+  generic APIs for doing link layer operations.
+- Auto-negotiation checks involve changing the auto-neg state
+  both in local and partner NIC.
+- Link layer test and performance test are separated to 
+  different selftest files.
+- Resetting of NIC driver done after test completion.
+
+Changes in v2:
+Link to v2: https://patchwork.kernel.org/project/netdevbpf/cover/20240917023525.2571082-1-mohan.prasad@microchip.com/
+- Changed the hardcoded implementation of speed, duplex states,
+  throughput to generic values, in order to support all type
+  of NIC drivers.
+- Test executes based on the supported link modes between local
+  NIC driver and partner.
+- Instead of lan743x directory, selftest file is now relocated 
+  to /selftests/drivers/net/hw.
+Link to v1: https://patchwork.kernel.org/project/netdevbpf/cover/20240903221549.1215842-1-mohan.prasad@microchip.com/
+---
+Mohan Prasad J (3):
+  selftests: nic_link_layer: Add link layer selftest for NIC driver
+  selftests: nic_link_layer: Add selftest case for speed and duplex
+    states
+  selftests: nic_performance: Add selftest for performance of NIC driver
+
+ .../testing/selftests/drivers/net/hw/Makefile |   6 +-
+ .../drivers/net/hw/lib/py/__init__.py         |   1 +
+ .../drivers/net/hw/lib/py/linkconfig.py       | 222 ++++++++++++++++++
+ .../drivers/net/hw/nic_link_layer.py          | 113 +++++++++
+ .../drivers/net/hw/nic_performance.py         | 137 +++++++++++
+ .../selftests/drivers/net/lib/py/load.py      |  20 +-
+ 6 files changed, 496 insertions(+), 3 deletions(-)
+ create mode 100644 tools/testing/selftests/drivers/net/hw/lib/py/linkconfig.py
+ create mode 100644 tools/testing/selftests/drivers/net/hw/nic_link_layer.py
+ create mode 100644 tools/testing/selftests/drivers/net/hw/nic_performance.py
+
+-- 
+2.43.0
+
