@@ -1,138 +1,112 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5B71ABEC6;
-	Thu, 14 Nov 2024 15:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B425150997;
+	Thu, 14 Nov 2024 15:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731598581; cv=none; b=UEPhstMzbLWIDhqNtfpskojrsfQ+3TgLjUtTbZ5vJ51w8BeQYps1leRIjdCVBdAEICF9NXVqH42Hv1v1R3Un/NfXyJPJsnBa/oEYZeikM2I1akam9hBUlOMVvScMuPn55VuJUijRRw1loQzODoGDmp9RM6ivqSDszRgUKpAt6fA=
+	t=1731598695; cv=none; b=mdo4otjB/x1UFi2dZJpGVrf0FSb24SCVb6ADOiErsl6hFMxSdkV5LvIOiC5ED/UdfxQD1w6ojdF+2bizvszV0nyyyPVsItUW+rrA+iQreU5bfEj6CUtDLJu3OhDuR9/s+axOorkEDD5gy/uijmZDDLFcFXFEU/S9DJ0+0C1ulzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731598581; c=relaxed/simple;
-	bh=D0Ihx6W6vMhkvdWBBTjBM042pgzSMrP8w8JKh+aC7Lc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cx+s+o0GEyaLTpctassEGqhWe4zT66Thyhjm+y2oA5dC1sIyzIbn8FR6cCoYUMWUhjZkfcIz6uEH/TUrt+aO+X8mtxFa08zMPoxfZYWOh9PAUjUuRFPM3qm+6iCQhWupxtibfEFwj2/rPPRKuwH1GD2ybNdlQYSPtBgEkT5k/PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dYQZoJ8G; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1731598695; c=relaxed/simple;
+	bh=mlAXRAgMve6+f/4rnGWaWmCnOK8cUZsS6OQ6L22iv7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HZqeaj2SDhOBB55/0RQpdncL3kthqtfl3KCKo9JHz8pOErSeL+66rMTyV9pFFVPfzJ4XJ+8Alqe7Qo9eKFF6z6ZVGw6ASQ1ceBk1FXmS+OmqjPgoA2XNtn0kF5hrsDzF4EMCIYvGeqfvZrxwm+KW7ebOaYD8tVbLm+PrbITTWG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uaBedl8H; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dYQZoJ8G"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 522F21BF20C;
-	Thu, 14 Nov 2024 15:36:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731598571;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=unLNMvXwm+4Ey2QBvMpwyWlJW/nP417xwtjjmRzD8A0=;
-	b=dYQZoJ8GizsCRQNeeh7mP0iuOKIpX2vWhjKhzP9R6JubF51/zwWoT/X8B5NRZJexKLoB63
-	oR1xrOQgwS+A8Y3E1kzfk0LfZV1CWj/r6OVHE6e/LCMo6QxstbMcjUR93kJx9FJ053kQh8
-	9ti8pcUIhV8NKnr2+3gHNjSPEBFt5oe/DX3iqnfjUuFn+57hrfrsx4R+bl1p6wBkJbACFi
-	STgplV/jJP5uQkweqQIqtt0tU3tuc8QlnHn5dQbMIPLebL8kx9qkii0cBqjqURksVIpggF
-	28RjUYmWhPoivm+a42rka9XyXE44yRJxVgp7bok3hAcS77xFQrEJHpcB0ku0Kw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Herve Codina <herve.codina@bootlin.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v2 06/10] net: freescale: ucc_geth: Simplify frame length check
-Date: Thu, 14 Nov 2024 16:35:57 +0100
-Message-ID: <20241114153603.307872-7-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
-References: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uaBedl8H"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=FNMWD0/TBlzi7ZB1FB7EAN9VcYluVvAfBP4VmUMbiC8=; b=uaBedl8HRP4sqxCNN4VErMwkyu
+	T79AvEg+S6PYzlhTobsS3EFfw4mWPjqN02RRHtb3Ww/1xhhpOZQNA0I7UBTuGQlBTMBPsXN94TJ1h
+	tXWeTw9k+GzIq4a9QrQMThecdgdsFfToZK+lAaG1eD7gWA9CHuWnNSSVE43sZ/9zd6g8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tBbv6-00DJZ7-3J; Thu, 14 Nov 2024 16:38:08 +0100
+Date: Thu, 14 Nov 2024 16:38:08 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Justin Lai <justinlai0215@realtek.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	horms@kernel.org, pkshih@realtek.com, larry.chiu@realtek.com
+Subject: Re: [PATCH net 1/4] rtase: Refactor the
+ rtase_check_mac_version_valid() function
+Message-ID: <2fac05ba-7766-4586-8676-e30f09cd2d09@lunn.ch>
+References: <20241114111443.375649-1-justinlai0215@realtek.com>
+ <20241114111443.375649-2-justinlai0215@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241114111443.375649-2-justinlai0215@realtek.com>
 
-The frame length check is configured when the phy interface is setup.
-However, it's configured according to an internal flag that is always
-false. So, just make so that we disable the relevant bit in the MACCFG2
-register upon accessing it for other MAC configuration operations.
+On Thu, Nov 14, 2024 at 07:14:40PM +0800, Justin Lai wrote:
+> 1. Sets tp->hw_ver.
+> 2. Changes the return type from bool to int.
+> 
+> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+> ---
+>  drivers/net/ethernet/realtek/rtase/rtase.h    |  2 ++
+>  .../net/ethernet/realtek/rtase/rtase_main.c   | 21 +++++++++++--------
+>  2 files changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
+> index 583c33930f88..547c71937b01 100644
+> --- a/drivers/net/ethernet/realtek/rtase/rtase.h
+> +++ b/drivers/net/ethernet/realtek/rtase/rtase.h
+> @@ -327,6 +327,8 @@ struct rtase_private {
+>  	u16 int_nums;
+>  	u16 tx_int_mit;
+>  	u16 rx_int_mit;
+> +
+> +	u32 hw_ver;
+>  };
+>  
+>  #define RTASE_LSO_64K 64000
+> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> index f8777b7663d3..33808afd588d 100644
+> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> @@ -1972,20 +1972,21 @@ static void rtase_init_software_variable(struct pci_dev *pdev,
+>  	tp->dev->max_mtu = RTASE_MAX_JUMBO_SIZE;
+>  }
+>  
+> -static bool rtase_check_mac_version_valid(struct rtase_private *tp)
+> +static int rtase_check_mac_version_valid(struct rtase_private *tp)
+>  {
+> -	u32 hw_ver = rtase_r32(tp, RTASE_TX_CONFIG_0) & RTASE_HW_VER_MASK;
+> -	bool known_ver = false;
+> +	int ret = -ENODEV;
+>  
+> -	switch (hw_ver) {
+> +	tp->hw_ver = rtase_r32(tp, RTASE_TX_CONFIG_0) & RTASE_HW_VER_MASK;
+> +
+> +	switch (tp->hw_ver) {
+>  	case 0x00800000:
+>  	case 0x04000000:
+>  	case 0x04800000:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
-V2: No changes
+Since these magic numbers are being used in more places, please add
+some #define with sensible names.
 
- drivers/net/ethernet/freescale/ucc_geth.c | 21 +++------------------
- drivers/net/ethernet/freescale/ucc_geth.h |  1 -
- 2 files changed, 3 insertions(+), 19 deletions(-)
+> -	if (!rtase_check_mac_version_valid(tp))
+> -		return dev_err_probe(&pdev->dev, -ENODEV,
+> -				     "unknown chip version, contact rtase maintainers (see MAINTAINERS file)\n");
+> +	ret = rtase_check_mac_version_valid(tp);
+> +	if (ret != 0) {
+> +		dev_err(&pdev->dev,
+> +			"unknown chip version, contact rtase maintainers (see MAINTAINERS file)\n");
+> +	}
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 42254ee64a35..7db575a1e710 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -1205,22 +1205,6 @@ static int init_mac_station_addr_regs(u8 address_byte_0,
- 	return 0;
- }
- 
--static int init_check_frame_length_mode(int length_check,
--					u32 __iomem *maccfg2_register)
--{
--	u32 value = 0;
--
--	value = in_be32(maccfg2_register);
--
--	if (length_check)
--		value |= MACCFG2_LC;
--	else
--		value &= ~MACCFG2_LC;
--
--	out_be32(maccfg2_register, value);
--	return 0;
--}
--
- static int init_preamble_length(u8 preamble_length,
- 				u32 __iomem *maccfg2_register)
- {
-@@ -1304,6 +1288,9 @@ static int adjust_enet_interface(struct ucc_geth_private *ugeth)
- 
- 	/*                    Set MACCFG2                    */
- 	maccfg2 = in_be32(&ug_regs->maccfg2);
-+
-+	/* Disable frame length check */
-+	maccfg2 &= ~MACCFG2_LC;
- 	maccfg2 &= ~MACCFG2_INTERFACE_MODE_MASK;
- 	if ((ugeth->max_speed == SPEED_10) ||
- 	    (ugeth->max_speed == SPEED_100))
-@@ -1365,8 +1352,6 @@ static int adjust_enet_interface(struct ucc_geth_private *ugeth)
- 		put_device(&tbiphy->mdio.dev);
- 	}
- 
--	init_check_frame_length_mode(ug_info->lengthCheckRx, &ug_regs->maccfg2);
--
- 	ret_val = init_preamble_length(ug_info->prel, &ug_regs->maccfg2);
- 	if (ret_val != 0) {
- 		if (netif_msg_probe(ugeth))
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
-index 60fd804a616a..2365b61c743a 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.h
-+++ b/drivers/net/ethernet/freescale/ucc_geth.h
-@@ -1088,7 +1088,6 @@ struct ucc_geth_info {
- 	u8 miminumInterFrameGapEnforcement;
- 	u8 backToBackInterFrameGap;
- 	int ipAddressAlignment;
--	int lengthCheckRx;
- 	u32 mblinterval;
- 	u16 nortsrbytetime;
- 	u8 fracsiz;
--- 
-2.47.0
+Since you are changing this, maybe include the hw_ver?
 
+	Andrew
