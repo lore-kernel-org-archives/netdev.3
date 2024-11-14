@@ -1,310 +1,264 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C3574BE1;
-	Thu, 14 Nov 2024 14:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731593592; cv=fail; b=aW2uE09l4evljjYv4pMVDtND8QH4fE+mYMSgksK8LWb6DmsJhn8dZJ6mhyhqDznt59mM/TogJ2wnXcV55M5GSc3CQU2ggugd3bdVKPe3XX+dPSH19c5kLJGEBYQdtJpX1VlVMCQ5SGF9OxFHMShxji43XBPgtDn6kMiiP8yQ+Uw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731593592; c=relaxed/simple;
-	bh=Lh9ZeMDtu/EEAYzsGmicpbsxKbm2Hs8eop6jxt0MHLs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kEOShR2Qv6+B3v4dkGMl8YBox1TrRC2TXgNrhbYKC4+mzcKzwrYhIJqs2FVWAWmDEhkXyIvA971/EDcIS/ncEWAh8Hh9Dcs+4TqeaswPnFgOdAcSv0YMWbzfAr7SSjLpcrlOciYOJvT2WmN30Cf2uguNcJrTdrWCMTYAuMlil/g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fu1528dd; arc=fail smtp.client-ip=40.107.244.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A142FE33
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 14:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731593715; cv=none; b=Q+Ds9F9L1UPW4Enid7rS8DkpafeR+aqeKtqPAySfzUmhT3ypPgH8YzKdIiSMDBMP88yk2Kvulsd364bPYiAEk+m2dgF3wFpTr6eV2ck7IIlwryG6kitIMWau+ecxDnfW//Gk1YFKxaYuy7osH190OIXcBvwKRuPo+CxG+LSdoik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731593715; c=relaxed/simple;
+	bh=ja5Pm9uYZP4HeGDnNqYZDc/HKtmhFCsP7FShmCcwMSw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=rOgR+0GwY4hqsUbhucUSKxNmTX6ylfTa7PPj9/P7MkEAKocLHx2xkMqvqARC2HY9gfoSJrfXkA3ZxDN7XY/l5h50uWyVv3PgurBAouj1RKH0JBTYtthhD0rWLGBr7EMVOaSZFArs12PgWjABIptoAfpoGlDXmifSCUelBdyY6wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s4LTW3Bh; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fu1528dd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xdJz+y7UpvP4Bjar+frxgdFYcfyzKh391dfUmuz1/cl2NCron5tHp3yIQdmjWrvEe++Q1+aPRpQJefmVrOuH49C4ZOIwURDVOFGXa8sZqT6BMH01j12Ri77+cWIcPILoEWrmCrbaUq4hy5NzPS5wQwjs9VPDH9ZejOp49NmzpW5uaIQ14/6Z+mk/b87b00mioK9PQ+xg64bO1rKiL9PUhOU+GOPyxX+zDlng2c4hvt087R4VzlE1ETKItlEQ46sLRktvNUd0BIbcDxOmzSrtutZu1tpC2eFqlJnRtqhG/u/nvK5iwoEFRGgyYAS5oNzhxoNvFDE7S9dvkzTcc/ctKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oLhAWSsdS6h4Px/bZX5a9/WrfuXlE0DgG1hrjpze6/s=;
- b=NWVZTMb23U5P8Yxc2bayr2PjCti05PVDvMA3UfkPEg4rlZUpn979Hdk1Z++CVdsVORuDq1bYHDF8gDOuoBSHo6wyK7ZLxIFQikULCt/epeccyorPGgG1QFelBGQ8SR1H2CL6fyUAbKrj0FGJ6vgXNXTN1nj+mzPUtEUNROxV8dlrYqpqntlCkKDiFDdFKKan18Iqpn9k+xM7bq8IvEbNg1ho8OBI9iOlhs4VO70JucMj5v78VgCn4bMKc7qePhxLBFMWxvWV11CMEHWcxZG6+i8RDfMbfHaL7pSsmS6FoMN8Vug+iPJbTISsNeO0qb9QJ7a/xZVXPh1xy1zQTrLYKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oLhAWSsdS6h4Px/bZX5a9/WrfuXlE0DgG1hrjpze6/s=;
- b=Fu1528dd34MT3OmcRoGRJpwcPmDyBnzegxUV93Az9RBZUMWZi6kfe47tuYNSqX5B56GxjRPHUj+ZzFz6an2qzeD4poOKeaeu+wynxtyOyzYoHUZ47lxgWwwF9fTCY23QG+0KYQqjQz25Ag+L7XVaj/QeFHX+xT/TomZGRTGN4eINWy8UgifI06mDQk1JhK69XlW98rmzTBcddbBZhluT7uHxUxkua+K09egYr7DTTuXVD84IvHv0RgwjYLkohEWUTTW23OsdGwtYlK0nI+9PCz1dPbNqfmX3/B3AI7vn0zQ7rxjB5Xnl9qpWbwxfOhhY/4SbtcQ5tFlKZpMkEHwIaA==
-Received: from CH2PR14CA0001.namprd14.prod.outlook.com (2603:10b6:610:60::11)
- by SJ0PR12MB7458.namprd12.prod.outlook.com (2603:10b6:a03:48d::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.16; Thu, 14 Nov
- 2024 14:13:05 +0000
-Received: from DS3PEPF000099D3.namprd04.prod.outlook.com
- (2603:10b6:610:60:cafe::2d) by CH2PR14CA0001.outlook.office365.com
- (2603:10b6:610:60::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29 via Frontend
- Transport; Thu, 14 Nov 2024 14:13:04 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DS3PEPF000099D3.mail.protection.outlook.com (10.167.17.4) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8158.14 via Frontend Transport; Thu, 14 Nov 2024 14:13:04 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 14 Nov
- 2024 06:12:46 -0800
-Received: from fedora.mtl.com (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 14 Nov
- 2024 06:12:39 -0800
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
- Machata" <petrm@nvidia.com>, Amit Cohen <amcohen@nvidia.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Andy Roulin <aroulin@nvidia.com>,
-	<mlxsw@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
-	<shuah@kernel.org>, Benjamin Poirier <bpoirier@nvidia.com>, Hangbin Liu
-	<liuhangbin@gmail.com>, <linux-kselftest@vger.kernel.org>, Jiri Pirko
-	<jiri@resnulli.us>
-Subject: [PATCH net-next v4 7/7] selftests: net: fdb_notify: Add a test for FDB notifications
-Date: Thu, 14 Nov 2024 15:09:59 +0100
-Message-ID: <910c5880ae6d3b558d6889cbdba2be690c2615c6.1731589511.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1731589511.git.petrm@nvidia.com>
-References: <cover.1731589511.git.petrm@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s4LTW3Bh"
+Message-ID: <4af7b21e-1340-493b-a3c0-be752ef9d7cf@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1731593710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P/88vAmCRZdNnlmj1UPgM2nFthtidD0sUVSQ3mSRpTg=;
+	b=s4LTW3BhyD+g2DbbDdiCaHi9kNDK/6Is8jugzKI4GeEwAULusU5AFoW8v/MqUgsK8Ut9iP
+	qyGHM4MJUUw4VdWBd+t9FERnPilkhri+X+IEg8klM4nYjy/dA8X91wKrQevoUvBWG4/Rk3
+	n5JDIvEZSxyEmVJqbHXGuGA3pDcD7YE=
+Date: Thu, 14 Nov 2024 14:15:03 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D3:EE_|SJ0PR12MB7458:EE_
-X-MS-Office365-Filtering-Correlation-Id: f24f67b7-6f6c-4661-9c66-08dd04b674a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?twYwB1BbJYgeV5RYhfNm2aPJqL/FtQEVkMrXcAsH/CnvsRcml7FTzhgzxeTh?=
- =?us-ascii?Q?p/YWaNnVIe/c5hfYb6nnRSejd0yYCM8THkfXLifd/kG+LSCNkbRqLUv+Mn3h?=
- =?us-ascii?Q?pC+oufvk/xNm33hDUUqAHRQcmF1PQrL8hPlkuDlD0Non+PY/0iWMXlp1T+Qk?=
- =?us-ascii?Q?eTqA1bxWD0Lvkapw9nz+aq6vWCj7J2j6Sp88NFpxDumqP7mapKgGcNUn+MnI?=
- =?us-ascii?Q?0JMfJiXAd7EufofV66KL364ic6qHEMVxoEnXgrC+75Dt6b3AR0fN5o5mYNCE?=
- =?us-ascii?Q?Fc93RbO7lqmcRRJnzjdOu/JQbHLnkPaUVmXfoCGTfbhFKp/6kgaVeQ6cx7+X?=
- =?us-ascii?Q?NmB/a5d5HCJlPnv5xzRAAMHX0xKXp96n+Xu6ZMC1bQwKO/rlO389WP5XRVRi?=
- =?us-ascii?Q?/UPStI9VHSxRB+tBckjcoJ/t1Vc1Zp/1vLLjbVJiR6cI8pL/IGj4oTfXJiAs?=
- =?us-ascii?Q?rw/kFX5Ly1Ktm55tyzakqYYPxXE7g56H98yJhrMDK9ike6iyshYbpdh3C6Vw?=
- =?us-ascii?Q?3/8syPqP8m3eremFXkh2HNv8V5NdZ2gBA1IOEOwK40K9dTnKR/7ZvX3+L0rc?=
- =?us-ascii?Q?1ttwE3qE6y0tgDmeVrQjXzmYkMFK0KUxYjNBymf1QYa3P6uj6CS6jmmUGZpi?=
- =?us-ascii?Q?t695DwUJxFRwAGje4koFKl9on9VbfnPzP1XP7FlEg44NIdYVGkrxarHwuDqH?=
- =?us-ascii?Q?ExporfhmiThfPOjIEt/supDDHGdYdOTdkFer0Jm20WOT8XbvO2igQHpeTdMN?=
- =?us-ascii?Q?aBJ9xfDAieIj9WjVRoPTC1+L/p4FwyCOwpMmUyha6A0WFvmc/eM+3Nq7PNJK?=
- =?us-ascii?Q?INZs84Kisofl56S4WaoilCRtp1BAcEss+ITfMQFliquFdi4qkNU9DjzHT36L?=
- =?us-ascii?Q?k8rDNIPOX4V1jDSulEKYTIc6b0lzEIkZF3Q1CFlijLvptsAnN5LU7Ni60yWj?=
- =?us-ascii?Q?Qhj+rnv4IthrJEBKwhwqclFYCYxttkuv4XK+UARULdViSRHNbd8DzDva8G5d?=
- =?us-ascii?Q?l8hbxWixn03T7308J1LbhKxS0OvFThwoi4Sz1yS6XlukYp7RRTmAmhZYwexO?=
- =?us-ascii?Q?6CEPErLfhcARZhiDWctnYg2IH1Z1hP1q7+5a5yC6asLI2q9wR11zGAe16RGQ?=
- =?us-ascii?Q?Hq1ey+rjlNv0xSwN9LVtpRb9b7NhgWrLH1nfk34nUt3gPJ1HqcEn5V1xHPGG?=
- =?us-ascii?Q?9kXpC/bugCGL2jdq5rU27Eb+TeAjJy0jVM00ZfDGw/dzdpWekAt4MkaCFJBa?=
- =?us-ascii?Q?W1KLc0D1QrS+DayKn0tMtBD9T4cGPBVc2kJ6mJMKxL7lUg3SdBo+YbPN8GTu?=
- =?us-ascii?Q?fdjGEZSb4Ij9CU+WeZW9iWpyxGD70tmvTlko3PBQPtKR7Obw3wdbrK0HOBpB?=
- =?us-ascii?Q?EOz23Wx/z6qK2ZhnLJ5k44Kn0t2HlYfspBBpk+zUAdzvphZgFg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2024 14:13:04.2314
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f24f67b7-6f6c-4661-9c66-08dd04b674a0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099D3.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7458
+Subject: Re: [PATCH net-next v4 1/5] net: phy: microchip_ptp : Add header file
+ for Microchip ptp library
+To: Divya Koppera <divya.koppera@microchip.com>, andrew@lunn.ch,
+ arun.ramadoss@microchip.com, UNGLinuxDriver@microchip.com,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ richardcochran@gmail.com
+References: <20241114120455.5413-1-divya.koppera@microchip.com>
+ <20241114120455.5413-2-divya.koppera@microchip.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20241114120455.5413-2-divya.koppera@microchip.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Check that only one notification is produced for various FDB edit
-operations.
+On 14/11/2024 12:04, Divya Koppera wrote:
+> This ptp header file library will cover ptp macros for future phys in
+> Microchip where addresses will be same but base offset and mmd address
+> may changes.
+> 
+> Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+> ---
+> v3 -> v4
+> - Re-ordered mchp_ptp_clock structure.
+> 
+> v2 -> v3
+> - No changes
+> 
+> v1 -> v2
+> - Fixed sparse warnings and compilation errors/warnings reported by kernel
+>    test robot
+> ---
+>   drivers/net/phy/microchip_ptp.h | 216 ++++++++++++++++++++++++++++++++
+>   1 file changed, 216 insertions(+)
+>   create mode 100644 drivers/net/phy/microchip_ptp.h
+> 
+> diff --git a/drivers/net/phy/microchip_ptp.h b/drivers/net/phy/microchip_ptp.h
+> new file mode 100644
+> index 000000000000..1b6e0d9d7e76
+> --- /dev/null
+> +++ b/drivers/net/phy/microchip_ptp.h
+> @@ -0,0 +1,216 @@
+> +/* SPDX-License-Identifier: GPL-2.0
+> + * Copyright (C) 2024 Microchip Technology
+> + */
+> +
+> +#ifndef _MICROCHIP_PTP_H
+> +#define _MICROCHIP_PTP_H
+> +
+> +#if IS_ENABLED(CONFIG_MICROCHIP_PHYPTP)
+> +
+> +#include <linux/ptp_clock_kernel.h>
+> +#include <linux/ptp_clock.h>
+> +#include <linux/ptp_classify.h>
+> +#include <linux/net_tstamp.h>
+> +#include <linux/mii.h>
+> +#include <linux/phy.h>
+> +
+> +#define MCHP_PTP_CMD_CTL(b)			((b) + 0x0)
+> +#define MCHP_PTP_CMD_CTL_LTC_STEP_NSEC		BIT(6)
+> +#define MCHP_PTP_CMD_CTL_LTC_STEP_SEC		BIT(5)
+> +#define MCHP_PTP_CMD_CTL_CLOCK_LOAD		BIT(4)
+> +#define MCHP_PTP_CMD_CTL_CLOCK_READ		BIT(3)
+> +#define MCHP_PTP_CMD_CTL_EN			BIT(1)
+> +#define MCHP_PTP_CMD_CTL_DIS			BIT(0)
+> +
+> +#define MCHP_PTP_REF_CLK_CFG(b)			((b) + 0x2)
+> +#define MCHP_PTP_REF_CLK_SRC_250MHZ		0x0
+> +#define MCHP_PTP_REF_CLK_PERIOD_OVERRIDE	BIT(9)
+> +#define MCHP_PTP_REF_CLK_PERIOD			4
+> +#define MCHP_PTP_REF_CLK_CFG_SET	(MCHP_PTP_REF_CLK_SRC_250MHZ |\
+> +					 MCHP_PTP_REF_CLK_PERIOD_OVERRIDE |\
+> +					 MCHP_PTP_REF_CLK_PERIOD)
+> +
+> +#define MCHP_PTP_LTC_SEC_HI(b)			((b) + 0x5)
+> +#define MCHP_PTP_LTC_SEC_MID(b)			((b) + 0x6)
+> +#define MCHP_PTP_LTC_SEC_LO(b)			((b) + 0x7)
+> +#define MCHP_PTP_LTC_NS_HI(b)			((b) + 0x8)
+> +#define MCHP_PTP_LTC_NS_LO(b)			((b) + 0x9)
+> +#define MCHP_PTP_LTC_RATE_ADJ_HI(b)		((b) + 0xc)
+> +#define MCHP_PTP_LTC_RATE_ADJ_HI_DIR		BIT(15)
+> +#define MCHP_PTP_LTC_RATE_ADJ_LO(b)		((b) + 0xd)
+> +#define MCHP_PTP_LTC_STEP_ADJ_HI(b)		((b) + 0x12)
+> +#define MCHP_PTP_LTC_STEP_ADJ_HI_DIR		BIT(15)
+> +#define MCHP_PTP_LTC_STEP_ADJ_LO(b)		((b) + 0x13)
+> +#define MCHP_PTP_LTC_READ_SEC_HI(b)		((b) + 0x29)
+> +#define MCHP_PTP_LTC_READ_SEC_MID(b)		((b) + 0x2a)
+> +#define MCHP_PTP_LTC_READ_SEC_LO(b)		((b) + 0x2b)
+> +#define MCHP_PTP_LTC_READ_NS_HI(b)		((b) + 0x2c)
+> +#define MCHP_PTP_LTC_READ_NS_LO(b)		((b) + 0x2d)
+> +#define MCHP_PTP_OP_MODE(b)			((b) + 0x41)
+> +#define MCHP_PTP_OP_MODE_DIS			0
+> +#define MCHP_PTP_OP_MODE_STANDALONE		1
+> +#define MCHP_PTP_LATENCY_CORRECTION_CTL(b)	((b) + 0x44)
+> +#define MCHP_PTP_PREDICTOR_EN			BIT(6)
+> +#define MCHP_PTP_TX_PRED_DIS			BIT(1)
+> +#define MCHP_PTP_RX_PRED_DIS			BIT(0)
+> +#define MCHP_PTP_LATENCY_SETTING		(MCHP_PTP_PREDICTOR_EN | \
+> +						 MCHP_PTP_TX_PRED_DIS | \
+> +						 MCHP_PTP_RX_PRED_DIS)
+> +
+> +#define MCHP_PTP_INT_EN(b)			((b) + 0x0)
+> +#define MCHP_PTP_INT_STS(b)			((b) + 0x01)
+> +#define MCHP_PTP_INT_TX_TS_OVRFL_EN		BIT(3)
+> +#define MCHP_PTP_INT_TX_TS_EN			BIT(2)
+> +#define MCHP_PTP_INT_RX_TS_OVRFL_EN		BIT(1)
+> +#define MCHP_PTP_INT_RX_TS_EN			BIT(0)
+> +#define MCHP_PTP_INT_ALL_MSK		(MCHP_PTP_INT_TX_TS_OVRFL_EN | \
+> +					 MCHP_PTP_INT_TX_TS_EN | \
+> +					 MCHP_PTP_INT_RX_TS_OVRFL_EN |\
+> +					 MCHP_PTP_INT_RX_TS_EN)
+> +
+> +#define MCHP_PTP_CAP_INFO(b)			((b) + 0x2e)
+> +#define MCHP_PTP_TX_TS_CNT(v)			(((v) & GENMASK(11, 8)) >> 8)
+> +#define MCHP_PTP_RX_TS_CNT(v)			((v) & GENMASK(3, 0))
+> +
+> +#define MCHP_PTP_RX_PARSE_CONFIG(b)		((b) + 0x42)
+> +#define MCHP_PTP_RX_PARSE_L2_ADDR_EN(b)		((b) + 0x44)
+> +#define MCHP_PTP_RX_PARSE_IPV4_ADDR_EN(b)	((b) + 0x45)
+> +
+> +#define MCHP_PTP_RX_TIMESTAMP_CONFIG(b)		((b) + 0x4e)
+> +#define MCHP_PTP_RX_TIMESTAMP_CONFIG_PTP_FCS_DIS BIT(0)
+> +
+> +#define MCHP_PTP_RX_VERSION(b)			((b) + 0x48)
+> +#define MCHP_PTP_RX_TIMESTAMP_EN(b)		((b) + 0x4d)
+> +
+> +#define MCHP_PTP_RX_INGRESS_NS_HI(b)		((b) + 0x54)
+> +#define MCHP_PTP_RX_INGRESS_NS_HI_TS_VALID	BIT(15)
+> +
+> +#define MCHP_PTP_RX_INGRESS_NS_LO(b)		((b) + 0x55)
+> +#define MCHP_PTP_RX_INGRESS_SEC_HI(b)		((b) + 0x56)
+> +#define MCHP_PTP_RX_INGRESS_SEC_LO(b)		((b) + 0x57)
+> +#define MCHP_PTP_RX_MSG_HEADER2(b)		((b) + 0x59)
+> +
+> +#define MCHP_PTP_TX_PARSE_CONFIG(b)		((b) + 0x82)
+> +#define MCHP_PTP_PARSE_CONFIG_LAYER2_EN		BIT(0)
+> +#define MCHP_PTP_PARSE_CONFIG_IPV4_EN		BIT(1)
+> +#define MCHP_PTP_PARSE_CONFIG_IPV6_EN		BIT(2)
+> +
+> +#define MCHP_PTP_TX_PARSE_L2_ADDR_EN(b)		((b) + 0x84)
+> +#define MCHP_PTP_TX_PARSE_IPV4_ADDR_EN(b)	((b) + 0x85)
+> +
+> +#define MCHP_PTP_TX_VERSION(b)			((b) + 0x88)
+> +#define MCHP_PTP_MAX_VERSION(x)			(((x) & GENMASK(7, 0)) << 8)
+> +#define MCHP_PTP_MIN_VERSION(x)			((x) & GENMASK(7, 0))
+> +
+> +#define MCHP_PTP_TX_TIMESTAMP_EN(b)		((b) + 0x8d)
+> +#define MCHP_PTP_TIMESTAMP_EN_SYNC		BIT(0)
+> +#define MCHP_PTP_TIMESTAMP_EN_DREQ		BIT(1)
+> +#define MCHP_PTP_TIMESTAMP_EN_PDREQ		BIT(2)
+> +#define MCHP_PTP_TIMESTAMP_EN_PDRES		BIT(3)
+> +#define MCHP_PTP_TIMESTAMP_EN_ALL		(MCHP_PTP_TIMESTAMP_EN_SYNC |\
+> +						 MCHP_PTP_TIMESTAMP_EN_DREQ |\
+> +						 MCHP_PTP_TIMESTAMP_EN_PDREQ |\
+> +						 MCHP_PTP_TIMESTAMP_EN_PDRES)
+> +
+> +#define MCHP_PTP_TX_TIMESTAMP_CONFIG(b)		((b) + 0x8e)
+> +#define MCHP_PTP_TX_TIMESTAMP_CONFIG_PTP_FCS_DIS BIT(0)
+> +
+> +#define MCHP_PTP_TX_MOD(b)			((b) + 0x8f)
+> +#define MCHP_PTP_TX_MOD_PTP_SYNC_TS_INSERT	BIT(12)
+> +#define MCHP_PTP_TX_MOD_PTP_FU_TS_INSERT	BIT(11)
+> +
+> +#define MCHP_PTP_TX_EGRESS_NS_HI(b)		((b) + 0x94)
+> +#define MCHP_PTP_TX_EGRESS_NS_HI_TS_VALID	BIT(15)
+> +
+> +#define MCHP_PTP_TX_EGRESS_NS_LO(b)		((b) + 0x95)
+> +#define MCHP_PTP_TX_EGRESS_SEC_HI(b)		((b) + 0x96)
+> +#define MCHP_PTP_TX_EGRESS_SEC_LO(b)		((b) + 0x97)
+> +#define MCHP_PTP_TX_MSG_HEADER2(b)		((b) + 0x99)
+> +
+> +#define MCHP_PTP_TSU_GEN_CONFIG(b)		((b) + 0xc0)
+> +#define MCHP_PTP_TSU_GEN_CFG_TSU_EN		BIT(0)
+> +
+> +#define MCHP_PTP_TSU_HARD_RESET(b)		((b) + 0xc1)
+> +#define MCHP_PTP_TSU_HARDRESET			BIT(0)
+> +
+> +/* Represents 1ppm adjustment in 2^32 format with
+> + * each nsec contains 4 clock cycles in 250MHz.
+> + * The value is calculated as following: (1/1000000)/((2^-32)/4)
+> + */
+> +#define MCHP_PTP_1PPM_FORMAT			17179
+> +#define MCHP_PTP_FIFO_SIZE			8
+> +#define MCHP_PTP_MAX_ADJ				31249999
+> +
+> +#define BASE_CLK(p)		((p)->clk_base_addr)
+> +#define BASE_PORT(p)		((p)->port_base_addr)
+> +#define PTP_MMD(p)		((p)->mmd)
+> +
+> +enum ptp_fifo_dir {
+> +	PTP_INGRESS_FIFO,
+> +	PTP_EGRESS_FIFO
+> +};
+> +
+> +struct mchp_ptp_clock {
+> +	struct mii_timestamper mii_ts;
+> +	struct phy_device *phydev;
+> +	struct ptp_clock *ptp_clock;
+> +
+> +	struct sk_buff_head tx_queue;
+> +	struct sk_buff_head rx_queue;
+> +	struct list_head rx_ts_list;
+> +
+> +	struct ptp_clock_info caps;
+> +
+> +	/* Lock for Rx ts fifo */
+> +	spinlock_t rx_ts_lock;
+> +	int hwts_tx_type;
+> +
+> +	enum hwtstamp_rx_filters rx_filter;
+> +	int layer;
+> +	int version;
+> +	u16 port_base_addr;
+> +	u16 clk_base_addr;
+> +
+> +	/* Lock for phc */
+> +	struct mutex ptp_lock;
+> +	u8 mmd;
+> +};
+> 
 
-Regarding the ip_link_add() and ip_link_master() helpers. This pattern of
-action plus corresponding defer is bound to come up often, and a dedicated
-vocabulary to capture it will be handy. tunnel_create() and vlan_create()
-from forwarding/lib.sh are somewhat opaque and perhaps too kitchen-sinky,
-so I tried to go in the opposite direction with these ones, and wrapped
-only the bare minimum to schedule a corresponding cleanup.
+I'm not quite sure that this layout is better, but as Andrew said if
+it's not going to do Mpps processing - we are fine.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
----
-
-Notes:
-    v4:
-    - Adjust the sleep around the FDB op
----
-CC: Shuah Khan <shuah@kernel.org>
-CC: Benjamin Poirier <bpoirier@nvidia.com>
-CC: Hangbin Liu <liuhangbin@gmail.com>
-CC: linux-kselftest@vger.kernel.org
-CC: Jiri Pirko <jiri@resnulli.us>
-
- tools/testing/selftests/net/Makefile      |  2 +-
- tools/testing/selftests/net/fdb_notify.sh | 96 +++++++++++++++++++++++
- tools/testing/selftests/net/lib.sh        | 17 ++++
- 3 files changed, 114 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/fdb_notify.sh
-
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 2b2a5ec7fa6a..d1494700f501 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -92,7 +92,7 @@ TEST_PROGS += test_vxlan_mdb.sh
- TEST_PROGS += test_bridge_neigh_suppress.sh
- TEST_PROGS += test_vxlan_nolocalbypass.sh
- TEST_PROGS += test_bridge_backup_port.sh
--TEST_PROGS += fdb_flush.sh
-+TEST_PROGS += fdb_flush.sh fdb_notify.sh
- TEST_PROGS += fq_band_pktlimit.sh
- TEST_PROGS += vlan_hw_filter.sh
- TEST_PROGS += bpf_offload.py
-diff --git a/tools/testing/selftests/net/fdb_notify.sh b/tools/testing/selftests/net/fdb_notify.sh
-new file mode 100755
-index 000000000000..c03151e7791c
---- /dev/null
-+++ b/tools/testing/selftests/net/fdb_notify.sh
-@@ -0,0 +1,96 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+source lib.sh
-+
-+ALL_TESTS="
-+	test_dup_bridge
-+	test_dup_vxlan_self
-+	test_dup_vxlan_master
-+	test_dup_macvlan_self
-+	test_dup_macvlan_master
-+"
-+
-+do_test_dup()
-+{
-+	local op=$1; shift
-+	local what=$1; shift
-+	local tmpf
-+
-+	RET=0
-+
-+	tmpf=$(mktemp)
-+	defer rm "$tmpf"
-+
-+	defer_scope_push
-+		bridge monitor fdb &> "$tmpf" &
-+		defer kill_process $!
-+
-+		sleep 0.5
-+		bridge fdb "$op" 00:11:22:33:44:55 vlan 1 "$@"
-+		sleep 0.5
-+	defer_scope_pop
-+
-+	local count=$(grep -c -e 00:11:22:33:44:55 $tmpf)
-+	((count == 1))
-+	check_err $? "Got $count notifications, expected 1"
-+
-+	log_test "$what $op: Duplicate notifications"
-+}
-+
-+test_dup_bridge()
-+{
-+	ip_link_add br up type bridge vlan_filtering 1
-+	do_test_dup add "bridge" dev br self
-+	do_test_dup del "bridge" dev br self
-+}
-+
-+test_dup_vxlan_self()
-+{
-+	ip_link_add br up type bridge vlan_filtering 1
-+	ip_link_add vx up type vxlan id 2000 dstport 4789
-+	ip_link_master vx br
-+
-+	do_test_dup add "vxlan" dev vx self dst 192.0.2.1
-+	do_test_dup del "vxlan" dev vx self dst 192.0.2.1
-+}
-+
-+test_dup_vxlan_master()
-+{
-+	ip_link_add br up type bridge vlan_filtering 1
-+	ip_link_add vx up type vxlan id 2000 dstport 4789
-+	ip_link_master vx br
-+
-+	do_test_dup add "vxlan master" dev vx master
-+	do_test_dup del "vxlan master" dev vx master
-+}
-+
-+test_dup_macvlan_self()
-+{
-+	ip_link_add dd up type dummy
-+	ip_link_add mv up link dd type macvlan mode passthru
-+
-+	do_test_dup add "macvlan self" dev mv self
-+	do_test_dup del "macvlan self" dev mv self
-+}
-+
-+test_dup_macvlan_master()
-+{
-+	ip_link_add br up type bridge vlan_filtering 1
-+	ip_link_add dd up type dummy
-+	ip_link_add mv up link dd type macvlan mode passthru
-+	ip_link_master mv br
-+
-+	do_test_dup add "macvlan master" dev mv self
-+	do_test_dup del "macvlan master" dev mv self
-+}
-+
-+cleanup()
-+{
-+	defer_scopes_cleanup
-+}
-+
-+trap cleanup EXIT
-+tests_run
-+
-+exit $EXIT_STATUS
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 24f63e45735d..8994fec1c38f 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -442,3 +442,20 @@ kill_process()
- 	# Suppress noise from killing the process.
- 	{ kill $pid && wait $pid; } 2>/dev/null
- }
-+
-+ip_link_add()
-+{
-+	local name=$1; shift
-+
-+	ip link add name "$name" "$@"
-+	defer ip link del dev "$name"
-+}
-+
-+ip_link_master()
-+{
-+	local member=$1; shift
-+	local master=$1; shift
-+
-+	ip link set dev "$member" master "$master"
-+	defer ip link set dev "$member" nomaster
-+}
--- 
-2.45.0
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
