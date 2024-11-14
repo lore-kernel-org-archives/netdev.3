@@ -1,162 +1,69 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8F21F76D0
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 09:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFC41DFE11;
+	Thu, 14 Nov 2024 09:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731576577; cv=none; b=Qm4vLg62qgWIbha6wNhIolvlc1Z25Sr9+Ejh3E5isRN4Lbofn98HvZFA8m1pGcmH88IfBgpmDFBc09LdGnKh2b1uEX0pnYxEtRKITrj5qqa4nywNKNKgLPrZnQA6i/p/Y3i/S1Zuqr/eHbSq0F4++r+BcoOWzCVEq4iyVcUCA+c=
+	t=1731576603; cv=none; b=LzFgIkxdHq1Kmll7yi0YW2y97WxChcVRZZwhRNPHKW8wwouhOIaZhO9XmuesOmCs2p4rshTYO+EXor5uooMUXNkcXDQV7pTABCZJxHRsh0Ak5Q2OmzhJ6P1z1yTYsVWRrvQHOY70LMlCb4Bb3zipHiB0xSlTUBm2VsM/eiYw1Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731576577; c=relaxed/simple;
-	bh=8Yd0/TEJi56FeR8EgbegfxdHTlDuoiPPyVHul7cJxB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SPrAbNKSujT1YhrKJ0JtyLr5G8VOuImnyuegKV+R3djV/NTSqG1xn9mGJEwmvrv8BFLS/uIV5K5C8wbhkbTZsNdZsy0PICC8ncYIE6VemQ/ckiH5rQqRa5x+KApTGavyrHTvQsW//p5GHQi3PgRdxfZvxH7mHkQ7IiSPv26Toqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tBWA6-0001EK-Eg; Thu, 14 Nov 2024 10:29:14 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tBWA6-000icz-02;
-	Thu, 14 Nov 2024 10:29:14 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 98E12372F4A;
-	Thu, 14 Nov 2024 09:29:13 +0000 (UTC)
-Date: Thu, 14 Nov 2024 10:29:13 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Charan.Pedumuru@microchip.com
-Cc: krzk@kernel.org, mailhol.vincent@wanadoo.fr, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, Nicolas.Ferre@microchip.com, 
-	alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: net: can: atmel: Convert to json schema
-Message-ID: <20241114-magnetic-eggplant-elephant-14e724-mkl@pengutronix.de>
-References: <20241003-can-v2-1-85701d3296dd@microchip.com>
- <xykmnsibdts7u73yu7b2vn3w55wx7puqo2nwhsji57th7lemym@f4l3ccxpevo4>
- <cd3a9342-3863-4a81-9b09-db7b8da1d561@microchip.com>
+	s=arc-20240116; t=1731576603; c=relaxed/simple;
+	bh=6d4OAfyS0gIXH3DCnVH3tucf0oe8DAjODoZevmc8ryw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wg9SZKCzMgYFryv1FVCAeYYMsO7hDVbUI9y6W0wOpNTC6pZUmTtEUool8lXOidZ3fKuVnnjN0Vrsc1WGbvs/AeycAcEwzoHggVdVe/VECa37qgAAsgGF+VRzKFGvgVzlTaj8U3egM5+POmWH2Qj2xQmLsb2+78U3pCXMEBtuuGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=NRA0NcxH; arc=none smtp.client-ip=178.154.239.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="NRA0NcxH"
+Received: from mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:2d9f:0:640:f6ce:0])
+	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 5C84E617A1;
+	Thu, 14 Nov 2024 12:21:53 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id nLI6BkbOoiE0-rxeFujks;
+	Thu, 14 Nov 2024 12:21:52 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1731576112; bh=qg5S/j9Olh2XIwp9A4Kv+ec4EEkXxjydlHNi+juiFYg=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=NRA0NcxHUuDY8nFhGc0zVcoXq4UMtYCPVxg1CRPikIcw79F+XByGoh9TcCWNGdMuq
+	 5exQni6f52MKcXx5dOczRKH3lGHRGYen9AKUl1n/SvQaVQo4GFci3SkiRrwYxdCsaz
+	 dMSpmj+IDihy3RyOdjPlkRudOfyeuk4IfM74YRUA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <9de3e5e4-d179-4db0-a589-5ccf21e2fe4a@yandex.ru>
+Date: Thu, 14 Nov 2024 12:21:48 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ia4wiuv7bjc5o7j2"
-Content-Disposition: inline
-In-Reply-To: <cd3a9342-3863-4a81-9b09-db7b8da1d561@microchip.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/unix: pass pidfd flags via SCM_PIDFD cmsg
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: almasrymina@google.com, asml.silence@gmail.com, axboe@kernel.dk,
+ brauner@kernel.org, davem@davemloft.net, edumazet@google.com,
+ gouhao@uniontech.com, horms@kernel.org, kees@kernel.org, krisman@suse.de,
+ kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, mhal@rbox.co, netdev@vger.kernel.org,
+ oleg@redhat.com, pabeni@redhat.com, quic_abchauha@quicinc.com,
+ shuah@kernel.org, tandersen@netflix.com, viro@zeniv.linux.org.uk,
+ willemb@google.com
+References: <20241113210206.3440784-1-stsp2@yandex.ru>
+ <20241114025007.99331-1-kuniyu@amazon.com>
+Content-Language: en-US
+From: stsp <stsp2@yandex.ru>
+In-Reply-To: <20241114025007.99331-1-kuniyu@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
---ia4wiuv7bjc5o7j2
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] dt-bindings: net: can: atmel: Convert to json schema
-MIME-Version: 1.0
-
-On 13.11.2024 05:30:53, Charan.Pedumuru@microchip.com wrote:
-> On 03/10/24 14:04, Krzysztof Kozlowski wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know =
-the content is safe
-> >
-> > On Thu, Oct 03, 2024 at 10:37:03AM +0530, Charan Pedumuru wrote:
-> >> Convert atmel-can documentation to yaml format
-> >>
-> >> Signed-off-by: Charan Pedumuru <charan.pedumuru@microchip.com>
-> >> ---
-> >> Changes in v2:
-> >> - Renamed the title to "Microchip AT91 CAN controller"
-> >> - Removed the unnecessary labels and add clock properties to examples
-> >> - Removed if condition statements and made clock properties as default=
- required properties
-> >> - Link to v1: https://lore.kernel.org/r/20240912-can-v1-1-c5651b1809bb=
-@microchip.com
-> >> ---
-> >>   .../bindings/net/can/atmel,at91sam9263-can.yaml    | 58 ++++++++++++=
-++++++++++
-> >>   .../devicetree/bindings/net/can/atmel-can.txt      | 15 ------
-> >>   2 files changed, 58 insertions(+), 15 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/net/can/atmel,at91sam92=
-63-can.yaml b/Documentation/devicetree/bindings/net/can/atmel,at91sam9263-c=
-an.yaml
-> >> new file mode 100644
-> >> index 000000000000..c818c01a718b
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/net/can/atmel,at91sam9263-can.=
-yaml
-> >> @@ -0,0 +1,58 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/net/can/atmel,at91sam9263-can.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Microchip AT91 CAN Controller
-> >> +
-> >> +maintainers:
-> >> +  - Nicolas Ferre <nicolas.ferre@microchip.com>
-> >> +
-> >> +allOf:
-> >> +  - $ref: can-controller.yaml#
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    oneOf:
-> >> +      - enum:
-> >> +          - atmel,at91sam9263-can
-> >> +          - atmel,at91sam9x5-can
-> >> +      - items:
-> >> +          - enum:
-> >> +              - microchip,sam9x60-can
-> >> +          - const: atmel,at91sam9x5-can
-> > That is not what old binding said.
->=20
-> Apologies for the late reply, the driver doesn't have compatible with=20
-> "microchip,sam9x60-can",
-> so I made "atmel,at91sam9x5-can" as fallback driver
-
-I think a better answer is:
-
-The CAN IP core on the microchip,sam9x60-can is compatible with the IP
-core on the "atmel,at91sam9x5-can".
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---ia4wiuv7bjc5o7j2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmc1wuYACgkQKDiiPnot
-vG9Sqgf9G/Fg9mjf2UZVGGZWrYCj65mGdUNZgeVJfWBMxLzfrrBzSbDoC7BHvtk8
-kTCC4Q9xW18ne3S9xbZBACX/9j3Sn9+r5DPQDo2Nd04p6w1qAzkgdoMsgZw9M8CU
-uPbHPsWCqpG6ZyJnDWYYnRcI0DLozdRYeNH+3IJN0FIV9PQUXth6n51mak0eCgei
-xCtAqR+8ggUrebUlyuw6MddiZFStgeCFGmqnoxKk3TAz7OdwnPlb+mUDux+1Grpo
-GZEM6MMr4bqEtGjXxjXb72nmvcL3LpyE6NVDjvtKILQX03nARds7ZGuSXshaDj84
-aN65bsQb3LbFLmqNiBOcJPb1OGHRRg==
-=bN37
------END PGP SIGNATURE-----
-
---ia4wiuv7bjc5o7j2--
+14.11.2024 05:50, Kuniyuki Iwashima пишет:
+> From: Stas Sergeev <stsp2@yandex.ru>
+> Date: Thu, 14 Nov 2024 00:02:05 +0300
+>> @@ -154,7 +157,12 @@ static __inline__ void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm
+>>   	if (!scm->pid)
+>>   		return;
+>>   
+>> -	pidfd = pidfd_prepare(scm->pid, 0, &pidfd_file);
+>> +	err = pidfd_validate_flags(scm->pidfd_flags);
+> No neede to double check here, it's already checked in __scm_send().
+Done and sent v2, thanks.
