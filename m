@@ -1,62 +1,64 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC4B14E2D6
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 16:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1E415DBB3
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731600216; cv=none; b=J9TwDc2N2uFCimykNOAjASOtx1jGYu97HLKswiVENqf/kWy8par5PkH13vK7YPd46s9K4r/NeLl7AUZE/9KteYbklGedsLx9lJEbggU2PFE3nnplLj4bL5qOtfOZU3NSs6cJZHfzc8haBen1rWEjFaEnelD6L4/mHqkthWOhHoA=
+	t=1731600224; cv=none; b=gMUYj3eJubGNZhFaf+rMpzVCNzgTfThsaJZYyjFYX3Dwyc0XBsf6/PUrwWa+3vg2zGBxmfQnOZW6af3klLY4UVFVZJ0sIponiq64MqU8ztGIcWYb7YlRvASOHGMvnPnDg4f1ctO2t7bYLe8p/37RsSoBD+LCXkJKY4rXNiMVlAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731600216; c=relaxed/simple;
-	bh=EiBG97YNblHkUXL6lTFf1fcI90D+FK3ZliHurtw57i4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=AMFF0wa9NefBX+fXxAmydijDM8yKYCwiADu0UhTFIkhGcPKrGlUb4r4eoVWFDmUyCJ8bk7s9ShdtBGqSUGEbpm3rhSH4QtOzhtkR2hIdgWMnodP9kUbJ+ME6b7t2LPjvdeByozXhxUTDGEWc6FlItZvvEmk1MQ6AvfZtR0Sq1hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=amTz5GC+; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1731600224; c=relaxed/simple;
+	bh=5RknSn7bVZ9Sp8G0NfIi7txZbEwVmyyLhHOcziJAz7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m8JfWwPGlTjCRtPW+lG2ThebbFW0VjZq0MiaOJ4al96OJ8y6DDSojgkJyljd+de19PuLrnr9mZPLPOeyKp+nOjXd3v8FgjyJW5aXXaX5Than0e6nQaif0gEvP7JUy9cSUlPCsWIlBiJhVg/+NseeGlzHYLUpMvz9lX7ey1ovBJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CiBN7u9n; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="amTz5GC+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CiBN7u9n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731600213;
+	s=mimecast20190719; t=1731600222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=mqDeygRmWi/kNU1a4hZLWkcZ1ztVZyaf0VsbpEiFlQI=;
-	b=amTz5GC+eTPglghcelbV7RHoxIMpcXwaGIrowJEsddklEM1nifXtiGz3Ph3dqnsErwfXYb
-	RfZnbKqbtS9nLkehODFe8fdWdBijOrejydLH9PwRoi/o2ES2/NCJLR5Z9/KzgM99QZzx+b
-	YwlshMwXYSGaHVgw6MhqZqQ2qLDMHlE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFJBfZsuRNKlRmGlsq7skNCrEogTFO/7vDcCzJF9P+M=;
+	b=CiBN7u9nWM1MmEM9knVa7AEkJVoDYOmYi/8QhQ7RFrL4iXNOegHNUe8g0DZfgLrxJOPt1l
+	r53YBTqvtrTZNeNAQQbBUC0IEk+1qpVY9jqduBjjL4SBW31jKEH9RqZwUnUQRLf7JNsNc9
+	sapm4PGKOrcB5G5eGFlBuYrFAFQ+2XU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-t-l-tX_CMWmpz6RtC_MB-A-1; Thu, 14 Nov 2024 11:03:29 -0500
-X-MC-Unique: t-l-tX_CMWmpz6RtC_MB-A-1
-X-Mimecast-MFC-AGG-ID: t-l-tX_CMWmpz6RtC_MB-A
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315ad4938fso6066845e9.0
-        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 08:03:29 -0800 (PST)
+ us-mta-553--5LtHiQzPG-QFpXPJdgHBw-1; Thu, 14 Nov 2024 11:03:41 -0500
+X-MC-Unique: -5LtHiQzPG-QFpXPJdgHBw-1
+X-Mimecast-MFC-AGG-ID: -5LtHiQzPG-QFpXPJdgHBw
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43157e3521dso5826325e9.1
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 08:03:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731600208; x=1732205008;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mqDeygRmWi/kNU1a4hZLWkcZ1ztVZyaf0VsbpEiFlQI=;
-        b=HdEJbcDr4vp9fX+8aJIBGesHLn/I2QT7fPjFJ5XLWtgoEEbfLQKQEtOf3p8CAE9Rby
-         AFTx3Uni8xhCYYIBEqRHP7SNk5e3hR9eXn83Mw4Uge3rGVxxVYXxXb4z6sN6uiwgcr8S
-         mVwzKeuXdX+HF13TJznHQ+MjD9XZ5vv4rB3S9/1u/enk0NogDhHsxYJrpBMgatKfxPAy
-         zGxtEeRP+/027YwD9Jk/j60uFSReQBnF5WjntoPukP3CoqavRfYsCAw1PFafXAfKrQUF
-         YsG7//1CaXuqQgpayLwm0deA2/wYFkDoZFoy783lL9dLYjEGmim0ohBFnDOnNs3pYJqP
-         /iMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqZ8Q5vkK8D+hvVRMaeihnipGGsHou9dWFxCFMf3tumIPaz5BWAkWULrpZ7hIprW1lTmoXbeI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT3IdhxFkHPHDeIAexLh6d+f9GE0ca1WIDPEEDaAL2ydVoNUOc
-	+1S6mk8blIfOXzybQVAnZHU6XubnVpKyMjkHOLyjUHOMxKR7whr1wX3LhpsBjuW9G+WInIgZP/u
-	A4RIovoyIT3o83KzTPfY+nURctEzqdhqs1xchbO5WGZt8oXr+BupXtg==
-X-Received: by 2002:a05:600c:1c09:b0:431:5522:e009 with SMTP id 5b1f17b1804b1-432b750394cmr227379835e9.12.1731600207967;
-        Thu, 14 Nov 2024 08:03:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHPb1+OHLtmsNZvaVnkw878qmBSxtdRGcXdFiXLwoXAHw0rchZLFpvGTZGMFu9nMowpx0edyA==
-X-Received: by 2002:a05:600c:1c09:b0:431:5522:e009 with SMTP id 5b1f17b1804b1-432b750394cmr227368955e9.12.1731600198419;
-        Thu, 14 Nov 2024 08:03:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731600217; x=1732205017;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jFJBfZsuRNKlRmGlsq7skNCrEogTFO/7vDcCzJF9P+M=;
+        b=U7pRhoiuxAjFNFBV7BvM+HcrJCtbw+IFMrFWHwBa4mXxVgjm38TnHKbBH29p6yemSh
+         dt1seDsxX7phMVrk+WAen+tVHoqQZfm9Yimp6imQwsDd9WG1YNgioCfDFvVICNfZ9V9C
+         dY/A+FBH/nGFOLH069prQDJEHcWEKy79QStQXh7IHxUDDa9+/baeGhJNUjF3rItYMklV
+         TtDacI5+ZsiPgAgV7ZQgNLI+HsvLsQm3TAE0zXLWS4Fh6tWTFf7aFsVInTmcPlX+euc8
+         YQ91GXu8V5vROVwM7yhiPA95uXRTq3jjMtrKr9TvNU3KU4aUvTHhiei8AHea80B8WS9z
+         eIFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXba1KqEZ4WKsxvkBz7owYspn5eFgyCiqLeDiHfdinHgwqYdtrfG6lsz2auxSu3W7tbkKrbN5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHuXAGmmq5bUe77lQietej4psPhkivtcJPOM5oFvu7rs17mIZH
+	omV+kGkSlCLcloqPkIb+eicVsK4H9J8yJkmoAHfDBaSioCDtWgZPYKWqYR6RIuNsujphaa8AiuM
+	efxtjP95yrHtRtqNrXPeJQxhv6ckser+IH58WxT4+/ruDJ+/e2vlq8A==
+X-Received: by 2002:a05:600c:468d:b0:425:80d5:b8b2 with SMTP id 5b1f17b1804b1-432da790aa3mr28802695e9.16.1731600215799;
+        Thu, 14 Nov 2024 08:03:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPYCo/VbNnJPfZ9jCSUk1Uk+WXO2Lu9MT54UrcQ1GHUqbnEPX5xx7mMsc6HvBXUQYcJYRBSA==
+X-Received: by 2002:a05:600c:468d:b0:425:80d5:b8b2 with SMTP id 5b1f17b1804b1-432da790aa3mr28800225e9.16.1731600213753;
+        Thu, 14 Nov 2024 08:03:33 -0800 (PST)
 Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da299dadsm27965975e9.43.2024.11.14.08.03.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ada3199sm1826311f8f.22.2024.11.14.08.03.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 08:03:17 -0800 (PST)
-Date: Thu, 14 Nov 2024 17:03:16 +0100
+        Thu, 14 Nov 2024 08:03:33 -0800 (PST)
+Date: Thu, 14 Nov 2024 17:03:31 +0100
 From: Guillaume Nault <gnault@redhat.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Jozsef Kadlecsik <kadlec@netfilter.org>
@@ -67,9 +69,10 @@ Cc: netfilter-devel@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>, coreteam@netfilter.org,
 	netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH nf-next 0/5] netfilter: Prepare netfilter to future
- .flowi4_tos conversion.
-Message-ID: <cover.1731599482.git.gnault@redhat.com>
+Subject: [PATCH nf-next 2/5] netfilter: flow_offload: Convert
+ nft_flow_route() to dscp_t.
+Message-ID: <36ab64916593c2cd88cbc17b8369ee4bbe97182d.1731599482.git.gnault@redhat.com>
+References: <cover.1731599482.git.gnault@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,33 +81,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1731599482.git.gnault@redhat.com>
 
-There are multiple occasions where Netfilter code needs to perform
-route lookups and initialise struct flowi4. As we're in the process of
-converting the .flowi4_tos field to dscp_t, we need to convert the
-users so that they have a dscp_t value at hand, rather than a __u8.
+Use ip4h_dscp()instead of reading ip_hdr()->tos directly.
 
-All netfilter users get the DSCP (TOS) value from IPv4 packet headers.
-So we just need to use the new ip4h_dscp() helper to get a dscp_t
-variable.
+ip4h_dscp() returns a dscp_t value which is temporarily converted back
+to __u8 with inet_dscp_to_dsfield(). When converting ->flowi4_tos to
+dscp_t in the future, we'll only have to remove that
+inet_dscp_to_dsfield() call.
 
-Converting .flowi4_tos to dscp_t will allow to detect regressions where
-ECN bits are mistakenly treated as DSCP when doing route lookups.
+Also, remove the comment about the net/ip.h include file, since it's
+now required for the ip4h_dscp() helper too.
 
-Guillaume Nault (5):
-  netfilter: ipv4: Convert ip_route_me_harder() to dscp_t.
-  netfilter: flow_offload: Convert nft_flow_route() to dscp_t.
-  netfilter: rpfilter: Convert rpfilter_mt() to dscp_t.
-  netfilter: nft_fib: Convert nft_fib4_eval() to dscp_t.
-  netfilter: nf_dup4: Convert nf_dup_ipv4_route() to dscp_t.
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+---
+ net/netfilter/nft_flow_offload.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- net/ipv4/netfilter.c              | 2 +-
- net/ipv4/netfilter/ipt_rpfilter.c | 2 +-
- net/ipv4/netfilter/nf_dup_ipv4.c  | 2 +-
- net/ipv4/netfilter/nft_fib_ipv4.c | 3 ++-
- net/netfilter/nft_flow_offload.c  | 4 ++--
- 5 files changed, 7 insertions(+), 6 deletions(-)
-
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index 65199c23c75c..3b474d235663 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -8,7 +8,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/netfilter/nf_conntrack_common.h>
+ #include <linux/netfilter/nf_tables.h>
+-#include <net/ip.h> /* for ipv4 options. */
++#include <net/ip.h>
+ #include <net/inet_dscp.h>
+ #include <net/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_core.h>
+@@ -236,7 +236,7 @@ static int nft_flow_route(const struct nft_pktinfo *pkt,
+ 		fl.u.ip4.saddr = ct->tuplehash[!dir].tuple.src.u3.ip;
+ 		fl.u.ip4.flowi4_oif = nft_in(pkt)->ifindex;
+ 		fl.u.ip4.flowi4_iif = this_dst->dev->ifindex;
+-		fl.u.ip4.flowi4_tos = ip_hdr(pkt->skb)->tos & INET_DSCP_MASK;
++		fl.u.ip4.flowi4_tos = inet_dscp_to_dsfield(ip4h_dscp(ip_hdr(pkt->skb)));
+ 		fl.u.ip4.flowi4_mark = pkt->skb->mark;
+ 		fl.u.ip4.flowi4_flags = FLOWI_FLAG_ANYSRC;
+ 		break;
 -- 
 2.39.2
 
