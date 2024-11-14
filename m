@@ -1,35 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF16420127A;
-	Thu, 14 Nov 2024 10:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C381F76AC;
+	Thu, 14 Nov 2024 10:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731579619; cv=none; b=IG6td1dv5BqthIucB9oxJ2LcQpxkYPiaFXWQDziRA1dC2vgnc9hViCLx0exrIRXXHic3iYojq4mLEXHv3DoQJgGiVaQpmPqC2jTG+kzUflGICg4UQLjNK8sRG0ddBhUAxvc7GIgiIq7Q+FR8KNynRjPR2lZy0ce2FTEOQ62KkOg=
+	t=1731579936; cv=none; b=O2m+nArGx8nJAuvdw1NVmxZB+TWqd23wh9lfBW3ENYRg6iAx0enARQL8FXcUt+ynbYLM9hm9VEw1oPPOMvwGvbU0Sm5vqU/eVuYVyvxsS0yc84C4YX+TWlUfaNn3+P3PTo4Ef+S6s0Uk1z0Hric+eY+YBX5vHyKyMIwYbVaysWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731579619; c=relaxed/simple;
-	bh=WqoZPSZPRO3SiDo4pzhANc0aDEgAi1wQ2Z/rJ2p3oEA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ql2Y84JdlO2xyLDUdsbc1iPa/hG5YwoInJPXELf56dIW1qn22Qcn6FkM5hgFOLJfQHSgYOcxmoaIcWLIczDbaTKQePTFTor/admqh1d6SUlS2V1l5hDin9PAqoFIFV7lZn5qKdrNGCXqvBpvyRzOXPuvgETIEUIiZrQQbN03SvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baZf5bKc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731579936; c=relaxed/simple;
+	bh=PVZt50xKgkDZqujM6gY9ARLbzF4hPBVFADkPWTbzV6M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YKbBwHwCCsJXnmYnNkhL9esBbgGLrJbqwPjX598RhuTUYgVIlIUYbd6KScHXIvoETeK3oClKovqhRC35KxqzQH3/OZx70ea63kF85+N0hEX0gVCZvdMO8mGUgAbJLpnxFsIc2Yzva24XKq6oGGbYHHE2sfiKXWO4QfiVAKUM4PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FeNAW1OA; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baZf5bKc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFBAC4CECD;
-	Thu, 14 Nov 2024 10:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731579619;
-	bh=WqoZPSZPRO3SiDo4pzhANc0aDEgAi1wQ2Z/rJ2p3oEA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=baZf5bKccUP3axDeJh3De7q4W7MlZStYyhsWAXRHVFKpr1y7yUNXBIeF0Plrcv+iL
-	 LhkckTtFptLbqtAU5k2SySoDXldPvU/eah38HUm5mKPhTIIHZ+k9SsZZqShNKb6fEz
-	 vzQpO6WHpag+IO8dyJxzq8yhNEc7CoOEtZ1Q1Lwls3F9I+ZhJX/UMlLXLSQoTnnjNd
-	 Xp3k0IVLoxNSC2M3oY0P1dW4ni+Fl065IXaUFGMPkri+kL9K12WbfiGBQ0NRZJvqZ5
-	 ML3vQTG0G0uiQLrf+A7Psdta9hE07cEg0nziWFJt6KrAN6of7QQOFVN08McBE9kcFN
-	 swXKdeZgWIBXg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAC853809A80;
-	Thu, 14 Nov 2024 10:20:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FeNAW1OA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731579934; x=1763115934;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PVZt50xKgkDZqujM6gY9ARLbzF4hPBVFADkPWTbzV6M=;
+  b=FeNAW1OAV7ZCbBxrqwd1p3reBpZ9YXDInlqD4a1sa1eSdwfrnUWpZpK4
+   ssFePh0xAenCHPzjtIOKwGRxLENlai5GMRkXqaDzD1G35/IDxjBsdlJlo
+   L+vuGPHJaPdPiuQkiAV7/PGDXbTi6WM4j/muQbmdbJZb+/Q4IKN9kWpKh
+   z5fdY9uvFYJ+ue+GWkIHIFGUnYnlS4OMJoD8pU2y2TN7eL1hvTctjggK7
+   si0tCXPX5Zac3vFzQgdGNNQZJpwET4w7OqSdDf+M9XEBgqXejpFQ7x1SW
+   61g9DcMoOLhYxurdFn4giT8r5oxV5S2mYl+4DVsHJB1RebZaMrt84yBGh
+   w==;
+X-CSE-ConnectionGUID: HPV/YlKXRl6rsyfNkaR4NA==
+X-CSE-MsgGUID: Hug4GU7DTUmSW5iGn49sdw==
+X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; 
+   d="scan'208";a="37840105"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Nov 2024 03:25:33 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 14 Nov 2024 03:25:11 -0700
+Received: from HYD-DK-UNGSW20.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Thu, 14 Nov 2024 03:25:06 -0700
+From: Tarun Alle <Tarun.Alle@microchip.com>
+To: <arun.ramadoss@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] net: phy: microchip_t1: Clause-45 PHY loopback support for LAN887x
+Date: Thu, 14 Nov 2024 15:49:51 +0530
+Message-ID: <20241114101951.382996-1-Tarun.Alle@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,49 +58,27 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv4 net 0/2] bonding: fix ns targets not work on hardware NIC
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173157962974.1869204.16348527317957867096.git-patchwork-notify@kernel.org>
-Date: Thu, 14 Nov 2024 10:20:29 +0000
-References: <20241111101650.27685-1-liuhangbin@gmail.com>
-In-Reply-To: <20241111101650.27685-1-liuhangbin@gmail.com>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: netdev@vger.kernel.org, jv@jvosburgh.net, andy@greyhouse.net,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- razor@blackwall.org, horms@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain
 
-Hello:
+Adds support for clause-45 PHY loopback for the Microchip LAN887x driver.
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Signed-off-by: Tarun Alle <Tarun.Alle@microchip.com>
+---
+ drivers/net/phy/microchip_t1.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, 11 Nov 2024 10:16:48 +0000 you wrote:
-> The first patch fixed ns targets not work on hardware NIC when bonding
-> set arp_validate.
-> 
-> The second patch add a related selftest for bonding.
-> 
-> v4: Thanks Nikolay for the comments:
->     use bond_slave_ns_maddrs_{add/del} with clear name
->     fix comments typos
->     remove _slave_set_ns_maddrs underscore directly
->     update bond_option_arp_validate_set() change logic
-> v3: use ndisc_mc_map to convert the mcast mac address (Jay Vosburgh)
-> v2: only add/del mcast group on backup slaves when arp_validate is set (Jay Vosburgh)
->     arp_validate doesn't support 3ad, tlb, alb. So let's only do it on ab mode.
-> 
-> [...]
-
-Here is the summary with links:
-  - [PATCHv4,net,1/2] bonding: add ns target multicast address to slave device
-    https://git.kernel.org/netdev/net/c/8eb36164d1a6
-  - [PATCHv4,net,2/2] selftests: bonding: add ns multicast group testing
-    https://git.kernel.org/netdev/net/c/86fb6173d11e
-
-You are awesome, thank you!
+diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
+index 71d6050b2833..b17bf6708003 100644
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -2113,6 +2113,7 @@ static struct phy_driver microchip_t1_phy_driver[] = {
+ 		.handle_interrupt = lan887x_handle_interrupt,
+ 		.get_sqi	= lan887x_get_sqi,
+ 		.get_sqi_max	= lan87xx_get_sqi_max,
++		.set_loopback	= genphy_c45_loopback,
+ 	}
+ };
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
