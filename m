@@ -1,80 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41502E634;
-	Thu, 14 Nov 2024 03:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682982E634
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 03:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731553762; cv=none; b=D7MQjxAuhLqvwKFMUVZIrMVKqsVohhJTmWCPwuEK7GBIL0pWsNw7G0ikGcdBUZKStgZehtD4doAA2z7y/lVDobRq5OZC4NtsHiaPPAz+rK5hpx2mr0LiSHkTROvYVYOCEo3xOmMQdrGItkf26LsEUE00UHA8mmW0eqOQ/NMSw5k=
+	t=1731553819; cv=none; b=aLasQb5mmiCJfuTZOWCw/iVM+qGp7PLafXotT1N//kk7SM7R+2iXb4OiPTXcdY1NW556K6w7wmRDmJYPo936vQnl763isQUAUju0BWtZ0x6UoDwuybvpZk8JljlMzzS5Pbr5uolnx7w02WKo6U5ubdTE7tes1Ee+/sV48YbE2qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731553762; c=relaxed/simple;
-	bh=aNA+MUiXR33lNnb7g+eD9z36PEo+w4KP8BYPgK0Kh2w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=osPInc96nhDVcaJX6N+MCuC2VQDvZ9ImQiwLIDSBBkgBqrYstwdMY82GvChGhctlgZeADcaAjnGPqQH+y0lLsc5ancLFtamJQFHRi0xvWsy+5ENEZqy1JO7TGqRixgPYpEXc676+Ay9dW3m5QYovAbeIsOe/Xbnz0GF/RBs4E3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQG4UBxZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731553819; c=relaxed/simple;
+	bh=Naw/2iMvIsKYhVEY8NtnnYLnLQKzbYI2YxAKc1ylb7U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=P2S3lj1o7jdU9fHn124GN6+N+rdghuzZ9bzxoaavY2XUzEbwJo2G9u+Qvwaa08B37qlmeIaly1eOdTa9pHwQHUpDUZMFJNRY4lOIbKvD+3k1ZpLHylyzCuoxLHdFnHXPcOJRfNQHVNKBVI3fFsEQ/7z3WQgh/OqJ1HSxYmn2hko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPAaVjJE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQG4UBxZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68434C4CEC3;
-	Thu, 14 Nov 2024 03:09:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPAaVjJE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0691DC4CEC3;
+	Thu, 14 Nov 2024 03:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731553761;
-	bh=aNA+MUiXR33lNnb7g+eD9z36PEo+w4KP8BYPgK0Kh2w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QQG4UBxZzz99WLCh1CqhlhsxLgYpBVK2nXRK8PkrOJ1mtquva9FvsnXw1+Pvo1u01
-	 kSoXoKQiAyD+nsX0Os/T+IldoBGTutZN8QeYsOQWACKR6kiENdOaRl3yjSfmZmlm9s
-	 KNF+MSBp2oCkJb7cdVy0+vI5buypTfdDmifDPRCy6Y9M4YNvY85ZFan3GIn3blCBYD
-	 JAOlzbq1vawb+i3Qh6SodcO1n6xxgKj/n+Sl2mHyiQiISKC3JZRFeoWFG+/Ag4w1yb
-	 qwmxitYYnkKiAe0EJaElkWrY0I1Jciy5ki/Zjhmxi2d3//xSeBERMYfmaHdbEsU8P5
-	 9MR0sqfovkxlQ==
-Date: Wed, 13 Nov 2024 19:09:20 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jian Zhang <zhangjian.3032@bytedance.com>
-Cc: netdev@vger.kernel.org, openbmc@lists.ozlabs.org, Jeremy Kerr
- <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH net-next] mctp i2c: notify user space on TX failure
-Message-ID: <20241113190920.0ceaddf2@kernel.org>
-In-Reply-To: <20241108094206.2808293-1-zhangjian.3032@bytedance.com>
-References: <20241108094206.2808293-1-zhangjian.3032@bytedance.com>
+	s=k20201202; t=1731553819;
+	bh=Naw/2iMvIsKYhVEY8NtnnYLnLQKzbYI2YxAKc1ylb7U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jPAaVjJEr+wZAiK5Yo4EZ+VST4Th1E1VtJLxuprp6PGsqW3i4i9eX9H4IZgsQZRoJ
+	 /MLGYboBBZJNgo8WVMqwKpNee6C1pR7ptSRoMy6hEWW9nA9Rl+ID7879V4is6liADz
+	 89w8ge0K+FRX7wbSKu4+cl+P6208TF3wJO5Bs70F2rTP6hfrV7OzGVoPwBrU/7EC5U
+	 7MZnE7tUkohEwK0x+EqrFIBu6OdGRno85x+EfgLL4NVbcUnctfKwbafBYc7zk4l/LD
+	 IA6QPBsM6BOMG4jQz0fasS8fYWNqr9NKumyLKk89BUK/f7VNc5BP3LtsxFc29+gbrP
+	 U2kbb3IM+PePA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD503809A80;
+	Thu, 14 Nov 2024 03:10:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: phylink: ensure PHY momentary link-fails are handled
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173155382952.1467456.818025393378907444.git-patchwork-notify@kernel.org>
+Date: Thu, 14 Nov 2024 03:10:29 +0000
+References: <E1tAtcW-002RBS-LB@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1tAtcW-002RBS-LB@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ o.rempel@pengutronix.de, florian.fainelli@broadcom.com,
+ netdev@vger.kernel.org
 
-On Fri,  8 Nov 2024 17:42:06 +0800 Jian Zhang wrote:
-> diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-> index 4dc057c121f5..e9a835606dfc 100644
-> --- a/drivers/net/mctp/mctp-i2c.c
-> +++ b/drivers/net/mctp/mctp-i2c.c
-> @@ -485,6 +485,7 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
->  	struct mctp_i2c_hdr *hdr;
->  	struct i2c_msg msg = {0};
->  	u8 *pecp;
-> +	struct sock *sk;
->  	int rc;
->  
+Hello:
 
-nit: order the variable declaration lines longest to shortest
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> @@ -551,6 +552,14 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
->  		dev_warn_ratelimited(&midev->adapter->dev,
->  				     "__i2c_transfer failed %d\n", rc);
->  		stats->tx_errors++;
-> +
-> +		sk = skb->sk;
-> +		if (sk) {
-> +			sk->sk_err = -rc;
-> +			if (!sock_flag(sk, SOCK_DEAD))
-> +				sk_error_report(sk);
-> +		}
+On Tue, 12 Nov 2024 16:20:00 +0000 you wrote:
+> Normally, phylib won't notify changes in quick succession. However, as
+> a result of commit 3e43b903da04 ("net: phy: Immediately call
+> adjust_link if only tx_lpi_enabled changes") this is no longer true -
+> it is now possible that phy_link_down() and phy_link_up() will both
+> complete before phylink's resolver has run, which means it'll miss that
+> pl->phy_state.link momentarily became false.
+> 
+> [...]
 
-notifying socket in the xmit handler of a netdev is a bit strange,
-could you do it somewhere higher in the MCTP stack?
+Here is the summary with links:
+  - [net] net: phylink: ensure PHY momentary link-fails are handled
+    https://git.kernel.org/netdev/net/c/671154f174e0
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
