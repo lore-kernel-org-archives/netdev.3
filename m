@@ -1,84 +1,85 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E86B18BC2C;
-	Thu, 14 Nov 2024 12:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BC81F9EAE;
+	Thu, 14 Nov 2024 12:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731585879; cv=none; b=j0PSSAoQW//odsARuoWioj/5oo45xZXa8uCWP7m+FijNOFzkOMHY6q+KRTeW9RvaBHXPZBVLQFI744azyjIOgVSZkssEaEQTo5OAVAKG+eqEsRy3ZWvdaTzfbdQ+waKKBZ3y/dLwXlhhGnF06G04SJCNgNwkB9Xzbzc+Tx+7SLA=
+	t=1731586054; cv=none; b=nb3/t5MAAJA/ol7UW1P5HKKXd9FJLQiFOCSpx4hmxZyiRFpxdOZIbKeQq/vU96SvCqg1CUCMu8HlHWdoHktxE8MMmIMcZSq8bLiFctKLSrOfH2OkMqDF80Pr/LUvr1Jdn29/r0gaA3Qha0kseUEsjkkyG2iGXjOxmW8h4mPeMtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731585879; c=relaxed/simple;
-	bh=1+Oht9w0/FE5QsO5SJj/3YQM87Ar4+UOgH2AsGDK5/4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=V7cQ+Bw9LJqITC8rpoYIG/xu4ZJ++Mv4HplxmoZFApF6M6mFFReM6ielhry5bC4rfRfhQ/kIVYyvt8tr7ccwL6oXKaow6yo6sIYEr1XIJllYbGR0CMNeJ+9v8QYUpbuFGGqqnoIgklnwytB2U++iXTctO/VBz0RnF4Fn3q254sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FBj5E0ZJ; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FBj5E0ZJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731585878; x=1763121878;
-  h=from:to:subject:date:message-id:mime-version;
-  bh=1+Oht9w0/FE5QsO5SJj/3YQM87Ar4+UOgH2AsGDK5/4=;
-  b=FBj5E0ZJv9+37GtlfTlezMP/DtqsmFy2nlh+0LJP9bBJluFR6a46z/Wf
-   6v2bAq+oA4zUzQK1vcK/E2WNd5Z7tSqFJp/s8F+5uQ++9JgKz+qiwzSMQ
-   4WI9x3VoL/JZ1BNL1Ab6v8pMgxH3cPYmyTmqf778RQzpUN2snLpgxUC8k
-   mgMsEVh+T9K51OFNoON10LDN3GAj3xB6f3fFI//BHPm1mrBE5kInTPyD3
-   zW/tt/gpoaMBQOLptptdwubW+EzeUvKEVGjhZlNI0G/prK1ZKyM0S6NtT
-   aY0I7qFgoAKIxFW8RvVCVArV2TM+4OrnR580PIMWWFsOKfHR7uZX3/sLr
-   g==;
-X-CSE-ConnectionGUID: zl8u+YR3TAunldWusYHTGA==
-X-CSE-MsgGUID: WcQPf7jDSK6TXCGDuP7Tpg==
-X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; 
-   d="scan'208";a="37842596"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Nov 2024 05:04:37 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 14 Nov 2024 05:03:34 -0700
-Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Thu, 14 Nov 2024 05:03:30 -0700
-From: Divya Koppera <divya.koppera@microchip.com>
-To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
-	<vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v4 0/5] Add ptp library for Microchip phys
-Date: Thu, 14 Nov 2024 17:34:50 +0530
-Message-ID: <20241114120455.5413-1-divya.koppera@microchip.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1731586054; c=relaxed/simple;
+	bh=LOd6GxO4tMJcV2o7TjI7n8wU2/+etepq1GwxCfsRtyc=;
+	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=pv57YEcPToZzgspW3bDJSaqn4S/GGAbuqylQlc3VIyT75KeI6nxTjMqSOgYRQ7CgQ7UCckihLXuZIPx+4Ly/A0YkwGwthJP88wC9FeY/DkOqtpdaWdUQ4Z2TuO1+cM/V+0Bh0gR3EIMtEVIKBZsP1VM20lRLlrxGwkXdDIajcm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4XpzRb5Bvxz50FXN;
+	Thu, 14 Nov 2024 20:07:23 +0800 (CST)
+Received: from njy2app02.zte.com.cn ([10.40.13.116])
+	by mse-fl1.zte.com.cn with SMTP id 4AEC67Ud016915;
+	Thu, 14 Nov 2024 20:06:07 +0800 (+08)
+	(envelope-from jiang.kun2@zte.com.cn)
+Received: from mapi (njb2app06[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Thu, 14 Nov 2024 20:06:11 +0800 (CST)
+Date: Thu, 14 Nov 2024 20:06:11 +0800 (CST)
+X-Zmail-TransId: 2afe6735e7b3032-b8ad8
+X-Mailer: Zmail v1.0
+Message-ID: <20241114200611368_vpMExu265JwdZuArEo_D@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+From: <jiang.kun2@zte.com.cn>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <jmaloy@redhat.com>, <lucien.xin@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <tu.qiang35@zte.com.cn>, <jiang.kun2@zte.com.cn>, <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIERvY3VtZW50YXRpb246IHRpY3A6IGZpeCBmb3JtYXR0aW5nIGlzc3VlIGluIHRpcGMucnN0?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 4AEC67Ud016915
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6735E7FB.000/4XpzRb5Bvxz50FXN
 
-Adds support of ptp library in Microchip phys
+From: tuqiang <tu.qiang35@zte.com.cn>
 
-Divya Koppera (5):
-  net: phy: microchip_ptp : Add header file for Microchip ptp library
-  net: phy: microchip_ptp : Add ptp library for Microchip phys
-  net: phy: Kconfig: Add ptp library support and 1588 optional flag in
-    Microchip phys
-  net: phy: Makefile: Add makefile support for ptp in Microchip phys
-  net: phy: microchip_t1 : Add initialization of ptp for lan887x
+The hyphen is removed to have the same style as the others.
 
- drivers/net/phy/Kconfig         |   9 +-
- drivers/net/phy/Makefile        |   1 +
- drivers/net/phy/microchip_ptp.c | 997 ++++++++++++++++++++++++++++++++
- drivers/net/phy/microchip_ptp.h | 216 +++++++
- drivers/net/phy/microchip_t1.c  |  40 +-
- 5 files changed, 1259 insertions(+), 4 deletions(-)
- create mode 100644 drivers/net/phy/microchip_ptp.c
- create mode 100644 drivers/net/phy/microchip_ptp.h
+Fixes: 09ef17863f37 ("Documentation: add more details in tipc.rst")
+Signed-off-by: tuqiang <tu.qiang35@zte.com.cn>
+Signed-off-by: Jiang Kun <jiang.kun2@zte.com.cn>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jon Maloy <jmaloy@redhat.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+---
+ Documentation/networking/tipc.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/networking/tipc.rst b/Documentation/networking/tipc.rst
+index ab63d298cca2..9b375b9b9981 100644
+--- a/Documentation/networking/tipc.rst
++++ b/Documentation/networking/tipc.rst
+@@ -112,7 +112,7 @@ More Information
+
+ - How to contribute to TIPC:
+
+-- http://tipc.io/contacts.html
++  http://tipc.io/contacts.html
+
+ - More details about TIPC specification:
 
 -- 
-2.17.1
-
+2.18.4
