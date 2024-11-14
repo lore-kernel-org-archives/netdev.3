@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50361386B4;
-	Thu, 14 Nov 2024 04:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255511EBA11
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 04:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731556817; cv=none; b=LKPk8v8ueLBUz66YgjOVXREAm5ghW9vDSkTmOgfUWOav7X6ebs6NpnUMr2GYPCasnjTh4YLwDsTip3Z9z226JTPbCRPJYx2oC3qlN5cVDncdMpqPi2GVm/ZTx8JFxMBHPecNcBqf0P6f8s9YTlroiV4pjPRtMar8D1yKKxFTyoE=
+	t=1731556820; cv=none; b=HYep2yi9sSIlHUaMmfmejxr+F/qfkFmPSZKqGF2ORnxDQZuXykEBByuQ/UAdvLURWOc8+cJ7GIs3O4m4Wp36OGUq9LW0DNDWma9NMAbQpzsSQHUPJt1NDoA2gOGYkhMyKLx6ie77b55FUPOenD245gH5gloBsP0oz0hRBLWPJBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731556817; c=relaxed/simple;
-	bh=oFyEqg+Wi3bg6Jd+vWNtNIrKr6QAtBEfuLjYAZvCcL4=;
+	s=arc-20240116; t=1731556820; c=relaxed/simple;
+	bh=jGwZPKaocPgmlhwUnYSs8zJK9VIwEBJselPmRLFLh9M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=E9aEe4ABGFKSz5AR2DjcfMiAaBR404d5JHnowefEyrNOP0oe0usTmS3954umBKLLt0RVng+18YYEOI9yBvtV0MJXrwOewrd8EjGYKkXubW9pUp8E+abQV01DbvtORCAmvgcGTervN3tfBkLmnRFbz3TNOAGtU6YV2x+2oJu4DCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzlhoKEX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=FRa46MUa0BTndMOq9MEBDVLG1kZEyYdly4AHaTtZymi+XkxK/G34N1522y0Swnf4X8IYMb8OQhFlJTomjUjU1E6UIRDsbWHZvys4eis3xs6GuVeU84zjEtUQhtP4it81Zf5aFhj/A/avrxX8gd6tZqHLQwRuBfGsNaVjXxrq40Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9+DW6WR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzlhoKEX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45061C4CED0;
-	Thu, 14 Nov 2024 04:00:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9+DW6WR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D09C4CED4;
+	Thu, 14 Nov 2024 04:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731556817;
-	bh=oFyEqg+Wi3bg6Jd+vWNtNIrKr6QAtBEfuLjYAZvCcL4=;
+	s=k20201202; t=1731556820;
+	bh=jGwZPKaocPgmlhwUnYSs8zJK9VIwEBJselPmRLFLh9M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=mzlhoKEX4I76OAJB7pvtu5Ze2fcts8G9x8h3GSAoyP+KzoIy6C5/xzXwvJ9Ep05u8
-	 HGGXkG+jktDO8LFOvUNZU/ddThiPLLQDlOVwAYralL/jhT9CqiImtgl2iTHIo+V70c
-	 fzxkZwtkr2kIMratdRlGfnI66ekfT7VwI7UE9vqUig6MPC0qG++QT32oISGBRJFjAd
-	 pDKVCff+API3hcYNfNkJLWMGrQFtWcOYRbtB+u2toKx8cF5z1QdUFBARoLRVWMtYsH
-	 6zm+HjIMidPwri3aAOWhkZSvfP98AJ3cUysWAaaKz1N5NgtQioSJ7tQs7ry+U6kp7u
-	 3y6Nj1UQ1PI7Q==
+	b=i9+DW6WR1IAJkO/DrIM50XTegeeauT4vpIAevTqw/Oi/lwQffwVY+1s+BtvWL6OcK
+	 0iwwX2uvYDkGHb7JdU+hRg6EuSgRF+V3y2i680MQWwVE5cxzaBac3dhmyS32P0wmK6
+	 TvcLSgWpg17EgH9Hb6AUz6JlxSKAADgqlZNmGLqJvTiRmBjPfk7i8qBmYdZl1LcJpC
+	 NCMlTqSV9mYcBTPYl5T07OWxN4uU7/PpiNkuquzJL7mcNNhy94JVdhVmTSTbEq2JFU
+	 f4zFQt8eb6VNk/ZsY8JNB2a/iWhfTs2Xsozef0Zjw2Sx0JAtO9b9QhcCuV1uyHM9jW
+	 3Rq79Z99nKG+A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAEBF3809A80;
-	Thu, 14 Nov 2024 04:00:28 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD8C3809A80;
+	Thu, 14 Nov 2024 04:00:31 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/2] net: stmmac: dwmac-mediatek: Fix inverted logic for
- mediatek,mac-wol
+Subject: Re: [PATCH net] net: Make copy_safe_from_sockptr() match documentation
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173155682775.1476954.16636894744432122406.git-patchwork-notify@kernel.org>
-Date: Thu, 14 Nov 2024 04:00:27 +0000
-References: <20241109-mediatek-mac-wol-noninverted-v2-0-0e264e213878@collabora.com>
-In-Reply-To: <20241109-mediatek-mac-wol-noninverted-v2-0-0e264e213878@collabora.com>
-To: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado_=3Cnfraprado=40collabora=2Ecom?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	=?utf-8?q?=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, biao.huang@mediatek.com,
- alexandre.torgue@foss.st.com, joabreu@synopsys.com,
- mcoquelin.stm32@gmail.com, bartosz.golaszewski@linaro.org,
- ahalaney@redhat.com, horms@kernel.org, kernel@collabora.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com
+ <173155683024.1476954.4874522617358555171.git-patchwork-notify@kernel.org>
+Date: Thu, 14 Nov 2024 04:00:30 +0000
+References: <20241111-sockptr-copy-ret-fix-v1-1-a520083a93fb@rbox.co>
+In-Reply-To: <20241111-sockptr-copy-ret-fix-v1-1-a520083a93fb@rbox.co>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 09 Nov 2024 10:16:31 -0500 you wrote:
-> This series fixes the inverted handling of the mediatek,mac-wol DT
-> property. This was done with backwards compatibility in v1, but based on
-> the feedback received, all boards should be using MAC WOL, so many of
-> them were incorrectly described and didn't have working WOL tested
-> anyway. So for v2, the approach is simpler: just fix the driver handling
-> and update the DTs to enable MAC WOL everywhere.
+On Mon, 11 Nov 2024 00:17:34 +0100 you wrote:
+> copy_safe_from_sockptr()
+>   return copy_from_sockptr()
+>     return copy_from_sockptr_offset()
+>       return copy_from_user()
+> 
+> copy_from_user() does not return an error on fault. Instead, it returns a
+> number of bytes that were not copied. Have it handled.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,1/2] net: stmmac: dwmac-mediatek: Fix inverted handling of mediatek,mac-wol
-    https://git.kernel.org/netdev/net/c/a03b18a71c12
-  - [v2,2/2] arm64: dts: mediatek: Set mediatek,mac-wol on DWMAC node for all boards
-    (no matching commit)
+  - [net] net: Make copy_safe_from_sockptr() match documentation
+    https://git.kernel.org/netdev/net/c/eb94b7bb1010
 
 You are awesome, thank you!
 -- 
