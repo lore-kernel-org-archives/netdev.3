@@ -1,40 +1,73 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E431F9A8D;
-	Thu, 14 Nov 2024 12:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746961F9A91
+	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 12:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731586963; cv=none; b=Nt7yrq557AvNVhOjLeKsrzSbopaYIE85NOPseUrhNn4opCwiXYlWLoWCGZr07xNp2FiRl0SJr8d/o6PKmRYRdPynwsat9JDPt+ECG0ZKeQFULPhkD/hMgkHdQawhXw8JKficj07IL52M7rVh71K6eT31A+VUkjhrLSSj5NJ4R4Q=
+	t=1731586970; cv=none; b=OL9odgsj2YWbUuxClQZpenmtuiz62PhLGCXnhH8uWy7EZ+WPiOMwDnEDy+IZhgaTrKgDQyfRroObZ7bWzSvrpG6Lru0LTlZJ+oQW7/8HWfW4TeLUKjYLfMo2DzZQuv1WmFxDzM59sGZRDliCdDdqTh1ZkAyp4ryu3B9EF4RvSws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731586963; c=relaxed/simple;
-	bh=u7Y8vcACw0nN7XvzUTUQjb+zsdFCruoZHnJv/2+6AWE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=US/EzG/kmTRcTCx3B2asJEeunyp5YO9gDDNeveOWJeF56N9LzJubxbKkQ5I0p4ez016eDutJ4DdM0jaYVmKffANKJjLEkgqvuGqBmvmLwteSBQJq41DP53+zwP+jFABhzIW7t7a0aHIRDnB/1AUKmkHv87KR8MjXlBzdkxuLRl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Xpzk46HcFzDrDS;
-	Thu, 14 Nov 2024 20:19:56 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7F9541800F2;
-	Thu, 14 Nov 2024 20:22:37 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 14 Nov 2024 20:22:37 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>
-Subject: [PATCH net-next v1 01/10] mm: page_frag: some minor refactoring before adding new API
-Date: Thu, 14 Nov 2024 20:15:56 +0800
-Message-ID: <20241114121606.3434517-2-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241114121606.3434517-1-linyunsheng@huawei.com>
-References: <20241114121606.3434517-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1731586970; c=relaxed/simple;
+	bh=uSfGMC7MpvLcsmrYMIC/KjTjHJL8kyUCy9g8i5xca0k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Hzgl6giy0oTZZy44zI0ctwQEzW7d7J8cMSo1DmXE3iSxmlQQGEnPatgOXSqHZJ1jzDDZFOXvI/oh85MxoaHrhqrj/lDVNsIdE5a8aYQgZbVyUXwNflr65l9yA1KUOeanQMdLRYbt3inWAu7b+VuufYjAADExw5FWzhCVNbOjcU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LQ5XjDm1; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LQ5XjDm1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731586969; x=1763122969;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=uSfGMC7MpvLcsmrYMIC/KjTjHJL8kyUCy9g8i5xca0k=;
+  b=LQ5XjDm1/DbxllHYaOIMI9EkL3A+bTzgwj9YEYPl0XPfxoL8FtfjTi0J
+   lQrAJqh2Z8+TneyGDoUPYG/ZetixYCS5bkNkdX2SUpO9q7unFS9YOPG1Z
+   PRHzRgKlrYdk3Y57ZAWP87oax5c3IDranuRk5XGmhkqfIR70RpOJuumM2
+   dWBPOy6yuNskE0hw7x6+GwaAcTrZVrrXAK5hdoswa20t3R68in7qTvuKr
+   3zZsmdhTOLE3a8hNPuohP34w5iILw2vs+JQfitTSNUh+aNuzJU/iIHro0
+   1wDna3KQVzLZBCSsbMWvWSzPQFcdZoYV0aZ7yyPZ2BJ84taaKK4GYJGaM
+   A==;
+X-CSE-ConnectionGUID: LjQ7AO4eQpuxOa+7EPRPgg==
+X-CSE-MsgGUID: 1JbcyXTWSsajE94/2rmmmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11255"; a="42145109"
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; 
+   d="scan'208";a="42145109"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 04:22:49 -0800
+X-CSE-ConnectionGUID: mMvXgwzgQIuC5GR6+C53MA==
+X-CSE-MsgGUID: MfjcJqrMTbmougbLThm7HQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,154,1728975600"; 
+   d="scan'208";a="88083637"
+Received: from gk3153-dr2-r750-36946.igk.intel.com ([10.102.20.192])
+  by orviesa010.jf.intel.com with ESMTP; 14 Nov 2024 04:22:45 -0800
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: michal.swiatkowski@linux.intel.com
+Cc: David.Laight@ACULAB.COM,
+	horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	jacob.e.keller@intel.com,
+	jiri@resnulli.us,
+	konrad.knitter@intel.com,
+	marcin.szycik@intel.com,
+	mschmidt@redhat.com,
+	netdev@vger.kernel.org,
+	nex.sw.ncis.nat.hpm.dev@intel.com,
+	pawel.chmielewski@intel.com,
+	pio.raczynski@gmail.com,
+	pmenzel@molgen.mpg.de,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sridhar.samudrala@intel.com,
+	wojciech.drewek@intel.com
+Subject: [iwl-next v8 9/9] ice: init flow director before RDMA
+Date: Thu, 14 Nov 2024 13:22:39 +0100
+Message-ID: <20241114122239.97600-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20241114122009.97416-1-michal.swiatkowski@linux.intel.com>
+References: <20241114122009.97416-1-michal.swiatkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,153 +75,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-Refactor common codes from __page_frag_alloc_va_align() to
-__page_frag_cache_prepare() and __page_frag_cache_commit(),
-so that the new API can make use of them.
+Flow director needs only one MSI-X. Load it before RDMA to save MSI-X
+for it.
 
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: Andrew Morton <akpm@linux-foundation.org>
-CC: Linux-MM <linux-mm@kvack.org>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 ---
- include/linux/page_frag_cache.h | 34 ++++++++++++++++++++++++++--
- mm/page_frag_cache.c            | 40 ++++++++++++++++++++++++++-------
- 2 files changed, 64 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
-index 41a91df82631..5ae97f93a0a1 100644
---- a/include/linux/page_frag_cache.h
-+++ b/include/linux/page_frag_cache.h
-@@ -5,6 +5,7 @@
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index a6f586f9bfd1..b6997481fd42 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5175,11 +5175,12 @@ int ice_load(struct ice_pf *pf)
  
- #include <linux/bits.h>
- #include <linux/log2.h>
-+#include <linux/mmdebug.h>
- #include <linux/mm_types_task.h>
- #include <linux/types.h>
+ 	ice_napi_add(vsi);
  
-@@ -39,8 +40,37 @@ static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
- 
- void page_frag_cache_drain(struct page_frag_cache *nc);
- void __page_frag_cache_drain(struct page *page, unsigned int count);
--void *__page_frag_alloc_align(struct page_frag_cache *nc, unsigned int fragsz,
--			      gfp_t gfp_mask, unsigned int align_mask);
-+void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
-+				struct page_frag *pfrag, gfp_t gfp_mask,
-+				unsigned int align_mask);
-+unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
-+					    struct page_frag *pfrag,
-+					    unsigned int used_sz);
++	ice_init_features(pf);
 +
-+static inline unsigned int __page_frag_cache_commit(struct page_frag_cache *nc,
-+						    struct page_frag *pfrag,
-+						    unsigned int used_sz)
-+{
-+	VM_BUG_ON(!nc->pagecnt_bias);
-+	nc->pagecnt_bias--;
-+
-+	return __page_frag_cache_commit_noref(nc, pfrag, used_sz);
-+}
-+
-+static inline void *__page_frag_alloc_align(struct page_frag_cache *nc,
-+					    unsigned int fragsz, gfp_t gfp_mask,
-+					    unsigned int align_mask)
-+{
-+	struct page_frag page_frag;
-+	void *va;
-+
-+	va = __page_frag_cache_prepare(nc, fragsz, &page_frag, gfp_mask,
-+				       align_mask);
-+	if (likely(va))
-+		__page_frag_cache_commit(nc, &page_frag, fragsz);
-+
-+	return va;
-+}
+ 	err = ice_init_rdma(pf);
+ 	if (err)
+ 		goto err_init_rdma;
  
- static inline void *page_frag_alloc_align(struct page_frag_cache *nc,
- 					  unsigned int fragsz, gfp_t gfp_mask,
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index 3f7a203d35c6..f55d34cf7d43 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -90,9 +90,31 @@ void __page_frag_cache_drain(struct page *page, unsigned int count)
- }
- EXPORT_SYMBOL(__page_frag_cache_drain);
+-	ice_init_features(pf);
+ 	ice_service_task_restart(pf);
  
--void *__page_frag_alloc_align(struct page_frag_cache *nc,
--			      unsigned int fragsz, gfp_t gfp_mask,
--			      unsigned int align_mask)
-+unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
-+					    struct page_frag *pfrag,
-+					    unsigned int used_sz)
-+{
-+	unsigned int orig_offset;
-+
-+	VM_BUG_ON(used_sz > pfrag->size);
-+	VM_BUG_ON(pfrag->page != encoded_page_decode_page(nc->encoded_page));
-+	VM_BUG_ON(pfrag->offset + pfrag->size >
-+		  (PAGE_SIZE << encoded_page_decode_order(nc->encoded_page)));
-+
-+	/* pfrag->offset might be bigger than the nc->offset due to alignment */
-+	VM_BUG_ON(nc->offset > pfrag->offset);
-+
-+	orig_offset = nc->offset;
-+	nc->offset = pfrag->offset + used_sz;
-+
-+	/* Return true size back to caller considering the offset alignment */
-+	return nc->offset - orig_offset;
-+}
-+EXPORT_SYMBOL(__page_frag_cache_commit_noref);
-+
-+void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
-+				struct page_frag *pfrag, gfp_t gfp_mask,
-+				unsigned int align_mask)
- {
- 	unsigned long encoded_page = nc->encoded_page;
- 	unsigned int size, offset;
-@@ -114,6 +136,8 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 		/* reset page count bias and offset to start of new frag */
- 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
- 		nc->offset = 0;
-+	} else {
-+		page = encoded_page_decode_page(encoded_page);
- 	}
+ 	clear_bit(ICE_DOWN, pf->state);
+@@ -5187,6 +5188,7 @@ int ice_load(struct ice_pf *pf)
+ 	return 0;
  
- 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
-@@ -132,8 +156,6 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 			return NULL;
- 		}
+ err_init_rdma:
++	ice_deinit_features(pf);
+ 	ice_tc_indir_block_unregister(vsi);
+ err_tc_indir_block_register:
+ 	ice_unregister_netdev(vsi);
+@@ -5210,8 +5212,8 @@ void ice_unload(struct ice_pf *pf)
  
--		page = encoded_page_decode_page(encoded_page);
--
- 		if (!page_ref_sub_and_test(page, nc->pagecnt_bias))
- 			goto refill;
+ 	devl_assert_locked(priv_to_devlink(pf));
  
-@@ -148,15 +170,17 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
- 
- 		/* reset page count bias and offset to start of new frag */
- 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
-+		nc->offset = 0;
- 		offset = 0;
- 	}
- 
--	nc->pagecnt_bias--;
--	nc->offset = offset + fragsz;
-+	pfrag->page = page;
-+	pfrag->offset = offset;
-+	pfrag->size = size - offset;
- 
- 	return encoded_page_decode_virt(encoded_page) + offset;
- }
--EXPORT_SYMBOL(__page_frag_alloc_align);
-+EXPORT_SYMBOL(__page_frag_cache_prepare);
- 
- /*
-  * Frees a page fragment allocated out of either a compound or order 0 page.
+-	ice_deinit_features(pf);
+ 	ice_deinit_rdma(pf);
++	ice_deinit_features(pf);
+ 	ice_tc_indir_block_unregister(vsi);
+ 	ice_unregister_netdev(vsi);
+ 	ice_devlink_destroy_pf_port(pf);
 -- 
-2.33.0
+2.42.0
 
