@@ -1,203 +1,311 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69AB192D9D
-	for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 12:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C266C1779B8;
+	Thu, 14 Nov 2024 12:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731585780; cv=none; b=tqMbCjzEN4ztVi20bpyCfWstkxzhDk0an7fbrlF0Bgyux2OzvC7i1mfCxMS03wIg5/GGv5v9cY/5NmzYQROai0sYd69CklkdZVbYHjCCYAYDyzzBiV4knxqLdatXiBQvkiNxTHR0EaRGjQlpcht/9lW7dZIW9lY5e5Oc9FlH0X8=
+	t=1731585851; cv=none; b=o2lGRfo2INQJfbV39buYD4Gbj2cMNgB72U9xlXqUpCQnp+kZ03rHEK9MrgVBDoQWPsisbvjLtieFIvN/rWotHbIZz7s9OadU2hSs1wZL8NE1FxL+xgonoFRG3xVBFReBh3pl4MYgZO7eVm1ph3JB/jnL2A0WKDU5/HL1nxcbR/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731585780; c=relaxed/simple;
-	bh=k8vvHLSi3/Ba27sZNaoHwLkf9qlD47v6sneOKR2gKYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YNzJvo5FgxgkwZTRxh6RIejAOWXsnpYQ0zCrPY5WWpK0XXmUUXEeUP3YsB2bSCv60EQZU3pEMXSPo9i7qunnRqXrrhQ/dKn8cIUMqCjZu45oRMUQ4oR8zhZFEZWSFV2Udi+5nMSkkTRrxD2e6drB7eRVDNmXa+3RDyyotvdo9QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=afhQGr3v; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731585851; c=relaxed/simple;
+	bh=/BnN39ZXP9CH35AUjE4z/toI/56ki9ekpvEOFL7pbEY=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h9hbS99v9kNalmApzf155M6MoMySP8qZ5a3mbBXX4R7Gq0qiisbGCj732iHS2rJf2h71cLA6mTJMU4uXcfAG6qqGA+g3r8MKqOkoboK4aFPqytHFLAnmLMdSKHvlQmcVsiuTioBpV4H6LU3ynCG26gHo04bUGbV3F23zphsKjZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Gg6ZjoSo; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="afhQGr3v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731585777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/zpQdMqKFFqaHRJ8M6WcgEvfRNF6AeI76vWq5L2MI+s=;
-	b=afhQGr3v7xc+3FOLlU15/PJc135LPfn4n08/GF6DPIkRdngZkN1RLpvsgBXmefkFfDuC0f
-	wGh6VZKFsxa0LrpB42C0AftYbhEd7LYZQHBIZsx3CeA0RnY3Eq4+m22P//CmKkhAi884ZF
-	ZYi+VMgvfcLewB3MOZUMYppFzxsFbUY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-237-9F0_5PVEP_C_YjXyRuHRzg-1; Thu, 14 Nov 2024 07:02:54 -0500
-X-MC-Unique: 9F0_5PVEP_C_YjXyRuHRzg-1
-X-Mimecast-MFC-AGG-ID: 9F0_5PVEP_C_YjXyRuHRzg
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43159603c92so4036275e9.2
-        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 04:02:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731585773; x=1732190573;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/zpQdMqKFFqaHRJ8M6WcgEvfRNF6AeI76vWq5L2MI+s=;
-        b=jnM+nQQ5R/PiPvpK2HFAK1pka/9/Ekoc3t4nNHm0S/FksgkoAYinjHK1Dookgh5I8S
-         aKT5b06V6Bpl+d9F93N8XJOXVdfeoCwsuhlMV58Fp7hcnjxKJ07KjEn2LfFR2oOEdj8O
-         KtXP26FkJU323ox3mjaYKgAwI9uGNE+VL2wjVMCQvS5qIFSG9T2jf2JWJKRWoL29Obje
-         milUVS+iQXTwT8ffwvgQelORgZgblOdJH7aOS6iFectrptBGvmMAV/yE8VmTtUTl1mSw
-         PbPrpRFCLs3A091+ppv6Wmw++DFxVdFP+hQqZzeqcLS5+7JP1SacMkUeg7as6dmmrauO
-         0usg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/fyL9bopPQqPvwTu4xFKlJq3UnGByk8CdqbznYCKOHQCD0Yg5mv1pqx+VBvISt9hylVzBXhA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwE53S7Bp/titAq1DuBxkYN9XKm4NrdvUa1h6pataJWERo616hk
-	TVjDuI/HHfGP6/AMImjIofdkggOaTz9vYYPbBIQUAL5qlCDOc7PKzZVCPeQW6W57BsSb15k22Qy
-	6WAezxn0mFplMbXW3/2Jnp0NLuUjrPzarKSsVPgG93IjCvJhb9wNAzA==
-X-Received: by 2002:a05:600c:4689:b0:431:57e5:b251 with SMTP id 5b1f17b1804b1-432da7dc45fmr14238875e9.28.1731585773175;
-        Thu, 14 Nov 2024 04:02:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbgc10bxAJ/VIRFkaOi6IwkSPLAJX2D33rxzmsycb7616hQU5vNcmjB3rsRSBucznfT6zuWQ==
-X-Received: by 2002:a05:600c:4689:b0:431:57e5:b251 with SMTP id 5b1f17b1804b1-432da7dc45fmr14238395e9.28.1731585772696;
-        Thu, 14 Nov 2024 04:02:52 -0800 (PST)
-Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298a41sm21695655e9.38.2024.11.14.04.02.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 04:02:52 -0800 (PST)
-Date: Thu, 14 Nov 2024 13:02:49 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
-	Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next v3 2/2] net: ethernet: ti: am65-cpsw: enable
- DSCP to priority map for RX
-Message-ID: <ZzXm6SHjRfbaOX14@debian>
-References: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
- <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
- <ZzVBS1zXIy31pnaf@debian>
- <76dd6141-5852-43ae-af98-f0edf0bc10f5@kernel.org>
- <8bfe8acc-9514-4ba8-9498-2427ddb0bb78@kernel.org>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Gg6ZjoSo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731585849; x=1763121849;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version;
+  bh=/BnN39ZXP9CH35AUjE4z/toI/56ki9ekpvEOFL7pbEY=;
+  b=Gg6ZjoSoTESAFEG/fLYe7UeOYjBLK+WV1pU5NK8Ss7hHmm3DhRGiCHN/
+   VNv7FeawDhROmJ65Iby6xP4N2SkQdGszKtp9IboUkWosnNT6AcakElLzB
+   GA/bvXKLtGnSX47/WWBndg7+J68/HmDTifB8t7fSx9PvAgAqHy7yloEIf
+   EgGr/boVyPyapdKfofZKmZuiyIvRS/wHT3Sq+rfLANNQqCaVEja2zDMKr
+   z5po1zXX0kVYs/uo0EzYcQLZNfXDVtuW/zWKlfLg8wXYxNljPKbIAlyhJ
+   zaKYGEbGl+5zTSXDHzxTc2nzrb+8PMwOvulXuBVO9JSS3cwqnx2+k2igX
+   A==;
+X-CSE-ConnectionGUID: R1m+lyWhTgaRIjoFVkjDnA==
+X-CSE-MsgGUID: 5Uasf3oXQPWoU51GAppiOg==
+X-IronPort-AV: E=Sophos;i="6.12,153,1728975600"; 
+   d="scan'208";a="34821612"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Nov 2024 05:04:03 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 14 Nov 2024 05:03:39 -0700
+Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Thu, 14 Nov 2024 05:03:35 -0700
+From: Divya Koppera <divya.koppera@microchip.com>
+To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v4 1/5] net: phy: microchip_ptp : Add header file for Microchip ptp library
+Date: Thu, 14 Nov 2024 17:34:51 +0530
+Message-ID: <20241114120455.5413-2-divya.koppera@microchip.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20241114120455.5413-1-divya.koppera@microchip.com>
+References: <20241114120455.5413-1-divya.koppera@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8bfe8acc-9514-4ba8-9498-2427ddb0bb78@kernel.org>
+Content-Type: text/plain
 
-On Thu, Nov 14, 2024 at 12:12:47PM +0200, Roger Quadros wrote:
-> On 14/11/2024 11:41, Roger Quadros wrote:
-> > On 14/11/2024 02:16, Guillaume Nault wrote:
-> >> So what about following the IETF mapping found in section 4.3?
-> >> https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-> > 
-> > Thanks for this tip.
-> > I will update this patch to have the default DSCP to UP mapping as per
-> > above link and map all unused DSCP to UP 0.
-> 
-> How does the below code look in this regard?
+This ptp header file library will cover ptp macros for future phys in
+Microchip where addresses will be same but base offset and mmd address
+may changes.
 
-Looks generally good to me. A few comments inline though.
+Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+---
+v3 -> v4
+- Re-ordered mchp_ptp_clock structure.
 
-> static void am65_cpsw_port_enable_dscp_map(struct am65_cpsw_port *slave)
-> {
-> 	int dscp, pri;
-> 	u32 val;
-> 
-> 	/* Default DSCP to User Priority mapping as per:
-> 	 * https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
+v2 -> v3
+- No changes
 
-Maybe also add a link to
-https://datatracker.ietf.org/doc/html/rfc8622#section-11
-which defines the LE PHB (Low Effort) and updates RFC 8325 accordingly.
+v1 -> v2
+- Fixed sparse warnings and compilation errors/warnings reported by kernel
+  test robot
+---
+ drivers/net/phy/microchip_ptp.h | 216 ++++++++++++++++++++++++++++++++
+ 1 file changed, 216 insertions(+)
+ create mode 100644 drivers/net/phy/microchip_ptp.h
 
-> 	 */
-> 	for (dscp = 0; dscp <= AM65_CPSW_DSCP_MAX; dscp++) {
-> 		switch (dscp) {
-> 		case 56:	/* CS7 */
-> 		case 48:	/* CS6 */
-> 			pri = 7;
-> 			break;
-> 		case 46:	/* EF */
-> 		case 44:	/* VA */
-> 			pri = 6;
-> 			break;
-> 		case 40:	/* CS5 */
-> 			pri = 5;
-> 			break;
-> 		case 32:	/* CS4 */
-> 		case 34:	/* AF41 */
-> 		case 36:	/* AF42 */
-> 		case 38:	/* AF43 */
-> 		case 24:	/* CS3 */
-> 		case 26:	/* AF31 */
-> 		case 28:	/* AF32 */
-> 		case 30:	/* AF33 */
-
-Until case 32 (CS4) you've kept the order of RFC 8325, table 1.
-It'd make life easier for reviewers if you could keep this order
-here. That is, moving CS4 after AF43 and CS3 after AF33.
-
-> 			pri = 4;
-> 			break;
-> 		case 17:	/* AF21 */
-
-AF21 is 18, not 17.
-
-> 		case 20:	/* AF22 */
-> 		case 22:	/* AF23 */
-> 			pri = 3;
-> 			break;
-> 		case 8:		/* CS1 */
-
-Let's be complete and add the case for LE (RFC 8622), which also
-maps to 1.
-
-> 			pri = 1;
-> 			break;
-> 		default:
-> 			pri = 0;
-> 			break;
-> 		}
-> 
-> 		am65_cpsw_port_set_dscp_map(slave, dscp, pri);
-> 	}
-> 
-> 	/* enable port IPV4 and IPV6 DSCP for this port */
-> 	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-> 	val |= AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN |
-> 		AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN;
-> 	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-> }
-> 
-> > 
-> > Is there any mechanism/API for network administrator to change this
-> > default mapping in the network drivers?
-> > 
-> >>
-> >>>  static void am65_cpsw_sl_ctl_reset(struct am65_cpsw_port *port)
-> >>>  {
-> >>>  	cpsw_sl_reset(port->slave.mac_sl, 100);
-> >>> @@ -921,6 +974,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
-> >>>  	common->usage_count++;
-> >>>  
-> >>>  	am65_cpsw_port_set_sl_mac(port, ndev->dev_addr);
-> >>> +	am65_cpsw_port_enable_dscp_map(port);
-> >>>  
-> >>>  	if (common->is_emac_mode)
-> >>>  		am65_cpsw_init_port_emac_ale(port);
-> >>>
-> >>> -- 
-> >>> 2.34.1
-> >>>
-> >>>
-> >>
-> > 
-> 
-> -- 
-> cheers,
-> -roger
-> 
+diff --git a/drivers/net/phy/microchip_ptp.h b/drivers/net/phy/microchip_ptp.h
+new file mode 100644
+index 000000000000..1b6e0d9d7e76
+--- /dev/null
++++ b/drivers/net/phy/microchip_ptp.h
+@@ -0,0 +1,216 @@
++/* SPDX-License-Identifier: GPL-2.0
++ * Copyright (C) 2024 Microchip Technology
++ */
++
++#ifndef _MICROCHIP_PTP_H
++#define _MICROCHIP_PTP_H
++
++#if IS_ENABLED(CONFIG_MICROCHIP_PHYPTP)
++
++#include <linux/ptp_clock_kernel.h>
++#include <linux/ptp_clock.h>
++#include <linux/ptp_classify.h>
++#include <linux/net_tstamp.h>
++#include <linux/mii.h>
++#include <linux/phy.h>
++
++#define MCHP_PTP_CMD_CTL(b)			((b) + 0x0)
++#define MCHP_PTP_CMD_CTL_LTC_STEP_NSEC		BIT(6)
++#define MCHP_PTP_CMD_CTL_LTC_STEP_SEC		BIT(5)
++#define MCHP_PTP_CMD_CTL_CLOCK_LOAD		BIT(4)
++#define MCHP_PTP_CMD_CTL_CLOCK_READ		BIT(3)
++#define MCHP_PTP_CMD_CTL_EN			BIT(1)
++#define MCHP_PTP_CMD_CTL_DIS			BIT(0)
++
++#define MCHP_PTP_REF_CLK_CFG(b)			((b) + 0x2)
++#define MCHP_PTP_REF_CLK_SRC_250MHZ		0x0
++#define MCHP_PTP_REF_CLK_PERIOD_OVERRIDE	BIT(9)
++#define MCHP_PTP_REF_CLK_PERIOD			4
++#define MCHP_PTP_REF_CLK_CFG_SET	(MCHP_PTP_REF_CLK_SRC_250MHZ |\
++					 MCHP_PTP_REF_CLK_PERIOD_OVERRIDE |\
++					 MCHP_PTP_REF_CLK_PERIOD)
++
++#define MCHP_PTP_LTC_SEC_HI(b)			((b) + 0x5)
++#define MCHP_PTP_LTC_SEC_MID(b)			((b) + 0x6)
++#define MCHP_PTP_LTC_SEC_LO(b)			((b) + 0x7)
++#define MCHP_PTP_LTC_NS_HI(b)			((b) + 0x8)
++#define MCHP_PTP_LTC_NS_LO(b)			((b) + 0x9)
++#define MCHP_PTP_LTC_RATE_ADJ_HI(b)		((b) + 0xc)
++#define MCHP_PTP_LTC_RATE_ADJ_HI_DIR		BIT(15)
++#define MCHP_PTP_LTC_RATE_ADJ_LO(b)		((b) + 0xd)
++#define MCHP_PTP_LTC_STEP_ADJ_HI(b)		((b) + 0x12)
++#define MCHP_PTP_LTC_STEP_ADJ_HI_DIR		BIT(15)
++#define MCHP_PTP_LTC_STEP_ADJ_LO(b)		((b) + 0x13)
++#define MCHP_PTP_LTC_READ_SEC_HI(b)		((b) + 0x29)
++#define MCHP_PTP_LTC_READ_SEC_MID(b)		((b) + 0x2a)
++#define MCHP_PTP_LTC_READ_SEC_LO(b)		((b) + 0x2b)
++#define MCHP_PTP_LTC_READ_NS_HI(b)		((b) + 0x2c)
++#define MCHP_PTP_LTC_READ_NS_LO(b)		((b) + 0x2d)
++#define MCHP_PTP_OP_MODE(b)			((b) + 0x41)
++#define MCHP_PTP_OP_MODE_DIS			0
++#define MCHP_PTP_OP_MODE_STANDALONE		1
++#define MCHP_PTP_LATENCY_CORRECTION_CTL(b)	((b) + 0x44)
++#define MCHP_PTP_PREDICTOR_EN			BIT(6)
++#define MCHP_PTP_TX_PRED_DIS			BIT(1)
++#define MCHP_PTP_RX_PRED_DIS			BIT(0)
++#define MCHP_PTP_LATENCY_SETTING		(MCHP_PTP_PREDICTOR_EN | \
++						 MCHP_PTP_TX_PRED_DIS | \
++						 MCHP_PTP_RX_PRED_DIS)
++
++#define MCHP_PTP_INT_EN(b)			((b) + 0x0)
++#define MCHP_PTP_INT_STS(b)			((b) + 0x01)
++#define MCHP_PTP_INT_TX_TS_OVRFL_EN		BIT(3)
++#define MCHP_PTP_INT_TX_TS_EN			BIT(2)
++#define MCHP_PTP_INT_RX_TS_OVRFL_EN		BIT(1)
++#define MCHP_PTP_INT_RX_TS_EN			BIT(0)
++#define MCHP_PTP_INT_ALL_MSK		(MCHP_PTP_INT_TX_TS_OVRFL_EN | \
++					 MCHP_PTP_INT_TX_TS_EN | \
++					 MCHP_PTP_INT_RX_TS_OVRFL_EN |\
++					 MCHP_PTP_INT_RX_TS_EN)
++
++#define MCHP_PTP_CAP_INFO(b)			((b) + 0x2e)
++#define MCHP_PTP_TX_TS_CNT(v)			(((v) & GENMASK(11, 8)) >> 8)
++#define MCHP_PTP_RX_TS_CNT(v)			((v) & GENMASK(3, 0))
++
++#define MCHP_PTP_RX_PARSE_CONFIG(b)		((b) + 0x42)
++#define MCHP_PTP_RX_PARSE_L2_ADDR_EN(b)		((b) + 0x44)
++#define MCHP_PTP_RX_PARSE_IPV4_ADDR_EN(b)	((b) + 0x45)
++
++#define MCHP_PTP_RX_TIMESTAMP_CONFIG(b)		((b) + 0x4e)
++#define MCHP_PTP_RX_TIMESTAMP_CONFIG_PTP_FCS_DIS BIT(0)
++
++#define MCHP_PTP_RX_VERSION(b)			((b) + 0x48)
++#define MCHP_PTP_RX_TIMESTAMP_EN(b)		((b) + 0x4d)
++
++#define MCHP_PTP_RX_INGRESS_NS_HI(b)		((b) + 0x54)
++#define MCHP_PTP_RX_INGRESS_NS_HI_TS_VALID	BIT(15)
++
++#define MCHP_PTP_RX_INGRESS_NS_LO(b)		((b) + 0x55)
++#define MCHP_PTP_RX_INGRESS_SEC_HI(b)		((b) + 0x56)
++#define MCHP_PTP_RX_INGRESS_SEC_LO(b)		((b) + 0x57)
++#define MCHP_PTP_RX_MSG_HEADER2(b)		((b) + 0x59)
++
++#define MCHP_PTP_TX_PARSE_CONFIG(b)		((b) + 0x82)
++#define MCHP_PTP_PARSE_CONFIG_LAYER2_EN		BIT(0)
++#define MCHP_PTP_PARSE_CONFIG_IPV4_EN		BIT(1)
++#define MCHP_PTP_PARSE_CONFIG_IPV6_EN		BIT(2)
++
++#define MCHP_PTP_TX_PARSE_L2_ADDR_EN(b)		((b) + 0x84)
++#define MCHP_PTP_TX_PARSE_IPV4_ADDR_EN(b)	((b) + 0x85)
++
++#define MCHP_PTP_TX_VERSION(b)			((b) + 0x88)
++#define MCHP_PTP_MAX_VERSION(x)			(((x) & GENMASK(7, 0)) << 8)
++#define MCHP_PTP_MIN_VERSION(x)			((x) & GENMASK(7, 0))
++
++#define MCHP_PTP_TX_TIMESTAMP_EN(b)		((b) + 0x8d)
++#define MCHP_PTP_TIMESTAMP_EN_SYNC		BIT(0)
++#define MCHP_PTP_TIMESTAMP_EN_DREQ		BIT(1)
++#define MCHP_PTP_TIMESTAMP_EN_PDREQ		BIT(2)
++#define MCHP_PTP_TIMESTAMP_EN_PDRES		BIT(3)
++#define MCHP_PTP_TIMESTAMP_EN_ALL		(MCHP_PTP_TIMESTAMP_EN_SYNC |\
++						 MCHP_PTP_TIMESTAMP_EN_DREQ |\
++						 MCHP_PTP_TIMESTAMP_EN_PDREQ |\
++						 MCHP_PTP_TIMESTAMP_EN_PDRES)
++
++#define MCHP_PTP_TX_TIMESTAMP_CONFIG(b)		((b) + 0x8e)
++#define MCHP_PTP_TX_TIMESTAMP_CONFIG_PTP_FCS_DIS BIT(0)
++
++#define MCHP_PTP_TX_MOD(b)			((b) + 0x8f)
++#define MCHP_PTP_TX_MOD_PTP_SYNC_TS_INSERT	BIT(12)
++#define MCHP_PTP_TX_MOD_PTP_FU_TS_INSERT	BIT(11)
++
++#define MCHP_PTP_TX_EGRESS_NS_HI(b)		((b) + 0x94)
++#define MCHP_PTP_TX_EGRESS_NS_HI_TS_VALID	BIT(15)
++
++#define MCHP_PTP_TX_EGRESS_NS_LO(b)		((b) + 0x95)
++#define MCHP_PTP_TX_EGRESS_SEC_HI(b)		((b) + 0x96)
++#define MCHP_PTP_TX_EGRESS_SEC_LO(b)		((b) + 0x97)
++#define MCHP_PTP_TX_MSG_HEADER2(b)		((b) + 0x99)
++
++#define MCHP_PTP_TSU_GEN_CONFIG(b)		((b) + 0xc0)
++#define MCHP_PTP_TSU_GEN_CFG_TSU_EN		BIT(0)
++
++#define MCHP_PTP_TSU_HARD_RESET(b)		((b) + 0xc1)
++#define MCHP_PTP_TSU_HARDRESET			BIT(0)
++
++/* Represents 1ppm adjustment in 2^32 format with
++ * each nsec contains 4 clock cycles in 250MHz.
++ * The value is calculated as following: (1/1000000)/((2^-32)/4)
++ */
++#define MCHP_PTP_1PPM_FORMAT			17179
++#define MCHP_PTP_FIFO_SIZE			8
++#define MCHP_PTP_MAX_ADJ				31249999
++
++#define BASE_CLK(p)		((p)->clk_base_addr)
++#define BASE_PORT(p)		((p)->port_base_addr)
++#define PTP_MMD(p)		((p)->mmd)
++
++enum ptp_fifo_dir {
++	PTP_INGRESS_FIFO,
++	PTP_EGRESS_FIFO
++};
++
++struct mchp_ptp_clock {
++	struct mii_timestamper mii_ts;
++	struct phy_device *phydev;
++	struct ptp_clock *ptp_clock;
++
++	struct sk_buff_head tx_queue;
++	struct sk_buff_head rx_queue;
++	struct list_head rx_ts_list;
++
++	struct ptp_clock_info caps;
++
++	/* Lock for Rx ts fifo */
++	spinlock_t rx_ts_lock;
++	int hwts_tx_type;
++
++	enum hwtstamp_rx_filters rx_filter;
++	int layer;
++	int version;
++	u16 port_base_addr;
++	u16 clk_base_addr;
++
++	/* Lock for phc */
++	struct mutex ptp_lock;
++	u8 mmd;
++};
++
++struct mchp_ptp_rx_ts {
++	struct list_head list;
++	u32 seconds;
++	u32 nsec;
++	u16 seq_id;
++};
++
++struct mchp_ptp_clock *mchp_ptp_probe(struct phy_device *phydev, u8 mmd,
++				      u16 clk_base, u16 port_base);
++
++int mchp_config_ptp_intr(struct mchp_ptp_clock *ptp_clock,
++			 u16 reg, u16 val, bool enable);
++
++irqreturn_t mchp_ptp_handle_interrupt(struct mchp_ptp_clock *ptp_clock);
++
++#else
++
++static inline struct mchp_ptp_clock *mchp_ptp_probe(struct phy_device *phydev,
++						    u8 mmd, u16 clk_base,
++						    u16 port_base)
++{
++	return NULL;
++}
++
++static inline int mchp_config_ptp_intr(struct mchp_ptp_clock *ptp_clock,
++				       u16 reg, u16 val, bool enable)
++{
++	return 0;
++}
++
++static inline irqreturn_t mchp_ptp_handle_interrupt(struct mchp_ptp_clock *ptp_clock)
++{
++	return IRQ_NONE;
++}
++
++#endif //CONFIG_MICROCHIP_PHYPTP
++
++#endif //_MICROCHIP_PTP_H
+-- 
+2.17.1
 
