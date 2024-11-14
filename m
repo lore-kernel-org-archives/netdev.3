@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542E1A01B9;
-	Thu, 14 Nov 2024 15:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6387C193061;
+	Thu, 14 Nov 2024 15:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731598576; cv=none; b=IpN5YGG6hdN4kG92PdXtC1oI/0q7k69vMHaz3AEZFX6DrLvOQNgTuwMiK1UgJtFvH0YEfHMwBWxKIUzhoKRYRKuMt5TY55lUmLoTUOb8yfrKHub6hWvCkDBIsiCpn8KQY4ZMhrKXJaOO1+0vRXXO7sunAGWWIRJM1OEmnVgoa9s=
+	t=1731598576; cv=none; b=pYV4JiwNWRz8pxWcJhc6BkGLYlTPf0zypNI8aQOL3XgPzUdfM4bTNsG2xkAnDgXnfArKPxEr4MKovcruMgPMxpQVF7uwapn/seXjtvgWYBSPmTqh3aRlWj1nHHr/256vopE5Jk9B/AlnrLyEEW/jy8ZuNGWxT0BfBwHbUgcVrEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731598576; c=relaxed/simple;
-	bh=0UsaPE2Uh4SyaFc9Rflbhw3/kdxyOR6CEBmi99Vhh+w=;
+	bh=aXDa6WXqAsGTp271cwDJq8clhE7AZLg1W7agSE8IHpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWsR1z2kCzei3djAYtYxhLafzjpnW/9K8H58TB9zGfzqJ7OD/5rwMucQkudggDL4m0M+5GD1sgvOUZzaYH004LSTdQbDqD3BuR8CjmVKaTFDJ7aTAO9p5Nbb9Au9xaFR7UYspWw5yeZ6Y4fAgmtJN4v7klvhateMz7n1e6l+zW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DFiaN64+; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=FAV+sTbwuUXGKYKZ9RA5Vc9zeZl/YOxt94h7aS2kmk7tRR7F83tTS0XrAnhhAa1bnmUznDqyeMUH8OiNfzSCIR6TiIc4II3snQ2QNNCCORPvdQgSZ4C500Avcyo2uhbBMVJs04p+tmj6u4/9zLGlQ9W9Uu82VijdncVu2vjy8rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Yf5SpRpd; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DFiaN64+"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0D20A1BF207;
-	Thu, 14 Nov 2024 15:36:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Yf5SpRpd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5858D1BF208;
+	Thu, 14 Nov 2024 15:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731598572;
+	t=1731598567;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1dMKBG+AoRYWHAnDg3HglYfHqu6OSVERdBxJpGegsQM=;
-	b=DFiaN64+rcortkHZ2MvYoDftQM3Z+rhQ8tXu9CzURnWE/b3pfpD2t5c3leJLl1dOAldhZa
-	Wqz+Qf5jy7+3xL5uovFLZaQIO2TM8Lfzyp1gSIOFuVm5f0cldTiemjn6EZLmU9T4+4dedB
-	3zbTxI+1KC3XRmGDPVlsSmgshTV/wZbIDmhIoeCIqOm0oGImmekvyfUR0+XF7t7gzQOKYe
-	KHqOerpDE7jk/GvgWcYGkHb5AeYWGWslOGgBx6KxmPEDdX8AvZ57GrdJoa1nGU9EW8DQBF
-	abzIHFolSmHqMbh06T3Z1dQPpQJHWjBzGNGqXEtd8Tzc6mNYxFlDlhm09DLvOQ==
+	bh=RxGGhBtDTqWK4tM+QLuLJgRdIcL+yhd5ZKBES7qfk0g=;
+	b=Yf5SpRpdOyGccdaHG+TnVqEQWpp7+EpWmrtK8GJLmtxo2XRVCTcpLofML0eq2SxrBg52dc
+	M7ZleiUG0N3oT66unHuzKYWKBgThv0ZxCA36QyCpbmC+7xGTMHDNET4MeaD4h0eTy2RUa0
+	034pahCjrw+pbF33x4izemJUKBV7yP28rklVo3A+D9VVu3KPnLWIN1ZSrKJrVxXzROe0u1
+	c63jL6w8+z+sg1EAmcWGzpmkCE++1qVJwqYfEisiZcnqVRKcyHIi6YYPMezpeEouctPNpU
+	M3XpwLKltOpNQMsXjUNozPSv0cCgsJEsuFc0kr0+84/Lubv1n1Zds1zfCadK7A==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -46,9 +46,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v2 08/10] net: freescale: ucc_geth: Move the serdes configuration around
-Date: Thu, 14 Nov 2024 16:35:59 +0100
-Message-ID: <20241114153603.307872-9-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 01/10] net: freescale: ucc_geth: Drop support for the "interface" DT property
+Date: Thu, 14 Nov 2024 16:35:52 +0100
+Message-ID: <20241114153603.307872-2-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
 References: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
@@ -61,130 +61,133 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The uec_configure_serdes() function deals with serialized linkmodes
-settings. It's used during the link bringup sequence. It is planned to
-be used during the phylink conversion for mac configuration, but it
-needs to me moved around in the process. To make the phylink port
-clearer, this commit moves the function without any feature change.
+In april 2007, ucc_geth was converted to phylib with :
 
+commit 728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib").
+
+In that commit, the device-tree property "interface", that could be used to
+retrieve the PHY interface mode was deprecated.
+
+DTS files that still used that property were converted along the way, in
+the following commit, also dating from april 2007 :
+
+commit 0fd8c47cccb1 ("[POWERPC] Replace undocumented interface properties in dts files")
+
+17 years later, there's no users of that property left and I hope it's
+safe to say we can remove support from that in the ucc_geth driver,
+making the probe() function a bit simpler.
+
+Should there be any users that have a DT that was generated when 2.6.21 was
+cutting-edge, print an error message with hints on how to convert the
+devicetree if the 'interface' property is found.
+
+With that property gone, we can greatly simplify the parsing of the
+phy-interface-mode from the devicetree by using of_get_phy_mode(),
+allowing the removal of the open-coded parsing in the driver.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-V2: New patch
+V2: No changes
 
- drivers/net/ethernet/freescale/ucc_geth.c | 93 +++++++++++------------
- 1 file changed, 46 insertions(+), 47 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.c | 63 +++++------------------
+ 1 file changed, 12 insertions(+), 51 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 57e8f0718dc7..15d05b270b6e 100644
+index 6663c1768089..80540c817c4e 100644
 --- a/drivers/net/ethernet/freescale/ucc_geth.c
 +++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -1512,6 +1512,52 @@ static void ugeth_activate(struct ucc_geth_private *ugeth)
- 	__netdev_watchdog_up(ugeth->ndev);
- }
+@@ -3469,32 +3469,6 @@ static int ucc_geth_resume(struct platform_device *ofdev)
+ #define ucc_geth_resume NULL
+ #endif
  
-+/* Initialize TBI PHY interface for communicating with the
-+ * SERDES lynx PHY on the chip.  We communicate with this PHY
-+ * through the MDIO bus on each controller, treating it as a
-+ * "normal" PHY at the address found in the UTBIPA register.  We assume
-+ * that the UTBIPA register is valid.  Either the MDIO bus code will set
-+ * it to a value that doesn't conflict with other PHYs on the bus, or the
-+ * value doesn't matter, as there are no other PHYs on the bus.
-+ */
-+static void uec_configure_serdes(struct net_device *dev)
-+{
-+	struct ucc_geth_private *ugeth = netdev_priv(dev);
-+	struct ucc_geth_info *ug_info = ugeth->ug_info;
-+	struct phy_device *tbiphy;
-+
-+	if (!ug_info->tbi_node) {
-+		dev_warn(&dev->dev, "SGMII mode requires that the device tree specify a tbi-handle\n");
-+		return;
-+	}
-+
-+	tbiphy = of_phy_find_device(ug_info->tbi_node);
-+	if (!tbiphy) {
-+		dev_err(&dev->dev, "error: Could not get TBI device\n");
-+		return;
-+	}
-+
-+	/*
-+	 * If the link is already up, we must already be ok, and don't need to
-+	 * configure and reset the TBI<->SerDes link.  Maybe U-Boot configured
-+	 * everything for us?  Resetting it takes the link down and requires
-+	 * several seconds for it to come back.
-+	 */
-+	if (phy_read(tbiphy, ENET_TBI_MII_SR) & TBISR_LSTATUS) {
-+		put_device(&tbiphy->mdio.dev);
-+		return;
-+	}
-+
-+	/* Single clk mode, mii mode off(for serdes communication) */
-+	phy_write(tbiphy, ENET_TBI_MII_ANA, TBIANA_SETTINGS);
-+
-+	phy_write(tbiphy, ENET_TBI_MII_TBICON, TBICON_CLK_SELECT);
-+
-+	phy_write(tbiphy, ENET_TBI_MII_CR, TBICR_SETTINGS);
-+
-+	put_device(&tbiphy->mdio.dev);
-+}
-+
- static void ugeth_link_up(struct ucc_geth_private *ugeth,
- 			  struct phy_device *phy,
- 			  phy_interface_t interface, int speed, int duplex)
-@@ -1619,53 +1665,6 @@ static void adjust_link(struct net_device *dev)
- 		ugeth_link_down(ugeth);
- }
- 
--/* Initialize TBI PHY interface for communicating with the
-- * SERDES lynx PHY on the chip.  We communicate with this PHY
-- * through the MDIO bus on each controller, treating it as a
-- * "normal" PHY at the address found in the UTBIPA register.  We assume
-- * that the UTBIPA register is valid.  Either the MDIO bus code will set
-- * it to a value that doesn't conflict with other PHYs on the bus, or the
-- * value doesn't matter, as there are no other PHYs on the bus.
-- */
--static void uec_configure_serdes(struct net_device *dev)
+-static phy_interface_t to_phy_interface(const char *phy_connection_type)
 -{
--	struct ucc_geth_private *ugeth = netdev_priv(dev);
--	struct ucc_geth_info *ug_info = ugeth->ug_info;
--	struct phy_device *tbiphy;
+-	if (strcasecmp(phy_connection_type, "mii") == 0)
+-		return PHY_INTERFACE_MODE_MII;
+-	if (strcasecmp(phy_connection_type, "gmii") == 0)
+-		return PHY_INTERFACE_MODE_GMII;
+-	if (strcasecmp(phy_connection_type, "tbi") == 0)
+-		return PHY_INTERFACE_MODE_TBI;
+-	if (strcasecmp(phy_connection_type, "rmii") == 0)
+-		return PHY_INTERFACE_MODE_RMII;
+-	if (strcasecmp(phy_connection_type, "rgmii") == 0)
+-		return PHY_INTERFACE_MODE_RGMII;
+-	if (strcasecmp(phy_connection_type, "rgmii-id") == 0)
+-		return PHY_INTERFACE_MODE_RGMII_ID;
+-	if (strcasecmp(phy_connection_type, "rgmii-txid") == 0)
+-		return PHY_INTERFACE_MODE_RGMII_TXID;
+-	if (strcasecmp(phy_connection_type, "rgmii-rxid") == 0)
+-		return PHY_INTERFACE_MODE_RGMII_RXID;
+-	if (strcasecmp(phy_connection_type, "rtbi") == 0)
+-		return PHY_INTERFACE_MODE_RTBI;
+-	if (strcasecmp(phy_connection_type, "sgmii") == 0)
+-		return PHY_INTERFACE_MODE_SGMII;
 -
--	if (!ug_info->tbi_node) {
--		dev_warn(&dev->dev, "SGMII mode requires that the device "
--			"tree specify a tbi-handle\n");
--		return;
--	}
--
--	tbiphy = of_phy_find_device(ug_info->tbi_node);
--	if (!tbiphy) {
--		dev_err(&dev->dev, "error: Could not get TBI device\n");
--		return;
--	}
--
--	/*
--	 * If the link is already up, we must already be ok, and don't need to
--	 * configure and reset the TBI<->SerDes link.  Maybe U-Boot configured
--	 * everything for us?  Resetting it takes the link down and requires
--	 * several seconds for it to come back.
--	 */
--	if (phy_read(tbiphy, ENET_TBI_MII_SR) & TBISR_LSTATUS) {
--		put_device(&tbiphy->mdio.dev);
--		return;
--	}
--
--	/* Single clk mode, mii mode off(for serdes communication) */
--	phy_write(tbiphy, ENET_TBI_MII_ANA, TBIANA_SETTINGS);
--
--	phy_write(tbiphy, ENET_TBI_MII_TBICON, TBICON_CLK_SELECT);
--
--	phy_write(tbiphy, ENET_TBI_MII_CR, TBICR_SETTINGS);
--
--	put_device(&tbiphy->mdio.dev);
+-	return PHY_INTERFACE_MODE_MII;
 -}
 -
- /* Configure the PHY for dev.
-  * returns 0 if success.  -1 if failure
-  */
+ static int ucc_geth_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+ {
+ 	struct ucc_geth_private *ugeth = netdev_priv(dev);
+@@ -3564,19 +3538,6 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+ 	int err, ucc_num, max_speed = 0;
+ 	const unsigned int *prop;
+ 	phy_interface_t phy_interface;
+-	static const int enet_to_speed[] = {
+-		SPEED_10, SPEED_10, SPEED_10,
+-		SPEED_100, SPEED_100, SPEED_100,
+-		SPEED_1000, SPEED_1000, SPEED_1000, SPEED_1000,
+-	};
+-	static const phy_interface_t enet_to_phy_interface[] = {
+-		PHY_INTERFACE_MODE_MII, PHY_INTERFACE_MODE_RMII,
+-		PHY_INTERFACE_MODE_RGMII, PHY_INTERFACE_MODE_MII,
+-		PHY_INTERFACE_MODE_RMII, PHY_INTERFACE_MODE_RGMII,
+-		PHY_INTERFACE_MODE_GMII, PHY_INTERFACE_MODE_RGMII,
+-		PHY_INTERFACE_MODE_TBI, PHY_INTERFACE_MODE_RTBI,
+-		PHY_INTERFACE_MODE_SGMII,
+-	};
+ 
+ 	ugeth_vdbg("%s: IN", __func__);
+ 
+@@ -3627,18 +3588,17 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+ 	/* Find the TBI PHY node.  If it's not there, we don't support SGMII */
+ 	ug_info->tbi_node = of_parse_phandle(np, "tbi-handle", 0);
+ 
+-	/* get the phy interface type, or default to MII */
+-	prop = of_get_property(np, "phy-connection-type", NULL);
+-	if (!prop) {
+-		/* handle interface property present in old trees */
+-		prop = of_get_property(ug_info->phy_node, "interface", NULL);
+-		if (prop != NULL) {
+-			phy_interface = enet_to_phy_interface[*prop];
+-			max_speed = enet_to_speed[*prop];
+-		} else
+-			phy_interface = PHY_INTERFACE_MODE_MII;
+-	} else {
+-		phy_interface = to_phy_interface((const char *)prop);
++	prop = of_get_property(ug_info->phy_node, "interface", NULL);
++	if (prop) {
++		dev_err(&ofdev->dev,
++			"Device-tree property 'interface' is no longer supported. Please use 'phy-connection-type' instead.");
++		goto err_put_tbi;
++	}
++
++	err = of_get_phy_mode(np, &phy_interface);
++	if (err) {
++		dev_err(&ofdev->dev, "Invalid phy-connection-type");
++		goto err_put_tbi;
+ 	}
+ 
+ 	/* get speed, or derive from PHY interface */
+@@ -3746,6 +3706,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
+ err_deregister_fixed_link:
+ 	if (of_phy_is_fixed_link(np))
+ 		of_phy_deregister_fixed_link(np);
++err_put_tbi:
+ 	of_node_put(ug_info->tbi_node);
+ 	of_node_put(ug_info->phy_node);
+ 	return err;
 -- 
 2.47.0
 
