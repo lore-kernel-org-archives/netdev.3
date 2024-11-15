@@ -1,109 +1,143 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC281B85EC;
-	Fri, 15 Nov 2024 13:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97BD1BF7FC;
+	Fri, 15 Nov 2024 13:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677003; cv=none; b=JRZMRNKXy5LmyhCed2RWxXTnHsyY1n1SDeWmSJacKJ6ZIhcyDmKaxooMRcy/BrAucHEQAcAPXWAuVlSY7jbgRnn6O9lzqPqMaI4B6/DfGcbGUGp98HxiCFir6VZZKn16TtT7CIiDH/v6Qy035oNw5F/n43pzBs6fKrfDyJUWJXw=
+	t=1731677223; cv=none; b=NwfsIeXnfee8bN0Lk3sefEApxHPtUni09vLINj815Z1flsEp/Zbs82Ssnz0xfuBHvCj3mMLSMHvgvBG3J7qskdUBApRqsCXTVB7hKI7gKCY7PBOcuXjYVbq6U3YaQmv+3m3rkl5xLoSVW/lnkts6yXtrtiEjHly71ozTKk7cKBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677003; c=relaxed/simple;
-	bh=Qrkypyn6oLcQyux/FiD+FNhRfG3YNrtpoe3KECqQWpk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TYkWA+V2cg8GXXUvcZvp4Hb2zsx3cBaE469JxDEojXAHTqJ/1Q49CKrHSXSm977cmQX9YeocehDRzuKmefizQJPjer+gbrwt6o9vCtCGUvU0sQsPLYkrgaIY/s1VgEo/997OTbds0Ui3tNdS3GrY2ty0yItrEHzQ1DzbOVzxL60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=JBvNZuKW; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1731677223; c=relaxed/simple;
+	bh=xmb6AeeJzlrkGrfBGxdwUoyxLn2DL5/bv17R11jozjA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=S8JGfEcdV5voaCw8jD9NIJpo6p4XhnmKlAk6LhxuMOabHJLLwJRK96Oz+hpa/w6F065SC+BnKEuoGJzpPLabsIQ2Wal6ot51fj4f6zyy3xRr/f8Ytr1tYgHoGUDxggsGKgXvIu63QEndLhKZWjQbt5H6PqoGUWNHHVH8Izx1alQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=omP7zZoL; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="JBvNZuKW"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1tBwHw-007sYD-Pr; Fri, 15 Nov 2024 14:23:04 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=BTb5bnxrLGEwgrcrSvx3sXPxwvSsd+znqfFVwgZLS/4=
-	; b=JBvNZuKWOWLoFvHjz1R1mJhxdBH3A/4SKIyS7qq6yjhuWRywSgPdTa8oTE2+ws7xrnYMYH6Q6
-	c9GCEgx28yuob1wrnzhULTudPc7yWp1q29v3dNLFjyqoa+FqrQRmiVWkRmqHQF7wPiBhC/Kkko9FZ
-	wvtjvqCGVI9VzOLHMvUN3Yxujo8ZS27D0pg4diUNF4p9Tb710ISN2jtD+BT0f80zDtGjlXgtlLthJ
-	eCg2X08xbM0yquSWoMnJvs6pDMywtOc6YmHjBQ2cLM+cXeRFvicSIJASKg+KEQs13gyg0AVQaIdTU
-	3LxWB17EuuhVeXC6KWEVjMsvl3THPLQURcsE4g==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1tBwHw-0003oo-Aa; Fri, 15 Nov 2024 14:23:04 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1tBwHh-00BIK5-EG; Fri, 15 Nov 2024 14:22:49 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH net v2 0/4] net: Fix some callers of copy_from_sockptr()
-Date: Fri, 15 Nov 2024 14:21:39 +0100
-Message-Id: <20241115-sockptr-copy-fixes-v2-0-9b1254c18b7a@rbox.co>
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="omP7zZoL"
+Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
+	by mail.ispras.ru (Postfix) with ESMTPSA id BDDCA40777D2;
+	Fri, 15 Nov 2024 13:26:55 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BDDCA40777D2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1731677215;
+	bh=1e1LOUtI0Astf/a7ioL+raSU9vL4XmV0G94gVl8ZTzA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=omP7zZoLTS3qTb2wHMaUKEYSdvj2aRwzUayVpDedz18JlYgjCW/T1J77VZLAhifpF
+	 tWkxPCmDCuE+bKNCgd61u5jWKhkHmQEk8LPHnSWRZ2dEno85iLZCNS08rRLC1rp4cH
+	 GO32E5lDSfPXhciACWi1DWaBIbaHF5xpLGgP+vKE=
+From: Vitalii Mordan <mordan@ispras.ru>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Vadim Mutilin <mutilin@ispras.ru>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH net-next v3] stmmac: dwmac-intel-plat: remove redundant dwmac->data check in probe
+Date: Fri, 15 Nov 2024 16:26:32 +0300
+Message-Id: <20241115132632.599188-1-mordan@ispras.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAONKN2cC/22NzQqDMBCEX0X23C2uPzTpyfcoHmKy1lAwkkhQJ
- O/eEHrs8ZthvrkgsLcc4Fld4DnaYN2aoblVoBe1vhmtyQxN3XRE1GFw+rPtHrXbTpztwQFbKSU
- rJUgpgjzcPJci716w8g5jDhcbdufPchSpVD9n/88ZCWs0JFotHrOeTD/4yR137WBMKX0BD8Pjk
- 7cAAAA=
-X-Change-ID: 20241114-sockptr-copy-fixes-3999eaa81aa1
-To: Marcel Holtmann <marcel@holtmann.org>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, 
- linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
- linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Some callers misinterpret copy_from_sockptr()'s return value. The function
-follows copy_from_user(), i.e. returns 0 for success, or the number of
-bytes not copied on error. Simply returning the result in a non-zero case
-isn't usually what was intended.
+The driver’s compatibility with devices is confirmed earlier in
+platform_match(). Since reaching probe means the device is valid,
+the extra check can be removed to simplify the code.
 
-Compile tested with CONFIG_LLC, CONFIG_AF_RXRPC, CONFIG_BT enabled.
-
-Last patch probably belongs more to net-next, if any. Here as a RFC.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
-Changes in v2:
-- Fix the fix of llc_ui_setsockopt()
-- Switch "bluetooth:" to "Bluetooth:" [bluez.test.bot]
-- Collect Reviewed-by [Luiz Augusto von Dentz]
-- Link to v1: https://lore.kernel.org/r/20241115-sockptr-copy-fixes-v1-0-d183c87fcbd5@rbox.co
+v2: Add a comment explaining why dwmac->data cannot be NULL, as per
+Andrew Lunn's request.
+v3: Resolve merge conflicts.
+ .../stmicro/stmmac/dwmac-intel-plat.c         | 53 ++++++++++---------
+ 1 file changed, 28 insertions(+), 25 deletions(-)
 
----
-Michal Luczaj (4):
-      Bluetooth: Improve setsockopt() handling of malformed user input
-      llc: Improve setsockopt() handling of malformed user input
-      rxrpc: Improve setsockopt() handling of malformed user input
-      net: Comment copy_from_sockptr() explaining its behaviour
-
- include/linux/sockptr.h           |  2 ++
- include/net/bluetooth/bluetooth.h |  9 ---------
- net/bluetooth/hci_sock.c          | 14 +++++++-------
- net/bluetooth/iso.c               | 10 +++++-----
- net/bluetooth/l2cap_sock.c        | 20 +++++++++++---------
- net/bluetooth/rfcomm/sock.c       |  9 ++++-----
- net/bluetooth/sco.c               | 11 ++++++-----
- net/llc/af_llc.c                  |  8 ++++----
- net/rxrpc/af_rxrpc.c              |  8 ++++----
- 9 files changed, 43 insertions(+), 48 deletions(-)
----
-base-commit: ea301aec8bb718b02b68761d2229fc12c9fefa29
-change-id: 20241114-sockptr-copy-fixes-3999eaa81aa1
-
-Best regards,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+index a433526dcbe8..d94f0a150e93 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+@@ -97,35 +97,38 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
+ 	dwmac->dev = &pdev->dev;
+ 	dwmac->tx_clk = NULL;
+ 
++	/*
++	 * This cannot return NULL at this point because the driver’s
++	 * compatibility with the device has already been validated in
++	 * platform_match().
++	 */
+ 	dwmac->data = device_get_match_data(&pdev->dev);
+-	if (dwmac->data) {
+-		if (dwmac->data->fix_mac_speed)
+-			plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
+-
+-		/* Enable TX clock */
+-		if (dwmac->data->tx_clk_en) {
+-			dwmac->tx_clk = devm_clk_get(&pdev->dev, "tx_clk");
+-			if (IS_ERR(dwmac->tx_clk))
+-				return PTR_ERR(dwmac->tx_clk);
++	if (dwmac->data->fix_mac_speed)
++		plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
++
++	/* Enable TX clock */
++	if (dwmac->data->tx_clk_en) {
++		dwmac->tx_clk = devm_clk_get(&pdev->dev, "tx_clk");
++		if (IS_ERR(dwmac->tx_clk))
++			return PTR_ERR(dwmac->tx_clk);
++
++		ret = clk_prepare_enable(dwmac->tx_clk);
++		if (ret) {
++			dev_err(&pdev->dev,
++				"Failed to enable tx_clk\n");
++			return ret;
++		}
+ 
+-			ret = clk_prepare_enable(dwmac->tx_clk);
++		/* Check and configure TX clock rate */
++		rate = clk_get_rate(dwmac->tx_clk);
++		if (dwmac->data->tx_clk_rate &&
++		    rate != dwmac->data->tx_clk_rate) {
++			rate = dwmac->data->tx_clk_rate;
++			ret = clk_set_rate(dwmac->tx_clk, rate);
+ 			if (ret) {
+ 				dev_err(&pdev->dev,
+-					"Failed to enable tx_clk\n");
+-				return ret;
+-			}
+-
+-			/* Check and configure TX clock rate */
+-			rate = clk_get_rate(dwmac->tx_clk);
+-			if (dwmac->data->tx_clk_rate &&
+-			    rate != dwmac->data->tx_clk_rate) {
+-				rate = dwmac->data->tx_clk_rate;
+-				ret = clk_set_rate(dwmac->tx_clk, rate);
+-				if (ret) {
+-					dev_err(&pdev->dev,
+-						"Failed to set tx_clk\n");
+-					goto err_tx_clk_disable;
+-				}
++					"Failed to set tx_clk\n");
++				goto err_tx_clk_disable;
+ 			}
+ 		}
+ 
 -- 
-Michal Luczaj <mhal@rbox.co>
+2.25.1
 
