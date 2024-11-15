@@ -1,79 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A21C17A596;
-	Fri, 15 Nov 2024 03:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211CF42ABD
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 03:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731642024; cv=none; b=SBiG/n/8h1C9uNZI8P7snO8bXpg8Od1dGFPcdXDHaEgejSqUou0BTRc6+tXQKgRMXBvdI1N10RcgxRnp3tkluuXhondWsO+sf6iM9a2PpCB3+dpSUZFFbJcPsSRJxV/UGxC5qtXts+qxn7iT6IWhh4VQ2MDtignXOi9Y4woYpGY=
+	t=1731643027; cv=none; b=rTfwdvqmVQSS2+PaU00CBayZ3OZ4iyQbItCjJ++NTptyquBX4db+xSj1+DWyrwAxA6E5Ei1TfEhJr6398xOEqT3hJMgDfLa9vYDi25AP3wmLav7SDHSW9Eb18KuKGYkgiKXZLsnHvvu0kX208cFDWSTIvWKdz0TBwCacOi+hfX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731642024; c=relaxed/simple;
-	bh=f0ZQsNAzzD5s1aH0RpbD7imVYadO9+UqQZvmGcVGCNw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RIDhykX8Y1sRS0LsXtRgavn1EtCF7ExvQVr2gEBCPITklNkFvY5BnCdrLN1FfAyjV68YhaGNYLp8RVUAWx41/MBod0QPhCJixLKeMgmKh6rkUjHB5cqaDOXnrcnhYOmbRayKHP+LWRBYfR2W8CNGvLickWykfeq+SnSnavs1XPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dz/QCJTk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731643027; c=relaxed/simple;
+	bh=Pr2GqMqQ7tO5s2YN/pEEpRUWI2nFDuuFsweUPN8Ayfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Yu+Ce0rfr5E13wsGpW9F1lREZuz+wo+W8WoDovFgzZRcu86bWyLFpuvsk1bY8CWzqVkTvcED4OYt6voyXY8dXZCrhBB6Mwl6K7OQ+7ABnULadDhudP4Rg0ac4Lz272xuw/FJybVKS4TJI48ZPCmqPJ9w7vmp7mGkcoWQBgk8bcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMAo2XOQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dz/QCJTk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08CEC4AF09;
-	Fri, 15 Nov 2024 03:40:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMAo2XOQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D67C4CECF;
+	Fri, 15 Nov 2024 03:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731642023;
-	bh=f0ZQsNAzzD5s1aH0RpbD7imVYadO9+UqQZvmGcVGCNw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dz/QCJTkz8kQNoEOJCyPWN5ndC8Rh8nS+XhkQHWVp3d947FQh2FyrWTvRQdNzhroG
-	 iTygW/apJ5mMLFgT6d3nbyzkyA3oNikggmdG9Y/fnUcF0Irs/9aSuF/rY98ZP4uySf
-	 Kqgb4+dLLrfn5hRypQce0g6XC8/ne6MEjxoGU3PA7cVDJPGPjiHSQnWgHGeOMyEF/d
-	 Xpi6k3GvlRRPzMk9sxksedlx9hHuYGxuLNwoskxMH5buxD3Oa7gVuwUBioHL4tpUs3
-	 8g0+pfKR5wlagkEdbwtSMP9/9n1yjx9yKehLohFD8yU+lDMBv4UcP6pIFOnaatX6oU
-	 MLKyED1y5AzAA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AECEA3809A80;
-	Fri, 15 Nov 2024 03:40:35 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1731643026;
+	bh=Pr2GqMqQ7tO5s2YN/pEEpRUWI2nFDuuFsweUPN8Ayfs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hMAo2XOQtPTvfJyfF+evyNZs3aF7m1cKKn5fDNl/Io+lPseUVHZAx1MJpu1kcL387
+	 ibUdvh/UNvidquz5WyvuFd6DzAqCjQYiu/0ShUy+vEhN1g/PuIVsarjAFVK6URjXfn
+	 iVW8z3nnMTeA8gAM3m6LEbPypK98TrtwNR+UQafC9qHiLZ3LVyAJXs6OgGkOc30Q6o
+	 GIKmU7UJpFGTFdjfgo5gUGjmJyE98ZarNNiZbymDRESMYo8bMSUlVyH8wBAXevtgXT
+	 0WYnMs7PWcJ7VICWAMEJlwaCWUaWks+hQ2VCNiGoxC4TEGdnsKWT8dS4uFHQnSZpxd
+	 yrG+g0Fl5ye4Q==
+Date: Thu, 14 Nov 2024 19:57:05 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, andrew.gospodarek@broadcom.com,
+ hongguang.gao@broadcom.com, shruti.parab@broadcom.com, Sreekanth Reddy
+ <sreekanth.reddy@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>
+Subject: Re: [PATCH net-next 08/11] bnxt_en: Add functions to copy host
+ context memory
+Message-ID: <20241114195705.635ab748@kernel.org>
+In-Reply-To: <20241113053649.405407-9-michael.chan@broadcom.com>
+References: <20241113053649.405407-1-michael.chan@broadcom.com>
+	<20241113053649.405407-9-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: sparx5: add missing lan969x Kconfig dependency
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173164203424.2141101.17831622786298437732.git-patchwork-notify@kernel.org>
-Date: Fri, 15 Nov 2024 03:40:34 +0000
-References: <20241113115513.4132548-1-arnd@kernel.org>
-In-Reply-To: <20241113115513.4132548-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- arnd@arndb.de, jensemil.schulzostergaard@microchip.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 13 Nov 2024 12:55:08 +0100 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Tue, 12 Nov 2024 21:36:46 -0800 Michael Chan wrote:
+> Host context memory is used by the newer chips to store context
+> information for various L2 and RoCE states and FW logs.  This
+> information will be useful for debugging.  This patch adds the
+> functions to copy all pages of a context memory type to a contiguous
+> buffer.  The next patches will include the context memory dump
+> during ethtool -w coredump.
 > 
-> The sparx5 switchdev driver can be built either with or without support
-> for the Lan969x switch. However, it cannot be built-in when the lan969x
-> driver is a loadable module because of a link-time dependency:
-> 
-> arm-linux-gnueabi-ld: drivers/net/ethernet/microchip/sparx5/sparx5_main.o:(.rodata+0xd44): undefined reference to `lan969x_desc'
-> 
-> [...]
+> Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
+> Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+> Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com
 
-Here is the summary with links:
-  - [net-next] net: sparx5: add missing lan969x Kconfig dependency
-    https://git.kernel.org/netdev/net-next/c/4c54e9497d9a
+Truncated signoff tag.
 
-You are awesome, thank you!
+nit: I don't know who Shruti is but my guess is that she co-authored 
+the code, in which case a Co-developed tag would be appropriated.
+
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+
+> +/**
+> + * __bnxt_copy_ctx_mem - copy host context memory
+> + * @bp: The driver context
+> + * @ctxm: The pointer to the context memory type
+> + * @buf: The destination buffer
+> + * @offset: The buffer offset to copy the data to
+> + * @head: The head offset of context memory to copy from
+> + * @tail: The tail offset (last byte + 1) of context memory to end the copy
+> + *
+> + * This function is called for debugging purposes to dump the host context
+> + * used by the chip.
+> + */
+
+return values must now be documented, per ./scripts/kernel-doc -Wall
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
