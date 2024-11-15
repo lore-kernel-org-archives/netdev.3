@@ -1,94 +1,78 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA89D18FDC9
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 22:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FE5187876
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 22:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731709723; cv=none; b=NqjNOBURlBdbHtvuMXkYP+g2j+NYkiODpq+phm25cC+2KGc085g5hl9H/DScwU3V21IxnDkaN8lnTyffir1TMb1TSSF3AQ49g8myRtQBxLYCaOb/boq/0Sj9byYpEqSG9TvZtDfkTcJjQhau50bsDJEhT94GGO+XhIkkeG4QEmg=
+	t=1731709824; cv=none; b=Rk0rgpu2S9OHiDJOrfEBKG6HtshNm2le7bqX28056G36/+hAwVRUTim7d8kyBXmTXnnDyXFEhGyyp5SNIPN7366GEfQqQkYH33mFQd1cvDpveFlwJg27YU+pUCIdVoGPAMtpB+uwyjm/bElQU95KyLKi5iR1wZBU0I2a2+fhIck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731709723; c=relaxed/simple;
-	bh=i2IhHfulyS75UGsF7/PqW4S9kdXZVMBDzqNzBpLvNdI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smCC+9yPOxvJBn1/zsyYKjbyoXtVP5lckWQU8W/myrbjxKKoQ5wRvZz7jSr4llYgAwka7cqeP7vTyG+xemLnAyL3dBxa7NRhJySYkA54dpxexCzbu8gl2xuzqhrUwgHAH7F986frOrU9ZfPU91DoBri0n6UGPta/cJxRQ3ahh9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=KSvdt2+v; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1731709824; c=relaxed/simple;
+	bh=6w1o7nRaks0ohhcJz8ZUTDQeVxrQhzMJPgnzEjF7x74=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=j/eiR6xX3ocmcP4aZfA1Cs3XS3FzM7LJN9UVcTtrneWXesTOWWFoeToaAI8JYaZaOFjtxA2+BSaEHg4erSKfR8QMQQc2kAxxPOUCXI3oEo2ZjI5fMhEVREclLqOjUR4m8gF5lq6BT4Mi+Cz/apCMzlBGU6Osmr6X1KsfwUlt78E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=blRs0nmR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="KSvdt2+v"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b18da94ba9so194374985a.0
-        for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 14:28:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1731709720; x=1732314520; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J+8l3D//FSODytWJh9ARkg7rtz2NFPnk8CFXEo496Tk=;
-        b=KSvdt2+vnepVepyfsLWSDLRaUI0/1H1+KPbWPaDa0UtWEIny2rkZ9zFN8bTvapJ1PZ
-         PfjSRzrq2HgtaaR8hZK2WAf/OFAAPlt/xBywBuDhU5JUAvUU9qbqkHUCkSuhXdD0xDEC
-         Z2tkB3HZhP3ZwhUa3KFiuIW/X0MhJ3iNBW3UY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731709720; x=1732314520;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J+8l3D//FSODytWJh9ARkg7rtz2NFPnk8CFXEo496Tk=;
-        b=OW5kW8vxwWLhc/nvnfXxjnEQ0DB+BcoPCpq3EbO75irFQxYmpYkLmNqo3NXmHK7dO4
-         aE+smRsedvAW1fXbZ+FAdFmVtRVWYhctA590xz8IXcJXCmGalM/qwQPh6eBBSW2+ypsy
-         J7rGQm4cE70xCRUy9bXrmfjnCbraMCOZo0Q2Wmn+gQZN6uzrVIlnQkVEJX6dW6PLzvto
-         AyeOq0CGGJ1AoEopYAB20mHXoHiGSZi0t5u5k4VlWGH/rV1ukEbfpIMquKCaEB3Q0/Wf
-         MiVMDlpbQl8T5V/hP7GOdMrnQqICAqO7l8yvo1r1Ejm9T6Vox39wuE7oSt0jukvdGF5z
-         SoMg==
-X-Forwarded-Encrypted: i=1; AJvYcCXg2QkvAMlj8bXCga0YnNwkWTNS6tNmaU57b+UXzv5bhkyOUTu+mqrGpksCqCQrkRjQOoMSDkM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE+neA33Y6s9g8mzp9tmeNJKvz0XM4TWs1Bk0mvKPfUkhMicdx
-	Z7WiXT3vMiORh0sSStU1dCBQqsW5uoeT7lxbdmLNUa25otAiysm5CMe1/iHLjA==
-X-Google-Smtp-Source: AGHT+IHEJRVcqkSvSHdB5vLd3VF5G5QTq3MPd7V7tt3ym0x6SbftfZEGWwJgBwj4lbxJ2I1pfgtbmQ==
-X-Received: by 2002:a05:620a:1a9d:b0:7ac:e8bf:894a with SMTP id af79cd13be357-7b35a51f0d2mr1310167785a.20.1731709720684;
-        Fri, 15 Nov 2024 14:28:40 -0800 (PST)
-Received: from JRM7P7Q02P.dhcp.broadcom.net ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4635a9eefd0sm24560391cf.27.2024.11.15.14.28.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 14:28:40 -0800 (PST)
-From: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-X-Google-Original-From: Andy Gospodarek <gospo@broadcom.com>
-Date: Fri, 15 Nov 2024 17:28:37 -0500
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, bhelgaas@google.com,
-	Wei Huang <wei.huang2@amd.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	asml.silence@gmail.com, almasrymina@google.com,
-	michael.chan@broadcom.com, ajit.khaparde@broadcom.com,
-	somnath.kotur@broadcom.com, andrew.gospodarek@broadcom.com,
-	manoj.panicker2@amd.com, Eric.VanTassell@amd.com
-Subject: Re: [PATCH V1 1/2] bnxt_en: Add TPH support in BNXT driver
-Message-ID: <ZzfLFSvHCaPgVPzH@JRM7P7Q02P.dhcp.broadcom.net>
-References: <20241115140434.50457691@kernel.org>
- <20241115222038.GA2063216@bhelgaas>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="blRs0nmR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E312AC4CED2;
+	Fri, 15 Nov 2024 22:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731709823;
+	bh=6w1o7nRaks0ohhcJz8ZUTDQeVxrQhzMJPgnzEjF7x74=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=blRs0nmR/m/6lLv/jJInrA0DZY0ZW+sltzhsglrMJ3O+O1wAVQtDdt0zRRh8L8Ixb
+	 fnlQ9vwgkyaGa6JdRMiGSfESaXJmLs7Q60cNuceEpp/tQTkHra6AfO4+4UTSp2BV6u
+	 761zCMKtXIFp2d0DMldE8ZQDsS4vIyGCLdDUorYeOHVMO/wCc5Gh7ySFGFM/netfdj
+	 OHxr/SmovgvJE5/kMvWFZfCB2S/knvvwkH9H+2fjs42dlHZZkEyJtUaFqvz3ArHv/K
+	 6OOS5HISvFv9hdmLYD1L+sc0JyUDx2y6YbP/2ABt5n6MfrI6O/my9k0/c8oo7LHZdz
+	 STT0KDGM3BWtQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD8F3809A80;
+	Fri, 15 Nov 2024 22:30:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241115222038.GA2063216@bhelgaas>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] bnxt_en: optimize gettimex64
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173170983475.2752190.16027206230047890074.git-patchwork-notify@kernel.org>
+Date: Fri, 15 Nov 2024 22:30:34 +0000
+References: <20241114114820.1411660-1-vadfed@meta.com>
+In-Reply-To: <20241114114820.1411660-1-vadfed@meta.com>
+To: Vadim Fedorenko <vadfed@meta.com>
+Cc: vadim.fedorenko@linux.dev, pavan.chebbi@broadcom.com,
+ andrew+netdev@lunn.ch, pabeni@redhat.com, michael.chan@broadcom.com,
+ kuba@kernel.org, richardcochran@gmail.com, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org
 
-On Fri, Nov 15, 2024 at 04:20:38PM -0600, Bjorn Helgaas wrote:
-> On Fri, Nov 15, 2024 at 02:04:34PM -0800, Jakub Kicinski wrote:
-> > ...
-> > Bjorn, do you have a strong preference to have a user of the TPH code
-> > merged as part of 6.13?  We're very close to the merge window, I'm not
-> > sure build bots etc. will have enough time to hammer this code.
-> > My weak preference would be to punt these driver changes to 6.14
-> > avoid all the conflicts and risks (unless Linus gives us another week.)
-> 
-> I do not have a preference.  The PCI core changes are queued for
-> v6.13, so driver changes will be able to go the normal netdev route
-> for v6.14.
-> 
-> I agree it seems late to add significant things for v6.13.
-> 
+Hello:
 
-Excellent.  Thank you!
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 14 Nov 2024 03:48:20 -0800 you wrote:
+> Current implementation of gettimex64() makes at least 3 PCIe reads to
+> get current PHC time. It takes at least 2.2us to get this value back to
+> userspace. At the same time there is cached value of upper bits of PHC
+> available for packet timestamps already. This patch reuses cached value
+> to speed up reading of PHC time.
+> 
+> Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2] bnxt_en: optimize gettimex64
+    https://git.kernel.org/netdev/net-next/c/c7a21af711e8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
