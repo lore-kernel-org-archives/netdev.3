@@ -1,223 +1,270 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C030C142E86
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 08:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F4018A6C5
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 08:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731659547; cv=none; b=KpNZE6H+HDAKFE81uIJP29UnUh3JmqanfEScz4jEC7wF7q6CuWab/eJwsAd7RXz7c4nlDdZRYJdpmnx8IC57F0m8im/EjQIprYqLfCcF3e89HRu58qrfa6ZJF8h87B0u29xmUCGiQE9I4tr9aAJXo/STK01L7q7aD+LG2ibNd8s=
+	t=1731659638; cv=none; b=ikS1pBVwBhQ4qAkdK/iW7JFSgOWQdBE2EqzHtUYDPmga4Ulm9nCGCc+LSUB9YHNFPvjg6txXtCFwh26nVC9PuQaE4wB9dss+8JpTcXFOPzNuVmEHXed9VJf/y15y+k1WRNDepwNuQYNFgnNpcsTvAkmBfJsaoH6BKmEeKMNUxug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731659547; c=relaxed/simple;
-	bh=KwwtRZveGMe16US76kOe+Iauo+yTFHTCMml6hFlPRTY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kQ3LrtwfNTnHejwfehSY06P980NN+bKueqgCoX2vXUcB2FXqe0SwmWsYa1CjA0G3BlR8ESeXxINM/w16wK67gNA3yOYCyuXrkx/pTkNyIxl6Atuiqwu3PU9udF0OSLgcwYTsI/vKAcI5rNI4Wf3KYyq5b++NulsF2STBe+qysPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iyBHw73n; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731659638; c=relaxed/simple;
+	bh=67TCKEXyzrm3B91IZ3Sjvc95H/FTaazkGlvec1Zj1tg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PLG198zuLYDZmjjEIqE85SvqzcNetxn6vz8IWQOsjsuuXehpbmu2Op6KYddrEDZRDLPkeEdwawFluvDM0iQ3x/PkxzWRLclq/RdhYzU/EcN2TRK6oCVrPl4oqqVMpiFGojaOS9MJXpmscrbtrinEmjEu2gs11ATLSnJifrZN7aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=o5AyskLi; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iyBHw73n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731659543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KwwtRZveGMe16US76kOe+Iauo+yTFHTCMml6hFlPRTY=;
-	b=iyBHw73neaeyiBXj5LGmJBkvbZEUjiGNpqfaOvY94KTx3G4j82p/3Bw3+zRo2VIwKy9D8a
-	I6RlZncOcCEimvcYxfZgiVK24CFtvPR5unBMiNLtRJIv7OPEQymTS04AbZtpkJ0+AJceid
-	+DniDpu755iUXXNPxpb0B/gEuf0RRgA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-TX_8tRe1Pl2HLkKxj1u-OA-1; Fri, 15 Nov 2024 03:32:22 -0500
-X-MC-Unique: TX_8tRe1Pl2HLkKxj1u-OA-1
-X-Mimecast-MFC-AGG-ID: TX_8tRe1Pl2HLkKxj1u-OA
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3821e0179d1so241486f8f.2
-        for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 00:32:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731659540; x=1732264340;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KwwtRZveGMe16US76kOe+Iauo+yTFHTCMml6hFlPRTY=;
-        b=QjUX1lgfNFEu7wuWreXbV0uwULQZnLRXj6kLzusOl9Vrz3feTNMTgRz/DFxaafJWp+
-         ZRShd4bkrY1JNqHIJmJxn3Dtp219wFOJ5ekKDneGSGCF/gFkD+axKRa/BADXDOtSrGeo
-         GQyzIbO6yYeAN+Mfw+t8n5HD90ZffH1X0o4ov6025duFIGcRDxhDtMSxlcEsd1HhobUC
-         yz9O8tuT6dci0x+3+RUxgmmK74QIZMSEuOdPVf0A0uJ7yWQlsQ6OPVtia3tNHNWYXJ4X
-         XsO6oGLMPhltiOd0eeOX3wTT4TwvB85FoYmaP11S7VYPUagPe2619Llsv9acdidzFZF1
-         kqzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyf+Cunjneyla9H8gJVvQCaiOPDIw3gbZqKy26oTKbccEMo5U35HyxJ0qg3Is5kCb/cQ2PQDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz59TxlTPkLs7rb9shqC4SLZrqWnYCRRlE4J1zSI7Fl1FLVbM50
-	T/LF8rgvqrLmpDRi7W9p79ZlE50oN8Xe7+A49psAAPgRFRb1dW6O/WSPB1Wtrg4wflquk5SZ3s2
-	c1LVVpp/MKhVBB1orKYDegDWI6VTA44ujfo0Cisl72Osr0qmLtqVoSQ==
-X-Received: by 2002:a5d:64c9:0:b0:37d:5173:7a54 with SMTP id ffacd0b85a97d-38225aafc0bmr1382366f8f.52.1731659540154;
-        Fri, 15 Nov 2024 00:32:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGdh/kmNlYkC/WQKFf2J1h1Btsr4ZUjp0WRHuv0DJX0wKMjNySBXwoM4GCHyqPFiIGeYI7IOw==
-X-Received: by 2002:a5d:64c9:0:b0:37d:5173:7a54 with SMTP id ffacd0b85a97d-38225aafc0bmr1382314f8f.52.1731659539626;
-        Fri, 15 Nov 2024 00:32:19 -0800 (PST)
-Received: from [10.200.68.91] (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ada2da2sm3716393f8f.15.2024.11.15.00.32.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 00:32:19 -0800 (PST)
-Message-ID: <ff7f7358cec4bb03423879a2e4efd16d0a3e8ed7.camel@redhat.com>
-Subject: Re: [PATCH v2 11/11] Remove devres from pci_intx()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Damien Le Moal
- <dlemoal@kernel.org>,  Niklas Cassel <cassel@kernel.org>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rasesh Mody
- <rmody@marvell.com>,  GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko
- <imitsyanko@quantenna.com>,  Sergey Matyukevich <geomatsi@gmail.com>, Kalle
- Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar
- S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>, Ricky Wu
- <ricky_wu@realtek.com>,  Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao
- <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>, Mostafa Saleh
- <smostafa@google.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>, Kunwu Chan
- <chentao@kylinos.cn>, Ankit Agrawal <ankita@nvidia.com>, Christian Brauner
- <brauner@kernel.org>, Reinette Chatre <reinette.chatre@intel.com>, Eric
- Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-input@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-Date: Fri, 15 Nov 2024 09:32:16 +0100
-In-Reply-To: <8734jtl3xm.ffs@tglx>
-References: <20241113124158.22863-2-pstanner@redhat.com>
-	 <20241113124158.22863-13-pstanner@redhat.com> <87msi3ksru.ffs@tglx>
-	 <49bb6fc9ebff3cae844da0465ceadeef8d3217c7.camel@redhat.com>
-	 <8734jtl3xm.ffs@tglx>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="o5AyskLi"
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 68C8720861;
+	Fri, 15 Nov 2024 09:33:54 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id dRbUOyFV1Mka; Fri, 15 Nov 2024 09:33:53 +0100 (CET)
+Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id 8731B201A1;
+	Fri, 15 Nov 2024 09:33:53 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 8731B201A1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1731659633;
+	bh=Cd0I/1edb4VyrYg9jtQLbwr0/8OEjfHEJ4u9sil1pI0=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=o5AyskLiYvlEl1ww77eOwGObYpDWpygopmBB5LeNrVdjKAJ3EcppyKp/HHgAv0PRv
+	 m/TqvzGD1zsYZGqjkzi83+AhAdEZY8/hywEYLQMMLwgJ3/ZLjiPOt55CK6l6W0a/Dt
+	 xIFzQyRR9bCgCA/TAH0Fdb8gkYa3aWSVZyvpjbI93MK78VST05S72UbjXdv4XUAkUR
+	 La6SouyL4iURip6HrK6PXVQlL+ynvh7eVNCe1HZRbRqJiH9ntXcbJ5x/snd+BMB3Sb
+	 oeNL7rRYawmbf3xd44ULGAmco9HUu4emjFI7CSIvl/kM2hQjXwjZ+nW6uJRznmjsl9
+	 /T5HPJa4zVT0g==
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Fri, 15 Nov 2024 09:33:53 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 15 Nov
+ 2024 09:33:53 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id B4C8631843F8; Fri, 15 Nov 2024 09:33:52 +0100 (CET)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 03/11] xfrm: Add an inbound percpu state cache.
+Date: Fri, 15 Nov 2024 09:33:35 +0100
+Message-ID: <20241115083343.2340827-4-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241115083343.2340827-1-steffen.klassert@secunet.com>
+References: <20241115083343.2340827-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On Fri, 2024-11-15 at 01:46 +0100, Thomas Gleixner wrote:
-> On Thu, Nov 14 2024 at 10:05, Philipp Stanner wrote:
-> > On Wed, 2024-11-13 at 17:22 +0100, Thomas Gleixner wrote:
-> > > On Wed, Nov 13 2024 at 13:41, Philipp Stanner wrote:
-> > > > pci_intx() is a hybrid function which can sometimes be managed
-> > > > through
-> > > > devres. This hybrid nature is undesirable.
-> > > >=20
-> > > > Since all users of pci_intx() have by now been ported either to
-> > > > always-managed pcim_intx() or never-managed
-> > > > pci_intx_unmanaged(),
-> > > > the
-> > > > devres functionality can be removed from pci_intx().
-> > > >=20
-> > > > Consequently, pci_intx_unmanaged() is now redundant, because
-> > > > pci_intx()
-> > > > itself is now unmanaged.
-> > > >=20
-> > > > Remove the devres functionality from pci_intx(). Have all users
-> > > > of
-> > > > pci_intx_unmanaged() call pci_intx(). Remove
-> > > > pci_intx_unmanaged().
-> > > >=20
-> > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > > > ---
-> > > > =C2=A0drivers/misc/cardreader/rtsx_pcr.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/misc/tifm_7xx1.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 6 +--
-> > > > =C2=A0.../net/ethernet/broadcom/bnx2x/bnx2x_main.c=C2=A0 |=C2=A0 2 =
-+-
-> > > > =C2=A0drivers/net/ethernet/brocade/bna/bnad.c=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/ntb/hw/amd/ntb_hw_amd.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 +-
-> > > > =C2=A0drivers/ntb/hw/intel/ntb_hw_gen1.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/pci/devres.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 +-
-> > > > =C2=A0drivers/pci/msi/api.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/pci/msi/msi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/pci/pci.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 43 +----------
-> > > > ----
-> > > > ----
-> > > > =C2=A0drivers/vfio/pci/vfio_pci_core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > > > =C2=A0drivers/vfio/pci/vfio_pci_intrs.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 10 ++---
-> > > > =C2=A0drivers/xen/xen-pciback/conf_space_header.c=C2=A0=C2=A0 |=C2=
-=A0 2 +-
-> > > > =C2=A0include/linux/pci.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 -
-> > > > =C2=A014 files changed, 22 insertions(+), 62 deletions(-)
-> > >=20
-> > > Now I'm utterly confused. This undoes the pci_intx_unmanaged()
-> > > churn
-> > > which you carefully split into several patches first.
-> >=20
-> > Have you read the email I have linked?
-> >=20
-> > There is also the cover-letter (does anyone in the community ever
-> > read
-> > those?) which explicitly states:
-> >=20
-> > "Patch "Remove devres from pci_intx()" obviously reverts the
-> > previous
-> > patches that made drivers use pci_intx_unmanaged(). But this way
-> > it's
-> > easier to review and approve. It also makes sure that each checked
-> > out
-> > commit should provide correct behavior, not just the entire series
-> > as a
-> > whole."
->=20
-> I read it and I assume your intention was to force an eye on every
-> use
-> case of pci_intx() and not just on those which need to be converted
-> to
-> pcim_intx().
->=20
-> I'm not convinced that this is needed, but fair enough.
+Now that we can have percpu xfrm states, the number of active
+states might increase. To get a better lookup performance,
+we add a percpu cache to cache the used inbound xfrm states.
 
-Whether pcim_enable_device() is really not used could have been
-overlooked, or the driver could move to "managed mode" in parallel for
-v6.13 for example. Then a bug would be silently introduced into those
-drivers.
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Tested-by: Antony Antony <antony.antony@secunet.com>
+Tested-by: Tobias Brunner <tobias@strongswan.org>
+---
+ include/net/netns/xfrm.h |  1 +
+ include/net/xfrm.h       |  5 ++++
+ net/ipv4/esp4_offload.c  |  6 ++---
+ net/ipv6/esp6_offload.c  |  6 ++---
+ net/xfrm/xfrm_input.c    |  2 +-
+ net/xfrm/xfrm_state.c    | 57 ++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 70 insertions(+), 7 deletions(-)
 
-Besides, me touching pci_intx() unfortunately caused a few explosions
-in the past already, in
-
-fc8c818e756991f5f50b8dfab07f970a18da2556 and
-00f89ae4e759a7eef07e4188e1534af7dd2c7e9c
-
-So this time I prefer to be rather safe than sorry.
-
-
-BTW, if you can review the MSI patch and check whether removing devres
-from there really is fine, that would be helpful.
-
-
-Regards,
-P.
+diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
+index ae60d6664095..23dd647fe024 100644
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -43,6 +43,7 @@ struct netns_xfrm {
+ 	struct hlist_head	__rcu *state_bysrc;
+ 	struct hlist_head	__rcu *state_byspi;
+ 	struct hlist_head	__rcu *state_byseq;
++	struct hlist_head	 __percpu *state_cache_input;
+ 	unsigned int		state_hmask;
+ 	unsigned int		state_num;
+ 	struct work_struct	state_hash_work;
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 0b394c5fb5f3..2b87999bd5aa 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -185,6 +185,7 @@ struct xfrm_state {
+ 	struct hlist_node	byspi;
+ 	struct hlist_node	byseq;
+ 	struct hlist_node	state_cache;
++	struct hlist_node	state_cache_input;
+ 
+ 	refcount_t		refcnt;
+ 	spinlock_t		lock;
+@@ -1650,6 +1651,10 @@ int xfrm_state_update(struct xfrm_state *x);
+ struct xfrm_state *xfrm_state_lookup(struct net *net, u32 mark,
+ 				     const xfrm_address_t *daddr, __be32 spi,
+ 				     u8 proto, unsigned short family);
++struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
++					   const xfrm_address_t *daddr,
++					   __be32 spi, u8 proto,
++					   unsigned short family);
+ struct xfrm_state *xfrm_state_lookup_byaddr(struct net *net, u32 mark,
+ 					    const xfrm_address_t *daddr,
+ 					    const xfrm_address_t *saddr,
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 80c4ea0e12f4..e0d94270da28 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -53,9 +53,9 @@ static struct sk_buff *esp4_gro_receive(struct list_head *head,
+ 		if (sp->len == XFRM_MAX_DEPTH)
+ 			goto out_reset;
+ 
+-		x = xfrm_state_lookup(dev_net(skb->dev), skb->mark,
+-				      (xfrm_address_t *)&ip_hdr(skb)->daddr,
+-				      spi, IPPROTO_ESP, AF_INET);
++		x = xfrm_input_state_lookup(dev_net(skb->dev), skb->mark,
++					    (xfrm_address_t *)&ip_hdr(skb)->daddr,
++					    spi, IPPROTO_ESP, AF_INET);
+ 
+ 		if (unlikely(x && x->dir && x->dir != XFRM_SA_DIR_IN)) {
+ 			/* non-offload path will record the error and audit log */
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 919ebfabbe4e..7b41fb4f00b5 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -80,9 +80,9 @@ static struct sk_buff *esp6_gro_receive(struct list_head *head,
+ 		if (sp->len == XFRM_MAX_DEPTH)
+ 			goto out_reset;
+ 
+-		x = xfrm_state_lookup(dev_net(skb->dev), skb->mark,
+-				      (xfrm_address_t *)&ipv6_hdr(skb)->daddr,
+-				      spi, IPPROTO_ESP, AF_INET6);
++		x = xfrm_input_state_lookup(dev_net(skb->dev), skb->mark,
++					    (xfrm_address_t *)&ipv6_hdr(skb)->daddr,
++					    spi, IPPROTO_ESP, AF_INET6);
+ 
+ 		if (unlikely(x && x->dir && x->dir != XFRM_SA_DIR_IN)) {
+ 			/* non-offload path will record the error and audit log */
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 749e7eea99e4..841a60a6fbfe 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -572,7 +572,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			goto drop;
+ 		}
+ 
+-		x = xfrm_state_lookup(net, mark, daddr, spi, nexthdr, family);
++		x = xfrm_input_state_lookup(net, mark, daddr, spi, nexthdr, family);
+ 		if (x == NULL) {
+ 			secpath_reset(skb);
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index a2047825f6c8..e3266a5d4f90 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -754,6 +754,9 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 			hlist_del_rcu(&x->byseq);
+ 		if (!hlist_unhashed(&x->state_cache))
+ 			hlist_del_rcu(&x->state_cache);
++		if (!hlist_unhashed(&x->state_cache_input))
++			hlist_del_rcu(&x->state_cache_input);
++
+ 		if (x->id.spi)
+ 			hlist_del_rcu(&x->byspi);
+ 		net->xfrm.state_num--;
+@@ -1106,6 +1109,52 @@ static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
+ 	return NULL;
+ }
+ 
++struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
++					   const xfrm_address_t *daddr,
++					   __be32 spi, u8 proto,
++					   unsigned short family)
++{
++	struct hlist_head *state_cache_input;
++	struct xfrm_state *x = NULL;
++	int cpu = get_cpu();
++
++	state_cache_input =  per_cpu_ptr(net->xfrm.state_cache_input, cpu);
++
++	rcu_read_lock();
++	hlist_for_each_entry_rcu(x, state_cache_input, state_cache_input) {
++		if (x->props.family != family ||
++		    x->id.spi       != spi ||
++		    x->id.proto     != proto ||
++		    !xfrm_addr_equal(&x->id.daddr, daddr, family))
++			continue;
++
++		if ((mark & x->mark.m) != x->mark.v)
++			continue;
++		if (!xfrm_state_hold_rcu(x))
++			continue;
++		goto out;
++	}
++
++	x = __xfrm_state_lookup(net, mark, daddr, spi, proto, family);
++
++	if (x && x->km.state == XFRM_STATE_VALID) {
++		spin_lock_bh(&net->xfrm.xfrm_state_lock);
++		if (hlist_unhashed(&x->state_cache_input)) {
++			hlist_add_head_rcu(&x->state_cache_input, state_cache_input);
++		} else {
++			hlist_del_rcu(&x->state_cache_input);
++			hlist_add_head_rcu(&x->state_cache_input, state_cache_input);
++		}
++		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
++	}
++
++out:
++	rcu_read_unlock();
++	put_cpu();
++	return x;
++}
++EXPORT_SYMBOL(xfrm_input_state_lookup);
++
+ static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
+ 						     const xfrm_address_t *daddr,
+ 						     const xfrm_address_t *saddr,
+@@ -3079,6 +3128,11 @@ int __net_init xfrm_state_init(struct net *net)
+ 	net->xfrm.state_byseq = xfrm_hash_alloc(sz);
+ 	if (!net->xfrm.state_byseq)
+ 		goto out_byseq;
++
++	net->xfrm.state_cache_input = alloc_percpu(struct hlist_head);
++	if (!net->xfrm.state_cache_input)
++		goto out_state_cache_input;
++
+ 	net->xfrm.state_hmask = ((sz / sizeof(struct hlist_head)) - 1);
+ 
+ 	net->xfrm.state_num = 0;
+@@ -3088,6 +3142,8 @@ int __net_init xfrm_state_init(struct net *net)
+ 			       &net->xfrm.xfrm_state_lock);
+ 	return 0;
+ 
++out_state_cache_input:
++	xfrm_hash_free(net->xfrm.state_byseq, sz);
+ out_byseq:
+ 	xfrm_hash_free(net->xfrm.state_byspi, sz);
+ out_byspi:
+@@ -3117,6 +3173,7 @@ void xfrm_state_fini(struct net *net)
+ 	xfrm_hash_free(net->xfrm.state_bysrc, sz);
+ 	WARN_ON(!hlist_empty(net->xfrm.state_bydst));
+ 	xfrm_hash_free(net->xfrm.state_bydst, sz);
++	free_percpu(net->xfrm.state_cache_input);
+ }
+ 
+ #ifdef CONFIG_AUDITSYSCALL
+-- 
+2.34.1
 
