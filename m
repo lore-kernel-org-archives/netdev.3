@@ -1,90 +1,114 @@
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73433A32
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 07:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E306C523A;
+	Fri, 15 Nov 2024 07:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731654886; cv=none; b=bLNxZ7gU/vKzULZsEdJdJIjhQ31R/Gl4ZFtSqtYvpUgpHQ4urHYJ+VlfmkMvDHNeLCN0T2WnifKoiZdVsnpIK66ZKiE93t8mf/hjJdJ+QYLCfDFCGgftLio91A35fT67bbFQmzGgHxkXNbXHAvt8vkXOzNH+wGm75AAYEbgK62E=
+	t=1731655379; cv=none; b=EHguPAKAum+9S+FpgzoQOxQLkVaV492naNSszniQj01OwEMEwPsIWQjOyTlxSu4zhuwoXDkWiJC6lElqn4tO3qCGUqpMvZdtO2rqS7K+v9gbCjnVSJISWzYyAPIr39rQYKKYCnrFsKgx1C86fV0y12XYEpUJPEjYmFasbQnxK2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731654886; c=relaxed/simple;
-	bh=9AmgxxOLS8mqk3kQantZPGpPnVglNhOEhEXpSW672xI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZkUhXtkWi3enu42NBFesloL7z1an1p+9uFfI0RGVzwT0zK68eNPs5qGMpTamgvaDHGH5Jp4grKQcPTL/NgsmbRCFNF6V25fSVdv1VefbDuQ+GB6blQ0HUGwpRXHzaT+gkmPZiRrWf1KVMinA4jfQY81v3W0fNoo09CY/KrvAerg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: bizesmtp86t1731654743t3c21mjr
-X-QQ-Originating-IP: SFCi8xKvph9l2q2Y1+L8c3dMeW/ndL3WaXGiV8vJgew=
-Received: from wxdbg.localdomain.com ( [115.206.160.29])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 15 Nov 2024 15:12:14 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16770981959892933605
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.co,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rmk+kernel@armlinux.org.uk,
-	netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com,
-	duanqiangwen@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net] net: txgbe: fix null pointer to pcs
-Date: Fri, 15 Nov 2024 15:35:08 +0800
-Message-Id: <20241115073508.1130046-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1731655379; c=relaxed/simple;
+	bh=N/BiYXgE9Jhe3HGAW2Ch4Co0N6fmwewtwH683zofX10=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VmiavrPTO+6pASGQ/BbMPJ53XyrOTBEKlBNcOj9EnU5fTniOE+A525A6nsM8oCo7+Ael0Ytonoxvo2a9LiITxOOJIjyiGHycOnxaM7rXBPzSrg32WuflprDJqjOJD5cY0HcaVI6mL/iPz48LLRaz+u0C5gQkLdsTj55zJATHocU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=SG0WR2Up; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="SG0WR2Up"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1731654886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9pgoHLWj9VbX/NrQJnb29ZRcPNXEydueCcQO0bd/UTE=;
+	b=SG0WR2UpAqHzUaQRKm+gP7+Zc8GGYDTVxn3e5ZVXw36iLlm4UsX9RrwAHnkBpr2F1c0ZTC
+	31GUNdD/c1Ct33/szlga0McFaQZ9l0O/0s6SEIzccdw0qi0dI73e4aUX3awT8DZlY3WyjG
+	15ULoyZV9cz6NXchMMgftYzkSM2Xdls=
+From: Sven Eckelmann <sven@narfation.org>
+To: mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
+ Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Subject: Re: [PATCH-net] batman-adv: Fix "Arguments in wrong order" issue
+Date: Fri, 15 Nov 2024 08:14:40 +0100
+Message-ID: <2963697.e9J7NaK4W3@ripper>
+In-Reply-To: <20241115045637.15481-1-dheeraj.linuxdev@gmail.com>
+References: <20241115045637.15481-1-dheeraj.linuxdev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NEaes6yu2o+mSNtccq7LsB49D/AqC67rl7wf/IDL1EByZWsEqzv1hB7B
-	7v2lytEhLJ+6dQGinX5HvcT0Uvua8Tw/JKxcg44sxKsZOWlbiPVrUAK6xi9iIolEguPwVF0
-	K1NjuG6oBXtbIRkTQ92b31k+NPbnzgNE4sNXJDZ1gIGMfR5bGPwYAxl1XxBKXtB0020KUF5
-	t1ROjma5vrO/aS+j8V7QBZQnlxlPX3OV+ejOvQfPrHStE0NarHfEmLrTKyNNmLboLl5s+EO
-	CU340MDGTBiYJrT09tQNcYQVqlCIlIpni9zlK0tKfayACFwwf9hn+SIAgb1ax8JEHv8VMDq
-	2WXklUNEXh+QObmu5ef8+NivSSL7yRNDriFoGw+r0vAmy6omDS2/VkEqIy5JrGm6noivJAI
-	+Nw8EQLBzJLubNds7RFDc77y50sEIkW5Dbaz5z5werGKtLVYaSxh+6BlJo1UzNgMU2wXQn4
-	7sGX/jCX+5CkCMPS9r51c7rcsHR3DQohKSDMmcSxnYbJuJWBsFkXnUdgKM71vOj6rBLENLC
-	C8U/lGTZdGlX/XVszbcMXpyuUvZuyEEAl/QHxoLa46Rbboi9liu15DBT6imR6EEPWdvJcP5
-	Oaa7o14e+FBSl7dn5WFpwbhpXSjzDHAOBySdH08A0teC9rAa/5FuY1AJAbF5DutDVrf9ojm
-	vhpWt4zFCmzHf3jFL2gH4KFb2BRbdcQxvXFIUWCxHB55i12ujzDPuwTSzNK1Gmx2MtoSafn
-	jgjB3jZbhndZ9+tBasiFFwcNI83xUKUbGyF0/OWw7VTjbQnfgHlM4oARfrPVrmAwALMjunL
-	8l07sxLNvtvaP+oYZv9D+7NppglSe7jljimC2WXE3f9YTokEvKMUpcxUk8v6FoOnnQ7R4fU
-	3sDxAAs33uEQFIIT/zIqQBw7V7ovmvOX11VPQxkQqob5Y9d1K5uivL6D5VdHdZvGH+YDSgk
-	bGNNWgvVJZ9NFWG8nXeg0Qhb0Kh6UKOr+1HvMn4DfmPuENN0eRnRGxbn0/htoJrdQ7zo=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+Content-Type: multipart/signed; boundary="nextPart3320950.aeNJFYEL58";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-For 1000BASE-X or SGMII interface mode, the PCS also need to be selected.
-Only return null pointer when there is a copper NIC with external PHY.
+--nextPart3320950.aeNJFYEL58
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+Date: Fri, 15 Nov 2024 08:14:40 +0100
+Message-ID: <2963697.e9J7NaK4W3@ripper>
+In-Reply-To: <20241115045637.15481-1-dheeraj.linuxdev@gmail.com>
+References: <20241115045637.15481-1-dheeraj.linuxdev@gmail.com>
+MIME-Version: 1.0
 
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Friday, 15 November 2024 05:56:37 CET Dheeraj Reddy Jonnalagadda wrote:
+> This commit fixes an "Arguments in wrong order" issue detected by
+> Coverity (CID 1376875).
+> 
+> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+> ---
+>  net/batman-adv/distributed-arp-table.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/
+distributed-arp-table.c
+> index 801eff8a40e5..781a5118d441 100644
+> --- a/net/batman-adv/distributed-arp-table.c
+> +++ b/net/batman-adv/distributed-arp-table.c
+> @@ -1195,7 +1195,7 @@ bool batadv_dat_snoop_outgoing_arp_request(struct 
+batadv_priv *bat_priv,
+>  			goto out;
+>  		}
+>  
+> -		skb_new = batadv_dat_arp_create_reply(bat_priv, ip_dst, 
+ip_src,
+> +		skb_new = batadv_dat_arp_create_reply(bat_priv, ip_src, 
+ip_dst,
+>  						      
+dat_entry->mac_addr,
+>  						      
+hw_src, vid);
+>  		if (!skb_new)
+> 
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 2bfe41339c1c..f26946198a2f 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -162,7 +162,7 @@ static struct phylink_pcs *txgbe_phylink_mac_select(struct phylink_config *confi
- 	struct wx *wx = phylink_to_wx(config);
- 	struct txgbe *txgbe = wx->priv;
- 
--	if (interface == PHY_INTERFACE_MODE_10GBASER)
-+	if (wx->media_type != sp_media_copper)
- 		return &txgbe->xpcs->pcs;
- 
- 	return NULL;
--- 
-2.27.0
+Sorry, but this is wrong. We send an answer here ("ARP request 
+replied locally") and of course we must then switch src and destination. 
+Otherwise we would send the ARP response to the entity which didn't requested 
+it.
+
+This was already marked as false positive in Coverity a long time ago.
+
+Kind regards,
+	Sven
+--nextPart3320950.aeNJFYEL58
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZzb04AAKCRBND3cr0xT1
+yzM0AQCBQ1es0wPjpvjM/8+1H+eeP4x7a8mHMiUCI0cuKxT8yQEAmrAsexf+nPGA
+Z1QV0TNZe100S6Fib9mpVuTh3xXCjAU=
+=Orm4
+-----END PGP SIGNATURE-----
+
+--nextPart3320950.aeNJFYEL58--
+
+
 
