@@ -1,75 +1,101 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0990E18785D;
-	Fri, 15 Nov 2024 09:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC29A18CC1C;
+	Fri, 15 Nov 2024 09:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731662504; cv=none; b=fQBVw6toINyE0fq3kL1JQ+Ks2CZpyOdMfsGH0uM7inSSkjQiohxIBg1W/rON2IADR6CKgiE8IwYowSgyS16TN17tkJkgPwodumOXsJnLvI9jxgManwCaiyhz+HazBQxHUOR7iPpDXCm2ZPD6oX7Gu9BTXupS4yvtWHQMV3oGnLw=
+	t=1731662590; cv=none; b=IPHkrS0l0P9D16BxsXKx2aEnlMapEYIwcXEgJtDlOp1xlsVmGylp8UFrZWDGOtFDXjgAcvwPWfQozVG5gF/XTwJGI08tk9XOWLa7ZFHiwhsXa7MvsuIvMDqvoPrISTfdw3n+VDv3dHHi4Ao3/sRhB6BjFU0QjG2rGWLxOc8iQ0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731662504; c=relaxed/simple;
-	bh=4mL2KcxRoDYVRV/FTNeMeIO34Rqn6F5VHmFisLPKuY4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r4edjcHRBon5dEtQfEwPR7GVRWCeHHZhCmpN/l4NImKiuFtaDNw2//MN96aow+ils7R+Wzyv6DlbRfhh5puYUpWn0VI4ZaJVe0G9aXs1v9ZPgP4cH0Bs2GUfep4+LSfpZThfPJLFESV217al3mk+6uj/Oz7xVU0t+QqiES/Fl/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XqWfg3LJYz926T;
-	Fri, 15 Nov 2024 17:18:51 +0800 (CST)
-Received: from kwepemg200003.china.huawei.com (unknown [7.202.181.30])
-	by mail.maildlp.com (Postfix) with ESMTPS id 79087180102;
-	Fri, 15 Nov 2024 17:21:32 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemg200003.china.huawei.com
- (7.202.181.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 15 Nov
- 2024 17:21:31 +0800
-From: Liu Jian <liujian56@huawei.com>
-To: <trondmy@kernel.org>, <anna@kernel.org>, <chuck.lever@oracle.com>,
-	<jlayton@kernel.org>, <neilb@suse.de>, <okorniev@redhat.com>,
-	<Dai.Ngo@oracle.com>, <tom@talpey.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>
-CC: <linux-nfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<liujian56@huawei.com>
-Subject: [PATCH] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
-Date: Fri, 15 Nov 2024 17:38:04 +0800
-Message-ID: <20241115093804.1634328-1-liujian56@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1731662590; c=relaxed/simple;
+	bh=nbuhk+CaUW9mRbVIzoPXH9V8FF1V83ATXwEiP9WhI7A=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FBIYCNYnasEx1brar6uF6ABHrp/PEztpRROgZKmZAygbCra+rj2AyJOWOW8ze7U9w+fN40MJht7mwJuJ7YSpQmHga9tkNMR65RwHo4Ov7ZiAAb+DyplTNHOi9bS3X2qYOlJ17LrSj6M1VPJyiOvwX5Xa3bg2lcubN5XUpbnB/zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=MaskqfJ6; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="MaskqfJ6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731662588; x=1763198588;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nbuhk+CaUW9mRbVIzoPXH9V8FF1V83ATXwEiP9WhI7A=;
+  b=MaskqfJ67K2+glak12R0FZIScSkTWIf2VDDFz5Xk7DNJEbGIErQVdTg5
+   91cUxNRe8eidh9X58nPx8K/oPuOJmKyLXFWyl9uDMEaRBQrvec87wNVvV
+   QAZ/4JaEyuKKZFQf0IzNPfzpWUukMWqoG1Ir1X8XOrLHt3ngtKZId0uD1
+   jw+eQ6TV00cwq7sBkz5dWWdXFG+gv79dlVnisOqzst+kDtAaYcIZ5TAbp
+   5OU9oNoYAlQJL7FnOBj+4pszq6ukcYzQysjOAS8PWFtpRKHROv65nipWq
+   XeWpMpKWP1cRSjjwJ26R0DFc82J2SNk3JntBoAMY5SRk8GAqr1zAJHDdY
+   g==;
+X-CSE-ConnectionGUID: sSmUfU85Rbizj9448fniyw==
+X-CSE-MsgGUID: sf/zJ0QfQIWXKVwBjtgE9A==
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
+   d="scan'208";a="34091113"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Nov 2024 02:23:07 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 15 Nov 2024 02:22:41 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Fri, 15 Nov 2024 02:22:38 -0700
+Date: Fri, 15 Nov 2024 09:22:37 +0000
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lars
+ Povlsen" <lars.povlsen@microchip.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Russell King <linux@armlinux.org.uk>,
+	<jacob.e.keller@intel.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <devicetree@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH net-next v2 8/8] dt-bindings: net: sparx5: document RGMII
+ MAC delays
+Message-ID: <20241115092237.gzpat4x6kjipb2x7@DEN-DL-M70577>
+References: <20241113-sparx5-lan969x-switch-driver-4-v2-0-0db98ac096d1@microchip.com>
+ <20241113-sparx5-lan969x-switch-driver-4-v2-8-0db98ac096d1@microchip.com>
+ <29ddbe38-3aac-4518-b9f3-4d228de08360@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemg200003.china.huawei.com (7.202.181.30)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <29ddbe38-3aac-4518-b9f3-4d228de08360@lunn.ch>
 
-Since transport->sock has been set to NULL during reset transport,
-XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
-xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
-to dereference the transport->sock that has been set to NULL.
+Hi Andrew,
 
-Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Liu Jian <liujian56@huawei.com>
----
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+> > The lan969x switch device supports two RGMII port interfaces that can be
+> > configured for MAC level rx and tx delays.
+> >
+> > Document two new properties {rx,tx}-internal-delay-ps. Make them
+> > required properties, if the phy-mode is one of: rgmii, rgmii_id,
+> > rgmii-rxid or rgmii-txid. Also specify accepted values.
+> 
+> This is unusual if you look at other uses of {rt}x-internal-delay-ps.
+> It is generally an optional parameter, and states it defaults to 0 if
+> missing, and is ignored by the driver if phy-mode is not an rgmii
+> variant.
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 906a1b563aee..2a7e33abe151 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1198,6 +1198,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
- }
- 
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
--- 
-2.34.1
+Is unusual bad? :-) I thought that requiring the properties would make
+misconfigurations (mismatching phy-modes and MAC delays) more obvious,
+as you were forced to specify exactly what combination you want in the
+DT.  Maybe not. I can change it,  no problem.
+
+/Daniel
+
+
+> 
+>         Andrew
+
+
 
