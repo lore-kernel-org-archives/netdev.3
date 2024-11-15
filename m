@@ -1,122 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88BD13AD11
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 02:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB0C28EF;
+	Fri, 15 Nov 2024 02:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731638651; cv=none; b=uwT98lVroqbD8OqotHqiDrZwfcHv4J9yTmmmVcPTM/O4ZPwaEDayIA7EO89e2c0tMA9ATSxWbpTjhqYIDEguxmPCxNy6WQuvucTjN1r3rs2An3AHmsPOOtVxM4VbwEX0DF99l5ekGX0/rwRejpJbKhDeftzScEqxIXFwbCKDQ+8=
+	t=1731638816; cv=none; b=gnZK5LmmWybXDs/gxb/Pv2LneGJ6qyOrNddZ19mps/6gvGo3OsLIBd89Bg3pApYxvzriZYd2KPhwQZ06upumiZs8d65UtMwUdLhe3BL3w8HBkKo6ELOEBzlhXMFKka+Px1iLD+jPPKOK7ZtWHM7C/f44rCK6YsoLorb4qLZ1MEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731638651; c=relaxed/simple;
-	bh=OxSWWLIUP+xkl6A/4kcNUvrt7MZBic5/QiYfBI412ds=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=ltTdlrLQXidfhbaRXPi2BFnZ4p/PNLAWRV+Ff2VkmhBfL8EKPtwcWT+4154N68Zmkey40PXu8Ttx4AVZSFGUxQhQ0yEbjlCSMo2cdetc/+6PQ4yVqv3Q2V9ifKG05dM6+tT3is247PBQDY9iakj6lzkJ/AeDLjx23/9PEZCmjKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKM6N/My; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKM6N/My"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731638650; x=1763174650;
-  h=from:to:cc:subject:date:message-id;
-  bh=OxSWWLIUP+xkl6A/4kcNUvrt7MZBic5/QiYfBI412ds=;
-  b=kKM6N/MyJ8oOnle+eQkx3eb6VpVok73YYICpM3PxDu30pFLkOUcE/MDK
-   rYrNfgHSkNAW5v2Ss82rN+KEtEykYJAUSHG0WQ6hoeS9RuFdu8Y8za9H2
-   PXByxTJO8DBzAXuR7MM43/SrFsGAMoaJlWvw9ZoyKAs/H9WGj6Bl+oC2B
-   Sel4VIuFU6nTS8t9NhJpznOPjNPBp0BeHtHgFL1jQN0mITednrWDj49Mn
-   DU8sg4W1GDnLRVAR1xathDV+LpS9NJVOHzKsDIxm3s6h58YRtlsLlWtti
-   sPQvtzobEdqAzR24LxUa8x46f83bP+79n9gZh+312n7ulIwQ9fqMAdMQG
-   A==;
-X-CSE-ConnectionGUID: AJxmKtInQyiY/1Dmdcw/Mg==
-X-CSE-MsgGUID: w9ORdI15QvyxCQ3+IcWTLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11256"; a="31722670"
-X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; 
-   d="scan'208";a="31722670"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2024 18:44:09 -0800
-X-CSE-ConnectionGUID: GAOiYYtBQ2WMzyanpPCy2g==
-X-CSE-MsgGUID: 3AHNBOZ4RLqcJgI5djzekA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,155,1728975600"; 
-   d="scan'208";a="93467477"
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by orviesa004.jf.intel.com with ESMTP; 14 Nov 2024 18:16:44 -0800
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
+	s=arc-20240116; t=1731638816; c=relaxed/simple;
+	bh=IAiuFyp3E8W9vuvfCCVnB6Wz9h8JSHrPyDRUJkzoI38=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XM8md1ZyDYxbMIBSbNUe7PhI6dXE4U3Y51dwBkB9l2MW1MyT06BPlIy++a+pe9+0vfeUnAmQtI7Wzf6uFXtlQHUctO/NjSnl86U+LwsreTK/N5W+h+ctiaGss3cQi6M5V1iy53g3eEzPBw/AiTzHna0rwPxi1StqoXSLu1sDa+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: bizesmtpsz13t1731638776tf26ak
+X-QQ-Originating-IP: m+FaQT7FrJXF6yKa4W3dcPGuEsWgqna6Tk5+0LWIfnY=
+Received: from localhost.localdomain ( [115.206.160.29])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 15 Nov 2024 10:46:07 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10350192324756698958
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: linux-pci@vger.kernel.org
 Cc: netdev@vger.kernel.org,
-	przemyslaw.kitszel@intel.com,
-	sridhar.samudrala@intel.com,
-	rlance@google.com,
-	decot@google.com,
-	willemb@google.com,
-	joshua.a.hay@intel.com,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH iwl-net] idpf: add read memory barrier when checking descriptor done bit
-Date: Thu, 14 Nov 2024 18:16:18 -0800
-Message-Id: <20241115021618.20565-1-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
+	helgaas@kernel.org,
+	jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH PCI v2] PCI: Add ACS quirk for Wangxun FF5XXX NICS
+Date: Fri, 15 Nov 2024 10:46:04 +0800
+Message-ID: <E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: M9NnLm3GdbLblnwuwzDh1lvvan46j55EdPu/Tw3UrgSnUAYJ/p8hyr8g
+	DygslxdDA8OtNC0stBCDeLvxGrXPFYfzfMulV64nFA7pw3wMLjvyDr+deG8Afagy5hxzw8i
+	1UC34bWkeRMjWgM9a3cDL3bhQvJ5Y2pxO/+uaLEuIu/yIP9mslbMryP6ql+qszqFqEq5kZ1
+	x4VaF3AyUuRaoEEkgrz30nPVV5aVMGN5/l81TXZMmuseKkf708681kfEy0krfJvLKv+7vNt
+	2MkRKa0efpixwGXx+sCcc9RSnsDdgM/NLdfpcxjSQz49yQ4XMjcXulbAQ5Wffg69umFeplh
+	wSAnq1pBK+VqrcjBNo71Iwux0ikMCspRm4GapMzTEL2YmTMaLHx0Mxy15p6C17410+96oqG
+	hpLBUtIxmk1sn1kIIA6ul/U0QUy2e7gi9RZ8xZxuyMkzaC0LAPTnv2xcR9bWYV3cHxDGZPL
+	LFSjuE/5XaYTyQHRXJVNSSSsbCZYybVW0aCXr/DhS+oXhq5Pdt5bevT0AnUM2gvphLwCrCb
+	YHcklIq0dIKCihv3PRCREPGUMZbHG32X/0kIcYmPdThgSY6BCWa1fuFLl0k524zK5a4tLXg
+	bZg+iM11MZx6RAvaLLxyX0/rkN1BI04spyrQT4i92rCMDEej6Myguy0OWYG50WsJXHN2AUY
+	DYp00sdwtWzpa3gykcyShQgjSUMKCzIt30ufdLPFMt00Dmb0q5VEjbfi6/DXk5/GoqU+wgE
+	FUcVscM/HsYeYiRqlYLJ298T1Hcd/YIIaNuOvRD3DMQ6eLr5Sy928JXu9iyxKSVsaY1r99n
+	agKyVYzfdwd/F8LXrACJv5YrSvm7DDQk2YY8JvLMZvLLUOhKr+MeQG+CkATF207Ru/wx6nQ
+	054wQ9YNSxi29f0gs/x+ajc53/dtzMPXwJe50DE4PEnusFpsQhI4hIajUK7IM3YywPBKnPy
+	h2DkjAe4A3WlBS4oMi0iFWLUxHhcK47/t93wwjQ2KQRXRNDO78eoDJO/8
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-Add read memory barrier to ensure the order of operations when accessing
-control queue descriptors. Specifically, we want to avoid cases where loads
-can be reordered:
+Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.
+They may be multi-function devices, but they do not advertise an ACS
+capability.
 
-1. Load #1 is dispatched to read descriptor flags.
-2. Load #2 is dispatched to read some other field from the descriptor.
-3. Load #2 completes, accessing memory/cache at a point in time when the DD
-   flag is zero.
-4. NIC DMA overwrites the descriptor, now the DD flag is one.
-5. Any fields loaded before step 4 are now inconsistent with the actual
-   descriptor state.
+But the hardware does isolate FF5xxx functions as though it had an
+ACS capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS
+Control register, i.e., all peer-to-peer traffic is directed
+upstream instead of being routed internally.
 
-Add read memory barrier between steps 1 and 2, so that load #2 is not
-executed until load has completed.
+Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
+functions can be in independent IOMMU groups.
 
-Fixes: 8077c727561a ("idpf: add controlq init and reset checks")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Suggested-by: Lance Richardson <rlance@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_controlq.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-index 4849590a5591..61c7fafa54a1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-@@ -375,6 +375,11 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
- 		desc = IDPF_CTLQ_DESC(cq, ntc);
- 		if (!(le16_to_cpu(desc->flags) & IDPF_CTLQ_FLAG_DD))
- 			break;
-+		/*
-+		 * This barrier is needed to ensure that no other fields
-+		 * are read until we check the DD flag.
-+		 */
-+		dma_rmb();
+v2:
+- Update commit and comment logs.
+v1:
+https://lore.kernel.org/linux-pci/3D914272-CFAE-4B37-A07B-36CA77210110@net-swift.com/T/#t
+
+ drivers/pci/quirks.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index dccb60c1d9cc..8103bc24a54e 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4996,18 +4996,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
+ }
  
- 		/* strip off FW internal code */
- 		desc_err = le16_to_cpu(desc->ret_val) & 0xff;
-@@ -562,6 +567,11 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
- 
- 		if (!(flags & IDPF_CTLQ_FLAG_DD))
- 			break;
-+		/*
-+		 * This barrier is needed to ensure that no other fields
-+		 * are read until we check the DD flag.
-+		 */
-+		dma_rmb();
- 
- 		q_msg[i].vmvf_type = (flags &
- 				      (IDPF_CTLQ_FLAG_FTYPE_VM |
+ /*
+- * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
+- * devices, peer-to-peer transactions are not be used between the functions.
+- * So add an ACS quirk for below devices to isolate functions.
++ * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
++ * multi-function devices, the hardware isolates the functions by
++ * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
++ * PCI_ACS_CR were set.
+  * SFxxx 1G NICs(em).
+  * RP1000/RP2000 10G NICs(sp).
++ * FF5xxx 40G/25G/10G NICs(aml).
+  */
+ static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
+ {
+ 	switch (dev->device) {
+-	case 0x0100 ... 0x010F:
+-	case 0x1001:
+-	case 0x2001:
++	case 0x0100 ... 0x010F: /* EM */
++	case 0x1001: case 0x2001: /* SP */
++	case 0x5010: case 0x5025: case 0x5040: /* AML */
++	case 0x5110: case 0x5125: case 0x5140: /* AML */
+ 		return pci_acs_ctrl_enabled(acs_flags,
+ 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ 	}
 -- 
-2.17.2
+2.43.2
 
