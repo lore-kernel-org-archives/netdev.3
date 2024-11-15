@@ -1,39 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3A1192D8B;
-	Fri, 15 Nov 2024 13:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA58C1B218E;
+	Fri, 15 Nov 2024 13:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731676395; cv=none; b=q8hP/WBLZr9gPEDbzeIVOQQt0JcS8aRNsfmBrF63q0VSCiNrgdl4jXhyUmgNprKci9nIIFDhUdT12xBGkS+eJfDkJLTmgwNruVFxNlux1WFM+dOvTDeUHiIb0T2PzCoXTymsl5fX9n0zy9PcoLvq/ZAUmYC8fciClraOBaaNn9o=
+	t=1731676978; cv=none; b=Em5TOfnv2Pj6EDHVrr5TtU5Ma5ExJQ0fEfjKgcmk0GL/733x/LYyKhLdb/J6XDcL3X+4+UmC+9ajyA1R4C9Q4qwZ9+YOj/ZUEuEpo5VdEO86k5mqXV5zqex0LXF5u5eLqfHw2Tx8+qz6nTUPUcDS94/dq54A5NcyDlM1/pGr+rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731676395; c=relaxed/simple;
-	bh=ozD32IK5xa55e4YX1jnrRjLeqAhNIL3ofxjLF3f0V0s=;
+	s=arc-20240116; t=1731676978; c=relaxed/simple;
+	bh=yZBYo3Xczm3xelxlNqnzQYLgDwGmIibZiotL/Xr5ibI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDbq972GQfuy2GA/c1s5UoWfN0ZQ/UTQz6mBqThnIKxXuNaBawXFh9kXzgTaODLLVN1+Dixz1Um0JEV/uMnJiTzVFROkPYx3gcH9Wr0x+gAR4plRaW74PZXSWdL0tbf8gM4gNTJ022bhKvRu2X4iq4OOVDSFhRiGgP9UVsajubo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNnqCHSW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DrKARe5BvA9LVLJD5BgIGlj7keXsyRi3u1uw8lCxAPcNarPadB6u4IkGbdicK8KGqJ+edNaG8f+J7JGH4/Ksvko0Mv08eXlTyuWCE07m80DNmoFRiLREekArEwoQqEvU9wnVGb7pFNnOTsufBr4krHgcSWgo76F/IZRrueSz5/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kuS9SzL/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNnqCHSW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5BBC4CED4;
-	Fri, 15 Nov 2024 13:13:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731676395;
-	bh=ozD32IK5xa55e4YX1jnrRjLeqAhNIL3ofxjLF3f0V0s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lNnqCHSW0sUbyXz4U7F5PV2MhttsFCQW6/+/+c3SV/K4Y7YiWv12Qznljvl6AtLHa
-	 1bCDwY7uBQAWR+nQgPk0vQ7E84jsvoL+nYYFreWvftfwKv7Mjka3dgwQD1RbwaWA4Y
-	 9VwNHx5KXnopPnuDAdkqAy/m1X9ENzdYAZkZaBAw=
-Date: Fri, 15 Nov 2024 14:13:12 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: bpf@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, netdev@vger.kernel.org,
-	magnus.karlsson@intel.com, bjorn@kernel.org, jordyzomer@google.com,
-	security@kernel.org
-Subject: Re: [PATCH bpf 2/2] bpf: fix OOB devmap writes when deleting elements
-Message-ID: <2024111559-busily-bucktooth-d9a2@gregkh>
-References: <20241115125348.654145-1-maciej.fijalkowski@intel.com>
- <20241115125348.654145-3-maciej.fijalkowski@intel.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kuS9SzL/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ef3SzHkC/AAEf+p5zTM3KCa1I619LTyjflgp5vpLoF4=; b=kuS9SzL/3MNLaDLbckp5u18ELV
+	TC/iDCSgoIsrmkllG4TQsJA8fMVq1f5M0UQpUg7sxxQ6138WVDYLd/ird8R+uvzoojnz1GKmjrw43
+	M2aKNrxrwjjoLFw8OyfhJZ+u8pctVsw8ZDkz38yqYQu3xTw82qBqS9dj9HNHDgJv+6KM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tBwHM-00DQ7l-NL; Fri, 15 Nov 2024 14:22:28 +0100
+Date: Fri, 15 Nov 2024 14:22:28 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel@quicinc.com
+Subject: Re: [PATCH] net: stmmac: dwmac-qcom-ethqos: Enable support for XGMAC
+Message-ID: <5899239a-50c4-46ca-9cd7-43e95d61fe54@lunn.ch>
+References: <20241112-fix_qcom_ethqos_to_support_xgmac-v1-1-f0c93b27f9b2@quicinc.com>
+ <55914c2a-95d8-4c40-a3ea-dfa6b2aeb1dd@lunn.ch>
+ <2ac308d7-35be-463e-9838-3bbedc2a4d68@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,135 +55,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241115125348.654145-3-maciej.fijalkowski@intel.com>
+In-Reply-To: <2ac308d7-35be-463e-9838-3bbedc2a4d68@quicinc.com>
 
-On Fri, Nov 15, 2024 at 01:53:48PM +0100, Maciej Fijalkowski wrote:
-> Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-> index used for accessing map entry, due to being a signed integer,
-> causes the OOB writes. Fix is simple as changing the type from int to
-> u32, however, when compared to XSKMAP case, one more thing needs to be
-> addressed.
-> 
-> When map is released from system via dev_map_free(), we iterate through
-> all of the entries and an iterator variable is also an int, which
-> implies OOB accesses. Again, change it to be u32.
-> 
-> Example splat below:
-> 
-> [  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-> [  160.731662] #PF: supervisor read access in kernel mode
-> [  160.736876] #PF: error_code(0x0000) - not-present page
-> [  160.742095] PGD 0 P4D 0
-> [  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-> [  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-> [  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-> [  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-> [  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-> [  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-> [  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-> [  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-> [  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-> [  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-> [  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-> [  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-> [  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-> [  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-> [  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> [  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> [  160.874092] PKRU: 55555554
-> [  160.876847] Call Trace:
-> [  160.879338]  <TASK>
-> [  160.881477]  ? __die+0x20/0x60
-> [  160.884586]  ? page_fault_oops+0x15a/0x450
-> [  160.888746]  ? search_extable+0x22/0x30
-> [  160.892647]  ? search_bpf_extables+0x5f/0x80
-> [  160.896988]  ? exc_page_fault+0xa9/0x140
-> [  160.900973]  ? asm_exc_page_fault+0x22/0x30
-> [  160.905232]  ? dev_map_free+0x77/0x170
-> [  160.909043]  ? dev_map_free+0x58/0x170
-> [  160.912857]  bpf_map_free_deferred+0x51/0x90
-> [  160.917196]  process_one_work+0x142/0x370
-> [  160.921272]  worker_thread+0x29e/0x3b0
-> [  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-> [  160.929157]  kthread+0xd4/0x110
-> [  160.932355]  ? kthread_park+0x80/0x80
-> [  160.936079]  ret_from_fork+0x2d/0x50
-> [  160.943396]  ? kthread_park+0x80/0x80
-> [  160.950803]  ret_from_fork_asm+0x11/0x20
-> [  160.958482]  </TASK>
-> 
-> Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-> Reported-by: Jordy Zomer <jordyzomer@google.com>
-> Suggested-by: Jordy Zomer <jordyzomer@google.com>
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> ---
->  kernel/bpf/devmap.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-> index 7878be18e9d2..3aa002a47a96 100644
-> --- a/kernel/bpf/devmap.c
-> +++ b/kernel/bpf/devmap.c
-> @@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
->  static void dev_map_free(struct bpf_map *map)
->  {
->  	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
-> -	int i;
-> +	u32 i;
->  
->  	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
->  	 * so the programs (can be more than one that used this map) were
-> @@ -821,7 +821,7 @@ static long dev_map_delete_elem(struct bpf_map *map, void *key)
->  {
->  	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
->  	struct bpf_dtab_netdev *old_dev;
-> -	int k = *(u32 *)key;
-> +	u32 k = *(u32 *)key;
->  
->  	if (k >= map->max_entries)
->  		return -EINVAL;
-> @@ -838,7 +838,7 @@ static long dev_map_hash_delete_elem(struct bpf_map *map, void *key)
->  {
->  	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
->  	struct bpf_dtab_netdev *old_dev;
-> -	int k = *(u32 *)key;
-> +	u32 k = *(u32 *)key;
->  	unsigned long flags;
->  	int ret = -ENOENT;
->  
-> -- 
-> 2.34.1
+On Thu, Nov 14, 2024 at 05:08:13PM -0800, Sagar Cheluvegowda wrote:
 > 
 > 
+> On 11/13/2024 6:51 PM, Andrew Lunn wrote:
+> > On Tue, Nov 12, 2024 at 06:08:10PM -0800, Sagar Cheluvegowda wrote:
+> >> All Qualcomm platforms have only supported EMAC version 4 until
+> >> now whereas in future we will also be supporting XGMAC version
+> >> which has higher capabilities than its peer. As both has_gmac4
+> >> and has_xgmac fields cannot co-exist, make sure to disable the
+> >> former flag when has_xgmac  is enabled.
+> > 
+> > If you say they are mutually exclusive, how can it happen that both
+> > are enabled?
+> > 
+> > To me, this feels like you are papering over a bug somewhere else.
+> > 
+> > 	Andrew
+> 
+> 
+> We can set either has_gmac4 or has_xgmac flags by using below
+> dtsi properties as well. But since Qualcomm only supported
+> GMAC4 version in all of its chipsets until now, we had enabled
+> has_gmac4 flag by default within dwmac_qcom_ethqos.c instead
+> of adding any of the below entries in the dtsi. But this will
+> create problem for us as we start supporting Xgmac version
+> in the future, so we are trying to add this change so that
+> our driver can support Xgmac version when "snps,dwxgmac" is 
+> defined in the dtsi and we are keeping the default supported
+> configuration as gmac4.
 
+So i think you are saying that stmmac_probe_config_dt() does not
+reliably set
 
-Hi,
+	plat->has_gmac4 = 1;
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+or
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+	plat->has_xgmac = 1;
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+because you have not listed the secondary compatibles:
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+"snps,dwmac-4.00"
+"snps,dwmac-4.10a"
+"snps,dwmac-4.20a"
+"snps,dwmac-5.10a"
+"snps,dwmac-5.20"
+"snps,dwxgmac"
 
-thanks,
+in your .dtsi files.
 
-greg k-h's patch email bot
+It is too late to add these, because of backwards compatibility to old
+DT blobs.
+
+However, you are thinking of doing it correctly for new SoCs, and
+include "snps,dwxgmac", so stmmac_probe_config_dt() will set
+plat->has_xgmac = 1. The hard coded plat_dat->has_gmac4 = 1 then gives
+you problems.
+
+Correct?
+
+An explanation like this needs to be added to the commit message
+however you solve it in the end, because your current commit message
+does not explain the problem you are trying to solve.
+
+You already have:
+
+struct ethqos_emac_driver_data {
+        const struct ethqos_emac_por *por;
+        unsigned int num_por;
+        bool rgmii_config_loopback_en;
+        bool has_emac_ge_3;
+        const char *link_clk_name;
+        bool has_integrated_pcs;
+        u32 dma_addr_width;
+        struct dwmac4_addrs dwmac4_addrs;
+        bool needs_sgmii_loopback;
+};
+
+static const struct of_device_id qcom_ethqos_match[] = {
+        { .compatible = "qcom,qcs404-ethqos", .data = &emac_v2_3_0_data},
+        { .compatible = "qcom,sa8775p-ethqos", .data = &emac_v4_0_0_data},
+        { .compatible = "qcom,sc8280xp-ethqos", .data = &emac_v3_0_0_data},
+        { .compatible = "qcom,sm8150-ethqos", .data = &emac_v2_1_0_data},
+        { }
+};
+
+This has has_emac_ge_3. I think it is much cleaner to add has_gmac4
+and has_xgmac to ethqos_emac_driver_data, so you have a clear link to
+the compatible.
+
+	Andrew
