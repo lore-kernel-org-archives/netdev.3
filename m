@@ -1,43 +1,43 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71151E231D;
-	Fri, 15 Nov 2024 19:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F225D1E32DA;
+	Fri, 15 Nov 2024 19:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731699414; cv=none; b=llwYPUrZhbMxdvMXkdGfFySlVMARjTD5SESOrmoC62UR8JMnqa5edm+Rf1R8ZVnJjxlY3k96FucdhMzuWbYj09iDKRjkPuJ5yWvpjj68OQ+pfvVmAFyFA/yKjzpAHpiw0RavwFhNjK2sjRRmxFOJOJ9js9HMJJC/6bhi8GoWXG4=
+	t=1731699416; cv=none; b=pTt5tV9Asxj8842YpazOMEcamI2WxbP+HahBOclYS8UtMlcqI6vfZ3qq+Y5RUjZ8XkdEt6KjDFaOOpEfRDttPoh0geuMtllCXwmR/TkIVH9oxucuBKSdPnrjALlmrWRbWPmHk/KDAzRTwg/O6wpZZmXwFPrgQZIj5x1G+mR6mek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731699414; c=relaxed/simple;
-	bh=YOg3gjQeCmu3PGtzkKN/uoxNDEFbfr1TI3Lssf5OECo=;
+	s=arc-20240116; t=1731699416; c=relaxed/simple;
+	bh=faaMXfJYfuow/ltwSWOiJC8jGRiLGsZloDL3Wvc6u0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHw+BlgSHNovDb/IQ8VWEG7T8C+0x1Om1n/1nLQI1O/j7knLCC81ZkTwtO8h05H1cEsJ9hgl+Tw/GyVpRCSrg2wZTa/zDHzRb5RAUE6qwaSRPUTEfo3emDVbcz+qEjvATyKlcqmEYd6bCaae0xdoXveRoX2Dhv8il/KCjlXgktY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=f6YBcOHy/eod+SAaFtbaj1QRKhxPidX6IEW1eOc2PwJHC5CYc6E++Hbiv/MnM3bEGuZHYS7l/NAIKUg55WllCtJCh6sPki7vH2i0N9wqF0nO0US65G0/nXNyBfhYUN/I+1DudYAhru//QyhkH+ZakTiIJIl4wcWpl62jphCZKzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20cb7139d9dso23723055ad.1;
-        Fri, 15 Nov 2024 11:36:52 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-211c1bd70f6so17968325ad.0;
+        Fri, 15 Nov 2024 11:36:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731699412; x=1732304212;
+        d=1e100.net; s=20230601; t=1731699414; x=1732304214;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Xd49IMPW8HB/K3Il5x15g7iaHPzUwpcdvWbm5eV+/NI=;
-        b=kWpWbdAH8faLz1m6Oe3PEkWn5VWZGDjilFkYxn9Oc6/v2O3DzEsyldNJLOV+C8DYeK
-         OW6jtQktaNsLJH2vYVQdEZpX1WCclHBsRB3C9OWZZ/EkwCl3zspvq1X6V14xBKHVi1x1
-         T5fqmbmlmeSfEiWEdPXRV4kt1JtguelUQL1SuMzy5PfGZmgzUslklnttMmsgwkIMi5g+
-         tUo+qtv9v8mpqlyItBQplsB8MQ3DQBYUY7kMd+EnYuaQA5Hx3A5jFe0pvJEVQOfA3PQL
-         lzvPZd5caOmaJwXxPI8wFhzCfCZEZblOkHnzUHo1tAofPFSvZsui7VR4Myn9/fFAS86v
-         fVxA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2ZSzYUvLaTOMovGkLQl3NQGtrSGH2BpLu9dGI3mc07sFI0Blq0OR2U2s47B6FRpV7QLybuUHmXyI=@vger.kernel.org, AJvYcCWi5YdGbC5dP66n0vKG2qq96j0zUbbcRg4uVuZaxcInF5TbqXujb8sBx8YYAa8r3AtaiBsSj/vzZjaCsSGp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwM6uCDmEjZgrQvg0OmyDz7/DfDO+cXmNCkec/u/u5zcRubNeSR
-	j7vcnsX/hAMElVw5dqHY+/zAThWXHdO1lKPHEKRI+qioL3qPeYCTbdqD0H0=
-X-Google-Smtp-Source: AGHT+IF13fZsqQYvQ0+oMWRWXuGibAGGMQBftQqFf0Hi8uMzS6MG/5fsY8Rq3AL32AmKSnaQSvFJZg==
-X-Received: by 2002:a17:902:d48c:b0:20c:94f6:3e03 with SMTP id d9443c01a7336-211d0ed2e36mr56282275ad.47.1731699411591;
-        Fri, 15 Nov 2024 11:36:51 -0800 (PST)
+        bh=F2zixJ6bg1ERpm7DhfabkX8EOs8JLcd3Ty5tEJKE0ZI=;
+        b=jfvj8VJBFl+KZnso2MiUwEU4tbo3MqGj8EobIPTfS9SoooeCMmYn3nV3yOeME6NcwE
+         YISfdeqXJtzvmzPebINwEGPPs5nVrSPdGr7/S9pSHId1vorwtGV1WI8S+WyocmcxPQU7
+         Y8c3RJxemtvZKiECCPciibSO6DAvSq9JWEppJouC50vrkEdRXEZUyi4e0yTW8CjLS2Ou
+         +4MTtBFtryfNf/4hekDEuXlpQpJP9xhSAmLfnUWbc9lGsLTwOcXaehL0QKoHG8wKJmfy
+         vZLfMvf5FSBm+nx3bRTuekYS8wpY96oPJL13E5ifZHbNqZcyiY4xpnbo+y5PIWuJK+wD
+         qs1A==
+X-Forwarded-Encrypted: i=1; AJvYcCViWVVo77asB4SgJiXgCV5jJ6Df+cJBrFNymsBlqBFaJaQfecJ4I3S8sKoEYnPC8qODaL2gSuuAsi30CwZ+@vger.kernel.org, AJvYcCWDSa4ysKGpdvznRbPCEVuQD0BoiDKHNW45zHtQzA875pndqnZYOSr4pxU/0IP+D5T9Wq51+3PNV/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL4i9ZFycx6bpptq1l53dKd+PHYTe/ivVYy9VTPgqYEabAZix2
+	Co+LBx35POKTgEFirfyRPUUzopFIK1qCFLnbo6tOeXyCTRTf69A7DEM+IlQ=
+X-Google-Smtp-Source: AGHT+IGOMfVDWF0nv5jgESPFzMUPux6TWK8QY3aNuivC8DizfU8labuWg18PdZSxgI4lOAIt0JOADw==
+X-Received: by 2002:a17:902:da8b:b0:20e:df57:db50 with SMTP id d9443c01a7336-211c0faa33cmr133803395ad.18.1731699413949;
+        Fri, 15 Nov 2024 11:36:53 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0ecc6a4sm16148095ad.94.2024.11.15.11.36.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724772010f6sm1729386b3a.195.2024.11.15.11.36.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 11:36:51 -0800 (PST)
+        Fri, 15 Nov 2024 11:36:53 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -52,9 +52,9 @@ Cc: davem@davemloft.net,
 	andrew+netdev@lunn.ch,
 	kory.maincent@bootlin.com,
 	sdf@fomichev.me
-Subject: [PATCH net-next v2 3/8] ynl: support directional specs in ynl-gen-c.py
-Date: Fri, 15 Nov 2024 11:36:41 -0800
-Message-ID: <20241115193646.1340825-4-sdf@fomichev.me>
+Subject: [PATCH net-next v2 5/8] ynl: include uapi header after all dependencies
+Date: Fri, 15 Nov 2024 11:36:43 -0800
+Message-ID: <20241115193646.1340825-6-sdf@fomichev.me>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115193646.1340825-1-sdf@fomichev.me>
 References: <20241115193646.1340825-1-sdf@fomichev.me>
@@ -66,159 +66,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The intent is to generate ethtool uapi headers. For now, some of the
-things are hard-coded:
-- <FAMILY>_MSG_{USER,KERNEL}_MAX
-- the split between USER and KERNEL messages
+Essentially reverse the order of headers for userspace generated files.
+
+Before (make -C tools/net/ynl/; cat tools/net/ynl/generated/ethtool-user.h):
+  #include <linux/ethtool_netlink_generated.h>
+  #include <linux/ethtool.h>
+  #include <linux/ethtool.h>
+  #include <linux/ethtool.h>
+
+After:
+  #include <linux/ethtool.h>
+  #include <linux/ethtool_netlink_generated.h>
+
+While at it, make sure we track which headers we've already included
+and include the headers only once.
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- tools/net/ynl/ynl-gen-c.py | 118 +++++++++++++++++++++++++++----------
- 1 file changed, 87 insertions(+), 31 deletions(-)
+ tools/net/ynl/ynl-gen-c.py | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 8ba252973c2d..e5ac6f89b78a 100755
+index e5ac6f89b78a..d86d185b6383 100755
 --- a/tools/net/ynl/ynl-gen-c.py
 +++ b/tools/net/ynl/ynl-gen-c.py
-@@ -2419,6 +2419,87 @@ _C_KW = {
-     cw.block_start(line=start_line)
+@@ -2781,12 +2781,17 @@ _C_KW = {
+         else:
+             cw.p(f'#include "{hdr_file}"')
+             cw.p('#include "ynl.h"')
+-        headers = [parsed.uapi_header]
++        headers = []
+     for definition in parsed['definitions']:
+         if 'header' in definition:
+             headers.append(definition['header'])
++    if args.mode == 'user':
++        headers.append(parsed.uapi_header)
++    seen_header = []
+     for one in headers:
+-        cw.p(f"#include <{one}>")
++        if one not in seen_header:
++            cw.p(f"#include <{one}>")
++            seen_header.append(one)
+     cw.nl()
  
- 
-+def render_uapi_unified(family, cw, max_by_define, separate_ntf):
-+    max_name = c_upper(family.get('cmd-max-name', f"{family.op_prefix}MAX"))
-+    cnt_name = c_upper(family.get('cmd-cnt-name', f"__{family.op_prefix}MAX"))
-+    max_value = f"({cnt_name} - 1)"
-+
-+    uapi_enum_start(family, cw, family['operations'], 'enum-name')
-+    val = 0
-+    for op in family.msgs.values():
-+        if separate_ntf and ('notify' in op or 'event' in op):
-+            continue
-+
-+        suffix = ','
-+        if op.value != val:
-+            suffix = f" = {op.value},"
-+            val = op.value
-+        cw.p(op.enum_name + suffix)
-+        val += 1
-+    cw.nl()
-+    cw.p(cnt_name + ('' if max_by_define else ','))
-+    if not max_by_define:
-+        cw.p(f"{max_name} = {max_value}")
-+    cw.block_end(line=';')
-+    if max_by_define:
-+        cw.p(f"#define {max_name} {max_value}")
-+    cw.nl()
-+
-+
-+def render_uapi_directional(family, cw, max_by_define):
-+    max_name = f"{family.op_prefix}USER_MAX"
-+    cnt_name = f"__{family.op_prefix}USER_CNT"
-+    max_value = f"({cnt_name} - 1)"
-+
-+    cw.block_start(line='enum')
-+    cw.p(c_upper(f'{family.name}_MSG_USER_NONE = 0,'))
-+    val = 0
-+    for op in family.msgs.values():
-+        if 'do' in op and 'event' not in op:
-+            suffix = ','
-+            if op.value and op.value != val:
-+                suffix = f" = {op.value},"
-+                val = op.value
-+            cw.p(op.enum_name + suffix)
-+            val += 1
-+    cw.nl()
-+    cw.p(cnt_name + ('' if max_by_define else ','))
-+    if not max_by_define:
-+        cw.p(f"{max_name} = {max_value}")
-+    cw.block_end(line=';')
-+    if max_by_define:
-+        cw.p(f"#define {max_name} {max_value}")
-+    cw.nl()
-+
-+    max_name = f"{family.op_prefix}KERNEL_MAX"
-+    cnt_name = f"__{family.op_prefix}KERNEL_CNT"
-+    max_value = f"({cnt_name} - 1)"
-+
-+    cw.block_start(line='enum')
-+    cw.p(c_upper(f'{family.name}_MSG_KERNEL_NONE = 0,'))
-+    val = 0
-+    for op in family.msgs.values():
-+        if ('do' in op and 'reply' in op['do']) or 'notify' in op or 'event' in op:
-+            enum_name = op.enum_name
-+            if 'event' not in op and 'notify' not in op:
-+                enum_name = f'{enum_name}_REPLY'
-+
-+            suffix = ','
-+            if op.value and op.value != val:
-+                suffix = f" = {op.value},"
-+                val = op.value
-+            cw.p(enum_name + suffix)
-+            val += 1
-+    cw.nl()
-+    cw.p(cnt_name + ('' if max_by_define else ','))
-+    if not max_by_define:
-+        cw.p(f"{max_name} = {max_value}")
-+    cw.block_end(line=';')
-+    if max_by_define:
-+        cw.p(f"#define {max_name} {max_value}")
-+    cw.nl()
-+
-+
- def render_uapi(family, cw):
-     hdr_prot = f"_UAPI_LINUX_{c_upper(family.uapi_header_name)}_H"
-     cw.p('#ifndef ' + hdr_prot)
-@@ -2522,30 +2603,12 @@ _C_KW = {
-     # Commands
-     separate_ntf = 'async-prefix' in family['operations']
- 
--    max_name = c_upper(family.get('cmd-max-name', f"{family.op_prefix}MAX"))
--    cnt_name = c_upper(family.get('cmd-cnt-name', f"__{family.op_prefix}MAX"))
--    max_value = f"({cnt_name} - 1)"
--
--    uapi_enum_start(family, cw, family['operations'], 'enum-name')
--    val = 0
--    for op in family.msgs.values():
--        if separate_ntf and ('notify' in op or 'event' in op):
--            continue
--
--        suffix = ','
--        if op.value != val:
--            suffix = f" = {op.value},"
--            val = op.value
--        cw.p(op.enum_name + suffix)
--        val += 1
--    cw.nl()
--    cw.p(cnt_name + ('' if max_by_define else ','))
--    if not max_by_define:
--        cw.p(f"{max_name} = {max_value}")
--    cw.block_end(line=';')
--    if max_by_define:
--        cw.p(f"#define {max_name} {max_value}")
--    cw.nl()
-+    if family.msg_id_model == 'unified':
-+        render_uapi_unified(family, cw, max_by_define, separate_ntf)
-+    elif family.msg_id_model == 'directional':
-+        render_uapi_directional(family, cw, max_by_define)
-+    else:
-+        raise Exception(f'Unsupported enum-model {family.msg_id_model}')
- 
-     if separate_ntf:
-         uapi_enum_start(family, cw, family['operations'], enum_name='async-enum')
-@@ -2669,13 +2732,6 @@ _C_KW = {
-         os.sys.exit(1)
-         return
- 
--    supported_models = ['unified']
--    if args.mode in ['user', 'kernel']:
--        supported_models += ['directional']
--    if parsed.msg_id_model not in supported_models:
--        print(f'Message enum-model {parsed.msg_id_model} not supported for {args.mode} generation')
--        os.sys.exit(1)
--
-     cw = CodeWriter(BaseNlLib(), args.out_file, overwrite=(not args.cmp_out))
- 
-     _, spec_kernel = find_kernel_root(args.spec)
+     if args.mode == "user":
 -- 
 2.47.0
 
