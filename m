@@ -1,61 +1,61 @@
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594F718F2CF
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 08:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B4B14D43D
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 08:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731659641; cv=none; b=fRjsO5mIvJxXC6bO74mNuA5neuI8s0tfAjqAKW/fM6thaQtnRNnVTCfJ3nEwAZtttTYJMpbgRL0iSlRZ9LoVuNr5iYMhtsTvLnhN+Rj2ubglXV4gewpBQ11hH5cUGZ+tyUBtC6/8ZxuJJiHJ36GLNWohiSqlOB1aw8EsGfLToqc=
+	t=1731660094; cv=none; b=Q2mV4GjuPr4nPWxUIANbKTkjXh6HmL6FTIrnC1m22TvCSGix2luUY/apZqCu1aYwBQ1rj3/OgOlCnkZKbAYM65ZQMxW4BjfQnY47Iot3OafRWmbKQeBfp8Abx+Pi5k1vpzRns5j+PIerU2I6yuTY2nb9qtNcpVG6TW2P9MmEZns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731659641; c=relaxed/simple;
-	bh=sJoyAqxIyI/Rcv0+dWftZWsk+Os8GSbM8/hdE4r/sZ0=;
+	s=arc-20240116; t=1731660094; c=relaxed/simple;
+	bh=VgeaN4rFESSmDTNEsQCmx/xAuDcijxxI9gWOowCNeSY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d5YkNRwP7PGzwKpGhA146f/uYdoVB0WJuKSHlwiwRE7VKc7XNMxSIWgv+4xGoHm3MH7Or2Aiy7q5Z9COfxPy1MR16HC84uMulraYk467oItaaD2dINnC62nPslLMT29gCA5fpyer7YXcEujDHapwHyqHj8amHavnXAWNewIIt3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=XAL2lIEp; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=K7NFEIS/ESMKD+9y64H49F1zwrZxSrGmn+IVCAuevcRp4N+5+qkU+u2JafjW87+mg4vN3y/9wCw1ZAMePEaHfvZsC9iMca6GWNgRaLx13LNdDu4sdhip3KmwuzVdbR/y/D7at9R9e+OZW7Hf0aGbF5F0UCQtlbz0HJsgdbDryq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=awTMG2Q/; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="XAL2lIEp"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="awTMG2Q/"
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id DECC22084E;
-	Fri, 15 Nov 2024 09:33:56 +0100 (CET)
+	by a.mx.secunet.com (Postfix) with ESMTP id 304CB2064C;
+	Fri, 15 Nov 2024 09:41:30 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id nMtqeyuYRPXD; Fri, 15 Nov 2024 09:33:56 +0100 (CET)
+	with ESMTP id gMdpg8EigriH; Fri, 15 Nov 2024 09:41:29 +0100 (CET)
 Received: from cas-essen-01.secunet.de (rl1.secunet.de [10.53.40.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id C39A52087B;
-	Fri, 15 Nov 2024 09:33:54 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com C39A52087B
+	by a.mx.secunet.com (Postfix) with ESMTPS id 9F6CD2085B;
+	Fri, 15 Nov 2024 09:41:29 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 9F6CD2085B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1731659634;
-	bh=FGARKLvUpHLyBjRimmkWlk/8LFcsN/TytdxMHNs/7Fw=;
+	s=202301; t=1731660089;
+	bh=XXDhB26Y3YO7DNhxqanYD56+G2MX+IoLqJe/FL3VaoA=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=XAL2lIEp0wMYrAXLY4Z2Krp3Q+CSiKVcsA73oBOZut+ZrJ4xjonOymbCOZ+HlRs/w
-	 31Fy8AAu97+UHJZ6OLqDdx4F+n89G69sAp4yVSSEeYv3UnqWOU9te4xhuADU5GJoIO
-	 KBS4NR6ycH1UrpvId4dWj77qaa3hS0c+4DrAaEHef20B3ShUK5qZqhhnM9FZ/QagFF
-	 12dQ/TZQmLQm1RnSgDP5gwXTb8uiWF13uphgvB/0fav6s7Oi3Ce2fnPLwuVJVz3Gu2
-	 mzZbfXenok1fnMe6JtUi/NzCd5tfXFTWnrhcxj8cK0gOEP360yg+kHvgRKn8q9kPzX
-	 uSU/Ro6Ic02HA==
+	b=awTMG2Q/M2jw2l9jvvdAwBe+co2j4865jqnY68V/RY26fQp3XICzhqHxhEGZfOQLz
+	 tLVqb2P+sojYfs5pkh5/EAPQrx3iCwJwIM2ON0EVFwmYhcQ8QDiluuED3DzWDePwWs
+	 xJzgeVZhNd08tBQ8/IutrNDD5XxRy+Cw2vNgdZth6oXxm/Kac/W9QU+d+9lRRpdcft
+	 K8RCl8oGKQPRK4MGBX4nVFEj+b/24Bu06QlR/SvwgDJv/V7iWjziiMQ5esMB8bLZiE
+	 HxvrSGigVgR9S5fj74A7k5jw+QIp+ZYwU/6/sNrXy7vylTafJt3OaUUsQoZANEBQll
+	 j1iMOYYoLqEPQ==
 Received: from mbx-essen-02.secunet.de (10.53.40.198) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 15 Nov 2024 09:33:54 +0100
+ 15.1.2507.39; Fri, 15 Nov 2024 09:41:29 +0100
 Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
  (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 15 Nov
- 2024 09:33:53 +0100
+ 2024 09:41:29 +0100
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id BBFA631843FF; Fri, 15 Nov 2024 09:33:52 +0100 (CET)
+	id D22583184498; Fri, 15 Nov 2024 09:33:52 +0100 (CET)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 05/11] xfrm: Convert xfrm_get_tos() to dscp_t.
-Date: Fri, 15 Nov 2024 09:33:37 +0100
-Message-ID: <20241115083343.2340827-6-steffen.klassert@secunet.com>
+Subject: [PATCH 10/11] xfrm: replace deprecated strncpy with strscpy_pad
+Date: Fri, 15 Nov 2024 09:33:42 +0100
+Message-ID: <20241115083343.2340827-11-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241115083343.2340827-1-steffen.klassert@secunet.com>
 References: <20241115083343.2340827-1-steffen.klassert@secunet.com>
@@ -71,47 +71,32 @@ X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
  mbx-essen-02.secunet.de (10.53.40.198)
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Daniel Yang <danielyangkang@gmail.com>
 
-Return a dscp_t variable to prepare for the future conversion of
-xfrm_bundle_create() to dscp_t.
+The function strncpy is deprecated since it does not guarantee the
+destination buffer is NULL terminated. Recommended replacement is
+strscpy. The padded version was used to remain consistent with the other
+strscpy_pad usage in the modified function.
 
-While there, rename the function "xfrm_get_dscp", to align its name
-with the new return type.
-
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Daniel Yang <danielyangkang@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_policy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/xfrm/xfrm_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 8a1b83191a6c..51a071a79016 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -2587,10 +2587,10 @@ xfrm_tmpl_resolve(struct xfrm_policy **pols, int npols, const struct flowi *fl,
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index fab18b85af53..6b0800c7c75e 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1101,7 +1101,7 @@ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
+ 	if (!nla)
+ 		return -EMSGSIZE;
+ 	algo = nla_data(nla);
+-	strncpy(algo->alg_name, auth->alg_name, sizeof(algo->alg_name));
++	strscpy_pad(algo->alg_name, auth->alg_name, sizeof(algo->alg_name));
  
- }
- 
--static int xfrm_get_tos(const struct flowi *fl, int family)
-+static dscp_t xfrm_get_dscp(const struct flowi *fl, int family)
- {
- 	if (family == AF_INET)
--		return fl->u.ip4.flowi4_tos & INET_DSCP_MASK;
-+		return inet_dsfield_to_dscp(fl->u.ip4.flowi4_tos);
- 
- 	return 0;
- }
-@@ -2684,7 +2684,7 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
- 
- 	xfrm_flowi_addr_get(fl, &saddr, &daddr, family);
- 
--	tos = xfrm_get_tos(fl, family);
-+	tos = inet_dscp_to_dsfield(xfrm_get_dscp(fl, family));
- 
- 	dst_hold(dst);
- 
+ 	if (redact_secret && auth->alg_key_len)
+ 		memset(algo->alg_key, 0, (auth->alg_key_len + 7) / 8);
 -- 
 2.34.1
 
