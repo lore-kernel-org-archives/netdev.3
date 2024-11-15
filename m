@@ -1,43 +1,43 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624DB1E32A1;
-	Fri, 15 Nov 2024 19:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C715B1E571C;
+	Fri, 15 Nov 2024 19:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731699416; cv=none; b=TGaNyvOEOT/WJqhiIDIQsM1TCV4R1hhUDzYeJH2DubOBm36KqVEcE/5aKjFQV06B7hdoPY7n/z/LB1b+63y2lhsou7pvLiSY8o04DULaq+aWBPe76Iwb0dnkennw77WlYcEivOqudEhUGNHxXhW3KzZFKcbi4FYFcScN59N1MF0=
+	t=1731699420; cv=none; b=kK5oqJ9K6PDn57pQYObz21iayPN6LC/LVPxsbIGS7ZDmVsVaeqgVNpL7JqoLJnvv4aMbtCkfgjvnJ00CAISCp1NYpjNBVIPWjHSBGFrO5pOPCS5CGHLc7/DSM+dCQFniTZ6GcfZzDSojPd3kLPfSmi6CrJnc7AlgcNVIcrB+A3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731699416; c=relaxed/simple;
-	bh=e2VGVcdu+WLUvr5mGWncWdM25LlN4C5Ycm+b+R4vkf8=;
+	s=arc-20240116; t=1731699420; c=relaxed/simple;
+	bh=717O+fK4ZfKQCnDndiG1SgDSiM+kk2j+rBgnmx1O/zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiXXQ0QbU0ABE9TH3NscmxCJrpGPLLuqqDcerKM2bl0VaiLWHHOMpgrIasmSrllW8nnSd7Wz4gdwKUZQ1kV41rkSHahr+KLzRiYGn1EeR+Xz6WBV1/DLiM7cm1Zo3LdZJxkiRajvcAeQKRt9n4gKNTYn1fPHZeo8t+TpPnFDNIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
+	 MIME-Version; b=Yy7fuVj6oaBMoGWJWrtA/pY2YvZuHQ86yPbU8nyhte2WCA3UxpPF5BqNhLRC9SzycxZW2mifD9iEiJm7lKKUz9tXEdhvoRY4SmlHwzHDmq2OONhFNkFk+dDpD81H678eJAVOnaW04QKy/jSdgSiTOjfwgtBBupYmh2Sr1crR5o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7ee020ec76dso1639288a12.3;
-        Fri, 15 Nov 2024 11:36:54 -0800 (PST)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71e5a62031aso7864b3a.1;
+        Fri, 15 Nov 2024 11:36:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731699413; x=1732304213;
+        d=1e100.net; s=20230601; t=1731699416; x=1732304216;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BpvZVvO3XQqGQVhMWLYsibuwSMrxx9nY1LMZs3B72cE=;
-        b=tgEAUicH4nZy0KS3lnSPKPnKblXnfzVWn41epqBibUDUDfUnSkJFB0JcOl7xPVUpyY
-         YWiIqWUmYaYb5w6kmugXDx7Hvsnkd+hS1izZ+ae3vz+cZPuKgRT+yZunGpXtb+CaGYTO
-         btvlPH0ML745/uvM3LHI8lLT7TWeBXzrif5sS17CG2mMH7Ssv3N04ZcbX4utjhR2sFif
-         rDNQkmlNA6XPk+mjqBAQiIA7gaSSR6/9jrWkmJWjAz0vM09ClbjjR+JN237uBq1ErvBe
-         PSnGB2Tk4P6wVB1yCMl7uq34hecjgaRk8XrxNL5uarNxyOYXyw20tFJB7MPWTiVYEArx
-         nNgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNZ8NYIIgAIgFPkTl4irS7z363iUXzPXIh/eqiLz1rQJ539EfgBoF9mXeYGojXWzgVY0gbaG97hCg=@vger.kernel.org, AJvYcCXua09uTlYX+r2vdKn2vgzHrWD4h0n6ivlRG9qoZLcUX6fFTYgVabjh+HudNFaDrV6yQSLfj+GR7NI4iFCj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzUFdJb1Eaw5cFupVEh07mwG01oIe7f9ZlySRLmrPQASSp/6n/
-	sI8e9670eGhU6zyfFHtHBvf52xywu9jxIgDYvHUz+yCndHa7wjwm/QQnp18=
-X-Google-Smtp-Source: AGHT+IGoW8cLpHe12/Jblf3mKKgt5ik/n2gbAumThBVqzMxi8R9/cEWqryDzHwmTPDAStM8JLbIJsg==
-X-Received: by 2002:a17:902:d4ca:b0:20c:f3cf:50e6 with SMTP id d9443c01a7336-211d0ebc492mr59797655ad.38.1731699412833;
-        Fri, 15 Nov 2024 11:36:52 -0800 (PST)
+        bh=d04pzn815Z4miPeZvVH4+wOjZK368LNa45Zq4cEoVus=;
+        b=e/8Oemp1GrYVCGxhu6TQ/9T2P0Tfh9Sn9MyogFp2JS5/tny1nOuX3Pdm9TItNnhckl
+         oSX9ishmN7Buy2U1Scv61FKSgswQSdTto9muJosrFWPPky00M3mo4lWJDdGkKykeQfxl
+         YAx15qkqmLQs5klPymkoRxwMgnpP/w421qT67beaTc7Oi5Iyh8xZBbA9UQCLsBAzXEYn
+         tVpatx5DWxLEto9TPmFyAOXjPUZTLsq7A5EB8YuJ+m1p9EbWDc3gsKKL2K0VeQzkLSC/
+         zGA6NBPiCmJavJog4qjSEVOVTmfn9OJqOVAzI80GrKFXxa4FKnyaBnPs+YPqGlOh9051
+         IFEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCHTVgYnGwYACApr9I7nF/eTTtUuDW/JzYaHG/LKPyEuIa3c4lO1EXUOHIfbgZeDkBl9X86vcgSMw=@vger.kernel.org, AJvYcCWhvGk+Z/7GX4B6yO2wGQqHmEsmrV8p58/k3wItKMWgpoz1R4OOC3vsJRu91AoMbKO3mhdaLLQ+3Yaay5jk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3IEcEo8y79bdUeOgHVHJ5UoNLIn/5PYscyz7j12257jTlI3AE
+	o4DJB8q0EJnQmvIxE/bD5NCxvtQy3/6Hpnrb9u3W4uxCb8IDnS9G1DjUpCs=
+X-Google-Smtp-Source: AGHT+IFrGrkSLMFX+rRz37Fk7PjTtyjIym40LSVJPcWXwvhw6ULhIpPDdS+0VqR6BPUfP4vHcgiSVg==
+X-Received: by 2002:a05:6a00:ac3:b0:71e:f4:dbc with SMTP id d2e1a72fcca58-72476f6fdccmr4888928b3a.25.1731699415332;
+        Fri, 15 Nov 2024 11:36:55 -0800 (PST)
 Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0ec937esm16006535ad.91.2024.11.15.11.36.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72477120a13sm1816871b3a.60.2024.11.15.11.36.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 11:36:52 -0800 (PST)
+        Fri, 15 Nov 2024 11:36:54 -0800 (PST)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -52,9 +52,9 @@ Cc: davem@davemloft.net,
 	andrew+netdev@lunn.ch,
 	kory.maincent@bootlin.com,
 	sdf@fomichev.me
-Subject: [PATCH net-next v2 4/8] ynl: add missing pieces to ethtool spec to better match uapi header
-Date: Fri, 15 Nov 2024 11:36:42 -0800
-Message-ID: <20241115193646.1340825-5-sdf@fomichev.me>
+Subject: [PATCH net-next v2 6/8] ethtool: separate definitions that are gonna be generated
+Date: Fri, 15 Nov 2024 11:36:44 -0800
+Message-ID: <20241115193646.1340825-7-sdf@fomichev.me>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241115193646.1340825-1-sdf@fomichev.me>
 References: <20241115193646.1340825-1-sdf@fomichev.me>
@@ -66,864 +66,1886 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- __ETHTOOL_UDP_TUNNEL_TYPE_CNT and render max
-- skip rendering stringset (empty enum)
-- skip rendering c33-pse-ext-state (defined in ethtool.h)
-- rename header flags to ethtool-flag-
-- add attr-cnt-name to each attribute to use XXX_CNT instead of XXX_MAX
-- add unspec 0 entry to each attribute
-- carry some doc entries from the existing header
-- tcp-header-split
+Reshuffle definitions that are gonna be generated into
+ethtool_netlink_generated.h and match ynl spec order.
+This should make it easier to compare the output of the ynl-gen-c
+to the existing uapi header. No functional changes.
+
+Things that are still remaining to be manually defined:
+- ETHTOOL_FLAG_ALL - probably no good way to add to spec?
+- some of the cable test bits (not sure whether it's possible to move to
+  spec)
+- some of the stats definitions (no way currently to move to spec)
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- Documentation/netlink/specs/ethtool.yaml | 353 ++++++++++++++++++++++-
- 1 file changed, 342 insertions(+), 11 deletions(-)
+ MAINTAINERS                                   |   2 +-
+ include/uapi/linux/ethtool_netlink.h          | 893 +----------------
+ .../uapi/linux/ethtool_netlink_generated.h    | 899 ++++++++++++++++++
+ 3 files changed, 901 insertions(+), 893 deletions(-)
+ create mode 100644 include/uapi/linux/ethtool_netlink_generated.h
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 93369f0eb816..8a5c77e1ee68 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -5,6 +5,7 @@ name: ethtool
- protocol: genetlink-legacy
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 96b9344c3524..13f9f570d086 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16085,7 +16085,7 @@ F:	include/linux/inetdevice.h
+ F:	include/linux/netdev*
+ F:	include/linux/platform_data/wiznet.h
+ F:	include/uapi/linux/cn_proc.h
+-F:	include/uapi/linux/ethtool_netlink.h
++F:	include/uapi/linux/ethtool_netlink*
+ F:	include/uapi/linux/if_*
+ F:	include/uapi/linux/net_shaper.h
+ F:	include/uapi/linux/netdev*
+diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
+index 283305f6b063..9c909ce733a5 100644
+--- a/include/uapi/linux/ethtool_netlink.h
++++ b/include/uapi/linux/ethtool_netlink.h
+@@ -10,545 +10,12 @@
+ #define _UAPI_LINUX_ETHTOOL_NETLINK_H_
  
- doc: Partial family for Ethtool Netlink.
-+uapi-header: linux/ethtool_netlink_generated.h
+ #include <linux/ethtool.h>
+-
+-/* message types - userspace to kernel */
+-enum {
+-	ETHTOOL_MSG_USER_NONE,
+-	ETHTOOL_MSG_STRSET_GET,
+-	ETHTOOL_MSG_LINKINFO_GET,
+-	ETHTOOL_MSG_LINKINFO_SET,
+-	ETHTOOL_MSG_LINKMODES_GET,
+-	ETHTOOL_MSG_LINKMODES_SET,
+-	ETHTOOL_MSG_LINKSTATE_GET,
+-	ETHTOOL_MSG_DEBUG_GET,
+-	ETHTOOL_MSG_DEBUG_SET,
+-	ETHTOOL_MSG_WOL_GET,
+-	ETHTOOL_MSG_WOL_SET,
+-	ETHTOOL_MSG_FEATURES_GET,
+-	ETHTOOL_MSG_FEATURES_SET,
+-	ETHTOOL_MSG_PRIVFLAGS_GET,
+-	ETHTOOL_MSG_PRIVFLAGS_SET,
+-	ETHTOOL_MSG_RINGS_GET,
+-	ETHTOOL_MSG_RINGS_SET,
+-	ETHTOOL_MSG_CHANNELS_GET,
+-	ETHTOOL_MSG_CHANNELS_SET,
+-	ETHTOOL_MSG_COALESCE_GET,
+-	ETHTOOL_MSG_COALESCE_SET,
+-	ETHTOOL_MSG_PAUSE_GET,
+-	ETHTOOL_MSG_PAUSE_SET,
+-	ETHTOOL_MSG_EEE_GET,
+-	ETHTOOL_MSG_EEE_SET,
+-	ETHTOOL_MSG_TSINFO_GET,
+-	ETHTOOL_MSG_CABLE_TEST_ACT,
+-	ETHTOOL_MSG_CABLE_TEST_TDR_ACT,
+-	ETHTOOL_MSG_TUNNEL_INFO_GET,
+-	ETHTOOL_MSG_FEC_GET,
+-	ETHTOOL_MSG_FEC_SET,
+-	ETHTOOL_MSG_MODULE_EEPROM_GET,
+-	ETHTOOL_MSG_STATS_GET,
+-	ETHTOOL_MSG_PHC_VCLOCKS_GET,
+-	ETHTOOL_MSG_MODULE_GET,
+-	ETHTOOL_MSG_MODULE_SET,
+-	ETHTOOL_MSG_PSE_GET,
+-	ETHTOOL_MSG_PSE_SET,
+-	ETHTOOL_MSG_RSS_GET,
+-	ETHTOOL_MSG_PLCA_GET_CFG,
+-	ETHTOOL_MSG_PLCA_SET_CFG,
+-	ETHTOOL_MSG_PLCA_GET_STATUS,
+-	ETHTOOL_MSG_MM_GET,
+-	ETHTOOL_MSG_MM_SET,
+-	ETHTOOL_MSG_MODULE_FW_FLASH_ACT,
+-	ETHTOOL_MSG_PHY_GET,
+-
+-	/* add new constants above here */
+-	__ETHTOOL_MSG_USER_CNT,
+-	ETHTOOL_MSG_USER_MAX = __ETHTOOL_MSG_USER_CNT - 1
+-};
+-
+-/* message types - kernel to userspace */
+-enum {
+-	ETHTOOL_MSG_KERNEL_NONE,
+-	ETHTOOL_MSG_STRSET_GET_REPLY,
+-	ETHTOOL_MSG_LINKINFO_GET_REPLY,
+-	ETHTOOL_MSG_LINKINFO_NTF,
+-	ETHTOOL_MSG_LINKMODES_GET_REPLY,
+-	ETHTOOL_MSG_LINKMODES_NTF,
+-	ETHTOOL_MSG_LINKSTATE_GET_REPLY,
+-	ETHTOOL_MSG_DEBUG_GET_REPLY,
+-	ETHTOOL_MSG_DEBUG_NTF,
+-	ETHTOOL_MSG_WOL_GET_REPLY,
+-	ETHTOOL_MSG_WOL_NTF,
+-	ETHTOOL_MSG_FEATURES_GET_REPLY,
+-	ETHTOOL_MSG_FEATURES_SET_REPLY,
+-	ETHTOOL_MSG_FEATURES_NTF,
+-	ETHTOOL_MSG_PRIVFLAGS_GET_REPLY,
+-	ETHTOOL_MSG_PRIVFLAGS_NTF,
+-	ETHTOOL_MSG_RINGS_GET_REPLY,
+-	ETHTOOL_MSG_RINGS_NTF,
+-	ETHTOOL_MSG_CHANNELS_GET_REPLY,
+-	ETHTOOL_MSG_CHANNELS_NTF,
+-	ETHTOOL_MSG_COALESCE_GET_REPLY,
+-	ETHTOOL_MSG_COALESCE_NTF,
+-	ETHTOOL_MSG_PAUSE_GET_REPLY,
+-	ETHTOOL_MSG_PAUSE_NTF,
+-	ETHTOOL_MSG_EEE_GET_REPLY,
+-	ETHTOOL_MSG_EEE_NTF,
+-	ETHTOOL_MSG_TSINFO_GET_REPLY,
+-	ETHTOOL_MSG_CABLE_TEST_NTF,
+-	ETHTOOL_MSG_CABLE_TEST_TDR_NTF,
+-	ETHTOOL_MSG_TUNNEL_INFO_GET_REPLY,
+-	ETHTOOL_MSG_FEC_GET_REPLY,
+-	ETHTOOL_MSG_FEC_NTF,
+-	ETHTOOL_MSG_MODULE_EEPROM_GET_REPLY,
+-	ETHTOOL_MSG_STATS_GET_REPLY,
+-	ETHTOOL_MSG_PHC_VCLOCKS_GET_REPLY,
+-	ETHTOOL_MSG_MODULE_GET_REPLY,
+-	ETHTOOL_MSG_MODULE_NTF,
+-	ETHTOOL_MSG_PSE_GET_REPLY,
+-	ETHTOOL_MSG_RSS_GET_REPLY,
+-	ETHTOOL_MSG_PLCA_GET_CFG_REPLY,
+-	ETHTOOL_MSG_PLCA_GET_STATUS_REPLY,
+-	ETHTOOL_MSG_PLCA_NTF,
+-	ETHTOOL_MSG_MM_GET_REPLY,
+-	ETHTOOL_MSG_MM_NTF,
+-	ETHTOOL_MSG_MODULE_FW_FLASH_NTF,
+-	ETHTOOL_MSG_PHY_GET_REPLY,
+-	ETHTOOL_MSG_PHY_NTF,
+-
+-	/* add new constants above here */
+-	__ETHTOOL_MSG_KERNEL_CNT,
+-	ETHTOOL_MSG_KERNEL_MAX = __ETHTOOL_MSG_KERNEL_CNT - 1
+-};
+-
+-/* request header */
+-
+-enum ethtool_header_flags {
+-	ETHTOOL_FLAG_COMPACT_BITSETS	= 1 << 0,	/* use compact bitsets in reply */
+-	ETHTOOL_FLAG_OMIT_REPLY		= 1 << 1,	/* provide optional reply for SET or ACT requests */
+-	ETHTOOL_FLAG_STATS		= 1 << 2,	/* request statistics, if supported by the driver */
+-};
++#include <linux/ethtool_netlink_generated.h>
  
- definitions:
-   -
-@@ -12,43 +13,96 @@ doc: Partial family for Ethtool Netlink.
-     enum-name:
-     type: enum
-     entries: [ vxlan, geneve, vxlan-gpe ]
-+    enum-cnt-name: __ethtool-udp-tunnel-type-cnt
-+    render-max: true
-   -
-     name: stringset
-     type: enum
-     entries: []
-+    header: linux/ethtool.h # skip rendering, no actual definition
-   -
-     name: header-flags
-     type: flags
--    entries: [ compact-bitsets, omit-reply, stats ]
-+    name-prefix: ethtool-flag-
-+    entries:
-+      -
-+        name: compact-bitsets
-+        doc: use compact bitsets in reply
-+      -
-+        name: omit-reply
-+        doc: provide optional reply for SET or ACT requests
-+      -
-+        name: stats
-+        doc: request statistics, if supported by the driver
-   -
-     name: module-fw-flash-status
-     type: enum
--    entries: [ started, in_progress, completed, error ]
-+    doc: plug-in module firmware flashing status
-+    header: linux/ethtool.h
-+    entries:
-+      -
-+        name: started
-+        doc: The firmware flashing process has started.
-+      -
-+        name: in_progress
-+        doc: The firmware flashing process is in progress.
-+      -
-+        name: completed
-+        doc: The firmware flashing process was completed successfully.
-+      -
-+        name: error
-+        doc: The firmware flashing process was stopped due to an error.
-   -
-     name: c33-pse-ext-state
--    enum-name:
-+    doc: "groups of PSE extended states functions. IEEE 802.3-2022 33.2.4.4 Variables"
-     type: enum
-     name-prefix: ethtool-c33-pse-ext-state-
-+    header: linux/ethtool.h
-     entries:
-         - none
--        - error-condition
--        - mr-mps-valid
--        - mr-pse-enable
--        - option-detect-ted
--        - option-vport-lim
--        - ovld-detected
--        - power-not-available
--        - short-detected
-+        -
-+          name: error-condition
-+          doc: Group of error_condition states
-+        -
-+          name: mr-mps-valid
-+          doc: Group of mr_mps_valid states
-+        -
-+          name: mr-pse-enable
-+          doc: Group of mr_pse_enable states
-+        -
-+          name: option-detect-ted
-+          doc: Group of option_detect_ted states
-+        -
-+          name: option-vport-lim
-+          doc: Group of option_vport_lim states
-+        -
-+          name: ovld-detected
-+          doc: Group of ovld_detected states
-+        -
-+          name: power-not-available
-+          doc: Group of power_not_available states
-+        -
-+          name: short-detected
-+          doc: Group of short_detected states
-   -
-     name: phy-upstream-type
-     enum-name:
-     type: enum
-     entries: [ mac, phy ]
-+  -
-+    name: tcp-data-split
-+    type: enum
-+    entries: [ unknown, disabled, enabled ]
+ #define ETHTOOL_FLAG_ALL (ETHTOOL_FLAG_COMPACT_BITSETS | \
+ 			  ETHTOOL_FLAG_OMIT_REPLY | \
+ 			  ETHTOOL_FLAG_STATS)
  
- attribute-sets:
-   -
-     name: header
-+    attr-cnt-name: __ethtool-a-header-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: dev-index
-         type: u32
-@@ -65,7 +119,12 @@ doc: Partial family for Ethtool Netlink.
+-enum {
+-	ETHTOOL_A_HEADER_UNSPEC,
+-	ETHTOOL_A_HEADER_DEV_INDEX,		/* u32 */
+-	ETHTOOL_A_HEADER_DEV_NAME,		/* string */
+-	ETHTOOL_A_HEADER_FLAGS,			/* u32 - ETHTOOL_FLAG_* */
+-	ETHTOOL_A_HEADER_PHY_INDEX,		/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_HEADER_CNT,
+-	ETHTOOL_A_HEADER_MAX = __ETHTOOL_A_HEADER_CNT - 1
+-};
+-
+-/* bit sets */
+-
+-enum {
+-	ETHTOOL_A_BITSET_BIT_UNSPEC,
+-	ETHTOOL_A_BITSET_BIT_INDEX,		/* u32 */
+-	ETHTOOL_A_BITSET_BIT_NAME,		/* string */
+-	ETHTOOL_A_BITSET_BIT_VALUE,		/* flag */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_BITSET_BIT_CNT,
+-	ETHTOOL_A_BITSET_BIT_MAX = __ETHTOOL_A_BITSET_BIT_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_BITSET_BITS_UNSPEC,
+-	ETHTOOL_A_BITSET_BITS_BIT,		/* nest - _A_BITSET_BIT_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_BITSET_BITS_CNT,
+-	ETHTOOL_A_BITSET_BITS_MAX = __ETHTOOL_A_BITSET_BITS_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_BITSET_UNSPEC,
+-	ETHTOOL_A_BITSET_NOMASK,		/* flag */
+-	ETHTOOL_A_BITSET_SIZE,			/* u32 */
+-	ETHTOOL_A_BITSET_BITS,			/* nest - _A_BITSET_BITS_* */
+-	ETHTOOL_A_BITSET_VALUE,			/* binary */
+-	ETHTOOL_A_BITSET_MASK,			/* binary */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_BITSET_CNT,
+-	ETHTOOL_A_BITSET_MAX = __ETHTOOL_A_BITSET_CNT - 1
+-};
+-
+-/* string sets */
+-
+-enum {
+-	ETHTOOL_A_STRING_UNSPEC,
+-	ETHTOOL_A_STRING_INDEX,			/* u32 */
+-	ETHTOOL_A_STRING_VALUE,			/* string */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STRING_CNT,
+-	ETHTOOL_A_STRING_MAX = __ETHTOOL_A_STRING_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_STRINGS_UNSPEC,
+-	ETHTOOL_A_STRINGS_STRING,		/* nest - _A_STRINGS_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STRINGS_CNT,
+-	ETHTOOL_A_STRINGS_MAX = __ETHTOOL_A_STRINGS_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_STRINGSET_UNSPEC,
+-	ETHTOOL_A_STRINGSET_ID,			/* u32 */
+-	ETHTOOL_A_STRINGSET_COUNT,		/* u32 */
+-	ETHTOOL_A_STRINGSET_STRINGS,		/* nest - _A_STRINGS_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STRINGSET_CNT,
+-	ETHTOOL_A_STRINGSET_MAX = __ETHTOOL_A_STRINGSET_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_STRINGSETS_UNSPEC,
+-	ETHTOOL_A_STRINGSETS_STRINGSET,		/* nest - _A_STRINGSET_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STRINGSETS_CNT,
+-	ETHTOOL_A_STRINGSETS_MAX = __ETHTOOL_A_STRINGSETS_CNT - 1
+-};
+-
+-/* STRSET */
+-
+-enum {
+-	ETHTOOL_A_STRSET_UNSPEC,
+-	ETHTOOL_A_STRSET_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_STRSET_STRINGSETS,		/* nest - _A_STRINGSETS_* */
+-	ETHTOOL_A_STRSET_COUNTS_ONLY,		/* flag */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STRSET_CNT,
+-	ETHTOOL_A_STRSET_MAX = __ETHTOOL_A_STRSET_CNT - 1
+-};
+-
+-/* LINKINFO */
+-
+-enum {
+-	ETHTOOL_A_LINKINFO_UNSPEC,
+-	ETHTOOL_A_LINKINFO_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_LINKINFO_PORT,		/* u8 */
+-	ETHTOOL_A_LINKINFO_PHYADDR,		/* u8 */
+-	ETHTOOL_A_LINKINFO_TP_MDIX,		/* u8 */
+-	ETHTOOL_A_LINKINFO_TP_MDIX_CTRL,	/* u8 */
+-	ETHTOOL_A_LINKINFO_TRANSCEIVER,		/* u8 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_LINKINFO_CNT,
+-	ETHTOOL_A_LINKINFO_MAX = __ETHTOOL_A_LINKINFO_CNT - 1
+-};
+-
+-/* LINKMODES */
+-
+-enum {
+-	ETHTOOL_A_LINKMODES_UNSPEC,
+-	ETHTOOL_A_LINKMODES_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_LINKMODES_AUTONEG,		/* u8 */
+-	ETHTOOL_A_LINKMODES_OURS,		/* bitset */
+-	ETHTOOL_A_LINKMODES_PEER,		/* bitset */
+-	ETHTOOL_A_LINKMODES_SPEED,		/* u32 */
+-	ETHTOOL_A_LINKMODES_DUPLEX,		/* u8 */
+-	ETHTOOL_A_LINKMODES_MASTER_SLAVE_CFG,	/* u8 */
+-	ETHTOOL_A_LINKMODES_MASTER_SLAVE_STATE,	/* u8 */
+-	ETHTOOL_A_LINKMODES_LANES,		/* u32 */
+-	ETHTOOL_A_LINKMODES_RATE_MATCHING,	/* u8 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_LINKMODES_CNT,
+-	ETHTOOL_A_LINKMODES_MAX = __ETHTOOL_A_LINKMODES_CNT - 1
+-};
+-
+-/* LINKSTATE */
+-
+-enum {
+-	ETHTOOL_A_LINKSTATE_UNSPEC,
+-	ETHTOOL_A_LINKSTATE_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_LINKSTATE_LINK,		/* u8 */
+-	ETHTOOL_A_LINKSTATE_SQI,		/* u32 */
+-	ETHTOOL_A_LINKSTATE_SQI_MAX,		/* u32 */
+-	ETHTOOL_A_LINKSTATE_EXT_STATE,		/* u8 */
+-	ETHTOOL_A_LINKSTATE_EXT_SUBSTATE,	/* u8 */
+-	ETHTOOL_A_LINKSTATE_EXT_DOWN_CNT,	/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_LINKSTATE_CNT,
+-	ETHTOOL_A_LINKSTATE_MAX = __ETHTOOL_A_LINKSTATE_CNT - 1
+-};
+-
+-/* DEBUG */
+-
+-enum {
+-	ETHTOOL_A_DEBUG_UNSPEC,
+-	ETHTOOL_A_DEBUG_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_DEBUG_MSGMASK,		/* bitset */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_DEBUG_CNT,
+-	ETHTOOL_A_DEBUG_MAX = __ETHTOOL_A_DEBUG_CNT - 1
+-};
+-
+-/* WOL */
+-
+-enum {
+-	ETHTOOL_A_WOL_UNSPEC,
+-	ETHTOOL_A_WOL_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_WOL_MODES,			/* bitset */
+-	ETHTOOL_A_WOL_SOPASS,			/* binary */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_WOL_CNT,
+-	ETHTOOL_A_WOL_MAX = __ETHTOOL_A_WOL_CNT - 1
+-};
+-
+-/* FEATURES */
+-
+-enum {
+-	ETHTOOL_A_FEATURES_UNSPEC,
+-	ETHTOOL_A_FEATURES_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_FEATURES_HW,				/* bitset */
+-	ETHTOOL_A_FEATURES_WANTED,			/* bitset */
+-	ETHTOOL_A_FEATURES_ACTIVE,			/* bitset */
+-	ETHTOOL_A_FEATURES_NOCHANGE,			/* bitset */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_FEATURES_CNT,
+-	ETHTOOL_A_FEATURES_MAX = __ETHTOOL_A_FEATURES_CNT - 1
+-};
+-
+-/* PRIVFLAGS */
+-
+-enum {
+-	ETHTOOL_A_PRIVFLAGS_UNSPEC,
+-	ETHTOOL_A_PRIVFLAGS_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PRIVFLAGS_FLAGS,			/* bitset */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PRIVFLAGS_CNT,
+-	ETHTOOL_A_PRIVFLAGS_MAX = __ETHTOOL_A_PRIVFLAGS_CNT - 1
+-};
+-
+-/* RINGS */
+-
+-enum {
+-	ETHTOOL_TCP_DATA_SPLIT_UNKNOWN = 0,
+-	ETHTOOL_TCP_DATA_SPLIT_DISABLED,
+-	ETHTOOL_TCP_DATA_SPLIT_ENABLED,
+-};
+-
+-enum {
+-	ETHTOOL_A_RINGS_UNSPEC,
+-	ETHTOOL_A_RINGS_HEADER,				/* nest - _A_HEADER_* */
+-	ETHTOOL_A_RINGS_RX_MAX,				/* u32 */
+-	ETHTOOL_A_RINGS_RX_MINI_MAX,			/* u32 */
+-	ETHTOOL_A_RINGS_RX_JUMBO_MAX,			/* u32 */
+-	ETHTOOL_A_RINGS_TX_MAX,				/* u32 */
+-	ETHTOOL_A_RINGS_RX,				/* u32 */
+-	ETHTOOL_A_RINGS_RX_MINI,			/* u32 */
+-	ETHTOOL_A_RINGS_RX_JUMBO,			/* u32 */
+-	ETHTOOL_A_RINGS_TX,				/* u32 */
+-	ETHTOOL_A_RINGS_RX_BUF_LEN,                     /* u32 */
+-	ETHTOOL_A_RINGS_TCP_DATA_SPLIT,			/* u8 */
+-	ETHTOOL_A_RINGS_CQE_SIZE,			/* u32 */
+-	ETHTOOL_A_RINGS_TX_PUSH,			/* u8 */
+-	ETHTOOL_A_RINGS_RX_PUSH,			/* u8 */
+-	ETHTOOL_A_RINGS_TX_PUSH_BUF_LEN,		/* u32 */
+-	ETHTOOL_A_RINGS_TX_PUSH_BUF_LEN_MAX,		/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_RINGS_CNT,
+-	ETHTOOL_A_RINGS_MAX = (__ETHTOOL_A_RINGS_CNT - 1)
+-};
+-
+-/* CHANNELS */
+-
+-enum {
+-	ETHTOOL_A_CHANNELS_UNSPEC,
+-	ETHTOOL_A_CHANNELS_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_CHANNELS_RX_MAX,			/* u32 */
+-	ETHTOOL_A_CHANNELS_TX_MAX,			/* u32 */
+-	ETHTOOL_A_CHANNELS_OTHER_MAX,			/* u32 */
+-	ETHTOOL_A_CHANNELS_COMBINED_MAX,		/* u32 */
+-	ETHTOOL_A_CHANNELS_RX_COUNT,			/* u32 */
+-	ETHTOOL_A_CHANNELS_TX_COUNT,			/* u32 */
+-	ETHTOOL_A_CHANNELS_OTHER_COUNT,			/* u32 */
+-	ETHTOOL_A_CHANNELS_COMBINED_COUNT,		/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_CHANNELS_CNT,
+-	ETHTOOL_A_CHANNELS_MAX = (__ETHTOOL_A_CHANNELS_CNT - 1)
+-};
+-
+-/* COALESCE */
+-
+-enum {
+-	ETHTOOL_A_COALESCE_UNSPEC,
+-	ETHTOOL_A_COALESCE_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_COALESCE_RX_USECS,			/* u32 */
+-	ETHTOOL_A_COALESCE_RX_MAX_FRAMES,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_USECS_IRQ,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_IRQ,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_USECS,			/* u32 */
+-	ETHTOOL_A_COALESCE_TX_MAX_FRAMES,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_USECS_IRQ,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_IRQ,		/* u32 */
+-	ETHTOOL_A_COALESCE_STATS_BLOCK_USECS,		/* u32 */
+-	ETHTOOL_A_COALESCE_USE_ADAPTIVE_RX,		/* u8 */
+-	ETHTOOL_A_COALESCE_USE_ADAPTIVE_TX,		/* u8 */
+-	ETHTOOL_A_COALESCE_PKT_RATE_LOW,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_USECS_LOW,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_LOW,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_USECS_LOW,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_LOW,		/* u32 */
+-	ETHTOOL_A_COALESCE_PKT_RATE_HIGH,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_USECS_HIGH,		/* u32 */
+-	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_HIGH,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_USECS_HIGH,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH,		/* u32 */
+-	ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL,	/* u32 */
+-	ETHTOOL_A_COALESCE_USE_CQE_MODE_TX,		/* u8 */
+-	ETHTOOL_A_COALESCE_USE_CQE_MODE_RX,		/* u8 */
+-	ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES,		/* u32 */
+-	ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,		/* u32 */
+-	/* nest - _A_PROFILE_IRQ_MODERATION */
+-	ETHTOOL_A_COALESCE_RX_PROFILE,
+-	/* nest - _A_PROFILE_IRQ_MODERATION */
+-	ETHTOOL_A_COALESCE_TX_PROFILE,
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_COALESCE_CNT,
+-	ETHTOOL_A_COALESCE_MAX = (__ETHTOOL_A_COALESCE_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_PROFILE_UNSPEC,
+-	/* nest, _A_IRQ_MODERATION_* */
+-	ETHTOOL_A_PROFILE_IRQ_MODERATION,
+-	__ETHTOOL_A_PROFILE_CNT,
+-	ETHTOOL_A_PROFILE_MAX = (__ETHTOOL_A_PROFILE_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_IRQ_MODERATION_UNSPEC,
+-	ETHTOOL_A_IRQ_MODERATION_USEC,			/* u32 */
+-	ETHTOOL_A_IRQ_MODERATION_PKTS,			/* u32 */
+-	ETHTOOL_A_IRQ_MODERATION_COMPS,			/* u32 */
+-
+-	__ETHTOOL_A_IRQ_MODERATION_CNT,
+-	ETHTOOL_A_IRQ_MODERATION_MAX = (__ETHTOOL_A_IRQ_MODERATION_CNT - 1)
+-};
+-
+-/* PAUSE */
+-
+-enum {
+-	ETHTOOL_A_PAUSE_UNSPEC,
+-	ETHTOOL_A_PAUSE_HEADER,				/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PAUSE_AUTONEG,			/* u8 */
+-	ETHTOOL_A_PAUSE_RX,				/* u8 */
+-	ETHTOOL_A_PAUSE_TX,				/* u8 */
+-	ETHTOOL_A_PAUSE_STATS,				/* nest - _PAUSE_STAT_* */
+-	ETHTOOL_A_PAUSE_STATS_SRC,			/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PAUSE_CNT,
+-	ETHTOOL_A_PAUSE_MAX = (__ETHTOOL_A_PAUSE_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_PAUSE_STAT_UNSPEC,
+-	ETHTOOL_A_PAUSE_STAT_PAD,
+-
+-	ETHTOOL_A_PAUSE_STAT_TX_FRAMES,
+-	ETHTOOL_A_PAUSE_STAT_RX_FRAMES,
+-
+-	/* add new constants above here
+-	 * adjust ETHTOOL_PAUSE_STAT_CNT if adding non-stats!
+-	 */
+-	__ETHTOOL_A_PAUSE_STAT_CNT,
+-	ETHTOOL_A_PAUSE_STAT_MAX = (__ETHTOOL_A_PAUSE_STAT_CNT - 1)
+-};
+-
+-/* EEE */
+-
+-enum {
+-	ETHTOOL_A_EEE_UNSPEC,
+-	ETHTOOL_A_EEE_HEADER,				/* nest - _A_HEADER_* */
+-	ETHTOOL_A_EEE_MODES_OURS,			/* bitset */
+-	ETHTOOL_A_EEE_MODES_PEER,			/* bitset */
+-	ETHTOOL_A_EEE_ACTIVE,				/* u8 */
+-	ETHTOOL_A_EEE_ENABLED,				/* u8 */
+-	ETHTOOL_A_EEE_TX_LPI_ENABLED,			/* u8 */
+-	ETHTOOL_A_EEE_TX_LPI_TIMER,			/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_EEE_CNT,
+-	ETHTOOL_A_EEE_MAX = (__ETHTOOL_A_EEE_CNT - 1)
+-};
+-
+-/* TSINFO */
+-
+-enum {
+-	ETHTOOL_A_TSINFO_UNSPEC,
+-	ETHTOOL_A_TSINFO_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_TSINFO_TIMESTAMPING,			/* bitset */
+-	ETHTOOL_A_TSINFO_TX_TYPES,			/* bitset */
+-	ETHTOOL_A_TSINFO_RX_FILTERS,			/* bitset */
+-	ETHTOOL_A_TSINFO_PHC_INDEX,			/* u32 */
+-	ETHTOOL_A_TSINFO_STATS,				/* nest - _A_TSINFO_STAT */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TSINFO_CNT,
+-	ETHTOOL_A_TSINFO_MAX = (__ETHTOOL_A_TSINFO_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_TS_STAT_UNSPEC,
+-
+-	ETHTOOL_A_TS_STAT_TX_PKTS,			/* uint */
+-	ETHTOOL_A_TS_STAT_TX_LOST,			/* uint */
+-	ETHTOOL_A_TS_STAT_TX_ERR,			/* uint */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TS_STAT_CNT,
+-	ETHTOOL_A_TS_STAT_MAX = (__ETHTOOL_A_TS_STAT_CNT - 1)
+-
+-};
+-
+-/* PHC VCLOCKS */
+-
+-enum {
+-	ETHTOOL_A_PHC_VCLOCKS_UNSPEC,
+-	ETHTOOL_A_PHC_VCLOCKS_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PHC_VCLOCKS_NUM,			/* u32 */
+-	ETHTOOL_A_PHC_VCLOCKS_INDEX,			/* array, s32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PHC_VCLOCKS_CNT,
+-	ETHTOOL_A_PHC_VCLOCKS_MAX = (__ETHTOOL_A_PHC_VCLOCKS_CNT - 1)
+-};
+-
+-/* CABLE TEST */
+-
+-enum {
+-	ETHTOOL_A_CABLE_TEST_UNSPEC,
+-	ETHTOOL_A_CABLE_TEST_HEADER,		/* nest - _A_HEADER_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_CABLE_TEST_CNT,
+-	ETHTOOL_A_CABLE_TEST_MAX = __ETHTOOL_A_CABLE_TEST_CNT - 1
+-};
+-
+ /* CABLE TEST NOTIFY */
+ enum {
+ 	ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC,
+@@ -582,74 +49,12 @@ enum {
+ 	ETHTOOL_A_CABLE_INF_SRC_ALCD,
+ };
  
-   -
-     name: bitset-bit
-+    attr-cnt-name: __ethtool-a-bitset-bit-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: index
-         type: u32
-@@ -77,7 +136,12 @@ doc: Partial family for Ethtool Netlink.
-         type: flag
-   -
-     name: bitset-bits
-+    attr-cnt-name: __ethtool-a-bitset-bits-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: bit
-         type: nest
-@@ -85,7 +149,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: bitset-bit
-   -
-     name: bitset
-+    attr-cnt-name: __ethtool-a-bitset-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: nomask
-         type: flag
-@@ -104,7 +173,12 @@ doc: Partial family for Ethtool Netlink.
-         type: binary
-   -
-     name: string
-+    attr-cnt-name: __ethtool-a-string-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: index
-         type: u32
-@@ -113,7 +187,16 @@ doc: Partial family for Ethtool Netlink.
-         type: string
-   -
-     name: strings
-+    attr-cnt-name: __ethtool-a-strings-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: string
-         type: nest
-@@ -121,7 +204,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: string
-   -
-     name: stringset
-+    attr-cnt-name: __ethtool-a-stringset-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: id
-         type: u32
-@@ -135,7 +223,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: strings
-   -
-     name: stringsets
-+    attr-cnt-name: __ethtool-a-stringsets-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: stringset
-         type: nest
-@@ -143,7 +236,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: stringset
-   -
-     name: strset
-+    attr-cnt-name: __ethtool-a-strset-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -158,7 +256,12 @@ doc: Partial family for Ethtool Netlink.
+-enum {
+-	ETHTOOL_A_CABLE_RESULT_UNSPEC,
+-	ETHTOOL_A_CABLE_RESULT_PAIR,		/* u8 ETHTOOL_A_CABLE_PAIR_ */
+-	ETHTOOL_A_CABLE_RESULT_CODE,		/* u8 ETHTOOL_A_CABLE_RESULT_CODE_ */
+-	ETHTOOL_A_CABLE_RESULT_SRC,		/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
+-
+-	__ETHTOOL_A_CABLE_RESULT_CNT,
+-	ETHTOOL_A_CABLE_RESULT_MAX = (__ETHTOOL_A_CABLE_RESULT_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_CABLE_FAULT_LENGTH_UNSPEC,
+-	ETHTOOL_A_CABLE_FAULT_LENGTH_PAIR,	/* u8 ETHTOOL_A_CABLE_PAIR_ */
+-	ETHTOOL_A_CABLE_FAULT_LENGTH_CM,	/* u32 */
+-	ETHTOOL_A_CABLE_FAULT_LENGTH_SRC,	/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
+-
+-	__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT,
+-	ETHTOOL_A_CABLE_FAULT_LENGTH_MAX = (__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT - 1)
+-};
+-
+ enum {
+ 	ETHTOOL_A_CABLE_TEST_NTF_STATUS_UNSPEC,
+ 	ETHTOOL_A_CABLE_TEST_NTF_STATUS_STARTED,
+ 	ETHTOOL_A_CABLE_TEST_NTF_STATUS_COMPLETED
+ };
  
-   -
-     name: privflags
-+    attr-cnt-name: __ethtool-a-privflags-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -170,7 +273,12 @@ doc: Partial family for Ethtool Netlink.
+-enum {
+-	ETHTOOL_A_CABLE_NEST_UNSPEC,
+-	ETHTOOL_A_CABLE_NEST_RESULT,		/* nest - ETHTOOL_A_CABLE_RESULT_ */
+-	ETHTOOL_A_CABLE_NEST_FAULT_LENGTH,	/* nest - ETHTOOL_A_CABLE_FAULT_LENGTH_ */
+-	__ETHTOOL_A_CABLE_NEST_CNT,
+-	ETHTOOL_A_CABLE_NEST_MAX = (__ETHTOOL_A_CABLE_NEST_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_CABLE_TEST_NTF_UNSPEC,
+-	ETHTOOL_A_CABLE_TEST_NTF_HEADER,	/* nest - ETHTOOL_A_HEADER_* */
+-	ETHTOOL_A_CABLE_TEST_NTF_STATUS,	/* u8 - _STARTED/_COMPLETE */
+-	ETHTOOL_A_CABLE_TEST_NTF_NEST,		/* nest - of results: */
+-
+-	__ETHTOOL_A_CABLE_TEST_NTF_CNT,
+-	ETHTOOL_A_CABLE_TEST_NTF_MAX = (__ETHTOOL_A_CABLE_TEST_NTF_CNT - 1)
+-};
+-
+-/* CABLE TEST TDR */
+-
+-enum {
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_UNSPEC,
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_FIRST,		/* u32 */
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_LAST,		/* u32 */
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_STEP,		/* u32 */
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_PAIR,		/* u8 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_CABLE_TEST_TDR_CFG_CNT,
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG_MAX = __ETHTOOL_A_CABLE_TEST_TDR_CFG_CNT - 1
+-};
+-
+-enum {
+-	ETHTOOL_A_CABLE_TEST_TDR_UNSPEC,
+-	ETHTOOL_A_CABLE_TEST_TDR_HEADER,	/* nest - _A_HEADER_* */
+-	ETHTOOL_A_CABLE_TEST_TDR_CFG,		/* nest - *_TDR_CFG_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_CABLE_TEST_TDR_CNT,
+-	ETHTOOL_A_CABLE_TEST_TDR_MAX = __ETHTOOL_A_CABLE_TEST_TDR_CNT - 1
+-};
+-
+ /* CABLE TEST TDR NOTIFY */
  
-   -
-     name: rings
-+    attr-cnt-name: __ethtool-a-rings-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -205,6 +313,7 @@ doc: Partial family for Ethtool Netlink.
-       -
-         name: tcp-data-split
-         type: u8
-+        enum: tcp-data-split
-       -
-         name: cqe-size
-         type: u32
-@@ -223,31 +332,48 @@ doc: Partial family for Ethtool Netlink.
+ enum {
+@@ -689,132 +94,6 @@ enum {
+ 	ETHTOOL_A_CABLE_TDR_NEST_MAX = (__ETHTOOL_A_CABLE_TDR_NEST_CNT - 1)
+ };
  
-   -
-     name: mm-stat
-+    attr-cnt-name: __ethtool-a-mm-stat-cnt
-+    doc: MAC Merge (802.3)
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pad
-         type: pad
-       -
-         name: reassembly-errors
-+        doc: aMACMergeFrameAssErrorCount
-         type: u64
-       -
-         name: smd-errors
-+        doc: aMACMergeFrameSmdErrorCount
-         type: u64
-       -
-         name: reassembly-ok
-+        doc: aMACMergeFrameAssOkCount
-         type: u64
-       -
-         name: rx-frag-count
-+        doc: aMACMergeFragCountRx
-         type: u64
-       -
-         name: tx-frag-count
-+        doc: aMACMergeFragCountTx
-         type: u64
-       -
-         name: hold-count
-+        doc: aMACMergeHoldCount
-         type: u64
-   -
-     name: mm
-+    attr-cnt-name: __ethtool-a-mm-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -285,7 +411,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: mm-stat
-   -
-     name: linkinfo
-+    attr-cnt-name: __ethtool-a-linkinfo-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -307,7 +438,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u8
-   -
-     name: linkmodes
-+    attr-cnt-name: __ethtool-a-linkmodes-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -343,7 +479,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u8
-   -
-     name: linkstate
-+    attr-cnt-name: __ethtool-a-linkstate-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -368,7 +509,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: debug
-+    attr-cnt-name: __ethtool-a-debug-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -379,7 +525,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: bitset
-   -
-     name: wol
-+    attr-cnt-name: __ethtool-a-wol-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -393,7 +544,12 @@ doc: Partial family for Ethtool Netlink.
-         type: binary
-   -
-     name: features
-+    attr-cnt-name: __ethtool-a-features-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -416,7 +572,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: bitset
-   -
-     name: channels
-+    attr-cnt-name: __ethtool-a-channels-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -448,7 +609,12 @@ doc: Partial family for Ethtool Netlink.
+-enum {
+-	ETHTOOL_A_CABLE_TEST_TDR_NTF_UNSPEC,
+-	ETHTOOL_A_CABLE_TEST_TDR_NTF_HEADER,	/* nest - ETHTOOL_A_HEADER_* */
+-	ETHTOOL_A_CABLE_TEST_TDR_NTF_STATUS,	/* u8 - _STARTED/_COMPLETE */
+-	ETHTOOL_A_CABLE_TEST_TDR_NTF_NEST,	/* nest - of results: */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_CABLE_TEST_TDR_NTF_CNT,
+-	ETHTOOL_A_CABLE_TEST_TDR_NTF_MAX = __ETHTOOL_A_CABLE_TEST_TDR_NTF_CNT - 1
+-};
+-
+-/* TUNNEL INFO */
+-
+-enum {
+-	ETHTOOL_UDP_TUNNEL_TYPE_VXLAN,
+-	ETHTOOL_UDP_TUNNEL_TYPE_GENEVE,
+-	ETHTOOL_UDP_TUNNEL_TYPE_VXLAN_GPE,
+-
+-	__ETHTOOL_UDP_TUNNEL_TYPE_CNT
+-};
+-
+-enum {
+-	ETHTOOL_A_TUNNEL_UDP_ENTRY_UNSPEC,
+-
+-	ETHTOOL_A_TUNNEL_UDP_ENTRY_PORT,		/* be16 */
+-	ETHTOOL_A_TUNNEL_UDP_ENTRY_TYPE,		/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TUNNEL_UDP_ENTRY_CNT,
+-	ETHTOOL_A_TUNNEL_UDP_ENTRY_MAX = (__ETHTOOL_A_TUNNEL_UDP_ENTRY_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_TUNNEL_UDP_TABLE_UNSPEC,
+-
+-	ETHTOOL_A_TUNNEL_UDP_TABLE_SIZE,		/* u32 */
+-	ETHTOOL_A_TUNNEL_UDP_TABLE_TYPES,		/* bitset */
+-	ETHTOOL_A_TUNNEL_UDP_TABLE_ENTRY,		/* nest - _UDP_ENTRY_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TUNNEL_UDP_TABLE_CNT,
+-	ETHTOOL_A_TUNNEL_UDP_TABLE_MAX = (__ETHTOOL_A_TUNNEL_UDP_TABLE_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_TUNNEL_UDP_UNSPEC,
+-
+-	ETHTOOL_A_TUNNEL_UDP_TABLE,			/* nest - _UDP_TABLE_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TUNNEL_UDP_CNT,
+-	ETHTOOL_A_TUNNEL_UDP_MAX = (__ETHTOOL_A_TUNNEL_UDP_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_TUNNEL_INFO_UNSPEC,
+-	ETHTOOL_A_TUNNEL_INFO_HEADER,			/* nest - _A_HEADER_* */
+-
+-	ETHTOOL_A_TUNNEL_INFO_UDP_PORTS,		/* nest - _UDP_TABLE */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_TUNNEL_INFO_CNT,
+-	ETHTOOL_A_TUNNEL_INFO_MAX = (__ETHTOOL_A_TUNNEL_INFO_CNT - 1)
+-};
+-
+-/* FEC */
+-
+-enum {
+-	ETHTOOL_A_FEC_UNSPEC,
+-	ETHTOOL_A_FEC_HEADER,				/* nest - _A_HEADER_* */
+-	ETHTOOL_A_FEC_MODES,				/* bitset */
+-	ETHTOOL_A_FEC_AUTO,				/* u8 */
+-	ETHTOOL_A_FEC_ACTIVE,				/* u32 */
+-	ETHTOOL_A_FEC_STATS,				/* nest - _A_FEC_STAT */
+-
+-	__ETHTOOL_A_FEC_CNT,
+-	ETHTOOL_A_FEC_MAX = (__ETHTOOL_A_FEC_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_FEC_STAT_UNSPEC,
+-	ETHTOOL_A_FEC_STAT_PAD,
+-
+-	ETHTOOL_A_FEC_STAT_CORRECTED,			/* array, u64 */
+-	ETHTOOL_A_FEC_STAT_UNCORR,			/* array, u64 */
+-	ETHTOOL_A_FEC_STAT_CORR_BITS,			/* array, u64 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_FEC_STAT_CNT,
+-	ETHTOOL_A_FEC_STAT_MAX = (__ETHTOOL_A_FEC_STAT_CNT - 1)
+-};
+-
+-/* MODULE EEPROM */
+-
+-enum {
+-	ETHTOOL_A_MODULE_EEPROM_UNSPEC,
+-	ETHTOOL_A_MODULE_EEPROM_HEADER,			/* nest - _A_HEADER_* */
+-
+-	ETHTOOL_A_MODULE_EEPROM_OFFSET,			/* u32 */
+-	ETHTOOL_A_MODULE_EEPROM_LENGTH,			/* u32 */
+-	ETHTOOL_A_MODULE_EEPROM_PAGE,			/* u8 */
+-	ETHTOOL_A_MODULE_EEPROM_BANK,			/* u8 */
+-	ETHTOOL_A_MODULE_EEPROM_I2C_ADDRESS,		/* u8 */
+-	ETHTOOL_A_MODULE_EEPROM_DATA,			/* binary */
+-
+-	__ETHTOOL_A_MODULE_EEPROM_CNT,
+-	ETHTOOL_A_MODULE_EEPROM_MAX = (__ETHTOOL_A_MODULE_EEPROM_CNT - 1)
+-};
+-
+-/* STATS */
+-
+-enum {
+-	ETHTOOL_A_STATS_UNSPEC,
+-	ETHTOOL_A_STATS_PAD,
+-	ETHTOOL_A_STATS_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_STATS_GROUPS,			/* bitset */
+-
+-	ETHTOOL_A_STATS_GRP,			/* nest - _A_STATS_GRP_* */
+-
+-	ETHTOOL_A_STATS_SRC,			/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STATS_CNT,
+-	ETHTOOL_A_STATS_MAX = (__ETHTOOL_A_STATS_CNT - 1)
+-};
+-
+ enum {
+ 	ETHTOOL_STATS_ETH_PHY,
+ 	ETHTOOL_STATS_ETH_MAC,
+@@ -825,27 +104,6 @@ enum {
+ 	__ETHTOOL_STATS_CNT
+ };
  
-   -
-     name: irq-moderation
-+    attr-cnt-name: __ethtool-a-irq-moderation-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: usec
-         type: u32
-@@ -460,7 +626,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: profile
-+    attr-cnt-name: __ethtool-a-profile-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: irq-moderation
-         type: nest
-@@ -468,7 +639,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: irq-moderation
-   -
-     name: coalesce
-+    attr-cnt-name: __ethtool-a-coalesce-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -565,7 +741,12 @@ doc: Partial family for Ethtool Netlink.
+-enum {
+-	ETHTOOL_A_STATS_GRP_UNSPEC,
+-	ETHTOOL_A_STATS_GRP_PAD,
+-
+-	ETHTOOL_A_STATS_GRP_ID,			/* u32 */
+-	ETHTOOL_A_STATS_GRP_SS_ID,		/* u32 */
+-
+-	ETHTOOL_A_STATS_GRP_STAT,		/* nest */
+-
+-	ETHTOOL_A_STATS_GRP_HIST_RX,		/* nest */
+-	ETHTOOL_A_STATS_GRP_HIST_TX,		/* nest */
+-
+-	ETHTOOL_A_STATS_GRP_HIST_BKT_LOW,	/* u32 */
+-	ETHTOOL_A_STATS_GRP_HIST_BKT_HI,	/* u32 */
+-	ETHTOOL_A_STATS_GRP_HIST_VAL,		/* u64 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_STATS_GRP_CNT,
+-	ETHTOOL_A_STATS_GRP_MAX = (__ETHTOOL_A_STATS_GRP_CNT - 1)
+-};
+-
+ enum {
+ 	/* 30.3.2.1.5 aSymbolErrorDuringCarrier */
+ 	ETHTOOL_A_STATS_ETH_PHY_5_SYM_ERR,
+@@ -935,155 +193,6 @@ enum {
+ 	ETHTOOL_A_STATS_RMON_MAX = (__ETHTOOL_A_STATS_RMON_CNT - 1)
+ };
  
-   -
-     name: pause-stat
-+    attr-cnt-name: __ethtool-a-pause-stat-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pad
-         type: pad
-@@ -577,7 +758,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u64
-   -
-     name: pause
-+    attr-cnt-name: __ethtool-a-pause-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -600,7 +786,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: eee
-+    attr-cnt-name: __ethtool-a-eee-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -627,7 +818,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: ts-stat
-+    attr-cnt-name: __ethtool-a-ts-stat-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: tx-pkts
-         type: uint
-@@ -639,7 +835,12 @@ doc: Partial family for Ethtool Netlink.
-         type: uint
-   -
-     name: tsinfo
-+    attr-cnt-name: __ethtool-a-tsinfo-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -665,19 +866,32 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: ts-stat
-   -
-     name: cable-result
-+    attr-cnt-name: __ethtool-a-cable-result-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pair
-+        doc: ETHTOOL_A_CABLE_PAIR_
-         type: u8
-       -
-         name: code
-+        doc: ETHTOOL_A_CABLE_RESULT_CODE_
-         type: u8
-       -
-         name: src
-+        doc: ETHTOOL_A_CABLE_INF_SRC_
-         type: u32
-   -
-     name: cable-fault-length
-+    attr-cnt-name: __ethtool-a-cable-fault-length-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pair
-         type: u8
-@@ -689,7 +903,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: cable-nest
-+    attr-cnt-name: __ethtool-a-cable-nest-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: result
-         type: nest
-@@ -700,20 +919,31 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: cable-fault-length
-   -
-     name: cable-test
-+    attr-cnt-name: __ethtool-a-cable-test-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-         nested-attributes: header
-   -
-     name: cable-test-ntf
-+    attr-cnt-name: __ethtool-a-cable-test-ntf-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-         nested-attributes: header
-       -
-         name: status
-+        doc: _STARTED/_COMPLETE
-         type: u8
-       -
-         name: nest
-@@ -721,7 +951,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: cable-nest
-   -
-     name: cable-test-tdr-cfg
-+    attr-cnt-name: __ethtool-a-cable-test-tdr-cfg-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: first
-         type: u32
-@@ -736,7 +971,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u8
-   -
-     name: cable-test-tdr-ntf
-+    attr-cnt-name: __ethtool-a-cable-test-tdr-ntf-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -750,7 +990,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: cable-nest
-   -
-     name: cable-test-tdr
-+    attr-cnt-name: __ethtool-a-cable-test-tdr-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -761,7 +1006,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: cable-test-tdr-cfg
-   -
-     name: tunnel-udp-entry
-+    attr-cnt-name: __ethtool-a-tunnel-udp-entry-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: port
-         type: u16
-@@ -772,7 +1022,12 @@ doc: Partial family for Ethtool Netlink.
-         enum: udp-tunnel-type
-   -
-     name: tunnel-udp-table
-+    attr-cnt-name: __ethtool-a-tunnel-udp-table-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: size
-         type: u32
-@@ -787,14 +1042,24 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: tunnel-udp-entry
-   -
-     name: tunnel-udp
-+    attr-cnt-name: __ethtool-a-tunnel-udp-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: table
-         type: nest
-         nested-attributes: tunnel-udp-table
-   -
-     name: tunnel-info
-+    attr-cnt-name: __ethtool-a-tunnel-info-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -805,7 +1070,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: tunnel-udp
-   -
-     name: fec-stat
-+    attr-cnt-name: __ethtool-a-fec-stat-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pad
-         type: pad
-@@ -823,7 +1093,12 @@ doc: Partial family for Ethtool Netlink.
-         sub-type: u64
-   -
-     name: fec
-+    attr-cnt-name: __ethtool-a-fec-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -844,7 +1119,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: fec-stat
-   -
-     name: module-eeprom
-+    attr-cnt-name: __ethtool-a-module-eeprom-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -869,7 +1149,12 @@ doc: Partial family for Ethtool Netlink.
-         type: binary
-   -
-     name: stats-grp
-+    attr-cnt-name: __ethtool-a-stats-grp-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pad
-         type: pad
-@@ -912,7 +1197,12 @@ doc: Partial family for Ethtool Netlink.
-         name: hist-val
-   -
-     name: stats
-+    attr-cnt-name: __ethtool-a-stats-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: pad
-         type: pad
-@@ -933,7 +1223,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: phc-vclocks
-+    attr-cnt-name: __ethtool-a-phc-vclocks-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -947,7 +1242,12 @@ doc: Partial family for Ethtool Netlink.
-         sub-type: s32
-   -
-     name: module
-+    attr-cnt-name: __ethtool-a-module-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -960,7 +1260,13 @@ doc: Partial family for Ethtool Netlink.
-         type: u8
-   -
-     name: c33-pse-pw-limit
-+    attr-cnt-name: __ethtool-a-c33-pse-pw-limit-cnt
-+    attr-max-name: __ethtool-a-c33-pse-pw-limit-max
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: min
-         type: u32
-@@ -969,7 +1275,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: pse
-+    attr-cnt-name: __ethtool-a-pse-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -1027,7 +1338,12 @@ doc: Partial family for Ethtool Netlink.
-         nested-attributes: c33-pse-pw-limit
-   -
-     name: rss
-+    attr-cnt-name: __ethtool-a-rss-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -1053,7 +1369,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: plca
-+    attr-cnt-name: __ethtool-a-plca-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -1084,7 +1405,12 @@ doc: Partial family for Ethtool Netlink.
-         type: u32
-   -
-     name: module-fw-flash
-+    attr-cnt-name: __ethtool-a-module-fw-flash-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
-@@ -1110,7 +1436,12 @@ doc: Partial family for Ethtool Netlink.
-         type: uint
-   -
-     name: phy
-+    attr-cnt-name: __ethtool-a-phy-cnt
-     attributes:
-+      -
-+        name: unspec
-+        type: unused
-+        value: 0
-       -
-         name: header
-         type: nest
+-/* MODULE */
+-
+-enum {
+-	ETHTOOL_A_MODULE_UNSPEC,
+-	ETHTOOL_A_MODULE_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_MODULE_POWER_MODE_POLICY,	/* u8 */
+-	ETHTOOL_A_MODULE_POWER_MODE,		/* u8 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_MODULE_CNT,
+-	ETHTOOL_A_MODULE_MAX = (__ETHTOOL_A_MODULE_CNT - 1)
+-};
+-
+-/* Power Sourcing Equipment */
+-enum {
+-	ETHTOOL_A_C33_PSE_PW_LIMIT_UNSPEC,
+-	ETHTOOL_A_C33_PSE_PW_LIMIT_MIN,	/* u32 */
+-	ETHTOOL_A_C33_PSE_PW_LIMIT_MAX,	/* u32 */
+-};
+-
+-enum {
+-	ETHTOOL_A_PSE_UNSPEC,
+-	ETHTOOL_A_PSE_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PODL_PSE_ADMIN_STATE,		/* u32 */
+-	ETHTOOL_A_PODL_PSE_ADMIN_CONTROL,	/* u32 */
+-	ETHTOOL_A_PODL_PSE_PW_D_STATUS,		/* u32 */
+-	ETHTOOL_A_C33_PSE_ADMIN_STATE,		/* u32 */
+-	ETHTOOL_A_C33_PSE_ADMIN_CONTROL,	/* u32 */
+-	ETHTOOL_A_C33_PSE_PW_D_STATUS,		/* u32 */
+-	ETHTOOL_A_C33_PSE_PW_CLASS,		/* u32 */
+-	ETHTOOL_A_C33_PSE_ACTUAL_PW,		/* u32 */
+-	ETHTOOL_A_C33_PSE_EXT_STATE,		/* u32 */
+-	ETHTOOL_A_C33_PSE_EXT_SUBSTATE,		/* u32 */
+-	ETHTOOL_A_C33_PSE_AVAIL_PW_LIMIT,	/* u32 */
+-	ETHTOOL_A_C33_PSE_PW_LIMIT_RANGES,	/* nest - _C33_PSE_PW_LIMIT_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PSE_CNT,
+-	ETHTOOL_A_PSE_MAX = (__ETHTOOL_A_PSE_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_RSS_UNSPEC,
+-	ETHTOOL_A_RSS_HEADER,
+-	ETHTOOL_A_RSS_CONTEXT,		/* u32 */
+-	ETHTOOL_A_RSS_HFUNC,		/* u32 */
+-	ETHTOOL_A_RSS_INDIR,		/* binary */
+-	ETHTOOL_A_RSS_HKEY,		/* binary */
+-	ETHTOOL_A_RSS_INPUT_XFRM,	/* u32 */
+-	ETHTOOL_A_RSS_START_CONTEXT,	/* u32 */
+-
+-	__ETHTOOL_A_RSS_CNT,
+-	ETHTOOL_A_RSS_MAX = (__ETHTOOL_A_RSS_CNT - 1),
+-};
+-
+-/* PLCA */
+-
+-enum {
+-	ETHTOOL_A_PLCA_UNSPEC,
+-	ETHTOOL_A_PLCA_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PLCA_VERSION,			/* u16 */
+-	ETHTOOL_A_PLCA_ENABLED,			/* u8  */
+-	ETHTOOL_A_PLCA_STATUS,			/* u8  */
+-	ETHTOOL_A_PLCA_NODE_CNT,		/* u32 */
+-	ETHTOOL_A_PLCA_NODE_ID,			/* u32 */
+-	ETHTOOL_A_PLCA_TO_TMR,			/* u32 */
+-	ETHTOOL_A_PLCA_BURST_CNT,		/* u32 */
+-	ETHTOOL_A_PLCA_BURST_TMR,		/* u32 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PLCA_CNT,
+-	ETHTOOL_A_PLCA_MAX = (__ETHTOOL_A_PLCA_CNT - 1)
+-};
+-
+-/* MAC Merge (802.3) */
+-
+-enum {
+-	ETHTOOL_A_MM_STAT_UNSPEC,
+-	ETHTOOL_A_MM_STAT_PAD,
+-
+-	/* aMACMergeFrameAssErrorCount */
+-	ETHTOOL_A_MM_STAT_REASSEMBLY_ERRORS,	/* u64 */
+-	/* aMACMergeFrameSmdErrorCount */
+-	ETHTOOL_A_MM_STAT_SMD_ERRORS,		/* u64 */
+-	/* aMACMergeFrameAssOkCount */
+-	ETHTOOL_A_MM_STAT_REASSEMBLY_OK,	/* u64 */
+-	/* aMACMergeFragCountRx */
+-	ETHTOOL_A_MM_STAT_RX_FRAG_COUNT,	/* u64 */
+-	/* aMACMergeFragCountTx */
+-	ETHTOOL_A_MM_STAT_TX_FRAG_COUNT,	/* u64 */
+-	/* aMACMergeHoldCount */
+-	ETHTOOL_A_MM_STAT_HOLD_COUNT,		/* u64 */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_MM_STAT_CNT,
+-	ETHTOOL_A_MM_STAT_MAX = (__ETHTOOL_A_MM_STAT_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_MM_UNSPEC,
+-	ETHTOOL_A_MM_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_MM_PMAC_ENABLED,		/* u8 */
+-	ETHTOOL_A_MM_TX_ENABLED,		/* u8 */
+-	ETHTOOL_A_MM_TX_ACTIVE,			/* u8 */
+-	ETHTOOL_A_MM_TX_MIN_FRAG_SIZE,		/* u32 */
+-	ETHTOOL_A_MM_RX_MIN_FRAG_SIZE,		/* u32 */
+-	ETHTOOL_A_MM_VERIFY_ENABLED,		/* u8 */
+-	ETHTOOL_A_MM_VERIFY_STATUS,		/* u8 */
+-	ETHTOOL_A_MM_VERIFY_TIME,		/* u32 */
+-	ETHTOOL_A_MM_MAX_VERIFY_TIME,		/* u32 */
+-	ETHTOOL_A_MM_STATS,			/* nest - _A_MM_STAT_* */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_MM_CNT,
+-	ETHTOOL_A_MM_MAX = (__ETHTOOL_A_MM_CNT - 1)
+-};
+-
+-/* MODULE_FW_FLASH */
+-
+-enum {
+-	ETHTOOL_A_MODULE_FW_FLASH_UNSPEC,
+-	ETHTOOL_A_MODULE_FW_FLASH_HEADER,		/* nest - _A_HEADER_* */
+-	ETHTOOL_A_MODULE_FW_FLASH_FILE_NAME,		/* string */
+-	ETHTOOL_A_MODULE_FW_FLASH_PASSWORD,		/* u32 */
+-	ETHTOOL_A_MODULE_FW_FLASH_STATUS,		/* u32 */
+-	ETHTOOL_A_MODULE_FW_FLASH_STATUS_MSG,		/* string */
+-	ETHTOOL_A_MODULE_FW_FLASH_DONE,			/* uint */
+-	ETHTOOL_A_MODULE_FW_FLASH_TOTAL,		/* uint */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_MODULE_FW_FLASH_CNT,
+-	ETHTOOL_A_MODULE_FW_FLASH_MAX = (__ETHTOOL_A_MODULE_FW_FLASH_CNT - 1)
+-};
+-
+-enum {
+-	ETHTOOL_A_PHY_UNSPEC,
+-	ETHTOOL_A_PHY_HEADER,			/* nest - _A_HEADER_* */
+-	ETHTOOL_A_PHY_INDEX,			/* u32 */
+-	ETHTOOL_A_PHY_DRVNAME,			/* string */
+-	ETHTOOL_A_PHY_NAME,			/* string */
+-	ETHTOOL_A_PHY_UPSTREAM_TYPE,		/* u32 */
+-	ETHTOOL_A_PHY_UPSTREAM_INDEX,		/* u32 */
+-	ETHTOOL_A_PHY_UPSTREAM_SFP_NAME,	/* string */
+-	ETHTOOL_A_PHY_DOWNSTREAM_SFP_NAME,	/* string */
+-
+-	/* add new constants above here */
+-	__ETHTOOL_A_PHY_CNT,
+-	ETHTOOL_A_PHY_MAX = (__ETHTOOL_A_PHY_CNT - 1)
+-};
+ 
+ /* generic netlink info */
+ #define ETHTOOL_GENL_NAME "ethtool"
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+new file mode 100644
+index 000000000000..4b4bf17d1a88
+--- /dev/null
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -0,0 +1,899 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++#ifndef _UAPI_LINUX_ETHTOOL_NETLINK_GENERATED_H
++#define _UAPI_LINUX_ETHTOOL_NETLINK_GENERATED_H
++
++/* TUNNEL INFO */
++
++enum {
++	ETHTOOL_UDP_TUNNEL_TYPE_VXLAN,
++	ETHTOOL_UDP_TUNNEL_TYPE_GENEVE,
++	ETHTOOL_UDP_TUNNEL_TYPE_VXLAN_GPE,
++
++	__ETHTOOL_UDP_TUNNEL_TYPE_CNT
++};
++
++/* request header */
++
++enum ethtool_header_flags {
++	ETHTOOL_FLAG_COMPACT_BITSETS	= 1 << 0,	/* use compact bitsets in reply */
++	ETHTOOL_FLAG_OMIT_REPLY		= 1 << 1,	/* provide optional reply for SET or ACT requests */
++	ETHTOOL_FLAG_STATS		= 1 << 2,	/* request statistics, if supported by the driver */
++};
++
++enum {
++	ETHTOOL_TCP_DATA_SPLIT_UNKNOWN = 0,
++	ETHTOOL_TCP_DATA_SPLIT_DISABLED,
++	ETHTOOL_TCP_DATA_SPLIT_ENABLED,
++};
++
++enum {
++	ETHTOOL_A_HEADER_UNSPEC,
++	ETHTOOL_A_HEADER_DEV_INDEX,		/* u32 */
++	ETHTOOL_A_HEADER_DEV_NAME,		/* string */
++	ETHTOOL_A_HEADER_FLAGS,			/* u32 - ETHTOOL_FLAG_* */
++	ETHTOOL_A_HEADER_PHY_INDEX,		/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_HEADER_CNT,
++	ETHTOOL_A_HEADER_MAX = __ETHTOOL_A_HEADER_CNT - 1
++};
++
++/* bit sets */
++
++enum {
++	ETHTOOL_A_BITSET_BIT_UNSPEC,
++	ETHTOOL_A_BITSET_BIT_INDEX,		/* u32 */
++	ETHTOOL_A_BITSET_BIT_NAME,		/* string */
++	ETHTOOL_A_BITSET_BIT_VALUE,		/* flag */
++
++	/* add new constants above here */
++	__ETHTOOL_A_BITSET_BIT_CNT,
++	ETHTOOL_A_BITSET_BIT_MAX = __ETHTOOL_A_BITSET_BIT_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_BITSET_BITS_UNSPEC,
++	ETHTOOL_A_BITSET_BITS_BIT,		/* nest - _A_BITSET_BIT_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_BITSET_BITS_CNT,
++	ETHTOOL_A_BITSET_BITS_MAX = __ETHTOOL_A_BITSET_BITS_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_BITSET_UNSPEC,
++	ETHTOOL_A_BITSET_NOMASK,		/* flag */
++	ETHTOOL_A_BITSET_SIZE,			/* u32 */
++	ETHTOOL_A_BITSET_BITS,			/* nest - _A_BITSET_BITS_* */
++	ETHTOOL_A_BITSET_VALUE,			/* binary */
++	ETHTOOL_A_BITSET_MASK,			/* binary */
++
++	/* add new constants above here */
++	__ETHTOOL_A_BITSET_CNT,
++	ETHTOOL_A_BITSET_MAX = __ETHTOOL_A_BITSET_CNT - 1
++};
++
++/* string sets */
++
++enum {
++	ETHTOOL_A_STRING_UNSPEC,
++	ETHTOOL_A_STRING_INDEX,			/* u32 */
++	ETHTOOL_A_STRING_VALUE,			/* string */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STRING_CNT,
++	ETHTOOL_A_STRING_MAX = __ETHTOOL_A_STRING_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_STRINGS_UNSPEC,
++	ETHTOOL_A_STRINGS_STRING,		/* nest - _A_STRINGS_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STRINGS_CNT,
++	ETHTOOL_A_STRINGS_MAX = __ETHTOOL_A_STRINGS_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_STRINGSET_UNSPEC,
++	ETHTOOL_A_STRINGSET_ID,			/* u32 */
++	ETHTOOL_A_STRINGSET_COUNT,		/* u32 */
++	ETHTOOL_A_STRINGSET_STRINGS,		/* nest - _A_STRINGS_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STRINGSET_CNT,
++	ETHTOOL_A_STRINGSET_MAX = __ETHTOOL_A_STRINGSET_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_STRINGSETS_UNSPEC,
++	ETHTOOL_A_STRINGSETS_STRINGSET,		/* nest - _A_STRINGSET_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STRINGSETS_CNT,
++	ETHTOOL_A_STRINGSETS_MAX = __ETHTOOL_A_STRINGSETS_CNT - 1
++};
++
++/* STRSET */
++
++enum {
++	ETHTOOL_A_STRSET_UNSPEC,
++	ETHTOOL_A_STRSET_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_STRSET_STRINGSETS,		/* nest - _A_STRINGSETS_* */
++	ETHTOOL_A_STRSET_COUNTS_ONLY,		/* flag */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STRSET_CNT,
++	ETHTOOL_A_STRSET_MAX = __ETHTOOL_A_STRSET_CNT - 1
++};
++
++/* PRIVFLAGS */
++
++enum {
++	ETHTOOL_A_PRIVFLAGS_UNSPEC,
++	ETHTOOL_A_PRIVFLAGS_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_PRIVFLAGS_FLAGS,			/* bitset */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PRIVFLAGS_CNT,
++	ETHTOOL_A_PRIVFLAGS_MAX = __ETHTOOL_A_PRIVFLAGS_CNT - 1
++};
++
++/* RINGS */
++
++enum {
++	ETHTOOL_A_RINGS_UNSPEC,
++	ETHTOOL_A_RINGS_HEADER,				/* nest - _A_HEADER_* */
++	ETHTOOL_A_RINGS_RX_MAX,				/* u32 */
++	ETHTOOL_A_RINGS_RX_MINI_MAX,			/* u32 */
++	ETHTOOL_A_RINGS_RX_JUMBO_MAX,			/* u32 */
++	ETHTOOL_A_RINGS_TX_MAX,				/* u32 */
++	ETHTOOL_A_RINGS_RX,				/* u32 */
++	ETHTOOL_A_RINGS_RX_MINI,			/* u32 */
++	ETHTOOL_A_RINGS_RX_JUMBO,			/* u32 */
++	ETHTOOL_A_RINGS_TX,				/* u32 */
++	ETHTOOL_A_RINGS_RX_BUF_LEN,                     /* u32 */
++	ETHTOOL_A_RINGS_TCP_DATA_SPLIT,			/* u8 */
++	ETHTOOL_A_RINGS_CQE_SIZE,			/* u32 */
++	ETHTOOL_A_RINGS_TX_PUSH,			/* u8 */
++	ETHTOOL_A_RINGS_RX_PUSH,			/* u8 */
++	ETHTOOL_A_RINGS_TX_PUSH_BUF_LEN,		/* u32 */
++	ETHTOOL_A_RINGS_TX_PUSH_BUF_LEN_MAX,		/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_RINGS_CNT,
++	ETHTOOL_A_RINGS_MAX = (__ETHTOOL_A_RINGS_CNT - 1)
++};
++
++/* MAC Merge (802.3) */
++
++enum {
++	ETHTOOL_A_MM_STAT_UNSPEC,
++	ETHTOOL_A_MM_STAT_PAD,
++
++	/* aMACMergeFrameAssErrorCount */
++	ETHTOOL_A_MM_STAT_REASSEMBLY_ERRORS,	/* u64 */
++	/* aMACMergeFrameSmdErrorCount */
++	ETHTOOL_A_MM_STAT_SMD_ERRORS,		/* u64 */
++	/* aMACMergeFrameAssOkCount */
++	ETHTOOL_A_MM_STAT_REASSEMBLY_OK,	/* u64 */
++	/* aMACMergeFragCountRx */
++	ETHTOOL_A_MM_STAT_RX_FRAG_COUNT,	/* u64 */
++	/* aMACMergeFragCountTx */
++	ETHTOOL_A_MM_STAT_TX_FRAG_COUNT,	/* u64 */
++	/* aMACMergeHoldCount */
++	ETHTOOL_A_MM_STAT_HOLD_COUNT,		/* u64 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_MM_STAT_CNT,
++	ETHTOOL_A_MM_STAT_MAX = (__ETHTOOL_A_MM_STAT_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_MM_UNSPEC,
++	ETHTOOL_A_MM_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_MM_PMAC_ENABLED,		/* u8 */
++	ETHTOOL_A_MM_TX_ENABLED,		/* u8 */
++	ETHTOOL_A_MM_TX_ACTIVE,			/* u8 */
++	ETHTOOL_A_MM_TX_MIN_FRAG_SIZE,		/* u32 */
++	ETHTOOL_A_MM_RX_MIN_FRAG_SIZE,		/* u32 */
++	ETHTOOL_A_MM_VERIFY_ENABLED,		/* u8 */
++	ETHTOOL_A_MM_VERIFY_STATUS,		/* u8 */
++	ETHTOOL_A_MM_VERIFY_TIME,		/* u32 */
++	ETHTOOL_A_MM_MAX_VERIFY_TIME,		/* u32 */
++	ETHTOOL_A_MM_STATS,			/* nest - _A_MM_STAT_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_MM_CNT,
++	ETHTOOL_A_MM_MAX = (__ETHTOOL_A_MM_CNT - 1)
++};
++
++/* LINKINFO */
++
++enum {
++	ETHTOOL_A_LINKINFO_UNSPEC,
++	ETHTOOL_A_LINKINFO_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_LINKINFO_PORT,		/* u8 */
++	ETHTOOL_A_LINKINFO_PHYADDR,		/* u8 */
++	ETHTOOL_A_LINKINFO_TP_MDIX,		/* u8 */
++	ETHTOOL_A_LINKINFO_TP_MDIX_CTRL,	/* u8 */
++	ETHTOOL_A_LINKINFO_TRANSCEIVER,		/* u8 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_LINKINFO_CNT,
++	ETHTOOL_A_LINKINFO_MAX = __ETHTOOL_A_LINKINFO_CNT - 1
++};
++
++/* LINKMODES */
++
++enum {
++	ETHTOOL_A_LINKMODES_UNSPEC,
++	ETHTOOL_A_LINKMODES_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_LINKMODES_AUTONEG,		/* u8 */
++	ETHTOOL_A_LINKMODES_OURS,		/* bitset */
++	ETHTOOL_A_LINKMODES_PEER,		/* bitset */
++	ETHTOOL_A_LINKMODES_SPEED,		/* u32 */
++	ETHTOOL_A_LINKMODES_DUPLEX,		/* u8 */
++	ETHTOOL_A_LINKMODES_MASTER_SLAVE_CFG,	/* u8 */
++	ETHTOOL_A_LINKMODES_MASTER_SLAVE_STATE,	/* u8 */
++	ETHTOOL_A_LINKMODES_LANES,		/* u32 */
++	ETHTOOL_A_LINKMODES_RATE_MATCHING,	/* u8 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_LINKMODES_CNT,
++	ETHTOOL_A_LINKMODES_MAX = __ETHTOOL_A_LINKMODES_CNT - 1
++};
++
++/* LINKSTATE */
++
++enum {
++	ETHTOOL_A_LINKSTATE_UNSPEC,
++	ETHTOOL_A_LINKSTATE_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_LINKSTATE_LINK,		/* u8 */
++	ETHTOOL_A_LINKSTATE_SQI,		/* u32 */
++	ETHTOOL_A_LINKSTATE_SQI_MAX,		/* u32 */
++	ETHTOOL_A_LINKSTATE_EXT_STATE,		/* u8 */
++	ETHTOOL_A_LINKSTATE_EXT_SUBSTATE,	/* u8 */
++	ETHTOOL_A_LINKSTATE_EXT_DOWN_CNT,	/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_LINKSTATE_CNT,
++	ETHTOOL_A_LINKSTATE_MAX = __ETHTOOL_A_LINKSTATE_CNT - 1
++};
++
++/* DEBUG */
++
++enum {
++	ETHTOOL_A_DEBUG_UNSPEC,
++	ETHTOOL_A_DEBUG_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_DEBUG_MSGMASK,		/* bitset */
++
++	/* add new constants above here */
++	__ETHTOOL_A_DEBUG_CNT,
++	ETHTOOL_A_DEBUG_MAX = __ETHTOOL_A_DEBUG_CNT - 1
++};
++
++/* WOL */
++
++enum {
++	ETHTOOL_A_WOL_UNSPEC,
++	ETHTOOL_A_WOL_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_WOL_MODES,			/* bitset */
++	ETHTOOL_A_WOL_SOPASS,			/* binary */
++
++	/* add new constants above here */
++	__ETHTOOL_A_WOL_CNT,
++	ETHTOOL_A_WOL_MAX = __ETHTOOL_A_WOL_CNT - 1
++};
++
++/* FEATURES */
++
++enum {
++	ETHTOOL_A_FEATURES_UNSPEC,
++	ETHTOOL_A_FEATURES_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_FEATURES_HW,				/* bitset */
++	ETHTOOL_A_FEATURES_WANTED,			/* bitset */
++	ETHTOOL_A_FEATURES_ACTIVE,			/* bitset */
++	ETHTOOL_A_FEATURES_NOCHANGE,			/* bitset */
++
++	/* add new constants above here */
++	__ETHTOOL_A_FEATURES_CNT,
++	ETHTOOL_A_FEATURES_MAX = __ETHTOOL_A_FEATURES_CNT - 1
++};
++
++/* CHANNELS */
++
++enum {
++	ETHTOOL_A_CHANNELS_UNSPEC,
++	ETHTOOL_A_CHANNELS_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_CHANNELS_RX_MAX,			/* u32 */
++	ETHTOOL_A_CHANNELS_TX_MAX,			/* u32 */
++	ETHTOOL_A_CHANNELS_OTHER_MAX,			/* u32 */
++	ETHTOOL_A_CHANNELS_COMBINED_MAX,		/* u32 */
++	ETHTOOL_A_CHANNELS_RX_COUNT,			/* u32 */
++	ETHTOOL_A_CHANNELS_TX_COUNT,			/* u32 */
++	ETHTOOL_A_CHANNELS_OTHER_COUNT,			/* u32 */
++	ETHTOOL_A_CHANNELS_COMBINED_COUNT,		/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_CHANNELS_CNT,
++	ETHTOOL_A_CHANNELS_MAX = (__ETHTOOL_A_CHANNELS_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_IRQ_MODERATION_UNSPEC,
++	ETHTOOL_A_IRQ_MODERATION_USEC,			/* u32 */
++	ETHTOOL_A_IRQ_MODERATION_PKTS,			/* u32 */
++	ETHTOOL_A_IRQ_MODERATION_COMPS,			/* u32 */
++
++	__ETHTOOL_A_IRQ_MODERATION_CNT,
++	ETHTOOL_A_IRQ_MODERATION_MAX = (__ETHTOOL_A_IRQ_MODERATION_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_PROFILE_UNSPEC,
++	/* nest, _A_IRQ_MODERATION_* */
++	ETHTOOL_A_PROFILE_IRQ_MODERATION,
++	__ETHTOOL_A_PROFILE_CNT,
++	ETHTOOL_A_PROFILE_MAX = (__ETHTOOL_A_PROFILE_CNT - 1)
++};
++
++/* COALESCE */
++
++enum {
++	ETHTOOL_A_COALESCE_UNSPEC,
++	ETHTOOL_A_COALESCE_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_COALESCE_RX_USECS,			/* u32 */
++	ETHTOOL_A_COALESCE_RX_MAX_FRAMES,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_USECS_IRQ,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_IRQ,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_USECS,			/* u32 */
++	ETHTOOL_A_COALESCE_TX_MAX_FRAMES,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_USECS_IRQ,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_IRQ,		/* u32 */
++	ETHTOOL_A_COALESCE_STATS_BLOCK_USECS,		/* u32 */
++	ETHTOOL_A_COALESCE_USE_ADAPTIVE_RX,		/* u8 */
++	ETHTOOL_A_COALESCE_USE_ADAPTIVE_TX,		/* u8 */
++	ETHTOOL_A_COALESCE_PKT_RATE_LOW,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_USECS_LOW,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_LOW,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_USECS_LOW,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_LOW,		/* u32 */
++	ETHTOOL_A_COALESCE_PKT_RATE_HIGH,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_USECS_HIGH,		/* u32 */
++	ETHTOOL_A_COALESCE_RX_MAX_FRAMES_HIGH,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_USECS_HIGH,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_MAX_FRAMES_HIGH,		/* u32 */
++	ETHTOOL_A_COALESCE_RATE_SAMPLE_INTERVAL,	/* u32 */
++	ETHTOOL_A_COALESCE_USE_CQE_MODE_TX,		/* u8 */
++	ETHTOOL_A_COALESCE_USE_CQE_MODE_RX,		/* u8 */
++	ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES,		/* u32 */
++	ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,		/* u32 */
++	/* nest - _A_PROFILE_IRQ_MODERATION */
++	ETHTOOL_A_COALESCE_RX_PROFILE,
++	/* nest - _A_PROFILE_IRQ_MODERATION */
++	ETHTOOL_A_COALESCE_TX_PROFILE,
++
++	/* add new constants above here */
++	__ETHTOOL_A_COALESCE_CNT,
++	ETHTOOL_A_COALESCE_MAX = (__ETHTOOL_A_COALESCE_CNT - 1)
++};
++
++/* PAUSE */
++
++enum {
++	ETHTOOL_A_PAUSE_STAT_UNSPEC,
++	ETHTOOL_A_PAUSE_STAT_PAD,
++
++	ETHTOOL_A_PAUSE_STAT_TX_FRAMES,
++	ETHTOOL_A_PAUSE_STAT_RX_FRAMES,
++
++	/* add new constants above here
++	 * adjust ETHTOOL_PAUSE_STAT_CNT if adding non-stats!
++	 */
++	__ETHTOOL_A_PAUSE_STAT_CNT,
++	ETHTOOL_A_PAUSE_STAT_MAX = (__ETHTOOL_A_PAUSE_STAT_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_PAUSE_UNSPEC,
++	ETHTOOL_A_PAUSE_HEADER,				/* nest - _A_HEADER_* */
++	ETHTOOL_A_PAUSE_AUTONEG,			/* u8 */
++	ETHTOOL_A_PAUSE_RX,				/* u8 */
++	ETHTOOL_A_PAUSE_TX,				/* u8 */
++	ETHTOOL_A_PAUSE_STATS,				/* nest - _PAUSE_STAT_* */
++	ETHTOOL_A_PAUSE_STATS_SRC,			/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PAUSE_CNT,
++	ETHTOOL_A_PAUSE_MAX = (__ETHTOOL_A_PAUSE_CNT - 1)
++};
++
++/* EEE */
++
++enum {
++	ETHTOOL_A_EEE_UNSPEC,
++	ETHTOOL_A_EEE_HEADER,				/* nest - _A_HEADER_* */
++	ETHTOOL_A_EEE_MODES_OURS,			/* bitset */
++	ETHTOOL_A_EEE_MODES_PEER,			/* bitset */
++	ETHTOOL_A_EEE_ACTIVE,				/* u8 */
++	ETHTOOL_A_EEE_ENABLED,				/* u8 */
++	ETHTOOL_A_EEE_TX_LPI_ENABLED,			/* u8 */
++	ETHTOOL_A_EEE_TX_LPI_TIMER,			/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_EEE_CNT,
++	ETHTOOL_A_EEE_MAX = (__ETHTOOL_A_EEE_CNT - 1)
++};
++
++/* TSINFO */
++
++enum {
++	ETHTOOL_A_TS_STAT_UNSPEC,
++
++	ETHTOOL_A_TS_STAT_TX_PKTS,			/* uint */
++	ETHTOOL_A_TS_STAT_TX_LOST,			/* uint */
++	ETHTOOL_A_TS_STAT_TX_ERR,			/* uint */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TS_STAT_CNT,
++	ETHTOOL_A_TS_STAT_MAX = (__ETHTOOL_A_TS_STAT_CNT - 1)
++
++};
++
++enum {
++	ETHTOOL_A_TSINFO_UNSPEC,
++	ETHTOOL_A_TSINFO_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_TSINFO_TIMESTAMPING,			/* bitset */
++	ETHTOOL_A_TSINFO_TX_TYPES,			/* bitset */
++	ETHTOOL_A_TSINFO_RX_FILTERS,			/* bitset */
++	ETHTOOL_A_TSINFO_PHC_INDEX,			/* u32 */
++	ETHTOOL_A_TSINFO_STATS,				/* nest - _A_TSINFO_STAT */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TSINFO_CNT,
++	ETHTOOL_A_TSINFO_MAX = (__ETHTOOL_A_TSINFO_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_CABLE_RESULT_UNSPEC,
++	ETHTOOL_A_CABLE_RESULT_PAIR,		/* u8 ETHTOOL_A_CABLE_PAIR_ */
++	ETHTOOL_A_CABLE_RESULT_CODE,		/* u8 ETHTOOL_A_CABLE_RESULT_CODE_ */
++	ETHTOOL_A_CABLE_RESULT_SRC,		/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
++
++	__ETHTOOL_A_CABLE_RESULT_CNT,
++	ETHTOOL_A_CABLE_RESULT_MAX = (__ETHTOOL_A_CABLE_RESULT_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_CABLE_FAULT_LENGTH_UNSPEC,
++	ETHTOOL_A_CABLE_FAULT_LENGTH_PAIR,	/* u8 ETHTOOL_A_CABLE_PAIR_ */
++	ETHTOOL_A_CABLE_FAULT_LENGTH_CM,	/* u32 */
++	ETHTOOL_A_CABLE_FAULT_LENGTH_SRC,	/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
++
++	__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT,
++	ETHTOOL_A_CABLE_FAULT_LENGTH_MAX = (__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_CABLE_NEST_UNSPEC,
++	ETHTOOL_A_CABLE_NEST_RESULT,		/* nest - ETHTOOL_A_CABLE_RESULT_ */
++	ETHTOOL_A_CABLE_NEST_FAULT_LENGTH,	/* nest - ETHTOOL_A_CABLE_FAULT_LENGTH_ */
++	__ETHTOOL_A_CABLE_NEST_CNT,
++	ETHTOOL_A_CABLE_NEST_MAX = (__ETHTOOL_A_CABLE_NEST_CNT - 1)
++};
++
++/* CABLE TEST */
++
++enum {
++	ETHTOOL_A_CABLE_TEST_UNSPEC,
++	ETHTOOL_A_CABLE_TEST_HEADER,		/* nest - _A_HEADER_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_CABLE_TEST_CNT,
++	ETHTOOL_A_CABLE_TEST_MAX = __ETHTOOL_A_CABLE_TEST_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_CABLE_TEST_NTF_UNSPEC,
++	ETHTOOL_A_CABLE_TEST_NTF_HEADER,	/* nest - ETHTOOL_A_HEADER_* */
++	ETHTOOL_A_CABLE_TEST_NTF_STATUS,	/* u8 - _STARTED/_COMPLETE */
++	ETHTOOL_A_CABLE_TEST_NTF_NEST,		/* nest - of results: */
++
++	__ETHTOOL_A_CABLE_TEST_NTF_CNT,
++	ETHTOOL_A_CABLE_TEST_NTF_MAX = (__ETHTOOL_A_CABLE_TEST_NTF_CNT - 1)
++};
++
++/* CABLE TEST TDR */
++
++enum {
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_UNSPEC,
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_FIRST,		/* u32 */
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_LAST,		/* u32 */
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_STEP,		/* u32 */
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_PAIR,		/* u8 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_CABLE_TEST_TDR_CFG_CNT,
++	ETHTOOL_A_CABLE_TEST_TDR_CFG_MAX = __ETHTOOL_A_CABLE_TEST_TDR_CFG_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_CABLE_TEST_TDR_NTF_UNSPEC,
++	ETHTOOL_A_CABLE_TEST_TDR_NTF_HEADER,	/* nest - ETHTOOL_A_HEADER_* */
++	ETHTOOL_A_CABLE_TEST_TDR_NTF_STATUS,	/* u8 - _STARTED/_COMPLETE */
++	ETHTOOL_A_CABLE_TEST_TDR_NTF_NEST,	/* nest - of results: */
++
++	/* add new constants above here */
++	__ETHTOOL_A_CABLE_TEST_TDR_NTF_CNT,
++	ETHTOOL_A_CABLE_TEST_TDR_NTF_MAX = __ETHTOOL_A_CABLE_TEST_TDR_NTF_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_CABLE_TEST_TDR_UNSPEC,
++	ETHTOOL_A_CABLE_TEST_TDR_HEADER,	/* nest - _A_HEADER_* */
++	ETHTOOL_A_CABLE_TEST_TDR_CFG,		/* nest - *_TDR_CFG_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_CABLE_TEST_TDR_CNT,
++	ETHTOOL_A_CABLE_TEST_TDR_MAX = __ETHTOOL_A_CABLE_TEST_TDR_CNT - 1
++};
++
++enum {
++	ETHTOOL_A_TUNNEL_UDP_ENTRY_UNSPEC,
++
++	ETHTOOL_A_TUNNEL_UDP_ENTRY_PORT,		/* be16 */
++	ETHTOOL_A_TUNNEL_UDP_ENTRY_TYPE,		/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TUNNEL_UDP_ENTRY_CNT,
++	ETHTOOL_A_TUNNEL_UDP_ENTRY_MAX = (__ETHTOOL_A_TUNNEL_UDP_ENTRY_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_TUNNEL_UDP_TABLE_UNSPEC,
++
++	ETHTOOL_A_TUNNEL_UDP_TABLE_SIZE,		/* u32 */
++	ETHTOOL_A_TUNNEL_UDP_TABLE_TYPES,		/* bitset */
++	ETHTOOL_A_TUNNEL_UDP_TABLE_ENTRY,		/* nest - _UDP_ENTRY_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TUNNEL_UDP_TABLE_CNT,
++	ETHTOOL_A_TUNNEL_UDP_TABLE_MAX = (__ETHTOOL_A_TUNNEL_UDP_TABLE_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_TUNNEL_UDP_UNSPEC,
++
++	ETHTOOL_A_TUNNEL_UDP_TABLE,			/* nest - _UDP_TABLE_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TUNNEL_UDP_CNT,
++	ETHTOOL_A_TUNNEL_UDP_MAX = (__ETHTOOL_A_TUNNEL_UDP_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_TUNNEL_INFO_UNSPEC,
++	ETHTOOL_A_TUNNEL_INFO_HEADER,			/* nest - _A_HEADER_* */
++
++	ETHTOOL_A_TUNNEL_INFO_UDP_PORTS,		/* nest - _UDP_TABLE */
++
++	/* add new constants above here */
++	__ETHTOOL_A_TUNNEL_INFO_CNT,
++	ETHTOOL_A_TUNNEL_INFO_MAX = (__ETHTOOL_A_TUNNEL_INFO_CNT - 1)
++};
++
++/* FEC */
++
++enum {
++	ETHTOOL_A_FEC_STAT_UNSPEC,
++	ETHTOOL_A_FEC_STAT_PAD,
++
++	ETHTOOL_A_FEC_STAT_CORRECTED,			/* array, u64 */
++	ETHTOOL_A_FEC_STAT_UNCORR,			/* array, u64 */
++	ETHTOOL_A_FEC_STAT_CORR_BITS,			/* array, u64 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_FEC_STAT_CNT,
++	ETHTOOL_A_FEC_STAT_MAX = (__ETHTOOL_A_FEC_STAT_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_FEC_UNSPEC,
++	ETHTOOL_A_FEC_HEADER,				/* nest - _A_HEADER_* */
++	ETHTOOL_A_FEC_MODES,				/* bitset */
++	ETHTOOL_A_FEC_AUTO,				/* u8 */
++	ETHTOOL_A_FEC_ACTIVE,				/* u32 */
++	ETHTOOL_A_FEC_STATS,				/* nest - _A_FEC_STAT */
++
++	__ETHTOOL_A_FEC_CNT,
++	ETHTOOL_A_FEC_MAX = (__ETHTOOL_A_FEC_CNT - 1)
++};
++
++/* MODULE EEPROM */
++
++enum {
++	ETHTOOL_A_MODULE_EEPROM_UNSPEC,
++	ETHTOOL_A_MODULE_EEPROM_HEADER,			/* nest - _A_HEADER_* */
++
++	ETHTOOL_A_MODULE_EEPROM_OFFSET,			/* u32 */
++	ETHTOOL_A_MODULE_EEPROM_LENGTH,			/* u32 */
++	ETHTOOL_A_MODULE_EEPROM_PAGE,			/* u8 */
++	ETHTOOL_A_MODULE_EEPROM_BANK,			/* u8 */
++	ETHTOOL_A_MODULE_EEPROM_I2C_ADDRESS,		/* u8 */
++	ETHTOOL_A_MODULE_EEPROM_DATA,			/* binary */
++
++	__ETHTOOL_A_MODULE_EEPROM_CNT,
++	ETHTOOL_A_MODULE_EEPROM_MAX = (__ETHTOOL_A_MODULE_EEPROM_CNT - 1)
++};
++
++
++enum {
++	ETHTOOL_A_STATS_GRP_UNSPEC,
++	ETHTOOL_A_STATS_GRP_PAD,
++
++	ETHTOOL_A_STATS_GRP_ID,			/* u32 */
++	ETHTOOL_A_STATS_GRP_SS_ID,		/* u32 */
++
++	ETHTOOL_A_STATS_GRP_STAT,		/* nest */
++
++	ETHTOOL_A_STATS_GRP_HIST_RX,		/* nest */
++	ETHTOOL_A_STATS_GRP_HIST_TX,		/* nest */
++
++	ETHTOOL_A_STATS_GRP_HIST_BKT_LOW,	/* u32 */
++	ETHTOOL_A_STATS_GRP_HIST_BKT_HI,	/* u32 */
++	ETHTOOL_A_STATS_GRP_HIST_VAL,		/* u64 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STATS_GRP_CNT,
++	ETHTOOL_A_STATS_GRP_MAX = (__ETHTOOL_A_STATS_GRP_CNT - 1)
++};
++
++/* STATS */
++
++enum {
++	ETHTOOL_A_STATS_UNSPEC,
++	ETHTOOL_A_STATS_PAD,
++	ETHTOOL_A_STATS_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_STATS_GROUPS,			/* bitset */
++
++	ETHTOOL_A_STATS_GRP,			/* nest - _A_STATS_GRP_* */
++
++	ETHTOOL_A_STATS_SRC,			/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_STATS_CNT,
++	ETHTOOL_A_STATS_MAX = (__ETHTOOL_A_STATS_CNT - 1)
++};
++
++/* PHC VCLOCKS */
++
++enum {
++	ETHTOOL_A_PHC_VCLOCKS_UNSPEC,
++	ETHTOOL_A_PHC_VCLOCKS_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_PHC_VCLOCKS_NUM,			/* u32 */
++	ETHTOOL_A_PHC_VCLOCKS_INDEX,			/* array, s32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PHC_VCLOCKS_CNT,
++	ETHTOOL_A_PHC_VCLOCKS_MAX = (__ETHTOOL_A_PHC_VCLOCKS_CNT - 1)
++};
++
++/* MODULE */
++
++enum {
++	ETHTOOL_A_MODULE_UNSPEC,
++	ETHTOOL_A_MODULE_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_MODULE_POWER_MODE_POLICY,	/* u8 */
++	ETHTOOL_A_MODULE_POWER_MODE,		/* u8 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_MODULE_CNT,
++	ETHTOOL_A_MODULE_MAX = (__ETHTOOL_A_MODULE_CNT - 1)
++};
++
++/* Power Sourcing Equipment */
++enum {
++	ETHTOOL_A_C33_PSE_PW_LIMIT_UNSPEC,
++	ETHTOOL_A_C33_PSE_PW_LIMIT_MIN,	/* u32 */
++	ETHTOOL_A_C33_PSE_PW_LIMIT_MAX,	/* u32 */
++};
++
++enum {
++	ETHTOOL_A_PSE_UNSPEC,
++	ETHTOOL_A_PSE_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_PODL_PSE_ADMIN_STATE,		/* u32 */
++	ETHTOOL_A_PODL_PSE_ADMIN_CONTROL,	/* u32 */
++	ETHTOOL_A_PODL_PSE_PW_D_STATUS,		/* u32 */
++	ETHTOOL_A_C33_PSE_ADMIN_STATE,		/* u32 */
++	ETHTOOL_A_C33_PSE_ADMIN_CONTROL,	/* u32 */
++	ETHTOOL_A_C33_PSE_PW_D_STATUS,		/* u32 */
++	ETHTOOL_A_C33_PSE_PW_CLASS,		/* u32 */
++	ETHTOOL_A_C33_PSE_ACTUAL_PW,		/* u32 */
++	ETHTOOL_A_C33_PSE_EXT_STATE,		/* u32 */
++	ETHTOOL_A_C33_PSE_EXT_SUBSTATE,		/* u32 */
++	ETHTOOL_A_C33_PSE_AVAIL_PW_LIMIT,	/* u32 */
++	ETHTOOL_A_C33_PSE_PW_LIMIT_RANGES,	/* nest - _C33_PSE_PW_LIMIT_* */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PSE_CNT,
++	ETHTOOL_A_PSE_MAX = (__ETHTOOL_A_PSE_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_RSS_UNSPEC,
++	ETHTOOL_A_RSS_HEADER,
++	ETHTOOL_A_RSS_CONTEXT,		/* u32 */
++	ETHTOOL_A_RSS_HFUNC,		/* u32 */
++	ETHTOOL_A_RSS_INDIR,		/* binary */
++	ETHTOOL_A_RSS_HKEY,		/* binary */
++	ETHTOOL_A_RSS_INPUT_XFRM,	/* u32 */
++	ETHTOOL_A_RSS_START_CONTEXT,	/* u32 */
++
++	__ETHTOOL_A_RSS_CNT,
++	ETHTOOL_A_RSS_MAX = (__ETHTOOL_A_RSS_CNT - 1),
++};
++
++/* PLCA */
++
++enum {
++	ETHTOOL_A_PLCA_UNSPEC,
++	ETHTOOL_A_PLCA_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_PLCA_VERSION,			/* u16 */
++	ETHTOOL_A_PLCA_ENABLED,			/* u8  */
++	ETHTOOL_A_PLCA_STATUS,			/* u8  */
++	ETHTOOL_A_PLCA_NODE_CNT,		/* u32 */
++	ETHTOOL_A_PLCA_NODE_ID,			/* u32 */
++	ETHTOOL_A_PLCA_TO_TMR,			/* u32 */
++	ETHTOOL_A_PLCA_BURST_CNT,		/* u32 */
++	ETHTOOL_A_PLCA_BURST_TMR,		/* u32 */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PLCA_CNT,
++	ETHTOOL_A_PLCA_MAX = (__ETHTOOL_A_PLCA_CNT - 1)
++};
++
++/* MODULE_FW_FLASH */
++
++enum {
++	ETHTOOL_A_MODULE_FW_FLASH_UNSPEC,
++	ETHTOOL_A_MODULE_FW_FLASH_HEADER,		/* nest - _A_HEADER_* */
++	ETHTOOL_A_MODULE_FW_FLASH_FILE_NAME,		/* string */
++	ETHTOOL_A_MODULE_FW_FLASH_PASSWORD,		/* u32 */
++	ETHTOOL_A_MODULE_FW_FLASH_STATUS,		/* u32 */
++	ETHTOOL_A_MODULE_FW_FLASH_STATUS_MSG,		/* string */
++	ETHTOOL_A_MODULE_FW_FLASH_DONE,			/* uint */
++	ETHTOOL_A_MODULE_FW_FLASH_TOTAL,		/* uint */
++
++	/* add new constants above here */
++	__ETHTOOL_A_MODULE_FW_FLASH_CNT,
++	ETHTOOL_A_MODULE_FW_FLASH_MAX = (__ETHTOOL_A_MODULE_FW_FLASH_CNT - 1)
++};
++
++enum {
++	ETHTOOL_A_PHY_UNSPEC,
++	ETHTOOL_A_PHY_HEADER,			/* nest - _A_HEADER_* */
++	ETHTOOL_A_PHY_INDEX,			/* u32 */
++	ETHTOOL_A_PHY_DRVNAME,			/* string */
++	ETHTOOL_A_PHY_NAME,			/* string */
++	ETHTOOL_A_PHY_UPSTREAM_TYPE,		/* u32 */
++	ETHTOOL_A_PHY_UPSTREAM_INDEX,		/* u32 */
++	ETHTOOL_A_PHY_UPSTREAM_SFP_NAME,	/* string */
++	ETHTOOL_A_PHY_DOWNSTREAM_SFP_NAME,	/* string */
++
++	/* add new constants above here */
++	__ETHTOOL_A_PHY_CNT,
++	ETHTOOL_A_PHY_MAX = (__ETHTOOL_A_PHY_CNT - 1)
++};
++
++/* message types - userspace to kernel */
++enum {
++	ETHTOOL_MSG_USER_NONE,
++	ETHTOOL_MSG_STRSET_GET,
++	ETHTOOL_MSG_LINKINFO_GET,
++	ETHTOOL_MSG_LINKINFO_SET,
++	ETHTOOL_MSG_LINKMODES_GET,
++	ETHTOOL_MSG_LINKMODES_SET,
++	ETHTOOL_MSG_LINKSTATE_GET,
++	ETHTOOL_MSG_DEBUG_GET,
++	ETHTOOL_MSG_DEBUG_SET,
++	ETHTOOL_MSG_WOL_GET,
++	ETHTOOL_MSG_WOL_SET,
++	ETHTOOL_MSG_FEATURES_GET,
++	ETHTOOL_MSG_FEATURES_SET,
++	ETHTOOL_MSG_PRIVFLAGS_GET,
++	ETHTOOL_MSG_PRIVFLAGS_SET,
++	ETHTOOL_MSG_RINGS_GET,
++	ETHTOOL_MSG_RINGS_SET,
++	ETHTOOL_MSG_CHANNELS_GET,
++	ETHTOOL_MSG_CHANNELS_SET,
++	ETHTOOL_MSG_COALESCE_GET,
++	ETHTOOL_MSG_COALESCE_SET,
++	ETHTOOL_MSG_PAUSE_GET,
++	ETHTOOL_MSG_PAUSE_SET,
++	ETHTOOL_MSG_EEE_GET,
++	ETHTOOL_MSG_EEE_SET,
++	ETHTOOL_MSG_TSINFO_GET,
++	ETHTOOL_MSG_CABLE_TEST_ACT,
++	ETHTOOL_MSG_CABLE_TEST_TDR_ACT,
++	ETHTOOL_MSG_TUNNEL_INFO_GET,
++	ETHTOOL_MSG_FEC_GET,
++	ETHTOOL_MSG_FEC_SET,
++	ETHTOOL_MSG_MODULE_EEPROM_GET,
++	ETHTOOL_MSG_STATS_GET,
++	ETHTOOL_MSG_PHC_VCLOCKS_GET,
++	ETHTOOL_MSG_MODULE_GET,
++	ETHTOOL_MSG_MODULE_SET,
++	ETHTOOL_MSG_PSE_GET,
++	ETHTOOL_MSG_PSE_SET,
++	ETHTOOL_MSG_RSS_GET,
++	ETHTOOL_MSG_PLCA_GET_CFG,
++	ETHTOOL_MSG_PLCA_SET_CFG,
++	ETHTOOL_MSG_PLCA_GET_STATUS,
++	ETHTOOL_MSG_MM_GET,
++	ETHTOOL_MSG_MM_SET,
++	ETHTOOL_MSG_MODULE_FW_FLASH_ACT,
++	ETHTOOL_MSG_PHY_GET,
++
++	/* add new constants above here */
++	__ETHTOOL_MSG_USER_CNT,
++	ETHTOOL_MSG_USER_MAX = __ETHTOOL_MSG_USER_CNT - 1
++};
++
++/* message types - kernel to userspace */
++enum {
++	ETHTOOL_MSG_KERNEL_NONE,
++	ETHTOOL_MSG_STRSET_GET_REPLY,
++	ETHTOOL_MSG_LINKINFO_GET_REPLY,
++	ETHTOOL_MSG_LINKINFO_NTF,
++	ETHTOOL_MSG_LINKMODES_GET_REPLY,
++	ETHTOOL_MSG_LINKMODES_NTF,
++	ETHTOOL_MSG_LINKSTATE_GET_REPLY,
++	ETHTOOL_MSG_DEBUG_GET_REPLY,
++	ETHTOOL_MSG_DEBUG_NTF,
++	ETHTOOL_MSG_WOL_GET_REPLY,
++	ETHTOOL_MSG_WOL_NTF,
++	ETHTOOL_MSG_FEATURES_GET_REPLY,
++	ETHTOOL_MSG_FEATURES_SET_REPLY,
++	ETHTOOL_MSG_FEATURES_NTF,
++	ETHTOOL_MSG_PRIVFLAGS_GET_REPLY,
++	ETHTOOL_MSG_PRIVFLAGS_NTF,
++	ETHTOOL_MSG_RINGS_GET_REPLY,
++	ETHTOOL_MSG_RINGS_NTF,
++	ETHTOOL_MSG_CHANNELS_GET_REPLY,
++	ETHTOOL_MSG_CHANNELS_NTF,
++	ETHTOOL_MSG_COALESCE_GET_REPLY,
++	ETHTOOL_MSG_COALESCE_NTF,
++	ETHTOOL_MSG_PAUSE_GET_REPLY,
++	ETHTOOL_MSG_PAUSE_NTF,
++	ETHTOOL_MSG_EEE_GET_REPLY,
++	ETHTOOL_MSG_EEE_NTF,
++	ETHTOOL_MSG_TSINFO_GET_REPLY,
++	ETHTOOL_MSG_CABLE_TEST_NTF,
++	ETHTOOL_MSG_CABLE_TEST_TDR_NTF,
++	ETHTOOL_MSG_TUNNEL_INFO_GET_REPLY,
++	ETHTOOL_MSG_FEC_GET_REPLY,
++	ETHTOOL_MSG_FEC_NTF,
++	ETHTOOL_MSG_MODULE_EEPROM_GET_REPLY,
++	ETHTOOL_MSG_STATS_GET_REPLY,
++	ETHTOOL_MSG_PHC_VCLOCKS_GET_REPLY,
++	ETHTOOL_MSG_MODULE_GET_REPLY,
++	ETHTOOL_MSG_MODULE_NTF,
++	ETHTOOL_MSG_PSE_GET_REPLY,
++	ETHTOOL_MSG_RSS_GET_REPLY,
++	ETHTOOL_MSG_PLCA_GET_CFG_REPLY,
++	ETHTOOL_MSG_PLCA_GET_STATUS_REPLY,
++	ETHTOOL_MSG_PLCA_NTF,
++	ETHTOOL_MSG_MM_GET_REPLY,
++	ETHTOOL_MSG_MM_NTF,
++	ETHTOOL_MSG_MODULE_FW_FLASH_NTF,
++	ETHTOOL_MSG_PHY_GET_REPLY,
++	ETHTOOL_MSG_PHY_NTF,
++
++	/* add new constants above here */
++	__ETHTOOL_MSG_KERNEL_CNT,
++	ETHTOOL_MSG_KERNEL_MAX = __ETHTOOL_MSG_KERNEL_CNT - 1
++};
++
++#endif /* _UAPI_LINUX_ETHTOOL_NETLINK_GENERATED_H */
 -- 
 2.47.0
 
