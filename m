@@ -1,208 +1,967 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCF01D516B
-	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 16:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731686892; cv=fail; b=SRDyIRCCwilqFefV0ZLVhnO4c071jtxnNckB5dH0/JdVoUykxFXZjoTjv9X8+35EBrGocEPISOwTPaWh2kvQrYOD/s3uypq9m8lUv2XBG+TGPFvc5lSjL5d6PPILM2vIL/GtKLwxcrOR/IDQLH5TBlFVV8LucaYeNp+q5DnI+a8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731686892; c=relaxed/simple;
-	bh=EEYAZ3cVQ6FCD1ZIctC55c1J0N7g/4vMdHfSlVWez0Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lBtOSCf+yhqYyKhilbtawE/QRTR55m+Us2a7UDzzG+pt6quxCCZJBDcRWzPClzl7errtcPoYhZo/pl/A+ztrmlXBa7rgEPMnyNn7g0i4gIGqBMVnNeWg0W4bfwDUCRk74dZs94PSQ8iRQzYKefNZpYOQ684ULkG3fIJ4X78e5Ew=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X0XGEgs3; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B1F1BF37;
+	Fri, 15 Nov 2024 16:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731687095; cv=none; b=DCqVryrBmjVYEF0SzHR7qNZfLqnaRTZxQVeeM8i1bi6kQYRk4++2KVnXR9w7OtE4H6Qmw9BFjb6NSGvlPCVieV325at4lWOiCCX0zDikWikgh4+lNaO87Q48wgFNuuuhG+vavI9kaZ56JhR1CFoy2tdXrovzVppPVdcsqJx4qdI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731687095; c=relaxed/simple;
+	bh=SbQjcLJTFL4/Vg/hjT0iLy+c6mtNX4jdANM8WXh8F7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pW9wmoMF+9uIQ4b1ruVaFmLxHqBf+c/H6uIXfdzu2kZAJpfG1Oajj0ndfl29zE1IfE7TwvAbpTy7LP2CDQawuzHJy9fLbHQCq0JWNeDTNRIQsDsaYsjzrn2yQtWn0jQeaxFKyXiQa0/44QBrDBKBwUotcsrHnLbl9GnSZpolyFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hg743lAR; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X0XGEgs3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731686891; x=1763222891;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=EEYAZ3cVQ6FCD1ZIctC55c1J0N7g/4vMdHfSlVWez0Y=;
-  b=X0XGEgs3Okpccf816JojIa7JUiSLbN8/o7LR4QdbjK0G9mmYKQTtCjF0
-   e9Z0A1qCy5cDaHoJ7NQn4gsOPm2AGdjpTFQ/77QKRCh3+FxkhubIzntUg
-   fXiEfgqSSxkAT0+PtuNgrj91zg4yi0sqdp/WsYwkOi2gHQbr29yeKEu1R
-   yQO6QSy7YfrsuK6JHFRZ+WrK31TWT9srZD8zeMOsP7xIYd1dyU5dMe7d5
-   A4M0raolQ0ijFOCESxhjGEqXigCqPMqx6zQPmo+Lo0ECRr5oNTarJIi+0
-   LTtUyk3let+ewGwobNMlIQJ7JESMeAZuu3gmgzT+MFVgQoKqImItSP9/y
-   g==;
-X-CSE-ConnectionGUID: aOgc4vssSbaU5l7Kdcnyug==
-X-CSE-MsgGUID: FJ0y2mh+R3i7uFn/AL73FA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="35625851"
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; 
-   d="scan'208";a="35625851"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2024 08:07:15 -0800
-X-CSE-ConnectionGUID: qFUb5ITfRNCP6VioqZlhZw==
-X-CSE-MsgGUID: MYpyuHZNSH2ZIYda5GpxXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,157,1728975600"; 
-   d="scan'208";a="126143709"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Nov 2024 08:07:15 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 15 Nov 2024 08:07:14 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 15 Nov 2024 08:07:14 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.174)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 15 Nov 2024 08:07:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tYE5gVc4jEMBTBtsK4n3JQ5LuR1/2Wwf111TVwha+lc0R5XHMZ3+RjPsw63brqRm7RcUjxdhO7xfK3NkRUqICpjWBsWu6swtAv+JBV4TCklXgjL42MRmGNppotJykslhT7OxbEIynDDP4CwnmZYcALPzIDJ/e2/Etzsqrp7ZnCSEC1Qyn8q377Z8MKyyE8E9+zR+22EJnxm8T6KVrCqBBfNDXyiuf4+K1oBUrzhxww/VXH9LW5qDer1tihseoSv87vAL9rJweiLY3MmTGstkXqJI6jz836GxZNaEbgeR7v9XQi6jUCdtCWMpr9bMGAqyi9W/EmsgX8SSA/ooeZwDaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EEYAZ3cVQ6FCD1ZIctC55c1J0N7g/4vMdHfSlVWez0Y=;
- b=ernZI1AYWzm93JPYNlXq2fQcE2C4jDCrdRmZzp1Kf2aXw7PpMllFYIwQF308+j6IDwbytSUlmsiA5uM9MA8klu6eGJc3pW6zwOYrnODUc/vov8WiQXVw4NJT3N7KmT97kFx/VZ+/Ym6itCHwqYSw3vv/9uMznZBlMUVbW3l8FyDcflUwRIsLboUxKia/8uDXZM2BuZEZ53ZX5wdxuvPg/qiHKE/pPncHm/n/BZxzGXoOarI9uhAdcjYQ7CgDuTQjmq0MWhbE0JyKJB69IoQj/L61o1Vyyo8FImc/7DwPthinEjiWfULt15O32ntGJcubVEHXSCCTO4UTSBdHOxr1mQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB5889.namprd11.prod.outlook.com (2603:10b6:303:168::10)
- by IA1PR11MB6123.namprd11.prod.outlook.com (2603:10b6:208:3ed::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18; Fri, 15 Nov
- 2024 16:07:06 +0000
-Received: from MW4PR11MB5889.namprd11.prod.outlook.com
- ([fe80::89d6:5ccc:1dcc:3073]) by MW4PR11MB5889.namprd11.prod.outlook.com
- ([fe80::89d6:5ccc:1dcc:3073%4]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
- 16:07:06 +0000
-From: "Olech, Milena" <milena.olech@intel.com>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Lobakin, Aleksander"
-	<aleksander.lobakin@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net 01/10] idpf: initial PTP support
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net 01/10] idpf: initial PTP
- support
-Thread-Index: AQHbNeN9pe8q8r04FEKYiyV3vou+grK4XQCAgAAktQA=
-Date: Fri, 15 Nov 2024 16:07:06 +0000
-Message-ID: <MW4PR11MB588988BB2B4E0D3DBEBAD64B8E242@MW4PR11MB5889.namprd11.prod.outlook.com>
-References: <20241113154616.2493297-1-milena.olech@intel.com>
- <20241113154616.2493297-2-milena.olech@intel.com>
- <4aa6f9f2-e3d9-4255-a964-c03d611d848e@molgen.mpg.de>
-In-Reply-To: <4aa6f9f2-e3d9-4255-a964-c03d611d848e@molgen.mpg.de>
-Accept-Language: en-US, pl-PL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB5889:EE_|IA1PR11MB6123:EE_
-x-ms-office365-filtering-correlation-id: abdb14df-f8a8-4a16-3412-08dd058f8d5d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?SUF1Yk1PR0t2Nkt1WjVQRUxGY0hCa1NBcnYzUFpDL2VuSzYxelcvNUxXUVZM?=
- =?utf-8?B?Ukh1Zkc4Y3BHeDkxblpJZ2FxUzdUTnFQSEhDOVJDb3pOa3RjeXQ1ZGVTOVhZ?=
- =?utf-8?B?eXg2eW9HcS93T1NmQ2RnQ2dTdFJtK1IyakdrUFYxdmZKSEJFVTk3SXI1VW1O?=
- =?utf-8?B?bXdDSFJDU0lnNWltRUtGZHJxdXJGVjAyN3lueDJUMEhaMmlBRmg5NDNvcklh?=
- =?utf-8?B?d3NyMmJYK1hhakpVK3lZVmhzQzlQN2I4MmZqUVp4NXdmQU1CUW44NWdsYjZ6?=
- =?utf-8?B?L1VSdGVtd0xWSWpIc05KSC9PbnJxKzZGaUcrcHI4TThzcjVWMTZLT2tjRFc5?=
- =?utf-8?B?MWRGamRLZ2c0ZjlVaDRjNkF5UTh6eTVNaEtBNkczZVM1bmFCcXdmQ0UwVDl4?=
- =?utf-8?B?M1UydVd1bXhhTnFwbHRnUGMzS2ZNWDhtSVdVUnRKbEx2clU1bW9uNUYwMjZB?=
- =?utf-8?B?M1IybDFBY1pjeC9NRXE3R1N1UDRySzgwVlA4T0hWcElVRmU3MDRmZG1rMXZz?=
- =?utf-8?B?SWhQQURvUDd6cHRIZjB1MmdBZ0QzTlI5UEozWm5GMmEwbU5WMHFTcXYrK3Ur?=
- =?utf-8?B?cTY3K1RReGl2b1V4UUY3eWo4d0M3SXVTTzBtV1dtYWxmd3BzbHlMNCt2a3c2?=
- =?utf-8?B?VWVXQTljQk1kQVppTXM5NEQzbld5Z3B1OGJFNnhiNnN3b2JuOEpORVZDQUNs?=
- =?utf-8?B?bmpMZnhaK1ZLcC84YjAxOFhDL2xFVXB0ejZjMjhlTkRIL1I1aHlDL3o1RDV0?=
- =?utf-8?B?Wkd3VGV4NGtTOElJakpLM1ppSTdRSFh3VEZRODFBbG9kUUlGckRLQU9DZG9h?=
- =?utf-8?B?OUYwaDBNLzZ3U0crSmI2a3A3VncvUktTSFF2ZnVlRnhDWmlxWjV0WWhoRjVX?=
- =?utf-8?B?aTl4cXJ3anVhb0drN0oreFd6TFZDR3JaSCtIbDhsMld6cHJ5bXNlUkwwaEpu?=
- =?utf-8?B?bTNyN3ZSaG03Q08zR3JpWkVmdWtaUHo4MGIzVzlVN3BwNVNYeHRPWTZld1Fz?=
- =?utf-8?B?VDJLMkdvV2VWbzZlcDhxYkVnc3hHTFZ5M1pOM3JVSWN5alBiNmFETFZEclEy?=
- =?utf-8?B?M1NSWTR0b01mVjVSczY2MDVaODIyUVQ3b1QzZ1hSNUFYMkVQNE5PdU5vTFps?=
- =?utf-8?B?alFSUG9LaHhSbDRSbXpWVmtqdnpEZlR3dURpT0FmTDVwTmRxV014eUhKdzF4?=
- =?utf-8?B?Q1Z0QWxOVnZqTDNpbVVUTjloOFVIaFFNZ2k5UStjZXJvNnZJeDU3ZnVGeSsx?=
- =?utf-8?B?Rno2SzV6aDNPbzFIT2hrZVNBb2oyVnZyWCtDWGR4bXBRMXVrcytBQjJpVFhP?=
- =?utf-8?B?dVZkTHI1QXVVWHN2ZFgvZlRuVnkxUVVodUxjTmZ5OU1QS1h3NUEzUm83SStW?=
- =?utf-8?B?VEt1TjFTd3NJSFZpWDN6VVh4MmZBZnNwTmRxTHhSZVN1U01WanVzZ2V1OWFY?=
- =?utf-8?B?TlUwMVJUc3UwSDhhOXE2ZDdMWGZxcnpmOXBGQUhmLzVORStrVXpzUWFzaElH?=
- =?utf-8?B?N1hoRDZFNEIrM0FrMkZmemx5NnhOTkRaMG9FRUZzZmVIN3d2bEZlcFE4eVdM?=
- =?utf-8?B?aWdUS3dLancySzZlZkxRR2hCSGxnSlc2djNNWmlETHBsbTRtd0RReWVteDlT?=
- =?utf-8?B?ZSttV0dnaXNXVWJUV3dLVTJjVTlkNkVRQzlLQUZPa1N6UDZ1cld0NGtIcUcx?=
- =?utf-8?B?SHpwTy9CcTJGSExMb2xZaXRRRDQ4bWlGVjhYcTRpUXVJaGZxM01mQ0RSYVVF?=
- =?utf-8?B?TG5TNHB5K2E2T0t2bzArY1hrRHl6aXZ6aUp1K0pWalJuUXN1RVI0czlOUGkr?=
- =?utf-8?Q?EOCoyX/ZEQWvh18V5vJACaiZM3l2uOU4j+Ozc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5889.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SVhJZFIrcVQzU2hCSXFWZzJNamRRTFp5UjN0dVV2a2owZksyZTJHaFM4emtD?=
- =?utf-8?B?dFFMVU1QeWZRMThSNU83MEhVSW5IYkVmS3NxeXhlcW5TamJha3ZoamRJNlRv?=
- =?utf-8?B?TEtkQi9UU05IK2ZxU0RNMHphazg4OXVEUFZ5Y1hsdDNPdEhEZjIvdnlLMEJq?=
- =?utf-8?B?bjVRTGVLT1N2Mlk2dTJ1NXpHVnkxKzhKdTltQ2c2dHpvYVNjSG1GYWM4TmxU?=
- =?utf-8?B?OFVrSDlCa2U0Q2JpQjFYaC8vejZiSUtEbXFrWXk1cmJVVHFBMkNUK2N4enFP?=
- =?utf-8?B?emhGWDhGQVN3TCtSR3F4REdabkpjSTFyNWwrUDcrcnFha1BPOGl4OEdCbGlH?=
- =?utf-8?B?OFozaGIxdmhIS3B0cFh2bjJKNnZmVWEyZW1Ib01yR0gvNjhaekJKbVdVQmZV?=
- =?utf-8?B?YVZXL2pYSVpIaC8wVE8vcS9oUTJ3L1BHUFo0M2pNTDY5bnhtZ05MNkxISEx5?=
- =?utf-8?B?SXJzUUlZTUZSVWZ6dzN2SXQ0Q2dCYzA3WlF6SUZZaWtya1VwY282dUJwVHdK?=
- =?utf-8?B?WExVT1J2U21WWUJSRm4yd2YwRWhNRndESi96M3hvUUt5TVBWaVhnSHVEYU9t?=
- =?utf-8?B?Vk9hejZtKzJKR2tubmtOUlJya25tMU0wcU9laVlFRDZrMUdwSVd1OCs2eFZz?=
- =?utf-8?B?SHBnNDg5QUJHSDQyMGRxbEVZUWU0R1pCNCtpQjBZYWFUdHZGQkM5VFN2YkpS?=
- =?utf-8?B?VzVaUTB5ZWFRU3pFcXNmWk1rSzBwcU5yYm4yVmt4L0hjMnVUTXplajFDclRG?=
- =?utf-8?B?NnQrMGhlTkV2SFhFSzFHR3dobXBYK1JxSTdHYklkdWs5QjJCVVZxMThNVHhY?=
- =?utf-8?B?SWNIby9tMGw3Y2RYcGpON2J5eTRTQnB6bndtY2xuSkdsV1VPaWpCR1JpaUgw?=
- =?utf-8?B?YVBaTHM3czJCbkRQWis3clZjUWFTbWdqWUdMMWRPK2lHeHZiVDVBVndlVlgr?=
- =?utf-8?B?UERBUDMwcERGMmM4MkRzbUdQVlh6bnhsdCs1bEVieXV1Kzd4VEFHRkpRb2oy?=
- =?utf-8?B?NGVYcjlIaG9rbXhnL3RYbnZBMjg2WFdBL1JxZ1hWKzdiYlJsV0RrY0xSUEk0?=
- =?utf-8?B?NXNjbDF4TGY2YTJhZUM2Q2ZjaUtianBPcVp0L1VXYXp1S1lmK0lYVzN6VUgy?=
- =?utf-8?B?RjdWNjN0dFhzZHg2MERuYThIVTRocGJuR2x0dU1rMzgxei8wa2xTSUcyazNk?=
- =?utf-8?B?YWpUeTNJMjZWdUZlRktLMXZMSzNMVkpqOUZsQ0tIWWZNN1llcnkrbE0za294?=
- =?utf-8?B?ejV1TTVITUsvWDRMc2tQK1hQWDlvRHAzTzZ5ck56RU5uOEJQK0RyeVhiMUQ1?=
- =?utf-8?B?M2lmbEh6bWR3WlY1Ti92dEtpUTFLTkU4N1VxV3N0T2s2dGtxSXJPazBWVkdB?=
- =?utf-8?B?akdUUEVsMGZRQktRcUNWb3dkdTY0UXRUaEVtRFRRc0dpQWt0R0tCQUprRXBE?=
- =?utf-8?B?Q3p2R212dDBPaENBNUZFdWJyRU9RaW1SS09DUDM3QUVhZzBtT01vem5NcUhv?=
- =?utf-8?B?bFZTclpOMFVOcTZLenBaVUdzbjZpKy9UYWl2TFdHTVh6elhrSk44YTlqWkF5?=
- =?utf-8?B?anQ1UHo0Rk81Z2s3bWtoaHErQVNCSjUxOGNwNjBGQ3JqUTI4c0dUWkxvZlE1?=
- =?utf-8?B?UTFYZzhQL3NVcElyUzE4cUFXbnFuSFRIL0c5MHM3anZ1Sm85bkJMWFJ1UGo5?=
- =?utf-8?B?YUE5eUZzeGJMaXpNZ1VyTmZYbmVGNG1UVUZKcTRlUWZoaktuS2dFQ3FIMkt0?=
- =?utf-8?B?NUJQdVM3ajQrYS9FY2FhczJBelJCZnJMRG9GWWcwbkRUQkRDcXk1VzcrZ3J5?=
- =?utf-8?B?VzA0M05pUUwxeXNEd1FtRjRhSUVsZzkzQ1BUTnNKd3R2Q2JJWHM3NXpyYjFU?=
- =?utf-8?B?RFJRVUw1MFJTeHBwczZGRXZmZXQ5ZnpSeEFmdStXWVA4QkVWdWkrRDVwOXNo?=
- =?utf-8?B?c3FQY2hTeFBNZk53U3ZZNGVJQjlrY3NSY2VlZlh1ekM1V3JsdmRUOEFxd2s3?=
- =?utf-8?B?STRzZnhUOE9wYUQ0eHF4aGZCcGo1WjdQeVhabWFVdy9iUXEzbkdHTUI4dC9m?=
- =?utf-8?B?QVZzYmdaci9kR2hXSEdYTGVVV3ZsRXZRTE1kS3FlRml1bDF2ZnFhd0RybUFi?=
- =?utf-8?Q?vnKoT94cFN69/rNW90kf1/sxu?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hg743lAR"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20cf6eea3c0so21846815ad.0;
+        Fri, 15 Nov 2024 08:11:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731687093; x=1732291893; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bxle6vhM/YOExKPQ+e1Royz1RmzPpzoRl6bsqdNBIR4=;
+        b=Hg743lARqWztMdrXlBiY/5n0qem6qpvgyQB9jKnFQdUgqbjDw+3MaoqKnMhsgx527t
+         H+JEw+BuU/UeH+fEraYLWKfPAyHMyH01dTSaPj78n3TIeXU5WfS/V39sFXKFEr43wxcG
+         W3pWRNxaCkhgLHdgayyKZj90TPhnWS0nrKo5kqoL65wjRHJR0LhCITemNwtkZd3RUZnT
+         3jszJIswDdRRpZ7txK3oCDoofelUk1CyozQrafIe/un0kc3CEG1AKFqVPLpvvrAsBn3Z
+         FBU57TwGNfEpA5kVRRrnpVQCsIzZYgBOk2NSkhZ1ANAFQuNgmvdhTC0JF6TpP2Ou7kBN
+         cqXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731687093; x=1732291893;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bxle6vhM/YOExKPQ+e1Royz1RmzPpzoRl6bsqdNBIR4=;
+        b=JKsAAj+JRJACum2tAjCjQCyZf3oOukMlwPOvJCnR36STRKwCJm2pbFyI09C8EndKhi
+         ikjiUhkq7Q/yRSQ5/wE6ChG9efiKXPdxixO2Xbf+eG2iBMVVgyVgt7V3QFL4Ip16c7MG
+         zx8iETYhkpYPM4FnXEQdLxrK2pJysg2CAppU/NtgMA3j9X8NdTBiEo2ffXOjMzlI11Wc
+         uBtlFENWUu4UGR+sALyB3/yy3Vlh/m1kfhWVFCPch6NRlKsMEm2dOsw6oaCoG2eVqTQW
+         XDOOjePzLqcZPwOTOEzTPU02komfDja3JNH5XO37MVSigj9D0jcDRLdn8hQ17K18U5Ua
+         1aqg==
+X-Forwarded-Encrypted: i=1; AJvYcCURQhtTZPQCqedy7DHADashRYfal6Bm1qaqptlAAyLu2oVUCOy/51cyUxQse3OhSU0Ffl7+IYkszQ4yCwvr@vger.kernel.org, AJvYcCVQPHh/3sPNq7gfeq/jKein4dQ4jd5OlruofkuEE64DQSY0iwNZfkKdnrGmipNy9N0O4GgNnDtU@vger.kernel.org, AJvYcCWRi/QaOasbk2T+kX7/ddRe/KqHN1PsEtrjFdd9S3IVzZ6oLvGP6hTOsufCLtpP4vTWLXI=@vger.kernel.org, AJvYcCWjcx7tkz25tgmr+aKZ17NVZQW5oYjrJhkP8B+ZOuYKbbwSKM7EbXfbvZEvBfjIeM4jyJmRdYwfl+sXKyAjfWzf@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykx5eivJA5ysO7GfNOhrhq7qGB5s53A1wuKoxX4SKAKXhNpx4o
+	7Pyi3tL8vlL7BJP44uTJ0e/aQaqN0PRn6ETv+/fPW9T3HybhBxM=
+X-Google-Smtp-Source: AGHT+IH2O2xvTGQRiCo+PzFyXivA1TOEoBCNGPsGevbpQj9bDFxFzp4bgMUoLM8ttS0qHgNx+0ytsw==
+X-Received: by 2002:a17:902:f705:b0:20c:b0c7:7f0d with SMTP id d9443c01a7336-211d0d83b5bmr43896495ad.25.1731687092745;
+        Fri, 15 Nov 2024 08:11:32 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724771e18bbsm1510747b3a.135.2024.11.15.08.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 08:11:32 -0800 (PST)
+Date: Fri, 15 Nov 2024 08:11:31 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Alexis =?utf-8?Q?Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, ebpf@linuxfoundation.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH bpf-next v2 12/13] selftests/bpf: migrate bpf flow
+ dissectors tests to test_progs
+Message-ID: <ZzdyswzsKSYwkY__@mini-arch>
+References: <20241114-flow_dissector-v2-0-ee4a3be3de65@bootlin.com>
+ <20241114-flow_dissector-v2-12-ee4a3be3de65@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5889.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: abdb14df-f8a8-4a16-3412-08dd058f8d5d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Nov 2024 16:07:06.6209
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +7fy1ly2pA8ABJ+nGbxHb1xhNHMJqo1FXJJk4PIPMWCq9YvJlMuut5tNAEnYp5vUY/CNTThjsoMmN4kiTQB7XA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6123
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241114-flow_dissector-v2-12-ee4a3be3de65@bootlin.com>
 
-T24gMTEvMTUvMjAyNCAyOjQ0IFBNLCBQYXVsIE1lbnplbCB3cm90ZToNCg0KPiBEZWFyIE1pbGVu
-YSwNCj4NCj4NCj5UaGFuayB5b3UgZm9yIHlvdXIgcGF0Y2guIEl04oCZZCBiZSBncmVhdCBpZiB5
-b3UgdXNlZCBhIHN0YXRlbWVudCBmb3IgdGhlIA0KPnN1bW1hcnkvdGl0bGUgYnkgYWRkaW5nIGEg
-dmVyYiAoaW4gaW1wZXJhdGl2ZSBtb29kKToNCj4NCj5pZHBmOiBBZGQgaW5pdGlhbCBQVFAgc3Vw
-cG9ydA0KPg0KPkFtIDEzLjExLjI0IHVtIDE2OjQ2IHNjaHJpZWIgTWlsZW5hIE9sZWNoOg0KPj4g
-UFRQIGZlYXR1cmUgaXMgc3VwcG9ydGVkIGlmIHRoZSBWSVJUQ0hOTDJfQ0FQX1BUUCBpcyBuZWdv
-dGlhdGVkIGR1cmluZyB0aGUNCj4+IGNhcGFiaWxpdGllcyByZWNvZ25pdGlvbi4gSW5pdGlhbCBQ
-VFAgc3VwcG9ydCBpbmNsdWRlcyBQVFAgaW5pdGlhbGl6YXRpb24NCj4+IGFuZCByZWdpc3RyYXRp
-b24gb2YgdGhlIGNsb2NrLg0KPg0KPk1heWJlIG1lbnRpb24vcGFzdGUgdGhlIG5ldyBkZWJ1ZyBt
-ZXNzYWdlcywgYW5kIGRvY3VtZW50IG9uIHdoYXQgZGV2aWNlIA0KPnlvdSB0ZXN0ZWQgaXQ/DQo+
-DQo+DQo+S2luZCByZWdhcmRzLA0KPg0KPlBhdWwNCg0KUGF1bCwNCg0KSW50cm9kdWNlZCBQVFAg
-ZmxvdyBzaG91bGQgd29yayBvbiBhbGwgSURQRi1jb21wbGlhbnQgYWRhcHRlcnMuDQpJJ3ZlIHRl
-c3RlZCBvbiB0aGUgSW50ZWwgSVBVIEUyMTAwIGFkYXB0ZXIuDQoNClJlZ2FyZHMsDQpNaWxlbmEN
-Cg==
+On 11/14, Alexis Lothoré (eBPF Foundation) wrote:
+> test_flow_dissector.sh loads flow_dissector program and subprograms,
+> creates and configured relevant tunnels and interfaces, and ensure that
+> the bpf dissection is actually performed correctly. Similar tests exist
+> in test_progs (thanks to flow_dissector.c) and run the same programs,
+> but those are only executed with BPF_PROG_RUN: those tests are then
+> missing some coverage (eg: coverage for flow keys manipulated when the
+> configured flower uses a port range, which has a dedicated test in
+> test_flow_dissector.sh)
+> 
+> Convert test_flow_dissector.sh into test_progs so that the corresponding
+> tests are also run in CI.
+> 
+> Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+> ---
+> Changes in v2:
+> - use new helpers added to network_helpers
+> 
+> The content of this new test is heavily based on the initial
+> test_flow_dissector.c. I have kept most of the packet build function
+> (even if not all packet types are used for the test) to allow extending
+> the test later if needed.
+> 
+> The new test has been executed in a local x86 qemu environment as well
+> as in CI:
+> 
+>   # ./test_progs -a flow_dissector_classification
+>   #102/1   flow_dissector_classification/ipv4:OK
+>   #102/2   flow_dissector_classification/ipv4_continue_dissect:OK
+>   #102/3   flow_dissector_classification/ipip:OK
+>   #102/4   flow_dissector_classification/gre:OK
+>   #102/5   flow_dissector_classification/port_range:OK
+>   #102/6   flow_dissector_classification/ipv6:OK
+>   #102     flow_dissector_classification:OK
+> ---
+>  .../bpf/prog_tests/flow_dissector_classification.c | 807 +++++++++++++++++++++
+>  1 file changed, 807 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector_classification.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector_classification.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..e9bd145ee8f0cbee3487bc1e241f3c6b5f25fecb
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector_classification.c
+> @@ -0,0 +1,807 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#define _GNU_SOURCE
+> +#include <stdbool.h>
+> +#include <stdlib.h>
+> +#include <stdio.h>
+> +#include <bpf/bpf.h>
+> +#include <linux/bpf.h>
+> +#include <bpf/libbpf.h>
+> +#include <arpa/inet.h>
+> +#include <asm/byteorder.h>
+> +#include <netinet/udp.h>
+> +#include <poll.h>
+> +#include <string.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/socket.h>
+> +#include <sys/time.h>
+> +#include <unistd.h>
+> +#include "test_progs.h"
+> +#include "network_helpers.h"
+> +#include "bpf_util.h"
+> +#include "bpf_flow.skel.h"
+> +
+> +#define CFG_PORT_INNER 8000
+> +#define CFG_PORT_GUE 6080
+> +#define SUBTEST_NAME_MAX_LEN 32
+> +#define TEST_NAME_MAX_LEN (32 + SUBTEST_NAME_MAX_LEN)
+> +#define MAX_SOURCE_PORTS 3
+> +#define TEST_PACKETS_COUNT 10
+> +#define TEST_PACKET_LEN 100
+> +#define TEST_PACKET_PATTERN 'a'
+> +#define TEST_IPV4 "192.168.0.1/32"
+> +#define TEST_IPV6 "100::a/128"
+> +#define TEST_TUNNEL_REMOTE "127.0.0.2"
+> +#define TEST_TUNNEL_LOCAL "127.0.0.1"
+> +
+> +#define INIT_ADDR4(addr4, port)					\
+> +	{							\
+> +		.sin_family = AF_INET,				\
+> +		.sin_port = __constant_htons(port),		\
+> +		.sin_addr.s_addr = __constant_htonl(addr4),	\
+> +	}
+> +
+> +#define INIT_ADDR6(addr6, port)				\
+> +	{						\
+> +		.sin6_family = AF_INET6,		\
+> +		.sin6_port = __constant_htons(port),	\
+> +		.sin6_addr = addr6,			\
+> +	}
+> +#define TEST_IN4_SRC_ADDR_DEFAULT INIT_ADDR4(INADDR_LOOPBACK + 2, 0)
+> +#define TEST_IN4_DST_ADDR_DEFAULT INIT_ADDR4(INADDR_LOOPBACK, CFG_PORT_INNER)
+> +#define TEST_OUT4_SRC_ADDR_DEFAULT INIT_ADDR4(INADDR_LOOPBACK + 1, 0)
+> +#define TEST_OUT4_DST_ADDR_DEFAULT INIT_ADDR4(INADDR_LOOPBACK, 0)
+> +
+> +#define TEST_IN6_SRC_ADDR_DEFAULT INIT_ADDR6(IN6ADDR_LOOPBACK_INIT, 0)
+> +#define TEST_IN6_DST_ADDR_DEFAULT \
+> +	INIT_ADDR6(IN6ADDR_LOOPBACK_INIT, CFG_PORT_INNER)
+> +#define TEST_OUT6_SRC_ADDR_DEFAULT INIT_ADDR6(IN6ADDR_LOOPBACK_INIT, 0)
+> +#define TEST_OUT6_DST_ADDR_DEFAULT INIT_ADDR6(IN6ADDR_LOOPBACK_INIT, 0)
+> +
+> +#define TEST_IN4_SRC_ADDR_DISSECT_CONTINUE INIT_ADDR4(INADDR_LOOPBACK + 126, 0)
+> +#define TEST_IN4_SRC_ADDR_IPIP INIT_ADDR4((in_addr_t)0x01010101, 0)
+> +#define TEST_IN4_DST_ADDR_IPIP INIT_ADDR4((in_addr_t)0xC0A80001, CFG_PORT_INNER)
+> +
+> +struct grehdr {
+> +	uint16_t unused;
+> +	uint16_t protocol;
+> +} __packed;
+> +
+> +struct guehdr {
+> +	union {
+> +		struct {
+> +#if defined(__LITTLE_ENDIAN_BITFIELD)
+> +			__u8 hlen : 5, control : 1, version : 2;
+> +#elif defined(__BIG_ENDIAN_BITFIELD)
+> +			__u8 version : 2, control : 1, hlen : 5;
+> +#else
+> +#error "Please fix <asm/byteorder.h>"
+> +#endif
+> +			__u8 proto_ctype;
+> +			__be16 flags;
+> +		};
+> +		__be32 word;
+> +	};
+> +};
+> +
+> +static char buf[ETH_DATA_LEN];
+> +
+> +struct test_configuration {
+> +	char name[SUBTEST_NAME_MAX_LEN];
+> +	int (*test_setup)(void);
+> +	void (*test_teardown)(void);
+> +	int source_ports[MAX_SOURCE_PORTS];
+> +	int cfg_l3_inner;
+> +	struct sockaddr_in in_saddr4;
+> +	struct sockaddr_in in_daddr4;
+> +	struct sockaddr_in6 in_saddr6;
+> +	struct sockaddr_in6 in_daddr6;
+> +	int cfg_l3_outer;
+> +	struct sockaddr_in out_saddr4;
+> +	struct sockaddr_in out_daddr4;
+> +	struct sockaddr_in6 out_saddr6;
+> +	struct sockaddr_in6 out_daddr6;
+> +	int cfg_encap_proto;
+> +	uint8_t cfg_dsfield_inner;
+> +	uint8_t cfg_dsfield_outer;
+> +	int cfg_l3_extra;
+> +	struct sockaddr_in extra_saddr4;
+> +	struct sockaddr_in extra_daddr4;
+> +	struct sockaddr_in6 extra_saddr6;
+> +	struct sockaddr_in6 extra_daddr6;
+> +};
+> +
+> +static unsigned long util_gettime(void)
+> +{
+> +	struct timeval tv;
+> +
+> +	gettimeofday(&tv, NULL);
+> +	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+> +}
+> +
+> +static void build_ipv4_header(void *header, uint8_t proto, uint32_t src,
+> +			      uint32_t dst, int payload_len, uint8_t tos)
+> +{
+> +	struct iphdr *iph = header;
+> +
+> +	iph->ihl = 5;
+> +	iph->version = 4;
+> +	iph->tos = tos;
+> +	iph->ttl = 8;
+> +	iph->tot_len = htons(sizeof(*iph) + payload_len);
+> +	iph->id = htons(1337);
+> +	iph->protocol = proto;
+> +	iph->saddr = src;
+> +	iph->daddr = dst;
+> +	iph->check = build_ip_csum((void *)iph);
+> +}
+> +
+> +static void ipv6_set_dsfield(struct ipv6hdr *ip6h, uint8_t dsfield)
+> +{
+> +	uint16_t val, *ptr = (uint16_t *)ip6h;
+> +
+> +	val = ntohs(*ptr);
+> +	val &= 0xF00F;
+> +	val |= ((uint16_t)dsfield) << 4;
+> +	*ptr = htons(val);
+> +}
+> +
+> +static void build_ipv6_header(void *header, uint8_t proto,
+> +			      struct sockaddr_in6 *src,
+> +			      struct sockaddr_in6 *dst, int payload_len,
+> +			      uint8_t dsfield)
+> +{
+> +	struct ipv6hdr *ip6h = header;
+> +
+> +	ip6h->version = 6;
+> +	ip6h->payload_len = htons(payload_len);
+> +	ip6h->nexthdr = proto;
+> +	ip6h->hop_limit = 8;
+> +	ipv6_set_dsfield(ip6h, dsfield);
+> +
+> +	memcpy(&ip6h->saddr, &src->sin6_addr, sizeof(ip6h->saddr));
+> +	memcpy(&ip6h->daddr, &dst->sin6_addr, sizeof(ip6h->daddr));
+> +}
+> +
+> +static void build_udp_header(void *header, int payload_len, uint16_t sport,
+> +			     uint16_t dport, int family)
+> +{
+> +	struct udphdr *udph = header;
+> +	int len = sizeof(*udph) + payload_len;
+> +
+> +	udph->source = htons(sport);
+> +	udph->dest = htons(dport);
+> +	udph->len = htons(len);
+> +	udph->check = 0;
+> +	if (family == AF_INET)
+> +		udph->check = build_udp_v4_csum(header - sizeof(struct iphdr),
+> +						IPPROTO_UDP, udph->len,
+> +						udph, len >> 1);
+> +	else
+> +		udph->check = build_udp_v6_csum(header - sizeof(struct ipv6hdr),
+> +						udph, len >> 1);
+> +}
+> +
+> +static void build_gue_header(void *header, uint8_t proto)
+> +{
+> +	struct guehdr *gueh = header;
+> +
+> +	gueh->proto_ctype = proto;
+> +}
+> +
+> +static void build_gre_header(void *header, uint16_t proto)
+> +{
+> +	struct grehdr *greh = header;
+> +
+> +	greh->protocol = htons(proto);
+> +}
+> +
+> +static int l3_length(int family)
+> +{
+> +	if (family == AF_INET)
+> +		return sizeof(struct iphdr);
+> +	else
+> +		return sizeof(struct ipv6hdr);
+> +}
+> +
+> +static int build_packet(struct test_configuration *test, uint16_t sport)
+> +{
+> +	int ol3_len = 0, ol4_len = 0, il3_len = 0, il4_len = 0;
+> +	int el3_len = 0, packet_len;
+> +
+> +	memset(buf, 0, ETH_DATA_LEN);
+> +
+> +	if (test->cfg_l3_extra)
+> +		el3_len = l3_length(test->cfg_l3_extra);
+> +
+> +	/* calculate header offsets */
+> +	if (test->cfg_encap_proto) {
+> +		ol3_len = l3_length(test->cfg_l3_outer);
+> +
+> +		if (test->cfg_encap_proto == IPPROTO_GRE)
+> +			ol4_len = sizeof(struct grehdr);
+> +		else if (test->cfg_encap_proto == IPPROTO_UDP)
+> +			ol4_len = sizeof(struct udphdr) + sizeof(struct guehdr);
+> +	}
+> +
+> +	il3_len = l3_length(test->cfg_l3_inner);
+> +	il4_len = sizeof(struct udphdr);
+> +
+> +	packet_len = el3_len + ol3_len + ol4_len + il3_len + il4_len +
+> +		     TEST_PACKET_LEN;
+> +	if (!ASSERT_LE(packet_len, sizeof(buf), "check packet size"))
+> +		return -1;
+> +
+> +	/*
+> +	 * Fill packet from inside out, to calculate correct checksums.
+> +	 * But create ip before udp headers, as udp uses ip for pseudo-sum.
+> +	 */
+> +	memset(buf + el3_len + ol3_len + ol4_len + il3_len + il4_len,
+> +	       TEST_PACKET_PATTERN, TEST_PACKET_LEN);
+> +
+> +	/* add zero byte for udp csum padding */
+> +	buf[el3_len + ol3_len + ol4_len + il3_len + il4_len + TEST_PACKET_LEN] =
+> +		0;
+> +
+> +	switch (test->cfg_l3_inner) {
+> +	case PF_INET:
+> +		build_ipv4_header(buf + el3_len + ol3_len + ol4_len,
+> +				  IPPROTO_UDP, test->in_saddr4.sin_addr.s_addr,
+> +				  test->in_daddr4.sin_addr.s_addr,
+> +				  il4_len + TEST_PACKET_LEN,
+> +				  test->cfg_dsfield_inner);
+> +		break;
+> +	case PF_INET6:
+> +		build_ipv6_header(buf + el3_len + ol3_len + ol4_len,
+> +				  IPPROTO_UDP, &test->in_saddr6,
+> +				  &test->in_daddr6, il4_len + TEST_PACKET_LEN,
+> +				  test->cfg_dsfield_inner);
+> +		break;
+> +	}
+> +
+> +	build_udp_header(buf + el3_len + ol3_len + ol4_len + il3_len,
+> +			 TEST_PACKET_LEN, sport, CFG_PORT_INNER,
+> +			 test->cfg_l3_inner);
+> +
+> +	if (!test->cfg_encap_proto)
+> +		return il3_len + il4_len + TEST_PACKET_LEN;
+> +
+> +	switch (test->cfg_l3_outer) {
+> +	case PF_INET:
+> +		build_ipv4_header(buf + el3_len, test->cfg_encap_proto,
+> +				  test->out_saddr4.sin_addr.s_addr,
+> +				  test->out_daddr4.sin_addr.s_addr,
+> +				  ol4_len + il3_len + il4_len + TEST_PACKET_LEN,
+> +				  test->cfg_dsfield_outer);
+> +		break;
+> +	case PF_INET6:
+> +		build_ipv6_header(buf + el3_len, test->cfg_encap_proto,
+> +				  &test->out_saddr6, &test->out_daddr6,
+> +				  ol4_len + il3_len + il4_len + TEST_PACKET_LEN,
+> +				  test->cfg_dsfield_outer);
+> +		break;
+> +	}
+> +
+> +	switch (test->cfg_encap_proto) {
+> +	case IPPROTO_UDP:
+> +		build_gue_header(buf + el3_len + ol3_len + ol4_len -
+> +					 sizeof(struct guehdr),
+> +				 test->cfg_l3_inner == PF_INET ? IPPROTO_IPIP :
+> +								 IPPROTO_IPV6);
+> +		build_udp_header(buf + el3_len + ol3_len,
+> +				 sizeof(struct guehdr) + il3_len + il4_len +
+> +					 TEST_PACKET_LEN,
+> +				 sport, CFG_PORT_GUE, test->cfg_l3_outer);
+> +		break;
+> +	case IPPROTO_GRE:
+> +		build_gre_header(buf + el3_len + ol3_len,
+> +				 test->cfg_l3_inner == PF_INET ? ETH_P_IP :
+> +								 ETH_P_IPV6);
+> +		break;
+> +	}
+> +
+> +	switch (test->cfg_l3_extra) {
+> +	case PF_INET:
+> +		build_ipv4_header(buf,
+> +				  test->cfg_l3_outer == PF_INET ? IPPROTO_IPIP :
+> +								  IPPROTO_IPV6,
+> +				  test->extra_saddr4.sin_addr.s_addr,
+> +				  test->extra_daddr4.sin_addr.s_addr,
+> +				  ol3_len + ol4_len + il3_len + il4_len +
+> +					  TEST_PACKET_LEN,
+> +				  0);
+> +		break;
+> +	case PF_INET6:
+> +		build_ipv6_header(buf,
+> +				  test->cfg_l3_outer == PF_INET ? IPPROTO_IPIP :
+> +								  IPPROTO_IPV6,
+> +				  &test->extra_saddr6, &test->extra_daddr6,
+> +				  ol3_len + ol4_len + il3_len + il4_len +
+> +					  TEST_PACKET_LEN,
+> +				  0);
+> +		break;
+> +	}
+> +
+> +	return el3_len + ol3_len + ol4_len + il3_len + il4_len +
+> +	       TEST_PACKET_LEN;
+> +}
+> +
+> +/* sender transmits encapsulated over RAW or unencap'd over UDP */
+> +static int setup_tx(struct test_configuration *test)
+> +{
+> +	int family, fd, ret;
+> +
+> +	if (test->cfg_l3_extra)
+> +		family = test->cfg_l3_extra;
+> +	else if (test->cfg_l3_outer)
+> +		family = test->cfg_l3_outer;
+> +	else
+> +		family = test->cfg_l3_inner;
+> +
+> +	fd = socket(family, SOCK_RAW, IPPROTO_RAW);
+> +	if (!ASSERT_OK_FD(fd, "setup tx socket"))
+> +		return fd;
+> +
+> +	if (test->cfg_l3_extra) {
+> +		if (test->cfg_l3_extra == PF_INET)
+> +			ret = connect(fd, (void *)&test->extra_daddr4,
+> +				      sizeof(test->extra_daddr4));
+> +		else
+> +			ret = connect(fd, (void *)&test->extra_daddr6,
+> +				      sizeof(test->extra_daddr6));
+> +		if (!ASSERT_OK(ret, "connect")) {
+> +			close(fd);
+> +			return ret;
+> +		}
+> +	} else if (test->cfg_l3_outer) {
+> +		/* connect to destination if not encapsulated */
+> +		if (test->cfg_l3_outer == PF_INET)
+> +			ret = connect(fd, (void *)&test->out_daddr4,
+> +				      sizeof(test->out_daddr4));
+> +		else
+> +			ret = connect(fd, (void *)&test->out_daddr6,
+> +				      sizeof(test->out_daddr6));
+> +		if (!ASSERT_OK(ret, "connect")) {
+> +			close(fd);
+> +			return ret;
+> +		}
+> +	} else {
+> +		/* otherwise using loopback */
+> +		if (test->cfg_l3_inner == PF_INET)
+> +			ret = connect(fd, (void *)&test->in_daddr4,
+> +				      sizeof(test->in_daddr4));
+> +		else
+> +			ret = connect(fd, (void *)&test->in_daddr6,
+> +				      sizeof(test->in_daddr6));
+> +		if (!ASSERT_OK(ret, "connect")) {
+> +			close(fd);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return fd;
+> +}
+> +
+> +/* receiver reads unencapsulated UDP */
+> +static int setup_rx(struct test_configuration *test)
+> +{
+> +	int fd, ret;
+> +
+> +	fd = socket(test->cfg_l3_inner, SOCK_DGRAM, 0);
+> +	if (!ASSERT_OK_FD(fd, "socket rx"))
+> +		return fd;
+> +
+> +	if (test->cfg_l3_inner == PF_INET)
+> +		ret = bind(fd, (void *)&test->in_daddr4,
+> +			   sizeof(test->in_daddr4));
+> +	else
+> +		ret = bind(fd, (void *)&test->in_daddr6,
+> +			   sizeof(test->in_daddr6));
+> +	if (!ASSERT_OK(ret, "bind rx")) {
+> +		close(fd);
+> +		return ret;
+> +	}
+> +
+> +	return fd;
+> +}
+> +
+> +static int do_tx(int fd, const char *pkt, int len)
+> +{
+> +	int ret;
+> +
+> +	ret = write(fd, pkt, len);
+> +	return ret != len;
+> +}
+> +
+> +static int do_poll(int fd, short events, int timeout)
+> +{
+> +	struct pollfd pfd;
+> +	int ret;
+> +
+> +	pfd.fd = fd;
+> +	pfd.events = events;
+> +
+> +	ret = poll(&pfd, 1, timeout);
+> +	return ret;
+> +}
+> +
+> +static int do_rx(int fd)
+> +{
+> +	char rbuf;
+> +	int ret, num = 0;
+> +
+> +	while (1) {
+> +		ret = recv(fd, &rbuf, 1, MSG_DONTWAIT);
+> +		if (ret == -1 && errno == EAGAIN)
+> +			break;
+> +		if (!ASSERT_GE(ret, 0, "check recv return code"))
+> +			return -1;
+> +		if (!ASSERT_EQ(rbuf, TEST_PACKET_PATTERN, "check pkt pattern"))
+> +			return -1;
+> +		num++;
+> +	}
+> +
+> +	return num;
+> +}
+> +
+> +static int run_test(struct test_configuration *test, int source_port_index)
+> +{
+> +	int fdt = -1, fdr = -1, len, tx = 0, rx = 0, err;
+> +	unsigned long tstop, tcur;
+> +
+> +	fdr = setup_rx(test);
+> +	fdt = setup_tx(test);
+> +	if (!ASSERT_OK_FD(fdr, "setup rx") || !ASSERT_OK_FD(fdt, "setup tx")) {
+> +		err = -1;
+> +		goto out_close_sockets;
+> +	}
+> +
+> +	len = build_packet(test,
+> +			   (uint16_t)test->source_ports[source_port_index]);
+> +	if (!ASSERT_GT(len, 0, "build test packet"))
+> +		return -1;
+> +
+> +	tcur = util_gettime();
+> +	tstop = tcur;
+> +
+> +	while (tx < TEST_PACKETS_COUNT) {
+> +		if (!ASSERT_OK(do_tx(fdt, buf, len), "do_tx"))
+> +			break;
+> +		tx++;
+> +		err = do_rx(fdr);
+
+[..]
+
+> +		if (!ASSERT_GE(err, 0, "do_rx"))
+> +			break;
+
+You seem to be already doing similar ASSERT_GE inside the do_rx, maybe
+drop one?
+
+> +		rx += err;
+> +	}
+> +
+> +	/* read straggler packets, if any */
+> +	if (rx < tx) {
+> +		tstop = util_gettime() + 100;
+> +		while (rx < tx) {
+> +			tcur = util_gettime();
+> +			if (tcur >= tstop)
+> +				break;
+> +
+> +			err = do_poll(fdr, POLLIN, tstop - tcur);
+> +			if (err < 0)
+> +				break;
+> +			err = do_rx(fdr);
+> +			if (err >= 0)
+> +				rx += err;
+> +		}
+> +	}
+> +
+> +out_close_sockets:
+> +	close(fdt);
+> +	close(fdr);
+> +	return rx;
+> +}
+> +
+> +static int attach_and_configure_program(struct bpf_flow *skel)
+> +{
+> +	struct bpf_map *prog_array = skel->maps.jmp_table;
+> +	int main_prog_fd, sub_prog_fd, map_fd, i, err;
+> +	struct bpf_program *prog;
+> +	char prog_name[32];
+> +
+> +	main_prog_fd = bpf_program__fd(skel->progs._dissect);
+> +	if (main_prog_fd < 0)
+> +		return main_prog_fd;
+> +
+> +	err = bpf_prog_attach(main_prog_fd, 0, BPF_FLOW_DISSECTOR, 0);
+> +	if (err)
+> +		return err;
+> +
+> +	map_fd = bpf_map__fd(prog_array);
+> +	if (map_fd < 0)
+> +		return map_fd;
+> +
+> +	for (i = 0; i < bpf_map__max_entries(prog_array); i++) {
+> +		snprintf(prog_name, sizeof(prog_name), "flow_dissector_%d", i);
+> +
+> +		prog = bpf_object__find_program_by_name(skel->obj, prog_name);
+> +		if (!prog)
+> +			return -1;
+> +
+> +		sub_prog_fd = bpf_program__fd(prog);
+> +		if (sub_prog_fd < 0)
+> +			return -1;
+> +
+> +		err = bpf_map_update_elem(map_fd, &i, &sub_prog_fd, BPF_ANY);
+> +		if (err)
+> +			return -1;
+> +	}
+> +
+> +	return main_prog_fd;
+> +}
+> +
+> +static void detach_program(struct bpf_flow *skel, int prog_fd)
+> +{
+> +	bpf_prog_detach2(prog_fd, 0, BPF_FLOW_DISSECTOR);
+> +}
+> +
+> +static int set_port_drop(int pf, bool multi_port)
+> +{
+> +	SYS(fail, "tc qdisc add dev lo ingress");
+> +	SYS(fail_delete_qdisc, "tc filter add %s %s %s %s %s %s %s %s %s %s",
+> +	    "dev lo",
+> +	    "parent FFFF:",
+> +	    "protocol", pf == PF_INET6 ? "ipv6" : "ip",
+> +	    "pref 1337",
+> +	    "flower",
+> +	    "ip_proto udp",
+> +	    "src_port", multi_port ? "8-10" : "9",
+> +	    "action drop");
+> +	return 0;
+> +
+> +fail_delete_qdisc:
+> +	SYS_NOFAIL("tc qdisc del dev lo ingress");
+> +fail:
+> +	return 1;
+> +}
+> +
+> +static void remove_filter(void)
+> +{
+> +	SYS_NOFAIL("tc filter del dev lo ingress");
+> +	SYS_NOFAIL("tc qdisc del dev lo ingress");
+> +}
+> +
+> +static int ipv4_setup(void)
+> +{
+> +	return set_port_drop(PF_INET, false);
+> +}
+> +
+> +static int ipv6_setup(void)
+> +{
+> +	return set_port_drop(PF_INET6, false);
+> +}
+> +
+> +static int port_range_setup(void)
+> +{
+> +	return set_port_drop(PF_INET, true);
+> +}
+
+
+[..]
+
+> +static void ipv4_shutdown(void)
+> +{
+> +	remove_filter();
+> +}
+> +
+> +static void ipv6_shutdown(void)
+> +{
+> +	remove_filter();
+> +}
+> +
+> +static void port_range_shutdown(void)
+> +{
+> +	remove_filter();
+> +}
+
+nit: Maybe use remove_filter directly as .test_teardown? These extra
+wrappers are not adding anything (imho).
+
+> +static int set_addresses(void)
+> +{
+> +	SYS(out, "ip -4 addr add  %s dev lo", TEST_IPV4);
+> +	SYS(out_remove_ipv4, "ip -6 addr add %s dev lo", TEST_IPV6);
+> +	return 0;
+> +out_remove_ipv4:
+> +	SYS_NOFAIL("ip -4 addr del %s dev lo", TEST_IPV4);
+> +out:
+> +	return -1;
+> +}
+> +
+> +static void unset_addresses(void)
+> +{
+> +	SYS_NOFAIL("ip -4 addr del %s dev lo", TEST_IPV4);
+> +	SYS_NOFAIL("ip -6 addr del %s dev lo", TEST_IPV6);
+> +}
+> +
+> +static int ipip_setup(void)
+> +{
+> +	if (!ASSERT_OK(set_addresses(), "configure addresses"))
+> +		return -1;
+> +	if (!ASSERT_OK(set_port_drop(PF_INET, false), "set filter"))
+> +		goto out_unset_addresses;
+> +	SYS(out_remove_filter,
+> +	    "ip link add ipip_test type ipip remote %s local %s dev lo",
+> +	    TEST_TUNNEL_REMOTE, TEST_TUNNEL_LOCAL);
+> +	SYS(out_clean_netif, "ip link set ipip_test up");
+> +	return 0;
+> +
+> +out_clean_netif:
+> +	SYS_NOFAIL("ip link del ipip_test");
+> +out_remove_filter:
+> +	remove_filter();
+> +out_unset_addresses:
+> +	unset_addresses();
+> +	return -1;
+> +}
+> +
+> +static void ipip_shutdown(void)
+> +{
+> +	SYS_NOFAIL("ip link del ipip_test");
+> +	remove_filter();
+> +	unset_addresses();
+> +}
+> +
+> +static int gre_setup(void)
+> +{
+> +	if (!ASSERT_OK(set_addresses(), "configure addresses"))
+> +		return -1;
+> +	if (!ASSERT_OK(set_port_drop(PF_INET, false), "set filter"))
+> +		goto out_unset_addresses;
+> +	SYS(out_remove_filter,
+> +	    "ip link add gre_test type gre remote %s local %s dev lo",
+> +	    TEST_TUNNEL_REMOTE, TEST_TUNNEL_LOCAL);
+> +	SYS(out_clean_netif, "ip link set gre_test up");
+> +	return 0;
+> +
+> +out_clean_netif:
+> +	SYS_NOFAIL("ip link del ipip_test");
+> +out_remove_filter:
+> +	remove_filter();
+> +out_unset_addresses:
+> +	unset_addresses();
+> +	return -1;
+> +}
+> +
+> +static void gre_shutdown(void)
+> +{
+> +	SYS_NOFAIL("ip link del gre_test");
+> +	remove_filter();
+> +	unset_addresses();
+> +}
+> +
+> +static const struct test_configuration tests_input[] = {
+> +	{
+> +		.name = "ipv4",
+> +		.test_setup = ipv4_setup,
+> +		.test_teardown = ipv4_shutdown,
+> +		.source_ports = { 8, 9, 10 },
+> +		.cfg_l3_inner = PF_INET,
+> +		.in_saddr4 = TEST_IN4_SRC_ADDR_DEFAULT,
+> +		.in_daddr4 = TEST_IN4_DST_ADDR_DEFAULT
+> +	},
+> +	{
+> +		.name = "ipv4_continue_dissect",
+> +		.test_setup = ipv4_setup,
+> +		.test_teardown = ipv4_shutdown,
+> +		.source_ports = { 8, 9, 10 },
+> +		.cfg_l3_inner = PF_INET,
+> +		.in_saddr4 = TEST_IN4_SRC_ADDR_DISSECT_CONTINUE,
+> +		.in_daddr4 = TEST_IN4_DST_ADDR_DEFAULT },
+> +	{
+> +		.name = "ipip",
+> +		.test_setup = ipip_setup,
+> +		.test_teardown = ipip_shutdown,
+> +		.source_ports = { 8, 9, 10 },
+> +		.cfg_l3_inner = PF_INET,
+> +		.in_saddr4 = TEST_IN4_SRC_ADDR_IPIP,
+> +		.in_daddr4 = TEST_IN4_DST_ADDR_IPIP,
+> +		.out_saddr4 = TEST_OUT4_SRC_ADDR_DEFAULT,
+> +		.out_daddr4 = TEST_OUT4_DST_ADDR_DEFAULT,
+> +		.cfg_l3_outer = PF_INET,
+> +		.cfg_encap_proto = IPPROTO_IPIP,
+> +
+> +	},
+> +	{
+> +		.name = "gre",
+> +		.test_setup = gre_setup,
+> +		.test_teardown = gre_shutdown,
+> +		.source_ports = { 8, 9, 10 },
+> +		.cfg_l3_inner = PF_INET,
+> +		.in_saddr4 = TEST_IN4_SRC_ADDR_IPIP,
+> +		.in_daddr4 = TEST_IN4_DST_ADDR_IPIP,
+> +		.out_saddr4 = TEST_OUT4_SRC_ADDR_DEFAULT,
+> +		.out_daddr4 = TEST_OUT4_DST_ADDR_DEFAULT,
+> +		.cfg_l3_outer = PF_INET,
+> +		.cfg_encap_proto = IPPROTO_GRE,
+> +	},
+> +	{
+> +		.name = "port_range",
+> +		.test_setup = port_range_setup,
+> +		.test_teardown = port_range_shutdown,
+> +		.source_ports = { 7, 9, 11 },
+> +		.cfg_l3_inner = PF_INET,
+> +		.in_saddr4 = TEST_IN4_SRC_ADDR_DEFAULT,
+> +		.in_daddr4 = TEST_IN4_DST_ADDR_DEFAULT },
+> +	{
+> +		.name = "ipv6",
+> +		.test_setup = ipv6_setup,
+> +		.test_teardown = ipv6_shutdown,
+> +		.source_ports = { 8, 9, 10 },
+> +		.cfg_l3_inner = PF_INET6,
+> +		.in_saddr6 = TEST_IN6_SRC_ADDR_DEFAULT,
+> +		.in_daddr6 = TEST_IN6_DST_ADDR_DEFAULT
+> +	},
+> +};
+> +
+> +struct test_ctx {
+> +	struct bpf_flow *skel;
+> +	struct netns_obj *ns;
+> +	int prog_fd;
+> +};
+> +
+> +static int test_global_init(struct test_ctx *ctx)
+> +{
+> +	int err;
+> +
+> +	ctx->skel = bpf_flow__open_and_load();
+> +	if (!ASSERT_OK_PTR(ctx->skel, "open and load flow_dissector"))
+> +		return -1;
+> +
+> +	ctx->ns = netns_new("flow_dissector_classification", true);
+> +	if (!ASSERT_OK_PTR(ctx->ns, "switch ns"))
+> +		goto out_destroy_skel;
+> +
+> +	err = write_sysctl("/proc/sys/net/ipv4/conf/default/rp_filter", "0");
+> +	err |= write_sysctl("/proc/sys/net/ipv4/conf/all/rp_filter", "0");
+> +	err |= write_sysctl("/proc/sys/net/ipv4/conf/lo/rp_filter", "0");
+> +	if (!ASSERT_OK(err, "configure net tunables"))
+> +		goto out_clean_ns;
+> +
+> +	ctx->prog_fd = attach_and_configure_program(ctx->skel);
+> +	if (!ASSERT_OK_FD(ctx->prog_fd, "attach and configure program"))
+> +		goto out_clean_ns;
+> +	return 0;
+> +out_clean_ns:
+> +	netns_free(ctx->ns);
+> +out_destroy_skel:
+> +	bpf_flow__destroy(ctx->skel);
+> +	return -1;
+> +}
+> +
+> +static void test_global_shutdown(struct test_ctx *ctx)
+> +{
+> +	detach_program(ctx->skel, ctx->prog_fd);
+> +	netns_free(ctx->ns);
+> +	bpf_flow__destroy(ctx->skel);
+> +}
+> +
+> +void test_flow_dissector_classification(void)
+> +{
+> +	struct test_ctx ctx;
+> +	struct test_configuration *test;
+> +	int i;
+> +
+> +	if (test_global_init(&ctx))
+> +		return;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(tests_input); i++) {
+> +		if (!test__start_subtest(tests_input[i].name))
+> +			continue;
+
+[..]
+
+> +		test = (struct test_configuration *)&tests_input[i];
+
+nit: What's the purpose of the cast? Is it to de-constify? Can we
+change run_test arguments to accept const struct test_configuration
+ptr instead?
+
+> +		/* All tests are expected to have one rx-ok port first,
+> +		 * then a non-working rx port, and finally a rx-ok port
+> +		 */
+> +		if (test->test_setup &&
+> +		    !ASSERT_OK(test->test_setup(), "init filter"))
+> +			continue;
+> +
+> +		ASSERT_EQ(run_test(test, 0), TEST_PACKETS_COUNT,
+> +			  "test first port");
+> +		ASSERT_EQ(run_test(test, 1), 0, "test second port");
+> +		ASSERT_EQ(run_test(test, 2), TEST_PACKETS_COUNT,
+> +			  "test third port");
+> +		if (test->test_teardown)
+> +			test->test_teardown();
+> +	}
+> +	test_global_shutdown(&ctx);
+> +}
+> 
+> -- 
+> 2.47.0
+> 
