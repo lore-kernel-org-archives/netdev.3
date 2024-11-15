@@ -1,209 +1,203 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2041.outbound.protection.outlook.com [40.107.20.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5694317E017;
-	Fri, 15 Nov 2024 03:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731639835; cv=fail; b=kixjAxVRQqH9VS4gZCRYbjK6P+m3D2sqrPLQvdwlrt43Jc/eFZiUUsHHXUAI1O1FF7LbJS0Im4uXPJusl8A3IHUREq72p9XqqrF+teS0f7WhfBBHNAv2eIGW+UAnwL4Ot4ejmFfhn/GkAdW4LNmzXBwDdjSGC8Ou5yHOpTNfDbM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731639835; c=relaxed/simple;
-	bh=Nkk4AxYQjfxXdQi3GPscmfEoEXJ5yNP8kfWbHa31cok=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EbUZ4XZE+otLQP7gIADu5pSmm+/MSqv39tnLcp453D+HkMcLKNH8SSsDKdiMmlrQ9nWojgrRL6c8GoWS03sPvSyBrEZoCeN4w+uCAvdcdLp38Fw6jYTaFx0eVoB2ZX221aRBWeh4KHCSfhboZU4kMAuIg08qHlYQ9p31nB0Xa+U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RQiNBmMl; arc=fail smtp.client-ip=40.107.20.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE2513C8E2
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 03:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731639891; cv=none; b=BOjU5yN3xLwJOc49EOENf58XpvsNTEguCkRBLXCtBdv48wDF28AfgO7KASdinJriahmygiOB5DCfo8mEJYNWHvcj7dhDM98jvauJjxitSOj30VlWy3EL+5u7Q128amh3OxrDD3yBfiZ5f2zNxqi+qzzZB35akkTrR7ttQv24dvc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731639891; c=relaxed/simple;
+	bh=V716P8zZ//kv1B/yK/7tTukzKZaPZtXLXcL6pNiw8MY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l+hgOaLqqz5c+JWT5omJQccHCG99JE93gwgOVFtyVr5OzIIMf4HCZdA0f0871zTuDBesJC4ZnnyJH7nJM1gM+0yoYOM5fA13ma6DfB+1bCd1L8JtPLGWMcYIk159JT8JBm1d+mZ2m9t2gwuI4CfdQ6CdsQNCmaerZptHZbchTLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=UHWJELLh; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RQiNBmMl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ccRkElgwHP7ctIz2BAUeNvXbj30mCHyuXDjnwhD6P/u1C+57LREAtAJ0qLO3S9NShJCJeolXLTdWoIU84Ps2dGQgeXm0ksbzBBEx1M26WWKlThfca/E7W+f3NNnfl13gHH0n+tRvSDxwSKPVKTb+HCiQ7HWTl3ogp0QEj0GH/EaGNVHp42nHQRQCjizCSEM4U0iEwz/FljydX4nZ4OfiSBF5zSmK5+8nsvYpoHfqHQMNwgeg5ZhugfuP7FWZTwBRrU/snBGzYwuxtNTuaBY47buQLbsSIFmKSgPBOBC8knwXkjzT2giY2Bw2khObEgsaX+IQ/oTI0XiIAS/JO85Jlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eSRSkCcH5OvfN4cZ4Cjkba+bZxVcDFUWG7inqlrM8mw=;
- b=YHAm/RQIvJ1/dcJqnNquiYfyvtyf4RZIhwZuQkDz08Mbp/QmYXntspFhERhHC5jNTIRwshIVSnJBVgy0Z57or+3lXJcKHSorbqHFdcuywiwT2BemfOOp2+LR3502mUbE3M3OfZwRNiV8xAIfEYIajdaZfLORiOOPBEHLrfdBVZANA9kikwnQRYhlmMwuaspg+b96ERUNfhvL3zh7bnymfCPJsqZ4NX6iyELQzNEKwAYLhOoW3g/+EiNr/4ESamDtC58aks5rKuPTDt6wBkHseuhlo3S3XYt+8vi/72RMD7pgp+CgD0nYZOc1+ISDKbrm+Ker99FW/0tONamzPD17PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eSRSkCcH5OvfN4cZ4Cjkba+bZxVcDFUWG7inqlrM8mw=;
- b=RQiNBmMlhQ8Bey+Xu+HlDEO5aLSSgVZTY7tYGgGxhiFVdS3MTzy6I6xCNA6T0tHfbriJiGf5YbF7zH6ANKuG/+TvbuOQJ/frynNqiJf5y+Xd4WSBRO3vWUsFVIx2+/iNACCUkbFcSImdCIXKrVd4vElYZzoJ+AOMu/yam93p5tVV98oQa+0KwpczruDIse5+iwdH4ZgnR6aBsp/CdFxXagp38V3XpG6lMyAlPKYs29f7kHs57yDfTA3KrxNparCGs8wYWj0yc70dD4gBkpw9+BmOba3GY2uKRvGjaYO1nRrxvXIpnFTi7Z5cl2lQR2OiWsINrrHv568CjZFR2aD90g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI1PR04MB10028.eurprd04.prod.outlook.com (2603:10a6:800:1db::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18; Fri, 15 Nov
- 2024 03:03:50 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%7]) with mapi id 15.20.8158.017; Fri, 15 Nov 2024
- 03:03:50 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	frank.li@nxp.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v4 net-next 5/5] net: enetc: add UDP segmentation offload support
-Date: Fri, 15 Nov 2024 10:47:44 +0800
-Message-Id: <20241115024744.1903377-6-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241115024744.1903377-1-wei.fang@nxp.com>
-References: <20241115024744.1903377-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0047.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::15) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="UHWJELLh"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20caccadbeeso2523205ad.2
+        for <netdev@vger.kernel.org>; Thu, 14 Nov 2024 19:04:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1731639888; x=1732244688; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8MqYZvSWZEzxTRKfOnM5EWeCJU1PM/6TpfvqTM2kCbM=;
+        b=UHWJELLhh3DSkQ3pLA70WuwlCX0aIxqn1qL/t6dpBQ6tcOVXGUGX+XwB83JTO3kiyS
+         93KagMVx/SVaSHw1KT2cjvXCQwvVaiOO9GPy0wxBIf093eon45aCyF6uweSnGYgvKhuw
+         6J7IqoIloUi0TrD4+9ozqsrYHy+dW/4urb8EqrAx5L3UbRGz0PVVGA1X2UuGtHeYctAR
+         +tm3GAeRqZ3bCarX7QuLKDmABWftt+DDC0y6p7wVVqWqzE/SAYehGpM4pk/rU10Wjsdj
+         usJP0tqv9JEshmA3ixROU1lPriBXhNtvTiITFOWrpq/qHjhb8gnTgmLPDQWNpdsU+8sd
+         DPTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731639888; x=1732244688;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8MqYZvSWZEzxTRKfOnM5EWeCJU1PM/6TpfvqTM2kCbM=;
+        b=C0/XWqxu+WHVmZoGHXAlboiwWiR1bfzWEm1k1X66akCPiGymgjthE98HdV6udV/+F7
+         ozzFjNLa0hjt6MJ+DQ6qcEklilrDgGZdb/orh5AsWGjVVgtp0IxymIMHvmPasAUYZd4V
+         47OFETMZD5+mZzwXHH75GBrOlk4mGuB31vBm/P0c6WZNLuxkuIc/dszAc+YZq6mhAsCy
+         MWzko4Oq7/CDx0/MRRbwPlAm67guqiJugRBrdAiito0PNxK0WFouclbWbHG6wVFfSjyi
+         IUdkWKQuxmnBQR2CgLPJ6EyJhRAIu24/xPbnpAQogayCB6cUWApl61sDDtaZQSOYYLjP
+         C9NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7WDybYCL2E8Xaj2jeqx/ThDTvptP+jzITXGEHRFmfNAKHmg4P2uHN3YrS9gESZ960flJHl70=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz22vrYWzjbXobiiwXjCJLf8t5k44y3R71W+Y6e+Y4LiRuAfB5s
+	0sIRyCCkFCKCl25Pyd/3LdRqqfb60Fc70un6ZzVZ2hoLT/3W1+9ofzXF7k/Q88I=
+X-Google-Smtp-Source: AGHT+IGDq3TWintd3l7M/xrk1/Sdmp0H5dtDcPw5jhWZ/Cpp3whK9v98+GiYtk80xIdMvVwCNhZ/OQ==
+X-Received: by 2002:a17:902:da92:b0:20c:5c6b:2eac with SMTP id d9443c01a7336-211d0ecfb07mr14912765ad.49.1731639888546;
+        Thu, 14 Nov 2024 19:04:48 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1151:15:40a:5eb5:8916:33a4? ([2620:10d:c090:500::5:db2e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f54d5bsm3360945ad.241.2024.11.14.19.04.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 19:04:48 -0800 (PST)
+Message-ID: <4292b59f-7956-4c37-8909-ecb2261687b1@davidwei.uk>
+Date: Thu, 14 Nov 2024 19:04:46 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI1PR04MB10028:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7d0fafb-cbeb-4140-e9b7-08dd05222170
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?lrjqvaX/+CnrIOm2vHoWMwAJZiRYJ9jvrNXLFQPEhqhYyxQofLnJw837ynAg?=
- =?us-ascii?Q?N8NOPvc6BHJvKU0xBZO2W68nJBIJMAVMcu31HLDN7jFdtHBunBr4c2LkKGjn?=
- =?us-ascii?Q?DwUudxYIqp/DyIjIC1P5ypxXYtJFHVXE4YCYoBF6C+KToigth+tOMAf1GIQX?=
- =?us-ascii?Q?pOaTnsGr2hGIrqXGQZ3wcAeEZow5Rs2zcfIWzlZaRnkBdQys43b33jkyMxZE?=
- =?us-ascii?Q?lcFPkOQKslpqdSkXT5uuVeWMui/8TtpoKomF3RPxFkQ5OIBCscZ+NHGhRItN?=
- =?us-ascii?Q?efU5QpaABCcZZ7lKbgjixwdrwf2dm17q041YgQQJx13yL2bVgJxoBYq/69mO?=
- =?us-ascii?Q?fG5HHFge+4sZ/WcLzqk4/1C0DfVVMwcwiOQ/4/iRtj3Enh3mf2lR1DaxdKkd?=
- =?us-ascii?Q?pN0oJpiZCiT5XFAdww4PKk1cHO9VmNaLdHcV5btOi3kiD2/Fuv5Z79MI+RV+?=
- =?us-ascii?Q?ewNRfZCqvF91aA5jZDhiHhZwdgGw2nmGZNvUxQntYp2uqwl9II2WXaQyIKuB?=
- =?us-ascii?Q?md8sOLMDKLlqJXFLX513yXgcZYiA3FrxyeajGi8K1mnwCV56tjcJ0H/R2/Y4?=
- =?us-ascii?Q?+s6cQjxMQ232qvwfYI5yUkJXHTweFLC0Df1PpWy0c+1BhRXXcnHA/KyK2oLF?=
- =?us-ascii?Q?t9zuk8La4DZZz5KPUGI+s3A/3GYC38MqdIXKYs9CVgAC3dI6wc9JfM/3Ujuo?=
- =?us-ascii?Q?YKetEwjJE9Bhbb3OV+s8nXIJDKZ9PnTCC2x/YF1BUj6KCBUM0HS9iZmI4LUZ?=
- =?us-ascii?Q?57LSnQs4X+aEW1HviHWLsIDkbtrP0d9/1BEZyJJmBj4eGj9PJF6JjAE3XIm0?=
- =?us-ascii?Q?hreDedKLcq7o4nf7qDJmJoNh1hWMuPY4bDZRL9s+EWXfykzajirkxIA6/BI9?=
- =?us-ascii?Q?l0+kHC9oXpFtm6s/Zon9XOhdT5G0ICbBHv9IMwePVzDQ+5uRwM4Uqn46VCJ8?=
- =?us-ascii?Q?abpzNPrurDLgZuaFbLFXAEEYVTsrMUGzNNrpQo88sY1arNku4IYW3Y48PVWz?=
- =?us-ascii?Q?ROvTtRAjhnc2XRKf/oyokqeYSnMxT+Mbi0vj453vV4rFvQIrJIpa4Dp6gR03?=
- =?us-ascii?Q?WY3SvoKwWFAveERepz/JNNXhCq/H8VGo5m8FnHNUOfwPokRMVXId+TSL7kBE?=
- =?us-ascii?Q?ETPdvUJQ6n8PltDD3exzLSltC5RN3y16x/ybRL6BBGbMs4+CsmwDr+vsSbtv?=
- =?us-ascii?Q?o22nNIorxuxaZ272arJjulR+lz2Nj/IGHFT456LJyvmjIiWJj6N5rbrWnaJX?=
- =?us-ascii?Q?NfRxEfVQC+UrUqOSn+edSr/AVKtzU03V6I2unpOiB+yF9ltpxzW9eUyycool?=
- =?us-ascii?Q?iiN7w2QdGhJuyCQxgb0Qz2zrg3Tu8WVwQwPFb+9rLjvHWgFJDFwzHjwfSqHs?=
- =?us-ascii?Q?H8Ki+n4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mdzw2PxkViL7fmxGSkqB2sYdq5Ewj8jGI3Q28LY0kUbPao6zxkw8Bmtd+EDP?=
- =?us-ascii?Q?+uW+P36JS7yaAR07eNpQd1tdLHN7a3voDRvLIGV07b3+9OoFxnhVZeoPg2cn?=
- =?us-ascii?Q?gF+n9byrqcmxmE0Ul4vb7u/zqqr315npkc+WgnN6qvfO2MGRHof5YA2es7/q?=
- =?us-ascii?Q?loLjLaX0qrvPqCxyRdhn7YaZsIHcFrJJR4zz0OLxtoNxuFQ/9uzr0ZaJ2D+a?=
- =?us-ascii?Q?ikUaiLdzWL5vZS/F/e3V30WhFhqQl9BowJjxS6ToMasJ8PwzpG7XpXA8AQt6?=
- =?us-ascii?Q?ihawBb2jSJnJc4V6Q+GDyM/7B8EWEUIlYH3dr581fahfytNRamtTti4gBgOt?=
- =?us-ascii?Q?9vEaI6VhXTAXCI5Fpv+uqZfTfPKNZhgJsBr/QUGyVKAfuVdQbBBBOZtb5dyi?=
- =?us-ascii?Q?DTyxbunwSA7KC73vBmqBrzqgJFtISuAtH/6kMd/nbPUUQn/d8EN6KbO4rgvR?=
- =?us-ascii?Q?DmR3IxWqPd+9chfePF/Kz2GPqgmAmdeWrVSQoutg84V8Vc0y5ZOUvsf3ywuO?=
- =?us-ascii?Q?l4jsifQPi2ylf5LkxxP25mvmIKjqt6h/dNn5v+Th6TxfOXCtb1R+t5III50g?=
- =?us-ascii?Q?iRyLFcyJVxWbAMzy0Jxi3KyEmyUDCeLwsrPdBNMaiS/QBgjqBrRMtwHq2K5K?=
- =?us-ascii?Q?Mqdn3O5upYDIBB/WdibSrYISz08wRuiZuAk5cqAYPiLzhHSMiKW/oLkm7tUi?=
- =?us-ascii?Q?z8Vncy/Fc0n4JFI1zIVQVa15N7I2n/UMrIdtvVHSgnS53YVYaNfEuz1pgUiz?=
- =?us-ascii?Q?L045exNIG5rFVFSsE131a3EOpixUkFfm+QklXLKfZLYaiyq+YLwTgIRi2k8N?=
- =?us-ascii?Q?p1XMCDkit1CeFf6bm+ek4oesQCN+C6uwH+mEIhXVBqR/M4yA9iukiO9iK+ig?=
- =?us-ascii?Q?eF8W7cAFpO4ijCM8dKLj0X0BvjuES87Hp41E5GuAV5HiDJ8ACCck9+YEn+V3?=
- =?us-ascii?Q?+94OdWTaR3Djtbpt3pyTkebzj73YYVetN8Cgtc/lV2s3lfUNS0ej4axMqOwy?=
- =?us-ascii?Q?Nv8EuvKHs+A1n3IdJjhPzACXs1hDWKq4mQBCy9KJRB/LCxaqf8bKBJTPcZIb?=
- =?us-ascii?Q?HSdWLhML1Lqh40dGyOYN63qtpEMv31x2SKdouQ/TMVBp7zdOEnvFoq2x06sO?=
- =?us-ascii?Q?tuV1ZWFpvmMu+7tvkNIi4v5k8fd85/Si6IlW/Eb20/O6MiDpchlx3+3bSBBG?=
- =?us-ascii?Q?PJhi8TnUZYqJX66BzCLKSGcHmkPk88brYgRsmzyyQpH9A3aVQej4U6bzk/4o?=
- =?us-ascii?Q?2sjM11vQpts+rjFzoOEAsdpuDX+wSN9EArpcEyle5cLZ0TIYdiwvhzIOtohk?=
- =?us-ascii?Q?6kDI3Hlp+TsUs1KqsKq8ptEy8jhobsJPz4smj1pEJUo2A4dEf5nUI69oMmxB?=
- =?us-ascii?Q?BNk7o2opkfwiNQ5Fryg6NrYdDmYeJACU6t1KXxieZJxPlnKqLAi1sfJRw1AH?=
- =?us-ascii?Q?BXIZTxIqHSZncOApKddXsle8dosRz//5l1DQWX4cfz+3OdfM0nWjAPz92Rvx?=
- =?us-ascii?Q?VDS3BZXcYIzSpVj0BCwIFkZ47T0Z0wz2ppN/CqiTBED7+31AUl1mGEtelVBo?=
- =?us-ascii?Q?oOzIl58ZFfPc+18O3HqPANgMXweItEPVq1SrKgcP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7d0fafb-cbeb-4140-e9b7-08dd05222170
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 03:03:50.6938
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3rPHZ1+L+rHSFP1rvm9lGQi2XQkmnhH+YARIg/Qt6x0aGVMrWZoafhXfenPve18U6EkcvYQ9ecHJwLdmcwtMnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB10028
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/4] bluetooth: Improve setsockopt() handling of
+ malformed user input
+Content-Language: en-GB
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Michal Luczaj <mhal@rbox.co>, Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+ linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>
+References: <20241115-sockptr-copy-fixes-v1-0-d183c87fcbd5@rbox.co>
+ <20241115-sockptr-copy-fixes-v1-1-d183c87fcbd5@rbox.co>
+ <156ce25b-4344-40cd-9c72-1a45e8f77b38@davidwei.uk>
+ <CABBYNZLbR22cWaXA4YNwtE8=+VfdGYR5oN6TSJ-MwXCuP3=6hw@mail.gmail.com>
+ <970c7945-3dc4-4f07-94d5-19080efb2f21@davidwei.uk>
+ <CABBYNZL_awaZOKpsAyOaAbtnJLobJ1bQpF_9JNxpiyQg5P5q1Q@mail.gmail.com>
+From: David Wei <dw@davidwei.uk>
+In-Reply-To: <CABBYNZL_awaZOKpsAyOaAbtnJLobJ1bQpF_9JNxpiyQg5P5q1Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Set NETIF_F_GSO_UDP_L4 bit of hw_features and features because i.MX95
-enetc and LS1028A driver implements UDP segmentation.
+On 2024-11-14 18:50, Luiz Augusto von Dentz wrote:
+> Hi David,
+> 
+> On Thu, Nov 14, 2024 at 9:30 PM David Wei <dw@davidwei.uk> wrote:
+>>
+>> On 2024-11-14 18:15, Luiz Augusto von Dentz wrote:
+>>> Hi David,
+>>>
+>>> On Thu, Nov 14, 2024 at 7:42 PM David Wei <dw@davidwei.uk> wrote:
+>>>>
+>>>> On 2024-11-14 15:27, Michal Luczaj wrote:
+>>>>> The bt_copy_from_sockptr() return value is being misinterpreted by most
+>>>>> users: a non-zero result is mistakenly assumed to represent an error code,
+>>>>> but actually indicates the number of bytes that could not be copied.
+>>>>>
+>>>>> Remove bt_copy_from_sockptr() and adapt callers to use
+>>>>> copy_safe_from_sockptr().
+>>>>>
+>>>>> For sco_sock_setsockopt() (case BT_CODEC) use copy_struct_from_sockptr() to
+>>>>> scrub parts of uninitialized buffer.
+>>>>>
+>>>>> Opportunistically, rename `len` to `optlen` in hci_sock_setsockopt_old()
+>>>>> and hci_sock_setsockopt().
+>>>>>
+>>>>> Fixes: 51eda36d33e4 ("Bluetooth: SCO: Fix not validating setsockopt user input")
+>>>>> Fixes: a97de7bff13b ("Bluetooth: RFCOMM: Fix not validating setsockopt user input")
+>>>>> Fixes: 4f3951242ace ("Bluetooth: L2CAP: Fix not validating setsockopt user input")
+>>>>> Fixes: 9e8742cdfc4b ("Bluetooth: ISO: Fix not validating setsockopt user input")
+>>>>> Fixes: b2186061d604 ("Bluetooth: hci_sock: Fix not validating setsockopt user input")
+>>>>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>>>>> ---
+>>>>>  include/net/bluetooth/bluetooth.h |  9 ---------
+>>>>>  net/bluetooth/hci_sock.c          | 14 +++++++-------
+>>>>>  net/bluetooth/iso.c               | 10 +++++-----
+>>>>>  net/bluetooth/l2cap_sock.c        | 20 +++++++++++---------
+>>>>>  net/bluetooth/rfcomm/sock.c       |  9 ++++-----
+>>>>>  net/bluetooth/sco.c               | 11 ++++++-----
+>>>>>  6 files changed, 33 insertions(+), 40 deletions(-)
+>>>>>
+>>>> ...
+>>>>> diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+>>>>> index f48250e3f2e103c75d5937e1608e43c123aa3297..1001fb4cc21c0ecc7bcdd3ea9041770ede4f27b8 100644
+>>>>> --- a/net/bluetooth/rfcomm/sock.c
+>>>>> +++ b/net/bluetooth/rfcomm/sock.c
+>>>>> @@ -629,10 +629,9 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
+>>>>>
+>>>>>       switch (optname) {
+>>>>>       case RFCOMM_LM:
+>>>>> -             if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+>>>>> -                     err = -EFAULT;
+>>>>> +             err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
+>>>>> +             if (err)
+>>>>>                       break;
+>>>>> -             }
+>>>>
+>>>> This will return a positive integer if copy_safe_from_sockptr() fails.
+>>>
+>>> What are you talking about copy_safe_from_sockptr never returns a
+>>> positive value:
+>>>
+>>>  * Returns:
+>>>  *  * -EINVAL: @optlen < @ksize
+>>>  *  * -EFAULT: access to userspace failed.
+>>>  *  * 0 : @ksize bytes were copied
+>>
+>> Isn't this what this series is about? copy_from_sockptr() returns 0 on
+>> success, or a positive integer for number of bytes NOT copied on error.
+>> Patch 4 even updates the docs for copy_from_sockptr().
+>>
+>> copy_safe_from_sockptr()
+>>         -> copy_from_sockptr()
+>>         -> copy_from_sockptr_offset()
+>>         -> memcpy() for kernel to kernel OR
+>>         -> copy_from_user() otherwise
+> 
+> Well except the safe version does check what would otherwise cause a
+> positive return by the likes of copy_from_user and returns -EINVAL
+> instead, otherwise the documentation of copy_safe_from_sockptr is just
+> wrong and shall state that it could return positive as well but I
+> guess that would just make it as inconvenient so we might as well
+> detect when a positive value would be returned just return -EFAULT
+> instead.
 
-- i.MX95 ENETC supports UDP segmentation via LSO.
-- LS1028A ENETC supports UDP segmentation since the commit 3d5b459ba0e3
-("net: tso: add UDP segmentation support").
+Yes it checks and returns EINVAL, but not EFAULT which is what my
+comment on the original patch is about. Most of the calls to
+bt_copy_from_sockptr() that Michal replaced with
+copy_safe_from_sockptr() remain incorrect because it is assumed that
+EFAULT is returned. Only rfcomm_sock_setsockopt_old() was vaguely doing
+the right thing and the patch changed it back to the incorrect pattern:
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
-v2: rephrase the commit message
-v3: no changes
-v4: fix typo in commit message
----
- drivers/net/ethernet/freescale/enetc/enetc_pf_common.c | 6 ++++--
- drivers/net/ethernet/freescale/enetc/enetc_vf.c        | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+err = copy_safe_from_sockptr(...);
+if (err)
+	break;
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 82a67356abe4..76fc3c6fdec1 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -110,11 +110,13 @@ void enetc_pf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
- 	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
- 			    NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
- 			    NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_LOOPBACK |
--			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-+			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-+			    NETIF_F_GSO_UDP_L4;
- 	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
- 			 NETIF_F_HW_VLAN_CTAG_TX |
- 			 NETIF_F_HW_VLAN_CTAG_RX |
--			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-+			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-+			 NETIF_F_GSO_UDP_L4;
- 	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
- 			      NETIF_F_TSO | NETIF_F_TSO6;
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-index 052833acd220..ba71c04994c4 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
-@@ -138,11 +138,13 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
- 	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
- 			    NETIF_F_HW_VLAN_CTAG_TX |
- 			    NETIF_F_HW_VLAN_CTAG_RX |
--			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-+			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-+			    NETIF_F_GSO_UDP_L4;
- 	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
- 			 NETIF_F_HW_VLAN_CTAG_TX |
- 			 NETIF_F_HW_VLAN_CTAG_RX |
--			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
-+			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
-+			 NETIF_F_GSO_UDP_L4;
- 	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
- 			      NETIF_F_TSO | NETIF_F_TSO6;
- 
--- 
-2.34.1
+But I do agree that making copy_safe_from_sockptr() do the right thing
+and EFAULT will be easier and prevent future problems given that
+copy_from_sockptr() is meant to be deprecated anyhow.
 
+> 
+>> And copy_from_user() follows the same 0 for success or N > 0 for
+>> failure. It does not EFAULT on its own AFAIK.
+>>
+>> The docs for copy_safe_from_sockptr() that you've linked contains the
+>> exact misunderstanding that Michal is correcting.
+>>
+>>>
+>>>> Shouldn't this be:
+>>>>
+>>>> err = -EFAULT;
+>>>> if (copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen))
+>>>>         break;
+>>>
+>>>
+>>>
+> 
+> 
+> 
