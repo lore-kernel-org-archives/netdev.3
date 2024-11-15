@@ -1,107 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D3E1D5173;
-	Fri, 15 Nov 2024 17:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D481215573A
+	for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 17:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731691795; cv=none; b=cB1hzP/3suJawduf60L8H3SP+wFlNmDpOXHA0wQWwK9s3Q6GzlDIElRxd5QHmqBBAkc+yYsoNOiHHJ27qUZJbF1geM6VFA1MRH5P7/Veqgl1yyZqEIiMPlS5v70bxb7+25PfWcDlJ3lQKvJd3muB4KrL4Cz9FustQEqd/7biJgA=
+	t=1731692072; cv=none; b=FspKb6kMYAtoWZpF9aampQG9GoCvoHQBONb4IGovD8laqeEuIdgUreba1ezpQ7hWw5rWyCR9LzxvF0mPF3cTL2gqM9v1UsVqqgjIZZWdCHIkLNwgk5ioLNRIAa9CMevRBbpGik8/GR0Ngk627l8QdiQ36ckAPwrG3kxzI7i8is4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731691795; c=relaxed/simple;
-	bh=c22Rp9Y4CpepiHjjVTTOJhHJ8lV0+J+xtKFMTNd7rXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=J0WFcxH/N/nfpKwEU8j4dyKWzBSvDEWRmJz8I5hJfCDonT9vt5Pe5PTy0qoRCYsq14ANgmFEHP9gHsfix4uWWgH0E7p7Mu0vVizITNKMyniyKxBnJF2iu2xJxtE3HXCAPpNjvpB2NxaaKopq1yrRVjSngD3p27qCnA7KLpyhvsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIvA9dWo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731692072; c=relaxed/simple;
+	bh=B5foYQMH1aGdnaqJkB9lNTV83r6o8dGsvVkXPS7ossY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=msTvFm8s1EU0nl3g3NY/QgOsx7znRYw2M7/ELot+GLSlNFnV7bUlv3NkSBfR8VeyHGXZD98VjItcLwPf52nvebdB/ZPCQsG+fL9x5YA+F3pysaXas0xVLrHFZXjIwstyN0hpQpnRdutz5o5+zILuiBLphm8B1U0fcwQMaW9I+Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=IGRPnAOt; arc=none smtp.client-ip=80.12.242.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIvA9dWo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E33AC4CECF;
-	Fri, 15 Nov 2024 17:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731691795;
-	bh=c22Rp9Y4CpepiHjjVTTOJhHJ8lV0+J+xtKFMTNd7rXs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=qIvA9dWoAwrMPbXbU2jl2SZFnDgdT3C0jp+/a93mrtxU90nMWbp0Sd1qZQocAXcQn
-	 z7QnzZ9tf0n2fg9dfA9Y/XYDvFp4qPGZ3q/GtHPMOk5Wj6DvOCdWfqI1aYYoPRsLAp
-	 XYurJCkVWDsFsEYSwFFiGx63VmEkStRazSvLBIAJG3SBFU/+XemQMJLjtOc4Bi1I2v
-	 kJwy8o3eRJBs4any1nxm1ywZiRbMmWmKCfVaWS+4/vMmEJqUrDliyjzhk4yVbU2Y5S
-	 rqhu/gBckrgxntKfiVbFs2S3Drkv7gfs8MYbaCC+XUOAr/zQiiVQ2zCO0+oX2IFj0Z
-	 Co5JQbm9K3sYQ==
-Date: Fri, 15 Nov 2024 11:29:53 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-	jiawenwu@trustnetic.com, duanqiangwen@net-swift.com
-Subject: Re: [PATCH PCI v2] PCI: Add ACS quirk for Wangxun FF5XXX NICS
-Message-ID: <20241115172953.GA2044981@bhelgaas>
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="IGRPnAOt"
+Received: from [172.16.82.72] ([124.33.176.97])
+	by smtp.orange.fr with ESMTPA
+	id C0DAtmzuzJKJTC0DCt0RFy; Fri, 15 Nov 2024 18:34:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1731692068;
+	bh=uoqQAzrDh+tCtRBnaJ5TIwLIBIdjUa2Cj3TVQQfnVMc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=IGRPnAOtyQbLGiz4CaEVjBvQFWgXjlCqNXPwS7kX8V+6FoH5AwMjaRdaOsqJTAhWi
+	 BypjRDEnDoSa69AgDareLrdV8rycNbsVqfxFO1jFzS9Sige7XwjCm1uH3FhKHzIhX7
+	 zOjJ8YNNpb0cTu8FcWTWDdLdhHybsQBcSq0BXOy2Ioh+Si/VtYtVM0SDp/FbJtNhSB
+	 iu+GJ/H13lKpFpWnS2Ykx+DypCbD97zjBai3wwN1lvqO0yUNfEbFfZQlsALXDULkSq
+	 E9HmiZA3/R6fB2Js9CF0V4pSps/Ba3C2re9oU/jvNZcEZJQX7rhz44GqcZdOczIQfh
+	 aFqQS8Lx24JqQ==
+X-ME-Helo: [172.16.82.72]
+X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 15 Nov 2024 18:34:28 +0100
+X-ME-IP: 124.33.176.97
+Message-ID: <64787857-cbea-4fd3-b169-e7a8230234bf@wanadoo.fr>
+Date: Sat, 16 Nov 2024 02:34:23 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next] add .editorconfig file for basic formatting
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@gmail.com>
+References: <20241115151030.1198371-2-mailhol.vincent@wanadoo.fr>
+ <20241115084934.5a9ac7c6@hermes.local>
+Content-Language: en-US
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+In-Reply-To: <20241115084934.5a9ac7c6@hermes.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 15, 2024 at 10:46:04AM +0800, Mengyuan Lou wrote:
-> Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.
-> They may be multi-function devices, but they do not advertise an ACS
-> capability.
+On 16/11/2024 at 01:49, Stephen Hemminger wrote:
+> On Sat, 16 Nov 2024 00:08:27 +0900
+> Vincent Mailhol <mailhol.vincent@wanadoo.fr> wrote:
 > 
-> But the hardware does isolate FF5xxx functions as though it had an
-> ACS capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS
-> Control register, i.e., all peer-to-peer traffic is directed
-> upstream instead of being routed internally.
+>> +
+>> +[*.yaml]
+>> +charset = utf-8
+>> +end_of_line = lf
+>> +insert_final_newline = true
+>> +indent_style = space
+>> +indent_size = 2
+>> -- 
 > 
-> Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
-> functions can be in independent IOMMU groups.
-> 
-> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+> Ok, but there are no .yaml files in iproute2-next
 
-Applied to pci/virtualization for v6.13, thank you!
+My bad, I had a .yaml file in my local directory generated by some
+static analysis tool.
 
-> ---
-> 
-> v2:
-> - Update commit and comment logs.
-> v1:
-> https://lore.kernel.org/linux-pci/3D914272-CFAE-4B37-A07B-36CA77210110@net-swift.com/T/#t
-> 
->  drivers/pci/quirks.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index dccb60c1d9cc..8103bc24a54e 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -4996,18 +4996,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
->  }
->  
->  /*
-> - * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
-> - * devices, peer-to-peer transactions are not be used between the functions.
-> - * So add an ACS quirk for below devices to isolate functions.
-> + * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-> + * multi-function devices, the hardware isolates the functions by
-> + * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
-> + * PCI_ACS_CR were set.
->   * SFxxx 1G NICs(em).
->   * RP1000/RP2000 10G NICs(sp).
-> + * FF5xxx 40G/25G/10G NICs(aml).
->   */
->  static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
->  {
->  	switch (dev->device) {
-> -	case 0x0100 ... 0x010F:
-> -	case 0x1001:
-> -	case 0x2001:
-> +	case 0x0100 ... 0x010F: /* EM */
-> +	case 0x1001: case 0x2001: /* SP */
-> +	case 0x5010: case 0x5025: case 0x5040: /* AML */
-> +	case 0x5110: case 0x5125: case 0x5140: /* AML */
->  		return pci_acs_ctrl_enabled(acs_flags,
->  			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
->  	}
-> -- 
-> 2.43.2
-> 
+Will be removed in v2.
+
+
+Yours sincerely,
+Vincent Mailhol
+
