@@ -1,121 +1,104 @@
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1544C8F
-	for <netdev@vger.kernel.org>; Sat, 16 Nov 2024 02:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E981A28F4;
+	Sat, 16 Nov 2024 03:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731725999; cv=none; b=KyyV5UpwbeZjXEMt2ytmqM05rMIRgyXuVi3khdHWb6ybKt2kkLTH4KBSBgBtnYQldrNqHRTB62rP4wP634avHfjVoCQeLHMwOrxq62wwYDQzEBMzowke1DUxoMFk1ahLb3hOy5kDEV0lD7TpR9g8u/D2m3kRNb6kurQmS963DFw=
+	t=1731726024; cv=none; b=HUyXBnXGyTdXAdQP00LlUR/EwM3n2qCBGUYHDo5k7+EoQUxriLR1TZovYxuBsrisB4VI9b+uo0HqmEN96ZTPDaQ1fdjUQCdrwpSK3g2A8qDQPAxEeZ1CZ1xYSR9stKbAlV31dCzbcjnkYk7s2lxBaEL4VmRq6eePybIChyPa2b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731725999; c=relaxed/simple;
-	bh=sHwM0zIMkBBNZpzY3dUX5CsLAMAFYIkxD+1fTp5+aIE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qQH2JjocaUIy3TG2Wn8hxCWeSwlnrZOYBFf/ds+OzAmQjNlPMOxDzkfgHUMqJ1UF8U+BXGfQGidd+B6/kjXPfnDkApC7SW2ADHaDnCi+cmSz/RqFmlZiFbpgudAZHZ79iCQkZ8qdN82YaY0gqQRqPUcJzL3dr4cunbgi65/rJFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=cMw3hNo0; arc=none smtp.client-ip=80.12.242.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1731726024; c=relaxed/simple;
+	bh=tz0m8+RKXLWlVPvtju5AQulzjFo2nyhiUBLpbU10i0A=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=aOwItNdrhuKOLjpsqP3kw7WvqRbCkpfUx7phYFzYgEYfbse71c8khcnY/9dbKbJWeGyjiK3YFv+KLB9DrV5g1ntcqKt0ptSsedAZw2JMNcV8fMwG9I1bhWRzPfgMZrhz179CJaTd9VaVMEE/MhzKXK4E+ZL+Tgmt2D11MewAd6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mTg7Ye7X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="cMw3hNo0"
-Received: from mail-ej1-f50.google.com ([209.85.218.50])
-	by smtp.orange.fr with ESMTPSA
-	id C92PtgSs8ENnBC92Pt7laO; Sat, 16 Nov 2024 03:59:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1731725994;
-	bh=/Bn345Cy6wEdmGCXjW98zQRzQZPL/BpCvSGGpzZaZDI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=cMw3hNo0pZNtRgZ3ykvAgV2JCXBKZr/TPox4prPWP0BE4aYhf4S558coINuRXxMMI
-	 0OewdpxonaOYedXVcOnzxazT6phyDIGx5fPRhHGH20wbTGTOY/oXqdYOp3b8MZRjXK
-	 fW8UFLcVfCCqFIAiSjZ6PxEotmyudWM/xDsCFkpkYvIZdPiGi83krm6FKIVKxOuJ19
-	 qsemj3wb/D1zqqv99tKWBvE7n7af6fI96zGLWFwpO5qdSySVQqEm0UbZTovuVvXi8h
-	 uAgYYlmpYBI6MBVQQxdhWU2mK3mnhR/TZcC61uz3ER9YSDWsHQ9Nh5kypGVW9I7sxe
-	 k6me2eZ/E640Q==
-X-ME-Helo: mail-ej1-f50.google.com
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 16 Nov 2024 03:59:54 +0100
-X-ME-IP: 209.85.218.50
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9e44654ae3so208570466b.1
-        for <netdev@vger.kernel.org>; Fri, 15 Nov 2024 18:59:53 -0800 (PST)
-X-Gm-Message-State: AOJu0YzxOVvt3Ivod5G35t1HRBG4PzDeahlvoNL4aT2KBNV8oeSRQa8y
-	Q4d+RCuvmQ0XmxU7Tjb5XXqqk2VRpTp0WHAE9xuBXl7w/F0zU8Xbdkk0xciSGE5CDJTPmLPQoG1
-	Rsn83+Cp2aw2Zx2QyS+PE5I9XmN4=
-X-Google-Smtp-Source: AGHT+IE9KaFlNuwBB6UAF3oNO2eh18Qw5qd9ZpUsfdxJjL+Lq8nFd99l+AuY4661DIldI2vEpOpDoVGKAAsWs49+Pk8=
-X-Received: by 2002:a17:907:7ea5:b0:a9a:183a:b84e with SMTP id
- a640c23a62f3a-aa483508b20mr386768466b.40.1731725993606; Fri, 15 Nov 2024
- 18:59:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mTg7Ye7X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63480C4CECF;
+	Sat, 16 Nov 2024 03:00:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731726023;
+	bh=tz0m8+RKXLWlVPvtju5AQulzjFo2nyhiUBLpbU10i0A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=mTg7Ye7Xyii++4hI9BOIMOgfE2OBHWYQOqG9hJ1DD/7H0UBUUYi+0i0QasdYX/9AB
+	 SMq9f/jeCqaXEu0tfkVt4AxRA9WlMHt3e778G9VWe/TGZitihoZbEq5sC1EcFuatXP
+	 De8r/YTn/2HO/s8J0vnNUEfB0cANwhMFmGox0Cfld1FLigeMEEU0Q5LTp8eTNgjifo
+	 kwjeyk8J/81jUoTr6eTT4fD1ApJCLvBInVJu7FtXY4u+E6N400tYyXqMmaa0MhOqBI
+	 R7Fvxwb10ZBkJzSAHPAH08fhIdZG/gt0+zG+CFm4Ayfr+U4Ni6Dcc85XBpKU23QgZ+
+	 ccJXEiS4h4/fQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EA03809A80;
+	Sat, 16 Nov 2024 03:00:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115151030.1198371-2-mailhol.vincent@wanadoo.fr>
- <20241115085150.62d239ae@hermes.local> <31ea1d1b-dbe9-4bc6-8218-64de1884baaf@wanadoo.fr>
- <20241115123210.752b5580@hermes.local>
-In-Reply-To: <20241115123210.752b5580@hermes.local>
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Date: Sat, 16 Nov 2024 11:59:42 +0900
-X-Gmail-Original-Message-ID: <CAMZ6RqK_+r2OAFtug34vczgqGWodddy282wu6BrO+reYj0Q2UA@mail.gmail.com>
-Message-ID: <CAMZ6RqK_+r2OAFtug34vczgqGWodddy282wu6BrO+reYj0Q2UA@mail.gmail.com>
-Subject: Re: [PATCH iproute2-next] add .editorconfig file for basic formatting
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 00/13] virtio-net: support AF_XDP zero copy (tx)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173172603424.2805728.3396843307366937196.git-patchwork-notify@kernel.org>
+Date: Sat, 16 Nov 2024 03:00:34 +0000
+References: <20241112012928.102478-1-xuanzhuo@linux.alibaba.com>
+In-Reply-To: <20241112012928.102478-1-xuanzhuo@linux.alibaba.com>
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+ eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ virtualization@lists.linux.dev, bpf@vger.kernel.org
 
-On Sat. 16 Nov. 2024 at 05:32, Stephen Hemminger
-<stephen@networkplumber.org> wrote:
-> On Sat, 16 Nov 2024 02:59:01 +0900
-> Vincent Mailhol <mailhol.vincent@wanadoo.fr> wrote:
->
-> > > [*]
-> > > end_of_line = lf
-> > > insert_final_newline = true
-> > > trim_trailing_whitespace = true
-> >
-> > Just let me confirm this one: do you really want the automatic
-> > whitespace removal? On some editor, it will trim not only the modified
-> > lines but also any whitespace in the full file.
-> >
-> > This can create "noise" in the patch diff. If you acknowledge this risk,
-> > then I am fine to keep this parameter.
->
->
-> Yes, emacs and some other editors have bad habit of leaving trailing
-> whitespace. And sometimes new files get added without new line at end.
+Hello:
 
-Ack. trim_trailing_whitespace = true will be added back in v2.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Line length should be 100 like kernel.
+On Tue, 12 Nov 2024 09:29:15 +0800 you wrote:
+> v4:
+>     1. rebase net-next
+>     2. update the kdoc for the new APIs
+> 
+> v3:
+>     1. use sg_dma_address/length api to set the premapped sg
+>     2. remove 'premapped' parameter from the new APIs
+>     3. tweak the comment of commit #2,#3
+> 
+> [...]
 
-It is a bit more nuanced.
+Here is the summary with links:
+  - [net-next,v4,01/13] virtio_ring: introduce vring_need_unmap_buffer
+    https://git.kernel.org/netdev/net-next/c/9f19c084057a
+  - [net-next,v4,02/13] virtio_ring: split: record extras for indirect buffers
+    https://git.kernel.org/netdev/net-next/c/bc2b4c3401c6
+  - [net-next,v4,03/13] virtio_ring: packed: record extras for indirect buffers
+    https://git.kernel.org/netdev/net-next/c/aaa789843a93
+  - [net-next,v4,04/13] virtio_ring: perform premapped operations based on per-buffer
+    https://git.kernel.org/netdev/net-next/c/c7e1b422afac
+  - [net-next,v4,05/13] virtio_ring: introduce add api for premapped
+    https://git.kernel.org/netdev/net-next/c/3ef66af31fea
+  - [net-next,v4,06/13] virtio-net: rq submits premapped per-buffer
+    https://git.kernel.org/netdev/net-next/c/31f3cd4e5756
+  - [net-next,v4,07/13] virtio_ring: remove API virtqueue_set_dma_premapped
+    https://git.kernel.org/netdev/net-next/c/880ebcbe0663
+  - [net-next,v4,08/13] virtio_net: refactor the xmit type
+    https://git.kernel.org/netdev/net-next/c/7db956707f5f
+  - [net-next,v4,09/13] virtio_net: xsk: bind/unbind xsk for tx
+    https://git.kernel.org/netdev/net-next/c/21a4e3ce6dc7
+  - [net-next,v4,10/13] virtio_net: xsk: prevent disable tx napi
+    https://git.kernel.org/netdev/net-next/c/1df5116a41a8
+  - [net-next,v4,11/13] virtio_net: xsk: tx: support xmit xsk buffer
+    https://git.kernel.org/netdev/net-next/c/89f86675cb03
+  - [net-next,v4,12/13] virtio_net: update tx timeout record
+    https://git.kernel.org/netdev/net-next/c/e2c5c57f1af8
+  - [net-next,v4,13/13] virtio_net: xdp_features add NETDEV_XDP_ACT_XSK_ZEROCOPY
+    https://git.kernel.org/netdev/net-next/c/37e0ca657a3d
 
-  1. On the code, the official limit remains 80:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-       https://www.kernel.org/doc/html/latest/process/coding-style.html#breaking-long-lines-and-strings
 
-     Since below commit on checkpatch.pl:
-
-       https://git.kernel.org/torvalds/c/bdc48fa11e46
-
-     warnings are indeed only produced for exceeding the 100th column,
-     but as far as I can see, the 80 column limit is still broadly
-     followed on kdoc comment blocks and on all the documentation.
-
-  2 .Commit are wrapped at 75 columns:
-
-       https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format
-
-    When I applied the max_line_length = 100 parameter, emacs started
-    wrapping the body of my commits to the 100th column. I will add:
-
-      [COMMIT_EDITMSG]
-      max_line_length = 75
-
-    to the v2 to prevent this.
-
-In v2, I will apply your suggestion of a broad max_line_length = 100
-configuration, with a max_line_length = 75 exception for the commit
-messages. I am happy to take any of your suggestions as long as you
-agree on the risk and potential side effects!
-
-Yours sincerely,
-Vincent Mailhol
