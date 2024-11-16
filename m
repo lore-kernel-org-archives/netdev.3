@@ -1,96 +1,142 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE96D199B8;
-	Sat, 16 Nov 2024 17:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0F518E35D
+	for <netdev@vger.kernel.org>; Sat, 16 Nov 2024 18:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731779078; cv=none; b=oomsTqLKGlaOg0otJkrYcmRqw0lgm/btmkL8LG1WUdrD96VEVIhMrzb9PWl7vS/baC79eaGnemPETz6Z47fTxAEUjDZjX10VR5J7DBgFYCqCpjuLwECjU8b2XiLebktztw1UqJOWTXG8z7NHfKrBejmIBIOFq/zvt02hRtJ49uE=
+	t=1731780191; cv=none; b=gKAv4scZaDOpjAP2MTgfHbaY883EZ+4KffHp5KfaxBWx2miFuHi8h4wrZth7Cl6Q9rUbvqEJZhStzHpghJ7vb/buiHCnethkWOGUUOMWBGiuN32CG2EHWR1XgdF/1J0NbfZ/aZolEKQOSvxEFjcko5AaiBEUm1k5e/i3KHaHCO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731779078; c=relaxed/simple;
-	bh=QWZim7FQPbXfJxdh312FGeuv42qn/G7Zxw2QMmv5/mI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J2I+8IANOtHk5OsbnLqwrDQwSgffy+hj1Z8RW4azly7msAvl96UIQkkvcBwknyyARBpxxIXKbRk2LthIoplyw/q/0P5MafPtZZySl6vjUcFdtCt+n6dbT1Qk+WsLF3nYGSMlujnNJrM2QvC3T3DU3IbDFJPeAx1BJjuww5/3T34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=c96XA77v; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1731780191; c=relaxed/simple;
+	bh=6yVXQABDgHQ3YoFzFBc688YaHlYOrV8PMSvT0DmVF0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nGhTFXBq1226qa8l75oglZHgwauh39NSYxtbYysF+F7vFIDWGEB5Q0oEkWwxvxbujcS/6Lj1JSxOSEIVl1dhh2jO96T27gkCDGxhU+p2MtzKnuhS5m40IJDPR/UvDR5S5cWgCoOa3OLwW5pLfus7DnRahy7oz3k4JFMRaR/CJ/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=HsKRaCyI; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="c96XA77v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8NNLLCEIx8IzwDwZu7yHwyqQ+HCj7SmlfLX0ltjHK1c=; b=c96XA77v161R7ji8ERnY0/Rb2T
-	wNwGYefMTcknNBHUksYVjNHb2WnHftgV4lBTnCw42KiRfW5m5qoUI5CjCzeHvfvDME7qS2tNUPKTo
-	90frI/JCUTUqUqqc7EvBPXYJQecn3dWm4FU4bZMARsCq/3sJ8shawi1d9mYbeVHvgw4h3N6vjXwY7
-	K2iUqJguIZThrjMPNWdCa8EcMpK9FvkPzxjukmDb9QV1rEFT34ESldAZ7RYq5O0HlKJBGp4kaBPWy
-	Oompd0zu5LWojhwPGb9lhG2+S3DO9lBFi27OX2OvAkJMwX5dxeu238KS7OBdJqdqGuNKvTEmnXVk8
-	bLdNhxAA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41742)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tCMqK-0007TN-31;
-	Sat, 16 Nov 2024 17:44:21 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tCMqG-0003IR-1h;
-	Sat, 16 Nov 2024 17:44:16 +0000
-Date: Sat, 16 Nov 2024 17:44:16 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="HsKRaCyI"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so2026182a12.1
+        for <netdev@vger.kernel.org>; Sat, 16 Nov 2024 10:03:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1731780188; x=1732384988; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CGnFcahEd0eVvjCCPAmskcKVoLg3YmWfRrAxcNnhTVM=;
+        b=HsKRaCyI871iY1l5Qeyc6UDUSwcuGhGMCDevYQ2NGytn58BAQNcVs2Wqyv6d8Il4ZN
+         imRPyozRk+2ElitXM/VyaorxyO4j3/yIH/qXBD6JyvbRKYMHCzd2mOPzq4ttVt3Uzt7t
+         Mhqui6sOmmnYRMuweXVRqMKh/Qo3jn1h+qKek=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731780188; x=1732384988;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CGnFcahEd0eVvjCCPAmskcKVoLg3YmWfRrAxcNnhTVM=;
+        b=NuXQjA4LBkT1xHpMSFhsy3vzKrZDOgNN4vnJmgP8AT7hKcqhDwTjfBL/A63HlWktXC
+         yfz34P+to6kpna6kuum3BLPcS+6YXzcnZnh9p39x2qFNCdMjbVIMxbPIqL7dwk3OQFs+
+         F+4NdijDgXQMvVsRQHyfFfUsAzVtL/YMHXMlAFaCsXcPTIhsulYDrqaYhZ86QUDS3XlI
+         EQFfYLju0AUqBnKbOpnVKXw75EhruajwaeW6Qy3/sq0w+6fAoBUZJ3M97/9Ml7RgIwwN
+         8W+4/i/qD3W/7E41H424MTtORsyNC8rJ1NQ1i05b7v2t6FUT/P0yln6nxZL8wB7rz0UV
+         uurg==
+X-Forwarded-Encrypted: i=1; AJvYcCXfv6ave3Iyq7Gu0TElDp6IMs0PFgjzTlK+QegN+lNvZMfaBXCLvfLuV7w/Q5iTRr/z9ZBjEDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCZ/ZkTTmzTIhXkdberCltuYUnoMPi1KqDM2A99qOwY7W6VVrI
+	2p8gjxf8ZXIEnWB8SCBe5FtZNkrUjtqx7Qz313IOC8GvpHeM/b8N1UQx8af5I5Y=
+X-Google-Smtp-Source: AGHT+IEY6i5r17rHD7AA4pDo0eewtwkaRGniz3NbwzmDUylo6DVU+CLQMsuSqXx2AB1hMg+lZtDO9Q==
+X-Received: by 2002:a17:907:1c9d:b0:a9e:670f:9485 with SMTP id a640c23a62f3a-aa481a5cecfmr569044566b.30.1731780188249;
+        Sat, 16 Nov 2024 10:03:08 -0800 (PST)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-82-54-94-193.retail.telecomitalia.it. [82.54.94.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20dc6d364sm329549066b.0.2024.11.16.10.03.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 10:03:07 -0800 (PST)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chandrasekar Ramakrishnan <rcsekar@samsung.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dong Aisheng <b29396@freescale.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net v2 0/2] Fix 'ethtool --show-eee' during initial stage
-Message-ID: <ZzjZ8EcwpU-YnZrz@shell.armlinux.org.uk>
-References: <20241115111151.183108-1-yong.liang.choong@linux.intel.com>
- <403be2f6-bab1-4a63-bad4-c7eac1e572ee@gmail.com>
- <ZzdW2iB2OkbZxTgS@shell.armlinux.org.uk>
- <170a8d59-e954-4316-9b83-9b799cb60481@gmail.com>
- <Zzi7dqqZLCCVvlHq@shell.armlinux.org.uk>
- <3915908d-d70b-4fbe-b80b-990d02211965@gmail.com>
+	Fengguang Wu <fengguang.wu@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Varka Bhadram <varkabhadram@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 1/7] can: m_can: fix {rx,tx}_errors statistics
+Date: Sat, 16 Nov 2024 19:02:30 +0100
+Message-ID: <20241116180301.3935879-2-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241116180301.3935879-1-dario.binacchi@amarulasolutions.com>
+References: <20241116180301.3935879-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3915908d-d70b-4fbe-b80b-990d02211965@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 16, 2024 at 06:41:13PM +0100, Heiner Kallweit wrote:
-> On 16.11.2024 16:34, Russell King (Oracle) wrote:
-> > Hmm, don't we want to do this under phydev->lock, because network
-> > drivers and phylib may be reading from phydev->eee_cfg? If we
-> > update it outside the lock, and then revert, there's a chance that
-> > the phylib state machine / network driver may see the changes
-> > which then get reverted on failure, potentially leading to
-> > inconsistent state.
-> 
-> Good point, then the patch would look like this.
-> BTW: Saw that Jakub applied your patch already.
+The m_can_handle_lec_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission. The patch fixes the issue by incrementing the
+appropriate counter based on the type of error.
 
-Yes indeed, so I hope Jakub will apply your follow-up patch soon!
-This LGTM.
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+---
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+ drivers/net/can/m_can/m_can.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Thanks!
-
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 16e9e7d7527d..337ccfae34fd 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -695,7 +695,6 @@ static int m_can_handle_lec_err(struct net_device *dev,
+ 	u32 timestamp = 0;
+ 
+ 	cdev->can.can_stats.bus_error++;
+-	stats->rx_errors++;
+ 
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+@@ -711,26 +710,32 @@ static int m_can_handle_lec_err(struct net_device *dev,
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+ 		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+ 		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
