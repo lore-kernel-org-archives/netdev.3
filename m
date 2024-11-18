@@ -1,118 +1,127 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B66EAE7;
-	Mon, 18 Nov 2024 02:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BE9139D;
+	Mon, 18 Nov 2024 03:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731898519; cv=none; b=puHD3hEHd7jtb+z4gIhQsqz0LSp5uPUT8fx0XYyuDzkJOt1axrm917hWPdCiYstOudCr8/XJwgpKBn88EnFG80h/MEP8mYkqHyv9lNZgA5Au1Fx7hL3Ox4vc/+1C9ii2ZWNmDp+t0EtuIJlBn+FYAznx04eKm5IoWWlgFmuKSb0=
+	t=1731899444; cv=none; b=rZv7y3oIJUBTFMrB41BaX73GRvgVi8JKLqowWkYd4ywb2GAMDwRt8bN8plFjaF3M+E4rogUWG0LpVLckDFfaekyw03DNx5oOElq2UWcrIX2U5ZlzFS4Bj8M8NSgRfF4GUw0U3pmIP9V+ldnDCxhbIYLF2tziJBx8f0o9V03w2Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731898519; c=relaxed/simple;
-	bh=wRPgT1yObEHD6svJnaOip0QGxnZUBOU5xL/pq0EZDYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=dCZvbOFul9wPQ0Pzk4oEyZWa+FB3815t23N6HlZiYidZRX+z2xURBY2zyLJgtbnA3X4e0tOeScPKVc/WQY3mHhlV8Yu8TEEmj9edAzSqcGoV58ulWKq9pFD1KGVf+cpIVJogPkoGIyOKugqA0n1sixumwY2Wrys9jbaYF1Bl6vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=r9DxHmAm; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+	s=arc-20240116; t=1731899444; c=relaxed/simple;
+	bh=s/HE862Ebjc4x9QSbLryT2tjzrtXi+x51IAifw3w0tQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gLw7P0NaSkoizdVw4qUBoXX/95wE8bVBJirbRxClk/J6PwKFrZbojswjJx5Q3e1whC87DBuFw0Cby1WbFea0wg2Z3X/OGvEz919eRuTOMwcm0NUSAKVTm1oFtuAhsyPWM7hEBibLganCO9+zD2rIsasws9LNTWHEsWmdy2UzVrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=O8x9f828; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="r9DxHmAm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1731898511;
-	bh=lA9p/6FlZ0uog6Hp8Mfew1zkqnhfYb5W0Rbs/v3d/MA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=r9DxHmAm7s/FlNVmJ5oX4b8Tn63VDPyWgkdf0QAEkHnSdVb5b6/TR/1+dot+5M09q
-	 Xt1mP1rwfXsSok2qEpqWgvkHwdRa4sjquKPu1iOGpLvFOJ2qm2/RCB5k9QIgJ3TIg+
-	 7RvuzOY/adSf1h10szEZT3HF2Y6MKK75/PBB8ordVt5shMFUlpJwwgmfaBRSDsN2Uu
-	 mbPaYYhyqc3ustpb6OzQZNnOG/N22vYZQcGpeJcgvPxE2jMgDRnHJ9mW4N3Y3N1EtY
-	 faXu6EgvV/tIMQDxF5c65yckXBMZE6Kp0CAQtTgMhTc5rRWJxFRA3OyLkZrtFMFFXv
-	 Vi7594J7p25Lw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XsC0b0bgLz4xfL;
-	Mon, 18 Nov 2024 13:55:10 +1100 (AEDT)
-Date: Mon, 18 Nov 2024 13:55:12 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Networking <netdev@vger.kernel.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, "Russell King (Oracle)"
- <rmk+kernel@armlinux.org.uk>
-Subject: linux-next: manual merge of the net-next tree with the net tree
-Message-ID: <20241118135512.1039208b@canb.auug.org.au>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="O8x9f828"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=0mQMe
+	EqbIH1W/gwL+X7sQKXQSByBBidMVZJPmvHc5LI=; b=O8x9f828FIf+pdv0PSFbN
+	s8pEPtPhcfMbA51V1bFjHNef+ia4TnUEtja5wognArgPz3J1woE4HTKRBg+G2c+I
+	ZkpdHrdt1GIi6/Nixe3OM/Bm1ROEk9mL3NKe2rQHpxzFfvzZQmUjuyiRmLeaavzZ
+	qai+/Lfot0YZ38+y4QvPgI=
+Received: from localhost.localdomain (unknown [47.252.33.72])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDnTyXirzpnA_TwCQ--.780S3;
+	Mon, 18 Nov 2024 11:09:50 +0800 (CST)
+From: Jiayuan Chen <mrpre@163.com>
+To: martin.lau@linux.dev,
+	edumazet@google.com,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	horms@kernel.org,
+	daniel@iogearbox.net
+Cc: mykolal@fb.com,
+	ast@kernel.org,
+	kpsingh@kernel.org,
+	jolsa@kernel.org,
+	eddyz87@gmail.com,
+	shuah@kernel.org,
+	sdf@fomichev.me,
+	linux-kselftest@vger.kernel.org,
+	haoluo@google.com,
+	song@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	mhal@rbox.co,
+	yonghong.song@linux.dev,
+	Jiayuan Chen <mrpre@163.com>,
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Subject: [PATCH bpf v4 1/2] bpf: fix recursive lock when verdict program return SK_PASS
+Date: Mon, 18 Nov 2024 11:09:09 +0800
+Message-ID: <20241118030910.36230-2-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241118030910.36230-1-mrpre@163.com>
+References: <20241118030910.36230-1-mrpre@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/_/vmX0Hz1vripoj/QLgQntj";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnTyXirzpnA_TwCQ--.780S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KrWkAr1DXF4Duw48JF4fKrg_yoW8Aw1Dpa
+	4ku3y5GF9rZr18Z3s3KF97Xr1jgw1vgay2gr1ruw1fZrn0gry5urZ5KFy2vF4YvrsrKF98
+	Zr4jqFsrtw17XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_WrX_UUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiWwWbp2c6rkc3iAAAsp
 
---Sig_/_/vmX0Hz1vripoj/QLgQntj
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-Hi all,
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
 
-Today's linux-next merge of the net-next tree got a conflict in:
+'''
 
-  include/linux/phy.h
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
 
-between commit:
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+---
+ net/core/skmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  41ffcd95015f ("net: phy: fix phylib's dual eee_enabled")
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index b1dcbd3be89e..e90fbab703b2 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1117,9 +1117,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
+ 		}
+ 	}
+ 	rcu_read_unlock();
+-- 
+2.43.5
 
-from the net tree and commit:
-
-  721aa69e708b ("net: phy: convert eee_broken_modes to a linkmode bitmap")
-
-from the net-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc include/linux/phy.h
-index 44890cdf40a2,b8346db42727..000000000000
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@@ -720,6 -721,11 +720,10 @@@ struct phy_device=20
-  	/* used for eee validation and configuration*/
-  	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_eee);
-  	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising_eee);
-+ 	/* Energy efficient ethernet modes which should be prohibited */
-+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(eee_broken_modes);
- -	bool eee_enabled;
-+ 	bool enable_tx_lpi;
-+ 	struct eee_config eee_cfg;
- =20
-  	/* Host supported PHY interface types. Should be ignored if empty. */
-  	DECLARE_PHY_INTERFACE_MASK(host_interfaces);
-
---Sig_/_/vmX0Hz1vripoj/QLgQntj
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmc6rJAACgkQAVBC80lX
-0GyAOAf+JsvkHQtN6HM1uzq93ryqcOg8/QM2rbDuGAxiMphDc4vg+jUtiEuuOtHP
-Y1VwGaFYffonnh+nj72fZTx+hxWLk/SsQ4++ovlPKRRA7egDnMZ+lvFTiw5CjisH
-PqrDPPKYBixXnpP7lJZdMW9OzPUn3ziOOmlMbc1/OQVahLOYq5Nv6dCw6OCexgWT
-JCLRq1J0SwM6chF574CXu5iENguUEUGkTk+bZsRjX6bjhSodCEhMIwD6NZjAkOND
-dYQ1TyewL/Q7pWdcGrRwthWLZj7cA2HpM4zZ9kioZBqxh3pcIQoYdQT586T6hJ22
-/vEWrBHL+ofwDsE/sY6nbHYQCkFW4w==
-=VEEF
------END PGP SIGNATURE-----
-
---Sig_/_/vmX0Hz1vripoj/QLgQntj--
