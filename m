@@ -1,200 +1,96 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1805638B
-	for <netdev@vger.kernel.org>; Mon, 18 Nov 2024 13:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA99199953;
+	Mon, 18 Nov 2024 13:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731936042; cv=none; b=kN4t1pU6m3htZCwqgUbRr/Ml7p7vEQJjL2irMdsPaF5VgIhYhLhzaeYwyvytLBk0GhQe2cp3p9PonVty379wt7JSII97IO9WG2RAvo1HZ0pOwPgixfVchzZvjETFXt3NEbPbVTk5QmN5u8Pf57gGPkxMSBphQfkAsVLwGWet8Vs=
+	t=1731936088; cv=none; b=VLWWP3jsaw3SsVbdT1xpbLgJcDLnuHMxk9v+tphx+dMS45dinxft9zjuVmQ1K0rlpVsBi0DHyGJmX9JrQ+DoW5CeXoFJkzK9tiV1OEjAapEyPDU0DI+ax1nJ0emCc4g2M0ibeJwpoH+KkXQBMrdgFBSPgkiavKpAhAdi1ieC4Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731936042; c=relaxed/simple;
-	bh=3ysRUl+PVKUYXViDkyvStAguMgORpb59fTxQXyQSLiA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bwnVk5GauHQeflp52qt5uG+/LmtdF5NzSoMLzVI7ytuj49/RnHjfcyJlZybH5bJDpeyUtJGtQcRRINf9zgJUOPZVMWu6kdIYmSbxtKiC3tPOqWWizG+AOxPSkdSn6r2aUw9YY0CocMX9tAjfh3DCpZ1HSKya/DDor/ty/BgPp1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AeMOGxM8; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1731936088; c=relaxed/simple;
+	bh=frGXdPDFKBEuHHNSFyTyGguG9oglPOtv2z6cgXk/D+Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PRgDGasWNDRZC86cCuqsbszGL8P34vwkqLNYytIOqLWrKohSmcWqbEghgEAP5PI5E7XhVcVyTQFetAE4w+DRFl8gUJYlLifpcB6PZkXb7q4dNNyT7sclWAW8ky4r49Tchnma5CkGiMxWaLlbR/E8OlCwVV9CQdBJ5QDs0NQG2mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=zySOVMKW; arc=none smtp.client-ip=139.165.32.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AeMOGxM8"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e044d4f7so10e87.0
-        for <netdev@vger.kernel.org>; Mon, 18 Nov 2024 05:20:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731936039; x=1732540839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qq7C1iowpqdNPjDCtVSBZi9R0WMWqVOUt4R6+QJevj8=;
-        b=AeMOGxM8qt80wiedkaQ1MFzJvSRivoAwaRQKb5u4P+rO9ua8KY1SenSuPWW5Dtx2Cq
-         NaYu4bQJ2D4MYcY6egbLZbI2VJlSpA6SsEmege/KxV9F22JkKRSZG6hBOIsk/JFexG6J
-         ZzacUQ8WyPkciPxt5vAAewd4FjtUbL47p2PW7gSANcmJ3GoYcPCOMwmqFE7Zgggs3GPN
-         GVaSqcbSqbowEICJcINNnMOJBHyhnOHGviEehksg6Ul7yf48mKI1CubGOHBvqDRY3EzZ
-         EAuFpjCl96cxyzHXlCiuavnEjBru1bY3/fq7SDqJ6E6KFnWPgwNUVV6S9t64PsF4Ludl
-         CJMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731936039; x=1732540839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qq7C1iowpqdNPjDCtVSBZi9R0WMWqVOUt4R6+QJevj8=;
-        b=ZfvaAdcL4lr9IZkSDYtsyiA2reoG5d9RBj/9HpepaqjKxYQta7R84/DJ2TsDqQCyLR
-         9piqG2HCqWhFaTn9WJaZhS0mniyAP7wygrNTUMQenPJcq5BepRSpsa+Sypla5r3kxy4I
-         M/9zDpGvXbRdFzn4GyPaXb49pwForikcHIWyLOQTy+Q4TlRB4xqeLlSvYmR6lg6cKQz5
-         DK7cT9rGtwiwKbM/vsfYgYgbOEY7G+MG/ai02qse2zml8bs+CGPTVh+Q4wyh0GXmTV6u
-         jM1dfXGJyCAzh/rKNPsHGFnZrecCSxC9OFJr1mDkLoDoAFOm1sw+gAazI3U78z/rGy/e
-         sYtA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVy2D64OUzyrKF5B3R0yHT0R+AFPGUXciNgdXw2S50O9p+SHzVjgTNEGkoAdb5kCnVpZ4WNfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxenAJk77dgqkma7zmxJmbaIBuHHKfCpUPGqIdtKgS/lIPyvUNp
-	9UMLBMYpzw/Ch9uQ34/XBFUi8HjAgurUpoN65SpQwzJ8Ffc29PY4/em1RlC57i38Vb19LCmGHn1
-	wHSeQsNAOHSfBSb7cpqCjVf3ZE2U6dmWcC/jA
-X-Gm-Gg: ASbGncv3iUZaQyJlNFMPKwDkHsKNU157IloOSfnnMAacumw7zF1OCPyb4E9Qg/JLiCw
-	n7Hhkzq3nreJmoa2wfDBRwDXTCCOm1JM0cgN1JfoZ/pEqpOCah9EH+g234LTexcV9
-X-Google-Smtp-Source: AGHT+IECQfdOKRsGi2JqcxQRONDOfhdCeIRY3lpwghNhN8WCCOEWCHPGJeUO+4XPScuMgljcLZBFhWe7l5r4FtGBv78=
-X-Received: by 2002:a19:5f47:0:b0:53d:a866:ff6e with SMTP id
- 2adb3069b0e04-53dbc3bb642mr3120e87.2.1731936038436; Mon, 18 Nov 2024 05:20:38
- -0800 (PST)
+	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="zySOVMKW"
+Received: from localhost.localdomain (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id C7292200DF84;
+	Mon, 18 Nov 2024 14:15:17 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be C7292200DF84
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
+	s=ulg20190529; t=1731935718;
+	bh=I4D19/zw2U0OWpmierA9EawbL81A7CfWDg2OPLzVbVY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=zySOVMKWUe18p0g3LjHUfxbRfloEgCovSoQHj4Yr33nUyuXBsnVNk7cW0Hg3a0Yq0
+	 VPQebdsvTLQ/0K2XDMJLARtMVmnZbojydzBkysJetfMctGqeZyyDhM5O0xo6baE5GZ
+	 +4J6kdCXMNDBtwaua2S2l/h8ebH3Q0BXh9sixHKU3i/FZ30qBby/kd3c1F25UZRxYM
+	 /WFAGv5qQXs6lvpHMGHoDNFVxPWf9nXsWHORrtxbenzpg0/mzzUPIHXk5F2VuFgg7l
+	 Lp2pdlA+p10b36bRkqWtKegKek9FyXrcd3731VApV3HtYzamlonJFROExwv/B9bJ3D
+	 ArArYkKNPFmFA==
+From: Justin Iurman <justin.iurman@uliege.be>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	justin.iurman@uliege.be,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v4 1/4] include: net: add static inline dst_dev_overhead() to dst.h
+Date: Mon, 18 Nov 2024 14:14:59 +0100
+Message-Id: <20241118131502.10077-2-justin.iurman@uliege.be>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241118131502.10077-1-justin.iurman@uliege.be>
+References: <20241118131502.10077-1-justin.iurman@uliege.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241117141655.2078777-1-yuyanghuang@google.com> <Zzs0xDi-3jdQSuk0@fedora>
-In-Reply-To: <Zzs0xDi-3jdQSuk0@fedora>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Mon, 18 Nov 2024 22:19:59 +0900
-Message-ID: <CADXeF1GqzSWYmSFO3v6x7+KTc=Q+U9hUiTd+x5yvZaViSKSkOQ@mail.gmail.com>
-Subject: Re: [PATCH iproute2-next] iproute2: add 'ip monitor mcaddr' support
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, roopa@cumulusnetworks.com, jiri@resnulli.us, 
-	stephen@networkplumber.org, jimictw@google.com, prohr@google.com, 
-	nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org, 
-	=?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Thanks for the prompt review feedback.
+Add static inline dst_dev_overhead() function to include/net/dst.h. This
+helper function is used by ioam6_iptunnel, rpl_iptunnel and
+seg6_iptunnel to get the dev's overhead based on a cache entry
+(dst_entry). If the cache is empty, the default and generic value
+skb->mac_len is returned. Otherwise, LL_RESERVED_SPACE() over dst's dev
+is returned.
 
->No need changes for headers. Stephen will sync the headers.
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ include/net/dst.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-The patch will not compile without the header changes. I guess that
-means I should put the patch on hold until the kernel change is merged
-and the header changes get synced up to iproute2?
+diff --git a/include/net/dst.h b/include/net/dst.h
+index 0f303cc60252..ddea596be9a0 100644
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -440,6 +440,14 @@ static inline void dst_set_expires(struct dst_entry *dst, int timeout)
+ 		dst->expires = expires;
+ }
+ 
++static inline int dst_dev_overhead(struct dst_entry *dst, struct sk_buff *skb)
++{
++	if (likely(dst))
++		return LL_RESERVED_SPACE(dst->dev);
++
++	return skb->mac_len;
++}
++
+ INDIRECT_CALLABLE_DECLARE(int ip6_output(struct net *, struct sock *,
+ 					 struct sk_buff *));
+ INDIRECT_CALLABLE_DECLARE(int ip_output(struct net *, struct sock *,
+-- 
+2.34.1
 
->The rtnl_add_nl_group() should be aligned with the upper bracket. e.g.
-
-> Same with this one.
-
-Acked, will fix the alignment in version 2.
-
-Thanks,
-Yuyang
-
-Thanks,
-Yuyang
-
-
-On Mon, Nov 18, 2024 at 9:36=E2=80=AFPM Hangbin Liu <liuhangbin@gmail.com> =
-wrote:
->
-> On Sun, Nov 17, 2024 at 11:16:55PM +0900, Yuyang Huang wrote:
-> > Enhanced the 'ip monitor' command to track changes in IPv4 and IPv6
-> > multicast addresses. This update allows the command to listen for
-> > events related to multicast address additions and deletions by
-> > registering to the newly introduced RTNLGRP_IPV4_MCADDR and
-> > RTNLGRP_IPV6_MCADDR netlink groups.
-> >
-> > This patch depends on the kernel patch that adds RTNLGRP_IPV4_MCADDR
-> > and RTNLGRP_IPV6_MCADDR being merged first.
-> >
-> > Here is an example usage:
-> >
-> > root@uml-x86-64:/# ip monitor mcaddr
-> > 8: nettest123    inet6 mcast ff01::1 scope global
-> > 8: nettest123    inet6 mcast ff02::1 scope global
-> > 8: nettest123    inet mcast 224.0.0.1 scope link
-> > 8: nettest123    inet6 mcast ff02::1:ff00:7b01 scope global
-> > Deleted 8: nettest123    inet mcast 224.0.0.1 scope link
-> > Deleted 8: nettest123    inet6 mcast ff02::1:ff00:7b01 scope global
-> > Deleted 8: nettest123    inet6 mcast ff02::1 scope global
-> >
-> > Cc: Maciej =C5=BBenczykowski <maze@google.com>
-> > Cc: Lorenzo Colitti <lorenzo@google.com>
-> > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> > ---
-> >  include/uapi/linux/rtnetlink.h |  8 ++++++++
-> >  ip/ipaddress.c                 | 17 +++++++++++++++--
-> >  ip/ipmonitor.c                 | 25 ++++++++++++++++++++++++-
-> >  3 files changed, 47 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetl=
-ink.h
-> > index 4e6c8e14..ccf26bf1 100644
-> > --- a/include/uapi/linux/rtnetlink.h
-> > +++ b/include/uapi/linux/rtnetlink.h
-> > @@ -93,6 +93,10 @@ enum {
-> >       RTM_NEWPREFIX   =3D 52,
-> >  #define RTM_NEWPREFIX        RTM_NEWPREFIX
-> >
-> > +     RTM_NEWMULTICAST,
-> > +#define RTM_NEWMULTICAST RTM_NEWMULTICAST
-> > +     RTM_DELMULTICAST,
-> > +#define RTM_DELMULTICAST RTM_DELMULTICAST
-> >       RTM_GETMULTICAST =3D 58,
-> >  #define RTM_GETMULTICAST RTM_GETMULTICAST
-> >
-> > @@ -772,6 +776,10 @@ enum rtnetlink_groups {
-> >  #define RTNLGRP_TUNNEL               RTNLGRP_TUNNEL
-> >       RTNLGRP_STATS,
-> >  #define RTNLGRP_STATS                RTNLGRP_STATS
-> > +     RTNLGRP_IPV4_MCADDR,
-> > +#define RTNLGRP_IPV4_MCADDR  RTNLGRP_IPV4_MCADDR
-> > +     RTNLGRP_IPV6_MCADDR,
-> > +#define RTNLGRP_IPV6_MCADDR    RTNLGRP_IPV6_MCADDR
-> >       __RTNLGRP_MAX
-> >  };
-> >  #define RTNLGRP_MAX  (__RTNLGRP_MAX - 1)
->
-> No need changes for headers. Stephen will sync the headers.
->
-> > @@ -220,6 +226,8 @@ int do_ipmonitor(int argc, char **argv)
-> >                       lmask |=3D IPMON_LNEXTHOP;
-> >               } else if (strcmp(*argv, "stats") =3D=3D 0) {
-> >                       lmask |=3D IPMON_LSTATS;
-> > +             } else if (strcmp(*argv, "mcaddr") =3D=3D 0) {
-> > +                     lmask |=3D IPMON_LMCADDR;
-> >               } else if (strcmp(*argv, "all") =3D=3D 0) {
-> >                       prefix_banner =3D 1;
-> >               } else if (matches(*argv, "all-nsid") =3D=3D 0) {
-> > @@ -326,6 +334,21 @@ int do_ipmonitor(int argc, char **argv)
-> >               exit(1);
-> >       }
-> >
-> > +     if (lmask & IPMON_LMCADDR) {
-> > +             if ((!preferred_family || preferred_family =3D=3D AF_INET=
-) &&
-> > +                     rtnl_add_nl_group(&rth, RTNLGRP_IPV4_MCADDR) < 0)=
- {
->
-> The rtnl_add_nl_group() should be aligned with the upper bracket. e.g.
->
->                 if ((!preferred_family || preferred_family =3D=3D AF_INET=
-) &&
->                     rtnl_add_nl_group(&rth, RTNLGRP_IPV4_MCADDR) < 0) {
->
-> > +                     fprintf(stderr,
-> > +                             "Failed to add ipv4 mcaddr group to list\=
-n");
-> > +                     exit(1);
-> > +             }
-> > +             if ((!preferred_family || preferred_family =3D=3D AF_INET=
-6) &&
-> > +                     rtnl_add_nl_group(&rth, RTNLGRP_IPV6_MCADDR) < 0)=
- {
->
-> Same with this one.
->
-> Thanks
-> Hangbin
