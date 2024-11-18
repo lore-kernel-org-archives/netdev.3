@@ -1,51 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10AE1A08B6;
-	Mon, 18 Nov 2024 13:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCB21A265E;
+	Mon, 18 Nov 2024 13:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731934886; cv=none; b=cXqdE31d9uN7lS87RIAZ9EXTFjXCsuXUTG/sl9dIgUBv3pnR4MrLfq+29c9NPEl2l3bs1ogRsx0Kiq4JYPGhViJ/uzpgMWaOQVa5JLnOwb3NPlkzY3R6yYVauBhg1nd1NYydgbM+15K4FsHAmpNc0Y1YuzC0HmCyiRgCcmDeNyk=
+	t=1731934886; cv=none; b=MxaiG5uirDbJRhfO9ccR2KHgS3FyfSH49532hmV66l4JJEOXvEv0xBxGStM0+pXtls1KKoyJYaTwy2QUCwyADAfT9Q4uBFN62hgvgCYYvagVn5vjkdzpygTPgrDbRbURVVGzmcXQGeyNDtILmX6hmMZMt7oX2TATCqe0g1CerK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731934886; c=relaxed/simple;
-	bh=RcHLfgcSHz1AR6bIJm3t4pmOATMcmKjLpWbNz628tX0=;
+	bh=o0gsQLUEQBwVaB8DL86kcJ9iRFqkRAgI0i6UZvCJDyI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=TDJqWpxCcfu3BEtP4knf4fiCnPtACmIba++gVKA30Dl2BczWDoZ0JYAA0mxKjWgiebbr2OopIWIteZ5ME8/QogjrcuVrKuTW0OU1Fqi8q7mtWhYCqQmyArUnbCs+PgIPK6desuFw6OGuy2WJxDiHtXXB3W1CbCObIcohe5MaFv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=f463fUh6; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=slCY9CuC6J0+lMTSa6407FcaP2Uv0HmKyLIxDaXWvLRCjCYFWjSzjeDfGgLKmau7RqR7IN5CYLIG5GKyXlkQfHw4M5TVyLUNRqHUP3sPZjTgbCDCE8561i1rD+FclS+EQxGfDynPnzZE2tRRVANLananNQ0iVRFNpuPfTrZAAR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=TmHIZutI; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="f463fUh6"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="TmHIZutI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731934884; x=1763470884;
+  t=1731934885; x=1763470885;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=RcHLfgcSHz1AR6bIJm3t4pmOATMcmKjLpWbNz628tX0=;
-  b=f463fUh6WkzDsfXkkDeI80U9Ews6Dxngjsy+oR75tH5Lch4Mh0/d+2QP
-   UZfbLDDZY0CFLg2Hzb1lAsw3Yy6N2H13wHXxZnmp3HfHDtx8vTW8ZGCp+
-   OQ2oPYwK5G6vHougJxCNPJtG74mpo+YTDsbvmtx/JntQZnYGJRitSAiTe
-   NxPBO+XeGJHVPTzS9Uilf732iitocc6rszdR1suwBcqAJ/1ecKQMxkOF7
-   BWFOkb4PgduxNzXUBd5KE/g0v8ppcSdatUiTs5hhMIgH79PvYDuFmSDB0
-   2D/4qp5owxaT9WNZPQK1cEemhTUTO8+ZJelmQGkCJJMbxwYYKOwQz3ar5
-   w==;
-X-CSE-ConnectionGUID: DbRaG4tGSXe42+jZNuS/Pw==
-X-CSE-MsgGUID: AXqNjeRfRsyiP4+4YNaafg==
+  bh=o0gsQLUEQBwVaB8DL86kcJ9iRFqkRAgI0i6UZvCJDyI=;
+  b=TmHIZutISu5tTFRuV+GlLKmvNNLdecHTdrYsLTklY8RTihLvWJ6vTlPu
+   ZRYaINqTEJf1lU06bMx2g9eUjOLqyJuNH/pixSh8/9w6IgqTjZYuQ8SWG
+   zRMrHhnHvaqfmYNnkACup+6vRQhlwFfujqzGs8I1EhoDL/mSulc9DFmEy
+   vpWRKpopuvWbc4AgLRSPR7Q9LRwRXokk4APm/shiVcXqQGyVpURw1fkHW
+   P6TZKzEYx2uuB021/Do0EEVlQhBcNKg/h9Me1lcqthuruUgkCQFrpfOcZ
+   wr2Drp1z/NEsrHbEk94dD5ozoRUPjnJiny9jtfAeSPxtB5aE3AmEhDyzW
+   g==;
+X-CSE-ConnectionGUID: grjwx8pqQyysg5Oh3PusIg==
+X-CSE-MsgGUID: HYC7+POhSx6IjTmEcIZbtA==
 X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; 
-   d="scan'208";a="37994321"
+   d="scan'208";a="201886260"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Nov 2024 06:01:16 -0700
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Nov 2024 06:01:24 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 18 Nov 2024 06:01:12 -0700
+ 15.1.2507.35; Mon, 18 Nov 2024 06:01:22 -0700
 Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Mon, 18 Nov 2024 06:01:09 -0700
+ 15.1.2507.35 via Frontend Transport; Mon, 18 Nov 2024 06:01:19 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Mon, 18 Nov 2024 14:00:51 +0100
-Subject: [PATCH net-next v3 5/8] net: sparx5: verify RGMII speeds
+Date: Mon, 18 Nov 2024 14:00:54 +0100
+Subject: [PATCH net-next v3 8/8] dt-bindings: net: sparx5: document RGMII
+ delays
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20241118-sparx5-lan969x-switch-driver-4-v3-5-3cefee5e7e3a@microchip.com>
+Message-ID: <20241118-sparx5-lan969x-switch-driver-4-v3-8-3cefee5e7e3a@microchip.com>
 References: <20241118-sparx5-lan969x-switch-driver-4-v3-0-3cefee5e7e3a@microchip.com>
 In-Reply-To: <20241118-sparx5-lan969x-switch-driver-4-v3-0-3cefee5e7e3a@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -69,39 +70,47 @@ CC: <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
 X-Mailer: b4 0.14-dev
 
-When doing a port config, we verify the port speed against the PHY mode
-and supported speeds of that PHY mode.
+The lan969x switch device supports two RGMII port interfaces that can be
+configured for MAC level rx and tx delays.
 
-Add checks for the four RGMII phy modes: RGMII, RGMII_ID, RGMII_TXID and
-RGMII_RXID.
+Document two new properties {rx,tx}-internal-delay-ps. Make them
+required properties, if the phy-mode is one of: rgmii, rgmii_id,
+rgmii-rxid or rgmii-txid. Also specify accepted values.
 
-Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../bindings/net/microchip,sparx5-switch.yaml          | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index b494970752fd..9f0f687bd994 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -257,6 +257,15 @@ static int sparx5_port_verify_speed(struct sparx5 *sparx5,
- 		     conf->speed != SPEED_25000))
- 			return sparx5_port_error(port, conf, SPX5_PERR_SPEED);
- 		break;
-+	case PHY_INTERFACE_MODE_RGMII:
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+		if (conf->speed != SPEED_1000 &&
-+		    conf->speed != SPEED_100 &&
-+		    conf->speed != SPEED_10)
-+			return sparx5_port_error(port, conf, SPX5_PERR_SPEED);
-+		break;
- 	default:
- 		return sparx5_port_error(port, conf, SPX5_PERR_IFTYPE);
- 	}
+diff --git a/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml b/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
+index dedfad526666..2e9ef0f7bb4b 100644
+--- a/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
++++ b/Documentation/devicetree/bindings/net/microchip,sparx5-switch.yaml
+@@ -129,6 +129,24 @@ properties:
+             minimum: 0
+             maximum: 383
+ 
++          rx-internal-delay-ps:
++            description: |
++              RGMII Receive Clock Delay defined in pico seconds, used to select
++              the DLL phase shift between 1000 ps (45 degree shift at 1Gbps) and
++              3300 ps (147 degree shift at 1Gbps). A value of 0 ps will disable
++              any delay. The Default is no delay.
++            enum: [0, 1000, 1700, 2000, 2500, 3000, 3300]
++            default: 0
++
++          tx-internal-delay-ps:
++            description: |
++              RGMII Transmit Clock Delay defined in pico seconds, used to select
++              the DLL phase shift between 1000 ps (45 degree shift at 1Gbps) and
++              3300 ps (147 degree shift at 1Gbps). A value of 0 ps will disable
++              any delay. The Default is no delay.
++            enum: [0, 1000, 1700, 2000, 2500, 3000, 3300]
++            default: 0
++
+         required:
+           - reg
+           - phys
 
 -- 
 2.34.1
