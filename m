@@ -1,131 +1,96 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00882907;
-	Mon, 18 Nov 2024 09:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A2153836;
+	Mon, 18 Nov 2024 09:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731920712; cv=none; b=UtG261GJ+IQE0NSdnn7SffsoJtCcIJeRqRHhF61Fv+p8B0oSk1G0kJgzBU4ImMnUHxD9tAZD/H4TrHbR8RT1+3xVk2trO4b9rGAm8XYb4S9Vo97nY0vcgtMoJLNGRAAl99GGM6cdQtcRipR3ofd3+jr+SriZE09N/j7n1WBhwkY=
+	t=1731920958; cv=none; b=SuSiLriHRK/KW5xdvDsB8R4nON46U4DL2dRu2Sr6gCJRkyXE0x8TQ5odToXUE2wwTzwkBVtoDTaoCV4qSO141U2xOBd3HKoFV2p30/oHgEoDRLryeu7fRmQ/2toapSQf/FHOOYmmT3FwpPetB0pEuxby8R3NOro2SeWMi+pbd6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731920712; c=relaxed/simple;
-	bh=+s588WJ4gk9wbw75TVV+RheBWqaKRkOZn+a+pEIAwX4=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=eJ2nNorpJvDhtSAnhk4lxQ8elvFaB6+M7fyKO5BQD6hZyyFF5VZ6T+XvIQRDMwKKASjd/FAsySSPapG1XVPvZsvs2OhgmXSR2HRgvtjfgCwcPdjNpRYxv0OQhImgSX7GrK43IlXY4f6Dnt4CM80qG/HF6z/UGHMXh7rg1ldGDx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=mC/SRVKG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cI17NtaH; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1731920958; c=relaxed/simple;
+	bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kPATJDQxnuDqq3HIird9NgfoYm62/XskzLCsn4tSnMO4OVudE8bHxyAoqhIkmBQHN/wSysTzBmPyu79ILaIpctipU+/Ipeq+HgwQ9xlsk3rCxvJmWXecPA1qCmgpBaWZzuDpiW/S7x9DnrG/gElmsY5c6VUY72o0XxfZRor7oYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SrHKJxVR; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="mC/SRVKG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cI17NtaH"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id C9979138070D;
-	Mon, 18 Nov 2024 04:05:08 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Mon, 18 Nov 2024 04:05:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1731920708;
-	 x=1732007108; bh=gf4HA4MAdbhLcSvM8TnDWCU5nuBOYRd+UnKEWXA6Tls=; b=
-	mC/SRVKGvsslm21o20Z5VIyi1gQ6PypC3svwUI6xeYW3iBshmejaNdekK5xf0/Hn
-	Vr54P/doV/GkiRhEEtYSJFqDjZc2gspn9wYVX9Bmc+HNfwhvP/8oiHRa+bjEP6vP
-	2TAZGQ1UY59Ede2j6zhrawLwgUZyk6mGE23etSPEhLns9gdw/6ZgPAcn/zt6uYgf
-	LIq/Y6R44EquJh9i58G2fElo0IIMfKIm7jMsPbuIb/+5svyd1ctq/YyRtx55PfUW
-	i1lGekmsHlK1MREs6NlkZoXLN0IRYvZMXcTuE/BOtU+oWhtT+YOfarKiXceWQO1e
-	XR7rz8tiMxqV6yU+DCJkQg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1731920708; x=1732007108; bh=g
-	f4HA4MAdbhLcSvM8TnDWCU5nuBOYRd+UnKEWXA6Tls=; b=cI17NtaHx6pDVnb06
-	SUikQtCpalUARm7oJK3+za00Xv2XSAbc6nbQWUhSEMzT4JhfXKSZxQ+W5phg9F4S
-	Jgu6zIdVKibt4rTiDHcGQxfOqgGoMhKKel6c4pRYY9XK3C2igRwFSJQPKrxjFmST
-	jI8jc0zJ1sj6ddvxC4PaFY99re+xaNg6xHkRcpVxfxIiekQAW6ql/56VChx3Enzj
-	1GTllnaXt1pib6qhIsEk7jL4Ece6F8M9pgmaHy5oOC6Zi0VxLKmFQIk4X2Cze1Aw
-	EwK4w3ZvIIyT4NrHiz7q2VJn1fZvyVeeig1iBH5CU9cR+u7OaEgAYVd+RCNihMgl
-	n5lSw==
-X-ME-Sender: <xms:QwM7Z5e-BLKlUy6vneE6wXTvk0vIZrY5PNL9yM_KIpmsFJqg64Q8qQ>
-    <xme:QwM7Z3PsavxoblcxLEK8JGlXkzl_wz4nHSEtibptCih1YXZJHFqfXRME2Hsh0Vcey
-    zt2J39BHSLm1m9rto4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvdelgdduvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvffkjghfufgtgfesthejredtredttden
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpefhkeeltdfffefhgffhteetheeuhffgteeghfdtueef
-    udeuleetgfehtdejieffhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedufedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhgrtghkhigptghhohhusegrshhpvg
-    gvughtvggthhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhn
-    vghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgu
-    theskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughr
-    vgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopehprdiirggsvghlsehpvg
-    hnghhuthhrohhnihigrdguvg
-X-ME-Proxy: <xmx:QwM7ZyhXWjWwuzAyeJhvSyzkoOA9KW09C6TAiJUyJmpq5GdwXGQjHg>
-    <xmx:QwM7Zy94iC8McJYeioPwCoyzH8mqayiLyLatgUEmeE31BZGLpXdKAA>
-    <xmx:QwM7Z1sqraKGDKRBfuMwShDVaI7ZOyyVKAhENwLGNp4syP0f7G2j_A>
-    <xmx:QwM7ZxFnk07XbJDlrGWBqTPWGtCc7c4unC4UDac_HbYXhv6efCTdBA>
-    <xmx:RAM7Z-Gwjz9sEbnLXhN_Ic0w5Iv_U9X5XxsEh8XfQlBlN5ZUJOSLJjNU>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 77F842220071; Mon, 18 Nov 2024 04:05:07 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SrHKJxVR"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-211f6e1c865so3390455ad.3;
+        Mon, 18 Nov 2024 01:09:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731920956; x=1732525756; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+        b=SrHKJxVR7m3oU7mRrxp5tp8195/a4J6qbqwx0P9bQd7Knry67ARKGLZGc/ChpUs4J6
+         qbYAKwJe+9+JZFRVNcFJ/S9ph2QAMq/XIf8m1GH44EqLZ9IpZ1m+FY4m8sqjT/TJiVih
+         m4zIzrUnyDn3S5JK3/VfiltW7ATbAkEdTzOQhNNQl9g9+pRjckhBP2e3u/edPQTbx7Pm
+         oeONCrxqOzYtmBj2ABTN8bCWRqFEKWOcj2qANX1O6CSz2HBCvCJ7gW4we0xqHCSDoWI9
+         XB0WWn5e1VC+mblw1PtkIx4Hs0Uu7lulKxRKtkdkw2WmDnVcvOCKIYdJgjV/+FgLemR7
+         TWDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731920956; x=1732525756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+        b=Y3h4G0aZ+M1822mX2CQnmJj6hrMKc3c+GkYktG5vi22ZmN1qlWwhO7iZhU2XvJaiOw
+         MplHCo1w5DOvwUy1d6AJtRT86Oi8fnc4F/giGvOB1HPSgw9hhFtds5ZJX+Km/5Hyvs6o
+         uLIs29bX95fquM5WwnrkJFoj8sxvotohmb4XRtEJyWk4mmt2K/noD/UdFDhV6dIi24pi
+         o165Gcz96ImiNP87qAd7Ev+H30mA91fLfKgLibk+Mk9UJKLcCcqYXGivQfmcJ2IZp4ot
+         5PXxhaVyxrTkhwUDN+Vid5QYDnDHeVB+yHSUOfqINjL9s4gtMFrjJezqf33njBTsC2wr
+         jTBA==
+X-Forwarded-Encrypted: i=1; AJvYcCU03h+yQ9j8YpWkmc8W/CafvKWk+WILvJJTyP9Ct2F7jMFVVjlBbNJMujOaiJPN9g+hHMuf0XjcVY3PzpoEfDw=@vger.kernel.org, AJvYcCVanOkH3CTEMcQgtBeinFSjgUD0dNL6pOwxSvXtVjaj1G9vanx+aBBQk02FkRyBPL0UTVSFU9/CWDyhsw==@vger.kernel.org, AJvYcCWlKh5mnQg1gyTrHyPTM/lF+rBEf0GIBcDWXfuyWUK+E0NsU71JpoVkwwvSYcZ54LdVXmZKSkN4@vger.kernel.org, AJvYcCXUk5TAd4YxOB+1GmpcWssfhQ7NDa7hbAnwfpNGVJWe22VyhqCSP+xbgHSS+UhhBFMY3+R5YugdmxcDJdCx@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ0azNHph2gIIKIoqeTklXIexz+vGkdviQnAuJO8a9t/Q79ft4
+	u36DAp9xjSJRcmz4185sMqRUcBBZ3s7SoWYbCvosccudJMdIa+EqGLR+8Rsd3Kr48xnwXWYVlCM
+	UzB/4TYAEVGb8/xha6cfDprKAVzQ=
+X-Google-Smtp-Source: AGHT+IFpWfv5PIcWHbtZu/kn7bRyyJbKbZRumMvg1pEzQh+tSLDv2nY2KMHanrDXfZai+jdjAHxB8cHLncAz8ePurYk=
+X-Received: by 2002:a17:90b:1e50:b0:2ea:715b:72ba with SMTP id
+ 98e67ed59e1d1-2ea715b7581mr1460462a91.9.1731920955682; Mon, 18 Nov 2024
+ 01:09:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 18 Nov 2024 10:04:37 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jacky Chou" <jacky_chou@aspeedtech.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>,
- "Philipp Zabel" <p.zabel@pengutronix.de>, Netdev <netdev@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Message-Id: <e0ad34dc-cc11-428e-8bf0-c764612452e0@app.fastmail.com>
-In-Reply-To: 
- <SEYPR06MB51341859052E393D404F4E519D272@SEYPR06MB5134.apcprd06.prod.outlook.com>
-References: <20241118060207.141048-1-jacky_chou@aspeedtech.com>
- <20241118060207.141048-6-jacky_chou@aspeedtech.com>
- <4b1a9090-4134-4f77-a380-5ead03fd8ba8@app.fastmail.com>
- <SEYPR06MB51341859052E393D404F4E519D272@SEYPR06MB5134.apcprd06.prod.outlook.com>
-Subject: Re: [net-next v2 5/7] net: ftgmac100: add pin strap configuration for AST2700
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in>
+ <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch> <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
+ <q5xmd3g65jr4lmnio72pcpmkmvlha3u2q3fohe2wxlclw64adv@wjon44dqnn7e>
+ <CANiq72kQJw4=qBEPwykrWBsqmycwS+mR27OE2dTPQd3tKjx-Tw@mail.gmail.com> <5qtqdzljvzly5onzhfdq63fzcqcj26ybktm2cgomijpnfnyrbj@ln2kbp73csf6>
+In-Reply-To: <5qtqdzljvzly5onzhfdq63fzcqcj26ybktm2cgomijpnfnyrbj@ln2kbp73csf6>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 18 Nov 2024 10:09:03 +0100
+Message-ID: <CANiq72koO_gdhP_5hzNz5AH-JQNoAzpszpeVR_BV14Nw-OWhzw@mail.gmail.com>
+Subject: Re: [PATCH] rust: simplify Result<()> uses
+To: Manas <manas18244@iiitd.ac.in>
+Cc: Andrew Lunn <andrew@lunn.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 18, 2024, at 08:51, Jacky Chou wrote:
- 
->> Is there a way to probe the presence of 64-bit addressing from hardware
->> registers? That would be nicer than triggering it from the compatible string,
->> given that any future SoC is likely also 64-bit.
+On Mon, Nov 18, 2024 at 2:12=E2=80=AFAM Manas <manas18244@iiitd.ac.in> wrot=
+e:
+>
+> Yes.
 
-I just realized I replied to the wrong email, I meant to send
-my question as a reply to patch 4/7. The patch for the pin strap
-looks fine.
+I was asking because the kernel does not accept anonymous
+contributions, so when someone uses a single (common, I think?) word
+as their identity, it may not be enough to find the contributor again
+in the future if the email changes.
 
-> There is no register indicated about 64-bit address support in the 
-> ftgmac100 of Aspeed 7th generation. Therefore, we use the compatible
-> to configure pin strap and DMA mask.
+Thanks!
 
-Later in the series you just unconditionally write the 64-bit
-address, so it appears that the ftgmac100 can actually do
-64-bti addressing all along, and this doesn't have to be
-conditional at all, the call to dma_set_mask_and_coherent()
-only tells the kernel that the device can do it, which should
-work on all of them. Since the other devices won't have a
-larger "dma-ranges" configuration in DT, and no RAM above
-32-bit addressing, it should have no effect.
-
-Just make that part in patch 5 unconditional.
-
-     Arnd
+Cheers,
+Miguel
