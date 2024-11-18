@@ -1,189 +1,384 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B8197A92;
-	Mon, 18 Nov 2024 11:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731928558; cv=fail; b=qnzL6nGG5tmb0emNJy+eLwB8rE8yJ3GFESot3VrFIZUXqnySqVnFdrUJMBQD+rwkCbns7MJcUYyG0+rOTcHg1N1vt+JbvOEAWo42Wa+UstLv4TCO26C6ISHRNS4madM0wOsvyzd2OhJrmgSx1hawrk2wUf2z6hgfunnO0DzB9cQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731928558; c=relaxed/simple;
-	bh=FtWmxDPxHT5fiqQM4YUSGcS5TuqvIFumR6P0w2v9uvg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=O/9NCUkOS9kQuKg4rrpXW8o2+15qR0546cPOMYfPTN4sBkkkXsLXf+L9+Aj0hxVMLPtMYcXQsScIcSXF4/jLR5rIt2BcNbr5lGBPi7UkAFMPk0iOM+BVxFlhF13rqaMqYEa0oIAUD9nhF8+3ywLVb5y/VNG5zQ0cnhW/Pffdr1U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dfaGrnFd; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF99155322
+	for <netdev@vger.kernel.org>; Mon, 18 Nov 2024 11:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731929151; cv=none; b=L2tDaVCbkcZ7cFP+vAhOseJyYnx6foYSHdP/Pvt+X7kzLTP7sjEFRCmkfLxD4jkfVgmAqOgpkF9zhEIwaCITs2gI2sLhBY3jYLMKOsAsuQEg64pBum8Qq78IYL/kziDGAa4xnWiKtFDdNI5h2+RcQI9R/UosFMdQYk9s0c0RSIs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731929151; c=relaxed/simple;
+	bh=S7ZAQ9BExb5yaWxkcmH/wmhoNXDc6Rx6Cj3RdeyR3vA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oqLyhfOmfD8GO9QphSXaSnSWY8lL4vvY0bVG0JVkfD2Wx0Zc5I0fl1+UHvcDCY2Sv7jH12Xy3dX691Vvb+Ne8w6cIIEVq4F6Pk1yJRIPXH/IwrKZkbEXRBu/Z1vwZD4DQ9kXFmVN/TTGNkkvtrDRN9m+RvlR1XLDVMBZA1VlICM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LuFYA+zG; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dfaGrnFd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LuFYA+zG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731928557; x=1763464557;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=FtWmxDPxHT5fiqQM4YUSGcS5TuqvIFumR6P0w2v9uvg=;
-  b=dfaGrnFdheLfYyBMD6A+zZ9v9lMvXif8U4UCX0JWT8wl/EB65Xxe9xhh
-   sHFX+0xbzFMhbxrJh62mjQwwK+XOTj0oa15QRSqqQkRMKJipxEBM05wfu
-   dUy5ptu4Cdkt2qTTot8GInG7X/57uT1ZliF/e2xZBKBrGMI2Bajy+WMrF
-   WaynZMYBZ7PYl3wQTQOBRJ81Ni6u4qnfo91AlbovlQ0CGohlstujtUvMH
-   vzyMC0W5gGrrGYXU2DMHhXJGNay7D99gQfFIoP2F1t1gk1NcLHv9LI42j
-   OO2Mng4lbz3jxDwZAmFtujIZSw+cwHLW6tDE9dJDZtdwfsqWzyd8QJZ8Y
-   w==;
-X-CSE-ConnectionGUID: EP717krvS5KDISe0hRHsaQ==
-X-CSE-MsgGUID: /VVJteByQe+QHpxZ4qUu3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="43266239"
+  t=1731929150; x=1763465150;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=S7ZAQ9BExb5yaWxkcmH/wmhoNXDc6Rx6Cj3RdeyR3vA=;
+  b=LuFYA+zG/E+S6THK7a2Lzi7A6PHmJkBLL3tZ7oa2sINva5YOKSiO8Z9G
+   FwzAEc/KQrp0/Ot8dcMv1szQtL9QoTOvj6hrJSDQhzN89kUS/qTNHi2gS
+   LaKhzmQKD0JdG2CK+kQPUDiyOXshA9deMqwxU7Sh3IdoU0jChpdjKNc+I
+   y8TXq1CVt61oWONFihaRloT/n/GX4a7XZDxgQGrc1wcYOg+dUVx2Kb3Qk
+   eSvkHArVHMCEbGFv+6M3Cqi7ZwDrjB1iiVJud4QTywKsO4kvOemDgIcvp
+   6ZA2Xut72Mw7aLHjgEQWP4SBL6ZsP8oXNVqh5CSSNR11MUqvUeOujntCa
+   A==;
+X-CSE-ConnectionGUID: HwHQaOApSLSXeU3e/uWTOg==
+X-CSE-MsgGUID: pMLDCCsYSt6PkqiUhpTDUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="49419155"
 X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="43266239"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 03:15:56 -0800
-X-CSE-ConnectionGUID: /+qPDHxcR5yRBRlU1+3SiQ==
-X-CSE-MsgGUID: ROv2onekSe+3TEd/iFYa0Q==
+   d="scan'208";a="49419155"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 03:25:49 -0800
+X-CSE-ConnectionGUID: GfszG/40S1SeiqVaR4OW5w==
+X-CSE-MsgGUID: lCHPkLZpSvi80Zz9nw+wgA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="120048775"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Nov 2024 03:15:55 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 18 Nov 2024 03:15:55 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 18 Nov 2024 03:15:55 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.47) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 18 Nov 2024 03:15:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o2Qw3MFfRALVWKMwiTaLLSjF5B4FGF8uqQ7y1xDDoCrjgL1b4shFr6CU55axlH/vxl/s/2Uw9eURP9ld0nkPxf5xX0IihcAjRc1l3mg7riUFojCO/vO2z5ANcBZ0JNNgLmERQ2tIhzAcoqeRZNezMYACiI68qBOuwDl3896zg3nGgLK8+UmCr8PUBnWcuA6pzbqfcPgWJ/GC99Z54giBj2Eb1suUMJHbSSxgpNkcgtnQmIyt5BFpCkE1ERq9ud8qdP4J4BxSzWFfsXYZdK50xrijXxrOffIqG5duq2258abPX8ig0J5VJchE3dwjSP4D5LVQkmzkQHb7/M9/vzrAZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4hFoQ/fCujjkSKNDLgE9JiJS3+4mPGQv8fF+zFTQaFs=;
- b=vTwdtTlWdqcqcHxrQSj4c/FNaGiiL4yOiCOOAN+pgtoarJlPKookbgNl1JKfT7ZHxf0HfxYKOkGktRcLR2x25LjZYERhbaE7e4dV94PKWjRZCB5uu+vYyiXPfxwpbChc0PyGAgoK0fsHlgakfiPkAriuePIvPkun+8vymUnTjKGSQRBh+z3wYozqssuZu4DC5LrTW9oOJsoIDs4H/fBCiMsm5HJS6yiXShIwNCW83Q9PN1pA5DnWAY9OyJ7iLBWaAjAAsWhLJ+ERrXY2t6mGtyYB84rWcUmelTYWWv4x9YQtIpgsRmTRw67o6dVbtrO2QTNaVI6334dA9qw+9wfpqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8665.namprd11.prod.outlook.com (2603:10b6:8:1b8::6) by
- LV2PR11MB6071.namprd11.prod.outlook.com (2603:10b6:408:178::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.19; Mon, 18 Nov
- 2024 11:15:53 +0000
-Received: from DS0PR11MB8665.namprd11.prod.outlook.com
- ([fe80::8e7e:4f8:f7e4:3955]) by DS0PR11MB8665.namprd11.prod.outlook.com
- ([fe80::8e7e:4f8:f7e4:3955%7]) with mapi id 15.20.8158.019; Mon, 18 Nov 2024
- 11:15:53 +0000
-Date: Mon, 18 Nov 2024 12:15:40 +0100
-From: Michal Kubiak <michal.kubiak@intel.com>
-To: Justin Lai <justinlai0215@realtek.com>
-CC: <kuba@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <horms@kernel.org>, <pkshih@realtek.com>,
-	<larry.chiu@realtek.com>
-Subject: Re: [PATCH net v3 4/4] rtase: Add defines for hardware version id
-Message-ID: <Zzsh3AjTAnQoKKTl@localhost.localdomain>
-References: <20241118040828.454861-1-justinlai0215@realtek.com>
- <20241118040828.454861-5-justinlai0215@realtek.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241118040828.454861-5-justinlai0215@realtek.com>
-X-ClientProxiedBy: DUZPR01CA0009.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c3::16) To DS0PR11MB8665.namprd11.prod.outlook.com
- (2603:10b6:8:1b8::6)
+   d="scan'208";a="94016517"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa004.fm.intel.com with ESMTP; 18 Nov 2024 03:25:46 -0800
+Received: from baltimore.igk.intel.com (baltimore.igk.intel.com [10.102.21.1])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id EC67728197;
+	Mon, 18 Nov 2024 11:25:43 +0000 (GMT)
+From: Pawel Chmielewski <pawel.chmielewski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: pmenzel@molgen.mpg.de,
+	wojciech.drewek@intel.com,
+	marcin.szycik@intel.com,
+	netdev@vger.kernel.org,
+	rafal.romanowski@intel.com,
+	konrad.knitter@intel.com,
+	horms@kernel.org,
+	David.Laight@ACULAB.COM,
+	nex.sw.ncis.nat.hpm.dev@intel.com,
+	pio.raczynski@gmail.com,
+	sridhar.samudrala@intel.com,
+	jacob.e.keller@intel.com,
+	jiri@resnulli.us,
+	przemyslaw.kitszel@intel.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Pawel Chmielewski <pawel.chmielewski@intel.com>
+Subject: [PATCH 4/8] ice, irdma: move interrupts code to irdma
+Date: Mon, 18 Nov 2024 11:16:30 +0100
+Message-Id: <20241118101630.2936711-1-pawel.chmielewski@intel.com>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20241114122009.97416-5-michal.swiatkowski@linux.intel.com>
+References: <20241114122009.97416-5-michal.swiatkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8665:EE_|LV2PR11MB6071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70b7ec4e-3292-45bb-7a05-08dd07c25d73
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?smGdIKcii/ys+DXxc9iLI19DewaTv7+Yntjug4HQcGDyJSkfaXd5fVe2HDdQ?=
- =?us-ascii?Q?ve3UBzSlJypuS+UWMb+cIioepGoLXFk/8G3R/YIc6nLXMFaolbinzpgeiEDo?=
- =?us-ascii?Q?wKM4afjTpZrTUGioVzJHIyOOxUqqU5amkkr/btBePp/ru8i4D5yH0OS0dqic?=
- =?us-ascii?Q?bRIsxXHG+Hgo3qx8m0p8+PTeLyrb56dIogsOrNbcDSL8+b+RdnLeAm4cV+vb?=
- =?us-ascii?Q?H0WW+anJHFPM0I0zcR9F5+rSGXfuUCrUsDm3a1+P5C+t/wubEumJCxt5nSdG?=
- =?us-ascii?Q?ZLEW5W1oC6R8Z4i7BODCxmPHzifO982i1kMApCO73wmIaQ/6f1u/TmJK4tKW?=
- =?us-ascii?Q?LP7kpbHMu+hdvzynx7mfNxFYGQ/y0thoFn57XO1yPFamwB69hb3DMdRQHOtc?=
- =?us-ascii?Q?GezRpZUVyUEW2r4tj0YL/RJJFUUFN4IHduF1J6SAQnOEl+eZVvwFn2T8oysC?=
- =?us-ascii?Q?kEEu/osJrbeELSuxSRSOnK84tYocLMBbtZ6s+cS9HgSd6oTS/DAmN8ruUp2f?=
- =?us-ascii?Q?SffI6AR6vxy9TIZ3vEFgV2ucsM7J9mPOXFAD5w/eAnEehQVIuIIB4nygSMIH?=
- =?us-ascii?Q?mae4SrWEz6EYl1jSIZVxkxKo3MXfW3C0npaz01qb07xu81UtJJ1wZAp1CeWa?=
- =?us-ascii?Q?K4uwsoF9/9mraStdhOb6D0tCkXPZQshN1lbL4RoAk7pd9Rlff8yBoy/zPipL?=
- =?us-ascii?Q?ojs7l+12vv0TCVBT0GAYrkaqIWfQ/7rGGxY3BfB7pZtyGIm4c6hpna2b8P3P?=
- =?us-ascii?Q?pbTpzUR4iDskVYJ2n1Ixb2NcfHfFgV4Wf+FlnVbxLcr+eHjOHft7HjXoc2ow?=
- =?us-ascii?Q?bOdFjeifiKL3nJEZPv/s0JgebqtMf+uxjGGOCbPY24axDrH2ls0DPvr0Z7rD?=
- =?us-ascii?Q?ZPP6Xv6AH3rb7nBXSky+Vf+RIfDBIvvXrcqRPOw78EvGgMTRhBz/6f57tOkz?=
- =?us-ascii?Q?la5mTvVKgCmlIRLIH1A2EtlZwmuTQWTPzzqRQsAfbgV+Aq0AcsIKXRih46x4?=
- =?us-ascii?Q?joxySkwrsgvTwnfjsNUBV1jKh9QB8t1Lx+7U7A6zz3JygcRsBx8QvynO+AZo?=
- =?us-ascii?Q?ZHsyWSkm1PLvMoeqRSKHgfmNwWbP3w8PoStbyd/PJ7HXdOp+nWq7PwCIsZ1+?=
- =?us-ascii?Q?E1SAg6r7U8B5JqHBIVFSHJ5FWkepob2IQuFrvEX01of3uN6XR/+UDr1lJCiW?=
- =?us-ascii?Q?NJhamuZsaMjYpmdTNLevs2QggCRrmDD88ti25vRmYs1aHmdtHTqTUsKe0uGh?=
- =?us-ascii?Q?7RpypkSorQZQlqohXH5DYgLTF1kkUqUrCnRzTCz7EAaCdjP6g4tc2Sopm8Vs?=
- =?us-ascii?Q?wR4WJOapVCBWlqP+GygIX3Ri?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8665.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W4kqjUSJCPapGzuwOaronO+y8TJRZ6oqukWDm8u65/qZTJzj7pz0p4gYhSQT?=
- =?us-ascii?Q?J//VPK+7TSswKKwUQ9+rHOBL74x2F7JF2Ws0g4RJxxOtEnqSKBf+t2utwRas?=
- =?us-ascii?Q?vavQhxqod/SlDQCizmLp9CyegIizaJmiUwYr10iPGJDe8UUc1J/RUMS4jl2L?=
- =?us-ascii?Q?uns+3dBTSXG06cpCYgYNqtpWSADHyejU8hPOfr8wrCCe2N6cOnvCKbxgRK/m?=
- =?us-ascii?Q?G/rzCmCRskw9Pu2Kf4LQX2/NFW5uuPCSluujsoBiA2kLj6U5pjdNmHq8MyBb?=
- =?us-ascii?Q?Er4F2TL7+dIaY2oQE02YF+xz+5YGIxCvJP6Kg63yVbszibuRUmmqdF3Xb97U?=
- =?us-ascii?Q?BP2ldvi40+u+ERcVMdm458RZqFzQgD/H9ChIdgsBme15jQ/zq8hvz6i0KWu9?=
- =?us-ascii?Q?PQdz+6nDjLMzgu700dCknrikEcFU04WgCMNRxbAYxCvNzQhJ3sBNGakCLgbp?=
- =?us-ascii?Q?LxeLoBmNuPv5+aNfsZIOxGnHXUrx2CTXXpDZdjVvXt9V4TcTqJ4pe5i4dSOF?=
- =?us-ascii?Q?l7kTtg48VVj2z7O/rX+PnkkGNyp2ch+1gnTidQ3UfJsP3Xo4Qpzp8foIxiPX?=
- =?us-ascii?Q?GFKzw2TZX15L30vxOzMkgFxqbBKzMORf7j/tcR5uTDoV4AKsBoED8ENSsXzN?=
- =?us-ascii?Q?ukTDtWW1gfBjDExgFdcu15ACA4abmV4J50SsPITv6N4AbuQRDNr09HfMgZz5?=
- =?us-ascii?Q?20J6lbTDKPqQZk2lMCF1MqTwjWwpSD5vnN0uLSyZljt3J8ilEYCnFyQZMdiz?=
- =?us-ascii?Q?6QPuHeuU6TojtwzByEb4BNKbR40+8nv4EUryjnIQu9kq34MMohvwz47NFYGe?=
- =?us-ascii?Q?TRO+CO1kC5xhukn3FX8NEI80iY0UsZHCEyhnyhJ9bPkfjlTLoM2DRKyGM8kr?=
- =?us-ascii?Q?EcdOw3h48cZsftUsur1Mv1yE5dVe+mEaTQzhu581+ZklbpdQDnvjLYDpV6Sw?=
- =?us-ascii?Q?WeWcqILDj6Qp940BFVb7nOWbgoie9DHyVZYnCRb6rH94SnyjmImI1n0l2w1o?=
- =?us-ascii?Q?OiKBwJLhvqT6ipKPrfk+SfBSM66atnHvalMjE1Fdm5PvTaMo1OvrKFctNANm?=
- =?us-ascii?Q?91W9kmzCz7eXIM8ailjmgMlUsUn3YwWjAkoqQpCplQx6HHWk67uiYLoYeLdu?=
- =?us-ascii?Q?rUEIvlTw6Vr5AyXJvng40w4jUlfe8BgHF4n7A6gTOoZVLYL/u2isBJ8LwYZT?=
- =?us-ascii?Q?JOHrnLeyFpCdUUUuuomvR9Y1bZSlh05QZpi2Pb/QffGSMhX75Y+anL3i9v2V?=
- =?us-ascii?Q?yYemXIt1ePL1l/rm4Wkrg5hQCB7Isy/qd2ZxF9t5Ht35K3TyUBBEV8Xbj1e1?=
- =?us-ascii?Q?Zt3At13KB2v+0y38zaY8neG8z+4zx0jlZRMZUOzH0HvImTIzC79YdN3aMdQ0?=
- =?us-ascii?Q?V3O94+j+BX3KRf7A2wKFukbYQE0MDSgif3u6+3pMlRZDsg6v31r98xGNDlFo?=
- =?us-ascii?Q?cxdJVPItQpsHZSiciJ3EXEiCjyKrS5NqgAxxyL01SUhI+DiP4KmEfDUSdUpn?=
- =?us-ascii?Q?Wax+cQI7aVvETTRSlX4LowFM2fwi2NfCRjSQ8GI2ny3pKZkJV9MVHmVbqFnj?=
- =?us-ascii?Q?vtQrek/2+mfem5F4Tig4/6mE8fomceDjPHHVW+Ci9zLas1pQYi38Pd7NNYiV?=
- =?us-ascii?Q?Aw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70b7ec4e-3292-45bb-7a05-08dd07c25d73
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8665.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2024 11:15:53.1095
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IVVU5rkxP1LSUNtQxoA9aEAIvBM2Q9GZC13WMX7WolgJhGLfGHwLCW9tSXUao+OiwCI57mRoCjnEhtY3vvhzhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6071
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 18, 2024 at 12:08:28PM +0800, Justin Lai wrote:
-> Add defines for hardware version id.
-> 
-> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-> ---
->  drivers/net/ethernet/realtek/rtase/rtase.h      |  5 ++++-
->  drivers/net/ethernet/realtek/rtase/rtase_main.c | 12 ++++++------
->  2 files changed, 10 insertions(+), 7 deletions(-)
-> 
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-The patch is addressed to the "net" tree, but "Fixes" tag is missing.
-Also, the patch does not look like a bugfix it's rather an improvement
-of coding style with no functional changes. That's why I doubt it should go
-to the "net" tree.
+Move responsibility of MSI-X requesting for RDMA feature from ice driver
+to irdma driver. It is done to allow simple fallback when there is not
+enough MSI-X available.
 
-Thanks,
-Michal
+Change amount of MSI-X used for control from 4 to 1, as it isn't needed
+to have more than one MSI-X for this purpose.
+
+Reduce the maximum number of interrupts requested by irdma to 64.
+This improves the overall utilization of interrupts by the base driver
+for systems with a large number of cores.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Pawel Chmielewski <pawel.chmielewski@intel.com>
+---
+Proposed change for a v8 of original patch:
+ - Add a limit of 64 of MSI-X for RDMA, as suggested in [1]
+
+[1]: https://lore.kernel.org/netdev/5eca295e-1675-4779-b0d6-ec8a7550516f@intel.com/
+---
+ drivers/infiniband/hw/irdma/hw.c         |  2 -
+ drivers/infiniband/hw/irdma/main.c       | 50 +++++++++++++++++-
+ drivers/infiniband/hw/irdma/main.h       |  4 ++
+ drivers/net/ethernet/intel/ice/ice.h     |  1 -
+ drivers/net/ethernet/intel/ice/ice_idc.c | 64 ++++++------------------
+ drivers/net/ethernet/intel/ice/ice_irq.c |  3 +-
+ include/linux/net/intel/iidc.h           |  2 +
+ 7 files changed, 70 insertions(+), 56 deletions(-)
+
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index ad50b77282f8..69ce1862eabe 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -498,8 +498,6 @@ static int irdma_save_msix_info(struct irdma_pci_f *rf)
+ 	iw_qvlist->num_vectors = rf->msix_count;
+ 	if (rf->msix_count <= num_online_cpus())
+ 		rf->msix_shared = true;
+-	else if (rf->msix_count > num_online_cpus() + 1)
+-		rf->msix_count = num_online_cpus() + 1;
+ 
+ 	pmsix = rf->msix_entries;
+ 	for (i = 0, ceq_idx = 0; i < rf->msix_count; i++, iw_qvinfo++) {
+diff --git a/drivers/infiniband/hw/irdma/main.c b/drivers/infiniband/hw/irdma/main.c
+index 3f13200ff71b..f538f4923825 100644
+--- a/drivers/infiniband/hw/irdma/main.c
++++ b/drivers/infiniband/hw/irdma/main.c
+@@ -206,6 +206,47 @@ static void irdma_lan_unregister_qset(struct irdma_sc_vsi *vsi,
+ 		ibdev_dbg(&iwdev->ibdev, "WS: LAN free_res for rdma qset failed.\n");
+ }
+ 
++static int irdma_init_interrupts(struct irdma_pci_f *rf, struct ice_pf *pf)
++{
++	int i;
++
++	rf->msix_count = num_online_cpus() + IRDMA_NUM_AEQ_MSIX;
++
++	if (rf->msix_count > IRDMA_MAX_MSIX)
++		rf->msix_count = IRDMA_MAX_MSIX;
++
++	rf->msix_entries = kcalloc(rf->msix_count, sizeof(*rf->msix_entries),
++				   GFP_KERNEL);
++	if (!rf->msix_entries)
++		return -ENOMEM;
++
++	for (i = 0; i < rf->msix_count; i++)
++		if (ice_alloc_rdma_qvector(pf, &rf->msix_entries[i]))
++			break;
++
++	if (i < IRDMA_MIN_MSIX) {
++		for (; i > 0; i--)
++			ice_free_rdma_qvector(pf, &rf->msix_entries[i]);
++
++		kfree(rf->msix_entries);
++		return -ENOMEM;
++	}
++
++	rf->msix_count = i;
++
++	return 0;
++}
++
++static void irdma_deinit_interrupts(struct irdma_pci_f *rf, struct ice_pf *pf)
++{
++	int i;
++
++	for (i = 0; i < rf->msix_count; i++)
++		ice_free_rdma_qvector(pf, &rf->msix_entries[i]);
++
++	kfree(rf->msix_entries);
++}
++
+ static void irdma_remove(struct auxiliary_device *aux_dev)
+ {
+ 	struct iidc_auxiliary_dev *iidc_adev = container_of(aux_dev,
+@@ -216,6 +257,7 @@ static void irdma_remove(struct auxiliary_device *aux_dev)
+ 
+ 	irdma_ib_unregister_device(iwdev);
+ 	ice_rdma_update_vsi_filter(pf, iwdev->vsi_num, false);
++	irdma_deinit_interrupts(iwdev->rf, pf);
+ 
+ 	pr_debug("INIT: Gen2 PF[%d] device remove success\n", PCI_FUNC(pf->pdev->devfn));
+ }
+@@ -230,9 +272,7 @@ static void irdma_fill_device_info(struct irdma_device *iwdev, struct ice_pf *pf
+ 	rf->gen_ops.unregister_qset = irdma_lan_unregister_qset;
+ 	rf->hw.hw_addr = pf->hw.hw_addr;
+ 	rf->pcidev = pf->pdev;
+-	rf->msix_count =  pf->num_rdma_msix;
+ 	rf->pf_id = pf->hw.pf_id;
+-	rf->msix_entries = &pf->msix_entries[pf->rdma_base_vector];
+ 	rf->default_vsi.vsi_idx = vsi->vsi_num;
+ 	rf->protocol_used = pf->rdma_mode & IIDC_RDMA_PROTOCOL_ROCEV2 ?
+ 			    IRDMA_ROCE_PROTOCOL_ONLY : IRDMA_IWARP_PROTOCOL_ONLY;
+@@ -281,6 +321,10 @@ static int irdma_probe(struct auxiliary_device *aux_dev, const struct auxiliary_
+ 	irdma_fill_device_info(iwdev, pf, vsi);
+ 	rf = iwdev->rf;
+ 
++	err = irdma_init_interrupts(rf, pf);
++	if (err)
++		goto err_init_interrupts;
++
+ 	err = irdma_ctrl_init_hw(rf);
+ 	if (err)
+ 		goto err_ctrl_init;
+@@ -311,6 +355,8 @@ static int irdma_probe(struct auxiliary_device *aux_dev, const struct auxiliary_
+ err_rt_init:
+ 	irdma_ctrl_deinit_hw(rf);
+ err_ctrl_init:
++	irdma_deinit_interrupts(rf, pf);
++err_init_interrupts:
+ 	kfree(iwdev->rf);
+ 	ib_dealloc_device(&iwdev->ibdev);
+ 
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index 9f0ed6e84471..53a20f2dd681 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -117,6 +117,10 @@ extern struct auxiliary_driver i40iw_auxiliary_drv;
+ 
+ #define IRDMA_IRQ_NAME_STR_LEN (64)
+ 
++#define IRDMA_NUM_AEQ_MSIX	1
++#define IRDMA_MIN_MSIX		2
++#define IRDMA_MAX_MSIX		64
++
+ enum init_completion_state {
+ 	INVALID_STATE = 0,
+ 	INITIAL_STATE,
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index bde04595b592..71525bf4918e 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -96,7 +96,6 @@
+ #define ICE_MIN_LAN_OICR_MSIX	1
+ #define ICE_MIN_MSIX		(ICE_MIN_LAN_TXRX_MSIX + ICE_MIN_LAN_OICR_MSIX)
+ #define ICE_FDIR_MSIX		2
+-#define ICE_RDMA_NUM_AEQ_MSIX	4
+ #define ICE_NO_VSI		0xffff
+ #define ICE_VSI_MAP_CONTIG	0
+ #define ICE_VSI_MAP_SCATTER	1
+diff --git a/drivers/net/ethernet/intel/ice/ice_idc.c b/drivers/net/ethernet/intel/ice/ice_idc.c
+index 145b27f2a4ce..bab3e81cad5d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_idc.c
++++ b/drivers/net/ethernet/intel/ice/ice_idc.c
+@@ -228,61 +228,34 @@ void ice_get_qos_params(struct ice_pf *pf, struct iidc_qos_params *qos)
+ }
+ EXPORT_SYMBOL_GPL(ice_get_qos_params);
+ 
+-/**
+- * ice_alloc_rdma_qvectors - Allocate vector resources for RDMA driver
+- * @pf: board private structure to initialize
+- */
+-static int ice_alloc_rdma_qvectors(struct ice_pf *pf)
++int ice_alloc_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry)
+ {
+-	if (ice_is_rdma_ena(pf)) {
+-		int i;
+-
+-		pf->msix_entries = kcalloc(pf->num_rdma_msix,
+-					   sizeof(*pf->msix_entries),
+-						  GFP_KERNEL);
+-		if (!pf->msix_entries)
+-			return -ENOMEM;
++	struct msi_map map = ice_alloc_irq(pf, true);
+ 
+-		/* RDMA is the only user of pf->msix_entries array */
+-		pf->rdma_base_vector = 0;
+-
+-		for (i = 0; i < pf->num_rdma_msix; i++) {
+-			struct msix_entry *entry = &pf->msix_entries[i];
+-			struct msi_map map;
++	if (map.index < 0)
++		return -ENOMEM;
+ 
+-			map = ice_alloc_irq(pf, false);
+-			if (map.index < 0)
+-				break;
++	entry->entry = map.index;
++	entry->vector = map.virq;
+ 
+-			entry->entry = map.index;
+-			entry->vector = map.virq;
+-		}
+-	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(ice_alloc_rdma_qvector);
+ 
+ /**
+  * ice_free_rdma_qvector - free vector resources reserved for RDMA driver
+  * @pf: board private structure to initialize
++ * @entry: MSI-X entry to be removed
+  */
+-static void ice_free_rdma_qvector(struct ice_pf *pf)
++void ice_free_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry)
+ {
+-	int i;
+-
+-	if (!pf->msix_entries)
+-		return;
+-
+-	for (i = 0; i < pf->num_rdma_msix; i++) {
+-		struct msi_map map;
++	struct msi_map map;
+ 
+-		map.index = pf->msix_entries[i].entry;
+-		map.virq = pf->msix_entries[i].vector;
+-		ice_free_irq(pf, map);
+-	}
+-
+-	kfree(pf->msix_entries);
+-	pf->msix_entries = NULL;
++	map.index = entry->entry;
++	map.virq = entry->vector;
++	ice_free_irq(pf, map);
+ }
++EXPORT_SYMBOL_GPL(ice_free_rdma_qvector);
+ 
+ /**
+  * ice_adev_release - function to be mapped to AUX dev's release op
+@@ -382,12 +355,6 @@ int ice_init_rdma(struct ice_pf *pf)
+ 		return -ENOMEM;
+ 	}
+ 
+-	/* Reserve vector resources */
+-	ret = ice_alloc_rdma_qvectors(pf);
+-	if (ret < 0) {
+-		dev_err(dev, "failed to reserve vectors for RDMA\n");
+-		goto err_reserve_rdma_qvector;
+-	}
+ 	pf->rdma_mode |= IIDC_RDMA_PROTOCOL_ROCEV2;
+ 	ret = ice_plug_aux_dev(pf);
+ 	if (ret)
+@@ -395,8 +362,6 @@ int ice_init_rdma(struct ice_pf *pf)
+ 	return 0;
+ 
+ err_plug_aux_dev:
+-	ice_free_rdma_qvector(pf);
+-err_reserve_rdma_qvector:
+ 	pf->adev = NULL;
+ 	xa_erase(&ice_aux_id, pf->aux_idx);
+ 	return ret;
+@@ -412,6 +377,5 @@ void ice_deinit_rdma(struct ice_pf *pf)
+ 		return;
+ 
+ 	ice_unplug_aux_dev(pf);
+-	ice_free_rdma_qvector(pf);
+ 	xa_erase(&ice_aux_id, pf->aux_idx);
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index 1a7d446ab5f1..80c9ee2e64c1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -84,11 +84,12 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+ 	return entry;
+ }
+ 
++#define ICE_RDMA_AEQ_MSIX 1
+ static int ice_get_default_msix_amount(struct ice_pf *pf)
+ {
+ 	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
+ 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
+-	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_NUM_AEQ_MSIX : 0);
++	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
+ }
+ 
+ /**
+diff --git a/include/linux/net/intel/iidc.h b/include/linux/net/intel/iidc.h
+index 1c1332e4df26..13274c3def66 100644
+--- a/include/linux/net/intel/iidc.h
++++ b/include/linux/net/intel/iidc.h
+@@ -78,6 +78,8 @@ int ice_del_rdma_qset(struct ice_pf *pf, struct iidc_rdma_qset_params *qset);
+ int ice_rdma_request_reset(struct ice_pf *pf, enum iidc_reset_type reset_type);
+ int ice_rdma_update_vsi_filter(struct ice_pf *pf, u16 vsi_id, bool enable);
+ void ice_get_qos_params(struct ice_pf *pf, struct iidc_qos_params *qos);
++int ice_alloc_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry);
++void ice_free_rdma_qvector(struct ice_pf *pf, struct msix_entry *entry);
+ 
+ /* Structure representing auxiliary driver tailored information about the core
+  * PCI dev, each auxiliary driver using the IIDC interface will have an
+-- 
+2.37.3
+
