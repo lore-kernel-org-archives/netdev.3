@@ -1,130 +1,77 @@
-Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832131991C6;
-	Mon, 18 Nov 2024 14:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CE17483;
+	Mon, 18 Nov 2024 14:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731939261; cv=none; b=Is15TfuYAcvOBdBnE0wraYDxjTVJ2lcqJ9XmwVIl8RKKEmOqe8w4L+OdmFPULBU/NeI/GhmmXFRGSUYc7l18tsNz1AfO4WvqrmE5y+9PeKztErk4PfTLqBN9/RsLYYnxwXb1CcGci7Yiv9Lj3tekrYS0bOVzM+OXfHmFhT4oRLI=
+	t=1731939337; cv=none; b=aErUc2bR+VTco9XX1Z6bi2iyvb8I0Styd8nu9SejnMu65nV3SnOCS+kAouxM4Q/0yCoTc5yWqD4KRrqQlZ5DqMMnGZO2sV5fvv6SG1WXwhYTbqP6aDslUoAUOwZA6TicCrCRr2FkajIFWzXr2TqQ5Re6L+ApLeX00aWRTt2m0sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731939261; c=relaxed/simple;
-	bh=xF4ztao5+Y+7uUJATeyzm2Km8pJHEPLfPs6TcMj2k0k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DfQ+63TlxKY4reFRsYCI+Bo8SisweEhWMo64kLJz/+ILX21vLqqmCf3bhZJJ0kmyt28TLAy5k3cZao79wlR0neX0aEicaaD+6ph335GzKA4xVjoabUpgVkPVnuwElMipSkRFZWP2TQHAa63t5lIawsbOBIcpR6sF+mgmWfzc7OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=FUltMNtW; arc=none smtp.client-ip=3.9.82.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
+	s=arc-20240116; t=1731939337; c=relaxed/simple;
+	bh=pLw8yLEbJuvUtq9sxywo7ARuhOc5cWXO/kJtX8g68XQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EoDCj8VToVId0kIUNZnxN8dYqmF1JpN/hw8hh6Em40TxMjyrjGfmEaFeZXKrjz3rbC3eAULQgXKsBxJzCC+PPlYp9pIs1EN1V2Z4cSmHqW50EZmeDds6kGn1bCI0bKHH6vnjR4vdO0ObXXph7ngbw4N/eMjKLHNgzJVvuiQ+fQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ThzumbFM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="FUltMNtW"
-Received: from katalix.com (unknown [IPv6:2a02:8010:6359:1:c02c:fe13:9a85:43d])
-	(Authenticated sender: james)
-	by mail.katalix.com (Postfix) with ESMTPSA id 018CE7D9B6;
-	Mon, 18 Nov 2024 14:04:11 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1731938652; bh=xF4ztao5+Y+7uUJATeyzm2Km8pJHEPLfPs6TcMj2k0k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:From;
-	z=From:=20James=20Chapman=20<jchapman@katalix.com>|To:=20netdev@vge
-	 r.kernel.org|Cc:=20davem@davemloft.net,=0D=0A=09edumazet@google.co
-	 m,=0D=0A=09guohui.study@gmail.com,=0D=0A=09horms@kernel.org,=0D=0A
-	 =09kuba@kernel.org,=0D=0A=09linux-kernel@vger.kernel.org,=0D=0A=09
-	 pabeni@redhat.com,=0D=0A=09syzkaller-bugs@googlegroups.com,=0D=0A=
-	 09syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com,=0D=0A=09t
-	 parkin@katalix.com|Subject:=20[PATCH=20net]=20net/l2tp:=20fix=20wa
-	 rning=20in=20l2tp_exit_net=20found=20by=20syzbot|Date:=20Mon,=2018
-	 =20Nov=202024=2014:04:11=20+0000|Message-Id:=20<20241118140411.158
-	 2555-1-jchapman@katalix.com>|MIME-Version:=201.0;
-	b=FUltMNtWCgl+Xdjzj5hJsQi4jSz1+Du1YXN+P7Ie6whANgQOmUpoJHCgoXfYhABQ3
-	 TjFYE7ZhEEgvB4MNhE3NFW3FZ+1uM8u6ZucOHa7h2q3EA9ARdTnRpOncnA7uGRtRzV
-	 Ax22wNzjuUbDIFl0s66Whtu8kS5FfQ4P5veTcXg+tyAIDuY3p5qMHq8PduKm/RoZwY
-	 wbCiunrq2d9ZhXTGCwFJeGXa52E9E+oK/mOZS+d9oCV8wMDSbudN4wVaaTFy7LuHhQ
-	 /U/HAeNaPQtni3ESCoRGw7Ey/z+VqADGzdRLpwJqdQrZhD/Rn4FMbN34LdkF8gxKDj
-	 5YAdKIipz3ypA==
-From: James Chapman <jchapman@katalix.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	guohui.study@gmail.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	pabeni@redhat.com,
-	syzkaller-bugs@googlegroups.com,
-	syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com,
-	tparkin@katalix.com
-Subject: [PATCH net] net/l2tp: fix warning in l2tp_exit_net found by syzbot
-Date: Mon, 18 Nov 2024 14:04:11 +0000
-Message-Id: <20241118140411.1582555-1-jchapman@katalix.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ThzumbFM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=osWqrHi1PTnMhMN1ifWmZoFzhh+9H9ujv9/LFvTGxmM=; b=ThzumbFMkF9hLn0QG1QYfcRDGP
+	//KKlsqblN9hrJCe7/aZIpkKJlxEtuYEjNlBX67Cw3Jgz/pQKy2+vWUhiGLm52PH2ObST/MBVf7VZ
+	Zeg+X8o7hW0YRIm9v7PZLsnPrNoTVoEU0O4WMjIgxIcN+ufS8UHeH630mQDJNP1AK6pU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tD2XC-00Dg4Q-2X; Mon, 18 Nov 2024 15:15:22 +0100
+Date: Mon, 18 Nov 2024 15:15:22 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: manas18244@iiitd.ac.in
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: qt2025: simplify Result<()> in probe
+ return
+Message-ID: <2f3b1fc2-70b1-4ffe-b41c-09b52ce21277@lunn.ch>
+References: <20241118-simplify-result-qt2025-v1-1-f2d9cef17fca@iiitd.ac.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241118-simplify-result-qt2025-v1-1-f2d9cef17fca@iiitd.ac.in>
 
-In l2tp's net exit handler, we check that an IDR is empty before
-destroying it:
+On Mon, Nov 18, 2024 at 06:39:34PM +0530, Manas via B4 Relay wrote:
+> From: Manas <manas18244@iiitd.ac.in>
+> 
+> probe returns a `Result<()>` type, which can be simplified as `Result`,
+> due to default type parameters being unit `()` and `Error` types. This
+> maintains a consistent usage of `Result` throughout codebase.
+> 
+> Signed-off-by: Manas <manas18244@iiitd.ac.in>
 
-	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
-	idr_destroy(&pn->l2tp_tunnel_idr);
+Miguel has already pointed out, this is probably not sufficient for a
+signed-off-by: You need a real name here, in order to keep the lawyers happy.
 
-By forcing memory allocation failures in idr_alloc_32, syzbot is able
-to provoke a condition where idr_is_empty returns false despite there
-being no items in the IDR. This turns out to be because the radix tree
-of the IDR contains only internal radix-tree nodes and it is this that
-causes idr_is_empty to return false. The internal nodes are cleaned by
-idr_destroy.
+Also, each subsystem has its own way of doing things. Please take a
+read of:
 
-Use idr_for_each to check that the IDR is empty instead of
-idr_is_empty to avoid the problem.
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-Reported-by: syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332fe1e67018625f63c9
-Fixes: 73d33bd063c4 ("l2tp: avoid using drain_workqueue in l2tp_pre_exit_net")
-Signed-off-by: James Chapman <jchapman@katalix.com>
+    Andrew
+
 ---
- net/l2tp/l2tp_core.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 3eec23ac5ab1..369a2f2e459c 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1870,15 +1870,31 @@ static __net_exit void l2tp_pre_exit_net(struct net *net)
- 	}
- }
- 
-+static int l2tp_idr_item_unexpected(int id, void *p, void *data)
-+{
-+	const char *idr_name = data;
-+
-+	pr_err("l2tp: %s IDR not empty at net %d exit\n", idr_name, id);
-+	WARN_ON_ONCE(1);
-+	return 1;
-+}
-+
- static __net_exit void l2tp_exit_net(struct net *net)
- {
- 	struct l2tp_net *pn = l2tp_pernet(net);
- 
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v2_session_idr));
-+	/* Our per-net IDRs should be empty. Check that is so, to
-+	 * help catch cleanup races or refcnt leaks.
-+	 */
-+	idr_for_each(&pn->l2tp_v2_session_idr, l2tp_idr_item_unexpected,
-+		     "v2_session");
-+	idr_for_each(&pn->l2tp_v3_session_idr, l2tp_idr_item_unexpected,
-+		     "v3_session");
-+	idr_for_each(&pn->l2tp_tunnel_idr, l2tp_idr_item_unexpected,
-+		     "tunnel");
-+
- 	idr_destroy(&pn->l2tp_v2_session_idr);
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v3_session_idr));
- 	idr_destroy(&pn->l2tp_v3_session_idr);
--	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
- 	idr_destroy(&pn->l2tp_tunnel_idr);
- }
- 
--- 
-2.34.1
-
+pw-bot: cr
