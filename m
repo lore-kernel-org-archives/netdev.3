@@ -1,51 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4ED19E967;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C1D19F124;
 	Mon, 18 Nov 2024 13:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731934886; cv=none; b=S2BOGqKk49RaGBGIA/KiESNcQxqeum8zzmrLZtX6UL3v46Cprq2KXiRdbjp9qpFZ/+718r5zuvRZwdV8zG7FUjhulXJEhLQ0QNOEYSCEorpF7bOTWGB9qVVourN/J53Cj4nw1Crfv0f0IXlwfP+uL4jonI8D5OwVlG7B0cQD24A=
+	t=1731934886; cv=none; b=XNZLbsHCt8Og4xnAxiZuW0aMhu0j9v+YWBm42WqAX9CXUZ0EiZAOUikToXoaupJqFwWcXjs1yg5m1RgWJZBbDt0KMBCKDCp7gyR/DH4/yfU/wQ3JeK9Z/p3BUb3sygvyB/VMplZI7SnvDWD9gqqnvbHxVdOoVp785zAAxBkDDqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731934886; c=relaxed/simple;
-	bh=0VdMPso6LQlp9RroMsEOZb8JIdUw8DDtqtEgS7qnY4o=;
+	bh=7GTsdJGtOglgq6pJjKATbODyOcoDANT26+ktdOOzcCk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=IWHlYYhYzOjTiRPe+nphmE12GQ8xDEnaEpyjPVzP0U3EPrRvaw7DBt+g7IA1PPyuXejPEsnhZ3+mtVAeXhHlx5ZMQHzK+xUn4IPL/H+zqYTtzQRHKVKbCDEKN4gSe2bD5IB08LQvAPMYgSpwKQYNlaNTRSDE5LawnuQc9LDSo0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=jcSlPumv; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:To:CC; b=jMtlnQm263oVC0Szqy3IkcExuNs3TOcCYkWn5+8tXPvCkmiWYQegnaWyVQF0AEQSFUANartb65jqrKMPqrInJZGmpnsJ2Q50mrq8iRMnAvSbc7A/5IYLJD7YevcRTza3BgLqWZhPbhWfCl4f5u+PQzLlxSkaDZ8Oz3JgSMSvpgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JeM8j8gS; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="jcSlPumv"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JeM8j8gS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
   t=1731934884; x=1763470884;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=0VdMPso6LQlp9RroMsEOZb8JIdUw8DDtqtEgS7qnY4o=;
-  b=jcSlPumvFjPRBTAmKhfjGqdO0ffHjD1ZWnx6OGrG+MqiPo7K7QlsjLR9
-   obmQ3u3n7jrLjCRSb0pV1Cjs9WGzSyRZFmPyNCy18ZcnVCoqMfGhpPrKV
-   fzEPZBVqLFicxq0Sl2Cs53CnZ5qsgA17LJpWOfnsiw3RMm98MMZ+3Uy8D
-   QCO6FzRLquSTaTXHa6M6Glv01fH27Hc1iUKC2eqrbwxIW0ih80217DIFy
-   ueTvG773Hiasiy+tlE7i+WH5cwRcY9gm4HsUObzB4i3kSWf+HQG66Auga
-   kQOGIHC0er78nXgGFfLMGjp60RdR0HbxEV+in+RYouvfWKvYe/Pg/QE0R
-   g==;
-X-CSE-ConnectionGUID: pV1s/Z6yQPOamzioY1xjCw==
-X-CSE-MsgGUID: xMDNByP1QMa67yLDMwN2Ww==
+  bh=7GTsdJGtOglgq6pJjKATbODyOcoDANT26+ktdOOzcCk=;
+  b=JeM8j8gSFz3JbOHWZRBoOrRms8jSU1uSa3c7DCNTNcc9yYNImEota3Kh
+   63wKGnKKDr7J5SlrVX67x8ELlW0Ggsvec/moHPXEk9fUfg+2c76sNUCql
+   d/Vd6SckhvnBuVqpMHYiklTLAoKFfnICaX5HdjLVKyXZhgbJPwD4iWRSw
+   P2n1CPU0/2ecPC7TYo37Zpdwy2DH63OZG8ohC9cMnUDmZLGpPheSQyeRP
+   0l96g6hrY+hAW3DE+S5/1f2yyrIiQyduJeYMBoR3WIY1cRES+2AM7/m7V
+   d8Sad2yBuEqBbPVrHD5m9td8i9dzvUa4U2YRFpsb3coa/zYP6CmdwVQHr
+   Q==;
+X-CSE-ConnectionGUID: DbRaG4tGSXe42+jZNuS/Pw==
+X-CSE-MsgGUID: 5RzFK5rwQPmbu9sVlMLNWA==
 X-IronPort-AV: E=Sophos;i="6.12,164,1728975600"; 
-   d="scan'208";a="34953032"
+   d="scan'208";a="37994319"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Nov 2024 06:01:18 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Nov 2024 06:01:16 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 18 Nov 2024 06:01:15 -0700
+ 15.1.2507.35; Mon, 18 Nov 2024 06:01:02 -0700
 Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Mon, 18 Nov 2024 06:01:12 -0700
+ 15.1.2507.35 via Frontend Transport; Mon, 18 Nov 2024 06:00:59 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Mon, 18 Nov 2024 14:00:52 +0100
-Subject: [PATCH net-next v3 6/8] net: lan969x: add RGMII registers
+Date: Mon, 18 Nov 2024 14:00:48 +0100
+Subject: [PATCH net-next v3 2/8] net: sparx5: add function for RGMII port
+ check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20241118-sparx5-lan969x-switch-driver-4-v3-6-3cefee5e7e3a@microchip.com>
+Message-ID: <20241118-sparx5-lan969x-switch-driver-4-v3-2-3cefee5e7e3a@microchip.com>
 References: <20241118-sparx5-lan969x-switch-driver-4-v3-0-3cefee5e7e3a@microchip.com>
 In-Reply-To: <20241118-sparx5-lan969x-switch-driver-4-v3-0-3cefee5e7e3a@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -69,213 +70,90 @@ CC: <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
 X-Mailer: b4 0.14-dev
 
-Configuration of RGMII is done by configuring the GPIO and clock
-settings in the HSIOWRAP target, and configuring the RGMII port devices
-in the DEVRGMII target. Both targets contain registers replicated for
-the number of RGMII port devices, which is two.
-
-Add said targets and register macros required to configure RGMII.
+The lan969x device contains two RGMII interfaces, sitting at port 28 and
+29. Add function: is_port_rgmii() to the match data ops, that checks if
+a given port is an RGMII port or not. For Sparx5, this function always
+returns false.
 
 Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/lan969x/lan969x.c   |   3 +
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 145 +++++++++++++++++++++
- 2 files changed, 148 insertions(+)
+ drivers/net/ethernet/microchip/lan969x/lan969x.c    | 1 +
+ drivers/net/ethernet/microchip/lan969x/lan969x.h    | 5 +++++
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.h | 5 +++++
+ 5 files changed, 13 insertions(+)
 
 diff --git a/drivers/net/ethernet/microchip/lan969x/lan969x.c b/drivers/net/ethernet/microchip/lan969x/lan969x.c
-index a7e41058cb7c..4dce88e23a24 100644
+index ac37d0f74ee3..a7e41058cb7c 100644
 --- a/drivers/net/ethernet/microchip/lan969x/lan969x.c
 +++ b/drivers/net/ethernet/microchip/lan969x/lan969x.c
-@@ -90,9 +90,12 @@ static const struct sparx5_main_io_resource lan969x_main_iomap[] =  {
- 	{ TARGET_DEV2G5 + 27,         0x30d8000, 1 }, /* 0xe30d8000 */
- 	{ TARGET_DEV10G +  9,         0x30dc000, 1 }, /* 0xe30dc000 */
- 	{ TARGET_PCS10G_BR +  9,      0x30e0000, 1 }, /* 0xe30e0000 */
-+	{ TARGET_DEVRGMII,            0x30e4000, 1 }, /* 0xe30e4000 */
-+	{ TARGET_DEVRGMII +  1,       0x30e8000, 1 }, /* 0xe30e8000 */
- 	{ TARGET_DSM,                 0x30ec000, 1 }, /* 0xe30ec000 */
- 	{ TARGET_PORT_CONF,           0x30f0000, 1 }, /* 0xe30f0000 */
- 	{ TARGET_ASM,                 0x3200000, 1 }, /* 0xe3200000 */
-+	{ TARGET_HSIO_WRAP,           0x3408000, 1 }, /* 0xe3408000 */
- };
+@@ -329,6 +329,7 @@ static const struct sparx5_ops lan969x_ops = {
+ 	.is_port_5g              = &lan969x_port_is_5g,
+ 	.is_port_10g             = &lan969x_port_is_10g,
+ 	.is_port_25g             = &lan969x_port_is_25g,
++	.is_port_rgmii           = &lan969x_port_is_rgmii,
+ 	.get_port_dev_index      = &lan969x_port_dev_mapping,
+ 	.get_port_dev_bit        = &lan969x_get_dev_mode_bit,
+ 	.get_hsch_max_group_rate = &lan969x_get_hsch_max_group_rate,
+diff --git a/drivers/net/ethernet/microchip/lan969x/lan969x.h b/drivers/net/ethernet/microchip/lan969x/lan969x.h
+index 2489d0d32dfd..4b91c47d6d21 100644
+--- a/drivers/net/ethernet/microchip/lan969x/lan969x.h
++++ b/drivers/net/ethernet/microchip/lan969x/lan969x.h
+@@ -59,6 +59,11 @@ static inline bool lan969x_port_is_25g(int portno)
+ 	return false;
+ }
  
- static struct sparx5_sdlb_group lan969x_sdlb_groups[LAN969X_SDLB_GRP_CNT] = {
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-index 561344f19062..d9ef4ef137b8 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-@@ -37,6 +37,7 @@ enum sparx5_target {
- 	TARGET_FDMA = 117,
- 	TARGET_GCB = 118,
- 	TARGET_HSCH = 119,
-+	TARGET_HSIO_WRAP = 120,
- 	TARGET_LRN = 122,
- 	TARGET_PCEP = 129,
- 	TARGET_PCS10G_BR = 132,
-@@ -54,6 +55,7 @@ enum sparx5_target {
- 	TARGET_VCAP_SUPER = 326,
- 	TARGET_VOP = 327,
- 	TARGET_XQS = 331,
-+	TARGET_DEVRGMII = 392,
- 	NUM_TARGETS = 517
- };
++static inline bool lan969x_port_is_rgmii(int portno)
++{
++	return portno == 28 || portno == 29;
++}
++
+ /* lan969x_calendar.c */
+ int lan969x_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
+ 			      struct sparx5_calendar_data *data);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 2f1013f870fb..ad8c048179c7 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -1073,6 +1073,7 @@ static const struct sparx5_ops sparx5_ops = {
+ 	.is_port_5g              = &sparx5_port_is_5g,
+ 	.is_port_10g             = &sparx5_port_is_10g,
+ 	.is_port_25g             = &sparx5_port_is_25g,
++	.is_port_rgmii           = &sparx5_port_is_rgmii,
+ 	.get_port_dev_index      = &sparx5_port_dev_mapping,
+ 	.get_port_dev_bit        = &sparx5_port_dev_mapping,
+ 	.get_hsch_max_group_rate = &sparx5_get_hsch_max_group_rate,
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+index d5dd953b0a71..c58d7841638e 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+@@ -313,6 +313,7 @@ struct sparx5_ops {
+ 	bool (*is_port_5g)(int portno);
+ 	bool (*is_port_10g)(int portno);
+ 	bool (*is_port_25g)(int portno);
++	bool (*is_port_rgmii)(int portno);
+ 	u32  (*get_port_dev_index)(struct sparx5 *sparx5, int port);
+ 	u32  (*get_port_dev_bit)(struct sparx5 *sparx5, int port);
+ 	u32  (*get_hsch_max_group_rate)(int grp);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.h b/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
+index 9b9bcc6834bc..c8a37468a3d1 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.h
+@@ -40,6 +40,11 @@ static inline bool sparx5_port_is_25g(int portno)
+ 	return portno >= 56 && portno <= 63;
+ }
  
-@@ -5367,6 +5369,69 @@ extern const struct sparx5_regs *regs;
- #define HSCH_TAS_STATEMACHINE_CFG_REVISIT_DLY_GET(x)\
- 	FIELD_GET(HSCH_TAS_STATEMACHINE_CFG_REVISIT_DLY, x)
- 
-+/* LAN969X ONLY */
-+/* HSIOWRAP:XMII_CFG:XMII_CFG */
-+#define HSIO_WRAP_XMII_CFG(g)                                                  \
-+	__REG(TARGET_HSIO_WRAP, 0, 1, 116, g, 2, 20, 0, 0, 1, 4)
++static inline bool sparx5_port_is_rgmii(int portno)
++{
++	return false;
++}
 +
-+#define HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG         GENMASK(2, 1)
-+#define HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG, x)
-+#define HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG_GET(x)\
-+	FIELD_GET(HSIO_WRAP_XMII_CFG_GPIO_XMII_CFG, x)
-+
-+/* LAN969X ONLY */
-+/* HSIOWRAP:XMII_CFG:RGMII_CFG */
-+#define HSIO_WRAP_RGMII_CFG(g)                                                 \
-+	__REG(TARGET_HSIO_WRAP, 0, 1, 116, g, 2, 20, 4, 0, 1, 4)
-+
-+#define HSIO_WRAP_RGMII_CFG_TX_CLK_CFG           GENMASK(4, 2)
-+#define HSIO_WRAP_RGMII_CFG_TX_CLK_CFG_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_RGMII_CFG_TX_CLK_CFG, x)
-+#define HSIO_WRAP_RGMII_CFG_TX_CLK_CFG_GET(x)\
-+	FIELD_GET(HSIO_WRAP_RGMII_CFG_TX_CLK_CFG, x)
-+
-+#define HSIO_WRAP_RGMII_CFG_RGMII_TX_RST         BIT(1)
-+#define HSIO_WRAP_RGMII_CFG_RGMII_TX_RST_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_RGMII_CFG_RGMII_TX_RST, x)
-+#define HSIO_WRAP_RGMII_CFG_RGMII_TX_RST_GET(x)\
-+	FIELD_GET(HSIO_WRAP_RGMII_CFG_RGMII_TX_RST, x)
-+
-+#define HSIO_WRAP_RGMII_CFG_RGMII_RX_RST         BIT(0)
-+#define HSIO_WRAP_RGMII_CFG_RGMII_RX_RST_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_RGMII_CFG_RGMII_RX_RST, x)
-+#define HSIO_WRAP_RGMII_CFG_RGMII_RX_RST_GET(x)\
-+	FIELD_GET(HSIO_WRAP_RGMII_CFG_RGMII_RX_RST, x)
-+
-+/* LAN969X ONLY */
-+/* HSIOWRAP:XMII_CFG:DLL_CFG */
-+#define HSIO_WRAP_DLL_CFG(g, r)                                                \
-+	__REG(TARGET_HSIO_WRAP, 0, 1, 116, g, 2, 20, 12, r, 2, 4)
-+
-+#define HSIO_WRAP_DLL_CFG_DLL_ENA                BIT(19)
-+#define HSIO_WRAP_DLL_CFG_DLL_ENA_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_DLL_CFG_DLL_ENA, x)
-+#define HSIO_WRAP_DLL_CFG_DLL_ENA_GET(x)\
-+	FIELD_GET(HSIO_WRAP_DLL_CFG_DLL_ENA, x)
-+
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_ENA            BIT(18)
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_ENA_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_DLL_CFG_DLL_CLK_ENA, x)
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_ENA_GET(x)\
-+	FIELD_GET(HSIO_WRAP_DLL_CFG_DLL_CLK_ENA, x)
-+
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_SEL            GENMASK(17, 15)
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_SEL_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_DLL_CFG_DLL_CLK_SEL, x)
-+#define HSIO_WRAP_DLL_CFG_DLL_CLK_SEL_GET(x)\
-+	FIELD_GET(HSIO_WRAP_DLL_CFG_DLL_CLK_SEL, x)
-+
-+#define HSIO_WRAP_DLL_CFG_DLL_RST                BIT(0)
-+#define HSIO_WRAP_DLL_CFG_DLL_RST_SET(x)\
-+	FIELD_PREP(HSIO_WRAP_DLL_CFG_DLL_RST, x)
-+#define HSIO_WRAP_DLL_CFG_DLL_RST_GET(x)\
-+	FIELD_GET(HSIO_WRAP_DLL_CFG_DLL_RST, x)
-+
- /* LRN:COMMON:COMMON_ACCESS_CTRL */
- #define LRN_COMMON_ACCESS_CTRL                                                 \
- 	__REG(TARGET_LRN, 0, 1, 0, 0, 1, 72, 0, 0, 1, 4)
-@@ -8110,4 +8175,84 @@ extern const struct sparx5_regs *regs;
- #define XQS_CNT(g)                                                             \
- 	__REG(TARGET_XQS, 0, 1, 0, g, 1024, 4, 0, 0, 1, 4)
- 
-+/* LAN969X ONLY */
-+/* DEV1G:DEV_CFG_STATUS:DEV_RST_CTRL */
-+#define DEVRGMII_DEV_RST_CTRL(t)                                               \
-+	__REG(TARGET_DEVRGMII, t, 2, 0, 0, 1, 36, 0, 0, 1, 4)
-+
-+#define DEVRGMII_DEV_RST_CTRL_SPEED_SEL          GENMASK(22, 20)
-+#define DEVRGMII_DEV_RST_CTRL_SPEED_SEL_SET(x)\
-+	FIELD_PREP(DEVRGMII_DEV_RST_CTRL_SPEED_SEL, x)
-+#define DEVRGMII_DEV_RST_CTRL_SPEED_SEL_GET(x)\
-+	FIELD_GET(DEVRGMII_DEV_RST_CTRL_SPEED_SEL, x)
-+
-+/* LAN969X ONLY */
-+/* DEV1G:MAC_CFG_STATUS:MAC_ENA_CFG */
-+#define DEVRGMII_MAC_ENA_CFG(t)                                                \
-+	__REG(TARGET_DEVRGMII, t, 2, 36, 0, 1, 36, 0, 0, 1, 4)
-+
-+#define DEVRGMII_MAC_ENA_CFG_RX_ENA              BIT(4)
-+#define DEVRGMII_MAC_ENA_CFG_RX_ENA_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_ENA_CFG_RX_ENA, x)
-+#define DEVRGMII_MAC_ENA_CFG_RX_ENA_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_ENA_CFG_RX_ENA, x)
-+
-+#define DEVRGMII_MAC_ENA_CFG_TX_ENA              BIT(0)
-+#define DEVRGMII_MAC_ENA_CFG_TX_ENA_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_ENA_CFG_TX_ENA, x)
-+#define DEVRGMII_MAC_ENA_CFG_TX_ENA_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_ENA_CFG_TX_ENA, x)
-+
-+/* LAN969X ONLY */
-+/* DEV1G:MAC_CFG_STATUS:MAC_TAGS_CFG */
-+#define DEVRGMII_MAC_TAGS_CFG(t)                                               \
-+	__REG(TARGET_DEVRGMII, t, 2, 36, 0, 1, 36, 12, 0, 1, 4)
-+
-+#define DEVRGMII_MAC_TAGS_CFG_TAG_ID             GENMASK(31, 16)
-+#define DEVRGMII_MAC_TAGS_CFG_TAG_ID_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_TAGS_CFG_TAG_ID, x)
-+#define DEVRGMII_MAC_TAGS_CFG_TAG_ID_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_TAGS_CFG_TAG_ID, x)
-+
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA   BIT(3)
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA, x)
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA, x)
-+
-+#define DEVRGMII_MAC_TAGS_CFG_PB_ENA             GENMASK(2, 1)
-+#define DEVRGMII_MAC_TAGS_CFG_PB_ENA_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_TAGS_CFG_PB_ENA, x)
-+#define DEVRGMII_MAC_TAGS_CFG_PB_ENA_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_TAGS_CFG_PB_ENA, x)
-+
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA       BIT(0)
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA, x)
-+#define DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_TAGS_CFG_VLAN_AWR_ENA, x)
-+
-+/* LAN969X ONLY */
-+/* DEV1G:MAC_CFG_STATUS:MAC_IFG_CFG */
-+#define DEVRGMII_MAC_IFG_CFG(t)                                                \
-+	__REG(TARGET_DEVRGMII, t, 2, 36, 0, 1, 36, 24, 0, 1, 4)
-+
-+#define DEVRGMII_MAC_IFG_CFG_TX_IFG              GENMASK(12, 8)
-+#define DEVRGMII_MAC_IFG_CFG_TX_IFG_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_IFG_CFG_TX_IFG, x)
-+#define DEVRGMII_MAC_IFG_CFG_TX_IFG_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_IFG_CFG_TX_IFG, x)
-+
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG2             GENMASK(7, 4)
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG2_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_IFG_CFG_RX_IFG2, x)
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG2_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_IFG_CFG_RX_IFG2, x)
-+
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG1             GENMASK(3, 0)
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG1_SET(x)\
-+	FIELD_PREP(DEVRGMII_MAC_IFG_CFG_RX_IFG1, x)
-+#define DEVRGMII_MAC_IFG_CFG_RX_IFG1_GET(x)\
-+	FIELD_GET(DEVRGMII_MAC_IFG_CFG_RX_IFG1, x)
-+
- #endif /* _SPARX5_MAIN_REGS_H_ */
+ static inline u32 sparx5_to_high_dev(struct sparx5 *sparx5, int port)
+ {
+ 	const struct sparx5_ops *ops = sparx5->data->ops;
 
 -- 
 2.34.1
