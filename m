@@ -1,109 +1,130 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9810196C67;
-	Mon, 18 Nov 2024 14:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832131991C6;
+	Mon, 18 Nov 2024 14:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731938898; cv=none; b=lcUNzvarEWwtcegnqW1vFQ8FYE6Dd3nR88OS1FvdZWNXSYMq1GYCZivy1JkIeenpHIzGCjkldWs6gSn2t10N48H+RT+ypm+CU+ppTaCNEwr2dTNY+O9L7j54ZdK5M+llPyMXj1A18rL0vA/jpINaSn+Adlval3/7D2O7tb/wfFs=
+	t=1731939261; cv=none; b=Is15TfuYAcvOBdBnE0wraYDxjTVJ2lcqJ9XmwVIl8RKKEmOqe8w4L+OdmFPULBU/NeI/GhmmXFRGSUYc7l18tsNz1AfO4WvqrmE5y+9PeKztErk4PfTLqBN9/RsLYYnxwXb1CcGci7Yiv9Lj3tekrYS0bOVzM+OXfHmFhT4oRLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731938898; c=relaxed/simple;
-	bh=noEXu+HAE5F62nhuH2vjVRn7I7X3kce3M0rXhNmw/70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r41uXyxRJ1hsMeEVsZ/OKG1VRetD5Ms9RfRb1NPMkxguymYZsNGGBLpVnQW3D6QJqs09vgiiJ9HFqXfVvQKszELC1uUdxQ+2g6WXX8rVTZxJWGonvylwwMDThd+Anhu2eJznRVAcpkmZs5XU/zbzLOaKxU1areVObGRTeD9pXK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zj/IBhef; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731939261; c=relaxed/simple;
+	bh=xF4ztao5+Y+7uUJATeyzm2Km8pJHEPLfPs6TcMj2k0k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DfQ+63TlxKY4reFRsYCI+Bo8SisweEhWMo64kLJz/+ILX21vLqqmCf3bhZJJ0kmyt28TLAy5k3cZao79wlR0neX0aEicaaD+6ph335GzKA4xVjoabUpgVkPVnuwElMipSkRFZWP2TQHAa63t5lIawsbOBIcpR6sF+mgmWfzc7OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=FUltMNtW; arc=none smtp.client-ip=3.9.82.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zj/IBhef"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-71e74f35acaso260569b3a.2;
-        Mon, 18 Nov 2024 06:08:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731938896; x=1732543696; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=noEXu+HAE5F62nhuH2vjVRn7I7X3kce3M0rXhNmw/70=;
-        b=Zj/IBhefM2j89MX9RlHk1+MugFtOpydQpuLdJuCOO/io9l7btRqW1AbIHg4hteKVXC
-         vVhIfG3cHzHrFhpDGtq6234hKTdHI2Tu0SNOtiyhoAJ9sakfEiRaE9dPQYv/A+Mqjfl5
-         NKw1UYprPzV/9MmWGjf56xy4s8g0hUE23go4GVW9hq/wc9z4cZYiDcnLbmEdH6ajf/FV
-         uvkqiBPNgzHw/ml6UD4LArywQmGni9COu7IkkhOgHidORJg8AXtO36DvZRuNha/+BsfB
-         PKvHIPGxxr9ciQA/Xmkshr9kq3AfS4DN9wOzzFawUC5j8ayqldB1ZZ0aIhuhVxNmnRRc
-         TlJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731938896; x=1732543696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=noEXu+HAE5F62nhuH2vjVRn7I7X3kce3M0rXhNmw/70=;
-        b=ab2RXEpnq+CgvkgqavHc57bAJoVv5XX8vg4rF09H2As7EvLyoqkpDpYPxjzbUuvhiS
-         1gmImI5KucifdeX+N6z9fpIcHhZKWfensbFnkJrRnl/B4zO8o4Hi1dEWGgD7oV2s4VOK
-         FIofX4EhhBy9UWdRVH4C78Afx9p4Z02ihh9KYUWf2Ij/6v/dFII6+cczInrB/mbRFb0w
-         6MnCtrV67pu+EIxNViFSqDDOi8OpJpVyvCtmAEL6AwLZsoTcNeixjDkBPjsoUn48n5Iz
-         exanjap55aZUBqD4npYbErjTYrAFbum/ERueaTWVTeQ8fMO+SjtyCOhc/+sZiwGV2Swl
-         hhQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxHk6KbUMdmEPUe7ffcyI+0E4yEHfUVO4j3Ghmol4r3RHpWk823SdYSEFIAnInvVPeq4QzJuDj71ZNAQ==@vger.kernel.org, AJvYcCWFdFQvgO6u6pYJllY1OMNfXoPX4AuZ/esNbCj0x7iXBro1lHC8DxJgAL+6HoEzUKLuUJ7uWt+2@vger.kernel.org, AJvYcCWpPA+CU7L67etlgUegIjx9bFCtC2UpHTeV5h+BANbNj26BcMzZk4zSyIRUNfSX8DITxKjtvuWxim7afRZg@vger.kernel.org, AJvYcCX2iZJ5WjjRwZDGWRO7XAxrG4gxLcie3fNUUv8+HvDcIibPxS1cuWPCvypQx+cvtyTZWkhn3T3upM5sa6tSBI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLsizByE8uEmhKSbRmTLEUbKLjSLftDvAhTxTaqwKIspJbDbZl
-	Z4VZou8pcd1/9r+rUrzzp7HMtpskNYqkuf4r96HjFvN3sdEovx/asNV6iU/jrEqD+WZKkk8XbXH
-	FwlWl9ouhdwdIS/hOfoTlPmk2B2w=
-X-Google-Smtp-Source: AGHT+IEtNzPQE0+FAlliCDqjK8iImkXC1+7tKdkigdZUUgNBkeySrk+kLThp64OB7VpHyppN5CWaQ2BEFiQqWSRTXu0=
-X-Received: by 2002:a17:90b:3b82:b0:2ea:8aac:6aab with SMTP id
- 98e67ed59e1d1-2ea8aac6be0mr1090780a91.1.1731938895959; Mon, 18 Nov 2024
- 06:08:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="FUltMNtW"
+Received: from katalix.com (unknown [IPv6:2a02:8010:6359:1:c02c:fe13:9a85:43d])
+	(Authenticated sender: james)
+	by mail.katalix.com (Postfix) with ESMTPSA id 018CE7D9B6;
+	Mon, 18 Nov 2024 14:04:11 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
+	t=1731938652; bh=xF4ztao5+Y+7uUJATeyzm2Km8pJHEPLfPs6TcMj2k0k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:From;
+	z=From:=20James=20Chapman=20<jchapman@katalix.com>|To:=20netdev@vge
+	 r.kernel.org|Cc:=20davem@davemloft.net,=0D=0A=09edumazet@google.co
+	 m,=0D=0A=09guohui.study@gmail.com,=0D=0A=09horms@kernel.org,=0D=0A
+	 =09kuba@kernel.org,=0D=0A=09linux-kernel@vger.kernel.org,=0D=0A=09
+	 pabeni@redhat.com,=0D=0A=09syzkaller-bugs@googlegroups.com,=0D=0A=
+	 09syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com,=0D=0A=09t
+	 parkin@katalix.com|Subject:=20[PATCH=20net]=20net/l2tp:=20fix=20wa
+	 rning=20in=20l2tp_exit_net=20found=20by=20syzbot|Date:=20Mon,=2018
+	 =20Nov=202024=2014:04:11=20+0000|Message-Id:=20<20241118140411.158
+	 2555-1-jchapman@katalix.com>|MIME-Version:=201.0;
+	b=FUltMNtWCgl+Xdjzj5hJsQi4jSz1+Du1YXN+P7Ie6whANgQOmUpoJHCgoXfYhABQ3
+	 TjFYE7ZhEEgvB4MNhE3NFW3FZ+1uM8u6ZucOHa7h2q3EA9ARdTnRpOncnA7uGRtRzV
+	 Ax22wNzjuUbDIFl0s66Whtu8kS5FfQ4P5veTcXg+tyAIDuY3p5qMHq8PduKm/RoZwY
+	 wbCiunrq2d9ZhXTGCwFJeGXa52E9E+oK/mOZS+d9oCV8wMDSbudN4wVaaTFy7LuHhQ
+	 /U/HAeNaPQtni3ESCoRGw7Ey/z+VqADGzdRLpwJqdQrZhD/Rn4FMbN34LdkF8gxKDj
+	 5YAdKIipz3ypA==
+From: James Chapman <jchapman@katalix.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	guohui.study@gmail.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com,
+	tparkin@katalix.com
+Subject: [PATCH net] net/l2tp: fix warning in l2tp_exit_net found by syzbot
+Date: Mon, 18 Nov 2024 14:04:11 +0000
+Message-Id: <20241118140411.1582555-1-jchapman@katalix.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118-simplify-result-v2-0-9d280ada516d@iiitd.ac.in> <20241118-simplify-result-v2-1-9d280ada516d@iiitd.ac.in>
-In-Reply-To: <20241118-simplify-result-v2-1-9d280ada516d@iiitd.ac.in>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Nov 2024 15:08:03 +0100
-Message-ID: <CANiq72=o56xxJLEo7VL=-wUfKa7jZ75Tg3rRHv+CHg9jaxqRQA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: block: simplify Result<()> in
- validate_block_size return
-To: manas18244@iiitd.ac.in
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 18, 2024 at 2:12=E2=80=AFPM Manas via B4 Relay
-<devnull+manas18244.iiitd.ac.in@kernel.org> wrote:
->
-> `Result` is used in place of `Result<()>` because the default type
-> parameters are unit `()` and `Error` types, which are automatically
-> inferred. This patch keeps the usage consistent throughout codebase.
+In l2tp's net exit handler, we check that an IDR is empty before
+destroying it:
 
-The tags you had in v1 (Link, Suggested-by) seem to have been removed.
+	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
+	idr_destroy(&pn->l2tp_tunnel_idr);
 
-Nit: the usual style is to use the imperative tense when describing
-the change that the patch performs, although that is not a hard rule,
-e.g. you could say "Thus keep the usage consistent throughout the
-codebase." in the last sentence.
+By forcing memory allocation failures in idr_alloc_32, syzbot is able
+to provoke a condition where idr_is_empty returns false despite there
+being no items in the IDR. This turns out to be because the radix tree
+of the IDR contains only internal radix-tree nodes and it is this that
+causes idr_is_empty to return false. The internal nodes are cleaned by
+idr_destroy.
 
-> Signed-off-by: Manas <manas18244@iiitd.ac.in>
+Use idr_for_each to check that the IDR is empty instead of
+idr_is_empty to avoid the problem.
 
-Same comment as in v1 about the "known identity".
+Reported-by: syzbot+332fe1e67018625f63c9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=332fe1e67018625f63c9
+Fixes: 73d33bd063c4 ("l2tp: avoid using drain_workqueue in l2tp_pre_exit_net")
+Signed-off-by: James Chapman <jchapman@katalix.com>
+---
+ net/l2tp/l2tp_core.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-(The notes above apply to the other patches too).
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 3eec23ac5ab1..369a2f2e459c 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1870,15 +1870,31 @@ static __net_exit void l2tp_pre_exit_net(struct net *net)
+ 	}
+ }
+ 
++static int l2tp_idr_item_unexpected(int id, void *p, void *data)
++{
++	const char *idr_name = data;
++
++	pr_err("l2tp: %s IDR not empty at net %d exit\n", idr_name, id);
++	WARN_ON_ONCE(1);
++	return 1;
++}
++
+ static __net_exit void l2tp_exit_net(struct net *net)
+ {
+ 	struct l2tp_net *pn = l2tp_pernet(net);
+ 
+-	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v2_session_idr));
++	/* Our per-net IDRs should be empty. Check that is so, to
++	 * help catch cleanup races or refcnt leaks.
++	 */
++	idr_for_each(&pn->l2tp_v2_session_idr, l2tp_idr_item_unexpected,
++		     "v2_session");
++	idr_for_each(&pn->l2tp_v3_session_idr, l2tp_idr_item_unexpected,
++		     "v3_session");
++	idr_for_each(&pn->l2tp_tunnel_idr, l2tp_idr_item_unexpected,
++		     "tunnel");
++
+ 	idr_destroy(&pn->l2tp_v2_session_idr);
+-	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_v3_session_idr));
+ 	idr_destroy(&pn->l2tp_v3_session_idr);
+-	WARN_ON_ONCE(!idr_is_empty(&pn->l2tp_tunnel_idr));
+ 	idr_destroy(&pn->l2tp_tunnel_idr);
+ }
+ 
+-- 
+2.34.1
 
-The change itself looks fine to me of course, so with those fixed,
-please feel free to add in your next version:
-
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
