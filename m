@@ -1,160 +1,107 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4BC3398A
-	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 01:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC8C4C79
+	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 01:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731980955; cv=none; b=jpjKQDfp67cfwILO/9ByXt2pComxteGAGFx/nkm1HkOZqOHL0xBdhjcfomq6dlrTOlDs44h/0BP0M2yRfzGiCx5VA5ofvVVUSZ0nSH03osJZ8jgjT88fSpBan/0Su4VVQJWl5U+tQ5W/UQZARWj9QoQb5VCStY6GWsVEJGMbwXQ=
+	t=1731981015; cv=none; b=AzORTIvFJJ7lgcpZO6tqte3WtGYYsjsueeEfZp8ZnQ7e316eEsC32yvt/ahUl3UIUqTl6zlakuRmy5cuwvJVF+vYa8S24hq9aMeMEpFt/eemO94+i8Z6GHt2geCCmPuVpHUnAGBZYFd69kAFW7U33fblNdwtvN5ZEABqo0s9ssQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731980955; c=relaxed/simple;
-	bh=dLvMTYjrgb9BFkA94XrWUwyB+9EF+9QP227OXd1/PXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IV8DMm3kMSaDhClU2FkT2mzer1Dv8uuEB/uEunnt7VtDKixiq8eUIftnjFpVUCyGboF4tFB+2o+IZ/CPGwO3PGosvHSfvHKi/Va2sQFOH6nrtmHzD56RGIL5fdEKR8/euC2i5A/KFgNGlHLZ9FyBoQPGCTpC7GPEOIBFrlwQQso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=n9F05P7n; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1731981015; c=relaxed/simple;
+	bh=XmZaWXP8lPpVl5bq5eIK+W/qcxcqwDu/KBzYweKyTVA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Blblef1nr6GWqIg+iGB2sEh1CVBoXBwL+NEo/xJyKNUKr5iDn18Ip42bztDmMlvW83YEpOfxjjV2gn6qgGFiXGwtkPJ4LCOIdn9pH/4ilPgfUv5BtjOMh6H4/4i1paZCGqTxRS3O2wKZN2dUWi48ILoC9AqB6GqOGiNapiNV99o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asG2kWQl; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="n9F05P7n"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7f8cc29aaf2so253839a12.3
-        for <netdev@vger.kernel.org>; Mon, 18 Nov 2024 17:49:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asG2kWQl"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38248b810ffso303419f8f.0
+        for <netdev@vger.kernel.org>; Mon, 18 Nov 2024 17:50:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1731980952; x=1732585752; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dAYr5IUzD4C4m6DtTnVUzjgzDzT8VdlHo09rLjkfrsk=;
-        b=n9F05P7nBPTDc9pOy3CDNhtzKgyZI2wrLa6GUllSNm+sBfKa/aK+f8g5zh2qP/LjdP
-         +V/fGfjXppCdJXvn9B8sbO7tsaF9JjGvLE/dyrqs5kT3GmWM7+b8iDLuxO0kyPwSzAgI
-         BjJz42PCD4UBY4phvNpt/hj50wQ5U13YEE+6PXb6ArP//RSRDnwYt9//018iQS4Hq1lQ
-         5JXbZNRoXPprfHTZQstskPinaZNhhBxG/HVUJgv/ezBN3EIfF4DJqo7PtVcGheIJl55L
-         fbhp6xsvpWOsDdSebPCXlykC+f5Xiqs6THiuzDCTsyQLJq85PxcoG7Tk0QGv7gqw3c7w
-         5Ghg==
+        d=gmail.com; s=20230601; t=1731981013; x=1732585813; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fZU9m1MkdWx4i6vZAKzVum+IVfxNM41Y0ukpBjBroxA=;
+        b=asG2kWQlKltsIRASGT8W6iZiTZ1s35EimHifXYAZ1eBkJtwCFmHD4U/4d7XvJLC5xW
+         zqTa5ieMstggEbw5A3PeKH7ysKTEwzwiLAiSxZwf9tUEJck6G267a9wSvT4WOJ2pet44
+         SLk8wH0y9jsVpqwB2S0KhzRAct+OGPJFcmiQpGni5cMepDumZSYY+6FVCk72tmKk+HbO
+         LdOSkKbIGxKyyTG2BX7Cv0KfBCHfCbDEH5R+b7H8qNy+fu7Ju4A/bvSrKwbMX4SLtEuQ
+         wmLBYitjGIEpbVa6pvsUL+PMrjjEbBT0v8wjURqBG7H71zihFJOnn9i4aQXgPiZDp00h
+         rzKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731980952; x=1732585752;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dAYr5IUzD4C4m6DtTnVUzjgzDzT8VdlHo09rLjkfrsk=;
-        b=ByhX/dNDih7CrDtrauXqjN2NHO3PDApJrj5WGiRE9iM7dZNHiS40/PjmMDlMCyDTpp
-         BwlHIYah/vhaC0TUsoHAcN5uMV258wEknVe380UjaTNVKdtGVmxlaICrx43cRGuEBuwC
-         do8R/xFYXHgUb7d6SCSSbBv/ciln8UkLuO76HoSBWaBctx1nxmNgDOgjwdTpZR0LLOTf
-         fktl/wWtwcMW0hGKaS7eu6HApHxcYRsy/ZIEu4LkpqtbLGs3eWo8vGntPV3B1UcN2RIO
-         vdTO8mAzorKUsBeP+7kutQhCu4DapiPznwzFLSNe9bEWY8KTLpWt/hD3yb0ZlZAU6QSd
-         lxzA==
-X-Forwarded-Encrypted: i=1; AJvYcCXy3m3c0cP57TPCCMlm9V1Fa67+1zBchM77trqJhPAUiPmKwTf91RdswdX22EK/190OK1MDpnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTl7rU6sc+AfwOf6qFebwfQYGn0gM0pkc2YYyrKuE8/C5xKasB
-	8yFDrxH1GUUZ2G6Q1Zh4uWHzkJQ5jg5pq6d/aO96AYtht2VGaG6cYffm+mtoqlqkO3PiyEm9LPN
-	w
-X-Google-Smtp-Source: AGHT+IHv+FZwuIDJm03Wo2JticPfdjNytAqYHYS00rai/LV7Ja4gZ2Oav57Rnao5XvbDTt70SOVlCw==
-X-Received: by 2002:a05:6a20:7344:b0:1db:f960:bda8 with SMTP id adf61e73a8af0-1dc90bde950mr20283286637.34.1731980952534;
-        Mon, 18 Nov 2024 17:49:12 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72477203a26sm6903821b3a.200.2024.11.18.17.49.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 17:49:12 -0800 (PST)
-Date: Mon, 18 Nov 2024 17:49:10 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Etienne Buira <etienne.buira@free.fr>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [Bug] Linux sends poisonous ARP replies on ethernet
-Message-ID: <20241118174910.7fe410bc@hermes.local>
-In-Reply-To: <ZzuuSDQZux8uof5O@Z926fQmE5jqhFMgp6>
-References: <ZzuuSDQZux8uof5O@Z926fQmE5jqhFMgp6>
+        d=1e100.net; s=20230601; t=1731981013; x=1732585813;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fZU9m1MkdWx4i6vZAKzVum+IVfxNM41Y0ukpBjBroxA=;
+        b=wr2Y2kr7hXd0iagQLGcMUvCx50zIAo4PH0sklg5OT26/7bjVdJdb7Y9zLZXsZfrlko
+         vLnVf0PpvKPFs8qfj9PzQlRfDcJfh/wBksGi+pYXffFTxwv0xA1Yugj3eM1QM6MEKseB
+         3jMYbzRNV0PF1jjO8Lo6HQxWlv/pbquDxhrpziegQjE8cT2aF2wbXy6Udf3OfSsbcqRp
+         pGAgfsHe3aMFCCtj+gx3Z4LoTP2XvhVsfvFzZOBL3EmT9Z8AdbDpeVzYCWZ9qr/0OHJz
+         fZANKmFUwQcJV6JnAbv4gL7cWzsOPX5xUQISJc/szxzcoS13aaYLi/4dbugWTzZLs6+9
+         xXTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWEmWj5f5br99lKAm1ivV5sYrUlhQcqlSWcm8Uxadub4U5YLdMvdAHA7TjcZDp84eMs1cjGXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVfHmr1Kj5xc9fAGMLj2N/hFBUrsHEO02Kfl8ZLMmMptjHy6/O
+	4VPwW3qFYF2mMbKHZy/PCD0Ppst9NOWfAO8bij70TUQBzyIjPrTp
+X-Google-Smtp-Source: AGHT+IHlOI4F0kpcJOGv0iEQ33+t3UPrLsLMx4Chv12jG/53XXfwtQzEFnpW7KqtOrTwbh7/wRbVtA==
+X-Received: by 2002:a5d:5d89:0:b0:37d:4647:154e with SMTP id ffacd0b85a97d-382258f10b2mr12237535f8f.9.1731981012634;
+        Mon, 18 Nov 2024 17:50:12 -0800 (PST)
+Received: from [192.168.0.2] ([69.6.8.124])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3822eb34170sm10389757f8f.11.2024.11.18.17.50.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Nov 2024 17:50:11 -0800 (PST)
+Message-ID: <de5f6ecd-e3c9-4a14-a9ba-12614f19f191@gmail.com>
+Date: Tue, 19 Nov 2024 03:50:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next,v2] [PATCH net-next v2] net: wwan: t7xx: Change
+ PM_AUTOSUSPEND_MS to 5000
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: wojackbb@gmail.com, netdev@vger.kernel.org,
+ chandrashekar.devegowda@intel.com, chiranjeevi.rapolu@linux.intel.com,
+ haijun.liu@mediatek.com, m.chetan.kumar@linux.intel.com,
+ ricardo.martinez@linux.intel.com, loic.poulain@linaro.org,
+ johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ angelogioacchino.delregno@collabora.com, linux-mediatek@lists.infradead.org,
+ matthias.bgg@gmail.com
+References: <20241114102002.481081-1-wojackbb@gmail.com>
+ <6835fde6-0863-49e8-90e8-be88e86ef346@gmail.com>
+ <20241115152153.5678682f@kernel.org>
+ <7e5e2bda-e80d-46ec-816a-613c5808222e@gmail.com>
+ <20241118174456.463c2817@kernel.org>
+Content-Language: en-US
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+In-Reply-To: <20241118174456.463c2817@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Mon, 18 Nov 2024 22:14:48 +0100
-Etienne Buira <etienne.buira@free.fr> wrote:
+On 19.11.2024 03:44, Jakub Kicinski wrote:
+> On Tue, 19 Nov 2024 03:01:47 +0200 Sergey Ryazanov wrote:
+>>> He's decreasing the sleep timer from 20 to 5 sec, both of which
+>>> are very high for networking, anyway. You appear to be questioning
+>>> autosuspend itself but it seems to have been added 2 years ago already.
+>>>
+>>> What am I missing?
+>>
+>> Some possible funny side-effect of sleeping with this chipset. Like
+>> loosing network connection and dropping TCP sessions. I hope that 20
+>> seconds was putted on purpose.
+>>
+>> Suddenly, I don't have this modem at hand and want to be sure that we
+>> are not going to receive a stream of bug reports.
+> 
+> Power saving is always tricky, but they say they tested. I think we
+> should give it a go, worst case - it will be an easy revert.
 
-> Hi all,
-> 
-> I found problematic behaviours in linux network stack, which all look
-> so related i make a single bug-report.
-> 
-> The underlying bug(s) might be ancient (i previously had strange
-> behaviours that could be caused by this), therefore fixes should
-> probably find their way to stable@vger.kernel.org.
-> 
-> The configuration:
-> Two boxes are present on a dedicated virtual hub, both run
-> linux-torvalds b5a24181e461e8bfa8cdf35e1804679dc1bebcdd configured with
-> attached linux.config file and untainted, under qemu (Gentoo's version
-> 8.2.3) as kvm guests using virtio NICs.
-> 
-> box1:
->   # ip a
-> 	1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
-> 	    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-> 	    inet 127.0.0.1/8 brd 127.255.255.255 scope host lo
-> 	       valid_lft forever preferred_lft forever
-> 	2: nic0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
-> 	    link/ether 00:16:3e:00:00:04 brd ff:ff:ff:ff:ff:ff
-> 	    inet 10.0.1.1/24 brd 10.0.1.255 scope global nic0
-> 	       valid_lft forever preferred_lft forever
-> 	3: nic1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
-> 	    link/ether 00:16:3e:00:00:01 brd ff:ff:ff:ff:ff:ff
-> 	    inet 10.0.0.1/24 brd 10.0.0.255 scope global nic1
-> 	       valid_lft forever preferred_lft forever
-> 	4: nic2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
-> 	    link/ether 00:16:3e:00:00:02 brd ff:ff:ff:ff:ff:ff
-> 	    inet 10.0.0.2/24 brd 10.0.0.255 scope global nic2
-> 	       valid_lft forever preferred_lft forever
-> 
-> box2:
->   # ip a
-> 	1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue qlen 1000
-> 	    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-> 	    inet 127.0.0.1/8 brd 127.255.255.255 scope host lo
-> 	       valid_lft forever preferred_lft forever
-> 	2: nic3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast qlen 1000
-> 	    link/ether 00:16:3e:00:00:03 brd ff:ff:ff:ff:ff:ff
-> 	    inet 10.0.0.3/24 brd 10.0.0.255 scope global nic3
-> 	       valid_lft forever preferred_lft forever
-> 
-> 
-> 
-> The problem i found is that linux replies to ARP requests not directed
-> at it, this behaviour is not complying with RFC826:
-> box2# arping -c 5 10.0.0.2 -I nic3
-> 	ARPING 10.0.0.2 from 10.0.0.3 nic3
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:04] 2.285ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:01] 2.357ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:02] 2.368ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:02] 0.598ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:02] 0.771ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:02] 0.600ms
-> 	Unicast reply from 10.0.0.2 [00:16:3e:00:00:02] 0.627ms
-> 	Sent 5 probe(s) (0 broadcast(s))
-> 	Received 7 response(s) (0 request(s), 0 broadcast(s))
-> 
-> Here, all box1's NICs have replied with their own ethernet address(!),
-> including 00:16:3e:00:00:04 which is not even on the same IP network.
+Make sense. Then let's merge it.
 
-> 
-> Unfortunately, i cannot afford to get familiar enough with linux's
-> network stack to fix it without sponsorship.
-> 
-> Best wishes.
-> 
-
-It is not a bug.
-
-
-Linux uses the weak host model https://en.wikipedia.org/wiki/Host_model
-
-You can control how ARP is handled via the arp_ignore sysctl as
-documented here:
-
-https://www.kernel.org/doc/html/latest/networking/ip-sysctl.html
-
-
+Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
