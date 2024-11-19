@@ -1,40 +1,65 @@
-Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0776F1C9EDA;
-	Tue, 19 Nov 2024 11:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0946D1C876D
+	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 11:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732016210; cv=none; b=VxIg1nyDNVaHciUd6BPrONGLcjSxQlxNyefqFa9ao5Qf/LJJSOWwdZCUHfcZy0bLDL1gEKcYCS93u/k/QZgUdI+t+Vl2gIXe4jVKhq1Lq5KxO7Fpt5NyuytLWXstteD3lS2kU4GfVWUsGjKETVU4N4ytGW34QsnoCgqDsuQnaW0=
+	t=1732016468; cv=none; b=ogVmk/hNIyarh1Z1TW7jNUi0ELkZsOedbTomd6kWL/Rb5lUYF+WEnadQwQdO3t8fm6BPIc0t31OblaZGSdtL+QNBRGFm4bj92DT9MTvDyTVndOYOIzx8dTXdGoTI5BDkyTBsPz+F1TboVhv7ki3hhIsPBow4rAdSozbQRC37f/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732016210; c=relaxed/simple;
-	bh=la5KRTljLvSnmKiDKbgW9v6clOEXUDkvBBxcNk2vzp8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UuOig0GJzUEN9RdskZNnyQtzDjd+wJivvyjl6ad2aPC8OJyzqxQYfmBkbEWEDDNDrkyoW1po53dbKwptS9H2u+5f0ZHzjeFhY7DZHnKBCK3UaQkUDqPJmLvFxQt1u/Zcg8qEOxJCXrYJN20E5MFBlZDW+c4ZBTyEjA02ImSzcKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=SAFKpcBW; arc=none smtp.client-ip=80.12.242.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1732016468; c=relaxed/simple;
+	bh=B6tGFGc/acnVM3Qye2kgK47gJP4agRKP+KzyCFDdH6g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G+CvjUNtItubCMn1lqwoaayd7PVPgiHNA6wiMnHc7ieb77/Zciy5kvoPnY/4VYSo3gxyHcUoVhF3RAwJ+il7PlM5BrS4qNfjf/+RayAsQFOdI1RC2dTZObeOEr7GJeaRlkWAC0xHbI+zuuE2R0ZF4l688CeflyvEaEDs05z++eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DP0YiKqT; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="SAFKpcBW"
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id DMX1tne6r8AEMDMX2td4J4; Tue, 19 Nov 2024 12:36:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1732016201;
-	bh=jM4ya2O6hw0Q4RxtNV/BACAcgAvwqiLYCF7hautst5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=SAFKpcBWqnVyuGCJ02DHX4b0BDeffDZT5ROgXvi3Zl013gMz6pGw/1GhWEXyq8Q9h
-	 836JAesmiNMuvvNNC19yJbMttWg7X3Wrl/9z0CslS0YjnTMNgvswYlqhCaETMpOP19
-	 ilx1Iy82CGGy/BFRMSiorbvZPvXbSp5EFLNEeKX5Pki69YukTAbtiorMZcBCGafur5
-	 fOGsLw2LGzwRuJYXEmAampibO5wrv1rSPu2RXc+e5WqF2dJ/ITVwwQzWWNO3svGtui
-	 swymLr64h9Y1wXtYO1xxnILXJFT/KhakqAsE+9MvSZdvQSxYGC+TvEwSONxJ4ddZ77
-	 oi9YYHyXQ2eWQ==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 19 Nov 2024 12:36:41 +0100
-X-ME-IP: 124.33.176.97
-Message-ID: <7a91c06f-6ea3-4262-82a3-9a1daf481f82@wanadoo.fr>
-Date: Tue, 19 Nov 2024 20:36:30 +0900
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DP0YiKqT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732016466;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iSO7rRgJI8m9saV4ky7Ejp+AThjtq//l80mNHJPVY1A=;
+	b=DP0YiKqT9vOn2Ki/CuDdBcI4vNLQlYyC0HhEchXXBRlcCPRqFXY902rOpQo5uhSt38PBkI
+	fplbK59WdPawl/nCv63BVYWc8W+jV39WYO61MzoAovthhO7TnRzzfIy9BFj83Ufhpl5SM0
+	SUPTZ8V2mcJXcihng9jAwRdCsRuj8GM=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-333-UbBaoZb5OJ6hGyJXihS9sw-1; Tue, 19 Nov 2024 06:41:04 -0500
+X-MC-Unique: UbBaoZb5OJ6hGyJXihS9sw-1
+X-Mimecast-MFC-AGG-ID: UbBaoZb5OJ6hGyJXihS9sw
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d425b9dedeso11152606d6.3
+        for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 03:41:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732016464; x=1732621264;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iSO7rRgJI8m9saV4ky7Ejp+AThjtq//l80mNHJPVY1A=;
+        b=tcEsTpQbAvdPmVS0rx7qDuARdQvCCXivW5BKIZ5/FedsOvafunMB5omF4pQxYzmmYC
+         5aOIVCJxHk3nhK+wiVBPS7V7GE00J46vdjRbeyab5TIFn7ze7Ojgyd8W5byZzq8CJ9eH
+         j28jIEjYVThvd9+cNsKoPPf4ftuigWrVI41Pe3mXOt03O50iPl+tEMqUXWqB7yEoVXXL
+         QZGYGA4dfbpRBT8SG7X3drHJxTy+6FOp8IQ7jUxQQeUanejjozGslWd91Jf9yMKM7tqu
+         XON5U3hymMAq0pJ2PPAe0dDx1ywaNuOGv5RB6i8ImDWYOD0/sI6IPTs/DK2e/mp1SnRy
+         1HsQ==
+X-Gm-Message-State: AOJu0Ywg/SzxOONU1Cf6d/9Ffc+J+IPX25kceCyGx8bAxPhNZzwYl68J
+	dkw54i9ZmxTmgV7pkI55aidDz3Rv/Rb6brq0PMhcJZCo3DY2GlZQASNn5AqMrgKJ1QqxNipyAVi
+	J5f0OG9k4GfEW3e9BilEdPxxITGKl8m7GYxB8wHUfldud/+U2X7B9Vg==
+X-Received: by 2002:a05:6214:c65:b0:6d4:ab3:e19b with SMTP id 6a1803df08f44-6d40ab3e1abmr192732236d6.42.1732016464383;
+        Tue, 19 Nov 2024 03:41:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHSL+CvUXEPORupLRfcZC0IPSOYYNVWZYJtS4mmscYBrBcgg3M5ByxsUOZ5P6MeA/A9Dqar/A==
+X-Received: by 2002:a05:6214:c65:b0:6d4:ab3:e19b with SMTP id 6a1803df08f44-6d40ab3e1abmr192732066d6.42.1732016464058;
+        Tue, 19 Nov 2024 03:41:04 -0800 (PST)
+Received: from [192.168.1.14] (host-79-55-200-170.retail.telecomitalia.it. [79.55.200.170])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d40dc7ada9sm47266936d6.69.2024.11.19.03.41.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Nov 2024 03:41:03 -0800 (PST)
+Message-ID: <06940878-8a7c-441c-958b-7cd7e7408beb@redhat.com>
+Date: Tue, 19 Nov 2024 12:40:58 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,115 +67,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt
- lines
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, NXP Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>
-References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
- <20241119081053.4175940-4-ciprianmarian.costea@oss.nxp.com>
- <57915ed9-e57e-4ca3-bc31-6405893c937e@wanadoo.fr>
- <bfa5200d-6e56-417d-ac3b-52390398dba2@oss.nxp.com>
- <f84991f7-66c6-4366-9953-b230761b6b7a@wanadoo.fr>
+Subject: Re: [PATCH net-next v2] mm: page_frag: fix a compile error when
+ kernel is not compiled
+To: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net,
+ kuba@kernel.org
+Cc: netdev@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Duyck <alexanderduyck@fb.com>, Linux-MM <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241119033012.257525-1-linyunsheng@huawei.com>
 Content-Language: en-US
-In-Reply-To: <f84991f7-66c6-4366-9953-b230761b6b7a@wanadoo.fr>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241119033012.257525-1-linyunsheng@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 19/11/2024 at 20:26, Vincent Mailhol wrote:
-> On 19/11/2024 at 19:01, Ciprian Marian Costea wrote:
->> On 11/19/2024 11:26 AM, Vincent Mailhol wrote:
->>> On 19/11/2024 at 17:10, Ciprian Costea wrote:
+On 11/19/24 04:30, Yunsheng Lin wrote:
+> page_frag test module is an out of tree module, but built
+> using KDIR as the main kernel tree, the mm test suite is
+> just getting skipped if newly added page_frag test module
+> fails to compile due to kernel not yet compiled.
 > 
-> (...)
+> Fix the above problem by ensuring both kernel is built first
+> and a newer kernel which has page_frag_cache.h is used.
 > 
->>>>   +    if (priv->devtype_data.quirks & FLEXCAN_QUIRK_SECONDARY_MB_IRQ) {
->>>> +        err = request_irq(priv->irq_secondary_mb,
->>>> +                  flexcan_irq, IRQF_SHARED, dev->name, dev);
->>>> +        if (err)
->>>> +            goto out_free_irq_err;
->>>> +    }
->>>
->>> Is the logic here correct?
->>>
->>>    request_irq(priv->irq_err, flexcan_irq, IRQF_SHARED, dev->name, dev);
->>>
->>> is called only if the device has the FLEXCAN_QUIRK_NR_IRQ_3 quirk.
->>>
->>> So, if the device has the FLEXCAN_QUIRK_SECONDARY_MB_IRQ but not the
->>> FLEXCAN_QUIRK_NR_IRQ_3, you may end up trying to free an irq which was
->>> not initialized.
->>>
->>> Did you confirm if it is safe to call free_irq() on an uninitialized irq?
->>>
->>> (and I can see that currently there is no such device with
->>> FLEXCAN_QUIRK_SECONDARY_MB_IRQ but without FLEXCAN_QUIRK_NR_IRQ_3, but
->>> who knows if such device will be introduced in the future?)
->>>
->>
->> Hello Vincent,
->>
->> Thanks for your review. Indeed this seems to be an incorrect logic since
->> I do not want to create any dependency between 'FLEXCAN_QUIRK_NR_IRQ_3'
->> and 'FLEXCAN_QUIRK_SECONDARY_MB_IRQ'.
->>
->> I will change the impacted section to:
->>     if (err) {
->>         if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
->>             goto out_free_irq_err;
->>         else
->>             goto out_free_irq;
->>     }
-> 
-> This is better. Alternatively, you could move the check into the label:
-> 
->   out_free_irq_err:
->   	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
->   		free_irq(priv->irq_err, dev);
-> 
-> But this is not a strong preference, I let you pick the one which you
-> prefer.
+> CC: Andrew Morton <akpm@linux-foundation.org>
+> CC: Alexander Duyck <alexanderduyck@fb.com>
+> CC: Linux-MM <linux-mm@kvack.org>
+> Fixes: 7fef0dec415c ("mm: page_frag: add a test module for page_frag")
+> Fixes: 65941f10caf2 ("mm: move the page fragment allocator from page_alloc into its own file")
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+> Tested-by: Mark Brown <broonie@kernel.org>
 
-On second thought, it is a strong preference. If you keep the
+I'm closing the net-next PR right now, and we must either apply this
+patch even on short notice or reverting the blamed series.
 
-	if (priv->devtype_data.quirks & FLEXCAN_QUIRK_NR_IRQ_3)
-		goto out_free_irq_err;
-	else
-		goto out_free_irq;
+As this fix should not cause any more conflict than the original series,
+looks reasonable to me and has been tested by Mark, I'm going to apply it.
 
-then what if more code with a clean-up label is added to flexcan_open()?
-I am thinking of this:
-
-  out_free_foo:
-  	free(foo);
-  out_free_irq_err:
-  	free_irq(priv-irq_err, dev);
-  out_free_irq_boff:
-  	free_irq(priv->irq_boff, dev);
-
-Jumping to out_free_foo would now be incorrect because the
-out_free_irq_err label would also be visited.
-
->>>>       flexcan_chip_interrupts_enable(dev);
->>>>         netif_start_queue(dev);
->>>>         return 0;
->>>>   + out_free_irq_err:
->>>> +    free_irq(priv->irq_err, dev);
->>>>    out_free_irq_boff:
->>>>       free_irq(priv->irq_boff, dev);
->>>>    out_free_irq:
-> 
-> (...)
-
-Yours sincerely,
-Vincent Mailhol
+/P
 
