@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEA71D07AB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565981D095E;
 	Tue, 19 Nov 2024 15:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028465; cv=none; b=NW5cvya2KOtDx2TLQforps4oor47ylkP3PDhuLXl/ciui+giPiIa/HcbJVNeyy5DliBYrRD6vnI5rq7pVWH7vIvpyT/O/duvOyKieHD5W5BxEmy7h+han9HV83DEXmwkr7YWLsqHKfUzATK7NBpbDc5q7gcUEfovqnJ3KedUAAk=
+	t=1732028465; cv=none; b=Fn94m6S/EVzHkT3/4Lqw60P8w88DW3a7WgAgX3SkeDDhxY0afPcxrNRaVKlbl+9kFUPNe5osYbUoJ60PN17qFNjrucM/tGSFDMsuhYHDuwkaxS4oVgujIcLyu8R6ZHazA4jdYgnFD3sHG6vS48QqzRZe2PG280IVk8s85E4Ho4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732028465; c=relaxed/simple;
-	bh=iVihXo58CtO4IGuy+SiR8hXCaTbK3CdRsA01yVjIYGk=;
+	bh=OmhoPxBbW2h8GuBsgibA6xugOaiXQl/SNjprceISX24=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ARMNc+E1S4ldhwblVZvrSU87f4v4Umqg8qor+R0pi6hb0u3yMxq5+5N8bSoiZZW3Zot8APXYSs6qk3w/YxrGlMLLg9MPgSJbwS+IImtslRWz6JtP5InUsWLFAiwqBxwb0QxgPboNaIddNZGxHlTQyOTxXZ3HXf3YJen4PVRAFAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvIvqPmM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=kwrRas17gWXDtKokAR+sR+qkECqWxZbra23ioSrXQmyPS+sH+s+MrqFaxr/bABv04zzrh+qARL1LXS4XJECcJLp1/3oXUcfVwnqfKhwUGWIsa679lHpGjd8J/BqCsikxEW2S8WCmWnxIemfZ4hfaFsAfJN6Qw6JNqiOTGjbx00w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkBYdbFV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvIvqPmM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B7051C4CECF;
-	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkBYdbFV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 09E8AC4AF10;
+	Tue, 19 Nov 2024 15:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732028464;
-	bh=iVihXo58CtO4IGuy+SiR8hXCaTbK3CdRsA01yVjIYGk=;
+	s=k20201202; t=1732028465;
+	bh=OmhoPxBbW2h8GuBsgibA6xugOaiXQl/SNjprceISX24=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PvIvqPmMxmJo18fVQIHoXLMG6dyx0Xb0jHu5FCH6LGuuKkEgNwCzZwelJZlcE8PbH
-	 yNIDD4OQKXlDu8zXMshJC4cwJJXnwvYic/nKEYrO80F2UuLLFXF3cA/Y6ZELWCzEPR
-	 1/nEaYetKnDif2UR6qAYoMxPDlk1jH5G3h04//cmfR+oe0lROlFYeMG6tsPB1N9ckJ
-	 b8gY+lmD1bRukfVXReCXxm/pikN6CSVMEIKn3hw3+WSkZD7DBWb9aJ1AVMU9KhREFE
-	 1RQRN3mrSXvNKrpDyFYD9qySS1KU55TTFRILoV2u4WG14kIwVEdHaBQOuPTX8/z1qt
-	 9EWLuwKCiJr0Q==
+	b=RkBYdbFVF2kJFYxglbrq1cixQ8DxB02h/9tzJO4xw43qLqtGTaAGYToVIxtls/tyB
+	 a4zej2rsLvWoGx60mvaaGpFj+fGpyMqB8eHWtaT9G8OyqkKkzihGCuiBrArimi3eBZ
+	 cNL3zyRDHePyKUG0md4r15EHmaInkFahmQBDNoAfYM/ifD5Z135oqNKAY0v5E/Cu+W
+	 gNh27QAXnpGnPCcSvgooMCoWlml31vHDqzH9Eu1/4pkBwZeonM4yza75tCToDFjMHx
+	 4sDmDsFvRAT9Djw2xMRb+YsK70rpbPB2nPxNXWBXtoHn6kPReCEGLTJ1rpauAcFOVz
+	 oefMbJJnzwtRw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4BCBD44167;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F088ED44167;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Tue, 19 Nov 2024 16:00:15 +0100
-Subject: [PATCH v5 09/16] net: dwmac-starfive: Use helper rgmii_clock
+Date: Tue, 19 Nov 2024 16:00:19 +0100
+Subject: [PATCH v5 13/16] dt-bindings: net: Add DT bindings for DWMAC on
+ NXP S32G/R SoCs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241119-upstream_s32cc_gmac-v5-9-7dcc90fcffef@oss.nxp.com>
+Message-Id: <20241119-upstream_s32cc_gmac-v5-13-7dcc90fcffef@oss.nxp.com>
 References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 In-Reply-To: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -69,11 +70,11 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=1227;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=4093;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=bBoQpMQEMIZkvVLzY+cPIJeDILU+K5uktEDmkyEIirY=;
- b=VykuawcU4fgIfqEBtyRRZ3cazgs4UBBxKbDLVqgpAhgUdP/6Qn1gegY5BEGZUKsyvr94YnXk7
- rww5Y7nRP/7BWX2sZ6Amd/iuP7+bGvy0dogXTu0If44pwpnfdW8qdEO
+ bh=1xROYlylzwH8UK0iKW6W31OAoU/xH+M2AeMY1t7N71A=;
+ b=egKGCJN7L7SfDPwLAkt0D8PQm2WbSjgetnAwUx7ajU6wFMX7ZykF4MeT4vQGiic4QS3j4HY7g
+ dukyTfF5/bgCfzXADaOQyoGgrz6ag4THqvIlg54jUjvEv7bGItftnQy
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -83,47 +84,140 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Utilize a new helper function rgmii_clock().
+Add basic description for DWMAC ethernet IP on NXP S32G2xx, S32G3xx
+and S32R45 automotive series SoCs.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 105 +++++++++++++++++++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   3 +
+ 2 files changed, 108 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-index 4e1076faee0c..d80461a721c1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-@@ -34,24 +34,13 @@ struct starfive_dwmac {
- static void starfive_dwmac_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
- {
- 	struct starfive_dwmac *dwmac = priv;
--	unsigned long rate;
-+	long rate;
- 	int err;
- 
--	rate = clk_get_rate(dwmac->clk_tx);
--
--	switch (speed) {
--	case SPEED_1000:
--		rate = 125000000;
--		break;
--	case SPEED_100:
--		rate = 25000000;
--		break;
--	case SPEED_10:
--		rate = 2500000;
--		break;
--	default:
-+	rate = rgmii_clock(speed);
-+	if (rate < 0) {
- 		dev_err(dwmac->dev, "invalid speed %u\n", speed);
--		break;
-+		return;
- 	}
- 
- 	err = clk_set_rate(dwmac->clk_tx, rate);
+diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+new file mode 100644
+index 000000000000..a141e826a295
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2021-2024 NXP
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP S32G2xx/S32G3xx/S32R45 GMAC ethernet controller
++
++maintainers:
++  - Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
++
++description:
++  This device is a Synopsys DWC IP, integrated on NXP S32G/R SoCs.
++  The SoC series S32G2xx and S32G3xx feature one DWMAC instance,
++  the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
++  interface over Pinctrl device or the output can be routed
++  to the embedded SerDes for SGMII connectivity.
++
++properties:
++  compatible:
++    oneOf:
++      - const: nxp,s32g2-dwmac
++      - items:
++        - enum:
++            - nxp,s32g3-dwmac
++            - nxp,s32r45-dwmac
++        - const: nxp,s32g2-dwmac
++
++  reg:
++    items:
++      - description: Main GMAC registers
++      - description: GMAC PHY mode control register
++
++  interrupts:
++    maxItems: 1
++
++  interrupt-names:
++    const: macirq
++
++  clocks:
++    items:
++      - description: Main GMAC clock
++      - description: Transmit clock
++      - description: Receive clock
++      - description: PTP reference clock
++
++  clock-names:
++    items:
++      - const: stmmaceth
++      - const: tx
++      - const: rx
++      - const: ptp_ref
++
++required:
++  - clocks
++  - clock-names
++
++allOf:
++  - $ref: snps,dwmac.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/phy/phy.h>
++    bus {
++      #address-cells = <2>;
++      #size-cells = <2>;
++
++      ethernet@4033c000 {
++        compatible = "nxp,s32g2-dwmac";
++        reg = <0x0 0x4033c000 0x0 0x2000>, /* gmac IP */
++              <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
++        interrupt-parent = <&gic>;
++        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq";
++        snps,mtl-rx-config = <&mtl_rx_setup>;
++        snps,mtl-tx-config = <&mtl_tx_setup>;
++        clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
++        clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++        phy-mode = "rgmii-id";
++        phy-handle = <&phy0>;
++
++        mtl_rx_setup: rx-queues-config {
++          snps,rx-queues-to-use = <5>;
++        };
++
++        mtl_tx_setup: tx-queues-config {
++          snps,tx-queues-to-use = <5>;
++        };
++
++        mdio {
++          #address-cells = <1>;
++          #size-cells = <0>;
++          compatible = "snps,dwmac-mdio";
++
++          phy0: ethernet-phy@0 {
++            reg = <0>;
++          };
++        };
++      };
++    };
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index 4e2ba1bf788c..a88d1c236eaf 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -66,6 +66,9 @@ properties:
+         - ingenic,x2000-mac
+         - loongson,ls2k-dwmac
+         - loongson,ls7a-dwmac
++        - nxp,s32g2-dwmac
++        - nxp,s32g3-dwmac
++        - nxp,s32r-dwmac
+         - qcom,qcs404-ethqos
+         - qcom,sa8775p-ethqos
+         - qcom,sc8280xp-ethqos
 
 -- 
 2.47.0
