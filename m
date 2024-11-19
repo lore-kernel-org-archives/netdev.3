@@ -1,163 +1,264 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABCD1A28C;
-	Tue, 19 Nov 2024 08:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B3419D06A
+	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 08:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732004599; cv=none; b=AwNlLxXsXL6AAmyZrwZ8auPeE8CPCffB0EGGYDv9vWDW7IdSYvXLgk8IUN+FYoxi9ByprREtbEapTeikKnjrIGIEicxuTFyxJXurqAgKqNjlwJcHCFsqGfJHSzKyRpT2K8d8oVFLbiEfgEv+5nGcSrndVo1pxx88YWWwp6VmnWU=
+	t=1732005005; cv=none; b=pukXz8wJHUwLMHlkn6sFv0cApnx1J7AWF5eMQ05UFO2N8Jxfh9COEnq0rv5XDjf9Lc+/knPK4Ey1U0PBdb3QmQ01Pwj43uosKntIjNRaISvL6fUa7xZcKopyJ70fTP0FmD2fSpzJUp6XNWpCs1by8P5N6v7EbY086wqkuhzb540=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732004599; c=relaxed/simple;
-	bh=N/n/9VQwKxWlOdS9qxgmUQkfy4uKNtrkw5TJvWo/e2k=;
+	s=arc-20240116; t=1732005005; c=relaxed/simple;
+	bh=+xKCrPwQVHWM0r18FvOpIwNqva/kAUIiweoFAE7ZwzI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s66OLIdUVm3O85/AQk/PmpV/ab/4/HaQLqO0oIXVy5RHCPkT2cQShiWDoxtBEz+tTX9L0ibPmq7U7XRPqVNLd/q/qEOU0g2h5069wpYRB5+3Xo/63rXUsQ61Btp+XPCmw/rFl1g9MQLrZiantJ16//6L2cTDaV/FG3RTvAULV0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdd1dbvb; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=PFyOdBogJiQTzrbvexKDqyEulnv4BuiCwj4lMB7AITRtodYoqsv5uo+INpQwetpVewAe84zlqG0ggp2LXjEvCj912xRhOJQzlr5XI2wQQMWt2dvyaPReqnCi7aNM67THvwuKKjY9D+ENgbPXxfVEpGwa4tpx3OksFmAN/OwoBqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GGTtAHDG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdd1dbvb"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-71e52582cf8so2035451b3a.2;
-        Tue, 19 Nov 2024 00:23:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732004597; x=1732609397; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3y11cVWLnbMeLUtsLIN+/hTQ1x168DrE/MVNBKdLI7U=;
-        b=fdd1dbvbijfX8hUHS/v6rPE9ySyfXzzae81GiaSVhIOZVpPYWBxye79hsZw46E5z2D
-         WscvPER0DroNVCvgSvttDCX5PGL1RF+nrNpRRw1eCIP7EQC2GyJYS+/zJ4jUJ2fPeZi/
-         TMSgtygbtQfP0vJPEP47GOeP/ZVJJFf3t5fEla1nwl/AJVls8254CYxpsxluUJhfJdOO
-         kpgLi77YLYiKvJE74Qw4ErCEBD4CjrQe2sDesFpBAosOk1Zs+8FLfBPw5ChLB1v9BHEy
-         TxPF2xI0a5vMsxSwIR1jfTKtrvMp7P+/L/e8rqVk2flNEwyL2JieU5RyarwCdfel1Gw/
-         ME2g==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GGTtAHDG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732005002;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xTLxAWYQ1JNcTU0UUWCX6oUrShuLfa8MUCD9ctjzgKA=;
+	b=GGTtAHDGoa4//IKKyRRDqxZ1KbJ6UnluMRm/sPuc0S2gq1cwPRT8PWChHW8MXxwuwIVE9l
+	yx6g8cO+ZxtBHMrkM+CxoE52UtPTTOXZEKJH8F2nzK53tRlWXMdQ5FrTGc+jr1xZv4zirc
+	D1SB5sifdJKJsPLOdOUeJq8fxSF4APs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-vULGM0f8NEuwos4PdIUb4A-1; Tue, 19 Nov 2024 03:30:01 -0500
+X-MC-Unique: vULGM0f8NEuwos4PdIUb4A-1
+X-Mimecast-MFC-AGG-ID: vULGM0f8NEuwos4PdIUb4A
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a9a22a62e80so44412966b.1
+        for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 00:30:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732004597; x=1732609397;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3y11cVWLnbMeLUtsLIN+/hTQ1x168DrE/MVNBKdLI7U=;
-        b=r/+YW/4b1l/KBh/06iOAhTnksF36YvNG+nvkt3Ws3J5SDa3gNFs6DhpKpSfJAcbOlX
-         L87XBE32UOndVDnCaYp09MoamVAq8e/M5RppwboBPSLVrwfXzbjxQ8ffZQLTvqGAhl/K
-         wPwAa11StpYFqOtV0tWj78fzeA9NcSByIFzywWf5tECsb/wCyb4pItrZzbjgNA8mYqsm
-         ObjIDi+OFRq4NL3cFFeNbRtB/Brg9QIfthl7VXVxnVqByso4KVmrTR6J9st3E1mzHO77
-         Iv/ePGS0Bp/81J2Q3NWycvoPcOD2BEP+CTs5DF1KsUVdq8Th0vO1jV8mdc0PUcjZKh4+
-         J/4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWG+ZXyvCpXsFJKf4krQVc47BZb5MstjQG7IbgY1TsP0KKhsccW9sOrHyYHj6mNZ7VCK3XN/FJPrKxes7w=@vger.kernel.org, AJvYcCWv9XmHp2uTbYNRpxUCl+tOSz9Dbc9xOj25oRo+V96N5C+VwsVwalkFF7F0WGmqcsey68hv5UrWIaSz9jli/lTj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy52ZL17y33Ltwhk0L0GqG+yo+quut+RFmC/5Hv/hXXqVwCDGKy
-	vrwBpvdj24qdvDf6QUtsnn+JofMeiu8JUn7IkVN/NZ6IFjywTsbY
-X-Google-Smtp-Source: AGHT+IHUzfXK4t/vY90yoGZGr9Ob6wWwgcqt4R3WqvOLtnjNgbBrO2rhbG8JW9p6ym2zjueK1suoLw==
-X-Received: by 2002:a05:6a00:21cf:b0:71e:6eb:786e with SMTP id d2e1a72fcca58-72476bb87b0mr23612285b3a.13.1732004597303;
-        Tue, 19 Nov 2024 00:23:17 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7247711ce30sm7459121b3a.54.2024.11.19.00.23.13
+        d=1e100.net; s=20230601; t=1732005000; x=1732609800;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xTLxAWYQ1JNcTU0UUWCX6oUrShuLfa8MUCD9ctjzgKA=;
+        b=NK/ITK6PQjGbqeNAPSctRquy7Gnaq0C5RiupaQP45/9JYNA5RINIkILws4nGzqbUMA
+         /JDaVgVqkSZQrVDNX7xBmeJ+Pm4OletIEr75pFEQxybiWGvlTuTVQFTujq4pJqqpcyyD
+         NkKBxBEW6WSh/uZ5hb9WcrIgfyxTWsDT/cfQ4Ll+4j019JanA3YNZa5CUhbbihelpc0P
+         WRXkOBjHTNbM8QpEm1dc1dV5NGxQ47fqyPknN1KO7lszFYHiJ4vimzo95YykZ1BDkUU5
+         ZRw2ijb3YX1Y230uHD67LbXMmyrUG7chRJjL8/qFWUUsCW1rDI/CWnFW4AP3NWQC2MOE
+         Mjag==
+X-Gm-Message-State: AOJu0YzO7ql2NaTEXZWKZrCpo3hsQ+ghJlKjG3FXhAPAOCauAGFXivDu
+	2SW703M4IKoKN8qcYunAcusQ7INLAV2iVren96GA9eAhQEcIo76tJHPWX+3bpA7/eENFIsBSoy7
+	vx8DZB2+RNkq2fJZUCABXFezV6zrcFBCh2tePI/A5tGcgb+UVU7EJ0g==
+X-Received: by 2002:a17:907:d19:b0:a9e:b5d0:4ab7 with SMTP id a640c23a62f3a-aa483556727mr1382682566b.52.1732005000139;
+        Tue, 19 Nov 2024 00:30:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxd7z957UsxaATiVx0EDfbn0BFQH51aHLzQfor6HWy4iT3aPDneL8plKb/5vnwG3RSEd0qgw==
+X-Received: by 2002:a17:907:d19:b0:a9e:b5d0:4ab7 with SMTP id a640c23a62f3a-aa483556727mr1382676566b.52.1732004999357;
+        Tue, 19 Nov 2024 00:29:59 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-129.retail.telecomitalia.it. [79.46.200.129])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df4e7bfsm624064866b.42.2024.11.19.00.29.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 00:23:16 -0800 (PST)
-Date: Tue, 19 Nov 2024 08:23:10 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Sam Edwards <cfsworks@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net 2/2] selftests/rtnetlink.sh: add mngtempaddr test
-Message-ID: <ZzxK7hZSF7nPfuOj@fedora>
-References: <20241113125152.752778-1-liuhangbin@gmail.com>
- <20241113125152.752778-3-liuhangbin@gmail.com>
- <CAH5Ym4iVP0XYrb1=7QhDqhEO54vpSJGFGHaBnuM1qpua1p5-tg@mail.gmail.com>
- <ZzW46QZf5rzj4tMp@fedora>
- <CAH5Ym4jGZou27-bwGqxHAf2AHWXpT0=wOa0XNNuqtG9OOhi8EQ@mail.gmail.com>
+        Tue, 19 Nov 2024 00:29:58 -0800 (PST)
+Date: Tue, 19 Nov 2024 09:29:53 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Alexander Graf <graf@amazon.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, Asias He <asias@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] vsock/virtio: Remove queued_replies pushback logic
+Message-ID: <efsbknrsmen47tlay7cjrbo5qvmu4bcrmi2lvploi6qq5wpwet@wuu5mfgc3a34>
+References: <20241115103016.86461-1-graf@amazon.com>
+ <yjhfe5bsnfpqbnibxl2urrnuowzitxnrbodlihz4y5csig7e7p@drgxxxxgokfo>
+ <dca2f6ff-b586-461d-936d-e0b9edbe7642@amazon.com>
+ <CAGxU2F6eJA+vpYVbE0HNW794pF6wLL+o=92NYMQVvmFWnpNPaA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAH5Ym4jGZou27-bwGqxHAf2AHWXpT0=wOa0XNNuqtG9OOhi8EQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGxU2F6eJA+vpYVbE0HNW794pF6wLL+o=92NYMQVvmFWnpNPaA@mail.gmail.com>
 
-On Fri, Nov 15, 2024 at 12:59:27PM -0800, Sam Edwards wrote:
-> Hi Hangbin,
-> 
-> My apologies, I should have shared my version of the check function
-> before. Here it is:
-> 
-> ```bash
-> # Called to validate the addresses on $IFNAME:
-> #
-> # 1. Every `temporary` address must have a matching `mngtmpaddr`
-> # 2. Every `mngtmpaddr` address must have some un`deprecated` `temporary`
+On Mon, Nov 18, 2024 at 03:07:43PM +0100, Stefano Garzarella wrote:
+>On Fri, Nov 15, 2024 at 4:49 PM Alexander Graf <graf@amazon.com> wrote:
+>>
+>> Hi Stefano,
+>>
+>> On 15.11.24 12:59, Stefano Garzarella wrote:
+>> >
+>> > On Fri, Nov 15, 2024 at 10:30:16AM +0000, Alexander Graf wrote:
+>> >> Ever since the introduction of the virtio vsock driver, it included
+>> >> pushback logic that blocks it from taking any new RX packets until the
+>> >> TX queue backlog becomes shallower than the virtqueue size.
+>> >>
+>> >> This logic works fine when you connect a user space application on the
+>> >> hypervisor with a virtio-vsock target, because the guest will stop
+>> >> receiving data until the host pulled all outstanding data from the VM.
+>> >
+>> > So, why not skipping this only when talking with a sibling VM?
+>>
+>>
+>> I don't think there is a way to know, is there?
+>>
+>
+>I thought about looking into the header and check the dst_cid.
+>If it's > VMADDR_CID_HOST, we are talking with a sibling VM.
+>
+>>
+>> >
+>> >>
+>> >> With Nitro Enclaves however, we connect 2 VMs directly via vsock:
+>> >>
+>> >>  Parent      Enclave
+>> >>
+>> >>    RX -------- TX
+>> >>    TX -------- RX
+>> >>
+>> >> This means we now have 2 virtio-vsock backends that both have the
+>> >> pushback
+>> >> logic. If the parent's TX queue runs full at the same time as the
+>> >> Enclave's, both virtio-vsock drivers fall into the pushback path and
+>> >> no longer accept RX traffic. However, that RX traffic is TX traffic on
+>> >> the other side which blocks that driver from making any forward
+>> >> progress. We're not in a deadlock.
+>> >>
+>> >> To resolve this, let's remove that pushback logic altogether and rely on
+>> >> higher levels (like credits) to ensure we do not consume unbounded
+>> >> memory.
+>> >
+>> > I spoke quickly with Stefan who has been following the development from
+>> > the beginning and actually pointed out that there might be problems
+>> > with the control packets, since credits only covers data packets, so
+>> > it doesn't seem like a good idea remove this mechanism completely.
+>>
+>>
+>> Can you help me understand which situations the current mechanism really
+>> helps with, so we can look at alternatives?
+>
+>Good question!
+>I didn't participate in the initial development, so what I'm telling
+>you is my understanding.
+>@Stefan feel free to correct me!
+>
+>The driver uses a single workqueue (virtio_vsock_workqueue) where it
+>queues several workers. The ones we are interested in are:
+>1. the one to handle avail buffers in the TX virtqueue (send_pkt_work)
+>2. the one for used buffers in the RX virtqueue (rx_work)
+>
+>Assuming that the same kthread executes the different workers, it
+>seems to be more about making sure that the RX worker (i.e. rx_work)
+>does not consume all the execution time, leaving no room for TX
+>(send_pkt_work). Especially when there are a lot of messages queued in
+>the TX queue that are considered as response for the host. (The
+>threshold seems to be the size of the virtqueue).
+>
+>That said, perhaps just adopting a technique like the one in vhost
+>(byte_weight in vhost_dev_init(), vhost_exceeds_weight(), etc.) where
+>after a certain number of packets/bytes handled, the worker terminates
+>its work and reschedules, could give us the same guarantees, in a
+>simpler way.
 
-Thanks, this is much clear.
+Thinking more about, perhaps now I understand better why it was
+introduced, and it should be related to the above.
 
-> #
-> # Fails the whole test script if a problem is detected, else returns silently.
-> validate()
-> {
->     mng_prefixes=()
->     undep_prefixes=()
->     temp_addrs=()
-> 
->     while read -r line; do
->         line_array=($line)
->         address="${line_array[1]}"
->         prefix="$(echo "$address" | cut -d: -f1-4)::/64"
->         if echo "$line" | grep -q mngtmpaddr; then
->             mng_prefixes+=("$prefix")
->         elif echo "$line" | grep -q temporary; then
->             temp_addrs+=("$address")
->             if echo "$line" | grep -qv deprecated; then
->                 undep_prefixes+=("$prefix")
->             fi
->         fi
->     done < <(ip -6 addr show dev $IFNAME | grep '^\s*inet6')
-> 
->     # 1. All temporary addresses (temp and dep) must have a matching mngtmpaddr
->     for address in ${temp_addrs[@]}; do
->         prefix="$(echo "$address" | cut -d: -f1-4)::/64"
->         if [[ ! " ${mng_prefixes[*]} " =~ " $prefix " ]]; then
->             echo "FAIL: Temporary $address with no matching mngtmpaddr!";
->             exit 1
->         fi
->     done
-> 
->     # 2. All mngtmpaddr addresses must have a temporary address (not dep)
->     for prefix in ${mng_prefixes[@]}; do
->         if [[ ! " ${undep_prefixes[*]} " =~ " $prefix " ]]; then
->             echo "FAIL: No undeprecated temporary in $prefix!";
->             exit 1
->         fi
->     done
-> }
-> ```
-> 
-> Of course this is using awful text parsing and not JSON output. But
-> the idea is that it groups addresses by their /64 prefix, to confirm
-> that every /64 containing a mngtmpaddrs address also contains an
-> undeprecated temporary, and that every /64 containing a temporary
-> (deprecated or not) contains a mngtmpaddrs.
+In practice, "replies" are almost always queued in the intermediate
+queue (send_pkt_queue) directly by the RX worker (rx_work) during its
+execution. These are direct responses handled by
+virtio_transport_recv_pkt() to requests coming from the other peer (the
+host usually or sibling VM in your case). This happens for example
+calling virtio_transport_reset_no_sock() if a socket is not found, or
+sending back VIRTIO_VSOCK_OP_RESPONSE packet to ack a request of a
+connection coming with a VIRTIO_VSOCK_OP_REQUEST packet.
 
-And I will modify and use your checking version.
+Because of this, if the number of these "replies" exceeds an arbitrary
+threshold, the RX worker decides to de-schedule itself, to give space to
+the TX worker (send_pkt_work) to move those "replies" from the
+intermediate queue into the TX virtqueue, at which point the TX worker
+will reschedule the RX worker to continue the job. So more than avoiding
+deadlock, it seems to be a mechanism to avoid starvation.
 
-> 
-> This can be extended for the lifetime checking: when we build the set
-> of mngtmpaddrs /64s, we also note the valid/preferred_life_time values
-> for each mngtmpaddr. Then later when we confirm rule 1 (all temporary
-> addresses must have a matching mngtmpaddr) we also confirm that each
-> temporary does not outlive the mngtmpaddr in the same /64.
+Note that this is not necessary in vhost-vsock (which uses the same
+functions as this driver, e.g. virtio_transport_recv_pkt), because both
+workers already use vhost_exceeds_weight() to avoid this problem as
+well.
 
-Since we add all mngtmpaddrs manually, which valid/preferred_life_time
-will be forever. So we only need to check the temporary addresses'
-valid/preferred_life_time, right? And on the other hand, the preferred_lft
-maybe 0 in my example.
+At this point I think that doing something similar to vhost here as well
+would allow us not only to avoid the problem that `queued_replies`
+should avoid, but also that the RX worker monopolizes the workqueue
+during data transfer.
 
-    inet6 2001::743:ec1e:5c19:404f/64 scope global temporary dynamic
-       valid_lft 25sec preferred_lft 5sec
-    inet6 2001::938f:432:f32d:602f/64 scope global temporary dynamic
-       valid_lft 19sec preferred_lft 0sec
+Thanks,
+Stefano
 
-It looks we only need to check the valid_lft. Am I miss anything?
+>
+>>
+>>
+>> >
+>> >>
+>> >> Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
+>> >
+>> > I'm not sure we should add this Fixes tag, this seems very risky
+>> > backporting on stable branches IMHO.
+>>
+>>
+>> Which situations do you believe it will genuinely break anything in?
+>
+>The situation for which it was introduced (which I don't know
+>precisely because I wasn't following vsock yet).
+>Removing it completely without being sure that what it was developed
+>for is okay is risky to me.
+>
+>Support for sibling VMs has only recently been introduced, so I'd be
+>happier making these changes just for that kind of communication.
+>
+>That said, the idea of doing like vhost might solve all our problems,
+>so in that case maybe it might be okay.
+>
+>> As
+>> it stands today, if you run upstream parent and enclave and hammer them
+>> with vsock traffic, you get into a deadlock. Even without the flow
+>> control, you will never hit a deadlock. But you may get a brown-out like
+>> situation while Linux is flushing its buffers.
+>>
+>> Ideally we want to have actual flow control to mitigate the problem
+>> altogether. But I'm not quite sure how and where. Just blocking all
+>> receiving traffic causes problems.
+>>
+>>
+>> > If we cannot find a better mechanism to replace this with something
+>> > that works both guest <-> host and guest <-> guest, I would prefer
+>> > to do this just for guest <-> guest communication.
+>> > Because removing this completely seems too risky for me, at least
+>> > without a proof that control packets are fine.
+>>
+>>
+>> So your concern is that control packets would not receive pushback, so
+>> we would allow unbounded traffic to get queued up?
+>
+>Right, most of `reply` are control packets (reset and response IIUC)
+>that are not part of the credit mechanism, so I think this confirms
+>what Stefan was telling me.
+>
+>> Can you suggest
+>> options to help with that?
+>
+>Maybe mimic vhost approach should help, or something similar.
+>
+>That said, did you really encounter a real problem or is it more of a
+>patch to avoid future problems.
+>
+>Because it would be nice to have a test that emphasizes this problem
+>that we can use to check that everything is okay if we adopt something
+>different. The same goes for the problem that this mechanism wants to
+>avoid, I'll try to see if I have time to write a test so we can use
+>it.
+>
+>
+>Thanks,
+>Stefano
 
-Thanks
-Hangbin
