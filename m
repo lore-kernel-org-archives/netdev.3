@@ -1,106 +1,74 @@
-Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
+Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F1914AD24;
-	Tue, 19 Nov 2024 09:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0424C14AD24;
+	Tue, 19 Nov 2024 09:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732009723; cv=none; b=XWYhx7s/DQpO4Kl5KrKjfaz6GRPdwVmrYeGlFPwhS2o8t0ufkfgCK0FZsz3fLLUyqzehHKgerKOMAgd1Pqk0cPCtCVI3aTxifAHybGzD91cZ3H+tOEh85DsM/e3JVYn28t3GrTITpQQMRj/ixnlxOIW9+BJl0t2NzZBlokWVjF0=
+	t=1732009915; cv=none; b=tHvMfhKNBmIuWuaCPXo8K+NOyGq288qiIghaYZBDORsDwLg1jW83me3E4n1EezI2/GmOBjbYIt5TCDrYDJn/lodX3BX1KGwJ0EYtQWL6m9OWaM6QS2ERF5u7el+hEEu5UM4CIC3IcLWYoRv70bLOBKHVE/3K8QeRo8bIFrpCZD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732009723; c=relaxed/simple;
-	bh=5PZ6m2GEAyNN96EHseKtAqIwIUc/JC1dE0eYPR9GsQM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WCVOeosCHhH63jwdgul+hpFVeR22sgBUbbl/mGymHohY5hiZqKfX3EtBGaoShdvGk13Cg1XXpcYfurvKyi/NOTWwrv+VcslEEcyLxl0lBfdMN0rpyjNU/VTZJfHkijaR2A8cVzM/iS5KUwgwFRoLfaTf9g2MZ0RfLuMizNKVHcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=dHFOnqF4; arc=none smtp.client-ip=178.154.239.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="dHFOnqF4"
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:3ca8:0:640:a920:0])
-	by forward502b.mail.yandex.net (Yandex) with ESMTPS id 5AE7161487;
-	Tue, 19 Nov 2024 12:42:37 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XgNicYTOhmI0-CoY1FNFo;
-	Tue, 19 Nov 2024 12:42:36 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1732009356; bh=katyZrPhokp9l9mQeL64lcMdoGx8Uo2/Iourd02Wj30=;
-	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
-	b=dHFOnqF4OhEhJpTGKzdMMZISQNrVNKEM+Cbvna65QDkTpp9YllviMU9dTTJIpy9Lz
-	 +Cu+Ehc3twqXFolA8WhrbrYAyNxLPv9OxvLMACOTZKcJUpisQTgr1mrjETeVo77gTt
-	 SEm7G4N9bu+HzUJgakpI6MLrnx5AJoWSGFKkoL8Y=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <610a9e2a-aa6b-4a2a-ac5d-3ea597b16430@yandex.ru>
-Date: Tue, 19 Nov 2024 12:42:33 +0300
+	s=arc-20240116; t=1732009915; c=relaxed/simple;
+	bh=NEOEA02DqsWW3lYC4YWQs/ZZbW9XL0vo3dmHU46UoDs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a/VDDj567pOs5NrwsO2N6MeaR0nIsP78mpXcuT2WtihF0YjFVkHj1fmjVMneGJAfSc/fLhpOSqV/8//Yhia9SmB8Fyu9mjdURtYTh0YQBfBP41Yn1pYZd8t2TeSV/4t8DlFqY0G/2WiSTnTdy7uJjxEMQ04ceuZmOB70pj6kxiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 19 Nov
+ 2024 17:51:42 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Tue, 19 Nov 2024 17:51:42 +0800
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <joel@jms.id.au>, <andrew@codeconstruct.com.au>,
+	<f.fainelli@gmail.com>, <netdev@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-aspeed@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <jacky_chou@aspeedtech.com>
+Subject: [PATCH net v2] net: mdio: aspeed: Add dummy read for fire control
+Date: Tue, 19 Nov 2024 17:51:41 +0800
+Message-ID: <20241119095141.1236414-1-jacky_chou@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] tun: fix group permission check
-Content-Language: en-US
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- linux-kernel@vger.kernel.org
-Cc: Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, agx@sigxcpu.org, jdike@linux.intel.com,
- Guido Guenther <agx@sigxcpu.org>
-References: <20241117090514.9386-1-stsp2@yandex.ru>
- <673a05f83211d_11eccf2940@willemb.c.googlers.com.notmuch>
-From: stsp <stsp2@yandex.ru>
-In-Reply-To: <673a05f83211d_11eccf2940@willemb.c.googlers.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-17.11.2024 18:04, Willem de Bruijn пишет:
-> Stas Sergeev wrote:
->> Currently tun checks the group permission even if the user have matched.
->> Besides going against the usual permission semantic, this has a
->> very interesting implication: if the tun group is not among the
->> supplementary groups of the tun user, then effectively no one can
->> access the tun device. CAP_SYS_ADMIN still can, but its the same as
->> not setting the tun ownership.
->>
->> This patch relaxes the group checking so that either the user match
->> or the group match is enough. This avoids the situation when no one
->> can access the device even though the ownership is properly set.
->>
->> Also I simplified the logic by removing the redundant inversions:
->> tun_not_capable() --> !tun_capable()
->>
->> Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
-> This behavior goes back through many patches to commit 8c644623fe7e:
->
->      [NET]: Allow group ownership of TUN/TAP devices.
->
->      Introduce a new syscall TUNSETGROUP for group ownership setting of tap
->      devices. The user now is allowed to send packages if either his euid or
->      his egid matches the one specified via tunctl (via -u or -g
->      respecitvely). If both, gid and uid, are set via tunctl, both have to
->      match.
->
-> The choice evidently was on purpose. Even if indeed non-standard.
+When the command bus is sometimes busy, it may cause the command is not
+arrived to MDIO controller immediately. On software, the driver issues a
+write command to the command bus does not wait for command complete and
+it returned back to code immediately. But a read command will wait for
+the data back, once a read command was back indicates the previous write
+command had arrived to controller.
+Add a dummy read to ensure triggering mdio controller before starting
+polling the status of mdio controller to avoid polling unexpected timeout.
 
-So what would you suggest?
-Added Guido Guenther <agx@sigxcpu.org> to CC
-for an opinion.
-The main problem here is that by
-setting user and group properly, you
-end up with device inaccessible by
-anyone, unless the user belongs to
-the tun group. I don't think someone
-wants to set up inaccessible devices,
-so this property doesn't seem useful.
-OTOH if the user does have that group
-in his list, then, AFAICT, adding such
-group to tun changes nothing: neither
-limits nor extends the scope.
-If you had group already set and you
-set also user, then you limit the scope,
-but its the same as just setting user alone.
-So I really can't think of any valid usage
-scenario of setting both tun user and tun
-group.
+Fixes: a9770eac511a ("net: mdio: Move MDIO drivers into a new subdirectory")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+---
+ drivers/net/mdio/mdio-aspeed.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index c2170650415c..373902d33b96 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -62,6 +62,8 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
+ 		| FIELD_PREP(ASPEED_MDIO_DATA_MIIRDATA, data);
+ 
+ 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
++	/* Add dummy read to ensure triggering mdio controller */
++	(void)ioread32(ctx->base + ASPEED_MDIO_CTRL);
+ 
+ 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
+ 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
+-- 
+2.25.1
 
