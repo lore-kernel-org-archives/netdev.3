@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C1B1CFEA1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5D31CF293;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028464; cv=none; b=rE1DqD3S1NvcTp1bmsS3bFPX2bDdC6KY5mFD6txX4cNMn7L8v80dls8c5in3inH55u+u22cp86PX6vISFdIOMi9Bw/QHRSaFDi3FXJc+tLI6vqYaGzwgJo7WbzYzpHmv3v7WVR13KzQG/vJXDt8aOObOj7mzsQ8BQgK6+spp91Y=
+	t=1732028464; cv=none; b=BVCLI/Li7xfkZrneu54nDsFOPn/aOIVfvGO9nDpWDFwWBr85pxaUYHDEpPnuDDsvJmr4H4K7jya66/4tYKpJXUS720wBgSvsAsYsNoJZ0SUA9CdJp3Ka7a/fQb4+5RvEuTRSqxOr5o9gT7ZpZIJy0WT0vzAMkOH16qOdaGzdQZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732028464; c=relaxed/simple;
-	bh=IosRVsOhXaWuKtna+S7TTj7J8IIDP2TBXfqtgenJkPY=;
+	bh=6xMLlIpSN0JBvla5nTP1dqcG6Ed1UwqOOxwMgbKzQ0A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QqU3e16KnTEbdaXPHTRoIto5MrJzppwZx7ou1CI93HuWSfQQFlvWt3xtiB74l3ILKSOxNeQdlqhyJRqyE54lyd02YpV2DB/07vDcSh/JGf2ZAUPoF7v+4AWTMO+EtvZw0b5ycZHmQ9oUd2vsU+7q68woKBqzus7yC4xLUvKQwus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rHmW8pyz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=qACUdn8nTWYYt53dcb0ucMcsolR5gZMP09Go6us95tVuEl99RYC5rywVPbs7zLQMh+2PfTkhXZntbL+yKrsrvFm/GUNzAXibW92N1v0oFKYoCEpTH6NtGxk8MeHORoqn1M4LFVIzR9P8VqANK1DYsR0WqI2JbG0rhzLK4ZVFP+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cjb8vBoW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rHmW8pyz"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2C4EFC4CED2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cjb8vBoW"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F7F5C4CEE0;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1732028464;
-	bh=IosRVsOhXaWuKtna+S7TTj7J8IIDP2TBXfqtgenJkPY=;
+	bh=6xMLlIpSN0JBvla5nTP1dqcG6Ed1UwqOOxwMgbKzQ0A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rHmW8pyzYESo0w1Bh0OvU2MjWhCyLjMvDfeLfvzyQteYRnJSV7OwbQUwfrh0iiJDc
-	 BnV8vzJEAabyNT7Q9lAzrjSMaZepbOzslZ3a8KcbwFs3s9IdjjAjZe4kADrV5qVUPj
-	 cZ5EQurVs5mDOVHCL7kJJBEl021RRganQhLXMo0TsriMR7zZW21nhVvoXIBdIYJro4
-	 meyaK5vxsErcdbE4RyA76Azg3ld6aNV9oHt472Dh8rBWlkbVDqE9PpFA9ChNhiZ/ih
-	 JG+C2BmrgMHyV7llKWR2JsNl+7Py6nqhN7KHQaMk1zImgnDmOwqr45mrf83qB8SHHa
-	 bImfoWAJ22amg==
+	b=Cjb8vBoWvTq7UCm8IA2PWVqLbNSVrqjByOM5WR/sCrWEg+eGO7VD85jZmsotPVpL+
+	 JMSzlg5q1ty/1SFQUGC7VRDSam04nEeag4ccEUbPCj1LjPX5Dn1bLOZ5h/cAbWLSIS
+	 pV8pUMxb0sLr5aJrxrTIWXRqBaugh7U6RhWz0o834ZzuF4LSnIaZoGMKIB7ifAnEC3
+	 5xgM49YuW69HyCqvMkDbt/3uLeEQK5sU9ff29wmwhDQrxQiMEXH5UktmsOvuZes5QV
+	 1Q9ABK+pa3veCWQpGYnVV7vBGFo/gvOGyi/6a3SV9EouZpO/xwn2E6eMpC4HSWwphB
+	 OfPgczluSJb7w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DE76D44167;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43740D44166;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Tue, 19 Nov 2024 16:00:08 +0100
-Subject: [PATCH v5 02/16] net: driver: stmmac: Extend CSR calc support
+Date: Tue, 19 Nov 2024 16:00:10 +0100
+Subject: [PATCH v5 04/16] net: phy: Add helper for mapping RGMII link speed
+ to clock rate
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241119-upstream_s32cc_gmac-v5-2-7dcc90fcffef@oss.nxp.com>
+Message-Id: <20241119-upstream_s32cc_gmac-v5-4-7dcc90fcffef@oss.nxp.com>
 References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 In-Reply-To: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -68,13 +69,13 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=2225;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=1444;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=50kRIgWTZi5wCMka5I1DSABnnyKmmvDBzkE8UY/BAAc=;
- b=pMklRc3dp+NTaxkgKq7mLlrrefkInnF9GNFsD5SvbHHqshUcFJtH3UvED4kFZ69nTWOQHBVTX
- uKHpEoqqbP9BHh40hpxQr935ovrjlsPOE4NcZG8dF3iTKl9fX4IenzL
+ bh=9P0ry2iOu969sx+k09VLkaOhf19TsKhJriPqamf/d5Q=;
+ b=3x1pZvA190M4/JSVKA6683Fqp6WmSzqEWmYvvett/32O9XyIAaAkbscj0re5YlXILhFY1HZEn
+ +qAywTHv1c2BOioB2wL4dAHT4KiTNVvLwyHWaBz2kKoAR8J4QSJ4x9D
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -84,57 +85,57 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Add support for CSR clock range up to 800 MHz.
+The RGMII interface supports three data rates: 10/100 Mbps
+and 1 Gbps. These speeds correspond to clock frequencies
+of 2.5/25 MHz and 125 MHz, respectively.
 
+Many Ethernet drivers, including glues in stmmac, follow
+a similar pattern of converting RGMII speed to clock frequency.
+
+To simplify code, define the helper rgmii_clock(speed)
+to convert connection speed to clock frequency.
+
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h      | 2 ++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
- include/linux/stmmac.h                            | 2 ++
- 3 files changed, 8 insertions(+)
+ include/linux/phy.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 684489156dce..e364cf99d1ff 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -257,6 +257,8 @@ struct stmmac_safety_stats {
- #define CSR_F_150M	150000000
- #define CSR_F_250M	250000000
- #define CSR_F_300M	300000000
-+#define CSR_F_500M	500000000
-+#define CSR_F_800M	800000000
- 
- #define	MAC_CSR_H_FRQ_MASK	0x20
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7bf275f127c9..85fa75fa6abe 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -324,6 +324,10 @@ static void stmmac_clk_csr_set(struct stmmac_priv *priv)
- 			priv->clk_csr = STMMAC_CSR_150_250M;
- 		else if ((clk_rate >= CSR_F_250M) && (clk_rate <= CSR_F_300M))
- 			priv->clk_csr = STMMAC_CSR_250_300M;
-+		else if ((clk_rate >= CSR_F_300M) && (clk_rate < CSR_F_500M))
-+			priv->clk_csr = STMMAC_CSR_300_500M;
-+		else if ((clk_rate >= CSR_F_500M) && (clk_rate < CSR_F_800M))
-+			priv->clk_csr = STMMAC_CSR_500_800M;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a98bc91a0cde..e28c971d7616 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -298,6 +298,29 @@ static inline const char *phy_modes(phy_interface_t interface)
  	}
+ }
  
- 	if (priv->plat->flags & STMMAC_FLAG_HAS_SUN8I) {
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 75cbfb576358..865d0fe26f98 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -34,6 +34,8 @@
- #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
- #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
- #define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
-+#define	STMMAC_CSR_300_500M	0x6	/* MDC = clk_scr_i/204 */
-+#define	STMMAC_CSR_500_800M	0x7	/* MDC = clk_scr_i/324 */
++/**
++ * rgmii_clock - map link speed to the clock rate
++ * @speed: link speed value
++ *
++ * Description: maps RGMII supported link speeds
++ * into the clock rates.
++ *
++ * Returns: clock rate or negative errno
++ */
++static inline long rgmii_clock(int speed)
++{
++	switch (speed) {
++	case SPEED_10:
++		return 2500000;
++	case SPEED_100:
++		return 25000000;
++	case SPEED_1000:
++		return 125000000;
++	default:
++		return -EINVAL;
++	}
++}
++
+ #define PHY_INIT_TIMEOUT	100000
+ #define PHY_FORCE_TIMEOUT	10
  
- /* MTL algorithms identifiers */
- #define MTL_TX_ALGORITHM_WRR	0x0
 
 -- 
 2.47.0
