@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791521CF5FD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74241CFEA0;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028464; cv=none; b=YhyuZC0045lxwWKoU7CJPohUmdbrFW5+TSG+EoQLAKHCZvNPi+bV4oE3B2Aj4APTXzZoGsj+aTTGpnVI5L9m5A8fogxtiCQwtD5+k0SId7i22p/GhUja7w5DfwddGovNGXZyoI9OC34Pf8+/j4gU0dvugmozk8mqiVs7nfE6GmY=
+	t=1732028464; cv=none; b=rFsZCz5kGPbwATCaKLhR/KnMvQPiMlTbd5YU94n19w7vqp5yrebU9+h+/PZlDnZjN0rbf/+vpWk/5v9bwXIkym4j48QlbtTNMByHSvF3hBMgqL1IPtcF6/wwCqT2W4H7ltZyy9JIKVkSCoEYmTN/yCm5nBwSdpNBNN1jnwyYeiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732028464; c=relaxed/simple;
-	bh=zonr3mCcTyCgwR7d1gZNImuy1doROORC9hQH8Wi0Qyg=;
+	bh=axOruUYC/TxQCwOqg+9pJVARKk+8imeW6v4uMk1inlc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c7NE2eW9C8JxUX37k3P55B4Ado9tlhwgXQSJK7VAmPqYG/3GitRO5/pF36M9wc9XpOO/kgbGx3iowVuhgw0GaNVmpICHN4CHeVuzXC8HZV9oA0QIdo0wPtHnvCB+YQL7GQ828qLG6ALTfNl08wo+MxNa6r9h6iWvpx5Isneb5tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDVV4hcp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cDwgyVdNIQg7/wohJJDGJwOeRswXr3r0+vZEdTKu2Qir044q+++PTvf3mwJMYbRk9v/MGEouVW1o9Yg2Asi45j/IOZD+in1ejSj/+C92oRvzj0eyh+e7aYR9lC7aTrD9g75w9chWzcXO2xQRLH9/HF73AS61IiN78ZTJ2N1Eg6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7cqK3zq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDVV4hcp"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A2D2C4CECF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7cqK3zq"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F918C4CED8;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1732028464;
-	bh=zonr3mCcTyCgwR7d1gZNImuy1doROORC9hQH8Wi0Qyg=;
+	bh=axOruUYC/TxQCwOqg+9pJVARKk+8imeW6v4uMk1inlc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RDVV4hcp4eUvDGQRhU6ETJwU7idAdmiPrXhEQm3KRR2JFLdvXHySvFjXt8qMtdUFK
-	 3Rpa3MfFQZz0rNn0H7wzOhA3lgFTB/MjvEY8ZrfFQ0GnfHeB9fzuSvqpyenAtIGYsh
-	 U7Mm6t/ucrRB4o2m0jViNqV8oDd8dKtexoPdpWK7FNWOW1HZdJqcrsBCicje4HUdbC
-	 UhqPX0+ELsZ18Yegy5Dvim62OJF4efTFvqnIcORXD43zR5FeR3xMS/SZLNrw4dmmh8
-	 NG0ONGaBcNi6iqqg75GB6FCVKAB/Lx4ouJs9dQLP5TTSPHY4jT8ply9Zu/3GUJTZ+N
-	 tJKFo5q/FiRIQ==
+	b=d7cqK3zqTfRZuxLTPRJByUqJ6m02je2wZS0CYbmb/bt1RARGkW9pwzvpoy/OAzUCT
+	 sPh1SJKFmBN/Cwww/hmpWbewq9osjbudpHf30jTPnrz2EBHjrjQS3K6BqGiOeDsDtk
+	 npfF0RyNi8KlXAYxS1v6VPI4ScOkMwIucv+GCj+cYRYCaRfhgbxXquBLjaW9E3ccXY
+	 Ud0HGjphdj+oBR2WdOWAdv0VwERadjjXe9VD+yVTOFhO/7fvyiMkhzBUleQRAYq1Mk
+	 oFMT91/dWNrpP3B96751ynGYsxw72JoxYFwRflt3OMCc6xZ4G68202mC16RfVGxY82
+	 CwXhu2o3BwfSw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09662D44165;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31DD8D44162;
 	Tue, 19 Nov 2024 15:01:04 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Tue, 19 Nov 2024 16:00:07 +0100
-Subject: [PATCH v5 01/16] net: driver: stmmac: Fix CSR divider comment
+Date: Tue, 19 Nov 2024 16:00:09 +0100
+Subject: [PATCH v5 03/16] net: stmmac: Fix clock rate variables size
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241119-upstream_s32cc_gmac-v5-1-7dcc90fcffef@oss.nxp.com>
+Message-Id: <20241119-upstream_s32cc_gmac-v5-3-7dcc90fcffef@oss.nxp.com>
 References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 In-Reply-To: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -68,13 +68,13 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
- Jacob Keller <jacob.e.keller@intel.com>
+ Serge Semin <fancer.lancer@gmail.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=958;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732028461; l=4015;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=2KaIHv/oSTo3FOtKPvkHjEF7Z3D3rI5ymtYbTqdzAuo=;
- b=VzXyPPkdD5MNgXPIsgGgKyikwTPOcuqi1aJQqTrQ5YJTNgwosCPyciyjVICWmxvJfZ5ZXqQFd
- YttUk4CqsfaBSEM3a7vTlKy8vS6gzRhr2Z4pcsxZrVfQdEZZrLOBg1+
+ bh=2zBIP1pqWbxljDYVW6XJp7WZLnEFiMk2GjNFgE+0EQQ=;
+ b=WKYcQ/jJlzzzivMKrlny4nPDPO+laFcQ6yCq1HdncJmHKRIdn5VtMEEtXnhHjsbS79ApUS//Z
+ JDAIj8BSSNBC4Gg9d7xoROCmB8sOjyOpce2lTZj7WNy4Rv4deaQrHPy
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -84,30 +84,98 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The comment in declaration of STMMAC_CSR_250_300M
-incorrectly describes the constant as '/* MDC = clk_scr_i/122 */'
-but the DWC Ether QOS Handbook version 5.20a says it is
-CSR clock/124.
+The clock API clk_get_rate() returns unsigned long value.
+Expand affected members of stmmac platform data and
+convert the stmmac_clk_csr_set() and dwmac4_core_init() methods
+to defining the unsigned long clk_rate local variables.
 
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- include/linux/stmmac.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c   | 2 +-
+ include/linux/stmmac.h                                  | 6 +++---
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 901a3c1959fa..2a5b38723635 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -777,7 +777,7 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
+ 		netdev_err(priv->dev, "Failed to max out clk_ptp_ref: %d\n", err);
+ 	plat_dat->clk_ptp_rate = clk_get_rate(plat_dat->clk_ptp_ref);
+ 
+-	netdev_dbg(priv->dev, "PTP rate %d\n", plat_dat->clk_ptp_rate);
++	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
+ }
+ 
+ static int qcom_ethqos_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index e65a65666cc1..ac0b02783889 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -26,7 +26,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	void __iomem *ioaddr = hw->pcsr;
+ 	u32 value = readl(ioaddr + GMAC_CONFIG);
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	value |= GMAC_CORE_INIT;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 85fa75fa6abe..5eeff3ef7095 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -300,7 +300,7 @@ static void stmmac_global_err(struct stmmac_priv *priv)
+  */
+ static void stmmac_clk_csr_set(struct stmmac_priv *priv)
+ {
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index ad868e8d195d..b1e4df1a86a0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -639,7 +639,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 		dev_info(&pdev->dev, "PTP uses main clock\n");
+ 	} else {
+ 		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
+-		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
++		dev_dbg(&pdev->dev, "PTP rate %lu\n", plat->clk_ptp_rate);
+ 	}
+ 
+ 	plat->stmmac_rst = devm_reset_control_get_optional(&pdev->dev,
 diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index d79ff252cfdc..75cbfb576358 100644
+index 865d0fe26f98..c9878a612e53 100644
 --- a/include/linux/stmmac.h
 +++ b/include/linux/stmmac.h
-@@ -33,7 +33,7 @@
- #define	STMMAC_CSR_20_35M	0x2	/* MDC = clk_scr_i/16 */
- #define	STMMAC_CSR_35_60M	0x3	/* MDC = clk_scr_i/26 */
- #define	STMMAC_CSR_150_250M	0x4	/* MDC = clk_scr_i/102 */
--#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/122 */
-+#define	STMMAC_CSR_250_300M	0x5	/* MDC = clk_scr_i/124 */
- 
- /* MTL algorithms identifiers */
- #define MTL_TX_ALGORITHM_WRR	0x0
+@@ -252,8 +252,8 @@ struct plat_stmmacenet_data {
+ 	struct clk *stmmac_clk;
+ 	struct clk *pclk;
+ 	struct clk *clk_ptp_ref;
+-	unsigned int clk_ptp_rate;
+-	unsigned int clk_ref_rate;
++	unsigned long clk_ptp_rate;
++	unsigned long clk_ref_rate;
+ 	unsigned int mult_fact_100ns;
+ 	s32 ptp_max_adj;
+ 	u32 cdc_error_adj;
+@@ -265,7 +265,7 @@ struct plat_stmmacenet_data {
+ 	int mac_port_sel_speed;
+ 	int has_xgmac;
+ 	u8 vlan_fail_q;
+-	unsigned int eee_usecs_rate;
++	unsigned long eee_usecs_rate;
+ 	struct pci_dev *pdev;
+ 	int int_snapshot_num;
+ 	int msi_mac_vec;
 
 -- 
 2.47.0
