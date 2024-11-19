@@ -1,144 +1,105 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9C843179
-	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 14:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908F51CC89E
+	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 14:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028052; cv=none; b=r81DUse0u11HorMRDJ7Mkot7xak72dWmnblqlCBTLYaahN6uwaaHcbrzOCjKAFs5Q2jLjO8qYTZ1SYdAjgFahCc02fQqlu6PFQxG2xWXJ21vVTuo0i1b1iH14Zwt/nvBnNDHyG8ydxkgMkEmVnUvCo/q7qQgIeO3MW56Fxz/lEU=
+	t=1732028080; cv=none; b=duptVfKWNmJbF1jVtQxtak9tBF23WrvMUfiNrvQlB2twIFRCgBxmGk+Y3JoUp+R7Adv2JpyJjlRnxdX5SIUCegzku1DDX1isKc0fnrnk5mm5DydReS5EdEODPqizhbHPF7/tBv1+WQrnvYRrICDEih570XuKu3JNHtRhK2UsM3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732028052; c=relaxed/simple;
-	bh=lInCZp2xKgUZhAB/044xKlF58GdtVm2BUsygsBtHeB4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=NOFGVkde+n0KlKfCAEP8dpF0yO6aF6W+dxtjvYdFfDWQ0nCArDGRZ763ijwwAtNQx3EoaR/Y3L+e0poCWbqYiBH/EvGv31BOhthnlm1VfUf+q1Et2tlMxxSYyFC1KRD44KCuYSgObamEJvKOuNl7gQDThXt6wLVjtpzFA+HKjCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P0aQc86u; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732028080; c=relaxed/simple;
+	bh=ZYOYx3kDqNaAc2RhK2jsSET3mmqRKcim56l/2dY34II=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bkHN3CfOgil3N2zKmPBjvERnYPN5FjnlT6NYgoJeNeFD63uW/gyNyHu761YrojOJHZarhBhFLZYmuMdXmuiXboMIteVGj2aIuvIHPCIH//fnbjPLnH1ZPGLYl/lEstmMeYiWw9DdHbk0wiCsY2UBJHFW+5f2mk+bA07bsC/lRrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=zj3Ttou1; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P0aQc86u"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5ee354637b4so565710eaf.3
-        for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 06:54:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="zj3Ttou1"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cf6f367f97so6191697a12.0
+        for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 06:54:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732028050; x=1732632850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NaqUrT8Kzq3UMcB3TNf5QwaQzz6MIqNclugaH7J2qa8=;
-        b=P0aQc86uSyK873nKwBbJfMpPiRhDNL4CtJKypaMezLRt9QU6oW6ooV7LSuDm+aDFwY
-         4Wot4Bm2g9JwxvVNYEZTUH8mPQ4iPV69ty4WtAn/8XDoHuVThCvt9QMHoW3mF+VjP4+2
-         LbMaaK2siJSSIY0zUHdNHQlM9t85KnRuW6y/aJIf7wIAZ4mXXrCgeN8UD4nt/zL9i2oM
-         IMeXFl1CPW9iwVKw0TGx3DcYKcngNjWTR98iOk3xFVrJTs8Er/4Q8j9ZItUg33GGxDWL
-         n2etnI+s6X9IPVwXgucg/l8c8LDIxd+HHDXeu2UEipqhJzvZHqJbFALVNUF0Ub28WA7E
-         fndQ==
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1732028076; x=1732632876; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hc/wH3bmuYSOHHOwLUU69Mw4Cu3NRrbUkwVayPdHDog=;
+        b=zj3Ttou1e0A/F9tA+HjVuie8ZMN6ZuTkwORd2yue1dwsz3D4r1VndstQXW1kQExtQ7
+         V/v+dqqv2KDtS6TWiTLTl84xJ/ti2MeSU7N9yy7LOF7yjmvYvkVIrvAseFtiwbE9FS2X
+         69XX8PmE4nyzjM/pOunb2A7kiSPP4WrTQfRYlNdUJSnWLxCJ3UKYQ+8jg1KrcF4kqsvL
+         cU3aN3SoKcX2BYYT9H9As6PaxZHMT3NKs1jTSVCZH8pNhTkrn0Iib6z09WszpgSCqjw4
+         v1T9naPluP6jJ0SfKzV0LRp/Ub8MdBhGH5TKc6tXPyaZIt3PIBOP87kJ7XNTXLA8Fkz2
+         ELrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732028050; x=1732632850;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NaqUrT8Kzq3UMcB3TNf5QwaQzz6MIqNclugaH7J2qa8=;
-        b=YjRPSPpAFv8SQAJfy0U74m4A1Qust6cuWv7+8eZYd+r1uIHxS7KX+oe88LCgp5kDl3
-         L937nZbojq2GLvfw+PYZPP4b8W7RZK+YWUPCsry37DOSawJte4N+28Wr4QKRIMthg6lh
-         VZI1QA3QrGiyF8cUGUeexTGAkX3whEXjnL5xHY6FrX08p/soD+V2NYUUYe71X4S45kUU
-         PzOES19p2PUrMze+ydb2znJGxaD7pH3DyXfQIwHd+++Sj27bxPLO/QxJboKGG9l86szL
-         Urd27pWgGFhg7NgbGMk8jlM9NxiRJ7TXIOmopLkLOf04NkP1eqIzLmSy0w+4GKmGf3Lb
-         bhzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWd5d4daq4Q5gL43INWWwJkPH4Y1stLcX593qJCgivB3aIPNauxaeGue3ee4N8dZLJ9jDa6MFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOO/BlpCur0rD6a59Rb6OQcPjIM5PKs0xjQwpEzZAc2zwEv6yE
-	YfQ9UYa+9m/TSn0FHGhpqEeOApE07JEUaF1fsKzr2cnDV2bSq24e
-X-Google-Smtp-Source: AGHT+IGICjymsJKPKl6NOyIMIYXWvGmbp+D/Z9wfWLoDwKHaHW0FfKcrlwD8buwlxkb1rJjliGsM7A==
-X-Received: by 2002:a05:6358:2193:b0:1bc:573a:401a with SMTP id e5c5f4694b2df-1c6cd1fe0bfmr619665655d.5.1732028049964;
-        Tue, 19 Nov 2024 06:54:09 -0800 (PST)
-Received: from localhost (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b37a89fac6sm98476785a.108.2024.11.19.06.54.09
+        d=1e100.net; s=20230601; t=1732028076; x=1732632876;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hc/wH3bmuYSOHHOwLUU69Mw4Cu3NRrbUkwVayPdHDog=;
+        b=jKmwskR/VwlZlrK++36dVB7z4nlMa9bld1HWn/UkXh/zlSNtm5h52K4TymJ82t8BOY
+         6khcsvqhWnGg8V5y3Ob/E4P39EZg4wE1prmiioEiViJm4+b2t3wmOh0FQLjysb4qRaNI
+         NS9vLWtj1vNxtjhXhx3+I1rw0GvkWr+7j7ePGip37bcmtLzbTCJAgCPjkVZgF51oFpb0
+         LvShb5fZlqnWPE43xLZf7qp23CxDiOurAX/yUOFzXZs5asoTSSSL+8CqKML8utz+kb3x
+         +G5gXD2omWmvcCe0K7EVTzLMIUl7Q7Cs9O1x8i0RmhMioUksJWZ0BdvvxXVWluiibVFK
+         KWTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVoQ48sCHELVwSFtT9st7FK5MJVZlBhyySBm6KD6ZDueAQKtt5nZyntoDHPLj6GTDLrly5Vue4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh067yT+4dWv9txK6s7r1pE+Ms1Gc4rLPZJdf+Z9AURCCXGY16
+	mpf2MNcZ3aByBly/4gFefBg+MruURcP2pe4jPQmIw+JIxfCgUbJZnTl9NQz8g/03F+mvqlAoVHy
+	X
+X-Google-Smtp-Source: AGHT+IF+LJ5BopLAkVAcIutoot8+6i9QFPEx4ARS5ISXbmjPVOnvFRnknfI+GEufF8+im92V5q1nrw==
+X-Received: by 2002:a05:6000:4619:b0:382:5036:d1f2 with SMTP id ffacd0b85a97d-3825036d5fbmr1690367f8f.54.1732027591447;
+        Tue, 19 Nov 2024 06:46:31 -0800 (PST)
+Received: from localhost ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823390c818sm10993503f8f.28.2024.11.19.06.46.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 06:54:09 -0800 (PST)
-Date: Tue, 19 Nov 2024 09:54:09 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Stefano Brivio <sbrivio@redhat.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, 
- netdev@vger.kernel.org, 
- David Gibson <david@gibson.dropbear.id.au>, 
- Ed Santiago <santiago@redhat.com>, 
- Paul Holzinger <pholzing@redhat.com>, 
- Mike Manning <mvrmanning@gmail.com>
-Message-ID: <673ca6911817c_2a097e29430@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20241119133336.3e389752@elisabeth>
-References: <20241114215414.3357873-1-sbrivio@redhat.com>
- <20241114215414.3357873-2-sbrivio@redhat.com>
- <6737896d3b97b_3d5f2c29459@willemb.c.googlers.com.notmuch>
- <20241115191024.5bc07d74@elisabeth>
- <20241115192342.73f5ea19@elisabeth>
- <20241119133336.3e389752@elisabeth>
-Subject: Re: [PATCH RFC net 1/2] datagram: Rehash sockets only if local
- address changed for their family
+        Tue, 19 Nov 2024 06:46:30 -0800 (PST)
+Date: Tue, 19 Nov 2024 15:46:28 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Carolina Jubran <cjubran@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>, donald.hunter@gmail.com
+Subject: Re: [PATCH net-next V3 3/8] devlink: Extend devlink rate API with
+ traffic classes bandwidth management
+Message-ID: <ZzykxEIYZPjjRbVy@nanopsycho.orion>
+References: <20241117205046.736499-1-tariqt@nvidia.com>
+ <20241117205046.736499-4-tariqt@nvidia.com>
+ <Zzr84MDdA5S3TadZ@nanopsycho.orion>
+ <b4aa8e75-600e-4dc5-8fe1-a6be7bb42017@nvidia.com>
+ <Zzxa13xPBZGxRC01@nanopsycho.orion>
+ <20241119063313.5bc46276@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241119063313.5bc46276@kernel.org>
 
-Stefano Brivio wrote:
-> On Fri, 15 Nov 2024 19:23:42 +0100
-> Stefano Brivio <sbrivio@redhat.com> wrote:
-> 
-> > > On Fri, 15 Nov 2024 12:48:29 -0500
-> > > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-> > >   
-> > > > Stefano Brivio wrote:    
-> > > >
-> > > > [...]
-> > > >
-> > > > > diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
-> > > > > index cc6d0bd7b0a9..d52333e921f3 100644
-> > > > > --- a/net/ipv4/datagram.c
-> > > > > +++ b/net/ipv4/datagram.c
-> > > > > @@ -65,7 +65,7 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
-> > > > >  		inet->inet_saddr = fl4->saddr;	/* Update source address */
-> > > > >  	if (!inet->inet_rcv_saddr) {
-> > > > >  		inet->inet_rcv_saddr = fl4->saddr;
-> > > > > -		if (sk->sk_prot->rehash)
-> > > > > +		if (sk->sk_prot->rehash && sk->sk_family == AF_INET)
-> > > > >  			sk->sk_prot->rehash(sk);      
-> > > > 
-> > > > When is sk_family != AF_INET in __ip4_datagram_connect?    
-> 
-> So, this is the only "mismatching" case (by design) I can actually
-> reproduce. Long story short:
-> 
-> int __ip6_datagram_connect(struct sock *sk, struct sockaddr *uaddr,
-> 			   int addr_len)
-> {
-> 
-> 	[...]
-> 
-> 	if (usin->sin6_family == AF_INET) {
-> 		if (ipv6_only_sock(sk))
-> 			return -EAFNOSUPPORT;
-> 		err = __ip4_datagram_connect(sk, uaddr, addr_len);
-> 
-> 		[...]
-> 
-> here we (intentionally) call __ip4_datagram_connect() on an AF_INET6
-> socket because we're connecting a dual-stack socket to an IPv4 address.
-> 
-> This happens for me with sshd (from OpenSSH) doing getaddrinfo() at
-> boot, it's some DNS stuff, but I didn't trace it all the way. You can
-> also reproduce it with:
-> 
->   socat UDP6-LISTEN:1337,null-eof STDOUT & { sleep 1; : | socat STDIN UDP4:0:1337,shut-null; }
-> 
-> All in all, I would keep those checks. Even if this is the only case
-> we currently see, the assumptions __ip4_datagram_connect() <-> AF_INET
-> and __ip6_datagram_connect() <-> AF_INET6 don't hold in general.
-> 
-> Or do you find them exceedingly verbose / harmful for any other reason?
-> 
-> I would also make it clearer in the commit message why we need them
-> in the next patch (once net-next reopens).
+Tue, Nov 19, 2024 at 03:33:13PM CET, kuba@kernel.org wrote:
+>On Tue, 19 Nov 2024 10:31:03 +0100 Jiri Pirko wrote:
+>> >It seems that type: indexed-array with sub-type: u32 would be the correct
+>> >approach. However, I noticed that this support appears to be missing in the
+>> >ynl-gen-c.py script in this series:
+>> >https://lore.kernel.org/all/20240404063114.1221532-3-liuhangbin@gmail.com/.
+>> >If this is indeed the case, how should I specify the min and max values for
+>> >the u32 entries in the indexed-array?  
+>> 
+>> Not sure. Perhaps Jakub/Donald would know. Ccing.
+>
+>I haven't read full context, but all "nested" arrays are discouraged.
+>Use:
+>	multi-attr: true
+>and repeat the entries without wrapping them into another attr.
 
-Thanks for that context. Sounds good to me.
+But we need to use the array index. It looks a bit odd to me to depent
+on the index in multi-attr in general. It is not guaranteed other
+atrributes don't get in the middle. Ordering should be maintained, that
+is ok.
+
+How about to have a nest that contain just one multi-attr attribute?
