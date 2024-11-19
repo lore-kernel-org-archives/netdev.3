@@ -1,113 +1,152 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9196E1D221A;
-	Tue, 19 Nov 2024 16:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F012C1CCECE;
+	Tue, 19 Nov 2024 16:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732034500; cv=none; b=Dc1l27ktaBPMkjgfjtgLz69hSWUB1wsgNUtz2tHxhHI6OfFj8FPnbchdmfRcbYlabQcmWxDmGGDrshMM7dS1Na8xydL0xNFGxc+b6pzK0y/F+SwuxdcxEqyajRRqFJjTnmC28yA4E5vQEENCy+pI6csuSBeiGtn5xviZi5jrZI4=
+	t=1732034548; cv=none; b=JzDOVaUYTC3vQHCoS11cNSpEn3sDei0ZZJ+C8cOAEJhrnd1hvgX8XuRX0TuiEO28yWhpfsMCdgdeqpMtlkH06KbPRGWh3J3YSlaAmkfHd20YJBRO02iBOiAkS1XoYYmg65/eoosfHt4Z4mHsyB4trI20S9Q3/YIVUJAm+FWpCpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732034500; c=relaxed/simple;
-	bh=xBQNvDFZdqOuwdW3nqhA8Co5ztcdwYsGzLXjIGCuuD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CqVFQMYzItpk+8q+0okaXV8UlABi6yK12XBGZd/NktJBGI5o/PdYT+duvGxRkrKCyV7w8cmcNOPnEEjC4W3f9HycAIk2QxKNLmN0r/MyST83/MYxiaTu0xSa3tajIJC8KjWL+ufzSEo8EmHR4voC5CPH0EtvAdGqx/eg4Ua/iDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aaZC67T0; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1732034548; c=relaxed/simple;
+	bh=dyK6iQY4mG9VcCDxZWnkVliPw/bcSwDsWwuf4vJ6BnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YEhQluCi3xvbxqjYCrZXy11HOdpA9NYC4j+RRMX81s98vKlIW5OI8KBrU764YWMPWpc572BxbFMxOPjhdQOH1Cy0s8FmqbdoI8vQxIN8L0c3NkZquVowOHZ+G9G0qsU7dayN7KNGDgcWU7wOrwr3Uczr5FqdDxasbEyRUYB1mi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vCBFAFK9; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aaZC67T0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=820A+uqPjk3jrH0mLxNnwDGBvwyz/yvubtHzlTrrbZw=; b=aaZC67T0sa+lZ43UDQKQKt69/z
-	8VkYUpereUrC5gOPyh0zBSP9ETlYVP+htDja+DcuPS4RT7gA1EJSnBJhizZcl/1aLQmI/LGRbCxOQ
-	vhZae9c3UWVvdIbCoFfEZ9JJLdb4QzDaK+ytPFLqhzJepmYuPcaZ0lEuet60q91Nuf9qHuTKTdVvN
-	IdqJWQQF9UHu0xMyiOqifaWCvNe+SRGGPAIRirK6ysKtsGUKuKTZizNicVvQKkmMnC6z5RAcYFGJ1
-	ZShLf5w3Ie95GCUvWiZC3TO62GUXwgXhj3znzaQqJqpLqXAkP8cGa50N7aJv9GIOs1DuvdzMvr6Yw
-	gSsmJ+rQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50346)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tDRHw-0003wv-31;
-	Tue, 19 Nov 2024 16:41:17 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tDRHv-0006Cs-07;
-	Tue, 19 Nov 2024 16:41:15 +0000
-Date: Tue, 19 Nov 2024 16:41:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: jan.petrous@oss.nxp.com
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v5 04/16] net: phy: Add helper for mapping RGMII link
- speed to clock rate
-Message-ID: <Zzy_qh13euS1aTYr@shell.armlinux.org.uk>
-References: <20241119-upstream_s32cc_gmac-v5-0-7dcc90fcffef@oss.nxp.com>
- <20241119-upstream_s32cc_gmac-v5-4-7dcc90fcffef@oss.nxp.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vCBFAFK9"
+Message-ID: <6d2cdd37-f2d7-4537-a7e7-8e525c4378dd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1732034541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7l0JgKEgxnC8jk86kuocY0fjlpXe94Bsa3OSgU7iB+E=;
+	b=vCBFAFK9N11a8pykhD5s/Z3QIsimgWs+/LGk8r7ZPpr+OSIAmH4uK3sEuADOXoE5VWI2th
+	4ZCb11WmXmg39Cr5sJg+Zk+uFyBb4Rjop9ilizf5KbFtiyVZg/SFq6m0m7P1k2t5kWHdgQ
+	4vpM1ofFiZOYdzTR3Ftm2pPdKS/7VrE=
+Date: Tue, 19 Nov 2024 11:42:15 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119-upstream_s32cc_gmac-v5-4-7dcc90fcffef@oss.nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Subject: Re: [PATCH net-next 2/2] net: axienet: Add support for AXI 2.5G MAC
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Suraj Gupta <suraj.gupta2@amd.com>,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
+ radhey.shyam.pandey@amd.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ git@amd.com, harini.katakam@amd.com
+References: <20241118081822.19383-1-suraj.gupta2@amd.com>
+ <20241118081822.19383-3-suraj.gupta2@amd.com>
+ <ZztjvkxbCiLER-PJ@shell.armlinux.org.uk>
+ <657764fd-68a1-4826-b832-3bda91a0c13b@linux.dev>
+ <9d26a588-d9ac-43c5-bedc-22cb1f0923dd@lunn.ch>
+ <72ded972-cd16-4124-84af-8d8ddad049f0@linux.dev>
+ <ZzyzhCVBgXtQ_Aop@shell.armlinux.org.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <ZzyzhCVBgXtQ_Aop@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Nov 19, 2024 at 04:00:10PM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On 11/19/24 10:49, Russell King (Oracle) wrote:
+> On Tue, Nov 19, 2024 at 10:26:52AM -0500, Sean Anderson wrote:
+>> On 11/18/24 20:35, Andrew Lunn wrote:
+>> > On Mon, Nov 18, 2024 at 11:00:22AM -0500, Sean Anderson wrote:
+>> >> On 11/18/24 10:56, Russell King (Oracle) wrote:
+>> >> > On Mon, Nov 18, 2024 at 01:48:22PM +0530, Suraj Gupta wrote:
+>> >> >> Add AXI 2.5G MAC support, which is an incremental speed upgrade
+>> >> >> of AXI 1G MAC and supports 2.5G speed only. "max-speed" DT property
+>> >> >> is used in driver to distinguish 1G and 2.5G MACs of AXI 1G/2.5G IP.
+>> >> >> If max-speed property is missing, 1G is assumed to support backward
+>> >> >> compatibility.
+>> >> >> 
+>> >> >> Co-developed-by: Harini Katakam <harini.katakam@amd.com>
+>> >> >> Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+>> >> >> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+>> >> >> ---
+>> >> > 
+>> >> > ...
+>> >> > 
+>> >> >> -	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+>> >> >> -		MAC_10FD | MAC_100FD | MAC_1000FD;
+>> >> >> +	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
+>> >> >> +
+>> >> >> +	/* Set MAC capabilities based on MAC type */
+>> >> >> +	if (lp->max_speed == SPEED_1000)
+>> >> >> +		lp->phylink_config.mac_capabilities |= MAC_10FD | MAC_100FD | MAC_1000FD;
+>> >> >> +	else
+>> >> >> +		lp->phylink_config.mac_capabilities |= MAC_2500FD;
+>> >> > 
+>> >> > The MAC can only operate at (10M, 100M, 1G) _or_ 2.5G ?
+>> >> 
+>> >> It's a PCS limitation. It either does (1000Base-X and/or SGMII) OR
+>> >> (2500Base-X). The MAC itself doesn't have this limitation AFAIK.
+>> > 
+>> > 
+>> > And can the PCS change between these modes? It is pretty typical to
+>> > use SGMII for 10/100/1G and then swap to 2500BaseX for 2.5G.
+>> 
+>> Not AFAIK. There's only a bit for switching between 1000Base-X and
+>> SGMII. 2500Base-X is selected at synthesis time, and AIUI the serdes
+>> settings are different.
 > 
-> The RGMII interface supports three data rates: 10/100 Mbps
-> and 1 Gbps. These speeds correspond to clock frequencies
-> of 2.5/25 MHz and 125 MHz, respectively.
+> Okay. First it was a PCS limitation. Then it was a MAC limitation. Now
+> it's a synthesis limitation.
 > 
-> Many Ethernet drivers, including glues in stmmac, follow
-> a similar pattern of converting RGMII speed to clock frequency.
+> I'm coming to the conclusion that those I'm communicating with don't
+> actually know, and are just throwing random thoughts out there.
 > 
-> To simplify code, define the helper rgmii_clock(speed)
-> to convert connection speed to clock frequency.
+> Please do the research, and come back to me with a real and complete
+> answer, not some hand-wavey "it's a limitation of X, no it's a
+> limitation of Y, no it's a limitation of Z" which looks like no one
+> really knows the correct answer.
 > 
-> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> Just because the PCS doesn't have a bit that selects 2500base-X is
+> meaningless. 2500base-X is generally implemented by upclocking
+> 1000base-X by 2.5x. Marvell does this at their Serdes, there is
+> no configuration at the MAC/PCS for 2.5G speeds.
+> 
+> The same is true of 10GBASE-R vs 5GBASE-R in Marvell - 5GBASE-R is
+> just the serdes clocking the MAC/PCS at half the rate that 10GBASE-R
+> would run at.
+> 
+> I suspect this Xilinx hardware is just the same - clock the transmit
+> path it at 62.5MHz, and you get 1G speeds. Clock it at 156.25MHz,
+> and you get 2.5G speeds.
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Hey, I'm just a l^Huser.
 
-Thanks!
+In the synthesis settings for the PCS, you can select
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+  - 1G
+    - 1000BASEX
+    - SGMII
+    - BOTH
+  - 2 5G
+    - 2500 BASEX
+    - 2.5G SGMII
+
+(all of the above being exclusive choices)
+
+In the synthesis settings for the MAC, you can select
+
+  - 1 Gbps
+    - Tri speed
+    - 1000 Mbps
+  - 2.5 Gbps
+    - 2500 Mbps
+
+(ditto)
+
+I can't comment on what happens when you over/underclock the MAC or PCS.
+
+--Sean
