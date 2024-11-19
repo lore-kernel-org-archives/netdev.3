@@ -1,105 +1,144 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908F51CC89E
-	for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 14:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5542C1CEAA2;
+	Tue, 19 Nov 2024 14:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732028080; cv=none; b=duptVfKWNmJbF1jVtQxtak9tBF23WrvMUfiNrvQlB2twIFRCgBxmGk+Y3JoUp+R7Adv2JpyJjlRnxdX5SIUCegzku1DDX1isKc0fnrnk5mm5DydReS5EdEODPqizhbHPF7/tBv1+WQrnvYRrICDEih570XuKu3JNHtRhK2UsM3c=
+	t=1732028181; cv=none; b=ZGjlOYwdhGUBa0FOCir8yE8T7seDrbqoKR819OGaNr47mIyd1AZOkQMLXLexHA6tVCzKYGlu4AjMimlDFVV2GnNWIsywsQiqIlrDEYLMes7jQiPnOAH97abqio/YGPcyx+N8aATdNF4BWqhP5DQO1gdjxv384Y+60Qroe7wQPiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732028080; c=relaxed/simple;
-	bh=ZYOYx3kDqNaAc2RhK2jsSET3mmqRKcim56l/2dY34II=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bkHN3CfOgil3N2zKmPBjvERnYPN5FjnlT6NYgoJeNeFD63uW/gyNyHu761YrojOJHZarhBhFLZYmuMdXmuiXboMIteVGj2aIuvIHPCIH//fnbjPLnH1ZPGLYl/lEstmMeYiWw9DdHbk0wiCsY2UBJHFW+5f2mk+bA07bsC/lRrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=zj3Ttou1; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1732028181; c=relaxed/simple;
+	bh=ppUWTmFX24mYYKF9QRClgtlq6a/mWwX82JjPsCdrs6c=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=srmNEo5dRRjDE136eqpzQ+I27Byp2H1vDe5r1s73RW4OOLebvzQrCLqKKc9bbUcesBzPQrtq6SQSTgEF4o/Db88vsMwXMfqXxuiL8DeMBJza6ZS0T87yWclWWCiwX3vMSeOMY4TI+IyqCqq75ZJS2CH5pEPUvbFzQUz7Z9pvaTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cM8S3Dcl; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="zj3Ttou1"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cf6f367f97so6191697a12.0
-        for <netdev@vger.kernel.org>; Tue, 19 Nov 2024 06:54:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cM8S3Dcl"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e387fdd1ec4so2130230276.0;
+        Tue, 19 Nov 2024 06:56:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1732028076; x=1732632876; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hc/wH3bmuYSOHHOwLUU69Mw4Cu3NRrbUkwVayPdHDog=;
-        b=zj3Ttou1e0A/F9tA+HjVuie8ZMN6ZuTkwORd2yue1dwsz3D4r1VndstQXW1kQExtQ7
-         V/v+dqqv2KDtS6TWiTLTl84xJ/ti2MeSU7N9yy7LOF7yjmvYvkVIrvAseFtiwbE9FS2X
-         69XX8PmE4nyzjM/pOunb2A7kiSPP4WrTQfRYlNdUJSnWLxCJ3UKYQ+8jg1KrcF4kqsvL
-         cU3aN3SoKcX2BYYT9H9As6PaxZHMT3NKs1jTSVCZH8pNhTkrn0Iib6z09WszpgSCqjw4
-         v1T9naPluP6jJ0SfKzV0LRp/Ub8MdBhGH5TKc6tXPyaZIt3PIBOP87kJ7XNTXLA8Fkz2
-         ELrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732028076; x=1732632876;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1732028177; x=1732632977; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Hc/wH3bmuYSOHHOwLUU69Mw4Cu3NRrbUkwVayPdHDog=;
-        b=jKmwskR/VwlZlrK++36dVB7z4nlMa9bld1HWn/UkXh/zlSNtm5h52K4TymJ82t8BOY
-         6khcsvqhWnGg8V5y3Ob/E4P39EZg4wE1prmiioEiViJm4+b2t3wmOh0FQLjysb4qRaNI
-         NS9vLWtj1vNxtjhXhx3+I1rw0GvkWr+7j7ePGip37bcmtLzbTCJAgCPjkVZgF51oFpb0
-         LvShb5fZlqnWPE43xLZf7qp23CxDiOurAX/yUOFzXZs5asoTSSSL+8CqKML8utz+kb3x
-         +G5gXD2omWmvcCe0K7EVTzLMIUl7Q7Cs9O1x8i0RmhMioUksJWZ0BdvvxXVWluiibVFK
-         KWTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoQ48sCHELVwSFtT9st7FK5MJVZlBhyySBm6KD6ZDueAQKtt5nZyntoDHPLj6GTDLrly5Vue4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh067yT+4dWv9txK6s7r1pE+Ms1Gc4rLPZJdf+Z9AURCCXGY16
-	mpf2MNcZ3aByBly/4gFefBg+MruURcP2pe4jPQmIw+JIxfCgUbJZnTl9NQz8g/03F+mvqlAoVHy
-	X
-X-Google-Smtp-Source: AGHT+IF+LJ5BopLAkVAcIutoot8+6i9QFPEx4ARS5ISXbmjPVOnvFRnknfI+GEufF8+im92V5q1nrw==
-X-Received: by 2002:a05:6000:4619:b0:382:5036:d1f2 with SMTP id ffacd0b85a97d-3825036d5fbmr1690367f8f.54.1732027591447;
-        Tue, 19 Nov 2024 06:46:31 -0800 (PST)
-Received: from localhost ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823390c818sm10993503f8f.28.2024.11.19.06.46.30
+        bh=4mKc83Z9HOLY249Nin7rQjs6BHlM/yh/iEiCfe28AgI=;
+        b=cM8S3DclSzEaX9vBItpn3NSvwhjZw4KxCIcTh+Yx6CUzUs6CtOxbEg5EBbV0ViSIYU
+         06CkV1WTYG5sJXZFUjUSYvetCyV9ZZ5s8gvNT4VLoRxhfI0BQpbTjLfil6le87OUf57p
+         j4mcYgRydYbK7FzGcisNYlkZpNuoiHUlfIZA5qYoB7qz0zRQgDypABH91malBZF/FdUI
+         EDvicIx1ztp3ipejOJjSIBxlpNiKabevLQJ5XkMfitO+mi0/gNAA6mlYxJPpjk+pxDB6
+         11qXAhlTDy0uXtjRAp1zvRvFK99ZUCnv8FVQfkJ1JWFK1H7VPgNIUV2v8aO1NP+KaOPS
+         effg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732028177; x=1732632977;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4mKc83Z9HOLY249Nin7rQjs6BHlM/yh/iEiCfe28AgI=;
+        b=TNGd5JKNL24Jntqz9oDZQI2lMtfWA+bEr47DGF1cVD5PYcEbsU7n7tsovMu8F4sjzJ
+         XAYNjoGRrEUzLCA7AiefwBFScgYba0qme6avHMy8AV4WLuqYrh05BUti7JK+ubmmH82Q
+         +13zWFO/qZ5AyVwt3BVnZJOMm7In9pYF66jC7vm5z5yClYSO2U4WPNkZdG/Pdvpq9HEE
+         YRvmuanvKk74KPpkM5TQ33EaIytBVf1voeYfOxna+ja74AOgMFL+1pac6LxWjn7/tTFT
+         bNz11Ld7cSV2HHTzLlP5aAh3OyYOq1bT5Oe4eHb1tpY1tyQ7Ts66ev/hdweyzPFMEqw4
+         hTVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAAlT0Q1aCQcQ7uMt92QEsERunatRRC9KRpdibq5Esq5V+wMTPLYqa1rEEFf73TMXqfu0k++Y2a5ut7tc=@vger.kernel.org, AJvYcCUG0tqzHRAjNd/EXPId5mP274hoTRTUO/Q4yayjuV/vv7hWmBMWJh7NQsJ0MRknTYv+BkI1VcJU@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE6ymnFlxij+tCqShCH2nVUEQ/ooKnDy7Kl0M/mvaKSUj15BlC
+	coS0XMGpdJU05pYlFLH6fQD9IdhcB/tOoyULmF1VaQlbjoU3cmG1
+X-Google-Smtp-Source: AGHT+IGsmqH5sooiWWCQd3ivA8DTUDK4u8jFRlL3c45aXghHuCORBnM2NfkGYVPXYfr7Z02EvlM3yw==
+X-Received: by 2002:a05:6902:124b:b0:e30:c261:4d57 with SMTP id 3f1490d57ef6-e382614635emr14593861276.27.1732028177178;
+        Tue, 19 Nov 2024 06:56:17 -0800 (PST)
+Received: from localhost (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46392bbbf3esm11805901cf.41.2024.11.19.06.56.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 06:46:30 -0800 (PST)
-Date: Tue, 19 Nov 2024 15:46:28 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Carolina Jubran <cjubran@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, donald.hunter@gmail.com
-Subject: Re: [PATCH net-next V3 3/8] devlink: Extend devlink rate API with
- traffic classes bandwidth management
-Message-ID: <ZzykxEIYZPjjRbVy@nanopsycho.orion>
-References: <20241117205046.736499-1-tariqt@nvidia.com>
- <20241117205046.736499-4-tariqt@nvidia.com>
- <Zzr84MDdA5S3TadZ@nanopsycho.orion>
- <b4aa8e75-600e-4dc5-8fe1-a6be7bb42017@nvidia.com>
- <Zzxa13xPBZGxRC01@nanopsycho.orion>
- <20241119063313.5bc46276@kernel.org>
+        Tue, 19 Nov 2024 06:56:16 -0800 (PST)
+Date: Tue, 19 Nov 2024 09:56:16 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: stsp <stsp2@yandex.ru>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ linux-kernel@vger.kernel.org
+Cc: Jason Wang <jasowang@redhat.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ netdev@vger.kernel.org, 
+ agx@sigxcpu.org, 
+ jdike@linux.intel.com, 
+ Guido Guenther <agx@sigxcpu.org>
+Message-ID: <673ca7102dba5_2a097e2948f@willemb.c.googlers.com.notmuch>
+In-Reply-To: <610a9e2a-aa6b-4a2a-ac5d-3ea597b16430@yandex.ru>
+References: <20241117090514.9386-1-stsp2@yandex.ru>
+ <673a05f83211d_11eccf2940@willemb.c.googlers.com.notmuch>
+ <610a9e2a-aa6b-4a2a-ac5d-3ea597b16430@yandex.ru>
+Subject: Re: [PATCH net-next] tun: fix group permission check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119063313.5bc46276@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Tue, Nov 19, 2024 at 03:33:13PM CET, kuba@kernel.org wrote:
->On Tue, 19 Nov 2024 10:31:03 +0100 Jiri Pirko wrote:
->> >It seems that type: indexed-array with sub-type: u32 would be the correct
->> >approach. However, I noticed that this support appears to be missing in the
->> >ynl-gen-c.py script in this series:
->> >https://lore.kernel.org/all/20240404063114.1221532-3-liuhangbin@gmail.com/.
->> >If this is indeed the case, how should I specify the min and max values for
->> >the u32 entries in the indexed-array?  
->> 
->> Not sure. Perhaps Jakub/Donald would know. Ccing.
->
->I haven't read full context, but all "nested" arrays are discouraged.
->Use:
->	multi-attr: true
->and repeat the entries without wrapping them into another attr.
+stsp wrote:
+> 17.11.2024 18:04, Willem de Bruijn =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > Stas Sergeev wrote:
+> >> Currently tun checks the group permission even if the user have matc=
+hed.
+> >> Besides going against the usual permission semantic, this has a
+> >> very interesting implication: if the tun group is not among the
+> >> supplementary groups of the tun user, then effectively no one can
+> >> access the tun device. CAP_SYS_ADMIN still can, but its the same as
+> >> not setting the tun ownership.
+> >>
+> >> This patch relaxes the group checking so that either the user match
+> >> or the group match is enough. This avoids the situation when no one
+> >> can access the device even though the ownership is properly set.
+> >>
+> >> Also I simplified the logic by removing the redundant inversions:
+> >> tun_not_capable() --> !tun_capable()
+> >>
+> >> Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
+> > This behavior goes back through many patches to commit 8c644623fe7e:
+> >
+> >      [NET]: Allow group ownership of TUN/TAP devices.
+> >
+> >      Introduce a new syscall TUNSETGROUP for group ownership setting =
+of tap
+> >      devices. The user now is allowed to send packages if either his =
+euid or
+> >      his egid matches the one specified via tunctl (via -u or -g
+> >      respecitvely). If both, gid and uid, are set via tunctl, both ha=
+ve to
+> >      match.
+> >
+> > The choice evidently was on purpose. Even if indeed non-standard.
+> =
 
-But we need to use the array index. It looks a bit odd to me to depent
-on the index in multi-attr in general. It is not guaranteed other
-atrributes don't get in the middle. Ordering should be maintained, that
-is ok.
+> So what would you suggest?
+> Added Guido Guenther <agx@sigxcpu.org> to CC
+> for an opinion.
+> The main problem here is that by
+> setting user and group properly, you
+> end up with device inaccessible by
+> anyone, unless the user belongs to
+> the tun group. I don't think someone
+> wants to set up inaccessible devices,
+> so this property doesn't seem useful.
+> OTOH if the user does have that group
+> in his list, then, AFAICT, adding such
+> group to tun changes nothing: neither
+> limits nor extends the scope.
+> If you had group already set and you
+> set also user, then you limit the scope,
+> but its the same as just setting user alone.
+> So I really can't think of any valid usage
+> scenario of setting both tun user and tun
+> group.
 
-How about to have a nest that contain just one multi-attr attribute?
+Understood. If no one comments before the window reopens, I think it's
+fine to just resubmit.
+
