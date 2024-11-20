@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5186E1C4A18;
-	Wed, 20 Nov 2024 14:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557FC1C9DDB;
+	Wed, 20 Nov 2024 14:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732111596; cv=none; b=RvVhR5FfwriqLQYgQfE9ouc3IxuqZCGYiVgKsG04WHHl7GeoOk84nyxoVc6dHvBM7nU2vZQ82k0ehePefgKG7771lgzLX/s/WM/AlceukWgjXFw4PW6HN0CW0eLek+9C7WsaOyGf8r+UiwCE3ug8XTkywsNlQYcY4sT1g+9a87A=
+	t=1732111632; cv=none; b=uTusBdccSIg96YwUaWCAcLAxO7vWI2+jhggLVvSdxx8PWgpCQoOfn6hWixXdiyWtOcf2r9tZan8J8TTDhL1sUdX2EHjlTv89RuEEb5by0TDuTv1Pm6rcg6gTC9oPoZDqweCYrPNBmzyBETLxdf1yOfxiZv8mY/m0aBOd3ARFhQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732111596; c=relaxed/simple;
+	s=arc-20240116; t=1732111632; c=relaxed/simple;
 	bh=Ht1v6VZM0OpLQY36dqQ+vUEe14WDKDbfPqGqSliSrWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cc67jO/7mnIiajxbgGAArjA86+Bj+emCpcR6OTahHbnHZFEClRKSn18fWnZrI36q9U9tYE8PQ5pbFXJsBaWoVXbloe0wpmtUyV5ypN3VfgzFddSmeQoa0uxtymTutrFftHi2se402QyKunak/tq5YHSuIWqO8cgPzkCCjMt7RwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZETreamO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ATn+UEIL/fdnVx5ZKzKetA0vV0ATvKI75niRmH9Mc/o4lSllWbavsC4WzTjUUyR8JZHBKehR9SPIddTk4mCkyjAXIkGNqVSO/PYyO4PUz5727MOncrr/eOkSe54XeFNVjcMzcduO3CaobVCuEdmClAcG2GD1aNeaf7HKz5o3PtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iw2hsF71; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZETreamO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDABC4CECD;
-	Wed, 20 Nov 2024 14:06:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iw2hsF71"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587F6C4CED6;
+	Wed, 20 Nov 2024 14:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732111596;
+	s=k20201202; t=1732111632;
 	bh=Ht1v6VZM0OpLQY36dqQ+vUEe14WDKDbfPqGqSliSrWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZETreamOPU5JW9TUlu9C8gAJe4JyBO3o2atAOwBVqTN3Q5zDMcJr8WOq72+FnqOpA
-	 affbsH5ik7Kk69i5PvsSs7QlSlhYTRdqe5zIgoA1HcUSVY+gn4wK5CZ7+fA0KQkkk2
-	 9BDnA8/AQNa0KWQ2ZUA0zJop33NBZLthvdlk5bqf9RrZTds8v08IYkg/8NNf2WitNk
-	 rUeTlTVx/qN2w70T7tKP0Cnbwvxivl6YD40q0mPn2HnbBxG3wQ7Ebv4XMV9VdAzzCX
-	 i5MvFaawwspaQPiRCMgOgWRpe99B08cY/rQejWgH9V39k0rxtWuRMbxxtNJnWiHVRu
-	 5PvdfQGvxaFtw==
+	b=iw2hsF71IyYUOKVKRLiQwMqAhXjhsiO2x78sTypdXxKJw5qftKvg0mkgZzcKErsXI
+	 fHs/LBvz5EfAWcoXF8Bd3YrB0OMfZ5Zt7CrVTei77S8MVDfTIZ+BLd5zqVijoH+zp+
+	 m6pmWstU6OCOvanM07FZGpAJGvzCdGxO0iDVjtBBKKpHGt0HFA+/OTEOxbC+l5sQhL
+	 RIKGCGohLF5YkL1CDJnw8bvE6OG1fUFPOVt/tt9x3tScLTzi0Y+NHcooB/rut8xF1W
+	 4vl0j7/MFPWwza1Jg5AAQe8IrLKq0xxlKXosnl0QMRiQZamYLciNbHrZUDolk9QX8W
+	 GHaOXzAVzdooA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -37,12 +37,12 @@ Cc: Breno Leitao <leitao@debian.org>,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 10/10] ipmr: Fix access to mfc_cache_list without lock held
-Date: Wed, 20 Nov 2024 09:05:35 -0500
-Message-ID: <20241120140556.1768511-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 6/6] ipmr: Fix access to mfc_cache_list without lock held
+Date: Wed, 20 Nov 2024 09:06:36 -0500
+Message-ID: <20241120140647.1768984-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241120140556.1768511-1-sashal@kernel.org>
-References: <20241120140556.1768511-1-sashal@kernel.org>
+In-Reply-To: <20241120140647.1768984-1-sashal@kernel.org>
+References: <20241120140647.1768984-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.9
+X-stable-base: Linux 6.6.62
 Content-Transfer-Encoding: 8bit
 
 From: Breno Leitao <leitao@debian.org>
