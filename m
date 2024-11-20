@@ -1,99 +1,104 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F31A19C561;
-	Wed, 20 Nov 2024 09:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468D422318;
+	Wed, 20 Nov 2024 09:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732095797; cv=none; b=cWewRz1MyE4l3qhq4av0iSDEzdEEA0tBd+pPnWUW4zbw6JP0eA1Sv9udUaf0rgobWUZ67fi4W+DRdon8vVF8v1QPtQc4uKEcKh2mKP1zZucalIOh/ZDAWJT5fLW20M/jTU6Swbneu1GKTJibFHokTuFqeoxbLvDPq0brMn46B38=
+	t=1732096280; cv=none; b=hBTkGkQUbWQdYiXP/uQl2xicI6xtD1WbrvJMOSZHMQH/ECP7oRCk/HzB2gOOibQd4CWUVa0tg2PVoMLsdOAKVXGHzH2R1C1QkkPQFmVZJQMwBl8+SLInl1cHRkoGjgd0hlfeggEJyAVMZ5RfyEH4eDmgWdbNOAedWEYPwEv5Spc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732095797; c=relaxed/simple;
-	bh=VaKOt6vvu3wOap6Yra2kLT6E5D+cKAsIU7jD3uNxLao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oUCdBQZIC8r0dkZSzyuX4LBhrfC30vPiosFsQCSV5TBhp3xXH+vJkD60EVPLlH+vkzRf6WeC6UnbPkQ/5/es/CBEUKbHVSOtrTSR4UzdMx28l5XBthlSbWhax3rlkOQzOz6KTyFTE95rwDjZFrfmYW1mrwXnYIok7+oUyhRlotw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=igZMxffb; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1732096280; c=relaxed/simple;
+	bh=QnEvV7M7dRUWTCULBMx/LYYNVmrHpXS1rh3A+FZ5syA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GnK41zVDvgU/oUIqa3Ecn8mVhA4+kT3Ivj17bKjUNytmJSq8yLf+41euT0/S7/RVDymBxlR4wLynXe/hYhZ9F7aJiC0sH8kE2nbs3xWkeRWgJOD5SXkzOueW2DnRW0Qhf4Jl8LV45loqjqxsDwHwvljsapsZmiHkWWmjNVruJeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B8b4Pml8; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="igZMxffb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kZTawVyREwEbEOOkp3Rqm/v6gSKb/kMRQbLscX9yHuw=; b=igZMxffbTRUyD8L+1EoUfrdzky
-	RSCaES81zeNcd2+z6BGEANUnUTKU4IfjdGt+u85jLekbR7U1rsHoncYLr4zg5cR1nKwjoKFdG6/ZC
-	Qx1umwuHGU1wHui6vx5IHTK9UBcFgRWsI0n1SAEWTnn1X1jXAcTFRL0C5pnH9XXUKpIfyWrRfpzry
-	66FUMXQBG2L1hvu0eYY+ZzUPvAe1h6j3tzVaDsT7lFo+FrDcVo3WgPrkzuiMEfWkTrd001NvRabRJ
-	Ewjn/XKISUqt3m0EGepTbsEloWWyFSGQBTDbYsE57tavrghZxu5A4lu+kEOy8NcKfOSmKvCWETIyW
-	oYTXeekg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41692)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tDhEg-0005D4-0P;
-	Wed, 20 Nov 2024 09:42:58 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tDhEb-0006zB-1H;
-	Wed, 20 Nov 2024 09:42:53 +0000
-Date: Wed, 20 Nov 2024 09:42:53 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	joel@jms.id.au, andrew@codeconstruct.com.au, f.fainelli@gmail.com,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mdio: aspeed: Add dummy read for fire control
-Message-ID: <Zz2vHWLYTRKIG7GK@shell.armlinux.org.uk>
-References: <20241119095141.1236414-1-jacky_chou@aspeedtech.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B8b4Pml8"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ea8b039ddcso1439283a91.0;
+        Wed, 20 Nov 2024 01:51:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732096278; x=1732701078; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rS5nazrbc0MnpmMLjGy+J8J5XBtZBX25qoYPsMvVIlY=;
+        b=B8b4Pml8cnF9se7V/yt3XvVo7iOm/B566VcZtsmKbZnv7VzhAW9cKYRXAQNLI8dTTM
+         yvG8l9lEZK6okIxwlUTDdAI+NtuOo5OkpfecWf0MCzw0XkL7VMFTSFoaGtySY4XDxabY
+         KhBkGNKPeufEIMreTm3H40CJ/cZTDAqZb0g4EzpLq/sEzcGLjpYORmgu9r8Ukw6B+DmB
+         zC01do4qQM51RQAvkYJ+HONPbtSMFlS7oDLv5koa/w9yUIItaYBGQkE1Kd1JLnO/kxF+
+         XEvCA4hhXJjbh3kLK3IcPBfvOQT7qBioXHbUxUY2hdCCbkZ+0co3KBvA9NbTmiMs8ZpH
+         /0ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732096278; x=1732701078;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rS5nazrbc0MnpmMLjGy+J8J5XBtZBX25qoYPsMvVIlY=;
+        b=tpexs5SealEaIcgk9DiLI+XHD2bjw26C0wqLlyDcoCHsaOUxKU4+hq6BVMA5h+1TdS
+         5Fg2hUB//qLLUmqbEI7elz4T71wu+KjohYIyHBnmE0Z01AZNwZmx87gMbgj7BgDIixtt
+         VIbo1e5Y/sQyx3rYVdbfWl9l/0++uDmmnrlOWw+5Q5jFQdiKtC/gD1O+VzMeEaDzMcc8
+         niFOlm1xra7QT8bwEsNA6PrM8il8u/LqVNU2Lq1D5ity7b2DFid9UHp26P7j50Q7WsqY
+         GCsweL+vc9coJGuwIlt0TX7AEsYcOFd4rym3TY3wnLuGPD3RZiGSFpZyH/bJJPyk1rjg
+         3fYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVp9dJmmFcvdpAITh2haPbomSsaNw7SmGXMVn7Ts8/CA/I/+s1tu/r+pWmsgK12m1SKk2OCSm7tPW6mPJ07UfT2@vger.kernel.org, AJvYcCVzh+gagIqkagck9JWztEHHEBJBH86yzdqKoEGGGRIR0/7hg6hIZk9sKeinc2E2FZqS58hnrVqgUMS3MvA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXeHkxvbVnEKzssw2KuXzM0F6evm7pyyA/UqjTLYs3SC/j+6iB
+	uHn+AWWF2dmx/wkyh3O/eEOLh0C7kdXg6Gj4lpIYMrhZ1wgonlNY3EnjuquFgXM=
+X-Gm-Gg: ASbGncthq8eLQqFGPMk1mEQGrnf+iLMkbknmMJgxs1wDiF8STUhdPSqaAQDhpiFW31v
+	yh/p4NJQaf4KdXQ2eAC4FRoQIM8YFtKK3Fpj2jW7q1u1VI4Ve4ZkLKFObp7ezetMU8sMJUXN5Vw
+	CdddVr6M3oQ4wKfCO5YPrXUUxTNbe1caPyUzDvuMCjNUq6zPnAm6AKkmLo+0W4z3u4Ec7OjUqcr
+	0I9M3DWy5ikKTCBiWDFh0Ma4RNVFnpr9nPr/VFwHS6Cpls+q8MNYCNn+9I+0PHs11KysQ==
+X-Google-Smtp-Source: AGHT+IHl7gHPKMf4LQG3giGJiOy/u4nlubmYH4+Zq1qHn9Cm6IO+ffN848IAgrodnrjGDMxJ1ui+ag==
+X-Received: by 2002:a17:90b:3a84:b0:2ea:77d9:634d with SMTP id 98e67ed59e1d1-2eaca7448c4mr2596265a91.17.1732096278280;
+        Wed, 20 Nov 2024 01:51:18 -0800 (PST)
+Received: from fedora.dns.podman ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ead03de5bbsm887338a91.36.2024.11.20.01.51.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Nov 2024 01:51:17 -0800 (PST)
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Sam Edwards <cfsworks@gmail.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Alex Henrie <alexhenrie24@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: [PATCHv2 net 0/2] ipv6: fix temporary address not removed correctly
+Date: Wed, 20 Nov 2024 09:51:06 +0000
+Message-ID: <20241120095108.199779-1-liuhangbin@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119095141.1236414-1-jacky_chou@aspeedtech.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 19, 2024 at 05:51:41PM +0800, Jacky Chou wrote:
-> When the command bus is sometimes busy, it may cause the command is not
-> arrived to MDIO controller immediately. On software, the driver issues a
-> write command to the command bus does not wait for command complete and
-> it returned back to code immediately. But a read command will wait for
-> the data back, once a read command was back indicates the previous write
-> command had arrived to controller.
-> Add a dummy read to ensure triggering mdio controller before starting
-> polling the status of mdio controller to avoid polling unexpected timeout.
-> 
-> Fixes: a9770eac511a ("net: mdio: Move MDIO drivers into a new subdirectory")
-> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-> ---
->  drivers/net/mdio/mdio-aspeed.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-> index c2170650415c..373902d33b96 100644
-> --- a/drivers/net/mdio/mdio-aspeed.c
-> +++ b/drivers/net/mdio/mdio-aspeed.c
-> @@ -62,6 +62,8 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
->  		| FIELD_PREP(ASPEED_MDIO_DATA_MIIRDATA, data);
->  
->  	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
-> +	/* Add dummy read to ensure triggering mdio controller */
-> +	(void)ioread32(ctx->base + ASPEED_MDIO_CTRL);
+Currently the temporary address is not removed when mngtmpaddr is deleted
+or becomes unmanaged. The patch set fixed this issue and add a related
+test.
 
-I'd change that comment to:
+v2:
+1) delete the tempaddrs directly instead of remove them in  addrconf_verify_rtnl(Sam Edwards)
+2) Update the test case by checking the address including, add Sam in SOB (Sam Edwards)
 
-	/* The above write could be posted, causing the timeout below to
-	 * be inaccurate. Ensure the controller starts before we start the
-	 * timeout.
-	 */
+Hangbin Liu (2):
+  net/ipv6: delete temporary address if mngtmpaddr is removed or
+    unmanaged
+  selftests/rtnetlink.sh: add mngtempaddr test
+
+ net/ipv6/addrconf.c                      | 41 +++++++---
+ tools/testing/selftests/net/rtnetlink.sh | 95 ++++++++++++++++++++++++
+ 2 files changed, 124 insertions(+), 12 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.46.0
+
