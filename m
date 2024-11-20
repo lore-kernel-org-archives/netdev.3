@@ -1,98 +1,124 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170C7154439
-	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 17:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2071024B28;
+	Wed, 20 Nov 2024 17:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732122517; cv=none; b=ZkGxkg7OpfOPJuvJmwpq3fKwuRZLIdgT+LWE6oCuhtiWKpI5mUG6Fsdx/z2SgZjeVL+Kp8mzINwC+MRTw/OUwdAnoD7FG08Qok/BClCC24sBGj9wvRKQnZw/wMAGECiiFFjKKA1TpjozQY6AL32KCcxY9GnlDbBkkB92aagktJM=
+	t=1732122820; cv=none; b=BoCdedQvxlnwHsK4hOV7UhKVieVn3NMBUdBQ15uwZFCdoHGLcI9XGUA8nM/P9Xo+yruZxp8b+XWYTAHU/+JUWBj05cq//zvB5+vNaeTqOfPI5Iz9rO0jW9jsQREM2k50eSoML9c1FhQaVU4nwut0zumeP9j5pETEFHMyfwsvSFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732122517; c=relaxed/simple;
-	bh=LdmnBg7dEkkDqK/hRmLqgPc54YrWxdEeTQ0bSbwJuB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ojzWtN/mZJvmF0MUimNnQmN85PZfBlfAswYv1kMBT5C4tKRkh7uX+OHXTHtLW2qArbqIQnVMdjBtQZfjPvkyo1vrz/Hm4Ge7wgKpBBZyumeXTqDMVtArsHg4k6zRC882xGEjs9yhP+nGOPvJUlncCheCHI8bggSgy8rLdx1E6G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=Wf6f2Mxp; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1732122820; c=relaxed/simple;
+	bh=/1hZo+1vKMNvcfwFv9WQw8lUg2hIjCFIbJikQXtqLTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=VC71HMoVduQFDb9XPvI7Z5rwyl84tJt923eBZvIwVdLHrvXZKpRwg4kgP84u/waP7gLvl1fRtwEZp2FeMUZpCiAM/iGIw8s+KsM9LmLiPI1fzcElBAmX3fsK21ltmVi9d5t/JQgMzczaA8U5QND8WtgECM/1B+1rmACkBeGqHI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nh2d7bSf; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="Wf6f2Mxp"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20e576dbc42so62351545ad.0
-        for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 09:08:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1732122514; x=1732727314; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fx5Yf0Ry6m4y3ClWCHX8xWT4YyXCXGE+2A39W9IT2Dk=;
-        b=Wf6f2MxpY+Rgn08M4HpIe9yNSfyCkvMp/mv0RGHrGZRoJHN0jv11JtUw17TzoIQM9T
-         iPZE+4LDlBdjTPk5RQG3Ftv3poTrzE20ZwfiAe5zSHkW5ZpN0F15B/QVvf4nXEPBgbiy
-         wIoMcnyfHhhbNF57h54V/QTRuuPtEMgGR+my2W0zW1Za1b9jTEv8XQwxAExOsHoZc/KW
-         TZVni9xe9rHk7VV8/ZLg1uv+t+0Ipx4sPFJ/0WmV0+t6XvC2VlbHoEZjvG9TVxNTxtEy
-         VKJ3yHHIv9WmV0vp5kWrAs1pYSqH9SxnqK7g2PGQJnJMFoannx3kg0kSADfPc5PSQY2X
-         fR7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732122514; x=1732727314;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fx5Yf0Ry6m4y3ClWCHX8xWT4YyXCXGE+2A39W9IT2Dk=;
-        b=UEIYSiw/Hmp6O14KiLC5xEqhC78lNUtp2AOqsOX5uDTY3Q5BJ2fD93PA5gQ/2c6+G6
-         G/TsOy7KM+PoLdb8AruNecp9scA7MaIuAFGtYb89mjqlolvr81FYpquzthLfI2eAGljv
-         GhNJbCnfHJ8Lrt+vYD3hjy/MIxoD4sR7AXMNX0zbrLSxC00gnsDwhLBc8kvf+2d3qnFt
-         GK4g23TmF6/GhIv2mSkfxREzehRcXZGZHXLr59IkCTIdH5h91L3FiLiY/iJOnES1Nasr
-         h8tfqQCWLUJWP+2/OL4WO8BEhByVRfhr3l34934nwmCyrKrR9gh1nPMNz9R42A6bv9Br
-         y4aQ==
-X-Gm-Message-State: AOJu0YylmHpgyshT52Aw4FVt12kqJdwuHkU3mOHUkGsgqiyT5EN395VA
-	Q4OQ1Hk3Dn4JDnTAy9RVu5m5+KDNcPRL2fvo5dHC+nBCTR4b6imEp3IMtkfW3k8qNEeDrFtY0z5
-	d
-X-Google-Smtp-Source: AGHT+IGPIJ+5sMLGEO3ekkSiyw4NkWuw5Q4lRgs0ENedLGl1BAc1iALK8sr30fLb6ZNd1C+idOONsA==
-X-Received: by 2002:a17:903:8c6:b0:212:3f36:cee6 with SMTP id d9443c01a7336-2126aebbd8cmr40679035ad.33.1732122514342;
-        Wed, 20 Nov 2024 09:08:34 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724befea7adsm1943930b3a.189.2024.11.20.09.08.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 09:08:34 -0800 (PST)
-Date: Wed, 20 Nov 2024 09:08:32 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org
-Subject: Re: netdev: operstate UNKNOWN for loopback and other devices?
-Message-ID: <20241120090832.5b413ed4@hermes.local>
-In-Reply-To: <20241119192353.2862779e@kernel.org>
-References: <20241119153703.71f97b76@hermes.local>
-	<20241119192353.2862779e@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nh2d7bSf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732122818; x=1763658818;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=/1hZo+1vKMNvcfwFv9WQw8lUg2hIjCFIbJikQXtqLTc=;
+  b=Nh2d7bSfKZzXntSrBOoiurh+h9PVaOyqF7hvhpJUbl0ZpthrPidtMQ2I
+   6kwxNcS1ViQyzTxKLfAibu+kasP+YzkbJ7nIWhrQWnbt7XrWZVnft5NnE
+   Erv2MpyQhKtNSn2l6VyGviF6KV26jllFhdcLGYl7AgF6uOJWOQiMjxT3P
+   AKFZVsXwBdsa/mMmdgtFPyCJijMaO8kCN20heS05jwJs6/dZaTuY6JbqQ
+   eg7sXlO/90FL1oHuMd84DgI5X9mh8xyTZvv/rDNNXbJY2WxVLgMhs9as1
+   BhY3HaMJcoo3mPo6h7MF434FG7bvlUP2BZJz2b+22NdBT2C+wnONqj/Nq
+   g==;
+X-CSE-ConnectionGUID: ZXy7kK1kTg2uYG8aKWTCjA==
+X-CSE-MsgGUID: XqbFbB4PTJSw/DjCnENlNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11262"; a="36109802"
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; 
+   d="scan'208";a="36109802"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 09:13:11 -0800
+X-CSE-ConnectionGUID: nixXk+oPStyJnMT/xeWwMQ==
+X-CSE-MsgGUID: eWiXwDYRR9KnLo8uEJpnOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,170,1728975600"; 
+   d="scan'208";a="94794513"
+Received: from bmurrell-mobl.amr.corp.intel.com (HELO [10.125.109.160]) ([10.125.109.160])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2024 09:13:09 -0800
+Message-ID: <5624f840-0496-40bd-b6ec-8fb253565a84@intel.com>
+Date: Wed, 20 Nov 2024 10:13:07 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Should the CXL Type2 support patchset be split up?
+To: Alejandro Lucero Palau <alucerop@amd.com>, Paolo Abeni
+ <pabeni@redhat.com>, alejandro.lucero-palau@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org, dan.j.williams@intel.com,
+ martin.habets@xilinx.com, edward.cree@amd.com, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+References: <20241017165225.21206-1-alejandro.lucero-palau@amd.com>
+ <fb2d7565-b895-4109-b027-92275e086268@redhat.com>
+ <86522c97-350c-9319-6930-01f97a490578@amd.com>
+ <f14777c1-9a38-86e5-df39-c52b7df2f300@amd.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <f14777c1-9a38-86e5-df39-c52b7df2f300@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 19 Nov 2024 19:23:53 -0800
-Jakub Kicinski <kuba@kernel.org> wrote:
 
-> On Tue, 19 Nov 2024 15:37:03 -0800 Stephen Hemminger wrote:
-> > It looks like loopback and other software devices never get the operstate
-> > set correctly. Not a serious problem, but it is incorrect.
-> > 
-> > For example:
-> > $ ip -br link
-> > lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
-> > 
-> > tap0             UNKNOWN        ca:ff:ed:bf:96:a0 <BROADCAST,PROMISC,UP,LOWER_UP> 
-> > tap1             UNKNOWN        36:f5:16:d1:4c:15 <BROADCAST,PROMISC,UP,LOWER_UP> 
-> > 
-> > For wireless and ethernet devices kernel reports UP and DOWN correctly.
-> > 
-> > Looks like some missing bits in dev_open but not sure exactly where.  
+
+On 11/20/24 9:50 AM, Alejandro Lucero Palau wrote:
+> Hi all,
 > 
-> I thought it means the driver doesn't have any notion of the carrier,
-> IOW the carrier will never go down. Basically those drivers don't
-> call netif_carrier_{on,off}() at all, and rely on carrier being on
-> by default at netdev registration.
+> 
+> Facing Paolo's question again trying to involve CXL and (more) netdev maintainers.
+> 
+> 
+> Next v6 could have two different patchsets, one for cxl, one for netdev. The current patchset has already cleanly isolated sfc netdev patches, so it is trivial.
+> 
+> The main question is if CXL maintainers will be happy with this change as the sfc is the client justifying the CXL core changes. Also, the split could be delayed until all the patches get the Reviewed-by tag what is now only ~75% of them (sfc related patches without the public approval yet but internally obtained).
 
-Tap device does have concept of pseudo carrier. If application has file descriptor
-open it reports carrier, if the device is present but application has not opened
-it then carrier is reported down.
+Given that the series is dominantly CXL patches, my suggestion would be get the acks from netdev side and CXL can take the whole series without doing any splitting. That's been typically how it has been done with cross subsystem changes. i.e. ACPI+CXL etc. 
+
+DJ 
+
+> 
+> Thanks,
+> 
+> Alejandro
+> 
+> 
+> On 10/23/24 10:38, Alejandro Lucero Palau wrote:
+>>
+>> On 10/23/24 09:46, Paolo Abeni wrote:
+>>> I'm sorry for the late feedback, but which is the merge plan here?
+>>>
+>>> The series spawns across 2 different subsystems and could cause conflicts.
+>>>
+>>> Could the network device change be separated and send (to netdev) after
+>>> the clx ones land into Linus' tree?
+>>
+>>
+>> Hi Paolo,
+>>
+>>
+>> With v4 all sfc changes are different patches than those modifying CXL core, so I guess this is good for what you suggest.
+>>
+>>
+>> Not sure the implications for merging only some patches into the CXL tree.
+>>
+>>
+>> Thanks,
+>>
+>> Alejandro
+>>
+>>
+>>> Thanks,
+>>>
+>>> Paolo
+>>>
+
