@@ -1,108 +1,137 @@
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929D874040;
-	Wed, 20 Nov 2024 06:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECF715625A;
+	Wed, 20 Nov 2024 06:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732084465; cv=none; b=f1zPxW8UCxw4mAV2imCueJvAzosP9W9FO+7TXGRqW6nsJxrkqRr1WXh31wcxPiBjUHSd0Hkj+ibIWFJIDKO0AT6zyYp3h2SbJq52kMkW+VuhTYsI+Tqx5f/xKuCia5sS2k95tCpcilpdn0ahslLXAAnnnfUyP1CTxpt/JYJUY1A=
+	t=1732084841; cv=none; b=NiK0n4gePljmY+9lOy3J2gXShuLbtZJtKQvK5EUJ1g4TLU6+USLlFLX3FasAtDN2Out03rjClu0agFBwnlKHjMLyh2uHq/RRsIkw6+ggQr5KzkKZ8HxDKzYddyCj13SvK+F3ciCMrRjZUuIMIGemW1Z2mIbW4AOqWcikQYbfcxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732084465; c=relaxed/simple;
-	bh=3uumOuNXlCpu8TMT0VJQpUU4Tx+FKX2daARpB3THYQk=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=oVd22zfM7cVyQwK4fVjI0FyIyp8Ev/eIs8mUeP9JG+mxvUKaZ2D3yiGVxY3lJHHe2DUUGyKDHFFaoosqmPqy2Ol50VPpFCsizZKXzznBRmv5kIJ87QV32KzYub0fwbbSL7L3owfvzI6AH9BnzGOQiNVFzRCU/tMRYcsHE0Fw2Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Fpyz7lNA; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1732084841; c=relaxed/simple;
+	bh=qWez04eWlX1G3EtzCOVJ+TyPIxvM6199QFe3AFCQ7lg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=W7dblvqqSENWZdoPXJlPa0AJXcTJYDHP/lBC44F+0so9uznJ4KOgR+DKwKqU/Slv3CvyfG1AWuOgyRoqCzxR1fWNB+x7Mw8//f4TE3N6AsbiyA5Wx6e8Won1tcz+GuMeCDIsyMv/4JCTLrYJ84tF/P1JLmeIzFnTDT+Zf4E02GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=mWf0tfHM; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Fpyz7lNA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1732084457;
-	bh=f6l5ar/S69nXGkZml8nQA3BBhPwpLDKxZGJrvkTNWD0=;
-	h=From:To:Cc:Subject:Date;
-	b=Fpyz7lNAk/WOKk2XCDg8XLERM1L26UDJ8rQqwnf1UNpP4eR0Fv4WSrhOeHSbLrrWy
-	 30fhhaifOQT8Mv5ahUebQ9GnUq9Is4euBHY8PuUEi8tMKgxZlvOwGd0rKoaOF7uPAy
-	 IFvLNBI7fo+QhmhYlfvtBz6yJvg0RTGpeD3Q27bQ=
-Received: from localhost.localdomain ([111.48.58.13])
-	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
-	id 6F611248; Wed, 20 Nov 2024 14:27:54 +0800
-X-QQ-mid: xmsmtpt1732084074tzesikb58
-Message-ID: <tencent_9E44A7B2F489B91A12A11C2639C5A4B9F40A@qq.com>
-X-QQ-XMAILINFO: NCmjBvJFq6XN2aVtkB2vMkETWjYiChSTJ1rjUva3trTa8Tl8g/UVlYgjz4e+jj
-	 8OxCJ89zkrYHTr06rrr54Mvi2qiAcveXAVDf4FUMAFM7KkrhTQvrPLj8+02eAMW4okyQ3wWeCayv
-	 dtOO9ck8vNpgj/Dt0V0vKGRvisCitZlbAYHJMgstSq7qdYW7OYNEB0+ritCrINGbi4EP0xQXie0h
-	 p73vqudjtLPvCkrzltSBcvzuwMU7kX4/xBrAP/ibjIpS0ghZhmcTo9yGCwaKk2Z1OAN0AbwDgG+G
-	 rz31PJI674Pk4v+FxrHnAxpRrcCjlpH8pXAMcPcKVaQ7DIN793ASvjbILaX/6IuztRGO4PAmiPIK
-	 JF0MGYbTm8RJRDyJWyeDjuUpm72ZwvXz76omvNvKyEaUhmqiXgA7UplyLQWu7RIla92URTitzeol
-	 cP53lGHtj2ZQ5thcyJeJQyUsB0rJ/uv7x5mk2n6mS1/4aQ7oMwrVVW1QyUbJkBELR8e4IkLukxXA
-	 YQrzbxFsUR6euwiP2wvIv92qXvEJn3gN8oph4CdbYMiYyL7ykAOHLUBz5ZfNlcm72Ch15cWXUkN9
-	 6LOJOuoPgrfs93FJ8VQm5SB9YBW9iSTyXsLvAPUFeIaDNSRAX/TxGEeDw0s7KZIVSrr5HEWSHjGM
-	 jYRKouu6dtoqzj3u/iYDzJjR8pD0VNzqP4EfgWoHpB7imzxK4kIsPBaFODKgGMlvXNIMkB47VZ56
-	 p40p/uSmKCR5/JTqPWJiAlKHze9e35ux2WQ2RmHYb75g4iCs4NHSgnXyzmYWew6YcRxqSTODNaKR
-	 0Mf1RvVXBI2QP/WvYCvyWCpCcBHDvLkV/JPQxKgJR7Ljun4ZdHfxHz8kskORNgjJ8xGQ1nBRMSKC
-	 4kdQD0/LQQEP3FvUZBfr740p8mYEfhO4OH1kUXhE21U4/ukflO1OaA3ro5v1JxOhNwtuKGHTY67k
-	 SyAGTgdgQCL0pWY+15o0lhB8FCieO4aVw/AbL88ItgbJPCuwNeQPfZY8bHLSMY5a5+JuB0y7h0U5
-	 g5Hmeogw==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-From: Cong Yi <yicong.srfy@foxmail.com>
-To: linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cong Yi <yicong@kylinos.cn>
-Subject: [PATCH] net: phylink: Separating two unrelated definitions for improving code readability
-Date: Wed, 20 Nov 2024 14:27:53 +0800
-X-OQ-MSGID: <20241120062753.140472-1-yicong.srfy@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="mWf0tfHM"
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AK6eBiB53657961, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1732084811; bh=qWez04eWlX1G3EtzCOVJ+TyPIxvM6199QFe3AFCQ7lg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=mWf0tfHMsAkxIneK4Y27ion8vqFAX7InjR9Z0djd+vUAR+MQFWVU5RJc/PJq3DVe3
+	 yq2VLPopR8JAwv+CUIKJid5Zxlm2ax6HWgMnk/se0ilYUAd48SCh6W15UEuZZ+HJ2P
+	 jNQZAPzkuyD9fG4kCJgCs1eU48S0Jj7oO5aEUpVbkqcM5JCB7yry1s81pQjT26l/Y9
+	 fQ4R430IldJTveEssT7wd2oVkAkDdCDYaZ6eyxF/TymiQuTC1QT8AljPf4BUA/AW/2
+	 /x4MnBMu7t1+Gzz+ou6u46XUVdRSDPHGijlseu+UnC9MaqbmZbbmezxQG+zf44Eki1
+	 fEN8U3+XBeO/Q==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AK6eBiB53657961
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 Nov 2024 14:40:11 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 20 Nov 2024 14:40:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Nov 2024 14:40:11 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Wed, 20 Nov 2024 14:40:11 +0800
+From: Justin Lai <justinlai0215@realtek.com>
+To: Michal Kubiak <michal.kubiak@intel.com>
+CC: "kuba@kernel.org" <kuba@kernel.org>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        "horms@kernel.org" <horms@kernel.org>,
+        Ping-Ke Shih
+	<pkshih@realtek.com>,
+        Larry Chiu <larry.chiu@realtek.com>
+Subject: RE: [PATCH net v3 2/4] rtase: Correct the speed for RTL907XD-V1
+Thread-Topic: [PATCH net v3 2/4] rtase: Correct the speed for RTL907XD-V1
+Thread-Index: AQHbOW+onFVGkA7F1Em9YFPvgneGQLK8bH2AgAHAitD//8pMgIABvurQ
+Date: Wed, 20 Nov 2024 06:40:11 +0000
+Message-ID: <e942273d5ee040dca511bd55c1204a1e@realtek.com>
+References: <20241118040828.454861-1-justinlai0215@realtek.com>
+ <20241118040828.454861-3-justinlai0215@realtek.com>
+ <ZzsugTPBgp9a70/F@localhost.localdomain>
+ <5011ae11bd9b48c5bf8e1bf400aa5d13@realtek.com>
+ <Zzx5t24M0DG0yUrt@localhost.localdomain>
+In-Reply-To: <Zzx5t24M0DG0yUrt@localhost.localdomain>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Cong Yi <yicong@kylinos.cn>
+>=20
+> On Tue, Nov 19, 2024 at 07:23:12AM +0000, Justin Lai wrote:
+> > >
+> > > On Mon, Nov 18, 2024 at 12:08:26PM +0800, Justin Lai wrote:
+>=20
+> [...]
+>=20
+> > > >
+> > > >
+> > > ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
+> > > >                                               supported);
+> > > > -     cmd->base.speed =3D SPEED_5000;
+> > > > +
+> > > > +     switch (tp->hw_ver) {
+> > > > +     case 0x00800000:
+> > > > +     case 0x04000000:
+> > > > +             cmd->base.speed =3D SPEED_5000;
+> > > > +             break;
+> > > > +     case 0x04800000:
+> > > > +             cmd->base.speed =3D SPEED_10000;
+> > > > +             break;
+> > > > +     }
+> > > > +
+> > >
+> > > Above you are adding the code introducing some magic numbers and in
+> > > your last patch you are refactoring that newly added code.
+> > > Would it be possible to avoid those intermediate results and prepare
+> > > the final version of the fix in the series?
+> >
+> > We would still prefer to follow the "single patch, single purpose"
+> > approach for this part. Other reviewers have also provided similar
+> > feedback, so we would like to maintain the current approach.
+> >
+>=20
+> I understand other reviewers' feedback because it's simply hard to review=
+ the
+> series with many intermediate changes in the same code.
+> Moreover, in this case, those intermediate changes can be easily avoided =
+by
+> moving the patch #4 to the beginning of the series.
+> But still - I have doubts if the patch #4 can go into the "net" tree sinc=
+e it doesn't
+> have any functional fixes.
+>=20
+> Thanks,
+> Michal
 
-After the support of PCS state machine, phylink and pcs two
-unrelated state enum definitions are put together, which brings
-some confusion to code reading.
+Hi Michal,
 
-This patch defines the two separately.
+Thank you for your response. I will integrate the addition of the hardware
+version ID definitions into patch #1, as this will address both of your
+concerns at once.
 
-Signed-off-by: Cong Yi <yicong@kylinos.cn>
----
- drivers/net/phy/phylink.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 3e9957b6aa14..1c65fd29538d 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -30,11 +30,13 @@
- 	(ADVERTISED_TP | ADVERTISED_MII | ADVERTISED_FIBRE | \
- 	 ADVERTISED_BNC | ADVERTISED_AUI | ADVERTISED_Backplane)
- 
--enum {
-+enum phylink_disable_state {
- 	PHYLINK_DISABLE_STOPPED,
- 	PHYLINK_DISABLE_LINK,
- 	PHYLINK_DISABLE_MAC_WOL,
-+};
- 
-+enum phylink_pcs_state {
- 	PCS_STATE_DOWN = 0,
- 	PCS_STATE_STARTING,
- 	PCS_STATE_STARTED,
-@@ -76,7 +78,7 @@ struct phylink {
- 	struct phylink_link_state phy_state;
- 	struct work_struct resolve;
- 	unsigned int pcs_neg_mode;
--	unsigned int pcs_state;
-+	enum phylink_pcs_state pcs_state;
- 
- 	bool link_failed;
- 	bool using_mac_select_pcs;
--- 
-2.25.1
-
+Justin
