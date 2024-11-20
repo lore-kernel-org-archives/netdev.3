@@ -1,58 +1,39 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EAA158D94;
-	Wed, 20 Nov 2024 07:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from cmccmta2.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C848360DCF;
+	Wed, 20 Nov 2024 08:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732089576; cv=none; b=g4cENjJFcqE8s3pvU9pjul0kX8s8amN2/w2/GwOjky02npxvfZqr0Gd1XM1Clf8OmjzzvDZ3b0y6lgKxYPnBm6GQVkZywkViVXKtiORf4bv9ATWXhBHhs06pxbIJeNA+8a2w+RHKXr95BIvXwl1qtgI/lYdG6dsck3sHssep0DU=
+	t=1732090048; cv=none; b=Y61+Yb6/8YzKJdVNDaEUw78KIigNnCfQN7s5nnIkZw6/epzD9eqkNKxHzkdwJrgBxF5deeWmvkvpLb0RdIAms2tB1p7xzdjhv5GqjyumC949vRwo/q0FrQCe9ffvH3SHWtpLqcQtfgBKDwTYrTwQJKogMTShQjZQiVzBpPr9OG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732089576; c=relaxed/simple;
-	bh=WZikTQU/J9NItKRvbptX00Xfqlo3hfyd59uhzM1JNGc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BemFqaH5L08r2BKknIslmpLiId4sUIjMMjWnL4mwpgT8Iw7/6u39ToM/v1prAVfr4fPAcG0quv7IXriM2tZh7CoefZ75b9s2mDtZUD9N+mPikSuzT/YO+TjGbMQg1ieFv2wZzKJrZ3DjXR+0ZmKF27ZoRTWkgJc/sHkIHEgqyRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=VEoWoCKH; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="VEoWoCKH"
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AK7x77a93745991, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1732089547; bh=WZikTQU/J9NItKRvbptX00Xfqlo3hfyd59uhzM1JNGc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=VEoWoCKH2AF9TXqTRt6N3cMKjgPegPcxBzH6ECMRtfOu8KTTEUZtm6Ud/49zkO9IK
-	 ObenNaCPs6cFoolyRSoI/xL0W2BeLGCDWeW03SNPTNrF7ZnAfYNLFQICXUv+vgpaqX
-	 NHaOcwCbUbZn4n9gC+hDNG4UzoEdF/7fIK+zTFzwTPtdKbeQKxmySWNFrZ8KrEJ+HZ
-	 Yr9kHWoMRHAcmYYdxAJPYvikBufz11I6DHZEZZkA9uWiQXaM+9II9XszrAz7GJnV2B
-	 76aOUHMBUhJWmLV1PMBp7Whdzw0VXnEdxkwTtXP20Vafz6+odOSG+d8GhAuSb2pkFf
-	 5QOd/G80qv5ag==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AK7x77a93745991
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Nov 2024 15:59:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 20 Nov 2024 15:59:07 +0800
-Received: from RTDOMAIN (172.21.210.74) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 20 Nov
- 2024 15:59:06 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <horms@kernel.org>,
-        <michal.kubiak@intel.com>, <pkshih@realtek.com>,
-        <larry.chiu@realtek.com>, Justin Lai
-	<justinlai0215@realtek.com>
-Subject: [PATCH net v5 3/3] rtase: Corrects error handling of the rtase_check_mac_version_valid()
-Date: Wed, 20 Nov 2024 15:56:24 +0800
-Message-ID: <20241120075624.499464-4-justinlai0215@realtek.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241120075624.499464-1-justinlai0215@realtek.com>
-References: <20241120075624.499464-1-justinlai0215@realtek.com>
+	s=arc-20240116; t=1732090048; c=relaxed/simple;
+	bh=ouJXrUW2N3OuxsMMYy0qt0J1XOkLzf4/w6AsN7KLD2g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qQkj/TGk+nezl0K8fDLfanh6K1vGULugns2LJ71DvxFfr46lPtnZqYj2+GzB/gj0pW/hAOwTQ4LJ0wMDQZ63Mznh83wOzHjCwGHm5IcQs1vqnZx2K4XEY4ggQECdRxNhHKQ+m0A0+jXif/cVNO8ZgVJRklvb1nopbYMPVttdLuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee6673d98b3b2d-223fe;
+	Wed, 20 Nov 2024 16:07:15 +0800 (CST)
+X-RM-TRANSID:2ee6673d98b3b2d-223fe
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee2673d98b2135-74007;
+	Wed, 20 Nov 2024 16:07:15 +0800 (CST)
+X-RM-TRANSID:2ee2673d98b2135-74007
+From: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+To: jonathan.lemon@gmail.com
+Cc: vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Subject: [PATCH] ptp: ocp: Fix the wrong format specifier
+Date: Wed, 20 Nov 2024 14:26:05 +0800
+Message-Id: <20241120062605.35739-1-zhangjiao2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,40 +41,31 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Previously, when the hardware version ID was determined to be invalid,
-only an error message was printed without any further handling. Therefore,
-this patch makes the necessary corrections to address this.
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Use '%u' instead of '%d' for unsigned int.
+
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ptp/ptp_ocp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 7b433b290a97..1bfe5ef40c52 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -2122,6 +2122,7 @@ static int rtase_init_one(struct pci_dev *pdev,
- 		dev_err(&pdev->dev,
- 			"unknown chip version: 0x%08x, contact rtase maintainers (see MAINTAINERS file)\n",
- 			tp->hw_ver);
-+		goto err_out_release_board;
- 	}
- 
- 	rtase_init_software_variable(pdev, tp);
-@@ -2196,6 +2197,7 @@ static int rtase_init_one(struct pci_dev *pdev,
- 		netif_napi_del(&ivec->napi);
- 	}
- 
-+err_out_release_board:
- 	rtase_release_board(pdev, dev, ioaddr);
- 
- 	return ret;
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 5feecaadde8e..52e46fee8e5e 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -1455,7 +1455,7 @@ ptp_ocp_verify(struct ptp_clock_info *ptp_info, unsigned pin,
+ 		 * channels 1..4 are the frequency generators.
+ 		 */
+ 		if (chan)
+-			snprintf(buf, sizeof(buf), "OUT: GEN%d", chan);
++			snprintf(buf, sizeof(buf), "OUT: GEN%u", chan);
+ 		else
+ 			snprintf(buf, sizeof(buf), "OUT: PHC");
+ 		break;
 -- 
-2.34.1
+2.33.0
+
+
 
