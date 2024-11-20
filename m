@@ -1,71 +1,126 @@
-Received: from cmccmta2.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C848360DCF;
-	Wed, 20 Nov 2024 08:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C1170822
+	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 08:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732090048; cv=none; b=Y61+Yb6/8YzKJdVNDaEUw78KIigNnCfQN7s5nnIkZw6/epzD9eqkNKxHzkdwJrgBxF5deeWmvkvpLb0RdIAms2tB1p7xzdjhv5GqjyumC949vRwo/q0FrQCe9ffvH3SHWtpLqcQtfgBKDwTYrTwQJKogMTShQjZQiVzBpPr9OG0=
+	t=1732091263; cv=none; b=TOAgSxemM3Xd7Yi6o9VmBvFqTQZGpKU432Iu7KMrj13fQBqEOmbCZerESZzRmo8hPFzJGRf1qefyDWJl5/BKVKydzLVdKXrKHNGqVX7Ecj+0AqTNkUjkXMJ/n7nZEq+azgKmfK2lOiD8EkEbFVo5Rgj27nAm4ZVn8cQiNbK7Jx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732090048; c=relaxed/simple;
-	bh=ouJXrUW2N3OuxsMMYy0qt0J1XOkLzf4/w6AsN7KLD2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qQkj/TGk+nezl0K8fDLfanh6K1vGULugns2LJ71DvxFfr46lPtnZqYj2+GzB/gj0pW/hAOwTQ4LJ0wMDQZ63Mznh83wOzHjCwGHm5IcQs1vqnZx2K4XEY4ggQECdRxNhHKQ+m0A0+jXif/cVNO8ZgVJRklvb1nopbYMPVttdLuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee6673d98b3b2d-223fe;
-	Wed, 20 Nov 2024 16:07:15 +0800 (CST)
-X-RM-TRANSID:2ee6673d98b3b2d-223fe
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.101])
-	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee2673d98b2135-74007;
-	Wed, 20 Nov 2024 16:07:15 +0800 (CST)
-X-RM-TRANSID:2ee2673d98b2135-74007
-From: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
-To: jonathan.lemon@gmail.com
-Cc: vadim.fedorenko@linux.dev,
-	richardcochran@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Subject: [PATCH] ptp: ocp: Fix the wrong format specifier
-Date: Wed, 20 Nov 2024 14:26:05 +0800
-Message-Id: <20241120062605.35739-1-zhangjiao2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1732091263; c=relaxed/simple;
+	bh=oRF4Zp8urklCMluJXoTlIYuvlDScKbepSXFEoWRyqoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xh1TkNj4IYagaoesaHtjAgvoC57Pz3njhK08aSZXuixPKWqlw+VWUXpnkSOVxZD8jilPM1J57+xtyXMEpO+QxTQqclW9nPcPEBiJSlAW3p/rmYcLWNKmp5iQXDz74Js2wLEjhZpFK41ZQ7/3TnK2jdVJrGy7sA7sGdP/e9rl+SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tDg3Z-0006zr-6M; Wed, 20 Nov 2024 09:27:25 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tDg3X-001i5O-1a;
+	Wed, 20 Nov 2024 09:27:23 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1EC32377A27;
+	Wed, 20 Nov 2024 08:27:23 +0000 (UTC)
+Date: Wed, 20 Nov 2024 09:27:22 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Thomas Kopp <thomas.kopp@microchip.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: remove duplicate word
+Message-ID: <20241120-antique-earwig-of-modernism-1fc66e-mkl@pengutronix.de>
+References: <20241120044014.92375-1-RuffaloLavoisier@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-
-Use '%u' instead of '%d' for unsigned int.
-
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
----
- drivers/ptp/ptp_ocp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 5feecaadde8e..52e46fee8e5e 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -1455,7 +1455,7 @@ ptp_ocp_verify(struct ptp_clock_info *ptp_info, unsigned pin,
- 		 * channels 1..4 are the frequency generators.
- 		 */
- 		if (chan)
--			snprintf(buf, sizeof(buf), "OUT: GEN%d", chan);
-+			snprintf(buf, sizeof(buf), "OUT: GEN%u", chan);
- 		else
- 			snprintf(buf, sizeof(buf), "OUT: PHC");
- 		break;
--- 
-2.33.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yuwyd5k5mk2aw3ay"
+Content-Disposition: inline
+In-Reply-To: <20241120044014.92375-1-RuffaloLavoisier@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 
+--yuwyd5k5mk2aw3ay
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] docs: remove duplicate word
+MIME-Version: 1.0
 
+On 20.11.2024 13:40:13, Ruffalo Lavoisier wrote:
+> - Remove duplicate word, 'to'.
+
+Can I add your Signed-off-by to the patch?
+
+https://elixir.bootlin.com/linux/v6.12/source/Documentation/process/submitt=
+ing-patches.rst#L396
+
+Marc
+
+> ---
+>  .../devicetree/bindings/net/can/microchip,mcp251xfd.yaml        | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251xf=
+d.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
+> index 2a98b26630cb..c155c9c6db39 100644
+> --- a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
+> +++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
+> @@ -40,7 +40,7 @@ properties:
+> =20
+>    microchip,rx-int-gpios:
+>      description:
+> -      GPIO phandle of GPIO connected to to INT1 pin of the MCP251XFD, wh=
+ich
+> +      GPIO phandle of GPIO connected to INT1 pin of the MCP251XFD, which
+>        signals a pending RX interrupt.
+>      maxItems: 1
+> =20
+> --=20
+> 2.46.1
+>=20
+>=20
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--yuwyd5k5mk2aw3ay
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmc9nWcACgkQKDiiPnot
+vG9aAAf/c8tXeQMSvhdWf+YPQQTpApOl0IfwPrF3nhffF59fMFGzaWEKFCV4FyJK
+um242NrMo+ewZVcASlj5ycX+TtjdXe58wYF2DyBTwCZKciegmV4Uq/ku0vEsC/Jf
+t7GUZCt33I55YbHq64ACpGNO8MozSvxgvbMcf2jMeV6LAIKs7Ptrdex/NtCcCxy1
+TvxQmYgGv8OEtwcjKMR+whXIppvlZVq5/2JFncbyKVDc5MHaJr7rEdheXJneIojO
++EF/Kk6RU+pfjyRC+Q1rFak15kV41HpIrBWQD09KO9G+1JTXpSqitQcY7/UXke7K
+0474na1s2eEBhtBUCG6H4Dm2t1M8HA==
+=nP0u
+-----END PGP SIGNATURE-----
+
+--yuwyd5k5mk2aw3ay--
