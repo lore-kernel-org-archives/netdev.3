@@ -1,171 +1,102 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3805119C554
-	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 11:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A3B19F13F;
+	Wed, 20 Nov 2024 11:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732102455; cv=none; b=aM4Ktkm5mPDLFgePIxVClrVrwM0dDm4Ys5MRoMzombeD18bjfyZv88SbMjDbX4QFI1NguEj0BkSc8Ao4FW9AOgJgLd4fZZ+2dQDhmtcdlP1Qr5oHDistfVOxm+UIqIFMU6RA7fnltwS982ngQwVIKNhjdW7kVFUEly6OUI8wlbE=
+	t=1732102898; cv=none; b=h3iVcjyRFwYsbz2wje2ll476+NXHGoxL9T73XQHDhZPplhDZa6zNYoE8EzAX4S2AB9DFwIwASTFEKPxIW0dNIQnzPcQOy3AsumkIy3zk/jQgp8T933LxAietys3RV9tzv9zgBXShdNbQt3q5uvgXf9YXOI65fE+lt/uzpMHyd78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732102455; c=relaxed/simple;
-	bh=rqYE/LDFYG+MmMRSDPJ7ITKApe4LdqoAau/AARTvmnQ=;
+	s=arc-20240116; t=1732102898; c=relaxed/simple;
+	bh=vILuFizisww0o60BEmPF3+25yS8w/Yg/Fr0GNNJrfUw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cbKPav/NG7cCT4OfLs51hW5y5sfDRtA5CaXgL8lV9v9XY1a5/h4tecN6IHrDPNPRZ+Ntx4ZprqBUFvY1pq8KKg9CQnSPJlP8REhKHn8tm2ImAjNUFQ9j528+glLMjcqWsmWLt/lSfnFh6goLBoWwgEoXUM3ic65PBfoD0FriaBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tDixq-0000PP-So; Wed, 20 Nov 2024 12:33:42 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	 Content-Type:Content-Disposition:In-Reply-To; b=D4g9IF40+LvofwrTORs2DcmJ3KTD4rGkxlinx+zPGW9tAWv3geVIiZS1a1PgeeJSrt3B/CLaSFaJFlB1aoZSeo/Hqbnepc34VVgwU7Mj7Xcdu2gNYnnRKMSmritruKivHeoUE44/fY5djQaB7v2v+LYt5/4+PL+R2q/b1Swzuak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pIyXcthe; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pIyXcthe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Pj3fkjxRBBRbKsik6UaWTJe/SP1ioAOvTFAZ8+3xNBI=; b=pIyXcthefqtcgadsqRc7qaaHRG
+	hi6v7ChfC1RQB61X13RRO558mhfiV7ABPoiP+LbCJC5ykYHJp9gMouduUCMqwKwlSu9s+69cS+z8o
+	Fcaxl3IrTM8U+lK75izHvfmo6U0tfHz1btxRHGekSWzD5d5UpI+RX4E8XO5C48sc0Lr8BBC8fENdJ
+	9KnW8TS+sR5ecuJqMbFwRi24lKmbCsdaGT+hxPk4CAz7fGFwDF9ppHmRb5dRomHG0HYCHBW82Kde8
+	lo8NIIH2JAQghOEBjMH1v5ssYwuHvFzxJgRwJK15sDP52FiGqKN47Uo+1MiEjoXL0H2lJYzf5483y
+	akhr1DCQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44762)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tDixp-001jS8-0J;
-	Wed, 20 Nov 2024 12:33:41 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id ADF44377CB4;
-	Wed, 20 Nov 2024 11:33:40 +0000 (UTC)
-Date: Wed, 20 Nov 2024 12:33:40 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, NXP Linux Team <s32@nxp.com>, 
-	Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>, 
-	Enric Balletbo <eballetb@redhat.com>
-Subject: Re: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt
- lines
-Message-ID: <20241120-spirited-vulture-of-coffee-423adb-mkl@pengutronix.de>
-References: <20241119081053.4175940-1-ciprianmarian.costea@oss.nxp.com>
- <20241119081053.4175940-4-ciprianmarian.costea@oss.nxp.com>
- <20241120-magnificent-accelerated-robin-70e7ef-mkl@pengutronix.de>
- <c9d8ff57-730f-40d9-887e-d11aba87c4b5@oss.nxp.com>
- <20241120-venomous-skilled-rottweiler-622b36-mkl@pengutronix.de>
- <aa73f763-44bc-4e59-ad4a-ccaedaeaf1e8@oss.nxp.com>
- <20241120-cheerful-pug-of-efficiency-bc9b22-mkl@pengutronix.de>
- <72d06daa-82ed-4dc6-8396-fb20c63f5456@oss.nxp.com>
- <20241120-rational-chocolate-marten-70ed52-mkl@pengutronix.de>
- <06acdf7f-3b35-48bc-ab2e-9578221b7aea@oss.nxp.com>
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tDj5F-0005PY-1e;
+	Wed, 20 Nov 2024 11:41:22 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tDj5A-00073k-2J;
+	Wed, 20 Nov 2024 11:41:16 +0000
+Date: Wed, 20 Nov 2024 11:41:16 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net v2 1/2] net: phy: replace phydev->eee_enabled with
+ eee_cfg.eee_enabled
+Message-ID: <Zz3K3DnAkDgeNP7R@shell.armlinux.org.uk>
+References: <20241115111151.183108-1-yong.liang.choong@linux.intel.com>
+ <20241115111151.183108-2-yong.liang.choong@linux.intel.com>
+ <ZzdOkE0lqpl6wx2d@shell.armlinux.org.uk>
+ <c1bb831c-fd88-4b03-bda6-d8f4ec4a1681@linux.intel.com>
+ <ZzxerMEiUYUhdDIy@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="idbngjom6ttlxwj6"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <06acdf7f-3b35-48bc-ab2e-9578221b7aea@oss.nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <ZzxerMEiUYUhdDIy@pengutronix.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
+On Tue, Nov 19, 2024 at 10:47:24AM +0100, Oleksij Rempel wrote:
+> On Tue, Nov 19, 2024 at 05:06:33PM +0800, Choong Yong Liang wrote:
+> > Sorry for the late reply; I just got back from my sick leave. I wasn't aware
+> > that you had already submitted a patch. I thought I should include it in my
+> > patch series. However, I think I messed up the "Signed-off" part. Sorry
+> > about that.
+> > 
+> > The testing part actually took quite some time to complete, and I was
+> > already sick last Friday. I was only able to complete the patch series and
+> > resubmit the patch, and I thought we could discuss the test results from the
+> > patch series. The issue was initially found with EEE on GPY PHY working
+> > together with ptp4l, and it did not meet the expected results. There are
+> > many things that need to be tested, as it is not only Marvell PHY that has
+> > the issue.
+> 
+> Hm, the PTP issue with EEE is usually related to PHYs implementing the
+> EEE without MAC/LPI support.
 
---idbngjom6ttlxwj6
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 3/3] can: flexcan: handle S32G2/S32G3 separate interrupt
- lines
-MIME-Version: 1.0
+I think you are referring to PHYs that implement EEE on their own,
+without requiring support at the MAC, such as Atheros SmartEEE.
 
-On 20.11.2024 13:02:56, Ciprian Marian Costea wrote:
-> On 11/20/2024 12:54 PM, Marc Kleine-Budde wrote:
-> > On 20.11.2024 12:47:02, Ciprian Marian Costea wrote:
-> > > > > > > The mainline driver already handles the 2nd mailbox range (sa=
-me
-> > > > > > > 'flexcan_irq') is used. The only difference is that for the 2=
-nd mailbox
-> > > > > > > range a separate interrupt line is used.
-> > > > > >=20
-> > > > > > AFAICS the IP core supports up to 128 mailboxes, though the dri=
-ver only
-> > > > > > supports 64 mailboxes. Which mailboxes do you mean by the "2nd =
-mailbox
-> > > > > > range"? What about mailboxes 64..127, which IRQ will them?
-> > > > >=20
-> > > > > On S32G the following is the mapping between FlexCAN IRQs and mai=
-lboxes:
-> > > > > - IRQ line X -> Mailboxes 0-7
-> > > > > - IRQ line Y -> Mailboxes 8-127 (Logical OR of Message Buffer Int=
-errupt
-> > > > > lines 127 to 8)
-> > > > >=20
-> > > > > By 2nd range, I was refering to Mailboxes 8-127.
-> > > >=20
-> > > > Interesting, do you know why it's not symmetrical (0...63, 64...127=
-)?
-> > > > Can you point me to the documentation.
-> > >=20
-> > > Unfortunately I do not know why such hardware integration decisions h=
-ave
-> > > been made.
-> > >=20
-> > > Documentation for S32G3 SoC can be found on the official NXP website,
-> > > here:
-> > > https://www.nxp.com/products/processors-and-microcontrollers/s32-auto=
-motive-platform/s32g-vehicle-network-processors/s32g3-processors-for-vehicl=
-e-networking:S32G3
-> > >=20
-> > > But please note that you need to setup an account beforehand.
-> >=20
-> > I have that already, where is the mailbox to IRQ mapping described?
-> >=20
-> > regards,
-> > Marc
-> >=20
->=20
-> If you have successfully downloaded the Reference Manual for S32G2 or S32=
-G3
-> SoC, it should have attached an excel file describing all the interrupt
-> mappings.
+It wasn't clear that you aren't referring to a situation where the
+PHY has EEE support, requiring the MAC to generate LPI but the MAC
+does have that ability.
 
-I downloaded the S32G3 Reference Manual:
-
-| https://www.nxp.com/webapp/Download?colCode=3DRMS32G3
-
-It's a pdf. Where can I find the execl file?
-
-> In the excel file, if you search for 'FlexCAN_0' for example, you should =
-be
-> able to find IRQ lines 39 and 40 which correspond to Maiboxes 0-7 and 8-1=
-29
-> (ored) previously discussed.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---idbngjom6ttlxwj6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmc9yREACgkQKDiiPnot
-vG/Bhwf/TmgOWpK70qWkVmuc6pmKnZd7518rr3HRby5yKjHlz9lMpMU+rdevXATt
-Eb1uT7wi4HkmIFcogcLaLaMiqlCd+r+4R4rdb1s93NNBMcTVqJPQUFcOGzmkW6Vm
-yhVdQRO2wbLTxizGSbKnJZEwVrSO+i45FBAzWiDOjfn5D4HTdcycQE7LQUr/d26l
-aBMOdm4qLqK/g5lnYFE6PipHYnhyTrVCRMJmBYItO7SvwhYf1lfMKx9JG6qUWINS
-tMJThoELNypy4s5miXbs6ohkPtcTDbcSFBMiBbc8d9aAUsJ0yjTmW5FQ8noxsaGX
-3y9ERfkDZbXgGXInziFvzYiXtXpRCQ==
-=qt5d
------END PGP SIGNATURE-----
-
---idbngjom6ttlxwj6--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
