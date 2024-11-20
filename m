@@ -1,126 +1,100 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C1170822
-	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 08:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0BA16F271
+	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 08:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732091263; cv=none; b=TOAgSxemM3Xd7Yi6o9VmBvFqTQZGpKU432Iu7KMrj13fQBqEOmbCZerESZzRmo8hPFzJGRf1qefyDWJl5/BKVKydzLVdKXrKHNGqVX7Ecj+0AqTNkUjkXMJ/n7nZEq+azgKmfK2lOiD8EkEbFVo5Rgj27nAm4ZVn8cQiNbK7Jx0=
+	t=1732091379; cv=none; b=eOFOB2nbvB94SZapIteu+BU8N6b/Kwrsbb4jlzbKk6hAn2t828n22Im+a4w1Ru83i4YWb0oqqX/bmiiBzj4IfOeSO+RO2UUNHsf7UP2bE6ZGBFm5PtzGjMVv+wt/Iqhy4f4M7oDEe3Bpm8io5sEARYf73aLRDwbygBufNBeDREo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732091263; c=relaxed/simple;
-	bh=oRF4Zp8urklCMluJXoTlIYuvlDScKbepSXFEoWRyqoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xh1TkNj4IYagaoesaHtjAgvoC57Pz3njhK08aSZXuixPKWqlw+VWUXpnkSOVxZD8jilPM1J57+xtyXMEpO+QxTQqclW9nPcPEBiJSlAW3p/rmYcLWNKmp5iQXDz74Js2wLEjhZpFK41ZQ7/3TnK2jdVJrGy7sA7sGdP/e9rl+SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tDg3Z-0006zr-6M; Wed, 20 Nov 2024 09:27:25 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tDg3X-001i5O-1a;
-	Wed, 20 Nov 2024 09:27:23 +0100
-Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1EC32377A27;
-	Wed, 20 Nov 2024 08:27:23 +0000 (UTC)
-Date: Wed, 20 Nov 2024 09:27:22 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ruffalo Lavoisier <ruffalolavoisier@gmail.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Thomas Kopp <thomas.kopp@microchip.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: remove duplicate word
-Message-ID: <20241120-antique-earwig-of-modernism-1fc66e-mkl@pengutronix.de>
-References: <20241120044014.92375-1-RuffaloLavoisier@gmail.com>
+	s=arc-20240116; t=1732091379; c=relaxed/simple;
+	bh=7Ifr4kwlqQu0C1yFJZS3ajkFCOJ0TzLt5KNV+Hb4vwg=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tQ3TXNKGB/YXnsfsWUIttNzbnBJowtIpIVp1y233oXPgGh80nEvH+gifkFoanS0d+0tdlTW2QSimMzCeh891c00xbrGdwE0HzgXohWYeCpVIW63nL98rx/B7RT3Lv1KWrJ5qVD0IvfPxEKwdH3f0MTT67dM9ENMHbOaJHbq7Mf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas2t1732091313t745t33693
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.206.160.172])
+X-QQ-SSF:0001000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 12491251422650144601
+To: "'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Russell King'" <linux@armlinux.org.uk>
+Cc: <netdev@vger.kernel.org>
+References: <f769256c-d51c-4983-b7a5-015add42ca35@redhat.com>
+In-Reply-To: <f769256c-d51c-4983-b7a5-015add42ca35@redhat.com>
+Subject: RE: net vs net-next conflicts while cross merging
+Date: Wed, 20 Nov 2024 16:28:32 +0800
+Message-ID: <013a01db3b26$2f719310$8e54b930$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yuwyd5k5mk2aw3ay"
-Content-Disposition: inline
-In-Reply-To: <20241120044014.92375-1-RuffaloLavoisier@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQK2AfNkyr04IUYYpGaScxifmQHGp7EKRjtg
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MZQHZNohqAr1MDRdV/Q2PNLXc496CNtcwJTrNf0EyyGBkijD7BAekmos
+	YDJ3xLewarIgtVwyShmbniDoHRJCl0wR/YivMLMQd0qdhm5xTZNsdcPoxFQEHEchdtv5oMu
+	lASQUPm1T+2JQauianxJLbTTEaFoNtIL/h5xi4BeoWn+y0dofzjaHCCY8+6YhPvmEEtR/fV
+	EXyqoOOQbVkToRQeONIbONoiEmjnvZ/R+Dg5QHHFSYe/TnaSbhWjH8jm7+3KLYvUH1lpzoR
+	EYiiYTcp3a6jzBnG2PVRjPbE/CxWKz0fhZqfFGFE5AuPSc2AycIJT6ro42JVeeIV0ezhRki
+	G3XElk1tRGCpDcHcumVOJPSr0oY6ZVtxcsCBtGAzTu3salmqpvIvEwgQyub7EErfZYMh4RC
+	8b+X05n2j9vGFC4jVl2jAU9d9V4Lu41X3G5f17Z8U6uBldrwukpbnlZp82JPrzbWk1UcE5G
+	5KYlhLGVG5DwgZuEDg5jBy6z0a01SYxrUYvG2ZDJX0FJVdKH671+etK63z7EHhToKOv3Aah
+	GFabIF40LRbYx4LcqB53vBIDind1pbUGyqJaqtKCHcHtnCI56uQoy7xNJWsx5I/CBnUV5yU
+	h5SJf9Z9jq2Vj6LO0bHdR96z1aD1qFUTCMXULMOj+tpUk/FTw5XS8YAjV/WWJ+1NSOLoe4K
+	Is2jrCQytyFmgnHgVHopiVUgK3aUgWxCvBVK4W4np0sTSfCuv66mArZh9wtayfuMjqfWcBq
+	se6ePOY9Cr19R7z1jSyjT7lEYcj0zzFWDeNwynUaEHHSdRtHK9ivWfGzvc9Y6D59mhOlKU9
+	/T2fv3VTraLHmVi7LxGWaG67qk3ao13pZ/3pzXx6S9yDxZKJ2Jmaf0kRGsJRUztOnlTN/CI
+	GPMuPoANcj99wFRpAG00a0TB21WbMeyTvJxP22EGu2hfbvCuuHCxWMuLGTtWklx7J1nQT7P
+	gZWZI7rU7l2Nohn/p4PHel1Rgl4uv721COeGBpBLO2Ul14VZZH6IH42GVeR3DXBHCVImMkp
+	u04D/ic/DdcRWyTHr3/FElacoendE=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
+On Tue, No 19, 2024 9:15 PM, Paolo Abeni wrote:
+> Hi,
+> 
+> I just cross-merged net into net-next for the 6.13 PR. There was 2
+> conflicts:
+> 
+> include/linux/phy.h
+> 41ffcd95015f net: phy: fix phylib's dual eee_enabled
+> 21aa69e708b net: phy: convert eee_broken_modes to a linkmode bitmap
+> 
+> drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+> 2160428bcb20 net: txgbe: fix null pointer to pcs
+> 2160428bcb20 net: txgbe: remove GPIO interrupt controller
 
---yuwyd5k5mk2aw3ay
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] docs: remove duplicate word
-MIME-Version: 1.0
+Hi,
 
-On 20.11.2024 13:40:13, Ruffalo Lavoisier wrote:
-> - Remove duplicate word, 'to'.
+I don't find what's the conflict here. Do you mean these two:
 
-Can I add your Signed-off-by to the patch?
+2160428bcb20 ("net: txgbe: fix null pointer to pcs")
+155c499ffd1d ("net: wangxun: txgbe: use phylink_pcs internally")
 
-https://elixir.bootlin.com/linux/v6.12/source/Documentation/process/submitt=
-ing-patches.rst#L396
+If this is the case, it should be resolved as follow:
 
-Marc
+static struct phylink_pcs *txgbe_phylink_mac_select(struct phylink_config *config,
+						    phy_interface_t interface)
+{
+	struct wx *wx = phylink_to_wx(config);
+	struct txgbe *txgbe = wx->priv;
 
-> ---
->  .../devicetree/bindings/net/can/microchip,mcp251xfd.yaml        | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/can/microchip,mcp251xf=
-d.yaml b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-> index 2a98b26630cb..c155c9c6db39 100644
-> --- a/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-> +++ b/Documentation/devicetree/bindings/net/can/microchip,mcp251xfd.yaml
-> @@ -40,7 +40,7 @@ properties:
-> =20
->    microchip,rx-int-gpios:
->      description:
-> -      GPIO phandle of GPIO connected to to INT1 pin of the MCP251XFD, wh=
-ich
-> +      GPIO phandle of GPIO connected to INT1 pin of the MCP251XFD, which
->        signals a pending RX interrupt.
->      maxItems: 1
-> =20
-> --=20
-> 2.46.1
->=20
->=20
+	if (wx->media_type != sp_media_copper)
+		return txgbe->pcs;
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+	return NULL;
+}
 
---yuwyd5k5mk2aw3ay
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks!
+ 
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmc9nWcACgkQKDiiPnot
-vG9aAAf/c8tXeQMSvhdWf+YPQQTpApOl0IfwPrF3nhffF59fMFGzaWEKFCV4FyJK
-um242NrMo+ewZVcASlj5ycX+TtjdXe58wYF2DyBTwCZKciegmV4Uq/ku0vEsC/Jf
-t7GUZCt33I55YbHq64ACpGNO8MozSvxgvbMcf2jMeV6LAIKs7Ptrdex/NtCcCxy1
-TvxQmYgGv8OEtwcjKMR+whXIppvlZVq5/2JFncbyKVDc5MHaJr7rEdheXJneIojO
-+EF/Kk6RU+pfjyRC+Q1rFak15kV41HpIrBWQD09KO9G+1JTXpSqitQcY7/UXke7K
-0474na1s2eEBhtBUCG6H4Dm2t1M8HA==
-=nP0u
------END PGP SIGNATURE-----
-
---yuwyd5k5mk2aw3ay--
