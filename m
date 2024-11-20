@@ -1,99 +1,94 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6243516F8E5;
-	Wed, 20 Nov 2024 06:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3100815B0E2
+	for <netdev@vger.kernel.org>; Wed, 20 Nov 2024 07:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732085306; cv=none; b=M5zD54bPM8G/jAijl3XfoTyQYzx2krR0Pz86hNhZRAB/BM5mC4P24Xc3CEYAQdeOgK2WScnGNcM/ieprTX2hsDg4pwbzA97k9j138UARrYYnvIkUqi0XqiRFunGmiyZ98QdhEvuZipmqGyzKt+kQZ9TKKbUGfcGtZejTSZZtpmU=
+	t=1732088411; cv=none; b=CJhbb9Eg19QoDlbV3+7ORQFdBvQ7cAf3j45736rcb46KGt1eNDPhTbVyR4KdtM3RNI/Vx5DIF7ZIHDByIUxbro5d8BgcH/vvjVDZOjzJUcnJ/3Kz8G7AOimZ61Xlb+j8imAJTSjtTAV0Ov8KE5NNtcxybtyp2QeH4gyyj2UAHls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732085306; c=relaxed/simple;
-	bh=gF13eQVa0Ocaq1UGdDe667AyqYd4x7jSGMSKC4l9o1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K01y6B00IA50FlSjJX31YQnLh9QE/1cJo+YQWvg1o3lQfrGSgpi1SIFcmWfOsancBpPu3eVvqhpfSmE7gh8cm2ThQtlcUS3UzCLpOudUT8IbbMdl8GqcFWZbIAVwtBRHJBsslEDADBqSPsskoDWQWqgWbGdvyZSTvhiS+0a9fh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nsoYeUbK; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1732088411; c=relaxed/simple;
+	bh=5NBpiOdcl0cunyRLhCfjjuhNqW0BeuIw0Rwggbxtnhg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kXS3F7QENP/0zEa0xWYbH1qWJJBbV8I3hVBY5Pnan8dRyAbcQH8tcgOFg6Lbp3Z/g5IOjxI9KWPp5ExRDWbVTacDVMEPhwkXSHb6x+KgtgGYNN6vhhw4L3VeZ1mJ4F0ZLVRLzMQ91AtCn0MTeBbJ6iQ3OXf0YzAoVwG55OWihxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JYogboIG; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nsoYeUbK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=6ho3G
-	nqgGCt9fsxOHh+xodC+HlFBZfqO/I/iBHnLVCg=; b=nsoYeUbKFSvmbSvLA/Q68
-	lK8AQuvwO95fHEoj+QhFjv6DpRUBO6APzClm9J1nlFWnyGY2fAnqcouRAZfLE8v5
-	NUE6OEKlGBtiRep6ui6X11Wpd9p57xnQG0ukhOXDVFJxazJSPm4bgc7UaQigBtok
-	39+ru3S1RRuuz5Rn0ppXYs=
-Received: from localhost.localdomain (unknown [193.203.214.57])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDnD1j4hT1nTO3OIQ--.22522S6;
-	Wed, 20 Nov 2024 14:47:26 +0800 (CST)
-From: Ran Xiaokai <ranxiaokai627@163.com>
-To: juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	pshelar@ovn.org,
-	davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn,
-	linux-perf-users@vger.kernel.org,
-	netdev@vger.kernel.org,
-	dev@openvswitch.org
-Subject: [PATCH 2/4] perf/core: convert call_rcu(free_ctx) to kfree_rcu()
-Date: Wed, 20 Nov 2024 06:47:14 +0000
-Message-Id: <20241120064716.3361211-3-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241120064716.3361211-1-ranxiaokai627@163.com>
-References: <20241120064716.3361211-1-ranxiaokai627@163.com>
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JYogboIG"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2CB1D2540213;
+	Wed, 20 Nov 2024 02:40:09 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Wed, 20 Nov 2024 02:40:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1732088409; x=1732174809; bh=mRwlURH/zqPPvYHN+vyfwHNmXoIV6iH4CCu
+	WJgZIEfU=; b=JYogboIGJWHm6KDaO6vAbbrbKsoOT2UxZCCTbM3jLnmiNMo9Qpf
+	PFQ1v3pKluvokEJZtKG/hEbVoKcgaJHYz5bW5do/4T6RSul4ALjLkQJuL7wfl6qb
+	WiJQZ3Rsi+5gY/v1lME5TA8vMcsstlWUX8oL2FpfYdsfh4jtBACHMe5kG0+R+tP/
+	82Nti7GhuYlMMyY+ZEtUS1LSVLHN/l6HwdjNuy/HQAkp5jB7pAPnr6hT5awztVmU
+	Gt8IkyIFIzIG10Yn5UrZgoTahktiPEjScdtUtMHJbcthJaQZypBMZNG+hdsbOjIL
+	mksd1XWM7IfaXZ3PBXquz7i2pvtYWNRoMrw==
+X-ME-Sender: <xms:WJI9Z1vOYFPSIa5nz390Q0HeVIO79ajSXh81RRYGz0dP1W8DbLM_-g>
+    <xme:WJI9Z-e6d-fdPxZWNuGt_cAj5KAUDdKwA4intSmoJDT29X3M9eSremmrp2WxVRpTa
+    mrjOMLwRNxUvbg>
+X-ME-Received: <xmr:WJI9Z4x2OraafhIo4gtqMsoWHQot0YNDkojJjMzAt2P6zEfAp7ey-bwn_oyP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeefgddutdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdroh
+    hrgheqnecuggftrfgrthhtvghrnhephefhtdejvdeiffefudduvdffgeetieeigeeugfdu
+    ffdvffdtfeehieejtdfhjeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhes
+    ihguohhstghhrdhorhhgpdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehg
+    rhgvvggrrhgssegtrghnuggvlhgrthgvtghhrdgtohhmpdhrtghpthhtohepnhgvthguvg
+    hvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:WJI9Z8OtWRPwJ5zNb-SehpMtH7NxySbbqOzkdDn3ms_Sx9XWHOpe9w>
+    <xmx:WJI9Z1_yU1Vl89T9vAvDNZqbiJNcggrPult4GLd_JlSZFH-OLsZLQw>
+    <xmx:WJI9Z8Uo-hJJsJpriwnsfVfaNQAPIkHbh9YlAIO_MakkFiPGzaSiZw>
+    <xmx:WJI9Z2frXbMVf_2l9iF4UAVK6Qp228yQ0HXaqzs7rFDzMm-7fe5vng>
+    <xmx:WZI9Z3JM4ehxTgv8IpnNqmgD4BuSE0vZF9SJhaxVP7Yh-HzI21SKFR7M>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 Nov 2024 02:40:08 -0500 (EST)
+Date: Wed, 20 Nov 2024 09:40:04 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: David Ahern <dsahern@kernel.org>
+Cc: Ben Greear <greearb@candelatech.com>, netdev <netdev@vger.kernel.org>
+Subject: Re: GRE tunnels bound to VRF
+Message-ID: <Zz2SVFfcLnL1Hw56@shredder>
+References: <86264c3a-d3f7-467b-b9d2-bdc43d185220@candelatech.com>
+ <ZzsCNUN1vl01uZcX@shredder>
+ <aafc4334-61e3-45e0-bdcd-a6dca3aa78ff@candelatech.com>
+ <e138257e-68a9-4514-90e8-d7482d04c31f@candelatech.com>
+ <b8b88a15-5b62-4991-ab0c-bb30a51e7be6@candelatech.com>
+ <4a2f7ad9-6d38-4d9e-b665-80c29ff726d6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnD1j4hT1nTO3OIQ--.22522S6
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF1fXw17AF1rKF17Gw18uFg_yoWkuwb_Xw
-	47JF9Fgw4jya9xZryDua13tr10qa9rta1Fyrs7tFZrJFy5Jws0yr1SyrZrZr95XanrZa43
-	KwsxXFn0qw48AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1p6zUUUUUU==
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/1tbiqRudTGc9e4T0vgABsN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4a2f7ad9-6d38-4d9e-b665-80c29ff726d6@kernel.org>
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Tue, Nov 19, 2024 at 09:36:13AM -0700, David Ahern wrote:
+> On 11/19/24 7:59 AM, Ben Greear wrote:
+> > 
+> > Ok, I am happy to report that GRE with lower-dev bound to one VRF and
+> > greX in a different
+> > VRF works fine.
+> > 
+> 
+> mind sending a selftest that also documents this use case?
 
-The rcu callback free_ctx() simply calls kfree().
-It's better to directly call kfree_rcu().
+We already have that. See:
 
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
----
- kernel/events/core.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 065f9188b44a..7f4cc9c41bbe 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1210,14 +1210,6 @@ static void free_task_ctx_data(struct pmu *pmu, void *task_ctx_data)
- 		kmem_cache_free(pmu->task_ctx_cache, task_ctx_data);
- }
- 
--static void free_ctx(struct rcu_head *head)
--{
--	struct perf_event_context *ctx;
--
--	ctx = container_of(head, struct perf_event_context, rcu_head);
--	kfree(ctx);
--}
--
- static void put_ctx(struct perf_event_context *ctx)
- {
- 	if (refcount_dec_and_test(&ctx->refcount)) {
-@@ -1225,7 +1217,7 @@ static void put_ctx(struct perf_event_context *ctx)
- 			put_ctx(ctx->parent_ctx);
- 		if (ctx->task && ctx->task != TASK_TOMBSTONE)
- 			put_task_struct(ctx->task);
--		call_rcu(&ctx->rcu_head, free_ctx);
-+		kfree_rcu(ctx, rcu_head);
- 	}
- }
- 
--- 
-2.17.1
-
-
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=fed926d4f64ca1ba23c496747fc4209244c13d80
