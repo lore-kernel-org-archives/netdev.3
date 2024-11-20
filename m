@@ -1,22 +1,22 @@
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+Received: from out198-17.us.a.mail.aliyun.com (out198-17.us.a.mail.aliyun.com [47.90.198.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5835A19DF9A;
-	Wed, 20 Nov 2024 10:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10A81AAE00;
+	Wed, 20 Nov 2024 10:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732100219; cv=none; b=DeOyc87H15cIIFCUtdtyme1GimlSzA+o5Uba/exoTUQI92vPXwYVn9csgbfYi8xx/XIzCEoa+BUelJZypXUJH00Rs5YYwzkvaSDBnDpepQmWCzPJU7a1SdcnUroAHOgVBVVZdAV3aR/mGIw6/UYzYJUjjsJXs8D9sU64xOoKWGQ=
+	t=1732100223; cv=none; b=Mj+9pRmH0OyrGWsJ4OANnH/2svmEYBgnp0qf+kTEyiEQI5FYyrLTh1e3ZfCQWaWG28oDBjxko7xi5R0lO1epYwI5xaVVuYFHrRJ/kn16fxpgmoxyXmC71ZRmE3vBOUhVbwG65sPGAoYp2NtQnVxm4oRNegT/ww37lGxx8YZpYBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732100219; c=relaxed/simple;
-	bh=5PlUofkhhB/suIxzL/Vvzk31qhjeljBpYdmU/UDmOSg=;
+	s=arc-20240116; t=1732100223; c=relaxed/simple;
+	bh=EmhAm8eaURBDLb9g0pu8AdTnxGYLQF+n8L4F/thtkm0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M0kABJzPaTueIZCc2C27v5/AVrep+a7NLLFsBeP8c/6jx3wxGddb2F3+EXo5BnTyaW2Dr8YDDEIKN2oQ1+RjqYNwy9IN/qemryhFo9Uh9nGlKSWdsE9/4tHS8xb4QGE5dHYh5sicn3MssEFG/2AuAWZCEPYLeM+RwWwXDWJcYKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.221
+	 MIME-Version; b=F/GvCnlLMCOQHUNrvoET5E89yYgKIzucqgfZ7V79RHO31FkvqrHydxdj6vuw6x7qNHg+X4+9/cDfG6pxVZ/28vEwJj6wHyOtInMhuNqcN6SY9B26fqjOJSnCnTNq3uQ+LfRxW/JVM9wBIly+jhCj5JYsshMjDSIFJ+a0rP8QzRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.aGmppgd_1732100208 cluster:ay29)
+Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.aGmppel_1732100207 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 20 Nov 2024 18:56:48 +0800
+          Wed, 20 Nov 2024 18:56:47 +0800
 From: Frank Sae <Frank.Sae@motor-comm.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -28,9 +28,9 @@ Cc: netdev@vger.kernel.org,
 	fei.zhang@motor-comm.com,
 	hua.sun@motor-comm.com,
 	Frank.Sae@motor-comm.com
-Subject: [PATCH net-next v2 20/21] motorcomm:yt6801: Add a yt6801.rst in the ethernet documentation folder
-Date: Wed, 20 Nov 2024 18:56:24 +0800
-Message-Id: <20241120105625.22508-21-Frank.Sae@motor-comm.com>
+Subject: [PATCH net-next v2 17/21] motorcomm:yt6801: Update the Makefile and Kconfig in the motorcomm
+Date: Wed, 20 Nov 2024 18:56:21 +0800
+Message-Id: <20241120105625.22508-18-Frank.Sae@motor-comm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241120105625.22508-1-Frank.Sae@motor-comm.com>
 References: <20241120105625.22508-1-Frank.Sae@motor-comm.com>
@@ -42,40 +42,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the yt6801.rst in ethernet/motorcomm folder
+1. Add the YT6801 and NET_VENDOR_MOTORCOMM entry in the Kconfig.
+2. Add the CONFIG_YT6801 entry in the Makefile.
 
 Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
 ---
- .../ethernet/motorcomm/yt6801.rst             | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/ethernet/motorcomm/yt6801.rst
+ drivers/net/ethernet/motorcomm/Kconfig  | 27 +++++++++++++++++++++++++
+ drivers/net/ethernet/motorcomm/Makefile |  6 ++++++
+ 2 files changed, 33 insertions(+)
+ create mode 100644 drivers/net/ethernet/motorcomm/Kconfig
+ create mode 100644 drivers/net/ethernet/motorcomm/Makefile
 
-diff --git a/Documentation/networking/device_drivers/ethernet/motorcomm/yt6801.rst b/Documentation/networking/device_drivers/ethernet/motorcomm/yt6801.rst
+diff --git a/drivers/net/ethernet/motorcomm/Kconfig b/drivers/net/ethernet/motorcomm/Kconfig
 new file mode 100644
-index 000000000..dd1e59c33
+index 000000000..e85d11687
 --- /dev/null
-+++ b/Documentation/networking/device_drivers/ethernet/motorcomm/yt6801.rst
-@@ -0,0 +1,20 @@
-+.. SPDX-License-Identifier: GPL-2.0
++++ b/drivers/net/ethernet/motorcomm/Kconfig
+@@ -0,0 +1,27 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Motorcomm network device configuration
++#
 +
-+================================================================
-+Linux Base Driver for Motorcomm(R) Gigabit PCI Express Adapters
-+================================================================
++config NET_VENDOR_MOTORCOMM
++	bool "Motorcomm devices"
++	default y
++	help
++	  If you have a network (Ethernet) device belonging to this class,
++	  say Y.
 +
-+Motorcomm Gigabit Linux driver.
-+Copyright (c) 2021 - 2024 Motor-comm Co., Ltd.
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about Synopsys devices. If you say Y, you will be asked
++	  for your specific device in the following questions.
 +
++if NET_VENDOR_MOTORCOMM
 +
-+Contents
-+========
++config YT6801
++	tristate "Motorcomm(R) 6801 PCI-Express Gigabit Ethernet support"
++	depends on PCI && NET
++	help
++	  This driver supports Motorcomm(R) 6801 gigabit ethernet family of
++	  adapters.
 +
-+- Support
++endif # NET_VENDOR_MOTORCOMM
+diff --git a/drivers/net/ethernet/motorcomm/Makefile b/drivers/net/ethernet/motorcomm/Makefile
+new file mode 100644
+index 000000000..511940680
+--- /dev/null
++++ b/drivers/net/ethernet/motorcomm/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for the Motorcomm network device drivers.
++#
 +
-+
-+Support
-+=======
-+If you got any problem, contact Motorcomm support team via support@motor-comm.com
-+and Cc: netdev.
++obj-$(CONFIG_YT6801) += yt6801/
 -- 
 2.34.1
 
