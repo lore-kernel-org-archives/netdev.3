@@ -1,22 +1,22 @@
-Received: from out28-217.mail.aliyun.com (out28-217.mail.aliyun.com [115.124.28.217])
+Received: from out28-132.mail.aliyun.com (out28-132.mail.aliyun.com [115.124.28.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EE31A303C;
-	Wed, 20 Nov 2024 10:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE63C1A704C;
+	Wed, 20 Nov 2024 10:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732100217; cv=none; b=sAwRc0UrrVxxPXnbAfQDFmd9t4fKd1fXZ1T0fHEQm5V40OXNL7otqNCfm6rq6Ea98J6lCJyJMWUNmpyUyYF5IH3fVMbxejxPI/IwMm88QgazjfUsqcxmNbMXC0z9iFUXGgSGJKyuSxLXYR34zqO/YiKn/rNNMg1zNqO7S7o4O38=
+	t=1732100219; cv=none; b=qKryEJfC2LniMAUFtd6d9WoqkrjaBZNZBqn26cibxdQyjxyFxnRGsGltPFTA/RGYk7c1hCAxHyDPtxV0fSRqUhG2xnfsxiYsZWf4RHPaqxjwHjd5H4VbJZn3T3+p4wzRYp2EGsLNQfUKH/M8QHJPCbGnYCSgUFMoSX5QcVLIKV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732100217; c=relaxed/simple;
-	bh=9qVZPgCv88FAGuli8j25XcIf3zlG5e7cpzSCT+OuZmA=;
+	s=arc-20240116; t=1732100219; c=relaxed/simple;
+	bh=gu6UkrKnbpAcYBpjxtVBY+QIYIRJ7uLyqa1Ei6+AVF8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jDWKlre490znTrZhN2tBQ+a/uz+zf4RfM9CLIhLxzbhzGeECIFmK2CtAd5xl6+Y0e1n71PZw/L7lE3H+rHrWCHvd08dQRF7/wLYSZjH7mYGCeaj8qbwW0VcSf7Rl/AQ6Ut6xdQL+zDjFdKxaqLee3B6dP7bpA20jaYPrzOfNy5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.217
+	 MIME-Version; b=vEznnRuJpR2avOXHDxONrD/11ISVJeMwptuggV6WkGfu6uKTl9jXTmRTDV6gVmyY1Tu1rlk0ePjzalw9Ok4DTYjK+pbgt9/8tqfOjFhhMWuW41zyHUNBHipseA7hJOD5KZkskWgVt9mJXeUZMn9jQYmy0mwA0jckvdyZ+lvtgGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.aGmppe8_1732100206 cluster:ay29)
+Received: from sun-VirtualBox..(mailfrom:Frank.Sae@motor-comm.com fp:SMTPD_---.aGmppfz_1732100208 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Wed, 20 Nov 2024 18:56:46 +0800
+          Wed, 20 Nov 2024 18:56:48 +0800
 From: Frank Sae <Frank.Sae@motor-comm.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -28,9 +28,9 @@ Cc: netdev@vger.kernel.org,
 	fei.zhang@motor-comm.com,
 	hua.sun@motor-comm.com,
 	Frank.Sae@motor-comm.com
-Subject: [PATCH net-next v2 16/21] motorcomm:yt6801: Add a Makefile in the motorcomm folder
-Date: Wed, 20 Nov 2024 18:56:20 +0800
-Message-Id: <20241120105625.22508-17-Frank.Sae@motor-comm.com>
+Subject: [PATCH net-next v2 19/21] ethernet: Update the index.rst in the ethernet documentation folder
+Date: Wed, 20 Nov 2024 18:56:23 +0800
+Message-Id: <20241120105625.22508-20-Frank.Sae@motor-comm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241120105625.22508-1-Frank.Sae@motor-comm.com>
 References: <20241120105625.22508-1-Frank.Sae@motor-comm.com>
@@ -42,29 +42,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a Makefile in the motorcomm folder to build yt6801 driver.
+Add the yt6801 entry in the index.rst.
 
 Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
 ---
- drivers/net/ethernet/motorcomm/yt6801/Makefile | 9 +++++++++
- 1 file changed, 9 insertions(+)
- create mode 100644 drivers/net/ethernet/motorcomm/yt6801/Makefile
+ Documentation/networking/device_drivers/ethernet/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/motorcomm/yt6801/Makefile b/drivers/net/ethernet/motorcomm/yt6801/Makefile
-new file mode 100644
-index 000000000..72e0acd65
---- /dev/null
-+++ b/drivers/net/ethernet/motorcomm/yt6801/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (c) 2021 Motor-comm Corporation.
-+#
-+# Makefile for the Motorcomm(R) 6801 PCI-Express ethernet driver
-+#
-+
-+obj-$(CONFIG_YT6801) += yt6801.o
-+yt6801-objs :=  yt6801_desc.o yt6801_ethtool.o yt6801_hw.o \
-+		yt6801_net.o  yt6801_pci.o
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 6fc196149..f8b88408d 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -46,6 +46,7 @@ Contents:
+    mellanox/mlx5/index
+    meta/fbnic
+    microsoft/netvsc
++   motorcomm/yt6801
+    neterion/s2io
+    netronome/nfp
+    pensando/ionic
 -- 
 2.34.1
 
