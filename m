@@ -1,88 +1,137 @@
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8AB15D5C3;
-	Thu, 21 Nov 2024 15:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE6B158A33;
+	Thu, 21 Nov 2024 16:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732204311; cv=none; b=jZvuC5lLozLzvYEEqu14yHRoGx7O1TFCV2ofdNcVykV3Czy5qxSuGEtM10URQGiXJtWuQDRNElla+p/Ccf7gc5FtuFgemH2+EIyROmPcn7o4eC8wbw7yw1CUhhwFRy4Tus0vBbFjxhD6F/Ep3KlZmJO4+PpMUfERVxJgdsU6Ioc=
+	t=1732204943; cv=none; b=ar9CknIm75CXPGKB5nLmdtryM0gsHZwCv9RODjgYvuoZ2TI816c1RtFzs5wF60NNCo/azM4hBIfXjzKQWeRSfq5l+wDlRiLE5QzpmHwakEVwvL4LQd4PAnCdTgQx/j9mnEmZj2kET9InO9keTCGkGsAfELZ8VA496+Ybk/EDNnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732204311; c=relaxed/simple;
-	bh=X7hwPZmjY8q8t6ar3X/nRv/1vY7FPM9xlv+jJsMT4L8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IyXKrZ+1ZP94I4JZn2AlOEm+jq/BdJBPYlK3VdmOSIxFWKionM3QhFusOzyELTxa1eeVb+W25ki2UuFNih34vM55o1kRfA9ontjoOlUK9DdFRiNuTv83otu7l8mOE70JFCNdKSLhuZhLyD6DOvky3WMrRJvMT6AVfev4FArmiik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IkQk+h08; arc=none smtp.client-ip=217.70.178.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1732204943; c=relaxed/simple;
+	bh=dBHlf6+aZ1hAOrvQPwSccNRc472d+mPq6Pqy8pnvfqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTez54ssCs/Dd/tEl0s04ydXTsWl+D6l74I5yeKaa6eX2qC+vFs5zydd89O7DC8cQyxxzc0VU9yAZbOKofdK+hHhm62hkFL/P97SXrGzkNHaJu3c7FUP0+qq4Oj8m6SRk0pHr9AECkAuoT6tmmuI7bZeIZr9zPuEs/j+YIl0J3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=TWPDTvVP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JsoRE5mx; arc=none smtp.client-ip=103.168.172.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IkQk+h08"
-Received: from relay4-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::224])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 16AE2C351D;
-	Thu, 21 Nov 2024 15:27:52 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4498CE0015;
-	Thu, 21 Nov 2024 15:27:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732202864;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7vNUEM2nqa5ru8I3224DdW8toFKm1983QOZjCOpdhak=;
-	b=IkQk+h08kyzyl0ixQitvGKYANR/xMCGTYLxz+REOBqQ2sHLSvUez5TvQC8OF9DmBr2MHXp
-	liDAmVLJzuMzHMGk7B/aD8IhuMo2Qy859j28+aN0UyuBZepcKG7X65GSToOn8Hksg/NHy8
-	3TCmAmr76JWvf0ym9NkKxgatvqCq4CnYLKiCjCf14pIKyE0GketAiOH3CHCtt1m3PsKoE5
-	K7OkzjtQMjXPVtYthRtTdDifYI/PvOfzQRYULXMQMNGC8/4sls67l/2oNREMiTckwx1lwa
-	4py66em/riyMwXy4OOo7+eEygZZGNzaRVzYOC6llfdg7B+2eWTOTgVrmF9coAg==
-Date: Thu, 21 Nov 2024 16:27:39 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Donald Hunter
- <donald.hunter@gmail.com>, Rob Herring <robh@kernel.org>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, Heiner Kallweit
- <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Liam Girdwood
- <lgirdwood@gmail.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, Dent
- Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, Maxime
- Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH RFC net-next v3 17/27] regulator: dt-bindings: Add
- regulator-power-budget property
-Message-ID: <20241121162739.6c566d85@kmaincent-XPS-13-7390>
-In-Reply-To: <9b5c62aa-fc01-4391-9fab-219889fa0cf6@sirena.org.uk>
-References: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
-	<20241121-feature_poe_port_prio-v3-17-83299fa6967c@bootlin.com>
-	<9b5c62aa-fc01-4391-9fab-219889fa0cf6@sirena.org.uk>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="TWPDTvVP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JsoRE5mx"
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id EEB67200637;
+	Thu, 21 Nov 2024 11:02:18 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Thu, 21 Nov 2024 11:02:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1732204938; x=
+	1732208538; bh=pO3PALF2awA+eBkc4VARw2inhjxAJiO5t86BEffGEBw=; b=T
+	WPDTvVPJ6FmJbTIVJ9cjEwSdbk+CQXtbYOIod/ngJcXW4TWzv8qJlZTYYFak6mGn
+	KGTsig9Hs8eAtEMHVLfaTIcH3qdySAKtLCXx1ukd+ikhGODWIlgkebyY5vQnkp2b
+	qPdIRjyy4rtk5lGMgQLTnOcxcIC8MietnDM9xfW6Q5iFjgzuPN4lw/GpeCS5RvFl
+	/zfIgRwIos7ZmN3/WD13n8g3G24l0bk3rxfvk5Efkd85iWkyy1Jrku24hx6A+afQ
+	NA4nMTRAPSneMcclwaU6ZCcIin80Bq8bWFIY3e1S92rizQBHcaXSyFbdBspvdEIE
+	IWXze/N0lWC4d+Mp7nq1w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1732204938; x=1732208538; bh=pO3PALF2awA+eBkc4VARw2inhjxAJiO5t86
+	BEffGEBw=; b=JsoRE5mxhUvnoibuHggM8f9j0HS3wCPZT3oK+JNDED+a5Io456B
+	2P41QTC3Xz3PJQovzdxpoc6bYbT22dWh1BKU9fSIinuMJ+Z1eyTaBmBcyOxSdVvt
+	PWM2JrzWS3mqaPBERNu1j3lORoSLcCI7MIHzXo0DStbrChajPHuhFkG7rh41zIf5
+	BhAfmtA6a7/+zETJB48Vo4KkcDWKyXd2mrXbaCEBVtWQ62AYVuarA7hFE/NKCD4q
+	an68PAZqGQ6BzmyYWfzdIOWlyp+73kPJIqtYP2cEmSvM1MKW6rq0iICIB0XYsgQp
+	KAi0izO2lzizHWr7hauK10svFfeBmZqy6/A==
+X-ME-Sender: <xms:ilk_Zzo0kvxi0-8n6fCkCA24K5CkyUYcMk7atmcZrkPozFaxQ1PxuQ>
+    <xme:ilk_Z9p0mp4zrGaZJT-kz2gf6XsTOJET8TTJ-n63m-De-WQuC-E5SkE-LPh5_WrDJ
+    1h5a4joHZP4Xn7d84U>
+X-ME-Received: <xmr:ilk_ZwP1FwnkqlDMWvWy2roaQHiqTRmSZ2ZxwVOHe-hqE8ALy9_E5eQqj4XS>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeeigdekvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecu
+    hfhrohhmpefurggsrhhinhgrucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrih
+    hlrdhnvghtqeenucggtffrrghtthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeeg
+    teehgeehieffgfeuvdeuffefgfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghr
+    tghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnhhtohhnih
+    hosehophgvnhhvphhnrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopeguohhnrghlugdrhhhu
+    nhhtvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprhihrgiirghnohhvrdhsrdgrsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepnhgvthguvghvse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ilk_Z25w-yK-e58Q3JfDsVJIFxeV6ELe7jvji-q9k3hnHgEwnTMLUQ>
+    <xmx:ilk_Zy53vRHhMrOHg3FZEcQfMJxA_EVBqx2w2OqKgL01p7XiBkBfHA>
+    <xmx:ilk_Z-iuDQpl-psr7P3DlL8Eqj9AmNeM8NUqs-UuRNwIxN5dpVe6Kg>
+    <xmx:ilk_Z056dXOzePiJl8WqbSw9XDqPJrSJ4mRxQP5aunuXly-DHtXOgg>
+    <xmx:ilk_Z0skCtz4O2b9xjq7tt7lay1y8a72X5c38yerGPvt4f4IhyScrpsS>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 21 Nov 2024 11:02:17 -0500 (EST)
+Date: Thu, 21 Nov 2024 17:02:15 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Antonio Quartulli <antonio@openvpn.net>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, ryazanov.s.a@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v11 18/23] ovpn: implement peer
+ add/get/dump/delete via netlink
+Message-ID: <Zz9Zh-5hZrbal5Ww@hog>
+References: <20241029-b4-ovpn-v11-0-de4698c73a25@openvpn.net>
+ <20241029-b4-ovpn-v11-18-de4698c73a25@openvpn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241029-b4-ovpn-v11-18-de4698c73a25@openvpn.net>
 
-On Thu, 21 Nov 2024 14:58:06 +0000
-Mark Brown <broonie@kernel.org> wrote:
+[I'm still thinking about the locking problems for ovpn_peer_float,
+but just noticed this while staring at the rehash code]
 
-> On Thu, Nov 21, 2024 at 03:42:43PM +0100, Kory Maincent wrote:
-> >    regulator-input-current-limit-microamp:
-> >      description: maximum input current regulator allows
-> > =20
-> > +  regulator-power-budget:
-> > +    description: power budget of the regulator in mW
-> > + =20
->=20
-> Properties are supposed to include the unit in the name.
+2024-10-29, 11:47:31 +0100, Antonio Quartulli wrote:
+> +void ovpn_peer_hash_vpn_ip(struct ovpn_peer *peer)
+> +	__must_hold(&peer->ovpn->peers->lock)
+> +{
+> +	struct hlist_nulls_head *nhead;
+> +
+> +	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY)) {
+> +		/* remove potential old hashing */
+> +		hlist_nulls_del_init_rcu(&peer->hash_entry_transp_addr);
 
-Oh ok, thanks!
+s/hash_entry_transp_addr/hash_entry_addr4/ ?
 
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+
+> +		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr,
+> +					   &peer->vpn_addrs.ipv4,
+> +					   sizeof(peer->vpn_addrs.ipv4));
+> +		hlist_nulls_add_head_rcu(&peer->hash_entry_addr4, nhead);
+> +	}
+> +
+> +	if (!ipv6_addr_any(&peer->vpn_addrs.ipv6)) {
+> +		/* remove potential old hashing */
+> +		hlist_nulls_del_init_rcu(&peer->hash_entry_transp_addr);
+
+s/hash_entry_transp_addr/hash_entry_addr6/ ?
+
+
+> +		nhead = ovpn_get_hash_head(peer->ovpn->peers->by_vpn_addr,
+> +					   &peer->vpn_addrs.ipv6,
+> +					   sizeof(peer->vpn_addrs.ipv6));
+> +		hlist_nulls_add_head_rcu(&peer->hash_entry_addr6, nhead);
+> +	}
+> +}
+
+-- 
+Sabrina
