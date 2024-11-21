@@ -1,105 +1,144 @@
-Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296281D9A60;
-	Thu, 21 Nov 2024 13:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9011D6DB5
+	for <netdev@vger.kernel.org>; Thu, 21 Nov 2024 14:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732196662; cv=none; b=i0qSKiH3Dy0vEzySrV/w8f7i0meE9TuS7fgxICTgukqwNtJZ+DTB+tcb4aTwf1smRkmGgpV6aJkh0n1T3m1aMN/B63dIw2NleiR2X1EBAwR76302xRXHjEd8Uu2z1bwJpaK3niGoofR4W/rxYng+DkEk2AhJ9MWbQih8b1Kf3W8=
+	t=1732197615; cv=none; b=qg9I9661S2TQbku7++ycNAkSha1PTpbteRT20llYkdzl0f4+UPJMQxBR/VE0I3s6Scf1u6fkZv/uGl2awG+g72dNF2dvpNaEAtMASwzTPu+k4UkPTshXNf7KW+zQvuPoE+C2aeWfLd7R4QPQ4jt2LwvVwrxLPYPwqHCrwq8iaaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732196662; c=relaxed/simple;
-	bh=tqumU3GXnVmcrmQDrcmOrgl5O9MwV/8WU7lJpOWjZwY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Dxh/WScykPjnfJ4n9dKeVWUdfJATE4iJZfy6KH5PeArxbFIMlkPmjc6dTbW8Vlx5XZdRAAHh64sTqTGoXN2llDHJq88tzk/JirlAJ2zlskTEYpX6aeBR35p32TwBIsXWLOSXpgnM50h5l7fAdYXvXeymYat9xw3hpUqdjrsAcBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=BOhSEbm9; arc=none smtp.client-ip=178.154.239.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1732197615; c=relaxed/simple;
+	bh=7RgFP6UuxwQYmWQb6rn744Zd3NSDGlxQx4n7n6wtFzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnnqXlDo9IVlGJw2cpKctCJ4twnZpBQi8HQKaIjnByp+xl1mFP7LbZIlJYrm7aT7i52r0dHdNbz5b9ZPHVtT8l07M8xLbp3qXQeknzUJ9X46Ux75mRvgt3eVg6ozzCw2wGcy8tA+pZ0Y7b9yzC5GFS1PWX/Y0rERIl+J5nxeA0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Y2SIF5nX; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="BOhSEbm9"
-Received: from mail-nwsmtp-smtp-production-main-19.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-19.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1c:320f:0:640:c550:0])
-	by forward501b.mail.yandex.net (Yandex) with ESMTPS id 45318618E4;
-	Thu, 21 Nov 2024 16:37:47 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-19.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id hbThKc4Od8c0-ofwBpATU;
-	Thu, 21 Nov 2024 16:37:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1732196265; bh=aWaKJsPlggbH/UfOSNQmJxRwPNFPnRQJBjnFjQcmxpc=;
-	h=In-Reply-To:Cc:Date:References:To:Subject:From:Message-ID;
-	b=BOhSEbm9n04XPbf2GAaSdi4uT4NiV1xIHeDt8Er87+nW3Z9jpQVTC37hucUHw8Sk9
-	 n2dIFpEqSywoUiT8btU1pUAmPhB5bNulrkjvsfLrds4pCkQzSbvYn/+a4uLuhx/1uS
-	 Xd7FLIgRInkqhk9Wn0EvvHEbo6wdElBYUe/jChIk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-19.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <170c8ac6-688e-4d41-82aa-f392872896e7@yandex.ru>
-Date: Thu, 21 Nov 2024 16:37:43 +0300
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Y2SIF5nX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=kIDX6Fkl+Q7yxJZnKo0gK/TnsINUD39cdrx85nEWnFA=; b=Y2SIF5nXfBqPfvAlm3BbWzwLMk
+	7yQm/qEjUMgDibsd8qtj8J9nXodw3hNuRg+ecZTNm/mYTH8vpxtNjQn81lfPduLxglB8zF6kwDgWp
+	M61SUX10ytfrL7JyTxHdKwr7pXzh732/AW2MGIwiAFKSaQODiEW/Jivcwe6LhLfaSKjU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tE7iy-00E3qr-Uh; Thu, 21 Nov 2024 15:00:00 +0100
+Date: Thu, 21 Nov 2024 15:00:00 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+	edumazet@google.com, davem@davemloft.net,
+	Russell King <linux@armlinux.org.uk>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: Moving forward with stacked PHYs
+Message-ID: <1646a5bd-24c7-43fb-9d52-25966aafb80f@lunn.ch>
+References: <20241119115136.74297db7@fedora.home>
+ <Zz7zqzlDG40IYxC-@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: stsp <stsp2@yandex.ru>
-Subject: Re: [PATCH net-next v3] af_unix: pass pidfd flags via SCM_PIDFD cmsg
-To: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Cc: almasrymina@google.com, asml.silence@gmail.com, axboe@kernel.dk,
- brauner@kernel.org, cyphar@cyphar.com, davem@davemloft.net,
- edumazet@google.com, gouhao@uniontech.com, horms@kernel.org,
- kees@kernel.org, krisman@suse.de, kuba@kernel.org, kuniyu@amazon.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, mhal@rbox.co,
- netdev@vger.kernel.org, oleg@redhat.com, pabeni@redhat.com,
- quic_abchauha@quicinc.com, shuah@kernel.org, tandersen@netflix.com,
- viro@zeniv.linux.org.uk, willemb@google.com
-References: <20241116101120.323174-1-stsp2@yandex.ru>
- <20241121125732.88044-1-aleksandr.mikhalitsyn@canonical.com>
-Content-Language: en-US
-In-Reply-To: <20241121125732.88044-1-aleksandr.mikhalitsyn@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zz7zqzlDG40IYxC-@pengutronix.de>
 
-21.11.2024 15:57, Alexander Mikhalitsyn пишет:
-> Hi Stas!
->
-> Hmm, it is a bit unusual that SCM_PIDFD message format is different in case
-> when you send it and when you read it.
->
-> I mean that when you read it (on the receiver side) you get pidfd file descriptor number,
-> while when you write it (on the sender side) you are only allowed to send one integer and this time it's
-> a pidfd file descriptor flags. I personally have nothing strictly against that but just found this
-> a bit unusual and probably confusing for userspace programmers.
->
-> Compare it with SCM_CREDENTIALS, for instance, where we read/write the same structure struct ucred.
+> > On that front, there's more work coming to improve on that :
+> >   - It would be good if the stats reported through ethtool would account
+> >     for all the PHYs on the link, so that we would get a full overview
+> >     of all stats from all components of the link
+> 
+> Ack, i'm working right now on the standardized PHY stats. With some work on
+> kernel side it would be possible to get with something like this:
+> ethtool -S eth1 --all-groups
 
-SCM_PIDFD_FLAGS can be added instead.
-But as you currently can't send SCM_PIDFD,
-and won't be able to receive SCM_PIDFD_FLAGS
-if it is added, then nothing prevents the reuse
-of an existing value. So among the possible
-solutions is to have SCM_PIDFD_FLAGS as
-an alias to SCM_PIDFD.
+Naming becomes interesting, when you have multiple PHYs. You need to
+indicate which PHY the stats are from. So it will need nested netlink
+properties. I don't think we have anything like that at the moment for
+ethtool statistics, but it does exist in other places, e.g. cable
+testing results.
 
-Should I do that?
+> >   - A netlink notification to indicate that a new PHY was found on the
+> >     link is also in the plans.
+> 
+> This will be cool. I was thinking about netlink notification for some
+> health issues, to avoid polling on the user side.
 
->> +				goto error;
->> +			memcpy(&flags, CMSG_DATA(cmsg), sizeof(flags));
->> +			err = pidfd_validate_flags(flags);
-> pidfd_validate_flags allows PIDFD_THREAD, but what's the idea behind this if
-> scm->pid is always a thread-group leader? (see maybe_add_creds() function).
->
-> Sorry if I misunderstand something just want to ensure that we are on the same page.
-The idea is to cover only PIDFD_NONBLOCK
-for now, and add new flags after. Of course
-if PIDFD_NONBLOCK+future extensions sounds
-not very convincing, then I'll have to send those
-"new flag" patches together with this one.
-As you can see, the supplied test-case only
-covers PIDFD_NONBLOCK. You can decide
-whether or not it is valuable/acceptable on
-its own.
-Speaking of PIDFD_THREAD, one can add
-tid to creds for this to work. I don't need
-such functionality, so instead I can as well
-disallow sending this flag until someone
-else needs it. But it looks potentially useful,
-so adding tid can also be considered and
-looks simple enough.
-What do you think?
+We need to think about when we send the notification. During
+enumeration of the MDIO bus, during probe, or when the PHY is
+connected to its upstream? What are the userspaces user cases for this
+notification?
+
+> > There's a lot more work to do however, as these user-facing commands aren't
+> > the only place where netdev->phydev is used.
+> > 
+> > The first place are the MAC drivers. For this, there seems to be 2 options :
+> > 
+> >  - move to phylink. The phylink API is pretty well designed as it makes
+> >    the phydev totally irrelevant for the MAC driver. The MAC driver doesn't
+> >    even need to know if it's connected to a PHY or something else (and SFP
+> >    cage for example). That's nice, but there are still plenty of drivers
+> >    that don't use phylink.
+> 
+> This would be nice, but this is too much work. Last week I was porting lan78xx
+> to PHYlink. Plain porting is some hours of work, the 80% of time is
+> testing and fixing different issues. I do no think there are enough
+> resources to port all of drivers.
+
+It is clear that we the Maintainers cannot convert all MAC drivers to
+phylink. But i would be happy to say if you want to support multiple
+PHYs, you need to use phylink. To some extent, it is already that
+way. I don't think there are any systems with SFPs using phylib.  So i
+would not change the phylib API. Keep netdev->phydev meaning the first
+PHY, and maybe encode the assumption that it is the only PHY with a
+netdev_warn() if that assumption gets violated.
+
+> > There are other parts of the kernel that accesses the netdev->phydev. There
+> > are a few places in DSA where this is done.
+
+Many of the DSA drivers are now phylink, not phylib. Any using SFPs
+will be phylink. I would leave those using phylib alone, same as other
+MAC drivers.
+
+> > Finally, there's the whole work of actually configuring the PHY themselves
+> > correctly when they are chained to one another, and getting the logic right
+> > for the link-up/down detection, getting the ksettings values aggregated
+> > correctly, etc.
+> > 
+> > We have some local patches as well for that, to handle the stacked PHY
+> > state-machine synchronisation, link-reporting and negociation but
+> > it's still WIP to cover all the corner-cases and hard-to-test features, for
+> > example how to deal with WoL or EEE in these situations.
+> 
+> I assume, even with stacked PHYs, some kind of power management would
+> be needed. The WoL is probably less interesting, since all attached PHYs are
+> under linux control, so we can suspend or resume them.
+> 
+> The EEE on other hand, may help to reduce run time power consumption.
+> Still, it the user space should know about it, since it may be critical
+> for time critical tasks.
+
+We also need to consider where in the chain EEE, WoL, Pause etc are
+relevant. Both EEE and Pause it about negotiation, and that happen in
+the PHY closet to the media. WoL in theory could happen anywhere, but
+ideally you want it as close to the media as possible, so you can
+power off intermediary PHYs. But can PHYs in SFP actually wake the
+system? I don't think i have ever seen that, there is no interrupt pin
+on the SFP cage.  However WoL is currently a mess and MAC driver
+writers get is wrong. I would say WoL is another area we need a new
+API moving as much code into the core as possible, same as we have
+done for EEE, phylink handling of Pause etc. But that is probably out
+of scope for this work, but should be kept in mind.
+
+	Andrew
