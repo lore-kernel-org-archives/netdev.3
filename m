@@ -1,39 +1,39 @@
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD241D95B3;
-	Thu, 21 Nov 2024 14:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87991DD877;
+	Thu, 21 Nov 2024 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732200224; cv=none; b=reGhiQnSXGgXKDXkzeK5+VmfnRRMbFUzQbdnZmiemeiweZrKHmMCk+/W329FnuMS68cZ0qscH+h1mky2MGuGRJOhGe8ns879ayytL8JaU6+k1y8PIgHYs9lre+qNSNKo3q3VihBsQRFudfijkhpU/AD1lkvkBslGKpbWW+SV724=
+	t=1732200226; cv=none; b=YvZzahqpHOhvjVxtG6YmfjrUik5sMXZQllihrSREsOBciMxthMNyYBiqRzun2fmfy+AtgwC3GdZSFliYDbINhhb3XL3QmTvRbUcT0uRtaW2ZVeGXTJ6k6MwSjTgd7eymyS3NudtBck6GcSZgOBOQw72Bc14+5QTPv5fe/JS8dJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732200224; c=relaxed/simple;
-	bh=DC/9YkU2BchaabD5ycgLbSoIt4/zucrbbySyiKTAodw=;
+	s=arc-20240116; t=1732200226; c=relaxed/simple;
+	bh=ZsdCmW4n2LvHHk61rNgVX7raqVKq/pW4WBuFPn32Q2I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GJWMDY79jjXbe53bQau3QgY2MytMDkx/+ZRROryvLjzYKho2s9xPPICZs1j/Op9sMYwxuQxnCg/HzCJxSbN5xnJZzAqASaf+848lmplnEcO8RDhKhJ2n6WcdlkQfTm83p73H2/Hpbik4msVKwhw8Ee+WvnLFQZ4VeKwa7xWQemw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Hn2mOj1w; arc=none smtp.client-ip=217.70.183.194
+	 In-Reply-To:To:Cc; b=bQ79+my5K9/3ZUBM5TeQbdEhW/vdGj+Om3O9HcmtxfMxAm2yujVJS2kF0yLuBz+SZV+1qucNx6HHsZsmzS9AjHMueAY2OzcUg1zvUVEauGTrnicdEQSHkWYaABy4znWj+p11XI69rmzvPgzpvJGzDqyRnnujhqz0KJLsW3jAW9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nbCYWFlY; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Hn2mOj1w"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B4D774000B;
-	Thu, 21 Nov 2024 14:43:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nbCYWFlY"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 198CB40006;
+	Thu, 21 Nov 2024 14:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732200215;
+	t=1732200222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PB4N4irPSyn5rR+E/NNWqmUZSG81ZYdtH5kOGb0VcXk=;
-	b=Hn2mOj1wPiMHfblYXynxvv9q601z9o/gA4WJNSOy3/TJLNPerLtchzzAx7IBpYdTINhWwc
-	SGJCzhjPy3fNZ/J8NE5Qwo3JfaqmotoZpcwZOt/VDG0I4spU13YLwsGwFvTDDbp6AU6m1c
-	OtTTZKQ8flYbHNQ+yeLFDMsij5KljziJL5NB8o3ucUfIAVGb/xc5t3MeClrLuo1yQK35ev
-	o9yhM0jvMj+L1NRE6WUJkQ4kvVMa5z8OWd8EQD5qnZoYJanQtlzUKZdWlgTG3fM2xQDDiU
-	wh1eHuEyPT5gCxb3Mq+Bz7aqZKTfL9TZb5b0hccvr+ILOGFxi8rGhV2i1+Tt+Q==
+	bh=ZR/OQqXD89qyu5jFhAfZEfAZSUhVQIdWY1c3hbVfIMM=;
+	b=nbCYWFlYdqMjzdMZMVjm2eP2ZK2CE0KsGNaRD0BVd3lFbkTqjUsjj0Z9fuoHa7J2RUo0b3
+	C+Z9NoRJzW5WOBtTd2Mq3J4y5Fz5eT39tkn4VHtkPpqTj4Hn/ISjhc0hOG+ugZGyRVAQhj
+	xTEZ9xwrNJaliOzr6aE5P7/vtzubWZ3sxtx1ogpv+FZrkkT/5HXXwYCyl5erLdXewRrdrM
+	A/tHNdNKWpmkPeZFQnanv83mXhej5T7SKXqeLWJPpTE4s4YN1OnLFNumvyZS/gjqtaIm9D
+	92UvzppHSGrCw4H5XxPa6CzpZKpQA9ICHJ5JI5zI/Pkbt+xzjzbHC8d/4KUTWg==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Thu, 21 Nov 2024 15:42:28 +0100
-Subject: [PATCH RFC net-next v3 02/27] regulator: core: Ignore unset max_uA
- constraints in current limit check
+Date: Thu, 21 Nov 2024 15:42:31 +0100
+Subject: [PATCH RFC net-next v3 05/27] net: pse-pd: tps23881: Simplify
+ function returns by removing redundant checks
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241121-feature_poe_port_prio-v3-2-83299fa6967c@bootlin.com>
+Message-Id: <20241121-feature_poe_port_prio-v3-5-83299fa6967c@bootlin.com>
 References: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
 In-Reply-To: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -64,33 +64,84 @@ X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-We should only consider max_uA constraints if they are explicitly defined.
-In cases where it is not set, we should assume the regulator has no current
-limit.
+Cleaned up several functions in tps23881 by removing redundant checks on
+return values at the end of functions. These check has been removed, and
+the return statement now directly returns the function result, reducing
+the code's complexity and making it more concise.
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kyle Swenson <kyle.swenson@est.tech>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
+ drivers/net/pse-pd/tps23881.c | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
 
-Change in v3:
-- New patch
----
- drivers/regulator/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 1179766811f5..2948a7eca734 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -497,7 +497,8 @@ static int regulator_check_current_limit(struct regulator_dev *rdev,
- 		return -EPERM;
+diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
+index 5c4e88be46ee..20eab9857817 100644
+--- a/drivers/net/pse-pd/tps23881.c
++++ b/drivers/net/pse-pd/tps23881.c
+@@ -118,11 +118,7 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
+ 			val |= BIT(chan + 8);
  	}
  
--	if (*max_uA > rdev->constraints->max_uA)
-+	if (*max_uA > rdev->constraints->max_uA &&
-+	    rdev->constraints->max_uA)
- 		*max_uA = rdev->constraints->max_uA;
- 	if (*min_uA < rdev->constraints->min_uA)
- 		*min_uA = rdev->constraints->min_uA;
+-	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
+ }
+ 
+ static int tps23881_pi_is_enabled(struct pse_controller_dev *pcdev, int id)
+@@ -488,7 +484,7 @@ tps23881_write_port_matrix(struct tps23881_priv *priv,
+ 	struct i2c_client *client = priv->client;
+ 	u8 pi_id, lgcl_chan, hw_chan;
+ 	u16 val = 0;
+-	int i, ret;
++	int i;
+ 
+ 	for (i = 0; i < port_cnt; i++) {
+ 		pi_id = port_matrix[i].pi_id;
+@@ -519,11 +515,7 @@ tps23881_write_port_matrix(struct tps23881_priv *priv,
+ 	}
+ 
+ 	/* Write hardware ports matrix */
+-	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PORT_MAP, val);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return i2c_smbus_write_word_data(client, TPS23881_REG_PORT_MAP, val);
+ }
+ 
+ static int
+@@ -572,11 +564,7 @@ tps23881_set_ports_conf(struct tps23881_priv *priv,
+ 			val |= BIT(port_matrix[i].lgcl_chan[1]) |
+ 			       BIT(port_matrix[i].lgcl_chan[1] + 4);
+ 	}
+-	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DET_CLA_EN, val);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return i2c_smbus_write_word_data(client, TPS23881_REG_DET_CLA_EN, val);
+ }
+ 
+ static int
+@@ -602,11 +590,7 @@ tps23881_set_ports_matrix(struct tps23881_priv *priv,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = tps23881_set_ports_conf(priv, port_matrix);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return tps23881_set_ports_conf(priv, port_matrix);
+ }
+ 
+ static int tps23881_setup_pi_matrix(struct pse_controller_dev *pcdev)
 
 -- 
 2.34.1
