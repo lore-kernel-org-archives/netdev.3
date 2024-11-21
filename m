@@ -1,135 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4530C20330;
-	Thu, 21 Nov 2024 14:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705101386D7;
+	Thu, 21 Nov 2024 14:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732199140; cv=none; b=f86lYBJVOfu0XS1MCxToJOrTFqOKLxmXIsyzty8JufmU835c996TziwbjiuLMKYorv1utD0b8Qzrk2PerPAhGIvFuuyoPVkpudlfRCFqkJJjL1nonjUWNVJLSsFlpuUibU+Oyi5xZ9csAmXc+mtKPAmgwm+9f6eryGEPs8SPcvQ=
+	t=1732200222; cv=none; b=H/nmJec87jlOTMiTow0b8nYrGigjTVItK1qHV46UlwtSziTjUDKGPzM0BvlIGh0WVCbCNpUaufpVlmo/v7425BWcj/1dfJGJ+ha34joaGk5ytxDCycP0dikcY6YaAHDGMyY4SVuZT0gu861zhyfwMq9e6T5QwdFS5N3X2i6DE/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732199140; c=relaxed/simple;
-	bh=/xoURug9mFlPXUzDX/hahpXmfY+g2zn4YGL+kl59M5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e2GI00hRjZEWzRWLJeSJdrE1Q4OjW6UWdpTZiEzJjGfXDe8KvpfjPdUfRz4lY4Yqhl0oyuhv9kx19VHZNglQ7WH31QyeVeDNAVlQ/pLS2tezFuxb26SlbRqTQ9m3bh+f3sWkUbwZwC/8enI+taA+Rgxk/BSABNfI+QHyOCUfGNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=npEi2vOd; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1732200222; c=relaxed/simple;
+	bh=Z9ZNL3rh1rUDWm5Q3HrHpjTA0Zx0JXMguecu4dqyCSQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iCpYkGsqV4tVDUUPjMdfhWBCLs3KsP9+G7vTJnhOwb83qFaGsQzSaCfHs2SGI5ik8iRtOraWxJ+okAwY8hp2StXIa0V/U5LD6l6DX6gWoofodQ8XJ9pXiORc9DN7Pl7rHuDueTDfC5ErqgKZsaiM5F1TIogBU52OIEtyLRJciWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e8jJdSO5; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="npEi2vOd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=eKS76cxQEKPIR4MEzycu9OJBS5rxGLqkxBAvZUIpwVY=; b=np
-	Ei2vOdB6W7Zu4BhKLa323a/lO6SQZ8TcrZ6ky4luNxD9+wHZKN+Z/mn9zLt0LPN1U6G31mm6W2qqc
-	cnStju9YD4aum2igneGTkuOlV4kWSLux0KTLZyCwgEyygQ2xpO9aNVJI4+1fNT7dZnqMaXpQ7hkJR
-	/JyeuCitN9EV9EI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tE87g-00E3vg-8B; Thu, 21 Nov 2024 15:25:32 +0100
-Date: Thu, 21 Nov 2024 15:25:32 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
-Cc: netdev <netdev@vger.kernel.org>, Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>
-Subject: Re: [PATCH] usbnet_link_change() fails to call netif_carrier_on()
-Message-ID: <b1888530-1bf8-4ced-948d-d3989f9896b6@lunn.ch>
-References: <m34j43gwto.fsf@t19.piap.pl>
- <9baf4f17-bae6-4f5c-b9a1-92dc48fd7a8d@lunn.ch>
- <m3plmpf5ar.fsf@t19.piap.pl>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e8jJdSO5"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CB7ED4000C;
+	Thu, 21 Nov 2024 14:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732200217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EmHAa5lzTlUKP9x1tLfYUr5FJHSMHYYBy7nd5w51Avs=;
+	b=e8jJdSO5ViEhXGf3Ny2QOlNBN0n5eeXTbNv5GuHUTacuHbdaUyQ0Jl7p7A4bYxQKIvtxHo
+	IEOeMbWgmMA3IlJmMUwFA+dY2LaMQQcJh4pNk05ICaoWJueV/B4uni6UHYxWuqLRP0d1X0
+	K2Dlc2+A7UoEs5NTNN7T6wIWJoFB6zhw940tiX4+tj2LEop+fFA1jTQYiSekrNIrZoEa7B
+	eF6UxLzbsTeDv+pANeS2GJFAT+MGp2uy74dRICOF6G5hk6UV/uukMdgoKykGyGpZSVU3tn
+	4OFMKpB2tqoybQSK7nDB+XWS9cXcBHskFM09JbtpjNTp8YzUClUnDr/OPyg4jw==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Date: Thu, 21 Nov 2024 15:42:29 +0100
+Subject: [PATCH RFC net-next v3 03/27] net: pse-pd: Avoid setting max_uA in
+ regulator constraints
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <m3plmpf5ar.fsf@t19.piap.pl>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241121-feature_poe_port_prio-v3-3-83299fa6967c@bootlin.com>
+References: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
+In-Reply-To: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Donald Hunter <donald.hunter@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>, 
+ Dent Project <dentproject@linuxfoundation.org>, kernel@pengutronix.de, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On Thu, Nov 21, 2024 at 07:51:24AM +0100, Krzysztof Hałasa wrote:
-> Hi Andrew,
-> thanks for a looking at this.
-> 
-> Andrew Lunn <andrew@lunn.ch> writes:
-> 
-> >> void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
-> >> {
-> >>       /* update link after link is reseted */
-> >>       if (link && !need_reset)
-> >>               netif_carrier_on(dev->net);
-> >>       else
-> >>               netif_carrier_off(dev->net);
-> >>
-> >>       if (need_reset && link)
-> >>               usbnet_defer_kevent(dev, EVENT_LINK_RESET);
-> >>       else
-> >>               usbnet_defer_kevent(dev, EVENT_LINK_CHANGE);
-> >> }
-> >
-> > This device is using phylink to manage the PHY. phylink will than
-> > manage the carrier. It assumes it is solely responsible for the
-> > carrier. So i think your fix is wrong. You probably should be removing
-> > all code in this driver which touches the carrier.
-> 
-> Ok, I wasn't aware that phylink manages netdev's carrier state.
-> 
-> Then, is the patch wrong just because the asix driver shouldn't use the
-> function, or is it wrong because the function should work differently
-> (i.e., the semantics are different)?
-> 
-> Surely the function is broken, isn't it? Calling netif_carrier_off()
-> on link up event can't be right?
-> 
-> 
-> Now the ASIX driver, I'm looking at it for some time now. It consists
-> of two parts linked together. The ax88172a.c part doesn't use phylink,
-> while the main asix_devices.c does. So I'm leaving ax88172a.c alone for
-> now (while it could probably be better ported to the same framework,
-> i.e., phylink).
-> 
-> The main part uses usbnet.c, which does netif_carrier_{on,off}() in the
-> above usbnet_link_change(). I guess I can make it use directly
-> usbnet_defer_kevent() only so it won't be a problem.
-> 
-> Also, usbnet.c calls usbnet_defer_kevent() and thus netif_carrier_off()
-> in usbnet_probe, removing FLAG_LINK_INTR from asix_devices.c will stop
-> that.
-> 
-> The last place interacting with carrier status is asix_status(), called
-> about 8 times a second by usbnet.c intr_complete(). This is independent
-> of any MDIO traffic. Should I now remove this as well? I guess removing
-> asix_status would suffice.
+From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-I've not looked at this driver in detail, nor usbnet. So i can only
-make general comments. I do see there are a number of drivers which
-re-invent the wheel and do their own PHY handling, when they should
-allow Linux to do it via phylib/phylink.
+Setting the max_uA constraint in the regulator API imposes a current
+limit during the regulator registration process. This behavior conflicts
+with preserving the maximum PI power budget configuration across reboots.
 
-When the MAC driver is using phylink, or phylib, it should not touch
-the carrier, nor access the PHY directly. The exception can be during
-probe, when it can turn the carrier off. What the MAC driver should be
-doing is exposing its MDIO bus as a Linux MDIO bus. phylib will then
-enumerate the bus and find the PHYs on it. The MAC driver which does
-not have access to device tree then typically uses phy_find_first() to
-find a PHY on the bus, and uses phy_connect() to bind the PHY to the
-MAC. The MAC driver then uses phy_start() when the interface is
-opened. phylib will poll the PHY for changing in link status, and call
-the callback function registered via phy_connect() to let the MAC know
-about what the PHY has negotiated. Other than that, the MAC driver
-does nothing with the PHY.
+Instead, compare the desired current limit to MAX_PI_CURRENT in the
+pse_pi_set_current_limit() function to ensure proper handling of the
+power budget.
 
-It could well be there are historical discrepancies in usbnet, in that
-having Linux drive the PHY is somewhat new for usbnet, historically
-the wheel was reinvented, and maybe part of that is in the usbnet
-core.
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
 
-	Andrew
+Change ni v3:
+- New patch
+---
+ drivers/net/pse-pd/pse_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 2906ce173f66..9fee4dd53515 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -357,6 +357,9 @@ static int pse_pi_set_current_limit(struct regulator_dev *rdev, int min_uA,
+ 	if (!ops->pi_set_current_limit)
+ 		return -EOPNOTSUPP;
+ 
++	if (max_uA > MAX_PI_CURRENT)
++		return -ERANGE;
++
+ 	id = rdev_get_id(rdev);
+ 	mutex_lock(&pcdev->lock);
+ 	ret = ops->pi_set_current_limit(pcdev, id, max_uA);
+@@ -403,11 +406,9 @@ devm_pse_pi_regulator_register(struct pse_controller_dev *pcdev,
+ 
+ 	rinit_data->constraints.valid_ops_mask = REGULATOR_CHANGE_STATUS;
+ 
+-	if (pcdev->ops->pi_set_current_limit) {
++	if (pcdev->ops->pi_set_current_limit)
+ 		rinit_data->constraints.valid_ops_mask |=
+ 			REGULATOR_CHANGE_CURRENT;
+-		rinit_data->constraints.max_uA = MAX_PI_CURRENT;
+-	}
+ 
+ 	rinit_data->supply_regulator = "vpwr";
+ 
+
+-- 
+2.34.1
+
