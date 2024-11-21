@@ -1,155 +1,193 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2062.outbound.protection.outlook.com [40.107.101.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D8E1CD1F5
-	for <netdev@vger.kernel.org>; Thu, 21 Nov 2024 09:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732180966; cv=none; b=Pz87hOrTSGuVwnluepFuIFiLcsx8IcJRYjGODuTJt7sPhHN5lxNy6FDvemPnTLUcj5VvdrovCjQTSHrOe3qIqYbxfLduYK+z48RvDtREXxidoFcGV+ja5pIgbXaHnIwlhNWy1VF3OeJeJMxBRtj3F/k9E2lxSrxqQsuA0r/0ejQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732180966; c=relaxed/simple;
-	bh=IvkNi9MB9Gz+9logpWHPs9ebHF4rDxj4KcN9SKM0J3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D6WSH/vIMQxNTsbM91sUlW7T3ScA6Rkq366b6pZKXktFtHU9QscqIDm4W9gHL7wJ5jLxWRw8OLsJwy8yNAY/BIG0DHJQjsqze5h3XMXcRgXb/UsU3WjYyiYI3W7gz0sT16FeCmObQCD0Y0OPAL3PnGWPQk1PnUA9pOOEz0DCGc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P9yWuJye; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D3D1BD9FC;
+	Thu, 21 Nov 2024 09:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732181265; cv=fail; b=uOdJ7M2wBjzGi5HbIgzD9YlLIlMqDIQKNvnYzBOj9OaNxcmCNKH6GibZhH3jvftDl1BhozkhDR+5Tt3csgRmNyfD7+AZn/eidrPTtyHs4nhYq4wC5uHyJdZxFxXR3Oucf/1/MepLVBCRaeO/WkLN7qSssoe8ei9g4p1GKFG2I9c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732181265; c=relaxed/simple;
+	bh=ZgFyj9RlPKuGqDCIfJel3uMP6W92iQ6Zf51L9bFoMPo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZlfE/sTLKh9iy71t+cBuEiqSJAZDYTKd3vBbv06uvwdBgGsCSqfvDbbGyRLZHreYpqluNueGbTWF3sOiP9vVXhM4rodCxRLDK0+7Mqgo59yttp7E7YRUEA1hjrUwi5c3KRPvFILg7ut/4QVbeJ5n5h9KMqCTvmKOH2gvZ1WQWp0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jFX/Ix1q; arc=fail smtp.client-ip=40.107.101.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P9yWuJye"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732180964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ib0sSUsurO82uUHQHx2yt3sntw+yckXm2URc0dpDKg=;
-	b=P9yWuJyeCSrr8f23/JIKQxIPohwbq1G0Ffc428jII790vlsiaQP8TBDlW7HQsB9KJZYOXc
-	p/l1fjdVIaTq6Q9WEYgAwfv7nWDbOXLVRbWsbmKEc5Rt4GFaho3fBvXNdCuPerAldwhVYx
-	H40fq/HRQgZJQeeq0/oI1TCexT6s1Tc=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-zJg4J2pxNOGrBVkvWFx3zw-1; Thu, 21 Nov 2024 04:22:42 -0500
-X-MC-Unique: zJg4J2pxNOGrBVkvWFx3zw-1
-X-Mimecast-MFC-AGG-ID: zJg4J2pxNOGrBVkvWFx3zw
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa209443786so182255466b.0
-        for <netdev@vger.kernel.org>; Thu, 21 Nov 2024 01:22:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732180961; x=1732785761;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2ib0sSUsurO82uUHQHx2yt3sntw+yckXm2URc0dpDKg=;
-        b=iiulxo6KZMH8RT0+K5SozmmLwE9abIeZVIptCCN5s5gXj7Zo/au46VL80OZziyUjvZ
-         NohjF5OKIKGuGHrF72t9c23lvcDy3Pk7r2aziFzTevSfsUKc7evxUB7ahiL4HI6CPW+5
-         KlXjgKxQkQO14CF0S39brUKC7eC3AgxJSedz3blSS+3xdRR9tFVTcAZEP14NXYq7dnvW
-         pUROELYQ60a90E0DFYnKFlv4Rw5laJI6sEhXThCpwpFlHWw2PKyuoeV0YSJ2LT9GdMKn
-         SxU3sbmhbcEUioNNNOUfcIa1qqp5eeiJzZsfHKkZ5UkpNlYGTDc0OTpdeaPL9RaGxtY5
-         ymwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNov+2hLbfGJ/wOGSuoQRnbJXkAkWlwNCTCGrHGcdcpvlzIXgNDa1KD/jDn0Ok4DwMAq3O5v8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziV9pYX8urvlUpif0B5UBFqj5/rL5WJFvfH3DopgeOVZymf+25
-	qFZoXpOuzrhOvJjEQvdVCSvX5e+9OUwb1+2xnEGhJLFBc6vYmcmsgfB6oOii9gti3kJ7Owv2pnD
-	OP+KrKhI1LvYDRJg+Cg+0AosUm4tx+GeNbwK/il/iBYK12zm4b3PKwQ==
-X-Received: by 2002:a17:906:4fd4:b0:aa4:cd1e:c91b with SMTP id a640c23a62f3a-aa4ef969ef9mr248993266b.7.1732180961484;
-        Thu, 21 Nov 2024 01:22:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEk0q5Vdg3xAj2kuDWsfXimxNkzbgnZ/hzB33Foag073HTmnVH6K258Cxw5HfZC3jrA/MlmA==
-X-Received: by 2002:a17:906:4fd4:b0:aa4:cd1e:c91b with SMTP id a640c23a62f3a-aa4ef969ef9mr248988066b.7.1732180960769;
-        Thu, 21 Nov 2024 01:22:40 -0800 (PST)
-Received: from sgarzare-redhat (host-79-46-200-129.retail.telecomitalia.it. [79.46.200.129])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa4f4152c49sm58523866b.27.2024.11.21.01.22.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2024 01:22:40 -0800 (PST)
-Date: Thu, 21 Nov 2024 10:22:37 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Bobby Eshleman <bobby.eshleman@bytedance.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>, 
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf 4/4] selftest/bpf: Add test for vsock removal from
- sockmap on close()
-Message-ID: <c7d37htqscjjzhgauc4v3iwpncbencvacaphvo7sr7snb3cvhy@eego44ccc2no>
-References: <20241118-vsock-bpf-poll-close-v1-0-f1b9669cacdc@rbox.co>
- <20241118-vsock-bpf-poll-close-v1-4-f1b9669cacdc@rbox.co>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jFX/Ix1q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L4ebYVyRjyVfojZO4hyLZqAoxWAM3OU/kEz45fud2VAn4QwJqoPetfaRtG5m3IZl6eGO+JTCKPV/+qbUpV6ADBXSkCdz6Vss3rxafbGfJycmR15dFSrOstfUuNiAmpQxaCuXVzD8HCWoOy/MouYrGKKtYg2Qeri+YFYB6N8vC+PuSvjRujcinKfT7cQvX+4Hu6BW+GkXhjUrjC6TNWDtpdp1wj8cCyisXVKVHJZU7aClyiW1VOV/e5MMZUVpfOQ/apH3YZ1kggmk/FeM1YDphgkgwOg4Ywz0MThgxk009HKPks798U5yulG9u4mxUJGoz6OfBE/fjiFyux7nh6oCUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fFbeN0dN/9NlTojXya6B7ZGFFLEqUj1Rb0OcdnCxWVs=;
+ b=OyCJbVuqqwp5GrAhEHmejqDG882d6/jZMZqrOYRfNh0APzRTKR8n767PTis2+cUTA+8u5CCYi8sS3Va/U3gRQiyjPQfpOv2eMWJnN0DgDFI/nO9D9ZXawuF422NMc7q4KWhVte1WhPEHuhmywQrjabcA23x8gbFK9bjetgDZ0dQtvt17Vf4vBmqKCk5Efa6Qr71j8DSmMusCbWsSBCYEAT5HDnLSh95MII/HShz/UOvnLcetSiPBtzC1d6Zx/OyIaZmtV9JT2Va0k8G4JHoKANH1KUmbOmDdfa3y0QfG8H1VG0lP5WKQOb/F9JPlQQ8gcpKKgo4YiXhIglf8vGKqGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fFbeN0dN/9NlTojXya6B7ZGFFLEqUj1Rb0OcdnCxWVs=;
+ b=jFX/Ix1qRvLY09B/d/YkykztjRR27gN+pF3O/Ru40weqRkqbsmI3R1mhvUmf2QDQf87k1egkMZcfmJw0+Fl35Uofjysx81plkA526DZd1/QDp1A7LjoXYb5wPHp1uiXpDN26PXweTTLmsxfE6IQgpu3MmGWSjwztIV62kBOLsd4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
+ by MN0PR12MB6269.namprd12.prod.outlook.com (2603:10b6:208:3c3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Thu, 21 Nov
+ 2024 09:27:40 +0000
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79%5]) with mapi id 15.20.8158.023; Thu, 21 Nov 2024
+ 09:27:40 +0000
+Message-ID: <cbaefe66-a5de-47bb-a0ca-ff96fb4a5077@amd.com>
+Date: Thu, 21 Nov 2024 09:27:34 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 00/27] cxl: add type2 device basic support
+Content-Language: en-US
+To: Alison Schofield <alison.schofield@intel.com>,
+ alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+ dan.j.williams@intel.com, martin.habets@xilinx.com, edward.cree@amd.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@google.com
+References: <20241118164434.7551-1-alejandro.lucero-palau@amd.com>
+ <Zz6qFaLNs0XmdhMw@aschofie-mobl2.lan>
+From: Alejandro Lucero Palau <alucerop@amd.com>
+In-Reply-To: <Zz6qFaLNs0XmdhMw@aschofie-mobl2.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0536.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c5::16) To DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241118-vsock-bpf-poll-close-v1-4-f1b9669cacdc@rbox.co>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|MN0PR12MB6269:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c19d1a9-092d-46d4-1133-08dd0a0ebedc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?L0g5SXY4dlR1MnVaWXU1b1BlRm44R0l5Mks2UldpSUtKTU8xU3ZUR3Bsd2tr?=
+ =?utf-8?B?UEg0YW5xOGJKdEJSclpXOHl6anhwS3g2S3NubWtESE5HT1NVaEdiam5rYyty?=
+ =?utf-8?B?NDdTbWNnRTdCOW1YcmhrRFJsUXdkejNtdVdIb2FsNWFYK0JQOFRDMmRxbG9B?=
+ =?utf-8?B?dlJXNXg4aVpLM1pvMTVCMHpCUGZYY2hDbitjZ2FVMHpPbEt5UkM5NFVIZTJF?=
+ =?utf-8?B?aFZwTFQxdXhQMlo3M2l3NkxEcis5N0lSdEQ5MkVRNU9ucGNORjdqYm1MUHZT?=
+ =?utf-8?B?ZE5DRmFRSXJCY1g5YVFsNWd2V01BQStTVWxEaXNPdURlaFFzeVIvWloxQ2xh?=
+ =?utf-8?B?QzJKTFRYcklHUnN4ZEdZVEhieFUrc0E0NEwvMmN3ZHBHRW4yLzdNczlEYjNw?=
+ =?utf-8?B?MStWWWxpWjJiSk1xYXFUU3YweDNUYkRsNk00THRvbGtxSzdTdWh5TVd4Qjdr?=
+ =?utf-8?B?LytteFMwSzV5Q3lGeHBsZm9LekE1bVdpOEt3cGR2NnZuV2xMTlJtOUFkWWNH?=
+ =?utf-8?B?eXFrWThhYjg2c05ab3NZR3owTmxVZ3FaNmFGZ1RLbGlXd2Nlbzcyeld3aEZR?=
+ =?utf-8?B?a2o3UGFCVC9rTG9TbnpSU2xkcTBFRHNLb1RiY3l1Ykw3OEVRcm85NzFsMUta?=
+ =?utf-8?B?dFFxY0Z0KzR2NG1TcllUNzNzR3NuWHJ1OWxCaVN5OWZPdnR5S1hJSVhVNFNs?=
+ =?utf-8?B?WmFVeHM4RndjQnNtYW5GNDhQRDNxSldXRGlzcHpzU21FZEZOcEZ2bVNXanRt?=
+ =?utf-8?B?UnBpZmpNTzdsaTRib3kwMzVLUGF1MXE4THk4SklpMWtoK0o5TWpxTzliTitq?=
+ =?utf-8?B?QnpreVk5NkJCMitkNUlFa3NNTFo4c2F5d25KWGlpZktmbEFzcDMrRmZORVd0?=
+ =?utf-8?B?ZnA4YjZUc05yUjJhNDBadVRudEhPRDhCdlNEaWo1V0VMSWNVL2lZUmhTa1l2?=
+ =?utf-8?B?TXNwTkNra0x6bThzbDB1Qm1NbWxYYWhmdGhiOTY3dlNSeHNLVHJKZnVFWFRD?=
+ =?utf-8?B?bGNqcGVNbnU4LzZsT29TclFuQ0VHYUdreFJ1NnFNZ1lubE9xTVpqRkFZR1pr?=
+ =?utf-8?B?bjZ3Qm1MV2pnT3R1Q2UvTVlwZzI2bDlzNXlHQlhyZzFvVmFKK2UwRVd6cFI4?=
+ =?utf-8?B?V3VmUXRpSXVkYjRjZndLVU1YUU1UbkhTTVg5blhBOHMvVDRoaC9ocWZPSEZw?=
+ =?utf-8?B?aGoxdGdtbnF4U1RESnVGKzJhajNyM1VNVmFmS01Jb2RUWkUvTlVQbXp1ZVhI?=
+ =?utf-8?B?VTJRc20zNU8rOXNQRE5CMTdxTDFQai9wdFBOTHVSVUNBYkg5ZXFPa2NiSTAv?=
+ =?utf-8?B?YUdkRVhlRFVSYmxTRnJOSnMrRTFWOXdHYnZRWFpDZDh5WXNGRjNTQjI5OXBS?=
+ =?utf-8?B?SHloZmx5OFV5RmlGTml1TFJnVFgwcmo5K1pUUldTdHFLSlRqNHdmSEllVGtH?=
+ =?utf-8?B?aG1zYVpZejk2ZU4xZ1BHbC8rd2F5dUVUV2xMU1NGZTJLRVBocC8yMEdFOU5F?=
+ =?utf-8?B?NlBaeGhZMTlqdXBDbnFDWEZjcFFLWUpmdjd6UE9VeTdjS09ObndVcWRxV25I?=
+ =?utf-8?B?VFJIakNHMEhxcndncVd6OGQ2YVlvSXhXU29WV3F5NWtnT3NpNG5zSFh6TmhZ?=
+ =?utf-8?B?ZWF1K0Q1ZFQxQTNzUDZNemZGZnJDUWIrUHo2K1M1ZHB2ZmM2Y0w5cGhhRTNF?=
+ =?utf-8?B?ajZDUUMrRkM3dVFnaEF2TWsyTEVKak41b0wxMVlWR2lxWTFuUHZHMEo1ZjBp?=
+ =?utf-8?Q?+AQnLPbNlGNN4aF0bJSbtP6TU0wqYPh1hXoTMXH?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bitydmliS1kxRGxjOGJpMTlqZDdMcGVNMHY3UzU5QS90YlIyOGNucEY5YVZC?=
+ =?utf-8?B?K1Q3VDlBQVg1bEhRU000UWtIUjZJWGtSNmRrMCs0NlY4bFo0U2ZJMWlNSEF5?=
+ =?utf-8?B?RUk5TldPR2Z1OWhNdVdsc2VBbXh4bTdwRE1pMG5XaEhJVjNTaE40S1FzTGFV?=
+ =?utf-8?B?emVKTWVUemlueUh5b3ZRVTlxbGNmYkI2WWhsVWhTY1kvVGNNdE9yM1RCWW0x?=
+ =?utf-8?B?QmFWZlRLRWowc2FlZzh4SnIxS0xtK3p2Nko5L2w0T0ZIQjdTYWVLZ0dibjB2?=
+ =?utf-8?B?RGNNVk5pUG02c1BuN1BGZ05XOWFHRWtMOWVoYmZNUTk2ZWpiQStZaWRYZENt?=
+ =?utf-8?B?UXR2c3lMQkk4VmVTYWgxMEJjbjlIVlkvTlRqY21oR1hWSW5lbnBJZUFINjZN?=
+ =?utf-8?B?djlxd3krZ3JhQjZjYnI0aGZqZlhGVTN3NzBkWGtibEVTamZHcmhsVHZaTG9G?=
+ =?utf-8?B?dWhJMkduUEUrcStJSXhueXFHV2lJYWRYZHZMcjR6ZjJuTHB4SisrbGlIbEIx?=
+ =?utf-8?B?L3craGxlQ0xaRm5pQ0p6aDZmTTM2WERLQldMWUVjYW5rR0JZSy9wUFBxcEtM?=
+ =?utf-8?B?SlFneHhBV1lmQ3ZTbVp0TkJJL1Z5VkFYL3A0dkFjSkZZVnZFcUNRQWtvajJC?=
+ =?utf-8?B?OC9lRWVyekpOTld4Mm0zaTQ2S3VxV1Fnek5Sd1Jjb0dsd0pwaENNcCt2bGIv?=
+ =?utf-8?B?TXFrcHp6UVprWTRBd3lVd2lDS1FPSDQ0QWhZaUFwaXlTUlliYkJyTUw5VFpy?=
+ =?utf-8?B?Z0VLVkVEMEluMVZGcFc3dkRITWFZN0x4WmZCZ2lvdTczOU1zSC9DTW5zcmJ3?=
+ =?utf-8?B?cnNQMExrb1FPazZObFBaaWZIdGlyQ0xWcFpVZGNoMFdmYlY1aC9BdjBSZlRn?=
+ =?utf-8?B?OFYvaVRoWWJHSDNtVHlvcnMzQzJFd0dCSzVzblZYek90SjBxMGxmLy9HVjJF?=
+ =?utf-8?B?NlZObVJlRmUyWFZWLy9hazJMMFVLdDBKM0VFbUozRE1ZcG4vRGFyYWlqZ1Nz?=
+ =?utf-8?B?TU50YmE1Vlp4elE0cnhvZkhjMkdSKzI5VmVqMmhVWHcvRE1rOWFwR2N2N0ov?=
+ =?utf-8?B?eS9wdzYwSkp4Ynh6MWJ3YVJrWDFaSThyQVlVbjZvb1V0VzVyY2RIZ3NDOThT?=
+ =?utf-8?B?M21qM2NhSGpHRnRtVlVpN2dOWCtYa1FCQmdVa3VkUGVCby8rRjkwWlloN2lV?=
+ =?utf-8?B?ajBGT2Noa2RSRjlxT1l2RzE2b1crczArK2V6QmU0d0VVTXFYcjl6OVhmLzVS?=
+ =?utf-8?B?WEZlQWgrVDc0OTJHOUZoV0diSUdINk1aNlM5MUowNTRvZWtoSmE3UUt3RGky?=
+ =?utf-8?B?R29QeEpQS3QwZ3hOL2prUGx4VGsyd0Z2R2NGMFNoYW83VmxtQ3lkZHR0anFj?=
+ =?utf-8?B?amVvUUlLUXpTTkNUQ1FVcDFOOHREMHpENjhMeXlrZnFtV1d2d0hBZWJtVnIz?=
+ =?utf-8?B?SlFNc1JVUmpzVy9QdjhIeEhadEhodWptTDc5cm9OMExUczdmdyt4ajNkRzdW?=
+ =?utf-8?B?eUlnanJja1BtUHcrMVk1Nkh5SW95S3BXcTNsYThzRGdwMWNjWkFVbkFtSGls?=
+ =?utf-8?B?MFoza3RMd1BkeE91OFdsMzhNOFA4NWdhMDJSWEJCU1d3cmw3WlZEVzBuZTBW?=
+ =?utf-8?B?dVdrS0F2bEY3TTJMSldBbmF2ZDZjMjRDYkpsZGFUSlVtYytIMkkyQW9QUTEw?=
+ =?utf-8?B?anZ0RXFJZ2dFbUNjQ05ybFNnUE5KQjN0N3R5U0J3V3VSdHFEMjFYeDlEN3NS?=
+ =?utf-8?B?SVV3Q2Q0Ti9ldG1vekk2cFVTSDBJckhxdlVwWnBuSmYxWm1FSVYvam1aZXdl?=
+ =?utf-8?B?NHFjazFsT3dSQmhvSEZmcjQrcCtLVmpOV0djVlZacEVxNlJtQW1lVDc5QXcy?=
+ =?utf-8?B?aUFvY045TEpJNGxWa2t2Tm1wcXpuOFZHcWxTZzRxRk9tSXRLaXU2SHRnZWcz?=
+ =?utf-8?B?TzJsdXp4eldkbCt0a3IwZXd2b3dUSFd1MUdJZzEzOE55aDhvTjVxQ21JS2dH?=
+ =?utf-8?B?aXJBcE9saCtBUDU3Q201ZmRubTVyM1ZjQXR0RGI0bCtqVFQ3RWNiZE0wcnl1?=
+ =?utf-8?B?VlM2eThuc3dDQXZNRmhpMjU2UmtxQkdpbkpJekdlMVFKZmtjVlBscHFEb3FH?=
+ =?utf-8?Q?7Dqu7a/sF+BKimA8DX33Z3hWl?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c19d1a9-092d-46d4-1133-08dd0a0ebedc
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 09:27:40.6380
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nAYZwwaY4ibUazA5e9tKEWteSM1C4OFtjfuI60elqTtZhW6GitbU0mPmI8wvY0U/W7M5YaRoeNnRQoJYvIdwMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6269
 
-On Mon, Nov 18, 2024 at 10:03:44PM +0100, Michal Luczaj wrote:
->Make sure the proto::close callback gets invoked on vsock release.
->
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
-> .../selftests/bpf/prog_tests/sockmap_basic.c       | 31 ++++++++++++++++++++++
-> 1 file changed, 31 insertions(+)
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+On 11/21/24 03:33, Alison Schofield wrote:
+> On Mon, Nov 18, 2024 at 04:44:07PM +0000, alejandro.lucero-palau@amd.com wrote:
+>> From: Alejandro Lucero <alejandro.lucero-palau@amd.com>
+>>
+>> v5 changes:
+> Hi Alejandro -
+
+
+Hi Allison,
+
+
+> What is the base commit for this set?  (I'm trying to apply it)
+
+
+I'm not using the CXL tree but Linus one, and using 6.12-rc7
+
+
+> In future revs please include the base commit. I typically get it
+> by setting the upstream branch and then doing --base="auto" when
+> formatting the patches.
+
+
+Apologies for the inconveniences. I'll do so for v6, which will use 6.13
+
+Thanks
+
 
 >
->diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->index 21d1e2e2308433e7475952dcab034e92f2f6101a..c502e1590dcc1d8b06c82673e060839479d99590 100644
->--- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
->@@ -108,6 +108,35 @@ static void test_sockmap_create_update_free(enum bpf_map_type map_type)
-> 	close(s);
-> }
+> Thanks!
+> Alison
 >
->+static void test_sockmap_vsock_delete_on_close(void)
->+{
->+	int err, c, p, map;
->+	const int zero = 0;
->+
->+	err = create_pair(AF_VSOCK, SOCK_STREAM, &c, &p);
->+	if (!ASSERT_OK(err, "create_pair(AF_VSOCK)"))
->+		return;
->+
->+	map = bpf_map_create(BPF_MAP_TYPE_SOCKMAP, NULL, sizeof(int),
->+			     sizeof(int), 1, NULL);
->+	if (!ASSERT_GE(map, 0, "bpf_map_create")) {
->+		close(c);
->+		goto out;
->+	}
->+
->+	err = bpf_map_update_elem(map, &zero, &c, BPF_NOEXIST);
->+	close(c);
->+	if (!ASSERT_OK(err, "bpf_map_update"))
->+		goto out;
->+
->+	err = bpf_map_update_elem(map, &zero, &p, BPF_NOEXIST);
->+	ASSERT_OK(err, "after close(), bpf_map_update");
->+
->+out:
->+	close(p);
->+	close(map);
->+}
->+
-> static void test_skmsg_helpers(enum bpf_map_type map_type)
-> {
-> 	struct test_skmsg_load_helpers *skel;
->@@ -935,6 +964,8 @@ void test_sockmap_basic(void)
-> 		test_sockmap_create_update_free(BPF_MAP_TYPE_SOCKMAP);
-> 	if (test__start_subtest("sockhash create_update_free"))
-> 		test_sockmap_create_update_free(BPF_MAP_TYPE_SOCKHASH);
->+	if (test__start_subtest("sockmap vsock delete on close"))
->+		test_sockmap_vsock_delete_on_close();
-> 	if (test__start_subtest("sockmap sk_msg load helpers"))
-> 		test_skmsg_helpers(BPF_MAP_TYPE_SOCKMAP);
-> 	if (test__start_subtest("sockhash sk_msg load helpers"))
+> ..snip
 >
->-- 
->2.46.2
->
-
+>>
