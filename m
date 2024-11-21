@@ -1,139 +1,101 @@
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50D228EA;
-	Thu, 21 Nov 2024 04:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DC614A0AA;
+	Thu, 21 Nov 2024 04:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732162592; cv=none; b=gyT+C5AoMHPHfLQySlkLBbsTYr80WqvM+6I0heqbOL0Am4OgXeb6m4FNnR7+38QTivUBgXvDqqVZomsY8D7PlYoMCffBfVKNE9OemE8TAifQJaJyHwpmJFvpZzYj9sGBHAJs3rrkcrH+IOzHghvBim17AcT1/zZRqLKEHBDT1sE=
+	t=1732163350; cv=none; b=mGmrZ1E7391mZnG3NIr2fhz0lm6E+cdqAYyscFwNCfjgpsCSY/bq71fuEoLUSfRKgFQyIBXt2TKUACiMKR4OGRBFWXcVX0D1ENXmPevTxFjQipI2wKu17ohRwpkIn/Ux8CKp1DiDrghoL2rfCzKPUEV3+DYR2H7AMEE1oFbQpOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732162592; c=relaxed/simple;
-	bh=Y+/X5y+yOOcp+eDwa/X5cH1NJiN6/TPYFLkSwME5Pj8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WxX5lNZSL/NmnW3FD5QL5G45c12+IliL0aszK2BZx6UGrNeZJDUzzqEZVmYin/SJ60X02xEuxQGPJbH3Hc8sw90gWkPSnwa7p+5r8wAdmfcmdH6bMMNueZoT5WtuKYsnu/Qnf3rJKTwL81nU+ije8+7tFahXYUet4jhq9n+lvI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ndoCggms; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1732163350; c=relaxed/simple;
+	bh=mrLmzUmm6ToQPoBGZOkQVodGHG3cbLJ24xAFO3b7XsQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DkaCmQOrOYrziqxAh8NaqDwfjPuKh5yT+GWBQ5yzoqY1b5fP01kQa9BlhxR+rsrw05X0lLLfUsZLpQBtTKd1TCk3O7u9dtv8h/qsOjq08kp36lRYJGjfU7wsGzlL+uK8ILyCkMopZc04NV0M9uyYz9kxB7ZAp5qjsxPWgPqUUqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=MEg8R2aI; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ndoCggms"
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id DBBC189650;
-	Thu, 21 Nov 2024 05:16:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1732162583;
-	bh=0UnkVnltLG3gtKs1MUzm4I6PyPNWkwlXSmfZHQuFfgQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ndoCggmsvv8eO0/3DCC7mFyFaabjhnTYuVsZPSrTG0UODUfK5xphPnOtd2jwx01yL
-	 7MgOBm6kIxIZqYNsVJgL6pIppZ+Jb7jcn1tsogiu89XD+MYhrWdCpcTWP/Ukp7+959
-	 IBznUbMpWtrH+mSNk8/G4IDzNrIithOnZBF+KcjD8zCxQW2sGej9IrCFk7bKqmwEy3
-	 LtJs+jTyh4k2UIFkad1SqFMn8RqJv63HrAC1+V2f7FU+85nw6nFchV8YZ3umKQAlZG
-	 csSKpwY/45SNIsI01Los1ct6iaQSobFZUDKnGADXlVB9XOQ8eyd9djMfUUeKFOhBQt
-	 0BMPNqGVwmg6A==
-Message-ID: <c4d655d5-93d3-41dd-a958-c9305ab82fcd@denx.de>
-Date: Thu, 21 Nov 2024 02:39:40 +0100
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="MEg8R2aI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1732163346;
+	bh=mrLmzUmm6ToQPoBGZOkQVodGHG3cbLJ24xAFO3b7XsQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MEg8R2aItOCsozsPbMgwasrISoK1DySd0kmnMLuGcFIDVypoEzI9axv9SrQU8Bacl
+	 w5oxEl18qmEgYoTTTbw0vFb5jkm7oQ/LfWr+PC8qj8RtpDCAzyeDNZVc4YlYRbcSBz
+	 IbuOFKez76r76Sq2AIgWeWv4vpqwM3SatVCW5KMDcJQFP2ycHZEZJyNd8nWmOeVzcb
+	 qWBenb9nhm9Z1W8cUi9gCX87Iib9fYctRMXeZeP7XBHkzM3c0bvGeGkDoewEwDLkqm
+	 5E02JqnKZVzyZfiV2ihQ5/1ZkJd6FiuVuwpXInGUUYMZG5kbE1mXmFQSt0Ej/89sTT
+	 tQhcWYvrwZzIQ==
+Received: from [192.168.68.112] (ppp118-210-181-13.adl-adc-lon-bras34.tpg.internode.on.net [118.210.181.13])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 9CEB16C2B6;
+	Thu, 21 Nov 2024 12:29:01 +0800 (AWST)
+Message-ID: <944951bb04506e6b131293d634ab7be7417d8827.camel@codeconstruct.com.au>
+Subject: Re: [PATCH net v2] net: mdio: aspeed: Add dummy read for fire
+ control
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jacky Chou <jacky_chou@aspeedtech.com>, hkallweit1@gmail.com, 
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org,  pabeni@redhat.com, joel@jms.id.au, f.fainelli@gmail.com,
+ netdev@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
+ linux-aspeed@lists.ozlabs.org,  linux-kernel@vger.kernel.org
+Date: Thu, 21 Nov 2024 14:59:01 +1030
+In-Reply-To: <b6155c5f-3012-42d1-90dc-8ef39d1eef2d@lunn.ch>
+References: <20241119095141.1236414-1-jacky_chou@aspeedtech.com>
+	 <d28177c9152408d77840992f2b76efe3cb675b7a.camel@codeconstruct.com.au>
+	 <b6155c5f-3012-42d1-90dc-8ef39d1eef2d@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Rework bus locking
-From: Marek Vasut <marex@denx.de>
-To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com,
- linux-wireless@vger.kernel.org
-Cc: davem@davemloft.net, adham.abozaeid@microchip.com,
- claudiu.beznea@tuxon.dev, conor+dt@kernel.org, edumazet@google.com,
- kuba@kernel.org, kvalo@kernel.org, krzk+dt@kernel.org, pabeni@redhat.com,
- robh@kernel.org, devicetree@vger.kernel.org, netdev@vger.kernel.org
-References: <20241022013855.284783-1-marex@denx.de>
- <c9e98811-15f5-427a-82f7-2e7fff4a9873@bootlin.com>
- <8e28ba76-ecfa-49b6-89b5-1edabb22129d@denx.de>
- <a4c8c489-c6b9-4a38-84ab-f08409baccff@microchip.com>
- <5e2a5056-78ac-4be0-83ca-4aa55f524535@denx.de>
- <880baad9-be3d-41b2-bea3-620f915ca397@microchip.com>
- <9d20b408-72a4-49f0-aca6-108dfdd65f99@denx.de>
- <16e5c8d7-64ac-424e-9430-b683ae16a34e@denx.de>
- <9888f605-ee68-4bd3-8d1d-aeef247d23d0@microchip.com>
- <fcdfa93a-2db4-49ad-8947-ca43be329250@denx.de>
- <260a505e-53ec-4f1d-94fe-2b71af48f1b7@denx.de>
- <b61b5b11-b078-4cf5-bb40-7c3ff8ffa972@microchip.com>
- <b287f8f9-600e-4e69-b7ec-25990275575e@denx.de>
-Content-Language: en-US
-In-Reply-To: <b287f8f9-600e-4e69-b7ec-25990275575e@denx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 11/16/24 8:57 PM, Marek Vasut wrote:
-> On 11/15/24 9:04 PM, Ajay.Kathat@microchip.com wrote:
-> 
-> Hello Ajay,
-> 
->>>>>> Can you explain how to prevent that or shall we disable uAPSD
->>>>>> altogether ?
->>>>>
->>>>> Could you please share the test procedure and logs. I am occupied 
->>>>> at the
->>>>> moment but I shall make some time to look into it and get a better
->>>>> understanding.
->>>>
->>>> The simplest test procedure is this:
->>>>
->>>> $ while true ; do ifconfig wlan0 up ; ifconfig wlan0 down ; done
->>>>
->>>> As for the logs, MMCI controller sporadically reports either Command or
->>>> Data CRC error, so likely the SDIO response (from WILC to Host) is
->>>> corrupted.
->>>
->>> Are there any news ?
->>
->> I did test the same procedure in my setup, but I couldn't reproduce 
->> this issue
->> even after running it for a long duration. In my test setup, I used the
->> sama5d27-som1-ek1 host and wilc3000 firmware version 16.3.
->>
->> I think this issue could be related to the host MMCI controller driver.
->> Normally, the wilc SDIO bus failures are captured by driver logs with 
->> an error
->> code (e.g., timeout), but if the MMCI controller is outputting the 
->> warning
->> message, then the error could be related to it. Does the MMCI 
->> controller error
->> point to any specific function?
-> 
-> Either CMD52 or CMD53 errors out with CRC error, this is recognized by 
-> the controller. That points to sporadic CRC error during SDIO transfer.
-> 
->> Which host was used to test this scenario, and
->> is it possible to test with different host or different configuration 
->> on the
->> same host
-> 
-> I am observing sporadic command and data CRC errors on STM32MP157F 
-> system with SDIO WILC3000.
-> 
-> , like disabling power save on the host?
-> I already tested disabling power save.
-> 
-> Can you explain why does uAPSD (iw ...set power_save off) adversely 
-> affect SDIO bus stability ?
-> 
-> Can you explain how to prevent that or shall we disable uAPSD altogether ?
-> 
-> Is there any way to make the WILC firmware produce debug output , so we 
-> can figure out what is going on "on the other side" ?
-> 
-> Are you able to provide me (maybe off-list) some debug firmware build ?
-> (or can I get firmware sources and build and debug my own WILC firmware 
-> on the Cortus CPU?)
-> 
-> I can trigger the SDIO errors even without being connected to any AP , 
-> so this is something between the WILC and the SDIO host, the radio is 
-> likely not involved , right ?
+On Wed, 2024-11-20 at 14:44 +0100, Andrew Lunn wrote:
+> On Wed, Nov 20, 2024 at 03:13:11PM +1030, Andrew Jeffery wrote:
+> > On Tue, 2024-11-19 at 17:51 +0800, Jacky Chou wrote:
+> > > When the command bus is sometimes busy, it may cause the command
+> > > is
+> > > not
+> > > arrived to MDIO controller immediately. On software, the driver
+> > > issues a
+> > > write command to the command bus does not wait for command
+> > > complete
+> > > and
+> > > it returned back to code immediately. But a read command will
+> > > wait
+> > > for
+> > > the data back, once a read command was back indicates the
+> > > previous
+> > > write
+> > > command had arrived to controller.
+> > > Add a dummy read to ensure triggering mdio controller before
+> > > starting
+> > > polling the status of mdio controller to avoid polling unexpected
+> > > timeout.
+> >=20
+> > Why use the explicit dummy read rather than adjust the poll
+> > interval or
+> > duration? I still don't think that's been adequately explained
+> > given
+> > the hardware-clear of the fire bit on completion, which is what
+> > we're
+> > polling for.
+>=20
+> I'm guessing here, but if the hardware has not received the write,
+> the
+> read could return an indication that the hardware is idle, and so the
+> poll exits immediately. The returned value of the first read need to
+> be ignored. It is simpler and more reliable to do that with an
+> explicit read, rather than try to play with the poll timing.
+>=20
+> AS i said, a guess. We need a good commit message explaining the
+> reality of what is happening here.
 
-Any news ?
+I agree, the commit message needs to be more precise about the
+interactions and effects.
+
+Andrew
