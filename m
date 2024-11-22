@@ -1,174 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF901DEFD4;
-	Fri, 22 Nov 2024 12:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88621D5164
+	for <netdev@vger.kernel.org>; Fri, 22 Nov 2024 12:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732277444; cv=none; b=neZYnmEs/tznf5uD46jqzGpjrO1Sg9+oDc285ehdwrTZOKfAG2aC5F+ie193eAIFb6hOmPD70lBAL2x9vEinTuG5JYQYS5QWFsvSvwpHbD4TAjS0axOYXWYuUw24przW+eFrxkP+XZUABIh92iX11EYcV46Q7Qut26ud9zuqocs=
+	t=1732278147; cv=none; b=n6m9SyRnNIJ2wIkhAo0yWA/Lc0roWQzXUlz/6eTrQk4X3CwKoyKqHMwaOAY/HJHwcpJaP8znmFYOQqQbmRvmhTmwZxb5IGEMIa8jLsxXccZIdL4BWJRyeKZVAodEtk1w8h1xheaOXSPlMMWjxmnXko+tn6Z2FrGaqioLFh3Cavs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732277444; c=relaxed/simple;
-	bh=CrHJRhc2L7/itwiFwP/i12zUFtqwAjbrddJEbwlp7g4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X5fYqtZcFs0su7eSaWIWOw+xGvCCiCfkGX3L1KAn2L1V9Z63r3receS8VQNmwetWIuNN2D+ZWcfrHkLo09emDiBkz3QHTphvXsC18ffL08Kil4nSi1Xw2mmkY71VRu8wYgDOU4hlS5AeCSkddEQtrqzRZJaHqP0B8hArtyTCthk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HpvgWNg4; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1732278147; c=relaxed/simple;
+	bh=6P9vbsDQcOn2TrVTB/64KzffWt/q15shx9IOFx8viOQ=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=AlAdvME3OXgCm7Hk9pwk6iYKUjLlE99M0b1iBCupVEZEwQATb+lEEOUUdh6ecZL9s/4xAwYKcFhKPY8CKD4flFsFtToafjJMqP4DGPytLZL3kU07+QB3L4/qI4oNJrsNu0BLajcSG9SIy0ayKrt/Zcc4S2tNEGzZ3OUXuzB+6wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fSaO6vdT; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HpvgWNg4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732277443; x=1763813443;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CrHJRhc2L7/itwiFwP/i12zUFtqwAjbrddJEbwlp7g4=;
-  b=HpvgWNg4XoUqAA95vyim5wu8yjlAhXAk3cZ/YknWe0dqHL7Cuv4lwqV3
-   UacvHJKzMQYc6BEdIzsdDFgwt5X80X2SlY6AUAAbIi9AAAc07eAzpeeDG
-   afGy5pJ0cdwpA75UwqzjDBj/115np5Qn25vxgg8Slws1DVyFVjdrQk2+f
-   1f+PCYw3hdMtiBPB7aXni2QDrd+Q1MqBBBFX9trdfM3fGJ8xvpf72fzZt
-   XeHbVrJCBIFIj6L3Ay7aFBFLaIQ8SAbYRA8RLAoma1hzBvOqx3oJDW0Uj
-   4DNAjlsGByGB/nl4sgkSmyL32hcOMmQGPf/okyqossHHSdf0Y+HGxGx0D
-   Q==;
-X-CSE-ConnectionGUID: Tgtr7nipTh2Md8PhWlBDXw==
-X-CSE-MsgGUID: XPACY/e+Q8OoujekwhsxLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="20019736"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="20019736"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 04:10:43 -0800
-X-CSE-ConnectionGUID: yS5ZS9evRImeP3At4EuUFA==
-X-CSE-MsgGUID: ioAKk3kzS1u03gyM5JQueA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="95354729"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa004.fm.intel.com with ESMTP; 22 Nov 2024 04:10:40 -0800
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	bjorn@kernel.org,
-	maciej.fijalkowski@intel.com,
-	jordyzomer@google.com,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH v2 bpf 2/2] bpf: fix OOB devmap writes when deleting elements
-Date: Fri, 22 Nov 2024 13:10:30 +0100
-Message-Id: <20241122121030.716788-3-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20241122121030.716788-1-maciej.fijalkowski@intel.com>
-References: <20241122121030.716788-1-maciej.fijalkowski@intel.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fSaO6vdT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xlfNOBhQj4PaLhDXJw+TWDqraZPwaHPnZ3fn7raguOs=; b=fSaO6vdTT5e5lSn9ri9qjM70OK
+	8kkRnsH41xoUBqDO3JmLqIwlTNwdB6c8jnHqPU4d2yT5nTDaGJcf2lZ7JHpfl4vpreGaqVCNOMcKl
+	fJC0tXFv+mgVFpyLdxClb4mi5JRvWkL0XS57jdApYjhR5WWW6lZNRBWLoVr9Jaj5RLSUx+thO711K
+	aiCsKhqCjK6+/LIfLqYHXZJzGbE9GY+lBDpma9fOKHlYcKrCihL8oVufh1GWkqayMPUg5ZNUt1GzW
+	/VTQ7TWQNWEngkYc8pimQ8YvKoHFTJLZGPmUhtybw6DqS7ZJY82YxdY3s5y8DgucYa1iaMbRL8N0I
+	OkTYSF7w==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:33028 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1tESfy-0000Ux-1E;
+	Fri, 22 Nov 2024 12:22:18 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1tESfx-004evI-NH; Fri, 22 Nov 2024 12:22:17 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net v2] net: phy: fix phy_ethtool_set_eee() incorrectly
+ enabling LPI
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1tESfx-004evI-NH@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 22 Nov 2024 12:22:17 +0000
 
-Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-index used for accessing map entry, due to being a signed integer,
-causes the OOB writes. Fix is simple as changing the type from int to
-u32, however, when compared to XSKMAP case, one more thing needs to be
-addressed.
+When phy_ethtool_set_eee_noneg() detects a change in the LPI
+parameters, it attempts to update phylib state and trigger the link
+to cycle so the MAC sees the updated parameters.
 
-When map is released from system via dev_map_free(), we iterate through
-all of the entries and an iterator variable is also an int, which
-implies OOB accesses. Again, change it to be u32.
+However, in doing so, it sets phydev->enable_tx_lpi depending on
+whether the EEE configuration allows the MAC to generate LPI without
+taking into account the result of negotiation.
 
-Example splat below:
+This can be demonstrated with a 1000base-T FD interface by:
 
-[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-[  160.731662] #PF: supervisor read access in kernel mode
-[  160.736876] #PF: error_code(0x0000) - not-present page
-[  160.742095] PGD 0 P4D 0
-[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  160.874092] PKRU: 55555554
-[  160.876847] Call Trace:
-[  160.879338]  <TASK>
-[  160.881477]  ? __die+0x20/0x60
-[  160.884586]  ? page_fault_oops+0x15a/0x450
-[  160.888746]  ? search_extable+0x22/0x30
-[  160.892647]  ? search_bpf_extables+0x5f/0x80
-[  160.896988]  ? exc_page_fault+0xa9/0x140
-[  160.900973]  ? asm_exc_page_fault+0x22/0x30
-[  160.905232]  ? dev_map_free+0x77/0x170
-[  160.909043]  ? dev_map_free+0x58/0x170
-[  160.912857]  bpf_map_free_deferred+0x51/0x90
-[  160.917196]  process_one_work+0x142/0x370
-[  160.921272]  worker_thread+0x29e/0x3b0
-[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-[  160.929157]  kthread+0xd4/0x110
-[  160.932355]  ? kthread_park+0x80/0x80
-[  160.936079]  ret_from_fork+0x2d/0x50
-[  160.943396]  ? kthread_park+0x80/0x80
-[  160.950803]  ret_from_fork_asm+0x11/0x20
-[  160.958482]  </TASK>
+ # ethtool --set-eee eno0 advertise 8	# cause EEE to be not negotiated
+ # ethtool --set-eee eno0 tx-lpi off
+ # ethtool --set-eee eno0 tx-lpi on
 
-Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+This results in being true, despite EEE not having been negotiated and:
+ # ethtool --show-eee eno0
+	EEE status: enabled - inactive
+	Tx LPI: 250 (us)
+	Supported EEE link modes:  100baseT/Full
+	                           1000baseT/Full
+	Advertised EEE link modes:  100baseT/Full
+	Link partner advertised EEE link modes:  100baseT/Full
+	                                         1000baseT/Full
+
+Fix this by keeping track of whether EEE was negotiated via a new
+eee_active member in struct phy_device, and include this state in
+the decision whether phydev->enable_tx_lpi should be set.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- kernel/bpf/devmap.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/phy-c45.c |  2 +-
+ drivers/net/phy/phy.c     | 32 ++++++++++++++++++--------------
+ include/linux/phy.h       |  1 +
+ 3 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index 7878be18e9d2..3aa002a47a96 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
- static void dev_map_free(struct bpf_map *map)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
--	int i;
-+	u32 i;
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 96d0b3a5a9d3..944ae98ad110 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1530,7 +1530,7 @@ int genphy_c45_ethtool_get_eee(struct phy_device *phydev,
+ 		return ret;
  
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
-@@ -821,7 +821,7 @@ static long dev_map_delete_elem(struct bpf_map *map, void *key)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
+ 	data->eee_enabled = is_enabled;
+-	data->eee_active = ret;
++	data->eee_active = phydev->eee_active;
+ 	linkmode_copy(data->supported, phydev->supported_eee);
  
- 	if (k >= map->max_entries)
- 		return -EINVAL;
-@@ -838,7 +838,7 @@ static long dev_map_hash_delete_elem(struct bpf_map *map, void *key)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 	unsigned long flags;
- 	int ret = -ENOENT;
+ 	return 0;
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 4f3e742907cb..e174107b96e2 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -990,14 +990,14 @@ static int phy_check_link_status(struct phy_device *phydev)
+ 		phydev->state = PHY_RUNNING;
+ 		err = genphy_c45_eee_is_active(phydev,
+ 					       NULL, NULL, NULL);
+-		if (err <= 0)
+-			phydev->enable_tx_lpi = false;
+-		else
+-			phydev->enable_tx_lpi = phydev->eee_cfg.tx_lpi_enabled;
++		phydev->eee_active = err > 0;
++		phydev->enable_tx_lpi = phydev->eee_cfg.tx_lpi_enabled &&
++					phydev->eee_active;
  
+ 		phy_link_up(phydev);
+ 	} else if (!phydev->link && phydev->state != PHY_NOLINK) {
+ 		phydev->state = PHY_NOLINK;
++		phydev->eee_active = false;
+ 		phydev->enable_tx_lpi = false;
+ 		phy_link_down(phydev);
+ 	}
+@@ -1685,16 +1685,20 @@ EXPORT_SYMBOL(phy_ethtool_get_eee);
+ static void phy_ethtool_set_eee_noneg(struct phy_device *phydev,
+ 				      struct ethtool_keee *data)
+ {
+-	if (phydev->eee_cfg.tx_lpi_enabled != data->tx_lpi_enabled ||
+-	    phydev->eee_cfg.tx_lpi_timer != data->tx_lpi_timer) {
+-		eee_to_eeecfg(&phydev->eee_cfg, data);
+-		phydev->enable_tx_lpi = eeecfg_mac_can_tx_lpi(&phydev->eee_cfg);
+-		if (phydev->link) {
+-			phydev->link = false;
+-			phy_link_down(phydev);
+-			phydev->link = true;
+-			phy_link_up(phydev);
+-		}
++	bool enable_tx_lpi = data->tx_lpi_enabled &&
++			     phydev->eee_active;
++
++	eee_to_eeecfg(&phydev->eee_cfg, data);
++
++	if ((phydev->enable_tx_lpi != enable_tx_lpi ||
++	     phydev->eee_cfg.tx_lpi_timer != data->tx_lpi_timer) &&
++	    phydev->link) {
++		phydev->enable_tx_lpi = false;
++		phydev->link = false;
++		phy_link_down(phydev);
++		phydev->enable_tx_lpi = enable_tx_lpi;
++		phydev->link = true;
++		phy_link_up(phydev);
+ 	}
+ }
+ 
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 77c6d6451638..6a17cc05f876 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -723,6 +723,7 @@ struct phy_device {
+ 	/* Energy efficient ethernet modes which should be prohibited */
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(eee_broken_modes);
+ 	bool enable_tx_lpi;
++	bool eee_active;
+ 	struct eee_config eee_cfg;
+ 
+ 	/* Host supported PHY interface types. Should be ignored if empty. */
 -- 
-2.34.1
+2.30.2
 
