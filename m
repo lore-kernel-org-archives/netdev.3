@@ -1,150 +1,142 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360DA16C854;
-	Fri, 22 Nov 2024 07:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49CD230987;
+	Fri, 22 Nov 2024 07:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732260042; cv=none; b=Nkk9UMDkqp3rhjeYhrFK6im6w1oGW91GkQ3uAAO/mSUVBbQCUWXR2P6iiyeLlj8w3AozMQ5GBwtgbUp29oy9/Rb/20UIqVy8idN4XeCl5acmgTzSIIlHdmw1ldHeNiiUiMK8fT3D9FrkxmgxBvt+kVDmLfFTA91eRwz2sdT824E=
+	t=1732260129; cv=none; b=BYIHfQ4ZlGX0N9Gi8sOcgabnxwJ8tMd7AG3z/RmOZaj7mi2Mn0fCNOogrwxssxU0Ij5/SeLXXffRQ0HNMlY6zeTwLD6EeILXWI8zE4GBuIY1UHstJt9LxDkMkONPfBA7QF4JJ6W6u8WCJwVJDe4LyeM1p0+tHwLTnZWmAeHdzSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732260042; c=relaxed/simple;
-	bh=N160SUZkYD6JUX8pEDdwUH8ySm7ncw8qFmjrjOj7EHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h7PaXwfyJZVb+7QjQ3KO8fUoIjnU6mJ0tQdnYlbq+56uLTWj4LDjednlsVUdQFinToLJUpyGzBpp3DGzrjMBVZW/4Lr3mITNUM60KI9pbPQ+BCoA8/tvO/JbrgCXih3g/qTXybmwc+567PSp5+kKdHuRsZ3QNSzp7pwk8Oo1JZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XvmbM1hcMz1JCW6;
-	Fri, 22 Nov 2024 15:15:43 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 921CC1A0188;
-	Fri, 22 Nov 2024 15:20:36 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 Nov 2024 15:20:36 +0800
-Message-ID: <91964676-522f-44b5-87bc-27cfa5193813@huawei.com>
-Date: Fri, 22 Nov 2024 15:20:33 +0800
+	s=arc-20240116; t=1732260129; c=relaxed/simple;
+	bh=krLSltSvxa1b5p+97f+phk+FYHKalBzUK+6b+JMRYx4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kcN030gTVI2cPS6fur6JS9GD9paSRxsZRPw8omvw/0R+O08iLCMkt1IdP3zNVNfj17aB6bq7EnPSR2q5YK5gllq8qvVbuEI6CNSUzwL52gIJgZ250Yco5ef5IIc22YwBC0GbVCCueLzUznHrzauVF5c0M34lea2asXaDZ7Wzo5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=HX7iYiBI; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="HX7iYiBI"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1732260117; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=gaDcST95Gx4iPn815neB9XkKhGEorlv6Hxro/QIQDq0=;
+	b=HX7iYiBIv7GZGTDu2uM6KVaanHFL/1sCyAzBlwm/f8ThZXPUHENQTzwR+La72dgpDRb4q14vZ3uNd9vR9SuvVLPUe5IExZaMeKA69YmomsOEYH42rBgaK7ZP69gaqapZcPASZVajO7wlwfR09NF3kvmY88oSoPx+fK2Bd2N577Q=
+Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WJzio16_1732259792 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 22 Nov 2024 15:16:34 +0800
+From: Wen Gu <guwen@linux.alibaba.com>
+To: wenjia@linux.ibm.com,
+	jaka@linux.ibm.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: alibuda@linux.alibaba.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	horms@kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/2] net/smc: initialize close_work early to avoid warning
+Date: Fri, 22 Nov 2024 15:16:29 +0800
+Message-Id: <20241122071630.63707-2-guwen@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20241122071630.63707-1-guwen@linux.alibaba.com>
+References: <20241122071630.63707-1-guwen@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v4 3/3] page_pool: skip dma sync operation for
- inflight pages
-To: Robin Murphy <robin.murphy@arm.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <liuyonglong@huawei.com>, <fanghaiqing@huawei.com>,
-	<zhangkun09@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, IOMMU <iommu@lists.linux.dev>, MM
-	<linux-mm@kvack.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
- Apalodimas <ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20241120103456.396577-1-linyunsheng@huawei.com>
- <20241120103456.396577-4-linyunsheng@huawei.com>
- <15f937d7-7ac1-4a7f-abcd-abfede191b51@arm.com>
- <57dea3ef-6982-4946-bf96-8ebadf6f883c@huawei.com>
- <a02c5976-e288-404e-b725-66bd4c391384@arm.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <a02c5976-e288-404e-b725-66bd4c391384@arm.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2024/11/21 21:44, Robin Murphy wrote:
-> On 21/11/2024 8:04 am, Yunsheng Lin wrote:
->> On 2024/11/21 0:17, Robin Murphy wrote:
->>> On 20/11/2024 10:34 am, Yunsheng Lin wrote:
->>>> Skip dma sync operation for inflight pages before the
->>>> page_pool_destroy() returns to the driver as DMA API
->>>> expects to be called with a valid device bound to a
->>>> driver as mentioned in [1].
->>>>
->>>> After page_pool_destroy() is called, the page is not
->>>> expected to be recycled back to pool->alloc cache and
->>>> dma sync operation is not needed when the page is not
->>>> recyclable or pool->ring is full, so only skip the dma
->>>> sync operation for the infilght pages by clearing the
->>>> pool->dma_sync under protection of rcu lock when page
->>>> is recycled to pool->ring to ensure that there is no
->>>> dma sync operation called after page_pool_destroy() is
->>>> returned.
->>>
->>> Something feels off here - either this is a micro-optimisation which I wouldn't really expect to be meaningful, or it means patch #2 doesn't actually do what it claims. If it really is possible to attempt to dma_sync a page *after* page_pool_inflight_unmap() has already reclaimed and unmapped it, that represents yet another DMA API lifecycle issue, which as well as being even more obviously incorrect usage-wise, could also still lead to the same crash (if the device is non-coherent).
->>
->> For a page_pool owned page, it mostly goes through the below steps:
->> 1. page_pool calls buddy allocator API to allocate a page, call DMA mapping
->>     and sync_for_device API for it if its pool is empty. Or reuse the page in
->>     pool.
->>
->> 2. Driver calls the page_pool API to allocate the page, and pass the page
->>     to network stack after packet is dma'ed into the page and the sync_for_cpu
->>     API is called.
->>
->> 3. Network stack is done with page and called page_pool API to free the page.
->>
->> 4. page_pool releases the page back to buddy allocator if the page is not
->>     recyclable before doing the dma unmaping. Or do the sync_for_device
->>     and put the page in the its pool, the page might go through step 1
->>     again if the driver calls the page_pool allocate API.
->>
->> The calling of dma mapping and dma sync API is controlled by pool->dma_map
->> and pool->dma_sync respectively, the previous patch only clear pool->dma_map
->> after doing the dma unmapping. This patch ensures that there is no dma_sync
->> for recycle case of step 4 by clearing pool->dma_sync.
-> 
-> But *why* does it want to ensure that? Is there some possible race where one thread can attempt to sync and recycle a page while another thread is attempting to unmap and free it, such that you can't guarantee the correctness of dma_sync calls after page_pool_inflight_unmap() has started, and skipping them is a workaround for that? If so, then frankly I think that would want solving properly, but at the very least this change would need to come before patch #2.
+We encountered a warning that close_work was canceled before
+initialization.
 
-The racing window is something like below. page_pool_destroy() and
-page_pool_put_page() can be called concurrently, patch 2 only use
-a spinlock to synchronise page_pool_inflight_unmap() with
-page_pool_return_page() called by page_pool_put_page() to avoid
-concurrent dma unmapping, there is no synchronization between
-page_pool_destroy() and page_pool_dma_sync_for_device() called
-by page_pool_put_page():
-            CPU0                           CPU1
-             .                               .
-     page_pool_destroy()          page_pool_put_page()
-             .                               .
-     synchronize_rcu()                       .
-             .                               .
-   page_pool_inflight_unmap()                .
-             .                               .
-             .                    __page_pool_put_page()
-             .                               .
-             .               page_pool_dma_sync_for_device()
-             .                               .
+  WARNING: CPU: 7 PID: 111103 at kernel/workqueue.c:3047 __flush_work+0x19e/0x1b0
+  Workqueue: events smc_lgr_terminate_work [smc]
+  RIP: 0010:__flush_work+0x19e/0x1b0
+  Call Trace:
+   ? __wake_up_common+0x7a/0x190
+   ? work_busy+0x80/0x80
+   __cancel_work_timer+0xe3/0x160
+   smc_close_cancel_work+0x1a/0x70 [smc]
+   smc_close_active_abort+0x207/0x360 [smc]
+   __smc_lgr_terminate.part.38+0xc8/0x180 [smc]
+   process_one_work+0x19e/0x340
+   worker_thread+0x30/0x370
+   ? process_one_work+0x340/0x340
+   kthread+0x117/0x130
+   ? __kthread_cancel_work+0x50/0x50
+   ret_from_fork+0x22/0x30
 
-After this patch, page_pool_dma_sync_for_device() is protected by
-rcu lock and pool->dma_sync is cleared before synchronize_rcu and
-page_pool_inflight_unmap() is called after synchronize_rcu to ensure
-page_pool_dma_sync_for_device() will not call dma sync API after
-synchronize_rcu():
+This is because when smc_close_cancel_work is triggered, e.g. the RDMA
+driver is rmmod and the LGR is terminated, the conn->close_work is
+flushed before initialization, resulting in WARN_ON(!work->func).
 
-            CPU0                           CPU1
-             .                               .
-     page_pool_destroy() CPU       page_pool_put_page() CPU
-             .                               .
-    pool->dma_sync = false                   .
-             .                               .
-     synchronize_rcu()                       .
-             .                               .
-   page_pool_inflight_unmap()                .
-             .                               .
-             .                  page_pool_recycle_in_ring()
-             .                               .
-             .                        rcu_read_lock()
-             .               page_pool_dma_sync_for_device()
-             .                        rcu_read_unlock()
+__smc_lgr_terminate             | smc_connect_{rdma|ism}
+-------------------------------------------------------------
+                                | smc_conn_create
+				| \- smc_lgr_register_conn
+for conn in lgr->conns_all      |
+\- smc_conn_kill                |
+   \- smc_close_active_abort    |
+      \- smc_close_cancel_work  |
+         \- cancel_work_sync    |
+            \- __flush_work     |
+	         (close_work)   |
+	                        | smc_close_init
+	                        | \- INIT_WORK(&close_work)
 
-Previously patch 2&3 was combined as one patch, this version splits
-it out to make it more reviewable.
-I am not sure if it matters that much about the patch order as the
-fix doesn't seem to be completed unless both patches are included.
+So fix this by initializing close_work before establishing the
+connection.
+
+Fixes: 46c28dbd4c23 ("net/smc: no socket state changes in tasklet context")
+Fixes: 413498440e30 ("net/smc: add SMC-D support in af_smc")
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+---
+ net/smc/af_smc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 9d76e902fd77..ed6d4d520bc7 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -383,6 +383,7 @@ void smc_sk_init(struct net *net, struct sock *sk, int protocol)
+ 	smc->limit_smc_hs = net->smc.limit_smc_hs;
+ 	smc->use_fallback = false; /* assume rdma capability first */
+ 	smc->fallback_rsn = 0;
++	smc_close_init(smc);
+ }
+ 
+ static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
+@@ -1299,7 +1300,6 @@ static int smc_connect_rdma(struct smc_sock *smc,
+ 		goto connect_abort;
+ 	}
+ 
+-	smc_close_init(smc);
+ 	smc_rx_init(smc);
+ 
+ 	if (ini->first_contact_local) {
+@@ -1435,7 +1435,6 @@ static int smc_connect_ism(struct smc_sock *smc,
+ 			goto connect_abort;
+ 		}
+ 	}
+-	smc_close_init(smc);
+ 	smc_rx_init(smc);
+ 	smc_tx_init(smc);
+ 
+@@ -2479,7 +2478,6 @@ static void smc_listen_work(struct work_struct *work)
+ 		goto out_decl;
+ 
+ 	mutex_lock(&smc_server_lgr_pending);
+-	smc_close_init(new_smc);
+ 	smc_rx_init(new_smc);
+ 	smc_tx_init(new_smc);
+ 
+-- 
+2.32.0.3.g01195cf9f
 
