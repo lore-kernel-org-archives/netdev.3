@@ -1,135 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mg.ssi.bg (mg.ssi.bg [193.238.174.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9BB17E00E;
-	Fri, 22 Nov 2024 11:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325371AB535;
+	Fri, 22 Nov 2024 11:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732275636; cv=none; b=QJXbFs6Opt/d4cV/KMbUVLc2//RrF2eyVznJN4u4V+2hli/2Esta6t1cuWxYQsWgNIQM1P35g9CaVcH9z+6x3YlIwDZZVLFaa9W1JS/rZagL7h7FQMQiZgLaQyazi+/s+tI0OL3gAu697hoU1Z/JZIlsaEBTCfSh38lQjU/P/Lg=
+	t=1732275806; cv=none; b=Dxoca8psruYuQmLTu8gZ1q7WQz0HLu7Pig0IJVnD3mn0P4JMoxpZ/ccwntdVBHcSzHIjyJUqqw/GDSdxIY1UlPDQwGJiYDVmCfQ3fNBV188I+zPixoM3bRrGaUZ0DYMHlPuH7QkTiBrO8TI8XB6/u4HeuFwWjFph0oUmbXKxG3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732275636; c=relaxed/simple;
-	bh=i6CLV1FXRfEQmnP0bc/FJIlv39wNpE+G83O2FsKArr0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HK9ECLexx0krmJdZPxCjfajjVouWbK1QgriHcK2cK8Vi9r7DYM8So86mB4RnshTsj2fymxJ/U8lKLLHefIciAyV8Z7BRluQjHRizBlV4UgtwEL5ffjl6awO8hPMbOch8VR82rGdwuWppg1G4GL8hDWOxzMnzqulR0atIaIfh5yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fBhS4Exb; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1732275806; c=relaxed/simple;
+	bh=vLEMZZRV6Tb/GSrZfvxdj8fXkAKkDZRU/uiNN4sVXnw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=nhc95oLQcFu769hZUxah7KpmDPaEsOWyG0FhHmCo1bYwB3Wh4L708owiC+xrPiGSa8RIzc3nNVQ5IWJ0Q0m2/AiaRu6z4eP7q+d6NZ4MRN1cGlcwmViz0RBwQVm0uSVMnnv7bQC2eCnnWIMelh2lZZEHH8gSSRvupOPYFGPoOCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (1024-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=PP3qrNcO; arc=none smtp.client-ip=193.238.174.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fBhS4Exb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732275631; x=1763811631;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=i6CLV1FXRfEQmnP0bc/FJIlv39wNpE+G83O2FsKArr0=;
-  b=fBhS4Exb5g2Vc+2vZ7VOgeNuDThW9YvyBkhOAoxtRkEHCUypbVWzWUsJ
-   jlrIHE32ksSfP6KyFiWsnmq4WGlCw9CR8kmXL4Nv2WtH7iqgIhe105osP
-   7Xez3W7hDqE0Q5jCos2xAZPx3hoAPKv3UKZ0Vpd6poi4VV7CJA+Zx1PQ5
-   B/uEn98dORLLyrWYpSoVxFkzPDrY6hFjOmcLPIdaKzDeOaeRAU5xzLXRM
-   7zQtNDpWD3CDOGpYKQm1krBlVInCL6CjedtbuTZn12LXnmgZOlF2RrLMt
-   dB+9WUCC7dVoeCs58pViItWQK3HjgP6iLNRUezSeDLG4+NY4+dvLZE9JL
-   Q==;
-X-CSE-ConnectionGUID: XQo6tbalTW6xvIyI8skeTQ==
-X-CSE-MsgGUID: bShtfSmfTwWoUvI/Izb+UQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="31783571"
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="31783571"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 03:40:30 -0800
-X-CSE-ConnectionGUID: +DIRouKGQyG4razPmurnuw==
-X-CSE-MsgGUID: RVWYirEYQtKOFB+YzOf+PQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,175,1728975600"; 
-   d="scan'208";a="121511166"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa001.fm.intel.com with ESMTP; 22 Nov 2024 03:40:27 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id DA89228778;
-	Fri, 22 Nov 2024 11:40:24 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: bpf@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alasdair McWilliam <alasdair.mcwilliam@outlook.com>
-Subject: [PATCH bpf] xsk: always clear DMA mapping information when unmapping the pool
-Date: Fri, 22 Nov 2024 12:29:09 +0100
-Message-ID: <20241122112912.89881-1-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="PP3qrNcO"
+Received: from mg.ssi.bg (localhost [127.0.0.1])
+	by mg.ssi.bg (Proxmox) with ESMTP id 0F9E28106A;
+	Fri, 22 Nov 2024 13:43:21 +0200 (EET)
+Received: from ink.ssi.bg (ink.ssi.bg [193.238.174.40])
+	by mg.ssi.bg (Proxmox) with ESMTPS;
+	Fri, 22 Nov 2024 13:43:20 +0200 (EET)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by ink.ssi.bg (Postfix) with ESMTPSA id 29C52302A21;
+	Fri, 22 Nov 2024 13:43:08 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ssi.bg; s=ink;
+	t=1732275790; bh=vLEMZZRV6Tb/GSrZfvxdj8fXkAKkDZRU/uiNN4sVXnw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=PP3qrNcOkyDUcGvZn+zKDbEho8Gtjcv16SQIk2tpMRqH1FEMVi78J/uU/OJnfxRIf
+	 4atHzQYHf8CA6Tr2qPV0U5W3dWvRvcZzFvj0a81kb+Rrr7VOD2FaKt/wu7UwUfFrVN
+	 5MbQBOSv4xwK7ZKalc9/3QHQjDhsBrHxYWPGWQW4=
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.1/8.17.1) with ESMTP id 4AMBh5tV027561;
+	Fri, 22 Nov 2024 13:43:05 +0200
+Date: Fri, 22 Nov 2024 13:43:05 +0200 (EET)
+From: Julian Anastasov <ja@ssi.bg>
+To: Jinghao Jia <jinghao7@illinois.edu>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        kernel test robot <lkp@intel.com>, Ruowen Qin <ruqin@redhat.com>
+Subject: Re: [PATCH v2 net] ipvs: fix UB due to uninitialized stack access
+ in ip_vs_protocol_init()
+In-Reply-To: <20241122045257.27452-1-jinghao7@illinois.edu>
+Message-ID: <c65f0110-f5bf-c841-710e-2932cceec25a@ssi.bg>
+References: <20241122045257.27452-1-jinghao7@illinois.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-When the umem is shared, the DMA mapping is also shared between the xsk
-pools, therefore it should stay valid as long as at least 1 user remains.
-However, the pool also keeps the copies of DMA-related information that are
-initialized in the same way in xp_init_dma_info(), but cleared by
-xp_dma_unmap() only for the last remaining pool, this causes the problems
-below.
 
-The first one is that the commit adbf5a42341f ("ice: remove af_xdp_zc_qps
-bitmap") relies on pool->dev to determine the presence of a ZC pool on a
-given queue, avoiding internal bookkeeping. This works perfectly fine if
-the UMEM is not shared, but reliably fails otherwise as stated in the
-linked report.
+	Hello,
 
-The second one is pool->dma_pages which is dynamically allocated and
-only freed in xp_dma_unmap(), this leads to a small memory leak. kmemleak
-does not catch it, but by printing the allocation results after terminating
-the userspace program it is possible to see that all addresses except the
-one belonging to the last detached pool are still accessible through the
-kmemleak dump functionality.
+On Thu, 21 Nov 2024, Jinghao Jia wrote:
 
-Always clear the DMA mapping information from the pool and free
-pool->dma_pages when unmapping the pool, so that the only difference
-between results of the last remaining user's call and the ones before would
-be the destruction of the DMA mapping.
+> Under certain kernel configurations when building with Clang/LLVM, the
+> compiler does not generate a return or jump as the terminator
+> instruction for ip_vs_protocol_init(), triggering the following objtool
+> warning during build time:
+> 
+>   vmlinux.o: warning: objtool: ip_vs_protocol_init() falls through to next function __initstub__kmod_ip_vs_rr__935_123_ip_vs_rr_init6()
+> 
+> At runtime, this either causes an oops when trying to load the ipvs
+> module or a boot-time panic if ipvs is built-in. This same issue has
+> been reported by the Intel kernel test robot previously.
+> 
+> Digging deeper into both LLVM and the kernel code reveals this to be a
+> undefined behavior problem. ip_vs_protocol_init() uses a on-stack buffer
+> of 64 chars to store the registered protocol names and leaves it
+> uninitialized after definition. The function calls strnlen() when
+> concatenating protocol names into the buffer. With CONFIG_FORTIFY_SOURCE
+> strnlen() performs an extra step to check whether the last byte of the
+> input char buffer is a null character (commit 3009f891bb9f ("fortify:
+> Allow strlen() and strnlen() to pass compile-time known lengths")).
+> This, together with possibly other configurations, cause the following
+> IR to be generated:
+> 
+>   define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #5 section ".init.text" align 16 !kcfi_type !29 {
+>     %1 = alloca [64 x i8], align 16
+>     ...
+> 
+>   14:                                               ; preds = %11
+>     %15 = getelementptr inbounds i8, ptr %1, i64 63
+>     %16 = load i8, ptr %15, align 1
+>     %17 = tail call i1 @llvm.is.constant.i8(i8 %16)
+>     %18 = icmp eq i8 %16, 0
+>     %19 = select i1 %17, i1 %18, i1 false
+>     br i1 %19, label %20, label %23
+> 
+>   20:                                               ; preds = %14
+>     %21 = call i64 @strlen(ptr noundef nonnull dereferenceable(1) %1) #23
+>     ...
+> 
+>   23:                                               ; preds = %14, %11, %20
+>     %24 = call i64 @strnlen(ptr noundef nonnull dereferenceable(1) %1, i64 noundef 64) #24
+>     ...
+>   }
+> 
+> The above code calculates the address of the last char in the buffer
+> (value %15) and then loads from it (value %16). Because the buffer is
+> never initialized, the LLVM GVN pass marks value %16 as undefined:
+> 
+>   %13 = getelementptr inbounds i8, ptr %1, i64 63
+>   br i1 undef, label %14, label %17
+> 
+> This gives later passes (SCCP, in particular) more DCE opportunities by
+> propagating the undef value further, and eventually removes everything
+> after the load on the uninitialized stack location:
+> 
+>   define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #0 section ".init.text" align 16 !kcfi_type !11 {
+>     %1 = alloca [64 x i8], align 16
+>     ...
+> 
+>   12:                                               ; preds = %11
+>     %13 = getelementptr inbounds i8, ptr %1, i64 63
+>     unreachable
+>   }
+> 
+> In this way, the generated native code will just fall through to the
+> next function, as LLVM does not generate any code for the unreachable IR
+> instruction and leaves the function without a terminator.
+> 
+> Zero the on-stack buffer to avoid this possible UB.
+> 
+> Changelog:
+> ---
 
-Fixes: adbf5a42341f ("ice: remove af_xdp_zc_qps bitmap")
-Fixes: 921b68692abb ("xsk: Enable sharing of dma mappings")
-Reported-by: Alasdair McWilliam <alasdair.mcwilliam@outlook.com>
-Closes: https://lore.kernel.org/PA4P194MB10056F208AF221D043F57A3D86512@PA4P194MB1005.EURP194.PROD.OUTLOOK.COM
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- net/xdp/xsk_buff_pool.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+	You can not add --- before the following headers.
+'git am file.patch' can show the result of applying the patch.
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 521a2938e50a..0662d34b09ee 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -387,10 +387,9 @@ void xp_dma_unmap(struct xsk_buff_pool *pool, unsigned long attrs)
- 		return;
- 	}
- 
--	if (!refcount_dec_and_test(&dma_map->users))
--		return;
-+	if (refcount_dec_and_test(&dma_map->users))
-+		__xp_dma_unmap(dma_map, attrs);
- 
--	__xp_dma_unmap(dma_map, attrs);
- 	kvfree(pool->dma_pages);
- 	pool->dma_pages = NULL;
- 	pool->dma_pages_cnt = 0;
--- 
-2.43.0
+> v1 -> v2:
+> v1: https://lore.kernel.org/lkml/20241111065105.82431-1-jinghao7@illinois.edu/
+> * Fix small error in commit message
+> * Address Julian's feedback:
+>   * Make this patch target the net tree rather than net-next
+>   * Add a "Fixes" tag for the initial git commit
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202402100205.PWXIz1ZK-lkp@intel.com/
+> Co-developed-by: Ruowen Qin <ruqin@redhat.com>
+> Signed-off-by: Ruowen Qin <ruqin@redhat.com>
+> Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
+> ---
+
+	Please send v3, you can move your changelog here,
+after the above ---
+
+>  net/netfilter/ipvs/ip_vs_proto.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_proto.c b/net/netfilter/ipvs/ip_vs_proto.c
+> index f100da4ba3bc..a9fd1d3fc2cb 100644
+> --- a/net/netfilter/ipvs/ip_vs_proto.c
+> +++ b/net/netfilter/ipvs/ip_vs_proto.c
+> @@ -340,7 +340,7 @@ void __net_exit ip_vs_protocol_net_cleanup(struct netns_ipvs *ipvs)
+>  
+>  int __init ip_vs_protocol_init(void)
+>  {
+> -	char protocols[64];
+> +	char protocols[64] = { 0 };
+>  #define REGISTER_PROTOCOL(p)			\
+>  	do {					\
+>  		register_ip_vs_protocol(p);	\
+> @@ -348,8 +348,6 @@ int __init ip_vs_protocol_init(void)
+>  		strcat(protocols, (p)->name);	\
+>  	} while (0)
+>  
+> -	protocols[0] = '\0';
+> -	protocols[2] = '\0';
+>  #ifdef CONFIG_IP_VS_PROTO_TCP
+>  	REGISTER_PROTOCOL(&ip_vs_protocol_tcp);
+>  #endif
+> -- 
+> 2.47.0
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
