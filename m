@@ -1,116 +1,152 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500D61E1A16
-	for <netdev@vger.kernel.org>; Fri, 22 Nov 2024 16:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B241DF725
+	for <netdev@vger.kernel.org>; Fri, 22 Nov 2024 16:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732292482; cv=none; b=Me//Jut3Jqr/n4ZHQ7cxnUg7egskBL498BL34Cnoo86OfVzEkOJDUryYeD9JrJP2kLMlVycOYoSLaUIWufw5RbggJVc2mE4mgB0Bvo8ZsUj9XIuLn55gghZPcaTjueaZ9AbiE/uCrbJoP/wBMOXrMyhNQN7w6Mv8a6xrNgfyQ6k=
+	t=1732293888; cv=none; b=mqw0XLwGjKPx8edJrvBwZJTNybSGL0eBcJBonwuJuQQrNFTY4LzmxtIG+1soc9qSO4I+3QguJUhm+yu1wwPJL0ffb725Egg+V5mG7RkDZJnXlXhGD43kREtMLW09U2sYokExhkt21jf5e8/yRDG/mOizlG3MRUr4QzaO6QHJC4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732292482; c=relaxed/simple;
-	bh=qKtTB5DV3Zl7Y+bAH9RuF3TD9YvDTYHWYvVeSislgT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjqFGj38/7LFgbDYrmTa006r2DQx7d15cVYExcAjfAhbpEdArN1EyrXj95pBGupiugu9fg/tJlXmQmfP5x4Nv8KtJqcywLTkrA39hrBcqnp4QR7k1ahuZD96aHi70yzXdXnu4vmbR5hvPXkEuIbBbzbwcviM2V7xYo4pgT2qcEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MctXfxfP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732293888; c=relaxed/simple;
+	bh=VvA6MI6DHMqhZqQToztYS0AJPxXp/UyRcuWOX93oXSo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UwoxKTDA0PoCx9+bmXa86nsdk4luvS4IElxAwTsxiGotDRLNRsQ6lTkhN+XA4k+9uHxKNwWpn51kf6bq+Dom/ek2fozp7dsGDN9qHJH/EM29KbBMzAlPYiL7cXj8QV1BJ1cRm+kd4Jm2Nr1Yu/9cf12pDUw2kMmra/O8WubxZ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s//bAj9B; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MctXfxfP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732292479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qKtTB5DV3Zl7Y+bAH9RuF3TD9YvDTYHWYvVeSislgT4=;
-	b=MctXfxfPobufAJTIZN1DFV1XrTqVYArGsgZysGxdZ22pctOnR8obDojkRN//qpmJlZm9ap
-	oklp/UsRR4spujdGbQIfSYbRfAFC3mNfAPv9kQ7KjBFcEwC2MP/bbNJhoI1iUW1ATFhdy2
-	Z/fifoAG6t2KxIn54yyLzjAz/AndwxQ=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-JVXWbiocPBW-U9FeSnZgrg-1; Fri, 22 Nov 2024 11:21:18 -0500
-X-MC-Unique: JVXWbiocPBW-U9FeSnZgrg-1
-X-Mimecast-MFC-AGG-ID: JVXWbiocPBW-U9FeSnZgrg
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-539e75025f9so1457882e87.3
-        for <netdev@vger.kernel.org>; Fri, 22 Nov 2024 08:21:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s//bAj9B"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cfd3a7e377so3084678a12.2
+        for <netdev@vger.kernel.org>; Fri, 22 Nov 2024 08:44:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1732293884; x=1732898684; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5d0pR2lErJFhGW5JYLVTt1M7sixp7bLkth135lWgw3Q=;
+        b=s//bAj9BX3jyWQ+LKJWgoqfXjzjBRHQTFWOWArDSj5PQsQ1Dse795yIt14/D6yzraq
+         OFPNLDHKwgeq5o1Z5zZbzjOv5e2m4TiYlKzKjv0fxX7u+mlvZBn2NG4IHdHgdCtZPQl5
+         +kmCfnVjSxdkbaoDDP4yk+mI8R7eDd5cuCmNnnN4nPmI+WjeFC9z5QLmk/ACrrgaWJaL
+         ahwMfhgBbmEyTEtWZdv9BrdWrQqeQDegOp8YkRK11FFD5l4EVBgFXHPiPGFgDU4TQjuU
+         ZTaWM0E83C2Ia18V67omNa3crqVJ1r0xKGKiKOC4vUD2Ml8zIaJEfpRgkjXRpzQTZqGX
+         ulCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732292476; x=1732897276;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1732293884; x=1732898684;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qKtTB5DV3Zl7Y+bAH9RuF3TD9YvDTYHWYvVeSislgT4=;
-        b=PBDOI0XlwTitfQcJKEP0vsonoeB68Qp2EHxsmkMY1yXUgkJ+TWieGrl0HJ7lTcqLos
-         uXS7pXMdBC4q303ghNxeCr3SaRoE2mwsaciKRY1neELrmtjquggOTvFxfWPjs0MD0Hsw
-         v3H+cCDSPKey0v/w+9+oNOAsTDmpmR411pMJV5r4R/14iEZKm5r/ei8ZwxnDL1oz5BrV
-         pKB0vy8FwQ41QHi/PIP5cw/jXVbZd0ubeQY8voa6u6J2Um2C1mUwaWPZteyK7RNp1c5d
-         MiW92IqT9cAFZ/6IzuW9C8RX/iqGuuoq7vAI9rUd8d2FKL8Bbi3TgJDfa2hIQPbGf+r2
-         6I3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUXQ9Vi5m1z6Hhm9V0NxsyYLqbq0ZTjuhik9t3aYWZRx0ujgPoRQaNnaBQnLlvOM9HJplIV4gk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHm0M6RSW50cKIdSlRAEMF7nDIByPc7qMjC/8ITD9QaNrx05dx
-	wNszaoQqFcbGiBIgUiXiYlVT4I/m1FhhtYgeyhG3Kwhc9DB91GL/RAqjKgpuF02Wqo+wv12OyF4
-	7/plhdh6nh5k7XkyodroPvBtNoohate4jcJI0h+tGxWQZxsgwGx6CRg==
-X-Gm-Gg: ASbGncuYoH+Rfizg+LyNvsUbeeqUfKD6sLbilnADRBvcC3PtXjqEEeCI33ZmwBt4SGO
-	inCmRt8T1awXNAhysc8g/0RpMcnkYRF4q3Pw61r5i5FpX8C6FG7vvseZz/GZeN19k6DL7yigvXa
-	Da3Cp6fn6aKOU0ie4G20wE/RORDRJTkFCA7jPByw1J8miWYj6IpfFdTx5VowsZMmmOmnh1RQ4EW
-	YRE6rahUfMB6fMhtjvZXaN4YYQwCY4hWxla554rUpFWMIP8rLO6zBkSVTPVEQq61M4gh6U6WDin
-	5IwScQ==
-X-Received: by 2002:ac2:51c9:0:b0:53d:8c79:ace5 with SMTP id 2adb3069b0e04-53dd3aabeffmr2344608e87.54.1732292476506;
-        Fri, 22 Nov 2024 08:21:16 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFR0ePfE3lovnWGuzpFCv2uMYuHyzHPO1LZjbHFLMvu00pbafujzeSDjCej37Sftl/YHlPHDg==
-X-Received: by 2002:ac2:51c9:0:b0:53d:8c79:ace5 with SMTP id 2adb3069b0e04-53dd3aabeffmr2344568e87.54.1732292476130;
-        Fri, 22 Nov 2024 08:21:16 -0800 (PST)
-Received: from lleonard-thinkpadp16vgen1.rmtit.csb ([176.206.22.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-433b463ab5fsm98768945e9.27.2024.11.22.08.21.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 08:21:15 -0800 (PST)
-From: Luigi Leonardi <leonardi@redhat.com>
-To: mhal@rbox.co
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	bobby.eshleman@bytedance.com,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	haoluo@google.com,
-	horms@kernel.org,
-	john.fastabend@gmail.com,
-	jolsa@kernel.org,
-	kpsingh@kernel.org,
-	kuba@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	martin.lau@linux.dev,
-	mst@redhat.com,
-	mykolal@fb.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	sgarzare@redhat.com,
-	shuah@kernel.org,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	Luigi Leonardi <leonardi@redhat.com>
-Subject: Re: [PATCH bpf 3/4] bpf, vsock: Invoke proto::close on close()
-Date: Fri, 22 Nov 2024 17:20:31 +0100
-Message-ID: <20241122162031.55141-1-leonardi@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241118-vsock-bpf-poll-close-v1-3-f1b9669cacdc@rbox.co>
-References: <20241118-vsock-bpf-poll-close-v1-3-f1b9669cacdc@rbox.co>
+        bh=5d0pR2lErJFhGW5JYLVTt1M7sixp7bLkth135lWgw3Q=;
+        b=tOwEmWZK6VrMUUYwtbW8V4+gVARrGicy6kRASf4IOr+t4F3aCWvRwbDr3IGjYDqDY7
+         SbG6j/d1kGeoM5qlLH1WhV2H6oDm6vx7AjZil+iw6nOn/HrsmfQ2nOa7jMVUl0OMboJo
+         zfwQH0UdCg0w2EzcBMP7AeI19pGhMhlvWsAYn1A9ZV1GMRJkSoHc4xqHNDGF3RhTkPg4
+         638kBDcLJIcQLnQHvkTpwVL4gBS3FC7aPq/e/g6nuJVK+sWXqwCjPZqYziy1lsXi6JzH
+         GZEvBdjzNw48I4CDa+C+AB7Ivbi8U6jzS5kYqLeVhJGwVx0rPIVLwgV7qwg9rTd9PbFN
+         vdsA==
+X-Gm-Message-State: AOJu0Yz8qaO3OCNrqlMVjsGomwrmtaNq6C/+GIoogJpH8hGSxkNChzAs
+	vREvXO+0QrCheX7JaUAGeRsP1fcdE+ZPqrfPgAJm7ybRZa4MREJ1aNHTcOa5eAcabTgUX5XClgp
+	Z6zb+qtSDL7HF9jVObMPbkwgEH21GFngET8zW
+X-Gm-Gg: ASbGncs42fwhLZOuBOiRw3T4lVBXu1g1GGQbrKzG86B1G+QDUrec+7F+yxNU0QzZxlK
+	dwQRSX3EzMlYFq1I3SgSKb330JCOapg==
+X-Google-Smtp-Source: AGHT+IGcPlzkZ3PyDSUzWV3Kj+QmGM/kj5s2wAAI8F9d7zpAT9B9AXi3L/mFNXWwSOtalAUtm5/jap4f8LUJO4IAqqg=
+X-Received: by 2002:a05:6402:35d6:b0:5cf:e402:572e with SMTP id
+ 4fb4d7f45d1cf-5d0205f4738mr2698610a12.11.1732293884427; Fri, 22 Nov 2024
+ 08:44:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241122162108.2697803-1-kuba@kernel.org>
+In-Reply-To: <20241122162108.2697803-1-kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 22 Nov 2024 17:44:33 +0100
+Message-ID: <CANn89iKBUJ6p56+3TRNB5JAn0bmuRPDWLeOwGmvLh5yjwnDasA@mail.gmail.com>
+Subject: Re: [PATCH net] net_sched: sch_fq: don't follow the fast path if Tx
+ is behind now
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com, 
+	jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I spent some time checking and nobody but __sock_create (net/socket.c)
-and vsock_release can set sock->sk to NULL.
+On Fri, Nov 22, 2024 at 5:21=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> Recent kernels cause a lot of TCP retransmissions
+>
+> [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+> [  5]   0.00-1.00   sec  2.24 GBytes  19.2 Gbits/sec  2767    442 KBytes
+> [  5]   1.00-2.00   sec  2.23 GBytes  19.1 Gbits/sec  2312    350 KBytes
+>                                                       ^^^^
+>
+> Replacing the qdisc with pfifo makes them go away. It appears that
+> a flow may get throttled with a very near unthrottle time.
+> Later we may get busy processing Rx and the unthrottling time will
+> pass, but we won't service Tx since the core is busy with Rx.
+> If Rx sees an ACK and we try to push more data for the throttled flow
+> we may fastpath the skb, not realizing that there are already "ready
+> to send" packets for this flow sitting in the qdisc.
+> At least this is my theory on what happens.
+>
+> Don't trust the fastpath if we are "behind" according to the projected
+> unthrottle time for some flow waiting in the Qdisc.
+>
+> Qdisc config:
+>
+> qdisc fq 8001: dev eth0 parent 1234:1 limit 10000p flow_limit 100p \
+>   buckets 32768 orphan_mask 1023 bands 3 \
+>   priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 \
+>   weights 589824 196608 65536 quantum 3028b initial_quantum 15140b \
+>   low_rate_threshold 550Kbit \
+>   refill_delay 40ms timer_slack 10us horizon 10s horizon_drop
+>
+> For iperf this change seems to do fine, the reordering is gone.
+> The fastpath still gets used most of the time:
+>
+>   gc 0 highprio 0 fastpath 142614 throttled 418309 latency 19.1us
+>  xx_behind 2731
+>
+> where "xx_behind" counts how many times we hit the new return false.
+>
+> Fixes: 076433bd78d7 ("net_sched: sch_fq: add fast path for mostly idle qd=
+isc")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: jhs@mojatatu.com
+> CC: xiyou.wangcong@gmail.com
+> CC: jiri@resnulli.us
+> ---
+>  net/sched/sch_fq.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> index 19a49af5a9e5..3d932b262159 100644
+> --- a/net/sched/sch_fq.c
+> +++ b/net/sched/sch_fq.c
+> @@ -331,6 +331,12 @@ static bool fq_fastpath_check(const struct Qdisc *sc=
+h, struct sk_buff *skb,
+>                  */
+>                 if (q->internal.qlen >=3D 8)
+>                         return false;
+> +
+> +               /* Ordering invariants fall apart if some throttled flows
+> +                * are ready but we haven't serviced them, yet.
+> +                */
+> +               if (q->throttled_flows && q->time_next_delayed_flow <=3D =
+now)
+> +                       return false;
+>         }
 
-I also ran checkpatch, everything LGTM.
-Thanks for the fix!
+Interesting... I guess we could also call fq_check_throttled() to
+refresh a better view of the qdisc state ?
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+But perhaps your patch is simpler. I guess it could be reduced to
 
+if (q->time_next_delayed_flow <=3D now + q->offload_horizon)
+      return false;
+
+(Note the + q->offload_horizon)
+
+I do not think testing q->throttled_flows is strictly needed :
+If 0, then q->time_next_delayed_flow is set to ~0ULL.
