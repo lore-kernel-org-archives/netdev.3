@@ -1,67 +1,187 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C681A2500BB
-	for <netdev@vger.kernel.org>; Sun, 24 Nov 2024 22:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF6813D246;
+	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732487764; cv=none; b=OcjfQT1ExTDhG60/VQjCNjGmzcOSuKkM6daPoH4mBOAx9ZTULy9aE0hevVp7K07IZl/mZW0/I+n9W6Rr0x7Tx9SZAP3TjQfoDVhZe00F3kQHS5+NWNx6YLfh2R/D8IsgSKc07LA33WI6nN5BWMldAOrzmKAl6ddAXScSe4EhPFY=
+	t=1732488194; cv=none; b=LGnTR8Zg5jSXM5pmDERzUDOAngLPkNb+nUdxKYSHfofXLV7i1jAaRR+SvC3FP9aKaLvjASwk0+H65S0xlYL9w148W4+vFBgNk7LjTjFpMYoSLIywxqfQyYl5rat3a6yMTxJrd7L+ewVzYDZO0EWRLe9utRKst+zS8ZkLHPZFBaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732487764; c=relaxed/simple;
-	bh=gRXWBbwQaey9rjvZWPHDKNihdBOe8FCKmMS8kDGZaKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NkYkkI03BEh0QHx35lZHShM9jGE6UQP0pZe0k9VpaAp41dQG8YYTn3Pf7e6AmJ+resFa4Yw53+INpcukkZCNSsvpCfxQ/XcSq8d+j9XXHJZPFl1OHHSpfxmvajUbYx2+Tg20Zgq1MRLYdvWD+bLOSGVBaAXvn5ksnh7Z4ZeB/6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Cn1Cshvn; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1732488194; c=relaxed/simple;
+	bh=n/Zmpn1SW9SKnUGt+nFAHEbVDk6vv8Ps2OCoF2nXL94=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZG79tHZz8+BC3+O+urT2NyMBJjqBs4qgFhCqdhOnokj79CKKPibi4K3wsrVHU2wDRfKdb4PWR9Chkp1RZQc2CgpPs5NUsRitce5jUmcA4ryKMZ3DflutCXbq8wBsWFOSJ6pJHDOh4EIBp7rGKfyafaCAjak4eyrERtSVu1fBYDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXW1odbD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Cn1Cshvn"
-Date: Sun, 24 Nov 2024 17:35:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1732487760;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UJiix5CoSPF54iS+kZCPPFASrOQHwVk5cNDHTs71w+A=;
-	b=Cn1Cshvn9er28pxNdxu+hxm3Gile1R2+atfQu3oa1D3Z3FxidXK7/h41ZAm05gWO0doNa3
-	wjkG/m8WCx3acFGNYuiw75vvZtgdbfki4Wqnqh4q03wYigMfz6R2Mv6+P5TFvDTSzUm3r1
-	8o6BV8kWym/RlO7+OLiVDLuf5Snm6Qs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: NeilBrown <neilb@suse.de>, Thomas Graf <tgraf@suug.ch>, 
-	netdev@vger.kernel.org
-Subject: Re: rhashtable issue - -EBUSY
-Message-ID: <qderkhvtvsoje5ro5evohboirlysp7oqtczbix2eoklb4mrbvn@inrf23xnuujv>
-References: <>
- <Z0LxtPp1b-jy2Klg@gondor.apana.org.au>
- <173244248654.1734440.17446111766467452028@noble.neil.brown.name>
- <Z0L8LQeZwtvhJ2Ft@gondor.apana.org.au>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXW1odbD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D5805C4CEDB;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732488193;
+	bh=n/Zmpn1SW9SKnUGt+nFAHEbVDk6vv8Ps2OCoF2nXL94=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=IXW1odbDEeRnoPfClYmnuoo1UwdToSgEB/2rI873KI50zqjpomMbmAryDW+5iN5Gu
+	 adESSrC55zgnYgJyN3rgkwMnCF6ZMJJUthv1DE5hBM0qGDNUs12TTdQNJwpToTn3l2
+	 x0f9T7Oc2paqp+m6F1hv8EhuTfruEdAKZx7UpL1JhF0g06r4Zst7cRypJhoE9M1OPl
+	 0uWlUF1BXiomy/luhzIAeDO1Rt2MBdKAWKZNgQH75gyarVKukaTFKosDIRJN+sv607
+	 akVjX/S7T0NBeT12y5hBpIU84FOfkRi5OYkvbyzoKWafPpZJRNEUYol/R//41/cMEN
+	 2cHZGpfbZ3row==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C700ED3B7C2;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Sun, 24 Nov 2024 23:42:34 +0100
+Subject: [PATCH RFC net-next v6 03/15] net: stmmac: Fix clock rate
+ variables size
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z0L8LQeZwtvhJ2Ft@gondor.apana.org.au>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241124-upstream_s32cc_gmac-v6-3-dc5718ccf001@oss.nxp.com>
+References: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
+In-Reply-To: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Minda Chen <minda.chen@starfivetech.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
+ Serge Semin <fancer.lancer@gmail.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=4080;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=PjyG/bciJnCl1zgeP+KpvNNgB+qJrOmgZuJqhRBWPuo=;
+ b=znvrXADUMs7BxpCCyJgP1HuR3JqECd26+Chy+zoixcHYROslkHXw/fTTAB+uowr5PemF3CLtK
+ 01+r6V+Ys4WB5tuqI6/KCRdJHwt2810f73zX4oeBSttpiWq16dO6c9R
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Sun, Nov 24, 2024 at 06:13:01PM +0800, Herbert Xu wrote:
-> On Sun, Nov 24, 2024 at 09:01:26PM +1100, NeilBrown wrote:
-> >
-> > But I don't see any justification for refusing an insertion because we
-> > haven't achieved the short chains yet.  Certainly a WARN_ON_ONCE or a
-> > rate-limited WARN_ON might be appropriate.  Developers should be told
-> > when their hash function isn't good enough.
-> > But requiring developers to test for errors and to come up with some way
-> > to manage them (sleep and try again is all I can think of) doesn't help anyone.
-> 
-> If someone can show me this occurring in a situation other than
-> that where multiple entries with identical keys are being added
-> to the hash table, then I'm certainly happy to change this.
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-That's what I've been describing, but you keep insisting that this must
-be misuse, even though I'm telling you I've got the error code that
-shows what is going on.
+The clock API clk_get_rate() returns unsigned long value.
+Expand affected members of stmmac platform data and
+convert the stmmac_clk_csr_set() and dwmac4_core_init() methods
+to defining the unsigned long clk_rate local variables.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c   | 2 +-
+ include/linux/stmmac.h                                  | 6 +++---
+ 5 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 901a3c1959fa..2a5b38723635 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -777,7 +777,7 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
+ 		netdev_err(priv->dev, "Failed to max out clk_ptp_ref: %d\n", err);
+ 	plat_dat->clk_ptp_rate = clk_get_rate(plat_dat->clk_ptp_ref);
+ 
+-	netdev_dbg(priv->dev, "PTP rate %d\n", plat_dat->clk_ptp_rate);
++	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
+ }
+ 
+ static int qcom_ethqos_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index c25781874aa7..c36f90a782c5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -27,7 +27,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	void __iomem *ioaddr = hw->pcsr;
+ 	u32 value = readl(ioaddr + GMAC_CONFIG);
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	value |= GMAC_CORE_INIT;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 8304f82b3a50..efbf34456612 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -301,7 +301,7 @@ static void stmmac_global_err(struct stmmac_priv *priv)
+  */
+ static void stmmac_clk_csr_set(struct stmmac_priv *priv)
+ {
+-	u32 clk_rate;
++	unsigned long clk_rate;
+ 
+ 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 3ac32444e492..06e07e6e180b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -640,7 +640,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 		dev_info(&pdev->dev, "PTP uses main clock\n");
+ 	} else {
+ 		plat->clk_ptp_rate = clk_get_rate(plat->clk_ptp_ref);
+-		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
++		dev_dbg(&pdev->dev, "PTP rate %lu\n", plat->clk_ptp_rate);
+ 	}
+ 
+ 	plat->stmmac_rst = devm_reset_control_get_optional(&pdev->dev,
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 865d0fe26f98..c9878a612e53 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -252,8 +252,8 @@ struct plat_stmmacenet_data {
+ 	struct clk *stmmac_clk;
+ 	struct clk *pclk;
+ 	struct clk *clk_ptp_ref;
+-	unsigned int clk_ptp_rate;
+-	unsigned int clk_ref_rate;
++	unsigned long clk_ptp_rate;
++	unsigned long clk_ref_rate;
+ 	unsigned int mult_fact_100ns;
+ 	s32 ptp_max_adj;
+ 	u32 cdc_error_adj;
+@@ -265,7 +265,7 @@ struct plat_stmmacenet_data {
+ 	int mac_port_sel_speed;
+ 	int has_xgmac;
+ 	u8 vlan_fail_q;
+-	unsigned int eee_usecs_rate;
++	unsigned long eee_usecs_rate;
+ 	struct pci_dev *pdev;
+ 	int int_snapshot_num;
+ 	int msi_mac_vec;
+
+-- 
+2.47.0
+
+
