@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841DF184551;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095B17F4F6;
 	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732488194; cv=none; b=eF9ljOR1SUfMM2vm3FSSMZbaD8ITRb6zkCcfka/eFzMi02oPGXB3lHSm1CcZOJTkJOVd4p7ComPoOKG9Q7DH+Nj+N7BvBPuafdXzr7d1/7zYUI4X/iED4dqp6PpekDQdTCarr/u9NF8hMzKLqzrxfExBICoJorputK34odbzMj0=
+	t=1732488194; cv=none; b=oKfKx7NIEyiYMWVOtXJ11J3OCnTpQX9yBASNbxLW0a9O3f6e3nqq5KzGilEhdFRPjsYmzL/X4itcV29eBybkQXuVvouZNJmqgBY2zR6qLeiWZF+9PJANRSmyr7wB9W1eFk14vK9vQ9QVXejCbNEvRn8dKrVxNzZ3Y6S1XMefAGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732488194; c=relaxed/simple;
-	bh=2tMu+v0wz2kD7vp6+Ltgu032C6Y9FI2iXPc3O/OTgDs=;
+	bh=ASdzTe34Z+d59Brp4wy1vpf4xly9YpxzqxiqU7BbVP0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q7eRtsFY8be46dEUr/1LfGc36dTcsdms0ie3KJA1Vvs9qkttWH5qvGtIBMQTnq4OUDJ0mplnel+rQ4xa8caSHnJgfuJXrjujwuh4lo92SgChWV9EXIBd0BlHIqbYL1H3vHkdROp6gITDb98C63BL/LNKnR5BVXi3TWluVEUovaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9SZAW9z; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mDZNarFmRwinZMIAy5AqS3PEOUZwiebrNderK+AVY4eHDVOEYz28U2d/4xFBCnAJJAvQi0Pj9V1ZlSLVsCD53M9swI4jk1MFudxC1cVu5reYfFOZEcp0e00gfaSWBIyvA4ByHMTFp4krRCZzvCQwyYK+SHuotabTGkK8TXYo7jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=shGXhO9q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9SZAW9z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F2C5C4CEE9;
-	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="shGXhO9q"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EDF25C4CEE2;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1732488194;
-	bh=2tMu+v0wz2kD7vp6+Ltgu032C6Y9FI2iXPc3O/OTgDs=;
+	bh=ASdzTe34Z+d59Brp4wy1vpf4xly9YpxzqxiqU7BbVP0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=H9SZAW9zELbxIdRU9KWs7yzW7IBIUu6Khvb13uuuQz6rWhHsYZbcbK+s5REIMCR98
-	 Wf7IvR/rP1G7Bx4s0J33UBv28/UuVtt6Ujj/qt0ok6oAv09d5dTK3eF9rXWRKVDMjf
-	 gllUAYFswYlkTd7dm2T+O4Z9yXtIgZF5i8O/lm/ZfBtUkcmjQuAf7EiDgwgHPcnSh6
-	 whhgo6xlR2tfSFwP9xjnNgnKDOV48Bt5yff6m+RiofZLwRRuwSkKO2oitDdP4/RmbZ
-	 Mj0RXlcaz3uQ39ScsjV3POsbA7HTR0AR+0C/vYFv/0jdHw/Q/hyUcjOXyYbVaeVIo+
-	 kxnNS4ReV+x1Q==
+	b=shGXhO9qj4Vod1iK+HMfXSDtqQM9s5/H9cVNvy9RVzvhnza9IjZ027ogdED4byS5t
+	 s+MJfWb+EDnSjLCrQE2wkRMpy2r+OT48KiIvxre5hd/5jRTpuVzNTGxXvleFFsPJ/s
+	 twNYGcGnOdfSSA4U92WGbF+F1BfSSTx/aUIHBvq4PQDUQFMgjgmiU+yahbdvA2m3BP
+	 OwzxwkFlUzZuQyGMhKzAMDNxInvEU0t75cAPpm0UB+6r/9H+SXmRUZ+u0b+E1UutWI
+	 xX+WUhbR06ib5z6Rv1oYqcUunJUV5uebXwulyGyLs5F+WHyZqfwE2Yi1KUDX4nKw7n
+	 ZgYsYAVZZsJSw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14AD3D3B7C0;
-	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA9EED3B7C4;
+	Sun, 24 Nov 2024 22:43:13 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 24 Nov 2024 23:42:37 +0100
-Subject: [PATCH RFC net-next v6 06/15] net: dwmac-imx: Use helper
- rgmii_clock
+Date: Sun, 24 Nov 2024 23:42:35 +0100
+Subject: [PATCH RFC net-next v6 04/15] net: phy: Add helper for mapping
+ RGMII link speed to clock rate
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241124-upstream_s32cc_gmac-v6-6-dc5718ccf001@oss.nxp.com>
+Message-Id: <20241124-upstream_s32cc_gmac-v6-4-dc5718ccf001@oss.nxp.com>
 References: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
 In-Reply-To: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -72,11 +72,11 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
  "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=1376;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=1509;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=SsszkUP8I3NbcQMnOnyLygQGzFscaLh2fXkadRBQwQg=;
- b=SCSns3Qip+S8U2y2jO9SHEBK6YW4GKIwkZvJecmvH34A/QUaKJqmj67/CGbqjKMUpMz1GgqMe
- L1hL4ZOm+gYDJyeY+1mo5u69+NHXhGQ3t3EKpomRPVKe8Yz9zFDSNJZ
+ bh=fpWmpczGATKRZSZUfvD41WjUjGR83jNPIPJUZeOtjsk=;
+ b=n+FUBIb08C4MW29U1TwIN+jAnwb5gQDX3x+iM8uBEh3wGvLkmbG8sYsamLmxZ3aCohoJLLMAT
+ Zv6nMCNB+zzDPC7y7MBxFnFTGp/4Qv7JsyO2YTO7YrQKqRXCBCU24Ks
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -86,48 +86,58 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Utilize a new helper function rgmii_clock().
+The RGMII interface supports three data rates: 10/100 Mbps
+and 1 Gbps. These speeds correspond to clock frequencies
+of 2.5/25 MHz and 125 MHz, respectively.
 
+Many Ethernet drivers, including glues in stmmac, follow
+a similar pattern of converting RGMII speed to clock frequency.
+
+To simplify code, define the helper rgmii_clock(speed)
+to convert connection speed to clock frequency.
+
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ include/linux/phy.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 641f3cd019a3..43e0fbba4f77 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -186,7 +186,7 @@ static void imx_dwmac_fix_speed(void *priv, unsigned int speed, unsigned int mod
- {
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct imx_priv_data *dwmac = priv;
--	unsigned long rate;
-+	long rate;
- 	int err;
- 
- 	plat_dat = dwmac->plat_dat;
-@@ -196,17 +196,8 @@ static void imx_dwmac_fix_speed(void *priv, unsigned int speed, unsigned int mod
- 	    (plat_dat->mac_interface == PHY_INTERFACE_MODE_MII))
- 		return;
- 
--	switch (speed) {
--	case SPEED_1000:
--		rate = 125000000;
--		break;
--	case SPEED_100:
--		rate = 25000000;
--		break;
--	case SPEED_10:
--		rate = 2500000;
--		break;
--	default:
-+	rate = rgmii_clock(speed);
-+	if (rate < 0) {
- 		dev_err(dwmac->dev, "invalid speed %u\n", speed);
- 		return;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 77c6d6451638..9d0717ccd5c0 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -298,6 +298,29 @@ static inline const char *phy_modes(phy_interface_t interface)
  	}
+ }
+ 
++/**
++ * rgmii_clock - map link speed to the clock rate
++ * @speed: link speed value
++ *
++ * Description: maps RGMII supported link speeds
++ * into the clock rates.
++ *
++ * Returns: clock rate or negative errno
++ */
++static inline long rgmii_clock(int speed)
++{
++	switch (speed) {
++	case SPEED_10:
++		return 2500000;
++	case SPEED_100:
++		return 25000000;
++	case SPEED_1000:
++		return 125000000;
++	default:
++		return -EINVAL;
++	}
++}
++
+ #define PHY_INIT_TIMEOUT	100000
+ #define PHY_FORCE_TIMEOUT	10
+ 
 
 -- 
 2.47.0
