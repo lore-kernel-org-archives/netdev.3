@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C4F18871E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C075C18991E;
 	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732488194; cv=none; b=j+1bXQbuXPzVwdFSxoUwC/CqNekBN+lmKHUuIaryPL/SJlSRCKT73PeH6N7wXze31d4x2X0jn7cUjG8frXxRJ9kIBsgz3INc1aidSnIjosxHX/DWeLsRaK5yeN1Qd8tU92SG5F9sX6hVvuPLl8WfB9oAnpS6ocwYXvg/J3ZzkLA=
+	t=1732488194; cv=none; b=EUsqzopehILYD2TSZvdI94onbiJRZ3wy8iK8gPCNeod1QWkLG+tpl0gevdOGu4mobw4xQOAySyNYPobuv2EIilmjwc9TRHHJZ8tuGl6nrv+I0vPVqIfxq4ScH0FcLg4+OucVHLE/JPqwkW2bgThJAau7W6p+r7YzyqPSojyGA0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732488194; c=relaxed/simple;
-	bh=KSQ/a7NqTpyosWEB/jr4bID1FonyDJV1OEBnEmOAv/0=;
+	bh=zUEz2ANM1tWrM6cItHLJ+CI7tAh+sUssEFYL0gzJjUo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SGyjcaih07wTRYUSJzc41Ttb+4kFyWn/HpoDWDmPta4k8HK5ilCKZIRtWxcXrZPSAmxEZ6BU038r5ohluDsoNHkYtg6P5OYwoC1hnHM4u8wfLMxlNhTUNEyEgZ362AaF2oPQhpAt8e2zdKGa1umAiWhtKSsQMR0WwFQ2fxX/zyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPvJf0pN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ffCPWsLw6RHG3lJx844Z99OPRyTgbc5yTOmQVwmqRJfbeoMgeMLjol0UzKD/8/+HqP2L5Rl/0P+8h23APRp+QJwsExpwxjG+Eog0yDHkNPrF3j2XVnrOTVFxU72wmfNTwoQOCTy4cyOw1UvMERCDqFOa7zEWrts7Bhs7WYu4a1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNsGwKy0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPvJf0pN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5ACB4C4CECC;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNsGwKy0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7FABDC4CEF8;
 	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1732488194;
-	bh=KSQ/a7NqTpyosWEB/jr4bID1FonyDJV1OEBnEmOAv/0=;
+	bh=zUEz2ANM1tWrM6cItHLJ+CI7tAh+sUssEFYL0gzJjUo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OPvJf0pNFWA0bLbeJxJytThTk309+zh4gErH8l0OycgyI2F6AANPSrLC2yML2eHuR
-	 bfkpAEfcCFkTmRXgXTGSdgMzekn6U7ccRG/ZvlfPEerqUvf7rG7N3CHZ9HbPeFSOq/
-	 NAb5g73ip8mTjjE+pwjQnRoAgk4y8bm+VAFQQGnSQMg+/GOgaJOdLPkzk105gYmVFx
-	 sZrjFVpNUpCpcznjEG8a+ZVI4GNMNL7pHehTJ8nOdWqRZqhVK0GYNCaOBhotnjcglc
-	 SwSzsoE1iS7UkjOcjptPoT9uIzseuP2UWsCl+t9vAztEQTMNPxIX77YKUXbWHTegkg
-	 YqytbYqDq5mJw==
+	b=NNsGwKy0mzN9a4VzQsvlFpD/lBDfL9w8NOeHzHyzlB0rO3t4Hilr9jdbrCrDk0a6j
+	 1fD6E45XnNb/KcO6cSlDNVFayOdzbmjDCsKCHNXrxpGbmU6fLWaeEUCnus43mKdcZe
+	 +N3xaoeIbozcArlDSFenR4tVuJf4k9H7loN0w2dAQHC3Br7XfzjmQmgmIKlz6WNT9q
+	 jEIs+UWGW5N2un0CqFU8v4hifQEGDQjXlNPLcKSKgku2ytppV9cAe1o4tRkH09tgpN
+	 hPKva/MHpnGn86xKRO32HXY4p31fPPHI1rK4ENFzoJnkDiiSsjuIOY8yY/jIuib7I7
+	 DRMDEd7k4aJuw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D16FD3B7C1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75F3FD3B7C2;
 	Sun, 24 Nov 2024 22:43:14 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Sun, 24 Nov 2024 23:42:40 +0100
-Subject: [PATCH RFC net-next v6 09/15] net: dwmac-starfive: Use helper
+Date: Sun, 24 Nov 2024 23:42:42 +0100
+Subject: [PATCH RFC net-next v6 11/15] net: xgene_enet: Use helper
  rgmii_clock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241124-upstream_s32cc_gmac-v6-9-dc5718ccf001@oss.nxp.com>
+Message-Id: <20241124-upstream_s32cc_gmac-v6-11-dc5718ccf001@oss.nxp.com>
 References: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
 In-Reply-To: <20241124-upstream_s32cc_gmac-v6-0-dc5718ccf001@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -72,11 +72,11 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
  "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=1292;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732488190; l=1191;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=XVAWyqUUjd8nvrXhKQmMFKnUq2h/nlnHImM7aCwOPfU=;
- b=XFd3MbPMLeHASSvGCIQj9RIvkaQ0Eoy8HhjJQWFTpc3gGky9hlrOdGBo3y2X2G+2mrxL1HTOa
- yDe0j42c81JAVybxaaNJhDs6RuReYiWMnTQzOpl/uqcfZkBAUPCojUu
+ bh=yT5e9PnijROcL6qGdZBMgaJx1+AeFQufN+me46lPuTM=;
+ b=MWwT+YAn1OtfqT3jNEoFInoa7erkRTCAewBp6BEfx7ysV1e5kVmbleVqtH268TLZwUjSNPQ82
+ FH+lOEu1JTND2EKGP4BKsFDPtTzzCexLodYOiIY3j4pAImCvzuelPG8
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -92,42 +92,37 @@ Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/apm/xgene/xgene_enet_hw.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-index 421666279dd3..0a0a363d3730 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-starfive.c
-@@ -34,24 +34,13 @@ struct starfive_dwmac {
- static void starfive_dwmac_fix_mac_speed(void *priv, unsigned int speed, unsigned int mode)
- {
- 	struct starfive_dwmac *dwmac = priv;
--	unsigned long rate;
-+	long rate;
- 	int err;
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_hw.c b/drivers/net/ethernet/apm/xgene/xgene_enet_hw.c
+index e641dbbea1e2..b854b6b42d77 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_hw.c
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_hw.c
+@@ -421,18 +421,12 @@ static void xgene_enet_configure_clock(struct xgene_enet_pdata *pdata)
  
--	rate = clk_get_rate(dwmac->clk_tx);
--
--	switch (speed) {
--	case SPEED_1000:
--		rate = 125000000;
--		break;
--	case SPEED_100:
--		rate = 25000000;
--		break;
--	case SPEED_10:
--		rate = 2500000;
--		break;
--	default:
-+	rate = rgmii_clock(speed);
-+	if (rate < 0) {
- 		dev_err(dwmac->dev, "invalid speed %u\n", speed);
--		break;
-+		return;
+ 	if (dev->of_node) {
+ 		struct clk *parent = clk_get_parent(pdata->clk);
++		long rate = rgmii_clock(pdata->phy_speed);
+ 
+-		switch (pdata->phy_speed) {
+-		case SPEED_10:
+-			clk_set_rate(parent, 2500000);
+-			break;
+-		case SPEED_100:
+-			clk_set_rate(parent, 25000000);
+-			break;
+-		default:
+-			clk_set_rate(parent, 125000000);
+-			break;
+-		}
++		if (rate < 0)
++			rate = 125000000;
++
++		clk_set_rate(parent, rate);
  	}
- 
- 	err = clk_set_rate(dwmac->clk_tx, rate);
+ #ifdef CONFIG_ACPI
+ 	else {
 
 -- 
 2.47.0
