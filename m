@@ -1,40 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E31F95A
-	for <netdev@vger.kernel.org>; Sun, 24 Nov 2024 08:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9FD154C05
+	for <netdev@vger.kernel.org>; Sun, 24 Nov 2024 09:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732436154; cv=none; b=Cpodauyn+Uy3dDs2DW8dMw2PNW0TPcdR2P+5F8OAss+r71S9oLFUcCBvgRN7JR6zKoQVBfcT0JeX6GKFuM2Kg4rSjY9JSrQj3OpwHU0SZo7Xvm1PPa1jfjcjDAmBE9gZ4JVjrXh65Xx4Iq1Tc1XPSkD6THYx298xrzNrLLKP/xw=
+	t=1732440435; cv=none; b=kq5IogdE0mq1eflRowoSFAn6Eko1yTTL0FhBebA4fytoyU9Ye7A7Fo0TaBatxqRLEVMTRZXYRcOklI2vNrh9LMogfw/E07+29s/Y7YcoBLLPqqH1VCyO6/G203kKGTbcod8vc+vCelAZDmIPrLy1vZWA5xoNGxCDhKZoHog3Gcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732436154; c=relaxed/simple;
-	bh=yiKuvWs6Sk8moKhXA4kLgU7rr/Lz1gPeWMnu7OXhVGA=;
+	s=arc-20240116; t=1732440435; c=relaxed/simple;
+	bh=70Dewk9E3+4akR2otEDr/6c5hieXZxWyYrAq9d7LYu4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzEFdfNNhSVrHORRvEkrMbQTzlbOh/mePF+HPpCIm/jX+wAb/KfxkSTg43lDQlKzkRbnQrIMKVp39YHkA0gI5ucpN+eASZetJw+ge+qVsXxNE7GNOyYEBLX0fe7qbWZT/LsA/StseCP2c46+QQSOA1GiYBrVvwBu21CIYePNXtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZPB0rp+; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZPB0rp+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA27FC4CECF;
-	Sun, 24 Nov 2024 08:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732436154;
-	bh=yiKuvWs6Sk8moKhXA4kLgU7rr/Lz1gPeWMnu7OXhVGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AZPB0rp+YZYA0yHVArZe24iTiJ2f7+d7M9I8RfXE3KlgeNz4QFX+kT8lzYRcfsJU+
-	 sEyS9uX684NBx1XgOOSaBOQ5N0DMehRnAq5rOKs63QbQN7uekflK0QyD2NprOayXh5
-	 +m6oK2q/t8FQ7YrCiTsosFFlQ7yqupA0c3vdlnOUVp7W1+2Mg8mhbZ5J0aFfwBuO32
-	 WS5wU+bP/Fi+tzxUOvWmH6dypioj2nKUX5ZDexPQBFgnjQZyFZYsQ2/xbVQgb4bgP3
-	 214rQdyZOHuCDuHJOXFDhLTUX3eToZ8pX7lNGtrIwJQx8kCuXNsguWmOHfQ6hAc8LM
-	 wEYIXUGYsL1Zg==
-Date: Sun, 24 Nov 2024 10:15:49 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Feng Wang <wangfe@google.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
-	antony.antony@secunet.com, pabeni@redhat.com
-Subject: Re: [PATCH v6] xfrm: add SA information to the offloaded packet when
- if_id is set
-Message-ID: <20241124081549.GD160612@unreal>
-References: <20241121215257.3879343-2-wangfe@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=alZK3FnPpei1UGpZ8IrSKHhvSdHGy2O3kq4fR54v0vvVf0/a4dshfWvqn/8pzAJJFxXKMWK6qAJh5zpWMkXYnKvz/oEqfM9K+aeAK6ZLUCgZ3qFghtKPeLo1UlgPBr2fAYjKQOpaQQkd4eU4kLOJ0YhNHUaSGuoBgUHe84J8yrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tF8t6-0004vR-NB; Sun, 24 Nov 2024 10:26:40 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tF8t0-002N7A-2j;
+	Sun, 24 Nov 2024 10:26:34 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tF8t0-00CgGn-2K;
+	Sun, 24 Nov 2024 10:26:34 +0100
+Date: Sun, 24 Nov 2024 10:26:34 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Rob Herring <robh@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, Kyle Swenson <kyle.swenson@est.tech>,
+	Dent Project <dentproject@linuxfoundation.org>,
+	kernel@pengutronix.de,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH RFC net-next v3 12/27] net: pse-pd: Add support for
+ reporting events
+Message-ID: <Z0LxSnmQqrsCqJ-Y@pengutronix.de>
+References: <20241121-feature_poe_port_prio-v3-0-83299fa6967c@bootlin.com>
+ <20241121-feature_poe_port_prio-v3-12-83299fa6967c@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,207 +62,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241121215257.3879343-2-wangfe@google.com>
+In-Reply-To: <20241121-feature_poe_port_prio-v3-12-83299fa6967c@bootlin.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Thu, Nov 21, 2024 at 09:52:58PM +0000, Feng Wang wrote:
-> In packet offload mode, append Security Association (SA) information
-> to each packet, replicating the crypto offload implementation.
-
-Please write explicitly WHY "replicating ..." is right thing to do and
-why current code is not enough.
-
-The best thing will be to see how packet traversal in the netdev stack
-till it gets to the wire.
-
+On Thu, Nov 21, 2024 at 03:42:38PM +0100, Kory Maincent wrote:
+> From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 > 
-> The XFRM_XMIT flag is set to enable packet to be returned immediately
-> from the validate_xmit_xfrm function, thus aligning with the existing
-> code path for packet offload mode.
-
-This chunk was dropped mysteriously. It doesn't exist in the current patch.
-What type of testing did you perform? Can you please add it to the
-commit message?
-
-According to the strongswan documentation https://docs.strongswan.org/docs/5.9/features/routeBasedVpn.html,
-"Traffic that’s routed to an XFRM interface, while no policies and SAs with matching interface ID exist,
-will be dropped by the kernel."
-
-It looks like the current code doesn't handle this case, does it?
-
+> Add support for devm_pse_irq_helper() to register PSE interrupts. This aims
+> to report events such as over-current or over-temperature conditions
+> similarly to how the regulator API handles them but using a specific PSE
+> ethtool netlink socket.
 > 
-> This SA info helps HW offload match packets to their correct security
-> policies. The XFRM interface ID is included, which is used in setups
-> with multiple XFRM interfaces where source/destination addresses alone
-> can't pinpoint the right policy.
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Please add an examples of iproute2 commands on how it is achieved,
-together with tcprdump examples of before and after.
+....
 
-> 
-> Enable packet offload mode on netdevsim and add code to check the XFRM
-> interface ID.
+> @@ -634,6 +752,7 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index)
+>  	psec->pcdev = pcdev;
+>  	list_add(&psec->list, &pcdev->pse_control_head);
+>  	psec->id = index;
+> +	psec->attached_phydev = phydev;
 
-You still need to add checks in existing drivers to make sure that SAs
-with if_id won't be offloaded.
+Hm, i guess, here is missing some sort of phy_attach_pse.
+Otherwise the phydev may be removed.
 
-IMHO, netdevsim implementation is not a replacement to support
-out-of-tree code, but a way to help testing features without need to
-have complex HW, but still for the code which is in-tree.
-
-Thanks
-
-> 
-> Signed-off-by: wangfe <wangfe@google.com>
-> ---
-> v6: https://lore.kernel.org/all/20241119220411.2961121-1-wangfe@google.com/
->   - Fix code style to follow reverse x-mas tree order declaration.
-> v5: https://lore.kernel.org/all/20241112192249.341515-1-wangfe@google.com/
->   - Add SA information only when XFRM interface ID is non-zero.
-> v4: https://lore.kernel.org/all/20241104233251.3387719-1-wangfe@google.com/
->   - Add offload flag check and only doing check when XFRM interface
->     ID is non-zero.
-> v3: https://lore.kernel.org/all/20240822200252.472298-1-wangfe@google.com/
->   - Add XFRM interface ID checking on netdevsim in the packet offload
->     mode.
-> v2:
->   - Add why HW offload requires the SA info to the commit message
-> v1: https://lore.kernel.org/all/20240812182317.1962756-1-wangfe@google.com/
-> ---
-> ---
->  drivers/net/netdevsim/ipsec.c     | 32 ++++++++++++++++++++++++++++++-
->  drivers/net/netdevsim/netdevsim.h |  1 +
->  net/xfrm/xfrm_output.c            | 22 +++++++++++++++++++++
->  3 files changed, 54 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
-> index 88187dd4eb2d..5677b2acf9c0 100644
-> --- a/drivers/net/netdevsim/ipsec.c
-> +++ b/drivers/net/netdevsim/ipsec.c
-> @@ -153,7 +153,8 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs,
->  		return -EINVAL;
->  	}
+>  	kref_init(&psec->refcnt);
 >  
-> -	if (xs->xso.type != XFRM_DEV_OFFLOAD_CRYPTO) {
-> +	if (xs->xso.type != XFRM_DEV_OFFLOAD_CRYPTO &&
-> +	    xs->xso.type != XFRM_DEV_OFFLOAD_PACKET) {
->  		NL_SET_ERR_MSG_MOD(extack, "Unsupported ipsec offload type");
->  		return -EINVAL;
->  	}
-> @@ -169,6 +170,7 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs,
->  	memset(&sa, 0, sizeof(sa));
->  	sa.used = true;
->  	sa.xs = xs;
-> +	sa.if_id = xs->if_id;
->  
->  	if (sa.xs->id.proto & IPPROTO_ESP)
->  		sa.crypt = xs->ealg || xs->aead;
-> @@ -227,16 +229,31 @@ static bool nsim_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
->  	return true;
+>  	return psec;
+> @@ -689,7 +808,8 @@ static int psec_id_xlate(struct pse_controller_dev *pcdev,
+>  	return pse_spec->args[0];
 >  }
->  
-> +static int nsim_ipsec_add_policy(struct xfrm_policy *policy,
-> +				 struct netlink_ext_ack *extack)
-> +{
-> +	return 0;
-> +}
-> +
-> +static void nsim_ipsec_del_policy(struct xfrm_policy *policy)
-> +{
-> +}
-> +
->  static const struct xfrmdev_ops nsim_xfrmdev_ops = {
->  	.xdo_dev_state_add	= nsim_ipsec_add_sa,
->  	.xdo_dev_state_delete	= nsim_ipsec_del_sa,
->  	.xdo_dev_offload_ok	= nsim_ipsec_offload_ok,
-> +
-> +	.xdo_dev_policy_add     = nsim_ipsec_add_policy,
-> +	.xdo_dev_policy_delete  = nsim_ipsec_del_policy,
-> +
->  };
->  
->  bool nsim_ipsec_tx(struct netdevsim *ns, struct sk_buff *skb)
->  {
->  	struct sec_path *sp = skb_sec_path(skb);
->  	struct nsim_ipsec *ipsec = &ns->ipsec;
-> +	struct xfrm_offload *xo;
->  	struct xfrm_state *xs;
->  	struct nsim_sa *tsa;
->  	u32 sa_idx;
-> @@ -275,6 +292,19 @@ bool nsim_ipsec_tx(struct netdevsim *ns, struct sk_buff *skb)
->  		return false;
->  	}
->  
-> +	if (xs->if_id) {
-> +		if (xs->if_id != tsa->if_id) {
-> +			netdev_err(ns->netdev, "unmatched if_id %d %d\n",
-> +				   xs->if_id, tsa->if_id);
-> +			return false;
-> +		}
-> +		xo = xfrm_offload(skb);
-> +		if (!xo || !(xo->flags & XFRM_XMIT)) {
-> +			netdev_err(ns->netdev, "offload flag missing or wrong\n");
-> +			return false;
-> +		}
-> +	}
-> +
->  	ipsec->tx++;
->  
->  	return true;
-> diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-> index bf02efa10956..4941b6e46d0a 100644
-> --- a/drivers/net/netdevsim/netdevsim.h
-> +++ b/drivers/net/netdevsim/netdevsim.h
-> @@ -41,6 +41,7 @@ struct nsim_sa {
->  	__be32 ipaddr[4];
->  	u32 key[4];
->  	u32 salt;
-> +	u32 if_id;
->  	bool used;
->  	bool crypt;
->  	bool rx;
-> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-> index e5722c95b8bb..3e9a1b17f37e 100644
-> --- a/net/xfrm/xfrm_output.c
-> +++ b/net/xfrm/xfrm_output.c
-> @@ -704,6 +704,8 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
->  {
->  	struct net *net = dev_net(skb_dst(skb)->dev);
->  	struct xfrm_state *x = skb_dst(skb)->xfrm;
-> +	struct xfrm_offload *xo;
-> +	struct sec_path *sp;
->  	int family;
->  	int err;
->  
-> @@ -728,7 +730,27 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
->  			kfree_skb(skb);
->  			return -EHOSTUNREACH;
->  		}
-> +		if (x->if_id) {
-> +			sp = secpath_set(skb);
-> +			if (!sp) {
-> +				XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> +				kfree_skb(skb);
-> +				return -ENOMEM;
-> +			}
-> +
-> +			sp->olen++;
-> +			sp->xvec[sp->len++] = x;
-> +			xfrm_state_hold(x);
->  
-> +			xo = xfrm_offload(skb);
-> +			if (!xo) {
-> +				secpath_reset(skb);
-> +				XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> +				kfree_skb(skb);
-> +				return -EINVAL;
-> +			}
-> +			xo->flags |= XFRM_XMIT;
-> +		}
->  		return xfrm_output_resume(sk, skb, 0);
->  	}
->  
-> -- 
-> 2.47.0.371.ga323438b13-goog
-> 
-> 
+
+It will be good if some one takes a look at netlink specific part of the
+code.
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
