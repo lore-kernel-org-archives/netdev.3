@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708BA192D75
-	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BC0198A19
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 10:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732530822; cv=none; b=SabIXVvbWwoeW2n0YT6GBRY7lKlodk34TWepD29OaIY84HNG6VfmYYoY+A3xDFFJyuBCrdeVAiKajwqAu60wa5IJcSsd7obhshy0UQX2GTQrkUrGgKgwqBJzBwmCJm8KIfgwkKyJ3LWNFMfOvHxKbVppE0N1gRMSr5/kBq79z28=
+	t=1732530823; cv=none; b=Di8dVWg+Pw28xua49Yv1cZIpXF67sjsBsgTU6mvtx4s2YAxwmDUH+pjyS7UrgpTsXpQbvpYdzc3eeIVLV9OZ7cWDefCK9cuFnzVQTQRdT2dUqsBwQHzg7JGfbk02E8nO1XAX8xcqKCnjF9DxlZQMtywZ+LRsjRgtGw3nuImuRYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732530822; c=relaxed/simple;
-	bh=aqrcmVCIwkm7vpPwCYUzuqcfSmWqiRz5iZ58Ps7dWF8=;
+	s=arc-20240116; t=1732530823; c=relaxed/simple;
+	bh=TqMhoV+NZRvuMBxDCg40/WCJJCJojclQ99Ip8Q5RU9w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tsMe37ced+5OUrnTNT0sa5xQ2Z6y9pTzpR7sP97mLTHo0Rh0Pey4w9nW3ttCgwTCXGat1siaIhY9zb/gTJQ0FxsImil3fOsfKzFO367OKnXK3QgwsdmnR5DSzToegJAQklnmpg9tCUkcGf1E7940ttowgLvrxWI/LVBnbZFh7Ss=
+	 In-Reply-To:To:Cc; b=ohPTwWSfnRaSYE2z2BMTIwhZG139u80gJQRztd+eILxf7ZUWroBz8dFnX7qpjsJt0qw0lxG1tnE+FGFlutQkilJDwhj/GkOLHbwwEsQmRcWMCfJzJED6Ouh0VNfSsasatqERGhQwBNf02xYy4Q0hAa8VoKN1C2mIBdAGzjDRxx4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1tFWPQ-0001Fo-1e; Mon, 25 Nov 2024 11:33:36 +0100
+	id 1tFWPR-0001Fo-Ch; Mon, 25 Nov 2024 11:33:37 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 25 Nov 2024 11:33:21 +0100
-Subject: [PATCH v2 2/4] arm64: dts: agilex5: add gmac nodes
+Date: Mon, 25 Nov 2024 11:33:23 +0100
+Subject: [PATCH v2 4/4] arm64: dts: agilex5: initial support for Arrow
+ AXE5-Eagle
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -29,7 +30,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241125-v6-12-topic-socfpga-agilex5-v2-2-864256ecc7b2@pengutronix.de>
+Message-Id: <20241125-v6-12-topic-socfpga-agilex5-v2-4-864256ecc7b2@pengutronix.de>
 References: <20241125-v6-12-topic-socfpga-agilex5-v2-0-864256ecc7b2@pengutronix.de>
 In-Reply-To: <20241125-v6-12-topic-socfpga-agilex5-v2-0-864256ecc7b2@pengutronix.de>
 To: Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -47,114 +48,181 @@ X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-The Agilex5 provides three Synopsys XGMAC ethernet cores, that can be
-used to transmit and receive data at 10M/100M/1G/2.5G over ethernet
-connections and enables support for Time Sensitive Networking (TSN)
-applications.
+The Arrow AXE5-Eagle is an Intel Agilex5 SoCFPGA based board with:
+
+   - 1x PCIe Gen4.0 edge connector
+   - 4-port USB HUB
+   - 2x 1Gb Ethernet
+   - microSD
+   - HDMI output
+   - 2x 10Gb SFP+ cages
+
+As most devices aren't supported mainline yet, this is only the initial
+support for the board.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi | 87 ++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ arch/arm64/boot/dts/intel/Makefile                 |   1 +
+ .../boot/dts/intel/socfpga_agilex5_axe5_eagle.dts  | 140 +++++++++++++++++++++
+ 2 files changed, 141 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-index b1debf0317d0576f7b00200e9593481671183faa..647ccd0b5a66b68fab745d443b975c12d6ce63df 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-@@ -141,6 +141,93 @@ soc: soc@0 {
- 		device_type = "soc";
- 		interrupt-parent = <&intc>;
- 
-+		gmac0: ethernet@10810000 {
-+			compatible = "altr,socfpga-stmmac-a10-s10",
-+				     "snps,dwxgmac-2.10",
-+				     "snps,dwxgmac";
-+			reg = <0x10810000 0x3500>;
-+			interrupt-parent = <&intc>;
-+			interrupts = <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			max-frame-size = <3800>;
-+			snps,multicast-filter-bins = <64>;
-+			snps,perfect-filter-entries = <64>;
-+			rx-fifo-depth = <16384>;
-+			tx-fifo-depth = <32768>;
-+			resets = <&rst EMAC0_RESET>, <&rst EMAC0_OCP_RESET>;
-+			reset-names = "stmmaceth", "ahb";
-+			clocks = <&clkmgr AGILEX5_EMAC0_CLK>,
-+				 <&clkmgr AGILEX5_EMAC_PTP_CLK>;
-+			clock-names = "stmmaceth", "ptp_ref";
-+			snps,axi-config = <&stmmac_axi_emac0_setup>;
-+			altr,sysmgr-syscon = <&sysmgr 0x44 0>;
-+			status = "disabled";
+diff --git a/arch/arm64/boot/dts/intel/Makefile b/arch/arm64/boot/dts/intel/Makefile
+index d39cfb723f5b6674a821dfdafb21b12668bb1e0e..3e87d548c532b1a9e38f4489c037c5c4db3a50b8 100644
+--- a/arch/arm64/boot/dts/intel/Makefile
++++ b/arch/arm64/boot/dts/intel/Makefile
+@@ -3,5 +3,6 @@ dtb-$(CONFIG_ARCH_INTEL_SOCFPGA) += socfpga_agilex_n6000.dtb \
+ 				socfpga_agilex_socdk.dtb \
+ 				socfpga_agilex_socdk_nand.dtb \
+ 				socfpga_agilex5_socdk.dtb \
++				socfpga_agilex5_axe5_eagle.dtb \
+ 				socfpga_n5x_socdk.dtb
+ dtb-$(CONFIG_ARCH_KEEMBAY) += keembay-evm.dtb
+diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex5_axe5_eagle.dts b/arch/arm64/boot/dts/intel/socfpga_agilex5_axe5_eagle.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..c0f6870e7b40a53ca0d685b4109ff24e1409bb0e
+--- /dev/null
++++ b/arch/arm64/boot/dts/intel/socfpga_agilex5_axe5_eagle.dts
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier:     GPL-2.0
++/*
++ * Copyright (C) 2024, Arrow Electronics, Inc.
++ */
++#include "socfpga_agilex5.dtsi"
 +
-+			stmmac_axi_emac0_setup: stmmac-axi-config {
-+				snps,wr_osr_lmt = <31>;
-+				snps,rd_osr_lmt = <31>;
-+				snps,blen = <0 0 0 32 16 8 4>;
-+			};
++/ {
++	model = "SoCFPGA Agilex5 Arrow AXE5-Eagle";
++	compatible = "arrow,socfpga-agilex5-axe5-eagle", "intel,socfpga-agilex5";
++
++	aliases {
++		serial0 = &uart0;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		led-0 {
++			label = "hps_led0";
++			gpios = <&porta 6 GPIO_ACTIVE_HIGH>;
 +		};
 +
-+		gmac1: ethernet@10820000 {
-+			compatible = "altr,socfpga-stmmac-a10-s10",
-+				     "snps,dwxgmac-2.10",
-+				     "snps,dwxgmac";
-+			reg = <0x10820000 0x3500>;
-+			interrupt-parent = <&intc>;
-+			interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			max-frame-size = <3800>;
-+			snps,multicast-filter-bins = <64>;
-+			snps,perfect-filter-entries = <64>;
-+			rx-fifo-depth = <16384>;
-+			tx-fifo-depth = <32768>;
-+			resets = <&rst EMAC1_RESET>, <&rst EMAC1_OCP_RESET>;
-+			reset-names = "stmmaceth", "ahb";
-+			clocks = <&clkmgr AGILEX5_EMAC1_CLK>,
-+				 <&clkmgr AGILEX5_EMAC_PTP_CLK>;
-+			clock-names = "stmmaceth", "ptp_ref";
-+			snps,axi-config = <&stmmac_axi_emac1_setup>;
-+			altr,sysmgr-syscon = <&sysmgr 0x48 0>;
-+			status = "disabled";
++		led-1 {
++			label = "hps_led1";
++			gpios = <&porta 7 GPIO_ACTIVE_HIGH>;
++		};
++	};
 +
-+			stmmac_axi_emac1_setup: stmmac-axi-config {
-+				snps,wr_osr_lmt = <31>;
-+				snps,rd_osr_lmt = <31>;
-+				snps,blen = <0 0 0 32 16 8 4>;
-+			};
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		key-0 {
++			label = "hps_sw0";
++			gpios = <&porta 10 0>;
++			linux,input-type = <5>;	/* EV_SW */
++			linux,code = <0x0>;
 +		};
 +
-+		gmac2: ethernet@10830000 {
-+			compatible = "altr,socfpga-stmmac-a10-s10",
-+				     "snps,dwxgmac-2.10",
-+				     "snps,dwxgmac";
-+			reg = <0x10830000 0x3500>;
-+			interrupt-parent = <&intc>;
-+			interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			max-frame-size = <3800>;
-+			snps,multicast-filter-bins = <64>;
-+			snps,perfect-filter-entries = <64>;
-+			rx-fifo-depth = <16384>;
-+			tx-fifo-depth = <32768>;
-+			resets = <&rst EMAC2_RESET>, <&rst EMAC2_OCP_RESET>;
-+			reset-names = "stmmaceth", "ahb";
-+			clocks = <&clkmgr AGILEX5_EMAC2_CLK>,
-+				 <&clkmgr AGILEX5_EMAC_PTP_CLK>;
-+			clock-names = "stmmaceth", "ptp_ref";
-+			snps,axi-config = <&stmmac_axi_emac2_setup>;
-+			altr,sysmgr-syscon = <&sysmgr 0x4c 0>;
-+			status = "disabled";
-+
-+			stmmac_axi_emac2_setup: stmmac-axi-config {
-+				snps,wr_osr_lmt = <31>;
-+				snps,rd_osr_lmt = <31>;
-+				snps,blen = <0 0 0 32 16 8 4>;
-+			};
++		key-1 {
++			label = "hps_sw1";
++			gpios = <&porta 1 0>;
++			linux,input-type = <5>;	/* EV_SW */
++			linux,code = <0x0>;
 +		};
 +
- 		clkmgr: clock-controller@10d10000 {
- 			compatible = "intel,agilex5-clkmgr";
- 			reg = <0x10d10000 0x1000>;
++		key-2 {
++			label = "hps_pb0";
++			gpios = <&porta 8 1>;
++			linux,code = <187>;		/* KEY_F17 */
++		};
++
++		key-3 {
++			label = "hps_pb1";
++			gpios = <&porta 9 1>;
++			linux,code = <188>;		/* KEY_F18 */
++		};
++	};
++
++	vdd: regulator-vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "fixed-supply";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++	};
++
++	vdd_3_3: regulator-vdd {
++		compatible = "regulator-fixed";
++		regulator-name = "fixed-supply";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-always-on;
++	};
++};
++
++&gmac2 {
++	status = "okay";
++	phy-mode = "rgmii-id";
++	phy-handle = <&emac2_phy0>;
++
++	mdio0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "snps,dwmac-mdio";
++		emac2_phy0: ethernet-phy@1 {
++			reg = <0x1>;
++		};
++	};
++};
++
++&gpio0 {
++	status = "okay";
++};
++
++&i2c0 {
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++
++	i2c-mux@70 {
++		compatible = "nxp,pca9544";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x70>;
++		status = "okay";
++	};
++};
++
++&osc1 {
++	clock-frequency = <25000000>;
++};
++
++&qspi {
++	status = "okay";
++
++	flash@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "micron,mt25qu02g", "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <100000000>;
++
++		m25p,fast-read;
++		cdns,read-delay = <2>;
++		cdns,tshsl-ns = <50>;
++		cdns,tsd2d-ns = <50>;
++		cdns,tchsh-ns = <4>;
++		cdns,tslch-ns = <4>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
 
 -- 
 2.47.0
