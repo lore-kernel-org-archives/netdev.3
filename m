@@ -1,124 +1,116 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB1018FDBE;
-	Mon, 25 Nov 2024 09:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF081531E8
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 09:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732526217; cv=none; b=U+rFscGod6quDqYoizSMm2sAkUTbJVYk0kRsnRpChaaBViApbwwAN68mtciCh/brQaFdD3K1kEncGRDWsSyeFpKSq1QZphn0Z/2Q7xST/6nqyGuUv15jqaGTLbf1g2afbLNSVfyfZCxLuIRLA4apbjMhSlI5toWpSvrIelAWk5E=
+	t=1732526392; cv=none; b=Ey2mZvUBdUIbyUteREblwK0Ajg638SIXF4gZzgPo5lzjIx1TFj6YTv6lZGQCcGvyzfwbHw4QDX7MHvH5wtFywIgLkQu5K5qeDAkf4QvF7qrkY+JozaHuyeSRcDlpXiLUtu3GNJOd5tPM9ypkCUzT4ggKxMxxwKVGcfTqNvMa6e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732526217; c=relaxed/simple;
-	bh=17ic6u8a2Bvo+vx670R/sedCYSWel8wjM2LQ4U7aIvk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hp1Pij6Yc5fhu4VhdixOvolZd2vUcGSixf7Mzw4BmqK3INJtONT4hk7BQXHSpyjlm7+ygnFFYJB6y0l7MrBmbJOh4m0YJKS/rEtDj/qCC9YOgd+ETmOsD9MM09j3ytoZfyVJISwEnbXyP9QwPYhs2d3ThWMf4MIRloexFhvAE+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Smc9TvON; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1732526392; c=relaxed/simple;
+	bh=diqqxYiLjrRf3QZZifBvUqXqaK+915+aMt+MqM/XfA0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=DHnQIQ2vTJqUOJxcW07YSnbOdDlTmTn1FNhXqDc/GzyTbLTT7UrrVF+nKeMkDy11taTF9Rm7R75kSBvTPmw9g1arc+EgBs+7erxIvZdEWcXs/jtnzMHFtH7RgfaoTVoLNuBEKURpIjYrR+Pldmf04FVvWeTrqVU06m7xOulJFA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=I5RE05pv; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Smc9TvON"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8EA38A0888;
-	Mon, 25 Nov 2024 10:16:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=HuA3zgq41U+katKsYp5H
-	+YNI3j4ahVT5oYw1VTy9j3E=; b=Smc9TvONDcoSa3fX+PlEsvZmJAcZlDsX4M8q
-	RYfUHijNnsoiq3NQlQo9iGyJ31dy31fUS1BW4kOr75q/H1uPyyVnvgxu1N/tqAw7
-	TaxEhSirAHaU1TQ5jo75QK9hUEJZ7Jlse6GFK22Ce4Cs2pMLghQjKSXQjA+LqBxy
-	LgCEvkvNT2+5Me/a4/5wVGNU/hN6dYa3YsgnFI5QgHoA1IabkAeVR3V+FhNa3xzG
-	/6ev4AGCtpJD+oGiIrdVAGrhwTAxPPrFFaqnAAfco9QAHNTXDobJn7fvd8Um+ytz
-	u5VYz9eQDZSY/H5Wu4lUHSYmiq22VMiBTG76OK8f3F/EoaQyiGwWVhK4PnDqo9tp
-	/ZtmrYjFN5Puybw1Mzwyq+O4/6Dxt7DPthoB/CqgRZ1Dl3bt1q8KjyVjnuxHR5K0
-	Li3WzJ2se9W0wu4BgZQ5cjOGkPKCvoLN4f+nGCDzDSWjy6u8qUkNgj18xo0U/H+C
-	7IAeGFmttOBpRm8s1g65MU9utNt3Pxl3HJ7Em+TmpA2ZLza6WgFAvwnLokHG9o3B
-	QHmQXN6TvrJyskQ90dH2DJlSmN0VumKbWFQmajKBNWvQtiB28tAXUx2JbFfOaWEF
-	SsVm6IlPcnOlfKJL0fN5VYwvpcchWljTq/VDEBi7NeyGKRohi5aD3LndlNKzxfw6
-	DKrFEBI=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Frank
- Li" <Frank.Li@nxp.com>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?=
-	<csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, NXP Linux Team <linux-imx@nxp.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH 6.6 2/3] net: fec: refactor PPS channel configuration
-Date: Mon, 25 Nov 2024 10:16:38 +0100
-Message-ID: <20241125091639.2729916-3-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241125091639.2729916-1-csokas.bence@prolan.hu>
-References: <20241125091639.2729916-1-csokas.bence@prolan.hu>
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="I5RE05pv"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53dde5262fdso1575479e87.2
+        for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 01:19:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1732526388; x=1733131188; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6xHDSLrvBwNTWcyluIsTeyeRD7uapTC9/jjuO3O34G4=;
+        b=I5RE05pvh8Xmng3KjbB88RPKUzQNrWWwaQzRHc6I/vglAhMLIBelRpiy17uFqQg1UL
+         ediWF/NekKE/1fGH2FtR/4W9YzWR/531pWat3SVBfo6fnGnO//ReeXb3u/MJBdaGmEtJ
+         55M1+Ke9MDyNelxX4SMQvAEVp9slrBVCPKur2srL3Ldq+9CsBU9++WLsfa7vo1Owh/8r
+         9oL2F8DTNymskldei/Y2SnNhosPyF1gPbuDY3avn1Eu8jj0juIOUoWxhV6s9qtcDPUlT
+         qQW+Qj/Tkl4UwOLhc3uZBNJBcDgBeiHV1OdMhHJuhjzEkCUyumpZbXZjN0XTncuQfDWC
+         gYBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732526388; x=1733131188;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6xHDSLrvBwNTWcyluIsTeyeRD7uapTC9/jjuO3O34G4=;
+        b=EaSL+47K692dAiiNo1nCkKtFm9znv0QTZIIkenBd7Rr0ilaMQVd8aNJ7Nal3x8q2EZ
+         W7/PbsCisCkTDQS93uUPayXXkHRwU8sB9F4wdetVtZ7XjN15lrb0beTPE8QCnaPm/qbA
+         g8/JVkCbtvmJ+8p9LU54BVColZ40YzTLRs/6VeZhXYUDDEnX8pNVYLmIwECfGI+1d/jM
+         jU8I5jM5tWQEYn+FtEzCaZXpm6tmtEA5T2ybgBsECJGeqGFPwyV/IfJsnLUPx5RfKUcN
+         LwvwQnjEtNCAg4dxvxrYKSWPi4CjYeZLRIVa7PTMqzOMMKU0e6s/2/L8s+Y/sQSozona
+         ntrw==
+X-Forwarded-Encrypted: i=1; AJvYcCWXpRFZgYAwuZEiP82ebuEPXKFhS3nt912lX6rVb79iXdwzy1rC+G9wGP/j6Y6jz9TYJRa1hUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcoMEwOftop7AKCqAXjeb7pOnvXWcTYTDN1oTd+I8Emg+hm5kC
+	Q6DBbghEY1GKgOi6LRqWC2YrSNj14/k/+S/JHBO/41BRF9iRTows0otDgzbDa+9/7CBl7IxkaKP
+	5
+X-Gm-Gg: ASbGncu8M4xylFLFrFlqOpYguJVQkGEv22NIT2RFDbmyeP1nCIARU23V0jQz54KEw+i
+	fao6l9+RmNw13KtkcaKr+5ia0MUG0R5/wsMbW/xOQiHUofnp57zfNy6JGzK6IAZqUqt3ZRbesj9
+	njxqienEWfkFWP2YJlxKGb770ACKitMtJUtgCg8Y37DBYNx+ifQsz8iWZuI98TWFdrpY8a65P0M
+	vogZJbzW72VnnjFAZBMmkIjdaXPEfxu2jO6AJ38ej96+ewMO9OS
+X-Google-Smtp-Source: AGHT+IFUMDaJaUo/zwLRCPPn6+xlTSaKSGOILl2CPQC9sV9xuen4izfbUt7w4YV88nymV9lxgSulaw==
+X-Received: by 2002:a05:6512:3994:b0:53d:e4d2:bb3 with SMTP id 2adb3069b0e04-53de4d20fccmr886163e87.50.1732526388441;
+        Mon, 25 Nov 2024 01:19:48 -0800 (PST)
+Received: from [192.168.0.245] ([62.73.69.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825faf9829sm9843088f8f.31.2024.11.25.01.19.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Nov 2024 01:19:47 -0800 (PST)
+Message-ID: <385b4ead-8d43-4845-ac66-4218b285be32@blackwall.org>
+Date: Mon, 25 Nov 2024 11:19:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1732526206;VERSION=7980;MC=2326158866;ID=94029;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD94855607C67
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bridge: fix memory leak in error path
+To: Minhong He <heminhong@kylinos.cn>, stephen@networkplumber.org,
+ netdev@vger.kernel.org
+References: <20241125073147.68399-1-heminhong@kylinos.cn>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20241125073147.68399-1-heminhong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On 25/11/2024 09:31, Minhong He wrote:
+> When 'rtnl_dump_filter()' fails to process, it will cause memory leak.
+> 
+> Signed-off-by: Minhong He <heminhong@kylinos.cn>
+> ---
+>  bridge/mst.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
 
-Preparation patch to allow for PPS channel configuration, no functional
-change intended.
+Please CC bridge maintainers on related patches. This is a patch for iproute2
+and should have it in the subject (e.g. PATCH iproute2). Also there's undocumented
+and unrelated cosmetic fix (removal of extra tab below).
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> diff --git a/bridge/mst.c b/bridge/mst.c
+> index 32f64aba..a85e6188 100644
+> --- a/bridge/mst.c
+> +++ b/bridge/mst.c
+> @@ -153,6 +153,7 @@ static int mst_show(int argc, char **argv)
+>  
+>  	if (rtnl_dump_filter(&rth, print_msts, stdout) < 0) {
+>  		fprintf(stderr, "Dump terminated\n");
+> +		delete_json_obj();
+>  		return -1;
+>  	}
+>  
+> @@ -214,7 +215,7 @@ static int mst_set(int argc, char **argv)
+>  	state = strtol(s, &endptr, 10);
+>  	if (!(*s != '\0' && *endptr == '\0'))
+>  		state = parse_stp_state(s);
+> -	
+> +
 
-(cherry picked from commit bf8ca67e21671e7a56e31da45360480b28f185f1)
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
----
- drivers/net/ethernet/freescale/fec_ptp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+This change is not documented and unrelated cosmetic fix.
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index a4eb6edb850a..37e1c895f1b8 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -84,8 +84,7 @@
- #define FEC_CC_MULT	(1 << 31)
- #define FEC_COUNTER_PERIOD	(1 << 31)
- #define PPS_OUPUT_RELOAD_PERIOD	NSEC_PER_SEC
--#define FEC_CHANNLE_0		0
--#define DEFAULT_PPS_CHANNEL	FEC_CHANNLE_0
-+#define DEFAULT_PPS_CHANNEL	0
- 
- #define FEC_PTP_MAX_NSEC_PERIOD		4000000000ULL
- #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
-@@ -524,8 +523,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+
- 	if (rq->type == PTP_CLK_REQ_PPS) {
--		fep->pps_channel = DEFAULT_PPS_CHANNEL;
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
- 		ret = fec_ptp_enable_pps(fep, on);
-@@ -536,10 +536,9 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 		if (rq->perout.flags)
- 			return -EOPNOTSUPP;
- 
--		if (rq->perout.index != DEFAULT_PPS_CHANNEL)
-+		if (rq->perout.index != fep->pps_channel)
- 			return -EOPNOTSUPP;
- 
--		fep->pps_channel = DEFAULT_PPS_CHANNEL;
- 		period.tv_sec = rq->perout.period.sec;
- 		period.tv_nsec = rq->perout.period.nsec;
- 		period_ns = timespec64_to_ns(&period);
--- 
-2.34.1
-
+>  	if (state < 0 || state > UINT8_MAX) {
+>  		fprintf(stderr, "Error: invalid STP port state\n");
+>  		return -1;
 
