@@ -1,61 +1,61 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7110F4C76
-	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 04:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C5484A2B
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 04:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732508681; cv=none; b=D8Dce+ASdzQIRIDY15nzIRE1Lo/zKVJJu+02Regta26IEjLfvieQ+30/forbPGV5FJrRoQMc6gbRGJZSFwuhTZhW1V9Z29zSB48Ch8ZLg0MKygmX19paXdw1quxsnepsZo8IvYNLJjWalAFrhokIkSLJPgTJQDkfr6tKTnWBbKA=
+	t=1732508683; cv=none; b=oktJ6puhCgaVoOZtxS4r9jQGZWgc46j7aYujNwttypnRoPZ5InRgqztAuT/n2yzUd7C8UwFJAL5XMY/m71ot1ZiXRcPIs9ue6YEeyOoCHmdJUExXlLNPmEOElczqkp0GRichfTJKaFuwWyvX2oM1xt11yYpYeK/kyElr6kQIZZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732508681; c=relaxed/simple;
-	bh=49maGMWiy3Nbi8tm+3sP+LhlVcyM86OY4LiijQN7eNM=;
+	s=arc-20240116; t=1732508683; c=relaxed/simple;
+	bh=OXLnmwuWl+Cm7g2P3RutT8Ix3kF72EDVRgjT8SxtvHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1SYL4dPONF2WS1/j+E+SWS8GADTU4v3NcigL4n0rNu8ILxcfBlnRgUzEHtabnWow2Fn8FzLlV8XyNWbYwZxstsGnjDveLTFx7yDSrfZGAfiuXVumK4iDudFBAAZVnsfqL8RRitwIvGj8KL4Ecm9JPT8o0EDpK/yJOtRj+iw5E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=Oz7ta+Ww; arc=none smtp.client-ip=209.85.210.181
+	 MIME-Version; b=J8cFbW4gCKbW0PIoTnEkM3+vbPs+fKOeGakHRlQdeQiNuh1T5yW33VikJ+FdOQj+OQizzYSV2ISxQlN48uQjsDeAfXe6hlx/gnMTIUPQ1IfLiYvD40mdegxO2zXCqocuaMfrA7sjKWbhLQWfTfLKRdfoxp/FosRTKvNvzYAGcAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=R/efRj3I; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="Oz7ta+Ww"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-724e113c821so2152163b3a.3
-        for <netdev@vger.kernel.org>; Sun, 24 Nov 2024 20:24:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="R/efRj3I"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2127d4140bbso35768895ad.1
+        for <netdev@vger.kernel.org>; Sun, 24 Nov 2024 20:24:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1732508679; x=1733113479; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1732508681; x=1733113481; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mX+7FJNwY1ZGYJBKL/Ylmjs/CQwIsMbj1Ti1EMLN6tw=;
-        b=Oz7ta+WwB0uL41bN1Bm0Ua/JKG6laz21BddULDH2Y4x8qJR5JrnlPn+NClJ5cycun1
-         Rnw3mfBNCF04HmDmo1RdZLJaARkwJA3QkjF18vLvLCXHtp7lFwa+YP6DyrMPQN+i+2OT
-         S+i+P9MRxfnJa1vbs1J7C6Spb9LBkHSynobo+go5H5Kd0HlQ17kOpYbFGghVEE3eLIqK
-         IgOqGbrJqKPz61Z6ODy/BrqmuCq1YngFhDatDIuM0K9DgsugQhmia34VIasT7v+RFh/S
-         E7DgV/aGJ028jTny9+dNmAVCP/6P9o0uCI12kq13bA8CwruU8m7gNbKV8bFI1YjLkS3e
-         mugw==
+        bh=IR4pgyxC786CAUfE+ow9DeaMoR/lh2L56YzlXX5yIXE=;
+        b=R/efRj3IIouzqN7kxXCFEXx+fx01aX32AMLatVJgneiLfrp7PCdBtrnks7VO+Ym4jW
+         U3pxZvVriI1AAAh23EkWnc0pwYarhOP5ZnUtl+MwrRp8LB7ilZveOUUMN+notDRn8WRh
+         sLleyjbxDey6mKpegIwEOYR+GD+FoMT8RY4g+DZe2/rNhMKaSanzKa95ppfDNH5eFTUv
+         SI4SBZTp0eZNbjxHO7ohT2FDZQw8j5nlV4hcz8TWHRYN8sgCEP90/gVA4dGwwJ1Vab5a
+         AStVAhCq0Kf2b18MaqD3MSvrVfgYFtV7tDvmkfLFLRKKdHKNqNYfbEEmzSsfpjN8OVG4
+         qjfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732508679; x=1733113479;
+        d=1e100.net; s=20230601; t=1732508681; x=1733113481;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mX+7FJNwY1ZGYJBKL/Ylmjs/CQwIsMbj1Ti1EMLN6tw=;
-        b=b9dT1uaiUQ9f+dGFBNxQtBKQCPPpoXq2+cxXDmxdTI0QuVUtx1yHWRgaSDy+Q37rrt
-         Us0qvtQzEZ0xwHvY6Isb8b34NZyuFPXLkm7XmmYvIO77ul4EijdmB250uVVqwT8+buhi
-         dijdEhiffso8zZsENk6PqOdaieVanXhnAbdc42e2U9q6H/SN+2c2MFnXHSO+3qZyOX0C
-         toi/nC+m1KTGqpdjIdJICFUow/uZINd4hSyD/H8RqdjHTEzpspVfYYtyUhNvkh2bJjEm
-         I7u2qmXUTNkN/KtPs12NHpyOyJ/xk7QuavbDMYDTfUrOSyPyJjOGnBbPmUGqe4dNAQdT
-         E2Cw==
-X-Gm-Message-State: AOJu0Yy5q0c6tadUNFoCfguxxU/DjRQKPa630uo6UUZcZ538HJSQFeKD
-	O1y+jC9SRX5P3PQ0vlrGk/xRDz1U6mqyOsHKTgAkGbrTe6FegEfanRz6kM03KyLdlEZ+4DhHSnl
-	D
-X-Gm-Gg: ASbGncuwi2Wtb8ieeLpXF0BRoX059sNkjTL91rf6sHGPu5t42Dm/dyIoZbXptRy3Vy2
-	grLam+sRnypfjWPJ4KgoKulzeWWZpboFrDbJuieaepCanX4rrat6gyi1I1xiDTMCkg3+iFuMOOu
-	7LNqARgzSZCi7FJhvV7dJWRw6AfPsJS/cpTlMogPjVNOTnPB2SvLcgl8c257a/WMuUM/N3xRJ4/
-	UUMtEMnSFSVgnjxcpu3H0ClLHHHfCYfgg==
-X-Google-Smtp-Source: AGHT+IGlml5yCVInrC04HuLf7asLGGHkLFE9bqNOkY6NzmldhHqe1mmaonvulUM9isBw5zQjGzapHA==
-X-Received: by 2002:a17:90b:1dcf:b0:2ea:6f19:180b with SMTP id 98e67ed59e1d1-2eb0e885a10mr13377191a91.36.1732508678677;
-        Sun, 24 Nov 2024 20:24:38 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:5::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eb0d06299dsm5679189a91.53.2024.11.24.20.24.38
+        bh=IR4pgyxC786CAUfE+ow9DeaMoR/lh2L56YzlXX5yIXE=;
+        b=bZ3WBbjyDw+u2gde4D9JMKTbMfip8wtkbh55F0rN7E+fXQb7gK3MQAG0ZY2Ck7ejRE
+         ZXhqj9mHVo44TFqEowZDN3v4dmuyN70dbgEnJu1TaA2k7ccS8q+fmVrdpMrzwXU3HnWV
+         H8i5eFoNwRq4OTSaI37ZRWDsMxNmJ+n3FCnsGX4q5gH64j8MjAFb8RrfmOhRXdncH/Gu
+         qCuyOor3xmm5+LMSRagSi9Pq3GgSwSWlu4QfAl3dnxwWtSZ6Fd478tdaHoqUXsm1zEW0
+         nBI5S7fgTYpcqvgq02RaZsLiG0nbJ2TxaHFt80RUrMFdnShcxn6PT6ZC1oDd6rp1aN/Z
+         hMzA==
+X-Gm-Message-State: AOJu0YwViwZL99S+sADQWkSWeo76UMJd+P6e5Pg6WR6iGn624TuKriG3
+	t7BNXvzYkC4EpArqVRl92IFJC6xnRA5EhxenUoqR7uQxgBKHPIqCPLkuwmsjaAg3mwVxB5XGebE
+	R
+X-Gm-Gg: ASbGncsDMZAT2DDmtL+u2Afh4QzwWaYVhjNNAVxd9P5P5JxsghdSr8bHZ2067GDBLk/
+	hlHGTkm4ZuSVDQ/UfSfdyE9WXVIgli1geAaRwX21Dz85zxigcYyXV1VU9yKoyMfen6esU7zquXN
+	PDWN8u6nt2X0eQobryK/3E3qN7Gei+139Z6OJMmEIE7JrwlqvtGYzjEiBaYirBym9FDGYOlMX9L
+	vgFgdxh5KNy7xWwEe5w2GJhrRUoANB1yTE=
+X-Google-Smtp-Source: AGHT+IGB9o7kiKSRq5Z7Zg7bkpjgd4p9elOAst2dg9n2P5I4I372EN0kwsiNx8+C0WIBL8CecQ/mrg==
+X-Received: by 2002:a17:903:41d1:b0:212:5035:5b8d with SMTP id d9443c01a7336-2129f233686mr156782675ad.18.1732508681165;
+        Sun, 24 Nov 2024 20:24:41 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:22::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba2691sm54969315ad.68.2024.11.24.20.24.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Nov 2024 20:24:38 -0800 (PST)
+        Sun, 24 Nov 2024 20:24:40 -0800 (PST)
 From: David Wei <dw@davidwei.uk>
 To: netdev@vger.kernel.org,
 	Michael Chan <michael.chan@broadcom.com>,
@@ -66,9 +66,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	David Wei <dw@davidwei.uk>
-Subject: [PATCH net v1 1/3] bnxt_en: refactor tpa_info alloc/free into helpers
-Date: Sun, 24 Nov 2024 20:24:10 -0800
-Message-ID: <20241125042412.2865764-2-dw@davidwei.uk>
+Subject: [PATCH net v1 3/3] bnxt_en: handle tpa_info in queue API implementation
+Date: Sun, 24 Nov 2024 20:24:12 -0800
+Message-ID: <20241125042412.2865764-4-dw@davidwei.uk>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20241125042412.2865764-1-dw@davidwei.uk>
 References: <20241125042412.2865764-1-dw@davidwei.uk>
@@ -80,257 +80,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Refactor bnxt_rx_ring_info->tpa_info operations into helpers that work
-on a single tpa_info in prep for queue API using them.
-
-There are 2 pairs of operations:
-
-* bnxt_alloc_one_tpa_info()
-* bnxt_free_one_tpa_info()
-
-These alloc/free the tpa_info array itself.
-
-* bnxt_alloc_one_tpa_info_data()
-* bnxt_free_one_tpa_info_data()
-
-These alloc/free the frags stored in tpa_info array.
+Commit 7ed816be35ab ("eth: bnxt: use page pool for head frags") added a
+page pool for header frags, which may be distinct from the existing pool
+for the aggregation ring. Add support for this head_pool in the queue
+API.
 
 Signed-off-by: David Wei <dw@davidwei.uk>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 148 ++++++++++++++--------
- 1 file changed, 95 insertions(+), 53 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 24 +++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 5f7bdafcf05d..b2cc8df22241 100644
+index 294d21cdaeb7..e4b7ff9f6dfa 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3421,15 +3421,11 @@ static void bnxt_free_one_rx_agg_ring(struct bnxt *bp, struct bnxt_rx_ring_info
+@@ -15378,15 +15378,25 @@ static int bnxt_queue_mem_alloc(struct net_device *dev, void *qmem, int idx)
+ 			goto err_free_rx_agg_ring;
  	}
- }
  
--static void bnxt_free_one_rx_ring_skbs(struct bnxt *bp, int ring_nr)
-+static void bnxt_free_one_tpa_info_data(struct bnxt *bp,
-+					struct bnxt_rx_ring_info *rxr)
- {
--	struct bnxt_rx_ring_info *rxr = &bp->rx_ring[ring_nr];
--	struct bnxt_tpa_idx_map *map;
- 	int i;
- 
--	if (!rxr->rx_tpa)
--		goto skip_rx_tpa_free;
--
- 	for (i = 0; i < bp->max_tpa; i++) {
- 		struct bnxt_tpa_info *tpa_info = &rxr->rx_tpa[i];
- 		u8 *data = tpa_info->data;
-@@ -3440,6 +3436,17 @@ static void bnxt_free_one_rx_ring_skbs(struct bnxt *bp, int ring_nr)
- 		tpa_info->data = NULL;
- 		page_pool_free_va(rxr->head_pool, data, false);
- 	}
-+}
-+
-+static void bnxt_free_one_rx_ring_skbs(struct bnxt *bp,
-+				       struct bnxt_rx_ring_info *rxr)
-+{
-+	struct bnxt_tpa_idx_map *map;
-+
-+	if (!rxr->rx_tpa)
-+		goto skip_rx_tpa_free;
-+
-+	bnxt_free_one_tpa_info_data(bp, rxr);
- 
- skip_rx_tpa_free:
- 	if (!rxr->rx_buf_ring)
-@@ -3461,13 +3468,17 @@ static void bnxt_free_one_rx_ring_skbs(struct bnxt *bp, int ring_nr)
- 
- static void bnxt_free_rx_skbs(struct bnxt *bp)
- {
-+	struct bnxt_rx_ring_info *rxr;
- 	int i;
- 
- 	if (!bp->rx_ring)
- 		return;
- 
--	for (i = 0; i < bp->rx_nr_rings; i++)
--		bnxt_free_one_rx_ring_skbs(bp, i);
-+	for (i = 0; i < bp->rx_nr_rings; i++) {
-+		rxr = &bp->rx_ring[i];
-+
-+		bnxt_free_one_rx_ring_skbs(bp, rxr);
-+	}
- }
- 
- static void bnxt_free_skbs(struct bnxt *bp)
-@@ -3608,29 +3619,64 @@ static int bnxt_alloc_ring(struct bnxt *bp, struct bnxt_ring_mem_info *rmem)
- 	return 0;
- }
- 
-+static void bnxt_free_one_tpa_info(struct bnxt *bp,
-+				   struct bnxt_rx_ring_info *rxr)
-+{
-+	int i;
-+
-+	kfree(rxr->rx_tpa_idx_map);
-+	rxr->rx_tpa_idx_map = NULL;
-+	if (rxr->rx_tpa) {
-+		for (i = 0; i < bp->max_tpa; i++) {
-+			kfree(rxr->rx_tpa[i].agg_arr);
-+			rxr->rx_tpa[i].agg_arr = NULL;
-+		}
-+	}
-+	kfree(rxr->rx_tpa);
-+	rxr->rx_tpa = NULL;
-+}
-+
- static void bnxt_free_tpa_info(struct bnxt *bp)
- {
--	int i, j;
-+	int i;
- 
- 	for (i = 0; i < bp->rx_nr_rings; i++) {
- 		struct bnxt_rx_ring_info *rxr = &bp->rx_ring[i];
- 
--		kfree(rxr->rx_tpa_idx_map);
--		rxr->rx_tpa_idx_map = NULL;
--		if (rxr->rx_tpa) {
--			for (j = 0; j < bp->max_tpa; j++) {
--				kfree(rxr->rx_tpa[j].agg_arr);
--				rxr->rx_tpa[j].agg_arr = NULL;
--			}
--		}
--		kfree(rxr->rx_tpa);
--		rxr->rx_tpa = NULL;
-+		bnxt_free_one_tpa_info(bp, rxr);
-+	}
-+}
-+
-+static int bnxt_alloc_one_tpa_info(struct bnxt *bp,
-+				   struct bnxt_rx_ring_info *rxr)
-+{
-+	struct rx_agg_cmp *agg;
-+	int i;
-+
-+	rxr->rx_tpa = kcalloc(bp->max_tpa, sizeof(struct bnxt_tpa_info),
-+			      GFP_KERNEL);
-+	if (!rxr->rx_tpa)
-+		return -ENOMEM;
-+
-+	if (!(bp->flags & BNXT_FLAG_CHIP_P5_PLUS))
-+		return 0;
-+	for (i = 0; i < bp->max_tpa; i++) {
-+		agg = kcalloc(MAX_SKB_FRAGS, sizeof(*agg), GFP_KERNEL);
-+		if (!agg)
-+			return -ENOMEM;
-+		rxr->rx_tpa[i].agg_arr = agg;
- 	}
-+	rxr->rx_tpa_idx_map = kzalloc(sizeof(*rxr->rx_tpa_idx_map),
-+				      GFP_KERNEL);
-+	if (!rxr->rx_tpa_idx_map)
-+		return -ENOMEM;
-+
-+	return 0;
- }
- 
- static int bnxt_alloc_tpa_info(struct bnxt *bp)
- {
--	int i, j;
-+	int i, rc;
- 
- 	bp->max_tpa = MAX_TPA;
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-@@ -3641,25 +3687,10 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
- 
- 	for (i = 0; i < bp->rx_nr_rings; i++) {
- 		struct bnxt_rx_ring_info *rxr = &bp->rx_ring[i];
--		struct rx_agg_cmp *agg;
- 
--		rxr->rx_tpa = kcalloc(bp->max_tpa, sizeof(struct bnxt_tpa_info),
--				      GFP_KERNEL);
--		if (!rxr->rx_tpa)
--			return -ENOMEM;
--
--		if (!(bp->flags & BNXT_FLAG_CHIP_P5_PLUS))
--			continue;
--		for (j = 0; j < bp->max_tpa; j++) {
--			agg = kcalloc(MAX_SKB_FRAGS, sizeof(*agg), GFP_KERNEL);
--			if (!agg)
--				return -ENOMEM;
--			rxr->rx_tpa[j].agg_arr = agg;
--		}
--		rxr->rx_tpa_idx_map = kzalloc(sizeof(*rxr->rx_tpa_idx_map),
--					      GFP_KERNEL);
--		if (!rxr->rx_tpa_idx_map)
--			return -ENOMEM;
-+		rc = bnxt_alloc_one_tpa_info(bp, rxr);
++	if (bp->flags & BNXT_FLAG_TPA) {
++		rc = bnxt_alloc_one_tpa_info(bp, clone);
 +		if (rc)
-+			return rc;
- 	}
- 	return 0;
- }
-@@ -4268,10 +4299,31 @@ static void bnxt_alloc_one_rx_ring_page(struct bnxt *bp,
- 	rxr->rx_agg_prod = prod;
- }
- 
-+static int bnxt_alloc_one_tpa_info_data(struct bnxt *bp,
-+					struct bnxt_rx_ring_info *rxr)
-+{
-+	dma_addr_t mapping;
-+	u8 *data;
-+	int i;
-+
-+	for (i = 0; i < bp->max_tpa; i++) {
-+		data = __bnxt_alloc_rx_frag(bp, &mapping, rxr,
-+					    GFP_KERNEL);
-+		if (!data)
-+			return -ENOMEM;
-+
-+		rxr->rx_tpa[i].data = data;
-+		rxr->rx_tpa[i].data_ptr = data + bp->rx_offset;
-+		rxr->rx_tpa[i].mapping = mapping;
++			goto err_free_tpa_info;
 +	}
 +
-+	return 0;
-+}
-+
- static int bnxt_alloc_one_rx_ring(struct bnxt *bp, int ring_nr)
- {
- 	struct bnxt_rx_ring_info *rxr = &bp->rx_ring[ring_nr];
--	int i;
-+	int rc;
+ 	bnxt_init_one_rx_ring_rxbd(bp, clone);
+ 	bnxt_init_one_rx_agg_ring_rxbd(bp, clone);
  
- 	bnxt_alloc_one_rx_ring_skb(bp, rxr, ring_nr);
+ 	bnxt_alloc_one_rx_ring_skb(bp, clone, idx);
+ 	if (bp->flags & BNXT_FLAG_AGG_RINGS)
+ 		bnxt_alloc_one_rx_ring_page(bp, clone, idx);
++	if (bp->flags & BNXT_FLAG_TPA)
++		bnxt_alloc_one_tpa_info_data(bp, clone);
  
-@@ -4281,19 +4333,9 @@ static int bnxt_alloc_one_rx_ring(struct bnxt *bp, int ring_nr)
- 	bnxt_alloc_one_rx_ring_page(bp, rxr, ring_nr);
- 
- 	if (rxr->rx_tpa) {
--		dma_addr_t mapping;
--		u8 *data;
--
--		for (i = 0; i < bp->max_tpa; i++) {
--			data = __bnxt_alloc_rx_frag(bp, &mapping, rxr,
--						    GFP_KERNEL);
--			if (!data)
--				return -ENOMEM;
--
--			rxr->rx_tpa[i].data = data;
--			rxr->rx_tpa[i].data_ptr = data + bp->rx_offset;
--			rxr->rx_tpa[i].mapping = mapping;
--		}
-+		rc = bnxt_alloc_one_tpa_info_data(bp, rxr);
-+		if (rc)
-+			return rc;
- 	}
  	return 0;
+ 
++err_free_tpa_info:
++	bnxt_free_one_tpa_info(bp, clone);
+ err_free_rx_agg_ring:
+ 	bnxt_free_ring(bp, &clone->rx_agg_ring_struct.ring_mem);
+ err_free_rx_ring:
+@@ -15394,9 +15404,11 @@ static int bnxt_queue_mem_alloc(struct net_device *dev, void *qmem, int idx)
+ err_rxq_info_unreg:
+ 	xdp_rxq_info_unreg(&clone->xdp_rxq);
+ err_page_pool_destroy:
+-	clone->page_pool->p.napi = NULL;
+ 	page_pool_destroy(clone->page_pool);
++	if (clone->page_pool != clone->head_pool)
++		page_pool_destroy(clone->head_pool);
+ 	clone->page_pool = NULL;
++	clone->head_pool = NULL;
+ 	return rc;
  }
-@@ -13657,7 +13699,7 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
- 			bnxt_reset_task(bp, true);
- 			break;
- 		}
--		bnxt_free_one_rx_ring_skbs(bp, i);
-+		bnxt_free_one_rx_ring_skbs(bp, rxr);
- 		rxr->rx_prod = 0;
- 		rxr->rx_agg_prod = 0;
- 		rxr->rx_sw_agg_prod = 0;
+ 
+@@ -15406,13 +15418,15 @@ static void bnxt_queue_mem_free(struct net_device *dev, void *qmem)
+ 	struct bnxt *bp = netdev_priv(dev);
+ 	struct bnxt_ring_struct *ring;
+ 
+-	bnxt_free_one_rx_ring(bp, rxr);
+-	bnxt_free_one_rx_agg_ring(bp, rxr);
++	bnxt_free_one_rx_ring_skbs(bp, rxr);
+ 
+ 	xdp_rxq_info_unreg(&rxr->xdp_rxq);
+ 
+ 	page_pool_destroy(rxr->page_pool);
++	if (rxr->page_pool != rxr->head_pool)
++		page_pool_destroy(rxr->head_pool);
+ 	rxr->page_pool = NULL;
++	rxr->head_pool = NULL;
+ 
+ 	ring = &rxr->rx_ring_struct;
+ 	bnxt_free_ring(bp, &ring->ring_mem);
+@@ -15494,7 +15508,10 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 	rxr->rx_agg_prod = clone->rx_agg_prod;
+ 	rxr->rx_sw_agg_prod = clone->rx_sw_agg_prod;
+ 	rxr->rx_next_cons = clone->rx_next_cons;
++	rxr->rx_tpa = clone->rx_tpa;
++	rxr->rx_tpa_idx_map = clone->rx_tpa_idx_map;
+ 	rxr->page_pool = clone->page_pool;
++	rxr->head_pool = clone->head_pool;
+ 	rxr->xdp_rxq = clone->xdp_rxq;
+ 
+ 	bnxt_copy_rx_ring(bp, rxr, clone);
+@@ -15545,7 +15562,6 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+ 	bnxt_hwrm_rx_ring_free(bp, rxr, false);
+ 	bnxt_hwrm_rx_agg_ring_free(bp, rxr, false);
+ 	rxr->rx_next_cons = 0;
+-	page_pool_disable_direct_recycling(rxr->page_pool);
+ 
+ 	memcpy(qmem, rxr, sizeof(*rxr));
+ 	bnxt_init_rx_ring_struct(bp, qmem);
 -- 
 2.43.5
 
