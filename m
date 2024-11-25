@@ -1,120 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793851B87F0
-	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 20:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0431552FC
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 20:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732565981; cv=none; b=RzS9VTeFF9/poY+Y1tI3Z18sjKv9ifsbwqD7PWPguIO8InAUYkKg+emMJv9EMGvwAS7ueE0sI9VZMsUAHusdi9h5mI2+/H7yuJQRJAKEKtVXaLnqOQs8nEizYveoiUmmQH9LkIeiPvEqlktLFPTzKRTGDOsP1fhicQyEcD+TLUs=
+	t=1732568215; cv=none; b=ks8bKTW47tzI6jWmTiUzaBKZ89wqxY0WbZ/Nf5ne4poCBS6aHgLcamQGNggK2uvX+L8aJ1T8xYJg9T5LQn5j15Vm8l276BmNihyYY9QNRuT12DtBa4dzaor9Ao7nnN89dcsOsg7yzyy9K3aIedkPjTW/UESxAiFPy6UgbtBIgTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732565981; c=relaxed/simple;
-	bh=KJlb6x3NhUymu+6Y8syLqBjVhnjn19yo6hROLMRBuDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pIHcm6KA9B36kbghP33O+fFAnRGQUsixKvZN7XdlsAVfk6XJJ2x9HbidnCAjmJkCHa9RoW2XyUpwwVU/TjQI+9V6yh3MHPkYoJeFkf/zvIDhJe9l4mFjyMAhLCpj4cRhFRSpHwoWRHc4XYQaKo5np29LGx9kiiaZHQ3y1CvVImk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQ7sH6TM; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1732568215; c=relaxed/simple;
+	bh=/hsEjcK09GCipmp+jR2+xhUvheP3LVttjRjEftq/SVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ix5IxdfpndaeONLihSLJ935pv1cmC8IpDVtBuJdLerm1H5G7Q3REncRqBEhaVRAgbWRWuXwlLv982IaPI3KpW0Gwg68aKFiUV8SeZRbJkZaUiVLVzt7TyS8GNU27s+Q1aJ3wUJ/mV65sAoarw/AK4kx69dScUU9jPzVUExIA8Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DozZRfbr; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQ7sH6TM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732565979; x=1764101979;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KJlb6x3NhUymu+6Y8syLqBjVhnjn19yo6hROLMRBuDM=;
-  b=NQ7sH6TMGrN+hdbu3qL6Uw0Doxw/rHQ45gMZbOXrVaERsgVezVE9QoxH
-   xZKGUQT7dEArIjfBcWKeO/VavKCWyO75q0RiTKpjpOMwzYAbH5nwPV17V
-   OafbJZwVXblX5YrPMDgJenrhl/rb/MIQGcHNBFabmRxN9C+y7dS/GZr5t
-   xdD5lrDhaPtnuAPcTXvEPWRgQsvFsDUVh+RlTbx2gufnsxFBSJaDqhiLy
-   T5nAxBb5HYLtwU9HpQPU/euWmumN1MZtG27apQwDKBlDE1AozmsQjb+PQ
-   oNiSdd6vUtBcybzLbvZPhbrRMOLHFJYoCsEm8QkLePcYU/WlZV/dB/Cd5
-   w==;
-X-CSE-ConnectionGUID: liWmd932SKSPv8KAwxuIDQ==
-X-CSE-MsgGUID: qtGHC/GDRpquLTXH5siNzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="36624741"
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; 
-   d="scan'208";a="36624741"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 12:19:38 -0800
-X-CSE-ConnectionGUID: OgSz/mjLSXGkoj2itWL4uw==
-X-CSE-MsgGUID: +CZ+MvLnQ6eBVsIJpgvNVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,183,1728975600"; 
-   d="scan'208";a="122238582"
-Received: from mszapar-mobl1.ger.corp.intel.com (HELO [10.245.84.66]) ([10.245.84.66])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 12:19:37 -0800
-Message-ID: <c661b2cb-871e-48da-80e6-df7d011024fd@linux.intel.com>
-Date: Mon, 25 Nov 2024 21:19:22 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DozZRfbr"
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-84386a6669bso14405739f.3
+        for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 12:56:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732568213; x=1733173013; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mbxw1A0k5fe+ASi6rShndrrNduDYVaxs7kGjhs/QnDU=;
+        b=DozZRfbr51rPoMLJOTfEL8CCFFHR4ZHchq45syLwWjnjQhc+kNyPQZR8y1PTY7ymvT
+         zDkyK02CWJHWtwdbIImQRLdHe3XDfm/rjBgQkV7E7N6p3NuqSQRiOsytaQ0MEn6spTHM
+         1v0WqivvyzJz3CDOcBXLFjNce2We0yy8x7Pz6gOu/6tbuybHZWNTY2V++vhcHCyWi4bo
+         6mmg4rNVCul5qE046xo1DkWGqypK6dhq+bDiqRZCHdNw9mPyAvNV5anQ18QtQIYI61Tx
+         oNUPz3ENMJDcTb2jsFFR8XQiktsEX16J68bzDqEEftjCWMSCHxayPFMNRWnK7y48qeRj
+         3X8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732568213; x=1733173013;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mbxw1A0k5fe+ASi6rShndrrNduDYVaxs7kGjhs/QnDU=;
+        b=BWSQQVURKPIQ6xROF8XFNMLkCgn/YHNphWu3GdoffhvcUL2hwQBUpLZkBRcaH9TSQK
+         C4TYvfT7JqqNpGLh+RUe2eaFDO30090s9Dk6Ax91wujypHEJ/yAx5ulP9h6Xpjuv5ZjV
+         GwpCztDyOWK820wymH1WWLITMGIflCd/ZyEtkJlb42GCSQ7iYuiHgB8AsztOBHSYq7L8
+         cnBANFJJ5uBjjo6Sb4WkOE8CI2wghhnYrb6ojVIq5aYcpl9Zv/kiU9aWJTW/R/sb2FSv
+         B/9Ume9EcKJWuQG+na8bWCRpqOt1OzK6tdjoS7iXV2r/XP+z/eMxr2bFFygx0e/EygXA
+         rEKw==
+X-Gm-Message-State: AOJu0YyZ6s+RXbbyXFL7SSX4levalH+3Y1haagCzzb/spmcVtWLszB3n
+	1i/jjhCNi5EK4Q0w3lWuuvhy8juoLKZMPPYdclk40chYii9vDXB2UPHOqreo
+X-Gm-Gg: ASbGncvLl+6Ii0Lna1iaynZ1q78/TQ8ac0Nw5hMN6SdCxdsNie08ENq+NxD8QphlWrC
+	oOLKetCRDu+/gh21Ue6acPWoIf7IIyBf2jdize0zqDleqoL1B/6iBrU7vx5QaXs+cSIKvCRg/HU
+	+dF6fRNs3FEDa9yVNjrnQ/3mmbxrQMCebAmyQgH9l7gh8QqyI+6AbMbOjvyiaeifuRAmUM+IP0o
+	4QsIuk4wrHwD9rYGCJe/Hne1u9+58uyjU7iBv1dlNX5IZUxtDymQIDibXkRgo+jjLbtbt8KDbzF
+	T6Sh92WeOg==
+X-Google-Smtp-Source: AGHT+IESKRcKlMz9ecu9HXwHFocAEzK7gJnslfT6l4ESUMxrfQVhro1PrjUqn/41AxaAIutp7BvcPw==
+X-Received: by 2002:a05:6602:2b8b:b0:83b:a47c:dbfd with SMTP id ca18e2360f4ac-83ecdc50c2fmr1807410439f.6.1732568212922;
+        Mon, 25 Nov 2024 12:56:52 -0800 (PST)
+Received: from wsfd-netdev15.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e1cfee836esm2345928173.106.2024.11.25.12.56.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Nov 2024 12:56:52 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net] net: sched: fix erspan_opt settings in cls_flower
+Date: Mon, 25 Nov 2024 15:56:51 -0500
+Message-ID: <1e82b053724375528e82a4f21fe1778c59bb50c0.1732568211.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next] ixgbe: Enable XDP support when SRIOV is enabled
-To: "Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>
-References: <20241122121317.2117826-1-martyna.szapar-mudlaw@linux.intel.com>
- <DM4PR11MB61173CA962D7D88040365DA082232@DM4PR11MB6117.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Szapar-Mudlaw, Martyna" <martyna.szapar-mudlaw@linux.intel.com>
-In-Reply-To: <DM4PR11MB61173CA962D7D88040365DA082232@DM4PR11MB6117.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+When matching erspan_opt in cls_flower, only the (version, dir, hwid)
+fields are relevant. However, in fl_set_erspan_opt() it initializes
+all bits of erspan_opt and its mask to 1. This inadvertently requires
+packets to match not only the (version, dir, hwid) fields but also the
+other fields that are unexpectedly set to 1.
 
-On 11/22/2024 4:56 PM, Fijalkowski, Maciej wrote:
->> Remove the check that prevents XDP support when SRIOV is enabled.
->> There is no reason to completely forbid the user from using XDP
->> with SRIOV.
-> I think we need some more context here in commit message.
-> ixgbe HW was really short on HW queues that's why probably this restriction
-> was introduced in the first place.
->
-> Now I believe that driver has an ability to share XDP Tx resources with locking
-> being involved and that's why you can relax the previous limitation.
->
-> Correct?
+This patch resolves the issue by ensuring that only the (version, dir,
+hwid) fields are configured in fl_set_erspan_opt(), leaving the other
+fields to 0 in erspan_opt.
 
-Right, ixgbe hardware has a limited number of hw queues. There is 
-locking in place now. The reasoning behind this change is to give users 
-the flexibility to use XDP with SRIOV, there may be use cases for such 
-constrained scenarios, where this tradeoff is acceptable...
+Fixes: 79b1011cb33d ("net: sched: allow flower to match erspan options")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+---
+ net/sched/cls_flower.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I'll update commit msg.
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index e280c27cb9f9..c89161c5a119 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -1369,7 +1369,6 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 	int err;
+ 
+ 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
+-	memset(md, 0xff, sizeof(*md));
+ 	md->version = 1;
+ 
+ 	if (!depth)
+@@ -1398,9 +1397,9 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option index");
+ 			return -EINVAL;
+ 		}
++		memset(&md->u.index, 0xff, sizeof(md->u.index));
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX];
+-			memset(&md->u, 0x00, sizeof(md->u));
+ 			md->u.index = nla_get_be32(nla);
+ 		}
+ 	} else if (md->version == 2) {
+@@ -1409,10 +1408,12 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option dir or hwid");
+ 			return -EINVAL;
+ 		}
++		md->u.md2.dir = 1;
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR];
+ 			md->u.md2.dir = nla_get_u8(nla);
+ 		}
++		set_hwid(&md->u.md2, 0x3f);
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID];
+ 			set_hwid(&md->u.md2, nla_get_u8(nla));
+-- 
+2.43.0
 
->
->> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-
->> mudlaw@linux.intel.com>
->>
->> ---
->>
->> Added CC netdev
->>
->> ---
->>   drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 3 ---
->>   1 file changed, 3 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> index 459a539cf8db..a07e28107a42 100644
->> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> @@ -10637,9 +10637,6 @@ static int ixgbe_xdp_setup(struct net_device
->> *dev, struct bpf_prog *prog)
->>   	bool need_reset;
->>   	int num_queues;
->>
->> -	if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED)
->> -		return -EINVAL;
->> -
->>   	if (adapter->flags & IXGBE_FLAG_DCB_ENABLED)
->>   		return -EINVAL;
->>
->> --
->> 2.36.1
->>
