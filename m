@@ -1,116 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA72618D625;
-	Mon, 25 Nov 2024 13:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7141A7275
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 13:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732540312; cv=none; b=ZNQgJrfEEjoUmyhnZGVpk8doDfNy6Pr2QfCnneNtTr7AeBEMT/nlmSR5NH+HSDwmbPiDEiwvczvqiKnUx0LKkv14EDAne+d4aRECBUjsr+wzLHkixLjkKrWUj6u//8N00plJ/sMy+lRPmPxmj2f9wSUDamvzLeiTCfFuq+DSfyc=
+	t=1732540583; cv=none; b=Czido+VL0DvfsBEdErKlg8jAuYpQF3jKBFgLXIUQkO9DBt2ArYNTzPbEfM3kQMwt2ZYElwXiXOvOZUhDDBk61AqZQQ2Thk4e8r30Fvxuiy3rF1BT9q7rLeuu27La+rYEi7RRC6q0pMJFeG9B0y8sVrmbRXn0UPScLvav5OXgLSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732540312; c=relaxed/simple;
-	bh=77n7xr3tbx600Y8k4lOBNTIIJ0RxEAQqaxW7kBUCqsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n23zlh4f4rIWJJsla2HnBAZXDUjkYX/GAxDZ58L+pYJK1JJRFK82uSGh2A9m2G0CSfBs9O/lYjjWBWP5BAC8hlUYHU4XChq1c8NX7gYl03cfgrNyWIs7zBxTAnJ7LNHRFO2Kzl6WJiyEXCqCbhZbJWgS+Y8YXdZMT2wve+BJBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZ0q2qoJ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZ0q2qoJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03B5C4CECE;
-	Mon, 25 Nov 2024 13:11:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732540312;
-	bh=77n7xr3tbx600Y8k4lOBNTIIJ0RxEAQqaxW7kBUCqsc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TZ0q2qoJo9jRKJO+I3SfmVlTttF0p1AgwxhCf1SlgooF56vf8YeaxCg2ghEyOMMmT
-	 +U7xBi9FzIrrBUfze98Jj55U6IzZq5w8e0Rnl2uA0d/Wem1MTj8AcPUloaJ9clj+Vm
-	 LkqPO7I/TGGaYwsvne1Oijp1UcPVl35UdTSrURNNG+tpvzgHU0DQhErnywaP7OeCAM
-	 ijMXtrvbSAEWck9so/iL0W+VlDZ9L9b3Dxc06pZE5Tsv3w/UvxXhsfzeSUirmtUCrj
-	 YcviGFpRiI0GDFOLRG984vhhUZ0xBKkBlJ19QWTqkx49xrsM7aIUNyDxdstM2LuKk+
-	 GPo61Tm+Wo5yw==
-Date: Mon, 25 Nov 2024 13:11:46 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Jiayuan Chen <mrpre@163.com>, linux-kselftest@vger.kernel.org,
-	song@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, martin.lau@linux.dev, andrii@kernel.org,
-	ast@kernel.org, kpsingh@kernel.org, jolsa@kernel.org
-Subject: Re: [PATCH kselftest] fix single bpf test
-Message-ID: <c685c171-0d2d-4ef1-82ca-386c3a2e3df6@sirena.org.uk>
-References: <20241118140608.53524-1-mrpre@163.com>
- <93d96c99-4712-4054-a36f-3c65c80ab3f8@linuxfoundation.org>
+	s=arc-20240116; t=1732540583; c=relaxed/simple;
+	bh=roIkGxppyk36vBN5Aa6eHc1RlxwoOMeS01gUbDbG0fQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UXBqut0t5+PLVu9HatK3iL4fbN+WOgHS0fy95r6J3u01ZE1hMP4u9HWObBvmVeVs319dRJ8iUNL5lHpIfXrxL/+wDIliN2HoB1en5FNseNcy/6dqwyNt6wh8jsn928t8kJb2G/J/MZZnDMFrAe8KEmSPSkjZni5ldfZKo9xE6qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-8419aa46a87so97734639f.2
+        for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 05:16:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732540581; x=1733145381;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tUeEscvPl0THsXTCcyvV67cLrpataPHdN4bYi/SNHVE=;
+        b=h8gCYSCuAQBeoWCg/Z4HmWjmpWB1YGFb+mdqbm1+oiDKYTHnKe4VdXa7w9PsMpJg1O
+         QujWVxIJYAn8DaAF1iEh3ejjEHPH1o3U7vIDwroNFGzm3z1enhhsxgJv+3mNKp+LBPDk
+         nIcp5b0MYl/w12ICReNC/lpM9OsMeZpYeQXA03vqJMV/tZcjSb7wBMs/vlStDv2SK7JM
+         AdSuygzDcL5HCxTE4X4iZvCHOqiASF66QnrcpwamacI2HFp7rPWWTCYvWwSCeaqdEN4x
+         nWkV313GZe7dm+6/WWSUwSn99rXsMpPrzGZjOkAmDEdmtIYOJjR5MF1gJtDFf0ioTnZ9
+         cA0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWsgND7nBx/Aoeyn3OkHyqxx9nt0ZNJ8f+Iza8g9d/c6lo4COzvJBTxRcZGEJJPdjkm2BNyi6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb55fpJAnaq41rPJ+WAMxqSR44TtaI8ebhIiOZx1I3u1Rgu6xe
+	38L0Cr08B+TSQR4L4ohFVCLxauRHsNUujiyzEycst+JUPTHMW1jt8diLfhO0hPg2f1N1mhnBpq6
+	1LCcgyt+ZODZIQ6OuNTrusA0bHAVy8QS6VRMP1W1KGudCYgW9llZy0Mk=
+X-Google-Smtp-Source: AGHT+IFZP3MFmJFXYawZzjM1WHJDr4FPegED77nU69hwDq7WZ9qe3AIs018Ze5kDsiDe4gsMBEXzftjOoB3DZW6FcP1ToXBaj05U
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6obR2W6oqGidcei7"
-Content-Disposition: inline
-In-Reply-To: <93d96c99-4712-4054-a36f-3c65c80ab3f8@linuxfoundation.org>
-X-Cookie: This bag is recyclable.
+X-Received: by 2002:a05:6e02:1547:b0:3a7:629a:8be8 with SMTP id
+ e9e14a558f8ab-3a79acfca70mr162786835ab.3.1732540581438; Mon, 25 Nov 2024
+ 05:16:21 -0800 (PST)
+Date: Mon, 25 Nov 2024 05:16:21 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <674478a5.050a0220.1cc393.0081.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in call_netdevice_notifiers_info (2)
+From: syzbot <syzbot+9b66539a997baee14f5d@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    fcc79e1714e8 Merge tag 'net-next-6.13' of git://git.kernel..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=14ffd75f980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=275de99a754927af
+dashboard link: https://syzkaller.appspot.com/bug?extid=9b66539a997baee14f5d
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1539da626e54/disk-fcc79e17.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d44dbcc68df2/vmlinux-fcc79e17.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/76fdad1309ae/bzImage-fcc79e17.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9b66539a997baee14f5d@syzkaller.appspotmail.com
+
+RTNL: assertion failed at net/core/dev.c (1987)
+WARNING: CPU: 0 PID: 12 at net/core/dev.c:1987 call_netdevice_notifiers_info+0x106/0x110 net/core/dev.c:1987
+Modules linked in:
+CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:1 Not tainted 6.12.0-syzkaller-05480-gfcc79e1714e8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: bond0 bond_mii_monitor
+RIP: 0010:call_netdevice_notifiers_info+0x106/0x110 net/core/dev.c:1987
+Code: cc cc cc cc e8 2b 74 fd f7 c6 05 ec 80 70 06 01 90 48 c7 c7 20 5e 0e 8d 48 c7 c6 00 5e 0e 8d ba c3 07 00 00 e8 db 6c be f7 90 <0f> 0b 90 90 e9 73 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc900001176d8 EFLAGS: 00010246
+RAX: a4b68b757b823100 RBX: ffff88805a365ac0 RCX: ffff88801befda00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffffffff8155fe42 R09: 1ffffffff203c906
+R10: dffffc0000000000 R11: fffffbfff203c907 R12: dffffc0000000000
+R13: 1ffff92000022ee0 R14: 0000000000000004 R15: ffffc90000117720
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffeb14c9ff8 CR3: 000000000e738000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ netdev_state_change+0x11f/0x1a0 net/core/dev.c:1378
+ linkwatch_do_dev+0x112/0x170 net/core/link_watch.c:177
+ ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:62
+ bond_check_dev_link+0x1f1/0x3f0 drivers/net/bonding/bond_main.c:873
+ bond_miimon_inspect drivers/net/bonding/bond_main.c:2740 [inline]
+ bond_mii_monitor+0x49a/0x3170 drivers/net/bonding/bond_main.c:2962
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
 
---6obR2W6oqGidcei7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-On Fri, Nov 22, 2024 at 08:14:58AM -0700, Shuah Khan wrote:
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-> The commit 7a6eb7c34a78 went in 4 years ago? DO we have a better
-> story for the LLVM tool chain to get rid of skipping bpf and sched_ext?
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> Running make -C tools/testing/selftests/bpf/ gave me the following error.
-> Does this mean we still can't include bpf in default run?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-> make -C tools/testing/selftests/bpf/
-> make: Entering directory '/linux/linux_6.12/tools/testing/selftests/bpf'
->=20
-> Auto-detecting system features:
-> ...                                    llvm: [ OFF ]
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-The toolchain is in a better place now and we can run with released LLVM
-versions.  The detection above is still needed since the LLVM version
-needed is a bit newer than the version needed for the kernel itself,
-it's LLVM 18 for BPF, and not everyone has LLVM.
-
->   GEN     /linux/linux_6.12/tools/testing/selftests/bpf/tools/build/bpfto=
-ol/vmlinux.h
-> libbpf: failed to find '.BTF' ELF section in /linux/linux_6.12/vmlinux
-> Error: failed to load BTF from /linux/linux_6.12/vmlinux: No data availab=
-le
-> make[1]: *** [Makefile:209: /linux/linux_6.12/tools/testing/selftests/bpf=
-/tools/build/bpftool/vmlinux.h] Error 195
-> make[1]: *** Deleting file '/linux/linux_6.12/tools/testing/selftests/bpf=
-/tools/build/bpftool/vmlinux.h'
-> make: *** [Makefile:369: /linux/linux_6.12/tools/testing/selftests/bpf/to=
-ols/sbin/bpftool] Error 2
-> make: Leaving directory '/linux/linux_6.12/tools/testing/selftests/bpf'
-
-This bit still needs some attention - the build needs a kernel binary
-with BTF information built in via CONFIG_DEBUG_INFO_BTF.  That is
-enabled by the config fragment for BTF tests but it's not compatible
-with the arm64 defconfig since that sets CONFIG_DEBUG_INFO_REDUCED which
-isn't compatible with _BTF, and in general having it missing should be
-handled a bit more gracefully.  I believe some of the tests would run
-happily without the BTF information. =20
-
-TBH I'm a bit surprised we even tried to do this bit with LLVM not
-available...
-
---6obR2W6oqGidcei7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdEd5IACgkQJNaLcl1U
-h9BZMQf9F1MFajh28PQz3CmjPPNAkdxl8CF86T29XnOhxrfCPKuLpZNkem5jspwO
-Dg7Eu5rM36gAZyAsh+vUj+w6rsNf0XQ8cEVnXouJ98mCjjzuFZp1GKVfl3VdNEJ2
-aOGpQMtck3w1ZY/pZUU++kDcXSV9p/TnOCAjOt8HBc7V2FuQtJqvyfz2H++92CVA
-4HD3wrqqVtRDCd3APgApyRYm14eh37O8LUyMM4zcYDByC/orxJzq2dmuAxMdhqiM
-r3bwx6MIsC2GnqsrhZ+21SFN2vMUmXdt7MRZASBq7xmE3RALj2aIe0NzCG/53nV5
-6GaD8ns0JcFmbAn3gzPmJnJFd2Oj9w==
-=Afir
------END PGP SIGNATURE-----
-
---6obR2W6oqGidcei7--
+If you want to undo deduplication, reply with:
+#syz undup
