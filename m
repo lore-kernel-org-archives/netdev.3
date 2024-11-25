@@ -1,202 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D108F1AF0CB;
-	Mon, 25 Nov 2024 18:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E06E1CD2C
+	for <netdev@vger.kernel.org>; Mon, 25 Nov 2024 19:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732560647; cv=none; b=RGS3VIl1/WL3yO0DwjlZKnlZAjG94PKjY6JlLbjL5SFyDU6y5c9gi+PBTGCZjaL6SeqrWZkj8nDaicu6gKSs5NDtI6V1A/CSED6cr6oiibuajUaeOsKedVG3ylCQuo0K2Hzr+xTU2GfNes4Vpvtg2VCJoRYjcFD0kkimqz+mo00=
+	t=1732561220; cv=none; b=I8FFSjJTH1yLsqh6L0Cge5tvjIKLssBERypuv9Rm8WGBlZR+LZwC+MWUe+tuG6nq7qVdbeCy5irt0wx0QQ6aYimoLHlVU6gtojhDuU9APrf62Xk7JungHK7/cl0i7E/rAAHvYyFq9eF2GHTrcd0f2CzvcXxLPUjnbb9Pj2MKPXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732560647; c=relaxed/simple;
-	bh=T3BifNSxIQLht5pOam5kqaF6/zJkRYG7joZ7EyNthPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TTwXTpSqOmgsz4JpvHuGgYdT3MoEIw0yj7OGAdUiMpkLmsSFfbK5I8GknSCyZj+0/A0B+5FQi69Yj6eF/EvyElI4ljs1ihsNhOoLcCKWisci4ed9mURvOtq0tc1QATcxmtCHcxGmeXFsJWApxB6klYaiNsPPJGg/yC4ofkOmiSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMaRpC00; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732561220; c=relaxed/simple;
+	bh=V+nI29JBH/YaUXCWXgsHl9TfasPvB+cBwwng/71yIFk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pDFNQzuz30lqy+0CXohpn53t1Bh4KH4FoP2IM3OmmSiduxIIt7pY4XdzYGEMz4YLoDJZshzEfxQ69S/TuEZ3sq6vTIBtUUVQeEwy5VNuTRdc2zoaf9L7Y88YafdoxLaavEIssLoHHwhNnn8A3poMUjXI1cA3FFCa/+ugOyCM04g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVX1xvOM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMaRpC00"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8707FC4CECE;
-	Mon, 25 Nov 2024 18:50:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVX1xvOM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF043C4CECE;
+	Mon, 25 Nov 2024 19:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732560647;
-	bh=T3BifNSxIQLht5pOam5kqaF6/zJkRYG7joZ7EyNthPw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YMaRpC00WJIZyiZ3KJV0MVBO/FwuNOzagC4Y/A+szWcfgYvsQcuU2cPwkVblUpoLh
-	 dFrGvMszAlc2yYhdxl04gR0lQg9rHKmcnpzREkLoY5lTGElZE/REVIkjZ/9elbx+5O
-	 dT18EK4MwK8h3lT0chQ3o42Of0Pm3pJvR/E6iuEF90Q25pris8BJeqaNOGTYG/5QX6
-	 x9GyMWtQjB1nt+1pgZ+O7R2NvIPgmhX/8h/XuQ07q0NCRp4lKUe2z4QP83l4B+M4yK
-	 rG6Y6/fKq1ilP7Z9JIMpt0dtiDdVnznV5/W6sGkfpVSHw55n5NyLiHoHzfcul6/pRQ
-	 hwWlFKeVfHD1A==
-Message-ID: <fcaae4c8-4083-4eef-8cfe-3d1f7e340079@kernel.org>
-Date: Mon, 25 Nov 2024 19:50:41 +0100
+	s=k20201202; t=1732561219;
+	bh=V+nI29JBH/YaUXCWXgsHl9TfasPvB+cBwwng/71yIFk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=mVX1xvOMbIk7KctOZNbx7+CraGed1uY3TXM+NmgxF5ganwguRWRZHP0yy6GeCdCog
+	 q+mxS3lcRiljV1djBw7H0qflEcxumHKZM3LWwfOFVLXESPzObW+cNwiC1o39tvryxK
+	 Ck7KzVgQbF6TvUr9Z5cpu505hFkMILwdq6Ta27co+UBrq9PWTYmFaHLh6GJVrQQ3sL
+	 Kxtkhm7AX+x9kfIgNqvFyw00Brvjr+toCgypLMuSn8q1EnrZjZon6WeawpIbW+c1w/
+	 89azJ2OPpyfLqDZBnCMQswWgoAvnwv0+RTmY2LXRarJsYhfAWEMH68v6JFKD8AgPj6
+	 2/zD1Ojw/IXJA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE4AC3809A00;
+	Mon, 25 Nov 2024 19:00:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC/RFT v2 0/3] Introduce GRO support to cpumap codebase
-To: Alexander Lobakin <aleksander.lobakin@intel.com>,
- Daniel Xu <dxu@dxuuu.xyz>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
- kernel-team <kernel-team@cloudflare.com>, mfleming@cloudflare.com
-References: <cover.1726480607.git.lorenzo@kernel.org>
- <amx5t3imrrh56m7vtsmlhdzlggtv2mlhywk6266syjmijpgs2o@s2z7dollcf7l>
- <ZwZe6Bg5ZrXLkDGW@lore-desk> <55d2ac1c-0619-4b24-b8ab-6eb5f553c1dd@intel.com>
- <ZwZ7fr_STZStsnln@lore-desk> <c3e20036-2bb3-4bca-932c-33fd3801f138@intel.com>
- <c21dc62c-f03e-4b26-b097-562d45407618@intel.com>
- <01dcfecc-ab8e-43b8-b20c-96cc476a826d@intel.com>
- <b319014e-519c-4c2d-8b6d-1632357e66cd@app.fastmail.com>
- <rntmnecd6w7ntnazqloxo44dub2snqf73zn2jqwuur6io2xdv7@4iqbg5odgmfq>
- <05991551-415c-49d0-8f14-f99cb84fc5cb@intel.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <05991551-415c-49d0-8f14-f99cb84fc5cb@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH ethtool-next v4] rxclass: Make output for RSS context action
+ explicit
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173256123251.4006343.6336661823202115514.git-patchwork-notify@kernel.org>
+Date: Mon, 25 Nov 2024 19:00:32 +0000
+References: <6f294267b30c93707509d742c34461668a0efc68.1731636671.git.dxu@dxuuu.xyz>
+In-Reply-To: <6f294267b30c93707509d742c34461668a0efc68.1731636671.git.dxu@dxuuu.xyz>
+To: Daniel Xu <dxu@dxuuu.xyz>
+Cc: ecree.xilinx@gmail.com, jdamato@fastly.com, davem@davemloft.net,
+ mkubecek@suse.cz, kuba@kernel.org, martin.lau@linux.dev,
+ netdev@vger.kernel.org, kernel-team@meta.com
 
+Hello:
 
+This patch was applied to ethtool/ethtool.git (master)
+by Michal Kubecek <mkubecek@suse.cz>:
 
-On 25/11/2024 16.12, Alexander Lobakin wrote:
-> From: Daniel Xu <dxu@dxuuu.xyz>
-> Date: Fri, 22 Nov 2024 17:10:06 -0700
+On Thu, 14 Nov 2024 19:12:08 -0700 you wrote:
+> Currently `ethtool -n` prints out misleading output if the action for an
+> ntuple rule is to redirect to an RSS context. For example:
 > 
->> Hi Olek,
->>
->> Here are the results.
->>
->> On Wed, Nov 13, 2024 at 03:39:13PM GMT, Daniel Xu wrote:
->>>
->>>
->>> On Tue, Nov 12, 2024, at 9:43 AM, Alexander Lobakin wrote:
+>     # ethtool -X eth0 hfunc toeplitz context new start 24 equal 8
+>     New RSS context is 1
+> 
+>     # ethtool -N eth0 flow-type ip6 dst-ip $IP6 context 1
+>     Added rule with ID 0
 > 
 > [...]
-> 
->> Baseline (again)
->>
->> 	Transactions	Latency P50 (s)	Latency P90 (s)	Latency P99 (s)			Throughput (Mbit/s)
->> Run 1	3169917	        0.00007295	0.00007871	0.00009343		Run 1	21749.43
->> Run 2	3228290	        0.00007103	0.00007679	0.00009215		Run 2	21897.17
->> Run 3	3226746	        0.00007231	0.00007871	0.00009087		Run 3	21906.82
->> Run 4	3191258	        0.00007231	0.00007743	0.00009087		Run 4	21155.15
->> Run 5	3235653	        0.00007231	0.00007743	0.00008703		Run 5	21397.06
->> Average	3210372.8	0.000072182	0.000077814	0.00009087		Average	21621.126
->>
 
-We need to talk about what we are measuring, and how to control the
-experiment setup to get reproducible results.
-Especially controlling on what CPU cores our code paths are executing.
+Here is the summary with links:
+  - [ethtool-next,v4] rxclass: Make output for RSS context action explicit
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=54eba3e91248
 
-In above "baseline" case, we have two processes/tasks executing:
-  (1) RX-napi softirq/thread (until napi_gro_receive deliver to socket)
-  (2) Userspace netserver process TCP receiving data from socket.
-
-My experience is that you will see two noticeable different
-throughput performance results depending on whether (1) and (2) is
-executing on the *same* CPU (multi-tasking context-switching),
-or executing in parallel (e.g. pinned) on two different CPU cores.
-
-The netperf command have an option
-
-  -T lcpu,remcpu
-       Request that netperf be bound to local CPU lcpu and/or netserver 
-be bound to remote CPU rcpu.
-
-Verify setting by listing pinning like this:
-   for PID in $(pidof netserver); do taskset -pc $PID ; done
-
-You can also set pinning runtime like this:
-  export CPU=2; for PID in $(pidof netserver); do sudo taskset -pc $CPU 
-$PID; done
-
-For troubleshooting, I like to use the periodic 1 sec (netperf -D1)
-output and adjust pinning runtime to observe the effect quickly.
-
-My experience is unfortunately that TCP results have a lot of variation
-(thanks for incliding 5 runs in your benchmarks), as it depends on tasks
-timing, that can get affected by CPU sleep states. The systems CPU
-latency setting can be seen in /dev/cpu_dma_latency, which can be read
-like this:
-
-  sudo hexdump --format '"%d\n"' /dev/cpu_dma_latency
-
-For playing with changing /dev/cpu_dma_latency I choose to use tuned-adm
-as it requires holding the file open. E.g I play with these profiles:
-
-  sudo tuned-adm profile throughput-performance
-  sudo tuned-adm profile latency-performance
-  sudo tuned-adm profile network-latency
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
->> cpumap v2 Olek
->>
->> 	Transactions	Latency P50 (s)	Latency P90 (s)	Latency P99 (s)			Throughput (Mbit/s)
->> Run 1	3253651	        0.00007167	0.00007807	0.00009343		Run 1	13497.57
->> Run 2	3221492	        0.00007231	0.00007743	0.00009087		Run 2	12115.53
->> Run 3	3296453	        0.00007039	0.00007807	0.00009087		Run 3	12323.38
->> Run 4	3254460	        0.00007167	0.00007807	0.00009087		Run 4	12901.88
->> Run 5	3173327	        0.00007295	0.00007871	0.00009215		Run 5	12593.22
->> Average	3239876.6	0.000071798	0.00007807	0.000091638		Average	12686.316
->> Delta	0.92%	        -0.53%	        0.33%	        0.85%			        -41.32%
->>
->>
-
-
-We now three processes/tasks executing:
-  (1) RX-napi softirq/thread (doing XDP_REDIRECT into cpumap)
-  (2) CPUmap kthread (until gro_receive_skb/gro_flush deliver to socket)
-  (3) Userspace netserver process TCP receiving data from socket.
-
-Again, now the performance is going to depend on depending on which CPU
-cores the processes/tasks are running and whether some are sharing the
-same CPU. (There are both wakeup timing and cache-line effects).
-
-There are now more combinations to test...
-
-CPUmap is a CPU scaling facility, and you will likely also see different
-CPU utilization on the difference cores one you start to pin these to
-control the scenarios.
-
->> It's very interesting that we see -40% tput w/ the patches. I went back
-> 
-
-Sad that we see -40% throughput...  but do we know what CPU cores the
-now three different tasks/processes run on(?)
-
-
-> Oh no, I messed up something =\
->  > Could you please also test not the whole series, but patches 1-3 (up to
-> "bpf:cpumap: switch to GRO...") and 1-4 (up to "bpf: cpumap: reuse skb
-> array...")? Would be great to see whether this implementation works
-> worse right from the start or I just broke something later on.
-> 
->> and double checked and it seems the numbers are right. Here's the
->> some output from some profiles I took with:
->>
->>      perf record -e cycles:k -a -- sleep 10
->>      perf --no-pager diff perf.data.baseline perf.data.withpatches > ...
->>
->>      # Event 'cycles:k'
->>      # Baseline  Delta Abs  Shared Object                                                    Symbol
->>           6.13%     -3.60%  [kernel.kallsyms]                                                [k] _copy_to_iter
->
-
-I really appreciate that you provide perf data and perf diff, but as
-described above, we need data and information on what CPU cores are
-running which workload.
-
-Fortunately perf diff (and perf report) support doing like this:
-  perf diff --sort=cpu,symbol
-
-But then you also need to control the CPUs used in experiment for the
-diff to work.
-
-I hope I made sense as these kind of CPU scaling benchmarks are tricky,
---Jesper
