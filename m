@@ -1,90 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F2810F9;
-	Mon, 25 Nov 2024 03:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22290EAC7;
+	Mon, 25 Nov 2024 03:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732506288; cv=none; b=QJJNGHQ6rJHMk7bBJEXafPaJMui9GwS7FvwWh/pNWJvlNPQp7y6hwmmYgfvX6XjS2cFq/8rrJMd8ObuXNsD+hpnzhaXfIEAfp3HTtflQOW08YLRY3MNImHc1dzgGALY7bmSWgfjpLjP21aGYDHHSeQSWQJBZFuJWwgu4/LYyDRw=
+	t=1732506719; cv=none; b=fEe3AFAvVSHRRMeibut706tJlI0sivt39n60SU88PEkQXi8C10/fL5OPq1TE3IIPHFGtxJgKjO2D4gcc/0EfsaELG1n10W70xK3keS5D6hF9v04OVg3RAuWhr6/KXPaIPSrROOJGKKRdeqcAWKiHOUBZL9WfVnqjTK6C1qmqWKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732506288; c=relaxed/simple;
-	bh=ZRnoajD1QdXZX6krqeoKi10PkO2r+xrRVPlVkYB7UZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QxTtAnrCdN+O36RryvTM64Y0UHlk5An2BJ1W9Mg9y5pQs5F0oLrIuVXL6RYvwul/BNiThq7B4wfd1f/stMjNcTOl+0vuAJtP/DqQ/cw/KG5Un2czE+DWkZ90bm9g1cnUhS5HIkroJz+bKVgKzPzHAS0tBU5C8MhVznYqMjW7GUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A050C4CECE;
-	Mon, 25 Nov 2024 03:44:43 +0000 (UTC)
-Date: Sun, 24 Nov 2024 22:44:41 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ruan Bonan
- <bonan.ruan@u.nus.edu>, "mingo@redhat.com" <mingo@redhat.com>,
- "will@kernel.org" <will@kernel.org>, "longman@redhat.com"
- <longman@redhat.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "mattbobrowski@google.com"
- <mattbobrowski@google.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
- <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "mhiramat@kernel.org"
- <mhiramat@kernel.org>, "mathieu.desnoyers@efficios.com"
- <mathieu.desnoyers@efficios.com>, "bpf@vger.kernel.org"
- <bpf@vger.kernel.org>, "linux-trace-kernel@vger.kernel.org"
- <linux-trace-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, Fu Yeqi <e1374359@u.nus.edu>
-Subject: Re: [BUG] possible deadlock in __schedule (with reproducer
- available)
-Message-ID: <20241124224441.5614c15a@rorschach.local.home>
-In-Reply-To: <20241124223045.4e47e8b7@rorschach.local.home>
-References: <24481522-69BF-4CE7-A05D-1E7398400D80@u.nus.edu>
-	<20241123202744.GB20633@noisy.programming.kicks-ass.net>
-	<20241123180000.5e219f2e@gandalf.local.home>
-	<CAADnVQLBhV_sSuH+BKu66ZsxTcsvw7RSLnjRGLwQX3TFSjs-Gg@mail.gmail.com>
-	<20241124223045.4e47e8b7@rorschach.local.home>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732506719; c=relaxed/simple;
+	bh=UyuABPlzyiqkE23T62xlQISSVDBGgpm7/N5AP3n04ZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jNMaPrXobqe7dKecTup92lF890FZG+iTWKLt9wugKkBXav7Rc26RJUnr4fo5ocxb+U7agUlnpp84F5wdX6KCEF00qR60EfnSO3LCzZ4bh1YEqBolzbgA9gIRca5sVUO9b30ePktBzLs12DC4X2fkYxmf8lBmQChz9bHuxERj4w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=fOuCpeqV; arc=none smtp.client-ip=145.239.234.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="fOuCpeqV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
+	t=1732506709; bh=UyuABPlzyiqkE23T62xlQISSVDBGgpm7/N5AP3n04ZM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fOuCpeqVtL5FKsBHcNc5N1UebrdiEJ/+F/uQBttmoTfpS2aWt829DskHdXSpCT3F2
+	 HE/XTHZiYaBx4sqRacNewnMz13cYiptrM27eeUfN6BXk3nFa6yqAAboLRwxjI319n5
+	 YuGzb30QQIxQdjZ9+GI+urwnqtgv1ogHNrtmOG5c=
+Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
+	by mail.ionic.de (Postfix) with ESMTPSA id F028314886FF;
+	Mon, 25 Nov 2024 04:51:48 +0100 (CET)
+From: Mihai Moldovan <ionic@ionic.de>
+To: ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [RFC] [PATCH v2 06/13] soc: qcom: qmi_helpers: optionally bind to QRTR endpoint ID in qmi_sock_create
+Date: Mon, 25 Nov 2024 04:50:21 +0100
+Message-ID: <cdf0dfb31a80ba20e24686b19f8ffd9aa0996063.1732506261.git.ionic@ionic.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1732506261.git.ionic@ionic.de>
+References: <cover.1732506261.git.ionic@ionic.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 24 Nov 2024 22:30:45 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
+For clients that already know the QRTR endpoint ID before actually
+creating the QMI socket and set it in struct qmi_handle, optionally try
+to bind to this QRTR endpoint ID when creating the socket.
 
-> > > Ack. BPF should not be causing deadlocks by doing code called from
-> > > tracepoints.    
-> > 
-> > I sense so much BPF love here that it diminishes the ability to read
-> > stack traces :)  
-> 
-> You know I love BPF ;-)  I do recommend it when I feel it's the right
-> tool for the job.
+This can fail, and qmi_sock_create will issue diagnostic messages, but
+otherwise ignore the error.
 
-BTW, I want to apologize if my email sounded like an attack on BPF.
-That wasn't my intention. It was more about Peter's response being
-so short, where the submitter may not understand his response. It's not
-up to Peter to explain himself. As I said, this isn't his problem.
+Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+---
+ drivers/soc/qcom/qmi_interface.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-I figured I would fill in the gap. As I fear with more people using BPF,
-when some bug happens when they attach a BPF program somewhere, they
-then blame the code that they attached to. If this was titled "Possible
-deadlock when attaching BPF program to scheduler" and was sent to the
-BPF folks, I would not have any issue with it. But it was sent to the
-scheduler maintainers.
+diff --git a/drivers/soc/qcom/qmi_interface.c b/drivers/soc/qcom/qmi_interface.c
+index bb98b06e87f8..dd3978682c09 100644
+--- a/drivers/soc/qcom/qmi_interface.c
++++ b/drivers/soc/qcom/qmi_interface.c
+@@ -586,6 +586,7 @@ static struct socket *qmi_sock_create(struct qmi_handle *qmi,
+ 				      struct sockaddr_qrtr *sq)
+ {
+ 	struct socket *sock;
++	const struct proto_ops *ops = NULL;
+ 	int ret;
+ 
+ 	ret = sock_create_kern(&init_net, AF_QIPCRTR, SOCK_DGRAM,
+@@ -593,6 +594,33 @@ static struct socket *qmi_sock_create(struct qmi_handle *qmi,
+ 	if (ret < 0)
+ 		return ERR_PTR(ret);
+ 
++	ops = READ_ONCE(sock->ops);
++
++	if (!ops) {
++		pr_warn("sock->ops not available for QMI socket\n");
++		pr_warn("will not be able to bind to endpoint ID.\n");
++		/* N.B.: this error value will not be passed out. */
++		ret = -ENXIO;
++	}
++
++	if (!ret && !ops->setsockopt) {
++		pr_warn("ops->setsockopt not available for QMI socket\n");
++		pr_warn("will not be able to bind to endpoint ID.\n");
++		/* N.B.: this error value will not be passed out. */
++		ret = -ENXIO;
++	}
++
++	/* Only bind to a specific endpoint if a valid one was provided. */
++	if (!ret && qmi->endpoint_id) {
++		ret = ops->setsockopt(sock, SOL_QRTR, QRTR_BIND_ENDPOINT,
++				      KERNEL_SOCKPTR(&qmi->endpoint_id),
++				      sizeof(qmi->endpoint_id));
++
++		if (ret < 0)
++			pr_warn("binding to QRTR endpoint ID failed: %d\n",
++				ret);
++	}
++
+ 	ret = kernel_getsockname(sock, (struct sockaddr *)sq);
+ 	if (ret < 0) {
+ 		sock_release(sock);
+-- 
+2.45.2
 
-We need to teach people that if a bug happens because they attach a BPF
-program somewhere, they first notify the BPF folks. Then if it really
-ends up being a bug where the BPF program was attached, it should be
-the BPF folks that inform that subsystem maintainers. Not the original
-submitter.
-
-Cheers,
-
--- Steve
