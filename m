@@ -1,56 +1,55 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7078A18B476;
-	Mon, 25 Nov 2024 09:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB2F76026;
+	Mon, 25 Nov 2024 09:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732526217; cv=none; b=jtAr6jvZ0P0Cb5XHYWgnTfTQMQB3BoWAy05q73rifuAVAYiPIGf6T5RNHQ0089oc3Y5dfdoBJGcFnvu5uzwIfUOihQG96YbKYD+UPh176WpipvQfIhCzu0MhjJvOKKrju5WZKlMSyNQZIu5dCR96HXwxCtKCKgrYjbxs4aYJCLs=
+	t=1732526217; cv=none; b=aO6Wpnnj/p9fnIpdReSKmDkpUFGGtyfiHlrLLHLCO1UZONyQsWUa4K+DNPnILarS8kQYnwRCw14TCTvIXcY3w0xqGnZm/xczpqW8rThsaH/VeNAuVgePjM4cKaWOF+HavznzZqbty8iC/eC3jW4+I75FDvu60oj4mHXSvsORu54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732526217; c=relaxed/simple;
-	bh=iDJtZwn4B5g2vaImap3rOYI3eZ2Sb1T1E+6N7dCpfIE=;
+	bh=Y74p5h63B8YlHWDy/ce7uQvyoMJg/1MjVN+VyHmPi+M=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MZvlY6ebNiSbgodPpjBVxZGn+3k7WpN+hCRI+wWf6TlgQ3likJg80cJHaKAAvPHnRxHlXb9L6WpIbAEiQsnL09LNA7gY+2dv/uj0Uca5GyWFYTA5/CbnjAqeWNQXJHbd7pfU8+zruOB3HCfIAVtUNKWza9fSnYfGH/thTCmWNzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=pHQtCrjx; arc=none smtp.client-ip=193.68.50.107
+	 MIME-Version:Content-Type; b=jT4hbaj/1V9Fowi3rsOWutx1ZmhMWKXmy8AsdJ8G4BgEfDW7wbFeSM+oVszfsypctbKEuGryyTEhThtPZ7liP+FHwRsWTC0gGVQMpRyTptb4uJ4c8zbC1es0kwwVFVmytljl15MlLfxKwm8RxuVW+gvNpgDb+CmFMtZnrTOfuBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=a3wafdpP; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="pHQtCrjx"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="a3wafdpP"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id BB29EA0827;
-	Mon, 25 Nov 2024 10:16:46 +0100 (CET)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 54A4AA0895;
+	Mon, 25 Nov 2024 10:16:48 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=zd8wKecSdXBVrXpZnl+5
-	FGQh/68mIATekqahVWyBWDg=; b=pHQtCrjxWbBB965rNEgZROH5rDmlmlMnNItJ
-	0W61Xo3aGN6zTOwc4q32QEGjc+jXCAe3T1RSQzT/DtQjxjp8IHWgYcJMRqQEw8wo
-	WizduR8Tq7Uc+H0tMD0uCrUYbLLuX2+X1TR2FvXCNa7AGtOQ2jG8wW7vlz+KhgHy
-	n+kNfYwtShrhUW1eCtAox/Uu6YO/DJVJwA4RzVoZo/OYmqntnklRWZcBKkiK3a4Q
-	l71Ecsh0RDnGVJVcEmj1qfkAFEymxksUlkp69IjLXzv0xQrErKYuM8BbH+b4ZORf
-	cCt51Q6KQNyqmqiqmqoskZy2lpPIRY5daFJAQtAxfUpxeDM2pIp3QSGWf0Gbzm4N
-	oSiSXOu+CtEIBOCsrNx1ADa4VYH8SydrnVZE4zdpJkMpdIgphIccwZAHCeyy/EUl
-	brBfdm730rbvAP/X2VBasAZhnqW+sAuGHzOxUvi2x165X7Md3VL4Ep8PZG7vF/o6
-	a5iQXQS6n/EAcDoLw8lJI7612On6BB+Dw+RIOfp2KCHg7LuX4a9ww3PV6zkiwKXP
-	FgqO/fOi0crPhaQdGxOaT2ZSjzZqgYzWcPO277HyyNDFyTEOgL0aBYxX9B1BkEa0
-	/1qyHRCgz8ZPM8ZOGDEfpPCdQqjosDiF077f85Ha4VRRAcgFBulKl89IysOCvzjj
-	P6pCE+8=
+	:reply-to:subject:subject:to:to; s=mail; bh=BcIfIIITBoL48mjUW8ky
+	myP9kexR3fKyrefe9Pm6zM8=; b=a3wafdpPiYdb5SyROAT/mIqgwPgTql325lQB
+	7RWgp1bsT0Z3bZlsNyVkVmOFk/YY/LxwqA+LYp8TAiTQ+BbLK2XYIoO9RFR0FM/0
+	sKGYRKiEYd4ToUUBXM0CmVs1X7sVHMYY/JaiIdKN7dfbEgawHgxOXYnQ2ZbUlji+
+	Qn2ZTzn7It+Z21eE3tGvSplqNmw2sd87D1abT97DuDObeRUYuhhwPQNZM8IbYp+4
+	s5WA8esSy1XjzHWVqTndjlvODpvJkJm1NMaTT1+c/n0T27IuIH0g86KBVMPXnFgG
+	/zY5oNTwmNM9GjYMXD4b3j6kSe4wDQoW/aBkIzxtMfiSzp+zIZSrpIpIiSPvAnmm
+	QsELPzCxqhGxyesVmbjd+85NoQ8TGkbMQKbTSlY20w5xpF8mDqGHPcOMIJH49lDQ
+	tEHtPyOPRE0AxS670XbPOBAVKTi5QDlW/3ZmxmHtZJMAbg2uNKGKZbTXiq/oPBiC
+	/mYx2nfTQNSULFelqcNt6cpj/x2kN7SDslCpIJNOLRBvuSNiTPnWpAZO07N57hJ6
+	z74EtXc/jbEP05dvnlXDjvISxVJWW95g+IlgVgXRUE+zRL+G2idiN2nZl8ko2Epv
+	mPef7033HWSyMsl0kW/VPbmxYDDOAWnVRypX+rSPMuIUWyxuB6zE+fQeFer9jALm
+	epEXCB4=
 From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, Wei Fang
-	<wei.fang@nxp.com>, Linux Team <linux-imx@nxp.com>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: <stable@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
 CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Conor
- Dooley" <conor.dooley@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, "Shenwei
- Wang" <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Rob Herring <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>
-Subject: [PATCH 6.6 1/3] dt-bindings: net: fec: add pps channel property
-Date: Mon, 25 Nov 2024 10:16:37 +0100
-Message-ID: <20241125091639.2729916-2-csokas.bence@prolan.hu>
+	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Frank
+ Li" <Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni
+	<pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, NXP Linux Team
+	<linux-imx@nxp.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Richard Cochran
+	<richardcochran@gmail.com>
+Subject: [PATCH 6.6 3/3] net: fec: make PPS channel configurable
+Date: Mon, 25 Nov 2024 10:16:39 +0100
+Message-ID: <20241125091639.2729916-4-csokas.bence@prolan.hu>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241125091639.2729916-1-csokas.bence@prolan.hu>
 References: <20241125091639.2729916-1-csokas.bence@prolan.hu>
@@ -62,46 +61,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1732526206;VERSION=7980;MC=1203325918;ID=94028;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1732526207;VERSION=7980;MC=1988830740;ID=94030;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
 X-EsetId: 37303A29ACD94855607C67
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Add fsl,pps-channel property to select where to connect the PPS signal.
-This depends on the internal SoC routing and on the board, for example
-on the i.MX8 SoC it can be connected to an external pin (using channel 1)
-or to internal eDMA as DMA request (channel 0).
+Depending on the SoC where the FEC is integrated into the PPS channel
+might be routed to different timer instances. Make this configurable
+from the devicetree.
 
+When the related DT property is not present fallback to the previous
+default and use channel 0.
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com>
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-(cherry picked from commit 1aa772be0444a2bd06957f6d31865e80e6ae4244)
+(cherry picked from commit 566c2d83887f0570056833102adc5b88e681b0c7)
 Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 ---
- Documentation/devicetree/bindings/net/fsl,fec.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/fsl,fec.yaml b/Documentation/devicetree/bindings/net/fsl,fec.yaml
-index b494e009326e..9925563e5e14 100644
---- a/Documentation/devicetree/bindings/net/fsl,fec.yaml
-+++ b/Documentation/devicetree/bindings/net/fsl,fec.yaml
-@@ -182,6 +182,13 @@ properties:
-     description:
-       Register bits of stop mode control, the format is <&gpr req_gpr req_bit>.
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 37e1c895f1b8..7f6b57432071 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 	unsigned long flags;
+ 	int ret = 0;
  
-+  fsl,pps-channel:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0
-+    description:
-+      Specifies to which timer instance the PPS signal is routed.
-+    enum: [0, 1, 2, 3]
+-	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+-
+ 	if (rq->type == PTP_CLK_REQ_PPS) {
+ 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+ 
+@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ {
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
++	struct device_node *np = fep->pdev->dev.of_node;
+ 	int irq;
+ 	int ret;
+ 
+ 	fep->ptp_caps.owner = THIS_MODULE;
+ 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
+ 
++	fep->pps_channel = DEFAULT_PPS_CHANNEL;
++	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
 +
-   mdio:
-     $ref: mdio.yaml#
-     unevaluatedProperties: false
+ 	fep->ptp_caps.max_adj = 250000000;
+ 	fep->ptp_caps.n_alarm = 0;
+ 	fep->ptp_caps.n_ext_ts = 0;
 -- 
 2.34.1
 
