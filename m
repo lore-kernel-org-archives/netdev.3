@@ -1,61 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22031CEE9F
-	for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 11:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE2C1CEE97
+	for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 12:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732622084; cv=none; b=UZhu2AcGoXIAUiM4phIhBwU7EyZ36f1Llw2rfVDrNATcaBg8s94Ne6WqnpV64l88u7/I6Vc45DtiP21uYBq0FHYZArNborc1abQD6aF9r3m6+kK1eKJBgWWtqTKnPSnXnUQHSGnfNSkZBweYd6F70iSjRf/Vita7kwSx8RDF564=
+	t=1732623020; cv=none; b=J0HN87JmdUurxe5W9Dg488o/jcsQAwRPIc1mclG5qaq2zzPQ+syvawbiQyJJeN5CMfocjdILYnR9qNGfPu2MBPEn6IZVINcIh0LekG9zKvmrCiWIUiDRWtpkJeSOcre/dVs06FtpFuN9slL5q6dVvwKgxex+JXvIRe4GokaQmVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732622084; c=relaxed/simple;
-	bh=PKo26T3bgOqQbV1j/M6VA+TVNn/UhXn4giGR66NQrSo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=koWI+7J90dJNVLifgbJBf9rhsi7QBjrclL1qtmiuJlK6cCLu8yOO/AqQEolfxBs7JhtBawx8OfzgsQ/XIE3YTK1vxnF11P/TodaOfuxejTqXhOZDzsITiFTowYy9Q+YxZX4XdW82aRFsr1xjUrrSGbW+jyHHF12UpbvMFtIKOLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G/ApH4XC; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1732623020; c=relaxed/simple;
+	bh=2Pwp99beLOWovy2YFDWX9HzPD5KZ/9fCyXPjcmpr8qY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=CLv/+3Y4IsYZf+Jo1YSOusYL783qHdyf5fbKLgCCYlHGIDKU+QAx6lGvYV6/p04tjho3275BlbOOz7zOwQpRRtAoHB4fv8pyttLTSiqR26/ZUnB8fmL/1gM5UaPL+LHZ0hTUxwgrAZ/Q5r5uwj0gMbj20ZlgrzXnTJBBJAmWHfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIoeXiWg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G/ApH4XC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732622083; x=1764158083;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PKo26T3bgOqQbV1j/M6VA+TVNn/UhXn4giGR66NQrSo=;
-  b=G/ApH4XCNR1VVY4dmgelUDlD0v5pJOCKDJUUsSzjH1M79T343WVjt4qu
-   uG/KOl7P0u2aCNCuYhXBy7NQ2jmfwU/mKEylbDky9yNpGoVTi8dXU6z9+
-   xaEmFBMlaZ90pPrmYwKe4hGkp+2S6OlLz2sDdFa0mvN9rwOzBlwl0rG3U
-   WHnah+dZekyjfBICJi4lmWJgrx8r0lwCPax7lJqusOJNWl484ZIrnKOeg
-   XYcxgP63T+Ik28fBiYQIfmKX9FqD4dqR6EN9LFs9rqWQaLkUU9/L1KE6j
-   lNsBmgk5K8+SV+k3u2il8FQRZRfyK8mqCrsuOrWh28mybsbW/XJ3XuY2n
-   g==;
-X-CSE-ConnectionGUID: VXs7UBxDSs6EWhOmyc9oFg==
-X-CSE-MsgGUID: GX0wdn/MRniIMn/yVHC4Gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="55276399"
-X-IronPort-AV: E=Sophos;i="6.12,185,1728975600"; 
-   d="scan'208";a="55276399"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2024 03:54:43 -0800
-X-CSE-ConnectionGUID: cEbS0UvKRwi+BuQ2VGO12g==
-X-CSE-MsgGUID: anQH9psJTseFYL7bJ1++pA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,185,1728975600"; 
-   d="scan'208";a="91767003"
-Received: from unknown (HELO localhost.igk.intel.com) ([10.102.22.54])
-  by fmviesa008.fm.intel.com with ESMTP; 26 Nov 2024 03:54:41 -0800
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH v2 iwl-next 10/10] idpf: change the method for mailbox workqueue allocation
-Date: Tue, 26 Nov 2024 04:58:57 +0100
-Message-Id: <20241126035849.6441-11-milena.olech@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20241126035849.6441-1-milena.olech@intel.com>
-References: <20241126035849.6441-1-milena.olech@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIoeXiWg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2804C4CED0;
+	Tue, 26 Nov 2024 12:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732623017;
+	bh=2Pwp99beLOWovy2YFDWX9HzPD5KZ/9fCyXPjcmpr8qY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=IIoeXiWg+tPXgUWM0TcEIToiwtDbmkBKKrgtVrjiOA6LO5UhjhcF4uIXAjVPh0cUq
+	 dh/ZLSNrHYa4S40BxZJJ0LPR7fI+2tAldp3Exn7g1siYDeg5mbO6M9NPzbjk4D9GES
+	 B2YYxjtg00AokObRfiYNxkD+GXc5KYIckdr9jnY5FLSpVEdQ/Mcoqa0k7sM8y+1GF/
+	 spBPZqSMOSF3NJ3DNGZGlM1ze+prpasZnprPsH20h4erItsq/PrOmrhW/ti71zG/tY
+	 KldFKmTIrWaydjoz5P34rSnOrr8qcUjX8vSGgC3TYnL2nQi+6cCM09fC8vU3vv+ZgY
+	 omAGE2ERTLQXg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF3E3809A00;
+	Tue, 26 Nov 2024 12:10:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,35 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: hsr: fix hsr_init_sk() vs network/transport headers.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173262303050.368132.9382180929301338672.git-patchwork-notify@kernel.org>
+Date: Tue, 26 Nov 2024 12:10:30 +0000
+References: <20241122171343.897551-1-edumazet@google.com>
+In-Reply-To: <20241122171343.897551-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, george.mccollister@gmail.com
 
-Since workqueues are created per CPU, the works scheduled to this
-workqueues are run on the CPU they were assigned. It may result in
-overloaded CPU that is not able to handle virtchnl messages in
-relatively short time. Allocating workqueue with WQ_UNBOUND and
-WQ_HIGHPRI flags allows scheduler to queue virtchl messages on less loaded
-CPUs, what eliminates delays.
+Hello:
 
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Milena Olech <milena.olech@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 9fe0940f81b0..afc39e894cd2 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -220,8 +220,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
- 
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", 0, 0,
--					  dev_driver_string(dev),
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", WQ_UNBOUND | WQ_HIGHPRI,
-+					  0, dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
- 		dev_err(dev, "Failed to allocate mailbox workqueue\n");
+On Fri, 22 Nov 2024 17:13:43 +0000 you wrote:
+> Following sequence in hsr_init_sk() is invalid :
+> 
+>     skb_reset_mac_header(skb);
+>     skb_reset_mac_len(skb);
+>     skb_reset_network_header(skb);
+>     skb_reset_transport_header(skb);
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: hsr: fix hsr_init_sk() vs network/transport headers.
+    https://git.kernel.org/netdev/net/c/9cfb5e7f0ded
+
+You are awesome, thank you!
 -- 
-2.31.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
