@@ -1,103 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp052.goneo.de (smtp052.goneo.de [85.220.129.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE631CEE96;
-	Tue, 26 Nov 2024 13:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B240946C
+	for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 13:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732628918; cv=none; b=XOV1kw7if2D4dM+mBBm3z+zqAOgP4sZmhqJv2GA25DuMCWjjt2UeyXDG3GOW2r6q0i+ZEoFjlKTRjn+7ST4KQ4VN+Qo+73DjW9KQffwZt7svTxAjp8NWFsqxkh1HNCSfjBu2Fs4qFp0jMK5FIxuf7kb5FZhgrdqGc9iK9Z4KGNw=
+	t=1732629247; cv=none; b=gXYpRSKgNi/tpY3EgGnAqC87Hda6KSafWYHtXRzXHBELa1a7qfqwYq9QTS7jKnCQGfvOY4pvkxplo1q19LMCSR+Z+77I3B/1cmwd9RLc0Tu1SemGyzYf8nVaZJub3e64u800c8+QXVXJU30AHel8j9LhGnRj9wKJ0BZSHem0qe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732628918; c=relaxed/simple;
-	bh=ZKAvOwXr3qv93aa+cn8GDQk5NMxPHbHgo7mMdqPthRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KmEDgayj0wVBGl3LQjOK+/c4GaO+wvRRIQp/YTadeLzzbXVXRRy8p9P9wG2YwdKuskAmeACydtbH7Tk2AXgAsxhUG+l6LMs6YlysgaRMfbI/Bj+5JWfKgiawPUCGWe792rltH0nqdDp3OwzgvQ/gRQynGiyoJtq4ibz630Riil0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IvPnTxHO; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1732629247; c=relaxed/simple;
+	bh=/tzQ7FckYyoh5uNAcCY1jPw9rLxUwoRCr81psdSfSMs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ciVRRU9INYiAnZtcONO9D37B94RWVv5/7OAvI858EnserzRT3PZuh7AK9duo13Ct59os/4VPX4hV+i5xiuXvHKX5WjYf7MR+12URZQLJkOQsHsI+rPBpgUWSp4aAN9YCLGdDW5CPlh4Lcs2FDReC+EiTQStr0Ceytb7wJjB93jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=RDYs28ba; arc=none smtp.client-ip=85.220.129.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IvPnTxHO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=amZclqVZR4wTjHpzUyfdqRGzrVfZK9pbXNx6aTcQ9OY=; b=IvPnTxHOFuDkabpNSUxQ2IoWcs
-	9jLgd0ZMP4nYd1iWsIF5xNNdsgATmuiYiOUNKuUmmd+AiS1MwL1wSWWBcdxCqL8GteUjng7Bla0lv
-	nZoKOVyJgsHO1V8kgzPzMMT6zOSKaUdemh79NFcHk4xVYjV3zqY5H5gs0EDjMCcp7Ek8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tFvvP-00EWFb-Qx; Tue, 26 Nov 2024 14:48:19 +0100
-Date: Tue, 26 Nov 2024 14:48:19 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Frank Sae <Frank.Sae@motor-comm.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, xiaogang.fan@motor-comm.com,
-	fei.zhang@motor-comm.com, hua.sun@motor-comm.com
-Subject: Re: [PATCH net-next v2 05/21] motorcomm:yt6801: Implement the
- fxgmac_start function
-Message-ID: <fde04f06-df39-41a8-8f74-036e315e9a8b@lunn.ch>
-References: <20241120105625.22508-1-Frank.Sae@motor-comm.com>
- <20241120105625.22508-6-Frank.Sae@motor-comm.com>
- <95675880-1b93-4916-beee-e5feb6531009@lunn.ch>
- <ba24293a-77b1-4106-84d2-81ff343fc90f@motor-comm.com>
- <82e1860b-cbbf-4c82-9f1b-bf4a283e3585@lunn.ch>
- <43341290-15e3-4784-9b69-7f3f13f34e01@motor-comm.com>
- <a48d76ac-db08-46d5-9528-f046a7b541dc@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="RDYs28ba"
+Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by smtp5.goneo.de (Postfix) with ESMTPS id 8FF28240E4B;
+	Tue, 26 Nov 2024 14:47:50 +0100 (CET)
+Received: from hub2.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPS id EC42224081D;
+	Tue, 26 Nov 2024 14:47:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
+	t=1732628869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/tzQ7FckYyoh5uNAcCY1jPw9rLxUwoRCr81psdSfSMs=;
+	b=RDYs28batdwaGpA8Crz0VOcB/IVWYN+5Vu1GfDLr3lObUiaMc4n4IXh2rSWoAzR1jNUemO
+	+kYtoBMVEsEZfLtKEeNhZnqiFNIbfL/AHy8bYVZYxuZ9fhBVNXMnSatL+9OcwWXSZTrphf
+	7hRa7QUvPJjn+xmy8NdaoIxWgqmnfAHeywiXlr9jEhH+UR+f53T6DEdBoLdS5HX5BHtC5P
+	7ICxqkoE92uCf7GUL43Ul9TmX/L6vlj5suwGeL5s9avNljSfVbrVReKQM0B314n2k1EQM/
+	H5abfQklQ2eEiBxUFDUt1c9WjkV8d/KnW3yHlr3vonj0ICNDPcu/tHHV4It1fg==
+Received: from Til-Notebook.hs-nordhausen.de (unknown [195.37.89.195])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPSA id C0A8F2405E5;
+	Tue, 26 Nov 2024 14:47:47 +0100 (CET)
+From: Til Kaiser <mail@tk154.de>
+To: nbd@nbd.name,
+	sean.wang@mediatek.com,
+	Mark-MC.Lee@mediatek.com,
+	lorenzo@kernel.org
+Cc: netdev@vger.kernel.org
+Subject: [PATCH net] mediathek: mtk_eth_soc: fix netdev inside xdp_rxq_info 
+Date: Tue, 26 Nov 2024 14:41:53 +0100
+Message-ID: <20241126134707.253572-1-mail@tk154.de>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a48d76ac-db08-46d5-9528-f046a7b541dc@motor-comm.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: 15f699
+X-Rspamd-UID: ac0795
 
-On Tue, Nov 26, 2024 at 05:28:08PM +0800, Frank Sae wrote:
-> 
-> 
-> On 2024/11/26 11:15, Frank Sae wrote:
-> > Hi Andrew,
-> > 
-> > On 2024/11/25 22:18, Andrew Lunn wrote:
-> >>>> RGMII is unusual, you normally want RGMII_ID. Where are the 2ns delays
-> >>>> added?
-> >>>>
-> >>>
-> >>> Yes, you are right. PHY_INTERFACE_MODE_RGMII should be PHY_INTERFACE_MODE_RGMII_ID.
-> >>> YT6801 NIC integrated with YT8531S phy, and the 2ns delays added in the phy driver.
-> >>> https://elixir.bootlin.com/linux/v6.12/source/drivers/net/phy/motorcomm.c#L895
-> >>
-> >> But if you pass PHY_INTERFACE_MODE_RGMII to the PHY it is not adding
-> >> the 2ns delay. So how does this work now?
-> > 
-> > I'm sorry. Maybe PHY_INTERFACE_MODE_RGMII is enough.
-> > YT6801 is a pcie NIC chip that integrates one yt8531s phy.
-> > Therefore, a delay of 2ns is unnecessary, as the hardware has
-> >  already ensured this.
-> 
-> YT6801 looks like that:
-> 
->                       ||                      
->   ********************++**********************
->   *            | PCIE Endpoint |             *
->   *            +---------------+             *
->   *                | GMAC |                  *
->   *                +--++--+      YT6801      *
->   *                  |**|                    *
->   *         GMII --> |**| <-- MDIO           *
->   *                 +-++--+                  *
->   *                 | PHY |                  *
->   *                 +--++-+                  *
->   *********************||*********************
-> 
-> yt8531s phy driver not support GMII.
+Hi,
 
-Is it really GMII? If so, add GMII to the yt8531 driver.
+I have noticed on a Banana Pi BPI-R4 running OpenWrt that the
+ingress interface index is always 0 when I attach an eBPF/XDP
+program to one of its SFP ports or its switch in native/driver mode.
 
-Often this is described as PHY_INTERFACE_MODE_INTERNAL, meaning it
-does not matter what is being used between the MAC and the PHY, it is
-internal to the SoC. You might want to add that to the PHY driver.
+Attached, you can find a fix/patch and a simple eBPF/XDP program
+I used for testing.
 
-	Andrew
+Kind regards
+Til
+
