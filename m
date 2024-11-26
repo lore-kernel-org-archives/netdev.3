@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A2C17C219
-	for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 21:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5AA17C219
+	for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 21:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732655212; cv=none; b=eeGB2sSuk+v/IqL5lN59aFNAes3ekli3WigigRb/3ShcMInM6ZkyCV7Uf4qF4QKTf+U/9TLaqyKPPibix6HdhVZuG2SLl4JRqEQRgqgXk5cv2lx/M1cS2mmFafZtjpanZo89nicipBtYgoe98BR6PWTtjpo2J2i377386FfVC+k=
+	t=1732655260; cv=none; b=Sv//EZ7GnWJEQm0cqV7iWoBMaCtv7JGoyAlfrJqXBewi60xPGhSxK5zF2aColCtguo99h+fXgycQnxQsCQFC3EcCG8Pg7JTP+UiIN2+I6q8uZYTCkB8EupJj8TrY22VLIhcXTbJKtWO1cDxWyWphuDo1bISWiEP3qZ4TxH+jM8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732655212; c=relaxed/simple;
-	bh=5X826ci43sBcGyrKBl7krBqnWOAFhNHw5Sgj4SdxFCo=;
+	s=arc-20240116; t=1732655260; c=relaxed/simple;
+	bh=K9B+YMvOk/bNWHeXPSsf/p9F3ze4A/Z1Cmkx7v2w8E4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uNv1N2IgzpYTPMFKhNGicz4NN26Pg0sFCfGhPekf/U1RudFHnj6f4or5filt8Qyvf/Pl2YXAi1SEO6kJu/Tie5sOAWviSob5wRkZvUs/EGXvJDNpITSsVV9FtggOURIncukRuRnqek6keP6D+eMHtW4xeuF0yH30oYKhsnIvZW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GpeOe90d; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRARvtLndrSRAORS/xtr/yuPzkfiKVrJBqNvTv28PFvQvghu0FLozIpxaeNCwn9VFvdIjaNzc5JgkTriHB8wKAhv52J+5SJaYY4BBWyi21L2c00dCi0tU6K7LHD/55b8qxKiHsTfjLjf5OvQTpvxKXPe1IU1uvLuupgoDRnFpTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qOpMhdYh; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GpeOe90d"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qOpMhdYh"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eK29JLfQGYjMLr8qhnzk5waWYaHeLXYhWdUAvgw0WG4=; b=GpeOe90dHC49t0syfVOCe2POOB
-	/n5MKXelcj8x27JmVo5+BfSZRIPrfTx5eYKF8t+cjBAHJhwmGziGafDG8eCH1LEgBHr2a3jKPV37U
-	Lzcvck5apsQ9B/iP07R8Ijtu5MKwCToNWVOM1klEtUtfUmZcvxVcl0vmphpGc/0TXoMs=;
+	bh=Wu5gCjDHeReSLpzPU55/g/xBhapW17wwlqNE/BgrMPo=; b=qOpMhdYhodddGlZuayKI/fe3K1
+	BixRUYpRYm0lQ4dtBlUN998aCX8aWz3b35jpZVgmjgqjnznN75qKNEbKCjP4lZUJJ/iDOdCfbcsw6
+	Jz323atCcO4gcOab4LN8Cm6Su1oZ52UYMpxIfoA+IBnJRgt13fXM6i9Xgw0oMd6A/7ng=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tG2lZ-00EZDF-5Q; Tue, 26 Nov 2024 22:06:37 +0100
-Date: Tue, 26 Nov 2024 22:06:37 +0100
+	id 1tG2mL-00EZEP-Rq; Tue, 26 Nov 2024 22:07:25 +0100
+Date: Tue, 26 Nov 2024 22:07:25 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -47,11 +47,11 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
 	Matthias Brugger <matthias.bgg@gmail.com>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH RFC net-next 10/16] net: mvneta: implement
+Subject: Re: [PATCH RFC net-next 11/16] net: mvpp2: implement
  pcs_inband_caps() method
-Message-ID: <6231ab62-91e2-4874-aec7-f53e58a85250@lunn.ch>
+Message-ID: <ec787906-a330-47cb-a0ca-b4b2ab581960@lunn.ch>
 References: <Z0WTpE8wkpjMiv_J@shell.armlinux.org.uk>
- <E1tFrog-005xQY-LH@rmk-PC.armlinux.org.uk>
+ <E1tFrol-005xQe-Ou@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,10 +60,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1tFrog-005xQY-LH@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1tFrol-005xQe-Ou@rmk-PC.armlinux.org.uk>
 
-On Tue, Nov 26, 2024 at 09:25:06AM +0000, Russell King (Oracle) wrote:
-> Report the PCS in-band capabilities to phylink for Marvell NETA
+On Tue, Nov 26, 2024 at 09:25:11AM +0000, Russell King (Oracle) wrote:
+> Report the PCS in-band capabilities to phylink for Marvell PP2
 > interfaces.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
