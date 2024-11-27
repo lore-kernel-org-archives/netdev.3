@@ -1,369 +1,166 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D199980054
-	for <netdev@vger.kernel.org>; Wed, 27 Nov 2024 04:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C925C79DC7
+	for <netdev@vger.kernel.org>; Wed, 27 Nov 2024 05:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732680475; cv=none; b=ecJbgFZyxiG2ExO1oEkkcpaidUePj3CC1ag4UJOsrFNg3qLXhfuYjHtlZpMRZVURKDgSmLcIVWtxFwRWYi36wVpvUgqu03KIRVgLK6NpxGM95HCefT9vwa5DiciWQuYGnGXyPHOuLPM+DISl5zD/kNQCzSSZuOPoARRUIQZmhhY=
+	t=1732683932; cv=none; b=VVBaP3lkpDIQsHrZgOBGgNlGeyi/TqRpO7l9Y54kyw6dyUS6llXPKo9YWmr6b4lc/M9w0ih+oCzYl1maIng0LXIbVDyc1lIR41uHG0YL49j0w/E87jjlECjlWxNCc3o9XXjNEw/Cu1uVhJ331HNZChxGRAf1MY4b/zD9mrqAaU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732680475; c=relaxed/simple;
-	bh=DmST9PFbRHUXgYspuc7kOe6H5jWOwaIoW/9b3Sm7K7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R01d17ZsijQyb3F20RDVO3hPEsYqUjku7wY9QRM39tamyX9k6ZS1hK4nfcQs1nJNKZ9Mdt2omeXtzMQAjc4fL8gvtlx4KVQnRsdjOOu7G3xCNPLDeuwnK4ARWAmfObkYsHjHKzSAiX71yosAgxjaFms3XYPz/utRp+cXOUNM0L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=l2QNjnDb; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1732683932; c=relaxed/simple;
+	bh=cQo3jMBRUy5XpCA0875Q/2Wy2g+tnPMTvbk0wtPXc6M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jMNKS8Ko0ZCauu/FUSIAtLHcMgeJlqGYMG435equZvA85TwpxEpLlzymYzeLUblUIoBiNcZ0xZx43Hqn0xWjzHmAZQGbnsqg3CVtoHObILVSP94IMIhsFQndKUs0bM179ZaUm5ggK+n5Duf+7FnIoBPCY7Y1/a9D6hXAzbA3ISo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=V1cwFyNw; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="l2QNjnDb"
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 6F3C33F296
-	for <netdev@vger.kernel.org>; Wed, 27 Nov 2024 04:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1732680469;
-	bh=tcxowMTCDYap5jhfDWtWfSNdZtAgdsKkRr6s9f0a344=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=l2QNjnDbJGJ1okwZI1MJkYybp2XkR+Zua59GAIXouS7FOrx41SdlCcam3pbKc4VVm
-	 sxysodaEVekJewuGAQPJQ0tnhmF1InFnpCKGpelMlqfXdtN+cDN8wLj0/mhYu2BkPn
-	 d3Yj8Qf2CQBpCRAt3c/aSVgiATdUeE0/kClJyqw10Chf56EEJZnAOmwWe5DW96yKZy
-	 6Ql1mnarTwVA+ogHy/wNyGxNl3v9vBalQ+NUtKZzBtFNw1NtqQzVGpBJogJYcD+5ph
-	 1kKbuFN07fRzKWajamiTVK1ME5KGXn5RuXlvPtxG/ukayH7DYiXUm0EgO3R76l/5+3
-	 PE6T+OzFZON2g==
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2edeef8a994so1490994a91.2
-        for <netdev@vger.kernel.org>; Tue, 26 Nov 2024 20:07:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732680468; x=1733285268;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tcxowMTCDYap5jhfDWtWfSNdZtAgdsKkRr6s9f0a344=;
-        b=UiaxgIO6JBOtw1fh/9Zi9WvujKRvtS99ITRrv5n1b/aR1SdrADjCEhcoB+ohsh+swV
-         a5wooneYssuKvGXbfSzn+ZzaagZfS61bkyoBSc2305aPqSew00TDFWiRA8C4gEIMdLBm
-         JJb+GwNbVyp1Ww6Zq+A8LMhw4fyF9hxD4IXVLi9wUguNKK1cI5Eo054jvSm/zntX+Fiy
-         GXkyhmr3Dk+DNXIymLag29xuyrP4SNZfXHrnKz9RvcbKILVkBheVA87imVnHQFOImVl7
-         +7VbA7Ss3FgI1sxd9sqwJbz40d/kxd50/87BfBMNvtkyv2rHKP9MEOXrZCWNdER+8bLK
-         1fbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXveLmWWeEr6gHXl1SpAhbwsb1Ppi0FiQcujc57xIOPq32QTYfcZFfX+O7bB+xloxNT/KDSzt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycYGNGKLIc8wvRAZLW4vvWBkzjxwjBQHtBKFAzV9yrtLxIy9JB
-	k/5Cy+XPQRXmgvf7TS2m53KZkpnLF2yu/fEP1KJHNsa+X3h2jX5i9sydYOfB9WxIXdfv19TuehS
-	ebkj6dQ4QoS6W0usj+6iwpquScASrs3qn7zmmQg/sTbilfrQYv7X3oMl2M4Ruu3n7tn44/A==
-X-Gm-Gg: ASbGncsi0B6isI/tVd+gPTTKaJL7eX33RFYhYGNVjOd9cH7QqNGhQ7SHrGjdT8/1KC9
-	w2PUfxYE6BQyeVic05XDlZH/sPWBo3w5Vl109XxB1q1u0/L7NwUnSTRqp1LdM+d378J8qd6VgrV
-	ojE6X7FZOfVWcxz+5vW65Bv3LHYrO2KCrkvWHAsNPnPmZL5V+WYOfdPFgRJYNTC+FN6Gnk3+nSt
-	Gef/QuuKs6D03xtSf0abpJJX1g0uotaGLBE8R31NLXYqonzB+o=
-X-Received: by 2002:a17:90b:3e86:b0:2ea:9ce1:d143 with SMTP id 98e67ed59e1d1-2ee08eb0640mr2361204a91.11.1732680467887;
-        Tue, 26 Nov 2024 20:07:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqSQL6zAE0wvtElDjVcQcWzTfHG5uchaXuqkueuJqrfp6dYOb2r9JNbhtirZgWctUwcdmB4Q==
-X-Received: by 2002:a17:90b:3e86:b0:2ea:9ce1:d143 with SMTP id 98e67ed59e1d1-2ee08eb0640mr2361187a91.11.1732680467505;
-        Tue, 26 Nov 2024 20:07:47 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:e412:c4ef:3b3:8931])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ee0fb10032sm455714a91.45.2024.11.26.20.07.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 20:07:47 -0800 (PST)
-Date: Wed, 27 Nov 2024 13:07:45 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: virtualization@lists.linux.dev, mst@redhat.com, 
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] virtio_net: drain unconsumed tx completions if any
- before dql_reset
-Message-ID: <uwpyhnvavs6gnagujf2etse3q4c7vgjtej5bi34546isuefmgk@ebkfjs3wagsp>
-References: <20241126024200.2371546-1-koichiro.den@canonical.com>
- <CACGkMEsJ1X-u=djO2=kJzZdpZH5SX560V9osdpDuySXtfBMpuw@mail.gmail.com>
- <6lkdqvbnlntx3cno5qi7c4nks2ub3bkaycsuq7p433c4vemcmf@fwnhqbo5ehaw>
- <CACGkMEvR4+_iRAFACkXLgX-hGwjfOgd3emiyquzxUHL9wC-b=g@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="V1cwFyNw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1732683930; x=1764219930;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+Fz0LjCG8n28bev+j8h82zHb+3IInn5Q7zesQlyLr1U=;
+  b=V1cwFyNwTU5b+SAAEBlAMGIQyna+KZwjQxNzuGDPwXBN0HoKa0diz+vD
+   rgm1y5dlLbfUuUN5j2R/T9mkYqkjWniUv8UPxzmHQhXjutjHcE/8Dlbgp
+   wDRExrXAw2scg8t4c27XjPCX51VcqxRzBSpqqnainnLFaNk1BEuk1Otof
+   I=;
+X-IronPort-AV: E=Sophos;i="6.12,188,1728950400"; 
+   d="scan'208";a="677066085"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 05:05:22 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:22619]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.2:2525] with esmtp (Farcaster)
+ id 9288e15b-4bea-4491-ba24-e87b5f65b067; Wed, 27 Nov 2024 05:05:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 9288e15b-4bea-4491-ba24-e87b5f65b067
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 27 Nov 2024 05:05:21 +0000
+Received: from 6c7e67c6786f.amazon.com (10.119.13.144) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 27 Nov 2024 05:05:17 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: Jon Maloy <jmaloy@redhat.com>, Ying Xue <ying.xue@windriver.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: "Eric W. Biederman" <ebiederm@xmission.com>, Kuniyuki Iwashima
+	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+	<netdev@vger.kernel.org>, <tipc-discussion@lists.sourceforge.net>, syzkaller
+	<syzkaller@googlegroups.com>
+Subject: [PATCH v2 net] tipc: Fix use-after-free of kernel socket in cleanup_bearer().
+Date: Wed, 27 Nov 2024 14:05:12 +0900
+Message-ID: <20241127050512.28438-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkMEvR4+_iRAFACkXLgX-hGwjfOgd3emiyquzxUHL9wC-b=g@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWC002.ant.amazon.com (10.13.139.230) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Wed, Nov 27, 2024 at 11:24:15AM +0800, Jason Wang wrote:
-> On Tue, Nov 26, 2024 at 12:44 PM Koichiro Den
-> <koichiro.den@canonical.com> wrote:
-> >
-> > On Tue, Nov 26, 2024 at 11:50:17AM +0800, Jason Wang wrote:
-> > > On Tue, Nov 26, 2024 at 10:42 AM Koichiro Den
-> > > <koichiro.den@canonical.com> wrote:
-> > > >
-> > > > When virtnet_close is followed by virtnet_open, there is a slight chance
-> > > > that some TX completions remain unconsumed. Those are handled during the
-> > > > first NAPI poll, but since dql_reset occurs just beforehand, it can lead
-> > > > to a crash [1].
-> > > >
-> > > > This issue can be reproduced by running: `while :; do ip l set DEV down;
-> > > > ip l set DEV up; done` under heavy network TX load from inside of the
-> > > > machine.
-> > > >
-> > > > To fix this, drain unconsumed TX completions if any before dql_reset,
-> > > > allowing BQL to start cleanly.
-> > > >
-> > > > ------------[ cut here ]------------
-> > > > kernel BUG at lib/dynamic_queue_limits.c:99!
-> > > > Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> > > > CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
-> > > > Tainted: [N]=TEST
-> > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
-> > > > BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> > > > RIP: 0010:dql_completed+0x26b/0x290
-> > > > Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
-> > > > 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
-> > > > d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
-> > > > RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
-> > > > RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
-> > > > RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
-> > > > RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
-> > > > R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
-> > > > R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
-> > > > FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
-> > > > knlGS:0000000000000000
-> > > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
-> > > > PKRU: 55555554
-> > > > Call Trace:
-> > > >  <IRQ>
-> > > >  ? die+0x32/0x80
-> > > >  ? do_trap+0xd9/0x100
-> > > >  ? dql_completed+0x26b/0x290
-> > > >  ? dql_completed+0x26b/0x290
-> > > >  ? do_error_trap+0x6d/0xb0
-> > > >  ? dql_completed+0x26b/0x290
-> > > >  ? exc_invalid_op+0x4c/0x60
-> > > >  ? dql_completed+0x26b/0x290
-> > > >  ? asm_exc_invalid_op+0x16/0x20
-> > > >  ? dql_completed+0x26b/0x290
-> > > >  __free_old_xmit+0xff/0x170 [virtio_net]
-> > > >  free_old_xmit+0x54/0xc0 [virtio_net]
-> > > >  virtnet_poll+0xf4/0xe30 [virtio_net]
-> > > >  ? __update_load_avg_cfs_rq+0x264/0x2d0
-> > > >  ? update_curr+0x35/0x260
-> > > >  ? reweight_entity+0x1be/0x260
-> > > >  __napi_poll.constprop.0+0x28/0x1c0
-> > > >  net_rx_action+0x329/0x420
-> > > >  ? enqueue_hrtimer+0x35/0x90
-> > > >  ? trace_hardirqs_on+0x1d/0x80
-> > > >  ? kvm_sched_clock_read+0xd/0x20
-> > > >  ? sched_clock+0xc/0x30
-> > > >  ? kvm_sched_clock_read+0xd/0x20
-> > > >  ? sched_clock+0xc/0x30
-> > > >  ? sched_clock_cpu+0xd/0x1a0
-> > > >  handle_softirqs+0x138/0x3e0
-> > > >  do_softirq.part.0+0x89/0xc0
-> > > >  </IRQ>
-> > > >  <TASK>
-> > > >  __local_bh_enable_ip+0xa7/0xb0
-> > > >  virtnet_open+0xc8/0x310 [virtio_net]
-> > > >  __dev_open+0xfa/0x1b0
-> > > >  __dev_change_flags+0x1de/0x250
-> > > >  dev_change_flags+0x22/0x60
-> > > >  do_setlink.isra.0+0x2df/0x10b0
-> > > >  ? rtnetlink_rcv_msg+0x34f/0x3f0
-> > > >  ? netlink_rcv_skb+0x54/0x100
-> > > >  ? netlink_unicast+0x23e/0x390
-> > > >  ? netlink_sendmsg+0x21e/0x490
-> > > >  ? ____sys_sendmsg+0x31b/0x350
-> > > >  ? avc_has_perm_noaudit+0x67/0xf0
-> > > >  ? cred_has_capability.isra.0+0x75/0x110
-> > > >  ? __nla_validate_parse+0x5f/0xee0
-> > > >  ? __pfx___probestub_irq_enable+0x3/0x10
-> > > >  ? __create_object+0x5e/0x90
-> > > >  ? security_capable+0x3b/0x70
-> > > >  rtnl_newlink+0x784/0xaf0
-> > > >  ? avc_has_perm_noaudit+0x67/0xf0
-> > > >  ? cred_has_capability.isra.0+0x75/0x110
-> > > >  ? stack_depot_save_flags+0x24/0x6d0
-> > > >  ? __pfx_rtnl_newlink+0x10/0x10
-> > > >  rtnetlink_rcv_msg+0x34f/0x3f0
-> > > >  ? do_syscall_64+0x6c/0x180
-> > > >  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > >  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
-> > > >  netlink_rcv_skb+0x54/0x100
-> > > >  netlink_unicast+0x23e/0x390
-> > > >  netlink_sendmsg+0x21e/0x490
-> > > >  ____sys_sendmsg+0x31b/0x350
-> > > >  ? copy_msghdr_from_user+0x6d/0xa0
-> > > >  ___sys_sendmsg+0x86/0xd0
-> > > >  ? __pte_offset_map+0x17/0x160
-> > > >  ? preempt_count_add+0x69/0xa0
-> > > >  ? __call_rcu_common.constprop.0+0x147/0x610
-> > > >  ? preempt_count_add+0x69/0xa0
-> > > >  ? preempt_count_add+0x69/0xa0
-> > > >  ? _raw_spin_trylock+0x13/0x60
-> > > >  ? trace_hardirqs_on+0x1d/0x80
-> > > >  __sys_sendmsg+0x66/0xc0
-> > > >  do_syscall_64+0x6c/0x180
-> > > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > > > RIP: 0033:0x7f41defe5b34
-> > > > Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
-> > > > f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
-> > > > f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
-> > > > RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
-> > > > RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
-> > > > RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
-> > > > RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
-> > > > R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
-> > > > R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
-> > > >  </TASK>
-> > > > [...]
-> > > > ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-> > > >
-> > > > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
-> > > > Cc: <stable@vger.kernel.org> # v6.11+
-> > > > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> > > > ---
-> > > >  drivers/net/virtio_net.c | 37 +++++++++++++++++++++++++++++--------
-> > > >  1 file changed, 29 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > > > index 64c87bb48a41..3e36c0470600 100644
-> > > > --- a/drivers/net/virtio_net.c
-> > > > +++ b/drivers/net/virtio_net.c
-> > > > @@ -513,7 +513,7 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
-> > > >                                                struct sk_buff *curr_skb,
-> > > >                                                struct page *page, void *buf,
-> > > >                                                int len, int truesize);
-> > > > -static void virtnet_xsk_completed(struct send_queue *sq, int num);
-> > > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bool drain);
-> > > >
-> > > >  enum virtnet_xmit_type {
-> > > >         VIRTNET_XMIT_TYPE_SKB,
-> > > > @@ -580,7 +580,8 @@ static void sg_fill_dma(struct scatterlist *sg, dma_addr_t addr, u32 len)
-> > > >  }
-> > > >
-> > > >  static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
-> > > > -                           bool in_napi, struct virtnet_sq_free_stats *stats)
-> > > > +                           bool in_napi, struct virtnet_sq_free_stats *stats,
-> > > > +                           bool drain)
-> > > >  {
-> > > >         struct xdp_frame *frame;
-> > > >         struct sk_buff *skb;
-> > > > @@ -620,7 +621,8 @@ static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
-> > > >                         break;
-> > > >                 }
-> > > >         }
-> > > > -       netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
-> > > > +       if (!drain)
-> > > > +               netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
-> > > >  }
-> > > >
-> > > >  static void virtnet_free_old_xmit(struct send_queue *sq,
-> > > > @@ -628,10 +630,21 @@ static void virtnet_free_old_xmit(struct send_queue *sq,
-> > > >                                   bool in_napi,
-> > > >                                   struct virtnet_sq_free_stats *stats)
-> > > >  {
-> > > > -       __free_old_xmit(sq, txq, in_napi, stats);
-> > > > +       __free_old_xmit(sq, txq, in_napi, stats, false);
-> > > >
-> > > >         if (stats->xsk)
-> > > > -               virtnet_xsk_completed(sq, stats->xsk);
-> > > > +               virtnet_xsk_completed(sq, stats->xsk, false);
-> > > > +}
-> > > > +
-> > > > +static void virtnet_drain_old_xmit(struct send_queue *sq,
-> > > > +                                  struct netdev_queue *txq)
-> > > > +{
-> > > > +       struct virtnet_sq_free_stats stats = {0};
-> > > > +
-> > > > +       __free_old_xmit(sq, txq, false, &stats, true);
-> > > > +
-> > > > +       if (stats.xsk)
-> > > > +               virtnet_xsk_completed(sq, stats.xsk, true);
-> > > >  }
-> > >
-> > > Are we sure this can drain the queue? Note that the device is not stopped.
-> >
-> > Thanks for reviewing. netif_tx_wake_queue can be invoked before the "drain"
-> > point I added e.g. via virtnet_config_changed_work, so it seems that I need
-> > to ensure it's stopped (DRV_XOFF) before the "drain" and wake it afterwards.
-> > Please let me know if I’m mistaken.
-> 
-> Not sure I get you, but I meant we don't reset the device so it can
+syzkaller reported a use-after-free of UDP kernel socket
+in cleanup_bearer() without repro. [0][1]
 
-I was wondering whether there would be a scenario where the tx queue is
-woken up and some new packets from the upper layer reach dql_queued()
-before the drain point, which also could cause the crash.
+When bearer_disable() calls tipc_udp_disable(), cleanup
+of the UDP kernel socket is deferred by work calling
+cleanup_bearer().
 
-> keep raising tx interrupts:
-> 
-> virtnet_drain_old_xmit()
-> netdev_tx_reset_queue()
-> skb_xmit_done()
-> napi_enable()
-> netdev_tx_completed_queue() // here we might still surprise the bql?
+tipc_net_stop() waits for such works to finish by checking
+tipc_net(net)->wq_count.  However, the work decrements the
+count too early before releasing the kernel socket,
+unblocking cleanup_net() and resulting in use-after-free.
 
-Indeed, virtqueue_disable_cb() is needed before the drain point.
+Let's move the decrement after releasing the socket in
+cleanup_bearer().
 
-Thanks
+[0]:
+ref_tracker: net notrefcnt@000000009b3d1faf has 1/1 users at
+     sk_alloc+0x438/0x608
+     inet_create+0x4c8/0xcb0
+     __sock_create+0x350/0x6b8
+     sock_create_kern+0x58/0x78
+     udp_sock_create4+0x68/0x398
+     udp_sock_create+0x88/0xc8
+     tipc_udp_enable+0x5e8/0x848
+     __tipc_nl_bearer_enable+0x84c/0xed8
+     tipc_nl_bearer_enable+0x38/0x60
+     genl_family_rcv_msg_doit+0x170/0x248
+     genl_rcv_msg+0x400/0x5b0
+     netlink_rcv_skb+0x1dc/0x398
+     genl_rcv+0x44/0x68
+     netlink_unicast+0x678/0x8b0
+     netlink_sendmsg+0x5e4/0x898
+     ____sys_sendmsg+0x500/0x830
 
-> 
-> Thanks
-> 
-> >
-> > >
-> > > >
-> > > >  /* Converting between virtqueue no. and kernel tx/rx queue no.
-> > > > @@ -1499,7 +1512,8 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
-> > > >         /* Avoid to wakeup napi meanless, so call __free_old_xmit instead of
-> > > >          * free_old_xmit().
-> > > >          */
-> > > > -       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), true, &stats);
-> > > > +       __free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq), true,
-> > > > +                       &stats, false);
-> > > >
-> > > >         if (stats.xsk)
-> > > >                 xsk_tx_completed(sq->xsk_pool, stats.xsk);
-> > > > @@ -1556,10 +1570,13 @@ static int virtnet_xsk_wakeup(struct net_device *dev, u32 qid, u32 flag)
-> > > >         return 0;
-> > > >  }
-> > > >
-> > > > -static void virtnet_xsk_completed(struct send_queue *sq, int num)
-> > > > +static void virtnet_xsk_completed(struct send_queue *sq, int num, bool drain)
-> > > >  {
-> > > >         xsk_tx_completed(sq->xsk_pool, num);
-> > > >
-> > > > +       if (drain)
-> > > > +               return;
-> > > > +
-> > > >         /* If this is called by rx poll, start_xmit and xdp xmit we should
-> > > >          * wakeup the tx napi to consume the xsk tx queue, because the tx
-> > > >          * interrupt may not be triggered.
-> > > > @@ -3041,6 +3058,7 @@ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > >
-> > > >  static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > >  {
-> > > > +       struct netdev_queue *txq = netdev_get_tx_queue(vi->dev, qp_index);
-> > > >         struct net_device *dev = vi->dev;
-> > > >         int err;
-> > > >
-> > > > @@ -3054,7 +3072,10 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
-> > > >         if (err < 0)
-> > > >                 goto err_xdp_reg_mem_model;
-> > > >
-> > > > -       netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index));
-> > > > +       /* Drain any unconsumed TX skbs transmitted before the last virtnet_close */
-> > > > +       virtnet_drain_old_xmit(&vi->sq[qp_index], txq);
-> > > > +
-> > > > +       netdev_tx_reset_queue(txq);
-> > > >         virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
-> > > >         virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
-> > > >
-> > > > --
-> > > > 2.43.0
-> > > >
-> > > >
-> > >
-> > > Thanks
-> > >
-> >
-> 
+[1]:
+BUG: KMSAN: use-after-free in udp_hashslot include/net/udp.h:85 [inline]
+BUG: KMSAN: use-after-free in udp_lib_unhash+0x3b8/0x930 net/ipv4/udp.c:1979
+ udp_hashslot include/net/udp.h:85 [inline]
+ udp_lib_unhash+0x3b8/0x930 net/ipv4/udp.c:1979
+ sk_common_release+0xaf/0x3f0 net/core/sock.c:3820
+ inet_release+0x1e0/0x260 net/ipv4/af_inet.c:437
+ inet6_release+0x6f/0xd0 net/ipv6/af_inet6.c:489
+ __sock_release net/socket.c:658 [inline]
+ sock_release+0xa0/0x210 net/socket.c:686
+ cleanup_bearer+0x42d/0x4c0 net/tipc/udp_media.c:819
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xcaf/0x1c90 kernel/workqueue.c:3310
+ worker_thread+0xf6c/0x1510 kernel/workqueue.c:3391
+ kthread+0x531/0x6b0 kernel/kthread.c:389
+ ret_from_fork+0x60/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:244
+
+Uninit was created at:
+ slab_free_hook mm/slub.c:2269 [inline]
+ slab_free mm/slub.c:4580 [inline]
+ kmem_cache_free+0x207/0xc40 mm/slub.c:4682
+ net_free net/core/net_namespace.c:454 [inline]
+ cleanup_net+0x16f2/0x19d0 net/core/net_namespace.c:647
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xcaf/0x1c90 kernel/workqueue.c:3310
+ worker_thread+0xf6c/0x1510 kernel/workqueue.c:3391
+ kthread+0x531/0x6b0 kernel/kthread.c:389
+ ret_from_fork+0x60/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:244
+
+CPU: 0 UID: 0 PID: 54 Comm: kworker/0:2 Not tainted 6.12.0-rc1-00131-gf66ebf37d69c #7 91723d6f74857f70725e1583cba3cf4adc716cfa
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Workqueue: events cleanup_bearer
+
+Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+v2:
+  * Keep kernel socket with no net refcnt.
+
+v1: https://lore.kernel.org/netdev/20241126061446.64052-1-kuniyu@amazon.com/
+---
+ net/tipc/udp_media.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 439f75539977..b7e25e7e9933 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -814,10 +814,10 @@ static void cleanup_bearer(struct work_struct *work)
+ 		kfree_rcu(rcast, rcu);
+ 	}
+ 
+-	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
+ 	dst_cache_destroy(&ub->rcast.dst_cache);
+ 	udp_tunnel_sock_release(ub->ubsock);
+ 	synchronize_net();
++	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
+ 	kfree(ub);
+ }
+ 
+-- 
+2.39.5 (Apple Git-154)
+
