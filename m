@@ -1,76 +1,157 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62071F76A5;
-	Wed, 27 Nov 2024 13:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D2D6A8D2
+	for <netdev@vger.kernel.org>; Wed, 27 Nov 2024 13:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732714227; cv=none; b=gQ5TjJIozIBFgzr5jjySR9syjIRDK5634wRLEqSITEqfJgn5s48aBI9418c1J0pv/3DbROEiwVKHGT/uJpJgfuAsoWbYPP24Sar+X7z2oOEbSglOvuw50lwTWXWbtM3hYrkXV5ac9GXxHF0gRbm9Wtqnbz9pzF0uHz1CHd093mM=
+	t=1732714307; cv=none; b=Sesm3EC7pg9cDTlH8WBd2oHHH5E2ypDL/uFscH/rFonql1LMmaVRuY1xfKNR1XoxGARXHk10oj56uSo2CL+nii2FTUxdIGJHzpXvRtoF2Gl5DX2X8Zs6ZYJk4XZx404cq0QudLn0lRhxiw4JIYx8ds3zEl+gqSHcCEHr+ovA1mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732714227; c=relaxed/simple;
-	bh=lL70dIqRnAyBiu+zzo2/5+sjdmD6HVEsbvD4i+anjwE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CNt6QrpV0BqRpXqAsAZiOknmrSVKzXkzAlfRMcSBepIAUQsLWeQMeTaMqu4mLMBJcrWUPu5GAladLYSuTu5T2tKI7pRERCv8qloS79zkvRmcx+iTnJMZGRrelErfBYGRd4yY1iFJQLGMtvcdLYg0Tna5ZjY/MnUT75RBBrwdKJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ZDAY7btk; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1732714307; c=relaxed/simple;
+	bh=cldKOGvGEDCVtpyFEnvKqgLQdUBtqnf8swX67yPUtWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YIRyOd1WPU6hij86aWknh2bCdKCPCacjgH07Y+1PGfMTkgcxEdJ8G6W029n9z2Q1anxESlAp1tfZtGdv4BTJiLbzpWZW3jjfD2aRKZHWmRnC9n/HRuxlf/U7CE1SNSySU3bQSkkAbMWMNXGN2g8akFHmB8MfwlvNetNzWvjDmtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AwJKcbvV; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ZDAY7btk"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1732714217; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=veLuyZ9oSCmnspBOb1TsKxfnMyJAgGIRoKvRICjdLKo=;
-	b=ZDAY7btkpiKvyVyOIYm98/pL42EyeaHhONzMd9jBiyEgsHfz0bZO7DPxaPlT8WCaNGvyK+WQh0oaKX5tF3xz5R88XwB4op4Nu6RvrJdXLuWd/GPfp5zOf8Q78FAtWI4/9XquxNO3BrboiKKsONUUAux2+cxMFcN4PD4eiHl6Feo=
-Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WKMbqQk_1732714214 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 27 Nov 2024 21:30:16 +0800
-From: Wen Gu <guwen@linux.alibaba.com>
-To: wenjia@linux.ibm.com,
-	jaka@linux.ibm.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: alibuda@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	horms@kernel.org,
-	kgraul@linux.ibm.com,
-	hwippel@linux.ibm.com,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/2] two fixes for SMC
-Date: Wed, 27 Nov 2024 21:30:12 +0800
-Message-Id: <20241127133014.100509-1-guwen@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AwJKcbvV"
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 43D0E1140108;
+	Wed, 27 Nov 2024 08:31:44 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 27 Nov 2024 08:31:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1732714304; x=1732800704; bh=kD4GGRRXaJo5coUVseQ9cL4WW5EIeSMVT52
+	/M/YXrqo=; b=AwJKcbvVk4bZADXM0lQ75mLzLoElEG7hc+c9BuWIsNbyzCMdnL5
+	kno3T++TVEwRCKf0PMegKvZgdXwcmuHz6MsoQ7UCwG77X5ojgXakERDC1Qf5HbLO
+	nrg3DszrAfMtocoj/1eGMqAIvxXlLVrE5755JXNNlUJzC5gsmWajXigZY/HDKvP+
+	jqfJHNY7fPrEAWBTmJjDNRnlKZbhkyumR35rbQ54gueX/GYCJVXNz8uKwt3sx4F7
+	wOhvUoqPlaSdJ4ohaMVw32x7epDZEyj8xOmrS1GpKX86pkO8BeWteoihLzksTzAj
+	gKDHXaeAjtONJKXQF9AAAj+QfG+diyVw24w==
+X-ME-Sender: <xms:Ph9HZ_D9cAvcx7BRdtg_NxroEY9qbomzQ-iZMydPWLfXnGSZpgd1bw>
+    <xme:Ph9HZ1jbd-QB9tbOaVgRtIDFTeLGr8soT8xUwktkANplfSPv6uy4tYts7wvpUi57L
+    w3knU9fyiBWQ8s>
+X-ME-Received: <xmr:Ph9HZ6nMmXLhcXGacQGI-hUTdWDfHYdTGtEkHaGIW0AaPNprerRguB4BBJM90bCgP7SdY7ykx3vXPtppIxL4I69yLPE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgeelgdeglecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpeehhfdtjedviefffeduuddvffegteeiieeguefgudff
+    vdfftdefheeijedthfejkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehi
+    ughoshgthhdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtoheplhhorhgvnhiiohdrsghirghntghonhhisehrvgguhhgrthdrtghomhdp
+    rhgtphhtthhopehmrghilhesthhkudehgedruggvpdhrtghpthhtohepnhgsugesnhgsug
+    drnhgrmhgvpdhrtghpthhtohepshgvrghnrdifrghnghesmhgvughirghtvghkrdgtohhm
+    pdhrtghpthhtohepmhgrrhhkqdhmtgdrlhgvvgesmhgvughirghtvghkrdgtohhmpdhrtg
+    hpthhtoheplhhorhgvnhiioheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthgu
+    vghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghmtghohhgvnhesnh
+    hvihguihgrrdgtohhmpdhrtghpthhtoheprghlvghkshgrnhguvghrrdhlohgsrghkihhn
+    sehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:Ph9HZxxmC3iu7jjQT6jEOfhqON8G0HY1LLNJDQSZ8OvW5Ask2wtXiw>
+    <xmx:Ph9HZ0RmqwAAe4YJu_iLtG4siluM5JMOuPaLT-DLCglSg3nHopv21w>
+    <xmx:Ph9HZ0Y_cgaxonZc3g2QKMg55FpMgxDQwFIBWhN5fM8b8EDJYUf4eg>
+    <xmx:Ph9HZ1Rmo974fapYeKDrIkjkS1ZcpUKfFxMRoov-jakQh1SS9FmAZQ>
+    <xmx:QB9HZ3Ex6aB9bsAbLeVpOpgerrbD8h8THsOs-XtxAa1w-YNULKBI3I2V>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 Nov 2024 08:31:41 -0500 (EST)
+Date: Wed, 27 Nov 2024 15:31:39 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc: Til Kaiser <mail@tk154.de>, nbd@nbd.name, sean.wang@mediatek.com,
+	Mark-MC.Lee@mediatek.com, lorenzo@kernel.org,
+	netdev@vger.kernel.org, amcohen@nvidia.com,
+	aleksander.lobakin@intel.com
+Subject: Re: [PATCH net] mediathek: mtk_eth_soc: fix netdev inside
+ xdp_rxq_info
+Message-ID: <Z0cfOzsujtoxO422@shredder>
+References: <20241126134707.253572-1-mail@tk154.de>
+ <20241126134707.253572-2-mail@tk154.de>
+ <Z0YQYKgUyLt8w4va@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z0YQYKgUyLt8w4va@lore-desk>
 
-Hi, all
+On Tue, Nov 26, 2024 at 07:16:00PM +0100, Lorenzo Bianconi wrote:
+> > Currently, the network device isn't set inside the xdp_rxq_info
+> > of the mtk_rx_ring, which means that an XDP program attached to
+> > the Mediathek ethernet driver cannot retrieve the index of the
+> > interface that received the package since it's always 0 inside
+> > the xdp_md struct.
+> > 
+> > This patch sets the network device pointer inside the
+> > xdp_rxq_info struct, which is later used to initialize
+> > the xdp_buff struct via xdp_init_buff.
+> > 
+> > This was tested using the following eBPF/XDP program attached
+> > to a network interface of the mtk_eth_soc driver. As said before,
+> > ingress_ifindex always had a value of zero. After applying the
+> > patch, ingress_ifindex holds the correct interface index.
+> > 
+> > 	#include <linux/bpf.h>
+> > 	#include <bpf/bpf_helpers.h>
+> > 
+> > 	SEC("pass")
+> > 	int pass_func(struct xdp_md *xdp) {
+> >     		bpf_printk("ingress_ifindex: %u",
+> > 			xdp->ingress_ifindex);
+> > 
+> > 		return XDP_PASS;
+> > 	}
+> > 
+> > 	char _license[] SEC("license") = "GPL";
+> > 
+> > Signed-off-by: Til Kaiser <mail@tk154.de>
+> > ---
+> >  drivers/net/ethernet/mediatek/mtk_eth_soc.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> > index 53485142938c..9c6d4477e536 100644
+> > --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> > +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> > @@ -2069,6 +2069,7 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+> >  
+> >  		netdev = eth->netdev[mac];
+> >  		ppe_idx = eth->mac[mac]->ppe_idx;
+> > +		ring->xdp_q.dev = netdev;
+> 
+> I guess you can set it just before running xdp_init_buff(), but the change is fine.
 
-This patch set contains two bugfixes, to fix SMC warning and panic
-issues in race conditions.
+Lorenzo, is it legitimate to change rxq->dev post registration like
+that?
 
-Thanks!
+I am asking because we have a similar problem [1]. In our case we also
+register the rxq structure with a dummy netdev which is why XDP programs
+see an ifindex of 0.
 
-v2->v1:
-(https://lore.kernel.org/netdev/20241122071630.63707-2-guwen@linux.alibaba.com/)
-- Patch #1: Collect 'Reviewed-by' tags;
-- Patch #2: Extend sock lock protection from smc_conn_free() in smc_conn_abort() to most of smc_listen_work().
+Thanks
 
-Wen Gu (2):
-  net/smc: initialize close_work early to avoid warning
-  net/smc: fix LGR and link use-after-free issue
+[1] https://lore.kernel.org/netdev/ZzYR2ZJ1mGRq12VL@shredder/
 
- net/smc/af_smc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> Regards,
+> Lorenzo
+> 
+> >  
+> >  		if (unlikely(test_bit(MTK_RESETTING, &eth->state)))
+> >  			goto release_desc;
+> > -- 
+> > 2.47.1
+> > 
+> > 
 
--- 
-2.32.0.3.g01195cf9f
 
