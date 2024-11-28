@@ -1,212 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097C013D29A
-	for <netdev@vger.kernel.org>; Thu, 28 Nov 2024 07:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732778129; cv=fail; b=kDtXJ2hNocxJKLozndg2Rmb0ZbeQjaLZO4bfSxImQDwTOcRUohThGLuo0Wim6zsz8Uy2695LhC5X+inb8SfiHu+EhBI9sYXAXCTaMeDbTGTaWkT3tAnimYHZ4wd8RweuSOJj6JhaLsbtwCqOsV8QWVpjRTqyZUWU1jpRHE7b1LQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732778129; c=relaxed/simple;
-	bh=/0Q+bMmdZ1b8MPRdwRE18iSEiVzKaJKnQk7LQCmX+bc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BpEKGesP98nvxjpTnjj4tL6ggSbQwOjpeiI0B7RN2Vvqe65CZCVRZnAtycK1iJiS32iO7/pHC9JiNZ8DSyFRXFvQlN0phKpgK9RVOz8WrQDOlx191cTw2XD7h2CN8d/hE5wN8qRCA+oGjiUEWFcqE6J22o28c1EOYcFVh1QwSQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpX7JJ91; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpX7JJ91"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732778128; x=1764314128;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=/0Q+bMmdZ1b8MPRdwRE18iSEiVzKaJKnQk7LQCmX+bc=;
-  b=IpX7JJ91FSxK1YTvE9zn0dSrBAyWgTWpDX1ed0W3PIEty4ZqM5tNIgbP
-   cFBJur014rWzuFpP5x72S3fUjLBo/Ee5kGA/Y8gCCCL/tK8Zh5eCmYKdD
-   mDt8HENz1cGVAS2T4OZcBMNSC4ExnkSFYN6g57cCnUTapO2X+5f9zM/Oc
-   c31Rc/ceEPgBjBeaefg2isd5+mZbDzEIAJEDRy6F6Sk3OubQSf6xMcAjp
-   TfmtNxBPdsHOKOy0ZkdMh7spstcHjIXj7fZfQQ6VyS8gU1eALFj48paJk
-   Rzlq/edDvR43fOK3odVEfFsn5BqICbdRuRb406nICQaGxMzekRUoFrfCo
-   A==;
-X-CSE-ConnectionGUID: AKqlJwSfRsmw3kNpPgn3Ng==
-X-CSE-MsgGUID: ujVvp17nT4CLvTRRZ1ssiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="32935141"
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
-   d="scan'208";a="32935141"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 23:15:26 -0800
-X-CSE-ConnectionGUID: RDeeuEn+QrWpxYQi5VSI5A==
-X-CSE-MsgGUID: IO6RS/AGRl6iukwOCVIh4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,191,1728975600"; 
-   d="scan'208";a="92482243"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Nov 2024 23:15:26 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 27 Nov 2024 23:15:25 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 27 Nov 2024 23:15:25 -0800
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 27 Nov 2024 23:15:25 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F2VLG/zi+E72SwXsxolQaOBD9drLYIC9Ht22JBvvDPjwd/OWGzYx32b3Swzk4dKcdGqVry911DpkkD7S9+mjG6ZhxeMRD2iBds8msLOTXhRckmNjzPcd8y+NjyydKU81ZV/Ive3VOeqNy8tYrmo7vBmqp6X5Sb3UrLiCkXDGb1GtdzyMu+Gaskq4WrNh78ufDPy8k+G0+dGTeLoVTtY8od0I8NyRBzFZ4MNRuoU8lceiCSiLF70U8XdwV1TEl53blPtNAd69ZMc0pMY8OiVzSnTaG21/PM5NpqIHHNDmqqf1B6vj6Cg0qwzz8df/woYvh5nbUmpA98tc8ftsO+YMgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nKgbst3nr2TV3vx8avV2H7nkLzAiJVqdb8ZFN6snBog=;
- b=o4ocDXSrpixkx/9wQna7yu5p1bBuXCfqnh6aRm3tN4IFmULG+nOv0b0L6SgErlls8EyqP7DkkL6xdd53dEmB0Sa3g3vS3FV1lANihYHux5upRvO9Ck2CMPpa4k7jGTI/mTPLRq/aAgQv+a9zB5+WKK9k81vaVKSD2TcVxt+Cz7zQa0qxpR0CrbYbWUtRc1sS4U0lWZsLtwrbOvHAvyTNAH9DQnBu89dqtEsDtwu89Y08ZFFh4hP+diTZPkGXwLgWHKVdEkAC3185ADTyaOBmjaUnOdIGMSBlaKuJfsypbx7FDygYqvbVxb1+QL+zNnyKNt5FgUOCOhJCBiDbtsnwCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CYYPR11MB8429.namprd11.prod.outlook.com (2603:10b6:930:c2::15)
- by SA2PR11MB5051.namprd11.prod.outlook.com (2603:10b6:806:11f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.13; Thu, 28 Nov
- 2024 07:15:18 +0000
-Received: from CYYPR11MB8429.namprd11.prod.outlook.com
- ([fe80::4f97:ad9d:79a9:899f]) by CYYPR11MB8429.namprd11.prod.outlook.com
- ([fe80::4f97:ad9d:79a9:899f%4]) with mapi id 15.20.8207.010; Thu, 28 Nov 2024
- 07:15:18 +0000
-From: "Pucha, HimasekharX Reddy" <himasekharx.reddy.pucha@intel.com>
-To: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Kolacinski, Karol"
-	<karol.kolacinski@intel.com>, "Kubalewski, Arkadiusz"
-	<arkadiusz.kubalewski@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH v4 iwl-net 3/4] ice: Fix ETH56G FC-FEC
- Rx offset value
-Thread-Topic: [Intel-wired-lan] [PATCH v4 iwl-net 3/4] ice: Fix ETH56G FC-FEC
- Rx offset value
-Thread-Index: AQHbL37ykrZ5Hos8pUyLVmk+9W7Vb7LManlg
-Date: Thu, 28 Nov 2024 07:15:18 +0000
-Message-ID: <CYYPR11MB8429F445DA98954A5DF68F93BD292@CYYPR11MB8429.namprd11.prod.outlook.com>
-References: <20241105122916.1824568-1-grzegorz.nitka@intel.com>
- <20241105122916.1824568-4-grzegorz.nitka@intel.com>
-In-Reply-To: <20241105122916.1824568-4-grzegorz.nitka@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CYYPR11MB8429:EE_|SA2PR11MB5051:EE_
-x-ms-office365-filtering-correlation-id: c1a626ae-2a4b-436c-76e8-08dd0f7c69e8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?rNk7GkuwiXsoGv96Cvj31NFxBXeoLiNfF5NW9Am+2CQhpIBYeqnaHalSSZK1?=
- =?us-ascii?Q?8iVNerffndfUHziAii1IL13uApKV8k3NdLLnz2C/1ez39CN8Bcva6vk5v4oj?=
- =?us-ascii?Q?qVYyu8Ck9boMXgh5Zb82/UN3T0A5LyHIr6e2zmo8lPEMpny9xls2GJhbgeMU?=
- =?us-ascii?Q?8Is38vyvZDOW1bGFCeyZPsJXyn3bR9MMXbuw+7n3qPaTKdt3YwyauQoYAXrp?=
- =?us-ascii?Q?wVlaRUnR2vGcZS05Qh1erRceI3+PsYNWOw6BwbSb4yXP1xpigEnzvx9kUlJy?=
- =?us-ascii?Q?MY81ErQBGP8Y5mBv9S8H/+OKPN82KrrOUCR4nq/kKJL2dSitYV1RWVibOU0A?=
- =?us-ascii?Q?/cX8H9/7y2+9h/EEySQawJgmmqpV8KHaSaEkt/cW3BYNfTKKBAFf3nexjF/M?=
- =?us-ascii?Q?N19rLZlsq94j1qKNoHEElR3OsLjthBFlhfjAxn6+R1ROfD5sTJYiA5T/s38v?=
- =?us-ascii?Q?fPfEAIwH/cMooIEQOVzvnXiqutnHihxC09Cfo2ez5rBHLecDcHHPjWKHmeB8?=
- =?us-ascii?Q?7dSYvKNFBHAiU4t0Z6hjRZLlQbg21nTSD27+UHkmxu62GhPlwghsvtyZfgsT?=
- =?us-ascii?Q?9hGyeiQ9ht4FAfeneGUoKAKarPegzpLluxtDiWcRAhHxbfSwrgv2NvEsP8E7?=
- =?us-ascii?Q?ocuxtIvk1UqsVtUPPcdQKBW5rYI+h/jGa6HJCucHCz/Rzjm2qrUZUt0LjDQT?=
- =?us-ascii?Q?qyTPIUz3nlAuCIFECrwBQ4GI+F6lyui/bsX04Zi24eS31uk894EA9xN2KFg6?=
- =?us-ascii?Q?WRr6DCj3sEl6fLbAyx+fJ2BDW1m5sqSEMFvhfpdzB7l2Jh62uxRniwLbDquT?=
- =?us-ascii?Q?WiuvJsQXjBCqnT3LKlqe/VFNFb+lZ9hO5NKFWPxL6yeWM7DvvY9UJ+KzqL8d?=
- =?us-ascii?Q?hwCu0YjuGY/ffQaCIr40om0fIk4frG1U0uEnuVfxk7FGkQwMD9eT6SyRcD2G?=
- =?us-ascii?Q?EcdIMyr+Q/tb9vORTHYUH12oLyxCfIiVFyJmFwzY8INzzWvLJBu8YytCtg6p?=
- =?us-ascii?Q?WaegI9jFwqyYvrGvBW5H0eNYpQPqVzYNvJbWkTNZOjUE6PYc+hAT0TbI83s5?=
- =?us-ascii?Q?s6e0DCvK01rb0+xkW3jvWfxBlLXP6zo2QdRmEcixVy0r4k3gUVfu3cRWaM2k?=
- =?us-ascii?Q?rQ+hKwAx9PF57zoLSXOhJvQyST91XvulD01nh89YaWCHYb3QHvflbT4bMFhB?=
- =?us-ascii?Q?m0piyH8P9NLozhlxGiwhgueuywKe62wNnLkVtY362G+4tbhFq3qgWNoZl9Lw?=
- =?us-ascii?Q?k0uT3M137anlJnEfP80NB51WjBU6K0Q7NOr0yVzGZVobrikeJVBQjMqCuNiN?=
- =?us-ascii?Q?Suym7DQoUHkMLAaHMakCLGI2YfbRkkHeSKSgYwBE1qZKx8yeGCMa02j8tjLZ?=
- =?us-ascii?Q?/JjWvdnvC8Qi0/WkRtMqC9wzag9HVyNmMghKbBT8mBil0ruYIA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR11MB8429.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?bXWot7xPUjEEINEwZrT/+CpPn18IJBpbwTAonwFfcrJ8Jc5CY8APcBe0lRwq?=
- =?us-ascii?Q?RO4mBfgf38sPDpuVNoOElnQcFZ2lGpT9Ruf1xjCUKJ/FLqhJxAG9l5qoEwoF?=
- =?us-ascii?Q?KwfUdxv1z55insnpYwrkR+D2Ck7Oz9X2pXdiCCt/Me2Q9URoYqpV59KaZ6Fp?=
- =?us-ascii?Q?5Z3zPkNOGVonXVzN3DQeDoxW9E9tksRVmyZtCm4wmsbqlA4r0uNVSHveFp74?=
- =?us-ascii?Q?XpAynZ25AIEscq/fYDe+wcYtTAtxSlYYQDvGMklSvGFxZnld91hdD9XUZN1h?=
- =?us-ascii?Q?xeUPpH2DoIrdQzqLSE5PJaRSQrgB5etH+3Lr6+r2g2zGdzZj+qgT79wDHca4?=
- =?us-ascii?Q?TnjC6Sq6nMbav/UEvs/8z2dQCnJcSmfkS4UhrK3Z4umS4XX4oRWYRC98CzKP?=
- =?us-ascii?Q?d0uNU4ie5ubdcTSnZJG70VaGyPcBSC4eaQw5MpOyBpuvaqBoHSyRQzLgfbmp?=
- =?us-ascii?Q?AXKPi0ZSNLMGPqcHYL/c6eMQNchuClmyuSiiAd7EiVdivWct5TVrJknktIkQ?=
- =?us-ascii?Q?ZZ6FirSHS7DlkHahx+arO8HWqIgOiuAV2vfCfpA7+D/4zjMExOIw2Rc+ao8w?=
- =?us-ascii?Q?KUVsfky2onwNFknzPianvxEQqLs/MRHbtQP/2ue1IpnlnTFbEgGOXoICSIbK?=
- =?us-ascii?Q?iLJAXoO9EgsnPuKooVsHLwritdRRARueMXCmtsyi+ThvIdJkdCCJL0hBT1RI?=
- =?us-ascii?Q?sE2owtPDY41oSDsbpDNZjURlRBdQAli7lizHrWQG82w4GHzn8XDAjXlMRabk?=
- =?us-ascii?Q?xKgN1D4mmatUGY49DlJriliuaNQG1Ko65NAe5l45r1JEgsjtqWiXclzGoMoT?=
- =?us-ascii?Q?CcgvcfTzaW73NfSNQZk3Z3G74E8ktoFxlSKcOzljZh8OG8yj2Uz6L6o3n8gT?=
- =?us-ascii?Q?tvOZx9+61hpLgmxOBxcz7HqndTe4Rq3dFFOyvrjBPW4Gik3cnJF6WDCffOss?=
- =?us-ascii?Q?V+EOWW0asXIWJ73TPxKDVxZBdZZtDzQz1YghMiM3kk7+oWC3znHmslK6a66A?=
- =?us-ascii?Q?GzP/9YriPe7INy4jmmBT7t59EGsuQNbCaKelOwUJS1CZFSApwHVoHKCHuu4L?=
- =?us-ascii?Q?zbZkPjecc1HE+9onKfrgdcM9CvOQwOsXXxT2sOcUro4aNhyNprvyjsl4ySG6?=
- =?us-ascii?Q?CAAVzaV9sz5NuNEAD2boNiD+k2oRN3NOIs01K8rM+MQ7Ar8dDwV+v4zl0or8?=
- =?us-ascii?Q?RTvFXFSAko4cv3dJHQQFEsFFUMGl15S1k/XQg4e5QGUDelHZhW7+9aqfRvLA?=
- =?us-ascii?Q?VunqlKqZtzpc1jgPqq9cnUFvOPp5R6qURpLztIsMchJoBWYpno1Or7QS4wZ1?=
- =?us-ascii?Q?zRJl2q5E468zumkfTn2cad1Nd4MYpzq/7JzJJEtBfael1I3LQcJ8tG4w8uzg?=
- =?us-ascii?Q?ukj/978W3sheOOTKFpybXfgf5sB/aVA99jAqMJSf0iIXFOEGk1OzvG596d1Q?=
- =?us-ascii?Q?OFpMGjsPOt8NhdGvA+zTlEHmlvUM0XzjAElbjUPjW+YT7m53sMR0E293YxmT?=
- =?us-ascii?Q?2IzmdWBNs1P4ekQydBwu08jcNtUfExUUQCVQyZB4XlSoNlPvE44hC/foNtSM?=
- =?us-ascii?Q?kBBYUz/GWATyp0ye9RfbYueGKkT+DUGt2fCmTLV5bhUW4nGC98ntA6LzKmvK?=
- =?us-ascii?Q?1A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1488B1482E1
+	for <netdev@vger.kernel.org>; Thu, 28 Nov 2024 07:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732780675; cv=none; b=febRIuM2P5EFCadK3p0bVoBRfqMibtwZlCah6/efefXAuR95R8MwMxLyEYCNT/VCiEs8n2M2sWxgOvS/CUlT164bOH+XyYBvc1+hF/1uSd72YdOto7/mMf1UiZ4g2AVIIdenCSySQnrdRLdpkyEjsilFGa02h7AU6D8gKsXeHBQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732780675; c=relaxed/simple;
+	bh=hozTocJT2iKXBY9S5dg3BDzFJxp3Ezg8eYStAMLE8kI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+Dv3uz4NB3Pdj7OVHgVZDkbYWK2Lw6M/+twiseQwjqBIe3G/y/a8ICnn4sFr4DGakK4ftwo4tRW42ji3PRa3Of+yEenrsmh3ibbFQQFN2smKrGTQWbfqeZTXTzDr3xtHWDER3u0X/duewXOHM6UJuvfV+KJilIAq/xnzVkwaxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tGZPB-0001O4-AJ; Thu, 28 Nov 2024 08:57:41 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tGZP8-000Zj0-2l;
+	Thu, 28 Nov 2024 08:57:39 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tGZP9-002pKH-1h;
+	Thu, 28 Nov 2024 08:57:39 +0100
+Date: Thu, 28 Nov 2024 08:57:39 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [RFC net-next v1 2/2] net. phy: dp83tg720: Add randomized
+ polling intervals for unstable link detection
+Message-ID: <Z0gic12YXSrnGuKl@pengutronix.de>
+References: <20241127131011.92800-1-o.rempel@pengutronix.de>
+ <20241127131011.92800-2-o.rempel@pengutronix.de>
+ <dabcacd6-6e51-489c-b8f1-bd104ac4186f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CYYPR11MB8429.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1a626ae-2a4b-436c-76e8-08dd0f7c69e8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2024 07:15:18.3651
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: V8HldrobVgv2Kpwzx8A42tN2jcXP/PX0AbGnDaJVQYQqlwLF01AQEC65EcUTG2s/h7xBsMNeOywFJG1gEQRvZEndElKCS09TDG3ikXsjO++KSPxom4i5n358wgd0023S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5051
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dabcacd6-6e51-489c-b8f1-bd104ac4186f@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of G=
-rzegorz Nitka
-> Sent: 05 November 2024 17:59
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Nguyen, Anthony L <anthony.l.nguyen@intel.com=
->; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Kolacinski, Karol <k=
-arol.kolacinski@intel.com>; Kubalewski, Arkadiusz <arkadiusz.kubalewski@int=
-el.com>
-> Subject: [Intel-wired-lan] [PATCH v4 iwl-net 3/4] ice: Fix ETH56G FC-FEC =
-Rx offset value
->
-> From: Karol Kolacinski <karol.kolacinski@intel.com>
->
-> Fix ETH56G FC-FEC incorrect Rx offset value by changing it from -255.96 t=
-o -469.26 ns.
->
-> Those values are derived from HW spec and reflect internal delays.
-> Hex value is a fixed point representation in Q23.9 format.
->
-> Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products"=
-)
-> Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-> Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+On Wed, Nov 27, 2024 at 06:33:03PM +0100, Heiner Kallweit wrote:
+> On 27.11.2024 14:10, Oleksij Rempel wrote:
+> > Address the limitations of the DP83TG720 PHY, which cannot reliably detect or
+> > report a stable link state. To handle this, the PHY must be periodically reset
+> > when the link is down. However, synchronized reset intervals between the PHY
+> > and its link partner can result in a deadlock, preventing the link from
+> > re-establishing.
+> > 
+> Out of curiosity: This PHY isn't normally quirky, but completely broken.
+> Why would anybody use it?
 
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Co=
-ntingent worker at Intel)
+Is it rhetorical question, or you are really curios? I can answer it, but it
+will not be a short one ¯\_(ツ)_/¯
 
+> >  /* MDIO_MMD_VEND2 registers */
+> > @@ -355,6 +374,11 @@ static int dp83tg720_read_status(struct phy_device *phydev)
+> >  		if (ret)
+> >  			return ret;
+> > 
+> > +		/* The sleep value is based on testing with the DP83TG720S-Q1
+> > +		 * PHY. The PHY needs some time to recover from a link loss.
+> > +		 */
+> What is the issue during this "time to recover"?
+> Is errata information available from the vendor?
+
+I didn't found errata documentation for this chip. But there is
+"DP83TC81x, DP83TG72x Software Implementation Guide" SNLA404, describing
+the need of reset each 100ms and PHY Reset + PHY Initialization
+sequences:
+https://www.ti.com/lit/an/snla404/snla404.pdf
+
+So far, i was not able to find any justification for this delay, except
+it helped to reduce amount of PHY resets. 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
