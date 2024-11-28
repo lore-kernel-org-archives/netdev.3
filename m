@@ -1,133 +1,142 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C251A286D;
-	Thu, 28 Nov 2024 12:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3382D19B5A9;
+	Thu, 28 Nov 2024 12:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732796101; cv=none; b=FRXYEPfxm+Jlush1/WJfE6k10VZyG+fW5Wl6jQPdEuHEdb5WfU8WfbKQ+PFAj0gUgUlqGoEd2q5Fux6GS+hma6lCRUYgYWB+LiZu/9e45oIX71ubgCUDTmlS2f0Z73EYfcsq+GEDgFI6l7uQ4Iz/hWU6vQuETMpN+Ke4Of5pFiE=
+	t=1732796196; cv=none; b=gPlNCtmx1gbg8t0oOWyTHQ0LQMccfq/3TwuGNx/TqVfEaUw4WO2/Yyn4IKaHNVPiKY7WdE7nOx6UlLPw4DSyqZmxtklYCjr+PUxBzjRHJe6BhVVVoKD/FuEXWnjLqeCZ3sr/g8ucGJV7zx8UGUwhLJM5J8t/++Y+HPhPmmatY5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732796101; c=relaxed/simple;
-	bh=NbjMqZDxwd5fwMDUQRMntD21nvqixRwspGsXvNUU4VY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LMbahG/CdMAsnlZrhfk4Bevzv8BR4f3jAjM7egopU5+kaeCnrfxoeaI43IjHIw+Ywfs1ALadp3k3cDja4/4RAZhN3J8XwvBJQm0duUQwnmPHPD2E9Jy6G58JMQj98C+4k1aV/og1INmLN60Sx7SHJlQmT4z0xpjPVb6SDi5hPq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rIvcyaPA; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rIvcyaPA"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1732796088; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=a+2iRNxo+4wn8SyiCErQfyXgZ5G41KWwwTXasWh3J0E=;
-	b=rIvcyaPAZUd5okZssQrjjKyWY4RYi2VoQAB/EAHPrdZJ7mCzsYTuFHhRYxlji0xHfmZ6XRnaAAe1xsYHP+xcRBnUbwIwDnZw8czOwRL2yfEIL4uMkzyvfYwpkDMhjY+7rVUJFi4DnQsDwwzI+tH6Bdm8MlnciIMSnYtXC9LTfcg=
-Received: from localhost.localdomain(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0WKQ-9Tl_1732796087 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 28 Nov 2024 20:14:48 +0800
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-To: wenjia@linux.ibm.com,
-	jaka@linux.ibm.com,
-	alibuda@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/6] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
-Date: Thu, 28 Nov 2024 20:14:32 +0800
-Message-Id: <20241128121435.73071-4-guangguan.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <20241128121435.73071-1-guangguan.wang@linux.alibaba.com>
-References: <20241128121435.73071-1-guangguan.wang@linux.alibaba.com>
+	s=arc-20240116; t=1732796196; c=relaxed/simple;
+	bh=Bwr9ZrPViGoDhpDsCaHjTym0hlxFTLbYs6+kxkidXYA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Sv9tkXEvTRuFUZGwbp8xuo9v8ASrpHXZ2uyIkyF5zQ97Nf4Uw9Gfd4iUKK7IunTp9FZAtDCR27vvT9o9/GfdrsrA7oLa3jeEv0CFIcuZdCaGUsPMPqkBrEHSNyXdnlPattF2lM7brTy5dEGMtcUuvAPK21kHH21N3mdTU9JJ974=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so3247034a12.1;
+        Thu, 28 Nov 2024 04:16:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732796191; x=1733400991;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u3kvf3OXj33X+g+46pipOXl0SZdSrOn/Cxnccx7DlvA=;
+        b=I7p1Q/PE45kVYtmUplMNQ2tqh46catlKqCdFP6kK+1pLLpzThRbfF2GqzO517luRUg
+         ZX4+pK67ictULygzeB4bgLOZPgwfAj9OqvsNiK2q2IPq59oVWeUPMKYXK+WTjHYurE2H
+         R28ge2XyXdRNPP3rQSbIHn5FzFW/puoTGAApSc2K1fjKnM2s9OHpEcxqXqB0wRksC+Ok
+         50J6ymbS5Bly/TyzA7kqI3pemgoAWYe4DC1GmQvaU19CXN/jfq7m0tbH016AjSTR8nwD
+         DWGSS8lD75LoJBwiHUX6xWaNhY+FVSIAwANGxvqHNGkRGbdqrIE3/K3IHTXiyYAsg33a
+         V68A==
+X-Forwarded-Encrypted: i=1; AJvYcCWGYDwxF+GnIB2V00VaXOkRowh0RLeY+RJNqVsx7EZvLJL4SYo9iJvNBKDC+WJ1jGcTG560y+a0lfrx9H4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDmEuFXvIi7zqEwUXgC09chjwU6M7m5DYPc0TX6yjWZnSzmopm
+	lvmsHgh7LwMQD3HPZdVSc+wf7eNDjJQj/e6vL/VRvkAOGeJwmHWs
+X-Gm-Gg: ASbGncv66jxcZgZxWfojUKHX1cwhfZKnuFfs9HfHJVgUws3mEOUcGAzH23JcIPk/umy
+	JNG2Y1yD5vUYW2HGLgcPIOeLkrnm9nbxBCTlN8jAkgpFuQNYmo06WP156ExSMtCI2NIYOoMNAQj
+	BeyFEDm4MfeimHRQR/WRF0vJxmA6Zv0hpjG948eNtHow2WYTtzZLNMJall39UR9pR33svThzwFu
+	/Rhn0eJud+kyUq5qMGZLwrvrh/2gnlrbi4a5LLK/qu/EFi2BraZ2FvlAbfVsxUlj0wnC0KcHoLC
+	Doc=
+X-Google-Smtp-Source: AGHT+IEtzPhIRVlNfUfrAiV+urnJPeUlNoyUOrecAB6qkfjryGM8GXg9sBZP5QsYZIjX2Kq5h9FRCQ==
+X-Received: by 2002:a17:906:2189:b0:aa5:3663:64c5 with SMTP id a640c23a62f3a-aa5946690damr270156466b.22.1732796191243;
+        Thu, 28 Nov 2024 04:16:31 -0800 (PST)
+Received: from localhost (fwdproxy-lla-115.fbsv.net. [2a03:2880:30ff:73::face:b00c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5997d410dsm61051266b.66.2024.11.28.04.16.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Nov 2024 04:16:30 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 28 Nov 2024 04:16:25 -0800
+Subject: [PATCH] rhashtable: Fix potential deadlock by moving schedule_work
+ outside lock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241128-scx_lockdep-v1-1-2315b813b36b@debian.org>
+X-B4-Tracking: v=1; b=H4sIABhfSGcC/x3MWwqAIBAF0K0M9zsh7e1WIiJ0qqGoUAgh2nvQW
+ cB5EDkIR1h6EPiWKOcBSzojuHU6FlbiYQkmN6XWplXRpXE/3eb5UsU8tU1VFXXeeWSEK/As6d/
+ 64X0/Kf5ZPl0AAAA=
+X-Change-ID: 20241128-scx_lockdep-3fa87553609d
+To: Andrew Morton <akpm@linux-foundation.org>, Thomas Graf <tgraf@suug.ch>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, Tejun Heo <tj@kernel.org>, 
+ Hao Luo <haoluo@google.com>, Josh Don <joshdon@google.com>, 
+ Barret Rhoden <brho@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1932; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Bwr9ZrPViGoDhpDsCaHjTym0hlxFTLbYs6+kxkidXYA=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnSF8dXMIbxvjLvyUTU+nbt5QcGvKSbX9TIK29q
+ f4HW/YIYRmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ0hfHQAKCRA1o5Of/Hh3
+ bejED/9Plc4ODkhczg4Rx0iDPQNxoBroBVsaHCbGh3jtjc9uD1DBRIJOsSunqeIaTfQ8wHudXEB
+ UcvXbxFSOJk+U5owluDuQWm2f6C0YKtndYfuxuGMgnt2P9kiOjxtZtqg2SoL93PaTOsJONrOiAx
+ ANlFCGwbZ6fhK5Kejw76JYTJKnIUg6xNmPCmDiREfFkkAhs5F52LpuHRBzTYKNnf8s/rG7El0t9
+ M4CCl0IsAXNYM+KS/6X8eweP7P/Yr9D1uugMXpPKeA35guyKC/39+3fI6jAhOu4j0zo7EOaGJsj
+ rCOBtd7TrUn36o+ZLttVcTxW7dymiXYe4WSKumDAf5jKI9oM+GTyzKCALJXUZsZfg/rlEBjbA5r
+ I3PZsRWm6wC8tpIEAW3NUmOPC0DNmVvrvOHjlvsFpDmqbBMq/8sSAaMv7go29EB1pQlXbGBZu9R
+ HWE+zj8iyaNK9hPmDoaJB2kWPqOR8LglCmsz3ZBH+6sbk5ETaj/2IMm7tK6+rxWz6XT/BOppYVW
+ oKiTm5l/hGUMPvhiy/hzsXdaifpkH/bX16u3K4HBuqXtd9iWV/e6gmVQpkJC1PGkpK+xRlU+k7y
+ dlVcGPXc4KLYqqDFFPV+sONS2I0GadxkLxvUL2C2//9ahnk59T0eMdwIktamJCIXZoSDKgDZxdJ
+ scY9bBifGrvJJWQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-When receiving proposal msg in server, the field iparea_offset
-and the field ipv6_prefixes_cnt in proposal msg are from the
-remote client and can not be fully trusted. Especially the
-field iparea_offset, once exceed the max value, there has the
-chance to access wrong address, and crash may happen.
+Move the hash table growth check and work scheduling outside the
+rht lock to prevent a possible circular locking dependency.
 
-This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
+The original implementation could trigger a lockdep warning due to
+a potential deadlock scenario involving nested locks between
+rhashtable bucket, rq lock, and dsq lock. By relocating the
+growth check and work scheduling after releasing the rth lock, we break
+this potential deadlock chain.
 
-Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+This change expands the flexibility of rhashtable by removing
+restrictive locking that previously limited its use in scheduler
+and workqueue contexts.
+
+Import to say that this calls rht_grow_above_75(), which reads from
+struct rhashtable without holding the lock, if this is a problem, we can
+move the check to the lock, and schedule the workqueue after the lock.
+
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- net/smc/af_smc.c  | 6 +++++-
- net/smc/smc_clc.c | 4 ++++
- net/smc/smc_clc.h | 6 +++++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ lib/rhashtable.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 9d76e902fd77..8a2f196ab995 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2032,6 +2032,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
- 	if (pclc->hdr.typev1 == SMC_TYPE_N)
- 		return 0;
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx)
-+		return -EPROTO;
- 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
- 		return SMC_CLC_DECL_DIFFPREFIX;
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 6c902639728b767cc3ee42c61256d2e9618e6ce7..5a27ccd72db9a25d92d1ed2f8d519afcfc672afe 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -585,9 +585,6 @@ static struct bucket_table *rhashtable_insert_one(
+ 	rht_assign_locked(bkt, obj);
  
-@@ -2221,7 +2223,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
- 	int rc = 0;
- 
- 	/* check if ISM V1 is available */
--	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
-+	if (!(ini->smcd_version & SMC_V1) ||
-+	    !smcd_indicated(ini->smc_type_v1) ||
-+	    !pclc_smcd)
- 		goto not_found;
- 	ini->is_smcd = true; /* prepare ISM check */
- 	ini->ism_peer_gid[0].gid = ntohll(pclc_smcd->ism.gid);
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 33fa787c28eb..66a43b97eede 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -354,6 +354,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 
- 	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx ||
-+	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-+		return false;
-+
- 	if (hdr->version == SMC_V1) {
- 		if (hdr->typev1 == SMC_TYPE_N)
- 			return false;
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 5fd6f5b8ef03..ac8de6a177fa 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -336,8 +336,12 @@ struct smc_clc_msg_decline_v2 {	/* clc decline message */
- static inline struct smc_clc_msg_proposal_prefix *
- smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
- {
-+	u16 offset = ntohs(pclc->iparea_offset);
-+
-+	if (offset > sizeof(struct smc_clc_msg_smcd))
-+		return NULL;
- 	return (struct smc_clc_msg_proposal_prefix *)
--	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
-+	       ((u8 *)pclc + sizeof(*pclc) + offset);
+ 	atomic_inc(&ht->nelems);
+-	if (rht_grow_above_75(ht, tbl))
+-		schedule_work(&ht->run_work);
+-
+ 	return NULL;
  }
  
- static inline bool smcr_indicated(int smc_type)
+@@ -624,6 +621,9 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
+ 				data = ERR_CAST(new_tbl);
+ 
+ 			rht_unlock(tbl, bkt, flags);
++			if (rht_grow_above_75(ht, tbl))
++				schedule_work(&ht->run_work);
++
+ 		}
+ 	} while (!IS_ERR_OR_NULL(new_tbl));
+ 
+
+---
+base-commit: 0a31ca318eea4da46e5f495c79ccc4442c92f4dc
+change-id: 20241128-scx_lockdep-3fa87553609d
+
+Best regards,
 -- 
-2.24.3 (Apple Git-128)
+Breno Leitao <leitao@debian.org>
 
