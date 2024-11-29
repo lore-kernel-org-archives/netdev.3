@@ -1,75 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF719D8A4;
-	Fri, 29 Nov 2024 12:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732885104; cv=none; b=W5W5r2Mh99uCmCOYNb3LWfWvwXbhPyr/9d+pcy5cauwbNqt6z7G+RwihwqdoJDQdd4w6Cw0rXiIM4FLkl4cwayPiCeoUQ13m5KSGRjZ3rFyuZY/Q5sglY0mkL8LODuXF8WWFZEtCjwbXqh+Qe6m4nVrVdfq6XeRPiJg4/nVUD5s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732885104; c=relaxed/simple;
-	bh=sq/YLAb/fB+2vkIJfrLd/Ha67t4otVRZ7+d52cxNFXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HyyUf5ODjesyvRVRa3SOGKlaVNInI/c9gPc3XMXXqOi6tY6CAnnTUbYKHFMs++EVUg62ScuXmaW++WK4ZpsSBoa8k1CO//XC+F+NEuDbjTzb3gKc+vV4wZ6pzJq3meaRCdgCk1ZzGeynFhHXQQybYPc4zGEKdUslTySjcooiwNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7kF5xOB; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7kF5xOB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F656C4CECF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E5F19D8A2;
 	Fri, 29 Nov 2024 12:58:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732885103;
-	bh=sq/YLAb/fB+2vkIJfrLd/Ha67t4otVRZ7+d52cxNFXI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q7kF5xOB27aQnYfMlebD1tv+LucTFpSonUqh4/C42D2KymsHuuuYHJfajqQ2GiK1n
-	 HYKcPvcK5X+a/go5MSnR17aKSyiocpm7v74tmP/1DAyX7V5UTiqFxOrXtaoMrHb6Nd
-	 epuar4o9D8HJHP8E8N73bMSwpBUwAoljsbuva5MUKbsuHJ8Bsahl5atHbawjX4PbvC
-	 kHoMKvDUAb/e/1JvtDMdC3o5e/QJ73hIRYwpxTtoteEowCZZFOq1CT8gCqWfl4BM4E
-	 AUdY/pOBO0IX6XJc7oqsuaOm2rrTBMBdPzLDaBjPVGJnWuvnA0GqozwSDmK0ZIHjcJ
-	 tq7y5/qjbHmJA==
-Message-ID: <5b6cf8f9-fdaf-4719-b1b2-f4745c671263@kernel.org>
-Date: Fri, 29 Nov 2024 14:58:17 +0200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732885106; cv=none; b=NdB4/8QK2vDVPd6G8CQrIKWeUfZa0MJGEwE2PfydrGSpZr8heYub+YiW3A5QwCzfRuTcVL3mHHSsn/Quy6vOvDEAYVqQQD6qmLMl32WZdlCno3SAsZ63Cv8wUemEzPzERjCYCIWq6/tTui//4SVkRmbb+/08ptBKAL8MM3+7Fms=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732885106; c=relaxed/simple;
+	bh=Vk6T5ntq83lK1TB+cG9bfXykiD9dvIdJrl3RbTb89Yc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ogJOv70EEMj614d3xp35M4TA9XZhod2G28axHyy7F/R/uHYV13hqFPkHKX419rW2elunqf2yc7J0wzkO/8IvZ7DOwS+mFkLFounSp8Jlk7xrAH87RaGrahP+4O8IJCALrIi+fzdstHpD4bEDIO11zNn/u0Ey8+uE/qNx+980WfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 29 Nov
+ 2024 15:58:18 +0300
+Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 29 Nov
+ 2024 15:58:18 +0300
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Luca Coelho
+	<luciano.coelho@intel.com>, Kalle Valo <kvalo@codeaurora.org>, "David S.
+ Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, "Johannes
+ Berg" <johannes.berg@intel.com>, <linux-wireless@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH 5.4/5.10 0/1] Backport fix for CVE-2023-52531
+Date: Fri, 29 Nov 2024 04:58:12 -0800
+Message-ID: <20241129125813.25555-1-n.zhandarovich@fintech.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] net: ti: icssg-prueth: Fix clearing of
- IEP_CMP_CFG registers during iep_init
-To: Meghana Malladi <m-malladi@ti.com>, lokeshvutla@ti.com, vigneshr@ti.com,
- javier.carrasco.cruz@gmail.com, diogo.ivo@siemens.com,
- jacob.e.keller@intel.com, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
- andrew+netdev@lunn.ch
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com, danishanwar@ti.com
-References: <20241128122931.2494446-1-m-malladi@ti.com>
- <20241128122931.2494446-3-m-malladi@ti.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241128122931.2494446-3-m-malladi@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
+ (10.0.10.18)
 
+This patch fixes CVE-2023-52531 [1] present in 5.4 and 5.10 stable
+kernels. The vulnerability concerns flawed pointer arithmetic in
+iwlwifi driver caused by use of spurious casting to (u8 *). Original
+upstream commit [3] removed that cast but kept a change to increment
+a pointer first and only then cast it to (void *) or other type.
 
+However, as older branches did not receive commit 3827cb59b3b8
+("iwlwifi: avoid void pointer arithmetic") [2], the aforementioned
+kept change is also missing, which should be corrected and applied
+to other vulnerable versions. This backport ensures that correction
+and keeps away from dangerous void pointer arithmetic.
 
-On 28/11/2024 14:29, Meghana Malladi wrote:
-> When ICSSG interfaces are brought down and brought up again, the
-> pru cores are shut down and booted again, flushing out all the memories
-> and start again in a clean state. Hence it is expected that the
-> IEP_CMP_CFG register needs to be flushed during iep_init() to ensure
-> that the existing residual configuration doesn't cause any unusual
-> behavior. If the register is not cleared, existing IEP_CMP_CFG set for
-> CMP1 will result in SYNC0_OUT signal based on the SYNC_OUT register values.
-> 
-> After bringing the interface up, calling PPS enable doesn't work as
-> the driver believes PPS is already enabled, (iep->pps_enabled is not
-> cleared during interface bring down) and driver will just return true
-> even though there is no signal. Fix this by disabling pps and perout.
-> 
-> Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-> Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+[PATCH 5.4/5.10 1/1] wifi: iwlwifi: mvm: Fix a memory corruption issue
+Change 'channels' pointer before casting it to (void *).
+Fixes [1].
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-
+[1] https://nvd.nist.gov/vuln/detail/cve-2023-52531
+[2] https://github.com/torvalds/linux/commit/3827cb59b3b8ce4b1687385d35034dadcd90d7ce
+[3] https://github.com/torvalds/linux/commit/8ba438ef3cacc4808a63ed0ce24d4f0942cfe55d
