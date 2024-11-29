@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3C019D06D
-	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF9919D083
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732883258; cv=none; b=QSSof7ULGL18ReBu/7KjjqbK3gRgoRn05f4vPKAQBNZZHT11p43jkfbyPlYOYaEWiqpHr59e3EWG+iysv3TxkjTM0IM/j5AJVPNu3ZTdrxRJmnxjuI/PfFiiJ5si3VCHeKYT5yf77w5a275DRWj4ekPovYlgMESk2OBXUzvoVTo=
+	t=1732883259; cv=none; b=SfEsyXjXdlExoK9Oj6+GrSbmNxLLIwiS2BtUhucEKxXeW7F8kkNXuUgPsjAb94SYGhkwN3+p611NaXKm9/7k8JF+SBMtQrOHCuIdI74vgdxVJFF6r+jbZmRPh1MA4+7K5toTiSHBtmfESUBM3vYrVIGP4qj2t6aiKXVXI2HglX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732883258; c=relaxed/simple;
-	bh=6/608tDubOPvRZw50aMIPy4K1oH69byWhgujTZog154=;
+	s=arc-20240116; t=1732883259; c=relaxed/simple;
+	bh=E/+l/sEtYTBDaKnsJQcv8lGKfLI60QvkRbm4ElVQ2Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqEtokL+Zr6dFraFFtZq/9E7UmAiMzGe6Ny58SSz89an7KTd9HfqivgpX+u4h0+fzlaMr2YTVjrzdlAMsDDCtZS1s3sxEsfOOsZX50pr9KAqr/OaVnVbTayun4mGjXClO+7OtSgv8PYGUqU1EGQIf9BxhV8n49CXcGFHKqfzcBU=
+	 MIME-Version; b=MoGuWybK9sqHrIvnlL8IpR2dBb1DwEPHr9DGs2gAdYgbTgR1dY/EYOCOW53hGAe7/FJKjs5t41/eGZXA6g7kQD2EUtj/PTlkk2fgxxw9kkjDkbz8hOjuQgb2Y//HvZ1Hk19OfReyt7CltRI8ViFiVpU29rVwzC7B2aTJ4T59i8A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tH05s-0007mB-RI
-	for netdev@vger.kernel.org; Fri, 29 Nov 2024 13:27:32 +0100
+	id 1tH05v-0007oa-Ds
+	for netdev@vger.kernel.org; Fri, 29 Nov 2024 13:27:35 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tH05r-000mhB-1U
+	id 1tH05s-000miz-1c
 	for netdev@vger.kernel.org;
-	Fri, 29 Nov 2024 13:27:32 +0100
+	Fri, 29 Nov 2024 13:27:33 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id E7884381133
-	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:31 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id EA7C3381157
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:32 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 182E4381104;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 48122381107;
 	Fri, 29 Nov 2024 12:27:30 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id ced4dbfe;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id e7b69df0;
 	Fri, 29 Nov 2024 12:27:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -47,9 +47,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 03/14] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
-Date: Fri, 29 Nov 2024 13:16:50 +0100
-Message-ID: <20241129122722.1046050-4-mkl@pengutronix.de>
+Subject: [PATCH net 05/14] can: hi311x: hi3110_can_ist(): fix potential use-after-free
+Date: Fri, 29 Nov 2024 13:16:52 +0100
+Message-ID: <20241129122722.1046050-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241129122722.1046050-1-mkl@pengutronix.de>
 References: <20241129122722.1046050-1-mkl@pengutronix.de>
@@ -67,88 +67,48 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-Ensure that the statistics are always updated, even if the skb
-allocation fails.
+The commit a22bd630cfff ("can: hi311x: do not report txerr and rxerr
+during bus-off") removed the reporting of rxerr and txerr even in case
+of correct operation (i. e. not bus-off).
 
-Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
+The error count information added to the CAN frame after netif_rx() is
+a potential use after free, since there is no guarantee that the skb
+is in the same state. It might be freed or reused.
+
+Fix the issue by postponing the netif_rx() call in case of txerr and
+rxerr reporting.
+
+Fixes: a22bd630cfff ("can: hi311x: do not report txerr and rxerr during bus-off")
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
+Link: https://patch.msgid.link/20241122221650.633981-5-dario.binacchi@amarulasolutions.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/net/can/spi/hi311x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index 511615dc3341..cc371d0c9f3c 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index 148d974ebb21..b67464df25ff 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -671,9 +671,9 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
+ 			tx_state = txerr >= rxerr ? new_state : 0;
+ 			rx_state = txerr <= rxerr ? new_state : 0;
+ 			can_change_state(net, cf, tx_state, rx_state);
+-			netif_rx(skb);
  
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (unlikely(!skb))
--		return 0;
+ 			if (new_state == CAN_STATE_BUS_OFF) {
++				netif_rx(skb);
+ 				can_bus_off(net);
+ 				if (priv->can.restart_ms == 0) {
+ 					priv->force_quit = 1;
+@@ -684,6 +684,7 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
+ 				cf->can_id |= CAN_ERR_CNT;
+ 				cf->data[6] = txerr;
+ 				cf->data[7] = rxerr;
++				netif_rx(skb);
+ 			}
+ 		}
  
- 	/* check for 'last error code' which tells us the
- 	 * type of the last error to occur on the CAN bus
- 	 */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 	switch (lec_type) {
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
- 		stats->rx_errors++;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
- 		stats->rx_errors++;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
- 		stats->rx_errors++;
- 		break;
- 	default:
- 		break;
- 	}
- 
-+	if (unlikely(!skb))
-+		return 0;
-+
- 	netif_receive_skb(skb);
- 	return 1;
- }
 -- 
 2.45.2
 
