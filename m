@@ -1,147 +1,194 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2985161321;
-	Fri, 29 Nov 2024 08:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C26AD23
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 08:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732869868; cv=none; b=unaipGLCCrAdp7m095Le/ARH62+p1IJwh73BKKvn+vzN8yuhMM5ZSoMc5JUUMMES81XrwbRqwx32MowSWuaxcQf2kfbsEuNY2oNittBMowU3qp2Hx6ttl7wbhx2WtOG2TN4DJb2CE2+CXOGy1sTSa0UBAfLoYf882r3K3yDvBak=
+	t=1732870530; cv=none; b=c1VNcV35eG1Dz0VeKu8O1E69tGvG2mkwJGNmkA3i1kWySeNdXfyEsxJiZMFPzmTtoH0lNkps3wuAHR3mq3olQTW3RLZgLr+0f3I12o7eco0YH7hghiD1tNz8CiYzhOPTRVJhD1T9jsB7GtCtuV4apPJ0Fuzzx3H9b3r+aUYolCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732869868; c=relaxed/simple;
-	bh=5sqR9uQjM/ILZukK9MwwvoCAHBbjzx1SgZRUJfRZKuU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ka+zVcFXmX+UxpI50mmRyd+RUL8ARUpl4YI/K4+JuD6zUlm3msdsQeVqkOa1d9unK5+EDNK1fawJ6Fy59DOWOfK7gKAclmUApZHUdoQqEUlqindorUkfDJ+TBur2MuHdKCY04104BymxjKPul04WQ5Q/jikt9adOZubxVeKFtBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-85b9c456f46so120569241.3;
-        Fri, 29 Nov 2024 00:44:26 -0800 (PST)
+	s=arc-20240116; t=1732870530; c=relaxed/simple;
+	bh=qM20KHn5jAFgUZLCV2Slj4cu5IQfmkKXuvbqSICjsN0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=j3vUp8BUcGDysvEj+bYo3vN9qvyElNzspCH5b7bT4544hmVCTnanQF9GxHB5EEYNnDmF5Lnp47w/ngudUiu2oWuf7/HLTl5CcYNcDUxFRl4CXPq4/Ze7YRPDiJ1J1VGEU2yRF+gszS4NHjM7tTW3chFS8SWCcAiHNlnai+mnZ3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a7807feadfso15087835ab.2
+        for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 00:55:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732869865; x=1733474665;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QeED+wrJM5lj1ej/ygLCajwOh+yVxntCXNjbUrDu5EQ=;
-        b=iC1A+om6WmwwwLA8LzLvylWay5zw3t7H3aZm++DwvbB9vh4XtYNZJxm869vAewkW6V
-         xNZPalwGQO75ikRixKX5qQeJx2PYrGNO3j+h5TLwcvBV4UFq2Pw1P0qPCv37Xy72tgLK
-         TUbf1JS4aU0DMMH4ICdPYF814sDzTJU3oVrpM20g/tJzcTgw66e25hj9wYXdU8QUZbAe
-         pawPlmnPzVD/LMTTlEkJz38kaCRuC6ukeV3PDs1D+z0L1tEIwo9psme71wiuLxp+gN2I
-         fwoxlCQdR0epBLSpB+4mreyrH84uLQ/3H6uXLxKMbQKyzwsUarIeJmZA+UtOfm2G4tfi
-         Nnlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUP4sfAJNJdcouV+l7FPEn7G7TW/lv0jlEjA239cSavA/hKSn2D/6IKO8nPCn5ZHEziBvQrPqD4rb7NlWx5@vger.kernel.org, AJvYcCVuINbme7K8aqUausGmE+xOifeBD82QU9qYQAAsbEYwGn0sKi19qQWY4CzUrzPoqP3HeTBIJ2wGbwc5@vger.kernel.org, AJvYcCWujU5eIvZV63t9kjGwAN+DKgJWCmHTbQ96tFfuqPBGp+gnSHxYirNg/+ZRVZkITbkefaqYQRxk@vger.kernel.org, AJvYcCWzes+ZgN8668INrYgMVYHP9jcuk1Kt2s3t4fnOCnOuQ49jvETJ/BqXKA52CiOl4a2mjW6J6yccqUL8@vger.kernel.org
-X-Gm-Message-State: AOJu0YzICj84xa3zef+7UwOLmku+bAGeubWpr8SfXm5n2Hp7Zvv7ROe6
-	hBsyEE4psJuDZRM47GJ47CeQtn+/k8V3muSufz2aOgJY4EyMB8KwvtDooUp18Ps=
-X-Gm-Gg: ASbGncuK7zIsuGcfNbT7aydZgvYWPj4vqoBw47n2zUmZGIEtr3mcJA5x8cHAlUlwue8
-	UQRQt9T/6cwsh61DGpw4zhvGQRYYBSrntmL8NXlOwDKln5cTqaRrKID1WcN9JivkYmA/Gp/d8K3
-	B/3UYVeXEaJDAWgBz6si68zw2K4769THqAP+5ddVBh5PL8bqws6w/cOw4gOjZx0hE/gSAetCDym
-	/JiFzmuy+Qt9TJSu2dBpoYtqp9Sx2Sl5Sa1BjbVpTa28PciTF/5pDcITe4mPRPIRGNSVBAy0P+W
-	FLDqCyGhjdYK
-X-Google-Smtp-Source: AGHT+IGT3qqJVhbwx4mb8rV4gpFfFkb7AcM5/lsMFvYhcuxpxnktolgSVGHTY4WmlWqcV8QyGlAjgg==
-X-Received: by 2002:a05:6102:370b:b0:4ad:4bfd:5b0d with SMTP id ada2fe7eead31-4af449b8e70mr12728643137.23.1732869864920;
-        Fri, 29 Nov 2024 00:44:24 -0800 (PST)
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-85b82c9135esm660654241.27.2024.11.29.00.44.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Nov 2024 00:44:23 -0800 (PST)
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4af490d79d4so413059137.0;
-        Fri, 29 Nov 2024 00:44:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUfZTEz8UpGtMjnuMnNjfPS5PW7PKRAnVl1EyUF7ym62fG7J5z7jxtkmuYF5dEylIs76nu2e7I1pFVw@vger.kernel.org, AJvYcCVEGd0/50p/NgZ/1auTyFaW7XZvILoYN0wJKDbN41hysdGhC7PvTjcZ+3VNdWV9weL0jvQET5BErQgk@vger.kernel.org, AJvYcCVamZnMylmcmo+kzs1Xk6wR/PLO+fQdtlQiyDLjaWYtInvGY/5s4x2ivIf4sgV7bz7afevVJXcXcV2yPYDV@vger.kernel.org, AJvYcCXjETMPJud9L5Bsg/4S7PBqFzUtDVvw2SggaZFYPt7IgGTR5weWkPR594+B6y+WLtfcs6DNabW+@vger.kernel.org
-X-Received: by 2002:a05:6102:508a:b0:4af:594e:ebdc with SMTP id
- ada2fe7eead31-4af594ef13amr6615796137.5.1732869863438; Fri, 29 Nov 2024
- 00:44:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732870528; x=1733475328;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lR+p6NE3/ylb/sNtXOnSWDpXj/jDLqlspCqpCJsrYUs=;
+        b=Y+kX2taqYO4fL796jo2ZtbucfJNfe+D/hgiX9vFRG6xXyXqVwesAhNlqyNiM/ihnIo
+         0KMOHHe3TOADhyd7Ia9tSI+LYKNsI5zEuGGbGP8henL2QoDnkKL2Ib6Ht+ap47tI3yO1
+         Zp6CGnimmX7GBlDkSWtVYiuBk63lshRi6NIPi0aAc0uyN0PnRigemjaI3qTvqOX5HIaH
+         GHpSOxsKwUZraRQGPyf+3q0wzs7d0Xokl00fwOuRrBd4aXY3WOUIYh3lu6eFiNJiOb17
+         4hgb+Dj9OPdOisKBJB5OlT5al4f8fa6VfN/Gf7V6guNeq86qKUvrx6XP+n1uXu5x4/Ub
+         lqQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjU7mKKJjgunTjuGGVoCtwgcnjgi9eX3F0zKDC6AHymteg/zXotYCCnYV0qc/3DgQvW9iGHWM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyz8JU1ybQH7maEk+0GNHOybUxjUpCOHhVN5Q6vEuevVDEq2Mw
+	XNIFs+VR6FpUT46JX6AE9kqGmZzpoA2rAl73sWzIYv4fdJH/l71ZF3dGqiUWpUgks2fMjOp7ud0
+	OVE6l8yL/dYj1xNuD6+bCWspiz2fpFIdge/OR/cnWu8d486YpTonLvfs=
+X-Google-Smtp-Source: AGHT+IHPLcB/b9JLed7OoEV9zLx/4zMeKD0hmJ9n6HKfcyCZnnQp2qTsoSXlfpciYJsd/Oys+DOBVQfxG3BTz4+2ITnH/IXZBwZH
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241010063611.788527-1-herve.codina@bootlin.com>
- <20241010063611.788527-2-herve.codina@bootlin.com> <dywwnh7ns47ffndsttstpcsw44avxjvzcddmceha7xavqjdi77@cqdgmpdtywol>
- <20241129091013.029fced3@bootlin.com> <1a895f7c-bbfc-483d-b36b-921788b07b36@app.fastmail.com>
-In-Reply-To: <1a895f7c-bbfc-483d-b36b-921788b07b36@app.fastmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 29 Nov 2024 09:44:11 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWXgXiHNUhrXB9jT4opnOQYUxtW=Vh0yBQT0jJS49+zsw@mail.gmail.com>
-Message-ID: <CAMuHMdWXgXiHNUhrXB9jT4opnOQYUxtW=Vh0yBQT0jJS49+zsw@mail.gmail.com>
-Subject: Re: [PATCH v9 1/6] misc: Add support for LAN966x PCI device
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Herve Codina <herve.codina@bootlin.com>, Michal Kubecek <mkubecek@suse.cz>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Simon Horman <horms@kernel.org>, Lee Jones <lee@kernel.org>, 
-	"derek.kiernan@amd.com" <derek.kiernan@amd.com>, "dragan.cvetic@amd.com" <dragan.cvetic@amd.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Lars Povlsen <lars.povlsen@microchip.com>, 
-	Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon <daniel.machon@microchip.com>, 
-	UNGLinuxDriver@microchip.com, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, Andrew Lunn <andrew@lunn.ch>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Netdev <netdev@vger.kernel.org>, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+X-Received: by 2002:a05:6e02:1a02:b0:3a7:9347:5465 with SMTP id
+ e9e14a558f8ab-3a7c5523826mr116629975ab.3.1732870528021; Fri, 29 Nov 2024
+ 00:55:28 -0800 (PST)
+Date: Fri, 29 Nov 2024 00:55:28 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6749817f.050a0220.253251.00a8.GAE@google.com>
+Subject: [syzbot] [net?] BUG: soft lockup in sctp_generate_t1_init_event
+From: syzbot <syzbot+64802c9d544a016044ac@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 29, 2024 at 9:25=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote=
-:
-> On Fri, Nov 29, 2024, at 09:10, Herve Codina wrote:
-> > On Thu, 28 Nov 2024 20:42:53 +0100
-> > Michal Kubecek <mkubecek@suse.cz> wrote:
-> >> > --- a/drivers/misc/Kconfig
-> >> > +++ b/drivers/misc/Kconfig
-> >> > @@ -610,6 +610,30 @@ config MARVELL_CN10K_DPI
-> >> >      To compile this driver as a module, choose M here: the module
-> >> >      will be called mrvl_cn10k_dpi.
-> >> >
-> >> > +config MCHP_LAN966X_PCI
-> >> > +  tristate "Microchip LAN966x PCIe Support"
-> >> > +  depends on PCI
-> >> > +  select OF
-> >> > +  select OF_OVERLAY
-> >>
-> >> Are these "select" statements what we want? When configuring current
-> >> mainline snapshot, I accidentally enabled this driver and ended up
-> >> flooded with an enormous amount of new config options, most of which
-> >> didn't make much sense on x86_64. It took quite long to investigate wh=
-y.
-> >>
-> >> Couldn't we rather use
-> >>
-> >>      depends on PCI && OF && OF_OVERLAY
-> >>
-> >> like other drivers?
->
-> Agreed.
->
-> I would write in two lines as
->
->         depends on PCI
->         depends on OF_OVERLAY
->
-> since OF_OVERLAY already depends on OF, that can be left out.
-> The effect is the same as your variant though.
+Hello,
 
-What about
+syzbot found the following issue on:
 
-    depends on OF
-    select OF_OVERLAY
+HEAD commit:    28eb75e178d3 Merge tag 'drm-next-2024-11-21' of https://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1576a530580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ba7dd83119eb53b6
+dashboard link: https://syzkaller.appspot.com/bug?extid=64802c9d544a016044ac
+compiler:       aarch64-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm
 
-as "OF" is a clear bus dependency, due to the driver providing an OF
-child bus (cfr. I2C or SPI bus controller drivers depending on I2C or
-SPI), and OF_OVERLAY is an optional software mechanism?
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Gr{oetje,eeting}s,
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/384ffdcca292/non_bootable_disk-28eb75e1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4600137dc19a/vmlinux-28eb75e1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/307506ce5736/zImage-28eb75e1.xz
 
-                        Geert
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+64802c9d544a016044ac@syzkaller.appspotmail.com
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+watchdog: BUG: soft lockup - CPU#0 stuck for 23s! [kworker/u8:6:779]
+Modules linked in:
+irq event stamp: 875487
+hardirqs last  enabled at (875486): [<ffff80008525de50>] __exit_to_kernel_mode arch/arm64/kernel/entry-common.c:85 [inline]
+hardirqs last  enabled at (875486): [<ffff80008525de50>] exit_to_kernel_mode+0x38/0x118 arch/arm64/kernel/entry-common.c:95
+hardirqs last disabled at (875487): [<ffff80008525fff8>] __el1_irq arch/arm64/kernel/entry-common.c:557 [inline]
+hardirqs last disabled at (875487): [<ffff80008525fff8>] el1_interrupt+0x24/0x54 arch/arm64/kernel/entry-common.c:575
+softirqs last  enabled at (836530): [<ffff800082d402d8>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
+softirqs last  enabled at (836530): [<ffff800082d402d8>] nsim_dev_trap_report drivers/net/netdevsim/dev.c:820 [inline]
+softirqs last  enabled at (836530): [<ffff800082d402d8>] nsim_dev_trap_report_work+0x6c4/0xa9c drivers/net/netdevsim/dev.c:851
+softirqs last disabled at (836531): [<ffff800080010758>] __do_softirq+0x14/0x20 kernel/softirq.c:588
+CPU: 0 UID: 0 PID: 779 Comm: kworker/u8:6 Not tainted 6.12.0-syzkaller-07749-g28eb75e178d3 #0
+Hardware name: linux,dummy-virt (DT)
+Workqueue: events_unbound nsim_dev_trap_report_work
+pstate: 10000005 (nzcV daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __percpu_read_32+0x0/0x58 arch/arm64/include/asm/percpu.h:125
+lr : lockdep_enabled kernel/locking/lockdep.c:119 [inline]
+lr : lock_is_held_type+0x68/0x1b4 kernel/locking/lockdep.c:5914
+sp : ffff800080006a60
+x29: ffff800080006a60 x28: ffff00001ac99050 x27: 0000000000000003
+x26: 00000000ffffffff x25: 1ffff00010000d79 x24: ffff800086c84448
+x23: 0000000000000000 x22: ffff800080006bc0 x21: ffff800086ed8960
+x20: dfff800000000000 x19: ffff000011d8bf00 x18: 0000000032b43c88
+x17: 00000000000080fe x16: 0000000000000000 x15: 1fffe0000273a514
+x14: 1ffff000110ce4fc x13: ffff0000139d28c0 x12: ffff700010000d7e
+x11: 1ffff00010000d7d x10: ffff700010000d7d x9 : dfff800000000000
+x8 : ffff800080006bf0 x7 : 0000000000000000 x6 : ffff700010000d78
+x5 : ffff800080006bc4 x4 : ffff800080007488 x3 : 1fffe0000273a3c9
+x2 : 0000000000000000 x1 : ffff800086c84448 x0 : ffff000069f74448
+Call trace:
+ __percpu_read_32+0x0/0x58 arch/arm64/include/asm/percpu.h:47 (P)
+ lockdep_enabled kernel/locking/lockdep.c:119 [inline] (L)
+ lock_is_held_type+0x68/0x1b4 kernel/locking/lockdep.c:5914 (L)
+ lock_is_held include/linux/lockdep.h:249 [inline]
+ rcu_read_lock_held kernel/rcu/update.c:351 [inline]
+ rcu_read_lock_held+0x54/0x70 kernel/rcu/update.c:345
+ fib6_node_lookup_1+0x284/0x6c4 net/ipv6/ip6_fib.c:1620
+ fib6_node_lookup+0xc0/0x14c net/ipv6/ip6_fib.c:1649
+ fib6_table_lookup+0xbc/0x70c net/ipv6/route.c:2191
+ ip6_pol_route+0x164/0xbcc net/ipv6/route.c:2231
+ ip6_pol_route_output+0x50/0x7c net/ipv6/route.c:2606
+ pol_lookup_func include/net/ip6_fib.h:616 [inline]
+ fib6_rule_lookup+0xf8/0x560 net/ipv6/fib6_rules.c:117
+ ip6_route_output_flags_noref net/ipv6/route.c:2639 [inline]
+ ip6_route_output_flags+0x158/0x4b0 net/ipv6/route.c:2651
+ ip6_dst_lookup_tail.constprop.0+0xcc8/0x1b68 net/ipv6/ip6_output.c:1156
+ ip6_dst_lookup_flow+0x90/0x16c net/ipv6/ip6_output.c:1259
+ sctp_v6_get_dst+0x854/0x144c net/sctp/ipv6.c:384
+ sctp_transport_route+0xf8/0x2b8 net/sctp/transport.c:455
+ sctp_packet_config+0x7b8/0xa88 net/sctp/output.c:103
+ sctp_outq_select_transport+0x16c/0x59c net/sctp/outqueue.c:869
+ sctp_outq_flush_ctrl net/sctp/outqueue.c:903 [inline]
+ sctp_outq_flush+0x234/0x2540 net/sctp/outqueue.c:1212
+ sctp_outq_uncork+0x54/0x74 net/sctp/outqueue.c:764
+ sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1818 [inline]
+ sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
+ sctp_do_sm+0x1604/0x4b70 net/sctp/sm_sideeffect.c:1169
+ sctp_generate_timeout_event+0x154/0x2c8 net/sctp/sm_sideeffect.c:295
+ sctp_generate_t1_init_event+0x18/0x24 net/sctp/sm_sideeffect.c:321
+ call_timer_fn+0x1b0/0x7b4 kernel/time/timer.c:1793
+ expire_timers kernel/time/timer.c:1844 [inline]
+ __run_timers+0x50c/0x71c kernel/time/timer.c:2418
+ __run_timer_base kernel/time/timer.c:2430 [inline]
+ __run_timer_base kernel/time/timer.c:2422 [inline]
+ run_timer_base+0x110/0x180 kernel/time/timer.c:2439
+ run_timer_softirq+0x1c/0x44 kernel/time/timer.c:2449
+ handle_softirqs+0x2e8/0xd44 kernel/softirq.c:554
+ __do_softirq+0x14/0x20 kernel/softirq.c:588
+ ____do_softirq+0x10/0x1c arch/arm64/kernel/irq.c:81
+ call_on_irq_stack+0x24/0x4c arch/arm64/kernel/entry.S:891
+ do_softirq_own_stack+0x1c/0x2c arch/arm64/kernel/irq.c:86
+ do_softirq kernel/softirq.c:455 [inline]
+ do_softirq+0x12c/0x150 kernel/softirq.c:442
+ __local_bh_enable_ip+0x414/0x4a4 kernel/softirq.c:382
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:167 [inline]
+ _raw_spin_unlock_bh+0x44/0x54 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ nsim_dev_trap_report drivers/net/netdevsim/dev.c:820 [inline]
+ nsim_dev_trap_report_work+0x6c4/0xa9c drivers/net/netdevsim/dev.c:851
+ process_one_work+0x7b8/0x189c kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x730/0xb74 kernel/workqueue.c:3391
+ kthread+0x27c/0x300 kernel/kthread.c:389
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 5489 Comm: syz.2.701 Not tainted 6.12.0-syzkaller-07749-g28eb75e178d3 #0
+Hardware name: linux,dummy-virt (DT)
+pstate: 20000010 (nzCv q A32 LE aif -DIT -SSBS)
+pc : 0000000000018b8c
+lr : 0000000000018b8c
+sp : 0000000020000370
+x12: 0000000020000370
+x11: 00000000f76b10bc x10: 00000000003d0f00 x9 : 0000000000006364
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 00000000000001e4 x1 : 0000000000000004 x0 : 00000000ffffffff
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
