@@ -1,168 +1,132 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4546115852E;
-	Fri, 29 Nov 2024 09:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE21170A15
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 09:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732871733; cv=none; b=PMLbqV3cGq+qQoK6xIIXOVPY8myizKO12UVZQimInJOYD6lfMnqMNwKlgxfSv7D7vI+ABDdHfJM1T1eeO1QGsjThWVf+pQOJ5b20Bxls1MlXm1CAqC4O6EABME6DZGp885BJvFEezQNzOYIyeFPpbROaijDy7DKOW0kye94BlJM=
+	t=1732871952; cv=none; b=JUAFSth8ga8SJssRkgm7bABYs73UtVkeCQ5QFaawsUdeH3taiJs1x6fjXjnRvAoH0RdHJdcora2ZSTxQIwnY5gDGyCy02GCO7E/hqFitnklLO1+sAdBHOOb4ZD0GSbKuc/mjloauh7INBF/GFG+PTAGFE/gposyO1gZTOje8Y/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732871733; c=relaxed/simple;
-	bh=KaqlpHEGYnYZ87Z3/IzbVZ2RzQNqZFTf5v2/p2TYLCY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iGi8u1uCMa8pQGxS2/BT506dZko4tTcMnygAPBsTXz5tWs3a4MzmJeZUuremJy+QmE6nou0yFWlheFO/6s3tzNbdCedhS4mKHOvH1mBFllOe42FkvgxGjwN4c2ws0+ZqGIScBhXQHaPIBQaHZua7b6lWQNK22MANE/7k0ueecek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRwAviy9; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732871952; c=relaxed/simple;
+	bh=g79H7tIgDD6sOOJLZvjgc74BHN39nTif8XwYXNhWZPI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rOqg3Y+2kv4qrMuIrdZajzWJPn5rtJ/AYibpmdfhEsvP7ALocWdT42kRdUE0GDYo6YI/J7GE3oiXHK5Nh4gVdmgy48kOLn+IFsoKOt8bKrj/uBrr+fuxAfS2yR3Azh9fJMn5SVs85ai0tV+vVNxmfSE/dZUwbHWC3Dhm/fn2DYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LB6a0cM4; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRwAviy9"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21210eaa803so13902335ad.2;
-        Fri, 29 Nov 2024 01:15:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LB6a0cM4"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa51bf95ce1so319416566b.3
+        for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 01:19:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732871731; x=1733476531; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HUcwmQCkeGqB0StakEVOLLLoTkvnDgPEcHpdDrPO958=;
-        b=ZRwAviy9U3x+3E7ln2aA9DRpCNanp9zlO3g7Y84aXn43C2Hd57Vlx5UWEkJlxTRTew
-         c+IjgKVwURG6Xg0BUouoMQyNzFE/JqN9cFfvs4SqG5LRNAwF89f/yXjXHxPDHtg7M62g
-         VY8oBs6PO2BAqDrVfDduwhrSL5XCoj0sBK5XmwdAlC3FiJg2M4yfRLWt9WsS7GBxy83s
-         dVsiO95uMlZmjIHQT01iR4IAU8a0qjB75HyjZipn+BQGuQPmPozqDHbtZcGPvrUCR8Wg
-         9F2L5feVPetiXE8wmyH2Hno0ZRdg9jTZ018yFHOZ6sUOcWrZr5eY95ouoKoHDDOs0TZd
-         P1EQ==
+        d=google.com; s=20230601; t=1732871949; x=1733476749; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aD+G31sh9eiAnBFsgKCay0J/mHjjzI9Np4ku3nZS91I=;
+        b=LB6a0cM4GXWARyRqH1iNff1Z+PwmYV7oiTU5nuCxqnMdTcmUpFkVSLJehmdiklwZyW
+         /PR+v44Vx0/i7mmB1dB0ZPoZw19LxpCTNLucUqqLIW2/bm2KE6Dd+DUm2u4BnH7l5pNX
+         kjN79p3iGfhsbWpnHLcQn7JtlGjPeaAqVvhCrFZKEVKesGlwlKdvmeXdph1rOZA2Xupy
+         hffcaF7IB02GYIEy6gCB/PAsV12G3sECTkpRXEh+PNeo1Immkidl1a44eju2pB1jPCNy
+         k3k0wnux/WMybr0TdRoTtw7uWv6zfmK746j2ai394Ylpt7OgUfmMPRyr9LAm9TLFSdo4
+         nPyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732871731; x=1733476531;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HUcwmQCkeGqB0StakEVOLLLoTkvnDgPEcHpdDrPO958=;
-        b=w3sHJ2AKSdySm5HdRNH6uoB8/I2wD+jzXvvDgtrPdJ3JblHCQp5OAdW8iBCHp93LV7
-         JpAGIsvgAWDprMtuH7gi9jkSzsIASbmR9BO89sLqikV3KAhnQebBpewb/Pym0VbeXJu6
-         B+7M6cbGEsYzdWmZXIipguPjcHNY42+kkUEUyZ70544eGUEi6HsaAc7JajNnnws7KW0z
-         PQNfqCrPWTVEuDF+KJ3xvD3fzGyvjX6CRrmIaAQZ96VpX4ydK5yt/c+P9fIJ65nobF3c
-         WX0XKEz/uWWgYCDajC84w09cYAHaRJCtineA+mT70N0I97jwraxGW48NwGea2eI9cTTK
-         G+mA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTEJJRPXOOS0cNDzesajDrM4Uy9eeTQFqc7fzvS49edj2jTkZOyvTMctmhUnNHAAVPcKbBQmK5r9+53sI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJFjQwOadTLMgByy+n6J42Z8Q1ej9jE1UsHxjw0Vd7A/0vZizI
-	CRb4LkfXrw6nwnl3RXfn82FDJlyiDNNjiqGRsmgc/Ixc58AvBiCn
-X-Gm-Gg: ASbGncuo6edCnmRm1QV0pMHKbiyqzRW84+08Kxk53uK41CJngAfmcOjRK5AUCINcgL0
-	BeoMaZYOo9zRX66UoLCevwyrX2KtDmk8n/dW6ReNaoUTksO8J4thMtcodrULd81tHLsTHVivES4
-	ICQJHabeuWhrjgnfodZL1Dk/JyGM8w69cizPzoK38KxqJ0Tk1kcOLEgMU1XrL1viJ5VHbCiM4kF
-	hCn9BBhNA0bgxLgdEkVgs6WtXHg8ma1gkMoahY5+5O3hX1NFWzJhPAG5cYBx+eyZaxIVRV/i0ei
-	GNzdVCKfdk8dgIYZEpupkCG23iw=
-X-Google-Smtp-Source: AGHT+IF9d2ojpg7Jhyc7ajdo+FaCJ9zRYOLGCTGSJVFkffaKronYolhITsWDHjFSdXN+lSk9ynSsMg==
-X-Received: by 2002:a17:902:e949:b0:20b:775f:506d with SMTP id d9443c01a7336-215018568dcmr141201435ad.34.1732871731348;
-        Fri, 29 Nov 2024 01:15:31 -0800 (PST)
-Received: from localhost.localdomain (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215475446e0sm5636125ad.92.2024.11.29.01.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Nov 2024 01:15:30 -0800 (PST)
-From: Potin Lai <potin.lai.pt@gmail.com>
-Date: Fri, 29 Nov 2024 17:12:56 +0800
-Subject: [PATCH] Revert "net/ncsi: change from ndo_set_mac_address to
- dev_set_mac_address"
+        d=1e100.net; s=20230601; t=1732871949; x=1733476749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aD+G31sh9eiAnBFsgKCay0J/mHjjzI9Np4ku3nZS91I=;
+        b=bPaOLQOhypB94XM9Jtgj9+QDZSrWg4EbRCdLUnarA/mPk2+DC8szPqO9KBwUfUZ+lW
+         8U4dvfiGtdnrKzDjdh81shqI84a7njgWFGfmoq+DJNJKo4PISmrPtFLg/LXW0HsBkqCO
+         SHLAIcOzcJK6iCkoZV1nY9wxaxPDaCCExjnJhUepx8iDH6r/BWxHf2S8RH5MmBvS/qV6
+         Q0YF+3FUrceop2jyLn2aOilQH1N9XWsBWLwrxAHDz5cKeZcEh8L78l4P6LM5FHvCjdck
+         /8Y2hXBYbJIjehigatC9by/jERsDEVze0fFQdVckp/jBAwbOnkgOq3A7tw1L4hD3GQvY
+         gztw==
+X-Gm-Message-State: AOJu0YywCsySaShXz8tE6h5mR479W4aALyJX/nc42qs8GQjpRO1Y91BU
+	1mK/+6TiwXew+gSbc1/Cipfm/XpTjAvnrI77MPIIsLcGG5p1CjEUVjUclnRLErHqaYhlTjbRlvg
+	hN+RW6F7JwoZYtNNfeglStXDSYxg0TRTCY+3g
+X-Gm-Gg: ASbGncvR3bTX6Wx0UTr2a/NPkeEZW9rvL0U3mpDAO2dWcgpUW7zxn1NeD9nBtUt0UUF
+	E/fsPtlWDy5dinwLumgRaUB7/Trjc7uo=
+X-Google-Smtp-Source: AGHT+IHWERt/0pgD5kLacjbXchmlIltg6Ui9qU0nhvcGZ+VCsHYIfdH8hVFaOO0EB6DrOGFANRVTa1Tdu9myVnsa2RY=
+X-Received: by 2002:a17:906:9350:b0:aa5:427d:b101 with SMTP id
+ a640c23a62f3a-aa580f57d4amr1079397266b.36.1732871949390; Fri, 29 Nov 2024
+ 01:19:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-potin-revert-ncsi-set-mac-addr-v1-1-94ea2cb596af@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJeFSWcC/x2NQQqDMBAAvyJ77oJZqka/UnoIyabdg1F2QymIf
- zd4HBhmDjBWYYOlO0D5JyZbaeAeHcRvKB9GSY2Beno6RzPuW5WCTWWtWKIJGldcQ8SQkuLkiDL
- 5eaTBQ4vsyln+9+D1Ps8LBCu133AAAAA=
-To: Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Patrick Williams <patrick@stwcx.xyz>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Cosmo Chou <cosmo.chou@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
- Potin Lai <potin.lai.pt@gmail.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732871728; l=3556;
- i=potin.lai.pt@gmail.com; s=20240724; h=from:subject:message-id;
- bh=RuK+WbLgsjHtZ+l4K6wvPZvX+fDp3WNk9HOtKfGMKfU=;
- b=yH8EY9Qu2NPBZZvUmGOSfCB9tx1OahEnESLVkTIzFHdupqIm5Fu0wuIXTJKzd/UJcAbFqZnpi
- lJ8DuRCvejyAL36WpaRQASwkiHiEBHatUNJzlv3FS/Iyl8cCXZjeltx
-X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
- pk=6Z4H4V4fJwLteH/WzIXSsx6TkuY5FOcBBP+4OflJ5gM=
+References: <20241128085950.GA4505@incl>
+In-Reply-To: <20241128085950.GA4505@incl>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 29 Nov 2024 10:18:58 +0100
+Message-ID: <CANn89iKEbCKUxieR298R5-BaFQUDXV0o+J3bWjHqv4LyaYDMYw@mail.gmail.com>
+Subject: Re: [PATCH v2 net] net/ipv6: release expired exception dst cached in socket
+To: Jiri Wiesner <jwiesner@suse.de>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Xin Long <lucien.xin@gmail.com>, yousaf.kaukab@suse.com, andreas.taschner@suse.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Potin Lai <potin.lai@quantatw.com>
+On Thu, Nov 28, 2024 at 9:59=E2=80=AFAM Jiri Wiesner <jwiesner@suse.de> wro=
+te:
+>
+> Dst objects get leaked in ip6_negative_advice() when this function is
+> executed for an expired IPv6 route located in the exception table. There
+> are several conditions that must be fulfilled for the leak to occur:
+> * an ICMPv6 packet indicating a change of the MTU for the path is receive=
+d,
+>   resulting in an exception dst being created
+> * a TCP connection that uses the exception dst for routing packets must
+>   start timing out so that TCP begins retransmissions
+> * after the exception dst expires, the FIB6 garbage collector must not ru=
+n
+>   before TCP executes ip6_negative_advice() for the expired exception dst
+>
+> When TCP executes ip6_negative_advice() for an exception dst that has
+> expired and if no other socket holds a reference to the exception dst, th=
+e
+> refcount of the exception dst is 2, which corresponds to the increment
+> made by dst_init() and the increment made by the TCP socket for which the
+> connection is timing out. The refcount made by the socket is never
+> released. The refcount of the dst is decremented in sk_dst_reset() but
+> that decrement is counteracted by a dst_hold() intentionally placed just
+> before the sk_dst_reset() in ip6_negative_advice(). After
+> ip6_negative_advice() has finished, there is no other object tied to the
+> dst. The socket lost its reference stored in sk_dst_cache and the dst is
+> no longer in the exception table. The exception dst becomes a leaked
+> object.
+>
+> As a result of this dst leak, an unbalanced refcount is reported for the
+> loopback device of a net namespace being destroyed under kernels that do
+> not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
+> unregister_netdevice: waiting for lo to become free. Usage count =3D 2
+>
+> Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
+> patch that introduced the dst_hold() in ip6_negative_advice() was
+> 92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b2=
+2
+> merely refactored the code with regards to the dst refcount so the issue
+> was present even before 92f1655aa2b22. The bug was introduced in
+> 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
+> expired.") where the expired cached route is deleted and the sk_dst_cache
+> member of the socket is set to NULL by calling dst_negative_advice() but
+> the refcount belonging to the socket is left unbalanced.
+>
+> The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
+> When the TCP connection times out ipv4_negative_advice() merely resets th=
+e
+> sk_dst_cache of the socket while decrementing the refcount of the
+> exception dst.
+>
+> Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
+> Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer ac=
+tually expired.")
+> Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
+> Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
 
-This reverts commit 790071347a0a1a89e618eedcd51c687ea783aeb3.
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-We are seeing kernel panic when enabling two NCSI interfaces at same
-time. It looks like mutex lock is being used in softirq caused the
-issue.
-
-Kernel panic log:
-```
-[  224.323380] 8021q: adding VLAN 0 to HW filter on device eth0
-[  224.337533] ftgmac100 1e670000.ethernet eth0: NCSI: Handler for packet type 0x82 returned -19
-[  224.358372] BUG: scheduling while atomic: systemd-network/697/0x00000100
-[  224.373274] Modules linked in:
-[  224.373817] 8021q: adding VLAN 0 to HW filter on device eth1
-[  224.380063] CPU: 0 PID: 697 Comm: systemd-network Tainted: G        W          6.6.62-8ea1fc6-dirty-cbd80d0-gcbd80d04d13c #1
-[  224.380081] Hardware name: Generic DT based system
-[  224.380096]  unwind_backtrace from show_stack+0x18/0x1c
-[  224.439407]  show_stack from dump_stack_lvl+0x40/0x4c
-[  224.450573]  dump_stack_lvl from __schedule_bug+0x5c/0x70
-[  224.462492]  __schedule_bug from __schedule+0x884/0x968
-[  224.474026]  __schedule from schedule+0x58/0xa8
-[  224.484026]  schedule from schedule_preempt_disabled+0x14/0x18
-[  224.496906]  schedule_preempt_disabled from __mutex_lock.constprop.0+0x350/0x76c
-[  224.513235]  __mutex_lock.constprop.0 from ncsi_rsp_handler_oem_gma+0x104/0x1a0
-[  224.529367]  ncsi_rsp_handler_oem_gma from ncsi_rcv_rsp+0x120/0x2cc
-[  224.543195]  ncsi_rcv_rsp from __netif_receive_skb_one_core+0x60/0x84
-[  224.557413]  __netif_receive_skb_one_core from netif_receive_skb+0x38/0x148
-[  224.572779]  netif_receive_skb from ftgmac100_poll+0x358/0x444
-[  224.585656]  ftgmac100_poll from __napi_poll.constprop.0+0x34/0x1d0
-[  224.599490]  __napi_poll.constprop.0 from net_rx_action+0x350/0x43c
-[  224.613325]  net_rx_action from handle_softirqs+0x114/0x32c
-[  224.625624]  handle_softirqs from irq_exit+0x88/0xb8
-[  224.636575]  irq_exit from call_with_stack+0x18/0x20
-[  224.647530]  call_with_stack from __irq_usr+0x78/0xa0
-[  224.658675] Exception stack(0xe075dfb0 to 0xe075dff8)
-[  224.669799] dfa0:                                     00000000 00000000 00000000 00000020
-[  224.687843] dfc0: 00000069 aefde3e0 00000000 00000000 00000000 00000000 00000000 aefde4e4
-[  224.705887] dfe0: 01010101 aefddf20 a6b4331c a6b43618 600f0010 ffffffff
-[  224.721100] ------------[ cut here ]------------
-```
-
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
- net/ncsi/ncsi-rsp.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index e28be33bdf2c..0cd7b916d3f8 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -629,6 +629,7 @@ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
- 	struct net_device *ndev = ndp->ndev.dev;
-+	const struct net_device_ops *ops = ndev->netdev_ops;
- 	struct ncsi_rsp_oem_pkt *rsp;
- 	struct sockaddr saddr;
- 	u32 mac_addr_off = 0;
-@@ -655,9 +656,7 @@ static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- 	/* Set the flag for GMA command which should only be called once */
- 	ndp->gma_flag = 1;
- 
--	rtnl_lock();
--	ret = dev_set_mac_address(ndev, &saddr, NULL);
--	rtnl_unlock();
-+	ret = ops->ndo_set_mac_address(ndev, &saddr);
- 	if (ret < 0)
- 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
- 
-
----
-base-commit: 59b723cd2adbac2a34fc8e12c74ae26ae45bf230
-change-id: 20241129-potin-revert-ncsi-set-mac-addr-7122f2896258
-
-Best regards,
--- 
-Potin Lai <potin.lai.pt@gmail.com>
-
+Thanks a lot Jiri !
