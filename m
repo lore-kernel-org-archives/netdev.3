@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7619D075
-	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3C019D06D
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732883258; cv=none; b=e0QKEMO/oy7GwBmURcd9DTjMx3Vm6k4ISA3+dkRfLV6fYVY7asswJV6+Y7wd7irszhlshQDmEUnm2ARw5WCRkOMFhuo7e1KP0jhk5VLD1E9RM2iTeRs6/WO0W09BNO/WEMDtqDZq2kueT/e2kOLXWooYpsrCWO8O1+U3timDqJU=
+	t=1732883258; cv=none; b=QSSof7ULGL18ReBu/7KjjqbK3gRgoRn05f4vPKAQBNZZHT11p43jkfbyPlYOYaEWiqpHr59e3EWG+iysv3TxkjTM0IM/j5AJVPNu3ZTdrxRJmnxjuI/PfFiiJ5si3VCHeKYT5yf77w5a275DRWj4ekPovYlgMESk2OBXUzvoVTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732883258; c=relaxed/simple;
-	bh=r5PlcXUYBo+yvNKc0PBkrA67Y3wssAcxdPfyy7DF4Oc=;
+	bh=6/608tDubOPvRZw50aMIPy4K1oH69byWhgujTZog154=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZFZPwUGoCjte21upyOYoruG7HKzXhUWHRdiPzEPgfxapIMQjlS0UUP69axMs/R/KziXJKO4nSWQaX8x8pI3L85KTSOo23id1vYmTtQNLfokJ2817tNhg49YpqLEDosZtJ/q9oPFjT0QimVnLVdQZpIi0z2odEMH1dBal3gyYdXo=
+	 MIME-Version; b=hqEtokL+Zr6dFraFFtZq/9E7UmAiMzGe6Ny58SSz89an7KTd9HfqivgpX+u4h0+fzlaMr2YTVjrzdlAMsDDCtZS1s3sxEsfOOsZX50pr9KAqr/OaVnVbTayun4mGjXClO+7OtSgv8PYGUqU1EGQIf9BxhV8n49CXcGFHKqfzcBU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tH05u-0007n8-6D
-	for netdev@vger.kernel.org; Fri, 29 Nov 2024 13:27:34 +0100
+	id 1tH05s-0007mB-RI
+	for netdev@vger.kernel.org; Fri, 29 Nov 2024 13:27:32 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tH05r-000mhn-2f
+	id 1tH05r-000mhB-1U
 	for netdev@vger.kernel.org;
 	Fri, 29 Nov 2024 13:27:32 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 4F72538113F
-	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:32 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id E7884381133
+	for <netdev@vger.kernel.org>; Fri, 29 Nov 2024 12:27:31 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id EF52F381102;
-	Fri, 29 Nov 2024 12:27:29 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 182E4381104;
+	Fri, 29 Nov 2024 12:27:30 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 3a2bd01f;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id ced4dbfe;
 	Fri, 29 Nov 2024 12:27:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,14 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-Subject: [PATCH net 01/14] can: dev: can_set_termination(): allow sleeping GPIOs
-Date: Fri, 29 Nov 2024 13:16:48 +0100
-Message-ID: <20241129122722.1046050-2-mkl@pengutronix.de>
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 03/14] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
+Date: Fri, 29 Nov 2024 13:16:50 +0100
+Message-ID: <20241129122722.1046050-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241129122722.1046050-1-mkl@pengutronix.de>
 References: <20241129122722.1046050-1-mkl@pengutronix.de>
@@ -62,53 +59,96 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
-termination support") GPIO based termination support was added.
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-For no particular reason that patch uses gpiod_set_value() to set the
-GPIO. This leads to the following warning, if the systems uses a
-sleeping GPIO, i.e. behind an I2C port expander:
+Ensure that the statistics are always updated, even if the skb
+allocation fails.
 
-| WARNING: CPU: 0 PID: 379 at /drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x50/0x6c
-| CPU: 0 UID: 0 PID: 379 Comm: ip Not tainted 6.11.0-20241016-1 #1 823affae360cc91126e4d316d7a614a8bf86236c
-
-Replace gpiod_set_value() by gpiod_set_value_cansleep() to allow the
-use of sleeping GPIOs.
-
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Tested-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Fixes: 6e86a1543c37 ("can: dev: provide optional GPIO based termination support")
-Link: https://patch.msgid.link/20241121-dev-fix-can_set_termination-v1-1-41fa6e29216d@pengutronix.de
+Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 6792c14fd7eb..681643ab3780 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -468,7 +468,7 @@ static int can_set_termination(struct net_device *ndev, u16 term)
- 	else
- 		set = 0;
+diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
+index 511615dc3341..cc371d0c9f3c 100644
+--- a/drivers/net/can/c_can/c_can_main.c
++++ b/drivers/net/can/c_can/c_can_main.c
+@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
--	gpiod_set_value(priv->termination_gpio, set);
-+	gpiod_set_value_cansleep(priv->termination_gpio, set);
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (unlikely(!skb))
+-		return 0;
  
- 	return 0;
+ 	/* check for 'last error code' which tells us the
+ 	 * type of the last error to occur on the CAN bus
+ 	 */
+-	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++	if (likely(skb))
++		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+ 	switch (lec_type) {
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+-		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_STUFF;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+-		cf->data[2] |= CAN_ERR_PROT_FORM;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_FORM;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT1;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT0;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+ 		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
++	if (unlikely(!skb))
++		return 0;
++
+ 	netif_receive_skb(skb);
+ 	return 1;
  }
-
-base-commit: 9bb88c659673003453fd42e0ddf95c9628409094
 -- 
 2.45.2
 
