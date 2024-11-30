@@ -1,101 +1,125 @@
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE6914A60D;
-	Sat, 30 Nov 2024 12:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAAE1993B4;
+	Sat, 30 Nov 2024 13:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732971316; cv=none; b=Yx5sy364qLePxwmO/18B3/YtgZ7X+p9IeZ4iBTYhiKkPJrP47X9nvGERqwl8pKPzHE2s04oYZubyC4YhHLmINvUW7sa5qz+bi954RatooJbf52PvNj1MPTg/EWB/Qq5MyREfhFulV9EUECsU9lW5SE1BT9HHgSZWiafjdXbrsfU=
+	t=1732973954; cv=none; b=E45uzamc4c4zyW5MkR7xDcjm0nM6RFZZwUq2aOyIcgY/EEAKXP8c9ld0zXgkfETWVYFKvyd57vhzamtCis7NBlU7TimI5Ik9Zt9Yl33IbIbQLIaK4w+lHfA9cJllLf8XaTNU/OoKX1ND3bUvi59LCQWkSxH7Cl7PaeuxmjEzAqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732971316; c=relaxed/simple;
-	bh=YxFU9g3nKc0hDKlhwfiZxJLMQMtvK82CvUsbZBzlR+o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k3jmiF1JnbW7ZMMJxQ0Z4BhnaR5GPg0bqq5Pwq1p9L9zhsdqOo5zSxb89oruqfu2eITAGp0CDzpGGSFomGroFNhNhNJ/uJmy4DBbhBotEz9lYg/ffDUsmcnwe010q1jREJpsDJrbtA/QB+QwsE7KCDoUttYmLEvUBczRVGYssxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Sat, 30 Nov
- 2024 15:55:02 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Sat, 30 Nov
- 2024 15:55:02 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Luiz Augusto von Dentz
-	<luiz.von.dentz@intel.com>, Marcel Holtmann <marcel@holtmann.org>, "Johan
- Hedberg" <johan.hedberg@gmail.com>, Luiz Augusto von Dentz
-	<luiz.dentz@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH 5.10/5.15] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
-Date: Sat, 30 Nov 2024 04:54:57 -0800
-Message-ID: <20241130125457.29343-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1732973954; c=relaxed/simple;
+	bh=xNoawWxL5Y6li8c9tLsL2y/MxQevmVgjNhHQfuMu8o8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ur/9NeiFDK0tqtHxISRQhS/dMHAN7D+Zn7zAouFLQCl1sCB8aYyOgSv6w4irDWJLszb8jKhCV955k+CRMR5XNQMlbrlOOcc92l0VsLE/dZXXfthb1oSyWX+s/VFQMnYSQpz/zM1QtNw9mL8atbN2S31sikjRWsB8bw2+/Nq2HHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kC2gHsXP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kC2gHsXP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 43149C4CED3;
+	Sat, 30 Nov 2024 13:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732973954;
+	bh=xNoawWxL5Y6li8c9tLsL2y/MxQevmVgjNhHQfuMu8o8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=kC2gHsXPMdMygOCBv6KC5Z6BdFCC9RM+cIwBj0cE4WwueRfWWjZI5QxErmta1heDR
+	 yklTRGBjiuKcWZ6dk8dWnOdHFjur+jXOOtDQqX17GuT6y9RJmpPAJXvpGvA8YOamk3
+	 mR/khdt5SGvoX4H8lE6kVpuLk5Bq5OsWmzJSg/7S6a8X6ZBKI6aHdQb9HBU7ZdBO1k
+	 KrNWKG+ROb8o0lvBwh8rVfLGvgm7jTC2mRef9s0ish+BzQUuGgdPxu95bHgd6Kzwgt
+	 Pk+XMSU8C0N256dOH18FsuDnuv6axZ+ZdXEIQSTu3SX7gcnWlxhAGIVs3Swbmu32qA
+	 OSoyRNqWC61pg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F795D73606;
+	Sat, 30 Nov 2024 13:39:14 +0000 (UTC)
+From: Levi Zim via B4 Relay <devnull+rsworktech.outlook.com@kernel.org>
+Date: Sat, 30 Nov 2024 21:38:22 +0800
+Subject: [PATCH net 1/2] skmsg: return copied bytes in
+ sk_msg_memcopy_from_iter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241130-tcp-bpf-sendmsg-v1-1-bae583d014f3@outlook.com>
+References: <20241130-tcp-bpf-sendmsg-v1-0-bae583d014f3@outlook.com>
+In-Reply-To: <20241130-tcp-bpf-sendmsg-v1-0-bae583d014f3@outlook.com>
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Levi Zim <rsworktech@outlook.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1296;
+ i=rsworktech@outlook.com; h=from:subject:message-id;
+ bh=+jh9LaMvNTwv+zmDx2vk37sFrN9lWR5dQyH5HZC8Q2M=;
+ b=owEBbQKS/ZANAwAIAW87mNQvxsnYAcsmYgBnSxV+cY/4xWp+AOu+HS1pF3mD1lkW8ZroPbktI
+ OGHl4YPTW+JAjMEAAEIAB0WIQQolnD5HDY18KF0JEVvO5jUL8bJ2AUCZ0sVfgAKCRBvO5jUL8bJ
+ 2O4mD/9uiFluDIQT5sursakLeOiycc85GUFuCghVJQyfsOzbd6i1STV1z0tniaX2ZFkcha+XtZK
+ Tn/qA3C6do92pLsRW0VpVB2JpWJS/Bgh80SSj0AHo9pfAqH7Rz9Z1nwznelejLdKFwbPK86zvVN
+ Nd8ar9fgT9f+lvptiLNjUefXXNU53Zv+yQpzZDM9/DWNFvBQ3MFltNWWTbi5NCPpxzoC/Eg243O
+ NoON2+47hgJyprsrI+nyuSwZZGJLwXEw6zNPWPuoC0dkD6sO2qKgJWQ46QfWUQh+ciIHd7cTvpA
+ T5oVR558KA1JDRt8a3prsYkXsGLDmeZ7TDiEzfYDXPZbuvDDuQaXcP9SqxY2i0moRHZqapRMUNo
+ 4ZYho5sDiVRM7L1lz3tUBUeWUH9JYgSOhCXmoP5IxkzAo22iDrd0ePZVAADcqcB15VtCkp6VgTT
+ I5+DdO8cyNgomya2WVLTUKeXFxurvyBAE4BWyt+EGnhlZJLwfR7cQELw/JOYB/RIedqlAyr05bd
+ b+vey1/eH12e3aRy/xMb6hOV4FbG8RczF7+Csj2WO8C+1lChytqCKRFus3On6S1OuO7KYKzZfZl
+ oPG/UpE4AQ6/2R1qV2YdJz3h00IA3T2KTywVhdYFDcEbD3pYc5LWcAtW7FIs6HWzImeirVgX9TO
+ 6tB4maLwLVTPTCA==
+X-Developer-Key: i=rsworktech@outlook.com; a=openpgp;
+ fpr=17AADD6726DDC58B8EE5881757670CCFA42CCF0A
+X-Endpoint-Received: by B4 Relay for rsworktech@outlook.com/default with
+ auth_id=219
+X-Original-From: Levi Zim <rsworktech@outlook.com>
+Reply-To: rsworktech@outlook.com
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Levi Zim <rsworktech@outlook.com>
 
-commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
+Previously sk_msg_memcopy_from_iter returns the copied bytes from the
+last copy_from_iter{,_nocache} call upon success.
 
-This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
-("Bluetooth: Always request for user confirmation for Just Works")
-always request user confirmation with confirm_hint set since the
-likes of bluetoothd have dedicated policy around JUST_WORKS method
-(e.g. main.conf:JustWorksRepairing).
+This commit changes it to return the total number of copied bytes on
+success.
 
-CVE: CVE-2024-8805
-Cc: stable@vger.kernel.org
-Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: Kiran K <kiran.k@intel.com>
-[Nikita: minor fix to resolve a conflict caused by different debug
-print macros used around the change: keep BT_DBG() instead of
-bt_dev_dbg().]
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Levi Zim <rsworktech@outlook.com>
 ---
- net/bluetooth/hci_event.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ net/core/skmsg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 58c029958759..546795425119 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4751,19 +4751,16 @@ static void hci_user_confirm_request_evt(struct hci_dev *hdev,
- 		goto unlock;
- 	}
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index e90fbab703b2db1da49068b5a53338ce7ff99087..a65c2e64645863b80ddd94c464d86fcc587b5c04 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -369,8 +369,8 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ 			     struct sk_msg *msg, u32 bytes)
+ {
+ 	int ret = -ENOSPC, i = msg->sg.curr;
++	u32 copy, buf_size, copied = 0;
+ 	struct scatterlist *sge;
+-	u32 copy, buf_size;
+ 	void *to;
  
--	/* If no side requires MITM protection; auto-accept */
-+	/* If no side requires MITM protection; use JUST_CFM method */
- 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
- 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 	do {
+@@ -397,6 +397,7 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ 			goto out;
+ 		}
+ 		bytes -= copy;
++		copied += copy;
+ 		if (!bytes)
+ 			break;
+ 		msg->sg.copybreak = 0;
+@@ -404,7 +405,7 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ 	} while (i != msg->sg.end);
+ out:
+ 	msg->sg.curr = i;
+-	return ret;
++	return (ret < 0) ? ret : copied;
+ }
+ EXPORT_SYMBOL_GPL(sk_msg_memcopy_from_iter);
  
--		/* If we're not the initiators request authorization to
--		 * proceed from user space (mgmt_user_confirm with
--		 * confirm_hint set to 1). The exception is if neither
--		 * side had MITM or if the local IO capability is
--		 * NoInputNoOutput, in which case we do auto-accept
-+		/* If we're not the initiator of request authorization and the
-+		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
-+		 * method (mgmt_user_confirm with confirm_hint set to 1).
- 		 */
- 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
--		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
--		    (loc_mitm || rem_mitm)) {
-+		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
- 			BT_DBG("Confirming auto-accept as acceptor");
- 			confirm_hint = 1;
- 			goto confirm;
+
 -- 
-2.25.1
+2.47.1
+
 
