@@ -1,101 +1,130 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1C51D63CA
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 17:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7C218784A
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 17:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733160538; cv=none; b=Uw8jeQ3AYr4AxxFVW5De4QEImJ/5SnL7oUR/WzIdHkd7T6xWhcQbCXK0dQYEf3/x2Hgw57fs4HA6N+AXndqyMeo8+kBdZeZUiLhpD7EuEluOCz6oh3ehyl6zJmQChkK0DF6Y4nHyBr/ZQKDpqDzJQgkTCOEykuXRUYwjydHFXSo=
+	t=1733160854; cv=none; b=YBz2yXzDV0zJANCcDNcP1ibuos7hC/Sfv2tUbIBAgZUenA3GXdI90V6dxKq3ruEccgQqDNNhB1aBn7753VZZIJQnfjBAdOQlimI1cwreHXkQovqT+O95Dw5quKed5MWRZpFLOzoIOilmXQv4rj9AW2eySUvkJ25qGgRyoCgSyYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733160538; c=relaxed/simple;
-	bh=oA4h/pWuNzuIA53XuC2H0CS1AjE8LYq3vUvL0BHAu7o=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=mjDLoBSz4hg2arsUDSaWWn4aKgziIOWBusthPKfp243P++aqulmgdisF5Ydq+9AmY57AESewrYpV1b4nS2tczTa7mdxRvSndrRy4sWXkRske4VjasOaD+2/wySZZCIYs8DyUt7ASik7gtqIB4T4TPzpFDIxmWw29iisWAzdB7zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asSf3Ayh; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733160854; c=relaxed/simple;
+	bh=ZcWhmQeTdhzEQEyezGlnWtKSJ1aRtj36eMfuAb5qXpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aUALboRcWC6GBhllYj2Gk9TsbZVUvsvJNxLYye+XRvDxXChbpIRepsfaHgIi5c8RVyhgfK4JZPp0CXmV/nJ+McqB20D7r9ZbjwEEXbRuqoGOGA7fhJvUbgu8yfb/igFadtyzwyP30vzBx9mP7mVSiOjwc2j8L7tC0IIB1yImiTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=LXxoGrUy; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asSf3Ayh"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434acf1f9abso41938545e9.2
-        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 09:28:56 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="LXxoGrUy"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-724f1ce1732so3531842b3a.1
+        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 09:34:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733160535; x=1733765335; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+        d=fastly.com; s=google; t=1733160853; x=1733765653; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=da4GBTp8TcJ/LMSH22c3IAuZduc7mnbiMyj9O+lxw/c=;
-        b=asSf3Ayhxm/FACXrwuS7hB417Ms1fLe4z42CcblnZuDHBQH+MzDhKqh0Vka74qW30d
-         pnk14hB0SSNceF9dH1e6Z6ooAOhXcE5hb7pvCvAK6Nv7xMclJp5DkiogfdAdOW6an88b
-         rTeYMClYAQJQnWEiMQX5I+VlQkJXhgoXInEOeUd/pmKq2/CewFSszTW+lHMhlJtTY4ka
-         yAggC2lQKRtA9ftcmEt8kQvn9L6K0GQIyuynwzUBs5ptNOH3f8uzevrn2zWAnBQxhYAz
-         t63qUgSkjABv72dU8F4p2Itb+2ghS4iHigpfv1oTFOtERfwh7hfJ5HAXO1wrujF1FpCE
-         lofw==
+        bh=f/KBVkQ9WDET0JwE7JbXDlQw4ch/b8XOKIUlHGNDkFw=;
+        b=LXxoGrUyVYux4eRfCJPVkd9n9MDdCmUyo/RtxN2bMmr+E2mm70sKBPJ4BHiUMYDiYS
+         d/5+SM9usrJyH/4YWn+rruVhNhvvuMWD5B6pDskt1rxBJ1CRvRXyA6CvTwecI9F5/Mft
+         vBXvwsVYAtlAS02Zv9DkxEfGKEcU7g3iHWB8w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733160535; x=1733765335;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
+        d=1e100.net; s=20230601; t=1733160853; x=1733765653;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=da4GBTp8TcJ/LMSH22c3IAuZduc7mnbiMyj9O+lxw/c=;
-        b=ucrAdI5oziGJiJfvkCdVGz6iWTXqLU3CB29pQ88vJKNJAkAr2YiR3BFCZPCbPP1xZd
-         pZAOJoSqbhnkh79SNOgcvMIUPUm5CEXFA9NI5s7K1ia6ckaX5EHnu906I/RhirYG4cqM
-         37Ktd9O+6ckxbnP1j6q5QKHtbRiDUvxdxYlHClcDETraSYSLreQ7XE9l1LqSsu6v1hkE
-         niVyy68DTgcf79uOhCUkErQYCwRRBAUHaqNbezOBQ3sA8aTRdygAZ9F522nqqZd5MvU7
-         38nDpppe/iRlwBOKZL0MEVilk4Uv4z5f6mz18omBmQuz0Gi8e+v1IbovweAeL6S18jW+
-         pnQw==
-X-Gm-Message-State: AOJu0YxWxIydQ1NhWeAmWIHbvXSgdGXJRzUgH2vzVKm/wiA7QW541fES
-	qs4+dsOlrrAKd/OfNy8IG8z2TlXUtWW0Tz2grUEjexTtJF1i9u8E
-X-Gm-Gg: ASbGncswXIGIKLM231fIE2uNpZU8j7U29SDMc4bip/+40s5Y6EiyOHtfWerViojtchc
-	9M497LezWrKP/0hxI4Dvnl7zScl0YCsAqXi7yRGkBtasWIpq89HdQ0qSpwGMgg2rxoyS9x1Iqz2
-	oOem9PTUfkOv7rDbycsTjkleYjLmKxA/wV+QlXWiEqqM7qWqCxqPXt3X1PFmcxBFNT4APq2TJeE
-	Pdmhftp0AvnMoLQDm8byRnKEd9QSfhq/ivxAE5oKQDhEybEF7Lndbwb4a3ZIpYUcFBgoZ45TESE
-	U3HVOn5fOdTH6N1bbDSIvbFqIas/7och57LKyQ==
-X-Google-Smtp-Source: AGHT+IHmrqHloyNjgttPN4DyrTQiTQo3gXnbXscerhCtKOjfU/UWHZOeX3PRkHbVKohT9C6ipobv1w==
-X-Received: by 2002:a5d:5f4f:0:b0:385:ecdf:a30a with SMTP id ffacd0b85a97d-385ecdfa4ddmr6133017f8f.33.1733160535313;
-        Mon, 02 Dec 2024 09:28:55 -0800 (PST)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa763aaesm189973065e9.14.2024.12.02.09.28.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 09:28:54 -0800 (PST)
-Subject: Re: [PATCH net] ethtool: Fix access to uninitialized fields in set
- RXNFC command
-To: Gal Pressman <gal@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Dragos Tatulea <dtatulea@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-References: <20241202164805.1637093-1-gal@nvidia.com>
-From: Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <41d7f809-a75c-6107-3698-796163b5ab3d@gmail.com>
-Date: Mon, 2 Dec 2024 17:28:53 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        bh=f/KBVkQ9WDET0JwE7JbXDlQw4ch/b8XOKIUlHGNDkFw=;
+        b=hgvlWjz22rGVDuZVaxrQNDzsQLmot3PZh2Bv32HXTrJMW+WFc2VR1F6LCl/EJRyVZg
+         gy0BIAGKYo11/nt4CkyeRuFnwJg+gd2CJGiVur013qxU0C8X2Fv33NM0Orzo7lf9vK+H
+         yzmrskc+tErMvt1B8vP29R6DKr1g/NuZ538cIUR0zrHG4JwbyRoJ3tNazTDSAW+cqGGd
+         kFsMCnPgU+L+1Fd5ErQCjEWuKqaArcD1BOvUstasC9le6YwAnZ9ybx1yVydqldAvqZF0
+         AXOCtywpG/hMFSIoiCam5yfr5N4rdDwNUI6+tkkVdBCBGDzbtwwDFlSBoSMpy5mimSKC
+         3pPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlE/rOPbKE5IsJ7f1uc6VV8ctohgEzjQcCk8v4elrjh64ya1tmkw21dU9+fjl2QPeXlzxQZW4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvbBsKf4I3SefEOznH4ZeOCrFo7I7S24R/YYXk0doVKCITAeOA
+	i6uDTK4nFVB7A08G7kkoF2hc2hWuXWhp1MxKNsr/LQuvBH5ZtAZETRBK9M6ULW4/xWVE4uKPuQY
+	n
+X-Gm-Gg: ASbGnctyDjDbMJIBcBZQsb8eXXq76x2CQkS9jCternLnDD3lv123uPa5s+697DJYmpW
+	F4mgsfJ7mumzM64wSjcVDDBGITFkPoQ3Zo20oWb9p9dvD+yIIrS0RORL9oAQE8Fzh/RAp/a8lhT
+	hNyXctfoQV0wjbx3dKfUV8ut/C161nLLr28Oy9ThXsz2AfjfLfghhRL56IJhcNz+0RdK6ub57Wb
+	qkUbM8h2ekKK77p+8zhUUsC60VQzMtdNYuMRQ9mkOrShzTmiH+UKCtRG6vagSwa7WQMm733iN7a
+	a79taDlcAKT4h7NT
+X-Google-Smtp-Source: AGHT+IGdA7xHbfKmPdaYXg5efPm8iMgRtys8b0yolqaF3S0/bsz6LSFec8vyOdG86Jxh0+jRfA07Mg==
+X-Received: by 2002:a05:6a00:1390:b0:725:1d37:ebff with SMTP id d2e1a72fcca58-72530141196mr32222598b3a.22.1733160852632;
+        Mon, 02 Dec 2024 09:34:12 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fc9c31164asm7042249a12.42.2024.12.02.09.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 09:34:12 -0800 (PST)
+Date: Mon, 2 Dec 2024 09:34:08 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org,
+	mkarsten@uwaterloo.ca, skhawaja@google.com, sdf@fomichev.me,
+	bjorn@rivosinc.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, willemdebruijn.kernel@gmail.com,
+	edumazet@google.com, "David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, pcnet32@frontier.com
+Subject: Re: [net-next v6 5/9] net: napi: Add napi_config
+Message-ID: <Z03vkLXa-wajZZ8T@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>, netdev@vger.kernel.org,
+	mkarsten@uwaterloo.ca, skhawaja@google.com, sdf@fomichev.me,
+	bjorn@rivosinc.com, amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com, willemdebruijn.kernel@gmail.com,
+	edumazet@google.com, "David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, pcnet32@frontier.com
+References: <20241011184527.16393-1-jdamato@fastly.com>
+ <20241011184527.16393-6-jdamato@fastly.com>
+ <85dd4590-ea6b-427d-876a-1d8559c7ad82@roeck-us.net>
+ <Z0dqJNnlcIrvLuV6@LQ3V64L9R2>
+ <Z0d6QlrRUig5eD_I@LQ3V64L9R2>
+ <20241130124501.38b98030@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241202164805.1637093-1-gal@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241130124501.38b98030@kernel.org>
 
-On 02/12/2024 16:48, Gal Pressman wrote:
-> The check for non-zero ring with RSS is only relevant for
-> ETHTOOL_SRXCLSRLINS command, in other cases the check tries to access
-> memory which was not initialized by the userspace tool. Only perform the
-> check in case of ETHTOOL_SRXCLSRLINS.
+On Sat, Nov 30, 2024 at 12:45:01PM -0800, Jakub Kicinski wrote:
+> On Wed, 27 Nov 2024 12:00:02 -0800 Joe Damato wrote:
+> > CPU 0:
+> > pcnet32_open
+> >    lock(lp->lock)
+> >      napi_enable
+> >        napi_hash_add <- before this executes, CPU 1 proceeds
+> >          lock(napi_hash_lock)
+> > CPU 1:
+> >   pcnet32_close
+> >     napi_disable
+> >       napi_hash_del
+> >         lock(napi_hash_lock)
+> >          < INTERRUPT >
 > 
-> Without this patch, filter deletion (for example) could statistically
-> result in a false error:
->   # ethtool --config-ntuple eth3 delete 484
->   rmgr: Cannot delete RX class rule: Invalid argument
->   Cannot delete classification rule
-> 
-> Fixes: 9e43ad7a1ede ("net: ethtool: only allow set_rxnfc with rss + ring_cookie if driver opts in")
-> Link: https://lore.kernel.org/netdev/871a9ecf-1e14-40dd-bbd7-e90c92f89d47@nvidia.com/
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-> Signed-off-by: Gal Pressman <gal@nvidia.com>
+> How about making napi_hash_lock irq-safe ?
+> It's a control path lock, it should be fine to disable irqs.
 
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Ah, right. That should fix it.
+
+I'll write a fixes against net and change the napi_hash_lock to use
+spin_lock_irqsave and spin_lock_irqrestore and send shortly.
+
+> >             pcnet32_interrupt
+> >               lock(lp->lock)
+> 
