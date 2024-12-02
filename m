@@ -1,126 +1,116 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22571192B65
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 16:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80525199E8D;
+	Mon,  2 Dec 2024 16:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733156582; cv=none; b=tB+zcRYOtNB+wK0LC5RvKfxwNcOVkrF5JMRssISvsS8rwq6hm748WS5BTCDYHS+uX7qZXy14bRTLZZHpq2+mr7SE92j/+t0mImSM8LsKL8NSB4nWuC6fXTMOIIBeqKbyJSN4A5WektFtF9EFvv3jFUsTr1Q5TWTLvjEOgbFhB5U=
+	t=1733156980; cv=none; b=aIpqpx6/npy2BDdkCFvJxbNS38fnL3zzRNie0jIBlJikQ1mUYfETtxRTKzKa/q/yP0Xi2BvuKkOSU+VQi2UJnbwzLnD0IE4Iw8APasf/lrMN6qv+DX6ydE1ADzNQTekcOMglCqtQtgzCDxRx7/Xa9Xhdm83i6yCtewbu4zJgCKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733156582; c=relaxed/simple;
-	bh=Zsms+C4NOXG/Dy3KLtJWWY/xMoO7EcT/34IHBJcUaRc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=Su9q8XmWfLPdhK+gYKDEtl7x2Z/RB45qXoxAsyLTfXvChopDZ4ounXPVpjQpVvwNxS6DZOQUyTAJ7X2gpvEOzQBqtk5F85D4D4vv3LRpP/uq1sMLrTic2pOLqAZ+Oh+N9i6JQu1UnV8QPb5wp9mbmi3iujS6nmDRRrVEWUM7uOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O9/Aq6fw; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1733156980; c=relaxed/simple;
+	bh=yiONnHmDvX4qwzey5n0hL12IEZwVKs6E4DW4PuPL138=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GFyINAtauCwDU0LxtlWk2nf7l69SjlX0WNMDhFlYUjHVzbiX4YlTrrKW6xpFx73j2+90RqZPxGhJz/9mhZA07kKdZkCv6JResc8yfqlRVs0l4PiqX8d4IdrEWXiRyWJOQKK3y8uBVAEoftW04BybAJGJbMQQln5LHdGsLgGByM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O9/Aq6fw"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-434a0fd9778so41385385e9.0
-        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 08:23:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733156579; x=1733761379; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3YxeGxBXYGXTZb93lQ9kig+HGhN+3cwpXcO70XlpyaE=;
-        b=O9/Aq6fwA1vF5+W+MbU/1/vu0BggBMHjcI7HyYGw1+t2R2BX8/qRcRDfIE14eZNhoT
-         GXQSC36ziFv5zVdedDi37MiI+QUktI+kbwOlqZgHArckkBOZGw80c6+jwDBTV/GWwUgT
-         iuKAeYvnAvEzviVUII3UBbaKf4WR1PRc/fWUBacnxjoNN2DSYSIw5dA7P6HTuAT/LrwP
-         7un5YgNoJIuBuwRzn9EGBEafZH64ckFm2UuGtfUuUkNC7YWmX3HJFdaDSLQeVPvlymrX
-         t4TikPfdyfnA7nJDLtm27+KiVmJYkoiBfrUiLm/KZdtoTfhkzUV08imLSzFMmp95W7nJ
-         ydWA==
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21288ce11d7so40461845ad.2;
+        Mon, 02 Dec 2024 08:29:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733156579; x=1733761379;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3YxeGxBXYGXTZb93lQ9kig+HGhN+3cwpXcO70XlpyaE=;
-        b=meD05P3uvhKwPfcKFdhZzI8mwOlTpT1Od8UpjhaDu1W0DiKfQLEF3DUJKqHf1Sd5w8
-         qNwbkP1TUs6gpbNO/i9uNJnXRKA7Sd3r0FT3HgXFHhu8TKO8kyYZpds7Fbb2X6iCKBw6
-         L/tTKjsoLfKcK9HjNxbuLJEZLps1s+WRk9yhuOf/3vsRv+VBbvRqZyRc2kAHIFPJ5aag
-         wDpIouDlMEKfXct/mPhveyDwhbyGwrucNfgZVir4/VRh978nzSlhA9r96n5SLrAH6/Mp
-         lVx9UUFLwum1eilljfI5DprCz2TKJs3Idfk14A45j97XXnZ6TtfHWLmlGp6SZk+4efyJ
-         GxEA==
-X-Gm-Message-State: AOJu0Yxzng7+zxMqU1zGGdlYuG74bO1IbzBsn68G3V3TmrgKBbVLvE3H
-	sJ8p6+6ih7FH61I+hy4+2uJ+o7+QtpTSF2E9QijSLBheLa/4w4BKjy8jTxu+
-X-Gm-Gg: ASbGncvoMq6fq64SeC+HxJV8eOIfiuuifrgvcGDvfMwvl6wTRuExpiyJssZR2bisxRg
-	Bb/54n2JK9kxHSq+Px3Pa3IQGKQxOi3BZShw6DrfINgbsrjnUAvXYgjIAbgJ31zg8XlPt+rHBdb
-	Alybr/R2s2xpkciA3dL239kAtTxXBaZcdWWrpvRD/KXAOQ1Zxbs6k0b+2zH3kcPWLZ0/d0661Yb
-	eerAHXs0aOYVRQ0+E61e654eVBN+i9wnmAwHgagDmtShbpS81nE6jnjTskquX2Z+mfdqUARUp0o
-	Ds3/HtzdyX8+f3RpZ0r3dK37waD0zvrdVmZEzbk9dOud/Rsisy1PIS+1AR1y/oM3++kVbOGjh10
-	p/Q==
-X-Google-Smtp-Source: AGHT+IHJMnMvpKq7Hj7JyQcmDN/8Ny6qODY6Et1O1ZBQY+4XeadXXH4b5DxlcqU1ywMejxBx32c+8Q==
-X-Received: by 2002:a05:600c:458b:b0:431:5f1c:8359 with SMTP id 5b1f17b1804b1-434a9dcfd5emr222330845e9.15.1733156579093;
-        Mon, 02 Dec 2024 08:22:59 -0800 (PST)
-Received: from ?IPV6:2003:ed:7731:2315:f8e3:ac9e:6d58:8a90? (p200300ed77312315f8e3ac9e6d588a90.dip0.t-ipconnect.de. [2003:ed:7731:2315:f8e3:ac9e:6d58:8a90])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e2c84d52sm8119292f8f.49.2024.12.02.08.22.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 08:22:58 -0800 (PST)
-Message-ID: <6c7ae1c8-8573-4f4a-96cb-0a75eab21516@gmail.com>
-Date: Mon, 2 Dec 2024 17:22:57 +0100
+        d=1e100.net; s=20230601; t=1733156977; x=1733761777;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bfL9pfVed/5lGXLlfCTto6TeVoqcUMOXv4x0sAXkdgA=;
+        b=E98U4EUBSDNdO4VBHD3vcSXgF1AhjKziMunVMqBXFKsEgoEzfBbZZf6CxlnEvfZTHF
+         E6MIVEiDG6na+WqXHrmxrW2B2t4HU6YimNxo5BKbJBYQIhqY6XEdk7FMGNbsWCwmVNP4
+         r+nddxTUIZd9ennVVLhd03ugC1RwnJ5jiRSuqLfUU7sQoAB5mN5HjesdaAhsMbDq0Ea4
+         JAvC+P3ZkcL6ll1ZLPDnCKMwtOHI9/YdMbtU5XcPGzx2iR+XRCp1gKCmeXaPghwHthD6
+         5rTMKFXAF6czI7dFiP6xQ0v8cjn9C3Kq+9tsh30lGQz72aMLKhsYyC7aEjSUUzpgGkCB
+         vvlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrUMCsdqhQeiJU0ZZHYMtJOzHqzMg58s28S6iHHpjjqJRMdcuIDcpNFDO1oXim7+8c0fgv6fBxW3U=@vger.kernel.org, AJvYcCXq5JxsDdlu3LcCaAi1NKqk6V7RwWD1m0WraoJ0gP7buiGRQ3edPQDOqLIU5UD718d3PIgGfG48vQRHMdP2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyt8J8z7DtgkszX+tBYDSheNCwq7nl1RkCX2YaQgtbZXYHRoY8d
+	jrDTGn2qyhwc5YXAVCszjsDzwtgi0nneGEKRdztMYi40mMdH14L3iuBpr9Y=
+X-Gm-Gg: ASbGnctPt1kUcv/VglM0vEMXcXYtV4vSJ4HupncZBDgxEb9vQwz+owCSwLPvjwSyPdp
+	CwK8YdfaWhni2BmxW1gWgJkifdPf7gsnBW76sI16zDCqV2lluCWomcQO1HH3YYqjP9jW+Jl09PO
+	DlJ+oIWPrrnR4Byb7PUptEOb0xGwvaUFwakyOSHaXuvXJas/l1yMOxwzBeddHfeblFifwbTpPGx
+	5B/X7dTrQ7bYt6tjwwgM+l3OM/3vY/e0uWedfoiMVjTIYYO/Q==
+X-Google-Smtp-Source: AGHT+IFYuIT1TXCwUE+DMeo6jbJzFI1AzXMjy9fA6FNv9SpCnybc9kSaje1cbCnd4RCEEABbkihZRg==
+X-Received: by 2002:a17:902:e949:b0:215:931c:8fa7 with SMTP id d9443c01a7336-215931ca8f2mr76094315ad.31.1733156977566;
+        Mon, 02 Dec 2024 08:29:37 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7254176fe28sm8692144b3a.72.2024.12.02.08.29.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 08:29:37 -0800 (PST)
+From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	horms@kernel.org,
+	donald.hunter@gmail.com,
+	corbet@lwn.net,
+	andrew+netdev@lunn.ch,
+	kory.maincent@bootlin.com,
+	sdf@fomichev.me,
+	nicolas.dichtel@6wind.com
+Subject: [PATCH net-next v3 0/8] ethtool: generate uapi header from the spec
+Date: Mon,  2 Dec 2024 08:29:28 -0800
+Message-ID: <20241202162936.3778016-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Lion Ackermann <nnamrec@gmail.com>
-Subject: [PATCH] net: sched: fix ordering of qlen adjustment
-To: netdev@vger.kernel.org
-Cc: toke@toke.dk, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, nnamrec@gmail.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+We keep expanding ethtool netlink api surface and this leads to
+constantly playing catchup on the ynl spec side. There are a couple
+of things that prevent us from fully converting to generating
+the header from the spec (stats and cable tests), but we can
+generate 95% of the header which is still better than maintaining
+c header and spec separately. The series adds a couple of missing
+features on the ynl-gen-c side and separates the parts
+that we can generate into new ethtool_netlink_generated.h.
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
----
- net/sched/sch_cake.c  | 2 +-
- net/sched/sch_choke.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+v3:
+- s/Unsupported enum-model/Unsupported message enum-model/ (Jakub)
+- add placeholder doc for header-flags (Jakub)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 30955dd45779..a65fad45d556 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1542,7 +1542,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1553,6 +1552,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
-diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
-index 19c851125901..a91959142208 100644
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdisc *sch, unsigned int idx,
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
+v2:
+- attr-cnt-name -> enum-cnt-name (Jakub)
+- add enum-cnt-name documentation (Jakub)
+- __ETHTOOL_XXX_CNT -> __ethtool-xxx-cnt + c_upper (Jakub)
+- keep and refine enum model check (Jakub)
+- use 'header' presence as a signal to omit rendering instead of new
+  'render' property (Jakub)
+- new patch to reverse the order of header dependencies in xxx-user.h
+
+Stanislav Fomichev (8):
+  ynl: support enum-cnt-name attribute in legacy definitions
+  ynl: skip rendering attributes with header property in uapi mode
+  ynl: support directional specs in ynl-gen-c.py
+  ynl: add missing pieces to ethtool spec to better match uapi header
+  ynl: include uapi header after all dependencies
+  ethtool: separate definitions that are gonna be generated
+  ethtool: remove the comments that are not gonna be generated
+  ethtool: regenerate uapi header from the spec
+
+ Documentation/netlink/genetlink-c.yaml        |   3 +
+ Documentation/netlink/genetlink-legacy.yaml   |   3 +
+ Documentation/netlink/specs/ethtool.yaml      | 354 ++++++-
+ .../userspace-api/netlink/c-code-gen.rst      |   4 +-
+ MAINTAINERS                                   |   2 +-
+ include/uapi/linux/ethtool_netlink.h          | 893 +-----------------
+ .../uapi/linux/ethtool_netlink_generated.h    | 792 ++++++++++++++++
+ tools/net/ynl/ynl-gen-c.py                    | 139 ++-
+ 8 files changed, 1250 insertions(+), 940 deletions(-)
+ create mode 100644 include/uapi/linux/ethtool_netlink_generated.h
+
 -- 
 2.47.0
 
