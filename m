@@ -1,120 +1,118 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE41FE457;
-	Mon,  2 Dec 2024 11:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF151F8EE7
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 12:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733140774; cv=none; b=CObQCg2d0IbjHHDjgrMPhmLn/QvVJ048+mFxZuHlBBcUOBlZqjhJaWDTLzeiOlteylHs1ezEDR7tt9HVdgKH61MbFKa3EFhAtgAmUmV6BcT/Sb5lCtZ/I7kQjGZYNzmFcz0h9U/azyCDB+p5Hhf+iyQji4HNR4D7GpWcqs8dK98=
+	t=1733141777; cv=none; b=DDsDM+DKyjV3qgZRVv7Qe3TnzBsTa0FzUmS/gb3dAyO31pxMqTJXRdM89bDioc9mmdfJq07UUzF0dCsuLA+jq1qCE7JjcpTdrQmg1/k939CGY7THLRwCHFDNyERuVsw81cd0spx4UpaB7HQskPn490bDZfeUlGsI6/ecU9dbLYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733140774; c=relaxed/simple;
-	bh=N/FtLGxZSOjoESGAFkoZ7rNu2YPWJnOH24yyDQkCF1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jm2O/2bQJIrX8oWEc5xtit7oZanDxqrk5JQO6VQhdE2dLZW9OdUu9nSnBhMnsJDV5OkNlL6xjN9RSngypIKz2GvnqMVz1hAe/EzR7T0ar7VoS/fnNKJrDcoTZi/9xTSMHdvbGmHdHk1/mAfrUNN584cUYFbLXU7sOFFMxL1Mo50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=kfCOHf6D; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	s=arc-20240116; t=1733141777; c=relaxed/simple;
+	bh=Qp54G1wDVlff83pTPgjxhEijVs1GRnWXj9GeuRHDTV0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nx/DFy7nHzQV6a2/gnkql9v7WP4sZNCV/rY/g2jNWvj5Q/LefYpS9ABXEWp92Ep5LYrHZLZsJ0M3IxTh6wKdcIHtcatKOkdx89piLBDwknwJdc+LFd/wZ70xeVg2mQLAxcj8g+rw3j6yy9+ny5EpsI7np54Izl1WgtAUAIb2WQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=iMTR94ZQ; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="kfCOHf6D"
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 889F91C00A0; Mon,  2 Dec 2024 12:59:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1733140761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H5ubiw6vD4okQFCfJBW+Ugm6BtQvdoUcLByM+fyDWlU=;
-	b=kfCOHf6Dmy4t3nZYQCoE1xuCMpfTN/ZPug/6jz8E5HOnEaShyW/jfKEXm9TCCPlCibt3pc
-	2Iq5O9lku9yBP3uJeE0JAXWJxiqqABBXmlA+Lj5jUJ49CkPImVyzG6fc4ahCA8Tfntq00w
-	Bi/+mCXdm+r5lqCoOdf24UFOtWIwcWQ=
-Date: Mon, 2 Dec 2024 12:59:21 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Alexander =?iso-8859-1?Q?H=F6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>, robin@protonic.nl,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, corbet@lwn.net, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 3/6] can: j1939: fix error in J1939
- documentation.
-Message-ID: <Z02hGYbHhkEeE3eQ@duo.ucw.cz>
-References: <20241112103803.1654174-1-sashal@kernel.org>
- <20241112103803.1654174-3-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="iMTR94ZQ"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1tI4dH-0080pg-W4; Mon, 02 Dec 2024 12:30:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=N4MXPX46bSsTiOsfmmAde5fJTpY4yHbLGYMqDMKBx3k=; b=iMTR94ZQetOTqTZUdkPxJlPB8j
+	5IZ6+mI8Gm4riCySLodBQZ69uaqupzIq4z/sCQh/tCS4C3ru4A4DQOLewIIeE1kPTEZ6vh8nrHIDT
+	JjCi3fycfPdhzeOBd6lZDEKxWXkUMk9mEdHsTdut8yuEKuHOIjQoA9YnRczjZkY8HowSg11qrUo9P
+	zDeVoYzps7hTG2m+q8mRbKIk24cEGKZubqcbn4E8qmmPhkLp3Js1l4Qn/njLPG2RQlkrP480fmw85
+	yfNMEN+n7GZ2oSgzZTEJKq5/WvxW4ORNjCBtiLPn+Ch6SN3FVw8ms74otQGslwWp2dkXmkSGoiyGu
+	eMmyrBTA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1tI4dH-0005dz-Bz; Mon, 02 Dec 2024 12:30:27 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1tI4d3-007H5a-5a; Mon, 02 Dec 2024 12:30:13 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 02 Dec 2024 12:29:23 +0100
+Subject: [PATCH bpf 1/3] bpf, sockmap: Fix update element with same
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UyTOBD7KB2x8PJGs"
-Content-Disposition: inline
-In-Reply-To: <20241112103803.1654174-3-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co>
+References: <20241202-sockmap-replace-v1-0-1e88579e7bd5@rbox.co>
+In-Reply-To: <20241202-sockmap-replace-v1-0-1e88579e7bd5@rbox.co>
+To: Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Mykola Lysenko <mykolal@fb.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
+Consider a sockmap entry being updated with the same socket:
 
---UyTOBD7KB2x8PJGs
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+	osk = stab->sks[idx];
+	sock_map_add_link(psock, link, map, &stab->sks[idx]);
+	stab->sks[idx] = sk;
+	if (osk)
+		sock_map_unref(osk, &stab->sks[idx]);
 
-Hi!
+Due to sock_map_unref(), which invokes sock_map_del_link(), all the psock's
+links for stab->sks[idx] are torn:
 
-> From: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
->=20
-> [ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
->=20
-> The description of PDU1 format usage mistakenly referred to PDU2
-> format.
+	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+		if (link->link_raw == link_raw) {
+			...
+			list_del(&link->list);
+			sk_psock_free_link(link);
+		}
+	}
 
-I'm pretty sure this does not fix user-visible bug.
+And that includes the new link sock_map_add_link() added just before the
+unref.
 
-BR,
-								Pavel
+This results in a sockmap holding a socket, but without the respective
+link. This in turn means that close(sock) won't trigger the cleanup, i.e. a
+closed socket will not be automatically removed from the sockmap.
 
-> Signed-off-by: Alexander H=F6lzl <alexander.hoelzl@gmx.net>
-> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-> Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gm=
-x.net
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  Documentation/networking/j1939.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/networking/j1939.rst b/Documentation/networkin=
-g/j1939.rst
-> index 0a4b73b03b997..59f81ba411608 100644
-> --- a/Documentation/networking/j1939.rst
-> +++ b/Documentation/networking/j1939.rst
-> @@ -83,7 +83,7 @@ format, the Group Extension is set in the PS-field.
-> =20
->  On the other hand, when using PDU1 format, the PS-field contains a so-ca=
-lled
->  Destination Address, which is _not_ part of the PGN. When communicating =
-a PGN
-> -from user space to kernel (or vice versa) and PDU2 format is used, the P=
-S-field
-> +from user space to kernel (or vice versa) and PDU1 format is used, the P=
-S-field
->  of the PGN shall be set to zero. The Destination Address shall be set
->  elsewhere.
-> =20
+Stop tearing the links when a matching link_raw is found.
 
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/core/sock_map.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---UyTOBD7KB2x8PJGs
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 78347d7d25ef31525f8ec0a755a18e5793ad92c0..20b348b1964a10a1b0bfbe1a90a4a4cd99715b81 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -159,6 +159,7 @@ static void sock_map_del_link(struct sock *sk,
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
++			break;
+ 		}
+ 	}
+ 	spin_unlock_bh(&psock->link_lock);
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.46.2
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ02hGQAKCRAw5/Bqldv6
-8l9LAJwL6qfkl3olcEWNHAA4lyQ0gqDEHACfcaO8EgLoYfDotzr44LxkgMgl/VE=
-=/fMJ
------END PGP SIGNATURE-----
-
---UyTOBD7KB2x8PJGs--
