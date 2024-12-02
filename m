@@ -1,190 +1,125 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80619208986;
-	Mon,  2 Dec 2024 15:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9901BA53
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 15:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153659; cv=none; b=iyQ7iYVi5st4x3c7ovwS0CliYLp7Gete40+aRX3AWB/wSQ2NtGu6PZcjEdN+Y/CkFQXX0rXMLAWA9BET5FJvuUOmaSbiApDjPx2zhh7pNdxqLpsiol0HnhssD3DxiVVj7fCiae0mZBQgL1Na6g4lV+PIJ+ZrgwyM5NFKS1g2KKI=
+	t=1733154715; cv=none; b=LpyS030760D4xqfvb1VqHXuryUO/zPuERmSLjHIpE9itOkEe+87h2vRHDp85lyusSLoKG98nVWWVdQDIfZqTv7luQGbMkSgLAsqFO91Y3Vb0NP7s2YaUI0ZEPFRB7+/WIQfeqJGvyKHYmfEfC/OX9z9GNrwfjxRGqYunEDldBZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153659; c=relaxed/simple;
-	bh=26VnanjFRCPQ64E+0QrEzr8k+WRBR1WeMvaZsB9GYfA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KoKGDcZ20CCHyPe6tj4AJwJQNWfv+LWZui0ppjIUs1MvuadzfRKJFrTHUQiZ0znqaZnYK1IoBow4/EvtR5rqf2GMvztJwDbz9tPAMiiuSA/QVETSM8HJJLGi/2vgYS7OYun+nIOAaOc1Rv1iEEUuTvn7zi0vpixyGWE/b1pS3Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jkFmoR5A; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1733154715; c=relaxed/simple;
+	bh=bL3/xzhTDbzbGTJgjVxoz7qT0Bj5FKuFqnagataC9Bs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MPl1+0Zt3Re9fOIfqsE4uEtN4odb9vKELMEbr9UXaVVpeJKrCx4b5jB+yNqXT1BvDuAjb0qw/+jEr9OJcxZs1wz2n3M61+5bhKpFTtgGQq5bCFr+Dgpl4XnkPbcjJVyF1hMynTLb/hy9EN6wgoJcJ80QvtnYZ7TJzA0nMMvhrXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cogentembedded.com; spf=pass smtp.mailfrom=cogentembedded.com; dkim=pass (2048-bit key) header.d=cogentembedded-com.20230601.gappssmtp.com header.i=@cogentembedded-com.20230601.gappssmtp.com header.b=PCIWgvSh; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cogentembedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cogentembedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jkFmoR5A"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2D531E000E;
-	Mon,  2 Dec 2024 15:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733153649;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GH73Zxavz3tXadnXYMcGQBHsBqaFNZnzohIfStkLYAM=;
-	b=jkFmoR5AQNvVJ/5yuNA2ROvXY2LA2a8qcz2kU7gVCFdTUdoTQ68yJuYAVBoMVSgOoyXRYc
-	sGdkrJkO/HKRXS+4KRSEyxYiZRWpgHTPInijGeUskeKKxDVLP6qrAWN2e+HupM2t1V/Uhe
-	Xwj+oxMjqn4zFBuuVUi7Q9U2EZy0qR47YCw0+Bi6HKr5GnVnXQarej5Fihmm1LGEZViiGz
-	qUvkOlyUVDaIuSSgmiCnkAhRLHsJ05xYe04aUHbMOrre6XMx+XGplKXJHzQH02PNoUQRHf
-	ywdNA1hcDHf8HJyf9JPImarXCK2yYIQnJeEboraFpLzdCFA2OLVj/am04/cOJg==
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Michal Kubecek <mkubecek@suse.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH net v4] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
-Date: Mon,  2 Dec 2024 16:33:57 +0100
-Message-Id: <20241202153358.1142095-1-kory.maincent@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=cogentembedded-com.20230601.gappssmtp.com header.i=@cogentembedded-com.20230601.gappssmtp.com header.b="PCIWgvSh"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53dde4f0f23so4392900e87.3
+        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 07:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20230601.gappssmtp.com; s=20230601; t=1733154712; x=1733759512; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pPftgg43bq9aqu/m+EeNtGmhyyKJMhRNkMNK3b+tQes=;
+        b=PCIWgvShtXlV7oMfezCNXJfVLunDJ7WaTfheu4p3Bz7RE5lCgh/DW3Pqibw3fRCZsJ
+         +nZmCf6vDXL+LHUJfMOoYvhNqKicsmFu18dd7W+Ac+9TSELrfoPsG0bNJca5lVr/UtLm
+         WXLizMpwWAecikmfVjFWOH9nTTgkxsUwovzDRy0QZZoCCIq+dmW3I+BYoAFB7nnF9Jom
+         P7J0fu0za5EtB+2+nE6byPDSqLCFDFveIAG+G9CidfSVaVDtbt9Rsf9RTJ0iM4fsBv5d
+         t6SzFexAElLvtl8cFyyUeiW5eTM4jNEMYHoppwV384MEE3S/bq/CIcsZ+yLi5VvB7kKA
+         SnBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733154712; x=1733759512;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pPftgg43bq9aqu/m+EeNtGmhyyKJMhRNkMNK3b+tQes=;
+        b=CCKwg5OVTa32ylaEbZHanL77cWDma/2pWTJNPTW6nb92cmirw6u1CuDYnn4U8iaWth
+         q0IpU8xLbj4vIaIt9apfno3V16tAyLsoDPjfrzao+6QaIDH5ThQmIvOvfhlT+ni2ffZd
+         B/h9/+ZkpQHN7DQHICewUyKze7ifcwpqwCJsSviefCLqWEjgn7JnfgWqGPmxwgNE1yip
+         Zx99BYvDWswkLzGNZFkr2MFhndpXMC/DOlV1dUBpriRzQfvnPq6YBeGn5N+GCEDcYIlS
+         YUpbV2r832cfTGFiiYwjQXQDzUcQbRX4nUwok2pHFc4nGFnYsaIS/aRdaUex0CB8crhP
+         vIog==
+X-Forwarded-Encrypted: i=1; AJvYcCWdoMOO0p5+eC8CnsC8SwNXNxymIHit+ffZy1PKab+vlzE0l4rAQTSfNDL+Fnv4b/EnCkSD1mI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0P5GTVVLucEFCLL96rLWgKpjeIoN7ddUQqOAkHpq5LjYbZ9JD
+	oJLvDYLaor4fAHrPUoTjf+gW0neaIUjSyp/3qQAzgWulp58+gK7Klw8+AOjmBFU=
+X-Gm-Gg: ASbGncsJCB7vy6yupuD8dEIrSSf0SbOPwxlV9ZFPCZwUrg/X+oiXJLP4gLgszyz747E
+	TgHo57Osh3I8DqDpW9V+X4km2y9ZcPuOC4bkZvfZ8cHTWy5oeAso83IsK/0M9SwDVxNd7Gjjt7y
+	sXbPAsUYsKLmUOzDA3xq0g7iGzmu3Agi4r3g67ICNgz6pLK3x0EMKKjNR/hiQCEytxICsGuRGjk
+	PThCepzuBPxnKHS6tno7x/ihLhR5af6UpeTCwISXmOPqOC6v/wFDow2EN5G4xyKeUbPtA==
+X-Google-Smtp-Source: AGHT+IFwu/0m7FiwxwnmhV7gn9N4KqSQds8K2MDB//YnOhqAjuo10Y4Tx57ncNF0LbVlOwX5NtHLsw==
+X-Received: by 2002:a05:6512:3d1d:b0:53d:a99e:b768 with SMTP id 2adb3069b0e04-53df00d9666mr11899727e87.25.1733154711811;
+        Mon, 02 Dec 2024 07:51:51 -0800 (PST)
+Received: from [192.168.0.104] ([91.198.101.25])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df64311c0sm1502693e87.21.2024.12.02.07.51.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 07:51:51 -0800 (PST)
+Message-ID: <5cef26d0-b24f-48c6-a5e0-f7c9bd0cefec@cogentembedded.com>
+Date: Mon, 2 Dec 2024 20:51:44 +0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: kory.maincent@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: phy: phy_ethtool_ksettings_set: Allow any supported
+ speed
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Michael Dege <michael.dege@renesas.com>,
+ Christian Mardmoeller <christian.mardmoeller@renesas.com>,
+ Dennis Ostermann <dennis.ostermann@renesas.com>
+References: <20241202083352.3865373-1-nikita.yoush@cogentembedded.com>
+ <20241202100334.454599a7@fedora.home>
+ <73ca1492-d97b-4120-b662-cc80fc787ffd@cogentembedded.com>
+ <Z02He-kU6jlH-TJb@shell.armlinux.org.uk>
+ <eddde51a-2e0b-48c2-9681-48a95f329f5c@cogentembedded.com>
+ <Z02KoULvRqMQbxR3@shell.armlinux.org.uk>
+ <c1296735-81be-4f7d-a601-bc1a3718a6a2@cogentembedded.com>
+ <Z02oTJgl1Ldw8J6X@shell.armlinux.org.uk>
+Content-Language: en-US, ru-RU
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+In-Reply-To: <Z02oTJgl1Ldw8J6X@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-A bitset without mask in a _SET request means we want exactly the bits in
-the bitset to be set. This works correctly for compact format but when
-verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
-bits present in the request bitset but does not clear the rest. The commit
-6699170376ab ("ethtool: fix application of verbose no_mask bitset") fixes
-this issue by clearing the whole target bitmap before we start iterating.
-The solution proposed brought an issue with the behavior of the mod
-variable. As the bitset is always cleared the old value will always
-differ to the new value.
+>> root@vc4-033:~# ethtool tsn0
+>> Settings for tsn0:
+>>          Supported ports: [ MII ]
+>>          Supported link modes:   2500baseT/Full
+>>          Supported pause frame use: Symmetric Receive-only
+>>          Supports auto-negotiation: No
+> 
+> Okay, the PHY can apparently only operate in fixed mode, although I
+> would suggest checking that is actually the case. I suspect that may
+> be a driver bug, especially as...
 
-Fix it by adding a new function to compare bitmaps and a temporary variable
-which save the state of the old bitmap.
+My contacts from Renesas say that this PHY chip is an engineering sample.
 
-Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
----
-Resend a fix that got merged and reverted because it was broken.
-https://lore.kernel.org/netdev/20231009133645.44503-1-kory.maincent@bootlin.com/
-https://lore.kernel.org/netdev/20231019070904.521718-1-o.rempel@pengutronix.de/
-https://lore.kernel.org/netdev/20231019-feature_ptp_bitset_fix-v1-1-70f3c429a221@bootlin.com/
+I'm not sure about the origin of "driver" for this. I did not look inside before, but now I did, and it 
+is almost completely a stub. Even no init sequence. The only hw operations that this stub does are
+(1) reading bit 0 of register 1.0901 and returning it as link status (phydev->link),
+(2) reading bit 0 of register 1.0000 and returning it as master/slave setting (phydev->master_slave_get 
+/ phydev->master_slave_state)
+(3) applying phydev->master_slave_set via writing to bit 0 of register 1.0000 and then writing 0x200 to 
+register 7.0200
 
-Thanks Michal for the code proposal.
+Per standard, writing 0x200 to 7.0200 is autoneg restart, however bit 0 of 1.0000 has nothing to do with 
+master/slave. So what device actually does is unclear. Just a black box that provides 2.5G Base-T1 
+signalling, and software-wise can only report link and accept master-slave configuration.
 
-Changes in v4:
-- Add the function purposed by Michal for bitmap comparison.
+Not sure if supporting this sort of black box worths kernel changes.
 
-Changes in v3:
-- Add comment.
-- Updated variable naming.
-- Add orig_bitmap variable to avoid n_mask condition in the
-  nla_for_each_nested() loop.
 
-Changes in v2:
-- Fix the allocated size.
----
- net/ethtool/bitset.c | 48 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+> it changes phydev->duplex, which is _not_ supposed to happen if
+> negotiation has been disabled.
 
-diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
-index 0515d6604b3b..f0883357d12e 100644
---- a/net/ethtool/bitset.c
-+++ b/net/ethtool/bitset.c
-@@ -425,12 +425,32 @@ static int ethnl_parse_bit(unsigned int *index, bool *val, unsigned int nbits,
- 	return 0;
- }
- 
-+/**
-+ * ethnl_bitmap32_equal() - Compare two bitmaps
-+ * @map1:  first bitmap
-+ * @map2:  second bitmap
-+ * @nbits: bit size to compare
-+ *
-+ * Return: true if first @nbits are equal, false if not
-+ */
-+static bool ethnl_bitmap32_equal(const u32 *map1, const u32 *map2,
-+				 unsigned int nbits)
-+{
-+	if (memcmp(map1, map2, nbits / 32 * sizeof(u32)))
-+		return false;
-+	if (nbits % 32 == 0)
-+		return true;
-+	return !((map1[nbits / 32] ^ map2[nbits / 32]) &
-+		 ethnl_lower_bits(nbits % 32));
-+}
-+
- static int
- ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 			      const struct nlattr *attr, struct nlattr **tb,
- 			      ethnl_string_array_t names,
- 			      struct netlink_ext_ack *extack, bool *mod)
- {
-+	u32 *saved_bitmap = NULL;
- 	struct nlattr *bit_attr;
- 	bool no_mask;
- 	int rem;
-@@ -448,8 +468,20 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 	}
- 
- 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
--	if (no_mask)
--		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
-+	if (no_mask) {
-+		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
-+		unsigned int nbytes = nwords * sizeof(u32);
-+		bool dummy;
-+
-+		/* The bitmap size is only the size of the map part without
-+		 * its mask part.
-+		 */
-+		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
-+		if (!saved_bitmap)
-+			return -ENOMEM;
-+		memcpy(saved_bitmap, bitmap, nbytes);
-+		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
-+	}
- 
- 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
- 		bool old_val, new_val;
-@@ -458,22 +490,30 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
- 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
- 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
-+			kfree(saved_bitmap);
- 			return -EINVAL;
- 		}
- 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
- 				      names, extack);
--		if (ret < 0)
-+		if (ret < 0) {
-+			kfree(saved_bitmap);
- 			return ret;
-+		}
- 		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
- 		if (new_val != old_val) {
- 			if (new_val)
- 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
- 			else
- 				bitmap[idx / 32] &= ~((u32)1 << (idx % 32));
--			*mod = true;
-+			if (!no_mask)
-+				*mod = true;
- 		}
- 	}
- 
-+	if (no_mask && !ethnl_bitmap32_equal(saved_bitmap, bitmap, nbits))
-+		*mod = true;
-+
-+	kfree(saved_bitmap);
- 	return 0;
- }
- 
--- 
-2.34.1
-
+There are no writes to phydev->duplex inside the "driver".
+Something in the phy core is changing it.
