@@ -1,160 +1,190 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB82B20ADEC
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 15:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80619208986;
+	Mon,  2 Dec 2024 15:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733153089; cv=none; b=quK+C4wuqW+6+KZU5OC/dvVoYaKQkKwaKY8RDy8plOPo2R16eLJzA/jvdoIbLCechX7q7eMI6nt3+em6ksXxVTmiWxlp9FXDc/RWO6fl0UrywP0lQ7tfoM/+q53qUQ0Zl2xlIDPvvQlAgu9aqBrXuhZ8CBr7BQKGiRrGul3jfIk=
+	t=1733153659; cv=none; b=iyQ7iYVi5st4x3c7ovwS0CliYLp7Gete40+aRX3AWB/wSQ2NtGu6PZcjEdN+Y/CkFQXX0rXMLAWA9BET5FJvuUOmaSbiApDjPx2zhh7pNdxqLpsiol0HnhssD3DxiVVj7fCiae0mZBQgL1Na6g4lV+PIJ+ZrgwyM5NFKS1g2KKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733153089; c=relaxed/simple;
-	bh=goFeMCUVRbDjipThdghVVJLskLf8H473+GNXYnXXrDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ABVj9opwdjRV2wTmutdVNXxWRuLGMtaWicfZr+QUuiACI3aDInSJ0IxHwvVtQJuHIaMUnuqjS9SYUrlUTny/seJeZ77IG3+h9iQZQ+5nS7AbBTLDlHGuTdu2O6WrZBgKkIsOP4swN39e9ToDsr2mxcgmzdNSCOFY3S5r2C8o6eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oqVRjmwC; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1733153659; c=relaxed/simple;
+	bh=26VnanjFRCPQ64E+0QrEzr8k+WRBR1WeMvaZsB9GYfA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KoKGDcZ20CCHyPe6tj4AJwJQNWfv+LWZui0ppjIUs1MvuadzfRKJFrTHUQiZ0znqaZnYK1IoBow4/EvtR5rqf2GMvztJwDbz9tPAMiiuSA/QVETSM8HJJLGi/2vgYS7OYun+nIOAaOc1Rv1iEEUuTvn7zi0vpixyGWE/b1pS3Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jkFmoR5A; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oqVRjmwC"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6eeffdff41dso36736657b3.3
-        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 07:24:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733153087; x=1733757887; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=05ZXtxtYDYApb+lIzc95yV2LA74LDricN9fUjzTVsRg=;
-        b=oqVRjmwCPFbp8NX13GQ37Knaf7Js6RruA7JsAME9fKoTUAGL/hAHluYy3hssqDdGck
-         G3h2wgUUsarnvqYTXpdtcC7ex9fmfZah+6CcPrjQHRIdDHm5YYD2ZPWCzPyWLSZX+6Wl
-         Ttd2gF3PJx2LHbFghXgX2dyZmsOzrQOFa0InxUkzTh0xRpguw7ISgu8qgM4B0PL1BYAk
-         u2/lj2VSrRMtL+bSn3omEt6j92wabJzeXdNMRiojvlZWxVN6/j0rB5ZgVKGLX7zgR29U
-         clW/0lGnWXGwEgryAo35SEApnH1tAAyBhCWD6+6ugnSKDsCgkQNwbtXI2HeWI15fYVO/
-         e+tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733153087; x=1733757887;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=05ZXtxtYDYApb+lIzc95yV2LA74LDricN9fUjzTVsRg=;
-        b=xLuv4qH/JROuAA2t8Z1epg5AaSgxUjVliHog8pmzMhwSFVg7pRyAcH9ztcsmhQt5xt
-         kupzh80vGztUhNFez5+h5Gcch5BsQ4C7gOPQDCCy0eXIuHA0Nh/ngXy9WZwNctmRbLHz
-         0PPocQKIlmzpRvQH/gKhmRj+U2SiuSl5lIL0IjZ+XAad4HwPcfRxBNx3s7KcR/7/PtHY
-         ZqjSRtXqZRZQPcJJ2TQYP9XZNMYAuDRIfyyMHO+5z1S0SdTDScSa2XvaI8CIKEHnc5MF
-         t0iKTYOMPFMBUBwbtymfndVvUkp8tUYkg5/HKRIIUwPipF/l0khK193MH9LQYGlda3t1
-         j5MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW39tGcl5z1WcGPLpCP76L5j9St5Yca4DpzbqVnRH0w1EgzKah0Ay0gJN+R/mHDBKcai+Lwev4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP5ma9+DtA3IPbVW5NMubnwVy7JIOJhUHwwETFFlowmfv2EwTP
-	0jJyub6HAgten2UMo7HKP6XxS2kHv97G0N5d3mwjd68iHQffox+I4whW75o/8LVJD6zkxHb20wx
-	SHPfE586bemsHbYEK4orMxVyOYuXXnz/kLSWeGA==
-X-Gm-Gg: ASbGnctYnuld9lxPyRXFDQs3FSXrPR0Y3HYzp476RsHh8crzdI6vy6IY40Qlvfdlyxz
-	P2ZUCSUYpbxMIuvVKVhw/1GW/3CtFg3Mt
-X-Google-Smtp-Source: AGHT+IG1/7GNikn+o7qWaeU6OlA3SHIeQqG6VzX6iFXwmrBOhF0bD/LXd61skcVAWua1i/pv/Z75jusfAxofKt3ImP8=
-X-Received: by 2002:a05:6902:2e0e:b0:e39:9b9f:7f87 with SMTP id
- 3f1490d57ef6-e399b9f830cmr6954354276.29.1733153086437; Mon, 02 Dec 2024
- 07:24:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jkFmoR5A"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2D531E000E;
+	Mon,  2 Dec 2024 15:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1733153649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GH73Zxavz3tXadnXYMcGQBHsBqaFNZnzohIfStkLYAM=;
+	b=jkFmoR5AQNvVJ/5yuNA2ROvXY2LA2a8qcz2kU7gVCFdTUdoTQ68yJuYAVBoMVSgOoyXRYc
+	sGdkrJkO/HKRXS+4KRSEyxYiZRWpgHTPInijGeUskeKKxDVLP6qrAWN2e+HupM2t1V/Uhe
+	Xwj+oxMjqn4zFBuuVUi7Q9U2EZy0qR47YCw0+Bi6HKr5GnVnXQarej5Fihmm1LGEZViiGz
+	qUvkOlyUVDaIuSSgmiCnkAhRLHsJ05xYe04aUHbMOrre6XMx+XGplKXJHzQH02PNoUQRHf
+	ywdNA1hcDHf8HJyf9JPImarXCK2yYIQnJeEboraFpLzdCFA2OLVj/am04/cOJg==
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Michal Kubecek <mkubecek@suse.cz>,
+	"David S. Miller" <davem@davemloft.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: [PATCH net v4] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
+Date: Mon,  2 Dec 2024 16:33:57 +0100
+Message-Id: <20241202153358.1142095-1-kory.maincent@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241130094758.15553-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20241130094758.15553-1-krzysztof.kozlowski@linaro.org>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 2 Dec 2024 16:24:10 +0100
-Message-ID: <CAPDyKFqiar=EKBHG=PHimjNcdLKsVdx+BRZReEJzHr8_qoayeg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Drop Bhupesh Sharma from maintainers
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	Bhupesh Sharma <bhupesh.linux@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On Sat, 30 Nov 2024 at 10:48, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> For more than a year all emails to Bhupesh Sharma's Linaro emails bounce
-> and there were no updates to mailmap.  No reviews from Bhupesh, either,
-> so change the maintainer to Bjorn and Konrad (Qualcomm SoC maintainers).
->
-> Cc: Bhupesh Sharma <bhupesh.linux@gmail.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+A bitset without mask in a _SET request means we want exactly the bits in
+the bitset to be set. This works correctly for compact format but when
+verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
+bits present in the request bitset but does not clear the rest. The commit
+6699170376ab ("ethtool: fix application of verbose no_mask bitset") fixes
+this issue by clearing the whole target bitmap before we start iterating.
+The solution proposed brought an issue with the behavior of the mod
+variable. As the bitset is always cleared the old value will always
+differ to the new value.
 
-I have queued this up via my mmc tree for next. If anyone has
-objections to that and wants to funnel this via another tree, please
-let me know!
+Fix it by adding a new function to compare bitmaps and a temporary variable
+which save the state of the old bitmap.
 
-Kind regards
-Uffe
+Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+Resend a fix that got merged and reverted because it was broken.
+https://lore.kernel.org/netdev/20231009133645.44503-1-kory.maincent@bootlin.com/
+https://lore.kernel.org/netdev/20231019070904.521718-1-o.rempel@pengutronix.de/
+https://lore.kernel.org/netdev/20231019-feature_ptp_bitset_fix-v1-1-70f3c429a221@bootlin.com/
 
+Thanks Michal for the code proposal.
 
-> ---
->  Documentation/devicetree/bindings/crypto/qcom-qce.yaml         | 3 ++-
->  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml           | 3 ++-
->  Documentation/devicetree/bindings/net/qcom,ethqos.yaml         | 3 ++-
->  .../devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml        | 3 ++-
->  4 files changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> index c09be97434ac..62310add2e44 100644
-> --- a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> +++ b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm crypto engine driver
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    This document defines the binding for the QCE crypto
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index 8b393e26e025..eed9063e9bb3 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm SDHCI controller (sdhci-msm)
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    Secure Digital Host Controller Interface (SDHCI) present on
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> index 0bcd593a7bd0..f117471fb06f 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm Ethernet ETHQOS device
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    dwmmac based Qualcomm ethernet devices which support Gigabit
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> index 758adb06c8dd..059cb87b4d6c 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,sm6115-pas.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Qualcomm SM6115 Peripheral Authentication Service
->
->  maintainers:
-> -  - Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +  - Konrad Dybcio <konradybcio@kernel.org>
->
->  description:
->    Qualcomm SM6115 SoC Peripheral Authentication Service loads and boots
-> --
-> 2.43.0
->
->
+Changes in v4:
+- Add the function purposed by Michal for bitmap comparison.
+
+Changes in v3:
+- Add comment.
+- Updated variable naming.
+- Add orig_bitmap variable to avoid n_mask condition in the
+  nla_for_each_nested() loop.
+
+Changes in v2:
+- Fix the allocated size.
+---
+ net/ethtool/bitset.c | 48 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
+
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index 0515d6604b3b..f0883357d12e 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -425,12 +425,32 @@ static int ethnl_parse_bit(unsigned int *index, bool *val, unsigned int nbits,
+ 	return 0;
+ }
+ 
++/**
++ * ethnl_bitmap32_equal() - Compare two bitmaps
++ * @map1:  first bitmap
++ * @map2:  second bitmap
++ * @nbits: bit size to compare
++ *
++ * Return: true if first @nbits are equal, false if not
++ */
++static bool ethnl_bitmap32_equal(const u32 *map1, const u32 *map2,
++				 unsigned int nbits)
++{
++	if (memcmp(map1, map2, nbits / 32 * sizeof(u32)))
++		return false;
++	if (nbits % 32 == 0)
++		return true;
++	return !((map1[nbits / 32] ^ map2[nbits / 32]) &
++		 ethnl_lower_bits(nbits % 32));
++}
++
+ static int
+ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 			      const struct nlattr *attr, struct nlattr **tb,
+ 			      ethnl_string_array_t names,
+ 			      struct netlink_ext_ack *extack, bool *mod)
+ {
++	u32 *saved_bitmap = NULL;
+ 	struct nlattr *bit_attr;
+ 	bool no_mask;
+ 	int rem;
+@@ -448,8 +468,20 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 	}
+ 
+ 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+-	if (no_mask)
+-		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
++	if (no_mask) {
++		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
++		unsigned int nbytes = nwords * sizeof(u32);
++		bool dummy;
++
++		/* The bitmap size is only the size of the map part without
++		 * its mask part.
++		 */
++		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
++		if (!saved_bitmap)
++			return -ENOMEM;
++		memcpy(saved_bitmap, bitmap, nbytes);
++		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
++	}
+ 
+ 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
+ 		bool old_val, new_val;
+@@ -458,22 +490,30 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
+ 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
+ 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
++			kfree(saved_bitmap);
+ 			return -EINVAL;
+ 		}
+ 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
+ 				      names, extack);
+-		if (ret < 0)
++		if (ret < 0) {
++			kfree(saved_bitmap);
+ 			return ret;
++		}
+ 		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
+ 		if (new_val != old_val) {
+ 			if (new_val)
+ 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
+ 			else
+ 				bitmap[idx / 32] &= ~((u32)1 << (idx % 32));
+-			*mod = true;
++			if (!no_mask)
++				*mod = true;
+ 		}
+ 	}
+ 
++	if (no_mask && !ethnl_bitmap32_equal(saved_bitmap, bitmap, nbits))
++		*mod = true;
++
++	kfree(saved_bitmap);
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
+
