@@ -1,106 +1,148 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BF420FAA4;
-	Mon,  2 Dec 2024 14:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E5720FAA7
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 14:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733149963; cv=none; b=PiGF3Rpo/ZThUtaPWdkwI5TWwX+zdbCX6sz6W+dYgdXtVogxAI948/KFKRI5tcoLi3E6U3dX7KRWpQiypm2ZSeqmZMn6i9YAwIxmYiKbxMO+Xg7Gbtdb8M+z5bqHl41pxnuLqFUMO1SYWDCnPxE66Bc2qCnFjAAMcg09PrVQhgo=
+	t=1733149963; cv=none; b=cUUYm13nzkZm4c5I+4RZJqewP/sdZqrFR9QTvSMdk0TLVfPxW2nwBSt6JUtdjXNnqVXgefPXps8zxnD4QP0tYhM84LnmQWX28C9FcZ+Z/bQy3aLaM/8uabbzLMjHWH9dAnkdyKmMKLU2xp3Smceab7lcFnAL0rnaOBXQ2/a4H6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733149963; c=relaxed/simple;
-	bh=IJ1Rrc7KpT8C107R71TYZs9A0BxxfhfJImHlo+06Fxw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQoLlbmIZYz9Dj1DeWqWq55+2Umax8YT68T5HSatNc0JpZT3RgCnr3Wi/c2LEese3apP+GHvCZhp9GDAdqjLgsaIAdxUE2Z8wBCoTX1rVGAG/GOGzRD2/za96olldAGTn/F+OcZ1KkOUTU9OQB/tF4Umm6a1XMj1AIVpti/Wea4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rzjSVrTq; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	bh=h/pspp31U+S8lrRxWVsQn8EA2kCmmRyrZe21/mIeslE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PSn2nEiK/AGEI0FD29VY0Hv5E/qh2sKecGVn6/mXokMGz4nvUji2rV2/RnP5nDPxPihq1D5izk6BsZBbqTHolYs0xAm0NlgfqOiLIxic4bSJJKG7bJRcth2Ys+WqWmRIRakgFxITPr0reIyk72ywdYm2NO2ysdleiT7YXdWcSnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cp6YCnuQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rzjSVrTq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QywnUlO+90s8saZdPpnrP4d9TT5pCFNVTXS7DZDgsoU=; b=rzjSVrTqpXXd2IrWGOplMAgOgI
-	UMaFfeD1n5bCrmJ4CxYG7RRwAQ9BUjKNNP35naVgqIVwIsPGOszt7AASAxlEuTSRotK6PYSf+cA9C
-	to4xkuSiUr751CRr5txHzafN/rW2ey4isMsZvjixo4Q039JXDCv8PVLsYwAOn5ZmDJ/g=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tI7TH-00Exjr-G3; Mon, 02 Dec 2024 15:32:19 +0100
-Date: Mon, 2 Dec 2024 15:32:19 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cp6YCnuQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733149961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TuFRGfxMUYapMKv5roqocugerZ7QU1/h7r+6fzSgwms=;
+	b=Cp6YCnuQ9tcxAnIJC3L7wnFFWdggljkdWLs6BXCOxfErnM60DqHUh9rr7BWnml9kKxqddR
+	N2+3sO1Gj3z1oKSuTlBy9HaXD+vlowTOb+ErX+jIrTUpXl8hjkzPX6TAUd+DN560rMngFg
+	0K7Tkuyi0JJceBJo/sofJklPaWL+yoU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-C35iARwDNtqfRaepaS3E6g-1; Mon,
+ 02 Dec 2024 09:32:39 -0500
+X-MC-Unique: C35iARwDNtqfRaepaS3E6g-1
+X-Mimecast-MFC-AGG-ID: C35iARwDNtqfRaepaS3E6g
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 75659195394B;
+	Mon,  2 Dec 2024 14:32:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.48])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E963330000DF;
+	Mon,  2 Dec 2024 14:32:35 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Michael Dege <michael.dege@renesas.com>,
-	Christian Mardmoeller <christian.mardmoeller@renesas.com>,
-	Dennis Ostermann <dennis.ostermann@renesas.com>
-Subject: Re: [PATCH] net: phy: phy_ethtool_ksettings_set: Allow any supported
- speed
-Message-ID: <3b98a7c5-b8bf-4e96-b969-da1800813251@lunn.ch>
-References: <20241202083352.3865373-1-nikita.yoush@cogentembedded.com>
- <20241202100334.454599a7@fedora.home>
- <73ca1492-d97b-4120-b662-cc80fc787ffd@cogentembedded.com>
- <Z02He-kU6jlH-TJb@shell.armlinux.org.uk>
- <eddde51a-2e0b-48c2-9681-48a95f329f5c@cogentembedded.com>
- <Z02KoULvRqMQbxR3@shell.armlinux.org.uk>
- <c1296735-81be-4f7d-a601-bc1a3718a6a2@cogentembedded.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 23/37] rxrpc: Don't use received skbuff timestamps
+Date: Mon,  2 Dec 2024 14:30:41 +0000
+Message-ID: <20241202143057.378147-24-dhowells@redhat.com>
+In-Reply-To: <20241202143057.378147-1-dhowells@redhat.com>
+References: <20241202143057.378147-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c1296735-81be-4f7d-a601-bc1a3718a6a2@cogentembedded.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Mon, Dec 02, 2024 at 04:09:43PM +0500, Nikita Yushchenko wrote:
-> > > Right now, 'ethtool -s tsn0 master-slave forced-slave' causes a call to
-> > > driver's ethtool set_link_ksettings method. Which does error out for me
-> > > because at the call time, speed field is 2500.
-> > 
-> > Are you saying that the PHY starts in fixed-speed 2.5G mode?
-> > 
-> > What does ethtool tsn0 say after boot and the link has come up but
-> > before any ethtool settings are changed?
-> 
-> On a freshly booted board, with /etc/systemd/network temporary moved away.
-> 
-> (there are two identical boards, connected to each other)
-> 
-> root@vc4-033:~# ip l show dev tsn0
-> 19: tsn0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
->     link/ether 3a:e3:5c:56:ba:bd brd ff:ff:ff:ff:ff:ff
-> 
-> root@vc4-033:~# ethtool tsn0
-> Settings for tsn0:
->         Supported ports: [ MII ]
->         Supported link modes:   2500baseT/Full
+Don't use received skbuff timestamps, but rather set a timestamp when an
+ack is processed so that the time taken to get to rxrpc_input_ack() is
+included in the RTT.
 
-If it is a T1 PHY, we want it reporting 25000BaseT1/Full here.  Having
-T1 then probably allows us to unlock forced master/slave without
-autoneg, and setting speeds above 1G without autoneg.
+The timestamp of the latest ACK received is tracked in
+call->acks_latest_ts.
 
-Given this is an out of tree driver, i can understand why it does not,
-it means patching a number of in tree files.
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+---
+ net/rxrpc/input.c        | 19 ++++++++++---------
+ net/rxrpc/local_object.c |  3 ---
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
-https://www.marvell.com/products/automotive/88q4364.html
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 5226d26294db..eb467c3f06da 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -1037,14 +1037,6 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+ 	rxrpc_inc_stat(call->rxnet, stat_rx_acks[summary.ack_reason]);
+ 	prefetch(call->tx_queue);
+ 
+-	if (summary.acked_serial != 0) {
+-		if (summary.ack_reason == RXRPC_ACK_PING_RESPONSE)
+-			rxrpc_complete_rtt_probe(call, skb->tstamp, summary.acked_serial,
+-						 ack_serial, rxrpc_rtt_rx_ping_response);
+-		else
+-			summary.rtt_sample_avail = true;
+-	}
+-
+ 	/* If we get an EXCEEDS_WINDOW ACK from the server, it probably
+ 	 * indicates that the client address changed due to NAT.  The server
+ 	 * lost the call because it switched to a different peer.
+@@ -1087,7 +1079,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+ 	if (nr_acks > 0)
+ 		skb_condense(skb);
+ 
+-	call->acks_latest_ts = skb->tstamp;
++	call->acks_latest_ts = ktime_get_real();
+ 	call->acks_hard_ack = hard_ack;
+ 	call->acks_prev_seq = prev_pkt;
+ 
+@@ -1108,6 +1100,15 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+ 	if (hard_ack + 1 == 0)
+ 		return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_zero);
+ 
++	if (summary.acked_serial != 0) {
++		if (summary.ack_reason == RXRPC_ACK_PING_RESPONSE)
++			rxrpc_complete_rtt_probe(call, call->acks_latest_ts,
++						 summary.acked_serial, ack_serial,
++						 rxrpc_rtt_rx_ping_response);
++		else
++			summary.rtt_sample_avail = true;
++	}
++
+ 	/* Ignore ACKs unless we are or have just been transmitting. */
+ 	switch (__rxrpc_call_state(call)) {
+ 	case RXRPC_CALL_CLIENT_SEND_REQUEST:
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index 2792d2304605..a74a4b43904f 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -215,9 +215,6 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
+ 
+ 		/* we want to set the don't fragment bit */
+ 		rxrpc_local_dont_fragment(local, true);
+-
+-		/* We want receive timestamps. */
+-		sock_enable_timestamps(usk);
+ 		break;
+ 
+ 	default:
 
-says it can actually do 2.5G/5G/10GBASE-T1 as defined by the IEEE
-802.3ch standard.
-
-I would be reluctant to make changes to phylib without a kernel
-quality PHY driver queued for merging. So you might want to spend some
-time cleaning up the code. FYI: I've not looked at 802.3ch, but if
-that defines registers, i would expect the driver patches to actually
-be split into helpers for standard defined registers any 3ch driver
-can use, and a PHY driver gluing those together and accessing marvell
-specific registers.
-
-	 Andrew
