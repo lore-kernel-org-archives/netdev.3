@@ -1,340 +1,111 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB67A95C;
-	Mon,  2 Dec 2024 12:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05E81FDE05
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 12:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733143949; cv=none; b=Xu/fsjGomnFoV1Krg4Mv67frUvJwjo7btZVNrZMtohhPIT0zNWhD+16cJB4akD4wz+0JEGV0PJFiKc7q8grZFhUceIIBDmkeMaqWQgXehleJULa6bqsefuovC1la1+3vXPeZ8XyVqUGNpjf0tyNeS6wv1dXayMdMekXkRrDTgTg=
+	t=1733144183; cv=none; b=b0TFOMS5dIaWqY7ialpYNpFvD8YRRODYMtBLmym7kArWqn/vS+2rvNG4BhTD7dFDuTd5r5Lm7a1qvu8bd9b+I5Ryn5zYPw3X+lFWTbNOAmSA0ld/UdXWeLvqDoAZpI9ZtJYC+e/+TfIG6oQ0Q9PVv6Qj5Sljyoh2ferfec6NV/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733143949; c=relaxed/simple;
-	bh=5yfOKQEo5T3y6xK81o+UAx3eLEbjl8iAYsbPwg92jzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VyANP2d9ZQaRF2RClSq+gYrBBuz2Q06AaktzBNCZIR5yugpSp9e34eOT4bewZEq+pYW4IjrwB9tVwj3H/yZFcYMV6wRqE2kxIyjcAd+p1RCB6F43c5aq5RpnaiMkB2kHM1Zy7KZ4vVR4g72VlsxCwQx5Z2T0l9+5zecO4StR7Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=c4FezOj8; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1733144183; c=relaxed/simple;
+	bh=XKcSpIqleiLKXzA/UBD2mf8atNVNWe36NG8cwqXHUyQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oYR52FDlDllwTXbKN1n5jqPmxV+BWTGUTkNL4quUmg5XpVnEyjPAccAD9s1AfCT9AOozCOg7JXRN2GX6XD4fjScYRResw1uIVqeG5x6t+L8AAzMO22YOsiTpQgxuQkFJPyBvr34El2chXkql3Yd8o0VrZyaXx5Nb1VQ9DfekXxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZQarIxuA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="c4FezOj8"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1733143936; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=i47arluX3FDMYUCONBfrM7TK9LSaGe34biX+jE8Ot1Q=;
-	b=c4FezOj87wYU2UZ8Pxl5TalJPc+I0OzreV8K44b/mx3eq2SqvH9A6zaEXwtHQ99yudopEdpOOd4tlJhXEZ4PCPZc7jNWncLPF2hot4abhOdtXDPufgNIXHPMml7avBDTWUug6TkZsgGMBBawvKKDhUdz80Qx5OwL5R3SbGVpxO4=
-Received: from localhost.localdomain(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0WKiDfpL_1733143935 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Dec 2024 20:52:15 +0800
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-To: wenjia@linux.ibm.com,
-	jaka@linux.ibm.com,
-	alibuda@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] net/smc: support SMC-R V2 for rdma devices with max_recv_sge equals to 1
-Date: Mon,  2 Dec 2024 20:52:02 +0800
-Message-Id: <20241202125203.48821-2-guangguan.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <20241202125203.48821-1-guangguan.wang@linux.alibaba.com>
-References: <20241202125203.48821-1-guangguan.wang@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZQarIxuA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733144180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKcSpIqleiLKXzA/UBD2mf8atNVNWe36NG8cwqXHUyQ=;
+	b=ZQarIxuARsSQUa8XU7H+cEq4+fmQJL2vFuB6Ck+qCekbSPEa3R9xnhybBbObW6HiCzZf/1
+	xAoVTl+PXkvPqz548jTrhWbaLHGJaFeqMnCcH1aTwN94mDl/7MBTK5aSIeCWZ8NFs3e+hv
+	PBV8gUznknBhJjwwUpTLTCijDCcRdqM=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-VEkwHeEuNw-Y1HPa9UcT8A-1; Mon, 02 Dec 2024 07:56:19 -0500
+X-MC-Unique: VEkwHeEuNw-Y1HPa9UcT8A-1
+X-Mimecast-MFC-AGG-ID: VEkwHeEuNw-Y1HPa9UcT8A
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-215a3fbb8d4so6111575ad.3
+        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 04:56:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733144179; x=1733748979;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XKcSpIqleiLKXzA/UBD2mf8atNVNWe36NG8cwqXHUyQ=;
+        b=DSV8H+7A2C12juN5ZLlzmKpcbMAlzaelyu6wlAEwj1KmowKAsp4+qUDGzvhOhOGVPH
+         zdQrXuTAJRdUHtEoCxk5sFz9QJJdKIZhShFeC7uj6eXNF+qlMp9HfbIcAiIRdqhkcAax
+         Yh6oHqwvHGxDIUnBcUxLPTSb5Hxh54NUjGXJaDlNHpFHLUt8cSUUjcAbX3cJ9bj97n+q
+         uTd+R5a2RPea0OmKmAC16dmhtUk6eDAyyUFjfJ4ZL+B6a0RFp6qDblxa/MueDce7Bmiz
+         xoBzaI0EMHshB4cv46zPAVKrlXS+UkgyL2xUMG2vJHnmrlpFWhmsxzU0FxswVSJPmR+e
+         7ekQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXv3Awb2LNR3ZJ/YM15pOuJp2Vp1kdarGARHriUzeCgMOVmatGGJe1deONRc8zyTX+1UIj4UbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywfB7Y5zgojX96DhSHmo+l7wkj7pf/xr4BeQiWep2jZv9wvTE3
+	jkkLiFyTdCfi3T09VaGGbIDY+6h1keJQZyyzc6/t7EzAyD+2Qyf0fFNKm7QVohZWgs9HFHoc4iT
+	q0I5gK6IkaDYR36A/5aOKtKN8YheUSmdh9YXau1O6u3D9Ymy3iIvmqA==
+X-Gm-Gg: ASbGncuNbhMgQD1nX/oRUjBDnGdB2r3ZMX5r/zoBzeprynYS4dsnWlyZu3Ml4dVYAFX
+	ekgeYVwUf1mdWKDz52F++k3jBcxDHyt5eJmc85XL7lO9ptjcfDtq7RFBGN7NXR+wdrH6LtawGIf
+	DdjfHDvDvhljzKY+khe6wGPYFiCdYVZNEaVNBWfHP8K4Kn6hT6Kq8VdVrt3IxaRvJY9fyp+AJsA
+	m69R6HPhSX/B3UjQGwcqiBk4/XnBoSnyVOFusau3dA1KNU=
+X-Received: by 2002:a17:903:230d:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2156e01b95fmr108932005ad.6.1733144178713;
+        Mon, 02 Dec 2024 04:56:18 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHF2hbG8ic2+7SJeIpAEUnuyceBg+L9EW/IcZgt10HVRUVQF9A3JgMViVeeM6wluV6tH16bJQ==
+X-Received: by 2002:a17:903:230d:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2156e01b95fmr108931605ad.6.1733144178425;
+        Mon, 02 Dec 2024 04:56:18 -0800 (PST)
+Received: from localhost ([240d:1a:c0d:9f00:523b:c871:32d4:ccd0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215a6fc2d31sm9763385ad.236.2024.12.02.04.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 04:56:18 -0800 (PST)
+Date: Mon, 02 Dec 2024 21:56:09 +0900 (JST)
+Message-Id: <20241202.215609.382397812745347709.syoshida@redhat.com>
+To: glider@google.com
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ hawk@kernel.org, lorenzo@kernel.org, toke@redhat.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, syzkaller@googlegroups.com
+Subject: Re: [PATCH bpf] bpf, test_run: Fix use-after-free issue in
+ eth_skb_pkt_type()
+From: Shigeru Yoshida <syoshida@redhat.com>
+In-Reply-To: <CAG_fn=VqUi=sGzz+0PJ9L7QrtOcgcn0ju=30BEGwB=D728wE8A@mail.gmail.com>
+References: <20241201152735.106681-1-syoshida@redhat.com>
+	<CAG_fn=VqUi=sGzz+0PJ9L7QrtOcgcn0ju=30BEGwB=D728wE8A@mail.gmail.com>
+X-Mailer: Mew version 6.9 on Emacs 29.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-For SMC-R V2, llc msg can be larger than SMC_WR_BUF_SIZE, thus every
-recv wr has 2 sges, the first sge with length SMC_WR_BUF_SIZE is for
-V1/V2 compatible llc/cdc msg, and the second sge with length
-SMC_WR_BUF_V2_SIZE-SMC_WR_TX_SIZE is for V2 specific llc msg, like
-SMC_LLC_DELETE_RKEY and SMC_LLC_ADD_LINK for SMC-R V2. The memory
-buffer in the second sge is shared by all recv wr in one link and
-all link in one lgr for saving memory usage purpose.
-
-But not all RDMA devices with max_recv_sge greater than 1. Thus SMC-R
-V2 can not support on such RDMA devices and SMC_CLC_DECL_INTERR fallback
-happens because of the failure of create qp.
-
-This patch introduce the support for SMC-R V2 on RDMA devices with
-max_recv_sge equals to 1. Every recv wr has only one sge with individual
-buffer whose size is SMC_WR_BUF_V2_SIZE once the RDMA device's max_recv_sge
-equals to 1. It may use more memory, but it is better than
-SMC_CLC_DECL_INTERR fallback.
-
-Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
----
- net/smc/smc_core.c |  5 +++++
- net/smc/smc_core.h | 11 ++++++++++-
- net/smc/smc_ib.c   |  3 +--
- net/smc/smc_llc.c  | 21 +++++++++++++++------
- net/smc/smc_wr.c   | 42 +++++++++++++++++++++---------------------
- 5 files changed, 52 insertions(+), 30 deletions(-)
-
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 500952c2e67b..ede4d5f3111b 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -795,9 +795,14 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
- 	if (lgr->smc_version == SMC_V2) {
- 		lnk->smcibdev = ini->smcrv2.ib_dev_v2;
- 		lnk->ibport = ini->smcrv2.ib_port_v2;
-+		lnk->wr_rx_sge_cnt = lnk->smcibdev->ibdev->attrs.max_recv_sge < 2 ? 1 : 2;
-+		lnk->wr_rx_buflen = smc_link_shared_v2_rxbuf(lnk) ?
-+			SMC_WR_BUF_SIZE : SMC_WR_BUF_V2_SIZE;
- 	} else {
- 		lnk->smcibdev = ini->ib_dev;
- 		lnk->ibport = ini->ib_port;
-+		lnk->wr_rx_sge_cnt = 1;
-+		lnk->wr_rx_buflen = SMC_WR_BUF_SIZE;
- 	}
- 	get_device(&lnk->smcibdev->ibdev->dev);
- 	atomic_inc(&lnk->smcibdev->lnk_cnt);
-diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
-index 69b54ecd6503..48a1b1dcb576 100644
---- a/net/smc/smc_core.h
-+++ b/net/smc/smc_core.h
-@@ -122,10 +122,14 @@ struct smc_link {
- 	} ____cacheline_aligned_in_smp;
- 	struct completion	tx_ref_comp;
- 
--	struct smc_wr_buf	*wr_rx_bufs;	/* WR recv payload buffers */
-+	u8			*wr_rx_bufs;	/* WR recv payload buffers */
- 	struct ib_recv_wr	*wr_rx_ibs;	/* WR recv meta data */
- 	struct ib_sge		*wr_rx_sges;	/* WR recv scatter meta data */
- 	/* above three vectors have wr_rx_cnt elements and use the same index */
-+	int			wr_rx_sge_cnt; /* rx sge, V1 is 1, V2 is either 2 or 1 */
-+	int			wr_rx_buflen;	/* buffer len for the first sge, len for the
-+						 * second sge is lgr shared if rx sge is 2.
-+						 */
- 	dma_addr_t		wr_rx_dma_addr;	/* DMA address of wr_rx_bufs */
- 	dma_addr_t		wr_rx_v2_dma_addr; /* DMA address of v2 rx buf*/
- 	u64			wr_rx_id;	/* seq # of last recv WR */
-@@ -506,6 +510,11 @@ static inline bool smc_link_active(struct smc_link *lnk)
- 	return lnk->state == SMC_LNK_ACTIVE;
- }
- 
-+static inline bool smc_link_shared_v2_rxbuf(struct smc_link *lnk)
-+{
-+	return lnk->wr_rx_sge_cnt > 1;
-+}
-+
- static inline void smc_gid_be16_convert(__u8 *buf, u8 *gid_raw)
- {
- 	sprintf(buf, "%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x",
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 9c563cdbea90..53828833a3f7 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -662,7 +662,6 @@ void smc_ib_destroy_queue_pair(struct smc_link *lnk)
- /* create a queue pair within the protection domain for a link */
- int smc_ib_create_queue_pair(struct smc_link *lnk)
- {
--	int sges_per_buf = (lnk->lgr->smc_version == SMC_V2) ? 2 : 1;
- 	struct ib_qp_init_attr qp_attr = {
- 		.event_handler = smc_ib_qp_event_handler,
- 		.qp_context = lnk,
-@@ -676,7 +675,7 @@ int smc_ib_create_queue_pair(struct smc_link *lnk)
- 			.max_send_wr = SMC_WR_BUF_CNT * 3,
- 			.max_recv_wr = SMC_WR_BUF_CNT * 3,
- 			.max_send_sge = SMC_IB_MAX_SEND_SGE,
--			.max_recv_sge = sges_per_buf,
-+			.max_recv_sge = lnk->wr_rx_sge_cnt,
- 			.max_inline_data = 0,
- 		},
- 		.sq_sig_type = IB_SIGNAL_REQ_WR,
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 018ce8133b02..f865c58c3aa7 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -997,13 +997,14 @@ static int smc_llc_cli_conf_link(struct smc_link *link,
- }
- 
- static void smc_llc_save_add_link_rkeys(struct smc_link *link,
--					struct smc_link *link_new)
-+					struct smc_link *link_new,
-+					u8 *llc_msg)
- {
- 	struct smc_llc_msg_add_link_v2_ext *ext;
- 	struct smc_link_group *lgr = link->lgr;
- 	int max, i;
- 
--	ext = (struct smc_llc_msg_add_link_v2_ext *)((u8 *)lgr->wr_rx_buf_v2 +
-+	ext = (struct smc_llc_msg_add_link_v2_ext *)(llc_msg +
- 						     SMC_WR_TX_SIZE);
- 	max = min_t(u8, ext->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
- 	down_write(&lgr->rmbs_lock);
-@@ -1098,7 +1099,9 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- 	if (rc)
- 		goto out_clear_lnk;
- 	if (lgr->smc_version == SMC_V2) {
--		smc_llc_save_add_link_rkeys(link, lnk_new);
-+		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
-+			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)llc;
-+		smc_llc_save_add_link_rkeys(link, lnk_new, llc_msg);
- 	} else {
- 		rc = smc_llc_cli_rkey_exchange(link, lnk_new);
- 		if (rc) {
-@@ -1498,7 +1501,9 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	if (rc)
- 		goto out_err;
- 	if (lgr->smc_version == SMC_V2) {
--		smc_llc_save_add_link_rkeys(link, link_new);
-+		u8 *llc_msg = smc_link_shared_v2_rxbuf(link) ?
-+			(u8 *)lgr->wr_rx_buf_v2 : (u8 *)add_llc;
-+		smc_llc_save_add_link_rkeys(link, link_new, llc_msg);
- 	} else {
- 		rc = smc_llc_srv_rkey_exchange(link, link_new);
- 		if (rc)
-@@ -1807,8 +1812,12 @@ static void smc_llc_rmt_delete_rkey(struct smc_link_group *lgr)
- 	if (lgr->smc_version == SMC_V2) {
- 		struct smc_llc_msg_delete_rkey_v2 *llcv2;
- 
--		memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
--		llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
-+		if (smc_link_shared_v2_rxbuf(link)) {
-+			memcpy(lgr->wr_rx_buf_v2, llc, sizeof(*llc));
-+			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)lgr->wr_rx_buf_v2;
-+		} else {
-+			llcv2 = (struct smc_llc_msg_delete_rkey_v2 *)llc;
-+		}
- 		llcv2->num_inval_rkeys = 0;
- 
- 		max = min_t(u8, llcv2->num_rkeys, SMC_LLC_RKEYS_PER_MSG_V2);
-diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-index 994c0cd4fddb..b04a21b8c511 100644
---- a/net/smc/smc_wr.c
-+++ b/net/smc/smc_wr.c
-@@ -439,7 +439,7 @@ static inline void smc_wr_rx_demultiplex(struct ib_wc *wc)
- 		return; /* short message */
- 	temp_wr_id = wc->wr_id;
- 	index = do_div(temp_wr_id, link->wr_rx_cnt);
--	wr_rx = (struct smc_wr_rx_hdr *)&link->wr_rx_bufs[index];
-+	wr_rx = (struct smc_wr_rx_hdr *)(link->wr_rx_bufs + index * link->wr_rx_buflen);
- 	hash_for_each_possible(smc_wr_rx_hash, handler, list, wr_rx->type) {
- 		if (handler->type == wr_rx->type)
- 			handler->handler(wc, wr_rx);
-@@ -555,7 +555,6 @@ void smc_wr_remember_qp_attr(struct smc_link *lnk)
- 
- static void smc_wr_init_sge(struct smc_link *lnk)
- {
--	int sges_per_buf = (lnk->lgr->smc_version == SMC_V2) ? 2 : 1;
- 	bool send_inline = (lnk->qp_attr.cap.max_inline_data > SMC_WR_TX_SIZE);
- 	u32 i;
- 
-@@ -608,13 +607,14 @@ static void smc_wr_init_sge(struct smc_link *lnk)
- 	 * the larger spillover buffer, allowing easy data mapping.
- 	 */
- 	for (i = 0; i < lnk->wr_rx_cnt; i++) {
--		int x = i * sges_per_buf;
-+		int x = i * lnk->wr_rx_sge_cnt;
- 
- 		lnk->wr_rx_sges[x].addr =
--			lnk->wr_rx_dma_addr + i * SMC_WR_BUF_SIZE;
--		lnk->wr_rx_sges[x].length = SMC_WR_TX_SIZE;
-+			lnk->wr_rx_dma_addr + i * lnk->wr_rx_buflen;
-+		lnk->wr_rx_sges[x].length = smc_link_shared_v2_rxbuf(lnk) ?
-+			SMC_WR_TX_SIZE : lnk->wr_rx_buflen;
- 		lnk->wr_rx_sges[x].lkey = lnk->roce_pd->local_dma_lkey;
--		if (lnk->lgr->smc_version == SMC_V2) {
-+		if (lnk->lgr->smc_version == SMC_V2 && smc_link_shared_v2_rxbuf(lnk)) {
- 			lnk->wr_rx_sges[x + 1].addr =
- 					lnk->wr_rx_v2_dma_addr + SMC_WR_TX_SIZE;
- 			lnk->wr_rx_sges[x + 1].length =
-@@ -624,7 +624,7 @@ static void smc_wr_init_sge(struct smc_link *lnk)
- 		}
- 		lnk->wr_rx_ibs[i].next = NULL;
- 		lnk->wr_rx_ibs[i].sg_list = &lnk->wr_rx_sges[x];
--		lnk->wr_rx_ibs[i].num_sge = sges_per_buf;
-+		lnk->wr_rx_ibs[i].num_sge = lnk->wr_rx_sge_cnt;
- 	}
- 	lnk->wr_reg.wr.next = NULL;
- 	lnk->wr_reg.wr.num_sge = 0;
-@@ -655,7 +655,7 @@ void smc_wr_free_link(struct smc_link *lnk)
- 
- 	if (lnk->wr_rx_dma_addr) {
- 		ib_dma_unmap_single(ibdev, lnk->wr_rx_dma_addr,
--				    SMC_WR_BUF_SIZE * lnk->wr_rx_cnt,
-+				    lnk->wr_rx_buflen * lnk->wr_rx_cnt,
- 				    DMA_FROM_DEVICE);
- 		lnk->wr_rx_dma_addr = 0;
- 	}
-@@ -740,13 +740,11 @@ int smc_wr_alloc_lgr_mem(struct smc_link_group *lgr)
- 
- int smc_wr_alloc_link_mem(struct smc_link *link)
- {
--	int sges_per_buf = link->lgr->smc_version == SMC_V2 ? 2 : 1;
--
- 	/* allocate link related memory */
- 	link->wr_tx_bufs = kcalloc(SMC_WR_BUF_CNT, SMC_WR_BUF_SIZE, GFP_KERNEL);
- 	if (!link->wr_tx_bufs)
- 		goto no_mem;
--	link->wr_rx_bufs = kcalloc(SMC_WR_BUF_CNT * 3, SMC_WR_BUF_SIZE,
-+	link->wr_rx_bufs = kcalloc(SMC_WR_BUF_CNT * 3, link->wr_rx_buflen,
- 				   GFP_KERNEL);
- 	if (!link->wr_rx_bufs)
- 		goto no_mem_wr_tx_bufs;
-@@ -774,7 +772,7 @@ int smc_wr_alloc_link_mem(struct smc_link *link)
- 	if (!link->wr_tx_sges)
- 		goto no_mem_wr_tx_rdma_sges;
- 	link->wr_rx_sges = kcalloc(SMC_WR_BUF_CNT * 3,
--				   sizeof(link->wr_rx_sges[0]) * sges_per_buf,
-+				   sizeof(link->wr_rx_sges[0]) * link->wr_rx_sge_cnt,
- 				   GFP_KERNEL);
- 	if (!link->wr_rx_sges)
- 		goto no_mem_wr_tx_sges;
-@@ -872,7 +870,7 @@ int smc_wr_create_link(struct smc_link *lnk)
- 	smc_wr_tx_set_wr_id(&lnk->wr_tx_id, 0);
- 	lnk->wr_rx_id = 0;
- 	lnk->wr_rx_dma_addr = ib_dma_map_single(
--		ibdev, lnk->wr_rx_bufs,	SMC_WR_BUF_SIZE * lnk->wr_rx_cnt,
-+		ibdev, lnk->wr_rx_bufs,	lnk->wr_rx_buflen * lnk->wr_rx_cnt,
- 		DMA_FROM_DEVICE);
- 	if (ib_dma_mapping_error(ibdev, lnk->wr_rx_dma_addr)) {
- 		lnk->wr_rx_dma_addr = 0;
-@@ -880,13 +878,15 @@ int smc_wr_create_link(struct smc_link *lnk)
- 		goto out;
- 	}
- 	if (lnk->lgr->smc_version == SMC_V2) {
--		lnk->wr_rx_v2_dma_addr = ib_dma_map_single(ibdev,
--			lnk->lgr->wr_rx_buf_v2, SMC_WR_BUF_V2_SIZE,
--			DMA_FROM_DEVICE);
--		if (ib_dma_mapping_error(ibdev, lnk->wr_rx_v2_dma_addr)) {
--			lnk->wr_rx_v2_dma_addr = 0;
--			rc = -EIO;
--			goto dma_unmap;
-+		if (smc_link_shared_v2_rxbuf(lnk)) {
-+			lnk->wr_rx_v2_dma_addr =
-+				ib_dma_map_single(ibdev, lnk->lgr->wr_rx_buf_v2,
-+						  SMC_WR_BUF_V2_SIZE, DMA_FROM_DEVICE);
-+			if (ib_dma_mapping_error(ibdev, lnk->wr_rx_v2_dma_addr)) {
-+				lnk->wr_rx_v2_dma_addr = 0;
-+				rc = -EIO;
-+				goto dma_unmap;
-+			}
- 		}
- 		lnk->wr_tx_v2_dma_addr = ib_dma_map_single(ibdev,
- 			lnk->lgr->wr_tx_buf_v2, SMC_WR_BUF_V2_SIZE,
-@@ -935,7 +935,7 @@ int smc_wr_create_link(struct smc_link *lnk)
- 		lnk->wr_tx_v2_dma_addr = 0;
- 	}
- 	ib_dma_unmap_single(ibdev, lnk->wr_rx_dma_addr,
--			    SMC_WR_BUF_SIZE * lnk->wr_rx_cnt,
-+			    lnk->wr_rx_buflen * lnk->wr_rx_cnt,
- 			    DMA_FROM_DEVICE);
- 	lnk->wr_rx_dma_addr = 0;
- out:
--- 
-2.24.3 (Apple Git-128)
+T24gTW9uLCAyIERlYyAyMDI0IDEwOjMyOjA0ICswMTAwLCBBbGV4YW5kZXIgUG90YXBlbmtvIHdy
+b3RlOg0KPiBPbiBTdW4sIERlYyAxLCAyMDI0IGF0IDQ6MjfigK9QTSBTaGlnZXJ1IFlvc2hpZGEg
+PHN5b3NoaWRhQHJlZGhhdC5jb20+IHdyb3RlOg0KPj4NCj4+IEtNU0FOIHJlcG9ydGVkIGEgdXNl
+LWFmdGVyLWZyZWUgaXNzdWUgaW4gZXRoX3NrYl9wa3RfdHlwZSgpWzFdLiBUaGUNCj4+IGNhdXNl
+IG9mIHRoZSBpc3N1ZSB3YXMgdGhhdCBldGhfc2tiX3BrdF90eXBlKCkgYWNjZXNzZWQgc2tiJ3Mg
+ZGF0YQ0KPj4gdGhhdCBkaWRuJ3QgY29udGFpbiBhbiBFdGhlcm5ldCBoZWFkZXIuIFRoaXMgb2Nj
+dXJzIHdoZW4NCj4+IGJwZl9wcm9nX3Rlc3RfcnVuX3hkcCgpIHBhc3NlcyBhbiBpbnZhbGlkIHZh
+bHVlIGFzIHRoZSB1c2VyX2RhdGENCj4+IGFyZ3VtZW50IHRvIGJwZl90ZXN0X2luaXQoKS4NCj4g
+DQo+IEhpIFNoaWdlcnUsDQo+IA0KPiBUaGFua3MgZm9yIHRha2luZyBjYXJlIG9mIHRoaXMhDQo+
+IA0KPiBBbSBJIHVuZGVyc3RhbmRpbmcgcmlnaHQgdGhhdCB0aGlzIGJ1ZyB3YXMgcmVwb3J0ZWQg
+YnkgeW91ciBvd24NCj4gc3l6a2FsbGVyIGluc3RhbmNlPw0KDQpIaSBBbGV4YW5kZXIsDQoNClRo
+YW5rIHlvdSBmb3IgeW91ciBjb21tZW50IQ0KDQpZZXMsIHRoaXMgaXNzdWUgd2FzIGlkZW50aWZp
+ZWQgYnkgcnVubmluZyBteSBvd24gc3l6a2FsbGVyIGxvY2FsbHkuDQoNCkkgYWRkZWQgdGhlICJS
+ZXBvcnRlZC1ieTogc3l6a2FsbGVyIDxzeXprYWxsZXJAZ29vZ2xlZ3JvdXBzLmNvbT4iIHRhZw0K
+dG8gZ2l2ZSBjcmVkaXQgdG8gdGhlIHN5emthbGxlciBjb21tdW5pdHkuDQoNCj4gT3RoZXJ3aXNl
+LCBpZiB0aGUgcmVwb3J0IG9yaWdpbmF0ZXMgZnJvbSBzeXprYWxsZXIuYXBwc3BvdC5jb20sIGNv
+dWxkDQo+IHlvdSBwbGVhc2UgYXBwZW5kIHRoZSBidWcgaGFzaCB0byB0aGUgUmVwb3J0ZWQtYnk6
+IHRhZz8NCg0KSSBjaGVja2VkIHN5emthbGxlci5hcHBzcG90LmNvbSwgYnV0IHRoaXMgaXNzdWUg
+ZG9lcyBub3Qgc2VlbSB0byBiZQ0KcmVwb3J0ZWQuDQoNClRoYW5rcywgIA0KU2hpZ2VydQ0K
 
