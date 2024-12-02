@@ -1,55 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123AA1F9F67
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 08:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA791F9A96
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 09:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733129995; cv=none; b=kU9QdhzNhaRtXpfoKPshyNkBgxycWdEp/0Dk40f+kLbGuWG6A1XkdX0COkqrCwHCzxuk4o7OA4XBmtDtdq9WKn/elRR1cjjxGaVZIi2320A+rvmqaeW0za3u19tTHZ73P3trn78i4pqwbvYk+aOl/KImeTEPbhC1zSmCfT7L3aw=
+	t=1733130050; cv=none; b=NUKiE74Mn4L4bxw9JztXyFypzhS92fsj6f0bAJ60JhxBGfxBK6y/ccO/x14WuTxEAvVluRHiYcHb1Z5WjnoBZDB/UHc/q5tfKc3sPC8PPtamk9zw24MzM7C1c4L98BtFgmuDrVb0lkbjs111McczB5lyVKPZjnks0w0qvbZ43kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733129995; c=relaxed/simple;
-	bh=EWY/8NlglCtm+lnuvA5EoZv2NOoq9CHfiFQK2D/9qUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RIO1liUvtmIucw7dqTa/erPCv/d1HcUuWvn+jpFYRq7H4GNwPM4FWndklVXighUOwZJoEmk0rvgkzKUOZfIwzDRd62RE4Y1bW4V19WUXr0WikmhaiSgKHat2m5xO//XCV7do1AZJ9DMO134K2jg2arzJLOVe3xYrJu3ROgE8fyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxoRRIyW; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxoRRIyW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733129993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dQSuKW0IriBuZdk9cOAgO3iSiLEXolV5axaQLUPO0Lo=;
-	b=WxoRRIyWMtYd2b9Q+vAnmfSLmWu6rLrZItah5jSVcM6zn8UY7cLCM7GtLXU9dWkOFLRXHY
-	mAkXqr+1vub6a1lJG+BC80jWvW9c1P/uuqIuNlqBwCGkVpOLUPlYQ42LUu0pPyAfiBwME1
-	q62aCFApOmegxL8oL0t2y/WyR669WWA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-bUssSJVQNo6ZtnVNZS7xNw-1; Mon,
- 02 Dec 2024 03:59:49 -0500
-X-MC-Unique: bUssSJVQNo6ZtnVNZS7xNw-1
-X-Mimecast-MFC-AGG-ID: bUssSJVQNo6ZtnVNZS7xNw
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	s=arc-20240116; t=1733130050; c=relaxed/simple;
+	bh=X/Jfr+UcVrrfKJZ6+BKicGN8tooHWngW023BWsuf3zE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qmSISMseOAxc8Si/ywzDC4DFL5Giomr0VZYnNKT7Pi6I0VUep2xWxrGrkJ7ds9ZUh9wM3ilXR2ZBo3IGYPSaUOafbm4/8LMiDu+Isaf9RLaD3WxTZLjf2oUavuo461L1DjB/EWfi/SbXy3e5glj8uEGo6Hd0pCtkNemQnDOhMzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tI2IR-0007aa-1U
+	for netdev@vger.kernel.org; Mon, 02 Dec 2024 10:00:47 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tI2IP-001GWz-1j
+	for netdev@vger.kernel.org;
+	Mon, 02 Dec 2024 10:00:46 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id E2C8F38333A
+	for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 09:00:45 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 703AA1953959;
-	Mon,  2 Dec 2024 08:59:48 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.39.193.27])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 31CEA19560A3;
-	Mon,  2 Dec 2024 08:59:45 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 5409E38331A;
+	Mon, 02 Dec 2024 09:00:44 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id e589725b;
+	Mon, 2 Dec 2024 09:00:43 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>
-Subject: [PATCH v2 net] ipmr: tune the ipmr_can_free_table() checks.
-Date: Mon,  2 Dec 2024 09:59:39 +0100
-Message-ID: <7d13b21f439acd027e510890ba4b353994bad058.1733129879.git.pabeni@redhat.com>
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/15] pull-request: can 2024-12-02
+Date: Mon,  2 Dec 2024 09:55:34 +0100
+Message-ID: <20241202090040.1110280-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,124 +55,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Eric reported a syzkaller-triggered splat caused by recent ipmr changes:
+Hello netdev-team,
 
-WARNING: CPU: 2 PID: 6041 at net/ipv6/ip6mr.c:419
-ip6mr_free_table+0xbd/0x120 net/ipv6/ip6mr.c:419
-Modules linked in:
-CPU: 2 UID: 0 PID: 6041 Comm: syz-executor183 Not tainted
-6.12.0-syzkaller-10681-g65ae975e97d5 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:ip6mr_free_table+0xbd/0x120 net/ipv6/ip6mr.c:419
-Code: 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c
-02 00 75 58 49 83 bc 24 c0 0e 00 00 00 74 09 e8 44 ef a9 f7 90 <0f> 0b
-90 e8 3b ef a9 f7 48 8d 7b 38 e8 12 a3 96 f7 48 89 df be 0f
-RSP: 0018:ffffc90004267bd8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88803c710000 RCX: ffffffff89e4d844
-RDX: ffff88803c52c880 RSI: ffffffff89e4d87c RDI: ffff88803c578ec0
-RBP: 0000000000000001 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff88803c578000
-R13: ffff88803c710000 R14: ffff88803c710008 R15: dead000000000100
-FS: 00007f7a855ee6c0(0000) GS:ffff88806a800000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7a85689938 CR3: 000000003c492000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-ip6mr_rules_exit+0x176/0x2d0 net/ipv6/ip6mr.c:283
-ip6mr_net_exit_batch+0x53/0xa0 net/ipv6/ip6mr.c:1388
-ops_exit_list+0x128/0x180 net/core/net_namespace.c:177
-setup_net+0x4fe/0x860 net/core/net_namespace.c:394
-copy_net_ns+0x2b4/0x6b0 net/core/net_namespace.c:500
-create_new_namespaces+0x3ea/0xad0 kernel/nsproxy.c:110
-unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:228
-ksys_unshare+0x45d/0xa40 kernel/fork.c:3334
-__do_sys_unshare kernel/fork.c:3405 [inline]
-__se_sys_unshare kernel/fork.c:3403 [inline]
-__x64_sys_unshare+0x31/0x40 kernel/fork.c:3403
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7a856332d9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48
-89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d
-01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f7a855ee238 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007f7a856bd308 RCX: 00007f7a856332d9
-RDX: 00007f7a8560f8c6 RSI: 0000000000000000 RDI: 0000000062040200
-RBP: 00007f7a856bd300 R08: 00007fff932160a7 R09: 00007f7a855ee6c0
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f7a856bd30c
-R13: 0000000000000000 R14: 00007fff93215fc0 R15: 00007fff932160a8
-</TASK>
+this is a pull request of 14 patches for net/master.
 
-The root cause is a network namespace creation failing after successful
-initialization of the ipmr subsystem. Such a case is not currently
-matched by the ipmr_can_free_table() helper.
+The first patch is by me and allows the use of sleeping GPIOs to set
+termination GPIOs.
 
-New namespaces are zeroed on allocation and inserted into net ns list
-only after successful creation; when deleting an ipmr table, the list
-next pointer can be NULL only on netns initialization failure.
+Alexander Kozhinov fixes the gs_usb driver to use the endpoints
+provided by the usb endpoint descriptions instead of hard coded ones.
 
-Update the ipmr_can_free_table() checks leveraging such condition.
+Dario Binacchi contributes 11 statistics related patches for various
+CAN driver. A potential use after free in the hi311x is fixed. The
+statistics for the c_can, sun4i_can, hi311x, m_can, ifi_canfd,
+sja1000, sun4i_can, ems_usb, f81604 are fixed: update statistics even
+if the allocation of the error skb fails and fix the incrementing of
+the rx,tx error counters.
 
-Reported-by: Eric Dumazet <edumazet@google.com>
-Fixes: 11b6e701bce9 ("ipmr: add debug check for mr table cleanup")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+A patch by me fixes the workaround for DS80000789E 6 erratum in the
+mcp251xfd driver.
+
+The last patch is by Dmitry Antipov, targets the j1939 CAN protocol
+and fixes a skb reference counting issue.
+
+regards,
+Marc
+
 ---
-v1 -> v2:
- - move the netns init completed check in a new helper
----
- include/net/net_namespace.h | 5 +++++
- net/ipv4/ipmr.c             | 2 +-
- net/ipv6/ip6mr.c            | 2 +-
- 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 873c0f9fdac6..ac301c7d48a4 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -325,6 +325,11 @@ static inline int check_net(const struct net *net)
- #define net_drop_ns NULL
- #endif
- 
-+/* Returns true if the netns initialization is completed successfully */
-+static inline bool net_initialized(struct net *net)
-+{
-+	return net->list.next;
-+}
- 
- static inline void __netns_tracker_alloc(struct net *net,
- 					 netns_tracker *tracker,
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index c5b8ec5c0a8c..99d8faa508e5 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -122,7 +122,7 @@ static void ipmr_expire_process(struct timer_list *t);
- 
- static bool ipmr_can_free_table(struct net *net)
- {
--	return !check_net(net) || !net->ipv4.mr_rules_ops;
-+	return !check_net(net) || !net_initialized(net);
- }
- 
- static struct mr_table *ipmr_mr_table_iter(struct net *net,
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 7f1902ac3586..578ff1336afe 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -110,7 +110,7 @@ static void ipmr_expire_process(struct timer_list *t);
- 
- static bool ip6mr_can_free_table(struct net *net)
- {
--	return !check_net(net) || !net->ipv6.mr6_rules_ops;
-+	return !check_net(net) || !net_initialized(net);
- }
- 
- static struct mr_table *ip6mr_mr_table_iter(struct net *net,
--- 
-2.45.2
+The following changes since commit 9bb88c659673003453fd42e0ddf95c9628409094:
+
+  selftests: net: test extacks in netlink dumps (2024-11-24 17:00:06 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.13-20241202
+
+for you to fetch changes up to a8c695005bfe6569acd73d777ca298ddddd66105:
+
+  can: j1939: j1939_session_new(): fix skb reference counting (2024-12-02 09:53:39 +0100)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.13-20241202
+
+----------------------------------------------------------------
+Alexander Kozhinov (1):
+      can: gs_usb: add usb endpoint address detection at driver probe step
+
+Dario Binacchi (11):
+      can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
+      can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
+      can: hi311x: hi3110_can_ist(): fix potential use-after-free
+      can: hi311x: hi3110_can_ist(): update state error statistics if skb allocation fails
+      can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
+      can: ifi_canfd: ifi_canfd_handle_lec_err(): fix {rx,tx}_errors statistics
+      can: hi311x: hi3110_can_ist(): fix {rx,tx}_errors statistics
+      can: sja1000: sja1000_err(): fix {rx,tx}_errors statistics
+      can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
+      can: ems_usb: ems_usb_rx_err(): fix {rx,tx}_errors statistics
+      can: f81604: f81604_handle_can_bus_errors(): fix {rx,tx}_errors statistics
+
+Dmitry Antipov (1):
+      can: j1939: j1939_session_new(): fix skb reference counting
+
+Marc Kleine-Budde (3):
+      can: dev: can_set_termination(): allow sleeping GPIOs
+      Merge patch series "Fix {rx,tx}_errors CAN statistics"
+      can: mcp251xfd: mcp251xfd_get_tef_len(): work around erratum DS80000789E 6.
+
+ drivers/net/can/c_can/c_can_main.c            | 26 +++++++----
+ drivers/net/can/dev/dev.c                     |  2 +-
+ drivers/net/can/ifi_canfd/ifi_canfd.c         | 58 ++++++++++++++++--------
+ drivers/net/can/m_can/m_can.c                 | 33 +++++++++-----
+ drivers/net/can/sja1000/sja1000.c             | 65 ++++++++++++++++-----------
+ drivers/net/can/spi/hi311x.c                  | 53 +++++++++++++---------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c | 29 +++++++++++-
+ drivers/net/can/sun4i_can.c                   | 22 +++++----
+ drivers/net/can/usb/ems_usb.c                 | 58 +++++++++++++-----------
+ drivers/net/can/usb/f81604.c                  | 10 +++--
+ drivers/net/can/usb/gs_usb.c                  | 25 ++++++++---
+ net/can/j1939/transport.c                     |  2 +-
+ 12 files changed, 251 insertions(+), 132 deletions(-)
 
