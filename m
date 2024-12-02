@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C121DF967;
-	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91F1DFDBF;
+	Mon,  2 Dec 2024 22:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733177025; cv=none; b=r/WELbAYXQOKtxX/zlZGz8dgu/d2FUedsnr8I9E9Dt300R/GcyIXSsRLogod8kALjbXqQ9ZNBuIpwWU/qUay9GZtiOggaWYgcX/rHSq8x8Auxw9Ojhbo1Z7RE/9gprweB2gXrXM3LKsssjzIcjbeWVGQAiiw7NuVRGeA/3/6h9U=
+	t=1733177025; cv=none; b=EFN8Z+9alV9qSwieBGJR6o6vK5HbZirFGMYqJow7hE371PmaVn9HCJUd+BW49Osyjl8zx3NHqav/aOytywabxqC1Uhmrkltq6Bcj+6DLv7yWqvnwelqb5l2BRMAiVj1lOZ31DCPzbV/j28QV36LiLWeI7BdrMGMSN8hYmSAnu4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733177025; c=relaxed/simple;
-	bh=cDLcuBxu4MlG3S8lQE9mNu4I9S677lFh6lW7mFum0/A=;
+	bh=8EXZPVBYXlmWobRbQGHWVYHGGh1m+iUrmdn4povZRwc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RNNnt5Yk0HGeQpMvzhAAiC+iNfRPuDMY/I3EAeCTOt6hxQkHgN9XUQbPs83yIRpLz0oaz4T4cUbklemCjZQHnu+gRjbXdpD4NdQiCDCNrnKxxOkuAnaSkFsbj38U8ZVs3j2SHDP/7qk3IbxgTS8Wb1pEpK8O1PMMC7frmlLkuSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6hjT1+a; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=B13gHhLp4QnrmiuYxVjzgXtn6vJGt1GfOxQ4liE3beRYe7NMW2wh2qNFCxlKla561ijgjb0C3+OoL08dg2bkUuPo8vlW8DSyLFvj2sqJnA7IYC6O0Mc2ul6ze9Gm3FQ5nCxS6m78r/CXVtMJyExT07CSn2PfoQCy9eQGXacAVeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmnU1fFG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6hjT1+a"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9982BC4CEE3;
-	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmnU1fFG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 11B7DC4CEDD;
+	Mon,  2 Dec 2024 22:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733177024;
-	bh=cDLcuBxu4MlG3S8lQE9mNu4I9S677lFh6lW7mFum0/A=;
+	s=k20201202; t=1733177025;
+	bh=8EXZPVBYXlmWobRbQGHWVYHGGh1m+iUrmdn4povZRwc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=T6hjT1+arBPgp7c33VwEcTT8f/S4S9a673U+azCiuPkyQ+12Juiv3znjuZqbOVHqS
-	 jg25QPFQIAvpRtiX3s8jGJb4wW0DFiVLfPokQL91YL81Y6JTj/2M92d54Ke/MqnSL4
-	 JeiHXYwERm9wUkoP6QO7LLyqRvqM/453/NNHEqoSXQypzpiF81iCv96WhTCmROA24M
-	 8jn/XuQllNnyFdG7J1ymxzSfmX8sobB/Ys6Yo2cibrfCYP2ZcPtjkNnvKz+smG4wbr
-	 VVJkHm4xMbf5fLz/TSkiJxTp0CkEOml6j5BiMyHwe+Qn13y6QLBo5F5nt3T6ASTe4u
-	 n0vtNf4CXVuqw==
+	b=OmnU1fFGAx5kBt3l1068m/cD0b1OuVqPxeQv+RQTZyYqDNjlAa8KGO4vgAWrmwVKi
+	 Go5MTvjnYengKInUGSGCRqpkFlSj38aBHMRvcCB2RthsjspgvL6hcTDK3dY0c5z+k4
+	 o2vTUxn2efWfDZ0KXHfDtpO/L8cqQCVl+3CqR9R/xa7izHJhJSX+GSv/dVjIHdU6g9
+	 GYu7+sXhcIdKIqz9vm+m7/sHzNWVQCfOidYyfJXKhftiypv9TH4Sj4+KU6ys+AcYzD
+	 pi/vPBJTQgXMNzfaX3gLuV2DsOraKBhkQ1lsNnDQd6rrYDBOJ5qknL5092Lkk7HWBb
+	 JtHgXvrCYLI4w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D717E69E95;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2468E69E97;
 	Mon,  2 Dec 2024 22:03:44 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Mon, 02 Dec 2024 23:03:44 +0100
-Subject: [PATCH net-next v7 05/15] net: dwmac-dwc-qos-eth: Use helper
- rgmii_clock
+Date: Mon, 02 Dec 2024 23:03:47 +0100
+Subject: [PATCH net-next v7 08/15] net: dwmac-rk: Use helper rgmii_clock
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-upstream_s32cc_gmac-v7-5-bc3e1f9f656e@oss.nxp.com>
+Message-Id: <20241202-upstream_s32cc_gmac-v7-8-bc3e1f9f656e@oss.nxp.com>
 References: <20241202-upstream_s32cc_gmac-v7-0-bc3e1f9f656e@oss.nxp.com>
 In-Reply-To: <20241202-upstream_s32cc_gmac-v7-0-bc3e1f9f656e@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -73,11 +72,11 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
  "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733177022; l=1290;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733177022; l=1773;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=ZX+NwH2HQko3cIWDQjmmck130Lb3TijMXiPn59w6r/U=;
- b=uFp6e8h+BhAGpSRRXxR2e7S65R+2Nk4BVvwpSvoqxh9gwImcp6mIyNDmExHQ6dDj4WXJX7JbM
- p5u50oCGZHYCFppK8t8F3U0MIgqvWLohOmp9qdkp+hZl4WEN6/eC13h
+ bh=gyls2APUKHLlHqQNKqSG/VCF+Tkp2Zbsb4S51j4pUXE=;
+ b=vy9DLGv3Vdm6Dm1LqomplrVBOoVGrMYN+KNky2654yRfzJ/IP9V2YrCQRm6G/rwtK3eqAkVfp
+ iz4VIegNv8YAQwq59pWaCtB8/29r5wMg4isaJXusoe7T2ZtWlMAhs9O
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -93,41 +92,61 @@ Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 30 ++++++--------------------
+ 1 file changed, 6 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-index 83290e707df5..bd4eb187f8c6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c
-@@ -181,24 +181,19 @@ static void dwc_qos_remove(struct platform_device *pdev)
- static void tegra_eqos_fix_speed(void *priv, unsigned int speed, unsigned int mode)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 8cb374668b74..a4dc89e23a68 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -1079,20 +1079,11 @@ static void rk3568_set_gmac_speed(struct rk_priv_data *bsp_priv, int speed)
  {
- 	struct tegra_eqos *eqos = priv;
--	unsigned long rate = 125000000;
- 	bool needs_calibration = false;
-+	long rate = 125000000;
- 	u32 value;
- 	int err;
+ 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
+ 	struct device *dev = &bsp_priv->pdev->dev;
+-	unsigned long rate;
++	long rate;
+ 	int ret;
  
- 	switch (speed) {
- 	case SPEED_1000:
--		needs_calibration = true;
--		rate = 125000000;
+-	switch (speed) {
+-	case 10:
+-		rate = 2500000;
 -		break;
--
- 	case SPEED_100:
- 		needs_calibration = true;
+-	case 100:
 -		rate = 25000000;
 -		break;
-+		fallthrough;
+-	case 1000:
+-		rate = 125000000;
+-		break;
+-	default:
++	rate = rgmii_clock(speed);
++	if (rate < 0) {
+ 		dev_err(dev, "unknown speed value for GMAC speed=%d", speed);
+ 		return;
+ 	}
+@@ -1540,20 +1531,11 @@ static void rv1126_set_rgmii_speed(struct rk_priv_data *bsp_priv, int speed)
+ {
+ 	struct clk *clk_mac_speed = bsp_priv->clks[RK_CLK_MAC_SPEED].clk;
+ 	struct device *dev = &bsp_priv->pdev->dev;
+-	unsigned long rate;
++	long rate;
+ 	int ret;
  
- 	case SPEED_10:
+-	switch (speed) {
+-	case 10:
 -		rate = 2500000;
-+		rate = rgmii_clock(speed);
- 		break;
- 
- 	default:
+-		break;
+-	case 100:
+-		rate = 25000000;
+-		break;
+-	case 1000:
+-		rate = 125000000;
+-		break;
+-	default:
++	rate = rgmii_clock(speed);
++	if (rate < 0) {
+ 		dev_err(dev, "unknown speed value for RGMII speed=%d", speed);
+ 		return;
+ 	}
 
 -- 
 2.47.0
