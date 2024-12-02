@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B031E0B84;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05CA1E0DBE;
 	Mon,  2 Dec 2024 22:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733177026; cv=none; b=TEiX/yAD89hCQvJ2sxADCkhKQdQbiLoMrkwdKoENAV/JP66utmRcwVJJ6JSecqJCsfiqwt+rHRTajalpvSZgvufY8FSkiaGee8l0xJk3rTpTKrGOaDSldW7AAF/xgPXs0fyjmYdqLRY9ru1nYPiHIy0whuNH2JnIfDboQN3XcU8=
+	t=1733177026; cv=none; b=qTiVBFXgn0anKwGW51nfUv0QttE4iibcIt11+4RwPEnECcsbrRetDRkcK0NPIYFDtJmDrLeghxczxOJKL0FQ91HDJTnyQ6CVBQfm+u9muHgFiFMVkCFRd4mnWSGrZTqlxBQ7IPyEZ4+VzEEs52adu9u80sl8p2lNzKA3ZUAqzV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733177026; c=relaxed/simple;
-	bh=F4cbjF/9M6ITcKCkPhkzEDR5HNiIhwkdl+T79A6mE8Q=;
+	bh=Xx7A78Az9LY483yNlpcxh1fnnI6+OBafjR3+xqpR+KQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mtq/x1OmBuyJGXb2faTvRRvWRvK+UI+lUuQaSxvoCZ7pUC3GQCZVjxdZ4Xh4KAn3Nrd0ddTmgJ5UuFwtSeLVqZKwxa0QE5PfeWZeKOpnkOtHGT2tSRhvR62cUoyLjKnVmj5J6UHAGgTq6sZy/+NjRp7tDuuFGugrqW13UY22VJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dh7iRQsP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=GISpDbxsY4GoBR5dXjlw/+FqRSuZEDGe00cJJ+oPwQCZeV3OXxiL61QmaeeWU2ElmiD83ija7OrToaPGsv5gW+IMgVkpzrLg1OBMxNozuf16+VffQyg982/xMtdXG84Ji7DHT/24SFXHfD4i6eNCvcNPrmigQKbHuH+oNvjyIsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jS3/Dd+w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dh7iRQsP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A8534C4AF49;
-	Mon,  2 Dec 2024 22:03:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jS3/Dd+w"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A36DC4AF0F;
+	Mon,  2 Dec 2024 22:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733177025;
-	bh=F4cbjF/9M6ITcKCkPhkzEDR5HNiIhwkdl+T79A6mE8Q=;
+	s=k20201202; t=1733177026;
+	bh=Xx7A78Az9LY483yNlpcxh1fnnI6+OBafjR3+xqpR+KQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Dh7iRQsP1aktNPhrpo01hU5yRN1vLgusFkuhdNuBSHoA8rlteqrxBaHPpjow93iJo
-	 fQuLACvA769PrPubsDkJ5phrh+FavEljQaO4Isr7WnxjG0xG1ile1Aav7WH4MCzMGN
-	 /lK70kgx6IsGLa8bJlZKhNkO7bFil3p2EbIMRXIWW/vAusbJ6cdp56u5REuyOY79Pa
-	 8MHEenU3IFX7epAj8gqw7Kn1woxNVP9zcr3wflvX0jTO9qKwON0Dj1wKAWNgWM0d+O
-	 7dREoWK8i6eiv2g9hMETySSWCCjDqNuWOj8jwAGP/XCaEahxCrjar3/7xcZ3KehJlG
-	 lUGCW2Q+UoQig==
+	b=jS3/Dd+wkDSrpAc0yAvYYv9Rz06C+hX4kA8ABD9kebFqonpa0xmxMRFl5kbDrk+Sj
+	 FpPy0UNolN58ovi2+MnHR1xUdBWCrz/0jSqv4QGToz89seKktiQNH3ogNJX4rm3uyr
+	 DS2w/usoM3nK99Pj+sK46/ENgQmFwLqOuDuPTzwyOWdZZpjJwC3HSvFzRmGeF7GJPY
+	 jKPyNwL6vzwHtYqpqGCRAE0WmulsD9dm4WCA2pdrD+wU3jz/9EwJZW4nl6Ai20/2T6
+	 drH2j0ZODwxOdB9yslU08BfPwNfT0tf+UDKrneUH0cT+rjT07BQj89a2j4hPlE1Jhi
+	 a1/JzMkvdOZSQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80BBEE69E99;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D3DE69E9A;
 	Mon,  2 Dec 2024 22:03:45 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Mon, 02 Dec 2024 23:03:51 +0100
-Subject: [PATCH net-next v7 12/15] net: dwmac-sti: Use helper rgmii_clock
+Date: Mon, 02 Dec 2024 23:03:54 +0100
+Subject: [PATCH net-next v7 15/15] MAINTAINERS: Add Jan Petrous as the NXP
+ S32G/R DWMAC driver maintainer
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-upstream_s32cc_gmac-v7-12-bc3e1f9f656e@oss.nxp.com>
+Message-Id: <20241202-upstream_s32cc_gmac-v7-15-bc3e1f9f656e@oss.nxp.com>
 References: <20241202-upstream_s32cc_gmac-v7-0-bc3e1f9f656e@oss.nxp.com>
 In-Reply-To: <20241202-upstream_s32cc_gmac-v7-0-bc3e1f9f656e@oss.nxp.com>
 To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -69,14 +70,13 @@ Cc: linux-stm32@st-md-mailman.stormreply.com,
  netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
  0x1207@gmail.com, fancer.lancer@gmail.com, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733177022; l=2017;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733177022; l=915;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=E3dKlyRUyP013sEwa3YoW1YOIguttVezMK0ReGNP/J8=;
- b=5EU9Td/kVd7f4K9kEjDJi+349oi1iNwhZveDd+NbdQO1HK6hNFZF1sN6KFKDbDtGKZoUd0cQE
- bWHECNs0viOC6v11NRJYA4/ZXYvX9/tmNblOkNBiTsbNjmEjreDosHe
+ bh=4615b800g/SFqCBNWwu3wPncyuWc4LNL3Kg9996VRhc=;
+ b=R1xsjMpsqLH/cAho48SbcZaangLpTYAtQG3NRaP4fkNywz9ximUdUwFyBLo2fMhpiFQh4iebH
+ BmkcKeEldPtDJYSKYlUQj1TPfRyU7/OqIdwSLmYQxZplRniL2b4KZiB
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -86,63 +86,32 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Utilize a new helper function rgmii_clock().
+Add myself as NXP S32G/R DWMAC Ethernet driver maintainer.
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-index a6ff02d905a9..eabc4da9e1a9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-@@ -21,10 +21,7 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1e930c7a58b1..baf41d73d14e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2836,6 +2836,13 @@ S:	Maintained
+ F:	arch/arm64/boot/dts/freescale/s32g*.dts*
+ F:	drivers/pinctrl/nxp/
  
- #include "stmmac_platform.h"
- 
--#define DWMAC_125MHZ	125000000
- #define DWMAC_50MHZ	50000000
--#define DWMAC_25MHZ	25000000
--#define DWMAC_2_5MHZ	2500000
- 
- #define IS_PHY_IF_MODE_RGMII(iface)	(iface == PHY_INTERFACE_MODE_RGMII || \
- 			iface == PHY_INTERFACE_MODE_RGMII_ID || \
-@@ -140,7 +137,7 @@ static void stih4xx_fix_retime_src(void *priv, u32 spd, unsigned int mode)
- 	struct sti_dwmac *dwmac = priv;
- 	u32 src = dwmac->tx_retime_src;
- 	u32 reg = dwmac->ctrl_reg;
--	u32 freq = 0;
-+	long freq = 0;
- 
- 	if (dwmac->interface == PHY_INTERFACE_MODE_MII) {
- 		src = TX_RETIME_SRC_TXCLK;
-@@ -153,19 +150,14 @@ static void stih4xx_fix_retime_src(void *priv, u32 spd, unsigned int mode)
- 		}
- 	} else if (IS_PHY_IF_MODE_RGMII(dwmac->interface)) {
- 		/* On GiGa clk source can be either ext or from clkgen */
--		if (spd == SPEED_1000) {
--			freq = DWMAC_125MHZ;
--		} else {
-+		freq = rgmii_clock(spd);
++ARM/NXP S32G/S32R DWMAC ETHERNET DRIVER
++M:	Jan Petrous <jan.petrous@oss.nxp.com>
++L:	NXP S32 Linux Team <s32@nxp.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
++F:	drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
 +
-+		if (spd != SPEED_1000 && freq > 0)
- 			/* Switch to clkgen for these speeds */
- 			src = TX_RETIME_SRC_CLKGEN;
--			if (spd == SPEED_100)
--				freq = DWMAC_25MHZ;
--			else if (spd == SPEED_10)
--				freq = DWMAC_2_5MHZ;
--		}
- 	}
- 
--	if (src == TX_RETIME_SRC_CLKGEN && freq)
-+	if (src == TX_RETIME_SRC_CLKGEN && freq > 0)
- 		clk_set_rate(dwmac->clk, freq);
- 
- 	regmap_update_bits(dwmac->regmap, reg, STIH4XX_RETIME_SRC_MASK,
+ ARM/Orion SoC/Technologic Systems TS-78xx platform support
+ M:	Alexander Clouter <alex@digriz.org.uk>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 
 -- 
 2.47.0
