@@ -1,74 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D5061FD7
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 23:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609CE1DFD86
+	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 23:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733183416; cv=none; b=iURVmF26zPoXppjpMFAeX5KHu8GreI4MUplqL+ab0JcaCDzT3pBtBVLkJQpWTSDTVCcdJP/BopbZQ8H44uJcwWiFu4eSgdyodOFsq1AyLfRXHgXuky6q/yGX6WY6XsgHKxsjE3YI/rkCdSMbegl/YFB8OubUrsgnfGNwTDxK5mg=
+	t=1733183563; cv=none; b=cBvVca9N/TYp7RoTjvPix5Y7aA8cEXyfbVrQiXEMMizGQwHanwuRzEw1z31ANnqSaOl5FndG8og/Qkx3OfXVxZjVMPNXtV07XIa9ckkMrXjJlg5iRKUTM/iAEYTHUtqjvYfTFR33w6sElcqxCieNLEmSelqBg8MAmuPg/BMDWn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733183416; c=relaxed/simple;
-	bh=5GZeT/yUuHSE7I9T5lJCyiL9fkfXvuA+4PxIR0Ii6Is=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AVNcDB+zK9S71hYkkMdX+0FzGGFC20E0BBrQFi0dSKqZCi2c/+rc4fQwBjAMaOt4NSmN9t3xqDsrc4Qa9HzdLbqsPNbK20fUacIMpFTxneF1CccrLXRwiWwFOI3yCni21QKUNr+4+4zd9J0L1AhM6/iBZcLbXvNaCTVI5Pu6zgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YP6HBgd0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733183563; c=relaxed/simple;
+	bh=za2cz9ezczXWzWIsh7AglwUckecj/uWKxmHRIJ0+tOE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l2VJZwxJmX5fAPGyV1NJqZGdKcW0AL7zPuqdy4MHtlwq/aRQXrCvgbp5fcO+GmfNHKN96q8s4HeDSyC63qfDeafa049oGyoRAPm9Js7qM9QSRGF/i/1SyyTUiVEzIz7tsVvDqliq3DV5AvpVYstOY3cPTdTpxRDMZMqZmMvsBTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=eSrZPkDy; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YP6HBgd0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E91C4CED1;
-	Mon,  2 Dec 2024 23:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733183415;
-	bh=5GZeT/yUuHSE7I9T5lJCyiL9fkfXvuA+4PxIR0Ii6Is=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YP6HBgd00v26Q612tICcrWyJ5RtY8//kR00dCQMd6BM6RXyHgTmMUnsIb4wzNiR/e
-	 Sy+t8UyR4nePrqKHKBhrw1oT3+bm4/ZPrPfc3++GdarYKRRPB4NfZf9REl9FpTesn9
-	 3YnnA7BhNebjH2nVIBgsnXjlLh2pyRVfnxL/PoYeUvRPpo1mrrLToN06MA4fbylLVb
-	 82ld2fJbH90FMZmapnKr4O6BQD7AlUR+n2h+Dxb7TmH9n5sMYpjZ5PDpQ5UPuX4qyv
-	 EDluw0GbXqATCGVqm7wT4Y1OiYo1jlAkcTeSxxOrBvSo03QQnZiS+W1ybQSP4Nqo3E
-	 y+w8Sclipjv3g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C413806656;
-	Mon,  2 Dec 2024 23:50:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="eSrZPkDy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=krcAhW83wyDKaQwmQqtFekl0xKkVchV+xRIcnVPYinA=; t=1733183562; x=1734047562; 
+	b=eSrZPkDyvmXDOnOA+qzN9g+YI1qPSMuSO6R14pgfwr8f64FguM/L54sT2Cgc/FIEP18/+wB3Syn
+	1+ZRkvuhbmdOcHqOs7wHsU6cmxapxQwhG4qgEU4dX2pv4kdw+tPytt6g4PEEhRcZ2adlzPgzHRNGn
+	f4SkNng4PCViUzqELuIXcfUlWEb1wZnMp1AL6T9cO+8TlTD7vhAA5mHXm0DI9cl3GHJUOqCitUOEh
+	B4Ft8kgDl97aZQPyV0ATPJ7ht0eUDEIMVClsn+zMzwXxbtUumGySE1cpnIrk9NLiF1NDyklhawzny
+	3vyWEM3LGvUyTMNFX+XUjFp9A/ufU6q9rYew==;
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:61798)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1tIFpJ-0008VJ-Fk; Mon, 02 Dec 2024 15:27:38 -0800
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71d40fdde2fso1777593a34.3;
+        Mon, 02 Dec 2024 15:27:37 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWG6wB7Nh/aD+6/hk8r0Q38Od/7c20/ghHp8YQG4kePVHU+q05YUJuzw8farMxm1Tn1tzbjUO5jrOI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsz1sYzKOvnHUDHr/ixDG39oOLu5BPO08EhxQ6ZS9dy9AJaaEt
+	7ePIBD+5WnQB3F0ixdGmUqURRg4iap2bITCxMCbUf5BoiP2s2//xJavZFlupDVCdG+x7Qsxe6nq
+	c/N8b5Phm5ENQBvifsC65vkmmk1I=
+X-Google-Smtp-Source: AGHT+IEGY2/Wq4lbXpbFogvVpGkgWVw/q3JJZEXnB39V01T6YUbMSSjTPn5+KKB4HZ3rKrf5wjZkd2GjAoyZqCf5nqA=
+X-Received: by 2002:a05:6830:7310:b0:717:f864:90cb with SMTP id
+ 46e09a7af769-71dad5ed63cmr660710a34.4.1733182056937; Mon, 02 Dec 2024
+ 15:27:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] MAINTAINERS: list PTP drivers under networking
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173318343002.3956451.11228010903258244880.git-patchwork-notify@kernel.org>
-Date: Mon, 02 Dec 2024 23:50:30 +0000
-References: <20241130214100.125325-1-kuba@kernel.org>
-In-Reply-To: <20241130214100.125325-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: richardcochran@gmail.com, netdev@vger.kernel.org
+References: <20241111234006.5942-1-ouster@cs.stanford.edu> <20241111234006.5942-13-ouster@cs.stanford.edu>
+ <f81a78ac-b32a-44bf-9375-8ac380bbce74@linux.alibaba.com>
+In-Reply-To: <f81a78ac-b32a-44bf-9375-8ac380bbce74@linux.alibaba.com>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Mon, 2 Dec 2024 15:27:01 -0800
+X-Gmail-Original-Message-ID: <CAGXJAmzQ=xrpr46aF_qeU3mAwDdCaXWXnRKOc+hG8tyihCW9hw@mail.gmail.com>
+Message-ID: <CAGXJAmzQ=xrpr46aF_qeU3mAwDdCaXWXnRKOc+hG8tyihCW9hw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 12/12] net: homa: create Makefile and Kconfig
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: netdev@vger.kernel.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0
+X-Spam-Level: 
+X-Scan-Signature: 5e15904e367bf57319d290d73554c551
 
-Hello:
+On Mon, Nov 25, 2024 at 8:27=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.com=
+> wrote:
+>
+> On 11/12/24 7:40 AM, John Ousterhout wrote:
+>
+> A small formatting issue, perhaps you're using spaces?
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Yep; I fixed the formatting in Kconfig based on input from Randy
+Dunlap earlier in this message train.
 
-On Sat, 30 Nov 2024 13:41:00 -0800 you wrote:
-> PTP patches go via the netdev trees, add drivers/ptp/ to the networking
-> entry so that get_maintainer.pl --scm lists those trees above Linus's
-> tree.
-> 
-> Thanks to the real entry using drivers/ptp/* the original entry will
-> still be considered more specific / higher prio.
-> 
-> [...]
+> > +menuconfig HOMA
+> > +     tristate "The Homa transport protocol"
+> > +     depends on INET
+> > +     depends on IPV6
+>
+> Can HOMA run in an environment without IPv6=EF=BC=88IPv4 only)? If so, de=
+pends is not suitable here. Perhaps
+> what you need is to implement different branches in the code using
+>
+> #if IS_ENABLED(CONFIG_IPV6)
 
-Here is the summary with links:
-  - [net] MAINTAINERS: list PTP drivers under networking
-    https://git.kernel.org/netdev/net/c/c889aa2e7c2f
+No, Homa really can't run in environments without IPv6: internally,
+Homa stores all addresses as IPv6 addresses, converting to/from IPv4
+at the interfaces with other kernel functions. Hopefully that is not a
+problem? And given that, "depends on IPV6" is OK, right?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+-John-
