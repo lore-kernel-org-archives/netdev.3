@@ -1,94 +1,95 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609CE1DFD86
-	for <netdev@vger.kernel.org>; Mon,  2 Dec 2024 23:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A0D61FD7;
+	Mon,  2 Dec 2024 23:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733183563; cv=none; b=cBvVca9N/TYp7RoTjvPix5Y7aA8cEXyfbVrQiXEMMizGQwHanwuRzEw1z31ANnqSaOl5FndG8og/Qkx3OfXVxZjVMPNXtV07XIa9ckkMrXjJlg5iRKUTM/iAEYTHUtqjvYfTFR33w6sElcqxCieNLEmSelqBg8MAmuPg/BMDWn0=
+	t=1733183579; cv=none; b=sgrZvgyldXs0YRcuNqVfN5yRhzfAmCaWihEkdN2hPSZ1Yjz+X+X8980GIZm8PU10QLOKR9/vCPuW2KxKEInOpYHPH1NeDHzRkVbF/97RdFmS3lQOHGfsmakV+L7KTNafitfof+C8WDQkRmY3nLpL4TzihNlSmx1EhS1Sk9K1bjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733183563; c=relaxed/simple;
-	bh=za2cz9ezczXWzWIsh7AglwUckecj/uWKxmHRIJ0+tOE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l2VJZwxJmX5fAPGyV1NJqZGdKcW0AL7zPuqdy4MHtlwq/aRQXrCvgbp5fcO+GmfNHKN96q8s4HeDSyC63qfDeafa049oGyoRAPm9Js7qM9QSRGF/i/1SyyTUiVEzIz7tsVvDqliq3DV5AvpVYstOY3cPTdTpxRDMZMqZmMvsBTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=eSrZPkDy; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1733183579; c=relaxed/simple;
+	bh=xgFEQUmKXFmGUM1ahXnuTGHMGngiivX+kmcshsAXygU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Df6UjLbXVNtM8c9W98VPhkzAUueCOiyV9u4e5p0WXuLHtjMYYvIYuSgYdrUtmmT+sTkBiXpZfdlWDVRW2PtaKn240+b1hASrN0qDzPA6vYAp4sWOar5L/Kn9Bcw4+4gn88AmpMbmd4lHJMkfCNOfwiXGH6uyDYp42eGdW7YD0AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0310zmzO; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="eSrZPkDy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=krcAhW83wyDKaQwmQqtFekl0xKkVchV+xRIcnVPYinA=; t=1733183562; x=1734047562; 
-	b=eSrZPkDyvmXDOnOA+qzN9g+YI1qPSMuSO6R14pgfwr8f64FguM/L54sT2Cgc/FIEP18/+wB3Syn
-	1+ZRkvuhbmdOcHqOs7wHsU6cmxapxQwhG4qgEU4dX2pv4kdw+tPytt6g4PEEhRcZ2adlzPgzHRNGn
-	f4SkNng4PCViUzqELuIXcfUlWEb1wZnMp1AL6T9cO+8TlTD7vhAA5mHXm0DI9cl3GHJUOqCitUOEh
-	B4Ft8kgDl97aZQPyV0ATPJ7ht0eUDEIMVClsn+zMzwXxbtUumGySE1cpnIrk9NLiF1NDyklhawzny
-	3vyWEM3LGvUyTMNFX+XUjFp9A/ufU6q9rYew==;
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:61798)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1tIFpJ-0008VJ-Fk; Mon, 02 Dec 2024 15:27:38 -0800
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71d40fdde2fso1777593a34.3;
-        Mon, 02 Dec 2024 15:27:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWG6wB7Nh/aD+6/hk8r0Q38Od/7c20/ghHp8YQG4kePVHU+q05YUJuzw8farMxm1Tn1tzbjUO5jrOI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsz1sYzKOvnHUDHr/ixDG39oOLu5BPO08EhxQ6ZS9dy9AJaaEt
-	7ePIBD+5WnQB3F0ixdGmUqURRg4iap2bITCxMCbUf5BoiP2s2//xJavZFlupDVCdG+x7Qsxe6nq
-	c/N8b5Phm5ENQBvifsC65vkmmk1I=
-X-Google-Smtp-Source: AGHT+IEGY2/Wq4lbXpbFogvVpGkgWVw/q3JJZEXnB39V01T6YUbMSSjTPn5+KKB4HZ3rKrf5wjZkd2GjAoyZqCf5nqA=
-X-Received: by 2002:a05:6830:7310:b0:717:f864:90cb with SMTP id
- 46e09a7af769-71dad5ed63cmr660710a34.4.1733182056937; Mon, 02 Dec 2024
- 15:27:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0310zmzO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=i9hsELvHD2z5XWxhJW/OJyBNqoqTfdLs30fG0+5CDZg=; b=0310zmzOiZuEy4jzhgjjrZqhUo
+	uIqNoPYr5dZ47xNermYchKG+PyKyoYmq8WtH6irDeio3Oq+2w8UJuvgcASeYqm8EELuLYBexVb3zf
+	WT05IjkaoN/6ChopcRX9kFQr5So99ir7RRNDDw0zyLA9LZ6tjXk4yIkmKtVN15sQys9E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tIGDl-00F0ke-Kw; Tue, 03 Dec 2024 00:52:53 +0100
+Date: Tue, 3 Dec 2024 00:52:53 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Zhiyuan Wan <kmlinuxm@gmail.com>
+Cc: kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	willy.liu@realtek.com, Yuki Lee <febrieac@outlook.com>
+Subject: Re: [PATCH 1/2] net: phy: realtek: add combo mode support for
+ RTL8211FS
+Message-ID: <690e556f-a486-41e3-99ef-c29cb0a26d83@lunn.ch>
+References: <20241202195029.2045633-1-kmlinuxm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241111234006.5942-1-ouster@cs.stanford.edu> <20241111234006.5942-13-ouster@cs.stanford.edu>
- <f81a78ac-b32a-44bf-9375-8ac380bbce74@linux.alibaba.com>
-In-Reply-To: <f81a78ac-b32a-44bf-9375-8ac380bbce74@linux.alibaba.com>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Mon, 2 Dec 2024 15:27:01 -0800
-X-Gmail-Original-Message-ID: <CAGXJAmzQ=xrpr46aF_qeU3mAwDdCaXWXnRKOc+hG8tyihCW9hw@mail.gmail.com>
-Message-ID: <CAGXJAmzQ=xrpr46aF_qeU3mAwDdCaXWXnRKOc+hG8tyihCW9hw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 12/12] net: homa: create Makefile and Kconfig
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: netdev@vger.kernel.org, linux-api@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Spam-Level: 
-X-Scan-Signature: 5e15904e367bf57319d290d73554c551
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202195029.2045633-1-kmlinuxm@gmail.com>
 
-On Mon, Nov 25, 2024 at 8:27=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.com=
-> wrote:
->
-> On 11/12/24 7:40 AM, John Ousterhout wrote:
->
-> A small formatting issue, perhaps you're using spaces?
+> +static int rtl8211f_config_aneg(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	struct rtl821x_priv *priv = phydev->priv;
+> +
+> +	ret = genphy_read_abilities(phydev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	linkmode_copy(phydev->advertising, phydev->supported);
 
-Yep; I fixed the formatting in Kconfig based on input from Randy
-Dunlap earlier in this message train.
+This is all very unusual for config_aneg(). genphy_read_abilities()
+will have been done very early on during phy_probe(). So why do it
+now? And why overwrite how the user might of configured what is to be
+advertised?
 
-> > +menuconfig HOMA
-> > +     tristate "The Homa transport protocol"
-> > +     depends on INET
-> > +     depends on IPV6
->
-> Can HOMA run in an environment without IPv6=EF=BC=88IPv4 only)? If so, de=
-pends is not suitable here. Perhaps
-> what you need is to implement different branches in the code using
->
-> #if IS_ENABLED(CONFIG_IPV6)
+> +static int rtl8211f_read_status(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +	struct rtl821x_priv *priv = phydev->priv;
+> +	bool changed = false;
+> +
+> +	if (rtl8211f_mode(phydev) != priv->lastmode) {
+> +		changed = true;
+> +		ret = rtl8211f_config_aneg(phydev);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = genphy_restart_aneg(phydev);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	return genphy_c37_read_status(phydev, &changed);
+> +}
 
-No, Homa really can't run in environments without IPv6: internally,
-Homa stores all addresses as IPv6 addresses, converting to/from IPv4
-at the interfaces with other kernel functions. Hopefully that is not a
-problem? And given that, "depends on IPV6" is OK, right?
+So you are assuming read_status() is called once per second? But what
+about when interrupts are used?
 
--John-
+You might want to look at how the marvell driver does this. It is not
+great, but better than this.
+
+    Andrew
+
+---
+pw-bot: cr
