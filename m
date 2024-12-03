@@ -1,171 +1,149 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2050.outbound.protection.outlook.com [40.107.93.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6DE1F7060
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 14:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236450; cv=fail; b=d1xIQugYYCirt199gXDZOIuRt+l9yrAZjVJJKFN/TeaqND/W43uNKCwHgm7PTcPZjgp30nJMjGzNHH3Qg9tA5UFvybjPitmyptEfH7VIgn0qcNMYtPbzaldcIZTYh2NQuQnBucw56ILLqZSDcDiw/bi9wsoUcOJfuKHy6dCCdIg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236450; c=relaxed/simple;
-	bh=Q3aJjk/vGT+Zq338I6ED/u91MH0bn6fz6fT2ugyytHc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LFVDlM0/QvjSS1d0hsadcPYAgOLUgnkUnIwGQP/Bv6UJOeW8OPQgFNFuqePozBTgjzzpmFCn8OcrcBI1qTwZEgjsUGdBA7ucZtwhrvIoQn5mBT9gdNXtBP1fQL1YUWQSMh6fvdv7LJG1B13O3Pm5oJfLBzP9WvgZezdAJKZ1spk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SXMrSASQ; arc=fail smtp.client-ip=40.107.93.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953EF1F7090;
+	Tue,  3 Dec 2024 14:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733236455; cv=none; b=st3ST/AgLxMJRkft41kcNBnXTql0AWzveOCk5adjnpVg8x9NXP4xBDcUbfdHHrkKjNE0wBFbc7F9ED7Xbf7xNyJSZBOoQkiti89g/jAdu5ECzxth9SMZO+7jHyJrDCLsWHoDNiYUiuoXPEJUYeN3XoVQEofXYCyjLi5dfdd1E44=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733236455; c=relaxed/simple;
+	bh=HNvQv4Mn+yRf3AqTo5jKqGJck5Kl0ryooW890A6SVoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gtiNnoqTcU54LF5f7ySDklxmpxPLYEyFX6OXPvB6i0PqDvIuATFnLrK7j0RU+BVemGgZKESPRU58a/IbeVBARRhFZ000Y2VmCyc3xMTKT580uH+bIeMW6nqkfk4pEaltNK+3qV8ajPiRbZByF98Gmf8DAfyo4DKCLyPoGgiBZw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtZKslRn; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SXMrSASQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gevZXsbnfLh5XBKHrUiN/IeKhU/uFWu0fAF43q88w8owm8omHIEfWSxp1Dzj/8Y9v7JEzCwZN5u51uBjJE0oU5KvHcmyjH7FAoFf23oY2mMVdMCG8huRpU9VZhYVXxTupdWcpG+i8ZwBaHRT1bkKbNEh6CKeR73KuLMe4NIl4jhderFjCssmWjUctDmVn4pLWu5YEWO8azdLe2+nz17bP8usCmQtRNmSaUy35mLv6Z+K91wvvG9X+tO1qarAoIMbsrLRe/lOptasRQFn3a98QQ7bfHq8XRrZmAM1zbs1pFa+lYU0DsFzaOCneQb4nxmAUwSlMl+w+CgO1nw6AUoJfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g++9x6/WWOpx21Ct0wyRZir0Icn04lrIgiInhlZHoqQ=;
- b=cp/9eWaV2ccnGpqP20+37fEW0PKQjZugWiZayWYAc/gZSXiohLBO9KJeFfRYQENGU7TH8I1vmjHCjZsN8KG41kIf2RkVNarmtiliwhug4pLatp3jQ1YO+sJGRiIoj2tOGLh98il9/ev7qK8gXqdqEOjI/Tra/jpeNaZiEYEfoPU5n6Ctxx2Zhdjd2NiqfIcaQE8DsAsxERWcIernSbDHqdMjaD60l4bZAuW7cvqhd4wiQCA2/ZQdnm8eIzzYQLu48d+1ozIDc6HnE0/3PlTWxM83x/x3NK/0QHdnN24cQNBWcZ2RyqMA5Tv9iGc4uAH3Gbtb3riWQeMOEFj860iv1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g++9x6/WWOpx21Ct0wyRZir0Icn04lrIgiInhlZHoqQ=;
- b=SXMrSASQwbfr0gRi+YhFgOCPiPtFsewkT2qTv5lHAeyYDTUMizvzGkGoMZMdXREatgAqyUcPqVlhjDjX3BkZJtStAZdB4S/0mDFZ7gT0Gn3FXu9sdrmqIqCku5lZ0tM8C/TAhUz9+z4l8tqK5VdRugMMZnWqxVPNu33nI9U5l42amYySt7qw35eSFqRXTNpOUN7ypvnC3qCXIMptqowgKIrKS+zOiQWP184q4YuqN5e1u2urpKgKcHky2FPtrLlXTcvHFnowxDBAe2KcA4cGUeEi8ZyjD/Uon9zpPd3vXGygHbS1rzLN+qRxVqSDEE2zRd14+vZEEw2M2Sn/GKdBPA==
-Received: from SJ0P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::9)
- by MN0PR12MB6103.namprd12.prod.outlook.com (2603:10b6:208:3c9::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.17; Tue, 3 Dec
- 2024 14:34:03 +0000
-Received: from MWH0EPF000971E6.namprd02.prod.outlook.com
- (2603:10b6:a03:41b:cafe::b3) by SJ0P220CA0004.outlook.office365.com
- (2603:10b6:a03:41b::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.18 via Frontend Transport; Tue,
- 3 Dec 2024 14:34:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MWH0EPF000971E6.mail.protection.outlook.com (10.167.243.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Tue, 3 Dec 2024 14:34:02 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
- 06:33:43 -0800
-Received: from localhost.localdomain (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
- 06:33:35 -0800
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
- Machata" <petrm@nvidia.com>, <mlxsw@nvidia.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Menglong Dong <menglong8.dong@gmail.com>, "Guillaume
- Nault" <gnault@redhat.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next v1 06/11] vxlan: Bump error counters for header mismatches
-Date: Tue, 3 Dec 2024 15:30:32 +0100
-Message-ID: <a89e8baeb2ba4d267cd0d9d73491427b876cd53f.1733235367.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1733235367.git.petrm@nvidia.com>
-References: <cover.1733235367.git.petrm@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtZKslRn"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-434a90fed23so47206155e9.1;
+        Tue, 03 Dec 2024 06:34:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733236452; x=1733841252; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vaJmi2F2d7oVyPZ9dEs5lyx3B7MZvf2znAHG2U8SJkE=;
+        b=UtZKslRnw7PvO5YnxvwodwGTWwsV8Ac+1e0kafWnmJi6cG9QARZdODJSBU+iJS/gId
+         6qLHKTqDLtNLVLHFknxfe4A/67lZb6d3rMhY/9f5Z5B4/S++Z4DmcPPRdlytaAiaON3D
+         gyd41Q3sf2+iXQa2OARGfbi/fIjHC5Cn+y7yD2gyXbnFH4Dr3HQVnltFdaZAi6w9W+yJ
+         27xDcUAVBdnEUHSMKQRrIdRwSbxDwe8NbaYEbXEtIES13aBff9cFZIxwAuuIt8abdX6d
+         zMz5bZnWbfQMczEad3yiuWfb31s7EY+RHV+Jah9M35VwdJMYLjBGmg9WMAYcJDUYfUxI
+         pEOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733236452; x=1733841252;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vaJmi2F2d7oVyPZ9dEs5lyx3B7MZvf2znAHG2U8SJkE=;
+        b=mJKPWBtsbeLy4UxJWCg0kxjbjoB/Jf14J9BCAgGwIjtgC0rSn3liWzlTwJabPoS20E
+         htZAdyub2uMrXitoV2/+3V+i6dfmpqIF8VYU9OudExp7UYgk+sb2HjQWEyHSfr5CFwsc
+         DM3NKrrRGj2WRWzSC8JP8HziekfBLxhtzO1rUrMpiEoQAEoUXoGxhvaUBrSh1HScrZe1
+         y1McNiVKdJFbec6QTwvMb03fbg0vNLE8ZrG3cdWuTQsjeONI688o+iyuYRBw2jpYh6qd
+         n5weYswvQjVdLI3uWtZ+F0GPLtbY2rFGZLtaIFcKA1DyfOERBbH7lKq5YAxeD/KIMtN6
+         iPcg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+fQiOygZEPaSCBvRivUXXbQw6LTyiTqXDRKSKi3rdoDtu6xiiJr0VamOYINYNnJkp62dNZec=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwoBx+8/nBMCLJgBg6WkkQOUgQRzVgUf0PdkoYMxdQnGZ/KjXa
+	6us6dAGMQefZVrVlQK6hpJ9UVnOyGeb9soyKILF0bhQ6BZQrxasyDHOiipH2
+X-Gm-Gg: ASbGncv40v3u4F2Lwr52Ixjp7GhdwthHQHfQ2IhL2OBaKCpiruByg121hTjOCCvpd0r
+	URCPV3XLDshNSgTZ7I0ta/cT7VqfYK6YB+drrlinpmLkE1M1qGJsMFOBVlYOb0ImYlpuF+COl7C
+	h0xwx/cFAF6ALl4a/nttKwLdvzAL0NUl/0ogsh3GwkE1yqCRrVZ9Ayf44Jj+SsTOyNmp7Gm3F7n
+	fcRuPVqKp4UOkglVFwtgIgbsBReuisyFfXFTSt2MAvZhOFQ7MU=
+X-Google-Smtp-Source: AGHT+IHXPzxOR5DFEn/MeFs/flkeA4ulBRVyk5qHJg2whXQmSH48mU0TcuNMMQlhQARjWPbyEIw2uA==
+X-Received: by 2002:a05:600c:1f8f:b0:434:a396:9474 with SMTP id 5b1f17b1804b1-434d09cbe39mr25296065e9.18.1733236449638;
+        Tue, 03 Dec 2024 06:34:09 -0800 (PST)
+Received: from localhost ([81.168.73.77])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e2716cedsm10829147f8f.38.2024.12.03.06.34.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 06:34:09 -0800 (PST)
+Date: Tue, 3 Dec 2024 14:34:08 +0000
+From: Martin Habets <habetsm.xilinx@gmail.com>
+To: alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+	dan.j.williams@intel.com, martin.habets@xilinx.com,
+	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com,
+	Alejandro Lucero <alucerop@amd.com>
+Subject: Re: [PATCH v6 16/28] sfc: obtain root decoder with enough HPA free
+ space
+Message-ID: <20241203143408.GF778635@gmail.com>
+Mail-Followup-To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
+	netdev@vger.kernel.org, dan.j.williams@intel.com,
+	martin.habets@xilinx.com, edward.cree@amd.com, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>
+References: <20241202171222.62595-1-alejandro.lucero-palau@amd.com>
+ <20241202171222.62595-17-alejandro.lucero-palau@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E6:EE_|MN0PR12MB6103:EE_
-X-MS-Office365-Filtering-Correlation-Id: 713310fd-34b9-4a68-d702-08dd13a7887e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zcLz07fPQRMZ7mca5XFIe+CET96VG0abZ6YV656c6XJuJandtf/ZX5zyHwQ5?=
- =?us-ascii?Q?K5fSNIi4hRF/qtjDn3Dx6MT5oLFjU4NgHy89/rKRmnbvcytFO5IMUMv2z3+O?=
- =?us-ascii?Q?jc6qPcgN7eeHg2PdPYpvBrFAPO0+VAAM3o/B/FKTn+pWyEFauV7eJIFgdVv5?=
- =?us-ascii?Q?0TYuJ5acutWxzOS59vasdcAFt51lTlfqLz7P8SDJ/nCFGl1P8Smmn47cXF47?=
- =?us-ascii?Q?iuA7WWEzrkr5Qm4weZ7bvaR5B2owigyB9zFNpscDHn7UjAqJk9bjf+8Mg14n?=
- =?us-ascii?Q?qzww3wCLDlOzvrxWpMpbhpH7We3YZlT6htrtcfZjroKIqGYJFKHyCHiCDOZv?=
- =?us-ascii?Q?W0ISDSDyoW8QPSnZz9LchxqLjEIMsMVd243DOZf3XjbVh1VjXPX+dst67pQs?=
- =?us-ascii?Q?WQZKlPZ4XasptxU9UNnL7pyPb37XUYqKzyMOSBame2sezMPZBfBw7ZT9qrxA?=
- =?us-ascii?Q?kH0Z1olGjvrNyav8QL3XBMcsimKyLhQ0IviZTaZoiOqWiE/t0FIiUw7OzccB?=
- =?us-ascii?Q?Ut8pat8Ye5AE//s1EQUTI7tfAWIw+pFTIYgm0+21lzbEdXkJl9997KoQ79E+?=
- =?us-ascii?Q?R+tLfZsMvNLoawT6fgmnVLjaL5MVENZXBLeaUtOIYoLtronDt8pv/+JwN2XG?=
- =?us-ascii?Q?bJw3Z/ZabrdZMrI8cK/LX4Le+B5h/bPRHo2prX8lbFr2wBp1krCqRQ6FOmdJ?=
- =?us-ascii?Q?d+5FpTAwXYYGqUi8uSxGPs4CPs0oEH4MDytxk55BmOCNPjtFGu93Qh8SFIDp?=
- =?us-ascii?Q?HXT5ZT6z7A+XHLiK9Wbec9TmIheOupCC8bhg7HnWwKfcXqjVi4ti03EhRUZq?=
- =?us-ascii?Q?q6aLsCMNGEEwFF8tpCeesiGvQYMZJWbOEVjkD83JpjDs6dhn6ZFsYqsgHX7O?=
- =?us-ascii?Q?GxIft41yukd+zj3wUlrPKZXRlX7xDsjwZb7UDaXjWcOf8i5Yu1JjnkpdqUs2?=
- =?us-ascii?Q?gQVR1bI9YahEkvOG/xysHl9NKfCuNUQ2Jrgmj9iA9zM3Shs06fmu/S8Vir3R?=
- =?us-ascii?Q?JQDLpJbsMYhRWnROy3qD0iA20w93BdHlP9O7lTqdugnMOKHU9hUjLofRtjSR?=
- =?us-ascii?Q?Zut3eVhPu29MztH4eEPSV53QlIKD6qv7EJB+5D/7jo21ncVg66Eu6sKQOkw+?=
- =?us-ascii?Q?FJUKMqLegaiwS58iTL5UD8Jz7cnFu3PE8ggUdlcY/ixJiSxUERdCcridikjc?=
- =?us-ascii?Q?Dmm72S7stLAFLRmlXIYgEABNmb0PrXZ79DE+i+uztZ1n3KyZic+lFfjolCvT?=
- =?us-ascii?Q?9oKhf2F5rjC57ocHhf7E30mgKQX9jNQe5I32EjrIBfkKgf1kykkZf8VdYdSb?=
- =?us-ascii?Q?zeNBY++Fi+QJbp5hCRzru+n8VmXU2kgE4dW8RfV53YlqzDiwz6MYCkSQJluD?=
- =?us-ascii?Q?Rs4C38g0OJd5jBzkmceUEeRUknItaYbQ1dil5SByCiJNjHxtqPqANwTYkiA0?=
- =?us-ascii?Q?5rrzjjDTpIBH/7u8SVvuH91NsxKo+KHj?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:34:02.5396
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 713310fd-34b9-4a68-d702-08dd13a7887e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E6.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6103
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202171222.62595-17-alejandro.lucero-palau@amd.com>
 
-The VXLAN driver so far has not increased the error counters for packets
-that set reserved bits. It does so for other packet errors, so do it for
-this case as well.
+On Mon, Dec 02, 2024 at 05:12:10PM +0000, alejandro.lucero-palau@amd.com wrote:
+> 
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> Asking for availbale HPA space is the previous step to try to obtain
+> an HPA range suitable to accel driver purposes.
+> 
+> Add this call to efx cxl initialization.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
----
+Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+One comment below.
 
-Notes:
-CC: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: Menglong Dong <menglong8.dong@gmail.com>
-CC: Guillaume Nault <gnault@redhat.com>
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/ethernet/sfc/efx_cxl.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+> index d03fa9f9c421..79b93d92f9c2 100644
+> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+> @@ -26,6 +26,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  	struct pci_dev *pci_dev;
+>  	struct efx_cxl *cxl;
+>  	struct resource res;
+> +	resource_size_t max;
+>  	u16 dvsec;
+>  	int rc;
+>  
+> @@ -102,6 +103,23 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  		goto err3;
+>  	}
+>  
+> +	cxl->cxlrd = cxl_get_hpa_freespace(cxl->cxlmd,
+> +					   CXL_DECODER_F_RAM | CXL_DECODER_F_TYPE2,
+> +					   &max);
+> +
+> +	if (IS_ERR(cxl->cxlrd)) {
+> +		pci_err(pci_dev, "cxl_get_hpa_freespace failed\n");
+> +		rc = PTR_ERR(cxl->cxlrd);
+> +		goto err3;
+> +	}
+> +
+> +	if (max < EFX_CTPIO_BUFFER_SIZE) {
+> +		pci_err(pci_dev, "%s: no enough free HPA space %llu < %u\n",
+> +			__func__, max, EFX_CTPIO_BUFFER_SIZE);
 
- drivers/net/vxlan/vxlan_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Seems it should use %pa[p] for max here.
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index f6118de81b8a..b8afdcbdf235 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1721,6 +1721,10 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		 * little more security in adding extensions to VXLAN.
- 		 */
- 		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
-+		DEV_STATS_INC(vxlan->dev, rx_frame_errors);
-+		DEV_STATS_INC(vxlan->dev, rx_errors);
-+		vxlan_vnifilter_count(vxlan, vni, vninode,
-+				      VXLAN_VNI_STATS_RX_ERRORS, 0);
- 		goto drop;
- 	}
- 
--- 
-2.47.0
+Martin
 
+> +		rc = -ENOSPC;
+> +		goto err3;
+> +	}
+> +
+>  	probe_data->cxl = cxl;
+>  
+>  	return 0;
+> -- 
+> 2.17.1
+> 
+> 
