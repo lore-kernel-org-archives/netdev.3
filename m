@@ -1,301 +1,154 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from mr85p00im-ztdg06021801.me.com (mr85p00im-ztdg06021801.me.com [17.58.23.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871182BD1D;
-	Tue,  3 Dec 2024 12:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8F1EE00C
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 13:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733230796; cv=none; b=qC/H2S9dxe+WNy+l9GFiN6mPkHhmX+HJRiIvDkpPs+YOIlkXIPeleVxdwOQi9tFSsaiRi4tfy2fhp1pdOKx3FdhjJcETitILt9oWx/mKNC/ZlI1i59L1qEGO7HJSsUU8ar96K28ottWgkVCe5NlN4OAQ0q04t9x+d+OM5+gWIh4=
+	t=1733231024; cv=none; b=K5F2+XsPvbcOPw+ZuotJc8t+8RK4T1H0SXICFHwSfFS14LE3U8scOg/7ybEqywFoEFM0n/qaMdYW4lO1LDiSB6FC1e9Rb9Wm9osN4rHvtXON3/zAUdlmEEEh3UQztp3pDF/ITJj3w/pj2d4wfFgCAZWwhWAoxnEGYX92OAjtm2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733230796; c=relaxed/simple;
-	bh=ZEG9otDQvINqY6OReyg8BWgPrE/7dIYiKGpsAvyKPLo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nc7YfTw1i+4yVpU3KvD9WHdurmvNO3DFbPAdKiGEsMxT16j8d9Le3zxdyvD3f/jL3z4zlBazKXKDmmNRi8hU4L87iyMFd/yFupV1QgZjHhreREoG8LSAkl9Pk2GoxZomfnIlTzp5YiwHspkH/UZ10vFK4KHbUzHGrW/Qpa8k+QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=WW4/DRnj; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	s=arc-20240116; t=1733231024; c=relaxed/simple;
+	bh=PMZl124fAJi/9a12repkCEPo/NdFlnbWHM0+eGs6QGw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BhU3+2oyBZ9jbiH7DxS4s5utfP/DGBGssciLQm6KyoVYvgdn21rt3kvLkDikGdHUV5Z9GsXTA+gL9rt1cCsjXRWgm+1aVDuhSEUA5bs2391bv4PEuMi/XpUhruvCoTsh2nYx36x+Kla4UUbIqfzaiePU3FMAI3nQYOCNfwfT9+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Kc4yhuXu; arc=none smtp.client-ip=17.58.23.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="WW4/DRnj"
-Received: from ubuntu.home (220.24-245-81.adsl-dyn.isp.belgacom.be [81.245.24.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id AC19E200E1FF;
-	Tue,  3 Dec 2024 13:49:54 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be AC19E200E1FF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1733230194;
-	bh=Mtv8ELvUZ9071b3yI3eGE0meU9AdbEXLRQz1hY3sUiA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW4/DRnj4hR80j69Ol4roKmO2VDmylhs+uPJ6pexVRg39EYNo//S4/9bsR92KmtvM
-	 ClpkwkzoO1bbrO8+9tWhCxDB0haa3+pHsSnbD3rYf87znvCys9qPTXzs4BdHXB9XDc
-	 x2LB4WMn4ffZJfnMsK/XtVb8zEBt8C59A9AjMenoP70OoMBdqF7IRrzm6nGdx+uFv9
-	 cT6VKwS/g9FILm0jPtR1kz3pmyMcrHdIqJVXlp1L2yTLTzb7yDakTzNAa/OattPyvh
-	 T8EDErkw8zauspM+b7sdZ3QJkCG25TVIkpkjJvXI2eTfb7Q+Y+qPwduAQuYQwpTW60
-	 nNvLlkjYkC0dQ==
-From: Justin Iurman <justin.iurman@uliege.be>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	justin.iurman@uliege.be,
-	David Lebrun <dlebrun@google.com>
-Subject: [RESEND PATCH net-next v5 3/4] net: ipv6: seg6_iptunnel: mitigate 2-realloc issue
-Date: Tue,  3 Dec 2024 13:49:44 +0100
-Message-Id: <20241203124945.22508-4-justin.iurman@uliege.be>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241203124945.22508-1-justin.iurman@uliege.be>
-References: <20241203124945.22508-1-justin.iurman@uliege.be>
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Kc4yhuXu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1733231020;
+	bh=QEJ75x+TqYUJVxmVF6uQZZWFOEl0WJRfUhXN2h5KpKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=Kc4yhuXugc/D/qtZZ41v8wAnuwEzwggEWUway63IXkClqixwU1cfn/v3YVm8Qsiaw
+	 28NLlORRwJjFZX7JY4DZlIgrQ1s8zKvPJAQ+RXHBAEkcNRuUPk0OyxBiAs9kB0GBL/
+	 4jgwTolEa8TiqyUyeuv6tr/7DG898UMLRPOw8P2qzUVkHb/i6BK0gmuVjOCVuRaOL4
+	 yVOUtS8ijY+iNGs/3oFthLPmtWg3RPz3zQCNIexvybyNTkT8kJ+0hPmRIWLu7xxlpo
+	 9HqUza+TM66+s3TNEHqlu5QAj7PkxbSr1VPZfaRzmcsea2BKweNx4LzKqRftuLVcUB
+	 Ma8BwRHqOq26Q==
+Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06021801.me.com (Postfix) with ESMTPSA id 67D49442839;
+	Tue,  3 Dec 2024 13:03:18 +0000 (UTC)
+Message-ID: <b9885785-d4d4-4c72-b425-3dc552651d7e@icloud.com>
+Date: Tue, 3 Dec 2024 21:02:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
+ and adapt for various existing usages
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ Martin Tuma <martin.tuma@digiteqautomotive.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Andreas Noever <andreas.noever@gmail.com>,
+ Michael Jamet <michael.jamet@intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Yehezkel Bernat <YehezkelShB@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
+ Mike Christie <michael.christie@oracle.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Nilesh Javali <njavali@marvell.com>,
+ Manish Rangankar <mrangankar@marvell.com>,
+ GR-QLogic-Storage-Upstream@marvell.com, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Andreas Larsson <andreas@gaisler.com>, Stuart Yoder <stuyoder@gmail.com>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>, Jens Axboe <axboe@kernel.dk>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Cristian Marussi <cristian.marussi@arm.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-gpio@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org,
+ linux-sound@vger.kernel.org, open-iscsi@googlegroups.com,
+ linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+ arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
+ <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
+ <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
+ <2024120320-manual-jockey-dfd1@gregkh>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <2024120320-manual-jockey-dfd1@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: CNFmwAOF9NCRr2KajfMjTjtFd_qlM54K
+X-Proofpoint-GUID: CNFmwAOF9NCRr2KajfMjTjtFd_qlM54K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-03_02,2024-12-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412030113
 
-This patch mitigates the two-reallocations issue with seg6_iptunnel by
-providing the dst_entry (in the cache) to the first call to
-skb_cow_head(). As a result, the very first iteration would still
-trigger two reallocations (i.e., empty cache), while next iterations
-would only trigger a single reallocation.
+On 2024/12/3 20:41, Greg Kroah-Hartman wrote:
+> On Tue, Dec 03, 2024 at 08:23:45PM +0800, Zijun Hu wrote:
+>> On 2024/12/3 20:00, Uwe Kleine-König wrote:
+>>> Hello,
+>>>
+>>> On Tue, Dec 03, 2024 at 08:33:22AM +0800, Zijun Hu wrote:
+>>>> This patch series is to constify the following API:
+>>>> struct device *device_find_child(struct device *dev, void *data,
+>>>> 		int (*match)(struct device *dev, void *data));
+>>>> To :
+>>>> struct device *device_find_child(struct device *dev, const void *data,
+>>>> 				 device_match_t match);
+>>>> typedef int (*device_match_t)(struct device *dev, const void *data);
+>>>
+>>> This series isn't bisectible. With only the first two patches applied I
+>>> hit:
+>>
+>> yes. such patch series needs to be merge as atomic way.
+>>
+>> Hi Greg,
+>>
+>> is it possible to ONLY merge such patch series by atomic way into your
+>> driver-core tree?
+> 
+> Nope!
+> 
+>> or squash such patch series into a single patch ?
+>>
+>> various subsystem maintainers may not like squashing way.
+> 
+> Agreed, so look into either doing it in a bisectable way if at all
+> possible.  As I don't see a full series here, I can't suggest how it
+> needs to happen :(
+> 
 
-Performance tests before/after applying this patch, which clearly shows
-the improvement:
-- before: https://ibb.co/3Cg4sNH
-- after: https://ibb.co/8rQ350r
+let me send you a full series later and discuss how to solve this issue.
 
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Cc: David Lebrun <dlebrun@google.com>
----
- net/ipv6/seg6_iptunnel.c | 85 ++++++++++++++++++++++++----------------
- 1 file changed, 52 insertions(+), 33 deletions(-)
-
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 098632adc9b5..4bf937bfc263 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -124,8 +124,8 @@ static __be32 seg6_make_flowlabel(struct net *net, struct sk_buff *skb,
- 	return flowlabel;
- }
- 
--/* encapsulate an IPv6 packet within an outer IPv6 header with a given SRH */
--int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
-+static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
-+			       int proto, struct dst_entry *cache_dst)
- {
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct net *net = dev_net(dst->dev);
-@@ -137,7 +137,7 @@ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
- 	hdrlen = (osrh->hdrlen + 1) << 3;
- 	tot_len = hdrlen + sizeof(*hdr);
- 
--	err = skb_cow_head(skb, tot_len + skb->mac_len);
-+	err = skb_cow_head(skb, tot_len + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err))
- 		return err;
- 
-@@ -197,11 +197,18 @@ int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
- 
- 	return 0;
- }
-+
-+/* encapsulate an IPv6 packet within an outer IPv6 header with a given SRH */
-+int seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh, int proto)
-+{
-+	return __seg6_do_srh_encap(skb, osrh, proto, NULL);
-+}
- EXPORT_SYMBOL_GPL(seg6_do_srh_encap);
- 
- /* encapsulate an IPv6 packet within an outer IPv6 header with reduced SRH */
- static int seg6_do_srh_encap_red(struct sk_buff *skb,
--				 struct ipv6_sr_hdr *osrh, int proto)
-+				 struct ipv6_sr_hdr *osrh, int proto,
-+				 struct dst_entry *cache_dst)
- {
- 	__u8 first_seg = osrh->first_segment;
- 	struct dst_entry *dst = skb_dst(skb);
-@@ -230,7 +237,7 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
- 
- 	tot_len = red_hdrlen + sizeof(struct ipv6hdr);
- 
--	err = skb_cow_head(skb, tot_len + skb->mac_len);
-+	err = skb_cow_head(skb, tot_len + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err))
- 		return err;
- 
-@@ -317,8 +324,8 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
- 	return 0;
- }
- 
--/* insert an SRH within an IPv6 packet, just after the IPv6 header */
--int seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh)
-+static int __seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
-+				struct dst_entry *cache_dst)
- {
- 	struct ipv6hdr *hdr, *oldhdr;
- 	struct ipv6_sr_hdr *isrh;
-@@ -326,7 +333,7 @@ int seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh)
- 
- 	hdrlen = (osrh->hdrlen + 1) << 3;
- 
--	err = skb_cow_head(skb, hdrlen + skb->mac_len);
-+	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
- 	if (unlikely(err))
- 		return err;
- 
-@@ -369,9 +376,8 @@ int seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh)
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(seg6_do_srh_inline);
- 
--static int seg6_do_srh(struct sk_buff *skb)
-+static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
- {
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct seg6_iptunnel_encap *tinfo;
-@@ -384,7 +390,7 @@ static int seg6_do_srh(struct sk_buff *skb)
- 		if (skb->protocol != htons(ETH_P_IPV6))
- 			return -EINVAL;
- 
--		err = seg6_do_srh_inline(skb, tinfo->srh);
-+		err = __seg6_do_srh_inline(skb, tinfo->srh, cache_dst);
- 		if (err)
- 			return err;
- 		break;
-@@ -402,9 +408,11 @@ static int seg6_do_srh(struct sk_buff *skb)
- 			return -EINVAL;
- 
- 		if (tinfo->mode == SEG6_IPTUN_MODE_ENCAP)
--			err = seg6_do_srh_encap(skb, tinfo->srh, proto);
-+			err = __seg6_do_srh_encap(skb, tinfo->srh,
-+						  proto, cache_dst);
- 		else
--			err = seg6_do_srh_encap_red(skb, tinfo->srh, proto);
-+			err = seg6_do_srh_encap_red(skb, tinfo->srh,
-+						    proto, cache_dst);
- 
- 		if (err)
- 			return err;
-@@ -425,11 +433,13 @@ static int seg6_do_srh(struct sk_buff *skb)
- 		skb_push(skb, skb->mac_len);
- 
- 		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
--			err = seg6_do_srh_encap(skb, tinfo->srh,
--						IPPROTO_ETHERNET);
-+			err = __seg6_do_srh_encap(skb, tinfo->srh,
-+						  IPPROTO_ETHERNET,
-+						  cache_dst);
- 		else
- 			err = seg6_do_srh_encap_red(skb, tinfo->srh,
--						    IPPROTO_ETHERNET);
-+						    IPPROTO_ETHERNET,
-+						    cache_dst);
- 
- 		if (err)
- 			return err;
-@@ -444,6 +454,13 @@ static int seg6_do_srh(struct sk_buff *skb)
- 	return 0;
- }
- 
-+/* insert an SRH within an IPv6 packet, just after the IPv6 header */
-+int seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh)
-+{
-+	return __seg6_do_srh_inline(skb, osrh, NULL);
-+}
-+EXPORT_SYMBOL_GPL(seg6_do_srh_inline);
-+
- static int seg6_input_finish(struct net *net, struct sock *sk,
- 			     struct sk_buff *skb)
- {
-@@ -458,31 +475,33 @@ static int seg6_input_core(struct net *net, struct sock *sk,
- 	struct seg6_lwt *slwt;
- 	int err;
- 
--	err = seg6_do_srh(skb);
--	if (unlikely(err))
--		goto drop;
--
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
-+	local_bh_enable();
-+
-+	err = seg6_do_srh(skb, dst);
-+	if (unlikely(err))
-+		goto drop;
- 
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
-+			local_bh_enable();
- 		}
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	} else {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	}
--	local_bh_enable();
--
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
- 
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
-@@ -528,16 +547,16 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 	struct seg6_lwt *slwt;
- 	int err;
- 
--	err = seg6_do_srh(skb);
--	if (unlikely(err))
--		goto drop;
--
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
- 	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
- 	local_bh_enable();
- 
-+	err = seg6_do_srh(skb, dst);
-+	if (unlikely(err))
-+		goto drop;
-+
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -559,15 +578,15 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 		local_bh_disable();
- 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
- 		local_bh_enable();
-+
-+		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
-+		if (unlikely(err))
-+			goto drop;
- 	}
- 
- 	skb_dst_drop(skb);
- 	skb_dst_set(skb, dst);
- 
--	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
--	if (unlikely(err))
--		goto drop;
--
- 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT, net, sk, skb,
- 			       NULL, skb_dst(skb)->dev, dst_output);
--- 
-2.34.1
+> thanks,
+> 
+> greg k-h
 
