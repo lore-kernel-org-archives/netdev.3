@@ -1,178 +1,315 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BEF1DAC9F
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 14:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1066A2AF05;
+	Tue,  3 Dec 2024 14:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237142; cv=none; b=Lvr1BrU7qtkHvqoEIvV5qQjFuI9/hYZzxZPOO83PtYM5gVFFbUs102N8ZNxITjn/3Z++MC/cD8od3B8zPuy+X/uwVN9n+6EvHePiZXYfpGS6U8jXpebysPN/GTH69R8qMIpA3pxC9XwF9K47dvsepHP/WCQRClvTtGmaqozZBMc=
+	t=1733237568; cv=none; b=OHn7hBapGE1I7O0+hY/5chDdqVh7yxJPqkrzsz+G1dJmA9bR+u9sSwr8zEqD2dCeYSJj+/mw4fqv8CJsTVl7jr2dIlXWfg+uvkPu6/FSCmYqzTdk4580DwV/lm3VpPcWyxv4HTh7YhHoS2URN5tDHbsnIZz4H9sEyy4md88oklg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237142; c=relaxed/simple;
-	bh=8dZAcCybSyyCbITBqYJytc/CotfK54Ox4Lm254vkMfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3L7EfTujsixpTsAwdlCF4jz+ucWQreO1jfDtkHV2dSD+GhWcC4W6/3rRBx8zeQiIMWSVIbh63Py0R/8cOlUQRxujYUxX+u8I9Nftz+qRAdCu5z+w0Pc8LR6ORbfaOZgioreT2JRhsYOChEpMA4q9hw8DK4fcYw3WWBU80+dR4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=FBw04yPx; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
+	s=arc-20240116; t=1733237568; c=relaxed/simple;
+	bh=rS9m36SLoxmegxzRzWLvk9CSWmGpn7zVH4jpkU5s7Bs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gn+u0CDoDVTRqwJe3abm/PWlDKGLy6ZX5Q9bL1lwrC0xi0v7Wp8hYYw4d0P7EkXe7NjlDBYQHe+SdsroXanhE+KWpASOBlTEjDDYXLOmXn+5gJoNPK3oQmAK5sLqVJoiI8gn4lZIu3xkAZsndhyackQdSI8+Ets9/HZnnD2qebo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N+YyHfp1; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="FBw04yPx"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434aa472617so47829675e9.3
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 06:45:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N+YyHfp1"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-434a10588f3so36518085e9.1;
+        Tue, 03 Dec 2024 06:52:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1733237138; x=1733841938; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYUAWSDIdbphZ5G3pOF/T6c6CGV5MMb69iUkbh1uoXk=;
-        b=FBw04yPxapayMEI/Hfp92iF64lphRv30tzwssBm46+MOSJCjFa88BvlfYZ5EW8lGPl
-         mBxRvYkDgcqIvYHrUqhnD7fuHKO/pCfkSmmAxz+sgszBH1dF5dlSrVX20rF/daYnPWS2
-         LtYuR0drXI7HBXwUntbPCKaKSp5ZZrfLJdcFoTm2Q2QhTS5jtz2uhkD6gY5kJkjz2ek0
-         JfQckACfFNMzvtOtY+jwZwPjpXIXvFs3slBWDKZ1mz8Nbc69oD1DZZopOpqaplqkHJT1
-         VDMvM3nK9CQG8E6Rdz87QLPIEw+6BIKq40zDLgu5goHOk1Cxt+evVhiMYPQWW3jBlsIJ
-         vNOQ==
+        d=gmail.com; s=20230601; t=1733237564; x=1733842364; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n4xxwe/P+GUjyb6u27Ym0kwJOLqxlZj+XI/nl2u4V+Y=;
+        b=N+YyHfp15KDCpmb/XqymFbplWdT2sEzaqgqrw4ZhHJO/xM0c38RgDYFKt8DyGuahdf
+         0r3qy+s52IwnuUUGN/cdnxeiz+Vd2bULAPcTTb4kMi258tFtntOOi3HZOtNmBwwXg7i7
+         e6rEmHCrW5j66rT7kAmHn4gtB1GYKbNLLKsPuVVLBmdvymGMnPnZm87W8JO2pJffwP1k
+         X9jzd+BP6oz93UOQK7hHpZSKKm7CxY0OzDFYi2ix8ZwCdMJNe3oulS2crarbHR76EzWd
+         rxJ+wTSREZTsXKisdPNtN18Pz46fZSIseV+0KI33yPC4cCzVKP05lB4gfS5m13/doJ6M
+         MD7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733237138; x=1733841938;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LYUAWSDIdbphZ5G3pOF/T6c6CGV5MMb69iUkbh1uoXk=;
-        b=VxWnGK82gXdoMEyi/w4tcm2/kUDM2WDReOBunuzjxqAtaPZYuOoVxWgQojpeQi4MHg
-         3QEyJHfqNE6hPN5n8W8/uyKrLVDjJqHrOjVcJakj+mfyT3a9Loz8nbCCXoN/weikDNhy
-         yHObGe6k/z0zztns2oibrcEig8bnFnb0Oqxw4lGZgoHfn4s4k9aOxiiryph3CNGsELXX
-         dDEKBv4eW1zbBMXNKzuZeHg4sqjKR/BMmOgMnNdxCu7zuqhBk04BkeQMnDXo0SetX+mO
-         nGbW4//X8Zxyyi6Qp1jH7DxEXwwhc1E/eKTBiW2q8SsV/KIXSGg05v2WXth7h3GPF6l5
-         xV9w==
-X-Gm-Message-State: AOJu0Ywyj8FeGx2ewynCAn+QrhXQXSo2ZDozNFDCWXG+vBU9rxVHMz6h
-	2WWw1aIZN1Yi4onz9NPyezM3YKcqaPr2Wo5NhjOxTv5uxH1E64DinsESrNd+AOCCjpyPdgosFjS
-	1UwY=
-X-Gm-Gg: ASbGnctLctGOeclLNjvqgWkJyUWO4VS4F7FFQyWyJsxEnKyQSjXYuvn7Z/oFaoRwxzR
-	2w3X1NxPWn7DHcEubv8nqUvgeWpej1+qWtHI/6qeLPsfAvzM1ngwBRfVBEYO3dqG1fDhYs8rJc3
-	rsj3y51z0QFKCg4nGMhxP3jkxwjmZk6uPrENExRFJDq3QGfl5Eia0SusxExfqCwzTe6ZDLApEWG
-	8ah4AamhyAdJjnNB4AbdqqWWsKiB/nmZeEUgXymR8exCt9flkDFQ96ccUcZRHeUZq5vMJWlT0eT
-	xvg2wyyUIL1GLA==
-X-Google-Smtp-Source: AGHT+IExdHHjexiWRYW0A3yzO/aU99shhOBSmwRHUoZR7Gb39P6gg6MqzgLWtBfZZGTqXTUyZjZmMg==
-X-Received: by 2002:a05:6000:4802:b0:385:e961:6589 with SMTP id ffacd0b85a97d-385fd3cd5f2mr2621165f8f.20.1733237138384;
-        Tue, 03 Dec 2024 06:45:38 -0800 (PST)
-Received: from localtoast.corp.sigma-star.at ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385faec0c9dsm3180818f8f.20.2024.12.03.06.45.37
+        d=1e100.net; s=20230601; t=1733237564; x=1733842364;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=n4xxwe/P+GUjyb6u27Ym0kwJOLqxlZj+XI/nl2u4V+Y=;
+        b=K0rnzZmA/zcF+UZAOxJ1y/C9fj1PLqyYwtT4GtXFHycSYUIEK+CrW4MlYb9M+bWtV0
+         u3GeTUrCyKneac5Uz+B2/RQgJd6wZhD7fTrQIqj4wZz1owi81y+qJ7XKDo0B/1MdarSo
+         uXADpkNj55l04iVyFNHsqIvZt/4LENbpt12cOpNuWTFNpAjGXZ7ZDruvAvA2z2w97NTt
+         IJXTBhNT8Q4Yr9RIaBSbxVDbFRY9rFyXenvf2Q+Q5tiz82IKEV30nUf29DLPcrD4hquv
+         OIkJyiG5n7liD9SAhII1zGk9Nj4D9opiMZloDt7WXU5J8AO7cUoSlpC6HzYQ3VAyTvnh
+         JGGw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEuhxbFsIfGKALaAAKjfdvJAwiFyoElmI3fkr1bRcRWHjgidntw5ZhnOTSaZvVMXwhOp2bCWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ0/mMBGX8TOwL2k10y1EdmucZzX6SLOPTivZCEEIRfXKcftae
+	wBa3Gp9OjMW32iEqAS81vgvvnwtvgcystEyXRKMbzd3AcdpCvIqg
+X-Gm-Gg: ASbGncvZC1xjN8Vam1gndEtv8G8heqDSANuC6a7PHH1YkF2Xh38NSmSJ2HgyL0iUxRs
+	LWQaBds9lPrjsMrpZCiypKbLQbkS7nobNGKD7uYkcOAuSqdiOG/OtEhE0bmW8sua9R5ZM1rRyOt
+	wzusDOgp3188C2g46iQlrfC9EY+ynu73bEoUuEu3KGglExD4Lh3sxUafiTyyYx0oUsYiQiFptOy
+	VXzj/DgaA//2FQ33+RSFp8M2dqqr3oYOMlx9zhe3jqyCTi0/qw=
+X-Google-Smtp-Source: AGHT+IGQWkFjhBQrlAOa7TfvUGhqt/oQaNUu3UTObZ3txFl+xzooWcUjbQgJkzv99i8xFz8aKH7CXg==
+X-Received: by 2002:a05:600c:4fc5:b0:434:9d36:1f04 with SMTP id 5b1f17b1804b1-434d3f8e4d9mr5150955e9.4.1733237563929;
+        Tue, 03 Dec 2024 06:52:43 -0800 (PST)
+Received: from localhost ([81.168.73.77])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0dbe2e7sm192141795e9.11.2024.12.03.06.52.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 06:45:38 -0800 (PST)
-From: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-To: netdev@vger.kernel.org,
-	andrew@lunn.ch
-Cc: Julian.FRIEDRICH@frequentis.com,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	upstream+netdev@sigma-star.at,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v2] net: dsa: mv88e6xxx: propperly shutdown PPU re-enable timer on destroy
-Date: Tue,  3 Dec 2024 15:43:40 +0100
-Message-ID: <20241203144448.30880-1-david.oberhollenzer@sigma-star.at>
-X-Mailer: git-send-email 2.47.0
+        Tue, 03 Dec 2024 06:52:43 -0800 (PST)
+Date: Tue, 3 Dec 2024 14:52:42 +0000
+From: Martin Habets <habetsm.xilinx@gmail.com>
+To: alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+	dan.j.williams@intel.com, martin.habets@xilinx.com,
+	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com,
+	Alejandro Lucero <alucerop@amd.com>
+Subject: Re: [PATCH v6 28/28] sfc: support pio mapping based on cxl
+Message-ID: <20241203145242.GK778635@gmail.com>
+Mail-Followup-To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
+	netdev@vger.kernel.org, dan.j.williams@intel.com,
+	martin.habets@xilinx.com, edward.cree@amd.com, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>
+References: <20241202171222.62595-1-alejandro.lucero-palau@amd.com>
+ <20241202171222.62595-29-alejandro.lucero-palau@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202171222.62595-29-alejandro.lucero-palau@amd.com>
 
-The mv88e6xxx has an internal PPU that polls PHY state. If we want to
-access the internal PHYs, we need to disable it. Because enable/disable
-of the PPU is a slow operation, a 10ms timer is used to re-enable it,
-canceled with every access, so bulk operations effectively only disable
-it once and re-enable it some 10ms after the last access.
+Hi Alejandro,
 
-If a PHY is accessed and then the mv88e6xxx module is removed before
-the 10ms are up, the PPU re-enable ends up accessing a dangling pointer.
+On Mon, Dec 02, 2024 at 05:12:22PM +0000, alejandro.lucero-palau@amd.com wrote:
+> 
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> With a device supporting CXL and successfully initialised, use the cxl
+> region to map the memory range and use this mapping for PIO buffers.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> ---
+>  drivers/net/ethernet/sfc/ef10.c       | 49 +++++++++++++++++++++++----
+>  drivers/net/ethernet/sfc/efx_cxl.c    | 19 ++++++++++-
+>  drivers/net/ethernet/sfc/net_driver.h |  2 ++
+>  drivers/net/ethernet/sfc/nic.h        |  3 ++
+>  4 files changed, 66 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
+> index 452009ed7a43..f2aeffc323c6 100644
+> --- a/drivers/net/ethernet/sfc/ef10.c
+> +++ b/drivers/net/ethernet/sfc/ef10.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/wait.h>
+>  #include <linux/workqueue.h>
+>  #include <net/udp_tunnel.h>
+> +#include "efx_cxl.h"
+>  
+>  /* Hardware control for EF10 architecture including 'Huntington'. */
+>  
+> @@ -177,6 +178,12 @@ static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
+>  			  efx->num_mac_stats);
+>  	}
+>  
+> +	if (outlen < MC_CMD_GET_CAPABILITIES_V7_OUT_LEN)
+> +		nic_data->datapath_caps3 = 0;
+> +	else
+> +		nic_data->datapath_caps3 = MCDI_DWORD(outbuf,
+> +						      GET_CAPABILITIES_V7_OUT_FLAGS3);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -919,6 +926,9 @@ static void efx_ef10_forget_old_piobufs(struct efx_nic *efx)
+>  static void efx_ef10_remove(struct efx_nic *efx)
+>  {
+>  	struct efx_ef10_nic_data *nic_data = efx->nic_data;
+> +#ifdef CONFIG_SFC_CXL
+> +	struct efx_probe_data *probe_data;
+> +#endif
+>  	int rc;
+>  
+>  #ifdef CONFIG_SFC_SRIOV
+> @@ -949,7 +959,12 @@ static void efx_ef10_remove(struct efx_nic *efx)
+>  
+>  	efx_mcdi_rx_free_indir_table(efx);
+>  
+> +#ifdef CONFIG_SFC_CXL
+> +	probe_data = container_of(efx, struct efx_probe_data, efx);
+> +	if (nic_data->wc_membase && !probe_data->cxl_pio_in_use)
+> +#else
+>  	if (nic_data->wc_membase)
+> +#endif
+>  		iounmap(nic_data->wc_membase);
+>  
+>  	rc = efx_mcdi_free_vis(efx);
+> @@ -1140,6 +1155,9 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
+>  	unsigned int channel_vis, pio_write_vi_base, max_vis;
+>  	struct efx_ef10_nic_data *nic_data = efx->nic_data;
+>  	unsigned int uc_mem_map_size, wc_mem_map_size;
+> +#ifdef CONFIG_SFC_CXL
+> +	struct efx_probe_data *probe_data;
+> +#endif
+>  	void __iomem *membase;
+>  	int rc;
+>  
+> @@ -1263,8 +1281,27 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
+>  	iounmap(efx->membase);
+>  	efx->membase = membase;
+>  
+> -	/* Set up the WC mapping if needed */
+> -	if (wc_mem_map_size) {
+> +	if (!wc_mem_map_size) {
+> +		netif_dbg(efx, probe, efx->net_dev, "wc_mem_map_size is 0\n");
 
-This especially affects probing during bootup. The MDIO bus and PHY
-registration may succeed, but registration with the DSA framework
-may fail later on (e.g. because the CPU port depends on another,
-very slow device that isn't done probing yet, returning -EPROBE_DEFER).
-In this case, probe() fails, but the MDIO subsystem may already have
-accessed the MIDO bus or PHYs, arming timer.
+Please still print the details of the memory BAR that the netif_dbg has below.
+It is useful for debugging.
 
-This is fixed as follows:
- - If probe fails after mv88e6xxx_phy_init(), make sure we also call
-   mv88e6xxx_phy_destroy() before returning
- - In mv88e6xxx_phy_destroy(), grab the ppu_mutex to make sure the work
-   function either has already exited, or (should it run) cannot do
-   anything, fails to grab the mutex and returns.
- - In addition to destroying the timer, also destroy the work item, in
-   case the timer has already fired.
- - Do all of this synchronously, to make sure timer & work item are
-   destroyed and none of the callbacks are running.
+> +		return 0;
+> +	}
+> +
+> +	/* Set up the WC mapping */
+> +
+> +#ifdef CONFIG_SFC_CXL
+> +	probe_data = container_of(efx, struct efx_probe_data, efx);
+> +	if ((nic_data->datapath_caps3 &
+> +	    (1 << MC_CMD_GET_CAPABILITIES_V7_OUT_CXL_CONFIG_ENABLE_LBN)) &&
+> +	    probe_data->cxl_pio_initialised) {
+> +		/* Using PIO through CXL mapping? */
+> +		nic_data->pio_write_base = probe_data->cxl->ctpio_cxl +
+> +					   (pio_write_vi_base * efx->vi_stride +
+> +					    ER_DZ_TX_PIOBUF - uc_mem_map_size);
+> +		probe_data->cxl_pio_in_use = true;
+> +	} else
+> +#endif
+> +	{
+> +		/* Using legacy PIO BAR mapping */
+>  		nic_data->wc_membase = ioremap_wc(efx->membase_phys +
+>  						  uc_mem_map_size,
+>  						  wc_mem_map_size);
+> @@ -1279,12 +1316,12 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
+>  			nic_data->wc_membase +
+>  			(pio_write_vi_base * efx->vi_stride + ER_DZ_TX_PIOBUF -
+>  			 uc_mem_map_size);
+> -
+> -		rc = efx_ef10_link_piobufs(efx);
+> -		if (rc)
+> -			efx_ef10_free_piobufs(efx);
+>  	}
+>  
+> +	rc = efx_ef10_link_piobufs(efx);
+> +	if (rc)
+> +		efx_ef10_free_piobufs(efx);
+> +
+>  	netif_dbg(efx, probe, efx->net_dev,
+>  		  "memory BAR at %pa (virtual %p+%x UC, %p+%x WC)\n",
+>  		  &efx->membase_phys, efx->membase, uc_mem_map_size,
+> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+> index 71b32fc48ca7..78eb8aa9702a 100644
+> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+> @@ -24,9 +24,10 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  	DECLARE_BITMAP(expected, CXL_MAX_CAPS);
+>  	DECLARE_BITMAP(found, CXL_MAX_CAPS);
+>  	struct pci_dev *pci_dev;
+> +	resource_size_t max;
+>  	struct efx_cxl *cxl;
+>  	struct resource res;
+> -	resource_size_t max;
+> +	struct range range;
+>  	u16 dvsec;
+>  	int rc;
+>  
+> @@ -135,10 +136,25 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  		goto err_region;
+>  	}
+>  
+> +	rc = cxl_get_region_range(cxl->efx_region, &range);
+> +	if (rc) {
+> +		pci_err(pci_dev, "CXL getting regions params failed");
+> +		goto err_region_params;
+> +	}
+> +
+> +	cxl->ctpio_cxl = ioremap(range.start, range.end - range.start);
+> +	if (!cxl->ctpio_cxl) {
+> +		pci_err(pci_dev, "CXL ioremap region failed");
 
-Fixes: 2e5f032095ff ("dsa: add support for the Marvell 88E6131 switch chip")
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
----
-FWIW, this is a forward port of a patch I'm using on v6.6.
+This error will be more useful if you print out the start & size. Users can
+the check that against /proc/iomem.
 
-Thanks,
+> +		goto err_region_params;
+> +	}
+> +
+>  	probe_data->cxl = cxl;
+> +	probe_data->cxl_pio_initialised = true;
+>  
+>  	return 0;
+>  
+> +err_region_params:
+> +	cxl_accel_region_detach(cxl->cxled);
+>  err_region:
+>  	cxl_dpa_free(cxl->cxled);
+>  err3:
+> @@ -153,6 +169,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  void efx_cxl_exit(struct efx_probe_data *probe_data)
+>  {
+>  	if (probe_data->cxl) {
+> +		iounmap(probe_data->cxl->ctpio_cxl);
+>  		cxl_accel_region_detach(probe_data->cxl->cxled);
+>  		cxl_dpa_free(probe_data->cxl->cxled);
+>  		cxl_release_resource(probe_data->cxl->cxlds, CXL_RES_RAM);
+> diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
+> index 7f11ff200c25..79b0e6663f23 100644
+> --- a/drivers/net/ethernet/sfc/net_driver.h
+> +++ b/drivers/net/ethernet/sfc/net_driver.h
+> @@ -1209,6 +1209,7 @@ struct efx_cxl;
+>   * @efx: Efx NIC details
+>   * @cxl: details of related cxl objects
+>   * @cxl_pio_initialised: cxl initialization outcome.
+> ++ * @cxl_pio_in_use: PIO using CXL mapping
 
-David
----
- drivers/net/dsa/mv88e6xxx/chip.c | 8 +++++---
- drivers/net/dsa/mv88e6xxx/phy.c  | 3 +++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+Extra + sign here isn't right. Please build kdoc, I expect it would have caught this.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 284270a4ade1..c2af69bed660 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7264,13 +7264,13 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	err = mv88e6xxx_switch_reset(chip);
- 	mv88e6xxx_reg_unlock(chip);
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (np) {
- 		chip->irq = of_irq_get(np, 0);
- 		if (chip->irq == -EPROBE_DEFER) {
- 			err = chip->irq;
--			goto out;
-+			goto out_phy;
- 		}
- 	}
- 
-@@ -7289,7 +7289,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	if (err)
--		goto out;
-+		goto out_phy;
- 
- 	if (chip->info->g2_irqs > 0) {
- 		err = mv88e6xxx_g2_irq_setup(chip);
-@@ -7323,6 +7323,8 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		mv88e6xxx_g1_irq_free(chip);
- 	else
- 		mv88e6xxx_irq_poll_free(chip);
-+out_phy:
-+	mv88e6xxx_phy_destroy(chip);
- out:
- 	if (pdata)
- 		dev_put(pdata->netdev);
-diff --git a/drivers/net/dsa/mv88e6xxx/phy.c b/drivers/net/dsa/mv88e6xxx/phy.c
-index 8bb88b3d900d..ee9e5d7e5277 100644
---- a/drivers/net/dsa/mv88e6xxx/phy.c
-+++ b/drivers/net/dsa/mv88e6xxx/phy.c
-@@ -229,7 +229,10 @@ static void mv88e6xxx_phy_ppu_state_init(struct mv88e6xxx_chip *chip)
- 
- static void mv88e6xxx_phy_ppu_state_destroy(struct mv88e6xxx_chip *chip)
- {
-+	mutex_lock(&chip->ppu_mutex);
- 	del_timer_sync(&chip->ppu_timer);
-+	cancel_work_sync(&chip->ppu_work);
-+	mutex_unlock(&chip->ppu_mutex);
- }
- 
- int mv88e6185_phy_ppu_read(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
--- 
-2.47.0
+Martin
 
+>   */
+>  struct efx_probe_data {
+>  	struct pci_dev *pci_dev;
+> @@ -1216,6 +1217,7 @@ struct efx_probe_data {
+>  #ifdef CONFIG_SFC_CXL
+>  	struct efx_cxl *cxl;
+>  	bool cxl_pio_initialised;
+> +	bool cxl_pio_in_use;
+>  #endif
+>  };
+>  
+> diff --git a/drivers/net/ethernet/sfc/nic.h b/drivers/net/ethernet/sfc/nic.h
+> index 9fa5c4c713ab..c87cc9214690 100644
+> --- a/drivers/net/ethernet/sfc/nic.h
+> +++ b/drivers/net/ethernet/sfc/nic.h
+> @@ -152,6 +152,8 @@ enum {
+>   *	%MC_CMD_GET_CAPABILITIES response)
+>   * @datapath_caps2: Further Capabilities of datapath firmware (FLAGS2 field of
+>   * %MC_CMD_GET_CAPABILITIES response)
+> + * @datapath_caps3: Further Capabilities of datapath firmware (FLAGS3 field of
+> + * %MC_CMD_GET_CAPABILITIES response)
+>   * @rx_dpcpu_fw_id: Firmware ID of the RxDPCPU
+>   * @tx_dpcpu_fw_id: Firmware ID of the TxDPCPU
+>   * @must_probe_vswitching: Flag: vswitching has yet to be setup after MC reboot
+> @@ -186,6 +188,7 @@ struct efx_ef10_nic_data {
+>  	bool must_check_datapath_caps;
+>  	u32 datapath_caps;
+>  	u32 datapath_caps2;
+> +	u32 datapath_caps3;
+>  	unsigned int rx_dpcpu_fw_id;
+>  	unsigned int tx_dpcpu_fw_id;
+>  	bool must_probe_vswitching;
+> -- 
+> 2.17.1
+> 
+> 
