@@ -1,109 +1,102 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517651E884B
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 12:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7EA1EB9E3;
+	Tue,  3 Dec 2024 12:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733229803; cv=none; b=VyleOlk7mXkKL4nYi4YR5h4V7LLycKbWn6oAYVsosDAxvPaIYhZVBPrrX56Xneeo4v4m28zun3/KppPsTGssMxEIGlcU7zV74Yxh/NSqSHFQimnAJcB9uYefsW2jbCC14QYILosE/2gGPaxkeU70gK3vjNdAo1ANXTkgWDb4il4=
+	t=1733229811; cv=none; b=Ov2aXNmUdha599/lv/Mo/ep9swKB+1Bxpl00tg/wBHuvzcAFw1UGnqlMXbe2fh9LvQ4WSWi7sZJftzt2vZLDvA5+rJZ4cqgO2vdTEQUzN74dEKzxbfk1YWqFgj/VNen+7TgO46nhYAC61QVYDfHsmGn0G81UiVZK0Ou4s/p0vKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733229803; c=relaxed/simple;
-	bh=GzBvztZIsAnA0j805i0Hdlzz/ySCIXvl+SnZ96ohns8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kV9EjVwPhQpl2NAf7v9bxSx2tCSP2vTrLV3xzogmDYXV6DWv7fZU23LtJRLBSMvo+kUCLfGHSAE5lqBOqiQ911e+si03abwCXOGTk1jtoXsVTUqPU8XvZQq8CI0lXFnqPb9O3pqqsGJlkbvwBvwVU8bVWo/Mocq/q6RoJdBcC9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RQygbgL4; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733229811; c=relaxed/simple;
+	bh=0seOP6w/OIGFoNMs8f5tPporlNfTBPv3+vPmcEPW914=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=erNo64fa8bru65gKyDeKqPJAhgpVh9VmguY1soEOW1nKrP0IElLaF6TgMgIMcrMYOsZbfFE/NCUcvElTHl0InS2cldnQbdOFoHrb+9/ldICMMWSCAL9+mjarYQ/ADT/g+R6uTrsmQvJt5LBhPnxcK2/GvchIAI9PvToFwns2Cro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AIvjtNo2; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQygbgL4"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349c376d4fso5384375e9.0
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 04:43:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733229799; x=1733834599; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KO5UMHTUP1STwabFpZLUivHeu96b1MzdbWV6oLLApyU=;
-        b=RQygbgL4gaJ08eC1mu4QXbapHPzbXx+ucO+RUEVEmGtIz3g0KN30XWz8rxKkc6g8Ul
-         LFSDG8xD0VCBLk3vUWScHKkDJnnmxISmhyrstunkhRvZB1bl0WSsT7bTxE8p0dze7lw/
-         0z/7Ru8mwDFf1yyo4oA6N6M451f62+/9Zyo01wIzGZFA2VGew+JT2O1T1gbC2vtY5v0H
-         sy6tNP1PrTrxyAP2Z6bCwa+DWR3U8n9Kf8CayijhY6Z4OCZcWccLi4Rvgl/hWzcwqk/U
-         3o1YrEKrXfVSLgHNSlaYEiOEn4MYnhk9SRhfw+GV4kb1CBI7QbQGzmIM+dcmh/ZMZ3Z5
-         Uk/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733229799; x=1733834599;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KO5UMHTUP1STwabFpZLUivHeu96b1MzdbWV6oLLApyU=;
-        b=IXBt3O/RgvgKnluzu/OPK+Gwj1ukCoi672X89JZ8cPU+gAA6kX118nw7NQRP1IyiY9
-         hFnA5k9KwyVNc3Om/3PTE/oU2+xRHgSGq1FfLdfypciVTJiYDD9h4XqYBweB0g4SQ6Y4
-         p06aGfzmiAG1obNqzGUzIesDyEkDRUvx6SqnmX8mXE4XOJzLfhRhoi0cxOa4BcKzUmvp
-         lH18xQLYgGqu8SyYX+iMbPqjcoaQGIoc5kmrBsCr2hIwTIDXptJikQngPBvFHSiYAWfX
-         J+33I5nFkmDg6YhCOhBxg1dP4kbWAWuZhcHzApKmzqmjJ2bGG6ewppgQCSgUW5/cpEsp
-         L+yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcNIQiI1dsyo31ccIf4dVhLwXBqf0P2L1ZwFxXXdS8u+LsVAcmwfcohV/fuUKh9D8bPrd1JcA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi8yfPOUvMp4gvokqKmd4Ym4KLE3Yk56vTywk9EnKx1C0LA0ae
-	qn1zNcjbLa+PG4MirYFns+DO9w3C6pQAvw8XomVYx+L/P/Ic/y4C
-X-Gm-Gg: ASbGnctK8HB5NhWJ9AZS5RglucSuVmv/EfAlct/KdfNqJDYYsExafngYw/S6X2asAii
-	VJC5BJ7wKLla3dUR+Rg4gOBOHhmLJu7YJ6CT69V3TUMOOQR/5xww7ym78CBfvWCFvUlbOC4pkOG
-	BNfAZskpRlN+bXzGnq1zmMJL2sJlD5mFXcXrH87+CLv02ORhWiU1UjjlTAwdtTSK31yhSw0Sy07
-	j6Fh6+weY5kjcjWnFiywnnQnDKS8nZo4C2/MRc=
-X-Google-Smtp-Source: AGHT+IE179aeoJVF/xJTXzkRB1047Yc+2x9I2LLqIFSxmadH4ORqjZwu6nWQNf71YbSvfXJP3+THmw==
-X-Received: by 2002:a5d:6d02:0:b0:382:41ad:d8e1 with SMTP id ffacd0b85a97d-385fd42b9ddmr804660f8f.14.1733229799249;
-        Tue, 03 Dec 2024 04:43:19 -0800 (PST)
-Received: from skbuf ([188.25.135.117])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e3cbe250sm9875228f8f.94.2024.12.03.04.43.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 04:43:18 -0800 (PST)
-Date: Tue, 3 Dec 2024 14:43:16 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AIvjtNo2"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2787FE0004;
+	Tue,  3 Dec 2024 12:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1733229806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=W+I+80WOeNGElVcMFVionKAL8OOUIM1EboCBXK2lIoY=;
+	b=AIvjtNo2jOC+jd9gWK7fjVM6bQPL7bWgHmfn54Gx0ewm6x5dsqLrAK08xmE99z1v26+u4c
+	19SRqSQW4a9QcVK5geiqgO6TKPWkeR0xUKS9Yt5OmNpeaPKfyGVGfo29kQXHcvnkEmuVGi
+	mm1COr1V0zI1XQ99MWVZfrwY6hwU1CDZCaKr/nGSgSHW5ghzMJePJLy7Mf/dqZKDdDjfS6
+	o0Lj38zBIGDhnz9oJGoUcM+P8pg6q5piJoBl6EfDgVTIKkCm579xigWuJp4C+2QBf9V1i/
+	vv4mp1BW5BhKCfEDqvYL/ewQL1sTmB64kt9H/sq4bnkOMes/TutoOG4sFlvh5w==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	netdev <netdev@vger.kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH net-next v7 2/9] lib: packing: demote truncation error in
- pack() to a warning in __pack()
-Message-ID: <20241203124316.er7w64rdkc4nedno@skbuf>
-References: <20241202-packing-pack-fields-and-ice-implementation-v7-0-ed22e38e6c65@intel.com>
- <20241202-packing-pack-fields-and-ice-implementation-v7-2-ed22e38e6c65@intel.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Simon Horman <horms@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH net-next v3 00/10] net: freescale: ucc_geth: Phylink conversion
+Date: Tue,  3 Dec 2024 13:43:11 +0100
+Message-ID: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202-packing-pack-fields-and-ice-implementation-v7-2-ed22e38e6c65@intel.com>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Mon, Dec 02, 2024 at 04:26:25PM -0800, Jacob Keller wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> Most of the sanity checks in pack() and unpack() can be covered at
-> compile time. There is only one exception, and that is truncation of the
-> uval during a pack() operation.
-> 
-> We'd like the error-less __pack() to catch that condition as well. But
-> at the same time, it is currently the responsibility of consumer drivers
-> (currently just sja1105) to print anything at all when this error
-> occurs, and then discard the return code.
-> 
-> We can just print a loud warning in the library code and continue with
-> the truncated __pack() operation. In practice, having the warning is
-> very important, see commit 24deec6b9e4a ("net: dsa: sja1105: disallow
-> C45 transactions on the BASE-TX MDIO bus") where the bug was caught
-> exactly by noticing this print.
-> 
-> Add the first print to the packing library, and at the same time remove
-> the print for the same condition from the sja1105 driver, to avoid
-> double printing.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
+Hello everyone,
 
-Somehow this is missing your sign off.
+This is V3 of the phylink conversion for ucc_geth.
+
+The main changes in this V3 are related to error handling in the patches
+1 and 10 to report an error when the deprecated "interface" property is
+found in DT. Doing so, I found and addressed some issues with the jump
+labels in the error paths, impacting patches 1 and 10.
+
+The rest of the changes are just a rebase on net-next.
+
+Some of the V2 changes haven't been reviewed, so I stress out that I'm
+still uncertain about the way WoL is handled is patches 4 and 10.
+
+Thanks,
+
+Maxime
+
+Link to V1: https://lore.kernel.org/netdev/20241107170255.1058124-1-maxime.chevallier@bootlin.com/
+Link to V2: https://lore.kernel.org/netdev/20241114153603.307872-1-maxime.chevallier@bootlin.com/
+
+Maxime Chevallier (10):
+  net: freescale: ucc_geth: Drop support for the "interface" DT property
+  net: freescale: ucc_geth: split adjust_link for phylink conversion
+  net: freescale: ucc_geth: Use netdev->phydev to access the PHY
+  net: freescale: ucc_geth: Fix WOL configuration
+  net: freescale: ucc_geth: Use the correct type to store WoL opts
+  net: freescale: ucc_geth: Simplify frame length check
+  net: freescale: ucc_geth: Hardcode the preamble length to 7 bytes
+  net: freescale: ucc_geth: Move the serdes configuration around
+  net: freescale: ucc_geth: Introduce a helper to check Reduced modes
+  net: freescale: ucc_geth: phylink conversion
+
+ drivers/net/ethernet/freescale/Kconfig        |   3 +-
+ drivers/net/ethernet/freescale/ucc_geth.c     | 602 +++++++-----------
+ drivers/net/ethernet/freescale/ucc_geth.h     |  22 +-
+ .../net/ethernet/freescale/ucc_geth_ethtool.c |  74 +--
+ 4 files changed, 266 insertions(+), 435 deletions(-)
+
+-- 
+2.47.0
+
