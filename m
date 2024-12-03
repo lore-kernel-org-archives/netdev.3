@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D36C190497
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E31DEFC0
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733210533; cv=none; b=tjKj+ZT5MVsRN6lNxHxM8eVKglW0AgIJfwKB9zGrw/zxtTXwi3J6Sgjg7IrhFJIIfNaNzDRTU6Im3FvfNlH9m2qXhs9UCRlSr/ZGRUgZskFPUZmANV/FTYzYONqaf1diz++ZQmemo+TPCNP99pJe0Ak3tM65HTZU91EHWrpOoFc=
+	t=1733210534; cv=none; b=iNTett2xDxSlAqg0j6evsIGSxaNwVvnMzjH8jDaH3A4exhSNwI86XGUXWI+4mb6aQ0kc3B9+kdN6/z+fSxKyIusyfoxe/EvS7Ev9GF4KDFLwwWzzx17/oxHR43dc66vVKkVZdnzywKFoRoM6E/6/mQQ0g+xqLcrHU0E3+YzfeKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733210533; c=relaxed/simple;
-	bh=84clEU0P/5CbvPrnaLag9WOQh/98lXhngHyQ/rKGNEE=;
+	s=arc-20240116; t=1733210534; c=relaxed/simple;
+	bh=R4/0zDSvXQ7j2t6w8Tqa4xvfeIvEbrVq6ZRm2VJWwpg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ixdz04GDO+3ohmmIf47fu+aGYy3fr5qZzpeyRJWHy9TOdHcROgvajjMq3NcBrqIgUrI0S8e7xC6q6sB18wk859QCQjdTKk8GleSEDIDhlh6QZ9uOPq4gMkATK+7zlOLIOWA+Wt92lH1iJ6DWztuWGsIT2H95p9H5od4GpPyckV8=
+	 MIME-Version; b=Iidl4dhVqMI9jv/mYZLpBUVEY0Civ/zUP4OeNyZWXP36VOK+VzeyLi/voLdFz0qLBKaRC7MGJcdPEt2LDKIopgWblJnWNfFKEuVf0lpdZTP4erk4ev+yNQk7/1QxFYONKUfmX9I+hNt2DWWHEVBdqU1NTS/yd0Pr9zvEaTAVXIE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEP-0004s8-Gp; Tue, 03 Dec 2024 08:22:01 +0100
+	id 1tINEP-0004sE-MC; Tue, 03 Dec 2024 08:22:01 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-001Qz4-0o;
+	id 1tINEJ-001QzH-1K;
 	Tue, 03 Dec 2024 08:21:56 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-00AEoH-2n;
+	id 1tINEJ-00AEpS-3B;
 	Tue, 03 Dec 2024 08:21:55 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 11/21] net: usb: lan78xx: Add error handling to lan78xx_setup_irq_domain
-Date: Tue,  3 Dec 2024 08:21:44 +0100
-Message-Id: <20241203072154.2440034-12-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 18/21] net: usb: lan78xx: Use function-specific label in lan78xx_mac_reset
+Date: Tue,  3 Dec 2024 08:21:51 +0100
+Message-Id: <20241203072154.2440034-19-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
@@ -60,32 +60,59 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Update `lan78xx_setup_irq_domain` to handle errors in
-`lan78xx_read_reg`.  Return the error code immediately if the read
-operation fails, ensuring proper error propagation during IRQ domain
-setup.
+Rename the generic `done` label to the function-specific
+`mac_reset_done` label in `lan78xx_mac_reset`. This improves clarity and
+aligns with best practices for error handling and cleanup labels.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index d5f6367d3714..070b21baffaf 100644
+index c66e404f51ac..fdeb95db529b 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2445,7 +2445,10 @@ static int lan78xx_setup_irq_domain(struct lan78xx_net *dev)
+@@ -1604,16 +1604,16 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
+ 	 */
+ 	ret = lan78xx_phy_wait_not_busy(dev);
+ 	if (ret < 0)
+-		goto done;
++		goto mac_reset_done;
  
- 	mutex_init(&dev->domain_data.irq_lock);
+ 	ret = lan78xx_read_reg(dev, MAC_CR, &val);
+ 	if (ret < 0)
+-		goto done;
++		goto mac_reset_done;
  
--	lan78xx_read_reg(dev, INT_EP_CTL, &buf);
-+	ret = lan78xx_read_reg(dev, INT_EP_CTL, &buf);
-+	if (ret < 0)
-+		return ret;
-+
- 	dev->domain_data.irqenable = buf;
+ 	val |= MAC_CR_RST_;
+ 	ret = lan78xx_write_reg(dev, MAC_CR, val);
+ 	if (ret < 0)
+-		goto done;
++		goto mac_reset_done;
  
- 	dev->domain_data.irqchip = &lan78xx_irqchip;
+ 	/* Wait for the reset to complete before allowing any further
+ 	 * MAC register accesses otherwise the MAC may lock up.
+@@ -1621,16 +1621,16 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
+ 	do {
+ 		ret = lan78xx_read_reg(dev, MAC_CR, &val);
+ 		if (ret < 0)
+-			goto done;
++			goto mac_reset_done;
+ 
+ 		if (!(val & MAC_CR_RST_)) {
+ 			ret = 0;
+-			goto done;
++			goto mac_reset_done;
+ 		}
+ 	} while (!time_after(jiffies, start_time + HZ));
+ 
+ 	ret = -ETIMEDOUT;
+-done:
++mac_reset_done:
+ 	mutex_unlock(&dev->phy_mutex);
+ 
+ 	return ret;
 -- 
 2.39.5
 
