@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684E01DD9AD
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEFF1DC182
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733212606; cv=none; b=cfKQqm6aZ4SqLdavjK/lgIncjZhev6BrjR9MTrXAQktvDehMLIl6DzgEA5X/bYmlSn7n/DH9eLLYIvBy+I93J/t4jMRRSSBxhlxJzLQo5/5LqJaJj1e2HDNxC+3VGiotVb2AuipduIfF8jqUczeotpq+WL5tN8krMLPTWKywFG4=
+	t=1733212607; cv=none; b=NYhS60OzkYUkTNklnfgez10r92mX3xHMga57ZWorDGucZdBJC67YCYgS8FuO6nTwmzvWj06yLoCJSdglyhZr9xAKOu2ETIJ+02gi6zGBpFRZJIoIV55XVuEqNL+8aQ2rQhQy2+qyUgO1RPOuNwS5iOKjHxwfkFS6AWpLonb4MpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733212606; c=relaxed/simple;
-	bh=KvgKfIw/lL22aGiulcuLraD/URWJ60B/wcfyKrnFy2o=;
+	s=arc-20240116; t=1733212607; c=relaxed/simple;
+	bh=fNDJiRjSIpBTI2wShbwaQxYzIQAT0tah72XFz2vi4KU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G8sDPZK+EBvyKfohHg9WAKEympK3m7bo2BhFtwEi4YEWjIsmHYh1HVT/PWYOrw1J/ryTQw2XCgyEtVe8jhov3VPYyW6dMwVd8WiayP/ArC1Izi/8QyPfKU6RpevlAZWN8sYl3sUFirVo/OtdMGfQUiuxKEgECafvkBoq40KugOw=
+	 MIME-Version; b=Hh91leI/aoxICtxkX7ulSyvdGjIHJi69YkdylR9DOcrllULrwRGVO0/3o71+AycWOQv+oelmg4CqGhzUqN6i3ZCwicsfqEQobvN2tQBvrALY1n3fWs0mrlH1sJv+j1Hc8K/t1GJONquhgOq6EOeBsRNsp05sOeRm+tfeUipfT+Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINlj-000398-Kl; Tue, 03 Dec 2024 08:56:27 +0100
+	id 1tINlj-000393-Kj; Tue, 03 Dec 2024 08:56:27 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINle-001R94-0v;
-	Tue, 03 Dec 2024 08:56:23 +0100
+	id 1tINle-001R8v-0V;
+	Tue, 03 Dec 2024 08:56:22 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINle-00AHwd-37;
+	id 1tINle-00AHvo-2l;
 	Tue, 03 Dec 2024 08:56:22 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Russell King <linux@armlinux.org.uk>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v1 6/7] phy: dp83td510: add statistics support
-Date: Tue,  3 Dec 2024 08:56:20 +0100
-Message-Id: <20241203075622.2452169-7-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 1/7] net: ethtool: plumb PHY stats to PHY drivers
+Date: Tue,  3 Dec 2024 08:56:15 +0100
+Message-Id: <20241203075622.2452169-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241203075622.2452169-1-o.rempel@pengutronix.de>
 References: <20241203075622.2452169-1-o.rempel@pengutronix.de>
@@ -63,155 +63,130 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Add support for reporting PHY statistics in the DP83TD510 driver. This
-includes cumulative tracking of transmit/receive packet counts, and
-error counts. Implemented functions to update and provide statistics via
-ethtool, with optional polling support enabled through `PHY_POLL_STATS`.
+From: Jakub Kicinski <kuba@kernel.org>
 
+Feed the existing IEEE PHY counter struct (which currently
+only has one entry) and link stats into the PHY driver.
+The MAC driver can override the value if it somehow has a better
+idea of PHY stats. Since the stats are "undefined" at input
+the drivers can't += the values, so we should be safe from
+double-counting.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/phy/dp83td510.c | 98 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 97 insertions(+), 1 deletion(-)
+ include/linux/phy.h     | 10 ++++++++++
+ net/ethtool/linkstate.c | 25 ++++++++++++++++++++++---
+ net/ethtool/stats.c     | 19 +++++++++++++++++++
+ 3 files changed, 51 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
-index 92aa3a2b9744..08d61a6a8c61 100644
---- a/drivers/net/phy/dp83td510.c
-+++ b/drivers/net/phy/dp83td510.c
-@@ -34,6 +34,24 @@
- #define DP83TD510E_CTRL_HW_RESET		BIT(15)
- #define DP83TD510E_CTRL_SW_RESET		BIT(14)
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 563c46205685..523195c724b5 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1090,6 +1090,16 @@ struct phy_driver {
+ 	int (*cable_test_get_status)(struct phy_device *dev, bool *finished);
  
-+#define DP83TD510E_PKT_STAT_1			0x12b
-+#define DP83TD510E_TX_PKT_CNT_15_0_MASK		GENMASK(15, 0)
-+
-+#define DP83TD510E_PKT_STAT_2			0x12c
-+#define DP83TD510E_TX_PKT_CNT_31_16_MASK	GENMASK(15, 0)
-+
-+#define DP83TD510E_PKT_STAT_3			0x12d
-+#define DP83TD510E_TX_ERR_PKT_CNT_MASK		GENMASK(15, 0)
-+
-+#define DP83TD510E_PKT_STAT_4			0x12e
-+#define DP83TD510E_RX_PKT_CNT_15_0_MASK		GENMASK(15, 0)
-+
-+#define DP83TD510E_PKT_STAT_5			0x12f
-+#define DP83TD510E_RX_PKT_CNT_31_16_MASK	GENMASK(15, 0)
-+
-+#define DP83TD510E_PKT_STAT_6			0x130
-+#define DP83TD510E_RX_ERR_PKT_CNT_MASK		GENMASK(15, 0)
-+
- #define DP83TD510E_AN_STAT_1			0x60c
- #define DP83TD510E_MASTER_SLAVE_RESOL_FAIL	BIT(15)
- 
-@@ -58,8 +76,16 @@ static const u16 dp83td510_mse_sqi_map[] = {
- 	0x0000  /* 24dB =< SNR */
- };
- 
-+struct dp83td510_stats {
-+	u64 tx_pkt_cnt;
-+	u64 tx_err_pkt_cnt;
-+	u64 rx_pkt_cnt;
-+	u64 rx_err_pkt_cnt;
-+};
-+
- struct dp83td510_priv {
- 	bool alcd_test_active;
-+	struct dp83td510_stats stats;
- };
- 
- /* Time Domain Reflectometry (TDR) Functionality of DP83TD510 PHY
-@@ -177,6 +203,74 @@ struct dp83td510_priv {
- #define DP83TD510E_ALCD_COMPLETE			BIT(15)
- #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
- 
-+/**
-+ * dp83td510_update_stats - Update the PHY statistics for the DP83TD510 PHY.
-+ * @phydev: Pointer to the phy_device structure.
-+ *
-+ * The function reads the PHY statistics registers and updates the statistics
-+ * structure.
-+ *
-+ * Returns: 0 on success or a negative error code on failure.
-+ */
-+static int dp83td510_update_stats(struct phy_device *phydev)
-+{
-+	struct dp83td510_priv *priv = phydev->priv;
-+	u64 count;
-+	int ret;
-+
-+	/* DP83TD510E_PKT_STAT_1 to DP83TD510E_PKT_STAT_6 registers are cleared
-+	 * after reading them in a sequence. A reading of this register not in
-+	 * sequence will prevent them from being cleared.
+ 	/* Get statistics from the PHY using ethtool */
++	/**
++	 * @get_phy_stats: Get well known statistics.
++	 * @get_link_stats: Get well known link statistics.
++	 * The input structure is not zero-initialized and the implementation
++	 * must only set statistics which are actually collected by the device.
 +	 */
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_1);
-+	if (ret < 0)
-+		return ret;
-+	count = FIELD_GET(DP83TD510E_TX_PKT_CNT_15_0_MASK, ret);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_2);
-+	if (ret < 0)
-+		return ret;
-+	count |= (u64)FIELD_GET(DP83TD510E_TX_PKT_CNT_31_16_MASK, ret) << 16;
-+	ethtool_stat_add(&priv->stats.tx_pkt_cnt, count);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_3);
-+	if (ret < 0)
-+		return ret;
-+	count = FIELD_GET(DP83TD510E_TX_ERR_PKT_CNT_MASK, ret);
-+	ethtool_stat_add(&priv->stats.tx_err_pkt_cnt, count);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_4);
-+	if (ret < 0)
-+		return ret;
-+	count = FIELD_GET(DP83TD510E_RX_PKT_CNT_15_0_MASK, ret);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_5);
-+	if (ret < 0)
-+		return ret;
-+	count |= (u64)FIELD_GET(DP83TD510E_RX_PKT_CNT_31_16_MASK, ret) << 16;
-+	ethtool_stat_add(&priv->stats.rx_pkt_cnt, count);
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_PKT_STAT_6);
-+	if (ret < 0)
-+		return ret;
-+	count = FIELD_GET(DP83TD510E_RX_ERR_PKT_CNT_MASK, ret);
-+	ethtool_stat_add(&priv->stats.rx_err_pkt_cnt, count);
-+
-+	return 0;
-+}
-+
-+static void dp83td510_get_phy_stats(struct phy_device *phydev,
-+				    struct ethtool_eth_phy_stats *eth_stats,
-+				    struct ethtool_phy_stats *stats)
++	void (*get_phy_stats)(struct phy_device *dev,
++			      struct ethtool_eth_phy_stats *eth_stats);
++	void (*get_link_stats)(struct phy_device *dev,
++			       struct ethtool_link_ext_stats *link_stats);
+ 	/** @get_sset_count: Number of statistic counters */
+ 	int (*get_sset_count)(struct phy_device *dev);
+ 	/** @get_strings: Names of the statistic counters */
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 34d76e87847d..8d3a38cc3d48 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -94,6 +94,27 @@ static int linkstate_get_link_ext_state(struct net_device *dev,
+ 	return 0;
+ }
+ 
++static void
++ethtool_get_phydev_stats(struct net_device *dev,
++			 struct linkstate_reply_data *data)
 +{
-+	struct dp83td510_priv *priv = phydev->priv;
++	struct phy_device *phydev = dev->phydev;
 +
-+	stats->tx_packets = priv->stats.tx_pkt_cnt;
-+	stats->tx_errors = priv->stats.tx_err_pkt_cnt;
-+	stats->rx_packets = priv->stats.rx_pkt_cnt;
-+	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
++	if (!phydev)
++		return;
++
++	if (dev->phydev)
++		data->link_stats.link_down_events =
++			READ_ONCE(dev->phydev->link_down_events);
++
++	if (!phydev->drv || !phydev->drv->get_link_stats)
++		return;
++
++	mutex_lock(&phydev->lock);
++	phydev->drv->get_link_stats(phydev, &data->link_stats);
++	mutex_unlock(&phydev->lock);
 +}
 +
- static int dp83td510_config_intr(struct phy_device *phydev)
- {
- 	int ret;
-@@ -588,7 +682,7 @@ static struct phy_driver dp83td510_driver[] = {
- 	PHY_ID_MATCH_MODEL(DP83TD510E_PHY_ID),
- 	.name		= "TI DP83TD510E",
+ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 				  struct ethnl_reply_data *reply_base,
+ 				  const struct genl_info *info)
+@@ -127,9 +148,7 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 			   sizeof(data->link_stats) / 8);
  
--	.flags          = PHY_POLL_CABLE_TEST,
-+	.flags          = PHY_POLL_CABLE_TEST | PHY_POLL_STATS,
- 	.probe		= dp83td510_probe,
- 	.config_aneg	= dp83td510_config_aneg,
- 	.read_status	= dp83td510_read_status,
-@@ -599,6 +693,8 @@ static struct phy_driver dp83td510_driver[] = {
- 	.get_sqi_max	= dp83td510_get_sqi_max,
- 	.cable_test_start = dp83td510_cable_test_start,
- 	.cable_test_get_status = dp83td510_cable_test_get_status,
-+	.get_phy_stats	= dp83td510_get_phy_stats,
-+	.update_stats	= dp83td510_update_stats,
+ 	if (req_base->flags & ETHTOOL_FLAG_STATS) {
+-		if (dev->phydev)
+-			data->link_stats.link_down_events =
+-				READ_ONCE(dev->phydev->link_down_events);
++		ethtool_get_phydev_stats(dev, data);
  
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
+ 		if (dev->ethtool_ops->get_link_ext_stats)
+ 			dev->ethtool_ops->get_link_ext_stats(dev,
+diff --git a/net/ethtool/stats.c b/net/ethtool/stats.c
+index 912f0c4fff2f..cf802b1cda6f 100644
+--- a/net/ethtool/stats.c
++++ b/net/ethtool/stats.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/phy.h>
++
+ #include "netlink.h"
+ #include "common.h"
+ #include "bitset.h"
+@@ -112,6 +114,19 @@ static int stats_parse_request(struct ethnl_req_info *req_base,
+ 	return 0;
+ }
+ 
++static void
++ethtool_get_phydev_stats(struct net_device *dev, struct stats_reply_data *data)
++{
++	struct phy_device *phydev = dev->phydev;
++
++	if (!phydev || !phydev->drv || !phydev->drv->get_phy_stats)
++		return;
++
++	mutex_lock(&phydev->lock);
++	phydev->drv->get_phy_stats(phydev, &data->phy_stats);
++	mutex_unlock(&phydev->lock);
++}
++
+ static int stats_prepare_data(const struct ethnl_req_info *req_base,
+ 			      struct ethnl_reply_data *reply_base,
+ 			      const struct genl_info *info)
+@@ -145,6 +160,10 @@ static int stats_prepare_data(const struct ethnl_req_info *req_base,
+ 	data->ctrl_stats.src = src;
+ 	data->rmon_stats.src = src;
+ 
++	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
++	    src == ETHTOOL_MAC_STATS_SRC_AGGREGATE)
++		ethtool_get_phydev_stats(dev, data);
++
+ 	if (test_bit(ETHTOOL_STATS_ETH_PHY, req_info->stat_mask) &&
+ 	    dev->ethtool_ops->get_eth_phy_stats)
+ 		dev->ethtool_ops->get_eth_phy_stats(dev, &data->phy_stats);
 -- 
 2.39.5
 
