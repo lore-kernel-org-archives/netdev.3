@@ -1,27 +1,28 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2067.outbound.protection.outlook.com [40.107.212.67])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2066.outbound.protection.outlook.com [40.107.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8D71F4283
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 14:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDB01F473A
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 14:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236402; cv=fail; b=S4j7EemdDLlvknGz6INivCfpCTsNRuwamDVSVG+oQjzM+UOm1zRMDW+bkhUW+l+omP9+CER+k3u94PebQRePUt+M53qdqrSj2O7ztsIvi1mfxx+vq/qRw8+BEDlkeWbTXpBCBbY0M63pjSDAY8kaPMEE2svjSSenb2x+bsAhgYk=
+	t=1733236409; cv=fail; b=j28wK16Rc24a9Fy/tC4m3DwVwDIcgqIN6hiXqNgQ97zfcEH3rRoFqWraKQ/WcITJk4sXwgXjEN8c/gdiqrXa11kY8DnMvcXY0Yj2REJ4oMRr487UCCL1j0sP1Vy6j3cR/qiXW1QywO7JSW1nT37dADTysaik3E9BeiMLtWGL0w0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236402; c=relaxed/simple;
-	bh=gpg07kQ+XeMAuvfRma1Nn2KDn9+9j4jOwF7aqxERuP4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lfDljb5G5VZAjAq1sTX+Jh/GCa03LJsrs/eqKgsRxVq86oXCi6LWjFP8rwD7lEzckDfqMVqQ20kgg6SYBriMD+JrqPxRJnHXnMFXipJjpxK/qJHr4Ls3x72WMSckrN3t3MwmocXkUQKcsdW8y/cahmagHAqE3qbB8SZnSpgFx+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E5HSvSKu; arc=fail smtp.client-ip=40.107.212.67
+	s=arc-20240116; t=1733236409; c=relaxed/simple;
+	bh=gVD042tNwq8oKLWlK3ZioRMSmv5DowCb7/1j5JxG8uM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P7+WwMSr2oC9jjrpi55+FknRg59GuGbz6uYn+YYuttIGQAc+6JV7Zcm41UAi6Jx7E3TCCSbkYzQGCfulqP9oQEr6CRetd+S09sxPsUawo+UyooXjmowg7UjC682cevWuCBjXhXlfMrMGjrDrLPQw5uwUSS9qGZx4K4yGsAq070U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a36W5TtZ; arc=fail smtp.client-ip=40.107.236.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E5HSvSKu"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a36W5TtZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r12jE63NKUqZknYHiYVew7/UCH1LGcXxDxJkCwnUcOyhuva4+niKi+hF22llRGwXfpEUS9HeAQKqNPP1pWb1NTXjRmrRtE9E4skk3Js3MpczDgSJpRpokBemVyQ1NWgCpHXDgeaA8XtifSczmqy/3+SEXbutLsgyakYIhjEXDrqQCH1gYYin1ayVGbzsdXWXHkjPTE071x/E4IUgZ8H/NebdSh7VrMIBTBiTwLFTGPZPRInFJKC1E2Z7lUgEhcmydxFqSNKZ5dKWvsZbyWqETvkkxTS2QLRFWAC976mahrKdeofq1pY9NbpvmL4Jp5sAVRBruXfMbjMe8NdDUW1YwQ==
+ b=b7b8JhfGOom6XICoDEZBPiLAKKsiD9MlSVwjHi1sgMgCPLTyli8rlWA/GwDc9o0UXcLmrN51iw1ROX3QciBaOvxVk5o8Ix1DMZovbT3Unc6JJMykR8y3oo5q1e7yYFUX16LkcBNTpLsgSF33lpOV6jhMcmzR1yB3XFgVsROIrZe7BCPmIv94EYnTiRQv/K7+hBVZuzgmKt+ZkQ+Pltss6nsc3LHshc3pQVe6Aox6vJe54VFXmY7S6ZN5syQmcIeKXGdp2QybL9Nqk5uV1+ZcLdyAAjX4DlZMnH1ojf4sezp9ILa0koJGJPkjo7H4XIKnDKDFW3ikwxaabtwrxZrROQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XLgVUeAZLc3Qhb4WNvgiIM39YU9ggxgm/q9K8O68g/g=;
- b=r7Y2M+LfszTUZ8j0REvDuruM99/le88LsOk7iltZXjvdUwfkTAZk2yYMsu8ZT65Yf7XzWaD/oIWimwLETn1BsgHs/Qpo0QlWZ92wUQ3JJ3WAlxRZAaJJVuwRpgOlFN9Z6mGhBOKmnSz5YhWDB/WWn+gH6CgIpNsTMemy0heErj9qpoolEGx8wikhw/wWIRSB+jSHjwqkB4c/M2I0Uh2FM/GygIA/g/eHOafhQht8tVMM7dTbX7exsOfRiON9jDa91OZF2zhtBxGG4CJltVfsTXJ7h9Yjp5DkSzY2Gy0pa4UUj84y7FN5eQIDeG7lpRkPXmoxFGmRm6evbZFoaMSpvw==
+ bh=TTITGDel/3gDf5ViIed9lSwMnl3wRcq6dSwfN1tseBA=;
+ b=StOEHlUhTTU/OELkE043vGSdI1sucnZMm1xKggzFEHqmZ2flF84tUgihEecPi39z/RSzIkrx2QnaKQnyRwLSfzFIaZUiNZQeuc92poRncg5EFlLT5V9LHyKiNZSl00SMhyVKKNzyk/KPGtyCbEqooRnEi0qg9Bo4aTjjdzJuqyQLreCOno8lGbtu7LA1oEhmb2ySredOFdptvjwSsQkJW129MCQ+rRjkDeag4K/CXjxaRq8HuN68OnXRX8TA6DaldSN1UkUssisXSqPA/L1aiD6JosWnZP/Gd8PUFvWsrnPRf5jrcjK5p1Wauzi5+zERKiAsDo1afkvVoe63TpTMxg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XLgVUeAZLc3Qhb4WNvgiIM39YU9ggxgm/q9K8O68g/g=;
- b=E5HSvSKuPDm/WRSK2QbnFxDMYkAd7VBQEZsRaGae/m2SoA34VjtQUioxHkAViPyadmmNAb6eQ/6yUc+kXpm/j44mOOJQE03HRCVNoUzwqmMcMdjeDzXnH+hkUztDooaMv1YnKsErRJDtFo9HyZHcvdIAGQnl0LL2vPwl8g4bwwSj3w1tj+hz9PbgLYquzLa9EY27eDCjBWVbq0gvXcyho5mXIVD+okJwqgZdWedSYp5/U7OBQVUFHKie06MNdM9INJdH8G5wFqUW8y8+nU5nNOw8vcBJmTh3h/28vHJYPD7adVrEBobRhUpP2cPLwFDV7oxSa3FVa5vW63kcYyMsiw==
-Received: from MW4P222CA0006.NAMP222.PROD.OUTLOOK.COM (2603:10b6:303:114::11)
- by SJ0PR12MB6710.namprd12.prod.outlook.com (2603:10b6:a03:44c::7) with
+ bh=TTITGDel/3gDf5ViIed9lSwMnl3wRcq6dSwfN1tseBA=;
+ b=a36W5TtZj8VEskX9/2zgd5bk/JEBfHEYCkLAKvW2JPhQ/BumPqsiMPnK8bAp2b+AuPT4VmYSyP6f1pAs8IcUbsQJJ3viJzpCowYx6+VznszSW5o3g+jvpfGX/TDhYbzhV4XXB5wcS8IGTovdxz07JO1OpVFsdcVr0Q6uGAC2K/F1UurfJvJ36TdvVDp9eYWFJh2+M0Bj5r+ta5nbypHbhW8VJ1I02Steu5eV79DG09Kmq62AFteslQ+dIj5PDTDyKvrtvCMr5XeqrhbTOoSylSHgDnl2kvAWVWN9KurkpfXi16pFkjyTPCtlSYAiQgpjT0LZCcnTw9HUr9OmWpz2Hw==
+Received: from MW4PR04CA0347.namprd04.prod.outlook.com (2603:10b6:303:8a::22)
+ by IA1PR12MB8493.namprd12.prod.outlook.com (2603:10b6:208:447::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Tue, 3 Dec
- 2024 14:33:14 +0000
-Received: from SJ1PEPF00001CE0.namprd05.prod.outlook.com
- (2603:10b6:303:114:cafe::40) by MW4P222CA0006.outlook.office365.com
- (2603:10b6:303:114::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.19 via Frontend Transport; Tue,
- 3 Dec 2024 14:33:14 +0000
+ 2024 14:33:21 +0000
+Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
+ (2603:10b6:303:8a:cafe::be) by MW4PR04CA0347.outlook.office365.com
+ (2603:10b6:303:8a::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.18 via Frontend Transport; Tue,
+ 3 Dec 2024 14:33:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -48,27 +49,32 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00001CE0.mail.protection.outlook.com (10.167.242.8) with Microsoft
+ SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Tue, 3 Dec 2024 14:33:13 +0000
+ 15.20.8230.7 via Frontend Transport; Tue, 3 Dec 2024 14:33:20 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
- 06:32:59 -0800
+ 06:33:07 -0800
 Received: from localhost.localdomain (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
- 06:32:54 -0800
+ 06:32:59 -0800
 From: Petr Machata <petrm@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, <netdev@vger.kernel.org>
 CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
- Machata" <petrm@nvidia.com>, <mlxsw@nvidia.com>
-Subject: [PATCH net-next v1 00/11] vxlan: Support user-defined reserved bits
-Date: Tue, 3 Dec 2024 15:30:26 +0100
-Message-ID: <cover.1733235367.git.petrm@nvidia.com>
+ Machata" <petrm@nvidia.com>, <mlxsw@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Menglong Dong <menglong8.dong@gmail.com>, "Guillaume
+ Nault" <gnault@redhat.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v1 01/11] vxlan: In vxlan_rcv(), access flags through the vxlan netdevice
+Date: Tue, 3 Dec 2024 15:30:27 +0100
+Message-ID: <534fd8e3835d30c33bba3d77f26f017bcf6b7923.1733235367.git.petrm@nvidia.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1733235367.git.petrm@nvidia.com>
+References: <cover.1733235367.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,111 +87,110 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE0:EE_|SJ0PR12MB6710:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1daa087f-b718-42e1-f646-08dd13a76b65
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|IA1PR12MB8493:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77ebfb34-65a2-42b0-eca0-08dd13a76f7b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|7416014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TYX8enBUnOc+1/O0HpPH8JUNrwG73cOhof5gL9mx5wuKpUYgdOyYqrXZGdt/?=
- =?us-ascii?Q?BXyvMzmWgTLXQQCeTY2T6AXWzluqHe6Xi8T+lUWm6CyWwNldimteb6+dUtu/?=
- =?us-ascii?Q?aeJxyE+XukNLXOVHlg322Qv8kK/H28lsfttjuuAOJh04I7XETEYIllj/w3Vv?=
- =?us-ascii?Q?eHLBcjFGpkR31q0UURPWp5lFcND1s4qkzChnrmMEhicQOKOUYn2iyySNdfFC?=
- =?us-ascii?Q?pDeCSVvOBdjIPam9nJkvIpn6UtVGs/iuYhVbSYQLjxpznvb7LQTDEu8Epwes?=
- =?us-ascii?Q?aCVCicUpnUGj/CtVTfIB9F3l2aoKfgcVw/yxUauQn916EIUUtDQIHqEno0aY?=
- =?us-ascii?Q?J7dfhkRAb6LBx7OOdVch4/HTra3Dk/5Eu1s2kgqb9vyxohl4r6QQ2uBxu9TZ?=
- =?us-ascii?Q?MvG4inDei9LjMUMKgDqR638YgOtPYaaOxBR+YPNzH5t5dlrvG7CFkmCJrfTw?=
- =?us-ascii?Q?uWiYxh4eUykg3lnC9NSzalYztC4j5SyP8t/UfPlAHqYXrlb351gIRMDVgvuI?=
- =?us-ascii?Q?0Adv+Sy0E9xcMCQ4ndnHxq9bPunBK1wJe6rE+jGfl+/HZXZ48cWxGjZkQLNs?=
- =?us-ascii?Q?k4CHBLSh5+q8EQIO28nEpAfZrDIh3efxh+46WisTZgtBlRSGRLh9q+8fhBVW?=
- =?us-ascii?Q?FrE9P84xZF44K2FsqF/zl4ey4ZZaxGg4U1mEbrJFd8u5HkvJ1j8L11PDR7po?=
- =?us-ascii?Q?Ut0400rH1FJ/7ascs16KONyN23B6EX3qPnljyItC/sZY30rmSnvsws0Bi4mG?=
- =?us-ascii?Q?dVUNA7jSKZBR8PN6K0qQHq67X5ViHCdzd2Quy9Hn3UnsFKNWRNtfEhtg3VF5?=
- =?us-ascii?Q?OtVyb7sYDTK5iacdfz8WFN2xXl+8GI8QekWdqJ53Bj0wfBvM8P77o6a7W0MX?=
- =?us-ascii?Q?+iAYVvTlVtPrLwKwBAH3cKTlAHbUH4lwLcjs2MAVJGIfKd6Er6kib4rcQlfC?=
- =?us-ascii?Q?L0tAw7kF3gZdy7RiSPQDXPjFXR0B0Ja/HM0VryjMNt0HhiTjm4cv2zpm+9Ze?=
- =?us-ascii?Q?Gvci5Y3CVvchF6ZCGh5NbS5mzHVpk1ndjNgQeJdJNSlObV9NP8Si1SeMnCWC?=
- =?us-ascii?Q?hachHqppDX5JR03lg6IoTM2PdHoFaJtAtxUfs9KqxhrCIwLez+1ORYkPzGmA?=
- =?us-ascii?Q?bCwTxq9DcXNH+xY3U+8xbE4pJRV27sH5xO38pNBiRz8zd40FoFLYVhyYcuHH?=
- =?us-ascii?Q?9r72oYoWrFSOONHvHM7iAfdJjSrYjMpBgrrfrHICGU3SX7sbvEdbPMSfEPgL?=
- =?us-ascii?Q?OB2kkXST/sBJXkLm4Rky5QTAC9jaiPzkrmvfNLFw3DbkHCInx0GDkzfk+d4o?=
- =?us-ascii?Q?Ntr6gJLfxQwpFMYDCswOfvhQXs5BJHUN2sYlvN7KWkvqpkW9O5U+59GiPhio?=
- =?us-ascii?Q?parw/yXiC+RT1Qjzyt2clh+jwzLauAjULDiEHhxgWlhA4lriW5zXJtgYZfDP?=
- =?us-ascii?Q?FGk+CvOXoEuOLRs5QzCunUSUJj0NrYX0?=
+	=?us-ascii?Q?Wp412NdwYD6D1KsRcFh5B44NXUwF31IC2n32ENmKeMpcrB6oC/ZijTBTWZ/M?=
+ =?us-ascii?Q?pJpWa/3LAl+uOec3HWyfB0khunBCMpOklNwV9aCjzmNukaS176PyCVhDVQxA?=
+ =?us-ascii?Q?Rtei7zNBZvUn+BVLmvRcSdR7cWD/QAQ6uMIZvslE1xvaC5j6xpvLFhMlrvxB?=
+ =?us-ascii?Q?MSIbOr4MZpgSN2anhvX0zvL1jk8FPNBZmrAoeH3AyWmGsRgQOcpbix0FKw54?=
+ =?us-ascii?Q?JSqynvFptpm9Oc8zJkIex5ML/jcDOCz4ytmxowgqxrKTdGi6jYpF7l8s1AmP?=
+ =?us-ascii?Q?OVmi5mQu05dS8m1kKZUnor/XXEQbvtfy0tuFrZbsOgRHdWMlZnmTB4gvWe8I?=
+ =?us-ascii?Q?kI+yQK3cAmLKxO8rjGf1rqiRerf652utAnUAs7ezqEMCQYeQHFnZvXQ6irDN?=
+ =?us-ascii?Q?ApV+rQynsmoMuwrg18nh32ll/53TAOAM4H06YcwyJX8fnKkcAfUbhFl2EJtp?=
+ =?us-ascii?Q?p/xHWS9A2GTmLH5GVYk3fSywnSINJpn9HaEyqsqxehdsZB8eRSlGVkizu4KV?=
+ =?us-ascii?Q?VZxlPLMJdxp0mlyuniOO4yPDGzJFAXOewxNKHhWRQTmOk6Qjgei1L7iooHt3?=
+ =?us-ascii?Q?i9iQNEj6GhT71NNZ5lj3f/bPp7HZtUQuZeJWNjuCEcbcOwpE4I52DNBYEmOc?=
+ =?us-ascii?Q?oabFT2KXQ7yTDVGbz5FAtpyi7R/80XnNR24Y3Xlv1RZit8XrODfYjp68TzpG?=
+ =?us-ascii?Q?RDnAY3Wue2MWwk5IvhYOiy0EqGJ1JgKjRJGfvdqzFzfO7HUMcAUv8a5OjzpR?=
+ =?us-ascii?Q?E7xElRqEBuOP67MPz9lm6e5m2Wgcw1GgKSbpdskwii5GKF7Fv/qeEv59mc/U?=
+ =?us-ascii?Q?FB90Kty1TZ8M9rmLsxZjvJOuXcN20CZatr8WkyTX04xG79kSf6uR76xwAsDr?=
+ =?us-ascii?Q?Svf8C7w5B/WBQ/GaGf3iPbtTpk6uN/RDLONXYEGKHcs+rx0zjqF+5SuEXjzH?=
+ =?us-ascii?Q?qhQOHhqMnvVtv4i9mq/IcZCNchnBn5ueRmD689wgDAF7hNUKWZivgJ0w+kXZ?=
+ =?us-ascii?Q?9f7QMpEwGMiDY7iwnOz0K3cBJ6hG98j5VZPDYvIqybammTbMYnZvs+RrFSxH?=
+ =?us-ascii?Q?qNqcfnK+ws7nvg1/5xyQcbPBGT4yU6IB729p9m2lWWcHJOrhKaLHNWL47AHe?=
+ =?us-ascii?Q?nzepglDZoYN6ocosW4M+4wJ11/SEka2AmAboyZsEEhCBRbSOYoOG/lVvqny9?=
+ =?us-ascii?Q?DVzu+letedjSeO2A9wj6mw+twh9HnANX9i9RAPdqjoNl0EuXe81o1k/iavor?=
+ =?us-ascii?Q?Mthq2pKrdx3tWQ6fFyNTKpdUCYmEdZdQiQ0jbRSGyVfefEyNnmiZsQxE0TQZ?=
+ =?us-ascii?Q?S5P3t7lf2ZLz742JqTonOFVhmwv17Xq+q9DRAMni65Jh/WvO1ULGv7AJA0U0?=
+ =?us-ascii?Q?82iARgBjStGS271u0n7rl/O0i5zEw7+vzX84wgk8Az867uZ2rCSnA/FZPRSX?=
+ =?us-ascii?Q?5k4bCsxvS8YTnw8StzhG6/s9p5nzz/kT?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(7416014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:33:13.7851
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:33:20.6243
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1daa087f-b718-42e1-f646-08dd13a76b65
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77ebfb34-65a2-42b0-eca0-08dd13a76f7b
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE0.namprd05.prod.outlook.com
+	SJ1PEPF00001CE2.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6710
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8493
 
-Currently the VXLAN header validation works by vxlan_rcv() going feature
-by feature, each feature clearing the bits that it consumes. If anything
-is left unparsed at the end, the packet is rejected.
+vxlan_sock.flags is constructed from vxlan_dev.cfg.flags, as the subset of
+flags (named VXLAN_F_RCV_FLAGS) that is important from the point of view of
+socket sharing. Attempts to reconfigure these flags during the vxlan netdev
+lifetime are also bounced. It is therefore immaterial whether we access the
+flags through the vxlan_dev or through the socket.
 
-Unfortunately there are machines out there that send VXLAN packets with
-reserved bits set, even if they are configured to not use the
-corresponding features. One such report is here[1], and we have heard
-similar complaints from our customers as well.
+Convert the socket accesses to netdevice accesses in this separate patch to
+make the conversions that take place in the following patches more obvious.
 
-This patchset adds an attribute that makes it configurable which bits
-the user wishes to tolerate and which they consider reserved. This was
-recommended in [1] as well.
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
 
-A knob like that inevitably allows users to set as reserved bits that
-are in fact required for the features enabled by the netdevice, such as
-GPE. This is detected, and such configurations are rejected.
+Notes:
+CC: Andrew Lunn <andrew+netdev@lunn.ch>
+CC: Menglong Dong <menglong8.dong@gmail.com>
+CC: Guillaume Nault <gnault@redhat.com>
+CC: Alexander Lobakin <aleksander.lobakin@intel.com>
+CC: Breno Leitao <leitao@debian.org>
 
-In patches #1..#7, the reserved bits validation code is gradually moved
-away from the unparsed approach described above, to one where a given
-set of valid bits is precomputed and then the packet is validated
-against that.
+ drivers/net/vxlan/vxlan_core.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-In patch #8, this precomputed set is made configurable through a new
-attribute IFLA_VXLAN_RESERVED_BITS.
-
-Patches #9 and #10 massage the testsuite a bit, so that patch #11 can
-introduce a selftest for the resreved bits feature.
-
-The corresponding iproute2 support is available in [2].
-
-[1] https://lore.kernel.org/netdev/db8b9e19-ad75-44d3-bfb2-46590d426ff5@proxmox.com/
-[2] https://github.com/pmachata/iproute2/commits/vxlan_reserved_bits/
-
-v1 (vs. RFC):
-- No changes.
-
-Petr Machata (11):
-  vxlan: In vxlan_rcv(), access flags through the vxlan netdevice
-  vxlan: vxlan_rcv() callees: Move clearing of unparsed flags out
-  vxlan: vxlan_rcv() callees: Drop the unparsed argument
-  vxlan: vxlan_rcv(): Extract vxlan_hdr(skb) to a named variable
-  vxlan: Track reserved bits explicitly as part of the configuration
-  vxlan: Bump error counters for header mismatches
-  vxlan: vxlan_rcv(): Drop unparsed
-  vxlan: Add an attribute to make VXLAN header validation configurable
-  selftests: net: lib: Rename ip_link_master() to ip_link_set_master()
-  selftests: net: lib: Add several autodefer helpers
-  selftests: forwarding: Add a selftest for the new reserved_bits UAPI
-
- drivers/net/vxlan/vxlan_core.c                | 150 +++++---
- include/net/vxlan.h                           |   1 +
- include/uapi/linux/if_link.h                  |   1 +
- tools/testing/selftests/net/fdb_notify.sh     |   6 +-
- tools/testing/selftests/net/forwarding/lib.sh |   7 -
- .../net/forwarding/vxlan_reserved.sh          | 352 ++++++++++++++++++
- tools/testing/selftests/net/lib.sh            |  41 +-
- 7 files changed, 496 insertions(+), 62 deletions(-)
- create mode 100755 tools/testing/selftests/net/forwarding/vxlan_reserved.sh
-
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 4053bd3f1023..d07d86ac1f03 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1717,7 +1717,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	/* For backwards compatibility, only allow reserved fields to be
+ 	 * used by VXLAN extensions if explicitly requested.
+ 	 */
+-	if (vs->flags & VXLAN_F_GPE) {
++	if (vxlan->cfg.flags & VXLAN_F_GPE) {
+ 		if (!vxlan_parse_gpe_proto(&unparsed, &protocol))
+ 			goto drop;
+ 		unparsed.vx_flags &= ~VXLAN_GPE_USED_BITS;
+@@ -1730,8 +1730,8 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		goto drop;
+ 	}
+ 
+-	if (vs->flags & VXLAN_F_REMCSUM_RX) {
+-		reason = vxlan_remcsum(&unparsed, skb, vs->flags);
++	if (vxlan->cfg.flags & VXLAN_F_REMCSUM_RX) {
++		reason = vxlan_remcsum(&unparsed, skb, vxlan->cfg.flags);
+ 		if (unlikely(reason))
+ 			goto drop;
+ 	}
+@@ -1756,8 +1756,8 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		memset(md, 0, sizeof(*md));
+ 	}
+ 
+-	if (vs->flags & VXLAN_F_GBP)
+-		vxlan_parse_gbp_hdr(&unparsed, skb, vs->flags, md);
++	if (vxlan->cfg.flags & VXLAN_F_GBP)
++		vxlan_parse_gbp_hdr(&unparsed, skb, vxlan->cfg.flags, md);
+ 	/* Note that GBP and GPE can never be active together. This is
+ 	 * ensured in vxlan_dev_configure.
+ 	 */
 -- 
 2.47.0
 
