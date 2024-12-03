@@ -1,141 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475011EB9F0;
-	Tue,  3 Dec 2024 12:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517651E884B
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 12:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733229675; cv=none; b=fqUWbwLL4gIf1GsLJsID+AYIdQ6AQ0OZIk4C01SmleA9Gco6Rin9a4ZBPZZ07SKRjCf8baKRKTzA5au8anGnukmppcSZdgsRv0v4B86iQQRu+oeb3GZgHv7cpQ/anc/F2b4UljlLu2Wo0ZgI2qRekpKUTVKdMxSZLx5seWmPZgQ=
+	t=1733229803; cv=none; b=VyleOlk7mXkKL4nYi4YR5h4V7LLycKbWn6oAYVsosDAxvPaIYhZVBPrrX56Xneeo4v4m28zun3/KppPsTGssMxEIGlcU7zV74Yxh/NSqSHFQimnAJcB9uYefsW2jbCC14QYILosE/2gGPaxkeU70gK3vjNdAo1ANXTkgWDb4il4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733229675; c=relaxed/simple;
-	bh=2uEXSo5be+RCYE8wBlDOJXNuB/VT7ARg3i3C+zGOWYQ=;
+	s=arc-20240116; t=1733229803; c=relaxed/simple;
+	bh=GzBvztZIsAnA0j805i0Hdlzz/ySCIXvl+SnZ96ohns8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlgiALEaVTYJdwlQ3ce2Hd+GUHfNwe3ZiCAhKF6n6B6SU3Tyi0963R3QVHbVGlJen2i8VyCF6DO98sGU3X/bXBNG8oupkQIMV0KkOVfn1E0OQokbt2HoFFmqCTY266A8c0VclDaFij8a2F6h1AUOKS3GEewqvjBityvYGWYIN44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Unb6vnj; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kV9EjVwPhQpl2NAf7v9bxSx2tCSP2vTrLV3xzogmDYXV6DWv7fZU23LtJRLBSMvo+kUCLfGHSAE5lqBOqiQ911e+si03abwCXOGTk1jtoXsVTUqPU8XvZQq8CI0lXFnqPb9O3pqqsGJlkbvwBvwVU8bVWo/Mocq/q6RoJdBcC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RQygbgL4; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Unb6vnj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C16C4CECF;
-	Tue,  3 Dec 2024 12:41:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733229675;
-	bh=2uEXSo5be+RCYE8wBlDOJXNuB/VT7ARg3i3C+zGOWYQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1Unb6vnj0waeqg52vL3tNBxqazZ4YLEkRH6amdDr2bx43L5JPTkkH+pB+L4tMzH0J
-	 SCb6eYmqeMGHbFRdUm9eKf56OQESdHkQFoMknfazShRPcJP62eT8Z3A5bIfaHIyzv7
-	 mcuUv99lpsVEKyYu6Ycjcf2lp80AbgdlAJGG1ZwM=
-Date: Tue, 3 Dec 2024 13:41:10 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Martin Tuma <martin.tuma@digiteqautomotive.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQygbgL4"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349c376d4fso5384375e9.0
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 04:43:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733229799; x=1733834599; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KO5UMHTUP1STwabFpZLUivHeu96b1MzdbWV6oLLApyU=;
+        b=RQygbgL4gaJ08eC1mu4QXbapHPzbXx+ucO+RUEVEmGtIz3g0KN30XWz8rxKkc6g8Ul
+         LFSDG8xD0VCBLk3vUWScHKkDJnnmxISmhyrstunkhRvZB1bl0WSsT7bTxE8p0dze7lw/
+         0z/7Ru8mwDFf1yyo4oA6N6M451f62+/9Zyo01wIzGZFA2VGew+JT2O1T1gbC2vtY5v0H
+         sy6tNP1PrTrxyAP2Z6bCwa+DWR3U8n9Kf8CayijhY6Z4OCZcWccLi4Rvgl/hWzcwqk/U
+         3o1YrEKrXfVSLgHNSlaYEiOEn4MYnhk9SRhfw+GV4kb1CBI7QbQGzmIM+dcmh/ZMZ3Z5
+         Uk/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733229799; x=1733834599;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KO5UMHTUP1STwabFpZLUivHeu96b1MzdbWV6oLLApyU=;
+        b=IXBt3O/RgvgKnluzu/OPK+Gwj1ukCoi672X89JZ8cPU+gAA6kX118nw7NQRP1IyiY9
+         hFnA5k9KwyVNc3Om/3PTE/oU2+xRHgSGq1FfLdfypciVTJiYDD9h4XqYBweB0g4SQ6Y4
+         p06aGfzmiAG1obNqzGUzIesDyEkDRUvx6SqnmX8mXE4XOJzLfhRhoi0cxOa4BcKzUmvp
+         lH18xQLYgGqu8SyYX+iMbPqjcoaQGIoc5kmrBsCr2hIwTIDXptJikQngPBvFHSiYAWfX
+         J+33I5nFkmDg6YhCOhBxg1dP4kbWAWuZhcHzApKmzqmjJ2bGG6ewppgQCSgUW5/cpEsp
+         L+yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcNIQiI1dsyo31ccIf4dVhLwXBqf0P2L1ZwFxXXdS8u+LsVAcmwfcohV/fuUKh9D8bPrd1JcA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi8yfPOUvMp4gvokqKmd4Ym4KLE3Yk56vTywk9EnKx1C0LA0ae
+	qn1zNcjbLa+PG4MirYFns+DO9w3C6pQAvw8XomVYx+L/P/Ic/y4C
+X-Gm-Gg: ASbGnctK8HB5NhWJ9AZS5RglucSuVmv/EfAlct/KdfNqJDYYsExafngYw/S6X2asAii
+	VJC5BJ7wKLla3dUR+Rg4gOBOHhmLJu7YJ6CT69V3TUMOOQR/5xww7ym78CBfvWCFvUlbOC4pkOG
+	BNfAZskpRlN+bXzGnq1zmMJL2sJlD5mFXcXrH87+CLv02ORhWiU1UjjlTAwdtTSK31yhSw0Sy07
+	j6Fh6+weY5kjcjWnFiywnnQnDKS8nZo4C2/MRc=
+X-Google-Smtp-Source: AGHT+IE179aeoJVF/xJTXzkRB1047Yc+2x9I2LLqIFSxmadH4ORqjZwu6nWQNf71YbSvfXJP3+THmw==
+X-Received: by 2002:a5d:6d02:0:b0:382:41ad:d8e1 with SMTP id ffacd0b85a97d-385fd42b9ddmr804660f8f.14.1733229799249;
+        Tue, 03 Dec 2024 04:43:19 -0800 (PST)
+Received: from skbuf ([188.25.135.117])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e3cbe250sm9875228f8f.94.2024.12.03.04.43.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 04:43:18 -0800 (PST)
+Date: Tue, 3 Dec 2024 14:43:16 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Manish Rangankar <mrangankar@marvell.com>,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Jens Axboe <axboe@kernel.dk>, Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-gpio@vger.kernel.org, netdev@vger.kernel.org,
-	linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org, open-iscsi@googlegroups.com,
-	linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
-	arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
- and adapt for various existing usages
-Message-ID: <2024120320-manual-jockey-dfd1@gregkh>
-References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
- <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
- <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	netdev <netdev@vger.kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [PATCH net-next v7 2/9] lib: packing: demote truncation error in
+ pack() to a warning in __pack()
+Message-ID: <20241203124316.er7w64rdkc4nedno@skbuf>
+References: <20241202-packing-pack-fields-and-ice-implementation-v7-0-ed22e38e6c65@intel.com>
+ <20241202-packing-pack-fields-and-ice-implementation-v7-2-ed22e38e6c65@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
+In-Reply-To: <20241202-packing-pack-fields-and-ice-implementation-v7-2-ed22e38e6c65@intel.com>
 
-On Tue, Dec 03, 2024 at 08:23:45PM +0800, Zijun Hu wrote:
-> On 2024/12/3 20:00, Uwe Kleine-König wrote:
-> > Hello,
-> > 
-> > On Tue, Dec 03, 2024 at 08:33:22AM +0800, Zijun Hu wrote:
-> >> This patch series is to constify the following API:
-> >> struct device *device_find_child(struct device *dev, void *data,
-> >> 		int (*match)(struct device *dev, void *data));
-> >> To :
-> >> struct device *device_find_child(struct device *dev, const void *data,
-> >> 				 device_match_t match);
-> >> typedef int (*device_match_t)(struct device *dev, const void *data);
-> > 
-> > This series isn't bisectible. With only the first two patches applied I
-> > hit:
+On Mon, Dec 02, 2024 at 04:26:25PM -0800, Jacob Keller wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> yes. such patch series needs to be merge as atomic way.
+> Most of the sanity checks in pack() and unpack() can be covered at
+> compile time. There is only one exception, and that is truncation of the
+> uval during a pack() operation.
 > 
-> Hi Greg,
+> We'd like the error-less __pack() to catch that condition as well. But
+> at the same time, it is currently the responsibility of consumer drivers
+> (currently just sja1105) to print anything at all when this error
+> occurs, and then discard the return code.
 > 
-> is it possible to ONLY merge such patch series by atomic way into your
-> driver-core tree?
-
-Nope!
-
-> or squash such patch series into a single patch ?
+> We can just print a loud warning in the library code and continue with
+> the truncated __pack() operation. In practice, having the warning is
+> very important, see commit 24deec6b9e4a ("net: dsa: sja1105: disallow
+> C45 transactions on the BASE-TX MDIO bus") where the bug was caught
+> exactly by noticing this print.
 > 
-> various subsystem maintainers may not like squashing way.
+> Add the first print to the packing library, and at the same time remove
+> the print for the same condition from the sja1105 driver, to avoid
+> double printing.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
 
-Agreed, so look into either doing it in a bisectable way if at all
-possible.  As I don't see a full series here, I can't suggest how it
-needs to happen :(
-
-thanks,
-
-greg k-h
+Somehow this is missing your sign off.
