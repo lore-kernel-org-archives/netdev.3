@@ -1,220 +1,234 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D931F8EEE
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 21:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140E01FCFD9
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 21:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733259882; cv=none; b=FlCpx69jmFZnxS4Ve4asDZ78171U39Zmxggnr/Cb6fVROCopNGjFuObdFa4wB9YAV+OT3GvYNcTNGOgGGBD+55GnldryEiD6CFwEmxK8CAHiOeydU3izdT95kt/tIGVTq7lEX9cTzE3XzADOxGfNnQuqxm8KYX+G9RF3N27qnBE=
+	t=1733260174; cv=none; b=ZcAShfgsnK3do8/8qiljrAkew608rX7hd8yO1+mpah1LR2Jd95n860Oqu+Jz2sShvkhu9siKkjSVtsI8QKjAb64K0hNqyQeoJeQ6woEUa2WU08gq0P7CHTfxKjDBpEwR1o6vhDAHFh+924QHS8Fcmo6Q+z1zciv/l/o1ZBwn0+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733259882; c=relaxed/simple;
-	bh=lLfpM5IQp0sLN1LefPgAqi0BMzlhxMBc+0TNHa//RjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fnE1sN8r1B3IjthMIuhg1dkeBIuC7IHQF+4AHGPu4Ri8tYA0UW2RxlSqW9k0pPupK4CxPknt9HIDrp9N/4UKA5/1/na9bbv5EIh6I1OCJZ8N2q8huLI3lmm6oRUI2mnb3nQmg63J3tGRB7+4ZVkgJ7b7WmLqO0rVAiP9o/1B2rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbyjpCKM; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733260174; c=relaxed/simple;
+	bh=1Ds94AcozE3f38sb7CuSCG0LhT+JPwIueYtUg9QOCIc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uyzIQaInLsSO1rrGsUYj+CxFNcYwhInPPlODdEZas+90zf75vFouhDSoRSbA1CDVu4XbcBKSNMWMNAckTjyT3yo6Qd6BMGVk41Qgb1jdYe5v27QVxKNJit30uYipv4P0Mm6WP8zU4IbQgCM9Gpb5V2fl1rDtuK3SRKVX4o5sNYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqK5uH+s; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbyjpCKM"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215c54e5f24so10383105ad.2
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 13:04:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqK5uH+s"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7b35758d690so1014589885a.1
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 13:09:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733259880; x=1733864680; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fwI5fO24DTdfvyVV7IW8y+H37bG2nklnndbeMk0xhXY=;
-        b=nbyjpCKM/LlOO4FDo+KtO+D7W1KVgfux2eRkgBOTMeJjj6CitpWL+7hZLPnCV3Tzen
-         Y7awn2jYfxdv+ulFVunbYOQTv5oDCjiXmo7ovI7tYqdRaoapGF1S/4DW6QNs+s762z3n
-         /eJpAl4tZPGYiaGjlJ7yS+NitJuIAkHaOf6534m1J9g8/UDWbnQGupNpiIrhVXci0EWH
-         Yy6sD+by1yZGLKYGNhe60GyV4Ng4MBBh7R5GBVJH5I4CM7Yq1qBEaBSX0JGqMwp/h6hf
-         HToxjbk7IT3hiV8J1jYYvXftCkAjGqwj44Fdrww+iY251/p+2Ddrsg1gsDVpzJTHasFC
-         hTKQ==
+        d=google.com; s=20230601; t=1733260172; x=1733864972; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e/HP5PLaNL9jCvhmPN1UQGOlAGoXFCU75pUewFa+Stg=;
+        b=CqK5uH+sC6kZHNPcM3TglJ0n4mqGR7ch0Pdjq9pEGDhoiCb0rxrkuTcj6uSkqkOAPj
+         XjAMBda+hOOpzTBkkzFhGkI0C0FtpbyLYtAjDcy8EcVkJIKH7ia1no2POiqjEi40U7Ia
+         5UMYx9pk5Np3KzEYBtXYkjyZsnz7XzRoRXKoujSp21IKw+sXKHveCSGRyUYm7XKd822Z
+         Bf4hl4608KMROrXpJKrKvYB0Wghtaa3GGWXDIVtm82Xrnib0oFeM2+3CXCcy3y37EKtP
+         GPwgHjLuFDe7Db7LPHYe3FFUKTlLBT7MNoYrPVpi0jNMNArqPlWUo38H7FZWKNOYJgUq
+         K0LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733259880; x=1733864680;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fwI5fO24DTdfvyVV7IW8y+H37bG2nklnndbeMk0xhXY=;
-        b=IIl+RlsQb+nJrNPZ7aUgHBn2+n21ZV8HWwAqW7X782PAFqeUNxY0GS3hEa2ifjtPH4
-         T126XjdoXsOHdwSjrot3pEBEnuSBZjWvLliypoZA30mt/yAui/cp6NK+0NbMpEij+SCH
-         y2SsS+pptIS+OXVqV/VDP//FJIowEaBcT1IbtJa4HZSTzLZgXcD73+6r/hh1nYUEWlGz
-         /tIWl0HT8JPIgnO91gSyvNFrD+St//22/HtgZmTvqvCxid/j23RMf0yPmNM19mGvIODd
-         bky9MmZWKAkN3KLSnwOFN0zVj93ON1taR7rA21q/OFJJGU3Wmw8Q59zt4rDZ7ujXAqeF
-         U47A==
-X-Forwarded-Encrypted: i=1; AJvYcCX1kYYCbQMBz8tXzXqT5UAU0kT3+qeTwcE/8GbMW2d8s/oQj/PuvJShSGN97pQtNU9/MiuzYJE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm/DTCE1c+X8rgHXcnSMG6T8qYYscyqux4VJIHQLsEn3pKcsKm
-	9tMa/CQ/zb4X3fKWkVHq8lUTgAc+zlt+YSbdTcEQSKosyzz9rLM00ppM9KU=
-X-Gm-Gg: ASbGnctxfQiXv9DjTkFiNxaHKQjgT/hR2yaGdQm2a7dQ1w876QCPA9XfGbBC26R+Mbv
-	VWhLoB9+Wm8wvraHmIA+vUbKPSyxOoBjRDXKC+W6+YJmRIpd7XwHgsT/DY8GcpkW/vWfSLLbfUt
-	ABtbSktULmrkRmGuhNgANZImG/EzGZW9tuzp1vyc7jweW3LWZtGRJOR43E3mLRoWNkyfQ1+R1LK
-	oilVqiMIjWQp52Gn8vb2IqxvrTGriwSPZ1DcwzbvnSMDABuSg==
-X-Google-Smtp-Source: AGHT+IHiMtqDxIuX6AD2frTdncXVaVc9RdoZJGdmhnSoZ1dLtmFDyU/280mc8OBp57cJSFAnrXgIaQ==
-X-Received: by 2002:a17:902:e743:b0:215:4a4e:9286 with SMTP id d9443c01a7336-215bd0e66b0mr59232805ad.26.1733259879291;
-        Tue, 03 Dec 2024 13:04:39 -0800 (PST)
-Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215219cd615sm98867295ad.269.2024.12.03.13.04.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 13:04:38 -0800 (PST)
-Date: Tue, 3 Dec 2024 13:04:38 -0800
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com,
-	Dan Streetman <dan.streetman@canonical.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: Re: [PATCH net] net: defer final 'struct net' free in netns dismantle
-Message-ID: <Z09yZqv82dQn-1zI@mini-arch>
-References: <20241203165045.2428360-1-edumazet@google.com>
- <53482ace-71a3-4fa3-a7d3-592311fc3c1b@ovn.org>
+        d=1e100.net; s=20230601; t=1733260172; x=1733864972;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e/HP5PLaNL9jCvhmPN1UQGOlAGoXFCU75pUewFa+Stg=;
+        b=OcYIkremcpPb1232xAdWUB7XbTDrbRFRTxQbAvWFb2u+A3+COj8SEUCroFend3rgzo
+         P+omyIQ9SKdEZK7SW4k1e+VHyDmxuVtdGVuASeDHSmV0ovWIngvzGTLOV55I44X0bxdN
+         f8xU+UWK3Qyl/rfWUyabGFRACyXR/9gWD8yXoGwsrRBnnIX61rht77JAkFiHoL1k6SWx
+         Gogv/QWCglWswXCDY5cJMIOqmalZ0+SBNsRkYKQYjkLO49TJe1+JBHhybBmrZmXFInf0
+         A9H2sJo+T0IhBYPQhV3ojjaOa1x2W4UtLaqY/Z1jamolaOq00a9EqEJClf11MwMzfefS
+         jjnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJnn5dEg6oWj3DffcixLMVqndZlPXGD4beFg0R67p0stvOKr2UR9UIOYQ6+5xCgCAWaMhiq7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxX5hQhXNjJ6vO85LXnA2ImFJGarObFX+xVGECiBdXmGw4fxJA
+	K8loL3CS3CUFFne+QT3yn41QppQONY8El0wuysa0pc/hNd1WMVHkjVwUSsOdlYvfyWLgOgbr7Tk
+	UCAur/WQkzw==
+X-Google-Smtp-Source: AGHT+IG+yXPlZmZBuzv1BqOOMVtfHl+6kerX4SE5OK9wsg5inqpVntbkEIN+3pKPCGCxtL6OskW0IUyVFNfBlA==
+X-Received: from qkbbp18.prod.google.com ([2002:a05:620a:4592:b0:7b1:6421:b302])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:1996:b0:7b1:1d91:5cf1 with SMTP id af79cd13be357-7b6ababfdfbmr269869385a.1.1733260172055;
+ Tue, 03 Dec 2024 13:09:32 -0800 (PST)
+Date: Tue,  3 Dec 2024 21:09:29 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <53482ace-71a3-4fa3-a7d3-592311fc3c1b@ovn.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241203210929.3281461-1-edumazet@google.com>
+Subject: [PATCH net-next] net_sched: sch_fq: add three drop_reason
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/03, Ilya Maximets wrote:
-> On 12/3/24 17:50, Eric Dumazet wrote:
-> > Ilya reported a slab-use-after-free in dst_destroy [1]
-> > 
-> > Issue is in xfrm6_net_init() and xfrm4_net_init() :
-> > 
-> > They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
-> > 
-> > But net structure might be freed before all the dst callbacks are
-> > called. So when dst_destroy() calls later :
-> > 
-> > if (dst->ops->destroy)
-> >     dst->ops->destroy(dst);
-> > 
-> > dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
-> > 
-> > See a relevant issue fixed in :
-> > 
-> > ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
-> > 
-> > A fix is to queue the 'struct net' to be freed after one
-> > another cleanup_net() round (and existing rcu_barrier())
-> > 
-> > [1]
-> 
-> <snip>
-> 
-> Hi, Eric.  Thanks for the patch!
-> 
-> Though I tried to test it by applying directly on top of v6.12 tag, but I got
-> the following UAF shortly after booting the kernel.  Seems like podman service
-> was initializing something and creating namespaces for that.
-> 
-> I can try applying the change on top of net tree, if that helps.
-> 
-> Best regards, Ilya Maximets.
-> 
-> The log:
-> 
-> Dec  3 13:12:09  systemd-logind[1240]: New session 3 of user root.
-> Dec  3 13:12:09  systemd[1]: Started Session 3 of User root.
-> Dec  3 13:12:39  systemd[1]: systemd-hostnamed.service: Deactivated successfully.
-> Dec  3 13:12:40  kernel: ==================================================================
-> Dec  3 13:12:40  kernel: BUG: KASAN: slab-use-after-free in cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: Read of size 8 at addr ffff888166941bf8 by task kworker/u160:1/13
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: CPU: 34 UID: 0 PID: 13 Comm: kworker/u160:1 Not tainted 6.12.0+ #69
-> Dec  3 13:12:40  kernel: Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-> Dec  3 13:12:40  kernel: Workqueue: netns cleanup_net
-> Dec  3 13:12:40  kernel: Call Trace:
-> Dec  3 13:12:40  kernel: <TASK>
-> Dec  3 13:12:40  kernel: dump_stack_lvl (lib/dump_stack.c:124) 
-> Dec  3 13:12:40  kernel: print_address_description.constprop.0 (mm/kasan/report.c:378) 
-> Dec  3 13:12:40  kernel: ? cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: print_report (mm/kasan/report.c:489) 
-> Dec  3 13:12:40  kernel: ? cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: ? kasan_addr_to_slab (mm/kasan/common.c:37) 
-> Dec  3 13:12:40  kernel: kasan_report (mm/kasan/report.c:603) 
-> Dec  3 13:12:40  kernel: ? cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: ? __pfx_lock_acquire (kernel/locking/lockdep.c:5793) 
-> Dec  3 13:12:40  kernel: ? __pfx_cleanup_net (net/core/net_namespace.c:586) 
-> Dec  3 13:12:40  kernel: ? lock_is_held_type (kernel/locking/lockdep.c:5566 kernel/locking/lockdep.c:5897) 
-> Dec  3 13:12:40  kernel: process_one_work (kernel/workqueue.c:3229) 
-> Dec  3 13:12:40  kernel: ? __pfx_lock_acquire (kernel/locking/lockdep.c:5793) 
-> Dec  3 13:12:40  kernel: ? __pfx_process_one_work (kernel/workqueue.c:3131) 
-> Dec  3 13:12:40  kernel: ? assign_work (kernel/workqueue.c:1200) 
-> Dec  3 13:12:40  kernel: ? lock_is_held_type (kernel/locking/lockdep.c:5566 kernel/locking/lockdep.c:5897) 
-> Dec  3 13:12:40  kernel: worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391) 
-> Dec  3 13:12:40  kernel: ? __kthread_parkme (./arch/x86/include/asm/bitops.h:206 ./arch/x86/include/asm/bitops.h:238 ./include/asm-generic/bitops/instrumented-non-atomic.h:142 kernel/kthread.c:280) 
-> Dec  3 13:12:40  kernel: ? __pfx_worker_thread (kernel/workqueue.c:3337) 
-> Dec  3 13:12:40  kernel: kthread (kernel/kthread.c:389) 
-> Dec  3 13:12:40  kernel: ? __pfx_kthread (kernel/kthread.c:342) 
-> Dec  3 13:12:40  kernel: ret_from_fork (arch/x86/kernel/process.c:147) 
-> Dec  3 13:12:40  kernel: ? __pfx_kthread (kernel/kthread.c:342) 
-> Dec  3 13:12:40  kernel: ret_from_fork_asm (arch/x86/entry/entry_64.S:257) 
-> Dec  3 13:12:40  kernel: </TASK>
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: Allocated by task 1250:
-> Dec  3 13:12:40  kernel: kasan_save_stack (mm/kasan/common.c:48) 
-> Dec  3 13:12:40  kernel: kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69) 
-> Dec  3 13:12:40  kernel: __kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345) 
-> Dec  3 13:12:40  kernel: kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141) 
-> Dec  3 13:12:40  kernel: copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:496) 
-> Dec  3 13:12:40  kernel: create_new_namespaces (kernel/nsproxy.c:110) 
-> Dec  3 13:12:40  kernel: unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4)) 
-> Dec  3 13:12:40  kernel: ksys_unshare (kernel/fork.c:3313) 
-> Dec  3 13:12:40  kernel: __x64_sys_unshare (kernel/fork.c:3382) 
-> Dec  3 13:12:40  kernel: do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83) 
-> Dec  3 13:12:40  kernel: entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130) 
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: Freed by task 13:
-> Dec  3 13:12:40  kernel: kasan_save_stack (mm/kasan/common.c:48) 
-> Dec  3 13:12:40  kernel: kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69) 
-> Dec  3 13:12:40  kernel: kasan_save_free_info (mm/kasan/generic.c:582) 
-> Dec  3 13:12:40  kernel: __kasan_slab_free (mm/kasan/common.c:271) 
-> Dec  3 13:12:40  kernel: kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681) 
-> Dec  3 13:12:40  kernel: cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:655) 
-> Dec  3 13:12:40  kernel: process_one_work (kernel/workqueue.c:3229) 
-> Dec  3 13:12:40  kernel: worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391) 
-> Dec  3 13:12:40  kernel: kthread (kernel/kthread.c:389) 
-> Dec  3 13:12:40  kernel: ret_from_fork (arch/x86/kernel/process.c:147) 
-> Dec  3 13:12:40  kernel: ret_from_fork_asm (arch/x86/entry/entry_64.S:257) 
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: The buggy address belongs to the object at ffff888166941b40#012 which belongs to the cache net_namespace of size 6720
-> Dec  3 13:12:40  kernel: The buggy address is located 184 bytes inside of#012 freed 6720-byte region [ffff888166941b40, ffff888166943580)
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: The buggy address belongs to the physical page:
-> Dec  3 13:12:40  kernel: page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x166940
-> Dec  3 13:12:40  kernel: head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-> Dec  3 13:12:40  kernel: memcg:ffff8881229685c1
-> Dec  3 13:12:40  kernel: flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
-> Dec  3 13:12:40  kernel: page_type: f5(slab)
-> Dec  3 13:12:40  kernel: raw: 0017ffffc0000040 ffff888100053980 dead000000000122 0000000000000000
-> Dec  3 13:12:40  kernel: raw: 0000000000000000 0000000080040004 00000001f5000000 ffff8881229685c1
-> Dec  3 13:12:40  kernel: head: 0017ffffc0000040 ffff888100053980 dead000000000122 0000000000000000
-> Dec  3 13:12:40  kernel: head: 0000000000000000 0000000080040004 00000001f5000000 ffff8881229685c1
-> Dec  3 13:12:40  kernel: head: 0017ffffc0000003 ffffea00059a5001 ffffffffffffffff 0000000000000000
-> Dec  3 13:12:40  kernel: head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-> Dec  3 13:12:40  kernel: page dumped because: kasan: bad access detected
-> Dec  3 13:12:40  kernel:
-> Dec  3 13:12:40  kernel: Memory state around the buggy address:
-> Dec  3 13:12:40  kernel: ffff888166941a80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> Dec  3 13:12:40  kernel: ffff888166941b00: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
-> Dec  3 13:12:40  kernel: >ffff888166941b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> Dec  3 13:12:40  kernel:                                                                ^
-> Dec  3 13:12:40  kernel: ffff888166941c00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> Dec  3 13:12:40  kernel: ffff888166941c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> Dec  3 13:12:40  kernel: ==================================================================
-> Dec  3 13:12:40  kernel: Disabling lock debugging due to kernel taint
-> Dec  3 13:14:14  systemd[1]: var-lib-containers-storage-overlay-compat1591001862-merged.mount: Deactivated successfully.
-> Dec  3 13:14:14  kernel: evm: overlay not supported
-> Dec  3 13:14:14  systemd[1]: var-lib-containers-storage-overlay-metacopyx2dcheck2012509683-merged.mount: Deactivated successfully.
-> Dec  3 13:14:14  podman[5241]: 2024-12-03 13:14:14.444912997 -0500 EST m=+0.123882461 system refresh
-> Dec  3 13:14:15  systemd[1]: var-lib-containers-storage-overlay.mount: Deactivated successfully.
+Add three new drop_reason, more precise than generic QDISC_DROP:
 
-Let's also kick it out from the NIPA queue:
+"tc -s qd" show aggregate counters, it might be more useful
+to use drop_reason infrastructure for bug hunting.
 
+1) SKB_DROP_REASON_FQ_DROP_BAND_LIMIT
+   Whenever a packet is added while its band limit is hit.
+   Corresponding value in "tc -s qd" is bandX_drops XXXX
+
+2) SKB_DROP_REASON_FQ_DROP_HORIZON_LIMIT
+   Whenever a packet has a timestamp too far in the future.
+   Corresponding value in "tc -s qd" is horizon_drops XXXX
+
+3) SKB_DROP_REASON_FQ_DROP_FLOW_LIMIT
+   Whenever a flow has reached its limit.
+   Corresponding value in "tc -s qd" is flows_plimit XXXX
+
+Tested:
+tc qd replace dev eth0 root fq flow_limit 10 limit 100000
+perf record -a -e skb:kfree_skb sleep 1; perf script
+
+      udp_stream   12329 [004]   216.929492: skb:kfree_skb: skbaddr=0xffff888eabe17e00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_FLOW_LIMIT
+      udp_stream   12385 [006]   216.929593: skb:kfree_skb: skbaddr=0xffff888ef8827f00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_FLOW_LIMIT
+      udp_stream   12389 [005]   216.929871: skb:kfree_skb: skbaddr=0xffff888ecb9ba500 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_FLOW_LIMIT
+      udp_stream   12316 [009]   216.930398: skb:kfree_skb: skbaddr=0xffff888eca286b00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_FLOW_LIMIT
+      udp_stream   12400 [008]   216.930490: skb:kfree_skb: skbaddr=0xffff888eabf93d00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_FLOW_LIMIT
+
+tc qd replace dev eth1 root fq flow_limit 100 limit 10000
+perf record -a -e skb:kfree_skb sleep 1; perf script
+
+      udp_stream   18074 [001]  1058.318040: skb:kfree_skb: skbaddr=0xffffa23c881fc000 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_BAND_LIMIT
+      udp_stream   18126 [005]  1058.320651: skb:kfree_skb: skbaddr=0xffffa23c6aad4000 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_BAND_LIMIT
+      udp_stream   18118 [006]  1058.321065: skb:kfree_skb: skbaddr=0xffffa23df0d48a00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_BAND_LIMIT
+      udp_stream   18074 [001]  1058.321126: skb:kfree_skb: skbaddr=0xffffa23c881ffa00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_BAND_LIMIT
+      udp_stream   15815 [003]  1058.321224: skb:kfree_skb: skbaddr=0xffffa23c9835db00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_DROP_BAND_LIMIT
+
+tc -s -d qd sh dev eth1
+qdisc fq 8023: root refcnt 257 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023
+ bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 weights 589824 196608 65536 quantum 18Kb
+ initial_quantum 92120b low_rate_threshold 550Kbit refill_delay 40ms
+ timer_slack 10us horizon 10s horizon_drop
+ Sent 492439603330 bytes 336953991 pkt (dropped 61724094, overlimits 0 requeues 4463)
+ backlog 14611228b 9995p requeues 4463
+  flows 2965 (inactive 1151 throttled 0) band0_pkts 0 band1_pkts 9993 band2_pkts 0
+  gc 6347 highprio 0 fastpath 30 throttled 5 latency 2.32us flows_plimit 7403693
+ band1_drops 54320401
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-pw-bot: cr
+ include/net/dropreason-core.h | 18 ++++++++++++++++++
+ include/net/sch_generic.h     |  9 +++++++++
+ net/sched/sch_fq.c            | 14 ++++++++++----
+ 3 files changed, 37 insertions(+), 4 deletions(-)
+
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 6c5a1ea209a22d8702f8c982762ca5f69791b8eb..570605152a2a2d36a698aa062104d59d3aba000b 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -58,6 +58,9 @@
+ 	FN(TC_EGRESS)			\
+ 	FN(SECURITY_HOOK)		\
+ 	FN(QDISC_DROP)			\
++	FN(FQ_DROP_BAND_LIMIT)		\
++	FN(FQ_DROP_HORIZON_LIMIT)	\
++	FN(FQ_DROP_FLOW_LIMIT)		\
+ 	FN(CPU_BACKLOG)			\
+ 	FN(XDP)				\
+ 	FN(TC_INGRESS)			\
+@@ -311,6 +314,21 @@ enum skb_drop_reason {
+ 	 * failed to enqueue to current qdisc)
+ 	 */
+ 	SKB_DROP_REASON_QDISC_DROP,
++	/**
++	 * @SKB_DROP_REASON_FQ_DROP_BAND_LIMIT: dropped by fq qdisc when per band
++	 * limit is reached.
++	 */
++	SKB_DROP_REASON_FQ_DROP_BAND_LIMIT,
++	/**
++	 * @SKB_DROP_REASON_FQ_DROP_HORIZON_LIMIT: dropped by fq qdisc when packet
++	 * timestamp is too far in the future.
++	 */
++	SKB_DROP_REASON_FQ_DROP_HORIZON_LIMIT,
++	/**
++	 * @SKB_DROP_REASON_FQ_DROP_FLOW_LIMIT: dropped by fq qdisc when a flow
++	 * exceeds its limits.
++	 */
++	SKB_DROP_REASON_FQ_DROP_FLOW_LIMIT,
+ 	/**
+ 	 * @SKB_DROP_REASON_CPU_BACKLOG: failed to enqueue the skb to the per CPU
+ 	 * backlog queue. This can be caused by backlog queue full (see
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 5d74fa7e694cc85be91dbf01f0876b9feaa29115..c7a33c2c69830a6cbff8f6359de7cc468c2e845e 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1245,6 +1245,15 @@ static inline int qdisc_drop(struct sk_buff *skb, struct Qdisc *sch,
+ 	return NET_XMIT_DROP;
+ }
+ 
++static inline int qdisc_drop_reason(struct sk_buff *skb, struct Qdisc *sch,
++				    struct sk_buff **to_free,
++				    enum skb_drop_reason reason)
++{
++	tcf_set_drop_reason(skb, reason);
++	return qdisc_drop(skb, sch, to_free);
++}
++
++
+ static inline int qdisc_drop_all(struct sk_buff *skb, struct Qdisc *sch,
+ 				 struct sk_buff **to_free)
+ {
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index a5e87f9ea9861cbedb7ce858fbbcabb5d67cf821..9180810e39fa230ee2c4b6b94bcb87df388f4df8 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -537,6 +537,8 @@ static bool fq_packet_beyond_horizon(const struct sk_buff *skb,
+ 	return unlikely((s64)skb->tstamp > (s64)(now + q->horizon));
+ }
+ 
++#define FQDR(reason) SKB_DROP_REASON_FQ_DROP_##reason
++
+ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		      struct sk_buff **to_free)
+ {
+@@ -548,7 +550,8 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	band = fq_prio2band(q->prio2band, skb->priority & TC_PRIO_MAX);
+ 	if (unlikely(q->band_pkt_count[band] >= sch->limit)) {
+ 		q->stat_band_drops[band]++;
+-		return qdisc_drop(skb, sch, to_free);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 FQDR(BAND_LIMIT));
+ 	}
+ 
+ 	now = ktime_get_ns();
+@@ -558,8 +561,9 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		/* Check if packet timestamp is too far in the future. */
+ 		if (fq_packet_beyond_horizon(skb, q, now)) {
+ 			if (q->horizon_drop) {
+-					q->stat_horizon_drops++;
+-					return qdisc_drop(skb, sch, to_free);
++				q->stat_horizon_drops++;
++				return qdisc_drop_reason(skb, sch, to_free,
++							 FQDR(HORIZON_LIMIT));
+ 			}
+ 			q->stat_horizon_caps++;
+ 			skb->tstamp = now + q->horizon;
+@@ -572,7 +576,8 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	if (f != &q->internal) {
+ 		if (unlikely(f->qlen >= q->flow_plimit)) {
+ 			q->stat_flows_plimit++;
+-			return qdisc_drop(skb, sch, to_free);
++			return qdisc_drop_reason(skb, sch, to_free,
++						 FQDR(FLOW_LIMIT));
+ 		}
+ 
+ 		if (fq_flow_is_detached(f)) {
+@@ -597,6 +602,7 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	return NET_XMIT_SUCCESS;
+ }
++#undef FQDR
+ 
+ static void fq_check_throttled(struct fq_sched_data *q, u64 now)
+ {
+-- 
+2.47.0.338.g60cca15819-goog
+
