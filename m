@@ -1,55 +1,35 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131591E0DEB;
-	Tue,  3 Dec 2024 10:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3937A1E260C
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 10:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733221968; cv=none; b=A69L/DF+H7jmhr3qp2LfQRqfiuanKsw0ekiRpyQMQIlj/5QSnH88NwZwTmwgLOPkhPa1ZB5FBWviBfa+1eME1wc/lqHEBeBJK8mu2nAzwe9NcAL+/8oeBmFZcQEfedxWROLUTRSO+RvnqEDEDQ5qJxDkdFQdxDa0JFKq8cUQpwg=
+	t=1733222416; cv=none; b=DAgK/52nLxHOxIYQQ1nF/N9m+HnrjvlwlmNoehYhw8+r8VAvnq5xeLugbddtygHir5abRbpNCPopcjD9AQ4/iptoazsiIA8eZTS4Y7b227rd1FTg5fRq4sKt6yTSn6QowJkW2/9fIbubabzmhP1dCYOmRJmdBnPQgipZXceTQxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733221968; c=relaxed/simple;
-	bh=lfZk1PHy+4P1YFdjNi2bdTEnABvSnKLOXNwj20uCDiw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FZdG3yqIz3P/xzm0Q3+oSdFRf7T4ZpWKGy+U0G4+XXPt/Tl13TyP4h3maGl/UMLwtkDauv9uFt1WFJvXXijQM9++wNbi0QRqXbma+Nxr0x2Ige4qJCGcTNdAtbnpSH8lx4tA4dQzfFvhLGPrg+An2+nAG2kch8TbXBO1VGbrz9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ggZFKTuZ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1733222416; c=relaxed/simple;
+	bh=v+PmmP09i/Uo9rFLN1HqrjpY86uRNEMAGx4pmtmqW0w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UpcXtZTGixq7jHcbch2TFKhY2Okhnm1zmRPl+I0sfdg+ugHnC8t4mJyRcShIGNDtK1p7z1MajEMPiEPOGM2PwVAG2LIbqnM5te0qvmkkGTWBNx95msjmqAAAEFtd8wMyQeb5zhdp6/j79qo/0TkXJVC0czh0I6+yH92B9aiSAKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBuBw2Op; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ggZFKTuZ"
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4B3AVuBZ23707200, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1733221916; bh=lfZk1PHy+4P1YFdjNi2bdTEnABvSnKLOXNwj20uCDiw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=ggZFKTuZjxm9b9Nand76k6UGBNujO3hWp/6eO3U+P17yQhBu0GtkmeqFzjBYniBgi
-	 MIF3+D+lQS3j3DYaRPRpCVHcjwsdFoZzeWP6c+HApY7xars+Yd2PVwEvCA1ygd+k7/
-	 R1RXtB6tD8/hC8VYpEGB4HUL9+OrIwqQTJhzc7gO0XuuLvjrqCSsVVCC7w4Y24Qp/e
-	 oCODJl2MzqDUIFMKYnFbkiDfJf8oLaLK8/YLlQdgPI5jlKQeVybhawtJDaNEN1F7J8
-	 GC/wyRdbVpzXy0au5qcPSAWRWovhpxTU1kq1maXQ/OoKfvY0mUUlFZtIAsU6b8Nbzf
-	 bNfy5QhMkncIQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4B3AVuBZ23707200
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Dec 2024 18:31:56 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 3 Dec 2024 18:31:56 +0800
-Received: from RTDOMAIN (172.21.210.74) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 3 Dec
- 2024 18:31:55 +0800
-From: Justin Lai <justinlai0215@realtek.com>
-To: <kuba@kernel.org>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <horms@kernel.org>,
-        <michal.kubiak@intel.com>, <pkshih@realtek.com>,
-        <larry.chiu@realtek.com>, Justin Lai
-	<justinlai0215@realtek.com>
-Subject: [PATCH net-next] rtase: Add support for RTL907XD-VA PCIe port
-Date: Tue, 3 Dec 2024 18:31:46 +0800
-Message-ID: <20241203103146.734516-1-justinlai0215@realtek.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBuBw2Op"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9913C4CECF;
+	Tue,  3 Dec 2024 10:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733222415;
+	bh=v+PmmP09i/Uo9rFLN1HqrjpY86uRNEMAGx4pmtmqW0w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JBuBw2Op20c3wrYPILHJN6gsmajFLGm05nTM2AWOQsHwxKZe0weJhymFYjTGJK0he
+	 glnzYDnXz5tDSpc+GzCWnwBtGq+GjoTYbyHd6r8f6oyJ25R1fmoB7j+By8jmlH98QY
+	 RRHkH1ERsf/76zUkOzwXvQLI2GF9fYWMVcY9Yok4XPbraW2yFmc2stZv2LqDVAMuts
+	 E0gwoZXZj7TL4WAgtMSJg1/XWXWEzvKZOx/G0+3wsuHpc+GDw+qFEB9gh0gcaAx/n6
+	 21nC4vgEym8XgKgjXJTEaxxb5HZ+8fKpuH1Lgfx+lXzNfTDBgg6LKVNkaCw6fIG2dd
+	 YyzV0uB1EmKFg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33A643806656;
+	Tue,  3 Dec 2024 10:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,51 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Subject: Re: [Patch net v2] rtnetlink: fix double call of rtnl_link_get_net_ifla()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173322243001.10445.16406152761850784134.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Dec 2024 10:40:30 +0000
+References: <20241129212519.825567-1-xiyou.wangcong@gmail.com>
+In-Reply-To: <20241129212519.825567-1-xiyou.wangcong@gmail.com>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: netdev@vger.kernel.org, cong.wang@bytedance.com,
+ syzbot+21ba4d5adff0b6a7cfc6@syzkaller.appspotmail.com, kuniyu@amazon.com
 
-1. Add RTL907XD-VA hardware version id.
-2. Add the reported speed for RTL907XD-VA.
+Hello:
 
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
----
- drivers/net/ethernet/realtek/rtase/rtase.h      | 1 +
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 2 ++
- 2 files changed, 3 insertions(+)
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase.h b/drivers/net/ethernet/realtek/rtase/rtase.h
-index dbc3f92eebc4..2bbfcad613ab 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase.h
-+++ b/drivers/net/ethernet/realtek/rtase/rtase.h
-@@ -13,6 +13,7 @@
- #define RTASE_HW_VER_906X_7XA 0x00800000
- #define RTASE_HW_VER_906X_7XC 0x04000000
- #define RTASE_HW_VER_907XD_V1 0x04800000
-+#define RTASE_HW_VER_907XD_VA 0x08000000
- 
- #define RTASE_RX_DMA_BURST_256       4
- #define RTASE_TX_DMA_BURST_UNLIMITED 7
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index de7f11232593..6106aa5333bc 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1725,6 +1725,7 @@ static int rtase_get_settings(struct net_device *dev,
- 		cmd->base.speed = SPEED_5000;
- 		break;
- 	case RTASE_HW_VER_907XD_V1:
-+	case RTASE_HW_VER_907XD_VA:
- 		cmd->base.speed = SPEED_10000;
- 		break;
- 	}
-@@ -1993,6 +1994,7 @@ static int rtase_check_mac_version_valid(struct rtase_private *tp)
- 	case RTASE_HW_VER_906X_7XA:
- 	case RTASE_HW_VER_906X_7XC:
- 	case RTASE_HW_VER_907XD_V1:
-+	case RTASE_HW_VER_907XD_VA:
- 		ret = 0;
- 		break;
- 	}
+On Fri, 29 Nov 2024 13:25:19 -0800 you wrote:
+> From: Cong Wang <cong.wang@bytedance.com>
+> 
+> Currently rtnl_link_get_net_ifla() gets called twice when we create
+> peer devices, once in rtnl_add_peer_net() and once in each ->newlink()
+> implementation.
+> 
+> This looks safer, however, it leads to a classic Time-of-Check to
+> Time-of-Use (TOCTOU) bug since IFLA_NET_NS_PID is very dynamic. And
+> because of the lack of checking error pointer of the second call, it
+> also leads to a kernel crash as reported by syzbot.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] rtnetlink: fix double call of rtnl_link_get_net_ifla()
+    https://git.kernel.org/netdev/net/c/48327566769a
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
