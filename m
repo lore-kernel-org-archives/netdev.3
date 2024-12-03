@@ -1,128 +1,124 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F7202F84;
-	Tue,  3 Dec 2024 22:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1635716DC28;
+	Tue,  3 Dec 2024 22:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733264977; cv=none; b=hXq81poE8MoF4hRF+qeSuIbTOZLXdGunKOiPY+ucPhjm8o6x1q1X8XMBLqeid4+j3Z0ldHputaqr4/VIf2KxF/a8FcMGvyK0CnXaytYr9K0/Nk7QD7SQbiGAyfSgQ4UHlYOYyOk1QDs/9j4DTXrTmFlZ1IUaSS2wfvtTzg01gO8=
+	t=1733265159; cv=none; b=O14FruVEcrka5MvbdntigbZojM100VvlbwbED0R12mIOahjofwR3lWZqOOL8k5i7fMJJKYBxAJyXj86NLBArTu54AmgxnB36Ksa0P+C4enxfltXB5/e7NUCG6SSf9/CBp/07pk0R0nEM28HzPQQLcadsXHzmtt3NVJnXF9ueHUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733264977; c=relaxed/simple;
-	bh=v1NJNp5Tk7wpwinjGLDTU4LArY+PKjGPBb1DekJ1O6g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WAlcCL537VM+zJJ73QSdiGeifHjGx2QL2Fpo6LDnks8TrTarzy1s5SwEKB8Nude1oUtleaykav4ilbsX6OnusNoxNzvUCH83qPfVXmb8yWlk6of4DrI+NrvwOMD5tOswRjGifmAda8gWfx49J8/wvMSk9mVdW0NJLnEk5iPttz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AJzoTjec; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1733265159; c=relaxed/simple;
+	bh=/bBqnTfrh3T7UDYQTvCzK5mOHnVENziHCGIZsA8YP3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hQzEudoX7oCzmtuYvKm4T9W+eYa7knj8LA1JsTmKeY7dizcLXOLVXwegQ052PrYjeh87U6VS4x2NP/GDXzrTLrDrHWfy5uNKOzaSgp1mldEhjVL0fPg/EKwMV8DQaHiooDKSvnr70fj+OibnlgzxO6bU1Ny0HtsZ7nJVdF52s8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxN8FPVL; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AJzoTjec"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7fc99fc2b16so3640148a12.3;
-        Tue, 03 Dec 2024 14:29:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxN8FPVL"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6ef4084df4cso54534267b3.1;
+        Tue, 03 Dec 2024 14:32:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733264975; x=1733869775; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kOQqhZdgI8+JB/qh1dFLYIuDBxbHyOD15IWWEIuDAMg=;
-        b=AJzoTjecKLzsoGsVs3OdruKRC90CUVwafnbgu7PrVrxm59H6H8sXzEbWI2r3eosIwD
-         UNZpD83PKMoxrvQH+4tITghcnenoOkEXD+THCVPTNF1W/t4LdYCrYbqG9QRsXgUykQdz
-         5+Z7zfFIkcbUKwOroyUY22bsuw92cp0cXrFAbf7HGMeCW+zDv1wAqK60lwm+2oj5r2mD
-         /uM60E9YFzB7sBhYRhZueLyY95+zbufnaKfYPtYp8Jgw4ol2vzvAFOXYKMVhhYgNBLlA
-         xUPuLEc6weDXNNrhAd5C7uNGGWX08vCnQo+eyV8SN3KLjUVm09gAZYI2Z13YM/xgxghA
-         ZFpA==
+        d=gmail.com; s=20230601; t=1733265157; x=1733869957; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W3uXVixO2HYoTxZ+HwXw2HKm344cdNU9MSG32y7b4Qk=;
+        b=UxN8FPVLN/knMCNlGw4K5rX+1yfNgOGIXHXgi0KT+2soZ4p+NTNVlrh2SeSfJO8qGG
+         1vbQ0w1ndZbxMjEE2XTUYz8LvBYDqc+9Am6GzT4PA/qS4tnIFI4fspoCd3zgqczY6bRg
+         Mx5VQe1xQGOZMi5mmGmi8cJjhI3eSH2MxxI/5C+Se6lH9K0tUtLWcdufMatcYVoQfhUN
+         cScSeXrxWvhzNrhLDqay5dbMaNTqstDxYIjZax2tNzGz6w2vVth0fnaB8J50QhxU5f+j
+         dMYDSZVoWk+0Wb4QZaQCKW4rEzYSmTZQLrNU21ZSFLy9GwtpjrmpclGk1D3W+wg4vx4T
+         jPNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733264975; x=1733869775;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kOQqhZdgI8+JB/qh1dFLYIuDBxbHyOD15IWWEIuDAMg=;
-        b=HmdPbpFZmnL4K5XnsjHDBNDORVEmtP2aSYNSGedha6xb2eu+x8jrZo438Fil40ao8K
-         jDxjSb5WgFLfFlwsWVXmJhkpDSAE31GClOcpuDW160fyD+abqYzX67kUUN5YowM1gw1j
-         dllnG/EDyLglgYeG7WbCJHDlEHPpin93jAZ590PXscg74cbM70brFgGESCSd0ZwrmB3A
-         sztQrtQllxsbg3knzBnfwFCvRJVNOgoUEUn06n8mgQQFiRdDcMDB5gpdL7AWy+ys52IS
-         8JJYo0MJBnqgRwmfhZqHYOUoHkc2nkbdueUZu/vrsUQDXNVk4Hd4DWAifGfG1kvu0FQF
-         h8Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXtSiF3PVCzaxON6xIRx1wnoS7/w0NpMHez67cW/HuqRF5N6aLO1FFlQFt17FF0muYX0ZMe40dNR/P@vger.kernel.org, AJvYcCUbDgDtPpO0yc+ahIjRdmxFn8v73RKNqzBnQKHdRdDiv/prKTrzruRPrbxoraDDcm/XOtSqsrb0wLEHoekIWChe@vger.kernel.org, AJvYcCV2FqhGei1GjJOumGFyh4ZAnHS6Gnao6D7nvYNe57r36iXkYMKXA3x2tF0dKGCNXt7o8sEfXB1ODtmmpHkn@vger.kernel.org, AJvYcCWCFE9p2ccbH3B8Ax2ZxTyXLebOm7imzYMEAZmQQz5HCtYx602b9DeD+ln8uOPo3OeUMT/bDQSt@vger.kernel.org
-X-Gm-Message-State: AOJu0YxObALbq1K+oSVTR2eSE5Obic4RqLeZEuJrs4NdUdfeJ57Fl670
-	UfOITO+PVQCci9It0IqwRDJEqjQu0BIqSuZEz9c5w4VglsQPEtQm
-X-Gm-Gg: ASbGnctaik9TedA87IH+Crb3ICGPWTZnMef4uBV+XmWURhejxlNhPrOH45ITQ1ZmxFW
-	gr8M3SVcKUr0OV4DH5ddLqqwux9kGN2ULIK2nbuBzS0YN3XCE9E+MRgn5qymXfwLkrlf7vSEdqw
-	LNFlyB0shn2TT3/wG+nWroZhexnqH9cvgSAFSx8b3rvXA2EJ8PjXshnZij/nuNMwyyehQNZ59CI
-	uqRWrKkEtK7c/HQy37HB9xtTvyQVvMo3KB291Tad3vZ1F2AAO55yuv5HxpSlQAWlK51NKPIUlMW
-	F1Uwjm3wd0Ajh7SRWA==
-X-Google-Smtp-Source: AGHT+IGvaKP6B5Mct/zhxb1Oq+XpVrniUhSuQiZr/lzz3hOewfIePelGBKpMi3jZHY3N98/XDM2qYQ==
-X-Received: by 2002:a05:6a20:841f:b0:1e0:c5d2:f215 with SMTP id adf61e73a8af0-1e1653b7c37mr6146784637.12.1733264975288;
-        Tue, 03 Dec 2024 14:29:35 -0800 (PST)
-Received: from localhost.localdomain ([240d:0:4a45:1d00:61fb:e21e:f97a:dd9c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fc9c3b6ee3sm10055175a12.85.2024.12.03.14.29.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 03 Dec 2024 14:29:34 -0800 (PST)
-From: Kenjiro Nakayama <nakayamakenjiro@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	Kenjiro Nakayama <nakayamakenjiro@gmail.com>
-Subject: [PATCH net-next v2] selftests/net: call sendmmsg via udpgso_bench.sh
-Date: Wed,  4 Dec 2024 07:28:44 +0900
-Message-Id: <20241203222843.26983-1-nakayamakenjiro@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+        d=1e100.net; s=20230601; t=1733265157; x=1733869957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W3uXVixO2HYoTxZ+HwXw2HKm344cdNU9MSG32y7b4Qk=;
+        b=tDVu/7L6jXDqX8JBkLJONQ4KG3Z5yZrJyoXT5bUzpOUFzb8fbUN1RtlOVHTvdoInnS
+         2EPVeY9y6jfNmTWLUkcdrZM0Xrkx1JAvjuejTFHWP2zUOQdx7x3hHSMAvT2UfnOelBoe
+         Ai4nKHdq0oQXv6XbXYq7VsqyVNxTd0uIhdRDcEVpUeKv6xRTbNi3Rlj8P/t8Esy97rcc
+         54IW064lRSC4KJNbuIiny0YajmYZ5oJ03P9RvcRp28tVRhliFpf8nQ19jwqqVK33Poc2
+         GDPYQpK3bOlO2X5jZe51SVvpLCLqlW6X5f4vkF5YEFY/t4+gE7Obobwi6OnbOMBYbwcf
+         MbCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWu41vo96f0nJwdfSKmkawB0tO/qMrB32zvZvRxiypM/+DhT0rfjxXbrwdwFEOpz6W3oM63FspFJhaw1bM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytMO6nI78b4HyEhWnKEc1g6TNabt8cwC2NfVJacKxeqQbT1CxL
+	e+eQf0n4ndnAt3tE7Dchqk7akNZfloQetNlGO6lSO8i6jUDx7orltzJ8m2ByykKgFdqG1xsXtts
+	V3wtjfXeEPnljjV1mywDew25rSFU=
+X-Gm-Gg: ASbGnctIg4f/aL8eC10Jof5mIHuFqmH347fgfaXRj2f1F3twYv5Dc4V56ZvwBeTGyCB
+	eJy46LPuSmjDiI+Ml9SFI3Vz8zAONtJAmIF6uQoudRxaS
+X-Google-Smtp-Source: AGHT+IHdKPso0Q9UeLbszX084lHd/YkUoSrjxk6qabI3sAwyinBHwJSP95gkdk4ZVgLbdT+D1Gkwjcw7xohft4UO+2I=
+X-Received: by 2002:a05:690c:450f:b0:6ef:6178:404a with SMTP id
+ 00721157ae682-6efad2d997dmr52558727b3.33.1733265157005; Tue, 03 Dec 2024
+ 14:32:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241203221644.136104-1-rosenp@gmail.com> <20241203221644.136104-2-rosenp@gmail.com>
+ <50e1ec4d-818c-45a8-875b-40f74cca1514@gmail.com>
+In-Reply-To: <50e1ec4d-818c-45a8-875b-40f74cca1514@gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 3 Dec 2024 14:32:26 -0800
+Message-ID: <CAKxU2N_D1vjhfdX=ou2S+rfabe5nM9i=Q6YYYigLJMN3t9JS0g@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] net: mdio-ipq8064: use platform_get_resource
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, ansuelsmth@gmail.com, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently, sendmmsg is implemented in udpgso_bench_tx.c,
-but it is not called by any test script.
+On Tue, Dec 3, 2024 at 2:27=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.co=
+m> wrote:
+>
+> On 03.12.2024 23:16, Rosen Penev wrote:
+> > There's no need to get the of_node explicitly. platform_get_resource
+> > already does this.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  drivers/net/mdio/mdio-ipq8064.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/net/mdio/mdio-ipq8064.c b/drivers/net/mdio/mdio-ip=
+q8064.c
+> > index 6253a9ab8b69..e3d311ce3810 100644
+> > --- a/drivers/net/mdio/mdio-ipq8064.c
+> > +++ b/drivers/net/mdio/mdio-ipq8064.c
+> > @@ -111,15 +111,16 @@ ipq8064_mdio_probe(struct platform_device *pdev)
+> >  {
+> >       struct device_node *np =3D pdev->dev.of_node;
+> >       struct ipq8064_mdio *priv;
+> > -     struct resource res;
+> > +     struct resource *res;
+> >       struct mii_bus *bus;
+> >       void __iomem *base;
+> >       int ret;
+> >
+> > -     if (of_address_to_resource(np, 0, &res))
+> > +     res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +     if (!res)
+> >               return -ENOMEM;
+> >
+> > -     base =3D devm_ioremap(&pdev->dev, res.start, resource_size(&res))=
+;
+> > +     base =3D devm_ioremap(&pdev->dev, res->start, resource_size(res))=
+;
+> >       if (!base)
+> >               return -ENOMEM;
+> >
+>
+> Why not directly switching to devm_platform_get_and_ioremap_resource()?
+Because that is not the same.
 
-This patch adds a test for sendmmsg in udpgso_bench.sh.
-This allows for basic API testing and benchmarking
-comparisons with GSO.
+devm_platform_get_and_ioremap_resource is
 
-Signed-off-by: Kenjiro Nakayama <nakayamakenjiro@gmail.com>
----
- tools/testing/selftests/net/udpgso_bench.sh | 3 +++
- 1 file changed, 3 insertions(+)
+platform_get_resource + request_memory_region + ioremap
 
-diff --git a/tools/testing/selftests/net/udpgso_bench.sh b/tools/testing/selftests/net/udpgso_bench.sh
-index 640bc43452fa..88fa1d53ba2b 100755
---- a/tools/testing/selftests/net/udpgso_bench.sh
-+++ b/tools/testing/selftests/net/udpgso_bench.sh
-@@ -92,6 +92,9 @@ run_udp() {
- 	echo "udp"
- 	run_in_netns ${args}
- 
-+	echo "udp sendmmsg"
-+	run_in_netns ${args} -m
-+
- 	echo "udp gso"
- 	run_in_netns ${args} -S 0
- 
--- 
-2.39.3 (Apple Git-146)
-
+The issue here is the second. This driver (well, platform really) uses
+overlapping memory regions and so request_memory_region will fail.
