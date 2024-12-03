@@ -1,69 +1,53 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF57718FDC9;
-	Tue,  3 Dec 2024 07:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AFF1D90B6
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733210518; cv=none; b=a4PBAqTilwyF7dSbXXxr4BPm/Fv/TbHFkLB3TmRLNXU/onXncNne8g3MNkOWJzOEJIV1z0W0iWLyZY0lAVrp4ClGvCyrKl1uo5c3z4T2zDQiCYiIRMuK/Y/3gu+MJB5KG1pOr7cxGejLKYfYlVV2HlkjJ9hkHbD4DyIdLwsiiyc=
+	t=1733210527; cv=none; b=NmvrWdeQIv2eyPi17SHFxFSKRA+wUR/QOghRDdFkVoYIDCWm5uaLIpZEI0IdkkcQ42/hkeWbn+OV/yLmncghwCEkEIFuvzV0NXfzCDovj2o3kebUWB5kW+SwCe6Td5KWHDmXlcouXetDIiHRbR2euRF1MfKYTqVTMgp54Wvk398=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733210518; c=relaxed/simple;
-	bh=piuztm2JC1bAKcnC1hwkkT/67MNkUP6SLFTwxU1O2xc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HdHBJMR2TfeQqpvpjCiR3yuAYGgvF4BKjPT28x4URroT9clOv6hliUAcAZQ7MuN60E5acpPBjvW9Q5YfQeErsdFgJ0aBVAFmtvmd74vyU+rR/sD/GnCK6w9jSq9y3dzknU2Cvp/hsNl4o/C21ZgzN0etLK2OTRC4fYiDqN9okFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LPgRMpzw; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LPgRMpzw"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B34Kp8e026622;
-	Mon, 2 Dec 2024 23:21:40 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=D
-	7KcRipFCxqXuMMCt68EFtKaOtb5E+BZHExMXeYNFN8=; b=LPgRMpzw6LuEMU06l
-	atWnmNICIZeDR2Ny+HAe3tpgRh+k3vqZ9QhQP/Gjh9rcFGRJMInTilWnuzdNFYW+
-	Txl6ts6BPtQ7UNIe/KJ1JhVJog4K6AydjcETwFwHzMu9LMxQz60FrTQFMe7EHIOx
-	gdB0Hs8fMdjwfoHx6J8Z4aPXVKpg2RG5chga7Y3lTro80l0/dEnpnxJWFhfeL1t1
-	xe5vBabucl0T6TEyzbLqA8On7nFxKhcKLsSOhXtTi101MzEHa6XfGopTEa2VkhLg
-	o4sa5WbVhSOSNOFxBSzOdR1draSDyggC2ufduQgO22ogn03C+MVPHZX4QOUaC9lH
-	3VeOA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 439b8qa76x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Dec 2024 23:21:39 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 2 Dec 2024 23:21:39 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 2 Dec 2024 23:21:39 -0800
-Received: from ubuntu-PowerEdge-T110-II.sclab.marvell.com (unknown [10.106.27.86])
-	by maili.marvell.com (Postfix) with ESMTP id 83C3C5B6952;
-	Mon,  2 Dec 2024 23:21:38 -0800 (PST)
-From: Shinas Rasheed <srasheed@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <hgani@marvell.com>, <sedara@marvell.com>, <vimleshk@marvell.com>,
-        <thaller@redhat.com>, <wizhao@redhat.com>, <kheib@redhat.com>,
-        <egallen@redhat.com>, <konguyen@redhat.com>, <horms@kernel.org>,
-        <einstein.xue@synaxg.com>, Shinas Rasheed <srasheed@marvell.com>,
-        Veerasenareddy Burru <vburru@marvell.com>,
-        Satananda Burla
-	<sburla@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net v1 3/4] octeon_ep_vf: fix race conditions in ndo_get_stats64
-Date: Mon, 2 Dec 2024 23:21:29 -0800
-Message-ID: <20241203072130.2316913-4-srasheed@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241203072130.2316913-1-srasheed@marvell.com>
-References: <20241203072130.2316913-1-srasheed@marvell.com>
+	s=arc-20240116; t=1733210527; c=relaxed/simple;
+	bh=nSI7uH5fbpQf4VeGeuBwA7sgzei7oc2daJifiQRNLSE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UceM+5zuyU3TGQa7VMiivGrPa5YZ/0nr2UnCoIzTk8+jYrnMrqb4nN9LzfeTny0sp4ZVfS6ydF/EVIb2Y0TJ1ylISlbeaMjByjC5jF+xvxv7uwxPzcZmHWPHCGiVzRdU/VDLguDp6oJMLRLjQnhsLoP9/4wdV4pxqe/A1j2jI5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tINEL-0004s0-6F; Tue, 03 Dec 2024 08:21:57 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tINEI-001Qyl-3C;
+	Tue, 03 Dec 2024 08:21:55 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tINEJ-00AEmk-2G;
+	Tue, 03 Dec 2024 08:21:55 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	Phil Elwell <phil@raspberrypi.org>
+Subject: [PATCH net-next v1 02/21] net: usb: lan78xx: Remove KSZ9031 PHY fixup
+Date: Tue,  3 Dec 2024 08:21:35 +0100
+Message-Id: <20241203072154.2440034-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241203072154.2440034-1-o.rempel@pengutronix.de>
+References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,126 +55,130 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: QuasgP3i_da6lSIwMYnHlqC-06b1iXzX
-X-Proofpoint-GUID: QuasgP3i_da6lSIwMYnHlqC-06b1iXzX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-ndo_get_stats64() can race with ndo_stop(), which frees input and
-output queue resources. Implement device state variable to protect
-against such resource usage.
+Remove the KSZ9031RNX PHY fixup from the lan78xx driver. The fixup applied
+specific RGMII pad skew configurations globally, but these settings violate the
+RGMII specification and cause more harm than benefit.
 
-Fixes: c3fad23cdc06 ("octeon_ep_vf: add support for ndo ops")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Key issues with the fixup:
+1. **Non-Compliant Timing**: The fixup's delay settings fall outside the RGMII
+   specification requirements of 1.5 ns to 2.0 ns:
+   - RX Path: Total delay of **2.16 ns** (PHY internal delay of 1.2 ns + 0.96
+     ns skew).
+   - TX Path: Total delay of **0.96 ns**, significantly below the RGMII minimum
+     of 1.5 ns.
+
+2. **Redundant or Incorrect Configurations**:
+   - The RGMII skew registers written by the fixup do not meaningfully alter
+     the PHY's default behavior and fail to account for its internal delays.
+   - The TX_DATA pad skew was not configured, relying on power-on defaults
+     that are insufficient for RGMII compliance.
+
+3. **Micrel Driver Support**: By setting `PHY_INTERFACE_MODE_RGMII_ID`, the
+   Micrel driver can calculate and assign appropriate skew values for the
+   KSZ9031 PHY.  This ensures better timing configurations without relying on
+   external fixups.
+
+4. **System Interference**: The fixup applied globally, reconfiguring all
+   KSZ9031 PHYs in the system, even those unrelated to the LAN78xx adapter.
+   This could lead to unintended and harmful behavior on unrelated interfaces.
+
+While the fixup is removed, a better mechanism is still needed to dynamically
+determine the optimal combination of PHY and MAC delays to fully meet RGMII
+requirements without relying on Device Tree or global fixups. This would allow
+for robust operation across different hardware configurations.
+
+The Micrel driver is capable of using the interface mode value to calculate and
+apply better skew values, providing a configuration much closer to the RGMII
+specification than the fixup. Removing the fixup ensures better default
+behavior and prevents harm to other system interfaces.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- .../marvell/octeon_ep_vf/octep_vf_main.c      | 29 +++++++++++++++++++
- .../marvell/octeon_ep_vf/octep_vf_main.h      |  9 ++++++
- 2 files changed, 38 insertions(+)
+ drivers/net/usb/lan78xx.c | 38 +++++---------------------------------
+ 1 file changed, 5 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 7e6771c9cdbb..12b95fb21e64 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -497,6 +497,8 @@ static int octep_vf_open(struct net_device *netdev)
- 	if (ret)
- 		octep_vf_link_up(netdev);
- 
-+	set_bit(OCTEP_VF_DEV_STATE_OPEN, &oct->state);
-+
- 	return 0;
- 
- set_queues_err:
-@@ -511,6 +513,11 @@ static int octep_vf_open(struct net_device *netdev)
- 	return -1;
- }
- 
-+static bool octep_vf_drv_busy(struct octep_vf_device *oct)
-+{
-+	return test_bit(OCTEP_VF_DEV_STATE_READ_STATS, &oct->state);
-+}
-+
- /**
-  * octep_vf_stop() - stop the octeon network device.
-  *
-@@ -525,6 +532,14 @@ static int octep_vf_stop(struct net_device *netdev)
- 
- 	netdev_info(netdev, "Stopping the device ...\n");
- 
-+	clear_bit(OCTEP_VF_DEV_STATE_OPEN, &oct->state);
-+	/* Make sure device state open is cleared so that no more
-+	 * stats fetch can happen intermittently
-+	 */
-+	smp_mb__after_atomic();
-+	while (octep_vf_drv_busy(oct))
-+		msleep(20);
-+
- 	/* Stop Tx from stack */
- 	netif_carrier_off(netdev);
- 	netif_tx_disable(netdev);
-@@ -782,6 +797,16 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 	u64 tx_packets, tx_bytes, rx_packets, rx_bytes;
- 	int q;
- 
-+	set_bit(OCTEP_VF_DEV_STATE_READ_STATS, &oct->state);
-+	/* Make sure read stats state is set, so that ndo_stop
-+	 * doesn't clear resources as they are read
-+	 */
-+	smp_mb__after_atomic();
-+	if (!test_bit(OCTEP_VF_DEV_STATE_OPEN, &oct->state)) {
-+		clear_bit(OCTEP_VF_DEV_STATE_READ_STATS, &oct->state);
-+		return;
-+	}
-+
- 	tx_packets = 0;
- 	tx_bytes = 0;
- 	rx_packets = 0;
-@@ -807,6 +832,7 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 		stats->rx_missed_errors = oct->iface_rx_stats.dropped_pkts_fifo_full;
- 		stats->tx_dropped = oct->iface_tx_stats.dropped;
- 	}
-+	clear_bit(OCTEP_VF_DEV_STATE_READ_STATS, &oct->state);
- }
- 
- /**
-@@ -1140,6 +1166,9 @@ static int octep_vf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		dev_err(&pdev->dev, "Failed to register netdev\n");
- 		goto delete_mbox;
- 	}
-+
-+	clear_bit(OCTEP_VF_DEV_STATE_OPEN, &octep_vf_dev->state);
-+
- 	dev_info(&pdev->dev, "Device probe successful\n");
- 	return 0;
- 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
-index 5769f62545cd..692b3bf94722 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.h
-@@ -213,6 +213,12 @@ struct octep_vf_fw_info {
- 	u16 tx_ol_flags;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 6e468e77d796..918b88bd9524 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -472,9 +472,6 @@ struct lan78xx_net {
+ 	struct irq_domain_data	domain_data;
  };
  
-+/* Device state */
-+enum octep_vf_dev_state {
-+	OCTEP_VF_DEV_STATE_OPEN,
-+	OCTEP_VF_DEV_STATE_READ_STATS,
-+};
-+
- /* The Octeon device specific private data structure.
-  * Each Octeon device has this structure to represent all its components.
-  */
-@@ -282,6 +288,9 @@ struct octep_vf_device {
- 	/* offset for iface stats */
- 	u32 ctrl_mbox_ifstats_offset;
+-/* define external phy id */
+-#define	PHY_KSZ9031RNX			(0x00221620)
+-
+ /* use ethtool to change the level for any given device */
+ static int msg_level = -1;
+ module_param(msg_level, int, 0);
+@@ -2233,23 +2230,6 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
+ 	dev->domain_data.irqdomain = NULL;
+ }
  
-+	/* Device state */
-+	unsigned long state;
-+
- 	/* Negotiated Mbox version */
- 	u32 mbox_neg_ver;
+-static int ksz9031rnx_fixup(struct phy_device *phydev)
+-{
+-	struct lan78xx_net *dev = netdev_priv(phydev->attached_dev);
+-
+-	/* Micrel9301RNX PHY configuration */
+-	/* RGMII Control Signal Pad Skew */
+-	phy_write_mmd(phydev, MDIO_MMD_WIS, 4, 0x0077);
+-	/* RGMII RX Data Pad Skew */
+-	phy_write_mmd(phydev, MDIO_MMD_WIS, 5, 0x7777);
+-	/* RGMII RX Clock Pad Skew */
+-	phy_write_mmd(phydev, MDIO_MMD_WIS, 8, 0x1FF);
+-
+-	dev->interface = PHY_INTERFACE_MODE_RGMII_RXID;
+-
+-	return 1;
+-}
+-
+ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ {
+ 	u32 buf;
+@@ -2283,14 +2263,11 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ 			netdev_err(dev->net, "no PHY driver found\n");
+ 			return NULL;
+ 		}
+-		dev->interface = PHY_INTERFACE_MODE_RGMII;
+-		/* external PHY fixup for KSZ9031RNX */
+-		ret = phy_register_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0,
+-						 ksz9031rnx_fixup);
+-		if (ret < 0) {
+-			netdev_err(dev->net, "Failed to register fixup for PHY_KSZ9031RNX\n");
+-			return NULL;
+-		}
++		dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
++		/* The PHY driver is responsible to configure proper RGMII
++		 * interface delays. Disable RGMII delays on MAC side.
++		 */
++		lan78xx_write_reg(dev, MAC_RGMII_ID, 0);
  
+ 		phydev->is_internal = false;
+ 	}
+@@ -2349,9 +2326,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 			if (phy_is_pseudo_fixed_link(phydev)) {
+ 				fixed_phy_unregister(phydev);
+ 				phy_device_free(phydev);
+-			} else {
+-				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
+-							     0xfffffff0);
+ 			}
+ 		}
+ 		return -EIO;
+@@ -4208,8 +4182,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 
+ 	phydev = net->phydev;
+ 
+-	phy_unregister_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0);
+-
+ 	phy_disconnect(net->phydev);
+ 
+ 	if (phy_is_pseudo_fixed_link(phydev)) {
 -- 
-2.25.1
+2.39.5
 
