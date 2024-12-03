@@ -1,152 +1,84 @@
-Received: from pv50p00im-zteg10011501.me.com (pv50p00im-zteg10011501.me.com [17.58.6.42])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7FB3BB24
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 00:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A6F10F2;
+	Tue,  3 Dec 2024 00:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733186338; cv=none; b=aM3Ju7xC4r/+wiV/N8clrNtXTxOfjWIyzuF53oaPvJ2Bvcr8+8z0Kz0kCjvaGGJHAE4dsOo0PKTdqSPC2gTC0rO8dK28fgr6gmPJADAAMYOgZzi/UFq8b54X/o2AbJ+U4TazSq/Cn48Wdx1ri2RkGFImn/5iw4zfinWLrGnOhoY=
+	t=1733186934; cv=none; b=YJ9en59i8yVn6olDuktfJ9k/GAenmOdHuUF7Bzs6cFCFy6aU3GZPJCPR4KMfoMguUQ2MQoGPAk48iQzKvaMxdfrQ6pCnTj8KO4cu6uGkQ+llRlUxW6lUkiP1U0j/2YLKIps+GAVKkrfpbCEdo5RcstNK99si9uaNjxgB5jgUiko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733186338; c=relaxed/simple;
-	bh=bVxN+FZOfleQVmg6RLp1YA7VWhpbCqAopfI4NI1NFnA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EBvjKabPw9Mr1BIpObepvOWPWl0+87JlQ1o5v6lPCR26D8pCst6M8v9bb2SJzyR8ubaxOVKtRXJbpTPuveTljK4ohfdPV04MYkG5G1Q4LhHfj5PKVI71d0UMqxCA84zdPuH4Zg5AX5gF4SBCbwNaQ2F5WijIzqWchnnyaKBP5Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=cNZheBgV; arc=none smtp.client-ip=17.58.6.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1733186934; c=relaxed/simple;
+	bh=Kohrn/r3kJUIE/1CLkLKKsDIsURJR9Q6soGM08rJq/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T05yYKjHmPYwrP5L89/eaBvTdiGrr18rMzuv+EGYe6OZMaKM8EKVHj6aICdNVVHg574EWWN1Co2fvOY+xHc1IVfjZHKiYwPiClnuLFRQBjTauu5KubjORC1O6+p9TzjCgvrOWd1GXsyUfHAQP/JWIzaIJAHN8AY2z8ibsj70zj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DwKx3BzA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="cNZheBgV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733186335;
-	bh=DunB/Cza6j0J9yIEJF1/KVIA9ohiToydy/mrGuBe+NA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=cNZheBgVFQmN8bDOAgA1O/6ilvMdUYLWH2rCw2sbVyV42b9UfWahOMUwO6MA2D3wu
-	 PS9ynWuFaT87rd3PD4MocTwkv2r4XCW+znolqO/soTSf67giOwZyPuElgZCsDCGjPD
-	 tlxClv/tibYTlDeYlsonl81S7tf7SmWu6omQ3zz/xG2MhX/msIxPaL9v0oyTyFR9Fw
-	 r7B4k0/vLKdn1SsAxgw6R0/+MQJFM4NioFAG0GKYfjVBsizaRIrVhJ2s4itJxOhsB5
-	 Gigjpj8kjdQqUw86WbyZHXCyybV4R7w7adERzs4Ufil2RPDqc7KxPNEscKwkReaaGX
-	 7Wkla79Wkq4hw==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id DD3E54A00A7;
-	Tue,  3 Dec 2024 00:38:34 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 03 Dec 2024 08:33:33 +0800
-Subject: [PATCH v2 11/32] libnvdimm: Simplify nd_namespace_store()
- implementation
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DwKx3BzA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BwYIYsnjo2/NyptkkM25mrPtyLgZ9LTr+fZrUyhiw4s=; b=DwKx3BzAjMbVdclLZH5DeQEtr2
+	7hHfikBmqmprVeYmL4K+nae9Qyz8J1jISKnuscXEy+bHZaPXYO5e4vtu7gsVseEnstpkKpWdnRcaM
+	mrMFYCEKvFmueMUlb17EVG2uYzheQFVgJ+JPIxRH4JvWA0BTZSO0Avu13ZbT5Gtt5b58=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tIGPL-00F0o5-GB; Tue, 03 Dec 2024 01:04:51 +0100
+Date: Tue, 3 Dec 2024 01:04:51 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Zhiyuan Wan <kmlinuxm@gmail.com>
+Cc: kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	willy.liu@realtek.com, Yuki Lee <febrieac@outlook.com>
+Subject: Re: [PATCH 2/2] net: phy: realtek: add dt property to disable
+ broadcast PHY address
+Message-ID: <bc8c7c6a-5d5f-4f7c-a1e2-e10a6a82d50e@lunn.ch>
+References: <20241202195029.2045633-1-kmlinuxm@gmail.com>
+ <20241202195029.2045633-2-kmlinuxm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-const_dfc_done-v2-11-7436a98c497f@quicinc.com>
-References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
-In-Reply-To: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Martin Tuma <martin.tuma@digiteqautomotive.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Andreas Noever <andreas.noever@gmail.com>, 
- Michael Jamet <michael.jamet@intel.com>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Yehezkel Bernat <YehezkelShB@gmail.com>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, 
- Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Dan Williams <dan.j.williams@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
- Ira Weiny <ira.weiny@intel.com>, Takashi Sakamoto <o-takashi@sakamocchi.jp>, 
- Jiri Slaby <jirislaby@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
- Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>, 
- Mike Christie <michael.christie@oracle.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Nilesh Javali <njavali@marvell.com>, 
- Manish Rangankar <mrangankar@marvell.com>, 
- GR-QLogic-Storage-Upstream@marvell.com, Davidlohr Bueso <dave@stgolabs.net>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>, 
- Alison Schofield <alison.schofield@intel.com>, 
- Andreas Larsson <andreas@gaisler.com>, Stuart Yoder <stuyoder@gmail.com>, 
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, Jens Axboe <axboe@kernel.dk>, 
- Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Ard Biesheuvel <ardb@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-gpio@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev, 
- linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org, 
- linux-sound@vger.kernel.org, open-iscsi@googlegroups.com, 
- linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org, 
- sparclinux@vger.kernel.org, linux-block@vger.kernel.org, 
- arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
- linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: Mwb4WO2zvDF-UK70QCmcJRU4qe8f8eTp
-X-Proofpoint-ORIG-GUID: Mwb4WO2zvDF-UK70QCmcJRU4qe8f8eTp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-02_14,2024-12-02_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412030002
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202195029.2045633-2-kmlinuxm@gmail.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Tue, Dec 03, 2024 at 03:50:29AM +0800, Zhiyuan Wan wrote:
+> This patch add support to disable 'broadcast PHY address' feature of
+> RTL8211F.
+> 
+> This feature is enabled defaultly after a reset of this transceiver.
+> When this feature is enabled, the phy not only responds to the
+> configuration PHY address by pin states on board, but also responds
+> to address 0, the optional broadcast address of the MDIO bus.
+> 
+> But not every transceiver supports this feature, when RTL8211
+> shares one MDIO bus with other transceivers which doesn't support
+> this feature, like mt7530 switch chip (integrated in mt7621 SoC),
+> it usually causes address conflict, leads to the
+> port of RTL8211FS stops working.
 
-Simplify nd_namespace_store() implementation by device_find_child_by_name()
+I think you can do this without needing a new property. The DT binding
+has:
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/nvdimm/claim.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+            reg = <4>;
 
-diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
-index 030dbde6b0882050c90fb8db106ec15b1baef7ca..9e84ab411564f9d5e7ceb687c6491562564552e3 100644
---- a/drivers/nvdimm/claim.c
-+++ b/drivers/nvdimm/claim.c
-@@ -67,13 +67,6 @@ bool nd_attach_ndns(struct device *dev, struct nd_namespace_common *attach,
- 	return claimed;
- }
- 
--static int namespace_match(struct device *dev, void *data)
--{
--	char *name = data;
--
--	return strcmp(name, dev_name(dev)) == 0;
--}
--
- static bool is_idle(struct device *dev, struct nd_namespace_common *ndns)
- {
- 	struct nd_region *nd_region = to_nd_region(dev->parent);
-@@ -168,7 +161,7 @@ ssize_t nd_namespace_store(struct device *dev,
- 		goto out;
- 	}
- 
--	found = device_find_child(dev->parent, name, namespace_match);
-+	found = device_find_child_by_name(dev->parent, name);
- 	if (!found) {
- 		dev_dbg(dev, "'%s' not found under %s\n", name,
- 				dev_name(dev->parent));
+This is the address the PHY should respond on. If reg is not 0, then
+broadcast is not wanted.
 
--- 
-2.34.1
+If reg is 0, it means one of two things:
 
+The DT author did not know about this broadcast feature, the PHY
+appeared at address 0, so they wrote that. It might actually be
+strapped to another address, but it does not matter.
+
+The DT author wants it to use the broadcast address, it might even be
+strapped to address 0.
+
+Am i missing anything?
+
+	Andrew
