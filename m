@@ -1,155 +1,120 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012E520C038
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 15:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1141E0496;
+	Tue,  3 Dec 2024 15:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240105; cv=none; b=j6UWZVUk3qGbZAUAxTYnI7Mjokza/RqI8mXIuSsuyfY/4Gc5exhWARq0nBkHXQwz/W30PfKDhtoHMoEpD+1WUniy+bsc9J/jd30SjvhDVDFjd0SrAG9qq1hAvUov++0g1WzlTvU6PDPfa72/p4nzJB2DhM7tsvCWicEBYDuyiAQ=
+	t=1733241116; cv=none; b=jPtaFq+5fFuYxqW8wqbM6wfEOCOpsNE9aH63nJo25+12sYQS130yvQk2uKNCWO0CmAeG+9G39cmTrU48VC1mxEPImZNTOyT7/tkdE6pRtaDk2YckXgqIe2iATGSdPzg4k3H1GonUXH7elXelUqEKPF865PqvgJilAzZCW6k9R7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240105; c=relaxed/simple;
-	bh=1e4MjF93tkjg0YGVYUqFUbB08zsiPvN+Sk4f5cTiydc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OaDtrugGkVPBlVgdYVzDcwopVut3Hfzk1ebpiMyoYZMRUFz2zblgEId+DQ9S4FO7yt1Mv4/fnAQwWlNyHnsmjDM1k00oPEyKMKFVRdBRJJMizAnWuP6RHib6+riJUBdKwzU2JZAEAPkpIH+hHw5U9dfwD/teu0mzEpzWZL6mCRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UGz2/l5v; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733241116; c=relaxed/simple;
+	bh=bpMNhT7hs+A5dnCGGIqDp8qwNNx3fUETcoweFQOjllk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eqGlhlEN4RqLfuFq17v1l1vha0aNaBUKz6ykXg1CJYbzSK9bGOBRKalyIktZ1UlAsgte6k8K+cWV2DrzLCsvH/+sJVSQysMnLD30OIJXcQCE6njV5tHE5FbNyUJZ7juEWYMhwIm7sudVEI70VcodMhNdQ87930IiArCKvXc6NhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fHCeqkM6; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UGz2/l5v"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4668194603cso183561cf.1
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 07:35:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733240103; x=1733844903; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4CIzRsQC52+ZzIB8OpI8Cic6pwbdqgp0qwyGOZqbtlI=;
-        b=UGz2/l5vBrnbjGj0CjFyHK6GWTK4vABgJfmX+QiQJp9J+HmJuR1oPNdHlcLetCMJ7O
-         TlPk3cn10q5I7m2nzF7VpaX4V6Nf4UqNQLk6S7jl4NXntMyvnLb5k+KJKncfE1Ke9lzz
-         BjOs/211h6SwPOvU3QDN9AjNkKTLJSTjQRVZJWKX4CRRCmojgFI/Jp+rOTJXuhy8ABDa
-         hykNRiAsW8uAzIBOZ5Xz4aFDw6MKXmOL0Ov+1YVTR7oCWOBvUwktIeZ5hk3lZLB2+Ame
-         bRjgn4a4rgH/871bfgKuOU4U0KJ9wYQPgeOgc5lQbOGLyR6Df/EDRh0A7/J0MXKqbEAR
-         XiSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733240103; x=1733844903;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4CIzRsQC52+ZzIB8OpI8Cic6pwbdqgp0qwyGOZqbtlI=;
-        b=QE2xGF6tym+S47D+dkcs13K2WjQ6ZfkvGMlZCJxo1dVSplhfZL7JkDilUGv6jp3I7O
-         XVgZVhopB0MqPy9lh6hQW2PVrRwoI/fy3CshXucrgbj706Z6PMqkZi/Yr7YXt6bFnwfe
-         bbwWnOflWBsHEo4yxs/WZqPMfxOpppOqq+E3Dnb6jF5ZLLXED5H9fgZmlm414cGHEMQ7
-         pklW9CHajEdACvB3nYso0jbkvVPripM+oMEfLDd6vXdw06qPxL8r+caljOIER+0UETpp
-         S8M4Quseh0QJJnNXV4K0r7a/rWy8Ai4NMzqb5v0i3qM3PwnI3mYXdNtr92uSuaUOMlSS
-         myLg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7SnK6Zau8L3s/SOH7AckiGrirKiecKWc9cxLa5sgu1DUJIPeLVu42om1FPT7QRrQXKl8yDwY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+g+PpuzPUDyekYkusrQcWo3YsqJpowfzPyDtzvk4ROwrN+Tx6
-	5rS2y8A2kmve9ObvjZ9h46SXva3lEJFot2KIC0n5xoeNF7/kYxf+/twu5mA20LJVJ7pqh3anD4O
-	1nBu1293u680wQCu0MGfV7Y2nG+5tX+APzd5Lg+u67gQxX2Pb06oO
-X-Gm-Gg: ASbGnctwjWj4sjDOFgAaQ4g/0Gl3V6T1SL/GCTYDTTD6GVMzQU9v5oEbKotsnW3idE3
-	I/ztQcGAEXR2N4AGESPeA/Vv6FYbEpc8nxRtTgUKblY8gGUFx2CzekAqGi1EHDVV9
-X-Google-Smtp-Source: AGHT+IH6dSSGPfhUjUKRPLNKLdBO56X9AviG1EOomPsp2BsLghb521e+GCD1jR+tXn6zmu4S3GND8HOwHsMqdq4HEl0=
-X-Received: by 2002:a05:622a:4889:b0:466:97d6:b245 with SMTP id
- d75a77b69052e-4670b295a30mr3548461cf.22.1733240102601; Tue, 03 Dec 2024
- 07:35:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fHCeqkM6"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E8697FF811;
+	Tue,  3 Dec 2024 15:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1733241111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6mUUXlg2Sdr2QZ9xxnJnQJbYN76Rdm3JD+IpxMezPKc=;
+	b=fHCeqkM6Iljfd74vtUc6Go6drgzqlVnBl28AhspXXsK9XVyHDw/IVJcBm9JqWph4Y99KxK
+	4Oro9o3pP/wPORR2+ulupss5Q9szZdXpVRv5q4lBhgqtHRUHexaRBubmlFgh8Yx88ACHrN
+	p67sdXIJNWOhgNSxbFIkX5JYKy6CVzPRqbh4XsfskquLEX4QaJSI3a50jia5diUnqVDPCH
+	YnQ8eWcVajvIpP7Ocm5NhTPzKrUMJlS8eRbBFUUg23B7A6ehwCIsDcQsk39VtL6VyNjWi2
+	iuT79F2GWfUNiGlkYhbyZHqSrZYL+gWTXPDyFVf2XDdLpvkQC/1ZdZIqCH5hPg==
+Date: Tue, 3 Dec 2024 16:51:47 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Dennis Ostermann
+ <dennis.ostermann@renesas.com>, "nikita.yoush"
+ <nikita.yoush@cogentembedded.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Michael Dege
+ <michael.dege@renesas.com>, Christian Mardmoeller
+ <christian.mardmoeller@renesas.com>
+Subject: Re: [PATCH] net: phy: phy_ethtool_ksettings_set: Allow any
+ supported speed
+Message-ID: <20241203165147.4706cc3b@fedora.home>
+In-Reply-To: <Z08h95dUlS7zacTY@shell.armlinux.org.uk>
+References: <73ca1492-d97b-4120-b662-cc80fc787ffd@cogentembedded.com>
+	<Z02He-kU6jlH-TJb@shell.armlinux.org.uk>
+	<eddde51a-2e0b-48c2-9681-48a95f329f5c@cogentembedded.com>
+	<Z02KoULvRqMQbxR3@shell.armlinux.org.uk>
+	<c1296735-81be-4f7d-a601-bc1a3718a6a2@cogentembedded.com>
+	<Z02oTJgl1Ldw8J6X@shell.armlinux.org.uk>
+	<5cef26d0-b24f-48c6-a5e0-f7c9bd0cefec@cogentembedded.com>
+	<Z03aPw_QgVYn8WyR@shell.armlinux.org.uk>
+	<TYCPR01MB1047854DA050E52CADB04393A8E362@TYCPR01MB10478.jpnprd01.prod.outlook.com>
+	<1ff52755-ef24-4e4b-a671-803db37b58fc@lunn.ch>
+	<Z08h95dUlS7zacTY@shell.armlinux.org.uk>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20241203081005epcas2p247b3d05bc767b1a50ba85c4433657295@epcas2p2.samsung.com>
- <20241203081247.1533534-1-youngmin.nam@samsung.com> <CANn89iK+7CKO31=3EvNo6-raUzyibwRRN8HkNXeqzuP9q8k_tA@mail.gmail.com>
-In-Reply-To: <CANn89iK+7CKO31=3EvNo6-raUzyibwRRN8HkNXeqzuP9q8k_tA@mail.gmail.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Tue, 3 Dec 2024 10:34:46 -0500
-Message-ID: <CADVnQynUspJL4e3UnZTKps9WmgnE-0ngQnQmn=8gjSmyg4fQ5A@mail.gmail.com>
-Subject: Re: [PATCH] tcp: check socket state before calling WARN_ON
-To: Eric Dumazet <edumazet@google.com>
-Cc: Youngmin Nam <youngmin.nam@samsung.com>, davem@davemloft.net, dsahern@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dujeong.lee@samsung.com, 
-	guo88.liu@samsung.com, yiwang.cai@samsung.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, joonki.min@samsung.com, hajun.sung@samsung.com, 
-	d7271.choe@samsung.com, sw.ju@samsung.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Tue, Dec 3, 2024 at 6:07=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Tue, Dec 3, 2024 at 9:10=E2=80=AFAM Youngmin Nam <youngmin.nam@samsung=
-.com> wrote:
-> >
-> > We encountered the following WARNINGs
-> > in tcp_sacktag_write_queue()/tcp_fastretrans_alert()
-> > which triggered a kernel panic due to panic_on_warn.
-> >
-> > case 1.
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 4 PID: 453 at net/ipv4/tcp_input.c:2026
-> > Call trace:
-> >  tcp_sacktag_write_queue+0xae8/0xb60
-> >  tcp_ack+0x4ec/0x12b8
-> >  tcp_rcv_state_process+0x22c/0xd38
-> >  tcp_v4_do_rcv+0x220/0x300
-> >  tcp_v4_rcv+0xa5c/0xbb4
-> >  ip_protocol_deliver_rcu+0x198/0x34c
-> >  ip_local_deliver_finish+0x94/0xc4
-> >  ip_local_deliver+0x74/0x10c
-> >  ip_rcv+0xa0/0x13c
-> > Kernel panic - not syncing: kernel: panic_on_warn set ...
-> >
-> > case 2.
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 0 PID: 648 at net/ipv4/tcp_input.c:3004
-> > Call trace:
-> >  tcp_fastretrans_alert+0x8ac/0xa74
-> >  tcp_ack+0x904/0x12b8
-> >  tcp_rcv_state_process+0x22c/0xd38
-> >  tcp_v4_do_rcv+0x220/0x300
-> >  tcp_v4_rcv+0xa5c/0xbb4
-> >  ip_protocol_deliver_rcu+0x198/0x34c
-> >  ip_local_deliver_finish+0x94/0xc4
-> >  ip_local_deliver+0x74/0x10c
-> >  ip_rcv+0xa0/0x13c
-> > Kernel panic - not syncing: kernel: panic_on_warn set ...
-> >
->
-> I have not seen these warnings firing. Neal, have you seen this in the pa=
-st ?
+Hi Andrew,
 
-I can't recall seeing these warnings over the past 5 years or so, and
-(from checking our monitoring) they don't seem to be firing in our
-fleet recently.
+On Tue, 3 Dec 2024 15:21:27 +0000
+"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
 
-> In any case this test on sk_state is too specific.
+> On Tue, Dec 03, 2024 at 03:45:09PM +0100, Andrew Lunn wrote:
+> > On Tue, Dec 03, 2024 at 02:05:07PM +0000, Dennis Ostermann wrote:  
+> > > Hi,
+> > > 
+> > > according to IEE 802.3-2022, ch. 125.2.4.3, Auto-Negotiation is optional for 2.5GBASE-T1
+> > >   
+> > > > 125.2.4.3 Auto-Negotiation, type single differential-pair media
+> > > > Auto-Negotiation (Clause 98) may be used by 2.5GBASE-T1 and 5GBASE-T1 devices to detect the
+> > > > abilities (modes of operation) supported by the device at the other end of a link segment, determine common
+> > > > abilities, and configure for joint operation. Auto-Negotiation is performed upon link startup through the use
+> > > > of half-duplex differential Manchester encoding.
+> > > > The use of Clause 98 Auto-Negotiation is optional for 2.5GBASE-T1 and 5GBASE-T1 PHYs  
+> > > 
+> > > So, purposed change could make sense for T1 PHYs.  
+> > 
+> > The proposed change it too liberal. We need the PHY to say it supports
+> > 2.5GBASE-T1, not 2.5GBASE-T. We can then allow 2.5GBASE-T1 to not use
+> > autoneg, but 2.5GBASE-T has to use autoneg.  
+> 
+> I'm wondering whether we should add:
+> 
+> 	__ETHTOOL_DECLARE_LINK_MODE_MASK(requires_an);
+> 
+> to struct phy_device, and have phylib populate that by default with all
+> base-T link modes > 1G (which would be the default case as it is now.)
+> Then, PHY drivers can change this bitmap as they need for their device.
+> After the PHY features have been discovered, this should then get
+> AND-ed with the supported bitmap.
 
-I agree with Eric. IMHO TCP_FIN_WAIT1 deserves all the same warnings
-as ESTABLISHED, since in this state the connection may still have a
-big queue of data it is trying to reliably send to the other side,
-with full loss recovery and congestion control logic.
+If the standards says that BaseT4 >1G needs aneg, and that we can't
+have it for baseT1, couldn't we just have some lookup table for each
+mode indicating if they need or support aneg ? I'm thinking about
+something similar as the big table in net/ethtool/common.c where we
+have the linkmode - speed - duplex - lanes mapping :
 
-I would suggest that instead of running with panic_on_warn it would
-make more sense to not panic on warning, and instead add more detail
-to these warning messages in your kernels during your testing, to help
-debug what is going wrong. I would suggest adding to the warning
-message:
+https://elixir.bootlin.com/linux/v6.12.1/source/net/ethtool/common.c#L270
 
-tp->packets_out
-tp->sacked_out
-tp->lost_out
-tp->retrans_out
-tcp_is_sack(tp)
-tp->mss_cache
-inet_csk(sk)->icsk_ca_state
-inet_csk(sk)->icsk_pmtu_cookie
+maybe looking it up for each config operation would be too expensive ?
+or it maybe isn't flexible enough in case we have to deal with
+phy-pecific quirks...
 
-A hunch would be that this is either firing for (a) non-SACK
-connections, or (b) after an MTU reduction.
+Maxime
 
-In particular, you might try `echo 0 >
-/proc/sys/net/ipv4/tcp_mtu_probing` and see if that makes the warnings
-go away.
 
-cheers,
-neal
