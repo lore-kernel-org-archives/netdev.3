@@ -1,149 +1,225 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2078.outbound.protection.outlook.com [40.107.244.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953EF1F7090;
-	Tue,  3 Dec 2024 14:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236455; cv=none; b=st3ST/AgLxMJRkft41kcNBnXTql0AWzveOCk5adjnpVg8x9NXP4xBDcUbfdHHrkKjNE0wBFbc7F9ED7Xbf7xNyJSZBOoQkiti89g/jAdu5ECzxth9SMZO+7jHyJrDCLsWHoDNiYUiuoXPEJUYeN3XoVQEofXYCyjLi5dfdd1E44=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236455; c=relaxed/simple;
-	bh=HNvQv4Mn+yRf3AqTo5jKqGJck5Kl0ryooW890A6SVoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gtiNnoqTcU54LF5f7ySDklxmpxPLYEyFX6OXPvB6i0PqDvIuATFnLrK7j0RU+BVemGgZKESPRU58a/IbeVBARRhFZ000Y2VmCyc3xMTKT580uH+bIeMW6nqkfk4pEaltNK+3qV8ajPiRbZByF98Gmf8DAfyo4DKCLyPoGgiBZw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtZKslRn; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974E91F7093
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 14:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733236456; cv=fail; b=IuslIWOW+aQyX/ayNauJwQR7g/ICJN3Iai2TRCaxhC+hFbEocWgMTZKGLlCWfgp47Jf1LL30kBwAEeOZNLHD/q1d3usEblabBvTVKWFWLNkVz+fkm/GuZqsmLZkgjPAxvrHx3opyaZBOHxrCdwbfku3qF6ZkejvyIdP+Bp1/s2g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733236456; c=relaxed/simple;
+	bh=RxcewKR0DN5QRSwdc82XfUmx2DDuwVChRJ5JAw42/ko=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jlf0o5JcvJq6efZaEOd4hp/NEa7teRdNXGunyykJT8LRJZOVrzl46fZDkixUL3PlghFt/A4ELVau8MaPe/ORadxfOclQ0LoJtKE/ED+Ff5/+tSYTp6bP7I72x/MY7AB0BqPWi4oU/mbQPAtV21P8+TBdxZ8sJyaf010pK/cnn7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Dxp8LEpQ; arc=fail smtp.client-ip=40.107.244.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtZKslRn"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-434a90fed23so47206155e9.1;
-        Tue, 03 Dec 2024 06:34:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733236452; x=1733841252; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vaJmi2F2d7oVyPZ9dEs5lyx3B7MZvf2znAHG2U8SJkE=;
-        b=UtZKslRnw7PvO5YnxvwodwGTWwsV8Ac+1e0kafWnmJi6cG9QARZdODJSBU+iJS/gId
-         6qLHKTqDLtNLVLHFknxfe4A/67lZb6d3rMhY/9f5Z5B4/S++Z4DmcPPRdlytaAiaON3D
-         gyd41Q3sf2+iXQa2OARGfbi/fIjHC5Cn+y7yD2gyXbnFH4Dr3HQVnltFdaZAi6w9W+yJ
-         27xDcUAVBdnEUHSMKQRrIdRwSbxDwe8NbaYEbXEtIES13aBff9cFZIxwAuuIt8abdX6d
-         zMz5bZnWbfQMczEad3yiuWfb31s7EY+RHV+Jah9M35VwdJMYLjBGmg9WMAYcJDUYfUxI
-         pEOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733236452; x=1733841252;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vaJmi2F2d7oVyPZ9dEs5lyx3B7MZvf2znAHG2U8SJkE=;
-        b=mJKPWBtsbeLy4UxJWCg0kxjbjoB/Jf14J9BCAgGwIjtgC0rSn3liWzlTwJabPoS20E
-         htZAdyub2uMrXitoV2/+3V+i6dfmpqIF8VYU9OudExp7UYgk+sb2HjQWEyHSfr5CFwsc
-         DM3NKrrRGj2WRWzSC8JP8HziekfBLxhtzO1rUrMpiEoQAEoUXoGxhvaUBrSh1HScrZe1
-         y1McNiVKdJFbec6QTwvMb03fbg0vNLE8ZrG3cdWuTQsjeONI688o+iyuYRBw2jpYh6qd
-         n5weYswvQjVdLI3uWtZ+F0GPLtbY2rFGZLtaIFcKA1DyfOERBbH7lKq5YAxeD/KIMtN6
-         iPcg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+fQiOygZEPaSCBvRivUXXbQw6LTyiTqXDRKSKi3rdoDtu6xiiJr0VamOYINYNnJkp62dNZec=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwoBx+8/nBMCLJgBg6WkkQOUgQRzVgUf0PdkoYMxdQnGZ/KjXa
-	6us6dAGMQefZVrVlQK6hpJ9UVnOyGeb9soyKILF0bhQ6BZQrxasyDHOiipH2
-X-Gm-Gg: ASbGncv40v3u4F2Lwr52Ixjp7GhdwthHQHfQ2IhL2OBaKCpiruByg121hTjOCCvpd0r
-	URCPV3XLDshNSgTZ7I0ta/cT7VqfYK6YB+drrlinpmLkE1M1qGJsMFOBVlYOb0ImYlpuF+COl7C
-	h0xwx/cFAF6ALl4a/nttKwLdvzAL0NUl/0ogsh3GwkE1yqCRrVZ9Ayf44Jj+SsTOyNmp7Gm3F7n
-	fcRuPVqKp4UOkglVFwtgIgbsBReuisyFfXFTSt2MAvZhOFQ7MU=
-X-Google-Smtp-Source: AGHT+IHXPzxOR5DFEn/MeFs/flkeA4ulBRVyk5qHJg2whXQmSH48mU0TcuNMMQlhQARjWPbyEIw2uA==
-X-Received: by 2002:a05:600c:1f8f:b0:434:a396:9474 with SMTP id 5b1f17b1804b1-434d09cbe39mr25296065e9.18.1733236449638;
-        Tue, 03 Dec 2024 06:34:09 -0800 (PST)
-Received: from localhost ([81.168.73.77])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e2716cedsm10829147f8f.38.2024.12.03.06.34.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 06:34:09 -0800 (PST)
-Date: Tue, 3 Dec 2024 14:34:08 +0000
-From: Martin Habets <habetsm.xilinx@gmail.com>
-To: alejandro.lucero-palau@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
-	dan.j.williams@intel.com, martin.habets@xilinx.com,
-	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com,
-	Alejandro Lucero <alucerop@amd.com>
-Subject: Re: [PATCH v6 16/28] sfc: obtain root decoder with enough HPA free
- space
-Message-ID: <20241203143408.GF778635@gmail.com>
-Mail-Followup-To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
-	netdev@vger.kernel.org, dan.j.williams@intel.com,
-	martin.habets@xilinx.com, edward.cree@amd.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
-	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>
-References: <20241202171222.62595-1-alejandro.lucero-palau@amd.com>
- <20241202171222.62595-17-alejandro.lucero-palau@amd.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Dxp8LEpQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M9b2NBENpiLZlZNRalVn7SKpIhcSV0lQwOwjWzh6lcR2Nw9jwcPe6EJREU1qIVrKcf72THdyRcP28l4EgPTpiyUK8kNvpt96XKwqt2/wR+KnOL1HxlX2kwqhYYXouFaOCfZnINx/4Xp0MKZt3pI4VlAzUaNd5kRFan6UvupWe8p3wj/bcAhQzh7MDkg/TAExfCW9QxBA6GqwZ3lEdv2bhcfcPOzjczO3TQLdYolEgSxKORiekghk50kWHLON2SuEbqVVSgFANe92TqFv6qEa8x7mfOsF2wzd+PRilYlHDmX6aWKahsMgWIuw103Nei22yKlk3P6S9xOOAN770A+bcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UPATP31c5msu3dI4IKPzlhwyb3B2rGG+qBxUlaoEIcc=;
+ b=ui6BAMUIqslF5ka77BBHeJYviABrlEvzRO8G1QSp+WvIrNJiS9F95JiRnvh0EC9PQRxV0im8hSThISYcfqVQntoGtN4MdJLu5Gq3g+RkyLgeBIwan/jvQ4/43jzbLDXzti2ODb4zPfYNVsQD+pq5ACi2HHP6es0ROQHz0qj6FnQDLsEUi5rKDYH1HmECzbxs0cpcA8MbPwdoOuIcKjMS+DRt1ZAPBZknKcDI+1iwSrAlGXk5djUBXvy9wFpQcOh9gGJMSzGNGiJ7zL5avb5cdNeXUCWVUi3NTOO4rbcAbTw58c2DoCHORnHEXfYsZyjkO6ctqmp1SepPKMG/A5BIoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UPATP31c5msu3dI4IKPzlhwyb3B2rGG+qBxUlaoEIcc=;
+ b=Dxp8LEpQRd9kz3W/0PoZKNa6vYmxqT5c1weIqO+Zl6ntBhfNN5nZLcD4xTVE1ss5FnVawPA7uBWagy/iDTdWYW2lPNY7CEeRM0tfK6kyvlGjo/wuKkjBHV43WT7p8OhQu+dNWtIXXqbwTm90zZ8cOzi5GIJ5VyT49gA0pJXvp1z1Z/UvK6xOjEQUvkzeM9UE0OJDU6Tlg+sw3+v1mPDdbrY5RfBVANA3TRQ/Xpl7AP1Vazaid9piB1nGOf+LasIp4yxqMnVK298+KrZFgnDh4KqjS50H3pc6VVOmX+w9Qp08M5TWpx6s2AgmbazduYZmRSwElLXPeeFFgq0AWTYJeQ==
+Received: from SJ0P220CA0015.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::19)
+ by SA1PR12MB6869.namprd12.prod.outlook.com (2603:10b6:806:25d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Tue, 3 Dec
+ 2024 14:34:07 +0000
+Received: from MWH0EPF000971E6.namprd02.prod.outlook.com
+ (2603:10b6:a03:41b:cafe::30) by SJ0P220CA0015.outlook.office365.com
+ (2603:10b6:a03:41b::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.18 via Frontend Transport; Tue,
+ 3 Dec 2024 14:34:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000971E6.mail.protection.outlook.com (10.167.243.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8230.7 via Frontend Transport; Tue, 3 Dec 2024 14:34:07 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
+ 06:33:49 -0800
+Received: from localhost.localdomain (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Dec 2024
+ 06:33:43 -0800
+From: Petr Machata <petrm@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>
+CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
+ Machata" <petrm@nvidia.com>, <mlxsw@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Menglong Dong <menglong8.dong@gmail.com>, "Guillaume
+ Nault" <gnault@redhat.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v1 07/11] vxlan: vxlan_rcv(): Drop unparsed
+Date: Tue, 3 Dec 2024 15:30:33 +0100
+Message-ID: <82440b6b3471ed1c0bf01cca6be90bb4c9b413e2.1733235367.git.petrm@nvidia.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1733235367.git.petrm@nvidia.com>
+References: <cover.1733235367.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202171222.62595-17-alejandro.lucero-palau@amd.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E6:EE_|SA1PR12MB6869:EE_
+X-MS-Office365-Filtering-Correlation-Id: 61e04c79-bce3-444b-b4fe-08dd13a78b66
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?awtENVAPQU7EwXyfoj9uaJP+yIGdHo65GFZSbLHctSfKgj8wvBeKeykK3Eo+?=
+ =?us-ascii?Q?4IyTwTbmJmNnYebfXMPCdPx6/Q8nyjpk0UJ8+/tS3d65aRcDQrrCR/NdDQP1?=
+ =?us-ascii?Q?b5X+VCjjPHOk+qF5yH2pRbhAHGZ0Njo0dfLpzo/3vEqkCNdn+xSMZFxxk4EK?=
+ =?us-ascii?Q?bbxxh+Y902wk4C8A1bclyj+qLUcMYWvcjNMc70p4gUSCN/IfIFS92WZmvUlI?=
+ =?us-ascii?Q?ZabSQK6lQRN3T5GLE2GDQSEfjACJaC/VqA77Uo5Ec8j3QTpd1VTorzhgtPxw?=
+ =?us-ascii?Q?LRmWdsSOBgYjhcVXF3rTggolMFAYJ5wjL/44gE3COriyAcmvf+IJZPW5Vti3?=
+ =?us-ascii?Q?oZZedpvUQEzYHD+3i3nnUeXBLdFohmHi+4WoMSxrk7XGTs8EWrFbos5cLGzS?=
+ =?us-ascii?Q?CImGB7WogoM4CkhtXgwozXZERJaWTAGUIyuzTTXC31N9ynaZPo+twucDWyFN?=
+ =?us-ascii?Q?4bILPkSZ7D1+PURknpMEtcOIeP2MfsKhsz4ZwvZeMsdgLxNG3y1XOZ6tUoFe?=
+ =?us-ascii?Q?ESfwZ95e40LpUD5UzBK6M250cn/85vm2URNsum+KDuKeiu1v+VPi1dAgzw5B?=
+ =?us-ascii?Q?TcWwR62BaxpcJ+lK+v63OUWWO8UDdSNaDWaQ3MXJCIubzugSZvQ7uy0Cyu7K?=
+ =?us-ascii?Q?g37dL6bBHFTgxB08ICkx9+jVtwNLmwECH8BrpDPWI+1nlz2Ha0p0VmQBdip4?=
+ =?us-ascii?Q?pQnGn+YyP7k3G4grpHZ9Cmx0JLOw6h5ztlxE8dJC08rmgGP0lTl9eCIoNbhb?=
+ =?us-ascii?Q?J7gZbns0hWL6DjjTILfGu+AOhu4583dwoms6XE2hYTod6AqsmYMhoVc+rM6u?=
+ =?us-ascii?Q?FAtxXwSfZUJZWiljYeDWVkjHI5c+vGtFSovXJn1RLcujzaQiX1GJq9KPdymQ?=
+ =?us-ascii?Q?ftTOBfuwuVGFQnan3MLDAsSUSlvqC0pYtPDBjfx8Ne41XcvUvcsLr6QjhLO6?=
+ =?us-ascii?Q?5guVu0FZ4yOLr+YFQEwkMWtCjoxIB9lyyVaw6SBt9ER/dYAVRFhk5mEmbBrb?=
+ =?us-ascii?Q?gxx8FDb4mG/maoeyiMRWoePaKXfz/0m63v5Zl3x7O0Q0r/mDT+vbC/B4HmiZ?=
+ =?us-ascii?Q?wrwrV/81/dVMhx9yFxYdN9Pjl6kZVWXivqs9EB2AJiBt6Ksk2hKdidDCHKck?=
+ =?us-ascii?Q?PhhGBlcMUBPj1Z6ClEyXPjO4YD+mA4S8QUSIOHIMEFWBE8tjlOJbyINJSJ1q?=
+ =?us-ascii?Q?Q1KM75NtrUTCXyKEmrY8PIOacpTDJQ98urDtnzUweGfGDJ+L7jPEe/FWHjLL?=
+ =?us-ascii?Q?NmVvHn5iTE40A4OBobXnjHQ4kCT9KvvzXdYizdAV2sgwrul53Dl4rxxU4yfz?=
+ =?us-ascii?Q?Y/AjCPcCj7ok2Rs7gM4VctR7QLgTSA08r1qV5KkLH9TyNOniPr0EGZZlp7OC?=
+ =?us-ascii?Q?p9Rv+dacjK8U1uEK5pghdfq3ZCqO48NKRPQJo/y+46WzLsxEtZmJxDM1HRMy?=
+ =?us-ascii?Q?SeI2Uc1+AtaQB08HMgDW5tNxO6l07Hjw?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:34:07.4458
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61e04c79-bce3-444b-b4fe-08dd13a78b66
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000971E6.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6869
 
-On Mon, Dec 02, 2024 at 05:12:10PM +0000, alejandro.lucero-palau@amd.com wrote:
-> 
-> From: Alejandro Lucero <alucerop@amd.com>
-> 
-> Asking for availbale HPA space is the previous step to try to obtain
-> an HPA range suitable to accel driver purposes.
-> 
-> Add this call to efx cxl initialization.
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+The code currently validates the VXLAN header in two ways: first by
+comparing it with the set of reserved bits, constructed ahead of time
+during the netdevice construction; and second by gradually clearing the
+bits off a separate copy of VXLAN header, "unparsed". Drop the latter
+validation method.
 
-Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
-One comment below.
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
 
-> ---
->  drivers/net/ethernet/sfc/efx_cxl.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-> index d03fa9f9c421..79b93d92f9c2 100644
-> --- a/drivers/net/ethernet/sfc/efx_cxl.c
-> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
-> @@ -26,6 +26,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->  	struct pci_dev *pci_dev;
->  	struct efx_cxl *cxl;
->  	struct resource res;
-> +	resource_size_t max;
->  	u16 dvsec;
->  	int rc;
->  
-> @@ -102,6 +103,23 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->  		goto err3;
->  	}
->  
-> +	cxl->cxlrd = cxl_get_hpa_freespace(cxl->cxlmd,
-> +					   CXL_DECODER_F_RAM | CXL_DECODER_F_TYPE2,
-> +					   &max);
-> +
-> +	if (IS_ERR(cxl->cxlrd)) {
-> +		pci_err(pci_dev, "cxl_get_hpa_freespace failed\n");
-> +		rc = PTR_ERR(cxl->cxlrd);
-> +		goto err3;
-> +	}
-> +
-> +	if (max < EFX_CTPIO_BUFFER_SIZE) {
-> +		pci_err(pci_dev, "%s: no enough free HPA space %llu < %u\n",
-> +			__func__, max, EFX_CTPIO_BUFFER_SIZE);
+Notes:
+CC: Andrew Lunn <andrew+netdev@lunn.ch>
+CC: Menglong Dong <menglong8.dong@gmail.com>
+CC: Guillaume Nault <gnault@redhat.com>
+CC: Alexander Lobakin <aleksander.lobakin@intel.com>
+CC: Breno Leitao <leitao@debian.org>
 
-Seems it should use %pa[p] for max here.
+ drivers/net/vxlan/vxlan_core.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-Martin
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index b8afdcbdf235..b79cc5da35c9 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1670,7 +1670,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	const struct vxlanhdr *vh;
+ 	struct vxlan_dev *vxlan;
+ 	struct vxlan_sock *vs;
+-	struct vxlanhdr unparsed;
+ 	struct vxlan_metadata _md;
+ 	struct vxlan_metadata *md = &_md;
+ 	__be16 protocol = htons(ETH_P_TEB);
+@@ -1685,7 +1684,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	if (reason)
+ 		goto drop;
+ 
+-	unparsed = *vxlan_hdr(skb);
+ 	vh = vxlan_hdr(skb);
+ 	/* VNI flag always required to be set */
+ 	if (!(vh->vx_flags & VXLAN_HF_VNI)) {
+@@ -1695,8 +1693,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		/* Return non vxlan pkt */
+ 		goto drop;
+ 	}
+-	unparsed.vx_flags &= ~VXLAN_HF_VNI;
+-	unparsed.vx_vni &= ~VXLAN_VNI_MASK;
+ 
+ 	vs = rcu_dereference_sk_user_data(sk);
+ 	if (!vs)
+@@ -1731,7 +1727,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	if (vxlan->cfg.flags & VXLAN_F_GPE) {
+ 		if (!vxlan_parse_gpe_proto(vh, &protocol))
+ 			goto drop;
+-		unparsed.vx_flags &= ~VXLAN_GPE_USED_BITS;
+ 		raw_proto = true;
+ 	}
+ 
+@@ -1745,8 +1740,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		reason = vxlan_remcsum(skb, vxlan->cfg.flags);
+ 		if (unlikely(reason))
+ 			goto drop;
+-		unparsed.vx_flags &= ~VXLAN_HF_RCO;
+-		unparsed.vx_vni &= VXLAN_VNI_MASK;
+ 	}
+ 
+ 	if (vxlan_collect_metadata(vs)) {
+@@ -1769,19 +1762,12 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		memset(md, 0, sizeof(*md));
+ 	}
+ 
+-	if (vxlan->cfg.flags & VXLAN_F_GBP) {
++	if (vxlan->cfg.flags & VXLAN_F_GBP)
+ 		vxlan_parse_gbp_hdr(skb, vxlan->cfg.flags, md);
+-		unparsed.vx_flags &= ~VXLAN_GBP_USED_BITS;
+-	}
+ 	/* Note that GBP and GPE can never be active together. This is
+ 	 * ensured in vxlan_dev_configure.
+ 	 */
+ 
+-	if (unparsed.vx_flags || unparsed.vx_vni) {
+-		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
+-		goto drop;
+-	}
+-
+ 	if (!raw_proto) {
+ 		reason = vxlan_set_mac(vxlan, vs, skb, vni);
+ 		if (reason)
+-- 
+2.47.0
 
-> +		rc = -ENOSPC;
-> +		goto err3;
-> +	}
-> +
->  	probe_data->cxl = cxl;
->  
->  	return 0;
-> -- 
-> 2.17.1
-> 
-> 
