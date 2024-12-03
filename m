@@ -1,280 +1,114 @@
-Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286741F8EEE
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 16:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF821F756E;
+	Tue,  3 Dec 2024 16:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244653; cv=none; b=TdFSSNAgcFzKNqefi3qoJ1BYJcyI3MTvM9XNU65VuPICuZnOJwaQ+93Yf2fC4PCqBTeBqWIrYxBlnRaIhoKTYChk1Mjd21bZVYo5VdlAXZru8GYZH3yr8fEtiwc4XJ8O34mnOjBc3x7TIJBNeFR6qX1Y3XK07094D4KCFkakANM=
+	t=1733244772; cv=none; b=kewhMoHAbaAvAHMsB22zT6/R4glVtC7vMSk9CkcpwuBiEN6tZZ9d1/KJs1fH2paFlZUGIKdpY7fCJq9/2W8bRsN+hqIhirB6r9ojEfV30PnD8XVjHFEKY2OfT2FyOq4bThkS71cLRkFOjvTJ0vZwfTbHTyN8Jq+wfLANSWXTbyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244653; c=relaxed/simple;
-	bh=28OCExHwJJ2LaQi9qemdvsGjyR7KLaTWEag8lagOtCQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LDZ3QU6pJyTibO4cUihw0htxH8rWnNpB2FGGIDbbXtNe9XCezMmSbd3lJtWONv6ZZzLIqbL9zfR4HFpoU7bZpdiYDfs2xp00csKYCpouKX+cBE6aqktwWYLDkvBmDbkIio3F0vKhwIY5++c1cTY3ZzgjiTQjc/ibdLAu9ri0uB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1eOvgjyk; arc=none smtp.client-ip=209.85.210.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1733244772; c=relaxed/simple;
+	bh=KMoQysWKuRuCQztw6raSWjQ+IF192GVyXNDygjqp45k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+GoT6bf9o4CMO/L9tsVhjspA3Qv2owd/0vsqqHnMowTF1FGBjDqJXBQ3XicAEbQCC4PVJGQbNj35r9Wliynqb2hjSd3cHfkVmzJmPbwsl5NpmnLwQQdDN81lFZ5R4p4D497Pl01fYU1gKM3PqbycIUfpjixESTgRSi+VVrIe+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZFulI6l3; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1eOvgjyk"
-Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-71d49784700so3670122a34.3
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 08:50:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZFulI6l3"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7253bc4d25eso3891813b3a.0;
+        Tue, 03 Dec 2024 08:52:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733244650; x=1733849450; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5fwdTno1dhXb33AJXJDEYIouSLHCKylp+QM1GEb59FU=;
-        b=1eOvgjyk+4Bs0Cv0FUSulbHaYildw6h43XOUwYdxwR1LZGrwOjFGNXlnDqyJILdCzA
-         JHMGNd8/sOX0l6IkEI6IRxpXsBDytko0ZFCZ6fyw/P5YcD6LJYjqjbSt8skCK4CVzqhg
-         v6CBFm+g25MScAxCabFspvO5NXW3UHGHVteGEsgXjP2enjBO84Cb2gIhvCwanjDcYCAh
-         UeEpx32ToaAVy3Woq87l/s8kTXwcMC0k+vLm34s0fXHN5uzGZylbtAi8/s8I2ewri61K
-         A2zyRAPpCdQ62vUM3Cdc0oapBWfNvofMj1YKOaT16aykYWYPYx48MhtQSABJlYDTHCyR
-         6Cag==
+        d=gmail.com; s=20230601; t=1733244770; x=1733849570; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zV785WNUhq1gA/Wn6AqbiBGMdzVMW4esqYjkrkDGUc4=;
+        b=ZFulI6l37pigAxh596FkMuqk2PWpI2k0IcBXyUjWlR89R2CvKhUBqIohai99ElL75U
+         wIiwu0kd7ao+R6SKIpj/pgPI6bsvjllQF/negBmXWoNx223rWl0fAAZdPloLKGZp/Z+W
+         EUlg5iS4h19gHKE4uaKi5gvgbDBKlXWITWl/lK6mcsZ8x6cCurAXZWwQsz9nW5nfq4DZ
+         1qtfnZ7DOSxCKp2q1ipAg20552VsBjxAGtaAf5oTxIlQe2B3iGXfNX/wSWPum+pJXpJt
+         OZtKQCObfHKj+Tj6tSLWxq8h3U8ZodIsN0yvACPE5Fbk0mlB7HPJ4fne9lwJbyCdR+rn
+         jJAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733244650; x=1733849450;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5fwdTno1dhXb33AJXJDEYIouSLHCKylp+QM1GEb59FU=;
-        b=WDpwsv5oG6J+zCPjHER9VQnlurqeb43WhomtNoYVWq1gC2PphIBda3kAJjWfzP/9if
-         Sr3nszBnmaheJhbzatUvbc/ZBiOcr4ws8a3mbUS3cHYJUdDaMos3fi4vdiKtNmo8/wGh
-         kchdKE75cHmklLrI0eXb1iF2KeYnjXSJpur5Hbw+XZbpFr1Bb3GgnycUFerEom1RvMvC
-         7hYIvmZawzidCGb0XJd15GLsLT2JT3gTvWjNDlbgJI4FcpdNqQ4HAfY4OG2OJ3vGMA6D
-         Z13PnUK5Z8q6q1cD9KIYV6zZLfnzHkEK78nxEHHIMCudxv+gMfy5pvTSe9wGH1Gs4+Si
-         7Kcw==
-X-Gm-Message-State: AOJu0Yz7fssy2TRGYlrrtD4CbpLzwRtyQhWR+BYUTT+dWcdvBU3pKpMR
-	ObFaRYd32yOQD5LxOqhAvxFdQcvbJ+b7ta483BNQcN5ty4DVZuTxfR8xuJopsrLlrPvrRPbNzK7
-	XNv+i3wU0vA==
-X-Google-Smtp-Source: AGHT+IGAL5r7lNeRVQ9WwkQpLzx/+0i6nb0CXGO10JBWEz87yn7iGvMqD8xi8IDiK+jU6QisrOaoaaVKdDTxnA==
-X-Received: from qtbci17.prod.google.com ([2002:a05:622a:2611:b0:466:98d9:81d3])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6359:4107:b0:1b8:f18:3e6e with SMTP id e5c5f4694b2df-1caeaabab2dmr281411155d.12.1733244650126;
- Tue, 03 Dec 2024 08:50:50 -0800 (PST)
-Date: Tue,  3 Dec 2024 16:50:45 +0000
+        d=1e100.net; s=20230601; t=1733244770; x=1733849570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zV785WNUhq1gA/Wn6AqbiBGMdzVMW4esqYjkrkDGUc4=;
+        b=cMO79I640XH39qdVeQEl5+xtnywfOjQiMNLNB2qQfdCyCpMdDlQXPjZ+t6GxQPysnL
+         tx5mqwJ69BO1uxaKXEVEkHcmMNCydTziWu+n8r4xrNr4lSPMczbhLN4fR9NtagUodKeT
+         Lf6xOtzWEGEe0OwXDMu/SyuWfGIIfI5WrIG7M6uZhOVVgNAx7tdG1RIwAED0enA4EdXb
+         L+0wG93QuvwUQzOlWd8AR0lBGzzMwpE1+/xn2ReOvZvBrr/9OnJz+NnY4irsxClt35zM
+         d/cCs93jbRZwegLTs6viRPDx2y1H2NVTSBTDamtIlhFtlHv0Qjb8rAKDduFZqGsHF6cN
+         TrBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUystuy9RZ5HzAzhg4sVnYCxzXBOMO0SL4l2NC5AbB4D0N0a5iJ3wic1W3tcnD0i2vuo8CNfA2mc6XXaeA=@vger.kernel.org, AJvYcCXEH6ltGqXpSDyR2frZYTfBO9TMoNDUjdBEeXVw3B+uWp9G7YJ0XuKoBF3l0GQeu95E9HXImjDD@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMWN2xy5nEW55n/WGLfOeT6bEW59WA2p6frStPuTugyD34Fe1X
+	d8DDR/fNJDB3/+8n/5OV4cFTyLXQyexdp6q1Lbo2//sDI/j1igQ=
+X-Gm-Gg: ASbGncuYQPgTY6B+Ho86s4L585sf6fPLroHKexeJPKzxEQWQ75cwnJ+6B9orKTq6Vel
+	PfvilxF5d5XP1sodb1JOk/fVIhf3t109PZsXcTOlmQL8pJoKWu2geSWLGbIDwPWFhvisRqSpW7x
+	eQ3RO3XEOPWHupfnaYkXOx1Q6uhcY7l8wUErNvQhDTURDKa87DKVMb2w181FIO9p1GVD3uSFpkD
+	kl1JSx+f/Qgujc8T4E2jaZ5zxx3NX4FCvRKNtfJe4KHQB5aww==
+X-Google-Smtp-Source: AGHT+IGuAh/HD5NoVevDHBywonmxKblpUpfCSIwU15PIfQGiZ/NQeI+/BOrCPWeRdL/ZNbgaf2qL/g==
+X-Received: by 2002:a05:6a00:3bd2:b0:725:4518:9906 with SMTP id d2e1a72fcca58-7254518992dmr27567479b3a.8.1733244770237;
+        Tue, 03 Dec 2024 08:52:50 -0800 (PST)
+Received: from localhost ([2601:646:9e00:f56e:123b:cea3:439a:b3e3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72541813aeasm10994775b3a.140.2024.12.03.08.52.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 08:52:49 -0800 (PST)
+Date: Tue, 3 Dec 2024 08:52:49 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jan Stancek <jstancek@redhat.com>
+Cc: donald.hunter@gmail.com, kuba@kernel.org, pabeni@redhat.com,
+	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] tools: ynl: move python code to separate
+ sub-directory
+Message-ID: <Z083YZoAQEn9zrjM@mini-arch>
+References: <cover.1733216767.git.jstancek@redhat.com>
+ <20b2bdfe94fed5b9694e22c79c79858502f5e014.1733216767.git.jstancek@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241203165045.2428360-1-edumazet@google.com>
-Subject: [PATCH net] net: defer final 'struct net' free in netns dismantle
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Ilya Maximets <i.maximets@ovn.org>, 
-	Dan Streetman <dan.streetman@canonical.com>, 
-	Steffen Klassert <steffen.klassert@secunet.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20b2bdfe94fed5b9694e22c79c79858502f5e014.1733216767.git.jstancek@redhat.com>
 
-Ilya reported a slab-use-after-free in dst_destroy [1]
+On 12/03, Jan Stancek wrote:
+> Move python code to a separate directory so it can be
+> packaged as a python module.
 
-Issue is in xfrm6_net_init() and xfrm4_net_init() :
+There is a bunch of selftests that depend on this location:
 
-They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
+make -C tools/testing/selftests TARGETS="drivers/net" TEST_PROGS=ping.py TTEST_GEN_PROGS="" run_tests
+make: Entering directory '/home/virtme/testing-18/tools/testing/selftests'
+make[1]: Entering directory '/home/virtme/testing-18/tools/testing/selftests/drivers/net'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/virtme/testing-18/tools/testing/selftests/drivers/net'
+make[1]: Entering directory '/home/virtme/testing-18/tools/testing/selftests/drivers/net'
+TAP version 13
+1..1
+# overriding timeout to 90
+# selftests: drivers/net: ping.py
+# Traceback (most recent call last):
+#   File "/home/virtme/testing-18/tools/testing/selftests/drivers/net/./ping.py", line 4, in <module>
+#     from lib.py import ksft_run, ksft_exit
+#   File "/home/virtme/testing-18/tools/testing/selftests/drivers/net/lib/py/__init__.py", line 10, in <module>
+#     from net.lib.py import *
+#   File "/home/virtme/testing-18/tools/testing/selftests/net/lib/py/__init__.py", line 8, in <module>
+#     from .ynl import NlError, YnlFamily, EthtoolFamily, NetdevFamily, RtnlFamily
+#   File "/home/virtme/testing-18/tools/testing/selftests/net/lib/py/ynl.py", line 23, in <module>
+#     from net.ynl.lib import YnlFamily, NlError
+# ImportError: cannot import name 'YnlFamily' from 'net.ynl.lib' (unknown location)
+not ok 1 selftests: drivers/net: ping.py # exit=1
+make[1]: Leaving directory '/home/virtme/testing-18/tools/testing/selftests/drivers/net'
+make: Leaving directory '/home/virtme/testing-18/tools/testing/selftests'
+xx__-> echo $?
+0
+xx__-> echo scan > /sys/kernel/debug/kmemleak && cat /sys/kernel/debug/kmemleak
+xx__-> 
 
-But net structure might be freed before all the dst callbacks are
-called. So when dst_destroy() calls later :
-
-if (dst->ops->destroy)
-    dst->ops->destroy(dst);
-
-dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
-
-See a relevant issue fixed in :
-
-ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
-
-A fix is to queue the 'struct net' to be freed after one
-another cleanup_net() round (and existing rcu_barrier())
-
-[1]
-
-BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
-Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
-Dec 03 05:46:18 kernel:
-CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
-Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-Call Trace:
- <IRQ>
-dump_stack_lvl (lib/dump_stack.c:124)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-? dst_destroy (net/core/dst.c:112)
-print_report (mm/kasan/report.c:489)
-? dst_destroy (net/core/dst.c:112)
-? kasan_addr_to_slab (mm/kasan/common.c:37)
-kasan_report (mm/kasan/report.c:603)
-? dst_destroy (net/core/dst.c:112)
-? rcu_do_batch (kernel/rcu/tree.c:2567)
-dst_destroy (net/core/dst.c:112)
-rcu_do_batch (kernel/rcu/tree.c:2567)
-? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
-rcu_core (kernel/rcu/tree.c:2825)
-handle_softirqs (kernel/softirq.c:554)
-__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
-irq_exit_rcu (kernel/softirq.c:651)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
- </IRQ>
- <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
-Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
-RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
-R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
-? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
-? cpuidle_idle_call (kernel/sched/idle.c:186)
-default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
-cpuidle_idle_call (kernel/sched/idle.c:186)
-? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
-? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
-? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
-do_idle (kernel/sched/idle.c:326)
-cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
-? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
-? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
-common_startup_64 (arch/x86/kernel/head_64.S:414)
- </TASK>
-Dec 03 05:46:18 kernel:
-Allocated by task 12184:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
-kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
-copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
-create_new_namespaces (kernel/nsproxy.c:110)
-unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
-ksys_unshare (kernel/fork.c:3313)
-__x64_sys_unshare (kernel/fork.c:3382)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Freed by task 11:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-kasan_save_free_info (mm/kasan/generic.c:582)
-__kasan_slab_free (mm/kasan/common.c:271)
-kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
-cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
-process_one_work (kernel/workqueue.c:3229)
-worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
-kthread (kernel/kthread.c:389)
-ret_from_fork (arch/x86/kernel/process.c:147)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-Dec 03 05:46:18 kernel:
-Last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
-xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Second to last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
-xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
-xfrm_add_sa (net/xfrm/xfrm_user.c:912)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
-Reported-by: Ilya Maximets <i.maximets@ovn.org>
-Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
-Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-Cc: Dan Streetman <dan.streetman@canonical.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
----
- include/net/net_namespace.h |  1 +
- net/core/net_namespace.c    | 20 +++++++++++++++++++-
- 2 files changed, 20 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 873c0f9fdac66397152dcc66dfffe02c82661b21..fcf5195bafa8d308dbd759b855433166c787fb21 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -80,6 +80,7 @@ struct net {
- 						 * or to unregister pernet ops
- 						 * (pernet_ops_rwsem write locked).
- 						 */
-+	struct llist_node	defer_free_list;
- 	struct llist_node	cleanup_list;	/* namespaces on death row */
- 
- #ifdef CONFIG_KEYS
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index ae34ac818cda76493abe2f45a1f6f87ac8398934..825281e08cb46b2fc665dce2b558085710e5695c 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -449,6 +449,21 @@ static struct net *net_alloc(void)
- 	goto out;
- }
- 
-+static LLIST_HEAD(defer_free_list);
-+
-+static void net_complete_free(void)
-+{
-+	struct llist_node *kill_list;
-+	struct net *net;
-+
-+	/* Get the list of namespaces to free from last round. */
-+	kill_list = llist_del_all(&defer_free_list);
-+
-+	llist_for_each_entry(net, kill_list, defer_free_list)
-+		kmem_cache_free(net_cachep, net);
-+
-+}
-+
- static void net_free(struct net *net)
- {
- 	if (refcount_dec_and_test(&net->passive)) {
-@@ -457,7 +472,8 @@ static void net_free(struct net *net)
- 		/* There should not be any trackers left there. */
- 		ref_tracker_dir_exit(&net->notrefcnt_tracker);
- 
--		kmem_cache_free(net_cachep, net);
-+		/* Wait for an extra rcu_barrier() before final free. */
-+		llist_add(&net->defer_free_list, &defer_free_list);
- 	}
- }
- 
-@@ -642,6 +658,8 @@ static void cleanup_net(struct work_struct *work)
- 	 */
- 	rcu_barrier();
- 
-+	net_complete_free();
-+
- 	/* Finally it is safe to free my network namespace structure */
- 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
- 		list_del_init(&net->exit_list);
--- 
-2.47.0.338.g60cca15819-goog
-
+pw-bot: cr
