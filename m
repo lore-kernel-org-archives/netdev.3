@@ -1,164 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6EE1FAC5A
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 17:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59101FBE9B
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 17:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733248011; cv=none; b=SLaO3Y2p85a5KrBuSwwuImlu+d8Apc9xG1IBLtTMfKT8vH4CaXfpXsLtjlozAbZrCzo3QbunZwxbf74G/raFvt653A3e41OMrBSrlFw8WyW/3YTVyzQB5BUUL78xAIwyjiMkm9Ihsm8xdYv5gpwrQPh4NxxOsojEunn+Jk5kHK0=
+	t=1733248036; cv=none; b=KcLLWDoNPuBG/FUaXmDe2e7g95i4I1bZkQPF7Dr6Vcn0CctAdGwqwNJ39ERUHNMz6Xcv9geQelcWhvufJ4ME/Ph/06Zj3OSnXQawuV/S7RMC1eJg5sonG6TiGnoA6e0vS4QQ12Mhv3em4IxCBIDTGMrWwjk8Z07AmgxFX/r6wZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733248011; c=relaxed/simple;
-	bh=50YYxZWRrgFvV7RWzGZagJmm/MIRxY3i13DlmK0l2CQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ctDvgibSr431LuriShOZmEIkESC989KQM+uKPzlrkdCFPYCRkrvjv6MwCTz9M5kxzLewQYzbtq7fHwGedzx5NBWJfu3iAWSE2NVJ72XHte3VN1oHY6QGObOnQXHH3a6bv2CeuMKtX9NfDORcbfHDAjRaxXP5kFH0Xuqc11wN2BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F/fTAeIu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F/fTAeIu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733248008;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rSpS4mkww3n7ZfxdPyPAe92ZnrZDWXRdAxdhxgPhie0=;
-	b=F/fTAeIu9y15Fvw+vZZe/j2+i3YH8I6hivYSqIVbIz6kUZrH6w5zyTsf80EH+zfccMFGgD
-	0rMTomLkrtXjvUC4S/OZ8GX/5iLjEQTiM3f874zAgDZpHRMZinVT870KVb0709x9eHyJd0
-	tOO5X/xhJNcINH8yKhHzUGITr7fsLv8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-sFmih1MwPy67de4mghUXkg-1; Tue, 03 Dec 2024 12:46:47 -0500
-X-MC-Unique: sFmih1MwPy67de4mghUXkg-1
-X-Mimecast-MFC-AGG-ID: sFmih1MwPy67de4mghUXkg
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43498af79a6so215005e9.0
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 09:46:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733248006; x=1733852806;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rSpS4mkww3n7ZfxdPyPAe92ZnrZDWXRdAxdhxgPhie0=;
-        b=BQgmOoVLocTaUdjUN51CfAA/B5uF4SrU0b+M0Yl9MOcetteVxkf3NDIEL1r53mF4WU
-         Zo+pfXUwxaBG0YVqZIkc5derhRpRhSzyC7mm7nUv7C+40RyHkQpBstjAtL3co3tJh1nE
-         fFFirwNCCZjhtG0QhRi2ySJwNzVbVei7AMPB6JXWVdP428HFpd5B/G9Z20GfK0X4BEoe
-         8TEz4+qwZIdME8F03rIKNENeb3McVYtRLUiYPy968KYM2goL1uez9e/Zr5e2VXCr//TK
-         OHDIuIqzed0ujvGeL8wlBTWDIC4cwaXNvy/cCI3SlxbrxW08tgYeRL3AHN1HrSxb4gi5
-         134A==
-X-Forwarded-Encrypted: i=1; AJvYcCWaYxRE9V7VsS9hwbjiu2xIISw+UusNmD13PbBfSRzUzY/laKBruNYjyoYX1OEoFKOo/ue08PQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAE8Nw/YJQK+TO8cPDLa0oF+t04u/p3IG7UTFJ1Bg1T/KAlxJb
-	iY6TARXzdZct3LCxE+srlOTo4+Amr71YKaZTSU2bhdbcKmVg/eUV3ZmtHrux7zacbLVDEzHkzXT
-	yfg7V95xLtFAy+RBnS4XViw8ImOYwnY84UY7Uq2P2gG7wXVH86ivr3QC7NyvZrQ==
-X-Gm-Gg: ASbGncs9fSxAu6QuTEjGNFdxo3GSZK+J3mniOepecQNfkERcg0k/FlPklCuwU5sU1z0
-	zzfJQ6CIJnd1rBqKNkxnLB0wjpXHgSoScu1SIrnhMf3Msfba7BWViUVCDUmMAN5i1eOIVj5Lgou
-	ZuiApVaouTByTHK9Ty2hGHaAxo7+P82Vi4cuFf//E/FmGZBTn/MXKZSYW55sANIXM1H1JTMoF3s
-	Xd26qn+irT3FdbxrUct1SNK1VhEVNCo9bpMd70c+lI4ZvjOsbH4rUV9sjpNB+rO6514UhFSV/yu
-X-Received: by 2002:a05:600c:4e86:b0:434:9f90:2583 with SMTP id 5b1f17b1804b1-434afc1d39amr204882445e9.11.1733248006242;
-        Tue, 03 Dec 2024 09:46:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IETgA2pFZtAPaTKpdbTBMQYjJVZRs89hmZMU86qmFTgXb6S51/atTKr2YYGr045N/IDGnqPBA==
-X-Received: by 2002:a05:600c:4e86:b0:434:9f90:2583 with SMTP id 5b1f17b1804b1-434afc1d39amr204882335e9.11.1733248005853;
-        Tue, 03 Dec 2024 09:46:45 -0800 (PST)
-Received: from [192.168.88.24] (146-241-38-31.dyn.eolo.it. [146.241.38.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e19104a0sm11552257f8f.32.2024.12.03.09.46.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 09:46:45 -0800 (PST)
-Message-ID: <c6ec324f-dcfe-46c0-8bfb-1af77c03cb59@redhat.com>
-Date: Tue, 3 Dec 2024 18:46:43 +0100
+	s=arc-20240116; t=1733248036; c=relaxed/simple;
+	bh=Q95+gOI7pTAZtpI5+UrdylhdkgXfWijiKSsgRKgGNcI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ewYio5/SlOTYgotASLRt1NE377JaZ1JGRtrV95vK15xyoZF9PZC0mOJiZa11PZxsiP07gnkcAwWYbnbDmBsRnRR4C/DQRMhTgQJlw8GG54tURbUgwt/U2mfZbWO5HNqstiaJ2XJzKGuWPgXX9g9Mw9qAfZS13ahztnZvLhQ+MU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tIWyE-0003sq-Mm; Tue, 03 Dec 2024 18:45:58 +0100
+Message-ID: <fc624e3fd4a4a38dedf02e31be9e4f1c85fb40a0.camel@pengutronix.de>
+Subject: Re: [PATCH 09/22] drm/etnaviv: Convert timeouts to secs_to_jiffies()
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,  Nicolas Palix
+ <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
+ <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
+ Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
+ Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jeroen de Borst
+ <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>, Dick Kennedy
+ <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Roger Pau =?ISO-8859-1?Q?Monn=E9?=
+ <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
+ <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Jack
+ Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz
+ <luiz.dentz@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo
+ Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,  Josh Poimboeuf
+ <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, Miroslav Benes
+ <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, Joe Lawrence
+ <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+ <tiwai@suse.com>, Russell King <linux+etnaviv@armlinux.org.uk>, Christian
+ Gmeiner <christian.gmeiner@gmail.com>,  Louis Peens
+ <louis.peens@corigine.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr, 
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org,  linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org,  ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org,  linux-sound@vger.kernel.org,
+ etnaviv@lists.freedesktop.org,  oss-drivers@corigine.com,
+ linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
+Date: Tue, 03 Dec 2024 18:45:50 +0100
+In-Reply-To: <20241115-converge-secs-to-jiffies-v1-9-19aadc34941b@linux.microsoft.com>
+References: 
+	<20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
+	 <20241115-converge-secs-to-jiffies-v1-9-19aadc34941b@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 17/22] ovpn: implement peer
- add/get/dump/delete via netlink
-To: Antonio Quartulli <antonio@openvpn.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
- sd@queasysnail.net, ryazanov.s.a@gmail.com, Andrew Lunn <andrew@lunn.ch>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241202-b4-ovpn-v12-0-239ff733bf97@openvpn.net>
- <20241202-b4-ovpn-v12-17-239ff733bf97@openvpn.net>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241202-b4-ovpn-v12-17-239ff733bf97@openvpn.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On 12/2/24 16:07, Antonio Quartulli wrote:
-> +/**
-> + * ovpn_nl_peer_modify - modify the peer attributes according to the incoming msg
-> + * @peer: the peer to modify
-> + * @info: generic netlink info from the user request
-> + * @attrs: the attributes from the user request
-> + *
-> + * Return: a negative error code in case of failure, 0 on success or 1 on
-> + *	   success and the VPN IPs have been modified (requires rehashing in MP
-> + *	   mode)
-> + */
-> +static int ovpn_nl_peer_modify(struct ovpn_peer *peer, struct genl_info *info,
-> +			       struct nlattr **attrs)
-> +{
-> +	struct sockaddr_storage ss = {};
-> +	u32 sockfd, interv, timeout;
-> +	struct socket *sock = NULL;
-> +	u8 *local_ip = NULL;
-> +	bool rehash = false;
-> +	int ret;
-> +
-> +	if (attrs[OVPN_A_PEER_SOCKET]) {
-> +		if (peer->sock) {
-> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-> +					       "peer socket can't be modified");
-> +			return -EINVAL;
-> +		}
-> +
-> +		/* lookup the fd in the kernel table and extract the socket
-> +		 * object
-> +		 */
-> +		sockfd = nla_get_u32(attrs[OVPN_A_PEER_SOCKET]);
-> +		/* sockfd_lookup() increases sock's refcounter */
-> +		sock = sockfd_lookup(sockfd, &ret);
-> +		if (!sock) {
-> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-> +					       "cannot lookup peer socket (fd=%u): %d",
-> +					       sockfd, ret);
-> +			return -ENOTSOCK;
-> +		}
-> +
-> +		/* Only when using UDP as transport protocol the remote endpoint
-> +		 * can be configured so that ovpn knows where to send packets
-> +		 * to.
-> +		 *
-> +		 * In case of TCP, the socket is connected to the peer and ovpn
-> +		 * will just send bytes over it, without the need to specify a
-> +		 * destination.
-> +		 */
-> +		if (sock->sk->sk_protocol != IPPROTO_UDP &&
-> +		    (attrs[OVPN_A_PEER_REMOTE_IPV4] ||
-> +		     attrs[OVPN_A_PEER_REMOTE_IPV6])) {
-> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-> +					       "unexpected remote IP address for non UDP socket");
-> +			sockfd_put(sock);
-> +			return -EINVAL;
-> +		}
-> +
-> +		peer->sock = ovpn_socket_new(sock, peer);
-> +		if (IS_ERR(peer->sock)) {
-> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
-> +					       "cannot encapsulate socket: %ld",
-> +					       PTR_ERR(peer->sock));
-> +			sockfd_put(sock);
-> +			peer->sock = NULL;
+Am Freitag, dem 15.11.2024 um 21:22 +0000 schrieb Easwar Hariharan:
+> Changes made with the following Coccinelle rules:
+>=20
+> @@ constant C; @@
+>=20
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+>=20
+> @@ constant C; @@
+>=20
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+>=20
+Thanks, applied to etnaviv/next.
 
-This looks race-prone. If any other CPU can do concurrent read access to
-peer->sock it could observe an invalid pointer
-Even if such race does not exist, it would be cleaner store
-ovpn_socket_new() return value in a local variable and set peer->sock
-only on successful creation.
+Regards,
+Lucas
 
-/P
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c b/drivers/gpu/drm/e=
+tnaviv/etnaviv_cmdbuf.c
+> index 721d633aece9d4c81f0019e4c55884f26ee61c60..0f5a2c885d0ab7029c7248e15=
+d6ea3c31823b782 100644
+> --- a/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c
+> +++ b/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c
+> @@ -100,7 +100,7 @@ int etnaviv_cmdbuf_init(struct etnaviv_cmdbuf_suballo=
+c *suballoc,
+>  		mutex_unlock(&suballoc->lock);
+>  		ret =3D wait_event_interruptible_timeout(suballoc->free_event,
+>  						       suballoc->free_space,
+> -						       msecs_to_jiffies(10 * 1000));
+> +						       secs_to_jiffies(10));
+>  		if (!ret) {
+>  			dev_err(suballoc->dev,
+>  				"Timeout waiting for cmdbuf space\n");
+>=20
 
