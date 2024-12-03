@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34E01DEFC7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C09818FDA9
 	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733210532; cv=none; b=SXuDd/XYD7cpz1jfdLuPoyN2PJpuakdTV8c2xGwLpSNUooqHojZVLRGHq0eEXm78xvrc28MmawqR8arrQrUtuyFaZ+yBrq5fFdAwcSGchfvW1UcpmnUA19aBtY1W/tc5cHL+IOhAl2PDC8gK9npcbOmZZav74QAGA4IpUVv2nTs=
+	t=1733210533; cv=none; b=E1U+uh0loxsqJwrYnhsoZ4/xynnUfmQgMvNVy1UOBI9YS7Q46e9yhFQU7Am6BdT8HSIvqNeFF+FiKNXbZRV61a40us0raBfIfnueti4+VUXDOOu6KOFaCZNS6WYH26Q8cqAYzXutg981+A4E/iMyYmVg512GmE4/2kcIOVFC6sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733210532; c=relaxed/simple;
-	bh=PU9CT+RHswkoN/OIxw1I/AULgeESA5lUV1B0SdcKZ20=;
+	s=arc-20240116; t=1733210533; c=relaxed/simple;
+	bh=GYRH3OO6qC3Ffui5fJ/M7pAjCmNdhEieICbOAvKK978=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OigA7/D4OzMMIJ0qkTxTSwN5os7O6fiIL2LYUjCAzTQAI5f3Bw2zrF1v7sRYH0l79rxNlflpPBMtFzBnhnYZmSHciOF2xiXbzD3MYOEYpEqk06g4qJ+WalFTCVX2uJrDqTcHKxOumKPkjW+9EIPuygqYJl7AoSKGgAPDfDxSffU=
+	 MIME-Version; b=mjoh2ykOhGmyj816E+7VtvHeaLMJUBbXNaR+4LA5RJyTn18+6rWSf+QgCxQ3B3zxnZ7JsYOnKN3ZpQP3DSC9i5Tu+EiM1KnwQsperVRDeOmqpgcZXJMGMsqRRDrkCZwHzO+oL3wgzeZpKnLFg1hJyidWshXw7R8luhgh+lHbip8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEL-0004s6-6D; Tue, 03 Dec 2024 08:21:57 +0100
+	id 1tINEL-0004s9-6E; Tue, 03 Dec 2024 08:21:57 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-001Qyx-0Z;
-	Tue, 03 Dec 2024 08:21:55 +0100
+	id 1tINEJ-001QzA-10;
+	Tue, 03 Dec 2024 08:21:56 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-00AEnk-2c;
+	id 1tINEJ-00AEom-2x;
 	Tue, 03 Dec 2024 08:21:55 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 08/21] net: usb: lan78xx: Add error handling to set_rx_max_frame_length and set_mtu
-Date: Tue,  3 Dec 2024 08:21:41 +0100
-Message-Id: <20241203072154.2440034-9-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 14/21] net: usb: lan78xx: Add error handling to lan78xx_get_regs
+Date: Tue,  3 Dec 2024 08:21:47 +0100
+Message-Id: <20241203072154.2440034-15-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
@@ -60,77 +60,61 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Improve error handling in `lan78xx_set_rx_max_frame_length` by:
-- Checking return values from register read/write operations and
-  propagating errors.
-- Exiting immediately on failure to ensure proper error reporting.
-
-In `lan78xx_change_mtu`, log errors when changing MTU fails, using `%pe`
-for clear error representation.
+Update `lan78xx_get_regs` to handle errors during register and PHY
+reads.  Log warnings for failed reads and exit the function early if an
+error occurs.  This ensures that invalid data is not returned to users.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/net/usb/lan78xx.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 33cda7f3dd12..2d16c1fc850e 100644
+index 5d318ff8b33d..62445aced7c6 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2599,27 +2599,36 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 
- static int lan78xx_set_rx_max_frame_length(struct lan78xx_net *dev, int size)
+@@ -2112,20 +2112,35 @@ static void
+ lan78xx_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
+ 		 void *buf)
  {
--	u32 buf;
- 	bool rxenabled;
-+	u32 buf;
-+	int ret;
+-	u32 *data = buf;
+-	int i, j;
+ 	struct lan78xx_net *dev = netdev_priv(netdev);
++	u32 *data = buf;
++	int i, j, ret;
  
--	lan78xx_read_reg(dev, MAC_RX, &buf);
-+	ret = lan78xx_read_reg(dev, MAC_RX, &buf);
-+	if (ret < 0)
-+		return ret;
+ 	/* Read Device/MAC registers */
+-	for (i = 0; i < ARRAY_SIZE(lan78xx_regs); i++)
+-		lan78xx_read_reg(dev, lan78xx_regs[i], &data[i]);
++	for (i = 0; i < ARRAY_SIZE(lan78xx_regs); i++) {
++		ret = lan78xx_read_reg(dev, lan78xx_regs[i], &data[i]);
++		if (ret < 0) {
++			netdev_warn(dev->net,
++				    "failed to read register 0x%08x\n",
++				    lan78xx_regs[i]);
++			return;
++		}
++	}
  
- 	rxenabled = ((buf & MAC_RX_RXEN_) != 0);
+ 	if (!netdev->phydev)
+ 		return;
  
- 	if (rxenabled) {
- 		buf &= ~MAC_RX_RXEN_;
--		lan78xx_write_reg(dev, MAC_RX, buf);
-+		ret = lan78xx_write_reg(dev, MAC_RX, buf);
-+		if (ret < 0)
-+			return ret;
- 	}
+ 	/* Read PHY registers */
+-	for (j = 0; j < 32; i++, j++)
+-		data[i] = phy_read(netdev->phydev, j);
++	for (j = 0; j < 32; i++, j++) {
++		ret = phy_read(netdev->phydev, j);
++		if (ret < 0) {
++			netdev_warn(dev->net,
++				    "failed to read PHY register 0x%02x\n", j);
++			return;
++		}
++
++		data[i] = ret;
++	}
+ }
  
- 	/* add 4 to size for FCS */
- 	buf &= ~MAC_RX_MAX_SIZE_MASK_;
- 	buf |= (((size + 4) << MAC_RX_MAX_SIZE_SHIFT_) & MAC_RX_MAX_SIZE_MASK_);
- 
--	lan78xx_write_reg(dev, MAC_RX, buf);
-+	ret = lan78xx_write_reg(dev, MAC_RX, buf);
-+	if (ret < 0)
-+		return ret;
- 
- 	if (rxenabled) {
- 		buf |= MAC_RX_RXEN_;
--		lan78xx_write_reg(dev, MAC_RX, buf);
-+		ret = lan78xx_write_reg(dev, MAC_RX, buf);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	return 0;
-@@ -2685,7 +2694,10 @@ static int lan78xx_change_mtu(struct net_device *netdev, int new_mtu)
- 		return ret;
- 
- 	ret = lan78xx_set_rx_max_frame_length(dev, max_frame_len);
--	if (!ret)
-+	if (ret < 0)
-+		netdev_err(dev->net, "MTU changed to %d from %d failed with %pe\n",
-+			   new_mtu, netdev->mtu, ERR_PTR(ret));
-+	else
- 		WRITE_ONCE(netdev->mtu, new_mtu);
- 
- 	usb_autopm_put_interface(dev->intf);
+ static const struct ethtool_ops lan78xx_ethtool_ops = {
 -- 
 2.39.5
 
