@@ -1,58 +1,76 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB201F4707;
-	Tue,  3 Dec 2024 12:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F241E7679
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 12:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733229821; cv=none; b=IYw7F4QslEUexMiCphn4grnRomYZaq7mGUvQT7wh68IT4zcAVU5eEpfdV5IyR7gQ84KsK/rnHC72NqAz3aYP3gMCaSZnCKkVBybBqnReE6qk2hl05/fL1QxG0BLbTLpXgbklI0mN97rnFvllL2tbV53yDTXR5KQkQomSxa/usnE=
+	t=1733230170; cv=none; b=Kn/mNO59XPSyojUL+wZnVNXFFarXEuWNNeIDBlIB+zV0WTBoQzyI9UsLpQNHi99NdE4qFwqt16KgKGDosNIywn17zbfxsg4gI04iNESzaB0Tfg+HRQnbwMYa+mhDMJlzcHdCDal1YJnw5B19xAHqyqnopL/094gy9MlbZ0xSb84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733229821; c=relaxed/simple;
-	bh=Zn7Xtt2R2a17J2j22qArH4QSidXz3VWwYxCixsKN0bI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMm8VTLvgNJMCg7Dp0FlMKM1JzGhQyp7Jrxw4OcDJHYDs7xujev6SRpjS+rREtBYEoQM4DqqAdzPDoxboKsgRZuneppwKOc7m2vfXlGIFkEHdjgIx+CoJUIGhO0eEN4qxO40px+YON1g/oAmrgF7WXBgw26sVm0Ordazt2MlNsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=irjPdYeE; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1733230170; c=relaxed/simple;
+	bh=EzxVMfb5epJBDOEa0AqFUbqqvRq+M48yRLx5Ym8HyR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LzmqBJtxg9WTKZNfKjM8YdqGyPyW+rtY0qcy3Q0cEiHw50fuVtC8nsPzevlpsKcDNy92DHj5lJDGSK2mkgmpz0g6uPCjo6b/WOLgLmJ8F1ntIcxmEDeOVpKdIpm/wq2kCvWHnf+YNvTL/Rk6vNSXHV9kw/guQzuBBkSZYa7gtUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=Ah+vLnvZ; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="irjPdYeE"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 599BDE0018;
-	Tue,  3 Dec 2024 12:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733229817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+tvdZ/gxOBepzsWqf8dlkPYMYadq7ckIakRRjzQFrww=;
-	b=irjPdYeEiRScqC6KlZNXt0SaqCvOE+GjA0I4+OGf1Ub8/+raCrWWKavofh8SCrEGoGc/ib
-	4sB0SV7aDB2v0SRRf+NDQWgINjSmIx3QuDGde5H0FObjhba7MiT2i7O562McMU6vrUf9FZ
-	Cw7WHj4r/FnszUGqqSyeaRjyROkE6VLlrFkW1FXbGFYOOo7vwxRTs9vVFR2TDeF8SC++KO
-	jmFyrx1SNBouCOmB3OS+6xLYC3v9kMgYXgiyrXUgiC3JdRvHL3bxBRim7UJeoytOKRUY9k
-	wUHJOAybaR4U9SK14zyKz/UPph0b0yV+7w38dIC/vwWXj+FYHYslMjMXq5VXXg==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Simon Horman <horms@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v3 10/10] net: freescale: ucc_geth: phylink conversion
-Date: Tue,  3 Dec 2024 13:43:21 +0100
-Message-ID: <20241203124323.155866-11-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
-References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="Ah+vLnvZ"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d0cfb9fecaso4531808a12.2
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 04:49:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sartura.hr; s=sartura; t=1733230166; x=1733834966; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=71T3Td0FsXpr7aNeMggizgEb7JGX4xYtxFKIbd6ecOM=;
+        b=Ah+vLnvZO0CgfVrlUSkbbAzqp726QXxUVhX4d8/5QPfJjg7NegitWQchlaTk2BPEpa
+         Ex6sJE7eQRQ9AgNj049yWAYzj++cTOJ8z5/unu0MSmTHksmWqQyiTmYWkmKbrfmSTCm/
+         CzUfD+qu5qmQCBqJEqo/3c599LdYd2BkrQs/qefkzN+LJS3MLGbMQWi2smcXxW9fNJJo
+         fDTQb2vQh7UagNtDzIL5I6v5aZiB0vxr2KXwKprgdupnVHwkF6E2avmgrCkY32CWHZ+8
+         gbw6DsdrQjyxrujsxHSw6tFyNqEEKDRHANhMXLFI87gGo8tdarZMJeLasLmR3AHcIXvp
+         2s5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733230166; x=1733834966;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=71T3Td0FsXpr7aNeMggizgEb7JGX4xYtxFKIbd6ecOM=;
+        b=wGKK39Ru6/4YqBenT5iFUxV6SCQgVQNmsrP0ax+sSK3LscQ9A8Vi5wDDWgkNZb4+iO
+         cB9jf4aZCyO511WZUHmR9/k4yyQ23t6QyIAxgu3SYSxebhrRyhei/IZFbg+IP/3GLQvO
+         fUm1+XsMscmGryPpWH107u1oKakEKXcYz8MtzimprFbmgduwZkpI9ZaXc9CkcocXS1rm
+         GErd7UVVFumFBCyc4QSdfcqRaIpoKpJuYRTPH0KNQDZOdTnODrMnISCS5N6UjYOhwrQX
+         EXsON8+7C9xOA7dKiRx87goOf+MAI9/wX3FapDQcNN+TLgim2i1qpDEm86Us0hmWVdsF
+         +Y2w==
+X-Gm-Message-State: AOJu0YwItZisizwmS3KhRDTIQufJ3tV0/+XDShlcZzGLF/gxg34CnxzV
+	iDNnKjy4UIqwGMJTzh34+scvnpIvj85Q9vhPlxbYyY/VkU28P4TAtzYHTMjIWEpTyhh+Z8oIPX/
+	DV0ZOI0moO0F4KnUutj74ZLhA4SmUGS18WmnIlISKX8Y/U+v/uzjXDsbCqDn1E+1x3phQtta/vR
+	W7VUFzE2aqC8unNOe4sjkQbCa83EDGYkc5VqdYmcVfyg==
+X-Gm-Gg: ASbGncsjvtOh+e/u7Po5uij+lN42n0MC0AXFS+NhufPyuEaAtBhShVrNuzfK6ifvlqG
+	7o+xJBkTckeCd1JgquKkS2IjBC8QgsGarHDNxn1CjGZNIhrEwD1bVU8wPseam3pP14Of8Oxir+L
+	F0uhIjLcCChv5YoAUutk3SZtjEA9L0v/EzKcCNx/V2LRwwKdPcv2FKwY9iWzv4n5MfJUwglktkD
+	SdQG+AU5VvLyth3J/4uUsWEDFprqd6ftXAimYvVegEoQW36UaSTVzIpYBIwXUdwMHFIfPOgGlvs
+	CUINQBChKQ==
+X-Google-Smtp-Source: AGHT+IFRtDhE3+9bEyC4eIuTUxBQX+t/LQZONrANHtN0oq4RL1QcT2E9OQKULQTe5jBWk5yTIO1amQ==
+X-Received: by 2002:a05:6402:5107:b0:5d0:eb2d:db97 with SMTP id 4fb4d7f45d1cf-5d10cb80219mr2092879a12.25.1733230165647;
+        Tue, 03 Dec 2024 04:49:25 -0800 (PST)
+Received: from fedora.. (cpezg-94-253-146-235-cbl.xnet.hr. [94.253.146.235])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5d0b4813332sm5224581a12.3.2024.12.03.04.49.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 04:49:24 -0800 (PST)
+From: Robert Marko <robert.marko@sartura.hr>
+To: netdev@vger.kernel.org,
+	stephen@networkplumber.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	dsahern@kernel.org,
+	jiri@resnulli.us,
+	andrew@lunn.ch
+Cc: luka.perkov@sartura.hr,
+	Robert Marko <robert.marko@sartura.hr>
+Subject: [iproute2-next] ip: link: rmnet: add support for flag handling
+Date: Tue,  3 Dec 2024 13:47:59 +0100
+Message-ID: <20241203124921.200637-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,901 +78,145 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
 
-ucc_geth is quite capable in terms of supported interfaces, and even
-includes an externally controlled PCS (well, TBI). Port that driver to
-phylink.
+Extend the current rmnet support to allow enabling or disabling
+IFLA_RMNET_FLAGS via ip link as well as printing the current settings.
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
 ---
-V3: After adjusting patch 1, I also had to adjust the jump label in this
-patch for the probe error handling.
+ ip/iplink_rmnet.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
- drivers/net/ethernet/freescale/Kconfig        |   3 +-
- drivers/net/ethernet/freescale/ucc_geth.c     | 445 ++++++++----------
- drivers/net/ethernet/freescale/ucc_geth.h     |  13 +-
- .../net/ethernet/freescale/ucc_geth_ethtool.c |  73 +--
- 4 files changed, 209 insertions(+), 325 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-index 75401d2a5fb4..a2d7300925a8 100644
---- a/drivers/net/ethernet/freescale/Kconfig
-+++ b/drivers/net/ethernet/freescale/Kconfig
-@@ -81,8 +81,7 @@ config UCC_GETH
- 	tristate "Freescale QE Gigabit Ethernet"
- 	depends on QUICC_ENGINE && PPC32
- 	select FSL_PQ_MDIO
--	select PHYLIB
--	select FIXED_PHY
-+	select PHYLINK
- 	help
- 	  This driver supports the Gigabit Ethernet mode of the QUICC Engine,
- 	  which is available on some Freescale SOCs.
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 57debcba124c..f47f8177a93b 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -26,7 +26,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/mii.h>
- #include <linux/phy.h>
--#include <linux/phy_fixed.h>
-+#include <linux/phylink.h>
- #include <linux/workqueue.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-@@ -34,6 +34,7 @@
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
- #include <linux/platform_device.h>
-+#include <linux/rtnetlink.h>
- 
- #include <linux/uaccess.h>
- #include <asm/irq.h>
-@@ -1265,84 +1266,6 @@ static bool phy_interface_mode_is_reduced(phy_interface_t interface)
- 	       interface == PHY_INTERFACE_MODE_RTBI;
+diff --git a/ip/iplink_rmnet.c b/ip/iplink_rmnet.c
+index 1d16440c..49d487cc 100644
+--- a/ip/iplink_rmnet.c
++++ b/ip/iplink_rmnet.c
+@@ -16,6 +16,10 @@ static void print_explain(FILE *f)
+ {
+ 	fprintf(f,
+ 		"Usage: ... rmnet mux_id MUXID\n"
++		"		[ deaggregate { on | off } ]\n"
++		"		[ commands { on | off } ]\n"
++		"		[ qmapv4 { on | off } ]\n"
++		"		[ qmapv5 { on | off } ]\n"
+ 		"\n"
+ 		"MUXID := 1-254\n"
+ 	);
+@@ -26,9 +30,16 @@ static void explain(void)
+ 	print_explain(stderr);
  }
  
--static int adjust_enet_interface(struct ucc_geth_private *ugeth)
--{
--	struct ucc_geth_info *ug_info;
--	struct ucc_geth __iomem *ug_regs;
--	struct ucc_fast __iomem *uf_regs;
--	u32 upsmr, maccfg2;
--	u16 value;
--
--	ugeth_vdbg("%s: IN", __func__);
--
--	ug_info = ugeth->ug_info;
--	ug_regs = ugeth->ug_regs;
--	uf_regs = ugeth->uccf->uf_regs;
--
--	/*                    Set MACCFG2                    */
--	maccfg2 = in_be32(&ug_regs->maccfg2);
--
--	/* Disable frame length check */
--	maccfg2 &= ~MACCFG2_LC;
--	maccfg2 &= ~MACCFG2_INTERFACE_MODE_MASK;
--	if ((ugeth->max_speed == SPEED_10) ||
--	    (ugeth->max_speed == SPEED_100))
--		maccfg2 |= MACCFG2_INTERFACE_MODE_NIBBLE;
--	else if (ugeth->max_speed == SPEED_1000)
--		maccfg2 |= MACCFG2_INTERFACE_MODE_BYTE;
--	maccfg2 |= ug_info->padAndCrc;
--	out_be32(&ug_regs->maccfg2, maccfg2);
--
--	/*                    Set UPSMR                      */
--	upsmr = in_be32(&uf_regs->upsmr);
--	upsmr &= ~(UCC_GETH_UPSMR_RPM | UCC_GETH_UPSMR_R10M |
--		   UCC_GETH_UPSMR_TBIM | UCC_GETH_UPSMR_RMM);
--	if (phy_interface_mode_is_reduced(ugeth->phy_interface)) {
--		if (ugeth->phy_interface != PHY_INTERFACE_MODE_RMII)
--			upsmr |= UCC_GETH_UPSMR_RPM;
--		switch (ugeth->max_speed) {
--		case SPEED_10:
--			upsmr |= UCC_GETH_UPSMR_R10M;
--			fallthrough;
--		case SPEED_100:
--			if (ugeth->phy_interface != PHY_INTERFACE_MODE_RTBI)
--				upsmr |= UCC_GETH_UPSMR_RMM;
--		}
--	}
--	if ((ugeth->phy_interface == PHY_INTERFACE_MODE_TBI) ||
--	    (ugeth->phy_interface == PHY_INTERFACE_MODE_RTBI)) {
--		upsmr |= UCC_GETH_UPSMR_TBIM;
--	}
--	if (ugeth->phy_interface == PHY_INTERFACE_MODE_SGMII)
--		upsmr |= UCC_GETH_UPSMR_SGMM;
--
--	out_be32(&uf_regs->upsmr, upsmr);
--
--	/* Disable autonegotiation in tbi mode, because by default it
--	comes up in autonegotiation mode. */
--	/* Note that this depends on proper setting in utbipar register. */
--	if ((ugeth->phy_interface == PHY_INTERFACE_MODE_TBI) ||
--	    (ugeth->phy_interface == PHY_INTERFACE_MODE_RTBI)) {
--		struct ucc_geth_info *ug_info = ugeth->ug_info;
--		struct phy_device *tbiphy;
--
--		if (!ug_info->tbi_node)
--			pr_warn("TBI mode requires that the device tree specify a tbi-handle\n");
--
--		tbiphy = of_phy_find_device(ug_info->tbi_node);
--		if (!tbiphy)
--			pr_warn("Could not get TBI device\n");
--
--		value = phy_read(tbiphy, ENET_TBI_MII_CR);
--		value &= ~0x1000;	/* Turn off autonegotiation */
--		phy_write(tbiphy, ENET_TBI_MII_CR, value);
--
--		put_device(&tbiphy->mdio.dev);
--	}
--
--	return 0;
--}
--
- static int ugeth_graceful_stop_tx(struct ucc_geth_private *ugeth)
- {
- 	struct ucc_fast_private *uccf;
-@@ -1560,64 +1483,62 @@ static void uec_configure_serdes(struct net_device *dev)
- 	put_device(&tbiphy->mdio.dev);
- }
- 
--static void ugeth_link_up(struct ucc_geth_private *ugeth,
--			  struct phy_device *phy,
--			  phy_interface_t interface, int speed, int duplex)
-+static void ugeth_mac_link_up(struct phylink_config *config, struct phy_device *phy,
-+			      unsigned int mode, phy_interface_t interface,
-+			      int speed, int duplex, bool tx_pause, bool rx_pause)
- {
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct ucc_geth_private *ugeth = netdev_priv(ndev);
-+	struct ucc_geth_info *ug_info = ugeth->ug_info;
- 	struct ucc_geth __iomem *ug_regs = ugeth->ug_regs;
- 	struct ucc_fast __iomem *uf_regs = ugeth->uccf->uf_regs;
--	u32 tempval = in_be32(&ug_regs->maccfg2);
--	u32 upsmr = in_be32(&uf_regs->upsmr);
--	int new_state = 0;
-+	u32 old_maccfg2, maccfg2 = in_be32(&ug_regs->maccfg2);
-+	u32 old_upsmr, upsmr = in_be32(&uf_regs->upsmr);
- 
--	/* Now we make sure that we can be in full duplex mode.
--	 * If not, we operate in half-duplex mode.
--	 */
--	if (duplex != ugeth->oldduplex) {
--		new_state = 1;
--		if (duplex == DUPLEX_HALF)
--			tempval &= ~(MACCFG2_FDX);
--		else
--			tempval |= MACCFG2_FDX;
--		ugeth->oldduplex = duplex;
--	}
-+	old_maccfg2 = maccfg2;
-+	old_upsmr = upsmr;
-+
-+	/* No length check */
-+	maccfg2 &= ~MACCFG2_LC;
-+	maccfg2 &= ~MACCFG2_INTERFACE_MODE_MASK;
-+	upsmr &= ~(UCC_GETH_UPSMR_RPM | UCC_GETH_UPSMR_R10M |
-+		   UCC_GETH_UPSMR_TBIM | UCC_GETH_UPSMR_RMM);
-+
-+	if (speed == SPEED_10 || speed == SPEED_100)
-+		maccfg2 |= MACCFG2_INTERFACE_MODE_NIBBLE;
-+	else if (speed == SPEED_1000)
-+		maccfg2 |= MACCFG2_INTERFACE_MODE_BYTE;
-+
-+	maccfg2 |= ug_info->padAndCrc;
-+
-+	if (phy_interface_mode_is_reduced(interface)) {
-+
-+		if (interface != PHY_INTERFACE_MODE_RMII)
-+			upsmr |= UCC_GETH_UPSMR_RPM;
- 
--	if (speed != ugeth->oldspeed) {
--		new_state = 1;
- 		switch (speed) {
--		case SPEED_1000:
--			tempval = ((tempval &
--				    ~(MACCFG2_INTERFACE_MODE_MASK)) |
--				    MACCFG2_INTERFACE_MODE_BYTE);
--			break;
--		case SPEED_100:
- 		case SPEED_10:
--			tempval = ((tempval &
--				    ~(MACCFG2_INTERFACE_MODE_MASK)) |
--				    MACCFG2_INTERFACE_MODE_NIBBLE);
--			/* if reduced mode, re-set UPSMR.R10M */
--			if (phy_interface_mode_is_reduced(interface)) {
--				if (speed == SPEED_10)
--					upsmr |= UCC_GETH_UPSMR_R10M;
--				else
--					upsmr &= ~UCC_GETH_UPSMR_R10M;
--			}
--			break;
--		default:
--			if (netif_msg_link(ugeth))
--				pr_warn("%s:  Speed (%d) is not 10/100/1000!",
--					netdev_name(ugeth->ndev), speed);
--			break;
-+			upsmr |= UCC_GETH_UPSMR_R10M;
-+			fallthrough;
-+		case SPEED_100:
-+			if (interface != PHY_INTERFACE_MODE_RTBI)
-+				upsmr |= UCC_GETH_UPSMR_RMM;
- 		}
--		ugeth->oldspeed = speed;
- 	}
- 
--	if (!ugeth->oldlink) {
--		new_state = 1;
--		ugeth->oldlink = 1;
--	}
-+	if (interface == PHY_INTERFACE_MODE_TBI ||
-+	    interface == PHY_INTERFACE_MODE_RTBI)
-+		upsmr |= UCC_GETH_UPSMR_TBIM;
-+
-+	if (interface == PHY_INTERFACE_MODE_SGMII)
-+		upsmr |= UCC_GETH_UPSMR_SGMM;
- 
--	if (new_state) {
-+	if (duplex == DUPLEX_HALF)
-+		maccfg2 &= ~(MACCFG2_FDX);
-+	else
-+		maccfg2 |= MACCFG2_FDX;
-+
-+	if (maccfg2 != old_maccfg2 || upsmr != old_upsmr) {
- 		/*
- 		 * To change the MAC configuration we need to disable
- 		 * the controller. To do so, we have to either grab
-@@ -1628,69 +1549,79 @@ static void ugeth_link_up(struct ucc_geth_private *ugeth,
- 		ugeth_quiesce(ugeth);
- 		ugeth_disable(ugeth, COMM_DIR_RX_AND_TX);
- 
--		out_be32(&ug_regs->maccfg2, tempval);
-+		out_be32(&ug_regs->maccfg2, maccfg2);
- 		out_be32(&uf_regs->upsmr, upsmr);
- 
- 		ugeth_enable(ugeth, COMM_DIR_RX_AND_TX);
- 		ugeth_activate(ugeth);
- 	}
- 
--	if (netif_msg_link(ugeth))
--		phy_print_status(phy);
--}
-+	if (interface == PHY_INTERFACE_MODE_SGMII)
-+		uec_configure_serdes(ndev);
- 
--static void ugeth_link_down(struct ucc_geth_private *ugeth)
--{
--	ugeth->oldlink = 0;
--	ugeth->oldspeed = 0;
--	ugeth->oldduplex = -1;
--}
-+	if (!phylink_autoneg_inband(mode)) {
-+		ug_info->aufc = 0;
-+		ug_info->receiveFlowControl = rx_pause;
-+		ug_info->transmitFlowControl = tx_pause;
- 
--/* Called every time the controller might need to be made
-- * aware of new link state.  The PHY code conveys this
-- * information through variables in the ugeth structure, and this
-- * function converts those variables into the appropriate
-- * register values, and can bring down the device if needed.
-- */
-+		init_flow_control_params(ug_info->aufc,
-+					 ug_info->receiveFlowControl,
-+					 ug_info->transmitFlowControl,
-+					 ug_info->pausePeriod,
-+					 ug_info->extensionField,
-+					 &ugeth->uccf->uf_regs->upsmr,
-+					 &ugeth->ug_regs->uempr,
-+					 &ugeth->ug_regs->maccfg1);
-+	}
- 
--static void adjust_link(struct net_device *dev)
-+	ugeth_enable(ugeth, COMM_DIR_RX_AND_TX);
++static int on_off(const char *msg, const char *arg)
++{
++	fprintf(stderr, "Error: argument of \"%s\" must be \"on\" or \"off\", not \"%s\"\n", msg, arg);
++	return -1;
 +}
 +
-+static void ugeth_mac_link_down(struct phylink_config *config,
-+				unsigned int mode, phy_interface_t interface)
+ static int rmnet_parse_opt(struct link_util *lu, int argc, char **argv,
+ 			   struct nlmsghdr *n)
  {
--	struct ucc_geth_private *ugeth = netdev_priv(dev);
--	struct phy_device *phydev = dev->phydev;
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct ucc_geth_private *ugeth = netdev_priv(ndev);
++	struct ifla_rmnet_flags flags = { 0 };
+ 	__u16 mux_id;
  
--	if (phydev->link)
--		ugeth_link_up(ugeth, phydev, phydev->interface,
--			      phydev->speed, phydev->duplex);
--	else
--		ugeth_link_down(ugeth);
-+	ugeth_disable(ugeth, COMM_DIR_RX_AND_TX);
- }
- 
--/* Configure the PHY for dev.
-- * returns 0 if success.  -1 if failure
-- */
--static int init_phy(struct net_device *dev)
-+static void ugeth_mac_config(struct phylink_config *config, unsigned int mode,
-+			     const struct phylink_link_state *state)
- {
--	struct ucc_geth_private *priv = netdev_priv(dev);
--	struct ucc_geth_info *ug_info = priv->ug_info;
--	struct phy_device *phydev;
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct ucc_geth_private *ugeth = netdev_priv(ndev);
-+	struct ucc_geth_info *ug_info = ugeth->ug_info;
-+	u16 value;
- 
--	priv->oldlink = 0;
--	priv->oldspeed = 0;
--	priv->oldduplex = -1;
-+	if (state->interface == PHY_INTERFACE_MODE_TBI ||
-+	    state->interface == PHY_INTERFACE_MODE_RTBI) {
-+		struct phy_device *tbiphy;
- 
--	phydev = of_phy_connect(dev, ug_info->phy_node, &adjust_link, 0,
--				priv->phy_interface);
--	if (!phydev) {
--		dev_err(&dev->dev, "Could not attach to PHY\n");
--		return -ENODEV;
--	}
-+		if (!ug_info->tbi_node)
-+			pr_warn("TBI mode requires that the device tree specify a tbi-handle\n");
-+
-+		tbiphy = of_phy_find_device(ug_info->tbi_node);
-+		if (!tbiphy)
-+			pr_warn("Could not get TBI device\n");
-+
-+		value = phy_read(tbiphy, ENET_TBI_MII_CR);
-+		value &= ~0x1000;	/* Turn off autonegotiation */
-+		phy_write(tbiphy, ENET_TBI_MII_CR, value);
- 
--	if (priv->phy_interface == PHY_INTERFACE_MODE_SGMII)
--		uec_configure_serdes(dev);
-+		put_device(&tbiphy->mdio.dev);
-+	}
- 
--	phy_set_max_speed(phydev, priv->max_speed);
-+	if (phylink_autoneg_inband(mode)) {
-+		ug_info->aufc = 1;
- 
--	return 0;
-+		init_flow_control_params(ug_info->aufc, 1, 1,
-+					 ug_info->pausePeriod,
-+					 ug_info->extensionField,
-+					 &ugeth->uccf->uf_regs->upsmr,
-+					 &ugeth->ug_regs->uempr,
-+					 &ugeth->ug_regs->maccfg1);
-+	}
- }
- 
- static void ugeth_dump_regs(struct ucc_geth_private *ugeth)
-@@ -1962,7 +1893,6 @@ static void ucc_geth_set_multi(struct net_device *dev)
- static void ucc_geth_stop(struct ucc_geth_private *ugeth)
- {
- 	struct ucc_geth __iomem *ug_regs = ugeth->ug_regs;
--	struct phy_device *phydev = ugeth->ndev->phydev;
- 
- 	ugeth_vdbg("%s: IN", __func__);
- 
-@@ -1971,7 +1901,7 @@ static void ucc_geth_stop(struct ucc_geth_private *ugeth)
- 	 * Must be done before disabling the controller
- 	 * or deadlock may happen.
- 	 */
--	phy_stop(phydev);
-+	phylink_stop(ugeth->phylink);
- 
- 	/* Disable the controller */
- 	ugeth_disable(ugeth, COMM_DIR_RX_AND_TX);
-@@ -3213,12 +3143,6 @@ static int ucc_geth_init_mac(struct ucc_geth_private *ugeth)
- 		goto err;
+ 	while (argc > 0) {
+@@ -37,6 +48,48 @@ static int rmnet_parse_opt(struct link_util *lu, int argc, char **argv,
+ 			if (get_u16(&mux_id, *argv, 0))
+ 				invarg("mux_id is invalid", *argv);
+ 			addattr16(n, 1024, IFLA_RMNET_MUX_ID, mux_id);
++		} else if (matches(*argv, "deaggregate") == 0) {
++			NEXT_ARG();
++			flags.mask |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
++			if (strcmp(*argv, "on") == 0)
++				flags.flags |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
++			else if (strcmp(*argv, "off") == 0)
++				flags.flags &= RMNET_FLAGS_INGRESS_DEAGGREGATION;
++			else
++				return on_off("deaggregate", *argv);
++		} else if (matches(*argv, "commands") == 0) {
++			NEXT_ARG();
++			flags.mask |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
++			if (strcmp(*argv, "on") == 0)
++				flags.flags |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
++			else if (strcmp(*argv, "off") == 0)
++				flags.flags &= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
++			else
++				return on_off("commands", *argv);
++		} else if (matches(*argv, "qmapv4") == 0) {
++			NEXT_ARG();
++			flags.mask |= RMNET_FLAGS_INGRESS_MAP_CKSUMV4;
++			flags.mask |= RMNET_FLAGS_EGRESS_MAP_CKSUMV4;
++			if (strcmp(*argv, "on") == 0) {
++				flags.flags |= RMNET_FLAGS_INGRESS_MAP_CKSUMV4;
++				flags.flags |= RMNET_FLAGS_EGRESS_MAP_CKSUMV4;
++			} else if (strcmp(*argv, "off") == 0) {
++				flags.flags &= RMNET_FLAGS_INGRESS_MAP_CKSUMV4;
++				flags.flags &= RMNET_FLAGS_EGRESS_MAP_CKSUMV4;
++			} else
++				return on_off("qmapv4", *argv);
++		} else if (matches(*argv, "qmapv5") == 0) {
++			NEXT_ARG();
++			flags.mask |= RMNET_FLAGS_INGRESS_MAP_CKSUMV5;
++			flags.mask |= RMNET_FLAGS_EGRESS_MAP_CKSUMV5;
++			if (strcmp(*argv, "on") == 0) {
++				flags.flags |= RMNET_FLAGS_INGRESS_MAP_CKSUMV5;
++				flags.flags |= RMNET_FLAGS_EGRESS_MAP_CKSUMV5;
++			} else if (strcmp(*argv, "off") == 0) {
++				flags.flags &= RMNET_FLAGS_INGRESS_MAP_CKSUMV5;
++				flags.flags &= RMNET_FLAGS_EGRESS_MAP_CKSUMV5;
++			} else
++				return on_off("qmapv5", *argv);
+ 		} else if (matches(*argv, "help") == 0) {
+ 			explain();
+ 			return -1;
+@@ -48,11 +101,34 @@ static int rmnet_parse_opt(struct link_util *lu, int argc, char **argv,
+ 		argc--, argv++;
  	}
  
--	err = adjust_enet_interface(ugeth);
--	if (err) {
--		netif_err(ugeth, ifup, dev, "Cannot configure net device, aborting\n");
--		goto err;
--	}
--
- 	/*       Set MACSTNADDR1, MACSTNADDR2                */
- 	/* For more details see the hardware spec.           */
- 	init_mac_station_addr_regs(dev->dev_addr[0],
-@@ -3230,12 +3154,6 @@ static int ucc_geth_init_mac(struct ucc_geth_private *ugeth)
- 				   &ugeth->ug_regs->macstnaddr1,
- 				   &ugeth->ug_regs->macstnaddr2);
- 
--	err = ugeth_enable(ugeth, COMM_DIR_RX_AND_TX);
--	if (err) {
--		netif_err(ugeth, ifup, dev, "Cannot enable net device, aborting\n");
--		goto err;
--	}
--
- 	return 0;
- err:
- 	ucc_geth_stop(ugeth);
-@@ -3258,10 +3176,10 @@ static int ucc_geth_open(struct net_device *dev)
- 		return -EINVAL;
- 	}
- 
--	err = init_phy(dev);
-+	err = phylink_of_phy_connect(ugeth->phylink, ugeth->dev->of_node, 0);
- 	if (err) {
--		netif_err(ugeth, ifup, dev, "Cannot initialize PHY, aborting\n");
--		return err;
-+		dev_err(&dev->dev, "Could not attach to PHY\n");
-+		return -ENODEV;
- 	}
- 
- 	err = ucc_geth_init_mac(ugeth);
-@@ -3277,7 +3195,7 @@ static int ucc_geth_open(struct net_device *dev)
- 		goto err;
- 	}
- 
--	phy_start(dev->phydev);
-+	phylink_start(ugeth->phylink);
- 	napi_enable(&ugeth->napi);
- 	netdev_reset_queue(dev);
- 	netif_start_queue(dev);
-@@ -3304,7 +3222,7 @@ static int ucc_geth_close(struct net_device *dev)
- 
- 	cancel_work_sync(&ugeth->timeout_work);
- 	ucc_geth_stop(ugeth);
--	phy_disconnect(dev->phydev);
-+	phylink_disconnect_phy(ugeth->phylink);
- 
- 	free_irq(ugeth->ug_info->uf_info.irq, ugeth->ndev);
- 
-@@ -3338,7 +3256,7 @@ static void ucc_geth_timeout_work(struct work_struct *work)
- 		ucc_geth_stop(ugeth);
- 		ucc_geth_init_mac(ugeth);
- 		/* Must start PHY here */
--		phy_start(dev->phydev);
-+		phylink_start(ugeth->phylink);
- 		netif_tx_start_all_queues(dev);
- 	}
- 
-@@ -3363,6 +3281,7 @@ static int ucc_geth_suspend(struct platform_device *ofdev, pm_message_t state)
- {
- 	struct net_device *ndev = platform_get_drvdata(ofdev);
- 	struct ucc_geth_private *ugeth = netdev_priv(ndev);
-+	bool mac_wol = false;
- 
- 	if (!netif_running(ndev))
- 		return 0;
-@@ -3380,10 +3299,13 @@ static int ucc_geth_suspend(struct platform_device *ofdev, pm_message_t state)
- 		setbits32(ugeth->uccf->p_uccm, UCC_GETH_UCCE_MPD);
- 		setbits32(&ugeth->ug_regs->maccfg2, MACCFG2_MPE);
- 		ucc_fast_enable(ugeth->uccf, COMM_DIR_RX_AND_TX);
--	} else if (!ugeth->phy_wol_en) {
--		phy_stop(ndev->phydev);
-+		mac_wol = true;
- 	}
- 
-+	rtnl_lock();
-+	phylink_suspend(ugeth->phylink, mac_wol);
-+	rtnl_unlock();
++	if (flags.mask)
++		addattr_l(n, 1024, IFLA_RMNET_FLAGS, &flags, sizeof(flags));
 +
  	return 0;
  }
- 
-@@ -3417,12 +3339,9 @@ static int ucc_geth_resume(struct platform_device *ofdev)
- 		}
- 	}
- 
--	ugeth->oldlink = 0;
--	ugeth->oldspeed = 0;
--	ugeth->oldduplex = -1;
--
--	phy_stop(ndev->phydev);
--	phy_start(ndev->phydev);
-+	rtnl_lock();
-+	phylink_resume(ugeth->phylink);
-+	rtnl_unlock();
- 
- 	napi_enable(&ugeth->napi);
- 	netif_device_attach(ndev);
-@@ -3437,13 +3356,12 @@ static int ucc_geth_resume(struct platform_device *ofdev)
- 
- static int ucc_geth_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- {
-+	struct ucc_geth_private *ugeth = netdev_priv(dev);
-+
- 	if (!netif_running(dev))
- 		return -EINVAL;
- 
--	if (!dev->phydev)
--		return -ENODEV;
--
--	return phy_mii_ioctl(dev->phydev, rq, cmd);
-+	return phylink_mii_ioctl(ugeth->phylink, rq, cmd);
- }
- 
- static const struct net_device_ops ucc_geth_netdev_ops = {
-@@ -3451,7 +3369,6 @@ static const struct net_device_ops ucc_geth_netdev_ops = {
- 	.ndo_stop		= ucc_geth_close,
- 	.ndo_start_xmit		= ucc_geth_start_xmit,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_change_carrier     = fixed_phy_change_carrier,
- 	.ndo_set_mac_address	= ucc_geth_set_mac_addr,
- 	.ndo_set_rx_mode	= ucc_geth_set_multi,
- 	.ndo_tx_timeout		= ucc_geth_timeout,
-@@ -3491,6 +3408,12 @@ static int ucc_geth_parse_clock(struct device_node *np, const char *which,
- 	return 0;
- }
- 
-+struct phylink_mac_ops ugeth_mac_ops = {
-+	.mac_link_up = ugeth_mac_link_up,
-+	.mac_link_down = ugeth_mac_link_down,
-+	.mac_config = ugeth_mac_config,
-+};
-+
- static int ucc_geth_probe(struct platform_device* ofdev)
- {
- 	struct device *device = &ofdev->dev;
-@@ -3498,8 +3421,10 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	struct net_device *dev = NULL;
- 	struct ucc_geth_private *ugeth = NULL;
- 	struct ucc_geth_info *ug_info;
-+	struct device_node *phy_node;
-+	struct phylink *phylink;
- 	struct resource res;
--	int err, ucc_num, max_speed = 0;
-+	int err, ucc_num;
- 	const unsigned int *prop;
- 	phy_interface_t phy_interface;
- 
-@@ -3537,57 +3462,35 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	ug_info->uf_info.regs = res.start;
- 	ug_info->uf_info.irq = irq_of_parse_and_map(np, 0);
- 
--	ug_info->phy_node = of_parse_phandle(np, "phy-handle", 0);
--	if (!ug_info->phy_node && of_phy_is_fixed_link(np)) {
--		/*
--		 * In the case of a fixed PHY, the DT node associated
--		 * to the PHY is the Ethernet MAC DT node.
--		 */
--		err = of_phy_register_fixed_link(np);
--		if (err)
--			return err;
--		ug_info->phy_node = of_node_get(np);
--	}
--
- 	/* Find the TBI PHY node.  If it's not there, we don't support SGMII */
- 	ug_info->tbi_node = of_parse_phandle(np, "tbi-handle", 0);
- 
--	prop = of_get_property(ug_info->phy_node, "interface", NULL);
--	if (prop) {
--		dev_err(&ofdev->dev,
--			"Device-tree property 'interface' is no longer supported. Please use 'phy-connection-type' instead.");
--		err = -EINVAL;
--		goto err_deregister_fixed_link;
-+	phy_node = of_parse_phandle(np, "phy-handle", 0);
-+	if (phy_node) {
-+		prop = of_get_property(phy_node, "interface", NULL);
-+		if (prop) {
-+			dev_err(&ofdev->dev,
-+				"Device-tree property 'interface' is no longer supported. Please use 'phy-connection-type' instead.");
-+			of_node_put(phy_node);
-+			err = -EINVAL;
-+			goto err_put_tbi;
-+		}
-+		of_node_put(phy_node);
- 	}
- 
- 	err = of_get_phy_mode(np, &phy_interface);
- 	if (err) {
- 		dev_err(&ofdev->dev, "Invalid phy-connection-type");
--		goto err_deregister_fixed_link;
--	}
--
--	/* get speed, or derive from PHY interface */
--	if (max_speed == 0)
--		switch (phy_interface) {
--		case PHY_INTERFACE_MODE_GMII:
--		case PHY_INTERFACE_MODE_RGMII:
--		case PHY_INTERFACE_MODE_RGMII_ID:
--		case PHY_INTERFACE_MODE_RGMII_RXID:
--		case PHY_INTERFACE_MODE_RGMII_TXID:
--		case PHY_INTERFACE_MODE_TBI:
--		case PHY_INTERFACE_MODE_RTBI:
--		case PHY_INTERFACE_MODE_SGMII:
--			max_speed = SPEED_1000;
--			break;
--		default:
--			max_speed = SPEED_100;
--			break;
--		}
-+		goto err_put_tbi;
++static void rmnet_print_flags(FILE *fp, __u32 flags)
++{
++	open_json_array(PRINT_ANY, is_json_context() ? "flags" : "<");
++#define _PF(f)	if (flags & RMNET_FLAGS_##f) {				\
++		flags &= ~RMNET_FLAGS_##f;				\
++		print_string(PRINT_ANY, NULL, flags ? "%s," : "%s", #f); \
 +	}
++	_PF(INGRESS_DEAGGREGATION);
++	_PF(INGRESS_MAP_COMMANDS);
++	_PF(INGRESS_MAP_CKSUMV4);
++	_PF(EGRESS_MAP_CKSUMV4);
++	_PF(INGRESS_MAP_CKSUMV5);
++	_PF(EGRESS_MAP_CKSUMV5);
++#undef _PF
++	if (flags)
++		print_hex(PRINT_ANY, NULL, "%x", flags);
++	close_json_array(PRINT_ANY, "> ");
++}
  
--	if (max_speed == SPEED_1000) {
-+	if (phy_interface == PHY_INTERFACE_MODE_GMII ||
-+	    phy_interface_mode_is_rgmii(phy_interface) ||
-+	    phy_interface == PHY_INTERFACE_MODE_TBI ||
-+	    phy_interface == PHY_INTERFACE_MODE_RTBI ||
-+	    phy_interface == PHY_INTERFACE_MODE_SGMII) {
- 		unsigned int snums = qe_get_num_of_snums();
- 
--		/* configure muram FIFOs for gigabit operation */
- 		ug_info->uf_info.urfs = UCC_GETH_URFS_GIGA_INIT;
- 		ug_info->uf_info.urfet = UCC_GETH_URFET_GIGA_INIT;
- 		ug_info->uf_info.urfset = UCC_GETH_URFSET_GIGA_INIT;
-@@ -3616,7 +3519,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	dev = devm_alloc_etherdev(&ofdev->dev, sizeof(*ugeth));
- 	if (!dev) {
- 		err = -ENOMEM;
--		goto err_deregister_fixed_link;
-+		goto err_put_tbi;
- 	}
- 
- 	ugeth = netdev_priv(dev);
-@@ -3643,23 +3546,50 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 	dev->max_mtu = 1518;
- 
- 	ugeth->msg_enable = netif_msg_init(debug.msg_enable, UGETH_MSG_DEFAULT);
--	ugeth->phy_interface = phy_interface;
--	ugeth->max_speed = max_speed;
- 
--	/* Carrier starts down, phylib will bring it up */
--	netif_carrier_off(dev);
-+	ugeth->phylink_config.dev = &dev->dev;
-+	ugeth->phylink_config.type = PHYLINK_NETDEV;
+ static void rmnet_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ {
++	struct ifla_rmnet_flags *flags;
 +
-+	ugeth->phylink_config.mac_capabilities =
-+		MAC_SYM_PAUSE | MAC_10 | MAC_100 | MAC_1000FD;
+ 	if (!tb)
+ 		return;
+ 
+@@ -64,6 +140,13 @@ static void rmnet_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 		   "mux_id",
+ 		   "mux_id %u ",
+ 		   rta_getattr_u16(tb[IFLA_RMNET_MUX_ID]));
 +
-+	__set_bit(PHY_INTERFACE_MODE_MII,
-+		  ugeth->phylink_config.supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_RMII,
-+		  ugeth->phylink_config.supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_GMII,
-+		  ugeth->phylink_config.supported_interfaces);
-+	phy_interface_set_rgmii(ugeth->phylink_config.supported_interfaces);
-+
-+	if (ug_info->tbi_node) {
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  ugeth->phylink_config.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_TBI,
-+			  ugeth->phylink_config.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_RTBI,
-+			  ugeth->phylink_config.supported_interfaces);
++	if (tb[IFLA_RMNET_FLAGS]) {
++		if (RTA_PAYLOAD(tb[IFLA_RMNET_FLAGS]) < sizeof(*flags))
++			return;
++		flags = RTA_DATA(tb[IFLA_RMNET_FLAGS]);
++		rmnet_print_flags(f, flags->flags);
 +	}
-+
-+	phylink = phylink_create(&ugeth->phylink_config, dev_fwnode(&dev->dev),
-+				 phy_interface, &ugeth_mac_ops);
-+	if (IS_ERR(phylink)) {
-+		err = PTR_ERR(phylink);
-+		goto err_put_tbi;
-+	}
-+
-+	ugeth->phylink = phylink;
- 
- 	err = devm_register_netdev(&ofdev->dev, dev);
- 	if (err) {
- 		if (netif_msg_probe(ugeth))
- 			pr_err("%s: Cannot register net device, aborting\n",
- 			       dev->name);
--		goto err_deregister_fixed_link;
-+		goto err_destroy_phylink;
- 	}
- 
- 	err = of_get_ethdev_address(np, dev);
- 	if (err == -EPROBE_DEFER)
--		goto err_deregister_fixed_link;
-+		goto err_destroy_phylink;
- 
- 	ugeth->ug_info = ug_info;
- 	ugeth->dev = device;
-@@ -3668,11 +3598,11 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 
- 	return 0;
- 
--err_deregister_fixed_link:
--	if (of_phy_is_fixed_link(np))
--		of_phy_deregister_fixed_link(np);
-+err_destroy_phylink:
-+	phylink_destroy(phylink);
-+err_put_tbi:
- 	of_node_put(ug_info->tbi_node);
--	of_node_put(ug_info->phy_node);
-+
- 	return err;
  }
  
-@@ -3680,13 +3610,10 @@ static void ucc_geth_remove(struct platform_device* ofdev)
- {
- 	struct net_device *dev = platform_get_drvdata(ofdev);
- 	struct ucc_geth_private *ugeth = netdev_priv(dev);
--	struct device_node *np = ofdev->dev.of_node;
- 
- 	ucc_geth_memclean(ugeth);
--	if (of_phy_is_fixed_link(np))
--		of_phy_deregister_fixed_link(np);
-+	phylink_destroy(ugeth->phylink);
- 	of_node_put(ugeth->ug_info->tbi_node);
--	of_node_put(ugeth->ug_info->phy_node);
- }
- 
- static const struct of_device_id ucc_geth_match[] = {
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
-index dfb727327093..38789faae706 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.h
-+++ b/drivers/net/ethernet/freescale/ucc_geth.h
-@@ -16,6 +16,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/list.h>
-+#include <linux/phylink.h>
- #include <linux/if_ether.h>
- 
- #include <soc/fsl/qe/immap_qe.h>
-@@ -1074,6 +1075,9 @@ struct ucc_geth_tad_params {
- 	u16 vid;
- };
- 
-+struct phylink;
-+struct phylink_config;
-+
- /* GETH protocol initialization structure */
- struct ucc_geth_info {
- 	struct ucc_fast_info uf_info;
-@@ -1124,7 +1128,6 @@ struct ucc_geth_info {
- 	u32 eventRegMask;
- 	u16 pausePeriod;
- 	u16 extensionField;
--	struct device_node *phy_node;
- 	struct device_node *tbi_node;
- 	u8 weightfactor[NUM_TX_QUEUES];
- 	u8 interruptcoalescingmaxvalue[NUM_RX_QUEUES];
-@@ -1209,15 +1212,13 @@ struct ucc_geth_private {
- 	u16 skb_dirtytx[NUM_TX_QUEUES];
- 
- 	struct ugeth_mii_info *mii_info;
--	phy_interface_t phy_interface;
--	int max_speed;
- 	uint32_t msg_enable;
--	int oldspeed;
--	int oldduplex;
--	int oldlink;
- 	u32 wol_en;
- 	u32 phy_wol_en;
- 
-+	struct phylink *phylink;
-+	struct phylink_config phylink_config;
-+
- 	struct device_node *node;
- };
- 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-index 89b323ef8145..1fb49e5a414a 100644
---- a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-@@ -103,26 +103,18 @@ static const char rx_fw_stat_gstrings[][ETH_GSTRING_LEN] = {
- static int
- uec_get_ksettings(struct net_device *netdev, struct ethtool_link_ksettings *cmd)
- {
--	struct phy_device *phydev = netdev->phydev;
--
--	if (!phydev)
--		return -ENODEV;
--
--	phy_ethtool_ksettings_get(phydev, cmd);
-+	struct ucc_geth_private *ugeth = netdev_priv(netdev);
- 
--	return 0;
-+	return phylink_ethtool_ksettings_get(ugeth->phylink, cmd);
- }
- 
- static int
- uec_set_ksettings(struct net_device *netdev,
- 		  const struct ethtool_link_ksettings *cmd)
- {
--	struct phy_device *phydev = netdev->phydev;
--
--	if (!phydev)
--		return -ENODEV;
-+	struct ucc_geth_private *ugeth = netdev_priv(netdev);
- 
--	return phy_ethtool_ksettings_set(phydev, cmd);
-+	return phylink_ethtool_ksettings_set(ugeth->phylink, cmd);
- }
- 
- static void
-@@ -130,15 +122,8 @@ uec_get_pauseparam(struct net_device *netdev,
-                      struct ethtool_pauseparam *pause)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
--	struct phy_device *phydev = netdev->phydev;
--
--	if (phydev)
--		pause->autoneg = phydev->autoneg;
- 
--	if (ugeth->ug_info->receiveFlowControl)
--		pause->rx_pause = 1;
--	if (ugeth->ug_info->transmitFlowControl)
--		pause->tx_pause = 1;
-+	return phylink_ethtool_get_pauseparam(ugeth->phylink, pause);
- }
- 
- static int
-@@ -146,31 +131,11 @@ uec_set_pauseparam(struct net_device *netdev,
-                      struct ethtool_pauseparam *pause)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
--	struct phy_device *phydev = netdev->phydev;
--	int ret = 0;
- 
- 	ugeth->ug_info->receiveFlowControl = pause->rx_pause;
- 	ugeth->ug_info->transmitFlowControl = pause->tx_pause;
- 
--	if (phydev && phydev->autoneg) {
--		if (netif_running(netdev)) {
--			/* FIXME: automatically restart */
--			netdev_info(netdev, "Please re-open the interface\n");
--		}
--	} else {
--		struct ucc_geth_info *ug_info = ugeth->ug_info;
--
--		ret = init_flow_control_params(ug_info->aufc,
--					ug_info->receiveFlowControl,
--					ug_info->transmitFlowControl,
--					ug_info->pausePeriod,
--					ug_info->extensionField,
--					&ugeth->uccf->uf_regs->upsmr,
--					&ugeth->ug_regs->uempr,
--					&ugeth->ug_regs->maccfg1);
--	}
--
--	return ret;
-+	return phylink_ethtool_set_pauseparam(ugeth->phylink, pause);
- }
- 
- static uint32_t
-@@ -344,13 +309,8 @@ uec_get_drvinfo(struct net_device *netdev,
- static void uec_get_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
--	struct phy_device *phydev = netdev->phydev;
--
--	wol->supported = 0;
--	wol->wolopts = 0;
- 
--	if (phydev)
--		phy_ethtool_get_wol(phydev, wol);
-+	phylink_ethtool_get_wol(ugeth->phylink, wol);
- 
- 	if (qe_alive_during_sleep())
- 		wol->supported |= WAKE_MAGIC;
-@@ -361,19 +321,16 @@ static void uec_get_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- static int uec_set_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
--	struct phy_device *phydev = netdev->phydev;
- 	int ret = 0;
- 
--	if (phydev) {
--		ret = phy_ethtool_set_wol(phydev, wol);
--		if (ret == -EOPNOTSUPP) {
--			ugeth->phy_wol_en = 0;
--		} else if (ret) {
--			return ret;
--		} else {
--			ugeth->phy_wol_en = wol->wolopts;
--			goto out;
--		}
-+	ret = phylink_ethtool_set_wol(ugeth->phylink, wol);
-+	if (ret == -EOPNOTSUPP) {
-+		ugeth->phy_wol_en = 0;
-+	} else if (ret) {
-+		return ret;
-+	} else {
-+		ugeth->phy_wol_en = wol->wolopts;
-+		goto out;
- 	}
- 
- 	/* If the PHY isn't handling the WoL and the MAC is asked to more than
+ static void rmnet_print_help(struct link_util *lu, int argc, char **argv,
 -- 
-2.47.0
+2.47.1
 
