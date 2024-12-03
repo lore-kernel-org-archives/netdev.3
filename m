@@ -1,189 +1,116 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE31F76B9
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 19:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20084A29;
+	Tue,  3 Dec 2024 19:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733254796; cv=none; b=SySghDRpZwBPPlLVDWE6AWlcneSY3PGFzoUUjDltehYI1hYV74i57JgwrDzXngcR/sktBaeGhOnnn1az1AfifsJ1VsAgi6ZQvUg6PhhSRtXfkYSeK2At6A4spCfXT5SAPRe9eIktwpgEskUUVnBb/tUQTQ9dDP6uzsFDyq121nU=
+	t=1733255439; cv=none; b=UnMRRE/ahIfOFt8kqf3+qe6DDrIB1k2nnfoDbo/iP9qZcEl0efywo8mH/uLmYaIv5EHbo+T7VFVRusi4jLHwPL6NwDWe7egrjELJ44eonozpPmr7SmF8TRnaFaJohBgSZuKE7aQ8ED2ux4M77rgAySh5pwRknUfbzv29YlVbwGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733254796; c=relaxed/simple;
-	bh=jst4k0lpwWz/JgrqCgkdYIhbXw0yvHwbQqc+zlYC3PQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BsFw2+3zw61SgEdZsznacqvRLfku+5JV19yhggRiDa6VNhP4JHaG9Msum+sDmJxwfnhqbT84VY0fNwaT09y3nr52Nfm1C7MEu+9puE4UJVs9pRzlOTrgukNY91b+KiLYvUuvpnMkHR3voGqDXN4rZ8Go1GPD0+DY0pHneo+h+vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=c6re080E; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+	s=arc-20240116; t=1733255439; c=relaxed/simple;
+	bh=kFlYwn6ayP5qqBDY6UmZrLnFtOzph21tXcwoPje9qE0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KuxOlJOH1q/J3TPoM6Tko9VXzDeey01Xl2dOBDVzAXws2b596N3R+sR2osgYAjteMJsVLMndMk8q5UfUWRpg46sPXY457+REGAZ6070TSEeJKiJ40xnak0MEG8iRpv7YN1CZDOvx9Xmqys1J2hCw/juxcwsmNOHC93dbRE9Zyuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPimEKq5; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="c6re080E"
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D4E5D900071;
-	Tue,  3 Dec 2024 19:39:50 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id F188713C2B6;
-	Tue,  3 Dec 2024 11:39:48 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F188713C2B6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1733254789;
-	bh=jst4k0lpwWz/JgrqCgkdYIhbXw0yvHwbQqc+zlYC3PQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=c6re080E8gutaQBxvtsLi0qivBQsDaZrDcjH/oxx4rOUYjikZmHYvwD9AbYtCF1wC
-	 /MnV5tqvil2NfUfbU4FfrjRHuM8m/GbogtIeXImHnjVWc45mQjW+KR0+RMfDRShpoh
-	 aHMRUp7zLZ6Z975uUs40a0UIlNpX+xwd1SNBYDPc=
-From: greearb@candelatech.com
-To: netdev@vger.kernel.org
-Cc: Jason@zx2c4.com,
-	wireguard@lists.zx2c4.com,
-	dsahern@kernel.org,
-	Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v2] net: wireguard: Allow binding to specific ifindex
-Date: Tue,  3 Dec 2024 11:39:39 -0800
-Message-ID: <20241203193939.1953303-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPimEKq5"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71d4994dfbaso87912a34.0;
+        Tue, 03 Dec 2024 11:50:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733255437; x=1733860237; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ifgqa+vTgRi8G8JNmUoN0vZKwQw99/lv6G+n2Nugids=;
+        b=dPimEKq56111BDbvLE+MGdK3GwdK9p0l+SZ52TmorOfxISqLFzDygFXA3HFZLgra9e
+         dI791q9qQFzrTFmZ/4sZ3Uoqkxnt9hrVwxw/XpDz5BTxC2eieIqUuVi7s/Iw+9OwFLUV
+         e5Hasbc/iYv3GArgxqzWVDKHqfm+HMzzaMk3b2z40H37yd0mEK5oOybkxBYwQqa/52q+
+         DRCaNeRp96ENLWNz3ybA4mUe95hrAQEDDzNFbnI/5WZ4UqWoEH07vN5b7gqpCdxlCvE+
+         2dOFQR9rr3DGMNi4/qtfB/HNeU3KtHnOeh33GLZLXlfprX8X97RbnvukXrJ+WfZ6aQ3v
+         Kdkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733255437; x=1733860237;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ifgqa+vTgRi8G8JNmUoN0vZKwQw99/lv6G+n2Nugids=;
+        b=hY0GC3CdI8CSKjIgG0T8f0q8tFX5zelRoJJZzoTpegGAQhCmCuBFM/1bPok3mBtd4l
+         eAp9GdpPl49sQ1CP1jXgXhl/uE+FcJw7ZU21Adatz7gf6k610GhWVUWWCsccmZVvDHl2
+         JBP4aKB4Mo79QcIPaYW2jWGf7DZzRg6MyvC2QzucAyiTeK1CgSdgZvDGjHeyPN8e0Cso
+         2NDkWkwBu70lCZHcGM7Qxk/ozAHXjD0pmJuNlJiIsdL361o/N2WSUeVbP4RwFehLy0sM
+         9hQwmFaI10T59u5lhKGpQwv2mYSYs9kXb9pk0xztY2qBQ4olXwxqViOtv4Ws6f3bIqkX
+         KsUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWDEIHCCxG3mrMODS/Hb5yCZcDRgj9+t6jjQnWTTd0k1iVJiY4vFQ3Vzdk5B5neh+xV3Pk0VaPm1ZYIEhI=@vger.kernel.org, AJvYcCXdSSmrTM3kWOfEycKWBQ9pydWlMd+NlxE8BsMAxEPN8B85emwB65IxWOzRY6H8hnG7hTqOPqer@vger.kernel.org
+X-Gm-Message-State: AOJu0YzujOLiapAseSQZ38enFzMkrFY5i4NlMpkjz5XjAAjoai6/z+dU
+	uKbDLnyPTIRxBz5z8ETuxSHdHA7S/ExQk4awmNFaRbvv7mhvu2vtBlBUELTBAzxK70/RDTP3VhQ
+	FS4NjfUTU6fFOhG6mA71viK9k1LW7Irzn
+X-Gm-Gg: ASbGncsdggmJDqZstQ0zE2FaKe16z2Lov31igIuPGpgRbcbAyxqt7WyCuy/MfFoepwi
+	DF09NBZlnSBTb1Tl+T6xPij5REe9t8DORM83zVXhkxOgSZSAcKugVa17f9XvR
+X-Google-Smtp-Source: AGHT+IHChxvWasxRatX3dpdatcYjYbz8GgvAB9LdIpIWz9KT8LLHO03VZpXRHfyCW77TBTi98NMNt2Aclsjno0yFydA=
+X-Received: by 2002:a05:6830:630d:b0:71d:4d35:313b with SMTP id
+ 46e09a7af769-71daddab700mr2628814a34.1.1733255436713; Tue, 03 Dec 2024
+ 11:50:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1733254792-XQiFu4kcUtCa
-X-MDID-O:
- us5;at1;1733254792;XQiFu4kcUtCa;<greearb@candelatech.com>;2cb6a4bd943e67fe8a6fabf2d7a930d0
-X-PPE-TRUSTED: V=1;DIR=OUT;
+References: <cover.1733216767.git.jstancek@redhat.com> <20b2bdfe94fed5b9694e22c79c79858502f5e014.1733216767.git.jstancek@redhat.com>
+In-Reply-To: <20b2bdfe94fed5b9694e22c79c79858502f5e014.1733216767.git.jstancek@redhat.com>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Tue, 3 Dec 2024 19:50:25 +0000
+Message-ID: <CAD4GDZzY8YXY0Oszb0NP_=AwSEa-nEKxDwVKY3T7eqoo9uLkaA@mail.gmail.com>
+Subject: Re: [PATCH 1/5] tools: ynl: move python code to separate sub-directory
+To: Jan Stancek <jstancek@redhat.com>
+Cc: kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ben Greear <greearb@candelatech.com>
+On Tue, 3 Dec 2024 at 09:27, Jan Stancek <jstancek@redhat.com> wrote:
+>
+> Move python code to a separate directory so it can be
+> packaged as a python module.
+>
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> ---
+>  tools/net/ynl/Makefile                    | 1 +
+>  tools/net/ynl/generated/Makefile          | 2 +-
+>  tools/net/ynl/lib/.gitignore              | 1 -
+>  tools/net/ynl/lib/Makefile                | 1 -
+>  tools/net/ynl/pyynl/__init__.py           | 0
+>  tools/net/ynl/{ => pyynl}/cli.py          | 0
 
-Which allows us to bind to VRF.
+Perhaps we could have a symlink to cli.py from the original location
+for compatibility with existing in-place usage. Same for ethtool.py
+and other user-facing scripts.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
+>  tools/net/ynl/{ => pyynl}/ethtool.py      | 0
+>  tools/net/ynl/pyynl/lib/.gitignore        | 1 +
+>  tools/net/ynl/{ => pyynl}/lib/__init__.py | 0
+>  tools/net/ynl/{ => pyynl}/lib/nlspec.py   | 0
+>  tools/net/ynl/{ => pyynl}/lib/ynl.py      | 0
+>  tools/net/ynl/{ => pyynl}/ynl-gen-c.py    | 0
+>  tools/net/ynl/{ => pyynl}/ynl-gen-rst.py  | 0
 
-v2:  Fix bad use of comma, semicolon now used instead.
+The documentation build depends on this location. This patch is
+required to fix it:
 
- drivers/net/wireguard/device.h  |  1 +
- drivers/net/wireguard/netlink.c | 12 +++++++++++-
- drivers/net/wireguard/socket.c  |  8 +++++++-
- include/uapi/linux/wireguard.h  |  3 +++
- 4 files changed, 22 insertions(+), 2 deletions(-)
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index fa71602ec961..52c6c5a3efa9 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -104,7 +104,7 @@ quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath
+$(BUILDDIR)/$3/$4)
+ YNL_INDEX:=$(srctree)/Documentation/networking/netlink_spec/index.rst
+ YNL_RST_DIR:=$(srctree)/Documentation/networking/netlink_spec
+ YNL_YAML_DIR:=$(srctree)/Documentation/netlink/specs
+-YNL_TOOL:=$(srctree)/tools/net/ynl/ynl-gen-rst.py
++YNL_TOOL:=$(srctree)/tools/net/ynl/pyynl/ynl_gen_rst.py
 
-diff --git a/drivers/net/wireguard/device.h b/drivers/net/wireguard/device.h
-index 43c7cebbf50b..9698d9203915 100644
---- a/drivers/net/wireguard/device.h
-+++ b/drivers/net/wireguard/device.h
-@@ -53,6 +53,7 @@ struct wg_device {
- 	atomic_t handshake_queue_len;
- 	unsigned int num_peers, device_update_gen;
- 	u32 fwmark;
-+	int lowerdev; /* ifindex of lower level device to bind UDP transport */
- 	u16 incoming_port;
- };
- 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index f7055180ba4a..5de3d59a17b0 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -27,7 +27,8 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- 	[WGDEVICE_A_FLAGS]		= { .type = NLA_U32 },
- 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
- 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
--	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
-+	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED },
-+	[WGDEVICE_A_LOWERDEV]		= { .type = NLA_U32 },
- };
- 
- static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
-@@ -232,6 +233,7 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 		if (nla_put_u16(skb, WGDEVICE_A_LISTEN_PORT,
- 				wg->incoming_port) ||
- 		    nla_put_u32(skb, WGDEVICE_A_FWMARK, wg->fwmark) ||
-+		    nla_put_u32(skb, WGDEVICE_A_LOWERDEV, wg->lowerdev) ||
- 		    nla_put_u32(skb, WGDEVICE_A_IFINDEX, wg->dev->ifindex) ||
- 		    nla_put_string(skb, WGDEVICE_A_IFNAME, wg->dev->name))
- 			goto out;
-@@ -530,6 +532,14 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 			wg_socket_clear_peer_endpoint_src(peer);
- 	}
- 
-+	if (info->attrs[WGDEVICE_A_LOWERDEV]) {
-+		struct wg_peer *peer;
-+
-+		wg->lowerdev = nla_get_u32(info->attrs[WGDEVICE_A_LOWERDEV]);
-+		list_for_each_entry(peer, &wg->peer_list, peer_list)
-+			wg_socket_clear_peer_endpoint_src(peer);
-+	}
-+
- 	if (info->attrs[WGDEVICE_A_LISTEN_PORT]) {
- 		ret = set_port(wg,
- 			nla_get_u16(info->attrs[WGDEVICE_A_LISTEN_PORT]));
-diff --git a/drivers/net/wireguard/socket.c b/drivers/net/wireguard/socket.c
-index 0414d7a6ce74..7cef4b27f6ba 100644
---- a/drivers/net/wireguard/socket.c
-+++ b/drivers/net/wireguard/socket.c
-@@ -25,7 +25,8 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
- 		.daddr = endpoint->addr4.sin_addr.s_addr,
- 		.fl4_dport = endpoint->addr4.sin_port,
- 		.flowi4_mark = wg->fwmark,
--		.flowi4_proto = IPPROTO_UDP
-+		.flowi4_proto = IPPROTO_UDP,
-+		.flowi4_oif = wg->lowerdev,
- 	};
- 	struct rtable *rt = NULL;
- 	struct sock *sock;
-@@ -111,6 +112,9 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
- 	struct sock *sock;
- 	int ret = 0;
- 
-+	if (wg->lowerdev)
-+		fl.flowi6_oif = wg->lowerdev;
-+
- 	skb_mark_not_on_list(skb);
- 	skb->dev = wg->dev;
- 	skb->mark = wg->fwmark;
-@@ -360,6 +364,7 @@ int wg_socket_init(struct wg_device *wg, u16 port)
- 		.family = AF_INET,
- 		.local_ip.s_addr = htonl(INADDR_ANY),
- 		.local_udp_port = htons(port),
-+		.bind_ifindex = wg->lowerdev,
- 		.use_udp_checksums = true
- 	};
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -369,6 +374,7 @@ int wg_socket_init(struct wg_device *wg, u16 port)
- 		.local_ip6 = IN6ADDR_ANY_INIT,
- 		.use_udp6_tx_checksums = true,
- 		.use_udp6_rx_checksums = true,
-+		.bind_ifindex = wg->lowerdev,
- 		.ipv6_v6only = true
- 	};
- #endif
-diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
-index ae88be14c947..f3784885389a 100644
---- a/include/uapi/linux/wireguard.h
-+++ b/include/uapi/linux/wireguard.h
-@@ -29,6 +29,7 @@
-  *    WGDEVICE_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
-  *    WGDEVICE_A_LISTEN_PORT: NLA_U16
-  *    WGDEVICE_A_FWMARK: NLA_U32
-+ *    WGDEVICE_A_LOWERDEV: NLA_U32
-  *    WGDEVICE_A_PEERS: NLA_NESTED
-  *        0: NLA_NESTED
-  *            WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
-@@ -83,6 +84,7 @@
-  *    WGDEVICE_A_PRIVATE_KEY: len WG_KEY_LEN, all zeros to remove
-  *    WGDEVICE_A_LISTEN_PORT: NLA_U16, 0 to choose randomly
-  *    WGDEVICE_A_FWMARK: NLA_U32, 0 to disable
-+ *    WGDEVICE_A_LOWERDEV: NLA_U32, ifindex to bind lower transport, 0 to disable
-  *    WGDEVICE_A_PEERS: NLA_NESTED
-  *        0: NLA_NESTED
-  *            WGPEER_A_PUBLIC_KEY: len WG_KEY_LEN
-@@ -157,6 +159,7 @@ enum wgdevice_attribute {
- 	WGDEVICE_A_LISTEN_PORT,
- 	WGDEVICE_A_FWMARK,
- 	WGDEVICE_A_PEERS,
-+	WGDEVICE_A_LOWERDEV,
- 	__WGDEVICE_A_LAST
- };
- #define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
--- 
-2.42.0
-
+ YNL_RST_FILES_TMP := $(patsubst %.yaml,%.rst,$(wildcard
+$(YNL_YAML_DIR)/*.yaml))
+ YNL_RST_FILES := $(patsubst $(YNL_YAML_DIR)%,$(YNL_RST_DIR)%,
+$(YNL_RST_FILES_TMP))
