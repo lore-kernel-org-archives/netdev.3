@@ -1,125 +1,102 @@
-Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A512A189F39
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 08:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31CC1CDA17
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 08:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733214056; cv=none; b=YpAkygFBqRERPK8eOopVMO3Y+sEskP+fP0dQJh6GNRrrb/dwih62UtyA557NhWy/7U/RaXoEKo7yF1oYimIfwpCfPGfVQnrdiq3NnNEZJH4cpQOmGAoTTH0mouREBLwd0xp+Qi+s0HsTQ1rVYr0tosu7V2RtNUVH2GxAvGzo/vk=
+	t=1733214487; cv=none; b=ACqRY5MdxACvKgQKkDH2u/xnaJbaAJAz+ZDZwd3C6A/hbx77oiUaMVNZrK0qaAJdfsJShVJUvDxmuuidrc//RXpSsxE/j8MlOWVoQlnq3aVqnRnjQC7u76Mc/xJ3GX40neU2pWvgqNWjP0VhKO0GJC36o+4TK96FWzwx2eULkUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733214056; c=relaxed/simple;
-	bh=a/ziReuEbT1K8R1zLEe+HU8Wkbwhm+/KX9r1MAxFvJ0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=IuvNDKXHjiqki5y3TAdfU3yK3+aXZkA5TiupWxIMFGsU01eV12jsbdpcuHdVKJjtC86N0zhKXIt5B+++iOGUjznTDETTUmFRJ+vRgdXvN8oga5c38FCjc8IxkoB6ms0R7akt2jXiCilMpOC8v7MbtrcLj1IoGPGkZ+XJdtokzzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=Z/vaFr9m; arc=none smtp.client-ip=3.9.82.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
+	s=arc-20240116; t=1733214487; c=relaxed/simple;
+	bh=II6l3Ydybgfvkv2hN8JeiJTpharRPOZoUX5XEw8lMwc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iNg1WtERMrNjhXREHZ/837qck8c7fpugkIE+zsj/cCcbmZ1MgclkOIRPrSLbcGpixQOELSUmDAMSoEa0u28Dd+xPb/mXobPD1f9w5c5v5Djegz213FriDC9mEn4ghuu5xDV4F0DlR3vfFgShIplJLe11stYBI/C+oP5lveF8/zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JXUHrhhL; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="Z/vaFr9m"
-Received: from [IPV6:2a02:8010:6359:2:9c63:293c:9db9:bde3] (unknown [IPv6:2a02:8010:6359:2:9c63:293c:9db9:bde3])
-	(Authenticated sender: james)
-	by mail.katalix.com (Postfix) with ESMTPSA id A25317DEBC;
-	Tue,  3 Dec 2024 08:12:31 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1733213557; bh=a/ziReuEbT1K8R1zLEe+HU8Wkbwhm+/KX9r1MAxFvJ0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:From;
-	z=Message-ID:=20<bb2cd5e8-39c3-4fc4-e02e-2c2d6bf01f64@katalix.com>|
-	 Date:=20Tue,=203=20Dec=202024=2008:12:29=20+0000|MIME-Version:=201
-	 .0|To:=20Guillaume=20Nault=20<gnault@redhat.com>,=20David=20Miller
-	 =20<davem@davemloft.net>,=0D=0A=20Jakub=20Kicinski=20<kuba@kernel.
-	 org>,=20Paolo=20Abeni=20<pabeni@redhat.com>,=0D=0A=20Eric=20Dumaze
-	 t=20<edumazet@google.com>|Cc:=20netdev@vger.kernel.org,=20Simon=20
-	 Horman=20<horms@kernel.org>,=0D=0A=20David=20Ahern=20<dsahern@kern
-	 el.org>,=20Andrew=20Lunn=20<andrew+netdev@lunn.ch>|References:=20<
-	 cover.1733175419.git.gnault@redhat.com>|From:=20James=20Chapman=20
-	 <jchapman@katalix.com>|Subject:=20Re:=20[PATCH=20net-next=200/4]=2
-	 0net:=20Convert=20some=20UDP=20tunnel=20drivers=20to=0D=0A=20NETDE
-	 V_PCPU_STAT_DSTATS.|In-Reply-To:=20<cover.1733175419.git.gnault@re
-	 dhat.com>;
-	b=Z/vaFr9mYHN+ZnqlQb2pfdm3NAGrttWO1FvyuCN/AEEnCnLqO+nfmYHJnxS8MZr3e
-	 rP020xWUzDI0+0F3kHdlA9bMW+65ZqXXgFE0Bp7A2wIkn0NCad+JApfuaNOgopBBt3
-	 d/iP7f2CLFXfWzokuI9224iEaLKlWcn3dz/+9XQTcU28oddcc7IqdkYYa/9UlJU3XC
-	 bI8r5EmLhKGsbh1PQr78oLkCOqfbj+OXTGg8Tate/OgP6XhMUlMCHz0Wt1NAXn9zKK
-	 siG8Haf+p3ZYJPGUPNZskgAEqUbSetYMsXgtWyPsOVknicqINIctKHzQ0b7PukrrOR
-	 pOBeVm+FB9hlg==
-Message-ID: <bb2cd5e8-39c3-4fc4-e02e-2c2d6bf01f64@katalix.com>
-Date: Tue, 3 Dec 2024 08:12:29 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JXUHrhhL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733214486; x=1764750486;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=II6l3Ydybgfvkv2hN8JeiJTpharRPOZoUX5XEw8lMwc=;
+  b=JXUHrhhL0f6bpV2JECEuMMPE6Him7bvqunkbHATR2x0kzjjx7dzAgCur
+   O2kIqBuNWAeh//bzNeGBT+/NyKZMGnMti3oWFlCLZUz6QaLFF3yLIW7iN
+   eYn4GeEHUJW3H8Qxk+qVa4uf2uTE2UZsX2OTZwzh836MCzKqmEh9/JrFT
+   2s1l4GvK1gEc3pW/MPCvBB4poU5B1DyIN9llWnnJ6a4OS29AUWyszjSko
+   yqVRHRPn0CnDRflSeFP3LeuZ1NDAQYtOHVPoQRH/JueRpjjqKTROTzSci
+   sx42/H5X35BARKni5D8a5SbPvprZGrtsKV7uQ06kfmR8jQf+kBP25tYQf
+   A==;
+X-CSE-ConnectionGUID: J9hNEIjNQnCGZF4ug4zAFQ==
+X-CSE-MsgGUID: om7Ec5wQQd6W7mpN+dOoCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44081447"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; 
+   d="scan'208";a="44081447"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 00:28:05 -0800
+X-CSE-ConnectionGUID: hAoOTeqKR8Kh+8bWRhxIuw==
+X-CSE-MsgGUID: TgTOXg0SSZ24Wwm0Y74H8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; 
+   d="scan'208";a="93820710"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa009.fm.intel.com with ESMTP; 03 Dec 2024 00:28:03 -0800
+Received: from pkitszel-desk.tendawifi.com (unknown [10.245.246.131])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 141552876E;
+	Tue,  3 Dec 2024 08:28:01 +0000 (GMT)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: netdev@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH iwl-next] fixup! ice: dump ethtool stats and skb by Tx hang devlink health reporter
+Date: Tue,  3 Dec 2024 09:25:33 +0100
+Message-ID: <20241203082753.4831-2-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To: Guillaume Nault <gnault@redhat.com>, David Miller <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
-References: <cover.1733175419.git.gnault@redhat.com>
-From: James Chapman <jchapman@katalix.com>
-Organization: Katalix Systems Ltd
-Subject: Re: [PATCH net-next 0/4] net: Convert some UDP tunnel drivers to
- NETDEV_PCPU_STAT_DSTATS.
-In-Reply-To: <cover.1733175419.git.gnault@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Guillaume,
+Dan has reported [1] than @event variable is dereferenced before the check
+against NULL, fix that.
+[1]: https://lore.kernel.org/intel-wired-lan/b1453276-9043-49c4-a603-9b6bb41306c7@stanley.mountain
 
-I can work on similar changes to l2tp if you haven't already started 
-work on it.
+Tony please squash this into my devlink-health series (no need to amend
+commit message) that is in your dev-queue.
+The last version of the whole series was send here:
+https://lore.kernel.org/netdev/20240930133724.610512-1-przemyslaw.kitszel@intel.com
 
-James
+CC: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+ drivers/net/ethernet/intel/ice/devlink/health.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On 02/12/2024 21:48, Guillaume Nault wrote:
-> VXLAN, Geneve and Bareudp use various device counters for managing
-> RX and TX statistics:
-> 
->    * VXLAN uses the device core_stats for RX and TX drops, tstats for
->      regular RX/TX counters and DEV_STATS_INC() for various types of
->      RX/TX errors.
-> 
->    * Geneve uses tstats for regular RX/TX counters and DEV_STATS_INC()
->      for everything else, include RX/TX drops.
-> 
->    * Bareudp, was recently converted to follow VXLAN behaviour, that is,
->      device core_stats for RX and TX drops, tstats for regular RX/TX
->      counters and DEV_STATS_INC() for other counter types.
-> 
-> Let's consolidate statistics management around the dstats counters
-> instead. This avoids using core_stats in VXLAN and Bareudp, as
-> core_stats is supposed to be used by core networking code only (and not
-> in drivers).  This also allows Geneve to avoid using atomic increments
-> when updating RX and TX drop counters, as dstats is per-cpu. Finally,
-> this also simplifies the code as all three modules now handle stats in
-> the same way and with only two different sets of counters (the per-cpu
-> dstats and the atomic DEV_STATS_INC()).
-> 
-> Patch 1 creates dstats helper functions that can be used outside of VRF
-> (before that, dstats was VRF-specific).
-> Patches 2 to 4 convert VXLAN, Geneve and Bareudp, one by one.
-> 
-> Guillaume Nault (4):
->    vrf: Make pcpu_dstats update functions available to other modules.
->    vxlan: Handle stats using NETDEV_PCPU_STAT_DSTATS.
->    geneve: Handle stats using NETDEV_PCPU_STAT_DSTATS.
->    bareudp: Handle stats using NETDEV_PCPU_STAT_DSTATS.
-> 
->   drivers/net/bareudp.c          | 16 ++++++------
->   drivers/net/geneve.c           | 12 ++++-----
->   drivers/net/vrf.c              | 46 +++++++++-------------------------
->   drivers/net/vxlan/vxlan_core.c | 28 ++++++++++-----------
->   include/linux/netdevice.h      | 40 +++++++++++++++++++++++++++++
->   5 files changed, 80 insertions(+), 62 deletions(-)
-> 
+diff --git a/drivers/net/ethernet/intel/ice/devlink/health.c b/drivers/net/ethernet/intel/ice/devlink/health.c
+index c7a8b8c9e1ca..d9b852ccf99e 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/health.c
++++ b/drivers/net/ethernet/intel/ice/devlink/health.c
+@@ -163,11 +163,10 @@ static int ice_tx_hang_reporter_dump(struct devlink_health_reporter *reporter,
+ 	struct ice_tx_hang_event *event = priv_ctx;
+ 	struct sk_buff *skb;
+ 
+-	skb = event->tx_ring->tx_buf->skb;
+-
+ 	if (!event)
+ 		return 0;
+ 
++	skb = event->tx_ring->tx_buf->skb;
+ 	devlink_fmsg_obj_nest_start(fmsg);
+ 	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, head);
+ 	ICE_DEVLINK_FMSG_PUT_FIELD(fmsg, event, intr);
 
+base-commit: 9e11d56a825f5e927039c285df38c22c20dcb757
 -- 
-James Chapman
-Katalix Systems Ltd
-https://katalix.com
-Catalysts for your Embedded Linux software development
+2.46.0
 
