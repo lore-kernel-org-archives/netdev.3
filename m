@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B56E1DF976
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFE518FDAE
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733210533; cv=none; b=l30FpT2AblmJaxFmalEZrAuRQeLEgpBcv8Lj+WoY0FUNYatvIQC/yfwpM2EavzNxV38uCXcbwBa4Z2273K8iVZl+DV3ntbnHNpysuTTEB+kgWuhbhACWFiNkj+uaVmj2oB0csrMsIqc3T7HY4KSiptrFPXiNERmkLeSodBw/Pj0=
+	t=1733210534; cv=none; b=i9myczjcsUKijnTZqCIyVIePnAtMaShGP67zwAu+HGR1OSs03ciySZQcttguoift4BrFjRjtOpmQ01B2+khanTn06uitcU3gqdysUV8PMdz3qo6ncRCpvetS5qxg4pjowHlf7VIvNf/tq1HoPzdm3JZulOYb7Ti+j2J83ih7na4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733210533; c=relaxed/simple;
-	bh=FzGdrnbxt2WjTA897Dgy/DCsuUgxXjt7QzpJZwcGPSY=;
+	s=arc-20240116; t=1733210534; c=relaxed/simple;
+	bh=kCCfcs5qWKbWNrkYGX7ewBGKk+ZoMqqsF7UlhigcN4o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tIf4/b7YYcU1UI9WM74vwym6SRbl8xw3Ll/uwFlMqaY+pmScP+VlJFwyImnx0pqH/ZA+1DZX+lDw6sm9Ye/SxqZNgCrWS5OugWo93oY7J2RFFIdq4C+6js69oK2mLakBy8RxMwskhQK8abSDPaRwsuMuEnF4w6Phr1yy988JWF0=
+	 MIME-Version; b=lwj15E8YKVofU5c1zB9mKod7zYlHLVB2Knk3NnbNb4Y7wyuy9msaIPj3aJqehK4dilQM2Bz52cC0cyXGOg09ojrDPTQOqyd7BKs77k8UxSKmpzBmtXLh37ZLsqiUGlk2ek1WZQirl2r5YYiay64S6IOFfw2Z4KR9nYkLt1+Qs6c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,17 +18,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEL-0004s3-6F; Tue, 03 Dec 2024 08:21:57 +0100
+	id 1tINEP-0004sH-MH; Tue, 03 Dec 2024 08:22:01 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-001Qyw-0N;
-	Tue, 03 Dec 2024 08:21:55 +0100
+	id 1tINEJ-001QzI-1N;
+	Tue, 03 Dec 2024 08:21:56 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-00AEnZ-2Z;
-	Tue, 03 Dec 2024 08:21:55 +0100
+	id 1tINEK-00AEpd-00;
+	Tue, 03 Dec 2024 08:21:56 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 07/21] net: usb: lan78xx: Add error handling to lan78xx_init_ltm
-Date: Tue,  3 Dec 2024 08:21:40 +0100
-Message-Id: <20241203072154.2440034-8-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 19/21] net: usb: lan78xx: Improve error handling in lan78xx_phy_wait_not_busy
+Date: Tue,  3 Dec 2024 08:21:52 +0100
+Message-Id: <20241203072154.2440034-20-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
@@ -60,112 +60,38 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Convert `lan78xx_init_ltm` to return error codes and handle errors
-properly.  Previously, errors during the LTM initialization process were
-not propagated, potentially leading to undetected issues. This patch
-ensures:
-
-- Errors in `lan78xx_read_reg` and `lan78xx_write_reg` are checked and
-  handled.
-- Errors are logged with detailed messages using `%pe` for clarity.
-- The function exits immediately on error, returning the error code.
+Update `lan78xx_phy_wait_not_busy` to forward errors from
+`lan78xx_read_reg` instead of overwriting them with `-EIO`. Replace
+`-EIO` with `-ETIMEDOUT` for timeout cases, providing more specific and
+appropriate error codes.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 50 ++++++++++++++++++++++++++++++---------
- 1 file changed, 39 insertions(+), 11 deletions(-)
+ drivers/net/usb/lan78xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 29f6e1a36e20..33cda7f3dd12 100644
+index fdeb95db529b..9852526be002 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2807,13 +2807,16 @@ static int lan78xx_vlan_rx_kill_vid(struct net_device *netdev,
- 	return 0;
+@@ -961,14 +961,14 @@ static int lan78xx_phy_wait_not_busy(struct lan78xx_net *dev)
+ 
+ 	do {
+ 		ret = lan78xx_read_reg(dev, MII_ACC, &val);
+-		if (unlikely(ret < 0))
+-			return -EIO;
++		if (ret < 0)
++			return ret;
+ 
+ 		if (!(val & MII_ACC_MII_BUSY_))
+ 			return 0;
+ 	} while (!time_after(jiffies, start_time + HZ));
+ 
+-	return -EIO;
++	return -ETIMEDOUT;
  }
  
--static void lan78xx_init_ltm(struct lan78xx_net *dev)
-+static int lan78xx_init_ltm(struct lan78xx_net *dev)
- {
-+	u32 regs[6] = { 0 };
- 	int ret;
- 	u32 buf;
--	u32 regs[6] = { 0 };
- 
- 	ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
- 	if (buf & USB_CFG1_LTM_ENABLE_) {
- 		u8 temp[2];
- 		/* Get values from EEPROM first */
-@@ -2824,7 +2827,7 @@ static void lan78xx_init_ltm(struct lan78xx_net *dev)
- 							      24,
- 							      (u8 *)regs);
- 				if (ret < 0)
--					return;
-+					return ret;
- 			}
- 		} else if (lan78xx_read_otp(dev, 0x3F, 2, temp) == 0) {
- 			if (temp[0] == 24) {
-@@ -2833,17 +2836,40 @@ static void lan78xx_init_ltm(struct lan78xx_net *dev)
- 							   24,
- 							   (u8 *)regs);
- 				if (ret < 0)
--					return;
-+					return ret;
- 			}
- 		}
- 	}
- 
--	lan78xx_write_reg(dev, LTM_BELT_IDLE0, regs[0]);
--	lan78xx_write_reg(dev, LTM_BELT_IDLE1, regs[1]);
--	lan78xx_write_reg(dev, LTM_BELT_ACT0, regs[2]);
--	lan78xx_write_reg(dev, LTM_BELT_ACT1, regs[3]);
--	lan78xx_write_reg(dev, LTM_INACTIVE0, regs[4]);
--	lan78xx_write_reg(dev, LTM_INACTIVE1, regs[5]);
-+	ret = lan78xx_write_reg(dev, LTM_BELT_IDLE0, regs[0]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	ret = lan78xx_write_reg(dev, LTM_BELT_IDLE1, regs[1]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	ret = lan78xx_write_reg(dev, LTM_BELT_ACT0, regs[2]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	ret = lan78xx_write_reg(dev, LTM_BELT_ACT1, regs[3]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	ret = lan78xx_write_reg(dev, LTM_INACTIVE0, regs[4]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	ret = lan78xx_write_reg(dev, LTM_INACTIVE1, regs[5]);
-+	if (ret < 0)
-+		goto init_ltm_failed;
-+
-+	return 0;
-+
-+init_ltm_failed:
-+	netdev_err(dev->net, "Failed to init LTM with error %pe\n", ERR_PTR(ret));
-+	return ret;
- }
- 
- static int lan78xx_urb_config_init(struct lan78xx_net *dev)
-@@ -2939,7 +2965,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		return ret;
- 
- 	/* Init LTM */
--	lan78xx_init_ltm(dev);
-+	ret = lan78xx_init_ltm(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = lan78xx_write_reg(dev, BURST_CAP, dev->burst_cap);
- 	if (ret < 0)
+ static inline u32 mii_access(int id, int index, int read)
 -- 
 2.39.5
 
