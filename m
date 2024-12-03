@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384AE20B7E3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A8E20B7ED
 	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 23:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733270116; cv=none; b=PdD0Iidi5st05cNiILxrTZu9hRfGFKnEe6W+lO330xCjdUqKDFSzYxJrGNqpSz3t3RIHc47tyu9X1UwuBqoUDEf9R9h99xmq5sE2SDn5pvCN6GHCSpCfYJrfS4FhinIxNO4SR341njVCWQvD/IVVocKNlUROt+QCRUnezIW4k8k=
+	t=1733270117; cv=none; b=lMJRmd2xLOpkNIMlVRjXGMrJ8hRcLDn/40iL08vRnVKCd9vg3zLQAJRpfZR18VjFw09rzmMmwOIAmytZ0KIMvuCdjb4pCIyNGLvl3oaAFaemn2ovBf2X1TNrpti6U4uMjOIIRrnTrAVEwGJ6fFTg6koAvFBsuOuBEW7T7HdWGG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733270116; c=relaxed/simple;
-	bh=gu20ew2eNe0omuRWZFSExyiSntYD1ab+5kf2dvSDMZo=;
+	s=arc-20240116; t=1733270117; c=relaxed/simple;
+	bh=GKU35ZWsxf8uh/9gdvowWFQ6Kp4aMT7p4JseMmVWzRU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XtCl260u8lnrGk1Bq+jYAMLKbf/yeOYf5RCIpwMNwybCTbyGRv8X+uyywR6BYuvJGNc15OaEpBxsjRe+aqLNNj+SpX3T2c5xyI0EGhnkKkZzX7eY7SxeIKi/XHQMlCinqSJBDq7z1zSh11/y6gg9jj8pDI7Ohu4COn/B/t3AvA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lgEeIjoJ; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:To:Cc; b=F8D7tyNFlwexm5W+TRQj0CM/K9IK6Mf+ZMyJp5UY+/Cj6zZfGgzTFLEWvu4DBWItGvVrGcx70770a1OmZxWoCest7W/kom5QztA4OdW7OPWvEeB7ciyCVGN91o1PaD74ii9FSf8iLEx51NfSfZ34Otap2wim5oeqhW+QqSAtcQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QbiCwPXA; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lgEeIjoJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QbiCwPXA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1733270115; x=1764806115;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=gu20ew2eNe0omuRWZFSExyiSntYD1ab+5kf2dvSDMZo=;
-  b=lgEeIjoJ1wqp3OPIVYTNuo9mCUJIcblFCsIk/BXa8FfVIcLg1oe+cm0a
-   uslqFdI2Jh8fRXM1vxiWsd7/A8T4rv51hgiTBQG1sp6QvRGvp0WBF4zVU
-   05yLfVORkZu5RtMR4CzKJhrm8NedIsRPQklYmFy/z3zAoFrFsSpcTVMWm
-   tm4w+zKV4QJ3aUd8lGQ06aNvwkmjFLW1PyLc7E6bCBY70sCFP87K2Esc8
-   PVB71z3tM6uheEv7i4qSQS6914aAArlz6YXskHN3ooqzVdXUpHKpZPq7D
-   Pcffxu4Iosp7/i6xDdWyDi0z7u/p4m1Kwq544tdmgLqOJwTBZR59VwJuN
+  bh=GKU35ZWsxf8uh/9gdvowWFQ6Kp4aMT7p4JseMmVWzRU=;
+  b=QbiCwPXAi0HwhI2oMZeInb34nDey6wtqwUw2zoWK4gItPxUEwXMHvMm1
+   lm4WRvJDQRCUqo5uYAec1W2CBWGu6JcM3VVDcz7gNWTd2B4wVWZWAluqI
+   hezHqC/Fs3kX/ksTu8gU9icq9d7wAxtiExGi9YIXAB7MjoeyHnRnaWe+x
+   uoGMIqPhZzLT5zs22rvi7PrSsUmrFEVXBviJRErE9LMJX2wOWAztQh6A9
+   lmOlL7chEwSfHRm3uU/edkcF821bLo90Gnnkia3QDJmARRZpm1uCfOFBE
+   8WB63A5L7kYYJa6X8JMOS0UnqEloREr30/Wg12fTilcjmI5fKYk5WJYzL
    Q==;
-X-CSE-ConnectionGUID: KrgXNlY/RN+AiOVuQ6ePSA==
-X-CSE-MsgGUID: a44xO8VURhGEy22B1Ip1/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="58918460"
+X-CSE-ConnectionGUID: YUsDMUOpT9mxdjHhCMv3IQ==
+X-CSE-MsgGUID: QrArNKo0R2uU3SbKIserGw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="58918464"
 X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="58918460"
+   d="scan'208";a="58918464"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:55:09 -0800
-X-CSE-ConnectionGUID: yV8nZcZHRDmFiR2x4vKUDw==
-X-CSE-MsgGUID: UiXKM8aZTq2GTdyMTzFTfw==
+X-CSE-ConnectionGUID: QgAkg8tqQHSt9+yMmMNNqg==
+X-CSE-MsgGUID: UeL/SWyjQyWhnlSzK8fYww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
-   d="scan'208";a="93679059"
+   d="scan'208";a="93679033"
 Received: from jekeller-desk.jf.intel.com ([10.166.241.20])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:55:09 -0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 15:55:08 -0800
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 03 Dec 2024 15:53:56 -0800
-Subject: [PATCH net-next v8 10/10] ice: cleanup Rx queue context
- programming functions
+Date: Tue, 03 Dec 2024 15:53:47 -0800
+Subject: [PATCH net-next v8 01/10] lib: packing: create __pack() and
+ __unpack() variants without error checking
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-packing-pack-fields-and-ice-implementation-v8-10-2ed68edfe583@intel.com>
+Message-Id: <20241203-packing-pack-fields-and-ice-implementation-v8-1-2ed68edfe583@intel.com>
 References: <20241203-packing-pack-fields-and-ice-implementation-v8-0-2ed68edfe583@intel.com>
 In-Reply-To: <20241203-packing-pack-fields-and-ice-implementation-v8-0-2ed68edfe583@intel.com>
 To: Vladimir Oltean <vladimir.oltean@nxp.com>, 
@@ -67,120 +67,226 @@ To: Vladimir Oltean <vladimir.oltean@nxp.com>,
 Cc: Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.14.2
 
-The ice_copy_rxq_ctx_to_hw() and ice_write_rxq_ctx() functions perform some
-defensive checks which are typically frowned upon by kernel style
-guidelines.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-In particular, NULL checks on buffers which point to the stack are
-discouraged, especially when the functions are static and only called once.
-Checks of this sort only serve to hide potential programming error, as we
-will not produce the normal crash dump on a NULL access.
+A future variant of the API, which works on arrays of packed_field
+structures, will make most of these checks redundant. The idea will be
+that we want to perform sanity checks at compile time, not once
+for every function call.
 
-In addition, ice_copy_rxq_ctx_to_hw() cannot fail in another way, so could
-be made void.
+Introduce new variants of pack() and unpack(), which elide the sanity
+checks, assuming that the input was pre-sanitized.
 
-Future support for VF Live Migration will need to introduce an inverse
-function for reading Rx queue context from HW registers to unpack it, as
-well as functions to pack and unpack Tx queue context from HW.
-
-Rather than copying these style issues into the new functions, lets first
-cleanup the existing code.
-
-For the ice_copy_rxq_ctx_to_hw() function:
-
- * Move the Rx queue index check out of this function.
- * Convert the function to a void return.
- * Use a simple int variable instead of a u8 for the for loop index, and
-   initialize it inside the for loop.
- * Update the function description to better align with kernel doc style.
-
-For the ice_write_rxq_ctx() function:
-
- * Move the Rx queue index check into this function.
- * Update the function description with a Returns: to align with kernel doc
-   style.
-
-These changes align the existing write functions to current kernel
-style, and will align with the style of the new functions added when we
-implement live migration in a future series.
-
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ lib/packing.c | 142 ++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 78 insertions(+), 64 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 379040593d975342eaa2a3032938683b419f4f60..6c6862beab6a961ce5c0bc34e9c5794ed8cda865 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1358,32 +1358,23 @@ int ice_reset(struct ice_hw *hw, enum ice_reset_req req)
+diff --git a/lib/packing.c b/lib/packing.c
+index 793942745e34fde1810010e303742e6484861bc8..f237b8af99f5fa8e839c38126769c50b2bfe6361 100644
+--- a/lib/packing.c
++++ b/lib/packing.c
+@@ -51,64 +51,20 @@ static size_t calculate_box_addr(size_t box, size_t len, u8 quirks)
+ 	return offset_of_group + offset_in_group;
  }
  
- /**
-- * ice_copy_rxq_ctx_to_hw
-+ * ice_copy_rxq_ctx_to_hw - Copy packed Rx queue context to HW registers
-  * @hw: pointer to the hardware structure
-  * @rxq_ctx: pointer to the packed Rx queue context
-  * @rxq_index: the index of the Rx queue
+-/**
+- * pack - Pack u64 number into bitfield of buffer.
 - *
-- * Copies rxq context from dense structure to HW register space
-  */
--static int ice_copy_rxq_ctx_to_hw(struct ice_hw *hw,
--				  const ice_rxq_ctx_buf_t *rxq_ctx,
--				  u32 rxq_index)
-+static void ice_copy_rxq_ctx_to_hw(struct ice_hw *hw,
-+				   const ice_rxq_ctx_buf_t *rxq_ctx,
-+				   u32 rxq_index)
+- * @pbuf: Pointer to a buffer holding the packed value.
+- * @uval: CPU-readable unpacked value to pack.
+- * @startbit: The index (in logical notation, compensated for quirks) where
+- *	      the packed value starts within pbuf. Must be larger than, or
+- *	      equal to, endbit.
+- * @endbit: The index (in logical notation, compensated for quirks) where
+- *	    the packed value ends within pbuf. Must be smaller than, or equal
+- *	    to, startbit.
+- * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
+- * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
+- *	    QUIRK_MSB_ON_THE_RIGHT.
+- *
+- * Return: 0 on success, EINVAL or ERANGE if called incorrectly. Assuming
+- *	   correct usage, return code may be discarded. The @pbuf memory will
+- *	   be modified on success.
+- */
+-int pack(void *pbuf, u64 uval, size_t startbit, size_t endbit, size_t pbuflen,
+-	 u8 quirks)
++static void __pack(void *pbuf, u64 uval, size_t startbit, size_t endbit,
++		   size_t pbuflen, u8 quirks)
  {
--	u8 i;
+ 	/* Logical byte indices corresponding to the
+ 	 * start and end of the field.
+ 	 */
+-	int plogical_first_u8, plogical_last_u8, box;
+-	/* width of the field to access in the pbuf */
+-	u64 value_width;
 -
--	if (rxq_index > QRX_CTRL_MAX_INDEX)
+-	/* startbit is expected to be larger than endbit, and both are
+-	 * expected to be within the logically addressable range of the buffer.
+-	 */
+-	if (unlikely(startbit < endbit || startbit >= BITS_PER_BYTE * pbuflen))
+-		/* Invalid function call */
 -		return -EINVAL;
 -
- 	/* Copy each dword separately to HW */
--	for (i = 0; i < ICE_RXQ_CTX_SIZE_DWORDS; i++) {
-+	for (int i = 0; i < ICE_RXQ_CTX_SIZE_DWORDS; i++) {
- 		u32 ctx = ((const u32 *)rxq_ctx)[i];
- 
- 		wr32(hw, QRX_CONTEXT(i, rxq_index), ctx);
- 
- 		ice_debug(hw, ICE_DBG_QCTX, "qrxdata[%d]: %08X\n", i, ctx);
- 	}
+-	value_width = startbit - endbit + 1;
+-	if (unlikely(value_width > 64))
+-		return -ERANGE;
 -
+-	/* Check if "uval" fits in "value_width" bits.
+-	 * If value_width is 64, the check will fail, but any
+-	 * 64-bit uval will surely fit.
+-	 */
+-	if (unlikely(value_width < 64 && uval >= (1ull << value_width)))
+-		/* Cannot store "uval" inside "value_width" bits.
+-		 * Truncating "uval" is most certainly not desirable,
+-		 * so simply erroring out is appropriate.
+-		 */
+-		return -ERANGE;
++	int plogical_first_u8 = startbit / BITS_PER_BYTE;
++	int plogical_last_u8 = endbit / BITS_PER_BYTE;
++	int box;
+ 
+ 	/* Iterate through an idealistic view of the pbuf as an u64 with
+ 	 * no quirks, u8 by u8 (aligned at u8 boundaries), from high to low
+ 	 * logical bit significance. "box" denotes the current logical u8.
+ 	 */
+-	plogical_first_u8 = startbit / BITS_PER_BYTE;
+-	plogical_last_u8  = endbit / BITS_PER_BYTE;
+-
+ 	for (box = plogical_first_u8; box >= plogical_last_u8; box--) {
+ 		/* Bit indices into the currently accessed 8-bit box */
+ 		size_t box_start_bit, box_end_bit, box_addr;
+@@ -163,15 +119,13 @@ int pack(void *pbuf, u64 uval, size_t startbit, size_t endbit, size_t pbuflen,
+ 		((u8 *)pbuf)[box_addr] &= ~box_mask;
+ 		((u8 *)pbuf)[box_addr] |= pval;
+ 	}
 -	return 0;
  }
+-EXPORT_SYMBOL(pack);
  
- #define ICE_CTX_STORE(struct_name, struct_field, width, lsb) \
-@@ -1432,23 +1423,26 @@ static void ice_pack_rxq_ctx(const struct ice_rlan_ctx *ctx,
  /**
-  * ice_write_rxq_ctx - Write Rx Queue context to hardware
-  * @hw: pointer to the hardware structure
-- * @rlan_ctx: pointer to the rxq context
-+ * @rlan_ctx: pointer to the unpacked Rx queue context
-  * @rxq_index: the index of the Rx queue
+- * unpack - Unpack u64 number from packed buffer.
++ * pack - Pack u64 number into bitfield of buffer.
   *
-  * Pack the sparse Rx Queue context into dense hardware format and write it
-  * into the HW register space.
-+ *
-+ * Return: 0 on success, or -EINVAL if the Rx queue index is invalid.
+  * @pbuf: Pointer to a buffer holding the packed value.
+- * @uval: Pointer to an u64 holding the unpacked value.
++ * @uval: CPU-readable unpacked value to pack.
+  * @startbit: The index (in logical notation, compensated for quirks) where
+  *	      the packed value starts within pbuf. Must be larger than, or
+  *	      equal to, endbit.
+@@ -183,16 +137,12 @@ EXPORT_SYMBOL(pack);
+  *	    QUIRK_MSB_ON_THE_RIGHT.
+  *
+  * Return: 0 on success, EINVAL or ERANGE if called incorrectly. Assuming
+- *	   correct usage, return code may be discarded. The @uval will be
+- *	   modified on success.
++ *	   correct usage, return code may be discarded. The @pbuf memory will
++ *	   be modified on success.
   */
- int ice_write_rxq_ctx(struct ice_hw *hw, struct ice_rlan_ctx *rlan_ctx,
- 		      u32 rxq_index)
+-int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
+-	   size_t pbuflen, u8 quirks)
++int pack(void *pbuf, u64 uval, size_t startbit, size_t endbit, size_t pbuflen,
++	 u8 quirks)
  {
- 	ice_rxq_ctx_buf_t buf = {};
+-	/* Logical byte indices corresponding to the
+-	 * start and end of the field.
+-	 */
+-	int plogical_first_u8, plogical_last_u8, box;
+ 	/* width of the field to access in the pbuf */
+ 	u64 value_width;
  
--	if (!rlan_ctx)
-+	if (rxq_index > QRX_CTRL_MAX_INDEX)
- 		return -EINVAL;
+@@ -207,6 +157,33 @@ int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
+ 	if (unlikely(value_width > 64))
+ 		return -ERANGE;
  
- 	ice_pack_rxq_ctx(rlan_ctx, &buf);
-+	ice_copy_rxq_ctx_to_hw(hw, &buf, rxq_index);
- 
--	return ice_copy_rxq_ctx_to_hw(hw, &buf, rxq_index);
++	/* Check if "uval" fits in "value_width" bits.
++	 * If value_width is 64, the check will fail, but any
++	 * 64-bit uval will surely fit.
++	 */
++	if (value_width < 64 && uval >= (1ull << value_width))
++		/* Cannot store "uval" inside "value_width" bits.
++		 * Truncating "uval" is most certainly not desirable,
++		 * so simply erroring out is appropriate.
++		 */
++		return -ERANGE;
++
++	__pack(pbuf, uval, startbit, endbit, pbuflen, quirks);
++
 +	return 0;
- }
++}
++EXPORT_SYMBOL(pack);
++
++static void __unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
++		     size_t pbuflen, u8 quirks)
++{
++	/* Logical byte indices corresponding to the
++	 * start and end of the field.
++	 */
++	int plogical_first_u8 = startbit / BITS_PER_BYTE;
++	int plogical_last_u8 = endbit / BITS_PER_BYTE;
++	int box;
++
+ 	/* Initialize parameter */
+ 	*uval = 0;
  
- /* LAN Tx Queue Context */
+@@ -214,9 +191,6 @@ int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
+ 	 * no quirks, u8 by u8 (aligned at u8 boundaries), from high to low
+ 	 * logical bit significance. "box" denotes the current logical u8.
+ 	 */
+-	plogical_first_u8 = startbit / BITS_PER_BYTE;
+-	plogical_last_u8  = endbit / BITS_PER_BYTE;
+-
+ 	for (box = plogical_first_u8; box >= plogical_last_u8; box--) {
+ 		/* Bit indices into the currently accessed 8-bit box */
+ 		size_t box_start_bit, box_end_bit, box_addr;
+@@ -271,6 +245,46 @@ int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
+ 		*uval &= ~proj_mask;
+ 		*uval |= pval;
+ 	}
++}
++
++/**
++ * unpack - Unpack u64 number from packed buffer.
++ *
++ * @pbuf: Pointer to a buffer holding the packed value.
++ * @uval: Pointer to an u64 holding the unpacked value.
++ * @startbit: The index (in logical notation, compensated for quirks) where
++ *	      the packed value starts within pbuf. Must be larger than, or
++ *	      equal to, endbit.
++ * @endbit: The index (in logical notation, compensated for quirks) where
++ *	    the packed value ends within pbuf. Must be smaller than, or equal
++ *	    to, startbit.
++ * @pbuflen: The length in bytes of the packed buffer pointed to by @pbuf.
++ * @quirks: A bit mask of QUIRK_LITTLE_ENDIAN, QUIRK_LSW32_IS_FIRST and
++ *	    QUIRK_MSB_ON_THE_RIGHT.
++ *
++ * Return: 0 on success, EINVAL or ERANGE if called incorrectly. Assuming
++ *	   correct usage, return code may be discarded. The @uval will be
++ *	   modified on success.
++ */
++int unpack(const void *pbuf, u64 *uval, size_t startbit, size_t endbit,
++	   size_t pbuflen, u8 quirks)
++{
++	/* width of the field to access in the pbuf */
++	u64 value_width;
++
++	/* startbit is expected to be larger than endbit, and both are
++	 * expected to be within the logically addressable range of the buffer.
++	 */
++	if (startbit < endbit || startbit >= BITS_PER_BYTE * pbuflen)
++		/* Invalid function call */
++		return -EINVAL;
++
++	value_width = startbit - endbit + 1;
++	if (value_width > 64)
++		return -ERANGE;
++
++	__unpack(pbuf, uval, startbit, endbit, pbuflen, quirks);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(unpack);
 
 -- 
 2.47.0.265.g4ca455297942
