@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0E91DD0F2
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CB41DD86E
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 07:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733210530; cv=none; b=npA0HgAuhTTgivUiSe0/S9eBGfZfVlBcqPjGvMhJnMT0uabnb0ryQ8loyUtYnQoJyapv2nlNgjRenTIevMICVqnjxbsMQVWNL2118sHy+hOxVKmjawB8iMd2sXrTd+6EqJ8BtQdEVbKaE+c32M5FUXCegf55Vqqrxwg+J71usZs=
+	t=1733210530; cv=none; b=msJF5dXIz5OWx9JRTBZDERUqy55BNspEGEkS+y1tSrHfxOxoOkx/SS9nQ9JPCxrH6D3XG3d34DiJOSh3YNt7tAJ26oKZzO2jPIZxyzWDi6upGSD0Tu9Z03izDqbWydUoHn5RL0bh8hUr6LV1RbMChFH1OOuHl9/wvyJRP5ZJToU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733210530; c=relaxed/simple;
-	bh=PaxtvrrZrzTt8HJSHJ5IQ4oy/JKItrDoSW/bOnWk72g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sKDSoCjA4GmhyMIc/PSlZNoceBfV8muagDK0pY2K1CC/BQU/qHPBuQ8jahhErZigGMOWR2qF9FuKNWDinCXAAKqZxQfZGw0vFUmxAsL2u26EdgDsdYzomcbAZRh/cgQLdEKURU7DwK+whzUh1RRCbKEB/UhPkftx6BeQtzjTlh8=
+	bh=mGDid1ehrOdamOqJz3u1exKDT5Bj0RLZfdq1ZKei79g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a1+FKm8xbILrsey7h1DKWb4tlFXUu6/q3s9EB6nhIF7CXmAzlmPJxL3APq23qoAeX4aQOOMpaFHbaxzhMyNueXDlbkok5kCkoly1wLJ/PGcpviplhPuwGGv5bL1zDFFI/8WDXOQaqRPLeK3xcHG8eXgM/CPpbUgR6i6IIG7Pgfk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEL-0004sC-6F; Tue, 03 Dec 2024 08:21:57 +0100
+	id 1tINEL-0004rx-6F; Tue, 03 Dec 2024 08:21:57 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-001Qz5-14;
-	Tue, 03 Dec 2024 08:21:56 +0100
+	id 1tINEI-001Qyj-34;
+	Tue, 03 Dec 2024 08:21:55 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tINEJ-00AEoR-2q;
+	id 1tINEJ-00AEmQ-26;
 	Tue, 03 Dec 2024 08:21:55 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,12 +41,10 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 12/21] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
-Date: Tue,  3 Dec 2024 08:21:45 +0100
-Message-Id: <20241203072154.2440034-13-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 00/21] lan78xx: Preparations for PHYlink
+Date: Tue,  3 Dec 2024 08:21:33 +0100
+Message-Id: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241203072154.2440034-1-o.rempel@pengutronix.de>
-References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,85 +57,53 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Convert `lan78xx_init_mac_address` to return error codes and handle
-failures in register read and write operations. Update `lan78xx_reset`
-to check for errors during MAC address initialization and propagate them
-appropriately.
+This patch set is part of the preparatory work for migrating the lan78xx
+USB Ethernet driver to the PHYlink framework. During extensive testing,
+I observed that resetting the USB adapter can lead to various read/write
+errors. While the errors themselves are acceptable, they generate
+excessive log messages, resulting in significant log spam. This set
+improves error handling to reduce logging noise by addressing errors
+directly and returning early when necessary.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+Key highlights of this series include:
+- Enhanced error handling to reduce log spam while preserving the
+  original error values, avoiding unnecessary overwrites.
+- Improved error reporting using the `%pe` specifier for better clarity
+  in log messages.
+- Removal of redundant and problematic PHY fixups for LAN8835 and
+  KSZ9031, with detailed explanations in the respective patches.
+- Cleanup of code structure, including unified `goto` labels for better
+  readability and maintainability, even in simple editors.
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 070b21baffaf..26dc43bac84b 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2153,13 +2153,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
- 	.get_regs	= lan78xx_get_regs,
- };
- 
--static void lan78xx_init_mac_address(struct lan78xx_net *dev)
-+static int lan78xx_init_mac_address(struct lan78xx_net *dev)
- {
- 	u32 addr_lo, addr_hi;
- 	u8 addr[6];
-+	int ret;
-+
-+	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
-+	if (ret < 0)
-+		return ret;
- 
--	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
--	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
-+	if (ret < 0)
-+		return ret;
- 
- 	addr[0] = addr_lo & 0xFF;
- 	addr[1] = (addr_lo >> 8) & 0xFF;
-@@ -2192,14 +2198,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
- 			  (addr[2] << 16) | (addr[3] << 24);
- 		addr_hi = addr[4] | (addr[5] << 8);
- 
--		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
--		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
--	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
--	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	if (ret < 0)
-+		return ret;
- 
- 	eth_hw_addr_set(dev->net, addr);
-+
-+	return 0;
- }
- 
- /* MDIO read and write wrappers for phylib */
-@@ -2990,7 +3008,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
- 		}
- 	} while (buf & HW_CFG_LRST_);
- 
--	lan78xx_init_mac_address(dev);
-+	ret = lan78xx_init_mac_address(dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* save DEVID for later usage */
- 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
--- 
+Oleksij Rempel (21):
+  net: usb: lan78xx: Remove LAN8835 PHY fixup
+  net: usb: lan78xx: Remove KSZ9031 PHY fixup
+  net: usb: lan78xx: move functions to avoid forward definitions
+  net: usb: lan78xx: Improve error reporting with %pe specifier
+  net: usb: lan78xx: Fix error handling in MII read/write functions
+  net: usb: lan78xx: Improve error handling in EEPROM and OTP operations
+  net: usb: lan78xx: Add error handling to lan78xx_init_ltm
+  net: usb: lan78xx: Add error handling to set_rx_max_frame_length and
+    set_mtu
+  net: usb: lan78xx: Add error handling to lan78xx_irq_bus_sync_unlock
+  net: usb: lan78xx: Improve error handling in dataport and multicast
+    writes
+  net: usb: lan78xx: Add error handling to lan78xx_setup_irq_domain
+  net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+  net: usb: lan78xx: Add error handling to lan78xx_set_mac_addr
+  net: usb: lan78xx: Add error handling to lan78xx_get_regs
+  net: usb: lan78xx: Simplify lan78xx_update_reg
+  net: usb: lan78xx: Fix return value handling in lan78xx_set_features
+  net: usb: lan78xx: Use ETIMEDOUT instead of ETIME in lan78xx_stop_hw
+  net: usb: lan78xx: Use function-specific label in lan78xx_mac_reset
+  net: usb: lan78xx: Improve error handling in lan78xx_phy_wait_not_busy
+  net: usb: lan78xx: Rename lan78xx_phy_wait_not_busy to
+    lan78xx_mdiobus_wait_not_busy
+  net: usb: lan78xx: Improve error handling in WoL operations
+
+ drivers/net/usb/lan78xx.c | 916 +++++++++++++++++++++-----------------
+ 1 file changed, 519 insertions(+), 397 deletions(-)
+
+--
 2.39.5
 
