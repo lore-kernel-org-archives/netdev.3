@@ -1,137 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D1B1F8AD2;
-	Tue,  3 Dec 2024 17:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280EC1FAC51;
+	Tue,  3 Dec 2024 17:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733247633; cv=none; b=IwY8YHy277/AbM3CHyMns6pgJyfSlYMvT8tLfutuyuDzAmjfa2+Qn2xUYqXU666ztn5CVFrHT8bizNklb0TwaM6uxfXjo48agUJjYtUoei9hOAd6dA8Ehj29QdDz6F7iMAqdAbsPqELHVgc3BhWKgo/DHGeeK9wdmWb7JIsrYt4=
+	t=1733247651; cv=none; b=IPfsUpVPLATaEqwXTaSvpuq9UMdcY0H42p3Kbhuc0qsJfRYuGRzYWgeFtqjbgJOz1hu6gmrUiAc1KGl9oQD0KxnKx09aiPg5PHhm8zpTjCMn8sky4rqT83OFPQqqrrQkBdfwwvzRgPiWGDDj04lkhJ4T9JROQvOr/vKqOwd6O5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733247633; c=relaxed/simple;
-	bh=JVxnQB3YiNFwYmPRcTY5PbfjrO33ScuIbRHk2z9VhNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GtJnL+90cXtwNDZHkH/K5MytV5TZdjk2yUBCa4Us3VVWLG68ZSRrYJyXlPo/+engOP2UV2CEY01APFBO1KUwxz4uFnQEkN1hy1h2jXjktTpQQ/WXIw7Izsd0MPxDnUY5oHao//kKohr4GiJbg8CM/InTgfV5fFQgM+BpY4dChvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIF0xXaJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733247651; c=relaxed/simple;
+	bh=5f8V0ViCWSwHPKr9N1Ee9MvOVQtipiD141WC9doMRfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=odpbwVu0Nt4Cj5bozIlHnMTy5IYuGG6Ogru5x1yYXyfvlpsLTOxU3ObiSp8eiI72kwk0O74p3D10dUMob9bwD9AcYyAjh28qVTwDNSRVdh7MdjSnOmmzQO7jAXLtfUwTcvtz68loXUA8ApSDkIPy56nBLYTzd9OuJOQ5QBHX8u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AVNnOntV; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIF0xXaJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9EEC4CECF;
-	Tue,  3 Dec 2024 17:40:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733247632;
-	bh=JVxnQB3YiNFwYmPRcTY5PbfjrO33ScuIbRHk2z9VhNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tIF0xXaJUWSDV3HPcTEmBBjCCzzuroPOVgBSWktcnaRWOSOrebfBkWSEK+oS02taX
-	 f8z4mnuUAOhk+Zx8Oz72U90HVCGv9aDIxylHJFX7t60xEANNf/zB9EKHYr19QxQiMc
-	 fFAT8AYlWWBAZWrdvk+oPHaZ2DP1/6B0TcPOaG1czg8XrixMcN4CW9VtlBBNn3xFug
-	 S3UcRfyDUFNKY6LHYnzVcmZ08Mh43tnGBtOCLrUxVz+DIH034iEOR82tPfol6+GKw8
-	 ibli5PkOAQpF5RivOoj7u75bNlMzb0X1kBYlIAPEr3pG5Kk0oab/ocOw2YZbm7Zc4t
-	 izODEXmjxK+Ew==
-Date: Tue, 3 Dec 2024 19:40:27 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	linux-pci@vger.kernel.org, Ariel Almog <ariela@nvidia.com>,
-	Aditya Prabhune <aprabhune@nvidia.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Arun Easi <aeasi@marvell.com>, Jonathan Chocron <jonnyc@amazon.com>,
-	Bert Kenward <bkenward@solarflare.com>,
-	Matt Carlson <mcarlson@broadcom.com>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AVNnOntV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733247651; x=1764783651;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=5f8V0ViCWSwHPKr9N1Ee9MvOVQtipiD141WC9doMRfs=;
+  b=AVNnOntV90hiZXOqX2mMQps7nFFfPsr4CZQZ02V+Jtc3frAlTu3fbtHL
+   8e4jSxPaVM0p+XUA2diEZgQ3x9NNb8/lAiJroS24espMJ/ARSoZBvUZj1
+   37cDDra1GJUN49Moh/ibskq9DnqJLX+aceYIgMWwOlZx2D8IFeZWKYEVq
+   yczEzDCNSyf5FLuUO9dYeNNoGVcnO+y8RdWRZ41cxC8fXmIr+Se0tDmtp
+   fbnSW0Rvr5s1ChtVHsoxkHOVPjGIgNwCiyM7Fqx7LvbuC+OuGKYMScAg4
+   703Btoti6Bh1a4IEN34A+k2ZMmtYI/0SBeEDKjjvoMnpau9VQa8hZJKes
+   w==;
+X-CSE-ConnectionGUID: mNeqAZu1Tsub2Uf8JAfkUw==
+X-CSE-MsgGUID: LSUlTI4xQkqs8dmZ791XBg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="37135271"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="37135271"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 09:40:50 -0800
+X-CSE-ConnectionGUID: y/5LGjzMRACcXQoC2TjPLg==
+X-CSE-MsgGUID: n7FXlJYgTGGlQccDcgKKoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="124336982"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by orviesa002.jf.intel.com with ESMTP; 03 Dec 2024 09:40:46 -0800
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH v3] PCI/sysfs: Change read permissions for VPD attributes
-Message-ID: <20241203174027.GK1245331@unreal>
-References: <18f36b3cbe2b7e67eed876337f8ba85afbc12e73.1733227737.git.leon@kernel.org>
- <20241203092456.5dde2476@hermes.local>
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v6 00/10] xdp: a fistful of generic changes pt. I
+Date: Tue,  3 Dec 2024 18:37:23 +0100
+Message-ID: <20241203173733.3181246-1-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241203092456.5dde2476@hermes.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 03, 2024 at 09:24:56AM -0800, Stephen Hemminger wrote:
-> On Tue,  3 Dec 2024 14:15:28 +0200
-> Leon Romanovsky <leon@kernel.org> wrote:
-> 
-> > The Vital Product Data (VPD) attribute is not readable by regular
-> > user without root permissions. Such restriction is not needed at
-> > all for Mellanox devices, as data presented in that VPD is not
-> > sensitive and access to the HW is safe and well tested.
-> > 
-> > This change changes the permissions of the VPD attribute to be accessible
-> > for read by all users for Mellanox devices, while write continue to be
-> > restricted to root only.
-> > 
-> > The main use case is to remove need to have root/setuid permissions
-> > while using monitoring library [1].
-> > 
-> > [leonro@vm ~]$ lspci |grep nox
-> > 00:09.0 Ethernet controller: Mellanox Technologies MT2910 Family [ConnectX-7]
-> > 
-> > Before:
-> > [leonro@vm ~]$ ls -al /sys/bus/pci/devices/0000:00:09.0/vpd
-> > -rw------- 1 root root 0 Nov 13 12:30 /sys/bus/pci/devices/0000:00:09.0/vpd
-> > After:
-> > [leonro@vm ~]$ ls -al /sys/bus/pci/devices/0000:00:09.0/vpd
-> > -rw-r--r-- 1 root root 0 Nov 13 12:30 /sys/bus/pci/devices/0000:00:09.0/vpd
-> > 
-> > [1] https://developer.nvidia.com/management-library-nvml
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> > Changelog:
-> > v3:
-> >  * Used | to change file attributes
-> >  * Remove WARN_ON
-> > v2: https://lore.kernel.org/all/61a0fa74461c15edfae76222522fa445c28bec34.1731502431.git.leon@kernel.org
-> >  * Another implementation to make sure that user is presented with
-> >    correct permissions without need for driver intervention.
-> > v1: https://lore.kernel.org/all/cover.1731005223.git.leonro@nvidia.com
-> >  * Changed implementation from open-read-to-everyone to be opt-in
-> >  * Removed stable and Fixes tags, as it seems like feature now.
-> > v0:
-> > https://lore.kernel.org/all/65791906154e3e5ea12ea49127cf7c707325ca56.1730102428.git.leonro@nvidia.com/
-> > ---
-> >  drivers/pci/vpd.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> > 
-> > diff --git a/drivers/pci/vpd.c b/drivers/pci/vpd.c
-> > index a469bcbc0da7..a7aa54203321 100644
-> > --- a/drivers/pci/vpd.c
-> > +++ b/drivers/pci/vpd.c
-> > @@ -332,6 +332,13 @@ static umode_t vpd_attr_is_visible(struct kobject *kobj,
-> >  	if (!pdev->vpd.cap)
-> >  		return 0;
-> >  
-> > +	/*
-> > +	 * Mellanox devices have implementation that allows VPD read by
-> > +	 * unprivileged users, so just add needed bits to allow read.
-> > +	 */
-> > +	if (unlikely(pdev->vendor == PCI_VENDOR_ID_MELLANOX))
-> > +		return a->attr.mode | 0044;
-> > +
-> >  	return a->attr.mode;
-> >  }
-> >  
-> 
-> Could this be with other vendor specific quirks instead?
+XDP for idpf is currently 6 chapters:
+* convert Rx to libeth;
+* convert Tx and stats to libeth;
+* generic XDP and XSk code changes (you are here);
+* generic XDP and XSk code additions;
+* actual XDP for idpf via new libeth_xdp;
+* XSk for idpf (via ^).
 
-In previous versions, I asked Bjorn about using quirks and the answer
-was that quirks are mainly to fix HW defects fixes and this change doesn't
-belong to that category.
+Part III does the following:
+* improve &xdp_buff_xsk cacheline placement;
+* does some cleanups with marking read-only bpf_prog and xdp_buff
+  arguments const for some generic functions;
+* allows attaching already registered XDP memory model to RxQ info;
+* makes system percpu page_pools valid XDP memory models;
+* starts using netmems in the XDP core code (1 function);
+* allows mixing pages from several page_pools within one XDP frame;
+* optimizes &xdp_frame layout and removes no-more-used field.
 
-https://lore.kernel.org/linux-pci/20241111214804.GA1820183@bhelgaas/
+Bullets 4-6 are the most important ones. All of them are prereqs to
+libeth_xdp.
 
-> 
-> Also, the wording of the comment is awkward. Suggest:
-> 	On Mellanox devices reading VPD is safe for unprivileged users.
+Alexander Lobakin (9):
+  xsk: align &xdp_buff_xsk harder
+  bpf, xdp: constify some bpf_prog * function arguments
+  xdp, xsk: constify read-only arguments of some static inline helpers
+  xdp: allow attaching already registered memory model to xdp_rxq_info
+  xsk: allow attaching XSk pool via xdp_rxq_info_reg_mem_model()
+  netmem: add a couple of page helper wrappers
+  page_pool: make page_pool_put_page_bulk() handle array of netmems
+  page_pool: allow mixing PPs within one bulk
+  xdp: get rid of xdp_frame::mem.id
 
-Thanks
+Toke Høiland-Jørgensen (1):
+  xdp: register system page pool as an XDP memory model
+
+ include/net/page_pool/types.h                 |   6 +-
+ include/linux/bpf.h                           |  12 +-
+ include/linux/filter.h                        |   9 +-
+ include/linux/netdevice.h                     |   7 +-
+ include/linux/skbuff.h                        |   2 +-
+ include/net/netmem.h                          |  78 +++++++++++-
+ include/net/xdp.h                             |  93 ++++++++++----
+ include/net/xdp_sock_drv.h                    |  11 +-
+ include/net/xsk_buff_pool.h                   |   4 +-
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    |   2 +-
+ drivers/net/veth.c                            |   4 +-
+ kernel/bpf/cpumap.c                           |   2 +-
+ kernel/bpf/devmap.c                           |   8 +-
+ net/bpf/test_run.c                            |   4 +-
+ net/core/dev.c                                |  20 ++-
+ net/core/filter.c                             |  41 +++---
+ net/core/page_pool.c                          |  79 ++++++++----
+ net/core/skbuff.c                             |   2 +-
+ net/core/xdp.c                                | 118 +++++++++++-------
+ 19 files changed, 348 insertions(+), 154 deletions(-)
+
+---
+From v5[0]:
+* split the overgrowth series into 2 parts: changes and additions
+  (Jakub);
+* 008: future-proof: make the touched function MP-agnostic to avoid
+  double work in future;
+* send to better fitting now bpf instead of netdev.
+
+From v4[1]:
+* 12: pick RB from Toke;
+* 19: drop redundant ';'s (Jakub);
+* 19: fix a couple context imbalance warnings by moving __acquires() /
+  __releases() to the proper place (smatch);
+* no functional changes.
+
+From v3[2]:
+* rebase on top of the latest net-next to solve conflict (Jakub);
+* 09: use iterative approach instead of recursive to not blow the stack
+  (Toke);
+* 12: rephrase the commitmsg since the functionality changed, so that
+  it's not actual anymore (Toke);
+* align &xdp_buff_xsk a bit harder since its alignment degraded
+  recently;
+* pick RBs from Toke.
+
+From v2[3]:
+* cover: rename the series;
+* collect RBs and Acks from Maciej;
+* 007: reword the commitmsg;
+* 011: fix typos in the commitmsg (M);
+* 012: 'ts' -> 'tsize' (M; not 'truesize' to fit into 80 cols =\);
+* 016: fix the intro sentence (M);
+* no functional changes.
+
+From v1[4]:
+* rebase on top of the latest net-next;
+* no other changes.
+
+[0] https://lore.kernel.org/netdev/20241113152442.4000468-1-aleksander.lobakin@intel.com
+[1] https://lore.kernel.org/netdev/20241107161026.2903044-1-aleksander.lobakin@intel.com
+[2] https://lore.kernel.org/netdev/20241030165201.442301-1-aleksander.lobakin@intel.com
+[3] https://lore.kernel.org/netdev/20241015145350.4077765-1-aleksander.lobakin@intel.com
+[4] https://lore.kernel.org/netdev/20241009152756.3113697-1-aleksander.lobakin@intel.com
+-- 
+2.47.0
+
