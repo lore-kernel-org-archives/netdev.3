@@ -1,89 +1,87 @@
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD90B660
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 18:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA53C1FBEA5
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 18:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733249909; cv=none; b=Yz5VukBFHjqnE8ZK8wd+67T143nchpZc0C32Ce444RlPir6SgH4YKB+o3UjAzjjaneE9pBcEtdvS8EXJIvxLq7z4F+01wApqGjqT/nh46MuWGjmMRAXbejMM96aY/JpClS69UN4zNjMGAIYqTNanY+xfPE/zYyWw+cY61uhV0g4=
+	t=1733250086; cv=none; b=DJUHA0j4Eu6vXQP9aJoK7mqU6JbCwWYDizgBDBYoDIR9UD/DvAm2/BW4uMTcL1p9SGLtNAsqnD90NIXVcHWIlsk22yota6UHUKEN2FJyAYVMGJO4r8XwYRnJ0YBTYbEjLNzKoAA1iJS1Y2FA7okAL9xUEs7z5wrofl6yUkSixWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733249909; c=relaxed/simple;
-	bh=Y/LATXzbXBs1wuBH8LCeQx8wtNBrawUJlxEPBbZRTgU=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BIkE8aovWem2A3N+R4mRvsXTZExqEgntst5GxcKh7vLCfIxl+oWatCdMPM9fnllgQsaVfSOMeER+uynB4Lv2MTUpGixsDetxT7GKL0yetRwGP1kAIyFz4q8xhMF88+VckpCzSx2v/NFlLrNK/05+d2TpYc6OG1WDZbfgL9RcWkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3a7e0d5899bso87559555ab.0
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 10:18:27 -0800 (PST)
+	s=arc-20240116; t=1733250086; c=relaxed/simple;
+	bh=0pR8wHbG2EpinRUX7sOjW5bAxd3b/Yk6MGMuZbsLWrs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cKfyx8UwhJ2yEWPEeEAMrntU0kGozwKkFNy6Dbj6rjNc4OBIRsv6ilnuZyMiV+jL8CyvjUuTv12VcA0N528uiu9YuPE2zO+7ekHfZ8RGa9/8euygN+RJ1DkNHdLLY2l1xYLekp++cODcoVni7eqCIm3IxKVE7NU/HwLe5Dk9EMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oy6XdlqY; arc=none smtp.client-ip=209.85.219.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oy6XdlqY"
+Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-6d884e46548so68379976d6.2
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 10:21:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733250084; x=1733854884; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FN54Sr9QLBQIrkewMRkTvBLZ54fjMvSBCIBoEcUqnnc=;
+        b=oy6XdlqY1BEnFy2CAUSTIBmFbH7NzEFsARaH+CsGtW8o+FjN4jMfE4ATLYDBJ6N/UL
+         Il5UcEvg58O7J7OfgFiwTE85W89Ct/n5j2ZElj/urU+OesuJ3oGOd0NZMYd4aAwiyMZE
+         QPM09Ur1Uc4tav3YIeXIwdix3PrCSsTm8McK/gVhjMqS3dwSOyhqugy8cKDcDFgXfZXV
+         iIP4Vk9y4mxesRks7WmWR19CAQU5Xl9l9zx+HWHc5EgGYeEKXYZB1txzMHTfmuGBRHJf
+         PT0bdaiqGeCBWVtDvvfS6ljuEDODpZwT3R3Q9Rh8nt5kXV4aeYj8SvNM7fejF/FybRHP
+         5yxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733249907; x=1733854707;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        d=1e100.net; s=20230601; t=1733250084; x=1733854884;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=H8RBZ0U7YFVbawuroNmqKmJopoxRovlVXxs2fuXsgOQ=;
-        b=Y9zJXrwKnL/ZwiHbh/5CXtVhMGhZ35jyANjiduaGHyUIm9/Gn03XsVpmnTLB5aHa1o
-         zK59d5JNNT2LZM9cbLLBo/WNOi7HnDy0lCUKoa+guXX67HIL7iq/SrnuNkHZcj1mgp2C
-         q6TvfuzU1zivoLA7VUuOegbJ1rQo37Rh8uaXK4y9cLTKJ868D/yW+tn5JWspZTdPX+14
-         bhAZWP3nJcUDp+LK7rKp1YJBRhYWHLAKtwShR+RHinH5n1GZpZMcI4656YtUk/naKeyK
-         BSPuogIf7jOL5HqdLTE0aAHQH20Y6PVIMSq38quI2iOTZLI2GP24pXddG/QAOFA1tXE3
-         PphA==
-X-Forwarded-Encrypted: i=1; AJvYcCWs5ScUTvcOGeKqcEm5zEgRB+tvrvARsKNP0DMN20aou8NeKehtGe9fs+Bnbti/ESRVd+F8Ofk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm67Yc+ctDJMpcawzgBwEbVlgde11FnIHBO/I8VTKzyPkyAu/A
-	2wJIRuiZbbuAfvE8bY+gzkIfr5k/zb6czxJDatZH0TjHEq61rJxDTeNHhdxLam4a2mE/UWh9gz3
-	Fdij0mY3zez4Oz8PY9Yvmrcc0tjN7jrE5r8dMFqwi8IQVfLosZFKW8Cs=
-X-Google-Smtp-Source: AGHT+IE4Hbak9jaVQvKtwxtOhqhG4SJFknf1eSnld1wtG3nbW0JHuSbM2fVwB1KsKRd7SDcinMCufy5c4+ZW7alz19YQCaw6QjC4
+        bh=FN54Sr9QLBQIrkewMRkTvBLZ54fjMvSBCIBoEcUqnnc=;
+        b=OPQGHkC7H6Q5S6X/KWHoMrmkjKKqnYkWZOHXRp4CO7J/56bONHyFg4I0/V6Tjn3vyU
+         6CUns1z4lnITkiKmsx2Bxot7CpfpaV+PBZcg9SHWjNWhKdCW54wXdiPlTUatZdHHOHB3
+         aePwaDc7uxPJpIB9l8IHFfLjp4Fu8Va7b7OEjgBNLSI5vTsrm1/hTd24OlSnxg187pO0
+         fdY5kE/i2IPPAq6VjfnsE7EzHFkJ8MyHRMhqZ93JuSfHFtYzlDfRoj2EESumZmC31s8U
+         9xcuezdTQi0W+Z1Rb+7gNxN6afgKewfBWYlJnDenl/6NAc7Yo73thl2c2YdGHH/kPh75
+         Zmng==
+X-Gm-Message-State: AOJu0Yzs0/MsPME7R8rugxxRGLTdr4A7fDJHtLLj3P0JpNOzMuHP0J8A
+	nyUnM1YoknqXB+yWFDnVH4zk8A0hXYFasMYL0JYKnjTiUDt8Puw7bKPSsikyL50QKzoe4WeGl0Z
+	emySGJewrSQ==
+X-Google-Smtp-Source: AGHT+IHbBd9W6ycVnDiuz7WTesF9LGA1mq2faGp9Mkh+wSYLEwfzsRHOnX/1ktaCWsd9bEvlOxhSi/FSRQaeLA==
+X-Received: from qvc12.prod.google.com ([2002:a05:6214:810c:b0:6cb:2aa1:eb4])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ad4:5aee:0:b0:6d4:19a0:202 with SMTP id 6a1803df08f44-6d8b740e6a7mr41783096d6.33.1733250083785;
+ Tue, 03 Dec 2024 10:21:23 -0800 (PST)
+Date: Tue,  3 Dec 2024 18:21:21 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:184b:b0:3a7:4826:b057 with SMTP id
- e9e14a558f8ab-3a7fedb4c6fmr16352255ab.21.1733249906967; Tue, 03 Dec 2024
- 10:18:26 -0800 (PST)
-Date: Tue, 03 Dec 2024 10:18:26 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674f4b72.050a0220.17bd51.004a.GAE@google.com>
-Subject: [syzbot] [net?] WARNING in geneve_xmit (2)
-From: syzbot <syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241203182122.2725517-1-edumazet@google.com>
+Subject: [PATCH net] geneve: do not assume mac header is set in geneve_xmit_skb()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com, 
+	Stefano Brivio <sbrivio@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+We should not assume mac header is set in output path.
 
-syzbot found the following issue on:
+Use skb_eth_hdr() instead of eth_hdr() to fix the issue.
 
-HEAD commit:    aaf20f870da0 Merge tag 'rpmsg-v6.13' of git://git.kernel.o..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=167d0f78580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a51a585c6e636e05
-dashboard link: https://syzkaller.appspot.com/bug?extid=3ec5271486d7cb2d242a
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+sysbot reported the following :
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a124d816c6b8/disk-aaf20f87.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/72ab15012016/vmlinux-aaf20f87.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/70a3dde18fe5/bzImage-aaf20f87.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 skb_mac_header include/linux/skbuff.h:3052 [inline]
-WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 eth_hdr include/linux/if_ether.h:24 [inline]
-WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit_skb drivers/net/geneve.c:898 [inline]
-WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 skb_mac_header include/linux/skbuff.h:3052 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 eth_hdr include/linux/if_ether.h:24 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit_skb drivers/net/geneve.c:898 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
 Modules linked in:
 CPU: 0 UID: 0 PID: 11635 Comm: syz.4.1423 Not tainted 6.12.0-syzkaller-10296-gaaf20f870da0 #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:skb_mac_header include/linux/skbuff.h:3052 [inline]
-RIP: 0010:eth_hdr include/linux/if_ether.h:24 [inline]
-RIP: 0010:geneve_xmit_skb drivers/net/geneve.c:898 [inline]
-RIP: 0010:geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
+ RIP: 0010:skb_mac_header include/linux/skbuff.h:3052 [inline]
+ RIP: 0010:eth_hdr include/linux/if_ether.h:24 [inline]
+ RIP: 0010:geneve_xmit_skb drivers/net/geneve.c:898 [inline]
+ RIP: 0010:geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
 Code: 21 c6 02 e9 35 d4 ff ff e8 a5 48 4c fb 90 0f 0b 90 e9 fd f5 ff ff e8 97 48 4c fb 90 0f 0b 90 e9 d8 f5 ff ff e8 89 48 4c fb 90 <0f> 0b 90 e9 41 e4 ff ff e8 7b 48 4c fb 90 0f 0b 90 e9 cd e7 ff ff
 RSP: 0018:ffffc90003b2f870 EFLAGS: 00010283
 RAX: 000000000000037a RBX: 000000000000ffff RCX: ffffc9000dc3d000
@@ -98,50 +96,45 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
- netdev_start_xmit include/linux/netdevice.h:5011 [inline]
- __dev_direct_xmit+0x58a/0x720 net/core/dev.c:4490
- dev_direct_xmit include/linux/netdevice.h:3181 [inline]
- packet_xmit+0x1e4/0x360 net/packet/af_packet.c:285
- packet_snd net/packet/af_packet.c:3146 [inline]
- packet_sendmsg+0x2700/0x5660 net/packet/af_packet.c:3178
- sock_sendmsg_nosec net/socket.c:711 [inline]
- __sock_sendmsg net/socket.c:726 [inline]
- __sys_sendto+0x488/0x4f0 net/socket.c:2197
- __do_sys_sendto net/socket.c:2204 [inline]
- __se_sys_sendto net/socket.c:2200 [inline]
- __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2200
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
+  __dev_direct_xmit+0x58a/0x720 net/core/dev.c:4490
+  dev_direct_xmit include/linux/netdevice.h:3181 [inline]
+  packet_xmit+0x1e4/0x360 net/packet/af_packet.c:285
+  packet_snd net/packet/af_packet.c:3146 [inline]
+  packet_sendmsg+0x2700/0x5660 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg net/socket.c:726 [inline]
+  __sys_sendto+0x488/0x4f0 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2200
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fdc2d180809
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdc2deed058 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007fdc2d345fa0 RCX: 00007fdc2d180809
-RDX: 000000000000000e RSI: 0000000020000340 RDI: 0000000000000003
-RBP: 00007fdc2d1f393e R08: 0000000020000140 R09: 0000000000000014
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fdc2d345fa0 R15: 00007ffff90ca148
- </TASK>
 
-
+Fixes: a025fb5f49ad ("geneve: Allow configuration of DF behaviour")
+Reported-by: syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/674f4b72.050a0220.17bd51.004a.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stefano Brivio <sbrivio@redhat.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/geneve.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 2f29b1386b1c81640562e6ce91d6e8d88f0ffe1c..bc658bc6088546d5d1f116988b93d4dda915a799 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -895,7 +895,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		if (geneve->cfg.df == GENEVE_DF_SET) {
+ 			df = htons(IP_DF);
+ 		} else if (geneve->cfg.df == GENEVE_DF_INHERIT) {
+-			struct ethhdr *eth = eth_hdr(skb);
++			struct ethhdr *eth = skb_eth_hdr(skb);
+ 
+ 			if (ntohs(eth->h_proto) == ETH_P_IPV6) {
+ 				df = htons(IP_DF);
+-- 
+2.47.0.338.g60cca15819-goog
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
