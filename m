@@ -1,59 +1,96 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E58D1A4F2F
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 08:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F5E1DE4D9
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 09:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733216029; cv=none; b=Fe5Yw3rTQhPjTxuN1hEWcaDXqtS482zQNNcagMy7g5PVXr3mJGrazxEC1c+OG2HREUPqvH3aCBE3o3Nf7RS61AbI18enrl5+fD0Bjj+4OLgey31iyNB7wuR5tpgJxP008R98PABLi04CT5huIPjJj/yARlGRck7Yk/xJusqITPc=
+	t=1733217031; cv=none; b=OLhc023SLQhB2b7r5nTunjlGKa5HpU+kDCGW4kMaENgfC/XG0lO0cn3JcrJAgGtsBXO8iGyHBxuPSO3cwI/Uxoj7i5poiDTUNJJHkE2En5BdiPp0dpdLhpEfcVzrWEq/TIuyqHf+NDWhGMA0mdcE9g5eq8sAQNJfykql4fp7/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733216029; c=relaxed/simple;
-	bh=WrPArXvpbZr9O9eZmjNxD8Ss2kNDYmAdk++CLX9L820=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pqEKx/aZrZLhId/HD0j7rgWJGTyX5+3ddifPRSN2qWPIn+WFbUjQyYiFzx3BiGh9EJo1SweBXdIgjz551rirH1u1dlAgGpSA0k6DLUKLdBXlMw5vBFpTsTGJxEZERzRvC2kJf7/P9AxowxMzYz5MiHc6ZwpEmInPNpZvKfFd2+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=nbB6Jc/p; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+	s=arc-20240116; t=1733217031; c=relaxed/simple;
+	bh=t2rIDheqjcBU9D907pHcVZZDQMqpDHx8i/WTx64rQ1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qAgp6Iz8OGkfciui8de0fAcqBJ55g6lVxs/hmg8lqRf47mSCFK99EXRW4odDJTcQ2GhvNXzz1uE2rsOl0o4LzMWeZ8CRBo0gi5qwImFf/DSWmFwH68ty2oiKs+zDCfKFRcmZmQO/vKHmjS/cqDb/lSD4TiliwEl0cthajFdVNbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/S00nTu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="nbB6Jc/p"
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1733215685; bh=WrPArXvpbZr9O9eZmjNxD8Ss2kNDYmAdk++CLX9L820=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=nbB6Jc/pUP9c+wE4JekMes5g4aEFpYpZ83S+7XoIrC0ZJLDGx9pc1pJQrLKHXgyDk
-	 ajyfzoVv1jgBKa6L48D0YpxutJG4yMG3Mw9QyFI7am8VUZ4j29T45FR/vRc1k3lcFS
-	 yILUJMUZVJmGIpt3MAQid5Ip6HDewPxOMdyMXVa8fQUdi3dDePMP3rJejo33aCuapU
-	 +0HVSH/HfbHY3iQFmU+Kdc11dk9HkutrEY4Qyp1E1Xotp+AkbLyWKCwhU7u8aeCyF5
-	 BW8O6m0ARk9wCc6uZ/ylSX28T+7pQ30aRSugynouIqyMzsRdS8lwlb72EOHMmAVrmK
-	 bZcNkMvbOvy6w==
-To: Lion Ackermann <nnamrec@gmail.com>, netdev@vger.kernel.org
-Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, nnamrec@gmail.com
-Subject: Re: [PATCH] net: sched: fix ordering of qlen adjustment
-In-Reply-To: <6c7ae1c8-8573-4f4a-96cb-0a75eab21516@gmail.com>
-References: <6c7ae1c8-8573-4f4a-96cb-0a75eab21516@gmail.com>
-Date: Tue, 03 Dec 2024 09:48:04 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87iks1gnjv.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/S00nTu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C9DC4CED6;
+	Tue,  3 Dec 2024 09:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733217031;
+	bh=t2rIDheqjcBU9D907pHcVZZDQMqpDHx8i/WTx64rQ1E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p/S00nTutZFeFDap47LU2wOH4RkX8Rw+FKXBJkY2DC9GFMirmrJkSgs5zUSUQODMm
+	 uI/Z+0ygF9/uxwmqjBAAU3cMKrF68qBNWeRLuU9+9ZwIfcp+O79rJo0Lnbg2/ITgGB
+	 i7VyIrCWqluCegLc5eK0j9Y0rJ4BGtRTpNwYl9p8hd4NtloYD8zk67XHgW1NJVrw1O
+	 PgyWUsZq83zh8BAVG2xiZ1TrZy290zrkSLf55QOrcMn/zBk3bC/zZW1oFQsy5v0aUm
+	 NDz9DhvX7AwLjt5EuQket3aYIz8n62FSFyaubK41zGO6xFlY2owTqIaYFpx5nDC7Sv
+	 djbAIoJgXhqXg==
+Date: Tue, 3 Dec 2024 09:09:27 +0000
+From: Simon Horman <horms@kernel.org>
+To: greearb@candelatech.com
+Cc: netdev@vger.kernel.org, Jason@zx2c4.com, wireguard@lists.zx2c4.com,
+	dsahern@kernel.org
+Subject: Re: [PATCH] net: wireguard: Allow binding to specific ifindex
+Message-ID: <20241203090927.GA9361@kernel.org>
+References: <20241125212111.1533982-1-greearb@candelatech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241125212111.1533982-1-greearb@candelatech.com>
 
-Lion Ackermann <nnamrec@gmail.com> writes:
+On Mon, Nov 25, 2024 at 01:21:11PM -0800, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> Which allows us to bind to VRF.
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+> 
+> NOTE:  Modified user-space to utilize this may be found here:
+> https://github.com/greearb/wireguard-tools-ct
+> Only the 'wg' part has been tested with this new feature as of today.
 
-> Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-> _before_ a call to said function because otherwise it may fail to notify
-> parent qdiscs when the child is about to become empty.
->
-> Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+...
 
-For sch_cake:
+> diff --git a/drivers/net/wireguard/socket.c b/drivers/net/wireguard/socket.c
+> index 0414d7a6ce74..a7cb1c7c3112 100644
+> --- a/drivers/net/wireguard/socket.c
+> +++ b/drivers/net/wireguard/socket.c
+> @@ -25,7 +25,8 @@ static int send4(struct wg_device *wg, struct sk_buff *skb,
+>  		.daddr = endpoint->addr4.sin_addr.s_addr,
+>  		.fl4_dport = endpoint->addr4.sin_port,
+>  		.flowi4_mark = wg->fwmark,
+> -		.flowi4_proto = IPPROTO_UDP
+> +		.flowi4_proto = IPPROTO_UDP,
+> +		.flowi4_oif = wg->lowerdev,
+>  	};
+>  	struct rtable *rt = NULL;
+>  	struct sock *sock;
+> @@ -111,6 +112,9 @@ static int send6(struct wg_device *wg, struct sk_buff *skb,
+>  	struct sock *sock;
+>  	int ret = 0;
+>  
+> +	if (wg->lowerdev)
+> +		fl.flowi6_oif = wg->lowerdev,
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+Hi Ben,
 
+I think that the trailing ',' on the line above should be a ';'.
+As written, with a ',', the call to skb_mark_not_on_list() 
+below will be included in the conditional block above.
+And this doesn't seem to be the intention of the code based on indentation.
+
+Flagged by clang-19 with -Wcomma
+
+> +
+>  	skb_mark_not_on_list(skb);
+>  	skb->dev = wg->dev;
+>  	skb->mark = wg->fwmark;
+
+...
