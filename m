@@ -1,161 +1,141 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313211F75B6
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 15:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5B81FA27C;
+	Tue,  3 Dec 2024 15:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239917; cv=none; b=dDnjM+7v+o4sbYpFX0js8Q8f9TolumgJHdPQQGstgc011tGyCJEvHVu0ErOW4WfhRfSQ7HfY9yMDv6qgOwR7YzSi5DJ1pn3/vkXxcd6kNClWP0umAduZDYUd3UuGWzbrkQRsx5Bpel+xi/ERdjCz8FteuBjoTrTY9rrVc31ZVf0=
+	t=1733240056; cv=none; b=JE0aeA/D50a9gyLOipOT+Wial1t8O3HadrQNwZnvqFYl6VOvUyu9JMTM0z5N4xA/O23CdVZXDlOLPuUbyrF73vL05ff0GAgkpL3WeM0FlFNgwut37hsxtYREmDbF+fPbxLjPAlGYM7j9G5nRVqNGxRq6XvUdLAZRob15+p912/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239917; c=relaxed/simple;
-	bh=6eIBXgM1Iu7jes442VSZYKcS0hjg5boZg0u040qRHlk=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=neAEeLKkJy3SL692y5FoN3teYwbLIYG1LqN046dw7/cyCmZybGcY9QPPEtUaWiZXZKIVeIFq0NzMyuBxWxDdddzF1QGMI3Pz5Xv3OPJsSIG+V5Bt/Tb7UIfO95kNAEcUAZFEtDDg7TlLCrEm1KNc8xHVFV+N+2vhldcTakyPUo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=tigLSWZU; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1733240056; c=relaxed/simple;
+	bh=JkY+5fOV9qIOnxsCxpI9LuFE3gW4OY/AYWWLkZk6dT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyGhDYywNgXcVhXiT9iaRIflXP3wrP0nbu/Xs+5gveU+cILHl7BJe8VrxCw6BT0Ed6SsyxZPp2N03gKtGP0YldXovpdorKtO+jl/4pJyVLISHpptUOPCZx8jnSigo+hoE57ZiqW8XDQk79cr4QKVU65DGtu736YHGzzC/qrMEFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cw+tBO6K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="tigLSWZU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uf4WYKSTze3bSnwu7K9kB/i9fwhUx0yrzfWqKQGsojI=; b=tigLSWZUTpqGeEyg22VImz9IzQ
-	9d+xGzo9/AwXt5+fmG30Uy3VoxNhcxSzkFd0ib2o24QQZDJx4Z3sAm/2caoXcN0YOWqrcC9WYNzwi
-	mJQPI0HCBWaS9bVZrdbqP1SV9otJq6Tgu8SSDj7wvuDBX66JVIgKfQNuC7syKnOMJwaZNA+vMpHYM
-	723AJAT6cAjsk0mS9J1mGjN5C1rtBo0q5y6WfF+I6nCgByNjYogw8NLOMlHotbO3t+C599EaeZUuE
-	rNkNWlueoIFKb9ZVWT6jShBUTgAigCWhfuEQxli0SC6ijq8FAH0NQaddqhfIAQ/3N8yg+XC4/IyDX
-	55hqIqbA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39300 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tIUsP-0002A2-2i;
-	Tue, 03 Dec 2024 15:31:50 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tIUsO-006IUt-KN; Tue, 03 Dec 2024 15:31:48 +0000
-In-Reply-To: <Z08kCwxdkU4n2V6x@shell.armlinux.org.uk>
-References: <Z08kCwxdkU4n2V6x@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cw+tBO6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B548C4CED6;
+	Tue,  3 Dec 2024 15:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733240056;
+	bh=JkY+5fOV9qIOnxsCxpI9LuFE3gW4OY/AYWWLkZk6dT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cw+tBO6K4ei6BBayeOiLRkFW07O1fa5MF9AkitxqR9pP9zKAp7HWJ+ED/tGNWCHw6
+	 sCR+Dup7q6Bl/5guOfooulr0VAkud+sL2WAlfgORxiVnDmAyoyhgj4uN5xBUsM8d+y
+	 E8V65kOlexnY0r23jyd5Np5jk1x3b/wAxwJ/ZjuM=
+Date: Tue, 3 Dec 2024 15:48:07 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next 13/13] net: phylink: remove phylink_phy_no_inband()
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: usb: usbnet: restore usb%d name exception for local
+ mac addresses
+Message-ID: <2024120357-vertebrae-squatted-f670@gregkh>
+References: <20241203130457.904325-1-asmadeus@codewreck.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tIUsO-006IUt-KN@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 03 Dec 2024 15:31:48 +0000
+In-Reply-To: <20241203130457.904325-1-asmadeus@codewreck.org>
 
-Remove phylink_phy_no_inband() now that we are handling the lack of
-inband negotiation by querying the capabilities of the PHY and PCS,
-and the BCM84881 PHY driver provides us the information necessary to
-make the decision.
+On Tue, Dec 03, 2024 at 10:04:55PM +0900, Dominique Martinet wrote:
+> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> 
+> The previous commit assumed that local addresses always came from the
+> kernel, but some devices hand out local mac addresses so we ended up
+> with point-to-point devices with a mac set by the driver, renaming to
+> eth%d when they used to be named usb%d.
+> 
+> Userspace should not rely on device name, but for the sake of stability
+> restore the local mac address check portion of the naming exception:
+> point to point devices which either have no mac set by the driver or
+> have a local mac handed out by the driver will keep the usb%d name.
+> 
+> Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
+> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> ---
+>  drivers/net/usb/usbnet.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index 44179f4e807f..d044dc7b7622 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
+>  }
+>  EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+>  
+> +static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
+> +{
+> +	/* Point to point devices which don't have a real MAC address
+> +	 * (or report a fake local one) have historically used the usb%d
+> +	 * naming. Preserve this..
+> +	 */
+> +	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
+> +		(is_zero_ether_addr(net->dev_addr) ||
+> +		 is_local_ether_addr(net->dev_addr));
+> +}
+> +
+>  static void intr_complete (struct urb *urb)
+>  {
+>  	struct usbnet	*dev = urb->context;
+> @@ -1762,13 +1773,10 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+>  		if (status < 0)
+>  			goto out1;
+>  
+> -		// heuristic:  "usb%d" for links we know are two-host,
+> -		// else "eth%d" when there's reasonable doubt.  userspace
+> -		// can rename the link if it knows better.
+> +		/* heuristic: rename to "eth%d" if we are not sure this link
+> +		 * is two-host (these links keep "usb%d") */
+>  		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
+> -		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
+> -		     /* somebody touched it*/
+> -		     !is_zero_ether_addr(net->dev_addr)))
+> +		    !usbnet_needs_usb_name_format(dev, net))
+>  			strscpy(net->name, "eth%d", sizeof(net->name));
+>  		/* WLAN devices should always be named "wlan%d" */
+>  		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+> -- 
+> 2.47.0
+> 
+> 
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/phy/phylink.c | 27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+Hi,
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index b0881fa9c72e..95fbc363f9a6 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3391,10 +3391,11 @@ static phy_interface_t phylink_choose_sfp_interface(struct phylink *pl,
- 	return interface;
- }
- 
--static void phylink_sfp_set_config(struct phylink *pl, u8 mode,
-+static void phylink_sfp_set_config(struct phylink *pl,
- 				   unsigned long *supported,
- 				   struct phylink_link_state *state)
- {
-+	u8 mode = MLO_AN_INBAND;
- 	bool changed = false;
- 
- 	phylink_dbg(pl, "requesting link mode %s/%s with support %*pb\n",
-@@ -3428,8 +3429,7 @@ static void phylink_sfp_set_config(struct phylink *pl, u8 mode,
- 		phylink_mac_initial_config(pl, false);
- }
- 
--static int phylink_sfp_config_phy(struct phylink *pl, u8 mode,
--				  struct phy_device *phy)
-+static int phylink_sfp_config_phy(struct phylink *pl, struct phy_device *phy)
- {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(support);
- 	struct phylink_link_state config;
-@@ -3473,7 +3473,7 @@ static int phylink_sfp_config_phy(struct phylink *pl, u8 mode,
- 
- 	pl->link_port = pl->sfp_port;
- 
--	phylink_sfp_set_config(pl, mode, support, &config);
-+	phylink_sfp_set_config(pl, support, &config);
- 
- 	return 0;
- }
-@@ -3548,7 +3548,7 @@ static int phylink_sfp_config_optical(struct phylink *pl)
- 
- 	pl->link_port = pl->sfp_port;
- 
--	phylink_sfp_set_config(pl, MLO_AN_INBAND, pl->sfp_support, &config);
-+	phylink_sfp_set_config(pl, pl->sfp_support, &config);
- 
- 	return 0;
- }
-@@ -3619,19 +3619,9 @@ static void phylink_sfp_link_up(void *upstream)
- 	phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_LINK);
- }
- 
--/* The Broadcom BCM84881 in the Methode DM7052 is unable to provide a SGMII
-- * or 802.3z control word, so inband will not work.
-- */
--static bool phylink_phy_no_inband(struct phy_device *phy)
--{
--	return phy->is_c45 && phy_id_compare(phy->c45_ids.device_ids[1],
--					     0xae025150, 0xfffffff0);
--}
--
- static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
- {
- 	struct phylink *pl = upstream;
--	u8 mode;
- 
- 	/*
- 	 * This is the new way of dealing with flow control for PHYs,
-@@ -3642,17 +3632,12 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
- 	 */
- 	phy_support_asym_pause(phy);
- 
--	if (phylink_phy_no_inband(phy))
--		mode = MLO_AN_PHY;
--	else
--		mode = MLO_AN_INBAND;
--
- 	/* Set the PHY's host supported interfaces */
- 	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
- 			  pl->config->supported_interfaces);
- 
- 	/* Do the initial configuration */
--	return phylink_sfp_config_phy(pl, mode, phy);
-+	return phylink_sfp_config_phy(pl, phy);
- }
- 
- static void phylink_sfp_disconnect_phy(void *upstream,
--- 
-2.30.2
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
