@@ -1,124 +1,114 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1635716DC28;
-	Tue,  3 Dec 2024 22:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D7F1D8E1E
+	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 22:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733265159; cv=none; b=O14FruVEcrka5MvbdntigbZojM100VvlbwbED0R12mIOahjofwR3lWZqOOL8k5i7fMJJKYBxAJyXj86NLBArTu54AmgxnB36Ksa0P+C4enxfltXB5/e7NUCG6SSf9/CBp/07pk0R0nEM28HzPQQLcadsXHzmtt3NVJnXF9ueHUY=
+	t=1733265344; cv=none; b=MLyOY9VMue05MhDn/a3Ij82UbBPtyh7sO3V91YHlBbq+7oelbRmOSCKA/Fl53lNI6d92avJ5xtO/bSpMQmvyW3gdUXslaUzi0dtDmGEw0ilfhNqVMcXTALSpR/Ns2Vg71xCoSedHhhS/hXd5CLfme4fvR4+oxqzNd6ZowFj4mvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733265159; c=relaxed/simple;
-	bh=/bBqnTfrh3T7UDYQTvCzK5mOHnVENziHCGIZsA8YP3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hQzEudoX7oCzmtuYvKm4T9W+eYa7knj8LA1JsTmKeY7dizcLXOLVXwegQ052PrYjeh87U6VS4x2NP/GDXzrTLrDrHWfy5uNKOzaSgp1mldEhjVL0fPg/EKwMV8DQaHiooDKSvnr70fj+OibnlgzxO6bU1Ny0HtsZ7nJVdF52s8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxN8FPVL; arc=none smtp.client-ip=209.85.128.170
+	s=arc-20240116; t=1733265344; c=relaxed/simple;
+	bh=kYViiozP3wXER1FMTLl7y1IjqZskGkRhdRjZE2MHPeo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OcnvSQDeoth3QLouzLJVjtJB1iwSru0tYVzzG6ARz5JLNKRwPuqgHWo+ph9pMEeadNlMNkl7S7TVlb3PQF93rFp4bHlp1ol60yjnkh5VxLN2MfHwFxwkwkqHffywvqtIXGc9lpux9R0gaxjy2mHZjpLC6e3esRhjFGy+tIeXXzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VCMlXgfk; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxN8FPVL"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6ef4084df4cso54534267b3.1;
-        Tue, 03 Dec 2024 14:32:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VCMlXgfk"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7256dc42176so3015574b3a.3
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 14:35:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733265157; x=1733869957; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W3uXVixO2HYoTxZ+HwXw2HKm344cdNU9MSG32y7b4Qk=;
-        b=UxN8FPVLN/knMCNlGw4K5rX+1yfNgOGIXHXgi0KT+2soZ4p+NTNVlrh2SeSfJO8qGG
-         1vbQ0w1ndZbxMjEE2XTUYz8LvBYDqc+9Am6GzT4PA/qS4tnIFI4fspoCd3zgqczY6bRg
-         Mx5VQe1xQGOZMi5mmGmi8cJjhI3eSH2MxxI/5C+Se6lH9K0tUtLWcdufMatcYVoQfhUN
-         cScSeXrxWvhzNrhLDqay5dbMaNTqstDxYIjZax2tNzGz6w2vVth0fnaB8J50QhxU5f+j
-         dMYDSZVoWk+0Wb4QZaQCKW4rEzYSmTZQLrNU21ZSFLy9GwtpjrmpclGk1D3W+wg4vx4T
-         jPNQ==
+        d=gmail.com; s=20230601; t=1733265342; x=1733870142; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=loBDMJH2zBR8LxlFbyL9wElqOG056//EhC4OoIsws6g=;
+        b=VCMlXgfkk1qfcC0+NOMOw80dLsUcNKuhY2vJ6UPR8nbYK2dlAT2Fh+cSJzhz1TZMY7
+         cSFQhh6zHCjnR70gS6OOY6Hbl5cm8zQ6Wkk1nxtsyM6bZL+OvfzSirAw/zfkiG0EBR0E
+         Z5Y6xhH5shMgicdvwSoaf4OZfjvN24RpbP2Ny788Y3CLZRjTMIpzVoQ2QvxX/+VCGQuM
+         2r3mTIqd6JaVITpJ6PP6AWTkxaqJVSXTvSgV/2Jd3ZHJ9+Tc5BrKNQTPgMAIN01oqxg3
+         Obt3kzThyZ9bdOAo+eGTPLq+B3AjxjUdIGMLD3wYxPFKn5CKZJqAK4rFT60YhN8hCtJZ
+         4m9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733265157; x=1733869957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W3uXVixO2HYoTxZ+HwXw2HKm344cdNU9MSG32y7b4Qk=;
-        b=tDVu/7L6jXDqX8JBkLJONQ4KG3Z5yZrJyoXT5bUzpOUFzb8fbUN1RtlOVHTvdoInnS
-         2EPVeY9y6jfNmTWLUkcdrZM0Xrkx1JAvjuejTFHWP2zUOQdx7x3hHSMAvT2UfnOelBoe
-         Ai4nKHdq0oQXv6XbXYq7VsqyVNxTd0uIhdRDcEVpUeKv6xRTbNi3Rlj8P/t8Esy97rcc
-         54IW064lRSC4KJNbuIiny0YajmYZ5oJ03P9RvcRp28tVRhliFpf8nQ19jwqqVK33Poc2
-         GDPYQpK3bOlO2X5jZe51SVvpLCLqlW6X5f4vkF5YEFY/t4+gE7Obobwi6OnbOMBYbwcf
-         MbCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWu41vo96f0nJwdfSKmkawB0tO/qMrB32zvZvRxiypM/+DhT0rfjxXbrwdwFEOpz6W3oM63FspFJhaw1bM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytMO6nI78b4HyEhWnKEc1g6TNabt8cwC2NfVJacKxeqQbT1CxL
-	e+eQf0n4ndnAt3tE7Dchqk7akNZfloQetNlGO6lSO8i6jUDx7orltzJ8m2ByykKgFdqG1xsXtts
-	V3wtjfXeEPnljjV1mywDew25rSFU=
-X-Gm-Gg: ASbGnctIg4f/aL8eC10Jof5mIHuFqmH347fgfaXRj2f1F3twYv5Dc4V56ZvwBeTGyCB
-	eJy46LPuSmjDiI+Ml9SFI3Vz8zAONtJAmIF6uQoudRxaS
-X-Google-Smtp-Source: AGHT+IHdKPso0Q9UeLbszX084lHd/YkUoSrjxk6qabI3sAwyinBHwJSP95gkdk4ZVgLbdT+D1Gkwjcw7xohft4UO+2I=
-X-Received: by 2002:a05:690c:450f:b0:6ef:6178:404a with SMTP id
- 00721157ae682-6efad2d997dmr52558727b3.33.1733265157005; Tue, 03 Dec 2024
- 14:32:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733265342; x=1733870142;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=loBDMJH2zBR8LxlFbyL9wElqOG056//EhC4OoIsws6g=;
+        b=GBYRxfuol0jnmgpZ8j+8FKVXEjKmPAlzWoQ0Wvi/lrqFDW7MWdD7D/Ilclkuw0+Kuk
+         Gc7SOEQetSq0lMECyu5BwokPHbKY7dKYZXJy4XvlGdqcccUucLLlSM9iyK++7T21HOYg
+         +TvrW6hqvRUGWaGM1lm3VlH6/myDtGKLd8xbH5FHqEV4G0lWCm1sXYCWPEtE+wPOAY3j
+         stNX9+FM0DD6MOUZ2NwQDzdV8GYCktbPlMILSAvuv9DKgP5Gb0s9Sd+XACDr+iqtcLHY
+         31s12Q2axuZJbl6n+x13yJSmZkJaolV0ZRCoja79tGLnfOasYL9W+fUKLCf3SJMIqFPd
+         sQVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjOZScMTxri2bFJTl5Kyu+vqpL7FW2N+XMLUtB0p2Ux6Kdp/rglx5bvJzRW9haIBizG3oIIAI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynLvFYiTT2h8DwXuCFt/v7nEwzWsBsX25cnSVU0FIzTWB9ZxaD
+	guxrJ9kDscGU66czljjBwl69THdASTK6g1eMHwUwr9Mqg5NH8Hm9
+X-Gm-Gg: ASbGncs7Wq78v5UxISMLaJhn7O1O4aRxut0XcTaRMnZYQse8TPJVE8HEyS8I5zckzIl
+	GCbmWyT/yRVqJUgITmyATR6XLFZp1ipaEuEbL09zA1DD54Y5Y8WBO+yCiyM0jjiRe1YIe6rh0rk
+	5j2ynY/p7H8fFpYC8DLzr8+5QpdQFfXVSzxFfZ7BSgg30NEB2wcQFHZ9uIaP8q/ciKdcXyykdh7
+	VbwJe/3yJg+oCrwD5SVunCDCk8I5OhdM+1hk+vEBjqOKcYGjdenHtUSbU2pxj+JmWs72f8j4kne
+	xEyDnTN3
+X-Google-Smtp-Source: AGHT+IH8BuwEdeBixD/Zw52WI1Q/MXZtqz2OJHZ1fIPnvP21ppGiNMP3R+n0L/WDaHfUFsuizY3nXQ==
+X-Received: by 2002:a17:902:f684:b0:215:96bc:b680 with SMTP id d9443c01a7336-215bd16f544mr60325935ad.42.1733265342321;
+        Tue, 03 Dec 2024 14:35:42 -0800 (PST)
+Received: from xiberoa (c-76-103-20-67.hsd1.ca.comcast.net. [76.103.20.67])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2156b1601basm59404425ad.196.2024.12.03.14.35.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 14:35:40 -0800 (PST)
+Date: Tue, 3 Dec 2024 14:35:38 -0800
+From: Frederik Deweerdt <deweerdt.lkml@gmail.com>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: David Howells <dhowells@redhat.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] splice: do not checksum AF_UNIX sockets
+Message-ID: <Z0-Huo1aqf2OAtJi@xiberoa>
+References: <Z0pMLtmaGPPSR3Ea@xiberoa>
+ <537172.1733243422@warthog.procyon.org.uk>
+ <Z098yHlrNYJsdzhM@pop-os.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203221644.136104-1-rosenp@gmail.com> <20241203221644.136104-2-rosenp@gmail.com>
- <50e1ec4d-818c-45a8-875b-40f74cca1514@gmail.com>
-In-Reply-To: <50e1ec4d-818c-45a8-875b-40f74cca1514@gmail.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Tue, 3 Dec 2024 14:32:26 -0800
-Message-ID: <CAKxU2N_D1vjhfdX=ou2S+rfabe5nM9i=Q6YYYigLJMN3t9JS0g@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] net: mdio-ipq8064: use platform_get_resource
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, ansuelsmth@gmail.com, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z098yHlrNYJsdzhM@pop-os.localdomain>
 
-On Tue, Dec 3, 2024 at 2:27=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.co=
-m> wrote:
->
-> On 03.12.2024 23:16, Rosen Penev wrote:
-> > There's no need to get the of_node explicitly. platform_get_resource
-> > already does this.
-> >
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> > ---
-> >  drivers/net/mdio/mdio-ipq8064.c | 7 ++++---
-> >  1 file changed, 4 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/mdio/mdio-ipq8064.c b/drivers/net/mdio/mdio-ip=
-q8064.c
-> > index 6253a9ab8b69..e3d311ce3810 100644
-> > --- a/drivers/net/mdio/mdio-ipq8064.c
-> > +++ b/drivers/net/mdio/mdio-ipq8064.c
-> > @@ -111,15 +111,16 @@ ipq8064_mdio_probe(struct platform_device *pdev)
-> >  {
-> >       struct device_node *np =3D pdev->dev.of_node;
-> >       struct ipq8064_mdio *priv;
-> > -     struct resource res;
-> > +     struct resource *res;
-> >       struct mii_bus *bus;
-> >       void __iomem *base;
-> >       int ret;
-> >
-> > -     if (of_address_to_resource(np, 0, &res))
-> > +     res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > +     if (!res)
-> >               return -ENOMEM;
-> >
-> > -     base =3D devm_ioremap(&pdev->dev, res.start, resource_size(&res))=
-;
-> > +     base =3D devm_ioremap(&pdev->dev, res->start, resource_size(res))=
-;
-> >       if (!base)
-> >               return -ENOMEM;
-> >
->
-> Why not directly switching to devm_platform_get_and_ioremap_resource()?
-Because that is not the same.
+On Tue, Dec 03, 2024 at 01:48:56PM -0800, Cong Wang wrote:
+> On Tue, Dec 03, 2024 at 04:30:22PM +0000, David Howells wrote:
+> > Frederik Deweerdt <deweerdt.lkml@gmail.com> wrote:
+> > 
+> > > -			if (skb->ip_summed == CHECKSUM_NONE)
+> > > +			if (skb->ip_summed == CHECKSUM_NONE && skb->sk->sk_family != AF_UNIX)
+> > >  				skb_splice_csum_page(skb, page, off, part);
+> > 
+> > Should AF_UNIX set some other CHECKSUM_* constant indicating that the checksum
+> > is unnecessary?
+> > 
+> 
+> It already means unnecessary on TX path:
+> 
+>  * - %CHECKSUM_NONE
+>  *
+>  *   The skb was already checksummed by the protocol, or a checksum is not
+>  *   required.
+> 
 
-devm_platform_get_and_ioremap_resource is
+Looking back at the patch series that introduced the checksumming [1],
+it looks like `ip_output.c::ip_append_page()` was the only path doing
+checksumming, it had similar looking logic:
+-
+-		if (skb->ip_summed == CHECKSUM_NONE) {
+-			__wsum csum;
+-			csum = csum_page(page, offset, len);
+-			skb->csum = csum_block_add(skb->csum, csum, skb->len);
+-		}
+-
 
-platform_get_resource + request_memory_region + ioremap
+That code in turn has been like this since the git import. I'm not sure
+what that was for and how to test its intent.
 
-The issue here is the second. This driver (well, platform really) uses
-overlapping memory regions and so request_memory_region will fail.
+Frederik
+
+[1] https://patchwork.kernel.org/project/linux-mm/patch/20230522121125.2595254-15-dhowells@redhat.com/
