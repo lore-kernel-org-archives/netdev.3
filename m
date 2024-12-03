@@ -1,118 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C533CFC
-	for <netdev@vger.kernel.org>; Tue,  3 Dec 2024 02:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE738460;
+	Tue,  3 Dec 2024 02:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733192731; cv=none; b=P03SxjWVcLJ6EeJfdGgu9GX3Sq4JGA8/OqhxCvBpdpZLLXzZt9N9cLSYiNf1UOZOjK7idwX9TfPcaDG2AvlfrkeWbd8LwXk/JpPozDwB8bTOUeDx1KxehBs5wqw5ZK8YHr2Z1p10hHvp38zEKUkgICDPGaadV/CPC7MCgMvIRv0=
+	t=1733192977; cv=none; b=jCPOXLqg1DymMtUiUg6r11aahOaA+P68bsS2DVsF6TrCL9U0Mp0BqIp7HwBV4liHJG08WgnJELtJYCmAZWM9HQ9ypdPm7Y2RMUxFeGRgDjdllUlsJsBcXcjr12Jy8yvWo9f/aFjrLeX8mbJbzeQ852F8z+qi2baj5/9iEh7osXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733192731; c=relaxed/simple;
-	bh=d6q8bGpZsfPskVwkj6L7Lml5GYk/xxetw+D0hD9cEJM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UB5yiFwG/VthNCOSxIQpcX5k0Sqck1yV2KS37jV8rsitKwg067VQO+tHqpZ0qDvnJVyzxGtJIrRWjuURBJ/NKKchgw6dFqPbdtXwanuu7pYJBUD6AlqGlPu83cYGEfeMa+tqopBNKF1OVhOawZwGq9j4LPH0DyZYjt19TubQuTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b4EAqaIS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733192977; c=relaxed/simple;
+	bh=PZN9zYd19RfhnrB//bv7GB/2Hbdkt8V1j4xAJFbC1II=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DBKEJtj2e+RK+/S8dtYh4XU9J9XBwa0t4x+nv9IdtFfjxlYDudYBsklyN0YpaNOpCGLkw2ogvnod/Mf2YyXuHlW+F4jRsoRAup20v+9RGZsvODnNCbRA78M6J958DgLbsLVEnvXCRj3jZLCLk/JH1L5wiSnlLBQ5vOzVGi6jiJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlfTP42e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b4EAqaIS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733192728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d6q8bGpZsfPskVwkj6L7Lml5GYk/xxetw+D0hD9cEJM=;
-	b=b4EAqaISwa+mJLCpjirIdOJEDEr99H45OfozaT2BnlqphUszY1aQH9E/8RbSHufGQNaM2i
-	FikslVW2l2Jq4psub1JJzeJSHlE8jDI5H47GUqR2JiNSPecWDaVKxyXumrD/mHCP0Auqef
-	ES8PlEtOPo9keg81GyodeKLacych1u0=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-yoJqepZ_P8my5QNWVWQ6EQ-1; Mon, 02 Dec 2024 21:25:27 -0500
-X-MC-Unique: yoJqepZ_P8my5QNWVWQ6EQ-1
-X-Mimecast-MFC-AGG-ID: yoJqepZ_P8my5QNWVWQ6EQ
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2eec0bad68dso1798585a91.2
-        for <netdev@vger.kernel.org>; Mon, 02 Dec 2024 18:25:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733192726; x=1733797526;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d6q8bGpZsfPskVwkj6L7Lml5GYk/xxetw+D0hD9cEJM=;
-        b=vjsP76tUqCcTD4KGd+djeEk+XP+Ql2fPupuG2uPthBXvKeuRT6o8QokFq3AWbHIuDD
-         +w/wLwa6VLPHNKqyq4EZX4C9bh/FfuetluThM3AryQdFqEacJdfrRc6pJf2F23bjeKKF
-         14evSWaroSu7KfhfYYFLDO0IjtaGait3vWI9CHPSktiKPU1OC3BjZ+bdT0fSfHKdFzRl
-         3bwk9TfLQEdSAPpUY6ot9f6OICAv+hqvNH72HoGKzQQjpA2Nndfe533ENxYmZMuayQY2
-         nOL2o+dLCACOilxNTkSwdU5xsQ6CxCIf39Gm7rCzelu5ANBKANMgqQcaZz5k9vrMTL5s
-         EkeA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7PfmGNAj/ZgLcu2xt8z95iJ2pJJQKT+Yg4vd4bNzrU1X6SkP5zNiEQuK6IPfbgiV8EIkMF60=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM/yLDHnyla3wKJNakeaN3g7S6dnaJxRFwH1+4SPmpGbZDmOi2
-	JFaJ5vLXIKhgYS8iRotYjHYYgMQMmYgnPB4CltcDreZ3wzUVAa6L3l43yFYRAQuVbVGdUPhyuAZ
-	vr4khPSR447x1KECMFHLgVOxf3HHu/diIiDFIRr77F3tFdnmWArCcQyoTbuMJ23x0RU8ieQmAMN
-	xxghumPr3VfRAfwktf95lS3exkmheN
-X-Gm-Gg: ASbGncucOARb5Hf9VVwfmv0Ry/8sUEFydAl9GFH4jMakVd6zQ2LKm6Wt2pqBO5Ai5kd
-	abfALLyIdVlkeVUBtAAgCzBdbnyc+LVhb
-X-Received: by 2002:a17:90b:3ecb:b0:2ee:b8ac:73b4 with SMTP id 98e67ed59e1d1-2ef01276888mr1136816a91.36.1733192726102;
-        Mon, 02 Dec 2024 18:25:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHH5qQnZ0DiMbRpH7Ik71jXULxUEUKJNASFzFHC0GxhUTgu42/8cZ6SwHvLSqsP/acaKB2ErIzMfAseQ2enXwc=
-X-Received: by 2002:a17:90b:3ecb:b0:2ee:b8ac:73b4 with SMTP id
- 98e67ed59e1d1-2ef01276888mr1136791a91.36.1733192725616; Mon, 02 Dec 2024
- 18:25:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlfTP42e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46182C4CED1;
+	Tue,  3 Dec 2024 02:29:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733192976;
+	bh=PZN9zYd19RfhnrB//bv7GB/2Hbdkt8V1j4xAJFbC1II=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SlfTP42eEEYXzvAazMnAu6C2pAk9+igIWybmh9h6qATN/YD/p/y9Dw8EPSrfHlQNj
+	 lHJJDHwv1xR09v2qxAjCVkFnf9uKil2qwrKs3q89xer+XcfiYTwzPj/f3TLdiD/Sos
+	 x4aK81AjiEQWwjB5cxlPlNciMoBGmotXtrU9+RqFqVWiWJKWPIjbM4yd2b9CtEEcXL
+	 ScLgH7RM7QNdmeXLojQSCibqeReoQa06KLDsggZ9I6IzHO9Ccz8VXlkZZXBar91euG
+	 UirWIYIOxsO3hlvDI5pGIFI5+kJD5cvmnOGSriVQJjudseoLG5xMJ+FO8uUb5rn0i4
+	 Bjlsa4ld2OYAQ==
+Date: Mon, 2 Dec 2024 18:29:35 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: 'Dominique MARTINET' <dominique.martinet@atmark-techno.com>
+Cc: David Laight <David.Laight@aculab.com>, Oliver Neukum
+ <oneukum@suse.com>, "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, Greg Thelen <gthelen@google.com>, John Sperbeck
+ <jsperbeck@google.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
+Message-ID: <20241202182935.75e8850c@kernel.org>
+In-Reply-To: <Z05cdCEgqyea-qBD@atmark-techno.com>
+References: <20241017071849.389636-1-oneukum@suse.com>
+	<Z00udyMgW6XnAw6h@atmark-techno.com>
+	<e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
+	<Z01xo_7lbjTVkLRt@atmark-techno.com>
+	<20241202065600.4d98a3fe@kernel.org>
+	<Z05FQ-Z6yv16lSnY@atmark-techno.com>
+	<20241202162653.62e420c5@kernel.org>
+	<Z05cdCEgqyea-qBD@atmark-techno.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241130181744.3772632-1-koichiro.den@canonical.com>
- <CACGkMEtmH9ukthh+DGCP5cJDrR=o9ML_1tF8nfS-rFa+NrijdA@mail.gmail.com> <20241202181445.0da50076@kernel.org>
-In-Reply-To: <20241202181445.0da50076@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 3 Dec 2024 10:25:14 +0800
-Message-ID: <CACGkMEs=A3tJHf3sFFN++Fb+VL=7P9bWGCynDAVFjtOT-0bYFQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] virtio_net: drop netdev_tx_reset_queue() from virtnet_enable_queue_pair()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Koichiro Den <koichiro.den@canonical.com>, virtualization@lists.linux.dev, 
-	mst@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, jiri@resnulli.us, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 3, 2024 at 10:14=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon, 2 Dec 2024 12:22:53 +0800 Jason Wang wrote:
-> > > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
-> > > Cc: <stable@vger.kernel.org> # v6.11+
-> > > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> >
-> > Acked-by: Jason Wang <jasowang@redhat.com>
->
-> I see Tx skb flush in:
->
-> virtnet_freeze() -> remove_vq_common() -> free_unused_bufs() -> virtnet_s=
-q_free_unused_buf()
->
-> do we need to reset the BQL state in that case?
+On Tue, 3 Dec 2024 10:18:44 +0900 'Dominique MARTINET' wrote:
+> Jakub Kicinski wrote on Mon, Dec 02, 2024 at 04:26:53PM -0800:
+> > > My problematic device here has FLAG_POINTTOPOINT and a (locally
+> > > admistered) mac address set, so it was not renamed up till now,
+> > > but the new check makes the locally admistered mac address being set
+> > > mean that it is no longer eligible to keep the usbX name.  
+> > 
+> > Ideally, udev would be the best option, like Greg said.
+> > This driver is already a fragile pile of workarounds.  
+> 
+> Right, as I replied to Greg I'm fine with this as long as it's what was
+> intended.
 
-Yes, I think so. And I spot another path which is:
+In theory unintentional != bug, but yes, its very likely unintentional.
 
-virtnet_tx_resize() -> virtqueue_resize() -> virtnet_sq_free_unused_buf().
+> Half of the reason I sent the mail in the first place is I don't
+> understand what commit 8a7d12d674ac ("net: usb: usbnet: fix name
+> regression") actually fixes: the commit message desribes something about
+> mac address not being set before bind() but the code does not change
+> what address is looked at (net->dev_addr), just which bits of the
+> address is checked; and I don't see what which bytes are being looked at
+> changing has anything to do with the "fixed" commit bab8eb0dd4cb9 ("usbnet:
+> modern method to get random MAC")
 
-> Rule of thumb is netdev_tx_reset_queue() should follow any flush
-> (IOW skb freeing not followed by netdev_tx_completed_queue()).
->
+We moved where the random address is assigned, we used to assign random
+(local) addr at init, now we assign it after calling ->bind().
 
-Right.
+Previously we checked "if local" as a shorthand for checking "if driver
+updated". This check should really have been "if addr == node_id".
 
-Koichiro, I think this fixes the problem of open/stop but may break
-freeze/restore(). Let's fix that.
+> ... And now we've started discussing this and I understand the check
+> better, I also don't see what having a mac set by the previous driver
+> has to do with the link not being P2P either.
+> 
+> 
+> (The other half was I was wondering what kind of policy stable would have
+> for this kind of things, but that was made clear enough)
+> 
+> 
+> > If you really really want the old behavior tho, let's convert 
+> > the zero check to  !is_zero_ether_addr() && !is_local_ether_addr().  
+> 
+> As far as I understand, !is_local_ether_addr (mac[0] & 0x2) implies
+> !is_zero_ether_addr (all bits of mac or'd), so that'd get us back to
+> exactly the old check.
 
-For resizing, it's a path that has been buggy since the introduction of BQL=
-.
+Let the compiler discover that, this is control path code, so write
+it for the human reader... The condition we want is "driver did not
+initialize the MAC address, or it initialized it to a local MAC
+address".
 
-Thanks
+> > Maybe factor out the P2P + address validation to a helper because
+> > the && vs || is getting complicated.  
+> 
+> ... And I can definitely relate to this part :)
+> 
+> So:
+> - final behavior wise I have no strong feeling, we'll fix our userspace
+> (... and documentation) whatever is decided here
+> - let's improve the comment and factor the check anyway.
+> As said above I don't understand why having a mac set matters, if that
+> can be explained I'll be happy to send a patch.
+> Or if we go with the local address version, something like the
+> following?
+> 
+> ----
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index 44179f4e807f..240ae86adf08 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -178,6 +178,13 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
+>  }
+>  EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+>  
+> +static bool usbnet_dev_is_two_host (struct usbnet *dev, struct net_device *net)
 
+static bool usenet_needs_usb_name_format(...
+
+> +{
+> +	/* device is marked point-to-point with a local mac address */
+
+	/* Point to point devices which don't have a real MAC address
+	 * (or report a fake local one) have historically used the usb%d
+	 * naming. Preserve this..
+	 */
+
+> +	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
+> +		is_local_ether_addr(net->dev_addr);
+
+	if ((dev->driver_info->flags & FLAG_POINTTOPOINT) &&
+	    (is_zero_ether_addr(net->dev_addr) ||
+	     is_local_ether_addr(net->dev_addr));
+
+> +}
+
+Up to you if you want to send this.
