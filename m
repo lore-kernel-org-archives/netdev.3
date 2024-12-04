@@ -1,152 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D171990C3
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 07:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1E319066D
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 07:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733298495; cv=none; b=eCUM98Zk9vs8rFUtLq8KnjfmX9d0a/m7Qq8UBF3vsc664m7PiuwdUXlVbfC6sutp2AKguFNpce38i+NF5M9mQ0/QSOvRXfxYpxtTTve6oxA+1llycpqErLvBkC73CeDRNOWbbEoqATRI8+xSiv/E5CTbkKv2QAsPHULhTntUhoQ=
+	t=1733298501; cv=none; b=YWJo9kzP24DWssQ58lzT1jpUy51nLcxYJ9384LlpSQW1Bkh13/AgqMX+IJt8xp6olenDmeK5rUAXE9ZC918OZRTCWRfmR7DG6L38thZaMk7UXOlCVjlR4qbEQwyjQS0GZZaH+NqD52QT0VoTejF6kH9baQ6r3xY83BOFol8JyM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733298495; c=relaxed/simple;
-	bh=rQ3W2F3r6HiohVE0vY/OBK/76HhFWdieLGVWaORhDMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axfVZG62VOEd+q7No1G3B7fPQ6tnPpHhXAXMHT3iMKA8jE45fmZnv3W80By/E78RAwTKj9gZkQgCe1hL+V0tvwu/LtjbtXxNlj8bjgMOgaq6vUmBRubSXpINGlSJ21hKdzdG7t/rhsC+tYX3tbicMo9ZYGk/t/1dlIcZ1jLjB2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=duxg03DE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733298501; c=relaxed/simple;
+	bh=dCC4lB1YF7XwicHffKdhMDtE8E2lvydXB4VvzNPKShs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hYzbn/DlPPAMcb7YB/0Mg3AdzMSvQlxaq3l1hyJ/HmMql0xJLcVZO+Btf5bFYRPhWea1Lzs9sOVu8BD4xlgAGivhw3jQOBoWtg+lo58qY8e74hhQZBp48LqRCMC6sYbfa7LMJby+sKRnFT0GcXqGqQxUBQkSSlTJnxoeJR6gfDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0JR8QhdL; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="duxg03DE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733298493;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=obq27x78dLFVc+cuRfM1jM6wMytnV14P+u4LaoDA4AU=;
-	b=duxg03DEItCgQPmpPHhblM0bXiyEwvcjEu4NEmA83OY1Ju8jWyah8hbcnhsMD9Yv0NkHQF
-	pjxuQGHYChD0RtDWEhHvTHu7Hs1L4mTfSc0Xngr+K99Mi3+4dj5fmJmO7KyAuVEb5AGdpv
-	UUjYJH4bNwG7FpwkBOCECMzOXuDnWGc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-BMBAKCGQPB2UVxq5r-mOOg-1; Wed,
- 04 Dec 2024 02:48:10 -0500
-X-MC-Unique: BMBAKCGQPB2UVxq5r-mOOg-1
-X-Mimecast-MFC-AGG-ID: BMBAKCGQPB2UVxq5r-mOOg
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1763E1956054;
-	Wed,  4 Dec 2024 07:48:09 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.48])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1D4F41955D7F;
-	Wed,  4 Dec 2024 07:48:05 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 12/39] rxrpc: Add a tracepoint to show variables pertinent to jumbo packet size
-Date: Wed,  4 Dec 2024 07:46:40 +0000
-Message-ID: <20241204074710.990092-13-dhowells@redhat.com>
-In-Reply-To: <20241204074710.990092-1-dhowells@redhat.com>
-References: <20241204074710.990092-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0JR8QhdL"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa503cced42so941407966b.3
+        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 23:48:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733298496; x=1733903296; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cDC0JfCTaWHQxPCjq/twJLGp/3pBkHXOb7oNgd1NSAo=;
+        b=0JR8QhdLDHWwnF27Cnk9ZcqOOFSZW5KmCZDeihGaB46WrHl9BMKU61+fxC5pUOmcwz
+         V+Z01P9j+esSAYaMtfjCSSkI8Bt5lEuB7L1NCHaywiAn6yjknGmrXj7cNMIupeC/unjv
+         oQHnnXAmj8NAlq2BFS7YEu2p30XQ3sDdI9TKoV+SbF3fe311/ojhmnVKs0wKer9dQSis
+         OoQk04NJ/OSKFYVrw0IWlyuyu1Fq5zhA9p0TITAZUxHB3BfKeFBCMaNdsoiaUmtFlvj2
+         1qD9IFOTYMQ2zfLjatOgZ1OtckPTD3Nhz0eCtlicuJ0TInlY2DYRa+BFbR1sm/T9wdY+
+         HL7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733298496; x=1733903296;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cDC0JfCTaWHQxPCjq/twJLGp/3pBkHXOb7oNgd1NSAo=;
+        b=YFfaGBn3uBRo3zUAVrs2EwtzPWnd97ABPXp0KgLdt9gQIWm5nXE/KvZWj+ozNOSvUq
+         ccLDdUKVDDVfFO6bCmMtoO95hpxBlO+/Nik0Cs/dPfytXsDZFt0ieSjhupNTB3s/yjGu
+         uiYAz2QDlCENMOdo4qH83EgRMU6LW7oC7m83bOeOdVegh/7/2rw75DWxdhN5AvHaZ86f
+         +4uAnGCUft5mtmSR1MaaXv2yIuq+amfIVnbq+d72L7VbZXzkS4x8vpU5CPju7BBPgYdl
+         Q8KBCfba5ODU5HrZwJ/gi1HKkbvjWpca9kTAqWUcmFFeF+ir994dnxhdwjIvc/d9W4Y1
+         bjdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAi2/iNNTfke8VNZnAPEVie3Hu9aAQZOLnO5/I8Yxeo/mSTqQ90dTDJRU6snXGOmr5TEZ7Z+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBGI8sELKhWEeCBawayuAEOlpLZGwl5pcFr5m680odrV1/Q7ou
+	J39IqBMY1L7tOh394mmjA0wN2S45jqRWZPEU0TcRk14YJEyI6NNaT9s5Fj/aBVYPOAEUmhojmL6
+	sGQGwNud60U5eYQ8d6aI10nXvvDgyhicISY+z
+X-Gm-Gg: ASbGncuVb9ITQtDkbtHDhtSkVy/2orRBH5eIc6Bl8KGNeFY05FgswBgn20gvP9hjlbQ
+	haKWu5zcLZW5K3aAzJrue1xqrhUps/6Dg
+X-Google-Smtp-Source: AGHT+IGF1iuSQAGuz4ZP2EbRPgNVR9NlUxUP1pACmV/18hBYDPczlk4/HSJNuiQNCWyh+E82bRfPCw56MPU8Npl4KuI=
+X-Received: by 2002:a17:906:1baa:b0:aa5:427e:6af4 with SMTP id
+ a640c23a62f3a-aa5f7f0affamr405472766b.47.1733298496184; Tue, 03 Dec 2024
+ 23:48:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+References: <20241204030520.2084663-1-tavip@google.com> <20241204030520.2084663-2-tavip@google.com>
+In-Reply-To: <20241204030520.2084663-2-tavip@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 4 Dec 2024 08:48:05 +0100
+Message-ID: <CANn89iJqs_C267y=2RQdWvdvoLdpoqaB7EjgnxPw3cn77gpG3w@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] net_sched: sch_sfq: don't allow 1 packet limit
+To: Octavian Purdila <tavip@google.com>
+Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, netdev@vger.kernel.org, syzbot <syzkaller@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a tracepoint to be called right before packets are transmitted for the
-first time that shows variable values that are pertinent to how many
-subpackets will be added to a jumbo DATA packet.
+On Wed, Dec 4, 2024 at 4:06=E2=80=AFAM Octavian Purdila <tavip@google.com> =
+wrote:
+>
+> The current implementation does not work correctly with a limit of
+> 1. iproute2 actually checks for this and this patch adds the check in
+> kernel as well.
+>
+> This fixes the following syzkaller reported crash:
+>
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
----
- include/trace/events/rxrpc.h | 41 ++++++++++++++++++++++++++++++++++++
- net/rxrpc/call_event.c       |  2 ++
- 2 files changed, 43 insertions(+)
+> The crash can be also be reproduced with the following (with a tc
+> recompiled to allow for sfq limits of 1):
+>
+> tc qdisc add dev dummy0 handle 1: root tbf rate 1Kbit burst 100b lat 1s
+> ../iproute2-6.9.0/tc/tc qdisc add dev dummy0 handle 2: parent 1:10 sfq li=
+mit 1
+> ifconfig dummy0 up
+> ping -I dummy0 -f -c2 -W0.1 8.8.8.8
+> sleep 1
+>
+> Scenario that triggers the crash:
+>
+> * the first packet is sent and queued in TBF and SFQ; qdisc qlen is 1
+>
+> * TBF dequeues: it peeks from SFQ which moves the packet to the
+>   gso_skb list and keeps qdisc qlen set to 1. TBF is out of tokens so
+>   it schedules itself for later.
+>
+> * the second packet is sent and TBF tries to queues it to SFQ. qdisc
+>   qlen is now 2 and because the SFQ limit is 1 the packet is dropped
+>   by SFQ. At this point qlen is 1, and all of the SFQ slots are empty,
+>   however q->tail is not NULL.
+>
+> At this point, assuming no more packets are queued, when sch_dequeue
+> runs again it will decrement the qlen for the current empty slot
+> causing an underflow and the subsequent out of bounds access.
+>
+> Reported-by: syzbot <syzkaller@googlegroups.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Octavian Purdila <tavip@google.com>
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 9dcadad88e76..71f07e726a90 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -903,6 +903,47 @@ TRACE_EVENT(rxrpc_txqueue,
- 		      __entry->tx_winsize)
- 	    );
- 
-+TRACE_EVENT(rxrpc_transmit,
-+	    TP_PROTO(struct rxrpc_call *call, int space),
-+
-+	    TP_ARGS(call, space),
-+
-+	    TP_STRUCT__entry(
-+		    __field(unsigned int,	call)
-+		    __field(rxrpc_seq_t,	seq)
-+		    __field(u16,		space)
-+		    __field(u16,		tx_winsize)
-+		    __field(u16,		cong_cwnd)
-+		    __field(u16,		cong_extra)
-+		    __field(u16,		in_flight)
-+		    __field(u16,		prepared)
-+		    __field(u16,		pmtud_jumbo)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->call	= call->debug_id;
-+		    __entry->seq	= call->tx_bottom;
-+		    __entry->space	= space;
-+		    __entry->tx_winsize	= call->tx_winsize;
-+		    __entry->cong_cwnd	= call->cong_cwnd;
-+		    __entry->cong_extra	= call->cong_extra;
-+		    __entry->prepared	= call->tx_prepared - call->tx_bottom;
-+		    __entry->in_flight	= call->tx_top - call->acks_hard_ack;
-+		    __entry->pmtud_jumbo = call->peer->pmtud_jumbo;
-+			   ),
-+
-+	    TP_printk("c=%08x q=%08x sp=%u tw=%u cw=%u+%u pr=%u if=%u pj=%u",
-+		      __entry->call,
-+		      __entry->seq,
-+		      __entry->space,
-+		      __entry->tx_winsize,
-+		      __entry->cong_cwnd,
-+		      __entry->cong_extra,
-+		      __entry->prepared,
-+		      __entry->in_flight,
-+		      __entry->pmtud_jumbo)
-+	    );
-+
- TRACE_EVENT(rxrpc_rx_data,
- 	    TP_PROTO(unsigned int call, rxrpc_seq_t seq,
- 		     rxrpc_serial_t serial, u8 flags),
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 3379adfaaf65..1f716f09d441 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -259,6 +259,8 @@ static void rxrpc_decant_prepared_tx(struct rxrpc_call *call)
- 		if (list_empty(&call->tx_sendmsg))
- 			break;
- 
-+		trace_rxrpc_transmit(call, space);
-+
- 		spin_lock(&call->tx_lock);
- 		do {
- 			txb = list_first_entry(&call->tx_sendmsg,
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
