@@ -1,47 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB10717BA1;
-	Wed,  4 Dec 2024 03:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A16B13D246
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 03:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733281689; cv=none; b=qevlHPI6YwZ4FlCABCoolo4nPDbqKv4Kgjculg7y001jZLct9W/5t6b9lk/n6Msnfh8vBtyCfwU1PwwCk2gjagr20sv/fMm8z0/hq7GsXb8mBZeeDIt/tdAzsPxrp2yUIw6NU4Qm2Qken4Qn7ej4gTBA0LlLUzxp0p0xg7olZe8=
+	t=1733281762; cv=none; b=TQ7EVPdU7PBVbMpWch8HOapWtUAeEKQGka3h/Vx/BM0CazsWH6vLfqraGIhUZzsnQ9g4Y6SCwSEtTxOTkOqIFq9GtdPeqUsokCnop5f36eYTouBYNtonwE7pXQaD8EHdWXGUZ0Ny0l/Xu65LTyDnusDEuhYctyrE+C0GpHuTaTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733281689; c=relaxed/simple;
-	bh=6y0xVYlZb8Whi2VSOrF7nZQqniOjfk3f6lrYdyE7QkE=;
+	s=arc-20240116; t=1733281762; c=relaxed/simple;
+	bh=s6j08+KKxkhmWsVdvz0z5kQ4Dd7McNmugq9MxfDhMZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tsELQnhEMDtcaNwiEKFxaY75Tl6M/SF0XJ276zd+yi2uQZlGShcaMyx1CEpgZvcqXXrL62os0DtoMUmOebLEIyCzU40imNFv/A8oBdE9cCVKhRK262bxdDDObRNhgjo/4LvUmLH5vhA5iyCnF5ddaVgWTc0eEjeOjl+O+RWl6DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdIBwFnU; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rXG/9K1BnGryfIZHPXO8fpa/AT8XQBgKElmy5GGyOb85YelGdeG4dCwFcB4NnV4NgL/bYU9ceuDd3rad2MZ/QwFMs6r3V+4qFnEZlhUQWdFtrEiRmUpPZo25tIonc+Hb24TZNgZKC72k0SqSqwMOGbIGHh+IHccpJ53f6cB+A5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ymh/pWQH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdIBwFnU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8305C4CEDC;
-	Wed,  4 Dec 2024 03:08:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ymh/pWQH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67820C4CEDC;
+	Wed,  4 Dec 2024 03:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733281689;
-	bh=6y0xVYlZb8Whi2VSOrF7nZQqniOjfk3f6lrYdyE7QkE=;
+	s=k20201202; t=1733281760;
+	bh=s6j08+KKxkhmWsVdvz0z5kQ4Dd7McNmugq9MxfDhMZc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jdIBwFnUkvcZ8+roXuyHAyUot7FBFVzk1uCcI8LiwnK+U/wwOloqLS30y3WRvoHKd
-	 ZyWcO2wi4dQ5H0FioQVmoC5HPwpODRV1oAPUs9ropSANcNlvrdKCk2fpmfMBP+d6Xg
-	 4D/s0D1i0kvlXB1FQIX4ZoVdb9FIv2tQgkxuv7iBrG0jJdWYqRN2SzXZZzD9RmP9xZ
-	 7bqY3V3Nfdkssvvmi0Zh+Avazo6J3Bzds0ia0oTyP13cDO9/o5UIOlsY+mX3Vq0lJP
-	 /c0jz9AooD4leb13z0rdQEOiG1wORsppFdRUQcytXaLC5mU+jCNxScSe43h8MSjezX
-	 d4sC3mHMl2jUA==
-Date: Tue, 3 Dec 2024 19:08:07 -0800
+	b=Ymh/pWQHYRgNuQtECtvAxSxmV5nCCRNPJ07ZkcPhBGdFrGbDVMc9AOBAkKT3JUPG2
+	 FdPGfVO12s0Hz9wmgTXIbjqf85DHSY8dyq3U+2lu/IWKUR61Esk4MvpvhxAxmDp94D
+	 fj9mmqzvMyr2tn/XueiXREAlx5PKYrQZb86FOkh+4vaDfnaAtuSeBOGjlZGpjs59ye
+	 2STigwS4XXQ2ZeI3n4xLFox+h1+VPmzGCHPI51S8Zu7IpVTsmUS0sgfrsB0wrzJ4QI
+	 4YBA+nl/grmriOeE0rc4SfxQKvCE7COxNbOLc/qpCVQdCSabRgMfILIOOaq6XTjLM6
+	 s8YvzvBHZ6v+A==
+Date: Tue, 3 Dec 2024 19:09:19 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Petr Machata <petrm@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- <netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, <mlxsw@nvidia.com>, Shuah Khan <shuah@kernel.org>,
- Benjamin Poirier <bpoirier@nvidia.com>, Hangbin Liu <liuhangbin@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next v1 11/11] selftests: forwarding: Add a selftest
- for the new reserved_bits UAPI
-Message-ID: <20241203190807.330fa9b6@kernel.org>
-In-Reply-To: <e4591fe820d539e45a08eae96a69ac7353a2cc7c.1733235367.git.petrm@nvidia.com>
-References: <cover.1733235367.git.petrm@nvidia.com>
-	<e4591fe820d539e45a08eae96a69ac7353a2cc7c.1733235367.git.petrm@nvidia.com>
+To: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ pabeni@redhat.com, bharat@chelsio.com
+Subject: Re: [PATCH net] cxgb4: use port number to set mac addr
+Message-ID: <20241203190919.33421a6b@kernel.org>
+In-Reply-To: <20241203144149.92032-1-anumula@chelsio.com>
+References: <20241203144149.92032-1-anumula@chelsio.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,11 +44,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 3 Dec 2024 15:30:37 +0100 Petr Machata wrote:
->  .../net/forwarding/vxlan_reserved.sh          | 352 ++++++++++++++++++
->  1 file changed, 352 insertions(+)
->  create mode 100755 tools/testing/selftests/net/forwarding/vxlan_reserved.sh
+On Tue,  3 Dec 2024 20:11:49 +0530 Anumula Murali Mohan Reddy wrote:
+> t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
+> uses port number to get mac addr, this leads to error when an attempt
+> to set MAC address on VF's of PF2 and PF3.
+> This patch fixes the issue by using port number to set mac address.
 
-Needs to be added to the Makefile, AFAICT
+Please add a Fixes tag pointing to the first commit where the issue can
+be observed.
 -- 
 pw-bot: cr
