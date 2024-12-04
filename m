@@ -1,182 +1,172 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9776038385
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 04:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733287272; cv=none; b=scuklXugsDZVkl4fRUgHjIxU7B8Yj1PuHtZbQKPwAu7UgiC3KK7VVcrgLoxrsuUdgUd58E5sD5eJ+gIP8nW3knwoHp+TFjWiGvkL6RgNFrFWvZi6MZxIWYDJMagjCeR1UgGkD0hqEayNvmvGiNZKVu/Xge2mLZCbUE/D85lGYF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733287272; c=relaxed/simple;
-	bh=IrUEeeXk0XqjRNrEb78avFaZBzk2PWSNq8LbhH2Q5vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tr6ziFm436mKNTyImEo1A0WkMF3ltsOeBJ57MSSGu159DdcR+MbVYI0YzDo6RCXakOAhECKn2ss4UlVLJmMlluZsaOj/O7oS2WmshKXTZctz0uQp6FjBSvIm1i9vA/hIW45JmTzU23+IB/HioRWg82oO+l6CG+i/CK4PlKOvGbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=EksffH91; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="EksffH91"
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id BE1573F767
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 04:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1733285695;
-	bh=Q24GDRfJXQyjTe8o63+C0HsFRR+/g6kWIzNile+zMUE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8353B192;
+	Wed,  4 Dec 2024 04:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733287720; cv=none; b=lFzuMIgEiOkEw26PNJA2ZHw3KaTk3r7s0QqAvYnsb97LZuwZidkFlW1oWniuyhEQcBLzvnU79ijaPlViFukFbNiNN0u2assTZ7v/jNF4KfQNHmVFOfqIrQHqJbcKG4Avt/rKFAhTRLL2lOmwaWOaiwne3p4o4kzMvCuSIPEtdBM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733287720; c=relaxed/simple;
+	bh=hxH3Ca85gKY3h+glCmXY6pry3O7lllgZ7KRXnLA6w8U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=EksffH91slgbCiU5/TxXHLq6LFOPz/G9JiNodlPs8f/6TwGRKYNLTfesbFWx3F98C
-	 2xMupUMvs1i1Uk74Vi3kwbO4HKEbBx8XWkqQiAFjv+KAIebkBbailN1HWybNRCZDpD
-	 Y/+7TLfKoA7/1c62zV72V5PZhLoyzPvSj85iU5cR2PjETiUvhzqee+u5ZOOJrixil9
-	 0XTaQyTsT4XVPnYiHitPGCw4kDg9QgHF9LOGKuGZWeHJlHuWGcvXBS15Nl6tlrDCAH
-	 paap9DNWku8yTSFlfBFTfoFOFIYupBXpmUI/MvPF8cl/TDBya7D7M/yTUVmJWwSPp1
-	 sd8VOnOYIUV1g==
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ee31227b58so5665165a91.3
-        for <netdev@vger.kernel.org>; Tue, 03 Dec 2024 20:14:55 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733285694; x=1733890494;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q24GDRfJXQyjTe8o63+C0HsFRR+/g6kWIzNile+zMUE=;
-        b=stoMJmhM2uZc3PVE9Fcxsxf2CFHlwcidvC6j//nAAx8ntUfZZayBedQVGanpIS0rPv
-         kUfQlZRUrg8ctqodYKhYapEcaPS6FZLwQM+udfUHnkRWSP3C0O0kksRFBEFaaYGobSQz
-         /yRrods4ux/3ADyuHmAXEUgqueIewj8Khns7XUz0I0vPfKN/PWwwuh2C+Cxu6nAEQYYC
-         /8dBRg/FpBYx/ETBj8SCRECXYkwm6ZvUOqkFtuPsXv37Gjs4uHZN9eRXEZz5r2uH399S
-         oGeW334NhSuaT4W8t3Sqf0p6tQrIZ7ewUFPN3HRVJjIzFVIsKf7XPg3uNXFqwp0LGnGI
-         EaIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHB3TEdfxNEiHKkwqoms+1/7GzJ5vunGbF9bMsz5+8dTQ1djFZI1Yrhy0nv8umq4pxjFvLRqc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0ERwlhNu/l/n4Z2slNUNjBlvc6oYhuZs+DrNLWvKiw0AzIs9v
-	F2X5MteZd4GMrx1T+uVVLpnrAdb/tD4vsDbjLpdp//99j6vYo+U52f59ZPGHCS2Hg7tiwlUiSC+
-	ktAfGTytaV4mLSHa+CU2qe8lz6f8xzUVu4GQOIGNxMAcJ2mITeL3bhmAL08yWK0IgVmr6mg==
-X-Gm-Gg: ASbGncvAaDcdxuDSOGk+klAX0McwfNcqIMnjTcfnTujrN8aug4aUOWT9TIZGwHOiXO/
-	p95uMoBPkTfuJ9s1Kyx5eW1Qc0YA/2YY0A8cSysmpcI8JiDgfm3Y5NtcnRBCQBIFK3MEAr+3Y54
-	SNiq0+IPzNolV7XzBT8N5QAVQKSgOifOfKKzHCOZSGga3FfatfJ9my6stdHfSsw1vVjUhLHaqrv
-	H67b6ioImI0zA8u0TacsN4mBz1LT9zwjvkxxfvsJBfSzSMFIJTT
-X-Received: by 2002:a17:90a:e70c:b0:2ee:f440:53ed with SMTP id 98e67ed59e1d1-2ef0127597bmr5969997a91.31.1733285694369;
-        Tue, 03 Dec 2024 20:14:54 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHmmxQJst2LuugrSZJhqPzCTrbLye21ezDzuZBBWTLDHpaGBRfvTE3sFkECyoe3UpjTjDpNpw==
-X-Received: by 2002:a17:90a:e70c:b0:2ee:f440:53ed with SMTP id 98e67ed59e1d1-2ef0127597bmr5969973a91.31.1733285694019;
-        Tue, 03 Dec 2024 20:14:54 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:9c88:3d14:cbea:e537])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef27050103sm388122a91.41.2024.12.03.20.14.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 20:14:53 -0800 (PST)
-Date: Wed, 4 Dec 2024 13:14:51 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: virtualization@lists.linux.dev, mst@redhat.com, 
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net-next v2 4/5] virtio_ring: add 'flushed' as an
- argument to virtqueue_reset()
-Message-ID: <ub7pbfodhjpubwixxsbxlkiclthp3adbxin7etff5seoxqs5i7@aj3c7tpeirwq>
-References: <20241203073025.67065-1-koichiro.den@canonical.com>
- <20241203073025.67065-5-koichiro.den@canonical.com>
- <CACGkMEuUa+6_uaa7H2CSvUnfNzBr-rdoQ+cp8eZD+Ay1CZ=A-g@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ykr+CJOrv/s2jP0pShdQ72ZjimkZJEC8dP9oIv42vgJ7ujWJAbJ5MccBRNHwuQEWjhKjEBUA2wJNqPf+q25/YKTG40EJgWO7vXWR2eKU645Fb+QNXr1FozcpLai2lmdbXbBa9eWT8EmLN1vIaewC701sN4c2dYfeJfHMaGVeBd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AcvFX56B; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AcvFX56B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733287717; x=1764823717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hxH3Ca85gKY3h+glCmXY6pry3O7lllgZ7KRXnLA6w8U=;
+  b=AcvFX56B5Zzw3hvJ+RA9YiJ49RrpTbZuDhQd9YBCiaOeL2WF9GONEJjX
+   RiA0jxOwfGpl5lJstFrbgxEjT8PF0UnNN9LcmlJ1CjPlFXhiohnWzxXsZ
+   u4oh848DFLoiUr1Aa9OXHxmm7VTCJeuR6OrcxznXtt8JUHyAWxIfrezHR
+   ohp9vuocIJcacErxSpPl0pEFYQj22PNzfn49U1rBEm4LSvUrp1GdTp7/R
+   IAP+OIpxkKeTnlg3I0Buq/W7/qNwZ2PCz5GNJzXZcrBkKdABr9h9SdXr2
+   9XABrimV7mblG5rdLIOIMiPbTRNcXCutKS00AztJmAcDiCXRuf/bx8XDK
+   Q==;
+X-CSE-ConnectionGUID: TST0IwpHQqG14jZiAjqswA==
+X-CSE-MsgGUID: emNrpWAkTnyRGvkL0JveqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="33670020"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="33670020"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 20:48:36 -0800
+X-CSE-ConnectionGUID: qfPjScBATOugZ76VSQroDA==
+X-CSE-MsgGUID: mpEKrRGgTNCsCC+pHq9aQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="98454788"
+Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 03 Dec 2024 20:48:33 -0800
+Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tIhJO-0002az-39;
+	Wed, 04 Dec 2024 04:48:30 +0000
+Date: Wed, 4 Dec 2024 12:47:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zhiyuan Wan <kmlinuxm@gmail.com>, andrew@lunn.ch
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	willy.liu@realtek.com, Zhiyuan Wan <kmlinuxm@gmail.com>
+Subject: Re: [PATCH net-next] net: phy: realtek: disable broadcast address
+ feature of rtl8211f
+Message-ID: <202412041255.6r9ogs5i-lkp@intel.com>
+References: <20241203125430.2078090-1-kmlinuxm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkMEuUa+6_uaa7H2CSvUnfNzBr-rdoQ+cp8eZD+Ay1CZ=A-g@mail.gmail.com>
+In-Reply-To: <20241203125430.2078090-1-kmlinuxm@gmail.com>
 
-On Wed, Dec 04, 2024 at 10:49:02AM +0800, Jason Wang wrote:
-> On Tue, Dec 3, 2024 at 3:31 PM Koichiro Den <koichiro.den@canonical.com> wrote:
-> >
-> > When virtqueue_reset() has actually recycled all unused buffers,
-> > additional work may be required in some cases. Relying solely on its
-> > return status is fragile, so introduce a new argument 'flushed' to
-> > explicitly indicate whether it has really occurred.
-> >
-> > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> > ---
-> >  drivers/net/virtio_net.c     | 6 ++++--
-> >  drivers/virtio/virtio_ring.c | 6 +++++-
-> >  include/linux/virtio.h       | 3 ++-
-> >  3 files changed, 11 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index 0103d7990e44..d5240a03b7d6 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -5695,6 +5695,7 @@ static int virtnet_rq_bind_xsk_pool(struct virtnet_info *vi, struct receive_queu
-> >                                     struct xsk_buff_pool *pool)
-> >  {
-> >         int err, qindex;
-> > +       bool flushed;
-> >
-> >         qindex = rq - vi->rq;
-> >
-> > @@ -5713,7 +5714,7 @@ static int virtnet_rq_bind_xsk_pool(struct virtnet_info *vi, struct receive_queu
-> >
-> >         virtnet_rx_pause(vi, rq);
-> >
-> > -       err = virtqueue_reset(rq->vq, virtnet_rq_unmap_free_buf);
-> > +       err = virtqueue_reset(rq->vq, virtnet_rq_unmap_free_buf, &flushed);
-> >         if (err) {
-> >                 netdev_err(vi->dev, "reset rx fail: rx queue index: %d err: %d\n", qindex, err);
-> >
-> > @@ -5737,12 +5738,13 @@ static int virtnet_sq_bind_xsk_pool(struct virtnet_info *vi,
-> >                                     struct xsk_buff_pool *pool)
-> >  {
-> >         int err, qindex;
-> > +       bool flushed;
-> >
-> >         qindex = sq - vi->sq;
-> >
-> >         virtnet_tx_pause(vi, sq);
-> >
-> > -       err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf);
-> > +       err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf, &flushed);
-> >         if (err) {
-> >                 netdev_err(vi->dev, "reset tx fail: tx queue index: %d err: %d\n", qindex, err);
-> >                 pool = NULL;
-> > diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-> > index 34a068d401ec..b522ef798946 100644
-> > --- a/drivers/virtio/virtio_ring.c
-> > +++ b/drivers/virtio/virtio_ring.c
-> > @@ -2828,6 +2828,7 @@ EXPORT_SYMBOL_GPL(virtqueue_resize);
-> >   * virtqueue_reset - detach and recycle all unused buffers
-> >   * @_vq: the struct virtqueue we're talking about.
-> >   * @recycle: callback to recycle unused buffers
-> > + * @flushed: whether or not unused buffers are all flushed
-> >   *
-> >   * Caller must ensure we don't call this with other virtqueue operations
-> >   * at the same time (except where noted).
-> > @@ -2839,14 +2840,17 @@ EXPORT_SYMBOL_GPL(virtqueue_resize);
-> >   * -EPERM: Operation not permitted
-> >   */
-> >  int virtqueue_reset(struct virtqueue *_vq,
-> > -                   void (*recycle)(struct virtqueue *vq, void *buf))
-> > +                   void (*recycle)(struct virtqueue *vq, void *buf),
-> > +                   bool *flushed)
-> >  {
-> >         struct vring_virtqueue *vq = to_vvq(_vq);
-> >         int err;
-> >
-> > +       *flushed = false;
-> >         err = virtqueue_disable_and_recycle(_vq, recycle);
-> >         if (err)
-> >                 return err;
-> > +       *flushed = true;
-> >
-> 
-> This makes me think if it would be easier if we just find a way to
-> reset the tx queue inside virtqueue_disable_and_recycle().
-> 
-> For example, introducing a recycle_done callback?
+Hi Zhiyuan,
 
-It sounds reasonable and much cleaner. I'll prepare and send v3 shortly.
-Thanks for the review.
+kernel test robot noticed the following build errors:
 
--Koichiro Den
+[auto build test ERROR on net-next/main]
 
-> 
-> Thanks
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Zhiyuan-Wan/net-phy-realtek-disable-broadcast-address-feature-of-rtl8211f/20241203-205751
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241203125430.2078090-1-kmlinuxm%40gmail.com
+patch subject: [PATCH net-next] net: phy: realtek: disable broadcast address feature of rtl8211f
+config: arm-randconfig-002-20241204 (https://download.01.org/0day-ci/archive/20241204/202412041255.6r9ogs5i-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241204/202412041255.6r9ogs5i-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412041255.6r9ogs5i-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/net/phy/realtek.c:12:
+   In file included from include/linux/phy.h:16:
+   In file included from include/linux/ethtool.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/arm/include/asm/cacheflush.h:10:
+   In file included from include/linux/mm.h:2223:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+>> drivers/net/phy/realtek.c:147:37: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'const void *' [-Wint-conversion]
+     147 |                 return dev_err_probe(dev, PTR_ERR(ret),
+         |                                                   ^~~
+   include/linux/err.h:52:61: note: passing argument to parameter 'ptr' here
+      52 | static inline long __must_check PTR_ERR(__force const void *ptr)
+         |                                                             ^
+   1 warning and 1 error generated.
+
+
+vim +147 drivers/net/phy/realtek.c
+
+   126	
+   127	static int rtl821x_probe(struct phy_device *phydev)
+   128	{
+   129		struct device *dev = &phydev->mdio.dev;
+   130		struct rtl821x_priv *priv;
+   131		u32 phy_id = phydev->drv->phy_id;
+   132		int ret;
+   133	
+   134		priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+   135		if (!priv)
+   136			return -ENOMEM;
+   137	
+   138		priv->clk = devm_clk_get_optional_enabled(dev, NULL);
+   139		if (IS_ERR(priv->clk))
+   140			return dev_err_probe(dev, PTR_ERR(priv->clk),
+   141					     "failed to get phy clock\n");
+   142	
+   143		dev_dbg(dev, "disabling MDIO address 0 for this phy");
+   144		ret = phy_modify_paged(phydev, 0xa43, RTL8211F_PHYCR1,
+   145					       RTL8211F_PHYAD0_EN, 0);
+   146		if (ret < 0) {
+ > 147			return dev_err_probe(dev, PTR_ERR(ret),
+   148					     "disabling MDIO address 0 failed\n");
+   149		}
+   150		/* Deny broadcast address as PHY address */
+   151		if (phydev->mdio.addr == 0)
+   152			return -ENODEV;
+   153	
+   154		ret = phy_read_paged(phydev, 0xa43, RTL8211F_PHYCR1);
+   155		if (ret < 0)
+   156			return ret;
+   157	
+   158		priv->phycr1 = ret & (RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF);
+   159		if (of_property_read_bool(dev->of_node, "realtek,aldps-enable"))
+   160			priv->phycr1 |= RTL8211F_ALDPS_PLL_OFF | RTL8211F_ALDPS_ENABLE | RTL8211F_ALDPS_XTAL_OFF;
+   161	
+   162		priv->has_phycr2 = !(phy_id == RTL_8211FVD_PHYID);
+   163		if (priv->has_phycr2) {
+   164			ret = phy_read_paged(phydev, 0xa43, RTL8211F_PHYCR2);
+   165			if (ret < 0)
+   166				return ret;
+   167	
+   168			priv->phycr2 = ret & RTL8211F_CLKOUT_EN;
+   169			if (of_property_read_bool(dev->of_node, "realtek,clkout-disable"))
+   170				priv->phycr2 &= ~RTL8211F_CLKOUT_EN;
+   171		}
+   172	
+   173		phydev->priv = priv;
+   174	
+   175		return 0;
+   176	}
+   177	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
