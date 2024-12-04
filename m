@@ -1,82 +1,60 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C6A14A4FF;
-	Wed,  4 Dec 2024 03:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD6714D6F9;
+	Wed,  4 Dec 2024 03:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733284336; cv=none; b=HlIsvKdksYa6kb/nWnvhM1GQlOpJjQJ3M06cI75PLT/z6vLEdw/RLKcKCP7nAZQgwZrvsSAEaVU7mIma+2WrkVwle4oCDK+aJUUZoIR9MpoFx4qSKh3fuLdpAbF/R2se5lynSIqa7PxYyfnkOVgjbtwske2ArxBtEKkZt+ndFyo=
+	t=1733284456; cv=none; b=AWGqb5xU9UzBjWkqoIQUhyZTp98GvIVUCQ9rbuMzhFZDR6jCSwoT6MhAvuaLKso3//VWA6oGbxAsdihqj5uRRJQgQQyhPU9MPXc6mgwZZQouIVcVtgxhVF4sfGpqeZl15YhT5c0kUeOsfVj9P8SavlKN5x92YuEIC6iW7cwH5TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733284336; c=relaxed/simple;
-	bh=fLYACWwFucewfXjZr5YEb2nJPip67Lv2+g81QB2bxzc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ta/Zm1jCgWD8Yqdlc7ZLHaLjJQlMX8r1e4Fv6Yu8OZzQZDq6nCE8YALgTKhNWRqp4YCwL3/Osx9pq0kRKP/j4aaTqJor3jqUH02F5oXyAYvHZDIrpt5sbT0v7Hy3/Tvqv5sQxq1wlgYHo6S0KHL3ZWD+JJvEBsLVqDGMIsM41Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RN+42dGA; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1733284456; c=relaxed/simple;
+	bh=JknuEuZPM6yyYs6VRhTlQ8rqiEEbje5m8a4CD73pXHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sIF/U0N8ttyKEoGLVWAJMhx88GcBFHAYsqUnci7gcSR7J7amtaT6kJ8zN+PBb/CqCUyFhnriO+piZ68xe8IbfWQf9AZ7OnGKlBTYJSHc0YVANuZP0xZiAmc6vuVF36C2WFDP2rHaA33+MQdvsmwQDrtyZ+MzXHyYiHxh2PylgLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuvzM4jn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RN+42dGA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=jnuZr
-	+sMFHO3kQXK5Q3ZVgkSaE9cD/7A4wzl+1kx1sc=; b=RN+42dGAMOqXyOOZFxQF3
-	AYgGCCrl4MnabwV+A2l+ZnXjlOB3G2/NOYN8RDN8PdBdypf9djkTJVsx85wuTEKP
-	EUAOHppbqmukufSC3xCsKUfottMauxd8ZYbfB662x5qKa5X1DJGQUbEANhlB/Ar3
-	/aTzHqrvgDKSwOAwijIBFs=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDHd1Zc0U9nHxKYBA--.64832S2;
-	Wed, 04 Dec 2024 11:49:49 +0800 (CST)
-From: MoYuanhao <moyuanhao3676@163.com>
-To: edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	MoYuanhao <moyuanhao3676@163.com>
-Subject: [PATCH net-next] tcp: Check space before adding MPTCP options
-Date: Wed,  4 Dec 2024 11:49:46 +0800
-Message-Id: <20241204034946.10794-1-moyuanhao3676@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuvzM4jn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5921AC4CED1;
+	Wed,  4 Dec 2024 03:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733284455;
+	bh=JknuEuZPM6yyYs6VRhTlQ8rqiEEbje5m8a4CD73pXHI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uuvzM4jnyCTa2xYk/et+13qLnOFzVsaymRu30j1TXAw56T3K4hkWzzD0a3ihmU/tq
+	 xxMEjaGpMxslF37V9IVmqXh7nPm7/VoztL4KPyQ+EnYgG8cct3cN6UPPSFLTiLaA74
+	 pC2Q3l+qvpl6Hjaa7CUdsawowDjPHxNEvE9/uRmWcWEKvlrr+T42++VH/dIhigG5d2
+	 vA/dM5COUDyVtkAjaIhb8LuNpQUIPRse2SpW5eDvIW7mOM8MFOyUGNxDrH0WpQlkc5
+	 DP6KVFJ3rrk1hk13IfeE9tPL228vAVbOuC9eut9IGLBINylk+/iJfCvgHQlGG3+f5j
+	 XXN6PzJNVFbWw==
+Date: Tue, 3 Dec 2024 19:54:14 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Vadim Fedorenko <vfedorenko@novek.ru>, Frantisek
+ Krenzelok <fkrenzel@redhat.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Apoorv Kothari <apoorvko@amazon.com>, Boris Pismenny <borisp@nvidia.com>,
+ John Fastabend <john.fastabend@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, Gal Pressman <gal@nvidia.com>, Marcel
+ Holtmann <marcel@holtmann.org>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next v4 3/6] tls: add counters for rekey
+Message-ID: <20241203195414.5023d276@kernel.org>
+In-Reply-To: <2f5b01548afb3795fb5f6aace6c2182ab98b9076.1731597571.git.sd@queasysnail.net>
+References: <cover.1731597571.git.sd@queasysnail.net>
+	<2f5b01548afb3795fb5f6aace6c2182ab98b9076.1731597571.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHd1Zc0U9nHxKYBA--.64832S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZr1DJF13tr4kWr4rArW3GFg_yoWfXrb_Aw
-	n7Kr4kGr4rZrn2yF4kCF45AFWIgrWa9a1vgr1Skasrt348ZF1qgr4kJr93J3Z7CF45Ary7
-	Jwn8JrWfWry3ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUxnY3UUUUU==
-X-CM-SenderInfo: 5pr13t5qkd0jqwxwqiywtou0bp/1tbiNhKrfmdPyhvF7AAAsh
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Ensure enough space before adding MPTCP options in tcp_syn_options()
-Added a check to verify sufficient remaining space
-before inserting MPTCP options in SYN packets.
-This prevents issues when space is insufficient.
+On Thu, 14 Nov 2024 16:50:50 +0100 Sabrina Dubroca wrote:
+> This introduces 4 counters to keep track of key updates:
+> Tls{Rx,Tx}Rekey{Ok,Error}.
 
-Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
----
- net/ipv4/tcp_output.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Possibly track detected rekey messages, too? Could help us identify
+when kernel blocks the socket but user space doesn't know how to rekey.
+Either way:
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 5485a70b5fe5..0e5b9a654254 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -883,8 +883,10 @@ static unsigned int tcp_syn_options(struct sock *sk, struct sk_buff *skb,
- 		unsigned int size;
- 
- 		if (mptcp_syn_options(sk, skb, &size, &opts->mptcp)) {
--			opts->options |= OPTION_MPTCP;
--			remaining -= size;
-+			if (remaining >= size) {
-+				opts->options |= OPTION_MPTCP;
-+				remaining -= size;
-+			}
- 		}
- 	}
- 
--- 
-2.25.1
-
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
