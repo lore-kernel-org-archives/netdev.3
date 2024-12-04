@@ -1,229 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AA926AFF;
-	Wed,  4 Dec 2024 14:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B2F202F86
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 14:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733322445; cv=none; b=lu1si1rYaZTNmv70UlS4yC8hg27Hho51k8AFI38nUWbNtA/gtGtPBtLfbDivbHJOzpNhQL0bUZaZgZTJA6PPxve+3nlxzKBbzcfWS7nJwaO+u93yzyGMGiy+lpx4vp1UVh8uA3qJc7YWrSuUPLVLDPcybstP78gmdgSEm97i58w=
+	t=1733322566; cv=none; b=BSEVxuOny7gK7ssB05JEvqJpfdyN2+tN8+dCaiKJSpmHQoU7N38TKwE1HVOQnWclMS6Ah6BOj4XRvG1ZgXqc1WkOL7Wr4FSosqBtyPG5hlCMufBPX7L0BfiVWrjNbHy5bUda3wCNUU2qcgUTd2ixo9948cJNKlsVQwy1CyLRL1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733322445; c=relaxed/simple;
-	bh=8kSlC422IeYzzzg01gqSDhhGR5XtczDm7IOevfiFGpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxjFIeFHUK5/dLJLqGjETyj90tlJVlSy+HOwAqhtSRDp7B4PttmIi63farSUEFg4Sb0VBHBWBA/CsXPZ4IepP8tXGREQ/0qFmvCebqKUe8V+smsK/t0ag/AEYw4B7mkLYQdEaNIfJuTRzCfT15NFqfceaRe1EPd03chRPRV/i74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdFpiD9E; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdFpiD9E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5A6C4CECD;
-	Wed,  4 Dec 2024 14:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733322444;
-	bh=8kSlC422IeYzzzg01gqSDhhGR5XtczDm7IOevfiFGpg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BdFpiD9Ehf6NJ3eXKMvlAfMjtslR49WOP1XgUzl8Ck2/Y6xhUo9QDz+XhMIbVjE45
-	 eFZCibANpmxxsm8ynWVu518p2aaxX5pvpUjiWwJ3rL50jEhG4+crmF4GqsX+cGlAaF
-	 u3q4BVYokvbhtYT0F2HAj2uqIWUtSa/NzF9/pe/iHr7eXhLjT4RL8/r2z3XDX4OJpQ
-	 K7iLFPQx5+KMMN2w5WvvSClaxGbQsO9IHAAEIF+2l8VL3TB61Y7/VCkJFWkSfUuFqG
-	 JWEd0DwOXxYGfhjwMSg9DBQAKawNzvv6CLepS2tQA0KymkZBGUiOdZlz2DgRb4ULEe
-	 JWqZQZUMt6mXg==
-Date: Wed, 4 Dec 2024 08:27:22 -0600
-From: Rob Herring <robh@kernel.org>
-To: Joey Lu <a0987203069@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
-	richardcochran@gmail.com, alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com, ychuang3@nuvoton.com, schung@nuvoton.com,
-	yclu4@nuvoton.com, peppe.cavallaro@st.com,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v4 1/3] dt-bindings: net: nuvoton: Add schema for Nuvoton
- MA35 family GMAC
-Message-ID: <20241204142722.GA177756-robh@kernel.org>
-References: <20241202023643.75010-1-a0987203069@gmail.com>
- <20241202023643.75010-2-a0987203069@gmail.com>
+	s=arc-20240116; t=1733322566; c=relaxed/simple;
+	bh=LBwJ6bbAn80WcRPQJQHQ6y5sHV7eCBHAdt1sUqOU46E=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=KUop+oRaOH+0wdZvmlF7TZS1cA2Z63FM1E3DBd9rQ6z9JZXmUvNG+KdXCepb5A9/0G72vY2XI6P9YFVQaA71I3WC3u3FB3gUQwAzM6leoMItgFdXd9Ljk7kM0LOiwQaM+HNPClEQh6gfZZjW5QjPQaIlq+9GK3GGMeDdQ0erBK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-8444dc6b982so86317839f.0
+        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 06:29:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733322563; x=1733927363;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lps44A56g0pBgvkO1wGgc43RH5tdrqdgb7gfd2Q29F0=;
+        b=fwzgJFl8EvGxG3iY0vH1VSJDSrtHiB7seY4fTPJvtGjuGYlis7Hr5QYABh5zP44WVP
+         phUw1MV8hlIKxaSd9b3H2848v00BH6aRhJJiLLaNBCCpTTzObmJ0yg5KoNyxFMn3Laxj
+         yWa3flVsmU/iw8BRvsRxnOBDofowq31rRIs5TllJ9RJRAEIGlviBEh7O9xo0e98OoI4Q
+         QgOKkqAQn/X6nYNtCYETNUzE3ZuZqP1TbAeAxiVGuyy4RefPObHuogNiFODtLZI6VJ07
+         x01cO1LAiR5NBaZrIpzM3sNM2SP7teeXdl3zVy2A+vLYlk0O66lif8tDfBIsFrWvFKRC
+         yaAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVb7FkhWHjEmtHy1z7RcWPxILz32WE11VcCoCxhTQn8h3d01iYtWttc31L2JNWTbyntqyHdVgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoYxi9Pkm+xLQdMS67EzhCu8lm4z/tpNk1MZReucDhYCmuKQ2f
+	RNMMCmZz6MTq55vC8hL/FmvlBl79usxAhyHmuqnRrFQpZVB1jJ6C03/1eVomjoyAkNaN3nF9c9j
+	dQuQ0yklMQe78sUW6KAYHVjnKzdp5EYj0S8LAsCmW1vuQaZ1rGug5/NA=
+X-Google-Smtp-Source: AGHT+IFgTcMnqnLEchm6AYwwlMmWF4Isq8kow0RtCBzKXE7/a4W57FGYAcZ5duqwr3yHAHmI484RZkACbVkF70/zKndsj9DHWhvU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202023643.75010-2-a0987203069@gmail.com>
+X-Received: by 2002:a92:cda4:0:b0:3a7:ca83:3f9 with SMTP id
+ e9e14a558f8ab-3a7f9c1b5ddmr68369045ab.4.1733322563630; Wed, 04 Dec 2024
+ 06:29:23 -0800 (PST)
+Date: Wed, 04 Dec 2024 06:29:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67506743.050a0220.17bd51.006e.GAE@google.com>
+Subject: [syzbot] [net?] BUG: unable to handle kernel paging request in
+ dst_dev_put (2)
+From: syzbot <syzbot+9911f8283beca191268b@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Dec 02, 2024 at 10:36:41AM +0800, Joey Lu wrote:
-> Create initial schema for Nuvoton MA35 family Gigabit MAC.
-> 
-> Signed-off-by: Joey Lu <a0987203069@gmail.com>
-> ---
->  .../bindings/net/nuvoton,ma35d1-dwmac.yaml    | 134 ++++++++++++++++++
->  .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
->  2 files changed, 135 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
-> new file mode 100644
-> index 000000000000..e44abaf4da3e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
-> @@ -0,0 +1,134 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/nuvoton,ma35d1-dwmac.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nuvoton DWMAC glue layer controller
-> +
-> +maintainers:
-> +  - Joey Lu <yclu4@nuvoton.com>
-> +
-> +description:
-> +  Nuvoton 10/100/1000Mbps Gigabit Ethernet MAC Controller is based on
-> +  Synopsys DesignWare MAC (version 3.73a).
-> +
-> +allOf:
-> +  - $ref: snps,dwmac.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - nuvoton,ma35d1-dwmac
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description:
-> +      Register range should be one of the GMAC interface.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: MAC clock
-> +      - description: PTP clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: stmmaceth
-> +      - const: ptp_ref
-> +
-> +  nuvoton,sys:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: phandle to access syscon registers.
-> +          - description: GMAC interface ID.
-> +            enum:
-> +              - 0
-> +              - 1
-> +    description:
-> +      A phandle to the syscon with one argument that configures system registers
-> +      for MA35D1's two GMACs. The argument specifies the GMAC interface ID.
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  reset-names:
-> +    items:
-> +      - const: stmmaceth
-> +
-> +  phy-mode:
-> +    enum:
-> +      - rmii
-> +      - rgmii
-> +      - rgmii-id
-> +      - rgmii-txid
-> +      - rgmii-rxid
-> +
-> +  tx-internal-delay-ps:
-> +    default: 0
-> +    minimum: 0
-> +    maximum: 2000
-> +    description:
-> +      RGMII TX path delay used only when PHY operates in RGMII mode with
-> +      internal delay (phy-mode is 'rgmii-id' or 'rgmii-txid') in pico-seconds.
-> +      Allowed values are from 0 to 2000.
-> +
-> +  rx-internal-delay-ps:
-> +    default: 0
-> +    minimum: 0
-> +    maximum: 2000
-> +    description:
-> +      RGMII RX path delay used only when PHY operates in RGMII mode with
-> +      internal delay (phy-mode is 'rgmii-id' or 'rgmii-rxid') in pico-seconds.
-> +      Allowed values are from 0 to 2000.
-> +
-> +  mdio:
-> +    $ref: /schemas/net/mdio.yaml#
+Hello,
 
-Drop. snps,dwmac.yaml already has this.
+syzbot found the following issue on:
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - interrupt-names
+HEAD commit:    7b1d1d4cfac0 Merge remote-tracking branch 'iommu/arm/smmu'..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=114ca75f980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=dfe1e340fbee3d16
+dashboard link: https://syzkaller.appspot.com/bug?extid=9911f8283beca191268b
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm64
 
-Drop all 4. Already required by snps,dwmac.yaml.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-> +  - clocks
-> +  - clock-names
-> +  - nuvoton,sys
-> +  - resets
-> +  - reset-names
-> +  - phy-mode
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/354fe38e2935/disk-7b1d1d4c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f12e0b1ef3fd/vmlinux-7b1d1d4c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/291dbc519bb3/Image-7b1d1d4c.gz.xz
 
-Drop this one too.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9911f8283beca191268b@syzkaller.appspotmail.com
 
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
-> +    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
-> +    ethernet@40120000 {
-> +        compatible = "nuvoton,ma35d1-dwmac";
-> +        reg = <0x40120000 0x10000>;
-> +        interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
-> +        interrupt-names = "macirq";
-> +        clocks = <&clk EMAC0_GATE>, <&clk EPLL_DIV8>;
-> +        clock-names = "stmmaceth", "ptp_ref";
-> +
-> +        nuvoton,sys = <&sys 0>;
-> +        resets = <&sys MA35D1_RESET_GMAC0>;
-> +        reset-names = "stmmaceth";
-> +
-> +        phy-mode = "rgmii-id";
-> +        phy-handle = <&eth_phy0>;
-> +        mdio {
-> +            compatible = "snps,dwmac-mdio";
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            ethernet-phy@0 {
-> +                reg = <0>;
-> +            };
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> index eb1f3ae41ab9..4bf59ab910cc 100644
-> --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> @@ -67,6 +67,7 @@ properties:
->          - ingenic,x2000-mac
->          - loongson,ls2k-dwmac
->          - loongson,ls7a-dwmac
-> +        - nuvoton,ma35d1-dwmac
->          - qcom,qcs404-ethqos
->          - qcom,sa8775p-ethqos
->          - qcom,sc8280xp-ethqos
-> -- 
-> 2.34.1
-> 
+Unable to handle kernel paging request at virtual address dfff800000000000
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+Mem abort info:
+  ESR = 0x0000000096000005
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x05: level 1 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[dfff800000000000] address between user and kernel address ranges
+Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.12.0-syzkaller-g7b1d1d4cfac0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : dst_dev_put+0x2c/0x2bc net/core/dst.c:146
+lr : dst_dev_put+0x28/0x2bc net/core/dst.c:145
+sp : ffff8000979379a0
+x29: ffff8000979379a0 x28: ffffffffffffffff x27: ffff80008f16a000
+x26: 1ffff00011e2d466 x25: dfff800000000000 x24: dfff800000000000
+x23: 0000000000000000 x22: dfff800000000000 x21: ffff80008f821110
+x20: 00007dfe9b881038 x19: 0000000000000002 x18: ffff0001b364a9a8
+x17: 0000000000000040 x16: ffff800080585eb0 x15: 0000000000000001
+x14: 1fffe0001df07cc3 x13: 0000000000000000 x12: 0000000000000000
+x11: ffff60001df07cc4 x10: 0000000000ff0100 x9 : 0000000000000000
+x8 : ffff0000c19e5ac0 x7 : ffff8000832ff164 x6 : 0000000000000000
+x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800089f54340
+x2 : 0000000000000001 x1 : 0000000000000000 x0 : 0000000000000002
+Call trace:
+ dst_dev_put+0x2c/0x2bc net/core/dst.c:146 (P)
+ dst_dev_put+0x28/0x2bc net/core/dst.c:145 (L)
+ rt_fibinfo_free_cpus net/ipv4/fib_semantics.c:206 [inline]
+ fib_nh_common_release+0x1f4/0x440 net/ipv4/fib_semantics.c:217
+ fib6_nh_release+0x3a0/0x40c net/ipv6/route.c:3668
+ fib6_info_destroy_rcu+0xc8/0x214 net/ipv6/ip6_fib.c:177
+ rcu_do_batch kernel/rcu/tree.c:2567 [inline]
+ rcu_core+0x898/0x1b5c kernel/rcu/tree.c:2823
+ rcu_core_si+0x10/0x1c kernel/rcu/tree.c:2840
+ handle_softirqs+0x2e0/0xbf8 kernel/softirq.c:554
+ run_ksoftirqd+0x70/0xc0 kernel/softirq.c:949
+ smpboot_thread_fn+0x4b0/0x90c kernel/smpboot.c:164
+ kthread+0x288/0x310 kernel/kthread.c:389
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:862
+Code: aa0003f3 f2fbfff6 97a314b2 d343fe77 (38766ae8) 
+---[ end trace 0000000000000000 ]---
+----------------
+Code disassembly (best guess):
+   0:	aa0003f3 	mov	x19, x0
+   4:	f2fbfff6 	movk	x22, #0xdfff, lsl #48
+   8:	97a314b2 	bl	0xfffffffffe8c52d0
+   c:	d343fe77 	lsr	x23, x19, #3
+* 10:	38766ae8 	ldrb	w8, [x23, x22] <-- trapping instruction
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
