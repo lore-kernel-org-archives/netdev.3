@@ -1,173 +1,238 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from master.debian.org (master.debian.org [82.195.75.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E3820CCE4;
-	Wed,  4 Dec 2024 16:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795324A28;
+	Wed,  4 Dec 2024 16:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733330566; cv=none; b=M5r7f52+KjUR+/IMvrT/kERb7/1tzrblJ9QBDgqZlgbufr/38VU95Kf8C1H6QSqEgZA5VzgHSTrhdrWsH9GkRp49Stgs7zz2HCW8q9t6Xz32lp+gjLYoAaVxy+NyMl/2ZpHgVFcCCTTPPlDM/E1J85UjatBkD9qoyGo536C/nNY=
+	t=1733330594; cv=none; b=jJfDd3vmU/BFGTcIRQoQvRz1BxyedqOaWYwnFC6fqMuROfI9/uRRPVNqfhkaMxXtKbmfWg771KtHsWo7jZIxkmo6jcpkZn/GYrvTs/F4+NNp8CyDSjX+uiDtuPrqNeN9q8xun2b2ABIcR/P4PPyEBH8jdrKxgp2MpRkTLv+B0KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733330566; c=relaxed/simple;
-	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SwVBeuyi5v4Lu3+qjVlZ8iH1SiBRWChE28dBLwbwKnQdQjFyYFaUJ3HjQ0Whr0F8P3iZtcbx2PFNWv2XgHcRGqazdjRc+nPb+PqT2WDeYUYqAIGgpTrIbLt1FgzXtOJ9TPs5Yql3fWFXJf/y3h0MDt6urmx/iYF6l1SdgnQnq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=u7h8O5xt; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=jwLrm3XJ; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1733330594; c=relaxed/simple;
+	bh=4tT1xTsxXZUI5Me8CpxOiXh3OyZEi6xFVGPDWXNILGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YLrNSjFfbyDr15Pdf6jPPcetAqEdRigytn4yJTBV31uZb4LFwU7dV97DshsrQNGUwMQy2csl1wYQvUj6/wKI5oIvC4lsA4PrhQSeS1tzKAF/80jLlOkAMildveBZgYkRkrHfrEmMjL7FY0m1KYTbC052GO9xKfLSYQSraBebXcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=master.debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=eKahpvPI; arc=none smtp.client-ip=82.195.75.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=master.debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="u7h8O5xt";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="jwLrm3XJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733330562;
-	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=u7h8O5xtkqg9XTRjnm2AByw4j1oANOrzOdAZMt8HHLl3Yjm3FyhEHxMbav7cjDIHA
-	 rH9JDDrakhhHcgYv4A62tmDfzUMvJQoGwAdV/vD+hl7hO/48F0u9n++jPP9OAsaCaz
-	 8lQA+iSncabPRQrhy+aNTkLi+yhrKeJAE1MSyUWQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0036B12819C7;
-	Wed, 04 Dec 2024 11:42:42 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id UnAtfjdAjrWL; Wed,  4 Dec 2024 11:42:41 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1733330561;
-	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=jwLrm3XJJg0bE+y+jmRYNMFwEElygfQC2HGQiHPd5Xz/u0WtyW7YWY3rX060euBo7
-	 f9S1jUzBwKhA2RFoWPD/ZkuHcVNkBdGsPnMe1XGCn2DaqvTsyQjVXKsqZzFLZSZ0Tt
-	 bvl4/NIRU0Ww5p2EbpvPP+Glg6xJuhny+E4/K7oQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 13309128116A;
-	Wed, 04 Dec 2024 11:42:36 -0500 (EST)
-Message-ID: <5c905df49a332b1136787a524955b46b6153c012.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
- and adapt for various existing usages
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Zijun Hu <zijun_hu@icloud.com>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
-	 <thomas@t-8ch.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel
- <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jean
- Delvare <jdelvare@suse.com>,  Guenter Roeck <linux@roeck-us.net>, Martin
- Tuma <martin.tuma@digiteqautomotive.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Andreas Noever <andreas.noever@gmail.com>, Michael
- Jamet <michael.jamet@intel.com>, Mika Westerberg
- <mika.westerberg@linux.intel.com>,  Yehezkel Bernat
- <YehezkelShB@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
- <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Dan Williams
- <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Dave
- Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, Takashi
- Sakamoto <o-takashi@sakamocchi.jp>, Jiri Slaby <jirislaby@kernel.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, Lee Duncan <lduncan@suse.com>, Chris
- Leech <cleech@redhat.com>, Mike Christie <michael.christie@oracle.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali
- <njavali@marvell.com>, Manish Rangankar <mrangankar@marvell.com>,
- GR-QLogic-Storage-Upstream@marvell.com, Davidlohr Bueso
- <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, Alison
- Schofield <alison.schofield@intel.com>, Andreas Larsson
- <andreas@gaisler.com>, Stuart Yoder <stuyoder@gmail.com>, Laurentiu Tudor
- <laurentiu.tudor@nxp.com>, Jens Axboe <axboe@kernel.dk>, Sudeep Holla
- <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, Ard
- Biesheuvel <ardb@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-gpio@vger.kernel.org,
- netdev@vger.kernel.org,  linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev,
-  linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org, 
- linux-sound@vger.kernel.org, open-iscsi@googlegroups.com, 
- linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org, 
- sparclinux@vger.kernel.org, linux-block@vger.kernel.org, 
- arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
- linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-Date: Wed, 04 Dec 2024 11:42:34 -0500
-In-Reply-To: <235ce0a9-1db1-4558-817b-6f92f22be5ab@icloud.com>
-References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
-	 <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
-	 <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
-	 <2024120320-manual-jockey-dfd1@gregkh>
-	 <b9885785-d4d4-4c72-b425-3dc552651d7e@icloud.com>
-	 <8eb7c0c54b280b8eb72f82032ede802c001ab087.camel@HansenPartnership.com>
-	 <8fb887a0-3634-4e07-9f0d-d8d7c72ca802@t-8ch.de>
-	 <f5ea7e17-5550-4658-8f4c-1c51827c7627@icloud.com>
-	 <108c63c753f2f637a72c2e105ac138f80d4b0859.camel@HansenPartnership.com>
-	 <235ce0a9-1db1-4558-817b-6f92f22be5ab@icloud.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="eKahpvPI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.master; h=In-Reply-To:Content-Type:MIME-Version:References:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description;
+	bh=hSp0xWyYxAqanUPupWSJ2QUcd1qQP8zfPnZwqCrb51E=; b=eKahpvPI8v0ItV9zLwcMXCsJoT
+	pq9msAVeID6nZD5j+pNM05LsGkW2k+b5XRWG/Ydr2413QMs4hmH4NoHpcXbVjw0HLCfqjrSR+RUyn
+	8msd5D2TckXIBokSoptmKw1di8McWLybY16z1cdRbMYbpLOyJMF0l5JFc2om3qqeSFrTQ73s5DZX5
+	tsd731J6rxoOSoPqAVGlTxtp6gITnP+yXQZhFX7UCAPQy/qav13XGotVAIb87ifdNpQp7Hfgano+4
+	xt0HM4bzEqaL1HNEnP8YFxG3zSfxz1QNsP1Sp1NTnt9SOfxscHPVV6OdZhjKUGiIB7NqWE1QrxNtQ
+	670fg5HQ==;
+Received: from ukleinek by master.debian.org with local (Exim 4.94.2)
+	(envelope-from <ukleinek@master.debian.org>)
+	id 1tIsN8-00EObM-IS; Wed, 04 Dec 2024 16:37:06 +0000
+Date: Wed, 4 Dec 2024 17:37:05 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@debian.org>
+To: Francesco Poli <invernomuto@paranoici.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>, 
+	"1086520@bugs.debian.org Mark Zhang" <markzhang@nvidia.com>, linux-rdma@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: Bug#1086520: linux-image-6.11.2-amd64: makes opensm fail to start
+Message-ID: <acpo6ocggcl66fjdllk5zrfs2vwiivpetd5ierdek5ruxvdbyl@tfbc3mfnp23o>
+References: <20241113231503.54d12ed5b5d0c8fa9b7d9806@paranoici.org>
+ <3wfi2j7jn2f7rajabfcengubgtyt3wkuin6hqepdoe5dlvfhvn@2clhco3z6fuw>
+ <173040083268.16618.7451145398661885923.reportbug@crunch>
+ <20241118200616.865cb4c869e693b19529df36@paranoici.org>
+ <nvs4i2v7o6vn6zhmtq4sgazy2hu5kiulukxcntdelggmznnl7h@so3oul6uwgbl>
+ <20241125195443.0ddf0d0176d7c34bd29942c7@paranoici.org>
+ <20241125193837.GH160612@unreal>
+ <20241127184803.75086499e71c6b1588a4fb5a@paranoici.org>
+ <173040083268.16618.7451145398661885923.reportbug@crunch>
+ <20241127200413.GE1245331@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eq7qn5hdhaesruc2"
+Content-Disposition: inline
+In-Reply-To: <20241127200413.GE1245331@unreal>
 
-On Wed, 2024-12-04 at 20:26 +0800, Zijun Hu wrote:
-> On 2024/12/3 23:34, James Bottomley wrote:
-> > > > This also enables an incremental migration.
-> > > change the API prototype from:
-> > > device_find_child(..., void *data_0, int (*match)(struct device
-> > > *dev, void *data));
-> > > 
-> > > to:
-> > > device_find_child(..., const void *data_0, int (*match)(struct
-> > > device *dev, const void *data));
-> > > 
-> > > For @data_0,  void * -> const void * is okay.
-> > > but for @match, the problem is function pointer type
-> > > incompatibility.
-> > > 
-> > > there are two solutions base on discussions.
-> > > 
-> > > 1) squashing likewise Greg mentioned.
-> > >    Do all of the "prep work" first, and then
-> > >    do the const change at the very end, all at once.
-> > > 
-> > > 2)  as changing platform_driver's remove() prototype.
-> > > Commit: e70140ba0d2b ("Get rid of 'remove_new' relic from
-> > > platform driver struct")
-> > > 
-> > >  introduce extra device_find_child_new() which is constified  ->
-> > > use *_new() replace ALL device_find_child() instances one by one
-> > > -> remove device_find_child() -> rename *_new() to
-> > > device_find_child() once.
-> > Why bother with the last step, which churns the entire code base
-> > again?
-> 
-> keep the good API name device_find_child().
 
-Well, I think it's a good opportunity to rename the API better, but if
-that's the goal, you can still do it with _Generic() without churning
-the code base a second time.  The example is in
-slab.h:kmem_cache_create
+--eq7qn5hdhaesruc2
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Bug#1086520: linux-image-6.11.2-amd64: makes opensm fail to start
+MIME-Version: 1.0
 
-> > Why not call the new function device_find_child_const() and simply
-> > keep it (it's descriptive of its function).  That way you can have
-> > a patch series without merging and at the end simply remove the old
-> > function.
-> 
-> device_find_child is a good name for the API, 'find' already means
-> const.
+Hello Francesco,
 
-Not to me it doesn't, but that's actually not what I think is wrong
-with the API name: it actually only returns the first match, so I'd
-marginally prefer it to be called device_find_first_child() ... not
-enough to churn the code to change it, but since you're doing that
-anyway it might make sense as an update.
+On Wed, Nov 27, 2024 at 10:04:13PM +0200, Leon Romanovsky wrote:
+> On Wed, Nov 27, 2024 at 06:48:03PM +0100, Francesco Poli wrote:
+> > On Mon, 25 Nov 2024 21:38:37 +0200 Leon Romanovsky wrote:
+> >=20
+> > > On Mon, Nov 25, 2024 at 07:54:43PM +0100, Francesco Poli wrote:
+> > [...]
+> > > > I will try to continue to bisect by testing the resulting kernels o=
+n a
+> > > > compute node: there's no OpenSM there and it cannot run anyway, if
+> > > > there's another OpenSM on the same InfiniBand network.
+> > > > However, I can check whether those issm* symlinks are created in
+> > > > /sys/class/infiniband_mad/=20
+> > > > I really hope that this is enough to pinpoint the first bad
+> > > > commit...
+> > >=20
+> > > Yes, these symlinks should be there. Your test scenario is correct on=
+e.
+> >=20
+> > OK, I have completed the bisect on a compute node without OpenSM, by
+> > looking at the issm* symlinks, as I said.
+> >=20
+> > See below.
+> >=20
+> > >=20
+> > > >=20
+> > > > Any better ideas?
+> > >=20
+> > > I think that commit: 2a5db20fa532 ("RDMA/mlx5: Add support to multi-p=
+lane device and port")
+> > > is the one which is causing to troubles, which leads me to suspect FW.
+> > [...]
+> >=20
+> > Thanks to your guess about the possibly troublesome commit, the bisect =
+was completed in a few steps:
+> >=20
+> >   $ git checkout 2a5db20fa532
+> >   $ make -j 12 my_defconfig bindeb-pkg
+> >  =20
+> >   [install this version on a compute node test image and reboot
+> >   one compute node with that image: the InfiniBand network was
+> >   working for that node, that's no surprise, since OpenSM was running
+> >   on the head node, but no issm* symlink was created; please note
+> >   that, surprisingly, the Ethernet network was not working, I mean
+> >   that the Ethernet interfaces were not found by the kernel...]
+> >  =20
+> >   root@node # ls -altrF /sys/class/infiniband_mad/
+> >   total 0
+> >   drwxr-xr-x 60 root root    0 Nov 26 17:06 ../
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:06 umad0 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.0/infiniband_mad/umad0/
+> >   -r--r--r--  1 root root 4096 Nov 26 17:06 abi_version
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:06 umad1 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.1/infiniband_mad/umad1/
+> >   drwxr-xr-x  2 root root    0 Nov 26 17:08 ./
+> >  =20
+> >   $ git bisect bad
+> >   Bisecting: 0 revisions left to test after this (roughly 0 steps)
+> >   [65528cfb21fdb68de8ae6dccae19af180d93e143] net/mlx5: mlx5_ifc update =
+for multi-plane support
+> >   $ make -j 12 my_defconfig bindeb-pkg
+> >  =20
+> >   [install this version on the compute node test image and reboot
+> >   one compute node with that image: the InfiniBand network again
+> >   working for that node, issm* symlinks were created;
+> >   Ethernet network again not working for that node...]
+> >  =20
+> >   root@node # ls -altrF /sys/class/infiniband_mad/
+> >   total 0
+> >   drwxr-xr-x 60 root root    0 Nov 26 17:31 ../
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:31 umad0 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.0/infiniband_mad/umad0/
+> >   -r--r--r--  1 root root 4096 Nov 26 17:31 abi_version
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:31 umad1 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.1/infiniband_mad/umad1/
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:36 issm1 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.1/infiniband_mad/issm1/
+> >   lrwxrwxrwx  1 root root    0 Nov 26 17:36 issm0 -> ../../devices/pci0=
+000:00/0000:00:01.1/0000:01:00.0/infiniband_mad/issm0/
+> >   drwxr-xr-x  2 root root    0 Nov 26 17:36 ./
+> >  =20
+> >   $ git bisect good
+> >   2a5db20fa532198639671713c6213f96ff285b85 is the first bad commit
+> >   commit 2a5db20fa532198639671713c6213f96ff285b85
+> >   Author: Mark Zhang <markzhang@nvidia.com>
+> >   Date:   Sun Jun 16 19:08:35 2024 +0300
+> >  =20
+> >       RDMA/mlx5: Add support to multi-plane device and port
+> >  =20
+> >       When multi-plane is supported, a logical port, which is aggregati=
+on of
+> >       multiple physical plane ports, is exposed for data transmission.
+> >       Compared with a normal mlx5 IB port, this logical port supports a=
+ll
+> >       functionalities except Subnet Management.
+> >  =20
+> >       Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+> >       Link: https://lore.kernel.org/r/7e37c06c9cb243be9ac79930cd1705390=
+3785b95.1718553901.git.leon@kernel.org
+> >       Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> >  =20
+> >    drivers/infiniband/hw/mlx5/main.c               | 60 +++++++++++++++=
+++++++----
+> >    drivers/infiniband/hw/mlx5/mlx5_ib.h            |  2 +
+> >    drivers/net/ethernet/mellanox/mlx5/core/vport.c |  1 +
+> >    include/linux/mlx5/driver.h                     |  1 +
+> >    4 files changed, 55 insertions(+), 9 deletions(-)
+> >=20
+> >=20
+> > In other words, bingo!, your guess looks correct, the first bad commit
+> > is the one you mentioned.
+> >=20
+> >=20
+> > Now, I will try to upgrade the firmware of the InfiniBand NICs, as you
+> > suggested, and check whether this solves the issue with the recent
+> > Linux kernel versions.
+> >=20
+> > Please confirm that the procedure to be followed is the one described in
+> > <https://docs.nvidia.com/networking/display/ubuntu2204/firmware+burning>
+>=20
+> Yes, it looks correct procedure.
+> If you didn't upgrade FW, this diff will achieve same result for you:
+>=20
+> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/ml=
+x5/main.c
+> index c2314797afc9..110ce177c305 100644
+> --- a/drivers/infiniband/hw/mlx5/main.c
+> +++ b/drivers/infiniband/hw/mlx5/main.c
+> @@ -2846,7 +2846,7 @@ static int mlx5_ib_get_plane_num(struct mlx5_core_d=
+ev *mdev, u8 *num_plane)
+>         if (err)
+>                 return err;
+>=20
+> -       *num_plane =3D vport_ctx.num_plane;
+> +       *num_plane =3D (vport_ctx.num_plane > 1) ? vport_ctx.num_plane : =
+0;
+>         return 0;
+>  }
+>=20
+> The culprit of your issue that in some FW versions, the vport_ctx.num_pla=
+ne
+> was 1 and not 0 for devices which don't support that mode, while for the =
+driver
+> everything that is not 0 means supported.
 
-Regards,
+I wonder if you could test a firmware upgrade or the above patch. Would
+be nice to know if there are still some things to do for us (=3D Debian
+kernel team) here.
 
-James
+If everything is fine for you, I'd like to close this bug.
 
+Best regards
+Uwe
+
+--eq7qn5hdhaesruc2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdQhS4ACgkQj4D7WH0S
+/k78mggAgQeh/GCn2XHHJQ4qCF+fi4lbYa4h5vWY3TeUfVkO5sd3qEXjcnYYi2D8
+XjMPToRyBws3qsHdtzVP70mHZJIPbtSf2Ah22n4PUtf1St/j+o6MkgUWgviYPiO2
+y0Ayux/2aFXLhdTHuM44jXVkGJU5nCv9gpO9aiSb8wdwy3Kif0vzgAnj1uXxbNXC
+/sfCk9lhOz6HQZGldDNL5fudAMFWwt3DJb0BxpvVe8XzE9Uradsh7pUWs7K6rRLj
+yurlX9SxYhQ0oWycTsmHxcvwz5ltdXQ4Veb3gJbsLntmDofsiMHw1YhJqKPUCMVp
+jrGokmLt57u6GaWz+ZKnhC40q9vVNQ==
+=RBHV
+-----END PGP SIGNATURE-----
+
+--eq7qn5hdhaesruc2--
