@@ -1,648 +1,169 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from devianza.investici.org (devianza.investici.org [198.167.222.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7602F2163BC
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 17:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7C6215F74;
+	Wed,  4 Dec 2024 17:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.167.222.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332986; cv=none; b=itvE4JZHE+0IXLJBvbhap7sKnhLmkjPyEVlzrXbaOh1XUaATyrVmf3xpDlKQLpiamaVvVAPXj4Qx4F902xHxbbz5qjNbZpy+zS7/t7VYtTDt5ravZgkdfrSVmRlzXLcMglh0c9bfFT1UF8TSzaJR1w9iXV7LtTYaqAgXjrP6cw4=
+	t=1733332987; cv=none; b=R11gcHJ0mLKvUhNc2nt1iZ8Ghedm8triLNzcKl2oikJRU8dIBBRlhhIDdlVNf5jJsCpanssAx+fRu3boSzPR01LWGKn3IVXmwkGDyetYSaltW3jVxAkFBNbcdHHSRTGFGl6fOUZLCmKMEWMd8Bsji/qu+YLHHNrRPVI/cDXbaHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332986; c=relaxed/simple;
-	bh=XDL+9pwkfIBwDQiQFl4GDzKDRTUcI6R3pAnYvNNnDfo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEQb3t/hcWaFClcYqTr85ZAtB78+EZ5AvCHiFWSzr0Cye3fpgLJuRGl5HQoIxpHT1QyHefxcgzjp8XDMzTR9A1RODWQn8neS6zaxVSNtGalfXdKMfpedjTZ2gNGxuhOMX40cvvmKuoAcFFCByR2nHopF56sWwhAyFpc/aGg0TiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=vvZ1qQ23; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	s=arc-20240116; t=1733332987; c=relaxed/simple;
+	bh=8HO3mm3jNM/ZIi+ulQAkDTTq+p4TEOdSZ5DMUDAq2Vg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=NWS5tHJADo4oYKCLMvmJTmy8jgazd+ocE447RVL4NL0zWuYhs0Tw1TVA+x9Z9WoR3Td38DQcoucpBXUtyU0mKVTQlWoFs/AIbWm4xnL3ZV34d8EV67md+9pvn6TbDvjQiPxQSu8BO2ENWFK/VkgQYfFO+FSs02W6u/s/sexXQLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=paranoici.org; spf=pass smtp.mailfrom=paranoici.org; dkim=pass (1024-bit key) header.d=paranoici.org header.i=@paranoici.org header.b=fJn7q2lb; arc=none smtp.client-ip=198.167.222.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=paranoici.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paranoici.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="vvZ1qQ23"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7256a7a3d98so49763b3a.3
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 09:23:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1733332984; x=1733937784; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E2A6qrannMDfARwxSzCj01X8wYOTt2ecawK3ihWMIsE=;
-        b=vvZ1qQ23OOZW1lUqb+66XwxJKqWDUbabqoXuFHOhWdNn+ghgfYmrSkV2iFbM9/gU4M
-         MvthnXSlzxjeqweNfWOgVMqtNiSsGj7V6T9WzIcZ8I7vRpmbq3pMhAyZFtAZF4sx07Bn
-         Lo9lsZAzuWESv0XpZciGQcW1q+CxRhlaDMp/J/FOzKA3eOYxqRnps3MzMusvDtue0wkB
-         TCuNSAM797eoLyrMfyIEzuK2oGoySbB3qgS16lRBzTfhoM/IKsEj1+SN2hWa6BFEmOwF
-         0n8hOdXZlcT7yTaOr9H0tSQCM45pnc5WCpPpCxIuScD7PNVmytZcpurdCyBniQf4EvJe
-         4dmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733332984; x=1733937784;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E2A6qrannMDfARwxSzCj01X8wYOTt2ecawK3ihWMIsE=;
-        b=Q7nR5h8fIT41i/g534gHEURAx7+eLZynvXlH0jB8ZzgJ47wN4V4U7dLzlaRxHajX3E
-         RYOBh1j5FhwibMEPn3C1RDpbVtcuQFqNBtW0n8aUPxqs+w5vQ0ryiQJuOZ7Pm6t7+pxf
-         OvjWBNKp6HUZl8iBZoaVxCExRGA6cdWJrTjquWMHLvM9wdUg7Vt9AVT41qoYEv2/nKx5
-         WtI+s23RS/kTAqE/yDsB/l5cKnlMGDJ6DKjDIXpPCAjwphgzah7Awf49hvGjdM3mh1rx
-         /wFgcLTYb2bj6567s3NfxVZAMOh5+AfoG8K3rPzoF6MIKJMfGpfXpC4Y6T1Al1IAQHaF
-         kuJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXN0tyVKZjc45fLG88pp8mT6N4hfgTJSaZGouKoyKAb9lyOBtmZdPdrfMbk42zIS/B8fj5VYsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUOs8dLc1jM0jJziH7euCo2e1gThYPrpmb5xxplDfcVWKQoP9V
-	wu0h+yE4mi/fRDa4UFY2GD9+E3/RMa1YIOzrLDwF8SGBGNfgvF/QGZw7VWtEK/w=
-X-Gm-Gg: ASbGncuRASCYGQAxsR+qGHgKikvGVEVWuZzv9iqtmQr3Deo/wO9ZVJPpeZ0ALApME3e
-	1ACF+oKUgnIIDRX2qL3hZfHB1oqiKqoVZyOL95tac4TeLC18QsAOsnhiNummYd7eXxpaJemRn2o
-	j0iP7txCJa8KMCynvrfMNVMik1TbpPBdtl9OY9j6ElGSOuthqmVLuvvOKZCgQ54ZqZWjij9Ugz6
-	8J1296XCtWxyuzd67ud9bAingicA7XOBQ==
-X-Google-Smtp-Source: AGHT+IFV2DubMl0Q5qRtcIn27QfGQ9ADCOaGdH5ch7HShsZvg9syTNAWFwtCaI73j7vPmnHO1MmUPw==
-X-Received: by 2002:a17:90a:d607:b0:2ee:693e:ed7c with SMTP id 98e67ed59e1d1-2ef0127487emr11186076a91.33.1733332983854;
-        Wed, 04 Dec 2024 09:23:03 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:5::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef2708b93dsm1686406a91.51.2024.12.04.09.23.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 09:23:03 -0800 (PST)
-From: David Wei <dw@davidwei.uk>
-To: io-uring@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Pedro Tammela <pctammela@mojatatu.com>
-Subject: [PATCH net-next v8 17/17] io_uring/zcrx: add selftest
-Date: Wed,  4 Dec 2024 09:21:56 -0800
-Message-ID: <20241204172204.4180482-18-dw@davidwei.uk>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241204172204.4180482-1-dw@davidwei.uk>
-References: <20241204172204.4180482-1-dw@davidwei.uk>
+	dkim=pass (1024-bit key) header.d=paranoici.org header.i=@paranoici.org header.b="fJn7q2lb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=paranoici.org;
+	s=stigmate; t=1733332478;
+	bh=0QrBbFQ1Yk43wtEVuPMTkfoJbcLfYpa5h2xyKqF9TXQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fJn7q2lb6Sq30r4i7Hi1Idj/7Fj1J3PmPVtm/N7w9ggFeeYS6lWZ65FwuKrpRkF+K
+	 OIQ10ChwvBTbmF0gZWZyxven9Hcs5bhfJqy2jjLlnXDWRUYrjK/srEWd7Yiohr1cdS
+	 lJiDni5XC+IMba7+VMn3aNxn4Z6EyzxIvGN2+UQk=
+Received: from mx2.investici.org (unknown [127.0.0.1])
+	by devianza.investici.org (Postfix) with ESMTP id 4Y3PJt0MCvz6vVX;
+	Wed,  4 Dec 2024 17:14:38 +0000 (UTC)
+Received: from [198.167.222.108] (mx2.investici.org [198.167.222.108]) (Authenticated sender: invernomuto@paranoici.org) by localhost (Postfix) with ESMTPSA id 4Y3PJs70sJz6vVW;
+	Wed,  4 Dec 2024 17:14:37 +0000 (UTC)
+Received: from frx by crunch with local (Exim 4.98)
+	(envelope-from <invernomuto@paranoici.org>)
+	id 1tIsxQ-000000003X3-30eO;
+	Wed, 04 Dec 2024 18:14:36 +0100
+Date: Wed, 4 Dec 2024 18:13:56 +0100
+From: Francesco Poli <invernomuto@paranoici.org>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@debian.org>
+Cc: Leon Romanovsky <leonro@nvidia.com>, 1086520-done@bugs.debian.org, Mark
+ Zhang <markzhang@nvidia.com>, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: Bug#1086520: linux-image-6.11.2-amd64: makes opensm fail to
+ start
+Message-Id: <20241204181356.932c49619598e04d8ad412e0@paranoici.org>
+In-Reply-To: <acpo6ocggcl66fjdllk5zrfs2vwiivpetd5ierdek5ruxvdbyl@tfbc3mfnp23o>
+References: <20241113231503.54d12ed5b5d0c8fa9b7d9806@paranoici.org>
+	<3wfi2j7jn2f7rajabfcengubgtyt3wkuin6hqepdoe5dlvfhvn@2clhco3z6fuw>
+	<173040083268.16618.7451145398661885923.reportbug@crunch>
+	<20241118200616.865cb4c869e693b19529df36@paranoici.org>
+	<nvs4i2v7o6vn6zhmtq4sgazy2hu5kiulukxcntdelggmznnl7h@so3oul6uwgbl>
+	<20241125195443.0ddf0d0176d7c34bd29942c7@paranoici.org>
+	<20241125193837.GH160612@unreal>
+	<20241127184803.75086499e71c6b1588a4fb5a@paranoici.org>
+	<173040083268.16618.7451145398661885923.reportbug@crunch>
+	<20241127200413.GE1245331@unreal>
+	<acpo6ocggcl66fjdllk5zrfs2vwiivpetd5ierdek5ruxvdbyl@tfbc3mfnp23o>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA512";
+ boundary="Signature=_Wed__4_Dec_2024_18_13_56_+0100_OXoMkKkJzsj06Qbl"
 
-Add a selftest for io_uring zero copy Rx that sets up the feature on a
-receiver and validates that it receives traffic from a sender. Requires
-a remote host and a proper net.config for the test. The remote host also
-requires liburing installed.
+--Signature=_Wed__4_Dec_2024_18_13_56_+0100_OXoMkKkJzsj06Qbl
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: David Wei <dw@davidwei.uk>
----
- .../selftests/drivers/net/hw/.gitignore       |   2 +
- .../testing/selftests/drivers/net/hw/Makefile |   6 +
- .../selftests/drivers/net/hw/iou-zcrx.c       | 432 ++++++++++++++++++
- .../selftests/drivers/net/hw/iou-zcrx.py      |  64 +++
- 4 files changed, 504 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/hw/iou-zcrx.c
- create mode 100755 tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+On Wed, 4 Dec 2024 17:37:05 +0100 Uwe Kleine-K=C3=B6nig wrote:
 
-diff --git a/tools/testing/selftests/drivers/net/hw/.gitignore b/tools/testing/selftests/drivers/net/hw/.gitignore
-index e9fe6ede681a..6942bf575497 100644
---- a/tools/testing/selftests/drivers/net/hw/.gitignore
-+++ b/tools/testing/selftests/drivers/net/hw/.gitignore
-@@ -1 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+iou-zcrx
- ncdevmem
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 21ba64ce1e34..5431af8e8210 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0+ OR MIT
- 
-+TEST_GEN_FILES = iou-zcrx
-+
- TEST_PROGS = \
- 	csum.py \
- 	devlink_port_split.py \
-@@ -10,6 +12,7 @@ TEST_PROGS = \
- 	ethtool_rmon.sh \
- 	hw_stats_l3.sh \
- 	hw_stats_l3_gre.sh \
-+	iou-zcrx.py \
- 	loopback.sh \
- 	nic_link_layer.py \
- 	nic_performance.py \
-@@ -38,3 +41,6 @@ include ../../../lib.mk
- # YNL build
- YNL_GENS := ethtool netdev
- include ../../../net/ynl.mk
-+
-+$(OUTPUT)/iou-zcrx: CFLAGS += -I/usr/include/
-+$(OUTPUT)/iou-zcrx: LDLIBS += -luring
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-new file mode 100644
-index 000000000000..29cd17114632
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
-@@ -0,0 +1,432 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <assert.h>
-+#include <errno.h>
-+#include <error.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include <arpa/inet.h>
-+#include <linux/errqueue.h>
-+#include <linux/if_packet.h>
-+#include <linux/ipv6.h>
-+#include <linux/socket.h>
-+#include <linux/sockios.h>
-+#include <net/ethernet.h>
-+#include <net/if.h>
-+#include <netinet/in.h>
-+#include <netinet/ip.h>
-+#include <netinet/ip6.h>
-+#include <netinet/tcp.h>
-+#include <netinet/udp.h>
-+#include <sys/epoll.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/resource.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <sys/types.h>
-+#include <sys/un.h>
-+#include <sys/wait.h>
-+
-+#include <liburing.h>
-+
-+#define PAGE_SIZE (4096)
-+#define AREA_SIZE (8192 * PAGE_SIZE)
-+#define SEND_SIZE (512 * 4096)
-+#define min(a, b) \
-+	({ \
-+		typeof(a) _a = (a); \
-+		typeof(b) _b = (b); \
-+		_a < _b ? _a : _b; \
-+	})
-+#define min_t(t, a, b) \
-+	({ \
-+		t _ta = (a); \
-+		t _tb = (b); \
-+		min(_ta, _tb); \
-+	})
-+
-+#define ALIGN_UP(v, align) (((v) + (align) - 1) & ~((align) - 1))
-+
-+static int cfg_family = PF_UNSPEC;
-+static int cfg_server = 0;
-+static int cfg_client = 0;
-+static int cfg_port = 8000;
-+static int cfg_payload_len;
-+static const char *cfg_ifname = NULL;
-+static int cfg_queue_id = -1;
-+
-+static socklen_t cfg_alen;
-+static struct sockaddr_storage cfg_addr;
-+
-+static char payload[SEND_SIZE] __attribute__((aligned(PAGE_SIZE)));
-+static void *area_ptr = NULL;
-+static void *ring_ptr = NULL;
-+static size_t ring_size = 0;
-+static struct io_uring_zcrx_rq rq_ring;
-+static unsigned long area_token;
-+static int connfd = 0;
-+static bool stop = false;
-+static size_t received = 0;
-+
-+static unsigned long gettimeofday_ms(void)
-+{
-+	struct timeval tv;
-+
-+	gettimeofday(&tv, NULL);
-+	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-+}
-+
-+static inline size_t get_refill_ring_size(unsigned int rq_entries)
-+{
-+	size_t size;
-+
-+	ring_size = rq_entries * sizeof(struct io_uring_zcrx_rqe);
-+	/* add space for the header (head/tail/etc.) */
-+	ring_size += PAGE_SIZE;
-+	return ALIGN_UP(ring_size, 4096);
-+}
-+
-+static void setup_zcrx(struct io_uring *ring)
-+{
-+	unsigned int ifindex;
-+	unsigned int rq_entries = 4096;
-+	int ret;
-+
-+	ifindex = if_nametoindex(cfg_ifname);
-+	if (!ifindex)
-+		error(1, 0, "bad interface name: %s", cfg_ifname);
-+
-+	area_ptr = mmap(NULL,
-+			AREA_SIZE,
-+			PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE,
-+			0,
-+			0);
-+	if (area_ptr == MAP_FAILED)
-+		error(1, 0, "mmap(): zero copy area");
-+
-+	ring_size = get_refill_ring_size(rq_entries);
-+	ring_ptr = mmap(NULL,
-+			ring_size,
-+			PROT_READ | PROT_WRITE,
-+			MAP_ANONYMOUS | MAP_PRIVATE,
-+			0,
-+			0);
-+
-+	struct io_uring_region_desc region_reg = {
-+		.size = ring_size,
-+		.user_addr = (__u64)(unsigned long)ring_ptr,
-+		.flags = IORING_MEM_REGION_TYPE_USER,
-+	};
-+
-+	struct io_uring_zcrx_area_reg area_reg = {
-+		.addr = (__u64)(unsigned long)area_ptr,
-+		.len = AREA_SIZE,
-+		.flags = 0,
-+	};
-+
-+	struct io_uring_zcrx_ifq_reg reg = {
-+		.if_idx = ifindex,
-+		.if_rxq = cfg_queue_id,
-+		.rq_entries = rq_entries,
-+		.area_ptr = (__u64)(unsigned long)&area_reg,
-+		.region_ptr = (__u64)(unsigned long)&region_reg,
-+	};
-+
-+	ret = io_uring_register_ifq(ring, &reg);
-+	if (ret)
-+		error(1, 0, "io_uring_register_ifq(): %d", ret);
-+
-+	rq_ring.khead = (unsigned int*)((char*)ring_ptr + reg.offsets.head);
-+	rq_ring.ktail = (unsigned int*)((char*)ring_ptr + reg.offsets.tail);
-+	rq_ring.rqes = (struct io_uring_zcrx_rqe*)((char*)ring_ptr + reg.offsets.rqes);
-+	rq_ring.rq_tail = 0;
-+	rq_ring.ring_entries = reg.rq_entries;
-+
-+	area_token = area_reg.rq_area_token;
-+}
-+
-+static void add_accept(struct io_uring *ring, int sockfd)
-+{
-+	struct io_uring_sqe *sqe;
-+
-+	sqe = io_uring_get_sqe(ring);
-+
-+	io_uring_prep_accept(sqe, sockfd, NULL, NULL, 0);
-+	sqe->user_data = 1;
-+}
-+
-+static void add_recvzc(struct io_uring *ring, int sockfd)
-+{
-+	struct io_uring_sqe *sqe;
-+
-+	sqe = io_uring_get_sqe(ring);
-+
-+	io_uring_prep_rw(IORING_OP_RECV_ZC, sqe, sockfd, NULL, 0, 0);
-+	sqe->ioprio |= IORING_RECV_MULTISHOT;
-+	sqe->user_data = 2;
-+}
-+
-+static void process_accept(struct io_uring *ring, struct io_uring_cqe *cqe)
-+{
-+	if (cqe->res < 0)
-+		error(1, 0, "accept()");
-+	if (connfd)
-+		error(1, 0, "Unexpected second connection");
-+
-+	connfd = cqe->res;
-+	add_recvzc(ring, connfd);
-+}
-+
-+static void process_recvzc(struct io_uring *ring, struct io_uring_cqe *cqe)
-+{
-+	unsigned rq_mask = rq_ring.ring_entries - 1;
-+	struct io_uring_zcrx_cqe *rcqe;
-+	struct io_uring_zcrx_rqe* rqe;
-+	struct io_uring_sqe *sqe;
-+	uint64_t mask;
-+	char *data;
-+	ssize_t n;
-+	int i;
-+
-+	if (cqe->res == 0 && cqe->flags == 0) {
-+		stop = true;
-+		return;
-+	}
-+
-+	if (cqe->res < 0)
-+		error(1, 0, "recvzc(): %d", cqe->res);
-+
-+	if (!(cqe->flags & IORING_CQE_F_MORE))
-+		add_recvzc(ring, connfd);
-+
-+	rcqe = (struct io_uring_zcrx_cqe*)(cqe + 1);
-+
-+	n = cqe->res;
-+	mask = (1ULL << IORING_ZCRX_AREA_SHIFT) - 1;
-+	data = (char *)area_ptr + (rcqe->off & mask);
-+
-+	for (i = 0; i < n; i++) {
-+		if (*(data + i) != payload[(received + i)])
-+			error(1, 0, "payload mismatch");
-+	}
-+	received += n;
-+
-+	rqe = &rq_ring.rqes[(rq_ring.rq_tail & rq_mask)];
-+	rqe->off = (rcqe->off & IORING_ZCRX_AREA_MASK) | area_token;
-+	rqe->len = cqe->res;
-+	IO_URING_WRITE_ONCE(*rq_ring.ktail, ++rq_ring.rq_tail);
-+}
-+
-+static void server_loop(struct io_uring *ring)
-+{
-+	struct io_uring_cqe *cqe;
-+	unsigned int count = 0;
-+	unsigned int head;
-+	int i, ret;
-+
-+	io_uring_submit_and_wait(ring, 1);
-+
-+	io_uring_for_each_cqe(ring, head, cqe) {
-+		if (cqe->user_data == 1)
-+			process_accept(ring, cqe);
-+		else if (cqe->user_data == 2)
-+			process_recvzc(ring, cqe);
-+		else
-+			error(1, 0, "unknown cqe");
-+		count++;
-+	}
-+	io_uring_cq_advance(ring, count);
-+}
-+
-+static void run_server()
-+{
-+	unsigned int flags = 0;
-+	struct io_uring ring;
-+	int fd, enable, ret;
-+	uint64_t tstop;
-+
-+	fd = socket(cfg_family, SOCK_STREAM, 0);
-+	if (fd == -1)
-+		error(1, 0, "socket()");
-+
-+	enable = 1;
-+	ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
-+	if (ret < 0)
-+		error(1, 0, "setsockopt(SO_REUSEADDR)");
-+
-+	ret = bind(fd, (const struct sockaddr *)&cfg_addr, sizeof(cfg_addr));
-+	if (ret < 0)
-+		error(1, 0, "bind()");
-+
-+	if (listen(fd, 1024) < 0)
-+		error(1, 0, "listen()");
-+
-+	flags |= IORING_SETUP_COOP_TASKRUN;
-+	flags |= IORING_SETUP_SINGLE_ISSUER;
-+	flags |= IORING_SETUP_DEFER_TASKRUN;
-+	flags |= IORING_SETUP_SUBMIT_ALL;
-+	flags |= IORING_SETUP_CQE32;
-+
-+	io_uring_queue_init(512, &ring, flags);
-+
-+	setup_zcrx(&ring);
-+
-+	add_accept(&ring, fd);
-+
-+	tstop = gettimeofday_ms() + 5000;
-+	while (!stop && gettimeofday_ms() < tstop)
-+		server_loop(&ring);
-+
-+	if (!stop)
-+		error(1, 0, "test failed\n");
-+}
-+
-+static void run_client()
-+{
-+	ssize_t to_send = SEND_SIZE;
-+	ssize_t sent = 0;
-+	ssize_t chunk, res;
-+	int fd;
-+
-+	fd = socket(cfg_family, SOCK_STREAM, 0);
-+	if (fd == -1)
-+		error(1, 0, "socket()");
-+
-+	if (connect(fd, (void *)&cfg_addr, cfg_alen))
-+		error(1, 0, "connect()");
-+
-+	while (to_send) {
-+		void *src = &payload[sent];
-+
-+		chunk = min_t(ssize_t, cfg_payload_len, to_send);
-+		res = send(fd, src, chunk, 0);
-+		if (res < 0)
-+			error(1, 0, "send(): %d", sent);
-+		sent += res;
-+		to_send -= res;
-+	}
-+
-+	close(fd);
-+}
-+
-+static void usage(const char *filepath)
-+{
-+	error(1, 0, "Usage: %s (-4|-6) (-s|-c) -h<server_ip> -p<port> "
-+		    "-l<payload_size> -i<ifname> -q<rxq_id>", filepath);
-+}
-+
-+static void parse_opts(int argc, char **argv)
-+{
-+	const int max_payload_len = sizeof(payload) -
-+				    sizeof(struct ipv6hdr) -
-+				    sizeof(struct tcphdr) -
-+				    40 /* max tcp options */;
-+	struct sockaddr_in6 *addr6 = (void *) &cfg_addr;
-+	struct sockaddr_in *addr4 = (void *) &cfg_addr;
-+	char *addr = NULL;
-+	int c;
-+
-+	if (argc <= 1)
-+		usage(argv[0]);
-+	cfg_payload_len = max_payload_len;
-+
-+	while ((c = getopt(argc, argv, "46sch:p:l:i:q:")) != -1) {
-+		switch (c) {
-+		case '4':
-+			if (cfg_family != PF_UNSPEC)
-+				error(1, 0, "Pass one of -4 or -6");
-+			cfg_family = PF_INET;
-+			cfg_alen = sizeof(struct sockaddr_in);
-+			break;
-+		case '6':
-+			if (cfg_family != PF_UNSPEC)
-+				error(1, 0, "Pass one of -4 or -6");
-+			cfg_family = PF_INET6;
-+			cfg_alen = sizeof(struct sockaddr_in6);
-+			break;
-+		case 's':
-+			if (cfg_client)
-+				error(1, 0, "Pass one of -s or -c");
-+			cfg_server = 1;
-+			break;
-+		case 'c':
-+			if (cfg_server)
-+				error(1, 0, "Pass one of -s or -c");
-+			cfg_client = 1;
-+			break;
-+		case 'h':
-+			addr = optarg;
-+			break;
-+		case 'p':
-+			cfg_port = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'l':
-+			cfg_payload_len = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'i':
-+			cfg_ifname = optarg;
-+			break;
-+		case 'q':
-+			cfg_queue_id = strtoul(optarg, NULL, 0);
-+			break;
-+		}
-+	}
-+
-+	if (cfg_server && addr)
-+		error(1, 0, "Receiver cannot have -h specified");
-+
-+	switch (cfg_family) {
-+	case PF_INET:
-+		memset(addr4, 0, sizeof(*addr4));
-+		addr4->sin_family = AF_INET;
-+		addr4->sin_port = htons(cfg_port);
-+		addr4->sin_addr.s_addr = htonl(INADDR_ANY);
-+
-+		if (addr &&
-+		    inet_pton(AF_INET, addr, &(addr4->sin_addr)) != 1)
-+			error(1, 0, "ipv4 parse error: %s", addr);
-+		break;
-+	case PF_INET6:
-+		memset(addr6, 0, sizeof(*addr6));
-+		addr6->sin6_family = AF_INET6;
-+		addr6->sin6_port = htons(cfg_port);
-+		addr6->sin6_addr = in6addr_any;
-+
-+		if (addr &&
-+		    inet_pton(AF_INET6, addr, &(addr6->sin6_addr)) != 1)
-+			error(1, 0, "ipv6 parse error: %s", addr);
-+		break;
-+	default:
-+		error(1, 0, "illegal domain");
-+	}
-+
-+	if (cfg_payload_len > max_payload_len)
-+		error(1, 0, "-l: payload exceeds max (%d)", max_payload_len);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	const char *cfg_test = argv[argc - 1];
-+	int i;
-+
-+	parse_opts(argc, argv);
-+
-+	for (i = 0; i < SEND_SIZE; i++)
-+		payload[i] = 'a' + (i % 26);
-+
-+	if (cfg_server)
-+		run_server();
-+	else if (cfg_client)
-+		run_client();
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-new file mode 100755
-index 000000000000..3998d0ad504f
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-@@ -0,0 +1,64 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+from os import path
-+from lib.py import ksft_run, ksft_exit
-+from lib.py import NetDrvEpEnv
-+from lib.py import bkg, cmd, wait_port_listen
-+
-+
-+def _get_rx_ring_entries(cfg):
-+    eth_cmd = "ethtool -g {} | awk '/RX:/ {{count++}} count == 2 {{print $2; exit}}'"
-+    res = cmd(eth_cmd.format(cfg.ifname), host=cfg.remote)
-+    return int(res.stdout)
-+
-+
-+def _get_combined_channels(cfg):
-+    eth_cmd = "ethtool -l {} | awk '/Combined:/ {{count++}} count == 2 {{print $2; exit}}'"
-+    res = cmd(eth_cmd.format(cfg.ifname), host=cfg.remote)
-+    return int(res.stdout)
-+
-+
-+def _set_flow_rule(cfg, chan):
-+    eth_cmd = "ethtool -N {} flow-type tcp6 dst-port 9999 action {} | awk '{{print $NF}}'"
-+    res = cmd(eth_cmd.format(cfg.ifname, chan), host=cfg.remote)
-+    return int(res.stdout)
-+
-+
-+def test_zcrx(cfg) -> None:
-+    cfg.require_v6()
-+    cfg.require_cmd("awk", remote=True)
-+
-+    combined_chans = _get_combined_channels(cfg)
-+    if combined_chans < 2:
-+        raise KsftSkipEx('at least 2 combined channels required')
-+    rx_ring = _get_rx_ring_entries(cfg)
-+
-+    rx_cmd = f"{cfg.bin_remote} -6 -s -p 9999 -i {cfg.ifname} -q {combined_chans - 1}"
-+    tx_cmd = f"{cfg.bin_local} -6 -c -h {cfg.remote_v6} -p 9999 -l 12840"
-+
-+    try:
-+        cmd(f"ethtool -G {cfg.ifname} rx 64", host=cfg.remote)
-+        cmd(f"ethtool -X {cfg.ifname} equal {combined_chans - 1}", host=cfg.remote)
-+        flow_rule_id = _set_flow_rule(cfg, combined_chans - 1)
-+
-+        with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
-+            wait_port_listen(9999, proto="tcp", host=cfg.remote)
-+            cmd(tx_cmd)
-+    finally:
-+        cmd(f"ethtool -N {cfg.ifname} delete {flow_rule_id}", host=cfg.remote)
-+        cmd(f"ethtool -X {cfg.ifname} default", host=cfg.remote)
-+        cmd(f"ethtool -G {cfg.ifname} rx {rx_ring}", host=cfg.remote)
-+
-+
-+def main() -> None:
-+    with NetDrvEpEnv(__file__) as cfg:
-+        cfg.bin_local = path.abspath(path.dirname(__file__) + "/../../../drivers/net/hw/iou-zcrx")
-+        cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-+
-+        ksft_run(globs=globals(), case_pfx={"test_"}, args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.43.5
+> Hello Francesco,
 
+Hello Uwe,
+
+[...]
+> I wonder if you could test a firmware upgrade or the above patch. Would
+> be nice to know if there are still some things to do for us (=3D Debian
+> kernel team) here.
+
+Yes, I've finally got around to upgrading the firmware.
+
+And today I had a time window, where I could reboot the cluster head
+node.
+After the reboot, the InfiniBand network works correctly:
+
+  $ uname -v
+  #1 SMP PREEMPT_DYNAMIC Debian 6.11.10-1 (2024-11-23)
+  $ ls -altrF /sys/class/infiniband_mad/
+  total 0
+  lrwxrwxrwx  1 root root    0 Dec  4 10:15 umad0 -> ../../devices/pci0000:=
+80/0000:80:01.1/0000:81:00.0/infiniband_mad/umad0/
+  lrwxrwxrwx  1 root root    0 Dec  4 10:15 umad1 -> ../../devices/pci0000:=
+80/0000:80:01.1/0000:81:00.1/infiniband_mad/umad1/
+  drwxr-xr-x  2 root root    0 Dec  4 10:17 ./
+  drwxr-xr-x 73 root root    0 Dec  4 10:17 ../
+  -r--r--r--  1 root root 4096 Dec  4 10:17 abi_version
+  lrwxrwxrwx  1 root root    0 Dec  4 18:08 issm1 -> ../../devices/pci0000:=
+80/0000:80:01.1/0000:81:00.1/infiniband_mad/issm1/
+  lrwxrwxrwx  1 root root    0 Dec  4 18:08 issm0 -> ../../devices/pci0000:=
+80/0000:80:01.1/0000:81:00.0/infiniband_mad/issm0/
+  # ethtool -i ibp129s0f0
+  driver: mlx5_core[ib_ipoib]
+  version: 6.11.10-amd64
+  firmware-version: 20.43.1014 (MT_0000000224)
+  expansion-rom-version:
+  bus-info: 0000:81:00.0
+  supports-statistics: yes
+  supports-test: yes
+  supports-eeprom-access: no
+  supports-register-dump: no
+  supports-priv-flags: yes
+  # ethtool -i ibp129s0f1
+  driver: mlx5_core[ib_ipoib]
+  version: 6.11.10-amd64
+  firmware-version: 20.43.1014 (MT_0000000224)
+  expansion-rom-version:
+  bus-info: 0000:81:00.1
+  supports-statistics: yes
+  supports-test: yes
+  supports-eeprom-access: no
+  supports-register-dump: no
+  supports-priv-flags: yes
+  $ ps aux | grep opens[m]
+  root        1150  0.0  0.0 1560776 3636 ?        Ssl  10:15   0:00 /usr/s=
+bin/opensm --guid 0x9c63c00300033240 --log_file /var/log/opensm.0x9c63c0030=
+0033240.log
+
+
+>=20
+> If everything is fine for you, I'd like to close this bug.
+
+I am closing the Debian bug report right now.
+Thanks to everyone who has been involved for the great and kind help!
+
+>=20
+> Best regards
+
+Have a nice evening.   :-)
+
+--=20
+ http://www.inventati.org/frx/
+ There's not a second to spare! To the laboratory!
+..................................................... Francesco Poli .
+ GnuPG key fpr =3D=3D CA01 1147 9CD2 EFDF FB82  3925 3E1C 27E1 1F69 BFFE
+
+--Signature=_Wed__4_Dec_2024_18_13_56_+0100_OXoMkKkJzsj06Qbl
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEygERR5zS79/7gjklPhwn4R9pv/4FAmdQjdQACgkQPhwn4R9p
+v/6AoA//TkOwnWjH5D4ks5SUi1DDiHU1IFfS/ix9o3TA2oWmP9/tQzIWV/ACfbbK
+5QBHtVb6lFSte9kIxSgc/mXP06PicFpsxOjByJ4Kwq8dlz9ksQqC/biF0h0PmKZt
+hRFVC0F69vDgUeUhREOQn6a3KscUv6pl9bEkUBmMjcXmdLkgPaFkMWt4jlopXhig
+w2U7vKhLFo+caw1WM3e4OJpF6iPXF4G6lyEOvXIo7zKohVwChVjH5rwUuIXmd0Q2
+ltvu8ZGcx0+wor5zoUORt1hYLXjOZ4jtJLAEgrvZNoa6eUGw1NPaNInwyjDo2hFS
+EidbgtJY3UFa3mytTbkQO4alfagC52CfjmxJfNC3dGqyBDHS5j2uXPB0V5NWbDWq
+lX7k1DcfBS9rJgNs+kBL5/aoU1KHWSCqdUbniomv3iba5thfmWpHF+mki5cJr/6+
+VIkARDEnLuk86nVm8dOVwm/jFLyerDXP6XzAdUjw4xPeBzib+dPlaD29r39YrvMf
+aRqSe8azvg7t+XFGpmfbXTnGgCUgv/YIACUtrs/ffif8ffTl9FC+8xMsgCH638J3
+nP7Sd1yVPzynZHshH1lGv+k7VSAZqGq2550hdAvmXs4pUPt/ow/3A2tBdNo8j00U
+GbZtEnbMp/i1nOZB/NOaTdmyT0Y5VEqqPmdkfL1KKASTSVK59Zw=
+=aoBA
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__4_Dec_2024_18_13_56_+0100_OXoMkKkJzsj06Qbl--
