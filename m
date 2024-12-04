@@ -1,21 +1,20 @@
 Received: from passt.top (passt.top [88.198.0.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830392391AF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83063171CD
 	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 22:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.198.0.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733350688; cv=none; b=YHNhUFC3viQIYmr0l+W7FHkfNBvdB5LULeOpWwn41G0r3VbxV3aroCVLVDXD7KogUcFt4MPB6jfOvOJmIZ+fwYSUCs0EHDfKw8cyhhKNTEfR+WzveKIxm7dT14S+WEqTWxdLd71/pH1pvUxPKt4fj+tyLlRqR5M87C7H3npNd3Y=
+	t=1733350688; cv=none; b=j3h25LEqLqqqj3HwklN43D0c7YmLBiXmOvndwcCqhppwRO3zJIIQlz7iCO4MWcs8oiZ2ms9k/HfXIOyS5zhtFE0EFAl1fZnPEL8gKQfscdfhfFm+Hk85MCFL5F6WA/iooQMhE3GU9HqvSXYYHbAiL/uFle3ANi4ctyTtgyHd3Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733350688; c=relaxed/simple;
-	bh=yn5DqhiG3Ge+L5dDqmDdpHasLiCtCkuWSl7fJ6ixU78=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9inCJgLV9xG9wxEi81aPh0bOCDfiqxJqZXX2R+fXcIp1rLDKx2PCsNvsMCzrZr0F0iXItFO9i+RAleBFpZg1Cwk8vWKujHqfw+Mu92cMMCFHuL3D2aIbqx4U3QfebS2qIMsyDRzQtGrKjMMub35iKm/W+tZ9eAVxEbNDY6KT1U=
+	bh=zcvbYn4KUK0Gg4vJfjt5PsCBsDpPY3OlhNA8CYr9Kfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C6Y12jTACLN7eMytb6X6BKTCF0Eh7OQMg+NWd9Lke9+HyfUtI0BhYAneX4Hop9y2zS1ndOjbfiUAIUyCXlb7nlZoXxrgkqlIJ0RA/2/Xtmn5ovtop/AwHPmztDXocUbDOwYikWN2wfIp8moRTppqN/swOVMOY7BaiP/JmyxUBxM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=passt.top; arc=none smtp.client-ip=88.198.0.164
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=passt.top
 Received: by passt.top (Postfix, from userid 1000)
-	id 252635A061D; Wed, 04 Dec 2024 23:12:54 +0100 (CET)
+	id 233355A061F; Wed, 04 Dec 2024 23:12:54 +0100 (CET)
 From: Stefano Brivio <sbrivio@redhat.com>
 To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 Cc: Eric Dumazet <edumazet@google.com>,
@@ -28,12 +27,10 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Cambda Zhu <cambda@linux.alibaba.com>,
 	Fred Chen <fred.cc@alibaba-inc.com>,
 	Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>
-Subject: [PATCH net-next 1/2] datagram: Rehash sockets only if local address changed for their family
-Date: Wed,  4 Dec 2024 23:12:53 +0100
-Message-ID: <20241204221254.3537932-2-sbrivio@redhat.com>
+Subject: [PATCH net-next 0/2] Fix race between datagram socket address change and rehash
+Date: Wed,  4 Dec 2024 23:12:52 +0100
+Message-ID: <20241204221254.3537932-1-sbrivio@redhat.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221254.3537932-1-sbrivio@redhat.com>
-References: <20241204221254.3537932-1-sbrivio@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,64 +39,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It makes no sense to rehash an IPv4 socket when we change
-sk_v6_rcv_saddr, or to rehash an IPv6 socket as inet_rcv_saddr is set:
-the secondary hash (including the local address) won't change, because
-ipv4_portaddr_hash() and ipv6_portaddr_hash() only take the address
-matching the socket family.
+Patch 2/2 fixes a race condition in the lookup of datagram sockets
+between address change (triggered by connect()) and rehashing. The
+issue occurs regardless of the type of hash, that is, it happens with
+updates to the secondary hash as well as to the newly introduced
+four-tuple hash.
 
-Currently, dual-stack AF_INET6 sockets (without IPV6_V6ONLY) are
-redundantly rehashed if connect() is issued on them with an IPv4
-address: __ip6_datagram_connect() calls __ip4_datagram_connect().
-This case can be reproduced with:
+Patch 1/2 is a small optimisation to simplify 2/2.
 
-  socat UDP6-LISTEN:1337,null-eof STDOUT & { sleep 1; : | socat STDIN UDP4:0:1337,shut-null; }
+This is essentially a rebase onto current net-next of the RFC I
+originally posted against 'net', before the 6.13 merge window,
+at:
 
-and, in general, the assumptions __ip4_datagram_connect() <-> AF_INET
-__ip6_datagram_connect() <-> AF_INET6 don't necessarily hold.
+  https://lore.kernel.org/netdev/20241114215414.3357873-1-sbrivio@redhat.com/
 
-This is a mere optimisation at the moment, but, in the next patch,
-we'll change the rehash operation into an operation that also sets the
-receive address, and we want this new operation to be called only with
-addresses corresponding to the socket family, for simplicity.
+with a couple of minor changes described in the single patch messages.
 
-v1:
-  - explain in which case sk_family isn't AF_INET, in
-    __ip4_datagram_connect() (Willem de Bruijn)
-  - rebase onto net-next
+The rebase is not trivial as four-tuple hashes were introduced
+meanwhile, with commits 1b29a730ef8b ("ipv6/udp: Add 4-tuple hash for
+connected socket"), 78c91ae2c6de ("ipv4/udp: Add 4-tuple hash for
+connected socket"), and their dependencies, but the race condition,
+described in detail in the commit message for 1/2, is exactly the same
+as before.
 
-Signed-off-by: Stefano Brivio <sbrivio@redhat.com>
----
- net/ipv4/datagram.c | 2 +-
- net/ipv6/datagram.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Stefano Brivio (2):
+  datagram: Rehash sockets only if local address changed for their
+    family
+  datagram, udp: Set local address and rehash socket atomically against
+    lookup
 
-diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
-index cc6d0bd7b0a9..d52333e921f3 100644
---- a/net/ipv4/datagram.c
-+++ b/net/ipv4/datagram.c
-@@ -65,7 +65,7 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
- 		inet->inet_saddr = fl4->saddr;	/* Update source address */
- 	if (!inet->inet_rcv_saddr) {
- 		inet->inet_rcv_saddr = fl4->saddr;
--		if (sk->sk_prot->rehash)
-+		if (sk->sk_prot->rehash && sk->sk_family == AF_INET)
- 			sk->sk_prot->rehash(sk);
- 	}
- 	inet->inet_daddr = fl4->daddr;
-diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
-index fff78496803d..5c28a11128c7 100644
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -211,7 +211,7 @@ int __ip6_datagram_connect(struct sock *sk, struct sockaddr *uaddr,
- 		    ipv6_mapped_addr_any(&sk->sk_v6_rcv_saddr)) {
- 			ipv6_addr_set_v4mapped(inet->inet_rcv_saddr,
- 					       &sk->sk_v6_rcv_saddr);
--			if (sk->sk_prot->rehash)
-+			if (sk->sk_prot->rehash && sk->sk_family == AF_INET6)
- 				sk->sk_prot->rehash(sk);
- 		}
- 
+ include/net/inet_hashtables.h | 13 ++++++
+ include/net/sock.h            |  2 +-
+ include/net/udp.h             |  3 +-
+ net/core/sock.c               | 12 ++++-
+ net/ipv4/datagram.c           |  7 +--
+ net/ipv4/inet_hashtables.c    | 13 ------
+ net/ipv4/udp.c                | 84 +++++++++++++++++++++++------------
+ net/ipv4/udp_impl.h           |  2 +-
+ net/ipv4/udplite.c            |  2 +-
+ net/ipv6/datagram.c           | 30 +++++++++----
+ net/ipv6/udp.c                | 31 +++++++------
+ net/ipv6/udp_impl.h           |  2 +-
+ net/ipv6/udplite.c            |  2 +-
+ 13 files changed, 130 insertions(+), 73 deletions(-)
+
 -- 
 2.40.1
 
