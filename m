@@ -1,452 +1,234 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FE11B0F3F
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 07:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86E61B2193
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 07:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733298527; cv=none; b=INcG3h9uzZQZBCuIP2Vg/O4SCBWnyDCWrCPHgcU4bh6AhLpSQSF6OZCltoIf1zy1IzCCc7xHfsB8QlkN+aYNw/X7mKDaeibw69Ctv5Nxb4e98UoGOrfPwbiBlfvmBbhH3P5MGjDuoybFzmPYaHbACm63YoFDDXH6DL18K6ORu14=
+	t=1733298529; cv=none; b=a4qau0wGM1OPdQe87WBnnUwpgwI9V3s6hTdaPk+HI/tu496LAlnB9/qQB4KrYGCEZW+vwdPvtD2uxx9PvNJzLvPZ/FvcKBI3uauyIt8LQNAlXXz2mutL56KDA/48AWPEoImjxnKfBSn+ecFJbjkvOvFvMFG2EKBhLonF2pGW+5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733298527; c=relaxed/simple;
-	bh=lIm1sfkgQdgswnNETY486ch/tTo3X6nN2DljFQj+Ohk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlP97n01sVDynkDZYoWY6zsz0o9jKWwTR2Koz1W1WEWfD6HMn+o6TfDw+1O1/F00CIyZTup3+GPWL1CY69m/XUPehV2c7X2X/nC9lSrnXDyklb/dB6fZlBR6miu6b3yoExaZ7eEYwKEKNM2Gk636wvOpk9WaMOb9M3vCowjqIAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fFmMzeKx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733298529; c=relaxed/simple;
+	bh=9qGDbkyOtwZ1d2Hg7oUG4eLq/pzedIIP3/HwVVA2Jwo=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=Bm+yCHZqKjCwEWwuI4Dd1MPg/A3r/0beLyTqgBXRSR/oS/ZTyhtEbKM8C1oC99aePGEhYntuExpc0vzE+o3bwyCj3eSbhKMOlgbsd1ifbKIqYsJkcmJRd876rdmHkzL+dx5OVsRXJKI1Wifj6Lw9sBpMCOugGSZ/7WB7zQvy/YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=KcI+1hsT; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fFmMzeKx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733298524;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/7QeiBm2vEJMz1lK39zYjm8kRRwNv4rjIa8Oiam3+ww=;
-	b=fFmMzeKxUpMFk5aW20lP1GNd+UKNz6H0OC8tPmQfHN8f+MEwYBbZb0m3oWr+Xj7qap2dLA
-	dfZAQBXt1nMYM02PHb1DGFz1HFCw3K8ZLL3n7qTGEfScqJT0ttjqCzuxEss5TrWQMnzj00
-	Skvx4Y+F0Th1RYW9AQfLKeG3aeTJ268=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-pfcyFQooMdiMR1FUr90ZyQ-1; Wed,
- 04 Dec 2024 02:48:42 -0500
-X-MC-Unique: pfcyFQooMdiMR1FUr90ZyQ-1
-X-Mimecast-MFC-AGG-ID: pfcyFQooMdiMR1FUr90ZyQ
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 75E6B1956088;
-	Wed,  4 Dec 2024 07:48:41 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.48])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E9DAD19560A2;
-	Wed,  4 Dec 2024 07:48:38 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 20/39] rxrpc: Replace call->acks_first_seq with tracking of the hard ACK point
-Date: Wed,  4 Dec 2024 07:46:48 +0000
-Message-ID: <20241204074710.990092-21-dhowells@redhat.com>
-In-Reply-To: <20241204074710.990092-1-dhowells@redhat.com>
-References: <20241204074710.990092-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="KcI+1hsT"
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20241204074844epoutp0368ff9f063e848846b7a956c0747dc0e1~N6dMpYZG20889808898epoutp03o
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 07:48:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20241204074844epoutp0368ff9f063e848846b7a956c0747dc0e1~N6dMpYZG20889808898epoutp03o
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1733298524;
+	bh=9qGDbkyOtwZ1d2Hg7oUG4eLq/pzedIIP3/HwVVA2Jwo=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=KcI+1hsTJSr3R83dsKKqTJtYFMxXNgEFpUCNehJc0FDUnvXhxhmr/G3u0dxAcpUuH
+	 j1a765vDuarCxVm+hW+sTjAECZEE/KR5L+OX+UIcIS+O8nY832DNyxKd//FiW3Hg44
+	 2ElVeP+yZjiue2TJTC2qDucPd2UhxZrUfiTd9trk=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+	epcas2p3.samsung.com (KnoxPortal) with ESMTP id
+	20241204074844epcas2p3d34f8747cb6534ca666e578c2bf42de1~N6dMOn21U1290012900epcas2p3Z;
+	Wed,  4 Dec 2024 07:48:44 +0000 (GMT)
+Received: from epsmgec2p1.samsung.com (unknown [182.195.36.69]) by
+	epsnrtp2.localdomain (Postfix) with ESMTP id 4Y38lv4VR0z4x9Px; Wed,  4 Dec
+	2024 07:48:43 +0000 (GMT)
+Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
+	epsmgec2p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	B7.89.22938.B5900576; Wed,  4 Dec 2024 16:48:43 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas2p3.samsung.com (KnoxPortal) with ESMTPA id
+	20241204074843epcas2p35b4941872b33f126fd98997850acc35f~N6dLFPOLS1290012900epcas2p3W;
+	Wed,  4 Dec 2024 07:48:43 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241204074843epsmtrp24f7ab4772ee78b80c81aeda591b02090~N6dLEMRDY0975109751epsmtrp2F;
+	Wed,  4 Dec 2024 07:48:43 +0000 (GMT)
+X-AuditID: b6c32a43-0b1e27000000599a-b2-6750095bbad1
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	4B.6B.33707.A5900576; Wed,  4 Dec 2024 16:48:42 +0900 (KST)
+Received: from KORCO117327 (unknown [10.229.60.106]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20241204074842epsmtip2b319ab3f827b6e389200285cb6dc6dc0~N6dK1cYcm1580915809epsmtip2L;
+	Wed,  4 Dec 2024 07:48:42 +0000 (GMT)
+From: "Dujeong.lee" <dujeong.lee@samsung.com>
+To: "'Eric Dumazet'" <edumazet@google.com>, "'Youngmin Nam'"
+	<youngmin.nam@samsung.com>
+Cc: "'Jakub Kicinski'" <kuba@kernel.org>, "'Neal Cardwell'"
+	<ncardwell@google.com>, <davem@davemloft.net>, <dsahern@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <guo88.liu@samsung.com>,
+	<yiwang.cai@samsung.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <joonki.min@samsung.com>,
+	<hajun.sung@samsung.com>, <d7271.choe@samsung.com>, <sw.ju@samsung.com>
+In-Reply-To: <CANn89iKms_9EX+wArf1FK7Cy3-Cr_ryX+MJ2YC8yt1xmvpY=Uw@mail.gmail.com>
+Subject: RE: [PATCH] tcp: check socket state before calling WARN_ON
+Date: Wed, 4 Dec 2024 16:48:42 +0900
+Message-ID: <009e01db4620$f08f42e0$d1adc8a0$@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQL4yZmsudMRkH1MkhPtbuC345sC9QKRMuYdAUIxOFgBsMn9rAIf5xWWAZwDXWsBNR7tnbBHBNdQ
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrMJsWRmVeSWpSXmKPExsWy7bCmuW40Z0C6wdJVShbX9k5kt5hzvoXF
+	Yt2uViaLp8cesVtMnsJo0bT/ErPFo/4TbBZXd79jtriwrY/V4vKuOWwWHXf2slgcWyBm8e30
+	G0aL1sef2S0+Hm9it1h84BO7g4DHlpU3mTwWbCr12LSqk83j/b6rbB59W1YxenzeJBfAFpVt
+	k5GamJJapJCal5yfkpmXbqvkHRzvHG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0tZJCWWJO
+	KVAoILG4WEnfzqYov7QkVSEjv7jEVim1ICWnwLxArzgxt7g0L10vL7XEytDAwMgUqDAhO+Pf
+	4jb2gn+2FR9WT2ZvYPxi3cXIySEhYCIxteEfaxcjF4eQwA5GifYjh9ghnE+MEl83X2AFqQJz
+	zh2s7GLkAOuY/DsAomYno8Tc/Q1Q3S8ZJTYc3M4I0sAmoCvx99lMdhBbRCBS4uzDB4wgRcwC
+	TcwS/96fYQNJcAoESvyauhCsSFjAWWLi3plMIDaLgIrE/EX9bCDbeAUsJZo3u4GEeQUEJU7O
+	fMICYjMLaEssW/iaGeIFBYmfT5exQuyKkvjy5jQzRI2IxOzONqiaGxwSd35KQjzgIjHrnTtE
+	WFji1fEt7BC2lMTnd3vZIOxiie/Xj4CdLCHQwCjx4dFrqISxRPOyBywgc5gFNCXW79KHGKks
+	ceQW1GV8Eh2H/7JDhHklOtqEIBpVJbYu+Ak1RFpi74/XrBMYlWYh+WsWkr9mIbl/FsKuBYws
+	qxjFUguKc9NTk40KDOExnZyfu4kRnJq1nHcwXpn/T+8QIxMH4yFGCQ5mJRHewCX+6UK8KYmV
+	ValF+fFFpTmpxYcYTYEBPZFZSjQ5H5gd8kriDU0sDUzMzAzNjUwNzJXEee+1zk0REkhPLEnN
+	Tk0tSC2C6WPi4JRqYNrZ18YROW+d+a8bFdVLrDgucTMtZ79zujP8dvXyKRvetUY/Xt8q9I3V
+	N+31QoegF4uqKk9viOhmFOx5pGG/UzLylLSlpXwh9yvjN2JXvpjO5fqnvnf2U/s9pZtsb5T9
+	fhXQ0v5T69k788US3jH+LBYBh+Z0fN4WLaT7wmaHSq80U8fntRsSYmWF7/nKvjU/0zPpz63N
+	e5wnl97fyVTCnif9Z9bjytI7gv1G7xYcWjJh7qf7G/fa2v2c1m5x6t3tD/Jxvy0rYoVPvFlw
+	t6e941nBo1AB6zoetbsvA6I9/D68Nz/7X+DQ8rrKcx7p8fdfGz3OmblUlkmThUO+5OHrupen
+	D/clc6r+/p8cqaF6e60SS3FGoqEWc1FxIgDDyqkbVgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDIsWRmVeSWpSXmKPExsWy7bCSvG4UZ0C6weU+K4treyeyW8w538Ji
+	sW5XK5PF02OP2C0mT2G0aNp/idniUf8JNouru98xW1zY1sdqcXnXHDaLjjt7WSyOLRCz+Hb6
+	DaNF6+PP7BYfjzexWyw+8IndQcBjy8qbTB4LNpV6bFrVyebxft9VNo++LasYPT5vkgtgi+Ky
+	SUnNySxLLdK3S+DK2NhtULBRt2JOWw9TA+NK1S5GDg4JAROJyb8Duhi5OIQEtjNKnJr5irmL
+	kRMoLi2x9sIbdghbWOJ+yxFWEFtI4DmjRNNRKRCbTUBX4u+zmWA1IgKREteWnWIBGcQsMIlZ
+	YsK5Y4wQU+cyS3xfsg+silMgUOLX1IVgtrCAs8TEvTOZQGwWARWJ+Yv62UAu4hWwlGje7AYS
+	5hUQlDg58wkLiM0soC3R+7CVEcZetvA11KEKEj+fLmOFOCJK4sub08wQNSISszvbmCcwCs9C
+	MmoWklGzkIyahaRlASPLKkbR1ILi3PTc5AJDveLE3OLSvHS95PzcTYzgCNUK2sG4bP1fvUOM
+	TByMhxglOJiVRHgDl/inC/GmJFZWpRblxxeV5qQWH2KU5mBREudVzulMERJITyxJzU5NLUgt
+	gskycXBKNTC5flis80xl0a/iX/evd7ou/hko8WHn7H8Xd+htkf/+3d1mre7V1+KrDx5azcQv
+	fOWzb7Z1d/KDVQoihz88DGvcqTxHZJdyaf0s55T1CSnSIdGZzQG++w6+PC+svCAm+KKw5PVP
+	0foRUj8zmlY7KldYSO4zWOz85HD02gVpr33lnmrsn740Ku5RtZ//xfmqORMFfD9kmlTf/OzU
+	Vz7Vc5tEnEr3pohys8jLM/Zb5+7csGP/vODK8HvPePTYLiS+/2Y36anwuaX1mczl2kWnnE4t
+	XONS0fHy2v2SarPJ+0RnZbIEHHdr6eaaPC/ylf5GzQvRzPZLg/pCwys9thz6ZlMupvXC7OXN
+	tdy6Z1T769qVWIozEg21mIuKEwGj1NgDPwMAAA==
+X-CMS-MailID: 20241204074843epcas2p35b4941872b33f126fd98997850acc35f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241203081005epcas2p247b3d05bc767b1a50ba85c4433657295
+References: <CGME20241203081005epcas2p247b3d05bc767b1a50ba85c4433657295@epcas2p2.samsung.com>
+	<20241203081247.1533534-1-youngmin.nam@samsung.com>
+	<CANn89iK+7CKO31=3EvNo6-raUzyibwRRN8HkNXeqzuP9q8k_tA@mail.gmail.com>
+	<CADVnQynUspJL4e3UnZTKps9WmgnE-0ngQnQmn=8gjSmyg4fQ5A@mail.gmail.com>
+	<20241203181839.7d0ed41c@kernel.org> <Z0/O1ivIwiVVNRf0@perf>
+	<CANn89iKms_9EX+wArf1FK7Cy3-Cr_ryX+MJ2YC8yt1xmvpY=Uw@mail.gmail.com>
 
-Replace the call->acks_first_seq variable (which holds ack.firstPacket from
-the latest ACK packet and indicates the sequence number of the first ack
-slot in the SACK table) with call->acks_hard_ack which will hold the
-highest sequence hard ACK'd.  This is 1 less than call->acks_first_seq, but
-it fits in the same schema as the other tracking variables which hold the
-sequence of a packet, not one past it.
-
-This will fix the rxrpc_congest tracepoint's calculation of SACK window
-size which shows one fewer than it should - and will occasionally go to -1.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
----
- include/trace/events/rxrpc.h | 68 +++++++++++++++++-------------------
- net/rxrpc/ar-internal.h      |  2 +-
- net/rxrpc/input.c            | 56 ++++++++++++++---------------
- 3 files changed, 59 insertions(+), 67 deletions(-)
-
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 0f253287de00..91108e0de3af 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -893,7 +893,7 @@ TRACE_EVENT(rxrpc_txqueue,
- 		    __field(unsigned int,		call)
- 		    __field(enum rxrpc_txqueue_trace,	why)
- 		    __field(rxrpc_seq_t,		tx_bottom)
--		    __field(rxrpc_seq_t,		acks_first_seq)
-+		    __field(rxrpc_seq_t,		acks_hard_ack)
- 		    __field(rxrpc_seq_t,		tx_top)
- 		    __field(rxrpc_seq_t,		send_top)
- 		    __field(int,			tx_winsize)
-@@ -903,19 +903,19 @@ TRACE_EVENT(rxrpc_txqueue,
- 		    __entry->call = call->debug_id;
- 		    __entry->why = why;
- 		    __entry->tx_bottom = call->tx_bottom;
--		    __entry->acks_first_seq = call->acks_first_seq;
-+		    __entry->acks_hard_ack = call->acks_hard_ack;
- 		    __entry->tx_top = call->tx_top;
- 		    __entry->send_top = call->send_top;
- 		    __entry->tx_winsize = call->tx_winsize;
- 			   ),
- 
--	    TP_printk("c=%08x %s f=%08x h=%08x n=%u/%u/%u/%u",
-+	    TP_printk("c=%08x %s b=%08x h=%08x n=%u/%u/%u/%u",
- 		      __entry->call,
- 		      __print_symbolic(__entry->why, rxrpc_txqueue_traces),
- 		      __entry->tx_bottom,
--		      __entry->acks_first_seq,
--		      __entry->acks_first_seq - __entry->tx_bottom,
--		      __entry->tx_top - __entry->acks_first_seq,
-+		      __entry->acks_hard_ack,
-+		      __entry->acks_hard_ack - __entry->tx_bottom,
-+		      __entry->tx_top - __entry->acks_hard_ack,
- 		      __entry->send_top - __entry->tx_top,
- 		      __entry->tx_winsize)
- 	    );
-@@ -1015,11 +1015,9 @@ TRACE_EVENT(rxrpc_rx_data,
- 	    );
- 
- TRACE_EVENT(rxrpc_rx_ack,
--	    TP_PROTO(struct rxrpc_call *call,
--		     rxrpc_serial_t serial, rxrpc_serial_t ack_serial,
--		     rxrpc_seq_t first, rxrpc_seq_t prev, u8 reason, u8 n_acks),
-+	    TP_PROTO(struct rxrpc_call *call, struct rxrpc_skb_priv *sp),
- 
--	    TP_ARGS(call, serial, ack_serial, first, prev, reason, n_acks),
-+	    TP_ARGS(call, sp),
- 
- 	    TP_STRUCT__entry(
- 		    __field(unsigned int,	call)
-@@ -1032,13 +1030,13 @@ TRACE_EVENT(rxrpc_rx_ack,
- 			     ),
- 
- 	    TP_fast_assign(
--		    __entry->call = call->debug_id;
--		    __entry->serial = serial;
--		    __entry->ack_serial = ack_serial;
--		    __entry->first = first;
--		    __entry->prev = prev;
--		    __entry->reason = reason;
--		    __entry->n_acks = n_acks;
-+		    __entry->call	= call->debug_id;
-+		    __entry->serial	= sp->hdr.serial;
-+		    __entry->ack_serial = sp->ack.acked_serial;
-+		    __entry->first	= sp->ack.first_ack;
-+		    __entry->prev	= sp->ack.prev_ack;
-+		    __entry->reason	= sp->ack.reason;
-+		    __entry->n_acks	= sp->ack.nr_acks;
- 			   ),
- 
- 	    TP_printk("c=%08x %08x %s r=%08x f=%08x p=%08x n=%u",
-@@ -1707,7 +1705,7 @@ TRACE_EVENT(rxrpc_congest,
- 	    TP_fast_assign(
- 		    __entry->call	= call->debug_id;
- 		    __entry->change	= change;
--		    __entry->hard_ack	= call->acks_first_seq;
-+		    __entry->hard_ack	= call->acks_hard_ack;
- 		    __entry->top	= call->tx_top;
- 		    __entry->lowest_nak	= call->acks_lowest_nak;
- 		    __entry->ack_serial	= ack_serial;
-@@ -1754,7 +1752,7 @@ TRACE_EVENT(rxrpc_reset_cwnd,
- 		    __entry->mode	= call->cong_mode;
- 		    __entry->cwnd	= call->cong_cwnd;
- 		    __entry->extra	= call->cong_extra;
--		    __entry->hard_ack	= call->acks_first_seq;
-+		    __entry->hard_ack	= call->acks_hard_ack;
- 		    __entry->prepared	= call->send_top - call->tx_bottom;
- 		    __entry->since_last_tx = ktime_sub(now, call->tx_last_sent);
- 		    __entry->has_data	= call->tx_bottom != call->tx_top;
-@@ -1855,7 +1853,7 @@ TRACE_EVENT(rxrpc_resend,
- 	    TP_fast_assign(
- 		    struct rxrpc_skb_priv *sp = ack ? rxrpc_skb(ack) : NULL;
- 		    __entry->call = call->debug_id;
--		    __entry->seq = call->acks_first_seq;
-+		    __entry->seq = call->acks_hard_ack;
- 		    __entry->transmitted = call->tx_transmitted;
- 		    __entry->ack_serial = sp ? sp->hdr.serial : 0;
- 			   ),
-@@ -1944,7 +1942,7 @@ TRACE_EVENT(rxrpc_call_reset,
- 		    __entry->call_id = call->call_id;
- 		    __entry->call_serial = call->rx_serial;
- 		    __entry->conn_serial = call->conn->hi_serial;
--		    __entry->tx_seq = call->acks_first_seq;
-+		    __entry->tx_seq = call->acks_hard_ack;
- 		    __entry->rx_seq = call->rx_highest_seq;
- 			   ),
- 
-@@ -1976,38 +1974,36 @@ TRACE_EVENT(rxrpc_notify_socket,
- 	    );
- 
- TRACE_EVENT(rxrpc_rx_discard_ack,
--	    TP_PROTO(unsigned int debug_id, rxrpc_serial_t serial,
--		     rxrpc_seq_t first_soft_ack, rxrpc_seq_t call_ackr_first,
--		     rxrpc_seq_t prev_pkt, rxrpc_seq_t call_ackr_prev),
-+	    TP_PROTO(struct rxrpc_call *call, rxrpc_serial_t serial,
-+		     rxrpc_seq_t hard_ack, rxrpc_seq_t prev_pkt),
- 
--	    TP_ARGS(debug_id, serial, first_soft_ack, call_ackr_first,
--		    prev_pkt, call_ackr_prev),
-+	    TP_ARGS(call, serial, hard_ack, prev_pkt),
- 
- 	    TP_STRUCT__entry(
- 		    __field(unsigned int,	debug_id)
- 		    __field(rxrpc_serial_t,	serial)
--		    __field(rxrpc_seq_t,	first_soft_ack)
--		    __field(rxrpc_seq_t,	call_ackr_first)
-+		    __field(rxrpc_seq_t,	hard_ack)
- 		    __field(rxrpc_seq_t,	prev_pkt)
--		    __field(rxrpc_seq_t,	call_ackr_prev)
-+		    __field(rxrpc_seq_t,	acks_hard_ack)
-+		    __field(rxrpc_seq_t,	acks_prev_seq)
- 			     ),
- 
- 	    TP_fast_assign(
--		    __entry->debug_id		= debug_id;
-+		    __entry->debug_id		= call->debug_id;
- 		    __entry->serial		= serial;
--		    __entry->first_soft_ack	= first_soft_ack;
--		    __entry->call_ackr_first	= call_ackr_first;
-+		    __entry->hard_ack		= hard_ack;
- 		    __entry->prev_pkt		= prev_pkt;
--		    __entry->call_ackr_prev	= call_ackr_prev;
-+		    __entry->acks_hard_ack	= call->acks_hard_ack;
-+		    __entry->acks_prev_seq	= call->acks_prev_seq;
- 			   ),
- 
- 	    TP_printk("c=%08x r=%08x %08x<%08x %08x<%08x",
- 		      __entry->debug_id,
- 		      __entry->serial,
--		      __entry->first_soft_ack,
--		      __entry->call_ackr_first,
-+		      __entry->hard_ack,
-+		      __entry->acks_hard_ack,
- 		      __entry->prev_pkt,
--		      __entry->call_ackr_prev)
-+		      __entry->acks_prev_seq)
- 	    );
- 
- TRACE_EVENT(rxrpc_req_ack,
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 6683043cee3f..3e57cef7385f 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -757,7 +757,7 @@ struct rxrpc_call {
- 
- 	/* Transmission-phase ACK management (ACKs we've received). */
- 	ktime_t			acks_latest_ts;	/* Timestamp of latest ACK received */
--	rxrpc_seq_t		acks_first_seq;	/* first sequence number received */
-+	rxrpc_seq_t		acks_hard_ack;	/* Highest sequence hard acked */
- 	rxrpc_seq_t		acks_prev_seq;	/* Highest previousPacket received */
- 	rxrpc_seq_t		acks_lowest_nak; /* Lowest NACK in the buffer (or ==tx_hard_ack) */
- 	rxrpc_serial_t		acks_highest_serial; /* Highest serial number ACK'd */
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index afb87a3322da..b89fd0dee324 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -782,12 +782,12 @@ static void rxrpc_input_ack_trailer(struct rxrpc_call *call, struct sk_buff *skb
-  */
- static rxrpc_seq_t rxrpc_input_check_prev_ack(struct rxrpc_call *call,
- 					      struct rxrpc_ack_summary *summary,
--					      rxrpc_seq_t seq)
-+					      rxrpc_seq_t hard_ack)
- {
- 	struct sk_buff *skb = call->cong_last_nack;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	unsigned int i, new_acks = 0, retained_nacks = 0;
--	rxrpc_seq_t old_seq = sp->ack.first_ack;
-+	rxrpc_seq_t seq = hard_ack + 1, old_seq = sp->ack.first_ack;
- 	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
- 
- 	if (after_eq(seq, old_seq + sp->ack.nr_acks)) {
-@@ -810,7 +810,7 @@ static rxrpc_seq_t rxrpc_input_check_prev_ack(struct rxrpc_call *call,
- 		summary->nr_retained_nacks = retained_nacks;
- 	}
- 
--	return old_seq + sp->ack.nr_acks;
-+	return old_seq + sp->ack.nr_acks - 1;
- }
- 
- /*
-@@ -825,22 +825,23 @@ static rxrpc_seq_t rxrpc_input_check_prev_ack(struct rxrpc_call *call,
- static void rxrpc_input_soft_acks(struct rxrpc_call *call,
- 				  struct rxrpc_ack_summary *summary,
- 				  struct sk_buff *skb,
--				  rxrpc_seq_t seq,
- 				  rxrpc_seq_t since)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	unsigned int i, old_nacks = 0;
--	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
-+	rxrpc_seq_t lowest_nak = call->acks_hard_ack + sp->ack.nr_acks + 1;
-+	rxrpc_seq_t seq = call->acks_hard_ack;
- 	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
- 
- 	for (i = 0; i < sp->ack.nr_acks; i++) {
-+		seq++;
- 		if (acks[i] == RXRPC_ACK_TYPE_ACK) {
- 			summary->nr_acks++;
--			if (after_eq(seq, since))
-+			if (after(seq, since))
- 				summary->nr_new_acks++;
- 		} else {
- 			summary->saw_nacks = true;
--			if (before(seq, since)) {
-+			if (before_eq(seq, since)) {
- 				/* Overlap with previous ACK */
- 				old_nacks++;
- 			} else {
-@@ -851,7 +852,6 @@ static void rxrpc_input_soft_acks(struct rxrpc_call *call,
- 			if (before(seq, lowest_nak))
- 				lowest_nak = seq;
- 		}
--		seq++;
- 	}
- 
- 	if (lowest_nak != call->acks_lowest_nak) {
-@@ -874,21 +874,21 @@ static void rxrpc_input_soft_acks(struct rxrpc_call *call,
-  * with respect to the ack state conveyed by preceding ACKs.
-  */
- static bool rxrpc_is_ack_valid(struct rxrpc_call *call,
--			       rxrpc_seq_t first_pkt, rxrpc_seq_t prev_pkt)
-+			       rxrpc_seq_t hard_ack, rxrpc_seq_t prev_pkt)
- {
--	rxrpc_seq_t base = READ_ONCE(call->acks_first_seq);
-+	rxrpc_seq_t base = READ_ONCE(call->acks_hard_ack);
- 
--	if (after(first_pkt, base))
-+	if (after(hard_ack, base))
- 		return true; /* The window advanced */
- 
--	if (before(first_pkt, base))
-+	if (before(hard_ack, base))
- 		return false; /* firstPacket regressed */
- 
- 	if (after_eq(prev_pkt, call->acks_prev_seq))
- 		return true; /* previousPacket hasn't regressed. */
- 
- 	/* Some rx implementations put a serial number in previousPacket. */
--	if (after_eq(prev_pkt, base + call->tx_winsize))
-+	if (after(prev_pkt, base + call->tx_winsize))
- 		return false;
- 	return true;
- }
-@@ -906,8 +906,8 @@ static bool rxrpc_is_ack_valid(struct rxrpc_call *call,
- static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- {
- 	struct rxrpc_ack_summary summary = { 0 };
--	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_acktrailer trailer;
-+	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	rxrpc_serial_t ack_serial, acked_serial;
- 	rxrpc_seq_t first_soft_ack, hard_ack, prev_pkt, since;
- 	int nr_acks, offset, ioffset;
-@@ -925,9 +925,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	summary.ack_reason = (sp->ack.reason < RXRPC_ACK__INVALID ?
- 			      sp->ack.reason : RXRPC_ACK__INVALID);
- 
--	trace_rxrpc_rx_ack(call, ack_serial, acked_serial,
--			   first_soft_ack, prev_pkt,
--			   summary.ack_reason, nr_acks);
-+	trace_rxrpc_rx_ack(call, sp);
- 	rxrpc_inc_stat(call->rxnet, stat_rx_acks[summary.ack_reason]);
- 
- 	if (acked_serial != 0) {
-@@ -952,7 +950,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	 * lost the call because it switched to a different peer.
- 	 */
- 	if (unlikely(summary.ack_reason == RXRPC_ACK_EXCEEDS_WINDOW) &&
--	    first_soft_ack == 1 &&
-+	    hard_ack == 0 &&
- 	    prev_pkt == 0 &&
- 	    rxrpc_is_client_call(call)) {
- 		rxrpc_set_call_completion(call, RXRPC_CALL_REMOTELY_ABORTED,
-@@ -965,7 +963,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	 * if we still have it buffered to the beginning.
- 	 */
- 	if (unlikely(summary.ack_reason == RXRPC_ACK_OUT_OF_SEQUENCE) &&
--	    first_soft_ack == 1 &&
-+	    hard_ack == 0 &&
- 	    prev_pkt == 0 &&
- 	    call->tx_bottom == 0 &&
- 	    rxrpc_is_client_call(call)) {
-@@ -975,10 +973,8 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	}
- 
- 	/* Discard any out-of-order or duplicate ACKs (outside lock). */
--	if (!rxrpc_is_ack_valid(call, first_soft_ack, prev_pkt)) {
--		trace_rxrpc_rx_discard_ack(call->debug_id, ack_serial,
--					   first_soft_ack, call->acks_first_seq,
--					   prev_pkt, call->acks_prev_seq);
-+	if (!rxrpc_is_ack_valid(call, hard_ack, prev_pkt)) {
-+		trace_rxrpc_rx_discard_ack(call, ack_serial, hard_ack, prev_pkt);
- 		goto send_response;
- 	}
- 
-@@ -992,17 +988,17 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 		skb_condense(skb);
- 
- 	if (call->cong_last_nack) {
--		since = rxrpc_input_check_prev_ack(call, &summary, first_soft_ack);
-+		since = rxrpc_input_check_prev_ack(call, &summary, hard_ack);
- 		rxrpc_free_skb(call->cong_last_nack, rxrpc_skb_put_last_nack);
- 		call->cong_last_nack = NULL;
- 	} else {
--		summary.nr_new_acks = first_soft_ack - call->acks_first_seq;
--		call->acks_lowest_nak = first_soft_ack + nr_acks;
--		since = first_soft_ack;
-+		summary.nr_new_acks = hard_ack - call->acks_hard_ack;
-+		call->acks_lowest_nak = hard_ack + nr_acks;
-+		since = hard_ack;
- 	}
- 
- 	call->acks_latest_ts = skb->tstamp;
--	call->acks_first_seq = first_soft_ack;
-+	call->acks_hard_ack = hard_ack;
- 	call->acks_prev_seq = prev_pkt;
- 
- 	switch (summary.ack_reason) {
-@@ -1018,7 +1014,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	if (trailer.maxMTU)
- 		rxrpc_input_ack_trailer(call, skb, &trailer);
- 
--	if (first_soft_ack == 0)
-+	if (hard_ack + 1 == 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_zero);
- 
- 	/* Ignore ACKs unless we are or have just been transmitting. */
-@@ -1048,7 +1044,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	if (nr_acks > 0) {
- 		if (offset > (int)skb->len - nr_acks)
- 			return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_short_sack);
--		rxrpc_input_soft_acks(call, &summary, skb, first_soft_ack, since);
-+		rxrpc_input_soft_acks(call, &summary, skb, since);
- 		rxrpc_get_skb(skb, rxrpc_skb_get_last_nack);
- 		call->cong_last_nack = skb;
- 	}
-
+On Wed, Dec 4, 2024 at 4:14 PM Eric Dumazet wrote:
+> To: Youngmin Nam <youngmin.nam=40samsung.com>
+> Cc: Jakub Kicinski <kuba=40kernel.org>; Neal Cardwell <ncardwell=40google=
+.com>;
+> davem=40davemloft.net; dsahern=40kernel.org; pabeni=40redhat.com;
+> horms=40kernel.org; dujeong.lee=40samsung.com; guo88.liu=40samsung.com;
+> yiwang.cai=40samsung.com; netdev=40vger.kernel.org; linux-
+> kernel=40vger.kernel.org; joonki.min=40samsung.com; hajun.sung=40samsung.=
+com;
+> d7271.choe=40samsung.com; sw.ju=40samsung.com
+> Subject: Re: =5BPATCH=5D tcp: check socket state before calling WARN_ON
+>=20
+> On Wed, Dec 4, 2024 at 4:35=E2=80=AFAM=20Youngmin=20Nam=20<youngmin.nam=
+=40samsung.com>=0D=0A>=20wrote:=0D=0A>=20>=0D=0A>=20>=20On=20Tue,=20Dec=200=
+3,=202024=20at=2006:18:39PM=20-0800,=20Jakub=20Kicinski=20wrote:=0D=0A>=20>=
+=20>=20On=20Tue,=203=20Dec=202024=2010:34:46=20-0500=20Neal=20Cardwell=20wr=
+ote:=0D=0A>=20>=20>=20>=20>=20I=20have=20not=20seen=20these=20warnings=20fi=
+ring.=20Neal,=20have=20you=20seen=20this=20in=0D=0A>=20the=20past=20?=0D=0A=
+>=20>=20>=20>=0D=0A>=20>=20>=20>=20I=20can't=20recall=20seeing=20these=20wa=
+rnings=20over=20the=20past=205=20years=20or=20so,=0D=0A>=20>=20>=20>=20and=
+=20(from=20checking=20our=20monitoring)=20they=20don't=20seem=20to=20be=20f=
+iring=20in=0D=0A>=20>=20>=20>=20our=20fleet=20recently.=0D=0A>=20>=20>=0D=
+=0A>=20>=20>=20FWIW=20I=20see=20this=20at=20Meta=20on=205.12=20kernels,=20b=
+ut=20nothing=20since.=0D=0A>=20>=20>=20Could=20be=20that=20one=20of=20our=
+=20workloads=20is=20pinned=20to=205.12.=0D=0A>=20>=20>=20Youngmin,=20what's=
+=20the=20newest=20kernel=20you=20can=20repro=20this=20on?=0D=0A>=20>=20>=0D=
+=0A>=20>=20Hi=20Jakub.=0D=0A>=20>=20Thank=20you=20for=20taking=20an=20inter=
+est=20in=20this=20issue.=0D=0A>=20>=0D=0A>=20>=20We've=20seen=20this=20issu=
+e=20since=205.15=20kernel.=0D=0A>=20>=20Now,=20we=20can=20see=20this=20on=
+=206.6=20kernel=20which=20is=20the=20newest=20kernel=20we=20are=0D=0A>=20ru=
+nning.=0D=0A>=20=0D=0A>=20The=20fact=20that=20we=20are=20processing=20ACK=
+=20packets=20after=20the=20write=20queue=20has=20been=0D=0A>=20purged=20wou=
+ld=20be=20a=20serious=20bug.=0D=0A>=20=0D=0A>=20Thus=20the=20WARN()=20makes=
+=20sense=20to=20us.=0D=0A>=20=0D=0A>=20It=20would=20be=20easy=20to=20build=
+=20a=20packetdrill=20test.=20Please=20do=20so,=20then=20we=20can=0D=0A>=20f=
+ix=20the=20root=20cause.=0D=0A>=20=0D=0A>=20Thank=20you=20=21=0D=0A=0D=0A=
+=0D=0APlease=20let=20me=20share=20some=20more=20details=20and=20clarificati=
+ons=20on=20the=20issue=20from=20ramdump=20snapshot=20locally=20secured.=0D=
+=0A=0D=0A1)=20This=20issue=20has=20been=20reported=20from=20Android-T=20lin=
+ux=20kernel=20when=20we=20enabled=20panic_on_warn=20for=20the=20first=20tim=
+e.=0D=0AReproduction=20rate=20is=20not=20high=20and=20can=20be=20seen=20in=
+=20any=20test=20cases=20with=20public=20internet=20connection.=0D=0A=0D=0A2=
+)=20Analysis=20from=20ramdump=20(which=20is=20not=20available=20at=20the=20=
+moment).=0D=0A2-A)=20From=20ramdump,=20I=20was=20able=20to=20find=20below=
+=20values.=0D=0Atp->packets_out=20=3D=200=0D=0Atp->retrans_out=20=3D=201=0D=
+=0Atp->max_packets_out=20=3D=201=0D=0Atp->max_packets_Seq=20=3D=20157583035=
+8=0D=0Atp->snd_ssthresh=20=3D=205=0D=0Atp->snd_cwnd=20=3D=201=0D=0Atp->prio=
+r_cwnd=20=3D=2010=0D=0Atp->wite_seq=20=3D=201575830359=0D=0Atp->pushed_seq=
+=20=3D=201575830358=0D=0Atp->lost_out=20=3D=201=0D=0Atp->sacked_out=20=3D=
+=200=0D=0A=0D=0A2-B)=20The=20last=20Tx=20packet=20from=20the=20device=20is=
+=20(Time:=2017371.562934)=0D=0AHex:=0D=0A4500005b95a3400040063e34c0a848188e=
+facf0a888a01bb5ded432f5ad8ab29801800495b5800000101080a3a52197fef299d9017030=
+30022f3589123b0523bdd07be137a98ca9b5d3475332d4382c7b420571e6d437a07ba7787=
+=0D=0A=0D=0AInternet=20Protocol=20Version=204=0D=0A0100=20....=20=3D=20Vers=
+ion:=204=0D=0A....=200101=20=3D=20Header=20Length:=2020=20bytes=20(5)=0D=0A=
+Differentiated=20Services=20Field:=200x00=20(DSCP:=20CS0,=20ECN:=20Not-ECT)=
+=0D=0ATotal=20Length:=2091=0D=0AIdentification:=200x95a3=20(38307)=0D=0A010=
+.=20....=20=3D=20Flags:=200x2,=20Don't=20fragment=0D=0A...0=200000=200000=
+=200000=20=3D=20Fragment=20Offset:=200=0D=0ATime=20to=20Live:=2064=0D=0APro=
+tocol:=20TCP=20(6)=0D=0AHeader=20Checksum:=200x3e34=0D=0AHeader=20checksum=
+=20status:=20Unverified=0D=0ASource=20Address:=20192.168.72.24=0D=0ADestina=
+tion=20Address:=20142.250.207.10=0D=0AStream=20index:=200=0D=0A=0D=0ATransm=
+ission=20Control=20Protocol=0D=0ASource=20Port:=2034954=0D=0ADestination=20=
+Port:=20443=0D=0AStream=20index:=200=0D=0AConversation=20completeness:=20In=
+complete=20(0)=0D=0ATCP=20Segment=20Len:=2039=0D=0ASequence=20Number:=200x5=
+ded432f=0D=0ASequence=20Number=20(raw):=201575830319=0D=0ANext=20Sequence=
+=20Number:=2040=0D=0AAcknowledgment=20Number:=200x5ad8ab29=0D=0AAcknowledgm=
+ent=20number=20(raw):=201524149033=0D=0A1000=20....=20=3D=20Header=20Length=
+:=2032=20bytes=20(8)=0D=0AFlags:=200x018=20(PSH,=20ACK)=0D=0AWindow:=2073=
+=0D=0ACalculated=20window=20size:=2073=0D=0AWindow=20size=20scaling=20facto=
+r:=20-1=20(unknown)=0D=0AChecksum:=200x5b58=0D=0AChecksum=20Status:=20Unver=
+ified=0D=0AUrgent=20Pointer:=200=0D=0AOptions:=20(12=20bytes),=20No-Operati=
+on=20(NOP),=20No-Operation=20(NOP),=20Timestamps=0D=0ATimestamps=0D=0ASEQ/A=
+CK=20analysis=0D=0ATCP=20payload=20(39=20bytes)=0D=0ATransport=20Layer=20Se=
+curity=0D=0ATLSv1.2=20Record=20Layer:=20Application=20Data=20Protocol:=20Hy=
+pertext=20Transfer=20Protocol=0D=0A=0D=0A2-C)=20When=20warn=20hit,=20DUT=20=
+was=20processing=20(Time:=2017399.502603,=2028=20seconds=20later=20since=20=
+last=20Tx)=0D=0AHex:=0D=0A456000405FA20000720681F08EFACF0AC0A8481801BB888A5=
+AD8AB295DED4356B010010D93D800000101080AEF299EF43A52089F0101050A5DED432F5DED=
+4356=0D=0A=0D=0AInternet=20Protocol=20Version=204=0D=0A0100=20....=20=3D=20=
+Version:=204=0D=0A....=200101=20=3D=20Header=20Length:=2020=20bytes=20(5)=
+=0D=0ADifferentiated=20Services=20Field:=200x60=20(DSCP:=20CS3,=20ECN:=20No=
+t-ECT)=0D=0ATotal=20Length:=2064=0D=0AIdentification:=200x5fa2=20(24482)=0D=
+=0A000.=20....=20=3D=20Flags:=200x0=0D=0A...0=200000=200000=200000=20=3D=20=
+Fragment=20Offset:=200=0D=0ATime=20to=20Live:=20114=0D=0AProtocol:=20TCP=20=
+(6)=0D=0AHeader=20Checksum:=200x81f0=0D=0AHeader=20checksum=20status:=20Unv=
+erified=0D=0ASource=20Address:=20142.250.207.10=0D=0ADestination=20Address:=
+=20192.168.72.24=0D=0AStream=20index:=200=0D=0A=0D=0ATransmission=20Control=
+=20Protocol=0D=0ASource=20Port:=20443=0D=0ADestination=20Port:=2034954=0D=
+=0AStream=20index:=200=0D=0AConversation=20completeness:=20Incomplete=20(0)=
+=0D=0ATCP=20Segment=20Len:=200=0D=0ASequence=20Number:=200x5ad8ab29=0D=0ASe=
+quence=20Number=20(raw):=201524149033=0D=0ANext=20Sequence=20Number:=201=0D=
+=0AAcknowledgment=20Number:=200x5ded4356=0D=0AAcknowledgment=20number=20(ra=
+w):=201575830358=0D=0A1011=20....=20=3D=20Header=20Length:=2044=20bytes=20(=
+11)=0D=0AFlags:=200x010=20(ACK)=0D=0AWindow:=20269=0D=0ACalculated=20window=
+=20size:=20269=0D=0AWindow=20size=20scaling=20factor:=20-1=20(unknown)=0D=
+=0AChecksum:=200x93d8=0D=0AChecksum=20Status:=20Unverified=0D=0AUrgent=20Po=
+inter:=200=0D=0AOptions:=20(24=20bytes),=20No-Operation=20(NOP),=20No-Opera=
+tion=20(NOP),=20Timestamps,=20No-Operation=20(NOP),=20No-Operation=20(NOP),=
+=20SACK=0D=0ATimestamps=0D=0A=0D=0A2-D)=20The=20DUT=20received=20ack=20afte=
+r=2028=20seconds=20from=20Access=20Point.=0D=0A=0D=0A3)Clarification=20on=
+=20=22tcp_write_queue_purge=22=20claim=0D=0AThis=20is=20just=20my=20conject=
+ure=20based=20on=20ramdump=20snapshot=20and=20it=20is=20not=20shown=20in=20=
+calltrace.=0D=0ABased=20on=20tcp=20status=20in=20snapshot=20I=20thought=20t=
+cp_write_queue_purge=20was=20called=20and=20packets_out=20was=20cleared.=0D=
+=0A=0D=0A4)=20In=20our=20kernel=20=22/proc/sys/net/ipv4/tcp_mtu_probing=22=
+=20is=20set=20to=200.=0D=0A=0D=0A
