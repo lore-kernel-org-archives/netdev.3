@@ -1,66 +1,38 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx16lb.world4you.com (mx16lb.world4you.com [81.19.149.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2EC23918D
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 22:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C66118DF6D
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 22:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.126
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733352727; cv=none; b=BJ+GVqACU+KP+tmu2dAIJVNzNLC7g+DKilT2n+kqJUupS2w9iWpqO+8+EGamQYRSHlJUTln/q0euMcwuRcagIoh4su3Ig1fd+mQCoQ20tHISoMd536vqSIqCZQOOQzfbuZfNXtpaOhMcGXt/y2lRtmBElHAHvLtucj5SqgAbis0=
+	t=1733353128; cv=none; b=DJFfcndwHUkrVzycj3f68gyX5fEnmwSifq/Ce7QwT7CsYQfRdtpYFZweV85HDzfy0+pHbsqKMKEGFDMEe7ZUgufXTXtb3QR2lsLLPhJ8sxViz8ncZwr/eXew7UaIuE0efb1fwE1NW/sJk26VeXkUsBqzSli2nSd0Qma7wXu4uwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733352727; c=relaxed/simple;
-	bh=BbpJCvn1MXnXbQgrGMkRVTBZLntlssDle2nhEWUHgOQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kzCYrzcotdgiNL8+cZ+ol0A61l9V8IW/QrXpoELwFY7bq1UNdUR7pw5Gm5MeywjNzi4kHSzvnlfmyMljbFUPhzX1xPViOidDbrfdxvTqqN3g5VhBZ4qDX/frXU96vcDxi2VptCzUb8yAnPpPesMBM0IDdc+IQhceThxQNTuAY3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=PJMZgcOa; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1733353128; c=relaxed/simple;
+	bh=gVKgzwl8ntKSWrOvFXyw8Z1n3CN0L59sb1DqfCJu1e4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EVPWqn+Xz8ctUuKCo6kDiUvc32IBh7IzcdBFg1glmzh6BdOPpgbTWmzeDW0s1Kya9PKkzzpFjoC0dJXuLA6D8OWLyRKWfOLTdggZ4ZN8Bt+w20wbxdeAI+KZPZwcEexZ4yoYxZWJ1WWUUZrcm6+yu5tw3TC4b93TQrcHOZmOLnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=fuT6POE0; arc=none smtp.client-ip=81.19.149.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="PJMZgcOa"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434a1833367so1853905e9.1
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 14:52:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1733352724; x=1733957524; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QJY4PGEWGLtki4js6cDocdleyzRKIiiLi+utb9IeRFw=;
-        b=PJMZgcOaZa+nlhakIYl1e6CtGmQGbwC8CwDnKgkyU6NxtFMGIec8Q4kbjsXkG8HA5m
-         mdm+Y0mhgJvJKWgsQuB0iKwa88irR9fdiMl1Jp71OJ3ClgJ1Q/Xu6WgcfnDQV0x6Z3+A
-         FFxmeXID7XmTONVN4WPFa6WETx6nmYCK8Bxbcy6FsZ5xuiz4ZBJmlhOR7H5BU1Y5prZV
-         C4updvjWN/3r8lasnhFORYfz3ZxOlB/Rbj5WNtLiY5TXQQ/BWtupDyieMKqfFfmO+xS4
-         rE7MnogdtPEoHNRNrtw0cgdaAYE03byb9VVeAl84SZoL8Jq7Tox71nndKX0M4L5adATE
-         X5wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733352724; x=1733957524;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QJY4PGEWGLtki4js6cDocdleyzRKIiiLi+utb9IeRFw=;
-        b=NV/fGCuwGinBzDSaRxic7iczERjJJA/MMWlY3Z9X6QtqbXJ0iFtS2P997nHpl3Kqz1
-         /d4nozxjnMie805LD3Upxbrd4JgY/m091BlVunI2/F2maN8EsRK4ZafQnos13Md5q4o7
-         /iMDgAp99s8TyFPCb5trnMfTM0AtVEtnLlqUH0sBejDAMZOgvwboRSbRxa8bZlQyWPp5
-         0jNOFzmthS82n5J3XBZF5j1A9h415VEBG1Ay2lQxbQ8gsn0E2VITNukjx/zCNIaLhP0w
-         rphYncJMxPqLem0LMGrsmk4nR/EuQGEvI5TpYaA1HcL88/NV6aMPZ0vRE4n6NGgRCmdb
-         E1NA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMQAhXiriBft9ljepQonHb6b/lPW3noKaGQfFbe6tb4x4GD/rIcyqLYZqUhraAzjPo5bl64RE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb11rkCEsZs//5DEYM03Ex8dRqx7dVZmvENUflrNAFNBpOM7+e
-	F8cvQh3w2ttzrK5fC3r8pf07N0cl7iQZCxw0FsYB7QGmb7S/CV88soVxptmCvnY=
-X-Gm-Gg: ASbGncv3cI5X4NpVv3UpbU5ahgnTY2DJXyNaLcNxy97bLWCY0HECKpeIIKmvDfkoQ1C
-	fY3xo/6bXgYIK3ORpwIRTRePuN7gdsB2uvt2FsDgmyXcTEZgn5Z1hvCyrewAIt4s6lc3a8MqWHB
-	Hu/04Boobokxx0z7q0MSPiNKK4/xrbFAaVWVoxLB+glSrvIlOw4IWVjsB7SkGdXJ49ZdYT+eBGy
-	MSbhbRFF6VPTC9a011dWDYWx7S3O2x0iCJaJEUmTEtHmebjYm7OthWbvwKqzTD/evWwomk2BKfE
-	BBLrzAFH690p
-X-Google-Smtp-Source: AGHT+IGJvHmmwLo8TCWd+PrCzT2NE0wYUpSiiKV93ZLkT6NdCnrMxrorsSCHOXAsAtRXhafH20MZlw==
-X-Received: by 2002:a05:600c:1c88:b0:434:9dcb:2f84 with SMTP id 5b1f17b1804b1-434d9253d19mr7729455e9.2.1733352724248;
-        Wed, 04 Dec 2024 14:52:04 -0800 (PST)
-Received: from ?IPV6:2001:67c:2fbc:1:9715:a35f:73a4:7403? ([2001:67c:2fbc:1:9715:a35f:73a4:7403])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d43809fdsm25998785e9.1.2024.12.04.14.52.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 14:52:03 -0800 (PST)
-Message-ID: <8714deae-c1f7-42ff-9e76-fabd9ca5188b@openvpn.net>
-Date: Wed, 4 Dec 2024 23:52:43 +0100
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="fuT6POE0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GirAyz2Vc6AyIWO7DCGREizNgX08C+P2Yh6QCGAaJaw=; b=fuT6POE0pV8AZkqh/tVR5YynqL
+	ybsdQqZJkfj7yzQWM6Hb+vxiIHHM9chdE+auV+4txYxCGITqr4hBNupqwXlvbbKx+auJjGlMucEzg
+	XZ3MRbMQAicd1V+mSnOBnkaVL7Mk54ygvfhPW5oJV2vNtBlwzLVE8z6kP4aaYq+/mDUk=;
+Received: from [88.117.62.55] (helo=[10.0.0.160])
+	by mx16lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tIvsb-000000008U2-1ODm;
+	Wed, 04 Dec 2024 21:21:50 +0100
+Message-ID: <06edcab8-280d-4397-8df2-58a35eb094ec@engleder-embedded.com>
+Date: Wed, 4 Dec 2024 21:21:49 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,100 +40,82 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 11/22] ovpn: implement TCP transport
-From: Antonio Quartulli <antonio@openvpn.net>
-To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
- Shuah Khan <shuah@kernel.org>, sd@queasysnail.net, ryazanov.s.a@gmail.com,
- Andrew Lunn <andrew@lunn.ch>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241202-b4-ovpn-v12-0-239ff733bf97@openvpn.net>
- <20241202-b4-ovpn-v12-11-239ff733bf97@openvpn.net>
- <784fddc4-336c-4674-8277-c7cebea6b94f@redhat.com>
- <2a1b614c-c52d-44c7-8cb8-c68a8864508d@openvpn.net>
+Subject: Re: [PATCH net-next] e1000e: Fix real-time violations on link up
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: anthony.l.nguyen@intel.com, andrew+netdev@lunn.ch,
+ netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, Gerhard Engleder <eg@keba.com>,
+ Vitaly Lifshits <vitaly.lifshits@intel.com>,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+References: <20241203202814.56140-1-gerhard@engleder-embedded.com>
+ <ef87bd20-6fda-4839-8cff-4ab10bf500a7@intel.com>
 Content-Language: en-US
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <2a1b614c-c52d-44c7-8cb8-c68a8864508d@openvpn.net>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <ef87bd20-6fda-4839-8cff-4ab10bf500a7@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-AV-Do-Run: Yes
 
-Paolo,
-
-On 04/12/2024 12:15, Antonio Quartulli wrote:
-[...]
->>> +        mutex_lock(&tcp6_prot_mutex);
->>> +        if (!ovpn_tcp6_prot.recvmsg)
->>> +            ovpn_tcp_build_protos(&ovpn_tcp6_prot, &ovpn_tcp6_ops,
->>> +                          sock->sk->sk_prot,
->>> +                          sock->sk->sk_socket->ops);
->>> +        mutex_unlock(&tcp6_prot_mutex);
+On 04.12.24 11:10, Przemek Kitszel wrote:
+> On 12/3/24 21:28, Gerhard Engleder wrote:
+>> From: Gerhard Engleder <eg@keba.com>
 >>
->> This looks like an hack to avoid a build dependency on IPV6, I think the
->> explicit
+>> From: Gerhard Engleder <eg@keba.com>
 > 
-> I happily copied this approach from espintcp.c:espintcp_init_sk() :-D
+> duplicated From: line
+
+Nervous fingers, sorry, will be fixed.
+
+>>
+>> Link down and up triggers update of MTA table. This update executes many
+>> PCIe writes and a final flush. Thus, PCIe will be blocked until all 
+>> writes
+>> are flushed. As a result, DMA transfers of other targets suffer from 
+>> delay
+>> in the range of 50us. This results in timing violations on real-time
+>> systems during link down and up of e1000e.
+>>
+>> A flush after a low enough number of PCIe writes eliminates the delay
+>> but also increases the time needed for MTA table update. The following
+>> measurements were done on i3-2310E with e1000e for 128 MTA table entries:
+>>
+>> Single flush after all writes: 106us
+>> Flush after every write:       429us
+>> Flush after every 2nd write:   266us
+>> Flush after every 4th write:   180us
+>> Flush after every 8th write:   141us
+>> Flush after every 16th write:  121us
+>>
+>> A flush after every 8th write delays the link up by 35us and the
+>> negative impact to DMA transfers of other targets is still tolerable.
+>>
+>> Execute a flush after every 8th write. This prevents overloading the
+>> interconnect with posted writes. As this also increases the time spent 
+>> for
+>> MTA table update considerable this change is limited to PREEMPT_RT.
+> 
+> hmm, why to limit this to PREEMPT_RT, the change sounds resonable also
+> for the standard kernel, at last for me
+> (perhaps with every 16th write instead)
+
+As Andrew argumented similar, I will remove the PREEMPT_RT dependency
+with the next version. This is not the hot path, so the additional delay
+of <<1ms for boot and interface up is negligible.
+
+> with that said, I'm fine with this patch as is too
 > 
 >>
->> #if IS_ENABLED(CONFIG_IPV6)
->>
->> at init time should be preferable
+>> Signed-off-by: Gerhard Engleder <eg@keba.com>
+> 
+> would be good to add link to your RFC
+> https://lore.kernel.org/netdev/f8fe665a-5e6c-4f95-b47a-2f3281aa0e6c@lunn.ch/T/
+> 
+> and also CC Vitaly who participated there (done),
+> same for IWL mailing list (also CCd), and use iwl-next tag for your
+> future contributions to intel ethernet
 
-To get this done at init time I need inet6_stream_ops to be accessible, 
-but it seems there is no EXPORT_SYMBOL() for this object.
+Will be done.
 
-However, I see that mptcp/protocol.c is happily accessing it.
-Any clue how this is possible?
+Thank you for the review!
 
-If I try to access it within ovpn I get the usual error:
-ERROR: modpost: "inet6_stream_ops" [drivers/net/ovpn/ovpn.ko] undefined!
-
-but mptcp compiles just fine.
-
-Any hint?
-
-Regards,
-
--- 
-Antonio Quartulli
-OpenVPN Inc.
-
+Gerhard
