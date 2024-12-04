@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4514D9FB;
-	Wed,  4 Dec 2024 03:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DFC155C97
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 03:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733281819; cv=none; b=j/D4fTeU63gjUEFMo4Q6CIcDGM0O+sBBl7VMNPv33ysQAUacUHu7g5umgXE6Vpt4KAeZVyq9HSjJJ5EsOKt1g4nUVSn8ebu1H+WrbY0zVn2dT4fdPA4noqRYz+jq4+vBXRRhEH7+EzXhqfmoA2Ra1br5kVOL28wv8fvb5L67Yew=
+	t=1733281822; cv=none; b=ag3iOLhK5xU8kvpRV/M91Yi3QLwJq3IxKMPK/gpjU/b08sRjFwIx6XnYl4ZrjW49b6LIWBaY2ukGn00ZYXayrt4KE5ZXsiFoDMggN4bwxJMY3Iy/dv+ReR+0wWzjVorQUHmZGjrcRDBjvYoC0jyVduuhEeP/Apl2kosefiE/ev4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733281819; c=relaxed/simple;
-	bh=WmrE0DC5qwIB4Vgu/OlnByp2tC0LRSQN3RMWZUkdeFU=;
+	s=arc-20240116; t=1733281822; c=relaxed/simple;
+	bh=dldjZ6FjbJAhNwaUtz6Z28e7gnmKzQtlo2Q4bp+od3c=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NSDIQDkdJYtNMb7gtBtkzSFpNM5GZce0TOj8woCV4MKVt5Wj0xkCw3c7adRdwmmruh6tPn4Uht6DWQG4EH6o5IsbZFCFBvls5CLkXNyT3aTz5gLledp/QzCHljeOAFwv/mMxbcbU0Fk0kAsKAxIafBqbLSeNm1tQLPxcyrUfbHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCFM8mZL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=N9BodXHgQnLPnK1KAxLCOSfjmgmubsdM3afCdykDhk7uRt7WRkPpWF/54u4Fn8OXTOUpo5YrI8Aa/ZBInJzSpwNdqDmlOAeMxR8DFXFlNHIXt8geDavFL4xETTsi4n8xw5qz/P1NzKbuOvoI+D1pytQ/9OnBArs7scdfQEIs/C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ts7VVDMS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCFM8mZL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4F7C4CEDC;
-	Wed,  4 Dec 2024 03:10:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ts7VVDMS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951C7C4CEE1;
+	Wed,  4 Dec 2024 03:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733281817;
-	bh=WmrE0DC5qwIB4Vgu/OlnByp2tC0LRSQN3RMWZUkdeFU=;
+	s=k20201202; t=1733281822;
+	bh=dldjZ6FjbJAhNwaUtz6Z28e7gnmKzQtlo2Q4bp+od3c=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YCFM8mZL7gome89XLNLCmtOdYb3+dKYF7EhVnEBUdxE8j8g5Gj7gM3UkgxI97Gp9K
-	 lApY+e2lZ0q07l8pT/Pwu1pHT0/NuDTilkWrg5cKmrw+GVC7qM/G36E0su+Okz+EUN
-	 6zcngXwkaLFjielLu4PMn57aMUB3YJO3bomF8jI3QbscSteV+CogL0rHfoypl66Q74
-	 7M30Te64pIZN/GY4Cu4DtIZAxAql5meMhC0A6eukGgVx9iyYd/StaKiUVCn3MI6pkn
-	 DULIM0UlaCp+4X4SicfSA0ZvAvM1kUR4gADFZ08rCAG8K71b0N3YptfSy4lkJlRbqd
-	 VCx7WHOkXFJbw==
+	b=Ts7VVDMS0T6gOULHIb+6RoGcGNiOSBzoSpN6XMhcHcQlprQ9wu4oKSHvGkIqv1ZN+
+	 NgZDTZDeQdMHySalBI2Udxzt6UHlyW5E4KBjo2rRqxb+MBj7k5nlZd4NR1HAvZ/Mz9
+	 u7n6cEn2/Cpnhltvw6wk154KARYn/ymzL6C/4x0C7zH1kR1RY7853dXRzJn1gj5JjD
+	 v3qOLgxRScbbd/cKdLLG2hTx+eGeQr1RIrp77vvjdwh+PGrkmi8PhaP9m4Q3KGPa/x
+	 Cm5npKV0k5IB1Ca86NELg1qDeD08/BRaNKs8yZgPVR3XlqP6onN5nAiveCFySylv/A
+	 QJSHLMTAtwyng==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7217F3806656;
-	Wed,  4 Dec 2024 03:10:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 341453806656;
+	Wed,  4 Dec 2024 03:10:38 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [net] net: Make napi_hash_lock irq safe
+Subject: Re: [PATCH net-next] r8169: remove support for chip version 11
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <173328183200.718738.18254702355170016369.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Dec 2024 03:10:32 +0000
-References: <20241202182103.363038-1-jdamato@fastly.com>
-In-Reply-To: <20241202182103.363038-1-jdamato@fastly.com>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
- kuba@kernel.org, mkarsten@uwaterloo.ca, stable@vger.kernel.org,
- linux@roeck-us.net, davem@davemloft.net, horms@kernel.org,
- dsahern@kernel.org, bigeasy@linutronix.de, lorenzo@kernel.org,
- aleksander.lobakin@intel.com, linux-kernel@vger.kernel.org
+ <173328183674.718738.14975736117873223643.git-patchwork-notify@kernel.org>
+Date: Wed, 04 Dec 2024 03:10:36 +0000
+References: <b689ab6d-20b5-4b64-bd7e-531a0a972ba3@gmail.com>
+In-Reply-To: <b689ab6d-20b5-4b64-bd7e-531a0a972ba3@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com, andrew+netdev@lunn.ch, pabeni@redhat.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Dec 2024 18:21:02 +0000 you wrote:
-> Make napi_hash_lock IRQ safe. It is used during the control path, and is
-> taken and released in napi_hash_add and napi_hash_del, which will
-> typically be called by calls to napi_enable and napi_disable.
+On Mon, 2 Dec 2024 21:20:02 +0100 you wrote:
+> This is a follow-up to 982300c115d2 ("r8169: remove detection of chip
+> version 11 (early RTL8168b)"). Nobody complained yet, so remove
+> support for this chip version.
 > 
-> This change avoids a deadlock in pcnet32 (and other any other drivers
-> which follow the same pattern):
-> 
-> [...]
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>  drivers/net/ethernet/realtek/r8169.h            |  2 +-
+>  drivers/net/ethernet/realtek/r8169_main.c       | 14 +-------------
+>  drivers/net/ethernet/realtek/r8169_phy_config.c | 10 ----------
+>  3 files changed, 2 insertions(+), 24 deletions(-)
 
 Here is the summary with links:
-  - [net] net: Make napi_hash_lock irq safe
-    https://git.kernel.org/netdev/net/c/cecc1555a8c2
+  - [net-next] r8169: remove support for chip version 11
+    https://git.kernel.org/netdev/net-next/c/bb18265c3aba
 
 You are awesome, thank you!
 -- 
