@@ -1,128 +1,61 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from static195-132.de.dm.aliyun.com (static195-132.de.dm.aliyun.com [47.245.195.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAD61B4F02;
-	Wed,  4 Dec 2024 13:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E27194C67
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 13:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.245.195.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733318935; cv=none; b=SAHcqOzuxPP+5KMj4DxSq1FCxUaOQhOok0SrMLKp4l2wkAd+7zU7we9z9GxVsP/EpSGEMDYvWtabqgWRBB4hzsWnRXIjv8/Z8tJ5KInVHX4osHJqvQRDeq7+JQKcpnaULBbVzym4Ik0J8L4C0T6FdkYqNWAowaEwY5giygazZr0=
+	t=1733319076; cv=none; b=DrMgXEtyfLA5hmsR3B7BJmG3Hj8+ivsbw3R0tlPqKOMVuAesRQfTnN+Cr2NoBIvME2djTCCfwXYLNJSXvT+Ks9hUs1r2x32aIi7DwPns7M+Qz8S6Z/M/PzBwXUagSzEVnFjVLz855KGLaYY+zFAqK/SYKUVV3wpAwpQXqzf4e/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733318935; c=relaxed/simple;
-	bh=JFMEaqJARTgv5xD0VK6lGzTRXH+hjD5csEE/MmFFaWI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bTwP2dulHNu9Si8ryFo7mBfP7XYUkeFlQYwsgJAL9XIDB2ojN6h8BhSTRBr1fMejKAK4cDi6nWWKusAOoefxk4wHR11L28XQ0JnJ2myYxpkfeL8Zq0JKV8izN7MdEJq9vRjGHaIGj3HsRg/on8SsULmYAixDKCkVpZ/q6Ti3C0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=I9f/1e1k; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1733319076; c=relaxed/simple;
+	bh=xidDK/6IHGOKsnH15m+2xrDxjSQNiRb14+A6BgRVsGE=;
+	h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type; b=MkhnQrObZUtUnhYplN6pXHaGB0w8go7/V7029AKzHp3tbOFrsZbCqqtaVz/aWJ8cbqUrSEiI+1T7MFfgRBzIiIOOZ4aEsBq5PN0+8E3BHl2l550Q2qoF6HtAU5hfklsD+Cy4jCyQuYdc/q+TNsgK71mb3yEsbbKCkNlpL9nfiLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rebagfactory.vip; spf=pass smtp.mailfrom=rebagfactory.vip; dkim=pass (1024-bit key) header.d=rebagfactory.vip header.i=@rebagfactory.vip header.b=DHUP4tzB; arc=none smtp.client-ip=47.245.195.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rebagfactory.vip
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rebagfactory.vip
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="I9f/1e1k"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4LmJ93oPNxvI+0AIIhL25FFOu/bFnhYn5Nx8R+9oCn8=;
-	t=1733318934; x=1734528534; b=I9f/1e1ksBRPdUDlFXvH/HnDesJrnDMorx7/NduDuwO+HCK
-	9yvpJl2anEFA9CZgA0DsemJWXekj5LYFMomlSQ8jFjnAQYMy0nI9yAG1w93HyoQjSFNbdXUdHNhNy
-	fYRJYDrc2sFTWaeLVKAGJL2+hrS3kYsfVxQkm728zjl6gA17ihfH/salvqZr6cNZModwHn7KknGdX
-	aoUDB3LyS/rWXmPgCfPxWgFsw5vihsvu4r84OUzOuzLVbX6yaJKlGY87jJbR6LsL5FUFiQqC0sNCK
-	2pp2otM6p7YRZF2twLMifFxUhjpKXekC1ZHpln3eD3Vu39k5oEYDRIbE1dZqjrhw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tIpQp-00000006UlJ-0HWQ;
-	Wed, 04 Dec 2024 14:28:43 +0100
-Message-ID: <cc0a13f9674238d3b7607e9d9b58ee6e5cc4aa5c.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next v1 7/7] netlink: specs: wireless: add a spec
- for nl80211
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- linux-wireless@vger.kernel.org, donald.hunter@redhat.com
-Date: Wed, 04 Dec 2024 14:28:42 +0100
-In-Reply-To: <CAD4GDZyCPiw1r02BHA_atDQdhsyVhxg=W1dnwi-Bc_tnkxtVeA@mail.gmail.com>
-References: <20241203130655.45293-1-donald.hunter@gmail.com>
-	 <20241203130655.45293-8-donald.hunter@gmail.com>
-	 <016ba49a8b072f89fc4340341be166e26cc1b9a8.camel@sipsolutions.net>
-	 <CAD4GDZyCPiw1r02BHA_atDQdhsyVhxg=W1dnwi-Bc_tnkxtVeA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	dkim=pass (1024-bit key) header.d=rebagfactory.vip header.i=@rebagfactory.vip header.b="DHUP4tzB"
+X-AliDM-RcptTo: bmV0ZGV2QHZnZXIua2VybmVsLm9yZw==
+Feedback-ID: default:jessie@rebagfactory.vip:batch:27908
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=rebagfactory.vip; s=aliyun-eu-central-1;
+	t=1733319068; h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
+	bh=xidDK/6IHGOKsnH15m+2xrDxjSQNiRb14+A6BgRVsGE=;
+	b=DHUP4tzBW5zZFcxzoA+H/EzhGWp4aoqJ5pqZJi5egNyBCt8rtdOjhoM3pEjWiJVUElKncYwexhUQjPPAW6e8XRDqOsaOmz473ZXJFn3tTPwX5bJz9h1tlcdzkrEXcQ4fevXPoLVU4FWm7ySw2YKLHTEGB/A9vKM4FiGAMCbAGog=
+Received: from LocalHost(mailfrom:jessie@rebagfactory.vip fp:SMTPD_-----6KO4PN cluster:dm-ay35de-a)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 04 Dec 2024 21:25:23 +0800
+X-EnvId: 8965875418
+Message-ID: <587631091877BA2717C948B0F7A72A4274FE80499@REBAGFACTORY.VIP>
+From: "Jessie" <jessie@rebagfactory.vip>
+Reply-To: <info@rebag.cn>
+To: <netdev@vger.kernel.org>
+Subject: Rebag: what's your category goal in 2025?
+Date: Wed, 4 Dec 2024 15:58:16 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: base64
+X-Priority: 3
+X-Mailer: Joinf MailSystem 8.0
+Content-Type: text/plain;
+	charset="utf-8"
 
-On Wed, 2024-12-04 at 13:12 +0000, Donald Hunter wrote:
-> My main motivation is coverage, for 2 reasons: firstly to flush out
-> any feature gaps in YNL such as the ones I fixed in this series
-
-Yeah, OK, though I'm not sure YNL is really meant to be feature complete
-for everything netlink may be doing, rather than for what's needed - and
-some of the things we did may even be things that are not meant to be
-done any more (e.g. nested array vs. multi-attr arrays.)
-
-> and
-> secondly to achieve a critical mass of YNL specs that encourages
-> people to build more tooling around the specs.
-
-OK, fair :)
-
-> YNL is already used for
-> in-tree test automation and documentation generation. There is
-> potential for generating strace dumpers and people are starting to use
-> generated user space code.
-
-Right.
-
-> > Also, I don't know how we will maintain this if it's not tied to any
-> > kernel code. What do you suggest? Do you want to just maintain it
-> > following the nl80211.h spec all the time?
->=20
-> It's a good question. I am okay with maintaining it alongside the
-> nl80211.h file, which will likely motivate me to write some automation
-> at least for notifying any divergence. There might come a time when it
-> becomes desirable to generate some of nl80211.h from the spec, as
-> Stanislav Fomichev is doing for ethtool here:
->=20
-> https://lore.kernel.org/netdev/20241202162936.3778016-1-sdf@fomichev.me/
-
-I think I wouldn't mind that - I'm hoping it'll also generate policies
-etc.? Though on that front we probably have weird quirks too ...
-
-But until then I guess someone's going to have to maintain it, and I'm
-not sure I want that to be me right now :)
-
-> > > +      name: get-wiphy
-> > > +      doc: Get information about a wiphy or dump a list of all wiphy=
-s
-> > > +      attribute-set: nl80211-attrs
-> > > +      do:
-> > > +        request:
-> > > +          value: 1
-> > > +          attributes:
-> > > +            - wiphy
-> > > +        reply:
-> > > +          value: 3
-> > > +      dump:
-> > > +        request:
-> > > +          attributes:
-> > > +            - wiphy
-> > >=20
-> >=20
-> > This already seems wrong - dump wiphy really should unconditionally
-> > include NL80211_ATTR_SPLIT_WIPHY_DUMP these days.
->=20
-> Yes, the valid parameter attributes should be wiphy, wdev, ifindex and
-> split-wiphy-dump by the look of it.
-
-Well there's that about valid parameters, but also no (new) tools today
-should ever *not* include the split-wiphy-dump attribute. I guess that
-can't be expressed here, but it's a gotcha for implementers that just
-follow the YNL spec?
-
-johannes
+UmVzcGVjdGVkIFNpci9NYWRhbSwgDQoNCg0KUmViYWcgZmFjdG9yeSBob3BlIGZpbmQgeW91IHZl
+cnkgd2VsbC4gU21pbGUgOiApDQoNCkluIHRoZXNlIGRheXMgd2UgYXJlIGRldmVsb3BwaW5nIHNv
+bWUgc3R5bGVzIG9mIGZpcnN0IGFpZCBiYWcgYW5kIG1lZGljYWwgYmFncyBmb3IgYSBmZXcgb2Yg
+Y3VzdG9tZXJzLCANCmFuZCB0aGUgZmVlZGJhY2sgc2VlbXMgZ3JlYXQsIHNvIHdlJ2QgbGlrZSB0
+byBrZWVwIHlvdSBhbHNvIHVwZGF0ZWQgZm9yIHRoaXMgaXRlbSwgaWYgeW91IGFyZSBpbnRlcmVz
+dGVkDQp0byBhZGQgdGhlbSBpbnRvIHlvdXIgY2F0YWxvZ3VlLCBwbGVhc2UgZmVlbCBmcmVlIGxl
+dCB1cyBrbm93LlRoYW5rcyBpbiBhZHZhbmNlfiENCg0KQXR0YWNoZWQgeW91IHdpbGwgZmluZCBp
+bWFnZSBmcm9tIG91ciBCU0NJIGF1ZGl0IGZhY3RvcnksIHRoYW5rcyBpbiBhZHZhbmNlIGFuZCBI
+YXZlIGEgbmljZSBkYXkhIA0KUmVnYXJkcw0KDQoNClAuUywgd2UgZm91bmQgdGhhdCBzb21lIG9m
+IG91ciB2YWx1ZWQgY2xpZW50cyBzZWVtcyBkaWQgbm90IHRvdGFsbHkga25vdyB0aGUgYmFnIGl0
+ZW1zIHdlIHByb2R1Y2VkLCANCmFuZCB5b3UgY291bGQgY2hlY2sgdGhlbSBieSBvdXIgdXBkYXRl
+ZCBob21lIHBhZ2UgbGlua2VkIGJsZW93IHRoZSBhZGRyZXNzLiBNYW55IHRoYW5rcyEgDQoNCg0K
+U2hlaWxhIChzYWxlIGFzc2lzdGFuY2UpDQoNCg0KUkVCQUcNCg0KTm8uIDE4MSBKaWFuZ05hbiBT
+dHJlZXQgVmlsbGFnZSwNCkZvdGFuZyBUb3duIFlpd3UsIDMyMjAwMC5DTi4NClRFTDogKzg2IDA1
+NzkgODU1OTU5MDANCkZBWDogKzg2IDA1NzkgODUwMzkyODANCnd3dy5yZWJhZy5jbg==
