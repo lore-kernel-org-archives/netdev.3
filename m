@@ -1,150 +1,147 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AA218C345
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 21:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756E0191F83;
+	Wed,  4 Dec 2024 21:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733346311; cv=none; b=C2xQlG0TVmYGPOOebH4bBYjjnHXLiq6Tq24zsViUI/TYx11UFOLRXzKs6HxQFzzwuPo0QgiKxTgkwus9VFn7j9eoMXkLq9eIR0OdqdlH7q1MRTGPDqW0XI21ojzqzP0iJA9fUZI7hPP8E195RXB5v+wFOiJ8l+Mcr1CbEyCB/Oo=
+	t=1733347420; cv=none; b=U8LDHfjM1u67GGR2qzaVluLDCO6Wt0w/bXSmeTVYxorXOvX9UMcx2hcoMn4rL5/Y9HLF8QayD+kTh0H3OtiwG0tJf4gV0h+SafQn92AATUvJs5jsk1bpl9MxNYTpprSTGFMi0717DBrFOfJniZH/U/x0TTf1SrS7Uon4xV66ikA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733346311; c=relaxed/simple;
-	bh=HPP95/V3ZgiBzsuRrCJ27jnNYObM+Jwaft4QXccC/z8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9ZNvoJYIN4GLx6MCfh/IkdI4B7jdaDyPZnDuUfGyXAROMWS9jvGE18oOM5qdKSCMGUlWNLCgm5N2EdqzOeF9rBiy8iq9+GYapAiQ09I0EGAmsZJtNQXW/YlWZ2kXmapBllgJcCdwqZs+vRd+oOmUs86Ylr3eTKEnLnAVeqhIQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yourpreston.com; spf=pass smtp.mailfrom=yourpreston.com; dkim=pass (2048-bit key) header.d=yourpreston.com header.i=@yourpreston.com header.b=gdcb+PUw; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yourpreston.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yourpreston.com
+	s=arc-20240116; t=1733347420; c=relaxed/simple;
+	bh=mNofg1hTg0YdcTDLra4/FfjXPEnaYk1OszORZkd3Zsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=idIfmZtMHMgoGnOD1wm1ugxtFlhA9YE2oyzqOykAAGsTY14AiH9Ptfwtwb+ZuvhG7zDfUJ70VvNvJZ3/i0wycF9XARDhIlg+k9ON1eAFFfmIbvpT0p2kOpTw09DQR7GM6qiSLyviK9Pm5Cvi9JVLKKC7wDxIfyuwwTIcKJJkaGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GZGUAnuE; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yourpreston.com header.i=@yourpreston.com header.b="gdcb+PUw"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e3983426f80so287961276.1
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 13:05:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=yourpreston.com; s=google; t=1733346308; x=1733951108; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HPP95/V3ZgiBzsuRrCJ27jnNYObM+Jwaft4QXccC/z8=;
-        b=gdcb+PUwc+MEXTS2i0Qz/1XAbpXlGJCVWST1hefTCoATmoy0gwAVvbbgZdq71n1A1A
-         4vjS8Vby7yJHRzNYPaFpLzEu+q94XzJ/77X6mfNpjql491HPe+NQOIK1kEQVKAL0iB16
-         gtnUMz7898HlMXOqvF2EBU99SpRp5gb/bi9FUA2aSFWBEvEC/mD7pGHKwYCHyEt6Imsv
-         KXswj/555DorhJyQKScUiSOfjj2m6HBfj9Qpq3gb/CBPV1d4ybd46hzfZ+Zu2kGiyp4x
-         ovjdaeyS7B0Jf3c71QcRdJ8A+L1rKRYOx+O39OnkdxjHvX4Q3wCEHYZhJM+VFXK/TzG5
-         hw5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733346308; x=1733951108;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HPP95/V3ZgiBzsuRrCJ27jnNYObM+Jwaft4QXccC/z8=;
-        b=PwT+JWyz3STBSssmFa3umRXTsILpxzXemMMxIEOHvFuCabu+eBgaFygsywmmEMmVVJ
-         JBZ9x9ikpnBOD7hsloIxjAidvRcmaAHE6Z889Yjc8K41TN6lAwKI0C1rNHDfuR4gtJ19
-         0Ka73W1jUyxivGP4mvHamuUDlLuF/F1s+INNiBA7xS4SZEcwFTwnGsWDJyjO0deyBhu7
-         vL3dOW9hMgE/tQN15bBzXpCWcGjM+GDiw6Tam9Mfj3R21zUk8WBzGRWQ5huqlLIhgIIQ
-         itG+hqV8ddmDXFK3wbJb4felskgtdIDkDLmmVlKbNeobCP+p6QS/rBWn2+fPLuhOLiQD
-         /5OA==
-X-Gm-Message-State: AOJu0YxAe1FGVJftBNR99ujHkhoOgpVTDhpB5ii68V/i1+9tmapN64Fr
-	qRdfyxWA+mP+raXY11RpoeIlWTSgemk1VwtYdeI+hOcjWm8KLe6OpAf9aepkcu5ISxI/IR8MI1n
-	DChjYgCjhkDigeB6lQxrB9BW+o+1uTy2QzxclNTXvTS4HAVYO
-X-Gm-Gg: ASbGncuAaZXK1/daYu/QakEh8cfapkh76l6IRJthy8dZkLpBbEWEjKW15FJah/eDPuC
-	FdZRDEKMGt/nwh1ELTLR1+fW2SVylRySbPUawqko3/SSBATTukA3UgIZaMDI0sQ==
-X-Google-Smtp-Source: AGHT+IGlk1ZpGnFl7WAP3x8Zv1q10Uv0TSuwr0MS3/ol7YnQqLyxXbrm4Z2zN5zVz4xPQZyGGLtOQiKKotZcSMFjKeQ=
-X-Received: by 2002:a05:690c:6012:b0:6ef:96f9:2f48 with SMTP id
- 00721157ae682-6efad3591b2mr98678207b3.37.1733346308149; Wed, 04 Dec 2024
- 13:05:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GZGUAnuE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733347418; x=1764883418;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mNofg1hTg0YdcTDLra4/FfjXPEnaYk1OszORZkd3Zsk=;
+  b=GZGUAnuEoUq30mR4470Z+mxzNENylk8KxEVQfffWYeLmUWaYk3m/XlVA
+   yTNhF246lcu03YvI+om4/FtxSl/5vkYwvhwg6YLuU9AhR6IvjS5XZ148U
+   7qUNmGNuMHzF/w0rStOZ4xcQHq20r3cxu8uYgJBczbSem+NCBb17UPOBu
+   zc83QTp+yny5IL385FcE/lX4EGIOSBxijUjXTHlZt0qomax9IYUuMem8Q
+   1AE5kT94RuCn+xFasic0SOV1CXjH29Ok1N3A27OmfSjQ1d/tUx50PeYQS
+   l1MdyRqqN7iLeX5z5wIAHHSQQvhpRklfDABXxaxGLN9eKZwQUQVyPWgCN
+   Q==;
+X-CSE-ConnectionGUID: 5l1uXbjGRoOiwUXCPn0kcQ==
+X-CSE-MsgGUID: rePxSNlgSRi6zbR+9QCftw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="36480144"
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="36480144"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 13:23:37 -0800
+X-CSE-ConnectionGUID: 3mnhJN5RQlK78St+s68PTA==
+X-CSE-MsgGUID: aq8CJ+ayR5qHcOD00kslmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="93783596"
+Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 04 Dec 2024 13:23:34 -0800
+Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tIwqE-0003Vn-36;
+	Wed, 04 Dec 2024 21:23:28 +0000
+Date: Thu, 5 Dec 2024 05:22:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-rdma@vger.kernel.org,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>
+Subject: Re: [PATCH net-next V4 07/11] devlink: Extend devlink rate API with
+ traffic classes bandwidth management
+Message-ID: <202412050552.sNZ6Y79O-lkp@intel.com>
+References: <20241203202924.228440-8-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CABBfiem067qtdVbMeq2bGrn-5bKZsy_M8N-4GkE0BO6Uh7jX1A@mail.gmail.com>
- <3e6af55f-3270-604b-c134-456200188f94@katalix.com>
-In-Reply-To: <3e6af55f-3270-604b-c134-456200188f94@katalix.com>
-From: Preston <preston@yourpreston.com>
-Date: Wed, 4 Dec 2024 16:04:57 -0500
-Message-ID: <CABBfie=3+NBmjpVHn8Ji7VakEo9-JMKDH3ut5d1nXnDneC0tPw@mail.gmail.com>
-Subject: Re: ethernet over l2tp with vlan
-To: James Chapman <jchapman@katalix.com>
-Cc: netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203202924.228440-8-tariqt@nvidia.com>
 
-l2tpeth0 is not attached to anything, it's created by the `ip l2tp`
-commands. But since it's encapsulating and setting a new destination
-IP address, packets are referred to the route table.
+Hi Tariq,
 
-On Wed, Dec 4, 2024 at 6:48=E2=80=AFAM James Chapman <jchapman@katalix.com>=
- wrote:
->
-> On 03/12/2024 16:14, Preston wrote:
-> > Hello folks, please let me know if there=E2=80=99s a more appropriate p=
-lace to
-> > ask this but I believe I=E2=80=99ve found something that isn=E2=80=99t =
-supported in
-> > iproute2 and would like to ask your thoughts.
->
-> Thanks for reaching out.
->
-> > I am trying to encapsulate vlan tagged ethernet traffic inside of an
-> > l2tp tunnel.This is something that is actively used in controllerless
-> > wifi aggregation in large networks alongside Ethernet over GRE. There
-> > are draft RFCs that cover it as well. The iproute2 documentation I=E2=
-=80=99ve
-> > found on this makes it seem that it should work but isn=E2=80=99t expli=
-cit.
-> >
-> > Using a freshly compiled iproute2 (on Rocky 8) I am able to make this
-> > work with GRE without issue. L2tp on the other hand seems to quietly
-> > drop the vlan header. I=E2=80=99ve tried doing the same with a bridge t=
-ype
-> > setup and still see the same behavior. I've been unsuccessful in
-> > debugging it further, I don=E2=80=99t think the debug flags in iproute2=
-'s
-> > ipl2tp.c are functional and I suppose the issue might instead be in
-> > the kernel module which isn=E2=80=99t something I=E2=80=99ve tried debu=
-gging before.
-> > Is this a bug? Since plain ethernet over l2tp works I assumed vlan
-> > support as well.
-> >
-> >
-> > # Not Working L2TP:
-> > [root@iperf1 ~]# ip l2tp add tunnel tunnel_id 1 peer_tunnel_id 1 encap
-> > udp local 2.2.2.2 remote 1.1.1.1 udp_sport 1701 udp_dport 1701
-> > [root@iperf1 ~]# ip l2tp add session tunnel_id 1 session_id 1 peer_sess=
-ion_id 1
-> > [root@iperf1 ~]# ip link add link l2tpeth0 name l2tpeth0.1319 type vlan=
- id 1319
-> > [root@iperf1 ~]# ip link set l2tpeth0 up
-> > [root@iperf1 ~]# ip link set l2tpeth0.1319 up
-> > Results: (captured at physical interface, change wireshark decoding
-> > l2tp value 0 if checking yourself)
-> > VLAN header dropped
-> > Wireshark screenshot: https://i.ibb.co/stMsRG0/l2tpwireshark.png
->
-> This should work.
->
-> In your test network, how is the virtual interface l2tpeth0 connected to
-> the physical interface which you are using to capture packets?
->
-> >
-> >
-> > # Working GRE:
-> > [root@iperf1 ~]# ip link add name gre1 type gretap remote 1.1.1.1
-> > [root@iperf1 ~]# ip link add name gre1.120 link gre1 type vlan proto
-> > 802.1q id 120
-> > [root@iperf1 ~]# ip link set gre1 up
-> > [root@iperf1 ~]# ip link set gre1.120 up
-> > Results:
-> > VLAN header present
-> > Wireshark screenshot: https://i.ibb.co/6rJWjg9/grewireshark.png
-> >
-> >
-> > -------------------------------------------------------
-> > ~Preston Taylor
-> >
->
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Tariq-Toukan/net-mlx5-ifc-Reorganize-mlx5_ifc_flow_table_context_bits/20241204-124235
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20241203202924.228440-8-tariqt%40nvidia.com
+patch subject: [PATCH net-next V4 07/11] devlink: Extend devlink rate API with traffic classes bandwidth management
+config: arm-randconfig-001 (https://download.01.org/0day-ci/archive/20241205/202412050552.sNZ6Y79O-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241205/202412050552.sNZ6Y79O-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412050552.sNZ6Y79O-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/uapi/linux/neighbour.h:6,
+                    from include/linux/netdevice.h:44,
+                    from include/linux/etherdevice.h:21,
+                    from net/devlink/devl_internal.h:7,
+                    from net/devlink/rate.c:7:
+   net/devlink/rate.c: In function 'devlink_nl_rate_tc_bw_set':
+>> include/linux/netlink.h:116:13: warning: ' traffic classes must be spe...' directive output truncated writing 34 bytes into a region of size 32 [-Wformat-truncation=]
+     116 |         if (snprintf(__extack->_msg_buf, NETLINK_MAX_FMTMSG_LEN,               \
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     117 |                      "%s" fmt "%s", "", ##args, "") >=                         \
+         |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   net/devlink/rate.c:403:25: note: in expansion of macro 'NL_SET_ERR_MSG_FMT'
+     403 |                         NL_SET_ERR_MSG_FMT(info->extack,
+         |                         ^~~~~~~~~~~~~~~~~~
+   include/linux/netlink.h:116:13: note: 'snprintf' output 83 bytes into a destination of size 80
+     116 |         if (snprintf(__extack->_msg_buf, NETLINK_MAX_FMTMSG_LEN,               \
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     117 |                      "%s" fmt "%s", "", ##args, "") >=                         \
+         |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   net/devlink/rate.c:403:25: note: in expansion of macro 'NL_SET_ERR_MSG_FMT'
+     403 |                         NL_SET_ERR_MSG_FMT(info->extack,
+         |                         ^~~~~~~~~~~~~~~~~~
 
 
---=20
--------------------------------------------------------
-~Preston Taylor
+vim +116 include/linux/netlink.h
+
+2d4bc93368f5a0d Johannes Berg 2017-04-12  107  
+51c352bdbcd23d7 Edward Cree   2022-10-18  108  /* We splice fmt with %s at each end even in the snprintf so that both calls
+51c352bdbcd23d7 Edward Cree   2022-10-18  109   * can use the same string constant, avoiding its duplication in .ro
+51c352bdbcd23d7 Edward Cree   2022-10-18  110   */
+51c352bdbcd23d7 Edward Cree   2022-10-18  111  #define NL_SET_ERR_MSG_FMT(extack, fmt, args...) do {			       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  112  	struct netlink_ext_ack *__extack = (extack);			       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  113  									       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  114  	if (!__extack)							       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  115  		break;							       \
+51c352bdbcd23d7 Edward Cree   2022-10-18 @116  	if (snprintf(__extack->_msg_buf, NETLINK_MAX_FMTMSG_LEN,	       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  117  		     "%s" fmt "%s", "", ##args, "") >=			       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  118  	    NETLINK_MAX_FMTMSG_LEN)					       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  119  		net_warn_ratelimited("%s" fmt "%s", "truncated extack: ",      \
+51c352bdbcd23d7 Edward Cree   2022-10-18  120  				     ##args, "\n");			       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  121  									       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  122  	do_trace_netlink_extack(__extack->_msg_buf);			       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  123  									       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  124  	__extack->_msg = __extack->_msg_buf;				       \
+51c352bdbcd23d7 Edward Cree   2022-10-18  125  } while (0)
+51c352bdbcd23d7 Edward Cree   2022-10-18  126  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
