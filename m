@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E5C1993B6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440751990CE
 	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 08:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733301717; cv=none; b=P8J5vO1mqJNSxpeJCZ1Te3Sx22jVNBdtgYuDvRqgRo8x/sPFtzmYGGHGDev7DBAvxzzyDRp3u49DRZyUnd3eBY+gPq6aGuDr8Z9VeMHdA/5D85gHSwGOtvP+YhB54amlxARfXBNOiuL0PaIFHSLFsUiC2KHiqcSOTUCNu8nv4RE=
+	t=1733301718; cv=none; b=LFOsmyp+GUO/lSB8SW2nxqeqVv5G2Pf/hANVFjm1c5A9LC4l9630VFP+r51Pq2sqH9y+LK+2QNG0QSUUGDhklga7iJUXJSRAt8UpORyIQXMWdNqjhR8HBS1Sgb3SxeechDeBmAWiQRdsroo9DcNqDhbPn9s/1jZgHmiXAswoPoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733301717; c=relaxed/simple;
-	bh=UdPm1Lyyq7wwyNxQzMjqH77a1AaRQ0/9PQWrSZHffQQ=;
+	s=arc-20240116; t=1733301718; c=relaxed/simple;
+	bh=mzjTFGrttSsCn/51pAntoYmX38f7QDB45JL75XW+zPY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZSJwDSmRL0KAQGl+nnXVpZixd4yS7kVGS6LHAb2NRFWTfP4Iv623IOcrqD1j0/AU77vN0InpgrY8C8xMK9+5Gs5GSpe/oeGQeOQF/MW2TSq357MCj0OL/HADilESWnzzm9g7UTMQ6B161TdonZG8SVJW4C3zvIAGZGz39quWrLQ=
+	 MIME-Version; b=FrCAO5PkCMMh7tkhU8jO7lCOo9qRTzDOL+cg0ehgp6ialuvgJ8qcO4CWgvTXzcfttmwdFKlpafoisKV5oCdJcmTKh1Umy0XnKNI6Duv09Ip+Jv6sKFjmxlUhhdEyll1hqX+dqnZ4D5630G8qo93tEI5PwQwhpWshux+ulKJ0Bsc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx7-0001I4-4A; Wed, 04 Dec 2024 09:41:45 +0100
+	id 1tIkx7-0001I0-44; Wed, 04 Dec 2024 09:41:45 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-001cUG-0j;
-	Wed, 04 Dec 2024 09:41:44 +0100
+	id 1tIkx5-001cU7-0M;
+	Wed, 04 Dec 2024 09:41:43 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-004ptU-2z;
+	id 1tIkx5-004psf-2d;
 	Wed, 04 Dec 2024 09:41:43 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -43,9 +43,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v2 06/10] net: usb: lan78xx: Improve error handling in EEPROM and OTP operations
-Date: Wed,  4 Dec 2024 09:41:38 +0100
-Message-Id: <20241204084142.1152696-7-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v2 01/10] net: usb: lan78xx: Remove LAN8835 PHY fixup
+Date: Wed,  4 Dec 2024 09:41:33 +0100
+Message-Id: <20241204084142.1152696-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241204084142.1152696-1-o.rempel@pengutronix.de>
 References: <20241204084142.1152696-1-o.rempel@pengutronix.de>
@@ -61,437 +61,122 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Refine error handling in EEPROM and OTP read/write functions by:
-- Return error values immediately upon detection.
-- Avoid overwriting correct error codes with `-EIO`.
-- Preserve initial error codes as they were appropriate for specific
-  failures.
-- Use `-ETIMEDOUT` for timeout conditions instead of `-EIO`.
+Remove the PHY fixup for the LAN8835 PHY in the lan78xx driver due to
+the following reasons:
+
+- There is no publicly available information about the LAN8835 PHY.
+  However, it appears to be the integrated PHY used in the LAN7800 and
+  LAN7850 USB Ethernet controllers. These PHYs use the GMII interface,
+  not RGMII as configured by the fixup.
+
+- The correct driver for handling the LAN8835 PHY functionality is the
+  Microchip PHY driver (`drivers/net/phy/microchip.c`), which properly
+  supports these integrated PHYs.
+
+- The PHY ID `0x0007C130` is actually used by the LAN8742A PHY, which
+  only supports RMII. This interface is incompatible with the LAN78xx
+  MAC, as the LAN7801 (the only LAN78xx version without an integrated
+  PHY) supports only RGMII.
+
+- The mask applied for this fixup is overly broad, inadvertently
+  covering both Microchip LAN88xx PHYs and unrelated SMSC LAN8742A PHYs,
+  leading to potential conflicts with other devices.
+
+- Testing has shown that removing this fixup for LAN7800 and LAN7850
+  does not result in any noticeable difference in functionality, as the
+  Microchip PHY driver (`drivers/net/phy/microchip.c`) handles all
+  necessary configurations for these integrated PHYs.
+
+- Registering this fixup globally (not limited to USB devices) risks
+  conflicts by unintentionally modifying other interfaces whenever a
+  LAN7801 adapter is connected to the system.
+
+Note that both LAN7800 and LAN7850 USB Ethernet controllers use an
+integrated PHY with the ID `0x0007C132`. Additionally, the LAN7515, a
+specialized part for Raspberry Pi, includes an integrated LAN7800 USB
+Ethernet controller and USB hub in a multifunctional chip design, and it
+also uses the same PHY ID (`0x0007C132`).
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/lan78xx.c | 240 ++++++++++++++++++++++++--------------
- 1 file changed, 152 insertions(+), 88 deletions(-)
+ drivers/net/usb/lan78xx.c | 35 -----------------------------------
+ 1 file changed, 35 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index ee308be1e618..29f6e1a36e20 100644
+index 531b1b6a37d1..6e468e77d796 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1000,8 +1000,8 @@ static int lan78xx_wait_eeprom(struct lan78xx_net *dev)
+@@ -473,7 +473,6 @@ struct lan78xx_net {
+ };
  
- 	do {
- 		ret = lan78xx_read_reg(dev, E2P_CMD, &val);
--		if (unlikely(ret < 0))
--			return -EIO;
-+		if (ret < 0)
-+			return ret;
+ /* define external phy id */
+-#define	PHY_LAN8835			(0x0007C130)
+ #define	PHY_KSZ9031RNX			(0x00221620)
  
- 		if (!(val & E2P_CMD_EPC_BUSY_) ||
- 		    (val & E2P_CMD_EPC_TIMEOUT_))
-@@ -1011,7 +1011,7 @@ static int lan78xx_wait_eeprom(struct lan78xx_net *dev)
- 
- 	if (val & (E2P_CMD_EPC_TIMEOUT_ | E2P_CMD_EPC_BUSY_)) {
- 		netdev_warn(dev->net, "EEPROM read operation timeout");
--		return -EIO;
-+		return -ETIMEDOUT;
- 	}
- 
- 	return 0;
-@@ -1025,8 +1025,8 @@ static int lan78xx_eeprom_confirm_not_busy(struct lan78xx_net *dev)
- 
- 	do {
- 		ret = lan78xx_read_reg(dev, E2P_CMD, &val);
--		if (unlikely(ret < 0))
--			return -EIO;
-+		if (ret < 0)
-+			return ret;
- 
- 		if (!(val & E2P_CMD_EPC_BUSY_))
- 			return 0;
-@@ -1035,75 +1035,81 @@ static int lan78xx_eeprom_confirm_not_busy(struct lan78xx_net *dev)
- 	} while (!time_after(jiffies, start_time + HZ));
- 
- 	netdev_warn(dev->net, "EEPROM is busy");
--	return -EIO;
-+	return -ETIMEDOUT;
+ /* use ethtool to change the level for any given device */
+@@ -2234,29 +2233,6 @@ static void lan78xx_remove_irq_domain(struct lan78xx_net *dev)
+ 	dev->domain_data.irqdomain = NULL;
  }
  
- static int lan78xx_read_raw_eeprom(struct lan78xx_net *dev, u32 offset,
- 				   u32 length, u8 *data)
+-static int lan8835_fixup(struct phy_device *phydev)
+-{
+-	int buf;
+-	struct lan78xx_net *dev = netdev_priv(phydev->attached_dev);
+-
+-	/* LED2/PME_N/IRQ_N/RGMII_ID pin to IRQ_N mode */
+-	buf = phy_read_mmd(phydev, MDIO_MMD_PCS, 0x8010);
+-	buf &= ~0x1800;
+-	buf |= 0x0800;
+-	phy_write_mmd(phydev, MDIO_MMD_PCS, 0x8010, buf);
+-
+-	/* RGMII MAC TXC Delay Enable */
+-	lan78xx_write_reg(dev, MAC_RGMII_ID,
+-			  MAC_RGMII_ID_TXC_DELAY_EN_);
+-
+-	/* RGMII TX DLL Tune Adjust */
+-	lan78xx_write_reg(dev, RGMII_TX_BYP_DLL, 0x3D00);
+-
+-	dev->interface = PHY_INTERFACE_MODE_RGMII_TXID;
+-
+-	return 1;
+-}
+-
+ static int ksz9031rnx_fixup(struct phy_device *phydev)
  {
--	u32 val;
--	u32 saved;
-+	u32 val, saved;
- 	int i, ret;
--	int retval;
- 
- 	/* depends on chip, some EEPROM pins are muxed with LED function.
- 	 * disable & restore LED function to access EEPROM.
- 	 */
- 	ret = lan78xx_read_reg(dev, HW_CFG, &val);
-+	if (ret < 0)
-+		return ret;
-+
- 	saved = val;
- 	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
- 		val &= ~(HW_CFG_LED1_EN_ | HW_CFG_LED0_EN_);
- 		ret = lan78xx_write_reg(dev, HW_CFG, val);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
--	retval = lan78xx_eeprom_confirm_not_busy(dev);
--	if (retval)
--		return retval;
-+	ret = lan78xx_eeprom_confirm_not_busy(dev);
-+	if (ret == -ETIMEDOUT)
-+		goto read_raw_eeprom_done;
-+	/* If USB fails, there is nothing to do */
-+	if (ret < 0)
-+		return ret;
- 
- 	for (i = 0; i < length; i++) {
- 		val = E2P_CMD_EPC_BUSY_ | E2P_CMD_EPC_CMD_READ_;
- 		val |= (offset & E2P_CMD_EPC_ADDR_MASK_);
- 		ret = lan78xx_write_reg(dev, E2P_CMD, val);
--		if (unlikely(ret < 0)) {
--			retval = -EIO;
--			goto exit;
--		}
-+		if (ret < 0)
-+			return ret;
- 
--		retval = lan78xx_wait_eeprom(dev);
--		if (retval < 0)
--			goto exit;
-+		ret = lan78xx_wait_eeprom(dev);
-+		/* Looks like not USB specific error, try to recover */
-+		if (ret == -ETIMEDOUT)
-+			goto read_raw_eeprom_done;
-+		/* If USB fails, there is nothing to do */
-+		if (ret < 0)
-+			return ret;
- 
- 		ret = lan78xx_read_reg(dev, E2P_DATA, &val);
--		if (unlikely(ret < 0)) {
--			retval = -EIO;
--			goto exit;
--		}
-+		if (ret < 0)
-+			return ret;
- 
- 		data[i] = val & 0xFF;
- 		offset++;
- 	}
- 
--	retval = 0;
--exit:
-+read_raw_eeprom_done:
- 	if (dev->chipid == ID_REV_CHIP_ID_7800_)
--		ret = lan78xx_write_reg(dev, HW_CFG, saved);
-+		return lan78xx_write_reg(dev, HW_CFG, saved);
- 
--	return retval;
-+	return 0;
- }
- 
- static int lan78xx_read_eeprom(struct lan78xx_net *dev, u32 offset,
- 			       u32 length, u8 *data)
- {
--	u8 sig;
- 	int ret;
-+	u8 sig;
- 
- 	ret = lan78xx_read_raw_eeprom(dev, 0, 1, &sig);
--	if ((ret == 0) && (sig == EEPROM_INDICATOR))
--		ret = lan78xx_read_raw_eeprom(dev, offset, length, data);
--	else
--		ret = -EINVAL;
-+	if (ret < 0)
-+		return ret;
- 
--	return ret;
-+	if (sig != EEPROM_INDICATOR)
-+		return -ENODATA;
-+
-+	return lan78xx_read_raw_eeprom(dev, offset, length, data);
- }
- 
- static int lan78xx_write_raw_eeprom(struct lan78xx_net *dev, u32 offset,
-@@ -1112,113 +1118,144 @@ static int lan78xx_write_raw_eeprom(struct lan78xx_net *dev, u32 offset,
- 	u32 val;
- 	u32 saved;
- 	int i, ret;
--	int retval;
- 
- 	/* depends on chip, some EEPROM pins are muxed with LED function.
- 	 * disable & restore LED function to access EEPROM.
- 	 */
- 	ret = lan78xx_read_reg(dev, HW_CFG, &val);
-+	if (ret < 0)
-+		return ret;
-+
- 	saved = val;
- 	if (dev->chipid == ID_REV_CHIP_ID_7800_) {
- 		val &= ~(HW_CFG_LED1_EN_ | HW_CFG_LED0_EN_);
- 		ret = lan78xx_write_reg(dev, HW_CFG, val);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
--	retval = lan78xx_eeprom_confirm_not_busy(dev);
--	if (retval)
--		goto exit;
-+	ret = lan78xx_eeprom_confirm_not_busy(dev);
-+	/* Looks like not USB specific error, try to recover */
-+	if (ret == -ETIMEDOUT)
-+		goto write_raw_eeprom_done;
-+	/* If USB fails, there is nothing to do */
-+	if (ret < 0)
-+		return ret;
- 
- 	/* Issue write/erase enable command */
- 	val = E2P_CMD_EPC_BUSY_ | E2P_CMD_EPC_CMD_EWEN_;
- 	ret = lan78xx_write_reg(dev, E2P_CMD, val);
--	if (unlikely(ret < 0)) {
--		retval = -EIO;
--		goto exit;
--	}
-+	if (ret < 0)
-+		return ret;
- 
--	retval = lan78xx_wait_eeprom(dev);
--	if (retval < 0)
--		goto exit;
-+	ret = lan78xx_wait_eeprom(dev);
-+	/* Looks like not USB specific error, try to recover */
-+	if (ret == -ETIMEDOUT)
-+		goto write_raw_eeprom_done;
-+	/* If USB fails, there is nothing to do */
-+	if (ret < 0)
-+		return ret;
- 
- 	for (i = 0; i < length; i++) {
- 		/* Fill data register */
- 		val = data[i];
- 		ret = lan78xx_write_reg(dev, E2P_DATA, val);
+ 	struct lan78xx_net *dev = netdev_priv(phydev->attached_dev);
+@@ -2315,14 +2291,6 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
+ 			netdev_err(dev->net, "Failed to register fixup for PHY_KSZ9031RNX\n");
+ 			return NULL;
+ 		}
+-		/* external PHY fixup for LAN8835 */
+-		ret = phy_register_fixup_for_uid(PHY_LAN8835, 0xfffffff0,
+-						 lan8835_fixup);
 -		if (ret < 0) {
--			retval = -EIO;
--			goto exit;
+-			netdev_err(dev->net, "Failed to register fixup for PHY_LAN8835\n");
+-			return NULL;
 -		}
-+		if (ret < 0)
-+			return ret;
+-		/* add more external PHY fixup here if needed */
  
- 		/* Send "write" command */
- 		val = E2P_CMD_EPC_BUSY_ | E2P_CMD_EPC_CMD_WRITE_;
- 		val |= (offset & E2P_CMD_EPC_ADDR_MASK_);
- 		ret = lan78xx_write_reg(dev, E2P_CMD, val);
--		if (ret < 0) {
--			retval = -EIO;
--			goto exit;
--		}
-+		if (ret < 0)
-+			return ret;
- 
--		retval = lan78xx_wait_eeprom(dev);
--		if (retval < 0)
--			goto exit;
-+		ret = lan78xx_wait_eeprom(dev);
-+		/* Looks like not USB specific error, try to recover */
-+		if (ret == -ETIMEDOUT)
-+			goto write_raw_eeprom_done;
-+		/* If USB fails, there is nothing to do */
-+		if (ret < 0)
-+			return ret;
- 
- 		offset++;
+ 		phydev->is_internal = false;
  	}
- 
--	retval = 0;
--exit:
-+write_raw_eeprom_done:
- 	if (dev->chipid == ID_REV_CHIP_ID_7800_)
--		ret = lan78xx_write_reg(dev, HW_CFG, saved);
-+		return lan78xx_write_reg(dev, HW_CFG, saved);
- 
--	return retval;
-+	return 0;
- }
- 
- static int lan78xx_read_raw_otp(struct lan78xx_net *dev, u32 offset,
- 				u32 length, u8 *data)
- {
--	int i;
--	u32 buf;
- 	unsigned long timeout;
-+	int ret, i;
-+	u32 buf;
- 
--	lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+	ret = lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+	if (ret < 0)
-+		return ret;
- 
- 	if (buf & OTP_PWR_DN_PWRDN_N_) {
- 		/* clear it and wait to be cleared */
--		lan78xx_write_reg(dev, OTP_PWR_DN, 0);
-+		ret = lan78xx_write_reg(dev, OTP_PWR_DN, 0);
-+		if (ret < 0)
-+			return ret;
- 
- 		timeout = jiffies + HZ;
- 		do {
- 			usleep_range(1, 10);
--			lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+			ret = lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+			if (ret < 0)
-+				return ret;
-+
- 			if (time_after(jiffies, timeout)) {
- 				netdev_warn(dev->net,
- 					    "timeout on OTP_PWR_DN");
--				return -EIO;
-+				return -ETIMEDOUT;
+@@ -2384,8 +2352,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 			} else {
+ 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
+ 							     0xfffffff0);
+-				phy_unregister_fixup_for_uid(PHY_LAN8835,
+-							     0xfffffff0);
  			}
- 		} while (buf & OTP_PWR_DN_PWRDN_N_);
- 	}
+ 		}
+ 		return -EIO;
+@@ -4243,7 +4209,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 	phydev = net->phydev;
  
- 	for (i = 0; i < length; i++) {
--		lan78xx_write_reg(dev, OTP_ADDR1,
--				  ((offset + i) >> 8) & OTP_ADDR1_15_11);
--		lan78xx_write_reg(dev, OTP_ADDR2,
--				  ((offset + i) & OTP_ADDR2_10_3));
-+		ret = lan78xx_write_reg(dev, OTP_ADDR1,
-+					((offset + i) >> 8) & OTP_ADDR1_15_11);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_ADDR2,
-+					((offset + i) & OTP_ADDR2_10_3));
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_FUNC_CMD, OTP_FUNC_CMD_READ_);
-+		if (ret < 0)
-+			return ret;
+ 	phy_unregister_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0);
+-	phy_unregister_fixup_for_uid(PHY_LAN8835, 0xfffffff0);
  
--		lan78xx_write_reg(dev, OTP_FUNC_CMD, OTP_FUNC_CMD_READ_);
--		lan78xx_write_reg(dev, OTP_CMD_GO, OTP_CMD_GO_GO_);
-+		ret = lan78xx_write_reg(dev, OTP_CMD_GO, OTP_CMD_GO_GO_);
-+		if (ret < 0)
-+			return ret;
+ 	phy_disconnect(net->phydev);
  
- 		timeout = jiffies + HZ;
- 		do {
- 			udelay(1);
--			lan78xx_read_reg(dev, OTP_STATUS, &buf);
-+			ret = lan78xx_read_reg(dev, OTP_STATUS, &buf);
-+			if (ret < 0)
-+				return ret;
-+
- 			if (time_after(jiffies, timeout)) {
- 				netdev_warn(dev->net,
- 					    "timeout on OTP_STATUS");
--				return -EIO;
-+				return -ETIMEDOUT;
- 			}
- 		} while (buf & OTP_STATUS_BUSY_);
- 
--		lan78xx_read_reg(dev, OTP_RD_DATA, &buf);
-+		ret = lan78xx_read_reg(dev, OTP_RD_DATA, &buf);
-+		if (ret < 0)
-+			return ret;
- 
- 		data[i] = (u8)(buf & 0xFF);
- 	}
-@@ -1232,45 +1269,72 @@ static int lan78xx_write_raw_otp(struct lan78xx_net *dev, u32 offset,
- 	int i;
- 	u32 buf;
- 	unsigned long timeout;
-+	int ret;
- 
--	lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+	ret = lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+	if (ret < 0)
-+		return ret;
- 
- 	if (buf & OTP_PWR_DN_PWRDN_N_) {
- 		/* clear it and wait to be cleared */
--		lan78xx_write_reg(dev, OTP_PWR_DN, 0);
-+		ret = lan78xx_write_reg(dev, OTP_PWR_DN, 0);
-+		if (ret < 0)
-+			return ret;
- 
- 		timeout = jiffies + HZ;
- 		do {
- 			udelay(1);
--			lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+			ret = lan78xx_read_reg(dev, OTP_PWR_DN, &buf);
-+			if (ret < 0)
-+				return ret;
-+
- 			if (time_after(jiffies, timeout)) {
- 				netdev_warn(dev->net,
- 					    "timeout on OTP_PWR_DN completion");
--				return -EIO;
-+				return -ETIMEDOUT;
- 			}
- 		} while (buf & OTP_PWR_DN_PWRDN_N_);
- 	}
- 
- 	/* set to BYTE program mode */
--	lan78xx_write_reg(dev, OTP_PRGM_MODE, OTP_PRGM_MODE_BYTE_);
-+	ret = lan78xx_write_reg(dev, OTP_PRGM_MODE, OTP_PRGM_MODE_BYTE_);
-+	if (ret < 0)
-+		return ret;
- 
- 	for (i = 0; i < length; i++) {
--		lan78xx_write_reg(dev, OTP_ADDR1,
--				  ((offset + i) >> 8) & OTP_ADDR1_15_11);
--		lan78xx_write_reg(dev, OTP_ADDR2,
--				  ((offset + i) & OTP_ADDR2_10_3));
--		lan78xx_write_reg(dev, OTP_PRGM_DATA, data[i]);
--		lan78xx_write_reg(dev, OTP_TST_CMD, OTP_TST_CMD_PRGVRFY_);
--		lan78xx_write_reg(dev, OTP_CMD_GO, OTP_CMD_GO_GO_);
-+		ret = lan78xx_write_reg(dev, OTP_ADDR1,
-+					((offset + i) >> 8) & OTP_ADDR1_15_11);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_ADDR2,
-+					((offset + i) & OTP_ADDR2_10_3));
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_PRGM_DATA, data[i]);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_TST_CMD, OTP_TST_CMD_PRGVRFY_);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = lan78xx_write_reg(dev, OTP_CMD_GO, OTP_CMD_GO_GO_);
-+		if (ret < 0)
-+			return ret;
- 
- 		timeout = jiffies + HZ;
- 		do {
- 			udelay(1);
--			lan78xx_read_reg(dev, OTP_STATUS, &buf);
-+			ret = lan78xx_read_reg(dev, OTP_STATUS, &buf);
-+			if (ret < 0)
-+				return ret;
-+
- 			if (time_after(jiffies, timeout)) {
- 				netdev_warn(dev->net,
- 					    "Timeout on OTP_STATUS completion");
--				return -EIO;
-+				return -ETIMEDOUT;
- 			}
- 		} while (buf & OTP_STATUS_BUSY_);
- 	}
 -- 
 2.39.5
 
