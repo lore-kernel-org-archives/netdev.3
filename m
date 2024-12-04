@@ -1,189 +1,173 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED91020D508;
-	Wed,  4 Dec 2024 16:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E3820CCE4;
+	Wed,  4 Dec 2024 16:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733330466; cv=none; b=pBwZGrZl5aBhkuR4OXpEI0RdgQBYJTnOOG2fh6CYqNrDuy7IqR5Yj5IFAYVb95tUoPn+efocdYmlm7fiC7GERbB5yShDj0560pueDwiuc1rHKKKaGPzhpbw9VCnfhGglwiXPuK8o7Rt4Vo+CMxffvWQoQxUKvr1+XKV4AxNltmM=
+	t=1733330566; cv=none; b=M5r7f52+KjUR+/IMvrT/kERb7/1tzrblJ9QBDgqZlgbufr/38VU95Kf8C1H6QSqEgZA5VzgHSTrhdrWsH9GkRp49Stgs7zz2HCW8q9t6Xz32lp+gjLYoAaVxy+NyMl/2ZpHgVFcCCTTPPlDM/E1J85UjatBkD9qoyGo536C/nNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733330466; c=relaxed/simple;
-	bh=YomcDZLsGkHJ93XYiHcO82QDo1w9Pr3neNOGqdenPeA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aAC/qx6hqoA7pEAx/sCw4cosuyhadaUhZ7wz4GeBthlW2Y9BLx5iwh4f96iM0GTD4hTc/Fk97m1MSQYwUK4dLugS9cOVYi0Fu5qOvcZXH4xYtdsNGji5IY3MyJQN8Sa+BVEmXMWmCtd1v67rBzqNBF/tGtqEWc9aUDKR5ZeeUaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa55da18f89so1044166566b.0;
-        Wed, 04 Dec 2024 08:41:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733330462; x=1733935262;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cp5LZ1kxAlRspYk7ziqigDfPMTtHysD3G76P4O98mfc=;
-        b=PCg2it7Dy+DB+dUV3p/njBpA4e/D3QDvI+2anX49f44whHDsrPGwNrzbo4gUhwZf9Q
-         gvRltYJvX7zGEzpSRQsQ9r7cF7EvHHHcQJgqJng3q2/5OxP04hhEvznNg5maIpgP8qyK
-         EpBwxPdTUBqZrZ1vtwm2/PXu5wj+0ZnE8fj6Ukij0Pan8KzVuTo+vE95rsLOBwsdZv6E
-         9ezBGbIB8bEDXS805oTLj89OtVtOR2mpFoYbyC+PYkXwi8YF7kzE2B6K8gWzH56QaFh/
-         1SoWnNx7hLFbahT74tRivPlmdKiDO/dyzHVadoRQ6fHqMPPgeUvafxpC1Jacv9vFDNcV
-         6aTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKtaGkjHvq1uEOi1X8kjCamcFd+ZS3SAKoh8bX83Fp1OvQDwSZqaxaZn8inWM7FTYn0Ta589nEW4wrcXmxRvEe@vger.kernel.org, AJvYcCViXz/fMTtCLi7q+MKOVMQBu32gPE2f50/Umya6LRkAGvsHESo8gCumwm5vzitDaFLqTYfdtcJrtlkJyEk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/CJJUkLgqqfnmx7BZ1sTgh3v64AZWLbK5v2UZlIEeKOkOmw+w
-	7U+TPvxjf1RbYAX38/D+8LiGkp0ThTHXmA2lgPoH0zQU0UYtS16j
-X-Gm-Gg: ASbGncv8Aqf1mY1UCxn4FjgzLq7HvcT49n4cdtle/BewoXMy4eEArst3mV893eZVilO
-	jpmWsoStmWaMsQzbWhpVPSY9TbZRI3egW7VfOGiU34IkFddrpymuK9ZKBiIk5k15ByLeGXNYvCQ
-	76zRl9WGJl1JX/2IiUdiU7c4oExjd0V9txaKjCIUlxIjHPwpON6I71MBwTltl3LN+0GI3550v0n
-	RD1dBUA39K3IIWAtS4uvHTrQ1hm2T2qzvjwUDYDU7C8V7DyLBxRvd+85J37LCSprw1yi5jnWQjh
-	lQ==
-X-Google-Smtp-Source: AGHT+IHO0yNu3MoObM3YmZd7Bqm+/kY4WR82IcRqXNzewqckpka6AEx2/xT8dMOgvIORsma2yOwlbg==
-X-Received: by 2002:a17:906:cc9:b0:a99:e939:d69e with SMTP id a640c23a62f3a-aa5f7f35a67mr507569266b.51.1733330462155;
-        Wed, 04 Dec 2024 08:41:02 -0800 (PST)
-Received: from localhost (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5998e6a1asm750102766b.98.2024.12.04.08.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:41:01 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 04 Dec 2024 08:40:45 -0800
-Subject: [PATCH net-next 4/4] netconsole: selftest: verify userdata entry
- limit
+	s=arc-20240116; t=1733330566; c=relaxed/simple;
+	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SwVBeuyi5v4Lu3+qjVlZ8iH1SiBRWChE28dBLwbwKnQdQjFyYFaUJ3HjQ0Whr0F8P3iZtcbx2PFNWv2XgHcRGqazdjRc+nPb+PqT2WDeYUYqAIGgpTrIbLt1FgzXtOJ9TPs5Yql3fWFXJf/y3h0MDt6urmx/iYF6l1SdgnQnq3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=u7h8O5xt; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=jwLrm3XJ; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="u7h8O5xt";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="jwLrm3XJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1733330562;
+	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=u7h8O5xtkqg9XTRjnm2AByw4j1oANOrzOdAZMt8HHLl3Yjm3FyhEHxMbav7cjDIHA
+	 rH9JDDrakhhHcgYv4A62tmDfzUMvJQoGwAdV/vD+hl7hO/48F0u9n++jPP9OAsaCaz
+	 8lQA+iSncabPRQrhy+aNTkLi+yhrKeJAE1MSyUWQ=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0036B12819C7;
+	Wed, 04 Dec 2024 11:42:42 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id UnAtfjdAjrWL; Wed,  4 Dec 2024 11:42:41 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1733330561;
+	bh=/tV2/rqC9g/RzItU4xjpFfq9TJiKncFzSdSN5cVSPCI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=jwLrm3XJJg0bE+y+jmRYNMFwEElygfQC2HGQiHPd5Xz/u0WtyW7YWY3rX060euBo7
+	 f9S1jUzBwKhA2RFoWPD/ZkuHcVNkBdGsPnMe1XGCn2DaqvTsyQjVXKsqZzFLZSZ0Tt
+	 bvl4/NIRU0Ww5p2EbpvPP+Glg6xJuhny+E4/K7oQ=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 13309128116A;
+	Wed, 04 Dec 2024 11:42:36 -0500 (EST)
+Message-ID: <5c905df49a332b1136787a524955b46b6153c012.camel@HansenPartnership.com>
+Subject: Re: [PATCH v2 00/32] driver core: Constify API device_find_child()
+ and adapt for various existing usages
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Zijun Hu <zijun_hu@icloud.com>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+	 <thomas@t-8ch.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Philipp Zabel
+ <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jean
+ Delvare <jdelvare@suse.com>,  Guenter Roeck <linux@roeck-us.net>, Martin
+ Tuma <martin.tuma@digiteqautomotive.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Andreas Noever <andreas.noever@gmail.com>, Michael
+ Jamet <michael.jamet@intel.com>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>,  Yehezkel Bernat
+ <YehezkelShB@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Dan Williams
+ <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Dave
+ Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, Takashi
+ Sakamoto <o-takashi@sakamocchi.jp>, Jiri Slaby <jirislaby@kernel.org>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Srinivas Kandagatla
+ <srinivas.kandagatla@linaro.org>, Lee Duncan <lduncan@suse.com>, Chris
+ Leech <cleech@redhat.com>, Mike Christie <michael.christie@oracle.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, Nilesh Javali
+ <njavali@marvell.com>, Manish Rangankar <mrangankar@marvell.com>,
+ GR-QLogic-Storage-Upstream@marvell.com, Davidlohr Bueso
+ <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, Alison
+ Schofield <alison.schofield@intel.com>, Andreas Larsson
+ <andreas@gaisler.com>, Stuart Yoder <stuyoder@gmail.com>, Laurentiu Tudor
+ <laurentiu.tudor@nxp.com>, Jens Axboe <axboe@kernel.dk>, Sudeep Holla
+ <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>, Ard
+ Biesheuvel <ardb@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-gpio@vger.kernel.org,
+ netdev@vger.kernel.org,  linux-pwm@vger.kernel.org, nvdimm@lists.linux.dev,
+  linux1394-devel@lists.sourceforge.net, linux-serial@vger.kernel.org, 
+ linux-sound@vger.kernel.org, open-iscsi@googlegroups.com, 
+ linux-scsi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+ sparclinux@vger.kernel.org, linux-block@vger.kernel.org, 
+ arm-scmi@vger.kernel.org, linux-efi@vger.kernel.org, 
+ linux-remoteproc@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+Date: Wed, 04 Dec 2024 11:42:34 -0500
+In-Reply-To: <235ce0a9-1db1-4558-817b-6f92f22be5ab@icloud.com>
+References: <20241203-const_dfc_done-v2-0-7436a98c497f@quicinc.com>
+	 <g32cigmktmj4egkq2tof27el2yss4liccfxgebkgqvkil32mlb@e3ta4ezv7y4m>
+	 <9d34bd6f-b120-428a-837b-5a5813e14618@icloud.com>
+	 <2024120320-manual-jockey-dfd1@gregkh>
+	 <b9885785-d4d4-4c72-b425-3dc552651d7e@icloud.com>
+	 <8eb7c0c54b280b8eb72f82032ede802c001ab087.camel@HansenPartnership.com>
+	 <8fb887a0-3634-4e07-9f0d-d8d7c72ca802@t-8ch.de>
+	 <f5ea7e17-5550-4658-8f4c-1c51827c7627@icloud.com>
+	 <108c63c753f2f637a72c2e105ac138f80d4b0859.camel@HansenPartnership.com>
+	 <235ce0a9-1db1-4558-817b-6f92f22be5ab@icloud.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-netcons_overflow_test-v1-4-a85a8d0ace21@debian.org>
-References: <20241204-netcons_overflow_test-v1-0-a85a8d0ace21@debian.org>
-In-Reply-To: <20241204-netcons_overflow_test-v1-0-a85a8d0ace21@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3502; i=leitao@debian.org;
- h=from:subject:message-id; bh=YomcDZLsGkHJ93XYiHcO82QDo1w9Pr3neNOGqdenPeA=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBnUIYVHQTBNZj7dFIHe4XblV2VV/QByfF5NQGkt
- ioydQXukr6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCZ1CGFQAKCRA1o5Of/Hh3
- bXPUEACn4DPPvEGE3XTGBPu/ibwdBM9YYUMy4lUVQ76eZv7QVfrRDLG7AbwUbLHhndQVsvqoPG8
- bmykl0uRhspf0MNB+ugX9BfaQM8BvVnAxGhj/DbFvYdxs+gVAdJfujiXEG7axVPhsN4maoOsijw
- Vu51P9JfcO2jp84IO2Oj3noIqJQ9dzIXPQYHo9mBqZqzm+tRdUOF6yCVz7ZxRGerasSnpvMszML
- O6qCCQOXjlKd3ZxqtnuF1wbmvfMFizzAqX5ITp7/ZSMAuyua3AZ9GTjw3TLhEzlAzRhsdEH8Eni
- mIbqLz+aRCP5proEVnkc1AlHLZhr1ZLpEgLuguwEg67jdjpaq/U8ALZvpt+b1b5E9is6ck/YYI1
- arL9sEeLn/xZdwOk8c9/NlZDbkjKJ7UCnvydjgOtQhvqtlq++ToEgfWkgRsQ01LhmKmX9NQTJEC
- 0eJ+zV1CU6tDSXTzJm8qtYnbbaW5UbsEnZYirIx6glEdGsECFP3PCU0fms0CsbHwecHFF4HzUU9
- ceR05gJsUk0KFSiMuAPW2EyFxeM5ilQS2HBqguiAVR1C8Z9GiQIRUmjaL83gDIjukGWG4oPy8YB
- ZGv5ODoPSQj2qRxvhYVRu1k2/lpxvMk30b7pvin2nViDOE8yTPtsHSHendgFLDiykYQXSodG1TP
- aFbCj1R8O7Xpv5w==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
 
-Add a new selftest for netconsole that tests the userdata entry limit
-functionality. The test performs two key verifications:
+On Wed, 2024-12-04 at 20:26 +0800, Zijun Hu wrote:
+> On 2024/12/3 23:34, James Bottomley wrote:
+> > > > This also enables an incremental migration.
+> > > change the API prototype from:
+> > > device_find_child(..., void *data_0, int (*match)(struct device
+> > > *dev, void *data));
+> > > 
+> > > to:
+> > > device_find_child(..., const void *data_0, int (*match)(struct
+> > > device *dev, const void *data));
+> > > 
+> > > For @data_0,  void * -> const void * is okay.
+> > > but for @match, the problem is function pointer type
+> > > incompatibility.
+> > > 
+> > > there are two solutions base on discussions.
+> > > 
+> > > 1) squashing likewise Greg mentioned.
+> > >    Do all of the "prep work" first, and then
+> > >    do the const change at the very end, all at once.
+> > > 
+> > > 2)  as changing platform_driver's remove() prototype.
+> > > Commit: e70140ba0d2b ("Get rid of 'remove_new' relic from
+> > > platform driver struct")
+> > > 
+> > >  introduce extra device_find_child_new() which is constified  ->
+> > > use *_new() replace ALL device_find_child() instances one by one
+> > > -> remove device_find_child() -> rename *_new() to
+> > > device_find_child() once.
+> > Why bother with the last step, which churns the entire code base
+> > again?
+> 
+> keep the good API name device_find_child().
 
-1. Create MAX_USERDATA_ITEMS (16) userdata entries successfully
-2. Confirm that attempting to create an additional userdata entry fails
+Well, I think it's a good opportunity to rename the API better, but if
+that's the goal, you can still do it with _Generic() without churning
+the code base a second time.  The example is in
+slab.h:kmem_cache_create
 
-The selftest script uses the netcons library and checks the behavior
-by attempting to create entries beyond the maximum allowed limit.
+> > Why not call the new function device_find_child_const() and simply
+> > keep it (it's descriptive of its function).  That way you can have
+> > a patch series without merging and at the end simply remove the old
+> > function.
+> 
+> device_find_child is a good name for the API, 'find' already means
+> const.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- MAINTAINERS                                        |  2 +-
- .../selftests/drivers/net/netcons_overflow.sh      | 67 ++++++++++++++++++++++
- 2 files changed, 68 insertions(+), 1 deletion(-)
+Not to me it doesn't, but that's actually not what I think is wrong
+with the API name: it actually only returns the first match, so I'd
+marginally prefer it to be called device_find_first_child() ... not
+enough to churn the code to change it, but since you're doing that
+anyway it might make sense as an update.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8af5c9a28e68c4b6a785e2e6b82db20b3cf59822..62192db4641a4056d1eab911f5c141fb37eaed36 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16092,7 +16092,7 @@ S:	Maintained
- F:	Documentation/networking/netconsole.rst
- F:	drivers/net/netconsole.c
- F:	tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
--F:	tools/testing/selftests/drivers/net/netcons_basic.sh
-+F:	tools/testing/selftests/drivers/net/netcons\*
- 
- NETDEVSIM
- M:	Jakub Kicinski <kuba@kernel.org>
-diff --git a/tools/testing/selftests/drivers/net/netcons_overflow.sh b/tools/testing/selftests/drivers/net/netcons_overflow.sh
-new file mode 100755
-index 0000000000000000000000000000000000000000..a19f613553578dc185b7332a827463d9b0c6685f
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netcons_overflow.sh
-@@ -0,0 +1,67 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+#  This test verifies that users can successfully create up to
-+#  MAX_USERDATA_ITEMS userdata entries without encountering any failures.
-+#
-+#  Additionally, it tests for expected failure when attempting to exceed this
-+#  maximum limit.
-+#
-+# Author: Breno Leitao <leitao@debian.org>
-+
-+set -euo pipefail
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "${SCRIPTDIR}"/lib/sh/lib_netcons.sh
-+# This is coming from netconsole code. Check for it in drivers/net/netconsole.c
-+MAX_USERDATA_ITEMS=16
-+
-+# Function to create userdata entries
-+function create_userdata_max_entries() {
-+	# All these keys should be created without any error
-+	for i in $(seq $MAX_USERDATA_ITEMS)
-+	do
-+		# USERDATA_KEY is used by set_user_data
-+		USERDATA_KEY="key"${i}
-+		set_user_data
-+	done
-+}
-+
-+# Function to verify the entry limit
-+function verify_entry_limit() {
-+	# Allowing the test to fail without exiting, since the next command
-+	# will fail
-+	set +e
-+	mkdir "${NETCONS_PATH}/userdata/key_that_will_fail" 2> /dev/null
-+	ret="$?"
-+	set -e
-+	if [ "$ret" -eq 0 ];
-+	then
-+		echo "Adding more than ${MAX_USERDATA_ITEMS} entries in userdata should fail, but it didn't" >&2
-+		ls "${NETCONS_PATH}/userdata/" >&2
-+		exit "${ksft_fail}"
-+	fi
-+}
-+
-+# ========== #
-+# Start here #
-+# ========== #
-+
-+modprobe netdevsim 2> /dev/null || true
-+modprobe netconsole 2> /dev/null || true
-+
-+# Check for basic system dependency and exit if not found
-+check_for_dependencies
-+
-+# Remove the namespace, interfaces and netconsole target on exit
-+trap cleanup EXIT
-+# Create one namespace and two interfaces
-+set_network
-+# Create a dynamic target for netconsole
-+create_dynamic_target
-+# populate the maximum number of supported keys in userdata
-+create_userdata_max_entries
-+# Verify an additional entry is not allowed
-+verify_entry_limit
-+exit "${ksft_pass}"
+Regards,
 
--- 
-2.43.5
+James
 
