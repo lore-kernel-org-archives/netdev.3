@@ -1,175 +1,130 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6611F7063;
-	Wed,  4 Dec 2024 14:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4561F7096;
+	Wed,  4 Dec 2024 14:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733321322; cv=none; b=nHDxUbEXJSupxBtwlZ0ZZPM8gARyWXp7t8s/yZ8TqHnzu7wD4S40FHlSmVDWRpJ650bNs4iL9bG+xL8EwNl/ewvVKXGYM0XJ1o2UnoK7JzzFvcaLahHzvsg+bkby4QUPNGrHxAiASi/3DYeKOFxiLubFZQO9KNSYn6Iv7TL0Lkc=
+	t=1733321330; cv=none; b=jfpH/V8jmXo8BlQtkjQ8Vzzilfs6tUi5jRCH4W9ttuu/LezVL6DtErddp4JAXbJbzsGjD4uY2bF31yR3w2XjbAl2YjvbFD1pQixhMP32cCST/OfHcVL2ecJAjfg5pYVrwDm4/L4Iw3AGICDxQbeytTUj998j7KdEczJrjrLoGS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733321322; c=relaxed/simple;
-	bh=/fe8EmsHecaTgFQ0SjApsH7uMyiArhUf6jYyWQV4fVQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uYBFe3yiSvMnREmJih3rC4vFdjNz2wd4U4NVXq0qYAficMhdIdT5AF7PjmIZp81enWYTsgslA81nTPrGQLDU/tTzgjra68Cviw2sCES/IQNMf3Ccc+a6QSKUiSZWT8mbf3ds3G6Uaeu1AmugnYiSuzriZVW6q6aq31qogc4ewtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ELdnrYq+; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1733321330; c=relaxed/simple;
+	bh=1okdIYs91H96snC5/ndQeyXzr6F826zbfhNCRycItLc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QdeGfuM3idVTb9isfoZe0IqjQXRu/FvksxrlRktACXNHe5ObTOn99jnSegvHVXiaoJ2AAh8Q5TGVADQp1y0+1Oy7oplDeXvrsCTTr7yI1yA5GYbr3I2mBb4gmWgcSd5LRd1NQ7dNxiLddmADt9RVAbD8N9C686nd64kdWL/fMhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SZNvK6XS; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ELdnrYq+"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B48NdM3003395;
-	Wed, 4 Dec 2024 06:08:30 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=M8lkfBorNntUGoZ/b+KIj96
-	mrwXAMwLeikIZk9vsPDI=; b=ELdnrYq+ZHkt7KjvSsKHrMEqzOSVLCwHx3YF7u/
-	FKma+tuwkhCUAEs6JuHnGo0KtCnX9P+QrAiiC3EvYIZNCSRHjAibPVRbzxtq5nEv
-	Ok+/QwLq3rw/vWF7SoC5WPTAUqhLcynQYRCEAMEbf0ViadbFeGp6o0UvFoOqyKk8
-	GsfcJiZIEDsyr1UOv9YfRnWntwqLbgoLi1IaPnUlhISoqJ0++HRqzY/ccdbCUrDP
-	RqRVb9iOYCgB4hRw5OMtFx9F+KTlwOk2Sn+svTUCh4nFFVLEJMVykQFA6aqTi30c
-	iaWLd56+fEjU8j9TcGBpzDXi18hTsSXj9zyZsSdkHLcqpfA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 43akhhgjv8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Dec 2024 06:08:30 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 4 Dec 2024 06:08:28 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 4 Dec 2024 06:08:28 -0800
-Received: from hyd1425.marvell.com (unknown [10.29.37.152])
-	by maili.marvell.com (Postfix) with ESMTP id B092D5B6938;
-	Wed,  4 Dec 2024 06:08:23 -0800 (PST)
-From: Sai Krishna <saikrishnag@marvell.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <lcherian@marvell.com>, <jerinj@marvell.com>,
-        <hkelam@marvell.com>, <sbhatta@marvell.com>, <andrew+netdev@lunn.ch>,
-        <kalesh-anakkur.purayil@broadcom.com>
-CC: Sai Krishna <saikrishnag@marvell.com>
-Subject: [net-next PATCH v5 0/6] CN20K silicon with mbox support
-Date: Wed, 4 Dec 2024 19:38:15 +0530
-Message-ID: <20241204140821.1858263-1-saikrishnag@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SZNvK6XS"
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5f1e79c2f81so3215739eaf.2;
+        Wed, 04 Dec 2024 06:08:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733321327; x=1733926127; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vx0u3vo0+JUIMPSAFw/f3+EyZZy7ixLIYC9U8AZ9zVg=;
+        b=SZNvK6XSLRaGKZoji3Kq5o5BhKpbEIXrFxLtqcxY9lLRfW/T3vwIjWOkGTDRR6Tol9
+         VR6bAOpsXGzohUvo5QUp+aLIEg4RHVr3FyZIPg/1QZMR8+y5ecVHYlUq2n8Aunz580gX
+         Gzf6koUYSzCsuSw0zC6VTgp91yc+IF5yEcI4jEnRWQENoNa2vX+HkCrLJLKrTkGyqrYg
+         SQm5TXIQ84Uko1TFEuqk1MILtFjpK0YgYC+nUNckqtrka6eh+B7XTULgPkDtIfIzGbNW
+         ik5KegMTAB81GNqPp2rqTNgnYzHDXkfQ3QYifd7vsGUlBywdmBBPVFTYVgKW97ixRaFb
+         EBTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733321327; x=1733926127;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vx0u3vo0+JUIMPSAFw/f3+EyZZy7ixLIYC9U8AZ9zVg=;
+        b=bS0k+rYB1pSv4R8/s9Tw6axvUiClJpjf8PoAb6up5v65mTG85Bx30kqk8ws+48uKL/
+         sZ6BKOCIfcIFj26EAEHnrLKqKkIURtrHS6xPk/8ChVdD4D53RARmR75fziA/Iwlj0V3M
+         Z5ORpKoSPedr8Z8+R9pIpFk1JX++/OvkT0RBXAKX2ehCzvNxbiWoC445cXerq9YB9GJY
+         iAXg5FUZJk/089XXKgy74JzSKaClIwMEYnC0TYx+PIwG2kOzspikWefd8WmSSheKWmhN
+         BV50Z+wS0GYVT7Ufs+N2Wdj/5BHx7bkisA/JwPJ7tAxcuvrA7xzmZLNDAIkdF9QfjcLW
+         CMrg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXJiOKvkdoq54gvREGdLjg733X5hZItI1c9+kC/e3ytVW6nR1RW+7VsIKkmYQs76Yzg8vN8xfFzfARK58y6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIoAByv+duatNOgItrl/3IuWGXTy4Hj2rMp1OwZVrYYYwyItHX
+	KoLpzhpdfqNppE/6r4htDrEUzY9jsA21oXnuGGe+eGtOJQmaQ8qZbpYMjJdZCK7wdeoMv80grG2
+	DCKYdvWx5ru1c3oxeNGANTRMS9EgRAw==
+X-Gm-Gg: ASbGncvYPNr/YnPqs6YcJFq5EUk16tIK+vG7ZU1zWrkmLFGsgVm/n4ETie6ZGeOfRrK
+	fgXro2MAFHQhA3DNInzf4JD1aUR7GYltCFhnhdieOoXzlb/fmV/ILCFTDz6UDdw==
+X-Google-Smtp-Source: AGHT+IF0BqOExzj4u/H/mCCNIyAfyv+H3I4HsOxvBOgLtMLfNdBmAHGcjzh4GFjo5NNZ7IxIn7jIpmEBATx1iNJ0RT8=
+X-Received: by 2002:a05:6830:490d:b0:71d:634a:e0d6 with SMTP id
+ 46e09a7af769-71dad6069d1mr8141136a34.6.1733321327458; Wed, 04 Dec 2024
+ 06:08:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: WVoDooGGjCiyFqFtn3zrtsTSKUp1Nb6r
-X-Proofpoint-GUID: WVoDooGGjCiyFqFtn3zrtsTSKUp1Nb6r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
+References: <20241203130655.45293-1-donald.hunter@gmail.com>
+ <20241203130655.45293-8-donald.hunter@gmail.com> <016ba49a8b072f89fc4340341be166e26cc1b9a8.camel@sipsolutions.net>
+ <CAD4GDZyCPiw1r02BHA_atDQdhsyVhxg=W1dnwi-Bc_tnkxtVeA@mail.gmail.com> <cc0a13f9674238d3b7607e9d9b58ee6e5cc4aa5c.camel@sipsolutions.net>
+In-Reply-To: <cc0a13f9674238d3b7607e9d9b58ee6e5cc4aa5c.camel@sipsolutions.net>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Wed, 4 Dec 2024 14:08:36 +0000
+Message-ID: <CAD4GDZxa-=_8DcVjz+=AQAyyiORey2U2sv6qmayoF34nTTN_cA@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 7/7] netlink: specs: wireless: add a spec for nl80211
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-wireless@vger.kernel.org, 
+	donald.hunter@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-CN20K is the next generation silicon in the Octeon series with various
-improvements and new features.
+On Wed, 4 Dec 2024 at 13:28, Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> > > Also, I don't know how we will maintain this if it's not tied to any
+> > > kernel code. What do you suggest? Do you want to just maintain it
+> > > following the nl80211.h spec all the time?
+> >
+> > It's a good question. I am okay with maintaining it alongside the
+> > nl80211.h file, which will likely motivate me to write some automation
+> > at least for notifying any divergence. There might come a time when it
+> > becomes desirable to generate some of nl80211.h from the spec, as
+> > Stanislav Fomichev is doing for ethtool here:
+> >
+> > https://lore.kernel.org/netdev/20241202162936.3778016-1-sdf@fomichev.me/
+>
+> I think I wouldn't mind that - I'm hoping it'll also generate policies
+> etc.? Though on that front we probably have weird quirks too ...
 
-Along with other changes the mailbox communication mechanism between RVU
-(Resource virtualization Unit) SRIOV PFs/VFs with Admin function (AF) has
-also gone through some changes.
+Yes, the policies are generated, quirks notwithstanding ;-)
 
-Some of those changes are
-- Separate IRQs for mbox request and response/ack.
-- Configurable mbox size, default being 64KB.
-- Ability for VFs to communicate with RVU AF instead of going through
-  parent SRIOV PF.
+> But until then I guess someone's going to have to maintain it, and I'm
+> not sure I want that to be me right now :)
 
-Due to more memory requirement due to configurable mbox size, mbox memory
-will now have to be allocated by
-- AF (PF0) for communicating with other PFs and all VFs in the system.
-- PF for communicating with it's child VFs.
+Ack that. The burden is on me.
 
-On previous silicons mbox memory was reserved and configured by firmware.
+> > > > +      name: get-wiphy
+> > > > +      doc: Get information about a wiphy or dump a list of all wiphys
+> > > > +      attribute-set: nl80211-attrs
+> > > > +      do:
+> > > > +        request:
+> > > > +          value: 1
+> > > > +          attributes:
+> > > > +            - wiphy
+> > > > +        reply:
+> > > > +          value: 3
+> > > > +      dump:
+> > > > +        request:
+> > > > +          attributes:
+> > > > +            - wiphy
+> > > >
+> > >
+> > > This already seems wrong - dump wiphy really should unconditionally
+> > > include NL80211_ATTR_SPLIT_WIPHY_DUMP these days.
+> >
+> > Yes, the valid parameter attributes should be wiphy, wdev, ifindex and
+> > split-wiphy-dump by the look of it.
+>
+> Well there's that about valid parameters, but also no (new) tools today
+> should ever *not* include the split-wiphy-dump attribute. I guess that
+> can't be expressed here, but it's a gotcha for implementers that just
+> follow the YNL spec?
 
-This patch series add basic mbox support for AF (PF0) <=> PFs and
-PF <=> VFs. AF <=> VFs communication and variable mbox size support will
-come in later.
+There's no way to specify that, but the constraint can be described
+clearly in the doc string. I'll do that for v2.
 
-Patch #1 Supported co-existance of bit encoding PFs and VFs in 16-bit
-         hardware pcifunc format between CN20K silicon and older octeon
-         series. Also exported PF,VF masks and shifts present in mailbox
-         module to all other modules.
-
-Patch #2 Added basic mbox operation APIs and structures to support both
-         CN20K and previous version of silicons.
-
-Patch #3 This patch adds support for basic mbox infrastructure
-         implementation for CN20K silicon in AF perspective. There are
-         few updates w.r.t MBOX ACK interrupt and offsets in CN20k.
-         
-Patch #4 Added mbox implementation between NIC PF and AF for CN20K.
-
-Patch #5 Added mbox communication support between AF and AF's VFs.
-
-Patch #6 This patch adds support for MBOX communication between NIC PF and
-         its VFs.
-
-Sai Krishna (5):
-  octeontx2-af: CN20k basic mbox operations and structures
-  octeontx2-af: CN20k mbox to support AF REQ/ACK functionality
-  octeontx2-pf: CN20K mbox REQ/ACK implementation for NIC PF
-  octeontx2-af: CN20K mbox implementation for AF's VF
-  octeontx2-pf: CN20K mbox implementation between PF-VF
-
-Subbaraya Sundeep (1):
-  octeontx2: Set appropriate PF, VF masks and shifts based on silicon
-
----
-v5 changes:
-	No changes, re-posting.
-
-v4 changes:
-	Addressed minor conflits suggested by Jakub Kicinski
-        1. This V4 version of patch set is just a rebase of V3 on top of
-	net-next to address some minor conflicts.
-
-v3 changes:
-	Addressed review comments given by Jakub Kicinski, Simon Horman
-        1. Fixed sparse errors, warnings.
-        2. Fixed a comment mistake, inline with kernel-doc format.
-        3. Removed un-necessary type casting to honor Networking code format.
-
-v2 changes:
-	Addressed review comments given by Kalesh Anakkur Purayil
-        1. Optimized code in parts of patches, removed redundant code
-        2. Fixed sparse warning
-        3. Removed debug log.
-
- .../ethernet/marvell/octeontx2/af/Makefile    |   2 +-
- .../ethernet/marvell/octeontx2/af/cn20k/api.h |  34 ++
- .../marvell/octeontx2/af/cn20k/mbox_init.c    | 418 ++++++++++++++++++
- .../ethernet/marvell/octeontx2/af/cn20k/reg.h |  81 ++++
- .../marvell/octeontx2/af/cn20k/struct.h       |  40 ++
- .../ethernet/marvell/octeontx2/af/common.h    |   2 +-
- .../net/ethernet/marvell/octeontx2/af/mbox.c  | 129 +++++-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  13 +
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 195 +++++---
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  53 ++-
- .../marvell/octeontx2/af/rvu_struct.h         |   6 +-
- .../ethernet/marvell/octeontx2/nic/Makefile   |   2 +-
- .../ethernet/marvell/octeontx2/nic/cn10k.c    |  18 +-
- .../ethernet/marvell/octeontx2/nic/cn10k.h    |   1 +
- .../ethernet/marvell/octeontx2/nic/cn20k.c    | 252 +++++++++++
- .../ethernet/marvell/octeontx2/nic/cn20k.h    |  17 +
- .../marvell/octeontx2/nic/otx2_common.c       |  10 +-
- .../marvell/octeontx2/nic/otx2_common.h       |  36 +-
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 152 +++++--
- .../ethernet/marvell/octeontx2/nic/otx2_reg.h |  49 +-
- .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  44 +-
- 21 files changed, 1392 insertions(+), 162 deletions(-)
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/api.h
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/mbox_init.c
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/reg.h
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/struct.h
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
- create mode 100644 drivers/net/ethernet/marvell/octeontx2/nic/cn20k.h
-
--- 
-2.25.1
-
+Thanks,
+Donald.
