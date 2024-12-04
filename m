@@ -1,237 +1,331 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5655320DD5B
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 17:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E68220DD6D
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 17:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332794; cv=none; b=uP56ds7d8eCiWHwaE2HQkzbCKFEaAWrS16ZGj0IOhuULEUYZqd6SqFPisCW0qlGmjZb89IPAW3LilKaB99JiKaTuTRiOI+GYdAcRZvpI8nwZ70kqiDTCfEflCVcaeHNKzrbZiPb/FjXN7Y6osBvihLwKmUZq5pem78DN/IfjTho=
+	t=1733332964; cv=none; b=oPiUUjT1hv9rG7r7TE8X9Q/fl9NVlRsHNJhHo7Yh+dsSz/Y6Lnx0FLMYwCs8cWAebtu/cq9jEZ5yk0kzEsGuy4Qja/SRfJQvmmSdcdBS0ZGolaPh9cTGj44pa5J9tXTEdFkzE/0H3Dr8RjOvGrk5fGVs2X670mnAFN7DsnhlxkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332794; c=relaxed/simple;
-	bh=vTr1igLhIDtfKINzt7pPA2LIHaCiS9UDZmVN/VLa30g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sifLvxnbxODMlT1WYzCI1WuLpehY02c1P0BbVrC/q/Hz5T+tunq/gpTSFYl7SZLvWNIYeVYspFBLOD3xOkQ6I35/+ZhIvYuvjuXqA0XjFgnzBj4+Y65NdoeTT5sZS2DYC4rcUVUI7dFM05ftRXKv4xQyyKjlvs7uKCowK/n+f0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HFLUr/4f; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1733332964; c=relaxed/simple;
+	bh=CQ/5YfEJvkG5WscL4093Y9mZyhtCYa/aZu85bhnRsoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=acPTEH8ZX7OEO4+gUuy+CnmSfcy6ezEZNH2LBHKAD1k2XnaPe2yJh0pZ53+lQcOZgbpPxXyC7UTJ3Buh6HPi9YELH2JMvEnMeCM+iiyOIw+FUiE1zkejiRpvgjMh2A68gEoGxgqk7GHtassGHbv9aFYiJnO0DQ4nzWLXDi3drsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=F1JNElXV; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HFLUr/4f"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6ef590f5321so90143577b3.0
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 09:19:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="F1JNElXV"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7fd10cd5b10so23504a12.2
+        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 09:22:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733332791; x=1733937591; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ThCuNupMzkORQUCZ2snpPbXOuVyinHnt+ntQhdrZzRI=;
-        b=HFLUr/4fMqXoCxzb5JaIUlM1I6LIXSAoJQEclaf2Fx5FP54SJ7l0Wrs1jpZZ4voRIZ
-         JZfYsnUJdhmO2B0Us0hvzLryAGJaoiL9C8TIhZ9qa7H4XUjql99oftLDwaRfNvDiFnNp
-         vZ27Eq0a+kEYc+XPeUsVsQl3K+1GGPNph8sfGpu8BF3PuQ2h0rLqHP4EbutG5VViQoZ9
-         LTbojwAidVBfRDDEqqKktnJa/KNaa2Y/ygUBKb+6E0KAIa36FyIcwl3ntaMoZsT+CMZu
-         K9j1lFc1K4ogd5l5E3uMXj2HYlgYQGA8OzYS6M97/p5rRp9dactz/nfori/5nrFIFhQt
-         gWNQ==
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1733332961; x=1733937761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GzUZlML4zdc55ZOBuwqdAZPFhGyN3Gd9Cwr1/cz4A38=;
+        b=F1JNElXV4EumbE5RZ0YuoX+hycd5YS0aB3on3XlelSvoN+H79oGAazvrNSnekid2b8
+         2Y2XRXdx64JjC+OlYx5yZnHrtwyuurXTCZcMUtUM44k7teFSKlVPvxP3kyrDFmdvJCRS
+         PaIaqTe05FGsAdsGukA8QYzuenLYMchb6ikS1Os1ZraJucbIp7PSqhRIb39jzWzXcCd5
+         wgYnqtCz+7YH/f9S47OXFlzOxo1zIUWKr2QtgEaqMLyDe3F87yo4UWEcxeDI3e+/YgKQ
+         AUlP/du125/6gjA37dStCUMJqY3aCtv7jtkm8qu7w51QWJCcj9dK/N7dBdzJJv0BQ0H9
+         lIkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733332791; x=1733937591;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ThCuNupMzkORQUCZ2snpPbXOuVyinHnt+ntQhdrZzRI=;
-        b=eENr10++WGGp/9viJ6S1bAlyLUbVOBs7eli4iznJDsinJCDZDsfydDFjTLXHWRQs3A
-         aMyftNqOQciAJZf63PrvPS8tR5wY34hQBmDe17QvWzWzzfKZpVfmOqgE9pl6bCoTNx/i
-         dKa+QHNFhELPd/yKzGYUkLhHxe61tGEtGgMMFiaXLiH5kx7ZLdqAuXE9udzw9HMF5liV
-         PE+5n6A83A+VkrowQdh4WtcJx/vUMoc9mKFN8vx2/letF25n1CP/poJvfl7hF1/5uVEs
-         5SwJOAtmoGKP5N9kY0meEzqW6n8Xaar7B7yt0F4nS/lLQPeW8/8JXys8OSyvqjh7a4/+
-         tdqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcO/0Or9QSIV9UAbZbbAYzJPHyD74nsTiN50XT+FtHBhR8iJCVgeCj9cgH6Kx8CJhtBHqE1ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznFGnka1DZvKwvm4GpKsW+ibLHfjHCcaAbg+MBY5wzQv1Vv9r6
-	05U9adFtl3Kj2gEzISVwDhtzd1osNX+vSUY3gmr/a4O4c9HOQaQ0AuuM5tW030QBEFmUqy1Ydkf
-	oWM94/wlOpg==
-X-Google-Smtp-Source: AGHT+IHBiI2gaV4W2E+oryz9BtbnOw193W9PcT0tZj12W3CSDbuknqFkNbetMpz5VER2OQw8oQ0HYLpQWHjD+g==
-X-Received: from ywbet19.prod.google.com ([2002:a05:690c:2e13:b0:6ef:60b5:32b0])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:690c:6382:b0:6ef:5ab8:2c53 with SMTP id 00721157ae682-6efad1be626mr75865177b3.19.1733332791302;
- Wed, 04 Dec 2024 09:19:51 -0800 (PST)
-Date: Wed,  4 Dec 2024 17:19:50 +0000
+        d=1e100.net; s=20230601; t=1733332961; x=1733937761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GzUZlML4zdc55ZOBuwqdAZPFhGyN3Gd9Cwr1/cz4A38=;
+        b=mhtOAf7LvlHEoLfF2ohN2bw52x1P7D1pZFuV4aUABJm/Xpm8SYCSkVgLcSHecvIEux
+         4WxeFyMOJ/Lrj5h+ZgLtv570So5LQYRYD2G8tP6XLQa7xtVIft/8Ap4v0kAWO0YK6Khi
+         buE4PsZ9b7gutAnnXfSTjloJlhDWxG2eVzvQLZ1KmyuF1FvA97PDp/KHigYtki6JTsZW
+         +T851XCY3uG7JyrJ+VMqHtBjQgrYUkhGAMPGdMIlijZE8z4q9NS5VLFg4ROaA+fFAYa5
+         IjhWDEli/8tL3RBJFd3z97VF7ltRI4bqlQBultgOQE2hyK/6J+yvF0Udfmm3TpxDk++p
+         sAJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+1fkgKYQlCIIZ+JFVAMUK31uVRin4nk5cy7PWTC2IXN6nMErNk2KihnB0l4xsXlXah5LmzZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJcPCUl2r+vfuaJW0TK7TNvgZC4ac9oqmAKnbPjbfdHRbwd6pl
+	SpqtAPCQzMubuZckAZpuOuaBIdy+ERt5NBCQ5U3Kx8Cuc+6FUVNZ41YL92cuxqw=
+X-Gm-Gg: ASbGncuJop91uZ6HgGbyginBX/Q/LTTAZaF187LLhrWaOtyJCvb6svRYga+FC0OvfmP
+	WNafTN4v+VUbWntl4j8SitIoipwYPL4Ikirw7uIlJfdym2RJCANfo2w/Y3jLpNvOXvJM7prOiGh
+	d6C91dfqKQNCod4LTQvC3kM6A2TMb5DONWmjBG8nAM9+adClJbWNq7wqOf5Em4SZso7axl1o7PU
+	4g9QEJ7ia6TFvG1CwVp9RQVb5Nt1Souixs=
+X-Google-Smtp-Source: AGHT+IGI20u7e5CYbx/vBstDIX2y0Y4Q3dUiNYLAKbvvnNhfjri8X2hV8ZElUBh79vdJpj9GHWDjZQ==
+X-Received: by 2002:a05:6a21:7e85:b0:1e1:7536:87d2 with SMTP id adf61e73a8af0-1e175368d60mr3181694637.44.1733332961451;
+        Wed, 04 Dec 2024 09:22:41 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:19::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fc9c32250asm11705361a12.46.2024.12.04.09.22.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 09:22:40 -0800 (PST)
+From: David Wei <dw@davidwei.uk>
+To: io-uring@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Pedro Tammela <pctammela@mojatatu.com>
+Subject: [PATCH net-next v8 00/17] io_uring zero copy rx
+Date: Wed,  4 Dec 2024 09:21:39 -0800
+Message-ID: <20241204172204.4180482-1-dw@davidwei.uk>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204171950.89829-1-edumazet@google.com>
-Subject: [PATCH v2 net-next] net_sched: sch_fq: add three drop_reason
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Victor Nogueira <victor@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add three new drop_reason, more precise than generic QDISC_DROP:
+This patchset adds support for zero copy rx into userspace pages using
+io_uring, eliminating a kernel to user copy.
 
-"tc -s qd" show aggregate counters, it might be more useful
-to use drop_reason infrastructure for bug hunting.
+We configure a page pool that a driver uses to fill a hw rx queue to
+hand out user pages instead of kernel pages. Any data that ends up
+hitting this hw rx queue will thus be dma'd into userspace memory
+directly, without needing to be bounced through kernel memory. 'Reading'
+data out of a socket instead becomes a _notification_ mechanism, where
+the kernel tells userspace where the data is. The overall approach is
+similar to the devmem TCP proposal.
 
-1) SKB_DROP_REASON_FQ_BAND_LIMIT
-   Whenever a packet is added while its band limit is hit.
-   Corresponding value in "tc -s qd" is bandX_drops XXXX
+This relies on hw header/data split, flow steering and RSS to ensure
+packet headers remain in kernel memory and only desired flows hit a hw
+rx queue configured for zero copy. Configuring this is outside of the
+scope of this patchset.
 
-2) SKB_DROP_REASON_FQ_HORIZON_LIMIT
-   Whenever a packet has a timestamp too far in the future.
-   Corresponding value in "tc -s qd" is horizon_drops XXXX
+We share netdev core infra with devmem TCP. The main difference is that
+io_uring is used for the uAPI and the lifetime of all objects are bound
+to an io_uring instance. Data is 'read' using a new io_uring request
+type. When done, data is returned via a new shared refill queue. A zero
+copy page pool refills a hw rx queue from this refill queue directly. Of
+course, the lifetime of these data buffers are managed by io_uring
+rather than the networking stack, with different refcounting rules.
 
-3) SKB_DROP_REASON_FQ_FLOW_LIMIT
-   Whenever a flow has reached its limit.
-   Corresponding value in "tc -s qd" is flows_plimit XXXX
+This patchset is the first step adding basic zero copy support. We will
+extend this iteratively with new features e.g. dynamically allocated
+zero copy areas, THP support, dmabuf support, improved copy fallback,
+general optimisations and more.
 
-Tested:
-tc qd replace dev eth1 root fq flow_limit 10 limit 100000
-perf record -a -e skb:kfree_skb sleep 1; perf script
+In terms of netdev support, we're first targeting Broadcom bnxt. Patches
+aren't included since Taehee Yoo has already sent a more comprehensive
+patchset adding support in [1]. Google gve should already support this,
+and Mellanox mlx5 support is WIP pending driver changes.
 
-      udp_stream   12329 [004]   216.929492: skb:kfree_skb: skbaddr=0xffff888eabe17e00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_FLOW_LIMIT
-      udp_stream   12385 [006]   216.929593: skb:kfree_skb: skbaddr=0xffff888ef8827f00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_FLOW_LIMIT
-      udp_stream   12389 [005]   216.929871: skb:kfree_skb: skbaddr=0xffff888ecb9ba500 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_FLOW_LIMIT
-      udp_stream   12316 [009]   216.930398: skb:kfree_skb: skbaddr=0xffff888eca286b00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_FLOW_LIMIT
-      udp_stream   12400 [008]   216.930490: skb:kfree_skb: skbaddr=0xffff888eabf93d00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_FLOW_LIMIT
+===========
+Performance
+===========
 
-tc qd replace dev eth1 root fq flow_limit 100 limit 10000
-perf record -a -e skb:kfree_skb sleep 1; perf script
+Note: Comparison with epoll + TCP_ZEROCOPY_RECEIVE isn't done yet.
 
-      udp_stream   18074 [001]  1058.318040: skb:kfree_skb: skbaddr=0xffffa23c881fc000 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_BAND_LIMIT
-      udp_stream   18126 [005]  1058.320651: skb:kfree_skb: skbaddr=0xffffa23c6aad4000 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_BAND_LIMIT
-      udp_stream   18118 [006]  1058.321065: skb:kfree_skb: skbaddr=0xffffa23df0d48a00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_BAND_LIMIT
-      udp_stream   18074 [001]  1058.321126: skb:kfree_skb: skbaddr=0xffffa23c881ffa00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_BAND_LIMIT
-      udp_stream   15815 [003]  1058.321224: skb:kfree_skb: skbaddr=0xffffa23c9835db00 rx_sk=(nil) protocol=34525 location=__dev_queue_xmit+0x9d9 reason: FQ_BAND_LIMIT
+Test setup:
+* AMD EPYC 9454
+* Broadcom BCM957508 200G
+* Kernel v6.11 base [2]
+* liburing fork [3]
+* kperf fork [4]
+* 4K MTU
+* Single TCP flow
 
-tc -s -d qd sh dev eth1
-qdisc fq 8023: root refcnt 257 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023
- bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 weights 589824 196608 65536 quantum 18Kb
- initial_quantum 92120b low_rate_threshold 550Kbit refill_delay 40ms
- timer_slack 10us horizon 10s horizon_drop
- Sent 492439603330 bytes 336953991 pkt (dropped 61724094, overlimits 0 requeues 4463)
- backlog 14611228b 9995p requeues 4463
-  flows 2965 (inactive 1151 throttled 0) band0_pkts 0 band1_pkts 9993 band2_pkts 0
-  gc 6347 highprio 0 fastpath 30 throttled 5 latency 2.32us flows_plimit 7403693
- band1_drops 54320401
+With application thread + net rx softirq pinned to _different_ cores:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-v2: Addressed Cong feedback from v1
-    v1: https://lore.kernel.org/netdev/CANn89iLofU1dnwAf-4ezn08h=o82ZPCHc3QJSMUdC+5aUhRsgA@mail.gmail.com/T/#t
----
- include/net/dropreason-core.h | 18 ++++++++++++++++++
- include/net/sch_generic.h     |  9 +++++++++
- net/sched/sch_fq.c            | 14 ++++++++++----
- 3 files changed, 37 insertions(+), 4 deletions(-)
++-------------------------------+
+| epoll     | io_uring          |
+|-----------|-------------------|
+| 82.2 Gbps | 116.2 Gbps (+41%) |
++-------------------------------+
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 6c5a1ea209a22d8702f8c982762ca5f69791b8eb..c29282fabae6cdf9dd79f698b92b4b8f57156b1e 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -58,6 +58,9 @@
- 	FN(TC_EGRESS)			\
- 	FN(SECURITY_HOOK)		\
- 	FN(QDISC_DROP)			\
-+	FN(FQ_BAND_LIMIT)		\
-+	FN(FQ_HORIZON_LIMIT)		\
-+	FN(FQ_FLOW_LIMIT)		\
- 	FN(CPU_BACKLOG)			\
- 	FN(XDP)				\
- 	FN(TC_INGRESS)			\
-@@ -311,6 +314,21 @@ enum skb_drop_reason {
- 	 * failed to enqueue to current qdisc)
- 	 */
- 	SKB_DROP_REASON_QDISC_DROP,
-+	/**
-+	 * @SKB_DROP_REASON_FQ_BAND_LIMIT: dropped by fq qdisc when per band
-+	 * limit is reached.
-+	 */
-+	SKB_DROP_REASON_FQ_BAND_LIMIT,
-+	/**
-+	 * @SKB_DROP_REASON_FQ_HORIZON_LIMIT: dropped by fq qdisc when packet
-+	 * timestamp is too far in the future.
-+	 */
-+	SKB_DROP_REASON_FQ_HORIZON_LIMIT,
-+	/**
-+	 * @SKB_DROP_REASON_FQ_FLOW_LIMIT: dropped by fq qdisc when a flow
-+	 * exceeds its limits.
-+	 */
-+	SKB_DROP_REASON_FQ_FLOW_LIMIT,
- 	/**
- 	 * @SKB_DROP_REASON_CPU_BACKLOG: failed to enqueue the skb to the per CPU
- 	 * backlog queue. This can be caused by backlog queue full (see
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 5d74fa7e694cc85be91dbf01f0876b9feaa29115..c7a33c2c69830a6cbff8f6359de7cc468c2e845e 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1245,6 +1245,15 @@ static inline int qdisc_drop(struct sk_buff *skb, struct Qdisc *sch,
- 	return NET_XMIT_DROP;
- }
- 
-+static inline int qdisc_drop_reason(struct sk_buff *skb, struct Qdisc *sch,
-+				    struct sk_buff **to_free,
-+				    enum skb_drop_reason reason)
-+{
-+	tcf_set_drop_reason(skb, reason);
-+	return qdisc_drop(skb, sch, to_free);
-+}
-+
-+
- static inline int qdisc_drop_all(struct sk_buff *skb, struct Qdisc *sch,
- 				 struct sk_buff **to_free)
- {
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index a5e87f9ea9861cbedb7ce858fbbcabb5d67cf821..2ca5332cfcc5c52bf30e6f8337814a656b919b17 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -537,6 +537,8 @@ static bool fq_packet_beyond_horizon(const struct sk_buff *skb,
- 	return unlikely((s64)skb->tstamp > (s64)(now + q->horizon));
- }
- 
-+#define FQDR(reason) SKB_DROP_REASON_FQ_##reason
-+
- static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		      struct sk_buff **to_free)
- {
-@@ -548,7 +550,8 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	band = fq_prio2band(q->prio2band, skb->priority & TC_PRIO_MAX);
- 	if (unlikely(q->band_pkt_count[band] >= sch->limit)) {
- 		q->stat_band_drops[band]++;
--		return qdisc_drop(skb, sch, to_free);
-+		return qdisc_drop_reason(skb, sch, to_free,
-+					 FQDR(BAND_LIMIT));
- 	}
- 
- 	now = ktime_get_ns();
-@@ -558,8 +561,9 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		/* Check if packet timestamp is too far in the future. */
- 		if (fq_packet_beyond_horizon(skb, q, now)) {
- 			if (q->horizon_drop) {
--					q->stat_horizon_drops++;
--					return qdisc_drop(skb, sch, to_free);
-+				q->stat_horizon_drops++;
-+				return qdisc_drop_reason(skb, sch, to_free,
-+							 FQDR(HORIZON_LIMIT));
- 			}
- 			q->stat_horizon_caps++;
- 			skb->tstamp = now + q->horizon;
-@@ -572,7 +576,8 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	if (f != &q->internal) {
- 		if (unlikely(f->qlen >= q->flow_plimit)) {
- 			q->stat_flows_plimit++;
--			return qdisc_drop(skb, sch, to_free);
-+			return qdisc_drop_reason(skb, sch, to_free,
-+						 FQDR(FLOW_LIMIT));
- 		}
- 
- 		if (fq_flow_is_detached(f)) {
-@@ -597,6 +602,7 @@ static int fq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 	return NET_XMIT_SUCCESS;
- }
-+#undef FQDR
- 
- static void fq_check_throttled(struct fq_sched_data *q, u64 now)
- {
+Pinned to _same_ core:
+
++-------------------------------+
+| epoll     | io_uring          |
+|-----------|-------------------|
+| 62.6 Gbps | 80.9 Gbps (+29%)  |
++-------------------------------+
+
+==============
+Patch overview
+==============
+
+Networking folks would be mostly interested in patches 1-8, 11, 12 and
+14. Patches 1-8 make the necessary prerequisite changes in netdev core.
+
+Patch 11 implements struct memory_provider_ops, patch 12 adds a
+recv_actor_t func used with tcp_read_sock(), and patch 14 passes it all
+to netdev via the queue API.
+
+io_uring folks would be mostly interested in patches 9-15:
+
+* Initial registration that sets up a hw rx queue.
+* Shared ringbuf for userspace to return buffers.
+* New request type for doing zero copy rx reads.
+
+=====
+Links
+=====
+
+Broadcom bnxt support:
+[1]: https://lore.kernel.org/netdev/20241003160620.1521626-8-ap420073@gmail.com/
+
+Linux kernel branch:
+[2]: https://github.com/spikeh/linux.git zcrx/next
+
+liburing for testing:
+[3]: https://github.com/isilence/liburing.git zcrx/next
+
+kperf for testing:
+[4]: https://git.kernel.dk/kperf.git
+
+Changes in v8:
+--------------
+* add documentation and selftest
+* use io_uring regions for the refill ring
+
+Changes in v7:
+--------------
+net:
+* Use NAPI_F_PREFER_BUSY_POLL for napi_execute + stylistics changes.
+
+Changes in v6:
+--------------
+Please note: Comparison with TCP_ZEROCOPY_RECEIVE isn't done yet.
+
+net:
+* Drop a devmem.h clean up patch.
+* Migrate to netdev_get_by_index from deprecated API.
+* Fix !CONFIG_NET_DEVMEM build.
+* Don’t return into the page pool cache directly, use a new helper 
+* Refactor napi_execute
+
+io_uring:
+* Require IORING_RECV_MULTISHOT flag set.
+* Add unselectable CONFIG_IO_URING_ZCRX.
+* Pulled latest io_uring changes.
+* Unexport io_uring_pp_zc_ops.
+
+Changes in v5:
+--------------
+* Rebase on top of merged net_iov + netmem infra.
+* Decouple net_iov from devmem TCP.
+* Use netdev queue API to allocate an rx queue.
+* Minor uAPI enhancements for future extensibility.
+* QoS improvements with request throttling.
+
+Changes in RFC v4:
+------------------
+* Rebased on top of Mina Almasry's TCP devmem patchset and latest
+  net-next, now sharing common infra e.g.:
+    * netmem_t and net_iovs
+    * Page pool memory provider
+* The registered buffer (rbuf) completion queue where completions from
+  io_recvzc requests are posted is removed. Now these post into the main
+  completion queue, using big (32-byte) CQEs. The first 16 bytes is an
+  ordinary CQE, while the latter 16 bytes contain the io_uring_rbuf_cqe
+  as before. This vastly simplifies the uAPI and removes a level of
+  indirection in userspace when looking for payloads.
+  * The rbuf refill queue is still needed for userspace to return
+    buffers to kernel.
+* Simplified code and uAPI on the io_uring side, particularly
+  io_recvzc() and io_zc_rx_recv(). Many unnecessary lines were removed
+  e.g. extra msg flags, readlen, etc.
+
+Changes in RFC v3:
+------------------
+* Rebased on top of Jakub Kicinski's memory provider API RFC. The ZC
+  pool added is now a backend for memory provider.
+* We're also reusing ppiov infrastructure. The refcounting rules stay
+  the same but it's shifted into ppiov->refcount. That lets us to
+  flexibly manage buffer lifetimes without adding any extra code to the
+  common networking paths. It'd also make it easier to support dmabufs
+  and device memory in the future.
+  * io_uring also knows about pages, and so ppiovs might unnecessarily
+    break tools inspecting data, that can easily be solved later.
+
+Many patches are not for upstream as they depend on work in progress,
+namely from Mina:
+
+* struct netmem_t
+* Driver ndo commands for Rx queue configs
+* struct page_pool_iov and shared pp infra
+
+Changes in RFC v2:
+------------------
+* Added copy fallback support if userspace memory allocated for ZC Rx
+  runs out, or if header splitting or flow steering fails.
+* Added veth support for ZC Rx, for testing and demonstration. We will
+  need to figure out what driver would be best for such testing
+  functionality in the future. Perhaps netdevsim?
+* Added socket registration API to io_uring to associate specific
+  sockets with ifqs/Rx queues for ZC.
+* Added multi-socket support, such that multiple connections can be
+  steered into the same hardware Rx queue.
+* Added Netbench server/client support.
+
+David Wei (6):
+  io_uring/zcrx: add interface queue and refill queue
+  io_uring/zcrx: add io_zcrx_area
+  io_uring/zcrx: add io_recvzc request
+  io_uring/zcrx: set pp memory provider for an rx queue
+  net: add documentation for io_uring zcrx
+  io_uring/zcrx: add selftest
+
+Jakub Kicinski (1):
+  net: page_pool: create hooks for custom page providers
+
+Pavel Begunkov (10):
+  net: prefix devmem specific helpers
+  net: generalise net_iov chunk owners
+  net: prepare for non devmem TCP memory providers
+  net: page_pool: add ->scrub mem provider callback
+  net: page pool: add helper creating area from pages
+  net: page_pool: introduce page_pool_mp_return_in_cache
+  net: add helper executing custom callback from napi
+  io_uring/zcrx: implement zerocopy receive pp memory provider
+  io_uring/zcrx: add copy fallback
+  io_uring/zcrx: throttle receive requests
+
+ Documentation/networking/iou-zcrx.rst         | 201 +++++
+ Kconfig                                       |   2 +
+ include/linux/io_uring_types.h                |   4 +
+ include/net/busy_poll.h                       |   6 +
+ include/net/netmem.h                          |  21 +-
+ include/net/page_pool/memory_provider.h       |  14 +
+ include/net/page_pool/types.h                 |  10 +
+ include/uapi/linux/io_uring.h                 |  54 +-
+ io_uring/KConfig                              |  10 +
+ io_uring/Makefile                             |   1 +
+ io_uring/io_uring.c                           |   7 +
+ io_uring/io_uring.h                           |  10 +
+ io_uring/net.c                                |  74 ++
+ io_uring/opdef.c                              |  16 +
+ io_uring/register.c                           |   7 +
+ io_uring/rsrc.c                               |   2 +-
+ io_uring/rsrc.h                               |   1 +
+ io_uring/zcrx.c                               | 845 ++++++++++++++++++
+ io_uring/zcrx.h                               |  75 ++
+ net/core/dev.c                                |  81 +-
+ net/core/devmem.c                             |  51 +-
+ net/core/devmem.h                             |  45 +-
+ net/core/page_pool.c                          | 102 ++-
+ net/core/page_pool_user.c                     |  15 +-
+ net/ipv4/tcp.c                                |   8 +-
+ .../selftests/drivers/net/hw/.gitignore       |   2 +
+ .../testing/selftests/drivers/net/hw/Makefile |   6 +
+ .../selftests/drivers/net/hw/iou-zcrx.c       | 432 +++++++++
+ .../selftests/drivers/net/hw/iou-zcrx.py      |  64 ++
+ 29 files changed, 2091 insertions(+), 75 deletions(-)
+ create mode 100644 Documentation/networking/iou-zcrx.rst
+ create mode 100644 include/net/page_pool/memory_provider.h
+ create mode 100644 io_uring/KConfig
+ create mode 100644 io_uring/zcrx.c
+ create mode 100644 io_uring/zcrx.h
+ create mode 100644 tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+ create mode 100755 tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+
 -- 
-2.47.0.338.g60cca15819-goog
+2.43.5
 
