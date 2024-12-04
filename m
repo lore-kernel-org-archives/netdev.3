@@ -1,83 +1,224 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6132E155398;
-	Wed,  4 Dec 2024 05:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDE71DA5F;
+	Wed,  4 Dec 2024 05:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733291355; cv=none; b=RyZAE9qLY9c5vnVrbJjWOr3MBJm3G+vSDEPI2F7HL9b/mLVPztEIl0VMrMgBIIXDsYhNP9Q/J37Slj1pmjRxrcS1GghifuZQ4NbrBxdAoG9DONTHwKZg3P+nJ0LPrJPVeFBxjXYPLpoHpdXE4RLiNaBUdatBRGZzaCq3PycEsXA=
+	t=1733291850; cv=none; b=cyCP9//VZ8p1brIri7tW0cJVGvfCB0DPnRU2YTNZmP0T71wpZVzbjEx1eBcL/UQQKmTOKmwqsnqeVnhHi5lhgG/l5xbnz5Gf4mxVRsXXVRVCpOgL/uxJl0Fvy3Jrwjb7Oq4yp2aKSw4jeaKJLdL0VRCvodjytjaxP+0ta0Y1Cus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733291355; c=relaxed/simple;
-	bh=IkEZtadZftKjRqH9yhts5fEPqBDe38sXpY9gxB7o5Mc=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=dKKBqaYPE2kMJAJgZFQDxANe8ceKzvoX4Un9r63YJniKOJhLM6AgkhAahsxCC0Fdh0P4CbPDb/TPzb76vErZtfwccNe0+sNoJEBzq4+G6D+AAp84u/+AQPsfO/QvkxnNQTdLgoR2lwBjL76PvBt/zqEoe7sSz48ZBE/3zV+zmt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=awHI/dA7; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1733291850; c=relaxed/simple;
+	bh=HuvTXqsRA4N97G0Rqta5+oxCTeUV4Gie9FTJal2gZO0=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mrXqB2tbi3XND7Uhhczo25xSE//1dwlsdanzRVQcJZLMi9q0q2Rdf9pBal1Qy7YM8jdDLBlj3LMxU/LJxdVoiXfEBRwJAt4l1VH/ndxekK/+fHp/OsLtB7Xp4tdFd3zDDyXFJSqyTY/TsZRt3/KfJIupawMmNGUlu/NbQI5Bpto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EnBoF/QW; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="awHI/dA7"
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id E66E120BCAE6; Tue,  3 Dec 2024 21:49:13 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E66E120BCAE6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1733291353;
-	bh=WO1k8Du3NxHFMes7jiIFdn5k2SdK8KHlt0QIB6oFTsM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=awHI/dA7tv/s5c6Ko1jjxO/b8h9g0EdFwF3Gko9BwbyI3WTUOmtJq+tiIgbtAlNWB
-	 0ML7L58npWa3taJFWWeXKCkwhndc55LCdO3wx1zye7sOi1SOk8kaZmxtbx5pSF0Uwb
-	 /2rnkyZsXPFKIoQiT7hd+mULCXskH/aDyOTvuVFg=
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Erick Archer <erick.archer@outlook.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net :mana :Request a V2 response version for MANA_QUERY_GF_STAT
-Date: Tue,  3 Dec 2024 21:48:20 -0800
-Message-Id: <1733291300-12593-1-git-send-email-shradhagupta@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EnBoF/QW"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B43rU7f024581;
+	Tue, 3 Dec 2024 21:57:18 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=M
+	9HvErn7WuVfxbc/WGapQI+GNQGI3J4zEyW7HbTRyQ4=; b=EnBoF/QWa3VhTqN0w
+	Bim/GNV/OjUo3gNzW1AKzGihqxhmImEszqqBBclzy2gHfz1LUr1RpNckKA94/o3C
+	b6gfyKToOaBGpoBk8R0E+iFCUIPPzooSJschp9fPmpMbZrEKPfoUxPywgyd2w3jv
+	u6D52AvGBh2KRISLv+bcP/R/fw1nldDpnfSF5evyK25Ei/m7BzjvQM7NB1+2cJaR
+	RaTAPlP75XX0dv7JQZc+roFgIlqRILdc3Edt/VSBQkRavFGWIEHip0NjlsWwe7XC
+	Y6rpD+oBmQPM34iE126hmf5PHEMxT12WluT6NT1XjaD3fiAMpXoeI6aFN4+7rAHz
+	vS/Nw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 43afjw86ck-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Dec 2024 21:57:17 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 3 Dec 2024 21:57:16 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Tue, 3 Dec 2024 21:57:15 -0800
+Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
+	by maili.marvell.com (Postfix) with ESMTP id 8E71C3F7076;
+	Tue,  3 Dec 2024 21:57:11 -0800 (PST)
+From: Bharat Bhushan <bbhushan2@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <hkelam@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <jerinj@marvell.com>,
+        <lcherian@marvell.com>, <ndabilpuram@marvell.com>,
+        <andrew+netdev@lunn.ch>, <richardcochran@gmail.com>,
+        <bbhushan2@marvell.com>
+Subject: [net-next PATCH v10 2/8] octeontx2-pf: Move skb fragment map/unmap to common code
+Date: Wed, 4 Dec 2024 11:26:53 +0530
+Message-ID: <20241204055659.1700459-3-bbhushan2@marvell.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241204055659.1700459-1-bbhushan2@marvell.com>
+References: <20241204055659.1700459-1-bbhushan2@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: eHNH1pgVmpnrQryb8JS2gY5guc-ihh2J
+X-Proofpoint-ORIG-GUID: eHNH1pgVmpnrQryb8JS2gY5guc-ihh2J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
 
-The current requested response version(V1) for MANA_QUERY_GF_STAT query
-results in STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR value being set to
-0 always.
-In order to get the correct value for this counter we request the response
-version to be V2.
+Move skb fragment map/unmap function to common file
+so as to reuse same for outbound IPsec crypto offload
 
-Cc: stable@vger.kernel.org
-Fixes: e1df5202e879 ("net :mana :Add remaining GDMA stats for MANA to ethtool")
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../marvell/octeontx2/nic/otx2_common.c       | 46 +++++++++++++++++++
+ .../marvell/octeontx2/nic/otx2_common.h       |  4 ++
+ .../marvell/octeontx2/nic/otx2_txrx.c         | 46 -------------------
+ 3 files changed, 50 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 57ac732e7707..f73848a4feb3 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2536,6 +2536,7 @@ void mana_query_gf_stats(struct mana_port_context *apc)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 523ecb798a7a..971115a5d2cc 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -10,6 +10,7 @@
+ #include <net/page_pool/helpers.h>
+ #include <net/tso.h>
+ #include <linux/bitfield.h>
++#include <net/xfrm.h>
  
- 	mana_gd_init_req_hdr(&req.hdr, MANA_QUERY_GF_STAT,
- 			     sizeof(req), sizeof(resp));
-+	req.hdr.resp.msg_version = GDMA_MESSAGE_V2;
- 	req.req_stats = STATISTICS_FLAGS_RX_DISCARDS_NO_WQE |
- 			STATISTICS_FLAGS_RX_ERRORS_VPORT_DISABLED |
- 			STATISTICS_FLAGS_HC_RX_BYTES |
+ #include "otx2_reg.h"
+ #include "otx2_common.h"
+@@ -1947,3 +1948,48 @@ EXPORT_SYMBOL(otx2_mbox_up_handler_ ## _fn_name);
+ MBOX_UP_CGX_MESSAGES
+ MBOX_UP_MCS_MESSAGES
+ #undef M
++
++dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
++				 struct sk_buff *skb, int seg, int *len)
++{
++	enum dma_data_direction dir = DMA_TO_DEVICE;
++	const skb_frag_t *frag;
++	struct page *page;
++	int offset;
++
++	/* Crypto hardware need write permission for ipsec crypto offload */
++	if (unlikely(xfrm_offload(skb))) {
++		dir = DMA_BIDIRECTIONAL;
++		skb = skb_unshare(skb, GFP_ATOMIC);
++	}
++
++	/* First segment is always skb->data */
++	if (!seg) {
++		page = virt_to_page(skb->data);
++		offset = offset_in_page(skb->data);
++		*len = skb_headlen(skb);
++	} else {
++		frag = &skb_shinfo(skb)->frags[seg - 1];
++		page = skb_frag_page(frag);
++		offset = skb_frag_off(frag);
++		*len = skb_frag_size(frag);
++	}
++	return otx2_dma_map_page(pfvf, page, offset, *len, dir);
++}
++
++void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg)
++{
++	enum dma_data_direction dir = DMA_TO_DEVICE;
++	struct sk_buff *skb = NULL;
++	int seg;
++
++	skb = (struct sk_buff *)sg->skb;
++	if (unlikely(xfrm_offload(skb)))
++		dir = DMA_BIDIRECTIONAL;
++
++	for (seg = 0; seg < sg->num_segs; seg++) {
++		otx2_dma_unmap_page(pfvf, sg->dma_addr[seg],
++				    sg->size[seg], dir);
++	}
++	sg->num_segs = 0;
++}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 566848663fea..bb78d825046d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -1149,4 +1149,8 @@ static inline int mcam_entry_cmp(const void *a, const void *b)
+ {
+ 	return *(u16 *)a - *(u16 *)b;
+ }
++
++dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
++				 struct sk_buff *skb, int seg, int *len);
++void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg);
+ #endif /* OTX2_COMMON_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index 3b0457e52a6a..a49041e55c33 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -11,7 +11,6 @@
+ #include <linux/bpf.h>
+ #include <linux/bpf_trace.h>
+ #include <net/ip6_checksum.h>
+-#include <net/xfrm.h>
+ 
+ #include "otx2_reg.h"
+ #include "otx2_common.h"
+@@ -81,51 +80,6 @@ static unsigned int frag_num(unsigned int i)
+ #endif
+ }
+ 
+-static dma_addr_t otx2_dma_map_skb_frag(struct otx2_nic *pfvf,
+-					struct sk_buff *skb, int seg, int *len)
+-{
+-	enum dma_data_direction dir = DMA_TO_DEVICE;
+-	const skb_frag_t *frag;
+-	struct page *page;
+-	int offset;
+-
+-	/* Crypto hardware need write permission for ipsec crypto offload */
+-	if (unlikely(xfrm_offload(skb))) {
+-		dir = DMA_BIDIRECTIONAL;
+-		skb = skb_unshare(skb, GFP_ATOMIC);
+-	}
+-
+-	/* First segment is always skb->data */
+-	if (!seg) {
+-		page = virt_to_page(skb->data);
+-		offset = offset_in_page(skb->data);
+-		*len = skb_headlen(skb);
+-	} else {
+-		frag = &skb_shinfo(skb)->frags[seg - 1];
+-		page = skb_frag_page(frag);
+-		offset = skb_frag_off(frag);
+-		*len = skb_frag_size(frag);
+-	}
+-	return otx2_dma_map_page(pfvf, page, offset, *len, dir);
+-}
+-
+-static void otx2_dma_unmap_skb_frags(struct otx2_nic *pfvf, struct sg_list *sg)
+-{
+-	enum dma_data_direction dir = DMA_TO_DEVICE;
+-	struct sk_buff *skb = NULL;
+-	int seg;
+-
+-	skb = (struct sk_buff *)sg->skb;
+-	if (unlikely(xfrm_offload(skb)))
+-		dir = DMA_BIDIRECTIONAL;
+-
+-	for (seg = 0; seg < sg->num_segs; seg++) {
+-		otx2_dma_unmap_page(pfvf, sg->dma_addr[seg],
+-				    sg->size[seg], dir);
+-	}
+-	sg->num_segs = 0;
+-}
+-
+ static void otx2_xdp_snd_pkt_handler(struct otx2_nic *pfvf,
+ 				     struct otx2_snd_queue *sq,
+ 				 struct nix_cqe_tx_s *cqe)
 -- 
-2.43.0
+2.34.1
 
