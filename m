@@ -1,104 +1,103 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866124A28
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 16:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236420CCDA
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 16:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329744; cv=none; b=eRsirOAcqbH4hr33DzEo6UWskXdIreKpq5Wd/hfvenkSV6BKxAtoa1ULK5S6UtUHQkAWLvJVfeO8z6nxBjhXahk6MaChM5LHoW6hhom7YxnNHwXQtPfVJTXQhBxblHIosQpj3OpzZsvCeSJhqkgdItTQi8Q2xrbU1RGTaNGp7iU=
+	t=1733329871; cv=none; b=OUTLuAb6KpiZ2h5ouIJOOSSB8Xx3WxiAM2/BvUjIr+ugPpDC4RFnijsOJVTeUXnq67rt8TZgPg3ktWEExpXrfDy5XnHwEBez4uNJAAkloCGU9G8OTHfqYXAFr/NXHsz6OAn0Zzn37cnVbbZK79jI1TWD6vq89RrwyxYdb0G63z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329744; c=relaxed/simple;
-	bh=BaiNk8zk/S96u4pRQNs7OcMqgpSVqzMAmy1/IaK1ZoA=;
+	s=arc-20240116; t=1733329871; c=relaxed/simple;
+	bh=OwIm7ewoQ/tyyVEl2gtgBbM/FzCCUtYjHF0g2oI+RyQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ou3F18rs/hUXoNNpOXaLuLgkzBO7a5t5fKeXsXsjfFWbhjyg5dEykqllyIp79Tz7D/yXuMAgZVhWa/Bd/ogPZ+aOncUSX621eXoBLT4Fg6zzOdw+oh6oxNbdbsimL8EzemsTuBXn6VrMRKmRmMczq2/hOlGkCeH8SUxI3ONZOCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=GGtSD+/n; arc=none smtp.client-ip=209.85.210.173
+	 MIME-Version:Content-Type; b=tVTNaSnivj7rlKDXpaYjY4dnh/3QTCXf/zqFqmvNgKVeQt+EbbT3ZZ0BEqaiqRv9UZnrDq/pn+mcaI6NatJVW4wKXbXvOZC7yqvqd+jbQvTGJ83Wl/5gUrorLi7jPaBjUX1NJGA8g7Fo21zZWvQpt1w/UFALJGf0zNn6sUuno6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=kbdWZQhP; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="GGtSD+/n"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-72590a998b4so683944b3a.0
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 08:29:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="kbdWZQhP"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-724d57a9f7cso2654b3a.3
+        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 08:31:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1733329742; x=1733934542; darn=vger.kernel.org;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1733329868; x=1733934668; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=onf6poKdC/MdUF+6FfngpVu/rb1qprvIuOQ9zWYC92w=;
-        b=GGtSD+/nbb1GJw7h9i/d5wXZNbrN1Jn/7ARFsJm/eI5W1K3Jm17gzB4+5BfJhFTouI
-         0N44bqq9OaC+2YLLB+xA7OO6MiQxIYZZyu+ZETgMTcPG/8aBK54nvdMDB+EDjHczBYxj
-         2Sc3Tx6Mg3ZgSDjL9sPTkJ9EwcPiW3owBxxPff4OIOE7pRqWyMg6uEmEwPg9axfNDCiZ
-         2lpOM+h0PZBtipeoex4J/c10ka07Mbl1UzFIEJlpfeFM2EuGh99pjW5aOI94yrbnrNoc
-         U555Wv7FkswNUTz9JUUgT9dLpvlnzGb08eZMTqchMh+00ClATE7pCM9iTPWDojuIjUZf
-         VvVw==
+        bh=BePRakW479YdwoV8rL4Bf5U0PThrSiDz+M0PQMXyqss=;
+        b=kbdWZQhPsljj2I2KA8dRGvAYoRSNHMwUs/6Vy3TIxdR/wehwIyqcKJQ+YlgpygMdfa
+         Zws3hTpT7ssHRPYgPS9g716tWPQBm142+UMS1GtAW6hdX9WSODJIO1T7unrSKrEed/OZ
+         zPi5jGlBUW6/UMIlr8RLwZ7qlQdRa6x0foZb9lSVS1/RLXa7unZ9gquvDe+yS65TLmBN
+         OnwARPIuSAcYe0r2eMkwp2Edvspufwsl/Qud9svlLmPPVGDclQY3kI/Qsj+r2ylEfktJ
+         7Ap3th9Vg9ZOeAueJyeNlN2hOQDqm7amS5x6H59BwGFbHDRX863hD2/97zC+uSjJgf8u
+         VHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733329742; x=1733934542;
+        d=1e100.net; s=20230601; t=1733329868; x=1733934668;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=onf6poKdC/MdUF+6FfngpVu/rb1qprvIuOQ9zWYC92w=;
-        b=ItqM+e1Q2cUE/k5j/lPCIGvBf/c18fCwmLz0VMbEDOOEB63CZThVfju38J65pLJRgr
-         O36IblyuT8pyzGq36wUHuWFeUkXtvPP8oXMz8GHfZgzxoZer2wdHN3kwgnk+zrWLDKnU
-         tXf5XSx4gk3KWXc6IZtcpsTvDmhdzOS2SDnDuTq0cDjaUUb0rzHT5NtnBgD9sB2w61Ju
-         Y9a5ZO0E5xnVqh3Juo2yO6qsZCwG0I0LYwhXVHMATujuMotxtNMvxFPmoRI816h1b8xF
-         fgpxQDLrRLNDF+nRyq2srBR38cfh6kFUWc841X6O2TL8nKehGsB+yIx6/YLpKGQ3t0qe
-         YrYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNqb+Z+E+ihHTUId3lpicslsgPJZQjxTPDkhH7cgki0Jj0KVE6FAxJwWmNDKI3ENBZQ0nQldc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCFNlZdfU8JTdwn+iOAPc4b9Ni2xlMudDfOF1VcRQVju1Sj4BK
-	QJznaOqWnYBcJApWvr4Wq8tDaYtDQv6IWdM0kBxI7s7LHwJpBTg6Pv8JSt9TyCo=
-X-Gm-Gg: ASbGncvV83tpKv9KVvPhBaKd6t7b//17hR7gX5/0Sp1gDh/ahAaWLBzUNGK7xnisorg
-	1bC17VQx0OKfm3gDfAX0Hc1nAhijXByGakmoUTCMRTOWrvOtP/UfSC/rQmohunLYkJlY8xif7eq
-	DNs6T7b5Gvhbc/hgKNl1xpfqx8BWal1BHY+SoBkDlOPQT60/g9UpD5mDT3sYvNw6psUX0RQnh5m
-	q7rqieX4Kb+PItKS1tjly7+bPqxgqVqbhdZAH8uiUXwk0tZvBq+2cLtywR+MT0o9/r/Cwt/uS8w
-	vjx/ecnCn5LDFubdKhUgCy2zb2M=
-X-Google-Smtp-Source: AGHT+IF/kGceHP1aSb7zekvp4svsOdmeV0etN4fJaUHSQDZehFmAACGQ1FPASw4P5+7VKPzayjaO9A==
-X-Received: by 2002:a17:902:ceca:b0:215:7e49:8202 with SMTP id d9443c01a7336-215bde11763mr94406835ad.13.1733329741641;
-        Wed, 04 Dec 2024 08:29:01 -0800 (PST)
+        bh=BePRakW479YdwoV8rL4Bf5U0PThrSiDz+M0PQMXyqss=;
+        b=sApN9RO7NXue9TBklHKl88TYyRXxKeO5qAbiiZe9zFh6C1go1Gc16oVou1RREmvAYG
+         4Td/aQ8xwMtExhmioNT8ek8aJgeV7i6Fvvzy3ldvgXxmsAat/SO4zga6oIdxAOa0PjAh
+         C4ekDoM1+HuX2L4l5irVW4ejGchwfd1y2aNlvExYnIqqsvq9HH5AqZT93CuzSSQGhw4y
+         sbOZ9tW8ImXdkifjcjm0jJfTIhbogWHAiC6oQhiyRuEQKE8H+bCiANKMQpWyDFXyBx+s
+         s9/i78X+Vj4k70rWvfPQ+n1snzeN2Bcy9hGwANKxYqUpbtuxSEWcuDIhbnb5C+pTIGqi
+         EoYw==
+X-Gm-Message-State: AOJu0YzJF8NYkat3IlafsJMzms97fRi8S5WDvUtnJ3nv5irdleKGQZNY
+	mHfwqwsUn4gC4TuXgfk3QtcMrR9ScLoyUr8IfL54CawoGYTkd1WLdSgGXPFmtEzjUL1JxHJoJKt
+	l
+X-Gm-Gg: ASbGnctxKbd0I2pqLjQZ4lS3VuxO+/Fvg/y1IaGCki05FkNpCJS/ZpBXrQqmBIuaov6
+	JexglUIWYU/WmBbGnqQbCPU9J74zceafn15sbgI6pUtGPhK4ku0pJGEXVKlAq/wD2K/faxpYwK0
+	VjRCUVDKMnigNsqiDPQX/9lgVZLLm+Zjmx8GW7YN+GojQ685u1V8FMpcWTBurB+atpn/AtD3rEj
+	nFStNaZaezI19Ys88QtmdJ2GMQVumQtlGPM5lLWebu4MUGjgH+g0p2EWJ+4cu7xVCRTOpLhiaqN
+	FC4GwsFnwj39vv+xS2ICmbYvSJQ=
+X-Google-Smtp-Source: AGHT+IH2gCiezvnfDDkWfddINxstjV2QYvR+BG0TKVIsBV8Z6di3xtH5a/GbjX/fnLTAtwjhnoWfig==
+X-Received: by 2002:a05:6a00:2e87:b0:725:9ac3:f24 with SMTP id d2e1a72fcca58-7259ac31305mr1348367b3a.5.1733329868391;
+        Wed, 04 Dec 2024 08:31:08 -0800 (PST)
 Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2157f8dc404sm63664175ad.220.2024.12.04.08.29.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72590d136c4sm1455389b3a.9.2024.12.04.08.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:29:01 -0800 (PST)
-Date: Wed, 4 Dec 2024 08:28:59 -0800
+        Wed, 04 Dec 2024 08:31:08 -0800 (PST)
+Date: Wed, 4 Dec 2024 08:31:05 -0800
 From: Stephen Hemminger <stephen@networkplumber.org>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern
- <dsahern@kernel.org>, roopa@cumulusnetworks.com, jiri@resnulli.us,
- jimictw@google.com, prohr@google.com, liuhangbin@gmail.com,
- nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org, "Maciej
- =?UTF-8?B?xbtlbmN6eWtvd3NraQ==?=" <maze@google.com>, Lorenzo Colitti
- <lorenzo@google.com>
-Subject: Re: [PATCH iproute2-next, v3 1/2] iproute2: expose netlink
- constants in UAPI
-Message-ID: <20241204082859.5da44d1e@hermes.local>
-In-Reply-To: <20241204140208.2701268-1-yuyanghuang@google.com>
-References: <20241204140208.2701268-1-yuyanghuang@google.com>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, dsahern@kernel.org, jiri@resnulli.us, andrew@lunn.ch,
+ luka.perkov@sartura.hr
+Subject: Re: [iproute2-next] ip: link: rmnet: add support for flag handling
+Message-ID: <20241204083105.1827dd73@hermes.local>
+In-Reply-To: <20241203124921.200637-1-robert.marko@sartura.hr>
+References: <20241203124921.200637-1-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed,  4 Dec 2024 23:02:07 +0900
-Yuyang Huang <yuyanghuang@google.com> wrote:
+On Tue,  3 Dec 2024 13:47:59 +0100
+Robert Marko <robert.marko@sartura.hr> wrote:
 
-> This change adds the following multicast related netlink constants to
-> the UAPI:
->=20
-> * RTNLGRP_IPV4_MCADDR and RTNLGRP_IPV6_MCADDR: Netlink multicast
->   groups for IPv4 and IPv6 multicast address changes.
-> * RTM_NEWMULTICAST and RTM_DELMULTICAST: Netlink message types for
->   multicast address additions and deletions.
->=20
-> Exposing these constants in the UAPI enables ip monitor to effectively
-> monitor and manage multicast group memberships.
->=20
-> Cc: Maciej =C5=BBenczykowski <maze@google.com>
-> Cc: Lorenzo Colitti <lorenzo@google.com>
-> Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> ---
+> +		} else if (matches(*argv, "deaggregate") == 0) {
+> +			NEXT_ARG();
+> +			flags.mask |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
+> +			if (strcmp(*argv, "on") == 0)
+> +				flags.flags |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
+> +			else if (strcmp(*argv, "off") == 0)
+> +				flags.flags &= RMNET_FLAGS_INGRESS_DEAGGREGATION;
+> +			else
+> +				return on_off("deaggregate", *argv);
+> +		} else if (matches(*argv, "commands") == 0) {
+> +			NEXT_ARG();
+> +			flags.mask |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
+> +			if (strcmp(*argv, "on") == 0)
+> +				flags.flags |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
+> +			else if (strcmp(*argv, "off") == 0)
+> +				flags.flags &= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
+> +			else
+> +				return on_off("commands", *argv);
+> +		} else if (matches(*argv, "qmapv4") == 0) {
 
-This should get automatically picked up when David does header update.
+New uses of matches() is discouraged because it leads to argument conflicts.
+Use strcmp instead.
