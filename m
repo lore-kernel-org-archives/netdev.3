@@ -1,101 +1,113 @@
-Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [131.188.11.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B1A1B3950;
-	Wed,  4 Dec 2024 11:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.188.11.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7A1ABEDC;
+	Wed,  4 Dec 2024 11:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733313394; cv=none; b=o8AdxHppkYFgPqBocgMJb57f6ny52lAqGJ6kLVWNuaXNSovcuMFiaiJVWwMqQbn1Fpw5TDKBjeZI8Q0oatoXeUNbbtVhVWlPjPMVYAGrH8T3h4vgBA2t47rhPD41LR+l3uOeQ6lC4SBNZ6zuiwfo4utlGGM4C3P1XPCHWT+cmb4=
+	t=1733313476; cv=none; b=tFnrzhRP5xTA1pj2UeiRd7fzdMdWiA/Lua8E79ExJ+vFEj8KfSwx2tgM+pELJqtmIjSQmKqh7WNJdV45jM8udrGscTgEceXh4myHOxIbMDqimI3Fc3/qkBc7oN5iT31qFjYlCt57+jYune1pA8sqJsErDFmZCWRHcimfK4gV2Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733313394; c=relaxed/simple;
-	bh=gfrZtkK4A+DOGZgYgjVo7j3CV+EEQ4cZ7jeW9wIdt5w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JKWrHOzGdkt15T2MxVRpe68s5sPbDxzIzawMa5T1Yxg2kELGjFnnE0EhA8KC77aMiChJgUfjdTCQRSWcRIZ027o+g+K91OOlzoZDWzTXBByhPzYK2yKvNOsum819gZc3iXMOhdVZD70QXN8ROmpYKeWw/bUglTnImnYHwO/E2x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fau.de; spf=pass smtp.mailfrom=fau.de; dkim=pass (2048-bit key) header.d=fau.de header.i=@fau.de header.b=DZd7wSIk; arc=none smtp.client-ip=131.188.11.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fau.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fau.de
+	s=arc-20240116; t=1733313476; c=relaxed/simple;
+	bh=oP0UxJ1SexpNYel+q3Ldy/dOEsfTJEnknxgC+x34Fcg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kfeRNd2JT09sIbb0R0gqTXamZd2JGVvO2z18zdEWGu7STRMYjEzY3t4EdC5ybUw8Ed9anpalfQrI4cRAydrETzF97TAagXjtZajMtTZCDck8wZu1v8dUdKBongdO3VD0+9YBTVizLfQklFnfuVkcT4DQylyoXkzwpf4OXemt2QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZC5Jdn01; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fau.de header.i=@fau.de header.b="DZd7wSIk"
-Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4Y3G3B0qktzPk68;
-	Wed,  4 Dec 2024 12:47:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
-	t=1733312838; bh=gfrZtkK4A+DOGZgYgjVo7j3CV+EEQ4cZ7jeW9wIdt5w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From:To:CC:
-	 Subject;
-	b=DZd7wSIkv3/2Bo17KZyUK+M4I12AusFLMbl7/xkJGRxWEaQiOZSMLxZsSq97WfoIe
-	 xCtO+mNR1btfdG0KMG7ZRmCKkqizO0LmQQVVjKyOhmVvQOC2MTQ+DJEjBgDGerCxBH
-	 WSG5ItX77bL4K0alAUoE3mRAw9zgZ8MppkthHJXt+ZnE141KxJejQpHtuYBkUJSXe4
-	 GBpmsAaPOX2vrtIpCo7BrHmasRwlLxcpmw5Fd8sob9j6YxPdVi8wrhUtgUOh8ldJIJ
-	 +Ntw7gLEmCOD15F5k0CWCA7AmBV2OjYXAZBOTk1aev7Hall1AE4Y160UydnmJAw87o
-	 ENwrdWn1nEgCQ==
-X-Virus-Scanned: amavisd-new at boeck4.rrze.uni-erlangen.de (RRZE)
-X-RRZE-Flag: Not-Spam
-X-RRZE-Submit-IP: 131.188.37.42
-Received: from [131.188.37.42] (faui7y.informatik.uni-erlangen.de [131.188.37.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: U2FsdGVkX1/suPM4bff5/GBbiflfuJQPB+JDQHv2SKk=)
-	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4Y3G374hqTzPkl7;
-	Wed,  4 Dec 2024 12:47:15 +0100 (CET)
-Message-ID: <ce09216d-ccb2-4cf3-8c68-4de468411db5@fau.de>
-Date: Wed, 4 Dec 2024 12:47:15 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZC5Jdn01"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733313475; x=1764849475;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oP0UxJ1SexpNYel+q3Ldy/dOEsfTJEnknxgC+x34Fcg=;
+  b=ZC5Jdn01KkDQUj0F4dHlt/phetTpMx1hcQ7Uz08zM0vrlJyUxi28OWp/
+   wgHIdeR/MmstgiUpmUlXPyJqGniqK8OGxqyoUpd2UrwnibQW5L1F2NtWE
+   cucyRt957De8CwoaPQCVTfWDBLm7l5clzFfm32jlSAK3dFsu/zvCm61tj
+   /MTEKwA/6Gm7PGBi6wBDY0UKQqT4BhSdvhqg+ER0qmPCvkJbLPTD+a4ki
+   KP9colqr8FagHx1jKa1wVfTunEXz4hgg5rGZn9zlN1KkJBs0MfQFaX858
+   YrDpIgRt+Be2vg9WiJbZJLiuZwuIQ1hKPi1YW+qTi2eYa1yjDx/h9tZ7y
+   g==;
+X-CSE-ConnectionGUID: VdvgeMheRj6HKrE9hGCuJw==
+X-CSE-MsgGUID: YtPeAxwdR2C0dCELFpD/0g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="32934351"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="32934351"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:57:49 -0800
+X-CSE-ConnectionGUID: VLIkdnLkRE+Uu0b/lyEb2Q==
+X-CSE-MsgGUID: svvCZBXNQPKFXMvy7bmjLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="93639903"
+Received: from p12ill20yoongsia.png.intel.com ([10.88.227.28])
+  by orviesa009.jf.intel.com with ESMTP; 04 Dec 2024 03:57:44 -0800
+From: Song Yoong Siang <yoong.siang.song@intel.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next 1/1] selftests/bpf: Enable Tx hwtstamp in xdp_hw_metadata
+Date: Wed,  4 Dec 2024 19:57:15 +0800
+Message-Id: <20241204115715.3148412-1-yoong.siang.song@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/sched: netem: account for backlog updates from child
- qdisc
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241125231825.2586179-1-martin.ottens@fau.de>
- <20241202191312.3d3c8097@kernel.org>
-Content-Language: en-US, de-DE
-From: Martin Ottens <martin.ottens@fau.de>
-In-Reply-To: <20241202191312.3d3c8097@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 03.12.24 04:13, Jakub Kicinski wrote:
-> I don't understand why we need to perform packet accounting=20
-> in a separate new member (t_len). You seem to fix qlen accounting,
-> anyway, and I think sch->limit should apply to the qdisc and all
-> its children. Not just qdisc directly (since most classful qdiscs
-> don't hold packets).
+Set tx_type to HWTSTAMP_TX_ON to enable hardware timestamping for all
+outgoing packets.
 
-Netem is a classful qdisc but different from others because it holds=20
-packets in its internal tfifo and optional additionally in a child=20
-qdisc. However, sch->limit currently only considers the packets in=20
-the tfifo and not the packets hold by a child, but child qdiscs=20
-expect this value to refer to the number of packets that are in=20
-netem and all its children together. If the children change this=20
-value (using 'qdisc_tree_reduce_backlog'), then the number of=20
-packets in the tfifo no longer matches sch->limit.
-By adding t_len, the number of packets in the tfifo will be tracked=20
-independently from sch->limit therefore sch->limit can be changes=20
-by children without unwanted behavior. t_len is required, because=20
-currently the limit option of netem refers to the maximum number=20
-of packets in the tfifo - therefore the behavior of netem is not
-changed by this patch.
+Besides, set XDP_UMEM_TX_METADATA_LEN flag to reserve tx_metadata_len bytes
+of per-chunk metadata.
 
-> I'm not a qdisc expert, so if you feel confident about this code you
-> need to explain the thinking in the commit message..
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+---
+ tools/testing/selftests/bpf/xdp_hw_metadata.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-With the patch I try to fix the error without changing the behavior=20
-of netem (e.g., change the meaning of the limit option to apply to=20
-the tfifo length and the packets in the child qdisc). Maybe there=20
-are even better approaches - I am happy about any feedback. I will=20
-revise the explanation in the patch to make this clearer and=20
-resubmit it.
+diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+index 06266aad2f99..6f7b15d6c6ed 100644
+--- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
++++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+@@ -79,7 +79,7 @@ static int open_xsk(int ifindex, struct xsk *xsk, __u32 queue_id)
+ 		.fill_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
+ 		.comp_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
+ 		.frame_size = XSK_UMEM__DEFAULT_FRAME_SIZE,
+-		.flags = XSK_UMEM__DEFAULT_FLAGS,
++		.flags = XDP_UMEM_TX_METADATA_LEN,
+ 		.tx_metadata_len = sizeof(struct xsk_tx_metadata),
+ 	};
+ 	__u32 idx = 0;
+@@ -551,6 +551,7 @@ static void hwtstamp_enable(const char *ifname)
+ {
+ 	struct hwtstamp_config cfg = {
+ 		.rx_filter = HWTSTAMP_FILTER_ALL,
++		.tx_type = HWTSTAMP_TX_ON,
+ 	};
+ 
+ 	hwtstamp_ioctl(SIOCGHWTSTAMP, ifname, &saved_hwtstamp_cfg);
+-- 
+2.34.1
+
