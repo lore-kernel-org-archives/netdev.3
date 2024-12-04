@@ -1,405 +1,213 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D361991CB
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 08:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3D3197A9F
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 08:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733301718; cv=none; b=f7Ux2WZwoczCP1WnYF9LWAiScrCQnPU5xhLgFWX+uIrbDVpb94/NAL/siFgcNRTkasvzNDOS4ROKoEvCvXLRr8EIWYNl+N2PwsbE0XGXyn9AKASR8jqVgCS2NZvVnHkYt0nFZ+nEVYd2pRpZkb4BOZgWVd2NS4lqnWDab+5tSos=
+	t=1733301764; cv=none; b=MKSrOE+wLmN2W3TnT+fGJT65ic0pF2B1V1CMuU9JIM+lQMY0gEivMdjVwPpYKGmYFSdOaP+a9C6uCNHof7HpSI0qgL6ZP2TvKeW6drUpm2A0ImN7tNI0/HXczDLxJ0PlrpSJSK7jzIbooFejZptQVIdPQe5LWCofiHY9Qf3b6Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733301718; c=relaxed/simple;
-	bh=HBxeSql5mApDhzJ5+/iGcdGeV4q+CbOqaGqV0sok3nE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qxFNiuZ1nCOs6NnWndDbG25pO5OpMqjMf+80x+R9Dc69eaEXSiOpPOOtveWnO1PmjZN4zN6pj0r+MOebY+Y4xQCCSAynYJqYJe2JR84o8KRUN5VTBM8ni8nemUeOWYcwGBDsrzENAFMCdEmCZAlSeiaA1OQhFKn01JnT9ovP9bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx7-0001I2-44; Wed, 04 Dec 2024 09:41:45 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-001cU9-0W;
-	Wed, 04 Dec 2024 09:41:43 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-004psz-2n;
-	Wed, 04 Dec 2024 09:41:43 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v2 03/10] net: usb: lan78xx: move functions to avoid forward definitions
-Date: Wed,  4 Dec 2024 09:41:35 +0100
-Message-Id: <20241204084142.1152696-4-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241204084142.1152696-1-o.rempel@pengutronix.de>
-References: <20241204084142.1152696-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1733301764; c=relaxed/simple;
+	bh=fjEvVtLccharBw3OrDrLgtyYjXSAEgcWSb1bNawUsvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fQ2IVZl67GCyAd9WwrxVtV4k7l/YpVLIzkgWEKp1steeZhY2BSEYEsvx80Ki2XLcM0LN6kH2F/j8nclCP+Z1lg6RMSNwJVr2YFS4s768WB7YuSpmk212CmA81gwqdkzqj03rNGY/7BWDeEUmzCEb1aFDX3FS9wJh14cDF3mXDyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=WZ8XdoOy; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="WZ8XdoOy"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5d0ac27b412so6240522a12.1
+        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 00:42:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1733301761; x=1733906561; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=GpsfTfUICfzCAXT9xiVRag8nVJBIPwyu/jXg6HVeCRY=;
+        b=WZ8XdoOyu7+lnNTDwgIwLgW8HU9ehyNBkA76YLeP5tOGaMtIYJMxzEqPHotb7m8xeb
+         y3ujxl7QBgyU+sVJeSUeC1+q/sfntD6/VNhzFlRkQshYyuA6wt0VwOFBPf443Mor5mr6
+         0PP1E+mOJWZuzdbmm6WhgQcefHDTgEIJ2yhhiZpERtrLHnDGxjsskE7yrXnd7I14yBwi
+         pN5lqzjoSb9YfkP1D6aTpOHVQhQeJ7UT1zTBoSTAT5y+IDnfocSx5naaw9IFevyc+7GR
+         Mt/Bey0ZCyRcYH+TM+UdtHzfsP21bf/XS4X9o+dxH4XG7JZeScHjKO72OKa+epGhjJia
+         rzaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733301761; x=1733906561;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GpsfTfUICfzCAXT9xiVRag8nVJBIPwyu/jXg6HVeCRY=;
+        b=GxKpZJyeISo/oC/Ny2E6TzMWWYQUB43ELBIxqN6bFAnArA+/8eWbqZIJN0ITo06fcR
+         tc9hnKOEyT0vYlF+n8gx7ISTP5zfrjx5hk/Jc4m/0sj/FI2Suv2hfLYqUxzGrF9inGSS
+         i1VwTnuYim2/NFIVDtLJ6SDR/e1PFEYkQYe8Qu8uTY0LfVpSjZsqd2pbtrgw5ERXycQ8
+         qK/M4Oaj4POklHZWdwkFuA94UYnlzkM72tZPlAHi2K5/C7d2AyNxMtY19IGKYQATX8mk
+         0sdVsr8iQtbaAM6W3wJkXAP9dxr1sXUfjXHTBGJHkGdxDKu+Ua2pAaFbNEa9w+mFFwOn
+         6OQg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8SqHsoSHKnY9BlnihWA6YJVMsYaokGw/VpYF9EmDPQtbTuCddLqvSHcfuj6X+G4ZGR8Gm65k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy14GBctX+V2SVYUf1dXwuho32o35wF/kAhg8cDldsTSn42Uqr4
+	63gZFuDvZk/TpgvvUcoZBUWpy4pRwcZE2q2EG6DtkdkGV0J10/fZ7X82IPp6sXA=
+X-Gm-Gg: ASbGnctREQgKqVFUTV5wIbw3/P774J8cbGULVeI6T0TxXpT3KKa8OZcB1uhynxCngJj
+	iYU1aZiLP21syQOQwWrIgwB87XWNWGiOBGF5liwjDjvcodUR8zTt5xAXTt3s5oZP5GJrJfz9siw
+	xAesIKyfMffHHmkIGWGJ96qpjJEBqaeJoHVnsTMQJrne1+sYxPYVtv40XxHlyM0kf7gfKY0NEk/
+	CTj6AKgtoz9plDkRIVOT4lE4ua4/GlBlhDKt/PH7MkPYRwDBQr3V3UEVBKp2nujsjAfmpRRhEED
+	iMbD6mCQ5gyx
+X-Google-Smtp-Source: AGHT+IH+4UdC7PPD55te0VL0jClyrUfAzN4BNPp2pqdgPe1HA3JZqBAE6b7QL6znRAsN1/ZIvy5A6A==
+X-Received: by 2002:a05:6402:1e8e:b0:5d0:e877:7664 with SMTP id 4fb4d7f45d1cf-5d10cb5bcafmr4903940a12.19.1733301760877;
+        Wed, 04 Dec 2024 00:42:40 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:85f4:5278:b2f6:64fb? ([2001:67c:2fbc:1:85f4:5278:b2f6:64fb])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d097db0bbesm6930084a12.29.2024.12.04.00.42.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Dec 2024 00:42:39 -0800 (PST)
+Message-ID: <b66e3ee0-4283-4de2-9131-2cfe13d868f9@openvpn.net>
+Date: Wed, 4 Dec 2024 09:43:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v12 17/22] ovpn: implement peer
+ add/get/dump/delete via netlink
+To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, sd@queasysnail.net, ryazanov.s.a@gmail.com,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20241202-b4-ovpn-v12-0-239ff733bf97@openvpn.net>
+ <20241202-b4-ovpn-v12-17-239ff733bf97@openvpn.net>
+ <c6ec324f-dcfe-46c0-8bfb-1af77c03cb59@redhat.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <c6ec324f-dcfe-46c0-8bfb-1af77c03cb59@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Move following functions to avoid forward declarations in the code:
-- lan78xx_start_hw()
-- lan78xx_stop_hw()
-- lan78xx_flush_fifo()
-- lan78xx_start_tx_path()
-- lan78xx_stop_tx_path()
-- lan78xx_flush_tx_fifo()
-- lan78xx_start_rx_path()
-- lan78xx_stop_rx_path()
-- lan78xx_flush_rx_fifo()
+On 03/12/2024 18:46, Paolo Abeni wrote:
+> On 12/2/24 16:07, Antonio Quartulli wrote:
+>> +/**
+>> + * ovpn_nl_peer_modify - modify the peer attributes according to the incoming msg
+>> + * @peer: the peer to modify
+>> + * @info: generic netlink info from the user request
+>> + * @attrs: the attributes from the user request
+>> + *
+>> + * Return: a negative error code in case of failure, 0 on success or 1 on
+>> + *	   success and the VPN IPs have been modified (requires rehashing in MP
+>> + *	   mode)
+>> + */
+>> +static int ovpn_nl_peer_modify(struct ovpn_peer *peer, struct genl_info *info,
+>> +			       struct nlattr **attrs)
+>> +{
+>> +	struct sockaddr_storage ss = {};
+>> +	u32 sockfd, interv, timeout;
+>> +	struct socket *sock = NULL;
+>> +	u8 *local_ip = NULL;
+>> +	bool rehash = false;
+>> +	int ret;
+>> +
+>> +	if (attrs[OVPN_A_PEER_SOCKET]) {
+>> +		if (peer->sock) {
+>> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
+>> +					       "peer socket can't be modified");
+>> +			return -EINVAL;
+>> +		}
+>> +
+>> +		/* lookup the fd in the kernel table and extract the socket
+>> +		 * object
+>> +		 */
+>> +		sockfd = nla_get_u32(attrs[OVPN_A_PEER_SOCKET]);
+>> +		/* sockfd_lookup() increases sock's refcounter */
+>> +		sock = sockfd_lookup(sockfd, &ret);
+>> +		if (!sock) {
+>> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
+>> +					       "cannot lookup peer socket (fd=%u): %d",
+>> +					       sockfd, ret);
+>> +			return -ENOTSOCK;
+>> +		}
+>> +
+>> +		/* Only when using UDP as transport protocol the remote endpoint
+>> +		 * can be configured so that ovpn knows where to send packets
+>> +		 * to.
+>> +		 *
+>> +		 * In case of TCP, the socket is connected to the peer and ovpn
+>> +		 * will just send bytes over it, without the need to specify a
+>> +		 * destination.
+>> +		 */
+>> +		if (sock->sk->sk_protocol != IPPROTO_UDP &&
+>> +		    (attrs[OVPN_A_PEER_REMOTE_IPV4] ||
+>> +		     attrs[OVPN_A_PEER_REMOTE_IPV6])) {
+>> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
+>> +					       "unexpected remote IP address for non UDP socket");
+>> +			sockfd_put(sock);
+>> +			return -EINVAL;
+>> +		}
+>> +
+>> +		peer->sock = ovpn_socket_new(sock, peer);
+>> +		if (IS_ERR(peer->sock)) {
+>> +			NL_SET_ERR_MSG_FMT_MOD(info->extack,
+>> +					       "cannot encapsulate socket: %ld",
+>> +					       PTR_ERR(peer->sock));
+>> +			sockfd_put(sock);
+>> +			peer->sock = NULL;
+> 
+> This looks race-prone. If any other CPU can do concurrent read access to
+> peer->sock it could observe an invalid pointer
+> Even if such race does not exist, it would be cleaner store
+> ovpn_socket_new() return value in a local variable and set peer->sock
+> only on successful creation.
 
-These functions will be used in an upcoming PHYlink migration patch.
+Yeah, this race is not possible because at this time the peer is not 
+hashed yet, so it only exists in this local 'peer' variable.
 
-No modifications to the functionality of the code are made.
+However, you're not the first one to comment this piece of code.
+I'll definitely switch to using a local variable for the sock.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/usb/lan78xx.c | 300 +++++++++++++++++++-------------------
- 1 file changed, 150 insertions(+), 150 deletions(-)
+Thanks!
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 918b88bd9524..dd9b5d3abcb3 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -808,6 +808,156 @@ static void lan78xx_update_stats(struct lan78xx_net *dev)
- 	usb_autopm_put_interface(dev->intf);
- }
- 
-+static int lan78xx_start_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enable)
-+{
-+	return lan78xx_update_reg(dev, reg, hw_enable, hw_enable);
-+}
-+
-+static int lan78xx_stop_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enabled,
-+			   u32 hw_disabled)
-+{
-+	unsigned long timeout;
-+	bool stopped = true;
-+	int ret;
-+	u32 buf;
-+
-+	/* Stop the h/w block (if not already stopped) */
-+
-+	ret = lan78xx_read_reg(dev, reg, &buf);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (buf & hw_enabled) {
-+		buf &= ~hw_enabled;
-+
-+		ret = lan78xx_write_reg(dev, reg, buf);
-+		if (ret < 0)
-+			return ret;
-+
-+		stopped = false;
-+		timeout = jiffies + HW_DISABLE_TIMEOUT;
-+		do  {
-+			ret = lan78xx_read_reg(dev, reg, &buf);
-+			if (ret < 0)
-+				return ret;
-+
-+			if (buf & hw_disabled)
-+				stopped = true;
-+			else
-+				msleep(HW_DISABLE_DELAY_MS);
-+		} while (!stopped && !time_after(jiffies, timeout));
-+	}
-+
-+	ret = stopped ? 0 : -ETIME;
-+
-+	return ret;
-+}
-+
-+static int lan78xx_flush_fifo(struct lan78xx_net *dev, u32 reg, u32 fifo_flush)
-+{
-+	return lan78xx_update_reg(dev, reg, fifo_flush, fifo_flush);
-+}
-+
-+static int lan78xx_start_tx_path(struct lan78xx_net *dev)
-+{
-+	int ret;
-+
-+	netif_dbg(dev, drv, dev->net, "start tx path");
-+
-+	/* Start the MAC transmitter */
-+
-+	ret = lan78xx_start_hw(dev, MAC_TX, MAC_TX_TXEN_);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Start the Tx FIFO */
-+
-+	ret = lan78xx_start_hw(dev, FCT_TX_CTL, FCT_TX_CTL_EN_);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int lan78xx_stop_tx_path(struct lan78xx_net *dev)
-+{
-+	int ret;
-+
-+	netif_dbg(dev, drv, dev->net, "stop tx path");
-+
-+	/* Stop the Tx FIFO */
-+
-+	ret = lan78xx_stop_hw(dev, FCT_TX_CTL, FCT_TX_CTL_EN_, FCT_TX_CTL_DIS_);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Stop the MAC transmitter */
-+
-+	ret = lan78xx_stop_hw(dev, MAC_TX, MAC_TX_TXEN_, MAC_TX_TXD_);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+/* The caller must ensure the Tx path is stopped before calling
-+ * lan78xx_flush_tx_fifo().
-+ */
-+static int lan78xx_flush_tx_fifo(struct lan78xx_net *dev)
-+{
-+	return lan78xx_flush_fifo(dev, FCT_TX_CTL, FCT_TX_CTL_RST_);
-+}
-+
-+static int lan78xx_start_rx_path(struct lan78xx_net *dev)
-+{
-+	int ret;
-+
-+	netif_dbg(dev, drv, dev->net, "start rx path");
-+
-+	/* Start the Rx FIFO */
-+
-+	ret = lan78xx_start_hw(dev, FCT_RX_CTL, FCT_RX_CTL_EN_);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Start the MAC receiver*/
-+
-+	ret = lan78xx_start_hw(dev, MAC_RX, MAC_RX_RXEN_);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int lan78xx_stop_rx_path(struct lan78xx_net *dev)
-+{
-+	int ret;
-+
-+	netif_dbg(dev, drv, dev->net, "stop rx path");
-+
-+	/* Stop the MAC receiver */
-+
-+	ret = lan78xx_stop_hw(dev, MAC_RX, MAC_RX_RXEN_, MAC_RX_RXD_);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Stop the Rx FIFO */
-+
-+	ret = lan78xx_stop_hw(dev, FCT_RX_CTL, FCT_RX_CTL_EN_, FCT_RX_CTL_DIS_);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+/* The caller must ensure the Rx path is stopped before calling
-+ * lan78xx_flush_rx_fifo().
-+ */
-+static int lan78xx_flush_rx_fifo(struct lan78xx_net *dev)
-+{
-+	return lan78xx_flush_fifo(dev, FCT_RX_CTL, FCT_RX_CTL_RST_);
-+}
-+
- /* Loop until the read is completed with timeout called with phy_mutex held */
- static int lan78xx_phy_wait_not_busy(struct lan78xx_net *dev)
- {
-@@ -2662,156 +2812,6 @@ static int lan78xx_urb_config_init(struct lan78xx_net *dev)
- 	return result;
- }
- 
--static int lan78xx_start_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enable)
--{
--	return lan78xx_update_reg(dev, reg, hw_enable, hw_enable);
--}
--
--static int lan78xx_stop_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enabled,
--			   u32 hw_disabled)
--{
--	unsigned long timeout;
--	bool stopped = true;
--	int ret;
--	u32 buf;
--
--	/* Stop the h/w block (if not already stopped) */
--
--	ret = lan78xx_read_reg(dev, reg, &buf);
--	if (ret < 0)
--		return ret;
--
--	if (buf & hw_enabled) {
--		buf &= ~hw_enabled;
--
--		ret = lan78xx_write_reg(dev, reg, buf);
--		if (ret < 0)
--			return ret;
--
--		stopped = false;
--		timeout = jiffies + HW_DISABLE_TIMEOUT;
--		do  {
--			ret = lan78xx_read_reg(dev, reg, &buf);
--			if (ret < 0)
--				return ret;
--
--			if (buf & hw_disabled)
--				stopped = true;
--			else
--				msleep(HW_DISABLE_DELAY_MS);
--		} while (!stopped && !time_after(jiffies, timeout));
--	}
--
--	ret = stopped ? 0 : -ETIME;
--
--	return ret;
--}
--
--static int lan78xx_flush_fifo(struct lan78xx_net *dev, u32 reg, u32 fifo_flush)
--{
--	return lan78xx_update_reg(dev, reg, fifo_flush, fifo_flush);
--}
--
--static int lan78xx_start_tx_path(struct lan78xx_net *dev)
--{
--	int ret;
--
--	netif_dbg(dev, drv, dev->net, "start tx path");
--
--	/* Start the MAC transmitter */
--
--	ret = lan78xx_start_hw(dev, MAC_TX, MAC_TX_TXEN_);
--	if (ret < 0)
--		return ret;
--
--	/* Start the Tx FIFO */
--
--	ret = lan78xx_start_hw(dev, FCT_TX_CTL, FCT_TX_CTL_EN_);
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--static int lan78xx_stop_tx_path(struct lan78xx_net *dev)
--{
--	int ret;
--
--	netif_dbg(dev, drv, dev->net, "stop tx path");
--
--	/* Stop the Tx FIFO */
--
--	ret = lan78xx_stop_hw(dev, FCT_TX_CTL, FCT_TX_CTL_EN_, FCT_TX_CTL_DIS_);
--	if (ret < 0)
--		return ret;
--
--	/* Stop the MAC transmitter */
--
--	ret = lan78xx_stop_hw(dev, MAC_TX, MAC_TX_TXEN_, MAC_TX_TXD_);
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--/* The caller must ensure the Tx path is stopped before calling
-- * lan78xx_flush_tx_fifo().
-- */
--static int lan78xx_flush_tx_fifo(struct lan78xx_net *dev)
--{
--	return lan78xx_flush_fifo(dev, FCT_TX_CTL, FCT_TX_CTL_RST_);
--}
--
--static int lan78xx_start_rx_path(struct lan78xx_net *dev)
--{
--	int ret;
--
--	netif_dbg(dev, drv, dev->net, "start rx path");
--
--	/* Start the Rx FIFO */
--
--	ret = lan78xx_start_hw(dev, FCT_RX_CTL, FCT_RX_CTL_EN_);
--	if (ret < 0)
--		return ret;
--
--	/* Start the MAC receiver*/
--
--	ret = lan78xx_start_hw(dev, MAC_RX, MAC_RX_RXEN_);
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--static int lan78xx_stop_rx_path(struct lan78xx_net *dev)
--{
--	int ret;
--
--	netif_dbg(dev, drv, dev->net, "stop rx path");
--
--	/* Stop the MAC receiver */
--
--	ret = lan78xx_stop_hw(dev, MAC_RX, MAC_RX_RXEN_, MAC_RX_RXD_);
--	if (ret < 0)
--		return ret;
--
--	/* Stop the Rx FIFO */
--
--	ret = lan78xx_stop_hw(dev, FCT_RX_CTL, FCT_RX_CTL_EN_, FCT_RX_CTL_DIS_);
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
--/* The caller must ensure the Rx path is stopped before calling
-- * lan78xx_flush_rx_fifo().
-- */
--static int lan78xx_flush_rx_fifo(struct lan78xx_net *dev)
--{
--	return lan78xx_flush_fifo(dev, FCT_RX_CTL, FCT_RX_CTL_RST_);
--}
--
- static int lan78xx_reset(struct lan78xx_net *dev)
- {
- 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+Regards,
+
 -- 
-2.39.5
+Antonio Quartulli
+OpenVPN Inc.
 
