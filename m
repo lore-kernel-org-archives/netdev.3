@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CAC1993BA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DE51991CD
 	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 08:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733301717; cv=none; b=GyuW5k8q0sfrYiEdE5VameqsQdG0A/2u9Bhmqste7clkfKG798cd6JbefIEr0PAfUtWD916Mp+nuvu0DhsCS/QLNIMgDbdXWI82jS+kMA+EOpon/u/rM6bFx8M/C95RUCLHHBw+NsozEXIRM6xMy8Fz532rvl/p0Gcol9tpcano=
+	t=1733301717; cv=none; b=YhrkuLYAaos5uIOlNudB7I+VrxQOpIiyz0KMSTvm9ODJ9dr+3p7b5IOeNre6zgyC0R3MeguPAcKoyfANd3xllvm3+kF4F0yVFjqasO03w8trSt+lSO1Qv3EAJ7uk64sl7rlqmGbY67FMEMCPztKqmynlmw+65c9Z/y/VUGHfVY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733301717; c=relaxed/simple;
-	bh=g7W6HaNHfZK9DJ4BMFiE+Tt3WIyDpSTET1kWhUBSNY0=;
+	bh=u33syiicEIaonuoBeEib0kONlZukMcsn71SdeVu9Azo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hGosKua5mKEMi8cksMu4I+H6EYTH4PHlqLTbq9hqReG5Asx+b5pfRnn5aNRygKSfxFzUp8AwVM6HKjG/9+E1P7ghWGo8FqxzciXYBBJznRy0KzjeU6sILCTWhtzKX0lJxs1PsfdxWsx0g+2vagvgp+v5doHAbadM64zCTKfItyE=
+	 MIME-Version; b=A/sSWG1nj6GWVmemSIe0dNHzGhtXwQdua/3RloXJtljwHUa/mKVsIRwGT1b75kHHFN8Izqa+mYXVxdNLaJJidmoT2lEJ/kQoM75w9q6SbfjgotMkVcBpF73oyoc2bFVtinbgEMwbw3X+H1AitS8dQJGQKUR5lAitzIJFEuYoL+g=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx7-0001I3-49; Wed, 04 Dec 2024 09:41:45 +0100
+	id 1tIkx7-0001I7-46; Wed, 04 Dec 2024 09:41:45 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-001cUB-0b;
-	Wed, 04 Dec 2024 09:41:43 +0100
+	id 1tIkx5-001cUL-0z;
+	Wed, 04 Dec 2024 09:41:44 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tIkx5-004pt9-2r;
+	id 1tIkx5-004ptq-36;
 	Wed, 04 Dec 2024 09:41:43 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -43,9 +43,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v2 04/10] net: usb: lan78xx: Improve error reporting with %pe specifier
-Date: Wed,  4 Dec 2024 09:41:36 +0100
-Message-Id: <20241204084142.1152696-5-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v2 08/10] net: usb: lan78xx: Add error handling to set_rx_max_frame_length and set_mtu
+Date: Wed,  4 Dec 2024 09:41:40 +0100
+Message-Id: <20241204084142.1152696-9-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241204084142.1152696-1-o.rempel@pengutronix.de>
 References: <20241204084142.1152696-1-o.rempel@pengutronix.de>
@@ -61,42 +61,78 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Replace integer error codes with the `%pe` format specifier in register
-read and write error messages. This change provides human-readable error
-strings, making logs more informative and debugging easier.
+Improve error handling in `lan78xx_set_rx_max_frame_length` by:
+- Checking return values from register read/write operations and
+  propagating errors.
+- Exiting immediately on failure to ensure proper error reporting.
+
+In `lan78xx_change_mtu`, log errors when changing MTU fails, using `%pe`
+for clear error representation.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/lan78xx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/usb/lan78xx.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index dd9b5d3abcb3..94320deaaeea 100644
+index 33cda7f3dd12..2d16c1fc850e 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -621,8 +621,8 @@ static int lan78xx_read_reg(struct lan78xx_net *dev, u32 index, u32 *data)
- 		*data = *buf;
- 	} else if (net_ratelimit()) {
- 		netdev_warn(dev->net,
--			    "Failed to read register index 0x%08x. ret = %d",
--			    index, ret);
-+			    "Failed to read register index 0x%08x. ret = %pe",
-+			    index, ERR_PTR(ret));
+@@ -2599,27 +2599,36 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 
+ static int lan78xx_set_rx_max_frame_length(struct lan78xx_net *dev, int size)
+ {
+-	u32 buf;
+ 	bool rxenabled;
++	u32 buf;
++	int ret;
+ 
+-	lan78xx_read_reg(dev, MAC_RX, &buf);
++	ret = lan78xx_read_reg(dev, MAC_RX, &buf);
++	if (ret < 0)
++		return ret;
+ 
+ 	rxenabled = ((buf & MAC_RX_RXEN_) != 0);
+ 
+ 	if (rxenabled) {
+ 		buf &= ~MAC_RX_RXEN_;
+-		lan78xx_write_reg(dev, MAC_RX, buf);
++		ret = lan78xx_write_reg(dev, MAC_RX, buf);
++		if (ret < 0)
++			return ret;
  	}
  
- 	kfree(buf);
-@@ -652,8 +652,8 @@ static int lan78xx_write_reg(struct lan78xx_net *dev, u32 index, u32 data)
- 	if (unlikely(ret < 0) &&
- 	    net_ratelimit()) {
- 		netdev_warn(dev->net,
--			    "Failed to write register index 0x%08x. ret = %d",
--			    index, ret);
-+			    "Failed to write register index 0x%08x. ret = %pe",
-+			    index, ERR_PTR(ret));
+ 	/* add 4 to size for FCS */
+ 	buf &= ~MAC_RX_MAX_SIZE_MASK_;
+ 	buf |= (((size + 4) << MAC_RX_MAX_SIZE_SHIFT_) & MAC_RX_MAX_SIZE_MASK_);
+ 
+-	lan78xx_write_reg(dev, MAC_RX, buf);
++	ret = lan78xx_write_reg(dev, MAC_RX, buf);
++	if (ret < 0)
++		return ret;
+ 
+ 	if (rxenabled) {
+ 		buf |= MAC_RX_RXEN_;
+-		lan78xx_write_reg(dev, MAC_RX, buf);
++		ret = lan78xx_write_reg(dev, MAC_RX, buf);
++		if (ret < 0)
++			return ret;
  	}
  
- 	kfree(buf);
+ 	return 0;
+@@ -2685,7 +2694,10 @@ static int lan78xx_change_mtu(struct net_device *netdev, int new_mtu)
+ 		return ret;
+ 
+ 	ret = lan78xx_set_rx_max_frame_length(dev, max_frame_len);
+-	if (!ret)
++	if (ret < 0)
++		netdev_err(dev->net, "MTU changed to %d from %d failed with %pe\n",
++			   new_mtu, netdev->mtu, ERR_PTR(ret));
++	else
+ 		WRITE_ONCE(netdev->mtu, new_mtu);
+ 
+ 	usb_autopm_put_interface(dev->intf);
 -- 
 2.39.5
 
