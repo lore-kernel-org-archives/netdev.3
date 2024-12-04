@@ -1,103 +1,282 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236420CCDA
-	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 16:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C620C473
+	for <netdev@vger.kernel.org>; Wed,  4 Dec 2024 16:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329871; cv=none; b=OUTLuAb6KpiZ2h5ouIJOOSSB8Xx3WxiAM2/BvUjIr+ugPpDC4RFnijsOJVTeUXnq67rt8TZgPg3ktWEExpXrfDy5XnHwEBez4uNJAAkloCGU9G8OTHfqYXAFr/NXHsz6OAn0Zzn37cnVbbZK79jI1TWD6vq89RrwyxYdb0G63z4=
+	t=1733329975; cv=none; b=WGwJXQol2IcL/rLzWyGp35vNGThQ9cKyGfu9sAWxSMLt8jPM+ZIzGLgXIlY1ySmpKP5PV9RitJFIPZH0CXjX4NVPwl934JVi7xeceoIeMpGAb1JwJ8JGTEpK6gEJsLUXkGOP9OyDGCGXnqB3zz2Jgk6emN01woHTbwdFnXmO2/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329871; c=relaxed/simple;
-	bh=OwIm7ewoQ/tyyVEl2gtgBbM/FzCCUtYjHF0g2oI+RyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVTNaSnivj7rlKDXpaYjY4dnh/3QTCXf/zqFqmvNgKVeQt+EbbT3ZZ0BEqaiqRv9UZnrDq/pn+mcaI6NatJVW4wKXbXvOZC7yqvqd+jbQvTGJ83Wl/5gUrorLi7jPaBjUX1NJGA8g7Fo21zZWvQpt1w/UFALJGf0zNn6sUuno6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=kbdWZQhP; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1733329975; c=relaxed/simple;
+	bh=Z0dYTEMwvs7EPeBramaT98wi9z6hwRDhzo523x4GzXQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HiAgPMItMX2l6b4x2tzd3kWlTUjvT7HfRNwCSE60Pel25RHUJO7i0yi9NPExHSYJ8fTh2nhHPrVSV2CMcD52Mehv1MWwML7Mp/61/ZLvUqY4IjLraQA5MZkXsUf6v3G4tfBdqJ6HMHRO6lKJ3Sjh3wCaydD4fMXQe1j6Vws3dqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=c63XBgaF; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="kbdWZQhP"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-724d57a9f7cso2654b3a.3
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 08:31:09 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="c63XBgaF"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fc93152edcso19571a12.0
+        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 08:32:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1733329868; x=1733934668; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BePRakW479YdwoV8rL4Bf5U0PThrSiDz+M0PQMXyqss=;
-        b=kbdWZQhPsljj2I2KA8dRGvAYoRSNHMwUs/6Vy3TIxdR/wehwIyqcKJQ+YlgpygMdfa
-         Zws3hTpT7ssHRPYgPS9g716tWPQBm142+UMS1GtAW6hdX9WSODJIO1T7unrSKrEed/OZ
-         zPi5jGlBUW6/UMIlr8RLwZ7qlQdRa6x0foZb9lSVS1/RLXa7unZ9gquvDe+yS65TLmBN
-         OnwARPIuSAcYe0r2eMkwp2Edvspufwsl/Qud9svlLmPPVGDclQY3kI/Qsj+r2ylEfktJ
-         7Ap3th9Vg9ZOeAueJyeNlN2hOQDqm7amS5x6H59BwGFbHDRX863hD2/97zC+uSjJgf8u
-         VHpA==
+        d=fastly.com; s=google; t=1733329972; x=1733934772; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B9F2gbv4yEGv6FWimwcogNz/DAberMpNHKWgDCnbd2w=;
+        b=c63XBgaFWVjjICt1zdzR96hDRI7LWCGhDji9iAEFLGpRvbo87nWUc0Vy9k16wczuCQ
+         B0jbr3o8laT/pdzxHbyEfz1m2zIZJS1N6UedFrvcF2LV6kAVMLJWoSRh8z94/VVPsaVo
+         VgJQYpxtapRHZhbhROqd4/4oorsuR032rEuB0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733329868; x=1733934668;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BePRakW479YdwoV8rL4Bf5U0PThrSiDz+M0PQMXyqss=;
-        b=sApN9RO7NXue9TBklHKl88TYyRXxKeO5qAbiiZe9zFh6C1go1Gc16oVou1RREmvAYG
-         4Td/aQ8xwMtExhmioNT8ek8aJgeV7i6Fvvzy3ldvgXxmsAat/SO4zga6oIdxAOa0PjAh
-         C4ekDoM1+HuX2L4l5irVW4ejGchwfd1y2aNlvExYnIqqsvq9HH5AqZT93CuzSSQGhw4y
-         sbOZ9tW8ImXdkifjcjm0jJfTIhbogWHAiC6oQhiyRuEQKE8H+bCiANKMQpWyDFXyBx+s
-         s9/i78X+Vj4k70rWvfPQ+n1snzeN2Bcy9hGwANKxYqUpbtuxSEWcuDIhbnb5C+pTIGqi
-         EoYw==
-X-Gm-Message-State: AOJu0YzJF8NYkat3IlafsJMzms97fRi8S5WDvUtnJ3nv5irdleKGQZNY
-	mHfwqwsUn4gC4TuXgfk3QtcMrR9ScLoyUr8IfL54CawoGYTkd1WLdSgGXPFmtEzjUL1JxHJoJKt
-	l
-X-Gm-Gg: ASbGnctxKbd0I2pqLjQZ4lS3VuxO+/Fvg/y1IaGCki05FkNpCJS/ZpBXrQqmBIuaov6
-	JexglUIWYU/WmBbGnqQbCPU9J74zceafn15sbgI6pUtGPhK4ku0pJGEXVKlAq/wD2K/faxpYwK0
-	VjRCUVDKMnigNsqiDPQX/9lgVZLLm+Zjmx8GW7YN+GojQ685u1V8FMpcWTBurB+atpn/AtD3rEj
-	nFStNaZaezI19Ys88QtmdJ2GMQVumQtlGPM5lLWebu4MUGjgH+g0p2EWJ+4cu7xVCRTOpLhiaqN
-	FC4GwsFnwj39vv+xS2ICmbYvSJQ=
-X-Google-Smtp-Source: AGHT+IH2gCiezvnfDDkWfddINxstjV2QYvR+BG0TKVIsBV8Z6di3xtH5a/GbjX/fnLTAtwjhnoWfig==
-X-Received: by 2002:a05:6a00:2e87:b0:725:9ac3:f24 with SMTP id d2e1a72fcca58-7259ac31305mr1348367b3a.5.1733329868391;
-        Wed, 04 Dec 2024 08:31:08 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72590d136c4sm1455389b3a.9.2024.12.04.08.31.07
+        d=1e100.net; s=20230601; t=1733329972; x=1733934772;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B9F2gbv4yEGv6FWimwcogNz/DAberMpNHKWgDCnbd2w=;
+        b=Y9ULWb8AAXwpQAGPUdhI74w07NAUABQ/q0Hq1zv2hs+RKByqw1g+EPRcPpQsyJt9p/
+         zyUl0aZzel+eMpvrLZvJN0DTjGgghzqH+J+6C3DNEFQEMgQe/RjImu5WsGUNQNpvakXi
+         L2J7FBhSSwYCEQ7VDgcrsyfPzAmuPjVjeHJC98XvMl8avWzx58x5t2knUzG1GuR0jECR
+         HjqaTlo1Te3Asr8usr43vsdwa/LhW+AdT0ZWIPdkpKLZEiZaRPF7tA0b94GWSl/cFJKv
+         NHLA1f2SWIKpWIBoHNUjFUh0vBgBafSsfUCs1Kot4L9ncpHWzmonaqjz6BPLKfMAkXon
+         KQWg==
+X-Gm-Message-State: AOJu0YzyKvtyc8UBsX8cKFtXQ+afiOqArd5YDAmgehhvMIJjp6YN5VIP
+	Z8xmdlsy5i7NkYixsoX9b4dLIYMivFIFhKfVGrJFWj0FKEHfplVtKPe74jmojvWcknmILZo+GBN
+	AuU1xoqb+Vyh42gKN59r38cI+jB6jNxo0+9q2u8T34WFhPUlx5BR1Y9EuN33Z2VPsRFGEt1JOLy
+	uW6/KaDjuCiIaGPvwjPj6urZTE+onhQ4n5oeM=
+X-Gm-Gg: ASbGncssIqO+FfuPGWzD141yPDPpr06bBLHMregw6p4SnRF4ThH8Efxm1l7PsshRK2j
+	BDcxSD2lvaqKxxFaD17n+6R6Gp390e+czrd76/FkAAKYl43c63vl8N5QD7SYRG+DT3WbhQPP5Ie
+	fh6rLDsfbvyexlH+op+enrpCArJjtfpGM+aGwKpSf4BVdQeSLGjnDliFW7035sVB5RigHY0SnsB
+	JfXAJVsr5QETp4d3Ztp1RyDteHQbwcueI2Vp9s5BbUJ/WsBA0kqwDYryw==
+X-Google-Smtp-Source: AGHT+IH+E1gXaxMcRBNlIPPX1i+yJ6kT0s/1DKSFVWFhZ1hgmYUfBlH8N4Ve1euLnBgvSAii6npH/w==
+X-Received: by 2002:a17:902:f64d:b0:215:8fd3:d1b6 with SMTP id d9443c01a7336-215be6fca4fmr115273835ad.23.1733329970689;
+        Wed, 04 Dec 2024 08:32:50 -0800 (PST)
+Received: from localhost.localdomain ([2620:11a:c019:0:65e:3115:2f58:c5fd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215884744e6sm60591775ad.174.2024.12.04.08.32.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:31:08 -0800 (PST)
-Date: Wed, 4 Dec 2024 08:31:05 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, dsahern@kernel.org, jiri@resnulli.us, andrew@lunn.ch,
- luka.perkov@sartura.hr
-Subject: Re: [iproute2-next] ip: link: rmnet: add support for flag handling
-Message-ID: <20241204083105.1827dd73@hermes.local>
-In-Reply-To: <20241203124921.200637-1-robert.marko@sartura.hr>
-References: <20241203124921.200637-1-robert.marko@sartura.hr>
+        Wed, 04 Dec 2024 08:32:49 -0800 (PST)
+From: Joe Damato <jdamato@fastly.com>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	mkarsten@uwaterloo.ca,
+	stfomichev@gmail.com,
+	Joe Damato <jdamato@fastly.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
+	linux-kernel@vger.kernel.org (open list),
+	llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT:Keyword:\b(?i:clang|llvm)\b)
+Subject: [PATCH net-next v2] selftests: net: cleanup busy_poller.c
+Date: Wed,  4 Dec 2024 16:32:39 +0000
+Message-Id: <20241204163239.294123-1-jdamato@fastly.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue,  3 Dec 2024 13:47:59 +0100
-Robert Marko <robert.marko@sartura.hr> wrote:
+Fix various integer type conversions by using strtoull and a temporary
+variable which is bounds checked before being casted into the
+appropriate cfg_* variable for use by the test program.
 
-> +		} else if (matches(*argv, "deaggregate") == 0) {
-> +			NEXT_ARG();
-> +			flags.mask |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
-> +			if (strcmp(*argv, "on") == 0)
-> +				flags.flags |= RMNET_FLAGS_INGRESS_DEAGGREGATION;
-> +			else if (strcmp(*argv, "off") == 0)
-> +				flags.flags &= RMNET_FLAGS_INGRESS_DEAGGREGATION;
-> +			else
-> +				return on_off("deaggregate", *argv);
-> +		} else if (matches(*argv, "commands") == 0) {
-> +			NEXT_ARG();
-> +			flags.mask |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
-> +			if (strcmp(*argv, "on") == 0)
-> +				flags.flags |= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
-> +			else if (strcmp(*argv, "off") == 0)
-> +				flags.flags &= RMNET_FLAGS_INGRESS_MAP_COMMANDS;
-> +			else
-> +				return on_off("commands", *argv);
-> +		} else if (matches(*argv, "qmapv4") == 0) {
+While here:
+  - free the strdup'd cfg string for overall hygenie.
+  - initialize napi_id = 0 in setup_queue to avoid warnings on some
+    compilers.
 
-New uses of matches() is discouraged because it leads to argument conflicts.
-Use strcmp instead.
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+---
+ v2:
+   - initialize napi_id to 0 in setup_queue to avoid clang warning as
+     suggested by Stanislav. Tested with clang 10.0.0 and 18.1.8
+
+ tools/testing/selftests/net/busy_poller.c | 88 +++++++++++++----------
+ 1 file changed, 50 insertions(+), 38 deletions(-)
+
+diff --git a/tools/testing/selftests/net/busy_poller.c b/tools/testing/selftests/net/busy_poller.c
+index 99b0e8c17fca..04c7ff577bb8 100644
+--- a/tools/testing/selftests/net/busy_poller.c
++++ b/tools/testing/selftests/net/busy_poller.c
+@@ -54,16 +54,16 @@ struct epoll_params {
+ #define EPIOCGPARAMS _IOR(EPOLL_IOC_TYPE, 0x02, struct epoll_params)
+ #endif
+ 
+-static uint32_t cfg_port = 8000;
++static uint16_t cfg_port = 8000;
+ static struct in_addr cfg_bind_addr = { .s_addr = INADDR_ANY };
+ static char *cfg_outfile;
+ static int cfg_max_events = 8;
+-static int cfg_ifindex;
++static uint32_t cfg_ifindex;
+ 
+ /* busy poll params */
+ static uint32_t cfg_busy_poll_usecs;
+-static uint32_t cfg_busy_poll_budget;
+-static uint32_t cfg_prefer_busy_poll;
++static uint16_t cfg_busy_poll_budget;
++static uint8_t cfg_prefer_busy_poll;
+ 
+ /* IRQ params */
+ static uint32_t cfg_defer_hard_irqs;
+@@ -79,6 +79,7 @@ static void usage(const char *filepath)
+ 
+ static void parse_opts(int argc, char **argv)
+ {
++	unsigned long long tmp;
+ 	int ret;
+ 	int c;
+ 
+@@ -86,31 +87,40 @@ static void parse_opts(int argc, char **argv)
+ 		usage(argv[0]);
+ 
+ 	while ((c = getopt(argc, argv, "p:m:b:u:P:g:o:d:r:s:i:")) != -1) {
++		/* most options take integer values, except o and b, so reduce
++		 * code duplication a bit for the common case by calling
++		 * strtoull here and leave bounds checking and casting per
++		 * option below.
++		 */
++		if (c != 'o' && c != 'b')
++			tmp = strtoull(optarg, NULL, 0);
++
+ 		switch (c) {
+ 		case 'u':
+-			cfg_busy_poll_usecs = strtoul(optarg, NULL, 0);
+-			if (cfg_busy_poll_usecs == ULONG_MAX ||
+-			    cfg_busy_poll_usecs > UINT32_MAX)
++			if (tmp == ULLONG_MAX || tmp > UINT32_MAX)
+ 				error(1, ERANGE, "busy_poll_usecs too large");
++
++			cfg_busy_poll_usecs = (uint32_t)tmp;
+ 			break;
+ 		case 'P':
+-			cfg_prefer_busy_poll = strtoul(optarg, NULL, 0);
+-			if (cfg_prefer_busy_poll == ULONG_MAX ||
+-			    cfg_prefer_busy_poll > 1)
++			if (tmp == ULLONG_MAX || tmp > 1)
+ 				error(1, ERANGE,
+ 				      "prefer busy poll should be 0 or 1");
++
++			cfg_prefer_busy_poll = (uint8_t)tmp;
+ 			break;
+ 		case 'g':
+-			cfg_busy_poll_budget = strtoul(optarg, NULL, 0);
+-			if (cfg_busy_poll_budget == ULONG_MAX ||
+-			    cfg_busy_poll_budget > UINT16_MAX)
++			if (tmp == ULLONG_MAX || tmp > UINT16_MAX)
+ 				error(1, ERANGE,
+ 				      "busy poll budget must be [0, UINT16_MAX]");
++
++			cfg_busy_poll_budget = (uint16_t)tmp;
+ 			break;
+ 		case 'p':
+-			cfg_port = strtoul(optarg, NULL, 0);
+-			if (cfg_port > UINT16_MAX)
++			if (tmp == ULLONG_MAX || tmp > UINT16_MAX)
+ 				error(1, ERANGE, "port must be <= 65535");
++
++			cfg_port = (uint16_t)tmp;
+ 			break;
+ 		case 'b':
+ 			ret = inet_aton(optarg, &cfg_bind_addr);
+@@ -124,41 +134,39 @@ static void parse_opts(int argc, char **argv)
+ 				error(1, 0, "outfile invalid");
+ 			break;
+ 		case 'm':
+-			cfg_max_events = strtol(optarg, NULL, 0);
+-
+-			if (cfg_max_events == LONG_MIN ||
+-			    cfg_max_events == LONG_MAX ||
+-			    cfg_max_events <= 0)
++			if (tmp == ULLONG_MAX || tmp > INT_MAX)
+ 				error(1, ERANGE,
+-				      "max events must be > 0 and < LONG_MAX");
++				      "max events must be > 0 and <= INT_MAX");
++
++			cfg_max_events = (int)tmp;
+ 			break;
+ 		case 'd':
+-			cfg_defer_hard_irqs = strtoul(optarg, NULL, 0);
+-
+-			if (cfg_defer_hard_irqs == ULONG_MAX ||
+-			    cfg_defer_hard_irqs > INT32_MAX)
++			if (tmp == ULLONG_MAX || tmp > INT32_MAX)
+ 				error(1, ERANGE,
+ 				      "defer_hard_irqs must be <= INT32_MAX");
++
++			cfg_defer_hard_irqs = (uint32_t)tmp;
+ 			break;
+ 		case 'r':
+-			cfg_gro_flush_timeout = strtoull(optarg, NULL, 0);
+-
+-			if (cfg_gro_flush_timeout == ULLONG_MAX)
++			if (tmp == ULLONG_MAX || tmp > UINT64_MAX)
+ 				error(1, ERANGE,
+-				      "gro_flush_timeout must be < ULLONG_MAX");
++				      "gro_flush_timeout must be < UINT64_MAX");
++
++			cfg_gro_flush_timeout = (uint64_t)tmp;
+ 			break;
+ 		case 's':
+-			cfg_irq_suspend_timeout = strtoull(optarg, NULL, 0);
+-
+-			if (cfg_irq_suspend_timeout == ULLONG_MAX)
++			if (tmp == ULLONG_MAX || tmp > UINT64_MAX)
+ 				error(1, ERANGE,
+ 				      "irq_suspend_timeout must be < ULLONG_MAX");
++
++			cfg_irq_suspend_timeout = (uint64_t)tmp;
+ 			break;
+ 		case 'i':
+-			cfg_ifindex = strtoul(optarg, NULL, 0);
+-			if (cfg_ifindex == ULONG_MAX)
++			if (tmp == ULLONG_MAX || tmp > INT_MAX)
+ 				error(1, ERANGE,
+-				      "ifindex must be < ULONG_MAX");
++				      "ifindex must be <= INT_MAX");
++
++			cfg_ifindex = (int)tmp;
+ 			break;
+ 		}
+ 	}
+@@ -215,7 +223,7 @@ static void setup_queue(void)
+ 	struct netdev_napi_set_req *set_req = NULL;
+ 	struct ynl_sock *ys;
+ 	struct ynl_error yerr;
+-	uint32_t napi_id;
++	uint32_t napi_id = 0;
+ 
+ 	ys = ynl_sock_create(&ynl_netdev_family, &yerr);
+ 	if (!ys)
+@@ -277,8 +285,8 @@ static void run_poller(void)
+ 	 * here
+ 	 */
+ 	epoll_params.busy_poll_usecs = cfg_busy_poll_usecs;
+-	epoll_params.busy_poll_budget = (uint16_t)cfg_busy_poll_budget;
+-	epoll_params.prefer_busy_poll = (uint8_t)cfg_prefer_busy_poll;
++	epoll_params.busy_poll_budget = cfg_busy_poll_budget;
++	epoll_params.prefer_busy_poll = cfg_prefer_busy_poll;
+ 	epoll_params.__pad = 0;
+ 
+ 	val = 1;
+@@ -342,5 +350,9 @@ int main(int argc, char *argv[])
+ 	parse_opts(argc, argv);
+ 	setup_queue();
+ 	run_poller();
++
++	if (cfg_outfile)
++		free(cfg_outfile);
++
+ 	return 0;
+ }
+
+base-commit: e8e7be7d212dc2bc83b8151e51088666a6c42092
+-- 
+2.25.1
+
