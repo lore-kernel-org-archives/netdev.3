@@ -1,144 +1,116 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A359A1A8F84;
-	Thu,  5 Dec 2024 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB83D1D63C6
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 09:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733391284; cv=none; b=R5S55ZdrSMNoVOeNmyp8QPVS9p5SXLg5+xQFLgRKjBtiULWNH3M8UeOTXc6l3W3QInZvkqHi5XRNkw3Fxm8oRqB1JmJ1/yksRo+nnPV+uxOFUJzWnZB7sAbdn5BuXMhVqObM9Ga4k/PrvxDBrOE99dHEIngnYvuOlFWKIahvBzw=
+	t=1733391753; cv=none; b=UlOPYTn5/o0OWrPOyAAriaszUxPdlaqTt167pOh+YB8XqAnsSEKRNpqL4/urlfraIT2YctmgXdbMV0lDGfbgB2c6JiPkEj2V/xDPa26Y8dUqRWMeaNVN1QkHHN4X/1C7FJ05bkYNjw5dYxldSSW4jaPwW6h457xd1t4OPkSRFB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733391284; c=relaxed/simple;
-	bh=SgjiSFVxnlRVKIIJzqHaBXZJFjFXmkquQB53qoebHPk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=muC+2knvt1ZhnOCIPsskTUG00iE7QZRkgg0BBJ/uL+u4Yu3mZbbAwYnhRRkV5LM/Q69shqU2pi+H9Ydln1OjL76Pn/7preicPZL0Qq8yOJyPTGsRA3xafwHCAWrRzruarCx92j/D+45UGidYzAKefeD+VqAP344pDgX1kj74BEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsP/MMTr; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733391753; c=relaxed/simple;
+	bh=pIzdI20dvJKGL2SESL4H2+F0XmvQiYc+5ukxILvmp4A=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=pVeGbXsCvhXwVhXKalamnd4BYgs/D+y/TYxvYPaG47GMh2VDAOhzBQG8o5QeX1nL0nI+2G0/qP0q5MRahCHqhIfF0u7RM+VuV3GupCOC4y+E/3j9A6k4oz+WaRe98ZDpM4wgZyIP20GeFTqLSeijgTYustzWa7D6Mw5eFsd+Bpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=sAjRqda2; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsP/MMTr"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-724e1742d0dso632460b3a.0;
-        Thu, 05 Dec 2024 01:34:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733391282; x=1733996082; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=svw3hVWhjLUsKCnyMo5bW6Ng4sD85ogIrMfseX9wbyA=;
-        b=gsP/MMTrj12JVHLsTZfPYK3umou5w/6L9oGZFjvWjP8g44MrGNRWa9gqhakCtQ/Rdj
-         WXLyj4aDGM12cAWXwl967LARkPJGUrFtSZzUjlQb/Nz+/Q8c3x0rhDu2iM2XvSnc5UV+
-         GJaKvDFLASYDLsH6HT1R9LQkgywD6CdHkA6b7PqK7Z5HOlkWdyK6vV6mL/5ctM4h0ir+
-         xkMDQq6uTEL5PG5dXxMePbgdRO7duDBKa1oWyBUFIbtOzBSVL6U1dzXjmTDSckEITTae
-         DLqr64xJI8627lxQUOKsXQiYJT0pQXv779oz8ZO0RldbKBlrsk3FCzGJApZpp7SQwm7O
-         Vrhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733391282; x=1733996082;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=svw3hVWhjLUsKCnyMo5bW6Ng4sD85ogIrMfseX9wbyA=;
-        b=oSEdTdvrdjsM0oZiesZOd3zpWXsyRBbvIj0+/xzYqN6HAQLPHXGdcknlg0LUbavd+a
-         nmu8jR+AgPq6t256YQq0qpOm/Ovvk17OvrI6GYQZI45Uxt6jr8vAPUYg+tOOdHSy9193
-         3JmJASH3pzYeUsm+U51cWjbkFKk6UpV4Kx3c19iwdKQJ4T9H6+hQzKaf2PimdWlJQqgi
-         19+qSxW0yjhj/nO7W3d7ZWmsDCEXbUlYPFlw7qrIWk1HeVAzpYrhvGdAivdeMdAY1hgW
-         Tvtl+4JO41QWzO+1biy+I0K82OthByfbjfm1THS521M/srGG/use6OwO2dWnK8Mx2b6S
-         vdBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUC0qaTZyISTWwOyysCOkY3CQdDPYPGHap9Bg4Ifsnbo684DiEH5ZUXi0L43Ir2Y76PBbeDL3IicEaWVbk=@vger.kernel.org, AJvYcCUqp1P2uPdjXu77BzxfNK9E3rPRoMP4FpmFhhyDLgxHkTLoz2jqd0mithRRrXj5zvKhUbIBrM2peU687LQ=@vger.kernel.org, AJvYcCWfA4//H8e4TnjSNc8+WG5mrqsC3N5jRLJzZoGU/rOY8TVr1aVZtBz3GiRxQkv1OS8bontScTNf@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy48HObuvc+CoRn0lt69y1CSdK82+kGSJoqOs49gRpEjFMjfSUo
-	rW+p5sxQpUZxnURP7/GORQHoI6Gpui8fC2VbGA+Km3cyrJOhMIVYFCowBw==
-X-Gm-Gg: ASbGncuZSRENXBAIMMMC/yI/8SvYtxq8aH9QgJmjyTF5P8zV1ahPq7CJ9MavNiqY8oU
-	4fl8SvXsJceJGQrmE8+E1dCwxFmgOINtqpK0uVVxUgog7KWRiVNl/TAn7H1tAjmy8z1o2z1WWhk
-	KtSG9oiJyWcCxKJvI3YiecEeqHXmDW/1KCUR4JyOsiOULJ1ueKXVEEBsnJiAuWTkRwCbhktGWQM
-	Eh8XLx8ZDfNPNm2gJqhP4FN3uLeQxtQHNbx5+PPMq+SdCo=
-X-Google-Smtp-Source: AGHT+IGGByayQpZUFnuuK54B4xfgnuxti4ZXFGpFEg18KahQT7dWybOnF+z1/CV1gszt9ZR4jHsBdg==
-X-Received: by 2002:a17:902:ec8b:b0:215:19ae:77bf with SMTP id d9443c01a7336-215bd0d8999mr134561575ad.19.1733391281860;
-        Thu, 05 Dec 2024 01:34:41 -0800 (PST)
-Received: from localhost ([129.146.253.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e5f172sm8672215ad.69.2024.12.05.01.34.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 01:34:41 -0800 (PST)
-Date: Thu, 5 Dec 2024 17:34:31 +0800
-From: Furong Xu <0x1207@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jon Hunter <jonathanh@nvidia.com>, Thierry Reding
- <thierry.reding@gmail.com>, Robin Murphy <robin.murphy@arm.com>, Jakub
- Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
- <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, xfr@outlook.com, Suraj Jaiswal
- <quic_jsuraj@quicinc.com>, Thierry Reding <treding@nvidia.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>, Will Deacon
- <will@kernel.org>
-Subject: Re: [PATCH net v1] net: stmmac: TSO: Fix unbalanced DMA map/unmap
- for non-paged SKB data
-Message-ID: <20241205173431.0000779e@gmail.com>
-In-Reply-To: <Z1CVRzWcSDuPyQZe@shell.armlinux.org.uk>
-References: <20241128144501.0000619b@gmail.com>
-	<20241202163309.05603e96@kernel.org>
-	<20241203100331.00007580@gmail.com>
-	<20241202183425.4021d14c@kernel.org>
-	<20241203111637.000023fe@gmail.com>
-	<klkzp5yn5kq5efgtrow6wbvnc46bcqfxs65nz3qy77ujr5turc@bwwhelz2l4dw>
-	<df3a6a9d-4b53-4338-9bc5-c4eea48b8a40@arm.com>
-	<2g2lp3bkadc4wpeslmdoexpidoiqzt7vejar5xhjx5ayt3uox3@dqdyfzn6khn6>
-	<Z1CFz7GpeIzkDro1@shell.armlinux.org.uk>
-	<9719982a-d40c-4110-9233-def2e6cb4d74@nvidia.com>
-	<Z1CVRzWcSDuPyQZe@shell.armlinux.org.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="sAjRqda2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=A3y6MwUAGsUHiozWMnJnTOPGfmVxoyuHA6Uc8vPNLyU=; b=sAjRqda2Pzz4zayqttQHebInbQ
+	pltGcFA3wdx2kUu+lxknjca8uFBS2Q5PryXnPgxPxg2ipEMYdyu8RrRY/7giZE6k8MxrK0DeUGZyG
+	0/Zpj0AAmYwvkMcU5pLCzBiT1/xwH+7US45Gue74feSNXgsPuo8xVKuMTsx+6HUoS3wwWSO2boxsh
+	zvRpyWVTM2DrHJrWnQkzFKKflmn9Mo00k3goQ7glOAmssnP3UWmwXmERVHKxEF1h2l/MBEaovR6+k
+	Fn2L11+MSSaldWvYRzYBIYBdpMkGvfApsQm1jORDL1cyQBgaHL26EdmwZVHCKeKmck8pqkbaPLIUa
+	+ciHJj/g==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:45918 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1tJ8NN-0004To-1x;
+	Thu, 05 Dec 2024 09:42:26 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1tJ8NM-006L5J-AH; Thu, 05 Dec 2024 09:42:24 +0000
+In-Reply-To: <Z1F1b8eh8s8T627j@shell.armlinux.org.uk>
+References: <Z1F1b8eh8s8T627j@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next 1/3] net: pcs: pcs-lynx: implement pcs_inband_caps()
+ method
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1tJ8NM-006L5J-AH@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Thu, 05 Dec 2024 09:42:24 +0000
 
-Hi Russell,
+Report the PCS in-band capabilities to phylink for the Lynx PCS.
 
-On Wed, 4 Dec 2024 17:45:43 +0000, "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> So yes, "des" is being offset, which will upset the unmap operation.
-> Please try the following patch, thanks:
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9b262cdad60b..c81ea8cdfe6e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -4192,8 +4192,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  	struct stmmac_txq_stats *txq_stats;
->  	struct stmmac_tx_queue *tx_q;
->  	u32 pay_len, mss, queue;
-> +	dma_addr_t tso_des, des;
->  	u8 proto_hdr_len, hdr;
-> -	dma_addr_t des;
->  	bool set_ic;
->  	int i;
->  
-> @@ -4289,14 +4289,15 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
->  
->  		/* If needed take extra descriptors to fill the remaining payload */
->  		tmp_pay_len = pay_len - TSO_MAX_BUFF_SIZE;
-> +		tso_des = des;
->  	} else {
->  		stmmac_set_desc_addr(priv, first, des);
->  		tmp_pay_len = pay_len;
-> -		des += proto_hdr_len;
-> +		tso_des = des + proto_hdr_len;
->  		pay_len = 0;
->  	}
->  
-> -	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
-> +	stmmac_tso_allocator(priv, tso_des, tmp_pay_len, (nfrags == 0), queue);
->  
->  	/* In case two or more DMA transmit descriptors are allocated for this
->  	 * non-paged SKB data, the DMA buffer address should be saved to
-> 
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/pcs/pcs-lynx.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-Much appreciated for your comments and suggestions, I sent a new patch to fix
-this issue. Please let me know if you have any new advice.
-https://lore.kernel.org/netdev/20241205091830.3719609-1-0x1207@gmail.com/
+diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
+index b79aedad855b..767a8c0714ac 100644
+--- a/drivers/net/pcs/pcs-lynx.c
++++ b/drivers/net/pcs/pcs-lynx.c
+@@ -35,6 +35,27 @@ enum sgmii_speed {
+ #define phylink_pcs_to_lynx(pl_pcs) container_of((pl_pcs), struct lynx_pcs, pcs)
+ #define lynx_to_phylink_pcs(lynx) (&(lynx)->pcs)
+ 
++static unsigned int lynx_pcs_inband_caps(struct phylink_pcs *pcs,
++					 phy_interface_t interface)
++{
++	switch (interface) {
++	case PHY_INTERFACE_MODE_1000BASEX:
++	case PHY_INTERFACE_MODE_SGMII:
++	case PHY_INTERFACE_MODE_QSGMII:
++		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
++
++	case PHY_INTERFACE_MODE_10GBASER:
++	case PHY_INTERFACE_MODE_2500BASEX:
++		return LINK_INBAND_DISABLE;
++
++	case PHY_INTERFACE_MODE_USXGMII:
++		return LINK_INBAND_ENABLE;
++
++	default:
++		return 0;
++	}
++}
++
+ static void lynx_pcs_get_state_usxgmii(struct mdio_device *pcs,
+ 				       struct phylink_link_state *state)
+ {
+@@ -306,6 +327,7 @@ static void lynx_pcs_link_up(struct phylink_pcs *pcs, unsigned int neg_mode,
+ }
+ 
+ static const struct phylink_pcs_ops lynx_pcs_phylink_ops = {
++	.pcs_inband_caps = lynx_pcs_inband_caps,
+ 	.pcs_get_state = lynx_pcs_get_state,
+ 	.pcs_config = lynx_pcs_config,
+ 	.pcs_an_restart = lynx_pcs_an_restart,
+-- 
+2.30.2
 
-Thanks,
-Furong
