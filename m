@@ -1,28 +1,28 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2077.outbound.protection.outlook.com [40.107.101.77])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2048.outbound.protection.outlook.com [40.107.223.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAD721C9FD
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 15:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0725C222574
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 15:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733413459; cv=fail; b=Ugz6RLyureHXjtaMrssLfKh+i7X/y9lgqS743YHUCUq6zASm9FGskm/5EpOcrsC9rs7cxOakmuG0okLQtuWKpV+loWysMRXETVD6q9Ti++SXDKqxjchFR58Cj64fmTRNSeE04/lW0zWkgjDnJuXbB7yxtuotLVTnrnYdiFieOdc=
+	t=1733413461; cv=fail; b=CEyzXjj7huZjb3YkNjFCvC9Xl0WWOiUQWM66RQ6yfjX6O/Zs1reQ55Cymw6jkeAqbNNvJeA1bHVVyklVydDSiaPI1Hi1sV9d9auU6gwesi/TtaMzeOJ6eer0D4gemSIPiVs3wvS7+s4KjlT0MdYERPtQ450vKrDt5UDsf/A4sVA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733413459; c=relaxed/simple;
-	bh=KEyyWmR+1MTMjYgeQVD0qDDfb0uiTkQ6HLxpywT0aDQ=;
+	s=arc-20240116; t=1733413461; c=relaxed/simple;
+	bh=1ku2EMo6yMHEg5+ip+YnpKpoWv8rx2QkdXEUbVgim0Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z0m6WeSGPgczpIsvbvb6v/i3R9+IBTAmuWZyWCHTlj7ypjNunm6JXzRVDTMpruSBaBKGZlO7Pn0Arm3CsaRWzixXohhDuMsr842vy3tEHiOrX+yNNqtfgREkqBZKS7t94lQ1qkCjO8a2oHDqvAA4rkLmoeCa6x+OIoPS3LS+mCQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mKS14bcP; arc=fail smtp.client-ip=40.107.101.77
+	 MIME-Version:Content-Type; b=iY98klb6o/a2b7J5LzbYDjmRZa2rkU6eK7eeMM4NQJIjlWJtWnypVG6zSKh8HvD9KXAyBRd9Ucvmwg+dWDRVjDwv2ajteAyWVGQJF/9f89FcYUOcDtro/kYn/Q6+lpgilg+LuMOp+N1v3pVEQPVkDBngFlPIdp7QIQzWoZDYnTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kbP0+n2t; arc=fail smtp.client-ip=40.107.223.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mKS14bcP"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kbP0+n2t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sInuwL17wSz5tW+8zUyEwkYh9L3wZWJ70wJZ0pVOkl/zB0AiuoI0qaYgzSeW9LoFVOY0IcVHIlVg7Clb+PEOq88WBNuMqEwRoj5ywm5VC6AFT2kky81+u9KuWvjow9gVte8nI8/NfH4Xqt187xfnNGGmi6KzuXGlP2mRoOWY+tAoWNsbQUKvaGMo5qytMG9svwGTzAo5eX7M2oWj54Q682Pqg34MWNFSMLCjsQ5rJEQSM8DXBEM9+9bgqijmKdQjypYdki1Vd4qraTKmNudD2IzjxBa3Y2cBqGNVgXoWoI/K2JKw001QpHNZDPnWdPcDo0TrmDtAUXL0Xu7cpRN1cg==
+ b=cJ4KfzncYuTWiFNki2nhdoMsK2RlWLuJggMVdKasRWa3pTJTXFMOR6ubxDpWnAYNd3z5qxdX8BWoHkaumziuWcDwhsVZSeH0eNGYCUXfKTnREEd/o5tYzOb8dJLd7YfOu2QpUyWHMmwDFAP3pMVNnpM5cIqPyE3JPg3FFbtUSiVIJxZHM72dnF9WjBOUxHesTbttjjo59VOEkyIVkr+6WzeXR0z89uV04c2Ln2jjBMQ9M78e+j+UPccsQZOVfAU1SXwAffY44sPtOmOTqRzcibhnEgu3FVY2hhl8lFDGC2Caugm0V92FJG+cw3OucAPLILqB5SBXwtszUSv7bdurMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f3zCt9csEe3DSeoIpLsQVQK746Hs85nFnxWJlwlD7m0=;
- b=cJzahSH9VtyIrVAdOA5Ggx64pHwR8D0p0Y4VApUsacTpRGM+3j+8qj+djmxOHmo0goTkwe2Nk5uwEyBcKAyazryMFnci2mXlqNLeioZ/NRGUpz1QtBfJ6KCGYFtHW975DA9z6qjl8e2o/OB2iw7AtnJ0vcabUf+YAKKBmklRCYvXR0b2/orPw6+J5wehPG4Ow+1VjSLlngJ6mCEUOAibc6xhKSY9Yt6reoETLick4TjZBE9f8JYh1dLtBzGL9Kf/llgEGUVQB1HASAR2Cmc+JyVbLMKnNgRr2bqrhhT38dVI9O+lQ1YLy19Pjq9SKzgW6iOtDLTS74haE3a91vczZQ==
+ bh=gO6UD/APZI+e8FHC377Ht/AVvyYItDlRhst5ibeJ5z0=;
+ b=v46jRbvp5Cim2Ywn3srfk3+HEfVroK9fMz/uEOIaqf5lIFFEMWE9PTqnFLv4qZ6nVBwkLR0Tv88+pIpsF3w5TLn3sAJv+BTH4HC8hyJR18s7ztDN7c3g2jHLredpwjDpvC1BlIn2kW9wH5No9xxQGB/CUwJJqJCUoG1xvV3zngSOAAUopVTJMC0SFgDdOahzpYhIfidzebKiEPS88IgsJ2+LgfkSXB/0eNr411+Ui033b5iMVYmrXf8RiCNyndkufsdNew9rr72IOazFIpCLxp5cyLEB7AJtZsbj+GdAgcSfptdFqnUAGrtR1/bmE9f4l70dWhMiLmMrpkqmuiEzYA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f3zCt9csEe3DSeoIpLsQVQK746Hs85nFnxWJlwlD7m0=;
- b=mKS14bcPNHdk2MWeXHbpwCoJ36R/0nmnwKFzgcRfWfaKQsYVcrIrKN0RghvBk2UClAA4tcgPq6hnWQp5j2F23l71pJPegHOWqKIpOCDXggMUSH9xhiBOoeQj3ohEq90ObXAX74weJNoKfKJz9XGlBEzk3CwIo+erLy9ny2i+byA6FV9lHjPDKn7SkFILKkkhgoh8AJc2p2aDyF8uXcR0LM7rWDH62o/60x++tl6Va6ZdJD0snJ8nnf/OH9bcYHA8Gw+lpcOBgetMR+BzsJC4+I8jnvjZzXdi9LhO30qgtdiRx3N8hZsb1qdNwDkELi5Cw0uvMKuOnr+o4AKtSLEElQ==
-Received: from DS7PR05CA0054.namprd05.prod.outlook.com (2603:10b6:8:2f::28) by
- PH7PR12MB7188.namprd12.prod.outlook.com (2603:10b6:510:204::15) with
+ bh=gO6UD/APZI+e8FHC377Ht/AVvyYItDlRhst5ibeJ5z0=;
+ b=kbP0+n2tn6MCFRbIv9ANPUBL7f0xUHHH1q41nPbEfANz54rr5TAeVc266tPC0UieVBV76YyhOgKK2GXFZGDhpm7qzKydx0aBF3G6CUaaiYb54oDyT7TYcRigRFL8gVSb1BwAOMwaS1NxVa8bYKTriAKYH0F6YSG4vxlkQAvUAYbEzjP+7MDidiRw/nLdTVKNEfbmwwIKQ5ezF2IWMWs0+Rne3sa4mRDQg1yWbXaouTxjoy8G6OHaGka9E4yyxPfH50Mn9lYhTLuSPfYgCpFHRCUFsVOuw/65qnzDfATMI3PxqjtKiZILdQbQ+4J1yhu4So2qBxBXdxvErdUbXW7L1g==
+Received: from SJ0P220CA0011.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:41b::31)
+ by BL1PR12MB5708.namprd12.prod.outlook.com (2603:10b6:208:387::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.15; Thu, 5 Dec
- 2024 15:44:12 +0000
-Received: from DS1PEPF0001708E.namprd03.prod.outlook.com
- (2603:10b6:8:2f:cafe::9d) by DS7PR05CA0054.outlook.office365.com
- (2603:10b6:8:2f::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.9 via Frontend Transport; Thu, 5
- Dec 2024 15:44:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.11; Thu, 5 Dec
+ 2024 15:44:11 +0000
+Received: from CO1PEPF000044F0.namprd05.prod.outlook.com
+ (2603:10b6:a03:41b:cafe::7b) by SJ0P220CA0011.outlook.office365.com
+ (2603:10b6:a03:41b::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.21 via Frontend Transport; Thu,
+ 5 Dec 2024 15:44:05 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,17 +49,17 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- DS1PEPF0001708E.mail.protection.outlook.com (10.167.17.134) with Microsoft
+ CO1PEPF000044F0.mail.protection.outlook.com (10.167.241.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 15:44:11 +0000
+ 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 15:44:04 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
- 07:44:00 -0800
+ 07:43:53 -0800
 Received: from localhost.localdomain (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
- 07:43:53 -0800
+ 07:43:47 -0800
 From: Petr Machata <petrm@nvidia.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
@@ -69,9 +69,9 @@ CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
  Machata" <petrm@nvidia.com>, <mlxsw@nvidia.com>, Menglong Dong
 	<menglong8.dong@gmail.com>, Guillaume Nault <gnault@redhat.com>, "Alexander
  Lobakin" <aleksander.lobakin@intel.com>, Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next v2 06/11] vxlan: Bump error counters for header mismatches
-Date: Thu, 5 Dec 2024 16:40:55 +0100
-Message-ID: <d096084167d56706d620afe5136cf37a2d34d1b9.1733412063.git.petrm@nvidia.com>
+Subject: [PATCH net-next v2 05/11] vxlan: Track reserved bits explicitly as part of the configuration
+Date: Thu, 5 Dec 2024 16:40:54 +0100
+Message-ID: <984dbf98d5940d3900268dbffaf70961f731d4a4.1733412063.git.petrm@nvidia.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1733412063.git.petrm@nvidia.com>
 References: <cover.1733412063.git.petrm@nvidia.com>
@@ -87,55 +87,67 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|PH7PR12MB7188:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a784ac8-7330-4dc8-55ec-08dd1543aa1a
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F0:EE_|BL1PR12MB5708:EE_
+X-MS-Office365-Filtering-Correlation-Id: afd1fef2-3733-4e6c-72a6-08dd1543a60e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Oz8M9Lb4Lli+gIWTwP1oFZ/AJhASNy7mU0D3rSWZi9M/j5x8W/kOP9gNVAGJ?=
- =?us-ascii?Q?RELMXXdeTGtg0YpA3qQp+CnF4TBjjtiWlTc5FwbHn2/+9ySZ+xkptl85fIcI?=
- =?us-ascii?Q?ayWPHBjODmW2YfFb57wl0BI5KKahLXXbubZGoSZQQwtU7EBwz/CKIZSYOvz4?=
- =?us-ascii?Q?kHK4+TmwvBccCuRaisPWHmxMaH89eYWJnCZDHeF7LFEtjpYdCKq+NUV+Az25?=
- =?us-ascii?Q?pJeu2UNX7SxZtgXpa7z21NHoPT18BjcT/mNtKKcsxE6+SlGS0j2VUjKkIOx6?=
- =?us-ascii?Q?fof6J/4GwM3modNDxIp4bY0qvygNhtwxHDnyYJrEftmg5vmXD0d5JwqQKgL/?=
- =?us-ascii?Q?kRUGiJenOCrf30fVrPOwqRq5TZs7xHgF36aENeMNg5ruQsuwAnlU0KNgrJXC?=
- =?us-ascii?Q?tZP6swcyeu3B1ynPu90kuZUOiA8vnXeZs2sybc/wWG3H6k/al9HaHExVfiNX?=
- =?us-ascii?Q?QTdR/x/4HH5nBEO0ahd/tlO+sRAWJyhRos698zC2n0IjXSTaMarhS6sQHFJT?=
- =?us-ascii?Q?fesouQDxYvMH4IEpaNmJSxp7bBNIrzj6kPKXPqwMBqnCNzFuvipnZADLI9U+?=
- =?us-ascii?Q?P03k0+3EQoPWSjlhhBLDJG/8YTfVE/A5WDCh97t9IMnN7xUbqPhMyGB7ekcf?=
- =?us-ascii?Q?QcLf7FkpvR1OFnkC80VQBvPOuQOlhaOJCS3K1+Mf0Ni5tSUgQRNkZ1YOUGKS?=
- =?us-ascii?Q?RqVnQDOPT1nOwscNUndzYMq6CEk4oRe4c1Q/lv6QXHk4QfOxZX2y9SMWh6G7?=
- =?us-ascii?Q?bIt2nNAyMnSlInMd4LYq73kZSlco9Q7D7E9dBuS0DijrjCcAu9UW7zn2A3qH?=
- =?us-ascii?Q?mfEcrF6pevj1W1aTTFxnCNUKUS6+CwLUHPwXvBoziwGoyIVIq6bNZvhvqY0t?=
- =?us-ascii?Q?LMziO1t7LG8c8kWC8QIRqKxuuNwm8pT95rlGRRcudXFIFi6EbVnqsvPL/BaZ?=
- =?us-ascii?Q?EKnvfwOMI+JSxzNcpr1M1lZSg48KL/RpA2a+CSYcVaWo1ic8EvdxNvzoairZ?=
- =?us-ascii?Q?lEnBKk+Wr+/8nOcgxR8KkpuyqirW5AkwCLezzCvtiP0aorb7sX37FUZ2sb4t?=
- =?us-ascii?Q?L6rnGGndLRcb5SahYgv8P6p78LQtSQfzKUa8h+oNBu0B9ceY2eR4Fcy/rR30?=
- =?us-ascii?Q?5FE5jS3n3xVKTKAnJaOZS9r/Xosp6ltUl7+g5DPMimJ7RvSAahcoehbwlTze?=
- =?us-ascii?Q?lqup1QuGsCIgITVrk8XJCshTGgwvMPXLZnR+ws3QCwdEteJ3j3MleJ0cjYhs?=
- =?us-ascii?Q?b71L/uqJW4GR1qHudF3lTcliMNeU8Wqn8v+eC2ijiV/FxJpo92arFJaRtu6j?=
- =?us-ascii?Q?BL1gNGjWIh1XEEEFowZktgex8J6ABMAKxKREY4y6ccKq6N9RsEa03JaKCLko?=
- =?us-ascii?Q?2fFVOx3X0OfGI7+fji+q8YLnKgI1Wlp/ZzI/fHNHv6LhtQszO7LM3CDuMLp3?=
- =?us-ascii?Q?ilzf1/jwzOWhPGOlnlFiyZeROMZJ/lyR?=
+	=?us-ascii?Q?a6P1zRK3FYX8uv54kJ+QysMLlK5ZIa8NiX2bWWYGC28Sz5adD1tq3GGwo1Tt?=
+ =?us-ascii?Q?fBqTVePq/M2OeA70bFnMdLhHrZ/mREh2gcLM2uDrK6VBnvWCDE6wFQI+8xH0?=
+ =?us-ascii?Q?wCxrE4nJpEyzvmHW64LEngL8q30waboYBZaHbwi2bJRPUu7C0aw1DS5ujuKI?=
+ =?us-ascii?Q?uM7ozbzgxgIftHCACIubwupCMRHDX4TuJ/YSSTCqhmia24boRytvNO1udf8+?=
+ =?us-ascii?Q?FhRtnpC1dWUo8svmWnMYIZkFubFULGx2sxtjjW+dOzSIyt/nXhtmRVz80kjH?=
+ =?us-ascii?Q?2y/vo9DzlEgCmJvdGRR37tI/u4X2z6FdCKkvV2oMRH8idMaHvX7vhzpZaUlD?=
+ =?us-ascii?Q?5fS0APeAK0Ct4j/dBAmw3/BwbrmCWCdnnAjojsw9mr/hxreNoD3UYtprJeXy?=
+ =?us-ascii?Q?0OIhPAgx/1Bx95LmTsgHNdob6OQRFucuIw+ZPpPycMmiBGGaU7Sxo1KkZkr7?=
+ =?us-ascii?Q?XVyeVBjc+B/w8ik+Q0hIIkI/4BHddpgKD6WnxO/JxSJTc9idIhktsybT9pcN?=
+ =?us-ascii?Q?RKlED+kj/sWbgxLtXVeTcCAyfG1v8Divg9oV6qGvTdsb1+Yd9Dbiw6DMD0s2?=
+ =?us-ascii?Q?sy2mBfh4Vx/JlFI3QbuHTn4fqNijyW39oTWQNfw3usZYUAV0/g6TBzBq76dc?=
+ =?us-ascii?Q?g70/5whIE46AT3KLFgnt9H2FupJ0T9t8E+7IIwmhn58jzgUskeqdsVVEEVbK?=
+ =?us-ascii?Q?xSFBANU79ez0+W3QGvbzLUxxrcA/wfs0mO5k7DClo6L5MnKUttbCq7+E9Vyi?=
+ =?us-ascii?Q?A8Wz2H55mc1XSCBwRpcVMw+zx8Jmh+UxRaKogv/Eu3UikZmSqXwQz5tAP7Jr?=
+ =?us-ascii?Q?aUkPNynIMc5pBvoX94fpU3mJHOWkruQC8hwuU5IQIW68C8Pmw2ODYzsk1drV?=
+ =?us-ascii?Q?A+lXgxS8FIiMnIjRoWK8Oavhay8MLCvMe02EKqwWy44JkVr8DvP3a8pjM8wX?=
+ =?us-ascii?Q?UDST8BAxfc6PWgdDAy8r+Jq6PYXovbdYd9D3qVzT9J6v5SvzcAMi2QK9of1n?=
+ =?us-ascii?Q?rzNk4Dbk579dOr7vRvVX7GhwSXPLN1aVwWFtQyLKZgEPkvlpLfyiWrAu1oQ1?=
+ =?us-ascii?Q?KUaMJ0+t8TnSoXqOJhbxNSyT66u77p34OVYV3Bd+4htVrgzgYyxS1o2CUfAb?=
+ =?us-ascii?Q?iRksSXblUXQM9eJwlcejFlPcfZwjFGPltSpFbdaHPkEI6m0FFybgjxx0L67s?=
+ =?us-ascii?Q?5TUax9pZYE/pO4k+tXtTTu8yIOwjX01L0/mKUy6V7LP0FO8Sm066/ysv/PYa?=
+ =?us-ascii?Q?uoe4NxrKDORgvMrOZIO6xzIPfEbeQOXdCC/YJ/QnBiqWCRGOoYbBPvoDqUV+?=
+ =?us-ascii?Q?BWU5bB13ySnA2nX6Cz9q2u5ewhQk7gyHjufRaKeBG3pUD4pIwSGxbsG5T567?=
+ =?us-ascii?Q?OeWk2upybC18q38ekbZ2sTw6On461fMGtHEWPWKcLbLiM5n80pnf+IBAC0Fv?=
+ =?us-ascii?Q?jr1npus/qRHoHBAabP4Hu5FwdlezOVwc?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 15:44:11.5760
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 15:44:04.8497
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a784ac8-7330-4dc8-55ec-08dd1543aa1a
+X-MS-Exchange-CrossTenant-Network-Message-Id: afd1fef2-3733-4e6c-72a6-08dd1543a60e
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001708E.namprd03.prod.outlook.com
+	CO1PEPF000044F0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7188
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5708
 
-The VXLAN driver so far has not increased the error counters for packets
-that set reserved bits. It does so for other packet errors, so do it for
-this case as well.
+In order to make it possible to configure which bits in VXLAN header should
+be considered reserved, introduce a new field vxlan_config::reserved_bits.
+Have it cover the whole header, except for the VNI-present bit and the bits
+for VNI itself, and have individual enabled features clear more bits off
+reserved_bits.
+
+(This is expressed as first constructing a used_bits set, and then
+inverting it to get the reserved_bits. The set of used_bits will be useful
+on its own for validation of user-set reserved_bits in a following patch.)
+
+The patch also moves a comment relevant to the validation from the unparsed
+validation site up to the new site. Logically this patch should add the new
+comment, and a later patch that removes the unparsed bits would remove the
+old comment. But keeping both legs in the same patch is better from the
+history spelunking point of view.
 
 Signed-off-by: Petr Machata <petrm@nvidia.com>
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
@@ -147,24 +159,111 @@ CC: Guillaume Nault <gnault@redhat.com>
 CC: Alexander Lobakin <aleksander.lobakin@intel.com>
 CC: Breno Leitao <leitao@debian.org>
 
- drivers/net/vxlan/vxlan_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 41 +++++++++++++++++++++++++---------
+ include/net/vxlan.h            |  1 +
+ 2 files changed, 31 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index f6118de81b8a..b8afdcbdf235 100644
+index 257411d1ccca..f6118de81b8a 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1721,6 +1721,10 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		 * little more security in adding extensions to VXLAN.
- 		 */
- 		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
-+		DEV_STATS_INC(vxlan->dev, rx_frame_errors);
-+		DEV_STATS_INC(vxlan->dev, rx_errors);
-+		vxlan_vnifilter_count(vxlan, vni, vninode,
-+				      VXLAN_VNI_STATS_RX_ERRORS, 0);
+@@ -1710,9 +1710,20 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
  		goto drop;
  	}
  
+-	/* For backwards compatibility, only allow reserved fields to be
+-	 * used by VXLAN extensions if explicitly requested.
+-	 */
++	if (vh->vx_flags & vxlan->cfg.reserved_bits.vx_flags ||
++	    vh->vx_vni & vxlan->cfg.reserved_bits.vx_vni) {
++		/* If the header uses bits besides those enabled by the
++		 * netdevice configuration, treat this as a malformed packet.
++		 * This behavior diverges from VXLAN RFC (RFC7348) which
++		 * stipulates that bits in reserved in reserved fields are to be
++		 * ignored. The approach here maintains compatibility with
++		 * previous stack code, and also is more robust and provides a
++		 * little more security in adding extensions to VXLAN.
++		 */
++		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
++		goto drop;
++	}
++
+ 	if (vxlan->cfg.flags & VXLAN_F_GPE) {
+ 		if (!vxlan_parse_gpe_proto(vh, &protocol))
+ 			goto drop;
+@@ -1763,14 +1774,6 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	 */
+ 
+ 	if (unparsed.vx_flags || unparsed.vx_vni) {
+-		/* If there are any unprocessed flags remaining treat
+-		 * this as a malformed packet. This behavior diverges from
+-		 * VXLAN RFC (RFC7348) which stipulates that bits in reserved
+-		 * in reserved fields are to be ignored. The approach here
+-		 * maintains compatibility with previous stack code, and also
+-		 * is more robust and provides a little more security in
+-		 * adding extensions to VXLAN.
+-		 */
+ 		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
+ 		goto drop;
+ 	}
+@@ -4080,6 +4083,10 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+ 			 struct net_device *dev, struct vxlan_config *conf,
+ 			 bool changelink, struct netlink_ext_ack *extack)
+ {
++	struct vxlanhdr used_bits = {
++		.vx_flags = VXLAN_HF_VNI,
++		.vx_vni = VXLAN_VNI_MASK,
++	};
+ 	struct vxlan_dev *vxlan = netdev_priv(dev);
+ 	int err = 0;
+ 
+@@ -4306,6 +4313,8 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+ 				    extack);
+ 		if (err)
+ 			return err;
++		used_bits.vx_flags |= VXLAN_HF_RCO;
++		used_bits.vx_vni |= ~VXLAN_VNI_MASK;
+ 	}
+ 
+ 	if (data[IFLA_VXLAN_GBP]) {
+@@ -4313,6 +4322,7 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+ 				    VXLAN_F_GBP, changelink, false, extack);
+ 		if (err)
+ 			return err;
++		used_bits.vx_flags |= VXLAN_GBP_USED_BITS;
+ 	}
+ 
+ 	if (data[IFLA_VXLAN_GPE]) {
+@@ -4321,8 +4331,17 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
+ 				    extack);
+ 		if (err)
+ 			return err;
++
++		used_bits.vx_flags |= VXLAN_GPE_USED_BITS;
+ 	}
+ 
++	/* For backwards compatibility, only allow reserved fields to be
++	 * used by VXLAN extensions if explicitly requested.
++	 */
++	conf->reserved_bits = (struct vxlanhdr) {
++		.vx_flags = ~used_bits.vx_flags,
++		.vx_vni = ~used_bits.vx_vni,
++	};
+ 	if (data[IFLA_VXLAN_REMCSUM_NOPARTIAL]) {
+ 		err = vxlan_nl2flag(conf, data, IFLA_VXLAN_REMCSUM_NOPARTIAL,
+ 				    VXLAN_F_REMCSUM_NOPARTIAL, changelink,
+diff --git a/include/net/vxlan.h b/include/net/vxlan.h
+index 33ba6fc151cf..2dd23ee2bacd 100644
+--- a/include/net/vxlan.h
++++ b/include/net/vxlan.h
+@@ -227,6 +227,7 @@ struct vxlan_config {
+ 	unsigned int			addrmax;
+ 	bool				no_share;
+ 	enum ifla_vxlan_df		df;
++	struct vxlanhdr			reserved_bits;
+ };
+ 
+ enum {
 -- 
 2.47.0
 
