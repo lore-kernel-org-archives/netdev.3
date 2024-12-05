@@ -1,16 +1,15 @@
 Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF2E1B85D7;
-	Thu,  5 Dec 2024 07:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C2C17CA17;
+	Thu,  5 Dec 2024 07:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733383336; cv=none; b=i0/+wSoQP6ewbayeukY249pl1vb4U2ypw3KqPjk7ScUAglSh3GzdVJcrgz/JC+elSiMyhj6dbg1VjmNxZCdLR5LDqmDvQS99wSawP7u2uM49jVvv2YbMhkgsAc8/sbT4nN4zqcezJK4yYEsdRk0C8NBi32oUEpytqztgP1EX0x4=
+	t=1733383561; cv=none; b=NhcdxvXXiGvvFaDlw+weJ7wX45qyVepdkidNzUIVeMC+Dj9BLVDENUcWxSKkKqc7pF03fr6ZLCyKsonXJ5/ip5MeQceAqVjtCaHFmimjmVrqbPs7pf6GPvilENNBYXj7td4KWVIwQj9IynMFXnDnborjnECxSYl4j+qOkJh8prs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733383336; c=relaxed/simple;
-	bh=r9NYc8MfyGenoK5VR4Xw9lt9XWCXnQGy/+CYZVZ2k/Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cAxD3a6CI1E0HlNYNFajxp1vGUEBLUq3iMZ/3nYXWl2OxQ6duu9v1y8+B+1BDyIHP52Lzh6aA9hD3qSockM7cMRXdqGw6+6epn4EKfV3jFld6RHEQdBg7QPVEqRHHC1QFVy7G89GVESx75/9xVvc5c4aSCR2ztGOYcPuY93j9hQ=
+	s=arc-20240116; t=1733383561; c=relaxed/simple;
+	bh=uLqV/mASobHzVYQQqiUKRDUQqJOd/bhXHsXwED0T4nE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XuKghFDS9iSdMRW1YwTesONSOqz2AMW5jWjLksT8J6YC2ERGJ2ncsQhq++tXbtp6nzX0lTLyJJvX+USANdmoKYDxP7flhdZO2mcZVeG6VbxtLAX25+Z8znoo6ZByvaR1biGV+F5viK8AEqQ8k9r221J0f2tvqnnV6DAOhInZoH8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
@@ -28,12 +27,10 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
 CC: <jacky_chou@aspeedtech.com>
-Subject: [PATCH net-next v4 3/7] net: ftgmac100: Add reset toggling for Aspeed SOCs
-Date: Thu, 5 Dec 2024 15:20:44 +0800
-Message-ID: <20241205072048.1397570-4-jacky_chou@aspeedtech.com>
+Subject: [PATCH net-next v4 0/7] Add Aspeed G7 FTGMAC100 support
+Date: Thu, 5 Dec 2024 15:20:41 +0800
+Message-ID: <20241205072048.1397570-1-jacky_chou@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241205072048.1397570-1-jacky_chou@aspeedtech.com>
-References: <20241205072048.1397570-1-jacky_chou@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,56 +40,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Toggle the SCU reset before hardware initialization.
+The Aspeed 7th generation SoC features three FTGMAC100.
+The main difference from the previous generation is that the
+FTGMAC100 adds support for 64-bit DMA capability. Another change
+is that the RMII/RGMII pin strap configuration is changed to be set
+in the bit 20 fo register 0x50.
 
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Jacky Chou (7):
+  dt-bindings: net: ftgmac100: support for AST2700
+  net: faraday: Add ARM64 in FTGMAC100 for AST2700
+  net: ftgmac100: Add reset toggling for Aspeed SOCs
+  net: ftgmac100: Add support for AST2700
+  net: ftgmac100: add pin strap configuration for AST2700
+  net: ftgmac100: Add 64-bit DMA support for AST2700
+  net: ftgmac100: remove extra newline symbols
+
+ .../bindings/net/faraday,ftgmac100.yaml       | 17 ++++-
+ drivers/net/ethernet/faraday/Kconfig          |  7 +-
+ drivers/net/ethernet/faraday/ftgmac100.c      | 75 +++++++++++++++----
+ drivers/net/ethernet/faraday/ftgmac100.h      | 10 +++
+ 4 files changed, 88 insertions(+), 21 deletions(-)
+
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 17ec35e75a65..96c1eee547c4 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -9,6 +9,7 @@
- #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
- 
- #include <linux/clk.h>
-+#include <linux/reset.h>
- #include <linux/dma-mapping.h>
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
-@@ -98,6 +99,7 @@ struct ftgmac100 {
- 	struct work_struct reset_task;
- 	struct mii_bus *mii_bus;
- 	struct clk *clk;
-+	struct reset_control *rst;
- 
- 	/* AST2500/AST2600 RMII ref clock gate */
- 	struct clk *rclk;
-@@ -1979,6 +1981,22 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 				  priv->base + FTGMAC100_OFFSET_TM);
- 	}
- 
-+	priv->rst = devm_reset_control_get_optional_exclusive(priv->dev, NULL);
-+	if (IS_ERR(priv->rst))
-+		goto err_register_netdev;
-+
-+	err = reset_control_assert(priv->rst);
-+	if (err) {
-+		dev_err(priv->dev, "Failed to reset mac (%d)\n", err);
-+		goto err_register_netdev;
-+	}
-+	usleep_range(10000, 20000);
-+	err = reset_control_deassert(priv->rst);
-+	if (err) {
-+		dev_err(priv->dev, "Failed to deassert mac reset (%d)\n", err);
-+		goto err_register_netdev;
-+	}
-+
- 	/* Default ring sizes */
- 	priv->rx_q_entries = priv->new_rx_q_entries = DEF_RX_QUEUE_ENTRIES;
- 	priv->tx_q_entries = priv->new_tx_q_entries = DEF_TX_QUEUE_ENTRIES;
+ v2:
+  - Separate old patch to multiple patch
+  - Add more commit information in all patches
+  - Add error handling in ftgmac100.
+ v3:
+  - Move reset function to normal probe procedure
+  - Move dma set mask to normal probe procedure
+ v4:
+  - Add more information in commit messages
+  - Add resets property in ftgmac100 yaml
+  - Remove more print log from reset flow in ftgmac100 driver
 -- 
 2.25.1
 
