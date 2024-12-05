@@ -1,173 +1,106 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B489721765E
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 12:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37635217677;
+	Thu,  5 Dec 2024 12:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733400076; cv=none; b=ukQOrw1rF0C3kpgZTEH0874lmRBmHfzuklfOBo02L0ZK6cxWZ9CVPj9NRu3lWXL8GuLDMVCf4yWKXvt0etyIMmfy09++VIlRBfuAJKim/a9tl920QG9oq+os4qd4XyF4jMa0YcPzCXnCs+AOpJb3+/mIBi77Uy4qOKNcSEGvzDA=
+	t=1733400168; cv=none; b=fx8SC5CANkLVqmmkJXCA+J3UU0mKB4owohH+SpTExrBN1XrB142gp2U++Lp03kllTMxjuZAKSWOZZ8WVUScO8GDbAZ76i+lzW9EcJfO0PEefH/ZRMkrMcFLybi4Bpml7tMWK3rRiEPrbbZl4rCAe9JPXayIGwuNw2eJ0pIsjcZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733400076; c=relaxed/simple;
-	bh=igHuV65PfChlvayLhiUqy9lj35SM6XPHNIT3m7rfZik=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rHEqFq4X1guQQeapM5KQywm17+9Js1q+ucRARWbTWqAPHLlibqefTBsf5ISPffboseb68ipDZBE/j5NLJU5rhx0Gb+DS1deJLLs4gMJBsqlnmLEITMnc0kpdJEAjD4ojkEgJA4SP6hJA+jpTR7cQuXveyCh31j5oFOe29fDOOvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=aUh2uQay; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1733400168; c=relaxed/simple;
+	bh=u77Vv3jDD6O3Mdctw1zm04s6sTUEqR+uEJ4fb3IrtsM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J71B4A2F6iqldE2xTvzTv/Iq8Hdq85ic0F0tSgx2MgSl0W40GH8cDBxvJmF8F5vzxxM8jLFDCBysehwZb5Z6j6Bb/aqkc2Yw9S2/kl+AdcgrhRqf8L84icpOqNFwVTYZHjv4yt+dV1RX0DQkGYKVgdwPOFgxnmC0RP7CcyqCTuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=JbHJ55t9; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="aUh2uQay"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ffd796ba0aso7457101fa.3
-        for <netdev@vger.kernel.org>; Thu, 05 Dec 2024 04:01:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1733400073; x=1734004873; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v9iuiYMyHL0ZujcME1Pq8WGSxJnCLdbW4+uP4na3Cm0=;
-        b=aUh2uQays9R1KX3swFiIp+efFyuLMk3U3THp742IsxbnESuQdWPE4N+fj0rdwIaWCX
-         FvSIddYGq4aT3mBCDh6OYdPmBxfeIp1KLdDsB15yhfxYBBdBXbqGg7cOSDUcYkXuILKT
-         i/utp7FHKoINwVUuiKMy0cQ2R1OawTYy5jaK0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733400073; x=1734004873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v9iuiYMyHL0ZujcME1Pq8WGSxJnCLdbW4+uP4na3Cm0=;
-        b=Xl/KiZVsOq/PrW2vCvBZIydqwSXTrqVryWwTeYMh/9y9UsmTDhRRA/pV6Rm9l2FOzo
-         Ta5d4Yt4y83TY1g8GhAT8/DWyIP5HWJgslx2mIu/VHya1lGxoQ+FcSjgGhUyVuxoh5zb
-         +bY0uyARtD48QrOhr5HuXJgPrZxJOiXkaYhpApAiB1b6SdNIDgD/l1vdbt7JFpK6arX9
-         k8bU8DFLrtTEyJn39ZSRKEyNs28TtBr6DpR7GlkD8hHVWDp6POSUzg6DB1tuqOAjlaOb
-         FuhYP1ijpbctFSoM/09HcXxtaTV4IVt9BSF3skwmoIJE4JFTFK+WERR1k3HeVnEswM9f
-         UzlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXiuyNAzzBlbZal8UsjE9NntiN6V1SJGTeUtjQoes7IstOTYP1cwEC/dbIzQaXQHbV1v+UH7NI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmOo9mchrziwxgYHMuSmmF0MKZSbKhk9ym/yoli7TVun8Hrgcs
-	G94si93A2Od3DlNHDz/bGtbKi+Ktipp3no6D4RmFwRHguQmDKMc7m74Zml+4R+gVL/lWlsKi5IR
-	zPjje2Xb7gENQXex0igIccuDVp5YADbvnAUjk
-X-Gm-Gg: ASbGncsafqffrEyiueM2LObkmwNeQCRMQWGVoDAq+FoXuyr035VXyzM5cN6vs1C9p/1
-	VuFcsg0PNTLTNYaCIzySxizkDc7RRV84=
-X-Google-Smtp-Source: AGHT+IFqxE8e3rYM9AzwaPlgzzOUZ14+ItrMjjXrcdlxT+YFbFu9+Xx3xTisN69RKnuerQioeLH7SVvHjRsOGYMz5kA=
-X-Received: by 2002:a2e:7a10:0:b0:300:1373:f16c with SMTP id
- 38308e7fff4ca-3001374012amr41186281fa.7.1733400072710; Thu, 05 Dec 2024
- 04:01:12 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="JbHJ55t9"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733400162; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=nxoEgdhRHGmWj3cebeyEiaDTUJHx/zizItatstHS8Uw=;
+	b=JbHJ55t9RH5BLmvGoX5By4KPnEgC7F1bvMqIvsVqPO4qvSGIZV7snc/4fVSLQ0o2+0xqrzDGYDC4/DxpJP4tpLOIY6pinVlcJi7aPIUFpLh/VF3Mny4uWeES2XUWKLY80bKWC1z6sp3+MinHc5mnnVRNndeYDS/gNFptQXmK/RY=
+Received: from 30.221.98.81(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0WKtI0FI_1733400160 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Dec 2024 20:02:42 +0800
+Message-ID: <6711d96c-6c8c-4b9d-be07-759bfdab7875@linux.alibaba.com>
+Date: Thu, 5 Dec 2024 20:02:39 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241113193239.2113577-1-dualli@chromium.org> <20241113193239.2113577-3-dualli@chromium.org>
- <20241204183550.6e9d703f@kernel.org>
-In-Reply-To: <20241204183550.6e9d703f@kernel.org>
-From: Li Li <dualli@chromium.org>
-Date: Thu, 5 Dec 2024 04:01:01 -0800
-Message-ID: <CANBPYPgzGKfu-P8dH9tdgdNPAGz1TMcmQVbJF2XFhaX0W6ig-g@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 2/2] binder: report txn errors via generic netlink
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: dualli@google.com, corbet@lwn.net, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, donald.hunter@gmail.com, 
-	gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com, 
-	maco@android.com, joel@joelfernandes.org, brauner@kernel.org, 
-	cmllamas@google.com, surenb@google.com, arnd@arndb.de, masahiroy@kernel.org, 
-	bagasdotme@gmail.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org, hridya@google.com, 
-	smoreland@google.com, kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/2] net/smc: support ipv4 mapped ipv6 addr
+ client for smc-r v2
+To: Wenjia Zhang <wenjia@linux.ibm.com>, jaka@linux.ibm.com,
+ alibuda@linux.alibaba.com, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dust Li <dust.li@linux.alibaba.com>
+References: <20241202125203.48821-1-guangguan.wang@linux.alibaba.com>
+ <20241202125203.48821-3-guangguan.wang@linux.alibaba.com>
+ <894d640f-d9f6-4851-adb8-779ff3678440@linux.ibm.com>
+Content-Language: en-US
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+In-Reply-To: <894d640f-d9f6-4851-adb8-779ff3678440@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 4, 2024 at 6:35=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Wed, 13 Nov 2024 11:32:39 -0800 Li Li wrote:
-> > +     struct binder_proc *proc;
-> > +
-> > +     if (flags !=3D (flags & (BINDER_GENL_FLAG_OVERRIDE
-> > +                     | BINDER_GENL_FLAG_FAILED
-> > +                     | BINDER_GENL_FLAG_DELAYED
-> > +                     | BINDER_GENL_FLAG_SPAM))) {
-> > +             pr_err("Invalid binder report flags: %u\n", flags);
-> > +             return -EINVAL;
->
-> no need, netlink already checks that only bits from the flags are used:
 
-Ah, yes, let me remove this redundant check.
 
->
->                                     vvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-> +       [BINDER_GENL_A_CMD_FLAGS] =3D NLA_POLICY_MASK(NLA_U32, 0xf),
->
+On 2024/12/5 18:16, Wenjia Zhang wrote:
+> 
+> 
+> On 02.12.24 13:52, Guangguan Wang wrote:
+>> AF_INET6 is not supported for smc-r v2 client before, event if the
+> %s/event/even/g
+> 
 
-> > +     payload =3D nla_total_size(strlen(context->name) + 1) +
-> > +               nla_total_size(sizeof(u32)) * (BINDER_GENL_A_REPORT_MAX=
- - 1);
-> > +     skb =3D genlmsg_new(payload + GENL_HDRLEN, GFP_KERNEL);
->
->  genlmsg_new() adds the GENL_HDRLEN already
->
+I will fix it in the next version.
 
-Yes, genlmsg_new calls genlmsg_msg_size to include GENL_HDRLEN already.
-I'll just use NLMSG_DEFAULT_SIZE as suggested below.
+>> ipv6 addr is ipv4 mapped. Thus, when using AF_INET6, smc-r connection
+>> will fallback to tcp, especially for java applications running smc-r.
+>> This patch support ipv4 mapped ipv6 addr client for smc-r v2. Clients
+>> using real global ipv6 addr is still not supported yet.
+>>
+>> Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+>> Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+>> Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+>> Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+>> ---
+>>   net/smc/af_smc.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>> index 9d76e902fd77..5b13dd759766 100644
+>> --- a/net/smc/af_smc.c
+>> +++ b/net/smc/af_smc.c
+>> @@ -1116,7 +1116,12 @@ static int smc_find_proposal_devices(struct smc_sock *smc,
+>>       ini->check_smcrv2 = true;
+>>       ini->smcrv2.saddr = smc->clcsock->sk->sk_rcv_saddr;
+>>       if (!(ini->smcr_version & SMC_V2) ||
+>> +#if IS_ENABLED(CONFIG_IPV6)
+>> +        (smc->clcsock->sk->sk_family != AF_INET &&
+>> +         !ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)) ||
+> I think here you want to say !(smc->clcsock->sk->sk_family == AF_INET && ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)), right? If it is, the negativ form of the logical operation (a&&b) is (!a)||(!b), i.e. here should be:
+> （smc->clcsock->sk->sk_family != AF_INET）|| （!ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)）
+> 
 
-> > +     payload =3D nla_total_size(sizeof(pid)) + nla_total_size(sizeof(f=
-lags));
-> > +     skb =3D genlmsg_new(payload + GENL_HDRLEN, GFP_KERNEL);
-> > +     if (!skb) {
-> > +             pr_err("Failed to alloc binder genl reply message\n");
-> > +             return -ENOMEM;
->
-> no need for error messages on allocation failures, kernel will print an
-> OOM report
->
+(smc->clcsock->sk->sk_family != AF_INET && !ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)) not equls to !(smc->clcsock->sk->sk_family == AF_INET && ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr))
 
-Will remove this unnecessary pr_err.
+Following your logic, here also can be: 
+!(smc->clcsock->sk->sk_family == AF_INET || ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr))
 
-> > +     }
-> > +
-> > +     hdr =3D genlmsg_iput(skb, info);
-> > +     if (!hdr)
-> > +             goto free_skb;
-> > +
-> > +     if (nla_put_string(skb, BINDER_GENL_A_CMD_CONTEXT, context->name)=
- ||
->
-> Have you counted strlen(context->name) to payload?
-> TBH for small messages counting payload size is probably an overkill,
-> you can use NLMSG_GOODSIZE as the size of the skb.
->
+I think both is acceptable. But in order to keep consistent with the code when IPV6 is not enabled, I prefer (smc->clcsock->sk->sk_family != AF_INET && !ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)).
 
-Yes, the message is known to be small. I'll use GENLMSG_DEFAULT_SIZE instea=
-d.
-
-> > +         nla_put_u32(skb, BINDER_GENL_A_CMD_PID, pid) ||
-> > +         nla_put_u32(skb, BINDER_GENL_A_CMD_FLAGS, flags))
-> > +             goto cancel_skb;
-> > +
-> > +     genlmsg_end(skb, hdr);
-> > +
-> > +     if (genlmsg_reply(skb, info)) {
-> > +             pr_err("Failed to send binder genl reply message\n");
-> > +             return -EFAULT;
-> > +     }
-> > +
-> > +     if (!context->report_portid)
-> > +             context->report_portid =3D portid;
->
-> Is there any locking required?
-
-A lock isn't necessary here. The system administration process always runs
-before any other user apps. Even though this is not true, the design is to
-allow the first process to claim this netlink. Having a lock doesn't help
-in any case.
-
->
-> > +     return 0;
-> > +
-> > +cancel_skb:
-> > +     pr_err("Failed to add reply attributes to binder genl message\n")=
-;
-> > +     genlmsg_cancel(skb, hdr);
-> > +free_skb:
-> > +     pr_err("Free binder genl reply message on error\n");
-> > +     nlmsg_free(skb);
-> > +     return -EMSGSIZE;
-> > +}
->
+>> +#else
+>>           smc->clcsock->sk->sk_family != AF_INET ||
+>> +#endif
+>>           !smc_clc_ueid_count() ||
+>>           smc_find_rdma_device(smc, ini))
+>>           ini->smcr_version &= ~SMC_V2;
