@@ -1,86 +1,134 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308791D63C5;
-	Thu,  5 Dec 2024 12:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F030D21767D;
+	Thu,  5 Dec 2024 12:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733400172; cv=none; b=EZVne2vwUVEQ182mDSf7eKtlOKeVCAG76gNjsKm1EJBBb+ki90Xa2F/AixV16A5BKpB3RoqqXkQIxL3z/XoxovfarchtPgOsaci0Kibe5Cgm2bwZGvMt6gheCZU85/EHiGSUcNZkJ6tAuODCLSrVEjV2baA3zKTuhzyh8MfdeGk=
+	t=1733400314; cv=none; b=W5Q/iVJfkY3a/kUGG3cbUV7qMD9R7IEdchuYZL9RpJipdWaEwyT90p1G3oaFrz7xxTc0q1oZUlIm03hqQcbIwFFGfG1ne3daFy1UGz7/4Ur4nsA7wGU7GvBQNI5voaNg8FQRzpIV36qZzACtXaqSRaNWv9Sw/Zq80EPRm0/iP7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733400172; c=relaxed/simple;
-	bh=QviPwX4i1+oGiQ0z7Lj2wfw4JcQbZSTXITIQDql5joU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gFc08eDWyXYHHiX0eMPTuLIIua+hbbHzmj4aZZGfi9AOPdhnrJCXuxskA+yz1dGj/jm8Pp594rnZoj3IDSX4hZnkvIQOwWtp5A4LV3rwGZPvNUCkCByPRG8c4GIeZlZO3rLf/QSxCCPO9RiZxu7rKeQo/XQ1tjijvMLUqfikPdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Xc7icjyX; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1733400314; c=relaxed/simple;
+	bh=cpBM2mHDOk8ghk0zarIdMmXK6Uy4RCjaekgr+BJriak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JvFarl9yfD8wwF8b0q+sjn+gYa0bA6Feh7qTcWbHnZHDLeNAM4RMypaIahDwfeTCq4oKmPy/mMOVZ4wrZ3s1Jbd359HgxQDbbZHGc/HuSkmaUp5iw3Z2DeWHMjzRigKIXikdtkpmi3IjlokXB1aPaZlkEZKFfJtckhU41Lwd7tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=p8XzPql1; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Xc7icjyX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cH/uRS4ajyoldPGNzhQX9EFCmhy17ZLZf2YfVGbhuVM=; b=Xc7icjyXgBpyRNegnkQSYTJV+s
-	Sg53JA/JrfkUjRdAV62EagjT0ICJrfTc+yuX3sEnXwKL/TW/8SNRfquwuWRZG0KMY9iyi+GMPcEcM
-	Emt8AgDuMEc3fFlO0BM9VibntPde4YO6u8zKSipI92V/Gu0m35El094if24t0V7u8GMDkjokFTjTH
-	6pRcCOOQ1pgqbk8kYJ+wmL4Zt73Zlnz16h1DAUD1LaO5LWFJXksUbfTQxE83JTr4IFwOtfm8WwN6w
-	E1hr2rouhTE4HttpwDHMmOCZ0A3ceeH8Eiy+pTcTSK5vmilvf33oG0wCqrfTRyXCq43T21y1wm5iD
-	6aaNSR1Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45000)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tJAYw-0004jA-2r;
-	Thu, 05 Dec 2024 12:02:34 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tJAYl-0006Wi-22;
-	Thu, 05 Dec 2024 12:02:19 +0000
-Date: Thu, 5 Dec 2024 12:02:19 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v1 3/7] phy: replace bitwise flag definitions
- with BIT() macro
-Message-ID: <Z1GWSwtWrUKPZBU7@shell.armlinux.org.uk>
-References: <20241203075622.2452169-1-o.rempel@pengutronix.de>
- <20241203075622.2452169-4-o.rempel@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="p8XzPql1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=uOnIC
+	0uuIhcqnFHtdax/VPuxtdeWTkpS66gXN6eM3hg=; b=p8XzPql1BtP0RomjTZmJK
+	IpqRQyoeQkggqGnFuHuxvTcdQivRtbNmRH04lI9JcXdrn4rMKh7iIwdtXZPGP0UQ
+	Y5xvNw6dUVEAxskpMu+MrM30S+fOVET37Ctzua8lUxGxwgE6lOVEjmbFlcxpECGk
+	75ODRe75FoNLc+5LQatj8Q=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgA347I+llFnx_IkAQ--.41744S2;
+	Thu, 05 Dec 2024 20:02:15 +0800 (CST)
+From: Jiayuan Chen <mrpre@163.com>
+To: bpf@vger.kernel.org
+Cc: martin.lau@linux.dev,
+	ast@kernel.org,
+	edumazet@google.com,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	song@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	mhal@rbox.co,
+	yonghong.song@linux.dev,
+	daniel@iogearbox.net,
+	xiyou.wangcong@gmail.com,
+	Jiayuan Chen <mrpre@163.com>
+Subject: [PATCH bpf 0/2] bpf: fix wrong copied_seq calculation and add tests
+Date: Thu,  5 Dec 2024 20:02:02 +0800
+Message-ID: <20241205120204.229737-1-mrpre@163.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241203075622.2452169-4-o.rempel@pengutronix.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgA347I+llFnx_IkAQ--.41744S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4fZw4rtw4UZr4xXr1rtFb_yoW5CrWfpF
+	WkC3yFgrnrtFyIvr1kAa4Iqr4rGw4ruay5Jr1Fqay3A398Kr93Zrn7KF43Zr95GrWrZF15
+	Zr1jqrsY9w1DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziU73PUUUUU=
+X-CM-SenderInfo: xpus2vi6rwjhhfrp/1tbiWw6sp2dRlGM-sQAAsR
 
-On Tue, Dec 03, 2024 at 08:56:17AM +0100, Oleksij Rempel wrote:
-> Convert the PHY flag definitions to use the BIT() macro instead of
-> hexadecimal values. This improves readability and maintainability.
+bpf: fix wrong copied_seq calculation and add tests
 
-Maybe only readability. One can argue that changing them introduces the
-possibility of conflicts when porting patches which adds maintenance
-burden.
+A previous commit described in this topic
+https://lore.kernel.org/bpf/20230523025618.113937-9-john.fastabend@gmail.com
+directly updated 'sk->copied_seq' in the tcp_eat_skb() function when the
+action of a BPF program was SK_REDIRECT. For other actions, like SK_PASS,
+the update logic for 'sk->copied_seq' was moved to
+tcp_bpf_recvmsg_parser() to ensure the accuracy of the 'fionread' feature.
 
-However, this change looks fine to me:
+That commit works for a single stream_verdict scenario, as it also
+modified 'sk_data_ready->sk_psock_verdict_data_ready->tcp_read_skb'
+to remove updating 'sk->copied_seq'.
 
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+However, for programs where both stream_parser and stream_verdict are
+active(strparser purpose), tcp_read_sock() was used instead of
+tcp_read_skb() (sk_data_ready->strp_data_ready->tcp_read_sock)
+tcp_read_sock() now still update 'sk->copied_seq', leading to duplicated
+updates.
 
-Thanks!
+In summary, for strparser + SK_PASS, copied_seq is redundantly calculated
+in both tcp_read_sock() and tcp_bpf_recvmsg_parser().
 
+The issue causes incorrect copied_seq calculations, which prevent
+correct data reads from the recv() interface in user-land.
+
+Modifying tcp_read_sock() or strparser implementation directly is
+unreasonable, as it is widely used in other modules.
+
+Here, we introduce a method tcp_bpf_read_sock() to replace 
+'sk->sk_socket->ops->read_sock' (like 'tls_build_proto()' does in
+tls_main.c). Such replacement action was also used in updating
+tcp_bpf_prots in tcp_bpf.c, so it's not weird.
+(Note that checkpatch.pl may complain missing 'const' qualifier when we
+define the bpf-specified 'proto_ops', but we have to do because we need
+update it).
+
+Also we remove strparser check in tcp_eat_skb() since we implement custom
+function tcp_bpf_read_sock() without copied_seq updating.
+
+Since strparser currently supports only TCP, it's sufficient for 'ops' to
+inherit inet_stream_ops.
+
+In strparser's implementation, regardless of partial or full reads,
+it completely clones the entire skb, allowing us to unconditionally
+free skb in tcp_bpf_read_sock().
+
+We added test cases for bpf + strparser and separated them from
+sockmap_basic. This is because we need to add more test cases for
+strparser in the future.
+
+---
+Jiayuan Chen (2):
+  bpf: fix wrong copied_seq calculation
+  selftests/bpf: add strparser test for bpf
+
+ include/linux/skmsg.h                         |   1 +
+ include/net/tcp.h                             |   1 +
+ net/core/skmsg.c                              |   3 +
+ net/ipv4/tcp.c                                |   2 +-
+ net/ipv4/tcp_bpf.c                            |  77 +++++-
+ .../selftests/bpf/prog_tests/sockmap_basic.c  |  53 ----
+ .../selftests/bpf/prog_tests/sockmap_strp.c   | 255 ++++++++++++++++++
+ .../selftests/bpf/progs/test_sockmap_strp.c   |  51 ++++
+ 8 files changed, 386 insertions(+), 57 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/sockmap_strp.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_strp.c
+
+
+base-commit: 5a6ea7022ff4d2a65ae328619c586d6a8909b48b
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.5
+
