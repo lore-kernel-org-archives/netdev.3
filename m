@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8427A218AC4
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 12:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8DC218E84
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 12:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733403420; cv=none; b=Wgvlw1iWMfLfntDXuRyoRlheftna/5YRfbgEK0FUXfZGsdNcSggf1uvCSmDQZGhUMfFF8+c6wnVKkzhFzrLewH4wz1xdirEjhHFjsXhXHA2cUncEXOdeoqBxMN+/J8VfIyxrhlbQhEIuQhZwGh2qOkqrYsoXvcfxP0qwu0+AWFc=
+	t=1733403421; cv=none; b=fIZg4UW9N+psPFoNGDjBbmn/P02X9L02qdkFrv9Wz41CF797IVBG+IM4ATNieclcYEfdvqOLgOyJGJJw7UkrjQTCPTBHNdqrql6R7cg/cFJCs5Om2YOBiowovfh4W2U1VXsXOAGhmdqNIbwtwnymufMsX+22bls/Ctu9UdSz9Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733403420; c=relaxed/simple;
-	bh=ltlZ1X980XEljgkzY/NiPgAEA6GecoAYrB0BAEh5vRU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L5HeOwxMxfxyC1hRb/X1sY/wEnGm29nSZEWWllX7gduB1wjvGSW22+BUVfvIcizJXLk91HwjluCyrE74dwwrkb1LIoBVJWl5yo2EX+ssdZdIDobQvrvj6wpQSOu+qPsBH2/Wf0l1jxj68JhuiOH6TX0ipuZALVUy6Bi+I7BfkAE=
+	s=arc-20240116; t=1733403421; c=relaxed/simple;
+	bh=03CTMSj45GpqetMi6jRySHO+Gz2jeR3jfcV11iZK7Ew=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=eoHBnMfZSXdcIMJCw8ukCsFm58b5N5E8lk7QfFt/BQHNyCil3/aEvxtrF+6gaxXWhchO297BodIy7gjL+aot0X/mQpTihHYJmNDcDuBjPlDX3+ia+Xt11ef5ylbnSHQh3hqj3g3NSsDBoKl/SeaPsssl0UsxO2pkiAoYiH42Cn0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tJBPP-0006PG-HP; Thu, 05 Dec 2024 13:56:43 +0100
+	id 1tJBPP-0006PI-HP; Thu, 05 Dec 2024 13:56:43 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tJBPN-001pLG-0J;
+	id 1tJBPN-001pLI-0R;
 	Thu, 05 Dec 2024 13:56:41 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tJBPN-005GEN-2X;
+	id 1tJBPN-005GEh-2h;
 	Thu, 05 Dec 2024 13:56:41 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
@@ -46,10 +47,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH 0/5] Add support for Priva E-Measuringbox board
-Date: Thu,  5 Dec 2024 13:56:35 +0100
-Message-Id: <20241205125640.1253996-1-o.rempel@pengutronix.de>
+Subject: [PATCH v1 2/5] dt-bindings: vendor-prefixes: Add prefix for Priva
+Date: Thu,  5 Dec 2024 13:56:37 +0100
+Message-Id: <20241205125640.1253996-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241205125640.1253996-1-o.rempel@pengutronix.de>
+References: <20241205125640.1253996-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,31 +65,29 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch series introduces support for the Priva E-Measuringbox board
-based on the ST STM32MP133 SoC. The set includes all the necessary
-changes for device tree bindings, vendor prefixes, thermal support, and
-board-specific devicetree to pass devicetree validation and checkpatch
-tests.
+Introduce the 'pri' vendor prefix for Priva, a company specializing in
+sustainable solutions for building automation, energy, and climate
+control.  More information about Priva can be found at
+https://www.priva.com
 
-Oleksij Rempel (3):
-  dt-bindings: net: Add TI DP83TD510 10BaseT1L PHY
-  dt-bindings: vendor-prefixes: Add prefix for Priva
-  dt-bindings: arm: stm32: Add Priva E-Measuringbox board
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Roan van Dijk (2):
-  arm: dts: stm32: Add thermal support for STM32MP131
-  arm: dts: stm32: Add Priva E-Measuringbox devicetree
-
- .../devicetree/bindings/arm/stm32/stm32.yaml  |   6 +
- .../devicetree/bindings/net/ti,dp83td510.yaml |  35 ++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- arch/arm/boot/dts/st/Makefile                 |   1 +
- arch/arm/boot/dts/st/stm32mp131.dtsi          |  35 ++
- arch/arm/boot/dts/st/stm32mp133c-prihmb.dts   | 496 ++++++++++++++++++
- 6 files changed, 575 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/ti,dp83td510.yaml
- create mode 100644 arch/arm/boot/dts/st/stm32mp133c-prihmb.dts
-
---
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index da01616802c7..9a9ac3adc5ef 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1198,6 +1198,8 @@ patternProperties:
+     description: Primux Trading, S.L.
+   "^probox2,.*":
+     description: PROBOX2 (by W2COMP Co., Ltd.)
++  "^pri,.*":
++    description: Priva
+   "^prt,.*":
+     description: Protonic Holland
+   "^pulsedlight,.*":
+-- 
 2.39.5
 
