@@ -1,168 +1,167 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2043.outbound.protection.outlook.com [40.107.243.43])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C5A1DB929
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 11:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733396869; cv=fail; b=s0Sf2F/X+FcnWPhHoOjBP9xZmv4e4026h+dk2iITVPpKg0eSNI24NzGzGe3uHomYYjvvAk/YXVvlVSfBGwklLfV51wwm8aBhl5ohzxy4fv/vgxyruC+Q/QXW5FmkWLKTaInrVhqFoF3fPYoLyC3uJK/MnsWHuqm9VTMqibkQ4vc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733396869; c=relaxed/simple;
-	bh=kyjC0/Y+L7AWQLYmJhPy4v2XVOdeTXA2lmyeZV/7fI4=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=rBdqlosm5aNOGcPNpLaG6UCTfR8n02qRgbqGSORkDb4u5ZTREovDFHYF6xEyjl32/1bZKrswDanw4OcZ8Lzxsj5bwzW8t6Ajbau/ibsCHLQR7cQCEOgfOBLeIQkl1R+75NXCM64IQhsKdwDpGiQiy6i7iviTnftVT40mpEioayM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GBawBv3U; arc=fail smtp.client-ip=40.107.243.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEA71DD0E7
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 11:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733396892; cv=none; b=lQZonfo5MGE9Z3/JIZryuYz47urV5Yi7c4Sn/E2p+ULAWswkDKPshpqztfCyBu2VTXh1Iy6irg2vYCA/qHmgHh39dgV2AnaOdphNy8VvMn6wJTf1Qx+KwlJSuYEoN+GEciZmOOeM1pkJoii6Q4bxRIgqv9FBptTad1lq4s1g1n0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733396892; c=relaxed/simple;
+	bh=7jzak9MvPN4qRr12LbNBymHBYJIoEDZYDF3D3T6/bmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=bUF9mxMs4jrao2aGfkI5RQSwtlKLlysFb+4HTB4BtFXQP0ikuvucyaSuclSewyz4UBymepAGd0Gk05W2Rs8mbKjmnmWXGAbeMehKwPePF3AaSJjc4W/+Rjs4FOVrb0zhF/oQhSZiyzKYALlvGfhoAcs5MR66NjcvU3DXLwwy+d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=INEamduz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GBawBv3U"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xwtdRRzsUYhkWiwDpKpYKuSBEsiSqdRMzPexk26qI/WIlOpM+/EbbKh5Agt0VOLcjNleHXdXNWwf3RswdMzY/+tFJQyOErFvy/3Id1MOM2J/zfrOiNfQcx2yZexPx+vtnDGChznb9JJTIS6HDNo9wNsy7bLLYYlQZwQTr3tQnv1ao7NmTE99vhGcKis78g3/jbGnW+iutvWSGFlg/msgL4yP+PmbFZwvEyRE23yDap+HG1q9Etv0vnPdEvVhF6UF77M4POKpuVmWXm4zjWs5r4h2kYd+H167xEWd/QnpIwlwKdxq7obUTAT/uVtc16rwiMF2/vPveBjKIfCND89bSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UW8/F66PlgbILuiA2iy717+UPRtOSx3sCbI3S1J6VVE=;
- b=yt6pOVc9stRcyxt3sF9j8HE4w9z1+F+90u8Ycvb1QtimZBFUXXkb6vzkoHXuQe+VJijwYO+7DP1airPozE6uFr79vYFcIfNX2V9DHoaAO3r9FDqT5vBTnljmgcjJ2mEQg1jaKbPe2gvm83HXoAjQm+J7sRfn0NUNoIanBmW4SaONQ0Cq7Bluj40SiomAx2OlRJW1mkwl9SnxFeWmMzKcRSKiewoqwlxpzyx0P5LYhaCMBsJw0g28OcADrKCDuNSf+xtxrD+P1mdzdmy+NdHqVuOYUd5Ti+3MUeq4VEZPJfDxjHenPcy48uMR4xxKD0MPkLDbkn9fJLYECcMtwDOL+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=debian.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UW8/F66PlgbILuiA2iy717+UPRtOSx3sCbI3S1J6VVE=;
- b=GBawBv3UGZKc/BjACW541A5QZTzcvYiVMDoV5Nu3cTr4lFg82712wUvt9Zhxs0BVpkGCwZfY5L/5GZ1sqiPNPzYaOD5UEYVnH9SLkMKeO9LgHcswg/F4fTYS52wZUSY+ld2BbyQPorBsmDzlsf5AAyWI7kP+klxIvN2TM797liiHK/A89PXyEiSREpCGAGHe2HlPSLZEXpdufO6hDBkYHdgsrDbt9bDfFHp1MZqKc1PvU6WNGSwLAMTRTuaIP6y+OmpJ4S4b07Ot7hOcNBM7FiU4+DETLGP1ofkmMDMgoQkKw7w2CsEzbrBSNwIPEbCMMBhsBZKCxIL3jl41Ng4g+Q==
-Received: from DS0PR17CA0010.namprd17.prod.outlook.com (2603:10b6:8:191::26)
- by BL3PR12MB6522.namprd12.prod.outlook.com (2603:10b6:208:3be::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Thu, 5 Dec
- 2024 11:07:41 +0000
-Received: from DS2PEPF0000343E.namprd02.prod.outlook.com
- (2603:10b6:8:191:cafe::7c) by DS0PR17CA0010.outlook.office365.com
- (2603:10b6:8:191::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.10 via Frontend Transport; Thu,
- 5 Dec 2024 11:07:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DS2PEPF0000343E.mail.protection.outlook.com (10.167.18.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 11:07:41 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
- 03:07:32 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
- 03:07:19 -0800
-References: <cover.1733235367.git.petrm@nvidia.com>
- <d28c09cf04d210255882d7f370862f60e8f7fdf3.1733235367.git.petrm@nvidia.com>
- <6d317ad7-84f4-4cfe-b7d5-22eafada0f17@intel.com>
-User-agent: mu4e 1.8.14; emacs 29.4
-From: Petr Machata <petrm@nvidia.com>
-To: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-CC: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, <netdev@vger.kernel.org>, Simon Horman
-	<horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, <mlxsw@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Menglong Dong
-	<menglong8.dong@gmail.com>, Guillaume Nault <gnault@redhat.com>, "Alexander
- Lobakin" <aleksander.lobakin@intel.com>, Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH net-next v1 04/11] vxlan: vxlan_rcv(): Extract
- vxlan_hdr(skb) to a named variable
-Date: Thu, 5 Dec 2024 11:44:25 +0100
-In-Reply-To: <6d317ad7-84f4-4cfe-b7d5-22eafada0f17@intel.com>
-Message-ID: <87ldwuie1s.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="INEamduz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733396886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DFy/Xqar4Obttki81CGZmOSw2PSTZcRsLCRsN1Srm5E=;
+	b=INEamduzY8TwIaYn4q9d1+dhDu5jCYtEweYKZeAVWMbq/3Aj80MI9+P+Ny6llgBeVzUUMv
+	oweXwRSh6L6tjJV1Y7ilIJsUxwugvCqqVrbqnLYXQGTPwrJeTbhj027mgbZ45n2Vgi2C2G
+	FvZJLUHTzWTTiL23w6Amg9UqYrNrtno=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-vz285ntzMSi2fDoIPFdgnQ-1; Thu, 05 Dec 2024 06:08:05 -0500
+X-MC-Unique: vz285ntzMSi2fDoIPFdgnQ-1
+X-Mimecast-MFC-AGG-ID: vz285ntzMSi2fDoIPFdgnQ
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6d88e7976e3so9690166d6.1
+        for <netdev@vger.kernel.org>; Thu, 05 Dec 2024 03:08:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733396885; x=1734001685;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DFy/Xqar4Obttki81CGZmOSw2PSTZcRsLCRsN1Srm5E=;
+        b=MxCZqcpsIXzSliQY6ktpsJTNykMad+MySocOcm85KkeFKWOtma6b9NkEpj2TRqHzgq
+         UXQsZe/S9R8uwYd5zLhzfyAGN7xS9cHCa26zB07bB9PBKBhSuRJF0rr8ASEf0YrdB2eu
+         +gR4UQTiuMUT/PcgLV/z/qpM2Par8RikwkQxjYNXran8dxNQFbC8JRtQl/sE9XJ9CID3
+         PXNiMoZcwkeWg2bxQtMn7slgHJScYFpe/F75vcU2NRHlh0XHImJWz0FBFiaCelXDvJCw
+         VQsoWsJbNHep3dJp0sebcGpiMxNvoiUj7/aybNSA0biXAUK8yDAWQRGL0owQlE5JwavH
+         7Hgw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/kpMQO3zP+MCX0/TIEH3AVmGF0+rhjJ3Hxfeqy7orwS7qAWDLIYwEXpvQArLCKemryyPKh+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvNE80X7W5H0EhryVAlW5d1dI/CBVjvvmLFsRY6yaFA1scP2ri
+	I6XgcfvrHL3I2ILghKhBIMXlX0YmcxR+5orNs9Oz9+ZiQLYaLfzHi78DJG1sm5pScpE3Q5C7DkJ
+	c2UBVGarlRR2xchmwhJhPWy99mYxooSrQjNRZzUJzL+lv7K8AeDBb0w==
+X-Gm-Gg: ASbGncuUjhcNv1EcFtKcmOxMYRz2d+OKQN7tKw0idSX7GlQKzPG0mVALSFsamL+YMBi
+	h1m+KYakMntoadbdVh8n5oWJ7/gUg0PDdQCqCKyJ0pkoAI9Gx7SMkuXoV6JPE0cFHlxHGb9u0X3
+	GPiuBxVySZHFH7jbVu8szwf1DWs8uLFlciyaK0NIOMgrAowxp62DJa33xYS4PXSN7GNJ4aRFIr3
+	hjnmw0F6qvNB/niKTWEiPMyHCA/3dNHtj3v7P+nlSTE4C+nN82iVRgDYMTSmHKPeIVLt3Ebd8O+
+X-Received: by 2002:a05:6214:1947:b0:6d8:b5b8:702e with SMTP id 6a1803df08f44-6d8b72ceee9mr172147146d6.9.1733396883491;
+        Thu, 05 Dec 2024 03:08:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHF73BYHYSSO/IIW6W6xOI+A4Bs70aSZyUGPnoMs7ygn24W9AhjOy1ah5mIdbyjBd56P+hybQ==
+X-Received: by 2002:a05:6214:1947:b0:6d8:b5b8:702e with SMTP id 6a1803df08f44-6d8b72ceee9mr172146696d6.9.1733396883142;
+        Thu, 05 Dec 2024 03:08:03 -0800 (PST)
+Received: from [192.168.88.24] (146-241-38-31.dyn.eolo.it. [146.241.38.31])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8da696452sm5392486d6.36.2024.12.05.03.08.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2024 03:08:02 -0800 (PST)
+Message-ID: <946b59e0-18f9-4e4f-a3c9-3de432db4340@redhat.com>
+Date: Thu, 5 Dec 2024 12:07:57 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF0000343E:EE_|BL3PR12MB6522:EE_
-X-MS-Office365-Filtering-Correlation-Id: 980c136f-bdd9-4a80-e891-08dd151d095e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3UhEluFrTYXXk6z8/vkXDL30TC9EZCGbRxDYDzPmN3HxmdRIg9o0g3sqovvi?=
- =?us-ascii?Q?6cP0I4ZpUSyfuno5Xzlgj7W4CC4nzLHoQxLeP3VqN8PoKslozSLYGZVe5nKH?=
- =?us-ascii?Q?3c2ssLYjoitN0LPjgtkLKFHhMV3dS+kaufd6j/28v4M7T0wB6r8TB7hyUuHs?=
- =?us-ascii?Q?HGfcndzHeclcuCA1l3xz78v4+lIyGYgVk0Nnx1wsyE0SFYRe4AS+XyYt5URw?=
- =?us-ascii?Q?s7RcKu2OfJZidkXZI53II4zlUoql5fhb+aFAEbG0CofeFqXCIvqsBUwVT4Me?=
- =?us-ascii?Q?voliPeH8jaq5XVt5rdxycCOUpiNwATKR+d2d02NhfkyAGurLE5LVODdjq/uy?=
- =?us-ascii?Q?XYd7DHbU4D65UcTPalTpF42bOSP/sXhrKFQDfA0O883CQtRgUQOjYcNOCfD2?=
- =?us-ascii?Q?2Ql86Ph6BN+w10+CVQuUrOxA+2UN8zfjEnTQV8FpFrpKUMWvoUqLmhX7QdM2?=
- =?us-ascii?Q?Ni5Bc/HEGnNohsBPd19R6KkNfWZaPvvpAC+1pm5QUoI/UVUjgKVU4Sfo6i/X?=
- =?us-ascii?Q?smplFTuUs86MJPkdvny1yI5S37m3p5+0D6XhCjM4Ai3VSHpoAm1G2ZGXLXpP?=
- =?us-ascii?Q?Qt+83/tyeeaAFyBXB7ZEN3F3Wjpww9jesm1i2Fc6Ks4NfgO2njx5Jt5PUdFs?=
- =?us-ascii?Q?TUhYMelBPxUI6gzy+owWq5vngyyknRRjPWVenIAX7Ga9TafrFXuXNcIVTdoT?=
- =?us-ascii?Q?UQ+C6PXOj5MPA8splfYg5ypHEtDboyIQwXk8nY8zIJTqMfgoyjBtp99qNJa7?=
- =?us-ascii?Q?pmslTKDlvWjjzKnn3LHbmVsa2WyD6IX4swrxyV79raDylqx0BsGfxQxAlZ/y?=
- =?us-ascii?Q?tqFovUszkPRjtFjl58dQqTlj35Tyab7gmSNg2om+TJISDHNSrJ/JndBomlO0?=
- =?us-ascii?Q?VM71PRDwaEK451k6JJxXvwnIg1rJO8UCpWksW+u6mdPndfA+HS7NMbnzenz9?=
- =?us-ascii?Q?sHCPF4gi8trB5asiDplWPXIT8A5zM8cV3t1Nlvlx94eG0zIV63j8T09bXxkV?=
- =?us-ascii?Q?/9QQKJG6diDFl2iMryvR1eeTTOOu0vUubbU7YEUsaYk0oz8KhP804b7uFMUM?=
- =?us-ascii?Q?fwUU4sES3JgbquVrRFX+I/Aqq8WtrmMVEk7tRslxDOvpY4mEIDZqFX6NkO7v?=
- =?us-ascii?Q?z5QXadLBdK148KAvrziQf5MSpDN+iERlDT7BDfGyR1VzUdT379cGoD0NIzxI?=
- =?us-ascii?Q?EidGL3omcYNb9ZJrPhmC6L6uxE8YENZ3219ls2XS5UARTEn68csXANAt1lT7?=
- =?us-ascii?Q?wgqAUkSQQwdSdZtoa7qtLmESqi5mrjSx8X00bepR/inh25XZ+VTaDYI2M6n1?=
- =?us-ascii?Q?ozXpgB2+upks7V9L1U2Hxknr8YJZF90SE90LmIDPZ4uCil3fT4uUOH6wu7+Z?=
- =?us-ascii?Q?kyCvTBU5/Jw0Q+kK+Xf5CUp2QPu7tKMG4jmQQQkQhOBr7bpYhCAGJJyp0rti?=
- =?us-ascii?Q?3GwFZ3G7Kr7d/aE3Vl/RevAbNhRNi1d0?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 11:07:41.0521
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 980c136f-bdd9-4a80-e891-08dd151d095e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF0000343E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6522
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 2/5] net: phy: microchip_ptp : Add ptp library
+ for Microchip phys
+To: Divya.Koppera@microchip.com, andrew@lunn.ch, Arun.Ramadoss@microchip.com,
+ UNGLinuxDriver@microchip.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ richardcochran@gmail.com, vadim.fedorenko@linux.dev
+References: <20241203085248.14575-1-divya.koppera@microchip.com>
+ <20241203085248.14575-3-divya.koppera@microchip.com>
+ <ec73fe36-978b-4e3a-a5de-5aafb54af9a8@redhat.com>
+ <CO1PR11MB477140866E76B0FCEFA05735E2302@CO1PR11MB4771.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CO1PR11MB477140866E76B0FCEFA05735E2302@CO1PR11MB4771.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 12/5/24 12:00, Divya.Koppera@microchip.com wrote:
+> From: Paolo Abeni <pabeni@redhat.com> Thursday, December 5, 2024 3:17 PM
+>> To: Divya Koppera - I30481 <Divya.Koppera@microchip.com>;
+>> andrew@lunn.ch; Arun Ramadoss - I17769
+>> <Arun.Ramadoss@microchip.com>; UNGLinuxDriver
+>> <UNGLinuxDriver@microchip.com>; hkallweit1@gmail.com;
+>> linux@armlinux.org.uk; davem@davemloft.net; edumazet@google.com;
+>> kuba@kernel.org; netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
+>> richardcochran@gmail.com; vadim.fedorenko@linux.dev
+>> Subject: Re: [PATCH net-next v5 2/5] net: phy: microchip_ptp : Add ptp library
+>> for Microchip phys
+>>
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the
+>> content is safe
+>>
+>> On 12/3/24 09:52, Divya Koppera wrote:
+>>> +struct mchp_ptp_clock *mchp_ptp_probe(struct phy_device *phydev, u8
+>> mmd,
+>>> +                                   u16 clk_base_addr, u16
+>>> +port_base_addr) {
+>>> +     struct mchp_ptp_clock *clock;
+>>> +     int rc;
+>>> +
+>>> +     clock = devm_kzalloc(&phydev->mdio.dev, sizeof(*clock), GFP_KERNEL);
+>>> +     if (!clock)
+>>> +             return ERR_PTR(-ENOMEM);
+>>> +
+>>> +     clock->port_base_addr   = port_base_addr;
+>>> +     clock->clk_base_addr    = clk_base_addr;
+>>> +     clock->mmd              = mmd;
+>>> +
+>>> +     /* Register PTP clock */
+>>> +     clock->caps.owner          = THIS_MODULE;
+>>> +     snprintf(clock->caps.name, 30, "%s", phydev->drv->name);
+>>> +     clock->caps.max_adj        = MCHP_PTP_MAX_ADJ;
+>>> +     clock->caps.n_ext_ts       = 0;
+>>> +     clock->caps.pps            = 0;
+>>> +     clock->caps.adjfine        = mchp_ptp_ltc_adjfine;
+>>> +     clock->caps.adjtime        = mchp_ptp_ltc_adjtime;
+>>> +     clock->caps.gettime64      = mchp_ptp_ltc_gettime64;
+>>> +     clock->caps.settime64      = mchp_ptp_ltc_settime64;
+>>> +     clock->ptp_clock = ptp_clock_register(&clock->caps,
+>>> +                                           &phydev->mdio.dev);
+>>> +     if (IS_ERR(clock->ptp_clock))
+>>> +             return ERR_PTR(-EINVAL);
+>>> +
+>>> +     /* Initialize the SW */
+>>> +     skb_queue_head_init(&clock->tx_queue);
+>>> +     skb_queue_head_init(&clock->rx_queue);
+>>> +     INIT_LIST_HEAD(&clock->rx_ts_list);
+>>> +     spin_lock_init(&clock->rx_ts_lock);
+>>> +     mutex_init(&clock->ptp_lock);
+>>
+>> The s/w initialization is completed after successfully registering the new ptp
+>> clock, is that safe? It looks like it may race with ptp callbacks.
+> 
+> If I understand your comment correctly ptp_lock in the clock instance is not initialized before registering the clock.
+> Rest of the initializations are related to packet processing and also depends on phydev->default_timestamp and mii_ts instance only after which packets will be forwarded to phy.
+> As we are also re-initializing the clock ptp4l/application need to restart.
+> 
+> Initializing ptp_lock before registering the clock should be safe from ptp point of view. 
+> 
+> Let me know your opinion?
 
-Mateusz Polchlopek <mateusz.polchlopek@intel.com> writes:
+I guess moving the lock initialization before the registration should be
+safe.
 
-> On 12/3/2024 3:30 PM, Petr Machata wrote:
->
->> @@ -1713,7 +1714,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
->>   	 * used by VXLAN extensions if explicitly requested.
->>   	 */
->>   	if (vxlan->cfg.flags & VXLAN_F_GPE) {
->> -		if (!vxlan_parse_gpe_proto(vxlan_hdr(skb), &protocol))
->> +		if (!vxlan_parse_gpe_proto(vh, &protocol))
->>   			goto drop;
->>   		unparsed.vx_flags &= ~VXLAN_GPE_USED_BITS;
->>   		raw_proto = true;
->
-> Overall that's cool refactor but I wonder - couldn't it be somehow
-> merged with patch03? You touch vxlan_rcv function and the same
-> pieces of code in both patches, so maybe you can do that there?
-> Squash those two patches into one? It seems that in this patch you
-> change something you already changed in prev patch - maybe
-> it should be done in patch03? Or do I miss something?
+Please not that the main issue open is WRT code reuse: I second Andrew
+opinion about the need of consolidating the microchip ptp drivers
+implementation. A library should be able to abstract above individual
+device differences.
 
-Look, I'm juggling various bits back and forth and honestly it's all
-much of a muchness. There's nothing obviously better whichever way you
-package it. First changing to open-coded vxlan_hdr in 03 makes sense,
-because it's already open-coded like that several times. Then we have a
-clean 04 that replaces all the existing open-coded sites, including the
-new one, thus everything is done in one go.
+Thanks,
 
-I'd just leave it as is, largely because I don't want to touch something
-that works for frankly cosmetic reasons when the end result is the same.
+Paolo
+
