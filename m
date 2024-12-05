@@ -1,52 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1040782C60
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 01:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4A21369B6
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 01:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733361784; cv=none; b=SvSIKnUz5yChiPfPPAx5fsr4a2RcCtPGSntg4jCsRSo+LApydHHbm0j96VifqpLBGZ2zVeXR6auZsH0F8r0ALuli0GrmgWaJtvcoCTEGEJgySrg4IigPXOx2QuYgoLT/yKdSxsOv4suWeYusx1D1yD34VTNONPneQu9fYcP30O8=
+	t=1733361785; cv=none; b=ES+KPBOGBUpI9vCw2rGdpfmhmHYZyzp43/QD/iS5BDToTWAs1MAn4raItlQqBs0vBcgaHxfILrKnT2cn5S+z+P7lMv/Nsz14Qpxg520TfKj+nZKSsNjeDZHHCzM1DWj1RVqTUiXUml+xCiScv6uI3YqSipkYe1i2VQqaGfhUIew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733361784; c=relaxed/simple;
-	bh=3Xwt4tVh9I6gC0KpqPOdfPiO9zPIEXZUGn6x9cEvU9g=;
+	s=arc-20240116; t=1733361785; c=relaxed/simple;
+	bh=IkXx8ftQSJ88xgscRSgBQC1zidnBLzSaz832fqO38xU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WQuBjXlkUDql6ltzs7zUPreP3uJdmpA9nhH9qbphBjhCLDzuPb56VV/39KZdH+QDS5JqhrxtSISiP2TA2UPxHgp0poHFpufqVPbnEt7C4zxWH7z/ec8/NwUBWQDEhNuKTqHdKrHfvbbB9PrLldr/UAtD6KvSrq72V8J+yVJKoFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mNTw5DSm; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:To:Cc; b=PknvgAlblA+tBctP/bUm57WKZq+XiqTW8js5/LgVW9AlGvzFSNVzp4IPBSCWbFsfuyOS+S7cibGlPxxsLFH+x0X1KsSqw1kb+P0nGuUb0MVIznogrTgsG552ZEAgeDaCbFTPEL3nPJuIY79UOqxwM9YJcPR6b21lHaoSaSUQ12w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YLmQZrTp; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mNTw5DSm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YLmQZrTp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733361783; x=1764897783;
+  t=1733361784; x=1764897784;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=3Xwt4tVh9I6gC0KpqPOdfPiO9zPIEXZUGn6x9cEvU9g=;
-  b=mNTw5DSmgmW7Hr43l8Q1ab8JwXqOUrmOi4bMWx9Ge6UVqfeDYe8xn/Kw
-   rk1/9R0JG3a7Q7/zH/Uc8c0FQprkdUtZFJ50B9cRQF3Zg+MI1XWY0ZweS
-   GsmShyJgNf9dUdtjw4TukoXnzsyXotW1I+5Hqae1Kp90KWmS2kMXc/uzy
-   tQrEBFNXFb0+YOC88u5t9UEDkPYwCZSV4Jv8O0OwcqE3y/5dpH6iB9ZZz
-   gvT7JjZesJVw9tihJb0dZoT3M1Ca37AsB8kJyk3XSr1SROKK65v+U7hnP
-   DcFdAqRMin6HzY+GFKskmKhk0gZFkyvl6RF0YNqdHhjnxjX8tdPsL9OeO
-   A==;
-X-CSE-ConnectionGUID: DMnfrzN1TBWXPv8mjWgfXg==
-X-CSE-MsgGUID: JXHU5LIeSG2KQ1l6p6YG7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="32993847"
+  bh=IkXx8ftQSJ88xgscRSgBQC1zidnBLzSaz832fqO38xU=;
+  b=YLmQZrTpozyQ1Olm6v3moPwt2IecWxPGn42WgoH8jXIRHjHEF0UBhCcl
+   O0jKxZ6qmGm3FTdLHIo67cToMbi9wZ9ZE2TFwyCiolkPadcszxHOg608N
+   20oCp0iUyMCDfvXOvk3p5/iCftQQAj2GDHNrNO6+sTMc4W7DoUNGOuCKZ
+   ADdE4YBRnyJVCxsSfNn+HFyEBywMN1Sgleygb7WSRfB6jkBKU/8juU7jZ
+   DjcZxu0SDWGo+K5pGuR41aJZMXgu5/30AE+MukWZwtU0cX9Muxm+e5IPq
+   DL0jAToImFxhJCjiEkKwWn2A9zr3xlXjA35vaRD6ulN4KlUxYNFifQGnL
+   w==;
+X-CSE-ConnectionGUID: D15G4fqFSaGALTnlsRYreg==
+X-CSE-MsgGUID: r8tS3aMTQHakeW/xcFCxvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="32993860"
 X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
-   d="scan'208";a="32993847"
+   d="scan'208";a="32993860"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 17:23:00 -0800
-X-CSE-ConnectionGUID: NqSMIrzNRXSRmFXxasg10A==
-X-CSE-MsgGUID: LIP5A54CT0CTcN1mUUni9A==
+X-CSE-ConnectionGUID: vjp5featTTe9cEl9snnW3g==
+X-CSE-MsgGUID: FnvfFKYzTQqhWGXNofO5jA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
-   d="scan'208";a="98905977"
+   d="scan'208";a="98905983"
 Received: from jekeller-desk.jf.intel.com ([10.166.241.20])
   by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 17:23:00 -0800
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 04 Dec 2024 17:22:52 -0800
-Subject: [PATCH net-next v9 06/10] ice: use structures to keep track of
- queue context size
+Date: Wed, 04 Dec 2024 17:22:54 -0800
+Subject: [PATCH net-next v9 08/10] ice: reduce size of queue context fields
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-packing-pack-fields-and-ice-implementation-v9-6-81c8f2bd7323@intel.com>
+Message-Id: <20241204-packing-pack-fields-and-ice-implementation-v9-8-81c8f2bd7323@intel.com>
 References: <20241204-packing-pack-fields-and-ice-implementation-v9-0-81c8f2bd7323@intel.com>
 In-Reply-To: <20241204-packing-pack-fields-and-ice-implementation-v9-0-81c8f2bd7323@intel.com>
 To: Vladimir Oltean <vladimir.oltean@nxp.com>, 
@@ -67,149 +66,124 @@ To: Vladimir Oltean <vladimir.oltean@nxp.com>,
 Cc: Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.14.2
 
-The ice Tx and Rx queue context are currently stored as arrays of bytes
-with defined size (ICE_RXQ_CTX_SZ and ICE_TXQ_CTX_SZ). The packed queue
-context is often passed to other functions as a simple u8 * pointer, which
-does not allow tracking the size. This makes the queue context API easy to
-misuse, as you can pass an arbitrary u8 array or pointer.
+The ice_rlan_ctx and ice_tlan_ctx structures have some fields which are
+intentionally sized larger than necessary relative to the packed sizes the
+data must fit into. This was done because the original ice_set_ctx()
+function and its helpers did not correctly handle packing when the packed
+bits straddled a byte. This is no longer the case with the use of the
+<linux/packing.h> implementation.
 
-Introduce wrapper typedefs which use a __packed structure that has the
-proper fixed size for the Tx and Rx context buffers. This enables the
-compiler to track the size of the value and ensures that passing the wrong
-buffer size will be detected by the compiler.
+Save some bytes in these structures by sizing the variables to the number
+of bytes the actual bitpacked fields fit into.
 
-The existing APIs do not benefit much from this change, however the
-wrapping structures will be used to simplify the arguments of new packing
-functions based on the recently introduced pack_fields API.
+There are a couple of gaps left in the structure, which is a result of the
+fields being in the order they appear in the packed bit layout, but where
+alignment forces some extra gaps. We could fix this, saving ~8 bytes from
+each structure. However, these structures are not used heavily, and the
+resulting savings is minimal:
 
-Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+$ bloat-o-meter ice-before-reorder.ko ice-after-reorder.ko
+add/remove: 0/0 grow/shrink: 1/1 up/down: 26/-70 (-44)
+Function                                     old     new   delta
+ice_vsi_cfg_txq                             1873    1899     +26
+ice_setup_rx_ctx.constprop                  1529    1459     -70
+Total: Before=1459555, After=1459511, chg -0.00%
+
+Thus, the fields are left in the same order as the packed bit layout,
+despite the gaps this causes.
+
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 11 +++++++++--
- drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h  |  2 --
- drivers/net/ethernet/intel/ice/ice_base.c       |  2 +-
- drivers/net/ethernet/intel/ice/ice_common.c     | 24 +++++++++++-------------
- 4 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h | 32 ++++++++------------------
+ 1 file changed, 10 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 1489a8ceec51df890f481f7fdc04b1845ca85255..3bf05b135b3557e5867ef037d02621a59dc251d4 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -12,6 +12,13 @@
- #define ICE_AQC_TOPO_MAX_LEVEL_NUM	0x9
- #define ICE_AQ_SET_MAC_FRAME_SIZE_MAX	9728
- 
-+#define ICE_RXQ_CTX_SIZE_DWORDS		8
-+#define ICE_RXQ_CTX_SZ			(ICE_RXQ_CTX_SIZE_DWORDS * sizeof(u32))
-+#define ICE_TXQ_CTX_SZ			22
-+
-+typedef struct __packed { u8 buf[ICE_RXQ_CTX_SZ]; } ice_rxq_ctx_buf_t;
-+typedef struct __packed { u8 buf[ICE_TXQ_CTX_SZ]; } ice_txq_ctx_buf_t;
-+
- struct ice_aqc_generic {
- 	__le32 param0;
- 	__le32 param1;
-@@ -2084,10 +2091,10 @@ struct ice_aqc_add_txqs_perq {
- 	__le16 txq_id;
- 	u8 rsvd[2];
- 	__le32 q_teid;
--	u8 txq_ctx[22];
-+	ice_txq_ctx_buf_t txq_ctx;
- 	u8 rsvd2[2];
- 	struct ice_aqc_txsched_elem info;
--};
-+} __packed;
- 
- /* The format of the command buffer for Add Tx LAN Queues (0x0C30)
-  * is an array of the following structs. Please note that the length of
 diff --git a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-index 0e8ed8c226e68988664d64c1fd3297cee32af020..a76e5b0e7861e39e59013637cb176f67d1f7ef15 100644
+index 31d4a445d640df21c2aa007ffbd4f2310da264ad..1479b45738af15bf6e00aed24b2c6a3f91675f4d 100644
 --- a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
 +++ b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-@@ -371,8 +371,6 @@ enum ice_rx_flex_desc_status_error_1_bits {
- 	ICE_RX_FLEX_DESC_STATUS1_LAST /* this entry must be last!!! */
- };
- 
--#define ICE_RXQ_CTX_SIZE_DWORDS		8
--#define ICE_RXQ_CTX_SZ			(ICE_RXQ_CTX_SIZE_DWORDS * sizeof(u32))
- #define ICE_TX_CMPLTNQ_CTX_SIZE_DWORDS	22
+@@ -375,23 +375,17 @@ enum ice_rx_flex_desc_status_error_1_bits {
  #define ICE_TX_DRBELL_Q_CTX_SIZE_DWORDS	5
  #define GLTCLAN_CQ_CNTX(i, CQ)		(GLTCLAN_CQ_CNTX0(CQ) + ((i) * 0x0800))
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index 82a9cd4ec7aec90febdc7ab31cf8d707314cbd1f..e7aaa06241210e764b4cb627031310e4fd5b6520 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -910,7 +910,7 @@ ice_vsi_cfg_txq(struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 	ice_setup_tx_ctx(ring, &tlan_ctx, pf_q);
- 	/* copy context contents into the qg_buf */
- 	qg_buf->txqs[0].txq_id = cpu_to_le16(pf_q);
--	ice_set_ctx(hw, (u8 *)&tlan_ctx, qg_buf->txqs[0].txq_ctx,
-+	ice_set_ctx(hw, (u8 *)&tlan_ctx, (u8 *)&qg_buf->txqs[0].txq_ctx,
- 		    ice_tlan_ctx_info);
  
- 	/* init queue specific tail reg. It is referred as
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 0f5a80269a7be0a302d4229a42bb8bbfc500905a..48d95cb49864ad73769487d2b95b2e8306156cf9 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1359,29 +1359,27 @@ int ice_reset(struct ice_hw *hw, enum ice_reset_req req)
- /**
-  * ice_copy_rxq_ctx_to_hw
-  * @hw: pointer to the hardware structure
-- * @ice_rxq_ctx: pointer to the rxq context
-+ * @rxq_ctx: pointer to the packed Rx queue context
-  * @rxq_index: the index of the Rx queue
-  *
-  * Copies rxq context from dense structure to HW register space
-  */
--static int
--ice_copy_rxq_ctx_to_hw(struct ice_hw *hw, u8 *ice_rxq_ctx, u32 rxq_index)
-+static int ice_copy_rxq_ctx_to_hw(struct ice_hw *hw,
-+				  const ice_rxq_ctx_buf_t *rxq_ctx,
-+				  u32 rxq_index)
- {
- 	u8 i;
+-/* RLAN Rx queue context data
+- *
+- * The sizes of the variables may be larger than needed due to crossing byte
+- * boundaries. If we do not have the width of the variable set to the correct
+- * size then we could end up shifting bits off the top of the variable when the
+- * variable is at the top of a byte and crosses over into the next byte.
+- */
++/* RLAN Rx queue context data */
+ struct ice_rlan_ctx {
+ 	u16 head;
+-	u16 cpuid; /* bigger than needed, see above for reason */
++	u8 cpuid;
+ #define ICE_RLAN_BASE_S 7
+ 	u64 base;
+ 	u16 qlen;
+ #define ICE_RLAN_CTX_DBUF_S 7
+-	u16 dbuf; /* bigger than needed, see above for reason */
++	u8 dbuf;
+ #define ICE_RLAN_CTX_HBUF_S 6
+-	u16 hbuf; /* bigger than needed, see above for reason */
++	u8 hbuf;
+ 	u8 dtype;
+ 	u8 dsize;
+ 	u8 crcstrip;
+@@ -399,12 +393,12 @@ struct ice_rlan_ctx {
+ 	u8 hsplit_0;
+ 	u8 hsplit_1;
+ 	u8 showiv;
+-	u32 rxmax; /* bigger than needed, see above for reason */
++	u16 rxmax;
+ 	u8 tphrdesc_ena;
+ 	u8 tphwdesc_ena;
+ 	u8 tphdata_ena;
+ 	u8 tphhead_ena;
+-	u16 lrxqthresh; /* bigger than needed, see above for reason */
++	u8 lrxqthresh;
+ 	u8 prefena;	/* NOTE: normally must be set to 1 at init */
+ };
  
--	if (!ice_rxq_ctx)
--		return -EINVAL;
--
- 	if (rxq_index > QRX_CTRL_MAX_INDEX)
- 		return -EINVAL;
+@@ -535,18 +529,12 @@ enum ice_tx_ctx_desc_eipt_offload {
+ #define ICE_LAN_TXQ_MAX_QGRPS	127
+ #define ICE_LAN_TXQ_MAX_QDIS	1023
  
- 	/* Copy each dword separately to HW */
- 	for (i = 0; i < ICE_RXQ_CTX_SIZE_DWORDS; i++) {
--		wr32(hw, QRX_CONTEXT(i, rxq_index),
--		     *((u32 *)(ice_rxq_ctx + (i * sizeof(u32)))));
-+		u32 ctx = ((const u32 *)rxq_ctx)[i];
- 
--		ice_debug(hw, ICE_DBG_QCTX, "qrxdata[%d]: %08X\n", i,
--			  *((u32 *)(ice_rxq_ctx + (i * sizeof(u32)))));
-+		wr32(hw, QRX_CONTEXT(i, rxq_index), ctx);
-+
-+		ice_debug(hw, ICE_DBG_QCTX, "qrxdata[%d]: %08X\n", i, ctx);
- 	}
- 
- 	return 0;
-@@ -1426,15 +1424,15 @@ static const struct ice_ctx_ele ice_rlan_ctx_info[] = {
- int ice_write_rxq_ctx(struct ice_hw *hw, struct ice_rlan_ctx *rlan_ctx,
- 		      u32 rxq_index)
- {
--	u8 ctx_buf[ICE_RXQ_CTX_SZ] = { 0 };
-+	ice_rxq_ctx_buf_t buf = {};
- 
- 	if (!rlan_ctx)
- 		return -EINVAL;
- 
- 	rlan_ctx->prefena = 1;
- 
--	ice_set_ctx(hw, (u8 *)rlan_ctx, ctx_buf, ice_rlan_ctx_info);
--	return ice_copy_rxq_ctx_to_hw(hw, ctx_buf, rxq_index);
-+	ice_set_ctx(hw, (u8 *)rlan_ctx, (u8 *)&buf, ice_rlan_ctx_info);
-+	return ice_copy_rxq_ctx_to_hw(hw, &buf, rxq_index);
- }
- 
- /* LAN Tx Queue Context */
+-/* Tx queue context data
+- *
+- * The sizes of the variables may be larger than needed due to crossing byte
+- * boundaries. If we do not have the width of the variable set to the correct
+- * size then we could end up shifting bits off the top of the variable when the
+- * variable is at the top of a byte and crosses over into the next byte.
+- */
++/* Tx queue context data */
+ struct ice_tlan_ctx {
+ #define ICE_TLAN_CTX_BASE_S	7
+ 	u64 base;		/* base is defined in 128-byte units */
+ 	u8 port_num;
+-	u16 cgd_num;		/* bigger than needed, see above for reason */
++	u8 cgd_num;
+ 	u8 pf_num;
+ 	u16 vmvf_num;
+ 	u8 vmvf_type;
+@@ -557,7 +545,7 @@ struct ice_tlan_ctx {
+ 	u8 tsyn_ena;
+ 	u8 internal_usage_flag;
+ 	u8 alt_vlan;
+-	u16 cpuid;		/* bigger than needed, see above for reason */
++	u8 cpuid;
+ 	u8 wb_mode;
+ 	u8 tphrd_desc;
+ 	u8 tphrd;
+@@ -566,7 +554,7 @@ struct ice_tlan_ctx {
+ 	u16 qnum_in_func;
+ 	u8 itr_notification_mode;
+ 	u8 adjust_prof_id;
+-	u32 qlen;		/* bigger than needed, see above for reason */
++	u16 qlen;
+ 	u8 quanta_prof_idx;
+ 	u8 tso_ena;
+ 	u16 tso_qnum;
 
 -- 
 2.47.0.265.g4ca455297942
