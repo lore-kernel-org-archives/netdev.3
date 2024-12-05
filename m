@@ -1,139 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB9221475;
-	Thu,  5 Dec 2024 17:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546507E105;
+	Thu,  5 Dec 2024 17:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733418728; cv=none; b=UlZprN4BJigP2fPG6QYiW0h9gRhbtM/owMy6R2O/N7lJNAD51pgdZXA8l3awZESKAFVBMGV5qdgfOEMDbmi1LDeUJCQGptsAcpCxitCeDHdxzn0up7wkC47isfXYTVU8BULW7HPrjOBT7m+ffu26YjVcmt17mNMkyNDGNDvVICs=
+	t=1733418980; cv=none; b=spzfjSPJj2wXNZdIbWTqHqt4Hx+oxQmRMqmvuz/W/tVeOzFGDUcibkv9TnYpD5rR3pWAbAk3V5Smji5ZYz+VLBEzW0tFDOu5mCyCV458BsyWGxH+JMStfLLBuVW/CrlIQRgFisr32JGBffGIQZSAU2zUSEyoKQ0mdfZVf19c90A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733418728; c=relaxed/simple;
-	bh=rRwtsTd/2jg22s9kHbgwGu+T4KqT1qXWp/uJhMpyJOg=;
+	s=arc-20240116; t=1733418980; c=relaxed/simple;
+	bh=ll/pqBlh7VQdZrfl40Y3GRd2AxpRWeO2O5BqSRhjrXw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A6dkyEiMDuwBZxcDQmDAyzs0lswOBNdREa3KLLvyTGOZa+e89jIO7w4vN0sESaOzYwxQQRcKYBLfq6YN7GIatBOrQgnIsu/2OXnvfWanbK1rK1pqHNdISRICya3SHuHphl810zZqD+hzOpWqfKvDo1LXIiJBxp7kpmjt4YSrirM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTNF6XXq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mhn2Oozg6kmdWU3apIee0BV0mm3GoHolw6YqTLz3/pYyHGDz/CBcWzeZR0jrzKdG/nPv9XlxPg1o2K6Nd34lfpraKbuyPuYlftbQMhrj8p/1S6xKQOsZ/NIzDaPHz1M/Qj2/p7Lj8GkiTR36szePTIrNPPospvrGWqvcbDXORx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGxelnSm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTNF6XXq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B62C4CED1;
-	Thu,  5 Dec 2024 17:12:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGxelnSm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A18C4CED1;
+	Thu,  5 Dec 2024 17:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733418728;
-	bh=rRwtsTd/2jg22s9kHbgwGu+T4KqT1qXWp/uJhMpyJOg=;
+	s=k20201202; t=1733418979;
+	bh=ll/pqBlh7VQdZrfl40Y3GRd2AxpRWeO2O5BqSRhjrXw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dTNF6XXqqUDGU2L+aNI9XdWv+RDALoORwOEuvBeBtHsXaVLP7Gi6XqpTpSo7gxfmy
-	 rLH/pKjYwhiN0+U7SF/UQt5+Fv7Kdr6q5TWxTYBc+WbOhieg6piRJgANNM1817TdHY
-	 Vof7/U+StobxDLexPTL4QUtiiafomgEmzX7xHkp56msSf8Gm0ziNuwHkbnDo0yMfTM
-	 8f19/14POLm6i6fPoDFVxnHDY530J5jTPWtHC7iaBgZmKjk+xMbF42IwqJc5kOPMHg
-	 mw2IsdPuoFG1/nEEhi+megqjHDxybdn6sQBOeH8Xz+GSi/FJpSMm76DS09Msxjd17E
-	 VLYYFuyU2W5gw==
-Date: Thu, 5 Dec 2024 17:12:03 +0000
-From: Simon Horman <horms@kernel.org>
+	b=UGxelnSmP2fi+QBtv0TaH/Q9nACsWEbMiXTzcVD8FSQHtVUZmxSLiisduv91ug+sS
+	 Ax5e/T0z+6bvflbNCWXVu47JOFQRYk7k6HmJYDoCCwditaCWxk4O2fJ3AWlSo4fzua
+	 Uf7/+C9qjPN37R2kGgv6k78I5ZLIOtoJ6vVrYqkLT78lSYMkOJpmBAT4mTRI+QFIwM
+	 tv555atqTSfiYtDUEe4wuTnR8GZCmULXsaUg6uMaBo2IbSWPqD+opXDzaQwGbFNsqb
+	 vH+pPl3AQa3oSI8fHxfOqVisVWNpp9sHWglYH14WkcCIzTkdajm+dEi57YY+zUQbvB
+	 f7QmOrNvl4H6A==
+Date: Thu, 5 Dec 2024 17:16:14 +0000
+From: Conor Dooley <conor@kernel.org>
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Woojung Huh <woojung.huh@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>, kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com, Phil Elwell <phil@raspberrypi.org>
-Subject: Re: [PATCH net-next v1 02/21] net: usb: lan78xx: Remove KSZ9031 PHY
- fixup
-Message-ID: <20241205171203.GE2581@kernel.org>
-References: <20241203072154.2440034-1-o.rempel@pengutronix.de>
- <20241203072154.2440034-3-o.rempel@pengutronix.de>
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v1 2/5] dt-bindings: vendor-prefixes: Add prefix for Priva
+Message-ID: <20241205-hamstring-mantis-b8b3a25210ef@spud>
+References: <20241205125640.1253996-1-o.rempel@pengutronix.de>
+ <20241205125640.1253996-3-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="RfxN6UD6pYJLj5Ip"
+Content-Disposition: inline
+In-Reply-To: <20241205125640.1253996-3-o.rempel@pengutronix.de>
+
+
+--RfxN6UD6pYJLj5Ip
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241203072154.2440034-3-o.rempel@pengutronix.de>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 03, 2024 at 08:21:35AM +0100, Oleksij Rempel wrote:
-> Remove the KSZ9031RNX PHY fixup from the lan78xx driver. The fixup applied
-> specific RGMII pad skew configurations globally, but these settings violate the
-> RGMII specification and cause more harm than benefit.
-> 
-> Key issues with the fixup:
-> 1. **Non-Compliant Timing**: The fixup's delay settings fall outside the RGMII
->    specification requirements of 1.5 ns to 2.0 ns:
->    - RX Path: Total delay of **2.16 ns** (PHY internal delay of 1.2 ns + 0.96
->      ns skew).
->    - TX Path: Total delay of **0.96 ns**, significantly below the RGMII minimum
->      of 1.5 ns.
-> 
-> 2. **Redundant or Incorrect Configurations**:
->    - The RGMII skew registers written by the fixup do not meaningfully alter
->      the PHY's default behavior and fail to account for its internal delays.
->    - The TX_DATA pad skew was not configured, relying on power-on defaults
->      that are insufficient for RGMII compliance.
-> 
-> 3. **Micrel Driver Support**: By setting `PHY_INTERFACE_MODE_RGMII_ID`, the
->    Micrel driver can calculate and assign appropriate skew values for the
->    KSZ9031 PHY.  This ensures better timing configurations without relying on
->    external fixups.
-> 
-> 4. **System Interference**: The fixup applied globally, reconfiguring all
->    KSZ9031 PHYs in the system, even those unrelated to the LAN78xx adapter.
->    This could lead to unintended and harmful behavior on unrelated interfaces.
-> 
-> While the fixup is removed, a better mechanism is still needed to dynamically
-> determine the optimal combination of PHY and MAC delays to fully meet RGMII
-> requirements without relying on Device Tree or global fixups. This would allow
-> for robust operation across different hardware configurations.
-> 
-> The Micrel driver is capable of using the interface mode value to calculate and
-> apply better skew values, providing a configuration much closer to the RGMII
-> specification than the fixup. Removing the fixup ensures better default
-> behavior and prevents harm to other system interfaces.
-> 
+On Thu, Dec 05, 2024 at 01:56:37PM +0100, Oleksij Rempel wrote:
+> Introduce the 'pri' vendor prefix for Priva, a company specializing in
+> sustainable solutions for building automation, energy, and climate
+> control.  More information about Priva can be found at
+> https://www.priva.com
+>=20
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/usb/lan78xx.c | 38 +++++---------------------------------
->  1 file changed, 5 insertions(+), 33 deletions(-)
-> 
-> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Doc=
+umentation/devicetree/bindings/vendor-prefixes.yaml
+> index da01616802c7..9a9ac3adc5ef 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -1198,6 +1198,8 @@ patternProperties:
+>      description: Primux Trading, S.L.
+>    "^probox2,.*":
+>      description: PROBOX2 (by W2COMP Co., Ltd.)
+> +  "^pri,.*":
+> +    description: Priva
 
-...
+Why not "priva"? Saving two chars doesn't seem worth less info.
 
-> @@ -2283,14 +2263,11 @@ static struct phy_device *lan7801_phy_init(struct lan78xx_net *dev)
->  			netdev_err(dev->net, "no PHY driver found\n");
->  			return NULL;
->  		}
-> -		dev->interface = PHY_INTERFACE_MODE_RGMII;
-> -		/* external PHY fixup for KSZ9031RNX */
-> -		ret = phy_register_fixup_for_uid(PHY_KSZ9031RNX, 0xfffffff0,
-> -						 ksz9031rnx_fixup);
-> -		if (ret < 0) {
-> -			netdev_err(dev->net, "Failed to register fixup for PHY_KSZ9031RNX\n");
-> -			return NULL;
-> -		}
-> +		dev->interface = PHY_INTERFACE_MODE_RGMII_ID;
-> +		/* The PHY driver is responsible to configure proper RGMII
-> +		 * interface delays. Disable RGMII delays on MAC side.
-> +		 */
-> +		lan78xx_write_reg(dev, MAC_RGMII_ID, 0);
->  
->  		phydev->is_internal = false;
->  	}
+--RfxN6UD6pYJLj5Ip
+Content-Type: application/pgp-signature; name="signature.asc"
 
-nit: With this change ret is now set but otherwise unused in this function.
+-----BEGIN PGP SIGNATURE-----
 
-     I would suggest a new patch, prior to this one, that drops the
-     other places where it is set. They seem to have no effect.
-     And then remove ret from this function in this patch.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ1Hf3gAKCRB4tDGHoIJi
+0vCCAPsHVLh5ARoGVS/2vGmP95xh8i6OPSPvwg87l4tT5DQKGAD+OrSsG3fRMkAH
+BhsrJpztvvaJq8afTPZtjQh4PQEPlQc=
+=4PKr
+-----END PGP SIGNATURE-----
 
-> @@ -2349,9 +2326,6 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
->  			if (phy_is_pseudo_fixed_link(phydev)) {
->  				fixed_phy_unregister(phydev);
->  				phy_device_free(phydev);
-> -			} else {
-> -				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
-> -							     0xfffffff0);
->  			}
->  		}
->  		return -EIO;
-
-...
+--RfxN6UD6pYJLj5Ip--
