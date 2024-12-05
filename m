@@ -1,242 +1,410 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3061D5CEA;
-	Thu,  5 Dec 2024 08:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733388357; cv=fail; b=GkTy5xRqa8ecCDv3hH6dzYZVzQlpDf118LbzO2nygIyIMGR/fCmN4YtZpoMbYrFlXuflhKX0UC3IIVD4sjfsSYrcf+3lv6R5DtQxRZPZoLIoh9zctaVW2dH1DMMgJeBSkZz90veKQkMTZF3hG81IeDV8SaVwRyy7AK2aiKy1VyA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733388357; c=relaxed/simple;
-	bh=ExfnwmQ+gAxdlolqN6319Lwm4zfvJGh8cYqoW3+lk4w=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=i9/Sr9kGe8Yvn1dp+6zjtQTgQpCkG5Uq6anNEu7dtSuFQvWzSoE3ed7cQs7hpq2bk8GbH+CWwWe6HgGUNFNoKh7CyTRBprP7g8JVfdFnZ5vsP8KdyOCY/++//tt2ZaDqPlyBVwvXysQXG/E0ItD7dPbsqw9xymHb4NFsH9vwqAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NU6rOLy2; arc=fail smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBB81D6DC5
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 08:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733388362; cv=none; b=aO3N9DmTAW9nB/+4xxdkYV+qXP48f3pvvwZRoNZCpsOLtQls07QLEUyWSo4W2/kFeb5Wv5SKq2wDZ8cZPpMRpJa8cv6F83dazXF4Pw+q4SIrDh2LXI9mFZSEmcEZeLLB52ECchmFQZmZRSBCi3WqK7z03A5o+JsbQpMsPTx0gOo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733388362; c=relaxed/simple;
+	bh=sQ6Z2k8ZTh3SXcZYXjTntib3M5oZgJmZSCzafWYkf2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=soq0qBKo3H1d5+L28LYJMz38YkFC64Muap7WDyr0ZjDdW2+0lE/o9nieHTtRQkKDfOaPI8+sD/V4S05NgkywDARtdKx+gXmsCYcTqd+pdBINjve3ABHPyqc5JPdeOvS/XhtvLAdUipJ8AK/tFNmEkSJyJZy1vx8jtWhOzAORMeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyZzeJNq; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NU6rOLy2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyZzeJNq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733388356; x=1764924356;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ExfnwmQ+gAxdlolqN6319Lwm4zfvJGh8cYqoW3+lk4w=;
-  b=NU6rOLy2uQX+S5UtgsHhMKRlPldH/EzgOGeSfMRh1AOFS7bcYgNncRQB
-   yz9VuvTYrAQcPVZLfOQfQmoewX7gDc+oNKSPM7S2U3u1P/Ei7yZdaCdJ0
-   6jmxlCBH4xTmZeJYj+WtKrLClHhODehER+AZT1xCNZIiwi8QIGYBH+LI5
-   7KeM0FEdlckHqUY51hX+xHU8Q76VS29RETShY/RRTKoDG1UHeCGWmWrT3
-   PFXCTa5t8pM0bAueXqMiEAE9XP+bhZG+F36lFOaTUzpBu5+tRtPzZ6PIz
-   6W2NAQHcstnZhA9yj7d3LvT/MzkX9N7ekCqGB/D2zO6f/SmA10cSCAWPH
-   w==;
-X-CSE-ConnectionGUID: KEHrqiUQQIKjVI24VDnGug==
-X-CSE-MsgGUID: pWCZtEvkQjuDmJxQD2ualQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="37623248"
+  t=1733388360; x=1764924360;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=sQ6Z2k8ZTh3SXcZYXjTntib3M5oZgJmZSCzafWYkf2k=;
+  b=EyZzeJNqEkfuo417r/9FANnDfdW5vzCZaDNDS+lYzOCGulaRqMW0n4vz
+   fKP7XCVl9+BPDLxj0U1AV5MLJMeCkFEOugIx0rwPVY2+3hhNc1xfM86jV
+   86soAalTA4S4zXRZX6/8BGUy0GCcnYqEBlEuWkIeY0jRbuDQ61VVN3xay
+   UK/kBS86Njj1rglqI6r6VKnUWzJWFpdvPAiaWUXTR21BQhkMjo7fiNZnM
+   RjlBx1U/xfF89A+3p9svu2IaEJOnzyIvA8HYSjuSnV1WwjJuCVisBbb18
+   9wEZKW0yKa0XVQc6mUiCEPpsuC7li7PorVATgelRvHiXMgvtf9hGbqSeB
+   g==;
+X-CSE-ConnectionGUID: i+0ZEI/nRYS8TsrESOFV3g==
+X-CSE-MsgGUID: WdPWUiT/R3KtmWzpjyH8fQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="37623267"
 X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
-   d="scan'208";a="37623248"
+   d="scan'208";a="37623267"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 00:45:55 -0800
-X-CSE-ConnectionGUID: ea65SP4NQpSIIDVBuTl9sg==
-X-CSE-MsgGUID: 1qrnkK73SnWgOFRVwbUh1A==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 00:45:59 -0800
+X-CSE-ConnectionGUID: mGH8eXSQT9itpf2J8WKfwA==
+X-CSE-MsgGUID: vmsqz2H3R5aOK1gD+7UsUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
-   d="scan'208";a="94864143"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Dec 2024 00:45:55 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 5 Dec 2024 00:45:55 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 5 Dec 2024 00:45:55 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.175)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 5 Dec 2024 00:45:54 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dCIgx2ibDNWm3VN2FiCTTTKMs8tpsaCycJ2sToJ1eh5GimGqoafGIGbpupHXR2T07K8RzzD4drPbX3Sw8LfEw6VsCl6mE0e9DLKaxmq8ZZWk+9Y8XYvLYICzeE8OSnBQsaWri5t7sQHIQJ1C9YhPjvsOV3xJA/92L8ZadVkJXiVJAvA6tzi6UQWtKTGMvVcs2G7U4Z2yf4LDvwuNLCGzQNyQ5NaEbDLMp5qRxVk3p4i4gZBNWvb6ybUmpQzHorgRQDvIPF84Ug4AUMAXwGK4hCaml5QFafHCNFjwCLIxQkr0hIibhXBxp6UX2Fia7b8/oagYji8JLC+FMo7Sj7KOsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4yzl1Db+NDdSBqjGB/bcRqcB63jU0G2EK48BInzdWUc=;
- b=R47/vwhDE8BReaFlRmrfPaLdhZJjUmyA95X4NtuNWkSqG5awt6O7QU0/T8xebtB27d3934BpbGlWU6zXAEoi/xs7O1KvX9DjOyENcW9yvfBLJdnoUjXb9y60GGc7QpHTcpPJoI6szbMc+5J9wEvdVdwhCau8afcIyTXkHmyWRy6jJ1JNHc2h2mqgzSUU1tAKSQDjdwOc0IgmY3MjooN9EGipVMi1zUs1JJ//sx8IXfAzJ0GWOpM3AMrKUo0qSnYkKdtDj48jmSqyfBBmfmMvqaLWg3PLCuX89SSxGq4lUSkMeB3T62zewDOVz07HjI119kNR0fl1DcUhcDZWkSciag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB5399.namprd11.prod.outlook.com (2603:10b6:208:318::12)
- by SA1PR11MB8544.namprd11.prod.outlook.com (2603:10b6:806:3a3::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Thu, 5 Dec
- 2024 08:45:52 +0000
-Received: from BL1PR11MB5399.namprd11.prod.outlook.com
- ([fe80::b8f1:4502:e77d:e2dc]) by BL1PR11MB5399.namprd11.prod.outlook.com
- ([fe80::b8f1:4502:e77d:e2dc%5]) with mapi id 15.20.8230.010; Thu, 5 Dec 2024
- 08:45:52 +0000
-Message-ID: <d5591ca1-7413-4575-90e4-a22ac81cd2b8@intel.com>
-Date: Thu, 5 Dec 2024 09:45:46 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 5/7] ethtool: add helper to prevent invalid
- statistics exposure to userspace
-To: Oleksij Rempel <o.rempel@pengutronix.de>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, "Jonathan
- Corbet" <corbet@lwn.net>
-CC: <kernel@pengutronix.de>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>, Russell King
-	<linux@armlinux.org.uk>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	<linux-doc@vger.kernel.org>
-References: <20241203075622.2452169-1-o.rempel@pengutronix.de>
- <20241203075622.2452169-6-o.rempel@pengutronix.de>
-Content-Language: pl
-From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Organization: Intel
-In-Reply-To: <20241203075622.2452169-6-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA2P291CA0002.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::22) To BL1PR11MB5399.namprd11.prod.outlook.com
- (2603:10b6:208:318::12)
+   d="scan'208";a="94864156"
+Received: from pkwapuli-mobl1.ger.corp.intel.com (HELO vbox-pkwap.ger.corp.intel.com) ([10.246.2.76])
+  by orviesa008.jf.intel.com with ESMTP; 05 Dec 2024 00:45:55 -0800
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Stefan Wegrzyn <stefan.wegrzyn@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH iwl-next v12 4/8] ixgbe: Add support for NVM handling in E610 device
+Date: Thu,  5 Dec 2024 09:44:46 +0100
+Message-ID: <20241205084450.4651-5-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20241205084450.4651-1-piotr.kwapulinski@intel.com>
+References: <20241205084450.4651-1-piotr.kwapulinski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB5399:EE_|SA1PR11MB8544:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a785999-d9e4-4610-b747-08dd150939a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RWN4SVFuT2UyWVkzZ3lHYWlmVU1iOFQ1NkUxN1ZZcHRDOGpEN1Y2TDdkZ29Q?=
- =?utf-8?B?SEFjY00zclZMcWVmQWZXU3BmaTBBODVuK25ySkFDVndwYnh6SmVyZVpkcFFx?=
- =?utf-8?B?Wi82RVBvZEpLYjB6eVlSTytTc2VsNDh2dFJBSlcyMUxaS0M4dkhqN0tkdUlQ?=
- =?utf-8?B?K0N5RThoT0MySHNocmxaa0RJOWwya09wUS9Yc1kyMjdqK3hHb2lSVHNXVjIz?=
- =?utf-8?B?T0pNdVJKOWU3OGRXNHF0R0dQdFJSeFNsU1ljaE5OMVpLTEFHeWdqek92QWEr?=
- =?utf-8?B?TTJsclg4ZGN5dFRVdVFxWmR2Um9JQ0tJTzRJejBkU0RLK3I1SEFNQXdRaEh0?=
- =?utf-8?B?K3l4ejI3dldTTWJBVzVNaHlKQUQ3SHVHeW9YTEhsbVVGc0IycDhtbjI4N29K?=
- =?utf-8?B?ZXpISFhnbm12VjhrdDVNZ3p2UzFMdzhKdXRWQzhHTE9IdDQxY3dLNXR0a05y?=
- =?utf-8?B?aUpNUnNPeVpTM3g1RXVIeDJDWGZBYndYT0Z2QnJYY1Y2TDlCYVFkTU9vbHVC?=
- =?utf-8?B?cGJFWmFZQWJuSWxSYUpTQmN0QUVPNzI4MitjaGh6LzFDaUZub2FPZFQwbUpi?=
- =?utf-8?B?L0VsZDFDWjg1RERQdFowcklBWmVvaWVZUUp3TFFTdlBWOVZibkNCUmJaS3Bk?=
- =?utf-8?B?VTVBMm1xcVp5anRadjloLzhSdkRkNlJpVjZJVXg3Qmg3Y1NsQkJKYytlVnVo?=
- =?utf-8?B?LzBoclErRmNxZU5KR1JPaVhkbTVoeEhhbUxmWEtiT2pBNXNXNFRBaDdsTUNI?=
- =?utf-8?B?K0srQmRud0pXNVNzVXJubE4yUVJ6ZE1uODBFZTRKeG94S0JNZFM5SXJ3dy9j?=
- =?utf-8?B?ZHdYZUpoamNmNVlUYWZVYVRmNHBRTzdIcXhxdVJSaS9xcGtuNnc2SlVVMXZZ?=
- =?utf-8?B?bHBITGxzY2NjZUlJVHpoMHdiRU5XTHhlamlpOHpNR2VzTDM5N3NJUGNCakRC?=
- =?utf-8?B?bnR1ZDlEa0lacHVoZlJaUTlSVm1NRGgrV1FJeEpJb1I3clpDZ09RZ1Z5Tk9Z?=
- =?utf-8?B?YzZIUWxEdkdqdThVcWdWaURVaEpBcWRNTGdYMkpiQWFNWnQ0NVhjbHN4SVBL?=
- =?utf-8?B?Z3gyclM0RlVvWEJGdTVlTmFDcnR6MWxtV1RNRnVtNkJvUGUweDErQkdET1RM?=
- =?utf-8?B?OG11TlViNkFuSzR3UnZlc1F2ZWw4V1FJQTJJalZTR1lNTE5YZGlkWW9YamRM?=
- =?utf-8?B?OVVTeFM2d1Bha2IwcTZ0M0lDclJmRzZmVTZPQzkvUmd6N2hMMWhLdll4cTVm?=
- =?utf-8?B?N08wSDJjeDRhVU54ZjVzd0h3ZG9BajVjUjB6bjh6Mjd6SG0zUWw2YlBnTTd6?=
- =?utf-8?B?NGYrSWM3eXFjamczTWVJNS84WkltUUo4SHgzbWlOMUltUlorUEdtd2Jwdlly?=
- =?utf-8?B?UDZJWDdLMEE2YkhYZXVyb0NvY2RVN2ZmdHJ3VFhVK29LMjA3bDZUOHdSaWwz?=
- =?utf-8?B?M0NDOGlOblNmSWtlYnQ2OHo0dUhXdmZydWlKU0NLeStQMWxSaHhwd1pwRVBa?=
- =?utf-8?B?NnRYUTZUWFVFNmVhUmZBcGphSmhlVlduWWtOUS9UeDkyakgxZktNUmdaTnNZ?=
- =?utf-8?B?b1graHEyaGhLeEdyTnc4dkxubW1oN1VheXRxSzRCOExjOEtkaERldWhoSkhs?=
- =?utf-8?B?TU82NWtjNXU3SERnR2RPOWFGZHZzL1dhSHFrUy9nZVZ1KzNwS3FCbmQxZW1n?=
- =?utf-8?B?dDFtVEgyOHYzNURQVzNSK2Z3am90MnJjOUtFS3U4bThlTk9QNXBKUnlnVmkv?=
- =?utf-8?B?SmVqWEkxdUtVR28zamdmYjdNNDNDbTRicU5lYVcwMTB4Yk01Qzh2MGF3ZUtO?=
- =?utf-8?B?Q2o4M2p3Z0lvYWNHQ1JPZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5399.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZEIvMjhIQXRCNUJVMktNRTJjUlFXaUhQS3gzUWl3VWsvVWpqZDc4LzlkNGlv?=
- =?utf-8?B?L1VHdmIyRUJueVJ1UkZiM3J0ODZVTDZkQzNXaStKNm93aUdvTVVEdTBwV05k?=
- =?utf-8?B?VHZCYXJlbmZMTFo0bDhaaVhrL1FaM1kyRFpkWjVqRUpMakRWbnBiZWMrTGRa?=
- =?utf-8?B?blM2UTdNYU1PMDdqdTlMclNDak1aYms4NHJlYlJ0Q0JoRkVJN3ZTVlRQdm5x?=
- =?utf-8?B?SE9FRlFReWhIQ0hodDg5MDFhQnNJdEZYMzYxRTVITjhjaFhvc1ozSzQxdm5B?=
- =?utf-8?B?OWFwazVIY0k3bXZXekY0MytaZEw0VVVpU0dOUHZCWWVLZWxqVmRyVkFCN0Jh?=
- =?utf-8?B?RVpYV3ZWWkhEMHhwTzlkQStDbWdFb2QzZ0FqdTFFNlhEcjF3SWhid0hxUk9u?=
- =?utf-8?B?MG8wVmdnZ3V2eHJhZXRLbEpUVUNnTmdoUDFKQXJHWTNRQU5WcGZtNVUrS0RT?=
- =?utf-8?B?azAxRlRuU2l2MnNIQURHSWw5QWhNdGV3dzF1MTVvQUoyaHpMOURpV0M4cExa?=
- =?utf-8?B?d3VqUnU2QXUwVlRwclVsdDJaMHMxMG90NldKNDJ3ZWxIMGVhTHhvcW5JbUFJ?=
- =?utf-8?B?OFlWVGxxWEljL21RaHF1eWhlYTYvQ3BVYTNPN1d3R21zT3YwaDVzYnpYeEcz?=
- =?utf-8?B?NmlmNHJZN0wwMjVOUTFYc0FPZ3pMbDMydWxFWmRqdE5tV3BzN3g5VFp1YllH?=
- =?utf-8?B?bEtUSHlVVGxFWml1eFNFSWQvMFVKTFRndmxQZ214SkpJbnFMK2x1N2FFMGYv?=
- =?utf-8?B?bWg1aUNlbEx2a2RuU1ZoUXhadUNvOTRLakxlZ2poREI2cXNBdldlSUhpTXNN?=
- =?utf-8?B?ZmRmaTFteklROW5wYWJ5N2grNVpzcHh2NDVHUmxGTzdBVU4wTjlEeWJhZGxY?=
- =?utf-8?B?RGhnTldlOU5Dd3JSVFdTSk0zRGd2bjdKTllRa1c2YmtXcUZNMVFQUnZQZ1Rm?=
- =?utf-8?B?YzRrWHZCSmUyL3RVQnJDa2ZzZmpPNWtnczJnZHRhU2JMbmVFVC8vQk5sUkxQ?=
- =?utf-8?B?Q29GMS85eTFHcWxBN3d0L3Y2Y1YxSjVuZTg3QmhiZmpsL3NBYUpsK3RyQ0tu?=
- =?utf-8?B?VFcrV2o5WHpZTUtEQm9RQkVCcEhRTjlMNlRJOVlLcWZHbG9vdWZyOTFRVDNQ?=
- =?utf-8?B?YXBZSGVjekQ4eUEwV0Z2N2ZrUEsrS1dlWlJzYnlEQWY3MkdWRm4xN1ZlUEpj?=
- =?utf-8?B?bFp4aE4xaFRjazJNa2FGKzJqOWgySGNlbkNLdXJjS3JMRlM0VkhEWmJ6d0NB?=
- =?utf-8?B?MTZXdUxJOTFwOFg0emI1MlY5S3FlMFNhOWlOTFgwU1crUlVRbGUxa2Y2NCs3?=
- =?utf-8?B?T25wT3BCdTVjSmJOTmpNaVVzMEhFSDNWcEJnK2V5WTJNbks3UnRUeWN0TGhw?=
- =?utf-8?B?UTZKTVFzM2VKTVRhOWFVYldQcGhsRzlwbWxYeEl6LytLUHJZRW15UEo5OVVk?=
- =?utf-8?B?SHFybkNDcUFwemR6em5Fb1pFQXVyTHYxYkxya3huaXkrODN3VEY2OW5COWRm?=
- =?utf-8?B?aUprSHVaSjliS1pMZmh5QzJZS1lkQyswdjlJT1RaUHd3V24zRGZXOUc4N0RI?=
- =?utf-8?B?Yzd2UDNwOEJBYUJHNnEzWnhSSGwrV3dFckFBc1dLQlRWS3hqNHdmR210akVY?=
- =?utf-8?B?NDBPYU5VZVFGNDJZdjFrQVFZRm0xNDU4RUJsdFRmdmszZXNGdEJFUmdBUWFF?=
- =?utf-8?B?c01Pb0NWZDQvZ2lnb254d0pLZS9YS2RXZmIyei9DK1dOQTJvQmhPc1J4dTVa?=
- =?utf-8?B?T00wTlRwbVNBeUJSbEpLU3d6WW0xRTl1MVhyVitXNDhFOW5aVlFaT1REclhB?=
- =?utf-8?B?dVdTcW1DQ29zSnNxZ3V0QVNLcjlyc2VseHBLWGNPeHQ0dHozMXpYbk1rM0FS?=
- =?utf-8?B?cy83b2ZYUGZEWmdYMVNqWTNqYVZnc1lBZWxyMDRrdnhhclZCbk9LNlJzMUhz?=
- =?utf-8?B?RGNYc1hJVUR6WnV4YVRUcmlkZW9TNmdjMllTQjl0dXFvNWt6Qk45VXU1V1Fo?=
- =?utf-8?B?L29YbFBRcTdwVlIwak9CVXJWTkhXbGQ1dkNCS0Y4T3JIL1o2TkMwcW5FUTJz?=
- =?utf-8?B?azVGbi9oZTB5cW5KTzc2VUFDMXRRY3pwek0rbUkyL0F3QkVYRzNuU3RVU2NO?=
- =?utf-8?B?aVc5VUFjMkVWNnZML3BWZW40WUhkdTd0ekJQUjJzVWRDcXZOeElGaUcza3Fa?=
- =?utf-8?B?cGc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a785999-d9e4-4610-b747-08dd150939a7
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5399.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 08:45:52.4590
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0PEb6vxX4U0HBMpy64BNyVZBM2YOPoA10w0C9lR6eBTxe0JJJ4kn5XUT9cZp8ezmyDGZRACbtlPEfp5zOeOBzXYyblVaDNEfWtHGoZo4B+k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8544
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
+Add low level support for accessing NVM in E610 device. NVM operations are
+handled via the Admin Command Interface. Add the following NVM specific
+operations:
+- acquire, release, read
+- validate checksum
+- read shadow ram
 
+Co-developed-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
+Signed-off-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
+Co-developed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 291 ++++++++++++++++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  12 +
+ 2 files changed, 303 insertions(+)
 
-On 12/3/2024 8:56 AM, Oleksij Rempel wrote:
-> Introduce a new helper function, `ethtool_stat_add`, to update 64-bit
-> statistics with proper handling of the reserved value
-> `ETHTOOL_STAT_NOT_SET`. This ensures that statistics remain valid and
-> are always reported to userspace, even if the driver accidentally sets
-> `ETHTOOL_STAT_NOT_SET` during an update.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->   include/linux/ethtool.h | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-> index b0ed740ca749..657bd69ddaf7 100644
-> --- a/include/linux/ethtool.h
-> +++ b/include/linux/ethtool.h
-> @@ -371,6 +371,22 @@ static inline void ethtool_stats_init(u64 *stats, unsigned int n)
->   		stats[n] = ETHTOOL_STAT_NOT_SET;
->   }
->   
-> +/**
-> + * ethtool_stat_add - Add a value to a u64 statistic with wraparound handling
-> + * @stat: Pointer to the statistic to update
-> + * @value: Value to add to the statistic
-> + *
-> + * Adds the specified value to a u64 statistic. If the result of the addition
-> + * equals the reserved value (`ETHTOOL_STAT_NOT_SET`), it increments the result
-> + * by 1 to avoid the reserved value.
-> + */
-> +static inline void ethtool_stat_add(u64 *stat, u64 value)
-> +{
-> +	*stat += value;
-> +	if (*stat == ETHTOOL_STAT_NOT_SET)
-> +		(*stat)++;
-> +}
-> +
->   /* Basic IEEE 802.3 MAC statistics (30.3.1.1.*), not otherwise exposed
->    * via a more targeted API.
->    */
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index 1c50005..0542b4b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -2102,3 +2102,294 @@ int ixgbe_aci_get_netlist_node(struct ixgbe_hw *hw,
+ 
+ 	return 0;
+ }
++
++/**
++ * ixgbe_acquire_nvm - Generic request for acquiring the NVM ownership
++ * @hw: pointer to the HW structure
++ * @access: NVM access type (read or write)
++ *
++ * Request NVM ownership.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_acquire_nvm(struct ixgbe_hw *hw,
++		      enum ixgbe_aci_res_access_type access)
++{
++	u32 fla;
++
++	/* Skip if we are in blank NVM programming mode */
++	fla = IXGBE_READ_REG(hw, IXGBE_GLNVM_FLA);
++	if ((fla & IXGBE_GLNVM_FLA_LOCKED_M) == 0)
++		return 0;
++
++	return ixgbe_acquire_res(hw, IXGBE_NVM_RES_ID, access,
++				 IXGBE_NVM_TIMEOUT);
++}
++
++/**
++ * ixgbe_release_nvm - Generic request for releasing the NVM ownership
++ * @hw: pointer to the HW structure
++ *
++ * Release NVM ownership.
++ */
++void ixgbe_release_nvm(struct ixgbe_hw *hw)
++{
++	u32 fla;
++
++	/* Skip if we are in blank NVM programming mode */
++	fla = IXGBE_READ_REG(hw, IXGBE_GLNVM_FLA);
++	if ((fla & IXGBE_GLNVM_FLA_LOCKED_M) == 0)
++		return;
++
++	ixgbe_release_res(hw, IXGBE_NVM_RES_ID);
++}
++
++/**
++ * ixgbe_aci_read_nvm - read NVM
++ * @hw: pointer to the HW struct
++ * @module_typeid: module pointer location in words from the NVM beginning
++ * @offset: byte offset from the module beginning
++ * @length: length of the section to be read (in bytes from the offset)
++ * @data: command buffer (size [bytes] = length)
++ * @last_command: tells if this is the last command in a series
++ * @read_shadow_ram: tell if this is a shadow RAM read
++ *
++ * Read the NVM using ACI command (0x0701).
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_aci_read_nvm(struct ixgbe_hw *hw, u16 module_typeid, u32 offset,
++		       u16 length, void *data, bool last_command,
++		       bool read_shadow_ram)
++{
++	struct ixgbe_aci_cmd_nvm *cmd;
++	struct ixgbe_aci_desc desc;
++
++	if (offset > IXGBE_ACI_NVM_MAX_OFFSET)
++		return -EINVAL;
++
++	cmd = &desc.params.nvm;
++
++	ixgbe_fill_dflt_direct_cmd_desc(&desc, ixgbe_aci_opc_nvm_read);
++
++	if (!read_shadow_ram && module_typeid == IXGBE_ACI_NVM_START_POINT)
++		cmd->cmd_flags |= IXGBE_ACI_NVM_FLASH_ONLY;
++
++	/* If this is the last command in a series, set the proper flag. */
++	if (last_command)
++		cmd->cmd_flags |= IXGBE_ACI_NVM_LAST_CMD;
++	cmd->module_typeid = cpu_to_le16(module_typeid);
++	cmd->offset_low = cpu_to_le16(offset & 0xFFFF);
++	cmd->offset_high = (offset >> 16) & 0xFF;
++	cmd->length = cpu_to_le16(length);
++
++	return ixgbe_aci_send_cmd(hw, &desc, data, length);
++}
++
++/**
++ * ixgbe_nvm_validate_checksum - validate checksum
++ * @hw: pointer to the HW struct
++ *
++ * Verify NVM PFA checksum validity using ACI command (0x0706).
++ * If the checksum verification failed, IXGBE_ERR_NVM_CHECKSUM is returned.
++ * The function acquires and then releases the NVM ownership.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_nvm_validate_checksum(struct ixgbe_hw *hw)
++{
++	struct ixgbe_aci_cmd_nvm_checksum *cmd;
++	struct ixgbe_aci_desc desc;
++	int err;
++
++	err = ixgbe_acquire_nvm(hw, IXGBE_RES_READ);
++	if (err)
++		return err;
++
++	cmd = &desc.params.nvm_checksum;
++
++	ixgbe_fill_dflt_direct_cmd_desc(&desc, ixgbe_aci_opc_nvm_checksum);
++	cmd->flags = IXGBE_ACI_NVM_CHECKSUM_VERIFY;
++
++	err = ixgbe_aci_send_cmd(hw, &desc, NULL, 0);
++
++	ixgbe_release_nvm(hw);
++
++	if (!err && cmd->checksum !=
++		cpu_to_le16(IXGBE_ACI_NVM_CHECKSUM_CORRECT)) {
++		struct ixgbe_adapter *adapter = container_of(hw, struct ixgbe_adapter,
++							     hw);
++
++		err = -EIO;
++		netdev_err(adapter->netdev, "Invalid Shadow Ram checksum");
++	}
++
++	return err;
++}
++
++/**
++ * ixgbe_read_sr_word_aci - Reads Shadow RAM via ACI
++ * @hw: pointer to the HW structure
++ * @offset: offset of the Shadow RAM word to read (0x000000 - 0x001FFF)
++ * @data: word read from the Shadow RAM
++ *
++ * Reads one 16 bit word from the Shadow RAM using ixgbe_read_flat_nvm.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_read_sr_word_aci(struct ixgbe_hw  *hw, u16 offset, u16 *data)
++{
++	u32 bytes = sizeof(u16);
++	u16 data_local;
++	int err;
++
++	err = ixgbe_read_flat_nvm(hw, offset * sizeof(u16), &bytes,
++				  (u8 *)&data_local, true);
++	if (err)
++		return err;
++
++	*data = data_local;
++	return 0;
++}
++
++/**
++ * ixgbe_read_flat_nvm - Read portion of NVM by flat offset
++ * @hw: pointer to the HW struct
++ * @offset: offset from beginning of NVM
++ * @length: (in) number of bytes to read; (out) number of bytes actually read
++ * @data: buffer to return data in (sized to fit the specified length)
++ * @read_shadow_ram: if true, read from shadow RAM instead of NVM
++ *
++ * Reads a portion of the NVM, as a flat memory space. This function correctly
++ * breaks read requests across Shadow RAM sectors, prevents Shadow RAM size
++ * from being exceeded in case of Shadow RAM read requests and ensures that no
++ * single read request exceeds the maximum 4KB read for a single admin command.
++ *
++ * Returns an error code on failure. Note that the data pointer may be
++ * partially updated if some reads succeed before a failure.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_read_flat_nvm(struct ixgbe_hw  *hw, u32 offset, u32 *length,
++			u8 *data, bool read_shadow_ram)
++{
++	u32 inlen = *length;
++	u32 bytes_read = 0;
++	bool last_cmd;
++	int err;
++
++	/* Verify the length of the read if this is for the Shadow RAM */
++	if (read_shadow_ram && ((offset + inlen) >
++				(hw->eeprom.word_size * 2u)))
++		return -EINVAL;
++
++	do {
++		u32 read_size, sector_offset;
++
++		/* ixgbe_aci_read_nvm cannot read more than 4KB at a time.
++		 * Additionally, a read from the Shadow RAM may not cross over
++		 * a sector boundary. Conveniently, the sector size is also 4KB.
++		 */
++		sector_offset = offset % IXGBE_ACI_MAX_BUFFER_SIZE;
++		read_size = min_t(u32,
++				  IXGBE_ACI_MAX_BUFFER_SIZE - sector_offset,
++				  inlen - bytes_read);
++
++		last_cmd = !(bytes_read + read_size < inlen);
++
++		/* ixgbe_aci_read_nvm takes the length as a u16. Our read_size
++		 * is calculated using a u32, but the IXGBE_ACI_MAX_BUFFER_SIZE
++		 * maximum size guarantees that it will fit within the 2 bytes.
++		 */
++		err = ixgbe_aci_read_nvm(hw, IXGBE_ACI_NVM_START_POINT,
++					 offset, (u16)read_size,
++					 data + bytes_read, last_cmd,
++					 read_shadow_ram);
++		if (err)
++			break;
++
++		bytes_read += read_size;
++		offset += read_size;
++	} while (!last_cmd);
++
++	*length = bytes_read;
++	return err;
++}
++
++/**
++ * ixgbe_read_ee_aci_e610 - Read EEPROM word using the admin command.
++ * @hw: pointer to hardware structure
++ * @offset: offset of  word in the EEPROM to read
++ * @data: word read from the EEPROM
++ *
++ * Reads a 16 bit word from the EEPROM using the ACI.
++ * If the EEPROM params are not initialized, the function
++ * initialize them before proceeding with reading.
++ * The function acquires and then releases the NVM ownership.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_read_ee_aci_e610(struct ixgbe_hw *hw, u16 offset, u16 *data)
++{
++	int err;
++
++	if (hw->eeprom.type == ixgbe_eeprom_uninitialized) {
++		err = hw->eeprom.ops.init_params(hw);
++		if (err)
++			return err;
++	}
++
++	err = ixgbe_acquire_nvm(hw, IXGBE_RES_READ);
++	if (err)
++		return err;
++
++	err = ixgbe_read_sr_word_aci(hw, offset, data);
++	ixgbe_release_nvm(hw);
++
++	return err;
++}
++
++/**
++ * ixgbe_validate_eeprom_checksum_e610 - Validate EEPROM checksum
++ * @hw: pointer to hardware structure
++ * @checksum_val: calculated checksum
++ *
++ * Performs checksum calculation and validates the EEPROM checksum. If the
++ * caller does not need checksum_val, the value can be NULL.
++ * If the EEPROM params are not initialized, the function
++ * initialize them before proceeding.
++ * The function acquires and then releases the NVM ownership.
++ *
++ * Return: the exit code of the operation.
++ */
++int ixgbe_validate_eeprom_checksum_e610(struct ixgbe_hw *hw, u16 *checksum_val)
++{
++	int err;
++
++	if (hw->eeprom.type == ixgbe_eeprom_uninitialized) {
++		err = hw->eeprom.ops.init_params(hw);
++		if (err)
++			return err;
++	}
++
++	err = ixgbe_nvm_validate_checksum(hw);
++	if (err)
++		return err;
++
++	if (checksum_val) {
++		u16 tmp_checksum;
++
++		err = ixgbe_acquire_nvm(hw, IXGBE_RES_READ);
++		if (err)
++			return err;
++
++		err = ixgbe_read_sr_word_aci(hw, E610_SR_SW_CHECKSUM_WORD,
++					     &tmp_checksum);
++		ixgbe_release_nvm(hw);
++
++		if (!err)
++			*checksum_val = tmp_checksum;
++	}
++
++	return err;
++}
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
+index 4a4f969..412ddd1 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
+@@ -59,5 +59,17 @@ int ixgbe_enter_lplu_e610(struct ixgbe_hw *hw);
+ int ixgbe_aci_get_netlist_node(struct ixgbe_hw *hw,
+ 			       struct ixgbe_aci_cmd_get_link_topo *cmd,
+ 			       u8 *node_part_number, u16 *node_handle);
++int ixgbe_acquire_nvm(struct ixgbe_hw *hw,
++		      enum ixgbe_aci_res_access_type access);
++void ixgbe_release_nvm(struct ixgbe_hw *hw);
++int ixgbe_aci_read_nvm(struct ixgbe_hw *hw, u16 module_typeid, u32 offset,
++		       u16 length, void *data, bool last_command,
++		       bool read_shadow_ram);
++int ixgbe_nvm_validate_checksum(struct ixgbe_hw *hw);
++int ixgbe_read_sr_word_aci(struct ixgbe_hw  *hw, u16 offset, u16 *data);
++int ixgbe_read_flat_nvm(struct ixgbe_hw  *hw, u32 offset, u32 *length,
++			u8 *data, bool read_shadow_ram);
++int ixgbe_read_ee_aci_e610(struct ixgbe_hw *hw, u16 offset, u16 *data);
++int ixgbe_validate_eeprom_checksum_e610(struct ixgbe_hw *hw, u16 *checksum_val);
+ 
+ #endif /* _IXGBE_E610_H_ */
+-- 
+2.43.0
 
-The code of function looks good
-
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
