@@ -1,96 +1,184 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B651E2770C;
-	Thu,  5 Dec 2024 07:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12B31AF0DD;
+	Thu,  5 Dec 2024 07:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733383958; cv=none; b=ib9Eg6IJCyxDM0T3psRptdY3VSBRqkvUsKHQDj6FmSnHPPNNReX1Y+XUrCuVBOFG4PNos4rBbyF1X4lsBnMSx2iD0H1FD0rY3zewQ/KMgkpnxKZIinosZW0doloWP5xkB/Wec6bOrzOg6umqnY8bcHWwLwonT/Pi/FdWd7py2Vw=
+	t=1733383963; cv=none; b=D6pzAxyjrUUexYZBPaFGNVOkK/4SaD3OjYhELma5utmKrLzPrwO9AO6TlFpXS/FJixSPYRLVRk/ED9eiTnJRg+yJ4bAzHR5p2ur6rRJyoS+DmTVZ3H1pWzCARrlx7+t5KFRJQqOT0vceCN4f06mcVH/oHCY8ic+j3AeyTHGOLN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733383958; c=relaxed/simple;
-	bh=8v8rNpYCt5+w7TUoucBk34CLs31HOmkIcLaBdCmdwzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snjg1AVVlT98yVZ+IAaypRNlouSI7n2N7bpiW4vxMDp6xcyMuFhOj0tRIoz5sTj6DLSEizfy/sfOTKnuf4c6WSo/A5ZNxIMlauEr78ZxjKaV+B2mVqVIueKAimluLlVCWO6NhD/JaEeUIPrglHFGoE63NhslytONhlr71uBNMjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nmZGsgMg; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1733383963; c=relaxed/simple;
+	bh=QP/wqp6Ij1Z7DZhBDfa6gv+EOrB5ILBBIm4EoiR84ds=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
+	 From:Cc:In-Reply-To; b=ryueOKZFQGZMC8c184N5NI0jOlj5SpH7PDYuJb22/N8qRPk365oeU2JMMHyr+EHszPbi9BseDXx8vH5NWFcmMNVWjFCtW0jNZJHmOtC8Hv0axxniCw0KzX14TLaM7imwan32zCXG+MbVItNll7jbayGZoKrRfua4XIQuvttfT6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XtRnLJJp; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nmZGsgMg"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C9EE81BF205;
-	Thu,  5 Dec 2024 07:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733383953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M0uLzqoQedwirIumfnvNOpR0fEO9z6ZDDUf+XyF2k1c=;
-	b=nmZGsgMgcL7R2GwptET0jTVmXpIGp030DPZr91xtkvYkN7Cbhgn+5o+k/w1uiDcxUXRUBb
-	nQYNI5q+lXq8jiij00dhkF2LhqUP7QVd2YKMZYxDP+jOlVvf+XU3SqoZKb0Fe50G8cjOF8
-	atXyTQKUbVvykP+QLV+cQQHbv4M17sRbuYYn8S1GEko7Fz9Z1mwj1gVUtDJOhuvnQcAdau
-	cC38FReuOum3xlUvIBZOMB2WgEluDNL5/b3h2hddYkjpGg+JYIC7MzbKJqskeDLKgPL3pD
-	74VL6NsE+0FVZ511rYCjBY1CSWT6eDrAOt5MDAosKIoaPMTllGDHFJlXFguk7Q==
-Date: Thu, 5 Dec 2024 08:32:30 +0100
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Simon Horman
- <horms@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v3 09/10] net: freescale: ucc_geth: Introduce a
- helper to check Reduced modes
-Message-ID: <20241205083230.2344d850@fedora.home>
-In-Reply-To: <49fbbbf8-ec21-41a6-b87e-0172d0a4a2b3@lunn.ch>
-References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
-	<20241203124323.155866-10-maxime.chevallier@bootlin.com>
-	<ce002489-2a88-47e3-ba9a-926c3a71dea9@lunn.ch>
-	<20241204092232.02b8fb9a@fedora.home>
-	<49fbbbf8-ec21-41a6-b87e-0172d0a4a2b3@lunn.ch>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XtRnLJJp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Content-Type:Message-ID:Date:MIME-Version:Subject:
+	From; bh=lwIb7lYxLhF0mY4AbJgOSUXB84EqcKDHlgRExWuAjlM=; b=XtRnLJJ
+	pUaAyKFF0Fa9iK6ljmpjYAeOyvN4BwRK+lTan7QUTSXUmudwvD4ScqdDoo0ayxco
+	Dggbj2G7RLXvhyEzwjKA9Cgc+Vwb0ZdrU94JGtFmXIDPTZDT33+/nKTnESq4Zr6v
+	mZCuLPhajMcvCdB7btriZkJKKzXjp4/r5i6Y=
+Received: from [10.100.3.67] (unknown [14.153.182.146])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3P+bjVlFnpDZvGQ--.6053S2;
+	Thu, 05 Dec 2024 15:31:48 +0800 (CST)
+Content-Type: multipart/mixed; boundary="------------eeeusMGOxTWC0yGMAG98c7bD"
+Message-ID: <dcdeaf17-c3ce-4677-a0c0-c391d8bd951f@163.com>
+Date: Thu, 5 Dec 2024 15:31:47 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] tcp: Check space before adding MPTCP options
+To: matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ edumazet@google.com, davem@davemloft.net, dsahern@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+References: <20241204085801.11563-1-moyuanhao3676@163.com>
+ <80b6603d-ed52-43b7-a434-0253e5de784a@kernel.org>
+Content-Language: en-US
+From: Mo Yuanhao <moyuanhao3676@163.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mptcp@lists.linux.dev, stable@vger.kernel.org
+In-Reply-To: <80b6603d-ed52-43b7-a434-0253e5de784a@kernel.org>
+X-CM-TRANSID:_____wD3P+bjVlFnpDZvGQ--.6053S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArWxtryDZFWkZrWkXry3twb_yoW5Ar45pF
+	98KrnYkr4kJa48Gw4xX3Wvyr1rZa1rCrZ8K3W5Ww12ywn8WFyI9ryIkw4YvrnrWr48tw12
+	vr47Z3s3ua1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jxMa8UUUUU=
+X-CM-SenderInfo: 5pr13t5qkd0jqwxwqiywtou0bp/xtbBZxCsfmdRKpMBzwABsl
 
-On Wed, 4 Dec 2024 16:41:33 +0100
-Andrew Lunn <andrew@lunn.ch> wrote:
+This is a multi-part message in MIME format.
+--------------eeeusMGOxTWC0yGMAG98c7bD
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> On Wed, Dec 04, 2024 at 09:22:32AM +0100, Maxime Chevallier wrote:
-> > Hello Andrew,
-> > 
-> > On Wed, 4 Dec 2024 03:15:52 +0100
-> > Andrew Lunn <andrew@lunn.ch> wrote:
-> >   
-> > > > +static bool phy_interface_mode_is_reduced(phy_interface_t interface)
-> > > > +{
-> > > > +	return phy_interface_mode_is_rgmii(interface) ||
-> > > > +	       interface == PHY_INTERFACE_MODE_RMII ||
-> > > > +	       interface == PHY_INTERFACE_MODE_RTBI;
-> > > > +}    
-> > > 
-> > > I wounder if this is useful anywhere else? Did you take a look around
-> > > other MAC drivers? Maybe this should be in phy.h?  
-> > 
-> > Yes I did consider it but it looks like ucc_geth is the only driver
-> > that has a configuration that applies to all R(MII/GMII/TBI) interfaces  
+在 2024/12/4 19:01, Matthieu Baerts 写道:
+> Hi MoYuanhao,
 > 
-> O.K. What is important is you considered it. Thanks. Too many
-> developers are focus on just their driver and don't think about other
-> drivers and code reuse.
+> +Cc MPTCP mailing list.
 > 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> (Please cc the MPTCP list next time)
+> 
+> On 04/12/2024 09:58, MoYuanhao wrote:
+>> Ensure enough space before adding MPTCP options in tcp_syn_options()
+>> Added a check to verify sufficient remaining space
+>> before inserting MPTCP options in SYN packets.
+>> This prevents issues when space is insufficient.
+> 
+> Thank you for this patch. I'm surprised we all missed this check, but
+> yes it is missing.
+> 
+> As mentioned by Eric in his previous email, please add a 'Fixes' tag.
+> For bug-fixes, you should also Cc stable and target 'net', not 'net-next':
+> 
+> Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing
+> connections")
+> Cc: stable@vger.kernel.org
+> 
+> 
+> Regarding the code, it looks OK to me, as we did exactly that with
+> mptcp_synack_options(). In mptcp_established_options(), we pass
+> 'remaining' because many MPTCP options can be set, but not here. So I
+> guess that's fine to keep the code like that, especially for the 'net' tree.
+> 
+> 
+> Also, and linked to Eric's email, did you have an issue with that, or is
+> it to prevent issues in the future?
+> 
+> 
+> One last thing, please don’t repost your patches within one 24h period, see:
+> 
+>    https://docs.kernel.org/process/maintainer-netdev.html
+> 
+> 
+> Because the code is OK to me, and the same patch has already been sent
+> twice to the netdev ML within a few hours, I'm going to apply this patch
+> in our MPTCP tree with the suggested modifications. Later on, we will
+> send it for inclusion in the net tree.
+> 
+> pw-bot: awaiting-upstream
+> 
+> (Not sure this pw-bot instruction will work as no net/mptcp/* files have
+> been modified)
+> 
+> Cheers,
+> Matt
+Hi Matt,
 
-Thanks Andrew. I should have indicated that in the commit log or in the
-cover in the first place though, I'll make sure to do it next time.
+Thank you for your feedback!
 
-Maxime
+I have made the suggested updates to the patch (version 2):
+
+I’ve added the Fixes tag and Cc'd the stable@vger.kernel.org list.
+The target branch has been adjusted to net as per your suggestion.
+I will make sure to Cc the MPTCP list in future submissions.
+
+Regarding your question, this patch was created to prevent potential 
+issues related to insufficient space for MPTCP options in the future. I 
+didn't encounter a specific issue, but it seemed like a necessary 
+safeguard to ensure robustness when handling SYN packets with MPTCP options.
+
+Additionally, I have made further optimizations to the patch, which are 
+included in the attached version. I believe it would be more elegant to 
+introduce a new function, mptcp_set_option(), similar to 
+mptcp_set_option_cond(), to handle MPTCP options.
+
+This is my first time replying to a message in a Linux mailing list, so 
+if there are any formatting issues or mistakes, please point them out 
+and I will make sure to correct them in future submissions.
+
+Thanks again for your review and suggestions. Looking forward to seeing 
+the patch applied to the MPTCP tree and later inclusion in the net tree.
+
+Best regards,
+
+MoYuanhao
+--------------eeeusMGOxTWC0yGMAG98c7bD
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-tcp-Check-space-before-adding-MPTCP-options.patch"
+Content-Disposition: attachment;
+ filename="0001-tcp-Check-space-before-adding-MPTCP-options.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSAxMjkwNGRiNTQ4YmRkODAxMTg5NWZlMDcxZDdhNDIwY2NjNjU4NGY4IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNb1l1YW5oYW8gPG1veXVhbmhhbzM2NzZAMTYzLmNv
+bT4KRGF0ZTogVGh1LCA1IERlYyAyMDI0IDEwOjE4OjE1ICswODAwClN1YmplY3Q6IFtQQVRD
+SCBuZXQgdjJdIHRjcDogQ2hlY2sgc3BhY2UgYmVmb3JlIGFkZGluZyBNUFRDUCBvcHRpb25z
+CgpFbnN1cmUgZW5vdWdoIHNwYWNlIGJlZm9yZSBhZGRpbmcgTVBUQ1Agb3B0aW9ucyBpbiB0
+Y3Bfc3luX29wdGlvbnMoKQpBZGRlZCBhIGNoZWNrIHRvIHZlcmlmeSBzdWZmaWNpZW50IHJl
+bWFpbmluZyBzcGFjZQpiZWZvcmUgaW5zZXJ0aW5nIE1QVENQIG9wdGlvbnMgaW4gU1lOIHBh
+Y2tldHMuClRoaXMgcHJldmVudHMgaXNzdWVzIHdoZW4gc3BhY2UgaXMgaW5zdWZmaWNpZW50
+LgoKRml4ZXM6IGNlYzM3YTZlNDFhYSAoIm1wdGNwOiBIYW5kbGUgTVBfQ0FQQUJMRSBvcHRp
+b25zIGZvciBvdXRnb2luZyBjb25uZWN0aW9ucyIpClNpZ25lZC1vZmYtYnk6IE1vWXVhbmhh
+byA8bW95dWFuaGFvMzY3NkAxNjMuY29tPgotLS0KIG5ldC9pcHY0L3RjcF9vdXRwdXQuYyB8
+IDI0ICsrKysrKysrKysrKysrKystLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDE2IGluc2Vy
+dGlvbnMoKyksIDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbmV0L2lwdjQvdGNwX291
+dHB1dC5jIGIvbmV0L2lwdjQvdGNwX291dHB1dC5jCmluZGV4IDU0ODVhNzBiNWZlNS4uNDAx
+ZWIxNGM4NzBkIDEwMDY0NAotLS0gYS9uZXQvaXB2NC90Y3Bfb3V0cHV0LmMKKysrIGIvbmV0
+L2lwdjQvdGNwX291dHB1dC5jCkBAIC03OTIsNiArNzkyLDIxIEBAIHN0YXRpYyB2b2lkIHNt
+Y19zZXRfb3B0aW9uX2NvbmQoY29uc3Qgc3RydWN0IHRjcF9zb2NrICp0cCwKICNlbmRpZgog
+fQogCitzdGF0aWMgdm9pZCBtcHRjcF9zZXRfb3B0aW9uKHN0cnVjdCBzb2NrICpzaywgY29u
+c3Qgc3RydWN0IHNrX2J1ZmYgKnNrYiwKKwkJCQlzdHJ1Y3QgdGNwX291dF9vcHRpb25zICpv
+cHRzLCB1bnNpZ25lZCBpbnQgKnJlbWFpbmluZykKK3sKKwlpZiAoc2tfaXNfbXB0Y3Aoc2sp
+KSB7CisJCXVuc2lnbmVkIGludCBzaXplOworCisJCWlmIChtcHRjcF9zeW5fb3B0aW9ucyhz
+aywgc2tiLCAmc2l6ZSwgJm9wdHMtPm1wdGNwKSkgeworCQkJaWYgKCpyZW1haW5pbmcgPj0g
+c2l6ZSkgeworCQkJCW9wdHMtPm9wdGlvbnMgfD0gT1BUSU9OX01QVENQOworCQkJCSpyZW1h
+aW5pbmcgLT0gc2l6ZTsKKwkJCX0KKwkJfQorCX0KK30KKwogc3RhdGljIHZvaWQgbXB0Y3Bf
+c2V0X29wdGlvbl9jb25kKGNvbnN0IHN0cnVjdCByZXF1ZXN0X3NvY2sgKnJlcSwKIAkJCQkg
+IHN0cnVjdCB0Y3Bfb3V0X29wdGlvbnMgKm9wdHMsCiAJCQkJICB1bnNpZ25lZCBpbnQgKnJl
+bWFpbmluZykKQEAgLTg3OSwxNCArODk0LDcgQEAgc3RhdGljIHVuc2lnbmVkIGludCB0Y3Bf
+c3luX29wdGlvbnMoc3RydWN0IHNvY2sgKnNrLCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiLAogCiAJ
+c21jX3NldF9vcHRpb24odHAsIG9wdHMsICZyZW1haW5pbmcpOwogCi0JaWYgKHNrX2lzX21w
+dGNwKHNrKSkgewotCQl1bnNpZ25lZCBpbnQgc2l6ZTsKLQotCQlpZiAobXB0Y3Bfc3luX29w
+dGlvbnMoc2ssIHNrYiwgJnNpemUsICZvcHRzLT5tcHRjcCkpIHsKLQkJCW9wdHMtPm9wdGlv
+bnMgfD0gT1BUSU9OX01QVENQOwotCQkJcmVtYWluaW5nIC09IHNpemU7Ci0JCX0KLQl9CisJ
+bXB0Y3Bfc2V0X29wdGlvbihzayxza2Isb3B0cywgJnJlbWFpbmluZyk7CiAKIAlicGZfc2tv
+cHNfaGRyX29wdF9sZW4oc2ssIHNrYiwgTlVMTCwgTlVMTCwgMCwgb3B0cywgJnJlbWFpbmlu
+Zyk7CiAKLS0gCjIuMjUuMQoK
+
+--------------eeeusMGOxTWC0yGMAG98c7bD--
+
