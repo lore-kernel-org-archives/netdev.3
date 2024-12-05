@@ -1,26 +1,26 @@
 Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECE51B4F0F;
-	Thu,  5 Dec 2024 07:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF2E1B85D7;
+	Thu,  5 Dec 2024 07:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733383334; cv=none; b=CRkRjb/OyazDupuhBybx/yPXciV2qGBCnLtVg3CkS4E/8z+pnmsactVn7sJ7JNli95Nf7KpMpv13B8yt4HWJgAXJkWSIM7xTcblNSlPhHo8yYbzizwjRC8zkQQc6k24mqRfRJXvaeis80qvkstNlyEcnDnI+a0L6CC9dQhwgaoc=
+	t=1733383336; cv=none; b=i0/+wSoQP6ewbayeukY249pl1vb4U2ypw3KqPjk7ScUAglSh3GzdVJcrgz/JC+elSiMyhj6dbg1VjmNxZCdLR5LDqmDvQS99wSawP7u2uM49jVvv2YbMhkgsAc8/sbT4nN4zqcezJK4yYEsdRk0C8NBi32oUEpytqztgP1EX0x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733383334; c=relaxed/simple;
-	bh=CYrgK0GZef4qd4DylejgFhuD+iymzjGbUbnw1d4ueFA=;
+	s=arc-20240116; t=1733383336; c=relaxed/simple;
+	bh=r9NYc8MfyGenoK5VR4Xw9lt9XWCXnQGy/+CYZVZ2k/Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZa2IFkdbdb7WSM54N3W7NP1OP2eoHPHAlIdBb1w1BCQgelc4kPHPMxwOP7BgnzOExxVLBHic5GcD/60ULKGHXopUpWesJcTpC4jSrgHA8yrpd810M12pE83M/+QudPJDk7oK1eMkkQIAxSmjGmIuXhANtcbzTYa5XRZOv/AgJI=
+	 MIME-Version:Content-Type; b=cAxD3a6CI1E0HlNYNFajxp1vGUEBLUq3iMZ/3nYXWl2OxQ6duu9v1y8+B+1BDyIHP52Lzh6aA9hD3qSockM7cMRXdqGw6+6epn4EKfV3jFld6RHEQdBg7QPVEqRHHC1QFVy7G89GVESx75/9xVvc5c4aSCR2ztGOYcPuY93j9hQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 5 Dec
- 2024 15:20:49 +0800
+ 2024 15:20:48 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 5 Dec 2024 15:20:49 +0800
+ Transport; Thu, 5 Dec 2024 15:20:48 +0800
 From: Jacky Chou <jacky_chou@aspeedtech.com>
 To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <robh@kernel.org>,
@@ -28,9 +28,9 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>
 CC: <jacky_chou@aspeedtech.com>
-Subject: [PATCH net-next v4 7/7] net: ftgmac100: remove extra newline symbols
-Date: Thu, 5 Dec 2024 15:20:48 +0800
-Message-ID: <20241205072048.1397570-8-jacky_chou@aspeedtech.com>
+Subject: [PATCH net-next v4 3/7] net: ftgmac100: Add reset toggling for Aspeed SOCs
+Date: Thu, 5 Dec 2024 15:20:44 +0800
+Message-ID: <20241205072048.1397570-4-jacky_chou@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241205072048.1397570-1-jacky_chou@aspeedtech.com>
 References: <20241205072048.1397570-1-jacky_chou@aspeedtech.com>
@@ -43,57 +43,56 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Remove some unnecessary newline symbols in code.
+Toggle the SCU reset before hardware initialization.
 
 Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 11a81f75ed4e..5a0a94c3b1eb 100644
+index 17ec35e75a65..96c1eee547c4 100644
 --- a/drivers/net/ethernet/faraday/ftgmac100.c
 +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -575,7 +575,6 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
- 	dma_unmap_single(priv->dev, map, RX_BUF_SIZE, DMA_FROM_DEVICE);
- #endif
+@@ -9,6 +9,7 @@
+ #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
  
--
- 	/* Resplenish rx ring */
- 	ftgmac100_alloc_rx_buf(priv, pointer, rxdes, GFP_ATOMIC);
- 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
-@@ -1273,7 +1272,6 @@ static int ftgmac100_poll(struct napi_struct *napi, int budget)
- 		more = ftgmac100_rx_packet(priv, &work_done);
- 	} while (more && work_done < budget);
+ #include <linux/clk.h>
++#include <linux/reset.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
+@@ -98,6 +99,7 @@ struct ftgmac100 {
+ 	struct work_struct reset_task;
+ 	struct mii_bus *mii_bus;
+ 	struct clk *clk;
++	struct reset_control *rst;
  
--
- 	/* The interrupt is telling us to kick the MAC back to life
- 	 * after an RX overflow
- 	 */
-@@ -1363,7 +1361,6 @@ static void ftgmac100_reset(struct ftgmac100 *priv)
- 	if (priv->mii_bus)
- 		mutex_lock(&priv->mii_bus->mdio_lock);
- 
--
- 	/* Check if the interface is still up */
- 	if (!netif_running(netdev))
- 		goto bail;
-@@ -1462,7 +1459,6 @@ static void ftgmac100_adjust_link(struct net_device *netdev)
- 
- 	if (netdev->phydev)
- 		mutex_lock(&netdev->phydev->lock);
--
- }
- 
- static int ftgmac100_mii_probe(struct net_device *netdev)
-@@ -1990,7 +1986,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 			dev_err(priv->dev, "MII probe failed!\n");
- 			goto err_ncsi_dev;
- 		}
--
+ 	/* AST2500/AST2600 RMII ref clock gate */
+ 	struct clk *rclk;
+@@ -1979,6 +1981,22 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 				  priv->base + FTGMAC100_OFFSET_TM);
  	}
  
- 	if (priv->is_aspeed) {
++	priv->rst = devm_reset_control_get_optional_exclusive(priv->dev, NULL);
++	if (IS_ERR(priv->rst))
++		goto err_register_netdev;
++
++	err = reset_control_assert(priv->rst);
++	if (err) {
++		dev_err(priv->dev, "Failed to reset mac (%d)\n", err);
++		goto err_register_netdev;
++	}
++	usleep_range(10000, 20000);
++	err = reset_control_deassert(priv->rst);
++	if (err) {
++		dev_err(priv->dev, "Failed to deassert mac reset (%d)\n", err);
++		goto err_register_netdev;
++	}
++
+ 	/* Default ring sizes */
+ 	priv->rx_q_entries = priv->new_rx_q_entries = DEF_RX_QUEUE_ENTRIES;
+ 	priv->tx_q_entries = priv->new_tx_q_entries = DEF_TX_QUEUE_ENTRIES;
 -- 
 2.25.1
 
