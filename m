@@ -1,102 +1,104 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D593D21A447;
-	Thu,  5 Dec 2024 13:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD57E219A6B
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 13:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733406969; cv=none; b=INI/NEQ5hoGCboOgXx98rPFuiWd7JI+iqDGncyJs3ZM3FqLq0eJCL8GICQPCaEu7ImkclIOILKTZTQlZDwzZdH6dCzEAFr2Ghc1LvY80VDAp2UCvvLmUvgw+8eYM7vk34L77y3jIx5qE4gTBu7lwH677qgtnIn7jMyHBJthRdKM=
+	t=1733407093; cv=none; b=Hw3DfiPl1jmnTbG9wyxU3egcjumGkFLYtR+UbLEb2POnBFwXGEiYe2/ZVFg1YckqG9mTNrhqhiQm6/hn/AdTlXkYoC+jGyWZImR2OgYz9hvedA1VdutKbsyvcv4EGT1iBdYzPHwFd7Dprfw9D1nl/segHMRkPW2L146WWeeGV14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733406969; c=relaxed/simple;
-	bh=6GvfB7edygOjof5RC098NRUa57MLKSj4Kl9eAHtIq4U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=RxmOza+mmj2JgsXdhnNvt0oitjFBPq6Vz/LqNEvY70AyrHndU23mUpX80w4iUsN2MJiglUm3EOC81EZcKPq+3FaxapP7hMs4bAJNEnw9CctusV6GI3y0kqJ3yrtk65eHKddb/M1oE/5pWKLAo7eAm9/BVm7W32vjFQpczZ4FOGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ZaM/17IJ; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ZaM/17IJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1733406967; x=1764942967;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=6GvfB7edygOjof5RC098NRUa57MLKSj4Kl9eAHtIq4U=;
-  b=ZaM/17IJbtTWHByr8AaGUn/wUWJxqlTZHs3q6aS3PAcmTC3KdKnlGYQH
-   idoBKhF1XccWVbYYLvRJO/QsabwYgQ+XSBYguPZkmgOPyR/FWEUJtSbs2
-   +Xa8Wf1d09Bfj8u3KyvByz3Cm0vPs67xbPZSHyX15VhSmQMF+F0gOKle3
-   7JK+Pygr9aOA4Z0vLVv9MPDSGv1CHiKroScOUi4Ki8/J2hWggTQwIbksw
-   J5Am4a8e8eC0o6jgP+8qNVFbAu1/HNQNK+xkN8N1T6+XaCbaQj/btVfKx
-   EPwpvnrTZnI/l4eYPpXPt/j/CqKKpRby3yYosJzM7qxBHhKXa1L8M19re
-   Q==;
-X-CSE-ConnectionGUID: qy+UA5uVS7igPsVfubi4eA==
-X-CSE-MsgGUID: JzRvWx8tQKavjYXcv/wEYw==
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="202626300"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Dec 2024 06:56:06 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 5 Dec 2024 06:55:36 -0700
-Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Thu, 5 Dec 2024 06:55:33 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Thu, 5 Dec 2024 14:54:28 +0100
-Subject: [PATCH net 5/5] net: sparx5: fix the maximum frame length register
+	s=arc-20240116; t=1733407093; c=relaxed/simple;
+	bh=Whztqzqhd31DO6J1pWBJGbIcubmLvvZmURKz55fjQck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dj66ajrysOxDd3p3oWRxua9hYwpT3AHWmhooFZK1l438bOa7SbeFk/SMMrTzY8BCOCyhNOhCWYG0eZZft9nqW/3JiLbA58VUSt/5oPNt49uvw6Z00R9MPl7zYjbQewguF90KQU3fD00nN0yC8MQLVKvq8nPtB7gb1ts4SXzSIxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1tJCMh-0000kQ-S9; Thu, 05 Dec 2024 14:57:59 +0100
+Message-ID: <361b3a14-db86-4c3c-9f07-4ebc1dd40d0e@pengutronix.de>
+Date: Thu, 5 Dec 2024 14:57:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241205-sparx5-lan969x-misc-fixes-v1-5-575ff3d0b022@microchip.com>
-References: <20241205-sparx5-lan969x-misc-fixes-v1-0-575ff3d0b022@microchip.com>
-In-Reply-To: <20241205-sparx5-lan969x-misc-fixes-v1-0-575ff3d0b022@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Lars Povlsen
-	<lars.povlsen@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, Richard Cochran <richardcochran@gmail.com>,
-	Bjarni Jonasson <bjarni.jonasson@microchip.com>,
-	<jensemil.schulzostergaard@microchip.com>, <horatiu.vultur@microchip.com>,
-	<arnd@arndb.de>, <jacob.e.keller@intel.com>,
-	<Parthiban.Veerasooran@microchip.com>
-CC: Calvin Owens <calvin@wbinvd.org>, Muhammad Usama Anjum
-	<Usama.Anjum@collabora.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14-dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] arm: dts: st: stm32mp151a-prtt1l: Fix QSPI
+ configuration
+To: Alexandre TORGUE <alexandre.torgue@foss.st.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: devicetree@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20240806120517.406714-1-o.rempel@pengutronix.de>
+ <20dc2cd4-7684-4894-9db3-23c3f4abd661@pengutronix.de>
+ <a483fb50-f978-4e48-b38e-6d79632540f1@foss.st.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <a483fb50-f978-4e48-b38e-6d79632540f1@foss.st.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On port initialization, we configure the maximum frame length accepted
-by the receive module associated with the port. This value is currently
-written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
-fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
-this.
+Hello Alex,
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 29.10.24 16:39, Alexandre TORGUE wrote:
+> On 8/7/24 11:38, Ahmad Fatoum wrote:
+>> Hello Oleksij,
+>>
+>> On 06.08.24 14:05, Oleksij Rempel wrote:
+>> There's bias-disable in stm32mp15-pinctrl.dtsi. You may want to add
+>> a /delete-property/ for that to make sure, it's not up to the driver
+>> which one has priority.
+>>
+>>>           drive-push-pull;
+>>>           slew-rate = <1>;
+>>
+>> These are already in qspi_bk1_pins_a. If repeating those is ok, why
+>> not go a step further and just duplicate the pinmux property and stay
+>> clear of this issue altogether, provided Alex is amenable to changing
+>> his mind regarding pinctrl groups in board device trees.
+> 
+> I still prefer to have pin configuration defined in pinctrl dtsi file and I'll continue like this for ST board. The reason is that we try to reuse as much as possible pins when we create a new board and so it is easier to maintain if we declare them only one time.
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 1401761c6251..f9d1a6bb9bff 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -1151,7 +1151,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
- 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
- 		      devinst,
--		      DEV10G_MAC_ENA_CFG(0));
-+		      DEV10G_MAC_MAXLEN_CFG(0));
- 
- 	/* Handle Signal Detect in 10G PCS */
- 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
+I can see the point for ST evaluation kits as ST customer hardware
+will often copy the reference designs.
+
+> But, I'm not blocked for "other" boards based on STM32 SoC. I mean, if it is simpler for you and above all if it avoid issues/complexities then, you can declare some pin groups in your board dts file. In this case we need to take care of the IO groups label name.
+
+That's good to hear and what I wanted to clarify. Especially for things like
+ADCs, there are so many possible permutations that there is no point for
+boards to add their pinctrl group to the main DTSI instead of just listing
+their specific pin configuration in the board DTS.
+
+Thanks,
+Ahmad
+
+> 
+> regards
+> alex
+> 
+>>
+>>
+>> Cheers,
+>> Ahmad
+>>
+> 
+
 
 -- 
-2.34.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
