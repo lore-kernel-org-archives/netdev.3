@@ -1,116 +1,87 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FA7170A13
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 03:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF55522F
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 03:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733370414; cv=none; b=RwX2D7vsSsFfuVoJhb4/+/hAPN2+kHde8I9UpS5xjy1BT5CWRqitEEWTDLK84ermxY1S4Zz2jp9+0mXr2q7T7xGE1RhKMmnt5e1XkoTpUsv0VLh7CBQOHdw1tfvvd731IsCEYA8BbtDUPnTyIFzIyg3R5RLllSGXq+iMdKZs9RE=
+	t=1733370620; cv=none; b=Ws++3KXrZrcLirHObRl6bveYEhSCsqd1LiUHFUswuZzDKe86JvacAjdXaUXqypsp9mJ9PzIzghpeGCawEl8+mu6t3jGRA6uGF/gMmrTmCPMKKq8ODZHEA91EhX+jEK6/uCQZWF+rNbsFpGXnS9T2JteQT1YYL/M/hzE4Bw3kKoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733370414; c=relaxed/simple;
-	bh=vu631VYWu8qIt32EzU4pJHGIb+CbIYolPm7Qc2J9LeQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kDvG6TYVcU+NBVs2kbRcaZSh9JhL6tjtiEVbLuOEJ+26qh+MWOwOhxtFNjqNjeiTz5irX4XwL3TRpafiaeyWPUn6tBnFm4SDi8yW6QDwGf5vA4gkMSP9LUxrRhs9Q7bUcAmVf7akohjwDbSzzeiDGNb/9RshuM2XcI1c2N6LCYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QBIogoTJ; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733370620; c=relaxed/simple;
+	bh=o7t/uGH8TiEAxh0yI5h3F3cyumKZ/tnPYuKDuQ8Rl/g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=JboleXS8k4fNcTccgeeQTQeiWVIOTy/ORunwmKHlKmNQBXK/Ggdii8b6bQpKVRbIb1e29ype3W980PDERzkhuaMJgAQAXh3KejiMbejkf/Pdu952C7MGkhExK2duTuiDefXppfy1UFyZbob0n29VEfKPXvSeEEyic29CMuNubSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hs4LsXjL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QBIogoTJ"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53ddfc5901eso2e87.0
-        for <netdev@vger.kernel.org>; Wed, 04 Dec 2024 19:46:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733370410; x=1733975210; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iuCAerqgy58O986DuA3yz7fFQC8pdsooU4+587wlwoc=;
-        b=QBIogoTJIjy1s++Jr2Y2sGOFY2clKZY9zL3BjEZrV93Bsrp5bXHEa2wDIv6/UNgXmW
-         X8djQd4IFw87tzbZgE1WGbrDwdvVFw1FCs/SepZl+x8xmeWkk2AeRcOijYtSLGQkq0di
-         2ufnbWbiLDn7RBeIsS1BAI0Yp2gcg6/yGYhmWMFCAeRHCBfnLOPKszEA5zcArxdmJyO0
-         rPuMQ/10L+8NA5zh6v/RUPw7rImltuKRvbFXn1E50k3+d2RSKHZ+7ENd4FgL5MZznj1w
-         6y+mf/S/KK56VA3I5DM8UmxM9Yfv1pnHr6lCwUOXFUCh+hO/BgLGpXf5xcXBrXZVbh8K
-         201w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733370410; x=1733975210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iuCAerqgy58O986DuA3yz7fFQC8pdsooU4+587wlwoc=;
-        b=KdqJSCj0TnCzVrhktW2Qp20mL3OmQ080v3r8BeqCEiV484fru6w0055nIv3Rm1jPds
-         XLgBo55xRAJZmiEWVo2W0JRAu+OF/HodC/V7bwefyWoyGcthJfICMb5DY6zQ+bJH7NKN
-         di+nytHqpSWIM8x8fuWyBmgmkkDtdJb73pG1XRbnJrM9AS1Q59zrYElgBL2HrvvwvXNY
-         hpKpR6h7FTnftgtnNKEdS+deGo2ig2T3xsEFEWjFrUzOEX6C3WOHt7NGtUE3OG7vTHu7
-         WpmeMBPMtSmdCTkLu6diS6IeQMybZlCqbsXLWhhv8PN6wc10WYDvOtMokwiilnGJc1tX
-         KOrA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMloahKUaQdVoRZxYzhmN1OGYu2TSVrxnRvCrD7Tl6skidfzz0pTN3jcv5O0DvK5JCsn485+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxoq0Sx5k2Pdzoo1Yzia1FXPTSLSETwiZuccymflqcMFBIGwpBi
-	LczWTpG5aJRYjSaRvt1Fi/asLD32qrUhEuB4OhqcTTwFynjaidDKSi2PLtZQprIYCsSge0lOqOF
-	ydVHn7Ssm4+XJz8Rj1vr6ZlRtaQF3cwWXI76V
-X-Gm-Gg: ASbGncus+gbGqAlyOo8EReECilHg9iNU719AfXwCKZzkFzf+FTycdzfOqLPVy5jiP+8
-	GWynxbE6rgrbiFamhWprGfj2uUYGN7vbew9k5Veh7+94O8mQ2aUZVuUIEsI/fqA==
-X-Google-Smtp-Source: AGHT+IE/zZs7n7wJH7X3NDtrTv2DvoJS6GX4uoMnWJZV1R1edhRWdsFbUbEbYhHUq0kLCE4RtpgsaC8Hs3TDgx03OPs=
-X-Received: by 2002:a19:e057:0:b0:53e:23cc:203a with SMTP id
- 2adb3069b0e04-53e23cc2085mr691e87.0.1733370409342; Wed, 04 Dec 2024 19:46:49
- -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hs4LsXjL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68806C4CED6;
+	Thu,  5 Dec 2024 03:50:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733370620;
+	bh=o7t/uGH8TiEAxh0yI5h3F3cyumKZ/tnPYuKDuQ8Rl/g=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Hs4LsXjLHsOztYGacMhg6QskVSCp1YdbSGaXtXtYX7rDERMJEQdaib35g1fYhSWhj
+	 Chfr4mkRVVESWJsIidSyLETWFat+4XS6Pcb3xEnykLDgUTBqr6omV61VsTasnlJSlM
+	 PHrwT9L/HR+qzoMrptihkfocfoSw8kh17IrYxofj960y7tN+49+jXMB0cmCkTmVPyI
+	 erroeM/dwpxnHT48V2rvSgJ9Suu9AhNA5Ard3Nmwqv7d0nh4MGsGhp7RNgiiSj+Q7r
+	 U1dXn+U4krLE82XNHMMcxbLxvmvF6eYyrDMdkvOe+G5TYT33H54cFC9+VdkGMgRr9r
+	 UFLWs2EWKgLNg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34171380A94C;
+	Thu,  5 Dec 2024 03:50:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204140208.2701268-1-yuyanghuang@google.com> <20241204082859.5da44d1e@hermes.local>
-In-Reply-To: <20241204082859.5da44d1e@hermes.local>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Thu, 5 Dec 2024 12:46:10 +0900
-X-Gm-Features: AZHOrDlZx2aw05uYi6xELn58IluqLXRfnMI4nnlQIXQyRHm6V2qv26PKUpD6H78
-Message-ID: <CADXeF1GAorRDqyZLE=kbjD-hmuG5y8B7ufDzx0mLNiOvrfwrLQ@mail.gmail.com>
-Subject: Re: [PATCH iproute2-next, v3 1/2] iproute2: expose netlink constants
- in UAPI
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, roopa@cumulusnetworks.com, jiri@resnulli.us, 
-	jimictw@google.com, prohr@google.com, liuhangbin@gmail.com, 
-	nicolas.dichtel@6wind.com, andrew@lunn.ch, netdev@vger.kernel.org, 
-	=?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Lorenzo Colitti <lorenzo@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/6] mlx5 misc fixes 2024-12-03
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173337063500.1436302.12940640807031847951.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Dec 2024 03:50:35 +0000
+References: <20241203204920.232744-1-tariqt@nvidia.com>
+In-Reply-To: <20241203204920.232744-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ saeedm@nvidia.com, gal@nvidia.com, leonro@nvidia.com
 
-> This should get automatically picked up when David does header update.
+Hello:
 
-Thanks for the suggestion, I need the header patch to make my patch
-series build.
-Based on the previous review feedback, when David merges the patch
-series, this patch will be skipped.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Link: https://lore.kernel.org/netdev/c97dd18b-8f67-4d22-a088-d73268402261@k=
-ernel.org/
+On Tue, 3 Dec 2024 22:49:14 +0200 you wrote:
+> Hi,
+> 
+> This patchset provides misc bug fixes from the team to the mlx5 core and
+> Eth drivers.
+> 
+> Series generated against:
+> commit af8edaeddbc5 ("net: hsr: must allocate more bytes for RedBox support")
+> 
+> [...]
 
-Thanks,
-Yuyang
+Here is the summary with links:
+  - [net,1/6] net/mlx5: HWS: Fix memory leak in mlx5hws_definer_calc_layout
+    https://git.kernel.org/netdev/net/c/530b69a26952
+  - [net,2/6] net/mlx5: HWS: Properly set bwc queue locks lock classes
+    https://git.kernel.org/netdev/net/c/10e0f0c018d5
+  - [net,3/6] net/mlx5: E-Switch, Fix switching to switchdev mode with IB device disabled
+    https://git.kernel.org/netdev/net/c/5f9b2bf019b7
+  - [net,4/6] net/mlx5: E-Switch, Fix switching to switchdev mode in MPV
+    https://git.kernel.org/netdev/net/c/d04c81a3e3ce
+  - [net,5/6] net/mlx5e: SD, Use correct mdev to build channel param
+    https://git.kernel.org/netdev/net/c/31f114c3d158
+  - [net,6/6] net/mlx5e: Remove workaround to avoid syndrome for internal port
+    https://git.kernel.org/netdev/net/c/5085f861b414
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-On Thu, Dec 5, 2024 at 1:29=E2=80=AFAM Stephen Hemminger
-<stephen@networkplumber.org> wrote:
->
-> On Wed,  4 Dec 2024 23:02:07 +0900
-> Yuyang Huang <yuyanghuang@google.com> wrote:
->
-> > This change adds the following multicast related netlink constants to
-> > the UAPI:
-> >
-> > * RTNLGRP_IPV4_MCADDR and RTNLGRP_IPV6_MCADDR: Netlink multicast
-> >   groups for IPv4 and IPv6 multicast address changes.
-> > * RTM_NEWMULTICAST and RTM_DELMULTICAST: Netlink message types for
-> >   multicast address additions and deletions.
-> >
-> > Exposing these constants in the UAPI enables ip monitor to effectively
-> > monitor and manage multicast group memberships.
-> >
-> > Cc: Maciej =C5=BBenczykowski <maze@google.com>
-> > Cc: Lorenzo Colitti <lorenzo@google.com>
-> > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> > ---
->
-> This should get automatically picked up when David does header update.
