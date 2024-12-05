@@ -1,81 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BFA1F4283
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 10:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09F61D4600
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 10:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733395243; cv=none; b=VkVHBu6hFBaH1OSylimybAmpw+CE0ggn4cNwAznX6jXbsMQJpA+Xb+nfAido6U8FkOhtgrJvHxIegcfM7uPMBmikwzs++VJucqynu9HxR7jovxOsBcTlmiaEOtD6Vt8Aump+cIsuMLxKvrR72F+9aN7KluzWxwDQLQiDyGmR9mc=
+	t=1733395312; cv=none; b=ZUZhAcrP1i0r+WF+JJLWCtDLFIVsL0EiVlZM4DETxWpNHLJhGSszhnkfoK/HoNlryPVAoi3eJ0ag3z4ov0i7tH+nZN7PCWA3gQQb59UZa3RTed+G1RFzoavg1Zh8vROdYtcostm3ngWC8C1M9uMl5y6itkLIkOzF31jmb9pfZSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733395243; c=relaxed/simple;
-	bh=eshHAQfNSHOzASdNe9Ca6yUEiJvbhuYcQfpae53AkRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYa23bhgq/4S3EIAxz5BpslNmHCQ5lES+3wFSYKreL26Ourbx1z+bNISu6IzGmCwSE7niRe5WwcgdSgWG2YItPMkxU4k2hgqf2wr05N5NgkJqWKENC8qvn4UScdPOngOJNH67hkMo2fIPHh+XnYyZEX32wQGW6gNyjJgr2YVegE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NzbxdELE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733395312; c=relaxed/simple;
+	bh=CD23YOnW6PzejW2qo2fwFTZSS1XjZfF9wBMKgpqb1aU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uhkCkxw84h42WIj4ic97lBQ2P/RxWNMJpB3UXPa59mzWIcRJ39rBz+j4NOzyLEKsGAJ0pq8ZWqqTbz+wGApAOavhPg4Xzz63E1nw7qKbqwFqYXaEBTQMruOXOpDNUBCf5hrlc6RJchb0WNIId09qepGVJplh1KW3MO/RVZG+1M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=qg0PuLbU; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NzbxdELE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733395240;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WpCGJ4eeYXK6hXhyy8nkE9QIN4zLNYIGTlUdRPmUVpo=;
-	b=NzbxdELEolBXpW+x0eTUpQL8y4JifnZIXG9HMnRrTvmI6Puq4QpNsIkQa1Cads+hmJcKOr
-	12KuXyVbqNA4kBmjAsXYGMr3dUKmjSeCZEZ3edfdeoLH7twNMbyTx+hhiqr2zB+JUGnn0P
-	kvKtTdMY51gIqpnfNlpVPhpgXhB9/bs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-1Xg4e4dlPvmGEaUquT6U0Q-1; Thu, 05 Dec 2024 05:40:39 -0500
-X-MC-Unique: 1Xg4e4dlPvmGEaUquT6U0Q-1
-X-Mimecast-MFC-AGG-ID: 1Xg4e4dlPvmGEaUquT6U0Q
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4349c5e58a3so6631265e9.2
-        for <netdev@vger.kernel.org>; Thu, 05 Dec 2024 02:40:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733395238; x=1734000038;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WpCGJ4eeYXK6hXhyy8nkE9QIN4zLNYIGTlUdRPmUVpo=;
-        b=ABXRB1u5r+qkezJ9jSUXsFMWVdgLcLUtr0rQfNitXGulI4KR9dp4NxLAaitEeEGhQS
-         qvWZ33y1EbWN8iWCQT62OlOIxncZgXFm8iArLl6VJCOGS+hS4E92/iGrOXxHX/+CI8V0
-         UjhunuZM4M/ShZQjAdv+Zs+B+Rfds1cX+Ke3KS5L6uJ1y1aXuQn7hUrHOw0yQlFY4lhB
-         +ozR6Bu0D9dfGZYAm1sX25Be29LmuJhp4+BEHISM5Fv07ndE1/nOCSPRgSl5O9/8jHqW
-         oB6rcwkgtHSmFccYcUMuq8fQky8aGI32Qn3S5U4QK54fomKFE95YYgnVYyPOk9PaddJ3
-         bvNw==
-X-Forwarded-Encrypted: i=1; AJvYcCW4iQJFKZ+CEHczuLGj1J1uDIqb9iJlXGHNorgU5pu/RzuElMpe7yaekGRCie5eZFHw/+ahtio=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6qCLZVZkfIfRdkbddJS7idubscjnKzztiCIw9G81m4ofyrLip
-	BAG2WhkO5W2rS+9Qciebox8Mnj54nclhwxznIRJUUkwW1yjc0GSc5lfIia7RS9cWRdb9Bve2wtH
-	GfZOPoOjrdoSxRydDSZK0hKmHwhpqiyX9dvygLvdUZkYufyGbYeka2Q==
-X-Gm-Gg: ASbGncvSnBMr1cp/f9sCTBea6R/NBFdJLF1fm3/JNEXBHZw4U8uz8TdGG9ftBG0p5zy
-	qoUvywA/0MmVRVzkgzSZxRaMRYLfbprXpvu1KBnD+X9wCu9i7dcXGejQDygat2NdvLaERCXEVEC
-	wbYSu65VFVrEbhV3ox+1B3Z0X6UG+Keq3RJRzekECcYkEoOIVbj6POyDB5DzWCKE5tSiDLxnhCi
-	bUw35NO0nkeVyqa5u8U4wCB/OmafrChuGyQfyQ=
-X-Received: by 2002:a05:600c:4ecf:b0:426:647b:1bfc with SMTP id 5b1f17b1804b1-434d0a14eb7mr98426235e9.30.1733395238187;
-        Thu, 05 Dec 2024 02:40:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEsUHluXJQKUT4U9GZXEYGz55h1e+WikGnJtrY5qJkX8kQnZ3tgKpsrMkwfLF3sVmYTJvd9jg==
-X-Received: by 2002:a05:600c:4ecf:b0:426:647b:1bfc with SMTP id 5b1f17b1804b1-434d0a14eb7mr98425925e9.30.1733395237817;
-        Thu, 05 Dec 2024 02:40:37 -0800 (PST)
-Received: from redhat.com ([2.55.188.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d5272f99sm55804775e9.11.2024.12.05.02.40.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 02:40:37 -0800 (PST)
-Date: Thu, 5 Dec 2024 05:40:33 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Koichiro Den <koichiro.den@canonical.com>
-Cc: virtualization@lists.linux.dev, jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/7] virtio_net: introduce
- virtnet_sq_free_unused_buf_done()
-Message-ID: <20241205054009-mutt-send-email-mst@kernel.org>
-References: <20241204050724.307544-1-koichiro.den@canonical.com>
- <20241204050724.307544-4-koichiro.den@canonical.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="qg0PuLbU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RyES79fS8WpEtqkC/+FprrNNAiwJuH1cZHlQFZ6IDew=; b=qg0PuLbUZzPn8JJUMOxuNz5xr+
+	QSQm85RWU1sEMCVLMUrVaYOjwLAQpZe2FWuziqo55lNpDZ72Ey1/DqgsSngrq1MtTX0rRmlL7C+4X
+	nioDSHDd5Fw1uZq3Fr+LaG4FincbV3xe+BkWEUKAS7VQw4SSbu4wpAKMP1/jzEoih9AfCTJVQkZ1U
+	M2GJXCJ8F09JEB53l9O1uehS9oKge05NsyTmWiCtfgzlwPvc2OUU7VD2asew5Y6WXEETOULnlF/cG
+	mYyMtF/76R462/iFPUxML1oAunrS39z6U5JUlSWyeBFfv3VQuBKOn/tiQEOR99e1zbzlsvsk/OSfS
+	MPfyU/jQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34364)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tJ9Im-0004ZG-1C;
+	Thu, 05 Dec 2024 10:41:44 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tJ9Ik-0006Ta-2l;
+	Thu, 05 Dec 2024 10:41:42 +0000
+Date: Thu, 5 Dec 2024 10:41:42 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/4] net: phylib EEE cleanups
+Message-ID: <Z1GDZlFyF2fsFa3S@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,49 +55,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241204050724.307544-4-koichiro.den@canonical.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Dec 04, 2024 at 02:07:20PM +0900, Koichiro Den wrote:
-> This will be used in the following commits, to ensure DQL reset occurs
-> iff. all unused buffers are actually recycled.
-> 
-> Cc: <stable@vger.kernel.org> # v6.11+
-> Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+Hi,
 
-to avoid adding an unused function, squash with a patch that uses it.
+Clean up phylib's EEE support. Patches previously posted as RFC as part
+of the phylink EEE series.
 
+Patch 1 changes the Marvell driver to use the state we store in
+struct phy_device, rather than manually calling
+phydev->eee_cfg.eee_enabled.
 
-> ---
->  drivers/net/virtio_net.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 1b7a85e75e14..b3cbbd8052e4 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -503,6 +503,7 @@ struct virtio_net_common_hdr {
->  static struct virtio_net_common_hdr xsk_hdr;
->  
->  static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
-> +static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq);
->  static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
->  			       struct net_device *dev,
->  			       unsigned int *xdp_xmit,
-> @@ -6233,6 +6234,14 @@ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
->  	}
->  }
->  
-> +static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq)
-> +{
-> +	struct virtnet_info *vi = vq->vdev->priv;
-> +	int i = vq2txq(vq);
-> +
-> +	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, i));
-> +}
-> +
->  static void free_unused_bufs(struct virtnet_info *vi)
->  {
->  	void *buf;
-> -- 
-> 2.43.0
+Patch 2 avoids genphy_c45_ethtool_get_eee() setting ->eee_enabled, as
+we copy that from phydev->eee_cfg.eee_enabled later, and after patch 3
+mo one uses this after calling genphy_c45_ethtool_get_eee(). In fact,
+the only caller of this function now is phy_ethtool_get_eee().
 
+As all callers to genphy_c45_eee_is_active() now pass NULL as its
+is_enabled flag, this is no longer useful. Remove the argument in
+patch 3.
+
+Patch 4 updates the phylib documentation to make it absolutely clear
+that phy_ethtool_get_eee() now fills in all members of struct
+ethtool_keee, which is why we now have so many buggy network drivers.
+
+ drivers/net/phy/marvell.c |  4 +---
+ drivers/net/phy/phy-c45.c | 14 ++++----------
+ drivers/net/phy/phy.c     |  9 ++++-----
+ include/linux/phy.h       |  2 +-
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
