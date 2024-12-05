@@ -1,116 +1,148 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E4F17E473;
-	Thu,  5 Dec 2024 16:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5819E21D5AC
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 16:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733417449; cv=none; b=BKrIPay/asOLquPUVlURdcw+4ruoQzhuJTvPvpQGF+Ti9Sl5ruGDm07b4mHUIJZci2s0sxxQ3+geUm+ucBRD2Tx1XJjMZ/9nETr3iisQjSFJpIWvVuf0EicJCnLGApTcs1VU+MoEJu4CINPf7TS1gaQfBBjcDz8SBsI6qUIEn+o=
+	t=1733417487; cv=none; b=r9aVtrXvvR9p1Us5PVTYlPdiejcBz0aeURbZOKRGDwi3G/KkQCJXhe56KXU7uv3+s6P8vnFg62xEqpXh2MY8CXJy/R7oZv2dQf6WJ2upHkbWcts8v9qmXRj3W4kEsjzXnTKx9W2y0mBQELCOu2n9K2hABXStPwPVNjDDhRyQzH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733417449; c=relaxed/simple;
-	bh=oGfWW60F9GXeis13WJQH1YWP9uI8wK159nVr4TCspJk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=AuCXVvpMwacI3KwN4LiUSzkOtOxSJITqysyI853sQGNdn7v/EVc3DRcWvN46P9TnU4S6TJ+DGtLkvmtJxzsXryBHqqBCyG5wi7DmsyvU2vesCCXbTmrfU8s56L4ihrVI5bxNOpPYYwbKHj0j0JXA8h4BjYsYCffJTFc8wikjVfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VUyaeouY; arc=none smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VUyaeouY"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-4afa525d6bdso326600137.3;
-        Thu, 05 Dec 2024 08:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733417447; x=1734022247; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4ip7g8ZBAyv55LDWoEeh4pNG9nPsy9ulRpf+djAImBI=;
-        b=VUyaeouYGVVEdUlTiFV2iVA7/n/1mK2AetRwEmYDd8bJRv87WcqCDL+qKUKmTIEwZq
-         WRzWIhBYjxz3yTFR8GE0zzvQB4gawVDWq9Vemw15BcCmficUHJ3lkyYy65b33NvWecwz
-         RPsSsFmQbu8411tQQbiUOuHxbUow+6Y0alQpHqAfeXOFUYnpH46NW9KmgNovTzI03FEi
-         cwKjqyDLi3xpbC/D60/rwkpnQEVMF0grShwkRr742DR3qiPfl/mEz/ZIhLSTiCliqOEq
-         skxvI8WNPYUEK6JOSP0Hw0yi2uWMlv0ud5WmoewUrDANhiSzZKNWe5da18TiwmaD7WXY
-         m7dQ==
+	s=arc-20240116; t=1733417487; c=relaxed/simple;
+	bh=UAmPDj30xoP/mRT/12Tk/ijVz4LSRAml6O+Za2Nyc+4=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=nn5S+H0D3Tf6Ie90uSxFfn7OQ9EDgmg7AhP3aPkEbY/AEt4BoYXnCOQyxa24CkBtu5UPq69txFXuMG1CBS599kv6N6PuZJZVIolsdmdUf1RixuyyaHzanYKnipkLi1ih6Hj4PoQy40zSIXDbzLx2BFrGWwluFBjKm0TZd3KZ6+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a763f42b35so12382685ab.1
+        for <netdev@vger.kernel.org>; Thu, 05 Dec 2024 08:51:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733417447; x=1734022247;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4ip7g8ZBAyv55LDWoEeh4pNG9nPsy9ulRpf+djAImBI=;
-        b=PhxWnNdS7wOrN+EDJTvz548/p0MRNVECnOGZLakQ3Kj49U6oUwU+ayI9fFc8AMZlff
-         /UP+7AjjSaYhkVWBC9t1Trm/DklgLEWZEChjMFmSryyNiIIWPss6mUewe4K4fvCN6ehI
-         au602LloOJqxAOBLjoLPKnDERMa5kzCWpYyFnGvT0fscbl3qmaS6CNJQltNicEHRGcqY
-         7vGlxJSfMtE4efcqnI22oLknDr+9WGQSKJ7ZP91QJpkZstk69rR7CdoqEJl7rhMmKPZU
-         t+PRVbkoqrlACimNtrxUSePgYnXiDe1m7BcACU1IKF38t8n+33tT+7JjJzHLWOHGmHcH
-         U23Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVLmL2JkQEfWp2ik6GE9X8wDcukOKkEmsb4pHAEvwuKzhc5/W3XNad+w+bi1iR1uucFYo/nSg4n@vger.kernel.org, AJvYcCVR1bwzoHQJ9HNxgJIuV+XHwyRHbILXw7c8kbCew1rt3Rkg3lHmh89cWPMDtTK8KrOVFZkTOIYksQRT9SE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpx97e+xLmsxWD2d50V5OGu/aJdlZJSh56s6vAH1rn8HIE7vFB
-	TLzghATBE0NmoOBFPpIKwvHOUopsXwJRu9UYaSIKDsnNgRrvm6H1SHVGsg==
-X-Gm-Gg: ASbGncsVqRxiJHM1qTWgolYuTuvmJtaqbFbhiVpZc0TUHgRlQyEUw/6l4S4cGamyqmK
-	OasdpczDZQ6cNpBf1nzT+5wOS66tPd5oX8rlyaYlKj22USr+VMKONnOiM9sGT46ScrFgyBGgWUj
-	yYMUprCRI467KzHBG01S8poWSJMqFMDM+A/nYmXglF7iK0udkMe3dQBJkGwTOlOVt0bLEq8dE6T
-	viJUAk7Wc99hUlSnG2XMfAM6qZTRNIQFD3S5RMj3LRucq/2kwBPVBAWpA9T75DqeAyOQ7orKROe
-	vKDZ4ZmStnGgdMzJX5PvxQ==
-X-Google-Smtp-Source: AGHT+IHokD67x/rwM1UuTEmWeEKMCDNmnPwBDnY+8t30KDYA5tginYlfFZxDnAm4nG2hv2sAzxdyCQ==
-X-Received: by 2002:a05:6102:5128:b0:4af:597b:f6 with SMTP id ada2fe7eead31-4afcaa10028mr6691137.4.1733417446716;
-        Thu, 05 Dec 2024 08:50:46 -0800 (PST)
-Received: from localhost (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4afbc5e6e22sm244771137.15.2024.12.05.08.50.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 08:50:45 -0800 (PST)
-Date: Thu, 05 Dec 2024 11:50:45 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Stas Sergeev <stsp2@yandex.ru>, 
- netdev@vger.kernel.org
-Cc: Stas Sergeev <stsp2@yandex.ru>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowang@redhat.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- linux-kernel@vger.kernel.org
-Message-ID: <6751d9e5254ac_119ae629486@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20241205073614.294773-1-stsp2@yandex.ru>
-References: <20241205073614.294773-1-stsp2@yandex.ru>
-Subject: Re: [PATCH net-next] tun: fix group permission check
+        d=1e100.net; s=20230601; t=1733417484; x=1734022284;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D2gbEUkjVJzZMe3qDA5y2A+gClxSmSQxcirGoSqiF0Q=;
+        b=aFAURmsUljWxcX+qxTWpZQMCBSwDV7lJS+ONZbZyC1smqb3XfViPeRzjjFB/CygLAc
+         k1dTI/CZpjAGnZDw86+Hu0r8HCXvzsXOA/X9R7rPz2AV+fcDfVIZg+HU2NeNrDinquYA
+         umVlhATOl7AxXs06m3i6beNuXcAoLoxrqJIM7C3oxuZJ6HIEKlGcmX+ahgry7AhfE9iA
+         snSZkd4lUs5Yw8QIm+ov9EwH6pjykDsqv3inN9qGwVoIBXhW91EOZPLSYkBI2lRMQqBW
+         KHTkvLCNWJxEOji3MHco9jEHUHW0wX33bWnQJWPMKY3g22fnvA0EMBJiTpIkYsQm3jqQ
+         lOhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBT136dFyfQVZWMffoWxABLzxQQeHt4fYAfwMXKG1ZNG0IIOj2kGivdKVI5LluK0a7Gq1TJe0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxcz4D7cKZor6vAXaJdmTbiG63MFHrWuGh4ze5M/MYR2FaZfQK2
+	KAf8WpfvInO8Q/+G4y3dGOm9SMgaPUFFqYeWF40kmCOnuqnPkkBIkEL0pCcBac0z4fisoWt9M6h
+	tdi8MBYcjwba5TrejI8MgN0h/VbZlEgHfYowl0P8AnNSRCAJ0xotShcQ=
+X-Google-Smtp-Source: AGHT+IESiye16sM1MLh4ToS68muDj2aem9gMWWEZ/DY4Au40yyXXuSg01lsQy1c1j1U6L6rd3Gqy4JT941LzuGUSobKTymt4BpZz
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:1a23:b0:3a7:7ded:53b9 with SMTP id
+ e9e14a558f8ab-3a7fed9effcmr116225875ab.20.1733417484608; Thu, 05 Dec 2024
+ 08:51:24 -0800 (PST)
+Date: Thu, 05 Dec 2024 08:51:24 -0800
+In-Reply-To: <67508b5f.050a0220.17bd51.0070.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6751da0c.050a0220.b4160.01dc.GAE@google.com>
+Subject: Re: [syzbot] [tipc?] general protection fault in cleanup_bearer
+From: syzbot <syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, eric.dumazet@gmail.com, 
+	horms@kernel.org, jmaloy@redhat.com, kuba@kernel.org, kuniyu@amazon.com, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net, 
+	ying.xue@windriver.com
+Content-Type: text/plain; charset="UTF-8"
 
-Stas Sergeev wrote:
-> Currently tun checks the group permission even if the user have matched.
-> Besides going against the usual permission semantic, this has a
-> very interesting implication: if the tun group is not among the
-> supplementary groups of the tun user, then effectively no one can
-> access the tun device. CAP_SYS_ADMIN still can, but its the same as
-> not setting the tun ownership.
-> 
-> This patch relaxes the group checking so that either the user match
-> or the group match is enough. This avoids the situation when no one
-> can access the device even though the ownership is properly set.
-> 
-> Also I simplified the logic by removing the redundant inversions:
-> tun_not_capable() --> !tun_capable()
-> 
-> Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
-> 
-> CC: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> CC: Jason Wang <jasowang@redhat.com>
-> CC: Andrew Lunn <andrew+netdev@lunn.ch>
-> CC: "David S. Miller" <davem@davemloft.net>
-> CC: Eric Dumazet <edumazet@google.com>
-> CC: Jakub Kicinski <kuba@kernel.org>
-> CC: Paolo Abeni <pabeni@redhat.com>
-> CC: netdev@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
+syzbot has found a reproducer for the following issue on:
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+HEAD commit:    31f1b55d5d7e net :mana :Request a V2 response version for ..
+git tree:       net
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=17d290f8580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3891b550f14aea0f
+dashboard link: https://syzkaller.appspot.com/bug?extid=46aa5474f179dacd1a3b
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1724ade8580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=148868df980000
 
-A lot more readable this way too.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ba0fb1ec0f79/disk-31f1b55d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/535224afed4c/vmlinux-31f1b55d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/bd1b0227ba3d/bzImage-31f1b55d.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.12.0-syzkaller-10767-g31f1b55d5d7e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cleanup_bearer
+RIP: 0010:read_pnet include/net/net_namespace.h:392 [inline]
+RIP: 0010:sock_net include/net/sock.h:655 [inline]
+RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 ec 2e 91 f6 48 8b 1b 48 83 c3 30 e8 80 97 63 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 ca 2e 91 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc900000e7b70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88801cef8000
+RDX: dffffc0000000000 RSI: ffffffff8c0ad980 RDI: 0000000000000001
+RBP: ffff8880287b5e08 R08: ffffffff9432398f R09: 1ffffffff2864731
+R10: dffffc0000000000 R11: fffffbfff2864732 R12: ffff8880287b5e98
+R13: dffffc0000000000 R14: 0000000000000001 R15: ffff8880287b5e18
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007efddcf2f208 CR3: 000000007aa02000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:read_pnet include/net/net_namespace.h:392 [inline]
+RIP: 0010:sock_net include/net/sock.h:655 [inline]
+RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 ec 2e 91 f6 48 8b 1b 48 83 c3 30 e8 80 97 63 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 ca 2e 91 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc900000e7b70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88801cef8000
+RDX: dffffc0000000000 RSI: ffffffff8c0ad980 RDI: 0000000000000001
+RBP: ffff8880287b5e08 R08: ffffffff9432398f R09: 1ffffffff2864731
+R10: dffffc0000000000 R11: fffffbfff2864732 R12: ffff8880287b5e98
+R13: dffffc0000000000 R14: 0000000000000001 R15: ffff8880287b5e18
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055bf163e0cc0 CR3: 000000007e7d8000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	18 48 89             	sbb    %cl,-0x77(%rax)
+   3:	d8 48 c1             	fmuls  -0x3f(%rax)
+   6:	e8 03 42 80 3c       	call   0x3c80420e
+   b:	28 00                	sub    %al,(%rax)
+   d:	74 08                	je     0x17
+   f:	48 89 df             	mov    %rbx,%rdi
+  12:	e8 ec 2e 91 f6       	call   0xf6912f03
+  17:	48 8b 1b             	mov    (%rbx),%rbx
+  1a:	48 83 c3 30          	add    $0x30,%rbx
+  1e:	e8 80 97 63 00       	call   0x6397a3
+  23:	48 89 d8             	mov    %rbx,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	48 89 df             	mov    %rbx,%rdi
+  34:	e8 ca 2e 91 f6       	call   0xf6912f03
+  39:	49 83 c7 e8          	add    $0xffffffffffffffe8,%r15
+  3d:	48 8b 1b             	mov    (%rbx),%rbx
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
