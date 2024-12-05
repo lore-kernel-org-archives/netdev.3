@@ -1,103 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078FA1946B3;
-	Thu,  5 Dec 2024 10:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1AB2391A1;
+	Thu,  5 Dec 2024 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733395685; cv=none; b=uMvUSOPMCpDWqknmd2jbdDVi8hBzCCqUOhUSlWDMi5iGJWg8Msz/Kcn4MSMsKUGpzmnVK1/tv/tXAMKljp42QVW9G3csPJVZzWA6OT7QkFOSyFL3tAv/+gsHUYqMUFvCrLbi2EZPCtIXsBnhKZ/o7OEBgY29snRrHznDRPm3Kvc=
+	t=1733395817; cv=none; b=SEX2Fus/CwBfn2ZdKWFa31cP+6tP8Meycah7AKjXKGPKAihyDPJBieFEDg702B/C6c2aJW4D6kw5aftD26srCcxBcRWcXO1+5PAsmmj/P6aYfCalnJPiNBreKXUsNqad9VCGPJs2/BPJtincbLhd7oNj5GeMLPJ8eAI594q6tDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733395685; c=relaxed/simple;
-	bh=984bOJSofutD/cKYuwpIYV5GdLZGWe2dvJNXvkaebaU=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Oie2IYuJaqx5k9IUT8vb/CSdcBYuTNPnSsASG58gokV9t1Wwwk52+QmqVfBX4iK2vB+2qaQw3zvOCAWfG6tkA39n3LvKRutpZ+bzooHMZbPyKSnCSy/qJfsmTSucYTSUEcnjBymkDPXb4z0geZylIVVG/9nVhxrowdc7HWMZ20Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvuOhxsT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733395817; c=relaxed/simple;
+	bh=hC/g/ej9iegvPjoYKMnZE1MKWG6g0oMR4/9cGEHr8+8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=a9QWVhQCrqksY6AEFANYBwwgujHsDlGeM4QNhy08AU8mIKXg+HRdaUHaCCOuv0wSY5gCh1NaYyexEaTy8NmBzdFBG4Y3HmJ1MpU9WpB1qrpb1FGZTFGYnvDnyHXSgdsJVgghzGruiGhVrcyf3cZJDswcERhy540uOtYL1mugvoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TaSHIPDf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvuOhxsT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A633C4CED1;
-	Thu,  5 Dec 2024 10:48:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TaSHIPDf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A18C4CED1;
+	Thu,  5 Dec 2024 10:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733395684;
-	bh=984bOJSofutD/cKYuwpIYV5GdLZGWe2dvJNXvkaebaU=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=mvuOhxsTG9flwdCTs/hQOE1YYyL8hj/aFKhEG2criZ5g95AMVqfblo2J/OVrkZO9U
-	 fNi1Cv+L4PkI84R1dtCKzBGHsnHLKb8KtKUGbDEa9+7BesQiSc/ektc3BwZgj1Yywr
-	 tMYJ0O8AZDW06vqFCjKLooOUa9gTYfUUleBS6KXudR9nE+k6U2iIaiillY7F3Nacig
-	 D+/VCJaLC5INuQWHg3LZVtCsVYuHriY7RFNvfKg7HtUgfl0wJTXYtvenLhjvbu2n38
-	 aWwRzA/o0Af4/RPNxwOhY1+M6LhN3H+xk013yVa5y5TknAq3nEtBdSMrcHv2ko6bym
-	 1HCuMi0TT+P9A==
-Date: Thu, 05 Dec 2024 04:48:02 -0600
+	s=k20201202; t=1733395816;
+	bh=hC/g/ej9iegvPjoYKMnZE1MKWG6g0oMR4/9cGEHr8+8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TaSHIPDf9qVi7iNe6O0AMe2/c1FiuAPQtxgmI2jrOSLEuaxK7MgpUm8HNGVXxQuir
+	 rkzCoR7JAsEDPO+ocgyndm4W187ANUqgwseVV1lUsYAmO5p9bh7WYYffcMtPTDdNxw
+	 bEmuQnqo1i9YKR223WYgy2vKHNMByeCBldOTrCmMVDVPuUWHqQIPNJCpasnfxpokzf
+	 5WT7PDOh7rBGgHRG7qfKGZD/P5Vw2ohsoljSl+jTrsWn3mBcVNhUCT/8QBg4bfhhYH
+	 0sFnzgUMepiWzxA3Ls86NHaAjfDBzfBPhnpNNNFzd45PN2Z0buaSxzV85ST6VaSOZq
+	 IS3WFKACkHfOA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE4F4380A94D;
+	Thu,  5 Dec 2024 10:50:32 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Richard Cochran <richardcochran@gmail.com>, 
- netdev@vger.kernel.org, linux-clk@vger.kernel.org, 
- Dinh Nguyen <dinguyen@kernel.org>, devicetree@vger.kernel.org, 
- Stephen Boyd <sboyd@kernel.org>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-Reply-To: <20241205-v6-12-topic-socfpga-agilex5-v3-1-2a8cdf73f50a@pengutronix.de>
-References: <20241205-v6-12-topic-socfpga-agilex5-v3-0-2a8cdf73f50a@pengutronix.de>
- <20241205-v6-12-topic-socfpga-agilex5-v3-1-2a8cdf73f50a@pengutronix.de>
-Message-Id: <173339568226.2585836.18129717858312736704.robh@kernel.org>
-Subject: Re: [PATCH v3 1/6] dt-bindings: net: dwmac: Convert socfpga dwmac
- to DT schema
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v8 0/3] vsock/test: fix wrong setsockopt() parameters
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173339583150.1545533.78880242047414570.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Dec 2024 10:50:31 +0000
+References: <20241203150656.287028-1-kshk@linux.ibm.com>
+In-Reply-To: <20241203150656.287028-1-kshk@linux.ibm.com>
+To: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Cc: sgarzare@redhat.com, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com,
+ pabeni@redhat.com, AVKrasnov@sberdevices.ru, mst@redhat.com
 
+Hello:
 
-On Thu, 05 Dec 2024 10:06:01 +0100, Steffen Trumtrar wrote:
-> Changes to the binding while converting:
-> - add "snps,dwmac-3.7{0,2,4}a". They are used, but undocumented.
-> - altr,f2h_ptp_ref_clk is not a required property but optional.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue,  3 Dec 2024 09:06:53 -0600 you wrote:
+> Parameters were created using wrong C types, which caused them to be of
+> wrong size on some architectures, causing problems.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  .../devicetree/bindings/net/socfpga-dwmac.txt      |  57 ----------
->  .../devicetree/bindings/net/socfpga-dwmac.yaml     | 119 +++++++++++++++++++++
->  2 files changed, 119 insertions(+), 57 deletions(-)
+> The problem with SO_RCVLOWAT was found on s390 (big endian), while x86-64
+> didn't show it. After the fix, all tests pass on s390.
+> Then Stefano Garzarella pointed out that SO_VM_SOCKETS_* calls might have
+> a similar problem, which turned out to be true, hence, the second patch.
 > 
+> [...]
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Here is the summary with links:
+  - [net,v8,1/3] vsock/test: fix failures due to wrong SO_RCVLOWAT parameter
+    https://git.kernel.org/netdev/net/c/7ce1c0921a80
+  - [net,v8,2/3] vsock/test: fix parameter types in SO_VM_SOCKETS_* calls
+    https://git.kernel.org/netdev/net/c/3f36ee29e732
+  - [net,v8,3/3] vsock/test: verify socket options after setting them
+    https://git.kernel.org/netdev/net/c/86814d8ffd55
 
-yamllint warnings/errors:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/socfpga-dwmac.yaml: 'oneOf' conditional failed, one must be fixed:
-	'unevaluatedProperties' is a required property
-	'additionalProperties' is a required property
-	hint: Either unevaluatedProperties or additionalProperties must be present
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-Documentation/devicetree/bindings/net/socfpga-dwmac.example.dtb: /example-0/phy@100000240: failed to match any schema with compatible: ['altr,gmii-to-sgmii-2.0']
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/socfpga-dwmac.example.dtb: ethernet@ff700000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['altr,socfpga-stmmac', 'snps,dwmac-3.70a', 'snps,dwmac'] is too long
-	'altr,socfpga-stmmac' is not one of ['altr,socfpga-stmmac-a10-s10']
-	'snps,dwmac-3.72a' was expected
-	'snps,dwmac-3.74a' was expected
-	from schema $id: http://devicetree.org/schemas/net/socfpga-dwmac.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/socfpga-dwmac.example.dtb: ethernet@ff700000: phy-mode:0: 'sgmii' is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/net/socfpga-dwmac.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241205-v6-12-topic-socfpga-agilex5-v3-1-2a8cdf73f50a@pengutronix.de
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
