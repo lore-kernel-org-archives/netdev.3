@@ -1,97 +1,101 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7991D3194
-	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 09:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280251DA0E9
+	for <netdev@vger.kernel.org>; Thu,  5 Dec 2024 09:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733389469; cv=none; b=pKu2Xae2KRUji8btvChkydMaErJ7XWK+IHt64/hgg8j6FviHPNq/5pkkgtZMiafAMzHQMqsAdkc0IHclVQd4QIxSoRGQzdg1HnUgASpr9RlbljW0YeoCC+LBxK5W/UDI3CiKF4VmO12BL8V1kNJBgU8PeG/bolFx5T+kW5P++Cw=
+	t=1733389585; cv=none; b=ucGSczd0p4rfyDv6oK0Wlo1cQjoFtPlJRojYOEDQTORotNOBzaG2JUiS0OgRtYtG6x2ooVVeBRP2jO3X6Dx2srTE62P430+FZ42Qc8LnAQf1KruwIMDrDw44HVX9T3sBbVt58m1mZftbid8EQ3JPJUzgkiyPjc7PbBVnQMcEWr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733389469; c=relaxed/simple;
-	bh=zgVVy5XTLk3ptOAekcjfO0olEswNPRCyhZPPRQnNnwQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ZWgc3g50i1p8YqEPQdn1Bcof9RriTaPYcj58GpuPZ8xV5wZY4FwpASDfVK+IOGWcWpc9zYHNjCJm8zgdZfKzbFU8MyvXPT0nBckiUs2J02rfutOz0TJS1E50f2dJ2Ie7O9oCcXhFvTscMUP5Lb1FeoMps+Kk+M473n4dRFyCUos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a71bdd158aso6675085ab.1
-        for <netdev@vger.kernel.org>; Thu, 05 Dec 2024 01:04:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733389467; x=1733994267;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A50ennj8/l5LmpVJOQIb11du27QuZZWN9nvndJYiIt8=;
-        b=uJTc8xfbQOUHr7wvRzB/sO9J3FnS5zF7dXwH5FhoViUgC6zlWbxVph8fcqOYTqSnKH
-         pAWW6I1VF1lg7Ib74eHUS5oMyX16JnVdUkRrGhDVdipBCdfxHJ7tgUDR0QaxIaxewQCJ
-         8j9GT+rml2Nz2HI3NPXsktPfEimqn2QY4TMm6kPzflRO8AMcVs+ds9noRwXB2lTvMaYI
-         QAPABDBD3U1fP6NYEJUoPfob5m66iMzcpuoUcXvZt2QKmB2fCQwd3hW9DBveTJwsHJXJ
-         W4MmGqdMvKvbBYE0QTB7vhHhqVFb6gfiCIZRcGJ18BjH3npNsMoEZtA01MfK+1bS2OUI
-         Pm0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX6OXKrNu8RL8aNYtVj/wl1MJvnAiAFf/EfpKgr3+bh40W3S0O57ExbLfrrrHhdQTpRc8AlyQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDxZIfOpWz8amke5mH+GFbuFXW8FglT8ol7TLe+hLcEyYkyl5y
-	XOIS0A9ACKjvKhtKlVsx4XbiTRMwIYeW4PDVpHTRSHD+AdHOLx5yf84S1FRvpLjltziN1nn1xvV
-	BD2+dwsKDld5s1QdIP1Nmx/7zVfhRd3PCZK1DAkDQ648b3kFVvPkQ3AA=
-X-Google-Smtp-Source: AGHT+IGkizZga7sN5CYWA5QG1tBS31IluCqSzfXOIYfU5mE+eH6H+k9kkXC3INhDqYtZ1bVXrqsdHzGTV31W1c+dJe40KXNLf+zL
+	s=arc-20240116; t=1733389585; c=relaxed/simple;
+	bh=BrjZih4Ol/B/N7HxsWl8g5R6vYxxpRcHt620HszKJVU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SWxUfclhZTDpbW4+ZYd+SNRKZT0yFk3q0sYWyU7KtR5VHlbxNKkmJak4DEHAXwphl6DZ3gXh9JeaFrB+8BJ9Agt3srnF4Q+uYVq5nndYBcs6KFT+OsON5GhpPrem7N21HIlpZoqgxxCBRdLj+pl8vmFsE3ud13bcblojAwmYLtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1tJ7oQ-0004Ks-Ji; Thu, 05 Dec 2024 10:06:18 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [PATCH v3 0/6] ARM64: dts: intel: agilex5: add nodes and new board
+Date: Thu, 05 Dec 2024 10:06:00 +0100
+Message-Id: <20241205-v6-12-topic-socfpga-agilex5-v3-0-2a8cdf73f50a@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a02:b0:3a7:c2ea:1095 with SMTP id
- e9e14a558f8ab-3a7f9a372a3mr133223625ab.1.1733389467082; Thu, 05 Dec 2024
- 01:04:27 -0800 (PST)
-Date: Thu, 05 Dec 2024 01:04:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67516c9b.050a0220.17bd51.0090.GAE@google.com>
-Subject: [syzbot] Monthly net report (Dec 2024)
-From: syzbot <syzbot+list3c1df63765a7b6dd6d70@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPhsUWcC/43NQQ6CMBCF4auQrh3TDlDAlfcwLqAMMImhpMUGQ
+ 7i7hY0LE+Pyf4vvrcKTY/LikqzCUWDPdoyRnhJhhnrsCbiNLVBipmQqIWhQCLOd2IC3ppv6Guq
+ eH7TkUMmuTduyq0ppRBQmRx0vh367xx7Yz9a9jrOg9vU/NyiQ0GCji6KUpCVdJxr75+zsyMu5J
+ bHjAT+gwvw3iBEsdYa5JmOKBr/Abdve+EgsIxwBAAA=
+X-Change-ID: 20241030-v6-12-topic-socfpga-agilex5-90fd3d8f980c
+To: Dinh Nguyen <dinguyen@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-clk@vger.kernel.org, kernel@pengutronix.de, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello net maintainers/developers,
+This series adds the gpio0 and gmac nodes to the socfpga_agilex5.dtsi.
+As the the socfpga-dwmac binding is still in txt format, convert it to
+yaml, to pass dtb_checks.
 
-This is a 31-day syzbot report for the net subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/net
+An initial devicetree for a new board (Arrow AXE5-Eagle) is also added.
+Currently only QSPI and network are functional as all other hardware
+currently lacks mainline support.
 
-During the period, 14 new issues were detected and 8 were fixed.
-In total, 123 issues are still open and 1544 have already been fixed.
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+Changes in v3:
+- add socfpga-stmmac-agilex5 compatible
+- convert socfpga-dwmac.txt -> yaml
+- add Acked-bys
+- rebase to v6.13-rc1
+- Link to v2: https://lore.kernel.org/r/20241125-v6-12-topic-socfpga-agilex5-v2-0-864256ecc7b2@pengutronix.de
 
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  229243  Yes   possible deadlock in team_del_slave (3)
-                   https://syzkaller.appspot.com/bug?extid=705c61d60b091ef42c04
-<2>  31386   Yes   unregister_netdevice: waiting for DEV to become free (8)
-                   https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-<3>  7345    Yes   possible deadlock in smc_switch_to_fallback (2)
-                   https://syzkaller.appspot.com/bug?extid=bef85a6996d1737c1a2f
-<4>  6028    Yes   WARNING in inet_sock_destruct (4)
-                   https://syzkaller.appspot.com/bug?extid=de6565462ab540f50e47
-<5>  5974    Yes   KMSAN: uninit-value in eth_type_trans (2)
-                   https://syzkaller.appspot.com/bug?extid=0901d0cc75c3d716a3a3
-<6>  5836    Yes   WARNING: suspicious RCU usage in dev_deactivate_queue
-                   https://syzkaller.appspot.com/bug?extid=ca9ad1d31885c81155b6
-<7>  4913    Yes   possible deadlock in do_ip_setsockopt (4)
-                   https://syzkaller.appspot.com/bug?extid=e4c27043b9315839452d
-<8>  3323    Yes   KASAN: slab-use-after-free Read in __ethtool_get_link_ksettings
-                   https://syzkaller.appspot.com/bug?extid=5fe14f2ff4ccbace9a26
-<9>  2606    Yes   possible deadlock in team_port_change_check (2)
-                   https://syzkaller.appspot.com/bug?extid=3c47b5843403a45aef57
-<10> 2505    No    possible deadlock in do_ipv6_setsockopt (4)
-                   https://syzkaller.appspot.com/bug?extid=3433b5cb8b2b70933f8d
+Changes in v2:
+- fix node names according to dtb_check
+- remove gpio 'status = disabled'
+- mdio0: remove setting of adi,[rt]x-internal-delay-ps. 2000 is the
+  default value
+- add Acked-by to dt-binding
+- Link to v1: https://lore.kernel.org/r/20241030-v6-12-topic-socfpga-agilex5-v1-0-b2b67780e60e@pengutronix.de
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Steffen Trumtrar (6):
+      dt-bindings: net: dwmac: Convert socfpga dwmac to DT schema
+      dt-bindings: net: dwmac: add compatible for Agilex5
+      arm64: dts: agilex5: add gmac nodes
+      arm64: dts: agilex5: add gpio0
+      dt-bindings: intel: add agilex5-based Arrow AXE5-Eagle
+      arm64: dts: agilex5: initial support for Arrow AXE5-Eagle
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+ .../devicetree/bindings/arm/intel,socfpga.yaml     |   1 +
+ .../devicetree/bindings/net/socfpga-dwmac.txt      |  57 ---------
+ .../devicetree/bindings/net/socfpga-dwmac.yaml     | 126 +++++++++++++++++++
+ arch/arm64/boot/dts/intel/Makefile                 |   1 +
+ arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi     | 109 ++++++++++++++++
+ .../boot/dts/intel/socfpga_agilex5_axe5_eagle.dts  | 140 +++++++++++++++++++++
+ 6 files changed, 377 insertions(+), 57 deletions(-)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241030-v6-12-topic-socfpga-agilex5-90fd3d8f980c
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+Best regards,
+-- 
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-You may send multiple commands in a single email message.
