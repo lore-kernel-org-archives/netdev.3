@@ -1,37 +1,38 @@
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01661D4359;
-	Fri,  6 Dec 2024 18:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DB81FFC57;
+	Fri,  6 Dec 2024 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733510826; cv=none; b=FpLhR69v8sYt+lx1h4FR4T7JbUfLir3SKfHCYnFtgQS2lKDzHdMW6TB7x0zwlRZ8HaOwcmMf0ap7YE1grq3z+BjTcIgEykpCxc/yZB8fInHsUCI+Efn7L6vxx0ELKYejGRO32/XYzghN+yEzVcz21AaEtrceP6U2AR9Pp1fHj9w=
+	t=1733510827; cv=none; b=n1pA4xwRfnArREuUmHiEMxpRjPc7KXqavTcfGvhMs2ex2XtIUkQ48emFrXOQXapNpOm9pKOrwxg09WUSA7DtjEp77tiYz8vtoFgjgFjgv71LHfciNhXHsJzQ1dTrsnBpmGUStQ/5IOlG1EGjy8JLjx4ox3npgEGaGlidUrvZz9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733510826; c=relaxed/simple;
-	bh=KownpJjuhG1Vzre4NX9kPtuNAnHdGmVtan08w5kfTxI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XrLW9GToGQJuNW60+NM1yiDvo7uJsI9v58HgK+2M5Kr49+HCghgZke86SylyRfj/QPv55vlyM+kQS28a5/76tH9C03jiAMP2ZYm6xoSEEBahl5nXcmRT/NAgkwhEbSNN9HfJSPVrzTrZubmtxVpoW6p2LekKQoEGqCi7polvz1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=XSXqNBol; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1733510827; c=relaxed/simple;
+	bh=mT/7swdeuZHAQJy54hnIBi1b3QhMyhOPSsXb1YTf91s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Xj8vD8n4ZDSIzxbt5kC5ixHYtoA2iapyLsHdAnmE4VNGtGphF0epsgTeAtWfTWpL/nEqperqH/sy/0Z386ql1k1rytZk2wuXjxWCC66AbZBgfjJVGP8/sOakLciBUn0c1ySknP+jD3OGsYgGeE5iP8E65MOekCYemYPQ6AHpjd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=ewkl42Ot; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="XSXqNBol"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="ewkl42Ot"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1733510812; x=1734115612; i=wahrenst@gmx.net;
-	bh=XuarqVQ6ECgriRQe74xwJU1j0fNdYk9PZcUyFe4MIHk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1733510813; x=1734115613; i=wahrenst@gmx.net;
+	bh=mT/7swdeuZHAQJy54hnIBi1b3QhMyhOPSsXb1YTf91s=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=XSXqNBol+DbQXU12yB4BR1QfygMIyV3Z2p1KZNaohniia/NXwDIcFy9tkXD7b2UJ
-	 ChbbjD4TPiCgqm2AJDRffJt7M+kKmN1v9nF6BWSiQZbc/jpVlm+csyVhrHYDljrIS
-	 r8NhPcj0M0cttDoKed3UAoc/cmCn6bC6llcUpY5qjGY6+GTNrmM9zrQAj4C9vuQF/
-	 jLT0YBogVlhVdS0C9Daz6msoIMC+7i07XvZkrljGK5LKkyWrGFkwIA/2mlLqE5tTP
-	 haoxrTRMd0jqSIda2F4IRRwKjXSLRcbTdlpeFpJpFbeStG698hDO0mVS0tGAI0/1i
-	 ZRz8MTDJobnCseZOzQ==
+	b=ewkl42OtKyiOOPVLyjs/UpSuVf+nSMEsUdaSKE3w+naDkfOsZAM4ZFxfckEU+IFp
+	 kE2Yr0bwkBV/gxD9QL/b5yrsWuWaSrplYFQCkQnIAh4RU5OBQz5ZUXuDDpdZnMdom
+	 laJ93Yw4LNzLH/9fTEe8Mqs42ruNTUh6xdtPNf44QGHwi0hJOCo0Cl/J2bEYMMltX
+	 8HBA/1GQrImPBzTKr5kIlSAzeaL1cYUCUEVfF/bktNOSGr7CXkSKfho09nMUqco80
+	 2O/HYIbUPIMsSG0qivWCSL6IkqfNxEWniUMxkYO5ERPUmw0GwKwGllm7S5f3QsqGZ
+	 0H9mwVYyAUG90lhwPg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from stefanw-SCHENKER ([37.4.251.153]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfHEP-1tpy5f1PkR-00qgEv; Fri, 06
- Dec 2024 19:46:52 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MORAa-1t0KsF0N8I-00XdNw; Fri, 06
+ Dec 2024 19:46:53 +0100
 From: Stefan Wahren <wahrenst@gmx.net>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -42,10 +43,12 @@ Cc: chf.fritz@googlemail.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH V2 net 0/2] qca_spi: Fix SPI specific issues
-Date: Fri,  6 Dec 2024 19:46:41 +0100
-Message-Id: <20241206184643.123399-1-wahrenst@gmx.net>
+Subject: [PATCH V2 net 2/2] qca_spi: Make driver probing reliable
+Date: Fri,  6 Dec 2024 19:46:43 +0100
+Message-Id: <20241206184643.123399-3-wahrenst@gmx.net>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241206184643.123399-1-wahrenst@gmx.net>
+References: <20241206184643.123399-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,43 +56,56 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hib0uNNzpZ4WsqhgVQ7cqQ9iGPWOxFR9bBWHOmiIgsRBjPis/UX
- O43azoGadi0jB4kXw3+RYojCn9/k5RHjxFG5X3bKgmKrILCxfrgYKtQuXOAjrPc89crVZXB
- qmhOfRPPdgs7vpE0Zy1jP+zNBrNHZ/uxqVW/X5aNnJ67dTrFIxTwV3oeIPQI5xLjexHfIdH
- Y00GmKYNjBoizAzv4r2mA==
+X-Provags-ID: V03:K1:m1k4RaEn7bn/j+NRRVgE0JZb91KuhUvlWmWj9L9VkVRkUwyv5ww
+ JdNwtlPJULoMV9sVcRlOsNcc8o3eUfcve7YYhqIn0oYjkF+Tt+ZTfydfGU798FRwMb+LR19
+ ZLdq62r2qQh+h2DU74dPQ8zDazXRzfuJaANgjEMHFJ4az4iTwdE7QxVk8qAQONLHj5hM+Bw
+ R6EDRQn067MReUUUEb+Ow==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:GAFB2MpxR7g=;Kd24l2kvRNSWmRpZiHhtNDnnhz+
- lqtn2oHs6SVVcuqMhwIhYnMiI3htQCJzvNU5AHBUg/vghHNYxaJVrlUdfM/sb8d/x+FRA10+2
- ByAXn05KxIbwOcJ3/dp0TOhOQLvP42ntOYnP0S28OoZdD3DVbVW30+D6ywdFyfSL5yIBCjrlC
- zr+0TJUwP4wrTmDSirSnuirWo3PLB4EBszQ7SsG9lMzSkzq2x7Ro5FfjeWKFxJxmi97Bl6wGm
- 8/BzZC95VXCB5zSvDV9HkdNn5dortVzlRdPlOfiifpXZSCE2KbQsZlVRJMbCYT7j5O8JgSsRQ
- sPfcNZjnG7ss3ZA0H5VghEYbLHy/AWYumwovjY5hZNAk9J38tqALSvKks9u+gU3xlGs7mSlc3
- D0E13uoy23yCW9sNA3e0z+r4U2HH+6+X3sBThg6PI3G2ApnlS6lmABaKqdH8zGe5nMzXPZuln
- blw79FQCXP23bdSTHhbQoWTUTaYgBl8mhD6/oYwo5Sbl2ADw31QnjeywxWQzD6hISFY3xbvS5
- ZAh0zTdxC4W4TJVc4SLG68ePWlAAXLGIHVWRzMkOP60zTnz0r1NHnSEeBgLsBVp3lMu7KTacA
- YaQbG7yfnXGnpVQCE8i0bQZJAZaMIi8edN5jwi2pFJ8q9evHme/XeYF49X0+iVomx3e6wXY7i
- YjKB4KlhhcMi4bkOPK5hF5sqYkwZvhY8d7QtilTe4Gmbusw7HXRskZLPw+61+SFiy3zdbQl5T
- v6huM84Hllykonf5B0d0FL8kYQI9BMhHjj6bhXbJcMLGl9JY4buiAHOPNbLSyQbn7pDB5MNOv
- uChCLpUGE2UDu0nWXehQ1+zJMtuMCvGZ5dsbJe0OtDLpzzUQWkU43mXF1j/IXiWdI+2R7bVAd
- YlqfQSOtdekTTdj3ghUxyOb7c14hesOXJmCKPrxYnghfSQX46ClP/jBvH0oFfIP7goqhokalM
- DFg7RHdvjIaxi5hdDXCrHI1yhauuMdya3DvlsYbI8kJCJDOQswrQ79b9eXWwq5NQORml5osLr
- /c13RcXWdPHUDQEW//eOUULel+AfYWjquB6Nf8tiYlA+V4ZIod31YSe3slPCZJRosXIfTqoby
- kCML8vGTgtre0tJVfjA7VfGm4RKm9f
+UI-OutboundReport: notjunk:1;M01:P0:EuADY5HvDlk=;TFRlf9w6Nr/kJla5GM1N/2B2xr4
+ U1/PgwA4VurPxnpb+/NXDtF1egDKBNUCBHOYX56aMCISWtpqhy9o6jVAckr2ilDUYpNZzrhnA
+ ikB/EYEN8TaRApVt04kb8fjzdgvz8aaBuEgo5HQjF7QxgBJL2g9E5fxqAc5hphVLvIuyrgzA9
+ BTq66/6ErdYPmgke5D9UcCirnAaxG7+HhCcYbH+8ADRxUZW5738tuZY5g2QYeKvr2ENpB+7Pv
+ 5U8gOvny42yIZPxqvknLNQ8f+ZEsbIJ8zwT2RmTVB7HgzkTsWG23BaP1/uGEW68a02zWhzlIc
+ RLJCs25WBiugn4Ax3Ma3Mta2nqezcPCwnrA2E4Rh+3lvH4l44jnTKSC/gJ7C9AaXaCyXQ1AuI
+ SE2swvsB5OKQnc5WNGHcLiHRNprNM6sPmv7N4bXj3U5nw5XJOfK8nbtjq51DFN16vY6VRG3lw
+ ggH+QGnvCfb1BH8TpNKQqLP18ghr17CJNLaKNrarXaiZlPH1HC4M+SQ80W4JMZ9VE2S3fdSDo
+ AUSgvFadTvxRZgZ+VryCxYA1REyZezG+1PD+g8jd4WoEOeVwMC/QxBMIBXuiozG2E3PlAsrmV
+ oSS50qtycermeIH/Bs6ntOqGmtRNPK1lNg81bFI0+GR2b6/WXpn1DkWIRyaM3uXzmmRrRq+5U
+ JreZ+gPT88o9B0TxBHkARPpf9CKBaZw/QaWbfx1RLY/zq3DwEKkyuITcJtmWvCM3QuhvQ+fwb
+ R7vGXj3+K1ZdL3aVKYmtwkWhjCyzlZLFLB46FpukbhRK3wo912o2EOdCmzj01f1IrbNOh8Ev/
+ cJtHBoisGeij193V7oFGz6cLkBHJAVB5ZWSHPxWJaRoVCJEQ0956klis1GIqwDycoplAA8R5p
+ uG99V61tdtQrEZYdFF3weOGrlYJCPMvBDQRhGH+q+l9+XFp5rvNwc5867RmBAV1xEd+qoNmRS
+ /hU3Cc0j8jWe0DqsA6f4ATr+HqoVNWTZwWxiJJUj5PnUVh8Y/2gOMkdNHvik/xqV0lo24qOCw
+ esKgvggDjB0Vkwaxx7OrH+YVIZZYC3sjyvfwmxwMr8nxOvmCSvyMEWvZ1rp3FqBP6dYh6FL4J
+ XJeThoxpiRcicGWwaWZVabPp6jv89z
 
-This small series address two annoying SPI specific issues of
-the qca_spi driver.
+The module parameter qcaspi_pluggable controls if QCA7000 signature
+should be checked at driver probe (current default) or not. Unfortunately
+this could fail in case the chip is temporary in reset, which isn't under
+total control by the Linux host. So disable this check per default
+in order to avoid unexpected probe failures.
 
-Changes in V2:
-- drop member clkspeed from struct qcaspi as suggested by Jakub Kicinski
-- add new patch "Make driver probing reliable"
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7=
+000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Stefan Wahren (2):
-  qca_spi: Fix clock speed for multiple QCA7000
-  qca_spi: Make driver probing reliable
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/etherne=
+t/qualcomm/qca_spi.c
+index d328e770bcbe..38a779f4b866 100644
+=2D-- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -54,7 +54,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes=
+ per burst. Use 1-5000."
 
- drivers/net/ethernet/qualcomm/qca_spi.c | 26 +++++++++++--------------
- drivers/net/ethernet/qualcomm/qca_spi.h |  1 -
- 2 files changed, 11 insertions(+), 16 deletions(-)
+ #define QCASPI_PLUGGABLE_MIN 0
+ #define QCASPI_PLUGGABLE_MAX 1
+-static int qcaspi_pluggable =3D QCASPI_PLUGGABLE_MIN;
++static int qcaspi_pluggable =3D QCASPI_PLUGGABLE_MAX;
+ module_param(qcaspi_pluggable, int, 0);
+ MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
 
 =2D-
 2.34.1
