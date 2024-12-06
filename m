@@ -1,29 +1,29 @@
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419161D2F74;
-	Fri,  6 Dec 2024 11:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81127192B8F;
+	Fri,  6 Dec 2024 11:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733484219; cv=none; b=kBgcNpZYu6wtue5H/sJSZ693YoCtjepbCmhZq0Rurc6GY7a+XZULVZJRBugPk6mZx6gGALOBnh3Svs2Jl5/4o6LjEgi38irYaS+oarjIA1hy/AslrWFAmIMSc4DTmQ/Rs2PQTJ/IXxtzL7+n6NF0zzxuLyXgsgzaSCKKv/4dEJ0=
+	t=1733484219; cv=none; b=fP88r7vUgwlmrY6SbCyUSyo5LF9rutlPjqJp9NxOlHLpxTQvXGCPw9iniOgP1PnBaum+fpKwYssjAYkoIOd4EJFyn2Vl5FlRqWx0DEfKfDkKJEMTUw6XfS79HbOBcfRjDex/2hvZ/m/qndJt9IRAlCkR9PI9eliwn9gIsEbdvu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733484219; c=relaxed/simple;
-	bh=XCd2GkCj5iFxClGU0pgjRZ1y5tlkkQN7mxYMh8vPiWk=;
+	bh=VD7tCLHPxT/lH+qFL5UPmP3pxTCXqQlPANrOitAP1mg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fTjwDMBMBMKUm/6eYZCeZ/OecRoHSS2UDh0k4W8QG5AXR6O1QJlog0q0scQ2Uk7pX9TPeneYgRDvWEPwDrJm5ki+aOM5WweTtTDn1Jvw4sS3HNi7J6F6o2UosaaT8wyKbcd6oenSZvJ+Qp07EsUvECP5VGOH4cteQy+3g3UEqfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+	 MIME-Version:Content-Type; b=H8x2WrEySsgUVvqcHy2lDMTFkJJkdudo+9pkK1zHVUce2gM1nljqtD/i1LvW/h/V/wgGtM738ukGYTRTNCw5Dpqdqv+hDQAk7RcBbl+LO5OoY3khTRjEL2pAZ5iWCo4sI+xxftMwBJ3LcPWlwk+a/kGVovmP+Un53TAv06jv2zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Y4TMQ4m3qz1V5kB;
-	Fri,  6 Dec 2024 19:20:34 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Y4TNz4M74z21mgN;
+	Fri,  6 Dec 2024 19:21:55 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id C73B414035E;
-	Fri,  6 Dec 2024 19:23:33 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1AE001A0188;
+	Fri,  6 Dec 2024 19:23:35 +0800 (CST)
 Received: from localhost.localdomain (10.90.30.45) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Dec 2024 19:23:32 +0800
+ 15.2.1544.11; Fri, 6 Dec 2024 19:23:34 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
@@ -34,9 +34,9 @@ CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
 	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
 	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>, <hkelam@marvell.com>
-Subject: [PATCH V5 net-next 1/8] debugfs: Add debugfs_create_devm_dir() helper
-Date: Fri, 6 Dec 2024 19:16:22 +0800
-Message-ID: <20241206111629.3521865-2-shaojijie@huawei.com>
+Subject: [PATCH V5 net-next 3/8] net: hibmcge: Add irq_info file to debugfs
+Date: Fri, 6 Dec 2024 19:16:24 +0800
+Message-ID: <20241206111629.3521865-4-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20241206111629.3521865-1-shaojijie@huawei.com>
 References: <20241206111629.3521865-1-shaojijie@huawei.com>
@@ -51,89 +51,80 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-Add debugfs_create_devm_dir() helper
+the driver requested three interrupts: "tx", "rx", "err".
+The err interrupt is a summary interrupt. We distinguish
+different errors based on the status register and mask.
+
+With "cat /proc/interrupts | grep hibmcge",
+we can't distinguish the detailed cause of the error,
+so we added this file to debugfs.
+
+the following effects are achieved:
+[root@localhost sjj]# cat /sys/kernel/debug/hibmcge/0000\:83\:00.1/irq_info
+RX                  : enabled: true , logged: false, count: 0
+TX                  : enabled: true , logged: false, count: 0
+MAC_MII_FIFO_ERR    : enabled: false, logged: true , count: 0
+MAC_PCS_RX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_PCS_TX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_APP_RX_FIFO_ERR : enabled: false, logged: true , count: 0
+MAC_APP_TX_FIFO_ERR : enabled: false, logged: true , count: 0
+SRAM_PARITY_ERR     : enabled: true , logged: true , count: 0
+TX_AHB_ERR          : enabled: true , logged: true , count: 0
+RX_BUF_AVL          : enabled: true , logged: false, count: 0
+REL_BUF_ERR         : enabled: true , logged: true , count: 0
+TXCFG_AVL           : enabled: true , logged: false, count: 0
+TX_DROP             : enabled: true , logged: false, count: 0
+RX_DROP             : enabled: true , logged: false, count: 0
+RX_AHB_ERR          : enabled: true , logged: true , count: 0
+MAC_FIFO_ERR        : enabled: true , logged: false, count: 0
+RBREQ_ERR           : enabled: true , logged: false, count: 0
+WE_ERR              : enabled: true , logged: false, count: 0
+
+The irq framework of hibmcge driver also includes tx/rx interrupts.
+Therefore, TX and RX are not moved separately form this file.
 
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- fs/debugfs/inode.c      | 36 ++++++++++++++++++++++++++++++++++++
- include/linux/debugfs.h | 10 ++++++++++
- 2 files changed, 46 insertions(+)
+ .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 38a9c7eb97e6..f682c4952a27 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -610,6 +610,42 @@ struct dentry *debugfs_create_dir(const char *name, struct dentry *parent)
- }
- EXPORT_SYMBOL_GPL(debugfs_create_dir);
- 
-+static void debugfs_remove_devm(void *dentry_rwa)
-+{
-+	struct dentry *dentry = dentry_rwa;
-+
-+	debugfs_remove(dentry);
-+}
-+
-+/**
-+ * debugfs_create_devm_dir - Managed debugfs_create_dir()
-+ * @dev: Device that owns the action
-+ * @name: a pointer to a string containing the name of the directory to
-+ *        create.
-+ * @parent: a pointer to the parent dentry for this file.  This should be a
-+ *          directory dentry if set.  If this parameter is NULL, then the
-+ *          directory will be created in the root of the debugfs filesystem.
-+ * Managed debugfs_create_dir(). dentry will automatically be remove on
-+ * driver detach.
-+ */
-+struct dentry *debugfs_create_devm_dir(struct device *dev, const char *name,
-+				       struct dentry *parent)
-+{
-+	struct dentry *dentry;
-+	int ret;
-+
-+	dentry = debugfs_create_dir(name, parent);
-+	if (IS_ERR(dentry))
-+		return dentry;
-+
-+	ret = devm_add_action_or_reset(dev, debugfs_remove_devm, dentry);
-+	if (ret)
-+		ERR_PTR(ret);
-+
-+	return dentry;
-+}
-+EXPORT_SYMBOL_GPL(debugfs_create_devm_dir);
-+
- /**
-  * debugfs_create_automount - create automount point in the debugfs filesystem
-  * @name: a pointer to a string containing the name of the file to create.
-diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-index 59444b495d49..19d8c322debe 100644
---- a/include/linux/debugfs.h
-+++ b/include/linux/debugfs.h
-@@ -139,6 +139,9 @@ void debugfs_create_file_size(const char *name, umode_t mode,
- 
- struct dentry *debugfs_create_dir(const char *name, struct dentry *parent);
- 
-+struct dentry *debugfs_create_devm_dir(struct device *dev, const char *name,
-+				       struct dentry *parent);
-+
- struct dentry *debugfs_create_symlink(const char *name, struct dentry *parent,
- 				      const char *dest);
- 
-@@ -286,6 +289,13 @@ static inline struct dentry *debugfs_create_dir(const char *name,
- 	return ERR_PTR(-ENODEV);
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
+index d445c0c1035c..af550f8258b2 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
+@@ -56,9 +56,31 @@ static int hbg_dbg_rx_ring(struct seq_file *s, void *unused)
+ 	return 0;
  }
  
-+static inline struct dentry *debugfs_create_devm_dir(struct device *dev,
-+						     const char *name,
-+						     struct dentry *parent)
++static int hbg_dbg_irq_info(struct seq_file *s, void *unused)
 +{
-+	return ERR_PTR(-ENODEV);
++	struct net_device *netdev = dev_get_drvdata(s->private);
++	struct hbg_priv *priv = netdev_priv(netdev);
++	struct hbg_irq_info *info;
++	u32 i;
++
++	for (i = 0; i < priv->vectors.info_array_len; i++) {
++		info = &priv->vectors.info_array[i];
++		seq_printf(s,
++			   "%-20s: enabled: %-5s, logged: %-5s, count: %llu\n",
++			   info->name,
++			   hbg_get_bool_str(hbg_hw_irq_is_enabled(priv,
++								  info->mask)),
++			   hbg_get_bool_str(info->need_print),
++			   info->count);
++	}
++
++	return 0;
 +}
 +
- static inline struct dentry *debugfs_create_symlink(const char *name,
- 						    struct dentry *parent,
- 						    const char *dest)
+ static const struct hbg_dbg_info hbg_dbg_infos[] = {
+ 	{ "tx_ring", hbg_dbg_tx_ring },
+ 	{ "rx_ring", hbg_dbg_rx_ring },
++	{ "irq_info", hbg_dbg_irq_info },
+ };
+ 
+ void hbg_debugfs_init(struct hbg_priv *priv)
 -- 
 2.33.0
 
