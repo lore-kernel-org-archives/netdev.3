@@ -1,157 +1,130 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296721FCD0F;
-	Fri,  6 Dec 2024 12:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40163201113;
+	Fri,  6 Dec 2024 12:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733487591; cv=none; b=VW5uaGEls3c0W6BmVvD9YY8uHIueg/1O58txXOXcktZLMkgGQT0xubjIoZLEedLZaNlGRphIjkXx7JAE0itO4dgRnXXZjZIsIxBHNXh4KDYAOeUUcLVxCbwsyGIkUSiIrxgCXwuXyr5vjshBocDSKvYDxoroInc8aqTnY1nczqA=
+	t=1733488188; cv=none; b=thODb/fcRs5hNE5JR9FZM+mbmnoWzen/58TlapY6nfvH+2yjciWUpySnmhiAQlSGA8k1MxI2WMDSxKVnmIP/hfDOV0PrIjnYxdekrn8XsNLW7qjrmwPQPuXT6kPtBhurlezLUISF2CVUQNPwzpQZZLH2QPbIiTBIXZ+BcTakVXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733487591; c=relaxed/simple;
-	bh=4siyzwtx0SoKFEFM6fcZ0GN4NJVmR4GccRdwKuO/JY4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=r3l/32dXs6EMMTp8IALYVm1DySJ7TL9aiM62Em31fhYwg9wN+xJFVlraTwLxQ4hvih5bfLJYNnq7HIcLztsf1IucgDdy8WT+2Y+lrIog5X0ql/pErGLpHQ3XKUhFrjmeEZsRo3vNSj9nc7vHFVMrfqFC7GB6m6OTejqrJoN34ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=jTjz4S9w; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="jTjz4S9w"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 5653D21D92;
-	Fri,  6 Dec 2024 14:19:40 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=QvUxd/vxMw8Bwuy6xT8sVlJO+DjkY4zLPCCgu87quuk=; b=jTjz4S9wmd54
-	L6Dz1c6a27LaRJin11iO1/LuIDOevuvoLPkbtFgX8a9QeF+gk3Ke7ELKws4UM/wI
-	Azo277jpuO6dL16+u6kzaO4XWjIKd2oZko3mhOlnhgqboDkTx+QByVc3J0wxQWGv
-	BPhzSfB2p/spiH5Qlj6JavO65+dbOaxEtpzeJyU7aMrTMdcIoQyI02n9V6EC3cpI
-	OFhTpOfPLOUUwI2aDh4SDcYZ0w7LwI6N69heV52JFXt0MJ52b2z5+DC7G2RUU8Pt
-	47r8bhTmj+hf3eM61bUAnMMvdSFeGvqwDKlGOkP8RhoDx+LjFJKcarqGd+8UAsg3
-	5xgDSC1IMtdCP8OTzIitCsAPE8ev+Accj6IoDPSdL6380Io7pOO54slJach30Lps
-	fen1j9m5NDXNr0HLl3mgSb0FWpvM7lNpn393nmw+1ysq9TVZSrfqlxOomwFMYKY/
-	Ub26103Wle4wX/hGBv0s5fi6Qmf/A/yspu9aSOydu6A7KbW1l8hnVDawyWTd2qXQ
-	osu+i30K3PfiMBclcihy81Km6SmmF7a1FhPlBcgePEEd4KxJxJglyRHgbAFvc2eg
-	MrxupfqsU6xYRI9808PMbE/8HxhmTFbbXG2PKeuDIBpHb78GOEfNaBHZRzdY16En
-	gWsUWiNkgzoxMOsC7bIWmgECURJCLUc=
-Received: from ink.ssi.bg (ink.ssi.bg [193.238.174.40])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Fri,  6 Dec 2024 14:19:39 +0200 (EET)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by ink.ssi.bg (Postfix) with ESMTPSA id 4E9EB15F19;
-	Fri,  6 Dec 2024 14:19:31 +0200 (EET)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.1/8.17.1) with ESMTP id 4B6CJLt6022576;
-	Fri, 6 Dec 2024 14:19:22 +0200
-Date: Fri, 6 Dec 2024 14:19:21 +0200 (EET)
-From: Julian Anastasov <ja@ssi.bg>
-To: David Laight <David.Laight@ACULAB.COM>
-cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "'Naresh Kamboju'" <naresh.kamboju@linaro.org>,
-        "'Dan Carpenter'" <dan.carpenter@linaro.org>,
-        "'pablo@netfilter.org'" <pablo@netfilter.org>,
-        "'open list'" <linux-kernel@vger.kernel.org>,
-        "'lkft-triage@lists.linaro.org'" <lkft-triage@lists.linaro.org>,
-        "'Linux Regressions'" <regressions@lists.linux.dev>,
-        "'Linux ARM'" <linux-arm-kernel@lists.infradead.org>,
-        "'netfilter-devel@vger.kernel.org'" <netfilter-devel@vger.kernel.org>,
-        "'Arnd Bergmann'" <arnd@arndb.de>,
-        "'Anders Roxell'" <anders.roxell@linaro.org>,
-        "'Johannes Berg'" <johannes.berg@intel.com>,
-        "'toke@kernel.org'" <toke@kernel.org>,
-        "'Al Viro'" <viro@zeniv.linux.org.uk>,
-        "'kernel@jfarr.cc'" <kernel@jfarr.cc>,
-        "'kees@kernel.org'" <kees@kernel.org>
-Subject: Re: [PATCH net] Fix clamp() of ip_vs_conn_tab on small memory
- systems.
-In-Reply-To: <33893212b1cc4a418cec09aeeed0a9fc@AcuMS.aculab.com>
-Message-ID: <5ec10e7c-d050-dab8-1f1b-d0ca2d922eef@ssi.bg>
-References: <33893212b1cc4a418cec09aeeed0a9fc@AcuMS.aculab.com>
+	s=arc-20240116; t=1733488188; c=relaxed/simple;
+	bh=Sn0W2n3Nmn4M+B+vsFN5ieoRowmKkyBRsaa5O53+g6o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LkGhavO5JG9ScOUgo44mxi/2sPvOzJIgIWB7Rz1kokTudfNFxnQLnt1pxtyurB0PFiXs9vAFaZ5MrBsuZTxF/GNbdw215kfONKEmFvseRwVcyJftZHzw9kw2mXbWIrVR933t4+LVFcrcazuSt6XmKl75QMoPizm76hWbSgXyy1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Y4VrT2SPBz1T6VK;
+	Fri,  6 Dec 2024 20:27:21 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 69E3C1402C4;
+	Fri,  6 Dec 2024 20:29:41 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Dec 2024 20:29:41 +0800
+Message-ID: <c2b306af-4817-4169-814b-adbf25803919@huawei.com>
+Date: Fri, 6 Dec 2024 20:29:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 1/3] page_pool: fix timing for checking and
+ disabling napi_local
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <pabeni@redhat.com>, <liuyonglong@huawei.com>,
+	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>, Simon
+ Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20241120103456.396577-1-linyunsheng@huawei.com>
+ <20241120103456.396577-2-linyunsheng@huawei.com>
+ <20241202184954.3a4095e3@kernel.org>
+ <e053e75a-bde1-4e69-9a8d-d1f54be06bdb@huawei.com>
+ <20241204172846.5b360d32@kernel.org>
+ <70aefeb1-6a78-494c-9d5b-e03696948d11@huawei.com>
+ <20241205164233.64512141@kernel.org>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <20241205164233.64512141@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
+On 2024/12/6 8:42, Jakub Kicinski wrote:
+> On Thu, 5 Dec 2024 19:43:25 +0800 Yunsheng Lin wrote:
+>> It depends on what is the callers is trying to protect by calling
+>> page_pool_disable_direct_recycling().
+>>
+>> It seems the use case for the only user of the API in bnxt driver
+>> is about reuseing the same NAPI for different page_pool instances.
+>>
+>> According to the steps in netdev_rx_queue.c:
+>> 1. allocate new queue memory & create page_pool
+>> 2. stop old rx queue.
+>> 3. start new rx queue with new page_pool
+>> 4. free old queue memory + destroy page_pool.
+>>
+>> The page_pool_disable_direct_recycling() is called in step 2, I am
+>> not sure how napi_enable() & napi_disable() are called in the above
+>> flow, but it seems there is no use-after-free problem this patch is
+>> trying to fix for the above flow.
+>>
+>> It doesn't seems to have any concurrent access problem if napi->list_owner
+>> is set to -1 before napi_disable() returns and the napi_enable() for the
+>> new queue is called after page_pool_disable_direct_recycling() is called
+>> in step 2.
+> 
+> The fix is presupposing there is long delay between fetching of
+> the NAPI pointer and its access. The concern is that NAPI gets
+> restarted in step 3 after we already READ_ONCE()'ed the pointer,
+> then we access it and judge it to be running on the same core.
+> Then we put the page into the fast cache which will never get
+> flushed.
 
-	Hello,
+It seems the napi_disable() is called before netdev_rx_queue_restart()
+and napi_enable() and ____napi_schedule() are called after
+netdev_rx_queue_restart() as there is no napi API called in the
+implementation of 'netdev_queue_mgmt_ops' for bnxt driver?
 
-On Fri, 6 Dec 2024, David Laight wrote:
+If yes, napi->list_owner is set to -1 before step 1 and only set to
+a valid cpu in step 6 as below:
+1. napi_disable()
+2. allocate new queue memory & create new page_pool.
+3. stop old rx queue.
+4. start new rx queue with new page_pool.
+5. free old queue memory + destroy old page_pool.
+6. napi_enable() & ____napi_schedule()
 
-> The intention of the code seems to be that the minimum table
-> size should be 256 (1 << min).
-> However the code uses max = clamp(20, 5, max_avail) which implies
+And there are at least three flows involved here:
+flow 1: calling napi_complete_done() and set napi->list_owner to -1.
+flow 2: calling netdev_rx_queue_restart().
+flow 3: calling skb_defer_free_flush() with the page belonging to the old
+       page_pool.
 
-	Actually, it tries to reduce max=20 (max possible) below
-max_avail: [8 .. max_avail]. Not sure what 5 is here...
+The only case of page_pool_napi_local() returning true in flow 3 I can
+think of is that flow 1 and flow 3 might need to be called in the softirq
+of the same CPU and flow 3 might need to be called before flow 1.
 
-> the author thought max_avail could be less than 5.
-> But clamp(val, min, max) is only well defined for max >= min.
-> If max < min whether is returns min or max depends on the order of
-> the comparisons.
+It seems impossible that page_pool_napi_local() will return true between
+step 1 and step 6 as updated napi->list_owner is always seen by flow 3
+when they are both called in the softirq context of the same CPU or
+napi->list_owner != CPU that calling flow 3, which seems like an implicit
+assumption for the case of napi scheduling between different cpus too.
 
-	Looks like max_avail goes below 8 ? What value you see
-for such small system?
+And old page_pool is destroyed in step 5, I am not sure if it is necessary
+to call page_pool_disable_direct_recycling() in step 3 if page_pool_destroy()
+already have the synchronize_rcu() in step 5 before enabling napi.
 
-> Change to clamp(max_avail, 5, 20) which has the expected behaviour.
-
-	It should be clamp(max_avail, 8, 20)
+If not, maybe I am missing something here. It would be good to be more specific
+about the timing window that page_pool_napi_local() returning true for the old
+page_pool.
 
 > 
-> Replace the clamp_val() on the line below with clamp().
-> clamp_val() is just 'an accident waiting to happen' and not needed here.
-
-	OK
-
-> Fixes: 4f325e26277b6
-> (Although I actually doubt the code is used on small memory systems.)
-> 
-> Detected by compile time checks added to clamp(), specifically:
-> minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
-
-	Existing or new check? Does it happen that max_avail
-is a constant, so that a compile check triggers?
-
-> 
-> Signed-off-by: David Laight <david.laight@aculab.com>
-
-	The code below looks ok to me but can you change the
-comments above to more correctly specify the values and if the
-problem is that max_avail goes below 8 (min).
-
-> ---
->  net/netfilter/ipvs/ip_vs_conn.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
-> index 98d7dbe3d787..c0289f83f96d 100644
-> --- a/net/netfilter/ipvs/ip_vs_conn.c
-> +++ b/net/netfilter/ipvs/ip_vs_conn.c
-> @@ -1495,8 +1495,8 @@ int __init ip_vs_conn_init(void)
->  	max_avail -= 2;		/* ~4 in hash row */
->  	max_avail -= 1;		/* IPVS up to 1/2 of mem */
->  	max_avail -= order_base_2(sizeof(struct ip_vs_conn));
-
-	More likely we can additionally clamp max_avail here:
-
-	max_avail = max(min, max_avail);
-
-	But your solution solves the problem with less lines.
-
-> -	max = clamp(max, min, max_avail);
-> -	ip_vs_conn_tab_bits = clamp_val(ip_vs_conn_tab_bits, min, max);
-> +	max = clamp(max_avail, min, max);
-> +	ip_vs_conn_tab_bits = clamp(ip_vs_conn_tab_bits, min, max);
->  	ip_vs_conn_tab_size = 1 << ip_vs_conn_tab_bits;
->  	ip_vs_conn_tab_mask = ip_vs_conn_tab_size - 1;
->  
-> -- 
-> 2.17.1
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
