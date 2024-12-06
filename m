@@ -1,121 +1,157 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD920FAAD;
-	Fri,  6 Dec 2024 16:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63DE207E0D;
+	Fri,  6 Dec 2024 16:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733502080; cv=none; b=u7waYrr0NdZRQTpTmAzFJ6Zq+VUbjxd1WEKBuWZipoE6zPBo51URu/HHwqme2YsiwoRZUsKkMHODURvWi1nM7jAwRHmrgyYp3VY+wsa0QkSfJc8QuvbFSivEZz4/oRiDkfq3N32P4IFQF1TuMLwDBwBRJUkvVBGNqHvXvOZ7V7M=
+	t=1733502208; cv=none; b=RAu5WbIl/BQZd8K18ZsKeBvp0y1tM1QQV4kqNJ3Kc1fZSF1iTSmm8GQf0AIZ3LqwJWsdfkC+bBzlhAVzrmlLencA2H8xgkCt5xkr3JwKdo2hbogY7eMZ9IxUc6mAF4t6V8aMAeylMHOlib2nMyi3w8sc/6ku984y57gh/8gHs7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733502080; c=relaxed/simple;
-	bh=3dqaAoA31eacZhIbEOCa66ooHy/r1skHVtQzT7c7LRw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
-	 In-Reply-To:Content-Type; b=rrR417HCB0DIV+QLPl6KZ6G6r6iUZ00HP+T+JWhV6WWSLNi5iT6CRqXCnJsgyHfglyeOTg0demQYvVH2waSPOJiYqpS0ICFC37wrcMN2TBnZlpyAfZXZmzK1vmM2slGmlaHwMKOGZtDF53e3ercHzJZXk91g6MX3p3JIJ/E5UhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f0zSvMAF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1733502208; c=relaxed/simple;
+	bh=K3MjHXQZtPWDPl2K6xXNdF3L6j0v60HTDtwhM7VhARo=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ZZvhrTZpU1P55WQDWH7+llIvNA5FiUwl+mx+4CTLTjtY6zvGnrpaOkd/ghB2sSaARQh13dvpW89QSSIDQ1uWMkSo5FF4nieej14Rt0YuzSxYR3skz1O4+34yMDDQU6SBRkmexdPkbaMTJdVnEswQLWjd41Y5JuXwGZ30TYfxG8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=HQUi70o4; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f0zSvMAF"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67ObwZ031090;
-	Fri, 6 Dec 2024 16:21:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dZpxmyE10vyIjqiDFe9RUIn9vvUySpmF8C5fjD0TsPI=; b=f0zSvMAFf8MqbLhi
-	cstF/x9zO2OZT0iHRfdjU9D+ABSiEPzQI8ZhGd58O3rV7d8X9d7pTylMXylSCGEc
-	yefqnrlhLxXa49/Ofew6lx96MoJ2F3M4g94JewHiSm38tMVeTEhGaOMjPFsB15A1
-	dJG74kOtWu90ADYCFKlDw3QLrjifl6AX2JUCXQ7VMZKbj+EFpnnjV8EINUCkX9Ey
-	w68eTEuKRx+FscaK3zklyKVvTF8PE7Wa5+GCwkPJ6d2h6hwpY2jvjn33stOyAPBN
-	DxTR1SU22KW8QXqdcDGl7QW19vLuk9Ekp/32/b+2ix7NP1srPgaZn8tu9NZBTFyg
-	KmrNrQ==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43be173rss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 16:21:06 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B6GL5VB030458
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 6 Dec 2024 16:21:05 GMT
-Received: from [10.253.9.12] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 6 Dec 2024
- 08:21:00 -0800
-Message-ID: <dc40d847-9a98-4f46-94cb-208257334aed@quicinc.com>
-Date: Sat, 7 Dec 2024 00:20:57 +0800
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="HQUi70o4"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id E383921D96;
+	Fri,  6 Dec 2024 18:23:23 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=CgMFn6VL5GFx5RytU/0EGmFMlUt3Qngt2zSqkoPE5/Y=; b=HQUi70o4FvhS
+	cYB/jbDWZNy7y7Y0wnXFbM1qfSackMkaIsrqnXlO16IINMJ9dRw5sYmPWzR9fXnC
+	KPGqmxFi/Ym9rQagN9p6nMghefF9h7/8ZAhKu5GNOlC2QxdLuvYrstPODqkXfc6u
+	gXhAukX9GrZdptE4etIdKq4l1PB2nk3/28QZdDczn8vleamPQfevWNnyfZcNwgAz
+	II4GU5JFSVJUwKpG+aJ7fPr3lLYuC5xJmwhvDtPXiAxnCnMqLbfEaNpGIvKIUSDT
+	DIir0w4RQWAIL4flwzjupJ7meqHkbz7ZIuhDyyMFHdHZ+wWpXZywJvGnAzIXitmR
+	7ck2B6tjrUg99kF9vTtbzHcaIh9HvY0juJxHuPcuzZCMy77v/Ifa6Sqdc9Ga9bkP
+	yPR45NwSwtIxFNLuo4Wlm4Z9ACLqzA2kYk0pt/W5/hq1drwzCiggnBY6bBizYRts
+	sKt3/GcJxgEmlBadj752x52QKgCg1+Spe++dmaobPxFk2BRxzNkmqZz6meaypWKU
+	XKZ9T0kSaqOLA+dIN4/kLEZvZ08DYHAEZ/8jwRntDOqQ+48BcOqf/XCooU8WV7a/
+	ubwQHoZvsceIMXOJVDxhY7ZYKNrGPpVJWmscWMFxYa6ZlR4VzPNeypmAFPDDkaH3
+	WFEOG3Snd9faZJsMbczS5ClYFm94/v0=
+Received: from ink.ssi.bg (ink.ssi.bg [193.238.174.40])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri,  6 Dec 2024 18:23:23 +0200 (EET)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by ink.ssi.bg (Postfix) with ESMTPSA id E617B15F19;
+	Fri,  6 Dec 2024 18:23:14 +0200 (EET)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.1/8.17.1) with ESMTP id 4B6GNBkf041510;
+	Fri, 6 Dec 2024 18:23:12 +0200
+Date: Fri, 6 Dec 2024 18:23:11 +0200 (EET)
+From: Julian Anastasov <ja@ssi.bg>
+To: David Laight <David.Laight@ACULAB.COM>
+cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "'Naresh Kamboju'" <naresh.kamboju@linaro.org>,
+        "'Dan Carpenter'" <dan.carpenter@linaro.org>,
+        "'pablo@netfilter.org'" <pablo@netfilter.org>,
+        "'open list'" <linux-kernel@vger.kernel.org>,
+        "'lkft-triage@lists.linaro.org'" <lkft-triage@lists.linaro.org>,
+        "'Linux Regressions'" <regressions@lists.linux.dev>,
+        "'Linux ARM'" <linux-arm-kernel@lists.infradead.org>,
+        "'netfilter-devel@vger.kernel.org'" <netfilter-devel@vger.kernel.org>,
+        "'Arnd Bergmann'" <arnd@arndb.de>,
+        "'Anders Roxell'" <anders.roxell@linaro.org>,
+        "'Johannes Berg'" <johannes.berg@intel.com>,
+        "'toke@kernel.org'" <toke@kernel.org>,
+        "'Al Viro'" <viro@zeniv.linux.org.uk>,
+        "'kernel@jfarr.cc'" <kernel@jfarr.cc>,
+        "'kees@kernel.org'" <kees@kernel.org>
+Subject: RE: [PATCH net] Fix clamp() of ip_vs_conn_tab on small memory
+ systems.
+In-Reply-To: <2a91ee407ed64d24b82e5fc665971add@AcuMS.aculab.com>
+Message-ID: <c0a2ee53-f6ff-f4d4-e9ab-6a3bf850bec5@ssi.bg>
+References: <33893212b1cc4a418cec09aeeed0a9fc@AcuMS.aculab.com> <5ec10e7c-d050-dab8-1f1b-d0ca2d922eef@ssi.bg> <2a91ee407ed64d24b82e5fc665971add@AcuMS.aculab.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Lei Wei <quic_leiwei@quicinc.com>
-Subject: Re: [PATCH net-next v2 4/5] net: pcs: qcom-ipq9574: Add USXGMII
- interface mode support
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_kkumarcs@quicinc.com>, <quic_suruchia@quicinc.com>,
-        <quic_pavir@quicinc.com>, <quic_linchen@quicinc.com>,
-        <quic_luoj@quicinc.com>, <srinivas.kandagatla@linaro.org>,
-        <bartosz.golaszewski@linaro.org>, <vsmuthu@qti.qualcomm.com>,
-        <john@phrozen.org>, <linux-arm-msm@vger.kernel.org>
-References: <20241204-ipq_pcs_rc1-v2-0-26155f5364a1@quicinc.com>
- <20241204-ipq_pcs_rc1-v2-4-26155f5364a1@quicinc.com>
- <Z1B3W94-8qjn17Sj@shell.armlinux.org.uk>
-Content-Language: en-US
-In-Reply-To: <Z1B3W94-8qjn17Sj@shell.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: lNU9p6noLeU3grZhwU3QLQff8mwIKHfH
-X-Proofpoint-ORIG-GUID: lNU9p6noLeU3grZhwU3QLQff8mwIKHfH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 spamscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
- impostorscore=0 suspectscore=0 adultscore=0 malwarescore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060123
+Content-Type: text/plain; charset=US-ASCII
 
 
+	Hello,
 
-On 12/4/2024 11:38 PM, Russell King (Oracle) wrote:
-> On Wed, Dec 04, 2024 at 10:43:56PM +0800, Lei Wei wrote:
->> +static int ipq_pcs_link_up_config_usxgmii(struct ipq_pcs *qpcs, int speed)
->> +{
-> ...
->> +	/* USXGMII only support full duplex mode */
->> +	val |= XPCS_DUPLEX_FULL;
+On Fri, 6 Dec 2024, David Laight wrote:
+
+> From: Julian Anastasov
+> > Sent: 06 December 2024 12:19
+> > 
+> > On Fri, 6 Dec 2024, David Laight wrote:
+> > 
+> > > The intention of the code seems to be that the minimum table
+> > > size should be 256 (1 << min).
+> > > However the code uses max = clamp(20, 5, max_avail) which implies
+> > 
+> > 	Actually, it tries to reduce max=20 (max possible) below
+> > max_avail: [8 .. max_avail]. Not sure what 5 is here...
 > 
-> Again... this restriction needs to be implemented in .pcs_validate() by
-> knocking out the half-duplex link modes when using USXGMII mode.
+> Me mistyping values between two windows :-)
 > 
-> .pcs_validate() needs to be implemented whenever the PCS has
-> restrictions beyond what is standard for the PHY interface mode.
+> Well min(max, max_avail) would be the reduced upper limit.
+> But you'd still fall foul of the compiler propagating the 'n > 1'
+> check in order_base_2() further down the function.
 > 
-
-Currently, it seems there is no phylink_validate() call in 
-phylink_resolve(), to validate the resolved duplex/speed which is 
-notified by phydev when the PHY is linked up. So I am thinking to add 
-this duplex check in this link_up op, and return an appropriate error in 
-case of half-duplex. (Kindly correct me if I am wrong).
-
-> Thanks.
+> > > the author thought max_avail could be less than 5.
+> > > But clamp(val, min, max) is only well defined for max >= min.
+> > > If max < min whether is returns min or max depends on the order of
+> > > the comparisons.
+> > 
+> > 	Looks like max_avail goes below 8 ? What value you see
+> > for such small system?
 > 
+> I'm not, but clearly you thought the value could be small otherwise
+> the code would only have a 'max' limit.
+> (Apart from a 'sanity' min of maybe 2 to stop the code breaking.)
 
+	I'm not sure how much memory we can see in small system,
+IMHO, problem should not be possible in practice:
+
+- nobody expects 0 from totalram_pages() in the code
+
+- order_base_2(sizeof(struct ip_vs_conn)) is probably 8 on 32-bit
+
+- PAGE_SHIFT: 12 (for 4KB) or more?
+
+	So, if totalram_pages() returns below 128 pages (4KB each)
+max_avail will be below 19 (7 + 12), then 19 is reduced with 2 + 1
+and becomes 16, finally with 8 (from the 2nd order_base_2) to reach
+16-8=8. You need a system with less than 512KB (19 bits) to trigger 
+problem in clamp() that will lead to max below 8. Further, without
+checks, for ip_vs_conn_tab_bits=1 we need totalram_pages() to return 0
+pages.
+
+> > > Detected by compile time checks added to clamp(), specifically:
+> > > minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+> > 
+> > 	Existing or new check? Does it happen that max_avail
+> > is a constant, so that a compile check triggers?
+> 
+> Is all stems from order_base_2(totalram_pages()).
+> order_base_2(n) is 'n > 1 ? ilog2(n - 1) + 1 : 0'.
+> And the compiler generates two copies of the code that follows
+> for the 'constant zero' and ilog2() values.
+> And the 'zero' case compiles clamp(20, 8, 0) which is errored.
+> Note that it is only executed if totalram_pages() is zero,
+> but it is always compiled 'just in case'.
+
+	I'm confused with these compiler issues, if you
+think we should go with the patch just decide if it is a
+net or net-next material. Your change is safer for bad
+max_avail values but I don't expect to see problem while
+running without the change, except the building bugs.
+
+	Also, please use nf/nf-next tag to avoid any
+confusion with upstreaming...
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
