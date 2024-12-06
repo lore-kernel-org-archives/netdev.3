@@ -1,45 +1,46 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530BC2206B2
-	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 18:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C387E1D515D
+	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 18:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733510163; cv=none; b=V65KMT+pX6gP5pmxBqoiP6JSeriRkF9mFNvbilKwXdhVTfgy2ro5FHq/zD/scEwc7OX3uTvmL4BLLrslW/E+MXjV/CmGLwhdZ/F+XTeV+yG/H/lbRQmYpC+qH8JJ10YVCB3pdaNTMl5b41iIh7rVXhgLBz6fuuu/2xwcp3hGVZM=
+	t=1733510164; cv=none; b=m3fmBdKk5tsc9Ex/N9ZZAGGA7eLPQJcy37ffQW96Y7myk9MC2AEYN+/UmjJKjjE6Y9xzAG9Dz19QAI3gguFQd2PQCxEAByz6/eulQ6ny1naNfigq+r4gev14ZZfG7oiVhMpz0dkNcOH+PUpulLTcarZYCGV5mx3mN0NeB34ZkQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733510163; c=relaxed/simple;
-	bh=tSczHC8zpyoIY3iqu4LdXulEkjhCzQOuHl+tISPzKs0=;
+	s=arc-20240116; t=1733510164; c=relaxed/simple;
+	bh=pEGUBin/LsorY0ZPDZld9BOJ/tu57s2EIBTk/O6y/Tg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AgU72hNQAN5OGDvLCgPdW2w1zMA0BmwDR866vYWoVdmwn+sJglax5sR2OthIKJ6B3s2zAm0kiEY1JYBj35Wf2aZUuAw0NYUUgFGVNzvY+x6yRNjbMC/uAX1UddS+SqlcGwvwIQgQ1NXI/cjMjRJcr+5PgPwVEWPr1yD6ljMgXKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=fInc+A9g; arc=none smtp.client-ip=185.226.149.38
+	 In-Reply-To:To:Cc; b=S60+AFtQe8RndLviG9qKFtrV+zHU4kRlGZyBi+VXet4zdOu0MAnMAcZTVM+lLza6APfPzh+X0YtBGvFRga/lzqAjLEJsaeQN7LBsfGl51j4yOmN6na+3APyT3ak/cWZhO4FnYSYVsgmRTKIQIS9O7LyFoE9vVBThFIGKR9iunFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=NhHAKFYI; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="fInc+A9g"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="NhHAKFYI"
 Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tJdB7-004OrH-N8; Fri, 06 Dec 2024 19:35:49 +0100
+	id 1tJdBA-004OrT-7K; Fri, 06 Dec 2024 19:35:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=wBN7/ol7TUrDrXw5usJz5pglJHSJtQFy2mBXrPf0tJw=; b=fInc+A9gVBd3xiAfCPzxrYGKTD
-	OACaZjLRsQdSAT40e6AMeofj4Z/Aqras4Ilh93a52H+60e/70P/LlbtAp95YDorTRw0GVHsnZ1+Ph
-	96bpOhzxsaV3FEIwuQOFZ+oQRe2SRB2yAlXg7twKnWfuYuPdQNSoxyWAryGbf+FeXKBErSAnPOlRi
-	e8U+OQSzgTGlN8aBpatSLeC1lkOZjnkMV7uKYST41i+Oy9mpQZ4vVMXjgpGMNNdvbnwwvlVnCKDsA
-	CaQAvmYhIdklDOthLV4yVfXM01fID5TFXC280u3FWJC667JufKQ93TfdYmq9Y/iqqjGnPy3DA4d+j
-	Zyuxv9yg==;
+	bh=nxh02L6aDFisPrlSN5GEXJNL2ZIK2xxyPJNshoQVDFQ=; b=NhHAKFYI2rMuyAM6C04H+8dEKV
+	fR7vv+OgTioL7WgHbSLAdShb3KcW25TFDV1t4+pX8N0Ol7nx2url/so/+Bj0IKx+fD7jaLyvYOozA
+	iRK1r/ThVcWJjs/oechFAB8qAKEbMwnQzN+CBeeyskB69jwY/RufZ6wL1LzXHpu/X1+fYZ5IvFIFQ
+	y9uCGMBm0OdSGAgkBZ99eNVvkTTbvLkrWWowfTlp5h82we5VYYP3tA0O2EO0FX6crSt/PrKXgRicI
+	bwD6mbvWKWfY/Rl90IYOd95YdKwhl1rEbV5ugT8Mj34ZXHPsZQzdNopAY40cZIZrnquvlCbomB26h
+	zj9TtFoQ==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
 	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tJdB7-0008Fx-CE; Fri, 06 Dec 2024 19:35:49 +0100
+	id 1tJdB9-0008G2-Od; Fri, 06 Dec 2024 19:35:51 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tJdAo-007yMC-SB; Fri, 06 Dec 2024 19:35:30 +0100
+	id 1tJdAp-007yMC-Jh; Fri, 06 Dec 2024 19:35:31 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Fri, 06 Dec 2024 19:34:51 +0100
-Subject: [PATCH net-next 1/4] vsock/test: Use NSEC_PER_SEC
+Date: Fri, 06 Dec 2024 19:34:54 +0100
+Subject: [PATCH net-next 4/4] vsock/test: Add test for MSG_ZEROCOPY
+ completion memory leak
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,52 +49,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241206-test-vsock-leaks-v1-1-c31e8c875797@rbox.co>
+Message-Id: <20241206-test-vsock-leaks-v1-4-c31e8c875797@rbox.co>
 References: <20241206-test-vsock-leaks-v1-0-c31e8c875797@rbox.co>
 In-Reply-To: <20241206-test-vsock-leaks-v1-0-c31e8c875797@rbox.co>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Replace 1000000000ULL with NSEC_PER_SEC.
+Exercise the ENOMEM error path by attempting to hit net.core.optmem_max
+limit on send().
 
-No functional change intended.
+Fixed by commit 60cf6206a1f5 ("virtio/vsock: Improve MSG_ZEROCOPY error
+handling").
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- tools/testing/vsock/vsock_test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/vsock/vsock_test.c | 66 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
 diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 48f17641ca504316d1199926149c9bd62eb2921d..38fd8d96eb83ef1bd45728cfaac6adb3c1e07cfe 100644
+index f92c62b25a25d35ae63a77a0122a194051719169..6973e681490b363e3b9cedcf195844ba56da6f1d 100644
 --- a/tools/testing/vsock/vsock_test.c
 +++ b/tools/testing/vsock/vsock_test.c
-@@ -22,6 +22,7 @@
- #include <signal.h>
- #include <sys/ioctl.h>
- #include <linux/sockios.h>
-+#include <linux/time64.h>
- 
- #include "vsock_test_zerocopy.h"
- #include "timeout.h"
-@@ -559,7 +560,7 @@ static time_t current_nsec(void)
- 		exit(EXIT_FAILURE);
- 	}
- 
--	return (ts.tv_sec * 1000000000ULL) + ts.tv_nsec;
-+	return (ts.tv_sec * NSEC_PER_SEC) + ts.tv_nsec;
+@@ -1552,6 +1552,67 @@ static void test_stream_msgzcopy_leak_errq_server(const struct test_opts *opts)
+ 	close(fd);
  }
  
- #define RCVTIMEO_TIMEOUT_SEC 1
-@@ -599,7 +600,7 @@ static void test_seqpacket_timeout_client(const struct test_opts *opts)
- 	}
++static void test_stream_msgzcopy_leak_zcskb_client(const struct test_opts *opts)
++{
++	char buf[1024] = { 0 };
++	ssize_t optmem_max;
++	int fd, res;
++	FILE *f;
++
++	f = fopen("/proc/sys/net/core/optmem_max", "r");
++	if (!f) {
++		perror("fopen(optmem_max)");
++		exit(EXIT_FAILURE);
++	}
++
++	if (fscanf(f, "%zd", &optmem_max) != 1 || optmem_max > ~0U / 2) {
++		fprintf(stderr, "fscanf(optmem_max) failed\n");
++		exit(EXIT_FAILURE);
++	}
++
++	fclose(f);
++
++	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
++	if (fd < 0) {
++		perror("connect");
++		exit(EXIT_FAILURE);
++	}
++
++	enable_so_zerocopy_check(fd);
++
++	/* The idea is to fail virtio_transport_init_zcopy_skb() by hitting
++	 * core.sysctl_optmem_max (sysctl net.core.optmem_max) limit check in
++	 * sock_omalloc().
++	 */
++	optmem_max *= 2;
++	errno = 0;
++	do {
++		res = send(fd, buf, sizeof(buf), MSG_ZEROCOPY);
++		optmem_max -= res;
++	} while (res > 0 && optmem_max > 0);
++
++	if (errno != ENOMEM) {
++		fprintf(stderr, "expected ENOMEM on send()\n");
++		exit(EXIT_FAILURE);
++	}
++
++	close(fd);
++}
++
++static void test_stream_msgzcopy_leak_zcskb_server(const struct test_opts *opts)
++{
++	int fd;
++
++	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
++	if (fd < 0) {
++		perror("accept");
++		exit(EXIT_FAILURE);
++	}
++
++	vsock_wait_remote_close(fd);
++	close(fd);
++}
++
+ static struct test_case test_cases[] = {
+ 	{
+ 		.name = "SOCK_STREAM connection reset",
+@@ -1692,6 +1753,11 @@ static struct test_case test_cases[] = {
+ 		.run_client = test_stream_msgzcopy_leak_errq_client,
+ 		.run_server = test_stream_msgzcopy_leak_errq_server,
+ 	},
++	{
++		.name = "SOCK_STREAM MSG_ZEROCOPY leak completion skb",
++		.run_client = test_stream_msgzcopy_leak_zcskb_client,
++		.run_server = test_stream_msgzcopy_leak_zcskb_server,
++	},
+ 	{},
+ };
  
- 	read_overhead_ns = current_nsec() - read_enter_ns -
--			1000000000ULL * RCVTIMEO_TIMEOUT_SEC;
-+			   NSEC_PER_SEC * RCVTIMEO_TIMEOUT_SEC;
- 
- 	if (read_overhead_ns > READ_OVERHEAD_NSEC) {
- 		fprintf(stderr,
 
 -- 
 2.47.1
