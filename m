@@ -1,130 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC2E200135;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A751FF5FA;
 	Fri,  6 Dec 2024 12:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733488344; cv=none; b=MSbFAQwFuvwgDm56SM/vRcSWUWyKFq36nMSVVNHzJDaV1IBzce1ixMKkimngzIRa58FT2ElFqom5a3SnfMUNK17yGcb/IVaRAsFmVS48nFYNq1BfltF3b0e5DjJbZV7hfc7X+VxYiILvfvVJ4JGEMfthj8sodfKw2P2ekwGJAkk=
+	t=1733488346; cv=none; b=YxyZjH8EcKlIUesj3nfX862hheCZoh4SZ3CKygCOxt/g/aZ6V/dmir3tI0oYUDkMeqQlJcvecbnXeftfTeESpxKZuFpNFbsaNrv+qYa8MNv5Wwm8QdoaHk39HyyBHX4NmddSCWQlJaFCTO2qTMubRGFeeAIGPvZGfJGjXNdKEhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733488344; c=relaxed/simple;
-	bh=w/ls8XXs5aUyevc75S13Ak3D8BY0kudJCVt5TOtgEQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PcFqSwgm9nZuhekuh4U0KLvAUfkyvPQl6/HqtW0fmtPA79jq3XSn5VqcPdzsCOcWqN+8+0SRaHIzyWmR7RYkQwUDw5r5YQ2wJwglHabYtUiWxfGPRoCOdDSX48pjSA7v05x2VFEY0dStBLG5OqDYpcTkyvLe5olGux95t8hUkfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPR3kDjQ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPR3kDjQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E3EC4CED1;
-	Fri,  6 Dec 2024 12:32:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733488344;
-	bh=w/ls8XXs5aUyevc75S13Ak3D8BY0kudJCVt5TOtgEQM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DPR3kDjQz0Sb6HZVaCIGX8RIv6cIFwyCtU+CqXdLr0vHVbeOa+Up2HBiKBlzJzn1H
-	 AQ7GqKPTAYSQjtkb8G9udoz7OsYSc0lRZl4da7b41QvDepcbU9tQWM8K/L5CbPi9e+
-	 3LZQQt6Kf2yBZ+tcEOVX6TP7BCw3YVgNzj21FH/d636HTKkImyctF3uFjisdYzAFcx
-	 AuaH/BfMibdJltJcgVlBbwem3DMjgyFCxgd7cBbf2w/0B76IxYxM7gS+HlH81f/1KU
-	 okFSnxuxwnTdf7e3s6YtltHck/TvZhNp1G6QJzCVvoxNsJXJbWuUBSsxHh+YfIP/6D
-	 YBPpXt2KaAP5g==
-Date: Fri, 6 Dec 2024 12:32:19 +0000
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	Frank Li <frank.li@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx checksum
- offload for i.MX95 ENETC
-Message-ID: <20241206123219.GN2581@kernel.org>
-References: <20241204052932.112446-1-wei.fang@nxp.com>
- <20241204052932.112446-3-wei.fang@nxp.com>
- <20241206093708.GI2581@kernel.org>
- <PAXPR04MB8510D797ABEFA1D6153A3C9A88312@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1733488346; c=relaxed/simple;
+	bh=u7Y8vcACw0nN7XvzUTUQjb+zsdFCruoZHnJv/2+6AWE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QIdK9ew9P96ji2V0HIkzDmVSKwFTummUfSzcm4PeOJAKj/jhAcow78Whm4Rde79A0LFUy/Q+IBHRh/0NFBZruf/Bz/ox5vpQNDLjbuYVfyqPMAD20gDQjqB5Vh7PB28L4rkzw7v/DljsOh0mSBGJ1IBiYMUaS/AYlAYqqIGjvtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y4VvZ743kz1kvGW;
+	Fri,  6 Dec 2024 20:30:02 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 507741401DC;
+	Fri,  6 Dec 2024 20:32:22 +0800 (CST)
+Received: from localhost.localdomain (10.90.30.45) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Dec 2024 20:32:22 +0800
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Yunsheng Lin
+	<linyunsheng@huawei.com>, Alexander Duyck <alexander.duyck@gmail.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>
+Subject: [PATCH net-next v2 01/10] mm: page_frag: some minor refactoring before adding new API
+Date: Fri, 6 Dec 2024 20:25:24 +0800
+Message-ID: <20241206122533.3589947-2-linyunsheng@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20241206122533.3589947-1-linyunsheng@huawei.com>
+References: <20241206122533.3589947-1-linyunsheng@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR04MB8510D797ABEFA1D6153A3C9A88312@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-On Fri, Dec 06, 2024 at 10:46:49AM +0000, Wei Fang wrote:
-> > -----Original Message-----
-> > From: Simon Horman <horms@kernel.org>
-> > Sent: 2024年12月6日 17:37
-> > To: Wei Fang <wei.fang@nxp.com>
-> > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
-> > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
-> > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
-> > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
-> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > Subject: Re: [PATCH v6 RESEND net-next 2/5] net: enetc: add Tx checksum
-> > offload for i.MX95 ENETC
-> > 
-> > On Wed, Dec 04, 2024 at 01:29:29PM +0800, Wei Fang wrote:
-> > > In addition to supporting Rx checksum offload, i.MX95 ENETC also supports
-> > > Tx checksum offload. The transmit checksum offload is implemented through
-> > > the Tx BD. To support Tx checksum offload, software needs to fill some
-> > > auxiliary information in Tx BD, such as IP version, IP header offset and
-> > > size, whether L4 is UDP or TCP, etc.
-> > >
-> > > Same as Rx checksum offload, Tx checksum offload capability isn't defined
-> > > in register, so tx_csum bit is added to struct enetc_drvdata to indicate
-> > > whether the device supports Tx checksum offload.
-> > >
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-> > 
-> > ...
-> > 
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > > index 4b8fd1879005..590b1412fadf 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> > > @@ -558,7 +558,12 @@ union enetc_tx_bd {
-> > >  		__le16 frm_len;
-> > >  		union {
-> > >  			struct {
-> > > -				u8 reserved[3];
-> > > +				u8 l3_start:7;
-> > > +				u8 ipcs:1;
-> > > +				u8 l3_hdr_size:7;
-> > > +				u8 l3t:1;
-> > > +				u8 resv:5;
-> > > +				u8 l4t:3;
-> > >  				u8 flags;
-> > >  			}; /* default layout */
-> > 
-> > Hi Wei,
-> > 
-> > Given that little-endian types are used elsewhere in this structure
-> > I am guessing that the layout above works for little-endian hosts
-> > but will not work on big-endian hosts.
-> > 
-> > If so, I would suggest an alternate approach of using a single 32-bit
-> > word and accessing it using a combination of FIELD_PREP() and FIELD_GET()
-> > using masks created using GENMASK() and BIT().
-> 
-> Good suggestion, I will refine it, thanks.
+Refactor common codes from __page_frag_alloc_va_align() to
+__page_frag_cache_prepare() and __page_frag_cache_commit(),
+so that the new API can make use of them.
 
-Thanks. I forgot to mention that you will likely also need to add
-cpu_to_le32 and le32_to_cpu to the mix.
+CC: Alexander Duyck <alexander.duyck@gmail.com>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: Linux-MM <linux-mm@kvack.org>
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+---
+ include/linux/page_frag_cache.h | 34 ++++++++++++++++++++++++++--
+ mm/page_frag_cache.c            | 40 ++++++++++++++++++++++++++-------
+ 2 files changed, 64 insertions(+), 10 deletions(-)
 
-> > Or, less desirably IMHO, by providing an alternate layout for
-> > the embedded struct for big endian systems.
-> > 
-> > ...
-> 
+diff --git a/include/linux/page_frag_cache.h b/include/linux/page_frag_cache.h
+index 41a91df82631..5ae97f93a0a1 100644
+--- a/include/linux/page_frag_cache.h
++++ b/include/linux/page_frag_cache.h
+@@ -5,6 +5,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/log2.h>
++#include <linux/mmdebug.h>
+ #include <linux/mm_types_task.h>
+ #include <linux/types.h>
+ 
+@@ -39,8 +40,37 @@ static inline bool page_frag_cache_is_pfmemalloc(struct page_frag_cache *nc)
+ 
+ void page_frag_cache_drain(struct page_frag_cache *nc);
+ void __page_frag_cache_drain(struct page *page, unsigned int count);
+-void *__page_frag_alloc_align(struct page_frag_cache *nc, unsigned int fragsz,
+-			      gfp_t gfp_mask, unsigned int align_mask);
++void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
++				struct page_frag *pfrag, gfp_t gfp_mask,
++				unsigned int align_mask);
++unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
++					    struct page_frag *pfrag,
++					    unsigned int used_sz);
++
++static inline unsigned int __page_frag_cache_commit(struct page_frag_cache *nc,
++						    struct page_frag *pfrag,
++						    unsigned int used_sz)
++{
++	VM_BUG_ON(!nc->pagecnt_bias);
++	nc->pagecnt_bias--;
++
++	return __page_frag_cache_commit_noref(nc, pfrag, used_sz);
++}
++
++static inline void *__page_frag_alloc_align(struct page_frag_cache *nc,
++					    unsigned int fragsz, gfp_t gfp_mask,
++					    unsigned int align_mask)
++{
++	struct page_frag page_frag;
++	void *va;
++
++	va = __page_frag_cache_prepare(nc, fragsz, &page_frag, gfp_mask,
++				       align_mask);
++	if (likely(va))
++		__page_frag_cache_commit(nc, &page_frag, fragsz);
++
++	return va;
++}
+ 
+ static inline void *page_frag_alloc_align(struct page_frag_cache *nc,
+ 					  unsigned int fragsz, gfp_t gfp_mask,
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index 3f7a203d35c6..f55d34cf7d43 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -90,9 +90,31 @@ void __page_frag_cache_drain(struct page *page, unsigned int count)
+ }
+ EXPORT_SYMBOL(__page_frag_cache_drain);
+ 
+-void *__page_frag_alloc_align(struct page_frag_cache *nc,
+-			      unsigned int fragsz, gfp_t gfp_mask,
+-			      unsigned int align_mask)
++unsigned int __page_frag_cache_commit_noref(struct page_frag_cache *nc,
++					    struct page_frag *pfrag,
++					    unsigned int used_sz)
++{
++	unsigned int orig_offset;
++
++	VM_BUG_ON(used_sz > pfrag->size);
++	VM_BUG_ON(pfrag->page != encoded_page_decode_page(nc->encoded_page));
++	VM_BUG_ON(pfrag->offset + pfrag->size >
++		  (PAGE_SIZE << encoded_page_decode_order(nc->encoded_page)));
++
++	/* pfrag->offset might be bigger than the nc->offset due to alignment */
++	VM_BUG_ON(nc->offset > pfrag->offset);
++
++	orig_offset = nc->offset;
++	nc->offset = pfrag->offset + used_sz;
++
++	/* Return true size back to caller considering the offset alignment */
++	return nc->offset - orig_offset;
++}
++EXPORT_SYMBOL(__page_frag_cache_commit_noref);
++
++void *__page_frag_cache_prepare(struct page_frag_cache *nc, unsigned int fragsz,
++				struct page_frag *pfrag, gfp_t gfp_mask,
++				unsigned int align_mask)
+ {
+ 	unsigned long encoded_page = nc->encoded_page;
+ 	unsigned int size, offset;
+@@ -114,6 +136,8 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 		/* reset page count bias and offset to start of new frag */
+ 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
+ 		nc->offset = 0;
++	} else {
++		page = encoded_page_decode_page(encoded_page);
+ 	}
+ 
+ 	size = PAGE_SIZE << encoded_page_decode_order(encoded_page);
+@@ -132,8 +156,6 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 			return NULL;
+ 		}
+ 
+-		page = encoded_page_decode_page(encoded_page);
+-
+ 		if (!page_ref_sub_and_test(page, nc->pagecnt_bias))
+ 			goto refill;
+ 
+@@ -148,15 +170,17 @@ void *__page_frag_alloc_align(struct page_frag_cache *nc,
+ 
+ 		/* reset page count bias and offset to start of new frag */
+ 		nc->pagecnt_bias = PAGE_FRAG_CACHE_MAX_SIZE + 1;
++		nc->offset = 0;
+ 		offset = 0;
+ 	}
+ 
+-	nc->pagecnt_bias--;
+-	nc->offset = offset + fragsz;
++	pfrag->page = page;
++	pfrag->offset = offset;
++	pfrag->size = size - offset;
+ 
+ 	return encoded_page_decode_virt(encoded_page) + offset;
+ }
+-EXPORT_SYMBOL(__page_frag_alloc_align);
++EXPORT_SYMBOL(__page_frag_cache_prepare);
+ 
+ /*
+  * Frees a page fragment allocated out of either a compound or order 0 page.
+-- 
+2.33.0
+
