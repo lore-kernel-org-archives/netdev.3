@@ -1,130 +1,175 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD19214802
-	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 22:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21522C6D9
+	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 22:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733523191; cv=none; b=GBaxkIEdlUZGtFxezVs3rqFBFi+0JdT7u+8QHRs9bs+VQvLQUjO+6eH2w3fwK3o+bZgD9wsBcwb0fYxtghqTZIVchFixZkcHfXiUObXmLe8Qyx3NLqmGzzUdpw/Yy83u3dLRx6ovopIbn31sKAot9x/0PHM+NbLa8cOz50vuI1c=
+	t=1733524697; cv=none; b=B53L1Jmax1oT4Zjs7fb8P9zCjP5Z9rlhMV5LsJUByi7Ys91IY+/GJ9RfCsAdWjE4bi28k1MYalfpxNzoqhbsRm/5pKtNGRTdqGRVplslNXm0r1qmQzB+XRXOl6VP/Llp/JMJ7IkQrs1HWukjrRQkEF88iSAB/X+sJi5h3C4bdzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733523191; c=relaxed/simple;
-	bh=tKoKpqFqMsaTyalh17cUupQqtDJ85oUoAYZrQ6vulEQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A5Q4lYT03Fh6zSBXY83qv5EQ7zEqsRHioVLyD3XYGYOnfrc6AWvKUI/8Il/AEgNBFuG/+DujKPXraS6Iq+/8fokpk3iklOcRjIwQ8HtackAmTwkM3NEPq2ZfGxxEQ06o++KykPNY+0vk8ywBsQCJX7t0w+/DlTsFUSZA1GuCr3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ucs7Dmiu; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733524697; c=relaxed/simple;
+	bh=+KahjWkKKHf7Kr+cIJ8XN54sSNZKpQNaIP4nqimDcAo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FOnlB/W5KLPIcKpHaGDM7ZgZhkO+sVdz2pb0kFefYxpDNd8gkKchvQKMY9nUs8OkELMFpTSUiroN8u4431QMOgIWsMZ+bBCoPv5FYdaW3q3mgJ2vpmzJ/OQhfAkSVVl/1UN3pxHQvVLCUmOtFDOPiRLejN1/8N4KLT544XyoEXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SP6gid6e; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ucs7Dmiu"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-434a2f3bae4so26248905e9.3
-        for <netdev@vger.kernel.org>; Fri, 06 Dec 2024 14:13:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SP6gid6e"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-7b69c165661so298982885a.2
+        for <netdev@vger.kernel.org>; Fri, 06 Dec 2024 14:38:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733523187; x=1734127987; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GkaAUC4YurkH0P3A1uBBUmUf2ttFOaLH/NU+6/Qr6is=;
-        b=Ucs7Dmiup8L05E6cxjnH3omgWpKSQ00eAmxP7J33GuzZEpTq7toysgdkk/+QvXRTQa
-         eg7ezheVwLEwx2oo/xj6Fz61D34/vlkVxJPa566M0F3vTO44x0Fh3/P+7fWRspYtZ2z0
-         xxkiXB0PseI4xR2u2Dtq5uh6aknC19XwU5VTa6v4YzmTx8qE6Ga2sQMi1UYI2k1p9Nyh
-         X9MsXK9dHbK7o9tfBqxQ8TxRVE2ut6i9YeSLu8VUlVwhqP7FtPeSa9qXaRGQBnuSYp+l
-         2BI3AQKEeO1OP5xmYgkeuxfgb65aQy4SDHIaR4RS+kKf31jEyvzSFKnpeX/SOUcg+I2k
-         kTqw==
+        d=google.com; s=20230601; t=1733524694; x=1734129494; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rwCouMcX1+pw+wA3+z1ardlTUZELDS3YzjK5RN5UVyg=;
+        b=SP6gid6eyzEo40wS+sj61w8HZ+ff7xrk2n/cwnV2iA2GBUhbo59VEy79bH+yUzvZOs
+         FcQstaqqxAtaTZcAy0QdrZgoEWoKA7+6C3ua9bg2d2wcacHsAcL4b0SLNDj73nTvAkdV
+         jI+mAXiY8qjPWFSvdQlWWO5GqT5G1CzrmiQH7JgOI8C37d4MQju3DwcdQB277ZVt6hNX
+         VxQl3RDlnZMfPjSQCXVPOHZJ+Ya5pUcXZuOdneBJxF50a26lg1k/PRGV0D8xIvoWTUES
+         UgUBFIm2dP1abtgCUCXfQ7Kuvu7UTmvjiIOEeJhnTdxCiwFdO5NnwR+Cb5CTIuX9xenQ
+         628g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733523187; x=1734127987;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GkaAUC4YurkH0P3A1uBBUmUf2ttFOaLH/NU+6/Qr6is=;
-        b=UaiJGylLHDueH2elgy/hSyP2WoZr1aEUXW4e7PCJTuiUTeVOsPUNCZ4rAPw+HgbOea
-         9b+yhlG7Sy8KWDa03pKubmpAaRS/KGGJ+k+bZaLzUKaVqKOLm4aFy90bTSw0qvQAbO0d
-         xdwDDKEKbtPediTpyXu793eWJUU7yLjCuutJfmA209sz4WB0BCnWG8v7xr5ucCO54D/X
-         8lacudSTHvXV7+AokFO9yIPBxQL2TbQwnbQ7UuN7DQBbel72j+07Cdldyx2ZX4wuBoTQ
-         wcIDJOmLaxi8AxMuWLE/JUEJ+uQh8/84IRQ65kZy8+7Zo+Wa+1KhObw56oetaA3AM6jj
-         tu6Q==
-X-Gm-Message-State: AOJu0YzH7fAqz2zP6X2jYb28g9It/AT6v9MnXrxAA9jXJWxoyX2EAzFS
-	4yFyij/EPy10Vu4lzJ5Ml/ElFFeYifiY8tX8J2hMhgq/oEc1NQra8Cbh4PFM8yg0kYuXGXrtjwX
-	/cc3bfaHfyWSWmZwxYo1/Os5QD/Q=
-X-Gm-Gg: ASbGncv6cj3RA3j4NJR1OHfx27vZDGjFWm+Sl56aR1+3uTxaALywQp3vTv/MSNag6XI
-	ncemeDFmqeoZRdXkmzSe5en6c7chUTGFu
-X-Google-Smtp-Source: AGHT+IGg6zB/q6LoB1qDsMb1psAUNJl0ejwRh84tUBK9vljANM8j1Zir7HlHwaqTQPNx0585nLIkVzfeakcWWlAYiCU=
-X-Received: by 2002:a05:600c:45c6:b0:430:54a4:5ad7 with SMTP id
- 5b1f17b1804b1-434ddead902mr34414235e9.1.1733523187253; Fri, 06 Dec 2024
- 14:13:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733524694; x=1734129494;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rwCouMcX1+pw+wA3+z1ardlTUZELDS3YzjK5RN5UVyg=;
+        b=m2Yk/PIauxi8A0MCa/wU20hEYh3OvrpYLDc5S9tqOwSqQqa7L5xPP66+/dBp9RcbVi
+         5GLUYueL29tRBqx0SxI9EeTDpcW8kDuDtX5VsFJzPIq43N3Lgsku93rzrfbiEJR2IGff
+         +iG207JpgQO023MMa6qZaeLshfVwKHwfmIO09XPGWCPFPofEwAu0ep62W22OFWglWuJx
+         k6doRCwQvkcCQIhhYhzxKHW+yv4SmVSreiCMYQ4xHpRm5xlfttEP348ecgaRTunLpG/i
+         WVo30BAxx4+9PHePdTTcvqO5LqFPY8DCzAVzuXgAknG8u9y+djbNZ0IpVkMoCOzkP8Wx
+         skAw==
+X-Gm-Message-State: AOJu0YydHjxV4v1Nc+Kwpf9tKjvlqxMnSrfOH4KbLYSOlQ3IhVqtC8e9
+	/E6zpsUF0Z8yeEu7v11/SPwWXPrr2C9szOfay5/MLQk6h4LFvEZpMEAqfzmetxi2MbdgZbefa2W
+	PZFZU13IwLA==
+X-Google-Smtp-Source: AGHT+IFtn0AMRSzG04GpSFNWOWkAuTjB3s1HfejltXt+f6W8BzOWODgnqfG3kQn0VQZU9bobDu5tKJfIOh1yQA==
+X-Received: from qtbbn5.prod.google.com ([2002:a05:622a:1dc5:b0:466:a9ac:a24a])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5fca:0:b0:464:94cf:98a3 with SMTP id d75a77b69052e-46734f977b6mr56472751cf.51.1733524694561;
+ Fri, 06 Dec 2024 14:38:14 -0800 (PST)
+Date: Fri,  6 Dec 2024 22:38:11 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241127221129.46155-1-jesse.vangavere@scioteq.com>
- <20241130140659.4518f4a3@kernel.org> <CAMdwsN99s2C=qvxEO=hmpRfvjRH6E7tww0Mfp-Q044ufi8Rn-w@mail.gmail.com>
-In-Reply-To: <CAMdwsN99s2C=qvxEO=hmpRfvjRH6E7tww0Mfp-Q044ufi8Rn-w@mail.gmail.com>
-From: Jesse Van Gavere <jesseevg@gmail.com>
-Date: Fri, 6 Dec 2024 23:12:56 +0100
-Message-ID: <CAMdwsN8iXqhBW4y7WOBT1WAdhfoKhmndmODzVihkvfmmzuOj6w@mail.gmail.com>
-Subject: Re: [PATCH] net: dsa: microchip: KSZ9896 register regmap alignment to
- 32 bit boundaries
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, woojung.huh@microchip.com, 
-	UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com, 
-	Jesse Van Gavere <jesse.vangavere@scioteq.com>, Tristram.Ha@microchip.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241206223811.1343076-1-edumazet@google.com>
+Subject: [PATCH net-next] mctp: no longer rely on net->dev_index_head[]
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Jeremy Kerr <jk@codeconstruct.com.au>, 
+	Matt Johnston <matt@codeconstruct.com.au>, Kuniyuki Iwashima <kuniyu@amazon.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+mctp_dump_addrinfo() is one of the last users of
+net->dev_index_head[] in the control path.
 
-A quick ping on this, how do I best proceed here?
-Do I keep the original commit and take in account the feedback for the
-commit message or should I e.g. like Tristram recommended just modify
-it to 2 regmap reg ranges for these PHY registers?
-In that case I might just as well modify this commit to make this
-modification for all the existing regmap reg range arrays defined.
-(There's probably also something to say about enforcing these ranges
-across more chips but that's a bit outside the scope of what I'm
-trying to do here)
+Switch to for_each_netdev_dump() for better scalability.
 
-Best regards,
-Jesse
+Use C99 for mctp_device_rtnl_msg_handlers[] to prepare
+future RTNL removal from mctp_dump_addrinfo()
 
-Op di 3 dec 2024 om 06:29 schreef Jesse Van Gavere <jesseevg@gmail.com>:
->
-> Hello Jakub, all,
->
-> Op za 30 nov 2024 om 23:07 schreef Jakub Kicinski <kuba@kernel.org>:
-> >
-> > On Wed, 27 Nov 2024 23:11:29 +0100 Jesse Van Gavere wrote:
-> > > Commit (SHA1: 8d7ae22ae9f8c8a4407f8e993df64440bdbd0cee) fixed this issue
-> > > for the KSZ9477 by adjusting the regmap ranges.
-> >
-> > The correct format for referring to other commits in Linux kernel is:
-> >  %h (\"%s\")
-> > IOW:
-> >
-> >  Commit 8d7ae22ae9f8 ("net: dsa: microchip: KSZ9477 register regmap
-> >  alignment to 32 bit boundaries") fixed this issue...
-> >
-> > > The same issue presents itself on the KSZ9896 regs and is fixed with
-> > > the same regmap range modification.
-> >
-> > Could you explain the impact? What will not work / break without this
-> > change? Please add a Fixes tag indicating where buggy code was added
-> > to make sure backporters know how far to backport.
-> Will do, still learning the ropes of contributing, thanks for the feedback!
-> > --
-> > pw-bot: cr
->
-> What do you think I preferably do to account for Tristram's feedback
-> in my next patch?
-> Should I incorporate it as-is, keep my patch with requested changes,
-> or perhaps even "fix" it with below suggestion across all registers
-> sets?
-> > The port address range 0x#100-0x#13F just maps to the PHY registers 0-31,
-> > so it can be simply one single regmap_reg_range(0x1100, 0x113f) instead
-> > of many.  I suggest using regmap_reg_range(0x1100, 0x111f) and
-> > regmap_reg_range(0x1120, 0x113f) to remind people the high range address
-> > needs special handling.
->
-> > I also do not know why those _register_set are not enforced across all
-> > KSZ9897 related switches.
->
-> Best regards,
-> Jesse
+(mdev->addrs is not yet RCU protected)
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Matt Johnston <matt@codeconstruct.com.au>
+---
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+---
+ net/mctp/device.c | 50 ++++++++++++++++++-----------------------------
+ 1 file changed, 19 insertions(+), 31 deletions(-)
+
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index 26ce34b7e88e174cdb6fa65c0d8e5bf6b5a580d7..8e0724c56723de328592bfe5c6fc8085cd3102fe 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -20,8 +20,7 @@
+ #include <net/sock.h>
+ 
+ struct mctp_dump_cb {
+-	int h;
+-	int idx;
++	unsigned long ifindex;
+ 	size_t a_idx;
+ };
+ 
+@@ -115,43 +114,29 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	struct mctp_dump_cb *mcb = (void *)cb->ctx;
+ 	struct net *net = sock_net(skb->sk);
+-	struct hlist_head *head;
+ 	struct net_device *dev;
+ 	struct ifaddrmsg *hdr;
+ 	struct mctp_dev *mdev;
+-	int ifindex;
+-	int idx = 0, rc;
++	int ifindex, rc;
+ 
+ 	hdr = nlmsg_data(cb->nlh);
+ 	// filter by ifindex if requested
+ 	ifindex = hdr->ifa_index;
+ 
+ 	rcu_read_lock();
+-	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
+-		idx = 0;
+-		head = &net->dev_index_head[mcb->h];
+-		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+-			if (idx >= mcb->idx &&
+-			    (ifindex == 0 || ifindex == dev->ifindex)) {
+-				mdev = __mctp_dev_get(dev);
+-				if (mdev) {
+-					rc = mctp_dump_dev_addrinfo(mdev,
+-								    skb, cb);
+-					mctp_dev_put(mdev);
+-					// Error indicates full buffer, this
+-					// callback will get retried.
+-					if (rc < 0)
+-						goto out;
+-				}
+-			}
+-			idx++;
+-			// reset for next iteration
+-			mcb->a_idx = 0;
+-		}
++	for_each_netdev_dump(net, dev, mcb->ifindex) {
++		if (ifindex && ifindex != dev->ifindex)
++			continue;
++		mdev = __mctp_dev_get(dev);
++		if (!mdev)
++			continue;
++		rc = mctp_dump_dev_addrinfo(mdev, skb, cb);
++		mctp_dev_put(mdev);
++		if (rc < 0)
++			break;
++		mcb->a_idx = 0;
+ 	}
+-out:
+ 	rcu_read_unlock();
+-	mcb->idx = idx;
+ 
+ 	return skb->len;
+ }
+@@ -531,9 +516,12 @@ static struct notifier_block mctp_dev_nb = {
+ };
+ 
+ static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
+-	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
+-	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
+-	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
++	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_NEWADDR,
++	 .doit = mctp_rtm_newaddr},
++	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_DELADDR,
++	 .doit = mctp_rtm_deladdr},
++	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_GETADDR,
++	 .dumpit = mctp_dump_addrinfo},
+ };
+ 
+ int __init mctp_device_init(void)
+-- 
+2.47.0.338.g60cca15819-goog
+
