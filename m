@@ -1,180 +1,120 @@
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74201FF7D9
-	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 13:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551F620103B
+	for <netdev@vger.kernel.org>; Fri,  6 Dec 2024 13:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733490530; cv=none; b=m5+f0aSFW5RxxuqrjTqzXygBf8MP8eSqObdOvxN1l0RhRwm32RhO/kVS/fpw6SDqh8x5Pb/EUVq6FqwF/MeRCBKux2COvan1dKAyjkWNDJ0RszFyf5ZXhmeYwc7/fBXuGU3n4xIjvFntn/Pl9na/vhc4v1CH/sMynwgAM1ibIOU=
+	t=1733490574; cv=none; b=hd0vAKyrTd75zZ7h73LeWhLTBgXAWLNTB5rZBqIZuHELqb7IssfuAAwo7sA70SkzJXkU6B6r2wFtYFefgRdVRvBqSgJOyrm4q8cOnz/ZPG6TEgrit+N/a42n6ma3+j9C/9h97/fVeWjBIycKkbpNHgBSpHr2l5xRydgsq7DDiK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733490530; c=relaxed/simple;
-	bh=QF8c2MhUemDCUpYqGQBweZ1Ws7IWDc/WAQA2tfJjVVU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=DEnSe9cVif/rYDxU8bxDR4s7Pgq1PPpkjy/mhYlIzkxHZSUh5+3cUAvesvyJk5cuV16jxQgIpLIZ8wf+ftBTZrP5FXWISf/0DxM89uZmb4gHUjxTgk/UGqNBtJhrULvyrM6pK1CyOuwfcrSFGNILHQuR/Ug2YxdoW5nUxHOtNBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-168-rEnKtWNUMFWeQM5TnnsDWQ-1; Fri, 06 Dec 2024 13:08:45 +0000
-X-MC-Unique: rEnKtWNUMFWeQM5TnnsDWQ-1
-X-Mimecast-MFC-AGG-ID: rEnKtWNUMFWeQM5TnnsDWQ
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 6 Dec
- 2024 13:07:59 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Fri, 6 Dec 2024 13:07:59 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Julian Anastasov' <ja@ssi.bg>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 'Naresh Kamboju'
-	<naresh.kamboju@linaro.org>, 'Dan Carpenter' <dan.carpenter@linaro.org>,
-	"'pablo@netfilter.org'" <pablo@netfilter.org>, 'open list'
-	<linux-kernel@vger.kernel.org>, "'lkft-triage@lists.linaro.org'"
-	<lkft-triage@lists.linaro.org>, 'Linux Regressions'
-	<regressions@lists.linux.dev>, 'Linux ARM'
-	<linux-arm-kernel@lists.infradead.org>, "'netfilter-devel@vger.kernel.org'"
-	<netfilter-devel@vger.kernel.org>, 'Arnd Bergmann' <arnd@arndb.de>, "'Anders
- Roxell'" <anders.roxell@linaro.org>, 'Johannes Berg'
-	<johannes.berg@intel.com>, "'toke@kernel.org'" <toke@kernel.org>, 'Al Viro'
-	<viro@zeniv.linux.org.uk>, "'kernel@jfarr.cc'" <kernel@jfarr.cc>,
-	"'kees@kernel.org'" <kees@kernel.org>
-Subject: RE: [PATCH net] Fix clamp() of ip_vs_conn_tab on small memory
- systems.
-Thread-Topic: [PATCH net] Fix clamp() of ip_vs_conn_tab on small memory
- systems.
-Thread-Index: AdtHyTlbE/fm67s0Ria1gsbgnJ6KcgAD9raAAACnwVA=
-Date: Fri, 6 Dec 2024 13:07:59 +0000
-Message-ID: <2a91ee407ed64d24b82e5fc665971add@AcuMS.aculab.com>
-References: <33893212b1cc4a418cec09aeeed0a9fc@AcuMS.aculab.com>
- <5ec10e7c-d050-dab8-1f1b-d0ca2d922eef@ssi.bg>
-In-Reply-To: <5ec10e7c-d050-dab8-1f1b-d0ca2d922eef@ssi.bg>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1733490574; c=relaxed/simple;
+	bh=dyHOX0mk2DvLsKVikP8Gv/x3O3rm4+yTGF7tP++exTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G6DgO1PaFsmfJNDDnTY2lf+YGMdcfwOd4AFUJBJUUnDgmuYR4Q8SelLKnSgRh1WBbCYJ8qWdj+RtTGjxxdQAynN/jY9lfcahprPufbtQtQZhc1WkfaumhJHp7hzTKtS91Ih8Yb0NdM0ZXe5P7WXF+AlKdyVIbb3tB+eqXASzCZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com; spf=pass smtp.mailfrom=waldekranz.com; dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b=UXpvoPzY; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=waldekranz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=waldekranz.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=waldekranz-com.20230601.gappssmtp.com header.i=@waldekranz-com.20230601.gappssmtp.com header.b="UXpvoPzY"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ffd6b7d77aso25330081fa.0
+        for <netdev@vger.kernel.org>; Fri, 06 Dec 2024 05:09:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=waldekranz-com.20230601.gappssmtp.com; s=20230601; t=1733490570; x=1734095370; darn=vger.kernel.org;
+        h=content-transfer-encoding:organization:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mHEwR1AyeXEtbRi9lx8Og99xFAVCPLImG2PXMNnqFh0=;
+        b=UXpvoPzY00n5KxrepzQdFcLraJkcsyqQ+4Xp7OJZJftm5xveGv656ydMhSrxpIqaVP
+         tXQdwng00Q8NhXdJlaEHQoY0FdgFv9PgtRJtjcrnKPZoEe2XZAT64Xrb5p4mMW38bLbF
+         vOFctlVHCoNIHg9T3UiXSVFs0iZlk/urBCkm1xY8j4xFXuC0rnwksuW2l35eEapSDhWV
+         yE2nPfFq+cQg6LkKdiLgXi+DtoCOsA0joIFQnEm3iStbyYUR4pwDD+0C/2/niRPfo2Vi
+         DVtT05a4BwmqnFRLHQsBYCZ43snLI+dRIvGqvFtf5QrnPfN1g9/GIamLVDlXIMRpctG8
+         pqpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733490570; x=1734095370;
+        h=content-transfer-encoding:organization:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mHEwR1AyeXEtbRi9lx8Og99xFAVCPLImG2PXMNnqFh0=;
+        b=SIA46SfG8yyldjRkUE+EcEZQk4uARCul+xtCeD435LPrCXaMhbqEBL31GOYY3W4ZVl
+         FU3OiaqG1eN1KrgupaidCBPLfsa7bycIx2lOz6WmD6xOHzRz3XESLp7BVdhpErJrDSnD
+         f9QcB5A3oNiq8n89+Dw9schHeCZWGs/I4GC2eqYyalJ/JBeDJCO0SBmQilEYlPQcIxm8
+         RBfJ9As2IAMxSHnVGKvI3PoaI3QQuQq0RtmyU84+whidrLzGEDaeKDtHKPLpwAZ44U8c
+         bm1mNeZyoSqHYIUkW+fbDCcWI6ibntKgdaIO+FfO5b2ggm4Q4nQl9M0aLgI5Y2Frbli+
+         9liA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKMj+QqmRUjy8/NwMUHCSQzx8Nr3w3o60DxCfAlaK1FMQB/tX7S2kYpCJYrdudiE1VOzwghOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWS2QiOcrpKNVKW13q/clgRpg8paJ/V9OfE253gSS5qpSVk4re
+	LvlnIuldd+sou6Y31JIGXEtH1wQH7+n+Q78KlNXbzhrFCcRg0fb3F3hHqhrPVUA=
+X-Gm-Gg: ASbGncvIM1ZQ7jP0a1JPU+6NTJn8mhz9xV11O2QBLYxmhWNomZcx9Un079u/SoJ9E8U
+	UdrMald7lAA03S5hHjzSqLUon8VME7AKsVhotM0H1T3Aw1lfqaBxsklW+/Of5SDO7fwLgoHTj2a
+	o3Qd+tuCCMH6pn6vhZUXEabUfLu9AR7OLF7KJLQ+Qy/mfrAaKXun1i2s1MSzpnsZ8XBVSseJDTD
+	/6JZmuNquMKVeJWHb9XhqXs4/5bBIlT5PPRg1RnZ7eldavrXjnRR7N+zT5yJRwEuLMo+4Fx55TM
+	IAGBYW1SAg==
+X-Google-Smtp-Source: AGHT+IFelkb1GD26qibKoZqMkwblynJ3qKf48HzH66z2LpZxLqDSYltMm34CGvxC4S4l9q973NpQew==
+X-Received: by 2002:a2e:bc84:0:b0:300:3a15:8f19 with SMTP id 38308e7fff4ca-3003a15931fmr6905191fa.32.1733490570044;
+        Fri, 06 Dec 2024 05:09:30 -0800 (PST)
+Received: from wkz-x13.. (h-176-10-159-15.NA.cust.bahnhof.se. [176.10.159.15])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30020e21704sm4527401fa.90.2024.12.06.05.09.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 05:09:28 -0800 (PST)
+From: Tobias Waldekranz <tobias@waldekranz.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: andrew@lunn.ch,
+	f.fainelli@gmail.com,
+	olteanv@gmail.com,
+	netdev@vger.kernel.org,
+	linux@armlinux.org.uk,
+	chris.packham@alliedtelesis.co.nz
+Subject: [PATCH net 0/4] net: dsa: mv88e6xxx: Amethyst (6393X) fixes
+Date: Fri,  6 Dec 2024 14:07:32 +0100
+Message-ID: <20241206130824.3784213-1-tobias@waldekranz.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hSGfRIh-mIn234Ffx7NohDXmZPXFts_sAKvYWCtUFmk_1733490524
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Organization: Addiva Elektronik
+Content-Transfer-Encoding: 8bit
 
-From: Julian Anastasov
-> Sent: 06 December 2024 12:19
->=20
-> On Fri, 6 Dec 2024, David Laight wrote:
->=20
-> > The intention of the code seems to be that the minimum table
-> > size should be 256 (1 << min).
-> > However the code uses max =3D clamp(20, 5, max_avail) which implies
->=20
-> =09Actually, it tries to reduce max=3D20 (max possible) below
-> max_avail: [8 .. max_avail]. Not sure what 5 is here...
+This series provides a set of bug fixes discovered while bringing up a
+new board using mv88e6393x chips.
 
-Me mistyping values between two windows :-)
+1/4 adds logging of low-level I/O errors that where previously only
+logged at a much higher layer, e.g. "probe failed" or "failed to add
+VLAN", at which time the origin of the error was long gone. Not
+exactly a bugfix, though still suitable for -net IMHO; but I'm also
+happy to send it via net-next instead if that makes more sense.
 
-Well min(max, max_avail) would be the reduced upper limit.
-But you'd still fall foul of the compiler propagating the 'n > 1'
-check in order_base_2() further down the function.
+2/4 fixes an issue I've never seen on any other board. At first I
+assumed that there was some board-specific issue, but we've not been
+able to find one. If you give the chip enough time, it will eventually
+signal "PPU Polling" and everything else will work as
+expected. Therefore I assume that all is in order, and that we simply
+need to increase the timeout.
 
-> > the author thought max_avail could be less than 5.
-> > But clamp(val, min, max) is only well defined for max >=3D min.
-> > If max < min whether is returns min or max depends on the order of
-> > the comparisons.
->=20
-> =09Looks like max_avail goes below 8 ? What value you see
-> for such small system?
+3/4 just broadens Chris' original fix to apply to all chips. Though I
+have obviously not tested this on every supported device, I can't see
+how this could possibly be chip specific. Was there some specific
+reason for originally limiting the set of chips that this applied to?
 
-I'm not, but clearly you thought the value could be small otherwise
-the code would only have a 'max' limit.
-(Apart from a 'sanity' min of maybe 2 to stop the code breaking.)
+4/4 can only be supported on the Amethyst, which can control the
+ieee-multicast policy per-port, rather than via a global setting as
+it's done on the older families.
 
->=20
-> > Change to clamp(max_avail, 5, 20) which has the expected behaviour.
->=20
-> =09It should be clamp(max_avail, 8, 20)
->=20
-> >
-> > Replace the clamp_val() on the line below with clamp().
-> > clamp_val() is just 'an accident waiting to happen' and not needed here=
-.
->=20
-> =09OK
->=20
-> > Fixes: 4f325e26277b6
-> > (Although I actually doubt the code is used on small memory systems.)
-> >
-> > Detected by compile time checks added to clamp(), specifically:
-> > minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
->=20
-> =09Existing or new check? Does it happen that max_avail
-> is a constant, so that a compile check triggers?
+Tobias Waldekranz (4):
+  net: dsa: mv88e6xxx: Improve I/O related error logging
+  net: dsa: mv88e6xxx: Give chips more time to activate their PPUs
+  net: dsa: mv88e6xxx: Never force link on in-band managed MACs
+  net: dsa: mv88e6xxx: Limit rsvd2cpu policy to user ports on 6393X
 
-Is all stems from order_base_2(totalram_pages()).
-order_base_2(n) is 'n > 1 ? ilog2(n - 1) + 1 : 0'.
-And the compiler generates two copies of the code that follows
-for the 'constant zero' and ilog2() values.
-And the 'zero' case compiles clamp(20, 8, 0) which is errored.
-Note that it is only executed if totalram_pages() is zero,
-but it is always compiled 'just in case'.
+ drivers/net/dsa/mv88e6xxx/chip.c    | 92 ++++++++++++++++-------------
+ drivers/net/dsa/mv88e6xxx/chip.h    |  6 +-
+ drivers/net/dsa/mv88e6xxx/global1.c | 19 +++++-
+ drivers/net/dsa/mv88e6xxx/port.c    | 48 +++++++--------
+ drivers/net/dsa/mv88e6xxx/port.h    |  1 -
+ 5 files changed, 97 insertions(+), 69 deletions(-)
 
->=20
-> >
-> > Signed-off-by: David Laight <david.laight@aculab.com>
->=20
-> =09The code below looks ok to me but can you change the
-> comments above to more correctly specify the values and if the
-> problem is that max_avail goes below 8 (min).
->=20
-> > ---
-> >  net/netfilter/ipvs/ip_vs_conn.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs=
-_conn.c
-> > index 98d7dbe3d787..c0289f83f96d 100644
-> > --- a/net/netfilter/ipvs/ip_vs_conn.c
-> > +++ b/net/netfilter/ipvs/ip_vs_conn.c
-> > @@ -1495,8 +1495,8 @@ int __init ip_vs_conn_init(void)
-> >  =09max_avail -=3D 2;=09=09/* ~4 in hash row */
-> >  =09max_avail -=3D 1;=09=09/* IPVS up to 1/2 of mem */
-> >  =09max_avail -=3D order_base_2(sizeof(struct ip_vs_conn));
->=20
-> =09More likely we can additionally clamp max_avail here:
->=20
-> =09max_avail =3D max(min, max_avail);
->=20
-> =09But your solution solves the problem with less lines.
-
-And less code in the path that is actually executed.
-
-=09David
-
->=20
-> > -=09max =3D clamp(max, min, max_avail);
-> > -=09ip_vs_conn_tab_bits =3D clamp_val(ip_vs_conn_tab_bits, min, max);
-> > +=09max =3D clamp(max_avail, min, max);
-> > +=09ip_vs_conn_tab_bits =3D clamp(ip_vs_conn_tab_bits, min, max);
-> >  =09ip_vs_conn_tab_size =3D 1 << ip_vs_conn_tab_bits;
-> >  =09ip_vs_conn_tab_mask =3D ip_vs_conn_tab_size - 1;
-> >
-> > --
-> > 2.17.1
->=20
-> Regards
->=20
-> --
-> Julian Anastasov <ja@ssi.bg>
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+-- 
+2.43.0
 
