@@ -1,241 +1,209 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BCC20012D;
-	Fri,  6 Dec 2024 11:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733484225; cv=none; b=DRf5vFWAKETi/wRNH0FqHQAF3qF0lXPMfM15t1yP7Q5Im1HPMBNrCidXYgHlQWJ+5i+lL1nWdhxAPM4o0JOaAgG5W61doNEljkLGx7acTUr1n+335b8QsoLJcsyYMf0QgpuB0OTX9M9cZloGCGi10EQxdB8D1R6K0pwvPxy7lUs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733484225; c=relaxed/simple;
-	bh=tZk6UELzS++FMkjA3a9HFF9oj+zX3MtVADY/8jm/Q1Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sLGjoVS4uuQfCv5XoFbnCznnhTz1ozzmiXynraB7L9ITSQVsJuM7/46sk5zK0lpvxWbb4PHRU2XCgd+tOcvW3VOnVqGuW0xBD5K37VG1SlTrKoPyd+GQtdlQ+d/GLs5TFLwHJKiuWWCNAEzHWolFuxFz3PRFkj8/WwQ3mXwOp6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Y4TMf28WbzgZ8J;
-	Fri,  6 Dec 2024 19:20:46 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 19698140134;
-	Fri,  6 Dec 2024 19:23:37 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Dec 2024 19:23:36 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<gregkh@linuxfoundation.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>, <hkelam@marvell.com>
-Subject: [PATCH V5 net-next 6/8] net: hibmcge: Add pauseparam supported in this module
-Date: Fri, 6 Dec 2024 19:16:27 +0800
-Message-ID: <20241206111629.3521865-7-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241206111629.3521865-1-shaojijie@huawei.com>
-References: <20241206111629.3521865-1-shaojijie@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A031DF99D;
+	Fri,  6 Dec 2024 11:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733484630; cv=fail; b=BgMbAxjkA/LHEx/UmqNG7hciTGUgM5+VF4zlQmD+6TA90c1weuzt16I4loro1EJEU3PH/Xo0zQqcZH3ok5hLvRTBO8eatqiqO+XDLiKrtvmXBYa58/5/dDU9LY3KkiJE/uhFXAamh5RRF4Moj7R+ChnvLCKJfJb8xanzFKOIH94=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733484630; c=relaxed/simple;
+	bh=iwL3JbdVUEEWEETxRq2rZ7yum0GZFyODIDxjaHvfYh8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ctAqKpbiuEgu9npRhujQiyH+tFv0yg35Sl0VQJDOLyl5dvFcZFrXFjlANXo60UsvBaqCqflph703ONHShk74gFAxBR5qnrKL+wU4XjYtjurXIFPPBT2kB/JL1acPqoEr1RXc4lVU5MYJrTxhet0rC7zbviwnLAttMzT5xyAo0rU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=NB1HCdDb; arc=fail smtp.client-ip=40.107.244.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="NB1HCdDb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZCngjTuy5a3xoQdmzAcpFfOqPQrixZbhY6dFi8tWJrDb4sW1dj142HEKqx/i0oAzhv9vBOgxPI63m9CucxrGyKn2f5Ya4Vw/nFzDlH/iUEm/5g1ZQOsIbB3o+z+ud9wWElyhIptG0rz0ewbbh6Z0MStquf5wMSzlJ5Pso9a/ruMVbakzfW8s3S4cb5LABRWlR5Cj72lK8vbeDwrmEQ2CO5cH4wH91XJ4VMsYFPudnPERltA6gWSRE/0Ce3ay+tAR0E2a9OLymP15IkwQl3OTbxQt8AVclqO1OcZVRDl79YFIl/3H4PcZgnx+3J9y0KjhyS80whYxyHC7MBkyvDQmnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0UPxRa7cUiNNzMeuWBLDukxs2HucC5sSEBITWbj6kDI=;
+ b=QA7jbFRwj9UAGZR8xGRMPPwWqJwBikRJBiBU134RYo/17Fz1SLsk13YHTV3ml+pTQ7CrROCP3699UYnzUjzA+89cMKoiD/AiW1D/dHi1JBTwOnfY6kWuE+g/SkYkIgB1LBcPyzoP602wyXbLj7ct7XcvZZyw/91pVUtp2WoYT1uC196MwNzUxb5X78rlcIYKADzyXAZkR1/elUYR2TSonDAh4Xyo81soRB7y/gswIxFLOWvNNzUHGCku56nXBL9NX9RzY6Z8CTT5qLXT2YPn3N5Ay9dpRJft6RM/vC82JgLch6g/hHEoX0z+ej79qzQ3+UZsQd9LNAr6HVZBSKPunA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0UPxRa7cUiNNzMeuWBLDukxs2HucC5sSEBITWbj6kDI=;
+ b=NB1HCdDbHMr+xXwVjqBGXcsSiSzJ346ytYMejZfDXfoxAZEyZLPb5tyrzN0LgiaBWk77LNS8pmCAXoU4VQKp91gWNGixVFDRw7wzAkkQLwT/pfDfBa/XGi59OVqgBTS4wwnsswbblYXu9OeZK7RyM47jFR2UVSg3It416RiZcJ7SAs/KKKhL0khSIPO66i5N96SFeRF+XW3tUP/OsNYChQqKXpjlFqqp5Q19RZNZKD5cBJOBiSeVf+bpP1qEI6ZCy0Azq9CKUiqdMMQU9dvq+aqLpkNLHtSttpbfNJ0Zo8/S6PgZFwG3oD2lDaZvYezHohUxxq2f8v2SPRi7dF1plQ==
+Received: from CO1PR11MB4771.namprd11.prod.outlook.com (2603:10b6:303:9f::9)
+ by SJ2PR11MB7546.namprd11.prod.outlook.com (2603:10b6:a03:4cc::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.12; Fri, 6 Dec
+ 2024 11:30:23 +0000
+Received: from CO1PR11MB4771.namprd11.prod.outlook.com
+ ([fe80::bfb9:8346:56a5:e708]) by CO1PR11MB4771.namprd11.prod.outlook.com
+ ([fe80::bfb9:8346:56a5:e708%4]) with mapi id 15.20.8230.010; Fri, 6 Dec 2024
+ 11:30:23 +0000
+From: <Divya.Koppera@microchip.com>
+To: <andrew@lunn.ch>
+CC: <Arun.Ramadoss@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<richardcochran@gmail.com>, <vadim.fedorenko@linux.dev>
+Subject: RE: [PATCH net-next v5 3/5] net: phy: Kconfig: Add ptp library
+ support and 1588 optional flag in Microchip phys
+Thread-Topic: [PATCH net-next v5 3/5] net: phy: Kconfig: Add ptp library
+ support and 1588 optional flag in Microchip phys
+Thread-Index:
+ AQHbRWDdzNo+Cnt01kOqIfdpKniGbLLVUBQAgADphTCAAAeQAIAA4dWwgACYKQCAAVytMA==
+Date: Fri, 6 Dec 2024 11:30:23 +0000
+Message-ID:
+ <CO1PR11MB4771E6936F63727B53F187B2E2312@CO1PR11MB4771.namprd11.prod.outlook.com>
+References: <20241203085248.14575-1-divya.koppera@microchip.com>
+ <20241203085248.14575-4-divya.koppera@microchip.com>
+ <67b0c8ac-5079-478c-9495-d255f063a828@lunn.ch>
+ <CO1PR11MB47710AF4F801CB2EF586D453E2372@CO1PR11MB4771.namprd11.prod.outlook.com>
+ <ee883c7a-f8af-4de6-b7d3-90e883af7dec@lunn.ch>
+ <CO1PR11MB4771EDCFF242B8D8E5A0A1E0E2302@CO1PR11MB4771.namprd11.prod.outlook.com>
+ <05eecef6-f6be-4fcd-9896-df4e04bbde19@lunn.ch>
+In-Reply-To: <05eecef6-f6be-4fcd-9896-df4e04bbde19@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB4771:EE_|SJ2PR11MB7546:EE_
+x-ms-office365-filtering-correlation-id: 5a0e8065-fc74-4e50-8410-08dd15e95fb8
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?3iqyZYZzNpbIge7iymZM8k6ZB8aj18xow8W4PozfiZVkksDodAPEaKSJjb+e?=
+ =?us-ascii?Q?61MqSyCuMA+w/iaSDEsgxAKQyYn3N37zgrYPU8+XKlpl2tG0nERxWjKRux1y?=
+ =?us-ascii?Q?NP2YXynQNdaiVeFIIO/njnT+F7lbmH0g/4qYqKepmGSiHWGSC6azbnoxgsDR?=
+ =?us-ascii?Q?zVKaMU9cf6coJ8Y7o55+BL9TmoODF50ZcAUKZOU8uzIkD7s84m0xzgW+7IXb?=
+ =?us-ascii?Q?WWKXNwpAG3eKBb1ak3XhW5Dgk4BlBMZAhY1haAObOVPd38oURaeBHcLm/hsu?=
+ =?us-ascii?Q?gzRmaPf8zXPD/j49gOBcLVaGdZ7Lo7XDTaHHrtow8iK0TL39Rzu4gkYhabdz?=
+ =?us-ascii?Q?QC+f+gE3FRGMXHHt4wXJbP15flpuS0t+aTcf+6neFLHL9XTQ3hCtd8d1N7PL?=
+ =?us-ascii?Q?j1auaWRJwx84F2ni6GHnJ60TKP5WnbLo9RpcxjktQa78wJexJfyh5+i79XYC?=
+ =?us-ascii?Q?WjaA29vZCPcMr/USjHzdPO0Jig/WEzskSlXSuWkoZElzCnS1+XK1b8oIzk5Y?=
+ =?us-ascii?Q?044ppudiCIQt2hHLRea8ie+5L0XC87xdUO8DoeirHCux7p8M4jWcOQzWi9/q?=
+ =?us-ascii?Q?dGDesmumbd9PM/heKz/C9j7pZDgK8/kZNsdMw6n4ENbXFMMMBnogZx7u+yQM?=
+ =?us-ascii?Q?UngeVmMqoxrbmPlPIqfge16w6uHhM54lKC+BufjmRYfaKqaPjYKyKZelTLNT?=
+ =?us-ascii?Q?M5fp5h2cehUoRXOlNLLcjDF6L66K4RBNrOV9h2etkU/BI5xg7XBQ/YwTx1lS?=
+ =?us-ascii?Q?ppfbvIBnqxi5tYnpg9UNVUtnLcJgOtpAgb39aQGZeKSHwbX56X7mzSWixjEh?=
+ =?us-ascii?Q?XLm27zLz63Yig5eCTvuLS7t1jx5Y+pWlqOOq2H0/vSRx+puc9FzyCIfCTXYW?=
+ =?us-ascii?Q?dueYWuCdT2CL5rvZIE3nZl+EsgWs+HSCWNuifedx7+6OTh/648+IVAfz4WUN?=
+ =?us-ascii?Q?QJTrjZi+hwsReoDPmQ9305/Qwi9Bvhq5Vt+lNDl9U4ijAdK+U9/5VBf9yPnU?=
+ =?us-ascii?Q?husM130us9kJyp4Yp4cDKtvPGfU1qNvYzDiO5oMfZPSE3WcRGlPbF14xQNtJ?=
+ =?us-ascii?Q?54NVUa3OQ9RXFZoOwixcHM01Hi1lCa+Xb3tqtPSjxusISXLCy5ZU8CR5p7Ds?=
+ =?us-ascii?Q?D4IWWUxCnl4pNNwUWkWqhNVyW2I/jzw7oAmEFOeK7GuWfNECmtHDSPxxLjHr?=
+ =?us-ascii?Q?pZ1W4oinkk1p6dFEw28H+vlkLpHQmryugCLYBa4A3OEmV93DTqhQHoJwnM6i?=
+ =?us-ascii?Q?VMGLhXTLKZVPIkJE6WV/PsjDM4Ra6jmdwqJlzScu8w4UoTD/qtW5Pe4MGcvr?=
+ =?us-ascii?Q?QX18RqllnU2rT8j/cq/gPbwQY73qNEy1d+0OShNprtgsD+TG58Apw1BZxrWy?=
+ =?us-ascii?Q?YRU/767lVbh4vnlJbascVNnTy+860/rnuTh5mIc4hx3MlHJsXQ=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?qqlQdI8n7eop6tWWmjgYEGSjClJZxsesUqpA6ZARfO46qQl3X/IMX4+T0iPt?=
+ =?us-ascii?Q?5hvqsdoaqsFP6LswfbUwJDwjND8OEnxnH655oaht9uokLxGiiA9yW07hM/uJ?=
+ =?us-ascii?Q?dbmQLfwvqdTeEpraRed2Yhk/CoaKynEgz98k9a0dlJMzZaPyf+cqrM50+IEh?=
+ =?us-ascii?Q?ZhNKZhoZRwKMEvYHBzOB7cMhsimdizaMd7KEJcFRz9wfizVATuR/axU54Vz5?=
+ =?us-ascii?Q?AHM9RDx/GLBfd7QGSA/BBfOx7ec/Q6zky0ulDBBh2SIXaSN2Y6NN3DxJhMdL?=
+ =?us-ascii?Q?p79gRkOHl2vXjwDFAh7TkQWEutxbudu+j7jZxBCK0Ca1TRhfqTPkQlS5z/YQ?=
+ =?us-ascii?Q?hnhOioCg3qL7QekvUPoFeBhI2xI3UyLRrUyJxYgNrItsrbg1jcute17cv5X6?=
+ =?us-ascii?Q?yxJcLC+346iASsJ3QIl/DWpyVLQDVaRLDJr0rUS+VLWHzPBq6ezJW2wsNyks?=
+ =?us-ascii?Q?DudTIdSB2IXff8CMssE6VEpy7xHWkr7pIrn3ZmcGm3Rig8iop94NLCUTwfow?=
+ =?us-ascii?Q?gxCdeb2RuK1oV0Xi+KbNpYtej+bNDtXtjZ8tJe9P22qoG9VN5L/vayjRj4vL?=
+ =?us-ascii?Q?P04yZXaMD3n7X8t5Bydmvy/tF/R5hjj5TmkyUHVtEdL87KBUuivDjphldeZp?=
+ =?us-ascii?Q?0AWlin0pOyOqfaylPwo0HxLvqliZkeQAo8PI5fgim41MsHbqi1lIHkqfGi0f?=
+ =?us-ascii?Q?Iqy+3NoueKE/wBFupWMPDWrT0Y5MjgMKiLJ9ZZty+GMoBIYAvsRD6Jyf5y3d?=
+ =?us-ascii?Q?/35fhf/2sPgkWsWQgfjPZwjpBCRZRiDeKLsQyfViSV7rbdrXsnc5aELq9tlK?=
+ =?us-ascii?Q?nVg7M+p6f6OC9ecogZsKfqY10uwf2OZ9+02K338yEmWz1vJeHMoThOa5jMw0?=
+ =?us-ascii?Q?b4BqGCuj3qWxoxBnExhYMUPzTbkfgVbWO4psHo5DiG1ty6QIZ/cYMsrcU84V?=
+ =?us-ascii?Q?R7jH/SjnphzDVsbap3P/SHx8nnDGRm7hNsesMgi2Ykj9oN06yBchr7bcMdIV?=
+ =?us-ascii?Q?882cV35JDOqDXiQDRm+yYEaD+fKKt/4XwGDlftTGwB0iYqaxXrtxmxSgHq8I?=
+ =?us-ascii?Q?mO3+sJi2IAHV5Y9TjQ72l3DmBvhJv8hMCVaWvnN3I5YHMjehu46MRY2sUGcC?=
+ =?us-ascii?Q?zRm6V8533I7uM9O5li/xE+PbD6YeLftN6lZEAxRtl6/I7cu/LTTZOpf3G1pJ?=
+ =?us-ascii?Q?2U9910nKR1p/oriFNjAWaGYwiyKqC738Y71JVx6fpBVku2bQhVMqKG3H9jOM?=
+ =?us-ascii?Q?uDhTMLWsFmrNoFGOujLhA2WFu2NbkA4Ry81d237VGY1CzVvgXrLPLPRCSfAR?=
+ =?us-ascii?Q?H1DrMa7VIwUrnDCZHrpU7SvPtsmoothi3onftcoNnb3+q2Tl4pUHRW4Wqqxb?=
+ =?us-ascii?Q?9nAaaN8zoBzUXslgqd5cTbkcVsl+16FYKrLaxrHLfjagnQ92qoDpRuowwKR6?=
+ =?us-ascii?Q?6izxObGEmp2W92QHRTJyXudLpBQGADU/A/j7fMe0WhzyKoc2fvDWbbr/r4TK?=
+ =?us-ascii?Q?KbODY9bz9kFGqh6ezDUOa0hj3z07qPDe+XqPE1ynpa8Iqa8hodjgPODgQ9sy?=
+ =?us-ascii?Q?XtqoeGI2qLummWjVzltrlvZyrWVtJmq8L/zfQzaO?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a0e8065-fc74-4e50-8410-08dd15e95fb8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2024 11:30:23.3809
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2ZH4G0QDaVOvl5qhE0b7zJoqXBuzU3F7TkfcPsqgnGD+r1KRmWf4zRkbXdsAGwrNZiNIdt8UvGVihdLT3dD8wAYjHH1r3a4SiLMx9YT5YFM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7546
 
-The MAC can automatically send or respond to pause frames.
-This patch supports the function of enabling pause frames
-by using ethtool.
+Hi Andrew,
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-ChangeLog:
-v3 -> v4:
-  - Support auto-neg pause, suggested by Andrew.
-  v3: https://lore.kernel.org/all/20241111145558.1965325-1-shaojijie@huawei.com/
----
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |  1 +
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 25 +++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 21 ++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.h   |  3 +++
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  1 +
- .../net/ethernet/hisilicon/hibmcge/hbg_mdio.c | 15 +++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  2 ++
- 7 files changed, 68 insertions(+)
+Thanks for your comments.
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index e071f77754fe..76b0b32bcb15 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -115,6 +115,7 @@ struct hbg_mac {
- 	u32 duplex;
- 	u32 autoneg;
- 	u32 link_status;
-+	u32 pause_autoneg;
- };
- 
- struct hbg_mac_table_entry {
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index e7f169d2abb7..a821a92db43d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -143,12 +143,37 @@ static void hbg_ethtool_get_regs(struct net_device *netdev,
- 	}
- }
- 
-+static void hbg_ethtool_get_pauseparam(struct net_device *net_dev,
-+				       struct ethtool_pauseparam *param)
-+{
-+	struct hbg_priv *priv = netdev_priv(net_dev);
-+
-+	param->autoneg = priv->mac.pause_autoneg;
-+	hbg_hw_get_pause_enable(priv, &param->tx_pause, &param->rx_pause);
-+}
-+
-+static int hbg_ethtool_set_pauseparam(struct net_device *net_dev,
-+				      struct ethtool_pauseparam *param)
-+{
-+	struct hbg_priv *priv = netdev_priv(net_dev);
-+
-+	priv->mac.pause_autoneg = param->autoneg;
-+	phy_set_asym_pause(priv->mac.phydev, param->rx_pause, param->tx_pause);
-+
-+	if (!param->autoneg)
-+		hbg_hw_set_pause_enable(priv, param->tx_pause, param->rx_pause);
-+
-+	return 0;
-+}
-+
- static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
- 	.get_regs_len		= hbg_ethtool_get_regs_len,
- 	.get_regs		= hbg_ethtool_get_regs,
-+	.get_pauseparam         = hbg_ethtool_get_pauseparam,
-+	.set_pauseparam         = hbg_ethtool_set_pauseparam,
- };
- 
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 29d66a0ea0a6..0cbe9f7229b3 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -220,6 +220,27 @@ void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable)
- 			    HBG_REG_REC_FILT_CTRL_UC_MATCH_EN_B, enable);
- }
- 
-+void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en)
-+{
-+	hbg_reg_write_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+			    HBG_REG_PAUSE_ENABLE_TX_B, tx_en);
-+	hbg_reg_write_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+			    HBG_REG_PAUSE_ENABLE_RX_B, rx_en);
-+}
-+
-+void hbg_hw_get_pause_enable(struct hbg_priv *priv, u32 *tx_en, u32 *rx_en)
-+{
-+	*tx_en = hbg_reg_read_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+				    HBG_REG_PAUSE_ENABLE_TX_B);
-+	*rx_en = hbg_reg_read_field(priv, HBG_REG_PAUSE_ENABLE_ADDR,
-+				    HBG_REG_PAUSE_ENABLE_RX_B);
-+}
-+
-+void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr)
-+{
-+	hbg_reg_write64(priv, HBG_REG_FD_FC_ADDR_LOW_ADDR, mac_addr);
-+}
-+
- static void hbg_hw_init_transmit_ctrl(struct hbg_priv *priv)
- {
- 	u32 ctrl = 0;
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-index 6eb4b7d2cba8..a4a049b5121d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.h
-@@ -56,5 +56,8 @@ u32 hbg_hw_get_fifo_used_num(struct hbg_priv *priv, enum hbg_dir dir);
- void hbg_hw_set_tx_desc(struct hbg_priv *priv, struct hbg_tx_desc *tx_desc);
- void hbg_hw_fill_buffer(struct hbg_priv *priv, u32 buffer_dma_addr);
- void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable);
-+void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en);
-+void hbg_hw_get_pause_enable(struct hbg_priv *priv, u32 *tx_en, u32 *rx_en);
-+void hbg_hw_set_rx_pause_mac_addr(struct hbg_priv *priv, u64 mac_addr);
- 
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index 0ad03681b706..a45a63856e61 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -204,6 +204,7 @@ static int hbg_net_set_mac_address(struct net_device *netdev, void *addr)
- 	if (is_exists)
- 		hbg_set_mac_to_mac_table(priv, index, NULL);
- 
-+	hbg_hw_set_rx_pause_mac_addr(priv, ether_addr_to_u64(mac_addr));
- 	dev_addr_set(netdev, mac_addr);
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-index a3479fba8501..db6bc4cfb971 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-@@ -114,6 +114,19 @@ static void hbg_mdio_init_hw(struct hbg_priv *priv)
- 	hbg_mdio_set_command(mac, cmd);
- }
- 
-+static void hbg_flowctrl_cfg(struct hbg_priv *priv)
-+{
-+	struct phy_device *phydev = priv->mac.phydev;
-+	bool rx_pause;
-+	bool tx_pause;
-+
-+	if (!priv->mac.pause_autoneg)
-+		return;
-+
-+	phy_get_pause(phydev, &tx_pause, &rx_pause);
-+	hbg_hw_set_pause_enable(priv, tx_pause, rx_pause);
-+}
-+
- static void hbg_phy_adjust_link(struct net_device *netdev)
- {
- 	struct hbg_priv *priv = netdev_priv(netdev);
-@@ -140,6 +153,7 @@ static void hbg_phy_adjust_link(struct net_device *netdev)
- 			priv->mac.duplex = phydev->duplex;
- 			priv->mac.autoneg = phydev->autoneg;
- 			hbg_hw_adjust_link(priv, speed, phydev->duplex);
-+			hbg_flowctrl_cfg(priv);
- 		}
- 
- 		priv->mac.link_status = phydev->link;
-@@ -168,6 +182,7 @@ static int hbg_phy_connect(struct hbg_priv *priv)
- 		return ret;
- 
- 	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
-+	phy_support_asym_pause(phydev);
- 	phy_attached_info(phydev);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index 665666712c7c..f12efc12f3c5 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -51,6 +51,8 @@
- #define HBG_REG_PORT_ENABLE_RX_B		BIT(1)
- #define HBG_REG_PORT_ENABLE_TX_B		BIT(2)
- #define HBG_REG_PAUSE_ENABLE_ADDR		(HBG_REG_SGMII_BASE + 0x0048)
-+#define HBG_REG_PAUSE_ENABLE_RX_B		BIT(0)
-+#define HBG_REG_PAUSE_ENABLE_TX_B		BIT(1)
- #define HBG_REG_AN_NEG_STATE_ADDR		(HBG_REG_SGMII_BASE + 0x0058)
- #define HBG_REG_TRANSMIT_CTRL_ADDR		(HBG_REG_SGMII_BASE + 0x0060)
- #define HBG_REG_TRANSMIT_CTRL_PAD_EN_B		BIT(7)
--- 
-2.33.0
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Thursday, December 5, 2024 8:06 PM
+> To: Divya Koppera - I30481 <Divya.Koppera@microchip.com>
+> Cc: Arun Ramadoss - I17769 <Arun.Ramadoss@microchip.com>;
+> UNGLinuxDriver <UNGLinuxDriver@microchip.com>; hkallweit1@gmail.com;
+> linux@armlinux.org.uk; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org; richardcochran@gmail.com;
+> vadim.fedorenko@linux.dev
+> Subject: Re: [PATCH net-next v5 3/5] net: phy: Kconfig: Add ptp library s=
+upport
+> and 1588 optional flag in Microchip phys
+>=20
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
+e
+> content is safe
+>=20
+> > > And has Microchip finial decided not to keep reinventing the wheel,
+> > > and there will never be a new PHY implementation? I ask, because
+> > > what would its KCONFIG symbol be?
+> > >
+> >
+>=20
+> > For all future Microchip PHYs PTP IP will be same, hence the
+> > implementation and kconfig symbol is under MICROCHIP_PHYPTP to keep it
+> > more generic.
+>=20
+> So you would be happy for me to NACK all new PHY PTP implementations?
+>=20
+> Are you management happy with this statement?
+>=20
+> Even if they are, i still think you need a less generic KCONFIG symbol, i=
+ doubt
+> somebody somewhere in Microchip can resist making yet another PTP
+> implementation.
+>=20
 
+I understand your point.
+
+I will change the Kconfig symbol to "MICROCHIP_PHY_RDS_PTP". RDS is interna=
+l code name to identify the PHY PTP IP.=20
+
+I will also change the file names, macros, and functions to reflect the int=
+ernal code name as per macro.
+
+>         Andrew
+
+Thanks,
+Divya
