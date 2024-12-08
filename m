@@ -1,148 +1,156 @@
-Received: from pv50p00im-zteg10021301.me.com (pv50p00im-zteg10021301.me.com [17.58.6.46])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2F7148857
-	for <netdev@vger.kernel.org>; Sun,  8 Dec 2024 13:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79B1E515;
+	Sun,  8 Dec 2024 15:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733663954; cv=none; b=Fs7nHslQ+YPSjJBUir6e5MKj998E0lue4HCFrA1sS/EoSt1AmEabVudePUGhDsbyN5yEufpQ1SBnk/WPlJspoFPSiLu30lYH4UrviqKUaPYY/7E3muMaDa7q3a1fkygRvOeHnQ8moaza3JHwTcHCj2wnkztESR3nG+ARE6rS/+o=
+	t=1733670557; cv=none; b=PcAmw3uWIUc9nHuXjKG6w0xse2jCb39hhGl8IJES+F+x7rPR4lufssQQzrJajAKeTOFaZbDEc8n9Fhg3FdurCR0ZLs0GxeFeZ0ua3v0P/7/KJAD6i85YjoglDVZneJ1DDysJb7Sw5llYIrnF8szQO6Zhh9I1eSIEJ5p91TwbDf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733663954; c=relaxed/simple;
-	bh=v6DuWZtu4YUnrBhocodbi8f07v2ZhN1ZLmNgHMutPlg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pOZvOpfJpxtPXFvlNdJietcI+NfwmBPnse5Duf7FumQMLsX9lSZvD24HjM97pl3FeBF3RLEkYSuft39iLeeVRGGDG2qXYzZFG1r+KglU+gb+qrFpEf56D0VxkUVaV1m7MhxAwMaIbTcL1oVfoeICE4te0nDk8u5xOT2cquIvijM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=nsAlKyTz; arc=none smtp.client-ip=17.58.6.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1733670557; c=relaxed/simple;
+	bh=0/24tb5J5ZhpVmnerobC8TCw5uPq4OQXR25zSLmdD70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LdVnxUM//3Zg7yXzVuFR5+FrFAJx/Gm5Af3iM+wsVNtjWNR7AQ0QYQMbkVH4xM7xRjKclYLj+TofrvnAAOBZZvZDH9Pn/n72ZPck9X61XUEcK/GSvEhSvXhcuY4pmQ679diPNkFO0Cx38iCf5gCFFU2adzgr3QlAw5syxwcCeHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fztLzeQ2; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="nsAlKyTz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733663951;
-	bh=B9Z7dZW7Hi3Js1z/RCEjU+3M/IjEGHpjDFHWBOHmqc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=nsAlKyTzBjgFKiKK875IKrpeQ6Hv0IpX0ZWERQ6ck5xVT3yTVHF/ma0+sMayke7RA
-	 Mgepn7kdGl4f4KMgfy/ymh+QBWxBeS7/1xqjrAX4SI9iGKKSkpp5xcz5oH/1zd68so
-	 q8B21ej8wfHvQSmqknU2Qp3DQusSq/gzOdhHF5FFhfSN5Qste9Sq1vNahO5iwGakAp
-	 tKQIdEZWB3krUn4WgU7lFUNJY/OoKRT0xs0HLsHhvA1M3HxUyLGgZ/BUmsWP7OKH1i
-	 bCryHNz+PA1BYV/NsVSs5yT/qG6oSWCs9oJcX6JOBLUE0hNVJ8Fz0YBe04unhhDqh2
-	 KUvRd6BwJWVxw==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10021301.me.com (Postfix) with ESMTPSA id B0625500490;
-	Sun,  8 Dec 2024 13:18:59 +0000 (UTC)
-Message-ID: <7780942a-93cd-4508-be97-fc5e5267c389@icloud.com>
-Date: Sun, 8 Dec 2024 21:18:54 +0800
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fztLzeQ2"
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 59B7C13838E6;
+	Sun,  8 Dec 2024 10:09:14 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 08 Dec 2024 10:09:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1733670554; x=1733756954; bh=vQ0fUrvfmSwHGUIm0t5bIdaTbvcjvBrQHDH
+	gjP/z5gk=; b=fztLzeQ2iSEguxwlTQL/dO/rjzZP/vvUPzkj5Nbkkz+xnFQEdFq
+	dnG7NlgVuX7kEG7ilKdgJYoiKi5VDqE1HJgiMGvAIx8fUPIBUAWbjKOVcfa71OPW
+	qM3z28yWapYWrKF0ThLhHtzswjhYFIj+WZ1xplhgnWPSUQX56oSTZNttF0UqkKjs
+	N6kfcYDEzr2TLs14G6DfdPoK8cSbAkQThP1u2yaGA6QKWAzP4MSS6wRgD7bHwAUi
+	+omGafcnJtXDFg940oNb99HxTbcP+rWUBxEDgtu36MGFRYwVtQXvbxVpDhmMxb6L
+	CfjV6Gbo+dsn27ziCdiAMgH7bOtMgN7DtPw==
+X-ME-Sender: <xms:mbZVZ3KH4ZNlr4KszFswctL3fgmLCXDUdf7I0wSWPZlBSWfwKCZ52Q>
+    <xme:mbZVZ7IzxZcajYx5V8J1tTrsE_xCXAygPKucCLV_2Dg3uQ577FH5UO_KTEh311zOG
+    nHBgfnHdOatsHw>
+X-ME-Received: <xmr:mbZVZ_tG4ca5F1cSJwNsZ6tSufoajT5sYH12gomO1IcweRVymdsNlvq6TIRO>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeefgdejfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduieefudeifefg
+    leekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthho
+    pedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfigvihdrfhgrnhhgsehngi
+    hprdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrmhgrnhhoihhlsehngihprdgtohhm
+    pdhrtghpthhtohepvhhlrgguihhmihhrrdholhhtvggrnhesnhigphdrtghomhdprhgtph
+    htthhopeigihgrohhnihhnghdrfigrnhhgsehngihprdgtohhmpdhrtghpthhtoheprghn
+    ughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurg
+    hvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdr
+    tghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepph
+    grsggvnhhisehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:mbZVZwYn-HGtpe1O8smjfG7xkg6J03zuegDBlLehaEYI6xUXYtAK2A>
+    <xmx:mbZVZ-bFg-ODKBTwYAKxb5WJ4jSzQMYqDXL6QIzsxQL-eUmcTksNXA>
+    <xmx:mbZVZ0CD1qe1jNVxGrungQpdB1EJYkKOy5MPbRLKIjr81OMccvwZRg>
+    <xmx:mbZVZ8bz3iFu7bzIm87LOAZY_SmioxlqOBC2Xa_5lNR8WZXKoi-KzQ>
+    <xmx:mrZVZ6Rx57OgYC9GcsEeSLG9_W910dgH0uZ99qYqrQ1_EZO6vyBO20ZX>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Dec 2024 10:09:13 -0500 (EST)
+Date: Sun, 8 Dec 2024 17:09:10 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, frank.li@nxp.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v6 RESEND net-next 5/5] net: enetc: add UDP segmentation
+ offload support
+Message-ID: <Z1W2lp5jNPqJZi4C@shredder>
+References: <20241204052932.112446-1-wei.fang@nxp.com>
+ <20241204052932.112446-6-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/11] driver core: Constify API device_find_child()
- then adapt for various usages
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-sound@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux1394-devel@lists.sourceforge.net, arm-scmi@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-gpio@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- linux-hwmon@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-scsi@vger.kernel.org, open-iscsi@googlegroups.com,
- linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
- netdev@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20241205-const_dfc_done-v3-0-1611f1486b5a@quicinc.com>
- <20241205-const_dfc_done-v3-4-1611f1486b5a@quicinc.com>
- <20241206135209.GA133715@workstation.local>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20241206135209.GA133715@workstation.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: zq6ALpvY8lzOJgSSQvNtYt-PHDnk_XXq
-X-Proofpoint-GUID: zq6ALpvY8lzOJgSSQvNtYt-PHDnk_XXq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-08_04,2024-12-06_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- clxscore=1011 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412080111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204052932.112446-6-wei.fang@nxp.com>
 
-On 2024/12/6 21:52, Takashi Sakamoto wrote:
-> Hi,
+On Wed, Dec 04, 2024 at 01:29:32PM +0800, Wei Fang wrote:
+> Set NETIF_F_GSO_UDP_L4 bit of hw_features and features because i.MX95
+> enetc and LS1028A driver implements UDP segmentation.
 > 
-> On Thu, Dec 05, 2024 at 08:10:13AM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> Constify the following API:
->> struct device *device_find_child(struct device *dev, void *data,
->> 		int (*match)(struct device *dev, void *data));
->> To :
->> struct device *device_find_child(struct device *dev, const void *data,
->>                                  device_match_t match);
->> typedef int (*device_match_t)(struct device *dev, const void *data);
->> with the following reasons:
->>
->> - Protect caller's match data @*data which is for comparison and lookup
->>   and the API does not actually need to modify @*data.
->>
->> - Make the API's parameters (@match)() and @data have the same type as
->>   all of other device finding APIs (bus|class|driver)_find_device().
->>
->> - All kinds of existing device match functions can be directly taken
->>   as the API's argument, they were exported by driver core.
->>
->> Constify the API and adapt for various existing usages by simply making
->> various match functions take 'const void *' as type of match data @data.
->>
->> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->> ---
->>  arch/sparc/kernel/vio.c                |  6 +++---
->>  drivers/base/core.c                    |  6 +++---
->>  drivers/block/sunvdc.c                 |  6 +++---
->>  drivers/bus/fsl-mc/dprc-driver.c       |  4 ++--
->>  drivers/cxl/core/pci.c                 |  4 ++--
->>  drivers/cxl/core/pmem.c                |  2 +-
->>  drivers/cxl/core/region.c              | 21 ++++++++++++---------
->>  drivers/firewire/core-device.c         |  4 ++--
->>  drivers/firmware/arm_scmi/bus.c        |  4 ++--
->>  drivers/firmware/efi/dev-path-parser.c |  4 ++--
->>  drivers/gpio/gpio-sim.c                |  2 +-
->>  drivers/gpu/drm/mediatek/mtk_drm_drv.c |  2 +-
->>  drivers/hwmon/hwmon.c                  |  2 +-
->>  drivers/media/pci/mgb4/mgb4_core.c     |  4 ++--
->>  drivers/nvdimm/bus.c                   |  2 +-
->>  drivers/pwm/core.c                     |  2 +-
->>  drivers/rpmsg/rpmsg_core.c             |  4 ++--
->>  drivers/scsi/qla4xxx/ql4_os.c          |  3 ++-
->>  drivers/scsi/scsi_transport_iscsi.c    | 10 +++++-----
->>  drivers/slimbus/core.c                 |  8 ++++----
->>  drivers/thunderbolt/retimer.c          |  2 +-
->>  drivers/thunderbolt/xdomain.c          |  2 +-
->>  drivers/tty/serial/serial_core.c       |  4 ++--
->>  drivers/usb/typec/class.c              |  8 ++++----
->>  include/linux/device.h                 |  4 ++--
->>  include/scsi/scsi_transport_iscsi.h    |  4 ++--
->>  net/dsa/dsa.c                          |  2 +-
->>  tools/testing/cxl/test/cxl.c           |  2 +-
->>  28 files changed, 66 insertions(+), 62 deletions(-)
+> - i.MX95 ENETC supports UDP segmentation via LSO.
+> - LS1028A ENETC supports UDP segmentation since the commit 3d5b459ba0e3
+> ("net: tso: add UDP segmentation support").
 > 
-> For the changes in FireWire subsystem:
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> v2: rephrase the commit message
+> v3: no changes
+> v4: fix typo in commit message
+> v5: no changes
+> v6: no changes
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc_pf_common.c | 6 ++++--
+>  drivers/net/ethernet/freescale/enetc/enetc_vf.c        | 6 ++++--
+>  2 files changed, 8 insertions(+), 4 deletions(-)
 > 
-> Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> index 82a67356abe4..76fc3c6fdec1 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
+> @@ -110,11 +110,13 @@ void enetc_pf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
+>  	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
+>  			    NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
+>  			    NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_LOOPBACK |
+> -			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
+> +			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
+> +			    NETIF_F_GSO_UDP_L4;
+>  	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
+>  			 NETIF_F_HW_VLAN_CTAG_TX |
+>  			 NETIF_F_HW_VLAN_CTAG_RX |
+> -			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
+> +			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
+> +			 NETIF_F_GSO_UDP_L4;
+>  	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
+>  			      NETIF_F_TSO | NETIF_F_TSO6;
 
-thank you for code review and previous cooperation to achieve
-this goal (^^).
+I didn't see any wording about it in the commit message / cover letter
+so I will ask: Any reason not to enable UDP segmentation offload on
+upper VLAN devices by setting the feature in 'ndev->vlan_features'?
 
+>  
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> index 63d78b2b8670..3768752b6008 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -145,11 +145,13 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
+>  	ndev->hw_features = NETIF_F_SG | NETIF_F_RXCSUM |
+>  			    NETIF_F_HW_VLAN_CTAG_TX |
+>  			    NETIF_F_HW_VLAN_CTAG_RX |
+> -			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
+> +			    NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
+> +			    NETIF_F_GSO_UDP_L4;
+>  	ndev->features = NETIF_F_HIGHDMA | NETIF_F_SG | NETIF_F_RXCSUM |
+>  			 NETIF_F_HW_VLAN_CTAG_TX |
+>  			 NETIF_F_HW_VLAN_CTAG_RX |
+> -			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6;
+> +			 NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6 |
+> +			 NETIF_F_GSO_UDP_L4;
+>  	ndev->vlan_features = NETIF_F_SG | NETIF_F_HW_CSUM |
+>  			      NETIF_F_TSO | NETIF_F_TSO6;
+>  
+> -- 
+> 2.34.1
 > 
-> Thanks
 > 
-> Takashi Sakamoto
-
