@@ -1,115 +1,147 @@
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5891D9460
-	for <netdev@vger.kernel.org>; Sun,  8 Dec 2024 20:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C54837160;
+	Sun,  8 Dec 2024 20:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733690057; cv=none; b=DI05rUAWZkt3m3BIIzsInHkP6MF88Saz7ixukNUAoWNa9xznMHK45wUYu9OWoxVNXGwsOweEeGFn2Bcn4G6NKmafUYARNcZJH1YyuhNuBlJ+LSlrjZuaF0VvCH0xfkaXI7Cu0tQGTdZLDwnWArRhwc6iU0ZJgVmBtOseVH6sVig=
+	t=1733690846; cv=none; b=AsxZVqz//0cD2Y/MHBLBzzUSWGLTy/SzuZA4+Pe0zLEbLVuZXDMRN9PztSpgeMjYg6m0+EjVW+vw0A3B7bBR4fRGeKkZ+xN6BWqQmH9QJRxoe9AYaY643VwyQUAoxECM5xLWletYn2i7EiVwYkXLuEeLI+UWFJvtFOBe6wlZ4KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733690057; c=relaxed/simple;
-	bh=pNrqIk3HpjkzXjt78tMOqkOHaDPRWMm8HAACWjnoBto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QfIy0ZYw0DbDK/iZFIa6Pf0J0MavRVuie+Og6B3stVev1sBjoJsju27jEz1xkKUVnmJgkpzRBb9ZwDQWLntXFqxlWmjSpPRIpA57PqF3n8gsqVoeQT4iWppwxGMlZmpNzfR+q17RAGKDsaukUz8SNxpGqWhLFNPUeYpqi7w8Qgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=1+xDsx27; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	s=arc-20240116; t=1733690846; c=relaxed/simple;
+	bh=wvTHlBoz9C30davazZ3R7eA+Vj3AKi08qx/aTOFW1pQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FWZLfOWX/PnPezyEQThuRXUE4/yVEcMjc9S0F798rXZ2c7X8aieESoNDxR+odFlXxx4s8NK0bciigEwoMCpre45qB2qa0plMmcIb0UF9xm05dwVcvM3omEMdSM59rej/BCpcjfJC2iQjF4yxy1nHdYuXfINyzHqYqps4ET6Ex5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G16evrTg; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="1+xDsx27"
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 9C14D2C01D5;
-	Mon,  9 Dec 2024 09:23:26 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1733689406;
-	bh=iOAaPQH6Oq+/Dn/tDj2Rvor3y/O/oTixRDCGSQdLv8I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=1+xDsx27d3SfF9dA3MHfcuSxGQ52YgGAUmjwpRRkuJkv4MdNbJSljyWmoVn1mBdzt
-	 uBenQBhBVknsqzmtJrO8d88/rB6XOTdK/06jpVd4zRnzlBKO8biQ73INY/rcPkmEAg
-	 L1L6oaMx7iJQfLBFtEOdtv6gh0fLwrG/oOIyoynhNPwNZHmE0FFy5QxBLghX5dAvSJ
-	 ovQLeeXTc3iTCYPgK4XPJLVrKMsNBETB2Sg+agw3D8VGkfVDC0Ec7cQY3TN5IaDMrh
-	 W8zT4qD7++Azp8o+Sv+YL/czvDUNmiDt192rTVKUeRE/2QffhiWTjJo9AAQ+A56AfE
-	 gpy0SsTnHczYA==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B6756003e0000>; Mon, 09 Dec 2024 09:23:26 +1300
-Received: from [10.33.22.30] (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id 8617513ED0C;
-	Mon,  9 Dec 2024 09:23:26 +1300 (NZDT)
-Message-ID: <a01c7092-2642-4091-a085-07272b450471@alliedtelesis.co.nz>
-Date: Mon, 9 Dec 2024 09:23:26 +1300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G16evrTg"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-434a2f3bae4so40524545e9.3;
+        Sun, 08 Dec 2024 12:47:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733690842; x=1734295642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uydVfRix40VtM5XGFg4FP+2BbqHhhGYzjwg/+qRitoA=;
+        b=G16evrTgMZYHQgJq2t4ucbMLgPw7IjpTn/Owk6E/fsU/aDeOWQcvu4M8VEBWUYs2Yr
+         4GbhKU2gzFgHjEdsyPatPUQ4RoCujcO+oZ4fRpWBh7zMI9OXF9WJIS3yrwmDZOtVKRJU
+         NpjLu5kr0spJYAw37zYytOd9wK/qrNgNV8pHxyhL5ehdAyV5dyax7kGeicloFaxGo2kN
+         jH5ZSBzx1ImJKSsZMkSIZK9w7jplJ7avVGkoJrt/mBlThv0Ey4qHq/tflWw6WgPIcn2B
+         CvGyPhi2aiG9+ZDYr/PyLNWbM8e8huuTr9acfwaKsCPIzjdKJEcLO+h//tu/bo7l5SIC
+         VgLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733690842; x=1734295642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uydVfRix40VtM5XGFg4FP+2BbqHhhGYzjwg/+qRitoA=;
+        b=RbDLK20QizKayeodtxJpIeSWS560s8/0vOtwb8YJZ1JmiXExQeASRXRXz6P5aS2EET
+         VAeuSGUCtt9fE/zSx7V4866zUEmjxdyI/YH1vki2++dmydnEtE1FMe70vaUspzHTuve8
+         ZC27uMnUAgYL2S6atVDkRHar/NFrVO3iaKIofc+GUznh4OpRMSBI0BaJhotOg9sX8Rle
+         tzHvUkQbp4uiAlVIZJOScJAc0hvd+XaM/WXGwj5eNdsEjIKmRIqsGZrq5DFbO2jmf0Dm
+         rjSuReUqhkzhmPRjeP2bXNeIypQgcEwHmHYrXw5NpYikEuKrugjfsb5JVzyM16fkCjU9
+         YTNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWAHQXjrTuwMyxBLx6n4KqByMfJowH4d0krB3/gWJi86WRQzfRJZoOAwhcPpxB1CJmc4F8wlL1Z+P1VbF4@vger.kernel.org, AJvYcCVTBnyRN11hzX1ustFB75e8M5bqK9zebYL/j2UIJDtcfVQbBjsEP5Kf2cpUq3i3wocJ1JsPrNtL@vger.kernel.org, AJvYcCWg2Aqxod2JvF9jV7tgHDg2llutBXGBLa06Ny+GLKcAEV7NSD+efsfrdBgqlZtyubTgf6kzG+XyNgyu@vger.kernel.org, AJvYcCXeDA6gDiLdN+Sfk67wwlz84kpv2zHJRZCZNBUr2gRiTtdVCO1oGQ96o6qBbnF0FUoSs+IxLk0Hw4coWZ/nfiU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc3iO2Jvr97RtqwH4SNXgTz7w33uaxxE+3MEDKwI4ZbEG1v9ps
+	OwBbLqUk6O3MOOJLhedji66OfR59GgggdV7MUAPq+eAe7LDFF2dv
+X-Gm-Gg: ASbGnctv37QQk0Fukx0T42wZbmdDO5v5C+c25NioBUej+g9SJPjUSnemphmz6GFN3Iz
+	qDEaDIbZ3GXm0xhbrTyNMoiI4yU5jxWS5SXMFiUVWNTvTRq65garKQWKDCWkoS7MtnujyC4BxNv
+	RYki37d0xlgVE0OYIs9DOoXm8k4MwyjSRXYY72JbwVXGY91XHxR39Q4Quq3vyV2tIn9lTqLUZnE
+	rj2ijv2D9D4q+kEWgxUyulFoJsktw0WjcjJ0PUVrOK6/6D0uK+kdrZtccw=
+X-Google-Smtp-Source: AGHT+IHFzU3im506LwOrHouMZuWAgeUYsws5o5LtVKTrGik4PmUi+r8oEAGSFnNWQi82Ax6AF2zxOw==
+X-Received: by 2002:a05:600c:1909:b0:434:f586:753c with SMTP id 5b1f17b1804b1-434f5867ecemr15873445e9.7.1733690842202;
+        Sun, 08 Dec 2024 12:47:22 -0800 (PST)
+Received: from localhost.localdomain ([46.248.82.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861f59cc6fsm10874975f8f.34.2024.12.08.12.47.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Dec 2024 12:47:21 -0800 (PST)
+From: Uros Bizjak <ubizjak@gmail.com>
+To: x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-bcachefs@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Uros Bizjak <ubizjak@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH v3 0/6] Enable strict percpu address space checks
+Date: Sun,  8 Dec 2024 21:45:15 +0100
+Message-ID: <20241208204708.3742696-1-ubizjak@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 0/4] net: dsa: mv88e6xxx: Amethyst (6393X) fixes
-To: Tobias Waldekranz <tobias@waldekranz.com>, davem@davemloft.net,
- kuba@kernel.org
-Cc: andrew@lunn.ch, f.fainelli@gmail.com, olteanv@gmail.com,
- netdev@vger.kernel.org, linux@armlinux.org.uk
-References: <20241206130824.3784213-1-tobias@waldekranz.com>
-Content-Language: en-US
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-In-Reply-To: <20241206130824.3784213-1-tobias@waldekranz.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=RLIQHJi+ c=1 sm=1 tr=0 ts=6756003e a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=vivaPATRc73yjkcZA2IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Tobias,
+Enable strict percpu address space checks via x86 named address space
+qualifiers. Percpu variables are declared in __seg_gs/__seg_fs named
+AS and kept named AS qualified until they are dereferenced via percpu
+accessor. This approach enables various compiler checks for
+cross-namespace variable assignments.
 
-On 07/12/2024 02:07, Tobias Waldekranz wrote:
-> This series provides a set of bug fixes discovered while bringing up a
-> new board using mv88e6393x chips.
->
-> 1/4 adds logging of low-level I/O errors that where previously only
-> logged at a much higher layer, e.g. "probe failed" or "failed to add
-> VLAN", at which time the origin of the error was long gone. Not
-> exactly a bugfix, though still suitable for -net IMHO; but I'm also
-> happy to send it via net-next instead if that makes more sense.
->
-> 2/4 fixes an issue I've never seen on any other board. At first I
-> assumed that there was some board-specific issue, but we've not been
-> able to find one. If you give the chip enough time, it will eventually
-> signal "PPU Polling" and everything else will work as
-> expected. Therefore I assume that all is in order, and that we simply
-> need to increase the timeout.
->
-> 3/4 just broadens Chris' original fix to apply to all chips. Though I
-> have obviously not tested this on every supported device, I can't see
-> how this could possibly be chip specific. Was there some specific
-> reason for originally limiting the set of chips that this applied to?
+Please note that current version of sparse doesn't know anything about
+__typeof_unqual__() operator. Avoid the usage of __typeof_unqual__()
+when sparse checking is active to prevent sparse errors with unknowing
+keyword. The proposed patch by Dan Carpenter to implement
+__typeof_unqual__() handling in sparse is located at:
 
-I think it was mainly because I didn't have a 88e639xx to test with 
-(much like you) so I kept the change isolated to the hardware I did have 
-access to.
+https://lore.kernel.org/lkml/5b8d0dee-8fb6-45af-ba6c-7f74aff9a4b8@stanley.mountain/
 
-The original thread that kicked the original series off was 
-https://lore.kernel.org/netdev/72e8e25a-db0d-275f-e80e-0b74bf112832@alliedtelesis.co.nz/
+v2: - Add comment to remove test for __CHECKER__ once sparse learns
+      about __typeof_unqual__.
+    - Add Acked-by: tags.
+v3: - Rename __per_cpu_qual to __percpu_qual.
+    - Add more Acked-by: tags.
 
-Since the only difference is the mode == MLO_AN_INBAND check I think 
-your change is reasonably safe.
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
 
->
-> 4/4 can only be supported on the Amethyst, which can control the
-> ieee-multicast policy per-port, rather than via a global setting as
-> it's done on the older families.
->
-> Tobias Waldekranz (4):
->    net: dsa: mv88e6xxx: Improve I/O related error logging
->    net: dsa: mv88e6xxx: Give chips more time to activate their PPUs
->    net: dsa: mv88e6xxx: Never force link on in-band managed MACs
->    net: dsa: mv88e6xxx: Limit rsvd2cpu policy to user ports on 6393X
->
->   drivers/net/dsa/mv88e6xxx/chip.c    | 92 ++++++++++++++++-------------
->   drivers/net/dsa/mv88e6xxx/chip.h    |  6 +-
->   drivers/net/dsa/mv88e6xxx/global1.c | 19 +++++-
->   drivers/net/dsa/mv88e6xxx/port.c    | 48 +++++++--------
->   drivers/net/dsa/mv88e6xxx/port.h    |  1 -
->   5 files changed, 97 insertions(+), 69 deletions(-)
->
+Uros Bizjak (6):
+  x86/kgdb: Use IS_ERR_PCPU() macro
+  compiler.h: Introduce TYPEOF_UNQUAL() macro
+  percpu: Use TYPEOF_UNQUAL() in variable declarations
+  percpu: Use TYPEOF_UNQUAL() in *_cpu_ptr() accessors
+  percpu: Repurpose __percpu tag as a named address space qualifier
+  percpu/x86: Enable strict percpu checks via named AS qualifiers
+
+ arch/x86/include/asm/percpu.h  | 38 ++++++++++++++++++++++++---------
+ arch/x86/kernel/kgdb.c         |  2 +-
+ fs/bcachefs/util.h             |  2 +-
+ include/asm-generic/percpu.h   | 39 ++++++++++++++++++++++------------
+ include/linux/compiler.h       | 13 ++++++++++++
+ include/linux/compiler_types.h |  2 +-
+ include/linux/part_stat.h      |  2 +-
+ include/linux/percpu-defs.h    |  6 +++---
+ include/net/snmp.h             |  5 ++---
+ init/Kconfig                   |  3 +++
+ kernel/locking/percpu-rwsem.c  |  2 +-
+ net/mpls/internal.h            |  4 ++--
+ 12 files changed, 82 insertions(+), 36 deletions(-)
+
+-- 
+2.42.0
+
