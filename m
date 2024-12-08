@@ -1,40 +1,40 @@
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8062D149C4D;
-	Sun,  8 Dec 2024 15:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A047602D;
+	Sun,  8 Dec 2024 15:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733670855; cv=none; b=QTgnS5RbjfoC2Y0LQ+9DcUYb3hCmfRwr5h8Ze+3z/GfRXndOhRx23dhImnZ2ZMPBvr/bpzeHWV4tVLMCpzEYpo0wBIA9nWtnYbMrqli3nvo33r99cSZ13RguqUDsrDIGpkZ8p7N2QQMH48xfQyhf1H6bYMzK5amGOiZ/eoHWaBk=
+	t=1733671125; cv=none; b=UPofshiigOwYJo1y3Jj9vhYifrCJrDBkvuc+tMKviZFU76cigp8kgG1cFRTjtXQrQUx85OCRXJNyw1vN9Ogm4sL31vQBdgqOvd730hyBEqMq+2LzCqd0E4sJNfhlsyPwuJTW6KHSWT+NF2Yy4XS6qn8cCCequk2f+iKyRGUH8+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733670855; c=relaxed/simple;
-	bh=wh/UWvUGZcgZWokg44nR1/nimiwZ3IkP8kiQTpA5G/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=U7DUDsu5vlRnaHKdrcCrI4YXcffdaBlNDK8EYwVsGm5vEAecKMpi3BxXd9xCqte0m9zS7IwX+Cexm7HJU0xLhHWwmTL2vsN3F43zellMLxRv8ZaOBi/gWA5Zz086cyJatuu/OOoOYfB7B0Nrj/vI6SITsinEiF7dK5D4nC/xmW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=gO8NLcl6; arc=none smtp.client-ip=80.12.242.24
+	s=arc-20240116; t=1733671125; c=relaxed/simple;
+	bh=2OArod8sW4RreCC6MJSPMsq0MEeKaQN+IBaRZAk6Dac=;
+	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
+	 In-Reply-To:Content-Type; b=iJhOm89WaI0+gTag9IqFJnSz9yGTKoXJKSwGw2Py7WQiWhglKJv0aGuGs+FZhPiP5CxaR+AAt+LsB7zDRUCIrHq6RK4qi3yYVVcBWLmjEta36JD+k8BAHnoZEDZwGLsbpmPh36MSYgla59TiiNfMpS35M8LjPGNaDxOMZTBIXvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Eg5KF7hb; arc=none smtp.client-ip=80.12.242.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="gO8NLcl6"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Eg5KF7hb"
 Received: from [192.168.1.37] ([90.11.132.44])
 	by smtp.orange.fr with ESMTPA
-	id KIyktPf7LKnkaKIyltSzZs; Sun, 08 Dec 2024 16:13:58 +0100
+	id KIuTt5Z1GhfQMKIuTtU2lx; Sun, 08 Dec 2024 16:09:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1733670838;
-	bh=Pdf86gR/dMKzkGH5bal5f/VQlcSO3nRfeOeV/tWrQ+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=gO8NLcl6a4c7J73S19642SQgukw51ysvu4UFeYagLERMwA3v+/H7FNR1ucyg22b/O
-	 892EhhwK1nkrqYNwJhWHEnbzX4oz3p6BvqqVU3FrisC8HYPAmGBpaMrQ6HtSNdIiYA
-	 j7ncnZNgxSM46LYgXIc9uEoAHd5zyHrmUWnerYETEQoqdkZmIfl0Kx2c2cdBe9VJ9M
-	 j3ASPrpmR3ch7IO04glAVsZCjNc5V8PP4BuP3rLHtYMjqsjUoeyfaJ9O0Sqp7u1l1a
-	 QA7iQdH1oEq3JfI45mXOdlzcetKOMX9WFrx1J0ViJcjXa5mP3s0QN9rRBi4dyjO21i
-	 wbie9Dv7Q4GvA==
+	s=t20230301; t=1733670570;
+	bh=pDg9j4Kgs8Eh6X0ImJM0JCCi0wdfL5kuTF+nMwtl4+A=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=Eg5KF7hbCX3H60W9Wj+/lz92hplkkTFtPhU035C3ifPmyjDdYtby33boSWgK2ehmU
+	 i1TKka2qzTofga1fFeG2f7m3UrrRnk/rFrx7YMbmguPtUklUy7DxF0L6NAloyfVmEr
+	 8DaiqPQkc8mDxtUAmz2BvboAoN056pWuQdxHWvfTkDNEg6ER/XO8ggKSpSjiiaVbk2
+	 HOB2EPXTlnXQL3dfxkVXu9uLiGXlDUokjR3pkeTQ/vsV900einRnEknbJsIa6w5E3y
+	 G2bEtB9S9WlYrwTCx+TZSuQpvtl654wHk2lqWtXGleHxEAjF8fxO8/kasnYWuF0DBy
+	 oqlqHjA5P8+qw==
 X-ME-Helo: [192.168.1.37]
 X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 08 Dec 2024 16:13:58 +0100
+X-ME-Date: Sun, 08 Dec 2024 16:09:30 +0100
 X-ME-IP: 90.11.132.44
-Message-ID: <42f11110-7071-43c8-a4fe-df99a60bc12d@wanadoo.fr>
-Date: Sun, 8 Dec 2024 16:13:50 +0100
+Message-ID: <8e9cf879-b188-4bfe-8200-f6a6ae285cb5@wanadoo.fr>
+Date: Sun, 8 Dec 2024 16:09:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,126 +42,122 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v10 6/9] net: mdio: Add Airoha AN8855 Switch MDIO
- Passtrough
-To: Christian Marangi <ansuelsmth@gmail.com>, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+Subject: Re: [net-next PATCH v10 5/9] mfd: an8855: Add support for Airoha
+ AN8855 Switch MFD
+References: <20241208002105.18074-1-ansuelsmth@gmail.com>
+ <20241208002105.18074-6-ansuelsmth@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  Vladimir Oltean <olteanv@gmail.com>,
  Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
  Heiner Kallweit <hkallweit1@gmail.com>, Russell King
  <linux@armlinux.org.uk>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ "AngeloGioacchino Del Regno," <angelogioacchino.delregno@collabora.com>,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, upstream@airoha.com
-References: <20241208002105.18074-1-ansuelsmth@gmail.com>
- <20241208002105.18074-7-ansuelsmth@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20241208002105.18074-7-ansuelsmth@gmail.com>
+In-Reply-To: <20241208002105.18074-6-ansuelsmth@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 Le 08/12/2024 à 01:20, Christian Marangi a écrit :
-> Add Airoha AN8855 Switch driver to register a MDIO passtrough as switch
-> address is shared with the internal PHYs and require additional page
-> handling.
+> Add support for Airoha AN8855 Switch MFD that provide support for a DSA
+> switch and a NVMEM provider. Also provide support for a virtual MDIO
+> passthrough as the PHYs address for the switch are shared with the switch
+> address
 > 
-> This requires the upper Switch MFD to be probed and init to actually
-> work.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Signed-off-by: Christian Marangi <ansuelsmth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
->   MAINTAINERS                    |   1 +
->   drivers/net/mdio/Kconfig       |   9 +++
->   drivers/net/mdio/Makefile      |   1 +
->   drivers/net/mdio/mdio-an8855.c | 113 +++++++++++++++++++++++++++++++++
->   4 files changed, 124 insertions(+)
->   create mode 100644 drivers/net/mdio/mdio-an8855.c
+>   MAINTAINERS                           |   1 +
+>   drivers/mfd/Kconfig                   |   9 +
+>   drivers/mfd/Makefile                  |   1 +
+>   drivers/mfd/airoha-an8855.c           | 279 ++++++++++++++++++++++++++
+>   include/linux/mfd/airoha-an8855-mfd.h |  41 ++++
+>   5 files changed, 331 insertions(+)
+>   create mode 100644 drivers/mfd/airoha-an8855.c
+>   create mode 100644 include/linux/mfd/airoha-an8855-mfd.h
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7f4d7c48b6e1..38c7b2362c92 100644
+> index f3e3f6938824..7f4d7c48b6e1 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -722,6 +722,7 @@ F:	Documentation/devicetree/bindings/net/airoha,an8855-mdio.yaml
+> @@ -721,6 +721,7 @@ F:	Documentation/devicetree/bindings/mfd/airoha,an8855-mfd.yaml
+>   F:	Documentation/devicetree/bindings/net/airoha,an8855-mdio.yaml
 >   F:	Documentation/devicetree/bindings/net/dsa/airoha,an8855-switch.yaml
 >   F:	Documentation/devicetree/bindings/nvmem/airoha,an8855-efuse.yaml
->   F:	drivers/mfd/airoha-an8855.c
-> +F:	drivers/net/mdio/mdio-an8855.c
+> +F:	drivers/mfd/airoha-an8855.c
 >   
 >   AIROHA ETHERNET DRIVER
->   M:	Lorenzo Bianconi <lorenzo@kernel.org>
-> diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
-> index 4a7a303be2f7..64fc5c3ef38b 100644
-> --- a/drivers/net/mdio/Kconfig
-> +++ b/drivers/net/mdio/Kconfig
-> @@ -61,6 +61,15 @@ config MDIO_XGENE
->   	  This module provides a driver for the MDIO busses found in the
->   	  APM X-Gene SoC's.
+>   M:	Lorenzo Bianconi <lorenzo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index ae23b317a64e..a83db24336d9 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -53,6 +53,15 @@ config MFD_ALTERA_SYSMGR
+>   	  using regmap_mmio accesses for ARM32 parts and SMC calls to
+>   	  EL3 for ARM64 parts.
 >   
-> +config MDIO_AN8855
-> +	tristate "Airoha AN8855 Switch MDIO bus controller"
-> +	depends on MFD_AIROHA_AN8855
-> +	depends on OF_MDIO
+> +config MFD_AIROHA_AN8855
+> +	bool "Airoha AN8855 Switch MFD"
+> +	depends on MDIO && OF
+> +	select MFD_CORE
 > +	help
-> +	  This module provides a driver for the Airoha AN8855 Switch
-> +	  that require a MDIO passtrough as switch address is shared
+> +	  Support for the Airoha AN8855 Switch MFD. This is a SoC Switch
+> +	  that provide various peripherals. Currently it provides a
 
-requires?
+provides?
 
-> +	  with the internal PHYs and require additional page handling.
-
-requires?
-
+> +	  DSA switch and a NVMEM provider.
 > +
->   config MDIO_ASPEED
->   	tristate "ASPEED MDIO bus controller"
->   	depends on ARCH_ASPEED || COMPILE_TEST
+>   config MFD_ACT8945A
+>   	tristate "Active-semi ACT8945A"
+>   	select MFD_CORE
 
 ...
 
-> +static int an8855_mdio_probe(struct platform_device *pdev)
+> +static int an8855_mfd_probe(struct mdio_device *mdiodev)
 > +{
-> +	struct device *dev = &pdev->dev;
 > +	struct an8855_mfd_priv *priv;
-> +	struct mii_bus *bus;
-> +	int ret;
+> +	struct regmap *regmap;
 > +
-> +	/* Get priv of MFD */
-> +	priv = dev_get_drvdata(dev->parent);
-
-Ok, forget the related comment made on patch 5/9.
-
-> +
-> +	bus = devm_mdiobus_alloc(dev);
-> +	if (!bus)
+> +	priv = devm_kzalloc(&mdiodev->dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
 > +		return -ENOMEM;
 > +
-> +	bus->priv = priv;
-> +	bus->name = KBUILD_MODNAME "-mii";
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, KBUILD_MODNAME "-%d",
-> +		 priv->switch_addr);
-> +	bus->parent = dev;
-> +	bus->read = an8855_phy_read;
-> +	bus->write = an8855_phy_write;
+> +	priv->bus = mdiodev->bus;
+> +	priv->dev = &mdiodev->dev;
+> +	priv->switch_addr = mdiodev->addr;
+> +	/* no DMA for mdiobus, mute warning for DMA mask not set */
+> +	priv->dev->dma_mask = &priv->dev->coherent_dma_mask;
 > +
-> +	ret = devm_of_mdiobus_register(dev, bus, dev->of_node);
-> +	if (ret)
-> +		dev_err(dev, "failed to register MDIO bus: %d", ret);
+> +	regmap = devm_regmap_init(priv->dev, NULL, priv,
+> +				  &an8855_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(priv->dev, "regmap initialization failed");
 
 Nitpick: Missing ending \n.
-dev_err_probe() could be used.
+Also, return dev_err_probe() could be used.
+
+> +		return PTR_ERR(priv->dev);
+> +	}
+> +
+> +	dev_set_drvdata(&mdiodev->dev, priv);
+
+Is it needed?
+There is no dev_get_drvdata() in this patch
 
 > +
-> +	return ret;
+> +	return devm_mfd_add_devices(priv->dev, PLATFORM_DEVID_AUTO, an8855_mfd_devs,
+> +				    ARRAY_SIZE(an8855_mfd_devs), NULL, 0,
+> +				    NULL);
 > +}
 
 ...
 
 CJ
-
-
-
