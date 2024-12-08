@@ -1,122 +1,238 @@
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07D414F9FF;
-	Sun,  8 Dec 2024 15:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ADD14600D;
+	Sun,  8 Dec 2024 15:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733671615; cv=none; b=s7LR1+aC6bjVHnyrTak09zxFBZt+94zBuYEctuh3kPDT3Jkz8AiAz6+pW3kKMCRiWpKZKKLNBIjP917B/MYabsiTjraPfsuAu1VOkH2Y3bKM9b5O9bPohzEtql4kPl1Ekokna5Na0mkubYEtG7A2r73H8X477Oz33wcC6zRDlwk=
+	t=1733672855; cv=none; b=PPrfCGDXSYOirf9+if4MarduifAOg0gPSennrk3jq2BCEp6vuhCaYVmq3ZI5MOfqHvkPTxg86zqnLYqLjiJdQ5Z7CiOtEQ7nfRHgKREkdvYxHNT27JQJqtwAV3pOrSuD1efdTLz0qLY/l2eFzpzsDJ+1U4WwEHsbnohwf9jHLoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733671615; c=relaxed/simple;
-	bh=AZoi0XZVF4cYMk5HBsVPYwuVPV/Ylxm5DdyCSLCNVVs=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
-	 In-Reply-To:Content-Type; b=KxpE25ZRzDbR5OpvGN0teypBaNg4aDeJrV8RoBJaYPvbm4Ev4DwcYbu9QsDx6hslxtvgnk1Ph+Z/Z50o8biTN8/kQJnWgOoslDSa6Ey3s6KbB4mWB0yq/YcTOsyJYzR7d9peWrTSONBwjAuFR2hsitAGWnIsouuBe7fOgNbMvvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Dn8KWRVs; arc=none smtp.client-ip=80.12.242.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1733672855; c=relaxed/simple;
+	bh=wNUOxvL83TzsGifq3IVokVvTfxVKq3AXSvoF49vydRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hc7XX7ksG0wLFGtJHzoBgZJ/x0Vb2MFhM6Cqbrr2+wQDpfe5/YBr9nd7k6LHogVNlfFBid86dZtz917ODV4aytxYGDjRL9sk9JeNecRBQaadaICRqgnnHPFdmKp3XaCM52WRIu8D7RcGDUCWlP9iPKljXwu/z4y9+aTY0r4C3j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IbVxRtn/; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Dn8KWRVs"
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id KJBGtwSuVqhuoKJBGtLLZl; Sun, 08 Dec 2024 16:26:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1733671610;
-	bh=VVlq2KdrmbfOW86CMGQBu5vttyCc5rsOJolnA5rzBIk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=Dn8KWRVsKQrdEj1cVfH9KGP3vdTtQX3bBcFfNlISnT2UtzDMpJ1PNPUBZRXixCQn+
-	 uJ6bIcL1s3iHJMSrpeOceQnsSc/jUwI0lGEG19YMIF5uumgfP0l2uLDh9trY/JYrfR
-	 FOim+Qk//jZBt/0TI2guKmq17F97VVeQNsq8Hmhc+YIaofT+qHTgaeIVV7j9p6aHfp
-	 4ITSpVrTgHUi7reH71c04BqTswwzfULvqb2n2FNTeRym+haSa/1jlGSE74DMPDBElA
-	 slfNd/JhiX2U34JgvwS8pBjx0zmVY3GDgoYpqRZ0Y9jmLgjPETZtysu6r61d9iBm4Y
-	 Fms4mMJ1oqjjw==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 08 Dec 2024 16:26:50 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <d205aae9-68d5-41f1-8739-779b2d9a6664@wanadoo.fr>
-Date: Sun, 8 Dec 2024 16:26:46 +0100
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IbVxRtn/"
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5B6FD1140152;
+	Sun,  8 Dec 2024 10:47:32 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Sun, 08 Dec 2024 10:47:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733672852; x=
+	1733759252; bh=0JUvzhJNY3ZdO4SAnbwz1UN2DckRSUWEHcK7aapXk8I=; b=I
+	bVxRtn/HaV9RKcTFVke0iVCvuOKTf7VjU9dMAZMx1V0dJJcZJNJeM7VVJa+6G8D6
+	Bl7casc3F4G+D6ndWId6cRtX8DD/CJtY8WqVcnRimSzv7f8GbDOkXORo/EvsYTY7
+	V6GbBjgLEftIdCTJ0AvglO4rlsHm1/WOs4DpLxi18Q/jUJOfbjDeeKAz8Ojf2nof
+	Qv4y06Md8x4ChSIr3ue/zDzx8hf+ylXyyG6Ry5XmOAHoAZQ0H2Q/jLOgo+YL8Smu
+	nNvg8b2pnT83QMxDbefbpGMvX8cLyRT39pRbSfw6cfq+R/Z3zutJYfEcM/cb0es4
+	jo46W34SZgYDaqCPlGuvg==
+X-ME-Sender: <xms:k79VZ6xMbzYQQPERLxP0eES253SM-_X-JWJA6XY-DMEj-lyjrin4mw>
+    <xme:k79VZ2RJzEqMQVhewpHyG1__nOADq_ipTQX6PVkEZmpRHixAjFALij13iTKJomvoH
+    zGulveFqmDMW58>
+X-ME-Received: <xmr:k79VZ8Vve7rI6cIC4Xeka3bAPsjGz163rXzjjjTLdCbxPcOMmFlblHIhX7m9>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeefgdekudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeen
+    ucfhrhhomhepkfguohcuufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdroh
+    hrgheqnecuggftrfgrthhtvghrnhephfdvudeileeiteejkedtgffhgfdtvdevgedtheeh
+    vedufeffkeevhfetvdeggfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpnhgvth
+    hfihhlthgvrhdrohhrghdpnhgvthguvghvtghonhhfrdhinhhfohenucevlhhushhtvghr
+    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhesihguohhstg
+    hhrdhorhhgpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepfigvihdrfhgrnhhgsehngihprdgtohhmpdhrtghpthhtohepthhomheshhgvrh
+    gsvghrthhlrghnugdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegtlhgruhguihhurdhmrghnohhilhesnhigphdrtghomhdprhgtph
+    htthhopehvlhgrughimhhirhdrohhlthgvrghnsehngihprdgtohhmpdhrtghpthhtohep
+    gihirghonhhinhhgrdifrghnghesnhigphdrtghomhdprhgtphhtthhopegrnhgurhgvfi
+    donhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhl
+    ohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:k79VZwgBeXFgKJ4a_0jCt_hxhl6LmPLYrOrymJ4FTsVMXRpUkrdggA>
+    <xmx:k79VZ8BkFicNaUmRtUF0TEMFO-wt8xpgA8_fijiVtOlFvMNHzEyP-g>
+    <xmx:k79VZxIC9KSS-DYHjlSZ7-BjmBUftlXWvZNFGLfE8HFn7O2F2Vb_sA>
+    <xmx:k79VZzCf9mwfPtTKYPYvZhTBZRw-KJBwOmyYcPBfGdUlF7kgJf_FWg>
+    <xmx:lL9VZ0btcnBu4SMcSmVsMQIbbj0h8B6UFYjbkZOuylDpsNJvSa5GWQnS>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Dec 2024 10:47:30 -0500 (EST)
+Date: Sun, 8 Dec 2024 17:47:29 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Wei Fang <wei.fang@nxp.com>, tom@herbertland.com
+Cc: Simon Horman <horms@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Frank Li <frank.li@nxp.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+ offload for i.MX95 ENETC
+Message-ID: <Z1W_kSMUp3lsLPr_@shredder>
+References: <20241204052932.112446-1-wei.fang@nxp.com>
+ <20241204052932.112446-2-wei.fang@nxp.com>
+ <20241206092329.GH2581@kernel.org>
+ <PAXPR04MB85101D0EE82ED8EEF48A588988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20241206123030.GM2581@kernel.org>
+ <PAXPR04MB85107FD857F1AB33BBE4F70988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH v10 8/9] net: dsa: Add Airoha AN8855 5-Port
- Gigabit DSA Switch driver
-References: <20241208002105.18074-1-ansuelsmth@gmail.com>
- <20241208002105.18074-9-ansuelsmth@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Vladimir Oltean <olteanv@gmail.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Matthias Brugger <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno," <angelogioacchino.delregno@collabora.com>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, upstream@airoha.com
-In-Reply-To: <20241208002105.18074-9-ansuelsmth@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB85107FD857F1AB33BBE4F70988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Le 08/12/2024 à 01:20, Christian Marangi a écrit :
-> Add Airoha AN8855 5-Port Gigabit DSA switch. Switch can support
-> 10M, 100M, 1Gb, 2.5G and 5G Ethernet Speed but 5G is currently error out
-> as it's not currently supported as requires additional configuration for
-> the PCS.
+On Fri, Dec 06, 2024 at 12:45:02PM +0000, Wei Fang wrote:
+> > -----Original Message-----
+> > From: Simon Horman <horms@kernel.org>
+> > Sent: 2024年12月6日 20:31
+> > To: Wei Fang <wei.fang@nxp.com>
+> > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+> > offload for i.MX95 ENETC
+> > 
+> > On Fri, Dec 06, 2024 at 10:33:15AM +0000, Wei Fang wrote:
+> > > > -----Original Message-----
+> > > > From: Simon Horman <horms@kernel.org>
+> > > > Sent: 2024年12月6日 17:23
+> > > > To: Wei Fang <wei.fang@nxp.com>
+> > > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
+> > > > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
+> > > > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+> > > > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
+> > > > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > > > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
+> > > > offload for i.MX95 ENETC
+> > > >
+> > > > On Wed, Dec 04, 2024 at 01:29:28PM +0800, Wei Fang wrote:
+> > > > > ENETC rev 4.1 supports TCP and UDP checksum offload for receive, the bit
+> > > > > 108 of the Rx BD will be set if the TCP/UDP checksum is correct. Since
+> > > > > this capability is not defined in register, the rx_csum bit is added to
+> > > > > struct enetc_drvdata to indicate whether the device supports Rx
+> > checksum
+> > > > > offload.
+> > > > >
+> > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > > > Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+> > > > > ---
+> > > > > v2: no changes
+> > > > > v3: no changes
+> > > > > v4: no changes
+> > > > > v5: no changes
+> > > > > v6: no changes
+> > > > > ---
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc.c       | 14
+> > ++++++++++----
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc.h       |  2 ++
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc_hw.h    |  2 ++
+> > > > >  .../net/ethernet/freescale/enetc/enetc_pf_common.c |  3 +++
+> > > > >  4 files changed, 17 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > index 35634c516e26..3137b6ee62d3 100644
+> > > > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > > > > @@ -1011,10 +1011,15 @@ static void enetc_get_offloads(struct
+> > enetc_bdr
+> > > > *rx_ring,
+> > > > >
+> > > > >  	/* TODO: hashing */
+> > > > >  	if (rx_ring->ndev->features & NETIF_F_RXCSUM) {
+> > > > > -		u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
+> > > > > -
+> > > > > -		skb->csum = csum_unfold((__force
+> > __sum16)~htons(inet_csum));
+> > > > > -		skb->ip_summed = CHECKSUM_COMPLETE;
+> > > > > +		if (priv->active_offloads & ENETC_F_RXCSUM &&
+> > > > > +		    le16_to_cpu(rxbd->r.flags) &
+> > ENETC_RXBD_FLAG_L4_CSUM_OK)
+> > > > {
+> > > > > +			skb->ip_summed = CHECKSUM_UNNECESSARY;
+> > > > > +		} else {
+> > > > > +			u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
+> > > > > +
+> > > > > +			skb->csum = csum_unfold((__force
+> > __sum16)~htons(inet_csum));
+> > > > > +			skb->ip_summed = CHECKSUM_COMPLETE;
+> > > > > +		}
+> > > > >  	}
+> > > >
+> > > > Hi Wei,
+> > > >
+> > > > I am wondering about the relationship between the above and
+> > > > hardware support for CHECKSUM_COMPLETE.
+> > > >
+> > > > Prior to this patch CHECKSUM_COMPLETE was always used, which seems
+> > > > desirable. But with this patch, CHECKSUM_UNNECESSARY is conditionally
+> > used.
+> > > >
+> > > > If those cases don't work with CHECKSUM_COMPLETE then is this a
+> > bug-fix?
+> > > >
+> > > > Or, alternatively, if those cases do work with CHECKSUM_COMPLETE, then
+> > > > I'm unsure why this change is necessary or desirable. It's my understanding
+> > > > that from the Kernel's perspective CHECKSUM_COMPLETE is preferable to
+> > > > CHECKSUM_UNNECESSARY.
+> > > >
+> > > > ...
+> > >
+> > > Rx checksum offload is a new feature of ENETC v4. We would like to exploit
+> > this
+> > > capability of the hardware to save CPU cycles in calculating and verifying
+> > checksum.
+> > >
+> > 
+> > Understood, but CHECKSUM_UNNECESSARY is usually the preferred option as
+> > it
+> > is more flexible, e.g. allowing low-cost calculation of inner checksums
+> > in the presence of encapsulation.
 > 
-> The switch is also a nvmem-provider as it does have EFUSE to calibrate
-> the internal PHYs.
-> 
-> Signed-off-by: Christian Marangi <ansuelsmth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
+> I think you mean 'CHECKSUM_COMPLETE' is the preferred option. But there is no
+> strong reason against using CHECKSUM_UNNECESSARY. So I hope to keep this patch.
 
-...
+I was also under the impression that CHECKSUM_COMPLETE is more desirable
+than CHECKSUM_UNNECESSARY. Maybe Tom can help.
 
-> +static int an8855_read_switch_id(struct an8855_priv *priv)
-> +{
-> +	u32 id;
-> +	int ret;
-> +
-> +	ret = regmap_read(priv->regmap, AN8855_CREV, &id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (id != AN8855_ID) {
-> +		dev_err(priv->dev,
-> +			"Switch id detected %x but expected %x",
+Tom:
 
-missing \n
+If a device can report both CHECKSUM_UNNECESSARY and CHECKSUM_COMPLETE,
+is there any advantage in reporting CHECKSUM_UNNECESSARY? The only
+advantage I can think of is that when the kernel pulls headers (IPv6 for
+example) it wouldn't need to compute their checksum in order to adjust
+skb->csum, but I am not sure how critical that is.
 
-> +			id, AN8855_ID);
-> +		return -ENODEV;
-> +	}
-> +
-> +	return 0;
-> +}
+I am asking because I am interested in knowing what is the
+recommendation for future devices: Implement both or only
+CHECKSUM_COMPLETE?
 
-...
+Original patch is here [1] and I did read your paper [2] and David's
+presentation [3].
 
-> +static void an8855_switch_remove(struct platform_device *pdev)
-> +{
-> +	struct an8855_priv *priv = dev_get_drvdata(&pdev->dev);
-> +
-> +	if (!priv)
-> +		return;
+Thanks
 
-I don't think this can happen. So it could be removed?
-
-> +
-> +	dsa_unregister_switch(priv->ds);
-> +}
-
-...
-
-CJ
+[1] https://lore.kernel.org/netdev/20241204052932.112446-1-wei.fang@nxp.com/T/#mf89bb4c6c72e8dd4a697551cbc9485217366d013
+[2] https://people.netfilter.org/pablo/netdev0.1/papers/UDP-Encapsulation-in-Linux.pdf
+[3] https://www.netdevconf.info/1.1/proceedings/slides/miller-hardware-checksumming.pdf
