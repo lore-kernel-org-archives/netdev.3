@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF671C5CAC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01DE1C5CB5
 	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 13:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733749685; cv=none; b=JFK0IxCnOvwKx1HZTz753AbTpaUsQOAD3Z/0tHhl/Y39eGHBPjgxKSmlzHAmQNDKQsKa3fOsT6EVu6PMLPJLufLR/6SReLQx3CKGOGyj/IEmaGiEWskTwK9GU/Ofrkdkv99Y+HRR0HysJJEDXdfOTmzGkXNJ/PEIb0vjbfH6yVw=
+	t=1733749684; cv=none; b=uIPLPh6SG9bMOtZPMxUGZ5v9KlsoDkXTbKD5t83XxP/I5FOa4cZDAGMeC81nfTPgNFYuwpl0MVyhWd5wzanXlH4VSrJLbhvEJOl8/nfy/X4zN3oAl8cZOdvYIn37Lxqv9fiF7hBC/Z0p84n+YmVVFETWSFI3l0nkn6Dzn+/qBIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733749685; c=relaxed/simple;
-	bh=PhXQ00/lGrLiI8+Ecv2+tDmvO0EzcGbWyO3HQgAQ3j8=;
+	s=arc-20240116; t=1733749684; c=relaxed/simple;
+	bh=g/OKuduUhe2JFrdTAfNDAaDkWJEOzOP2KVvW6wG+NzQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a+hKlS6O8iAnq9Zl6YGhooIlQ1pncVSpYG4qk76XmqynNY3YCy8lit1HVSB5ban+sfUQNquosYneAlHkaRceFIZB2R/6I/VlBkuL7KkoPexUxiNbGCWseF0cq5Zo/006ozb/YDrLz0vJTFCoDdf81ZpAmj6EYrdPTGBKF1/DzWw=
+	 MIME-Version; b=siezWcf3lvd6L2yvtQZpjLYnZAWEtCi9PL2KDfreM4qRNevsaYu0PiXyky9sqFaEzMjaBhq4PytAx8lU5falKxzm/LLdOmFAqbRe32vimJG1C3GPbk1NvLOahgZ4kOfgtHnElV+HkZWEvLkF4+wgkxI9pAEg3C68ibft7eQcieI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUP-0004RB-PL; Mon, 09 Dec 2024 14:07:53 +0100
+	id 1tKdUP-0004RG-PJ; Mon, 09 Dec 2024 14:07:53 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUN-002W7K-1b;
+	id 1tKdUN-002W7R-1v;
 	Mon, 09 Dec 2024 14:07:52 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUO-002wxG-0e;
+	id 1tKdUO-002wxu-0q;
 	Mon, 09 Dec 2024 14:07:52 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 03/11] net: usb: lan78xx: Add error handling to lan78xx_set_mac_addr
-Date: Mon,  9 Dec 2024 14:07:43 +0100
-Message-Id: <20241209130751.703182-4-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 07/11] net: usb: lan78xx: Use ETIMEDOUT instead of ETIME in lan78xx_stop_hw
+Date: Mon,  9 Dec 2024 14:07:47 +0100
+Message-Id: <20241209130751.703182-8-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241209130751.703182-1-o.rempel@pengutronix.de>
 References: <20241209130751.703182-1-o.rempel@pengutronix.de>
@@ -60,53 +60,31 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Update `lan78xx_set_mac_addr` to handle errors during MAC address
-register write operations. Ensure that errors are properly propagated to
-the caller, improving the robustness of MAC address updates.
+Update `lan78xx_stop_hw` to return `-ETIMEDOUT` instead of `-ETIME` when
+a timeout occurs. While `-ETIME` indicates a general timer expiration,
+`-ETIMEDOUT` is more commonly used for signaling operation timeouts and
+provides better consistency with standard error handling in the driver.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/usb/lan78xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 26dc43bac84b..5d318ff8b33d 100644
+index 2966f7e63617..c66e404f51ac 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2763,6 +2763,7 @@ static int lan78xx_set_mac_addr(struct net_device *netdev, void *p)
- 	struct lan78xx_net *dev = netdev_priv(netdev);
- 	struct sockaddr *addr = p;
- 	u32 addr_lo, addr_hi;
-+	int ret;
+@@ -844,9 +844,7 @@ static int lan78xx_stop_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enabled,
+ 		} while (!stopped && !time_after(jiffies, timeout));
+ 	}
  
- 	if (netif_running(netdev))
- 		return -EBUSY;
-@@ -2779,14 +2780,20 @@ static int lan78xx_set_mac_addr(struct net_device *netdev, void *p)
- 	addr_hi = netdev->dev_addr[4] |
- 		  netdev->dev_addr[5] << 8;
- 
--	lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
--	lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+	ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* Added to support MAC address changes */
--	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
--	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
-+	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
-+	if (ret < 0)
-+		return ret;
- 
--	return 0;
-+	return lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
+-	ret = stopped ? 0 : -ETIME;
+-
+-	return ret;
++	return stopped ? 0 : -ETIMEDOUT;
  }
  
- /* Enable or disable Rx checksum offload engine */
+ static int lan78xx_flush_fifo(struct lan78xx_net *dev, u32 reg, u32 fifo_flush)
 -- 
 2.39.5
 
