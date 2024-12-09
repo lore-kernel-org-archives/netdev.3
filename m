@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF752165E7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B21221DBE
 	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 13:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733749686; cv=none; b=o3nYxawGciH8xFothdms8bQ4Mj8rhY5w23uJBqeiMxflSXrl891FGENYhvgcDLHOMYz+V1v4wvbskDJ8E+9g9Ofn/NdBxXXEEBOcIyxp5kf2TPkPh9hgK5V087CdY3fuNtO4VVlfWu+fZZqC7HFOy8mIqISTXquazg9vXmy+eMc=
+	t=1733749687; cv=none; b=Y1oadMUo8CYO7nIOGZPMtj8rqZ9oe0Jnlrcn3extGWwpiXigr5Y/CNAUW2HLBdoNeqgvvmEF/NmCThOX1U/IrUP4YpZCTzIZvqdipJ3eHvb53x1QopZt6tfg0FMe55FJAdiqj1yEi1q4x2mwEzBiec6kVtxJioW5xRAxKDMhoSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733749686; c=relaxed/simple;
-	bh=84clEU0P/5CbvPrnaLag9WOQh/98lXhngHyQ/rKGNEE=;
+	s=arc-20240116; t=1733749687; c=relaxed/simple;
+	bh=30LU4+4zbasvRm9xbPR0QPujuyYcs3Dswq1ogtdq/vw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tllwh4lDKj+bNeJfp0USUoc74XnWdkLPVlV+BLx8Dt6lPa6GwPrBzdDN8GYz0eFqtdGxkicRSNEjQnJjFZkTRKJIqI05Nf+x3jh1sa+f26/aF46OvZ2jqC76qXgDGvsl49ckBqULd4Zz8E8pZ2r9SgqRc5eL5k/2bea3iLJiohY=
+	 MIME-Version; b=SUsM2mHkpsQuX3FnzCC1OKxQ1URzWaB0XDZtKk0jRthy3mOi9+rYGKkqM32X9tAgDWR1HmWWO2B84lgKA3xDzNxU1zmWgUpmNBnjKbGuSC4T5ixwKgHXSqWtHuhRXVxJxEHAwbGAOQhcKUCSGA8j8lwWTIHzPJRzTRXj07YzLMs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUP-0004R9-PK; Mon, 09 Dec 2024 14:07:53 +0100
+	id 1tKdUT-0004RJ-P7; Mon, 09 Dec 2024 14:07:57 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUN-002W7I-1U;
+	id 1tKdUN-002W7a-2D;
 	Mon, 09 Dec 2024 14:07:52 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUO-002wws-0X;
+	id 1tKdUO-002wye-13;
 	Mon, 09 Dec 2024 14:07:52 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 01/11] net: usb: lan78xx: Add error handling to lan78xx_setup_irq_domain
-Date: Mon,  9 Dec 2024 14:07:41 +0100
-Message-Id: <20241209130751.703182-2-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 11/11] net: usb: lan78xx: Improve error handling in WoL operations
+Date: Mon,  9 Dec 2024 14:07:51 +0100
+Message-Id: <20241209130751.703182-12-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241209130751.703182-1-o.rempel@pengutronix.de>
 References: <20241209130751.703182-1-o.rempel@pengutronix.de>
@@ -60,32 +60,45 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Update `lan78xx_setup_irq_domain` to handle errors in
-`lan78xx_read_reg`.  Return the error code immediately if the read
-operation fails, ensuring proper error propagation during IRQ domain
-setup.
+Enhance error handling in Wake-on-LAN (WoL) operations:
+- Log a warning in `lan78xx_get_wol` if `lan78xx_read_reg` fails.
+- Check and handle errors from `device_set_wakeup_enable` and
+  `phy_ethtool_set_wol` in `lan78xx_set_wol`.
+- Ensure proper cleanup with a unified error handling path.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index d5f6367d3714..070b21baffaf 100644
+index 0403aea1a9fa..99c19ec1cb88 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -2445,7 +2445,10 @@ static int lan78xx_setup_irq_domain(struct lan78xx_net *dev)
+@@ -1857,6 +1857,7 @@ static void lan78xx_get_wol(struct net_device *netdev,
  
- 	mutex_init(&dev->domain_data.irq_lock);
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (unlikely(ret < 0)) {
++		netdev_warn(dev->net, "failed to get WoL %pe", ERR_PTR(ret));
+ 		wol->supported = 0;
+ 		wol->wolopts = 0;
+ 	} else {
+@@ -1888,10 +1889,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
  
--	lan78xx_read_reg(dev, INT_EP_CTL, &buf);
-+	ret = lan78xx_read_reg(dev, INT_EP_CTL, &buf);
+ 	pdata->wol = wol->wolopts;
+ 
+-	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
++	ret = device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
 +	if (ret < 0)
-+		return ret;
-+
- 	dev->domain_data.irqenable = buf;
++		goto set_wol_done;
  
- 	dev->domain_data.irqchip = &lan78xx_irqchip;
+-	phy_ethtool_set_wol(netdev->phydev, wol);
++	ret = phy_ethtool_set_wol(netdev->phydev, wol);
+ 
++set_wol_done:
+ 	usb_autopm_put_interface(dev->intf);
+ 
+ 	return ret;
 -- 
 2.39.5
 
