@@ -1,46 +1,48 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2413A198831;
-	Mon,  9 Dec 2024 15:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC761B423B;
+	Mon,  9 Dec 2024 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733757499; cv=none; b=EaqgaP4Nv8SziQkq7+EsO7jXCSHfrArwGcwpiBXPHr+ckZb4CFfSY4GuZPa3MGUAAzwxDcdKkfoOCU5HjmCs0zcehI7h/7zA1KDxhcBxkmhZRhDcXY1B3rNd1z6TRrtAweQM7Hy97KmhIZfxckMxQQ0xTmMJ43iSQnDVvhRYMN8=
+	t=1733757501; cv=none; b=mmOa1/UG4E94cnCcaIQwyDx68wG6ct+BwL/v6oxwdhGHLw6zkLVHMLa68ha+imozJ9EICGVfkbP/DZ3vpm07EVFFSg3oU5q2/jn/bsSIfGAbSSoCTruFcnLTNh+H2GBULy7EZ19lF0dbHW5sLEHgfM4dU7I2fOusMnlxvwa9srw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733757499; c=relaxed/simple;
-	bh=Xb/ZmS39i7KGvL8g4KNP0laPkSKSBTKqMY7jSvKZA/Q=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mf3rUFcaUmw7q8ZUxouGOmBAdLQFWNEjEKlcRp2oOEJPNMUKBh9bB5jX34r5b0gMV8JgxQgHCXKlYiOhrcrv44YHFhlIvsgZFFzaeurN7E3yBdrVZM58ib5wbqgOAInoIj8ezXzWkBy/cTYzQ9zgn5OhSBRxFAmp3tlZCZFE8Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Dj19mpQZ; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1733757501; c=relaxed/simple;
+	bh=34Kvhd9rXAxxfCnK//kvZ21jMyc9BazOQaCB2lv9p6k=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jApVaYgt2DnkfNLyl0y5fBqnp3fO7rUeJM+1DrEwJfqO6o8uqevm1CzbkDQEyr0/xG6tmJ+h3Dk3SyPg6CopJ+MwdFePyoD6pJJIZ899RMafKzqLAPYM+Ibqq/wBeoe9W5vKEOU/UM13OzuqIT5IivZ5RV4JujZ+BMqG4dfbEKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=aNEt/IsR; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Dj19mpQZ"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="aNEt/IsR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1733757498; x=1765293498;
-  h=from:to:subject:date:message-id:mime-version;
-  bh=Xb/ZmS39i7KGvL8g4KNP0laPkSKSBTKqMY7jSvKZA/Q=;
-  b=Dj19mpQZnSVfG7LKdPVC3eeUJBgM6mu34vtRrsaI32IcMeAvSSWZcP7i
-   0ypreFW3xC+/D4f15Spei+5WeCTVfgGWsWT8FI9C4E//i1x15kl6dmdA/
-   9gYCw6CCiDbN1+ADy8UQljdWoE2PIkZE2EaWU1ozmqUYctCOwqO9igUCr
-   fMVbx0lX0ZVq018iwmIt0D+M+SZTqVYJu6ptQzfqehBTZ83bXNwdf44AV
-   LtPsso/9HNmty99JfmLwEzZgeCP/tenbUobMXQ3BzBsYNan700NavNDkV
-   AN6WxJvNMMfDUjZhbn1C2N3zH7B7iKlhOAFINWHPldeTDLpG1/r0epJUe
+  t=1733757500; x=1765293500;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version;
+  bh=34Kvhd9rXAxxfCnK//kvZ21jMyc9BazOQaCB2lv9p6k=;
+  b=aNEt/IsRVkALWae/ACyVnVVYT4k1F+G/LgSalm638YQqZLgOqPE2Egbp
+   Igi49RqvmJCkf5ej82oTxYthWJGbqQ/c7ZpgkiBp95WUD9Izl+F9taHqr
+   ZA2rdRxMJ8hul6R07X4Pk9EpZsdx3NzyG/Uw5Xy+uDz2efQkGUY0NcU9j
+   58Mog9v+3B6ibzQG306aa2jIWIFOubYcTXEzS9i6Wjf8jAok5piWY51T9
+   T/cPiFO4DfRBPgKyZIlpYB0AL43R46P2x21v16/CePZsl7cHZOZNgJQiz
+   EL98nkjh90ij0L+Q/sTX8kvtf9Ymn8d5TvIyWGdxcv7lj+JOyP5JhQEu1
    g==;
-X-CSE-ConnectionGUID: fVcj29IcQ9C5yarZFzKSjw==
-X-CSE-MsgGUID: wzH9YeAfRjKh/ZcVvxgfoQ==
+X-CSE-ConnectionGUID: yJIa2BtxQkuJT04wZ40P6A==
+X-CSE-MsgGUID: tWARgQsjTA2f1+q38CqAwA==
 X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="35775867"
+   d="scan'208";a="35775868"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
   by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Dec 2024 08:18:15 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 9 Dec 2024 08:17:34 -0700
+ 15.1.2507.35; Mon, 9 Dec 2024 08:17:49 -0700
 Received: from training-HP-280-G1-MT-PC.microchip.com (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Mon, 9 Dec 2024 08:17:30 -0700
+ 15.1.2507.35 via Frontend Transport; Mon, 9 Dec 2024 08:17:45 -0700
 From: Divya Koppera <divya.koppera@microchip.com>
 To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
 	<UNGLinuxDriver@microchip.com>, <hkallweit1@gmail.com>,
@@ -48,10 +50,12 @@ To: <andrew@lunn.ch>, <arun.ramadoss@microchip.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
 	<vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v6 0/5] Add rds ptp library for Microchip phys
-Date: Mon, 9 Dec 2024 20:47:37 +0530
-Message-ID: <20241209151742.9128-1-divya.koppera@microchip.com>
+Subject: [PATCH net-next v6 3/5] net: phy: Kconfig: Add rds ptp library support and 1588 optional flag in Microchip phys
+Date: Mon, 9 Dec 2024 20:47:40 +0530
+Message-ID: <20241209151742.9128-4-divya.koppera@microchip.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20241209151742.9128-1-divya.koppera@microchip.com>
+References: <20241209151742.9128-1-divya.koppera@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,30 +64,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Adds support for rds ptp library in Microchip phys, where rds is internal
-code name for ptp IP or hardware. This library will be re-used in
-Microchip phys where same ptp hardware is used. Register base addresses
-and mmd may changes, due to which base addresses and mmd is made variable
-in this library.
+Add ptp library support in Kconfig
+As some of Microchip T1 phys support ptp, add dependency
+of 1588 optional flag in Kconfig
 
-Divya Koppera (5):
-  net: phy: microchip_rds_ptp: Add header file for Microchip rds ptp
-    library
-  net: phy: microchip_rds_ptp : Add rds ptp library for Microchip phys
-  net: phy: Kconfig: Add rds ptp library support and 1588 optional flag
-    in Microchip phys
-  net: phy: Makefile: Add makefile support for rds ptp in Microchip phys
-  net: phy: microchip_t1 : Add initialization of ptp for lan887x
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Divya Koppera <divya.koppera@microchip.com>
+---
+v5 -> v6
+- Renamed the config name to reflect ptp hardware used.
 
- drivers/net/phy/Kconfig             |    9 +-
- drivers/net/phy/Makefile            |    1 +
- drivers/net/phy/microchip_rds_ptp.c | 1009 +++++++++++++++++++++++++++
- drivers/net/phy/microchip_rds_ptp.h |  218 ++++++
- drivers/net/phy/microchip_t1.c      |   41 +-
- 5 files changed, 1274 insertions(+), 4 deletions(-)
- create mode 100644 drivers/net/phy/microchip_rds_ptp.c
- create mode 100644 drivers/net/phy/microchip_rds_ptp.h
+v4 -> v5
+Addressed below review comments.
+- Indentation fix
+- Changed dependency check to if check for PTP_1588_CLOCK_OPTIONAL
 
+v1 -> v2 -> v3 -> v4
+- No changes
+---
+ drivers/net/phy/Kconfig | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 15828f4710a9..4ff6f5474397 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -287,8 +287,15 @@ config MICROCHIP_PHY
+ 
+ config MICROCHIP_T1_PHY
+ 	tristate "Microchip T1 PHYs"
++	select MICROCHIP_PHY_RDS_PTP if NETWORK_PHY_TIMESTAMPING && \
++				  PTP_1588_CLOCK_OPTIONAL
+ 	help
+-	  Supports the LAN87XX PHYs.
++	  Supports the LAN8XXX PHYs.
++
++config MICROCHIP_PHY_RDS_PTP
++	tristate "Microchip PHY RDS PTP"
++	help
++	  Currently supports LAN887X T1 PHY
+ 
+ config MICROSEMI_PHY
+ 	tristate "Microsemi PHYs"
 -- 
 2.17.1
 
