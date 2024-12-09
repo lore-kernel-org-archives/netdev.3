@@ -1,179 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCFA1ACED7;
-	Mon,  9 Dec 2024 14:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B546F1B0421
+	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 14:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733754037; cv=none; b=dzBC66EsvxEmo/NswgoE44TBBuNHQjsKXizoMScJu5r3YlqdWrlSRbcqWJkEpM4U/aZI8dLUWRYVlOKxRXsu6BvYjxRfQJ+gDJEJ0d5MC+H93sBjSitESN/nDsi2WXdDIMCQS6iBaSV8t0sNHl7mzC1/RhuqEyNY/tuQeyB/1Fo=
+	t=1733754167; cv=none; b=hElVrN3zFXO5Rr5JUDtJF8sf+GuX4mWbPpIQMXAPOrRixXX5ANnS1tuV+Vs3gRJB6yTmhUS2Kf/cmqhEskxgI1PH5qWHi/n5cGWALoocjw/1241YFI6LIyWB8hEEFr/vnJKQxsW9WUA+xY6CxyjA6dNWkq9fF/DnfeXvuWXW1p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733754037; c=relaxed/simple;
-	bh=PLN8C0vyxeY0HZVJKEgoSC+dtNcyo3RDZ1X6tDGDsnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L8SbmOa0Mfz1TmBwRgmYox2qBucSd7MlIqbG7yTZV1QXRMJ+np4qUCUY7tHUkLtJKeyXUNUPge0EIse4UtMTLee0xIAHhCHHrfXAUEC62m3807w+PhYoZeY6+PmwzX5+V+VoXruSg+Im6TkA4q2Mq4GXehksExXH6HIYlyolzHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZrPUwtU; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733754167; c=relaxed/simple;
+	bh=Nksm2B7YF/kxpTNDqcK9kU3i2yzLbmwGJNb6iIx/Kpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bx6VX2qNqdxZI55VqUEOCXkRta0/6lWAmMT2nk7bWdn/9h+QpsrHzDoKu3oLMSPXcEMTSI1lY3jde7FiUrxSPDCoYX1FHZEDNhYKd7mXQSFdj3csKvAESo2vTyvFFD1wx9zzF5EEPTISP7UVy9ow7nYGnmydXqczXQn+Ct4X7yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=g4NOJPQo; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZrPUwtU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733754036; x=1765290036;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=PLN8C0vyxeY0HZVJKEgoSC+dtNcyo3RDZ1X6tDGDsnU=;
-  b=AZrPUwtUR06GQi+tEVqbQyZWkTTONvFHTYjK/5mmia/MURmdceEmUZyW
-   wqsdA1rGKZGvOZqM1Jf7cfQwP9ZQIZK3tJdge7ndGC1TRROmfsbhCOMvK
-   os0Muep3e1SY61uLt+KZjmPR1DYEEb20RJR6/+7S5jFUR5+25+EaM2Aax
-   Lc/D21z/NFOQP4sf20pqxgtl8mNAEz0bMsRWg8ut00gjo/LvHrkehRLTT
-   3XzaVz5jDtJuPS98vxeuvDfaeT31nrN8pRRS1/zEq52uDQW2ubeFXZNeC
-   wIJlbZDNt6rHHNLgDPjn23pZI5eFxVMMbkJQ2eGbai7niMOR7Of8z9CwO
-   Q==;
-X-CSE-ConnectionGUID: oBsioNUGRgywWgd75C7qQA==
-X-CSE-MsgGUID: cKfHM/iPRA6mjgx8YAHJQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34110207"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="34110207"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 06:20:35 -0800
-X-CSE-ConnectionGUID: 7JqJZmemSLmeRFeMvpV0dQ==
-X-CSE-MsgGUID: Es16+6sTSQ+BlBm8KCAiIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="94923537"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa007.fm.intel.com with ESMTP; 09 Dec 2024 06:20:32 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id AEC55312FE;
-	Mon,  9 Dec 2024 14:20:30 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="g4NOJPQo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=K6jgVBpRZHxQ5DEqLZmFTAzvfUkownFqChtoVmYYGe0=; b=g4NOJPQou20GUDtPikUps6+r+R
+	2LKLITAARSNn7nMVvamh6g/2cDhb8mPDJ8dM0+lVJltp6um92jEWqO3A+ZgOAT73BoO31lEipmI1y
+	VGy+JSX/IN/cRtMLyqzoONggk3YhEmXdVRZXwyIC33Nn2gT7sFrl/hqx2zAgId2ryBhiLJmqbYrBh
+	+oNVnICubueFwDcECqYq8+IAkGJbh7mqBbpuC8O2kYWkyeYytggbP5IHfFrBIOs0wh1e81VtaFwkD
+	uhFX0AZnhCYdiYc/RSX46aB08tIjjLE1bvjvTBiclXCaYvdpp1EacEwRjR4agaZ3AY7MPNwdTckfc
+	y4zK0QBA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57612)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tKeeg-0000w1-1v;
+	Mon, 09 Dec 2024 14:22:35 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tKeed-00022f-2h;
+	Mon, 09 Dec 2024 14:22:31 +0000
+Date: Mon, 9 Dec 2024 14:22:31 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bryan Whitehead <bryan.whitehead@microchip.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH iwl-net] ice: do not configure destination override for switchdev
-Date: Mon,  9 Dec 2024 15:08:53 +0100
-Message-ID: <20241209140856.277801-1-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.43.0
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com
+Subject: [PATCH net-next 00/10] net: add phylink managed EEE support
+Message-ID: <Z1b9J-FihzJ4A6aQ@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-After switchdev is enabled and disabled later, LLDP packets sending stops,
-despite working perfectly fine before and during switchdev state.
-To reproduce (creating/destroying VF is what triggers the reconfiguration):
+Hi,
 
-devlink dev eswitch set pci/<address> mode switchdev
-echo '2' > /sys/class/net/<ifname>/device/sriov_numvfs
-echo '0' > /sys/class/net/<ifname>/device/sriov_numvfs
+Adding managed EEE support to phylink has been on the cards ever since
+the idea in phylib was mooted. This overly large series attempts to do
+so. I've included all the patches as it's important to get the driver
+patches out there.
 
-This happens because LLDP relies on the destination override functionality.
-It needs to 1) set a flag in the descriptor, 2) set the VSI permission to
-make it valid. The permissions are set when the PF VSI is first configured,
-but switchdev then enables it for the uplink VSI (which is always the PF)
-once more when configured and disables when deconfigured, which leads to
-software-generated LLDP packets being blocked.
+Patch 1 adds a definition for the clock stop capable bit in the PCS
+MMD status register.
 
-Do not modify the destination override permissions when configuring
-switchdev, as the enabled state is the default configuration that is never
-modified.
+Patch 2 adds a phylib API to query whether the PHY allows the transmit
+xMII clock to be stopped while in LPI mode. This capability is for MAC
+drivers to save power when LPI is active, to allow them to stop their
+transmit clock.
 
-Fixes: 1a1c40df2e80 ("ice: set and release switchdev environment")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c |  6 ------
- drivers/net/ethernet/intel/ice/ice_lib.c     | 18 ------------------
- drivers/net/ethernet/intel/ice/ice_lib.h     |  4 ----
- 3 files changed, 28 deletions(-)
+Patch 3 adds another phylib API to configure whether the receive xMII
+clock may be disabled by the PHY. We do have an existing API,
+phy_init_eee(), but... it only allows the control bit to be set which
+is weird - what if a boot firmware or previous kernel has set this bit
+and we want it clear?
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index fb527434b58b..b44a375e6365 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -50,9 +50,6 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	if (vlan_ops->dis_rx_filtering(uplink_vsi))
- 		goto err_vlan_filtering;
- 
--	if (ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_set_allow_override))
--		goto err_override_uplink;
--
- 	if (ice_vsi_update_local_lb(uplink_vsi, true))
- 		goto err_override_local_lb;
- 
-@@ -64,8 +61,6 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- err_up:
- 	ice_vsi_update_local_lb(uplink_vsi, false);
- err_override_local_lb:
--	ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_clear_allow_override);
--err_override_uplink:
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- err_vlan_filtering:
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
-@@ -276,7 +271,6 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	vlan_ops = ice_get_compat_vsi_vlan_ops(uplink_vsi);
- 
- 	ice_vsi_update_local_lb(uplink_vsi, false);
--	ice_vsi_update_security(uplink_vsi, ice_vsi_ctx_clear_allow_override);
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index a7d45a8ce7ac..e07fc8851e1d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3930,24 +3930,6 @@ void ice_vsi_ctx_clear_antispoof(struct ice_vsi_ctx *ctx)
- 				 ICE_AQ_VSI_SEC_TX_PRUNE_ENA_S);
- }
- 
--/**
-- * ice_vsi_ctx_set_allow_override - allow destination override on VSI
-- * @ctx: pointer to VSI ctx structure
-- */
--void ice_vsi_ctx_set_allow_override(struct ice_vsi_ctx *ctx)
--{
--	ctx->info.sec_flags |= ICE_AQ_VSI_SEC_FLAG_ALLOW_DEST_OVRD;
--}
--
--/**
-- * ice_vsi_ctx_clear_allow_override - turn off destination override on VSI
-- * @ctx: pointer to VSI ctx structure
-- */
--void ice_vsi_ctx_clear_allow_override(struct ice_vsi_ctx *ctx)
--{
--	ctx->info.sec_flags &= ~ICE_AQ_VSI_SEC_FLAG_ALLOW_DEST_OVRD;
--}
--
- /**
-  * ice_vsi_update_local_lb - update sw block in VSI with local loopback bit
-  * @vsi: pointer to VSI structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index 10d6fc479a32..6085039bac95 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -104,10 +104,6 @@ ice_vsi_update_security(struct ice_vsi *vsi, void (*fill)(struct ice_vsi_ctx *))
- void ice_vsi_ctx_set_antispoof(struct ice_vsi_ctx *ctx);
- 
- void ice_vsi_ctx_clear_antispoof(struct ice_vsi_ctx *ctx);
--
--void ice_vsi_ctx_set_allow_override(struct ice_vsi_ctx *ctx);
--
--void ice_vsi_ctx_clear_allow_override(struct ice_vsi_ctx *ctx);
- int ice_vsi_update_local_lb(struct ice_vsi *vsi, bool set);
- int ice_vsi_add_vlan_zero(struct ice_vsi *vsi);
- int ice_vsi_del_vlan_zero(struct ice_vsi *vsi);
+Patch 4 starts on the phylink parts of this, extracting from
+phylink_resolve() the detection of link-up. (Yes, okay, I could've
+dropped this patch, but with 23 patches, it's not going to make that
+much difference.)
+
+Patch 5 adds phylink managed EEE support. Two new MAC APIs are added,
+to enable and disable LPI. The enable method is passed the LPI timer
+setting which it is expected to program into the hardware, and also a
+flag ehther the transmit clock should be stopped.
+
+ *** There are open questions here. Eagle eyed reviewers will notice
+   pl->config->lpi_interfaces. There are MACs out there which only
+   support LPI signalling on a subset of their interface types. Phylib
+   doesn't understand this. I'm handling this at the moment by simply
+   not activating LPI at the MAC, but that leads to ethtool --show-eee
+   suggesting that EEE is active when it isn't.
+ *** Should we pass the phy_interface_t to these functions?
+ *** Should mac_enable_tx_lpi() be allowed to fail if the MAC doesn't
+   support the interface mode?
+
+The above questions remain unanswered from the RFC posting of this
+series.
+
+A change that has been included over the RFC version is the addition
+of the mac_validate_tx_lpi() method, which allows MAC drivers to
+validate the parameters to the ethtool set_eee() method. Implementations
+of this are in mvneta and mvpp2.
+
+An example of a MAC that this is the case are the Marvell ones - both
+NETA and PP2 only support LPI signalling when connected via SGMII,
+which makes being connected to a PHY which changes its link mode
+problematical.
+
+The remainder of the patches address the driver sides, which are
+necessary to actually test phylink managed EEE.
+
+ drivers/net/ethernet/marvell/mvneta.c            | 127 +++++++++++--------
+ drivers/net/ethernet/marvell/mvpp2/mvpp2.h       |   5 +
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c  |  98 +++++++++++++++
+ drivers/net/ethernet/microchip/lan743x_ethtool.c |  21 ----
+ drivers/net/ethernet/microchip/lan743x_main.c    |  39 ++++--
+ drivers/net/ethernet/microchip/lan743x_main.h    |   1 -
+ drivers/net/phy/phy.c                            |  47 ++++++-
+ drivers/net/phy/phylink.c                        | 150 +++++++++++++++++++++--
+ include/linux/phy.h                              |   2 +
+ include/linux/phylink.h                          |  59 +++++++++
+ include/uapi/linux/mdio.h                        |   1 +
+ 11 files changed, 458 insertions(+), 92 deletions(-)
+
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
