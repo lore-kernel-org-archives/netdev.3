@@ -1,91 +1,98 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C25B2163AD
-	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 09:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F86215163
+	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 09:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733737155; cv=none; b=QZDaNOtWSFnSZje/8HIJ52v8EEsiKI+cELGt8/g36qnsiPJ8cBnKaxkacF4sbnlGV3ELcKOOISwP3gxpeTMho4t4pKrh2idrw79BmTERp9wCQ7IcaGwp/v5SxWqDjUI6EwZzBXYL69trX7uQXDYTVErweyTKyCn2vlcR9+zNPMg=
+	t=1733737618; cv=none; b=Gd7w/SuGH729yHyR15Ji6qqsSMrtFCd2gj88H3eV2ks1EyJgBexlHfKgzwQUq5F/aropVo0Es3Asbg0b5FqHxEgaADlD4IG0cKXzsmYfWN0afWfG1INeiSqIN+ZsjoUNN3XWaqZN04QqM/g3G8gaBQ7wBnD7j8yHpE0RrInh6k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733737155; c=relaxed/simple;
-	bh=hh2354hlp1VuyDijMDkpJeNyikhjTkcRkAr5qoYK+0M=;
+	s=arc-20240116; t=1733737618; c=relaxed/simple;
+	bh=/4yCcmtI9X8BI1PJ3TBHSU8LfIPaaUkVMzOZ5/bpD/E=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uuXkbWmkx18oYpV/Xexfh+7kxZdIDO1uwcQkEQ0ZXU7/3Ne5Ch8Gesrq5K3IZaMqystj9cEoTLZP/2+V+8onyqbOEIofU8eF2Hzq0/nsrTV1dRE7prIK4MhH/Be4S0jdzTMpt5BAB3c4/w12SKObiwSqzXjMrMduVtrjUeNUMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.pengutronix.de)
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1tKZxM-0001JS-54; Mon, 09 Dec 2024 10:21:32 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>,  Dinh Nguyen <dinguyen@kernel.org>,
-  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Michael Turquette
- <mturquette@baylibre.com>,  Richard Cochran <richardcochran@gmail.com>,
-  Rob Herring <robh@kernel.org>,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-clk@vger.kernel.org,  kernel@pengutronix.de,  Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 0/6] ARM64: dts: intel: agilex5: add nodes and new board
-In-Reply-To: <dee94bf85dd158e4f0846617ba20d2d8.sboyd@kernel.org> (Stephen
-	Boyd's message of "Fri, 06 Dec 2024 14:13:05 -0800")
-References: <20241205-v6-12-topic-socfpga-agilex5-v3-0-2a8cdf73f50a@pengutronix.de>
-	<dee94bf85dd158e4f0846617ba20d2d8.sboyd@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.0.92
-Date: Mon, 09 Dec 2024 10:21:30 +0100
-Message-ID: <87seqxus85.fsf@pengutronix.de>
+	 MIME-Version:Content-Type; b=X72+xq7tVaeskwkgd1dzQ4JBTPYz7IcYRPTjICxqgSX5lzuNrilYMUPSzn3GQfGzDMtOA30D+liHPSLDVjkzR2cWPQT5tmrCPc/uwA86nGcx+8B4ac8YPQnbWgyOPTVf8rVWJnmMztStUM9MJ2YYmGOpRQZ70oPNg1VbXorbS0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GwtaXjSX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GwtaXjSX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733737615;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/4yCcmtI9X8BI1PJ3TBHSU8LfIPaaUkVMzOZ5/bpD/E=;
+	b=GwtaXjSXK4uaAQ93UmSUdZGW/clZcH/MiiVTmNUZejondxSnfyLx8VKAMlOjcUMhrh8GoG
+	ecfmmbwuR8RCBvTNBdusHmAoO5Jb9msNbWgn3f6OtDUO1RgSg2QBQxwtvupTiklbTKBKE/
+	uugsJT2j6WK9eyvj0ElPQk8m5QJ4NfU=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-100-gUGl389zOTCf5B0h-YB0lA-1; Mon, 09 Dec 2024 04:46:54 -0500
+X-MC-Unique: gUGl389zOTCf5B0h-YB0lA-1
+X-Mimecast-MFC-AGG-ID: gUGl389zOTCf5B0h-YB0lA
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d3e4e09ae7so2028894a12.3
+        for <netdev@vger.kernel.org>; Mon, 09 Dec 2024 01:46:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733737612; x=1734342412;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/4yCcmtI9X8BI1PJ3TBHSU8LfIPaaUkVMzOZ5/bpD/E=;
+        b=qtZnCeYNRCthqOj1GhEJxPFj01Pfac25GtcKkRbORudiz7l6C/JQwlJWl8CGFtHwUY
+         tSBFx5QEkYDf+20B8psrjCVDo/IJsa1TFHIWjki4z5oDAicqWs6rGod/D2WV4r8bvC0g
+         Xk8MowR60zGXcMZ5Np3AzbcgxtQI2bs6gVBmFqWC/kkBCwOzuju0Zfw+z8hd5dNA0ZEh
+         LDk6bABqUiaBgisxTFF2QslgEhqApRkFjQc1O2LFINEjpjEDPZq2NkUbzPWT6SyCXyAa
+         BOijb49N8TGFzA10Q4fIC0e7XxMoffBp6mcHOWhNUtX3eE2sa7oVkgqa/1sFA0v03tqf
+         mOsg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3wCFVBEP9v6xFdDkuQQMVNPcNHhZTbsAjLLHUcNPkKUF5FkmtJMlAcLXlX5o4rNu8oujEfnM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy9YhbW75VDD+rH/ao1m+NmKM+503fVqNX28dWsEyw2DnOZ0jR
+	p0PCCG1lDzThrIN/dbKfUeny46ZNcPjhQJrYmStImR+NTWl73BmVYVjoF9tcZQZSDHLjcA07voo
+	X5Q7gD4jNrdpyzlDdbjmq5k4fQ5xy9sMgFi7vT6zWMIfq5fBl103DiA==
+X-Gm-Gg: ASbGncuS+8DNcClTyF1U/X0vWoysJKRP734m3R6SezO/LNliSVd829i2MzKQurhY3sX
+	iZz209sl8zoLtPj+ynYh1PPRG2Q30INUC6RcfHAQyO0E7ld/chtd9KYYKgK3NYmhXePPNot2u4h
+	HAk7ORD9H/hr4Ml13sdtZni+qMOKZEBLCYIKXACVozbl0VLFdKABdJhfVsvq8rvpNXeSc3p5qGd
+	yOLS1VK1EzI21F9eqsEjIz3eW+iHOrEMwzncMTPi26SeNvCz8irWos3m7cZNI/KhWM/jGVKYxo=
+X-Received: by 2002:a05:6402:1f12:b0:5d0:e560:487f with SMTP id 4fb4d7f45d1cf-5d3be6b51f6mr13070168a12.11.1733737612325;
+        Mon, 09 Dec 2024 01:46:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+SM0HMMf3rLKQaHWVX8CzFTGrQpKPYgN7rKoWJXvIPMd3Duz+8mjeqy9B/SksYJY5E9rQEQ==
+X-Received: by 2002:a05:6402:1f12:b0:5d0:e560:487f with SMTP id 4fb4d7f45d1cf-5d3be6b51f6mr13070149a12.11.1733737611993;
+        Mon, 09 Dec 2024 01:46:51 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d3db53b828sm3387904a12.74.2024.12.09.01.46.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 01:46:51 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 84C7B16BD8AD; Mon, 09 Dec 2024 10:46:50 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Frederic Weisbecker <frederic@kernel.org>, LKML
+ <linux-kernel@vger.kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: pktgen: Use kthread_create_on_cpu()
+In-Reply-To: <20241208234955.31910-1-frederic@kernel.org>
+References: <20241208234955.31910-1-frederic@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 09 Dec 2024 10:46:50 +0100
+Message-ID: <87v7vt6ved.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2024-12-06 at 14:13 -08, Stephen Boyd <sboyd@kernel.org> wrote:
+Frederic Weisbecker <frederic@kernel.org> writes:
 
-> Quoting Steffen Trumtrar (2024-12-05 01:06:00)
-> > This series adds the gpio0 and gmac nodes to the socfpga_agilex5.dtsi.
-> > As the the socfpga-dwmac binding is still in txt format, convert it to
-> > yaml, to pass dtb_checks.
-> >
-> > An initial devicetree for a new board (Arrow AXE5-Eagle) is also added.
-> > Currently only QSPI and network are functional as all other hardware
-> > currently lacks mainline support.
-> >
-> [...]
-> > Steffen Trumtrar (6):
-> >       dt-bindings: net: dwmac: Convert socfpga dwmac to DT schema
-> >       dt-bindings: net: dwmac: add compatible for Agilex5
-> >       arm64: dts: agilex5: add gmac nodes
-> >       arm64: dts: agilex5: add gpio0
-> >       dt-bindings: intel: add agilex5-based Arrow AXE5-Eagle
-> >       arm64: dts: agilex5: initial support for Arrow AXE5-Eagle
-> >
-> >  .../devicetree/bindings/arm/intel,socfpga.yaml     |   1 +
-> >  .../devicetree/bindings/net/socfpga-dwmac.txt      |  57 ---------
-> >  .../devicetree/bindings/net/socfpga-dwmac.yaml     | 126 +++++++++++++++++++
-> >  arch/arm64/boot/dts/intel/Makefile                 |   1 +
-> >  arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi     | 109 ++++++++++++++++
-> >  .../boot/dts/intel/socfpga_agilex5_axe5_eagle.dts  | 140 +++++++++++++++++++++
-> >  6 files changed, 377 insertions(+), 57 deletions(-)
+> Use the proper API instead of open coding it.
 >
-> Why are clk framework maintainers Cced on this patch series?
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-Oops, sorry for the noise. Forgot to update the Cc list :(
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-
-Best regards,
-Steffen
-
---
-Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
