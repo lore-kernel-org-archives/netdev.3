@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050961C5CAB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542231C5CA7
 	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 13:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733749683; cv=none; b=tAmIhjjjFvYFAtdjFeI8BeJmi2kCjQzCbDvKe6BKCAdB00nQb0f85vjSSai8RQztoCDC5dgVLs9DYp3nGF+DgYU47cyNDaE+k6WIuLfL//sxZ9q0usPpxdqMRqHi70e0tgllwFYdxxI3z/Gk+4rA+YipgSZLN5ZeN2Ih/KDgC+Y=
+	t=1733749684; cv=none; b=octv7NC4VjdN59bvpYch1ZNYNClAl3HSaZMWcYGLxRmwIlkw+cXvxc9Rs4WMQWU1eb97RxMF/MXJHKK9zyrjyhyuJlkRYnoUa+bc1S2vbvdrx7xY2h1DIDO4UvOK185i49MI9zZ027crUZsziYkh3QnqR/2lb0Y41V13Ki+t1tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733749683; c=relaxed/simple;
-	bh=Mdid41HpR/uZUM79Qmv1K9Q8mfecEHCml7VhDgPU3vE=;
+	s=arc-20240116; t=1733749684; c=relaxed/simple;
+	bh=PaxtvrrZrzTt8HJSHJ5IQ4oy/JKItrDoSW/bOnWk72g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HkoLn2oH1wgvVl1mbI6JIaciiI3nHh2Uy1rh1l03DcneNX0x1ibfksexhTh5J6zemrxtTB+2LdoLtAedxLdHWb7VIIckkBG3dGXrcKUWJiiClsuf2FC3et2bwthoDHTv8Y/xSrg6wj70QsGB+JHv5SNNiGqAF4tp9yMN3e/Vrg0=
+	 MIME-Version; b=d9gmZb7a1J+afhmyGd3qDmHB9WxYb6KCbFcE8PI/EE47V8Ne7LnRpM2n96bWACusfFg29Rkx1UekkTIyGQvwbFbczMiT5wODe4o1ZlQ91wL/5D4DX7wrZ2hZKou+SsNCEGgntPVd+ButPKZBygaElCeMb7oGArwSUU7QmBoIfLk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUP-0004RI-PL; Mon, 09 Dec 2024 14:07:53 +0100
+	id 1tKdUP-0004RA-PJ; Mon, 09 Dec 2024 14:07:53 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUN-002W7X-2B;
+	id 1tKdUN-002W7J-1X;
 	Mon, 09 Dec 2024 14:07:52 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tKdUO-002wyR-10;
+	id 1tKdUO-002wx6-0b;
 	Mon, 09 Dec 2024 14:07:52 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 10/11] net: usb: lan78xx: Rename lan78xx_phy_wait_not_busy to lan78xx_mdiobus_wait_not_busy
-Date: Mon,  9 Dec 2024 14:07:50 +0100
-Message-Id: <20241209130751.703182-11-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 02/11] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+Date: Mon,  9 Dec 2024 14:07:42 +0100
+Message-Id: <20241209130751.703182-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241209130751.703182-1-o.rempel@pengutronix.de>
 References: <20241209130751.703182-1-o.rempel@pengutronix.de>
@@ -60,73 +60,85 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Rename `lan78xx_phy_wait_not_busy` to `lan78xx_mdiobus_wait_not_busy`
-for clarity and accuracy, as the function operates on the MII bus rather
-than a specific PHY. Update all references to reflect the new name.
+Convert `lan78xx_init_mac_address` to return error codes and handle
+failures in register read and write operations. Update `lan78xx_reset`
+to check for errors during MAC address initialization and propagate them
+appropriately.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/usb/lan78xx.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 9852526be002..0403aea1a9fa 100644
+index 070b21baffaf..26dc43bac84b 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -953,7 +953,7 @@ static int lan78xx_flush_rx_fifo(struct lan78xx_net *dev)
+@@ -2153,13 +2153,19 @@ static const struct ethtool_ops lan78xx_ethtool_ops = {
+ 	.get_regs	= lan78xx_get_regs,
+ };
+ 
+-static void lan78xx_init_mac_address(struct lan78xx_net *dev)
++static int lan78xx_init_mac_address(struct lan78xx_net *dev)
+ {
+ 	u32 addr_lo, addr_hi;
+ 	u8 addr[6];
++	int ret;
++
++	ret = lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
++	if (ret < 0)
++		return ret;
+ 
+-	lan78xx_read_reg(dev, RX_ADDRL, &addr_lo);
+-	lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	ret = lan78xx_read_reg(dev, RX_ADDRH, &addr_hi);
++	if (ret < 0)
++		return ret;
+ 
+ 	addr[0] = addr_lo & 0xFF;
+ 	addr[1] = (addr_lo >> 8) & 0xFF;
+@@ -2192,14 +2198,26 @@ static void lan78xx_init_mac_address(struct lan78xx_net *dev)
+ 			  (addr[2] << 16) | (addr[3] << 24);
+ 		addr_hi = addr[4] | (addr[5] << 8);
+ 
+-		lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
+-		lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		ret = lan78xx_write_reg(dev, RX_ADDRL, addr_lo);
++		if (ret < 0)
++			return ret;
++
++		ret = lan78xx_write_reg(dev, RX_ADDRH, addr_hi);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+-	lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
+-	lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	ret = lan78xx_write_reg(dev, MAF_LO(0), addr_lo);
++	if (ret < 0)
++		return ret;
++
++	ret = lan78xx_write_reg(dev, MAF_HI(0), addr_hi | MAF_HI_VALID_);
++	if (ret < 0)
++		return ret;
+ 
+ 	eth_hw_addr_set(dev->net, addr);
++
++	return 0;
  }
  
- /* Loop until the read is completed with timeout called with phy_mutex held */
--static int lan78xx_phy_wait_not_busy(struct lan78xx_net *dev)
-+static int lan78xx_mdiobus_wait_not_busy(struct lan78xx_net *dev)
- {
- 	unsigned long start_time = jiffies;
- 	u32 val;
-@@ -1602,7 +1602,7 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
- 	 * bus can result in the MAC interface locking up and not
- 	 * completing register access transactions.
- 	 */
--	ret = lan78xx_phy_wait_not_busy(dev);
-+	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
- 		goto mac_reset_done;
+ /* MDIO read and write wrappers for phylib */
+@@ -2990,7 +3008,9 @@ static int lan78xx_reset(struct lan78xx_net *dev)
+ 		}
+ 	} while (buf & HW_CFG_LRST_);
  
-@@ -2243,7 +2243,7 @@ static int lan78xx_mdiobus_read(struct mii_bus *bus, int phy_id, int idx)
- 	mutex_lock(&dev->phy_mutex);
+-	lan78xx_init_mac_address(dev);
++	ret = lan78xx_init_mac_address(dev);
++	if (ret < 0)
++		return ret;
  
- 	/* confirm MII not busy */
--	ret = lan78xx_phy_wait_not_busy(dev);
-+	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
- 		goto done;
- 
-@@ -2253,7 +2253,7 @@ static int lan78xx_mdiobus_read(struct mii_bus *bus, int phy_id, int idx)
- 	if (ret < 0)
- 		goto done;
- 
--	ret = lan78xx_phy_wait_not_busy(dev);
-+	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
- 		goto done;
- 
-@@ -2284,7 +2284,7 @@ static int lan78xx_mdiobus_write(struct mii_bus *bus, int phy_id, int idx,
- 	mutex_lock(&dev->phy_mutex);
- 
- 	/* confirm MII not busy */
--	ret = lan78xx_phy_wait_not_busy(dev);
-+	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
- 		goto done;
- 
-@@ -2299,7 +2299,7 @@ static int lan78xx_mdiobus_write(struct mii_bus *bus, int phy_id, int idx,
- 	if (ret < 0)
- 		goto done;
- 
--	ret = lan78xx_phy_wait_not_busy(dev);
-+	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
- 		goto done;
- 
+ 	/* save DEVID for later usage */
+ 	ret = lan78xx_read_reg(dev, ID_REV, &buf);
 -- 
 2.39.5
 
