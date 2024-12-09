@@ -1,170 +1,99 @@
-Received: from lf-2-14.ptr.blmpb.com (lf-2-14.ptr.blmpb.com [101.36.218.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D913A214A77
-	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 07:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.36.218.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95AE1EB3D;
+	Mon,  9 Dec 2024 07:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733728486; cv=none; b=kysw+oMwo2wZG1OIhQ1XIJC+pQOXNi7cHYlKDG/haQHWJcP5bSnlnjOvZuodzA/C3/XgIXR/CLiNdqHsXhz3H7ADcULxHPUJUgAsfQQT7LcMfBg4D2FkZO5UqhE21x3nu9Y+fpUwMujzRPw8A6Y4ipop6rbaNoAsHpnCA1DtoQo=
+	t=1733728573; cv=none; b=qJysI0D5wVbgJpOPlugViRBzsMB5SQu1XazpGhVOao/QHnGhunaJ9xIUVO2fTmvTXsqgvXWuaTlmBN/PaOgQpdYnGLwOhqUX7sAUCvWHi5iPHP4HqmHeH2FnGiu03+MuzvMHTW4kA1NeI/CJFQaA/icW5u2/7iHcJcI0WBF0jJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733728486; c=relaxed/simple;
-	bh=cHQiY8gHFbUBGx3T0MGuWejCxTwSm2ZLrlAaEVhvHa4=;
-	h=From:Content-Type:Cc:Subject:Date:To:Message-Id:Mime-Version; b=RshZqTZNDrZxIACN1leSS0sfgLuxjwtqFJOPgFAaVUM8OJFUst8Obyu7bMwDBBp64SRKQrB0+GpYv9rTN1GzTZQjwG51PlP5GrepF2DsGlw07vPoOq7Q84h4jrbpMzZJ2LcJRNzUBlOXEPn1EKeKMiX9nAwa6DaqyELyT11XXJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=GFioUy5n; arc=none smtp.client-ip=101.36.218.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	s=arc-20240116; t=1733728573; c=relaxed/simple;
+	bh=1J6V4E8LA0GGaZJ+POqJMUUoNezDtzJbOgOTt4Cj3ZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=rlDGvi0mN/a27NRv7PEEjac8fW/LcynzwdII3Muyw9OkIzSHY8ZTmEOwE43hV3DXxxbugMWv0HM2+KxzsVyXXfz0H8rL9j+5jv4ZdJO1x7MFoVrEzCnC5aeqjbR1iKrZqkr87dtjp6zeKE/lC34fV4P4fHf/716VT2Foer7r1lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Ii2f0KYp; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="GFioUy5n"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1733728265; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=hBXLKHXsmjpFLXzkrsgF3rYoceZ5L3+4r3u9qAGFkCw=;
- b=GFioUy5nOdbFzT+DdynkDGhZQtvoE/7AsLHRXBgQqNFv1AOoK0yegy66C3NwCymn/BfeTA
- 9kkdPG6h5sJa1y5Kt2xI+EAaL8nTz0Qs8RTLoZSqh4Qb7c7h3s7t+9NDvXUbdHlIfISAej
- lwoA3sQOVSFFsIuR7Lro6Nkv8iEOkOZeyWRczjr82t6dKGfxVeapkcOoPX99W+YAX0GpJc
- 9MUPbwS44lo6iF3yJIzYcn346TbfiDgS9GQg1aOKBGYmGdV7XfqlhaCpsuLLjwpuBgz9Ji
- YP2ykEJSc7rdOd/PcGYt++91Q/foWerhTysGNdMFMFZFj98/dLaHR1gY0X4uCg==
-From: "Tian Xin" <tianx@yunsilicon.com>
-X-Original-From: Tian Xin <tianx@yunsilicon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+267569807+3beeb7+vger.kernel.org+tianx@yunsilicon.com>
-Cc: <weihg@yunsilicon.com>, <tianx@yunsilicon.com>
-Subject: [PATCH 00/16] net-next/yunsilicon: ADD Yunsilicon XSC Ethernet Driver
-Date: Mon,  9 Dec 2024 15:10:45 +0800
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTP; Mon, 09 Dec 2024 15:11:02 +0800
-X-Mailer: git-send-email 2.25.1
-To: <netdev@vger.kernel.org>, <davem@davemloft.net>
-Message-Id: <20241209071101.3392590-1-tianx@yunsilicon.com>
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Ii2f0KYp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1733728564;
+	bh=l8PMxQonCXz47oET43kTRgtVB66upph2v/VQEttAlKo=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Ii2f0KYph51ZksyHS6iZxYyfe7FY4Jqyil4xObbImf4MubzEmRK5E6Wg8CXzVEJsm
+	 2HF4ZUJJCP2hnZ9Kny5Wy+ip7IyDF2tX1pUzuSUSzk82QMf+irzAG7+XifeXia2rVC
+	 SQX6fARwgqkX2KmlawmD/UNRlkjpSf7Fcr6bQoxt3VWDtCSzEBnVF0kBeBi/jzCJL/
+	 zy2ooM9CvRva0at0m8p62JV7w/mZyYohlWUjbk9M5hf9REZ2oxn4QamG9/k2ZRMGgK
+	 lIuy3kEYE1QWjF0EBNz7s8XReXMifcBbmO/Icm+xL9xyYMM0yp04osx8Ub6EGvzWjJ
+	 LUhfoylh349hQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Y6Cnw25L7z4wcj;
+	Mon,  9 Dec 2024 18:16:03 +1100 (AEDT)
+Date: Mon, 9 Dec 2024 18:16:07 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov
+ <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>
+Cc: "Alexis =?UTF-8?B?TG90aG9yw6k=?= (eBPF Foundation)"
+ <alexis.lothore@bootlin.com>, bpf <bpf@vger.kernel.org>, Networking
+ <netdev@vger.kernel.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: Fixes tag needs some work in the bpf-next tree
+Message-ID: <20241209181607.421c025f@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/.=Jldjg5mtb2ktJcqUecz9.";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-From: Xin Tian <tianx@yunsilicon.com>
+--Sig_/.=Jldjg5mtb2ktJcqUecz9.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-The patch series adds the xsc driver, which will support the Yuncilicon
-MS/MC/MV series of network devices.
+Hi all,
 
-The Yunsilicon MS/MC/MV series network cards provide support for both
-Ethernet and RDMA functionalities.
+In commit
 
-This submission is the first phase, which includes the PF-based Ethernet
-transmit and receive functionality. Once this is merged, we will submit
-additional patches to implement support for other features, such as SR-IOV,
-ethtool support, and a new RDMA driver.
+  c721d8f8b196 ("selftests/bpf: ensure proper root namespace cleanup when t=
+est fail")
 
+Fixes tag
 
-Xin Tian (16):
-  net-next/yunsilicon: Add yunsilicon xsc driver basic framework
-  net-next/yunsilicon: Enable CMDQ
-  net-next/yunsilicon: Add hardware setup APIs
-  net-next/yunsilicon: Add qp and cq management
-  net-next/yunsilicon: Add eq and alloc
-  net-next/yunsilicon: Add pci irq
-  net-next/yunsilicon: Device and interface management
-  net-next/yunsilicon: Add ethernet interface
-  net-next/yunsilicon: Init net device
-  net-next/yunsilicon: Add eth needed qp and cq apis
-  net-next/yunsilicon: ndo_open and ndo_stop
-  net-next/yunsilicon: Add ndo_start_xmit
-  net-next/yunsilicon: Add eth rx
-  net-next/yunsilicon: add ndo_get_stats64
-  net-next/yunsilicon: Add ndo_set_mac_address
-  net-next/yunsilicon: Add change mtu
+  Fixes: 284ed00a59dd ("selftests/bpf: migrate flow_dissector namespace exc=
+lusivity test")
 
- drivers/net/ethernet/Kconfig                  |    1 +
- drivers/net/ethernet/Makefile                 |    1 +
- drivers/net/ethernet/yunsilicon/Kconfig       |   26 +
- drivers/net/ethernet/yunsilicon/Makefile      |    8 +
- .../yunsilicon/xsc/common/xsc_auto_hw.h       |   97 +
- .../ethernet/yunsilicon/xsc/common/xsc_cmd.h  | 2513 +++++++++++++++++
- .../ethernet/yunsilicon/xsc/common/xsc_cmdq.h |  218 ++
- .../ethernet/yunsilicon/xsc/common/xsc_core.h |  659 +++++
- .../yunsilicon/xsc/common/xsc_device.h        |   77 +
- .../yunsilicon/xsc/common/xsc_driver.h        |   25 +
- .../ethernet/yunsilicon/xsc/common/xsc_pp.h   |   38 +
- .../ethernet/yunsilicon/xsc/common/xsc_pph.h  |  176 ++
- .../net/ethernet/yunsilicon/xsc/net/Kconfig   |   16 +
- .../net/ethernet/yunsilicon/xsc/net/Makefile  |    9 +
- .../net/ethernet/yunsilicon/xsc/net/main.c    | 2195 ++++++++++++++
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |   58 +
- .../yunsilicon/xsc/net/xsc_eth_common.h       |  237 ++
- .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  651 +++++
- .../yunsilicon/xsc/net/xsc_eth_stats.c        |   42 +
- .../yunsilicon/xsc/net/xsc_eth_stats.h        |   33 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  310 ++
- .../yunsilicon/xsc/net/xsc_eth_txrx.c         |  185 ++
- .../yunsilicon/xsc/net/xsc_eth_txrx.h         |   90 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.c  |  109 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.h  |  207 ++
- .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  230 ++
- .../net/ethernet/yunsilicon/xsc/pci/Kconfig   |   17 +
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   10 +
- .../net/ethernet/yunsilicon/xsc/pci/alloc.c   |  225 ++
- .../net/ethernet/yunsilicon/xsc/pci/alloc.h   |   15 +
- .../net/ethernet/yunsilicon/xsc/pci/cmdq.c    | 2162 ++++++++++++++
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.c  |  151 +
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.h  |   14 +
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.c  |  356 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.h  |   46 +
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |  269 ++
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |   18 +
- .../net/ethernet/yunsilicon/xsc/pci/intf.c    |  279 ++
- .../net/ethernet/yunsilicon/xsc/pci/intf.h    |   22 +
- .../net/ethernet/yunsilicon/xsc/pci/main.c    |  432 +++
- .../net/ethernet/yunsilicon/xsc/pci/pci_irq.c |  429 +++
- .../net/ethernet/yunsilicon/xsc/pci/pci_irq.h |   14 +
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.c  |  189 ++
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.h  |   15 +
- .../net/ethernet/yunsilicon/xsc/pci/vport.c   |  102 +
- 45 files changed, 12976 insertions(+)
- create mode 100644 drivers/net/ethernet/yunsilicon/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_auto_hw.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmd.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmdq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_driver.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_pp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_pph.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/intf.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/intf.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/main.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
+has these problem(s):
 
--- 
-2.43.0
+  - Target SHA1 does not exist
+
+Maybe you meant
+
+Fixes: 6fb5be12d1bb ("selftests/bpf: migrate flow_dissector namespace exclu=
+sivity test")
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/.=Jldjg5mtb2ktJcqUecz9.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmdWmTcACgkQAVBC80lX
+0Gyaegf9GcYmvcPCRNc/v8zT0K0viqhGSuVTHttaMtO2gSBZ/q6YhKaPk43LbXHd
+ovgnM19jQ4vYBuKhtQ0M3kXOsRc88b2fAwA5GP8pjxAtYehmc6mjbktQx44mP5XR
+jnyxfEAjZTLXLkYQ6GFHLL0Gnn6tREGzIR2nnoyWn48NJvrGQzXcdVCl0Fadm7x5
+Fc7FUoW/hFK3n+2WptQikFRgA07n+A7ri01tujsAs9JplfdgvD/q0cfPd39OIEyP
+YXIp4rVOtQ3f6tja58fZBlbR6el9bLCAK0MfuQgHIdKmm6RQn7/mSRcB95DoM6D8
+A17bRo/9FL9EIv/ycZleBIpN9DsVxw==
+=XeEq
+-----END PGP SIGNATURE-----
+
+--Sig_/.=Jldjg5mtb2ktJcqUecz9.--
