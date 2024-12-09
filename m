@@ -1,155 +1,156 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5153422617A
-	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 23:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DD4226189;
+	Mon,  9 Dec 2024 23:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733787906; cv=none; b=CegYEPAk1rVv/UgWR8I4lGhX6mAwE27/YTYxiuYPQIxz0hE6lhBsu42s6BuN4tbyQG8FTmkCh0JSATAPKRrov8aCoYOSaxk9UP1QpltozX9B8mVJqXg6su+p2u22K8O9sdEUdQCOpAPDh7R1JJAzQI4MopyCl2oAXmiBGZ8Q3JE=
+	t=1733787908; cv=none; b=j+Kfb9wrEVTelTw2UL9iZfs2cffcpY5XyVipgnnI7JnLCbbk0qxxiitc9eDIUPH92nbav3hzOHkHtyebhGMtThGqpgBsb+OB06ok9xu+/MGfAtEseMGO03U+aGGzrR6YhPU8zB8IY9fS9Lb40XSE/uDRqU72lW9kIQ8/5skDD1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733787906; c=relaxed/simple;
-	bh=JufgrUswjYv0bzgkH5yoyfwWJxuth+loL86OiEXEGxM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RKDtv/CsvdjY7hi3lt+0X66hrOe49KnZ/GiC7mOrmxFCxT0zzdTct3uTmb7Egv53SrfonD57VKuoOt9dpUGLApbfCV0IIMnVPjsoXuwZSVawgTkLff87CoCpaNn+3xSJm3P0N9ayuyczSDIYGhVD2yxAlrNTXMfvFawG5L+dSS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vDB5QPUo; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733787908; c=relaxed/simple;
+	bh=fOnBXHIAuJzE69Hz+Tu/sV6nKrtFajTIcLJ7FIXBo/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UYBtNNluv3ozxWbyPg0raUJKHI4XQ94tHO4VQQEwz1ZS5RPUXtdCZL6sogHvl62+fhCC4SvjpLa75SZS4x5BLdeFA3sVe5Z/OeWxom4jrIet05aNvTv1okdD0YL0t4cMnS9+iNl/Yn9DulrBLF9IGz5DpW1hSkazh+FQuN0zI/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz; spf=pass smtp.mailfrom=dxuuu.xyz; dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b=HBniydiw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Hx8+x14t; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dxuuu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vDB5QPUo"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa642e45241so686862566b.1
-        for <netdev@vger.kernel.org>; Mon, 09 Dec 2024 15:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733787903; x=1734392703; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dpfE3tT+UCTl6NxBKbi0GxRreWOybLCZniR1NWm7/Nk=;
-        b=vDB5QPUoWRkuiuNPzntT19hylCU5e8/36ED06Egh0C4wLyeN48uq6ZoPkmHkWqAVDL
-         2XUodI85CFFt2OzxRSSEMxNYbNuAoYOeG0VUMVsR0hj/LvtUpooY9dde8xs6T1lOICsI
-         AEW3SWkpSVOvPPhXMJUSBbHK8JyKbGuwgGRXJpUlIewpKMW/53j4F0XUI4Wuf/EVdovT
-         AO6m1Ot1jHmOJU9ysaUOPufTfrpTxqd9I+LmiA3b1JfV8zu3cXdD072VLow0I2hJmXJO
-         21xx9pwELBPduhi18DZ5b/tq8sRXWSOJ0jZui1nIeGyURLRz5KhsidQz46Ji3GESY+L+
-         scSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733787903; x=1734392703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dpfE3tT+UCTl6NxBKbi0GxRreWOybLCZniR1NWm7/Nk=;
-        b=UYynYGbUXkQYtTcr04oOx9d7MnXQ8n+0y69jAaOIqtEOFMAM0IxFAVxRHL4blH3n1s
-         XsBZt+sGEPrxxCfZoUrNJQ8kK0Xa2cgj0Eo8iIlGmDKBHaTX8xJord1um+U+GYzUSv3n
-         xpCS0/Yhah5pGmup/+7NBDLBRjsP9vHUNYeARAsu0QiXjVOeQU6ImqiSIRzQ7XMaf1tN
-         8//g7hoCOSvoLCQFDNZucSkQa1rJeDsHV3+4eS+wZKTXFZ/zgaVDSmnSkUJ0mbgrAncu
-         GfR1yzKNODSQtvs0rioayemdpHxt3YJAtzyb50rmoBwPfgijk50i4So0vSKmoLoZoTjQ
-         Vwhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhnkOt/OuTOEtKdvTxgEPtTAkUzRNDIEwgkBpka+0/bJMTw8muf2ypX3ViU+fDExOyeO0eZUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC6nJyi1IGPJMFRNlBLzS+RXVPgXJ8AMFrOmA6fvAm7s7plZpe
-	/gt360XXHfguzzVazhDHvl24s+CvmdJw4/CK9Yn89hd2/hCr684mbAgtAXvoKrZTHY7lRBJHMR+
-	k0imG/2uAhqDR/98Xuh3KRsHnZf0a7Cvm1TCT
-X-Gm-Gg: ASbGncsjQ8OKEfMpY3lP6f8zdVPVvkuWKXii8oXXEWP/HMrI1/HCBSP6f2JzjZABHvi
-	reUp8GdmmDUzRM+9WFU+btDWZSTRPSr0sz+bayXP/OBz7791nG0o8EGJhNBT4dYO0
-X-Google-Smtp-Source: AGHT+IFVzMugsf0zKCWk1dY8q4BFO/Qb0ORCOxMaSWJ1WAiL3cqrPyQt5cGwwfwWS5pXgHMB5SbrqJN57U1CDMuSuUo=
-X-Received: by 2002:a17:906:2192:b0:aa6:8275:223c with SMTP id
- a640c23a62f3a-aa69ce3762amr221718766b.44.1733787902494; Mon, 09 Dec 2024
- 15:45:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b="HBniydiw";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Hx8+x14t"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 9BA752540143;
+	Mon,  9 Dec 2024 18:45:05 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Mon, 09 Dec 2024 18:45:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1733787905; x=1733874305; bh=cvkcFxFnEzqNudK34KaNb
+	KjEuuWQ+WuBmDyvs2JoXoI=; b=HBniydiwb2yl3TUam+pW5JjwCxko8Um/aknJK
+	30ce7RXqHCYyPL6OvuvNpyF/2UmnsXsATYs1VnKbsr5U2K4BC+eUvxHgX5fNeRGy
+	pjBPX0XpR1Ij64ZWt8rdLrRjipPB5g54mh7Pn+E6vLKOOvC30E8fubnP3XwOwNGN
+	floseDOymAd6JvIML7PkZyZph85nbc7lOZAKicpr7vA2eJEpUDoIfHlAJf7uN/ri
+	Fx1zs0Hr8tSeOFnzB0lAL/Dl5uXIovLwkOZrmTQ3MVSokUFEYv1OWOqMfZdTEWv9
+	e5DQSoSbg/J5MAuvGBYyutn8oB5hI8gujVimAtJe8kczIZggw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1733787905; x=1733874305; bh=cvkcFxFnEzqNudK34KaNbKjEuuWQ+WuBmDy
+	vs2JoXoI=; b=Hx8+x14tJBg99IVN6qtVcSU3vrJ2M4lN1kYWFsiF+NcvE+8aX7f
+	Zk1kuWwM1XGZIGk58MW9w6Cfk/0a6x/hiZZIh8N7uE9KrRRS5xrLV+GIDwhadWBi
+	1ecT3V/yNyawJuikcOfanQpQIC+FpE4Gdnur3tOShOXcEvIyOIdw1IvpR3nxfPtu
+	p1NOGStwYGHh3iekLhf1nXAkjknuqURWH89rEFZ6aPUdi/KCn4c1inmbC0K/z2OT
+	gcFiJ5GJGfePKDmrkUOLWdGDFuvkxbXCL0hjAbOFmVbl7BWtAwx3hMjKFm8/N9Yg
+	qZ20K+a9HioQNqfZnLNYbZxBTBMJWFUTQYw==
+X-ME-Sender: <xms:AIFXZ9OzkGOJK-LDl3FyeSxOfiL6ITZCXqyiyfJnvyw3_XCd2lqpEA>
+    <xme:AIFXZ_8-pm6lB7vn_H5cgx7usbKft0GaFhfIjw22Te6Vx0VBSAoxZ9FyY_qoCX9NK
+    DPEQWK7tKhPxmRvPw>
+X-ME-Received: <xmr:AIFXZ8RE1qUl7XmxD5c0Q2AFUvxu1zsZyypBerECOacrreF5bbeIgE12U4Fg2i1NLso8vE-RVXo6IIh0Tbnziu-GbU1dVcyJzCtr-LdXzxRuuS7KqHfL>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeejgdduhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdefhe
+    dmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepffgrnhhi
+    vghlucgiuhcuoegugihusegugihuuhhurdighiiiqeenucggtffrrghtthgvrhhnpeeitd
+    ekgfduveetveevgfeuhfegieekleegheeftdekffefjefgteetfeeukefgkeenucffohhm
+    rghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepugiguhesugiguhhuuhdrgiihiidpnhgspghrtghpthhtohep
+    jedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghpfhesvhhgvghrrdhkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehqmhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhht
+    ohhnhiesphhhvghnohhmvgdrohhrghdprhgtphhtthhopehtohhkvgeskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:AYFXZ5vLlr_YItdHbLSrgv__s-mVQi_VxiMrLEPwCEHPh5DJQF_xSg>
+    <xmx:AYFXZ1e3SWcCWwOFZmVB1doZLDXu0pXW1cobVC-AKCZmNxmi9jbC2w>
+    <xmx:AYFXZ13WNSx1Nn-Nvk12pnAGZOaULvcZwkZrYptTCnUpwD9CDi2AwA>
+    <xmx:AYFXZx9l3efe3HBI2BiMeSq9MOMW-zNAfGg82cfCnXuf3GFpp4bUYg>
+    <xmx:AYFXZ_uGqYIceT28LYqJT9LsVJWNubKekQojh5MNph6OowzeUOXqaL-F>
+Feedback-ID: i6a694271:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Dec 2024 18:45:04 -0500 (EST)
+From: Daniel Xu <dxu@dxuuu.xyz>
+To: linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	qmo@kernel.org
+Cc: antony@phenome.org,
+	toke@kernel.org,
+	martin.lau@linux.dev
+Subject: [PATCH bpf-next v3 0/4] bpftool: btf: Support dumping a single type from file
+Date: Mon,  9 Dec 2024 16:44:31 -0700
+Message-ID: <cover.1733787798.git.dxu@dxuuu.xyz>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209202811.481441-2-wangfe@google.com> <20241209215301.GC1245331@unreal>
-In-Reply-To: <20241209215301.GC1245331@unreal>
-From: Feng Wang <wangfe@google.com>
-Date: Mon, 9 Dec 2024 15:44:51 -0800
-Message-ID: <CADsK2K_NnizU+oY02PW9ZAiLzyPH=j=LYyjHnzgcMptxr95Oyg@mail.gmail.com>
-Subject: Re: [PATCH v7] xfrm: add SA information to the offloaded packet when
- if_id is set
-To: Leon Romanovsky <leon@kernel.org>
-Cc: steffen.klassert@secunet.com, netdev@vger.kernel.org, 
-	antony.antony@secunet.com, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Steffen,
+Some projects, for example xdp-tools [0], prefer to check in a minimized
+vmlinux.h rather than the complete file which can get rather large.
 
-This patch was done based on our previous discussion.  I did the
-changes we agreed on.  This SA info includes the matched encryption
-information, so it doesn't need to perform lookup on the source and
-destination anymore in the driver.
+However, when you try to add a minimized version of a complex struct (eg
+struct xfrm_state), things can get quite complex if you're trying to
+manually untangle and deduplicate the dependencies.
 
-Thanks,
+This commit teaches bpftool to do a minimized dump of a single type by
+providing an optional root_id argument.
 
-Feng
+Example usage:
 
-On Mon, Dec 9, 2024 at 1:53=E2=80=AFPM Leon Romanovsky <leon@kernel.org> wr=
-ote:
->
-> On Mon, Dec 09, 2024 at 08:28:12PM +0000, Feng Wang wrote:
-> > In packet offload mode, append Security Association (SA) information
-> > to each packet, replicating the crypto offload implementation. This
-> > SA info helps HW offload match packets to their correct security
-> > policies. The XFRM interface ID is included, which is used in setups
-> > with multiple XFRM interfaces where source/destination addresses alone
-> > can't pinpoint the right policy.
-> >
-> > The XFRM_XMIT flag is set to enable packet to be returned immediately
-> > from the validate_xmit_xfrm function, thus aligning with the existing
-> > code path for packet offload mode.
-> >
-> > Enable packet offload mode on netdevsim and add code to check the XFRM
-> > interface ID.
-> >
-> > Signed-off-by: wangfe <wangfe@google.com>
-> > ---
->
-> <...>
->
-> > @@ -728,7 +730,27 @@ int xfrm_output(struct sock *sk, struct sk_buff *s=
-kb)
-> >                       kfree_skb(skb);
-> >                       return -EHOSTUNREACH;
-> >               }
-> > +             if (x->if_id) {
-> > +                     sp =3D secpath_set(skb);
-> > +                     if (!sp) {
-> > +                             XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERRO=
-R);
-> > +                             kfree_skb(skb);
-> > +                             return -ENOMEM;
-> > +                     }
-> > +
-> > +                     sp->olen++;
-> > +                     sp->xvec[sp->len++] =3D x;
-> > +                     xfrm_state_hold(x);
-> >
-> > +                     xo =3D xfrm_offload(skb);
-> > +                     if (!xo) {
-> > +                             secpath_reset(skb);
-> > +                             XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERRO=
-R);
-> > +                             kfree_skb(skb);
-> > +                             return -EINVAL;
-> > +                     }
-> > +                     xo->flags |=3D XFRM_XMIT;
-> > +             }
->
-> Steffen,
->
-> I would like to ask from you to delay this patch till this "if_id"
-> support is implemented and tested on real upstreamed device.
->
-> I have no confidence that the solution proposed above is the right thing
-> to do as it doesn't solve the claim "This SA info helps HW offload match
-> packets to their correct security". HW is going to perform lookup anyway
-> on the source and destination, so it is unclear how will it "help".
->
-> Thanks
->
-> >               return xfrm_output_resume(sk, skb, 0);
-> >       }
-> >
-> > --
-> > 2.47.0.338.g60cca15819-goog
-> >
-> >
+    $ ./bpftool btf dump file ~/dev/linux/vmlinux | rg "STRUCT 'xfrm_state'"
+    [12643] STRUCT 'xfrm_state' size=912 vlen=58
+
+    $ ./bpftool btf dump file ~/dev/linux/vmlinux root_id 12643 format c
+    #ifndef __VMLINUX_H__
+    #define __VMLINUX_H__
+
+    [..]
+
+    struct xfrm_type_offload;
+
+    struct xfrm_sec_ctx;
+
+    struct xfrm_state {
+            possible_net_t xs_net;
+            union {
+                    struct hlist_node gclist;
+                    struct hlist_node bydst;
+            };
+            union {
+                    struct hlist_node dev_gclist;
+                    struct hlist_node bysrc;
+            };
+            struct hlist_node byspi;
+    [..]
+
+[0]: https://github.com/xdp-project/xdp-tools/blob/master/headers/bpf/vmlinux.h
+
+=== Changelog ===
+
+Changes in v3:
+* Make `root_id` a top level btf-dump argument rather than attached to `file`
+* Update bash completion script
+* Refactor root_type_ids checking to after btf handle creation
+* Update help messages and fix existing man page inconsistency
+
+Changes in v2:
+* Add early error check for invalid BTF ID
+
+Daniel Xu (4):
+  bpftool: man: Add missing format argument to command description
+  bpftool: btf: Validate root_type_ids early
+  bpftool: btf: Support dumping a single type from file
+  bpftool: bash: Add bash completion for root_id argument
+
+ .../bpf/bpftool/Documentation/bpftool-btf.rst |  7 ++--
+ tools/bpf/bpftool/bash-completion/bpftool     |  7 ++--
+ tools/bpf/bpftool/btf.c                       | 33 ++++++++++++++++++-
+ 3 files changed, 42 insertions(+), 5 deletions(-)
+
+-- 
+2.46.0
+
