@@ -1,300 +1,71 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6497513D638;
-	Mon,  9 Dec 2024 16:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A141448E3
+	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 16:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733761235; cv=none; b=RL6ig0NdWSc6ZOurOLUMK7qDjKDyZzoMpACdTw3WOQ4x6TBZU7g5dWsP8o31BXNZi4D33zKFwbZ4SvpqHjjFvjgqZIJsQpFW2P/lRcl+HJXX0X82nplAoErFxc32LS0jYlRqd9MV7lLz0QmFxfTXjj9sYdjvnkwalX/qsI8g228=
+	t=1733761617; cv=none; b=GeSUB1tnpH+dB4cnTvpkOaeLXF++s7h7JEfNPkjNiguB9EfpZeCeuKhARW64iyz2s5aPDKFQ8dNIr8YRwLlanQOKucmlMQfWtKvn5Q3cHd1JovdPG8ErNRu0RPrAxRum9CtImzHAzrMGYwyQHTrL53yOohXprwfS6ltJp5w/i40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733761235; c=relaxed/simple;
-	bh=zEM5sGwnK8jbcNCd30OlcreC3ZV9KvdarCeo9ahvO/I=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PX2iqFpZjNezkMyihQ4STZyQxwI1oMzrXfVctaJS9dj5Vi6ZoK0EGGGp7BOtMuWXczBAd3mn49u1NI+DueB7pVUnMsznqb2d4jyMfc9p3h8dy6R1dA+EFGevYndFBl2nvNCbK0q2KKZenkFcv41yO8g63bTw4qJAsVTMkOn1C7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=lSiWm8o/; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1733761617; c=relaxed/simple;
+	bh=kjFrTsU+q1j6f3NIpnZxA6D/FU1RQXLjLXaISq5cvAs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DjV8BGGgywMkEPJZVhskhYptD8E/XA+m0R417S8/FQXB9A2r8Uk4QHXFyczKObfH8UYXdICr8lifX2BffnCmhtc28tq+TI6xIUIYkHxmDKJ61mjclCJNJ3TBvzeojeYCyi4PtuMe8oylAgr8G8dvlZS4uq3UERh91HLXNAj/DsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACBDMnBz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="lSiWm8o/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1733761234; x=1765297234;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=zEM5sGwnK8jbcNCd30OlcreC3ZV9KvdarCeo9ahvO/I=;
-  b=lSiWm8o/MLrgxgmpzwE9xka8AA0JIzzOQIP+lv6rlxszxpsizvWw9VUq
-   WHxkMBSeMWzAG1GX9ZJUGTJZfR0BV4lW0XPpGNt8GafDP3pQ6qo2y3cIl
-   PVO5eiRVnr9cPyOqOQLiEbf8V7Vi2m+WdYXyvOzSEaVd6wVNm8TX95/l5
-   foKqOLRdl82QJFUDf0rKDqFU7ryvHkgFO64YCgTah0ZTIUIj3CoVQA0n9
-   EHm3OtdJ6lhtrwl8AgFXzMLMrsj+ZE83BqCaheGFHtMx3EcD1aa80EAbm
-   DglpLvPv1+bA4CraZGkEcM0DjSc9sbKYiefwLOLU5l+Bgm8US98KFMU9k
-   A==;
-X-CSE-ConnectionGUID: JLL7S6y7ROGYO+q1cU6U3w==
-X-CSE-MsgGUID: wDpFiZV9RvSP4oWuRd5a1A==
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="35311727"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Dec 2024 09:20:31 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 9 Dec 2024 09:20:25 -0700
-Received: from HYD-DK-UNGSW20.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Mon, 9 Dec 2024 09:20:22 -0700
-From: Tarun Alle <Tarun.Alle@microchip.com>
-To: <arun.ramadoss@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 2/2] net: phy: microchip_t1: Autonegotiaion support for LAN887x T1 phy
-Date: Mon, 9 Dec 2024 21:44:27 +0530
-Message-ID: <20241209161427.3580256-3-Tarun.Alle@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241209161427.3580256-1-Tarun.Alle@microchip.com>
-References: <20241209161427.3580256-1-Tarun.Alle@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACBDMnBz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7387C4CEDE;
+	Mon,  9 Dec 2024 16:26:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733761617;
+	bh=kjFrTsU+q1j6f3NIpnZxA6D/FU1RQXLjLXaISq5cvAs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ACBDMnBzIEcfJe86TOSsBXg+QJhrgTWencd9ze09v27KYzJgLCWZ15G8JgjgfGJKQ
+	 Zu8SEVKJzcHk2w2/fFQ1r9ByKNxAbkTSGHDp4jwhFuZaUkstMJnoSkOgW/EL4wjIL/
+	 Dyg2XTdJGIgNtxvuyNbli4mZKVbIWyN03XEHg4RSWAK1slpIhTLVy7V9VAd8Awlas6
+	 t43N0Wr5c8yqjpjVUYCIy6PtYeZ/IC2OT9tqG0szC08q4iwUEKdqZc/aLESmayBh8x
+	 fzrZO+orPAO31vwcpx0qaxtGRcuVewqPkAf0jwmAgYaHHlB2IprxQKNNaeM4ewfGMv
+	 vSkVqsKVMa2cQ==
+Message-ID: <688a8d28-fe32-4afd-af0a-5fdbc317e63e@kernel.org>
+Date: Mon, 9 Dec 2024 09:26:55 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] Documentation: networking: Add a caveat to
+ nexthop_compat_mode sysctl
+Content-Language: en-US
+To: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, mlxsw@nvidia.com
+References: <b575e32399ccacd09079b2a218255164535123bd.1733740749.git.petrm@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <b575e32399ccacd09079b2a218255164535123bd.1733740749.git.petrm@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Adds auto-negotiation support for lan887x T1 phy.
+On 12/9/24 4:05 AM, Petr Machata wrote:
+> net.ipv4.nexthop_compat_mode was added when nexthop objects were added to
+> provide the view of nexthop objects through the usual lens of the route
+> UAPI. As nexthop objects evolved, the information provided through this
+> lens became incomplete. For example, details of resilient nexthop groups
+> are obviously omitted.
+> 
+> Now that 16-bit nexthop group weights are a thing, the 8-bit UAPI cannot
+> convey the >8-bit weight accurately. Instead of inventing workarounds for
+> an obsolete interface, just document the expectations of inaccuracy.
+> 
+> Fixes: b72a6a7ab957 ("net: nexthop: Increase weight to u16")
+> Signed-off-by: Petr Machata <petrm@nvidia.com>
+> ---
+>  Documentation/networking/ip-sysctl.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
 
-Signed-off-by: Tarun Alle <Tarun.Alle@microchip.com>
----
- drivers/net/phy/microchip_t1.c | 147 +++++++++++++++++++++++++++------
- 1 file changed, 121 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index b17bf6708003..b8e65cb7d29e 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -268,6 +268,11 @@
- /* End offset of samples */
- #define SQI_INLIERS_END (SQI_INLIERS_START + SQI_INLIERS_NUM)
- 
-+#define LAN887X_VEND_CTRL_STAT_REG		0x8013
-+#define LAN887X_AN_LOCAL_CFG_FAULT		BIT(10)
-+#define LAN887X_AN_LOCAL_SLAVE			BIT(9)
-+#define LAN887X_AN_LOCAL_MASTER			BIT(8)
-+
- #define DRIVER_AUTHOR	"Nisar Sayed <nisar.sayed@microchip.com>"
- #define DRIVER_DESC	"Microchip LAN87XX/LAN937x/LAN887x T1 PHY driver"
- 
-@@ -1259,11 +1264,6 @@ static int lan887x_get_features(struct phy_device *phydev)
- 	/* Enable twisted pair */
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_TP_BIT, phydev->supported);
- 
--	/* First patch only supports 100Mbps and 1000Mbps force-mode.
--	 * T1 Auto-Negotiation (Clause 98 of IEEE 802.3) will be added later.
--	 */
--	linkmode_clear_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, phydev->supported);
--
- 	return 0;
- }
- 
-@@ -1344,25 +1344,34 @@ static int lan887x_phy_setup(struct phy_device *phydev)
- 
- static int lan887x_100M_setup(struct phy_device *phydev)
- {
-+	static const struct lan887x_regwr_map phy_comm_cfg[] = {
-+		{MDIO_MMD_PMAPMD, LAN887X_AFE_PORT_TESTBUS_CTRL4, 0x00b8},
-+		{MDIO_MMD_PMAPMD, LAN887X_TX_AMPLT_1000T1_REG, 0x0038},
-+		{MDIO_MMD_VEND1,  LAN887X_INIT_COEFF_DFE1_100, 0x000f},
-+	};
- 	int ret;
- 
- 	/* (Re)configure the speed/mode dependent T1 settings */
--	if (phydev->master_slave_set == MASTER_SLAVE_CFG_MASTER_FORCE ||
--	    phydev->master_slave_set == MASTER_SLAVE_CFG_MASTER_PREFERRED){
--		static const struct lan887x_regwr_map phy_cfg[] = {
--			{MDIO_MMD_PMAPMD, LAN887X_AFE_PORT_TESTBUS_CTRL4, 0x00b8},
--			{MDIO_MMD_PMAPMD, LAN887X_TX_AMPLT_1000T1_REG, 0x0038},
--			{MDIO_MMD_VEND1,  LAN887X_INIT_COEFF_DFE1_100, 0x000f},
--		};
--
--		ret = lan887x_phy_config(phydev, phy_cfg, ARRAY_SIZE(phy_cfg));
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		if (phydev->master_slave_set == MASTER_SLAVE_CFG_MASTER_FORCE ||
-+		    phydev->master_slave_set ==
-+		    MASTER_SLAVE_CFG_MASTER_PREFERRED) {
-+			ret = lan887x_phy_config(phydev, phy_comm_cfg,
-+						 ARRAY_SIZE(phy_comm_cfg));
-+		} else {
-+			static const struct lan887x_regwr_map phy_cfg[] = {
-+				{MDIO_MMD_PMAPMD, LAN887X_AFE_PORT_TESTBUS_CTRL4,
-+				 0x0038},
-+				{MDIO_MMD_VEND1, LAN887X_INIT_COEFF_DFE1_100,
-+				 0x0014},
-+			};
-+
-+			ret = lan887x_phy_config(phydev, phy_cfg,
-+						 ARRAY_SIZE(phy_cfg));
-+		}
- 	} else {
--		static const struct lan887x_regwr_map phy_cfg[] = {
--			{MDIO_MMD_PMAPMD, LAN887X_AFE_PORT_TESTBUS_CTRL4, 0x0038},
--			{MDIO_MMD_VEND1, LAN887X_INIT_COEFF_DFE1_100, 0x0014},
--		};
--
--		ret = lan887x_phy_config(phydev, phy_cfg, ARRAY_SIZE(phy_cfg));
-+		ret = lan887x_phy_config(phydev, phy_comm_cfg,
-+					 ARRAY_SIZE(phy_comm_cfg));
- 	}
- 	if (ret < 0)
- 		return ret;
-@@ -1384,8 +1393,16 @@ static int lan887x_1000M_setup(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
--	return phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD, LAN887X_DSP_PMA_CONTROL,
--				LAN887X_DSP_PMA_CONTROL_LNK_SYNC);
-+	if (phydev->autoneg == AUTONEG_ENABLE)
-+		ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+				       LAN887X_REG_REG26,
-+				       LAN887X_REG_REG26_HW_INIT_SEQ_EN);
-+	else
-+		ret = phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD,
-+				       LAN887X_DSP_PMA_CONTROL,
-+				       LAN887X_DSP_PMA_CONTROL_LNK_SYNC);
-+
-+	return ret;
- }
- 
- static int lan887x_link_setup(struct phy_device *phydev)
-@@ -1407,6 +1424,11 @@ static int lan887x_phy_reset(struct phy_device *phydev)
- {
- 	int ret, val;
- 
-+	/* Disable aneg */
-+	ret = genphy_c45_an_disable_aneg(phydev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Clear 1000M link sync */
- 	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_PMAPMD, LAN887X_DSP_PMA_CONTROL,
- 				 LAN887X_DSP_PMA_CONTROL_LNK_SYNC);
-@@ -1435,23 +1457,68 @@ static int lan887x_phy_reset(struct phy_device *phydev)
- 				    5000, 10000, true);
- }
- 
-+/* LAN887X Errata: 100M master issue. Dual speed in Aneg is not supported. */
-+static int lan887x_config_advert(struct phy_device *phydev)
-+{
-+	linkmode_and(phydev->advertising, phydev->advertising,
-+		     phydev->supported);
-+
-+	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT1_Full_BIT,
-+			      phydev->advertising)) {
-+		linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
-+				   phydev->advertising);
-+		phydev->speed = SPEED_1000;
-+	} else if (linkmode_test_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
-+				     phydev->advertising)) {
-+		linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT1_Full_BIT,
-+				   phydev->advertising);
-+		phydev->speed = SPEED_100;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int lan887x_phy_reconfig(struct phy_device *phydev)
- {
- 	int ret;
- 
--	linkmode_zero(phydev->advertising);
-+	if (phydev->autoneg == AUTONEG_ENABLE)
-+		ret = genphy_c45_an_config_aneg(phydev);
-+	else
-+		ret = genphy_c45_pma_setup_forced(phydev);
-+	if (ret < 0)
-+		return ret;
- 
--	ret = genphy_c45_pma_setup_forced(phydev);
-+	/* For link to comeup, (re)configure the speed/mode
-+	 * dependent T1 settings
-+	 */
-+	ret = lan887x_link_setup(phydev);
- 	if (ret < 0)
- 		return ret;
- 
--	return lan887x_link_setup(phydev);
-+	/* Autoneg to be re-started only after all settings are done */
-+	if (phydev->autoneg == AUTONEG_ENABLE) {
-+		ret = genphy_c45_restart_aneg(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
- }
- 
- static int lan887x_config_aneg(struct phy_device *phydev)
- {
- 	int ret;
- 
-+	/* Reject the not support advertisement settings */
-+	if (phydev->autoneg == AUTONEG_ENABLE) {
-+		ret  = lan887x_config_advert(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	/* LAN887x Errata: speed configuration changes require soft reset
- 	 * and chip soft reset
- 	 */
-@@ -2058,6 +2125,34 @@ static int lan887x_get_sqi(struct phy_device *phydev)
- 	return FIELD_GET(T1_DCQ_SQI_MSK, rc);
- }
- 
-+static int lan887x_read_status(struct phy_device *phydev)
-+{
-+	int rc;
-+
-+	phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
-+
-+	rc = genphy_c45_read_status(phydev);
-+	if (rc < 0)
-+		return rc;
-+
-+	if (phydev->autoneg == AUTONEG_ENABLE) {
-+		/* Fetch resolved mode */
-+		rc = phy_read_mmd(phydev, MDIO_MMD_AN,
-+				  LAN887X_VEND_CTRL_STAT_REG);
-+		if (rc < 0)
-+			return rc;
-+
-+		if (rc & LAN887X_AN_LOCAL_MASTER)
-+			phydev->master_slave_state = MASTER_SLAVE_STATE_MASTER;
-+		else if (rc & LAN887X_AN_LOCAL_SLAVE)
-+			phydev->master_slave_state = MASTER_SLAVE_STATE_SLAVE;
-+		else if (rc & LAN887X_AN_LOCAL_CFG_FAULT)
-+			phydev->master_slave_state = MASTER_SLAVE_STATE_ERR;
-+	}
-+
-+	return 0;
-+}
-+
- static struct phy_driver microchip_t1_phy_driver[] = {
- 	{
- 		PHY_ID_MATCH_MODEL(PHY_ID_LAN87XX),
-@@ -2106,7 +2201,7 @@ static struct phy_driver microchip_t1_phy_driver[] = {
- 		.get_strings    = lan887x_get_strings,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
--		.read_status	= genphy_c45_read_status,
-+		.read_status	= lan887x_read_status,
- 		.cable_test_start = lan887x_cable_test_start,
- 		.cable_test_get_status = lan887x_cable_test_get_status,
- 		.config_intr    = lan887x_config_intr,
--- 
-2.34.1
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
