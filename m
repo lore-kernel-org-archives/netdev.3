@@ -1,112 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0152A19D89B
-	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 21:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E861119ABD4
+	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 21:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733781187; cv=none; b=V5IyyxxxFjFrsm2jQL3eKT4ZiryHHNqZSU+nDWdssA0RipwaZmICEa2+X47956s66oWZg2Qr6EG0OGZcjbrPFY60Iw1AiMXGbewTlWgz4pJ9Qrpa3yQ5gGKF2hnMBQzxIgWSIIb4IVqEW2o0FABZTtOAacznuZVJaM2EL/lKP/Q=
+	t=1733781392; cv=none; b=Qpicg/BV1hHDjORDQ7i/uFQujzwfr2Br+vrjlmONQCK7lxZx+a1MG/r+9mXcMjo7SZOSku4nb53HZsHbXujGLBTJ4IKsyPC+1sfeXhfyxu3W98UcQ7W45TFmkIuz+7x+Iuf6EX2KkL1dg+t6FqGpF/loflqqWEs8EA/qlBW0TTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733781187; c=relaxed/simple;
-	bh=cI1DgdJ30N5skcwufLsR1wZRUPZiPjGuM1bDPZAW464=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q+jogqGm9OSAOZ6r9ioc6tdLwu0yOrAIavuQzvAfU0We2AOfVNcKQLHwCqkvDwKjvo+K7f/Z+yJCRQF7udit2fg/2c1HXLfd7zJ6rrs1vUMWp9rm4tPE0onsWqdIOA5FRe77GVNZd+yUZK1KrbPDNsjnuFxzHuPf9qEFDnOuCAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0CoD4E7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733781392; c=relaxed/simple;
+	bh=rLikFwWBaSJVkAJl7elSg6TEqIpcLFI+lP4vN60vbY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=KF2Ik4APr9ASKJQTZN3MAieEejUrILzMlPHHffrcH5nAI9Nu/xD+g5JlFLgLlGVzqnVGRZmjmk/xtCPqLFMT61MJFzOsmz9Vhwe18nhheuhI7cyzcRp5Up67q0m/DlkEfejQEqMWW56sJLAcwH5F6xb3gm3sZADtymkikx/V0ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jSHBlCEN; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0CoD4E7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1116FC4CEDD;
-	Mon,  9 Dec 2024 21:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733781186;
-	bh=cI1DgdJ30N5skcwufLsR1wZRUPZiPjGuM1bDPZAW464=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H0CoD4E7hKRBFoWobarcGp+9Fw9MWXBw0SYcbH3zMHctnVzJ+i61LCbJomzHPFcIR
-	 DUu69EihbrupyzHsumJJw3RSW11ZOzM9MCGEYuduFj+AdIftAHnbJ2iqBzhvS6tZ78
-	 AHqlHSBShj2eRZ1zLQUWY0w41IMndKeAXDExjeAgVoRwJy/MFMK3zfhnhBgrUzl8H/
-	 9swo19T38xQ+UoUs6tA1vVe1m2T2X4EdbgjhBmksocfDydCmeZdZofoGoJY0+Y3+Y6
-	 4J6ovnKPqTk5yWfxNjhdBXBEq3WgkFAta3/v/9ciK69VFkj9UNDVG0FCY/dGKTOV1j
-	 XwPH827uaMAuA==
-Date: Mon, 9 Dec 2024 23:53:01 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: steffen.klassert@secunet.com
-Cc: Feng Wang <wangfe@google.com>, netdev@vger.kernel.org,
-	antony.antony@secunet.com, pabeni@redhat.com
-Subject: Re: [PATCH v7] xfrm: add SA information to the offloaded packet when
- if_id is set
-Message-ID: <20241209215301.GC1245331@unreal>
-References: <20241209202811.481441-2-wangfe@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jSHBlCEN"
+Message-ID: <09b0c78a-09be-474d-b080-bdd5e7c76e40@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1733781386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TOMJNfwreH26POHoZy5xtvsHbwUvB7HFQGPmn4XFhZI=;
+	b=jSHBlCENcCjlMvV4QEHL7fQNkI18KFeKgHb5YtptsmiyeYpaVaqLT9E2O3+o5Gj0caMwLl
+	d7grm7+qCqqqJVKH8Ji6raz+jUveO4CTsD9uG0IGjIjvcOrJo5T+Q8ccBZ1Su6mNWJu/Up
+	EZesVWjK28vBGG2kfkZvEcGJziqQFUk=
+Date: Mon, 9 Dec 2024 13:56:21 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209202811.481441-2-wangfe@google.com>
+Subject: Re: unregistering tcp_ca struct_ops can cause kernel page fault
+To: rtm@csail.mit.edu
+References: <74665.1733669976@localhost>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <74665.1733669976@localhost>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Dec 09, 2024 at 08:28:12PM +0000, Feng Wang wrote:
-> In packet offload mode, append Security Association (SA) information
-> to each packet, replicating the crypto offload implementation. This
-> SA info helps HW offload match packets to their correct security
-> policies. The XFRM interface ID is included, which is used in setups
-> with multiple XFRM interfaces where source/destination addresses alone
-> can't pinpoint the right policy.
+On 12/8/24 6:59 AM, rtm@csail.mit.edu wrote:
+> The attached program, along with the attached bpf_cubic.o eBPF binary,
+> uses bpftool to install a tcp_ca struct ops, creates a tcp connection,
+> and then unregisters the struct ops while the tcp connection is still
+> active. On my 6.13.0 system this causes a kernel fault due to
+
+I tried the latest bpf-next/master (6.13-r2 + some recent bpf patches). I cannot 
+reproduce. I also don't recall any recent fix related to struct_ops refcnt in 
+the bpf_struct_ops or bpf_tcp_ca.
+
+I don't see how this could happen now because the icsk->icsk_ca_ops is 
+refcnt-ed. e.g. the setsockopt(TCP_CONGESTION) in your attached tcpbpf12a.c. 
+bpf_try_module_get, which then calls bpf_struct_ops_get for the bpf written 
+tcp-cc, should have refcnt-ed the icsk_ca_ops. I traced on the kernel code path 
+triggered by your tcpbpf12a.c and the refcnt looks correct.
+
+If you can reproduce consistently, please help to debug and narrow further why 
+the bpf_struct_ops_map_free() cleanup is finished while a tcp_sock still has a 
+hold of it in icsk->icsk_ca_ops.
+
+> tcp_tso_segs() calling through a de-allocated struct tcp_congestion_ops.
 > 
-> The XFRM_XMIT flag is set to enable packet to be returned immediately
-> from the validate_xmit_xfrm function, thus aligning with the existing
-> code path for packet offload mode.
+> bpf_cubic.o came from
 > 
-> Enable packet offload mode on netdevsim and add code to check the XFRM
-> interface ID.
+>    https://github.com/aroodgar/bpf-tcp-congestion-control-algorithm
 > 
-> Signed-off-by: wangfe <wangfe@google.com>
-> ---
-
-<...>
-
-> @@ -728,7 +730,27 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
->  			kfree_skb(skb);
->  			return -EHOSTUNREACH;
->  		}
-> +		if (x->if_id) {
-> +			sp = secpath_set(skb);
-> +			if (!sp) {
-> +				XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> +				kfree_skb(skb);
-> +				return -ENOMEM;
-> +			}
-> +
-> +			sp->olen++;
-> +			sp->xvec[sp->len++] = x;
-> +			xfrm_state_hold(x);
->  
-> +			xo = xfrm_offload(skb);
-> +			if (!xo) {
-> +				secpath_reset(skb);
-> +				XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> +				kfree_skb(skb);
-> +				return -EINVAL;
-> +			}
-> +			xo->flags |= XFRM_XMIT;
-> +		}
-
-Steffen,
-
-I would like to ask from you to delay this patch till this "if_id"
-support is implemented and tested on real upstreamed device.
-
-I have no confidence that the solution proposed above is the right thing
-to do as it doesn't solve the claim "This SA info helps HW offload match
-packets to their correct security". HW is going to perform lookup anyway
-on the source and destination, so it is unclear how will it "help".
-
-Thanks
-
->  		return xfrm_output_resume(sk, skb, 0);
->  	}
->  
-> -- 
-> 2.47.0.338.g60cca15819-goog
+> Linux ubuntu66 6.13.0-rc1-00337-g7503345ac5f5 #11 SMP Sun Dec  8 08:37:57 EST 2024 x86_64 x86_64 x86_64 GNU/Linux
 > 
+> Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
+> CPU: 6 UID: 0 PID: 1594 Comm: a.out Not tainted 6.13.0-rc1-00337-g7503345ac5f5 #11
+> Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
+> RIP: 0010:__x86_indirect_thunk_array+0xa/0x20
+> Code: 66 0f 1f 00 31 ff e9 15 70 d6 fe cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+>   cc cc cc cc cc cc cc e8 01 00 00 00 cc 48 89 04 24 <c3> cc cc cc cc 90 66 66 2e
+>   0f 1f 84 00 00 00 00 00 0f 1f 44 00 00
+> RSP: 0018:ffffc90002037c60 EFLAGS: 00010202
+> RAX: 6b6b6b6b6b6b6b6b RBX: ffff88810afc0b00 RCX: 0000000000000018
+> RDX: 00000000077b668a RSI: 0000000000008000 RDI: ffff88810afc0b00
+> RBP: 0000000000008000 R08: 0000000000000000 R09: 0000000000008000
+> R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+> R13: 0000000000008000 R14: 0000000000000000 R15: ffffffff842f6140
+> FS:  00007f5457b84740(0000) GS:ffff88842db80000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f5457d8c710 CR3: 000000011b4b8005 CR4: 00000000003706f0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> Call Trace:
+>   <TASK>
+>   ? die_addr+0x31/0x80
+>   ? exc_general_protection+0x1b4/0x3c0
+>   ? asm_exc_general_protection+0x26/0x30
+>   ? __x86_indirect_thunk_array+0xa/0x20
+>   ? tcp_tso_segs+0x1c/0x90
+>   ? tcp_write_xmit+0x74/0x1840
+>   ? __mod_memcg_state+0x91/0x190
+>   ? __tcp_push_pending_frames+0x31/0xc0
+>   ? tcp_sendmsg_locked+0xafc/0xd10
+>   ? tcp_sendmsg+0x26/0x40
+>   ? sock_write_iter+0x167/0x1a0
+>   ? vfs_write+0x35d/0x400
+>   ? ksys_write+0xc6/0xe0
+>   ? do_syscall_64+0x3f/0xd0
+>   ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>   </TASK>
 > 
+> Robert Morris
+> rtm@mit.edu
+> 
+
