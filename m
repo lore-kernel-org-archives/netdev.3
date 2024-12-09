@@ -1,117 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408E91E9B23
-	for <netdev@vger.kernel.org>; Mon,  9 Dec 2024 17:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08401422D8;
+	Mon,  9 Dec 2024 18:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733767091; cv=none; b=MWeDXd6RtO70zbnyTiRNwZd6lI6JWIJ/SX7OPOG7O+R5sUout5yrhXC1k1wNfswn7j4Phr8N0QwOrbeJR1VQ3maM1CmX9DmkXvfF0ioVtAa9t4GPZmSxbyUhfsT8SzXl+VVa2M7rhz9JMo9nT2qIgscKmLTi2VyAkCNUQ874hXM=
+	t=1733767396; cv=none; b=uHO8XbHvilyJRJ5ssR0HQS7/v7RS/pU2MGaxTAvyJZHUnRrOnb3eiYCRd+dRhyrYTqSpgtlr9biUMenNaqOygpE0gyWXOsX7MbJLConXaywNJBALsbvUWzLXGRfXdJrW5o21ZqHtE8AW4xgsOMH7yMCi4aq6Lh0sKMNb4q0dg+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733767091; c=relaxed/simple;
-	bh=qP2Hlu3N0NgQnWyH9Lx3+uHpafocFuwd0F24K19I0HQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IlcoiLWXGtrFEtjLZUBGxxKWduqziyzwfWcLEhRODbN1ScKYvUmXkH3jSjwrvuLQtGTnzTDaZEmJY27oWqc98sdnuIxdcSyD/STiRUrADBtQMaOVnueA6QPZSeydcO9w97i7079YDuV3R6K0LvrXh9gWGoZBqJ2uXeQNcx3VMaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZcUoNWsI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733767396; c=relaxed/simple;
+	bh=okgy+MLTRZVukPpkQdOnyKHTis1jPZQhb5A6/9Vibho=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTjICzrZNtt9PzAkUYURIC8z0FqD65VtKtHsQ5CJjBn8nUpEQDwL0uQjORoICVvBnJaSsiLrxg8KTG8jnKHANnwfxp5dFDrv0URqVQjeF9BEeofWp41D2om6SUoja+Ws8g9rgTmKHW8RwSyn81u/3s93rtlpuZ2IMUurG5KaXx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kFKqGEJ7; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZcUoNWsI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733767089;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RszX/9FzqgwZYqnsZaT6Kv2E583oRNDgfo2kcZMftbw=;
-	b=ZcUoNWsI8S5l6ASsHPkwFQeQ5eHT3GgbRKmMSW3Kb5+TV0eKxJh+mlollJ9UC87WRLZy6e
-	YmUYtnMtUuzwP3buGfjnfhQTj4AXLLf2gF+Gp+Y/dLl9duF4XLhOn9j0y3Ws1DKQ3qqrfy
-	P+2saU38G0uQPyvrSVgbfOmJWesU0/E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-O7c4uoO3Omy0eq5aDjnZsg-1; Mon,
- 09 Dec 2024 12:58:06 -0500
-X-MC-Unique: O7c4uoO3Omy0eq5aDjnZsg-1
-X-Mimecast-MFC-AGG-ID: O7c4uoO3Omy0eq5aDjnZsg
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D8A8D1955F29;
-	Mon,  9 Dec 2024 17:58:03 +0000 (UTC)
-Received: from starship.lan (unknown [10.22.82.46])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3816E195605A;
-	Mon,  9 Dec 2024 17:58:00 +0000 (UTC)
-From: Maxim Levitsky <mlevitsk@redhat.com>
-To: kvm@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Long Li <longli@microsoft.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: [PATCH v2 2/2] net: mana: Fix irq_contexts memory leak in mana_gd_setup_irqs
-Date: Mon,  9 Dec 2024 12:57:51 -0500
-Message-Id: <20241209175751.287738-3-mlevitsk@redhat.com>
-In-Reply-To: <20241209175751.287738-1-mlevitsk@redhat.com>
-References: <20241209175751.287738-1-mlevitsk@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kFKqGEJ7"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6f00da6232bso14097757b3.2;
+        Mon, 09 Dec 2024 10:03:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733767394; x=1734372194; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fS19pHErUsbSBWymBFt8sxXHouLUsXPczLGhaJeqX0k=;
+        b=kFKqGEJ7h3tfwTccuZLUZxm+/OYomZe6LwmJ/YLRSTnuHNMqt4i02Uot3gNTv6v+dL
+         3xYHPVWK7YmaDkuG4B9lC2k/wKg4ERhP5OZ4yA8WFPaie8m+xC5xe2JEsDJLzlrlEFqd
+         cA7y1fUp1L2hDOytkrloesR235GhE8qrJM/3uyby2VnPtCcO/LfX6/2iFZncz0ePNRY7
+         siQnCAwcgeieJIZLWI95EPzbUdjIDo1PvzpnCC+nM+IHzXtokPJIf0jtmqjGucPLw5Il
+         dlLo9PgLFgUdxQMTaSYz64o700Der2g++CyggKb0DDeTZT4Wq+f8tv/83PIthIT0Jz3V
+         3G4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733767394; x=1734372194;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fS19pHErUsbSBWymBFt8sxXHouLUsXPczLGhaJeqX0k=;
+        b=S+mgQUK+Mjr2fNuoPgWodVLs0vXA09PoUR0UQO9nYFspirNnu197r9RawlX6K9mcuG
+         QUUZUXq9D2IcxU1fMZ20iUxvdTlJnUb/BX6JJBEdJGOSmIpWC3GC35L5ljyvDlrN5ttc
+         itn7aKhU6PAYmiHlywJE3xpX4IflPjOzaxHPIlco0DSwRMKxFAh7889rioITrBiymlxk
+         inieDEhm7jbeic/Tva/W97gxLHbtpbG8g+q0sTdxcpG9sEhUP2NeADjBkr2gDbkuscQW
+         YdMET/FE1LSWyaUdimZbujWDtTzKqnAs5av+UxUZkuUZTHgmFK2o8JuE7sXvVwquMmR2
+         t/sg==
+X-Forwarded-Encrypted: i=1; AJvYcCXenq4FLCftl1HS2wk/LY3/kRQ6DGyGJLo/biLtIPzV1fv/O8Q0j9xGiUUD9S++Ct2XFHRYF6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwY6PmTNP4GaNUYAIJ6e6LIlcsiz8EL8gCc4lKcLgCzyrMsdxuo
+	ESpivJt2uEyUPNQpBdKLbFIDimgqPRoM1R6p1W0+9ayefKKje9ku
+X-Gm-Gg: ASbGncumlnEM2UG4Co6WgTcZyQmRDGxQokx9UP3dPpWsqUcMlC5xDs2Yic5HjK77kGx
+	oMuGeWpGB9ToQ64fNBn22Tih8tuVRyBed4ud5pCCL+8uop3HMxKbgr6s9dbJNX3OmOcXHleWce3
+	4zz9oDmxWStSHUnZMhfyVxCxeSX0ZKx9wnUqZg68pXBQJUMhJzGesm0q83JsoEiWj1iSPFr5PWw
+	DFSqcZZW4NTmhLXGyDVRjqAzt+d+VpZH50=
+X-Google-Smtp-Source: AGHT+IEgFSaAMEn7YPDUy1WGNAM05B5/pB6jeAuu33qoe9PaLjRqvDPAr7QiUoOW7yfxWlp9bunHsQ==
+X-Received: by 2002:a05:690c:62c8:b0:6ef:61b9:e003 with SMTP id 00721157ae682-6efe3c89e3amr133624417b3.36.1733767393795;
+        Mon, 09 Dec 2024 10:03:13 -0800 (PST)
+Received: from fan ([50.205.20.42])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6efd384e227sm23966177b3.2.2024.12.09.10.03.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 10:03:13 -0800 (PST)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Mon, 9 Dec 2024 10:03:02 -0800
+To: alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+	dan.j.williams@intel.com, martin.habets@xilinx.com,
+	edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com,
+	Alejandro Lucero <alucerop@amd.com>
+Subject: Re: [PATCH v6 19/28] cxl: make region type based on endpoint type
+Message-ID: <Z1cw1oaOhq4OcNHS@fan>
+References: <20241202171222.62595-1-alejandro.lucero-palau@amd.com>
+ <20241202171222.62595-20-alejandro.lucero-palau@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202171222.62595-20-alejandro.lucero-palau@amd.com>
 
-gc->irq_contexts is not freeded if one of the later operations
-fail.
+On Mon, Dec 02, 2024 at 05:12:13PM +0000, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> Current code is expecting Type3 or CXL_DECODER_HOSTONLYMEM devices only.
+> Support for Type2 implies region type needs to be based on the endpoint
+> type instead.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
 
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Fixes: 8afefc361209 ("net: mana: Assigning IRQ affinity on HT cores")
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
----
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index aba188f9f10f..6297c0869cd6 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1318,7 +1318,7 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
- 				   GFP_KERNEL);
- 	if (!gc->irq_contexts) {
- 		err = -ENOMEM;
--		goto free_irq_vector;
-+		goto free_irq_array;
- 	}
- 
- 	for (i = 0; i < nvec; i++) {
-@@ -1388,8 +1388,9 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
- 	}
- 
- 	kfree(gc->irq_contexts);
--	kfree(irqs);
- 	gc->irq_contexts = NULL;
-+free_irq_array:
-+	kfree(irqs);
- free_irq_vector:
- 	cpus_read_unlock();
- 	pci_free_irq_vectors(pdev);
+>  drivers/cxl/core/region.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 2ddc56c07973..5f4d285da745 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -2658,7 +2658,8 @@ static ssize_t create_ram_region_show(struct device *dev,
+>  }
+>  
+>  static struct cxl_region *__create_region(struct cxl_root_decoder *cxlrd,
+> -					  enum cxl_decoder_mode mode, int id)
+> +					  enum cxl_decoder_mode mode, int id,
+> +					  enum cxl_decoder_type target_type)
+>  {
+>  	int rc;
+>  
+> @@ -2680,7 +2681,7 @@ static struct cxl_region *__create_region(struct cxl_root_decoder *cxlrd,
+>  		return ERR_PTR(-EBUSY);
+>  	}
+>  
+> -	return devm_cxl_add_region(cxlrd, id, mode, CXL_DECODER_HOSTONLYMEM);
+> +	return devm_cxl_add_region(cxlrd, id, mode, target_type);
+>  }
+>  
+>  static ssize_t create_region_store(struct device *dev, const char *buf,
+> @@ -2694,7 +2695,7 @@ static ssize_t create_region_store(struct device *dev, const char *buf,
+>  	if (rc != 1)
+>  		return -EINVAL;
+>  
+> -	cxlr = __create_region(cxlrd, mode, id);
+> +	cxlr = __create_region(cxlrd, mode, id, CXL_DECODER_HOSTONLYMEM);
+>  	if (IS_ERR(cxlr))
+>  		return PTR_ERR(cxlr);
+>  
+> @@ -3370,7 +3371,8 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>  
+>  	do {
+>  		cxlr = __create_region(cxlrd, cxled->mode,
+> -				       atomic_read(&cxlrd->region_id));
+> +				       atomic_read(&cxlrd->region_id),
+> +				       cxled->cxld.target_type);
+>  	} while (IS_ERR(cxlr) && PTR_ERR(cxlr) == -EBUSY);
+>  
+>  	if (IS_ERR(cxlr)) {
+> -- 
+> 2.17.1
+> 
+
 -- 
-2.26.3
-
+Fan Ni
