@@ -1,121 +1,74 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1653F19DF4B;
-	Tue, 10 Dec 2024 13:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456723DEB6;
+	Tue, 10 Dec 2024 13:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733837661; cv=none; b=bvb8t9jSKTO8PPrCyJbvXHa5651pTKwL3KkSKs4a2U40V9HPg+kjqcQLHcu0I7cyRsgFlwIDvudNmbcy5yOphrCs810rR/2EgtPVKTMq2id7DjWIwd15fx77PKaA7UdNYdCUAhQIqBPdUz+mB+i1ZpLveP9t1VxUHO/pMO9Zo88=
+	t=1733837733; cv=none; b=epk9nxKeYzZ9kJMJRu3zkugYu2OUKxW189BM411cMw/TOWUvq7tk6yEvHVg6XSlLr2BHI7agONcfsbkOP7B7QoPVsqUym3iEJysoThsg8R3BezTQTxf5yVY78p8ec3iiYGts+eCmqQKqXPgVxOZJcss/nU+Z1CZqV1cROKSiNUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733837661; c=relaxed/simple;
-	bh=g3iQbcQOr7dyQ3EfYALIA3Med08yMRWpX7nADQuGN3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HRjC9Bt6/HfFbntutvDCo56XWhvFw8KR6zSmWbZaj3QGZdnN60OkE3YS+7wrTH2hFKd+/cLJymb0uhpAE+6O9uzVHnpflZlYOtcl0HMCNdytkOsJeE/Oe7BIw/vz00pzQays/u1CBmyQiXNtqyEHvLQMAPcUoVFI9YclmsP/Lp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=q75z1BSq; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1733837733; c=relaxed/simple;
+	bh=KSb1CsrkqC3wYPbKN8cfL6z4QkC5xeYcGVFKvtDP/Os=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CPWLOIW2XgxbzJgQschEULOfKgbPJnlhExhw3/F5xmC633LVigBKnigT7lSHh8HkGcCJ8wqWmmbaz0qGk739L6apHha4GL2I9UkhgE4norjSGqKkQo1Bh5hNUga1JbFCdSXhYh6fD0fSgrEejQCty9E6zbFSjGG5MscCfLueCoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C8YmAVMK; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="q75z1BSq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=ZA0Z+XbKwoZy17m9SInn+B77xWbHgPSpbFAiZ9LdHZ0=; t=1733837660; x=1735047260; 
-	b=q75z1BSqZQTtrTdSG/K6tsgS6gcd4NbyZreGx6YLD5H/jDocC/uUKa32qgi8jxhnJyrAOmPPj2L
-	WeMZhj/yWM9wQLEDXHe27srPWzElFvCk+TplU5nBe85//9nY0NF24xmQrgwd/gPKYJuPyvXLlUocR
-	wdstqDP7Gk/iyOVtnqNaeWIgp2jOFJC3xRFLcyzRXUIyPN5uMBqB6R+wqbXLLCER3u4OLk5UGFMpS
-	He04w85WTk744DuJzxfJLhIxte5osEcMVzkQqS2XB/w97iC/+WvQtwwWhMyqxt3dudBD4TL1QBOEr
-	tu2ghB5gyECPBvKcplVzTR1OBB6s9h2NiUFg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tKzs4-0000000CMeq-2ebh;
-	Tue, 10 Dec 2024 14:01:48 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2024-12-10
-Date: Tue, 10 Dec 2024 14:01:04 +0100
-Message-ID: <20241210130145.28618-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C8YmAVMK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SkIzBj7XqUW6X0EbObqOqOtk5PpRyAk+LhCPP1Kn5N0=; b=C8YmAVMK/nQMB1dHTKVmHjpPnP
+	fPB2dkyBmS5TvAma9EHMgf+tMJEMYpWdpV5g9Ezw2I9BcaKGZIZlLyhrrL+HMeynLDuj/5BDeO2Iq
+	gw7RGgQqrXRGM+wGi6ZS3zzEh+oojV+7oSl4DFYLyON20/4LeUhiKPtBr6cWj2YrC0VM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tL0Oc-00FnvD-7L; Tue, 10 Dec 2024 14:35:26 +0100
+Date: Tue, 10 Dec 2024 14:35:26 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jesse Van Gavere <jesseevg@gmail.com>
+Cc: devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	Marek Vasut <marex@denx.de>, Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Vladimir Oltean <olteanv@gmail.com>, UNGLinuxDriver@microchip.com,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Jesse Van Gavere <jesse.vangavere@scioteq.com>
+Subject: Re: [PATCH net-next] dt-bindings: net: dsa: microchip,ksz: Improve
+ example to a working one
+Message-ID: <dfb09395-78ce-477f-bbbc-747b0a234d4f@lunn.ch>
+References: <20241210120443.1813-1-jesse.vangavere@scioteq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210120443.1813-1-jesse.vangavere@scioteq.com>
 
-Hi,
+On Tue, Dec 10, 2024 at 01:04:43PM +0100, Jesse Van Gavere wrote:
+> Currently the example will not work when implemented as-is as there are
+> some properties and nodes missing.
+> - Define two eth ports, one for each switch for clarity.
+> - Add mandatory dsa,member properties as it's a dual switch setup example.
+> - Add the mdio node for each switch and define the PHYs under it.
+> - Add a phy-mode and phy-handle to each port otherwise they won't come up.
+> - Add a mac-address property, without this the port does not come up, in
+> the example all 0 is used so the port replicates MAC from the CPU port
 
-For now, we have a reasonably small number of fixes :)
-FWIW our tree was based on -rc1 but net only pulled it
-later, but it should now pull only wireless into net.
+To some extent, the example is for the properties defined in the
+binding. For properties defined in other bindings, you should look at
+the examples in other bindings, and then glue it all together in a
+real .dts file.
 
-Please pull and let us know if there's any problem.
+I don't know if Rob will accept this patch.
 
-Thanks,
-johannes
-
-
-
-The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
-
-  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-12-10
-
-for you to fetch changes up to f1d3334d604cc32db63f6e2b3283011e02294e54:
-
-  wifi: cfg80211: sme: init n_channels before channels[] access (2024-12-06 10:45:22 +0100)
-
-----------------------------------------------------------------
-A small set of fixes:
- - avoid CSA warnings during link removal
-   (by changing link bitmap after remove)
- - fix # of spatial streams initialisation
- - fix queues getting stuck in some CSA cases
-   and resume failures
- - fix interface address when switching monitor mode
- - fix MBSS change flags 32-bit stack corruption
- - more UBSAN __counted_by "fixes" ...
- - fix link ID netlink validation
-
-----------------------------------------------------------------
-Aditya Kumar Singh (1):
-      wifi: cfg80211: clear link ID from bitmap during link delete after clean up
-
-Benjamin Lin (1):
-      wifi: mac80211: fix station NSS capability initialization order
-
-Emmanuel Grumbach (2):
-      wifi: mac80211: wake the queues in case of failure in resume
-      wifi: mac80211: fix a queue stall in certain cases of CSA
-
-Felix Fietkau (1):
-      wifi: mac80211: fix vif addr when switching from monitor to station
-
-Haoyu Li (2):
-      wifi: mac80211: init cnt before accessing elem in ieee80211_copy_mbssid_beacon
-      wifi: cfg80211: sme: init n_channels before channels[] access
-
-Issam Hamdi (1):
-      wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
-
-Lin Ma (1):
-      wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
-
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  2 +-
- include/net/mac80211.h                            |  7 ++--
- net/mac80211/cfg.c                                | 17 +++++---
- net/mac80211/ieee80211_i.h                        | 49 ++++++++++++++++++-----
- net/mac80211/iface.c                              | 23 ++++-------
- net/mac80211/mesh.c                               |  6 +--
- net/mac80211/mlme.c                               |  2 -
- net/mac80211/util.c                               | 26 +++---------
- net/wireless/nl80211.c                            |  2 +-
- net/wireless/sme.c                                |  1 +
- net/wireless/util.c                               |  3 +-
- 11 files changed, 76 insertions(+), 62 deletions(-)
+	Andrew
