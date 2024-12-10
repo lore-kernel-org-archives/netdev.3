@@ -1,86 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx04lb.world4you.com (mx04lb.world4you.com [81.19.149.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF0823ED5A;
-	Tue, 10 Dec 2024 20:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895808633A
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 20:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733860881; cv=none; b=XVTl0Z/Km2w2EpY15PcmdToFkra/FF4K+mTdWU4cOmY3r1yHhQdPptvANYSJo1mqYO74NRTJ1EYcud8+csfeE7wC6eyKbFPH5NZr56eO1ZYfGF5thLmOwU3Fo3nGHwf34o3+b8e7eisr7z0aOQEOO0QMHG/43vZxTicPF++66Ys=
+	t=1733861271; cv=none; b=HxK0gUNyDTIs2mOpJS9YNKSAa6McvuuyEjqk1u9oapOl8MU7cIxlBPq0fq/laMi5aoQXLJxrZE3Sqn1MaDO55aKeUq/rqeyyE/NXGsJMbjwyyzSr2/1/NcrUk/boxLVyk8eiS0PpU5FQtUyyRKOsODVx10Y+EIRzzEpjoZzNM6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733860881; c=relaxed/simple;
-	bh=YXV+agBAHaQx3JUMim2czM+in4PUNgRqxhtN1zSl5OI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WiKfnoF+SLpjtAQfLv/2s2AAUcS3jqLQx0D1F16aXsmNfZXcLUlFTJvs1s4qEhVGRWDaHPVb7gTF7UOSw8SLQxLzfXV56wiCZaOEw7h/PTnx73n2DCnur9g2NZWfO7AWSS3OUQos3S0M/3S2IqO4FPAy8NWBeCuMCqtBNIMijQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pelv31Vc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733861271; c=relaxed/simple;
+	bh=F7woYvry3+aLKVoNl+4k/qBjmXrAxbYidJQZz+WxI0c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UPPyPjjCriuDB3lk5s2+Vz5PCkqGS5GK4lJzx/NNJ+tk8pQbImDw0Ue6qkO+WHmMAN6sqnjdMgUYQUn7sGnx+Z2yXebTKs9FV93w4SBLPoCk3Bf+j6tcHND02Ptrt05SnN+u79ep9fl8WYyADnDG2CFMOZ0BkpDcTOotU+PSsw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=gueOzaKY; arc=none smtp.client-ip=81.19.149.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pelv31Vc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EE8C4CED6;
-	Tue, 10 Dec 2024 20:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733860880;
-	bh=YXV+agBAHaQx3JUMim2czM+in4PUNgRqxhtN1zSl5OI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pelv31VcxFqNTcIbe39dodlW9atq5X/iCdE9Q7tkluic/0p/XsfEw+n5bbqWmN1AH
-	 pvbyiELRKo0Y9npcupyI1eusdy5Nj6Pkk+ANPUTY52oqw32uktdOTvUpD2DrJGfevR
-	 zaJbh17OeQDR6u+R7vCV4qM02F2TaSfN6DnHfsgGzZz26502PSPiW3FHSJxYNgVG78
-	 1l9WaFeXQbw6sZHRTA9YQQJ6uJ1PiP1LaT5hozlIGqVD6/zHIxhXzGIm68qzmKUon1
-	 rrHHIgdpvHR3k+RBwGpZP06yMsgLttL9SwxY6jEYICLCBWtAfe+7j6nYpQbjZRyosB
-	 ITbEUWlSj/tdg==
-Date: Tue, 10 Dec 2024 20:01:15 +0000
-From: Simon Horman <horms@kernel.org>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: "nikita.yoush" <nikita.yoush@cogentembedded.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Michael Dege <michael.dege@renesas.com>,
-	Christian Mardmoeller <christian.mardmoeller@renesas.com>,
-	Dennis Ostermann <dennis.ostermann@renesas.com>
-Subject: Re: [PATCH net] net: renesas: rswitch: fix initial MPIC register
- setting
-Message-ID: <20241210200115.GC2806@kernel.org>
-References: <20241209075951.163924-1-nikita.yoush@cogentembedded.com>
- <TYWPR01MB11030BB4AC02261FF655A13CFD83D2@TYWPR01MB11030.jpnprd01.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="gueOzaKY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lnZE1dOWpl9EX2OVEJeaZEwlAEsYcjlUnXot6Nbygj0=; b=gueOzaKYPSxZbXKPTtt9JJN0zl
+	MHmwoEA5Jv1iIqfTmH3NXKOgq7y/SNA/KpjHPQA4QqRFr9i1lWxJ9/JZIRXZnaZZxskwkKQzPcSAy
+	e2TYKkGv8FX50pf8P7EkowtkgOyx7r4j2pyzdpj8RgQ4XDJ7eXsg8KjoqHEKH63lxmCw=;
+Received: from [88.117.62.55] (helo=[10.0.0.160])
+	by mx04lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tL6Mg-000000008LO-1pXC;
+	Tue, 10 Dec 2024 20:57:51 +0100
+Message-ID: <71bdcb46-83c3-496e-861f-cc0841fb26e3@engleder-embedded.com>
+Date: Tue, 10 Dec 2024 20:57:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYWPR01MB11030BB4AC02261FF655A13CFD83D2@TYWPR01MB11030.jpnprd01.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v2] e1000e: Fix real-time
+ violations on link up
+Content-Language: en-US
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, Gerhard Engleder <eg@keba.com>,
+ Vitaly Lifshits <vitaly.lifshits@intel.com>
+References: <20241210152708.GA3241347@bhelgaas>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20241210152708.GA3241347@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-On Tue, Dec 10, 2024 at 06:30:41AM +0000, Yoshihiro Shimoda wrote:
-> Hello Nikita-san,
+On 10.12.24 16:27, Bjorn Helgaas wrote:
+> On Sun, Dec 08, 2024 at 07:49:50PM +0100, Gerhard Engleder wrote:
+>> Link down and up triggers update of MTA table. This update executes many
+>> PCIe writes and a final flush. Thus, PCIe will be blocked until all writes
+>> are flushed. As a result, DMA transfers of other targets suffer from delay
+>> in the range of 50us. This results in timing violations on real-time
+>> systems during link down and up of e1000e.
 > 
-> > From: Nikita Yushchenko, Sent: Monday, December 9, 2024 5:00 PM
-> > 
-> > MPIC.PIS must be set per phy interface type.
-> > MPIC.LSC must be set per speed.
-> > 
-> > Do that strictly per datasheet, instead of hardcoding MPIC.PIS to GMII.
-> > 
-> > Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
-> > Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+> These look like PCIe memory writes (not config or I/O writes), which
+> are posted and do not require Completions.  Generally devices should
+> not delay acceptance of posted requests for more than 10us (PCIe r6.0,
+> sec 2.3.1).
 > 
-> Thank you for the patch! I could not apply this patch on net.git / main branch
-> and the branch + your patches [1] though, this patch looks good. So,
+> Since you mention DMA to/from other targets, maybe there's some kind
+> of fairness issue in the interconnect, which would suggest a
+> platform-specific issue that could happen with devices other than
+> e1000e.
 > 
-> Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> 
-> [1]
-> https://patchwork.kernel.org/project/netdevbpf/list/?series=915669
+> I think it would be useful to get to the root cause of this, or at
+> least mention the interconnect design where you saw the problem in
+> case somebody trips over this issue with other devices.
 
-Hi Nikita,
+Getting the root cause would be interesting, but this problem happens on
+a rather ancient platform: an Intel i3-2310E Ivy Bridge CPU launched in
+2011 (which still does its job as robot controller). Intel support does
+not answer questions for such old platforms. Even for other timing
+issues on the interconnect the Intel support was limited. I will mention
+the CPU more explicitly as the platform with this issue.
 
-I agree with Shimoda-san that this does not seem to apply cleanly to net.
-Which is a requirement for our CI to run. Please rebase and repost.
+> The PCIe spec does have an implementation note that says drivers might
+> need to restrict the programming model as you do here for designs that
+> can't process posted requests fast enough.  If that's the case for
+> e1000e, I would ask Intel whether other related devices might also be
+> affected.
 
--- 
-pw-bot: changes-requested
+Even for newer CPUs the Intel support has already ended and this CPU is
+not sold by Intel anymore. So I won't get an answer. But our experience
+is that limiting the number of posted writes always make sense at least
+for real-time. Even for our own FPGA based PCIe target, which is able to
+consume posted writes at full speed, we limit the number of posted
+writes to reduce negative effects on real-time. This experience was made
+with multiple Intel platforms.
+
+Gerhard
