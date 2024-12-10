@@ -1,63 +1,149 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E81D5CD4
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 03:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6101BEF8B;
+	Tue, 10 Dec 2024 03:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733801320; cv=none; b=uZlKert/dfqgzLt6LIL4ILC6wuq4jyW/wgvL2IWa4LtLrh8yf+qyahVnp5w330zfwnNWelCVdHMEzGPy4GI2YVap7VlW+806gxfUD3zfsDQxGw3trpKxDaZM0OhzM8+ZOSquhPRf9Fm2oqAHae6+KDXAlKmWerlKL3rGBZ/tshM=
+	t=1733801401; cv=none; b=l+3F3U/vq4Sry9jPQRq00TJ6KySGl2KKDNpry1ukR0qvxSi/9xgfgpDtoeobo4D6TAHRuy5GHWceYK/nIhqXlx6orgNAGJYeOe//9Kxig6vra5rqJCgWre+joB6w6eDKwsNkxBYqn6KHzVNFCJ/SFNaNp0bmsrcretnMAjh1DQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733801320; c=relaxed/simple;
-	bh=8ZjoMrkpGhvqaHmWz56d2HnDt6npNs1OUjUIB6kSozM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dcfZMDW9XijnUZSXVI7HK1St0JtUMEwObBURynk/tAnckW9s5ELlN5gJC9GQ9DQ1KF55VBn0oO3g1QXWo7rudLbMaAECUsBWh519YsbgOE25M+SnmpSkSXplKFsJ1PZ7ZyK1VLjPXfzxrUU7aaj0b7zAnW5jAWGUDyxlnbUTdzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zCSujAu0; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1733801401; c=relaxed/simple;
+	bh=HcWoaK439QTaY/DOc4afGwl8pFNb+PCJ7dAnkLL7e4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MM9TpTSuCcCbmkIWRyve8I0KQcbpOva0RP9NFom5MeipLXQO91Tj9Vq+ctwOVY0uJfwpnv4IFS0vV4i3Qi+dScnUnp/+GOjd9SlWJyB6cKa/bw2te2i3AcA3OPykdQm08OC+pb59aZULckkRsR8gHZ7B3ki2YBnheVKxZUZghOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/MQun+s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zCSujAu0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jqsScO1BrCYUlXGxgKhDktsvDknhF9QrcqKB7Z6tVCg=; b=zCSujAu04X06np3J1EIJD1IUw2
-	YM1Y2uS32WriS1jikq09CJUVWGFtLvqQekaQmUdg1luNMZrbpgccjXH3XQPFU9CdD+OGICYWnNSR2
-	bSqI+u8B3AyuOFcvw1ekhmr1178Ilyhd9r8pxtcZly6hcPjxy43SZY4oYYevLDkeQPjY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tKqvJ-00Fkde-0J; Tue, 10 Dec 2024 04:28:33 +0100
-Date: Tue, 10 Dec 2024 04:28:32 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Bryan Whitehead <bryan.whitehead@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com
-Subject: Re: [PATCH net-next 09/10] net: lan743x: use netdev in
- lan743x_phylink_mac_link_down()
-Message-ID: <243d3de2-e5ea-4e58-86e8-035262994803@lunn.ch>
-References: <Z1b9J-FihzJ4A6aQ@shell.armlinux.org.uk>
- <E1tKeg3-006SND-0e@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/MQun+s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6167CC4CED6;
+	Tue, 10 Dec 2024 03:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733801400;
+	bh=HcWoaK439QTaY/DOc4afGwl8pFNb+PCJ7dAnkLL7e4k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M/MQun+sIrYfdZCh9CNqjL7ftXtStBD9UtTfmzKgfTEoWm6YPFYtptK1seAQQFr5m
+	 Wlzt9VJaLP7W1lvI2HQ04K4rT3Fzj+p6+CLkeT7Jo7WXGJqSdImcfDg5T3J7AgRHKo
+	 hBn0SiuWi/kPyhBYSiwjE2AYjp1MN0otY5m/xqddsmU3zUkBn/y3+YsIlmlX/ulhV2
+	 iuNwkm32uNM86pMwyUqAP8aL+pRl5pAEomKAkAnwm6kMCNbijT6Hc1MHQZLSpexD2y
+	 yx39x/6fBzRtGaX5qcsvvGhElCdQmDEJGCZAZe7CGGRqp7BmG8G5r677ZzVuCjsKDk
+	 tPoY1vzxjjt+g==
+Date: Mon, 9 Dec 2024 19:29:59 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Wei <dw@davidwei.uk>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org, Jens Axboe
+ <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, Paolo Abeni
+ <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, David
+ Ahern <dsahern@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>
+Subject: Re: [PATCH net-next v8 06/17] net: page pool: add helper creating
+ area from pages
+Message-ID: <20241209192959.42425232@kernel.org>
+In-Reply-To: <20241204172204.4180482-7-dw@davidwei.uk>
+References: <20241204172204.4180482-1-dw@davidwei.uk>
+	<20241204172204.4180482-7-dw@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1tKeg3-006SND-0e@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 09, 2024 at 02:23:59PM +0000, Russell King (Oracle) wrote:
-> Use the netdev that we already have in lan743x_phylink_mac_link_down().
+On Wed,  4 Dec 2024 09:21:45 -0800 David Wei wrote:
+> From: Pavel Begunkov <asml.silence@gmail.com>
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Add a helper that takes an array of pages and initialises passed in
+> memory provider's area with them, where each net_iov takes one page.
+> It's also responsible for setting up dma mappings.
+> 
+> We keep it in page_pool.c not to leak netmem details to outside
+> providers like io_uring, which don't have access to netmem_priv.h
+> and other private helpers.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+User space will likely give us hugepages. Feels a bit wasteful to map
+and manage them 4k at a time. But okay, we can optimize this later.
 
-    Andrew
+> diff --git a/include/net/page_pool/memory_provider.h b/include/net/page_pool/memory_provider.h
+> new file mode 100644
+> index 000000000000..83d7eec0058d
+> --- /dev/null
+> +++ b/include/net/page_pool/memory_provider.h
+> @@ -0,0 +1,10 @@
+
+nit: missing SPDX
+
+> +#ifndef _NET_PAGE_POOL_MEMORY_PROVIDER_H
+> +#define _NET_PAGE_POOL_MEMORY_PROVIDER_H
+> +
+> +int page_pool_mp_init_paged_area(struct page_pool *pool,
+> +				struct net_iov_area *area,
+> +				struct page **pages);
+> +void page_pool_mp_release_area(struct page_pool *pool,
+> +				struct net_iov_area *area);
+> +
+> +#endif
+
+> +static void page_pool_release_page_dma(struct page_pool *pool,
+> +				       netmem_ref netmem)
+> +{
+> +	__page_pool_release_page_dma(pool, netmem);
+
+I'm guessing this is to save text? Because
+__page_pool_release_page_dma() is always_inline? 
+Maybe add a comment?
+
+> +}
+> +
+> +int page_pool_mp_init_paged_area(struct page_pool *pool,
+> +				 struct net_iov_area *area,
+> +				 struct page **pages)
+> +{
+> +	struct net_iov *niov;
+> +	netmem_ref netmem;
+> +	int i, ret = 0;
+> +
+> +	if (!pool->dma_map)
+> +		return -EOPNOTSUPP;
+> +
+> +	for (i = 0; i < area->num_niovs; i++) {
+> +		niov = &area->niovs[i];
+> +		netmem = net_iov_to_netmem(niov);
+> +
+> +		page_pool_set_pp_info(pool, netmem);
+
+Maybe move setting pp down, after we successfully mapped. Technically
+it's not a bug to leave it set on netmem, but it would be on a page
+struct.
+
+> +		if (!page_pool_dma_map_page(pool, netmem, pages[i])) {
+> +			ret = -EINVAL;
+> +			goto err_unmap_dma;
+> +		}
+> +	}
+> +	return 0;
+> +
+> +err_unmap_dma:
+> +	while (i--) {
+> +		netmem = net_iov_to_netmem(&area->niovs[i]);
+> +		page_pool_release_page_dma(pool, netmem);
+> +	}
+> +	return ret;
+> +}
+> +
+> +void page_pool_mp_release_area(struct page_pool *pool,
+> +			       struct net_iov_area *area)
+> +{
+> +	int i;
+> +
+> +	if (!pool->dma_map)
+> +		return;
+> +
+> +	for (i = 0; i < area->num_niovs; i++) {
+> +		struct net_iov *niov = &area->niovs[i];
+> +
+> +		page_pool_release_page_dma(pool, net_iov_to_netmem(niov));
+> +	}
+> +}
+
