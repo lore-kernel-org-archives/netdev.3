@@ -1,197 +1,144 @@
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70967215775
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 09:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB73678F30;
+	Tue, 10 Dec 2024 09:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733824047; cv=none; b=I1+23uRylZlSMvNTjVwkMocAymV/QBTCDtpds9ZCotasg6IvIT8avi37M/74p4s+cmSEBvzC0lOhcNiq6/HLmbJ9HXKaiU13g3Do6dXCSogiiqfJutT6UtNyxRnpzVsHwxxGW73WbiKoGJkW6mvgoJOzVEOcj29gEWyhJHEWBhw=
+	t=1733824268; cv=none; b=PXxLIURF/w7YxKY8m2g0UZQEpvjANEdAVDa0aSQKmsHF2XAWd6QDNtNvvz535yV9iwbOjHYE5Bc7lbpay0co4NjJ6cKSMZ83es320tdhrYnF4trXVYkPmTTlGcf8vRlliBza/dTma4AgbxxOppYdQnM9nGT700g29Ac2GmxoGCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733824047; c=relaxed/simple;
-	bh=Yq/g1+dlm+VkcybN+h2Y8RtQ/vZYo7MXe09kKqZaMjo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lI953bIYOqYKOjdT3WTh629wOMZSQUpQTnYzs3RqQpi46p9akXXrBNYb7cX4XUZUXIBYJr5OfdcUKEGHuw+dwiLUSVCtggXxLAvqiZiJMDHC1P1jaD7G9a05gFodr3U8ftjeptfgQJADP9PXXm1PjNy/FQFn1tQMD8Uq/X7FngE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=ZUaTtMWE; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1733824268; c=relaxed/simple;
+	bh=oi7eCnykiiMdiANJBoLlcbfnIekOTSmhDJnHa4TSeJI=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=oQ8kh6scrK4efokesfe9xvCEZbzAnX/o5mBBXMralQIa1bA6H6xhoUcaO/wOxkyjnjpfinw7XI3J9zUL7E9Q+JHG/ipA1DyCIgcKgCngblO5h65B+F2oVrzxpwSoOe/+5/u/AnfeDJkhh5o32TPYbFF0HF8F78EtkAoT9MpMk9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VDJZPGwz; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ZUaTtMWE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VDJZPGwz"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-434b3e32e9dso58109495e9.2;
+        Tue, 10 Dec 2024 01:51:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1733824046; x=1765360046;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+nQk20/RHfQJBAfdTJfM7QSr5cTW54e3CPpW+j3xuRc=;
-  b=ZUaTtMWEkJCn3SNvX+iUKcqoQs0FilGcC25qdUpbmXtZBTmeV2/WbrTj
-   a05V04rsd7H9bspNBiv1XdVv+KNiEby6hJ+EGyyiIGxO9cTeilAkE4BWE
-   F/81YOuFa/GsfkpmyCpZNTN9KoOGVX++gvFcIpEsjrwPvdxROfQ2ZAtk1
-   k=;
-X-IronPort-AV: E=Sophos;i="6.12,222,1728950400"; 
-   d="scan'208";a="359438288"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 09:47:24 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:9157]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.104:2525] with esmtp (Farcaster)
- id 9250ef6a-cffe-4683-b2b6-dc88e0d0fbe5; Tue, 10 Dec 2024 09:47:23 +0000 (UTC)
-X-Farcaster-Flow-ID: 9250ef6a-cffe-4683-b2b6-dc88e0d0fbe5
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 10 Dec 2024 09:47:23 +0000
-Received: from 6c7e67c6786f.amazon.com (10.143.88.19) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Tue, 10 Dec 2024 09:47:19 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <edumazet@google.com>
-CC: <davem@davemloft.net>, <horms@kernel.org>, <kuba@kernel.org>,
-	<kuni1840@gmail.com>, <kuniyu@amazon.com>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>
-Subject: Re: [PATCH v2 net-next 00/15] treewide: socket: Clean up sock_create() and friends.
-Date: Tue, 10 Dec 2024 18:47:16 +0900
-Message-ID: <20241210094716.76970-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <CANn89iKHE=ucDztegP5TPHM=6e0JaGApQ7J==4r1Q9nffm+-sQ@mail.gmail.com>
-References: <CANn89iKHE=ucDztegP5TPHM=6e0JaGApQ7J==4r1Q9nffm+-sQ@mail.gmail.com>
+        d=gmail.com; s=20230601; t=1733824265; x=1734429065; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eVngt1qTy/xN3Hpa896xeIHRZX1r8nOJq/F7ShWMruQ=;
+        b=VDJZPGwzVxmc/ktT87hfP47PSwsIujM79x+QxT7l2SmMWmCUsM3mQrbzJmKQsozaCm
+         9+GzgKBPSXPg5fxJrEwehKuFCvmKcM5BIZ3y1hUi1Ox46rgA38bAVtyyP/lpEVth4RNe
+         I0rzqr1kF5IK8VOEDGBHC7vq+dTEDXjFBjnJlcNghTIqIdaakY3TPoFM7YItYJuwVWij
+         yN5Aog9D+hEO2PDgFrG27af50eVwbhiiRwV73oocmNdXEQxEib2GKryVWNbSYd+M3G6P
+         YTkE71QfSeghIG7HbHqP5TVPZLr5zzTjzLog/l/kcJV3yDTztx2XmVgg5O4ydR/DsS2G
+         kqAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733824265; x=1734429065;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eVngt1qTy/xN3Hpa896xeIHRZX1r8nOJq/F7ShWMruQ=;
+        b=kcNwvNPtA8mp7Ee2zPYHhIcIP8vaOUc/f8qn90MWvP5md5awiaqItrFR2gMHTzQRNa
+         etfr4nh0MNWXVJjhfk9hKhxaOwdGJeJ8w04tGolkcYoGsLDWEqHbVnMMP+xfRLARZTYe
+         pdh3aXYetxP2WvsyAeiL4mLMTWMZL1aFenPtZS6uXoRUCUA4b/VZH3anU2/V6kS+FQsn
+         Bo+sF60SvH6qP3B8yrTR2YcsBNgs0YkvuFUL+875/iY8iePf1xAdw5I5HSIQyqqXhRDC
+         cka5Vk0i8u6eDJUM3yQIWPHwWV1bDoID7JJjo2Nb6wjLOwDQtcy+MPJ5s57xqDtr10GE
+         6cXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbFVGtf+uf/VsKUtnm42KUOrHwybQGlZky9h/veF0B7y+NNWoF3ceuKwA/lV2q0ytT1XA9UAT6@vger.kernel.org, AJvYcCVvzSBg21YineMpFMp7PGbKpWe+YDW1aaBCBq11jAej2HJ4okqkIu0Rp2jnNGzOYDN9fq2iAUwyfTw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycQXRRYDWtL8ZyewUwk66kGuropy/8Bm/1guuztD/lIROk+m66
+	0QlBD5Ssmkbaa/I1BKy+nwywGmwSutzzBhnRGNx3r0u2NSHe/k4euoibaw==
+X-Gm-Gg: ASbGncvcmUagtQC0EsMd5UEv2TTYmqB1EaXxk2vmd2l7E0DY+UZN2gD+VC7cqFpe53l
+	fw9VWCjEl0fb7eE17MJNhUUC1TnfLE1vg9UW9XAFhgIoCzf8ye+bOnqOBOwdwiOyFgfAs0KvNf+
+	GT/6QDo/GtLnv7Z37sgo8xwcndPn9tKE/ksBvXEN+5VPHvNeGtSBRIndwA6aSHzcdSF2/gQj18w
+	h4RNvFjulvxUi/e1443LtziTMxk6zNNv7j0j25tjchhwOK/bvo65RUBGlW1Wx6kjHdl5p0CHcAm
+	+QB4JiP3SgzzEkFRwMRy8eAWCirma1L6MNWOWsH+Hg==
+X-Google-Smtp-Source: AGHT+IG1bPkTNmZoa++SRWPW66kFFJI1n5L1bp5c5HzG2uRlnN9E30pff4QzwAt6iLDjZTxSjuFfQw==
+X-Received: by 2002:a05:600c:1e27:b0:434:f804:a992 with SMTP id 5b1f17b1804b1-434f804ac4emr51157525e9.32.1733824265028;
+        Tue, 10 Dec 2024 01:51:05 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434e8ec8072sm115493755e9.18.2024.12.10.01.51.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 01:51:04 -0800 (PST)
+Subject: Re: [PATCH v7 16/28] sfc: obtain root decoder with enough HPA free
+ space
+To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
+ netdev@vger.kernel.org, dan.j.williams@intel.com, martin.habets@xilinx.com,
+ edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
+Cc: Alejandro Lucero <alucerop@amd.com>
+References: <20241209185429.54054-1-alejandro.lucero-palau@amd.com>
+ <20241209185429.54054-17-alejandro.lucero-palau@amd.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <6c4f75a0-b63b-9591-5ffc-db4bf4bf3a16@gmail.com>
+Date: Tue, 10 Dec 2024 09:51:03 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EX19D037UWB001.ant.amazon.com (10.13.138.123) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+In-Reply-To: <20241209185429.54054-17-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 10 Dec 2024 09:46:27 +0100
-> On Tue, Dec 10, 2024 at 8:38 AM Kuniyuki Iwashima <kuniyu@amazon.com> wrote:
-> >
-> > There are a bunch of weird usages of sock_create() and friends due
-> > to poor documentation.
-> >
-> >   1) some subsystems use __sock_create(), but all of them can be
-> >      replaced with sock_create_kern()
-> >
-> >   2) some subsystems use sock_create(), but most of the sockets are
-> >      not tied to userspace processes nor exposed via file descriptors
-> >      but are (most likely unintentionally) exposed to some BPF hooks
-> >      (infiniband, ISDN, NVMe over TCP, iscsi, Xen PV call, ocfs2, smbd)
-> >
-> >   3) some subsystems use sock_create_kern() and convert the sockets
-> >      to hold netns refcnt (cifs, mptcp, rds, smc, and sunrpc)
-> >
-> >   4) the sockets of 2) and 3) are counted in /proc/net/sockstat even
-> >      though they are untouchable from userspace
-> >
-> > The primary goal is to sort out such confusion and provide enough
-> > documentation for future developers to choose an appropriate API.
-> >
-> > Regarding 3), we introduce a new API, sock_create_net(), that holds
-> > a netns refcnt for kernel socket to remove the socket conversion to
-> > avoid use-after-free triggered by TCP kernel socket after commit
-> > 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns
-> > of kernel sockets.").
-> >
-> > Finally, we rename sock_create() and sock_create_kern() to
-> > sock_create_user() and sock_create_net_noref(), respectively.
-> > This intentionally breaks out-of-tree drivers to give the owners
-> > a chance to choose an appropriate API.
-> >
-> > Throughout the series, we follow the definition below:
-> >
-> >   userspace socket:
-> >     * created by sock_create_user()
-> >     * holds the reference count of the network namespace
-> >     * directly linked to a file descriptor
-> >       * currently all sockets created by sane sock_create() users
-> >         are tied to userspace process and exposed via file descriptors
-> >     * accessed via a file descriptor (and some BPF hooks except
-> >       for BPF LSM)
-> >     * counted in the first line of /proc/net/sockstat.
-> >
-> >   kernel socket
-> >     * created by sock_create_net() or sock_create_net_noref()
-> >       * the former holds the refcnt of netns, but the latter doesn't
-> >     * not directly exposed to userspace via a file descriptor nor BPF
-> >       except for BPF LSM
-> >
-> > Note that __sock_create(kern=1) skips some LSMs (SELinux, AppArmor)
-> > but not all; BPF LSM can enforce security regardless of the argument.
-> >
-> > I didn't CC maintainers for mechanical changes as the CC list explodes.
-> >
-> >
-> > Changes:
-> >   v2:
-> >     * Patch 8
-> >       * Fix build error for PF_IUCV
-> >     * Patch 12
-> >       * Collect Acked-by from MPTCP/RDS maintainers
-> >
-> >   v1: https://lore.kernel.org/netdev/20241206075504.24153-1-kuniyu@amazon.com/
-> >
+On 09/12/2024 18:54, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
 > 
-> My concern with this huge refactoring is the future backports hassle,
-> before going to the review part...
-
-I understand that concern as a distributor, that's why I waited the
-sunrpc fix to be merged into net-next, which I believe is the last
-problematic caller of sock_create_kern(AF_INET6?, SOCK_STREAM).
-
-Also, I think socket()/accept()/sk_alloc() are unlikely to have
-many bugs and get updated so frequently.
-
-  $ git log --oneline v5.4.286...v5.4 -- net/socket.c | wc -l
-  13
-  $ git log --oneline v5.10.230...v5.10 -- net/socket.c | wc -l
-  13
-  $ git log --oneline v5.15.173...v5.15 -- net/socket.c | wc -l
-  8
-  $ git log --oneline v6.1.119...v6.1 -- net/socket.c | wc -l
-  13
-
-b7d22a79ff4e ("net: explicitly clear the sk pointer, when pf->create
-fails") is the only patch touching sock_create(). (in 5.15+)
-
-Recently, I backported ef7134c7fc48 ("smb: client: Fix use-after-free
-of network namespace.") to our 5.4/5.10/5.15/6.1 trees (and will post
-them to upstream stable trees) and it didn't have conflicts in terms
-of networking code.
-
-
+> Asking for available HPA space is the previous step to try to obtain
+> an HPA range suitable to accel driver purposes.
 > 
-> Also the change about counting or not 'kernel sockets' in
-> /proc/net/sockstat is orthogonal.
+> Add this call to efx cxl initialization.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+> ---
+>  drivers/net/ethernet/sfc/efx_cxl.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+> index 8db5cf5d9ab0..f2dc025c9fbb 100644
+> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+> @@ -26,6 +26,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  	struct pci_dev *pci_dev;
+>  	struct efx_cxl *cxl;
+>  	struct resource res;
+> +	resource_size_t max;
 
-I dug a bit more history.
+While it won't actually match because there's no (), the fact that this
+ is the name of a common function-like macro is not ideal.  Can you
+ rename this variable to something clearer ('max_size' perhaps)?
 
-/proc/net/sockstat was initially a global counter and later
-it's namespacified by 648845ab7e200 in 2017.
+>  	u16 dvsec;
+>  	int rc;
+>  
+> @@ -102,6 +103,23 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  		goto err3;
+>  	}
+>  
+> +	cxl->cxlrd = cxl_get_hpa_freespace(cxl->cxlmd,
+> +					   CXL_DECODER_F_RAM | CXL_DECODER_F_TYPE2,
+> +					   &max);
+> +
+> +	if (IS_ERR(cxl->cxlrd)) {
+> +		pci_err(pci_dev, "cxl_get_hpa_freespace failed\n");
+> +		rc = PTR_ERR(cxl->cxlrd);
+> +		goto err3;
+> +	}
+> +
+> +	if (max < EFX_CTPIO_BUFFER_SIZE) {
+> +		pci_err(pci_dev, "%s: no enough free HPA space %pap < %u\n",
 
-Before the commit, the global counter included all sockets.
+s/no/not/
 
-But 26abe14379f8 changed kernel sockets not to hold netns
-refcount in 2015, so we can't decrement the namespacified
-counter during socket destruction for kernel sockets.
+> +			__func__, &max, EFX_CTPIO_BUFFER_SIZE);
+> +		rc = -ENOSPC;
+> +		goto err3;
+> +	}
+> +
+>  	probe_data->cxl = cxl;
+>  
+>  	return 0;
+> 
 
-Then, the namespacified sockstat was changed to include sockets
-holding netns refcnt, and it was only userspace sockets until the
-first kernel socket conversion.
-
-So, the option would be either of
-
-  1) keep as is (counting userspace sockets and kernel sockets
-     with net refcnt)
-
-  2) count userspace sockets only
-
-  3) count all sockets (and detect callers of sock_create_kern()
-     who touches kernel sockets after netns is freed, with help
-     of syzbot and KMSAN/KASAN)
-
-3) is invasive but seems doable considering now we have
-ref_tracker_dir_exit() for kernel sockets in net_free().
-
-What do you think ?
