@@ -1,73 +1,67 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx-rz-3.rrze.uni-erlangen.de (mx-rz-3.rrze.uni-erlangen.de [131.188.11.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4C31A0B15;
-	Tue, 10 Dec 2024 13:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52B01A0BC0;
+	Tue, 10 Dec 2024 13:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.188.11.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733835932; cv=none; b=giUJ7reU0qZX+AJ8R3bv/fAu1hjPd4tXn/+G/VQVyDYi/X/nsfWeOn6+7eF3Xd+gJpefUhnr5gX8qoxc3q8icJysu2h0G4MyN2RJl6vTVaAkVTiJzo1zwWNe2t0zHcEn38OGjCUW8HRS1KfOmW/V/C7xyNAQHityikNEA2zrqdA=
+	t=1733836489; cv=none; b=mVMhEdDaM6roFYdw36L6yqidiAnqDPJm05kwjp6F0pwYIEY4nUJA6rgvoqihsqTxUYC2dV/zbCFGeSrsPs8cTqkQXgfuDgkckoaJTdRpQ/xX68BSaR7rjlEZOjPcUREj0bZDAB0n3ofQs+LK0T4NgAw/AlQw7PILeaBgMoBG9Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733835932; c=relaxed/simple;
-	bh=ObIvv4aBHq42R6izYAIFAgUT2lfTA0MWQNtfEld2CnM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gHhwV91dnqQVIXZPAbTaodLBFNb1+w67iHz/0fv/IUJtbgs136GZb7SwK61L57x0C1SchOHjLWgbcjOEe8FjQjPCDnm1l4tiIhp2GeEI/F0muhjCv6/3CDbuT5pwZfCR/0KiqrSZUPzIE+coO0lylFymJcYTKtY7Yy39BRQq5jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zurich.ibm.com; spf=pass smtp.mailfrom=zurich.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dWkW/IJ0; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zurich.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zurich.ibm.com
+	s=arc-20240116; t=1733836489; c=relaxed/simple;
+	bh=YsT6EcP18yeiYtzFMO3dO4JbLwI/AMemaxTrUzranP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OIVOgcHiajolNdyTFKZyuxHedBQVZQcEV/Thq9xm27IB0vBkHShOzsCa8k7ALr95NGTaj5AANvOPVlUGxrtTsOHzyUq5uaUEdb0lMAKy1MP5z506VAgFoWuoDn4NQuam9rlxX06Noxs4v26FbVRQ2Yk1WftTwyTokMk04WUnzhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fau.de; spf=pass smtp.mailfrom=fau.de; dkim=pass (2048-bit key) header.d=fau.de header.i=@fau.de header.b=eXE+9zIz; arc=none smtp.client-ip=131.188.11.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fau.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fau.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dWkW/IJ0"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BA2SDY6032428;
-	Tue, 10 Dec 2024 13:05:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Tmqk0ezcuIeoWDq63ykmLje//L3X4RDn77qpjUnro
-	VQ=; b=dWkW/IJ0sCNEJ1+7OwXVJr76H95F7ofKb/s2blW3AIW9TPjQYBlviZaxg
-	fENyUx3Nfd5jVXBn1W/X8nsLiv4+gqnfoj33FVkz14JB+n4VjHtyZDocphkXtwqj
-	NGjiYvcUAWB6a4IaDs5XdMCMzjwV8whFu8T6tbGaa7aLnsjJ7DYr77SNgtEMZupX
-	likRDK4Hj8AwuL4WzvKC2i4mhF2sDcCDLaw2NwUl9FjCgjjcxxQ07rZPIDJ+frhZ
-	AAAQuFRuXWYG/+yw2QYUIhcgRGSYeXq80W1045vEnolqZt0ruXuVzeFo1oiKRHo6
-	5hSQL1dvyyUJ3xW3ZoFRhbLB4tbFQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cbsq6dkh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 13:05:22 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BAD5Mhl001327;
-	Tue, 10 Dec 2024 13:05:22 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cbsq6dke-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 13:05:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAAQDZb032727;
-	Tue, 10 Dec 2024 13:05:21 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d0psbwnh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 13:05:21 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BAD5JLv50790864
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Dec 2024 13:05:20 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D061220043;
-	Tue, 10 Dec 2024 13:05:19 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F63120040;
-	Tue, 10 Dec 2024 13:05:19 +0000 (GMT)
-Received: from rims.zurich.ibm.com (unknown [9.4.68.72])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Dec 2024 13:05:19 +0000 (GMT)
-From: Bernard Metzler <bmt@zurich.ibm.com>
-To: linux-rdma@vger.kernel.org
-Cc: jgg@ziepe.ca, leon@kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-        zyjzyj2000@gmail.com, Bernard Metzler <bmt@zurich.ibm.com>,
-        syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
-Subject: [PATCH] RDMA/siw: Remove direct link to net_device
-Date: Tue, 10 Dec 2024 14:03:51 +0100
-Message-Id: <20241210130351.406603-1-bmt@zurich.ibm.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key) header.d=fau.de header.i=@fau.de header.b="eXE+9zIz"
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-rz-3.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4Y6zjC265nz1xwX;
+	Tue, 10 Dec 2024 14:14:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1733836479; bh=sG/19ZfeKePzGrlNfwsDwdiV3IXJN2uSxlAjdLrtWQI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From:To:CC:
+	 Subject;
+	b=eXE+9zIzScPz2FUv5JXz+9SaUswPMbQOno7tUqKHlqKmmKE0U+PzmjTr0Tk6dtKtw
+	 0ouwoL/FGgwUn5FhALGsyhY4QPaN2gtGos1AMHV0aIs9JK8g4BqLPnr0H0TvlarL2o
+	 YLG5nX7H4Oz/sEcZC/Q61M2uQCF+vczCc27uVSGUZSJqcMJwDiM6bkCbStNjPArfVX
+	 Pft85fFuhfXGAAL4ufSCzBEBjjiTPLO7vX2/D7AWVdLwGrIHbfMk+YT66KdxyxDGtZ
+	 apwL+j6svk0us3SWtvpmycwec8ZwXEAVuE7OkyfVa/6fz4mHLeZkMHKkiQhHcpFzQx
+	 uHNYIg3NrS8lw==
+X-Virus-Scanned: amavisd-new at boeck5.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 131.188.47.107
+Received: from faui76b (faui76b.informatik.uni-erlangen.de [131.188.47.107])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX1+IZSEIeQ8pHHzlT6KmbtTYX2dsz1NRJc0=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4Y6zj83t5Yz1yZZ;
+	Tue, 10 Dec 2024 14:14:36 +0100 (CET)
+From: Martin Ottens <martin.ottens@fau.de>
+To: 
+Cc: Martin Ottens <martin.ottens@fau.de>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] net/sched: netem: account for backlog updates from child qdisc
+Date: Tue, 10 Dec 2024 14:14:11 +0100
+Message-Id: <20241210131412.1837202-1-martin.ottens@fau.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <AM0EoMm1Qv3_0ak2vtRjSmuW4+zZ7izzBVjDMawfnKm3dLcjyA@mail.gmail.com>
+References: <AM0EoMm1Qv3_0ak2vtRjSmuW4+zZ7izzBVjDMawfnKm3dLcjyA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,183 +69,163 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jGLhd_i-PGUraM-d4GchWu6iJHnGFpdE
-X-Proofpoint-GUID: yW7HGGi5IYCoqZzpE0Gni0e6AkiodKsD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=934 adultscore=0
- lowpriorityscore=0 clxscore=1011 phishscore=0 impostorscore=0
- suspectscore=0 spamscore=0 mlxscore=0 priorityscore=1501 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412100097
 
-Maintain needed network interface information locally, but
-remove a direct link to net_device which can become stale.
-Accessing a stale net_device link was causing a 'KASAN:
-slab-use-after-free' exception during siw_query_port()
-call.
+In general, 'qlen' of any classful qdisc should keep track of the
+number of packets that the qdisc itself and all of its children holds.
+In case of netem, 'qlen' only accounts for the packets in its internal
+tfifo. When netem is used with a child qdisc, the child qdisc can use
+'qdisc_tree_reduce_backlog' to inform its parent, netem, about created
+or dropped SKBs. This function updates 'qlen' and the backlog statistics
+of netem, but netem does not account for changes made by a child qdisc.
+'qlen' then indicates the wrong number of packets in the tfifo.
+If a child qdisc creates new SKBs during enqueue and informs its parent
+about this, netem's 'qlen' value is increased. When netem dequeues the
+newly created SKBs from the child, the 'qlen' in netem is not updated.
+If 'qlen' reaches the configured sch->limit, the enqueue function stops
+working, even though the tfifo is not full.
 
-Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
-Reported-by: syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=4b87489410b4efd181bf
-Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configure netem as root
+qdisc and tbf as its child on the outgoing interface of the machine
+as follows:
+$ tc qdisc add dev <oif> root handle 1: netem delay 100ms limit 100
+$ tc qdisc add dev <oif> parent 1:0 tbf rate 50Mbit burst 1542 latency 50ms
+
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on the machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
+
+Statistics after 10s of iPerf3 TCP test before the fix (note that
+netem's backlog > limit, netem stopped accepting packets):
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 2767766 bytes 1848 pkt (dropped 652, overlimits 0 requeues 0)
+ backlog 4294528236b 1155p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 2767766 bytes 1848 pkt (dropped 327, overlimits 7601 requeues 0)
+ backlog 0b 0p requeues 0
+
+Statistics after the fix:
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 37766372 bytes 24974 pkt (dropped 9, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 37766372 bytes 24974 pkt (dropped 327, overlimits 96017 requeues 0)
+ backlog 0b 0p requeues 0
+
+tbf segments the GSO SKBs (tbf_segment) and updates the netem's 'qlen'.
+The interface fully stops transferring packets and "locks". In this case,
+the child qdisc and tfifo are empty, but 'qlen' indicates the tfifo is at
+its limit and no more packets are accepted.
+
+This patch adds a counter for the entries in the tfifo. Netem's 'qlen' is
+only decreased when a packet is returned by its dequeue function, and not
+during enqueuing into the child qdisc. External updates to 'qlen' are thus
+accounted for and only the behavior of the backlog statistics changes. As
+in other qdiscs, 'qlen' then keeps track of  how many packets are held in
+netem and all of its children. As before, sch->limit remains as the
+maximum number of packets in the tfifo. The same applies to netem's
+backlog statistics.
+
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- drivers/infiniband/sw/siw/siw.h       | 11 +++++++----
- drivers/infiniband/sw/siw/siw_cm.c    |  4 ++--
- drivers/infiniband/sw/siw/siw_main.c  | 18 ++++++++++++------
- drivers/infiniband/sw/siw/siw_verbs.c | 11 ++++++-----
- 4 files changed, 27 insertions(+), 17 deletions(-)
+ net/sched/sch_netem.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw.h b/drivers/infiniband/sw/siw/siw.h
-index 86d4d6a2170e..c8f75527b513 100644
---- a/drivers/infiniband/sw/siw/siw.h
-+++ b/drivers/infiniband/sw/siw/siw.h
-@@ -69,16 +69,19 @@ struct siw_pd {
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index fe6fed291a7b..71ec9986ed37 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -79,6 +79,8 @@ struct netem_sched_data {
+ 	struct sk_buff	*t_head;
+ 	struct sk_buff	*t_tail;
  
- struct siw_device {
- 	struct ib_device base_dev;
--	struct net_device *netdev;
- 	struct siw_dev_cap attrs;
- 
- 	u32 vendor_part_id;
-+	struct {
-+		int ifindex;
-+		enum ib_port_state state;
-+		enum ib_mtu mtu;
-+		enum ib_mtu max_mtu;
-+	} ifinfo;
++	u32 t_len;
 +
- 	int numa_node;
- 	char raw_gid[ETH_ALEN];
+ 	/* optional qdisc for classful handling (NULL at netem init) */
+ 	struct Qdisc	*qdisc;
  
--	/* physical port state (only one port per device) */
--	enum ib_port_state state;
--
- 	spinlock_t lock;
+@@ -383,6 +385,7 @@ static void tfifo_reset(struct Qdisc *sch)
+ 	rtnl_kfree_skbs(q->t_head, q->t_tail);
+ 	q->t_head = NULL;
+ 	q->t_tail = NULL;
++	q->t_len = 0;
+ }
  
- 	struct xarray qp_xa;
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index 86323918a570..451b50d92f7f 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -1780,7 +1780,7 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+@@ -412,6 +415,7 @@ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+ 		rb_link_node(&nskb->rbnode, parent, p);
+ 		rb_insert_color(&nskb->rbnode, &q->t_root);
+ 	}
++	q->t_len++;
+ 	sch->q.qlen++;
+ }
  
- 		/* For wildcard addr, limit binding to current device only */
- 		if (ipv4_is_zeronet(laddr->sin_addr.s_addr))
--			s->sk->sk_bound_dev_if = sdev->netdev->ifindex;
-+			s->sk->sk_bound_dev_if = sdev->ifinfo.ifindex;
+@@ -518,7 +522,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			1<<get_random_u32_below(8);
+ 	}
  
- 		rv = s->ops->bind(s, (struct sockaddr *)laddr,
- 				  sizeof(struct sockaddr_in));
-@@ -1798,7 +1798,7 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+-	if (unlikely(sch->q.qlen >= sch->limit)) {
++	if (unlikely(q->t_len >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+@@ -702,8 +706,8 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ tfifo_dequeue:
+ 	skb = __qdisc_dequeue_head(&sch->q);
+ 	if (skb) {
+-		qdisc_qstats_backlog_dec(sch, skb);
+ deliver:
++		qdisc_qstats_backlog_dec(sch, skb);
+ 		qdisc_bstats_update(sch, skb);
+ 		return skb;
+ 	}
+@@ -719,8 +723,7 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
  
- 		/* For wildcard addr, limit binding to current device only */
- 		if (ipv6_addr_any(&laddr->sin6_addr))
--			s->sk->sk_bound_dev_if = sdev->netdev->ifindex;
-+			s->sk->sk_bound_dev_if = sdev->ifinfo.ifindex;
+ 		if (time_to_send <= now && q->slot.slot_next <= now) {
+ 			netem_erase_head(q, skb);
+-			sch->q.qlen--;
+-			qdisc_qstats_backlog_dec(sch, skb);
++			q->t_len--;
+ 			skb->next = NULL;
+ 			skb->prev = NULL;
+ 			/* skb->dev shares skb->rbnode area,
+@@ -747,16 +750,21 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+ 					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
++					sch->qstats.backlog -= pkt_len;
++					sch->q.qlen--;
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
++			sch->q.qlen--;
+ 			goto deliver;
+ 		}
  
- 		rv = s->ops->bind(s, (struct sockaddr *)laddr,
- 				  sizeof(struct sockaddr_in6));
-diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
-index 17abef48abcd..4db10bdfb515 100644
---- a/drivers/infiniband/sw/siw/siw_main.c
-+++ b/drivers/infiniband/sw/siw/siw_main.c
-@@ -287,7 +287,6 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
- 		return NULL;
+ 		if (q->qdisc) {
+ 			skb = q->qdisc->ops->dequeue(q->qdisc);
+-			if (skb)
++			if (skb) {
++				sch->q.qlen--;
+ 				goto deliver;
++			}
+ 		}
  
- 	base_dev = &sdev->base_dev;
--	sdev->netdev = netdev;
+ 		qdisc_watchdog_schedule_ns(&q->watchdog,
+@@ -766,8 +774,10 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
  
- 	if (netdev->addr_len) {
- 		memcpy(sdev->raw_gid, netdev->dev_addr,
-@@ -354,6 +353,10 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
- 	atomic_set(&sdev->num_mr, 0);
- 	atomic_set(&sdev->num_pd, 0);
- 
-+	sdev->ifinfo.max_mtu = ib_mtu_int_to_enum(netdev->max_mtu);
-+	sdev->ifinfo.mtu = ib_mtu_int_to_enum(READ_ONCE(netdev->mtu));
-+	sdev->ifinfo.ifindex = netdev->ifindex;
-+
- 	sdev->numa_node = dev_to_node(&netdev->dev);
- 	spin_lock_init(&sdev->lock);
- 
-@@ -381,12 +384,12 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
- 
- 	switch (event) {
- 	case NETDEV_UP:
--		sdev->state = IB_PORT_ACTIVE;
-+		sdev->ifinfo.state = IB_PORT_ACTIVE;
- 		siw_port_event(sdev, 1, IB_EVENT_PORT_ACTIVE);
- 		break;
- 
- 	case NETDEV_DOWN:
--		sdev->state = IB_PORT_DOWN;
-+		sdev->ifinfo.state = IB_PORT_DOWN;
- 		siw_port_event(sdev, 1, IB_EVENT_PORT_ERR);
- 		break;
- 
-@@ -406,10 +409,13 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
- 	case NETDEV_CHANGEADDR:
- 		siw_port_event(sdev, 1, IB_EVENT_LID_CHANGE);
- 		break;
-+
-+	case NETDEV_CHANGEMTU:
-+		sdev->ifinfo.mtu = ib_mtu_int_to_enum(READ_ONCE(netdev->mtu));
-+		break;
- 	/*
- 	 * Todo: Below netdev events are currently not handled.
- 	 */
--	case NETDEV_CHANGEMTU:
- 	case NETDEV_CHANGE:
- 		break;
- 
-@@ -444,9 +450,9 @@ static int siw_newlink(const char *basedev_name, struct net_device *netdev)
- 		dev_dbg(&netdev->dev, "siw: new device\n");
- 
- 		if (netif_running(netdev) && netif_carrier_ok(netdev))
--			sdev->state = IB_PORT_ACTIVE;
-+			sdev->ifinfo.state = IB_PORT_ACTIVE;
- 		else
--			sdev->state = IB_PORT_DOWN;
-+			sdev->ifinfo.state = IB_PORT_DOWN;
- 
- 		ib_mark_name_assigned_by_user(&sdev->base_dev);
- 		rv = siw_device_register(sdev, basedev_name);
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 986666c19378..3ab9c5170637 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -178,14 +178,15 @@ int siw_query_port(struct ib_device *base_dev, u32 port,
- 
- 	rv = ib_get_eth_speed(base_dev, port, &attr->active_speed,
- 			 &attr->active_width);
-+
- 	attr->gid_tbl_len = 1;
- 	attr->max_msg_sz = -1;
--	attr->max_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
--	attr->active_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
--	attr->phys_state = sdev->state == IB_PORT_ACTIVE ?
-+	attr->max_mtu = sdev->ifinfo.max_mtu;
-+	attr->active_mtu = sdev->ifinfo.mtu;
-+	attr->phys_state = sdev->ifinfo.state == IB_PORT_ACTIVE ?
- 		IB_PORT_PHYS_STATE_LINK_UP : IB_PORT_PHYS_STATE_DISABLED;
- 	attr->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_DEVICE_MGMT_SUP;
--	attr->state = sdev->state;
-+	attr->state = sdev->ifinfo.state;
- 	/*
- 	 * All zero
- 	 *
-@@ -519,7 +520,7 @@ int siw_query_qp(struct ib_qp *base_qp, struct ib_qp_attr *qp_attr,
- 	qp_attr->cap.max_send_sge = qp->attrs.sq_max_sges;
- 	qp_attr->cap.max_recv_wr = qp->attrs.rq_size;
- 	qp_attr->cap.max_recv_sge = qp->attrs.rq_max_sges;
--	qp_attr->path_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
-+	qp_attr->path_mtu = sdev->ifinfo.mtu;
- 	qp_attr->max_rd_atomic = qp->attrs.irq_size;
- 	qp_attr->max_dest_rd_atomic = qp->attrs.orq_size;
- 
+ 	if (q->qdisc) {
+ 		skb = q->qdisc->ops->dequeue(q->qdisc);
+-		if (skb)
++		if (skb) {
++			sch->q.qlen--;
+ 			goto deliver;
++		}
+ 	}
+ 	return NULL;
+ }
 -- 
-2.38.1
+2.39.5
 
