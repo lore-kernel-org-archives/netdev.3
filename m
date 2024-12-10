@@ -1,112 +1,134 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC011A0B15
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 14:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BF11A0B15
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 14:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733842591; cv=none; b=mChTF6WKSl48o3wf7ZO8AcrPGT4jHMEDO1W1xRMF+La6mjk+wDGWInzx2peRQ+NZu1PoBk2ilmP4YjqscdPiJUD5ybqxLLCno8ib0Ai6NFYc/fpF0+wbpTva/0gdNacmi3aDdGubrdKez544sdzVLJULAZNh96qolr+elaVBKCw=
+	t=1733842663; cv=none; b=C1OaBiQhTVCdc1EXKxe2lTsWFerIquP1Co8wqu3xN/mYCf5mm76nQsnzgUepNobYqMEQP3bzclq/NIQ7HgmVuHkkfd352ocdzoXfESytOje7jyhtua7lCT39xXvorCS4qZszccgDigOspkrVSEC5OLV+BIPsNdw2ZVATMANWNu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733842591; c=relaxed/simple;
-	bh=im4r83/3MFTa7dU7WjsfCIHgV3XDNMNtyYTcEIAa3z0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a3vUK7zT9NP4+a9+qGKg6c0sI0B0dNtC99oloRxxIAwVK6jrcKs+OkjRXsXZVYJ51t0n6po4O6QJRj/Fv2f50SjEZOoOSCnEfqtGONFMN9NsmmIuSuP54pwo007pfPxvSpHlYaNviseczU9L5fNf7ldJ40lCfBdQ94IZkLkJI9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Pm8K3wNB; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1733842663; c=relaxed/simple;
+	bh=fDX5RNoVRjU4BcnqQdRaApxIr9nCwL29OAJ3hLNdKCY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j+g0J7Xktzo5O38VSEV0yJ14f5WbkaQ5PHjUHbXlTZP9hj2voNQke2YwR2VQ8ZsngOdoX3vmP34eCA3AkE8p2j52Jt1kpceXrVHppDvuqnWVmc4E5/xyjh1DS7eBjkFP3z8+n1j/wE9BKkPR/Uq5s3VqC3ntHU63xEJks+Ckqsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U8IkJ6Ep; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Pm8K3wNB"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6d88d3d1eb6so53716156d6.0
-        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 06:56:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1733842588; x=1734447388; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vgMZyCVjX5UlsD7+dFf6mQ2S1Ak5PnTha55MEVmA3OM=;
-        b=Pm8K3wNBSj1m7GHbbI4soC60iHHFwwoxdiH62co67hwkh4aaH4/lmB+Oag3Ux8WN04
-         gttW0Bu5qGe2wi8ZVcJlS2uxOkbyDnGFrhlIq8bsFu9hsB1iblkelcoOOy3Dqe8d2PQn
-         5vEMIWHd5HWqKPkNnL8QbzccxRzwM4E67Nw+jnZXWg3NyH7eSzey+inBooGC178ZMloJ
-         6AWtNaF2QAwbiWAVeB3ofcaDIGoFZn0ifb0oDfE95TR8EWeL6LLgxY5nEPWAtVdbhW+F
-         qDcY9WRmEipe9S5yfF4jzFDDa4+lVrRBGQyodQLyXzCaouD2rQfhrlKhSmkylPpHQI8n
-         FELw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U8IkJ6Ep"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733842661;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ay8NfcUY0T/d/3vklaeP1VfwpDuNBfY2af1Jw8w5ZUI=;
+	b=U8IkJ6Ep8wpY0Oe7hBRf2+TGAXpsTCXNJT7kYktntctU7+BPYFk4PJfbCAhJfHl403cM2a
+	BxJMBrdgZzlNkEn3wxyc7agnWIookMTFyldVvlAO7NTg+SmbP4imb5iCgNqDNBBeOs91Et
+	HLqRzIAat+V0gWU06mFYk9krL/z0Hjk=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-6RnjeSj8NxSQCSKFShjHYQ-1; Tue, 10 Dec 2024 09:57:39 -0500
+X-MC-Unique: 6RnjeSj8NxSQCSKFShjHYQ-1
+X-Mimecast-MFC-AGG-ID: 6RnjeSj8NxSQCSKFShjHYQ
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-46686a1565bso107356191cf.0
+        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 06:57:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733842588; x=1734447388;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vgMZyCVjX5UlsD7+dFf6mQ2S1Ak5PnTha55MEVmA3OM=;
-        b=UlvTQU87J3Qb0mb/h8/WjVPrc3q6gSV/MyAT3bTXDe12ayQpflyaUqzEOD8U+ixFgD
-         Sc7S4Un44MS8fhj6JgF9tijXOgtz+qIMNIMxQAx56zcNvTJTNti1MoWuf9iWrUMgV6km
-         SlDKigZzhgxGpZz3lLEcAQWYHI8Y36luesZ/CI1GqQT+HfpH2wsDCzZW7+C5aaGBb22+
-         i57tuVFK29XkqHa6x/Kb0tOTWQERPQEJr+hLRO7J58z6sTefpo56Ud3P3RxBAQjYSwJZ
-         Um13tsfrTf4nxmpA5r0VpvfT3Q5USJKx6jADLep9uQtM0r53fzAnBDASSiVbzcCmDf1E
-         7A8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXtL8F7OFvD8HB8Z0jQMUWmUori3l1JzyMxz9bNn0FphVa6WphrQdr5uf0JZJ3w973OEls4+mg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMiSIFfhGZFpj4H7Nw12aNzDjIyJuFzHGBjVCQEWjf/2kZ9gdk
-	SE2KOkm8M/IGayMRhgqsx4TObJsSQyhlNxIFkBrWU8YlLKona+Y77+ZRTUwGDPY=
-X-Gm-Gg: ASbGncvci2TD8gn5V5flQ7J3UJB3M7RT5Kb3Yy/F+Enw8iyaiTrPAFs62T19dPS3ytE
-	WLeSAJYELsFK3RjbVbmeCuEOb6YNKP7DT5qNAVQpmx9oRBFse3ahK14yQzybEbfl0LpdhHNqnNi
-	AaWq8+BaMpY5RFwacx8fNTX3bhBpiwbX5qX37T65fqjSFrUuC5FOd1XOsg+/YTQJVjGrjHzfol2
-	QITU/5aBZAe28pGLXKJqGJO8DdpErFW82NyiNUx+QLXuivjq++ihH6/Ef8uHbtSwecTBV1jNh41
-	Q9ZGm6rXR04FO0uLIi/fSTZly7Q=
-X-Google-Smtp-Source: AGHT+IFfM8EwNH3V/eEsdSGmByzZEtkSueHYuu1In0U8rV2p/p6b9CdRa4FvcdwQ1MsV2//64ZXC7g==
-X-Received: by 2002:ad4:5304:0:b0:6d8:a258:68bc with SMTP id 6a1803df08f44-6d9212d61c8mr48969336d6.11.1733842588496;
-        Tue, 10 Dec 2024 06:56:28 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8da9fe9e1sm60627086d6.82.2024.12.10.06.56.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 06:56:28 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tL1f1-0000000A2jg-1ul6;
-	Tue, 10 Dec 2024 10:56:27 -0400
-Date: Tue, 10 Dec 2024 10:56:27 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Bernard Metzler <bmt@zurich.ibm.com>
-Cc: linux-rdma@vger.kernel.org, leon@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com, zyjzyj2000@gmail.com,
-	syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
-Subject: Re: [PATCH] RDMA/siw: Remove direct link to net_device
-Message-ID: <20241210145627.GH1888283@ziepe.ca>
-References: <20241210130351.406603-1-bmt@zurich.ibm.com>
+        d=1e100.net; s=20230601; t=1733842659; x=1734447459;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ay8NfcUY0T/d/3vklaeP1VfwpDuNBfY2af1Jw8w5ZUI=;
+        b=RChUcyhNFnE42rJBvgQLjerMezRe4rIajJ+yaEjAP0x0FN4LpRJlF5JsG02OyMrF4/
+         U0RozlP6GDIoBxBdzAim6/5FC56sTtvlHZY/zoo/y7V6ACknneuCFk/+nkbBPwVls3Wr
+         W5/k12KPeLJBsiRicKbEeeh9DIn83ilmEZpSMktwUYCN7Ua8+dGA/nBZGFUYdf7PdJkY
+         uNIKZ9gdGkbp0zsRjQxehgyi+fSqC3CPrwoMfMZp7CPoNqDhvq9UJiUv/4TTbsL6Gdw9
+         IWqvXghXnoJQncCNXTtX4QbqIqgzzehcoKmlZa4ffGMl6T7f3oNN9iehpz47r4zNHs8s
+         j1rA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtrWbtzaCz2vBYNfXqS6rmVBfVe82zfSYbtUXDcKj80z6FX68dSx6tzt4A0ZstiJBCT5258SE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx948I0OJa9umYVkNas1prQ3iLWhVlDVe3+t6TsgXBlebJRrvh
+	ucV8qDeYwQFwz6a0PX5Mor/fsZYyxj8lnvDh2ykCRlkN5RI93/yjSVVVWnHMOH9ipF/WivRMY1e
+	EBkTEB+COGvDq3NHiyUL7W4NpDRUWRVU3912dAdlZ1nUY5Ixnzxobqg==
+X-Gm-Gg: ASbGnctsh0PAfMAIYoeJd8VJLGdkQkpVd3fgLmcon3FuI7TOItZ8AFB2OL3jELdNow0
+	oC8lprkPsWn63uWP5oBLRmZpRl8Rj0j3K3dMoFJW3pCHGzC7DA20/nHadBRPsiOmiQ8GIveaCUB
+	k04Cu9F/sjpkb1Z6dLVj1tiBhzmBjQylh4FonI2ZrsGNU2PLB2P4NTpgkCsUqZ+6esqtkQ9aHHf
+	vN8xOTblOhs/akCxk5Ia6iv9u5Y22/oEd/4fznZhxYd3yLm9iTdWqyUZusPT39FVxtJ38dqkZ1n
+	QL+d+rGVsq2Z6tyHdxVWTMLbVQ==
+X-Received: by 2002:a05:622a:5588:b0:467:54f4:737b with SMTP id d75a77b69052e-46754f47fcfmr184716961cf.25.1733842659426;
+        Tue, 10 Dec 2024 06:57:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFG7cnNqoBiMvJLT/w4nsM1TFhqWSEwBKOd94h1uXgd+rgELynEhjwIX13vVuBdHIAhy0EDIg==
+X-Received: by 2002:a05:622a:5588:b0:467:54f4:737b with SMTP id d75a77b69052e-46754f47fcfmr184716511cf.25.1733842659102;
+        Tue, 10 Dec 2024 06:57:39 -0800 (PST)
+Received: from [192.168.1.14] (host-82-49-164-239.retail.telecomitalia.it. [82.49.164.239])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4677006d143sm14016401cf.19.2024.12.10.06.57.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 06:57:38 -0800 (PST)
+Message-ID: <6f5b5241-2b08-4332-9268-fde890f0ae52@redhat.com>
+Date: Tue, 10 Dec 2024 15:57:34 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241210130351.406603-1-bmt@zurich.ibm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/4] ice: Fix quad registers read on E825
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+ netdev@vger.kernel.org
+Cc: Karol Kolacinski <karol.kolacinski@intel.com>, richardcochran@gmail.com,
+ przemyslaw.kitszel@intel.com, horms@kernel.org,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Grzegorz Nitka <grzegorz.nitka@intel.com>,
+ Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+References: <20241206193542.4121545-1-anthony.l.nguyen@intel.com>
+ <20241206193542.4121545-3-anthony.l.nguyen@intel.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20241206193542.4121545-3-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 10, 2024 at 02:03:51PM +0100, Bernard Metzler wrote:
-> diff --git a/drivers/infiniband/sw/siw/siw.h b/drivers/infiniband/sw/siw/siw.h
-> index 86d4d6a2170e..c8f75527b513 100644
-> --- a/drivers/infiniband/sw/siw/siw.h
-> +++ b/drivers/infiniband/sw/siw/siw.h
-> @@ -69,16 +69,19 @@ struct siw_pd {
+On 12/6/24 20:35, Tony Nguyen wrote:
+> @@ -1988,50 +2045,48 @@ static int ice_phy_cfg_parpcs_eth56g(struct ice_hw *hw, u8 port)
+>   */
+>  int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port)
+>  {
+> -	u8 port_blk = port & ~(ICE_PORTS_PER_QUAD - 1);
+> -	u8 blk_port = port & (ICE_PORTS_PER_QUAD - 1);
+> +	u8 quad_lane = port % ICE_PORTS_PER_QUAD;
+> +	u32 addr, val, peer_delay;
+>  	bool enable, sfd_ena;
+> -	u32 val, peer_delay;
+>  	int err;
 >  
->  struct siw_device {
->  	struct ib_device base_dev;
-> -	struct net_device *netdev;
->  	struct siw_dev_cap attrs;
+>  	enable = hw->ptp.phy.eth56g.onestep_ena;
+>  	peer_delay = hw->ptp.phy.eth56g.peer_delay;
+>  	sfd_ena = hw->ptp.phy.eth56g.sfd_ena;
 >  
->  	u32 vendor_part_id;
-> +	struct {
-> +		int ifindex;
-
-ifindex is only stable so long as you are holding a reference on the
-netdev..
-> --- a/drivers/infiniband/sw/siw/siw_main.c
-> +++ b/drivers/infiniband/sw/siw/siw_main.c
-> @@ -287,7 +287,6 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
->  		return NULL;
+> -	/* PHY_PTP_1STEP_CONFIG */
+> -	err = ice_read_ptp_reg_eth56g(hw, port_blk, PHY_PTP_1STEP_CONFIG, &val);
+> +	addr = PHY_PTP_1STEP_CONFIG;
+> +	err = ice_read_quad_ptp_reg_eth56g(hw, port, addr, &val);
+>  	if (err)
+>  		return err;
 >  
->  	base_dev = &sdev->base_dev;
-> -	sdev->netdev = netdev;
+>  	if (enable)
+> -		val |= blk_port;
+> +		val |= BIT(quad_lane);
+>  	else
+> -		val &= ~blk_port;
+> +		val &= ~BIT(quad_lane);
+>  
+> -	val &= ~(PHY_PTP_1STEP_T1S_UP64_M | PHY_PTP_1STEP_T1S_DELTA_M);
+> +	val &= ~PHY_PTP_1STEP_T1S_UP64_M;
+> +	val &= ~PHY_PTP_1STEP_T1S_DELTA_M;
 
-Like here needed to grab a reference before storing the pointer in the
-sdev struct.
+Minor nit: please don't mix 'cosmetic' changes like the above one in a
+fix, that makes the patch harder to read.
 
-Jason
+Thanks,
+
+Paolo
+
