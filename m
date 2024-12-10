@@ -1,67 +1,43 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1CC1A9B4C
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 14:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079C71B85C2
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 14:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733842682; cv=none; b=PTfX+j/q8EqtQpJbctuEM9NGT0XaZMQygAQUiuk5CmrBFQrBHEkbukMQgrSpTay8QCxsTsXvb9wAiZh5yjRTNE6dduwZc/wqks2yiIG730t43KE2ndgbndUUTDpROd3zyKt2p5MPTMR6nGOOD79vTIG/7HWV0grJnv2SYBnTPtA=
+	t=1733842775; cv=none; b=av4cNsM2WHY6dD8i9MxnTbwCllP5f+w3Z2u6fCzXlCJ967v8I4B+0nwrGgDVvmc50P8FhnUl8zOLcQcxb/Mxp8Oq79SWfe68DG4+bMwvhlyvLlpXi81mGULzwAwuoxKWmQX0TRbFn3P777nJlfzZlnj7G+LLaWQDtPISStgFB1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733842682; c=relaxed/simple;
-	bh=PXdRxS8VDAc9k4peB8AhqHweam9Zn73N/eoOrtwukBE=;
+	s=arc-20240116; t=1733842775; c=relaxed/simple;
+	bh=ZDw6LCM1u7OLn5QVjJD4sW+N5q2OjqIvp6c9RvNl9vo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AKR2oLb4oRo6+pvhP+GpQ5unAoXEk16hhb81L3lvKLbT5po3EU6qoARhMZahzByykGKtCpWWVxSqp+XOKg7JbKT5XN2A7y/mOrn9Yfc03H8E/MZSBVTOI+q87dcb3SLtaiVv6r9/cNEbUJhrtM+gsi+D96DmZG8bteQsWWJ4R6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zlc5DFbp; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=TOLQvXD8CYMY3/cYLE4X7vH/bs8GJSpdRGqNTm9t8r2naOjEaXKlou6uzAvKaR0Cxcyr1HlYEaDyCl+7PbaljFI1cu6pGJ+MYVCHO/JePulCSPkJym4QEN5JUeFRGtUP/v1JRoku5xLKDz0WK8m9REBsrLCXpIn38oMrDnd2jF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEeuwa5K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zlc5DFbp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733842680; x=1765378680;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PXdRxS8VDAc9k4peB8AhqHweam9Zn73N/eoOrtwukBE=;
-  b=Zlc5DFbpoChPkIevQH+wRPvpJwDnq9RTyH4I4UbIrFafttpvd6F/i3id
-   nN/tw15hAIQvobKKUIIS621kI9D89MfOJw4+Sm5ihKBpjZ/3jeHFtqY+e
-   aG9rU47iQ33hh/6sQwOwNObF57whxXFW/57RdlP5wMMhuUJwmmGseUqUJ
-   JYN/qwkO0Nmsn5muwMqOLDfaIMatywz1xgM1iCO2iL5zlTiC0zGcR/rce
-   +xtk/zX8PRthU8VFw7FdjjtRw4uf1KcHsg01vq3b7mWywcTQ95NQA8tL8
-   TJ8L6Ki+7A0psEUpV58nOcOX0NuYvms1fF9eDMxthFkN2RFJWgI/+oHQ7
-   Q==;
-X-CSE-ConnectionGUID: xmRHRk8CStKEPqpCRzyNrg==
-X-CSE-MsgGUID: 70yXkCJNTs+FEwyfq8gIBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45201937"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="45201937"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 06:57:48 -0800
-X-CSE-ConnectionGUID: 5LBUTF+xQhSAfCnDfNa3tQ==
-X-CSE-MsgGUID: TuqROZKoQuubn19k1IK4wA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="95267738"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 10 Dec 2024 06:57:45 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tL1gF-0005gT-08;
-	Tue, 10 Dec 2024 14:57:43 +0000
-Date: Tue, 10 Dec 2024 22:57:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Bryan Whitehead <bryan.whitehead@microchip.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com
-Subject: Re: [PATCH net-next 10/10] net: lan743x: convert to phylink managed
- EEE
-Message-ID: <202412102203.FVir20i4-lkp@intel.com>
-References: <E1tKeg8-006SNJ-4Q@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEeuwa5K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65329C4CEDE;
+	Tue, 10 Dec 2024 14:59:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733842774;
+	bh=ZDw6LCM1u7OLn5QVjJD4sW+N5q2OjqIvp6c9RvNl9vo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aEeuwa5KZh07b39hZQH33qx3aXB+Hi7OjmhoITc9t29b+xJm9Q2PB/kBf2lEqStO2
+	 TzSS506mQ10vSqBn/wAPgl0XHHCUx9H6CmfrCMvdWopnUHklXdXrGYCwrT6MI3rSsF
+	 0uAzDS3JGo8+j6K6nYW382HQzeJR2uLU3JnuqX7oDC3pBtmqix48nv4aO+Rgd0Hu/a
+	 dmscQRFmw8GLcmCzm0BK0PxAFbBBCjw6NgM/Hk8KrMCh9ZklXPCF6szFmbm0apz1Uo
+	 TgbaU8DIe18op0ltmEiBqzgob1lxhBKRoc1MAlyQ0MO2inIhZ/x1dOOeaNvdkQFBBR
+	 7k5PaaIKzL+iw==
+Date: Tue, 10 Dec 2024 14:59:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Subject: Re: [PATCH net] bnxt_en: Fix aggregation ID mask to prevent oops on
+ 5760X chips
+Message-ID: <20241210145930.GF4202@kernel.org>
+References: <20241209015448.1937766-1-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,157 +46,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1tKeg8-006SNJ-4Q@rmk-PC.armlinux.org.uk>
+In-Reply-To: <20241209015448.1937766-1-michael.chan@broadcom.com>
 
-Hi Russell,
+On Sun, Dec 08, 2024 at 05:54:48PM -0800, Michael Chan wrote:
+> The 5760X (P7) chip's HW GRO/LRO interface is very similar to that of
+> the previous generation (5750X or P5).  However, the aggregation ID
+> fields in the completion structures on P7 have been redefined from
+> 16 bits to 12 bits.  The freed up 4 bits are redefined for part of the
+> metadata such as the VLAN ID.  The aggregation ID mask was not modified
+> when adding support for P7 chips.  Including the extra 4 bits for the
+> aggregation ID can potentially cause the driver to store or fetch the
+> packet header of GRO/LRO packets in the wrong TPA buffer.  It may hit
+> the BUG() condition in __skb_pull() because the SKB contains no valid
+> packet header:
+> 
+> kernel BUG at include/linux/skbuff.h:2766!
+> Oops: invalid opcode: 0000 1 PREEMPT SMP NOPTI
+> CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Kdump: loaded Tainted: G           OE      6.12.0-rc2+ #7
+> Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+> Hardware name: Dell Inc. PowerEdge R760/0VRV9X, BIOS 1.0.1 12/27/2022
+> RIP: 0010:eth_type_trans+0xda/0x140
+> Code: 80 00 00 00 eb c1 8b 47 70 2b 47 74 48 8b 97 d0 00 00 00 83 f8 01 7e 1b 48 85 d2 74 06 66 83 3a ff 74 09 b8 00 04 00 00 eb a5 <0f> 0b b8 00 01 00 00 eb 9c 48 85 ff 74 eb 31 f6 b9 02 00 00 00 48
+> RSP: 0018:ff615003803fcc28 EFLAGS: 00010283
+> RAX: 00000000000022d2 RBX: 0000000000000003 RCX: ff2e8c25da334040
+> RDX: 0000000000000040 RSI: ff2e8c25c1ce8000 RDI: ff2e8c25869f9000
+> RBP: ff2e8c258c31c000 R08: ff2e8c25da334000 R09: 0000000000000001
+> R10: ff2e8c25da3342c0 R11: ff2e8c25c1ce89c0 R12: ff2e8c258e0990b0
+> R13: ff2e8c25bb120000 R14: ff2e8c25c1ce89c0 R15: ff2e8c25869f9000
+> FS:  0000000000000000(0000) GS:ff2e8c34be300000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000055f05317e4c8 CR3: 000000108bac6006 CR4: 0000000000773ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <IRQ>
+>  ? die+0x33/0x90
+>  ? do_trap+0xd9/0x100
+>  ? eth_type_trans+0xda/0x140
+>  ? do_error_trap+0x65/0x80
+>  ? eth_type_trans+0xda/0x140
+>  ? exc_invalid_op+0x4e/0x70
+>  ? eth_type_trans+0xda/0x140
+>  ? asm_exc_invalid_op+0x16/0x20
+>  ? eth_type_trans+0xda/0x140
+>  bnxt_tpa_end+0x10b/0x6b0 [bnxt_en]
+>  ? bnxt_tpa_start+0x195/0x320 [bnxt_en]
+>  bnxt_rx_pkt+0x902/0xd90 [bnxt_en]
+>  ? __bnxt_tx_int.constprop.0+0x89/0x300 [bnxt_en]
+>  ? kmem_cache_free+0x343/0x440
+>  ? __bnxt_tx_int.constprop.0+0x24f/0x300 [bnxt_en]
+>  __bnxt_poll_work+0x193/0x370 [bnxt_en]
+>  bnxt_poll_p5+0x9a/0x300 [bnxt_en]
+>  ? try_to_wake_up+0x209/0x670
+>  __napi_poll+0x29/0x1b0
+> 
+> Fix it by redefining the aggregation ID mask for P5_PLUS chips to be
+> 12 bits.  This will work because the maximum aggregation ID is less
+> than 4096 on all P5_PLUS chips.
+> 
+> Fixes: 13d2d3d381ee ("bnxt_en: Add new P7 hardware interface definitions")
+> Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+> Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+> Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-[auto build test ERROR on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Russell-King-Oracle/net-mdio-add-definition-for-clock-stop-capable-bit/20241210-022608
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/E1tKeg8-006SNJ-4Q%40rmk-PC.armlinux.org.uk
-patch subject: [PATCH net-next 10/10] net: lan743x: convert to phylink managed EEE
-config: powerpc-randconfig-002-20241210 (https://download.01.org/0day-ci/archive/20241210/202412102203.FVir20i4-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241210/202412102203.FVir20i4-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412102203.FVir20i4-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/net/ethernet/microchip/lan743x_main.c:5:
-   In file included from include/linux/pci.h:38:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/net/ethernet/microchip/lan743x_main.c:3078:25: error: use of undeclared identifier 'adapter'
-    3078 |         lan743x_mac_eee_enable(adapter, false);
-         |                                ^
-   drivers/net/ethernet/microchip/lan743x_main.c:3089:20: error: use of undeclared identifier 'adapter'
-    3089 |         lan743x_csr_write(adapter, MAC_EEE_TX_LPI_REQ_DLY_CNT, timer);
-         |                           ^
-   drivers/net/ethernet/microchip/lan743x_main.c:3090:25: error: use of undeclared identifier 'adapter'
-    3090 |         lan743x_mac_eee_enable(adapter, true);
-         |                                ^
->> drivers/net/ethernet/microchip/lan743x_main.c:3097:24: error: use of undeclared identifier 'lan743x_mac_disable_tx_lpi'; did you mean 'mac_disable_tx_lpi'?
-    3097 |         .mac_disable_tx_lpi = lan743x_mac_disable_tx_lpi,
-         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                               mac_disable_tx_lpi
-   drivers/net/ethernet/microchip/lan743x_main.c:3076:13: note: 'mac_disable_tx_lpi' declared here
-    3076 | static void mac_disable_tx_lpi(struct phylink_config *config)
-         |             ^
->> drivers/net/ethernet/microchip/lan743x_main.c:3098:23: error: use of undeclared identifier 'lan743x_mac_enable_tx_lpi'; did you mean 'mac_enable_tx_lpi'?
-    3098 |         .mac_enable_tx_lpi = lan743x_mac_enable_tx_lpi,
-         |                              ^~~~~~~~~~~~~~~~~~~~~~~~~
-         |                              mac_enable_tx_lpi
-   drivers/net/ethernet/microchip/lan743x_main.c:3081:13: note: 'mac_enable_tx_lpi' declared here
-    3081 | static void mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
-         |             ^
->> drivers/net/ethernet/microchip/lan743x_main.c:3113:26: error: no member named 'lpi_timer_max' in 'struct phylink_config'
-    3113 |         adapter->phylink_config.lpi_timer_max = U32_MAX;
-         |         ~~~~~~~~~~~~~~~~~~~~~~~ ^
-   1 warning and 6 errors generated.
-
-
-vim +/adapter +3078 drivers/net/ethernet/microchip/lan743x_main.c
-
-  3075	
-  3076	static void mac_disable_tx_lpi(struct phylink_config *config)
-  3077	{
-> 3078		lan743x_mac_eee_enable(adapter, false);
-  3079	}
-  3080	
-  3081	static void mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
-  3082				      bool tx_clk_stop)
-  3083	{
-  3084		/* Software should only change this field when Energy Efficient
-  3085		 * Ethernet Enable (EEEEN) is cleared. We ensure that by clearing
-  3086		 * EEEEN during probe, and phylink itself guarantees that
-  3087		 * mac_disable_tx_lpi() will have been previously called.
-  3088		 */
-  3089		lan743x_csr_write(adapter, MAC_EEE_TX_LPI_REQ_DLY_CNT, timer);
-  3090		lan743x_mac_eee_enable(adapter, true);
-  3091	}
-  3092	
-  3093	static const struct phylink_mac_ops lan743x_phylink_mac_ops = {
-  3094		.mac_config = lan743x_phylink_mac_config,
-  3095		.mac_link_down = lan743x_phylink_mac_link_down,
-  3096		.mac_link_up = lan743x_phylink_mac_link_up,
-> 3097		.mac_disable_tx_lpi = lan743x_mac_disable_tx_lpi,
-> 3098		.mac_enable_tx_lpi = lan743x_mac_enable_tx_lpi,
-  3099	};
-  3100	
-  3101	static int lan743x_phylink_create(struct lan743x_adapter *adapter)
-  3102	{
-  3103		struct net_device *netdev = adapter->netdev;
-  3104		struct phylink *pl;
-  3105	
-  3106		adapter->phylink_config.dev = &netdev->dev;
-  3107		adapter->phylink_config.type = PHYLINK_NETDEV;
-  3108		adapter->phylink_config.mac_managed_pm = false;
-  3109	
-  3110		adapter->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
-  3111			MAC_SYM_PAUSE | MAC_10 | MAC_100 | MAC_1000FD;
-  3112		adapter->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD;
-> 3113		adapter->phylink_config.lpi_timer_max = U32_MAX;
-  3114		adapter->phylink_config.lpi_timer_default =
-  3115			lan743x_csr_read(adapter, MAC_EEE_TX_LPI_REQ_DLY_CNT);
-  3116	
-  3117		lan743x_phy_interface_select(adapter);
-  3118	
-  3119		switch (adapter->phy_interface) {
-  3120		case PHY_INTERFACE_MODE_SGMII:
-  3121			__set_bit(PHY_INTERFACE_MODE_SGMII,
-  3122				  adapter->phylink_config.supported_interfaces);
-  3123			__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-  3124				  adapter->phylink_config.supported_interfaces);
-  3125			__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-  3126				  adapter->phylink_config.supported_interfaces);
-  3127			adapter->phylink_config.mac_capabilities |= MAC_2500FD;
-  3128			break;
-  3129		case PHY_INTERFACE_MODE_GMII:
-  3130			__set_bit(PHY_INTERFACE_MODE_GMII,
-  3131				  adapter->phylink_config.supported_interfaces);
-  3132			break;
-  3133		case PHY_INTERFACE_MODE_MII:
-  3134			__set_bit(PHY_INTERFACE_MODE_MII,
-  3135				  adapter->phylink_config.supported_interfaces);
-  3136			break;
-  3137		default:
-  3138			phy_interface_set_rgmii(adapter->phylink_config.supported_interfaces);
-  3139		}
-  3140	
-  3141		memcpy(adapter->phylink_config.lpi_interfaces,
-  3142		       adapter->phylink_config.supported_interfaces,
-  3143		       sizeof(adapter->phylink_config.lpi_interfaces));
-  3144	
-  3145		pl = phylink_create(&adapter->phylink_config, NULL,
-  3146				    adapter->phy_interface, &lan743x_phylink_mac_ops);
-  3147	
-  3148		if (IS_ERR(pl)) {
-  3149			netdev_err(netdev, "Could not create phylink (%pe)\n", pl);
-  3150			return PTR_ERR(pl);
-  3151		}
-  3152	
-  3153		adapter->phylink = pl;
-  3154		netdev_dbg(netdev, "lan743x phylink created");
-  3155	
-  3156		return 0;
-  3157	}
-  3158	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
