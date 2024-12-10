@@ -1,121 +1,113 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6C223C78;
-	Tue, 10 Dec 2024 04:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE48B13635E;
+	Tue, 10 Dec 2024 04:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733803779; cv=none; b=OhL+D5tuKy8tIr0Q1btAefmTFxjkELjoo9MLfRqvCk5+OwiPTRk1IAaazXaeXX3v1Gg1iCF0xC7vkX8KiNsIlIEe+vyQOH2tVYVE9P987EfDZSWkMaXkTEKE5sK0OTq7P5sDI3RRSSj7GG0ZmdKvBWwHbYNrM5rfFg6hvQ+2Xd8=
+	t=1733803842; cv=none; b=AO3CLy7tbNdT29I+eW8tdXC6cICckV7xf7Y6CaWhnSMo9WLp49lzaAXkN83n81mX5JGjgS8USoWcvoWxVu+hR8hqRrznsRNXPEZh9lE77kiUmyZQB8QMWzlynLkFl1pCsMuBykO8mFEht4Qgk/rRzm9IaMlajoha5Ai83nNphtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733803779; c=relaxed/simple;
-	bh=g9mkesjaUq+e5IZEottqPnsqKLrsHTRONfsXjeGbtac=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q2QfeW/NeYsQG0+KX//70iEAWT3/hP5IA/KGA4asgYSFT21CwG8LeRX2qQjtK9yoyDfA3zxYlHO833nU3iL04A+JM3wjGKQTzNbeO5X1IBzsLfGXAkrc45q+wvVRKbsz6dBvYXbnfij5qs9f++NVelgSwKDCd2udx5S8Aem2iTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tBEOA5V0; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1733803842; c=relaxed/simple;
+	bh=t/PmcYDnBMqBQKctltRFjQpiUYJsCmoRC4ECgxOEfHM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EDS9RWZS3ArlrLK0ZT5FE+V21bAxhFmlQ/mQ2VgN9IHU1jURkbkIdBfvof7DzgPxWQDvCxSYW50hWeGQDwUj1Dg7xfXqrTxNs9gqpy1pMv6ABVjgT3Mzvv9K10VlUhAo4gBPCPkj4mU8i843qdAP+EpEUX4KjQ4KoMyMXti8W80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VB3Qcj3+; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tBEOA5V0"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1733803774; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=6/Q1dEfws+7LpmLlumD7UVn5idRysTZwYHoRdWNn8ws=;
-	b=tBEOA5V0JHj0eLFO1v1YHxhdfu+7Gtl6E1cohD8BYL+RB5LyCH3GO9EL2byi5/+wmg1/kyMRG6CG4RAv2El8KHdVzrCjw78QGtuk7gei7Y6v8s+9bV1qIHI+kFT4PhT1OMBjGMcoDT8Vr9823d0+nbfCgqjy6FzGoa0EVC2xi+c=
-Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WLDSEVj_1733803444 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Dec 2024 12:04:09 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com>
-To: kgraul@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	jaka@linux.ibm.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	sdf@google.com,
-	haoluo@google.com,
-	yhs@fb.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kpsingh@kernel.org,
-	jolsa@kernel.org,
-	guwen@linux.alibaba.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH bpf-next v2 0/5] net/smc: Introduce smc_ops
-Date: Tue, 10 Dec 2024 12:03:59 +0800
-Message-ID: <20241210040404.10606-1-alibuda@linux.alibaba.com>
-X-Mailer: git-send-email 2.45.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VB3Qcj3+"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-434b3e32e9dso55689665e9.2;
+        Mon, 09 Dec 2024 20:10:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733803839; x=1734408639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6GwwAvNkiVn22SGPZCFlNonL6ljUKJrRHzaRDKU+3zo=;
+        b=VB3Qcj3+ccjEyXi1bkhUbTrXzeCl/OAmwXh2wgD8M0t9aj0m9mDmK7vgarRKCmXdjq
+         keG6aN7y2oosTbwSsWC24s5WD/MrmF4Wyto9+Xz1D7RnQHvUSmkz2Wf3sJPLPl7r75B3
+         xzoix+/dG03mWatKdPaKCTxRNSfnb6zuoCPxHoGAQfyTmwzPd1LQ1C7Y7+SPhBqz0FYX
+         MW6cuZMxzduCjw+QR8WIeUSjKr92y3JYsysrj7PY+Dm51M3DPCLaq6Omb88TzKTzJ5qR
+         YwQUjFGtFNuv9+gvjZp3zmlbIinDYXSqQuLRBiRxNy+oYiMDa9TSuS40UiJUsd59cXw8
+         GGmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733803839; x=1734408639;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6GwwAvNkiVn22SGPZCFlNonL6ljUKJrRHzaRDKU+3zo=;
+        b=B/wUwWc5zlKML/Ns/fFoSmQWRLqFAUbPaMhorMQ3BLxE2UawX8DO2BAWaCQA4qjq4Q
+         o3y+0tGTws7pErIgAVQn09SHk48uQ6s5lC/goEwORYKTrEjnoxkSPDenLzlBDWrg9KSk
+         7dx4NtZLeXCAARht/ofMHcuNLotgdNulYb/BS4KGd/Qz1MpvzY389aAKwW/5h4gMV9jZ
+         ZLhmkEBG2F5ZfjZ3Zgp7z/ym8B67d54nImQ6fsQWm1th8ooWx3hkLbvOhYxokUPu6K5U
+         oFLQ5KVCJbcrUnlMnG/r5+1NSNALTvuP8zCbNOdmWk1lvlSY6VuNLOaMJ1oaGq2YkwI/
+         MfrA==
+X-Forwarded-Encrypted: i=1; AJvYcCWC7qi0K6ruNZ971anM8wxq6o4/Zs5yT5AI9ujVqhhHHvlJJUBH1kulzPUOR/QcPTvmdyGEo+w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmFBgNSxKGTMuP9DRZ8FClD8L7qQmh9ayTyMeTbc5BGOB5h0tn
+	pcGyuHVogW+cwLMmWgqMPiMppLP4RjjFQw3GW+hyLGGR1yFxsyC+
+X-Gm-Gg: ASbGncvcqqc7J4AW+Ip2yChIVxJHI2vW0AURTZtLPlETl0HdmaXvgLiyQa+JiRv1Q24
+	y9Hh5XOO+Dz/jwpq1RVocXqQR+RDRU75UTVKzssmQyljuQOtv3cQjC4jWgO2By05Rxhk7+rBfEe
+	uR2SWu0uey3YTStUUUqUURWJVHsa/HVt4O3QVgQ7X6XwrsFOMb4yqQ08xdrTDcYpJ4Gu01ab33p
+	vef0igacoz5dK4Gh6l84kaytSuIWDR8Dnp+2EZPPIMd5vz3kXsoSvtd3h2iRe8=
+X-Google-Smtp-Source: AGHT+IFtODhIbJug8TyKcapcGw4+YyAnXd8yOc+w5ASrEk7FQ6i+CzfbIBl1t8Biki5GufuBt5Nhzw==
+X-Received: by 2002:a05:6000:402c:b0:385:e1a8:e28e with SMTP id ffacd0b85a97d-3862b34477fmr11974206f8f.10.1733803839161;
+        Mon, 09 Dec 2024 20:10:39 -0800 (PST)
+Received: from [192.168.42.90] ([85.255.235.153])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861f4a85f2sm14652517f8f.29.2024.12.09.20.10.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Dec 2024 20:10:38 -0800 (PST)
+Message-ID: <601572a4-f5a8-4dec-a07d-0c035c4fbb79@gmail.com>
+Date: Tue, 10 Dec 2024 04:11:31 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v8 08/17] net: add helper executing custom
+ callback from napi
+To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>
+Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, Paolo Abeni <pabeni@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>
+References: <20241204172204.4180482-1-dw@davidwei.uk>
+ <20241204172204.4180482-9-dw@davidwei.uk>
+ <20241209194447.26eaffd5@kernel.org>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20241209194447.26eaffd5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This patches attempt to introduce BPF injection capability for SMC,
-and add selftest to ensure code stability.
+On 12/10/24 03:44, Jakub Kicinski wrote:
+> On Wed,  4 Dec 2024 09:21:47 -0800 David Wei wrote:
+>> It's useful to have napi private bits and pieces like page pool's fast
+>> allocating cache, so that the hot allocation path doesn't have to do any
+>> additional synchronisation. In case of io_uring memory provider
+>> introduced in following patches, we keep the consumer end of the
+>> io_uring's refill queue private to napi as it's a hot path.
+>>
+>> However, from time to time we need to synchronise with the napi, for
+>> example to add more user memory or allocate fallback buffers. Add a
+>> helper function napi_execute that allows to run a custom callback from
+>> under napi context so that it can access and modify napi protected
+>> parts of io_uring. It works similar to busy polling and stops napi from
+>> running in the meantime, so it's supposed to be a slow control path.
+> 
+> Let's leave this out, please. I seriously doubt this works reliably
+> and the bar for adding complexity to NAPI is fairly high. A commit
+> which doesn't even quote any perf numbers will certainly not clear it.
 
-Since the SMC protocol is not suitable for all scenarios,
-especially for short-lived. For most applications, they cannot
-guarantee that there are no such scenarios at all. Therefore, apps
-may need some specific strategies to decide shall we need to use SMC
-or not, for example, apps can limit the scope of the SMC to a specific
-IP address or port.
-
-Based on the consideration of transparent replacement, we hope that apps
-can remain transparent even if they need to formulate some specific
-strategies for SMC using. That is, do not need to recompile their code.
-
-On the other hand, we need to ensure the scalability of strategies
-implementation. Although it is simple to use socket options or sysctl,
-it will bring more complexity to subsequent expansion.
-
-Fortunately, BPF can solve these concerns very well, users can write
-thire own strategies in eBPF to choose whether to use SMC or not.
-And it's quite easy for them to modify their strategies in the future.
-
-v2:
-  1. Rename smc_bpf_ops to smc_ops.
-  2. Change the scope of smc_ops from global to per netns.
-  3. Directly pass parameters to ops instead of smc_ops_ctx.
-  4. Remove struct smc_ops_ctx.
-  5. Remove exports that are no longer needed.
-
-D. Wythe (5):
-  bpf: export necessary sympols for modules with struct_ops
-  net/smc: Introduce generic hook smc_ops
-  net/smc: bpf: register smc_ops info struct_ops
-  libbpf: fix error when st-prefix_ops and ops from differ btf
-  bpf/selftests: add simple selftest for bpf_smc_ops
-
- include/net/netns/smc.h                       |   3 +
- include/net/smc.h                             |  51 ++++++
- kernel/bpf/bpf_struct_ops.c                   |   2 +
- kernel/bpf/syscall.c                          |   1 +
- net/ipv4/tcp_output.c                         |  15 +-
- net/smc/Kconfig                               |  12 ++
- net/smc/Makefile                              |   1 +
- net/smc/af_smc.c                              |  10 ++
- net/smc/smc_ops.c                             | 150 ++++++++++++++++++
- net/smc/smc_ops.h                             |  31 ++++
- net/smc/smc_sysctl.c                          |  95 +++++++++++
- tools/lib/bpf/libbpf.c                        |  34 +++-
- tools/testing/selftests/bpf/config            |   3 +
- .../selftests/bpf/prog_tests/test_bpf_smc.c   |  25 +++
- tools/testing/selftests/bpf/progs/bpf_smc.c   |  27 ++++
- 15 files changed, 453 insertions(+), 7 deletions(-)
- create mode 100644 net/smc/smc_ops.c
- create mode 100644 net/smc/smc_ops.h
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_bpf_smc.c
- create mode 100644 tools/testing/selftests/bpf/progs/bpf_smc.c
+I reworked it and got rid of the patch, though I don't see why
+performance here would matter. It's a very slow path if all
+paths failed, batching inside wasn't done right on the io_uring
+for simplicity, but that was certainly planned a follow up.
 
 -- 
-2.45.0
+Pavel Begunkov
 
