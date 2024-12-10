@@ -1,99 +1,115 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BBF1D7E4C;
-	Tue, 10 Dec 2024 04:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123394EB48;
+	Tue, 10 Dec 2024 04:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733803364; cv=none; b=rLDwMyxDw+FUxgAaJUvm/8EleUQlc8npRoPWnb5rLCuzhK9Ib6W9z/ccQtq4rlaBN4WD8X3E8z8xliy/iFlByVD7LdAvlRrdq2MrcB9MgRN91xCbvkA8OyreK3gmJJOyunshLsNWyN1u6iWD5dWKG1FhGjeU3xlssqwUO+2Youk=
+	t=1733803457; cv=none; b=mxdKILoomurkKDMFAvyg/CJqxsfIgOV8nr+BaPFAxUtASblF2R15zGDbdU3NERu2Htb536xbDNu3m5TdM46Sdhwl8PqfPzDKm4/YbY+lrEBsdAVDKWCEIKwxTkBWb9i9FgRou4FdMPetpELGltHM246ZHwPyWSjSp8uZ71DodG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733803364; c=relaxed/simple;
-	bh=Sx871PiLb0idIGmMJFPactKyI3butziq31u4oN3XmEs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JbiBfoTwg2i0V4BzODcqjhGOxztBpbzdEov2C1qg1sCdQuTyxGrRQIS4mQ3S5iYb+TosfgKSlPtOlTlSoUqZojpi5Ngd1sk3zp3pwxd/MJZKfTzHOiREnN16u9CdHKerdEDiZ+g9SjMerdJuRcqgyvOk88/JzWdtps1secE7O+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GKAocXLj; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733803457; c=relaxed/simple;
+	bh=8Me0+ORdUwnQJJZusQP7gsBibbKOgKoUBm5L+YNIMj0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qXKkKB32PC2JxTnMORP+cyw8WwEsK5Dn3C/mxve5GzMgfsf5hAZRJUZ0Jq49n5intLzZu3t7PJk1mAULs9+JVABMbDlyulopoo1o6+3PHhqEldKmGXXTk2FiVH/XjS74SUvRRyaKBVAVvOWusgvYTqZlz7AcWO/6C4DXir9GhvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sxlmZFw7; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GKAocXLj"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3862b364538so2092000f8f.1;
-        Mon, 09 Dec 2024 20:02:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733803360; x=1734408160; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MNwXowCkLmUhdCdMCcbLIBuj3MVAtIxlJMqopvFpVDo=;
-        b=GKAocXLjw8tbim+zlvRtGzz2HDujlUHzxMs1JvCmZ0DqMZTNkY16Wk9XsC9JHA6DF4
-         2SNt2BBw4vKImSEB59ucHMu30MX66lfzbrliTAabXpCe2MjP5sVbGLgDuKoRfvA2eaXm
-         8632Zf+vEZRvDh1xIkmNzTmq71DbqcfVXEC2QnDsPv6vAHMBiBZWxjumGk35vpXwChEX
-         +tRY9qFX2pkTMTRxIMWXQwMTn03zrrYblX/O7TWbDa8j+gDgmEvqpSTFmkOZAPl43IJh
-         1dj6OM0ZgWX5mzAs2Po177j1ZHE1kQr4nMoYfmrImEgZhonA8SGu5DP9gvjah2uYjhLO
-         ocpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733803360; x=1734408160;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MNwXowCkLmUhdCdMCcbLIBuj3MVAtIxlJMqopvFpVDo=;
-        b=Kg28MWZITOGN3MKM3Vp+24bBwEwy384ZikZamxc90m+BxWzZhMaSS0gnB21ihe+rLL
-         Uo4FoBJ9uypzJFXRbo6XPiijHQaJd6baIL/Fmw1i8a7tn1dhTl/wKm3fq5OVqunhE+yK
-         rds4HxL2ZkLFXNaG2FRe4Oub0gREQ9y0YaHM74cCmjCZCUR7TMiz/J9LxTFFpBrH9ouX
-         AZOb/oubuF8WFTcszW++nVsslqy+DDsuLiXg6GzndkATjGMmbA6m9dGMDt+U9rL1myWc
-         mIaURN8SBjHrnXZJH0Y/ONP2IFg/mKg+hNq5SEoHtgm50/NyKLa7at4OrkzxPiBJTlCc
-         L46g==
-X-Forwarded-Encrypted: i=1; AJvYcCXhfGsoNcEKQARgtX1JGwZ1FzkM9XqDi4hLNUzYXm0qVsX4R6k/wL1y0x/zoJBZiKR4FK48d/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2JM/xYWOmzVK36GryEtIp8kmeRYUJrEqYJu1CZd8yarZHjXCY
-	OPeduQIfDvVr3pmuYADd6gV/upDO3tJEtQDO30jzme3Gk0RKLl7i
-X-Gm-Gg: ASbGncsSfErQfKr1wB5TmW9VAr3hax2VnB1BRX0zUALqfAPrq/Tsv9os5WNKbnnPZHH
-	hQ8ArFdPfbZmS9PoC772/eWxODbqw7+oNtGPp5DE/kC6I4ooc+DiuMNLSnNF739o/S0zikfGZMv
-	kM3ZZRH+qXnsM5Ae0q5Cba9XVHkn9MIYZqLOZanr7jslRgACrxk9SOx/vLNDm145SFf2ZDFa0NO
-	vU5tPs8kXxX0dToNcGqDFI/orK8eF/nfSrwPsXzPpdqemDrlKDqtxN/cLTJg/M=
-X-Google-Smtp-Source: AGHT+IEYjHEKgbz/NXNWpGuMS09JG3a4HiXrgDUTXYQxmK1i+M1s03RHpv8A4ju7a2ZGrT6NueJH0A==
-X-Received: by 2002:a05:6000:18a3:b0:386:2e53:445c with SMTP id ffacd0b85a97d-386469d35c8mr1064416f8f.22.1733803360348;
-        Mon, 09 Dec 2024 20:02:40 -0800 (PST)
-Received: from [192.168.42.90] ([85.255.235.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f7676d45sm64448625e9.33.2024.12.09.20.02.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Dec 2024 20:02:39 -0800 (PST)
-Message-ID: <9debb3d5-d1a2-434e-b188-0e1a9d5c0ad3@gmail.com>
-Date: Tue, 10 Dec 2024 04:03:32 +0000
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sxlmZFw7"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733803452; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=GAH1Lz6yySHh0akD6UjVzqvmSG58TUkUU80VrEvWcyY=;
+	b=sxlmZFw7s6VzJfVmzdCfdKQImSPYnNajXlQuwK1YZA3kyit6qSdUXptcwxPfQd9zBMJyVm9KZrWZpHQXwSnfFmod59oIy0ucs6OPhtaWJuYINfC1cB5KeDYZUtuurZqEiXy7geF82SGH8RsErALM3yN0tK0NzkyzkLK3muZjWJU=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WLDSEXv_1733803449 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Dec 2024 12:04:10 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: kgraul@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	jaka@linux.ibm.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	pabeni@redhat.com,
+	song@kernel.org,
+	sdf@google.com,
+	haoluo@google.com,
+	yhs@fb.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	jolsa@kernel.org,
+	guwen@linux.alibaba.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf-next v2 1/5] bpf: export necessary sympols for modules with struct_ops
+Date: Tue, 10 Dec 2024 12:04:00 +0800
+Message-ID: <20241210040404.10606-2-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20241210040404.10606-1-alibuda@linux.alibaba.com>
+References: <20241210040404.10606-1-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 09/17] io_uring/zcrx: add interface queue and
- refill queue
-To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>
-Cc: io-uring@vger.kernel.org, netdev@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>, David Ahern <dsahern@kernel.org>,
- Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
- Pedro Tammela <pctammela@mojatatu.com>
-References: <20241204172204.4180482-1-dw@davidwei.uk>
- <20241204172204.4180482-10-dw@davidwei.uk>
- <20241209194920.3bc07355@kernel.org>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20241209194920.3bc07355@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/10/24 03:49, Jakub Kicinski wrote:
-> On Wed,  4 Dec 2024 09:21:48 -0800 David Wei wrote:
->> +	depends on INET
-> 
-> Interesting, why INET? Just curious, in theory there shouldn't
-> be anything IP related in ZC.
+Exports three necessary symbols for implementing struct_ops with
+tristate subsystem.
 
-Because of direct calls to tcp_read_sock(). With more protocols
-should be turned into a callback (or sharing it with splice).
+To hold or release refcnt of struct_ops refcnt by inline funcs
+bpf_try_module_get and bpf_module_put which use bpf_struct_ops_get(put)
+conditionally.
 
+And to copy obj name from one to the other with effective checks by
+bpf_obj_name_cpy.
+
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+---
+ kernel/bpf/bpf_struct_ops.c | 2 ++
+ kernel/bpf/syscall.c        | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index 606efe32485a..00c212e0ad39 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -1119,6 +1119,7 @@ bool bpf_struct_ops_get(const void *kdata)
+ 	map = __bpf_map_inc_not_zero(&st_map->map, false);
+ 	return !IS_ERR(map);
+ }
++EXPORT_SYMBOL_GPL(bpf_struct_ops_get);
+ 
+ void bpf_struct_ops_put(const void *kdata)
+ {
+@@ -1130,6 +1131,7 @@ void bpf_struct_ops_put(const void *kdata)
+ 
+ 	bpf_map_put(&st_map->map);
+ }
++EXPORT_SYMBOL_GPL(bpf_struct_ops_put);
+ 
+ int bpf_struct_ops_supported(const struct bpf_struct_ops *st_ops, u32 moff)
+ {
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 5684e8ce132d..62238ec989dc 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1167,6 +1167,7 @@ int bpf_obj_name_cpy(char *dst, const char *src, unsigned int size)
+ 
+ 	return src - orig_src;
+ }
++EXPORT_SYMBOL_GPL(bpf_obj_name_cpy);
+ 
+ int map_check_no_btf(const struct bpf_map *map,
+ 		     const struct btf *btf,
 -- 
-Pavel Begunkov
+2.45.0
 
