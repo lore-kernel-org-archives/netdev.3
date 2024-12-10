@@ -1,156 +1,81 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2054.outbound.protection.outlook.com [40.107.220.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E9D154C15
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 18:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733855474; cv=fail; b=df2e79Pw7SMN69ObUwhNWT0ga0eyoJh6ZYGMaaTJZIyOvg6M5w7p23UjT1PcIWK5R0DldhFf4gwVlAG2JxXJPeGZECyQOyjCE0eMV2GuF1mRDcteo01z/oGBJZfldB8+q7Le/ZiZ1bigoXcM++pf7h6N7QOXYfpZUBuxq7SCGu8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733855474; c=relaxed/simple;
-	bh=YokaQ8eN0GSdDUXdCcHahvZM8Wo0H22kuYCnofSqnWw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SJEpFtXSoPS4XSYO2tZ1tRbuM+3gzxZN31HUKGPv/d03JAENS4blbRJfKmOIzAHf8pO9bhPnbBQk2iyR7NS/J59C2iq0gLI0zjvafKx1oWmgkKrwDQqQtqle5l1Fl7ReOWUc5RDDXelvIKvDcAFhy2xusySIYq6DYiE6wL1HbN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dBuUHiWa; arc=fail smtp.client-ip=40.107.220.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388A8634A
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 18:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733855636; cv=none; b=TtQqloVwn4k0IaZcnANaekl4k0rZCXa7R7cOeBmSqqZIZBoPMT0Dt2glVy6e0LGkfpKN+M/eG+refDGF0jzsnuRTs8hJuPCnaouEEtozXoECbubEVqUO5NMd/Ti8KIuv1PezP4KPNbcldqc8iPf37xMSIma0T4ytK3SSvWGf5gQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733855636; c=relaxed/simple;
+	bh=AoqAgdMr2pLEnWbPhJNYMeRCXZQFVjrR2Q3QTfIAh+w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=W8xx7qd5BBGMNqyLLDU465/76BoM0esOytzxftJAnRcwnG3Uui9XnF3Xb1wm1PBztR2ziD/hZABDEEOaIInerdFnGYj+r2uVEWYSJ/RJJePK7TVENgoDjIyrRjzogY8TQImTPc32dvRMdip8NpPdq0hDMja4o3eg0LQ/Ef+H65o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lAq/hyaq; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dBuUHiWa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M2F1K7ZPrWGt5cPOCTUaZwq4oguRNO+8pCKh/zfl0qyAHKi+h7O+COdV3Z9jIzIjpIGLeC4aZn8zLpsYEjOf+0pHgfCC3HS5cd4rrzBvCp8k5KGrp+FbGxn+6cHHu0roFjidK7bhp9J179mxHwlJO6NiFXMYJtd6rMLpntJH3h+yd+JaTzqqbz7K/1I1kUmWYgjSZAgez1YNbzTta1OqKkPbKFwSukf22SBUCjEW9+y7aVIv4TNCfHZEhQT3O7WrcjCBcyNaXQn2YzwgytuHN80Fr1VcUi9D6DF/O7MfvdyyiFe4NFXZ5eGZfibIhvOeCNPXNPwhI4gr7CpX5E6JCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KEmpJvTh4Oo32A4OKtngJjs1ckU20Gm39iITIh+myNM=;
- b=nWNolyBryrYtWkhCGtAzDEXdk0qN96McVHPQSwQRRu+BZa/7f1zpUJejh/pz3CmZ82WAVBOqBjsV55DXo8ku5T7qljPeF/TaNgktzzjUso41wrKv7qTK3GTobswnsdjK7ciMjQNlZKzHilpl397eQRPjQ7HKceHO4SNyY94S2It5Gtsr6vV9EfKpecw9gPDEL765ir8+gh/oitl1FqgzwsiZMyyM+tbNBz+7tCmDdsPP+BsrVraxqRqEI9LrLIdP6d0lz1HkqhLFRseKo1IXstDLRnK5OXWs5Ojgcbkx+TfoFTbDBthTRjiuGUdoVPSXaJHRhN4AB3yzgGzLvomMjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KEmpJvTh4Oo32A4OKtngJjs1ckU20Gm39iITIh+myNM=;
- b=dBuUHiWa6Y+qO4oKsHzADoT02py3HcuhEoq7bESpnPbKd1Z0ug+vxcbYO5NS/BB5iavvLGppe+ZQqydljONC9KPPvJipUVQdodMzEVoa18W1xqddl/QU+HjxGzzE352Zd7+z7Vmn/maBR5tIW6FuePSZKerZJaAp1VCSEpdlFSQ=
-Received: from DM6PR13CA0017.namprd13.prod.outlook.com (2603:10b6:5:bc::30) by
- IA1PR12MB9468.namprd12.prod.outlook.com (2603:10b6:208:596::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Tue, 10 Dec
- 2024 18:31:05 +0000
-Received: from DS1PEPF00017098.namprd05.prod.outlook.com
- (2603:10b6:5:bc:cafe::9b) by DM6PR13CA0017.outlook.office365.com
- (2603:10b6:5:bc::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.13 via Frontend Transport; Tue,
- 10 Dec 2024 18:31:04 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017098.mail.protection.outlook.com (10.167.18.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8251.15 via Frontend Transport; Tue, 10 Dec 2024 18:31:04 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 10 Dec
- 2024 12:31:02 -0600
-From: Shannon Nelson <shannon.nelson@amd.com>
-To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<jacob.e.keller@intel.com>
-CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
-Subject: [PATCH net-next 3/5] ionic: Translate IONIC_RC_ENOSUPP to EOPNOTSUPP
-Date: Tue, 10 Dec 2024 10:30:43 -0800
-Message-ID: <20241210183045.67878-4-shannon.nelson@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20241210183045.67878-1-shannon.nelson@amd.com>
-References: <20241210183045.67878-1-shannon.nelson@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lAq/hyaq"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4675c482d6cso47653881cf.2
+        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 10:33:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733855634; x=1734460434; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wfQwR8hrRLAZhNoTgiSp+Y5DFUM57JOPWwbP76zFj7I=;
+        b=lAq/hyaqwrW5xgp95AZHTDw/zZECapBivDjbpEtP1RVvjFY0AGCs3uJxYWWidI9Dnm
+         4yrf4kv8YepIG2ftF9bMIf9rzV9c5QgasRLcvznwIMT7xK4xkKAv2XQ2YzEOJeVNbbcz
+         ifsdITAeOH6n0jORhFG0wRmu1RQaatFrAM546kZ2H/5hp74kWTnVQi/2L4l1ebZ63Wbu
+         Wfr5rLnSsUWMJbpsrLnDycnK6drrx0uq4NPE/C1SHV0atmZsCOoIbFGSbIn0/iklMELp
+         Ej7XA9SHey/hOCjixGu61Bey0OvfrZ7KLue/zwJUGQMWHtVtLW2Tq/OuDyRj+iavUkpu
+         bHKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733855634; x=1734460434;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wfQwR8hrRLAZhNoTgiSp+Y5DFUM57JOPWwbP76zFj7I=;
+        b=Ijd1iVo6S+B66I+E+itTb03foz8tDhihq17FNeVooLj6PWPjRFJndavsY0eISvRdIY
+         L8XeXj7yZger8bFBw/eJKlPjOdlCeLS5CXIn0aUdSYapbhXS34o6mKhjWwRizg5eXsIX
+         cRuHuw4tckuOBrPL0tOYw+n0ib+MD/oMG62KbXdvrj5aTlIC8t3yJdGmmvMkA6sIaaUA
+         9GhJR+OkTDwLkUKJaVu5ul1825A6bc8W5wEkTH62rKc6lOTv/ufYj/0k+Bbwu10gwOqe
+         +FJ83FmwjTfNrIQmrxFcynwzMy8A/BkaaS9VedEGX3Fi5pf07Ev84lEUypLMuzxQmaIb
+         tK2A==
+X-Gm-Message-State: AOJu0Yy5LI14o3cqtLJqqexGSiJwlgBJL1CqDdhmnhbXqodO+RXdICLL
+	wWWvE1rxrobMzySu+zY9c4L7MUF8lQB4qS6kMlkXY9XILXm95Ki7ol5mxZuC9IZwhq1aAaTTyMY
+	bn9nz8M9jsw==
+X-Google-Smtp-Source: AGHT+IFs5yhcyZSgfZIzPWMy/lC/k1kVW4/WrP88MbGJhytReQBk5G+ycqrc+7YuWXW4P4UtDR5cnJfACsVsIA==
+X-Received: from qtyf10.prod.google.com ([2002:a05:622a:114a:b0:467:84ce:5e8e])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:7c44:0:b0:467:8783:e48b with SMTP id d75a77b69052e-4678783e63dmr11522311cf.35.1733855634144;
+ Tue, 10 Dec 2024 10:33:54 -0800 (PST)
+Date: Tue, 10 Dec 2024 18:33:49 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017098:EE_|IA1PR12MB9468:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad4a3d59-5efc-46a7-e74d-08dd1948ce7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+xfGOqBJpX8Lt4JDTnn3bmLG8S3sCKEcsjD83mm4Cq3nnaT++RBSH9Mm3CAp?=
- =?us-ascii?Q?XvZa78B0CO7duqqZgSY7wZL9CBiRan2B4xtIpdQ5MGFaDUTMPVwIfz61KtmQ?=
- =?us-ascii?Q?RcHQ1sjSSRB/3150HCowcqC3C3gwCE0sUBRrqaHpJ+nGHCAbC7lhYNwfauUA?=
- =?us-ascii?Q?upGT1gzoHs0TgDK+PASc2hzQiG2s0yQ0GZJWqKvjaq10AhXi7zeGWQ+pQj4r?=
- =?us-ascii?Q?RmuP0sIB3plg/DFCk9KKqpkEJPnZ/Oc+GC+LL+ibEUqJyAsO18W8XnEJR78t?=
- =?us-ascii?Q?DpoM9WTp3/2gliL1lLyWNSVzZtQRU6aH/Y+jH5pBflqavqGuF1ZTqukOaN2l?=
- =?us-ascii?Q?al5qXuERKdKEpwsdPE5e8woiRjCV4z+O1b335q1jN8alN0jgvs03JjJ9JJIY?=
- =?us-ascii?Q?JqcQaYnKXsfGdkZKNsF9gTRhGITkbJKV2q0HpcIB3h30yeAA4XONq9KnCuK6?=
- =?us-ascii?Q?nvg2GWE5Ub17imm72zsIe0BXpe8BCsPcIVwmv97tr+20oOBloWpcjFNo/tBT?=
- =?us-ascii?Q?cU6Z6hg2+Y7WVePXoLtRQRSnDyD5qX0iOF33uS5hmaSfXwootGV/dV+n871o?=
- =?us-ascii?Q?rZxu4m3VlzYArTuk5Riuz/Wp2V/OOlB+9OkWTjV+FV2WJI2krPUJr9cLbhyE?=
- =?us-ascii?Q?koEi0mdx5RGEG9KKGlmFmQQFvhq3CMsZ19Pgwj59dc4pSfoWXvARhOFDkMdG?=
- =?us-ascii?Q?KwH4PzNJxjTGZU6m8Ac6xcHrWBeJtRWBXqfGD4E/Nl1OiyRhDyyj3Vx5QFw/?=
- =?us-ascii?Q?drXtJN115SJl0S/T6+2dDQyl+bawWgmM3yi3uSdOhlZVW0aO7EOnTNiSsh8j?=
- =?us-ascii?Q?rdhWArsp4qy1ZMgpF6/BCoMVg8kkZQUtlSX6Zkx2IWxg14HfrifMqEoNFQtW?=
- =?us-ascii?Q?muhHGM0RgCClMs3zp40XHGHgDL5jE8CeDoE2peA7d1C7mU9dqd4m0YuqGoR3?=
- =?us-ascii?Q?mJtQ1oyXzW0H9DGzTnKBgzVDsDDzWIkac4/yDmjVtTOCroChBjCVAUfATT3g?=
- =?us-ascii?Q?8sT8genKKmm67jES0CecGhQGqIDWv04uaKg7udqDGRy21d8C7fUdjZ9/YmB/?=
- =?us-ascii?Q?MmErWhpXUNJ3SQecLMEgRJ/pH2PfHvJohwQ96z1uMweKZRr+u+81/Fp9Oflc?=
- =?us-ascii?Q?0Ize0e4Z5SpAIxxSrOCHQh4x3kPNP8px9y6NzExrk0dEv3TX6swAvqS4zmfy?=
- =?us-ascii?Q?nvgAbi+ppWVgGr4tXnX0fDBfl9jr/9e91GTgoVEef/Bm87W+/Qt3+9v5tN81?=
- =?us-ascii?Q?7AZdPaXMziC4gQB6d8nbPs/49saEtKYLDn/yPGYWhQ/flqVurJd3gtAgXWXe?=
- =?us-ascii?Q?rRyyiucUABtjvjg45C/pGf11yU3VCvbTqa46Xq0qHoWiXempQtxT0aXri6eX?=
- =?us-ascii?Q?ruC6rnt2NIfeLUuZF58srGTZuZAk3QUbKnBk+8LuhZlDgynS4BjeONXm/5vu?=
- =?us-ascii?Q?lGviwcJGdAK0gegjO4N4yfrKwQiBVm0k?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 18:31:04.7951
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad4a3d59-5efc-46a7-e74d-08dd1948ce7b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017098.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9468
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.545.g3c1d2e2a6a-goog
+Message-ID: <20241210183352.86530-1-edumazet@google.com>
+Subject: [PATCH net-next 0/3] ipv6: mcast: add data-race annotations
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	David Ahern <dsahern@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Brett Creeley <brett.creeley@amd.com>
+ipv6_chk_mcast_addr() and igmp6_mcf_seq_show() are reading
+fields under RCU. Add missing annotations.
 
-Instead of reporting -EINVAL when IONIC_RC_ENOSUPP is returned use
-the -EOPNOTSUPP value. This aligns better since the FW only returns
-IONIC_RC_ENOSUPP when operations aren't supported not when invalid
-values are used.
+Eric Dumazet (3):
+  ipv6: mcast: reduce ipv6_chk_mcast_addr() indentation
+  ipv6: mcast: annotate data-races around mc->mca_sfcount[MCAST_EXCLUDE]
+  ipv6: mcast: annotate data-race around psf->sf_count[MCAST_XXX]
 
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
----
- drivers/net/ethernet/pensando/ionic/ionic_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/mcast.c | 59 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index 0f817c3f92d8..daf1e82cb76b 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -81,8 +81,9 @@ static int ionic_error_to_errno(enum ionic_status_code code)
- 	case IONIC_RC_EQTYPE:
- 	case IONIC_RC_EQID:
- 	case IONIC_RC_EINVAL:
--	case IONIC_RC_ENOSUPP:
- 		return -EINVAL;
-+	case IONIC_RC_ENOSUPP:
-+		return -EOPNOTSUPP;
- 	case IONIC_RC_EPERM:
- 		return -EPERM;
- 	case IONIC_RC_ENOENT:
 -- 
-2.17.1
+2.47.0.338.g60cca15819-goog
 
