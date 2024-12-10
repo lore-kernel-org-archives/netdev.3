@@ -1,96 +1,110 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D8C1BBBC6
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 16:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED8E1AAA15;
+	Tue, 10 Dec 2024 16:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733847172; cv=none; b=RZ+l9G1PlJqL8wh1/C9uDYjUozHHlZ60jYlRKiEafWTIl2h+GQTFdZBdREKy3ylzx6hgzaNEGjfI6cFmVoqlNhRrpYjRGO48Vr+oeDPABuWN7x3EfSdJ6H6yt+PAwSk7+afpctS0/DdZmYk/Hm31F83/hwqeIcWXCMhNxfooUJQ=
+	t=1733847300; cv=none; b=EKFy394M0FhezenoHT9le7XriXn37zAMlJeDCZ4UtO1n9l94EGd2Fu8twTfty+zOn2k/CnrxeGCR+DkVEyA+cuq8xp87cuiX9qfIvEIc/+k3ipGaOYvfWnO9f4lyn7a1sLVvC2dITIJEHmUZWEUMgWWEWjn72wAMGuN7/rgQeLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733847172; c=relaxed/simple;
-	bh=IEEi6Rs914XyJs+OK5nkfUNZ57Kyhb85U4z8bcFbL2o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svK2VSQMspFxpCXSq8JwkinIi5x/DrY76LOZyzg+qBhJmrjnHsOJfVqXaIcPtn+9jL9hQEm9tGaMx3IIsz2j3QDiQAm5FUqwpEzE072wpXkGxq5mchztPxN10BvyQEo6HKcGMRqxUqFJfXcd/Tu4fKin/iCm8+U4ujAQnjOYvbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sD1sQ5NL; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733847300; c=relaxed/simple;
+	bh=31VPjuhtUqs5XTJZjLWo1bnT/4FHbU4/2zRNq1awM5E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oEvSJu85E7sacZDilXxPKKeQFQrgw1SP/y3wwi9uYiNv+YlHQoqGJfxPUYN9mNm4oNmSyCEGJW3J4X7v3fGygxAG30P/0nHUGDGCXXZa+/6KnVzH6XvRg0LHcFt0riE11CfxJfH2UXPGJ8WgjYt1Vgu9ocVlnBalqAb+UZwnrLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPZf5H1B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sD1sQ5NL"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d122cf8e52so9074684a12.1
-        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 08:12:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733847169; x=1734451969; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IEEi6Rs914XyJs+OK5nkfUNZ57Kyhb85U4z8bcFbL2o=;
-        b=sD1sQ5NLqBqIHikLU1Jxpgt5cxV/2vSow+crbeVGudUxrSIppwpDDugwUdWm4dAXr2
-         BRmQZgRePiaoPTBwN7lrMMu60aR8Yl/PSPTQJkizhJDQYrMUZaqGlQKWfrgiUHYk96cU
-         yV7Scumy2/jGwUMmQAJDKppYsCXDMSYcKBt+QBfkDgKVJPraF0Jroux0o4McnEEbx8WF
-         hDx+C7UIZndQ009CTGICrxdig1N1XUiudj15HRcovqAuklY8EG+3IGGIyw9bSZFajqj1
-         xV0Tv+cesK3VIW/VKGQBaRVf02UMd2sabcMXlZ2w8aALbx9hBKy52iSZ+BUeZGAnwdcX
-         2niQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733847169; x=1734451969;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IEEi6Rs914XyJs+OK5nkfUNZ57Kyhb85U4z8bcFbL2o=;
-        b=srbaykn5uBjAcRHnEecFfDP/kaj5fW4cHkghZmEV09wa7BkxzJOP+nF5Y59wEEhyG5
-         XQJqZ9bWa/pmEjTo0FIJQMCOvhW/uCkv965wKF4v2R9ee/F1tvIoyHpjZIBnL0+fwGZm
-         WL9E0uW1VIPSj2NGJ2ZHf6JGyD0vvv2NYPJBC5vzaJnfJGQ7SbCTQkJ36bql6QIPZYDn
-         4c3p9Wt/RWohqyBse+zmNVO6Mb65e+UvbsPKXIaG6YR8O6P0Xvx3Tb8V8f67+W3npXJK
-         R3QGfN9fSRYm/DPl8mXl7rPMwPN8VTp6aXOL0hR/7sj31Nd5w4tn8oJdbagOt+FGklPI
-         eS+A==
-X-Gm-Message-State: AOJu0Yyils+TjwhvSQdHKBK8lXJYFn2JfIXOuiT4F9HmNFDaVjzbVPv7
-	q5tpkF0BU5ZWNkYG7ucUAaG+akhfnrZeV51kBItmKCz9MBsRNTJn7w9TkKr5MShUXtLZhv8ioqI
-	Zy/nXzfV5iSkC6ooHBnTcwAHe1tjPq4t8cd7fko9KnECL5tXinWJ1
-X-Gm-Gg: ASbGnctwXK1xBZ/QXHEFFLznLIWg1n7hu9S6Yv4eR2dTTYJigrs7k5QRXYJgiqlAjmI
-	lTkcW8n4ZpXAO+rUhVrrStBVT4VYGpITIgjM=
-X-Google-Smtp-Source: AGHT+IFC/KNyJLyHI2/ye5Ac84Q8Z6BtOd46kGclCv+WlL7f+aQgPRnclsq5M6vaWLh6SgB/Z9DJNBgT1+mVN6Bg9Lc=
-X-Received: by 2002:a05:6402:1e90:b0:5d0:d610:caa2 with SMTP id
- 4fb4d7f45d1cf-5d4185fe2aamr6068148a12.26.1733847168800; Tue, 10 Dec 2024
- 08:12:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPZf5H1B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F7C4CEDE;
+	Tue, 10 Dec 2024 16:14:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733847300;
+	bh=31VPjuhtUqs5XTJZjLWo1bnT/4FHbU4/2zRNq1awM5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hPZf5H1BVBX/7HcnkYtV2DylIp1rLFxLRcczmtRuCwwQ2Fov8LtGizL9CXhSrQ6EQ
+	 nfebIG+lJ8optZmTp/AFpDHHlZvHutvEUOtQWE8qTTsZp7qmhsFKnf5dVNugXqLaIK
+	 IRpNPpTBEEIevy7tDYZNRQi6FAfxcPzF0OWoPxfZJxfyiPgKcPZO6aVWQFMWl6mTzp
+	 ybDC/yirdvVia+jlDVS1pzPAKeJ/NHk05mUuKRZXieyAclX5H97oQNV7KUBQVhM9A0
+	 wYs8BPZSzWrsel9pQIywsnafcIRsbqzYuzJ1z0ZPrktZcWKiCmwD3Npl4tFTXs6KGd
+	 I/hWgMZfLyPag==
+Date: Tue, 10 Dec 2024 11:14:58 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 5.4 20/28] net: enetc: add i.MX95 EMDIO support
+Message-ID: <Z1hpArZhTewykeE4@sashalap>
+References: <20241124135549.3350700-1-sashal@kernel.org>
+ <20241124135549.3350700-20-sashal@kernel.org>
+ <PAXPR04MB8510442A46C2F25FF783E899882E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z1fMaHkRf8cfubuE@xiberoa>
-In-Reply-To: <Z1fMaHkRf8cfubuE@xiberoa>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 10 Dec 2024 17:12:37 +0100
-Message-ID: <CANn89iLgWc6vZZo0tD0XVg0zY-T-eUjKj4r=O_B3QARjFB755Q@mail.gmail.com>
-Subject: Re: [PATCH v2 net] splice: do not checksum AF_UNIX sockets
-To: Frederik Deweerdt <deweerdt.lkml@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Michal Luczaj <mhal@rbox.co>, David Howells <dhowells@redhat.com>, 
-	linux-kernel@vger.kernel.org, xiyou.wangcong@gmail.com, 
-	David.Laight@aculab.com, jdamato@fastly.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB8510442A46C2F25FF783E899882E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Tue, Dec 10, 2024 at 6:06=E2=80=AFAM Frederik Deweerdt
-<deweerdt.lkml@gmail.com> wrote:
+On Mon, Nov 25, 2024 at 01:54:14AM +0000, Wei Fang wrote:
+>> From: Wei Fang <wei.fang@nxp.com>
+>>
+>> [ Upstream commit a52201fb9caa9b33b4d881725d1ec733438b07f2 ]
+>>
+>> The verdor ID and device ID of i.MX95 EMDIO are different from LS1028A
+>> EMDIO, so add new vendor ID and device ID to pci_device_id table to support
+>> i.MX95 EMDIO.
+>>
+>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>> Signed-off-by: David S. Miller <davem@davemloft.net>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+>> b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+>> index fbd41ce01f068..aeffc3bd00afe 100644
+>> --- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+>> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
+>> @@ -3,6 +3,8 @@
+>>  #include <linux/of_mdio.h>
+>>  #include "enetc_mdio.h"
+>>
+>> +#define NETC_EMDIO_VEN_ID	0x1131
+>> +#define NETC_EMDIO_DEV_ID	0xee00
+>>  #define ENETC_MDIO_DEV_ID	0xee01
+>>  #define ENETC_MDIO_DEV_NAME	"FSL PCIe IE Central MDIO"
+>>  #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
+>> @@ -85,6 +87,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
+>>
+>>  static const struct pci_device_id enetc_pci_mdio_id_table[] = {
+>>  	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
+>> +	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
+>>  	{ 0, } /* End of table. */
+>>  };
+>>  MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
+>> --
+>> 2.43.0
 >
-> When `skb_splice_from_iter` was introduced, it inadvertently added
-> checksumming for AF_UNIX sockets. This resulted in significant
-> slowdowns, for example when using sendfile over unix sockets.
+>Hi Sasha,
 >
-> Using the test code in [1] in my test setup (2G single core qemu),
-> the client receives a 1000M file in:
-> - without the patch: 1482ms (+/- 36ms)
-> - with the patch: 652.5ms (+/- 22.9ms)
->
-> This commit addresses the issue by marking checksumming as unnecessary in
-> `unix_stream_sendmsg`
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Frederik Deweerdt <deweerdt.lkml@gmail.com>
-> Fixes: 2e910b95329c ("net: Add a function to splice pages into an skbuff =
-for MSG_SPLICE_PAGES")
-> ---
+>This patch does not need to be backported, because this is a new
+>feature which adds the EMDIO support for i.MX95 NETC. And i.MX95
+>NETC is supported in the latest kernel (should be 6.13, Linus tree).
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+I'll drop it, thanks!
+
+-- 
+Thanks,
+Sasha
