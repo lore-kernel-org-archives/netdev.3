@@ -1,216 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx08lb.world4you.com (mx08lb.world4you.com [81.19.149.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C008633A;
-	Tue, 10 Dec 2024 20:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AF9226869;
+	Tue, 10 Dec 2024 20:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733861285; cv=none; b=p+cqUNWNydE+wrZN+W7I0YPH+3fArVbYGVwea9z4r8azL2H+XIzD8J7VBfeMaS5JQJ6hT4K3QGRzn7f9SCY2QC52lN+/BMxC8NgbOaWyWbd8kUXY4EywwOle18S83+XTW3GqrNvSDwU/BGims1i1bZz7lCjj8Gbnzp9y/lLVINM=
+	t=1733861419; cv=none; b=Gim4sgn+FqQ9pFJW+G2gkRt/8k+rDXAap8an4Je/UTPfIGEDlcaafvuz1Opbt8N37sKfOtcadChL8WNpZOUDsq/mL8TLx5wGAL8oC1pShKdbN3B3My+KFb38lTfazlorlqmG8KBzxw1d+ACrGMqApbUi6RagTuzMw9XyfRRQMDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733861285; c=relaxed/simple;
-	bh=QjP0IIasjtVnXM9smYkNwrOQvlReXf+3UjfE/cman1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lTAR/koJIYfz/QWuf/8D0Di5K3CIcYV2wgi0h3LBfJhK8KrMCo4axMykIRFw08b4Mxp8qIX/QOWiv7LNdRym/fHoLijCW1Z48foX6TbRyo3VeUSrvLmnUDtLB7wBXl6LrGzX0GuD6vv7RQoZO/pESzWTuwP4cJBJUq/bRHAVoDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szpDhWI9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733861419; c=relaxed/simple;
+	bh=FYEQbT9tBWdrOaUmg/9LCm6UrMmwas/GkuSUSpaCRGs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=loxurJYRxtZ5HNKvHSnFbffnQYqoZoIuuTNhYhWGnLRGfFH33TamP1bRPDVpW0QBZRsFFtZD8pvyZnwIiUTNnZHfOgJa/1XFDA4u3bjtOBYc4m1DYvgGKOslUjFf8Obd4uxQb1Gidf7XOUGvMvoRU3kRxjOVMqpsbgQCXfoKwHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=OKBbQ14K; arc=none smtp.client-ip=81.19.149.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szpDhWI9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB37C4CED6;
-	Tue, 10 Dec 2024 20:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733861284;
-	bh=QjP0IIasjtVnXM9smYkNwrOQvlReXf+3UjfE/cman1s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=szpDhWI9OcT8EyJuU64yF0TWflIZVNKNrw4b4C9zR3GizRitmrpqEImIQ3V/+nVhH
-	 YSC89R8OY/F8A+4Me1YKuFwoUqXd59x5gUo6SsP67KtO4itELnMEdo+7Vo8omyGulA
-	 Fg/xppxVqf4af72sh94+n2cIw+zlYzQm2M9Voy+OFdAomPsGzuQkZLmu7N8Pkq7EMe
-	 4N13boG/L3wlJsAw5ykYx6K+NjJRTz3yXyLY/s0T6srjGNDEsAT1mea+ESZEP/1vpC
-	 MH/gkiHvHvtMZkMETMnYHtw1gGlXFzokHOlOZDrRs1Gt8Ir/c4eyI4xkEbpI8hfKi4
-	 9sBaL+AAMqeeQ==
-Date: Tue, 10 Dec 2024 20:07:59 +0000
-From: Simon Horman <horms@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Ido Schimmel <idosch@idosch.org>,
-	"tom@herbertland.com" <tom@herbertland.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	Frank Li <frank.li@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
- offload for i.MX95 ENETC
-Message-ID: <20241210200759.GD2806@kernel.org>
-References: <20241204052932.112446-1-wei.fang@nxp.com>
- <20241204052932.112446-2-wei.fang@nxp.com>
- <20241206092329.GH2581@kernel.org>
- <PAXPR04MB85101D0EE82ED8EEF48A588988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20241206123030.GM2581@kernel.org>
- <PAXPR04MB85107FD857F1AB33BBE4F70988312@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <Z1W_kSMUp3lsLPr_@shredder>
- <PAXPR04MB85101F4E12086B8E0A471580883D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="OKBbQ14K"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=AhEWUKL5EhB8ncFdMFzQW4/lbKCtlIrg6mHUxIedBSE=; b=OKBbQ14KBlVrretGyyGUSDnClZ
+	9c2oso6nkDj80BeuVHcyvOzAYIat6gZoqf+CYD6T973bqp/G81KnARBGKRIj27Mf8w+H8Jx4sBzrR
+	3cM5y0P1b2GmVaC397CQbjq4mviSSnfEL83KrihNXJ4GizDLrJRN+1OmRanbx5ubNoaU=;
+Received: from [88.117.62.55] (helo=[10.0.0.160])
+	by mx08lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1tL5qY-000000002GY-3Sx5;
+	Tue, 10 Dec 2024 20:24:39 +0100
+Message-ID: <94752230-a901-4a15-abd1-f470a62e1047@engleder-embedded.com>
+Date: Tue, 10 Dec 2024 20:24:37 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v2] e1000e: Fix real-time
+ violations on link up
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, Gerhard Engleder <eg@keba.com>,
+ Vitaly Lifshits <vitaly.lifshits@intel.com>, linux-pci@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>
+References: <20241208184950.8281-1-gerhard@engleder-embedded.com>
+ <7c4f3165-df86-47e1-9fc4-7087accf4a68@molgen.mpg.de>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <7c4f3165-df86-47e1-9fc4-7087accf4a68@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR04MB85101F4E12086B8E0A471580883D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-AV-Do-Run: Yes
 
-On Tue, Dec 10, 2024 at 07:49:18AM +0000, Wei Fang wrote:
-> > -----Original Message-----
-> > From: Ido Schimmel <idosch@idosch.org>
-> > Sent: 2024年12月8日 23:47
-> > To: Wei Fang <wei.fang@nxp.com>; tom@herbertland.com
-> > Cc: Simon Horman <horms@kernel.org>; Claudiu Manoil
-> > <claudiu.manoil@nxp.com>; Vladimir Oltean <vladimir.oltean@nxp.com>; Clark
-> > Wang <xiaoning.wang@nxp.com>; andrew+netdev@lunn.ch;
-> > davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
-> > pabeni@redhat.com; Frank Li <frank.li@nxp.com>; netdev@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
-> > offload for i.MX95 ENETC
-> > 
-> > On Fri, Dec 06, 2024 at 12:45:02PM +0000, Wei Fang wrote:
-> > > > -----Original Message-----
-> > > > From: Simon Horman <horms@kernel.org>
-> > > > Sent: 2024年12月6日 20:31
-> > > > To: Wei Fang <wei.fang@nxp.com>
-> > > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
-> > > > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
-> > > > andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
-> > > > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
-> > > > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
-> > > > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx checksum
-> > > > offload for i.MX95 ENETC
-> > > >
-> > > > On Fri, Dec 06, 2024 at 10:33:15AM +0000, Wei Fang wrote:
-> > > > > > -----Original Message-----
-> > > > > > From: Simon Horman <horms@kernel.org>
-> > > > > > Sent: 2024年12月6日 17:23
-> > > > > > To: Wei Fang <wei.fang@nxp.com>
-> > > > > > Cc: Claudiu Manoil <claudiu.manoil@nxp.com>; Vladimir Oltean
-> > > > > > <vladimir.oltean@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>;
-> > > > > > andrew+netdev@lunn.ch; davem@davemloft.net;
-> > edumazet@google.com;
-> > > > > > kuba@kernel.org; pabeni@redhat.com; Frank Li <frank.li@nxp.com>;
-> > > > > > netdev@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > imx@lists.linux.dev
-> > > > > > Subject: Re: [PATCH v6 RESEND net-next 1/5] net: enetc: add Rx
-> > checksum
-> > > > > > offload for i.MX95 ENETC
-> > > > > >
-> > > > > > On Wed, Dec 04, 2024 at 01:29:28PM +0800, Wei Fang wrote:
-> > > > > > > ENETC rev 4.1 supports TCP and UDP checksum offload for receive, the
-> > bit
-> > > > > > > 108 of the Rx BD will be set if the TCP/UDP checksum is correct. Since
-> > > > > > > this capability is not defined in register, the rx_csum bit is added to
-> > > > > > > struct enetc_drvdata to indicate whether the device supports Rx
-> > > > checksum
-> > > > > > > offload.
-> > > > > > >
-> > > > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > > > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-> > > > > > > ---
-> > > > > > > v2: no changes
-> > > > > > > v3: no changes
-> > > > > > > v4: no changes
-> > > > > > > v5: no changes
-> > > > > > > v6: no changes
-> > > > > > > ---
-> > > > > > >  drivers/net/ethernet/freescale/enetc/enetc.c       | 14
-> > > > ++++++++++----
-> > > > > > >  drivers/net/ethernet/freescale/enetc/enetc.h       |  2 ++
-> > > > > > >  drivers/net/ethernet/freescale/enetc/enetc_hw.h    |  2 ++
-> > > > > > >  .../net/ethernet/freescale/enetc/enetc_pf_common.c |  3 +++
-> > > > > > >  4 files changed, 17 insertions(+), 4 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > > > > b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > > > > > index 35634c516e26..3137b6ee62d3 100644
-> > > > > > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > > > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > > > > > @@ -1011,10 +1011,15 @@ static void enetc_get_offloads(struct
-> > > > enetc_bdr
-> > > > > > *rx_ring,
-> > > > > > >
-> > > > > > >  	/* TODO: hashing */
-> > > > > > >  	if (rx_ring->ndev->features & NETIF_F_RXCSUM) {
-> > > > > > > -		u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
-> > > > > > > -
-> > > > > > > -		skb->csum = csum_unfold((__force
-> > > > __sum16)~htons(inet_csum));
-> > > > > > > -		skb->ip_summed = CHECKSUM_COMPLETE;
-> > > > > > > +		if (priv->active_offloads & ENETC_F_RXCSUM &&
-> > > > > > > +		    le16_to_cpu(rxbd->r.flags) &
-> > > > ENETC_RXBD_FLAG_L4_CSUM_OK)
-> > > > > > {
-> > > > > > > +			skb->ip_summed = CHECKSUM_UNNECESSARY;
-> > > > > > > +		} else {
-> > > > > > > +			u16 inet_csum = le16_to_cpu(rxbd->r.inet_csum);
-> > > > > > > +
-> > > > > > > +			skb->csum = csum_unfold((__force
-> > > > __sum16)~htons(inet_csum));
-> > > > > > > +			skb->ip_summed = CHECKSUM_COMPLETE;
-> > > > > > > +		}
-> > > > > > >  	}
-> > > > > >
-> > > > > > Hi Wei,
-> > > > > >
-> > > > > > I am wondering about the relationship between the above and
-> > > > > > hardware support for CHECKSUM_COMPLETE.
-> > > > > >
-> > > > > > Prior to this patch CHECKSUM_COMPLETE was always used, which seems
-> > > > > > desirable. But with this patch, CHECKSUM_UNNECESSARY is conditionally
-> > > > used.
-> > > > > >
-> > > > > > If those cases don't work with CHECKSUM_COMPLETE then is this a
-> > > > bug-fix?
-> > > > > >
-> > > > > > Or, alternatively, if those cases do work with CHECKSUM_COMPLETE,
-> > then
-> > > > > > I'm unsure why this change is necessary or desirable. It's my
-> > understanding
-> > > > > > that from the Kernel's perspective CHECKSUM_COMPLETE is preferable
-> > to
-> > > > > > CHECKSUM_UNNECESSARY.
-> > > > > >
-> > > > > > ...
-> > > > >
-> > > > > Rx checksum offload is a new feature of ENETC v4. We would like to exploit
-> > > > this
-> > > > > capability of the hardware to save CPU cycles in calculating and verifying
-> > > > checksum.
-> > > > >
-> > > >
-> > > > Understood, but CHECKSUM_UNNECESSARY is usually the preferred option
-> > as
-> > > > it
-> > > > is more flexible, e.g. allowing low-cost calculation of inner checksums
-> > > > in the presence of encapsulation.
-> > >
-> > > I think you mean 'CHECKSUM_COMPLETE' is the preferred option. But there is
-> > no
-> > > strong reason against using CHECKSUM_UNNECESSARY. So I hope to keep this
-> > patch.
-> > 
-> > I was also under the impression that CHECKSUM_COMPLETE is more desirable
-> > than CHECKSUM_UNNECESSARY. Maybe Tom can help.
+On 09.12.24 12:34, Paul Menzel wrote:
+> [Cc: +PCI folks]
 > 
-> From the kernel doc [1] it should be necessary to use CHECKSUM_COMPLETE in
-> enetc driver, because ENETCv4 only supports UDP/TCP checksum offload. So I will
-> drop this patch from the patch set. thanks.
-
-Thanks.
-
+> Dear Gerhard,
 > 
-> [1] https://docs.kernel.org/networking/skbuff.html#:~:text=Even%20if%20device%20supports%20only%20some%20protocols%2C%20but%20is%20able%20to%20produce%20skb%2D%3Ecsum%2C%20it%20MUST%20use%20CHECKSUM_COMPLETE%2C%20not%20CHECKSUM_UNNECESSARY.
+> 
+> Thank you for your patch.
+> 
+> 
+> Am 08.12.24 um 19:49 schrieb Gerhard Engleder:
+>> From: Gerhard Engleder <eg@keba.com>
+>>
+>> From: Gerhard Engleder <eg@keba.com>
+> 
+> The from line is present twice. No idea, if git is going to remove both.
+
+It seems git send-email is adding this line again automatically.
+Will be fixed next time.
+
+>> Link down and up triggers update of MTA table. This update executes many
+>> PCIe writes and a final flush. Thus, PCIe will be blocked until all 
+>> writes
+>> are flushed. As a result, DMA transfers of other targets suffer from 
+>> delay
+>> in the range of 50us. This results in timing violations on real-time
+>> systems during link down and up of e1000e.
+>>
+>> A flush after a low enough number of PCIe writes eliminates the delay
+>> but also increases the time needed for MTA table update. The following
+>> measurements were done on i3-2310E with e1000e for 128 MTA table entries:
+>>
+>> Single flush after all writes: 106us
+>> Flush after every write:       429us
+>> Flush after every 2nd write:   266us
+>> Flush after every 4th write:   180us
+>> Flush after every 8th write:   141us
+>> Flush after every 16th write:  121us
+>>
+>> A flush after every 8th write delays the link up by 35us and the
+>> negative impact to DMA transfers of other targets is still tolerable.
+>>
+>> Execute a flush after every 8th write. This prevents overloading the
+>> interconnect with posted writes.
+>>
+>> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>> CC: Vitaly Lifshits <vitaly.lifshits@intel.com>
+>> Link: 
+>> https://lore.kernel.org/netdev/f8fe665a-5e6c-4f95-b47a-2f3281aa0e6c@lunn.ch/T/
+>> Signed-off-by: Gerhard Engleder <eg@keba.com>
+>> ---
+>> v2:
+>> - remove PREEMPT_RT dependency (Andrew Lunn, Przemek Kitszel)
+>> ---
+>>   drivers/net/ethernet/intel/e1000e/mac.c | 7 ++++++-
+>>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/intel/e1000e/mac.c 
+>> b/drivers/net/ethernet/intel/e1000e/mac.c
+>> index d7df2a0ed629..7d1482a9effd 100644
+>> --- a/drivers/net/ethernet/intel/e1000e/mac.c
+>> +++ b/drivers/net/ethernet/intel/e1000e/mac.c
+>> @@ -331,8 +331,13 @@ void e1000e_update_mc_addr_list_generic(struct 
+>> e1000_hw *hw,
+>>       }
+>>       /* replace the entire MTA table */
+>> -    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--)
+>> +    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--) {
+>>           E1000_WRITE_REG_ARRAY(hw, E1000_MTA, i, hw->mac.mta_shadow[i]);
+>> +
+>> +        /* do not queue up too many writes */
+> 
+> Maybe make the comment more elaborate?
+
+I will try to extend based on comments from the other thread.
+
+>> +        if ((i % 8) == 0 && i != 0)
+>> +            e1e_flush();
+>> +    }
+>>       e1e_flush();
+>>   }
+> 
+> 
+> Kind regards,
+> 
+> Paul
+
+Thank you for the review!
+
+Gerhard
