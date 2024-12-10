@@ -1,45 +1,46 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2077.outbound.protection.outlook.com [40.107.94.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D073486333
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 17:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8755F23ED5F
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 17:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733852931; cv=fail; b=ldowcuLxUYg9+T1vTEvkKOn+b8mNiVcd73+QFjDhUPS80YU7w8FQBLuv2G2YFVhLpWm88fnAeJ+DxBJYYSr0pCyenJdYn8ElQKJP0G8mEwe98qRsZmRFlqw1EoDecCC6u0NZZ7lFTY4a3926fTa/N2EJ5vQZfV0Wf0gPjZolQ9E=
+	t=1733852932; cv=fail; b=bgY9NYrg8ypU5+x0Li5HffY4EmNbiaeG/LmWmhif5+motwL/Cdrg//rovRC7oGA9qfFpoI1UfW6ILHe4/SOM/xWmPuXbzPZSQAQDQ4mZ2h9CG/N4E6E1fizFF5BQgW3FL3LK442ucnuu5/7DgJ/A9hzFeIxgZ4P1kIhTT1Y994k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733852931; c=relaxed/simple;
-	bh=TCFGao7ZODNfh3s2pV1t0utECX+KPJiVMl/lv0oH8pA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LOhPb0AiF9sB8kW/r4G8t9Fne4wm10Ebye6zP8KhlUuEB6J3Yxlsbz5M4xgW97VU8IUK9PvflnE5hE3KVFHtLGXcte2DswliyEes+LKix4mYlPk46ZiaW2oCuDvEoGvTzuljA7M0pAmoPcf1SHtS318CZCkZZySmoKBd3qQ0aaA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jOBqjq3G; arc=fail smtp.client-ip=40.107.237.83
+	s=arc-20240116; t=1733852932; c=relaxed/simple;
+	bh=tE8gG33Sam1o0mejRjG3sf4rpYS8VA4sqGoF6ctNEJA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RlgL1SndPd3L+oSgW6LEt67iFz+42HIOh9lbiY5DkCQ7go9F2EXGhSomU9/r6cFSfWcCRh5Mu2qF7pCYv0Ew8P8VwQWzUh184HysE/HfN3SMnhxBoYE8hvogoWZfLotqX4iuYNNoyLtjcSxJUfGdJRvORXBzg1TCW/KuxSqo+QY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Uic1ejgb; arc=fail smtp.client-ip=40.107.94.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jOBqjq3G"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Uic1ejgb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nNbyuS4hTNirVRRUPbV7U79GqXomT3R2nWKYi+rY+Y1Z1yy/6ZahguwITMinGg9RVXnyLUaNnyaRj4bv7IkWwEQajikpZptybAD+Cmpp4Y8gzaJjavnl7MvD7ybOS7vkf91bqSE2TzlSomBr8pQBsoNqv86fxJCRl1iRa50tksv8Dldl/LZ668vrV5hu3autvB2GU72phphoSJ8PzJn/2OujdGRHAbAYp9cX/ofRTnyGTf027C7y6ZseXJ+sknY18JkYuutuLUeNG1sgMGuU1mjAny6i5GDy4FkqVrWm8rfuS25/6etPNvNKepSU/SdRkOlc4DYLsf19gWu06kklGg==
+ b=CuWsv0WX14X8MTFwZTreR7gOh3Pdt6Gjb///lIKOsmrk+xSxOlTzvFHSWQCAh4yZK3ygJUzhfm+MLsr1BY+r2uQ55AUL10gsXCZ3BWdiM7QA8+sNvO11LTnHZl5Y7yxbcXhWyAG3DrxMmRlzys1sUax5GfgHWFNyd/mLlkF71LjgBmaLyppq37/aBfa/IzhT3vvXyKEjgjuHlsuNx4hIKuU/SCF8yTEY47Vqk9ALHN57d1sy5jbEaLnFypuULngDvrDSJE9iL56EkyW1PqICgBRkA8QOdy5TVGTPd/QUmvfZ+RRlUpNejWgN8/iDkIHe9V+J560FKPA7gnVbKaX89Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mf3j4kOm28DjxTYVglyomcR9DQ/YdOPWM6NEN6oQNPg=;
- b=S29ZAW77vy2796HxHhR/Sipn2eQYQ+epqHrmrs7mJ3SlP8kMIZsJR3tCSAtp+rNhcJmiJjnxf7tSp5i8kxcazMD+tlJ+iEtSfugfdp8Cvl48xIBWg5AEzqE3QLliOQJaiEBKIAmdaNeezQy7+pvIY97s5tXMrU+OAur+18kSRY38gMZ9Ang7YfXpSb/DS0s70cQDGIfypQVw2WPng8cfdNdOM39SKwyS9SibuBqOmVEDtUz3Uti7V3tjY0mlhF4bJXm0/Rb6jDfqm4S2c35lvCKx1j7OHa7OWvrauQITstG6g9jbUWAjqUtyUTRlB29De9FenOgZzeMST+iGaupE2g==
+ bh=d6Z1MERl8MCyA0ms7zfQr51MixZL12E01uZNiXeimuM=;
+ b=d/OidwRBq9GkjZ3U/lB+4YL+EKc9ISuwwKykUgqGw9x9gJkwkBkmfivQOBFbrbJhdfTGbfrwjKXq00XcH2/NJ5kXPT0ojINRmRgcJlGFxJ4eN8Cd6NZ6+kxQBryqS1lSvgerf20vFQK5LOH4PCCLdAH/UfsHDC5R1tPZSFbTRXk42N72fkPLBULcJDanAccRejJCOqkwCripl76uONqCUznEAeYOlXVxGdudo+9S4kUb8MWKpC1W91NInIHqURgGyim2UF9WVKlNrF6Oo/+5rJJYjziAHPfdnAHaNTKPwW9ytZv6dIS5+OQhIndyG6R8eoXoShjT1zbbiSpEFzlxoQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mf3j4kOm28DjxTYVglyomcR9DQ/YdOPWM6NEN6oQNPg=;
- b=jOBqjq3Gr7J2a0wiYDH7UdmIQc0ZGaYINlyeuJaz0WreWZzedNB/GOXYk4vA9Dro3ZbtKtsjfn74c9CGUm/UK102/aqu7hZILZyAZS6IWBZSqNdsVBGfKyLm3Cy/IVIxQ6GToIg/sBnsB7Lt279HihGhnS1ggp8cpX8kGlFB7MQ=
-Received: from MN2PR07CA0010.namprd07.prod.outlook.com (2603:10b6:208:1a0::20)
- by DM4PR12MB5770.namprd12.prod.outlook.com (2603:10b6:8:61::16) with
+ bh=d6Z1MERl8MCyA0ms7zfQr51MixZL12E01uZNiXeimuM=;
+ b=Uic1ejgbbJAWd7Y3TXW2XMD8TU7bNEDQ2BCREkmWEhPBCQ/6sIozl96Zu8+ouZW6P/NpIvZGtfgaDCSb4jGJ9mJci0CUuDUlO4dXQZJp1/TAEAwhIsHuIvqu+yLOPUaV1TgA57xmJmxPI5tS3i31ou+x8PH/2jG1mdHHo7nYE54=
+Received: from BN0PR07CA0006.namprd07.prod.outlook.com (2603:10b6:408:141::23)
+ by MN6PR12MB8490.namprd12.prod.outlook.com (2603:10b6:208:470::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.27; Tue, 10 Dec
- 2024 17:48:45 +0000
-Received: from BL02EPF0002992D.namprd02.prod.outlook.com
- (2603:10b6:208:1a0:cafe::c) by MN2PR07CA0010.outlook.office365.com
- (2603:10b6:208:1a0::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.14 via Frontend Transport; Tue,
- 10 Dec 2024 17:48:45 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Tue, 10 Dec
+ 2024 17:48:47 +0000
+Received: from BL02EPF0002992B.namprd02.prod.outlook.com
+ (2603:10b6:408:141:cafe::1c) by BN0PR07CA0006.outlook.office365.com
+ (2603:10b6:408:141::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.15 via Frontend Transport; Tue,
+ 10 Dec 2024 17:48:47 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,22 +48,24 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
+ BL02EPF0002992B.mail.protection.outlook.com (10.167.249.56) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8251.15 via Frontend Transport; Tue, 10 Dec 2024 17:48:45 +0000
+ 15.20.8230.7 via Frontend Transport; Tue, 10 Dec 2024 17:48:46 +0000
 Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 10 Dec
- 2024 11:48:43 -0600
+ 2024 11:48:45 -0600
 From: Shannon Nelson <shannon.nelson@amd.com>
 To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
 	<edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
 	<jacob.e.keller@intel.com>
 CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
-Subject: [PATCH net 0/3] ionic: minor code fixes
-Date: Tue, 10 Dec 2024 09:48:25 -0800
-Message-ID: <20241210174828.69525-1-shannon.nelson@amd.com>
+Subject: [PATCH net 2/3] ionic: no double destroy workqueue
+Date: Tue, 10 Dec 2024 09:48:27 -0800
+Message-ID: <20241210174828.69525-3-shannon.nelson@amd.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20241210174828.69525-1-shannon.nelson@amd.com>
+References: <20241210174828.69525-1-shannon.nelson@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,67 +77,89 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|DM4PR12MB5770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5626d893-2d82-4471-371e-08dd1942e4a2
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992B:EE_|MN6PR12MB8490:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1a95862-3745-4e0d-9688-08dd1942e5b6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dOVc11mN/syfmHH3vGl2CTn/BF1kTeempG6Bkqwiz2l8hSGirUWHU21Yui5S?=
- =?us-ascii?Q?YzznGAQUkMb27lpaDPuIcpAToShJSZdTzF2FolAqfsfp3vunbwo/3uI6jJYk?=
- =?us-ascii?Q?zfcQkSGAptuaVl1UBOV0upOJ8DX8QK2yTah7B0J7YSoTh4+5T1ByVh/r3J2M?=
- =?us-ascii?Q?G0EgCgtgkcP/nVa8vdANnS6jszr5rLY4PWIZxG3X+AOiopVvclSQr0rZtJmx?=
- =?us-ascii?Q?9ARKvTpiZyqJ3gPOEnueBNyJcaTj73ZqPNds7xo4EGZacMIL73CX0jkveoid?=
- =?us-ascii?Q?GLb2Ee9Lk8zcny0o/O2qv3bwAdUYfwNp5ePVwMzudiSZ7BGcxWf1AHg3keLu?=
- =?us-ascii?Q?i4+8BD9x5h6yNWbEqj5ETh+63ILKBuyerG57XsuiKKQ6d0nAuxlyAFpJjtRn?=
- =?us-ascii?Q?r4HyDlD+IHDPkVtghxaryJtXNUx4b0SZbSBJbHL/IrkFRwLQwarGK2CVfVtx?=
- =?us-ascii?Q?x4K0wrXtpPXDWPR+KYaTEtW0VFPa+Zs3/iDySq2e47DxdHYB7J/Exv8u9RV4?=
- =?us-ascii?Q?nkiDCHcp+XcWrwo/dUNPoqhJZxxav1fEhEmuoTq3q5BO1CAQMD2odz6PDBFd?=
- =?us-ascii?Q?AnzsV3Y+rpzhxkEVg6+yTtAT5MUlVZWB5W9B5qcnt6T0mqmDKMY0Nev753Xp?=
- =?us-ascii?Q?DjzcEDMMDeVVEbLBe6Py2SGuiJ5DqX749RezhIUCk7RTS+k92aUz9yih0RJW?=
- =?us-ascii?Q?51ByAWSc6LUst/3PlSlkAooRsgbUd1aOsAYcNVsvGyS85PSKvky27Tmi9Wku?=
- =?us-ascii?Q?pr7FQXiTlnUOOgmtgC4eY7JkyhDsZSGs2SGnjCXigbEo3vQEmraqjcEgXsEK?=
- =?us-ascii?Q?NsHy0NhwtZ9LhD83nOY5cwqyVgdNkSHaQhLfGhsr8Db6KGhXInuFAUDcVwuF?=
- =?us-ascii?Q?egKJFsIbOIFByoPUtl40Ct2Upp/1sk094ZC4ogKXjrfEif05oxdFyeqDh/4X?=
- =?us-ascii?Q?jQCX/ncjqeDyI47zdzSr5Fy0pWDyRqeVi9JmHt5T3Y8b0xLIFfuyE8/Lthun?=
- =?us-ascii?Q?PfxxOq++SqPDio2ki0CwYKtWGi7gkmKv6E1oYCifC182+F3NpZyuedT8L0wp?=
- =?us-ascii?Q?JIjf0bsCnxSMjZ2KsDP0EaPfqfu8smVoiyfHzwN2iTA9+kLB0LtobbTxmFlM?=
- =?us-ascii?Q?HArEPTHp/i97ia2ZbcOcElBxu3YqqZPthMHsWDTaCtKpPivP29Q8CTCL8s6b?=
- =?us-ascii?Q?+SudcEk+/lPXJd3n0JmjikYWg9NDdXzqf/ecsgrNbL28m60qrSq3LKnB3x4m?=
- =?us-ascii?Q?pqoUsaZp2iyV76KsvxcEyNMYgfR7NHNUGXH9eDFv4os39bGMAWR3BdRIW0ma?=
- =?us-ascii?Q?XglwYecb0vonSCyaQxX76OBISetor7DA5Bh6S/SBCC+1ya9D0Y2Q+JDDXW7F?=
- =?us-ascii?Q?pj2RDmu/h1tvbfaEqbLOS6bTwh6+xGVuPTMfFBiQ6LI/Rubt5rAYNn2vcfYq?=
- =?us-ascii?Q?+abboCM8IEkEJQziyiNLgA+8GOtAZytK?=
+	=?us-ascii?Q?Sj04RKvwiCpvT6DIM5tNd6Wf+Bam1P9XW1coEeJdKk8CeqesUdU95vzrLrUl?=
+ =?us-ascii?Q?G+ItNTtTK7IM8bI++M+WngISLwBMPxEdnvci7YYcF9A0urZGycRxvN4d40xw?=
+ =?us-ascii?Q?giC1pfc4+uHLQ4Jy4+VsYjeFpUbS1sDp/CqIbnXWG3lbpGXCpbazp2T9hVWz?=
+ =?us-ascii?Q?btHURHhniQC46oEIu68OUOTc/njymva3FDVHosIPK7uzyBWb5rItyEj6XD88?=
+ =?us-ascii?Q?rC90SwdPEKVoPaE7EiMxa3yFdOIVehk6A80DxMyzkZ6UyOyEXWN4Webyjp+2?=
+ =?us-ascii?Q?uCfjZXP0KXAHOkEfrocJv6/O7khOV70H8DnGW/t6pif8PaIjLqe5BX9bBTgc?=
+ =?us-ascii?Q?6b/f7wy3GSGoBSPNkyvxjue/P2dS+VkmN3sVl4TpUaWHb4B89SxFizjPz6Xv?=
+ =?us-ascii?Q?O5xqKNAbGbiilNfjZklwiNkQEEKHv3ybvC0kcgZQMxOhlfyRt+h1S/A2gxrI?=
+ =?us-ascii?Q?gG5JiF9992AkIdySixTNKA1eWoTUrVXpv0q8fkNRdeZKzCg9LLfiYji9Pbqs?=
+ =?us-ascii?Q?rr+ZfrCx0iAWbW34bv0YebKfU8LbZv2qPvGcPcB293rKj1BXbkag6n90MclF?=
+ =?us-ascii?Q?nQMjit7Sg+ZqagWDOG8DSYABar9r/5gE6/baFyLTeXTJxPU0VCGbogBMcQ9A?=
+ =?us-ascii?Q?cAhG6eXLxtkyF4/2bw2Jmsm3gp0N+VeNDBCRgvV2fU66La+PvLYINLUQeMFY?=
+ =?us-ascii?Q?HyhNS9fkqLmh9+iHudRsiWhjydRZd9SBRIMNlFBhEz+oTuCBP41AQnWSwE0g?=
+ =?us-ascii?Q?IiDSz0OEm3g4RQM3DvtLAlToPcZwH1XvGyJ8XfP4A4V90lxR2QOod9SArKxQ?=
+ =?us-ascii?Q?/czS8VVoayI+HPOAJ6ecF+jCv2t7Jl8S1BxCjVWLCY8gwsMe5tqP8gbAOb4k?=
+ =?us-ascii?Q?gx8uGFgtdbf/Jrj0cWpjur5G5N6kWxVtJw3XpsdVfbEre4nxaYnswUTbRVbF?=
+ =?us-ascii?Q?Of0ffdWEnbCK/oz3ldFb3BvuM9FK/JXuFjc5npl9kvyEG0tv3EgyjQQ5GyLa?=
+ =?us-ascii?Q?SCzMKONnyq47a/VJv9QyBveeh64RFxmZ771CXsIZhibWYwgO5fNQ4NpQqkfR?=
+ =?us-ascii?Q?rUqBNpHAZM3+3F7D6kR+C01MYklg+iKgY4yClUYcjtpTJlQzZrjRbgksQlKi?=
+ =?us-ascii?Q?OH6s/mRMtA5szXisxYmiqBLx55kZJTqPVgzxjbAUo8WeFtoHBJixb2cehPvc?=
+ =?us-ascii?Q?Mhe9IM3EawXPNWKTwFNvENrOM7LNRGNUJzfAUA6uTb2Wl4rjq7sVkshzTE0O?=
+ =?us-ascii?Q?EqNaObFsoAGqfa2OqskB+pjmaj/H9ja+o5zpPI4HyMTSOaKLida4F75eAE+2?=
+ =?us-ascii?Q?5mfI3Ft0vYpM+b2G7if5XdZObmFXfHspyK+nsQridrqQdaoAa0aePtPsG0jN?=
+ =?us-ascii?Q?Vpyg4+V9goPJo3pZWe983UexmrOiHeFb/7DVqn4f9l/JGy5SF+58cfkokV44?=
+ =?us-ascii?Q?t5uQCqOPs4WDNOdTcxph3M1liLRNrrAo?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 17:48:45.0225
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 17:48:46.8337
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5626d893-2d82-4471-371e-08dd1942e4a2
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1a95862-3745-4e0d-9688-08dd1942e5b6
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992D.namprd02.prod.outlook.com
+	BL02EPF0002992B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5770
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8490
 
-These are a couple of code fixes for the ionic driver.
+There are some FW error handling paths that can cause us to
+try to destroy the workqueue more than once, so let's be sure
+we're checking for that.
 
-Brett Creeley (1):
-  ionic: Fix netdev notifier unregister on failure
+The case where this popped up was in an AER event where the
+handlers got called in such a way that ionic_reset_prepare()
+and thus ionic_dev_teardown() got called twice in a row.
+The second time through the workqueue was already destroyed,
+and destroy_workqueue() choked on the bad wq pointer.
 
-Shannon Nelson (2):
-  ionic: no double destroy workqueue
-  ionic: use ee->offset when returning sprom data
+We didn't hit this in AER handler testing before because at
+that time we weren't using a private workqueue.  Later we
+replaced the use of the system workqueue with our own private
+workqueue but hadn't rerun the AER handler testing since then.
 
- drivers/net/ethernet/pensando/ionic/ionic.h         |  1 -
- drivers/net/ethernet/pensando/ionic/ionic_dev.c     |  5 ++++-
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c |  4 ++--
- drivers/net/ethernet/pensando/ionic/ionic_lif.c     | 11 ++---------
- 4 files changed, 8 insertions(+), 13 deletions(-)
+Fixes: 9e25450da700 ("ionic: add private workqueue per-device")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_dev.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+index 9e42d599840d..57edcde9e6f8 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+@@ -277,7 +277,10 @@ void ionic_dev_teardown(struct ionic *ionic)
+ 	idev->phy_cmb_pages = 0;
+ 	idev->cmb_npages = 0;
+ 
+-	destroy_workqueue(ionic->wq);
++	if (ionic->wq) {
++		destroy_workqueue(ionic->wq);
++		ionic->wq = NULL;
++	}
+ 	mutex_destroy(&idev->cmb_inuse_lock);
+ }
+ 
 -- 
 2.17.1
 
