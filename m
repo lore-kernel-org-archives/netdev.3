@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46BA4A04;
-	Tue, 10 Dec 2024 01:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672641863E;
+	Tue, 10 Dec 2024 01:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733794607; cv=none; b=Bb58Q1qdf/YRmIgL3GWwiATQcmMSvAJOQmoB3TJAseNkAzzf17LxeTncB9yDST0N19/jbAq9mTHjUqFt1ECSE7TLrwLJ/eWFxN+7dReqdSTfc0gxwbCLIQFdh21PLKUnMuo4l672RN+vnVKhAG02hyuuehW1IJzNwwOECvMexgc=
+	t=1733795628; cv=none; b=hQaDOMTdATz4Y1ct5IwL2A02cUwxHRZUPa79Tj3ufvr5XrTRSfdA8xn40tozl6oBkvgBcFcVYn9+vj1swqf7QOqFaPD9D8aubzSaUXi0SIZTB0z1mMSaQGeVjXlOMZCazYlh94A8T/HkwDet9u3ISwjmxexmPGnGyalNBsOfJTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733794607; c=relaxed/simple;
-	bh=IBXxBCGq5VRVnZFSaHJfkZkdGijYMzRvolmtnY5fLKM=;
+	s=arc-20240116; t=1733795628; c=relaxed/simple;
+	bh=0ohP2btiYgvRGCiZ+by5SNw8/jBZ9VC7lNA30/45sQ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CRDQfIcaKLPTOvDbinDo1Z8WXRQ3Vf/nF2cCTXWlGrLru3njHqs52v/YiY/1fP6z10oqqmpoDwPUrMFly2vHDTXrh+YT6Oof/soiLzvA7Weay518Up/bN+ezw4S7G/uEEYsLDs9sKGcP2ZCVqWphrm1CaaJY4ksyQQSxzlR+jK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zlxM1gJb; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=B7UgDsxWOqTL2CkVkRYM8GdwPWgw+ww2SQq4VzrmdP5ImZHT8xXLU1ZhuCibPlH26SrlV44NaLWjF3Wm/D5dkQg1PcjaXx5Q5ET6j5HisU0WjhbNaXNwt+7CRsjxck9nWQTH5umRsj65emA6oHor3Ja0A/7ezKIXGEpTsLvRwvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PrHYY1z8; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zlxM1gJb"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PrHYY1z8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eo4Cvix0Q6Ny9IVkv622V5LskCRdrNKizWnESnyiqRc=; b=zlxM1gJbeJPhQfj3PB35xuI8ka
-	vkwcwGEOvFv3yoPz55tUJfg/DXCtYKZTlq9jj8viWj3uR/WYXPWDA6puNYS+cDwEyQWxoraWd54M/
-	4LMvidGOhs7EPkylBIkBEcr7FTmVOI5TeH5gBWhxMDVMWJ5Ru37S+YjElYMFjqhx5C+A=;
+	bh=SXp+qtxYbr5cJiQYFPqHbEdcMH4PcZUu6E1u3pNKqeQ=; b=PrHYY1z8LaYBGTRjlMabb+CPuG
+	yslmeEFU9rTTL0FCGvDhAUjzexvuxZAG5WSJ/dh4SGH0pXKnkwtnvkPnPzjw33K9/pENQff2qj99/
+	vcta6hGz06pCRWoPP7hyhazcKoOzSfovgx4MV8bFzLb8n/sAF2DelRYbaFhPM0BM02S8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tKpAr-00Fjr0-8U; Tue, 10 Dec 2024 02:36:29 +0100
-Date: Tue, 10 Dec 2024 02:36:29 +0100
+	id 1tKpRO-00FjyY-Aq; Tue, 10 Dec 2024 02:53:34 +0100
+Date: Tue, 10 Dec 2024 02:53:34 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -47,11 +47,11 @@ Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	upstream@airoha.com
-Subject: Re: [net-next PATCH v11 9/9] net: phy: Add Airoha AN8855 Internal
- Switch Gigabit PHY
-Message-ID: <b3b79c80-ac7c-456b-a3b5-eee61f671694@lunn.ch>
+Subject: Re: [net-next PATCH v11 6/9] net: mdio: Add Airoha AN8855 Switch
+ MDIO Passtrough
+Message-ID: <5aec4a94-3cea-41a4-8500-71472fae51d4@lunn.ch>
 References: <20241209134459.27110-1-ansuelsmth@gmail.com>
- <20241209134459.27110-10-ansuelsmth@gmail.com>
+ <20241209134459.27110-7-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,27 +60,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241209134459.27110-10-ansuelsmth@gmail.com>
+In-Reply-To: <20241209134459.27110-7-ansuelsmth@gmail.com>
 
-> +config AIR_AN8855_PHY
-> +	tristate "Airoha AN8855 Internal Gigabit PHY"
-> +	help
-> +	  Currently supports the internal Airoha AN8855 Switch PHY.
-> +
->  config AIR_EN8811H_PHY
->  	tristate "Airoha EN8811H 2.5 Gigabit PHY"
->  	help
-
-Do you have any idea why the new one is AN, and previous one is EN?  I
-just like consistent naming, or an explanation why it is not
-consistent.
-
-> +#define AN8855_PHY_ID				0xc0ff0410
-> +static struct phy_driver an8855_driver[] = {
+> +static int an855_phy_restore_page(struct an8855_mfd_priv *priv,
+> +				  int phy) __must_hold(&priv->bus->mdio_lock)
 > +{
-> +	PHY_ID_MATCH_EXACT(AN8855_PHY_ID),
+> +	/* Check PHY page only for addr shared with switch */
+> +	if (phy != priv->switch_addr)
+> +		return 0;
+> +
+> +	/* Don't restore page if it's not set to switch page */
+> +	if (priv->current_page != FIELD_GET(AN8855_PHY_PAGE,
+> +					    AN8855_PHY_PAGE_EXTENDED_4))
+> +		return 0;
+> +
+> +	/* Restore page to 0, PHY might change page right after but that
+> +	 * will be ignored as it won't be a switch page.
+> +	 */
+> +	return an8855_mii_set_page(priv, phy, AN8855_PHY_PAGE_STANDARD);
+> +}
 
-Is there any documentation about the ID, and the lower nibble. Given
-it is 0, i'm wondering if PHY_ID_MATCH_EXACT() is correct.
+I don't really understand what is going on here. Maybe the commit
+message needs expanding, or the function names changing.
+
+Generally, i would expect a save/restore action. Save the current
+page, swap to the PHY page, do the PHY access, and then restore to the
+saved page.
 
 	Andrew
