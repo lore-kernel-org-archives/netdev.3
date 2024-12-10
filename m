@@ -1,62 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB86223E90
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 09:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71223DE80
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 09:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733824410; cv=none; b=RerAQMAEuxbfKbknHSYz3cmrFB5TvB2e+sdpnzzAEPRk/0AbRL8T03An6o2l5ZCC45e8i2S+OTv8WvtoyU1jTnhkeRMEQUasod+DhbRncsazQ5Ei4jDrloVMM6Lc4Bw0Jntb/651u/aqVNhGxyiglRGZH5BYAwCGZN+DpnuZ7ig=
+	t=1733824729; cv=none; b=EfPPOaBWDw5zXLDrTqIq+ve+gb63QGlogQYmCc5/s1kdvYSE9hDfEoqJ30Y1vAEzrVw50xRqNw9vL5xTLA3B5rUxa/UPgbj8FmFHAaOj+pV8HNxyaWpuxdEl8SnCHYOdheFR5rUECAHPdHqxCSFP/umrjcR+H3IWWW3E9PuBhf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733824410; c=relaxed/simple;
-	bh=5j4Dk8LXBjZqOyEFGw3cHHkqdvLYPJPuGAYZqOZ1gsg=;
+	s=arc-20240116; t=1733824729; c=relaxed/simple;
+	bh=rkrQTBCxPJXML5gKVUFymSfiqM6TYJ3wvjo8DKsj2fA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sjRwcfP9XvDaNLUsqnu9zsJbygyr8kkv0kUoJgfQpUeHZXJZdnDDsSv2SuTDEGbdJ50rVsSNNeqk33kPBURcW0eQWNxRUsVZwgMt2bMOuhvnrQoFKJCglQUyW6i5kmDjReVS3nrkxhb8KzowSI4wnAm0nTvRIUIVa9GBifVnRkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Asu0KpH2; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gscgcw23W/08BUoy66R9VJk9AJwPonz4LjPRUvZhBqNYMKQdWYMDHyRSHWQ9bXq2vWxWle1famOLWJdAcQPeA2FswiW+5LDs77lE57m1xWiWY1LAkNFwEWXUTT311zi5xbFBLh5+ThzFb9C4ZQEZQKcvN1v+p1yzlV41jZGQPho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=iR+XkCRS; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Asu0KpH2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733824409; x=1765360409;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5j4Dk8LXBjZqOyEFGw3cHHkqdvLYPJPuGAYZqOZ1gsg=;
-  b=Asu0KpH21kPBA93osX+KP8P/+5Fy+dvm+eCn2yyv1/RSw50oSKyTg+ZO
-   r4n53/rhuzGKPPhNtMCOQEIv0ErtZdm5Bio+p7iILASrykdPta2pmzDop
-   e6Ad0kKDcAUF7WUo40VyO1NYQ3ODN91WrJ+1iQxhJvft1HH9LIRkLHzQZ
-   fs3yQwSpXY4QZquYWvelJHEWyUYbL3YuKo4llLHIL2yFG3YzyTuHEo2tx
-   fzxHDsuTA9Z5aCFgpk8am2s+FLGt+hzL3qzX5kLltzgQWlpm49l0G8vzn
-   Lobm8oIxcVYHFKpvATIcI9tFOqM7F3Deb9s936YPEZaXEkPr1mT1RpPop
-   g==;
-X-CSE-ConnectionGUID: BDj2rhfeQ2u+MPCnu/d6dQ==
-X-CSE-MsgGUID: c23XTtgPSL2PF3OYd3rqKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45541953"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; 
-   d="scan'208";a="45541953"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 01:53:26 -0800
-X-CSE-ConnectionGUID: 4iYS4OinRDmUfCLTyTXixw==
-X-CSE-MsgGUID: URPu72AYQYWamYBoeRw1cA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="132743742"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 01:53:24 -0800
-Date: Tue, 10 Dec 2024 10:50:21 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Petr Machata <petrm@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="iR+XkCRS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Su63dy4fd1DaEn5KZcb5bHlp+IGfP7I6fk/9Lsw5iaY=; b=iR+XkCRSMmNPuuYtVe5pSpc9V7
+	t7yoO6cz7AEe7zaCNv3Ob/DCfE1xTiginHSLZNgefIK1rGwu4dqA4xTMBmq4x3xinqqAX801cscGt
+	4AmNR6YNB5hOYqs/CCGuccyGUzXbQ9OfwMD3FO2ovWRP4gLZHZSyze7AS6Ax93sWDPbAhLhMx6fVq
+	9mLUZ7Ww5aeOZvnM5YScZPOmWLqOvpmC/aUfwiEJf2CXm2iRKnuOGiyTWVO3uqXR+lBVG6DuwE++w
+	SPilAQf3qQkPzvnU7mmSTNa2bcqoqo629Vx8qImjnq19UUnCKlaZrACbSLG9unENOkzgDezoMcsxt
+	pptx72MQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59466)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1tKx0r-00027H-1X;
+	Tue, 10 Dec 2024 09:58:41 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1tKx0q-0002rY-1Q;
+	Tue, 10 Dec 2024 09:58:40 +0000
+Date: Tue, 10 Dec 2024 09:58:40 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bryan Whitehead <bryan.whitehead@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
-	Ido Schimmel <idosch@nvidia.com>, mlxsw@nvidia.com,
-	Vladyslav Mykhaliuk <vmykhaliuk@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH net-next] mlxsw: spectrum_flower: Do not allow mixing
- sample and mirror actions
-Message-ID: <Z1gO3ewMq07er0TN@mev-dev.igk.intel.com>
-References: <d6c979914e8706dbe1dedbaf29ffffb0b8d71166.1733822570.git.petrm@nvidia.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH net-next 06/10] net: phylink: allow MAC driver to
+ validate eee params
+Message-ID: <Z1gQ0O8dbUl26JTc@shell.armlinux.org.uk>
+References: <Z1b9J-FihzJ4A6aQ@shell.armlinux.org.uk>
+ <E1tKefn-006SMv-Lg@rmk-PC.armlinux.org.uk>
+ <a72db39a-ca78-43bc-a15b-5f1ab39af661@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,72 +63,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d6c979914e8706dbe1dedbaf29ffffb0b8d71166.1733822570.git.petrm@nvidia.com>
+In-Reply-To: <a72db39a-ca78-43bc-a15b-5f1ab39af661@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Dec 10, 2024 at 10:45:37AM +0100, Petr Machata wrote:
-> From: Ido Schimmel <idosch@nvidia.com>
+On Tue, Dec 10, 2024 at 04:21:51AM +0100, Andrew Lunn wrote:
+> > +/**
+> > + * mac_validate_tx_lpi() - validate the LPI parameters in EEE
+> > + * @config: a pointer to a &struct phylink_config.
+> > + * @e: EEE configuration to be validated.
+> > + *
+> > + * Validate the LPI configuration parameters in @e, returning an appropriate
+> > + * error. This will be called prior to any changes being made, and must not
+> > + * make any changes to existing configuration. Returns zero on success.
 > 
-> The device does not support multiple mirror actions per rule and the
-> driver rejects such configuration:
-> 
->  # tc filter add dev swp1 ingress pref 1 proto ip flower skip_sw action mirred egress mirror dev swp2 action mirred egress mirror dev swp3
->  Error: mlxsw_spectrum: Multiple mirror actions per rule are not supported.
->  We have an error talking to the kernel
-> 
-> Internally, the sample action is implemented by the device by mirroring
-> to the CPU port. Therefore, mixing sample and mirror actions in a single
-> rule does not work correctly and results in the last action effect.
-> 
-> Solve by rejecting such misconfiguration:
-> 
->  # tc filter add dev swp1 ingress pref 1 proto ip flower skip_sw action mirred egress mirror dev swp2 action sample rate 100 group 1
->  Error: mlxsw_spectrum: Sample action after mirror action is not supported.
->  We have an error talking to the kernel
-> 
->  # tc filter add dev swp1 ingress pref 1 proto ip flower skip_sw action sample rate 100 group 1 action mirred egress mirror dev swp2
->  Error: mlxsw_spectrum: Mirror action after sample action is not supported.
->  We have an error talking to the kernel
-> 
-> Reported-by: Vladyslav Mykhaliuk <vmykhaliuk@nvidia.com>
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-> Signed-off-by: Petr Machata <petrm@nvidia.com>
-> ---
->  drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> index f07955b5439f..6a4a81c63451 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-> @@ -192,6 +192,11 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
->  				return -EOPNOTSUPP;
->  			}
->  
-> +			if (sample_act_count) {
-> +				NL_SET_ERR_MSG_MOD(extack, "Mirror action after sample action is not supported");
-> +				return -EOPNOTSUPP;
-> +			}
-> +
->  			err = mlxsw_sp_acl_rulei_act_mirror(mlxsw_sp, rulei,
->  							    block, out_dev,
->  							    extack);
-> @@ -265,6 +270,11 @@ static int mlxsw_sp_flower_parse_actions(struct mlxsw_sp *mlxsw_sp,
->  				return -EOPNOTSUPP;
->  			}
->  
-> +			if (mirror_act_count) {
-> +				NL_SET_ERR_MSG_MOD(extack, "Sample action after mirror action is not supported");
-> +				return -EOPNOTSUPP;
-> +			}
-> +
->  			err = mlxsw_sp_acl_rulei_act_sample(mlxsw_sp, rulei,
->  							    block,
->  							    act->sample.psample_group,
-> -- 
-> 2.47.0
+> Maybe suggest -EOPNOTSUPP? We might then get more uniform error codes
+> from MAC drivers?
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+-EOPNOTSUPP would be appropriate if the driver doesn't support EEE at
+all. Other errors are more appropriate when validating the value of
+the parameters (e.g. tx_lpi_timer.)
 
-Thanks
+However, we probably need to have a discussion about the best way to
+handle tx_lpi_timer values that the hardware can't deal with. Should we
+handle it with a hrtimer? If so, we probably need mac_enable_tx_lpi() to
+return an error code, so that the core knows that the hardware can't
+cope with the value at a particular speed, and needs to switch to a
+software timer (I'm not currently sure how complex that would be to
+implement, but I think stmmac takes this approach.)
+
+That could make mac_validate_tx_lpi() redundant, but then I have a
+stack of DSA patches that could use this callback to indicate that
+EEE is not supported.
+
+I don't have all the answers for this, so I was hoping to kick off a
+discussion in the RFC patchset before submitting something that could
+be merged, but that didn't happen.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
