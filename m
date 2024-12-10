@@ -1,110 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED8E1AAA15;
-	Tue, 10 Dec 2024 16:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733847300; cv=none; b=EKFy394M0FhezenoHT9le7XriXn37zAMlJeDCZ4UtO1n9l94EGd2Fu8twTfty+zOn2k/CnrxeGCR+DkVEyA+cuq8xp87cuiX9qfIvEIc/+k3ipGaOYvfWnO9f4lyn7a1sLVvC2dITIJEHmUZWEUMgWWEWjn72wAMGuN7/rgQeLk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733847300; c=relaxed/simple;
-	bh=31VPjuhtUqs5XTJZjLWo1bnT/4FHbU4/2zRNq1awM5E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oEvSJu85E7sacZDilXxPKKeQFQrgw1SP/y3wwi9uYiNv+YlHQoqGJfxPUYN9mNm4oNmSyCEGJW3J4X7v3fGygxAG30P/0nHUGDGCXXZa+/6KnVzH6XvRg0LHcFt0riE11CfxJfH2UXPGJ8WgjYt1Vgu9ocVlnBalqAb+UZwnrLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPZf5H1B; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPZf5H1B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F7C4CEDE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4044A23DEBB;
 	Tue, 10 Dec 2024 16:14:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733847300;
-	bh=31VPjuhtUqs5XTJZjLWo1bnT/4FHbU4/2zRNq1awM5E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hPZf5H1BVBX/7HcnkYtV2DylIp1rLFxLRcczmtRuCwwQ2Fov8LtGizL9CXhSrQ6EQ
-	 nfebIG+lJ8optZmTp/AFpDHHlZvHutvEUOtQWE8qTTsZp7qmhsFKnf5dVNugXqLaIK
-	 IRpNPpTBEEIevy7tDYZNRQi6FAfxcPzF0OWoPxfZJxfyiPgKcPZO6aVWQFMWl6mTzp
-	 ybDC/yirdvVia+jlDVS1pzPAKeJ/NHk05mUuKRZXieyAclX5H97oQNV7KUBQVhM9A0
-	 wYs8BPZSzWrsel9pQIywsnafcIRsbqzYuzJ1z0ZPrktZcWKiCmwD3Npl4tFTXs6KGd
-	 I/hWgMZfLyPag==
-Date: Tue, 10 Dec 2024 11:14:58 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 5.4 20/28] net: enetc: add i.MX95 EMDIO support
-Message-ID: <Z1hpArZhTewykeE4@sashalap>
-References: <20241124135549.3350700-1-sashal@kernel.org>
- <20241124135549.3350700-20-sashal@kernel.org>
- <PAXPR04MB8510442A46C2F25FF783E899882E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733847301; cv=none; b=NMJtiJsA6VwDcU6tJ3xBPkOw1bCyHJvW8SeEulZNktU1TmnxsbHaWMT1Kv49WHNU8dMQlI6NWz45DVA/KLv1DAXQL7qpQ21w9zRE0Yb9z2NRk0XL8xvxWN6eo6DzU10Gz5YE55iyPjTHdIMfa3s/mPl/Ktmrte/YnjxWnYyeZx4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733847301; c=relaxed/simple;
+	bh=YKJueWy6tNGzFZqwMVGDkhBDz5+P0CEqnmS/Chj3Z3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AHG+vyjR2kO2SVV6rMISwlhPXJTt2mZESpw63BlsXTo4CBqjZkcKPShlM85uTvTCH9qytYmAEWWQcK8qLxs31yFyLXL/7705k2pvzFhdfpB2bMvEKfdVAqf/WXkVjlYnx1aaNDGuFYClYdWshfpj5c4KsQlo0w/5D1b9P2JZGxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZ4stD6N; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZ4stD6N"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862d161947so2805066f8f.3;
+        Tue, 10 Dec 2024 08:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733847297; x=1734452097; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
+        b=GZ4stD6NTwF5k+Aw8PFdXrihdFGS0YQ7BMFbzgXuesSkAX5fu1iQnCgnqlu/Yzk3uT
+         rHcs4TOsrr5rqUoQr/viyFd5vrmpEuC+xl0p95Y+DFWlAE+kyCuUsrMgfdyU/Mn6jlU9
+         Yoh45F7X8rSrNWwXmvD9GXSQNn4XbN4LAkEdhIGdTW1Cn7ke4gS9RAUEfFy0JvnuU29+
+         FZMtWb1TcbETNjzRFHDUb48jb3/C1egFvTL27NTHORqDHgzodruipKxmG1LkuOZ6Ybcv
+         LlwBuEKwnJOEgzxgm5v+5ZMRI35lUWQm/CAFkDBBxC12nakj8HS72JKdahwRSYz02zw0
+         kSeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733847297; x=1734452097;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
+        b=tXheUrMHZ9+EaJX4LZgnqd7IGg3sqciYmzBTxh2Vvz7CE06hi2lnBwsyrzYzBXl3+R
+         EC4KM11QpgqkJWY2CkpehoVW/27YaPBUGeB1ViURjKWFwSPb/ilzJEFSjpZONOZ/268V
+         SVjEbd1VXOuYJPJA5wEMOljA1drtQ9f480rEMDg/ydJR8lMgQhIeJv8IYOR2EztupuIp
+         hpDlTStcczy5FFz5bOufXm/WOZW1WcolLZ5LXVo+bELiDsPKkkv8Pxfulnk2ADJ2ld9q
+         AGv9dUeuCGn0/EJQ0lRaWNzAyKRP+qbgZOFWc7NvK9hYH/PpDeF9IvB+uu3uTdCf13i+
+         NYpw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0MRyHY0ADvbi9AQuxJzwdYRZybMkq3Q9YkxP2p9Z1Jt+pYnIenj8Tm0Vwto5qgCUwywFtsejiI7GznQeqxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx02gdCV/vEPYnhD+2aq1eB0Rx3B2B68koh7BaX/K9GiQgt454L
+	Tf9P4yfW3/fA4ZZ2NkpKvplkhyvJeTQ7AG5j6PcpALxFxilUB7ip7pItFg==
+X-Gm-Gg: ASbGncvU8o/A+VNBpQ1omTx8Sa54AkLLSE+jnkCywI0lvE/ZrG/sXcwHKM0JelogrrY
+	ZbtkwgTvYdM3y1Cw7SB6pwIBJOKSsOmMXNvCfsPDnUwLaCfVn0efNT/stLQTNgQNpELm3qRIvAq
+	m399WfbZvkFcWSknINsIua/BU+kgpuJrVbRrH0T/ec0BmoIhTy09x6Ah+9Met0oBgxYeVRThoSo
+	CSX+Rb22TwJD23Ho2cU148H0cpA+xxTdH6H8ZrEWsqQ8GcFN3ivp0HjKFtPClnkraunDwzg
+X-Google-Smtp-Source: AGHT+IFrunASWFM+kVEDgg00JoDIUUDCUOYzzNwMirWOWSeEYV07VhTPD4RbGinhWIGL9yxmsRk3qA==
+X-Received: by 2002:a05:6000:144a:b0:385:f8bd:6e80 with SMTP id ffacd0b85a97d-3862b3e4458mr14221989f8f.56.1733847297044;
+        Tue, 10 Dec 2024 08:14:57 -0800 (PST)
+Received: from imac.lan ([2a02:8010:60a0:0:75bb:8102:943a:2eb2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f30bceadsm102383045e9.41.2024.12.10.08.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 08:14:56 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH net-next v2 0/7] netlink: specs: add a spec for nl80211 wiphy
+Date: Tue, 10 Dec 2024 16:14:41 +0000
+Message-ID: <20241210161448.76799-1-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510442A46C2F25FF783E899882E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 25, 2024 at 01:54:14AM +0000, Wei Fang wrote:
->> From: Wei Fang <wei.fang@nxp.com>
->>
->> [ Upstream commit a52201fb9caa9b33b4d881725d1ec733438b07f2 ]
->>
->> The verdor ID and device ID of i.MX95 EMDIO are different from LS1028A
->> EMDIO, so add new vendor ID and device ID to pci_device_id table to support
->> i.MX95 EMDIO.
->>
->> Signed-off-by: Wei Fang <wei.fang@nxp.com>
->> Signed-off-by: David S. Miller <davem@davemloft.net>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
->> b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
->> index fbd41ce01f068..aeffc3bd00afe 100644
->> --- a/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
->> +++ b/drivers/net/ethernet/freescale/enetc/enetc_pci_mdio.c
->> @@ -3,6 +3,8 @@
->>  #include <linux/of_mdio.h>
->>  #include "enetc_mdio.h"
->>
->> +#define NETC_EMDIO_VEN_ID	0x1131
->> +#define NETC_EMDIO_DEV_ID	0xee00
->>  #define ENETC_MDIO_DEV_ID	0xee01
->>  #define ENETC_MDIO_DEV_NAME	"FSL PCIe IE Central MDIO"
->>  #define ENETC_MDIO_BUS_NAME	ENETC_MDIO_DEV_NAME " Bus"
->> @@ -85,6 +87,7 @@ static void enetc_pci_mdio_remove(struct pci_dev *pdev)
->>
->>  static const struct pci_device_id enetc_pci_mdio_id_table[] = {
->>  	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_MDIO_DEV_ID) },
->> +	{ PCI_DEVICE(NETC_EMDIO_VEN_ID, NETC_EMDIO_DEV_ID) },
->>  	{ 0, } /* End of table. */
->>  };
->>  MODULE_DEVICE_TABLE(pci, enetc_pci_mdio_id_table);
->> --
->> 2.43.0
->
->Hi Sasha,
->
->This patch does not need to be backported, because this is a new
->feature which adds the EMDIO support for i.MX95 NETC. And i.MX95
->NETC is supported in the latest kernel (should be 6.13, Linus tree).
+Add a rudimentary YNL spec for nl80211 that includes get-wiphy and
+get-interface, along with some required enhancements to YNL and the
+netlink schemas.
 
-I'll drop it, thanks!
+Patch 1 is a minor cleanup to prepare for patch 2
+Patches 2-4 are new features for YNL
+Patches 5-6 are schema updates for feature parity
+Patch 7 is the new nl80211 spec
+
+v1 -> v2
+ - Add formatting hints support to patch 3, thanks Jakub
+ - Raise exception for unhandled hints in patch 4, thanks Jakub
+ - Update nl80211 spec w/ split-wiphy-dump in patch 7, thanks Johannes
+
+Donald Hunter (7):
+  tools/net/ynl: remove extraneous plural from variable names
+  tools/net/ynl: support decoding indexed arrays as enums
+  tools/net/ynl: support rendering C array members to strings
+  tools/net/ynl: accept IP string inputs
+  netlink: specs: support nested structs in genetlink legacy
+  netlink: specs: add s8, s16 to genetlink schemas
+  netlink: specs: wireless: add a spec for nl80211
+
+ Documentation/netlink/genetlink-c.yaml      |    2 +-
+ Documentation/netlink/genetlink-legacy.yaml |    5 +-
+ Documentation/netlink/genetlink.yaml        |    2 +-
+ Documentation/netlink/specs/nl80211.yaml    | 1938 +++++++++++++++++++
+ tools/net/ynl/lib/ynl.py                    |   45 +-
+ 5 files changed, 1978 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/netlink/specs/nl80211.yaml
 
 -- 
-Thanks,
-Sasha
+2.47.1
+
