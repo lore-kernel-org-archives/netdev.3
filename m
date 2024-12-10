@@ -1,172 +1,205 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from s1.jo-so.de (s1.jo-so.de [37.221.195.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD7F1A3BA1;
-	Tue, 10 Dec 2024 16:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664931BAED6
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 16:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.221.195.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733848646; cv=none; b=YjO+JnVuzfLdsGfyoe4aa1QQXLkXXB72c1+vumaYu90L9UbIaSkfiEVUPwM5S5J9XRv8fp2cYrW5T4hehj9RgdtRQssUFoOraULfaJCxcaq1Ewiezl3jGG+j1BtRpMk24pL5r+RcBSPSqvvAiwlrqA1TQ7wGJLnhc4pxwBPMZ0Y=
+	t=1733848991; cv=none; b=IrN3mXottk1h/q8ooGdc/PzJEP4dOzV0tzTfshbo96onU5sRM4ol7iTdjO7f6FMkEA946ei7d60Yjf/Szm4rzfutwCBhUgD/ZYgemS+oOhJe7dRJt8CHAAeNYlbBWSp5CQixkr/qX6QDCCo1cbXqzul+xwmZV0N8xO6HxMfahqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733848646; c=relaxed/simple;
-	bh=bMaWMUz5V3ffO6Fby9ugSZR/xOrKRSiA3Zeu/M2/xfM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PfiBnaSSekB7NcoKDR9WAMPOlNDcdANLdzEYfMtw47zOxOQc6fZ0nNZj951p9QwKCJhCRN3gN6U/LvAuJ8H+TjHO+8SB/CZEwpDSm2a0n7ZCZNxbW3EMhGqrD/1zitpUwm0T1Jyrd91W92YRNbfkWNF3UX6Z99g+9Kgz4tQiTnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPXQkT5e; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPXQkT5e"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30227ccf803so18584321fa.2;
-        Tue, 10 Dec 2024 08:37:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733848642; x=1734453442; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mMr2qVhA4J2Ksp2znQVcePx2ayh49sbpV9PFu6+5bZw=;
-        b=lPXQkT5eLbSJihPkq8nL0G8RkVzHzRoxK5mOatJadWIYXOxVDxpn+B/NjAsr3sNkyW
-         1cOGWBUM5DRxAknBLIIa5/A6cn7p9apbJyoJY2cMcfyqNdMJmMpKTp3JSDPexsdvavMs
-         5A+p1IsBU7sMkhEMTAjkU9wVpTHamZClnZMpUD+ekJn57j2QdyqlhkalHW1p+PH98SlX
-         NVO4E10KbKrtbbotRq0efHbzE6alEW2Dxj24B3MKZedyTM0yBpAAVZr5zdXKimdq2u7+
-         Zr8TjDW/hNkxGRvO/JDpak679tjOrtPnPQ6QhFNRe+jiirI/iLSsZE5ER/mC8JIZcB4p
-         nEig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733848642; x=1734453442;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mMr2qVhA4J2Ksp2znQVcePx2ayh49sbpV9PFu6+5bZw=;
-        b=t3VqFKAyh/iCq8qnFGWP+G27/0aq73Zt7kpOaAlPc5AtRJmLAruSeGmx1BO7twHDTi
-         tiiwQUrDPTrSHNMhn86hK2i9HGubV7CN0dRLJT/mIpqj5mcNwjNDsLjXpq4hS+4ffOwZ
-         tiszA4Die3jB2y7RkgUPHIhWMDdhB7sPytKysJz3ZAVHnBuyIdnsEJDPaedDsIbNjtQz
-         g1aExzpVYkbROFnqsKwokSe2AGfz8FOavv2bao+MtAv3CxWtJErBuhG/32p9C2VrRYKN
-         7hgyZ9Pm+LXsmYcunJ5b2bKX8BJ7mJHzGNP9HtNZzrPWp1n12jnkJLMIpVM2o6shTEZU
-         nnCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIA1APIB+1IXaJSTYld/QCmEc+YQtiTxQU+0hiXS1IJ7dl3+SbEoivIoGLL3Rt+dyv1Jvqf5ol@vger.kernel.org, AJvYcCVAtMZwqvBaghoKPvWhxRe+dogpLB5F85HKRwxWfq9wGoSwj2OrY6kSANwIYysufOyMdQ13Op8MIXPA@vger.kernel.org, AJvYcCVS1daRC6bzX4QHacuXx/Axq+TYWzUsmvsvavZ1spW2QHxesWHYfTT/OqrsDUj1guESVbxvG4pzPN+tS23toYk=@vger.kernel.org, AJvYcCWsAMbak7iBv9MOlSQ3bdWPsrNby2V/vIyRjiEZ0fmnrWcAG6PKoxEImYU5NSUfjPgXf6MB+1wcUzlKZM1v@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw80Bl/eCnReMrBbhcMMYZPNkDJoWLNFA3qinKBehRBL/ZpLhU8
-	1ZWrEEvIWJM5/QBsLYrK5aFKqp4HYkloFMc2eWMz6TPz/0ZfiFDLNOIL79b00FI5tPmx/C1Q2i8
-	ZU194xuOhgBdPeZb0trwY2S6tRHQ=
-X-Gm-Gg: ASbGnct6exCBj4xdRBsNdU2qWnitw9JO2TT5yDWfxOvxcBTQYE5uwg4bj8L3Yto0dY/
-	8gAATxVLCoIkAz3+xTa3QA4+lfW3U9aSeoSU=
-X-Google-Smtp-Source: AGHT+IHiGI51RueWOS5PEJQEG+4Gh2nJXRo4OsJkgCK1jqR6c9JsfhkuPRwhfJ6Gu9P1fz4wuUEMdL6zMVunaz4Mo1A=
-X-Received: by 2002:a05:651c:150c:b0:300:41a8:125b with SMTP id
- 38308e7fff4ca-30041a813f7mr47506931fa.37.1733848642191; Tue, 10 Dec 2024
- 08:37:22 -0800 (PST)
+	s=arc-20240116; t=1733848991; c=relaxed/simple;
+	bh=SExrzfnPZUft5lVQF9Sc4NX1Ri0gWkekHaJBuHWpshQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AVyRXNasuiAnmGzc8Po2cs9p7by770QtQrRHgzb6fvfMJQt2/X+itPnHR6Wcj8anNPZPuPoRhoPxozniEJ0SriOIxFbFw/8q5ugTj8cKmDFzrhcs4GlAQyPWS5avaufCWdZv9V+liiH7IUO0MTTnFpo4WhZHH2PMJaVnU03gGJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de; spf=pass smtp.mailfrom=jo-so.de; arc=none smtp.client-ip=37.221.195.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jo-so.de
+Received: from mail-relay (helo=jo-so.de)
+	by s1.jo-so.de with local-bsmtp (Exim 4.96)
+	(envelope-from <joerg@jo-so.de>)
+	id 1tL3KA-001aIG-07;
+	Tue, 10 Dec 2024 17:43:02 +0100
+Received: from joerg by zenbook.jo-so.de with local (Exim 4.98)
+	(envelope-from <joerg@jo-so.de>)
+	id 1tL3K9-00000000Nkk-1bIj;
+	Tue, 10 Dec 2024 17:43:01 +0100
+Date: Tue, 10 Dec 2024 17:43:01 +0100
+From: =?utf-8?B?SsO2cmc=?= Sommer <joerg@jo-so.de>
+To: Christian Eggers <ceggers@arri.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org
+Subject: Re: KSZ8795 not detected at start to boot from NFS
+Message-ID: <njdcvcha6n3chy2ldrf2ghnj5brgqxqujrk4trp5wyo6jvpo6c@b3qdubsvg6ko>
+References: <ojegz5rmcjavsi7rnpkhunyu2mgikibugaffvj24vomvan3jqx@5v6fyz32wqoz>
+ <a578b29f-53f0-4e33-91a4-3932fa759cd1@lunn.ch>
+ <phab74r5xxbufhe6llruqa3tgkxzalytgzqrko4o2bg2xzizjv@apha3we342xn>
+ <7080052.9J7NaK4W3v@n9w6sw14>
+ <zhuujdhxrquhi4u6n25rryx3yw3lm2ceuijcwjmnrr4awt4ys4@53wh2fqxnd6w>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241208204708.3742696-1-ubizjak@gmail.com> <20241208204708.3742696-3-ubizjak@gmail.com>
- <20241209113039.GN21636@noisy.programming.kicks-ass.net>
-In-Reply-To: <20241209113039.GN21636@noisy.programming.kicks-ass.net>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Tue, 10 Dec 2024 17:37:10 +0100
-Message-ID: <CAFULd4Y7-_Zax3S-m3H6ok9SvsBgS7DmJjSu=3VZ1hyzT71jjg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] compiler.h: Introduce TYPEOF_UNQUAL() macro
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-bcachefs@vger.kernel.org, linux-arch@vger.kernel.org, 
-	netdev@vger.kernel.org, Nadav Amit <nadav.amit@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@linux.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@kernel.org>, Brian Gerst <brgerst@gmail.com>, 
-	Denys Vlasenko <dvlasenk@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: multipart/mixed; boundary="00000000000069a3ca0628ed186b"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3anvsdpyl3stznej"
+Content-Disposition: inline
+In-Reply-To: <zhuujdhxrquhi4u6n25rryx3yw3lm2ceuijcwjmnrr4awt4ys4@53wh2fqxnd6w>
 
---00000000000069a3ca0628ed186b
-Content-Type: text/plain; charset="UTF-8"
+
+--3anvsdpyl3stznej
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: KSZ8795 not detected at start to boot from NFS
+MIME-Version: 1.0
 
-On Mon, Dec 9, 2024 at 12:30=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Sun, Dec 08, 2024 at 09:45:17PM +0100, Uros Bizjak wrote:
-> > Define TYPEOF_UNQUAL() to use __typeof_unqual__() as typeof operator
-> > when available, to return unqualified type of the expression.
-> >
-> > Current version of sparse doesn't know anything about __typeof_unqual__=
-()
-> > operator. Avoid the usage of __typeof_unqual__() when sparse checking
-> > is active to prevent sparse errors with unknowing keyword.
->
-> Ooooh, new toys.
->
-> I suppose __unqual_scalar_typeof() wants to be using this when
-> available?
+J=C3=B6rg Sommer schrieb am So 08. Dez, 17:44 (+0100):
+> Christian Eggers schrieb am Sa 07. Dez, 23:44 (+0100):
+> > On Saturday, 7 December 2024, 21:47:31 CET, Andrew Lunn wrote:
+> > > What i don't understand from your description is why:
+> > >=20
+> > > > +       /* setup spi */
+> > > > +       spi->mode =3D SPI_MODE_3;
+> > > > +       ret =3D spi_setup(spi);
+> > > > +       if (ret)
+> > > > +               return ret;
+> > > > +
+> > >=20
+> > > is causing this issue. Is spi_setup() failing?
+> >=20
+> > On Saturday, 7 December 2024, 22:07:23 CET, J=C3=B6rg Sommer wrote:
+> >=20
+> > > I've added another dev_err() after the spi_setup:
+> > >=20
+> > > [    1.680516] ksz8795-switch spi0.1: ksz8795_spi_probe:55: ret of sp=
+i_setup=3D0
+> > > [    1.819194] ksz8795-switch spi0.1: ksz8795_spi_probe:61: ret=3D-22#
 
-Not only that, the new toy enables clang to check kernel's address
-spaces in a generic way using address_space attribute.
+Hi Christian,
 
-Please find attached a follow-up patch that enables __percpu checks
-for all targets, supported by clang. Clang is a little bit pickier
-than gcc about named address space declarations (it warns for use of
-duplicated address space attribute), so the patch in addition to the
-obvious
+I've changed the code for debugging to this:
 
-+#  define __percpu_qual        __attribute__((address_space(3)))
+        {
+            u16 id16;
+            ret =3D ksz_read16(dev, 0x00, &id16);
+            dev_err(&spi->dev, "%s:%d: ksz_read16(REG_CHIP_ID0, %d) =3D %d\=
+n",
+                    __func__, __LINE__, id16, ret);
+        }
 
-also fixes a couple of macros that could result in a duplicated
-address space attribute.
+	/* setup spi */
+        dev_err(&spi->dev, "Switching SPI mode from %d to spi-cpha,spi-cpol=
+\n",
+                spi->mode);
+        spi->mode =3D SPI_MODE_3;
+        ret =3D spi_setup(spi);
+        if (ret)
+            return ret;
 
-The patch, applied as a follow-up to the series, survives allyesconfig
-compilation with clang-19 and produces a bootable kernel. The patch
-was tested only for x86_64 target, for other targets a couple of
-trivial fixes would be necessary (a cast or a substitution of typeof()
-with TYPEOF_UNQUAL()).
+        {
+            u16 id16;
+            ret =3D ksz_read16(dev, 0x00, &id16);
+            dev_err(&spi->dev, "%s:%d: ksz_read16(REG_CHIP_ID0, %d) =3D %d\=
+n",
+                    __func__, __LINE__, id16, ret);
+        }
 
-AFAICS, the same approach using clang's address_space attribute can be
-implemented to also check other address spaces: __user, __iommu  and
-__rcu.
+	ret =3D ksz8_switch_register(dev);
 
-Uros.
+	dev_err(&spi->dev, "ksz8795_spi_probe:%d: ret=3D%d\n", __LINE__, ret);
+	if (ret =3D=3D -EINVAL || ret =3D=3D -ENODEV)
+		ret =3D -EPROBE_DEFER;
 
---00000000000069a3ca0628ed186b
-Content-Type: text/plain; charset="US-ASCII"; name="percpu-clang.diff.txt"
-Content-Disposition: attachment; filename="percpu-clang.diff.txt"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m4iomhgl0>
-X-Attachment-Id: f_m4iomhgl0
+With a devicetree without spi-cpha, spi-cpol I get this:
 
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvYXNtLWdlbmVyaWMvcGVyY3B1LmggYi9pbmNsdWRlL2FzbS1n
-ZW5lcmljL3BlcmNwdS5oCmluZGV4IDAyYWVjYTIxNDc5YS4uNDEwOWQ4MjhhNTY0IDEwMDY0NAot
-LS0gYS9pbmNsdWRlL2FzbS1nZW5lcmljL3BlcmNwdS5oCisrKyBiL2luY2x1ZGUvYXNtLWdlbmVy
-aWMvcGVyY3B1LmgKQEAgLTE2LDcgKzE2LDEyIEBACiAgKiBzcGFjZSBxdWFsaWZpZXIpLgogICov
-CiAjaWZuZGVmIF9fcGVyY3B1X3F1YWwKLSMgZGVmaW5lIF9fcGVyY3B1X3F1YWwKKyMgaWYgX19o
-YXNfYXR0cmlidXRlKGFkZHJlc3Nfc3BhY2UpICYmIFwKKyAgICAgZGVmaW5lZChDT05GSUdfQ0Nf
-SEFTX1RZUEVPRl9VTlFVQUwpICYmICFkZWZpbmVkKF9fQ0hFQ0tFUl9fKQorIyAgZGVmaW5lIF9f
-cGVyY3B1X3F1YWwJCV9fYXR0cmlidXRlX18oKGFkZHJlc3Nfc3BhY2UoMykpKQorIyBlbHNlCisj
-ICBkZWZpbmUgX19wZXJjcHVfcXVhbAorIyBlbmRpZgogI2VuZGlmCiAKICNpZmRlZiBDT05GSUdf
-U01QCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2RldmljZS5oIGIvaW5jbHVkZS9saW51eC9k
-ZXZpY2UuaAppbmRleCA2NjdjYjZkYjkwMTkuLjFkNmE1NWQ1MjUwYSAxMDA2NDQKLS0tIGEvaW5j
-bHVkZS9saW51eC9kZXZpY2UuaAorKysgYi9pbmNsdWRlL2xpbnV4L2RldmljZS5oCkBAIC00MzEs
-OSArNDMxLDkgQEAgc3RhdGljIGlubGluZSBpbnQgX19kZXZtX2FkZF9hY3Rpb25fb3JfcmVzZXQo
-c3RydWN0IGRldmljZSAqZGV2LCB2b2lkICgqYWN0aW9uKSgKICAqIFJFVFVSTlM6CiAgKiBQb2lu
-dGVyIHRvIGFsbG9jYXRlZCBtZW1vcnkgb24gc3VjY2VzcywgTlVMTCBvbiBmYWlsdXJlLgogICov
-Ci0jZGVmaW5lIGRldm1fYWxsb2NfcGVyY3B1KGRldiwgdHlwZSkgICAgICBcCi0JKCh0eXBlb2Yo
-dHlwZSkgX19wZXJjcHUgKilfX2Rldm1fYWxsb2NfcGVyY3B1KChkZXYpLCBzaXplb2YodHlwZSks
-IFwKLQkJCQkJCSAgICAgIF9fYWxpZ25vZl9fKHR5cGUpKSkKKyNkZWZpbmUgZGV2bV9hbGxvY19w
-ZXJjcHUoZGV2LCB0eXBlKQkJCQkgICAgXAorCSgoVFlQRU9GX1VOUVVBTCh0eXBlKSBfX3BlcmNw
-dSAqKV9fZGV2bV9hbGxvY19wZXJjcHUoKGRldiksIFwKKwkJCQlzaXplb2YodHlwZSksIF9fYWxp
-Z25vZl9fKHR5cGUpKSkKIAogdm9pZCBfX3BlcmNwdSAqX19kZXZtX2FsbG9jX3BlcmNwdShzdHJ1
-Y3QgZGV2aWNlICpkZXYsIHNpemVfdCBzaXplLAogCQkJCSAgIHNpemVfdCBhbGlnbik7CmRpZmYg
-LS1naXQgYS9pbmNsdWRlL2xpbnV4L3BlcmNwdS5oIGIvaW5jbHVkZS9saW51eC9wZXJjcHUuaApp
-bmRleCA1MmI1ZWE2NjNiOWYuLmMzYmYwNDBhYmE2NiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9saW51
-eC9wZXJjcHUuaAorKysgYi9pbmNsdWRlL2xpbnV4L3BlcmNwdS5oCkBAIC0xNDgsMTMgKzE0OCwx
-MyBAQCBleHRlcm4gdm9pZCBfX3BlcmNwdSAqcGNwdV9hbGxvY19ub3Byb2Yoc2l6ZV90IHNpemUs
-IHNpemVfdCBhbGlnbiwgYm9vbCByZXNlcnZlZAogCWFsbG9jX2hvb2tzKHBjcHVfYWxsb2Nfbm9w
-cm9mKF9zaXplLCBfYWxpZ24sIHRydWUsIEdGUF9LRVJORUwpKQogCiAjZGVmaW5lIGFsbG9jX3Bl
-cmNwdV9nZnAodHlwZSwgZ2ZwKQkJCQkJXAotCSh0eXBlb2YodHlwZSkgX19wZXJjcHUgKilfX2Fs
-bG9jX3BlcmNwdV9nZnAoc2l6ZW9mKHR5cGUpLAlcCisJKFRZUEVPRl9VTlFVQUwodHlwZSkgX19w
-ZXJjcHUgKilfX2FsbG9jX3BlcmNwdV9nZnAoc2l6ZW9mKHR5cGUpLCBcCiAJCQkJCQlfX2FsaWdu
-b2ZfXyh0eXBlKSwgZ2ZwKQogI2RlZmluZSBhbGxvY19wZXJjcHUodHlwZSkJCQkJCQlcCi0JKHR5
-cGVvZih0eXBlKSBfX3BlcmNwdSAqKV9fYWxsb2NfcGVyY3B1KHNpemVvZih0eXBlKSwJCVwKKwko
-VFlQRU9GX1VOUVVBTCh0eXBlKSBfX3BlcmNwdSAqKV9fYWxsb2NfcGVyY3B1KHNpemVvZih0eXBl
-KSwJXAogCQkJCQkJX19hbGlnbm9mX18odHlwZSkpCiAjZGVmaW5lIGFsbG9jX3BlcmNwdV9ub3By
-b2YodHlwZSkJCQkJCVwKLQkoKHR5cGVvZih0eXBlKSBfX3BlcmNwdSAqKXBjcHVfYWxsb2Nfbm9w
-cm9mKHNpemVvZih0eXBlKSwJXAorCSgoVFlQRU9GX1VOUVVBTCh0eXBlKSBfX3BlcmNwdSAqKXBj
-cHVfYWxsb2Nfbm9wcm9mKHNpemVvZih0eXBlKSwgXAogCQkJCQlfX2FsaWdub2ZfXyh0eXBlKSwg
-ZmFsc2UsIEdGUF9LRVJORUwpKQogCiBleHRlcm4gdm9pZCBmcmVlX3BlcmNwdSh2b2lkIF9fcGVy
-Y3B1ICpfX3BkYXRhKTsK
---00000000000069a3ca0628ed186b--
+[    1.751347] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    1.751445] ksz8795-switch spi0.1: Switching SPI mode from 0 to spi-cpha=
+,spi-cpol
+[    1.752226] ksz8795-switch spi0.1: ksz8795_spi_probe:91: ksz_read16(REG_=
+CHIP_ID0, 0) =3D 0
+
+[    1.889370] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-517
+[    1.891431] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    1.891525] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    1.892282] ksz8795-switch spi0.1: ksz8795_spi_probe:91: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    2.034994] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-517
+[    2.043130] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    2.043217] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    2.043957] ksz8795-switch spi0.1: ksz8795_spi_probe:91: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    2.187793] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-517
+[    2.195915] davinci_emac 1e20000.ethernet: incompatible machine/device t=
+ype for reading mac address
+[    2.207703] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    2.207795] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    2.208554] ksz8795-switch spi0.1: ksz8795_spi_probe:91: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    4.212102] ksz8795-switch spi0.1: configuring for fixed/rmii link mode
+[    4.219662] ksz8795-switch spi0.1: Link is Up - 100Mbps/Full - flow cont=
+rol rx/tx
+
+The immediate read after the spi_setup reports `0` for the chip ID.
+
+If I comment the second block, this brings the -22 which stops further
+probing (if not mangled by by EINVAL =E2=86=92 EPROBE_DEFER).
+
+[    1.712445] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    1.712545] ksz8795-switch spi0.1: Switching SPI mode from 0 to spi-cpha=
+,spi-cpol
+[    1.851109] ksz8795-switch spi0.1: invalid family id: 0
+[    1.851192] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-22
+[    1.853241] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    1.853336] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    1.992243] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-517
+[    1.994767] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    1.994860] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    2.128827] ksz8795-switch spi0.1: ksz8795_spi_probe:97: ret=3D-517
+[    2.140263] davinci_emac 1e20000.ethernet: incompatible machine/device t=
+ype for reading mac address
+[    2.148743] ksz8795-switch spi0.1: ksz8795_spi_probe:76: ksz_read16(REG_=
+CHIP_ID0, 34705) =3D 0
+[    2.148836] ksz8795-switch spi0.1: Switching SPI mode from 3 to spi-cpha=
+,spi-cpol
+[    4.145963] ksz8795-switch spi0.1: configuring for fixed/rmii link mode
+[    4.146161] ksz8795-switch spi0.1: Link is Up - 100Mbps/Full - flow cont=
+rol rx/tx
+
+So I think it's a timing problem: the ksz8795 isn't ready after the SPI
+reset, when the chip ID gets read, and this causes the probing to stop.
+
+Why is SPI_MODE_3 required? At me, the chip works fine with SPI_MODE_0.
+
+
+Regards, J=C3=B6rg
+
+--=20
+> Ich kenn mich mit OpenBSD kaum aus, was sind denn da so die
+> Vorteile gegenueber Linux und iptables?
+Der Fuchsschwanzeffekt ist gr=C3=B6=C3=9Fer. :->
+Message-ID: <slrnb11064.54g.hschlen@humbert.ddns.org>
+
+--3anvsdpyl3stznej
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEABEIAB0WIQS1pYxd0T/67YejVyF9LJoj0a6jdQUCZ1hvkwAKCRB9LJoj0a6j
+dVb1AP4kHCsLi5qlOuk3Zy6ajseRYl5rbsbWyTzAaqFTeRsGrwD2OXjIntA/UgCW
+UG2vU/PFkYGLGV8NjjhNZr0EKSmKSg==
+=/QlN
+-----END PGP SIGNATURE-----
+
+--3anvsdpyl3stznej--
