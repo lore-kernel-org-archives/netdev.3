@@ -1,117 +1,75 @@
-Received: from cichlid.cherry.relay.mailchannels.net (cichlid.cherry.relay.mailchannels.net [23.83.223.36])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B232451EF
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 23:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733872283; cv=pass; b=G5BDxiLeXJWQfez/184IrY6i+uPT0+12D/wDyhfG+8TtVMKi6i1y6jiSl9T0KxvZH6y+n/YPMpEcaCgk+aCI5qkkHq02CRqvEPDclW1yf4q15uNklg7ZTRg6wS3ED42hoB82fe3KFu45y7RX7i4r0UrOKjLsyH5+EaLRjYLUcJ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733872283; c=relaxed/simple;
-	bh=UQxE7ji1mP5BOJmwh6dh2HbYyWlR+Kk4E6wyTh56mHg=;
-	h=MIME-Version:From:To:Cc:Subject:In-Reply-To:References:Message-ID:
-	 Content-Type:Date; b=Eic4PpRjNRXPxguBTKWZGOwhFP2AKWWd8+X1xKqiMIRPUutx4HBCEoGlxtpaMjXf9W/DzQS52jnUhNHwJWms/Qj4lQd5ZqYleev7dZ8n2OK9/2r2ChllFADGuh53ZkUi/6t0wgas1ZARWykn4pE+s8DP7tpMgtdDBKBUy74pKFw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=prcz+Ngt; arc=pass smtp.client-ip=23.83.223.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B3E1F193F;
+	Tue, 10 Dec 2024 23:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733872287; cv=none; b=UZBm7GD6WPXB8U3WV4bCofEgvAMdJFLyRiKRSkPImRx8VwUb3QP/PeVK5BBN0GVupLm/MamaTJ3hUkRTVKVdGmGx65IygqNpqAqFIIV1hLENLP32VWBOzZOuzBawcXMb6Hd/B5bzs5Njut5BJ/jHnBrtKEQBgPykcpoJ/eJevGk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733872287; c=relaxed/simple;
+	bh=cAdm8flCRnl+5J0rloVrH8CV7CVOB9f8Y6CqOIT1+z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=POGQCHlCzyX4w3cQ4IUzxQ4vFWMTegsIkboZBjkL8bxzs9ni7DCzkATZgr3ydTXjysExLlp1JPn1pgSL8bMkjP7vXIjNjbVxiI5J1d3KGYxyJQtHU08FxHmjefT19eprdQiqT6VK2lBVNNX/UPGagQgHgMN/T1+hP0FAi1sTWZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bXFciefH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="prcz+Ngt"
-X-Sender-Id: hostingeremail|x-authuser|arinc.unal@arinc9.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 81F3124832;
-	Tue, 10 Dec 2024 21:45:20 +0000 (UTC)
-Received: from nl-srv-smtpout7.hostinger.io (trex-5.trex.outbound.svc.cluster.local [100.98.0.247])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 8AF5A24823;
-	Tue, 10 Dec 2024 21:45:16 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1733867120; a=rsa-sha256;
-	cv=none;
-	b=hFP3QZjCni3Ip+98MFP1SXKWHbM3jP5XOrotbnnYkdE47JEO2yqpYuKMt1LMFHicSvTFc5
-	+carobUQ/Wv063VPCooN79SBt6oRVu5edzaQG6YIhCnNhttSKo0Z47l1zh3NyieycbRx2E
-	dIASUPOWQBl7AKdPMuJj9QvDo2Pu9ryiJ7RBdCAGrsHI845q3kv4JKzK3L65e5ecDzyfS0
-	C7TI2LiyFBK89i6nE57o8UI18UWCddYL5R7Vdc1m1UETHppllY9rWTzu/3kU7HJ4YylTJ0
-	XweUIWINlwQ8PvXeJcXACJbg3pE0Peof2I1C+sV7/KkUH/O0g8f0oVg3PIfNdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1733867120;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SYdwHkJmBU/pcv/d+DYNr7WpOGo7tnfs2VifDPdDAhg=;
-	b=QrfbnH6L3CMm5LbRWznkqoqMitue4u8NE2ndpjiIs4Iv/dPhPlGvgv0tAeMUfp/OFBQfk8
-	r9YryQB8GS9wfrHTexiw9AYoLEXJcUCcXcPgmDSPtU/4H0sxHHfDOQDJdfxFuPmAU6GOWx
-	8a3GLlwTL5DyhHbxvG0hq1kB/l+XadMSf0lIC2Ex13Yi7KOXuNRwfcAvLA3puavPtz5v8q
-	nOrTj7cX5+fe1cXh9t0yu+2U+HYbwQs6laMOjC2n35quNOeOMiy6YDB45KogRsHXdZSAku
-	soxx0UkocrrBpCqE7K/csxr2eFjRq5rzx2ExEr1gZaHxqXqTKdFKIqKtcXOtxg==
-ARC-Authentication-Results: i=1;
-	rspamd-5d9d86ff64-sqxlh;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=arinc.unal@arinc9.com
-X-Sender-Id: hostingeremail|x-authuser|arinc.unal@arinc9.com
-X-MC-Relay: Bad
-X-MailChannels-SenderId: hostingeremail|x-authuser|arinc.unal@arinc9.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Bottle-Coil: 2fbcd1441e3f7124_1733867120287_3536260936
-X-MC-Loop-Signature: 1733867120287:1317792024
-X-MC-Ingress-Time: 1733867120287
-Received: from nl-srv-smtpout7.hostinger.io (nl-srv-smtpout7.hostinger.io
- [45.87.82.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.98.0.247 (trex/7.0.2);
-	Tue, 10 Dec 2024 21:45:20 +0000
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bXFciefH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GPgEgPHXiLBNETa+wEEXPVbWMGlgl8r/WmdmTJCw798=; b=bXFciefHRfvI9pD+nD5btga3zq
+	33lWZ0ZlsOX1oWoBf0BDVmVBvZEh++pTU6vUfe5lbienCeYsXObF/9gaejpcOHthv2xA2Bjq2FJqy
+	TM6O0hn6R3rmi6WCx4SQ6g+i7ue6QdL45PamUG8Ufu4iS7Lwd31Bj58wFhHp4yyLheeI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tL9Nm-0001My-61; Wed, 11 Dec 2024 00:11:10 +0100
+Date: Wed, 11 Dec 2024 00:11:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Lee Jones <lee@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	upstream@airoha.com
+Subject: Re: [net-next PATCH v11 5/9] mfd: an8855: Add support for Airoha
+ AN8855 Switch MFD
+Message-ID: <beb50a2b-1d3e-4c34-821c-e4f93767cb5d@lunn.ch>
+References: <20241209134459.27110-1-ansuelsmth@gmail.com>
+ <20241209134459.27110-1-ansuelsmth@gmail.com>
+ <20241209134459.27110-6-ansuelsmth@gmail.com>
+ <20241209134459.27110-6-ansuelsmth@gmail.com>
+ <20241210211529.osgzd54flq646bcr@skbuf>
+ <6758c174.050a0220.52a35.06bc@mx.google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com;
-	s=hostingermail-a; t=1733867114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SYdwHkJmBU/pcv/d+DYNr7WpOGo7tnfs2VifDPdDAhg=;
-	b=prcz+Ngt+NRtMI52vtGLN3OQLVWpkPxinr5+LleVEp1gSCl76tsRj8xQ7XMI9r4BWoJ1xM
-	a2LMV9zA8QPElKEHFbxaDsBLNzSFQ+jG0bFKlspi6XSW0rSwZf6/zPwI1miR1+p7Km2IrR
-	dl8X72ZDAiAPAqK8wH3oJNFJMU15lTl5vUV9wniFiOQLW7zyBh097h/yy95tcJHBrk2MW7
-	1jIrQUeXMaObWB1szYeWs3toHC00bBayYWcI+F7VOqw2Gw/veTUxD7Ua9JydTcPNJYRTLh
-	maAd6RhXWFD9cyWuQkDE2eQ0bCgSoJJTk81w+KdzjPr7hbjNz+nacY2KL5q0JQ==
-From: arinc.unal@arinc9.com
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Daniel
- Golle <daniel@makrotopia.org>, "David S. Miller" <davem@davemloft.net>, DENG
- Qingfang <dqfext@gmail.com>, Eric Dumazet <edumazet@google.com>, Florian
- Fainelli <florian.fainelli@broadcom.com>, Jakub Kicinski <kuba@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Matthias Brugger <matthias.bgg@gmail.com>, netdev@vger.kernel.org, Paolo
- Abeni <pabeni@redhat.com>, Sean Wang <sean.wang@mediatek.com>, Simon Horman
- <horms@kernel.org>, UNGLinuxDriver@microchip.com, Vladimir Oltean
- <olteanv@gmail.com>, Woojung Huh <woojung.huh@microchip.com>
-Subject: Re: [PATCH net-next 5/9] net: dsa: mt753x: implement .support_eee()
- method
-In-Reply-To: <E1tL14J-006cZa-Rh@rmk-PC.armlinux.org.uk>
-References: <Z1hNkEb13FMuDQiY@shell.armlinux.org.uk>
- <E1tL14J-006cZa-Rh@rmk-PC.armlinux.org.uk>
-Message-ID: <3b9218282c34a1a0e10c4bc80a588082@arinc9.com>
-X-Sender: arinc.unal@arinc9.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date: Tue, 10 Dec 2024 21:45:13 +0000 (UTC)
-X-CM-Envelope: MS4xfJuZft709FxizpinMKGWhJhNuVkZgkBg+qc3Jglod8if95nnLuGy8biWUCFr5kuQapCfrsMBJit/W+EQFp9ExfhFRsMgaChMRyoVpzk96i1nf1hMBm0t rugRkpC2iB2Rhx0oVFDS0z98PC5IEggSkuZi1yGBZZrGG6QaW0lPwJw3+/TPoJBjnPN8FJIiWbFYzpqr6zvZOCZaK2NJ1ice5ZWKcEYuL2dPJP0it+tbzpph RLws0KOZfe7K6l2c0fCG/AmRGk6a8tpWJPX9mYEDRyArrhSB54NgYsmkl358i/wk38tMGVjqZeQIqIVFQhGUPIkP1LC1vfQ7M/zzRUIfPH7eziiUHLPn5kxg esfFq2hvhZp4mvqTHBnZTAf6SIw+4gt46hj2v0GGnhj0rHEMkFeYzDLGTL/Rwn5CKE7w3FYyrLzmTiG7dwJVt+QHVPNrl2e1y0TuKAfxlrSRkvuoT2swX5/R /2NMOPKxL9K11wsaSyml7zlKsITYEAd3AFagiW22SJoHX7sId2VkShlIZ5W+SxrBqDtGcGuVGR15bq3SW5Vm0XSS3s/Z2gYJ8FIOx6c9xZK49JWpGMg4zMS6 sap06jaGyY5vfJ3H4/Z4k2753n/XA0KWv24Fco4jgykckekYj3KbZ11QscrsAjiNCu/2UDmzx+pUxNyh0xxUt9uwTLkT2W7pa5mz/FaW4Z2LObtLEyb5z+/B vbZk8/Bc7qfud57FqoYsdIfA1QPV7fPZ/9KfEynUMNA+qTdmoYEUQp3XuyG6m8SaS4tzzu77sGtlBDcHUx/7/WaodcYWan1mZq2AtoznQ+Lj19n29yHcl6qS wD9NPfzszGRKDim4sx2h1A80/sWxdKlw19iv3smG3G2N42iXzypaYyqZ8qoyVw==
-X-CM-Analysis: v=2.4 cv=K9lwHDWI c=1 sm=1 tr=0 ts=6758b66a a=5MOetqiP25nozuSVG0c2+A==:117 a=5MOetqiP25nozuSVG0c2+A==:17 a=IkcTkHD0fZMA:10 a=PHq6YzTAAAAA:8 a=GvHEsTVZAAAA:8 a=1IKdRoJznwPGE5zMZgQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=THfFRngN91AA:10 a=ZKzU8r6zoKMcqsNulkmm:22 a=aajZ2D0djhd3YR65f-bR:22
-X-AuthUser: arinc.unal@arinc9.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6758c174.050a0220.52a35.06bc@mx.google.com>
 
-On 2024-12-10 16:18, Russell King (Oracle) wrote:
-> Implement the .support_eee() method by using the generic helper as all
-> user ports support EEE.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Doesn't regmap add lots of overhead tho?
 
-Reviewed-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Compared to what. MDIO operates over a 2.5MHz bus, assuming it is true
+MDIO. The CPU overhead of regmap is probably negligible compared to
+waiting for MDIO transactions to finish.
 
-Much love.
-
-Arınç
+	Andrew
