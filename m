@@ -1,293 +1,118 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011035.outbound.protection.outlook.com [40.107.74.35])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C523594F;
-	Tue, 10 Dec 2024 06:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733813171; cv=fail; b=QExedORmcpNMxnpfezxtaK2IMaXYtzjPEMjMBR3//cj5PaZgvoyw5xIBiltug59GKlo85YOX2wkIvoL/WfjvZcf6e2z7pnbgGj6B+fzxjyRZdvHwa7zhZWSXMC28LB9bQNBJshTSGpe404nS2Ji6BVGkUk37blVi5qrt/HfD1OY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733813171; c=relaxed/simple;
-	bh=uTHB9lyk0UqVu9XilkSYKsaEgmoMw1GXxoLvFZRHRqc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HHB7tuEx70vNuf/mx3am9neB4aGxeeTMxMW1NjPK/TgPfR6qK9EWeUWDJqa89Dvw62x9Cfk/PpfBrILDOrFuNSr2NaDZwbiIu681PknE6zYuc0OipSp7X7qx2twa+Ds4S7kC/rk8l8DKTrnuPSI3PGFqBOyfIdo4h7BddvdKst0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=HxWsGGMz; arc=fail smtp.client-ip=40.107.74.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2E522617C;
+	Tue, 10 Dec 2024 07:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733814439; cv=none; b=EDDDkISyVECXInZm8S4ZFPAvWzeo4+rBxfHKgCh2zIvjlOT8I361U/IG5Fq3Bg5qa0CW/a8ViLR1HVdV9fhDUoIbvnk1JXpw9TVOiHEyv3S4N8BFmiwU9vF+RQwdowPvGoToBQ13y3EYY9Cn7kJeJ1GkxdeFqtZSGo1TlFbSMpc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733814439; c=relaxed/simple;
+	bh=21yYhE3JbhGoBWJsgIJYYeuG7B7/nF2qsxltmh9NDKw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ig6Qz9T3hOsoZ9qswtUdfecFsa9qkAvS2X59mx/GATsLc747a4NJGS/aINrntWJylkahm1ZPSCGYTvtYGK5U13rePkDu188BuLxDlD1GEz/zK9k2L7/3g4ZhlUtShfdEw0POIV9KKcyJ+9FDJVUAEwD9t6GBXRvVCUOYfo3PW+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=q7lGGmHB; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="HxWsGGMz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cFAfX1O6JTPJkmOgQfWvRiakjROXiupY0+IyD7KElnDrKE0dYhy+WACQFeAz/Ug4q7t+SbKel9aCxXlksIzIIoqflHtgEsNNd3wpq3+ZcoGq2XiXD3MmRlYgeVXjmHDZx/TZfaymhNAtaUB/us1AZ1/VrdSgRXGTBg5e8mVCV9yvB39SjeVLbTAX7pqS2u93HdgC4yh1+1zLHYQxzASnv9hK3qUsg9M4U3raZkulWV4tJYADfSt79JTzvNBFBF92VYGvkCUgidpyIeI0n20rqekuWWFup3iO6oESFrqKosdpmo/oSK4IThzNK/vE5GT4ivAun+AW+23E7gHA6Qfxbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1BBSsPz//9QtxspfjErmjJvfFc0CKkrmm+QuEGlzpI4=;
- b=SvAAxyf+B/mqL6HtWU2h7vrp0qzoqG7muGxDqh4gYRf9j3evfnGFQvrK5xp7GuZj5q8abT4XsfhiK0dPvx5I4XVSCnyHwv6iN0j03PXU15nbVZByhpLSN+63sFHPcQy7H5+brOmxxHEdxbu06XH2lPb8hXIwUiYM9fDXpvZqdmSjL3iPfYKgeOGuCJj1drSOKmIplK0gRaxI3MyjerAMAt3e2lN6lG5oeOQcFWjoH3QL+BDBvCiyGHq4bsKEbllA0F0JpT9H+GF9f8h2kShg1IT+7Frsq8pNTdWtHb0Xfw0UmxKxyZt+n+zG7ppu1ix6uquB4RyTex7s09mof3VRqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1BBSsPz//9QtxspfjErmjJvfFc0CKkrmm+QuEGlzpI4=;
- b=HxWsGGMzQhdzL6yAzWk48mp9giR7/DzjysboJUuKlCDKVpo5Xt8PXypI1C9lGXmh6Gf3dy+WiUQMEd+lGkJGCp4VBd99XEUSSZXOJJrNv6vexRkWZRi7QWg2upWPLuJ2u0ChOmNMp49inbZHKtz/5A7Fcp+u9q7HoWIaqccwqiM=
-Received: from TYWPR01MB11030.jpnprd01.prod.outlook.com
- (2603:1096:400:390::11) by TY3PR01MB10061.jpnprd01.prod.outlook.com
- (2603:1096:400:1de::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.10; Tue, 10 Dec
- 2024 06:46:04 +0000
-Received: from TYWPR01MB11030.jpnprd01.prod.outlook.com
- ([fe80::a78e:aecb:953:b562]) by TYWPR01MB11030.jpnprd01.prod.outlook.com
- ([fe80::a78e:aecb:953:b562%4]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
- 06:46:04 +0000
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To: nikita.yoush <nikita.yoush@cogentembedded.com>, Andrew Lunn
-	<andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Geert Uytterhoeven <geert+renesas@glider.be>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Michael Dege
-	<michael.dege@renesas.com>, Christian Mardmoeller
-	<christian.mardmoeller@renesas.com>, Dennis Ostermann
-	<dennis.ostermann@renesas.com>, nikita.yoush
-	<nikita.yoush@cogentembedded.com>
-Subject: RE: [PATCH net] net: renesas: rswitch: handle stop vs interrupt race
-Thread-Topic: [PATCH net] net: renesas: rswitch: handle stop vs interrupt race
-Thread-Index: AQHbSi4BGb0KrsT/rk2BwvNszCBRyrLfBb6w
-Date: Tue, 10 Dec 2024 06:46:04 +0000
-Message-ID:
- <TYWPR01MB11030FA7F8B6B30B8A7759847D83D2@TYWPR01MB11030.jpnprd01.prod.outlook.com>
-References: <20241209113204.175015-1-nikita.yoush@cogentembedded.com>
-In-Reply-To: <20241209113204.175015-1-nikita.yoush@cogentembedded.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYWPR01MB11030:EE_|TY3PR01MB10061:EE_
-x-ms-office365-filtering-correlation-id: 280f3f53-043e-4a8d-d507-08dd18e6513c
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|10070799003|376014|366016|1800799024|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?a38UVkUqxhdSaVjOTQ2Tvelid42qzV+toX8gsmoIcDL40GG5nIs5lemfT+V3?=
- =?us-ascii?Q?yKZsd+1DX44TAPw9wSAc64j1PpI3JyxXQhp1m/bdWtRyjcQrnpBI+Tbz5u5H?=
- =?us-ascii?Q?nSRr6B1pRJalMyzGzvWpACV0kBd6CW8Ond9NYe9C65YJMuM92T/GLc7PUpD5?=
- =?us-ascii?Q?MLYfxY/QJYHb+xrc/a5xiS+U5xoDyn5Tsi0HXykl1/nitHAGh8d4WjxHIcCs?=
- =?us-ascii?Q?J/cZDyETHlinzwipcjfLt+pIeahOq841YUWCUVBWl3KIFKMD+urXhNs198F7?=
- =?us-ascii?Q?4VDUUsAbopypoS467aSP+c8uTcPVes+eeRC84EPGyjavRVw9sJplhDqSvcpS?=
- =?us-ascii?Q?Z5jyweu/uLrdFvG6aDtcv05z+NqmEKz53UzaRGxik8TqDhbuZUMflSG+4CI+?=
- =?us-ascii?Q?4OZnLO7LRd16UCmFTcMpYR1wNbmA3pi2ZmrHAZhP06CjVjF2z2JfieO68XQb?=
- =?us-ascii?Q?5ucGhKsI0p0dgLhYj33hbxzD4IGZPTE1ILMKvuTgO1n3JNRqu5ITsjMFNja5?=
- =?us-ascii?Q?eAlVbHIkC+sKkmhl7BV6V/Pll/J7K5FldcjUrVoRjNVs5ispHUaoNEYeKVFI?=
- =?us-ascii?Q?iNEMdKo+MEb6aCOICIZur0gwjYdzKoky+YZnVLfuf48u0v6/UwbhTSOoTUpv?=
- =?us-ascii?Q?91GCyhExzC7Xxp0WqUcbOBNjMR1r+xwZT4uPEvm01FI1hcVQ5Q9tdNC9SG8y?=
- =?us-ascii?Q?lQi/GXWpR5yZJtHth1bm3pM6zZjFLgjHSpbjya1OGdry767+y59BP41VUpPY?=
- =?us-ascii?Q?qUik25Rcfn0t23vLm9jkAqbfuuKPKNwm/3GoUpEUDO+nr5x/sBBVNBBij1ae?=
- =?us-ascii?Q?xI65PZuOhKRwy1vzxK/2UEsCTU32nKYL9MSqbZz0rNeTTIeLvk0xSmNVt4f2?=
- =?us-ascii?Q?7OMZsQoqwCgE1iSAkudwC6GBiMeCLQ4kt0HN+WGQ/TwkKV1KaIQS9klh+YaF?=
- =?us-ascii?Q?puobo1lY9BNBTLeDitmE8sHX2S+wu/niW/8OC/qr5EsbOTJ+bR4POPbkp4Ez?=
- =?us-ascii?Q?ciGUFhVZ9QFgrD2LAEfcdJatwnnBvYt4HlzezplKoVVge3uTEOtW4NkS7DM+?=
- =?us-ascii?Q?gaW1wqR3/IwZIQfA2cqrHZy+Pz0kQKhlUpvaXhV1m8J7iCpENRGczlIVLfgQ?=
- =?us-ascii?Q?4UkRYpAFEHqHrMztZaIEcnrlGW5NnBU7SkXGXxqmLtxU3bElHjV1iyHdJt4U?=
- =?us-ascii?Q?izBTZOHZETfadDOn4SoaI22rLPrlTgF+1w0S75c/mMZSzdb+sI8y+OtSVHO/?=
- =?us-ascii?Q?lJXt8g8nsgcWzLO3QNbfhA3oDoDq9zTQjLG0a5Ihdwg9v36LarjQybqOuiv5?=
- =?us-ascii?Q?EV4DE83Um+AECC3TuzgX50qCckQptXCUK0ZwCBQBBVKhiTHs53Z+ZpL06Pvn?=
- =?us-ascii?Q?Kkafq+GRnWVgtKxv28qw+WepTz6Ko8Fm5xY0q+zbigl4wBBP6g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYWPR01MB11030.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(366016)(1800799024)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?b7eC03ZUrcd2yIU+qNNwDldHEz0tKLZeuoMszANiKJ4D0r8bnSM8l2HzGsM0?=
- =?us-ascii?Q?z7WwNwLLP3mzk91NnQllFWfVQkEmVv8YukGCBnzbz51rovRO40WpUStwmdTq?=
- =?us-ascii?Q?apV8l/eqqRy8abtC/1Rstll7D/ChuFs4izPszmfTkroe7v8uTmrLudecYi9o?=
- =?us-ascii?Q?16j5MgLs1d5aOYyUFGFcSFyaBeUnZsd6UbVRU5UUPWNuXu/+/z1lkr3CY1Jb?=
- =?us-ascii?Q?llDiykvxnnBancwehP1xFPI3vSebL/aVK5yZkjxfhRB37aTmWTjYtjhEACuM?=
- =?us-ascii?Q?z1JzPtxUOAf9EOpjpLOfRiWsTRW3nZNxmAdpNTwKplIvWMsnnXyV202Fe/bl?=
- =?us-ascii?Q?j27G8dlNeM2pzDsDQbbhpwphMDS/z8/lYwOe1clKw4Ttg/anxE9a3AIAOJ91?=
- =?us-ascii?Q?NsTesqeVBHg01GoIDQC3BB7SnWsNUC25yVl2N8Wy0+biM4oKON6G/wSg0Lcf?=
- =?us-ascii?Q?Wyb59pabn/7AGVBSMcWaz60qEyXnnFUsfpvEQQqeJN71dbZQgHe3V1HXv8YP?=
- =?us-ascii?Q?qT88ekeRgpxSP8bd+1JkRi6xezjSe9TDjRSkkvirKuCMIECtS9TDyE4dg42d?=
- =?us-ascii?Q?A15Mb5GQvQ24ABhSH+QVWBko/J2mMhQSbaE7BaAAcXB1oArZUXdqOKlxJAKY?=
- =?us-ascii?Q?zBz2t0TaCLj0Xi+CSuZhn5omTCRXpuhOqEXCIU7IoexkxDkMcCYTgoa9VOjM?=
- =?us-ascii?Q?ohlYTtZuH39l0SxFN9oW/Oejvvh5Ucn5fNwhQBSfaEetwiAFWjI71oZZbzZa?=
- =?us-ascii?Q?8ZBqNynBjP6j7L3/CnU1QmaTA6f8SvxS2DQqZOHFyCLsS1koj3gm1t4VKauW?=
- =?us-ascii?Q?LvxuEICflDmtKzh+DBL9zPoZicEC4cK8k16DDuiTff2CrfAKFXJ9htAyMry/?=
- =?us-ascii?Q?F4e4yYWp4hyiJQ4gJ0kaSJRyan9QmntpDi5Rb93dHmU2mLWkj3mAMq19Qf0D?=
- =?us-ascii?Q?P9YAQyfSCcCVe5UjM1/ZFD8LQaSCDPLWSv1oNSOpiBWnJpoCt2MlDsnrMfSk?=
- =?us-ascii?Q?aPQGDZQdVdDu8DA5hYxcU8RXzTZ+6W/es2y+/Y1R/T1AdEpKQNpOUJpjPivM?=
- =?us-ascii?Q?N/U4fYpcZRIye7yGyr1ssd+vmqPcX1S6Vifunsauw/gQFIL0DQugpIgPk21o?=
- =?us-ascii?Q?ZfkYZPMc5it+xCI+QEF+1+VRreOGDu5iyHLoIgo9xLu74UY7YGtldWH99hcI?=
- =?us-ascii?Q?0rUKK7MJzidRZtu74NChSc0wReJq7i7Y3HSukA7JYT8yPFPxrW+Tnb1uCEuK?=
- =?us-ascii?Q?uDBXWsnsbtp5aHB39GSA1FSuP5PHxQFWhNanbRpxc8EN1+T0T9moVME1yK41?=
- =?us-ascii?Q?EIYmeqMrt5EOzNJ/t5h9grpht7DjiXkTmeNXD7cerhS/4KrkAm/UCaauf1rr?=
- =?us-ascii?Q?Plg+R41a3edjeIzzGORbc/cMn9gEPKIHsWSP6xopWEzboFItz6j9JiyzrxGj?=
- =?us-ascii?Q?GqEbB9GAwi9QDo4H7zjyzoYWv1OEF3GShHBQhVZlDqIGLUyCsg1n3s6WhMYi?=
- =?us-ascii?Q?Mlzm+tKK6ga31armg0+1nK4NBn3vgP/RRfLODPShT7VuxsItGupGjsrKWiOD?=
- =?us-ascii?Q?GOj2GU/pLXm8sQ41KzBpA/hhQ1cFtqdRmfXrmXhORskZAmnJzkgF9F7xRyHU?=
- =?us-ascii?Q?X/v/4ba5arOAFctt69GwZ3kKpE2XynyDbLO6oxpDV6Pv1BgB+2kxpumfNZRL?=
- =?us-ascii?Q?WxtLVQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="q7lGGmHB"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733814427; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=DCSpoueBZE9y2EqJgZJxE02iPNXEzifaehYh+skOFvs=;
+	b=q7lGGmHBkO89AIDcpa3JHCdyUCG1Incd5pzr5H+5wk86rW23xZjW7ztFL9IPZofzH6EJVjcQamjotLra+d3KY99pmoJNwyogGfMO3PY/OPHOAds7T2SxSqjQor3SZJAyn1e22Z49bN3afKLFDTOYwRfcAzUwJ6fapZejWnL+Gfo=
+Received: from 30.221.101.48(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0WLE42aD_1733814424 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Dec 2024 15:07:06 +0800
+Message-ID: <58075d86-b43a-4d58-bf64-c29418f99143@linux.alibaba.com>
+Date: Tue, 10 Dec 2024 15:07:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYWPR01MB11030.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 280f3f53-043e-4a8d-d507-08dd18e6513c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2024 06:46:04.0914
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XHiPiJwlWXC7IOiAu3ht/Q/ZaquVJr4vIxpE1tkAj++ahMA6cYgjsBtyEVsUcsDWOsb5u5M1ISc6m4eJTxpwzo9uUZ7/qCvR3gMFTKvJvLFvsELTIgI0LIQswwfJ6PZc
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB10061
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/2] net/smc: support ipv4 mapped ipv6 addr
+ client for smc-r v2
+To: Halil Pasic <pasic@linux.ibm.com>, Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: jaka@linux.ibm.com, alibuda@linux.alibaba.com, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dust Li <dust.li@linux.alibaba.com>
+References: <20241202125203.48821-1-guangguan.wang@linux.alibaba.com>
+ <20241202125203.48821-3-guangguan.wang@linux.alibaba.com>
+ <894d640f-d9f6-4851-adb8-779ff3678440@linux.ibm.com>
+ <20241205135833.0beafd61.pasic@linux.ibm.com>
+ <5ac2c5a7-3f12-48e5-83a9-ecd3867e6125@linux.alibaba.com>
+ <7de81edd-86f2-4cfd-95db-e273c3436eb6@linux.ibm.com>
+ <3710a042-cabe-4b6d-9caa-fd4d864b2fdc@linux.ibm.com>
+ <d2af79e2-adb2-46f0-a7e3-67a9265f3adf@linux.alibaba.com>
+ <868f5d66-ac74-4b0a-a0d0-e44fdea3bb73@linux.ibm.com>
+ <20241209104647.5c36c429.pasic@linux.ibm.com>
+ <85d1c6e1-0fe3-4c71-af4e-8015270b90dc@linux.alibaba.com>
+ <20241209214449.0bb5afce.pasic@linux.ibm.com>
+Content-Language: en-US
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+In-Reply-To: <20241209214449.0bb5afce.pasic@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Nikita-san,
 
-Thank you for your patch!
 
-> From: Nikita Yushchenko, Sent: Monday, December 9, 2024 8:32 PM
->=20
-> Currently the stop routine of rswitch driver does not immediately
-> prevent hardware from continuing to update descriptors and requesting
-> interrupts.
->=20
-> It can happen that when rswitch_stop() executes the masking of
-> interrupts from the queues of the port being closed, napi poll for
-> that port is already scheduled or running on a different CPU. When
-> execution of this napi poll completes, it will unmask the interrupts.
-> And unmasked interrupt can fire after rswitch_stop() returns from
-> napi_disable() call. Then, the handler won't mask it, because
-> napi_schedule_prep() will return false, and interrupt storm will
-> happen.
->=20
-> This can't be fixed by making rswitch_stop() call napi_disable() before
-> masking interrupts. In this case, the interrupt storm will happen if
-> interrupt fires between napi_disable() and masking.
->=20
-> Fix this by checking for priv->opened_ports bit when unmasking
-> interrupts after napi poll. For that to be consistent, move
-> priv->opened_ports changes into spinlock-protected areas, and reorder
-> other operations in rswitch_open() and rswitch_stop() accordingly.
+On 2024/12/10 04:44, Halil Pasic wrote:
+> On Mon, 9 Dec 2024 20:36:45 +0800
+> Guangguan Wang <guangguan.wang@linux.alibaba.com> wrote:
+> 
+>>> I believe we would like to have a v3 here. Also I'm not sure
+>>> checking on saddr is sufficient, but I didn't do my research on
+>>> that question yet.
+>>>
+>>> Regards,
+>>> Halil  
+>>
+>> Did you mean to research whether the daddr should be checked too?
+> 
+> Right! Or is it implied that if saddr is a ipv4 mapped ipv6 addr
+> then the daddr must be ipv4 mapped ipv6 addr as well?
+> 
+> Regards,
+> Halil
 
-We should add a Fixes tag for net.git here. I think the following tag is be=
-tter because
-the first commit had this issue. Although this fixing patch cannot be appli=
-ed on
-the first commit, I believe this is no matter about the Fixes tag [1].
+I did a test by iperf3:
+A server with IPV4 addr 11.213.5.33/24 and real IPV6 addr 2012::1/64.
+A client with IPV4 addr 11.213.5.5/24 and real IPV6 addr 2012::2/64.
+iperf3 fails to run when server listen on IPV6 addr and client connect
+to server using IPV4 mapped IPV6 addr. commands show below:
+server: smc_run iperf3 -s -6 -B 2012::1
+client: smc_run iperf3 -t 10 -c 2012::1 -6 -B ::ffff:11.213.5.5
 
-Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Swi=
-tch"")
+Failure happened due to the connect() function got the errno -EAFNOSUPPORT,
+I also located the kernel code where the -EAFNOSUPPORT is returned
+(https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/tree/net/ipv6/ip6_output.c#:~:text=err%20%3D%20%2DEAFNOSUPPORT%3B).
+The call stack is:
+ip6_dst_lookup_tail+1
+ip6_dst_lookup_flow+55
+tcp_v6_connect+743
+__inet_stream_connect+181
+inet_stream_connect+59
+kernel_connect+109
+smc_connect+239
+__sys_connect+179
+__x64_sys_connect+26
+do_syscall_64+112
+entry_SYSCALL_64_after_hwframe+118
 
-> Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+The kernel code mentioned above restricts that when the saddr is ipv4
+mapped ipv6 addr, the daddr should be either ipv4 mapped ipv6 addr or
+ipv6_addr_any(::). As far as I know, the ipv6_addr_any daddr is used
+to connect to a server listen on ipv6_addr_any(::) by loopback connection.
 
-I could not apply this patch on net.git / main branch and the branch + your=
- patches [2]
-though, the fixed code looks good. So,
+Thus, based on the test and the code, I think it has the restrict that for
+SMC-Rv2 if saddr is a ipv4 mapped ipv6 addr then the daddr must be
+ipv4 mapped ipv6 addr as well.
 
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Doc=
-umentation/process/5.Posting.rst?h=3Dv6.12#n204
-
-[2]
-https://patchwork.kernel.org/project/netdevbpf/list/?series=3D915669
-
-Best regards,
-Yoshihiro Shimoda
-
-> ---
->  drivers/net/ethernet/renesas/rswitch.c | 33 ++++++++++++++------------
->  1 file changed, 18 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/etherne=
-t/renesas/rswitch.c
-> index 6ca5f72193eb..a33f74e1c447 100644
-> --- a/drivers/net/ethernet/renesas/rswitch.c
-> +++ b/drivers/net/ethernet/renesas/rswitch.c
-> @@ -918,8 +918,10 @@ static int rswitch_poll(struct napi_struct *napi, in=
-t budget)
->=20
->  	if (napi_complete_done(napi, budget - quota)) {
->  		spin_lock_irqsave(&priv->lock, flags);
-> -		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
-> -		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
-> +		if (test_bit(rdev->port, priv->opened_ports)) {
-> +			rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
-> +			rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
-> +		}
->  		spin_unlock_irqrestore(&priv->lock, flags);
->  	}
->=20
-> @@ -1582,20 +1584,20 @@ static int rswitch_open(struct net_device *ndev)
->  	struct rswitch_device *rdev =3D netdev_priv(ndev);
->  	unsigned long flags;
->=20
-> -	phy_start(ndev->phydev);
-> +	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-> +		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
->=20
->  	napi_enable(&rdev->napi);
-> -	netif_start_queue(ndev);
->=20
->  	spin_lock_irqsave(&rdev->priv->lock, flags);
-> +	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
->  	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, true);
->  	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, true);
->  	spin_unlock_irqrestore(&rdev->priv->lock, flags);
->=20
-> -	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-> -		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
-> +	phy_start(ndev->phydev);
->=20
-> -	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
-> +	netif_start_queue(ndev);
->=20
->  	return 0;
->  };
-> @@ -1607,7 +1609,16 @@ static int rswitch_stop(struct net_device *ndev)
->  	unsigned long flags;
->=20
->  	netif_tx_stop_all_queues(ndev);
-> +
-> +	phy_stop(ndev->phydev);
-> +
-> +	spin_lock_irqsave(&rdev->priv->lock, flags);
-> +	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
-> +	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
->  	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
-> +	spin_unlock_irqrestore(&rdev->priv->lock, flags);
-> +
-> +	napi_disable(&rdev->napi);
->=20
->  	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
->  		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
-> @@ -1620,14 +1631,6 @@ static int rswitch_stop(struct net_device *ndev)
->  		kfree(ts_info);
->  	}
->=20
-> -	spin_lock_irqsave(&rdev->priv->lock, flags);
-> -	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
-> -	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
-> -	spin_unlock_irqrestore(&rdev->priv->lock, flags);
-> -
-> -	phy_stop(ndev->phydev);
-> -	napi_disable(&rdev->napi);
-> -
->  	return 0;
->  };
->=20
-> --
-> 2.39.5
-
+Thanks,
+Guangguan Wang
