@@ -1,31 +1,31 @@
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70723DEA7
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 10:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10472080E5;
+	Tue, 10 Dec 2024 10:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733827826; cv=none; b=GuNNQWzWXSpfGnS8pXxHUa86wq6v5hpSoxDStxDWmKgVzZ6ZQwbr4OaqdCeNV4xLlwmxMFFjcKMwDbaOYubqsGHTIKZ0ozqfWMLNIo18avQhrtSwJD4C3riyrQbj45O+PBNNcqrHdK1owHZwh3l5kxZbgiddW9ltK07y4DQhl/Y=
+	t=1733828258; cv=none; b=KwHxzvA3fJHr0rXB/mkRQlo2EisRh/u8lAg41CO8mJl+ehJIIFaGBbGHCfVIMn1Wa40CxbVZ19m+Jbqyqcqg6kMP8BoJwiqQ0768eLlIOVjbaJkdL55yFFIxaqFePtzoHiTBmk0n+HqMTN2hLVHnNcRtF0ySdE9+5SimN+WBIRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733827826; c=relaxed/simple;
-	bh=Fi6qNclK3xfzfpKas4xGSFbhPysHiJDJVLkYE9pNg5M=;
+	s=arc-20240116; t=1733828258; c=relaxed/simple;
+	bh=j1MmgnUHnOiy0oh0HNDkid08LWfd7ytR58QtPYP7wwA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GPC3weN4XRerfSNNApsB+sudq2WTqCgihNdtLWou46Jb/x5IybKUfPrr8W8kDt65NAK6eDlb9sFmMItGQafaaoDuEgcGHQ1DGnkMRJostt5GKS8CotZbKfUoKYK9eyGcLs5kIkBVy6oH1i5fCA5wx2C31UH1Oah+LN7t72YsBVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CFVtL3Q/; arc=none smtp.client-ip=115.124.30.100
+	 In-Reply-To:Content-Type; b=M84nkRjmqJ3kXBRMYV3jjRpy7Fa4K8wpdrgBWOKs+12IMzeOYHadzZ3aRxp95w4Bj54397eJCpo3X1iYw2W7kDGkSpUTxucwSne0IJmxHcf/zRx/qKfhkzG+znv8Hrc2cBFTPKhmC584wOXLXvYZZWdBqHDi80O/bk+Q6ptRMuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=n/dhuxDm; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CFVtL3Q/"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="n/dhuxDm"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1733827821; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=hmBfcKmV2wJeq3Z2Kd7xyuI7/I99uQ4PGBf4zEM1t6w=;
-	b=CFVtL3Q/5uzA/8JiQwCwGQ5PhMr1s99WsuwLtNBFeGCZsmE5MwdR8sJ+2bz8XYVK81Fa5HHMHgx6XJMoRhoQa2DoEP1Hk1iuRkvFiCGbAmB2vujNpZxmLae81eczYHE8COLYpZIKT9kXAYul2BmK/bo2jagvkZisjNW+1hWS7bs=
-Received: from 30.221.128.124(mailfrom:lulie@linux.alibaba.com fp:SMTPD_---0WLEmF9i_1733827503 cluster:ay36)
+	t=1733828252; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=za3DqWLC997CzA35yUW0weA03pexBgrTU4NPXoJrrBU=;
+	b=n/dhuxDmrndTO6007L4nIXf9fOB7b5oZPXelZCnnP/ucIW0mxlyIa+KQFFhT44OvltvZhKdEYXvcXR1ZpweuM2wnvWzYPcRJW0yzIIzoT53+Zc86G51AgnRLOAEd05RHRovwm5WNsPfpkMOeuQTxT9orWAK1D2Yk+DLF3VFdQGM=
+Received: from 30.221.101.48(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0WLEr7oq_1733828250 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 10 Dec 2024 18:45:04 +0800
-Message-ID: <d638ce16-3f3a-44dd-bcb0-983fc1ef2f66@linux.alibaba.com>
-Date: Tue, 10 Dec 2024 18:45:03 +0800
+          Tue, 10 Dec 2024 18:57:31 +0800
+Message-ID: <f9609fe8-f8c2-4280-acc2-515485adfc1f@linux.alibaba.com>
+Date: Tue, 10 Dec 2024 18:57:28 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,65 +33,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] udp: fix l4 hash after reconnect
-To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Fred Chen <fred.cc@alibaba-inc.com>,
- Cambda Zhu <cambda@linux.alibaba.com>, Willem de Bruijn
- <willemb@google.com>, Stefano Brivio <sbrivio@redhat.com>
-References: <4761e466ab9f7542c68cdc95f248987d127044d2.1733499715.git.pabeni@redhat.com>
- <CANn89i+aKNhzYKo3H3gx5Uhy4iPQ4p=6WDDF-0brGyR=PzJqjQ@mail.gmail.com>
- <CANn89i+k11E9XeJZwvgZ7VO0yr1nWge8+U-ESw2GLYDq7-sdBw@mail.gmail.com>
- <b46a7757-f311-4656-a114-68381d9856e3@redhat.com>
- <a4085013-daaf-4141-af56-cd438bf8b4c9@linux.alibaba.com>
- <63b0f262-066a-4f7b-b55a-a7f0ed4aa7f4@redhat.com>
-From: Philo Lu <lulie@linux.alibaba.com>
-In-Reply-To: <63b0f262-066a-4f7b-b55a-a7f0ed4aa7f4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next v3 2/2] net/smc: support ipv4 mapped ipv6 addr
+ client for smc-r v2
+To: Wenjia Zhang <wenjia@linux.ibm.com>, pasic@linux.ibm.com,
+ jaka@linux.ibm.com, alibuda@linux.alibaba.com, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dust Li <dust.li@linux.alibaba.com>
+References: <20241209130649.34591-1-guangguan.wang@linux.alibaba.com>
+ <20241209130649.34591-3-guangguan.wang@linux.alibaba.com>
+ <1fc33d2e-83c1-4651-b761-27188d22fba0@linux.ibm.com>
+Content-Language: en-US
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+In-Reply-To: <1fc33d2e-83c1-4651-b761-27188d22fba0@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
 
-On 2024/12/10 16:32, Paolo Abeni wrote:
-> On 12/7/24 03:34, Philo Lu wrote:
->> On 2024/12/7 00:23, Paolo Abeni wrote:
->>> On 12/6/24 17:01, Eric Dumazet wrote:
->>>> BTW, it seems that udp_lib_rehash() does the udp_rehash4()
->>>> only if the hash2 has changed.
->>>
->>> Oh, you are right, that requires a separate fix.
->>>
->>> @Philo: could you please have a look at that? basically you need to
->>> check separately for hash2 and hash4 changes.
+On 2024/12/9 22:10, Wenjia Zhang wrote:
+> 
+> 
+> On 09.12.24 14:06, Guangguan Wang wrote:
+>> AF_INET6 is not supported for smc-r v2 client before, even if the
+>> ipv6 addr is ipv4 mapped. Thus, when using AF_INET6, smc-r connection
+>> will fallback to tcp, especially for java applications running smc-r.
+>> This patch support ipv4 mapped ipv6 addr client for smc-r v2. Clients
+>> using real global ipv6 addr is still not supported yet.
 >>
->> This is a good question. IIUC, the only affected case is when trying to
->> re-connect another remote address with the same local address
+>> Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+>> Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+>> Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+>> Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+>> Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+>> ---
+>>   net/smc/af_smc.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+>> index 9d76e902fd77..c3f9c0457418 100644
+>> --- a/net/smc/af_smc.c
+>> +++ b/net/smc/af_smc.c
+>> @@ -1116,7 +1116,10 @@ static int smc_find_proposal_devices(struct smc_sock *smc,
+>>       ini->check_smcrv2 = true;
+>>       ini->smcrv2.saddr = smc->clcsock->sk->sk_rcv_saddr;
+>>       if (!(ini->smcr_version & SMC_V2) ||
+>> -        smc->clcsock->sk->sk_family != AF_INET ||
+>> +#if IS_ENABLED(CONFIG_IPV6)
+>> +        (smc->clcsock->sk->sk_family == AF_INET6 &&
+>> +         !ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)) ||
+>> +#endif
+>>           !smc_clc_ueid_count() ||
+>>           smc_find_rdma_device(smc, ini))
+>>           ini->smcr_version &= ~SMC_V2;
 > 
-> AFAICS, there is also another case: when re-connection using a different
-> local addresses with the same l2 hash...
+> @Guangguan, I think Halil's point is valid, and we need to verify if checking on saddr is sufficient before this patch is applied. i.e. what about one peer with ipv4 mapped ipv6 communicates with another peer with a real ipv6 address? Is it possible? If yes, would SMCRv2 be used? I still haven't thought much on this yet, but it is worth to verify. Maybe you already have the answer?
+
+Hi, Wenjia
+
+I have replied the answer to the thread of v2 patch(https://lore.kernel.org/netdev/58075d86-b43a-4d58-bf64-c29418f99143@linux.alibaba.com/)
+
+If there are still any doubts or any other points to clarification, please let me know.
+
+Thanks,
+Guangguan Wang
+
 > 
-
-Yes, you're right. I missed this case... Thank you for pointing out it.
-
->> (i.e.,
->> hash2 unchanged). And this will be handled by udp_lib_hash4(). So in
->> udp_lib_rehash() I put rehash4() inside hash2 checking, which means a
->> passive rehash4 following rehash2.
+> @Jakub, could you please give us some more time to verify the issue mentioned above?
 > 
-> ... but even the latter case should be covered from the above.
-> 
->> So I think it's more about the convention for rehash. We can choose the
->> better one.
-> 
-> IIRC a related question raised during code review for the udp L4 hash
-> patches. Perhaps refactoring the code slightly to let udp_rehash()
-> really doing the re-hashing and udp_hash really doing only the hashing
-> could be worth.
-
-Agreed. I'd appreciate it if someone helps to refactor it, or I can do 
-this later myself.
-
--- 
-Philo
-
+> Thanks,
+> Wenjia
