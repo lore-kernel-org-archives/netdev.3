@@ -1,260 +1,130 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E972214225
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 19:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9826586342
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 19:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733858033; cv=none; b=VMmQunyH+R1H8nKpKMZ5W4aWrhqH8wGidWi47S8YTEFdc37kpbmwximvjMfVbAamKoHxe87KIQMVRaFa0ejl8LMNWty+UIep1Lvsh8VxnJlZj/MpqA0gPnrxP0svch+YkX4ZALOtnnNcXyS7clHmcYEj0H1BVvWXoalOAfbbGuM=
+	t=1733859302; cv=none; b=V4B0kyrMetmRSxq+3qA26ZZlz8rCxfqmqVpw7br2gsMAgof5LjsJ8u+LFfPXlIPWwZokT2ulw8K3Loiz79uvXiyGmNAtzxXvlzqseOEx0z49D0yr2fx2PDlW9ddFVG01S+KI3qipOjr4OE4Zt8mUvGh9oOEhTYBWS7fnkIL5ZhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733858033; c=relaxed/simple;
-	bh=bKHfseLrLFam+t0l4K7cSgf5MpnHwyP6kMNZLJ8EnQU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LegNJXdfFZ79S16zD6Gpw9q4E4Xick+fqseL4erkzBnW6iW4mcluF/ROElwy8skdhb9z29cO9fnnh/061tQTIhHkY4gDX6QnKWFi2TZgPMNy99dnbcjfg/9Rax14Hr8L65LVpJiSTYON8+OtSGDUaeY13s3D5JGL9PEsNey0woA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTmG0vJH; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733859302; c=relaxed/simple;
+	bh=dhQZ5hdiZRs+Gcc4d03j2TXHZ8gU+WCfRWPtUNcNCP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=smoGKiotcmWKL0tE9We4ZI7ylszxZUINJc5GMOfsap0OqYivsnACtmuC68l0FJYPQ3yvfy949G3c3T2H4V1nocC/id9MVLZUiq+BAOvxarEcv5qD8riNrVrQt+85p+ph/BXMgqxL2AV28tZ9MJb8JYrC57vBiFTTyp6g+vcGxBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DJ9KOo/n; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTmG0vJH"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434f09d18e2so34288605e9.0
-        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 11:13:51 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DJ9KOo/n"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2efded08c79so695595a91.0
+        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 11:35:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733858030; x=1734462830; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1Wy+YHf2E614t23hlQRqaAuPuP0RfmetGDSjCxDtFm8=;
-        b=TTmG0vJHHMpGu5Yog/Anu638YCoNFSosDNch4FXnEaLAMZiyZqzOXXvvEqbmNrYfM6
-         d3b/wUdhu3sw/g/PkbriRcUvpv4yZNp3lYSWE2BkMELbBtQlH92eZnX/AMHQ6OYyeSyx
-         oWGptkOKEVPsbvp6NaxP2Q7UK3HltVlnMTgwnCpnmv3jHEzebkrmT/KtTonJ7+FNXcXt
-         49Blg8sGnre1Wlxcg3f2dR1M2YCYqY6KA5citGeWTr1Nx4yPkeIURYphYnowANP+mqGo
-         56HWYGejv3/b3vq7AEJGy+P+vGK5E4TvKjlD979kLaHgh5JRgkOQIcJIaaQhCrhRbxrM
-         cwdQ==
+        d=broadcom.com; s=google; t=1733859300; x=1734464100; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OwV717DZF6jBbGmMqY4Lay6suGsxDvolISQzDQbt+mE=;
+        b=DJ9KOo/n3r7y9NtTWy+5WLYADoJcZbCp7+30oQncWZZ7P1cLJmcSNDDcUadqr4hDm/
+         nEjICcCdAPpAAQTdYfECJCW2kC47/JL0jcJghRKCEPJZVoqmKqHm1vQD8t1M0yJ4R0/j
+         N/bN+QdAItcRjcjFnnwg7yAQSym755VRmiV5A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733858030; x=1734462830;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1Wy+YHf2E614t23hlQRqaAuPuP0RfmetGDSjCxDtFm8=;
-        b=LjjDy3fRrcLmT0uAENtJaZM6/SoMawC0s13rhZ4FShRuyT6V3wBst7N2yuzWlY7QqT
-         jc/Xefg1C5OL7OwnZ5ulkr7/NvJagT910GWBO0PZliFSi7aenAUBN/m1ysJgjoNkEWVx
-         OYF1n5Dh7ugn+BuU0u3CpZIawZ2svDm2pNRqqI0C3YmUWGD+ZDKzh17TiY50IQrwGknQ
-         ERsJvE/qDU1QzcXdytkHHqQq4hp/RByUvHeeddyqt5zS4/LSbny14bhNFLoL3Iv1Xkyc
-         QWiE1jLJ3gj4o07jLFrUbcsT1Hj5kEtsD+CObzwhy8op4t5M+YKBkAIoFc+QXN4Ixvpe
-         OnOg==
-X-Gm-Message-State: AOJu0YwguksEjW+iNFBiJ8/KFZJdXMYB7WpiY68t8ucj+3/eA/kDlA7F
-	fWzR9EPWgunjifkTEg1KBXB0ij7N070G3i7AJ0Zpnf7uu0mPxVR8Bk+nkc7RES0=
-X-Gm-Gg: ASbGncvRghgkvOHOjprIpOKWYi5PgFpYoOmqQrga0XKFapk4JtnvsfE6Tl9h3RKHGHp
-	V2sivr2f4odhVJpxOSTrtni8k5/y8rds7jcOBDm9LrxnpWDxsTcI47o8xdchw3tNDOgF2qiLQXt
-	19RJ8lr9ea9uV7bf6AkxQPoA0siHHw6vYZribd4aXeEscpEhEl0oiAhVVs5KBsuu0fuFqztx3uX
-	mGrWkctdAx19bUrNb6i/z3OFSonfjCJR/EvXGp8USJmJyKwgnpWVcGUTlvbJiZx+qF7T9/H3cjh
-	ft/mtxoEn1DVDQLeESCFlzLxAqn8RuiaZDE9DTeglPCr+NNbP+zRZLMcWGjr8Q==
-X-Google-Smtp-Source: AGHT+IGqyygePq7AWxbGdP2on+xJnc/3BqHNzcKO/J87G2iyLWdSSTHylNPnue+AQC8ep2xHKPBeVg==
-X-Received: by 2002:a05:6000:440b:b0:386:3825:2c3b with SMTP id ffacd0b85a97d-3864ce96b85mr167776f8f.18.1733858030082;
-        Tue, 10 Dec 2024 11:13:50 -0800 (PST)
-Received: from localhost.localdomain (20014C4E37C0C7006406573B5E53AD5C.dsl.pool.telekom.hu. [2001:4c4e:37c0:c700:6406:573b:5e53:ad5c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862d3f57a0sm13310345f8f.108.2024.12.10.11.13.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 11:13:49 -0800 (PST)
-From: Anna Emese Nyiri <annaemesenyiri@gmail.com>
-To: netdev@vger.kernel.org
-Cc: fejes@inf.elte.hu,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	idosch@idosch.org,
-	Anna Emese Nyiri <annaemesenyiri@gmail.com>
-Subject: [PATCH net-next v6 4/4] sock: Introduce SO_RCVPRIORITY socket option
-Date: Tue, 10 Dec 2024 20:13:09 +0100
-Message-ID: <20241210191309.8681-5-annaemesenyiri@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241210191309.8681-1-annaemesenyiri@gmail.com>
-References: <20241210191309.8681-1-annaemesenyiri@gmail.com>
+        d=1e100.net; s=20230601; t=1733859300; x=1734464100;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OwV717DZF6jBbGmMqY4Lay6suGsxDvolISQzDQbt+mE=;
+        b=ryP6E3KK4aOgDzAGu+CcJggyP7UjhqbNs+f3d2rFODifx+6SrEcAgC2lwNIDZ2AIP/
+         U4jPFwQBPIQqsRIZqTQEOz03qyvgnqgMJ+B78lDwf1tBMMlMZ49sB1rA7tnjiYflXxbE
+         FU8jgvRGWwkEtk9oKsA0PhL4L9uYmxyabvZT6den93Y/avFi2f1eDt6zLzrp/oFBSQUr
+         uh86aFMg8xVJ42Fqv8UJ6b4nXNZ+pSOkuYCKupnrZMxmQjkvFUcO32Y+VzqBJCsggSYt
+         4/nqcLLWY9ifMfKTVYAPij25tjNs3rjIQ5Kvhx+CDNtLoeSkHh8ciEDqU7q8pz9eGIyy
+         G0eg==
+X-Forwarded-Encrypted: i=1; AJvYcCUf4t2nEcruunjnvTdiY/yZCWzXwrRCADoLiWW6TUZdKP1RBZ6fHBjKdWMuvDCXcrHMdDALwwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw2RpESSaVWkeQFkBquTVIwMueagZrpuLHE4QNZt4XmY6NjkgK
+	lP2HSUVh3jIssnl0vLW1zM0fnlEUj+RcKhRODqXRD+ACWTmDPgrFencdut3zeA==
+X-Gm-Gg: ASbGncuxtwFKexXCoNq6tAN9c4LNV4dNJUa7vtwzIsqBnPl+wS4iN0jTi12C1anC3q0
+	wVKwt2fAknG9P3bef9qKLQKUF168/WNtMCKW279bvsQo+fTfsDWEvgAcfDwZ2jYJWwqQ5HtdldZ
+	wT+hzPTd7RDXWYVKBOmCsqna1ITwi6KjevfUK+drHWXT8iz6JIHMBufXYA1qWH5Q8FQVFgbCpCD
+	e3IbcPWw8sPw/jShncsKJZosB1sb6VxQk5sj/wY3cWpls+VvibDCl2VgShBn55rrorNDD7rhs7A
+	S17AgssFShSH2xU7sA==
+X-Google-Smtp-Source: AGHT+IFBOs/F/U4/hLKU6kyWf8O6LlmYbxeJeYss/dK1iAbYGZxIT+jEyZtSoRHQ4kvolIcl2McsnQ==
+X-Received: by 2002:a17:90b:3a83:b0:2ee:e518:c1d8 with SMTP id 98e67ed59e1d1-2f12808c035mr266194a91.30.1733859299825;
+        Tue, 10 Dec 2024 11:34:59 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef45f958d6sm10127971a91.17.2024.12.10.11.34.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 11:34:58 -0800 (PST)
+Message-ID: <8a7bd584-d4e7-4a68-a562-08f2603ff49c@broadcom.com>
+Date: Tue, 10 Dec 2024 11:34:51 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/9] net: dsa: add hook to determine whether EEE
+ is supported
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Ar__n__ __NAL <arinc.unal@arinc9.com>, Daniel Golle <daniel@makrotopia.org>,
+ "David S. Miller" <davem@davemloft.net>, DENG Qingfang <dqfext@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Sean Wang <sean.wang@mediatek.com>,
+ Simon Horman <horms@kernel.org>, UNGLinuxDriver@microchip.com,
+ Vladimir Oltean <olteanv@gmail.com>, Woojung Huh <woojung.huh@microchip.com>
+References: <Z1hNkEb13FMuDQiY@shell.armlinux.org.uk>
+ <E1tL144-006cZD-El@rmk-PC.armlinux.org.uk>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <E1tL144-006cZD-El@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add new socket option, SO_RCVPRIORITY, to include SO_PRIORITY in the
-ancillary data returned by recvmsg().
-This is analogous to the existing support for SO_RCVMARK, 
-as implemented in commit <6fd1d51cfa253>
-("net: SO_RCVMARK socket option for SO_MARK with recvmsg()").
+On 12/10/24 06:18, Russell King (Oracle) wrote:
+> Add a hook to determine whether the switch supports EEE. This will
+> return false if the switch does not, or true if it does. If the
+> method is not implemented, we assume (currently) that the switch
+> supports EEE.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-Suggested-by: Ferenc Fejes <fejes@inf.elte.hu>
-Signed-off-by: Anna Emese Nyiri <annaemesenyiri@gmail.com>
----
- arch/alpha/include/uapi/asm/socket.h    |  2 ++
- arch/mips/include/uapi/asm/socket.h     |  2 ++
- arch/parisc/include/uapi/asm/socket.h   |  2 ++
- arch/sparc/include/uapi/asm/socket.h    |  2 ++
- include/net/sock.h                      |  4 +++-
- include/uapi/asm-generic/socket.h       |  2 ++
- net/core/sock.c                         |  8 ++++++++
- net/socket.c                            | 11 +++++++++++
- tools/include/uapi/asm-generic/socket.h |  2 ++
- 9 files changed, 34 insertions(+), 1 deletion(-)
-
-diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-index 302507bf9b5d..3df5f2dd4c0f 100644
---- a/arch/alpha/include/uapi/asm/socket.h
-+++ b/arch/alpha/include/uapi/asm/socket.h
-@@ -148,6 +148,8 @@
- 
- #define SCM_TS_OPT_ID		81
- 
-+#define SO_RCVPRIORITY		82
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-index d118d4731580..22fa8f19924a 100644
---- a/arch/mips/include/uapi/asm/socket.h
-+++ b/arch/mips/include/uapi/asm/socket.h
-@@ -159,6 +159,8 @@
- 
- #define SCM_TS_OPT_ID		81
- 
-+#define SO_RCVPRIORITY		82
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-index d268d69bfcd2..aa9cd4b951fe 100644
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -140,6 +140,8 @@
- 
- #define SCM_TS_OPT_ID		0x404C
- 
-+#define SO_RCVPRIORITY		0x404D
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-index 113cd9f353e3..5b464a568664 100644
---- a/arch/sparc/include/uapi/asm/socket.h
-+++ b/arch/sparc/include/uapi/asm/socket.h
-@@ -141,6 +141,8 @@
- 
- #define SCM_TS_OPT_ID            0x005a
- 
-+#define SO_RCVPRIORITY           0x005b
-+
- #if !defined(__KERNEL__)
- 
- 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 316a34d6c48b..d4bdd3286e03 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -953,6 +953,7 @@ enum sock_flags {
- 	SOCK_XDP, /* XDP is attached */
- 	SOCK_TSTAMP_NEW, /* Indicates 64 bit timestamps always */
- 	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
-+	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
- };
- 
- #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
-@@ -2660,7 +2661,8 @@ static inline void sock_recv_cmsgs(struct msghdr *msg, struct sock *sk,
- {
- #define FLAGS_RECV_CMSGS ((1UL << SOCK_RXQ_OVFL)			| \
- 			   (1UL << SOCK_RCVTSTAMP)			| \
--			   (1UL << SOCK_RCVMARK))
-+			   (1UL << SOCK_RCVMARK)			|\
-+			   (1UL << SOCK_RCVPRIORITY))
- #define TSFLAGS_ANY	  (SOF_TIMESTAMPING_SOFTWARE			| \
- 			   SOF_TIMESTAMPING_RAW_HARDWARE)
- 
-diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-index deacfd6dd197..aa5016ff3d91 100644
---- a/include/uapi/asm-generic/socket.h
-+++ b/include/uapi/asm-generic/socket.h
-@@ -143,6 +143,8 @@
- 
- #define SCM_TS_OPT_ID		81
- 
-+#define SO_RCVPRIORITY		82
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a3d9941c1d32..f9f4d976141e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1518,6 +1518,10 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 	case SO_RCVMARK:
- 		sock_valbool_flag(sk, SOCK_RCVMARK, valbool);
- 		break;
-+
-+	case SO_RCVPRIORITY:
-+		sock_valbool_flag(sk, SOCK_RCVPRIORITY, valbool);
-+		break;
- 
- 	case SO_RXQ_OVFL:
- 		sock_valbool_flag(sk, SOCK_RXQ_OVFL, valbool);
-@@ -1947,6 +1951,10 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		v.val = sock_flag(sk, SOCK_RCVMARK);
- 		break;
- 
-+	case SO_RCVPRIORITY:
-+		v.val = sock_flag(sk, SOCK_RCVPRIORITY);
-+		break;
-+
- 	case SO_RXQ_OVFL:
- 		v.val = sock_flag(sk, SOCK_RXQ_OVFL);
- 		break;
-diff --git a/net/socket.c b/net/socket.c
-index 9a117248f18f..79d08b734f7c 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1008,12 +1008,23 @@ static void sock_recv_mark(struct msghdr *msg, struct sock *sk,
- 	}
- }
- 
-+static void sock_recv_priority(struct msghdr *msg, struct sock *sk,
-+			       struct sk_buff *skb)
-+{
-+	if (sock_flag(sk, SOCK_RCVPRIORITY) && skb) {
-+		__u32 priority = skb->priority;
-+
-+		put_cmsg(msg, SOL_SOCKET, SO_PRIORITY, sizeof(__u32), &priority);
-+	}
-+}
-+
- void __sock_recv_cmsgs(struct msghdr *msg, struct sock *sk,
- 		       struct sk_buff *skb)
- {
- 	sock_recv_timestamp(msg, sk, skb);
- 	sock_recv_drops(msg, sk, skb);
- 	sock_recv_mark(msg, sk, skb);
-+	sock_recv_priority(msg, sk, skb);
- }
- EXPORT_SYMBOL_GPL(__sock_recv_cmsgs);
- 
-diff --git a/tools/include/uapi/asm-generic/socket.h b/tools/include/uapi/asm-generic/socket.h
-index 281df9139d2b..ffff554a5230 100644
---- a/tools/include/uapi/asm-generic/socket.h
-+++ b/tools/include/uapi/asm-generic/socket.h
-@@ -126,6 +126,8 @@
- 
- #define SCM_TS_OPT_ID		78
- 
-+#define SO_RCVPRIORITY		79
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.0
-
+Florian
