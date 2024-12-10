@@ -1,118 +1,132 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8E322CBD0
-	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 08:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5CA23099E
+	for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 08:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733818898; cv=none; b=bJggwvOnN5bd4qr6GVzH4nyz9OltapklYA+VODaf44xu8LL5lh1RRJZMYfYDCBUr91c8YxNVfKF+9rGWDJVqMO2wFE46Bs4fIfLRSjl7sPKn5dkF+pOqdcGe+v7fE80b/lKhsDjCnVu+34gYfp5CNXIJcjmxWERUWzHMIFxTMCA=
+	t=1733819104; cv=none; b=a4jCeOYdDUO72SzGJJTc1cDROTurTx8xBnJ6Nlrs30FF3cGXA2QKrNhAK/zGEM1kawSuHdNIWFwV9R1NBDjcg+L0ttq861HTDASZJ8e4wBIS3lFIb9TGdcFmrVpLWUSZMPHcCLYueTSx2Rk7xKbzFIdClqiqy+vJVK4fduizlgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733818898; c=relaxed/simple;
-	bh=2xLj5AqCTE5/ZWkK4RfTOBQ2dvNALAvlMD3MNIKBsz4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l3OwQDpU0p+YROgO318kVv0m/ocyuFy9VdjMfgd3csX54wzv6yibd9skCDqX7gVoOCp1GCy2J9+2ytBiv29sd1JWrylsOAN0Ky3xZfsCHEmz234jLtMqDnZNNvjzDFgU8CB5I7ts5d/ZujPTHH0YakGGkIv9sjRwuT/g8HWcPGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wH1t2PfG; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733819104; c=relaxed/simple;
+	bh=KQfHFQ/ZYKUlItWNvsZBVoWc70S6XVSP9gazTBBIOPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zuk5MXV/mOZZ4m1GoL+YOLDQmki1eLFyEug9WccZ5usKFILwu7GxnpKl9qbiKL7BD141HfWp9T4iDk6OZlfXBWo6C8wyIHif2BmqiJNglnAw7qSUe3D37vd9zKfgH8YHRZdp32lhmEcco9StegSJ0FvP+jOA/0PfZz89kVi3/Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WYdZ4Xlc; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wH1t2PfG"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d41848901bso1995156a12.0
-        for <netdev@vger.kernel.org>; Tue, 10 Dec 2024 00:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733818895; x=1734423695; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2xLj5AqCTE5/ZWkK4RfTOBQ2dvNALAvlMD3MNIKBsz4=;
-        b=wH1t2PfGCQNhYNkeoBaDo/+RjNyQGJPzAf6LDJtDCRterPxZb87kLJAmFlxWp5XN4a
-         FQAPHRrYz6y2N0AXPttus8+HunTkBEaqEDzAa+2vEuqdJdyb7p+Pmv5XmBiOy3h6oVkI
-         gekCaU7+bp7P76qLKwUXyWjn4Fg8pNqFnj3bOOA2G0n4cWcLOym+F+8pGzwZeaG9azFS
-         pD1xHVhWW5ubXk50DryvuP+fvqCKTleoVV9k1BIjnmXlAHXIIMyD3MPxiJ7m+K8jV3MS
-         PfFknOE8CBvirAKKNeMewmB70zoMq2y1D4M3dxqwilRSCx+CmoK8BSlBY9zsal36mAJv
-         C4+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733818895; x=1734423695;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2xLj5AqCTE5/ZWkK4RfTOBQ2dvNALAvlMD3MNIKBsz4=;
-        b=IYJsHTgkAEanqiN9QvHs3egE2+7796bFfuw5ht33ahi5Vdh+Np+1miO21Qr4kFA1d0
-         kx+oYvfoL4jpjaakMYtTB8vx+aEm1JiTQRaQtoE/n05DhI3AZxqc0SkkaB1024jKonIj
-         sobj6BFXAwHr1XGnScmfPoaFFFsIWIxJ7f9fMODHvdSlLnJEZJ5xr41jAfl0dYFhw7kM
-         8BmbLaIPcID6dHp4eiDOyjWq+a8EVnFa3ZJ/YKvvAkctGmQzHNaBAouKU0u0WYl0Qy8/
-         SD1NShnglxvHyVlWpamQ9NI6j+uQ8Y54805GH1OkLp86m7OQgn6YQlMnpExXJVmwIyfp
-         Rixw==
-X-Gm-Message-State: AOJu0YzZvZ/61YK851YI39trBXTGid1980xsU26D3SM9vqI8yhlvIqst
-	NuX4KaHbeRj638v8lNQdXbBli3mNqkomLOaE6Q+1pFZyvzC6Rt8qUcI6GZ/jIBjxl+27isUfYqb
-	5QX1j4gICncnB2mHekMIX/iGT3Su1LLd/xnD9
-X-Gm-Gg: ASbGncuX4VkNK+uGU3xHsJR7HvXQuEtHtVnJsqZuBvDKvt7hd1Hc4qWdXM95f0EWShM
-	cHHWHBoD4/QWRcLZmuJ9GZ4GiYhrvGToGzQ==
-X-Google-Smtp-Source: AGHT+IGl5zgCNyScZ2BTbGLKbQd65egk9PIPSccxoWeW78vkdZVwybnW6uN990vpllfQH8UFTKUGuD9Otbibqta4dg8=
-X-Received: by 2002:a05:6402:26d6:b0:5d4:1d34:99cf with SMTP id
- 4fb4d7f45d1cf-5d41e315b4amr2557123a12.16.1733818894751; Tue, 10 Dec 2024
- 00:21:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WYdZ4Xlc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733819102; x=1765355102;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KQfHFQ/ZYKUlItWNvsZBVoWc70S6XVSP9gazTBBIOPc=;
+  b=WYdZ4XlcHYor3Xt8Hopj4YyFRvT2gY9JG6HN6iBE6YYH+o2jf0AgXsBW
+   uwbUmQOx2hAEi/tb9ZkwFUeWN+hT/kK6iv5qiSTtOmGgZw9GvHe5Ui5gO
+   PoNplWE0R/9T3UJGcjN0r8TSQf2AsPUCV9v/pA8HszkqQOI8w8rmktMUK
+   QqSQh625VsPPrE5d2ss9wjt2Ou7zr09tHB7hOpxVJXgFaxwgJdmCWQIq0
+   srTXmpY0I6mkTK+yuT5gFex/hZkn/Dt9MlZTuH+U1WvwFH6caNCfW3FBp
+   y6kUHMSRqygC/TLm9bawXvbQQ+dvAc+jM79wqTp/TwcXqYNeBm5TpbcxC
+   g==;
+X-CSE-ConnectionGUID: CX/2Pzq/RT6xLj90A1N7PQ==
+X-CSE-MsgGUID: ZjDcfQFlRbOhSLzLlLG6wQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34398236"
+X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; 
+   d="scan'208";a="34398236"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 00:25:02 -0800
+X-CSE-ConnectionGUID: GikukbA1R5iupS4uLBVLPQ==
+X-CSE-MsgGUID: IOBTeSDPTTq0EF2vbHtSdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,221,1728975600"; 
+   d="scan'208";a="99398098"
+Received: from host61.igk.intel.com ([10.123.220.61])
+  by fmviesa003.fm.intel.com with ESMTP; 10 Dec 2024 00:25:01 -0800
+From: Anton Nadezhdin <anton.nadezhdin@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	richardcochran@gmail.com,
+	Anton Nadezhdin <anton.nadezhdin@intel.com>
+Subject: [PATCH iwl-next v2 0/5] ice: implement low latency PHY timer updates
+Date: Tue, 10 Dec 2024 09:22:04 -0500
+Message-ID: <20241210142333.320515-1-anton.nadezhdin@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-jakub-krn-909-poc-msec-tw-tstamp-v2-0-66aca0eed03e@cloudflare.com>
- <20241209-jakub-krn-909-poc-msec-tw-tstamp-v2-2-66aca0eed03e@cloudflare.com>
-In-Reply-To: <20241209-jakub-krn-909-poc-msec-tw-tstamp-v2-2-66aca0eed03e@cloudflare.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 10 Dec 2024 09:21:23 +0100
-Message-ID: <CANn89iLTfnFeqhpkC87pLg-u1Yqnao6NyidezZA0gYZCONnoMw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] tcp: Add sysctl to configure TIME-WAIT
- reuse delay
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Jason Xing <kerneljasonxing@gmail.com>, Adrien Vasseur <avasseur@cloudflare.com>, 
-	Lee Valentine <lvalentine@cloudflare.com>, kernel-team@cloudflare.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 9, 2024 at 8:38=E2=80=AFPM Jakub Sitnicki <jakub@cloudflare.com=
-> wrote:
->
-> Today we have a hardcoded delay of 1 sec before a TIME-WAIT socket can be
-> reused by reopening a connection. This is a safe choice based on an
-> assumption that the other TCP timestamp clock frequency, which is unknown
-> to us, may be as low as 1 Hz (RFC 7323, section 5.4).
->
-> However, this means that in the presence of short lived connections with =
-an
-> RTT of couple of milliseconds, the time during which a 4-tuple is blocked
-> from reuse can be orders of magnitude longer that the connection lifetime=
-.
-> Combined with a reduced pool of ephemeral ports, when using
-> IP_LOCAL_PORT_RANGE to share an egress IP address between hosts [1], the
-> long TIME-WAIT reuse delay can lead to port exhaustion, where all availab=
-le
-> 4-tuples are tied up in TIME-WAIT state.
->
-> Turn the reuse delay into a per-netns setting so that sysadmins can make
-> more aggressive assumptions about remote TCP timestamp clock frequency an=
-d
-> shorten the delay in order to allow connections to reincarnate faster.
->
-> Note that applications can completely bypass the TIME-WAIT delay protecti=
-on
-> already today by locking the local port with bind() before connecting. Su=
-ch
-> immediate connection reuse may result in PAWS failing to detect old
-> duplicate segments, leaving us with just the sequence number check as a
-> safety net.
->
-> This new configurable offers a trade off where the sysadmin can balance
-> between the risk of PAWS detection failing to act versus exhausting ports
-> by having sockets tied up in TIME-WAIT state for too long.
->
-> [1] https://lpc.events/event/16/contributions/1349/
->
-> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Programming the PHY registers in preparation for an increment value change
+or a timer adjustment on E810 requires issuing Admin Queue commands for
+each PHY register. It has been found that the firmware Admin Queue
+processing occasionally has delays of tens or rarely up to hundreds of
+milliseconds. This delay cascades to failures in the PTP applications which
+depend on these updates being low latency.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Consider a standard PTP profile with a sync rate of 16 times per second.
+This means there is ~62 milliseconds between sync messages. A complete
+cycle of the PTP algorithm
 
-Thanks !
+1) Sync message (with Tx timestamp) from source
+2) Follow-up message from source
+3) Delay request (with Tx timestamp) from sink
+4) Delay response (with Rx timestamp of request) from source
+5) measure instantaneous clock offset
+6) request time adjustment via CLOCK_ADJTIME systemcall
+
+The Tx timestamps have a default maximum timeout of 10 milliseconds. If we
+assume that the maximum possible time is used, this leaves us with ~42
+milliseconds of processing time for a complete cycle.
+
+The CLOCK_ADJTIME system call is synchronous and will block until the
+driver completes its timer adjustment or frequency change.
+
+If the writes to prepare the PHY timers get hit by a latency spike of 50
+milliseconds, then the PTP application will be delayed past the point where
+the next cycle should start. Packets from the next cycle may have already
+arrived and are waiting on the socket.
+
+In particular, LinuxPTP ptp4l may start complaining about missing an
+announce message from the source, triggering a fault. In addition, the
+clockcheck logic it uses may trigger. This clockcheck failure occurs
+because the timestamp captured by hardware is compared against a reading of
+CLOCK_MONOTONIC. It is assumed that the time when the Rx timestamp is
+captured and the read from CLOCK_MONOTONIC are relatively close together.
+This is not the case if there is a significant delay to processing the Rx
+packet.
+
+Newer firmware supports programming the PHY registers over a low latency
+interface which bypasses the Admin Queue. Instead, software writes to the
+REG_LL_PROXY_H and REG_LL_PROXY_L registers. Firmware reads these registers and
+then programs the PHY timers.
+
+Implement functions to use this interface when available to program the PHY
+timers instead of using the Admin Queue. This avoids the Admin Queue
+latency and ensures that adjustments happen within acceptable latency
+bounds.
+
+Jacob Keller (5):
+  ice: use rd32_poll_timeout_atomic in ice_read_phy_tstamp_ll_e810
+  ice: rename TS_LL_READ* macros to REG_LL_PROXY_H_*
+  ice: add lock to protect low latency interface
+  ice: check low latency PHY timer update firmware capability
+  ice: implement low latency PHY timer updates
+
+ drivers/net/ethernet/intel/ice/ice_common.c |   3 +
+ drivers/net/ethernet/intel/ice/ice_osdep.h  |   3 +
+ drivers/net/ethernet/intel/ice/ice_ptp.c    |  48 ++++--
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 155 +++++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  17 ++-
+ drivers/net/ethernet/intel/ice/ice_type.h   |  12 ++
+ 6 files changed, 204 insertions(+), 34 deletions(-)
+
+
+base-commit: 4376b34cf49c2f38e761beacd173d1dc15a255fd
+-- 
+2.42.0
+
