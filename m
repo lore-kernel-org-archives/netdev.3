@@ -1,524 +1,231 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF7D1BD9C6;
-	Tue, 10 Dec 2024 13:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733838962; cv=none; b=PME13whhdGyxHmJixvIfgOhxL0A9U89ChRR/l7cNMK92zAeDNOZ6tUhhXQH6nNaLeTX8bAGQQTWJuHTd8oB8eWqqH8/XLmBWHZa84LT3O6PXGg1ep3dgNl0zL5q0PjqZwD82NkmyumbvJitl3hOVo8VzwxS5hqiPZlphO3SxnjY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733838962; c=relaxed/simple;
-	bh=L3+QQgLXX4eaUvR2qSKm8lt9iBgzn1IOC6bXc/Za56w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nvAKuLppCKb4D9ZCU5KzS1L+h+OyhwQzN4OkKmUacR2LOMMPWZwJFV3NDzCVsOJAzeY/+ULeKaH8mLrEf0Jqf2xKSwKD7UoLYBCPPstximH3XKMy1e5IkU8ag+021hHzvdX7FF+AzjMbTuibmh2UCdGXvIDwN6OFhQINYxuO8UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Y70YR3fRDzHwtr;
-	Tue, 10 Dec 2024 21:52:59 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 31792180A9E;
-	Tue, 10 Dec 2024 21:55:52 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Dec 2024 21:55:51 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<gregkh@linuxfoundation.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>, <hkelam@marvell.com>
-Subject: [PATCH V6 net-next 6/7] net: hibmcge: Add reset supported in this module
-Date: Tue, 10 Dec 2024 21:48:54 +0800
-Message-ID: <20241210134855.2864577-7-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241210134855.2864577-1-shaojijie@huawei.com>
-References: <20241210134855.2864577-1-shaojijie@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41231AAE1A;
+	Tue, 10 Dec 2024 13:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733838982; cv=fail; b=uaSZhKRiBo8+R8qFL7Vez2xJaGdbvMKqSo4j2S1dzQXri56RrO1hUmVbNccSeWZ9lUjJvgmAEfPhonNUQWqU+14a4kuOMNkj3ktre6unyyK2CKa4olVpoj0jnRPnNcdzPSG2HccvpmgK847H2g6+M7ze3WyATL7QVdrODizj5C4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733838982; c=relaxed/simple;
+	bh=6HP8UWfF9yo0/JUlqgEl9IHZpGOW33ky5Bu7Lh/X8PM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=WLiQTM35Tms+mg0MTZeZy+QOQ76PfvUYGPLQZpPTurA/D3dF7wxIyGof9o/WAyWfma/gt/AsHJmXNCEhCA637dW/7+WkfI4smz+qfom5MLs7Ry6SuH+/IamRrCNaV4NABGjWpiJHwqlD5BzDQroSy+kpIGZL7PyzckjLnj9Phm4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=kuPzgP5d; arc=fail smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="kuPzgP5d"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BACZVsF027025;
+	Tue, 10 Dec 2024 05:55:54 -0800
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2045.outbound.protection.outlook.com [104.47.55.45])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 43ensk846q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Dec 2024 05:55:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OAzsMzisYViGNZTY/koY4VprXomWnwVq9bU9TELf4QNHg2qd9VPmubEkbHhkjkLZcRcNJqkUHzXZdpa3fD9nnT+m4zMDqdsc4zgyjkTsGz9+ZJX3O1Xh7gR/TT1vKX7LD1cJtbE34xa6carJf/0/GNyMx1G99GZjI5YB/xmhQVYpUMl5/IM2b41VlPbWCCI7YANEqmaNentpDC3qWKC5toW04+ksVJeQSflFo7n0+hnBUgaGPYx82qA+sIQqLBfnPl9kEi/+0FIIy4GGMlnN0yoOYvHhS8PWRTFRbuHdDyLC69pZj7yuSMaCH7vPjQ2Kw7ezZHc9zeQQUnPjzmyYfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6HP8UWfF9yo0/JUlqgEl9IHZpGOW33ky5Bu7Lh/X8PM=;
+ b=vHv/gjkYBcOoP5UA+t3r4npWc7cFx1HdKnKRfuJ7igUlgMm35I6gnRgYPXBEAfE6x+Bgp7kCoiLMX6k6EXZEwmL8rsZ4OP78H2RVbVh2W3ltZ+hAhVG5xixc07mUZ6IC23jlR0wvMVj+i7MHzkEVaIl1vSucwYVE8KWFZwfPQ4TKB2PM7xLZgckA9GisQUUKXY5aTS26sNpWNYcR3ReGGkM/wKPyZ956IBdD5HSnK/rt57q0NCXADZB46adI/KbqtMo+ccTjvSnEddw1rmZemOlZzSazEJ0ycIDOH5aSfggjZax5W/H+OvQFkbER9KvWR2u0dAgXXKT8k6v1lmZNFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6HP8UWfF9yo0/JUlqgEl9IHZpGOW33ky5Bu7Lh/X8PM=;
+ b=kuPzgP5d7hrMEzwcO7kB6mZtFxr+l5rsjSJldOQfKB9lr+YosFhQJCRJy6IkWS1hcLFp9YxTsJ0LL3un34D3s9FdMf39zxacoJPgKOz/dCImISJiwNRW247JSneEVimpMQS6HUdo2FlI0+ShTxpMV2uSB4jwLXlcQP9qwO1oEmY=
+Received: from CO1PR18MB4666.namprd18.prod.outlook.com (2603:10b6:303:e5::24)
+ by CH0PR18MB4225.namprd18.prod.outlook.com (2603:10b6:610:bc::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Tue, 10 Dec
+ 2024 13:55:51 +0000
+Received: from CO1PR18MB4666.namprd18.prod.outlook.com
+ ([fe80::b3e1:2252:a09b:a64e]) by CO1PR18MB4666.namprd18.prod.outlook.com
+ ([fe80::b3e1:2252:a09b:a64e%6]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 13:55:50 +0000
+From: Subbaraya Sundeep Bhatta <sbhatta@marvell.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Sai Krishna Gajula <saikrishnag@marvell.com>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Geethasowjanya Akula <gakula@marvell.com>,
+        Linu Cherian
+	<lcherian@marvell.com>, Jerin Jacob <jerinj@marvell.com>,
+        Hariprasad Kelam
+	<hkelam@marvell.com>,
+        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "kalesh-anakkur.purayil@broadcom.com" <kalesh-anakkur.purayil@broadcom.com>
+Subject: Re: [net-next PATCH v5 1/6] octeontx2: Set appropriate PF, VF masks
+ and shifts based on silicon
+Thread-Topic: [net-next PATCH v5 1/6] octeontx2: Set appropriate PF, VF masks
+ and shifts based on silicon
+Thread-Index: AQHbSws4zHSwIa0thEuX3AY9bgorhA==
+Date: Tue, 10 Dec 2024 13:55:50 +0000
+Message-ID:
+ <CO1PR18MB4666D202E13064800B338799A13D2@CO1PR18MB4666.namprd18.prod.outlook.com>
+References: <20241204140821.1858263-1-saikrishnag@marvell.com>
+	<20241204140821.1858263-2-saikrishnag@marvell.com>
+	<20241207183824.4a306105@kernel.org>
+	<CO1PR18MB466694B5C67641606838782BA13C2@CO1PR18MB4666.namprd18.prod.outlook.com>
+	<CO1PR18MB4666941A2B96DF6FC59E7119A13C2@CO1PR18MB4666.namprd18.prod.outlook.com>
+ <20241209132525.600ba231@kernel.org>
+ <CO1PR18MB46664C4F8AA71F0FF2A98A68A13D2@CO1PR18MB4666.namprd18.prod.outlook.com>
+ <CO1PR18MB46669A23447A3A954AB5C219A13D2@CO1PR18MB4666.namprd18.prod.outlook.com>
+In-Reply-To:
+ <CO1PR18MB46669A23447A3A954AB5C219A13D2@CO1PR18MB4666.namprd18.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR18MB4666:EE_|CH0PR18MB4225:EE_
+x-ms-office365-filtering-correlation-id: 3cc857bf-cb7a-46c8-d9ad-08dd19225b64
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?UWN5bUNiVisvVGlzR0twWFBkNG9VQlQrNzVuM1laZzBkMEZTdFM2QTZZSjNr?=
+ =?utf-8?B?TWZ2K3JQcmQ2UmlKOFl2SjAzYlQ1OHc1RnFHcTN2anFHK2JaN3VYNlZEYUdj?=
+ =?utf-8?B?blBmQ2NzaDEybEtVMEdlYTBLSkgrYm9WS2REbHltS2F0aVZoWDYvQ0N5Yjho?=
+ =?utf-8?B?bUo0dDJSaGlJaWVrVzNsZnBzcitlOVVqQ3NRZ24zaDZicUtnWjI5dHNvVlJy?=
+ =?utf-8?B?b3BkUkFNSjFLeG55WndLM2pMdEdtQlg3c3lSLzlQQ1RLODZtNmF0SEMrU3pu?=
+ =?utf-8?B?K1JaeXN2QUpvbGZwN0VxeFU2OFJBRmJGbTFmM2VOcS9nclJhTDlkWnQwRTV0?=
+ =?utf-8?B?T0NCUThITlNnYTVNSXBNNU03RHhFYnJ3THVkTlo2UTgzZDArMFZleE52U3Vp?=
+ =?utf-8?B?RjdnQlF4aHYvenNLZC9qL0pnR1ZqcTVMN3ZTNlRUaC9FaFlXWnZjelh3K29C?=
+ =?utf-8?B?VGNDL3VsZm1FOGNXQnd0Q1RWaWNrd3BML1RRaHJKTTJGZ3NtcURzRzFYckNI?=
+ =?utf-8?B?VTROM2lKOTljZk5WN0k2aHZoN2NMa3lDZzNzMzNudktKUmhQTStUOFVtKzVP?=
+ =?utf-8?B?cEtwYU9QU1RPUzlPdVBqb2J2ejNybktkN2JHcllNYXgwRGw4VEliamdneUF1?=
+ =?utf-8?B?UGtHSjh1Y0d4K2xBVFpIQ21ZL2dZeFNad3VLZzI2RkdKQ0RWamJYTGlnUWp3?=
+ =?utf-8?B?b1R2dlpjOUxZU1hDVWVBdGRLbmRlN1l6RVZ0TDY5NUF3R29rcFc3NDYvWUcy?=
+ =?utf-8?B?RGlkL1JuM1VBMWlNNE9NU29RVlAzS1F3OTh5U0d6YmJYK2ZhTWZ2a2FLREow?=
+ =?utf-8?B?SEcvcmYxRVZkWUhkNS9kLzE4c081QzYyMFUxL3oxQlpyajU1OFpId01sSEcr?=
+ =?utf-8?B?SkVTbWVNRTdLZk5iUmhsamVJUi9IaTJGdGVlblh1OWhGRTJibEpleVgxdXVo?=
+ =?utf-8?B?L1VWOW1YaFY0TTBhdkFlTGpIMDkzdDZFVlYxYjdFdnFTVURnZkVRdkRwb3hR?=
+ =?utf-8?B?NEZ5TzM5R1p0RGJUVTUzdFhRNVpsbFY4VEdicS9PcWptL2krY0tzVTlVMVBI?=
+ =?utf-8?B?d1JmZ2J6aW5lMTBQQlNlQ0g4dGRueTV2TlZEajNVTFBFbU1FNFFhS1Z3UmxS?=
+ =?utf-8?B?QXhFRytSd3MxS1QrU1Y0RkV5YWtRaWpXbUVBTHlad1NsM2IvQkoxR1dRbWNW?=
+ =?utf-8?B?RGFzbHNLditxYW5TOXFpazRYeG1PaTFpeE9RSkhHcTlaR0FrTmFvNlpqc1dr?=
+ =?utf-8?B?K2NnOEJlZmV4OFhBV2Z4MFhwTFVYWDhEWEY1a0tjVzJGSXpWRjFTdzVXZk5L?=
+ =?utf-8?B?VmlTWk05dytWbkNYVDZWR1lPOEkreFJOZGV6am1GenE1TlpuLzQxZlRON2lh?=
+ =?utf-8?B?NC8vRkZSUllVa2FJSitkU3hrSnc1UzY5Y2RXWnhjcys4VUJzOGlSOUluTDZp?=
+ =?utf-8?B?bTZualFMT1VUWTk2a3NEQWo4eE9CQURCRGNyTkZKU0VyaGY0NDJPSmJxbjVF?=
+ =?utf-8?B?am9nNmxFY2JWbTkrS2xpVDBCY2FxNmdldzJXM1ZaWUpoWnV4UjJwb2ZKam1C?=
+ =?utf-8?B?YVNEaVg1ejljWWNjL0I2VWtmcStROHFmRnpwaEthdGhzYTQ5YmRsZERrOGtH?=
+ =?utf-8?B?Q1Y4THd2TEJvRGZzTGtsNHBYcVZtTWl5OGozdUlJOTNqdWdyR3h2TnV0aEI3?=
+ =?utf-8?B?SE55TU1kWnBjZ2V0WWxzOU5PZTZSUnZoN2RRRkMxNWNucFdNd2JNZ3NGaVBU?=
+ =?utf-8?B?SUFDMjBaNXdYc2ZpNTk1YzBzQW4vRktHUTJBeCtaYlY1OW56YTlLdTNDZ3p1?=
+ =?utf-8?B?dXhhMTY2OC9hQzl3dFpPS2dpNXY1WGd6b3BZNmRwdWZqaE1ZY0JVQ29lcG1s?=
+ =?utf-8?B?ektiZE9wNjZiVGJTaWl5TjBJME9OU09mY2kxMk9CaXZCVUE9PQ==?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR18MB4666.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?SUt5Q3JDR3RXWmJrNWlaa08zdEY0MHRxdkZrOEJiLzZHYXFjbWpLc0IwVG1R?=
+ =?utf-8?B?aDRsSFlJbHJUN0dqUWFaZFdjQmlvTk8xQW95cXlUV2dqaGNBcTRlV1Y2eUhl?=
+ =?utf-8?B?RUFpZVNqRjZwWnkyUGUwSXZCWDY5OVN1bURxSlhHNFFMdDR3QTJzdVRoUm9I?=
+ =?utf-8?B?a2pOL0FwT2docUJ5UHRkT285STBKdzhRZjA3Rkowdm4xSklEUEhwdEJzZDQx?=
+ =?utf-8?B?dmlSVmFtKzJQOGJrS2VSQnFweGVuUWI4alJQblg3WTFGYVFLYndtU3lhL2lj?=
+ =?utf-8?B?amM2ZnBMN2pWMThxVGVCTUY4Y0k2di8vSXZJeUN6UE1wWGlGb25CYW4wQWNk?=
+ =?utf-8?B?Mi9LZUp4Y09TOURjZHdwbjNPTW83Tmlack9wQzFhV1BlWENlQ2htVVFTY1BO?=
+ =?utf-8?B?U0NJYll0Z1RoOGszQnM5Z01kbzVTZ0hlU013L1JML2Z0RmNyQ04xRTQyWFc3?=
+ =?utf-8?B?aUJHNlc0QXpleFNyTjdRREFmN09sRHo1bXVqUUxsVFBhS0pLM2lmalZEZDZT?=
+ =?utf-8?B?cUlyNHhkTUY4aFFBOGcrcVA5L0VDaEZQdEFwVE50MFlDVUxuNUV4NndCekg1?=
+ =?utf-8?B?WFpEWTl4aHIxaDcwS3dzU3ZVcUpOczBTY1pZVmFUcHJmWEtSZU1tMVJ3MzVn?=
+ =?utf-8?B?Ymg0eTZlQTFlZFpFUmhHSUNRZ2U0Nlp5YjFrZExMdTc5bmwrRDkyc0llU0FJ?=
+ =?utf-8?B?MmV4TVE3YWRUSU9zK2UvSTA2N2ZsTHFWN3RkTEl3WmRkQmQ3NkVBd0pURHZY?=
+ =?utf-8?B?ZzQ0TklUbVNWTTQ3RUg2Q1lnalh2VUJ5bHhpL0FpYTlMRWRiMXR0eDdDYUVG?=
+ =?utf-8?B?c1pKUFByeiszUlZDV016S0V2THJmTXAzOVp2OUd5N3RJSGNmTVlYdndxK2RS?=
+ =?utf-8?B?cWNsTXQ5WjZQMkJyM00vV3UyY2VXREhxK0pvdWpzb2FzOFpIT1U3K2cvTkY3?=
+ =?utf-8?B?V0laNTZqYnFhR2pyUlN5RXVhMnpGa1JmWmc2UWZ0UTVxSUlyRnNvNWprT2Rl?=
+ =?utf-8?B?OXNyZUcxRGdpUW5aSXF6WHJlT2szMERtTjdqcnk1OVo0RUNsdkpDWUR5cnBC?=
+ =?utf-8?B?OG5iRU4rZFZpYTdiM1kwOGh0U0FnRU9UM1pwT1BGRTl4V3ZVVXpXcEpjQmQx?=
+ =?utf-8?B?TUh0cUMwWFNqRStiUldPQ2RuNndmVVhxa2dkWVVIbHZja3VUZS9lay9oN2xv?=
+ =?utf-8?B?TlhmVzdvNWlzVmxwWHVxYWtmT1VMNHA4TnFKdVgxdHQvVENmMnNRWUVtaFpU?=
+ =?utf-8?B?azNDSGYxdCtVaXN5Z2ZyaEZjVWFZTSsyNTB4K2hVYnlzeHFoOGJWd1dKRjZ2?=
+ =?utf-8?B?dk01WUJtVVMrNWhXTlVpWUprVXFFajVveEljcXlaQ09TcjZBRmtUSlZ2SWNE?=
+ =?utf-8?B?NjlvMGMyS0RpL0E2VktiZmFCSU9TTCtyOXNrUFhuNm5ZeWQ3SlNNV3BPL09L?=
+ =?utf-8?B?R2hlN1FCYWpLd1BLTjlmYnhsTHc4TVYxUkJSeUhBRE54ZXljN0QyWkRCRUJr?=
+ =?utf-8?B?Y0VZbytJemNVZ2tqSmNxMEw5RDJlZ2VOdXZZakRJcllDWnlmSkd5UTQvZkFY?=
+ =?utf-8?B?eW5sNG9MbGN6VmtyK3grN1N5RzljYklEU2M3R2Exd3BGZTNvWjB4TnBIOHdi?=
+ =?utf-8?B?ZWt1K0xGMjVMZmZVMjRDZDhSMWZyanpRTW94R25MU2JZZnkxTk54RUQ2TTRp?=
+ =?utf-8?B?cjB2dUhON3E0M2VVNUpWbG1tNzdJTEJHNDNsREhic0ZWODVIOVFLSHYvSDl2?=
+ =?utf-8?B?NHdqVjFqdEdBMkcrZHp6Y0lmcFp6MVRidDE2NUdpbzg3R1h6cEY5Tms2RjFj?=
+ =?utf-8?B?MUZSeEtjTng3b0d2aHlReEwyT2kxalVINml6WW0xNm5YQlZ5YmZuay9mNW5w?=
+ =?utf-8?B?ZVpySWgzRzc0c055MzlYY1N1Zko0U09sQTh5ZXhhMjYzZUtwWS9FWWZNZUkw?=
+ =?utf-8?B?Rllvak5aQ3hxcFlUMFpuMUVOTGpRUnNoanZBc3YzZk5PaVhHYTYweXZsQlc5?=
+ =?utf-8?B?YWVoS05MVnE4eTl2VU04eVNIQ3FvbDFEcWs2a1M5UWFzejMwQmQ3K2VzRW1V?=
+ =?utf-8?B?c0IrWnNYbzJnZkx0T3NhQnY5bWxMOVJValhSSTZVM29PeUx2eEU5YVB0Wkpy?=
+ =?utf-8?Q?DwLHZCLwYML3UvQu9B/c1lyn0?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-OriginatorOrg: marvell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR18MB4666.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cc857bf-cb7a-46c8-d9ad-08dd19225b64
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2024 13:55:50.9187
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 43LipaEmDPpQJnQS8Kks4WiH+/j1HpXcOOstyxqF1k3Va67/AZ+ojaX51zGeV9MW59SswCevpd1sfIDKOC4AcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR18MB4225
+X-Proofpoint-GUID: k6YablaGWSwu6fWfBbh6U9OrJuz2zMn6
+X-Proofpoint-ORIG-GUID: k6YablaGWSwu6fWfBbh6U9OrJuz2zMn6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
 
-Sometimes, if the port doesn't work, we can try to fix it by resetting it.
-
-This patch supports reset triggered by ethtool or FLR of PCIe, For example:
- ethtool --reset eth0 dedicated
- echo 1 > /sys/bus/pci/devices/0000\:83\:00.1/reset
-
-We hope that the reset can be performed only when the port is down,
-and the port cannot be up during the reset.
-Therefore, the entire reset process is protected by the rtnl lock.
-
-After the reset is complete, the hardware registers are restored
-to their default values. Therefore, some rebuild operations are
-required to rewrite the user configuration to the registers.
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v4 -> v5:
-  - Simplify reset logic by optimizing release and re-hold rtnl lock, suggested by Jakub.
-  v4: https://lore.kernel.org/all/20241203150131.3139399-7-shaojijie@huawei.com/
----
- .../net/ethernet/hisilicon/hibmcge/Makefile   |   2 +-
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |  16 +++
- .../ethernet/hisilicon/hibmcge/hbg_debugfs.c  |  21 +++
- .../net/ethernet/hisilicon/hibmcge/hbg_err.c  | 134 ++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_err.h  |  13 ++
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  |  15 ++
- .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   |  10 +-
- .../net/ethernet/hisilicon/hibmcge/hbg_main.c |  35 +++--
- 8 files changed, 225 insertions(+), 21 deletions(-)
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
- create mode 100644 drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/Makefile b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-index 1a0ec2fb8c24..7ea15f9ef849 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/Makefile
-@@ -6,4 +6,4 @@
- obj-$(CONFIG_HIBMCGE) += hibmcge.o
- 
- hibmcge-objs = hbg_main.o hbg_hw.o hbg_mdio.o hbg_irq.o hbg_txrx.o hbg_ethtool.o \
--		hbg_debugfs.o
-+		hbg_debugfs.o hbg_err.o
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 76b0b32bcb15..ad25fd8de80a 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -4,6 +4,7 @@
- #ifndef __HBG_COMMON_H
- #define __HBG_COMMON_H
- 
-+#include <linux/ethtool.h>
- #include <linux/netdevice.h>
- #include <linux/pci.h>
- #include "hbg_reg.h"
-@@ -33,6 +34,14 @@ enum hbg_tx_state {
- 
- enum hbg_nic_state {
- 	HBG_NIC_STATE_EVENT_HANDLING = 0,
-+	HBG_NIC_STATE_RESETTING,
-+	HBG_NIC_STATE_RESET_FAIL,
-+};
-+
-+enum hbg_reset_type {
-+	HBG_RESET_TYPE_NONE = 0,
-+	HBG_RESET_TYPE_FLR,
-+	HBG_RESET_TYPE_FUNCTION,
- };
- 
- struct hbg_buffer {
-@@ -129,6 +138,11 @@ struct hbg_mac_filter {
- 	bool enabled;
- };
- 
-+/* saved for restore after rest */
-+struct hbg_user_def {
-+	struct ethtool_pauseparam pause_param;
-+};
-+
- struct hbg_priv {
- 	struct net_device *netdev;
- 	struct pci_dev *pdev;
-@@ -140,6 +154,8 @@ struct hbg_priv {
- 	struct hbg_ring tx_ring;
- 	struct hbg_ring rx_ring;
- 	struct hbg_mac_filter filter;
-+	enum hbg_reset_type reset_type;
-+	struct hbg_user_def user_def;
- };
- 
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-index 2f9d30a51f62..55158b86a95d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_debugfs.c
-@@ -19,6 +19,7 @@ struct hbg_dbg_info {
- };
- 
- #define hbg_get_bool_str(state) ((state) ? "true" : "false")
-+#define hbg_get_state_str(p, s) hbg_get_bool_str(test_bit(s, &(p)->state))
- 
- static void hbg_dbg_ring(struct hbg_priv *priv, struct hbg_ring *ring,
- 			 struct seq_file *s)
-@@ -101,11 +102,31 @@ static int hbg_dbg_mac_table(struct seq_file *s, void *unused)
- 	return 0;
- }
- 
-+static const char * const reset_type_str[] = {"None", "FLR", "Function"};
-+
-+static int hbg_dbg_nic_state(struct seq_file *s, void *unused)
-+{
-+	struct net_device *netdev = dev_get_drvdata(s->private);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	seq_printf(s, "event handling state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_EVENT_HANDLING));
-+	seq_printf(s, "resetting state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_RESETTING));
-+	seq_printf(s, "reset fail state: %s\n",
-+		   hbg_get_state_str(priv, HBG_NIC_STATE_RESET_FAIL));
-+	seq_printf(s, "last reset type: %s\n",
-+		   reset_type_str[priv->reset_type]);
-+
-+	return 0;
-+}
-+
- static const struct hbg_dbg_info hbg_dbg_infos[] = {
- 	{ "tx_ring", hbg_dbg_tx_ring },
- 	{ "rx_ring", hbg_dbg_rx_ring },
- 	{ "irq_info", hbg_dbg_irq_info },
- 	{ "mac_talbe", hbg_dbg_mac_table },
-+	{ "nic_state", hbg_dbg_nic_state },
- };
- 
- static void hbg_debugfs_uninit(void *data)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-new file mode 100644
-index 000000000000..4d1f4a33391a
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// Copyright (c) 2024 Hisilicon Limited.
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/phy.h>
-+#include <linux/rtnetlink.h>
-+#include "hbg_common.h"
-+#include "hbg_err.h"
-+#include "hbg_hw.h"
-+
-+static void hbg_restore_mac_table(struct hbg_priv *priv)
-+{
-+	struct hbg_mac_filter *filter = &priv->filter;
-+	u64 addr;
-+	u32 i;
-+
-+	for (i = 0; i < filter->table_max_len; i++)
-+		if (!is_zero_ether_addr(filter->mac_table[i].addr)) {
-+			addr = ether_addr_to_u64(filter->mac_table[i].addr);
-+			hbg_hw_set_uc_addr(priv, addr, i);
-+		}
-+
-+	hbg_hw_set_mac_filter_enable(priv, priv->filter.enabled);
-+}
-+
-+static void hbg_restore_user_def_settings(struct hbg_priv *priv)
-+{
-+	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
-+
-+	hbg_restore_mac_table(priv);
-+	hbg_hw_set_mtu(priv, priv->netdev->mtu);
-+	hbg_hw_set_pause_enable(priv, pause_param->tx_pause,
-+				pause_param->rx_pause);
-+}
-+
-+int hbg_rebuild(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	ret = hbg_hw_init(priv);
-+	if (ret)
-+		return ret;
-+
-+	hbg_restore_user_def_settings(priv);
-+	return 0;
-+}
-+
-+static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
-+{
-+	int ret;
-+
-+	ASSERT_RTNL();
-+
-+	if (netif_running(priv->netdev)) {
-+		dev_warn(&priv->pdev->dev,
-+			 "failed to reset because port is up\n");
-+		return -EBUSY;
-+	}
-+
-+	priv->reset_type = type;
-+	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
-+	if (ret) {
-+		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+	}
-+
-+	return ret;
-+}
-+
-+static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
-+{
-+	int ret;
-+
-+	if (!test_bit(HBG_NIC_STATE_RESETTING, &priv->state) ||
-+	    type != priv->reset_type)
-+		return 0;
-+
-+	ASSERT_RTNL();
-+
-+	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
-+	ret = hbg_rebuild(priv);
-+	if (ret) {
-+		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
-+		return ret;
-+	}
-+
-+	dev_info(&priv->pdev->dev, "reset done\n");
-+	return ret;
-+}
-+
-+/* must be protected by rtnl lock */
-+int hbg_reset(struct hbg_priv *priv)
-+{
-+	int ret;
-+
-+	ASSERT_RTNL();
-+	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
-+	if (ret)
-+		return ret;
-+
-+	return hbg_reset_done(priv, HBG_RESET_TYPE_FUNCTION);
-+}
-+
-+static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	rtnl_lock();
-+	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
-+}
-+
-+static void hbg_pci_err_reset_done(struct pci_dev *pdev)
-+{
-+	struct net_device *netdev = pci_get_drvdata(pdev);
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
-+	rtnl_unlock();
-+}
-+
-+static const struct pci_error_handlers hbg_pci_err_handler = {
-+	.reset_prepare = hbg_pci_err_reset_prepare,
-+	.reset_done = hbg_pci_err_reset_done,
-+};
-+
-+void hbg_set_pci_err_handler(struct pci_driver *pdrv)
-+{
-+	pdrv->err_handler = &hbg_pci_err_handler;
-+}
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-new file mode 100644
-index 000000000000..d7828e446308
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (c) 2024 Hisilicon Limited. */
-+
-+#ifndef __HBG_ERR_H
-+#define __HBG_ERR_H
-+
-+#include <linux/pci.h>
-+
-+void hbg_set_pci_err_handler(struct pci_driver *pdrv);
-+int hbg_reset(struct hbg_priv *priv);
-+int hbg_rebuild(struct hbg_priv *priv);
-+
-+#endif
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index a821a92db43d..326228b7b801 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -3,7 +3,9 @@
- 
- #include <linux/ethtool.h>
- #include <linux/phy.h>
-+#include <linux/rtnetlink.h>
- #include "hbg_common.h"
-+#include "hbg_err.h"
- #include "hbg_ethtool.h"
- #include "hbg_hw.h"
- 
-@@ -163,9 +165,21 @@ static int hbg_ethtool_set_pauseparam(struct net_device *net_dev,
- 	if (!param->autoneg)
- 		hbg_hw_set_pause_enable(priv, param->tx_pause, param->rx_pause);
- 
-+	priv->user_def.pause_param = *param;
- 	return 0;
- }
- 
-+static int hbg_ethtool_reset(struct net_device *netdev, u32 *flags)
-+{
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+
-+	if (*flags != ETH_RESET_DEDICATED)
-+		return -EOPNOTSUPP;
-+
-+	*flags = 0;
-+	return hbg_reset(priv);
-+}
-+
- static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
-@@ -174,6 +188,7 @@ static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_regs		= hbg_ethtool_get_regs,
- 	.get_pauseparam         = hbg_ethtool_get_pauseparam,
- 	.set_pauseparam         = hbg_ethtool_set_pauseparam,
-+	.reset			= hbg_ethtool_reset,
- };
- 
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 0cbe9f7229b3..e7798f213645 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -3,6 +3,7 @@
- 
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
-+#include <linux/if_vlan.h>
- #include <linux/iopoll.h>
- #include <linux/minmax.h>
- #include "hbg_common.h"
-@@ -167,8 +168,13 @@ static void hbg_hw_set_mac_max_frame_len(struct hbg_priv *priv,
- 
- void hbg_hw_set_mtu(struct hbg_priv *priv, u16 mtu)
- {
--	hbg_hw_set_pcu_max_frame_len(priv, mtu);
--	hbg_hw_set_mac_max_frame_len(priv, mtu);
-+	u32 frame_len;
-+
-+	frame_len = mtu + VLAN_HLEN * priv->dev_specs.vlan_layers +
-+		    ETH_HLEN + ETH_FCS_LEN;
-+
-+	hbg_hw_set_pcu_max_frame_len(priv, frame_len);
-+	hbg_hw_set_mac_max_frame_len(priv, frame_len);
- }
- 
- void hbg_hw_mac_enable(struct hbg_priv *priv, u32 enable)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index a45a63856e61..7454bf1c6213 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -6,6 +6,7 @@
- #include <linux/netdevice.h>
- #include <linux/pci.h>
- #include "hbg_common.h"
-+#include "hbg_err.h"
- #include "hbg_ethtool.h"
- #include "hbg_hw.h"
- #include "hbg_irq.h"
-@@ -13,8 +14,6 @@
- #include "hbg_txrx.h"
- #include "hbg_debugfs.h"
- 
--static void hbg_change_mtu(struct hbg_priv *priv, int new_mtu);
--
- static void hbg_all_irq_enable(struct hbg_priv *priv, bool enabled)
- {
- 	struct hbg_irq_info *info;
-@@ -56,11 +55,7 @@ static int hbg_hw_txrx_clear(struct hbg_priv *priv)
- 		return ret;
- 
- 	/* After reset, regs need to be reconfigured */
--	hbg_hw_init(priv);
--	hbg_hw_set_uc_addr(priv, ether_addr_to_u64(priv->netdev->dev_addr), 0);
--	hbg_change_mtu(priv, priv->netdev->mtu);
--
--	return 0;
-+	return hbg_rebuild(priv);
- }
- 
- static int hbg_net_stop(struct net_device *netdev)
-@@ -209,15 +204,6 @@ static int hbg_net_set_mac_address(struct net_device *netdev, void *addr)
- 	return 0;
- }
- 
--static void hbg_change_mtu(struct hbg_priv *priv, int new_mtu)
--{
--	u32 frame_len;
--
--	frame_len = new_mtu + VLAN_HLEN * priv->dev_specs.vlan_layers +
--		    ETH_HLEN + ETH_FCS_LEN;
--	hbg_hw_set_mtu(priv, frame_len);
--}
--
- static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	struct hbg_priv *priv = netdev_priv(netdev);
-@@ -225,7 +211,7 @@ static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (netif_running(netdev))
- 		return -EBUSY;
- 
--	hbg_change_mtu(priv, new_mtu);
-+	hbg_hw_set_mtu(priv, new_mtu);
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
- 	dev_dbg(&priv->pdev->dev,
-@@ -283,6 +269,17 @@ static int hbg_mac_filter_init(struct hbg_priv *priv)
- 	return 0;
- }
- 
-+static void hbg_init_user_def(struct hbg_priv *priv)
-+{
-+	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
-+
-+	priv->mac.pause_autoneg = HBG_STATUS_ENABLE;
-+
-+	pause_param->autoneg = priv->mac.pause_autoneg;
-+	hbg_hw_get_pause_enable(priv, &pause_param->tx_pause,
-+				&pause_param->rx_pause);
-+}
-+
- static int hbg_init(struct hbg_priv *priv)
- {
- 	int ret;
-@@ -308,6 +305,7 @@ static int hbg_init(struct hbg_priv *priv)
- 		return ret;
- 
- 	hbg_debugfs_init(priv);
-+	hbg_init_user_def(priv);
- 	return 0;
- }
- 
-@@ -372,7 +370,7 @@ static int hbg_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	netdev->netdev_ops = &hbg_netdev_ops;
- 	netdev->watchdog_timeo = 5 * HZ;
- 
--	hbg_change_mtu(priv, ETH_DATA_LEN);
-+	hbg_hw_set_mtu(priv, ETH_DATA_LEN);
- 	hbg_net_set_mac_address(priv->netdev, &priv->dev_specs.mac_addr);
- 	hbg_ethtool_set_ops(netdev);
- 
-@@ -401,6 +399,7 @@ static int __init hbg_module_init(void)
- 	int ret;
- 
- 	hbg_debugfs_register();
-+	hbg_set_pci_err_handler(&hbg_driver);
- 	ret = pci_register_driver(&hbg_driver);
- 	if (ret)
- 		hbg_debugfs_unregister();
--- 
-2.33.0
-
+SGkgSmFrdWIsDQoNCj5Gcm9tOiBKYWt1YiBLaWNpbnNraSA8bWFpbHRvOmt1YmFAa2VybmVsLm9y
+Zz4NCj5TZW50OiBUdWVzZGF5LCBEZWNlbWJlciAxMCwgMjAyNCAyOjU1IEFNDQo+VG86IFN1YmJh
+cmF5YSBTdW5kZWVwIEJoYXR0YSA8bWFpbHRvOnNiaGF0dGFAbWFydmVsbC5jb20+DQo+Q2M6IFNh
+aSBLcmlzaG5hIEdhanVsYSA8bWFpbHRvOnNhaWtyaXNobmFnQG1hcnZlbGwuY29tPjsNCj5tYWls
+dG86ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldDsgbWFpbHRvOmVkdW1hemV0QGdvb2dsZS5jb207DQo+bWFp
+bHRvOnBhYmVuaUByZWRoYXQuY29tOyBtYWlsdG86bmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgbWFp
+bHRvOmxpbnV4LQ0KPmtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IFN1bmlsIEtvdnZ1cmkgR291dGhh
+bSA8bWFpbHRvOnNnb3V0aGFtQG1hcnZlbGwuY29tPjsNCj5HZWV0aGFzb3dqYW55YSBBa3VsYSA8
+bWFpbHRvOmdha3VsYUBtYXJ2ZWxsLmNvbT47IExpbnUgQ2hlcmlhbg0KPjxtYWlsdG86bGNoZXJp
+YW5AbWFydmVsbC5jb20+OyBKZXJpbiBKYWNvYiA8bWFpbHRvOmplcmluakBtYXJ2ZWxsLmNvbT47
+DQo+SGFyaXByYXNhZCBLZWxhbSA8bWFpbHRvOmhrZWxhbUBtYXJ2ZWxsLmNvbT47DQo+bWFpbHRv
+OmFuZHJldytuZXRkZXZAbHVubi5jaDsgbWFpbHRvOmthbGVzaC1hbmFra3VyLnB1cmF5aWxAYnJv
+YWRjb20uY29tDQo+U3ViamVjdDogUmU6IFtFWFRFUk5BTF0gUmU6IFtuZXQtbmV4dCBQQVRDSCB2
+NSAxLzZdIG9jdGVvbnR4MjogU2V0IGFwcHJvcHJpYXRlDQo+UEYsIFZGIG1hc2tzIGFuZCBzaGlm
+dHMgYmFzZWQgb24gc2lsaWNvbg0KPj4gPj4gLSNkZWZpbmUgUlZVX1BGVkZfUEZfU0hJRlQJMTAN
+Cj4+ID4+IC0jZGVmaW5lIFJWVV9QRlZGX1BGX01BU0sJMHgzRg0KPj4gPj4gLSNkZWZpbmUgUlZV
+X1BGVkZfRlVOQ19TSElGVAkwDQo+PiA+PiAtI2RlZmluZSBSVlVfUEZWRl9GVU5DX01BU0sJMHgz
+RkYNCj4+ID4+ICsjZGVmaW5lIFJWVV9QRlZGX1BGX1NISUZUCXJ2dV9wY2lmdW5jX3BmX3NoaWZ0
+DQo+PiA+PiArI2RlZmluZSBSVlVfUEZWRl9QRl9NQVNLCXJ2dV9wY2lmdW5jX3BmX21hc2sNCj4+
+ID4+ICsjZGVmaW5lIFJWVV9QRlZGX0ZVTkNfU0hJRlQJcnZ1X3BjaWZ1bmNfZnVuY19zaGlmdA0K
+Pj4gPj4gKyNkZWZpbmUgUlZVX1BGVkZfRlVOQ19NQVNLCXJ2dV9wY2lmdW5jX2Z1bmNfbWFzaw0K
+Pj4gPg0KPj4gPldoeSBkbyB5b3UgbWFpbnRhaW4gdGhlc2UgZGVmaW5lcz8gTG9va3MgbGlrZSBh
+biB1bm5lY2Vzc2FyeQ0KPj4gPmluZGlyZWN0aW9uLg0KPj4gPg0KPj4gPkdpdmVuIHRoZXNlIGFy
+ZSBzaW1wbGUgbWFzayBhbmQgc2hpZnQgdmFsdWVzIHRoZXkgcHJvYmFibHkgaGF2ZSB0cml2aWFs
+DQo+PiA+dXNlcnMuIFN0YXJ0IGJ5IGFkZGluZyBoZWxwZXJzIHdoaWNoIHBlcmZvcm0gdGhlIGNv
+bnZlcnNpb25zIHVzaW5nDQo+PiA+dGhvc2UsIHRoZW4geW91IGNhbiBtb3JlIGVhc2lseSB1cGRh
+dGUgY29uc3RhbnRzLg0KPj4NCj4+IFRoZXJlIGFyZSB0b28gbWFueSBwbGFjZXMgdGhlc2UgbWFz
+a3MgYXJlIHVzZWQgaGVuY2UgYWRkZWQgdGhpcw0KPj4gaW5kaXJlY3Rpb24uDQo+PiAjIGdyZXAg
+UlZVX1BGVkZfIGRyaXZlcnMvKiAtaW5yIHwgd2MgLWwNCj4+IDEzNQ0KPg0KPlllcywgSSBoYXZl
+IGNoZWNrZWQgYmVmb3JlIG1ha2luZyB0aGUgc3VnZ2VzdGlvbi4NCj5BZGQgYSBoZWxwZXIgZmly
+c3QsIHlvdSBjYW4gdXNlIGNvY2NpIHRvIGRvIHRoZSBjb252ZXJzaW9ucy4NCg0KSW5pdGlhbGx5
+IEkgdGhvdWdodCBvZiBkb2luZyBzaW1pbGFyIGtpbmQgb2YgY2hhbmdlcyBieSB2aXNpdGluZyBl
+YWNoIGxpbmUgdXNpbmcgdGhlc2UgbWFza3MuIEJ1dCBwYXRjaCB3b3VsZCBiZQ0KbXVjaCBiaWdn
+ZXIgYW5kIGFsc28gdG8gYXZvaWQgYW55IHJlZ3Jlc3Npb24gaXNzdWVzIGZvciBleGlzdGluZyBz
+aWxpY29ucyBhbmQgY3J5cHRvIGRyaXZlciwgSSB0aG91Z2h0IHRoaXMgd291bGQgYmUgc2FmZSBh
+bmQgc2ltcGxlLg0KUGxlYXNlIGxldCBtZSBrbm93IGlmIHRoaXMgaXMgc3RpbGwgbm90IG9rYXkg
+Zm9yIHlvdS4NCg0KVGhhbmtzLA0KU3VuZGVlcA0KDQoNCg==
