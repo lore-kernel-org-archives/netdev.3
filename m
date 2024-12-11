@@ -1,196 +1,91 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DB31F238D;
-	Wed, 11 Dec 2024 23:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0871EC4FF
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 23:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733958106; cv=none; b=QbEuumbz9QDNvUy5ZMV1clchuQ6bc6pXL3P6/gIP0pwaQLRW/tgVaxinkkaR91FWX5A2nVOs6cnCzSXkbDFdERG0kF/maArlWfVvoIzNbkufoWlK7mv8AL5AQRbkv6KqPHFSoquwuFal5zOwAfCf4RcGYbN2q2r/6vDEV76MIRk=
+	t=1733958111; cv=none; b=XWNGbZnixuV/ZvqunuDUXmUTWXIWTVVmbsgH2XMo5AowxQcdJGB0f/JKzAuBaBK0B2J7qtjIU6HzyQwpUJGhSXe+s1u1iFlbiCW1WuakqQk1QxcpMBKCT4Dk98bpNF3ujPLsVd1UrjriYNiZiSh/+xTnG2Gar/FIjdFerRFKtYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733958106; c=relaxed/simple;
-	bh=HnYs3YFW5I2tWogr+BjysEtwRdl15oez4VWXYrp5+AM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PUm1rDRZvvDtyPHmL9soufJnfsX9yvwT/PQ82g2ao1CSB5RLh0DCbi7VVOW+D5IMXJnsuCP2hCJf/SmzuCSKMZ1bXptq10FSBY5u1fW3JJJfannbCPoFwzQRVWL0h2Y1xM5ZAfPggriKv98b+KUMsQ72BPovB3zy4ogiC1EOzkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	phil@netfilter.org
-Subject: [PATCH net 3/3] netfilter: nf_tables: do not defer rule destruction via call_rcu
-Date: Thu, 12 Dec 2024 00:01:30 +0100
-Message-Id: <20241211230130.176937-4-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20241211230130.176937-1-pablo@netfilter.org>
-References: <20241211230130.176937-1-pablo@netfilter.org>
+	s=arc-20240116; t=1733958111; c=relaxed/simple;
+	bh=7702vU6deKDG7UUlM9f7IXMlbtnn4sBDdbyNvy1bzAM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r5OqmsyFL5C571aMuV1H600vmMxzGPBTCX07eEc5D5uhQyjMEuhV/WN5R1CM+P+etckEK7vUOBPcNfVPHv94xsLQhP+V/n91AlWrao+Lvr43OeJY8sOyXlo2YoVQnSOze9KAGoqhD+x8iFMc3cEaMPwhqTbP2Xkxp4iyGo/1HHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=R60Bc3wz; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="R60Bc3wz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=aqpj2NOEIC4he92SdwRDRx1lfkZ6BBPNo45E39NFDBI=; t=1733958109; x=1734822109; 
+	b=R60Bc3wzcFkvD7zN8dJZHMXEmvWul6xIRhvr+ylllBohFWilFtOfpecLUcXST3ATphCt6QTcFxz
+	h4naZocDQa+TyVQoCvtmvfhC0jseO122fu2uJQR7SO0I6yQ0EqRX4SZgIm/sbspOCv+DZkB2kO7cP
+	rX8YBF5ZEnhnAtXmLisJW6bzeX4vzBuvdN/g+b7uZUzeI9hvByvXCLTpcQgicSRP9xg5FI2zAQ8vP
+	uOfQqpX08vlyNmm9UfOtLR75kfmBvjnBNOK1974t/0jH43xMXPhsAWpVmCgxfmLqOuxVaa95pO7Jm
+	Nr5GnZC+hOQjxBBCdOdooZizCNZXyCdbTDwQ==;
+Received: from mail-oa1-f53.google.com ([209.85.160.53]:45144)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1tLViG-000088-Sl
+	for netdev@vger.kernel.org; Wed, 11 Dec 2024 15:01:49 -0800
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2967af48248so3624303fac.2
+        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 15:01:48 -0800 (PST)
+X-Gm-Message-State: AOJu0YyCJzql56mIlJUyriWdq5OZy1RazKWBnN7x8S5WDwSJLdgqKWrW
+	IuUSDEYR+HIH1bvAjsORQdLOrIVuE2Ewr8/zTL6+jEGMeKzBpto7G9fxEX0IsRJDikI3Nb/BZ10
+	QL7DtZ+xsajqllfC9AJUS+bcgb1g=
+X-Google-Smtp-Source: AGHT+IHMmJbu1mq16kwWiBPDWWfFkW/tJrzU574SuWj5+4lizRoWNVYoOrYlESwnGJnpQZgzr5rD82aQgwvkgXGoS3A=
+X-Received: by 2002:a05:6870:2102:b0:295:eb96:9fd4 with SMTP id
+ 586e51a60fabf-2a012c0f7b3mr2942903fac.11.1733958108304; Wed, 11 Dec 2024
+ 15:01:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241209175131.3839-1-ouster@cs.stanford.edu> <20241209175131.3839-13-ouster@cs.stanford.edu>
+ <20241211063914.GA34839@j66a10360.sqa.eu95>
+In-Reply-To: <20241211063914.GA34839@j66a10360.sqa.eu95>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Wed, 11 Dec 2024 15:01:13 -0800
+X-Gmail-Original-Message-ID: <CAGXJAmxC5PkcbXyRuAxa6_uYDPoEE-_RfcE4NmyAHwg_rf9ChQ@mail.gmail.com>
+Message-ID: <CAGXJAmxC5PkcbXyRuAxa6_uYDPoEE-_RfcE4NmyAHwg_rf9ChQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 11/12] net: homa: create homa_plumbing.c homa_utils.c
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: 0.8
+X-Spam-Level: 
+X-Scan-Signature: a11a15d02c0ec4233875b3872b0caebb
 
-From: Florian Westphal <fw@strlen.de>
+On Tue, Dec 10, 2024 at 10:39=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.co=
+m> wrote:
+> > +
+> > +     /* Using a static buffer can produce garbled text under concurren=
+cy,
+> > +      * but (a) it's unlikely (this code only executes if the opcode i=
+s
+> > +      * bogus), (b) this is mostly for testing and debugging, and (c) =
+the
+> > +      * code below ensures that the string cannot run past the end of =
+the
+> > +      * buffer, so the code is safe.
+> > +      */
+>
+> IMMO, Regardless of the scenario you expect to use it in, writing code th=
+at
+> is clearly buggy is always perplexing.
 
-nf_tables_chain_destroy can sleep, it can't be used from call_rcu
-callbacks.
+Fair enough; you have shamed me (appropriately) into changing the code
+to use only static strings. This reduces the amount of information
+provided if a bogus type is provided, but I don't think that will
+matter in practice.
 
-Moreover, nf_tables_rule_release() is only safe for error unwinding,
-while transaction mutex is held and the to-be-desroyed rule was not
-exposed to either dataplane or dumps, as it deactives+frees without
-the required synchronize_rcu() in-between.
-
-nft_rule_expr_deactivate() callbacks will change ->use counters
-of other chains/sets, see e.g. nft_lookup .deactivate callback, these
-must be serialized via transaction mutex.
-
-Also add a few lockdep asserts to make this more explicit.
-
-Calling synchronize_rcu() isn't ideal, but fixing this without is hard
-and way more intrusive.  As-is, we can get:
-
-WARNING: .. net/netfilter/nf_tables_api.c:5515 nft_set_destroy+0x..
-Workqueue: events nf_tables_trans_destroy_work
-RIP: 0010:nft_set_destroy+0x3fe/0x5c0
-Call Trace:
- <TASK>
- nf_tables_trans_destroy_work+0x6b7/0xad0
- process_one_work+0x64a/0xce0
- worker_thread+0x613/0x10d0
-
-In case the synchronize_rcu becomes an issue, we can explore alternatives.
-
-One way would be to allocate nft_trans_rule objects + one nft_trans_chain
-object, deactivate the rules + the chain and then defer the freeing to the
-nft destroy workqueue.  We'd still need to keep the synchronize_rcu path as
-a fallback to handle -ENOMEM corner cases though.
-
-Reported-by: syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67478d92.050a0220.253251.0062.GAE@google.com/T/
-Fixes: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h |  4 ----
- net/netfilter/nf_tables_api.c     | 32 +++++++++++++++----------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 80a537ac26cd..4afa64c81304 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1103,7 +1103,6 @@ struct nft_rule_blob {
-  *	@name: name of the chain
-  *	@udlen: user data length
-  *	@udata: user data in the chain
-- *	@rcu_head: rcu head for deferred release
-  *	@blob_next: rule blob pointer to the next in the chain
-  */
- struct nft_chain {
-@@ -1121,7 +1120,6 @@ struct nft_chain {
- 	char				*name;
- 	u16				udlen;
- 	u8				*udata;
--	struct rcu_head			rcu_head;
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule_blob		*blob_next;
-@@ -1265,7 +1263,6 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-- *	@net: netnamespace this table belongs to
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1285,7 +1282,6 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
--	possible_net_t			net;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 21b6f7410a1f..0b9f1e8dfe49 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1596,7 +1596,6 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
- 	INIT_LIST_HEAD(&table->flowtables);
--	write_pnet(&table->net, net);
- 	table->family = family;
- 	table->flags = flags;
- 	table->handle = ++nft_net->table_handle;
-@@ -3987,8 +3986,11 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- 	kfree(rule);
- }
- 
-+/* can only be used if rule is no longer visible to dumps */
- static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
- }
-@@ -5757,6 +5759,8 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
- 		nft_set_trans_unbind(ctx, set);
-@@ -11695,19 +11699,6 @@ static void __nft_release_basechain_now(struct nft_ctx *ctx)
- 	nf_tables_chain_destroy(ctx->chain);
- }
- 
--static void nft_release_basechain_rcu(struct rcu_head *head)
--{
--	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
--	struct nft_ctx ctx = {
--		.family	= chain->table->family,
--		.chain	= chain,
--		.net	= read_pnet(&chain->table->net),
--	};
--
--	__nft_release_basechain_now(&ctx);
--	put_net(ctx.net);
--}
--
- int __nft_release_basechain(struct nft_ctx *ctx)
- {
- 	struct nft_rule *rule;
-@@ -11722,11 +11713,18 @@ int __nft_release_basechain(struct nft_ctx *ctx)
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
- 
--	if (maybe_get_net(ctx->net))
--		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
--	else
-+	if (!maybe_get_net(ctx->net)) {
- 		__nft_release_basechain_now(ctx);
-+		return 0;
-+	}
-+
-+	/* wait for ruleset dumps to complete.  Owning chain is no longer in
-+	 * lists, so new dumps can't find any of these rules anymore.
-+	 */
-+	synchronize_rcu();
- 
-+	__nft_release_basechain_now(ctx);
-+	put_net(ctx->net);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(__nft_release_basechain);
--- 
-2.30.2
-
+-John-
