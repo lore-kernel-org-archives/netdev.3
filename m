@@ -1,43 +1,64 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2F51FF1C0;
-	Wed, 11 Dec 2024 09:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3812040B2
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 09:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733908411; cv=none; b=myZH9W/2F5a+Yu2LHnvk4qi6uuCGhSWAEqyV0GK7rM14fekJtM2iVsW6UOOUzIRr2oHDgMxbewywUJDXX4mVN7cUP3qsKkaKBnmy1UhYZlV8A37nVMdZFCxnN2R1bhUvh+jgEs1XsZtMaoM+BYPDifJHN/p4ZZHam83JGxOFq74=
+	t=1733908544; cv=none; b=X1IDNUy2k1pmb4KnahaFXNSm087s4sFC8pZtBPNA0QdqvdkmPfZMcMYgHgZevkfK/FrIGwKmoZecmifqXEqsFrnFbkbgiszuhvEyy2EbKiJXyYYa8cY/BC2LpqKLpUzqlvOlgqoDfg+USQcCI19K8O4BCUtTriqAa7clKuDV1Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733908411; c=relaxed/simple;
-	bh=XRUbHwyQJfMjlhl4yYYx2nMCEEWfAaFjnaY1xKjMuzs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UENgNZTOZpwu7t9FEx5Dh4infSA5lTsP18hB/lJSc5SUlSuaKSqwOPy9Fpz/S24QTC5OIhpXR4mR7BxjwXCmbeX4Ey6juZiwwkCbKdRRHOaI1ZFOaajguTCxgimc7PWiuJ3qQwTINZ8AMIfCWwaRXyVDM4ZJyE8W24f+XEbdjMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB6pZao008972;
-	Wed, 11 Dec 2024 01:13:18 -0800
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx1u4046-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 11 Dec 2024 01:13:18 -0800 (PST)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 11 Dec 2024 01:13:04 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 11 Dec 2024 01:13:01 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <jdamato@fastly.com>, <gregkh@linuxfoundation.org>,
-        <jianqi.ren.cn@windriver.com>
-CC: <kuba@kernel.org>, <edumazet@google.com>, <patches@lists.linux.dev>,
-        <stable@vger.kernel.org>, <davem@davemloft.net>, <pabeni@redhat.com>,
-        <sashal@kernel.org>, <jamie.bainbridge@gmail.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6.1.y] net: napi: Prevent overflow of napi_defer_hard_irqs
-Date: Wed, 11 Dec 2024 18:10:55 +0800
-Message-ID: <20241211101055.2070018-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733908544; c=relaxed/simple;
+	bh=GTn8h1cILJZxRD/WPjB/UJpuuiM1eVhQlkQeJgDh5NM=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=GUvEUID4qHJhM3q0aJtJpoP8f1NLU0DAjBWYIZUNWsVOL05ieqqtnCTC2aa51YBB6dgKM7yGx2wQYwwVUqQKlyziyP94QePzhA5S9HODmkn4S/lTe3Jc7W1NDx3DdbYxy6ybWRRbIkD/wFVDA5GnEA5pXy3Cl0CDcGdLL85jzgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=DT11vbxL; arc=none smtp.client-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="DT11vbxL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1733908231;
+	bh=cqjMnbVmK1LhKXPepmKCsyi8lbW9EtlYn+9I8xwf1ms=;
+	h=From:To:Cc:Subject:Date;
+	b=DT11vbxLmQNpOd8UdLbru5oeVdXR4VvHUpXyY9PjI+yuNZ1OjN8LRg3kpO9wIjCRw
+	 6N7D3/T+rkz1JKgJT7ckKrMdxddCkY+u59oTeMVwuo39EnK4oJKwUELgY1pHJYZa+x
+	 ctZDsqEE4OkmWvFpHTn2uKLCVnyJdZpHqz/hhkU8=
+Received: from yangang-TM1701.. ([223.70.159.239])
+	by newxmesmtplogicsvrszc25-0.qq.com (NewEsmtp) with SMTP
+	id 1011BCCC; Wed, 11 Dec 2024 17:04:01 +0800
+X-QQ-mid: xmsmtpt1733907841tzs7a4spc
+Message-ID: <tencent_0FE3ED0442E69C9D86C0AEEE338A49F90305@qq.com>
+X-QQ-XMAILINFO: Ni8Yhdca2hoVflPFEakEGBA6MZIsGTtyedeHR6Bjr8xZsS8Ftp/KmRfYPTocQY
+	 dAjPEpChLf3eygMKsdRHTNa0mzWUI3OhiqBBod/+j4YIA0RHYhftZwzlj7KAeQDhNZyZcRXu4nfe
+	 4ASDtftpblDf9yDGmlvX/6FKHe8SlQZOp+UU6eqoUDpbH/OAUix9i57OXrJgFdXoMUFh/2lZkQ9y
+	 8VdHPLbF3S9fOMhOptuF3zGHP/m2Uz1tD1a/eGJ02+jY8tMqJ7AOx7GU85KPUiF/3+oJx9HXCmCT
+	 LUM4ckSmOwMSY06xK7Cn+puH27Mb45yH0O9X7mInLMUsByP9TN6wIQrg3gG7N/eMq0F6NPp2U9Iw
+	 oQtk/De7aQweLL0lrdU4A73Y5YED5mhV9KlKtam+DuqAzs3N7sClRuVD6f2gVymjoWBzmvhIp8hM
+	 Wv2JfINXg1Ynf7/61ZW9GxgyZUvv1hbL0VJzqVv97/m7y50SUrymPRCToCei2cgqwIUu39QvIXoI
+	 vkMhp+7dVKWTqK8gi9guo32FSEM/jF1HIVUOyQKV/B4eplxThvIm8e6xIXIykZbwqoOhZwiwqfG8
+	 3Ye268FLWtygR39u3NwFzWodk88in9sGFDeaLtheuC6URKLhivRDiivAsFFN+JUfT0SXD4MlXkNG
+	 u6QPt388m0N60YzpDJ9OOC3v8fI0C6aPr6Lt/PNYOMsh8ztTcQRYemNemI8dxfCu7K4fA2fYQz2R
+	 YqGYqp8dzKzIuFnji5Img0JAuuTGoFSPRyQf0+Nhu6on8pBr0Zfqn1o3dRcVWNTOQOyvURAWYW/C
+	 +YNdWAFv/NuTFISRGJpCeZDujOqZte6FQy8tffkYvB9cfJbI0msicBqzVoTnuaSkwFYYBrSxG3d3
+	 NmmudrE/Oi9Ea6iB/rlpePhVSlF9eHQU/LLCwBBwoUFIjtMO/zWrl/yHwHTpq4tsKK0+wZC8lyXB
+	 p64OirwF4=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: Gang Yan <gang_yan@foxmail.com>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Gang Yan <yangang@kylinos.cn>,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [mptcp-next] mptcp: fix invalid addr occupy 'add_addr_accepted'
+Date: Wed, 11 Dec 2024 17:03:58 +0800
+X-OQ-MSGID: <20241211090400.4646-1-gang_yan@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,123 +66,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=H/shw/Yi c=1 sm=1 tr=0 ts=675957ae cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=bC-a23v3AAAA:8 a=Cy2GHhHaAAAA:8 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=t7CeM3EgAAAA:8
- a=rXHdJJzl5kBpg4_CTW8A:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=bTms1Ghn32FVZww6NAbk:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: IDDmhlwAS5WRW5iySiboI35XiGXuTXdA
-X-Proofpoint-GUID: IDDmhlwAS5WRW5iySiboI35XiGXuTXdA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-11_09,2024-12-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1015
- impostorscore=0 adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412110069
 
-From: Joe Damato <jdamato@fastly.com>
+From: Gang Yan <yangang@kylinos.cn>
 
-[ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]
+This patch fixes an issue where an invalid address is announce as a
+signal, the 'add_addr_accepted' is incorrectly added several times
+when 'retransmit ADD_ADDR'. So we need to update this variable
+when the connection is removed from conn_list by mptcp_worker. So that
+the available address can be added in time.
 
-In commit 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
-napi_defer_irqs was added to net_device and napi_defer_irqs_count was
-added to napi_struct, both as type int.
+In fact, the 'add_addr_accepted' is only declined when 'RM_ADDR'
+by now, so when subflows are getting closed from the other peer,
+the new signal is not accepted as well.
 
-This value never goes below zero, so there is not reason for it to be a
-signed int. Change the type for both from int to u32, and add an
-overflow check to sysfs to limit the value to S32_MAX.
+We noticed there have exist some problems related to this.I think
+this patch effectively resolves them.
 
-The limit of S32_MAX was chosen because the practical limit before this
-patch was S32_MAX (anything larger was an overflow) and thus there are
-no behavioral changes introduced. If the extra bit is needed in the
-future, the limit can be raised.
-
-Before this patch:
-
-$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
-$ cat /sys/class/net/eth4/napi_defer_hard_irqs
--2147483647
-
-After this patch:
-
-$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
-bash: line 0: echo: write error: Numerical result out of range
-
-Similarly, /sys/class/net/XXXXX/tx_queue_len is defined as unsigned:
-
-include/linux/netdevice.h:      unsigned int            tx_queue_len;
-
-And has an overflow check:
-
-dev_change_tx_queue_len(..., unsigned long new_len):
-
-  if (new_len != (unsigned int)new_len)
-          return -ERANGE;
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240904153431.307932-1-jdamato@fastly.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/498
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
 ---
- include/linux/netdevice.h | 4 ++--
- net/core/net-sysfs.c      | 6 +++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index fbbd0df1106b..8379e938cd89 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -352,7 +352,7 @@ struct napi_struct {
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 21bc3586c33e..f99dddca859d 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2569,6 +2569,10 @@ static void __mptcp_close_subflow(struct sock *sk)
+ 			continue;
  
- 	unsigned long		state;
- 	int			weight;
--	int			defer_hard_irqs_count;
-+	u32			defer_hard_irqs_count;
- 	unsigned long		gro_bitmask;
- 	int			(*poll)(struct napi_struct *, int);
- #ifdef CONFIG_NETPOLL
-@@ -2193,7 +2193,7 @@ struct net_device {
- 
- 	struct bpf_prog __rcu	*xdp_prog;
- 	unsigned long		gro_flush_timeout;
--	int			napi_defer_hard_irqs;
-+	u32			napi_defer_hard_irqs;
- #define GRO_LEGACY_MAX_SIZE	65536u
- /* TCP minimal MSS is 8 (TCP_MIN_GSO_SIZE),
-  * and shinfo->gso_segs is a 16bit field.
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 8a06f97320e0..4ce57e75d139 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -30,6 +30,7 @@
- #ifdef CONFIG_SYSFS
- static const char fmt_hex[] = "%#x\n";
- static const char fmt_dec[] = "%d\n";
-+static const char fmt_uint[] = "%u\n";
- static const char fmt_ulong[] = "%lu\n";
- static const char fmt_u64[] = "%llu\n";
- 
-@@ -405,6 +406,9 @@ NETDEVICE_SHOW_RW(gro_flush_timeout, fmt_ulong);
- 
- static int change_napi_defer_hard_irqs(struct net_device *dev, unsigned long val)
- {
-+	if (val > S32_MAX)
-+		return -ERANGE;
+ 		mptcp_close_ssk(sk, ssk, subflow);
 +
- 	WRITE_ONCE(dev->napi_defer_hard_irqs, val);
- 	return 0;
- }
-@@ -418,7 +422,7 @@ static ssize_t napi_defer_hard_irqs_store(struct device *dev,
++		if (READ_ONCE(subflow->remote_id) &&
++		    --msk->pm.add_addr_accepted < mptcp_pm_get_add_addr_accept_max(msk))
++			WRITE_ONCE(msk->pm.accept_addr, true);
+ 	}
  
- 	return netdev_store(dev, attr, buf, len, change_napi_defer_hard_irqs);
  }
--NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_dec);
-+NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_uint);
- 
- static ssize_t ifalias_store(struct device *dev, struct device_attribute *attr,
- 			     const char *buf, size_t len)
 -- 
 2.25.1
 
