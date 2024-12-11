@@ -1,132 +1,210 @@
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91E41EE7BB
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 10:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733914634; cv=none; b=NHi48mfRoatIJpRULU2EMGrrtGd9KTPE7z4mSWhrRvLGd9RbV69/q/nGtM3apghI92IgTvNN7ItcWM3/Oteylh0E7/VAaQmXUERvPxp5Ukd/3CrNCVrsQxqN1sDlb/HkjzgdM4hY5qoePIQW6+EHkxyQrQBjkeC09Vy7uDAE0HY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733914634; c=relaxed/simple;
-	bh=71yklx03qQQJsAgZx+0nzCCvGzWqBU/MWhsKuVjVInc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mnURtFuix2jBDmxnLg5vpb+K85cXyKdrmQZzOeHoXOZk2jGUDoCtahMgrjOEPQ7RyXzZHVC8CPr4shZvX+IrZFcnjRl0OvDC55GAsR3G66Xr6R/S5xODDggPM13mhgfyusrvE9u382kJ497zZU/KQvYGXNmBzCO8k35Aj7msOWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=EoLsbCk+; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="EoLsbCk+"
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 7E8A2207CA;
-	Wed, 11 Dec 2024 11:57:04 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id NmNOOJhvd4UJ; Wed, 11 Dec 2024 11:57:04 +0100 (CET)
-Received: from cas-essen-02.secunet.de (rl2.secunet.de [10.53.40.202])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id E8D28207AC;
-	Wed, 11 Dec 2024 11:57:03 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com E8D28207AC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1733914623;
-	bh=mB+BhSa583ON4mE1AMoIZmMTmjeLB65bbpDm/9kVQsA=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=EoLsbCk+JCPytyK0QQuxqbGbnLxJWevyIdAJAE779OxLN6lhPgZsCiOokUnAlcqQU
-	 csXbnHI55uQ7KkQ7/kv0GI8hVa4Vyzvr+tVugDx2OeRurYQ9Z8m3az6hqOkBBWUIiW
-	 IY/nE5gTk/evxBVAxyVSmzsrqlazBYoFf3UOJPXUaIQ9gqYDqR/BnB5yhY/sOqhVM2
-	 DMmFPOUEiKOH/b9VbDeSjr5ClvtqXxps/ovskZi2/DGZBvmN6etnkph7d22Mc+HrVZ
-	 i1baVq+JPtyMhMN/gWSn7+YZ4298ylig8rKKm5/gA8HLTmsKA4L+tSbEqRc+UeXgvw
-	 n7x0+C+7ucAfw==
-Received: from mbx-essen-02.secunet.de (10.53.40.198) by
- cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 11 Dec 2024 11:57:03 +0100
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
- (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Dec
- 2024 11:57:03 +0100
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 3A05E318133F; Wed, 11 Dec 2024 11:57:03 +0100 (CET)
-Date: Wed, 11 Dec 2024 11:57:03 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Feng Wang <wangfe@google.com>, Leon Romanovsky <leon@kernel.org>,
-	<netdev@vger.kernel.org>, <antony.antony@secunet.com>, <pabeni@redhat.com>
-Subject: Re: [PATCH v7] xfrm: add SA information to the offloaded packet when
- if_id is set
-Message-ID: <Z1lv/+VBldgUYTGw@gauss3.secunet.de>
-References: <20241209202811.481441-2-wangfe@google.com>
- <20241209215301.GC1245331@unreal>
- <CADsK2K_NnizU+oY02PW9ZAiLzyPH=j=LYyjHnzgcMptxr95Oyg@mail.gmail.com>
- <Z1gMGlYPCywoqJK5@gauss3.secunet.de>
- <20241210192048.386d518a@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEBC211A08
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 11:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733916630; cv=none; b=PdcNPo8Loz3tWtvP3PFcYBef5y1GGtXoe1XhgTwf6AzAR4QxI9Ca6hNsWOu5L73RayZdRq49O8XGr2TI6vrQ8tv5D+AdEwolN4NjjFOQqCsi4GHhELlXQtEH8ZsVRhK74Fvrl1scX57iLamDMzUuOPUiqUzlv64xav+V1KZ1ASg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733916630; c=relaxed/simple;
+	bh=6W6L1Tf7yGGcjpTjBsl9mm8DEo+CIikh1VszU7Yey94=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MBON3u6/THQgXnFOkrz6ZGriipv5oeoZ/Fgv3gK9MYHYQ8yCljEqoSGRuIq9LYnMG1P3UaAu2nxiLFm+3APrTo5dDzK0PFC64CNdTzpiW/vP/juqhD8D/VlnTEeorwOrgAKp44khOjvlVU713y11hTSYOUah+Vpog0p0agiRv1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=VQUAmmY4; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="VQUAmmY4"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43540bdb448so11518815e9.2
+        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 03:30:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1733916625; x=1734521425; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=KtC2aVUCNmOY4NznYrw0YczTb2jM6dFjZfPdIjwCXqw=;
+        b=VQUAmmY4FooY7NVQZESSYAGZYQu3PscHFQFRw7+xtFL6IFU4lr7YLfo7FrN9oqhHH5
+         iiVnZ5372m1VGTyXOh7YjMbqS3ttIYc5rb382h2OLt9V8JLlBAal6lfNWNW14t4cZLDG
+         W981BIQcGPZAgp1jtt/u6FuORnj0Z9//Unl9bwvGLaQRwSWZJl3HyS9G2ilPb/P7ZeYY
+         cm8Lx+cWfu4S081EL5UavfN5yrfqEAzuMSgE91FH+w2TE2N4qGOx7oIOzqMml+kYB7c8
+         oKrmvBnErIhwILYcq8GU3TjG88r/7hfqEbNop2v38daY98RKNwoxgkFB9/DjflhjcO3T
+         Wtew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733916625; x=1734521425;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KtC2aVUCNmOY4NznYrw0YczTb2jM6dFjZfPdIjwCXqw=;
+        b=tKLampvYAB23EBEagn0pDZvD6fNrT5h1qWOqt6oWe5x86T3ucAUuYbeC7t6wavKccD
+         IAqt5NwuMNKeWPDjTz+kghL8tDjQdSlXOkRx2+t3wIoTl9NaTEvGXelvD8HQwPcvTSVH
+         ecCINlqkpipuPGlj3i+ODd+n6wPcjOyD0NGM2aEkoEFqlj1WVbAJXy6mXtl8DXZGtQMq
+         9L+Voo9mH1n0024orL6gQZ7Z0CZGoR8TI9JEXmS3gSHpkRk6uOenbfHV/CSW4k2k2wVT
+         f0hve2jE5LEH0gtXfd5q/CWzoO9u0IHtrA1SyizGiaI7BEDL51x6qbqDyKakd+GF4rrg
+         bbNQ==
+X-Gm-Message-State: AOJu0YwQP+oJT4AsoBE8lqrBoIVv+xYpusFjKnsorxDN1WK/OHe0KtcL
+	/Bsi4q9meMnS9TlV3Qxp2WPuBN0pGey9x2sUOJMJiyZG89Pi3oTN9hbfPk5E1+I=
+X-Gm-Gg: ASbGncvr4FBRJ8p2svN/QBZYiyWh53RgvlDnqdjmiCFtYiCpW4hr4j1hgy30xep66He
+	5uCPRlGrr9Al2A4KFNwt5BbFfSUxDq42U4DTw0Ddn4vjYdNkqsw3pmORqH4DusjoWihwuqMtB8g
+	TxmFk1lUDwTQ35SBSoZJ1JAiziG5iLGs4kVNaZEuTkPZngBpqoN+3f77xnAt5jCvESSNmHyCeIN
+	J4+UDqIvJ9/vrPr1/hDu5SG0OCVcuPYZ8+OYl/9XmQf51cbLaSMsFcmWcpTo7lPqTkpd0rEojcV
+	LqToJYjF+vvbLg==
+X-Google-Smtp-Source: AGHT+IGLUWsPSz7V+CdPs+HV+wwsBw5mLiGqfQuj+VwFhr00V+HqhtsmBDClS6l0UCkdvIEgUbHgQg==
+X-Received: by 2002:a05:600c:3552:b0:434:f131:1e6d with SMTP id 5b1f17b1804b1-4361c360e94mr22357895e9.10.1733916625186;
+        Wed, 11 Dec 2024 03:30:25 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:f6e8:f722:d96d:abb? ([2001:67c:2fbc:1:f6e8:f722:d96d:abb])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d526b577sm262182715e9.3.2024.12.11.03.30.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Dec 2024 03:30:24 -0800 (PST)
+Message-ID: <5a3d1c9b-f000-45c1-afd3-c7a10d2a50e8@openvpn.net>
+Date: Wed, 11 Dec 2024 12:31:08 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241210192048.386d518a@kernel.org>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-02.secunet.de (10.53.40.198)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14 17/22] ovpn: implement peer
+ add/get/dump/delete via netlink
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ sd@queasysnail.net, ryazanov.s.a@gmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20241209-b4-ovpn-v14-0-ea243cf16417@openvpn.net>
+ <20241209-b4-ovpn-v14-17-ea243cf16417@openvpn.net>
+ <CABAhCOSJCoZFuevjcwvdJ+==TpGEJZPmvvHfT=U3Kf_-Ob+BnA@mail.gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <CABAhCOSJCoZFuevjcwvdJ+==TpGEJZPmvvHfT=U3Kf_-Ob+BnA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 10, 2024 at 07:20:48PM -0800, Jakub Kicinski wrote:
-> On Tue, 10 Dec 2024 10:38:34 +0100 Steffen Klassert wrote:
-> > > This patch was done based on our previous discussion.  I did the
-> > > changes we agreed on.  
-> > 
-> > there is still no real packet offload support for netdev sim.
-> > And as said, this is at most the second best option.
-> > 
-> > You need to prove that this works. I want a complete API,
-> > but I also want a working one.
-> > 
-> > The easiest way to prove that this is implemented correctly
-> > is to upstream your driver. Everyting else is controversial
-> > and complicated.
+Hi Xiao and thanks for chiming in,
+
+On 11/12/2024 04:08, Xiao Liang wrote:
+> On Mon, Dec 9, 2024 at 6:48 PM Antonio Quartulli <antonio@openvpn.net> wrote:
+> [...]
+>> +/**
+>> + * ovpn_nl_peer_modify - modify the peer attributes according to the incoming msg
+>> + * @peer: the peer to modify
+>> + * @info: generic netlink info from the user request
+>> + * @attrs: the attributes from the user request
+>> + *
+>> + * Return: a negative error code in case of failure, 0 on success or 1 on
+>> + *        success and the VPN IPs have been modified (requires rehashing in MP
+>> + *        mode)
+>> + */
+>> +static int ovpn_nl_peer_modify(struct ovpn_peer *peer, struct genl_info *info,
+>> +                              struct nlattr **attrs)
+>> +{
+>> +       struct sockaddr_storage ss = {};
+>> +       struct ovpn_socket *ovpn_sock;
+>> +       u32 sockfd, interv, timeout;
+>> +       struct socket *sock = NULL;
+>> +       u8 *local_ip = NULL;
+>> +       bool rehash = false;
+>> +       int ret;
+>> +
+>> +       if (attrs[OVPN_A_PEER_SOCKET]) {
 > 
-> Yes, I don't have full context but FWIW offload changes accompanied 
-> by just netdevsim modifications raise a red flag:
+> Similar to link attributes in other tunnel drivers (e.g. IFLA_GRE_LINK,
+> IFLA_GRE_FWMARK), user-supplied sockets could have sockopts
+> (e.g. oif, fwmark, TOS). Since some of them may affect encapsulation
+> and routing decision, which are supported in datapath? And do we need
+> some validation here?
 
-Actually, we have the mlx5 driver that supports packet offload.
-When that was implemented, xfrm interfaces were no usecase.
-Because of that, we forgot to care for the xfrm interface ID as
-a lookup key. The problem is that users can still configure
-policies/states for xfrm interfaces and packet offload.
-The driver then just don't know if a packet was routed via
-a xfrm interface, and if so, via which one. So it might happen
-that a wrong policy/state is applied to a packet.
+Thanks for pointing this out.
+At the moment ovpn doesn't expect any specific socket option.
+I haven't investigated how they could be used and what effect they would 
+have on the packet processing.
+This is something we may consider later.
 
-My idea was to fix that by supporting xfrm interfaces
-with packet offload in the stack. But after looking
-a bit closer to the code yesterday, I noticed that we
-might not need any stack changes to get this right.
+At this point, do you still think I should add a check here of some sort?
 
-I think the driver should do the following:
+> 
+> [...]
+>> +static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
+>> +                            const struct ovpn_peer *peer, u32 portid, u32 seq,
+>> +                            int flags)
+>> +{
+>> +       const struct ovpn_bind *bind;
+>> +       struct nlattr *attr;
+>> +       void *hdr;
+>> +
+>> +       hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
+>> +                         OVPN_CMD_PEER_GET);
+>> +       if (!hdr)
+>> +               return -ENOBUFS;
+>> +
+>> +       attr = nla_nest_start(skb, OVPN_A_PEER);
+>> +       if (!attr)
+>> +               goto err;
+>> +
+>> +       if (nla_put_u32(skb, OVPN_A_PEER_ID, peer->id))
+>> +               goto err;
+>> +
+> 
+> I think it would be helpful to include the netns ID and supported sockopts
+> of the peer socket in peer info message.
 
-If xfrm interfaces are not supported:
+Technically the netns is the same as where the openvpn process in 
+userspace is running, because it'll be it to open the socket and pass it 
+down to ovpn.
+Therefore I am not sure there is any value in echoing back the netns ID. 
+Wouldn't you agree?
 
-- Reject policies and states that have xfrm interfaces
-  configured.
-
-If xfrm interfaces are supported:
-
-- Accept policies and states that have xfrm interfaces
-  configured.
-
-- On TX: Use the drivers xdo_dev_offload_ok function
-  to check if the packet came via the correct xfrm
-  interface and/or amend that info by adding the
-  xfrm state to the packets secpath.
-
-- On RX: Driver traveses through the list of registered
-  xfrm interfaces and match these against the used SAs
-  xfrm interface ID.
+Regarding sockopts, as mentioned above, this is somewhat unsupported for 
+now, so I Am not sure we have anything to send back.
 
 
-By doing that, no stack changes should be required.
+Regards,
+
+-- 
+Antonio Quartulli
+OpenVPN Inc.
+
