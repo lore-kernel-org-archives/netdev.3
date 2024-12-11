@@ -1,119 +1,142 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC45C2210C0;
-	Wed, 11 Dec 2024 09:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D872210C6;
+	Wed, 11 Dec 2024 09:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733908209; cv=none; b=BBkjlaXbvW+1E+S98CJ7hhOSHpsz+se66y5XGCWXpEXrgIGEu5RwFA495e8UNip45epfiXyRJLjwJn/xF/0YyKbSas0mCN8NCTa2jF0Oa/AUvMr4Z0E+n4vzbk8VbVEt1o8EHlnWsZn8kQ/3beM5GZ/h63lDe8QcjV/917a6YxU=
+	t=1733908338; cv=none; b=kwup7nAafQy7lABhNw+HzkR3smHV2LUhLKbA2XB2f0sHbPIEj7ELstSxP2dwh82+OYDb3Y5zZe/uQy6Wk/wLGejuQoP4XiwtXsfA/IyYgrcVeynRQiBaVHqukFU6KUhy/Q7DI+t+H6Mn3uj55N2SM0ffdvgT5XLv3yG8SIOvx8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733908209; c=relaxed/simple;
-	bh=lnLjvSQoyITD4fyiygfWRicJaqtlbsesWonfZxvC0/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rfx6Vn22jtOTrQc/LtA7l9zedbqok/BEtxhoqo+keKxiI9JUfrwcfhgJFULPDC4vzHbS4i/BrKbMiez2epwIG4MuHvjOdEfd1oqAiWLOIcmJZsUgZP8fl/rv8ZzN2nHR5sNTBR8Zz0rQb8g+ddv8qa0JRg8uhBoupLIBe+0wUNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llCT5XEs; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llCT5XEs"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-728eedfca37so415887b3a.2;
-        Wed, 11 Dec 2024 01:10:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733908207; x=1734513007; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=95VNZTlSV0GmtcT1rkj1rSMJXseSIfnM0Z5wuTWOkUo=;
-        b=llCT5XEsgGfpqjIw3mKSgJyBWMuEQJuCuEmWaHI52t51ur0AZqxvIuxRflM9WdRkOj
-         bMaGClz+ol1IeVzNsy7APzsdxHGPLVXEkvVx4UJgkEsglxD3ja++VkHhrmXMCl6MZJO5
-         EvlT1mdAflijZaU0XJYIQtKGt9c9le03wE+N7jbHsGHHy4dEk29vHJ2IE2T6TV2CnTVh
-         9uG8aYsR6Grewp3Jlvh5pyJGUj8KYB5GUXUI58fgbs6FpRELs7oT4wr/thrpvtaanpzM
-         cC5mATxV6pbZsqFJ+OrK8vr8jIc+vb6mf2GtS2g+ItybfWimm4aZo4d59ny+mPzRvGuP
-         Mg+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733908207; x=1734513007;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=95VNZTlSV0GmtcT1rkj1rSMJXseSIfnM0Z5wuTWOkUo=;
-        b=wJBb/eeSwhCEZs5IYmt3BKaeDPqpFNVEGO6oaOBeiEqFTUyEwMKcf+Mlz6ERdfCC0U
-         9e7dzhZp0C0vwSbfjhmmuWuqP1+eo7g72MzznYhEeJwGdFi9PxqlojANFUomBIe4HwXo
-         KuAsKOPhyOZEzviMOWssPGMwTyu/Fc8yA7TH2vuLqNWWdp4id/rF5gmFscaX9pjuLNA5
-         Y/q6BmKsiDoG8IKhuOKaRASO8+ImnsHWXHslyTMCOg5l0VrdjUocRRsoRh1+0lNODkYg
-         YCes6pFUu5axolz7LhewuSZ0ozNGMiKj3l4D36SQnulxDhSHdE6MO/qkKbtzW7ILlYdK
-         bxaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Hxvo4G5AFYRW31pDfN90X6wbLMvo1mSuAxE/ve4RIpmb24SZ7p9Pr7T+I/gUJovi/1U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOhlgudl4/F64ZA/GjxXvYuV5Pp0Q89AAdWEMNvbv4qQNCa1Xu
-	wJ++G8kCHFl4MDocdvQAVvLvqnzbGxYjDnXSXg3Rh6plRXVnxjKbnYl4YJR1
-X-Gm-Gg: ASbGncupb4srjPCU27fMdUF91DRl6cXd+S6FSQ9qoruxYL59ZvUXNerMUhi853KvmPK
-	jM2iGJ17t/cWGv/+MGEcyg8UetLr2Uhyz8G9h1oEY9zlxIB9DMJPns/lV4NOma6lu7hRFh0OcKv
-	fLYwdaEp6vrEdZ/UwJCWgiIXxsIkJNpI1mwWmSj7JeYl9LaVzq+QO7SRgC6jp3LPHiwxWvl9l51
-	SAo8CvaYD17/qhr7Q/eAf8EDA+jclEziUmG1GA2LOK1CG2WCD7n2dnrYDc=
-X-Google-Smtp-Source: AGHT+IFW6Naz+OTWa/PYPIVfYv/UxUumZZr6ce4hkxERUdlxOtW0YvjX8sA1l02cG6NHn2APItX04g==
-X-Received: by 2002:a05:6a20:7fa2:b0:1e1:bee3:50ea with SMTP id adf61e73a8af0-1e1c12834d8mr4241911637.11.1733908207197;
-        Wed, 11 Dec 2024 01:10:07 -0800 (PST)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd430cec7bsm5868062a12.67.2024.12.11.01.10.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 01:10:06 -0800 (PST)
-Date: Wed, 11 Dec 2024 09:10:01 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, mkubecek@suse.cz,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [PATCH net 4/5] team: Fix initial vlan_feature set in
- __team_compute_features
-Message-ID: <Z1lW6R0yhxxvYdrz@fedora>
-References: <20241210141245.327886-1-daniel@iogearbox.net>
- <20241210141245.327886-4-daniel@iogearbox.net>
+	s=arc-20240116; t=1733908338; c=relaxed/simple;
+	bh=Knj5TIsDQgyLg8p5+cY2aWCAJDz82Z4lK2SWfH0yCD8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=heaIi3xNiS74qT0/6CN5ry05rRPFcP0IpBE1wctF7C6zRx2PRkyKRD0YSqNA01fQmawPP2pjVYqPLUxC/2D+q1TBaNj+YOAegmkWPxClpYg3aeMbvCtdXPdl7DOwvuo+SuiBdzo/au9NtZ56UVqw7Ql/4a84vX1vZ5mSxnNS//Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB7fYB5012824;
+	Wed, 11 Dec 2024 09:12:05 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx4xbybu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 11 Dec 2024 09:12:04 +0000 (GMT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Wed, 11 Dec 2024 01:12:03 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Wed, 11 Dec 2024 01:11:59 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <cratiu@nvidia.com>, <gregkh@linuxfoundation.org>
+CC: <dtatulea@nvidia.com>, <tariqt@nvidia.com>, <pabeni@redhat.com>,
+        <patches@lists.linux.dev>, <stable@vger.kernel.org>,
+        <saeedm@nvidia.com>, <leon@kernel.org>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <roid@nvidia.com>,
+        <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 6.1.y] net/mlx5e: Don't call cleanup on profile rollback failure
+Date: Wed, 11 Dec 2024 18:09:53 +0800
+Message-ID: <20241211100953.2069964-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241210141245.327886-4-daniel@iogearbox.net>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: QoGXlSgbYD0qKXE6BvwAKD0aea_IgHQn
+X-Proofpoint-ORIG-GUID: QoGXlSgbYD0qKXE6BvwAKD0aea_IgHQn
+X-Authority-Analysis: v=2.4 cv=Y/UCsgeN c=1 sm=1 tr=0 ts=67595764 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=Ikd4Dj_1AAAA:8 a=20KFwNOVAAAA:8 a=t7CeM3EgAAAA:8 a=O6WMtLnDkRuORcTRUxwA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-11_08,2024-12-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 mlxscore=0 clxscore=1011 malwarescore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2411120000 definitions=main-2412110068
 
-On Tue, Dec 10, 2024 at 03:12:44PM +0100, Daniel Borkmann wrote:
-> Similarly as with bonding, fix the calculation of vlan_features to reuse
-> netdev_base_features() in order derive the set in the same way as
-> ndo_fix_features before iterating through the slave devices to refine the
-> feature set.
-> 
-> Fixes: 3625920b62c3 ("teaming: fix vlan_features computing")
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Nikolay Aleksandrov <razor@blackwall.org>
-> Cc: Ido Schimmel <idosch@idosch.org>
-> Cc: Jiri Pirko <jiri@nvidia.com>
-> ---
->  drivers/net/team/team_core.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-> index 1df062c67640..306416fc1db0 100644
-> --- a/drivers/net/team/team_core.c
-> +++ b/drivers/net/team/team_core.c
-> @@ -991,13 +991,14 @@ static void team_port_disable(struct team *team,
->  static void __team_compute_features(struct team *team)
->  {
->  	struct team_port *port;
-> -	netdev_features_t vlan_features = TEAM_VLAN_FEATURES &
-> -					  NETIF_F_ALL_FOR_ALL;
-> +	netdev_features_t vlan_features = TEAM_VLAN_FEATURES;
->  	netdev_features_t enc_features  = TEAM_ENC_FEATURES;
->  	unsigned short max_hard_header_len = ETH_HLEN;
->  	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
->  					IFF_XMIT_DST_RELEASE_PERM;
->  
-> +	vlan_features = netdev_base_features(vlan_features);
-> +
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(port, &team->port_list, list) {
->  		vlan_features = netdev_increment_features(vlan_features,
-> -- 
-> 2.43.0
-> 
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+[ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
+
+When profile rollback fails in mlx5e_netdev_change_profile, the netdev
+profile var is left set to NULL. Avoid a crash when unloading the driver
+by not calling profile->cleanup in such a case.
+
+This was encountered while testing, with the original trigger that
+the wq rescuer thread creation got interrupted (presumably due to
+Ctrl+C-ing modprobe), which gets converted to ENOMEM (-12) by
+mlx5e_priv_init, the profile rollback also fails for the same reason
+(signal still active) so the profile is left as NULL, leading to a crash
+later in _mlx5e_remove.
+
+ [  732.473932] mlx5_core 0000:08:00.1: E-Switch: Unload vfs: mode(OFFLOADS), nvfs(2), necvfs(0), active vports(2)
+ [  734.525513] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.557372] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.559187] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: new profile init failed, -12
+ [  734.560153] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.589378] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.591136] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
+ [  745.537492] BUG: kernel NULL pointer dereference, address: 0000000000000008
+ [  745.538222] #PF: supervisor read access in kernel mode
+<snipped>
+ [  745.551290] Call Trace:
+ [  745.551590]  <TASK>
+ [  745.551866]  ? __die+0x20/0x60
+ [  745.552218]  ? page_fault_oops+0x150/0x400
+ [  745.555307]  ? exc_page_fault+0x79/0x240
+ [  745.555729]  ? asm_exc_page_fault+0x22/0x30
+ [  745.556166]  ? mlx5e_remove+0x6b/0xb0 [mlx5_core]
+ [  745.556698]  auxiliary_bus_remove+0x18/0x30
+ [  745.557134]  device_release_driver_internal+0x1df/0x240
+ [  745.557654]  bus_remove_device+0xd7/0x140
+ [  745.558075]  device_del+0x15b/0x3c0
+ [  745.558456]  mlx5_rescan_drivers_locked.part.0+0xb1/0x2f0 [mlx5_core]
+ [  745.559112]  mlx5_unregister_device+0x34/0x50 [mlx5_core]
+ [  745.559686]  mlx5_uninit_one+0x46/0xf0 [mlx5_core]
+ [  745.560203]  remove_one+0x4e/0xd0 [mlx5_core]
+ [  745.560694]  pci_device_remove+0x39/0xa0
+ [  745.561112]  device_release_driver_internal+0x1df/0x240
+ [  745.561631]  driver_detach+0x47/0x90
+ [  745.562022]  bus_remove_driver+0x84/0x100
+ [  745.562444]  pci_unregister_driver+0x3b/0x90
+ [  745.562890]  mlx5_cleanup+0xc/0x1b [mlx5_core]
+ [  745.563415]  __x64_sys_delete_module+0x14d/0x2f0
+ [  745.563886]  ? kmem_cache_free+0x1b0/0x460
+ [  745.564313]  ? lockdep_hardirqs_on_prepare+0xe2/0x190
+ [  745.564825]  do_syscall_64+0x6d/0x140
+ [  745.565223]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ [  745.565725] RIP: 0033:0x7f1579b1288b
+
+Fixes: 3ef14e463f6e ("net/mlx5e: Separate between netdev objects and mlx5e profiles initialization")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 385904502a6b..8ee6a81b42b4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5980,7 +5980,9 @@ static void mlx5e_remove(struct auxiliary_device *adev)
+ 	mlx5e_dcbnl_delete_app(priv);
+ 	unregister_netdev(priv->netdev);
+ 	mlx5e_suspend(adev, state);
+-	priv->profile->cleanup(priv);
++	/* Avoid cleanup if profile rollback failed. */
++	if (priv->profile)
++		priv->profile->cleanup(priv);
+ 	mlx5e_devlink_port_unregister(priv);
+ 	mlx5e_destroy_netdev(priv);
+ }
+-- 
+2.25.1
+
