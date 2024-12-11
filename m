@@ -1,44 +1,43 @@
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC9A1F237F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD7C1F238D
 	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 23:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733961241; cv=none; b=KhyWwrH5/+wOvU6sZ6V+BG/cyD9CHaED5pEN+aonuN6Sue81GzEAWG69qfThMEDRNTM+CMxr9/RuwMmiO4aari7qzsBZMyDeCCvqUYBMoP6vdD024P+BYroTYrGEskF8+Zn42vWDsRUFiFwhn9vn5zztaLTAxWt4srAtFR9nnxg=
+	t=1733961242; cv=none; b=urybn7LlazqZSR7yfsMQQmBiPGk8R8VscBLG6JDr2hhkk3TQG4hsGB08glLRzOZRL99oeVSNagxDrAcRQdqZLIfjGZyl46b3UG+MNZ7+zZr+pg1WUlq6MpT++qWrDA6PyL+YaD0OMnUyQIqaGOBgJt1gLgELxtpM46dSha8qaZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733961241; c=relaxed/simple;
-	bh=jiXhH9kxXSn2Nw0H+KTvppAK2X+q60j+e8YmqY9FWOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npJEn85OcqKBAzHakTJ4vUYimHfLfjrQDNQbkBxnJAxAT2iis0goLQ17enxN8XsnG8v3oKeVSCAoNafPHyIEY+fN8P8SFX3fpdARWjzgSIwzjWTy3sZJ20eUbZvXBx7ZYuTsseZFvRGnqrAPvBKl80c9f19YocLkvZ3AN23e2bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=nAleCdE+; arc=none smtp.client-ip=202.36.163.20
+	s=arc-20240116; t=1733961242; c=relaxed/simple;
+	bh=stoC1G8iblU8O30Rj/lDT0olK4BzpBBbuTHrpwSS1QI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mNQQLZH5hX++WmV+3m5UvTJvhF+dqFbO+5epiYoI5WU2k8/Ed59e0HZjfU1wlJ7ordew9NUjL/M1wXZPHCl5qgxJH3TKKavtZZdY3+C+EpKDUT5kAFiapDO1py5c1QoNib78e4qdhrM0OYW1+MqUksr/O++Lfj+sGlnYrqzBZxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=ppXO5a6M; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="nAleCdE+"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="ppXO5a6M"
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 85FD32C04D0;
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 6BF2C2C02B3;
 	Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
 	s=mail181024; t=1733961231;
-	bh=YYpbsxw/IWs9rcS8rKosIOXg91vbXIdTiqCuBpMbmaM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAleCdE+4mBvOqZCsJtD9e/FtImUNu7U1cWCTJCNchoWuu9Jbv8vmmg2J3F/w/m7i
-	 JW4sRz2EZXKgQyselHquY9ZP6ArTC8dnbl9UGJYXbZikEaElF2OruttDiGjA/JjGAa
-	 b05KIxdckCDOuueCBVrZ8qCCnERYzOR8IcOdMSD153uBMgJdOZP5fy/z5S5dXBf0GH
-	 OWbcrgFLl544zQQJI5ORsGcmpGjUUT4RaHyOJLpJx8NokihI0t8ltk+94hOlDkBh8i
-	 CGgVD3lO4ZdIND/UF6E9clb9DYhJCXL6A4KC1w1pqnVkPRsmNeGE0QCIAuoW3sfwaL
-	 G7GDPiRb9BaUA==
+	bh=4b/0gkfN184TVJOckeIG7K3tpwmKYJFz5jFNpK3jJS0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ppXO5a6M9r/vOK7DwBNsrNxLqRDLjeXFzKkR2VLHBGYSl72Y1JyZiJPiUVrqe5buZ
+	 BJLycwwTQQmylyCM6DP8rWrlQsYtuFmqMttyJqXZmQhwNNSv90GqGitOqQ7SJFqmgM
+	 l9MzTljuTd8oGXTRvDvov5P0sOakQHbzUdXoimbaabEkJlEl0d6EkIi2K0B5D/IGEg
+	 UPmM4KUsb4ONbCp0nhc+GyZsIZT4cVYIpSUjTFByWX/8ZingB4v0l8a2ikMhPh6Efc
+	 CS/MLFuB1ad4csa36yswEsd0RGiUO126luunkGcBLqmzeJy26EnSIVh5h6X7YzSl0d
+	 QLoRDOfr/JK/Q==
 Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B675a260f0002>; Thu, 12 Dec 2024 12:53:51 +1300
+	id <B675a260f0000>; Thu, 12 Dec 2024 12:53:51 +1300
 Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id 24DEF13EE8E;
+	by pat.atlnz.lc (Postfix) with ESMTP id 20AE713ED7B;
 	Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
 Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id 2175A280964; Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
+	id 1B2E72807DF; Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 To: lee@kernel.org,
 	robh@kernel.org,
@@ -58,12 +57,10 @@ Cc: devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH 2/4] dt-bindings: mfd: Add MDIO interface to rtl9301-switch
-Date: Thu, 12 Dec 2024 12:53:40 +1300
-Message-ID: <20241211235342.1573926-3-chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 0/4] RTL9300 MDIO driver
+Date: Thu, 12 Dec 2024 12:53:38 +1300
+Message-ID: <20241211235342.1573926-1-chris.packham@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241211235342.1573926-1-chris.packham@alliedtelesis.co.nz>
-References: <20241211235342.1573926-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,51 +68,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675a260f a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=0DcZ6JciK6r0_laEW2MA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675a260f a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=_n84Z-pW24laMXaj73kA:9 a=3ZKOabzyN94A:10
 X-SEG-SpamProfiler-Score: 0
 x-atlnz-ls: pat
 
-The MDIO controller is part of the switch on the RTL9300 family of
-devices. Add a $ref to the mfd binding for these devices.
+This series adds a driver for the MDIO controller on the RTL9300 family
+of devices. The controller is a little unique in that we can't access
+the SMI interfaces directly. Instead we associate the SMI interface with
+a switch port and use the port number to address the SMI bus in
+software.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
----
- .../bindings/mfd/realtek,rtl9301-switch.yaml      | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Chris Packham (4):
+  dt-bindings: net: Add Realtek MDIO controller
+  dt-bindings: mfd: Add MDIO interface to rtl9301-switch
+  mips: dts: realtek: Add MDIO controller
+  net: mdio: Add RTL9300 MDIO driver
 
-diff --git a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch=
-.yaml b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-index f053303ab1e6..eeb08e7435fa 100644
---- a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-+++ b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
-@@ -41,6 +41,9 @@ patternProperties:
-   'i2c@[0-9a-f]+$':
-     $ref: /schemas/i2c/realtek,rtl9301-i2c.yaml#
-=20
-+  'mdio@[0-9a-f]+$':
-+    $ref: /schemas/net/realtek,rtl9301-mdio.yaml#
-+
- required:
-   - compatible
-   - reg
-@@ -110,5 +113,17 @@ examples:
-           };
-         };
-       };
-+
-+      mdio0: mdio@ca00 {
-+        compatible =3D "realtek,rtl9301-mdio";
-+        reg =3D <0xca00 0x200>;
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        ethernet-phy@0 {
-+          reg =3D <0>;
-+          realtek,smi-address =3D <0 1>;
-+        };
-+      };
-     };
-=20
+ .../bindings/mfd/realtek,rtl9301-switch.yaml  |  15 +
+ .../bindings/net/realtek,rtl9301-mdio.yaml    |  82 ++++++
+ arch/mips/boot/dts/realtek/rtl930x.dtsi       |   8 +
+ drivers/net/mdio/Kconfig                      |   7 +
+ drivers/net/mdio/Makefile                     |   1 +
+ drivers/net/mdio/mdio-realtek-rtl.c           | 264 ++++++++++++++++++
+ 6 files changed, 377 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl9301=
+-mdio.yaml
+ create mode 100644 drivers/net/mdio/mdio-realtek-rtl.c
+
 --=20
 2.47.1
 
