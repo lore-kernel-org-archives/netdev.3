@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BCA1F2C3B
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 22:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2D20456D
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 22:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733956364; cv=none; b=AGPDs0CwWBQdWKF2y7IQAUX1q/kuiQP4kcZMTQ4FFnsFTyBAMfHXaG1+8U08RMf7JzVvaYZUq+0e55UoIFT6RQniVTMKEQ7EihQMdKQZ+WrqunB6Id/B8tc3xC5VCFRBk2Zp5ra1aOP3G3Ls2PfwiInmvIM2D6bcp3omjI+sEpE=
+	t=1733956364; cv=none; b=dlzdZbbnZX9QLUDDbLNukN8QOXMOTsH0kXddJMWkMw+SlzvAzy53WAW06JhipHEqec9z6/RMSGjZjBTL1VUKkoAAocQxzg2lvSj5nZA2Eu6udjD3Gm88WcXcBAf0aJb0MF9+KFnzjOL9Dbhtp8YQYJLEBB71NF/j3GkAqT+XSMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733956364; c=relaxed/simple;
-	bh=nDhiEm6ADZ2KjN6W6XXgdg7PeX6vb/cbAyLvMwp9qZk=;
+	bh=/ipPID80lOfWAtFE1JfuL0fyBRP0NPdvpji+0aqWNPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSR8UTxWdp5xnUFxi+C7/bJZWxJdbQj/iJFTS08VouP2SneNhy6ieLXEvlVTRfRiRne7NwvMrpECVahsyyh7hIw4YaZnBnH85HpWBeCxnR5KetnKcxspmB8J72f4k/0tA0eLLvkCKjoE6y0bRGdfiK75vwmYTwTAzDlimMewoVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9WrK7ml; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=TAcrL5rxfQz+0xC6Gm+fW57NhKDaJysmQM1zHDnH/ydnmZN+sSgiuVo+mW76Rb/wxWge1/JWM9Y9B9s/zy108g65DuIMt0HLdXXX+tPp+YpagkGn/wcivYGd2uNM5JvezPISOpHWN8jXVcZB2BjQnsOkHe8uNHqkpQ8s9PEUx7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CzS40reN; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9WrK7ml"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CzS40reN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1733956362; x=1765492362;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=nDhiEm6ADZ2KjN6W6XXgdg7PeX6vb/cbAyLvMwp9qZk=;
-  b=f9WrK7ml8JvOUWYiG5gVtm3/fRTTQQC/8fBjCPAeimWURP7fd4Dn+uLK
-   xTA79BAKOvdAtInmkRTezcqceBMo85MtKCTAT5OmrKPnrH52/Q+HuKcmK
-   Ah5Ta2BT1/+pFJkUC2UF4YGpWL90whxemdypcKiSIcyc7nddaG4WzcdK/
-   tBIg/j69OOl/GAHt9aW/isedps7jk4YdNE8oxHCWOUVxi8r1+ZV0QlqrO
-   OEE+G3t8x9bQwIQ9JpSbEUImYit8o/lgemCdX7adWVls0cps3bOs/Hukv
-   yiBjwym7mzyw5htnN8+9AQdkG53t1yMnx8rmd1cGOysigvyihlmodIp6k
-   w==;
-X-CSE-ConnectionGUID: mEiAwXW+Q8G0PohLAqsPlw==
-X-CSE-MsgGUID: eJzUiafqQHuF4KIAjU+SBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34599631"
+  bh=/ipPID80lOfWAtFE1JfuL0fyBRP0NPdvpji+0aqWNPE=;
+  b=CzS40reNhYu4NllpfcQRY0WFRXLdI77ArKQobV6kLvfLyxqh1O1B6+eE
+   aI9uAWKlm9JIRcM+MFH6eLls7G7vYjXVr1rF6TMM4stwb2oD+yOcgyUDv
+   g5YfoUd3PNHlJ5mjpOBgYux15qamwHVwoW88NGBZLCWtJcszHNHfoTldG
+   2LryY+PS+6QhAT4sm/wsloD4nqeutg0+enSPZZ1xne6og/F6BqzCu6bXx
+   XVaHWlP7nc49cWGSHILuGPLzUNchOuFkfmZov5hptC/bw6d3qL5WZywe7
+   20earpXjeuz6VFB8YWMaCsT42YR8wlqILKhzkY2D68RdF9uhaJFvfffg0
+   A==;
+X-CSE-ConnectionGUID: zgdV5ADgTEOZOn7g5etTHw==
+X-CSE-MsgGUID: ESDQTxSoShykgFwHVSZnZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34599609"
 X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; 
-   d="scan'208";a="34599631"
+   d="scan'208";a="34599609"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 14:32:40 -0800
-X-CSE-ConnectionGUID: Begdxwe4SYWzdZVnwSesIg==
-X-CSE-MsgGUID: IN8OC1k4SUCnI3VAfND5VQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 14:32:39 -0800
+X-CSE-ConnectionGUID: XblL9bgDSTCl0iaNTd3EXg==
+X-CSE-MsgGUID: 1Eu75P+yQxGkW0XzX7eFWg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; 
-   d="scan'208";a="96192937"
+   d="scan'208";a="96192929"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa008.fm.intel.com with ESMTP; 11 Dec 2024 14:32:39 -0800
+  by fmviesa008.fm.intel.com with ESMTP; 11 Dec 2024 14:32:38 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -59,10 +59,11 @@ Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	jiri@resnulli.us,
 	apw@canonical.com,
 	lukas.bulwahn@gmail.com,
-	dwaipayanray1@gmail.com
-Subject: [PATCH net-next 4/7] ice: rename devlink_port.[ch] to port.[ch]
-Date: Wed, 11 Dec 2024 14:32:12 -0800
-Message-ID: <20241211223231.397203-5-anthony.l.nguyen@intel.com>
+	dwaipayanray1@gmail.com,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH net-next 2/7] devlink: add devlink_fmsg_put() macro
+Date: Wed, 11 Dec 2024 14:32:10 -0800
+Message-ID: <20241211223231.397203-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20241211223231.397203-1-anthony.l.nguyen@intel.com>
 References: <20241211223231.397203-1-anthony.l.nguyen@intel.com>
@@ -76,127 +77,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-Drop "devlink_" prefix from files that sit in devlink/.
-I'm going to add more files there, and repeating "devlink" does not feel
-good. This is also the scheme used in most other places, most notably the
-devlink core files are named like that.
+Add devlink_fmsg_put() that dispatches based on the type
+of the value to put, example: bool -> devlink_fmsg_bool_pair_put().
 
-devlink.[ch] stays as is.
-
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/Makefile                         | 2 +-
- drivers/net/ethernet/intel/ice/devlink/devlink.c                | 2 +-
- .../net/ethernet/intel/ice/devlink/{devlink_port.c => port.c}   | 2 +-
- .../net/ethernet/intel/ice/devlink/{devlink_port.h => port.h}   | 0
- drivers/net/ethernet/intel/ice/ice_eswitch.h                    | 2 +-
- drivers/net/ethernet/intel/ice/ice_main.c                       | 2 +-
- drivers/net/ethernet/intel/ice/ice_repr.c                       | 2 +-
- drivers/net/ethernet/intel/ice/ice_sf_eth.c                     | 2 +-
- 8 files changed, 7 insertions(+), 7 deletions(-)
- rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.c => port.c} (99%)
- rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.h => port.h} (100%)
+ include/net/devlink.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/Makefile b/drivers/net/ethernet/intel/ice/Makefile
-index 3307d551f431..56aa23aee472 100644
---- a/drivers/net/ethernet/intel/ice/Makefile
-+++ b/drivers/net/ethernet/intel/ice/Makefile
-@@ -32,7 +32,7 @@ ice-y := ice_main.o	\
- 	 ice_parser_rt.o \
- 	 ice_idc.o	\
- 	 devlink/devlink.o	\
--	 devlink/devlink_port.o \
-+	 devlink/port.o \
- 	 ice_sf_eth.o	\
- 	 ice_sf_vsi_vlan_ops.o \
- 	 ice_ddp.o	\
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 415445cefdb2..1b10682c00b8 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -6,7 +6,7 @@
- #include "ice.h"
- #include "ice_lib.h"
- #include "devlink.h"
--#include "devlink_port.h"
-+#include "port.h"
- #include "ice_eswitch.h"
- #include "ice_fw_update.h"
- #include "ice_dcb_lib.h"
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink_port.c b/drivers/net/ethernet/intel/ice/devlink/port.c
-similarity index 99%
-rename from drivers/net/ethernet/intel/ice/devlink/devlink_port.c
-rename to drivers/net/ethernet/intel/ice/devlink/port.c
-index c6779d9dffff..767419a67fef 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink_port.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/port.c
-@@ -5,7 +5,7 @@
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index fbb9a2668e24..b5e1427ea4d7 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -1261,6 +1261,17 @@ enum devlink_trap_group_generic_id {
+ 		.min_burst = _min_burst,				      \
+ 	}
  
- #include "ice.h"
- #include "devlink.h"
--#include "devlink_port.h"
-+#include "port.h"
- #include "ice_lib.h"
- #include "ice_fltr.h"
- 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink_port.h b/drivers/net/ethernet/intel/ice/devlink/port.h
-similarity index 100%
-rename from drivers/net/ethernet/intel/ice/devlink/devlink_port.h
-rename to drivers/net/ethernet/intel/ice/devlink/port.h
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.h b/drivers/net/ethernet/intel/ice/ice_eswitch.h
-index ac7db100e2cd..5c7dcf21b222 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.h
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.h
-@@ -5,7 +5,7 @@
- #define _ICE_ESWITCH_H_
- 
- #include <net/devlink.h>
--#include "devlink/devlink_port.h"
-+#include "devlink/port.h"
- 
- #ifdef CONFIG_ICE_SWITCHDEV
- void ice_eswitch_detach_vf(struct ice_pf *pf, struct ice_vf *vf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 0ab35607e5d5..d641dd8b8184 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -14,7 +14,7 @@
- #include "ice_dcb_lib.h"
- #include "ice_dcb_nl.h"
- #include "devlink/devlink.h"
--#include "devlink/devlink_port.h"
-+#include "devlink/port.h"
- #include "ice_sf_eth.h"
- #include "ice_hwmon.h"
- /* Including ice_trace.h with CREATE_TRACE_POINTS defined will generate the
-diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c b/drivers/net/ethernet/intel/ice/ice_repr.c
-index 970a99a52bf1..fb7a1b9a4313 100644
---- a/drivers/net/ethernet/intel/ice/ice_repr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_repr.c
-@@ -4,7 +4,7 @@
- #include "ice.h"
- #include "ice_eswitch.h"
- #include "devlink/devlink.h"
--#include "devlink/devlink_port.h"
-+#include "devlink/port.h"
- #include "ice_sriov.h"
- #include "ice_tc_lib.h"
- #include "ice_dcb_lib.h"
-diff --git a/drivers/net/ethernet/intel/ice/ice_sf_eth.c b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-index 75d7147e1c01..1a2c94375ca7 100644
---- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-@@ -5,8 +5,8 @@
- #include "ice_txrx.h"
- #include "ice_fltr.h"
- #include "ice_sf_eth.h"
--#include "devlink/devlink_port.h"
- #include "devlink/devlink.h"
-+#include "devlink/port.h"
- 
- static const struct net_device_ops ice_sf_netdev_ops = {
- 	.ndo_open = ice_open,
++#define devlink_fmsg_put(fmsg, name, value) (			\
++	_Generic((value),					\
++		bool :		devlink_fmsg_bool_pair_put,	\
++		u8 :		devlink_fmsg_u8_pair_put,	\
++		u16 :		devlink_fmsg_u32_pair_put,	\
++		u32 :		devlink_fmsg_u32_pair_put,	\
++		u64 :		devlink_fmsg_u64_pair_put,	\
++		char * :	devlink_fmsg_string_pair_put,	\
++		const char * :	devlink_fmsg_string_pair_put)	\
++	(fmsg, name, (value)))
++
+ enum {
+ 	/* device supports reload operations */
+ 	DEVLINK_F_RELOAD = 1UL << 0,
 -- 
 2.42.0
 
