@@ -1,91 +1,121 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0871EC4FF
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 23:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC9A1F237F
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 23:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733958111; cv=none; b=XWNGbZnixuV/ZvqunuDUXmUTWXIWTVVmbsgH2XMo5AowxQcdJGB0f/JKzAuBaBK0B2J7qtjIU6HzyQwpUJGhSXe+s1u1iFlbiCW1WuakqQk1QxcpMBKCT4Dk98bpNF3ujPLsVd1UrjriYNiZiSh/+xTnG2Gar/FIjdFerRFKtYA=
+	t=1733961241; cv=none; b=KhyWwrH5/+wOvU6sZ6V+BG/cyD9CHaED5pEN+aonuN6Sue81GzEAWG69qfThMEDRNTM+CMxr9/RuwMmiO4aari7qzsBZMyDeCCvqUYBMoP6vdD024P+BYroTYrGEskF8+Zn42vWDsRUFiFwhn9vn5zztaLTAxWt4srAtFR9nnxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733958111; c=relaxed/simple;
-	bh=7702vU6deKDG7UUlM9f7IXMlbtnn4sBDdbyNvy1bzAM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r5OqmsyFL5C571aMuV1H600vmMxzGPBTCX07eEc5D5uhQyjMEuhV/WN5R1CM+P+etckEK7vUOBPcNfVPHv94xsLQhP+V/n91AlWrao+Lvr43OeJY8sOyXlo2YoVQnSOze9KAGoqhD+x8iFMc3cEaMPwhqTbP2Xkxp4iyGo/1HHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=R60Bc3wz; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1733961241; c=relaxed/simple;
+	bh=jiXhH9kxXSn2Nw0H+KTvppAK2X+q60j+e8YmqY9FWOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=npJEn85OcqKBAzHakTJ4vUYimHfLfjrQDNQbkBxnJAxAT2iis0goLQ17enxN8XsnG8v3oKeVSCAoNafPHyIEY+fN8P8SFX3fpdARWjzgSIwzjWTy3sZJ20eUbZvXBx7ZYuTsseZFvRGnqrAPvBKl80c9f19YocLkvZ3AN23e2bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=nAleCdE+; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="R60Bc3wz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=aqpj2NOEIC4he92SdwRDRx1lfkZ6BBPNo45E39NFDBI=; t=1733958109; x=1734822109; 
-	b=R60Bc3wzcFkvD7zN8dJZHMXEmvWul6xIRhvr+ylllBohFWilFtOfpecLUcXST3ATphCt6QTcFxz
-	h4naZocDQa+TyVQoCvtmvfhC0jseO122fu2uJQR7SO0I6yQ0EqRX4SZgIm/sbspOCv+DZkB2kO7cP
-	rX8YBF5ZEnhnAtXmLisJW6bzeX4vzBuvdN/g+b7uZUzeI9hvByvXCLTpcQgicSRP9xg5FI2zAQ8vP
-	uOfQqpX08vlyNmm9UfOtLR75kfmBvjnBNOK1974t/0jH43xMXPhsAWpVmCgxfmLqOuxVaa95pO7Jm
-	Nr5GnZC+hOQjxBBCdOdooZizCNZXyCdbTDwQ==;
-Received: from mail-oa1-f53.google.com ([209.85.160.53]:45144)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1tLViG-000088-Sl
-	for netdev@vger.kernel.org; Wed, 11 Dec 2024 15:01:49 -0800
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2967af48248so3624303fac.2
-        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 15:01:48 -0800 (PST)
-X-Gm-Message-State: AOJu0YyCJzql56mIlJUyriWdq5OZy1RazKWBnN7x8S5WDwSJLdgqKWrW
-	IuUSDEYR+HIH1bvAjsORQdLOrIVuE2Ewr8/zTL6+jEGMeKzBpto7G9fxEX0IsRJDikI3Nb/BZ10
-	QL7DtZ+xsajqllfC9AJUS+bcgb1g=
-X-Google-Smtp-Source: AGHT+IHMmJbu1mq16kwWiBPDWWfFkW/tJrzU574SuWj5+4lizRoWNVYoOrYlESwnGJnpQZgzr5rD82aQgwvkgXGoS3A=
-X-Received: by 2002:a05:6870:2102:b0:295:eb96:9fd4 with SMTP id
- 586e51a60fabf-2a012c0f7b3mr2942903fac.11.1733958108304; Wed, 11 Dec 2024
- 15:01:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="nAleCdE+"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 85FD32C04D0;
+	Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1733961231;
+	bh=YYpbsxw/IWs9rcS8rKosIOXg91vbXIdTiqCuBpMbmaM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nAleCdE+4mBvOqZCsJtD9e/FtImUNu7U1cWCTJCNchoWuu9Jbv8vmmg2J3F/w/m7i
+	 JW4sRz2EZXKgQyselHquY9ZP6ArTC8dnbl9UGJYXbZikEaElF2OruttDiGjA/JjGAa
+	 b05KIxdckCDOuueCBVrZ8qCCnERYzOR8IcOdMSD153uBMgJdOZP5fy/z5S5dXBf0GH
+	 OWbcrgFLl544zQQJI5ORsGcmpGjUUT4RaHyOJLpJx8NokihI0t8ltk+94hOlDkBh8i
+	 CGgVD3lO4ZdIND/UF6E9clb9DYhJCXL6A4KC1w1pqnVkPRsmNeGE0QCIAuoW3sfwaL
+	 G7GDPiRb9BaUA==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B675a260f0002>; Thu, 12 Dec 2024 12:53:51 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+	by pat.atlnz.lc (Postfix) with ESMTP id 24DEF13EE8E;
+	Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id 2175A280964; Thu, 12 Dec 2024 12:53:51 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: lee@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	tsbogend@alpha.franken.de,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	markus.stockhausen@gmx.de
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 2/4] dt-bindings: mfd: Add MDIO interface to rtl9301-switch
+Date: Thu, 12 Dec 2024 12:53:40 +1300
+Message-ID: <20241211235342.1573926-3-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241211235342.1573926-1-chris.packham@alliedtelesis.co.nz>
+References: <20241211235342.1573926-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209175131.3839-1-ouster@cs.stanford.edu> <20241209175131.3839-13-ouster@cs.stanford.edu>
- <20241211063914.GA34839@j66a10360.sqa.eu95>
-In-Reply-To: <20241211063914.GA34839@j66a10360.sqa.eu95>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Wed, 11 Dec 2024 15:01:13 -0800
-X-Gmail-Original-Message-ID: <CAGXJAmxC5PkcbXyRuAxa6_uYDPoEE-_RfcE4NmyAHwg_rf9ChQ@mail.gmail.com>
-Message-ID: <CAGXJAmxC5PkcbXyRuAxa6_uYDPoEE-_RfcE4NmyAHwg_rf9ChQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 11/12] net: homa: create homa_plumbing.c homa_utils.c
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: 0.8
-X-Spam-Level: 
-X-Scan-Signature: a11a15d02c0ec4233875b3872b0caebb
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675a260f a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=0DcZ6JciK6r0_laEW2MA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-On Tue, Dec 10, 2024 at 10:39=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.co=
-m> wrote:
-> > +
-> > +     /* Using a static buffer can produce garbled text under concurren=
-cy,
-> > +      * but (a) it's unlikely (this code only executes if the opcode i=
-s
-> > +      * bogus), (b) this is mostly for testing and debugging, and (c) =
-the
-> > +      * code below ensures that the string cannot run past the end of =
-the
-> > +      * buffer, so the code is safe.
-> > +      */
->
-> IMMO, Regardless of the scenario you expect to use it in, writing code th=
-at
-> is clearly buggy is always perplexing.
+The MDIO controller is part of the switch on the RTL9300 family of
+devices. Add a $ref to the mfd binding for these devices.
 
-Fair enough; you have shamed me (appropriately) into changing the code
-to use only static strings. This reduces the amount of information
-provided if a bogus type is provided, but I don't think that will
-matter in practice.
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
+ .../bindings/mfd/realtek,rtl9301-switch.yaml      | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
--John-
+diff --git a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch=
+.yaml b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
+index f053303ab1e6..eeb08e7435fa 100644
+--- a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
++++ b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
+@@ -41,6 +41,9 @@ patternProperties:
+   'i2c@[0-9a-f]+$':
+     $ref: /schemas/i2c/realtek,rtl9301-i2c.yaml#
+=20
++  'mdio@[0-9a-f]+$':
++    $ref: /schemas/net/realtek,rtl9301-mdio.yaml#
++
+ required:
+   - compatible
+   - reg
+@@ -110,5 +113,17 @@ examples:
+           };
+         };
+       };
++
++      mdio0: mdio@ca00 {
++        compatible =3D "realtek,rtl9301-mdio";
++        reg =3D <0xca00 0x200>;
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        ethernet-phy@0 {
++          reg =3D <0>;
++          realtek,smi-address =3D <0 1>;
++        };
++      };
+     };
+=20
+--=20
+2.47.1
+
