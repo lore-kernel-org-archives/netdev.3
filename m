@@ -1,121 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399CC1EC4CD
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 22:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6791F4E57;
+	Wed, 11 Dec 2024 22:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733955893; cv=none; b=X+o+CkaIoUv/UURi/G5KS0rNZL9bZP7wEZZx+E6J87ERBXpzJwByPykGLXKSbGkl8sPDCZNdIDtGgfu3TL4YT+JGHa2PKRskLvdmRgrZ0GDTe0wdqEyLJkyqZa2fY2tw7mGtX/ATUQR0ic2CYScSH0gS7f3kXYT5ooYFCNHTT6s=
+	t=1733956345; cv=none; b=HOA+kLRATcm6rdnFeUUu44fRHPtKRlg0lfjD0MUu0BfHuLBuM8PBQFoTpUUEzVujmwycPFTazTZPNCJRg8WaAfEluIKUC8bGjsLSakAFYGfe170sbzneRBfeNl2juosA5qf72i37fi86M8WPaQJkor6TFBMQalaqjUGX6o1MyCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733955893; c=relaxed/simple;
-	bh=RV/W/MroeiS9i7sZw8kk7loBgZRFz63mwAfHWQtoXlE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UtIZeXyqNOq/IMSFG74NbilrnXRH+SLeWN4mSQRivZPNm3s9KbA24vVtyWULuVApGhylpq8QrpcOEKSBEiti9q7EpqV8vhoBl4tGA2N1PA678DWlQJ3lwb0Yp2t1O067bXGoV22m6b70mhBVUx9QgXnNs/AKnJAhiEz9G4d+2mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DxJT5G3B; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733956345; c=relaxed/simple;
+	bh=NGdHSLNI0l4aBJ0f/wN2z7bSGQikMSaNjVw2lkQNoSI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=DHbudQZ1J5ne/WjFWu34AlpgeC1loquMnY///N7cr1WseQnFp24sjtcIi8pHZfNT37BzM2w2cg6Ym5C6RwPkftQZteG4wORQlXXR3ldrtIn7g26mCoHx0wKWIstRDIGmOVhx6QsQXZoJSrrNTm8HFwzxhVgfbF8t/sMrMmJPXk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjfwijMb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DxJT5G3B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733955890;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4L62xxnOjfKCwQHQtFYxaSuIGZjtEixLHzI3Spv7u9I=;
-	b=DxJT5G3Bm88gTE25/B/XJpT4WqEks49r6GDDl+WxkvIvhr0fPDrovpW5F72RjJQ655K8AB
-	TguYPHMbqmMEobuNGYfRkFKy+hyF6XbRMCcCGFNK7QNBN6cTfQXsC1lEvvXpsah7PRbbzF
-	NLuZjhuYJzKfVg+vfgEkCAwWnrMp+gY=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-a_N0ztx9P92O0Sj8VNLW4g-1; Wed, 11 Dec 2024 17:24:49 -0500
-X-MC-Unique: a_N0ztx9P92O0Sj8VNLW4g-1
-X-Mimecast-MFC-AGG-ID: a_N0ztx9P92O0Sj8VNLW4g
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-6ef88388aaaso85077197b3.0
-        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 14:24:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733955888; x=1734560688;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4L62xxnOjfKCwQHQtFYxaSuIGZjtEixLHzI3Spv7u9I=;
-        b=a1JqomuTZrY3yxfzmmrO/6VtANTnRZLlR83niTrLOoeRi+LLhZ20rn9waArmjk8ffO
-         jAfImz1zAbXoV0bJhyzAYfP9471LHMNocxPKz+d6cttTqIKsc9LKkInf/2J+C1aSvfZ5
-         UC7ax8zxH8vEXW1XJbXcEHQQPfAmIBbmd8giIrMx9LUhYP6BfhJjCLgSlR7jaeM+QIPL
-         6iS1sAzJ5eNhkvIpWcD/2Bbr+kLh8y4Oc2DdEdDzEqcr1oBYrSRNFGQHEo8K2LHNPIYU
-         BBi/DuAD0ZbsNVl0dLKa93tErWFjiYim9blH2yIviV8hlsmH+WAILcs3g8yBcbxJFEs9
-         ymDw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1rGlqtpE0bJbv8SyjxeFSWJzOJ7LTu64Uh9tcjntvaPnDPQwKEObP4YVZ3yY+cSqlG33Tn28=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbpx4hvVy4FZAwuj5a6qlfLGrNg2PLR3oWXCJj/Q7OtxIx/8AM
-	WGOgqpY5tHONIdtJ02HzNRSPsjI1cwO2QF6ecxvHgYZjKBITBRf+QlnFsAymv368iZH1tsUnhJJ
-	wrqAZpFLLZbVuQMOansz8456l8jB2KyoPAUXJSdmTFBF11YXqRkZrT1GCIgylbKL1ZaH+PJgX4n
-	5woMwRRTJA4owOkiu/XYWLeaF5ZDPb
-X-Gm-Gg: ASbGncs7p+fNJvHEE6mQ38R6NHXqt7d8LdPZbpdfRbFOCBCM1vcR6clFDHC6bPK3Elb
-	Er62AngeQolsU8kZLlu3HN1ZSgM7dAm9p+jf7gTpthxi+jabt/C5+vYEKPg9cQVHVMg==
-X-Received: by 2002:a05:690c:4485:b0:6e2:2600:ed50 with SMTP id 00721157ae682-6f19e5071a2mr10985187b3.21.1733955888567;
-        Wed, 11 Dec 2024 14:24:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGh7oBAib1eBpyek7a5WPWh4QHh7h9VICuRKeigaC7/liBhCsHFKK7GpYF1R309LJITTPHEPKoaTwkJLcRC/qY=
-X-Received: by 2002:a05:690c:4485:b0:6e2:2600:ed50 with SMTP id
- 00721157ae682-6f19e5071a2mr10985027b3.21.1733955888311; Wed, 11 Dec 2024
- 14:24:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjfwijMb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C33C4CED3;
+	Wed, 11 Dec 2024 22:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733956344;
+	bh=NGdHSLNI0l4aBJ0f/wN2z7bSGQikMSaNjVw2lkQNoSI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=BjfwijMbLAHcxokg+pJC2/UdLPu8w5NNJmdVSAOq2BH6ThTgopYBX0+fTtZ0X5Kuy
+	 NfKs4ecBx8K7owJiX4gaHbZBZVEBE69mG9OnadEwoaVEg/YlWV4VJLxNr+lfzV/GM4
+	 iA1E8xJfJ2sY3w+RU6+3M4tkCTnE8gjvlGNhbmRMLplxytpDE2GUi7CltDLER9CJyH
+	 af7l45Q1lRTiP73iaTZ93p0r8Fdwq1sRnbHHxXRYZbnkmrZjFr7m4xdrLOhsG8VX23
+	 P33IqFJvqHyO4uQPBwp0R1LbM7vOM2Cv0K1r4G6XH+u5VBDgJKVnd2C0jB45rqkTCf
+	 vX12KmEy4LCbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC8A380A965;
+	Wed, 11 Dec 2024 22:32:41 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210161448.76799-1-donald.hunter@gmail.com>
- <20241210161448.76799-8-donald.hunter@gmail.com> <20241211210713.GE2806@kernel.org>
-In-Reply-To: <20241211210713.GE2806@kernel.org>
-From: Donald Hunter <donald.hunter@redhat.com>
-Date: Wed, 11 Dec 2024 22:24:37 +0000
-Message-ID: <CAAf2ycnfaZ9z4+skH9cUFxgx8Dk60ct-WsZXq9YS6gUtY1dQFw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 7/7] netlink: specs: wireless: add a spec for nl80211
-To: Simon Horman <horms@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v3 0/4] Optimize bpf_csum_diff() and homogenize for
+ all archs
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <173395636024.1729195.5884060368915845974.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Dec 2024 22:32:40 +0000
+References: <20241026125339.26459-1-puranjay@kernel.org>
+In-Reply-To: <20241026125339.26459-1-puranjay@kernel.org>
+To: Puranjay Mohan <puranjay@kernel.org>
+Cc: linux-riscv@lists.infradead.org, aou@eecs.berkeley.edu, ast@kernel.org,
+ akpm@linux-foundation.org, andrii@kernel.org, bpf@vger.kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
+ edumazet@google.com, haoluo@google.com, deller@gmx.de, kuba@kernel.org,
+ James.Bottomley@HansenPartnership.com, jolsa@kernel.org,
+ john.fastabend@gmail.com, kpsingh@kernel.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, martin.lau@linux.dev, mykolal@fb.com,
+ netdev@vger.kernel.org, palmer@dabbelt.com, pabeni@redhat.com,
+ paul.walmsley@sifive.com, puranjay12@gmail.com, shuah@kernel.org,
+ song@kernel.org, sdf@fomichev.me, yonghong.song@linux.dev
 
-On Wed, 11 Dec 2024 at 21:13, Simon Horman <horms@kernel.org> wrote:
->
-> On Tue, Dec 10, 2024 at 04:14:48PM +0000, Donald Hunter wrote:
-> > Add a rudimentary YNL spec for nl80211 that covers get-wiphy,
-> > get-interface and get-protocol-features.
-> >
-> > ./tools/net/ynl/cli.py \
-> >     --spec Documentation/netlink/specs/nl80211.yaml \
-> >     --do get-protocol-features
-> > {'protocol-features': {'split-wiphy-dump'}}
-> >
-> > ./tools/net/ynl/cli.py \
-> >     --spec Documentation/netlink/specs/nl80211.yaml \
-> >     --dump get-wiphy --json '{ "split-wiphy-dump": true }'
-> >
-> > ./tools/net/ynl/cli.py \
-> >     --spec Documentation/netlink/specs/nl80211.yaml \
-> >     --dump get-interface
-> >
-> > Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
->
-> Hi Donald,
->
-> Perhaps I'm doing something silly here, or my environment is somehow
-> broken. But with this patch applied I see:
->
-> make -C tools/net/ynl/ distclean && make -C tools/net/ynl/
-> ...
-> Exception: new_attr: unsupported sub-type u32
-> make[1]: *** [Makefile:37: nl80211-user.c] Error 1
+Hello:
 
-Hi Simon,
+This series was applied to riscv/linux.git (fixes)
+by Daniel Borkmann <daniel@iogearbox.net>:
 
-Thanks for reporting. It was also flagged up on patchwork. My bad. I
-had a blind spot for checking the C build because the last few specs I
-have worked on have been netlink-raw which don't have codegen. I'll
-look at fixing this and any subsequent issues.
+On Sat, 26 Oct 2024 12:53:35 +0000 you wrote:
+> Changes in v3:
+> v2: https://lore.kernel.org/all/20241023153922.86909-1-puranjay@kernel.org/
+> - Fix sparse warning in patch 2
+> 
+> Changes in v2:
+> v1: https://lore.kernel.org/all/20241021122112.101513-1-puranjay@kernel.org/
+> - Remove the patch that adds the benchmark as it is not useful enough to be
+>   added to the tree.
+> - Fixed a sparse warning in patch 1.
+> - Add reviewed-by and acked-by tags.
+> 
+> [...]
 
-Thanks,
-Donald.
+Here is the summary with links:
+  - [bpf-next,v3,1/4] net: checksum: move from32to16() to generic header
+    https://git.kernel.org/riscv/c/db71aae70e3e
+  - [bpf-next,v3,2/4] bpf: bpf_csum_diff: optimize and homogenize for all archs
+    https://git.kernel.org/riscv/c/6a4794d5a3e2
+  - [bpf-next,v3,3/4] selftests/bpf: don't mask result of bpf_csum_diff() in test_verifier
+    https://git.kernel.org/riscv/c/b87f584024e1
+  - [bpf-next,v3,4/4] selftests/bpf: Add a selftest for bpf_csum_diff()
+    https://git.kernel.org/riscv/c/00c1f3dc66a3
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
