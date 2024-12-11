@@ -1,35 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6791F4E57;
-	Wed, 11 Dec 2024 22:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363EE201259
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 22:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733956345; cv=none; b=HOA+kLRATcm6rdnFeUUu44fRHPtKRlg0lfjD0MUu0BfHuLBuM8PBQFoTpUUEzVujmwycPFTazTZPNCJRg8WaAfEluIKUC8bGjsLSakAFYGfe170sbzneRBfeNl2juosA5qf72i37fi86M8WPaQJkor6TFBMQalaqjUGX6o1MyCo=
+	t=1733956361; cv=none; b=XVl5snp9VWf4oI/9efFgdqHPw1HbEeLrFfxxPMXK8Nb5djZq5iRLCyBRpT3l9Hg1tKJxZUTSivSBYVfv8Oq1zH+WwyVqKDFWH+C8YgpABX9S1vgpoyEggnFsRYtZ3mwuYVVlD3xF0fQ3wG00oNyQ+wB62px23msN2kpfl7QDJr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733956345; c=relaxed/simple;
-	bh=NGdHSLNI0l4aBJ0f/wN2z7bSGQikMSaNjVw2lkQNoSI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DHbudQZ1J5ne/WjFWu34AlpgeC1loquMnY///N7cr1WseQnFp24sjtcIi8pHZfNT37BzM2w2cg6Ym5C6RwPkftQZteG4wORQlXXR3ldrtIn7g26mCoHx0wKWIstRDIGmOVhx6QsQXZoJSrrNTm8HFwzxhVgfbF8t/sMrMmJPXk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjfwijMb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733956361; c=relaxed/simple;
+	bh=LWmQEPZ4bG6LEk5LqIJucsKoiwr8W3YSykEz4mrzJRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pe0tVTdwrNRy4VkqbQHjSneNaiPzAPx8JvWIyO47RuXTaW/drPWlbg4vU6BHDMPIfbkvHP6CwVqQ2WQ8chVi4UrDJoQYs5ySiPuv1p5G27+DKWfPUMx+B61y/UNG7GA9fYUmOkNYqAcmWSygOicyR7xnUyZ4PR189xz2zDuNYNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cWmmFK9a; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjfwijMb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C33C4CED3;
-	Wed, 11 Dec 2024 22:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733956344;
-	bh=NGdHSLNI0l4aBJ0f/wN2z7bSGQikMSaNjVw2lkQNoSI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BjfwijMbLAHcxokg+pJC2/UdLPu8w5NNJmdVSAOq2BH6ThTgopYBX0+fTtZ0X5Kuy
-	 NfKs4ecBx8K7owJiX4gaHbZBZVEBE69mG9OnadEwoaVEg/YlWV4VJLxNr+lfzV/GM4
-	 iA1E8xJfJ2sY3w+RU6+3M4tkCTnE8gjvlGNhbmRMLplxytpDE2GUi7CltDLER9CJyH
-	 af7l45Q1lRTiP73iaTZ93p0r8Fdwq1sRnbHHxXRYZbnkmrZjFr7m4xdrLOhsG8VX23
-	 P33IqFJvqHyO4uQPBwp0R1LbM7vOM2Cv0K1r4G6XH+u5VBDgJKVnd2C0jB45rqkTCf
-	 vX12KmEy4LCbw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC8A380A965;
-	Wed, 11 Dec 2024 22:32:41 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cWmmFK9a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733956359; x=1765492359;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LWmQEPZ4bG6LEk5LqIJucsKoiwr8W3YSykEz4mrzJRc=;
+  b=cWmmFK9au8u7VluApR8smV8txMrVC3zpxPc/L2KT8o1FlTXQX0yugQ78
+   PC//U2rXB0qPKwH+eQbpuMre8kpyKZUMBDz311cxu2lo3FBSoyLQBJ+D5
+   OAz0z0ZJrTBsfMG0sFSGEAY3mbyF6M/7C6sq21Dv7Ac9+PwO7Q2tCo/iq
+   ZGAXYAmeluCBRmE2jmzdkOr043ZyDQ6z2kw+0AwYPr/4DpNvRYuli9MQb
+   +04ZzWYv+qsmMW+AS6mpQ+anuY8FaPnUENi5tKJQT/GrSFVnxzIOMtAQh
+   s/lpJ/dc3wIo1RvyTb9xPFERpWn3OBpEN/TyQk847rHQvCrzsTmuqOhgY
+   g==;
+X-CSE-ConnectionGUID: U6Ns/OhkSUGkkNAvhjJzKw==
+X-CSE-MsgGUID: zI2nyYkrQ164yUnT63v8RQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34599591"
+X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; 
+   d="scan'208";a="34599591"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 14:32:38 -0800
+X-CSE-ConnectionGUID: ZyRxAuQTSf2sevI7H2tMjQ==
+X-CSE-MsgGUID: W5r5L0kPSnGOQeulzsNRcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; 
+   d="scan'208";a="96192918"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa008.fm.intel.com with ESMTP; 11 Dec 2024 14:32:38 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	przemyslaw.kitszel@intel.com,
+	wojciech.drewek@intel.com,
+	mateusz.polchlopek@intel.com,
+	joe@perches.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	apw@canonical.com,
+	lukas.bulwahn@gmail.com,
+	dwaipayanray1@gmail.com
+Subject: [PATCH net-next 0/7][pull request] ice: add support for devlink health events
+Date: Wed, 11 Dec 2024 14:32:08 -0800
+Message-ID: <20241211223231.397203-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,58 +70,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v3 0/4] Optimize bpf_csum_diff() and homogenize for
- all archs
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <173395636024.1729195.5884060368915845974.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 22:32:40 +0000
-References: <20241026125339.26459-1-puranjay@kernel.org>
-In-Reply-To: <20241026125339.26459-1-puranjay@kernel.org>
-To: Puranjay Mohan <puranjay@kernel.org>
-Cc: linux-riscv@lists.infradead.org, aou@eecs.berkeley.edu, ast@kernel.org,
- akpm@linux-foundation.org, andrii@kernel.org, bpf@vger.kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
- edumazet@google.com, haoluo@google.com, deller@gmx.de, kuba@kernel.org,
- James.Bottomley@HansenPartnership.com, jolsa@kernel.org,
- john.fastabend@gmail.com, kpsingh@kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, martin.lau@linux.dev, mykolal@fb.com,
- netdev@vger.kernel.org, palmer@dabbelt.com, pabeni@redhat.com,
- paul.walmsley@sifive.com, puranjay12@gmail.com, shuah@kernel.org,
- song@kernel.org, sdf@fomichev.me, yonghong.song@linux.dev
 
-Hello:
+Przemek Kitszel says:
 
-This series was applied to riscv/linux.git (fixes)
-by Daniel Borkmann <daniel@iogearbox.net>:
+Reports for two kinds of events are implemented, Malicious Driver
+Detection (MDD) and Tx hang.
 
-On Sat, 26 Oct 2024 12:53:35 +0000 you wrote:
-> Changes in v3:
-> v2: https://lore.kernel.org/all/20241023153922.86909-1-puranjay@kernel.org/
-> - Fix sparse warning in patch 2
-> 
-> Changes in v2:
-> v1: https://lore.kernel.org/all/20241021122112.101513-1-puranjay@kernel.org/
-> - Remove the patch that adds the benchmark as it is not useful enough to be
->   added to the tree.
-> - Fixed a sparse warning in patch 1.
-> - Add reviewed-by and acked-by tags.
-> 
-> [...]
+Patches 1, 2, 3: core improvements (checkpatch.pl, devlink extension)
+Patch 4: rename current ice devlink/ files
+Patches 5, 6, 7: ice devlink health infra + reporters
 
-Here is the summary with links:
-  - [bpf-next,v3,1/4] net: checksum: move from32to16() to generic header
-    https://git.kernel.org/riscv/c/db71aae70e3e
-  - [bpf-next,v3,2/4] bpf: bpf_csum_diff: optimize and homogenize for all archs
-    https://git.kernel.org/riscv/c/6a4794d5a3e2
-  - [bpf-next,v3,3/4] selftests/bpf: don't mask result of bpf_csum_diff() in test_verifier
-    https://git.kernel.org/riscv/c/b87f584024e1
-  - [bpf-next,v3,4/4] selftests/bpf: Add a selftest for bpf_csum_diff()
-    https://git.kernel.org/riscv/c/00c1f3dc66a3
+Mateusz did good job caring for this series, and hardening the code.
+---
+IWL: https://lore.kernel.org/intel-wired-lan/20240930133724.610512-1-przemyslaw.kitszel@intel.com/
 
-You are awesome, thank you!
+with patches squashed in:
+https://lore.kernel.org/intel-wired-lan/20241210115620.3141094-1-mateusz.polchlopek@intel.com/
+https://lore.kernel.org/intel-wired-lan/20241203082753.4831-2-przemyslaw.kitszel@intel.com/
+
+The following are changes since commit c0b8980e6041afa363361e41fcafd7862721c3ee:
+  l2tp: Handle eth stats using NETDEV_PCPU_STAT_DSTATS.
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
+
+Ben Shelton (1):
+  ice: Add MDD logging via devlink health
+
+Mateusz Polchlopek (1):
+  devlink: add devlink_fmsg_dump_skb() function
+
+Przemek Kitszel (5):
+  checkpatch: don't complain on _Generic() use
+  devlink: add devlink_fmsg_put() macro
+  ice: rename devlink_port.[ch] to port.[ch]
+  ice: add Tx hang devlink health reporter
+  ice: dump ethtool stats and skb by Tx hang devlink health reporter
+
+ drivers/net/ethernet/intel/ice/Makefile       |   3 +-
+ .../net/ethernet/intel/ice/devlink/devlink.c  |   2 +-
+ .../net/ethernet/intel/ice/devlink/health.c   | 301 ++++++++++++++++++
+ .../net/ethernet/intel/ice/devlink/health.h   |  59 ++++
+ .../ice/devlink/{devlink_port.c => port.c}    |   2 +-
+ .../ice/devlink/{devlink_port.h => port.h}    |   0
+ drivers/net/ethernet/intel/ice/ice.h          |   2 +
+ drivers/net/ethernet/intel/ice/ice_eswitch.h  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |  10 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.h  |   2 +
+ .../ethernet/intel/ice/ice_ethtool_common.h   |  19 ++
+ drivers/net/ethernet/intel/ice/ice_main.c     |  26 +-
+ drivers/net/ethernet/intel/ice/ice_repr.c     |   2 +-
+ drivers/net/ethernet/intel/ice/ice_sf_eth.c   |   2 +-
+ include/net/devlink.h                         |  13 +
+ net/devlink/health.c                          |  67 ++++
+ scripts/checkpatch.pl                         |   2 +
+ 17 files changed, 497 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/health.c
+ create mode 100644 drivers/net/ethernet/intel/ice/devlink/health.h
+ rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.c => port.c} (99%)
+ rename drivers/net/ethernet/intel/ice/devlink/{devlink_port.h => port.h} (100%)
+ create mode 100644 drivers/net/ethernet/intel/ice/ice_ethtool_common.h
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.42.0
 
