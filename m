@@ -1,138 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E3B236FBE
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 09:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85AA1C07DB
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 09:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733910910; cv=none; b=Pt5z2O1ElXmmMmHDAxXLlBt98Zm935Vy+ZDarwA7gRSpEtDU4tnYKYnGaEWM5TjdXgvNB8uchGZ09YgVgTsjLQLW2Qgj8lGG4xeeTqej3X1DcnR7R3o8P8es9uNrTDuLb+recHaMZRvA7lJWv7SjfMGUl2JcLCR0HZofoJwbEE4=
+	t=1733911167; cv=none; b=hZxUjqJ7Q+tLqw/v8nMzCclcZaLiX5MzrqC0Xkace7vwiJV7W3XpHbUYSW9b4mZEoriETszmp1EgF9TY+g/6NsbNrWNZnfmTLbAZ8jeEc5HuuEh8/cAOmgg/oJB6a179mk33TaYHhT9oQe7hfa+2q64mDIwMhRcq1mT2k1zf9u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733910910; c=relaxed/simple;
-	bh=hGxEwZFcgw+OIxs4XY/stYiI3kdgLhPXYpx3ZnemYyk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mfq1kNWifxvvUyBPElQOAAyl6oxO0YDrqbuF0SMvuYlOlGkNJFTX5ry/gLNv9Y91Xu0lqLzyD4lW1L0Y+BczFIA2vPa2tiLatPGxuh4teGC3Zt0FNjTwkckcK45Im8pH8u9R0Kgz/Ated1XBmHBiLGfs5thgZeOnKfOe219jWiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V31TCMuv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733911167; c=relaxed/simple;
+	bh=ZlvieSYp+lFfKY9C2R6v2jjPfDG1Vm3fAT60s2bT+4o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Brm2vwrkas4U1Bv562Mr/1WZCdKG9u3hrczAkmnKNXZBWD2B8py8uPp7rXOZhCSg6IttoLmwDC4R99oCXl49Xqb59XqpT6cZEns6yP0kyRz0+RNy/wFeITJGI1Tkvb3XykEWhFPa0IXygR6g8Pt3uny8EKMgVBBH5F8R4KMbncw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=J/3p/nYM; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V31TCMuv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733910907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hGxEwZFcgw+OIxs4XY/stYiI3kdgLhPXYpx3ZnemYyk=;
-	b=V31TCMuvEmNV3+aZfpttM76NjSBlih0jiqVJvZcDEs6n8D0QJazN+eTYwDGUpnFpn3/1yi
-	YPbe+jK/61srwa8HpxYHHuRgId1bL2z8NHJORSLsEPKOZtGfwMlkHXo0EPZGYcDAvKgJ2J
-	kO7vRueS2pIL85Xu62pHJW4xwmLYAdc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-SYm0ayfIPYy0NR0xzXlb_w-1; Wed, 11 Dec 2024 04:55:06 -0500
-X-MC-Unique: SYm0ayfIPYy0NR0xzXlb_w-1
-X-Mimecast-MFC-AGG-ID: SYm0ayfIPYy0NR0xzXlb_w
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361efc9d23so3389435e9.3
-        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 01:55:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="J/3p/nYM"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so2908960f8f.0
+        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 01:59:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1733911163; x=1734515963; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=IoRCfObFE/0dbWPiqsJpx6TV+b8TV5eKkwKSHj1b0P4=;
+        b=J/3p/nYMAUjjA50H6ie+/f54NJteXu6jYS/mZ7+SX+bbIYNBZq5MDCYQ1U1owNZVtC
+         o4p1xPDaZynehJi487CELDGjtKh1Vu2UAuJqiROITCD9mGPdNXFU3jwlkK4ciG8AcRZN
+         IRxoqX6XRkEEaaW8pgYB6xm5tCnDZb1aZ7YezzdZZ6LvS5D6zc2ffgCuzzPMQn5Sb25n
+         3o+QWX7gRjJvgKU0eJHPK4XZIBqH5NFgpfMlhhYh4VmLdgPCpEKYurdNcdzOkgWMJgUV
+         LvZJG469PQ7sZP3HJFwwrnciWWSEjDNDoZi5chR7OvGt/rWmTzJH3ng6SJ8AlaxnUJES
+         JCdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733910905; x=1734515705;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hGxEwZFcgw+OIxs4XY/stYiI3kdgLhPXYpx3ZnemYyk=;
-        b=FpvJKkL3hFpRCnXytHphuMMTxZChfpJFoXFkJux+LzyyKTGr3KNDAblZQ8FtK1bXYk
-         PI0psRXLqLzDjup9N04yjK1AUqkgAi6fDpr5t31B5ucmVVdqyfofdmcGg80gAkEoQnKl
-         UAaObQujN97+qV2j1A05KjiZ3Yr7Ub5g/OgvdgC8V+GmhFdvRPH0WExhRO/kUAzGN7cJ
-         ZB7tn5+rkdIMFKl1gfUFj2Q+SxyqTxwC2AlAYnvbnqLdiAm09W4iomY37rCs+4aO2YQJ
-         +72UUppwxzWT62C5WyXqYFY3J0Ud37YqS9b5hbu1zHIE14YzDCZ8SJQ2r0tpy/hLehMj
-         zlBg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8/cUVZBasbLrSf4xo+zgExMvU+w6fw1Camqmp481/rcv52LfPLM0nJqo+ZsoFjUmSy5gUp/E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbA84OP9EsJjeM9Lj41KmnPE2I/8VOTokxMivQKsN4ssfNd0Eg
-	aFuOHrcZhvfkzRqmDcWwieerWEKVGykt17KlD9dw2UJGtl+Ez5npDfdW8s43v/AI7vPa71qQLiO
-	8o7729A0Dnhc3NY1P2RGgAYkZ3pikOVkTzwyVnEzkAOgmGCK5GGA5Ag==
-X-Gm-Gg: ASbGncvFhbQ5t1jxoqRIUIei2ojTAoOM/QQpQvOhhLO97qgYZvPuh2zvhjNq1RuTIu+
-	YnzSHK75SfLz0wmmRT8hkyqI70RY+ptQa8j5IGriuqn3GuQxZLegpP4nVPf/cEOn22TUtqptTSn
-	riJWqby2JThFI7X23AsjNEaO/etR9uXuE0Vksmw3vvF9u83BioZV6Dv0QHKw8Gs2wA9GzKHGSss
-	DsIC42fMmi8FHm56bWgv0Tcl16h+xfmXWxqvr/vIQ9VIYZzZ7V0IhKxgvWh1ryv6/TOENJxcP+J
-	1F4=
-X-Received: by 2002:a5d:6da4:0:b0:386:1ab5:f0e1 with SMTP id ffacd0b85a97d-3864ce968c0mr1757263f8f.14.1733910905413;
-        Wed, 11 Dec 2024 01:55:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWcbbdKQFeVBc5klJwqbHNmJKc5NGnuoW0xJ3gO9Ldk9/d5zthhScXLmcTcJPA97zDpXrgmQ==
-X-Received: by 2002:a5d:6da4:0:b0:386:1ab5:f0e1 with SMTP id ffacd0b85a97d-3864ce968c0mr1757234f8f.14.1733910904981;
-        Wed, 11 Dec 2024 01:55:04 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-387824c384esm897022f8f.56.2024.12.11.01.55.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 01:55:04 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 52C3B16BDC45; Wed, 11 Dec 2024 10:55:03 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Dave Taht <dave.taht@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>,
- cake@lists.bufferbloat.net, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, Cong Wang <xiyou.wangcong@gmail.com>, Paolo
- Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [Cake] [PATCH net-next] net_sched: sch_cake: Add drop reasons
-In-Reply-To: <20241210172802.410c76a6@kernel.org>
-References: <20241209-cake-drop-reason-v1-1-19205f6d1f19@redhat.com>
- <20241209155157.6a817bc5@kernel.org>
- <CAA93jw4chUsQ40LQStvJBeOEENydbv58gOWz8y7fFPJkATa9tA@mail.gmail.com>
- <87a5d46i9c.fsf@toke.dk> <20241210172802.410c76a6@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 11 Dec 2024 10:55:03 +0100
-Message-ID: <87sequ5ytk.fsf@toke.dk>
+        d=1e100.net; s=20230601; t=1733911163; x=1734515963;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IoRCfObFE/0dbWPiqsJpx6TV+b8TV5eKkwKSHj1b0P4=;
+        b=wQeD+el0IGG5i3RfMumcXmLkGWOg5VbWV5eD/b2kVFPibgTAa0k0COm7LVXeR4InFE
+         vJi6iXEQ/XJiIg/Qv3dGXKPVVWMSm+Fq2YjExLxhLcB62gWhMVraVwvZH8zs5ENOZP2v
+         tkGVvpMqxENijL4FseAHOF4UgiI0mXpsCDiShqPfH0C5JOahRfFthQwCL0TZ3OIYy1g7
+         cRaJfShFnq/Hr00TjJN/GjZbZOpZUcZGgArFlGk5b5quzPHeEgyrNhwzAkrBh+NWMZvI
+         qUNF6YJeDTviDDGc0BRTrMLrz7kMNo7JPJjuEROgM02n2csZoDKhs2ppn1OTOohwmR0e
+         L5gw==
+X-Gm-Message-State: AOJu0Yw0nazMSfGIC7nmlCxHrjITKsbqyu2JziBOaHFwMmQ5A5qOLiXL
+	TsDMyEGJI3rsAROdFKGTRcpQBHaJKGTq9weSTTfFQJ5tfvbppnPXC70hQu8VL4Q=
+X-Gm-Gg: ASbGnctszrG8sYGJlwLHGSvBN7trRps6e4SbwMB5eKDLKUbXhxgCl5rN9m775VufaoO
+	gShftqi0UNsGevPMavyTxw/tH1K7MAT6Pln6iAeaP2MjoPEoXg2OlvxVNobEPVwMVmNehqWsVE5
+	vAMzIjCYQHMJo7oIFGIWE3PHFDL3jKC0DKSQ5+A6AGWTjdR9BU4lnn8RaB6TpK4KRPBqPt6L7eS
+	E0jDqABeiYGanIEenxKt6ZiUtmU+UYZsOa16i/UX6TWu1eMy/OMgLdkud9ghIMClRJUabuhkCZY
+	mwMof7cfSo2ecA==
+X-Google-Smtp-Source: AGHT+IEHjbE4dsJ5tzTwee49t2ek+qPtaomPRduw7MRABYyFDxJIbdcKf+79ZqnixjCxHDteXJKqUw==
+X-Received: by 2002:a05:6000:1547:b0:385:f66c:a4b with SMTP id ffacd0b85a97d-3864cec5712mr1635635f8f.47.1733911163223;
+        Wed, 11 Dec 2024 01:59:23 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:f6e8:f722:d96d:abb? ([2001:67c:2fbc:1:f6e8:f722:d96d:abb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878251e12esm886242f8f.95.2024.12.11.01.59.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Dec 2024 01:59:22 -0800 (PST)
+Message-ID: <7d986843-d184-4ed7-930f-d30ae2bc4923@openvpn.net>
+Date: Wed, 11 Dec 2024 11:00:06 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14 08/22] ovpn: implement basic RX path (UDP)
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ sd@queasysnail.net, ryazanov.s.a@gmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20241209-b4-ovpn-v14-0-ea243cf16417@openvpn.net>
+ <20241209-b4-ovpn-v14-8-ea243cf16417@openvpn.net>
+ <20241210164417.GA6554@kernel.org>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ xsFNBFN3k+ABEADEvXdJZVUfqxGOKByfkExNpKzFzAwHYjhOb3MTlzSLlVKLRIHxe/Etj13I
+ X6tcViNYiIiJxmeHAH7FUj/yAISW56lynAEt7OdkGpZf3HGXRQz1Xi0PWuUINa4QW+ipaKmv
+ voR4b1wZQ9cZ787KLmu10VF1duHW/IewDx9GUQIzChqQVI3lSHRCo90Z/NQ75ZL/rbR3UHB+
+ EWLIh8Lz1cdE47VaVyX6f0yr3Itx0ZuyIWPrctlHwV5bUdA4JnyY3QvJh4yJPYh9I69HZWsj
+ qplU2WxEfM6+OlaM9iKOUhVxjpkFXheD57EGdVkuG0YhizVF4p9MKGB42D70pfS3EiYdTaKf
+ WzbiFUunOHLJ4hyAi75d4ugxU02DsUjw/0t0kfHtj2V0x1169Hp/NTW1jkqgPWtIsjn+dkde
+ dG9mXk5QrvbpihgpcmNbtloSdkRZ02lsxkUzpG8U64X8WK6LuRz7BZ7p5t/WzaR/hCdOiQCG
+ RNup2UTNDrZpWxpwadXMnJsyJcVX4BAKaWGsm5IQyXXBUdguHVa7To/JIBlhjlKackKWoBnI
+ Ojl8VQhVLcD551iJ61w4aQH6bHxdTjz65MT2OrW/mFZbtIwWSeif6axrYpVCyERIDEKrX5AV
+ rOmGEaUGsCd16FueoaM2Hf96BH3SI3/q2w+g058RedLOZVZtyQARAQABzSdBbnRvbmlvIFF1
+ YXJ0dWxsaSA8YW50b25pb0BvcGVudnBuLm5ldD7Cwa0EEwEIAFcCGwMFCwkIBwMFFQoJCAsF
+ FgIDAQACHgECF4AFCRWQ2TIWIQTKvaEoIBfCZyGYhcdI8My2j1nRTAUCYRUquBgYaGtwczov
+ L2tleXMub3BlbnBncC5vcmcACgkQSPDMto9Z0UzmcxAAjzLeD47We0R4A/14oDKlZxXO0mKL
+ fCzaWFsdhQCDhZkgxoHkYRektK2cEOh4Vd+CnfDcPs/iZ1i2+Zl+va79s4fcUhRReuwi7VCg
+ 7nHiYSNC7qZo84Wzjz3RoGYyJ6MKLRn3zqAxUtFECoS074/JX1sLG0Z3hi19MBmJ/teM84GY
+ IbSvRwZu+VkJgIvZonFZjbwF7XyoSIiEJWQC+AKvwtEBNoVOMuH0tZsgqcgMqGs6lLn66RK4
+ tMV1aNeX6R+dGSiu11i+9pm7sw8tAmsfu3kQpyk4SB3AJ0jtXrQRESFa1+iemJtt+RaSE5LK
+ 5sGLAO+oN+DlE0mRNDQowS6q/GBhPCjjbTMcMfRoWPCpHZZfKpv5iefXnZ/xVj7ugYdV2T7z
+ r6VL2BRPNvvkgbLZgIlkWyfxRnGh683h4vTqRqTb1wka5pmyBNAv7vCgqrwfvaV1m7J9O4B5
+ PuRjYRelmCygQBTXFeJAVJvuh2efFknMh41R01PP2ulXAQuVYEztq3t3Ycw6+HeqjbeqTF8C
+ DboqYeIM18HgkOqRrn3VuwnKFNdzyBmgYh/zZx/dJ3yWQi/kfhR6TawAwz6GdbQGiu5fsx5t
+ u14WBxmzNf9tXK7hnXcI24Z1z6e5jG6U2Swtmi8sGSh6fqV4dBKmhobEoS7Xl496JN2NKuaX
+ jeWsF2rOwE0EZmhJFwEIAOAWiIj1EYkbikxXSSP3AazkI+Y/ICzdFDmiXXrYnf/mYEzORB0K
+ vqNRQOdLyjbLKPQwSjYEt1uqwKaD1LRLbA7FpktAShDK4yIljkxhvDI8semfQ5WE/1Jj/I/Q
+ U+4VXhkd6UvvpyQt/LiWvyAfvExPEvhiMnsg2zkQbBQ/M4Ns7ck0zQ4BTAVzW/GqoT2z03mg
+ p1FhxkfzHMKPQ6ImEpuY5cZTQwrBUgWif6HzCtQJL7Ipa2fFnDaIHQeiJG0RXl/g9x3YlwWG
+ sxOFrpWWsh6GI0Mo2W2nkinEIts48+wNDBCMcMlOaMYpyAI7fT5ziDuG2CBA060ZT7qqdl6b
+ aXUAEQEAAcLBfAQYAQgAJhYhBMq9oSggF8JnIZiFx0jwzLaPWdFMBQJmaEkXAhsMBQkB4TOA
+ AAoJEEjwzLaPWdFMbRUP/0t5FrjF8KY6uCU4Tx029NYKDN9zJr0CVwSGsNfC8WWonKs66QE1
+ pd6xBVoBzu5InFRWa2ed6d6vBw2BaJHC0aMg3iwwBbEgPn4Jx89QfczFMJvFm+MNc2DLDrqN
+ zaQSqBzQ5SvUjxh8lQ+iqAhi0MPv4e2YbXD0ROyO+ITRgQVZBVXoPm4IJGYWgmVmxP34oUQh
+ BM7ipfCVbcOFU5OPhd9/jn1BCHzir+/i0fY2Z/aexMYHwXUMha/itvsBHGcIEYKk7PL9FEfs
+ wlbq+vWoCtUTUc0AjDgB76AcUVxxJtxxpyvES9aFxWD7Qc+dnGJnfxVJI0zbN2b37fX138Bf
+ 27NuKpokv0sBnNEtsD7TY4gBz4QhvRNSBli0E5bGUbkM31rh4Iz21Qk0cCwR9D/vwQVsgPvG
+ ioRqhvFWtLsEt/xKolOmUWA/jP0p8wnQ+3jY6a/DJ+o5LnVFzFqbK3fSojKbfr3bY33iZTSj
+ DX9A4BcohRyqhnpNYyHL36gaOnNnOc+uXFCdoQkI531hXjzIsVs2OlfRufuDrWwAv+em2uOT
+ BnRX9nFx9kPSO42TkFK55Dr5EDeBO3v33recscuB8VVN5xvh0GV57Qre+9sJrEq7Es9W609a
+ +M0yRJWJEjFnMa/jsGZ+QyLD5QTL6SGuZ9gKI3W1SfFZOzV7hHsxPTZ6
+Organization: OpenVPN Inc.
+In-Reply-To: <20241210164417.GA6554@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On 10/12/2024 17:44, Simon Horman wrote:
+> On Mon, Dec 09, 2024 at 09:53:17AM +0100, Antonio Quartulli wrote:
+>> Packets received over the socket are forwarded to the user device.
+>>
+>> Implementation is UDP only. TCP will be added by a later patch.
+>>
+>> Note: no decryption/decapsulation exists yet, packets are forwarded as
+>> they arrive without much processing.
+>>
+>> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+> 
+> ...
+> 
+>> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+>> index c0e7aa289ad3345fcd91e7c890f70961300c356f..975392fc39bc4c0107a07a53795afecd88d72c53 100644
+>> --- a/drivers/net/ovpn/udp.c
+>> +++ b/drivers/net/ovpn/udp.c
+>> @@ -23,9 +23,83 @@
+>>   #include "bind.h"
+>>   #include "io.h"
+>>   #include "peer.h"
+>> +#include "proto.h"
+>>   #include "socket.h"
+>>   #include "udp.h"
+>>   
+>> +/**
+>> + * ovpn_udp_encap_recv - Start processing a received UDP packet.
+>> + * @sk: socket over which the packet was received
+>> + * @skb: the received packet
+>> + *
+>> + * If the first byte of the payload is DATA_V2, the packet is further processed,
+>> + * otherwise it is forwarded to the UDP stack for delivery to user space.
+>> + *
+>> + * Return:
+>> + *  0 if skb was consumed or dropped
+>> + * >0 if skb should be passed up to userspace as UDP (packet not consumed)
+>> + * <0 if skb should be resubmitted as proto -N (packet not consumed)
+>> + */
+>> +static int ovpn_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+>> +{
+>> +	struct ovpn_priv *ovpn;
+>> +	struct ovpn_peer *peer;
+>> +	u32 peer_id;
+>> +	u8 opcode;
+>> +
+>> +	ovpn = ovpn_from_udp_sock(sk);
+>> +	if (unlikely(!ovpn)) {
+>> +		net_err_ratelimited("%s: cannot obtain ovpn object from UDP socket\n",
+>> +				    netdev_name(ovpn->dev));
+> 
+> Hi Antonio,
+> 
+> If we reach here then ovpn is NULL.
+> But the like above dereferences it.
+> 
+> Flagged by Smatch.
 
-> On Tue, 10 Dec 2024 09:42:55 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> > While I initially agreed with making this generic, preserving the qdis=
-c from
->> > where the drop came lets you safely inspect the cb block (timestamp, e=
-tc),
->> > format of which varies by qdisc. You also get insight as to which
->> > qdisc was dropping.
->> >
->> > Downside is we'll end up with SKB_DROP_REASON_XXX_OVERLIMIT for
->> > each of the qdiscs. Etc.=20=20
->>=20
->> Yeah, I agree that a generic "dropped by AQM" reason will be too generic
->> without knowing which qdisc dropped it.
->
-> Why does type of the qdisc matter if the qdisc was overlimit?
+Hi Simon,
+Thanks for pointing this out. I will get this fixed and add smatch to my 
+test battery.
 
-Well, I was thinking you'd want to figure out which device it was
-dropped from, but I guess you have skb->dev for that (and counters).
+Regards,
 
->> I guess any calls directly to kfree_skb_reason() from the qdisc will
->> provide the calling function, but for qdisc_drop_reason() the drop
->> will be deferred to __dev_queue_xmit(), so no way of knowing where
->> the drop came from, AFAICT?
->
-> Can you tell me why I'd need to inspect the skb->cb[] in cake if packet
-> is overlimit? Actually, none of the fields of the cb are initialized
-> when the packet is dropped for overlimit, AFAIU.
->
-> If someone is doing serious / advanced debug they mostly care about
-> access to the qdisc and can trivially check if its ops match the
-> expected symbol. (Speaking from experience, I've been debugging FQ
-> packet loss on Nov 23rd.)
->
-> If someone is just doing high level drop attribution having to list all
-> possible qdiscs under "qdisc discard" is purely pain.
->
-> Can we start with OVERLIMIT and CONGESTION as generic values and we can
-> specialize if anyone has a clear need?
+> 
+>> +		goto drop_noovpn;
+>> +	}
+> 
+> ...
+> 
 
-OK, I'll respin and drop CAKE from the names of those two...
-
--Toke
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
