@@ -1,92 +1,107 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02C929429;
-	Wed, 11 Dec 2024 00:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4CA10A3E;
+	Wed, 11 Dec 2024 00:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733876104; cv=none; b=ntLI0C14msat2TkDFcjLpG9jEYVzgm36qbNfXyAKQhME/6PaQetzTZkg6fjBgB155/7EccKCa5YEAtgiJX6rXQGV9OSacKW4odLrvEB0KeZekv69lmTfwGCI6jz4DfxcmyWmydYY2Gss2ZiHY1MMPK2MKglGWDPevoaFi91I9YI=
+	t=1733876381; cv=none; b=nyulSW+94Q8LW6X1ec+Rg6Tud27KF4TWqzc8wMcqtNoSaInlGFOry0eB+wk1pcplLJCJleRgkqmxVAbnJWUYue7OXAWkpMNQSjMT4/Q1RJekklY09LCDaTCvCkkutjLKfeVEKIbSBlEb4Gwt8qBXweOTkmVN6aPRQ0UV9sXzFAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733876104; c=relaxed/simple;
-	bh=HJ+qr4n9qbZDCwn+xF+Vopc7w856gIqQvLHjH+D1hbk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TM4nRRw4JPhf8IcarHlK3U5XENL1Qg3ijOa6Yiz6wT/rRJVKExJ30XQlq6TR1oD9KMsdwBZhgojOXwU5y1Ji3CUZy1PkOBGG6qHndhUkP9MpXIL6rG/JYSxFpXRjrfvGbpsMRJo8mimQVX/qGRVhh2u90b1XG08to3SzN7rYxwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPiv9jQp; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733876381; c=relaxed/simple;
+	bh=HTAmNFE3ZOktqaS7Zef0Avhslg/Cf3+5WSXYHPVehCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jVslroXTIRfToIWOO8zhEY81pxzC2qI6M3dc9LBI6cnc4khLFZI/Zqzlsq7D5+H7BUL3CGDROIWsFSJi9R03JTofPu8bgVwTeALRsYLiokGAKDrx8Zp8G2/aAmr4n/wrp4KTcTVkYsNnwAQacUiFISea18D1e4PbTSDd+UVBpE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=jroSMsnP; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPiv9jQp"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-216325f516fso3149645ad.3;
-        Tue, 10 Dec 2024 16:15:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733876102; x=1734480902; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mBVdwKlLaYGxi/QGz2w6Qngx3O8Ek49qub5WSebJONk=;
-        b=nPiv9jQpyxr9/NiVYU+VvyBUJSXzgBqvsv1oA98copOEyObtLFABVEQxVYHNB2gQY7
-         9GXw8yB9ONq034jSCSjmuk52Sx4kVc8FHNh7CPRlrIf5HvBkIJj3EL3xvMIjGanqrcok
-         hzo9qN/AIwGJUEpA2hplrlHVHsivogq3SQZTmkPOS2Bx97tDgqChnCZ9WTOKxO+wBNNw
-         +KkkNR9mm084SOAxjI54BDdt3NEVc1XwOqpFiq7wp5Tto4CrRC2rVPLpTOkor78VNb8l
-         Tm/LwUqGf4Jn4D6Pl71ns83H0p8lPqq9V31+5Zk5Z8fZgD7YfbqJcLh/7UcD/Le30yY0
-         8Jgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733876102; x=1734480902;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mBVdwKlLaYGxi/QGz2w6Qngx3O8Ek49qub5WSebJONk=;
-        b=Lh0MpzeNgL1Db4QrrGcwDBcHPZyaxS1tgln1PX16GyxFWaU3f6lin5UqnjFD0aoyPQ
-         ODOdM72XgV1zU5mzVlErjZDFC6mmPfeOLOkt7jCfdYntFMThcYpfgbB4Puw9EWqC1G4q
-         RV9OxixZ9hRLWL3CUGVxyRrbYlD+p4veHOcTM3x4EYOTOjXEna0F6q67/NpKoS8sDU2Y
-         z1UFgZhYDrjyxUYBu1IXkHG5tU/ZvmaMMaU65IwaVLIXiOsJo/vcb81oOV2XD8KMNb6b
-         bi6CcgVTtKe49EVBqlSk2H9BCHkCIBj3qEe2qSLn66WFxqhQJv6B+pNZ5QEKUWsQIYIF
-         yD/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXc9lqvjnXSbnnW9V0jDofTNABELXu/uPBiHCGkOPiuSEkfXmu/jWNaxud8XHO3GB/7Px02huzqxhbGa8xPzA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgopVGJ3AXqNou5lXAmMKOEspcFjixMG3/lNJi9BiHMEvPaNZs
-	p0OoZlTir0mhD2A9+tCjhnDSrBKBTIS6UZJ8xXAYl+gGL0IttN7sb0uZNvdBQ3p5Dtb/WZS0Rj1
-	jFFDsm3q2Cdjl20rAStYi8Z2bGkrIBAgUxA8=
-X-Gm-Gg: ASbGnctFpEqGLFHZn15kr5hJ0swsfqYzJnPtI4hpk90qcCsLrXJ/UQlNX1rnIcKC4ZJ
-	/oeu0uidgaLylCSH92UIMOQkux4CYIaEvufY=
-X-Google-Smtp-Source: AGHT+IGfx/vZOVVcJ3GV7BNC5k32CbyWv46xn14cbl/pnBXDga866oaOB6iwbuSL+1X9HzIuFQAUvB7qTYzLvg3yXE4=
-X-Received: by 2002:a17:90b:38c5:b0:2ee:a558:b6bf with SMTP id
- 98e67ed59e1d1-2f1280836d0mr528991a91.8.1733876101966; Tue, 10 Dec 2024
- 16:15:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="jroSMsnP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=eRCoVqRYb+rcP/0YVRkGDnmWTuf9gOXvCLMoBU51x1s=; b=jroSMsnPZKMkPx5k
+	2YZjGgHt42aaN0PCEPtVBBuFzH6GWJuBWXmmxkTmUTfevH1mxBSmpiajf4hUlmjQtlFhezUs0+g/S
+	xef0r5miZbN1uz51Je00gTxQMx1DinP8AD+s0zkI7QHerrvOUWSAJN1xZ96toW5jMFj/qmn741zp0
+	iTnG+sbBVZvvT6/qy7M1CaT1tmLnR100Gq7Me0IvoGn6Fwv2KpSQOlQKeaO3JYTvG3IFukPJQTK1C
+	lUTHSNZyJod1QQRy8gkQkL2L6YTdwJxto/uUA2ZMPHo9gMl7nCEXLUDMGUbYMt5juO+RH/YWd5ELA
+	UK+kARPMbDirxwUeYw==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1tLARt-004dta-1w;
+	Wed, 11 Dec 2024 00:19:29 +0000
+From: linux@treblig.org
+To: jeroendb@google.com,
+	pkaligineedi@google.com,
+	shailend@google.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH net-next] gve: Remove unused gve_adminq_set_mtu
+Date: Wed, 11 Dec 2024 00:19:27 +0000
+Message-ID: <20241211001927.253161-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211000616.232482-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20241211000616.232482-1-fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Dec 2024 01:14:49 +0100
-Message-ID: <CANiq72kYQvuwX5biW8CRh8DAo-7bnudEUfV18V7StD_1LqrOBQ@mail.gmail.com>
-Subject: Re: [PATCH net v1] rust: net::phy fix module autoloading
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 11, 2024 at 1:08=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> The alias symbol name was renamed by the commit 054a9cd395a7("modpost:
-> rename alias symbol for MODULE_DEVICE_TABLE()").
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Should this be:
+The last use of gve_adminq_set_mtu() was removed by
+commit 37149e9374bf ("gve: Implement packet continuation for RX.")
 
-    Fixes: 054a9cd395a7 ("modpost: rename alias symbol for
-MODULE_DEVICE_TABLE()")
+Remove it.
 
-?
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/net/ethernet/google/gve/gve_adminq.c | 14 --------------
+ drivers/net/ethernet/google/gve/gve_adminq.h |  1 -
+ 2 files changed, 15 deletions(-)
 
-I guess this will go through netdev -- thanks!
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 060e0e674938..aa7d723011d0 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -1128,20 +1128,6 @@ int gve_adminq_unregister_page_list(struct gve_priv *priv, u32 page_list_id)
+ 	return gve_adminq_execute_cmd(priv, &cmd);
+ }
+ 
+-int gve_adminq_set_mtu(struct gve_priv *priv, u64 mtu)
+-{
+-	union gve_adminq_command cmd;
+-
+-	memset(&cmd, 0, sizeof(cmd));
+-	cmd.opcode = cpu_to_be32(GVE_ADMINQ_SET_DRIVER_PARAMETER);
+-	cmd.set_driver_param = (struct gve_adminq_set_driver_parameter) {
+-		.parameter_type = cpu_to_be32(GVE_SET_PARAM_MTU),
+-		.parameter_value = cpu_to_be64(mtu),
+-	};
+-
+-	return gve_adminq_execute_cmd(priv, &cmd);
+-}
+-
+ int gve_adminq_report_stats(struct gve_priv *priv, u64 stats_report_len,
+ 			    dma_addr_t stats_report_addr, u64 interval)
+ {
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
+index 863683de9694..228217458275 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.h
++++ b/drivers/net/ethernet/google/gve/gve_adminq.h
+@@ -612,7 +612,6 @@ int gve_adminq_destroy_rx_queues(struct gve_priv *priv, u32 queue_id);
+ int gve_adminq_register_page_list(struct gve_priv *priv,
+ 				  struct gve_queue_page_list *qpl);
+ int gve_adminq_unregister_page_list(struct gve_priv *priv, u32 page_list_id);
+-int gve_adminq_set_mtu(struct gve_priv *priv, u64 mtu);
+ int gve_adminq_report_stats(struct gve_priv *priv, u64 stats_report_len,
+ 			    dma_addr_t stats_report_addr, u64 interval);
+ int gve_adminq_verify_driver_compatibility(struct gve_priv *priv,
+-- 
+2.47.1
 
-Cheers,
-Miguel
