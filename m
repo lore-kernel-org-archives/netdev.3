@@ -1,76 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FA61FDE38;
-	Wed, 11 Dec 2024 02:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE9E1AAA1D;
+	Wed, 11 Dec 2024 02:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733884225; cv=none; b=Qo+NHZ3ROkTHjMUbPGFnXroIzdmtcIbnDO2wUd2rnoBcWL5Ph/7ve69xvDsKi4p8VdP0JNJszYjnozvYWiH9Nhe4f8g1WP1iJJHVQ9K0caCbkDgmT3YUB5xUze5P+rp62b3AxBCR3QIqEcttHU1HEBjM4h5OBVzdHoZ0T5BFmLo=
+	t=1733884267; cv=none; b=Rtf9d/1IXeG7YPd8IpJXcW+U0pBqD9T58uNgZQMEv0MMH6vt/jblUFjhxxgjlxCSl8x+7oSqGisWDzqjQeVoPa4WG/YL8JeeWuaalpNn5u8Je1gkyLTnyONjepuT5+XB5tGdBzDv6aQxEtg+Fm0H4G1SnW6JeaNFGIVZoXqSHm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733884225; c=relaxed/simple;
-	bh=pc2MQPbAvIERSWwlHw2ybqImM0rR2QI5xFBUQeZKNKc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DHId/6dme6m+i/UF8dxZCkskX5WPEz6WTB7eRG9RE02uJGzG8LMYnCVvtcudFgxJ0MzvckWqG5+M31+c38WIZ0jc6s2+1DkUWgUNcBL0maC7zjxwz80QUUcfLq3ZSwmVq/9KJKbmhKIcET9bjJjPHuYfSk1P5qYLz07KTiB6nCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob7gNB92; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733884267; c=relaxed/simple;
+	bh=9/RMUndcExKfIjoAYXiSrUcS/uugTHcL3EUWICRqRuY=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=iJ4yGKHEa+fK16pXrsXcbijEtPcDeHmZkD1iHHmkYDOhveHqLMLYd07aerfT9lC05Mewuq2/forOHEywnvHBfn+keqew7PzPwmf657qW8xviO5EMmoxTpxT2OIwc1RiF7UIiKPJOtx0l6vVYyyfFbjLtekgnQczLAVhI8/dFuNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SMOIxaXL; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob7gNB92"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584D0C4CED6;
-	Wed, 11 Dec 2024 02:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733884225;
-	bh=pc2MQPbAvIERSWwlHw2ybqImM0rR2QI5xFBUQeZKNKc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ob7gNB92DRcxXT1bEF1Q5UPS6fX5MLJD8xbS/O9p4/VsRKRHoTc43jmilra82EmxI
-	 Ex/ir95bwZVb4pYhmpPRsiGVs9DuMTM9w+M4iVIP1kCYjwJF/VkQmEvx66ICnxn1cx
-	 9fdQuv+Ji0NBak1/dBMNqRU67gOl86DLsucK47C0qYHdmB/vSZQvcIuMo93xwHfvSt
-	 WPdqtVLSq7fgsovOhJ3kZocgbXIr4CcBzVW3gyMa7hOERGRhcZqVzvYfZVluQtSQIx
-	 QrB1ZTx6x+Lp7lJOInJMlmX+9fSgKcQMWDiBIHrxObS1JdoSZrLKyIq9L9vtoRa/wZ
-	 xdg1O/Iz6rJfw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 715D4380A954;
-	Wed, 11 Dec 2024 02:30:42 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SMOIxaXL"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3863703258fso106743f8f.1;
+        Tue, 10 Dec 2024 18:31:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733884264; x=1734489064; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gtkADtFaW5vFNsFzmyNYgIm6XeqYy3yV6Xm55WGlKSo=;
+        b=SMOIxaXL5at4fjJW5Idz1MNJBkwDW7pFirDt7hntYRaT1M/8OwpOtnyHCWnmMyW/RW
+         R8UqoXKTmYEXOvcdj2GXwfClrdQB4CO5VvkNKfPd8coFxsoh7yIPx9shE5fNgW1Ugssi
+         ISrCHiy4O+fcFv5ACT9lPHCFr6iosJpzhCfL1sNI6NQRZHIH9lzR6M1nC3g4FlzkVYF8
+         B9oFcSPW4pxFEV311yVbprEm30gaSUj4MH+SE+gteTruVEwdTrwqBOfTHYZ+9yeVXvzu
+         SlqK1uUjqe05Ub7NptmIJcwRRZRYZliIuii8WW3UXn8Jp4VNyVzxWNfUYzCHVHCbzp57
+         6QRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733884264; x=1734489064;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gtkADtFaW5vFNsFzmyNYgIm6XeqYy3yV6Xm55WGlKSo=;
+        b=aalItLM1LqqZnFQXHr285KV5FpipBrLiwcUhpM3rXQyC/viWHs3HLpimaRueAdO8P1
+         w3wiTwbeLVHvxLUXBGGjKpqBCZ0AHmnE3um/oJ39Jib5Uxix9i4XgCeaINUHXZM9ETmD
+         Rw7ciZdzRNNp8tk2km4WnuZhpXUDh+3+uT2pRemmhVRzT3FlHnGJ097CIZ5UPjL/rkG7
+         Y70a6Ji0nEJQUU80GhaZ3HmOpI9n/uY/nddQxHfVe/eF/t8Fp+54r75GBffBpQBeOlnc
+         mZYNgfRvBQyX6Y3H+eJKIZafMewKAPy3kjlc4/PNEhSj6V7wAfLLs8o8DGYkc9sv5Kdb
+         3B1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVwm0afzPtgiDx6VE20BF+V9BIOimFydc3uELMV4QVinZCrH3QHSid5Y95MFJgR7YVjp9K77t13pHI=@vger.kernel.org, AJvYcCXpRuABWk5WiCJ5Vg8MhmZIJEkRjPRZB+pjU0KKqDX/NkNEoFqhv0Nl/YqUXtOyH3CWXkCynQfW@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvdoTfT8wqxYlp8cvkjr7IwGpLnoW+4yDtKoESQ2H+p2nDOEqz
+	bGX81qWH80orT6dXkzQm7YxZbmKAB/WANSYy62NDMXxxcF0NL79g
+X-Gm-Gg: ASbGnctv45S/jCEgctmw1S3I5MnD7jZIf2JPTenb6nqklWtuDLbeNkfMmQoJh7QFJo+
+	J9coX+ecfx7D+1p71BzWkQlIaOEjAxg7KDALgOacbOyBROLXt7rwFqAgTXkZ6goIfJNgkPf4M+g
+	osvI2vaPH6N8fT6teMDaCgZL6Vx+3zx+WRhHSoRK92j9QmXaXfAxG/tdOabat0GaJMyCvPragY5
+	XxbHcMmROwFoug1kCPWtmArGgD4ZiJIM6Ger+AeIv65N98MaYLjd4ELsQXFRjRSOBsqiwftouUq
+	VLzUYTSEXFVIWmAzY0vvswdTkBlSLe78LqZyWYE/dQ==
+X-Google-Smtp-Source: AGHT+IHLe4oFOwCG1X40I8qdseDXMMpZXgckwUjW58XF1YFf4gxQ3VpvIkheqIOqqd82tcCFO74cOQ==
+X-Received: by 2002:a05:6000:1869:b0:385:fcaf:841 with SMTP id ffacd0b85a97d-3864dee4258mr495319f8f.23.1733884263825;
+        Tue, 10 Dec 2024 18:31:03 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878248f8e1sm141794f8f.18.2024.12.10.18.31.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 18:31:02 -0800 (PST)
+Subject: Re: [PATCH v7 24/28] cxl: add region flag for precluding a device
+ memory to be used for dax
+To: alejandro.lucero-palau@amd.com, linux-cxl@vger.kernel.org,
+ netdev@vger.kernel.org, dan.j.williams@intel.com, martin.habets@xilinx.com,
+ edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
+Cc: Alejandro Lucero <alucerop@amd.com>
+References: <20241209185429.54054-1-alejandro.lucero-palau@amd.com>
+ <20241209185429.54054-25-alejandro.lucero-palau@amd.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <455f8e81-fa7b-f416-db0d-4ad9ac158865@gmail.com>
+Date: Wed, 11 Dec 2024 02:31:01 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: hinic: Fix typo in dev_err message
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173388424100.1090195.1669181628771165715.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 02:30:41 +0000
-References: <20241209124804.9789-1-algonell@gmail.com>
-In-Reply-To: <20241209124804.9789-1-algonell@gmail.com>
-To: Andrew Kreimer <algonell@gmail.com>
-Cc: cai.huoqing@linux.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
+In-Reply-To: <20241209185429.54054-25-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  9 Dec 2024 14:47:30 +0200 you wrote:
-> There is a typo in dev_err message: fliter -> filter.
-> Fix it via codespell.
+On 09/12/2024 18:54, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
 > 
-> Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+> By definition a type2 cxl device will use the host managed memory for
+> specific functionality, therefore it should not be available to other
+> uses. However, a dax interface could be just good enough in some cases.
+> 
+> Add a flag to a cxl region for specifically state to not create a dax
+> device. Allow a Type2 driver to set that flag at region creation time.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Zhi Wang <zhiw@nvidia.com>
 > ---
->  drivers/net/ethernet/huawei/hinic/hinic_port.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/cxl/core/region.c | 10 +++++++++-
+>  drivers/cxl/cxl.h         |  3 +++
+>  drivers/cxl/cxlmem.h      |  3 ++-
+>  include/cxl/cxl.h         |  3 ++-
+>  4 files changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index b014f2fab789..b39086356d74 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -3562,7 +3562,8 @@ __construct_new_region(struct cxl_root_decoder *cxlrd,
+>   * cxl_region driver.
+>   */
+>  struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
+> -				     struct cxl_endpoint_decoder *cxled)
+> +				     struct cxl_endpoint_decoder *cxled,
+> +				     bool no_dax)
 
-Here is the summary with links:
-  - [net-next] net: hinic: Fix typo in dev_err message
-    https://git.kernel.org/netdev/net-next/c/6bb6ab852c19
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Won't this break bisectability?  sfc won't build as of this commit
+ because it tries to call cxl_create_region with the old signature.
+You could do the whole dance of having an interim API during the
+ conversion, but seems simpler just to reorder the patches so that
+ the no_dax parameter is added first before the caller is introduced.
