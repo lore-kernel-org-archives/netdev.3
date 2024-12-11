@@ -1,328 +1,207 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound-ip24b.ess.barracuda.com (outbound-ip24b.ess.barracuda.com [209.222.82.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442C51494CC
-	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 14:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733928902; cv=none; b=jmsOMLwfupuX/MrVX5D6mHJ20VAKleD7EOL8IgN49Po8JqyFGARJube9yyApe3SB7F1bJlhV8J2vj+of3GimKFWrUGTDc4X2YkMbZPRjI+PeiQCgfx3PD1H3+EgsbjYVd4Ae0s47W41R2IFVYNIY5wVEmh7VsWNJugn+F2D4NrI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733928902; c=relaxed/simple;
-	bh=K6irQrUR4/osH5woIT4ZVPYkShKru4GUg1JJ29W8tv8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=Oup53cQPZ4HubFNN2ZivtkQQLFfUoUMm/UlFunZFc3763YeHkePD8CqJZUfEEeAbgG4CqjCAs7iiuumW1CjHemjTjr2wtFIVDnGGeFXClU0pOPi4slxtVfBshBkTXStjGgDmwFzfepXM4yjrregER7tZep5xz6m2JbXqeORJu3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=Z/L4HIgm; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8051A0BCF
+	for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 14:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.221
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733928972; cv=fail; b=SO1q0m7orbw+TkGS17BasV8+/EgCf5lGu5PVYUKof2iPoDBNDLFcVwYwkfEiCDIz/xEzVNd0Chq06H294ut9AVOekTFTSWCbLvA14jXwESKvYz2qaCpMx2ipwaIHlvG4Pp3KNH09/z1830uOdDW7ULFQG7CwX7rPVFovjDajU7k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733928972; c=relaxed/simple;
+	bh=8v7VBtUoH5cEELxwX/PFSKy462E7TrrjoKRQkahKWv0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=sKJGnJ0ZdDEb4sKZ2i2S5o7fVOBQlLpz3onLAoLu4akRwSi8CO9JIwlJ2RVL+3hOQiZlcqJObEush4HQSsKv23hu9BOe0FvBcxl8vU1kOH73Nf6MttDTmP2e0qWeqT6uamMVd4sxkP643nq6i+dfXytoqrmXws6utiox1DpauNE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=digi.com; spf=pass smtp.mailfrom=digi.com; dkim=pass (2048-bit key) header.d=digi.com header.i=@digi.com header.b=ZfNKvwa6; arc=fail smtp.client-ip=209.222.82.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=digi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="Z/L4HIgm"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-725e71a11f7so654971b3a.1
-        for <netdev@vger.kernel.org>; Wed, 11 Dec 2024 06:54:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1733928899; x=1734533699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7I3KlEto23VWfQzA/+OahaA/mW3s4zBUhSTnL+g+LxQ=;
-        b=Z/L4HIgm1aQ0HOSpWCKw/kjN8PLJ4q0G2d2viTeT4oyExwb2dS9Em2/3MYMXsEzwg7
-         QlUsr6mMeuvUV0zaQaaA8vAPHFs2x1KvMzYu/JwxT5ouWaHqDp2TQthOZaotOXINNb//
-         +A31ntFpF/BHJPlfyTnPAVTPlgpT6+M/rzn7CMwqISIxEW0p5cDPoLZtaqEkE/AMwdhn
-         T1T+04kfbCic9mTCMoYILdosooJW/R6GEOrKkOYwjjdppNW8YvLDayVeL+HlY3Yo1o+6
-         T+NzRPBncXNzuzg6VR9hFI0ZdcXchOaHH2sDHiVWvIDY1/NXabvE5fiLx7BybvAJvZYe
-         NMFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733928899; x=1734533699;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7I3KlEto23VWfQzA/+OahaA/mW3s4zBUhSTnL+g+LxQ=;
-        b=YnQmO+SXMz495SFrnA8XpVDCrUMFDnsklAS0pYPby/8rSAKWBIvDbKeL9FKZ/Xc02A
-         qIKq6DIoM5ncOam+hAGKsaVc1ATINwvJMiPbJU9LsaSqXcv3RKYabtYp3fD9K0iPFXbp
-         FnHruVfaler4myVqRtQF8PeU24aAd5a16Jnw9+kRKVnJrpcUJXZBcgLRJtcn4jB25mk4
-         ZRJOw2en0jg2Ih3mAAmadW+/DOr4KfiZw0hyRoUs5nx8/8K3c6565kmPh+pnXimYabi3
-         x68/6xdHywEa0y2LEMYXeBQMxn6uivGDCLHcI2JSI1uR8A/AGeJDRykay7Gwxy7ViKn0
-         ILbw==
-X-Gm-Message-State: AOJu0Yy9Aa+Rk5OMEOBOHKTzWejq8djHgo/5qu1p/jYHfsRVHZsDnSFn
-	H26STjX+z+vvsiQ6U/ffopui552+CHxxYaCnRa58QpSSEH45UnKO6aBW0H7K2Gd1RgGo4lShBTE
-	H
-X-Gm-Gg: ASbGncsIdahVgN+n9FbE19pY+6qU5Q6YOSHlhNvF7KQoYP+WzX8SyN2cyBbPGTcfZeU
-	P+qNj1KNvxwokQnCpA8FIssphGWjg456R1GWl0TeS5oNyD5lW1wBPzIjBVrQnZB4I7et8VTnEP5
-	UeIbpzag0XZtCGEtH8Lvm4XYeHm4o0/6l6TtXhRFasp4PeUdDs23FDS61Otnot3zoG6NWGXwnNa
-	3oyEJE1sSlp6fRf3s6dG802TYmDcZCXcFfbiMA2MOCaCumiXjxXQ5bgiunW6LjdAvSIZwRaxXl4
-	87vlYpcctOZdaqdT55AxNoDIFLu+G1Q=
-X-Google-Smtp-Source: AGHT+IFooUIJKsFhrGKgjPsr08BC45elZjJ9h46au8wCZXoTnTA7fmOaLz5mZ9VZAhZcQmOoUZ0/PA==
-X-Received: by 2002:a05:6a20:3d86:b0:1d8:c646:f51 with SMTP id adf61e73a8af0-1e1c27582e0mr5260589637.20.1733928899346;
-        Wed, 11 Dec 2024 06:54:59 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd3277dc38sm7935316a12.54.2024.12.11.06.54.58
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 06:54:59 -0800 (PST)
-Date: Wed, 11 Dec 2024 06:54:56 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Subject: Fw: [Bug 219589] New: Warning at net/ipv4/ipmr.c:440
-Message-ID: <20241211065456.128f6a00@hermes.local>
+	dkim=pass (2048-bit key) header.d=digi.com header.i=@digi.com header.b="ZfNKvwa6"
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2044.outbound.protection.outlook.com [104.47.58.44]) by mx-outbound17-65.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Wed, 11 Dec 2024 14:56:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KzG2Xeku+URuyPVXaRFKQAyADUG5Vkq2fjPfEcwsMyGJaT0KeCTJIqxwhkPgTGiGoFfBoilmBQThmTjb89OLIVR3tp7VPcm5LI60jBy4GayPGWVThsavwqr20xjhGnYX8hqa6oTDNCMLaStoMHIY4wjGvZ47YimSeYuL+XtzgfaeOXMaUjGz64WyURnqGkjJfia4k+29WZo72iU5MK1zQDUvqS9cCzShBw/bP9ajWlFAAz7ATcQ63SqK5mpOBJIolSEFfjRduzVjyqgFjbyLMyRN8e808Cum4JvFsSkdY+RNhR1Zw7OJh1SUyewCAGJkl+5249ymkdqoC2ZimzmQsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mFd4DPtO3AHP3lrKxL4feGZM+KKgNqzQwsceolPhtU8=;
+ b=TECT4o9cQmVoGRkdf2UCj6Kw8Wrom2I9lG40Xufz2W5OOfMZZ9sfchORkj58jDnsM4XMyvKobBMNks1i0N31BWfb6+nv61ej1LBTcYgsK2lgQeGNA67Eoc+2sr3DrxcoPJK26AhhnSbdGrcw1+ulQumP+2b0QQektZeChN1n6gT6yZTcjnrM6i21v515neyaHrCvewWwcxBF2IyATPsbp96eyi6uVKXRQnZTa8tYaXeow0dCF3xt5dxMPDB7U3h/QZR+oGUHCVirgha/9sw8wgdXKhaORi/YLF8QQ0t3T/FVTpvfDqMeWFr8TlZR4s9ILTlhYZgxvn6QIibtPySArg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=digi.com; dmarc=pass action=none header.from=digi.com;
+ dkim=pass header.d=digi.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digi.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mFd4DPtO3AHP3lrKxL4feGZM+KKgNqzQwsceolPhtU8=;
+ b=ZfNKvwa6viGjsLJYjUnL1e4SE0r/avFO0qMQcow5PrfCraePrkCUv0LWmcU2YLxs2I77VtubkMRb5F15w/h+Sezp+jysF/hbSLWXo7gmYo84/QWsk49pVTkoIJGhaL1oV0vGl88FJ9Cql2SiZymS1AXU3ADi8Wph8IEradQPAW/ZV47vnUji+t0Ma1JAS/TMSIdH38rk28YEWf1vJ8snMQndxTiRHUQxEMW6yop/Gyuv7sW10RuDxZqUwTTJb3v27Vg5voLbCwnwqtEKu848gnvKhAwWUZR9ykVz3vFNbRCKdzuQ1A0WRuIUv20GuGOveqqArIVHCMzQKoNV2IFc6g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=digi.com;
+Received: from CO1PR10MB4561.namprd10.prod.outlook.com (2603:10b6:303:9d::15)
+ by CH0PR10MB4905.namprd10.prod.outlook.com (2603:10b6:610:ca::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Wed, 11 Dec
+ 2024 14:21:58 +0000
+Received: from CO1PR10MB4561.namprd10.prod.outlook.com
+ ([fe80::ecc0:e020:de02:c448]) by CO1PR10MB4561.namprd10.prod.outlook.com
+ ([fe80::ecc0:e020:de02:c448%4]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
+ 14:21:58 +0000
+Message-ID: <7eafe960-d172-4079-a91e-85e1066c2764@digi.com>
+Date: Wed, 11 Dec 2024 15:21:52 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: dsa: tag_ocelot_8021q: fix broken reception
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
+ alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241211124657.1357330-1-robert.hodaszi@digi.com>
+ <fe505333-7579-4470-852d-6fddd20197ab@lunn.ch>
+Content-Language: en-US
+From: Robert Hodaszi <robert.hodaszi@digi.com>
+In-Reply-To: <fe505333-7579-4470-852d-6fddd20197ab@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZR0P278CA0110.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:20::7) To CO1PR10MB4561.namprd10.prod.outlook.com
+ (2603:10b6:303:9d::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4561:EE_|CH0PR10MB4905:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43f83d32-692c-46e7-7a25-08dd19ef2bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SVRlckZzVWhHVXJuK3ZTZnNLRFhnZHVGemVQaXpVSldsVmZNa2dJSVlWWDZo?=
+ =?utf-8?B?NDF2d2dUU0M0eTJzUmNQejZJaVFqK2hLRzJ6K1l4RWZrcStrRWFEaW5ubDlZ?=
+ =?utf-8?B?VnorTFJVak9lUWI1TWVzN2dxYy9naTlya0daQkUySG5GUzlmbHBrWld6bkFj?=
+ =?utf-8?B?Uityb3ZrczQycnJ3c1krWHIyOS8ya25aV1Q4L3R5c0pLY040MnZjZE5IOXZF?=
+ =?utf-8?B?ZXU0dzc4MzJzRk55SldLZml5TDZqV05PTGhHYU1GMFlBRjR6YTY5M29icmZn?=
+ =?utf-8?B?OGYvYjU5TWt0ZzY5OUV5ODJaNkhkYzg1NDg3UDFoR0RxSkRyN2t6RU9KZ3dM?=
+ =?utf-8?B?VVJmOUFwelNxd3ZSV1RzK0JwR1pmNzRnOVBseWFTTlJyQ0Q0TTRRL2N0VmxM?=
+ =?utf-8?B?TW5zT29QdGRabVBIZk5SL1M0WStxZ0FvWWZBeWpzalh6ek5BSktyOHFFbDE0?=
+ =?utf-8?B?a2lDNC9mZGIvOWNMYzVXZlBCdmpsM3hqdUhzOXF2UDVGdi84QmswVmliUnNH?=
+ =?utf-8?B?U1lUWms4MUxUTlF6dHI4cFZhNkJWTko0d2hZd3k3Q0c5c1lPenQ3Z0gzb2RP?=
+ =?utf-8?B?QzZTUUh4czBSYTNoWkNJTlhPamc1MkJzNDJVM0w1R1Uyc1FFOXYzSk9kTkxX?=
+ =?utf-8?B?NGFLUjA1Skk3UnJGRHFBT3ZSbmEybWlvUzI1STQ3NjBPUlNacVoyY2RWSzZF?=
+ =?utf-8?B?ZTJYWWxkQjl3R0tzUyt6MXhYd0FUMnlOcDhWUGlsaVR1SVhTU0NmV0thdjZC?=
+ =?utf-8?B?b2Y4My9TQW9tRWJJSnFtZkFGS0VLZGdIQmM4MDJ0cUNySm9YVXdFclF2YUE2?=
+ =?utf-8?B?eVRBK3R3T1dER2VmTnprMXIvZGM5YW9nc29ZdEdpeThlY1p2M3p2THEwVEto?=
+ =?utf-8?B?a3NSNXljM2w5TGFGWkFVeHVML1lZK2FuSjJ5aHdZNnAyNWhDeklnTk1kay8x?=
+ =?utf-8?B?b3N0R2NmbjU1bXgzRFlFNWo3MDFsS2tubC92aHB5ZVdRbkQ0TVdKMWtUajVS?=
+ =?utf-8?B?MlV3TGxjbnZkY2s4Qllad3d4ZVRPUnl5VW8rbS93Y1hnbzdmU1V3cW9Mdi9J?=
+ =?utf-8?B?N3ptUkdPZTFBbGFMVnZIcmU3V1Y5SnUrbHJrTTNSSGM4dEt1UUhyT1JXZkdF?=
+ =?utf-8?B?b3o2bDVUU3JoVEIxSVZ3RFFMVVpTZi9BTGNmWmZ2K3FPRGlEYWdaYllIUUJZ?=
+ =?utf-8?B?R1BvVDZiZzl2MWhoN0tqYm5qZ3dZSFB3MFpzcXRhMDRjWkhZK3c1Uk5mekph?=
+ =?utf-8?B?RWVzemFIWTVZS1FHemFNN290SmNlcnZKQzhvKytTT1RyU1d2d1plNE1tOGFN?=
+ =?utf-8?B?T1ZEQ3hwWTNKOXRoUEVianV4a3o4UTR3eWlabVcvckxwS3ZXUHkzYS9jUDBY?=
+ =?utf-8?B?N1hydjFpL2hDRzBMb2dtZzdrclY3blBrVndvMmpDRzRKaXM3dVFZVVhpeXda?=
+ =?utf-8?B?M091elU2UTN5Y3dLd3NXUFVuNWhBRkQxMS9tZENQeFlyWWFPMDBQUUkzQlJ6?=
+ =?utf-8?B?WjVKaktsYjJvdFRKYkMyZkM5R1l4RlluYzRjVy83c1I0MyswOVRNMzJ4eGov?=
+ =?utf-8?B?Uzg0WlBjZjEwSVd3MHZaN1BUS3JueXpjUHZBV2JUMWhZYTdzZ1F6UE9YdnAv?=
+ =?utf-8?B?ZlF4dW5XbVVMc3NZb092MjAyQkVLMjN1b1h4RnNEdzdDYkdXOSt0R0poaHox?=
+ =?utf-8?B?TjNKUkIwM1JtN2M1aTFWbFM3MUFZeWNIUmVRY1M4T3Z4eUNFdTVFL0o3amtr?=
+ =?utf-8?B?YmtDcW5VVnBWZnp1T1pVZXd2QzFYNE5SbUErSGcwanNaRitmL043T3NlcmJ1?=
+ =?utf-8?B?WnFseklhVFBUSTN1VVpxZz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB4561.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjA4QkN4dWRQZXFJWVNrMXBEKzhWeGtNNWgwa1hSRE05SFBvTndOOWtkVVR0?=
+ =?utf-8?B?cExjbTQ4Mm1DZERRaTBhM2EwY1VOWUo4VVhCZk1QcmxIRHFRaitzZjdnay9p?=
+ =?utf-8?B?bEtUMXBzQ1NnMzFrQ0pYYmdyMjhweVZ1Y2xCNFQ5Q2o0LzhTSllkcFpMQ1dz?=
+ =?utf-8?B?SExWQU5RWVVrd0wxV0dyMjBFUWJpUlFPVWZQWTZINkZFOXNLa2JFQVNmWDRJ?=
+ =?utf-8?B?SVZmS2FCM1VidHM1Wi9HZnRqQWcydkRkeG9MU1ZDSGpRejB5MlZPMG1xQUtC?=
+ =?utf-8?B?MXN0bWFpenlzMkZvdGxvNWI3SHJnYUtZVitxaEJ6NXh1N04rb3lBVVh2S3JW?=
+ =?utf-8?B?cGhEZjhHRlVkN081NUtDd000OXZlQlRBWDlhSU5mSlJvRStiVFpRUmtmcEhU?=
+ =?utf-8?B?TDVNemMyWjhKK3RheGs3M1hOaTNVS0JlSjlkRExmb3oydGpVV0NHQlE5cDRr?=
+ =?utf-8?B?U0N2VWFJUjgxOUtsZGFSUWJ5aEhoTEk0VTlCS1krMUZDaTlNWE95QURYOU1E?=
+ =?utf-8?B?M1pMZ29yUzZONDg4MGhTdGRBOUFOUVhKd0s4aVludjU4Y1orT0c0SmlsV3JI?=
+ =?utf-8?B?TUFheHhTazUzYUtFNWNrUGFUcEtzbVYwbml4Y1doWHczSTNnRHZ0YlhlRE5M?=
+ =?utf-8?B?b3g2ZFliZ1MrZldwWjNuWFpWRDVQWlZaZW1La0kxdllnZHdaeGhZUkcwYUl1?=
+ =?utf-8?B?cnNYMk9tOVpob1BaN2Z1S09OV1ByN2Fqd3ZISTdWZ0dVSnR2V25OQi9KNzd3?=
+ =?utf-8?B?cmxpV0xqei9SUkluRHpTcWN2Snd3Q2w1NGRRbUJKYXA0U2Q2SlhBZWJ4NXZD?=
+ =?utf-8?B?OWJ1YldxYkRhdU9wMUV2MVBUd090YzloUVU3TEh4R1U1TlAzS0lSQkxoOUs1?=
+ =?utf-8?B?Qm55aU5qSWkvNFhtYjhlUzlFTHVWZC9zUy91ay9IS1dLZVFHdkRhdHpxUE1k?=
+ =?utf-8?B?UzlRMWZKZHVQaWdiZWd2WjF6UkpJSUhmc3RCNWp5bUlwZTIxSkpwYUtkMnM5?=
+ =?utf-8?B?MlFwZUhJc2NJWUZaaWR6MmRaM2g4ekpxTlZqai9iQmY5RFJ4dDQvMzlMSHJV?=
+ =?utf-8?B?SU1wNDI2QnBzd3drTWtFcWpRYklkNnpHNzdVOXpmMUtYdzJ3d3h2bEpFZkRk?=
+ =?utf-8?B?M0ZYV3d1aTlLbTB5RUpkVzNUSldpdjZObk0wd0xxMFRlQWtZN1U5QjJtM3Jt?=
+ =?utf-8?B?VVF5emlHYVBUblNlZVVKY3FBK0ZGUk1lVUJNOEF5L1hXN0c3RGRESU5ZUzNm?=
+ =?utf-8?B?YlBPUHduUThEUisrd3k0cGdzaERjL2IzdkJ6SWlneXM2cEdoQzdKSEFLTTRQ?=
+ =?utf-8?B?Q2JuTjJjeDBtK3c5Zk1mL0IyN1BEckJuVGdWb0dYZTROUlovb3JxL0o4L1BE?=
+ =?utf-8?B?TlBpa09pWjlXTTZ2TldrSnZ6QUZsQjdyRlJRdDVDcmtLWjUzeW9Kck9LWWt3?=
+ =?utf-8?B?dEhySDlWUGdPN3J6M1VoVFpuYzFTd2FUaVd6ZVJaOVZ4bEMyS3duQzdlaGpR?=
+ =?utf-8?B?amlxcWtLcVp0cm1VREs5Zmg2Q0VsK3lGaG9kaXdyK0pHSFBBZTBIMGF4cXgz?=
+ =?utf-8?B?SldYQkZmNFNZeE9qYzRjK3JQTk1JY011dmF6NnJWRmhwRGh5YkxybzQ3ODAv?=
+ =?utf-8?B?MVZCdEF1REswYVBaVXFVdkVLNGZ3aVF0dktxZFV1aHdnTUp5L25MWnZaVTZY?=
+ =?utf-8?B?V3lEeXJ5SUszMG8vRW4weElQdWZtRDN6cnFuZFhxUjdFYkxTM0tqR1ZQUldq?=
+ =?utf-8?B?MndGODBzSkxOcWJsWXRRSDJqSklUeVFkSnd0akJJd3lxVTlQL2lRRVBxNzM1?=
+ =?utf-8?B?eFd1Tjl4TmxnRXVmTzk1aWZxNTZUUzBsZXJSMUQrcmU2NHM4VHdxME8rSDRP?=
+ =?utf-8?B?bVNQUjFWdTE4YjVNZVRZZm1BNHozRFhRcTlVSnM1SmZ4eHRlNUxadUhmbWpy?=
+ =?utf-8?B?Qit3d1pzT3NoUGFMTFdHZzRFcHB0NUxxTytSbFlMSlR6VFFQbWZGZWF2SXdL?=
+ =?utf-8?B?enNpOFl2dWFsejJTMXNSUnJGSnNkNWVGNlJPZEIxUW0vdlZWVDNIeUpaQWJ3?=
+ =?utf-8?B?eHlHM0pRdlRBRndtYktoMlJkQTRlNWVhT1BvMDNXOCtJdkk4bEludUtXOXky?=
+ =?utf-8?Q?UdRV76vF7TQzoduvsRKF3s71r?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43f83d32-692c-46e7-7a25-08dd19ef2bca
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4561.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 14:21:58.3307
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: abb4cdb7-1b7e-483e-a143-7ebfd1184b9e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G3jIc7IreFZHEodfCfQXHkpDb9qMaR01MwI5RXpk56VyG4xRj+MEFPou5bOIS1OLZPTUKQDxJGo8f3gU97Fdwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4905
+X-OriginatorOrg: digi.com
+X-BESS-ID: 1733928965-104417-13371-6496-1
+X-BESS-VER: 2019.1_20241205.2350
+X-BESS-Apparent-Source-IP: 104.47.58.44
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVobGFgZAVgZQMCnNODXFwNgiJS
+	kx1dTEzMLAzCTVOMXC0tjMPDnN2CJRqTYWANhbzNhBAAAA
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.261039 [from 
+	cloudscan11-166.us-east-2a.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS112744 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status:1
 
+2024. 12. 11. 14:34 keltezéssel, Andrew Lunn írta:
+> [EXTERNAL E-MAIL] Warning! This email originated outside of the organization! Do not click links or open attachments unless you recognize the sender and know the content is safe.
+>
+>
+>
+> On Wed, Dec 11, 2024 at 01:46:56PM +0100, Robert Hodaszi wrote:
+>> Commit dcfe7673787b4bfea2c213df443d312aa754757b ("net: dsa: tag_sja1105:
+>> absorb logic for not overwriting precise info into dsa_8021q_rcv()")
+>> added support to let the DSA switch driver set source_port and
+>> switch_id. tag_8021q's logic overrides the previously set source_port
+>> and switch_id only if they are marked as "invalid" (-1). sja1105 and
+>> vsc73xx drivers are doing that properly, but ocelot_8021q driver doesn't
+>> initialize those variables. That causes dsa_8021q_rcv() doesn't set
+>> them, and they remain unassigned.
+>>
+>> Initialize them as invalid to so dsa_8021q_rcv() can return with the
+>> proper values.
+> Hi Robert
+>
+> Since this is a fix, it needs a Fixes: tag. Please also base it on net.
+>
+> There is more here:
+>
+> https://linkprotect.cudasvc.com/url?a=https%3a%2f%2fwww.kernel.org%2fdoc%2fhtml%2flatest%2fprocess%2fmaintainer-netdev.html&c=E,1,4wyDgaiEANqhFn2GG0tcaR1j57JQtD08e0Ct4VSwo05Uu1yGRm73RMgwy0gs_ClxX5Mmerf2f6bxOoXZF9G_zKOP4Isr6iVcIkPhTzyMVHt9DNUF0KUfXCE,&typo=1
+>
+>         Andrew
 
+Hi,
 
-Begin forwarded message:
+OK, thanks! Let me try again!
 
-Date: Wed, 11 Dec 2024 12:44:55 +0000
-From: bugzilla-daemon@kernel.org
-To: stephen@networkplumber.org
-Subject: [Bug 219589] New: Warning at net/ipv4/ipmr.c:440
+Robert
 
-
-https://bugzilla.kernel.org/show_bug.cgi?id=219589
-
-            Bug ID: 219589
-           Summary: Warning at net/ipv4/ipmr.c:440
-           Product: Networking
-           Version: 2.5
-          Hardware: All
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: IPV4
-          Assignee: stephen@networkplumber.org
-          Reporter: 0599jiangyc@gmail.com
-        Regression: No
-
-PoC (might not be stably reproduced):
-```
-// autogenerated by syzkaller (https://github.com/google/syzkaller)
-
-#define _GNU_SOURCE
-
-#include <endian.h>
-#include <fcntl.h>
-#include <sched.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#include <linux/sched.h>
-
-#ifndef __NR_clone3
-#define __NR_clone3 435
-#endif
-#ifndef __NR_seccomp
-#define __NR_seccomp 317
-#endif
-
-static long syz_open_dev(volatile long a0, volatile long a1, volatile long a2)
-{
-  if (a0 == 0xc || a0 == 0xb) {
-    char buf[128];
-    sprintf(buf, "/dev/%s/%d:%d", a0 == 0xc ? "char" : "block", (uint8_t)a1,
-            (uint8_t)a2);
-    return open(buf, O_RDWR, 0);
-  } else {
-    char buf[1024];
-    char* hash;
-    strncpy(buf, (char*)a0, sizeof(buf) - 1);
-    buf[sizeof(buf) - 1] = 0;
-    while ((hash = strchr(buf, '#'))) {
-      *hash = '0' + (char)(a1 % 10);
-      a1 /= 10;
-    }
-    return open(buf, a2, 0);
-  }
-}
-
-#define USLEEP_FORKED_CHILD (3 * 50 * 1000)
-
-static long handle_clone_ret(long ret)
-{
-  if (ret != 0) {
-    return ret;
-  }
-  usleep(USLEEP_FORKED_CHILD);
-  syscall(__NR_exit, 0);
-  while (1) {
-  }
-}
-
-#define MAX_CLONE_ARGS_BYTES 256
-static long syz_clone3(volatile long a0, volatile long a1)
-{
-  unsigned long copy_size = a1;
-  if (copy_size < sizeof(uint64_t) || copy_size > MAX_CLONE_ARGS_BYTES)
-    return -1;
-  char clone_args[MAX_CLONE_ARGS_BYTES];
-  memcpy(&clone_args, (void*)a0, copy_size);
-  uint64_t* flags = (uint64_t*)&clone_args;
-  *flags &= ~CLONE_VM;
-  return handle_clone_ret((long)syscall(__NR_clone3, &clone_args, copy_size));
-}
-
-uint64_t r[2] = {0xffffffffffffffff, 0xffffffffffffffff};
-
-int main(void)
-{
-  syscall(__NR_mmap, /*addr=*/0x1ffff000ul, /*len=*/0x1000ul, /*prot=*/0ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  syscall(__NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x1000000ul,
-          /*prot=PROT_WRITE|PROT_READ|PROT_EXEC*/ 7ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  syscall(__NR_mmap, /*addr=*/0x21000000ul, /*len=*/0x1000ul, /*prot=*/0ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  const char* reason;
-  (void)reason;
-  intptr_t res = 0;
-  if (write(1, "executing program\n", sizeof("executing program\n") - 1)) {
-  }
-  *(uint64_t*)0x20000a00 = 0x40b86000;
-  *(uint64_t*)0x20000a08 = 0;
-  *(uint64_t*)0x20000a10 = 0;
-  *(uint64_t*)0x20000a18 = 0;
-  *(uint32_t*)0x20000a20 = 0x1d;
-  *(uint64_t*)0x20000a28 = 0;
-  *(uint64_t*)0x20000a30 = 0;
-  *(uint64_t*)0x20000a38 = 0;
-  *(uint64_t*)0x20000a40 = 0;
-  *(uint64_t*)0x20000a48 = 0;
-  *(uint32_t*)0x20000a50 = -1;
-  syz_clone3(/*args=*/0x20000a00, /*size=*/0x58);
-  *(uint16_t*)0x20000040 = 1;
-  *(uint64_t*)0x20000048 = 0x20000080;
-  *(uint16_t*)0x20000080 = 6;
-  *(uint8_t*)0x20000082 = 4;
-  *(uint8_t*)0x20000083 = 0;
-  *(uint32_t*)0x20000084 = 0x7fff0000;
-  syscall(__NR_seccomp, /*op=*/1ul, /*flags=*/0ul, /*arg=*/0x20000040ul);
-  syscall(__NR_socket, /*domain=*/0x10ul, /*type=*/3ul, /*proto=*/0);
-  syscall(__NR_prlimit64, /*pid=*/0, /*res=RLIMIT_RTPRIO*/ 0xeul, /*new=*/0ul,
-          /*old=*/0ul);
-  *(uint64_t*)0x20000a00 = 0x40b86000;
-  *(uint64_t*)0x20000a08 = 0;
-  *(uint64_t*)0x20000a10 = 0;
-  *(uint64_t*)0x20000a18 = 0;
-  *(uint32_t*)0x20000a20 = 0x1d;
-  *(uint64_t*)0x20000a28 = 0;
-  *(uint64_t*)0x20000a30 = 0;
-  *(uint64_t*)0x20000a38 = 0;
-  *(uint64_t*)0x20000a40 = 0;
-  *(uint64_t*)0x20000a48 = 0;
-  *(uint32_t*)0x20000a50 = -1;
-  syz_clone3(/*args=*/0x20000a00, /*size=*/0x58);
-  res = -1;
-  res = syz_open_dev(/*dev=*/0xc, /*major=*/4, /*minor=*/0x14);
-  if (res != -1)
-    r[0] = res;
-  syscall(__NR_ioctl, /*fd=*/r[0], /*cmd=*/0x5608, 0);
-  res = -1;
-  res = syz_open_dev(/*dev=*/0xc, /*major=*/4, /*minor=*/0x15);
-  if (res != -1)
-    r[1] = res;
-  *(uint16_t*)0x20000080 = 0x3e7f;
-  *(uint64_t*)0x20000088 = 0x20000040;
-  syscall(__NR_ioctl, /*fd=*/r[1], /*cmd=*/0x4b67, /*arg=*/0x20000080ul);
-  return 0;
-}
-```
-
-[  201.617435] ------------[ cut here ]------------
-[  201.617808] WARNING: CPU: 3 PID: 2712  ipmrat
-net/ipv4/ipmr.c:440_rules_exit.isra.0+0x10c/0x1a0
-[  201.618094] Modules linked in:
-[  201.618200] CPU: 3 UID: 0 PID: 2712 Comm: fused3844 Not tainted 6.13.0-rc1
-#1
-[  201.618423] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.13.0-1ubuntu1.1 04/01/2014
-[  201.618682] RIP: 0010:ipmr_rules_exit.isra.0+0x10c/0x1a0
-[  201.618829] Code: 00 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 75 7d 48
-c7 03 00 00 00 00 5b 5d 41 5c 41 5d c3 cc cc cc cc e8 55 32 b7 fd 90 <0f> 0b 90
-eb 99 e8 4a 32 b7 fd 0f b6 2d a9 fa 30 02 40 80 fd 01 0f
-[  201.619438] RSP: 0000:ffff88810f0ff910 EFLAGS: 00010293
-[  201.619667] RAX: 0000000000000000 RBX: ffff8881161d3320 RCX:
-ffffffff8594d6fb
-[  201.619922] RDX: ffff888108342dc0 RSI: 0000000000000004 RDI:
-ffff8881161d2e44
-[  201.620162] RBP: ffff88810afea000 R08: 0000000000000000 R09:
-ffffed1022c3a5c9
-[  201.620439] R10: ffffed1022c3a5c8 R11: ffff8881161d2e47 R12:
-ffff8881161d2e44
-[  201.620750] R13: ffff8881161d2dc0 R14: dffffc0000000000 R15:
-fffffbfff0f58434
-[  201.621079] FS:  000000000fc74880(0000) GS:ffff8881f1180000(0000)
-knlGS:0000000000000000
-[  201.621429] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  201.621701] CR2: 000000000048b6b0 CR3: 0000000111808000 CR4:
-00000000000006f0
-[  201.621960] Call Trace:
-[  201.622067]  <TASK>
-[  201.622145]  ? __warn+0xea/0x2b0
-[  201.622305]  ? ipmr_rules_exit.isra.0+0x10c/0x1a0
-[  201.622502]  ? report_bug+0x2cb/0x430
-[  201.622645]  ? ipmr_rules_exit.isra.0+0x10c/0x1a0
-[  201.622819]  ? ipmr_rules_exit.isra.0+0x10d/0x1a0
-[  201.623008]  ? handle_bug+0x9b/0x110
-[  201.623137]  ? exc_invalid_op+0x25/0x70
-[  201.623364]  ? asm_exc_invalid_op+0x1a/0x20
-[  201.623556]  ? ipmr_rules_exit.isra.0+0x10b/0x1a0
-[  201.623774]  ? ipmr_rules_exit.isra.0+0x10c/0x1a0
-[  201.623969]  ipmr_net_exit_batch+0x54/0xa0
-[  201.624129]  ? __pfx_ipmr_net_exit_batch+0x10/0x10
-[  201.624318]  ? __pfx_ipmr_net_exit+0x10/0x10
-[  201.624489]  ops_exit_list.isra.0+0x102/0x150
-[  201.624631]  setup_net+0x432/0x740
-[  201.624725]  ? __pfx_setup_net+0x10/0x10
-[  201.624831]  ? __pfx_down_read_killable+0x10/0x10
-[  201.624977]  ? __kmalloc_cache_noprof+0x120/0x320
-[  201.625121]  copy_net_ns+0x247/0x3d0
-[  201.625236]  create_new_namespaces+0x382/0xa20
-[  201.625377]  copy_namespaces+0x1d5/0x2d0
-[  201.625510]  copy_process+0x2715/0x67a0
-[  201.625649]  ? alloc_file_pseudo+0x130/0x1e0
-[  201.625835]  ? sock_alloc_file+0x53/0x1d0
-[  201.626009]  ? __pfx_copy_process+0x10/0x10
-[  201.626143]  ? _copy_from_user+0x5a/0xa0
-[  201.626285]  ? copy_clone_args_from_user+0x3c5/0x680
-[  201.626487]  kernel_clone+0xc6/0x7a0
-[  201.626604]  ? __pfx_kernel_clone+0x10/0x10
-[  201.626781]  ? percpu_counter_add_batch+0x106/0x250
-[  201.626989]  __do_sys_clone3+0x181/0x1f0
-[  201.627149]  ? __pfx___do_sys_clone3+0x10/0x10
-[  201.627333]  ? __secure_computing+0x16c/0x2c0
-[  201.627509]  do_syscall_64+0xaa/0x1b0
-[  201.627640]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  201.627815] RIP: 0033:0x44df9d
-[  201.627926] Code: c3 e8 37 29 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89
-f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
-f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-[  201.628542] RSP: 002b:00007ffdcf96c988 EFLAGS: 00000206 ORIG_RAX:
-00000000000001b3
-[  201.628845] RAX: ffffffffffffffda RBX: 0000000000400530 RCX:
-000000000044df9d
-[  201.629125] RDX: 0000000020000a00 RSI: 0000000000000058 RDI:
-00007ffdcf96c9b0
-[  201.629396] RBP: 00007ffdcf96cac0 R08: 0000000000000000 R09:
-0000000000000058
-[  201.629676] R10: 0000000000000000 R11: 0000000000000206 R12:
-0000000000403380
-[  201.629912] R13: 0000000000000000 R14: 00000000004c5018 R15:
-0000000000000000
-[  201.630159]  </TASK>
-[  201.630274] ---[ end trace 0000000000000000 ]---
-
--- 
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are the assignee for the bug.
