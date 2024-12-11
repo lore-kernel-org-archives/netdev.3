@@ -1,50 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98D01422A8;
-	Wed, 11 Dec 2024 01:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA201DF721;
+	Wed, 11 Dec 2024 01:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733882185; cv=none; b=MgGLFIFw9/6NnyOoA+44Kc+5eL1pYlhGqMdlP+Yo9iR0CaJKqT7I4qLLX8hFYE5lMNHJdeiXNjtql863dJ02ERC1cW1gFarfRtXFx1GNlu24hlJIDmgOQWjXBb8MMtQFzNSJccY7lfkOgP9uIpYoiZcFrD6paS3m5SGk4CRPy8M=
+	t=1733882370; cv=none; b=QWUMV+XTF984aQkE6mS/gw1l/BPGFy6Nqs492vjsUVvK2K9BfUnt/aoqsHuUDucTuxQW2TW0FDYYwhnTCNY3ZpZELG+xAbL55KrCJwm7M3uRBS0l29yZTHT3/fozxOAyuUykL+r9CXNFiwhU4QXjfZ60QEZYxUD4L71fHibGJlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733882185; c=relaxed/simple;
-	bh=L9hpu8B4bEbv4BWzFDWIU58mS0NmeBwiwVL18jWxcmk=;
+	s=arc-20240116; t=1733882370; c=relaxed/simple;
+	bh=zEazvVQelItOcABGIC78+sK4TYpwCtVbuqNNLAXsEQc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ym8DKZ14/g6ux4T4o3nMApf9CA+yG7xcWoYb01dGuDWM+XPP3kRFtUbbmHwuCDouAT5BR/FnfMom9NXdoVSuYtRqWqF13JkFUzC9CFtLkSsrnX3s+IJBLwsnnx9WpFN5xONkuJ1ruGpsOqcyJRgI/PsZgj0v/tdcapa7bBLyfdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRHcntU6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tCpxPccc/zOHbQnUohxSAcwY+QOxlr0OLhsQF6CIg2R98OwCcI8VBQzWo/IBb9J0kOvlO/TTEzx1Ay+RXmRWlwUEhcOuHn+4uvKiuA7pv4POlosqKvafuzcZOiylICj4Kgs6KgpW4JG+Ggnmpp6nlQ+WEwMZTO+s+DcpvbE+xzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WG1789Wz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRHcntU6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A8BC4CED6;
-	Wed, 11 Dec 2024 01:56:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WG1789Wz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33134C4CED6;
+	Wed, 11 Dec 2024 01:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733882185;
-	bh=L9hpu8B4bEbv4BWzFDWIU58mS0NmeBwiwVL18jWxcmk=;
+	s=k20201202; t=1733882369;
+	bh=zEazvVQelItOcABGIC78+sK4TYpwCtVbuqNNLAXsEQc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eRHcntU6PUTaQAoAcl1WW2JDRXgUKIXE7WBD7o897zJVjdXb+uAiSlKSMQNPpDzh/
-	 CBJkfx8GA0/BK7W2DxurNJNOHL0weszqvRbEy8rzexSz9ta3UBrxKwe2UcGKEtu/0I
-	 Vm0SIlF3cQ25hub1vkMJbn8v7uxSo1NusbEq1EBA8lIsJbnMPbSr+/OFukp161Alfv
-	 Mf9skIEs60bLDHpHFv5HQGSDlxF2cGKr2azC27J4VbIb8skxdprs/As1YbPvmXa3Qf
-	 s6APl4ww4KZXiib2CpXNuzIpWorqL83QDNashcBW2pkabbAF4S0zvLXVHk1hxvBwDW
-	 P/hlfzaglAtKA==
-Date: Tue, 10 Dec 2024 17:56:23 -0800
+	b=WG1789WzUIrT/CpBcevHJNOIBumrD1N6Qedrovy+G025hdAW+6EnIYdCcl6WNPWXr
+	 rf6QcjjxYtDZD27rljp5BgkVDF13H4WF5weB07ZtroJQFBQHYR4DLq+QY6jvJkiUg+
+	 JAC/Zb945iW1L3wz0RfR61iMWkomZLhzZjDLF5dtzjgLYPUOovWGZBC6F+/OjgldU2
+	 R/kqEAk/RoFGc9lxa+n2mt1GUbo3yp0d6IT60Tb+PQ8xDevuSbsaHKxMIBnRh0L3nq
+	 D+TO4pwuz7uDEg1FCcEvgrXHoGee7UYuAAAt1lVHtOlNrWQPSkFqlvD7ESAPTMgZEu
+	 tcRetj1RhCpow==
+Date: Tue, 10 Dec 2024 17:59:28 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Cc: Ming Yu <a0282524688@gmail.com>, <tmyu0@nuvoton.com>, <lee@kernel.org>,
- <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <andi.shyti@kernel.org>,
- <mkl@pengutronix.de>, <mailhol.vincent@wanadoo.fr>,
- <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <wim@linux-watchdog.org>, <linux@roeck-us.net>,
- <jdelvare@suse.com>, <alexandre.belloni@bootlin.com>,
- <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
- <linux-i2c@vger.kernel.org>, <linux-can@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-watchdog@vger.kernel.org>,
- <linux-hwmon@vger.kernel.org>, <linux-rtc@vger.kernel.org>
-Subject: Re: [PATCH v3 1/7] mfd: Add core driver for Nuvoton NCT6694
-Message-ID: <20241210175623.748da1b8@kernel.org>
-In-Reply-To: <2d6e82ff-9f68-427e-a8a6-8dd31b3c94e4@intel.com>
-References: <20241210104524.2466586-1-tmyu0@nuvoton.com>
-	<20241210104524.2466586-2-tmyu0@nuvoton.com>
-	<2d6e82ff-9f68-427e-a8a6-8dd31b3c94e4@intel.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>, "hkallweit1@gmail.com"
+ <hkallweit1@gmail.com>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+ <edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>,
+ "heiko.stuebner@cherry.de" <heiko.stuebner@cherry.de>, "fank.li@nxp.com"
+ <fank.li@nxp.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v3 net] net: phy: micrel: Dynamically control external
+ clock of KSZ PHY
+Message-ID: <20241210175928.39505f6c@kernel.org>
+In-Reply-To: <PAXPR04MB8510008EBDA6EB1CF89246F8883E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20241206012113.437029-1-wei.fang@nxp.com>
+	<20241209181451.56790483@kernel.org>
+	<PAXPR04MB85104EC1BFE4075DF1A27B93883D2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	<20241210164308.6af97d00@kernel.org>
+	<PAXPR04MB8510008EBDA6EB1CF89246F8883E2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,16 +56,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024 11:57:41 +0100 Mateusz Polchlopek wrote:
-> > +int nct6694_read_msg(struct nct6694 *nct6694, u8 mod, u16 offset,
-> > +		     u16 length, void *buf)
-> > +{
-> > +	struct nct6694_cmd_header *cmd_header = nct6694->cmd_header;
-> > +	struct nct6694_response_header *response_header = nct6694->response_header;  
+On Wed, 11 Dec 2024 01:49:50 +0000 Wei Fang wrote:
+> > I may be missing something but if you don't need to disable the generic
+> > clock you can put the disable into the if () block for rmii-ref ?  
 > 
-> RCT violation
+> For my case, it's fine to disable rmii-ref because this clock source is always
+> enabled in FEC driver. But the commit 99ac4cbcc2a5 ("net: phy: micrel: allow
+> usage of generic ethernet-phy clock") was applied a year ago, so I raised a
+> concern in V2 [1], if a new platform only enables rmii-ref in the PHY driver,
+> disabling rmii-ref after getting the clock rate will cause problem, which will
+> cause RMII to not work. I'm not sure if any platform actually does this, if so
+> the following changes will be a more serious problem.
 
-This code is not under net not drivers/net
-As a general rule please focus on functional review, formatting and
-process issues are harder to judge unless you read all of the mailing
-list traffic.
+Put more of this explanation into the commit message and resend.
+If it convinces Andrew we can apply.
