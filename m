@@ -1,98 +1,101 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FD822C352;
-	Tue, 10 Dec 2024 23:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E9BEC4;
+	Wed, 11 Dec 2024 00:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733874498; cv=none; b=hE6EVlwyKQuB4OlDFuoSiinv5HvLZNeQ8vclmrRxeH9R8mq+RmgKy8dvoQ61FzKYSBM7l6811R791mCI4E8xmCqyEk3+3oljfbFJF2UGMHqw2Bhr0KAe8t1D6tjytclF4P5hkt4fK9IkwfdwPLRdSykOjo5BFHu4tOgCIliM0dE=
+	t=1733875614; cv=none; b=N/WP4uWeLZd6pn19BJM4Mq1PeSFliUc6awfObvcXRHCoRc/HSyN9KHeAV0+EIK05FW5FuEu33BKgEqCI7/vr8ylhKzlgXizn8OsAotw1WNpV8rRwdtSc9YB8mDBg2HdQW7AL5yma0YrtlR8rJ4IGAPLbCsvUcySdGZVhpp7GhqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733874498; c=relaxed/simple;
-	bh=Lp09MjOylsSyKIAgxhxl0bO4y+Lm//RliCsSA7mpCW8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FYDag+qvQ1zY8b3tkokRkIBwRF7XBbMnpPicyZeO58i+pNABH5HbjUTlFilTAbh0DkpbpGxoLpdrRucb3zDqvmJRAhLz8knrRzWTi3oHRmtWll5dKp4rWqQctGPya/R0lBL9hefNx02OMyPcxTie/Qb7nW7JqYe0Z1AIzpTmIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jRIL/FEd; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733875614; c=relaxed/simple;
+	bh=Q0xDJhoumS6SK4KZTkewFgu5ZjY6X4lL0E/F4WlCvP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mFHDCi1MlfDMeJjDZ3uHh6uW8va8/jBfy5XtIiMRYcJFRXEvqrZFWiPYmfyCOrik9hTuAUdAYkVXfWKW1MGEF7LvqGyGGFZ1KF8Je6tnpAPY2NDe8fHedOIUNhFoFlU/QNqniV9nUs/JTQb86p8dny89tHDgrbm7YrZVXkzPYy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LV3pbIfJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jRIL/FEd"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a9a977d6cc7so907856566b.3;
-        Tue, 10 Dec 2024 15:48:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733874495; x=1734479295; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ukbIms0t1DZTxH1MdXNsTj5uHjkdpiYZBUWkKbFqYeU=;
-        b=jRIL/FEd5Ki4XwYrM80ESceWLeuH1Pwhazcw2E/NikZ+tAesms+bixR+aYOKktl2Ui
-         ZE0Hq8MkS+goSbA9oZYOREJ9uSox70QohobtgGiZ2RJwwWYm4nfmX2inzvX0J/Vuo4sU
-         eJ0QPVwnzHHvHdjgf3Hdw25Kn7Zsm19MQtoWdTAiAP20b1HbVAnDaLut7X8i5R6Os6AO
-         BbydG2EYs/sYbIDUyjbMPNj7ClMOTvgeS+DSCeMZIODUo2tfEKt/tGHlKJykxc9iBdCg
-         eVkZsLRo7G4WK/pr69HDBIv+6oKTGZc6p6S0hrIHLg4oJsJcqFAu/FM9TmHgaemYF8Be
-         azeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733874495; x=1734479295;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ukbIms0t1DZTxH1MdXNsTj5uHjkdpiYZBUWkKbFqYeU=;
-        b=qFdfBLxDo7HfnIq6A1O58j2D5SE/dHuioEU2wS7ZT/sFIj+2jEYKqG4cjA6NoUEC9J
-         wN0u4BAkbUgMFn6qWrWVOGtsgcSKer1xt/76hxPNLclnmxAGfjcQp8HsQewOn7rLZoov
-         EkcNf7JbP66K1RExxyfKshl3vgoEVIglEIT4P0sRs0l8/6WxMEBnM004PwWt7F7vR3eI
-         7zjtQEkFaODRFKdfTmDmliQq1lwmxElf8lT8M17CYN4VEbeVhaUssHY5UTywouMA3x3p
-         kA0zKx7QmURQcvjhi7bfGpvVX7KU207nutvvIBm9OYhu3Air+9K/IE/pr66LakuFF0eO
-         GWfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf/5ah2Th8Nd9uaTEUVmOiudBZmls6f1I7JO2nfhepFs+9ZTvkF+US2rmz4n+uUhTYN92e7KuJyMdLaU8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRCy6hcvDwPgSI5aUatrPzkkqU3jpWYtFiSyCFyuM2ODmH9sWp
-	wbEOs9v9GASa/kBInB6nzs6w0aAB1+MDVj+nY/9H/djK+7RFoC/l
-X-Gm-Gg: ASbGncvpwADWvNZNCxkU6tPhDOFjYWPt//15OqTOrcImLqSwyZXYhT/efPymJRu5B8j
-	0KoLnrVPXorixVPx4/Cj8tzbCzT1HNwUzt7D8Kdu/4YNjkV1WdYhVvZS6OttI3cWUckpR2fHHZJ
-	cwAFodu+ifCV12LB7g9rZ6HSs5yHDuRxBn/mvWTh5QUREhooyKcmV5n04f0/R1vNi8jZt7plbqL
-	uqFj0fbIvs4G+awbt7X1/105+sPY+DDGsR2C6kd2BiFHt/q6cS2WYw=
-X-Google-Smtp-Source: AGHT+IG4np9YAocjxEFLm7x39/SQp1jbMm3P4nLtiba8Smoyscql8ySPb2yi/8a3fCNXNrboToIipA==
-X-Received: by 2002:a05:6402:5207:b0:5d4:55e:f99e with SMTP id 4fb4d7f45d1cf-5d4330a5c7cmr1438120a12.18.1733874494920;
-        Tue, 10 Dec 2024 15:48:14 -0800 (PST)
-Received: from [192.168.0.2] ([69.6.8.124])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa69964872asm270956366b.103.2024.12.10.15.48.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 15:48:13 -0800 (PST)
-Message-ID: <6dc095f8-00ca-4f4d-885e-735ef6c2fa80@gmail.com>
-Date: Wed, 11 Dec 2024 01:48:10 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LV3pbIfJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5ACC4CED6;
+	Wed, 11 Dec 2024 00:06:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733875613;
+	bh=Q0xDJhoumS6SK4KZTkewFgu5ZjY6X4lL0E/F4WlCvP0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LV3pbIfJ9XYGTBYZA4wWCfSnbR8UKWkGdey3/DgCAZjVV511CY2CRFoeARwjN/D9V
+	 EWHX9W+TUpzzGh5ml8qo0dnX3ufKGNppjjaIDsgKr5ntUTEuDzp20KIHuNw3owC9x5
+	 Sg+IiUNJZTWFmSMZFllDKyVIw1BnpYRh8aS59oIjqhU2XIxxQEISXbH+eoN0vxNtOY
+	 X5FQMcYpOp1n2JBdSxE8cLf16IuGzdZ04ET5BB3jKzYEwfPJl53bv70S415Ovv26bA
+	 9ArpS6cNj/mjt+sDHkp+SjEp+TB1JdJ6cZfrdJvf5OSGm+Wg9IuwasBt7gFfV2LpHr
+	 tNqohNEQmqEhg==
+Date: Tue, 10 Dec 2024 16:06:51 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: David Wei <dw@davidwei.uk>, io-uring@vger.kernel.org,
+ netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Paolo Abeni
+ <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, David
+ Ahern <dsahern@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <stfomichev@gmail.com>, Joe Damato <jdamato@fastly.com>,
+ Pedro Tammela <pctammela@mojatatu.com>
+Subject: Re: [PATCH net-next v8 07/17] net: page_pool: introduce
+ page_pool_mp_return_in_cache
+Message-ID: <20241210160651.32b5e8f8@kernel.org>
+In-Reply-To: <fc1715f6-c123-43c6-9562-f84c7aab4ed2@gmail.com>
+References: <20241204172204.4180482-1-dw@davidwei.uk>
+	<20241204172204.4180482-8-dw@davidwei.uk>
+	<20241209194057.161e9183@kernel.org>
+	<fc1715f6-c123-43c6-9562-f84c7aab4ed2@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: wwan: t7xx: Replace deprecated PCI functions
-To: Philipp Stanner <pstanner@redhat.com>,
- Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
- Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
- Liu Haijun <haijun.liu@mediatek.com>,
- Ricardo Martinez <ricardo.martinez@linux.intel.com>,
- Loic Poulain <loic.poulain@linaro.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241206195712.182282-2-pstanner@redhat.com>
-Content-Language: en-US
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-In-Reply-To: <20241206195712.182282-2-pstanner@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 06.12.2024 21:57, Philipp Stanner wrote:
-> pcim_iomap_regions() and pcim_iomap_table() have been deprecated by the
-> PCI subsystem.
+On Tue, 10 Dec 2024 04:31:53 +0000 Pavel Begunkov wrote:
+> >> +	page_pool_dma_sync_for_device(pool, netmem, -1);
+> >> +	page_pool_fragment_netmem(netmem, 1);
+> >> +	pool->alloc.cache[pool->alloc.count++] = netmem;  
+> > 
+> > and here:
+> > 
+> > 	return true;
+> > 
+> > this say mps can use return value as a stop condition in a do {} while()
+> > loop, without having to duplicate the check.
+> > 
+> > 	do {
+> > 		netmem = alloc...
+> > 		... logic;
+> > 	} while (page_pool_mp_alloc_refill(pp, netmem));
+> > 
+> > 	/* last netmem didn't fit in the cache */
+> > 	return netmem;  
 > 
-> Replace them with pcim_iomap_region().
+> That last netmem is a problem. Returning it is not a bad option,
+> but it doesn't feel right. Providers should rather converge to
+> one way of returning buffers and batching here is needed.
 > 
-> Additionally, pass the actual driver name to that function to improve
-> debug output.
+> I'd rather prefer this one then
 > 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> while (pp_has_space()) {
+> 	netmem = alloc();
+> 	pp_push(netmem);
+> }
+> 
+> Any thoughts on that?
 
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+No strong preference. If I was the one who placed the ->alloc() call
+the way it is placed it's probably because it saves us a conditional,
+it saves us checking if the cache is empty. 
+
+If we want to have the page pool pick the last object out of the cache
+I'd lean towards avoiding all the helpers. Make the callback:
+
+ void alloc_netmem(struct page_pool *pool, gfp_t gfp,
+                   size_t cnt, netmem_ref *arr);
+
+you get an @arr(ay) to fill up with up to @cnt elements. Mirroring
+alloc_pages_bulk_array_node() (down to its, to me at least, unusual
+ordering of arguments).
