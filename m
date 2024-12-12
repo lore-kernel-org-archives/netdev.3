@@ -1,193 +1,189 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B817A2153DD;
-	Thu, 12 Dec 2024 17:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0A62153DD
+	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022978; cv=none; b=ZOIrse7/GYRVH9EzzuUJzPCcM9wQeGyhYOWOUS87Pd/nGz1ZW/sVK6eXdKP4JZz5ySh/JBnf0QESVidL6Li/Hm6DvAV2rkVHESRslh8SORZErBcSTUVBqz7imRX7PZb+LbuVjNP1Th/BsCrAxvV/Cl62eUcWzHiD2c3VwQsu4ms=
+	t=1734022991; cv=none; b=lRrdP/gyLZqpUpQN6/qKV0U3bG9KFTnC9UvOrWeCGwmIa0j9PBL+Lh2gl0iebcamtbhktn2Vap13/RhEzw7GHhmR0BR6Tj/rqfQWzIs8gldyZ8BiMHGicPYG3LQwvbBeddraJvBdTOKKzeG4JMWYEbvlTQ4di2uUWGfgi2iwP9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022978; c=relaxed/simple;
-	bh=watSS0fbqpZzsEyFSLcvfFuZ8P0NH+THumoSLSiJVpE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=smD3hFrHN7PBotwTGBvJtvBDd3LeXURz+TL9d04TwzsNx0/jLvuRVQosuGcAWXSfbUcCI4+TBbjJV4CkgKaX9D3aO/c+L+slQq/c1ojhxfSfdUZWNZ4DSpfulS/+rUUXTl887MlLga5ar3FMHyYfr86dqVdzy7W+J00MOQClj3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMefTAdC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734022991; c=relaxed/simple;
+	bh=ToREWe4352M/z5GPHP7r8yDcvtRtOz+lPIMoKFtlTb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GE5nULMLuvSmSv7zYBFxa1NZBrGIGzYgxlFc+7Ryr7kXIX06o5HiFYUGziE07axKwzZkvWHrNOGAB0Jt3E9ScPiGu5ysPwOGoL89+6Y3InOhdEtR2SYWO5FPEULNRachUGWxDqzChle8AEK18mqXNXeihJ0wEYEB3cIajM5qmgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPa/VqaS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMefTAdC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67389C4CED3;
-	Thu, 12 Dec 2024 17:02:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPa/VqaS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA01C4CECE;
+	Thu, 12 Dec 2024 17:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734022978;
-	bh=watSS0fbqpZzsEyFSLcvfFuZ8P0NH+THumoSLSiJVpE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=oMefTAdC1o9FrilMO7zCuxGHjtpkebrdNsL5j3ShSTqRYIAiUgsWAsMFVpiG/Osul
-	 VUgXAUOa2P5X4mN/rdHDKXmLf2DFnMHqFv4ZMIkycfy4l19NtL5+u4ZZE9appWl63B
-	 x0dBOWkYQiFOQ9hnbHT14EVKoGAPJX/Ifwn3HftsEUWSucluT3yUKmCsZodFosKDrZ
-	 NNmTurhUDX8NEiKj/wSXCfYHfKYQh6KDiHiHP/66lQpTRohXeGhpOfYoMYHlWOrc3p
-	 0Rmz4xt5DDIpGgXMgUe5Bmj8BKjsIsTj8Y6UkizdX0WatmxDFBOZkMVNJDFrg30a8M
-	 fLtxOy6CXWH5g==
-Date: Thu, 12 Dec 2024 11:02:56 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Gur Stavi <gur.stavi@huawei.com>
-Cc: gongfan <gongfan1@huawei.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-doc@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Cai Huoqing <cai.huoqing@linux.dev>, Xin Guo <guoxin09@huawei.com>,
-	Shen Chenyang <shenchenyang1@hisilicon.com>,
-	Zhou Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>,
-	Shi Jing <shijing34@huawei.com>,
-	Meny Yossefi <meny.yossefi@huawei.com>
-Subject: Re: [RFC net-next v02 1/3] net: hinic3: module initialization and
- tx/rx logic
-Message-ID: <20241212170256.GA3347301@bhelgaas>
+	s=k20201202; t=1734022991;
+	bh=ToREWe4352M/z5GPHP7r8yDcvtRtOz+lPIMoKFtlTb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MPa/VqaSv61QtIxKlmN5WdbfzdyJFPWs0aqpD4eNUf0Qxmlz8WCa7B7Fgjoq4DMTQ
+	 8BxSNBFYsfhcZc0lBKJh5tV5XDJh0adH4rzKnyRJ63qN2Qlh3Jz0+tEWjS1LjbKRc3
+	 gbnBGIWCh+ruReR39MLT+IyqWBgXuU4cVt2TW+O/nRcecH56gfrf4uQMSXWRPrSHM0
+	 XU4II48dmQzGA7HayQl94u+atPT+LKzrO35aRhW7OzixlQbMZEVZ01H4bqjZWqJkEe
+	 5rC//BIhNgrF3EZhjJBOwH9YHnsU820iR1euhbyilwN4zvTPV57eWBhnTR2xzwQnhY
+	 1fLz2PFSkEyhQ==
+Date: Thu, 12 Dec 2024 18:03:08 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, nbd@nbd.name, sean.wang@mediatek.com,
+	Mark-MC.Lee@mediatek.com, lorenzo.bianconi83@gmail.com
+Subject: Re: [RFC net-next 0/5] Add ETS and TBF Qdisc offload for Airoha
+ EN7581 SoC
+Message-ID: <Z1sXTPeekJ5See_u@lore-desk>
+References: <cover.1733930558.git.lorenzo@kernel.org>
+ <20241211154109.dvkihluzdouhtamr@skbuf>
+ <Z1qqrVWV84DBZuCn@lore-desk>
+ <20241212150613.zhi3vbxuwsc3blui@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sB+GTkuP0EXgsnZH"
 Content-Disposition: inline
-In-Reply-To: <7d62ca11c809ac646c2fd8613fd48729061c22b3.1733990727.git.gur.stavi@huawei.com>
+In-Reply-To: <20241212150613.zhi3vbxuwsc3blui@skbuf>
 
-On Thu, Dec 12, 2024 at 02:04:15PM +0200, Gur Stavi wrote:
-> From: gongfan <gongfan1@huawei.com>
-> 
-> This is [1/3] part of hinic3 Ethernet driver initial submission.
-> With this patch hinic3 is a valid kernel module but non-functional driver.
 
-> +++ b/Documentation/networking/device_drivers/ethernet/huawei/hinic3.rst
-> @@ -0,0 +1,136 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +=====================================================================
-> +Linux kernel driver for Huawei Ethernet Device Driver (hinic3) family
-> +=====================================================================
-> +
-> +Overview
-> +========
-> +
-> +The hinic3 is a network interface card(NIC) for Data Center. It supports
+--sB+GTkuP0EXgsnZH
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Add space before "(".
+On Dec 12, Vladimir Oltean wrote:
+> On Thu, Dec 12, 2024 at 10:19:41AM +0100, Lorenzo Bianconi wrote:
+> > > Hi Lorenzo,
+> >=20
+> > Hi Vladimir,
+> >=20
+> > >=20
+> > > On Wed, Dec 11, 2024 at 04:31:48PM +0100, Lorenzo Bianconi wrote:
+> > > > Introduce support for ETS and TBF qdisc offload available in the Ai=
+roha
+> > > > EN7581 ethernet controller.
+> > > > Some DSA hw switches do not support Qdisc offloading or the mac chip
+> > > > has more fine grained QoS capabilities with respect to the hw switch
+> > > > (e.g. Airoha EN7581 mac chip has more hw QoS and buffering capabili=
+ties
+> > > > with respect to the mt7530 switch).=20
+> > > > Introduce ndo_setup_tc_conduit callback in order to allow tc to off=
+load
+> > > > Qdisc policies for the specified DSA user port configuring the hw s=
+witch
+> > > > cpu port (mac chip).
+> > >=20
+> > > Can you please make a detailed diagram explaining how is the conduit
+> > > involved in the packet data path for QoS? Offloaded tc on a DSA user
+> > > port is supposed to affect autonomously forwarded traffic too (like t=
+he
+> > > Linux bridge).
+> >=20
+> > I guess a typical use case would be the one below where the traffic fro=
+m the
+> > WAN port is forwarded to a DSA LAN one (e.g. lan0) via netfilter flowta=
+ble
+> > offload.
+> >=20
+> >             =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=90            =20
+> >             =E2=94=82               BR0               =E2=94=82        =
+    =20
+> >             =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=AC=E2=94=80=E2=94=80=E2=94=98            =20
+> > =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=90           =
+=20
+> > =E2=94=82DSA            =E2=94=82        =E2=94=82        =E2=94=82    =
+    =E2=94=82   =E2=94=82           =20
+> > =E2=94=82               =E2=94=82        =E2=94=82        =E2=94=82    =
+    =E2=94=82   =E2=94=82           =20
+> > =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=90      =E2=94=8C=
+=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=90   =E2=94=8C=E2=94=80=E2=94=80=
+=E2=96=BC=E2=94=80=E2=94=90   =E2=94=8C=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=
+=E2=94=90   =E2=94=8C=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=90 =E2=94=
+=82       =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> > =E2=94=82 =E2=94=82CPU=E2=94=82      =E2=94=82LAN0=E2=94=82   =E2=94=82=
+LAN1=E2=94=82   =E2=94=82LAN2=E2=94=82   =E2=94=82LAN3=E2=94=82 =E2=94=82  =
+     =E2=94=82WAN=E2=94=82
+> > =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=98      =E2=94=94=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98   =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=98   =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =E2=94=
+=82       =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> > =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98           =
+=20
+> >=20
+> > In this case the mac chip forwards (in hw) the WAN traffic to the DSA s=
+witch
+> > via the CPU port. In [0] we have the EN7581 mac chip architecture where=
+ we
+> > can assume GDM1 is the CPU port and GDM2 is the WAN port.
+> > The goal of this RFC series is to offload a Qdisc rule (e.g. ETS) on a =
+given
+> > LAN port using the mac chip QoS capabilities instead of creating the QoS
+> > discipline directly in the DSA hw switch:
+> >=20
+> > $tc qdisc replace dev lan0 root handle 1: ets bands 8 strict 2 quanta 1=
+514 1514 1514 3528 1514 1514
+> >=20
+> > As described above the reason for this approach would be to rely on the=
+ more
+> > fine grained QoS capabilities available on the mac chip with respect to=
+ the
+> > hw switch or because the DSA switch does not support QoS offloading.
+> >=20
+> > Regards,
+> > Lorenzo
+> >=20
+> > [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
+commit/?id=3D23020f04932701d5c8363e60756f12b43b8ed752
+>=20
+> Explain "the mac chip forwards (in hw) the WAN traffic to the DSA switch
+> via the CPU port". How many packets does airoha_dev_select_queue() see?
+> All of them, or only the first of a flow? What operations does the
+> offload consist of?
 
-> +Prime Physical Function (PPF) is responsible for the management of the
-> +whole NIC card. For example, clock synchronization between the NIC and
-> +the host.
-> +Any PF may serve as a PPF. The PPF is selected dynamically.
+I am referring to the netfilter flowtable offload where the kernel receives
+just the 3-way handshake of a TCP connection and then the traffic is fully
+offloaded (the hw receives a flower rule to route the traffic between
+interfaces applying NAT mangling if requested). Re-thinking about it,
+I guess it is better to post flowtable support first and then continue
+the discussion about QoS offloading, what do you think?
 
-Add blank line between paragraphs or reflow into a single paragraph.
+Regards,
+Lorenzo
 
-Is the PPF selected dynamically by the driver?  By firmware on the
-NIC?
+--sB+GTkuP0EXgsnZH
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +hinic3_pci_id_tbl.h       Supported device IDs.
-> +hinic3_hw_intf.h          Interface between HW and driver.
-> +hinic3_queue_common.[ch]  Common structures and methods for NIC queues.
-> +hinic3_common.[ch]        Encapsulation of memory operations in Linux.
-> +hinic3_csr.h              Register definitions in the BAR.
-> +hinic3_hwif.[ch]          Interface for BAR.
-> +hinic3_eqs.[ch]           Interface for AEQs and CEQs.
-> +hinic3_mbox.[ch]          Interface for mailbox.
-> +hinic3_mgmt.[ch]          Management interface based on mailbox and AEQ.
-> +hinic3_wq.[ch]            Work queue data structures and interface.
-> +hinic3_cmdq.[ch]          Command queue is used to post command to HW.
-> +hinic3_hwdev.[ch]         HW structures and methods abstractions.
-> +hinic3_lld.[ch]           Auxiliary driver adaptation layer.
-> +hinic3_hw_comm.[ch]       Interface for common HW operations.
-> +hinic3_mgmt_interface.h   Interface between firmware and driver.
-> +hinic3_hw_cfg.[ch]        Interface for HW configuration.
-> +hinic3_irq.c              Interrupt request
-> +hinic3_netdev_ops.c       Operations registered to Linux kernel stack.
-> +hinic3_nic_dev.h          NIC structures and methods abstractions.
-> +hinic3_main.c             Main Linux kernel driver.
-> +hinic3_nic_cfg.[ch]       NIC service configuration.
-> +hinic3_nic_io.[ch]        Management plane interface for TX and RX.
-> +hinic3_rss.[ch]           Interface for Receive Side Scaling (RSS).
-> +hinic3_rx.[ch]            Interface for transmit.
-> +hinic3_tx.[ch]            Interface for receive.
-> +hinic3_ethtool.c          Interface for ethtool operations (ops).
-> +hinic3_filter.c           Interface for mac address.
+-----BEGIN PGP SIGNATURE-----
 
-Could drop "." at end (or use it consistently).
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ1sXTAAKCRA6cBh0uS2t
+rK7yAQDKkWSmMnRY1Y45RFqPYGqs1he0Eu0S8a5KMFyT8LN6aAEAmmrlmDlpvvBE
+6GPUtdM8dyZnsC8GM0rgihJcNXPt5AE=
+=iyn0
+-----END PGP SIGNATURE-----
 
-s/mac/MAC/
-
-> +2 mailbox related events.
-> +
-> +MailBox
-
-s/MailBox/Mailbox/ since that's how you use it elsewhere.
-
-> +-------
-> +
-> +Mailbox is a communication mechanism between the hinic3 driver and the HW.
-
-> +The implementation of CEQ is the same as AEQ. It receives completion events
-> +form HW over a fixed size descriptor of 32 bits. Every device can have up
-> +to 32 CEQs. Every CEQ has a dedicated IRQ. CEQ only receives solicited
-> +events that are responses to requests from the driver. CEQ can receive
-> +multiple types of events, but in practice the hinic3 driver ignores all
-> +events except for HINIC3_CMDQ that represents completion of previously
-> +posted commands on a cmdq.
-
-s/form HW/from HW/
-
-> +Work queues are logical arrays of fixed size WQEs. The array may be spread
-> +over multiple non-contiguous pages using indirection table.
-
-Add blank line or wrap into single paragraph.
-
-> +Work queues are used by I/O queues and command queues.
-
-> +Every function, PF or VF, has a unique ordinal identification within the device.
-> +Many commands to management (mbox or cmdq) contain this ID so HW can apply the
-> +command effect to the right function.
-
-Add blank line or wrap into single paragraph.
-
-> +PF is allowed to post management commands to a subordinate VF by specifying the
-> +VFs ID. A VF must provide its own ID. Anti-spoofing in the HW will cause
-> +command from a VF to fail if it contains the wrong ID.
-
-> +config HINIC3
-> +	tristate "Huawei Intelligent Network Interface Card 3rd"
-> +	# Fields of HW and management structures are little endian and will not
-> +	# be explicitly converted
-
-I guess this comment is here to explain the !CPU_BIG_ENDIAN below?
-That's quite an unusual dependency.
-
-> +	depends on 64BIT && !CPU_BIG_ENDIAN
-
-> +++ b/drivers/net/ethernet/huawei/hinic3/Makefile
-> @@ -0,0 +1,21 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +# Copyright (c) Huawei Technologies Co., Ltd. 2024. All rights reserved.
-> +
-> +obj-$(CONFIG_HINIC3) += hinic3.o
-> +
-> +hinic3-objs := hinic3_hwdev.o \
-> +	       hinic3_lld.o \
-> +	       hinic3_common.o \
-> +	       hinic3_hwif.o \
-> +	       hinic3_hw_cfg.o \
-> +	       hinic3_queue_common.o \
-> +	       hinic3_mbox.o \
-> +	       hinic3_hw_comm.o \
-> +	       hinic3_wq.o \
-> +	       hinic3_nic_io.o \
-> +	       hinic3_nic_cfg.o \
-> +	       hinic3_tx.o \
-> +	       hinic3_rx.o \
-> +	       hinic3_netdev_ops.o \
-> +	       hinic3_rss.o \
-> +	       hinic3_main.o
-> \ No newline at end of file
-
-Add newline.
+--sB+GTkuP0EXgsnZH--
