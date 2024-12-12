@@ -1,156 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388C32156FF
-	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 14:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878352080FC
+	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 15:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015520; cv=none; b=pkr/LwJBEkQD0ETX43ONe1cMb2J6QaptE7iV2DtdRyQhU0IjxqimZ354uOUIMPjzX4ZQ7M3LFWWElqVwaJowJahPSzPbteuSqPTZlqUqHA9sGX4IiIQAFNhQ2N9csMF6G9bOMHNsV13dJTP2yNpYRcnkCBZQfS3Gd23VPAjoLX0=
+	t=1734015981; cv=none; b=P6Auaysty+iT9nAr67kXzMBuBMWutfjdG8JzeBeEiN4SATxkeqCPhL+mMDd/zrOIm2kzRTWrvpXPZAVrj2WHqXwSnLSoEl3px8PFwvyPU4whb0YiQ50KMMhFd+rb+hN4kfAtKZsFEAtQ/EwwQyyWImqIGIXowfuQH097sWtaAWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015520; c=relaxed/simple;
-	bh=G6Z2o7H+YRsuJn5EHuxMgQuZNMoz/Zu4aqlYRNiWXyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IPrCEQE4K2RocEIAeBslrZf1QSJoP7JjiPJLvf//UyL/9GYd9uAYGsnEWi2pXBWffTDkoB/xAen25The4WzGPaAHmAitD9TIMmJIwzT/EF+mSrx/R2qafCeiq5phxxBwh2jssmit5P7G8LMGiYAbTsY92OI8nhveSds4gjTgOFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ieWMtjHx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734015981; c=relaxed/simple;
+	bh=5URbwwsG9pto6x/IrUl8wAnLkIQt1yBTsO7yAEr6P2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jpago3W5aDEo3mUBuadLa8QqFIDvyLQH6774upR9TWOqOSbj4QhsFj9yibCZ2FetqVlJoO+SQWipsyCXxmnRgpMgopxLnR953qB52GY3+WLXYJPDphA+oepX+LYzuMQCtDQ+zTa3KxyGm8/qlOU7/l/ffDBQtvm7UxPx/h/zCkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N8EuWItT; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ieWMtjHx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734015517;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mp7PByfrT26c6XlUU6lXZIxvrN1DU5qMvcLQpbxnk5A=;
-	b=ieWMtjHx/VA8JrMSRqY63odCgsUs32B8CbSf0fmzSTCiV7aAXJ3Uxxmmio9VfBnYnzw4Db
-	5n/VHlD1v+BrNfgsJRb5dF5JoUy/vATckEKVm1XrLdTjwgrc0appiED284JnH/YTXkYbHp
-	xugjBJDACvd8J4C0Z9aE59oVsIjH73c=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-158-WChcqLLIMQayHBv_ao4-8Q-1; Thu, 12 Dec 2024 09:58:36 -0500
-X-MC-Unique: WChcqLLIMQayHBv_ao4-8Q-1
-X-Mimecast-MFC-AGG-ID: WChcqLLIMQayHBv_ao4-8Q
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43627bb20b5so2996215e9.1
-        for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 06:58:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8EuWItT"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa67bc91f88so11247266b.0
+        for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 07:06:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734015977; x=1734620777; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3X9RXZ5kaBuqnND7AIIIsHg5ne8BY/XG6TNoS8WiOA0=;
+        b=N8EuWItTMLj7FAoMJRrNV2eENaN12lPQILO4gHjnvdkvSr01g8nR8gaS2EPo69ZEup
+         pkUIizDwCxywVHvDEtmWN2rCs1U4t5VPL8huSCM5daUva9+hoJjaqmjO+iBp3BjxlmNV
+         CXk3Bu/NC/J3OXf1wffnXOst3SOKsPIjB5RhYQ5R++e9aep6bsSo2ySI8vDZBZru1Tn/
+         d/oUOQ0S5rTyaB6FHQfLf9ub1WPPLV1dSVNKKRRhKIk8CmDCdbc9q+wCp1EHNZ7ZH5v0
+         JbTWU2A9hGHY0OSW5lic49P6Wq61+MGB7c1KHRYFsuzCAiNGlGfMdOT1bfQXR1ednn8/
+         KqfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734015514; x=1734620314;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1734015977; x=1734620777;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mp7PByfrT26c6XlUU6lXZIxvrN1DU5qMvcLQpbxnk5A=;
-        b=axA8knbo0vtMRJlbKBO2msJnAQBJLb7bXo7Xa0gXBpfVtwq3UF/WP/kmraqKM5tHvB
-         vC5kuq4jstkzoGd/uftgEvmxmQhcco7spO3wTgxoeeL3e+tOU6PjYhvM9ZL9Q8NVkz5t
-         pTISdyFz/DWmGPsnqZtrwYWK0GrZvqBm+LSZ6UUDWBlQa3gkylS8CcofGKCevpVAFmLv
-         qD77DIsuWE25Tntl7w+XVK508OuEQjSiPTp/cKyGBF9kzW5PbA3zheD8DadfMpGzMrNC
-         zZHtyVDJfK8EDGVgbjRDJeVLmMmCeQ36uF/Pz3KuXRINeto4GWS1ugqZ15McnwmsLxf6
-         3S+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVDE1m8EEzD4xQoTpmjksJXDtcGzQTY0j2E7HGvwpoKfrcyV5lZ6bpmKRld+wUekYfhnE2K+O4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS7Ki4SyVQ82IIarwaK2Z7WuTve23+/3vVvOlwOKVQh06peu/0
-	DD3Z7alRLRm6KmrVok5dN/aePx7gr6LC9guDYEdoUWIqiSipL4eauaJ7WWho5OXkZvEgNagzWVn
-	H+vMmQdFpbG5oXldRkTAypA0yIVSVsvQTGu7Yh91svTt+dyir8UYQEA==
-X-Gm-Gg: ASbGncvlM58QIqtKNv85hZ03XgWAysToJvGssdHBQLAZLw05FnfgE/v4OX5U+m8RzL0
-	cxE5rHEYMHQxFKQCTOsiPOOOLAZCchtx5MhXHsxkUpAT/uJpEMvV/vp8sax1bW4zCtuz8N6wbtA
-	IQX4C6amRhCBTAFJEZWwZVZz44sMeoMe2KI0fhYHmDnfLmzQhO5fvO9ofdgffMKQzkWGuT+5KW+
-	wtsyXRPDHzWFCOIZg7zzai4kY5FX6Ni5DYtPAHz2yQ6sFq4ONZBoJ0kFkqJ/SL73q6Hdmm368q6
-	HPzDZKQ=
-X-Received: by 2002:a05:600c:1e89:b0:435:21a1:b109 with SMTP id 5b1f17b1804b1-436228239d4mr34776095e9.2.1734015514531;
-        Thu, 12 Dec 2024 06:58:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHoQPXURHNGvrny3f7vl2oVT9jWXY7D4FX6dkSlxmx2R9PGBk/+viTtA90lBPMFXjybTLaFQQ==
-X-Received: by 2002:a05:600c:1e89:b0:435:21a1:b109 with SMTP id 5b1f17b1804b1-436228239d4mr34775655e9.2.1734015514130;
-        Thu, 12 Dec 2024 06:58:34 -0800 (PST)
-Received: from [192.168.88.24] (146-241-48-67.dyn.eolo.it. [146.241.48.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559edc3sm19213025e9.22.2024.12.12.06.58.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2024 06:58:33 -0800 (PST)
-Message-ID: <a6d7a4ee-929e-4bee-80bf-a7b4f4f89f4a@redhat.com>
-Date: Thu, 12 Dec 2024 15:58:30 +0100
+        bh=3X9RXZ5kaBuqnND7AIIIsHg5ne8BY/XG6TNoS8WiOA0=;
+        b=vm44ctgVl89CUHiuCRo9yGLYWas19th0TyUBx8smfgsUDi8bTsllij13fsfjBpYwq2
+         ngn5nkhGOIediG5rIfI+YStskf7qvwYDGp8UTyUu5u3rTOk4vKqgg7i0dJWigJ3qZbUK
+         ZwDE+IcwsFeIXxJyJBk5lILhTVUxHFL8djKsKJk9ARTF54mtGXkJXEmvVkDxE6bE1Qg1
+         q8yMHFXLTL3LuJr23EY6QbpVvo74E0H0Y8sL7mG/AvNrjL/6HcnctOj2wynIhw5S7ol3
+         cadZmeemSXBIbPKoZ3n/J8IKaOBut7ZtdaEPnUGvSboglEqk967UNOVYxJnlAYAP0VJ0
+         0zMA==
+X-Gm-Message-State: AOJu0YxK6sw8aNkLN7KUf15tWgLPjL5O85qukz50jltksUMAp/BthT2t
+	z49wQoOdVByikThizVzn3DLP1xzjaZ1KFhaVfxM+Rny2wUPAoSQf
+X-Gm-Gg: ASbGncsxCERrNsGajnKLv4ORZ3WjtUYJQ2XX1Difh4k3cVUdVUg/uE7lXqJ3CfdgHZc
+	Q/X6y2d6Id9Kjxprj80tvK4genWLfGmlvToUkQDlXc/tDsL30a5pGjA4uzNwxjMX4Y0epZjTkW2
+	Jh0ZlIcx8C8wLVnoEXMpKcDTMLuyU4a4FKu6Fo1p4BMZa16OwrGgpaLylxi0aP/vz7A2W6fFGxf
+	Hrj/92NP1nlf9BEvJwBiSsez/AlWIWtZro2IU9VTutt
+X-Google-Smtp-Source: AGHT+IFXvOKogdYXBf0tSnXoAJsDqtqCCxrYnjkKv25vtP7nEldA5VbCFhzWzNTIO0xzXcbhrLjR8Q==
+X-Received: by 2002:a17:907:3f2a:b0:aa6:8dd8:8152 with SMTP id a640c23a62f3a-aa6b134ed58mr299305066b.10.1734015976359;
+        Thu, 12 Dec 2024 07:06:16 -0800 (PST)
+Received: from skbuf ([86.127.124.81])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6a58ee6basm370077566b.119.2024.12.12.07.06.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 07:06:15 -0800 (PST)
+Date: Thu, 12 Dec 2024 17:06:13 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, nbd@nbd.name, sean.wang@mediatek.com,
+	Mark-MC.Lee@mediatek.com, lorenzo.bianconi83@gmail.com
+Subject: Re: [RFC net-next 0/5] Add ETS and TBF Qdisc offload for Airoha
+ EN7581 SoC
+Message-ID: <20241212150613.zhi3vbxuwsc3blui@skbuf>
+References: <cover.1733930558.git.lorenzo@kernel.org>
+ <20241211154109.dvkihluzdouhtamr@skbuf>
+ <Z1qqrVWV84DBZuCn@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/11] Remove devres from pci_intx()
-To: Philipp Stanner <pstanner@redhat.com>, amien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Basavaraj Natikar <basavaraj.natikar@amd.com>, Jiri Kosina
- <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
- <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>,
- Manish Chopra <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Rasesh Mody <rmody@marvell.com>,
- GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>,
- Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Alex Williamson <alex.williamson@redhat.com>, Juergen Gross
- <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Mario Limonciello <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>,
- Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
- Kevin Tian <kevin.tian@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yi Liu <yi.l.liu@intel.com>, Kunwu Chan <chentao@kylinos.cn>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- Ankit Agrawal <ankita@nvidia.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-References: <20241209130632.132074-2-pstanner@redhat.com>
- <20241209130632.132074-13-pstanner@redhat.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241209130632.132074-13-pstanner@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1qqrVWV84DBZuCn@lore-desk>
 
-On 12/9/24 14:06, Philipp Stanner wrote:
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. This hybrid nature is undesirable.
+On Thu, Dec 12, 2024 at 10:19:41AM +0100, Lorenzo Bianconi wrote:
+> > Hi Lorenzo,
 > 
-> Since all users of pci_intx() have by now been ported either to
-> always-managed pcim_intx() or never-managed pci_intx_unmanaged(), the
-> devres functionality can be removed from pci_intx().
+> Hi Vladimir,
 > 
-> Consequently, pci_intx_unmanaged() is now redundant, because pci_intx()
-> itself is now unmanaged.
+> > 
+> > On Wed, Dec 11, 2024 at 04:31:48PM +0100, Lorenzo Bianconi wrote:
+> > > Introduce support for ETS and TBF qdisc offload available in the Airoha
+> > > EN7581 ethernet controller.
+> > > Some DSA hw switches do not support Qdisc offloading or the mac chip
+> > > has more fine grained QoS capabilities with respect to the hw switch
+> > > (e.g. Airoha EN7581 mac chip has more hw QoS and buffering capabilities
+> > > with respect to the mt7530 switch). 
+> > > Introduce ndo_setup_tc_conduit callback in order to allow tc to offload
+> > > Qdisc policies for the specified DSA user port configuring the hw switch
+> > > cpu port (mac chip).
+> > 
+> > Can you please make a detailed diagram explaining how is the conduit
+> > involved in the packet data path for QoS? Offloaded tc on a DSA user
+> > port is supposed to affect autonomously forwarded traffic too (like the
+> > Linux bridge).
 > 
-> Remove the devres functionality from pci_intx(). Have all users of
-> pci_intx_unmanaged() call pci_intx(). Remove pci_intx_unmanaged().
+> I guess a typical use case would be the one below where the traffic from the
+> WAN port is forwarded to a DSA LAN one (e.g. lan0) via netfilter flowtable
+> offload.
 > 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> ---
->  drivers/misc/cardreader/rtsx_pcr.c            |  2 +-
->  drivers/misc/tifm_7xx1.c                      |  6 +--
->  .../net/ethernet/broadcom/bnx2x/bnx2x_main.c  |  2 +-
->  drivers/net/ethernet/brocade/bna/bnad.c       |  2 +-
->  drivers/ntb/hw/amd/ntb_hw_amd.c               |  4 +-
->  drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
->  drivers/pci/devres.c                          |  4 +-
->  drivers/pci/msi/api.c                         |  2 +-
->  drivers/pci/msi/msi.c                         |  2 +-
->  drivers/pci/pci.c                             | 43 +------------------
->  drivers/vfio/pci/vfio_pci_core.c              |  2 +-
->  drivers/vfio/pci/vfio_pci_intrs.c             | 10 ++---
->  drivers/xen/xen-pciback/conf_space_header.c   |  2 +-
->  include/linux/pci.h                           |  1 -
->  14 files changed, 22 insertions(+), 62 deletions(-)
+>             ┌─────────────────────────────────┐             
+>             │               BR0               │             
+>             └───┬────────┬────────┬────────┬──┘             
+> ┌───────────────┼────────┼────────┼────────┼───┐            
+> │DSA            │        │        │        │   │            
+> │               │        │        │        │   │            
+> │ ┌───┐      ┌──▼─┐   ┌──▼─┐   ┌──▼─┐   ┌──▼─┐ │       ┌───┐
+> │ │CPU│      │LAN0│   │LAN1│   │LAN2│   │LAN3│ │       │WAN│
+> │ └───┘      └────┘   └────┘   └────┘   └────┘ │       └───┘
+> └──────────────────────────────────────────────┘            
+> 
+> In this case the mac chip forwards (in hw) the WAN traffic to the DSA switch
+> via the CPU port. In [0] we have the EN7581 mac chip architecture where we
+> can assume GDM1 is the CPU port and GDM2 is the WAN port.
+> The goal of this RFC series is to offload a Qdisc rule (e.g. ETS) on a given
+> LAN port using the mac chip QoS capabilities instead of creating the QoS
+> discipline directly in the DSA hw switch:
+> 
+> $tc qdisc replace dev lan0 root handle 1: ets bands 8 strict 2 quanta 1514 1514 1514 3528 1514 1514
+> 
+> As described above the reason for this approach would be to rely on the more
+> fine grained QoS capabilities available on the mac chip with respect to the
+> hw switch or because the DSA switch does not support QoS offloading.
+> 
+> Regards,
+> Lorenzo
+> 
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=23020f04932701d5c8363e60756f12b43b8ed752
 
-For the net bits:
-
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-
+Explain "the mac chip forwards (in hw) the WAN traffic to the DSA switch
+via the CPU port". How many packets does airoha_dev_select_queue() see?
+All of them, or only the first of a flow? What operations does the
+offload consist of?
