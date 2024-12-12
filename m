@@ -1,102 +1,174 @@
-Received: from njjs-sys-mailin01.njjs.baidu.com (mx315.baidu.com [180.101.52.204])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C628158DB1
-	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 11:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.101.52.204
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E48158DB1;
+	Thu, 12 Dec 2024 11:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734004059; cv=none; b=VET/CM9ZNqf3TkbR8XUFjEviw0WNEYj9c1ia1G/GxrJamOudHrGtsaicZMaH42CfbQ1Rz1zMdtlXJ8tb66E0nO4nJS1TBK7iZJiiXOlGo0ggRrHPnDQ/r4gtBUHKUw23Zo/xt3clrfMYFqtzYW/jV+A2jyNSdqUwMGNZg/OA1G0=
+	t=1734004274; cv=none; b=NsWGVhJueTZZMUWoTMa7jOwLBJhzs4Ku1Khmu4AxbGo1k89ZMEQ+e1zgFeOd6y3pg0aDTFpONtMRgqRaJFcOWfBKOTfpBwd6jIdjxmbOXPxV7UwwSWNhFYINWx/QOkOjbvFVGHhS545SItbzl+XbvWsH44kPayuxWOazFGyI8yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734004059; c=relaxed/simple;
-	bh=vxemn+dWccA8WDl7TjdH5dLFJOSlbDcfvDOBikqsoJo=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=JVz8mQ9sRY6aM7Gy6i5/HQ68/ZatIum20d3Xc8pg8qV2K1oGZZAmeWH6TmG8dHTMiEVKvBfeQadoHgw+zNeWqy/RBi7RfI66lQhmsfReuFRtbXKLRVBWokiePeyElSkxBYscLiB88JRVRBHTKfVwlxPpJdQ4ipHYCH4HTlGEQYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=180.101.52.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-Received: from localhost (bjhw-sys-rpm015653cc5.bjhw.baidu.com [10.227.53.39])
-	by njjs-sys-mailin01.njjs.baidu.com (Postfix) with ESMTP id 9F04D7F0004B;
-	Thu, 12 Dec 2024 19:47:25 +0800 (CST)
-From: Li RongQing <lirongqing@baidu.com>
-To: saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	leon@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch
-Cc: Li RongQing <lirongqing@baidu.com>,
-	Shuo Li <lishuo02@baidu.com>
-Subject: [PATCH][net-next] net/mlx5e: avoid to call net_dim and dim_update_sample
-Date: Thu, 12 Dec 2024 19:47:23 +0800
-Message-Id: <20241212114723.38844-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.9.4
+	s=arc-20240116; t=1734004274; c=relaxed/simple;
+	bh=oubn445uqd0v0CXdIPwBnssEZajwfyX6Dn3lPr8i5DE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=utmtnu+OeUcluo4SrMgmlNMKcJA9HYTV30wmKsKI1ksIGANtsgQGeyQP20LFE40sbfqHpvpWZI3+2NcI3bcT8eH9/CflxvKWQLXn9xP4Lz+ZW6gveej/xEQe6+rt26mJ1aIxrpWs41cGDJskKEe71isLpvzjaoMmvGCDn/uFEx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Y89kl3SYqz6LDfv;
+	Thu, 12 Dec 2024 19:50:07 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id E6EED1403A0;
+	Thu, 12 Dec 2024 19:51:02 +0800 (CST)
+Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Dec
+ 2024 12:50:53 +0100
+From: Gur Stavi <gur.stavi@huawei.com>
+To: Gur Stavi <gur.stavi@huawei.com>, gongfan <gongfan1@huawei.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	<linux-doc@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, Cai Huoqing
+	<cai.huoqing@linux.dev>, Xin Guo <guoxin09@huawei.com>, Shen Chenyang
+	<shenchenyang1@hisilicon.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>, Meny Yossefi
+	<meny.yossefi@huawei.com>
+Subject: [RFC net-next v02 0/3] net: hinic3: Add a driver for Huawei 3rd gen NIC
+Date: Thu, 12 Dec 2024 14:04:14 +0200
+Message-ID: <cover.1733990727.git.gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-High cpu usage for net_dim is seen still after commit 61bf0009a765
-("dim: pass dim_sample to net_dim() by reference"), the calling
-net_dim can be avoid under network low throughput or pingpong mode by
-checking the event counter, even under high throughput, it maybe only
-rx or tx direction
+The patch-set contains driver for Huawei's 3rd generation HiNIC
+Ethernet device that will be available in the future.
 
-And don't initialize dim_sample variable, since it will gets
-overwritten by dim_update_sample
+This is an SRIOV device, designed for data centers.
+Initially, the driver only supports VFs.
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Shuo Li <lishuo02@baidu.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+Following the discussion over RFC01, the code will be submitted in
+separate smaller patches where until the last patch the driver is
+non-functional.
+This RFC02 is an overall view of the entire driver but every patch will be
+posted as a standalone submission.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index 7610829..7c525e9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -49,11 +49,19 @@ static inline bool mlx5e_channel_no_affinity_change(struct mlx5e_channel *c)
- static void mlx5e_handle_tx_dim(struct mlx5e_txqsq *sq)
- {
- 	struct mlx5e_sq_stats *stats = sq->stats;
--	struct dim_sample dim_sample = {};
-+	struct dim_sample dim_sample;
-+	u16 nevents;
- 
- 	if (unlikely(!test_bit(MLX5E_SQ_STATE_DIM, &sq->state)))
- 		return;
- 
-+	if (sq->dim->state == DIM_MEASURE_IN_PROGRESS) {
-+		nevents = BIT_GAP(BITS_PER_TYPE(u16), sq->cq.event_ctr,
-+						  sq->dim->start_sample.event_ctr);
-+		if (nevents < DIM_NEVENTS)
-+			return;
-+	}
-+
- 	dim_update_sample(sq->cq.event_ctr, stats->packets, stats->bytes, &dim_sample);
- 	net_dim(sq->dim, &dim_sample);
- }
-@@ -61,11 +69,19 @@ static void mlx5e_handle_tx_dim(struct mlx5e_txqsq *sq)
- static void mlx5e_handle_rx_dim(struct mlx5e_rq *rq)
- {
- 	struct mlx5e_rq_stats *stats = rq->stats;
--	struct dim_sample dim_sample = {};
-+	struct dim_sample dim_sample;
-+	u16 nevents;
- 
- 	if (unlikely(!test_bit(MLX5E_RQ_STATE_DIM, &rq->state)))
- 		return;
- 
-+	if (rq->dim->state == DIM_MEASURE_IN_PROGRESS) {
-+		nevents = BIT_GAP(BITS_PER_TYPE(u16), rq->cq.event_ctr,
-+						  rq->dim->start_sample.event_ctr);
-+		if (nevents < DIM_NEVENTS)
-+			return;
-+	}
-+
- 	dim_update_sample(rq->cq.event_ctr, stats->packets, stats->bytes, &dim_sample);
- 	net_dim(rq->dim, &dim_sample);
- }
--- 
-2.9.4
+Changes:
+
+V01: https://lore.kernel.org/netdev/cover.1730290527.git.gur.stavi@huawei.com
+* Reduce overall line of code by removing optional functionality.
+* Break down into smaller patches.
+
+gongfan (3):
+  net: hinic3: module initialization and tx/rx logic
+  net: hinic3: management interfaces
+  net: hinic3: sw and hw initialization code
+
+ .../device_drivers/ethernet/huawei/hinic3.rst | 136 +++
+ MAINTAINERS                                   |   7 +
+ drivers/net/ethernet/huawei/Kconfig           |   1 +
+ drivers/net/ethernet/huawei/Makefile          |   1 +
+ drivers/net/ethernet/huawei/hinic3/Kconfig    |  16 +
+ drivers/net/ethernet/huawei/hinic3/Makefile   |  25 +
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.c  | 898 ++++++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.h  | 150 +++
+ .../ethernet/huawei/hinic3/hinic3_common.c    |  98 ++
+ .../ethernet/huawei/hinic3/hinic3_common.h    |  54 ++
+ .../net/ethernet/huawei/hinic3/hinic3_csr.h   |  74 ++
+ .../net/ethernet/huawei/hinic3/hinic3_eqs.c   | 786 +++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_eqs.h   | 128 +++
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    | 266 ++++++
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.h    |  62 ++
+ .../ethernet/huawei/hinic3/hinic3_hw_comm.c   | 412 ++++++++
+ .../ethernet/huawei/hinic3/hinic3_hw_comm.h   |  42 +
+ .../ethernet/huawei/hinic3/hinic3_hw_intf.h   | 248 +++++
+ .../net/ethernet/huawei/hinic3/hinic3_hwdev.c | 569 +++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_hwdev.h |  82 ++
+ .../net/ethernet/huawei/hinic3/hinic3_hwif.c  | 430 +++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_hwif.h  |  91 ++
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   | 172 ++++
+ .../net/ethernet/huawei/hinic3/hinic3_lld.c   | 417 ++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_lld.h   |  20 +
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  | 417 ++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_mbox.c  | 844 ++++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_mbox.h  | 147 +++
+ .../net/ethernet/huawei/hinic3/hinic3_mgmt.c  |  21 +
+ .../net/ethernet/huawei/hinic3/hinic3_mgmt.h  |  14 +
+ .../huawei/hinic3/hinic3_mgmt_interface.h     | 212 +++++
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 518 ++++++++++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   | 395 ++++++++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   |  76 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   | 107 +++
+ .../ethernet/huawei/hinic3/hinic3_nic_io.c    | 885 +++++++++++++++++
+ .../ethernet/huawei/hinic3/hinic3_nic_io.h    | 142 +++
+ .../huawei/hinic3/hinic3_pci_id_tbl.h         |  10 +
+ .../huawei/hinic3/hinic3_queue_common.c       |  65 ++
+ .../huawei/hinic3/hinic3_queue_common.h       |  51 +
+ .../net/ethernet/huawei/hinic3/hinic3_rss.c   | 378 ++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_rss.h   |  14 +
+ .../net/ethernet/huawei/hinic3/hinic3_rx.c    | 620 ++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_rx.h    | 104 ++
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 817 ++++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_tx.h    | 141 +++
+ .../net/ethernet/huawei/hinic3/hinic3_wq.c    | 132 +++
+ .../net/ethernet/huawei/hinic3/hinic3_wq.h    |  87 ++
+ 48 files changed, 11382 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/huawei/hinic3.rst
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/Kconfig
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/Makefile
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_common.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_common.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_csr.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_eqs.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_hwif.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_lld.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_lld.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mbox.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_queue_common.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_queue_common.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rss.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_tx.h
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_wq.c
+ create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_wq.h
+
+
+base-commit: 65fb414c93f486cef5408951350f20552113abd0
+--
+2.45.2
 
