@@ -1,46 +1,46 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2077.outbound.protection.outlook.com [40.107.237.77])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2078.outbound.protection.outlook.com [40.107.96.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB521D9353
-	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 21:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1139A1B21AA
+	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 21:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734039146; cv=fail; b=AixgNEY2Sm7usow+PypzXpVkF6OVjVf4ZBtPXG05qL9JMI7D4oCNcvQkTVeCdsfaLcrcuiuc8b+xK6CFx73q9vVulH1bdKBnthGgm3aNHZy6QqJh9W7l5QTKGtuq0px+YrIILqy6VMLnTQvxWpyIhZajMMhqrrc39M82pBLUlEY=
+	t=1734039147; cv=fail; b=sCx8n/LmVJkHBj1iBZvaykUCtEuLRWzkbehua/oDF0PAvgHkZG4HDg7IjqX+S6T6xwZcv4NyZqRJiBuBFfBe9nKWnHBZAI3qIF264+5acQCnoABuhSgKVxVyzblch3YdIFvavi8odRiC79Qol7Plt7/EfvMl2f+StPXo5o4sRo4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734039146; c=relaxed/simple;
-	bh=HpsaH56UpRcwfr3bFuJYIS3pxwzpiUPyb8ag9tfLJ54=;
+	s=arc-20240116; t=1734039147; c=relaxed/simple;
+	bh=wsnuJA5O4s62G60RQvmi5CXZ1UBveF3b7fp2NO7sbzM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jBxGHwWzFR4ZTy3S/cdsT+hLkzi9DZ2whqODh1bw0LEDZW6NmWWKya6OjNskqIiEdqOYWlZMIxoQqSWca9NYyk0GJPeu0TcQUCNgPAcZ2pP5XTgiMnd/2wmwP4he/pZTZtWMGzPgE/uZhZ3m47X5qefimmZjU9eQXFssJicQYIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FtRSmA1/; arc=fail smtp.client-ip=40.107.237.77
+	 MIME-Version:Content-Type; b=oX6S3keD1gMrqsxznGoAxFu1x96NyFwBCxRBV2kbtoABA3xOw1L5OeaC+nhwbq1B3G14gb4WxQCq3tEkHhzamm5zRozyXzayQSqQqVryyXYbvq9WeqdPPCggyD78X4gyLrMZXMqBEYidAG6mIW3TAy1xImLgXdBzsQuaZk0H15I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QBUMz+aX; arc=fail smtp.client-ip=40.107.96.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FtRSmA1/"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QBUMz+aX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P9LA2rJ23MATedjpjHmGeWkWicH0mQZKQsI8rvdKJCByOKqLXBBaAAStLMJhXus7c/AZVH/rSYszuOCgZADulF6bdmN2LpUJfI+8dIxQwCArd+jvszfnL1KLIYCQy/G7AWDNq4jO4Pxab8rlpUx+q/ENtmQh/CZ/fbZ1JB2DESqSG/AaoucDWxkV4FcM/BRJx4ybWpQBmb6wIqlSskTaZqmETqtsNbwhGMr8IW5SSw6ipJjMnwIMJ6HS8Qxzm5oXzizTtXrn0dm5+n7YrChYVRUjsdzSVDsdyUjF+6QKxuhUUhEMu7hOpuYZSyMOUNuqZSOCHO2w/sPTVXqeRiA8CQ==
+ b=NAJ0XAKIwj92wY3XegvOzuBOhe/5sTslVRvOFckvdpDV9lRwOnmgwRwsJWHuedxfK/5dAtslS0sd3rGklJN4K/dqDwUrlbyWSe3tjwsWK28wmm0wmb0/slq8K4AbSdDgIk8lYKTlNuT4NJTADpzK0dDMI/TFIDUkgoY65myPHkzIRHV02/NbIFIzuuZjaK3MmCtUjAk3fGrUOUnjgf/5P1uuTyGWZLwpXdTfo+jsXHnzDmaPM9xhg8EwvU0cX4UM2oq22o8S3QhbYEjVafnkTMSNC3sOJgv1O2ntbfm6GXhjX2fCC2+NezkECi5q7IrFXnh0oCAknijin8Ei820hbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vPMctx9mD0dB93bQg7HckZBnzyMCw4UeqoPD7OHyfWA=;
- b=gEqkb6VQSkDAyelAPZNwHA0fby7sj2NwDkJ/lfy6TD65KcKFInpKvvBTdleQRaU9G8UVwtV017/uMKK62q7RSjBJLf64jdQFcUT5BiZoch1f30VtZsWwHC8oWqbylgPs6mRfOBpYX/QcuxYaXkCWBwN2mQpPQI1abv9D/6wWQuj5a4329T+of0Ogy8p+qD2oQ9pB85fp39EhHoNknVqAl5iPrVtskTs7bxGo65WhOlsOVU2UYJO9ehwyVuvEZWdlLzOxdY7XHx+gq3FAH2iIugnNDvx5LXWKsJGRMbvoCDVKaTKuHowD8jk4BTG0P3E6Al4s4KPyhXa2m7pl29e4aQ==
+ bh=8tnmOvRBipRO86D2hN7Zrwe3H1wQlpdNSx7ldcKH7/s=;
+ b=X9bvRCqzBUV7oeXGUFjoMEm5jZ034P9h/fuTVcgPGWZw5bnjdjzBPLaWGecS+bORm7tfMW61nnFQHJuvPHvALo0JTEqvCKno1fSWJQbTucc+uGR67YqhDDaIbZRguupF2Dz43zStnNULj6pTfmrXiR4REFTvhtq4NNEh95w5/eH99vKupWBKBDgulanHTSoyZYFim3pbklYk/vGD64t02PzgvwkUw4jnM1uv7TmMEKX9p4gOlBCSy/iKfazm9Tdx3wa0uzsaAOip2QezVF8NJGLDdTiVT0cFc7ehDfx+hvdhhJG1bTZ2L1iCKJuWWL2OgRdT10b4Y8wttpV9aWqhsQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vPMctx9mD0dB93bQg7HckZBnzyMCw4UeqoPD7OHyfWA=;
- b=FtRSmA1/EP6RiVhvVxStbAs73bl77IIrl++3+GSTn0gBcF3Fb7Pu02Cu01MLzHCAEbZKBZv7AXBAG2Obocdon3ffUQMqRQYxLYCIc0kj1k73NqutJWplVr/wh90YMXW13W8HDCxt5nJsPKOX76a/2luxeS2dNvd75WMPIxZqyu4=
-Received: from MW2PR2101CA0001.namprd21.prod.outlook.com (2603:10b6:302:1::14)
- by IA1PR12MB8358.namprd12.prod.outlook.com (2603:10b6:208:3fa::17) with
+ bh=8tnmOvRBipRO86D2hN7Zrwe3H1wQlpdNSx7ldcKH7/s=;
+ b=QBUMz+aXXkJZhwfeiqZ4QtzV3LePblt9eXN429CTH60KkXsHSRQcmRn8oW4Qtgb687ph5ekEnE6gejqz7PS5STQkZF+1i7qsFdmcc6kxr4ylY9akJ5oODGXMCcZwiREzn3yi4J39wZDC19KbtjAoi8uD+q+YwlbztszvoA5Q2cA=
+Received: from MW2PR2101CA0010.namprd21.prod.outlook.com (2603:10b6:302:1::23)
+ by DM4PR12MB7576.namprd12.prod.outlook.com (2603:10b6:8:10c::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.17; Thu, 12 Dec
- 2024 21:32:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Thu, 12 Dec
+ 2024 21:32:22 +0000
 Received: from MWH0EPF000971E8.namprd02.prod.outlook.com
- (2603:10b6:302:1:cafe::82) by MW2PR2101CA0001.outlook.office365.com
- (2603:10b6:302:1::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8272.7 via Frontend Transport; Thu,
- 12 Dec 2024 21:32:19 +0000
+ (2603:10b6:302:1:cafe::e) by MW2PR2101CA0010.outlook.office365.com
+ (2603:10b6:302:1::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8272.4 via Frontend Transport; Thu,
+ 12 Dec 2024 21:32:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -50,19 +50,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  MWH0EPF000971E8.mail.protection.outlook.com (10.167.243.68) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8251.15 via Frontend Transport; Thu, 12 Dec 2024 21:32:19 +0000
+ 15.20.8251.15 via Frontend Transport; Thu, 12 Dec 2024 21:32:21 +0000
 Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 12 Dec
- 2024 15:32:18 -0600
+ 2024 15:32:19 -0600
 From: Shannon Nelson <shannon.nelson@amd.com>
 To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
 	<edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
 	<jacob.e.keller@intel.com>
 CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
-Subject: [PATCH v2 net 1/3] ionic: Fix netdev notifier unregister on failure
-Date: Thu, 12 Dec 2024 13:31:55 -0800
-Message-ID: <20241212213157.12212-2-shannon.nelson@amd.com>
+Subject: [PATCH v2 net 3/3] ionic: use ee->offset when returning sprom data
+Date: Thu, 12 Dec 2024 13:31:57 -0800
+Message-ID: <20241212213157.12212-4-shannon.nelson@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20241212213157.12212-1-shannon.nelson@amd.com>
 References: <20241212213157.12212-1-shannon.nelson@amd.com>
@@ -77,82 +77,79 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E8:EE_|IA1PR12MB8358:EE_
-X-MS-Office365-Filtering-Correlation-Id: 790e418f-d0f3-4276-8bea-08dd1af47523
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E8:EE_|DM4PR12MB7576:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32da3325-5534-4242-ddfd-08dd1af4767a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gOemyGkhu1/79+ofVgaLvyLhxHQQacIN8ZGwVFz2S2Jq3XwmEQq7HHe4wWMF?=
- =?us-ascii?Q?5B/u7qdd0wF5/qG8Kgy5+yIDwL63H49/XlK7rRIjciX1KP+cYjssJ7lrAZ1j?=
- =?us-ascii?Q?2MDMXwWeCKakdnXSh2okm4sY9vpq5ldp/K5ihcREm843DO4+x+hQLPxWLnJZ?=
- =?us-ascii?Q?6+W5glmn9fqiV0627IWiNwag6clECAZE19Cu7vQR1HAnYmEsThMWWNHZzU/J?=
- =?us-ascii?Q?NvUHk5Ub0zvg1Ln1ZyA9EtQTjG+VYm94/VWcmxM8bHoduepki/0SPxY12W4g?=
- =?us-ascii?Q?Vh9eFOs+KRfiLRoqTSO+t6AcdNFNJAORAskfLLwLR94be1zJNqtE2kZG9TxR?=
- =?us-ascii?Q?qyf2hYUKjkUZZTmZSihsmCK6f5vOvTL4PoPx16ZghZJoCbf12M+URAcyDl2J?=
- =?us-ascii?Q?0oaoL0GGYIPUlA07XVSRsnaM7wck9q4KVj/UvU2Y3qqyNooZ3yT9kIzRmVBT?=
- =?us-ascii?Q?i/dHz9PRrLiM+Ydc7JJsdTTKXOUln1PqqyE5qAZxMhH9d1vY+IcijAhVz0EP?=
- =?us-ascii?Q?Wo4mtUkAHdVS7JybMsfQq3iP3iWwKMX/IdiOY8PpwL401lfb9VuN8rBCLI2j?=
- =?us-ascii?Q?LCEJMK7GMlnTCPblo6sl8RIS7ErI+81aZiDTk57OaaqioqxcmxjJYcZtJKNr?=
- =?us-ascii?Q?BAqkPAjF1tSSWmwtMWt9Cnz39u0i1ZSplgn/sFSm1uGIm9JTNkZ4vJloe45N?=
- =?us-ascii?Q?tVKJ2ithNPu+UFt2RtUo7bZqI0wHLqA8ZJO7Ogti8eoKR/7yphlNH3Ba//0U?=
- =?us-ascii?Q?hR+PHLUW42ttr/Z1eAIyelBGrZKJAAJzkcm+VuVZUFJ30RCpbSl9a/+kRKrv?=
- =?us-ascii?Q?ZWgIvoKsOE1P8fmLvyxUm5hnMH0A1/L7te09GFXpOws0l3aFnWTtnz4Kdwar?=
- =?us-ascii?Q?FCUmhxd7H1k/m9gVCTcgmEXqrfN43ebHvyXQU2fWt88n5oLq0kz2slp3PyyN?=
- =?us-ascii?Q?9/ayJpQVku9nZTKts1RaDr804yUXNRjOLkvOTaRCDAfl93yZ84wziw0NTR8G?=
- =?us-ascii?Q?usiJhbZ8pIqnKRUwyNxThRoffQH4UqpfKFZh9M4huebeKbiyZOd+5a/gT7b3?=
- =?us-ascii?Q?UgchnucvvJa129wc3441YMT5OTDMmI6YFvM9U4FMnOgvDQUDm+eif3oWdH/2?=
- =?us-ascii?Q?QKEFIC+KVmelZqVVjXvgDcD6NsQ/wjQpwtdogD88GwSlVPoVPW9VQCKGL4a7?=
- =?us-ascii?Q?PGcElj9w2cr47C6Ocn+MVCjK3GIVIMQetZi99m7We3Vlav3xdfCfy5StLLoT?=
- =?us-ascii?Q?gT1Jgp9hDGc1+hxgNBvhYxaBn5AkmmeD1C2WroDNzoa66ngJnIF7jG36q1b3?=
- =?us-ascii?Q?lIE6yphWlcyglXSm/Kvnllg7/uQe2dRJm0cL85T4SgEx2WS1hejDU65jHhuA?=
- =?us-ascii?Q?A8zg4YGsp9vLZ6iH65Hzs0G8hGO/S9IaaAud4zQazqf6ozMEeY7JzeLdIM7g?=
- =?us-ascii?Q?tIUSVHLKav9MRF9XQWvVYzoHiA0yhjyk?=
+	=?us-ascii?Q?/gnL23aYDCj+AiLvL/vf7XvxfjQiLaMBX8MYIV1yPtj0uUqP/lTvABEA8h2H?=
+ =?us-ascii?Q?jtNhZJgm+eDVOGu92v4qomdX+RANkMWiqI5fbQ0XyMnEn/drGejhhc81w/SH?=
+ =?us-ascii?Q?AM2RAf8LcVGHxwQEKYt8N96uU3fNLEqKzwOgrbS2lWAVa1RkXOj6qKFmxVV8?=
+ =?us-ascii?Q?RJU2pZjY78bchz/yZudOLA1MncSLkC7pRK26yFFWw3wJzaww0kJ9+COP5pNJ?=
+ =?us-ascii?Q?mwWGrClGfdf5YLTNLyALcVKQJJPk7xbz2kbLd8xrUBFWMmNvCiX0RPH6mJw/?=
+ =?us-ascii?Q?MujdLC9scwRbqxjYHnvEviNV8TsxR5rkfjCcE3Er3o0TevTbvPCWN2ImZC5f?=
+ =?us-ascii?Q?SpTRpkudm59egjjZYyZrUuBp0wfRxC2e/6M+iyNsiOnGabggFabAHpwZyRcT?=
+ =?us-ascii?Q?1GbRdHZ1zStuoskSUFvUnKzXPS8wC7juINZGgwEtBIyQ5r1lI+TS6ghqMG3g?=
+ =?us-ascii?Q?1pSBqOEzW12yj4gAt/PHPdc+EmWQKluK9p8N4XEY1REjtB1Dc4eGMTlCS3OJ?=
+ =?us-ascii?Q?u+7FJqy6JKTGtlu88Rg5hMimyLTHBip4WTiqU3j0IpLznFxs/cQmMui1s7Z6?=
+ =?us-ascii?Q?8e2TKZczC97jBXsgcl8eD9mHIqlE/cK14HjSenvy/pdlKFheKaVLSlRQyLTL?=
+ =?us-ascii?Q?7DmbDwyIiPoHLg/i17NIzBDahWUNAhxFPmwRiSnHghNrebthkNTZk8zLqHUs?=
+ =?us-ascii?Q?YDm/JqAOXwWQlqOdVsNtxTjRKd1u77oIuw7pB/0DG/YipWYIMiy+3ZmTWas5?=
+ =?us-ascii?Q?O6ljDZJ3s81DZnvTqZ94qEAE3Rwryr5pz+Iu0b0L020r6Y1RtI3uZTtBuUYs?=
+ =?us-ascii?Q?jFs5KZO93za38epE2oTr5iGmVxE6RNVqcUfJ7pNNEI/hzEl75NFgnBulnH8w?=
+ =?us-ascii?Q?PYgz00zOiSH+WcAzXFcKZdI9iplJdNZwEBQAcpKO0ilCIedn+wivCwGtNLTv?=
+ =?us-ascii?Q?jb+10bXuGG6ob91+xgGmiV5Eao8p6AFvwZpk64eDGBA7fn/2pMgiIOHj+uzV?=
+ =?us-ascii?Q?XZKg+9xVbguqwk+CXqJEc8N3dTcpGHf38R1ojeu9IfgAJVB+ANg32MIaT8Uq?=
+ =?us-ascii?Q?8tKZdLnN2fx3veBhGMDEnxgxlprK10XJmWmcgi52nkWvO0m35JIYgQDYUm88?=
+ =?us-ascii?Q?4uRjdFonM6dD52cHkvjcsWmVO5Sd0Cn+j+aBHrJu7aafeIliyoDnWsORj/Md?=
+ =?us-ascii?Q?BE4hDPyCJN+rsw2t7R5I6Neibe+f0MoM3FSIojFATnCau4687h4NPOrWbxCV?=
+ =?us-ascii?Q?gXLoSoGU3Jve74mmUfOvJvWiWHqYK4F1hLaOhqqbzGBo/RutAjHilJB9nAWz?=
+ =?us-ascii?Q?OflLGahUjhuKTvlVsUu4Y9do8TcHMtT+OQGLFfO+/XP1PVUTZ25Xrm1nsCy5?=
+ =?us-ascii?Q?2hCYA5Jp/rcH/xGPsuSw9+bT2inC0s/yZVGt1CuGH9Sd7Pikd51KtA0cnybp?=
+ =?us-ascii?Q?PFb2i7/57S+L3MYRbA8j0BG4RVDH64Cx?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 21:32:19.4365
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 21:32:21.7022
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 790e418f-d0f3-4276-8bea-08dd1af47523
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32da3325-5534-4242-ddfd-08dd1af4767a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	MWH0EPF000971E8.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8358
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7576
 
-From: Brett Creeley <brett.creeley@amd.com>
+Some calls into ionic_get_module_eeprom() don't use a single
+full buffer size, but instead multiple calls with an offset.
+Teach our driver to use the offset correctly so we can
+respond appropriately to the caller.
 
-If register_netdev() fails, then the driver leaks the netdev notifier.
-Fix this by calling ionic_lif_unregister() on register_netdev()
-failure. This will also call ionic_lif_unregister_phc() if it has
-already been registered.
-
-Fixes: 30b87ab4c0b3 ("ionic: remove lif list concept")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
 Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 ++--
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 40496587b2b3..3d3f936779f7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3869,8 +3869,8 @@ int ionic_lif_register(struct ionic_lif *lif)
- 	/* only register LIF0 for now */
- 	err = register_netdev(lif->netdev);
- 	if (err) {
--		dev_err(lif->ionic->dev, "Cannot register net device, aborting\n");
--		ionic_lif_unregister_phc(lif);
-+		dev_err(lif->ionic->dev, "Cannot register net device: %d, aborting\n", err);
-+		ionic_lif_unregister(lif);
- 		return err;
- 	}
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index dda22fa4448c..9b7f78b6cdb1 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -961,8 +961,8 @@ static int ionic_get_module_eeprom(struct net_device *netdev,
+ 	len = min_t(u32, sizeof(xcvr->sprom), ee->len);
  
+ 	do {
+-		memcpy(data, xcvr->sprom, len);
+-		memcpy(tbuf, xcvr->sprom, len);
++		memcpy(data, &xcvr->sprom[ee->offset], len);
++		memcpy(tbuf, &xcvr->sprom[ee->offset], len);
+ 
+ 		/* Let's make sure we got a consistent copy */
+ 		if (!memcmp(data, tbuf, len))
 -- 
 2.17.1
 
