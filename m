@@ -1,84 +1,84 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D491A209F41;
-	Thu, 12 Dec 2024 08:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D699F13E40F
+	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 09:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733993569; cv=none; b=reNQTnry5bR1HOaANcMIpSi3DSZu6VEqMQq7XfOnJEtt/je9ZQF+2OkDWTIm7i3+qbCIJ5MAbgW02hPW6QAzgdL3mmbgsiZR1iG78g2s9joSENAnY7oi6nUpPmDU9NKFLrvSJ/rbOSA8tdphN+CwS15OXxOi896f28HI8W7lG+M=
+	t=1733994675; cv=none; b=DJN2xQbl/jMuq9/9+sLvouamr85Yg0YbeVnFljv9OISD2/RCJkNahT7iVKf/zIH8rNcfC585iTosYlkp0jn+0sf1Oc5w7v+6jDrqXPbmMzB6YmR/QexiLqPgHeZgxiMVYw8kXzK8P/gBqU3dymo9vNyf4/9dwTHETbWr4NNHLnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733993569; c=relaxed/simple;
-	bh=zKYRiVDZDdBDBpZiIGg3izZHsTSSNFJWT7GjC/8Wi0s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sh6JuCXmveYwAXCKvY+dCbETfnSJ/eODP5cvQ2HUbFBcj6vS9cI/72MQ0edPK3ZF2tUJSzM+UuGy609cePp+APlJjNX1Dfs7w9lb2vnFRN+G+Z5zz2LNGH6qeFDQRKP5Bfb65arpiEKi/kwCxtTMR3DDA9ibkC8cm+Zb8wY3W3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vRrG1WX1; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vRrG1WX1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qLj+Afwh+9fhcCfqdeum+6vZlKylpxMDdFRhWoqXL3Y=;
-	t=1733993567; x=1735203167; b=vRrG1WX1ErFVHH0mfEJ/6xrr5hgWr8F1SxOfe48kVifU/tm
-	SUoEI96BQ4RPX6wD9643QAAMi9vGa85tK7hSpiGpJvEVDW7e33BQ39VVha1mh289Up188HxaqCCFO
-	QpQbIVa/D1MkJoecOjOVMhHOc9VGIkhy/oHaqRvLrAD4gzxuPvyBj91tHK5DiSkxi3EkffAPIYsh4
-	P/6sFOre7K9VDrsD9d5S2KX+nIfPtnxnlAt2X3vw1ZvI3n5/3qYTG1dguST3nzDaPAQSK0cuIyYlM
-	9IvJxxepJ2bGNX8DHNx5/fvLdtfvhacMu4pDfTjxKfD3widmlSFbNJSgUFco77Rg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tLew9-0000000EMrs-1QBk;
-	Thu, 12 Dec 2024 09:52:45 +0100
-Message-ID: <301ccb4cf2451c748d2b9b68648be7cfadf75c6a.camel@sipsolutions.net>
-Subject: Re: [syzbot] [wireless?] BUG: sleeping function called from invalid
- context in wext_netdev_notifier_call
-From: Johannes Berg <johannes@sipsolutions.net>
-To: syzbot <syzbot+3647b9259b77c1bb8e94@syzkaller.appspotmail.com>, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Date: Thu, 12 Dec 2024 09:52:44 +0100
-In-Reply-To: <675a6973.050a0220.17f54a.0050.GAE@google.com>
-References: <675a6973.050a0220.17f54a.0050.GAE@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1733994675; c=relaxed/simple;
+	bh=WDwwYJ37rfDfcKE8p30b6KSBblv0uqzeb7SmpZ5Lnl4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E10xm4bQkDRr8Il/hEo18/8k6D+szk/rfeutMUM0/bFRjb6HbhkhEhvkPS912s9ku1c0u8BUtqJdVRs3DgM9hXARL35kZcwGSar3211hDHSh1r3mZKBvSaojXemXAWnoCtuPvLiuDmmZZZNCustXtlWO6+8uG6QF2m51Dbx09oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:a086:deff:83e6:222b])
+	by albert.telenet-ops.be with cmsmtp
+	id nlB22D0071T2bNC06lB20e; Thu, 12 Dec 2024 10:11:05 +0100
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tLfDn-000pz0-DP;
+	Thu, 12 Dec 2024 10:11:02 +0100
+Received: from geert by rox.of.borg with local (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tLfDp-00DEhg-UU;
+	Thu, 12 Dec 2024 10:11:01 +0100
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH] drm/rockchip: avoid 64-bit division
+Date: Thu, 12 Dec 2024 10:10:59 +0100
+Message-Id: <20241212091100.3154773-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-12-11 at 20:41 -0800, syzbot wrote:
-> CPU: 1 UID: 0 PID: 12894 Comm: kworker/u8:18 Not tainted 6.13.0-rc1-syzka=
-ller-00183-g4c49f38e20a5 #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 09/13/2024
-> Workqueue: bond0 bond_mii_monitor
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
->  __might_resched+0x5d4/0x780 kernel/sched/core.c:8758
->  down_read+0x8e/0xa40 kernel/locking/rwsem.c:1523
->  wireless_nlevent_flush net/wireless/wext-core.c:351 [inline]
->  wext_netdev_notifier_call+0x1f/0x120 net/wireless/wext-core.c:371
->  notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
->  netdev_state_change+0x11f/0x1a0 net/core/dev.c:1378
->  linkwatch_do_dev+0x112/0x170 net/core/link_watch.c:182
->  ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:62
->  bond_check_dev_link+0x1f1/0x3f0 drivers/net/bonding/bond_main.c:873
->  bond_miimon_inspect drivers/net/bonding/bond_main.c:2740 [inline]
->  bond_mii_monitor+0x49a/0x3170 drivers/net/bonding/bond_main.c:2962
+From: Arnd Bergmann <arnd@arndb.de>
 
-Yeah this isn't new. I thought we were going to just squash this with
+Dividing a 64-bit integer prevents building this for 32-bit targets:
 
-https://lore.kernel.org/netdev/2730097.1721581672@famine/
+ERROR: modpost: "__aeabi_uldivmod" [drivers/gpu/drm/rockchip/rockchipdrm.ko] undefined!
 
-Whatever came of that?
+As this function is not performance criticial, just Use the div_u64() helper.
 
-johannes
+Fixes: 128a9bf8ace2 ("drm/rockchip: Add basic RK3588 HDMI output support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
+index 9c796ee4c303a9a9..c8b362cc2b95fd49 100644
+--- a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
++++ b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
+@@ -82,7 +82,7 @@ static void dw_hdmi_qp_rockchip_encoder_enable(struct drm_encoder *encoder)
+ 		 * comment in rk_hdptx_phy_power_on() from
+ 		 * drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+ 		 */
+-		phy_set_bus_width(hdmi->phy, rate / 100);
++		phy_set_bus_width(hdmi->phy, div_u64(rate, 100));
+ 	}
+ }
+ 
+-- 
+2.34.1
+
