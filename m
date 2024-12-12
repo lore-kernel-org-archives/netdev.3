@@ -1,191 +1,220 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2070.outbound.protection.outlook.com [40.107.93.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3761DAC83;
-	Thu, 12 Dec 2024 22:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734041670; cv=none; b=hAHKznjTGsbq2iiiHvCtBlxx0pY7GKazfXZ31O9jpmVxigQOuZ5npLN2GntjuBQyWNK4RjX6b/0fH9ezbsKP4yelS9b3mrsancm8b2HWVBWhIvPtb/OGmt1acxg/w0scfwMa1Js0Rss6Z2L0SfcY9YxQf6jB9yZ4KAsVpelhmM4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734041670; c=relaxed/simple;
-	bh=G+KtAS+rlxBGvf+qHr2ZXx6Ieqa+kjzLUFo8Cc2SXns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mCCbnNJtAI7cPVOqrgePknmWO8MVRUfGml99Eb0iV0+aGBskvDu6H8QyQV8OiWEoGzM4Bogn6ggx6TEGJTEerutFMexdXc9WrkKrvzNKXFR701BqcMNx4p/ucM58D2Eq8zyPJWpKjpAJ8kTLqCXNu5jANunnCFRW2pocLxRancQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aVXzDkHC; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCF31DAC83;
+	Thu, 12 Dec 2024 22:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734041700; cv=fail; b=D1j7T/x9pnBzoSDu1e0PyHY0qmym67I4NcsO2vr91XlEy48eyx3oPHwzwJEVBdB/pGLHmoBVzYZpYQse9ZORxUjV/PWUKNlT5cxxc9FOaJ9YnxgZgRX5npsiFU8Q/4I9QPR5MycSV/rD0ZQ27ACRaDltzRV39Lz0CB9jCJ8Xghg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734041700; c=relaxed/simple;
+	bh=Fl+zryhfYVG6gEr9NKP8Z2jjIX/5H6ReIiTbkyl92t4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Of+txSfbeOz3nzCMjjJpT+xY9sC3fQcIcxltoDgdycbXJ1YoINQOJkIuHONM7FnPcbxoAcQj/6CTmLib9ZaOuvNF4pFb9wnegSITD4M/czvOO41N3lFvFbEmHNzjY9+jGP5MeReT0VvEJPANvphhVo3pacxXeOMGRM20OZcSI5k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=S5FX7mgw; arc=fail smtp.client-ip=40.107.93.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aVXzDkHC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734041669; x=1765577669;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=G+KtAS+rlxBGvf+qHr2ZXx6Ieqa+kjzLUFo8Cc2SXns=;
-  b=aVXzDkHCAUh2cpVYW1ErhxeYaPW7m7BJmDqGBvA2V2JJHXj/4YzsiGEK
-   VqE5AIL6AQJ/jPEb1Zhxq/UB4aQ0lyCly5lqdw+wjZFJX2njRbc/KmV5U
-   NLQv0LlSTHBBqUkIVDKmJJqx6iOBpiIfKK489nckFjwWftftoa3tTNRok
-   JeUNBqmiKwT7iGFo4Eg2qAY3asXm6RdfpvvMAN2EErRfp4K3xjxOyBDQo
-   yUhVfL52v0AjZdAEnQR43ruI0Oo7wVip4cSdEykgN/kAHuu/u2TzDGY+R
-   niwe23VgSkLEvkiIWZ4qrwj9yY+dTJCXeZhH/vW+IwRPiwRvC4pHDKJAZ
-   A==;
-X-CSE-ConnectionGUID: BZLv2ECQSOCEPvbi2s2BJw==
-X-CSE-MsgGUID: Y24s+jtrS52cX+VuHjlvNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="37330327"
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; 
-   d="scan'208";a="37330327"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 14:14:28 -0800
-X-CSE-ConnectionGUID: SlIJ1yTLSSyfDqKsIoHnkA==
-X-CSE-MsgGUID: /SB9dEtKTuGh+6qcfW6Zow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; 
-   d="scan'208";a="96235051"
-Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.110.120]) ([10.125.110.120])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 14:14:27 -0800
-Message-ID: <7d7a3ab4-d7f1-45aa-a618-04a5e341fa55@intel.com>
-Date: Thu, 12 Dec 2024 15:14:26 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="S5FX7mgw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oW+bAxV1V9HSFGDBfGHABo+VdPciLODqp7jAuXjtN4h/XI5hY6+sqRUmc6zEPVZSEeuQx5INKVJlt5SCcFso8MKhaXfljIQ09S9hsZH2Z1uN5kU1vINpvUlz8o35PmUbooHzuEBtXINiYcd8+2AQDiVvUeUUDMSud+kaf55k4Tn60pFHgdk7VuhbmT42JgzfKJrcAvc3XUDXMoWsCMnWCTmLNx/E1aLE0WCS5pGcH4TPQDZtMw8o891T6uMKtXg/eSu+5ZjVzMvPBNv2zLBgpni1t2VCS0jGe7N0QwE+ZW4vd7d0ONrPzbsr86d5iUVVT91hx4DkDfVY9GaD9+yhqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7UrEip40oNw7BVYg8YPY7Lc+yZo8gdTERNtoJm9bzpQ=;
+ b=fD3Y3ezdJ2aHXiQ2EIWD//TFhD8SBRCmAv1IEkZy3/OMmJ0skiLqedIQ1hUiyXBXNEQZeeZlwF91be07NPWbpl7/koCiFfI3heh8geSRaXYbjRppTRMvYmIZSRXaWPbugDUGI//pnrNYhFu9hpuPTYFBjK7H16CiAZQY+8bNXqMtQ2BYkxaFI3FJ6DubMs/Lo/vlofknr05PlFEn/J+YNe7HQj0VoAQVMP8pzQptL9+AtUpiGGr16WNUg/F9TxaTW5iji3hOrwyBbK7Z1st/6jcme4RbGyYR62e3ODZ5adGH5YpiPT5SOjDnAj7SxdN/UJs+/wduCtQgHP0FkAfFYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7UrEip40oNw7BVYg8YPY7Lc+yZo8gdTERNtoJm9bzpQ=;
+ b=S5FX7mgwYwYcIgD0tt2BrqqBseVOcA/yb7lW6l1+woz1xuh9H9kSmTpMfxxOBpTwA69vCkevaWpRRTGDGr+UsEFyYHtBJltqw1Pj/6V4jD1ct8YcL1Z4ecHEWCH50GcJ9uQNCbBLVX793s4/cjpImAty8fNw5AqdsPiK1xxJcc3/BPyrrUFOHzqVo6wEd7shtqmLZor2qtUtAfeunKxNW9aEozt8DWBOt7URsbMkNKOP5uc6C7RbG18lW9Ftj5syMSP28pJyFTriqGC2K7XfM3BDgTAR9rmC9fGW64X6Sva7ikIU3wefAjHhxA87rKq7eDrm1KwGm05bAYH7cRbd8w==
+Received: from MW4P221CA0009.NAMP221.PROD.OUTLOOK.COM (2603:10b6:303:8b::14)
+ by CH3PR12MB9148.namprd12.prod.outlook.com (2603:10b6:610:19d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.17; Thu, 12 Dec
+ 2024 22:14:52 +0000
+Received: from SJ5PEPF000001C9.namprd05.prod.outlook.com
+ (2603:10b6:303:8b:cafe::ae) by MW4P221CA0009.outlook.office365.com
+ (2603:10b6:303:8b::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.15 via Frontend Transport; Thu,
+ 12 Dec 2024 22:14:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SJ5PEPF000001C9.mail.protection.outlook.com (10.167.242.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8251.15 via Frontend Transport; Thu, 12 Dec 2024 22:14:51 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 12 Dec
+ 2024 14:14:45 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 12 Dec 2024 14:14:44 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Thu, 12 Dec 2024 14:14:41 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, Leon Romanovsky <leonro@nvidia.com>
+CC: <netdev@vger.kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>, <linux-rdma@vger.kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>
+Subject: [PATCH net-next V2 00/10] mlx5 misc changes 2024-12-11
+Date: Fri, 13 Dec 2024 00:13:19 +0200
+Message-ID: <20241212221329.961628-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4] cxl: avoid driver data for obtaining cxl_dev_state
- reference
-To: Alison Schofield <alison.schofield@intel.com>, alucerop@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
- dan.j.williams@intel.com, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com
-References: <20241203162112.5088-1-alucerop@amd.com>
- <Z1tZzf_RqsfRFwvF@aschofie-mobl2.lan>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <Z1tZzf_RqsfRFwvF@aschofie-mobl2.lan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001C9:EE_|CH3PR12MB9148:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24f9e3c5-9e2e-4123-5d14-08dd1afa6652
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?oxdm65nOxYk5JCa7mIMiFWi/zW3ZEDEGDu1w2j1PKpxuyR7Yjp2cgYsuLQVO?=
+ =?us-ascii?Q?VAf2FoPVihjrcom7EW9Gvua0nWZTfEOl8bJ+mfpElI41ViGJS7lASjb5i2hX?=
+ =?us-ascii?Q?IosmhjLFKPJ2fOc2ytVaD9NmglBuMOqq+tRRpjq6IM/owzqdjohDE5xM94Kc?=
+ =?us-ascii?Q?tHS1/tZFvQ/IzY9kHNq8tg7E0NX2p6ZPKJxIUyboxfcxuICRoUcnQBHqyf9g?=
+ =?us-ascii?Q?HNXwGSmHIB0WmzzC+Jb23nWpXp+6hrXSL5rhMf27FLeHrrj6SWSqC/c39tgF?=
+ =?us-ascii?Q?Q1U31i18+ncIdAHlJ045JJ0IjdKfMWZC3FMUITzRg4bL5crOJdz0jInrtgOu?=
+ =?us-ascii?Q?a2nkK5tGqtxn5AAzVgezFpjFc93W5D3T6LsKTvTzZ86ihzavGakzI2XdPuLN?=
+ =?us-ascii?Q?w/j1jLXqw26CkNO67013oxhDMMWsVeRQetg2o0H0gn0TTZWdEnpjJi8fAyPK?=
+ =?us-ascii?Q?Mm5lnGHSA5HgnCFyfU84V77/2fxQ/RaBT+K9gij0LJvhUW9u5f9Vpd5f4gP/?=
+ =?us-ascii?Q?fnDUg5q4r3AYTa/qONb8WpzI7I40KY+W53DDqYKqjT18/86RlrAlLc8U+tOj?=
+ =?us-ascii?Q?rXEUEiM50kKlA8tQEyiaYnuZM8ljc5/vg0zS45Cql2k4HlxOCOWBuWxInF6I?=
+ =?us-ascii?Q?WIi7G5Wef/S4a9paBKGEXlT5I7xRHFB4wcuM2gmJS4CIXT3k7zjgRCAg2nDI?=
+ =?us-ascii?Q?7a0tcCL7e/gYjsoepFnOyAtYiR17iVRyZJEQ2muHQCzd6uets3L7UaxGG6CL?=
+ =?us-ascii?Q?CpaN+onvFpdQe9rM1BF5PMpQ3IS3RaO6y+ZNvWt8xsLvkZeCC/3DlCrJS7VF?=
+ =?us-ascii?Q?/KzyYQEL2023a5JxUVTlAQpEErJMyOYAFkaX7sWONjhRwTuQOslmaHRLmlVv?=
+ =?us-ascii?Q?lECttLBdanm5pkqwA+L7jhE3Ip/7/SISQXfuMkw0LgSSd5/aFgKjrd65B0j4?=
+ =?us-ascii?Q?WP8nCT6x7B8kvSbhAnVdWNO+y6wbjSQV43+wINhAmuSjZkjZzlxumKA52wzj?=
+ =?us-ascii?Q?QLbiGC++ROQ2LdQhqVDcDuAXeKNJjlsC2lvphgjmNIX1zBGTxsdFC/FCubMR?=
+ =?us-ascii?Q?Z9C2aVboZ4mK1HPCYRizacoN759iA6bagFZ2BnNOMZrvxqzLyiPdOzl7xISy?=
+ =?us-ascii?Q?3wM+PIwfjfu1YAGlG8ShdcvJUMKXP1plwsN9tnpgoymwMEKXQHxpBPqNsnjP?=
+ =?us-ascii?Q?C/gbSzW+wF5MuxDy9c5+Q5UQP4TKaT2CCM4eRHzBU+OcVpDBDH9HHweLYz55?=
+ =?us-ascii?Q?7z9BbGZ9TbgzQjGIQuH9GviskV0KmYKtdUcR+iczMtuNzqkB6OeLYvBBLHN3?=
+ =?us-ascii?Q?Xd3A1KTGfFRJBEIYIOnskT/NZalfha9wg3gn/HYPhXDheg4eGCNVHDFdBi35?=
+ =?us-ascii?Q?epsE+UJasdR69OkJhRwekJxDcFSHU7oxHLmNWGiEHtRKot96lP2QucG9YjMu?=
+ =?us-ascii?Q?a1mujbvPD8L855z76dxixm47pXdIBchz?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 22:14:51.7142
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24f9e3c5-9e2e-4123-5d14-08dd1afa6652
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001C9.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9148
 
+Hi,
 
+This patchset from the team consists of misc additions to the mlx5 core
+driver. It requires pulling 4 IFC patches that were applied to
+mlx5-next:
+https://git.kernel.org/pub/scm/linux/kernel/git/mellanox/linux.git/log/?h=mlx5-next
 
-On 12/12/24 2:46 PM, Alison Schofield wrote:
-> On Tue, Dec 03, 2024 at 04:21:12PM +0000, alucerop@amd.com wrote:
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> CXL Type3 pci driver uses struct device driver_data for keeping
->> cxl_dev_state reference. Type1/2 drivers are not only about CXL so this
->> field should not be used when code requires cxl_dev_state to work with
->> and such a code used for Type2 support.
->>
->> Change cxl_dvsec_rr_decode for passing cxl_dev_state as a parameter.
->>
->> Seize the change for removing the unused cxl_port param.
->>
-> 
-> Dave,
-> 
-> Jonathan previously offered Reviewed-by tag so this looks good to
-> apply. I've added another review tag and also massaged the 
-> changelog for your consideration.
-> 
-> cxl/pci: Add Type 1/2 support to cxl_dvsec_rr_decode()
-> 
-> In cxl_dvsec_rr_decode() the pci driver expects to retrieve a cxlds,
-> struct cxl_dev_state, from the driver_data field of struct device.
-> While that works for Type 3, drivers for Type 1/2 devices may not
-> put a cxlds in the driver_data field.
-> 
-> In preparation for supporting Type 1/2 devices, replace parameter
-> 'struct device' with 'struct cxl_dev_state' in cxl_dvsec_rr_decode().
-> 
-> Remove the unused parameter 'cxl_port' in cxl_dvsec_rr_decode().
-> 
-> [as: massaged commit msg and log]
-> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+The first patch is an IFC change that's targeted to mlx5-next.  It's
+followed by two more patches by Rongwei that add support for multi-host
+LAG. The new multi-host NICs provide each host with partial ports,
+allowing each host to maintain its unique LAG configuration.
 
-Thanks! I'll take it with the commit log changes.
+Patch 4 by Mark is an enhancement to fs_core.
 
-> 
-> 
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> ---
->>  drivers/cxl/core/pci.c        | 6 +++---
->>  drivers/cxl/cxl.h             | 3 ++-
->>  drivers/cxl/port.c            | 2 +-
->>  tools/testing/cxl/test/mock.c | 6 +++---
->>  4 files changed, 9 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
->> index 5b46bc46aaa9..420e4be85a1f 100644
->> --- a/drivers/cxl/core/pci.c
->> +++ b/drivers/cxl/core/pci.c
->> @@ -291,11 +291,11 @@ static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm)
->>  	return devm_add_action_or_reset(host, disable_hdm, cxlhdm);
->>  }
->>  
->> -int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
->> +int cxl_dvsec_rr_decode(struct cxl_dev_state *cxlds,
->>  			struct cxl_endpoint_dvsec_info *info)
->>  {
->> -	struct pci_dev *pdev = to_pci_dev(dev);
->> -	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
->> +	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
->> +	struct device *dev = cxlds->dev;
->>  	int hdm_count, rc, i, ranges = 0;
->>  	int d = cxlds->cxl_dvsec;
->>  	u16 cap, ctrl;
->> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
->> index f6015f24ad38..fdac3ddb8635 100644
->> --- a/drivers/cxl/cxl.h
->> +++ b/drivers/cxl/cxl.h
->> @@ -821,7 +821,8 @@ struct cxl_hdm *devm_cxl_setup_hdm(struct cxl_port *port,
->>  int devm_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
->>  				struct cxl_endpoint_dvsec_info *info);
->>  int devm_cxl_add_passthrough_decoder(struct cxl_port *port);
->> -int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
->> +struct cxl_dev_state;
->> +int cxl_dvsec_rr_decode(struct cxl_dev_state *cxlds,
->>  			struct cxl_endpoint_dvsec_info *info);
->>  
->>  bool is_cxl_region(struct device *dev);
->> diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
->> index 24041cf85cfb..66e18fe55826 100644
->> --- a/drivers/cxl/port.c
->> +++ b/drivers/cxl/port.c
->> @@ -98,7 +98,7 @@ static int cxl_endpoint_port_probe(struct cxl_port *port)
->>  	struct cxl_port *root;
->>  	int rc;
->>  
->> -	rc = cxl_dvsec_rr_decode(cxlds->dev, port, &info);
->> +	rc = cxl_dvsec_rr_decode(cxlds, &info);
->>  	if (rc < 0)
->>  		return rc;
->>  
->> diff --git a/tools/testing/cxl/test/mock.c b/tools/testing/cxl/test/mock.c
->> index f4ce96cc11d4..4f82716cfc16 100644
->> --- a/tools/testing/cxl/test/mock.c
->> +++ b/tools/testing/cxl/test/mock.c
->> @@ -228,16 +228,16 @@ int __wrap_cxl_hdm_decode_init(struct cxl_dev_state *cxlds,
->>  }
->>  EXPORT_SYMBOL_NS_GPL(__wrap_cxl_hdm_decode_init, CXL);
->>  
->> -int __wrap_cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
->> +int __wrap_cxl_dvsec_rr_decode(struct cxl_dev_state *cxlds,
->>  			       struct cxl_endpoint_dvsec_info *info)
->>  {
->>  	int rc = 0, index;
->>  	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
->>  
->> -	if (ops && ops->is_mock_dev(dev))
->> +	if (ops && ops->is_mock_dev(cxlds->dev))
->>  		rc = 0;
->>  	else
->> -		rc = cxl_dvsec_rr_decode(dev, port, info);
->> +		rc = cxl_dvsec_rr_decode(cxlds, info);
->>  	put_cxl_mock_ops(index);
->>  
->>  	return rc;
->> -- 
->> 2.17.1
->>
->>
+Patches 5-6 by Yevgeny are HW steering cleanups, in preparation for
+future patchsets to come.
+
+Patches 7-8 by Itamar add SW Steering support for ConnectX-8. They are
+moved here after being part of previous submissions, yet to be accepted.
+
+Patch 9 by Carolina cleans up an unnecessary log message.
+
+Patch 10 by Patrisious allows RDMA RX steering creation over devices
+with IB link layer.
+
+Regards,
+Tariq
+
+V2:
+- Remove Moshe's 2 fs_core patches from the series.
+
+Carolina Jubran (1):
+  net/mlx5: Remove PTM support log message
+
+Itamar Gozlan (2):
+  net/mlx5: DR, expand SWS STE callbacks and consolidate common structs
+  net/mlx5: DR, add support for ConnectX-8 steering
+
+Mark Bloch (1):
+  net/mlx5: fs, retry insertion to hash table on EBUSY
+
+Patrisious Haddad (1):
+  net/mlx5: fs, Add support for RDMA RX steering over IB link layer
+
+Rongwei Liu (3):
+  net/mlx5: Add device cap abs_native_port_num
+  net/mlx5: LAG, Refactor lag logic
+  net/mlx5: LAG, Support LAG over Multi-Host NICs
+
+Yevgeny Kliteynik (2):
+  net/mlx5: HWS, no need to expose mlx5hws_send_queues_open/close
+  net/mlx5: HWS, do not initialize native API queues
+
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   1 +
+ .../net/ethernet/mellanox/mlx5/core/fs_cmd.c  |   3 +-
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c |  11 +-
+ .../ethernet/mellanox/mlx5/core/lag/debugfs.c |  13 +-
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 365 ++++++++++++------
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.h |  17 +-
+ .../net/ethernet/mellanox/mlx5/core/lag/mp.c  |  77 ++--
+ .../ethernet/mellanox/mlx5/core/lag/mpesw.c   |  16 +-
+ .../mellanox/mlx5/core/lag/port_sel.c         |  55 ++-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |   8 +-
+ .../mellanox/mlx5/core/steering/hws/bwc.h     |   6 +-
+ .../mellanox/mlx5/core/steering/hws/context.c |   6 +-
+ .../mellanox/mlx5/core/steering/hws/context.h |   6 +
+ .../mellanox/mlx5/core/steering/hws/mlx5hws.h |   1 -
+ .../mellanox/mlx5/core/steering/hws/send.c    |  48 ++-
+ .../mellanox/mlx5/core/steering/hws/send.h    |   6 -
+ .../mlx5/core/steering/sws/dr_domain.c        |   2 +-
+ .../mellanox/mlx5/core/steering/sws/dr_ste.c  |   6 +-
+ .../mellanox/mlx5/core/steering/sws/dr_ste.h  |  19 +-
+ .../mlx5/core/steering/sws/dr_ste_v0.c        |   6 +-
+ .../mlx5/core/steering/sws/dr_ste_v1.c        | 207 ++--------
+ .../mlx5/core/steering/sws/dr_ste_v1.h        | 147 ++++++-
+ .../mlx5/core/steering/sws/dr_ste_v2.c        | 169 +-------
+ .../mlx5/core/steering/sws/dr_ste_v2.h        | 168 ++++++++
+ .../mlx5/core/steering/sws/dr_ste_v3.c        | 221 +++++++++++
+ .../mlx5/core/steering/sws/mlx5_ifc_dr.h      |  40 ++
+ .../mellanox/mlx5/core/steering/sws/mlx5dr.h  |   2 +-
+ include/linux/mlx5/mlx5_ifc.h                 |   3 +-
+ 28 files changed, 1062 insertions(+), 567 deletions(-)
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_ste_v2.h
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_ste_v3.c
+
+-- 
+2.44.0
 
