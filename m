@@ -1,118 +1,117 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394428837;
-	Thu, 12 Dec 2024 14:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BEF8837;
+	Thu, 12 Dec 2024 14:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734013378; cv=none; b=MiYbC0mXftlCfqDsLgO1sn+FGk69eop1u9rXAf+sCiczBKmBPBaEpJ9P85H2XhM0RTqHJQiExfv8xUOgUYm/G3eEEyUCaBG+11j0fIvvkrszlafArSRL1UwIY16souyeRLS7n2SyKSI/rMP2HXZE0ppMinxYREvk7PZX1NFs820=
+	t=1734013656; cv=none; b=ZhsFqxNS5YXFNopP5w1tkw5nnPHSpxbx4qkjeAkJhLb/aSJW7tt0TukMlpaHqZ5TOHtfJoeg/fHEQF8xlRCruMkt/TBqBfBId7r9ucNI1tV01Z28/V4TA8Fizi7/+ZMe/MEWYddIFNiU14uG2IHY6MpjBmKdpfBqInDBxNfe5jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734013378; c=relaxed/simple;
-	bh=zKgvEFGqQx2FJ8CDJqBabJFwcSfnDuCHB0lcISfBNS4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z2wDXmUqQEYZLhRl7HLopLlhgnQR95u+hKPANW5hDmZnaKqJXtWGUB2j4FRyB1C6jpZMz4V6ldPBlge6rQOQsaDFUl0SxTVvGzf9PLK8GdzrKbs22t1EJGnPiKDXNlXcvNI52ki0GSZSn0ff/6RHyxnJC9K4Y9Y1u6+mwA1s6DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHas12+E; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734013656; c=relaxed/simple;
+	bh=THwrYGXIiz69ULgUOChLfT0Apz1xdUGNa3VyZHWINTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pt6a5uTOENtKAUEInNbNHII3u1Dhd6+NPJbpKJJxHi7BCmqDjj3W55fteAcvtGaUfVRbgbIDxNpWtDVwdJwcwl2cbVzVOOlw910C0dmCoHJAgoO8Y4a1cA0cum6g3TgKbc9gD9Xqx4VwKc59o8PpuE03qDrL8/CObbt+EERlREk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZRmWxufZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHas12+E"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54026562221so680654e87.1;
-        Thu, 12 Dec 2024 06:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734013375; x=1734618175; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QS+z2xhMRRsiEpeHQXzr4Hn0U9YM/X5VilCwkW5p+lM=;
-        b=HHas12+EjGZbEtldHTjwLTza08S5N0trbRS0b4x96poSlZ87IiCikODZ+amVpfAVwa
-         p9FtV/ZREMysD2YuOriDUTIznhs/Codx+SjEviyNwOS/QnjaPKaVn0bpRWX0IcQ8Ucwh
-         XzWhAA1X8PSrfl7PyPnOc5xFp9qOxdCDB/WHU1n2qhf4d/h+wL795yeGi4UCDMcKByIX
-         WlLZFptHC1twrUw3sVRZVD81eAhWXaGZcLNSxyO3DX97+ae5e6Jmd7Z+nWPiXqC5MyxF
-         sdZlt6yvXk8UnQhDhsvGyrrXehmDKk/t4AUKOfntNByQXo6y7RWWBOvWQ+msv3OtNF1t
-         I8JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734013375; x=1734618175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QS+z2xhMRRsiEpeHQXzr4Hn0U9YM/X5VilCwkW5p+lM=;
-        b=uLOFQ3ygLDGdvbws5Myc+xj9yUa9X4lgbsq24Dj5NwFElMioCPDUuibm2i27FgHz5f
-         njdOgKdt51z24VEyUIOx5Y5XMGJQAlRVCc0jqMoIhjUcTZEb7iwNs4CPoJbPa87uGABm
-         ovSC8E0qKSbMbZxnfWp53hxOK+zqIJbvhLq+fpZqZWR9epKfLbTg28njsHgngRCPbSaE
-         koVMD2AP+mRBtNVorKepHiGqofog9n9x/Hvy4+zkV9UXA0PxW0WY8y4A1H4bDB71V5+b
-         TU+ll+3P/C6BFzSDFWuRnk+3Pyao2q4cgp/OPeHIdDEDkm4JtHHIiJiXpKLH2ZTRo14Y
-         yPKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOgSfgn7Db6VVWW/k3gMjTjsCVyv/DwwyAKNm1otiH+L9VRG66Vg3x+8axPiT+x+FbXjm5WWw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymffJUxUwi0slSYpPVqinGB2pNIxrLmBJOJBOp9C/Z+vB6eq+M
-	6FeQeTKlfRKm9cvyrckIEL0yoRAJluWlVf1HqewY08IWMslkrrhP8dlixaYVIhT2Ml+Jn/S+QtQ
-	JeQU77muqRD0DRrUH9bWtDDgmpuS+eg==
-X-Gm-Gg: ASbGnct6GztTzr1MbMpXl1nTeducf9j86LiNUFydZF5+WFWlMa3db3VZ3PCxzClfGNh
-	1Rvti2w6RzBeEatfQm0O/L8QSqJMF2u5FKvPA7Ew=
-X-Google-Smtp-Source: AGHT+IGu8D26QzOkttbsr8xB8ZQzqIMI7ExAmhNiETJBOcsMMgvxSAHL0fcYwa5zbMrMcHX01CPujfMOHSCdkXFvskY=
-X-Received: by 2002:a05:6512:33cd:b0:53e:39c2:f036 with SMTP id
- 2adb3069b0e04-5403412ed5bmr235070e87.43.1734013374898; Thu, 12 Dec 2024
- 06:22:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZRmWxufZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE736C4CECE;
+	Thu, 12 Dec 2024 14:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734013656;
+	bh=THwrYGXIiz69ULgUOChLfT0Apz1xdUGNa3VyZHWINTM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZRmWxufZnautQhP11I8b96kLloJChzCpdvI/AftPcxettZ8H9AuEZKL2Ui/HEUzve
+	 pCcnWHp6hX/FJ5nhs4B2d0X+wg8m2w2udD36pKcvGyi1D8Ql4pwZfCV9B9F07ubHBl
+	 D2TNVkRBnz+R2xVvXBHnpq+BDroDWbRFZAwtAIXNRyofbn8DZ2FVtLMAABIt5UKB1I
+	 tSgYWP80ND9XfYTngB39aNOqdhmqe8bpyUsodRePyqbSI+axC5UHyq/JDktDqV+ISY
+	 0jkk4auyl5L+A2AMFoJMU+7Mm6kRnZ9dhAqs9OAsXn/dLwww2AO/wMtFE75JpB9DG6
+	 PStC2/SauN4dg==
+Date: Thu, 12 Dec 2024 06:27:34 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>, Andy Gospodarek
+ <andy@greyhouse.net>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/2] bond: fix xfrm offload feature during init
+Message-ID: <20241212062734.182a0164@kernel.org>
+In-Reply-To: <20241211071127.38452-1-liuhangbin@gmail.com>
+References: <20241211071127.38452-1-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211172115.1816733-1-luiz.dentz@gmail.com>
- <ba32a8c5-3d90-437e-a4bc-a67304230f79@redhat.com> <b6ebd1f0-d914-4044-913b-621071a1b123@redhat.com>
-In-Reply-To: <b6ebd1f0-d914-4044-913b-621071a1b123@redhat.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 12 Dec 2024 09:22:40 -0500
-Message-ID: <CABBYNZKadKNzMWdP5bsDxTtGXjYhe47nPeLyH49hHHpnTo2Etg@mail.gmail.com>
-Subject: Re: pull request: bluetooth 2024-12-11
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	davem@davemloft.net, kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Paolo,
+On Wed, 11 Dec 2024 07:11:25 +0000 Hangbin Liu wrote:
+> The first patch fixes the xfrm offload feature during setup active-backup
+> mode. The second patch add a ipsec offload testing.
 
-On Thu, Dec 12, 2024 at 7:20=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
->
->
-> On 12/12/24 12:55, Paolo Abeni wrote:
-> > On 12/11/24 18:21, Luiz Augusto von Dentz wrote:
-> >> The following changes since commit 3dd002f20098b9569f8fd7f8703f364571e=
-2e975:
-> >>
-> >>   net: renesas: rswitch: handle stop vs interrupt race (2024-12-10 19:=
-08:00 -0800)
-> >>
-> >> are available in the Git repository at:
-> >>
-> >>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.gi=
-t tags/for-net-2024-12-11
-> >>
-> >> for you to fetch changes up to 69e8a8410d7bcd3636091b5915a939b9972f99f=
-1:
-> >>
-> >>   Bluetooth: btmtk: avoid UAF in btmtk_process_coredump (2024-12-11 12=
-:01:13 -0500)
-> >
-> > On top of this I see a new build warning:
-> >
-> > net/bluetooth/hci_core.c:60:1: warning: symbol 'hci_cb_list_lock' was
-> > not declared. Should it be static?
-> >
-> > Would you mind fixing that and re-sending? We are still on time for
-> > tomorrow 'net' PR.
->
-> Whoops, I lost track of current time, the net PR will be later today
-> (sorry for the confusion!), but there is stills some time for the update.
+Looks like the test is too good, is there a fix pending somewhere for
+the BUG below? We can't merge the test before that:
 
-Will resend it asap.
+https://netdev-3.bots.linux.dev/vmksft-bonding-dbg/results/900082/11-bond-ipsec-offload-sh/stderr
 
-> /P
->
-
-
---=20
-Luiz Augusto von Dentz
+[  859.672652][    C3] bond_xfrm_update_stats: eth0 doesn't support xdo_dev_state_update_stats
+[  860.467189][ T8677] bond0: (slave eth0): link status definitely down, disabling slave
+[  860.467664][ T8677] bond0: (slave eth1): making interface the new active one
+[  860.831042][ T9677] bond_xfrm_update_stats: eth1 doesn't support xdo_dev_state_update_stats
+[  862.195271][ T9683] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:562
+[  862.195880][ T9683] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 9683, name: ip
+[  862.196189][ T9683] preempt_count: 201, expected: 0
+[  862.196396][ T9683] RCU nest depth: 0, expected: 0
+[  862.196591][ T9683] 2 locks held by ip/9683:
+[  862.196818][ T9683]  #0: ffff88800a829558 (&net->xfrm.xfrm_cfg_mutex){+.+.}-{4:4}, at: xfrm_netlink_rcv+0x65/0x90 [xfrm_user]
+[  862.197264][ T9683]  #1: ffff88800f460548 (&x->lock){+.-.}-{3:3}, at: xfrm_state_flush+0x1b3/0x3a0
+[  862.197629][ T9683] CPU: 3 UID: 0 PID: 9683 Comm: ip Not tainted 6.13.0-rc1-virtme #1
+[  862.197967][ T9683] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  862.198204][ T9683] Call Trace:
+[  862.198352][ T9683]  <TASK>
+[  862.198458][ T9683]  dump_stack_lvl+0xb0/0xd0
+[  862.198659][ T9683]  __might_resched+0x2f8/0x530
+[  862.198852][ T9683]  ? kfree+0x2d/0x330
+[  862.199005][ T9683]  __mutex_lock+0xd9/0xbc0
+[  862.199202][ T9683]  ? ref_tracker_free+0x35e/0x910
+[  862.199401][ T9683]  ? bond_ipsec_del_sa+0x2c1/0x790
+[  862.199937][ T9683]  ? find_held_lock+0x2c/0x110
+[  862.200133][ T9683]  ? __pfx___mutex_lock+0x10/0x10
+[  862.200329][ T9683]  ? bond_ipsec_del_sa+0x280/0x790
+[  862.200519][ T9683]  ? xfrm_dev_state_delete+0x97/0x170
+[  862.200711][ T9683]  ? __xfrm_state_delete+0x681/0x8e0
+[  862.200907][ T9683]  ? xfrm_user_rcv_msg+0x4f8/0x920 [xfrm_user]
+[  862.201151][ T9683]  ? netlink_rcv_skb+0x130/0x360
+[  862.201347][ T9683]  ? xfrm_netlink_rcv+0x74/0x90 [xfrm_user]
+[  862.201587][ T9683]  ? netlink_unicast+0x44b/0x710
+[  862.201780][ T9683]  ? netlink_sendmsg+0x723/0xbe0
+[  862.201973][ T9683]  ? ____sys_sendmsg+0x7ac/0xa10
+[  862.202164][ T9683]  ? ___sys_sendmsg+0xee/0x170
+[  862.202355][ T9683]  ? __sys_sendmsg+0x109/0x1a0
+[  862.202546][ T9683]  ? do_syscall_64+0xc1/0x1d0
+[  862.202738][ T9683]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  862.202986][ T9683]  ? __pfx_nsim_ipsec_del_sa+0x10/0x10 [netdevsim]
+[  862.203251][ T9683]  ? bond_ipsec_del_sa+0x2c1/0x790
+[  862.203457][ T9683]  bond_ipsec_del_sa+0x2c1/0x790
+[  862.203648][ T9683]  ? __pfx_lock_acquire.part.0+0x10/0x10
+[  862.203845][ T9683]  ? __pfx_bond_ipsec_del_sa+0x10/0x10
+[  862.204034][ T9683]  ? do_raw_spin_lock+0x131/0x270
+[  862.204225][ T9683]  ? __pfx_do_raw_spin_lock+0x10/0x10
+[  862.204468][ T9683]  xfrm_dev_state_delete+0x97/0x170
+[  862.204665][ T9683]  __xfrm_state_delete+0x681/0x8e0
+[  862.204858][ T9683]  xfrm_state_flush+0x1bb/0x3a0
+[  862.205057][ T9683]  xfrm_flush_sa+0xf0/0x270 [xfrm_user]
+[  862.205290][ T9683]  ? __pfx_xfrm_flush_sa+0x10/0x10 [xfrm_user]
+[  862.205537][ T9683]  ? __nla_validate_parse+0x48/0x3d0
+[  862.205744][ T9683]  xfrm_user_rcv_msg+0x4f8/0x920 [xfrm_user]
+[  862.205985][ T9683]  ? __pfx___lock_release+0x10/0x10
+[  862.206174][ T9683]  ? __pfx_xfrm_user_rcv_msg+0x10/0x10 [xfrm_user]
+[  862.206412][ T9683]  ? __pfx_validate_chain+0x10/0x10
+[  862.206614][ T9683]  ? hlock_class+0x4e/0x130
+[  862.206807][ T9683]  ? mark_lock+0x38/0x3e0
+[  862.206986][ T9683]  ? __mutex_trylock_common+0xfa/0x260
+[  862.207181][ T9683]  ? __pfx___mutex_trylock_common+0x10/0x10
+[  862.207425][ T9683]  netlink_rcv_skb+0x130/0x360
