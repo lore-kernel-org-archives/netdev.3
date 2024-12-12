@@ -1,142 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D705620DD62;
-	Thu, 12 Dec 2024 09:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABD720B808;
+	Thu, 12 Dec 2024 09:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733994716; cv=none; b=h6mt52o1XcjARfwcqycQoLRD2GiXmVpRRonwRGJuascJU0pmnop9124aZic8X4ffFfwfTifJIcGoEAIff5fFCI0obmHRnClGr63qCKuhjUnrHCd8OLTG0SEr2QbM4Sy8SdJOwIhrDhSuhb63VlxhZDJjuGISBbIbOsjtGrfNXP8=
+	t=1733994842; cv=none; b=J4e2plWq4+DQRj10+5Ebz9wluh4zv/9NBk3WUPcD1X953ebGx0M2WgQ8YIw0FAcs4f8HNS/n49mD/4gSzssFVDrqXsi6PE5VxrbNfMfygiMBoCFK38M5iu5A8fG3LUdMZDCPBRGo0lr5Ulecc8gI36xEYsmP8saVGedkcOVW50s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733994716; c=relaxed/simple;
-	bh=kzBsT3F4zajJH9Dt3PQh+yS4Aot+6eJwHXS8DSaNzEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvBlOE1JkGbsaEQv21ognTi6cA2IGIVfUbJkbi0PgtChHj+Z78K1x4fGUWPtn0r/JWAYO/5V9h3BFpzyLQ2c+4C8tNEh7fZXGPoHPEs1G8SRSRzwQjN2A5SmiF2RxONgvKwCl25cpZpuyRlEkzSTqlrZAXvpZ0yEWGFnK3Dzxu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cEo5Vq8s; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cEo5Vq8s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733994715; x=1765530715;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kzBsT3F4zajJH9Dt3PQh+yS4Aot+6eJwHXS8DSaNzEE=;
-  b=cEo5Vq8sylL9lgEURRREfwa7XufcPhQ/iuHF/PvuhqCJNIjp6DBEqWBx
-   0TUj1/c7I/sEYkb0OS6z8cL1PiCmlrddmO8SMGXnQA5o8rm76ZZ/N8cbq
-   PW2okKTYROU6YADoo4mEfh5rAeSIK7KXVlmehK2PIUy8l98UGEvpnYE5W
-   VxcyYTSv/2J/49jvpbplszUiHVeYxHpPUAcxz1GKapYbNUBKOuH8VYqNK
-   U35oDtOvvk51j2xehHsdJiOpUa9dOJNL5XVmYuBt2ZDr4Nbz45ewJFvsh
-   aQUtkemX0de6NOCQpDr5q2cU1smW4iYR2SfG0EFQxRf7HqiINPpHihyHA
-   Q==;
-X-CSE-ConnectionGUID: fkedDgpvRlO/JlancfuGaw==
-X-CSE-MsgGUID: ht0e2ozUQMKgrKbS7AeaCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="21994116"
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; 
-   d="scan'208";a="21994116"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 01:11:54 -0800
-X-CSE-ConnectionGUID: uq2AS8WyRZyEF+62XFXmDg==
-X-CSE-MsgGUID: tvTJ04EgSRmLHfZCdFa8dQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; 
-   d="scan'208";a="96256863"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 01:11:51 -0800
-Date: Thu, 12 Dec 2024 10:08:49 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Furong Xu <0x1207@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, xfr@outlook.com
-Subject: Re: [PATCH net-next v1] net: stmmac: Drop redundant dwxgmac_tc_ops
- variable
-Message-ID: <Z1qoITwRF9QLkZq/@mev-dev.igk.intel.com>
-References: <20241212033325.282817-1-0x1207@gmail.com>
+	s=arc-20240116; t=1733994842; c=relaxed/simple;
+	bh=jMe5DMsQaVgJD30Fuf7T2bz+p7iJLMSRi7QyfuCSVkU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UZ3B2PkQWhWMqQs/bE6KvhXg+tgvT4WJ+Gl6f3zLIaLftZo9zMlP4nXa4yzeryCiOQqxgCOGdO6zD4zJK6ozN+/DMktF/iIBaHmlOJFVVEmghPrNCZMu4TqzQRFmWcG7F9dzcjb7tgnSGuA6Qhs6cASx+bqcsxJVC6TJ8tei+Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afe70b41a8so89789137.3;
+        Thu, 12 Dec 2024 01:14:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733994839; x=1734599639;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p3vOvdd3INn7kkIYe2riOUyRlnXmK2D+iAwEfkSB57Y=;
+        b=ZfNMsdDRMZ4ij4wq41fpv9WqKbQEks/pPlebRWDszY5MkgDpc99Oq7Pp3nHM3Atfi7
+         QFNNZEAOkf/W/K/d7oRz2GC88jn3beLaLX1MFtjsqUaEfSleDC7Q0+opcKLsYUmlQtS2
+         0Tb1yyEQgx1zTImgEtKuw91IYz3l6YF/scjXam3U/PbJWjYoTWT3JYKyyTdfOtueKGoK
+         Ad3d2KpoxRUNNGkPShDUPMje3gVO+f22djhZ1tsc4lPyhNHPizMNGryROysX8Oo/u/sQ
+         /iBJIWAtX2qyomGJXwHWndcDFgu8wMx48NN4L8aWr+T2ORQ09TBs4mVSjh2IIEoHlEVV
+         qzjA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4zSMOdKT96tIRZinoAX5cQZj/467fjfjmReDL2O+AeDo9ZuEdPKTrL8hh+1SdUqwwmvGzJNxh+qBzNXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrP0Y+d0JeiqmMzLsAC6mZJcXEZnnWRyBnS8HZCtbScTPnjq/t
+	DHbvLCua2oxqCRCNtONs6VTnJ+d7Nd9+v+x87oNTyo17I/dT0lWDtDnHcZ1slyU=
+X-Gm-Gg: ASbGncswwa/XwZZa5oc7iNDMgzoCdUD5Ru+9YI+AnOVvJvzCrJ6Iddst4EzwGPXFfxr
+	PaWtIDpocUdN0Hhw/phyIV/Z7HIpbG++aX+Fb9o/zRvmN8NYOsRe1Wh+UU9kE4HfM+RsEkq0Rfg
+	wJXlAnrpePdtDl1+Tm2XgOceX6xL/iZM3nEpvfIebDfyZ4CXdTE0Uh/+SlUDwLtKSvyU2yppFHz
+	088vVuCC6x+wg7x6gg09aQOaB9q9OvP4BjxkvgaTg2r51WxDeqEvFsJmu1crI2reY8iUWFAfboF
+	66YThkW5mU7e0nxGzy0=
+X-Google-Smtp-Source: AGHT+IHxwhXBD7QtV57GPX18QEqwlJN0xLGrvpFbUNScduT1oj9dMI5+RAQghbnaMwCwSxyGWQpHcA==
+X-Received: by 2002:a05:6102:f13:b0:4af:f275:e747 with SMTP id ada2fe7eead31-4b2478aea7amr2352016137.22.1733994838889;
+        Thu, 12 Dec 2024 01:13:58 -0800 (PST)
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-85c5569f71csm1557353241.7.2024.12.12.01.13.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Dec 2024 01:13:58 -0800 (PST)
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso96347241.1;
+        Thu, 12 Dec 2024 01:13:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVg1jq58Z4uR+RvP9oYmFxFSe2DPQ25qUeZab0FKgdzJEGcEdRYPQn2YQGAgdlmcM0hx2P/M5Ly0zpYuls=@vger.kernel.org
+X-Received: by 2002:a05:6102:419e:b0:4b1:3b91:a697 with SMTP id
+ ada2fe7eead31-4b24780ccb2mr2758608137.15.1733994838008; Thu, 12 Dec 2024
+ 01:13:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212033325.282817-1-0x1207@gmail.com>
+References: <20241212091100.3154773-1-geert+renesas@glider.be>
+In-Reply-To: <20241212091100.3154773-1-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 12 Dec 2024 10:13:46 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXg5b21OmYfKfmgj433U+1dR5wriN8Q2cgFtq6S2wq_dg@mail.gmail.com>
+Message-ID: <CAMuHMdXg5b21OmYfKfmgj433U+1dR5wriN8Q2cgFtq6S2wq_dg@mail.gmail.com>
+Subject: Re: [PATCH] drm/rockchip: avoid 64-bit division
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+	Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 12, 2024 at 11:33:25AM +0800, Furong Xu wrote:
-> dwmac510_tc_ops and dwxgmac_tc_ops are completely identical,
-> keep dwmac510_tc_ops to provide better backward compatibility.
-> 
-> Signed-off-by: Furong Xu <0x1207@gmail.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/hwif.c      |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/hwif.h      |  1 -
->  drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 11 -----------
->  3 files changed, 2 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> index 4bd79de2e222..31bdbab9a46c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-> @@ -267,7 +267,7 @@ static const struct stmmac_hwif_entry {
->  		.hwtimestamp = &stmmac_ptp,
->  		.ptp = &stmmac_ptp_clock_ops,
->  		.mode = NULL,
-> -		.tc = &dwxgmac_tc_ops,
-> +		.tc = &dwmac510_tc_ops,
->  		.mmc = &dwxgmac_mmc_ops,
->  		.est = &dwmac510_est_ops,
->  		.setup = dwxgmac2_setup,
-> @@ -290,7 +290,7 @@ static const struct stmmac_hwif_entry {
->  		.hwtimestamp = &stmmac_ptp,
->  		.ptp = &stmmac_ptp_clock_ops,
->  		.mode = NULL,
-> -		.tc = &dwxgmac_tc_ops,
-> +		.tc = &dwmac510_tc_ops,
->  		.mmc = &dwxgmac_mmc_ops,
->  		.est = &dwmac510_est_ops,
->  		.setup = dwxlgmac2_setup,
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> index e428c82b7d31..2f7295b6c1c5 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> @@ -685,7 +685,6 @@ extern const struct stmmac_dma_ops dwmac410_dma_ops;
->  extern const struct stmmac_ops dwmac510_ops;
->  extern const struct stmmac_tc_ops dwmac4_tc_ops;
->  extern const struct stmmac_tc_ops dwmac510_tc_ops;
-> -extern const struct stmmac_tc_ops dwxgmac_tc_ops;
->  
->  #define GMAC_VERSION		0x00000020	/* GMAC CORE Version */
->  #define GMAC4_VERSION		0x00000110	/* GMAC4+ CORE Version */
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> index 6a79e6a111ed..694d6ee14381 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-> @@ -1284,14 +1284,3 @@ const struct stmmac_tc_ops dwmac510_tc_ops = {
->  	.query_caps = tc_query_caps,
->  	.setup_mqprio = tc_setup_dwmac510_mqprio,
->  };
-> -
-> -const struct stmmac_tc_ops dwxgmac_tc_ops = {
-> -	.init = tc_init,
-> -	.setup_cls_u32 = tc_setup_cls_u32,
-> -	.setup_cbs = tc_setup_cbs,
-> -	.setup_cls = tc_setup_cls,
-> -	.setup_taprio = tc_setup_taprio,
-> -	.setup_etf = tc_setup_etf,
-> -	.query_caps = tc_query_caps,
-> -	.setup_mqprio = tc_setup_dwmac510_mqprio,
-> -};
+On Thu, Dec 12, 2024 at 10:11=E2=80=AFAM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Dividing a 64-bit integer prevents building this for 32-bit targets:
+>
+> ERROR: modpost: "__aeabi_uldivmod" [drivers/gpu/drm/rockchip/rockchipdrm.=
+ko] undefined!
+>
+> As this function is not performance criticial, just Use the div_u64() hel=
+per.
+>
+> Fixes: 128a9bf8ace2 ("drm/rockchip: Add basic RK3588 HDMI output support"=
+)
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-LGTM
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Please ignore this patch. Something went wrong with my scripting.
+Sorry for the inconvenience.
 
-Thanks
-> -- 
-> 2.34.1
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
