@@ -1,45 +1,73 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED802206A5;
-	Thu, 12 Dec 2024 14:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257A2135B0;
+	Thu, 12 Dec 2024 14:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734013835; cv=none; b=oCciHK4A+gxKQocYXx99ZrIVtpMg7MyDw+HwhAab9107FI28zqDIq9qAp1F2q3qIs5LGuOs8JGvmNzQTr4/wat/mTneUUbkLyaC/q06VNTftPAInb1SGdMgJCdrYo3y9vSrUkjcuoCP/Cs8fk+HsEBxsLa6jCElYKzXnUw5WzEc=
+	t=1734014212; cv=none; b=nMTCPUD1kFIte8mc0HXoQaBqfGb0EzOpJ6OSusbXDolDs70z7BaDEVPVz7NcVmWK5DAXxOQr0qN8QuUohaI2mDpXvLYTIppUFsrX3Qp4x8iwTldEogNh9q1SdTMHEw5ku8l/kvsvvb34M9RxP5SAd44MdBtxghhenDzLVyMgyK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734013835; c=relaxed/simple;
-	bh=P07jQ7F4ZxHNzmfT4mFl3spWGSE1rxXYbR24w0QOeUg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HdP1PBQGJtC5t7XdTgUZ7/Z7lluikaZdVvbySWI4JUdgbNJ0/57ZZ6/cnu+PKAqCiT+O4531fioLYhoKvif0kr23YO2gIOpv72hbbIB/BLp4zTIVIrG9Mjv+w0aZjozrB8AZzAgEEH9ZqpNtEYAwSUjfr8dK9+agRXpRM9aFStE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Y8FFf75VvzRjDt;
-	Thu, 12 Dec 2024 22:28:38 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5112C1800CA;
-	Thu, 12 Dec 2024 22:30:25 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Dec 2024 22:30:24 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<gregkh@linuxfoundation.org>
-CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
-	<liuyonglong@huawei.com>, <chenhao418@huawei.com>, <sudongming1@huawei.com>,
-	<xujunsheng@huawei.com>, <shiyongbang@huawei.com>, <libaihan@huawei.com>,
-	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>, <hkelam@marvell.com>
-Subject: [PATCH V7 net-next 4/7] net: hibmcge: Add register dump supported in this module
-Date: Thu, 12 Dec 2024 22:23:31 +0800
-Message-ID: <20241212142334.1024136-5-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241212142334.1024136-1-shaojijie@huawei.com>
-References: <20241212142334.1024136-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1734014212; c=relaxed/simple;
+	bh=pQLHiYFHAQb5YJ4xkyY6IILERlYYmWavglLOnEsuL8E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XW4qWuPAM1S73l/pGjubnolXG84r6jsNn4aISOTNT20b7/dZTU7FevAQPzLZmdR+EsOw6kdVzJtEasSnXVMDdVtj7f63FxCe1UfbTwbK+bDGnSWE0AvUsWkS4N5RS6d4DfUV3qjYnkejwWi+fwGXcTbKrFaFDIBfmcaFvatAXKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zurich.ibm.com; spf=pass smtp.mailfrom=zurich.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DnZi5t1R; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zurich.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zurich.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DnZi5t1R"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BC6He8H029772;
+	Thu, 12 Dec 2024 14:36:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=28mhL5fEn9SPKTYxnHbM3HYvR/d0YcImlpc6UvQtv
+	Vk=; b=DnZi5t1R4jnW+YrsmBZ2lRfiT5mI20F4iEdXzs3nPrhFElIk5zhIpBsU0
+	XQUtiOcXAkaMXcdHMC72S664fOgPIJAFqw2tawIcajQ4UusB2Oj8k3tX3mXQZXIM
+	EAKDLgnNabrOEAbfLw5vlJesVeDtCTsgKgpK4S6eJPhZDMC0uW+ntnRIfaJtZ7+y
+	+rVq/rs1NwEEDjRLoy+NSTTS+s74wj4GT2wZ/NzJj2bcuPTHoPWJWCdUOAm588hY
+	wIUr03LDnW9T2JpQu4MBJg+hJM9wuNSz1Gg7qgsQPH4bkXJ1NZ+2fpM7CilYj2rZ
+	qZMV/QFq7gE6awIGc+xSdaMsCYDbA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjukfs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 14:36:42 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BCETFxO004511;
+	Thu, 12 Dec 2024 14:36:41 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjukfp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 14:36:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCBVfRQ017421;
+	Thu, 12 Dec 2024 14:36:40 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d3d20kkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 14:36:40 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BCEad6m9372138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Dec 2024 14:36:39 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29D7720043;
+	Thu, 12 Dec 2024 14:36:39 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1DE820040;
+	Thu, 12 Dec 2024 14:36:38 +0000 (GMT)
+Received: from rims.zurich.ibm.com (unknown [9.4.68.72])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Dec 2024 14:36:38 +0000 (GMT)
+From: Bernard Metzler <bmt@zurich.ibm.com>
+To: linux-rdma@vger.kernel.org
+Cc: jgg@ziepe.ca, leon@kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        zyjzyj2000@gmail.com, Bernard Metzler <bmt@zurich.ibm.com>,
+        syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
+Subject: [PATCH RESEND] RDMA/siw: Remove direct link to net_device
+Date: Thu, 12 Dec 2024 15:36:29 +0100
+Message-Id: <20241212143629.560965-1-bmt@zurich.ibm.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,320 +75,270 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GZe_wq7n_0hIDiyU8f7Xq8LMc97SgoE2
+X-Proofpoint-ORIG-GUID: Eo0jEQehK88G_GwHIWMmoqf2iYaQkNKv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412120104
 
-The dump register is an effective way to analyze problems.
+Do not manage a per device direct link to net_device. Rely
+on associated ib_devices net_device management, not doubling
+the effort locally. A badly managed local link to net_device
+was causing a 'KASAN: slab-use-after-free' exception during
+siw_query_port() call.
 
-To ensure code flexibility, each register contains the type,
-offset, and value information. The ethtool does the pretty print
-based on these information.
-
-The driver can dynamically add or delete registers that need to be dumped
-in the future because information such as type and offset is contained.
-ethtool always can do pretty print.
-
-With the ethtool of a specific version,
-the following effects are achieved:
-[root@localhost sjj]# ./ethtool -d enp131s0f1
-[SPEC] VALID                    [0x0000]: 0x00000001
-[SPEC] EVENT_REQ                [0x0004]: 0x00000000
-[SPEC] MAC_ID                   [0x0008]: 0x00000002
-[SPEC] PHY_ADDR                 [0x000c]: 0x00000002
-[SPEC] MAC_ADDR_L               [0x0010]: 0x00000808
-[SPEC] MAC_ADDR_H               [0x0014]: 0x08080802
-[SPEC] UC_MAX_NUM               [0x0018]: 0x00000004
-[SPEC] MAX_MTU                  [0x0028]: 0x00000fc2
-[SPEC] MIN_MTU                  [0x002c]: 0x00000100
-[SPEC] TX_FIFO_NUM              [0x0030]: 0x00000040
-[SPEC] RX_FIFO_NUM              [0x0034]: 0x0000007f
-[SPEC] VLAN_LAYERS              [0x0038]: 0x00000002
-[MDIO] COMMAND_REG              [0x0000]: 0x0000185f
-[MDIO] ADDR_REG                 [0x0004]: 0x00000000
-[MDIO] WDATA_REG                [0x0008]: 0x0000a000
-[MDIO] RDATA_REG                [0x000c]: 0x00000000
-[MDIO] STA_REG                  [0x0010]: 0x00000000
-[GMAC] DUPLEX_TYPE              [0x0008]: 0x00000001
-[GMAC] FD_FC_TYPE               [0x000c]: 0x00008808
-[GMAC] FC_TX_TIMER              [0x001c]: 0x000000ff
-[GMAC] FD_FC_ADDR_LOW           [0x0020]: 0xc2000001
-[GMAC] FD_FC_ADDR_HIGH          [0x0024]: 0x00000180
-[GMAC] MAX_FRM_SIZE             [0x003c]: 0x000005f6
-[GMAC] PORT_MODE                [0x0040]: 0x00000002
-[GMAC] PORT_EN                  [0x0044]: 0x00000006
-...
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+Reported-by: syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=4b87489410b4efd181bf
+Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
 ---
-ChangeLog:
-v1 -> v2:
-  - Not pass back ASCII text in dump register, suggested by Andrew.
-v1: https://lore.kernel.org/all/20241023134213.3359092-5-shaojijie@huawei.com/
----
- .../ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 140 ++++++++++++++++++
- .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  34 +++++
- 2 files changed, 174 insertions(+)
+ drivers/infiniband/sw/siw/siw.h       |  7 +++---
+ drivers/infiniband/sw/siw/siw_cm.c    | 31 +++++++++++++++++++++------
+ drivers/infiniband/sw/siw/siw_main.c  | 15 +------------
+ drivers/infiniband/sw/siw/siw_verbs.c | 27 +++++++++++++++++------
+ 4 files changed, 50 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index c3370114aef3..e7f169d2abb7 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -3,12 +3,152 @@
+diff --git a/drivers/infiniband/sw/siw/siw.h b/drivers/infiniband/sw/siw/siw.h
+index 86d4d6a2170e..ea5eee50dc39 100644
+--- a/drivers/infiniband/sw/siw/siw.h
++++ b/drivers/infiniband/sw/siw/siw.h
+@@ -46,6 +46,9 @@
+  */
+ #define SIW_IRQ_MAXBURST_SQ_ACTIVE 4
  
- #include <linux/ethtool.h>
- #include <linux/phy.h>
-+#include "hbg_common.h"
- #include "hbg_ethtool.h"
-+#include "hbg_hw.h"
++/* There is always only a port 1 per siw device */
++#define SIW_PORT 1
 +
-+enum hbg_reg_dump_type {
-+	HBG_DUMP_REG_TYPE_SPEC = 0,
-+	HBG_DUMP_REG_TYPE_MDIO,
-+	HBG_DUMP_REG_TYPE_GMAC,
-+	HBG_DUMP_REG_TYPE_PCU,
-+};
-+
-+struct hbg_reg_info {
-+	u32 type;
-+	u32 offset;
-+	u32 val;
-+};
-+
-+#define HBG_DUMP_SPEC_I(offset) {HBG_DUMP_REG_TYPE_SPEC, offset, 0}
-+#define HBG_DUMP_MDIO_I(offset) {HBG_DUMP_REG_TYPE_MDIO, offset, 0}
-+#define HBG_DUMP_GMAC_I(offset) {HBG_DUMP_REG_TYPE_GMAC, offset, 0}
-+#define HBG_DUMP_PCU_I(offset) {HBG_DUMP_REG_TYPE_PCU, offset, 0}
-+
-+static const struct hbg_reg_info hbg_dump_reg_infos[] = {
-+	/* dev specs */
-+	HBG_DUMP_SPEC_I(HBG_REG_SPEC_VALID_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_EVENT_REQ_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MAC_ID_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_PHY_ID_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MAC_ADDR_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MAC_ADDR_HIGH_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_UC_MAC_NUM_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MDIO_FREQ_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MAX_MTU_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_MIN_MTU_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_TX_FIFO_NUM_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_RX_FIFO_NUM_ADDR),
-+	HBG_DUMP_SPEC_I(HBG_REG_VLAN_LAYERS_ADDR),
-+
-+	/* mdio */
-+	HBG_DUMP_MDIO_I(HBG_REG_MDIO_COMMAND_ADDR),
-+	HBG_DUMP_MDIO_I(HBG_REG_MDIO_ADDR_ADDR),
-+	HBG_DUMP_MDIO_I(HBG_REG_MDIO_WDATA_ADDR),
-+	HBG_DUMP_MDIO_I(HBG_REG_MDIO_RDATA_ADDR),
-+	HBG_DUMP_MDIO_I(HBG_REG_MDIO_STA_ADDR),
-+
-+	/* gmac */
-+	HBG_DUMP_GMAC_I(HBG_REG_DUPLEX_TYPE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_FD_FC_TYPE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_FC_TX_TIMER_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_FD_FC_ADDR_LOW_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_FD_FC_ADDR_HIGH_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_MAX_FRAME_SIZE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_PORT_MODE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_PORT_ENABLE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_PAUSE_ENABLE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_AN_NEG_STATE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_TRANSMIT_CTRL_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_REC_FILT_CTRL_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_LINE_LOOP_BACK_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_CF_CRC_STRIP_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_MODE_CHANGE_EN_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_LOOP_REG_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_RECV_CTRL_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_VLAN_CODE_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_0_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_0_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_1_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_1_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_2_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_2_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_3_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_3_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_4_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_4_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_LOW_5_ADDR),
-+	HBG_DUMP_GMAC_I(HBG_REG_STATION_ADDR_HIGH_5_ADDR),
-+
-+	/* pcu */
-+	HBG_DUMP_PCU_I(HBG_REG_TX_FIFO_THRSLD_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_FIFO_THRSLD_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CFG_FIFO_THRSLD_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_INTRPT_MSK_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_INTRPT_STAT_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_INTRPT_CLR_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_TX_BUS_ERR_ADDR_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_BUS_ERR_ADDR_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_MAX_FRAME_LEN_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_DEBUG_ST_MCH_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_FIFO_CURR_STATUS_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_FIFO_HIST_STATUS_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_CFF_DATA_NUM_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_TX_PAUSE_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_CFF_ADDR_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_BUF_SIZE_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_BUS_CTRL_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_CTRL_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_RX_PKT_MODE_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_DBG_ST0_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_DBG_ST1_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_DBG_ST2_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_BUS_RST_EN_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_TXINT_MSK_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_TXINT_STAT_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_TXINT_CLR_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_RXINT_MSK_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_RXINT_STAT_ADDR),
-+	HBG_DUMP_PCU_I(HBG_REG_CF_IND_RXINT_CLR_ADDR),
-+};
-+
-+static const u32 hbg_dump_type_base_array[] = {
-+	[HBG_DUMP_REG_TYPE_SPEC] = 0,
-+	[HBG_DUMP_REG_TYPE_MDIO] = HBG_REG_MDIO_BASE,
-+	[HBG_DUMP_REG_TYPE_GMAC] = HBG_REG_SGMII_BASE,
-+	[HBG_DUMP_REG_TYPE_PCU] = HBG_REG_SGMII_BASE,
-+};
-+
-+static int hbg_ethtool_get_regs_len(struct net_device *netdev)
-+{
-+	return ARRAY_SIZE(hbg_dump_reg_infos) * sizeof(struct hbg_reg_info);
-+}
-+
-+static void hbg_ethtool_get_regs(struct net_device *netdev,
-+				 struct ethtool_regs *regs, void *data)
-+{
-+	struct hbg_priv *priv = netdev_priv(netdev);
-+	struct hbg_reg_info *info;
-+	u32 i, offset = 0;
-+
-+	regs->version = 0;
-+	for (i = 0; i < ARRAY_SIZE(hbg_dump_reg_infos); i++) {
-+		info = data + offset;
-+
-+		*info = hbg_dump_reg_infos[i];
-+		info->val = hbg_reg_read(priv, info->offset);
-+		info->offset -= hbg_dump_type_base_array[info->type];
-+
-+		offset += sizeof(*info);
-+	}
-+}
+ struct siw_dev_cap {
+ 	int max_qp;
+ 	int max_qp_wr;
+@@ -69,16 +72,12 @@ struct siw_pd {
  
- static const struct ethtool_ops hbg_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
-+	.get_regs_len		= hbg_ethtool_get_regs_len,
-+	.get_regs		= hbg_ethtool_get_regs,
- };
+ struct siw_device {
+ 	struct ib_device base_dev;
+-	struct net_device *netdev;
+ 	struct siw_dev_cap attrs;
  
- void hbg_ethtool_set_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index 8993f57ecea4..665666712c7c 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -10,6 +10,7 @@
- #define HBG_REG_MAC_ID_ADDR			0x0008
- #define HBG_REG_PHY_ID_ADDR			0x000C
- #define HBG_REG_MAC_ADDR_ADDR			0x0010
-+#define HBG_REG_MAC_ADDR_HIGH_ADDR		0x0014
- #define HBG_REG_UC_MAC_NUM_ADDR			0x0018
- #define HBG_REG_MDIO_FREQ_ADDR			0x0024
- #define HBG_REG_MAX_MTU_ADDR			0x0028
-@@ -29,6 +30,7 @@
- #define HBG_REG_MDIO_COMMAND_OP_M		GENMASK(11, 10)
- #define HBG_REG_MDIO_COMMAND_PRTAD_M		GENMASK(9, 5)
- #define HBG_REG_MDIO_COMMAND_DEVAD_M		GENMASK(4, 0)
-+#define HBG_REG_MDIO_ADDR_ADDR			(HBG_REG_MDIO_BASE + 0x0004)
- #define HBG_REG_MDIO_WDATA_ADDR			(HBG_REG_MDIO_BASE + 0x0008)
- #define HBG_REG_MDIO_WDATA_M			GENMASK(15, 0)
- #define HBG_REG_MDIO_RDATA_ADDR			(HBG_REG_MDIO_BASE + 0x000C)
-@@ -37,6 +39,10 @@
- /* GMAC */
- #define HBG_REG_SGMII_BASE			0x10000
- #define HBG_REG_DUPLEX_TYPE_ADDR		(HBG_REG_SGMII_BASE + 0x0008)
-+#define HBG_REG_FD_FC_TYPE_ADDR			(HBG_REG_SGMII_BASE + 0x000C)
-+#define HBG_REG_FC_TX_TIMER_ADDR		(HBG_REG_SGMII_BASE + 0x001C)
-+#define HBG_REG_FD_FC_ADDR_LOW_ADDR		(HBG_REG_SGMII_BASE + 0x0020)
-+#define HBG_REG_FD_FC_ADDR_HIGH_ADDR		(HBG_REG_SGMII_BASE + 0x0024)
- #define HBG_REG_DUPLEX_B			BIT(0)
- #define HBG_REG_MAX_FRAME_SIZE_ADDR		(HBG_REG_SGMII_BASE + 0x003C)
- #define HBG_REG_PORT_MODE_ADDR			(HBG_REG_SGMII_BASE + 0x0040)
-@@ -44,22 +50,40 @@
- #define HBG_REG_PORT_ENABLE_ADDR		(HBG_REG_SGMII_BASE + 0x0044)
- #define HBG_REG_PORT_ENABLE_RX_B		BIT(1)
- #define HBG_REG_PORT_ENABLE_TX_B		BIT(2)
-+#define HBG_REG_PAUSE_ENABLE_ADDR		(HBG_REG_SGMII_BASE + 0x0048)
-+#define HBG_REG_AN_NEG_STATE_ADDR		(HBG_REG_SGMII_BASE + 0x0058)
- #define HBG_REG_TRANSMIT_CTRL_ADDR		(HBG_REG_SGMII_BASE + 0x0060)
- #define HBG_REG_TRANSMIT_CTRL_PAD_EN_B		BIT(7)
- #define HBG_REG_TRANSMIT_CTRL_CRC_ADD_B		BIT(6)
- #define HBG_REG_TRANSMIT_CTRL_AN_EN_B		BIT(5)
- #define HBG_REG_REC_FILT_CTRL_ADDR		(HBG_REG_SGMII_BASE + 0x0064)
- #define HBG_REG_REC_FILT_CTRL_UC_MATCH_EN_B	BIT(0)
-+#define HBG_REG_LINE_LOOP_BACK_ADDR		(HBG_REG_SGMII_BASE + 0x01A8)
- #define HBG_REG_CF_CRC_STRIP_ADDR		(HBG_REG_SGMII_BASE + 0x01B0)
- #define HBG_REG_CF_CRC_STRIP_B			BIT(0)
- #define HBG_REG_MODE_CHANGE_EN_ADDR		(HBG_REG_SGMII_BASE + 0x01B4)
- #define HBG_REG_MODE_CHANGE_EN_B		BIT(0)
-+#define HBG_REG_LOOP_REG_ADDR			(HBG_REG_SGMII_BASE + 0x01DC)
- #define HBG_REG_RECV_CTRL_ADDR			(HBG_REG_SGMII_BASE + 0x01E0)
- #define HBG_REG_RECV_CTRL_STRIP_PAD_EN_B	BIT(3)
-+#define HBG_REG_VLAN_CODE_ADDR			(HBG_REG_SGMII_BASE + 0x01E8)
-+#define HBG_REG_STATION_ADDR_LOW_0_ADDR		(HBG_REG_SGMII_BASE + 0x0200)
-+#define HBG_REG_STATION_ADDR_HIGH_0_ADDR	(HBG_REG_SGMII_BASE + 0x0204)
-+#define HBG_REG_STATION_ADDR_LOW_1_ADDR		(HBG_REG_SGMII_BASE + 0x0208)
-+#define HBG_REG_STATION_ADDR_HIGH_1_ADDR	(HBG_REG_SGMII_BASE + 0x020C)
- #define HBG_REG_STATION_ADDR_LOW_2_ADDR		(HBG_REG_SGMII_BASE + 0x0210)
- #define HBG_REG_STATION_ADDR_HIGH_2_ADDR	(HBG_REG_SGMII_BASE + 0x0214)
-+#define HBG_REG_STATION_ADDR_LOW_3_ADDR		(HBG_REG_SGMII_BASE + 0x0218)
-+#define HBG_REG_STATION_ADDR_HIGH_3_ADDR	(HBG_REG_SGMII_BASE + 0x021C)
-+#define HBG_REG_STATION_ADDR_LOW_4_ADDR		(HBG_REG_SGMII_BASE + 0x0220)
-+#define HBG_REG_STATION_ADDR_HIGH_4_ADDR	(HBG_REG_SGMII_BASE + 0x0224)
-+#define HBG_REG_STATION_ADDR_LOW_5_ADDR		(HBG_REG_SGMII_BASE + 0x0228)
-+#define HBG_REG_STATION_ADDR_HIGH_5_ADDR	(HBG_REG_SGMII_BASE + 0x022C)
+ 	u32 vendor_part_id;
+ 	int numa_node;
+ 	char raw_gid[ETH_ALEN];
  
- /* PCU */
-+#define HBG_REG_TX_FIFO_THRSLD_ADDR		(HBG_REG_SGMII_BASE + 0x0420)
-+#define HBG_REG_RX_FIFO_THRSLD_ADDR		(HBG_REG_SGMII_BASE + 0x0424)
-+#define HBG_REG_CFG_FIFO_THRSLD_ADDR		(HBG_REG_SGMII_BASE + 0x0428)
- #define HBG_REG_CF_INTRPT_MSK_ADDR		(HBG_REG_SGMII_BASE + 0x042C)
- #define HBG_INT_MSK_WE_ERR_B			BIT(31)
- #define HBG_INT_MSK_RBREQ_ERR_B			BIT(30)
-@@ -81,11 +105,17 @@
- #define HBG_INT_MSK_RX_B			BIT(0) /* just used in driver */
- #define HBG_REG_CF_INTRPT_STAT_ADDR		(HBG_REG_SGMII_BASE + 0x0434)
- #define HBG_REG_CF_INTRPT_CLR_ADDR		(HBG_REG_SGMII_BASE + 0x0438)
-+#define HBG_REG_TX_BUS_ERR_ADDR_ADDR		(HBG_REG_SGMII_BASE + 0x043C)
-+#define HBG_REG_RX_BUS_ERR_ADDR_ADDR		(HBG_REG_SGMII_BASE + 0x0440)
- #define HBG_REG_MAX_FRAME_LEN_ADDR		(HBG_REG_SGMII_BASE + 0x0444)
- #define HBG_REG_MAX_FRAME_LEN_M			GENMASK(15, 0)
-+#define HBG_REG_DEBUG_ST_MCH_ADDR		(HBG_REG_SGMII_BASE + 0x0450)
-+#define HBG_REG_FIFO_CURR_STATUS_ADDR		(HBG_REG_SGMII_BASE + 0x0454)
-+#define HBG_REG_FIFO_HIST_STATUS_ADDR		(HBG_REG_SGMII_BASE + 0x0458)
- #define HBG_REG_CF_CFF_DATA_NUM_ADDR		(HBG_REG_SGMII_BASE + 0x045C)
- #define HBG_REG_CF_CFF_DATA_NUM_ADDR_TX_M	GENMASK(8, 0)
- #define HBG_REG_CF_CFF_DATA_NUM_ADDR_RX_M	GENMASK(24, 16)
-+#define HBG_REG_CF_TX_PAUSE_ADDR		(HBG_REG_SGMII_BASE + 0x0470)
- #define HBG_REG_TX_CFF_ADDR_0_ADDR		(HBG_REG_SGMII_BASE + 0x0488)
- #define HBG_REG_TX_CFF_ADDR_1_ADDR		(HBG_REG_SGMII_BASE + 0x048C)
- #define HBG_REG_TX_CFF_ADDR_2_ADDR		(HBG_REG_SGMII_BASE + 0x0490)
-@@ -104,6 +134,10 @@
- #define HBG_REG_RX_CTRL_RXBUF_1ST_SKIP_SIZE2_M	GENMASK(3, 0)
- #define HBG_REG_RX_PKT_MODE_ADDR		(HBG_REG_SGMII_BASE + 0x04F4)
- #define HBG_REG_RX_PKT_MODE_PARSE_MODE_M	GENMASK(22, 21)
-+#define HBG_REG_DBG_ST0_ADDR			(HBG_REG_SGMII_BASE + 0x05E4)
-+#define HBG_REG_DBG_ST1_ADDR			(HBG_REG_SGMII_BASE + 0x05E8)
-+#define HBG_REG_DBG_ST2_ADDR			(HBG_REG_SGMII_BASE + 0x05EC)
-+#define HBG_REG_BUS_RST_EN_ADDR			(HBG_REG_SGMII_BASE + 0x0688)
- #define HBG_REG_CF_IND_TXINT_MSK_ADDR		(HBG_REG_SGMII_BASE + 0x0694)
- #define HBG_REG_IND_INTR_MASK_B			BIT(0)
- #define HBG_REG_CF_IND_TXINT_STAT_ADDR		(HBG_REG_SGMII_BASE + 0x0698)
+-	/* physical port state (only one port per device) */
+-	enum ib_port_state state;
+-
+ 	spinlock_t lock;
+ 
+ 	struct xarray qp_xa;
+diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
+index 86323918a570..b157bd01e70b 100644
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -1759,6 +1759,7 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ {
+ 	struct socket *s;
+ 	struct siw_cep *cep = NULL;
++	struct net_device *ndev = NULL;
+ 	struct siw_device *sdev = to_siw_dev(id->device);
+ 	int addr_family = id->local_addr.ss_family;
+ 	int rv = 0;
+@@ -1779,9 +1780,15 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ 		struct sockaddr_in *laddr = &to_sockaddr_in(id->local_addr);
+ 
+ 		/* For wildcard addr, limit binding to current device only */
+-		if (ipv4_is_zeronet(laddr->sin_addr.s_addr))
+-			s->sk->sk_bound_dev_if = sdev->netdev->ifindex;
+-
++		if (ipv4_is_zeronet(laddr->sin_addr.s_addr)) {
++			ndev = ib_device_get_netdev(id->device, SIW_PORT);
++			if (ndev) {
++				s->sk->sk_bound_dev_if = ndev->ifindex;
++			} else {
++				rv = -ENODEV;
++				goto error;
++			}
++		}
+ 		rv = s->ops->bind(s, (struct sockaddr *)laddr,
+ 				  sizeof(struct sockaddr_in));
+ 	} else {
+@@ -1797,9 +1804,15 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ 		}
+ 
+ 		/* For wildcard addr, limit binding to current device only */
+-		if (ipv6_addr_any(&laddr->sin6_addr))
+-			s->sk->sk_bound_dev_if = sdev->netdev->ifindex;
+-
++		if (ipv6_addr_any(&laddr->sin6_addr)) {
++			ndev = ib_device_get_netdev(id->device, SIW_PORT);
++			if (ndev) {
++				s->sk->sk_bound_dev_if = ndev->ifindex;
++			} else {
++				rv = -ENODEV;
++				goto error;
++			}
++		}
+ 		rv = s->ops->bind(s, (struct sockaddr *)laddr,
+ 				  sizeof(struct sockaddr_in6));
+ 	}
+@@ -1861,6 +1874,9 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ 	list_add_tail(&cep->listenq, (struct list_head *)id->provider_data);
+ 	cep->state = SIW_EPSTATE_LISTENING;
+ 
++	if (ndev)
++		dev_put(ndev);
++
+ 	siw_dbg(id->device, "Listen at laddr %pISp\n", &id->local_addr);
+ 
+ 	return 0;
+@@ -1880,6 +1896,9 @@ int siw_create_listen(struct iw_cm_id *id, int backlog)
+ 	}
+ 	sock_release(s);
+ 
++	if (ndev)
++		dev_put(ndev);
++
+ 	return rv;
+ }
+ 
+diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
+index 17abef48abcd..14d3103aee6f 100644
+--- a/drivers/infiniband/sw/siw/siw_main.c
++++ b/drivers/infiniband/sw/siw/siw_main.c
+@@ -287,7 +287,6 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
+ 		return NULL;
+ 
+ 	base_dev = &sdev->base_dev;
+-	sdev->netdev = netdev;
+ 
+ 	if (netdev->addr_len) {
+ 		memcpy(sdev->raw_gid, netdev->dev_addr,
+@@ -381,12 +380,10 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
+-		sdev->state = IB_PORT_ACTIVE;
+ 		siw_port_event(sdev, 1, IB_EVENT_PORT_ACTIVE);
+ 		break;
+ 
+ 	case NETDEV_DOWN:
+-		sdev->state = IB_PORT_DOWN;
+ 		siw_port_event(sdev, 1, IB_EVENT_PORT_ERR);
+ 		break;
+ 
+@@ -407,12 +404,8 @@ static int siw_netdev_event(struct notifier_block *nb, unsigned long event,
+ 		siw_port_event(sdev, 1, IB_EVENT_LID_CHANGE);
+ 		break;
+ 	/*
+-	 * Todo: Below netdev events are currently not handled.
++	 * All other events are not handled
+ 	 */
+-	case NETDEV_CHANGEMTU:
+-	case NETDEV_CHANGE:
+-		break;
+-
+ 	default:
+ 		break;
+ 	}
+@@ -442,12 +435,6 @@ static int siw_newlink(const char *basedev_name, struct net_device *netdev)
+ 	sdev = siw_device_create(netdev);
+ 	if (sdev) {
+ 		dev_dbg(&netdev->dev, "siw: new device\n");
+-
+-		if (netif_running(netdev) && netif_carrier_ok(netdev))
+-			sdev->state = IB_PORT_ACTIVE;
+-		else
+-			sdev->state = IB_PORT_DOWN;
+-
+ 		ib_mark_name_assigned_by_user(&sdev->base_dev);
+ 		rv = siw_device_register(sdev, basedev_name);
+ 		if (rv)
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index 986666c19378..35f3744a3007 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -171,21 +171,29 @@ int siw_query_device(struct ib_device *base_dev, struct ib_device_attr *attr,
+ int siw_query_port(struct ib_device *base_dev, u32 port,
+ 		   struct ib_port_attr *attr)
+ {
+-	struct siw_device *sdev = to_siw_dev(base_dev);
++	struct net_device *ndev;
+ 	int rv;
+ 
+ 	memset(attr, 0, sizeof(*attr));
+ 
+ 	rv = ib_get_eth_speed(base_dev, port, &attr->active_speed,
+ 			 &attr->active_width);
++	if (rv)
++		return rv;
++
++	ndev = ib_device_get_netdev(base_dev, SIW_PORT);
++	if (!ndev)
++		return -ENODEV;
++
+ 	attr->gid_tbl_len = 1;
+ 	attr->max_msg_sz = -1;
+-	attr->max_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
+-	attr->active_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
+-	attr->phys_state = sdev->state == IB_PORT_ACTIVE ?
++	attr->max_mtu = ib_mtu_int_to_enum(ndev->max_mtu);
++	attr->active_mtu = ib_mtu_int_to_enum(READ_ONCE(ndev->mtu));
++	attr->phys_state = (netif_running(ndev) && netif_carrier_ok(ndev)) ?
+ 		IB_PORT_PHYS_STATE_LINK_UP : IB_PORT_PHYS_STATE_DISABLED;
++	attr->state = attr->phys_state == IB_PORT_PHYS_STATE_LINK_UP ?
++		IB_PORT_ACTIVE : IB_PORT_DOWN;
+ 	attr->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_DEVICE_MGMT_SUP;
+-	attr->state = sdev->state;
+ 	/*
+ 	 * All zero
+ 	 *
+@@ -199,6 +207,7 @@ int siw_query_port(struct ib_device *base_dev, u32 port,
+ 	 * attr->subnet_timeout = 0;
+ 	 * attr->init_type_repy = 0;
+ 	 */
++	dev_put(ndev);
+ 	return rv;
+ }
+ 
+@@ -506,6 +515,7 @@ int siw_query_qp(struct ib_qp *base_qp, struct ib_qp_attr *qp_attr,
+ {
+ 	struct siw_qp *qp;
+ 	struct siw_device *sdev;
++	struct net_device *ndev;
+ 
+ 	if (base_qp && qp_attr && qp_init_attr) {
+ 		qp = to_siw_qp(base_qp);
+@@ -513,13 +523,17 @@ int siw_query_qp(struct ib_qp *base_qp, struct ib_qp_attr *qp_attr,
+ 	} else {
+ 		return -EINVAL;
+ 	}
++	ndev = ib_device_get_netdev(base_qp->device, SIW_PORT);
++	if (!ndev)
++		return -ENODEV;
++
+ 	qp_attr->qp_state = siw_qp_state_to_ib_qp_state[qp->attrs.state];
+ 	qp_attr->cap.max_inline_data = SIW_MAX_INLINE;
+ 	qp_attr->cap.max_send_wr = qp->attrs.sq_size;
+ 	qp_attr->cap.max_send_sge = qp->attrs.sq_max_sges;
+ 	qp_attr->cap.max_recv_wr = qp->attrs.rq_size;
+ 	qp_attr->cap.max_recv_sge = qp->attrs.rq_max_sges;
+-	qp_attr->path_mtu = ib_mtu_int_to_enum(sdev->netdev->mtu);
++	qp_attr->path_mtu = ib_mtu_int_to_enum(READ_ONCE(ndev->mtu));
+ 	qp_attr->max_rd_atomic = qp->attrs.irq_size;
+ 	qp_attr->max_dest_rd_atomic = qp->attrs.orq_size;
+ 
+@@ -534,6 +548,7 @@ int siw_query_qp(struct ib_qp *base_qp, struct ib_qp_attr *qp_attr,
+ 
+ 	qp_init_attr->cap = qp_attr->cap;
+ 
++	dev_put(ndev);
+ 	return 0;
+ }
+ 
 -- 
-2.33.0
+2.38.1
 
