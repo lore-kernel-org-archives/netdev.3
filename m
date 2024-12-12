@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F274B2080FC;
-	Thu, 12 Dec 2024 15:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CDC2156EA;
+	Thu, 12 Dec 2024 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015997; cv=none; b=rCxBeMrTR+509S+9fV/AJtgwNorPf0Tyv9TcIJNSlPmzWIy7352ISV0OkLkTx+S+vkBIARRsJ/Y7sBZtcSPsqTbIKBcYP0jGKtBjkw+nI6sNtCQy0lTo3oD8qN1qSxXN9+eUCNe5oRwA8IX1a3PRzPBJ1r7grwtndLM2M5hOvzA=
+	t=1734016049; cv=none; b=dUm3lm7ySZd/1f6zhaKVDE4IHafphGMnLzMZSO5Vp1chSsXzAo0rFOHy6KkvTxa8mzxjKHO6pjpMRY2TSz5/FtvDI5OLIXjAZJ6Ztd1pgihUM9IUeSbrSBVF/IYz+tHLS4xCK/sqB7w4j40ofvt+bf90B5yM0rMMVEOZNG5Zud4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015997; c=relaxed/simple;
-	bh=fhd6N0Wos1BNNs1YgfZM4PBsdPQ2Jg9jH6URkvhfT1g=;
+	s=arc-20240116; t=1734016049; c=relaxed/simple;
+	bh=CX8AlibbY84H8JupjdmatQAcN3FLopAvDCOS2GrjDi0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=US5N9GV+t4nOCd+bSwQiMJDrjledj1I+44CAiKayxXHGPoQEhBNzTFhyU0ptRRQdQebR8uq0cOhfLP5E/RLwwDcO/sF98gpI6518qs74dOpuZtk1KF22RVUZLBCVpxp6/Ge53FePDOq1/MlNkn+nG7IPg3ZHNxwZQ30GTWagU7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0vRgX4C; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Lj60gU/tat3omPCYRSm7RhrhPVv1GJdFTMN/O3PxuLGfFX59H+mdz81WtK0Tno4yscqoKHUxLeYq+GG32u6waeRa6io1+X0EI5sMdHDz6DtwgcQlJKfRfsbHhedp1kscWRSvo71ZorW2HrBnu0knaTfDDkqvO4kuukYHTSUnbzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnZ5x3LP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0vRgX4C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D023C4CED0;
-	Thu, 12 Dec 2024 15:06:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnZ5x3LP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCD1C4CED0;
+	Thu, 12 Dec 2024 15:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734015996;
-	bh=fhd6N0Wos1BNNs1YgfZM4PBsdPQ2Jg9jH6URkvhfT1g=;
+	s=k20201202; t=1734016049;
+	bh=CX8AlibbY84H8JupjdmatQAcN3FLopAvDCOS2GrjDi0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=P0vRgX4Cvs6yCQ+tZ4xWOOdsdxj9Ww5uZ/KnObEYpoHsdcT17ldFTTmV3SdrZ4P2n
-	 gcN4vsnqCc6QyUwyl7ES3T+nZL4pGPdwLx6K+A2Sa+4oUp12L14u3F4YTkWLe36qiK
-	 6GkhWvcRJEjdDovDJDifoH7x2VNdxOYWtqOiaZBdpJwETx/vOJTtr3CgXtNX4cQHXs
-	 Xpa4bsNjZl7roDWawVIZQZPqtOD5qhbOmKTmMhNLmEZdQdMYMi2nLQBI8+vRPSq0p1
-	 74TyKFoD5qWODUSQ2xirGVf8iU1aVMmzNSvmzzB4Hl1/Iho7B34Cfir4zYKzdEKmHa
-	 L2QEHehZtuPzg==
-Date: Thu, 12 Dec 2024 07:06:35 -0800
+	b=HnZ5x3LPBnoNsckOn/+LAfrvep3YkEPE3NC4cAiqYLdVJLHhKTBaO7X/U/fhgYr2n
+	 fLdxvJojzoG8z4xqLGOuZDAfE2HrmLLqRCbDR/BDkC3I3tHi7AeUvKf0TrShLxfx6O
+	 /Djkf049uncyxisJ+UGTNP/OfSeeTQK/YGoqIA5lsSsS6lIGKo6ut85c26M92Hgjh5
+	 DRWYRkbeherswfc4pK4o8/YU1eoD1/ttFy0yLAYdu5dru3dpafXXIk8p+JTD+Vm9YM
+	 AzcZ6adyN+SKMzkOJFK/mJE8sK2LNZvXU9q0l+NFdDBDOm69JybkZI9oXNSw3WMLkB
+	 OEpjHBz8O8Viw==
+Date: Thu, 12 Dec 2024 07:07:27 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: andrew@lunn.ch
-Cc: Wei Fang <wei.fang@nxp.com>, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, florian.fainelli@broadcom.com, heiko.stuebner@cherry.de,
- frank.li@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-Subject: Re: [PATCH v4 net] net: phy: micrel: Dynamically control external
- clock of KSZ PHY
-Message-ID: <20241212070635.5459feb0@kernel.org>
-In-Reply-To: <20241211072136.745553-1-wei.fang@nxp.com>
-References: <20241211072136.745553-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, frank.li@nxp.com, horms@kernel.org, idosch@idosch.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v7 net-next 0/4] Add more feautues for ENETC v4 - round
+ 1
+Message-ID: <20241212070727.2eeedb46@kernel.org>
+In-Reply-To: <20241211063752.744975-1-wei.fang@nxp.com>
+References: <20241211063752.744975-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,15 +47,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 11 Dec 2024 15:21:36 +0800 Wei Fang wrote:
-> On the i.MX6ULL-14x14-EVK board, enet1_ref and enet2_ref are used as the
-> clock sources for two external KSZ PHYs. However, after closing the two
-> FEC ports, the clk_enable_count of the enet1_ref and enet2_ref clocks is
-> not 0. The root cause is that since the commit 985329462723 ("net: phy:
-> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
-> external clock of KSZ PHY has been enabled when the PHY driver probes,
-> and it can only be disabled when the PHY driver is removed. This causes
-> the clock to continue working when the system is suspended or the network
-> port is down.
+On Wed, 11 Dec 2024 14:37:48 +0800 Wei Fang wrote:
+> Compared to ENETC v1 (LS1028A), ENETC v4 (i.MX95) adds more features, and
+> some features are configured completely differently from v1. In order to
+> more fully support ENETC v4, these features will be added through several
+> rounds of patch sets. This round adds these features, such as Tx and Rx
+> checksum offload, increase maximum chained Tx BD number and Large send
+> offload (LSO).
 
-Andrew, could you pass the final judgment on this? :)
+Doesn't apply:
+
+Failed to apply patch:
+Applying: net: enetc: add Tx checksum offload for i.MX95 ENETC
+Applying: net: enetc: update max chained Tx BD number for i.MX95 ENETC
+Applying: net: enetc: add LSO support for i.MX95 ENETC PF
+error: sha1 information is lacking or useless (drivers/net/ethernet/freescale/enetc/enetc.c).
+error: could not build fake ancestor
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+hint: When you have resolved this problem, run "git am --continue".
+hint: If you prefer to skip this patch, run "git am --skip" instead.
+hint: To restore the original branch and stop patching, run "git am --abort".
+hint: Disable this message with "git config advice.mergeConflict false"
+Patch failed at 0003 net: enetc: add LSO support for i.MX95 ENETC PF
+-- 
+pw-bot: cr
