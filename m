@@ -1,114 +1,120 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98C01DE2B8
-	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 22:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5372F2F;
+	Thu, 12 Dec 2024 22:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734042369; cv=none; b=r9EpuPPZgyo+nCEGAIy6/PPKrRxIhi8W3MwCM6Mtv+k+HdO/+Zuwyxg6DjvmZWDBqkfkiIYC46z+DzKVjStocU12MurLcLcOoaJvF97LT/QSA/REMSsDHwuLc+l/oMXoa5UB0LFrjnDC1uzl8jFIHF0odfT/0Z6XDPvnTpFUgBs=
+	t=1734042566; cv=none; b=NGxIQ7j1Fzo0WuiurIEB+hWDRYaTHM55CShrz2z9jIP7QhXcObrLSwxQIogFzvPl8ueO9emJFC8ghkg86bR6XO1EhDNbT3iV3/2J28wLSsc4ael5arffr/YAAggPRFPV6f0VVt/iZWPuv9Rd1bLEBRoItDc4EkFupGcAb9pfppc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734042369; c=relaxed/simple;
-	bh=4pB5oOG/al/+veIVNf3erQM8CjNyPQ/J63c0AhLtShg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ke92qnTdFhIdmNgdQXBm/D7E7VGih+yzFxH9cIirmqPQR/IsIpapbAVfYg0Kl2BLELaerhAu/mFni4ydpZLF1kdWX0Bvk3Zj8672NLRDZ6MDt1YD8JcHREaH0TNihmdBW40GUVXbIxp5ePHcN8hyULMJyEbGJCqwtSCQGYoDFTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=E1Vzf4Ik; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1734042566; c=relaxed/simple;
+	bh=hgLL+j7viOzNdukkTMbjWUP+M01pNEnqmEe4gbYyxUw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ldEdFliAYtEX6s0BA0/TnEtlZ8zF6D4spYxy57eU8lqf1ReCHQMs8wxE+jJ0Krr+G9Y381l6itQhRlWvi1GcrAuhC2s2yyCfmdDHjQGdkR0qff709Kpx6z4nOIR4MtSTCjV/iA5J/UqSs9zuPFicLI577CHbKj3fKcMgsOJrUaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=h/NH4cj/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="E1Vzf4Ik"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7fc88476a02so932253a12.2
-        for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 14:26:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1734042364; x=1734647164; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HkdI0v71YIIMW/h2nJtvCUZS2CV2DbhWrwQdxX337ug=;
-        b=E1Vzf4IkkujA4EiT2lgDXvzK0hygmm5GlcIiKgCH/eTxnUmO7U1RnI4r4rntCABH5F
-         7JHRjkSlTzFchQZcNGsRMnixgqz1qAPvNNdkeE7ACgR9afZmir6gBClxBhhoAQ4EY8T3
-         t2/ju6U1z0T2zJH7J03m4QmfJ0HcrsKb7DQlDMnRvZbcqknSNkXoBWK600lZ5m7nspmY
-         WW1oU7vo6HgeFcRaPqYkxwF3swDpAF4qvfka5GsSkT6zQTcEO90uWBsNHACYmgq1rXAq
-         k12n2aHhwBClNmA2zGTrivRZvq4jHesnrv/Obz7NICFhxDqcrhTpeAik/xjs1bM6e+8z
-         X2MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734042364; x=1734647164;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HkdI0v71YIIMW/h2nJtvCUZS2CV2DbhWrwQdxX337ug=;
-        b=wujHEgidb9EYwMUTo1TW4VyJj0iL6kf2bHQtR7ykdsTQYRC9OsyjJW8qf2RmGQAcgT
-         1Eps9BIVVZTU4L5UXfUVxMq1c4QM+a0J3HWE53YzRUXwcQmK187s4MB3Y3Y7O6B8DF5z
-         MItfbDUzOEhUeamf+q9z8WDvQQSkwDAOvw3+EH7U+PF99iF/+qY1Xdoj4wWa5nuShp/J
-         6veBghwcXtNkWY5iul+IuHYOOO4h+ei/Ltm4z7/SbkCuLpszs+0VL7KnCoeEh3O2rxmu
-         6TWHvun6NOJ3LwbS7wXT/dwCh1VQXWvu/IoNi8leiSkyTK5C5UMM1pORVA+AHow0nTu8
-         P04Q==
-X-Gm-Message-State: AOJu0Yy5ez1CEZByyGMC0L5PPMcQ+w8XVwXhK1wPN/E8PDdX0w4aHsR8
-	iqreIfGtkZRotdIOjXuGuYPn8+y0h+usWqhxLdxOGhfB9DCSlEq16pmE3GouVAlDTzBtpAPl7Kw
-	c
-X-Gm-Gg: ASbGncvMFzyiivahA9DJgYQfvK8+dVxzelne68lDPzg3LDYnJPEwtCbT7D2E+wfnylj
-	DbOSSe/d5zTxZs5GUbjXFt1paD7jxDf+/y4iUb3WHxg2OGatpRJpfYCkaY6DKh9NSpk9ecYdBfb
-	Q0psNvfni3BezpPfxwIFruDfK1xw5RLZ8zyhtbRwH7ZVLHvr5REY0mU6o+WrzX/+XtxYSPmWdzK
-	3cSc/LhJb6RtDvok/y1VorJrgqAmmeZ1aHmKqwNgOGHBre/J0lVVJA4WCYe+c2Ikac1ETjBYv5V
-	nchYJMC4/S1rpWE0mIg2tIkzxvZw7iWjMA==
-X-Google-Smtp-Source: AGHT+IEF3cK9/mIS3qglYbNQSOh3TM7BWal9zt9c9o68Dmlh/D2NlA7ggmvmIwkqbcNKtI0SOFHeAw==
-X-Received: by 2002:a17:90b:4a0a:b0:2ee:bc1d:f98b with SMTP id 98e67ed59e1d1-2f2901b7dbfmr528459a91.31.1734042364017;
-        Thu, 12 Dec 2024 14:26:04 -0800 (PST)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142daeb5asm1830071a91.12.2024.12.12.14.26.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 14:26:03 -0800 (PST)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 6/6] uapi: remove no longer used linux/limits.h
-Date: Thu, 12 Dec 2024 14:24:31 -0800
-Message-ID: <20241212222549.43749-7-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241212222549.43749-1-stephen@networkplumber.org>
-References: <20241212222549.43749-1-stephen@networkplumber.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="h/NH4cj/"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCEvO6O029697;
+	Thu, 12 Dec 2024 22:29:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=um4mQb
+	9dLa/+1MlyiZ6x7Q5vlgiEUQiPyor2NdHS6Mw=; b=h/NH4cj/HBj4VNSbeHFobY
+	Tn8NL49lwgz91hCADluFQU0ipc1mbzvNjCccBGRuSbSlPpo87xcB8E+N3tWrBVPp
+	5XF6on22eKMFk6EbD1ZQfRjrq5p8JjRNL3noirXYm4urw61DcawVMRdpEZ9JmH91
+	9plouJYD42oCm82zOREWpopyOoICNUp1ZFq/9wgLQ8Apwz/YbBBXtcgLx6ZTna8n
+	+flXwdyKuWoymDiFqGj2nqtyx4Iss8Z588/YEV8ZTgT+Xf5Aq/4TXkUCPr3fpAUz
+	KkV0rglyyDmfEZIxqqNTCoZv+InI1bxo/HJfGruyTeWQf8BO4XnMOrRFbK44++Ag
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjwsxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 22:29:18 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BCMQegO023311;
+	Thu, 12 Dec 2024 22:29:18 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ccsjwsxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 22:29:18 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCIdYHk007776;
+	Thu, 12 Dec 2024 22:29:17 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ft11vake-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 22:29:17 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BCMTDbi34668920
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Dec 2024 22:29:13 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 611B12004D;
+	Thu, 12 Dec 2024 22:29:13 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 769DA20040;
+	Thu, 12 Dec 2024 22:29:12 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.171.23.191])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu, 12 Dec 2024 22:29:12 +0000 (GMT)
+Date: Thu, 12 Dec 2024 23:29:10 +0100
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Guangguan Wang <guangguan.wang@linux.alibaba.com>, wenjia@linux.ibm.com,
+        jaka@linux.ibm.com, alibuda@linux.alibaba.com,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Halil
+ Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH net-next RESEND v3 2/2] net/smc: support ipv4 mapped
+ ipv6 addr client for smc-r v2
+Message-ID: <20241212232910.65825906.pasic@linux.ibm.com>
+In-Reply-To: <c67f6f4d-2291-41c8-8a89-aa0ae8f2ecd9@redhat.com>
+References: <20241211023055.89610-1-guangguan.wang@linux.alibaba.com>
+	<20241211023055.89610-3-guangguan.wang@linux.alibaba.com>
+	<20241211195440.54b37a79.pasic@linux.ibm.com>
+	<c67f6f4d-2291-41c8-8a89-aa0ae8f2ecd9@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: P6yKMqRStoWD_On5XprJpk05iFBG6s_1
+X-Proofpoint-ORIG-GUID: hfe_P7LkdbcQXYWPJZoa96yFH1LLMWcU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=726
+ mlxscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412120162
 
-Code is now using limits.h instead.
+On Thu, 12 Dec 2024 13:49:29 +0100
+Paolo Abeni <pabeni@redhat.com> wrote:
 
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
----
- include/uapi/linux/limits.h | 21 ---------------------
- 1 file changed, 21 deletions(-)
- delete mode 100644 include/uapi/linux/limits.h
+> > Sorry for the late remark, but does this need a Fixes tag? I mean
+> > my gut feeling is that this is a bugfix -- i.e. should have been
+> > working from the get go -- and not a mere enhancement. No strong
+> > opinions here.  
+> 
+> FTR: my take is this is really a new feature, as the ipv6 support for
+> missing from the smc-r v2 introduction and sub-system maintainers
+> already implicitly agreed on that via RB tags.
 
-diff --git a/include/uapi/linux/limits.h b/include/uapi/linux/limits.h
-deleted file mode 100644
-index c3547f07..00000000
---- a/include/uapi/linux/limits.h
-+++ /dev/null
-@@ -1,21 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
--#ifndef _LINUX_LIMITS_H
--#define _LINUX_LIMITS_H
--
--#define NR_OPEN	        1024
--
--#define NGROUPS_MAX    65536	/* supplemental group IDs are available */
--#define ARG_MAX       131072	/* # bytes of args + environ for exec() */
--#define LINK_MAX         127	/* # links a file may have */
--#define MAX_CANON        255	/* size of the canonical input queue */
--#define MAX_INPUT        255	/* size of the type-ahead buffer */
--#define NAME_MAX         255	/* # chars in a file name */
--#define PATH_MAX        4096	/* # chars in a path name including nul */
--#define PIPE_BUF        4096	/* # bytes in atomic write to a pipe */
--#define XATTR_NAME_MAX   255	/* # chars in an extended attribute name */
--#define XATTR_SIZE_MAX 65536	/* size of an extended attribute value (64k) */
--#define XATTR_LIST_MAX 65536	/* size of extended attribute namelist (64k) */
--
--#define RTSIG_MAX	  32
--
--#endif
--- 
-2.45.2
+Works with me! Thanks!
 
+Regards,
+Halil
