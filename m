@@ -1,57 +1,79 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C225223C49;
-	Thu, 12 Dec 2024 15:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F4218592
+	for <netdev@vger.kernel.org>; Thu, 12 Dec 2024 16:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019008; cv=none; b=Uyxir5MpmNAgP0lqQ7omCmrNUx0zz2bprd/xIx5II8CE1iVcxyGNAjDsHssOXKfwJm/1W453LKvT9FsmXSEJsWEwidmzYZVD7rgXhG14GH6leBTclJ4aDlwvrenhF35H1ETFw/IC0fjorEbtnh5+FaaqjfE1vKwp2KKH78vgwXc=
+	t=1734020051; cv=none; b=bupjDaFltuqMFmvv7CY+oE3nhQK0JLbJQz8osWSXmeM+lkLqxh/GdDySLY7vZW7Q9IyT78vHo1re4Q2yjkpa1PacyiYhukKy54WtKr1FnDmOZ+T3VUwKm+vnCCdrpG9D+WgdflN7oksR9YBM7SOykTywm+JTG9JHfYMYp6ZSTqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019008; c=relaxed/simple;
-	bh=viU2z5ww8SGpckEb5uDkQ/hhkagL4yv7HyEWdggMAYk=;
+	s=arc-20240116; t=1734020051; c=relaxed/simple;
+	bh=eR0ZbRH6HLHvoah/9oCZXptW0VitzX95uvgWjSzU06w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B1F/n7xolBNarlbGEPCBEEZKVVwTqltGNO25cWAsV3x136NCpiztZR2hwDVkoYhtaG4jSoH6iKDw3wU2CmnJRO9upazRUz92HCGVG+jZfsu8sF8LeZiOQlhpVzICeoW+RInYzR17VU8ZQCTa4GJaTqHMbXLq5oFVH6TDIkyN9VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=jdG5GLlq; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tj0PkLlH09O4CWBq2WxwZMtGpktxI/zyY/Eurl+ZPilXxXPX5jPd9v2JXg6zY76lspIYVBFfaIZ4EHZirz084kxSsn5VLcqefjqwIsZ65eq+3JE+R9uISiE3VZFpjUB7TasMksOk2Ed6321MDOYQ6GZ6yK/h3WTz5DHoHxdJF4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pRcmFPlO; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="jdG5GLlq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=YFoc339tueLvMa87D9wphRrOL+Jf750+sCI4ejb2O2w=; b=jdG5GLlqv715NSU8j27fuWpLHW
-	kigi2RfcQvZ4u/uRVVfbY51jyao9dxnDsZj9o9m6Q7FDMQlxGaAuov2VQ+Ocx9QRKFXWyJU2h0Jej
-	MXEE7SoYtYUY4ehVa2o34aNo9sO7xCL7YMAeaigzSwQMYQIx4YGR32l0BQ4ltouwiDZlcsZ0dxk6d
-	XTOH0AOfcJZWkIqFIBTdo48ENeghKuw2m2euy1a4hdbD9b1YIC/knJzidbDcqDVQMMt/8g7yLY8MO
-	wWvDOyTCsXwV3EWJ4nVKXrVkxeRsPv9uIK94Kqe+VrVNwseCgg5sEMuc2XnSulQxO3GT/EEuaiLSE
-	w/dXEV9Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46612)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tLlYP-0005Rx-0u;
-	Thu, 12 Dec 2024 15:56:41 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tLlYM-0005RO-0B;
-	Thu, 12 Dec 2024 15:56:38 +0000
-Date: Thu, 12 Dec 2024 15:56:37 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pRcmFPlO"
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 6018013802EA;
+	Thu, 12 Dec 2024 11:14:07 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 12 Dec 2024 11:14:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1734020047; x=1734106447; bh=WeclAqIy9sf4mR+Xqw9pFD+R2mGlqRZf/7c
+	rEsdQr7o=; b=pRcmFPlOI8gSCYtNlYFkUlXDwtD9Qn+q7AKlXIotsyuI9CU41F+
+	yrobB5mDj5OZmbd01WFmottOsHTBY5rNpxy2IbFoIs8HA34ROBEAbLFD/LbeGpUg
+	P+cIIwIV48YtWCLzo8zm64mP6u9U+J8ttkTagUkVnQZtUM3UzAlmBSMJ0pgtiiF6
+	oFAdkRtiRZ7HyRYXjCTNw1CmGx6f9zwVVyUrk30P2zINdAsPIGe/HoprGSVXyhap
+	lNRM0a0QUkfS9q/bFbXC5Zp/Er8wBJBHMNGloiRMGSmnSRXG4vfP9h4JJIOrVJH2
+	3FGPqeYCP8U6kkCdFobd/E7Cz/YHQ0MJVVA==
+X-ME-Sender: <xms:zgtbZzj7pxHbcTY_8qJXuRbBEQrF5OB17M8HuMe4r84Ia-R6ps17Zg>
+    <xme:zgtbZwBj0N-GG4weQ-Qno-JvMy3XU_e5349Qwr3Jjx-rqj5xr6fJC6wesTrdzd13O
+    GVvulOiFvOOVlk>
+X-ME-Received: <xmr:zgtbZzF_DMCpH2PWSNNy9WlsA8SUTQ2vAUNpTfQJaQ3iwhmQG069GXQSrkIrt95ZepA0xc6CsQhVIG3lEYA8BMwjT9A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeehgdekhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorh
+    hgqeenucggtffrrghtthgvrhhnpefhffejgefhjeehjeevheevhfetveevfefgueduueei
+    vdeijeeihfegheeljefgueenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehi
+    ughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopehrrhgvnhguvggtsehrvgguhhgrthdrtghomhdprhgtphhtthhopehr
+    rgiiohhrsegslhgrtghkfigrlhhlrdhorhhgpdhrtghpthhtoheprhhoohhprgesnhhvih
+    guihgrrdgtohhmpdhrtghpthhtohepsghrihgughgvsehlihhsthhsrdhlihhnuhigrdgu
+    vghvpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhi
+    sehrvgguhhgrthdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:zgtbZwSapwMLePUOQR2dMfggzSVFw1uM90_q9WjyORUqJ0_bx15Meg>
+    <xmx:zgtbZwzwr9ILgIpllFtM8bYiuvpjDgW_j8DcTQNOSEgLgNeRVA-w2A>
+    <xmx:zgtbZ26Zivoj0GzAWpFs5GTMCYUPmgutHbQgGrlNR-f6KygdhRwHlg>
+    <xmx:zgtbZ1y54XoL5gEqZR17ATEivbvtjSSM1idpWej6IakylyfIon9HVQ>
+    <xmx:zwtbZ8dDp6OTbIx-MhDwo4PRSEkhCJiWvyRQmabzUFyVjo-T6kcGNMm5>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Dec 2024 11:14:05 -0500 (EST)
+Date: Thu, 12 Dec 2024 18:14:02 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Radu Rendec <rrendec@redhat.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+	Roopa Prabhu <roopa@nvidia.com>, bridge@lists.linux.dev,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next] net: dsa: sja1105: let phylink help with
- the replay of link callbacks
-Message-ID: <Z1sHtZXuOvJe3Ruu@shell.armlinux.org.uk>
-References: <20241003140754.1229076-1-vladimir.oltean@nxp.com>
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net-next] net/bridge: Add skb drop reasons to the most
+ common drop points
+Message-ID: <Z1sLyqZQCjbcCOde@shredder>
+References: <20241208221805.1543107-1-rrendec@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,133 +82,208 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241003140754.1229076-1-vladimir.oltean@nxp.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20241208221805.1543107-1-rrendec@redhat.com>
 
-On Thu, Oct 03, 2024 at 05:07:53PM +0300, Vladimir Oltean wrote:
-> sja1105_static_config_reload() changes major settings in the switch and
-> it requires a reset. A use case is to change things like Qdiscs (but see
-> sja1105_reset_reasons[] for full list) while PTP synchronization is
-> running, and the servo loop must not exit the locked state (s2).
-> Therefore, stopping and restarting the phylink instances of all ports is
-> not desirable, because that also stops the phylib state machine, and
-> retriggers a seconds-long auto-negotiation process that breaks PTP.
-
-However:
-
-> ptp4l[54.552]: master offset          5 s2 freq    -931 path delay       764
-> ptp4l[55.551]: master offset         22 s2 freq    -913 path delay       764
-> ptp4l[56.551]: master offset         13 s2 freq    -915 path delay       765
-> ptp4l[57.552]: master offset          5 s2 freq    -919 path delay       765
-> ptp4l[58.553]: master offset         13 s2 freq    -910 path delay       765
-> ptp4l[59.553]: master offset         13 s2 freq    -906 path delay       765
-> ptp4l[60.553]: master offset          6 s2 freq    -909 path delay       765
-> ptp4l[61.553]: master offset          6 s2 freq    -907 path delay       765
-> ptp4l[62.553]: master offset          6 s2 freq    -906 path delay       765
-> ptp4l[63.553]: master offset         14 s2 freq    -896 path delay       765
-> $ ip link set br0 type bridge vlan_filtering 1
-> [   63.983283] sja1105 spi2.0 sw0p0: Link is Down
-> [   63.991913] sja1105 spi2.0: Link is Down
-> [   64.009784] sja1105 spi2.0: Reset switch and programmed static config. Reason: VLAN filtering
-> [   64.020217] sja1105 spi2.0 sw0p0: Link is Up - 1Gbps/Full - flow control off
-> [   64.030683] sja1105 spi2.0: Link is Up - 1Gbps/Full - flow control off
-> ptp4l[64.554]: master offset       7397 s2 freq   +6491 path delay       765
-> ptp4l[65.554]: master offset         38 s2 freq   +1352 path delay       765
-> ptp4l[66.554]: master offset      -2225 s2 freq    -900 path delay       764
-> ptp4l[67.555]: master offset      -2226 s2 freq   -1569 path delay       765
-> ptp4l[68.555]: master offset      -1553 s2 freq   -1563 path delay       765
-> ptp4l[69.555]: master offset       -865 s2 freq   -1341 path delay       765
-> ptp4l[70.555]: master offset       -401 s2 freq   -1137 path delay       765
-> ptp4l[71.556]: master offset       -145 s2 freq   -1001 path delay       765
-
-doesn't this change in offset and frequency indicate that the PTP clock
-was still disrupted, and needed to be re-synchronised? If it was
-unaffected, then I would have expected the offset and frequency to
-remain similar to before the reset happened.
-
-Nevertheless...
-
-> @@ -1551,7 +1552,8 @@ static void phylink_resolve(struct work_struct *w)
->  	}
+On Sun, Dec 08, 2024 at 05:18:05PM -0500, Radu Rendec wrote:
+> The bridge input code may drop frames for various reasons and at various
+> points in the ingress handling logic. Currently kfree_skb() is used
+> everywhere, and therefore no drop reason is specified. Add drop reasons
+> to the most common drop points.
+> 
+> The purpose of this patch is to address the most common drop points on
+> the bridge ingress path. It does not exhaustively add drop reasons to
+> the entire bridge code. The intention here is to incrementally add drop
+> reasons to the rest of the bridge code in follow up patches.
+> 
+> Most of the skb drop points that are addressed in this patch can be
+> easily tested by sending crafted packets. The diagram below shows a
+> simple test configuration, and some examples using `packit`(*) are
+> also included. The bridge is set up with STP disabled.
+> (*) https://github.com/resurrecting-open-source-projects/packit
+> 
+> The following changes were *not* tested:
+> * SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT in br_multicast_flood(). I could
+>   not find an easy way to make a crafted packet get there.
+> * SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD in br_handle_frame_finish()
+>   when the port state is BR_STATE_DISABLED, because in that case the
+>   frame is already dropped in the switch/case block at the end of
+>   br_handle_frame().
+> 
+>     +---+---+
+>     |  br0  |
+>     +---+---+
+>         |
+>     +---+---+  veth pair  +-------+
+>     | veth0 +-------------+ xeth0 |
+>     +-------+             +-------+
+> 
+> SKB_DROP_REASON_MAC_INVALID_SOURCE - br_handle_frame()
+> packit -t UDP -s 192.168.0.1 -d 192.168.0.2 -S 8000 -D 8000 \
+>   -e 01:22:33:44:55:66 -E aa:bb:cc:dd:ee:ff -c 1 \
+>   -p '0x de ad be ef' -i xeth0
+> 
+> SKB_DROP_REASON_MAC_IEEE_MAC_CONTROL - br_handle_frame()
+> packit -t UDP -s 192.168.0.1 -d 192.168.0.2 -S 8000 -D 8000 \
+>   -e 02:22:33:44:55:66 -E 01:80:c2:00:00:01 -c 1 \
+>   -p '0x de ad be ef' -i xeth0
+> 
+> SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD - br_handle_frame()
+> bridge link set dev veth0 state 0 # disabled
+> packit -t UDP -s 192.168.0.1 -d 192.168.0.2 -S 8000 -D 8000 \
+>   -e 02:22:33:44:55:66 -E aa:bb:cc:dd:ee:ff -c 1 \
+>   -p '0x de ad be ef' -i xeth0
+> 
+> SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD - br_handle_frame_finish()
+> bridge link set dev veth0 state 2 # learning
+> packit -t UDP -s 192.168.0.1 -d 192.168.0.2 -S 8000 -D 8000 \
+>   -e 02:22:33:44:55:66 -E aa:bb:cc:dd:ee:ff -c 1 \
+>   -p '0x de ad be ef' -i xeth0
+> 
+> SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT - br_flood()
+> packit -t UDP -s 192.168.0.1 -d 192.168.0.2 -S 8000 -D 8000 \
+>   -e 02:22:33:44:55:66 -E aa:bb:cc:dd:ee:ff -c 1 \
+>   -p '0x de ad be ef' -i xeth0
+> 
+> Signed-off-by: Radu Rendec <rrendec@redhat.com>
+> ---
+>  include/net/dropreason-core.h | 18 ++++++++++++++++++
+>  net/bridge/br_forward.c       |  4 ++--
+>  net/bridge/br_input.c         | 24 +++++++++++++++---------
+>  3 files changed, 35 insertions(+), 11 deletions(-)
+> 
+> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+> index c29282fabae6..1f2ae5b387c1 100644
+> --- a/include/net/dropreason-core.h
+> +++ b/include/net/dropreason-core.h
+> @@ -108,6 +108,9 @@
+>  	FN(TUNNEL_TXINFO)		\
+>  	FN(LOCAL_MAC)			\
+>  	FN(ARP_PVLAN_DISABLE)		\
+> +	FN(MAC_IEEE_MAC_CONTROL)	\
+> +	FN(BRIDGE_INGRESS_PORT_NFWD)	\
+> +	FN(BRIDGE_NO_EGRESS_PORT)	\
+>  	FNe(MAX)
 >  
->  	if (mac_config) {
-> -		if (link_state.interface != pl->link_config.interface) {
-> +		if (link_state.interface != pl->link_config.interface ||
-> +		    pl->force_major_config) {
->  			/* The interface has changed, force the link down and
->  			 * then reconfigure.
->  			 */
-> @@ -1561,6 +1563,7 @@ static void phylink_resolve(struct work_struct *w)
->  			}
->  			phylink_major_config(pl, false, &link_state);
->  			pl->link_config.interface = link_state.interface;
-> +			pl->force_major_config = false;
+>  /**
+> @@ -502,6 +505,21 @@ enum skb_drop_reason {
+>  	 * enabled.
+>  	 */
+>  	SKB_DROP_REASON_ARP_PVLAN_DISABLE,
+> +	/**
+> +	 * @SKB_DROP_REASON_MAC_IEEE_MAC_CONTROL: the destination MAC address
+> +	 * is an IEEE MAC Control address.
+> +	 */
+
+IMO, dropping pause frames is not among "the most common drop points".
+Are you planning on reusing this reason in other modules? If not, then I
+prefer removing it. My understanding is that we should not try to
+document every obscure drop with these reasons.
+
+> +	SKB_DROP_REASON_MAC_IEEE_MAC_CONTROL,
+> +	/**
+> +	 * @SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD: the STP state of the
+> +	 * ingress bridge port does not allow frames to be forwarded.
+> +	 */
+> +	SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD,
+
+Are you intending on reusing this for other ingress drops (e.g., VLAN,
+locked port) or is this specific to ingress STP filtering? I think it
+will be useful to distinguish between the different cases, so I suggest
+renaming this reason to make it clear it is about ingress STP.
+
+> +	/**
+> +	 * SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT: no eligible egress port was
+> +	 * found while attempting to flood the frame.
+> +	 */
+> +	SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT,
+>  	/**
+>  	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+>  	 * shouldn't be used as a real 'reason' - only for tracing code gen
+> diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+> index e19b583ff2c6..e33e2f4fc3d9 100644
+> --- a/net/bridge/br_forward.c
+> +++ b/net/bridge/br_forward.c
+> @@ -249,7 +249,7 @@ void br_flood(struct net_bridge *br, struct sk_buff *skb,
+>  
+>  out:
+>  	if (!local_rcv)
+> -		kfree_skb(skb);
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT);
+>  }
+>  
+>  #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
+> @@ -349,6 +349,6 @@ void br_multicast_flood(struct net_bridge_mdb_entry *mdst,
+>  
+>  out:
+>  	if (!local_rcv)
+> -		kfree_skb(skb);
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_BRIDGE_NO_EGRESS_PORT);
+>  }
+>  #endif
+> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+> index ceaa5a89b947..fc00e172e1e1 100644
+> --- a/net/bridge/br_input.c
+> +++ b/net/bridge/br_input.c
+> @@ -96,8 +96,10 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+>  	if (br_mst_is_enabled(br)) {
+>  		state = BR_STATE_FORWARDING;
+>  	} else {
+> -		if (p->state == BR_STATE_DISABLED)
+> -			goto drop;
+> +		if (p->state == BR_STATE_DISABLED) {
+> +			kfree_skb_reason(skb, SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD);
+> +			return 0;
+> +		}
+>  
+>  		state = p->state;
+>  	}
+> @@ -155,8 +157,10 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
 >  		}
 >  	}
-
-This will delay the major config until the link comes up, as mac_config
-only gets set true for fixed-link and PHY when the link is up. For
-inband mode, things get less certain, because mac_config will only be
-true if there is a PHY present and the PHY link was up. Otherwise,
-inband leaves mac_config false, and thus if force_major_config was
-true, that would persist indefinitely.
-
-> +/**
-> + * phylink_replay_link_begin() - begin replay of link callbacks for driver
-> + *				 which loses state
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + *
-> + * Helper for MAC drivers which may perform a destructive reset at runtime.
-> + * Both the own driver's mac_link_down() method is called, as well as the
-> + * pcs_link_down() method of the split PCS (if any).
-> + *
-> + * This is similar to phylink_stop(), except it does not alter the state of
-> + * the phylib PHY (it is assumed that it is not affected by the MAC destructive
-> + * reset).
-> + */
-> +void phylink_replay_link_begin(struct phylink *pl)
-> +{
-> +	ASSERT_RTNL();
-> +
-> +	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
-
-I would prefer this used a different disable flag, so that...
-
-> +}
-> +EXPORT_SYMBOL_GPL(phylink_replay_link_begin);
-> +
-> +/**
-> + * phylink_replay_link_end() - end replay of link callbacks for driver
-> + *			       which lost state
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + *
-> + * Helper for MAC drivers which may perform a destructive reset at runtime.
-> + * Both the own driver's mac_config() and mac_link_up() methods, as well as the
-> + * pcs_config() and pcs_link_up() method of the split PCS (if any), are called.
-> + *
-> + * This is similar to phylink_start(), except it does not alter the state of
-> + * the phylib PHY.
-> + *
-> + * One must call this method only within the same rtnl_lock() critical section
-> + * as a previous phylink_replay_link_start().
-> + */
-> +void phylink_replay_link_end(struct phylink *pl)
-> +{
-> +	ASSERT_RTNL();
-> +
-> +	pl->force_major_config = true;
-> +	phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_STOPPED);
-
-this can check that phylink_replay_link_begin() was previously called
-to catch programming errors. There shouldn't be any conflict with
-phylink_start()/phylink_stop() since the RTNL is held, but I think
-its still worth checking that phylink_replay_link_begin() was
-indeed called previously.
-
-Other than those points, I think for sja1105 this is a better approach,
-and as it's lightweight in phylink, I don't think having this will add
-much maintenance burden, so I'm happy with the approach.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>  
+> -	if (state == BR_STATE_LEARNING)
+> -		goto drop;
+> +	if (state == BR_STATE_LEARNING) {
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD);
+> +		return 0;
+> +	}
+>  
+>  	BR_INPUT_SKB_CB(skb)->brdev = br->dev;
+>  	BR_INPUT_SKB_CB(skb)->src_port_isolated = !!(p->flags & BR_ISOLATED);
+> @@ -331,8 +335,10 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
+>  	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
+>  		return RX_HANDLER_PASS;
+>  
+> -	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
+> -		goto drop;
+> +	if (!is_valid_ether_addr(eth_hdr(skb)->h_source)) {
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_MAC_INVALID_SOURCE);
+> +		return RX_HANDLER_CONSUMED;
+> +	}
+>  
+>  	skb = skb_share_check(skb, GFP_ATOMIC);
+>  	if (!skb)
+> @@ -374,7 +380,8 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
+>  			return RX_HANDLER_PASS;
+>  
+>  		case 0x01:	/* IEEE MAC (Pause) */
+> -			goto drop;
+> +			kfree_skb_reason(skb, SKB_DROP_REASON_MAC_IEEE_MAC_CONTROL);
+> +			return RX_HANDLER_CONSUMED;
+>  
+>  		case 0x0E:	/* 802.1AB LLDP */
+>  			fwd_mask |= p->br->group_fwd_mask;
+> @@ -423,8 +430,7 @@ static rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
+>  
+>  		return nf_hook_bridge_pre(skb, pskb);
+>  	default:
+> -drop:
+> -		kfree_skb(skb);
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_BRIDGE_INGRESS_PORT_NFWD);
+>  	}
+>  	return RX_HANDLER_CONSUMED;
+>  }
+> -- 
+> 2.47.1
+> 
+> 
