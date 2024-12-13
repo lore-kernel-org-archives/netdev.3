@@ -1,256 +1,177 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD121DE8B4;
-	Fri, 13 Dec 2024 12:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F251DF99C
+	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 12:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734093296; cv=none; b=WR6j0J91XnL5QbM3EsxWiVs2atoNUruqwrvqZPekp05d3oScbBhBhG0VJZJKxsGnmSJjhMtvNKU5O1Dg2YBK9dUyFJWvhppgBQxiJ06bpfa3Ltp48hTo02l590CLUZonIcQjsrbXTxzDNVALMhCLtdrjfD7Fz7I2ajg1djmeHQA=
+	t=1734093434; cv=none; b=Nov/Phj8eQZ0F9+Cp5ytIUMtQKRyJnfEHKn9PkpoDQrZkCMrWWNtCZXVKmpxWIkXeVPOFllG2TSMEFcxIu2BssNNbcMgXJC5wF/a8J0PVUuDHdCs/zzDqSh0h3DRtZlqbYOFT3pqzYdOOxRRaunNwRTfHPva0jy5atjJmI5gV34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734093296; c=relaxed/simple;
-	bh=Vkvb/UX3r/SZPZHUjKzkAFgcEG4XjfTlCjoGPLms7Js=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cNrpwzuH3DG/wQmjuoripZonY1A9bpqmCJcGDu3zz0vT8Rx3JePyGdov81IAEYy0Lv1z1uvuUjEC6m1tC1qg2tAaA6f3uBbn+6mpUgMBxPxTONq88QKJzYEUrjBevMPHKSU06eFoxhI90Ft0CFG03hN41uMOmqO0M0WLCIHjuyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Y8pd52tkzzhZVn;
-	Fri, 13 Dec 2024 20:32:25 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4A353180087;
-	Fri, 13 Dec 2024 20:34:52 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 13 Dec 2024 20:34:52 +0800
-From: Yunsheng Lin <linyunsheng@huawei.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <somnath.kotur@broadcom.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Yunsheng Lin
-	<linyunsheng@huawei.com>, Robin Murphy <robin.murphy@arm.com>, Alexander
- Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Jesper
- Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH RFCv5 8/8] page_pool: use list instead of array for alloc cache
-Date: Fri, 13 Dec 2024 20:27:39 +0800
-Message-ID: <20241213122739.4050137-9-linyunsheng@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20241213122739.4050137-1-linyunsheng@huawei.com>
-References: <20241213122739.4050137-1-linyunsheng@huawei.com>
+	s=arc-20240116; t=1734093434; c=relaxed/simple;
+	bh=Nmi9GyDGQHCmYPBPOfLMTtqurvXheZhg9NmNBo3YxcU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Oo9eaY1mvI9jNY2tf8YdT247aqzDJOSySlfMW9HtcDGG4O3FlnelZWRVBRwKAulk3SLZmztWTuHqTiwBnbJ966/YukNeZvHhMwEtygReGc/gm2AdK0JJ4OGSgSQ7PkxJDomr1oXpzEj73dnfqG+S4+W/NkpmBtfY73CpAzFt3ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=K+C5v8Y3; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="K+C5v8Y3"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa5f1909d6fso309907166b.3
+        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 04:37:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1734093429; x=1734698229; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ltuE2+W/QkL0PmrBT7zRDBDtGcXVxn3gh0L5g4K6QKk=;
+        b=K+C5v8Y3W75xxgrONXSxelRLWCApWJehMQThBj1A1AywLFKDulVzQJMVa3Oa0aO9pQ
+         of2IJ5//2U5fGMSy5XCXGgj+tYEkKEpu6YtHCV8gC9t+vdJGyRKR1rtGp8d4LIIGBeYJ
+         eotPoHzGKu4Q1BXPnJTJheGWv0Sooc6ev0Rcsv+bmAq1XeoJTSNyPvAER44uPnuOg8rj
+         kY6eUAvvLz3nSTUURECk/sKJLsT1eptTxCVZE5cOJ11HFwJtTcgINPIhPvsT01ISPx8K
+         WtIHCS90fL4XfItYWiBCP3bL5uct7WCNfyROdd1akHvmPqvkKZcsY3M1/jXU9DqBGvzC
+         dXmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734093429; x=1734698229;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ltuE2+W/QkL0PmrBT7zRDBDtGcXVxn3gh0L5g4K6QKk=;
+        b=ghHwtjpn/CCGrV9eqYnfVEywxTOJ+PbfxnqVt8HZptaZUhjaIoPljZzNJaadMaCoqU
+         agUIUWZB0sCTLoCCuiLuMOVS7pRBp6u/nRVPb2TeUUa0qQ+tLByKVykLBClPHc5MRX6Q
+         q2zOASvPW57LdWb5PWbfe6labnIXywjA/9N5IIxNr6HOcqdpvl/Ig5AI1D0xl43YUcKX
+         tcx+1Z7Q+f2wW/D1zfhOB8B9MAjHRjqTrtQ+xINglVCwvog3H2tenZcgp8Q7hNizB1/L
+         0OfJzJ0CGTJNYUypDnpkC7hlv5s6qv437qJ2VOV6Jvkle0rqlxUV9O4QzuqqxT4YrFaS
+         2F1w==
+X-Gm-Message-State: AOJu0Yz7ZZOwXvaeQO2CpQmlJRdZQVV0koXadrAHogHkX8pQPvglYRRQ
+	jNj0Nvrvled5oz/xOtDE/vAGoNOqo41cBfHixPc+4MTaMnCuREskcan1flgLSkPe3dck39elnbF
+	X
+X-Gm-Gg: ASbGncup6k3CLPRzRpZmRCZ0TIU5bzYDjmnMbjNSzMvyOgDAuxx1nDu0qh8p6rxrgm+
+	CEyTlO8oI+meuwPdjUZQcWl34V1vGaXOLNv5Albrk6e8U7lYStzoECZ5YZOWIn/QShsHiETO343
+	CneWMR7P6+FUOevNWYwoLByW7cxBC0VFBuiaiVPy77fNfYygsfjkL2lbc01fkvr0BDppOH1zbpI
+	3JX1MV1iI+7dIv9qT4GJtZ46sJHw6v7rPP/shZ2XkKj7iUJ4qhk3a02eCPzYm248FE+HX5hIuLn
+	pC5jiF6njuw6Gk2OAZU=
+X-Google-Smtp-Source: AGHT+IEzo7yOAMIbo+2ZeO9KjOvgByarMKbpvTYUgjdcE+ovUy0pWk7Akq3CzcQvJ/6fvAVrohq13Q==
+X-Received: by 2002:a17:906:3145:b0:aa6:3f93:fb99 with SMTP id a640c23a62f3a-aab779d16aamr245324866b.36.1734093429329;
+        Fri, 13 Dec 2024 04:37:09 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:b5f9:333c:ae7e:f75e? ([2001:67c:2fbc:1:b5f9:333c:ae7e:f75e])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d14c7aa3besm11388409a12.75.2024.12.13.04.37.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2024 04:37:08 -0800 (PST)
+Message-ID: <8db525b6-3384-4e12-b16c-47b0a2898f1e@openvpn.net>
+Date: Fri, 13 Dec 2024 13:37:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v15 03/22] ovpn: add basic interface
+ creation/destruction/management routines
+To: Donald Hunter <donald.hunter@gmail.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Shuah Khan <shuah@kernel.org>, sd@queasysnail.net, ryazanov.s.a@gmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Xiao Liang <shaw.leon@gmail.com>
+References: <20241211-b4-ovpn-v15-0-314e2cad0618@openvpn.net>
+ <20241211-b4-ovpn-v15-3-314e2cad0618@openvpn.net>
+ <CAD4GDZyXK6rBH_ccHkYrA4h71bDkKxVy_B5o-bj0ezzdHTJKxQ@mail.gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <CAD4GDZyXK6rBH_ccHkYrA4h71bDkKxVy_B5o-bj0ezzdHTJKxQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-As the alloc cache is always protected by NAPI context
-protection, use encoded_next as a pointer to a next item
-to avoid the using the array.
+On 13/12/2024 13:32, Donald Hunter wrote:
+> On Wed, 11 Dec 2024 at 21:32, Antonio Quartulli <antonio@openvpn.net> wrote:
+>>
+>>   static int ovpn_newlink(struct net *src_net, struct net_device *dev,
+>>                          struct nlattr *tb[], struct nlattr *data[],
+>>                          struct netlink_ext_ack *extack)
+>>   {
+>> -       return -EOPNOTSUPP;
+>> +       struct ovpn_priv *ovpn = netdev_priv(dev);
+>> +       enum ovpn_mode mode = OVPN_MODE_P2P;
+>> +
+>> +       if (data && data[IFLA_OVPN_MODE]) {
+>> +               mode = nla_get_u8(data[IFLA_OVPN_MODE]);
+>> +               netdev_dbg(dev, "setting device mode: %u\n", mode);
+>> +       }
+>> +
+>> +       ovpn->dev = dev;
+>> +       ovpn->mode = mode;
+>> +
+>> +       /* turn carrier explicitly off after registration, this way state is
+>> +        * clearly defined
+>> +        */
+>> +       netif_carrier_off(dev);
+>> +
+>> +       return register_netdevice(dev);
+>>   }
+>>
+>>   static struct rtnl_link_ops ovpn_link_ops = {
+>>          .kind = "ovpn",
+>>          .netns_refund = false,
+>> +       .priv_size = sizeof(struct ovpn_priv),
+>> +       .setup = ovpn_setup,
+>> +       .policy = ovpn_policy,
+>> +       .maxtype = IFLA_OVPN_MAX,
+>>          .newlink = ovpn_newlink,
+>>          .dellink = unregister_netdevice_queue,
+>>   };
+> 
+> You need to implement .fill_info to add IFLA_OVPN_MODE into get / dump ops.
 
-Testing shows there is about 3ns improvement for the
-performance of 'time_bench_page_pool01_fast_path' test
-case.
+Ok, I'll add it in v16.
 
-CC: Robin Murphy <robin.murphy@arm.com>
-CC: Alexander Duyck <alexander.duyck@gmail.com>
-CC: IOMMU <iommu@lists.linux.dev>
-Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
----
- include/net/page_pool/types.h |  2 +-
- net/core/page_pool.c          | 59 +++++++++++++++++++++++++----------
- 2 files changed, 43 insertions(+), 18 deletions(-)
+Thanks a lot.
+Regards,
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index be50a25c4aa0..d942e1da5ff7 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -50,7 +50,7 @@
- #define PP_ALLOC_CACHE_REFILL	64
- struct pp_alloc_cache {
- 	u32 count;
--	netmem_ref cache[PP_ALLOC_CACHE_SIZE];
-+	struct page_pool_item *list;
- 
- 	/* Keep batched refilled pages here to avoid doing the atomic operation
- 	 * for each page.
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index ab832bfa004b..aadbf62e9708 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -382,6 +382,27 @@ static netmem_ref page_pool_consume_ring(struct page_pool *pool)
- 	return list->pp_netmem;
- }
- 
-+static netmem_ref __page_pool_consume_alloc(struct page_pool *pool)
-+{
-+	struct page_pool_item *item = pool->alloc.list;
-+
-+	pool->alloc.list = page_pool_item_get_next(item);
-+	pool->alloc.count--;
-+
-+	return item->pp_netmem;
-+}
-+
-+static void __page_pool_recycle_in_alloc(struct page_pool *pool,
-+					 netmem_ref netmem)
-+{
-+	struct page_pool_item *item;
-+
-+	item = netmem_get_pp_item(netmem);
-+	page_pool_item_set_next(item, pool->alloc.list);
-+	pool->alloc.list = item;
-+	pool->alloc.count++;
-+}
-+
- static __always_inline void __page_pool_release_page_dma(struct page_pool *pool,
- 							 netmem_ref netmem,
- 							 bool destroyed)
-@@ -673,10 +694,12 @@ static void __page_pool_return_page(struct page_pool *pool, netmem_ref netmem,
- 
- static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- {
--	struct page_pool_item *refill;
-+	struct page_pool_item *refill, *alloc, *curr;
- 	netmem_ref netmem;
- 	int pref_nid; /* preferred NUMA node */
- 
-+	DEBUG_NET_WARN_ON_ONCE(pool->alloc.count || pool->alloc.list);
-+
- 	/* Quicker fallback, avoid locks when ring is empty */
- 	refill = pool->alloc.refill;
- 	if (unlikely(!refill && !READ_ONCE(pool->ring.list))) {
-@@ -694,6 +717,7 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- 	pref_nid = numa_mem_id(); /* will be zero like page_to_nid() */
- #endif
- 
-+	alloc = NULL;
- 	/* Refill alloc array, but only if NUMA match */
- 	do {
- 		if (unlikely(!refill)) {
-@@ -702,10 +726,13 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- 				break;
- 		}
- 
-+		curr = refill;
- 		netmem = refill->pp_netmem;
- 		refill = page_pool_item_get_next(refill);
- 		if (likely(netmem_is_pref_nid(netmem, pref_nid))) {
--			pool->alloc.cache[pool->alloc.count++] = netmem;
-+			page_pool_item_set_next(curr, alloc);
-+			pool->alloc.count++;
-+			alloc = curr;
- 		} else {
- 			/* NUMA mismatch;
- 			 * (1) release 1 page to page-allocator and
-@@ -725,7 +752,8 @@ static noinline netmem_ref page_pool_refill_alloc_cache(struct page_pool *pool)
- 	/* Return last page */
- 	if (likely(pool->alloc.count > 0)) {
- 		atomic_sub(pool->alloc.count, &pool->ring.count);
--		netmem = pool->alloc.cache[--pool->alloc.count];
-+		pool->alloc.list = page_pool_item_get_next(alloc);
-+		pool->alloc.count--;
- 		alloc_stat_inc(pool, refill);
- 	}
- 
-@@ -740,7 +768,7 @@ static netmem_ref __page_pool_get_cached(struct page_pool *pool)
- 	/* Caller MUST guarantee safe non-concurrent access, e.g. softirq */
- 	if (likely(pool->alloc.count)) {
- 		/* Fast-path */
--		netmem = pool->alloc.cache[--pool->alloc.count];
-+		netmem = __page_pool_consume_alloc(pool);
- 		alloc_stat_inc(pool, fast);
- 	} else {
- 		netmem = page_pool_refill_alloc_cache(pool);
-@@ -859,6 +887,7 @@ static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
- static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 							gfp_t gfp)
- {
-+	netmem_ref netmems[PP_ALLOC_CACHE_REFILL] = {0};
- 	const int bulk = PP_ALLOC_CACHE_REFILL;
- 	unsigned int pp_order = pool->p.order;
- 	bool dma_map = pool->dma_map;
-@@ -869,16 +898,12 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 	if (unlikely(pp_order))
- 		return page_to_netmem(__page_pool_alloc_page_order(pool, gfp));
- 
--	/* Unnecessary as alloc cache is empty, but guarantees zero count */
--	if (unlikely(pool->alloc.count > 0))
--		return pool->alloc.cache[--pool->alloc.count];
--
--	/* Mark empty alloc.cache slots "empty" for alloc_pages_bulk_array */
--	memset(&pool->alloc.cache, 0, sizeof(void *) * bulk);
-+	/* alloc cache should be empty */
-+	DEBUG_NET_WARN_ON_ONCE(pool->alloc.count || pool->alloc.list);
- 
- 	nr_pages = alloc_pages_bulk_array_node(gfp,
- 					       pool->p.nid, bulk,
--					       (struct page **)pool->alloc.cache);
-+					       (struct page **)netmems);
- 	if (unlikely(!nr_pages))
- 		return 0;
- 
-@@ -886,7 +911,7 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 	 * page element have not been (possibly) DMA mapped.
- 	 */
- 	for (i = 0; i < nr_pages; i++) {
--		netmem = pool->alloc.cache[i];
-+		netmem = netmems[i];
- 
- 		if (unlikely(!page_pool_set_pp_info(pool, netmem))) {
- 			put_page(netmem_to_page(netmem));
-@@ -899,7 +924,7 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 			continue;
- 		}
- 
--		pool->alloc.cache[pool->alloc.count++] = netmem;
-+		__page_pool_recycle_in_alloc(pool, netmem);
- 		/* Track how many pages are held 'in-flight' */
- 		pool->pages_state_hold_cnt++;
- 		trace_page_pool_state_hold(pool, netmem,
-@@ -908,7 +933,7 @@ static noinline netmem_ref __page_pool_alloc_pages_slow(struct page_pool *pool,
- 
- 	/* Return last page */
- 	if (likely(pool->alloc.count > 0)) {
--		netmem = pool->alloc.cache[--pool->alloc.count];
-+		netmem = __page_pool_consume_alloc(pool);
- 		alloc_stat_inc(pool, slow);
- 	} else {
- 		netmem = 0;
-@@ -1078,7 +1103,7 @@ static bool page_pool_recycle_in_cache(netmem_ref netmem,
- 	}
- 
- 	/* Caller MUST have verified/know (page_ref_count(page) == 1) */
--	pool->alloc.cache[pool->alloc.count++] = netmem;
-+	__page_pool_recycle_in_alloc(pool, netmem);
- 	recycle_stat_inc(pool, cached);
- 	return true;
- }
-@@ -1392,7 +1417,7 @@ static void page_pool_empty_alloc_cache_once(struct page_pool *pool)
- 	 * call concurrently.
- 	 */
- 	while (pool->alloc.count) {
--		netmem = pool->alloc.cache[--pool->alloc.count];
-+		netmem = __page_pool_consume_alloc(pool);
- 		page_pool_return_page(pool, netmem);
- 	}
- 
-@@ -1532,7 +1557,7 @@ void page_pool_update_nid(struct page_pool *pool, int new_nid)
- 
- 	/* Flush pool alloc cache, as refill will check NUMA node */
- 	while (pool->alloc.count) {
--		netmem = pool->alloc.cache[--pool->alloc.count];
-+		netmem = __page_pool_consume_alloc(pool);
- 		__page_pool_return_page(pool, netmem, false);
- 	}
- }
+
 -- 
-2.33.0
+Antonio Quartulli
+OpenVPN Inc.
 
