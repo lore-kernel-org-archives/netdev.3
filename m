@@ -1,88 +1,142 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC866189BAC
-	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 20:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE4B189BAC
+	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 20:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734122888; cv=none; b=jYUlmszA1jDdYnx5ICxgaxv8cMFsQmyXUKU6IlIfWfZSMKf14IT6RaCUMTNMOPlMuBnCg9YLMWsEWS3tjVCGqnk/5xkBYN6Zit+8sQgbf6QNAurcGwUrjoNDDODLrShi+glEMkHmSL4r1UTNN0Vc/vLlEF+2O0PqMGpAvcpNQug=
+	t=1734122941; cv=none; b=UzyL5Vu/P7fsKBTlp0C4BV3+zCrBCnU4pPfk6gFpxRW2yDQ5JJNL3bvnW6z/0FcDaWzqv4lB9nOgab/BCui/BTLXvoY5rQaSegVGtuG3dOUTtD5xVN0Av5IUgixnL+BJ1gD+N+hIRcKqkASnSMKUJBSoVdTbsI3keTGvxvGKfBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734122888; c=relaxed/simple;
-	bh=rva9khKUh5S4eyCpPUaDoZslmuYjcHZJcPqbOE/Ftxg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AvHSv4dfMKp8ef7UTdKg3yIKTvOdKnQuHMHBt49+9lJTy1na/uokBNNAT6e46XYkKiymZ9+wxtqePPZ8e3GT7moYbOmgIsPtwgILWZyMh3R3hEeOYzwOqTPxpU0kHSotAdPx8mbcWV/eIlhODmB2QoM8Jslc0XCZ20HNj4/pDTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ChvmaAmw; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1734122941; c=relaxed/simple;
+	bh=h84w4eJYdKl8umuChjOIfJrEe98yr8jKNoEwzxvnibM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=M3wPdI8qysAN/W8qNIdzM6hU/IjjszE8fWK3JO0UZVECVwc6K0FrE8KMQg40McBTG5nVHU5SfFfmV1CV7GXHIGqbqIcomhhRAbh0y9MYCdGJEMv8IK75ZfUSA7NGWzPrH/y07dkFShszGaCGlXXXHMYifmeE/F6FPlaFv332xJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hninDEb6; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ChvmaAmw"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d0f6fa6f8bso3288416a12.0
-        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 12:48:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hninDEb6"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa66ead88b3so402146066b.0
+        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 12:48:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734122885; x=1734727685; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rva9khKUh5S4eyCpPUaDoZslmuYjcHZJcPqbOE/Ftxg=;
-        b=ChvmaAmw+ndo5NNkae/CNayo889AkDyppIE/3jbZIAqiTcj6YIBtJTwwoYTUmhMmoM
-         MgbkLXXum/F73FnVI42PksMV8KV+qtnbku5SOqXRRK6REfY3CWSRT6WnZN7RCAXVvIje
-         pJZyIeshCgoh8MAppHOGPtOo9TXHv/RmC4lu7e3EWqOlEB781b+Bu0VrreHdrrS9a2yf
-         II5Ar4H1ByfBGnRKGXFugXfLp6AFm9sdDJXFtcn2NYwgMP1QLmVCvUeEUnxyHcLBjEvx
-         6SAhQ+OH4QnnxHci6Mr98xE8+4y8g8k31+Fixm4IV0hB9AWrug3XpITDR48P0qK7OmDQ
-         ka9A==
+        d=gmail.com; s=20230601; t=1734122937; x=1734727737; darn=vger.kernel.org;
+        h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
+         :from:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=s6nyhrK1PwEvljraydkFoHfOJI8D15rx54zdqll0bjs=;
+        b=hninDEb6k84e5ulqIbCC4tCJnevddYt6ma1h9+dRj4wydmooV79uisRL28xpnTkBrM
+         /KLow9LCN3eSpK1rWcPg6KS9R4UwzKltSVDyEo9lE0/urafPJi1FyjJstmTgBO+B1TkO
+         IFGzMgQVsOpFSTf3ZdTtvnfXsPLIIGU5jIv2qP3MYUFKIgjEJSagDe8kKLaO0XAT8yZy
+         4il5nnJpVQjQTOoUWfz+OBn9X6DpoAU1uf4nIo0bghlE6pxV3nMC+aCWdVWsMvv3rPDq
+         U+sZsgUfmCsVk3Y/fFDJM4UkQOJmViT4K1Zvxp769DHtv/6HJ2eqf48w4eCE08R/24Jh
+         DS8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734122885; x=1734727685;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rva9khKUh5S4eyCpPUaDoZslmuYjcHZJcPqbOE/Ftxg=;
-        b=uq7Zc/bMECppRc/4OeO0MWHmCjYtjAVx0e+mkebyswl49RuP4BxAwpWu4uwwiPNobQ
-         yTkg2xQRoYnYOkdCafE9ou7k2WtROva17fvvNaZaZBxnhnBGa3KYfjfhz/gw//U9CLSP
-         UxL86Zi1mt9RJ2nA1LiUj8mQ3Oew6MLusT/+wXHQhpz69tYZe2d+aR8Eb8VUIS8w8I5F
-         umh3QL+JqvJogWwK5A6+RGY/hBD+xM6j/Ax4H9d5N/s8rkgp3MTvrOv89thNXW17Xje0
-         G7GvJ4O+r5Cg3A1296f9Ng7vaj0Ksilaf47QdbS9HUeho1wn2s6emJVHiO9xBDXgg484
-         43Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCWk5fxN1W6lyWu3SQjRTnpVwrLY7baINCBK4epZ/rxbvhnwaZIbIbpoSOTneNozVvmJ1qDQ7Oc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQgkmSTZ1HP17pPYyVcs6rJGV0L0GGHdWGOPTjdTWZDdr17X42
-	BIjx++vJOQ/MuU5pvoeLK8acpKib3mUdAjYU3sfpjg/9kffW1fB++dFm3cwQ/BZSAsg79Nel9NY
-	/+MtRhOYZxKG9JNV9q/iEGf66ts7mXfHQVP4s
-X-Gm-Gg: ASbGncubI/eu8eWCQPR2XgzllTjcpEOJhkVF3prJ9laVEOPENUqSIxpP7xOSghz5K/T
-	2rV+yR7ZwrL77IQ47qJpVtydsdQTJEIBZhjo6
-X-Google-Smtp-Source: AGHT+IF23UoUb/v7LLN/KNXAmcOZlXPcDLJ8NDzKHipziUTtTxthBjTorDj0mtSfhWZgsX9bVXiC6pWSvKnnDEMCB/g=
-X-Received: by 2002:a05:6402:34cb:b0:5d2:6993:ad91 with SMTP id
- 4fb4d7f45d1cf-5d63c3da9a9mr3353320a12.32.1734122884514; Fri, 13 Dec 2024
- 12:48:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734122937; x=1734727737;
+        h=content-transfer-encoding:autocrypt:content-language:cc:to:subject
+         :from:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s6nyhrK1PwEvljraydkFoHfOJI8D15rx54zdqll0bjs=;
+        b=ZXyFXEIQ2ZbrSpWYwJfTG59xKYuUXL8lEmEpSTwpJLIpwGRMqturlKQSYrjxy5L4pQ
+         QxNnFczxV8PETGVWwyhpgEYnYICJFUXoOLcJeexmuDi4AUKoxUYKyr8VEkDaK8ENSYhH
+         v0ImUF2QkJyS4010ms6T/DjLEl7hNDWK35IlFWrSt4B0TVguSYGm4OpbqrovcmAAiqik
+         F1XK2g+J43CHa9cpifWq63NIx6acp8G8HaCY3V9myINutQQSOfwlPLA9FmEdFcC6lOKS
+         7fIySiS1MxbcfsIP/0PZTqnPPNxDpfycko16cYQ05KNAAef3Co4rhzMcHKu8Dv4OXAr5
+         Vokg==
+X-Gm-Message-State: AOJu0YwPMISalOsoGprVO6xwzMzcNaY+ttF98Cw80RCJc1eFkdSqEUsT
+	S5bSiM+ERrMmHhxQ9SlvVIgboVYvOQlkJ+47mrQ6f3ENsu9guO9Z78Kk5w==
+X-Gm-Gg: ASbGncsWpHUkCsjaXXwO1V/0tX8BAQBSX2kAAg8aYQ5f6L+st3fHTmcFtgf1j2Xuqop
+	hl+uSPjUOyWS2R0EGSK87x4wutUZgt9rXFfzzHxQ0yNQwRBbhrFLWfyFTFU+tdjO+kj1antHsRz
+	hI/a1lMqtlRS6aumPIdi/QCfXsAKV5zRM0argroWCoPeiHhavZdVkJBkgEpqOvPUfygKOwT3Cdo
+	D8s34yhTVOBDVr8M0fkLz7Mq0BwuP6+sh+kUT2IT1WysuQig8cUq2Y8nFBIb/O+jBqTOn0wog5U
+	MX8osbIVe1LFIzD3D+C3beCH3ND51r+tkRDV5ENMhEIvvQ6ToJz5Arn1UyaO8XAyW6c1BIblAIE
+	i6bq46KILpb9/SN6kLbqwIl9nHQNiCMagk/pk0fNs/WgcXg==
+X-Google-Smtp-Source: AGHT+IFoOJME/VAMzvGMmQNw33+W4Tud96xNonAHwtivAswTeHpu+scESh9H78xq59SiTXiMDiuR6A==
+X-Received: by 2002:a17:907:7211:b0:aa6:8ce6:1928 with SMTP id a640c23a62f3a-aab77e7b934mr409147466b.48.1734116386000;
+        Fri, 13 Dec 2024 10:59:46 -0800 (PST)
+Received: from ?IPV6:2a02:3100:adc3:fd00:9eb:6163:d514:e25d? (dynamic-2a02-3100-adc3-fd00-09eb-6163-d514-e25d.310.pool.telefonica.de. [2a02:3100:adc3:fd00:9eb:6163:d514:e25d])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab96087424sm4036966b.83.2024.12.13.10.59.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2024 10:59:44 -0800 (PST)
+Message-ID: <15c4a9fd-a653-4b09-825d-751964832a7a@gmail.com>
+Date: Fri, 13 Dec 2024 19:59:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213130212.1783302-1-edumazet@google.com> <20241213130212.1783302-3-edumazet@google.com>
- <20241213201641.GH561418@kernel.org>
-In-Reply-To: <20241213201641.GH561418@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 13 Dec 2024 21:47:53 +0100
-Message-ID: <CANn89iLHSZQcejDktwE8gb2L-vJGGzO1+eevZCqbkQ+=Cr3_6A@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/4] inetpeer: remove create argument of inet_getpeer()
-To: Simon Horman <horms@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	David Ahern <dsahern@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next 0/2] r8169: add support for RTL8125D rev.b
+To: Realtek linux nic maintainers <nic_swsd@realtek.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+ Chun-Hao Lin <hau@realtek.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 13, 2024 at 9:16=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
+Add support for RTL8125D rev.b. Its XID is 0x689. It is basically
+based on the one with XID 0x688, but with different firmware file.
+To avoid a mess with the version numbering, adjust it first.
 
-> Hi Eric,
->
-> With this change invalidated is set but otherwise unused in this function=
-,
-> so it can probably be removed.
->
-> Flagged by W=3D1 builds.
+ChunHao Lin (1):
+  r8169: add support for RTL8125D rev.b
 
-Ah, right, I will fix this in V2.
+Heiner Kallweit (1):
+  r8169: adjust version numbering for RTL8126
 
-Thanks Simon.
+ drivers/net/ethernet/realtek/r8169.h          |  3 +-
+ drivers/net/ethernet/realtek/r8169_main.c     | 68 ++++++++++---------
+ .../net/ethernet/realtek/r8169_phy_config.c   |  5 +-
+ 3 files changed, 42 insertions(+), 34 deletions(-)
+
+-- 
+2.47.1
+
+
+
