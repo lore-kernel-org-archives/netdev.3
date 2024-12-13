@@ -1,72 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1C41E0B75;
-	Fri, 13 Dec 2024 19:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B879F1E4929;
+	Fri, 13 Dec 2024 19:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734118471; cv=none; b=I08yJUpWn9iMrqbcl2/v21XRThxyO43SdCq1pYTSDfZ9iWgAcB8zkd/4dsSSre6JnxTYJi18OU05TWhsdlYqtw1sK7vmtN5UZiDKHRAfog9g5SAmpLOpy3coQIghBEL0/1O56pqeY44NML3kSF0yM6ZVKqRw7/wEldQL0utUjh8=
+	t=1734118509; cv=none; b=mwzOMbk+A9AqMPMHyvXzFI5WmxCPRYS+OHqR9SAk7XFc9QiB63mec0R3wQG0MhZa6qnFcYAuZvzSfReXe5hZI9F8LSqDAr6FJQlxZcfplgZ5DpG26DbVecBhis5+zrUDdqL9kkjRP5/Bigs8sHGtQ5kHSxHQNxR/342aTCJkH50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734118471; c=relaxed/simple;
-	bh=uazp8q3I6dRTgBXIMOo6n/VQO98UXytUK4cybDD7kcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKytqFj2vVQGJ4Xw/AFoYtBO2WvuLXHgVNLfz3y2Sxf0GwVqobR9+9bNwhXu+vskv4LmUd9hR8Qk34iN9RhWIsbUGvWdK9D+Y00oZPE3wjWXkcNwPxUc7bMwiu62Z9/Teb8N6iYzzGiHrXgrJNqqU/MY8eGmRTmFhctsedxXggw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQ3Kyszb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734118509; c=relaxed/simple;
+	bh=vM5pF/N6BKSuBzDOjQcB0i26QSKYjkA+UMc3cwL2/p0=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=SkPKfB4mRyCdDeHyY0C7vVoKC7YKhaOueV7q4aTQFYy2H2Br3YHk34V+O1zLlMQzbanhAGSwcnXxhvnW0LYZMN5QSfRkpu2TOS2Wu8PYWK7gkQOOusR3pprW8ecLEalEd5w77AsSmrODxs9qYWDR/D9TkXwyu2arV69vcNTe1hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=t3BbWIbt; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQ3Kyszb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6021C4CED0;
-	Fri, 13 Dec 2024 19:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734118471;
-	bh=uazp8q3I6dRTgBXIMOo6n/VQO98UXytUK4cybDD7kcc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EQ3Kyszb66u4VFirEw7paQAkGi12s8Z/lWCax6qsas82QKyma0JQgYxzaVjfdEQmG
-	 agrIgdhjPbUICT9CEHskftVKB4fHC9GepalJTv4d3zpc0JzCW92cy3MX+fwrEq0ckB
-	 f7hA4Mb/d0yrx1kMiFi6LYwaShsD0nBI3dfZkTnkUZnEfNtopE7hiqIF2btlfFwqWD
-	 9B29StxKyNIMtCzmJLkc1QkdTIHIxnN1Dg//14iIbBzIsWGf0Fnem8jdZd4NNTwjY3
-	 fpfw9E/oP25OpzogBX0TebFhb8Panua8wC886MLDP/CCp5gDeH4K8rKTPiFC2rfX6I
-	 H38ozCO7OpUnA==
-Date: Fri, 13 Dec 2024 19:34:26 +0000
-From: Simon Horman <horms@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Atul Gupta <atul.gupta@chelsio.com>,
-	Ayush Sawal <ayush.sawal@chelsio.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Michael Werner <werner@chelsio.com>,
-	Casey Leedom <leedom@chelsio.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH net] chelsio/chtls: prevent potential integer overflow on
- 32bit
-Message-ID: <20241213193426.GE561418@kernel.org>
-References: <c6bfb23c-2db2-4e1b-b8ab-ba3925c82ef5@stanley.mountain>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="t3BbWIbt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=HdDCxRaTUX9FGCD245j20jXl1EXkrNlD8Fe9FHouQUM=; b=t3BbWIbt0mNjNv/q72K2ziPS/i
+	AY/p8nVScTMol5dSAKTKnfdtkXLXZPGh89Cj3mjEhdCu0Nfc3BV028PdJeGK+WNwZsawUIdkm/mO0
+	735oeSHWCV2/tVwzV7lG7WmVzojiIxqhMya7f9MOq1HqMlRHfQRsIDOB4eaN9k9NYjIjDuHEQz7vQ
+	H7VvT5e6gw2ZC8LAnuRPjAo2bnTqElRdzxRtlFqXeu78z/tdWNQUeXlUDvjWUZv0Lcvn/dWzTqpl1
+	4GnVWcgUh96ugv0dLl25WqOdyvtr079spbDDFisw9pJOa6KwxxLQdhPEkpq679IHPwIMpPmBoseFq
+	8Kb+LFCA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:32846 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1tMBRC-0007DD-2v;
+	Fri, 13 Dec 2024 19:34:58 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1tMBRA-006vaY-Sv; Fri, 13 Dec 2024 19:34:56 +0000
+In-Reply-To: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
+References: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	 Jose Abreu <joabreu@synopsys.com>,
+	 Andrew Lunn <andrew+netdev@lunn.ch>,
+	 davem@davemloft.net,
+	 Eric Dumazet <edumazet@google.com>,
+	 Jakub Kicinski <kuba@kernel.org>,
+	 Paolo Abeni <pabeni@redhat.com>,
+	 Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	 Alexis =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>,
+	 Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	 netdev@vger.kernel.org,
+	 linux-stm32@st-md-mailman.stormreply.com,
+	 linux-arm-kernel@lists.infradead.org,
+	 linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 2/5] net: pcs: xpcs: fill in PCS supported_interfaces
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c6bfb23c-2db2-4e1b-b8ab-ba3925c82ef5@stanley.mountain>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1tMBRA-006vaY-Sv@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 13 Dec 2024 19:34:56 +0000
 
-On Fri, Dec 13, 2024 at 12:47:27PM +0300, Dan Carpenter wrote:
-> The "gl->tot_len" variable is controlled by the user.  It comes from
-> process_responses().  On 32bit systems, the "gl->tot_len +
-> sizeof(struct cpl_pass_accept_req) + sizeof(struct rss_header)" addition
-> could have an integer wrapping bug.  Use size_add() to prevent this.
-> 
-> Fixes: a08943947873 ("crypto: chtls - Register chtls with net tls")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-> I fixed a similar bug earlier:
-> https://lore.kernel.org/all/86b404e1-4a75-4a35-a34e-e3054fa554c7@stanley.mountain
+Fill in the new PCS supported_interfaces member with the interfaces
+that XPCS supports.
 
-Thanks Dan,
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/pcs/pcs-xpcs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index f70ca39f0905..cf41dc5e74e8 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -1446,6 +1446,8 @@ static struct dw_xpcs *xpcs_create(struct mdio_device *mdiodev)
+ 	if (ret)
+ 		goto out_clear_clks;
+ 
++	xpcs_get_interfaces(xpcs, xpcs->pcs.supported_interfaces);
++
+ 	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID)
+ 		xpcs->pcs.poll = false;
+ 	else
+-- 
+2.30.2
+
