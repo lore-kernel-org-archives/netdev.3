@@ -1,42 +1,35 @@
-Received: from mail115-95.sinamail.sina.com.cn (mail115-95.sinamail.sina.com.cn [218.30.115.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3522D1AC8AE
-	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 23:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98F61B0F0A;
+	Fri, 13 Dec 2024 23:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734131366; cv=none; b=sjiyFaoF6f7z9G24NYQTyVI/pMV3AQZ3eTktNbIFeJfKOMPEH2xcKBHXVVkjl5o+0YD/fg5BZ+A1YZ28VtTcO4EKcKF/s6Qm4Q03R2hpHNSUZ9i1x5J/B8w0q9eQ6RtBsfRqq5YGjttWc0B3ajhYcc5vYypNIQpmimYhBWjir7g=
+	t=1734131419; cv=none; b=gBx7tMkOI3cyDaI72OBhtT1KfXXwZDCuHFj783428ELQlt3FW6bEAVxSuLjLYQ5/q9QMK6BZY4WD0g7AENY9TziXdS5NXlZTer8mSOyfI0gxoSZtpAStdZcsnkjvfYOOA9s7SZsg4TgustiGKbVBwhQPoP5y21/BVVHivIh0/8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734131366; c=relaxed/simple;
-	bh=574geqgrCvxBHE53U1Huo+MbTMWwGYYgbCRZYx76LBw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jV/DsGs+U/Xbgmu0SmQNxLCWfyW0HY7zvipTbWZ0rxKWKj/H7dwKY/gMm9W3GEwr/W4BpA1sniq0zysUNIm/ZlmMz0kCjycueKsqV5OuYIvoXv4rIKe3pXB2qP63ipbCEDU8g55DCcZuk/MVSsOI5EtmyfYk27iY2AjAfCu3IKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; arc=none smtp.client-ip=218.30.115.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([113.88.50.238])
-	by sina.com (10.185.250.23) with ESMTP
-	id 675CBE6E00003624; Fri, 14 Dec 2024 07:08:36 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 512638913054
-X-SMAIL-UIID: 3BE65FF4A60141BE9018ABCAC0CE0B48-20241214-070836-1
-From: Hillf Danton <hdanton@sina.com>
-To: syzbot <syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com>
-Cc: edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [tipc?] kernel BUG in __pskb_pull_tail
-Date: Sat, 14 Dec 2024 07:08:20 +0800
-Message-Id: <20241213230820.1957-1-hdanton@sina.com>
-In-Reply-To: <675b61aa.050a0220.599f4.00bb.GAE@google.com>
-References: 
+	s=arc-20240116; t=1734131419; c=relaxed/simple;
+	bh=Kr8sC2qFWfrbxPnSY7o0fTv5e0gyuclbb8jSGIyZEk4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=m0K51h7nfYt13Lescfe8paVLdVj2HZ4WME2Fz01+Yj+TjNNgkkXBSLFgDnGzTHJgr3dvKlN1X8eLc3RUIuTtchMYcHArKZHsosS2LCx4dTkobgR6KrnSWq4dCJlLTsA7ivp3gU9K/n4KrYHkbKCfUwwYbNzVwP6mbDLp+FGhr9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqmzqF51; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqmzqF51"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8038DC4CED0;
+	Fri, 13 Dec 2024 23:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734131417;
+	bh=Kr8sC2qFWfrbxPnSY7o0fTv5e0gyuclbb8jSGIyZEk4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=EqmzqF51T3RnLm1+40Ru9uHEFu75rNQ+wLJ6y36sKkcdChBCVqAzsHab7JbZ3SD6G
+	 UjMVnGXZzk9VPQpv/czh76qGwX+CbcVTOm0mSTjgVsPKd6IiMSWwNRd93V2zR1A2Ku
+	 ETAJ4NU1fc4wy+wSNcrCXP/jQmv3JkZtrBj3RU/Q5hPRpXHgaGmgOtaSUEQIIi+0Cy
+	 p9GzsVXEaXxxEuJyGW2KxoChoMhoItW98tlyz08s0hhOJk+817ZXkncvl+krU4JpU8
+	 fz29CtAtiaFtXsigCZE1a9h8Jfda1BcIn0p30BvXTNEMDnMhLOjxbLl+hwGmCgEx1o
+	 k5ggTioVMLLkg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E54380A959;
+	Fri, 13 Dec 2024 23:10:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,27 +37,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf] bpf: fix configuration-dependent BTF function
+ references
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173413143374.3187520.16720861618216480481.git-patchwork-notify@kernel.org>
+Date: Fri, 13 Dec 2024 23:10:33 +0000
+References: <20241213-bpf-cond-ids-v1-1-881849997219@weissschuh.net>
+In-Reply-To: <20241213-bpf-cond-ids-v1-1-881849997219@weissschuh.net>
+To: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=3Clinux=40weissschuh=2Enet=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net,
+ kuba@kernel.org, hawk@kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 
-On Thu, 12 Dec 2024 14:20:26 -0800
-> syzbot found the following issue on:
+Hello:
+
+This patch was applied to bpf/bpf-next.git (master)
+by Andrii Nakryiko <andrii@kernel.org>:
+
+On Fri, 13 Dec 2024 00:00:30 +0100 you wrote:
+> These BTF functions are not available unconditionally,
+> only reference them when they are available.
 > 
-> HEAD commit:    96b6fcc0ee41 Merge branch 'net-dsa-cleanup-eee-part-1'
-> git tree:       net-next
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117844f8580000
+> Avoid the following build warnings:
+> 
+>   BTF     .tmp_vmlinux1.btf.o
+> btf_encoder__tag_kfunc: failed to find kfunc 'bpf_send_signal_task' in BTF
+> btf_encoder__tag_kfuncs: failed to tag kfunc 'bpf_send_signal_task'
+>   NM      .tmp_vmlinux1.syms
+>   KSYMS   .tmp_vmlinux1.kallsyms.S
+>   AS      .tmp_vmlinux1.kallsyms.o
+>   LD      .tmp_vmlinux2
+>   NM      .tmp_vmlinux2.syms
+>   KSYMS   .tmp_vmlinux2.kallsyms.S
+>   AS      .tmp_vmlinux2.kallsyms.o
+>   LD      vmlinux
+>   BTFIDS  vmlinux
+> WARN: resolve_btfids: unresolved symbol prog_test_ref_kfunc
+> WARN: resolve_btfids: unresolved symbol bpf_crypto_ctx
+> WARN: resolve_btfids: unresolved symbol bpf_send_signal_task
+> WARN: resolve_btfids: unresolved symbol bpf_modify_return_test_tp
+> WARN: resolve_btfids: unresolved symbol bpf_dynptr_from_xdp
+> WARN: resolve_btfids: unresolved symbol bpf_dynptr_from_skb
+> 
+> [...]
 
-Test fix (https://patchwork.kernel.org/project/netdevbpf/patch/20241212222247.724674-1-edumazet@google.com/ )
+Here is the summary with links:
+  - [bpf] bpf: fix configuration-dependent BTF function references
+    https://git.kernel.org/bpf/bpf-next/c/00a5acdbf398
 
-#syz test
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
---- x/drivers/net/tun.c
-+++ y/drivers/net/tun.c
-@@ -1485,7 +1485,7 @@ static struct sk_buff *tun_napi_alloc_fr
- 	skb->truesize += skb->data_len;
- 
- 	for (i = 1; i < it->nr_segs; i++) {
--		const struct iovec *iov = iter_iov(it);
-+		const struct iovec *iov = iter_iov(it) + i;
- 		size_t fragsz = iov->iov_len;
- 		struct page *page;
- 		void *frag;
---
+
