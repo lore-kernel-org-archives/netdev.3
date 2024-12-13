@@ -1,52 +1,51 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69671E048A;
-	Fri, 13 Dec 2024 13:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A01E0DAC;
+	Fri, 13 Dec 2024 13:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734097311; cv=none; b=PjYAjz4ew2K7pS/Olox0c4iPrjpXFEgVhxsN82KHta1u5Ndu6ORvhUmu6wfbBTCt6mT4r0ze69lbi0tiI7n+ZmK+vXRGOwN2JqLfTouECH+mrUT1RPf4Or9fQnTUy2c+k+HQKqmWfRZDQ7RV/0PRLkipS2a9p4uU8jlFCBYM+2g=
+	t=1734097321; cv=none; b=Qzf1jTj+xeThbEqnr0FgfsjtLzwJXMHN6Qs2PpFd1qIl3moyY166q6sdW1iyYlP+whAbApXROspLSLPuKWKo4p1P0F2a7NUM+pNWrzj10siwSbXmXmNj1UzOfNsIiwcdF14Qd7hq+exjI7VrGol6KBSwDYJoBql8HnKGt7Wi7Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734097311; c=relaxed/simple;
-	bh=e2K9xQ3ZvYEJWrTowWR9ILxUeHoj5YBQVIgtoHUtVjk=;
+	s=arc-20240116; t=1734097321; c=relaxed/simple;
+	bh=c2H8FbwD3Q/YIOzmIKcPAL7n6iGlnnMkTZKYfTBCR1U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=eovi1/oYYnN5nwdb4BqnJkK2MAysSwMwWvKw6pFvyqUuK741DZCD2/o6ex2Xq9bbxtmTdx06S3AFisM2RW5aWFZdi8rR8nbz1ti65sggehqulIGQaSu4lG+ag4osTAgWZCp6jy7aDpbelugjSKpJR4O4Uxk0XCEP/5BfYZKtClM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qHpRKhAn; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:To:CC; b=mPsbaw3/GmFEbJNAeBVzzNiNIKy7rBB7+72y3xPgd+lpEuezgIdDZGkjFvvqtxUt4Tel6B7CMTrA+LTS6rJNBbVwajeGhlGdKpX11QpNvyWcncuo2rwwujfWfDiUAHVAIPcCghP1y2+9RXY8EkcDNQmjvYKQas1fxBQpOycUYkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iPUE/HIx; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qHpRKhAn"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="iPUE/HIx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1734097309; x=1765633309;
+  t=1734097320; x=1765633320;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=e2K9xQ3ZvYEJWrTowWR9ILxUeHoj5YBQVIgtoHUtVjk=;
-  b=qHpRKhAn6Y1QqzxI90U1xU1q6mS7+U/lBMcJ1jt5epGlGqPJX3u5J25d
-   blKUAvLYWhDchsL18Mk9yzTjkILZwnI7ImHoR3G6v3/dlmtl2nis/byRH
-   gJRRuOm0wc4/KffILNdU708kl1F+EJuVoLXSK5pFs37zzP1weGCW16pnN
-   8obiqtFf3FMs+GL5sLd97hNGEQa+NeIbEe7QRwHvHSYMyETWLa918RC0Z
-   AtskEEX+mkJr1MAdfrtKN39baKx51d8McpQqzAekEn7oEDpiLh4NWN9o9
-   hygvuTSEykiw7533p6FUcBv+uHCubijIRkQM+vjui+NI8ocDtyfP5oW1M
+  bh=c2H8FbwD3Q/YIOzmIKcPAL7n6iGlnnMkTZKYfTBCR1U=;
+  b=iPUE/HIx6hPyI1i8gmmBPTv4/blDPtTXPQ9V3N7c3HtxxAg/gtzFYO5c
+   7KzlK2e2DpAImwT1Pg788INMEFSobIvGrLbAr4ajrup1lOVKoEJYzpF77
+   p3JueNzGYTdDBJfZS2nuFg8PGvVnoASLzw0rx1xB3LhKre0t+5fCSin7m
+   QCtnDNVM5UgjHGiApjTPtcZ2+eP7J+HExwDVCbQtpT/pmF2XMUTJn/WRf
+   W5ilNyyNcIZY8EKI0emsmFWvQdJMr2vhKHAmHxZksxYbVbQhD3E/NXcEL
+   g312IqAwjIaohrmdULLtHSEhMRS2eHNDtp1xLp31dzHtLM8XhCMHndJWP
    A==;
-X-CSE-ConnectionGUID: J8E2tOzOTwasRwDCNa1A1Q==
-X-CSE-MsgGUID: WEyjgUW9T2y381Bq/3UP+w==
+X-CSE-ConnectionGUID: thKqZWh2RbKY8jVE1tZn1g==
+X-CSE-MsgGUID: bXvY1h5ySO6OcLf3t/fUhg==
 X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
-   d="scan'208";a="202965479"
+   d="scan'208";a="202965488"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Dec 2024 06:41:48 -0700
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Dec 2024 06:41:58 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 13 Dec 2024 06:41:33 -0700
+ 15.1.2507.35; Fri, 13 Dec 2024 06:41:19 -0700
 Received: from DEN-DL-M70577.microchip.com (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Fri, 13 Dec 2024 06:41:29 -0700
+ 15.1.2507.35 via Frontend Transport; Fri, 13 Dec 2024 06:41:16 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Fri, 13 Dec 2024 14:41:04 +0100
-Subject: [PATCH net-next v4 5/9] net: sparx5: only return PCS for modes
- that require it
+Date: Fri, 13 Dec 2024 14:41:00 +0100
+Subject: [PATCH net-next v4 1/9] net: sparx5: do some preparation work
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20241213-sparx5-lan969x-switch-driver-4-v4-5-d1a72c9c4714@microchip.com>
+Message-ID: <20241213-sparx5-lan969x-switch-driver-4-v4-1-d1a72c9c4714@microchip.com>
 References: <20241213-sparx5-lan969x-switch-driver-4-v4-0-d1a72c9c4714@microchip.com>
 In-Reply-To: <20241213-sparx5-lan969x-switch-driver-4-v4-0-d1a72c9c4714@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -71,39 +70,78 @@ CC: <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<robert.marko@sartura.hr>
 X-Mailer: b4 0.14-dev
 
-The RGMII ports have no PCS to configure. Make sure we only return the
-PCS for port modes that require it.
+The sparx5_port_init() does initial configuration of a variety of
+different features and options for each port. Some are shared for all
+types of devices, some are not. As it is now, common configuration is
+done after configuration of low-speed devices. This will not work when
+adding RGMII support in a subsequent patch.
 
+In preparation for lan969x RGMII support, move a block of code, that
+configures 2g5 devices, down. This ensures that the configuration common
+to all devices is done before configuration of 2g5, 5g, 10g and 25g
+devices.
+
+Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_phylink.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ .../net/ethernet/microchip/sparx5/sparx5_port.c    | 36 +++++++++++-----------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_phylink.c b/drivers/net/ethernet/microchip/sparx5/sparx5_phylink.c
-index f8562c1a894d..035d2f1bea0d 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_phylink.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_phylink.c
-@@ -32,7 +32,19 @@ sparx5_phylink_mac_select_pcs(struct phylink_config *config,
- {
- 	struct sparx5_port *port = netdev_priv(to_net_dev(config->dev));
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index f9d1a6bb9bff..f39bf4878e11 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -1067,24 +1067,6 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 	if (err)
+ 		return err;
  
--	return &port->phylink_pcs;
-+	/* Return the PCS for all the modes that require it. */
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_QSGMII:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+	case PHY_INTERFACE_MODE_5GBASER:
-+	case PHY_INTERFACE_MODE_10GBASER:
-+	case PHY_INTERFACE_MODE_25GBASER:
-+		return &port->phylink_pcs;
-+	default:
-+		return NULL;
-+	}
- }
+-	/* Configure MAC vlan awareness */
+-	err = sparx5_port_max_tags_set(sparx5, port);
+-	if (err)
+-		return err;
+-
+-	/* Set Max Length */
+-	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
+-		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
+-		 sparx5,
+-		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
+-
+-	/* 1G/2G5: Signal Detect configuration */
+-	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
+-		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
+-		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
+-		sparx5,
+-		DEV2G5_PCS1G_SD_CFG(port->portno));
+-
+ 	/* Set Pause WM hysteresis */
+ 	spx5_rmw(QSYS_PAUSE_CFG_PAUSE_START_SET(pause_start) |
+ 		 QSYS_PAUSE_CFG_PAUSE_STOP_SET(pause_stop) |
+@@ -1108,6 +1090,24 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 		 ANA_CL_FILTER_CTRL_FILTER_SMAC_MC_DIS,
+ 		 sparx5, ANA_CL_FILTER_CTRL(port->portno));
  
- static void sparx5_phylink_mac_config(struct phylink_config *config,
++	/* Configure MAC vlan awareness */
++	err = sparx5_port_max_tags_set(sparx5, port);
++	if (err)
++		return err;
++
++	/* Set Max Length */
++	spx5_rmw(DEV2G5_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
++		 DEV2G5_MAC_MAXLEN_CFG_MAX_LEN,
++		 sparx5,
++		 DEV2G5_MAC_MAXLEN_CFG(port->portno));
++
++	/* 1G/2G5: Signal Detect configuration */
++	spx5_wr(DEV2G5_PCS1G_SD_CFG_SD_POL_SET(sd_pol) |
++		DEV2G5_PCS1G_SD_CFG_SD_SEL_SET(sd_sel) |
++		DEV2G5_PCS1G_SD_CFG_SD_ENA_SET(sd_ena),
++		sparx5,
++		DEV2G5_PCS1G_SD_CFG(port->portno));
++
+ 	if (conf->portmode == PHY_INTERFACE_MODE_QSGMII ||
+ 	    conf->portmode == PHY_INTERFACE_MODE_SGMII) {
+ 		err = sparx5_serdes_set(sparx5, port, conf);
 
 -- 
 2.34.1
