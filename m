@@ -1,61 +1,61 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE0A1DFD8D
-	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 23:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DA21F12F7
+	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 23:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734132607; cv=none; b=llmlL3tYN1o9Te0j1MebKYYlcQrGzU2oW+D4VNa3APWV3yA8y9Pgr44rPlHdVb+0++LgX3/RfBIXxoWi4nZ1Vfma+hIZMTYzhBZA9YHFpOp6hIZlTR7431xy3ILe0VXBvhqtAEUuBaQOteqkQe7O+crrOTfw9iDvLIu5THLT7M4=
+	t=1734132609; cv=none; b=D45zbZ5mmRnC981sm6v9xJBmmCi6N/exvsHss7gSaq/5p9FT5bDK8KaQb+wU3BiQ2p2U7LOdsyLoxuFzC6g5F91x4DsQyNRVneZoPXywXWpnv2GmwnoLaeQihZ1fHNN5tmlFYtZU7ptN1XfXKkRzNyqmDrzBJv1JKbLJqH08qgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734132607; c=relaxed/simple;
-	bh=rO2nseOhkawG+8YRK6fu8d6yVEe8z8rn5Ny5rTBCLAM=;
+	s=arc-20240116; t=1734132609; c=relaxed/simple;
+	bh=TPzsZdNWtFW8vcRGJQby6GpfACEn3oIIRbLydlxNfio=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QP1oLLVzyVUNLvtiv4p6w1hXIhyrs7B7LTvRUO4+JLRkebiQPIk7ysMO0vBslhOxqwEB2mARVU9d4h8isfaSKHF9J6kJIzgDQmJyRA1NIl6Nrg/AOCzzpWyNG9SHqTbYagJ0KZBrxQbDPr+3ZZh6MB+mh32zFUYP8fILJJcrgmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=PqR9jZC0; arc=none smtp.client-ip=209.85.160.179
+	 MIME-Version; b=HCBgO3JWEUatkVQgrFHTw7v9U/tEyD4dz/3hYAeQ3Kosuxd0DwzA38swmccuKUVggKmqYGtkml4XRVDswbYdQoOcNcsX0jV4WlM4FctUCv7QryciP0ZYMC6+CKINWtifcRzGCVK8XU/gesYRJOGY8grQ+Bj0YKz3AQwg/SsgVGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=AxpNow8P; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="PqR9jZC0"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-46677ef6910so24386041cf.2
-        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 15:30:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="AxpNow8P"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-46769b34cbfso42529251cf.0
+        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 15:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1734132603; x=1734737403; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1734132605; x=1734737405; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KzGU7EA7+CxZZl0ZD9zaKpznoSGHASSKNfn0psVXEmc=;
-        b=PqR9jZC0t9BYU8X0ngkMaFm1bUHoDJ7aQGFC4gJkdRz2e/n3NYAsbL5gzwlOT6AkwB
-         Rp4v8H15HOwY8GXXeRLB0CEPNYOrHtQTSR3ZM8vIy9BGarMDk9GSD3RmV4hpLZisaQBU
-         g8ka3BzC1aG016WUmP2keXrstmm931BupWXD50ahBX2XgJVRvafX49CNhoAcPQYy62bk
-         XYPiNrNi/KK/b0MNDVOsWjchzVefDWFhk8SDo9f04E0QiZmNkUS23paZa3XrVBTqjSjO
-         a4GU23TL15JbtXONRdcYt5IXwMWMzyCTcKWjRPIYN5KSJY9BiVUoNhsjepeWvTub3T0z
-         hEMQ==
+        bh=YtjTtmMT6O6w3VZS9xHihVZl/iedzM4fQQxBhi0eNmo=;
+        b=AxpNow8Pi3Y0pDaGgtyZMxBZ6HvKcgrKBrXsazFA00m4KwrQmlSivz+4crR3GjyuTz
+         cZivy4kv57ob35p26nhFLi4n5jayIl9jB4SQDrWyzzqv1QiJk5iUQaI5vO3H+XCHJLfN
+         m1N8e0UN6anG/+3GeFhXV4louHNUYi8eiotfD4IXWNaxYdi4eRdTG34XkKo1iM8NSxTa
+         G9D8bbOVV1jlI+ocf0BdgUfIuDw07wzFuvY2TsnWlG3+bb6WgShs8tjnz/hvbyYVRiue
+         LNi/v7vJ8IF8WQME0L6juJNwco55HfpNBpjP+RMMVa//Cd9D89wpzPh8SAzJWPnP0kWn
+         /lAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734132603; x=1734737403;
+        d=1e100.net; s=20230601; t=1734132605; x=1734737405;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KzGU7EA7+CxZZl0ZD9zaKpznoSGHASSKNfn0psVXEmc=;
-        b=MeV4OTbrhGoYsg30RYNbfzpPZeAd/yNGPxzGMCaPD9A4CqLXr1qBev8C7RSWCC+9od
-         R/lZRWh8nsIGyGEMW+i9shxsZG0WLujhS3rFV6su/EKlZHKskbXWh4t2VOckbHopD8YI
-         ZTOOm3jbXqR0qGdeWYr0JlAWfuUW72X8pse+yyF/Y01nB628kFmxZvMsdz+p9t7OPqfT
-         OnXJp0Wn0JK9epcQ4+wGaC62jz3WH7/2v9JSr535KMEgZ8g5+lvMlPcKGLeVQqksbr/1
-         8Li2nzhV6PnLoVV7skn6cfX0R2TGDa9bCBYZ6xD2zfXjmpQCWH06qCdzXvaDuUGw4nFH
-         e5cA==
-X-Gm-Message-State: AOJu0YzP4jd5R6vM3P+LRcFoZIvdqGnkrGvd5k0Jkgt3hirhoS01lw2n
-	BKED1VZ+KIUIxrgmuxST+bs8O1BiH3deb78B97rpPyXy6fDFb6ziCpFg3DiXBu1gx7cRsSY2PqI
-	adLr/AQ==
-X-Gm-Gg: ASbGncuZmDklBYRRzeEAbFI31sFfMmzCgEq2UzHijF1DHHfmXLH7NqJRs+5rulCK37W
-	pde3PJXpaj4OJoDlvD4NHZjC/p1H6L+PDwpTibjrQxRmaYfoHCEleEdHFJJ74YurO5ytfLXXZMI
-	ynMHMTmRsQFI5X5VND8jJwraIPyVKGMf3NL8F+fcDNtUnl/Dwkf/G6u1/7PE4/oRC0KwpTKW3lR
-	T8bK5xVJS0xCVWznN62imrLcdsWiPCkRVgoKw8oL/pP9fhcvrA6ZENQsCJ/TYyQC7+PMR1G0h71
-X-Google-Smtp-Source: AGHT+IFOEyawTuzhelkkZ5YhLC25ny1ozPpE10IusXh4SvjdnogSFTsDawNErpwZUT+xA6XS+MMaxg==
-X-Received: by 2002:a05:622a:1990:b0:467:5375:5804 with SMTP id d75a77b69052e-467a58296bemr87127611cf.38.1734132603562;
-        Fri, 13 Dec 2024 15:30:03 -0800 (PST)
+        bh=YtjTtmMT6O6w3VZS9xHihVZl/iedzM4fQQxBhi0eNmo=;
+        b=ql8x2U4t6GdqtFZJbicXb0HTcNd6hWqsv2zrJfmizbUsBLHCPOcX7BWKeocNocNgb7
+         GoeWEtqnOCdN07Ac87t27/IsG5vxqxnxf2tcs72SI9tyBTF67WCRVx7zNnQkRbPsfbyT
+         jLVksswX/czMUpGTfgzfLnOH39icgnhc13WqkebLY6noAozD92oiJwhG3YpPfzaxdaO2
+         XICZn1vgSwvxkYr4+DnQw/dOvXVetl1RXt3NyZcj/2+S/aH90orvqvtWYu2SbQYbTo8c
+         LcDz48NneZKQNcYzhBknuebl3QA5jL8NYBIoaq0Oj3cM7BrtOl8QMgenV0aj1cVB7tHP
+         3sGw==
+X-Gm-Message-State: AOJu0Yx0NQmbSQH6mWXMpm4YhP9l5K3enrnY0h/+ukGFC+cimKAti5KZ
+	YVWs8i7poIUJzPgKnOLl2nyZoUR4IuFDvtpEacTgoYOcblreqDjlODE7EhUH70wYU2MFt0xUHYh
+	ji6s4bA==
+X-Gm-Gg: ASbGnctLHeZNWl04Md6pWkEtI3HQyhQS1Am/TfjmFcVEvZSqnz+jdZDuUp36wsIMP/h
+	9H0dtFSr8r2VtbPe512CnVX7ZeLI2xlB9MTPCCjMXstXGZ343zDsHr84LrviAP47iYOrBtTjczy
+	7x284FDsPfA8zhe+OnsJuD1MRLNR4qWfWtlyG1pFbZkEKywRymy7Og0FQ/jAlvVwSETo97YgYyV
+	cmkX78TNEBuf7OwUF4jtagFOkRghS/kNwsKKpCNRpRhkj/2VYmFyQJIM5taEADmEAdOui9YKaU8
+X-Google-Smtp-Source: AGHT+IEwrvI0TWA5i3ygjy9DwZWY6eVFOFX1HCnKe1n5GIxKyiEggePCTzKUB6l8+q8IUwtnOb/khQ==
+X-Received: by 2002:ac8:5d14:0:b0:466:85eb:6118 with SMTP id d75a77b69052e-467a574d124mr67024061cf.16.1734132605341;
+        Fri, 13 Dec 2024 15:30:05 -0800 (PST)
 Received: from n36-183-057.byted.org ([130.44.215.64])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7047d4a20sm25805085a.39.2024.12.13.15.30.02
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7047d4a20sm25805085a.39.2024.12.13.15.30.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 15:30:03 -0800 (PST)
+        Fri, 13 Dec 2024 15:30:04 -0800 (PST)
 From: Amery Hung <amery.hung@bytedance.com>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -73,9 +73,9 @@ Cc: bpf@vger.kernel.org,
 	xiyou.wangcong@gmail.com,
 	yepeilin.cs@gmail.com,
 	ameryhung@gmail.com
-Subject: [PATCH bpf-next v1 03/13] bpf: Allow struct_ops prog to return referenced kptr
-Date: Fri, 13 Dec 2024 23:29:48 +0000
-Message-Id: <20241213232958.2388301-4-amery.hung@bytedance.com>
+Subject: [PATCH bpf-next v1 04/13] selftests/bpf: Test returning referenced kptr from struct_ops programs
+Date: Fri, 13 Dec 2024 23:29:49 +0000
+Message-Id: <20241213232958.2388301-5-amery.hung@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20241213232958.2388301-1-amery.hung@bytedance.com>
 References: <20241213232958.2388301-1-amery.hung@bytedance.com>
@@ -87,130 +87,332 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allow a struct_ops program to return a referenced kptr if the struct_ops
-operator's return type is a struct pointer. To make sure the returned
-pointer continues to be valid in the kernel, several constraints are
-required:
-
-1) The type of the pointer must matches the return type
-2) The pointer originally comes from the kernel (not locally allocated)
-3) The pointer is in its unmodified form
-
-Implementation wise, a referenced kptr first needs to be allowed to leak
-in check_reference_leak() if it is in the return register. Then, in
-check_return_code(), constraints 1-3 are checked.
-
-In addition, since the first user, Qdisc_ops::dequeue, allows a NULL
-pointer to be returned when there is no skb to be dequeued, we will allow
-a scalar value with value equals to NULL to be returned.
-
-In the future when there is a struct_ops user that always expects a valid
-pointer to be returned from an operator, we may extend tagging to the
-return value. We can tell the verifier to only allow NULL pointer return
-if the return value is tagged with MAY_BE_NULL.
+Test struct_ops programs returning referenced kptr. When the return type
+of a struct_ops operator is pointer to struct, the verifier should
+only allow programs that return a scalar NULL or a non-local kptr with the
+correct type in its unmodified form.
 
 Signed-off-by: Amery Hung <amery.hung@bytedance.com>
 ---
- kernel/bpf/verifier.c | 42 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 38 insertions(+), 4 deletions(-)
+ .../selftests/bpf/bpf_testmod/bpf_testmod.c   |  8 ++
+ .../selftests/bpf/bpf_testmod/bpf_testmod.h   |  4 +
+ .../prog_tests/test_struct_ops_kptr_return.c  | 87 +++++++++++++++++++
+ .../bpf/progs/struct_ops_kptr_return.c        | 29 +++++++
+ ...uct_ops_kptr_return_fail__invalid_scalar.c | 24 +++++
+ .../struct_ops_kptr_return_fail__local_kptr.c | 30 +++++++
+ ...uct_ops_kptr_return_fail__nonzero_offset.c | 23 +++++
+ .../struct_ops_kptr_return_fail__wrong_type.c | 28 ++++++
+ 8 files changed, 233 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/test_struct_ops_kptr_return.c
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_kptr_return.c
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__invalid_scalar.c
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__local_kptr.c
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__nonzero_offset.c
+ create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__wrong_type.c
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 69753096075f..c04028106710 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10453,6 +10453,8 @@ record_func_key(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
+diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+index 244234546ae2..cfab09f16cc2 100644
+--- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
++++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+@@ -1141,11 +1141,19 @@ static int bpf_testmod_ops__test_refcounted(int dummy,
+ 	return 0;
+ }
  
- static int check_reference_leak(struct bpf_verifier_env *env, bool exception_exit)
- {
-+	enum bpf_prog_type type = resolve_prog_type(env->prog);
-+	struct bpf_reg_state *reg = reg_state(env, BPF_REG_0);
- 	struct bpf_func_state *state = cur_func(env);
- 	bool refs_lingering = false;
- 	int i;
-@@ -10463,6 +10465,12 @@ static int check_reference_leak(struct bpf_verifier_env *env, bool exception_exi
- 	for (i = 0; i < state->acquired_refs; i++) {
- 		if (state->refs[i].type != REF_TYPE_PTR)
- 			continue;
-+		/* Allow struct_ops programs to leak referenced kptr through return value.
-+		 * Type checks are performed later in check_return_code.
-+		 */
-+		if (type == BPF_PROG_TYPE_STRUCT_OPS && !exception_exit &&
-+		    reg->ref_obj_id == state->refs[i].id)
-+			continue;
- 		verbose(env, "Unreleased reference id=%d alloc_insn=%d\n",
- 			state->refs[i].id, state->refs[i].insn_idx);
- 		refs_lingering = true;
-@@ -15993,13 +16001,15 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
- 	const char *exit_ctx = "At program exit";
- 	struct tnum enforce_attach_type_range = tnum_unknown;
- 	const struct bpf_prog *prog = env->prog;
--	struct bpf_reg_state *reg;
-+	struct bpf_reg_state *reg = reg_state(env, regno);
- 	struct bpf_retval_range range = retval_range(0, 1);
- 	enum bpf_prog_type prog_type = resolve_prog_type(env->prog);
- 	int err;
- 	struct bpf_func_state *frame = env->cur_state->frame[0];
- 	const bool is_subprog = frame->subprogno;
- 	bool return_32bit = false;
-+	struct btf *btf = bpf_prog_get_target_btf(prog);
-+	const struct btf_type *ret_type = NULL;
- 
- 	/* LSM and struct_ops func-ptr's return type could be "void" */
- 	if (!is_subprog || frame->in_exception_callback_fn) {
-@@ -16008,10 +16018,31 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
- 			if (prog->expected_attach_type == BPF_LSM_CGROUP)
- 				/* See below, can be 0 or 0-1 depending on hook. */
- 				break;
--			fallthrough;
-+			if (!prog->aux->attach_func_proto->type)
-+				return 0;
-+			break;
- 		case BPF_PROG_TYPE_STRUCT_OPS:
- 			if (!prog->aux->attach_func_proto->type)
- 				return 0;
++static struct task_struct *
++bpf_testmod_ops__test_return_ref_kptr(int dummy, struct task_struct *task__ref,
++				      struct cgroup *cgrp)
++{
++	return NULL;
++}
 +
-+			if (frame->in_exception_callback_fn)
-+				break;
-+
-+			/* Allow a struct_ops program to return a referenced kptr if it
-+			 * matches the operator's return type and is in its unmodified
-+			 * form. A scalar zero (i.e., a null pointer) is also allowed.
-+			 */
-+			ret_type = btf_type_by_id(btf, prog->aux->attach_func_proto->type);
-+			if (btf_type_is_ptr(ret_type) && reg->type & PTR_TO_BTF_ID &&
-+			    reg->ref_obj_id) {
-+				if (reg->btf_id != ret_type->type) {
-+					verbose(env, "Return kptr type, struct %s, doesn't match function prototype, struct %s\n",
-+						btf_type_name(reg->btf, reg->btf_id),
-+						btf_type_name(btf, ret_type->type));
-+					return -EINVAL;
-+				}
-+				return __check_ptr_off_reg(env, reg, regno, false);
-+			}
- 			break;
- 		default:
- 			break;
-@@ -16033,8 +16064,6 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
- 		return -EACCES;
- 	}
+ static struct bpf_testmod_ops __bpf_testmod_ops = {
+ 	.test_1 = bpf_testmod_test_1,
+ 	.test_2 = bpf_testmod_test_2,
+ 	.test_maybe_null = bpf_testmod_ops__test_maybe_null,
+ 	.test_refcounted = bpf_testmod_ops__test_refcounted,
++	.test_return_ref_kptr = bpf_testmod_ops__test_return_ref_kptr,
+ };
  
--	reg = cur_regs(env) + regno;
--
- 	if (frame->in_async_callback_fn) {
- 		/* enforce return zero from async callbacks like timer */
- 		exit_ctx = "At async callback return";
-@@ -16133,6 +16162,11 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
- 	case BPF_PROG_TYPE_NETFILTER:
- 		range = retval_range(NF_DROP, NF_ACCEPT);
- 		break;
-+	case BPF_PROG_TYPE_STRUCT_OPS:
-+		if (!ret_type || !btf_type_is_ptr(ret_type))
-+			return 0;
-+		range = retval_range(0, 0);
-+		break;
- 	case BPF_PROG_TYPE_EXT:
- 		/* freplace program can return anything as its return value
- 		 * depends on the to-be-replaced kernel func or bpf program.
+ struct bpf_struct_ops bpf_bpf_testmod_ops = {
+diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.h b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.h
+index 0e31586c1353..a66659314e67 100644
+--- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.h
++++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.h
+@@ -6,6 +6,7 @@
+ #include <linux/types.h>
+ 
+ struct task_struct;
++struct cgroup;
+ 
+ struct bpf_testmod_test_read_ctx {
+ 	char *buf;
+@@ -38,6 +39,9 @@ struct bpf_testmod_ops {
+ 	int (*unsupported_ops)(void);
+ 	/* Used to test ref_acquired arguments. */
+ 	int (*test_refcounted)(int dummy, struct task_struct *task);
++	/* Used to test returning referenced kptr. */
++	struct task_struct *(*test_return_ref_kptr)(int dummy, struct task_struct *task,
++						    struct cgroup *cgrp);
+ 
+ 	/* The following fields are used to test shadow copies. */
+ 	char onebyte;
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_struct_ops_kptr_return.c b/tools/testing/selftests/bpf/prog_tests/test_struct_ops_kptr_return.c
+new file mode 100644
+index 000000000000..bc2fac39215a
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/test_struct_ops_kptr_return.c
+@@ -0,0 +1,87 @@
++#include <test_progs.h>
++
++#include "struct_ops_kptr_return.skel.h"
++#include "struct_ops_kptr_return_fail__wrong_type.skel.h"
++#include "struct_ops_kptr_return_fail__invalid_scalar.skel.h"
++#include "struct_ops_kptr_return_fail__nonzero_offset.skel.h"
++#include "struct_ops_kptr_return_fail__local_kptr.skel.h"
++
++/* Test that the verifier accepts a program that acquires a referenced
++ * kptr and releases the reference through return
++ */
++static void kptr_return(void)
++{
++	struct struct_ops_kptr_return *skel;
++
++	skel = struct_ops_kptr_return__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "struct_ops_module_open_and_load"))
++		return;
++
++	struct_ops_kptr_return__destroy(skel);
++}
++
++/* Test that the verifier rejects a program that returns a kptr of the
++ * wrong type
++ */
++static void kptr_return_fail__wrong_type(void)
++{
++	struct struct_ops_kptr_return_fail__wrong_type *skel;
++
++	skel = struct_ops_kptr_return_fail__wrong_type__open_and_load();
++	if (ASSERT_ERR_PTR(skel, "struct_ops_module_fail__wrong_type__open_and_load"))
++		return;
++
++	struct_ops_kptr_return_fail__wrong_type__destroy(skel);
++}
++
++/* Test that the verifier rejects a program that returns a non-null scalar */
++static void kptr_return_fail__invalid_scalar(void)
++{
++	struct struct_ops_kptr_return_fail__invalid_scalar *skel;
++
++	skel = struct_ops_kptr_return_fail__invalid_scalar__open_and_load();
++	if (ASSERT_ERR_PTR(skel, "struct_ops_module_fail__invalid_scalar__open_and_load"))
++		return;
++
++	struct_ops_kptr_return_fail__invalid_scalar__destroy(skel);
++}
++
++/* Test that the verifier rejects a program that returns kptr with non-zero offset */
++static void kptr_return_fail__nonzero_offset(void)
++{
++	struct struct_ops_kptr_return_fail__nonzero_offset *skel;
++
++	skel = struct_ops_kptr_return_fail__nonzero_offset__open_and_load();
++	if (ASSERT_ERR_PTR(skel, "struct_ops_module_fail__nonzero_offset__open_and_load"))
++		return;
++
++	struct_ops_kptr_return_fail__nonzero_offset__destroy(skel);
++}
++
++/* Test that the verifier rejects a program that returns local kptr */
++static void kptr_return_fail__local_kptr(void)
++{
++	struct struct_ops_kptr_return_fail__local_kptr *skel;
++
++	skel = struct_ops_kptr_return_fail__local_kptr__open_and_load();
++	if (ASSERT_ERR_PTR(skel, "struct_ops_module_fail__local_kptr__open_and_load"))
++		return;
++
++	struct_ops_kptr_return_fail__local_kptr__destroy(skel);
++}
++
++void test_struct_ops_kptr_return(void)
++{
++	if (test__start_subtest("kptr_return"))
++		kptr_return();
++	if (test__start_subtest("kptr_return_fail__wrong_type"))
++		kptr_return_fail__wrong_type();
++	if (test__start_subtest("kptr_return_fail__invalid_scalar"))
++		kptr_return_fail__invalid_scalar();
++	if (test__start_subtest("kptr_return_fail__nonzero_offset"))
++		kptr_return_fail__nonzero_offset();
++	if (test__start_subtest("kptr_return_fail__local_kptr"))
++		kptr_return_fail__local_kptr();
++}
++
++
+diff --git a/tools/testing/selftests/bpf/progs/struct_ops_kptr_return.c b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return.c
+new file mode 100644
+index 000000000000..29b7719cd4c9
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return.c
+@@ -0,0 +1,29 @@
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++#include "../bpf_testmod/bpf_testmod.h"
++
++char _license[] SEC("license") = "GPL";
++
++void bpf_task_release(struct task_struct *p) __ksym;
++
++/* This test struct_ops BPF programs returning referenced kptr. The verifier should
++ * allow a referenced kptr or a NULL pointer to be returned. A referenced kptr to task
++ * here is acquried automatically as the task argument is tagged with "__ref".
++ */
++SEC("struct_ops/test_return_ref_kptr")
++struct task_struct *BPF_PROG(test_return_ref_kptr, int dummy,
++			     struct task_struct *task, struct cgroup *cgrp)
++{
++	if (dummy % 2) {
++		bpf_task_release(task);
++		return NULL;
++	}
++	return task;
++}
++
++SEC(".struct_ops.link")
++struct bpf_testmod_ops testmod_kptr_return = {
++	.test_return_ref_kptr = (void *)test_return_ref_kptr,
++};
++
++
+diff --git a/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__invalid_scalar.c b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__invalid_scalar.c
+new file mode 100644
+index 000000000000..d67982ba8224
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__invalid_scalar.c
+@@ -0,0 +1,24 @@
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++#include "../bpf_testmod/bpf_testmod.h"
++
++char _license[] SEC("license") = "GPL";
++
++struct cgroup *bpf_cgroup_acquire(struct cgroup *p) __ksym;
++void bpf_task_release(struct task_struct *p) __ksym;
++
++/* This test struct_ops BPF programs returning referenced kptr. The verifier should
++ * reject programs returning a non-zero scalar value.
++ */
++SEC("struct_ops/test_return_ref_kptr")
++struct task_struct *BPF_PROG(test_return_ref_kptr, int dummy,
++			     struct task_struct *task, struct cgroup *cgrp)
++{
++	bpf_task_release(task);
++	return (struct task_struct *)1;
++}
++
++SEC(".struct_ops.link")
++struct bpf_testmod_ops testmod_kptr_return = {
++	.test_return_ref_kptr = (void *)test_return_ref_kptr,
++};
+diff --git a/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__local_kptr.c b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__local_kptr.c
+new file mode 100644
+index 000000000000..9a4247432539
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__local_kptr.c
+@@ -0,0 +1,30 @@
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++#include "../bpf_testmod/bpf_testmod.h"
++#include "bpf_experimental.h"
++
++char _license[] SEC("license") = "GPL";
++
++struct cgroup *bpf_cgroup_acquire(struct cgroup *p) __ksym;
++void bpf_task_release(struct task_struct *p) __ksym;
++
++/* This test struct_ops BPF programs returning referenced kptr. The verifier should
++ * reject programs returning a local kptr.
++ */
++SEC("struct_ops/test_return_ref_kptr")
++struct task_struct *BPF_PROG(test_return_ref_kptr, int dummy,
++			     struct task_struct *task, struct cgroup *cgrp)
++{
++	struct task_struct *t;
++
++	t = bpf_obj_new(typeof(*task));
++	if (!t)
++		return task;
++
++	return t;
++}
++
++SEC(".struct_ops.link")
++struct bpf_testmod_ops testmod_kptr_return = {
++	.test_return_ref_kptr = (void *)test_return_ref_kptr,
++};
+diff --git a/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__nonzero_offset.c b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__nonzero_offset.c
+new file mode 100644
+index 000000000000..5bb0b4029d11
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__nonzero_offset.c
+@@ -0,0 +1,23 @@
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++#include "../bpf_testmod/bpf_testmod.h"
++
++char _license[] SEC("license") = "GPL";
++
++struct cgroup *bpf_cgroup_acquire(struct cgroup *p) __ksym;
++void bpf_task_release(struct task_struct *p) __ksym;
++
++/* This test struct_ops BPF programs returning referenced kptr. The verifier should
++ * reject programs returning a modified referenced kptr.
++ */
++SEC("struct_ops/test_return_ref_kptr")
++struct task_struct *BPF_PROG(test_return_ref_kptr, int dummy,
++			     struct task_struct *task, struct cgroup *cgrp)
++{
++	return (struct task_struct *)&task->jobctl;
++}
++
++SEC(".struct_ops.link")
++struct bpf_testmod_ops testmod_kptr_return = {
++	.test_return_ref_kptr = (void *)test_return_ref_kptr,
++};
+diff --git a/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__wrong_type.c b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__wrong_type.c
+new file mode 100644
+index 000000000000..32365cb7af49
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/struct_ops_kptr_return_fail__wrong_type.c
+@@ -0,0 +1,28 @@
++#include <vmlinux.h>
++#include <bpf/bpf_tracing.h>
++#include "../bpf_testmod/bpf_testmod.h"
++
++char _license[] SEC("license") = "GPL";
++
++struct cgroup *bpf_cgroup_acquire(struct cgroup *p) __ksym;
++void bpf_task_release(struct task_struct *p) __ksym;
++
++/* This test struct_ops BPF programs returning referenced kptr. The verifier should
++ * reject programs returning a referenced kptr of the wrong type.
++ */
++SEC("struct_ops/test_return_ref_kptr")
++struct task_struct *BPF_PROG(test_return_ref_kptr, int dummy,
++			     struct task_struct *task, struct cgroup *cgrp)
++{
++	struct task_struct *ret;
++
++	ret = (struct task_struct *)bpf_cgroup_acquire(cgrp);
++	bpf_task_release(task);
++
++	return ret;
++}
++
++SEC(".struct_ops.link")
++struct bpf_testmod_ops testmod_kptr_return = {
++	.test_return_ref_kptr = (void *)test_return_ref_kptr,
++};
 -- 
 2.20.1
 
