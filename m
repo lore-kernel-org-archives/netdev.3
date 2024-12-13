@@ -1,48 +1,49 @@
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873B364D6;
-	Fri, 13 Dec 2024 12:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972B11DF256;
+	Fri, 13 Dec 2024 12:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734092593; cv=none; b=W90M2mOVv+i/HZzU8M0EumQHgKil5Sa6/0KZEX1X88UcpLLIRYtKt8hgYaL03eyTbA5xXGefwFW9kr+w3ZlXTZZCyQG2i14CHnSvlf+dLDFBJaxDppn2h0mMsMDJSs3g2AiwLMGeYgDP1dOz5Jc7RKNMc7la3WLRHYo0THtanTs=
+	t=1734092843; cv=none; b=XF9FY//WUtI9VODVxrXlJAOpM+a/qoZrSHv0SNcu/tbasTMJAfwnFVLkXdMeFVUMoWao6zWpmRq8YOd+qqvs+a0sW1Dx58BNeEFYjqEfoHUrbuEAusIz68nwtjcW8GBbmr6SKIw7DJAjC/HO+l2ygluWsBvhdUu/f8DHUr/msek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734092593; c=relaxed/simple;
-	bh=9FhpDiE02t/1mLvmpuijYoGeEU6kID8DIhL0J5DHbn8=;
+	s=arc-20240116; t=1734092843; c=relaxed/simple;
+	bh=RNe5ohNpUyEDQ89uT1QfgzBzs2jm2Vw0Oha4SoeU/gM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jUDwNHrMkdx1DV+s2uG0S4xMoiYsev06ZFF/uUh2nSXGSRge0BGyD9q/LT3cJCi/Q6Nf34Y3YkuVoJFCqmBEhA9ceyVM34trc6qHj96CtRttwHp2xz8D0i7RWEGimojRu8qG+vMhIJa/NqEOcWVByrPH5AMB82YGrGuLTR4xdjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=go8+nm+S; arc=none smtp.client-ip=198.47.23.249
+	 In-Reply-To:Content-Type; b=QEGSi+JfUFGzrQKMhTOXYAeqPGOGc05P5XodtjBMScWFx3sfH+ajlnQ3uXfhxaEboIfBsOjMHOg36ZPluHhd5JPeUlT8LcY6HPhUGbKh0v/4OBXLm2OUO5S6DVEeqrSMuwoztQ6e9ZbV2Jp0R+mekjM4xB3RxbSXqNXXIMWNpa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sTl5zanL; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="go8+nm+S"
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BDCMZDU004162;
-	Fri, 13 Dec 2024 06:22:35 -0600
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sTl5zanL"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4BDCQw6T3086016
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Dec 2024 06:26:58 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734092555;
-	bh=YyFPqMKZRrKIg1oWIoiS8WyOAY1Z2VQsk+vK4yB1cIk=;
+	s=ti-com-17Q1; t=1734092818;
+	bh=STXJOLYyzLHgBSnUGBfmxsn3ExlIXLRjzN5ci1FD8As=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=go8+nm+SJ92VSD84e0sq5VN9fQCbHCChomk0DxqbNfRHclTZY0zXIYon6IhXtY/qD
-	 nNgfOuFrWwXFSFApUFR/uo3s9vcBvvcJmSh8+350xgKwjmzMOD+bwE5l7UgKshnQHU
-	 W4fhQycDw48c+zaBQHpAWKXnmfEBvl8aHKDgcJWE=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BDCMZ2N106743
+	b=sTl5zanLe+f9MmjsXgc64Z6gwv0BT6Xb9IJEroD+PQWyQ3Wb3TQTSLFBNrW6Icu+j
+	 MgDdiIECu7HEfHocq029dHBmakeaKHVPuNTv+KGXNXG9uPh2E8t97i7Cp6Pmf8lJxa
+	 n4xgq6x8iRAaMJ0tfvxlc8v6OjxQ4ACGJA/M//ig=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BDCQwGc008976
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 13 Dec 2024 06:22:35 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 13 Dec 2024 06:26:58 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 13
- Dec 2024 06:22:35 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2024 06:26:58 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 13 Dec 2024 06:22:35 -0600
+ Frontend Transport; Fri, 13 Dec 2024 06:26:58 -0600
 Received: from [10.24.69.13] (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BDCMTFB118902;
-	Fri, 13 Dec 2024 06:22:30 -0600
-Message-ID: <57545831-836c-4105-be59-212d01965110@ti.com>
-Date: Fri, 13 Dec 2024 17:52:29 +0530
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BDCQqoV123016;
+	Fri, 13 Dec 2024 06:26:53 -0600
+Message-ID: <5ed274f9-ca25-40a7-96c6-43b36b7663af@ti.com>
+Date: Fri, 13 Dec 2024 17:56:52 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,8 +51,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH net v4 2/2] net: ti: icssg-prueth: Fix
- clearing of IEP_CMP_CFG registers during iep_init
+Subject: Re: [EXTERNAL] Re: [PATCH net v4 1/2] net: ti: icssg-prueth: Fix
+ firmware load sequence.
 To: Dan Carpenter <dan.carpenter@linaro.org>
 CC: <vigneshr@ti.com>, <matthias.schiffer@ew.tq-group.com>, <robh@kernel.org>,
         <u.kleine-koenig@baylibre.com>, <javier.carrasco.cruz@gmail.com>,
@@ -61,81 +62,150 @@ CC: <vigneshr@ti.com>, <matthias.schiffer@ew.tq-group.com>, <robh@kernel.org>,
         <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
         <srk@ti.com>, Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
 References: <20241211135941.1800240-1-m-malladi@ti.com>
- <20241211135941.1800240-3-m-malladi@ti.com>
- <3b0b84f9-d51b-4075-9d1a-5c2042ee6c4e@stanley.mountain>
+ <20241211135941.1800240-2-m-malladi@ti.com>
+ <304870d9-10c7-43b3-8255-8f2b0422d759@stanley.mountain>
 Content-Language: en-US
 From: Meghana Malladi <m-malladi@ti.com>
-In-Reply-To: <3b0b84f9-d51b-4075-9d1a-5c2042ee6c4e@stanley.mountain>
+In-Reply-To: <304870d9-10c7-43b3-8255-8f2b0422d759@stanley.mountain>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
 
-On 11/12/24 20:13, Dan Carpenter wrote:
-> On Wed, Dec 11, 2024 at 07: 29: 41PM +0530, Meghana Malladi wrote: > 
-> drivers/net/ethernet/ti/icssg/icss_iep. c | 9 +++++++++ > 1 file 
-> changed, 9 insertions(+) > > diff --git 
-> a/drivers/net/ethernet/ti/icssg/icss_iep. c 
-> b/drivers/net/ethernet/ti/icssg/icss_iep. c
+On 11/12/24 21:16, Dan Carpenter wrote:
+> On Wed, Dec 11, 2024 at 07: 29: 40PM +0530, Meghana Malladi wrote: > 
+> -static int prueth_emac_start(struct prueth *prueth, struct prueth_emac 
+> *emac) > +static int prueth_emac_start(struct prueth *prueth, int slice) 
+>  > { > struct icssg_firmwares
 > ZjQcmQRYFpfptBannerStart
 > This message was sent from outside of Texas Instruments.
 > Do not click links or open attachments unless you recognize the source 
 > of this email and know the content is safe.
 > Report Suspicious
-> <https://us-phishalarm-ewt.proofpoint.com/EWT/v1/G3vK!uldqd1eFN22R6yXOvHOpn5WAo9_VFQH5-v8XYKsQLuIl9SMCOgfm9hmv8Rr9Y_bMWd5wpdH9mAXBiUbw5VhHCnva7cOtZgfLcnsXKK4$>
+> <https://us-phishalarm-ewt.proofpoint.com/EWT/v1/G3vK!uldqfRcOdo0RqyXEHNnjPxku43QuA2sRmrlczDVj-denyMX3qWPEeHokm6IS-fNmWZGSvK3Wn7nSFeNotanVMDOTlZZjZ8Ausf9AkMk$>
 > ZjQcmQRYFpfptBannerEnd
 > 
-> On Wed, Dec 11, 2024 at 07:29:41PM +0530, Meghana Malladi wrote:
->>  drivers/net/ethernet/ti/icssg/icss_iep.c | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->> 
->> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
->> index 5d6d1cf78e93..a96861debbe3 100644
->> --- a/drivers/net/ethernet/ti/icssg/icss_iep.c
->> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
->> @@ -215,6 +215,10 @@ static void icss_iep_enable_shadow_mode(struct icss_iep *iep)
->>  	for (cmp = IEP_MIN_CMP; cmp < IEP_MAX_CMP; cmp++) {
->>  		regmap_update_bits(iep->map, ICSS_IEP_CMP_STAT_REG,
->>  				   IEP_CMP_STATUS(cmp), IEP_CMP_STATUS(cmp));
->> +
->> +		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
->> +				   IEP_CMP_CFG_CMP_EN(cmp), 0);
->> +
+> On Wed, Dec 11, 2024 at 07:29:40PM +0530, Meghana Malladi wrote:
+>> -static int prueth_emac_start(struct prueth *prueth, struct prueth_emac *emac)
+>> +static int prueth_emac_start(struct prueth *prueth, int slice)
+>>  {
+>>  	struct icssg_firmwares *firmwares;
+>>  	struct device *dev = prueth->dev;
+>> -	int slice, ret;
+>> +	int ret;
+>>  
+>>  	if (prueth->is_switch_mode)
+>>  		firmwares = icssg_switch_firmwares;
+>> @@ -177,16 +177,6 @@ static int prueth_emac_start(struct prueth *prueth, struct prueth_emac *emac)
+>>  	else
+>>  		firmwares = icssg_emac_firmwares;
+>>  
+>> -	slice = prueth_emac_slice(emac);
+>> -	if (slice < 0) {
+>> -		netdev_err(emac->ndev, "invalid port\n");
+>> -		return -EINVAL;
+>> -	}
+>> -
+>> -	ret = icssg_config(prueth, emac, slice);
+>> -	if (ret)
+>> -		return ret;
+>> -
+>>  	ret = rproc_set_firmware(prueth->pru[slice], firmwares[slice].pru);
+>>  	ret = rproc_boot(prueth->pru[slice]);
 > 
-> Don't add this blank line.
-> 
-> You won't detect this by running checkpatch on the patch, but if you
-> apply the patch and re-run checkpatch on the file then it will complain
-> about this.
+> This isn't introduced by this patch but eventually Colin King is going to
+> get annoyed with you for setting ret twice in a row.
 > 
 
-I see, I will remove the blank line then.
+Yeah ok, I will fix this as part of this patch.
 
+>>  	if (ret) {
+>> @@ -208,7 +198,6 @@ static int prueth_emac_start(struct prueth *prueth, struct prueth_emac *emac)
+>>  		goto halt_rtu;
 >>  	}
 >>  
->>  	/* enable reset counter on CMP0 event */
->> @@ -780,6 +784,11 @@ int icss_iep_exit(struct icss_iep *iep)
->>  	}
->>  	icss_iep_disable(iep);
+>> -	emac->fw_running = 1;
+>>  	return 0;
 >>  
->> +	if (iep->pps_enabled)
->> +		icss_iep_pps_enable(iep, false);
->> +	else if (iep->perout_enabled)
->> +		icss_iep_perout_enable(iep, NULL, false);
+>>  halt_rtu:
+>> @@ -220,6 +209,78 @@ static int prueth_emac_start(struct prueth *prueth, struct prueth_emac *emac)
+>>  	return ret;
+>>  }
+>>  
+>> +static int prueth_emac_common_start(struct prueth *prueth)
+>> +{
+>> +	struct prueth_emac *emac;
+>> +	int ret = 0;
+>> +	int slice;
+>> +
+>> +	if (!prueth->emac[ICSS_SLICE0] && !prueth->emac[ICSS_SLICE1])
+>> +		return -EINVAL;
+>> +
+>> +	/* clear SMEM and MSMC settings for all slices */
+>> +	memset_io(prueth->msmcram.va, 0, prueth->msmcram.size);
+>> +	memset_io(prueth->shram.va, 0, ICSSG_CONFIG_OFFSET_SLICE1 * PRUETH_NUM_MACS);
+>> +
+>> +	icssg_class_default(prueth->miig_rt, ICSS_SLICE0, 0, false);
+>> +	icssg_class_default(prueth->miig_rt, ICSS_SLICE1, 0, false);
+>> +
+>> +	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
+>> +		icssg_init_fw_offload_mode(prueth);
+>> +	else
+>> +		icssg_init_emac_mode(prueth);
+>> +
+>> +	for (slice = 0; slice < PRUETH_NUM_MACS; slice++) {
+>> +		emac = prueth->emac[slice];
+>> +		if (emac) {
+>> +			ret |= icssg_config(prueth, emac, slice);
+>> +			if (ret)
+>> +				return ret;
 > 
+> Here we return directly.
 > 
-> Do we need the else?  Could be written as:
+>> +		}
+>> +		ret |= prueth_emac_start(prueth, slice);
 > 
-> 	if (iep->pps_enabled)
-> 		icss_iep_pps_enable(iep, false);
-> 	if (iep->perout_enabled)
-> 		icss_iep_perout_enable(iep, NULL, false);
+> Here we continue.  Generally, I would expect there to be some clean up
+> on this error path like this:
+> 
+> 		ret = prueth_emac_start(prueth, slice);
+> 		if (ret)
+> 			goto unwind_slices;
+> 
+> 	...
+> 
+> 	return 0;
+> 
+> unwind_slices:
+> 	while (--slice >= 0)
+> 		prueth_emac_stop(prueth, slice);
+> 
+> 	return ret;
+> 
+> I dread to see how the cleanup is handled on this path...
+> 
+> Ok.  I've looked at it and, nope, it doesn't work.  This is freed in
+> prueth_emac_common_stop() but partial allocations are not freed.
+> Also the prueth_emac_stop() is open coded as three calls to
+> rproc_shutdown() which is ugly.
+> 
+> I've written a blog which describes a system for writing error
+> handling code.  If each function cleans up after itself by freeing
+> its own partial allocations then you don't need to have a variable
+> like "prueth->prus_running = 1;" to track how far the allocation
+> process went before failing.
+> https://urldefense.com/v3/__https://staticthinking.wordpress.com/2022/04/28/free-the-last-thing-style/__;!!G3vK!T5VCna8tMLVZNSL49zSwJOQBnoAQEa2xqXUUsIYY78CYm5mEH2wAdMX9CDEfMHXWsjTn0sG4mwKevVIOrgfAuQ$  <https://urldefense.com/v3/__https://staticthinking.wordpress.com/2022/04/28/free-the-last-thing-style/__;!!G3vK!T5VCna8tMLVZNSL49zSwJOQBnoAQEa2xqXUUsIYY78CYm5mEH2wAdMX9CDEfMHXWsjTn0sG4mwKevVIOrgfAuQ$>
 > 
 
-pps and perout and mutually exclusive, hence used if and else if.
+I agree that current error handling is all over the place. But I wasn't 
+sure what would be the cleanest approach here. Thanks for sharing the 
+blog, I have looked into it and looks very promising. I will try this 
+approach and get back to you.
+
+thanks & regards,
+Meghana Malladi.
 
 > regards,
 > dan carpenter
-> 
 > 
