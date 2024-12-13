@@ -1,100 +1,98 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574BE194C7D
-	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 21:52:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A13318FDC8
+	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 22:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734126736; cv=none; b=bSMLvvAI6ipm+9L9OWHlgwYX14B4l+OKXTgr7FUX1ZSNxLma0lK5HBpud+L6yEIRnYpImW2g1WwU3KIzsr3ue8P+bHyX+FQ5Zua0N5qQDXzf6tuwF6Lq/A96jQtssSWXQaZ2vvooKNq+9zorFna/NiEoWUWYxy0O8NgBUuEen/s=
+	t=1734128804; cv=none; b=YKB47UZWK3PoiIKG2B+2lVypIE8zNo7IbTwAX3juD5EVgNzxH5opBg/Z3xBFl96cTa3LGfoVtWzXsGzHoEmKaCN52efajfmIvuGxmz7ZR69/RGfabzjQHxyhSb9vSiFadJORwJd5nvW5k8cFhf1MWQdrLFb3SPohAI/LiXEaAco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734126736; c=relaxed/simple;
-	bh=sdPWg6UMMWRlFERRT1a4togFVACj1wpKDF7YtLOCw0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CMJTYR08uy/VsjC5oJQVDUWd/vDV9lYootBv2oQkDtWHnrr88xIPuZCcULogliSgvli6YuthW8Bbbo90JZfv8rH7h2yQRQ0wjepmPrwq1DsFCjqVlcLF1ZHAVE18+oS2mRTySmHaVghYRSGELq3mBMOS1aQPPOcYfihW347zNWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=aPKgSu/7; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+	s=arc-20240116; t=1734128804; c=relaxed/simple;
+	bh=XX91Xi0yFJjRfC7Mk2DYxMUHNqgtt1Y0buHqAPALJbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tX6uTCLb4r6f6fjHgvf1Rm6ICjuGVvzd50TRQXQH5b8J8wq7CJMi5lRNmYVqTpD64QKuJEJEQpHQGIMocZEk5LS2mv52EBCYE/Rc1feGI/CNQIk0krqXOiuxzqIyXJ4oU/n0oAGuFrHLR3HQNSxlcyj1tAOlN6PVEIdPbWDgQXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sY6pK1H5; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="aPKgSu/7"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2161eb95317so21319475ad.1
-        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 13:52:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1734126734; x=1734731534; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o3yQ+Geoyy37/CgwBJIKvgzXSArVOH8eMq6ft9chLNo=;
-        b=aPKgSu/7somZLCrMUetuNP6tLYD7EV6OR4oZ/FcLF2dHnhPBeJBon9Xgdcac0A+LGP
-         AC3uCI4bhYINdGiAAy4c28X640fxROxNlvL5DZaAX69+kArGoKqNO5hsJ3GdyoMVUzGf
-         LSvT0+/yLUOTy5rGe5WYzyKe/33ySz398o6rs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734126734; x=1734731534;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o3yQ+Geoyy37/CgwBJIKvgzXSArVOH8eMq6ft9chLNo=;
-        b=t+7lqWH9WHMxnJMRH2Su9vff9AnxOd7nQK0Qb3EK60XZ7H7KdT0mwRH1wXuBWdqulP
-         1KCkWi1wjpcdCM1Srgx4/8usWaSbyfZ51xuIRbfzwN0OSk/bf7jAlKervcd6iYTXTVFJ
-         bOEgdXx1WAvv/+7BgYCDhEnddRe3/nt8jk6eg5/Q7sJm2KTz5rQ15omv0z8ErvMNAFGU
-         BxppvKv/rER+JrDdqUnIawriZqZU2SWH2+NCMyfeivc/matTK+/8FNe8vhHeGHt68UOi
-         E1hMWcx6G9YtX1TCnp8E5dTayxWTjdccESkqYSgHeXLVopre0whxsp3dDwGOMPAVaQRJ
-         gu9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVg5vMea2pgJK3oDZCImq5rRMH/mfFTCvgSrUDd7zYTzeSgnTIHrBD+yhk7DBLgT3SURsHLH38=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc5QrWfXMPOEqmoE+ECmahSiVDB0XZTzVljHhb1hnqhIpMJQpT
-	nXpOpX865lhWmnZBwMDOtktffQB+AtwEKlo9P2Nz6Gq1Sfo2BCSynQ89k3BBSMw=
-X-Gm-Gg: ASbGncvPShA9nhBd8cKm7wWe+BUgp3ntvNoAiCX8vmEzs8XqXR5kNYOoSG4VwO2sBTp
-	r+4KtzrZXEOuqLqf2xvCf3oEvHax+Mx0EyvUJbfo7xK9TulZlMLa1rq2DN3JDygb/4a0k/1fGqh
-	yTTrF5t92WhEqDGvGM/l72BfR0etWQhMOtvMCF0H1DWjF9cq+PeZUYJfC1Oezub3+9oA+eVDFCe
-	T6FuDR5/pB5oyBVnwxhevlrm4F+/j5Fc2ePRWXnrqsgAjBcZwOd5mnoHrEyTc19WXNTZXfU78Pn
-	+QbILIsy3y5ZH2kvXXXHostLqwF0
-X-Google-Smtp-Source: AGHT+IFkC6MJXlC9+7p4z+9Nm60Lzpb8Gsf0z9+xTJuPGFTINtVStlIRhHQsvsSYLwMByV8Pus6GYA==
-X-Received: by 2002:a17:903:946:b0:215:a179:14d2 with SMTP id d9443c01a7336-21892a5c0ecmr58766495ad.50.1734126734665;
-        Fri, 13 Dec 2024 13:52:14 -0800 (PST)
-Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e6d87asm2147205ad.264.2024.12.13.13.52.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 13:52:14 -0800 (PST)
-Date: Fri, 13 Dec 2024 13:52:11 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH net 0/5] netdev: fix repeated netlink messages in queue
- dumps
-Message-ID: <Z1ysi1RHOr3S-40F@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com
-References: <20241213152244.3080955-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sY6pK1H5"
+Message-ID: <c1701350-236d-4a9e-9c53-4badc0738309@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1734128799;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MG6FDJJsoBDRM7h+Zj8HQ5/vOReax2EY7pVl0sF3C0Y=;
+	b=sY6pK1H5k4yNY68I/XoeOH/Iw8jNPCsidwJ65lQjB7iilAyvCMI9LSMZ74gDpeB4Ohv0or
+	2/F4jGRIvBogBTj3M78nIOfBtxdHKIt9I4bsYQ6c19Mjz3ggkQLPIhh3Ot9Mk20b1OJl84
+	I6RcAhwVX9A6KGr9E6oqvPtqqmDlYiI=
+Date: Fri, 13 Dec 2024 14:26:26 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213152244.3080955-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 02/11] net-timestamp: prepare for bpf prog use
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, willemdebruijn.kernel@gmail.com,
+ willemb@google.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
+References: <20241207173803.90744-1-kerneljasonxing@gmail.com>
+ <20241207173803.90744-3-kerneljasonxing@gmail.com>
+ <f8e9ab4a-38b9-43a5-aaf4-15f95a3463d0@linux.dev>
+ <CAL+tcoDGq8Jih9vwsz=-O8byC1S0R1uojShMvUiTZKQvMDnfTQ@mail.gmail.com>
+ <996cbe46-e2cd-44b6-a53a-13fd6ebfc4c0@linux.dev>
+ <CAL+tcoAxmHj9_d5PUqvSHswavKFspd_D5tOt81fon-UtEf_OMA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <CAL+tcoAxmHj9_d5PUqvSHswavKFspd_D5tOt81fon-UtEf_OMA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Dec 13, 2024 at 07:22:39AM -0800, Jakub Kicinski wrote:
-> Fix dump continuation for queues and queue stats in the netdev family.
-> Because we used post-increment when saving id of dumped queue next
-> skb would re-dump the already dumped queue.
+On 12/13/24 6:42 AM, Jason Xing wrote:
+>>>> I just noticed a trickier one, sockops bpf prog can write to sk->sk_txhash. The
+>>>> same should go for reading from sk. Also, sockops prog assumes a fullsock sk is
+>>>> a tcp_sock which also won't work for the udp case. A quick thought is to do
+>>>> something similar to is_fullsock. May be repurpose the is_fullsock somehow or a
+>>>> new u8 is needed. Take a look at SOCK_OPS_{GET,SET}_FIELD. It avoids
+>>>> writing/reading the sk when is_fullsock is false.
+
+May be this message buried in the earlier reply or some piece was not clear, so 
+worth to highlight here.
+
+Take a look at how is_fullsock is used in SOCK_OPS_{GET,SET}_FIELD. I think a 
+similar idea can be borrowed here.
+
+>>>
+>>> Do you mean that if we introduce a new field, then bpf prog can
+>>> read/write the socket?
+>>
+>> The same goes for writing the sk, e.g. writing the sk->sk_txhash. It needs the
+>> sk_lock held. Reading may be ok-ish. The bpf prog can read it anyway by
+>> bpf_probe_read...etc.
+>>
+>> When adding udp timestamp callback later, it needs to stop reading the tcp_sock
+>> through skops from the udp callback for sure. Do take a look at
+>> SOCK_OPS_GET_TCP_SOCK_FIELD. I think we need to ensure the udp timestamp
+>> callback won't break here before moving forward.
 > 
-> Jakub Kicinski (5):
->   netdev: fix repeated netlink messages in queue dump
->   netdev: fix repeated netlink messages in queue stats
->   selftests: net: support setting recv_size in YNL
->   selftests: net-drv: queues: sanity check netlink dumps
->   selftests: net-drv: stats: sanity check netlink dumps
+> Agreed. Removing the "sock_ops.sk = sk;" is simple, but I still want
+> the bpf prog to be able to read some fields from the socket under
+> those new callbacks.
 
-Thanks for the work and improvements.
+No need to remove "sock_ops.sk = sk;". Try to borrow the is_fullsock idea.
 
-Patch 1 and 2 definitely seem to be "fixes" and are against net
-which seems appropriate to me.
-
-Patches 3, 4, and 5 seem like new features, though. Should those
-three be a separate series against net-next, instead?
-
-In the event that you do decide to separate out 3, 4, and 5 you can
-feel free to carry along my Reviewed-bys.
+Overall, the new timestamp callback breaks assumptions like, sk_lock is held and 
+is_fullsock must be a tcp_sock. This needs to be audited. In particular, please 
+check sock_ops_func_proto() for all accessible bpf helpers. Also check the 
+sock_ops_is_valid_access() and sock_ops_convert_ctx_access() for directly 
+accessible fields without the helpers. In particular, the BPF_WRITE (able) 
+fields and the tcp_sock fields.
