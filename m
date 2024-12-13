@@ -1,111 +1,107 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8C01F03E2;
-	Fri, 13 Dec 2024 19:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFB51EC019;
+	Fri, 13 Dec 2024 19:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734118525; cv=none; b=dIfd7TsLxndcr9ZQvC0nmRaa/8Ir5klsdqy8wlhG4TIHZPOtnZ6yAFQqfyO0Ul5bG45HnzD73QNQGTVgj12E8y9ygHqdcriUu7FGsvNn7Xn3YIPgqZ/vYqIpjrjyO9S6ntkrZgfiP+dIU/Bmv6HpybPV2FA6iWYz/1HRDPZqHG0=
+	t=1734118731; cv=none; b=QImF8rzSWbRn/q6MCFekvgmCu+ujBiAafhIJvjzwsFBL8Mmt7ggZeBsWrpjODd5T70oEULhmMmkUIq+p4begHnmRzPCLhCwX55wcKbN1XlmJgHd1jkL9FE7HezfolIIy5NLc0xL4SbWLwOw/Wh/nn/I98gnoIfytAZqfBFyPMT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734118525; c=relaxed/simple;
-	bh=qm2FBUfP120JYJBGjVWf6BHggAiBDu2UJXq1cdQTu2M=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=XzPY+1yKx1fscYmiprnetQGmJTYc0fjCmBe2+Ivn24cgfo0k3tK3p0+fPs64/anOUtSiJQNWBllQl70JLuY2mrRUqJJVoagUIDteOuoL4/0jgS4WxuPAGl3TVYdynMRqyzSe6Fy6ylw5N561R/xuJu4Ewv8Tu5T5okIfuIhX3Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=L/niVw4t; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1734118731; c=relaxed/simple;
+	bh=b9+0gx6NBBz3gKRdeNlQwgV9wK9wWLpOX8qq2KWvHT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OuEdokf+ORFY0A+DdojMAYZ54lybbiIyQChB3sAz9pFNIIeyF+hdqkt5YAmALsEEsd/z42O5bdgpmsGTeSuHWTMLEZXg/PGxHsDtMkzUnTSLz/LwDVEW4/ijRRvYGRb8xXRaRFxyNeezeiVFJNL6sE5a6p2fq8Eu62yzH78l/p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMTsaEJW; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="L/niVw4t"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=yydHl5BH5Sb6MLQ4m8pTbWEBjAsjzLNECa7MKHOHJLc=; b=L/niVw4tv8rIjtUYlrmUm/to63
-	7TWOizwe65Scj1N18yS/1bNUTtMQU/c4fovuuQxm+QDWYWUgKpHzcOOzjqOccwnwRX0RpkPS/n7O+
-	rHnQvWMJHc+ZiOVEVzF8VqQ6iBrJKR3pjzSvaVyDHiVifTBkhwyglwKX3dDkI0Wb5Xe6q5cfyVkg3
-	A/0Io2liQyGXd4xgS2zw/fzPlhokjXGsBK79SRVmMyTIyxUWsIRDascvHL3C2oPrFmcT3jb3WM0vN
-	GJLU0LWrkTkmET7jTC3iebx1OuGeQNeDoBAWKB5wT2IJTfTBYGqTrLo64zTHi+PkXykYMe5ClCKCG
-	BZ6ne/oQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41426 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tMBRT-0007EF-09;
-	Fri, 13 Dec 2024 19:35:15 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tMBRQ-006vat-7F; Fri, 13 Dec 2024 19:35:12 +0000
-In-Reply-To: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
-References: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	 Jose Abreu <joabreu@synopsys.com>,
-	 Andrew Lunn <andrew+netdev@lunn.ch>,
-	 davem@davemloft.net,
-	 Eric Dumazet <edumazet@google.com>,
-	 Jakub Kicinski <kuba@kernel.org>,
-	 Paolo Abeni <pabeni@redhat.com>,
-	 Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	 Alexis =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>,
-	 Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	 netdev@vger.kernel.org,
-	 linux-stm32@st-md-mailman.stormreply.com,
-	 linux-arm-kernel@lists.infradead.org,
-	 linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 5/5] net: stmmac: use PCS supported_interfaces
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMTsaEJW"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ef6af22ea8so1845383a91.0;
+        Fri, 13 Dec 2024 11:38:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734118729; x=1734723529; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b9+0gx6NBBz3gKRdeNlQwgV9wK9wWLpOX8qq2KWvHT0=;
+        b=YMTsaEJW+AC/ijjt7zKmcKbAJ8hK8OCiJrslAaVoMvXgGJveRBkdhIJZZb8KI52JyO
+         F4hzzVgAj8UvH88JoZL1qxjyFMm+pe7xN3Nqvc5RQWyeImqi5dK/eYqL7m27u1A6o7RB
+         WAjdZ+TDIh9J/WmM19DBelxpsA+FCED7w9gwXApTZ3YjxccSPtGDiz0P5BYQXE/iE+9v
+         lh1t6NR0NpTazKGjbnrYJz3Y7wBXvZmFkzLAW9Tuz28tsA6tJuLk9ajtC9JthYsEa6RL
+         Y8V2NBh1V7bprJ94TqiaXnr9lpqJhdGXBiTzUBPlhYJ/IROMHhXFC55xDwHCEEtURjgQ
+         QC8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734118729; x=1734723529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b9+0gx6NBBz3gKRdeNlQwgV9wK9wWLpOX8qq2KWvHT0=;
+        b=JwasAt7JQmZnqIxBj4e5OTJubuBcQpOY9r2wrgCUzAPAwYqij/YpavFbTImdPqKl11
+         YpgKP3YFGwJjoRvK8zxbG1Ym+oweSiRnbp2zhsh2r83b6isUnsb/rw/Rx1VYjpBGJd2X
+         FdWiWY4J2lXp1/8UN0/Hv4K2SVyrSWziI6tP3cIoNAbBvnuPzlx+QQxivKjolXv+SG1E
+         janpyI+60lRv+SPW25ZXgzw7nHo9lp/1soAMFmbwv+ydRXAW83YudG/LiZMNFEwS/+hh
+         jlI6mr52vbcg4WIT06iy2+0MPHX6NWDqhY5IUj82nqEOL7X3kewTrqPeLuL8csHamKIn
+         Kh9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUetjRR0oIUXErnptcimoqqrDvw72FKdPsUv5FUxtXFn+td5rysJ9XFKtDJxqd6WCxcSca1dXVr@vger.kernel.org, AJvYcCVyGZw3YnBtEP012AJy7qEKwmarkLndOGvQbvTB1nmRlRMOKtIYgaO1wifGtnJdDYxAt6g/NImEalqMz/7SMivvMJCdzTE=@vger.kernel.org, AJvYcCXt4Z9J0MxqWzzf9A3X8gn6JzpJfShmUiQCeACIwda8oESgBdleermxAod4nNjD3hC5AhAf7F3CTw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw86T03jrs2YzL1OxTzcMTnEcvjzS0U4XlFuPQBR8E8QzA0eNyj
+	cXzcymDn7snSOiqi2fXusmQ4yYrZT9DEWc4QBgcL8ENX1CnSivX/CmXNC0/rY7Su0Bqihk+CTJP
+	ceD+YzG+UR/iFNdKwUyYuFhMMdGS+4Q==
+X-Gm-Gg: ASbGncstc7S/eyYJOMVOzSzkf9zKFkD9+wM04ahc7XFYPa38EEVGpebzLrsWtkf8DrA
+	X0Ih/laGAWlNmUsu/RS7SO21XQ88ddwbYfsWvpg==
+X-Google-Smtp-Source: AGHT+IERj/xTNDVTNuz30VRcBw/trJVoy7deAP4+WdTLQrW9/wwyW5HFwcNA0aH9mRIw+sx2+tUfPgczeZYab3M9fvk=
+X-Received: by 2002:a17:90b:280a:b0:2ee:b4d4:69 with SMTP id
+ 98e67ed59e1d1-2f2903a450cmr6055716a91.35.1734117178087; Fri, 13 Dec 2024
+ 11:12:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tMBRQ-006vat-7F@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 13 Dec 2024 19:35:12 +0000
+References: <20241212102000.2148788-1-ivanov.mikhail1@huawei-partners.com>
+ <20241212.zoh7Eezee9ka@digikod.net> <b92e65aa-84aa-a66f-2f61-b70fd5c6b138@huawei-partners.com>
+ <CAEjxPJ737irXncrwoM3avg4L+U37QB2w+fjJZZYTjND5Z4_Nig@mail.gmail.com> <fe8fe02f-db3b-a4a2-508f-dda8b434d44a@huawei-partners.com>
+In-Reply-To: <fe8fe02f-db3b-a4a2-508f-dda8b434d44a@huawei-partners.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Fri, 13 Dec 2024 14:12:46 -0500
+Message-ID: <CAEjxPJ7a18Ux9OdRGzZu5om2N0kAPjLBNX5OYhbfT6y6-i3YpQ@mail.gmail.com>
+Subject: Re: [PATCH] selinux: Read sk->sk_family once in selinux_socket_bind()
+To: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
+Cc: =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	paul@paul-moore.com, selinux@vger.kernel.org, omosnace@redhat.com, 
+	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
+	yusongping@huawei.com, artem.kuzin@huawei.com, 
+	konstantin.meskhidze@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use the PCS' supported_interfaces member to build the MAC level
-supported_interfaces bitmap.
+On Fri, Dec 13, 2024 at 11:40=E2=80=AFAM Mikhail Ivanov
+<ivanov.mikhail1@huawei-partners.com> wrote:
+>
+> On 12/13/2024 6:46 PM, Stephen Smalley wrote:
+> > On Fri, Dec 13, 2024 at 5:57=E2=80=AFAM Mikhail Ivanov
+> > <ivanov.mikhail1@huawei-partners.com> wrote:
+> >>
+> >> On 12/12/2024 8:50 PM, Micka=C3=ABl Sala=C3=BCn wrote:
+> >>> This looks good be there are other places using sk->sk_family that
+> >>> should also be fixed.
+> >>
+> >> Thanks for checking this!
+> >>
+> >> For selinux this should be enough, I haven't found any other places
+> >> where sk->sk_family could be read from an IPv6 socket without locking.
+> >>
+> >> I also would like to prepare such fix for other LSMs (apparmor, smack,
+> >> tomoyo) (in separate patches).
+> >
+> > I'm wondering about the implications for SELinux beyond just
+> > sk->sk_family access, e.g. SELinux maps the (family, type, protocol)
+> > triple to a security class at socket creation time via
+> > socket_type_to_security_class() and caches the security class in the
+> > inode_security_struct and sk_security_struct for later use.
+>
+> IPv6 and IPv4 TCP sockets are mapped to the same SECCLASS_TCP_SOCKET
+> security class. AFAICS there is no other places that can be affected by
+> the IPV6_ADDFORM transformation.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index d45fd7a3acd5..0e45c4a48bb5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1206,6 +1206,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
- 	int mode = priv->plat->phy_interface;
- 	struct fwnode_handle *fwnode;
-+	struct phylink_pcs *pcs;
- 	struct phylink *phylink;
- 
- 	priv->phylink_config.dev = &priv->dev->dev;
-@@ -1227,8 +1228,14 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 
- 	/* If we have an xpcs, it defines which PHY interfaces are supported. */
- 	if (priv->hw->xpcs)
--		xpcs_get_interfaces(priv->hw->xpcs,
--				    priv->phylink_config.supported_interfaces);
-+		pcs = xpcs_to_phylink_pcs(priv->hw->xpcs);
-+	else
-+		pcs = priv->hw->phylink_pcs;
-+
-+	if (pcs)
-+		phy_interface_or(priv->phylink_config.supported_interfaces,
-+				 priv->phylink_config.supported_interfaces,
-+				 pcs->supported_interfaces);
- 
- 	fwnode = priv->plat->port_node;
- 	if (!fwnode)
--- 
-2.30.2
-
+Great, thank you for checking!
