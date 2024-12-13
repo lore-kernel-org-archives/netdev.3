@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7941B413A;
-	Fri, 13 Dec 2024 10:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213721ADFFB;
+	Fri, 13 Dec 2024 10:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734084543; cv=none; b=J00DWYtZo2yvEcoPsZD9CluWsnvm8WXZlUHKmigh+cvN9rqCyN0NDhl1ZOmg0lP3V1l5uu73VeStma3fh2Y/hrertb/ls8K/nofhiPG91NpGDhmnSJcblqXiI2mfqoM7+r5rAdZb/rcIWtfA2eJ/QnJgDza2r0FhLB+mBz3j6a8=
+	t=1734084710; cv=none; b=cZ21NFHszH/IDkbq6DGeG61ngIvAuWmw3ifaH84XiDCLYGWUKbute4NaOcMfmVLiOmPcvNcd/zK7Gh7DFuc8JnutKO/21n38ESm2cbDV6h77Fjy4o4znIT2stpURlJBEVXJ4bZm6Hgfcr9HZXV3fRcgagjcc/+5i8y7hrvEA4Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734084543; c=relaxed/simple;
-	bh=FcDuO+xQqxomYB6F/Fmp9CM6ES57XdPaE+SpIRGRm4A=;
+	s=arc-20240116; t=1734084710; c=relaxed/simple;
+	bh=FhkR2Jy2phECAawNh940FstvyZ2NMMrD1kWzsX/kbS4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8gfeyYyneBEKlzZv1NRyWNc0cZ8Qy9uLSgR1YCftYNhEkGMZtqX3EBITKwIGTiwyDM49JVAB44O9DCgoK4m4U/lEoS6l2wiQ33Lzk7R2LM2re5Zh3ex62DAL3md64E9hLMpf9ziol7ATwdYa1e2PZEvy2vPYZaWGsTRdBq10Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cuCo+COU; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=WJuMbCEi6+an1611Nm7SJd0eFoxR7+d8AeG4VaenQJQYX4vTNOywtIduHpH6WTYR7sk3CTYccBF60SHuOgnxDfFMo0uuhMphMGr87yPKAo0XIml7r+gkdVRbj/WvvYHySZwFuT7gjx+KYx4Li2Xf+R+PTLis+n3zKKBJHdKmKho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HwhcA1E/; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cuCo+COU"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HwhcA1E/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=uz92ybMyABO7UIcVN9ORXs2VW98/j7BDjmm3Mn0C9uk=; b=cuCo+COUK6+gh/ZQ1MhBYW/4W/
-	biTjqTYa7RtDdO/m/XomLxW210YNXIomw74Gdii2spdbjVlmIJJqc4loDM689AioxGjF5L0luokA5
-	GNbX8fnEOcP6oz37JkS37Q6VwoPoiFqqwbfJGHAKtTDMWqtgel1FBQJFdMzVeikZC4XE=;
+	bh=0c63pzHVbgCDCuCZw1/2piJ3HdBSD8HKGz7PGa5awcw=; b=HwhcA1E/f/yUEA/uToLkSUXSGU
+	SyDE+8R+7jCh8TDwTdEIsxNc5TF8ahtD4WMEQkV1cO4CtPGPswGle4GSwUWop9DNWflrOrjrK2QOI
+	Cgs2kLRCWNCO9uIpvIy2i07Np4KFkaopqjz6uKbuoP2B44c14Ipdpe65cB1wfPzUCSsE=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tM2bJ-000K2B-2h; Fri, 13 Dec 2024 11:08:49 +0100
-Date: Fri, 13 Dec 2024 11:08:49 +0100
+	id 1tM2aD-000K1U-TA; Fri, 13 Dec 2024 11:07:41 +0100
+Date: Fri, 13 Dec 2024 11:07:41 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: dimitri.fedrau@liebherr.com
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -41,11 +41,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Dimitri Fedrau <dima.fedrau@gmail.com>
-Subject: Re: [PATCH net-next v3 2/2] net: phy: dp83822: Add support for GPIO2
- clock output
-Message-ID: <3ee3f428-b4ec-4b81-8b4e-551b3a957338@lunn.ch>
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: dp83822: Add support
+ for GPIO2 clock output
+Message-ID: <c8ba4645-d3eb-4f20-b1a2-ecf160e34e85@lunn.ch>
 References: <20241212-dp83822-gpio2-clk-out-v3-0-e4af23490f44@liebherr.com>
- <20241212-dp83822-gpio2-clk-out-v3-2-e4af23490f44@liebherr.com>
+ <20241212-dp83822-gpio2-clk-out-v3-1-e4af23490f44@liebherr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,13 +54,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241212-dp83822-gpio2-clk-out-v3-2-e4af23490f44@liebherr.com>
+In-Reply-To: <20241212-dp83822-gpio2-clk-out-v3-1-e4af23490f44@liebherr.com>
 
-On Thu, Dec 12, 2024 at 09:44:07AM +0100, Dimitri Fedrau via B4 Relay wrote:
+On Thu, Dec 12, 2024 at 09:44:06AM +0100, Dimitri Fedrau via B4 Relay wrote:
 > From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 > 
-> The GPIO2 pin on the DP83822 can be configured as clock output. Add support
-> for configuration via DT.
+> The GPIO2 pin on the DP83822 can be configured as clock output. Add
+> binding to support this feature.
 > 
 > Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
