@@ -1,319 +1,380 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2049.outbound.protection.outlook.com [40.107.243.49])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DEE1AF0CE;
-	Fri, 13 Dec 2024 09:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734081948; cv=fail; b=tv7j+crtiGQ1UDbN5zoiHiAUD4yuYseCryl1a5+RagpIPI3vTEYO+QujjxJASva6twEaXAyqQI7/70DybKc7H/haKMg0oW0Jq0v3fO978vPFfZOs/HwuYayDpS6OZHGBoodI5XC8TribKcBMW+VDcuWPqGViaHnSCCK36pB94oA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734081948; c=relaxed/simple;
-	bh=QVE9hl2n4Ay/qda4ixKjq3gT8+bE7JMFBF5dgu5DSio=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=upqUzdDdk50hta+d2rifS8LlLV1jtUd8Vpc4uG90fxeSap5IWsD7xNRvNFD/oGJpeVgzVNGtvf7GlGZkXApaZu0iLhvpo3YtOPhELAuSYv2Dk+cII7KncI6PxQnTENGtYnGbGcqtDuEvGeUoJB62/TqbGzzCNUZWqC58xpa8ttE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ifLbmJJF; arc=fail smtp.client-ip=40.107.243.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6AF1AD3F6
+	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 09:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734081961; cv=none; b=R+1C7F1sUwHortcipKTe8P276CYpBrSZ/nwX6YDbCtnyDq/PoOynrnoo/Qjbs79Ogjh7YhZ7oUoZtc5hVM5rcLWV66g6lWomu05cBbqxwdT06hMAWZvbJTlxa62tVA8E9itksLcEQrzJ8SVtvSmm7Hc2Aeg+k0+rNBHRxFkRhyg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734081961; c=relaxed/simple;
+	bh=Do2pKLFpEvB3f4BLZFkiijQRsFj+VxC+DuC8DqnxYe0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WxIr+vXZT+H3uWEwXMC5elqUYfs+nX6q+SWkiO1jND0n0fQ8k9W5BTcpOVR2IYT00mRB5QyH1SY6Yvyx9n7TLqRh9j6PgMT3SSbXGOWVgRFV/tClGC0jhDK+m1o+RSic7weq86pHb05/5Pw4A318cGOvYvn77grwFqOqkQ6P6fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=H5j7tcdI; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ifLbmJJF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wf4fUvr+CW8edQxkevGmT9QtwFhruc4MMDMu6OJ3C+9WaxzHb0OyPbWKsHzGshvZxGNnoWHcJ10EyzuivXzitcqv8J7Ji7jS1oN7wraCJreS2wmrX+uTvEsMeA9S13DINm0VSP0r1kIkDHAZLYrsBBSIL3ajIVR9neVOBkstnrGkuZEvF8TbW5YUuS7TJ0FkQfWK5Ww22q5VlQ42pJWKkuWro5ZpHMmB0R7GJEsHvYBSD1xnaAELnauwvh+m6I5jWQNVpJEvSyLPOCYJltD//NBpx1ZU9HFyTSW4nsKxpHxWWIuEyk9XdblVXX/ONvDgK1DxV2HSdiY6egyqHwqTpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PfXOFVzt5KJV5ze9ngQefAarB27yOCZy4Ikj8DPn7qc=;
- b=MzBUrPZoug9YFyteFg2sIXFOrbZBjpqfeV7kfHLN38Xa3ZI/oqjzDuLtWtJTKwYpAJZUzWczbAsyQe7q8v7JyUR/9V5SYVUJUGfLApOg92c3bcvXPbgWgGPz4CmpuU9w+9SXUjIooLktAlofcYLaegaTOcUaqN/dwcf/cKtCM0eZdnU6B/Y8A3u/cv5UmtzUrrVBxTm0Fz4kqOEgrc9PDXDQJHsmFsdUNuFHIOvIjenxTh/hxgHn2paT8jQTNSVENaNO3qjVcHCEhMMGNBkbJa6Ben6AhWC1dGAZvPDc57X9aELd/3x7jEn0+aTv9ghtym7sunu8mlXfzgxUgOW3Ag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PfXOFVzt5KJV5ze9ngQefAarB27yOCZy4Ikj8DPn7qc=;
- b=ifLbmJJFmQMDcmR7wrDo5XpExpZNX1RvNaOhIOd7H+ospCxf6I2iO8fHj0j5Ky5f6tYuW9EcAUYJN07WHPj2ScqVHZRIxt9YfS3JSz+E2agWUrFs7PIxBg7wnscmWg3zAH4Vlm4RqDS1OhOKHw+qAmhL+ZMwun9uuPpAbant1Bg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
- by BL1PR12MB5729.namprd12.prod.outlook.com (2603:10b6:208:384::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.16; Fri, 13 Dec
- 2024 09:25:44 +0000
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79%5]) with mapi id 15.20.8230.016; Fri, 13 Dec 2024
- 09:25:44 +0000
-Message-ID: <5c1fa4e2-7751-d761-b6f7-edffedf2f090@amd.com>
-Date: Fri, 13 Dec 2024 09:25:39 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v7 15/28] cxl: define a driver interface for HPA free
- space enumeration
-Content-Language: en-US
-To: Simon Horman <horms@kernel.org>, alejandro.lucero-palau@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
- dan.j.williams@intel.com, martin.habets@xilinx.com, edward.cree@amd.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, dave.jiang@intel.com
-References: <20241209185429.54054-1-alejandro.lucero-palau@amd.com>
- <20241209185429.54054-16-alejandro.lucero-palau@amd.com>
- <20241212180928.GH73795@kernel.org>
-From: Alejandro Lucero Palau <alucerop@amd.com>
-In-Reply-To: <20241212180928.GH73795@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0017.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::15) To DM6PR12MB4202.namprd12.prod.outlook.com
- (2603:10b6:5:219::22)
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="H5j7tcdI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1734081959; x=1765617959;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fZ2vgw2orZk9KHORph1AJ5PnQMCZ2qzYNZsXKW/zIQM=;
+  b=H5j7tcdIEjuVrz2m8tHQp4LlF3Vq1V8oSBBMOvNqi5Mwrj3lj0zvGIc1
+   NkNwNXcPdbCqQvbvkgGwyfmZF+7rwJ64GIM2PJjWxbTkjmxGQV7tNAmdX
+   j0qlf3VXdi4cCZOD7wfWAvIeZqBIXGP2tqKASLltjlZJ0d7K3XlmuBFhw
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.12,230,1728950400"; 
+   d="scan'208";a="49085574"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 09:25:55 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:42003]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.254:2525] with esmtp (Farcaster)
+ id 9a1fdd71-af87-4e41-ae26-d1024f94f801; Fri, 13 Dec 2024 09:25:55 +0000 (UTC)
+X-Farcaster-Flow-ID: 9a1fdd71-af87-4e41-ae26-d1024f94f801
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 13 Dec 2024 09:25:55 +0000
+Received: from 6c7e67c6786f.amazon.com (10.119.14.208) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 13 Dec 2024 09:25:50 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+CC: Kuniyuki Iwashima <kuniyu@amazon.com>, Kuniyuki Iwashima
+	<kuni1840@gmail.com>, <netdev@vger.kernel.org>, Matthieu Baerts
+	<matttbe@kernel.org>, Allison Henderson <allison.henderson@oracle.com>,
+	"Steve French" <sfrench@samba.org>, Wenjia Zhang <wenjia@linux.ibm.com>, Jan
+ Karcher <jaka@linux.ibm.com>, Chuck Lever <chuck.lever@oracle.com>, Jeff
+ Layton <jlayton@kernel.org>
+Subject: [PATCH v3 net-next 11/15] socket: Remove kernel socket conversion.
+Date: Fri, 13 Dec 2024 18:21:48 +0900
+Message-ID: <20241213092152.14057-12-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20241213092152.14057-1-kuniyu@amazon.com>
+References: <20241213092152.14057-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|BL1PR12MB5729:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3d379e9-f616-412d-88d3-08dd1b581e76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ajR2VVczR3B3WVRISU9pd08rcGsxVG54bm8zVkkwOGhpbDdPVDFYUkd5VS9a?=
- =?utf-8?B?Q1paWG5KVVE3YVJaeUF5eXN0eUJnQ3lOMWtxSE9Xc3dibG9WZXRwTGw0SjI1?=
- =?utf-8?B?RjJQcWF6dnA2V0gycllDeGs4WGFvVE5KSGRsdTBxUWJWajQxN0hHM0I3ZnRh?=
- =?utf-8?B?OGZRUVlPUW9sRFR4czRhWm1CQmk3c1E3TWZuMHFITndQUFpxWm5KU3dDWE92?=
- =?utf-8?B?Z2V4V3ZnMzRXSlR4Y3dTVDNZanlocDR2d3p1ZUVUK3FSUURIb2J2cTYwQXdO?=
- =?utf-8?B?NGF3UmNEamNGTHk1ZWV4YlVMNVAzSkdYNnovZWQ3bUF1U3RNd3daNEl4NDQr?=
- =?utf-8?B?MXRWOGwxTlkwRjdTY3FjUkpIbzBLSndFeWZINkdXK3JTK2swZlBRbWFpY29D?=
- =?utf-8?B?TUxVYkhpZXU2UGhvakFUT2NPMWE0blpiQ1RvRXJEeFMzNkUzUmpSejRxZmY5?=
- =?utf-8?B?QktublJhQTJtN3YvTVlUa0QwNVlxSTNtK0VYQkRmV3hPV3FhVGd4dWREVWJK?=
- =?utf-8?B?MFZ0TmJ4NG84alJ3R1hKbDJIUW9XOENZN2o0SWdSWEs4QVZJZHNkSjFNZldj?=
- =?utf-8?B?RWR6Ukp3RkNRWFk1TVRsSHp6cnFwaktTa1V4RW0ycEMvbXJZMmdLWlhsd2xx?=
- =?utf-8?B?TDVnUHozd1RoalNaQ2lLOWR3czI3U09MYVFhM20zc0xtc2l0Nk1rMk9NVU1v?=
- =?utf-8?B?YkZwQW9yOE55VEdpY0EyczdzbDExNnpmbklZV3FOQURCaGs3ZUhSUXlOaEdS?=
- =?utf-8?B?bGlQY0licytGVGx1N0orckdQMVRZMll4dFJKck5wbGpMNkcrWkhIZEkvZG9U?=
- =?utf-8?B?Wm1sWWltZmdSa1J3V0dzbmFERWkrUmllQkQvWXQ1enBUL0oxTndLaWVrS0Qv?=
- =?utf-8?B?MnNma1A2K2VDc0lpY25VTDRNTXdsTmNKWXB5aWRRYWtuSTRjaWFidWpFUm9H?=
- =?utf-8?B?bGJhbkJNWnF3SFZWait2d3hUTW1ac2FrODA0V1NKV3FTRzRoYXNSanR1TXFx?=
- =?utf-8?B?YnFLcERVN0EvdGhoNDNWbThQUWs2Z3hyblJYWnJXRU5lanhCTEpiZXRLUDV5?=
- =?utf-8?B?M05zNTJXeE9zVG5XQUE0OHZlUWZaVkZZSWlNakpzZ2g0T3hVNkNUclVYZE9B?=
- =?utf-8?B?NUxtbWN1MUZNLzNOR0tvUCtzdnc0eU5VUEtvUnVvYU40QS8vL3NSU3B6UThX?=
- =?utf-8?B?YThiTXpRUDROVHVFc1FxbkZxQnBQWml6S0szSm1CT091SWx2OHg4TkptWk1x?=
- =?utf-8?B?SmhYOTErSlZUdUY1ZFlqdDd5UHVCTmVKdVpMTng2aUlKMWhmL3J0NnBXbHJT?=
- =?utf-8?B?QzJaenRnSGJaeXNXblkwZFEwL21sMzVxRXlxVHptMktvOWtINXdFNEJTMURv?=
- =?utf-8?B?T004amtSZ0ZZQjF4OXNYV3JJc1FrMk9HcEFPdlh5WFgyQ2puamNidU94NlR2?=
- =?utf-8?B?dkY3aHNMQ1BpSW5FRkRDM1Qya2F5Nng4eHcveFkzbmFXVE5IdFZ6U0Iyd3Nv?=
- =?utf-8?B?VEFiYVE1WFY4TUNLaFEvTnpqRmlLWE12YmNqZVByVlhMcTQzN1grcTUrN3Rm?=
- =?utf-8?B?MFB0RVpzSEJZVDhhSWFQc1JzSDVxS2pMeHRIV3pDRFI2V1FJRktZSHJjVEly?=
- =?utf-8?B?ZG9rTE1HSmMrSE55OVBKZUt5c2E3TzV1VkRMMHVDakxNbVlzTFMrczRFc1cz?=
- =?utf-8?B?QkxDSXZpUGYyZFQvRGpzbnVOYTFSbVVWSTNkWVNkRmNNNVJwZ1paMEp3dFhj?=
- =?utf-8?B?ZWxOb3lKMTcwK21EV0JrMDVQR3hjSHRTeCtDVlVlRXU0c2VhUWZHeGFTL0Vl?=
- =?utf-8?Q?PEpMekD6scSsak8MmnV0g82DKoCnLA03fGny4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a1NhaGRJaXB1MFcxTDBOTVF1OE82KzRLTlVkRk4vYmt0REVjRVMzR1V1WmVQ?=
- =?utf-8?B?dGRYemJ5a3R3eG4rVHFuZUpyYTVGZUZQM2h3KzN4SHRyNDNaNW12V3hwWm1t?=
- =?utf-8?B?SXhxZVV6UXRhdDJiaklqSkhoYlhldXZLUTk3dzBBK2JmWEZlNk1BSlNiRjhS?=
- =?utf-8?B?eGhac243eHd2RGV5RnhvU2pTZGNEZXRlMHd1QzYvczVEeWJpV1ZNTENwWmZR?=
- =?utf-8?B?aWdwWVpHUVlBMVlOenhVb2ZBdjhFeE1wbE0vZDZuakFLbzhnT2dqWml6Y256?=
- =?utf-8?B?WlpVLy82ZjluUVFWelRLdHJ5c2NaTGlsZGJkWXlFWC9FRnFpYVRLM1FQT01x?=
- =?utf-8?B?UGp4SWJNYXlSbS9OV0R6K0JPRFZQc2tDSWdKaEs1UGgyRzZFNHFvVHc3QjFJ?=
- =?utf-8?B?VGxhZHEvdXl2NCt0YlNFQmdrYnFhNmRKdk1UMHU4NXRWWkthTldoMWJDQWxF?=
- =?utf-8?B?Q1c2RmhJRVJwaCtFVDNFcVNtZENGS1dOdmx0R29qL2FvY2pQSDJRRlBWN05k?=
- =?utf-8?B?bmJ3Ui9vN2hIdlhIdUwvZkplS1dZUjlsZkVNWkh2bUZHRFB0Uy9VaWx5TThi?=
- =?utf-8?B?Q3VRZEdFUVF6SklFYzlWTHFlTlkxK3lxN1NBc3huTkdBYURvVEgxWkd0NnZF?=
- =?utf-8?B?K1Z2Nm5BMWMzQ1NjR2VFcmFYNFNjeGVUeEdJVk5aTkZWTHhlSkt5bUUyM1pZ?=
- =?utf-8?B?aVVkN3NKRXlTWWIvZjZrVHVXZTBmelBGdXZNaXQ0azFURkROSkJ3NEJyM0h0?=
- =?utf-8?B?MzJUV0RMaTE0WlllYXppNzkrcVExa2liMnJxSUNvakY4ZHh5d3pJb3dSbU55?=
- =?utf-8?B?YXFvMm9pU2NkRUNqSC85QWZsV1Z2R0NhaXhucGxteWtQY1IvaFJFaXQzamw4?=
- =?utf-8?B?NDlzRWM2MDA5enBtWXRyNzZ5WW1wR3RQemtZaDMxQ3d6UzhMemdKUWRWblBR?=
- =?utf-8?B?RXRVd1R1NDVZWE5TWWR5Sll1VFJSalI3Sk1pTG5DaGtYMWVYQkQ2cjBZUTR2?=
- =?utf-8?B?aTM4cnA1WHZaY0svekUxZUowZDBVQ1VrdnZpbk5vajN4NkIvVk5nRHpiU1Bj?=
- =?utf-8?B?b1AxbmpxU0V4NDE0b1dJTjVsMGNGbDNqQm9majZoMndqMDJuUXM1OHAyaFBH?=
- =?utf-8?B?STYvanNWVTNGSXQ1WDRZZStGWXJWV2ViQ1d6ZFZtbkhpM1d4NHh5YXphVk5B?=
- =?utf-8?B?LzZFdVZjM01pZjhoak8vL1I3K3RFZXFYVUMySDJORFZONFU4TEpqQVllend2?=
- =?utf-8?B?dXBDSFBnamJTcWxLY0xxRlc5NFJNQ245dXFmU1hlc0JQZXJKSVRIeGVDT1FK?=
- =?utf-8?B?S3hmdEUyQTdPRjhoMXZGSEU5S2d1WGVveFU2ZFNPRUZyTjZMc2lncHZveFBY?=
- =?utf-8?B?cUU5cSs5V2RqQmhEc2dxcWEvdmlub2ROaEFUQWplY0oxa3RzWXA3cVoyOFNo?=
- =?utf-8?B?ZS9kNHRZSUs4dGVSK3FWS29vakhjK3NTejEzc0l6OExKK3BEbHVwV1pCejZi?=
- =?utf-8?B?UDF3ZWt3bmdVUVdIeHdNNk1sMTh1QysyMzNwSHVrZGY0THBlNmlvNVFsL0xr?=
- =?utf-8?B?ODJVblc1R2JsUjlsR3gxTkNkbGdWaExISDU4ZnF1bGQ0ekFCVFBtRWJpYllO?=
- =?utf-8?B?aHZCR2FpcVlxSkNLQUJORkwvN0Rnc0VES2hLTlplTTJYWnFTL0k1akk0QUVx?=
- =?utf-8?B?QUtoUGRCMkhQUE80aTZZeDdJNTBQL0RoTUpaWVBPZjFvdmV2TWtVbGVVTUVO?=
- =?utf-8?B?aEk2WXF4MnpyTXZOcUtvMHFYbE56Nmk1c2c4K3pRdy9xVTFrYzRFQ2F0QzdN?=
- =?utf-8?B?aW1tWTM0WnM0ZFZxci9wNFpOd08yN0pENkFLZncvYzlxdnFFMWZrWjkxYytT?=
- =?utf-8?B?Z3lEMHczR2lldGlEOVlsM2FhdDZBSjVPUURUN3Rxblh3dnJHbUZaeGJsUjFr?=
- =?utf-8?B?TDdwR0YyOER2YnhPOHdxdGZnVVFvQjBYSHRZOS83K0RhRGJkblJHdnQwUG5s?=
- =?utf-8?B?c3QwbzhidjhHVzI3elRTTFJ1ZURHbDBxRkFDVGRkNGVNVnJCcVM4bmJlUFFX?=
- =?utf-8?B?Q2kyY3FyTjhuZUFVYzhoM3d0aTVXRFhoM2lva01sbHhIbzB3UWV1MlpKTDkv?=
- =?utf-8?Q?K1aTqVBYCddK6qzy6072AHdMm?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3d379e9-f616-412d-88d3-08dd1b581e76
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 09:25:44.2002
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u/g/nYGs2EEAcDBQlIRnwdL7yiK1601qWC82/js3T9dXEH+zm24Dyg9HVbsXG+U/wH8EGYS5fKJgsE5aDdtXzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5729
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
+Since commit 26abe14379f8 ("net: Modify sk_alloc to not reference count
+the netns of kernel sockets."), TCP kernel socket has caused many UAF.
 
-On 12/12/24 18:09, Simon Horman wrote:
-> On Mon, Dec 09, 2024 at 06:54:16PM +0000, alejandro.lucero-palau@amd.com wrote:
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> CXL region creation involves allocating capacity from device DPA
->> (device-physical-address space) and assigning it to decode a given HPA
->> (host-physical-address space). Before determining how much DPA to
->> allocate the amount of available HPA must be determined. Also, not all
->> HPA is create equal, some specifically targets RAM, some target PMEM,
->> some is prepared for device-memory flows like HDM-D and HDM-DB, and some
->> is host-only (HDM-H).
->>
->> Wrap all of those concerns into an API that retrieves a root decoder
->> (platform CXL window) that fits the specified constraints and the
->> capacity available for a new region.
->>
->> Based on https://lore.kernel.org/linux-cxl/168592159290.1948938.13522227102445462976.stgit@dwillia2-xfh.jf.intel.com/
->>
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
->> ---
->>   drivers/cxl/core/region.c | 154 ++++++++++++++++++++++++++++++++++++++
->>   drivers/cxl/cxl.h         |   3 +
->>   include/cxl/cxl.h         |   8 ++
->>   3 files changed, 165 insertions(+)
->>
->> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
->> index 967132b49832..77af6a59f4b5 100644
->> --- a/drivers/cxl/core/region.c
->> +++ b/drivers/cxl/core/region.c
->> @@ -687,6 +687,160 @@ static int free_hpa(struct cxl_region *cxlr)
->>   	return 0;
->>   }
->>   
->> +struct cxlrd_max_context {
->> +	struct device *host_bridge;
->> +	unsigned long flags;
->> +	resource_size_t max_hpa;
->> +	struct cxl_root_decoder *cxlrd;
->> +};
->> +
->> +static int find_max_hpa(struct device *dev, void *data)
->> +{
->> +	struct cxlrd_max_context *ctx = data;
->> +	struct cxl_switch_decoder *cxlsd;
->> +	struct cxl_root_decoder *cxlrd;
->> +	struct resource *res, *prev;
->> +	struct cxl_decoder *cxld;
->> +	resource_size_t max;
->> +
->> +	if (!is_root_decoder(dev))
->> +		return 0;
->> +
->> +	cxlrd = to_cxl_root_decoder(dev);
->> +	cxlsd = &cxlrd->cxlsd;
->> +	cxld = &cxlsd->cxld;
->> +	if ((cxld->flags & ctx->flags) != ctx->flags) {
->> +		dev_dbg(dev, "%s, flags not matching: %08lx vs %08lx\n",
->> +			__func__, cxld->flags, ctx->flags);
->> +		return 0;
->> +	}
->> +
->> +	/*
->> +	 * The CXL specs do not forbid an accelerator being part of an
->> +	 * interleaved HPA range, but it is unlikely and because it helps
->> +	 * simplifying the code, we assume this being the case by now.
->> +	 */
->> +	if (cxld->interleave_ways != 1) {
->> +		dev_dbg(dev, "%s, interleave_ways not matching\n", __func__);
->> +		return 0;
->> +	}
->> +
->> +	guard(rwsem_read)(&cxl_region_rwsem);
->> +	if (ctx->host_bridge != cxlsd->target[0]->dport_dev) {
->> +		dev_dbg(dev, "%s, host bridge does not match\n", __func__);
->> +		return 0;
->> +	}
->> +
->> +	/*
->> +	 * Walk the root decoder resource range relying on cxl_region_rwsem to
->> +	 * preclude sibling arrival/departure and find the largest free space
->> +	 * gap.
->> +	 */
->> +	lockdep_assert_held_read(&cxl_region_rwsem);
->> +	max = 0;
->> +	res = cxlrd->res->child;
->> +	if (!res)
->> +		max = resource_size(cxlrd->res);
->> +	else
->> +		max = 0;
->> +
->> +	for (prev = NULL; res; prev = res, res = res->sibling) {
->> +		struct resource *next = res->sibling;
->> +		resource_size_t free = 0;
->> +
->> +		/*
->> +		 * Sanity check for preventing arithmetic problems below as a
->> +		 * resource with size 0 could imply using the end field below
->> +		 * when set to unsigned zero - 1 or all f in hex.
->> +		 */
->> +		if (!resource_size(prev))
->> +			continue;
-> Hi Alejandro and Dan,
->
-> Below it is assumed that prev may be null.
-> But above resource_size will dereference it unconditionally.
-> That doesn't seem right.
+We have converted such sockets to hold netns refcnt, and we have the
+same pattern in cifs, mptcp, rds, smc, and sunrpc.
 
+Let's drop the conversion and use sock_create_net() instead.
 
-Hi Simon,
+The changes for cifs, mptcp, and smc are straightforward.
 
+For rds, we need to move maybe_get_net() before sock_create_net() and
+sock->ops->accept().
 
-I added this code in the last version for addressing concerns regarding 
-the resource being with 0 size, so it is me the one to put the blame on!
+For sunrpc, we call sock_create_net() for IPPROTO_TCP only and still
+call sock_create_kern() for others.
 
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Acked-by: Allison Henderson <allison.henderson@oracle.com>
+---
+v3: Add missing mutex_unlock in rds_tcp_conn_path_connect().
+v2: Collect Acked-by from MPTCP and RDS maintainers
 
-I'll fix that for v8.
+Cc: Steve French <sfrench@samba.org>
+Cc: Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Jan Karcher <jaka@linux.ibm.com>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+---
+ fs/smb/client/connect.c | 13 ++-----------
+ net/mptcp/subflow.c     | 10 +---------
+ net/rds/tcp.c           | 14 --------------
+ net/rds/tcp_connect.c   | 21 +++++++++++++++------
+ net/rds/tcp_listen.c    | 14 ++++++++++++--
+ net/smc/af_smc.c        | 21 ++-------------------
+ net/sunrpc/svcsock.c    | 12 ++++++------
+ net/sunrpc/xprtsock.c   | 12 ++++--------
+ 8 files changed, 42 insertions(+), 75 deletions(-)
 
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index c36c1b4ffe6e..7a67b86c0423 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3130,22 +3130,13 @@ generic_ip_connect(struct TCP_Server_Info *server)
+ 	if (server->ssocket) {
+ 		socket = server->ssocket;
+ 	} else {
+-		struct net *net = cifs_net_ns(server);
+-		struct sock *sk;
+-
+-		rc = sock_create_kern(net, sfamily, SOCK_STREAM,
+-				      IPPROTO_TCP, &server->ssocket);
++		rc = sock_create_net(cifs_net_ns(server), sfamily, SOCK_STREAM,
++				     IPPROTO_TCP, &server->ssocket);
+ 		if (rc < 0) {
+ 			cifs_server_dbg(VFS, "Error %d creating socket\n", rc);
+ 			return rc;
+ 		}
+ 
+-		sk = server->ssocket->sk;
+-		__netns_tracker_free(net, &sk->ns_tracker, false);
+-		sk->sk_net_refcnt = 1;
+-		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
+-
+ 		/* BB other socket options to set KEEPALIVE, NODELAY? */
+ 		cifs_dbg(FYI, "Socket created\n");
+ 		socket = server->ssocket;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index fd021cf8286e..e7e8972bdfca 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1755,7 +1755,7 @@ int mptcp_subflow_create_socket(struct sock *sk, unsigned short family,
+ 	if (unlikely(!sk->sk_socket))
+ 		return -EINVAL;
+ 
+-	err = sock_create_kern(net, family, SOCK_STREAM, IPPROTO_TCP, &sf);
++	err = sock_create_net(net, family, SOCK_STREAM, IPPROTO_TCP, &sf);
+ 	if (err)
+ 		return err;
+ 
+@@ -1768,14 +1768,6 @@ int mptcp_subflow_create_socket(struct sock *sk, unsigned short family,
+ 	/* the newly created socket has to be in the same cgroup as its parent */
+ 	mptcp_attach_cgroup(sk, sf->sk);
+ 
+-	/* kernel sockets do not by default acquire net ref, but TCP timer
+-	 * needs it.
+-	 * Update ns_tracker to current stack trace and refcounted tracker.
+-	 */
+-	__netns_tracker_free(net, &sf->sk->ns_tracker, false);
+-	sf->sk->sk_net_refcnt = 1;
+-	get_net_track(net, &sf->sk->ns_tracker, GFP_KERNEL);
+-	sock_inuse_add(net, 1);
+ 	err = tcp_set_ulp(sf->sk, "mptcp");
+ 	if (err)
+ 		goto err_free;
+diff --git a/net/rds/tcp.c b/net/rds/tcp.c
+index 351ac1747224..4509900476f7 100644
+--- a/net/rds/tcp.c
++++ b/net/rds/tcp.c
+@@ -494,21 +494,7 @@ bool rds_tcp_tune(struct socket *sock)
+ 
+ 	tcp_sock_set_nodelay(sock->sk);
+ 	lock_sock(sk);
+-	/* TCP timer functions might access net namespace even after
+-	 * a process which created this net namespace terminated.
+-	 */
+-	if (!sk->sk_net_refcnt) {
+-		if (!maybe_get_net(net)) {
+-			release_sock(sk);
+-			return false;
+-		}
+-		/* Update ns_tracker to current stack trace and refcounted tracker */
+-		__netns_tracker_free(net, &sk->ns_tracker, false);
+ 
+-		sk->sk_net_refcnt = 1;
+-		netns_tracker_alloc(net, &sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
+-	}
+ 	rtn = net_generic(net, rds_tcp_netid);
+ 	if (rtn->sndbuf_size > 0) {
+ 		sk->sk_sndbuf = rtn->sndbuf_size;
+diff --git a/net/rds/tcp_connect.c b/net/rds/tcp_connect.c
+index a0046e99d6df..c9449780f952 100644
+--- a/net/rds/tcp_connect.c
++++ b/net/rds/tcp_connect.c
+@@ -93,6 +93,7 @@ int rds_tcp_conn_path_connect(struct rds_conn_path *cp)
+ 	struct sockaddr_in6 sin6;
+ 	struct sockaddr_in sin;
+ 	struct sockaddr *addr;
++	struct net *net;
+ 	int addrlen;
+ 	bool isv6;
+ 	int ret;
+@@ -107,20 +108,28 @@ int rds_tcp_conn_path_connect(struct rds_conn_path *cp)
+ 
+ 	mutex_lock(&tc->t_conn_path_lock);
+ 
++	net = rds_conn_net(conn);
++
+ 	if (rds_conn_path_up(cp)) {
+-		mutex_unlock(&tc->t_conn_path_lock);
+-		return 0;
++		ret = 0;
++		goto out;
+ 	}
++
++	if (!maybe_get_net(net)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	if (ipv6_addr_v4mapped(&conn->c_laddr)) {
+-		ret = sock_create_kern(rds_conn_net(conn), PF_INET,
+-				       SOCK_STREAM, IPPROTO_TCP, &sock);
++		ret = sock_create_net(net, PF_INET, SOCK_STREAM, IPPROTO_TCP, &sock);
+ 		isv6 = false;
+ 	} else {
+-		ret = sock_create_kern(rds_conn_net(conn), PF_INET6,
+-				       SOCK_STREAM, IPPROTO_TCP, &sock);
++		ret = sock_create_net(net, PF_INET6, SOCK_STREAM, IPPROTO_TCP, &sock);
+ 		isv6 = true;
+ 	}
+ 
++	put_net(net);
++
+ 	if (ret < 0)
+ 		goto out;
+ 
+diff --git a/net/rds/tcp_listen.c b/net/rds/tcp_listen.c
+index 69aaf03ab93e..440ac9057148 100644
+--- a/net/rds/tcp_listen.c
++++ b/net/rds/tcp_listen.c
+@@ -101,6 +101,7 @@ int rds_tcp_accept_one(struct socket *sock)
+ 	struct rds_connection *conn;
+ 	int ret;
+ 	struct inet_sock *inet;
++	struct net *net;
+ 	struct rds_tcp_connection *rs_tcp = NULL;
+ 	int conn_state;
+ 	struct rds_conn_path *cp;
+@@ -108,7 +109,7 @@ int rds_tcp_accept_one(struct socket *sock)
+ 	struct proto_accept_arg arg = {
+ 		.flags = O_NONBLOCK,
+ 		.kern = true,
+-		.hold_net = false,
++		.hold_net = true,
+ 	};
+ #if !IS_ENABLED(CONFIG_IPV6)
+ 	struct in6_addr saddr, daddr;
+@@ -118,13 +119,22 @@ int rds_tcp_accept_one(struct socket *sock)
+ 	if (!sock) /* module unload or netns delete in progress */
+ 		return -ENETUNREACH;
+ 
++	net = sock_net(sock->sk);
++
++	if (!maybe_get_net(net))
++		return -EINVAL;
++
+ 	ret = sock_create_lite(sock->sk->sk_family,
+ 			       sock->sk->sk_type, sock->sk->sk_protocol,
+ 			       &new_sock);
+-	if (ret)
++	if (ret) {
++		put_net(net);
+ 		goto out;
++	}
+ 
+ 	ret = sock->ops->accept(sock, new_sock, &arg);
++	put_net(net);
++
+ 	if (ret < 0)
+ 		goto out;
+ 
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 6e93f188a908..7b0de80b3aca 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3310,25 +3310,8 @@ static const struct proto_ops smc_sock_ops = {
+ 
+ int smc_create_clcsk(struct net *net, struct sock *sk, int family)
+ {
+-	struct smc_sock *smc = smc_sk(sk);
+-	int rc;
+-
+-	rc = sock_create_kern(net, family, SOCK_STREAM, IPPROTO_TCP,
+-			      &smc->clcsock);
+-	if (rc)
+-		return rc;
+-
+-	/* smc_clcsock_release() does not wait smc->clcsock->sk's
+-	 * destruction;  its sk_state might not be TCP_CLOSE after
+-	 * smc->sk is close()d, and TCP timers can be fired later,
+-	 * which need net ref.
+-	 */
+-	sk = smc->clcsock->sk;
+-	__netns_tracker_free(net, &sk->ns_tracker, false);
+-	sk->sk_net_refcnt = 1;
+-	get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
+-	sock_inuse_add(net, 1);
+-	return 0;
++	return sock_create_net(net, family, SOCK_STREAM, IPPROTO_TCP,
++			       &smc_sk(sk)->clcsock);
+ }
+ 
+ static int __smc_create(struct net *net, struct socket *sock, int protocol,
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 9583bad3d150..cde5765f6f81 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1526,7 +1526,10 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	error = sock_create_kern(net, family, type, protocol, &sock);
++	if (protocol == IPPROTO_TCP)
++		error = sock_create_net(net, family, type, protocol, &sock);
++	else
++		error = sock_create_kern(net, family, type, protocol, &sock);
+ 	if (error < 0)
+ 		return ERR_PTR(error);
+ 
+@@ -1551,11 +1554,8 @@ static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+ 	newlen = error;
+ 
+ 	if (protocol == IPPROTO_TCP) {
+-		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
+-		sock->sk->sk_net_refcnt = 1;
+-		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
+-		if ((error = kernel_listen(sock, 64)) < 0)
++		error = kernel_listen(sock, 64);
++		if (error < 0)
+ 			goto bummer;
+ 	}
+ 
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index feb1768e8a57..f3e139c30442 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1924,7 +1924,10 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
+ 	struct socket *sock;
+ 	int err;
+ 
+-	err = sock_create_kern(xprt->xprt_net, family, type, protocol, &sock);
++	if (protocol == IPPROTO_TCP)
++		err = sock_create_net(xprt->xprt_net, family, type, protocol, &sock);
++	else
++		err = sock_create_kern(xprt->xprt_net, family, type, protocol, &sock);
+ 	if (err < 0) {
+ 		dprintk("RPC:       can't create %d transport socket (%d).\n",
+ 				protocol, -err);
+@@ -1941,13 +1944,6 @@ static struct socket *xs_create_sock(struct rpc_xprt *xprt,
+ 		goto out;
+ 	}
+ 
+-	if (protocol == IPPROTO_TCP) {
+-		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
+-		sock->sk->sk_net_refcnt = 1;
+-		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(xprt->xprt_net, 1);
+-	}
+-
+ 	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
+ 	if (IS_ERR(filp))
+ 		return ERR_CAST(filp);
+-- 
+2.39.5 (Apple Git-154)
 
-Thanks!
-
-
-> Flagged by Smatch.
->
->> +
->> +		if (!prev && res->start > cxlrd->res->start) {
->> +			free = res->start - cxlrd->res->start;
->> +			max = max(free, max);
->> +		}
->> +		if (prev && res->start > prev->end + 1) {
->> +			free = res->start - prev->end + 1;
->> +			max = max(free, max);
->> +		}
->> +		if (next && res->end + 1 < next->start) {
->> +			free = next->start - res->end + 1;
->> +			max = max(free, max);
->> +		}
->> +		if (!next && res->end + 1 < cxlrd->res->end + 1) {
->> +			free = cxlrd->res->end + 1 - res->end + 1;
->> +			max = max(free, max);
->> +		}
->> +	}
->> +
->> +	dev_dbg(CXLRD_DEV(cxlrd), "%s, found %pa bytes of free space\n",
->> +		__func__, &max);
->> +	if (max > ctx->max_hpa) {
->> +		if (ctx->cxlrd)
->> +			put_device(CXLRD_DEV(ctx->cxlrd));
->> +		get_device(CXLRD_DEV(cxlrd));
->> +		ctx->cxlrd = cxlrd;
->> +		ctx->max_hpa = max;
->> +		dev_dbg(CXLRD_DEV(cxlrd), "%s, found %pa bytes of free space\n",
->> +			__func__, &max);
->> +	}
->> +	return 0;
->> +}
-> ...
