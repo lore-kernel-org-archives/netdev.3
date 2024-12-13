@@ -1,242 +1,146 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39499190471
-	for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 20:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FFB190471;
+	Fri, 13 Dec 2024 20:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734120087; cv=none; b=BMukXCH5tLAPF0vevhSTMakzB4CxhMlYSwVuRl0cLusJuqhw2GLUsAg5KqUOB29Yk7fu5aar9gVgO71lt8Uhe73LwUsOj0Y6MkKC8Y2ve2bZs+3wChRBLM2SOVXrAMc1B2GLIRbTmvzmP9XqCYCJX4krVyqqhwGse1Lyrtdl7J8=
+	t=1734120132; cv=none; b=dguIrS5ul4EbhmwxU8HIcyc1nCtTXBPRhnQi1acYSlSs9G8h4QLmOOowXyJHdY3GmbstALd9WIYhl5bifH9DEnG+cRuoUoi38czImhrCjlvw8Aum6KiCN/hkh9GIaZ+CEyGEdPkC9vsAmMmywmFBTHN/h1eGgFgWllPsE3OtiX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734120087; c=relaxed/simple;
-	bh=+IBdDuUpH0ffV3eW21HSRtsMzybmo8R7I3/oqhIog4o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DqWhYsdJCi9HW1vC1EWEiCs4efTce43sVQF77rCgC3gQNbG2CpH2wNybo39iwdzTitfeYlmAuGVvn5BxMt5bSQmzmrtvcRmhvqFOYel5gmNUr5lcmAvLHN6lqvTXviybDuplxIZ+2eet7xUynHE6bCYZYgedJfyg5XtI65MQBpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=Aw4oxx8n; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	s=arc-20240116; t=1734120132; c=relaxed/simple;
+	bh=cQ7JGQb4NBBf1Vsc9XB1qFiRbuBlTCVNsKyI+dsWoFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=madOa7XmyC8oadtIutfXwug/9zzVGAjZy8ooPg9SNaD+D/OaF89QX3CiyDL5y3hprPuSTzW/Wz5dwC7dYUNwwwybZ8/GEESfRVHVtr5AuFBIQVkmeFFYZ8miixyyynbAPERSEXwknVD3TADfha2HShcFpfe77M4G+KGk63RfhYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz; spf=pass smtp.mailfrom=dxuuu.xyz; dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b=QaOiHdKK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=npwipiP1; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dxuuu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dxuuu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="Aw4oxx8n"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6ef7640e484so23889407b3.3
-        for <netdev@vger.kernel.org>; Fri, 13 Dec 2024 12:01:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1734120084; x=1734724884; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WjFjYpSxXBJz9M1hdmG3iiPhNXo18zA2UB8YwR16DTw=;
-        b=Aw4oxx8nq9uHYAk75b2hNQ2JcHhr7tC+0dX8m9SZWRJDFJiu/sVJSvzM9XBXgYsnYS
-         bynk15+8A395Wh84G5ZpC4YGGfrkQ8xHpBJDMEyW4pvh7ya16WRTs5NBihS1LZp+MXdA
-         fdGX+h9rZL7wyDolyXRO6nqFyYzZJdh5lxbUKe9+3g9IqZVlwYdSOmCg5hVzekeHff8f
-         cd2d8tYPjB4jEbRPJV86IGQHA0YidWAptwpswJs1nuZbmXmmTZ1vPEpDw7vKMqKjZ8ZK
-         GILYUBC5+V+gSuchWSYUY+EMYhxiix7FXnt7pk2unihcDI8wHNYTiBdy1abjtd8OFvr2
-         HEmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734120084; x=1734724884;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WjFjYpSxXBJz9M1hdmG3iiPhNXo18zA2UB8YwR16DTw=;
-        b=oL5LsIZChxCGyvM1RxqXODk9KtGpb7WRaVr2TWdjTDiUepiMoW+jhAD2sN2UdrYz0L
-         ptnmZvW5gZnskzNeYLI9rSmV2FY0BWUUPFAoEapW3lluMllTMmdULPTBjfWBwZ8g2CAN
-         4CtAzcKWxxg8J5PLU2Q5oM9bUzg4s5iLounSm0wgLyh7hYFx/JqKty/zk6B8o40gBxTh
-         b5PV2EUjeo0lGaOVn0tpWw1GtogLTampeq4aRrK8+EdQVNcFm0hgpNNHyPJwvS4WSuhL
-         tyzJf8dBNp7zMZF4wKbdYK3EuqA2UwB56/uYToqFsw14+bhNwJbUqSBd5JtRNGcEHMgn
-         nI1w==
-X-Forwarded-Encrypted: i=1; AJvYcCW2qd+dsmYvCyefbFBhxZDBSP4NxES9qz9SlUt1G8UbHEFVnd1Wd4qNFaIzao67ZBPwBI4l8M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzekHNS82bj5izZQxnzvnj+/T0r2jtPobQk8TN4hxUZwjCVmuOW
-	Ct64JkkGpW7aGEVmXOj6ikm0E+JgLelmdrgXX1s0ru6PYtPNnAhREykbT3Krd1jfXDW48jV/sU8
-	ErVAwpc+GRvO9ZloxHppxtDEN6v4pUJ1egaPqXoGkBDRoj4W+lKs=
-X-Gm-Gg: ASbGncun1JF8wnRDqvriwyqKQ4QlnTA0aa2Pq3nu2uz0Oix81SqquKP4vYb3k4L4Rb1
-	5B12E4HoQ4lSG4vQoSNFtljYKliQ/xxPY4Gmcsg==
-X-Google-Smtp-Source: AGHT+IEywBNIbwjppPoVSQ/XELBsV0fF8sTiDrKGwA9AnZLBRibm/aOssHinTtzowKOKfn5HmY+4fB4H6J+nE2ZGRjI=
-X-Received: by 2002:a17:90b:2242:b0:2ee:ba0c:1726 with SMTP id
- 98e67ed59e1d1-2f2901b253dmr5268444a91.34.1734119680395; Fri, 13 Dec 2024
- 11:54:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=dxuuu.xyz header.i=@dxuuu.xyz header.b="QaOiHdKK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="npwipiP1"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1DE081382149;
+	Fri, 13 Dec 2024 15:02:10 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 13 Dec 2024 15:02:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1734120130; x=1734206530; bh=oZSIPzAhQd
+	6vMkfp3yMQ1DBeWcFBflQVOjU83wzxEX4=; b=QaOiHdKKYfMaqckjyQp2jyBt70
+	TNQZ9wbVN0hS8LoeUM0Uf4as2f8fEEd0zQmBJn9nPNnAosINt3wCW2FXbu4iKDrU
+	2NG+IwCrn+dvpAykLDXx9Xn7NWoMoRUO8XyMNQUZbBSeodLfAHs5Ahd7us7jyTN3
+	sVt8xYd5nQsuJWixAzePTvnzqjy71eW5V3jFOStho+145G1QypGSa4jtmWcjNdsm
+	FptiqWaAEk7kjy1L7PzlN7HWU30gTwpgeKwvXK0gpBlWKooQdIXMhQx5qLRUiRWF
+	ZdpgL+/JgtO+UFvwbAU91Waoqd/6CQwY9FNakNzVjHi/hhtkksv+8JgSFl6g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1734120130; x=1734206530; bh=oZSIPzAhQd6vMkfp3yMQ1DBeWcFBflQVOjU
+	83wzxEX4=; b=npwipiP1XXC2keiLDgS4skVFf57oEJxqMFIg2wrWPLmrLoLm0qo
+	ff9VPo/lq5SzuxayZ1qQwQJ85B29XG5N1FHHw9RP7k6LON+WKFfFL/JHmAF59AZc
+	zfIF5Rb4RqUlgTzvuU7wFSjPUZHpycihMDsPmqsv2VqfngQJhjyLF3N4UqhLdX/p
+	S3nQiqUrgil8/BSac85SYjv71Gd/TF07XSjc43IVv5+sycYpW5tBO+ISPG4Or18D
+	1UXXZfgIR75Xo2/WDjdl1kaDy8ps8VFp0lDDr+gj907ZmrCHcIyVv395Qa7LEvZi
+	L4lb10YHHh19Q7Caz2IsZZCH2odIx3RxyyQ==
+X-ME-Sender: <xms:wZJcZ0WgkYbzWqiAjt18KImf03Tm8rYkNAVORZ_oAtQPC8tVjGoupg>
+    <xme:wZJcZ4lXkf9NCylP0JqFFD9cqfAm9EQooK7iCeOvZWignuW6EiKow32bV8kDT8cL1
+    Auyf2TugP6Mc886pw>
+X-ME-Received: <xmr:wZJcZ4azM93Sv3SSPD2xB6B3NCzflyPluMxk7l4IIDQfFzXVj-sZSIwKqXF8fJ-zgccRdoAL29iwGU-o3pGu4vS1UB0rg5L62vJEFDZU4e1enA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeejgddufeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlje
+    dtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpeff
+    rghnihgvlhcuighuuceougiguhesugiguhhuuhdrgiihiieqnecuggftrfgrthhtvghrnh
+    epvdefkeetuddufeeigedtheefffekuedukeehudffudfffffggeeitdetgfdvhfdvnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepugiguhesug
+    iguhhuuhdrgiihiidpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopegvugguhiiikeejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnug
+    hrihhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrshhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurg
+    hnihgvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopehjohhhnhdrfhgrshht
+    rggsvghnugesghhmrghilhdrtghomhdprhgtphhtthhopehmrghrthhinhdrlhgruheslh
+    hinhhugidruggvvhdprhgtphhtthhopehsohhngheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvh
+X-ME-Proxy: <xmx:wZJcZzVAuZoo_2tDsg6gQgXZbVOiPgqlD3wNsaphtsHG3dO4cQDPnA>
+    <xmx:wZJcZ-m4r7NVbXa1e__aK0bY2ojwi4zXhzLI2T_JFW5x1NJu7JASvQ>
+    <xmx:wZJcZ4etpWewECywR9VZ9iMk32de5di6Ekv7arBhe6jCuNsh0hWoWA>
+    <xmx:wZJcZwG-g3hDriQIbatprdiZNUTPppPi91VzzKYOdQ2-g0b2f1Uqbg>
+    <xmx:wpJcZ0pbJKun6Nq6gQOkEMqvVGN8jJOtoZQAmCqu9IZ4W98mHU_B-79P>
+Feedback-ID: i6a694271:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Dec 2024 15:02:07 -0500 (EST)
+Date: Fri, 13 Dec 2024 13:02:06 -0700
+From: Daniel Xu <dxu@dxuuu.xyz>
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: andrii@kernel.org, ast@kernel.org, shuah@kernel.org, 
+	daniel@iogearbox.net, john.fastabend@gmail.com, martin.lau@linux.dev, song@kernel.org, 
+	yonghong.song@linux.dev, kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, 
+	jolsa@kernel.org, mykolal@fb.com, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH bpf-next v5 3/5] bpf: verifier: Refactor helper access
+ type tracking
+Message-ID: <fsclbw3cvixxy3p3toxqegi55wew6mpqmkjs3uyhfxxgfwg5ic@k7g6iu6qgzze>
+References: <cover.1734045451.git.dxu@dxuuu.xyz>
+ <4727abf12fbc53723359d4edcdf5b6dd7d33f9cb.1734045451.git.dxu@dxuuu.xyz>
+ <341df2d52af6c1584353b89a8a65d9d0fb5f0f27.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213-sparx5-lan969x-switch-driver-4-v4-0-d1a72c9c4714@microchip.com>
-In-Reply-To: <20241213-sparx5-lan969x-switch-driver-4-v4-0-d1a72c9c4714@microchip.com>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Fri, 13 Dec 2024 20:54:29 +0100
-Message-ID: <CA+HBbNG0k24fO5OG42jw-7trWbT3iVTdo6Hh=55s1MaTh28p-A@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/9] net: lan969x: add RGMII support
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Lars Povlsen <lars.povlsen@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, Russell King <linux@armlinux.org.uk>, 
-	jacob.e.keller@intel.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, devicetree@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <341df2d52af6c1584353b89a8a65d9d0fb5f0f27.camel@gmail.com>
 
-On Fri, Dec 13, 2024 at 2:41=E2=80=AFPM Daniel Machon
-<daniel.machon@microchip.com> wrote:
->
-> =3D=3D Description:
->
-> This series is the fourth of a multi-part series, that prepares and adds
-> support for the new lan969x switch driver.
->
-> The upstreaming efforts is split into multiple series (might change a
-> bit as we go along):
->
->         1) Prepare the Sparx5 driver for lan969x (merged)
->
->         2) Add support for lan969x (same basic features as Sparx5
->            provides excl. FDMA and VCAP, merged).
->
->         3) Add lan969x VCAP functionality (merged).
->
->     --> 4) Add RGMII support.
->
->         5) Add FDMA support.
->
-> =3D=3D RGMII support:
->
-> The lan969x switch device includes two RGMII port interfaces (port 28
-> and 29) supporting data speeds of 1 Gbps, 100 Mbps and 10 Mbps.
->
-> =3D=3D Patch breakdown:
->
-> Patch #1 does some preparation work.
->
-> Patch #2 adds new function: is_port_rgmii() to the match data ops.
->
-> Patch #3 uses the is_port_rgmii() in a number of places.
->
-> Patch #4 makes sure that we do not configure an RGMII device as a
->          low-speed device, when doing a port config.
->
-> Patch #5 makes sure we only return the PCS if the port mode requires
->          it.
->
-> Patch #6 adds checks for RGMII PHY modes in sparx5_verify_speeds().
->
-> Patch #7 adds registers required to configure RGMII.
->
-> Patch #8 adds RGMII implementation.
->
-> Patch #9 documents RGMII delays in the dt-bindings.
->
-> Details are in the commit description of the individual patches
->
-> To: UNGLinuxDriver@microchip.com
-> To: Andrew Lunn <andrew+netdev@lunn.ch>
-> To: David S. Miller <davem@davemloft.net>
-> To: Eric Dumazet <edumazet@google.com>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Paolo Abeni <pabeni@redhat.com>
-> To: Lars Povlsen <lars.povlsen@microchip.com>
-> To: Steen Hegelund <Steen.Hegelund@microchip.com>
-> To: Horatiu Vultur <horatiu.vultur@microchip.com>
-> To: Russell King <linux@armlinux.org.uk>
-> To: jacob.e.keller@intel.com
-> To: robh@kernel.org
-> To: krzk+dt@kernel.org
-> To: conor+dt@kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: robert.marko@sartura.hr
->
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+On Thu, Dec 12, 2024 at 08:04:28PM GMT, Eduard Zingerman wrote:
+> On Thu, 2024-12-12 at 16:22 -0700, Daniel Xu wrote:
+> > Previously, the verifier was treating all PTR_TO_STACK registers passed
+> > to a helper call as potentially written to by the helper. However, all
+> > calls to check_stack_range_initialized() already have precise access type
+> > information available.
+> > 
+> > Rather than treat ACCESS_HELPER as a proxy for BPF_WRITE, pass
+> > enum bpf_access_type to check_stack_range_initialized() to more
+> > precisely track helper arguments.
+> > 
+> > One benefit from this precision is that registers tracked as valid
+> > spills and passed as a read-only helper argument remain tracked after
+> > the call.  Rather than being marked STACK_MISC afterwards.
+> > 
+> > An additional benefit is the verifier logs are also more precise. For
+> > this particular error, users will enjoy a slightly clearer message. See
+> > included selftest updates for examples.
+> > 
+> > Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> > ---
+> 
+> I think this change is ok.
+> With it there is only one use of 'enum bpf_access_src' remains,
+> but it doesn't look like it could be removed.
+> 
+> Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+> 
+> [...]
+> 
+> > --- a/tools/testing/selftests/bpf/progs/uninit_stack.c
+> > +++ b/tools/testing/selftests/bpf/progs/uninit_stack.c
+> > @@ -55,33 +55,4 @@ exit_%=:	r0 = 0;					\
+> >  		      : __clobber_all);
+> >  }
+> >  
+> > -static __noinline void dummy(void) {}
+> > -
+> > -/* Pass a pointer to uninitialized stack memory to a helper.
+> > - * Passed memory block should be marked as STACK_MISC after helper call.
+> > - */
+> > -SEC("socket")
+> > -__log_level(7) __msg("fp-104=mmmmmmmm")
+> > -__naked int helper_uninit_to_misc(void *ctx)
+> 
+> Is it possible to peek a helper that writes into memory and not delete
+> this test?
 
-Tested-by: Robert Marko <robert.marko@sartura.hr>
-
-> ---
-> Changes in v4:
->
-> - Split patch #4 in v3 into two patches, where the new patch #5 handles
->   PCS selection, by returning the PCS only for ports that require it.
->
-> - Got rid of the '|' symbol for {rx,tx}-internal-delay-ps property
->   description in the dt-bindings (patch #9).
->
-> - Link to v3: https://lore.kernel.org/r/20241118-sparx5-lan969x-switch-dr=
-iver-4-v3-0-3cefee5e7e3a@microchip.com
->
-> Changes in v3:
->
-> v2 was kindly tested by Robert Marko. Not carrying the tag to v3 since
-> we have changes to the handling of the delays.
->
-> - Modified lan969x_rgmii_delay_config() to not apply any MAC delay when
->   the {rx,tx}-internal-delay-ps properties are missing or set to 0
->   (patch #7).
->
-> - Removed 'required' constraint from {rx-tx}-internal-delay-ps
->   properties. Also added description and default value (Patch #8).
->
-> - Link to v2: https://lore.kernel.org/r/20241113-sparx5-lan969x-switch-dr=
-iver-4-v2-0-0db98ac096d1@microchip.com
->
-> Changes in v2:
->
->   Most changes are in patch #7. RGMII implementation has been moved to
->   it's own file lan969x_rgmii.c.
->
->   Details:
->
->     - Use ETH_P_8021Q and ETH_P_8021AD instead of the Sparx5 provided
->       equivalents (patch #7).
->     - Configure MAC delays through "{rx,tx}-internal-delay-ps"
->       properties (patch #7).
->     - Add selectors for all the phase shifts that the hardware supports
->       (instead of only 2.0 ns, patch #7).
->     - Add selectors for all the port speeds (instead of only 1000 mbps.)
->     - Document RGMII delays in dt-bindings.
->
->   - Link to v1: https://lore.kernel.org/r/20241106-sparx5-lan969x-switch-=
-driver-4-v1-0-f7f7316436bd@microchip.com
->
-> ---
-> Daniel Machon (9):
->       net: sparx5: do some preparation work
->       net: sparx5: add function for RGMII port check
->       net: sparx5: use is_port_rgmii() throughout
->       net: sparx5: skip low-speed configuration when port is RGMII
->       net: sparx5: only return PCS for modes that require it
->       net: sparx5: verify RGMII speeds
->       net: lan969x: add RGMII registers
->       net: lan969x: add RGMII implementation
->       dt-bindings: net: sparx5: document RGMII delays
->
->  .../bindings/net/microchip,sparx5-switch.yaml      |  18 ++
->  drivers/net/ethernet/microchip/sparx5/Makefile     |   3 +-
->  .../ethernet/microchip/sparx5/lan969x/lan969x.c    |   5 +
->  .../ethernet/microchip/sparx5/lan969x/lan969x.h    |  10 +
->  .../microchip/sparx5/lan969x/lan969x_rgmii.c       | 224 +++++++++++++++=
-++++++
->  .../net/ethernet/microchip/sparx5/sparx5_main.c    |  29 ++-
->  .../net/ethernet/microchip/sparx5/sparx5_main.h    |   3 +
->  .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 145 +++++++++++++
->  .../net/ethernet/microchip/sparx5/sparx5_phylink.c |  14 +-
->  .../net/ethernet/microchip/sparx5/sparx5_port.c    |  57 ++++--
->  .../net/ethernet/microchip/sparx5/sparx5_port.h    |   5 +
->  11 files changed, 484 insertions(+), 29 deletions(-)
-> ---
-> base-commit: 2c27c7663390d28bc71e97500eb68e0ce2a7223f
-> change-id: 20241104-sparx5-lan969x-switch-driver-4-d59b7820485a
->
-> Best regards,
-> --
-> Daniel Machon <daniel.machon@microchip.com>
->
-
-
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
+Yeah, good idea. Will do.
