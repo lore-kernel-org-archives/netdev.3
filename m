@@ -1,42 +1,42 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A9A18027;
-	Fri, 13 Dec 2024 19:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DE118027;
+	Fri, 13 Dec 2024 19:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734118510; cv=none; b=hdO0kuw6hBtBEfcjiILUL38spMmyY/esj3UE9buoYDDzSxyMREebkcZMNSSTZKrbpY5HBhxjKhdLYug041dg65u32c+D1bO77xqTSAvQWMHnGJD3ZguyOXrnu4gb9cUyh0pqEAkN8nA4sZf0TIhVnheSufLF4bsI7pst38NLxcw=
+	t=1734118516; cv=none; b=V7B4MA+c07IqiNDEGXmWk/pATv53k6W2upuqKkVH6+iOCXfaHMlu7d9Cah0PC5/cph91nXrzm/lfBm8mEibzHhnRWSmn3UKfqD5x7piavQWKXh+AlKVt5vdOeJv2er5QIO+AQ56v/zZxFfxzGz/RelhXwdr48Q4C/iM2o47pL1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734118510; c=relaxed/simple;
-	bh=mALPe8IHVvSk7t9f5SohClfyeGvzRb8hUiyxNJmToqY=;
+	s=arc-20240116; t=1734118516; c=relaxed/simple;
+	bh=di1JRxgla85+qVuKC7qR3d6Rx2bf65mfYztSCcJI+FU=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=LX71K0JL1NdZqpq1QRlPnfN/+lwDhMMIyZFdUSTJUYtykCCCTvAW5eUq0p0oPTUaXqIyQFiEnbQZs/MVdIcnxhYCnTswsj2J6B1rVSguCitvexydz5M529oj+PHIb4tXebYho08ihlOZqIWMhQtTEmo70L37pupb/DAKDnDCBUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xummMPIN; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=KMWl1VPEUn5rjN2xL/f1V0CCMXPntCP3RhdwkdihfOq5BdUUY70BMz8u/JtYysZxJzBxNIyi3HtC+j5StubSAB5FSO82uR3Y4UCUOhLFPDXZxuwJHpISdm+37gl34/yQyaKc9ZSPx5JJx6z5cXwoqav610BXF+IwtacgHegiKQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gXynTGLQ; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xummMPIN"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gXynTGLQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=pnbzjYFJC7QCn5g6ZiNpVxr72nno0JcTQWP0iYxpqpc=; b=xummMPINdqRamBjSov0p819TXB
-	ALjkFaYS3mgw/pTnEHaXHZ6sc882vTo53cevOgCSHZELyZTa03evhpiJSPd866JOMDsvsx4KUTgYm
-	WnLSFygA71xLrh/K73uDFmOdlif45PAgGy3OcdB8fkp/7oFwMPiADH1yroVLwyW5kaEDYLm9j76sG
-	j2RyrdF9kVVR2yKr3CEFaSClAyAESPMDGPQFQ0DPYqrTcqYLlw9EbnM0DTxLb03ixoCoxKlZfy6YU
-	vLPQZgnP0+bUxk2Aky78dbY84/RB1dtw/0+YwDHVho+9OMx5GY5qsCXA24nKk14hxtfLjm9YB3Cr5
-	x+zTpQ4g==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41828 helo=rmk-PC.armlinux.org.uk)
+	bh=GnGNXV9fY/OFbdFo3uaZITHwcc9v08Tzd5HOpCpKxEs=; b=gXynTGLQlPgMUDTLLkWjpq8Ph/
+	qR4YyX4amMJGOqU7fQTxDkycDxFyDm1QcTrsGhYa0bfi9sl1r3bMwM+/nA5N1bkTfr3rQjfJxz/mY
+	nolrEDppVWX45eTjXRTsM3gDNrTwRiBGHBsNRK8Ox6KFU3pSv511WhQ3PMj+cReLkHyKJ6SArutqn
+	Mo3OyxJiCa7QRozYfJvqVKz5/LqqZvxIm1Iiu6j1wCW7OfgpEZuZWTFiaGJVzzqs39t0nySMMJBna
+	EhZBJaXTn7SK4AhZDkvIJ6yE6AoS9XMcgiFOCL6WuU/XLKucwuNuXPIVQA3oyXDdbzYwuUCc6dijC
+	VMv2DMhA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:32860 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1tMBR7-0007DA-2X;
-	Fri, 13 Dec 2024 19:34:53 +0000
+	id 1tMBRI-0007Db-0x;
+	Fri, 13 Dec 2024 19:35:04 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1tMBR5-006vaS-Ou; Fri, 13 Dec 2024 19:34:51 +0000
+	id 1tMBRF-006vae-WC; Fri, 13 Dec 2024 19:35:02 +0000
 In-Reply-To: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
 References: <Z1yJQikqneoFNJT4@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -55,8 +55,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	 linux-stm32@st-md-mailman.stormreply.com,
 	 linux-arm-kernel@lists.infradead.org,
 	 linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/5] net: phylink: add support for PCS
- supported_interfaces bitmap
+Subject: [PATCH net-next 3/5] net: pcs: mtk-lynxi: fill in PCS
+ supported_interfaces
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,67 +66,34 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1tMBR5-006vaS-Ou@rmk-PC.armlinux.org.uk>
+Message-Id: <E1tMBRF-006vae-WC@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 13 Dec 2024 19:34:51 +0000
+Date: Fri, 13 Dec 2024 19:35:01 +0000
 
-Add support for the PCS to specify which interfaces it supports, which
-can be used by MAC drivers to build the main supported_interfaces
-bitmap. Phylink also validates that the PCS returned by the MAC driver
-supports the interface that the MAC was asked for.
-
-An empty supported_interfaces bitmap from the PCS indicates that it
-does not provide this information, and we handle that appropriately.
+Fill in the new PCS supported_interfaces member with the interfaces
+that the Mediatek LynxI supports.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/phy/phylink.c | 11 +++++++++++
- include/linux/phylink.h   |  3 +++
- 2 files changed, 14 insertions(+)
+ drivers/net/pcs/pcs-mtk-lynxi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 95fbc363f9a6..3e9960f54550 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -691,6 +691,17 @@ static int phylink_validate_mac_and_pcs(struct phylink *pl,
- 			return -EINVAL;
- 		}
+diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+index 7de804535229..1377fb78eaa1 100644
+--- a/drivers/net/pcs/pcs-mtk-lynxi.c
++++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+@@ -306,6 +306,11 @@ struct phylink_pcs *mtk_pcs_lynxi_create(struct device *dev,
+ 	mpcs->pcs.poll = true;
+ 	mpcs->interface = PHY_INTERFACE_MODE_NA;
  
-+		/* Ensure that this PCS supports the interface which the MAC
-+		 * returned it for. It is an error for the MAC to return a PCS
-+		 * that does not support the interface mode.
-+		 */
-+		if (!phy_interface_empty(pcs->supported_interfaces) &&
-+		    !test_bit(state->interface, pcs->supported_interfaces)) {
-+			phylink_err(pl, "MAC returned PCS which does not support %s\n",
-+				    phy_modes(state->interface));
-+			return -EINVAL;
-+		}
++	__set_bit(PHY_INTERFACE_MODE_SGMII, mpcs->pcs.supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_QSGMII, mpcs->pcs.supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_1000BASEX, mpcs->pcs.supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_2500BASEX, mpcs->pcs.supported_interfaces);
 +
- 		/* Validate the link parameters with the PCS */
- 		if (pcs->ops->pcs_validate) {
- 			ret = pcs->ops->pcs_validate(pcs, supported, state);
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 5462cc6a37dc..4b7a20620b49 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -393,6 +393,8 @@ struct phylink_pcs_ops;
- 
- /**
-  * struct phylink_pcs - PHYLINK PCS instance
-+ * @supported_interfaces: describing which PHY_INTERFACE_MODE_xxx
-+ *                        are supported by this PCS.
-  * @ops: a pointer to the &struct phylink_pcs_ops structure
-  * @phylink: pointer to &struct phylink_config
-  * @neg_mode: provide PCS neg mode via "mode" argument
-@@ -409,6 +411,7 @@ struct phylink_pcs_ops;
-  * the PCS driver.
-  */
- struct phylink_pcs {
-+	DECLARE_PHY_INTERFACE_MASK(supported_interfaces);
- 	const struct phylink_pcs_ops *ops;
- 	struct phylink *phylink;
- 	bool neg_mode;
+ 	return &mpcs->pcs;
+ }
+ EXPORT_SYMBOL(mtk_pcs_lynxi_create);
 -- 
 2.30.2
 
