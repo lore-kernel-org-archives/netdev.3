@@ -1,129 +1,282 @@
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from mx1.buffet.re (mx1.buffet.re [51.83.41.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F10D18FC8F
-	for <netdev@vger.kernel.org>; Sat, 14 Dec 2024 17:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F177E1A0721;
+	Sat, 14 Dec 2024 18:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.41.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734197520; cv=none; b=NGFVGqaqc4WVtncYSh3LdpOd41dm+2i/c+HQWksxvU2y2B6H+QL6VLL0HCh6WNxxrlZed0k1g1ZRpGQ0FDt70A8AO3LM96LqVB8IKrAnX6xsPfHERO6q5specgRMrh2YRXYU8/Md9zN02YPx19w3JBbvTNDvfrz3Qn4oVRq0EPs=
+	t=1734202004; cv=none; b=htDTPpsEQrWTRCiuoKYamuYBYE/fCm4zHSIhie5Qt7iMmW4FoScYSNfWTineTGVsun3ijZhDZfZuFK4fYkWUElAiZezeyZ7zQ7jxruuCwnxWdXBIaWAO0ix83nbzF1zxpApbNhOyZcDz8QKkyL1r2srH8Xh5nfwBFNGz0x+JnTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734197520; c=relaxed/simple;
-	bh=GdcIoMV9rDgh/h7XI/XexxU3pMPlgPu8UDf7JNbHBG0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bfv4QHR4b6/sj0mS60OeL+5DMNEqyNDYz/3sZ/9Y83dajDzhbwXk0QntCpm8OFe81YRsUNVc6798MiroPsT44QGWif/ZacDWrdCSgXMRQLuf3XfNMcJ+i1hl7JgD6Wx/8u39nWrOnvv9FkiGdrZuhTbCFReAlFT5L28XmTf/01E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-312-61ot2vfuOIOCZzeUwr6qww-1; Sat, 14 Dec 2024 17:31:50 +0000
-X-MC-Unique: 61ot2vfuOIOCZzeUwr6qww-1
-X-Mimecast-MFC-AGG-ID: 61ot2vfuOIOCZzeUwr6qww
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 14 Dec
- 2024 17:30:53 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Sat, 14 Dec 2024 17:30:53 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: "'netdev@vger.kernel.org'" <netdev@vger.kernel.org>, 'Naresh Kamboju'
-	<naresh.kamboju@linaro.org>, 'Dan Carpenter' <dan.carpenter@linaro.org>,
-	'Julian Anastasov' <ja@ssi.bg>, "'pablo@netfilter.org'"
-	<pablo@netfilter.org>, Andrew Morton <akpm@linux-foundation.org>
-CC: 'open list' <linux-kernel@vger.kernel.org>,
-	"'lkft-triage@lists.linaro.org'" <lkft-triage@lists.linaro.org>, "'Linux
- Regressions'" <regressions@lists.linux.dev>, 'Linux ARM'
-	<linux-arm-kernel@lists.infradead.org>, "'netfilter-devel@vger.kernel.org'"
-	<netfilter-devel@vger.kernel.org>, 'Arnd Bergmann' <arnd@arndb.de>, "'Anders
- Roxell'" <anders.roxell@linaro.org>, 'Johannes Berg'
-	<johannes.berg@intel.com>, "'toke@kernel.org'" <toke@kernel.org>, 'Al Viro'
-	<viro@zeniv.linux.org.uk>, "'kernel@jfarr.cc'" <kernel@jfarr.cc>,
-	"'kees@kernel.org'" <kees@kernel.org>
-Subject: [PATCH net-next] Fix clamp() of ip_vs_conn_tab on small memory
- systems.
-Thread-Topic: [PATCH net-next] Fix clamp() of ip_vs_conn_tab on small memory
- systems.
-Thread-Index: AdtOTfU+VQ/Jz9m3Sa6gMqrna34atA==
-Date: Sat, 14 Dec 2024 17:30:53 +0000
-Message-ID: <24a6bfd0811b4931b6ef40098b33c9ee@AcuMS.aculab.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1734202004; c=relaxed/simple;
+	bh=vOKvRMbY8m00DdlZDc5kSM8azQC0Pu0YHZjQw8q3hIY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=j/QGzCISSYPa2pVyRzTDHaZ+DOyq7yZyzG/Zlz6EyCXe77U977Dvm60qkOOGmnXPaxxv4iIv0AkUkaLZdJBOJlUywPVwo0DPM8R0+svJaJgZhDu5ibTe8VjGpt/LPurd8rMoLZEXsTykSvtGVTPkjWNWFJ09EhD6+78ilom9idg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re; spf=pass smtp.mailfrom=buffet.re; dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b=X9NbjJ6m; arc=none smtp.client-ip=51.83.41.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buffet.re
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b="X9NbjJ6m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=buffet.re; s=mx1;
+	t=1734201996; bh=vOKvRMbY8m00DdlZDc5kSM8azQC0Pu0YHZjQw8q3hIY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X9NbjJ6mTx9UgexeernLA5Uk8ALJcmiD7CQK7q5endYEiWNkrfgAzX2RBkMV+bXD1
+	 C1K5rvJjW9fiTrkaab3J7coLqgQ7FmQ53VOADdvXZvCDEtbVKs8pG67OkqrAZbaO43
+	 e20DMv0T06uPVLQT4zB+aY1Rx6zIQrWGb+HGXvMJQ4wKMjFERKBGoM6O3u7GfcB/yb
+	 +aBljJeuelmJJPxyArZb5e2D4LOJECXm44ZhM5SB0Ny0Pj+wJ8mZ3kydu2Dp9grayr
+	 o+23m6yhSUKgG3k3kWVIB8GszfivvWJ7nxY5xcyaS+gPPWPcPxAAiEszizGcUktj5r
+	 QR12y3bZ0Ly9w==
+Received: from localhost.localdomain (unknown [10.0.1.3])
+	by mx1.buffet.re (Postfix) with ESMTPSA id 8E2A01252E0;
+	Sat, 14 Dec 2024 19:46:36 +0100 (CET)
+From: Matthieu Buffet <matthieu@buffet.re>
+To: Mickael Salaun <mic@digikod.net>
+Cc: Gunther Noack <gnoack@google.com>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	konstantin.meskhidze@huawei.com,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Matthieu Buffet <matthieu@buffet.re>
+Subject: [PATCH v2 1/6] landlock: Add UDP bind+connect access control
+Date: Sat, 14 Dec 2024 19:45:35 +0100
+Message-Id: <20241214184540.3835222-2-matthieu@buffet.re>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241214184540.3835222-1-matthieu@buffet.re>
+References: <20241214184540.3835222-1-matthieu@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -d_piBN_gVH0cObc8QiRXmfKuJX7zCQDOZqFIzcatXM_1734197509
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-The 'max_avail' value is calculated from the system memory
-size using order_base_2().
-order_base_2(x) is defined as '(x) ? fn(x) : 0'.
-The compiler generates two copies of the code that follows
-and then expands clamp(max, min, PAGE_SHIFT - 12) (11 on 32bit).
-This triggers a compile-time assert since min is 5.
+If an app doesn't need to be able to open UDP sockets, it should be
+denied the right to create UDP sockets altogether (via seccomp and/or
+https://github.com/landlock-lsm/linux/issues/6 when it lands).
+For apps using UDP, add support for two more fine-grained access rights:
 
-In reality a system would have to have less than 512MB memory
-for the bounds passed to clamp to be reversed.
+- LANDLOCK_ACCESS_NET_CONNECT_UDP, to gate the possibility to connect()
+  a UDP socket. For client apps (those which want to avoid specifying a
+  destination for each datagram in sendmsg()), and for a few servers
+  (those creating per-client sockets, which want to receive traffic only
+  from a specific address)
 
-Swap the order of the arguments to clamp() to avoid the warning.
+- LANDLOCK_ACCESS_NET_BIND_UDP, to gate the possibility to bind() a UDP
+  socket. For most servers (to start listening for datagrams on a
+  non-ephemeral port) and can be useful for some client applications (to
+  set the source port of future datagrams, e.g. mDNS requires to use
+  source port 5353)
 
-Replace the clamp_val() on the line below with clamp().
-clamp_val() is just 'an accident waiting to happen' and not needed here.
+No restriction is enforced on send()/recv() to preserve performance.
+The security boundary is to prevent acquiring a bound/connected socket.
 
-Detected by compile time checks added to clamp(), specifically:
-minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
+Bump ABI to v7 to allow userland to detect and use these new restrictions.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYsT34UkGFKxus63H6UVpYi5GRZkezT9MR=
-LfAbM3f6ke0g@mail.gmail.com/
-Fixes: 4f325e26277b ("ipvs: dynamically limit the connection hash table")
-Tested-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: David Laight <david.laight@aculab.com>
+Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
 ---
+ include/uapi/linux/landlock.h | 53 ++++++++++++++++++++++++++---------
+ security/landlock/limits.h    |  2 +-
+ security/landlock/net.c       | 49 ++++++++++++++++++++++----------
+ security/landlock/syscalls.c  |  2 +-
+ 4 files changed, 76 insertions(+), 30 deletions(-)
 
-Julian seems to be waiting for a 'v2' from me.
-Changed target tree to 'net-next'.
-I've re-written the commit message.
-Copied Andrew Morton - he might want to take the change through the 'mm' tr=
-ee.
-Plausibly the 'fixes' tag should refer to the minmax.h change?
-This will need back-porting if the minmax set get back-ported.
-
-I'm not sure whether there ought to be an attribution to Dan Carpenter <dan=
-.carpenter@linaro.org>
-
- net/netfilter/ipvs/ip_vs_conn.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_con=
-n.c
-index 98d7dbe3d787..c0289f83f96d 100644
---- a/net/netfilter/ipvs/ip_vs_conn.c
-+++ b/net/netfilter/ipvs/ip_vs_conn.c
-@@ -1495,8 +1495,8 @@ int __init ip_vs_conn_init(void)
- =09max_avail -=3D 2;=09=09/* ~4 in hash row */
- =09max_avail -=3D 1;=09=09/* IPVS up to 1/2 of mem */
- =09max_avail -=3D order_base_2(sizeof(struct ip_vs_conn));
--=09max =3D clamp(max, min, max_avail);
--=09ip_vs_conn_tab_bits =3D clamp_val(ip_vs_conn_tab_bits, min, max);
-+=09max =3D clamp(max_avail, min, max);
-+=09ip_vs_conn_tab_bits =3D clamp(ip_vs_conn_tab_bits, min, max);
- =09ip_vs_conn_tab_size =3D 1 << ip_vs_conn_tab_bits;
- =09ip_vs_conn_tab_mask =3D ip_vs_conn_tab_size - 1;
-=20
---=20
-2.17.1
-
+diff --git a/include/uapi/linux/landlock.h b/include/uapi/linux/landlock.h
+index 33745642f787..3f7b8e85822d 100644
+--- a/include/uapi/linux/landlock.h
++++ b/include/uapi/linux/landlock.h
+@@ -119,12 +119,15 @@ struct landlock_net_port_attr {
+ 	 *
+ 	 * It should be noted that port 0 passed to :manpage:`bind(2)` will bind
+ 	 * to an available port from the ephemeral port range.  This can be
+-	 * configured with the ``/proc/sys/net/ipv4/ip_local_port_range`` sysctl
+-	 * (also used for IPv6).
++	 * configured globally with the
++	 * ``/proc/sys/net/ipv4/ip_local_port_range`` sysctl (also used for
++	 * IPv6), and, within that first range, on a per-socket basis using
++	 * ``setsockopt(IP_LOCAL_PORT_RANGE)``.
+ 	 *
+-	 * A Landlock rule with port 0 and the ``LANDLOCK_ACCESS_NET_BIND_TCP``
+-	 * right means that requesting to bind on port 0 is allowed and it will
+-	 * automatically translate to binding on the related port range.
++	 * A Landlock rule with port 0 and the %LANDLOCK_ACCESS_NET_BIND_TCP
++	 * or %LANDLOCK_ACCESS_NET_BIND_UDP right means that requesting to
++	 * bind on port 0 is allowed and it will automatically translate to
++	 * binding on the ephemeral port range.
+ 	 */
+ 	__u64 port;
+ };
+@@ -267,18 +270,42 @@ struct landlock_net_port_attr {
+  * Network flags
+  * ~~~~~~~~~~~~~~~~
+  *
+- * These flags enable to restrict a sandboxed process to a set of network
+- * actions. This is supported since the Landlock ABI version 4.
+- *
+- * The following access rights apply to TCP port numbers:
+- *
+- * - %LANDLOCK_ACCESS_NET_BIND_TCP: Bind a TCP socket to a local port.
+- * - %LANDLOCK_ACCESS_NET_CONNECT_TCP: Connect an active TCP socket to
+- *   a remote port.
++ * These flags enable to restrict which network-related actions a sandboxed
++ * process can take. TCP support was added in Landlock ABI version 4, and UDP
++ * support in version 7.
++ *
++ * TCP access rights:
++ *
++ * - %LANDLOCK_ACCESS_NET_BIND_TCP: bind sockets to the given local port,
++ *   for servers that will listen() on that port, or for clients that want
++ *   to open connections with that specific source port instead of using a
++ *   kernel-assigned random ephemeral one
++ * - %LANDLOCK_ACCESS_NET_CONNECT_TCP: connect client sockets to servers
++ *   listening on that remote port
++ *
++ * UDP access rights:
++ *
++ * - %LANDLOCK_ACCESS_NET_BIND_UDP: bind sockets to the given local port,
++ *   for servers that will listen() on that port, or for clients that want
++ *   to send datagrams with that specific source port instead of using a
++ *   kernel-assigned random ephemeral one
++ * - %LANDLOCK_ACCESS_NET_CONNECT_UDP: connect sockets to the given remote
++ *   port, either for clients that will send datagrams to that destination
++ *   (and want to send them faster without specifying an explicit address
++ *   every time), or for servers that want to filter which client address
++ *   they want to receive datagrams from (e.g. creating a client-specific
++ *   socket)
++ *
++ * Note that binding on port 0 means binding to an ephemeral
++ * kernel-assigned port, in the range configured in
++ * ``/proc/sys/net/ipv4/ip_local_port_range`` globally (and, within that
++ * range, on a per-socket basis with ``setsockopt(IP_LOCAL_PORT_RANGE)``).
+  */
+ /* clang-format off */
+ #define LANDLOCK_ACCESS_NET_BIND_TCP			(1ULL << 0)
+ #define LANDLOCK_ACCESS_NET_CONNECT_TCP			(1ULL << 1)
++#define LANDLOCK_ACCESS_NET_BIND_UDP			(1ULL << 2)
++#define LANDLOCK_ACCESS_NET_CONNECT_UDP			(1ULL << 3)
+ /* clang-format on */
+ 
+ /**
+diff --git a/security/landlock/limits.h b/security/landlock/limits.h
+index 15f7606066c8..ca90c1c56458 100644
+--- a/security/landlock/limits.h
++++ b/security/landlock/limits.h
+@@ -22,7 +22,7 @@
+ #define LANDLOCK_MASK_ACCESS_FS		((LANDLOCK_LAST_ACCESS_FS << 1) - 1)
+ #define LANDLOCK_NUM_ACCESS_FS		__const_hweight64(LANDLOCK_MASK_ACCESS_FS)
+ 
+-#define LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_TCP
++#define LANDLOCK_LAST_ACCESS_NET	LANDLOCK_ACCESS_NET_CONNECT_UDP
+ #define LANDLOCK_MASK_ACCESS_NET	((LANDLOCK_LAST_ACCESS_NET << 1) - 1)
+ #define LANDLOCK_NUM_ACCESS_NET		__const_hweight64(LANDLOCK_MASK_ACCESS_NET)
+ 
+diff --git a/security/landlock/net.c b/security/landlock/net.c
+index d5dcc4407a19..1c5cf2ddb7c1 100644
+--- a/security/landlock/net.c
++++ b/security/landlock/net.c
+@@ -63,10 +63,6 @@ static int current_check_access_socket(struct socket *const sock,
+ 	if (WARN_ON_ONCE(dom->num_layers < 1))
+ 		return -EACCES;
+ 
+-	/* Checks if it's a (potential) TCP socket. */
+-	if (sock->type != SOCK_STREAM)
+-		return 0;
 -
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+ 	/* Checks for minimal header length to safely read sa_family. */
+ 	if (addrlen < offsetofend(typeof(*address), sa_family))
+ 		return -EINVAL;
+@@ -94,17 +90,19 @@ static int current_check_access_socket(struct socket *const sock,
+ 	/* Specific AF_UNSPEC handling. */
+ 	if (address->sa_family == AF_UNSPEC) {
+ 		/*
+-		 * Connecting to an address with AF_UNSPEC dissolves the TCP
+-		 * association, which have the same effect as closing the
+-		 * connection while retaining the socket object (i.e., the file
+-		 * descriptor).  As for dropping privileges, closing
+-		 * connections is always allowed.
+-		 *
+-		 * For a TCP access control system, this request is legitimate.
++		 * Connecting to an address with AF_UNSPEC dissolves the
++		 * remote association while retaining the socket object
++		 * (i.e., the file descriptor). For TCP, it has the same
++		 * effect as closing the connection. For UDP, it removes
++		 * any preset destination for future datagrams.
++		 * Like dropping privileges, these actions are always
++		 * allowed: access control is performed when bind()ing or
++		 * connect()ing.
+ 		 * Let the network stack handle potential inconsistencies and
+ 		 * return -EINVAL if needed.
+ 		 */
+-		if (access_request == LANDLOCK_ACCESS_NET_CONNECT_TCP)
++		if (access_request == LANDLOCK_ACCESS_NET_CONNECT_TCP ||
++		    access_request == LANDLOCK_ACCESS_NET_CONNECT_UDP)
+ 			return 0;
+ 
+ 		/*
+@@ -118,7 +116,8 @@ static int current_check_access_socket(struct socket *const sock,
+ 		 * checks, but it is safer to return a proper error and test
+ 		 * consistency thanks to kselftest.
+ 		 */
+-		if (access_request == LANDLOCK_ACCESS_NET_BIND_TCP) {
++		if (access_request == LANDLOCK_ACCESS_NET_BIND_TCP ||
++		    access_request == LANDLOCK_ACCESS_NET_BIND_UDP) {
+ 			/* addrlen has already been checked for AF_UNSPEC. */
+ 			const struct sockaddr_in *const sockaddr =
+ 				(struct sockaddr_in *)address;
+@@ -159,16 +158,36 @@ static int current_check_access_socket(struct socket *const sock,
+ static int hook_socket_bind(struct socket *const sock,
+ 			    struct sockaddr *const address, const int addrlen)
+ {
++	access_mask_t access_request;
++
++	/* Checks if it's a (potential) TCP socket. */
++	if (sock->type == SOCK_STREAM)
++		access_request = LANDLOCK_ACCESS_NET_BIND_TCP;
++	else if (sk_is_udp(sock->sk))
++		access_request = LANDLOCK_ACCESS_NET_BIND_UDP;
++	else
++		return 0;
++
+ 	return current_check_access_socket(sock, address, addrlen,
+-					   LANDLOCK_ACCESS_NET_BIND_TCP);
++					   access_request);
+ }
+ 
+ static int hook_socket_connect(struct socket *const sock,
+ 			       struct sockaddr *const address,
+ 			       const int addrlen)
+ {
++	access_mask_t access_request;
++
++	/* Checks if it's a (potential) TCP socket. */
++	if (sock->type == SOCK_STREAM)
++		access_request = LANDLOCK_ACCESS_NET_CONNECT_TCP;
++	else if (sk_is_udp(sock->sk))
++		access_request = LANDLOCK_ACCESS_NET_CONNECT_UDP;
++	else
++		return 0;
++
+ 	return current_check_access_socket(sock, address, addrlen,
+-					   LANDLOCK_ACCESS_NET_CONNECT_TCP);
++					   access_request);
+ }
+ 
+ static struct security_hook_list landlock_hooks[] __ro_after_init = {
+diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+index c097d356fa45..200f771fa3a4 100644
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -150,7 +150,7 @@ static const struct file_operations ruleset_fops = {
+ 	.write = fop_dummy_write,
+ };
+ 
+-#define LANDLOCK_ABI_VERSION 6
++#define LANDLOCK_ABI_VERSION 7
+ 
+ /**
+  * sys_landlock_create_ruleset - Create a new ruleset
+-- 
+2.39.5
 
