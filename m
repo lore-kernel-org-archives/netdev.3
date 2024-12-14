@@ -1,127 +1,111 @@
-Received: from mx1.buffet.re (mx1.buffet.re [51.83.41.69])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392580C02;
-	Sat, 14 Dec 2024 18:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.41.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8151119A;
+	Sat, 14 Dec 2024 19:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734202424; cv=none; b=Qtpumkgbkmj3dTp0EBBOYrdqo6BGz1gW9d7PFiUwmg5dv+BA2anlAbgChogImQqP2JVyY8Oo1r7CPt7QHEicY7Jwx2ihfhlEqkQMNxS9IaLEGDpL4mTy8VvSLgNeKUk2PdxBOfn0PY2Kdh/B7MJxntldWJ0VvFPGOTPcud1RzfQ=
+	t=1734205395; cv=none; b=WmtEFWNKGQ+8h6C9PPEO/6HrYJISFoEhJeuEiKNsYT4ogbjLR+vcKFLJ/sRgqWWrcLkFYB3/8fQP3KBdkSiflixXPsivK9uw3aLe4oKbJf1fVqx+/8OuI39mIpqBkCdXy9Y6yFVWz1Fy1S/tIq7NlANncOOaUBt8vfkzSSYsg0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734202424; c=relaxed/simple;
-	bh=oCKT2oHPdAe+VXkRCxa2XD6OUm8jUcAcZdM74Lx+AXI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fN07ouaYJ0QgVtAhLM6Xi9vqthyJ7YFRuNbIjhpXshArAzL3m47jw7+siQgr52/jArriQpHYvPAO/ZHBpeShQCI6salwXDLawB56g8NnoR0Knw9oRGPKYkaBknAzpRA3G5tNIRLRZQLvvT8dJfSNcnViKFBYOerfNCYPAFsPzZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re; spf=pass smtp.mailfrom=buffet.re; dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b=D9GOcKeC; arc=none smtp.client-ip=51.83.41.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=buffet.re
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buffet.re
+	s=arc-20240116; t=1734205395; c=relaxed/simple;
+	bh=tXqciZ4bi16lw4tGIOlIHwU2qwiOiHAdCX1Cma++6LQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=rADVA5whkHqlWCd+6vTauS+ycEuLP+GhGv9gmdjZc1ii4axVq938u5Q9gAUe3PBUwegOeDa+a63HsFiBzmCxgMN+pfybhm1Qq7eFVdji6Rw+Nkjzs23q/XIOGL1333UJWAZwJEIkhDVv2+9+3lklxOOO2MuXP31H36lM1A8gnXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=qu8Bfyvo; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=buffet.re header.i=@buffet.re header.b="D9GOcKeC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=buffet.re; s=mx1;
-	t=1734201974; bh=oCKT2oHPdAe+VXkRCxa2XD6OUm8jUcAcZdM74Lx+AXI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D9GOcKeCXjU2qwnNqTooTW5qFY3JsaE/qkyCLHarBk496R9Q6oehRfWOJJgu2uWLY
-	 TFUseMEPnXy440X7PQlMVWwJuogZm7+hpejuycvID0SFuDFzkMeLG/6Z3JQcPaK/3E
-	 PegRRuVbKcBGqDkX2ynoMYfqeWbSEllEUIbIwkye8tV9BeOtJ3fS6TqwC3TE/DcvJe
-	 2NDvTQ0aaxyrKjGxTrdz4oP2kvX+d1nTdEfBzraPL4ShF7xINKyMkCW/zwt8PW48d2
-	 C2bhRZAQv8t/4c8y8tQ/gSF5xYlHmxWKjGyQp6NpS1DH8A11yukduVUIgJBwgZlkRt
-	 CeLI+UJSe87gA==
-Received: from localhost.localdomain (unknown [10.0.1.3])
-	by mx1.buffet.re (Postfix) with ESMTPSA id 3309A1233B5;
-	Sat, 14 Dec 2024 19:46:14 +0100 (CET)
-From: Matthieu Buffet <matthieu@buffet.re>
-To: Mickael Salaun <mic@digikod.net>
-Cc: Gunther Noack <gnoack@google.com>,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	konstantin.meskhidze@huawei.com,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E . Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Matthieu Buffet <matthieu@buffet.re>
-Subject: [PATCH v2 0/6] landlock: Add UDP access control support
-Date: Sat, 14 Dec 2024 19:45:34 +0100
-Message-Id: <20241214184540.3835222-1-matthieu@buffet.re>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="qu8Bfyvo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1734205391; x=1734464591;
+	bh=djRhhUH3mgerGdQ1ZA/d9QHoyZN0+WSjWLmBCwL3nhs=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=qu8BfyvoDw0wDK/ggOhvkWyvkNqVmOTzGnu4M0LU/oyljt7vHz7PHMWdPAsUbpyuu
+	 czyYh2Tk62SyQek/JTYmD9CQzqKdmZuuAkgUPx4QwTR2hHedZr5yVMBe24tTKV252f
+	 8s/fbrcKKYK4Ru0XgcNEThKawYFSxojESBFi7ia7Y1NMvIJ5FMHOT2v9JSxjdvUIeq
+	 G4F5ir+PIRLqOXcjxPdCxvm4WGSh28WSOLZQ1PB/mWSYiwRWpZnF7GGuP/DYg4h7z9
+	 T28y8iwJiedWKJn0w328e3uPx8Qr9WMIFGI5L4u0+c7K7tYN1l3OK5IPR03qllC3Wa
+	 JgSD4yC4NIB9g==
+Date: Sat, 14 Dec 2024 19:43:06 +0000
+To: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>, Rahul Rameshbabu <sergeantsagara@protonmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH net-next v2] rust: net::phy scope ThisModule usage in the module_phy_driver macro
+Message-ID: <20241214194242.19505-1-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 343454d894d86e60e952ec0404fc15c470e70326
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Mickael,
+Similar to the use of $crate::Module, ThisModule should be referred to as
+$crate::ThisModule in the macro evaluation. The reason the macro previously
+did not cause any errors is because all the users of the macro would use
+kernel::prelude::*, bringing ThisModule into scope.
 
-Thanks for your comments on the v1 of this patch, I should have everything
-fixed so (hopefully) this v2 boils down to something simpler.
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+---
 
-This patchset is based on
-https://git.kernel.org/pub/scm/linux/kernel/git/mic/linux.git
-Linux 6.12 (adc218676eef).
+Notes:
+    Notes:
+        v1->v2:
+            Dropped the Fixes: tag and target net-next.
+   =20
+        How I came up with this change:
+   =20
+            I was working on my own rust bindings and rust driver when I co=
+mpared my
+            macro_rule to the one used for module_phy_driver. I noticed, if=
+ I made a
+            driver that does not use kernel::prelude::*, that the ThisModul=
+e type
+            identifier used in the macro would cause an error without being=
+ scoped in
+            the macro_rule. I believe the correct implementation for the ma=
+cro is one
+            where the types used are correctly expanded with needed scopes.
 
-This patchset should add basic support to completely block a process
-from sending and receiving UDP datagrams, and delegate the right to
-send/receive based on remote/local port. It should fit nicely with
-the socket creation restrictions WIP (either don't have UDP at all, or
-have it with just the rights needed).
+ rust/kernel/net/phy.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-@Mikhail: I saw the discussions around TCP error code inconsistencies +
-over-restriction, and your patch v1. I took extra care to minimize this
-diff size: no unnecessary comment/refactor, especially in
-current_check_access_socket(). It should be just what is required for a
-basic UDP support without changing error handling in that main function.
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index b89c681d97c0..00c3100f5ebd 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
+ ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
+ ///
+ ///     impl ::kernel::Module for Module {
+-///         fn init(module: &'static ThisModule) -> Result<Self> {
++///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self>=
+ {
+ ///             let drivers =3D unsafe { &mut DRIVERS };
+ ///             let mut reg =3D ::kernel::net::phy::Registration::register=
+(
+ ///                 module,
+@@ -903,7 +903,7 @@ struct Module {
+                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+=20
+             impl $crate::Module for Module {
+-                fn init(module: &'static ThisModule) -> Result<Self> {
++                fn init(module: &'static $crate::ThisModule) -> Result<Sel=
+f> {
+                     // SAFETY: The anonymous constant guarantees that nobo=
+dy else can access
+                     // the `DRIVERS` static. The array is used only in the=
+ C side.
+                     let drivers =3D unsafe { &mut DRIVERS };
 
-The only question that remained open from v1 was about UDP rights naming.
-Since there were no strong preferences and the hooks now only handle
-sendmsg() if an explicit address is specified, that's now
-LANDLOCK_ACCESS_NET_UDP_SENDTO since the name (and prototype with a
-destination address parameter) of sendto(3) is closer to these semantics.
+base-commit: 9bc5c9515b4817e994579b21c32c033cbb3b0e6c
+--=20
+2.44.1
 
-Changes since v1 (link below):
-- recvmsg hook is gone and sendmsg hook doesn't apply to connected
-  sockets anymore, to improve performance
-- don't add a get_addr_port() helper function, which required a weird "am
-  I in IPv4 or IPv6 context" to avoid a addrlen>sizeof(struct sockaddr_in)
-  check in connect(AF_UNSPEC) IPv6 context. A helper was useful when ports
-  also needed to be read in a recvmsg() hook, now it's just a simple
-  switch case in the sendmsg() hook, more readable
-- rename sendmsg access right to LANDLOCK_ACCESS_NET_UDP_SENDTO
-- reorder hook prologue for consistency: check domain, then type and
-  family
-- add additional selftests cases around minimal address length
-- update documentation
-
-lcov gives me net.c going from 94% lines/80% functions to 96.6% lines/
-85.7% functions
-
-Any feedback welcome!
-
-Link: https://lore.kernel.org/all/20240916122230.114800-1-matthieu@buffet.re/
-Closes: https://github.com/landlock-lsm/linux/issues/10
-
-Link: https://lore.kernel.org/all/20241017110454.265818-1-ivanov.mikhail1@huawei-partners.com/
-Cc: Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>
-
-Matthieu Buffet (6):
-  landlock: Add UDP bind+connect access control
-  selftests/landlock: Adapt existing bind/connect for UDP
-  landlock: Add UDP sendmsg access control
-  selftests/landlock: Add ACCESS_NET_SENDTO_UDP
-  samples/landlock: Add sandboxer UDP access control
-  doc: Add landlock UDP support
-
- Documentation/userspace-api/landlock.rst     |  84 +++-
- include/uapi/linux/landlock.h                |  67 ++-
- samples/landlock/sandboxer.c                 |  58 ++-
- security/landlock/limits.h                   |   2 +-
- security/landlock/net.c                      | 137 +++++-
- security/landlock/syscalls.c                 |   2 +-
- tools/testing/selftests/landlock/base_test.c |   2 +-
- tools/testing/selftests/landlock/net_test.c  | 455 +++++++++++++++++--
- 8 files changed, 715 insertions(+), 92 deletions(-)
-
-
-base-commit: adc218676eef25575469234709c2d87185ca223a
--- 
-2.39.5
 
