@@ -1,99 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F561E502;
-	Sun, 15 Dec 2024 22:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B176C1E502;
+	Sun, 15 Dec 2024 22:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734302316; cv=none; b=JvvxaBSSFuE2iGL++e28bgOuG//hgv+QmgZsB7Rw8C5l5XQH377Hj2ipKvVyvGn9xbPsL802eQFcL5gtDMLqbzSAlI0obYqmonHrnSssIYIABNkiKbp1OiHAWuYoy4XAyOayO6xgpxowB7gpdGhO395XSWyrVwSHHszfpsK+aeI=
+	t=1734302413; cv=none; b=Qbbmp8mjXLtjN2/f/fAoq5tNc2J1pn0FoqYVk4vJ96VS4Rn5mSnZ0M9PoKaFq7+6qozeA7jg2XZBTWjz+/mzxWmpKu0Qo4z2cKq1rlM7Z185yfPqna2YsF71Ih0JxE3y3znGtUVPafu74PgBG/YVv6xWXjzU3RpbLfLF8Dtl+zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734302316; c=relaxed/simple;
-	bh=DJzqfLQxGe5G83lYAkMGNROuLprTGLPHr/4zHYMfAiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LKRGq38eE1RN2yQyiA0uGiXkSpkIwpAVUEr6Uh58ykjEw3XuOQYABQdG/TTNS5qs8jo0WSRw8QUvNZmkLpKxNsbbOECv/TE7jIi/Lk7k/BZJ+FQJTnLMcGb6qKmN2d0U0Bvfh52n1A+8VxDHz2uvF4Lmnkoq9DOGQCHaelDTloQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O7F20L5Z; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1734302413; c=relaxed/simple;
+	bh=WfRQO+5tKU8KmCaXLq8NrKO4qYsjqbeYm/W9l7MGvQY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Y/fB6tlSfZidCc9mtOXVRDscUaLLTaSoKERNhMrLhSQJS8qKgYWjdAz+Ub7kRx+/ELSDUd89nvzdi/h7eQO65t+Y1XX37qhThntXXMt/0Tehqn8QBb5RSiqHWeQNLSWc17T0yx3Rk8u2y+hN5IP0Ndza00JgNwUZ3AEIvVNZVzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sh6QKerd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O7F20L5Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734302314; x=1765838314;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DJzqfLQxGe5G83lYAkMGNROuLprTGLPHr/4zHYMfAiY=;
-  b=O7F20L5ZE1bslBRaudvrwJd+uqkdiClYBhFhkn8GajQF3WfgUdUQgWi9
-   VcfKw+bEBcCMU4remQi/wC0Z8lEqgVllxqGWXCSGfJJiKlfUtA8BplzFt
-   aV4XicwDFyb3bnO2dX20byy1ds/kQWzP/NUpMExlsG7WZXukMLOX21Zlh
-   /Vq9RIgJB9y82fwxVFN8T2XtNDf32c1JxmX7V4G2PTTKVcAWzMuTSfyW9
-   ukwMGGET+eSZXEH8GFO1h0FWm/2+H1K6ipO3t3o6gH+Z5pcpATa5s1L0y
-   QmR36Vznj+7YfU/jNTf2YjOlP6xTbzeTyZIu7PzJSxXTRO9DKyT7/vHCQ
-   A==;
-X-CSE-ConnectionGUID: SoQp70EQSKWpzuTKGkeuJA==
-X-CSE-MsgGUID: IL7q1NqIR/2xa4ctu/sSUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="33979690"
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="33979690"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 14:38:33 -0800
-X-CSE-ConnectionGUID: P/NU1gctRyGXdPtF38Vflg==
-X-CSE-MsgGUID: jMsGun9kQ1WzzwJl+hJiXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="97445581"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 15 Dec 2024 14:38:31 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tMxFs-000DtG-1s;
-	Sun, 15 Dec 2024 22:38:28 +0000
-Date: Mon, 16 Dec 2024 06:38:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matthieu Buffet <matthieu@buffet.re>, Mickael Salaun <mic@digikod.net>
-Cc: oe-kbuild-all@lists.linux.dev, Gunther Noack <gnoack@google.com>,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	konstantin.meskhidze@huawei.com, Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E . Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-	Matthieu Buffet <matthieu@buffet.re>
-Subject: Re: [PATCH v2 3/6] landlock: Add UDP sendmsg access control
-Message-ID: <202412160648.ACrVdKoZ-lkp@intel.com>
-References: <20241214184540.3835222-4-matthieu@buffet.re>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sh6QKerd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B96C4CECE;
+	Sun, 15 Dec 2024 22:40:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734302413;
+	bh=WfRQO+5tKU8KmCaXLq8NrKO4qYsjqbeYm/W9l7MGvQY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=sh6QKerdVhd4S1ruysVMhktLo3B1poA2coaH2dkFVm12tfM+UvfRy5cDktBGs5EqU
+	 1fmRLmvbbiFvM/Q3I+QJmMe9geLycNsexlbEEafPha3BDcjGSDlxP7OXwtfReRd7cx
+	 3c8VkOMSEymJoMXjswC4egjT/5hLMtA7vkkgdZlbxIUjSqh5Ku8ta0pPDp3xxL2eB9
+	 72Lwzs+vMe4qfus8zk4UTqvM8EqR2SstO9oPdlS6AeUDw3pFXov52NXE6yGtN3JV1O
+	 /wYTdiLnnLu1xHv/uu8GqMiGzzBrcc82N1bEAjuc1GuuMnn5NOa9pUr/O8L/Fzm+r7
+	 O5gKJ8ikpvOag==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 342CC3806656;
+	Sun, 15 Dec 2024 22:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241214184540.3835222-4-matthieu@buffet.re>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/7] mptcp: pm: userspace: misc cleanups
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173430243000.3595979.4122680352068648129.git-patchwork-notify@kernel.org>
+Date: Sun, 15 Dec 2024 22:40:30 +0000
+References: <20241213-net-next-mptcp-pm-misc-cleanup-v1-0-ddb6d00109a8@kernel.org>
+In-Reply-To: <20241213-net-next-mptcp-pm-misc-cleanup-v1-0-ddb6d00109a8@kernel.org>
+To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hi Matthieu,
+Hello:
 
-kernel test robot noticed the following build errors:
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[auto build test ERROR on adc218676eef25575469234709c2d87185ca223a]
+On Fri, 13 Dec 2024 20:52:51 +0100 you wrote:
+> These cleanups lead the way to the unification of the path-manager
+> interfaces, and allow future extensions. The following patches are not
+> linked to each others, but are all related to the userspace
+> path-manager.
+> 
+> - Patch 1: add a new helper to reduce duplicated code.
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matthieu-Buffet/landlock-Add-UDP-bind-connect-access-control/20241215-025450
-base:   adc218676eef25575469234709c2d87185ca223a
-patch link:    https://lore.kernel.org/r/20241214184540.3835222-4-matthieu%40buffet.re
-patch subject: [PATCH v2 3/6] landlock: Add UDP sendmsg access control
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20241216/202412160648.ACrVdKoZ-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241216/202412160648.ACrVdKoZ-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [net-next,1/7] mptcp: add mptcp_userspace_pm_lookup_addr helper
+    https://git.kernel.org/netdev/net-next/c/e7b4083b90b7
+  - [net-next,2/7] mptcp: add mptcp_for_each_userspace_pm_addr macro
+    https://git.kernel.org/netdev/net-next/c/a28717d8414e
+  - [net-next,3/7] mptcp: add mptcp_userspace_pm_get_sock helper
+    https://git.kernel.org/netdev/net-next/c/6a389c8ceeb7
+  - [net-next,4/7] mptcp: move mptcp_pm_remove_addrs into pm_userspace
+    https://git.kernel.org/netdev/net-next/c/8008e77e0741
+  - [net-next,5/7] mptcp: drop free_list for deleting entries
+    https://git.kernel.org/netdev/net-next/c/88d097316371
+  - [net-next,6/7] mptcp: change local addr type of subflow_destroy
+    https://git.kernel.org/netdev/net-next/c/1c670b39cec7
+  - [net-next,7/7] mptcp: drop useless "err = 0" in subflow_destroy
+    https://git.kernel.org/netdev/net-next/c/5409fd6fec68
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412160648.ACrVdKoZ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   arm-linux-gnueabi-ld: security/landlock/net.o: in function `hook_socket_sendmsg':
->> net.c:(.text.hook_socket_sendmsg+0x288): undefined reference to `udpv6_prot'
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
