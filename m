@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84751E502;
-	Sun, 15 Dec 2024 22:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1E1E502;
+	Sun, 15 Dec 2024 22:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734301930; cv=none; b=GdI4TGt33LO6sWWcCe3Z2ULIZACOFHlE6kv8h9CIH6kSViPieQEYU+Gn93Ca5H/PBV2lOU4hsWfIuajPpAon1R+tvPDg38hjCtPGEt98uG7Wmr+zGLCuXSK9r9Bvzny2nOQNrwCOnZkjdlKApI6CJzFBeqgvfIuBEP3oxDR/yFw=
+	t=1734302307; cv=none; b=X5+aZL7358HhnY3VIAVRBSGgviML+0qaR2Ry7pezNxKgk7ilA00POtdbbYt3H8B7SH58nF/oxusCDbC06njVjKPYj/42bCuV9Ilp6bI2SFgCF1SA8iz0spjCSnqWyGPWHlNcOZVPYmFkXHGvPzt3dlGaFQsOc2J9rzthUiG9dsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734301930; c=relaxed/simple;
-	bh=jg4FMEHnDQEdPeiYG++que5v/uPW0Z20gwcn0XCGsvU=;
+	s=arc-20240116; t=1734302307; c=relaxed/simple;
+	bh=HEHav5FT/SmaHg6TudEIA9CJ7AFKk/9Sy6PJHM/fkt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M/cSkQSYyClyUb1ANnHNj9V813mhD9afc75j/N+1Hpxbj1KGfg27G06vZ5Zy73Q+ewd04n/nZQGA7N0BRbGrx4rygJU4p43On40sWLk+bZHroJ48+9RxscssnWJf2m5gLQQZx9ev7mSp9o40z/hb/m9SOaG7MenWAiBaojy0mDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1c6sCD1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GnBLb2z+31Tk/FaEyoaLasEnSsmiGmc6i92+Ufsw95ouZr9CCC3WZWqapHz1CW1VfPHTrpMiWcIi/ZomhRYulSFXIBcznLyV4N1JwsWoYQDZFutJ6DylI7dDrvGfeo0QSYHMifIp+9unTVg/KO0wTTBmueCR0dCDRJVuBYHVsVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAgKAGse; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1c6sCD1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC030C4CECE;
-	Sun, 15 Dec 2024 22:32:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAgKAGse"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5230C4CECE;
+	Sun, 15 Dec 2024 22:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734301930;
-	bh=jg4FMEHnDQEdPeiYG++que5v/uPW0Z20gwcn0XCGsvU=;
+	s=k20201202; t=1734302307;
+	bh=HEHav5FT/SmaHg6TudEIA9CJ7AFKk/9Sy6PJHM/fkt8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o1c6sCD1QFgoPRpIdBJPT8D7wgf9sV55sNu8GDBvcWdNcXZIceUCngz3ypwl3c6D5
-	 m80CgXy41RveWw3BeYyZ6iEA+S+h/HCgAm7MNgyzC/dCOcWOfV87z9mGJoQlN8ThxD
-	 eF5kR2H6vf2+zBiZWKBDb4yPis/PBWB3oneiu9OxQ+wLM4Pv7Ee1r2Fueg7WkjwrTj
-	 RR5HDZuOfjtm8OMiHQDg/8vmBr1ceayKeSIqNjVm6oRLxbbxcxrdmBCfFYhqyh1bcb
-	 uIhDyTznCwam2xgPzNa/uB8rNWz7QJ3rY1eQf+EunlEQDwp6zlrL/KtH8Rhn2ibGCs
-	 913p6bW7LafXA==
-Date: Sun, 15 Dec 2024 14:32:08 -0800
+	b=jAgKAGselq2632Eh3Ty4sEgzlqXCYqPUjcvsi8goLxbHoCILdw0414Cs+U38bsUwn
+	 URdd3+Ha9lxgtTLyix1B8WAK6CEH9nN3lW3Fln0+kKgi4SdKgfKhrI1atgnLjSdj02
+	 PtBAukX5wnSXzcdvXIWBIn9HYkqjLr50FXMYPpXWHhagMfRuBgsHuhGyIeFcoBjaAm
+	 s1wJ1TRyhHNyHdRwzvqbS1Rnyy+NMper3CRva54ULiEc8/l9CSi563GfpKt7/rN72j
+	 cbayPIuQxCaP+WQikpNtnj9a2lR69dHl4iJ2BAjXJq6qLWDwyUjBcL4GVfub9ruIOG
+	 pBJ0nMEhMHr+Q==
+Date: Sun, 15 Dec 2024 14:38:25 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, Geliang
- Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 3/7] mptcp: add mptcp_userspace_pm_get_sock
- helper
-Message-ID: <20241215143208.3786c360@kernel.org>
-In-Reply-To: <20241213-net-next-mptcp-pm-misc-cleanup-v1-3-ddb6d00109a8@kernel.org>
-References: <20241213-net-next-mptcp-pm-misc-cleanup-v1-0-ddb6d00109a8@kernel.org>
-	<20241213-net-next-mptcp-pm-misc-cleanup-v1-3-ddb6d00109a8@kernel.org>
+To: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Andrew Lunn
+ <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, netdev@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, Michael
+ Dege <michael.dege@renesas.com>, Christian Mardmoeller
+ <christian.mardmoeller@renesas.com>, Dennis Ostermann
+ <dennis.ostermann@renesas.com>
+Subject: Re: [PATCH net-next 0/4] mdio support updates
+Message-ID: <20241215143825.7ae9f6a3@kernel.org>
+In-Reply-To: <20241208155236.108582-1-nikita.yoush@cogentembedded.com>
+References: <20241208155236.108582-1-nikita.yoush@cogentembedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,13 +50,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Dec 2024 20:52:54 +0100 Matthieu Baerts (NGI0) wrote:
->  	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
-> +	struct mptcp_sock *msk;
-> +
-> +	if (!token) {
-> +		GENL_SET_ERR_MSG(info, "missing required token");
-> +		return NULL;
-> +	}
+On Sun,  8 Dec 2024 20:52:32 +0500 Nikita Yushchenko wrote:
+> This series cleans up rswitch mdio support, and adds C22 operations.
 
-Ideally GENL_REQ_ATTR_CHECK() would be used in such cases.
+This series doesn't apply any more, please rebase / repost.
+-- 
+pw-bot: nap
