@@ -1,38 +1,33 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEC11465A5;
-	Sun, 15 Dec 2024 17:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5711758B
+	for <netdev@vger.kernel.org>; Sun, 15 Dec 2024 17:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734283864; cv=none; b=O5XIYBQsqpcebJb8B+WqLY27eTLP8DDlWYdfuzZcLkN3nHzulWfrU614/LmWmpYYgNHwQ+3S81YELDsuA6KSno1anhLcOyw7n3jmm5YLaYrBZdVcLG3ommwJy5hmGcQwclfwhB0+K9rBktwiuUh/6/UIhgLuO+lh2475zZlBA9c=
+	t=1734284235; cv=none; b=u2L4/01KmwpLOrAF6QY1bqHoSYRvlZogieuqIg/CYD5ioweQvgMZJcmJ01VmCsaukZGk4Yr3gnevL3HKlkXP/wqTbJRVMDbU40AzmCuptYMJYOfuC/d/4tML3Gv5k/tMwLc5y9J3eIcs+tSnmf7gqqSiotpfTVgn1JWlWMIeDs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734283864; c=relaxed/simple;
-	bh=uDkd9DRKWwfwDiFry+RrQNtzZxTSWFdATTUE/Bz4UyU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uDjQMLTsWFqFBhHbaSum5kPLPmjdOS+vCfr5VpYuFKVDQPOPGpVoODu7tmaNF2u0Y+NgozeR5kg0GYtxXbVcxk43CzC964qYoa9gfSYaRr3H28oqXb094hrat9iXBi3l0q1EKL/x9zpAHfedeKI++WgQ9PVa5RaIn/kUon++GkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tyYMImCc; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1734284235; c=relaxed/simple;
+	bh=TBeamio0Yi88VQx9QAOzcjx9B0WIvU23/rv2y0lsgUU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SfkDvGuBL6MP1piDpH5q6T40jDOG2jZsGrukQdkiuKTjQpZ5labgVzKidkgRl2tyJ6eShFi+3jTkavDYBkC0oK4x+TPhLgKexpK1p7e+n6FdxSAW4R1WA3sUR7D8DaX1joGo6ynQ+DyBfWe+X+I3/XL+dEGwpOgDfGDZWoYFrGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxGWBJNF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tyYMImCc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=zFclJrr4bHg7wXO/GCWuXtI5PXPkqXynOZ4ufpYDM20=; b=ty
-	YMImCcYTuxL9kKgqjmHQNy+646/nhPd+WGYhCyUJYajBbK3eA7Z0YgHX6rJEQhUJ1PdRKN4YIXYUV
-	770ffPqA/fmw/uFZmGuAbFFTnufy8PlWZDzZyjPMENo+yWHHK+DktrcMzAhwQ2Y/QQJeO7BeO1TJv
-	0xVNsQ1QakyLdN0=;
-Received: from [94.14.176.234] (helo=thinkpad.home.lunn.ch)
-	by vps0.lunn.ch with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tMsS1-000WHi-TG; Sun, 15 Dec 2024 18:30:42 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-Date: Sun, 15 Dec 2024 17:30:04 +0000
-Subject: [PATCH 2/3] net: dsa: mv88e6xxx: Enable RMU on 6165 family
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxGWBJNF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD81CC4CECE;
+	Sun, 15 Dec 2024 17:37:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734284235;
+	bh=TBeamio0Yi88VQx9QAOzcjx9B0WIvU23/rv2y0lsgUU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=IxGWBJNFTkuIx7OEwmQzxbwphC6qjzLuGzX7i5KWbEWX3qrsqGXGOIZIKdh1th6t8
+	 Pfvmz4Ygr+iiLmUtVFRfKBYF7H52v9fQWWMHDVarTEvkCuF7Xet52BGHDPijiOrMcm
+	 US19X+/9iwgFoVeByCHAlN8853g+Dq1lrRpl3WJS2rQhIaEx2HonHwXH6WsZfY2Z8d
+	 L+I1+jbeFoZUNgXRxu7qSH1zyAGkx2hcN+ofCwyRmuX8Xs9J8QlteaJwdXs3isF7/i
+	 JUpxkZjBs9KUB0QcykWxycPMC5ouj5Ey5VnfQptOPl/zim7N23U6C1/vEHMkWundPK
+	 174ETO4j8EOdg==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sun, 15 Dec 2024 18:36:35 +0100
+Subject: [PATCH net-next] net: airoha: Fix error patch in airoha_probe()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,135 +36,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-2-87671db17a65@lunn.ch>
-References: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-0-87671db17a65@lunn.ch>
-In-Reply-To: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-0-87671db17a65@lunn.ch>
-To: Vladimir Oltean <olteanv@gmail.com>, 
+Message-Id: <20241215-airoha_probe-error-path-fix-v1-1-dd299122d343@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKITX2cC/x3MMQqEMBBG4avI1A4kQbfwKiKS6L+baUyYiAiSu
+ xu2/F7xHipQQaGpe0hxSZF0NNi+oy364weWvZmccYN1dmQvmqJfs6YAhmpSzv6M/JWbx7B9AnY
+ DZ0DtkBUt/+/zUusLT50CkW0AAAA=
+X-Change-ID: 20241215-airoha_probe-error-path-fix-5bc6bed0e20e
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
+ Mark Lee <Mark-MC.Lee@mediatek.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andrew Lunn <andrew@lunn.ch>
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4354; i=andrew@lunn.ch;
- h=from:subject:message-id; bh=uDkd9DRKWwfwDiFry+RrQNtzZxTSWFdATTUE/Bz4UyU=;
- b=owEBbQKS/ZANAwAIAea/DcumaUyEAcsmYgBnXxI9W2uANgXai7AuoTjkY09lqCKtWR9cuiFSy
- 1Cr6p+F7QuJAjMEAAEIAB0WIQRh+xAly1MmORb54bfmvw3LpmlMhAUCZ18SPQAKCRDmvw3LpmlM
- hJpAD/4i7cfiaWvhJ7T5r4okvL13gBf0dWfYVwXM2ER1VvEcqyxyK9iCkHQgb5ylRUSikUH0Ouo
- FAwzyMqyHcvizE8Wmy1uuzNM4r2idu0z77lz4hefiqa28WHPT5UK01rEFfo2Uplot9FmAiIlRwf
- gi0pS2H4kpJud7FgxW2O+LtCua38vi3TULjog2C/CJ7EEjSSTlMwK88CeRUPdjGbpTXinTRJ2Gq
- /nFH//rW3T0EJELNGM4rbFmztZ/j1lKgHKI1ZeCNLelsjxSU9n0xDpoPZRtI+/LfiHDfXgoCHLV
- DK+j6kezIqd0SFX4u/eb874fpcdpKVNoO1KD6IJ73hSFNcMEcnKqd3TTpIN133tBE89i1+nEztO
- RIwP7WucRq7iQjBmKJM5Ch/2Cbj9XXW8VGWn44Ty1nVnej3ensndILDsu8LtAuI0etKtqw0+jc1
- tyqXFOGlbE64+XaPv+lABcXhpaysIXRWxvx3ntbtB+bAscGG3KH4PVJEjSEiUrZ5PngcTdMk6oE
- B0QOJZbKSzLHVomNA0EQZskD2exX/C/COjR9F4mPOZc07yy+2Vn/Vdl7xdoDZLUSiNtXV/cOGcX
- qmPkkoeoPBRuDvAJB7jRG5esFpTHhycANP8GUkh83/tbpoeKmuux0e+HR87wnBOEf2ZYtSntd9X
- PRAUwBGSWk6mrWg==
-X-Developer-Key: i=andrew@lunn.ch; a=openpgp;
- fpr=61FB1025CB53263916F9E1B7E6BF0DCBA6694C84
 
-The 6165 family allows the use of the RMU on ports 5 and 6.
+Do not run napi_disable if airoha_hw_init() fails since Tx/Rx napi
+has not been started yet. In order to fix the issue, introduce
+airoha_qdma_disable_napi routine and remove napi_disable in
+airoha_hw_cleanup().
 
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c    |  6 ++++++
- drivers/net/dsa/mv88e6xxx/global1.c | 25 +++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/global1.h |  7 +++++++
- 3 files changed, 38 insertions(+)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 33 ++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 46f81b925208024b9029d6d674ebb5816a615e68..fe471ff4cd8ea8bb6654c61d0b95bb66c2e12157 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -4317,6 +4317,8 @@ static const struct mv88e6xxx_ops mv88e6123_ops = {
- 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6165_g1_rmu_disable,
-+	.rmu_enable = mv88e6165_g1_rmu_enable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
-@@ -4467,6 +4469,8 @@ static const struct mv88e6xxx_ops mv88e6161_ops = {
- 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6165_g1_rmu_disable,
-+	.rmu_enable = mv88e6165_g1_rmu_enable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
-@@ -4505,6 +4509,8 @@ static const struct mv88e6xxx_ops mv88e6165_ops = {
- 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
- 	.pot_clear = mv88e6xxx_g2_pot_clear,
- 	.reset = mv88e6352_g1_reset,
-+	.rmu_disable = mv88e6165_g1_rmu_disable,
-+	.rmu_enable = mv88e6165_g1_rmu_enable,
- 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
- 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
-diff --git a/drivers/net/dsa/mv88e6xxx/global1.c b/drivers/net/dsa/mv88e6xxx/global1.c
-index ae0b6e5628184042404c208273ece55650cbc433..fcddba505ca3b8ddc0bc1a1e0576a5e08a51ef0e 100644
---- a/drivers/net/dsa/mv88e6xxx/global1.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1.c
-@@ -555,6 +555,31 @@ int mv88e6085_g1_rmu_enable(struct mv88e6xxx_chip *chip, int port)
- 				      MV88E6085_G1_CTL2_RM_ENABLE, val);
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 6c683a12d5aa52dd9d966df123509075a989c0b3..5bbf5fee2802135ff6083233d0bda78f2ba5606a 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -2138,17 +2138,14 @@ static void airoha_hw_cleanup(struct airoha_qdma *qdma)
+ 		if (!qdma->q_rx[i].ndesc)
+ 			continue;
+ 
+-		napi_disable(&qdma->q_rx[i].napi);
+ 		netif_napi_del(&qdma->q_rx[i].napi);
+ 		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
+ 		if (qdma->q_rx[i].page_pool)
+ 			page_pool_destroy(qdma->q_rx[i].page_pool);
+ 	}
+ 
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++) {
+-		napi_disable(&qdma->q_tx_irq[i].napi);
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
+ 		netif_napi_del(&qdma->q_tx_irq[i].napi);
+-	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+ 		if (!qdma->q_tx[i].ndesc)
+@@ -2173,6 +2170,21 @@ static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
+ 	}
  }
  
-+int mv88e6165_g1_rmu_disable(struct mv88e6xxx_chip *chip)
++static void airoha_qdma_disable_napi(struct airoha_qdma *qdma)
 +{
-+	return mv88e6xxx_g1_ctl2_mask(chip, MV88E6165_G1_CTL2_RMU_MODE_MASK,
-+				      MV88E6165_G1_CTL2_RMU_DISABLED);
-+}
++	int i;
 +
-+int mv88e6165_g1_rmu_enable(struct mv88e6xxx_chip *chip, int port)
-+{
-+	int val;
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
++		napi_disable(&qdma->q_tx_irq[i].napi);
 +
-+	switch (port) {
-+	case 4:
-+		val = MV88E6165_G1_CTL2_RMU_MODE_PORT_4;
-+		break;
-+	case 5:
-+		val = MV88E6165_G1_CTL2_RMU_MODE_PORT_5;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
++	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
++		if (!qdma->q_rx[i].ndesc)
++			continue;
++
++		napi_disable(&qdma->q_rx[i].napi);
 +	}
-+
-+	return mv88e6xxx_g1_ctl2_mask(chip, MV88E6165_G1_CTL2_RMU_MODE_MASK,
-+				      val);
 +}
 +
- int mv88e6352_g1_rmu_disable(struct mv88e6xxx_chip *chip)
+ static void airoha_update_hw_stats(struct airoha_gdm_port *port)
  {
- 	return mv88e6xxx_g1_ctl2_mask(chip, MV88E6352_G1_CTL2_RMU_MODE_MASK,
-diff --git a/drivers/net/dsa/mv88e6xxx/global1.h b/drivers/net/dsa/mv88e6xxx/global1.h
-index 4624d1bdfc2430d51be747662a25e7b5325e8c79..b8a28afcdcd695c519679976d1361fb7235411a6 100644
---- a/drivers/net/dsa/mv88e6xxx/global1.h
-+++ b/drivers/net/dsa/mv88e6xxx/global1.h
-@@ -235,6 +235,11 @@
- #define MV88E6085_G1_CTL2_DA_CHECK		0x4000
- #define MV88E6085_G1_CTL2_P10RM			0x2000
- #define MV88E6085_G1_CTL2_RM_ENABLE		0x1000
-+#define MV88E6165_G1_CTL2_RMU_MODE_MASK		0x0300
-+#define MV88E6165_G1_CTL2_RMU_DISABLED	        0x0000
-+#define MV88E6165_G1_CTL2_RMU_MODE_PORT_4	0x0100
-+#define MV88E6165_G1_CTL2_RMU_MODE_PORT_5	0x0200
-+#define MV88E6165_G1_CTL2_RMU_MODE_PORT_RECVD	0x0300
- #define MV88E6352_G1_CTL2_DA_CHECK		0x0800
- #define MV88E6390_G1_CTL2_RMU_MODE_MASK		0x0700
- #define MV88E6390_G1_CTL2_RMU_MODE_PORT_0	0x0000
-@@ -317,6 +322,8 @@ int mv88e6185_g1_set_cascade_port(struct mv88e6xxx_chip *chip, int port);
+ 	struct airoha_eth *eth = port->qdma->eth;
+@@ -2738,7 +2750,7 @@ static int airoha_probe(struct platform_device *pdev)
  
- int mv88e6085_g1_rmu_disable(struct mv88e6xxx_chip *chip);
- int mv88e6085_g1_rmu_enable(struct mv88e6xxx_chip *chip, int port);
-+int mv88e6165_g1_rmu_disable(struct mv88e6xxx_chip *chip);
-+int mv88e6165_g1_rmu_enable(struct mv88e6xxx_chip *chip, int port);
- int mv88e6352_g1_rmu_disable(struct mv88e6xxx_chip *chip);
- int mv88e6352_g1_rmu_enable(struct mv88e6xxx_chip *chip, int port);
- int mv88e6390_g1_rmu_disable(struct mv88e6xxx_chip *chip);
+ 	err = airoha_hw_init(pdev, eth);
+ 	if (err)
+-		goto error;
++		goto error_hw_cleanup;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_start_napi(&eth->qdma[i]);
+@@ -2753,13 +2765,16 @@ static int airoha_probe(struct platform_device *pdev)
+ 		err = airoha_alloc_gdm_port(eth, np);
+ 		if (err) {
+ 			of_node_put(np);
+-			goto error;
++			goto error_napi_disable;
+ 		}
+ 	}
+ 
+ 	return 0;
+ 
+-error:
++error_napi_disable:
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++		airoha_qdma_disable_napi(&eth->qdma[i]);
++error_hw_cleanup:
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_hw_cleanup(&eth->qdma[i]);
+ 
+@@ -2780,8 +2795,10 @@ static void airoha_remove(struct platform_device *pdev)
+ 	struct airoha_eth *eth = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
++		airoha_qdma_disable_napi(&eth->qdma[i]);
+ 		airoha_hw_cleanup(&eth->qdma[i]);
++	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
 
+---
+base-commit: 2c2b61d2138f472e50b5531ec0cb4a1485837e21
+change-id: 20241215-airoha_probe-error-path-fix-5bc6bed0e20e
+
+Best regards,
 -- 
-2.45.2
+Lorenzo Bianconi <lorenzo@kernel.org>
 
