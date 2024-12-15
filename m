@@ -1,37 +1,38 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180381547FB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FE81465A5;
 	Sun, 15 Dec 2024 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734283850; cv=none; b=SRnlVLeJnvidHW1oJXW0k8WbwIUYYY4r1ag7CJCIprj0YBo5KkhBfOLXxoCY9beqFvaaSVZOKYBBR80UBAXlG9Hbc9gCwAoceaX2e12kXzuR7RvpGqrdEEI8TITjfND2Cj9ULkbz0YNr4ZGTWimKgvP8IeMGeyC51Hb7OLFCtTA=
+	t=1734283851; cv=none; b=ITD6SHk2tBAlK5D6PMFrkIg7qjpeNeU13e+lhBDlTmkF3Z8Uzgia6g6ygdslTPo0vtXWNsJExAC6un6jZ0wD2LeYcjh+PaRXY4yOHJewOvMzEipHrZ8OsbJg5a7XrX/KyMgG8nLbaSMs2mtsoheQVf4QP4Y6eBO5eZIm29WyZFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734283850; c=relaxed/simple;
-	bh=/efaqbc42+v+ciq/3FM4TfPTRhewVv8qEyjoYpqBCtg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tkhfNTu/FP3OpM/VH1md/AOWg0YtPQdjCjy3f1ak/nFJgRYuHWm1/WzeBSObkskzZg0mPC/R3qHiyhud4pF10b/oFwrE8H4TAcPgi7DPzkylpXYAc9v3WvLb62O7f0BdLZggK1clgeUXD03UdG6AbUSxabukt6XJkdWA68f8UBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lba/hEJ+; arc=none smtp.client-ip=156.67.10.101
+	s=arc-20240116; t=1734283851; c=relaxed/simple;
+	bh=XvSZhCcMO+b5GYrnq5FHh4XipnZMgiopvTngRcyaNSo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RvbO1uadUIUL9MmecobE8w9yQMbNka+oIJKoeWO8WWNcIuBDdiYLMVgI3IxDHeQwzn4wT7kYNW3MWuC80xj+Nn2NaW/Zn4Ckg9a3gcxUMuYQGffCqeN37x2kRvNAR1aF2BFG/0ivilT73dU2DMiABMfzKSfrvsEuvaghsy6rrwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RnmyhxMw; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lba/hEJ+"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RnmyhxMw"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:
-	Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=qhnKUnZU2bi37bD6EJemfvDqOmaYI30ZEPYrAK+ItOc=; b=lba/hEJ++6wHBHPCstHDOJg70O
-	xy4lDh1HFgEobDeFHB9GccptnI7kHqYHlGXZwDdO9I642G1ac7Yq4hYwPhya7xbak+nPD+hTC3oXN
-	hJOoglObkugRvUF4juI7k76V3dQG42jcG6Fu0ATmqWkyu0HFfrQcdHbWoZ52WCd/dErs=;
+	s=20171124; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=pq5GsMcfo4rfBFuKUoZeo1gFpeGJ1AOCYPKI7H6XpQI=; b=Rn
+	myhxMwzSnLlwXLQtUOSmSog/6e6ID8k2vxFLj088y5+GzYQKS6t58XyYLXd3G3OhSe32WZSPfKg3h
+	VOFU0AaDzjsuzvfQ/kbAaJQ3/HRpZLEuZufFfJzo22W6ASGuscwHIb45OUA9NDsFoE7aAK5XmZk7M
+	cw29iEZqrE2BRCA=;
 Received: from [94.14.176.234] (helo=thinkpad.home.lunn.ch)
 	by vps0.lunn.ch with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tMsRz-000WHi-7t; Sun, 15 Dec 2024 18:30:39 +0100
+	id 1tMsS3-000WHi-4N; Sun, 15 Dec 2024 18:30:43 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH 0/3] dsa: mv88e6xxx: Add RMU enable/disable ops
-Date: Sun, 15 Dec 2024 17:30:02 +0000
-Message-Id: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-0-87671db17a65@lunn.ch>
+Date: Sun, 15 Dec 2024 17:30:05 +0000
+Subject: [PATCH 3/3] net: dsa: mv88e6xxx: Enable RMU on 6351 family
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,59 +41,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABoSX2cC/x2NMQ6DMAwAv4I811KcBoj6laoDIg71QEAJRJYQf
- 2/U4YZb7i4onIULvLoLMlcpsqUm9Ohg/k5pYZTQHKyxjqwZsQ5IT8wzYeKjoQeu1XseVBXzeuK
- 2F3TBTN7FPo6BoKX2zFH0v3l/7vsH9uzulXYAAAA=
-X-Change-ID: 20241207-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-4d0a84f5f7d1
+Message-Id: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-3-87671db17a65@lunn.ch>
+References: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-0-87671db17a65@lunn.ch>
+In-Reply-To: <20241215-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-v1-0-87671db17a65@lunn.ch>
 To: Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
  Russell King <linux@armlinux.org.uk>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andrew Lunn <andrew@lunn.ch>, Mattias Forsblad <mattias.forsblad@gmail.com>
+ Andrew Lunn <andrew@lunn.ch>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1014; i=andrew@lunn.ch;
- h=from:subject:message-id; bh=/efaqbc42+v+ciq/3FM4TfPTRhewVv8qEyjoYpqBCtg=;
- b=owEBbQKS/ZANAwAIAea/DcumaUyEAcsmYgBnXxI2zYaImhZL2iYGgRKggQIuDUOLOX3iKSEOE
- v1DWz+45GaJAjMEAAEIAB0WIQRh+xAly1MmORb54bfmvw3LpmlMhAUCZ18SNgAKCRDmvw3LpmlM
- hIA9EADEO+QSD1K/qpMoCscEBacVIf4ZN8cCc2rxbRWKkV8ws0ncgolY7Xe6QMVYNCkB8A4M0PL
- 1e1K1cVJuVYiHSdp+00+mHCtc6RPcbGDb/6UfmZ2GogT/lySC/ewx59DDQ1dLhY/y1nrKy5ml4K
- byobJnZCP+/CtliiX2f/gm+qAITSZI5eb7LE6f6FnYGAA2AcPpjClDwG08w7liqQ+PPjjShG4tH
- ukLGuUlbWwasyuFga5wjYI5fSCsWIncqivz0gs6nbfHhVqEUM95uBJr1ncq6nHdh7eIJdads2In
- Ll4BZkkimiucXrYP7Fncc1mesxxUKxecvoNiV2xrjykfqw68xDYQJwuGUmHOGStcSmJ4bU7HzEW
- y2ODq2uAYaQY6xM5taGla1TKBduEmP1h5XdfjfImnj2hWBn+wbBRHn5mfnDeDHqrvx+U1p+W2dP
- t7JpVjYR20Nc4//1Ai+wQ9MxkzLreG9IugjRBQNXhm+sIraImnZLIiJFKKy/GNzWKH1xO7nIqVo
- v4zAr4ni+xOJsZiwDoqueMisyRSkOHZOnhZkgd6DgqjX/VTd2zZZYTk3U4p8f2hXqHVhfIFLSTK
- hDElxQj5qM0BZWZ6uWyv7kyxgdIbMf5nxrNi2iA/KkjhBL4XyUjh+ETLFSwvXv5+na3riebYcZS
- iih3bTd2vdav1vQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2159; i=andrew@lunn.ch;
+ h=from:subject:message-id; bh=XvSZhCcMO+b5GYrnq5FHh4XipnZMgiopvTngRcyaNSo=;
+ b=owEBbQKS/ZANAwAIAea/DcumaUyEAcsmYgBnXxI9phcCRRuLiYllJ4YEMZM1vEHAZi+aJS4no
+ tO+5knklT+JAjMEAAEIAB0WIQRh+xAly1MmORb54bfmvw3LpmlMhAUCZ18SPQAKCRDmvw3LpmlM
+ hI3aD/9zAtdryswp48PAA0NV9GJumIa/On7kZD3bFs2DAIPN7cxSdly/qUkoEe0DezcKp3a2SAG
+ ohekJekcxiWlCbLJ2GAXL/5OgYuWb7xO7Q9ZYatDJeCxJ3bJ8jnt7Y2NAGWJhzApoyaR++HVah3
+ Nq4ff1q2dH9Wigu5DlntueHM4dbvodlmSvMnJdFpxVPL2Br3fLneWcLCdIzsq6Nr25jT9Jp3Jlt
+ geb+zV1b9+FP+tV+ZjsvHREPhPWPbkWzbnvd2CD+RGNdXFgE0YUgQdG4H4TE58Yoe6mYDKasAO+
+ UVf+ilkhJEPr0te/OeEzqrkOayZRhIdPnxRV1xs9Us0fqyojjF0RN3lvkAb0UytMAhCopfwlDLj
+ I7/I4pP1LWx9dRaqyaURqLoAiR6M5ju8yMpNY7qJ3yWo5U4xzhpIEpE46Tsu82kwnK4eOO3WScG
+ JZBimCOYGX3iIPFyZKuKBp9VxMFmu2j6Qgr5gtYPXEKrTZLJULrOs2fI8I3BAMl4NHlXWUnGixj
+ 3gv12jZ7lQzek1OUpgocxog41T0JzUr6JVK+CIb9JEm6ua8IUE507CnkKSLNTmt7ooOi3szhh08
+ TMlr6mFVG3B/ehBOXIQ8gVCGwwxoyj1ceRKLPKUZrZQwcYipFPhIy5CK1x79vcUyOedWCrOP1+Q
+ zVb0QItl8xNTDZA==
 X-Developer-Key: i=andrew@lunn.ch; a=openpgp;
  fpr=61FB1025CB53263916F9E1B7E6BF0DCBA6694C84
 
-Add internal APIs for enabling the Remote Management Unit, and
-extending the existing implementation to other families. Actually
-making use of the RMU is not included here, that will be part of a
-later big patch set, which without this preliminary patchset would be
-too big.
+The 6351 family of switches has the same RMU configuration as the 6352
+family.
 
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 ---
-Andrew Lunn (2):
-      net: dsa: mv88e6xxx: Enable RMU on 6165 family
-      net: dsa: mv88e6xxx: Enable RMU on 6351 family
+ drivers/net/dsa/mv88e6xxx/chip.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Mattias Forsblad (1):
-      net: dsa: mv88e6xxx: Add RMU enable for switches that support disable.
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index fe471ff4cd8ea8bb6654c61d0b95bb66c2e12157..300a2acfdd941f30d5ae7cb16062ee269e04178a 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -4559,6 +4559,8 @@ static const struct mv88e6xxx_ops mv88e6171_ops = {
+ 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.pot_clear = mv88e6xxx_g2_pot_clear,
+ 	.reset = mv88e6352_g1_reset,
++	.rmu_disable = mv88e6352_g1_rmu_disable,
++	.rmu_enable = mv88e6352_g1_rmu_enable,
+ 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
+ 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
+@@ -4663,6 +4665,8 @@ static const struct mv88e6xxx_ops mv88e6175_ops = {
+ 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.pot_clear = mv88e6xxx_g2_pot_clear,
+ 	.reset = mv88e6352_g1_reset,
++	.rmu_disable = mv88e6352_g1_rmu_disable,
++	.rmu_enable = mv88e6352_g1_rmu_enable,
+ 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
+ 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
+@@ -5321,6 +5325,8 @@ static const struct mv88e6xxx_ops mv88e6350_ops = {
+ 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.pot_clear = mv88e6xxx_g2_pot_clear,
+ 	.reset = mv88e6352_g1_reset,
++	.rmu_disable = mv88e6352_g1_rmu_disable,
++	.rmu_enable = mv88e6352_g1_rmu_enable,
+ 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
+ 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
+@@ -5367,6 +5373,8 @@ static const struct mv88e6xxx_ops mv88e6351_ops = {
+ 	.mgmt_rsvd2cpu = mv88e6352_g2_mgmt_rsvd2cpu,
+ 	.pot_clear = mv88e6xxx_g2_pot_clear,
+ 	.reset = mv88e6352_g1_reset,
++	.rmu_disable = mv88e6352_g1_rmu_disable,
++	.rmu_enable = mv88e6352_g1_rmu_enable,
+ 	.atu_get_hash = mv88e6165_g1_atu_get_hash,
+ 	.atu_set_hash = mv88e6165_g1_atu_set_hash,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
 
- drivers/net/dsa/mv88e6xxx/chip.c    | 29 ++++++++++++
- drivers/net/dsa/mv88e6xxx/chip.h    |  1 +
- drivers/net/dsa/mv88e6xxx/global1.c | 89 +++++++++++++++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/global1.h | 10 +++++
- 4 files changed, 129 insertions(+)
----
-base-commit: 2c2b61d2138f472e50b5531ec0cb4a1485837e21
-change-id: 20241207-v6-13-rc1-net-next-mv88e6xxx-rmu-ops-4d0a84f5f7d1
-
-Best regards,
 -- 
-Andrew Lunn <andrew@lunn.ch>
+2.45.2
 
