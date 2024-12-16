@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0A3204C00
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83F9204C01
 	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734350998; cv=none; b=KtF/9Xf+835lQRHlL7qzKF5La4AAt29+BWQNdKpNeFU6+45Ld+WW7lBl72QO4Ak1YPtqiY4wwPQk84nnTcFnJiC6f90ruR0C8nuwsN7YPTYiCcX/dCNdliR3l/L89wgjKutRKKtc++UfuAUttThzg5SNlOXTvigGJIa9a/wuKLI=
+	t=1734350998; cv=none; b=GU+lZRKwFIrhc29J3p+h0oI6iFW96YRTwUKqWR9BaZ5zeLhhyhlm0TsEmI3nCr4UtHZVW5y4HUxlYIn3YUWZoR2X92At+wBDkb4WXVhMg0wVPADUoZIu4AVwCQqemLMkBUzIB8IXFQVQtedjpsWlSCcLm1rn27hwbwPxD0KCWhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734350998; c=relaxed/simple;
-	bh=pfsl2TBxq6ncI2CnbTDx6yfSrPUgIlfFqf6zE4SHubU=;
+	bh=jc1WfBcyiJoiKMz9KgYkmV4nQ/C4HWUEcdFsqsMSRxg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YcXjugmDpDggIJbhFVVm6cFAnTz5StEqFoYqSH8+PLs6YSr/50zvgjsne4b0/qKu3K3qczFoP8ZVMxCwFtDKzF4V+BoINdaDSP6FoflspGYpS5SKv/CU7ypd1GGWLfbRRcbtX8NGpiVVl5Jt7D+Kx5iBHne2IMBUbk9rcmjRaCc=
+	 MIME-Version; b=NA1FpYY4wzTLLv0u2qiz//zVLDW8V0DkHAZ/ERAAQgKbT9hY92Tv+410CwPi1YbW9KYfeB/B6egAKm0ycOCSJnxmalbUSDRl09weGujdPGv0MRGua/P0SeA46ZRLmHfIBNxhe+8uwoOuuSRAC3wzgy1QYPZ2unB2+ElApdGcHyU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tN9v1-0001C4-9F; Mon, 16 Dec 2024 13:09:47 +0100
+	id 1tN9v1-0001C7-9E; Mon, 16 Dec 2024 13:09:47 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tN9uw-003h1j-2G;
+	id 1tN9uw-003h1m-2W;
 	Mon, 16 Dec 2024 13:09:43 +0100
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1tN9ux-0075u0-1H;
+	id 1tN9ux-0075uU-1R;
 	Mon, 16 Dec 2024 13:09:43 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -43,9 +43,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 3/6] net: usb: lan78xx: Use action-specific label in lan78xx_mac_reset
-Date: Mon, 16 Dec 2024 13:09:38 +0100
-Message-Id: <20241216120941.1690908-4-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 6/6] net: usb: lan78xx: Improve error handling in WoL operations
+Date: Mon, 16 Dec 2024 13:09:41 +0100
+Message-Id: <20241216120941.1690908-7-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241216120941.1690908-1-o.rempel@pengutronix.de>
 References: <20241216120941.1690908-1-o.rempel@pengutronix.de>
@@ -61,59 +61,44 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Rename the generic `done` label to the action-specific `exit_unlock`
-label in `lan78xx_mac_reset`. This improves clarity by indicating the
-specific cleanup action (mutex unlock) and aligns with best practices
-for error handling and cleanup labels.
+Enhance error handling in Wake-on-LAN (WoL) operations:
+- Log a warning in `lan78xx_get_wol` if `lan78xx_read_reg` fails.
+- Check and handle errors from `device_set_wakeup_enable` and
+  `phy_ethtool_set_wol` in `lan78xx_set_wol`.
+- Ensure proper cleanup with a unified error handling path.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/usb/lan78xx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/usb/lan78xx.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 4674051f5c9c..30301af29ab2 100644
+index 6c9dab290f3f..a91bf9c7e31d 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1604,16 +1604,16 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
- 	 */
- 	ret = lan78xx_mdiobus_wait_not_busy(dev);
- 	if (ret < 0)
--		goto done;
-+		goto exit_unlock;
+@@ -1857,6 +1857,7 @@ static void lan78xx_get_wol(struct net_device *netdev,
  
- 	ret = lan78xx_read_reg(dev, MAC_CR, &val);
- 	if (ret < 0)
--		goto done;
-+		goto exit_unlock;
+ 	ret = lan78xx_read_reg(dev, USB_CFG0, &buf);
+ 	if (unlikely(ret < 0)) {
++		netdev_warn(dev->net, "failed to get WoL %pe", ERR_PTR(ret));
+ 		wol->supported = 0;
+ 		wol->wolopts = 0;
+ 	} else {
+@@ -1888,10 +1889,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
  
- 	val |= MAC_CR_RST_;
- 	ret = lan78xx_write_reg(dev, MAC_CR, val);
- 	if (ret < 0)
--		goto done;
-+		goto exit_unlock;
+ 	pdata->wol = wol->wolopts;
  
- 	/* Wait for the reset to complete before allowing any further
- 	 * MAC register accesses otherwise the MAC may lock up.
-@@ -1621,16 +1621,16 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
- 	do {
- 		ret = lan78xx_read_reg(dev, MAC_CR, &val);
- 		if (ret < 0)
--			goto done;
-+			goto exit_unlock;
+-	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
++	ret = device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
++	if (ret < 0)
++		goto exit_pm_put;
  
- 		if (!(val & MAC_CR_RST_)) {
- 			ret = 0;
--			goto done;
-+			goto exit_unlock;
- 		}
- 	} while (!time_after(jiffies, start_time + HZ));
+-	phy_ethtool_set_wol(netdev->phydev, wol);
++	ret = phy_ethtool_set_wol(netdev->phydev, wol);
  
- 	ret = -ETIMEDOUT;
--done:
-+exit_unlock:
- 	mutex_unlock(&dev->phy_mutex);
++exit_pm_put:
+ 	usb_autopm_put_interface(dev->intf);
  
  	return ret;
 -- 
