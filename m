@@ -1,159 +1,105 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A7204C08
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393F22046BA;
+	Mon, 16 Dec 2024 12:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734350998; cv=none; b=q7Toj3X/6FA0E8NfV7NNDRhxap4nsATlAnY1icVrQKIilJOuehkAkDAGaKbsytYGdsHjQDwAPYCa6EzkgGv6mzEVyeS1IGDOCI/N9blGaQ4XFcT9q7AQhNZHpEB3yVYKX1wsoM7ymtLXBnU5dMmR4ANdWBXvIegcaeYumOCB4SQ=
+	t=1734351108; cv=none; b=pj4P5w3M3lvVy1wU8J88DdH7zbwbUvbZt/118EoMfXuU+LJlK2BTrQK27gLhgEW4rfId9u41OWEkd5xqBu2P19+7aYkaM2Y6dwsvFprokA8bzVmsE6c6d/xmsWFqLf0QWmS4EtkmFEU/Xy9tDmRppxs5gpIOo4YPkiD8trqEdLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734350998; c=relaxed/simple;
-	bh=M6/dmU5gV8hkCd8AiX90yM2U2eMQuPz7bbBpyE91QNM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V0zi9MtLeuU6a6i/Couos4LaO05CaLdu5+YqDhEitKHwv+KX3JiDe9ZpzvKTY/5fSYkqmZjggZWWwChttFYAw+eElnWyIcvmHu8MIgB/kNfPqYEb1QE1oSoP4PSiZLZPC4VzCBp2Zm2gc/OiqO3w7T9yrEshx6btAlgt8yhf+7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tN9v1-0001C5-9F; Mon, 16 Dec 2024 13:09:47 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tN9uw-003h1k-2O;
-	Mon, 16 Dec 2024 13:09:43 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1tN9ux-0075uA-1K;
-	Mon, 16 Dec 2024 13:09:43 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com,
-	Phil Elwell <phil@raspberrypi.org>
-Subject: [PATCH net-next v1 4/6] net: usb: lan78xx: rename phy_mutex to mdiobus_mutex
-Date: Mon, 16 Dec 2024 13:09:39 +0100
-Message-Id: <20241216120941.1690908-5-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241216120941.1690908-1-o.rempel@pengutronix.de>
-References: <20241216120941.1690908-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1734351108; c=relaxed/simple;
+	bh=/uPilcPPSkM0vFf7CZp7ih66ufLi2xO3rEUxtf1Dzh8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eL1OCaJAeWJBNtdgde+HvQJrhMFQOHccyam4h0gEchk0QgMrS7Wws85zjVMbgM3KXeCPSmQ+/tgevq2oZ/ZM3atxoKOz6aaBvBN8adzPcDPK1tKLUKds71uWtv31mFoUq4VGrkFJjIM9/zsK6S0ZexP0oZcfPGoJsUPMXzRX4yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AvEz7mgn; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AvEz7mgn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1734351107; x=1765887107;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/uPilcPPSkM0vFf7CZp7ih66ufLi2xO3rEUxtf1Dzh8=;
+  b=AvEz7mgnA8QDnTyvXhbj1cgm6Q5mMzmXV9oVNBYa/sswpoxsZYQ3KL2h
+   SoyeFFrqaTMsxhgvmY8uiqWwaALZ5Sp/UO9dDMDYaKDTlVoyBtv/U3ikP
+   LYii1QTG4orh3IPOwKWxY8ITcbuu8iTQ2H4o/RdAMUd1TvRo+QOGlKdrt
+   b39bFs3wX/D+bsnPLEw/uvyRP9v6XT5gfaDmsfbclsUyLX7Fqbxt5a3T8
+   p0vUJULK3bzp1nvQT2bE9jW+SIHKFUMYqnd4EMIkgfMyxUYbIqt2UkyGQ
+   Rbapm9WxOjQO1k1q2QQWc4nfmFRL+4dTl6bIKaTxm3JF8Kge1EffKxYIz
+   Q==;
+X-CSE-ConnectionGUID: pK+G4L7kQ0aeZKZcimCaNA==
+X-CSE-MsgGUID: AxFEMPyOT+abSUdbeMU9OQ==
+X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; 
+   d="scan'208";a="35580346"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Dec 2024 05:11:46 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 16 Dec 2024 05:10:44 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Mon, 16 Dec 2024 05:10:41 -0700
+Date: Mon, 16 Dec 2024 12:10:40 +0000
+From: Daniel Machon <daniel.machon@microchip.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Lars
+ Povlsen" <lars.povlsen@microchip.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, <jacob.e.keller@intel.com>,
+	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+	<devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<robert.marko@sartura.hr>
+Subject: Re: [PATCH net-next v4 6/9] net: sparx5: verify RGMII speeds
+Message-ID: <20241216121040.2dpxb7mv6h3u3r42@DEN-DL-M70577>
+References: <20241213-sparx5-lan969x-switch-driver-4-v4-0-d1a72c9c4714@microchip.com>
+ <20241213-sparx5-lan969x-switch-driver-4-v4-6-d1a72c9c4714@microchip.com>
+ <Z1yPq6OEziTNjWHK@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <Z1yPq6OEziTNjWHK@shell.armlinux.org.uk>
 
-Rename `phy_mutex` to `mdiobus_mutex` for clarity, as the mutex protects
-MDIO bus access rather than PHY-specific operations. Update all
-references to ensure consistency.
+> On Fri, Dec 13, 2024 at 02:41:05PM +0100, Daniel Machon wrote:
+> > When doing a port config, we verify the port speed against the PHY mode
+> > and supported speeds of that PHY mode. Add checks for the four RGMII phy
+> > modes: RGMII, RGMII_ID, RGMII_TXID and RGMII_RXID.
+> >
+> > Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+> > Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+> > Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+> 
+> You do realise that phylink knows what speeds each interface supports
+> (see phylink_get_capabilities()) and restricts the media advertisement
+> to ensure that ethtool link modes that can't be supported by the MAC
+> capabilities and set of interfaces that would be used are not
+> advertised.
+> 
+> This should mean none of your verification ever triggers. If it does,
+> then I'd like to know about it.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/usb/lan78xx.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+Yes, I agree. Having an extra look at phylink, these checks should not trigger
+at all.
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 30301af29ab2..78c75599b8f1 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -439,7 +439,7 @@ struct lan78xx_net {
- 	struct usb_anchor	deferred;
- 
- 	struct mutex		dev_mutex; /* serialise open/stop wrt suspend/resume */
--	struct mutex		phy_mutex; /* for phy access */
-+	struct mutex		mdiobus_mutex; /* for MDIO bus access */
- 	unsigned int		pipe_in, pipe_out, pipe_intr;
- 
- 	unsigned int		bulk_in_delay;
-@@ -952,7 +952,7 @@ static int lan78xx_flush_rx_fifo(struct lan78xx_net *dev)
- 	return lan78xx_flush_fifo(dev, FCT_RX_CTL, FCT_RX_CTL_RST_);
- }
- 
--/* Loop until the read is completed with timeout called with phy_mutex held */
-+/* Loop until the read is completed with timeout called with mdiobus_mutex held */
- static int lan78xx_mdiobus_wait_not_busy(struct lan78xx_net *dev)
- {
- 	unsigned long start_time = jiffies;
-@@ -1596,7 +1596,7 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
- 	u32 val;
- 	int ret;
- 
--	mutex_lock(&dev->phy_mutex);
-+	mutex_lock(&dev->mdiobus_mutex);
- 
- 	/* Resetting the device while there is activity on the MDIO
- 	 * bus can result in the MAC interface locking up and not
-@@ -1631,7 +1631,7 @@ static int lan78xx_mac_reset(struct lan78xx_net *dev)
- 
- 	ret = -ETIMEDOUT;
- exit_unlock:
--	mutex_unlock(&dev->phy_mutex);
-+	mutex_unlock(&dev->mdiobus_mutex);
- 
- 	return ret;
- }
-@@ -2249,7 +2249,7 @@ static int lan78xx_mdiobus_read(struct mii_bus *bus, int phy_id, int idx)
- 	if (ret < 0)
- 		return ret;
- 
--	mutex_lock(&dev->phy_mutex);
-+	mutex_lock(&dev->mdiobus_mutex);
- 
- 	/* confirm MII not busy */
- 	ret = lan78xx_mdiobus_wait_not_busy(dev);
-@@ -2273,7 +2273,7 @@ static int lan78xx_mdiobus_read(struct mii_bus *bus, int phy_id, int idx)
- 	ret = (int)(val & 0xFFFF);
- 
- done:
--	mutex_unlock(&dev->phy_mutex);
-+	mutex_unlock(&dev->mdiobus_mutex);
- 	usb_autopm_put_interface(dev->intf);
- 
- 	return ret;
-@@ -2290,7 +2290,7 @@ static int lan78xx_mdiobus_write(struct mii_bus *bus, int phy_id, int idx,
- 	if (ret < 0)
- 		return ret;
- 
--	mutex_lock(&dev->phy_mutex);
-+	mutex_lock(&dev->mdiobus_mutex);
- 
- 	/* confirm MII not busy */
- 	ret = lan78xx_mdiobus_wait_not_busy(dev);
-@@ -2313,7 +2313,7 @@ static int lan78xx_mdiobus_write(struct mii_bus *bus, int phy_id, int idx,
- 		goto done;
- 
- done:
--	mutex_unlock(&dev->phy_mutex);
-+	mutex_unlock(&dev->mdiobus_mutex);
- 	usb_autopm_put_interface(dev->intf);
- 	return ret;
- }
-@@ -4476,7 +4476,7 @@ static int lan78xx_probe(struct usb_interface *intf,
- 	skb_queue_head_init(&dev->rxq_done);
- 	skb_queue_head_init(&dev->txq_pend);
- 	skb_queue_head_init(&dev->rxq_overflow);
--	mutex_init(&dev->phy_mutex);
-+	mutex_init(&dev->mdiobus_mutex);
- 	mutex_init(&dev->dev_mutex);
- 
- 	ret = lan78xx_urb_config_init(dev);
--- 
-2.39.5
+As it is, the default switch case is to throw an error, so without this
+addition, the sparx5_port_verify_speed() function will fail when the PHY mode
+is any of RGMII{_ID,_TXID,_RXID}. This patch just follows the established
+pattern of adding the new PHY mode and checking the speed. TBH, I think that
+all the checks in this function can be removed entirely, but that is something
+I would like to verify and follow up on in a separate series, if that is OK? 
+
+Thanks.
+
+/Daniel
 
