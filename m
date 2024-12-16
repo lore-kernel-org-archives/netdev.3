@@ -1,168 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A99E38FA6
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14ED2046B2
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734350944; cv=none; b=egEzuCcbB0FC09cQ1JQooqbCcQrriN/F3upGPgKfPwpW0TIRJ4l2WyJCkU8hIdcJxciAB0/VElBlV4mQrnav9yrzk1mWo+ctpOHSs10Sl1nyYP0DXO/BOmgYJuYQ94v+hA7Kji535gkLZ8GgnBs8HQwfwU/ORpWHML3yUK8db9M=
+	t=1734350997; cv=none; b=UpHzGrpokrMUPnLUMoKBSivPVJvh7AfuyribbM5aZWSricVCyydk30ETfK7zlrV8IUsI5ao9OjZQhMwPwZhPetEhyHr1WeXnKqinVXK1mhkoRyEYk+FZXE7ZLCCV++6f/GzXJpofANSctmd04EpUGAnoJ72bOWb3BlIn2z9ohFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734350944; c=relaxed/simple;
-	bh=NvT9qeS8rdRRygfFMeVcBLUhj9fFyA9StbpSggcgn4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VbfRFcI2cl0+SayhcxCFG0oUzNTWPKxae4+6f9j+LCeqzLV/ZC9ymqZQoOqoK0UdAaUvk7xPC6vwi3jsXH5OBAtVcEzuf8tpC9mJIA8I7ha2eYdmfrp4fd7RP9iV5nLfe3p3SpGuY9SeZW9DA4wpHJvv/BDUbSBpiEJVByu2vzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUAjRbRI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUAjRbRI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C2BC4CED0;
-	Mon, 16 Dec 2024 12:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734350944;
-	bh=NvT9qeS8rdRRygfFMeVcBLUhj9fFyA9StbpSggcgn4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JUAjRbRIlS8wVKc6SP0LW23hTE7pDnYqceFYUEDBd38ebSAZ0gWl0ilTuvS6Afg8L
-	 N2ZwOEnVWwIfDW102jUyhF2GN5v1zZfTm482lXcdfntq7sYG9WWQU9fBmQf5QxKT2X
-	 k3qn4X7vo4LvRAW5pu7hV4WAlycm30pGWrmzaDciP/BSayeDDoHxbivHg7mPzxtN2y
-	 UBC61rz04qmQ6KvFt4r9705WhXBXZR1h/aMY+L0IwfENTghF1Evx5az/oxiHc5A6PY
-	 kl0L7XGLy6DtXbxzK7h7q+ml60BEbbt/ZT4HiINsM2mrn5xouzJfnjkhwhCAwYfV3w
-	 YtP5CKknd2mvg==
-Date: Mon, 16 Dec 2024 13:09:01 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, nbd@nbd.name, sean.wang@mediatek.com,
-	Mark-MC.Lee@mediatek.com, lorenzo.bianconi83@gmail.com
-Subject: Re: [RFC net-next 0/5] Add ETS and TBF Qdisc offload for Airoha
- EN7581 SoC
-Message-ID: <Z2AYXRy-LjohbxfL@lore-desk>
-References: <cover.1733930558.git.lorenzo@kernel.org>
- <20241211154109.dvkihluzdouhtamr@skbuf>
- <Z1qqrVWV84DBZuCn@lore-desk>
- <20241212150613.zhi3vbxuwsc3blui@skbuf>
- <Z1sXTPeekJ5See_u@lore-desk>
- <20241212184647.t5n7t2yynh6ro2mz@skbuf>
+	s=arc-20240116; t=1734350997; c=relaxed/simple;
+	bh=smjRVQ6loD7RNSPz3LagPvSvg5qkvEYEgfWW6vwiwRs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=eBG7ondsDVgZ9NWA713QF62dy8xMnJjKEg2a4vAn5iyxkUjwFF0e7dzRrkwkqKgkg87JptSu5oDRrC2IxKgNaLqLYSI9QyjxOC0uFSp/6G4SDKSXLiQn0+b8Qc/eJFKqWomJqcEYYifjwytc5pk2ecvrbVbHRuPOJlVVKAdAszI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tN9v1-0001C3-9K; Mon, 16 Dec 2024 13:09:47 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tN9uw-003h1i-2C;
+	Mon, 16 Dec 2024 13:09:43 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tN9ux-0075tp-1E;
+	Mon, 16 Dec 2024 13:09:43 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	Phil Elwell <phil@raspberrypi.org>
+Subject: [PATCH net-next v1 2/6] net: usb: lan78xx: Use ETIMEDOUT instead of ETIME in lan78xx_stop_hw
+Date: Mon, 16 Dec 2024 13:09:37 +0100
+Message-Id: <20241216120941.1690908-3-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241216120941.1690908-1-o.rempel@pengutronix.de>
+References: <20241216120941.1690908-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9z+PDC61Tt4YZqkq"
-Content-Disposition: inline
-In-Reply-To: <20241212184647.t5n7t2yynh6ro2mz@skbuf>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
+Update lan78xx_stop_hw to return -ETIMEDOUT instead of -ETIME when
+a timeout occurs. While -ETIME indicates a general timer expiration,
+-ETIMEDOUT is more commonly used for signaling operation timeouts and
+provides better consistency with standard error handling in the driver.
 
---9z+PDC61Tt4YZqkq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The -ETIME checks in tx_complete() and rx_complete() are unrelated to
+this error handling change. In these functions, the error values are derived
+from urb->status, which reflects USB transfer errors. The error value from
+lan78xx_stop_hw will be exposed in the following cases:
+- usb_driver::suspend
+- net_device_ops::ndo_stop (potentially, though currently the return value
+  is not used).
 
-> On Thu, Dec 12, 2024 at 06:03:08PM +0100, Lorenzo Bianconi wrote:
-> > > Explain "the mac chip forwards (in hw) the WAN traffic to the DSA swi=
-tch
-> > > via the CPU port". How many packets does airoha_dev_select_queue() se=
-e?
-> > > All of them, or only the first of a flow? What operations does the
-> > > offload consist of?
-> >=20
-> > I am referring to the netfilter flowtable offload where the kernel rece=
-ives
-> > just the 3-way handshake of a TCP connection and then the traffic is fu=
-lly
-> > offloaded (the hw receives a flower rule to route the traffic between
-> > interfaces applying NAT mangling if requested).
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/usb/lan78xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Hi Vladimir,
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 270345fcad65..4674051f5c9c 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -844,9 +844,7 @@ static int lan78xx_stop_hw(struct lan78xx_net *dev, u32 reg, u32 hw_enabled,
+ 		} while (!stopped && !time_after(jiffies, timeout));
+ 	}
+ 
+-	ret = stopped ? 0 : -ETIME;
+-
+-	return ret;
++	return stopped ? 0 : -ETIMEDOUT;
+ }
+ 
+ static int lan78xx_flush_fifo(struct lan78xx_net *dev, u32 reg, u32 fifo_flush)
+-- 
+2.39.5
 
-Sorry for the late reply.
-
->=20
-> And how do the follow-up packets know to go to the same conduit queue as
-> the initial packets of the flow?
->=20
-> As mentioned, my trouble with your current proposal is that I don't
-> think it reacts adequately to the user space request. Given your command,
-> packets forwarded from lan1 to lan0 should also go through lan0's ETS
-> scheduler, but my understanding is that they won't, because they bypass
-> the conduit. I don't encourage adding new net_device_ops infrastructure
-> to implement unexpected behavior.
-
-I guess what I did not make clear here is that we are discussing about
-'routed' traffic (sorry for that). The traffic is received from the WAN
-interface and routed to a DSA port (or the other way around).
-In this scenario the 3-way handshake will be received by the CPU via the
-WAN port (or the conduit port) while the subsequent packets will be hw
-forwarded from WAN to LAN (or LAN to WAN). For EN7581 [0], the traffic
-will be received by the system from GDM2 (WAN) and the PSE/PPE blocks
-will forward it to the GDM1 port that is connected to the DSA cpu port.
-
-The proposed series is about adding the control path to apply a given Qdisc
-(ETS or TBF for EN7581) to the traffic that is following the described path
-without creating it directly on the DSA switch port (for the reasons descri=
-bed
-before). E.g. the user would want to apply an ETS Qdisc just for traffic
-egressing via lan0.
-
-This series is not strictly related to the airoha_eth flowtable offload
-implementation but the latter is required to have a full pictures of the
-possible use case (this is why I was saying it is better to post it first).
-
->=20
-> I'm trying to look at the big picture and abstract away the flowtable a
-> bit. I don't think the tc rule should be on the user port. Can the
-> redirection of packets destined towards a particular switch port be
-> accomplished with a tc u32 filter on the conduit interface instead?
-> If the tc primitives for either the filter or the action don't exist,
-> maybe those could be added instead? Like DSA keys in "flower" which gain
-> introspection into the encapsulated packet headers?
-
-The issue with the current DSA infrastructure is there is no way to use
-the conduit port to offload a Qdisc policy to a given lan port since we
-are missing in the APIs the information about what user port we are
-interested in (this is why I added the new netdev callback).
-Please consider here we are discussing about Qdisc policies and not flower
-rules to mangle the traffic. The hw needs to be configured in advance to ap=
-ply
-the requested policy (e.g TBF for traffic shaping).
-
->=20
-> > Re-thinking about it, I guess it is better to post flowtable support
-> > first and then continue the discussion about QoS offloading, what do
-> > you think?
->=20
-> I don't know about Andrew, but I'm really not familiar with the
-> netfilter flowtable (and there's another series from Eric Woudstra
-> waiting for me to know everything about it).
->=20
-> Though, I don't think this can continue for long, we need to find a
-> common starting place for discussions, since the development for chips
-> with flowtable offload is starting to put pressure on DSA. What to read
-> as a starting point for a basic understanding?
-
-I do not think there is much documentation about it (except the source code=
-).
-I guess you can take a look to [1],[2].
-
-Regards,
-Lorenzo
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D23020f04932701d5c8363e60756f12b43b8ed752
-[1] https://docs.kernel.org/networking/nf_flowtable.html
-[2] https://thermalcircle.de/doku.php?id=3Dblog:linux:flowtables_1_a_netfil=
-ter_nftables_fastpath
-
---9z+PDC61Tt4YZqkq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ2AYXQAKCRA6cBh0uS2t
-rI2fAQC/7oYH2QeBJJIN/hte6cB0S7mGFi9AAfOMqOFticUhQwD+PE9flU17rfEv
-muUdtkVXcXrNmSTBIthSi4oOfNN60AM=
-=YmdI
------END PGP SIGNATURE-----
-
---9z+PDC61Tt4YZqkq--
