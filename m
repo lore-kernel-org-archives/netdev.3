@@ -1,44 +1,44 @@
 Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9446B15443F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E82D153BE4
 	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 03:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734318836; cv=none; b=Hf63+4MDpRtoD+cUMlkaIfPNeLQ/V0ALeXlLeFqpJZ+wjYy3pKCCBvfAHsEn9dVTtj6IBlQ5Y8TiXwSOpkYEOI8ZQL8sBpW3nSzDzuVBcUkhZTi4FUb0RFIFMIRUNuqanV5SWwxEVZw2UtPAxClg1aaqwNX1FQLRu3wxB8xXVjE=
+	t=1734318836; cv=none; b=gyU4y8XugfGspkN0UfLcbsr7727UIG0/W2GvK3X6dGUXqqHkaRWBpkJyYoUZCUgI2GtM7xwNiCXn3pjSS+IIwdQbrjq9kxVRBQ8wGPweHxaWubFYenqgLgKraITwe7U6ym2AMJpHjbIwLPqfBjPBU3qIutJlZHCO9gAb8bulpjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734318836; c=relaxed/simple;
-	bh=t3UDuB/k/6gJH28l6NNeiKh5cTQaX1PP5+VSQRwTTrY=;
+	bh=dTxUYroMkkS6yYemGfRDl3QZZF8yWEGI0ldNnuZpgB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5mDgeLuXvH19sXrzlZlyK41J83eoII5oZtow3LVNyoEJ6vfehoeqvLEtYAvlUGgDYhmPsc6rx3D8AUNyINp78KJwj2XwPv07ed48bPX/9p672d/+scwxTnC5CbE05fr6vHoZZPFprcuWoe/Zf9TjdqoR7L1nD0ktB/kIZy1DVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=IKjPTUtm; arc=none smtp.client-ip=202.36.163.20
+	 MIME-Version; b=DPjRvmmYZnomh6GnX2+uShPycCUdxeuz3rByEr+uwIW0j4rwojkswyMDjZMUo/nHKFCOT2J2/CLBXpxSItFhpvdMbCY3Zi1hCWqFBVPLLAK3x9+arJ3S9jzn29zeBxBCo+JVxMZMJtAB3ZJCrF9BycNhIYyw12JIWpZyuMdpABI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=ot8+dGVh; arc=none smtp.client-ip=202.36.163.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="IKjPTUtm"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="ot8+dGVh"
 Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 400842C02A8;
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 6253B2C04EA;
 	Mon, 16 Dec 2024 16:13:49 +1300 (NZDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
 	s=mail181024; t=1734318829;
-	bh=u8A0pZjwNNzs8FNwLXJeDrO2LOMmvwLBf+tlQXB1tAo=;
+	bh=dAFqooAZLwvN37SBMg+rsgoIlHkI6A6yh+3k1eVyeJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKjPTUtmcaVuMWRp0gpiwPCYUOqm/afvUCZl2cKmfxL2d2o7rcVmsHid3RWUF9DTc
-	 igtbdS6jwqPeNca43Kr03Pf2Zu76wxNTK6xrlADGWq4+R3kNuuJyIcKkzWZz4QXPCI
-	 cOEEulvbVPB7RE67Ofy2dsTedkSrKW2PkPBOHtIgLANbSUwnhD9kf5vMo8vrsusZtH
-	 hgYNYM62tjJaZWLMLO48UaomVtTj5jzqcL+qYu/86omDhRX2lXF/dFqIWzHobsQBRQ
-	 T1+ql6ee/3WExZtw0oRx2YIT8lU0VJURA10kH0+lF187oAdJLZOn9Z2hMuGlqcitx5
-	 VTr4sIWqqNvEQ==
+	b=ot8+dGVhy2xDkIe6Wz4Fn0nI6GztPKBq7X5Hn+pZVSSKgyR7IrV+QXvKH3zsyUgT4
+	 25WuR//1ggXmv+MCdfH/IKjwN+X7WYFx1Ft+bl4a5jYAf2GIFejJr06Ca7TzJHF+T+
+	 Ml5zHWHqJNOnPzZHo8sPFcd0XC28XBEJeZoo0fjqBrEH/wJ3CH0W3TxWbVR3eN2YlF
+	 wU3Iq8tcAjJjW83xWRCnIQDaZr3mczp3BHS2VVBXWHdLE7HOYGBQnUvaQ9TncYDEX6
+	 /Pp+plJdS0D5TEGjm/t4/GQxb5QGMAJlzcinsnM1T8+XwtaZzLDisfyQjXEXoxiek7
+	 Yv+uo+6AxEP/Q==
 Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B675f9aec0001>; Mon, 16 Dec 2024 16:13:48 +1300
+	id <B675f9aec0003>; Mon, 16 Dec 2024 16:13:49 +1300
 Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
-	by pat.atlnz.lc (Postfix) with ESMTP id E56D413EE7B;
+	by pat.atlnz.lc (Postfix) with ESMTP id EEC3013EE9C;
 	Mon, 16 Dec 2024 16:13:48 +1300 (NZDT)
 Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-	id DF4332803EA; Mon, 16 Dec 2024 16:13:48 +1300 (NZDT)
+	id EBA452803EA; Mon, 16 Dec 2024 16:13:48 +1300 (NZDT)
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 To: lee@kernel.org,
 	robh@kernel.org,
@@ -58,9 +58,9 @@ Cc: devicetree@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH v2 1/4] dt-bindings: net: Add Realtek MDIO controller
-Date: Mon, 16 Dec 2024 16:13:43 +1300
-Message-ID: <20241216031346.2626805-2-chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v2 4/4] net: mdio: Add RTL9300 MDIO driver
+Date: Mon, 16 Dec 2024 16:13:46 +1300
+Message-ID: <20241216031346.2626805-5-chris.packham@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241216031346.2626805-1-chris.packham@alliedtelesis.co.nz>
 References: <20241216031346.2626805-1-chris.packham@alliedtelesis.co.nz>
@@ -71,119 +71,430 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675f9aed a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=gEfo2CItAAAA:8 a=G3VztrOQQWe42Su9FKoA:9 a=3ZKOabzyN94A:10 a=d8afv_qLQQFTBC2_4BOH:22 a=sptkURWiP4Gy88Gu7hUp:22
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675f9aed a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=PLFZzS6RjvMAOK3DgDUA:9 a=3ZKOabzyN94A:10
 X-SEG-SpamProfiler-Score: 0
 x-atlnz-ls: pat
 
-Add dtschema for the MDIO controller found in the RTL9300 SoCs. The
-controller is slightly unusual in that direct MDIO communication is not
-possible. Instead, the SMI bus and PHY address are associated with a
-switch port and the port number is used when talking to the PHY.
+Add a driver for the MDIO controller on the RTL9300 family of Ethernet
+switches with integrated SoC. There are 4 physical SMI interfaces on the
+RTL9300 but access is done using the switch ports so a single MDIO bus
+is presented to the rest of the system.
 
 Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
 
 Notes:
     Changes in v2:
-    - None
+    - Add clause 22 support
+    - Remove commented out code
+    - Formatting cleanup
+    - Set MAX_PORTS correctly for MDIO interface
+    - Fix off-by-one error in pn check
 
- .../bindings/net/realtek,rtl9301-mdio.yaml    | 82 +++++++++++++++++++
- 1 file changed, 82 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl9301=
--mdio.yaml
+ drivers/net/mdio/Kconfig            |   7 +
+ drivers/net/mdio/Makefile           |   1 +
+ drivers/net/mdio/mdio-realtek-rtl.c | 341 ++++++++++++++++++++++++++++
+ 3 files changed, 349 insertions(+)
+ create mode 100644 drivers/net/mdio/mdio-realtek-rtl.c
 
-diff --git a/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.y=
-aml b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index 4a7a303be2f7..0c6240c4a7e9 100644
+--- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -185,6 +185,13 @@ config MDIO_IPQ8064
+ 	  This driver supports the MDIO interface found in the network
+ 	  interface units of the IPQ8064 SoC
+=20
++config MDIO_REALTEK_RTL
++	tristate "Realtek RTL9300 MDIO interface support"
++	depends on MACH_REALTEK_RTL || COMPILE_TEST
++	help
++	  This driver supports the MDIO interface found in the Realtek
++	  RTL9300 family of Ethernet switches with integrated SoC.
++
+ config MDIO_REGMAP
+ 	tristate
+ 	help
+diff --git a/drivers/net/mdio/Makefile b/drivers/net/mdio/Makefile
+index 1015f0db4531..2cd8b491f301 100644
+--- a/drivers/net/mdio/Makefile
++++ b/drivers/net/mdio/Makefile
+@@ -19,6 +19,7 @@ obj-$(CONFIG_MDIO_MOXART)		+=3D mdio-moxart.o
+ obj-$(CONFIG_MDIO_MSCC_MIIM)		+=3D mdio-mscc-miim.o
+ obj-$(CONFIG_MDIO_MVUSB)		+=3D mdio-mvusb.o
+ obj-$(CONFIG_MDIO_OCTEON)		+=3D mdio-octeon.o
++obj-$(CONFIG_MDIO_REALTEK_RTL)		+=3D mdio-realtek-rtl.o
+ obj-$(CONFIG_MDIO_REGMAP)		+=3D mdio-regmap.o
+ obj-$(CONFIG_MDIO_SUN4I)		+=3D mdio-sun4i.o
+ obj-$(CONFIG_MDIO_THUNDER)		+=3D mdio-thunder.o
+diff --git a/drivers/net/mdio/mdio-realtek-rtl.c b/drivers/net/mdio/mdio-=
+realtek-rtl.c
 new file mode 100644
-index 000000000000..95ed77ff8dcc
+index 000000000000..a13b84279138
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
-@@ -0,0 +1,82 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/realtek,rtl9301-mdio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/net/mdio/mdio-realtek-rtl.c
+@@ -0,0 +1,341 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * MDIO controller for RTL9300 switches with integrated SoC.
++ *
++ * The MDIO communication is abstracted by the switch. At the software l=
+evel
++ * communication uses the switch port to address the PHY with the actual=
+ MDIO
++ * bus and address having been setup via the realtek,smi-address propert=
+y.
++ */
 +
-+title: Realtek RTL9300 MDIO Controller
++#include <linux/mdio.h>
++#include <linux/mfd/syscon.h>
++#include <linux/mod_devicetable.h>
++#include <linux/of_mdio.h>
++#include <linux/phy.h>
++#include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
 +
-+maintainers:
-+  - Chris Packham <chris.packham@alliedtelesis.co.nz>
++#define SMI_GLB_CTRL			0x000
++#define   GLB_CTRL_INTF_SEL(intf)	BIT(16 + (intf))
++#define SMI_PORT0_15_POLLING_SEL	0x008
++#define SMI_ACCESS_PHY_CTRL_0		0x170
++#define SMI_ACCESS_PHY_CTRL_1		0x174
++#define   PHY_CTRL_RWOP			BIT(2)
++#define   PHY_CTRL_TYPE			BIT(1)
++#define   PHY_CTRL_CMD			BIT(0)
++#define   PHY_CTRL_FAIL			BIT(25)
++#define SMI_ACCESS_PHY_CTRL_2		0x178
++#define SMI_ACCESS_PHY_CTRL_3		0x17c
++#define SMI_PORT0_5_ADDR_CTRL		0x180
 +
-+allOf:
-+  - $ref: mdio.yaml#
++#define MAX_PORTS       28
++#define MAX_SMI_BUSSES  4
++#define MAX_SMI_ADDR	0x1f
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - realtek,rtl9302b-mdio
-+              - realtek,rtl9302c-mdio
-+              - realtek,rtl9303-mdio
-+          - const: realtek,rtl9301-mdio
-+      - const: realtek,rtl9301-mdio
++struct realtek_mdio_priv {
++	struct regmap *regmap;
++	u8 smi_bus[MAX_PORTS];
++	u8 smi_addr[MAX_PORTS];
++	bool smi_bus_isc45[MAX_SMI_BUSSES];
++	u32 reg_base;
++};
 +
-+  '#address-cells':
-+    const: 1
++static int realtek_mdio_wait_ready(struct realtek_mdio_priv *priv)
++{
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 val;
 +
-+  '#size-cells':
-+    const: 0
++	return regmap_read_poll_timeout(regmap, reg_base + SMI_ACCESS_PHY_CTRL_=
+1,
++					val, !(val & PHY_CTRL_CMD), 10, 500);
++}
 +
-+  reg:
-+    maxItems: 1
++static int realtek_mdio_read_c22(struct mii_bus *bus, int phy_id, int re=
+gnum)
++{
++	struct realtek_mdio_priv *priv =3D bus->priv;
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 val;
++	int err;
 +
-+patternProperties:
-+  '^ethernet-phy(@[a-f0-9]+)?':
-+    type: object
-+    $ref: ethernet-phy.yaml#
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
 +
-+    properties:
-+      reg:
-+        description:
-+          The MDIO communication on the RTL9300 is abstracted by the swi=
-tch. At
-+          the software level communication uses the switch port to addre=
-ss the
-+          PHY with the actual MDIO bus and address having been setup via=
- the
-+          realtek,smi-address property.
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, phy_id <=
+< 16);
++	if (err)
++		return err;
 +
-+      realtek,smi-address:
-+        $ref: /schemas/types.yaml#/definitions/uint32-array
-+        description: SMI interface and address for the connected PHY
-+        items:
-+          - description: SMI interface number associated with the port.
-+          - description: SMI address of the PHY for the port.
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_1,
++			   regnum << 20 |  0x1f << 15 | 0xfff << 3 | PHY_CTRL_CMD);
++	if (err)
++		return err;
 +
-+    unevaluatedProperties: false
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
 +
-+required:
-+  - compatible
-+  - reg
++	err =3D regmap_read(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, &val);
++	if (err)
++		return err;
 +
-+unevaluatedProperties: false
++	return val & 0xffff;
++}
 +
-+examples:
-+  - |
-+    mdio@ca00 {
-+        compatible =3D "realtek,rtl9301-mdio";
-+        reg =3D <0xca00 0x200>;
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
++static int realtek_mdio_write_c22(struct mii_bus *bus, int phy_id, int r=
+egnum, u16 value)
++{
++	struct realtek_mdio_priv *priv =3D bus->priv;
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 val;
++	int err;
 +
-+        ethernet-phy@0 {
-+            compatible =3D "ethernet-phy-ieee802.3-c45";
-+            reg =3D <0>;
-+            realtek,smi-address =3D <0 1>;
-+        };
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
 +
-+        ethernet-phy@8 {
-+            compatible =3D "ethernet-phy-ieee802.3-c45";
-+            reg =3D <8>;
-+            realtek,smi-address =3D <1 1>;
-+        };
-+    };
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_0, BIT(phy_=
+id));
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, value <<=
+ 16);
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_1,
++			   regnum << 20 |  0x1f << 15 | 0xfff << 3 | PHY_CTRL_RWOP | PHY_CTRL=
+_CMD);
++	if (err)
++		return err;
++
++	err =3D regmap_read_poll_timeout(regmap, reg_base + SMI_ACCESS_PHY_CTRL=
+_1,
++				       val, !(val & PHY_CTRL_CMD), 10, 100);
++	if (err)
++		return err;
++
++	if (val & PHY_CTRL_FAIL)
++		return -ENXIO;
++
++	return 0;
++}
++
++static int realtek_mdio_read_c45(struct mii_bus *bus, int phy_id, int de=
+v_addr, int regnum)
++{
++	struct realtek_mdio_priv *priv =3D bus->priv;
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 val;
++	int err;
++
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, phy_id <=
+< 16);
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_3,
++			   dev_addr << 16 | (regnum & 0xffff));
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_1,
++			   PHY_CTRL_TYPE | PHY_CTRL_CMD);
++	if (err)
++		return err;
++
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
++
++	err =3D regmap_read(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, &val);
++	if (err)
++		return err;
++
++	return val & 0xffff;
++}
++
++static int realtek_mdio_write_c45(struct mii_bus *bus, int phy_id, int d=
+ev_addr,
++				  int regnum, u16 value)
++{
++	struct realtek_mdio_priv *priv =3D bus->priv;
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 val;
++	int err;
++
++	err =3D realtek_mdio_wait_ready(priv);
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_0, BIT(phy_=
+id));
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_2, value <<=
+ 16);
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_3,
++			   dev_addr << 16 | (regnum & 0xffff));
++	if (err)
++		return err;
++
++	err =3D regmap_write(regmap, reg_base + SMI_ACCESS_PHY_CTRL_1,
++			   PHY_CTRL_RWOP | PHY_CTRL_TYPE | PHY_CTRL_CMD);
++	if (err)
++		return err;
++
++	err =3D regmap_read_poll_timeout(regmap, reg_base + SMI_ACCESS_PHY_CTRL=
+_1,
++				       val, !(val & PHY_CTRL_CMD), 10, 100);
++	if (err)
++		return err;
++
++	if (val & PHY_CTRL_FAIL)
++		return -ENXIO;
++
++	return 0;
++}
++
++static int realtek_mdiobus_init(struct realtek_mdio_priv *priv)
++{
++	u32 glb_ctrl_mask =3D 0, glb_ctrl_val =3D 0;
++	struct regmap *regmap =3D priv->regmap;
++	u32 reg_base =3D priv->reg_base;
++	u32 port_addr[5] =3D { 0 };
++	u32 poll_sel[2] =3D { 0 };
++	int i, err;
++
++	/* Associate the port with the SMI interface and PHY */
++	for (i =3D 0; i < MAX_PORTS; i++) {
++		int pos;
++
++		if (priv->smi_bus[i] > 3)
++			continue;
++
++		pos =3D (i % 6) * 5;
++		port_addr[i / 6] |=3D priv->smi_addr[i] << pos;
++
++		pos =3D (i % 16) * 2;
++		poll_sel[i / 16] |=3D priv->smi_bus[i] << pos;
++	}
++
++	/* Put the interfaces into C45 mode if required */
++	for (i =3D 0; i < MAX_SMI_BUSSES; i++) {
++		if (priv->smi_bus_isc45[i]) {
++			glb_ctrl_mask |=3D GLB_CTRL_INTF_SEL(i);
++			glb_ctrl_val |=3D GLB_CTRL_INTF_SEL(i);
++		}
++	}
++
++	err =3D regmap_bulk_write(regmap, reg_base + SMI_PORT0_5_ADDR_CTRL,
++				port_addr, 5);
++	if (err)
++		return err;
++
++	err =3D regmap_bulk_write(regmap, reg_base + SMI_PORT0_15_POLLING_SEL,
++				poll_sel, 2);
++	if (err)
++		return err;
++
++	err =3D regmap_update_bits(regmap, reg_base + SMI_GLB_CTRL,
++				 glb_ctrl_mask, glb_ctrl_val);
++	if (err)
++		return err;
++
++	return 0;
++}
++
++static int realtek_mdiobus_probe(struct platform_device *pdev)
++{
++	struct device *dev =3D &pdev->dev;
++	struct realtek_mdio_priv *priv;
++	struct fwnode_handle *child;
++	struct mii_bus *bus;
++	int err;
++
++	bus =3D devm_mdiobus_alloc_size(dev, sizeof(*priv));
++	if (!bus)
++		return -ENOMEM;
++
++	bus->name =3D "Reaktek Switch MDIO Bus";
++	bus->read =3D realtek_mdio_read_c22;
++	bus->write =3D realtek_mdio_write_c22;
++	bus->read_c45 =3D realtek_mdio_read_c45;
++	bus->write_c45 =3D  realtek_mdio_write_c45;
++	bus->parent =3D dev;
++	priv =3D bus->priv;
++
++	priv->regmap =3D syscon_node_to_regmap(dev->parent->of_node);
++	if (IS_ERR(priv->regmap))
++		return PTR_ERR(priv->regmap);
++
++	err =3D device_property_read_u32(dev, "reg", &priv->reg_base);
++	if (err)
++		return err;
++
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
++
++	device_for_each_child_node(dev, child) {
++		u32 pn, smi_addr[2];
++
++		err =3D fwnode_property_read_u32(child, "reg", &pn);
++		if (err)
++			return err;
++
++		if (pn >=3D MAX_PORTS)
++			return dev_err_probe(dev, -EINVAL, "illegal port number %d\n", pn);
++
++		err =3D fwnode_property_read_u32_array(child, "realtek,smi-address", s=
+mi_addr, 2);
++		if (err) {
++			smi_addr[0] =3D 0;
++			smi_addr[1] =3D pn;
++		}
++
++		if (smi_addr[0] > MAX_SMI_BUSSES)
++			return dev_err_probe(dev, -EINVAL, "illegal smi bus number %d\n",
++					     smi_addr[0]);
++
++		if (smi_addr[1] > MAX_SMI_ADDR)
++			return dev_err_probe(dev, -EINVAL, "illegal smi addr %d\n", smi_addr[=
+1]);
++
++		if (fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45"))
++			priv->smi_bus_isc45[smi_addr[0]] =3D true;
++
++		priv->smi_bus[pn] =3D smi_addr[0];
++		priv->smi_addr[pn] =3D smi_addr[1];
++	}
++
++	err =3D realtek_mdiobus_init(priv);
++	if (err)
++		return dev_err_probe(dev, err, "failed to initialise MDIO bus controll=
+er\n");
++
++	err =3D devm_of_mdiobus_register(dev, bus, dev->of_node);
++	if (err)
++		return dev_err_probe(dev, err, "cannot register MDIO bus\n");
++
++	return 0;
++}
++
++static const struct of_device_id realtek_mdio_ids[] =3D {
++	{ .compatible =3D "realtek,rtl9301-mdio" },
++	{ .compatible =3D "realtek,rtl9302b-mdio" },
++	{ .compatible =3D "realtek,rtl9302c-mdio" },
++	{ .compatible =3D "realtek,rtl9303-mdio" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, realtek_mdio_ids);
++
++static struct platform_driver rtl9300_mdio_driver =3D {
++	.probe =3D realtek_mdiobus_probe,
++	.driver =3D {
++		.name =3D "mdio-rtl9300",
++		.of_match_table =3D realtek_mdio_ids,
++	},
++};
++
++module_platform_driver(rtl9300_mdio_driver);
++
++MODULE_DESCRIPTION("RTL9300 MDIO driver");
++MODULE_LICENSE("GPL");
 --=20
 2.47.1
 
