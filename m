@@ -1,135 +1,112 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADF2203D53;
-	Mon, 16 Dec 2024 10:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D2520459B
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 10:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734345732; cv=none; b=QMbf2g+A3PD+T9DbKYtvLeMFeaeKOOdw7Xj+nLz1kSdnBzIwGD1DQIvDHg5o3E8rukl8wK8HpGa4rT5VaUMvMvh7EVef0SjshMnBb2SKDOsLah5WMOg8d2vWySEu3TtGQdVXo6z+jxuuCj2Acu0TMQnqOD3TIALOFE/enivvQqg=
+	t=1734345736; cv=none; b=DDOIT+BzhSUyziRfuy4aR8yWa7X0n0w8QcQ/x3Wi4bV9QbiVh7z1RdhOOCknhkKRj751/vlHIX5UBZxjjTKZotVPPJ4Ku+Tf217+3P83RsvPt371wMsqOlKpZ8Aq+Dr7U/3vwzP6mWFjxNaEBy1+cCJWPrW2rB6M7kwed2dbYQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734345732; c=relaxed/simple;
-	bh=wYHyds/oC/bIXn1FOZ3FfxUd/venFVAC8H+IayFbp3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtkXSChmdno7FZUD88RKGWX0co0ApuxJ4twtpeqGIYCZrzjVCIF21lmujyBYthM84J0cuEZdClDNcj7DQvKPj6BXAIqwwt7n4mAeCz7rQr33fHJTmPV/3qOCsYE+MA2rrdL91tCalyj5oMOJXEbWOM4e9zYPCB5IF1Kf2UOwdh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oqcYIiEa; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1734345736; c=relaxed/simple;
+	bh=6VdqSl8alXvH6pPsK78wHQAqoCIfIhg5UpI5s40sgg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-type; b=mZ6DvAJXPNN3zfkfbCigZwX/H03+b97KUwqT+uJEt2YnaJcrF2Zixwl/7Iz7wickULEprQsiuxdpf8Hadc5vgs7t6zEcgDt7dLapMt2McNzhXdK5dJSYoE+tPIa9FG6qAAFF3LksL4Gulb/rY1be0K4QR2Xs+5GbhiG/Jabsywk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CqlzAPaq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oqcYIiEa"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8FC2620003;
-	Mon, 16 Dec 2024 10:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734345721;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CqlzAPaq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734345733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tcrvnYxItVVme/Ppg4krYaiv+M+aU8FG8UoKAi5Pjng=;
-	b=oqcYIiEad4rgc71cps3pZPHKUjfxnfC/h+9Jwv86EATSIos1zHyfSWk0LI7LT6ruTObGbA
-	rOv1o9iGgNyEIPgAc8S1O7SkW7RkpYvZXVM8V5s3aesCLvyN8WouNZu0RvxHl/sCSbokqv
-	xSoEHHqTbFg6JTl9ouXJRkPTZKjOy2J7iVx9s/beUky1KvE7Qtsq/4agmdKpBk6Oy8/t9o
-	G9YxkPW1ihIBDt/5pydjLpdqmKtPxdZBGXFWoLjaqHTO6l45paRdc1pPAyA6QEVXuwyiwY
-	NLG6lYdezTCu25nVlYFS+LuxzTCiwqWiwyvZA1Qu5jfhipEHVRkCSpwH9jwp7A==
-Date: Mon, 16 Dec 2024 11:41:58 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl, andi.shyti@kernel.org, mkl@pengutronix.de,
-	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net,
-	jdelvare@suse.com, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-can@vger.kernel.org, netdev@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v3 7/7] rtc: Add Nuvoton NCT6694 RTC support
-Message-ID: <202412161041586ed7c0ff@mail.local>
-References: <20241210104524.2466586-1-tmyu0@nuvoton.com>
- <20241210104524.2466586-8-tmyu0@nuvoton.com>
+	bh=l7tcKVC1kh1dFVI8oN1xiQyOlNqxnj21TIJYyRp/op8=;
+	b=CqlzAPaqJDIA9NI3Phivr6bNzxIDE8MVXGBa6a8ZTgE1TXyzI4pFrFSj/j9F3jBqq8YJyP
+	EUtoaS7Lo/+Rm3IYNO5fqriKHUY5wrWwV97RXNSCdfWdDZBaHRw/WdZRw+oCYh8cS297xz
+	plN2on18A6K55ulRmWT5/FFaODl4dmw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-tUpMBIfLOWWK22VyY4z5Lw-1; Mon,
+ 16 Dec 2024 05:42:10 -0500
+X-MC-Unique: tUpMBIfLOWWK22VyY4z5Lw-1
+X-Mimecast-MFC-AGG-ID: tUpMBIfLOWWK22VyY4z5Lw
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B6D8195609F;
+	Mon, 16 Dec 2024 10:42:08 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.45.225.0])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BBEE8300F9B5;
+	Mon, 16 Dec 2024 10:42:04 +0000 (UTC)
+From: Jan Stancek <jstancek@redhat.com>
+To: donald.hunter@gmail.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	jdamato@fastly.com
+Cc: pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jstancek@redhat.com
+Subject: [PATCH v3 2/4] tools: ynl: add initial pyproject.toml for packaging
+Date: Mon, 16 Dec 2024 11:41:42 +0100
+Message-ID: <2a9b6d5a782acfa71ae5fb2f4d3cc538740013b6.1734345017.git.jstancek@redhat.com>
+In-Reply-To: <cover.1734345017.git.jstancek@redhat.com>
+References: <cover.1734345017.git.jstancek@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241210104524.2466586-8-tmyu0@nuvoton.com>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 10/12/2024 18:45:24+0800, Ming Yu wrote:
-> +static int nct6694_rtc_probe(struct platform_device *pdev)
-> +{
-> +	struct nct6694_rtc_data *data;
-> +	struct nct6694 *nct6694 = dev_get_drvdata(pdev->dev.parent);
-> +	int ret, irq;
-> +
-> +	irq = irq_create_mapping(nct6694->domain, NCT6694_IRQ_RTC);
-> +	if (!irq)
-> +		return -EINVAL;
-> +
-> +	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->xmit_buf = devm_kcalloc(&pdev->dev, NCT6694_MAX_PACKET_SZ,
-> +				      sizeof(unsigned char), GFP_KERNEL);
-> +	if (!data->xmit_buf)
-> +		return -ENOMEM;
-> +
-> +	data->rtc = devm_rtc_allocate_device(&pdev->dev);
-> +	if (IS_ERR(data->rtc))
-> +		return PTR_ERR(data->rtc);
-> +
-> +	data->nct6694 = nct6694;
-> +	data->rtc->ops = &nct6694_rtc_ops;
-> +	data->rtc->range_min = RTC_TIMESTAMP_BEGIN_2000;
-> +	data->rtc->range_max = RTC_TIMESTAMP_END_2099;
-> +
-> +	mutex_init(&data->lock);
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+---
+ tools/net/ynl/pyproject.toml | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+ create mode 100644 tools/net/ynl/pyproject.toml
 
-You should use rtc_lock/rtc_unlock instead of having your own lock. The
-core will take and release the lock appropriately before calling the
-rtc_ops so you only have to do it in the irq handler.
-
-> +
-> +	device_set_wakeup_capable(&pdev->dev, 1);
-
-This will cause a memory leak later on, see the discussion here:
-
-https://lore.kernel.org/linux-rtc/a88475b6-08bf-4c7c-ad63-efd1f29307e3@pf.is.s.u-tokyo.ac.jp/T/#mf51fdce6036efa3ea12fe75bd5126d4ac0c6813e
-
-> +
-> +	platform_set_drvdata(pdev, data);
-> +
-> +	ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
-> +					nct6694_irq, IRQF_ONESHOT,
-> +					"nct6694-rtc", data);
-> +	if (ret < 0)
-> +		return dev_err_probe(&pdev->dev, ret, "Failed to request irq\n");
-> +
-> +	/* Register rtc device to RTC framework */
-> +	return devm_rtc_register_device(data->rtc);
-> +}
-> +
-> +static struct platform_driver nct6694_rtc_driver = {
-> +	.driver = {
-> +		.name	= "nct6694-rtc",
-> +	},
-> +	.probe		= nct6694_rtc_probe,
-> +};
-> +
-> +module_platform_driver(nct6694_rtc_driver);
-> +
-> +MODULE_DESCRIPTION("USB-RTC driver for NCT6694");
-> +MODULE_AUTHOR("Ming Yu <tmyu0@nuvoton.com>");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:nct6694-rtc");
-> -- 
-> 2.34.1
-> 
-
+diff --git a/tools/net/ynl/pyproject.toml b/tools/net/ynl/pyproject.toml
+new file mode 100644
+index 000000000000..677ea8f4c185
+--- /dev/null
++++ b/tools/net/ynl/pyproject.toml
+@@ -0,0 +1,26 @@
++[build-system]
++requires = ["setuptools>=61.0"]
++build-backend = "setuptools.build_meta"
++
++[project]
++name = "pyynl"
++authors = [
++    {name = "Donald Hunter", email = "donald.hunter@gmail.com"},
++    {name = "Jakub Kicinski", email = "kuba@kernel.org"},
++]
++description = "yaml netlink (ynl)"
++version = "0.0.1"
++requires-python = ">=3.9"
++dependencies = [
++    "pyyaml==6.*",
++    "jsonschema==4.*"
++]
++
++[tool.setuptools.packages.find]
++include = ["pyynl", "pyynl.lib"]
++
++[project.scripts]
++ynl = "pyynl.cli:main"
++ynl-ethtool = "pyynl.ethtool:main"
++ynl-gen-c = "pyynl.ynl_gen_c:main"
++ynl-gen-rst = "pyynl.ynl_gen_rst:main"
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
+
