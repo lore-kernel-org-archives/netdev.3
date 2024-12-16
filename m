@@ -1,184 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E371CD215
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 06:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D1129CA;
+	Mon, 16 Dec 2024 07:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734332371; cv=none; b=tPcd1A4XioEYxN5+Xws+c5aRZGEyNoahpvCDTMOseEZvr/MCmpAY8KCkM40hpGsk3Kn48mO0AXuQQ2kJZ6MXhSKanzIUH6jUdWoYr8TUWj9Pcw/3r6dMjnLMQokxKaLuh8QyO2i1NhVgOYm21O2QwVFMmA3W3XU0uJP46EAJmss=
+	t=1734332653; cv=none; b=GMZNyLX9bQyVoFNPaY5uF04v+4WJBTcoMrWUSgBEJlnX731vOfPTSIekcIzx112N/BV7KcdGyMKOnLeelYQOGO4kCxl7sqigd2kAh8SsD3LJ3qCdfEdyxQgoRLWYQFfskBS8JROND7CU8+QpySZwfrUtlvJyITGDBh8WKPegl7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734332371; c=relaxed/simple;
-	bh=COAz++7EG7iVLtE17ZARIH2N/yLvtQ6Xspz083PLET8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkCabepjfImdrMTjYbza0b2EUhS/LBt02GE+nUFQjbR3Y9zA5L+JV0NgnNY7kweRgGqWJKWamyOfyAQRXKmgg2m3e0GfEVh+Z2wJdacGIWT/qlUC8O9zpn+c+3Bdh+Rw3M8t+f7ML/I4tcQTV/68DUhBDRCH0RTDhVH9gMtfzBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LFyjDtsT; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1734332653; c=relaxed/simple;
+	bh=KeSpEDkKtZpQhSch1YgBwfAeYb9z/c43PHmS5zAo9i0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fFZrmEbiXsdri2EF6dNOXy/qBqdn0fhJmUNIWBDWgsDZvdxEr5lxS3nyhKUhqR3GJtUbQDRA5fa6BIfYqXSLCJ7CUtwn+wUC5QWTnmCMV73Y0GK1qHmWco7dAoFk+DX+cuwJQPk2RRLvSmshC8ZIxbGWWd9q4roKo39wt/BHxbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WevJQVgb; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LFyjDtsT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734332370; x=1765868370;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=COAz++7EG7iVLtE17ZARIH2N/yLvtQ6Xspz083PLET8=;
-  b=LFyjDtsTcdIalGJspChQSOFRJ+KUoE0ISNqXus/DKLPM/AEVtXODRoWu
-   rPHhUfn9Y2EvIV4mcLOMschlZVnRY916Sd1NZIobcz9aTBZJ4Bqr+Jw8j
-   iwATppwhjYP03lmqo4XWZ4qRUB3vvDnLVNKdpwhbbD8wSUOQsDXuFhO6q
-   eVfb/Lwsg1w4Hqy6rWDnguol9fg1PBZYela/pvYJofR54u1kkduQCFCxR
-   ANx0O0AyJfGN46EvDgBRx5bXV9DbgBu/eE7/64ZCXVpNpXIYr7DnJNf2z
-   Lv8N+V8txouiwmNXq5Z3FZZqxyXW+8N3Y0DDU7DLpmqhsyC/rQgymS5j1
-   A==;
-X-CSE-ConnectionGUID: JZniRB9qR46GqHAQhmEkJQ==
-X-CSE-MsgGUID: R73QdexjQOemUWjfWezCAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34583966"
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="34583966"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 22:59:29 -0800
-X-CSE-ConnectionGUID: Xzm6SxfhTo6L8yPZpNroYg==
-X-CSE-MsgGUID: lIPTKk1zTZ24OKlT84LF1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="97017567"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 22:59:26 -0800
-Date: Mon, 16 Dec 2024 07:56:22 +0100
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: Re: [PATCH net-next 4/6] bnxt_en: Skip MAC loopback selftest if it
- is unsupported by FW
-Message-ID: <Z1/PFuPhm5cOGnAv@mev-dev.igk.intel.com>
-References: <20241215205943.2341612-1-michael.chan@broadcom.com>
- <20241215205943.2341612-5-michael.chan@broadcom.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WevJQVgb"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e3a0d2d15adso2453106276.0;
+        Sun, 15 Dec 2024 23:04:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734332651; x=1734937451; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tsU5wmh2P4K8mF9Ggmz3hxOZU+54LH8riOqnst6ceWc=;
+        b=WevJQVgbmXC1pclM8jpkZfyO8o9H4dSFa6ABjrT/c+AxQKnewTsDhp/j2p281yhSrY
+         B8oMI2Law1CM7NYLVAm2I0NLqyM0PGNSZX41Unn7qVUb8kF+YACMvYHqAGOMYuewpK9l
+         6tnnfATxDLsG0mA1LifEWm6tZtkey/MiaayomMBcje/nsSdF6C8Y/bC7WWl+DGht76to
+         luEcr9I2qT/UzcUonSXKBClAFAmUMEoj+H+mDxr1IktlR2XQwiAQY6BMxvN1XfP1sW4h
+         /9ykvBcM9bdvXxtMeSuFKkPa4Bg/isOPYImcjWrR+MddJct8MlIoHeH6p39Uk+wXi1Ki
+         Hg/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734332651; x=1734937451;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tsU5wmh2P4K8mF9Ggmz3hxOZU+54LH8riOqnst6ceWc=;
+        b=C3rHQvOYzv54LmzyuMhBHrdZcVuYkEndznqxOO34/2frpXDPyUlzF782TOMZId+G5b
+         7sLUIF5JOvgWS3Xy6CaMY9ouNFx1MDI8LLElp0IFy5Rvbcel3tjectbpIS2zPA405Z/Q
+         dCbf5RRV130LoMQfMCYDfIq4DisgrOE+S36r7AVuTTWYzGJ6im0UJQjmSL6IplKtJOwW
+         KJj4O/vJNU3T9fFIwYdz/Qv2usY7pOCdNKVt6K9u3c7NvECYReCJs+G1JxxVX4H4nXMq
+         R6rFsuqWg9YuspTbCOCsBVJLfuq4UL/iJS8ykpYYuBNIuxSVJKHIFNisv6I8fcilnycQ
+         Vt1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUw/Uar9vBZrZMC4NwBlmFfYUC8b1pdpgagOO+6J1bKEeMhpXo21Y5P3C53inatx2i3bZp7ZYRn9LSRxA==@vger.kernel.org, AJvYcCVLP2Sj64uMbAh3nhkjpyJEFK5fbQ3OhXnbbxfI11mRS7WYGj/VPmAWAEQsMvAzn6kE4WzvPheOOYYVAmY=@vger.kernel.org, AJvYcCVUnD2BN+6ofahDPqhklkTYEwFLYWVqWoIesUKRlXxojCCH5LlVWvnJuUUWwq/5k2xThLpqRyeJky0=@vger.kernel.org, AJvYcCVY4SHocZ7gMqjJ3OlfGI9wg2EZddo2OfSFG/FOQoJb2xYvD14CSzbfSVOoRfiKf/4UFy/dmplQ2B7f3xWYees=@vger.kernel.org, AJvYcCWE+3MhRmV/3D7WwzPFN1iSAjDdhNl0CgzIteV1Mxp9Wj+BoCuldaTzAZIzsdfwxL0oz74T/ebLRICX@vger.kernel.org, AJvYcCWSU1P6s1hO1hkSw06UUGwITro85/4EsOTD95KN09fx83pxcZcDbRMZ8SjeZMhSesA9LW1mO1FTHhwYtG1J@vger.kernel.org, AJvYcCWf9PrTyIV9ZZ2DDCceFJ9dXFPO3UOej1iESsY+elW7Q7M1Ku0kO6FkaMsFY5VQnxj6EG3jUReC@vger.kernel.org, AJvYcCX5k9u8xsoJov1/CFrKNCqyyhIaSC/htrzcQdFoo/zdBA8uLHXnn9q/YYgG69/Cn2r/HKSh9yjk9a9T@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW2oR3tCX0RXx8Qa+fioDHhtdxd72CR5RGIP4/B6znPwiJXXD6
+	Yob6rX6dCGXDQhcnkZLytJAiSgqnrcQ9yWAKQIY7JU3/H04JVwArCk5/nPlr57MAlUhVe9yKIas
+	CJBo2r07vtZfxZX0sUyRRJgI2UQM=
+X-Gm-Gg: ASbGnctqYft5gHoREbzjO/BcdUZf7GFMDymiBj7+0Mp7UGMz4WBAD9ch5mcyDLBTcgS
+	lf86GBvrtj6pz6iVyG1M+H/r5yaYgsnt3AjTgRtxdl7IAYaCi48tt3COmKUE68tqeVkv0XPs=
+X-Google-Smtp-Source: AGHT+IHLFDXpcf4og2XrYkLAxxhOSZA2+BQlHOzPM0PO9nHe4iVqax2MnRn2XR8QWV2Gsxx89csWs78ajaevICvrWAc=
+X-Received: by 2002:a05:6902:11ce:b0:e39:92ec:b5f6 with SMTP id
+ 3f1490d57ef6-e434f084c2amr8834964276.41.1734332651424; Sun, 15 Dec 2024
+ 23:04:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241215205943.2341612-5-michael.chan@broadcom.com>
+References: <20241210104524.2466586-1-tmyu0@nuvoton.com> <20241210104524.2466586-7-tmyu0@nuvoton.com>
+ <CAMZ6RqK+B3nc9bLWR49vwDJX3=pbjOKKoa=e=Pnc7wJNQx7JPQ@mail.gmail.com>
+In-Reply-To: <CAMZ6RqK+B3nc9bLWR49vwDJX3=pbjOKKoa=e=Pnc7wJNQx7JPQ@mail.gmail.com>
+From: Ming Yu <a0282524688@gmail.com>
+Date: Mon, 16 Dec 2024 15:04:00 +0800
+Message-ID: <CAOoeyxXNvnsdbrhjaKq13x=27-nK0U73+6yvRfTjJLAY+v_OcA@mail.gmail.com>
+Subject: Re: [PATCH v3 6/7] hwmon: Add Nuvoton NCT6694 HWMON support
+To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	andi.shyti@kernel.org, mkl@pengutronix.de, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-rtc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 15, 2024 at 12:59:41PM -0800, Michael Chan wrote:
-> Call the new HWRM_PORT_MAC_QCAPS to check if mac loopback is
-> supported.  Skip the MAC loopback ethtool self test if it is
-> not supported.
-> 
-> Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-> Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-> Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 29 +++++++++++++++++++
->  drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  5 ++++
->  .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 11 ++++---
->  3 files changed, 41 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 631dbda725ab..5a19146d6902 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -11551,6 +11551,31 @@ static int bnxt_hwrm_phy_qcaps(struct bnxt *bp)
->  	return rc;
->  }
->  
-> +static int bnxt_hwrm_mac_qcaps(struct bnxt *bp)
-> +{
-> +	struct hwrm_port_mac_qcaps_output *resp;
-> +	struct hwrm_port_mac_qcaps_input *req;
-> +	int rc;
-> +
-> +	if (bp->hwrm_spec_code < 0x10a03)
-> +		return 0;
-> +
-> +	rc = hwrm_req_init(bp, req, HWRM_PORT_MAC_QCAPS);
-> +	if (rc)
-> +		return rc;
-> +
-> +	resp = hwrm_req_hold(bp, req);
-> +	rc = hwrm_req_send_silent(bp, req);
-> +	if (rc)
-> +		goto hwrm_mac_qcaps_exit;
-> +
-> +	bp->mac_flags = resp->flags;
-> +
-> +hwrm_mac_qcaps_exit:
-> +	hwrm_req_drop(bp, req);
-> +	return rc;
-> +}
-> +
->  static bool bnxt_support_dropped(u16 advertising, u16 supported)
->  {
->  	u16 diff = advertising ^ supported;
-> @@ -15679,6 +15704,10 @@ static int bnxt_probe_phy(struct bnxt *bp, bool fw_dflt)
->  		bp->dev->priv_flags |= IFF_SUPP_NOFCS;
->  	else
->  		bp->dev->priv_flags &= ~IFF_SUPP_NOFCS;
-> +
-> +	bp->mac_flags = 0;
-> +	bnxt_hwrm_mac_qcaps(bp);
-The value returned from the function is ignored. Change it to return
-void, or do sth here with returned value.
+Dear Vincent,
 
-Thanks
-> +
->  	if (!fw_dflt)
->  		return 0;
->  
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> index d5e81e008ab5..094c9e95b463 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-> @@ -2668,6 +2668,11 @@ struct bnxt {
->  #define BNXT_PHY_FL_BANK_SEL		(PORT_PHY_QCAPS_RESP_FLAGS2_BANK_ADDR_SUPPORTED << 8)
->  #define BNXT_PHY_FL_SPEEDS2		(PORT_PHY_QCAPS_RESP_FLAGS2_SPEEDS2_SUPPORTED << 8)
->  
-> +	/* copied from flags in hwrm_port_mac_qcaps_output */
-> +	u8			mac_flags;
-> +#define BNXT_MAC_FL_NO_MAC_LPBK		\
-> +	PORT_MAC_QCAPS_RESP_FLAGS_LOCAL_LPBK_NOT_SUPPORTED
-> +
->  	u8			num_tests;
->  	struct bnxt_test_info	*test_info;
->  
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-> index e5904f2d56df..3bc2bd732021 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-> @@ -4896,21 +4896,24 @@ static void bnxt_self_test(struct net_device *dev, struct ethtool_test *etest,
->  		bnxt_close_nic(bp, true, false);
->  		bnxt_run_fw_tests(bp, test_mask, &test_results);
->  
-> -		buf[BNXT_MACLPBK_TEST_IDX] = 1;
-> -		bnxt_hwrm_mac_loopback(bp, true);
-> -		msleep(250);
->  		rc = bnxt_half_open_nic(bp);
->  		if (rc) {
-> -			bnxt_hwrm_mac_loopback(bp, false);
->  			etest->flags |= ETH_TEST_FL_FAILED;
->  			return;
->  		}
-> +		buf[BNXT_MACLPBK_TEST_IDX] = 1;
-> +		if (bp->mac_flags & BNXT_MAC_FL_NO_MAC_LPBK)
-> +			goto skip_mac_loopback;
-> +
-> +		bnxt_hwrm_mac_loopback(bp, true);
-> +		msleep(250);
->  		if (bnxt_run_loopback(bp))
->  			etest->flags |= ETH_TEST_FL_FAILED;
->  		else
->  			buf[BNXT_MACLPBK_TEST_IDX] = 0;
->  
->  		bnxt_hwrm_mac_loopback(bp, false);
-> +skip_mac_loopback:
->  		buf[BNXT_PHYLPBK_TEST_IDX] = 1;
->  		if (bp->phy_flags & BNXT_PHY_FL_NO_PHY_LPBK)
->  			goto skip_phy_loopback;
-> -- 
-> 2.30.1
+Thank you for your comments,
+I understand, I will make the modifications for these drivers,
+
+Thanks,
+Ming
+
+Vincent Mailhol <mailhol.vincent@wanadoo.fr> =E6=96=BC 2024=E5=B9=B412=E6=
+=9C=8813=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=8812:10=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+>
+...
+> > +struct nct6694_hwmon_data {
+> > +       struct nct6694 *nct6694;
+> > +       struct mutex lock;
+> > +       unsigned char *xmit_buf;
+> > +       unsigned char hwmon_en[NCT6694_HWMON_CMD0_LEN];
+> > +};
+>
+> A global comment on this series: do not declare your buffers as some
+> opaque unsigned char arrays. Instead, make it a structure (or an array
+> of structures if needed) using the little endian types for the
+> different fields.
+>
+> You already applied this change to the CAN driver after I made a
+> comment, please do the same throughout the series.
+>
+> The same applies with any other comments made by anyone else: do not
+> only apply to the patch where the comment is made, but apply it
+> broadly to the series.
+>
+> Thank you.
+>
+>
+> Yours sincerely,
+> Vincent Mailhol
