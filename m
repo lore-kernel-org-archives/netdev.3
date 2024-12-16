@@ -1,113 +1,126 @@
-Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551F4847B;
-	Mon, 16 Dec 2024 03:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.242
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C0D15443C
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 03:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734318709; cv=none; b=RdvGLxsLHB7nmZ9FF/qxOiJWw9vTCxXVKhcW+VjpEDBgwtnGlRYOCLzTPcY1E1+b5sUHzcC9W31U0aOMi1JVIW7+mvAN5t9+JqdiGjdRXh3IjVe3/6MM6rhkns0LHVyf+JTjMYBbu6uq23zIhuZz3UiPA3j9dEF5J7CoDb+vDd4=
+	t=1734318835; cv=none; b=UsIq6WlGW+dEB6oml3Ywt9jSmF2FUFkae3vvMp5Ly5ZLg02Bq9KCFnpyDS/T8P461R9LOboztMvuSJezm+W0mABBJkqTw911fzu7u4bu2ffJomSTyxDDz+ou9kmP5r8oYesIj1RnvGzPSxvwfUKS604d1fQLscyKXkH8qZXPOSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734318709; c=relaxed/simple;
-	bh=feZqFl3Z2fXoahyyv8inhP0iVemVBJb+Irhr0KxoyL0=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=ZCYTKMn3IDXPZnQ3BlcGsYzPBzFd31poQ+ixhDYI0nhE7H6J8xBjM0VrURu7/e2hh0rhs5nkCS8K8rajqVQ0LXtzoeA8GPREnIux/YzFVBWteEweeqF39gA0t5656XwlXFELaCGXc8I9HXqD8DQB3+shrSIjUgwYf5b1WXLXUWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=pHWEo56G; arc=none smtp.client-ip=203.205.221.242
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1734318835; c=relaxed/simple;
+	bh=EZMxsaSZyVTLl+wyd+Suo9rEvaWxLJNZbUuoR1n9dLQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Qm3sR7cK4XRf+r2DDEywoaEYRC6jNA+0us2tEXLE4kQrmrkS7No0CGFIaMhecJE0RXAd5QUAjUou6Zn5MAJmH39C8GLg0owCB9dPhOF2DPcPXv4UWYnu7uDwrWAEpnMQULaiDsLIxfRln+rl36t6/tBe0Mj20u332R3nTIji+uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=QU4Z7gzu; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="pHWEo56G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1734318394;
-	bh=Kc3CUwedDdXj45/Mbsftuq+CcH5kq+gS1YhoUSKMdBM=;
-	h=From:To:Cc:Subject:Date;
-	b=pHWEo56GJg+6nw3W+PmlYkkY8Ui8qw2NViHQ2vjsS995K8mM5almzngj8MNpARBP0
-	 x4lKP8icXcqQ0ueDjLhN9VzdiprdgYqcoEaYdAqVFZPz9j+KMeyxIU7LZirUTU0xjK
-	 wF80mSWNmc3kMrYtd4aAiB57R4mH5RDdlYMUxJ08=
-Received: from q-OptiPlex-7000.QUECTEL.COM ([203.93.254.82])
-	by newxmesmtplogicsvrsza36-0.qq.com (NewEsmtp) with SMTP
-	id 19427482; Mon, 16 Dec 2024 11:06:20 +0800
-X-QQ-mid: xmsmtpt1734318380tkxxbae7w
-Message-ID: <tencent_17DDD787B48E8A5AB8379ED69E23A0CD9309@qq.com>
-X-QQ-XMAILINFO: OATpkVjS499uQq0ifGKy4F7GQl3t+SPov80Pn6eQHF7hnugAjnJ8XcWvLZ2dsw
-	 1qLPBOs1OpNvtaD2Yhc7HP0xYIZnv5EyfLVbuPt19Y11q20ZkcxFBa7+9CwIYDZiqKnzp0FpbF9W
-	 pwdpRix+RH53j0HwXs9qJ8wFHT2OBHabxuY3hy1yimMoaB58VVdSVI6dFejocs/iNf1GDSCFoZE2
-	 mVbDTLIzFdtFaXnDtg95HEqowum1ANVR6vPjkqJ+JCCJu3gv0Rfp4QsWxvg9eGejI+6tnQR+8l7z
-	 5TC/MI+I9DowAKhe2YgQxbp+UuXBnHPkgRWamxPY3YlfMh5cVo8B6InBOBe72U0g5ySzgIz5Sr1q
-	 f+f+rJkbqIBZcLYajj0B/iQkhPRvRqsEWkgLrgQuyOj/N72yv2OlzUmKO86c2+acW3/Lodd0FqVU
-	 cqgLDw6MxPgqF80LpAQmZoU8xRgN33qeq/DGwQ35UctHNJ3xvAhBtAr3XkLy0N384Q1vYs77xwpW
-	 7f/cL9/kd5glNDFvUJiRXHZ5llSvKD3AXE3cthYjDJz1ERKTXXcAieHKP9E63JetjLdMkFN77nqw
-	 vRwyEhAVTCoIpIhc7I82XK+VqCheoeO0PtUMoCJAZSNmIwlM8YPsK/gq2R4b84c3nKwnaoXcgawp
-	 L79GoSm+cqhUedmLpvFHBCDcThWjWtSdvhAesj3V5CLXFLKBmw0vmy60fUQcBOAIo7zMy+sxQ3Hx
-	 hDEXD1tcX1jp9tbYgCkJRzXDbFJfFJOXfqsrutqdmyOQc+esb9STp83tMPmi/40X6JmneIZPCgOG
-	 fKsaoldFxYSoNVBbV5F3Aut059HzH+InEhOqYwAKDLAy9mmVt1Wa03xXTOrqYaq1fIHytDMMuLeR
-	 prBS1kV4jWPtMk3FJCBxHtdqWkcwHMwPTQAsOQZB0/QBeb92h/zLYIWJglvpQiIh20F7jcg8FVPI
-	 azmJGnsfUk2ivD9eduNt9Wyhqk7cjDjna54T6hUYRIt8BV1q8KDAIAm74rfR2SH8hlizRhnpjf0i
-	 yYt6dzA1SuI1p05bRYdfN8tZXi5elK7RtRG0DVEWbi2MQGsFadf7kuWtzoEL0=
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: Martin Hou <martin.hou@foxmail.com>
-To: bjorn@mork.no,
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="QU4Z7gzu"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 6D0702C06AE;
+	Mon, 16 Dec 2024 16:13:49 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1734318829;
+	bh=ija5y22i7nvrG7FYKFouDM3FeHuFJwf9xq2lkRzkIu4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QU4Z7gzu5duX/ec9QI26WXFEswSBoXDvU9ERJ+T6+3LUxHrbA8Sf25OFH77LJjumN
+	 +e5YLXkvJhn7YosxBfDDSActqYB5agQCAMe+aBKh1Xj033xCwVwDG6zjkM8x6gLMvh
+	 HWUBvj/oOJ9Z8zzaQ5yTTdaBIz6cnFHhSO/agQWt7iF2l0dI29z0dj4IqIPN/JEhh2
+	 Sw5+Q9mFsHdLPkVipL/mhqBQevHEnTwjTmH7M6t/IgGD54BOZN1jOhrzBHPcb9+Mlc
+	 c4M9aT2VLfczYAMhw0rnmUjGhza8hmMal7UbNEZvHlRVZqZlUuROWygP8FraAdgkTG
+	 vKNqjEB9S3gcQ==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B675f9aec0002>; Mon, 16 Dec 2024 16:13:49 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+	by pat.atlnz.lc (Postfix) with ESMTP id E6D5313EE87;
+	Mon, 16 Dec 2024 16:13:48 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id E1452280E23; Mon, 16 Dec 2024 16:13:48 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: lee@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
+	pabeni@redhat.com,
+	tsbogend@alpha.franken.de,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	markus.stockhausen@gmx.de
+Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Martin Hou <martin.hou@foxmail.com>
-Subject: [PATCH] net: usb: qmi_wwan: add Quectel RG255C
-Date: Mon, 16 Dec 2024 11:06:18 +0800
-X-OQ-MSGID: <20241216030618.70729-1-martin.hou@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	netdev@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH v2 2/4] dt-bindings: mfd: Add MDIO interface to rtl9301-switch
+Date: Mon, 16 Dec 2024 16:13:44 +1300
+Message-ID: <20241216031346.2626805-3-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241216031346.2626805-1-chris.packham@alliedtelesis.co.nz>
+References: <20241216031346.2626805-1-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BNQQr0QG c=1 sm=1 tr=0 ts=675f9aed a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=RZcAm9yDv7YA:10 a=0DcZ6JciK6r0_laEW2MA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-Add support for Quectel RG255C which is based on Qualcomm SDX35 chip.
-The composition is DM / NMEA / AT / QMI.
+The MDIO controller is part of the switch on the RTL9300 family of
+devices. Add a $ref to the mfd binding for these devices.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=04 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0316 Rev= 5.15
-S:  Manufacturer=Quectel
-S:  Product=RG255C-CN
-S:  SerialNumber=c68192c1
-C:* #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Martin Hou <martin.hou@foxmail.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 9fe7f704a2f7..e9208a8d2bfa 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1429,6 +1429,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
-+	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0316, 3)},	/* Quectel RG255C */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0112, 0)},	/* Fibocom FG132 */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
--- 
-2.25.1
+Notes:
+    Changes in v2:
+    - None
+
+ .../bindings/mfd/realtek,rtl9301-switch.yaml      | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch=
+.yaml b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
+index f053303ab1e6..eeb08e7435fa 100644
+--- a/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
++++ b/Documentation/devicetree/bindings/mfd/realtek,rtl9301-switch.yaml
+@@ -41,6 +41,9 @@ patternProperties:
+   'i2c@[0-9a-f]+$':
+     $ref: /schemas/i2c/realtek,rtl9301-i2c.yaml#
+=20
++  'mdio@[0-9a-f]+$':
++    $ref: /schemas/net/realtek,rtl9301-mdio.yaml#
++
+ required:
+   - compatible
+   - reg
+@@ -110,5 +113,17 @@ examples:
+           };
+         };
+       };
++
++      mdio0: mdio@ca00 {
++        compatible =3D "realtek,rtl9301-mdio";
++        reg =3D <0xca00 0x200>;
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        ethernet-phy@0 {
++          reg =3D <0>;
++          realtek,smi-address =3D <0 1>;
++        };
++      };
+     };
+=20
+--=20
+2.47.1
 
