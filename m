@@ -1,99 +1,124 @@
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE791CB51B
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 08:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277AE1FFC46
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 08:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734338229; cv=none; b=IQ3oN3lw3WgZeo12Jw7aSXLEqHoedm7xa6TNYI2NOv0gsMypo+0VhYqIQwVX/tk5O7K/XWeEd+ayUsKCCyYm4q1I3W35/VW7BI5vpGeuARACltwyFYX8FnvrjqDXM7vHIvkLNieQpcoKyU+qzQSMfisFMPuM8y2F4HcnDrBRRqA=
+	t=1734339128; cv=none; b=QZ50MN4o1up3j9fPwOvJbUcAvBmxokTDHzLFxENIgGwplIKWk9UsWIzgl6vE0y4tgXNjMhsb48trlKs7o4i0phOXQ4VHgjK5Z2AHn1HOJigvyKczwpUflus23Heq20mOP8QcnY++FmGeUI6Wz8DB1dPt7ELH3OMJgMOtP9HXvmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734338229; c=relaxed/simple;
-	bh=dtVWKlkbhPkFNpfftBtq15xbnTnw+4JX29ve0YxSxY0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=vD27p6ApWb5AY8qrLQoaoT2dho1/oJHlAaiLypfnoi1YVkyGORpTsJdJ/LXmNbrLrCfz4v8t/omZUDoSS2Gl0DsOm96gcTaAGiOOa75eHihWyqxHpWR+1XF7dgdYlvm3PppiQpUo9goN2hBGfXGmkJhwDnU/EPT4tuAzTS9m8eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yHTz31hz; arc=none smtp.client-ip=209.85.219.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1734339128; c=relaxed/simple;
+	bh=cw6agu2cPh7pWd/ovT6/NMYCbs8xgL2IfhBflTw9RKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vGt8NNg1xz088dG0TEK5PJU3GTFv6wEBMxLfz/hujN1F9gUPVu4l74VljOSKcwMkR1aJ+Ws/53kclm1+dmxtDXzRqRCS05d0bZIxX2p7KCD0nZ/F2mFBUgZnf9aX3yzN4MRFX4Sg0J1kEw//AexkC+joxNfsfDEovHRGigcCqo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFRsrcOF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yHTz31hz"
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-6d8f0b1023bso43748616d6.0
-        for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 00:37:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734338226; x=1734943026; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZVLUko23C4TFbn681BzNmzT441se9W69wg074YvkRqk=;
-        b=yHTz31hzhRsAJdw2lN3ulVXVpHR5DYzJS+UQvgdLHrLBl8fklRURY7Re3eaLl9gwAa
-         12KypIXxSOV7+tndqHc+o2ZUsNYUQZIyKO9TDBr/7q/5iKXXkNOg8eoiyzSi0xD1+gNC
-         A8f+2KbVHJkqHZX6UH2c7YIpqalbA2+z4rAEmc3fEISen+mqHeH3VK0JK4BRAjqRvj7n
-         cV+wyIAZwrWEai1y5X717imbkM/KhC8nDXkfmVEXtwL36NLl0Nl0W03f//M6abQ+1Ekw
-         lIkgSJyLcAO+E3nldsK/sm2RodB5AkoZmYDu4ypsC0bSerq7BIFfHCOtFPmbWQgb8oGK
-         EJFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734338226; x=1734943026;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVLUko23C4TFbn681BzNmzT441se9W69wg074YvkRqk=;
-        b=YsAlrbwn81MGIyXxie4lrKGUJxAVtfh++Co/u/5rdoiVT7l8rjRiUyxvDk0/ewlw19
-         cGXCWMbmlQrNJXRH6rJKdjRV2v+3uV/0tcCNU+xXqGNm9ORYaRh79B1Sav8/ew34h6j0
-         +IALAISDtQbf7mGwZIysenXW1Uht0qpkflDiqA11qKZHnl4atkhkuxdh+D8PVdF1O6SY
-         NHhuNCYMycKhWSln8ObbzgqlUoGhbImmz2/WWOngLqVanQO01B+G/hsIEACv+nlVa2x3
-         I1aUQW9WxsWsPt3ujT706aYyxl3wt3A3t+Mq03L15crP6BvlLG4vABM2LadCdhTMnjyE
-         DcKg==
-X-Gm-Message-State: AOJu0YzZX0el1wahvtbHyczNGgi70ONLZfdHCgHz1S0CMB+NXyfssTXl
-	0oqXik+fL2KbYKJ9fZH8vm2ZHLhiXslxhl/2pjYNlr/16tW+GgXxsCgW8l8Q4+/AlQlUy8JdxkD
-	dXbXUYC/eyA==
-X-Google-Smtp-Source: AGHT+IGBmF8HeJX/kpYS+xHvxoqZEV98UqYj6VJLPYT3j8kJ9wbrRcNQA/K4heccRfRjPFA/YWBmNIlqpWdMKg==
-X-Received: from qvrk2.prod.google.com ([2002:a05:6214:1022:b0:6d9:122d:a689])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:ac1:b0:6d8:9815:92e2 with SMTP id 6a1803df08f44-6dc8ca5a4e5mr232872586d6.15.1734338226382;
- Mon, 16 Dec 2024 00:37:06 -0800 (PST)
-Date: Mon, 16 Dec 2024 08:37:03 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFRsrcOF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B426FC4CED0;
+	Mon, 16 Dec 2024 08:52:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734339127;
+	bh=cw6agu2cPh7pWd/ovT6/NMYCbs8xgL2IfhBflTw9RKM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OFRsrcOF4OBWRenVFNHPeUnZz+Y62IbGF2AzGsilVYu8xGNyHPBlwWi5JU2qfkTGp
+	 DwrMuZ1IewMRszNz6mBBs6SmWH/n0KzpjaZWpsljK/3jUp/54H4V/9vuW+MVqtjKB6
+	 Nx3DwuobUj0z+JysAX+H9r05fVbkf5TXDuxHHvfjGyroK32f3m/X3J1RIlXYU+F1tc
+	 n5zyIDDqt5MIAsRuCzYE9IQgYnEQ7AfGGAG9JCLTTaALrInFHJaGJhxEBE2/axyqAD
+	 FrFN7IuQ4IG1IE2owxmQFS2yYVORZkcVTqzaHIT5WpHQLEV1KF2AaU/FhYuV/8LMbX
+	 nv8K1EVDXVgvg==
+Message-ID: <9e55f21d-e246-45d2-bad1-b1bcde95b4e6@kernel.org>
+Date: Mon, 16 Dec 2024 09:52:03 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241216083703.1859921-1-edumazet@google.com>
-Subject: [PATCH net] net: netdevsim: fix nsim_pp_hold_write()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot <syzkaller@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: page_pool: rename
+ page_pool_is_last_ref()
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, asml.silence@gmail.com,
+ almasrymina@google.com
+References: <20241215212938.99210-1-kuba@kernel.org>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20241215212938.99210-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-nsim_pp_hold_write() has two problems:
 
-1) It may return with rtnl held, as found by syzbot.
 
-2) Its return value does not propagate an error if any.
+On 15/12/2024 22.29, Jakub Kicinski wrote:
+> page_pool_is_last_ref() releases a reference while the name,
+> to me at least, suggests it just checks if the refcount is 1.
+> The semantics of the function are the same as those of
+> atomic_dec_and_test() and refcount_dec_and_test(), so just
+> use the _and_test() suffix.
+> 
+> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> Hopefully this doesn't conflict with anyone's work, I've been
+> deferring sending this rename forever because I always look
+> at it while reviewing an in-flight series and then I'm worried
+> it will conflict.
+> 
+> v2:
+>   - rebased on Olek's changes
+> v1: https://lore.kernel.org/20241213153759.3086474-1-kuba@kernel.org
+> 
+> CC: hawk@kernel.org
+> CC: ilias.apalodimas@linaro.org
+> CC: aleksander.lobakin@intel.com
+> CC: asml.silence@gmail.com
+> CC: almasrymina@google.com
+> ---
+>   include/net/page_pool/helpers.h | 4 ++--
+>   net/core/page_pool.c            | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 
-Fixes: 1580cbcbfe77 ("net: netdevsim: add some fake page pool use")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- drivers/net/netdevsim/netdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Looks good to me.
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 0be47fed4efc5664c436c91669de5d7c13ef3411..e068a9761c094e91c584d0b29a46166ec31f42d5 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -635,10 +635,10 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
- 		page_pool_put_full_page(ns->page->pp, ns->page, false);
- 		ns->page = NULL;
- 	}
--	rtnl_unlock();
- 
- exit:
--	return count;
-+	rtnl_unlock();
-+	return ret;
- }
- 
- static const struct file_operations nsim_pp_hold_fops = {
--- 
-2.47.1.613.gc27f4b7a9f-goog
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
 
+
+
+> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+> index e555921e5233..776a3008ac28 100644
+> --- a/include/net/page_pool/helpers.h
+> +++ b/include/net/page_pool/helpers.h
+> @@ -306,7 +306,7 @@ static inline void page_pool_ref_page(struct page *page)
+>   	page_pool_ref_netmem(page_to_netmem(page));
+>   }
+>   
+> -static inline bool page_pool_is_last_ref(netmem_ref netmem)
+> +static inline bool page_pool_unref_and_test(netmem_ref netmem)
+>   {
+>   	/* If page_pool_unref_page() returns 0, we were the last user */
+>   	return page_pool_unref_netmem(netmem, 1) == 0;
+> @@ -321,7 +321,7 @@ static inline void page_pool_put_netmem(struct page_pool *pool,
+>   	 * allow registering MEM_TYPE_PAGE_POOL, but shield linker.
+>   	 */
+>   #ifdef CONFIG_PAGE_POOL
+> -	if (!page_pool_is_last_ref(netmem))
+> +	if (!page_pool_unref_and_test(netmem))
+>   		return;
+>   
+>   	page_pool_put_unrefed_netmem(pool, netmem, dma_sync_size, allow_direct);
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index e07ad7315955..9733206d6406 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -897,7 +897,7 @@ void page_pool_put_netmem_bulk(netmem_ref *data, u32 count)
+>   	for (u32 i = 0; i < count; i++) {
+>   		netmem_ref netmem = netmem_compound_head(data[i]);
+>   
+> -		if (page_pool_is_last_ref(netmem))
+> +		if (page_pool_unref_and_test(netmem))
+>   			data[bulk_len++] = netmem;
+>   	}
+>   
