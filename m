@@ -1,73 +1,73 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4A0205E2E;
-	Mon, 16 Dec 2024 14:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC6A206284;
+	Mon, 16 Dec 2024 14:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734358232; cv=none; b=mr7Bx0FA4uqFaQRR2L7tG5JElpd2H8IxWb0YimIuDWp6AhN1+0vSV09BrlM6u0T1JHxA381IcObO34SiofpEcqwwNOB/p/+7XLPkmy9H2lJPWvaVbf0kPSgcbkXw7NWJYMNse2Xq0lIGX922xADNf87ppoF1uHOtW86uO4bOe+k=
+	t=1734358234; cv=none; b=ijPa7oEWWpKUWZ+hPx2JUxY2We0surQPwa0JfTaQCk0E2JfhT87evLqHqhxYOcEdINIdOJFFa2ee6saDH97TGP471BbNN0kuSdlqCgyIclhy76yjfZXNmuWYDxSLmzMi/Eunst7GMkeKxQHfV4YZP947aNY2gbc//RNT9mRgU8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734358232; c=relaxed/simple;
-	bh=uQjOQIpAptRl8pQc8gFSIJEsWRVkI7foqw2nTq56XLE=;
+	s=arc-20240116; t=1734358234; c=relaxed/simple;
+	bh=IDxhcv0YrqyvrNkAnxSC+WSCaccxp8oEIkrJ4llFEAg=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=EcxvtzKSDp340u8m7eK1+ejOoCAE3jwqZpdRja4ZVXA0YH4yK4NI8u4g5N7hjDxvgCDNL5dsmeoYchPv9v/H9RkgmhhutORa8ShtDV8J/ikjU8KEGIh8Xyp34TsUs8abNDPzb4yu6ZoCxGKaHNXdPOE3bhF7vAFIkSw+Vu/iVCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCx1mz++; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version:Content-Type; b=aZyVMSpmLvqfu1NPVebUAMaZd2ACVrnIgCbzqXW0NxGe/WPQa+aPDC2iV/L/B/+G2Bk2B6OyCChVl+at2UNlN5tqT8rcyZHoRScy05Ovr4/9xknD/z07a+DcrGRqhdLcBRoFgEkPBuTxgw++Go59rwe4madOEBPz5vmvQbxlH6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSRUP7dc; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCx1mz++"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3862df95f92so2075782f8f.2;
-        Mon, 16 Dec 2024 06:10:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSRUP7dc"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38789e5b6a7so2147848f8f.1;
+        Mon, 16 Dec 2024 06:10:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734358229; x=1734963029; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734358230; x=1734963030; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9dWQe4Es2nwYeY5DBTxwNHhi948NVg8Vto7M75jNwf4=;
-        b=UCx1mz++Tc1qNIdmxPmwGW2us5Y4/e1r/1liub9RgetjBWPKoyoqLwmor7qHeiU9Mv
-         uMw/mNnzT9zXNEZSGDrYz1Xc2CIfjqAoLKqXKkHUWJc74oUL5McBd37DQFIRlLWx5m5d
-         rlY8a4XrE5+kZjS97qdzlratNy148jWzJS+InTNbPcBQYdoIgbFpdeUXjA/5YAn8tbfw
-         NbGuDZjgm0imWOLDX0zOxDOT0QyoyvIHYEbXCxItFAyWRqAFKjNJffgX9eNHJunhukXs
-         /ggA+uPbApoTVebRsVLkGpQEWJheWHhUomHNfyVp4fVbEqiCHcmTLpfhKM+ICYEDj8pK
-         LGKg==
+        bh=kHGUggi4KWk7b9dNu2KvnRj9xlQayHW6VmghHC4yAKQ=;
+        b=TSRUP7dcykZQFdJ/hxU36nubZnH1A6Mxy5DUOgX0yijp9d9QRQB8WsI0Mku3RYBa5o
+         y02kpPOFxqj5A2buYPISqAfr8Bz/OXzRL9Nb108GiBenqSPRmkc/N6Uq4y6FmdTZf2XZ
+         Nz+im13BptvnVwMx85Km4L3lPTy93rY1TwPMUYF0ZLkxGPko58MvOtkH7SiHuEi+kj5z
+         KR8IEjBiv/dFQ+4bYjGuIJK1C2NETy7++LtSnfj+KbCUoQzvC/7Gn/OmifoJswszIOvb
+         ceGKQWd/DSmWV911fi1P33zcGDuDhKxfMgsfLHKfaWD1h77qNY+srxD8msZLNpmmQO5G
+         m/Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734358229; x=1734963029;
+        d=1e100.net; s=20230601; t=1734358230; x=1734963030;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9dWQe4Es2nwYeY5DBTxwNHhi948NVg8Vto7M75jNwf4=;
-        b=Z0kOsqxfltVKRf8LifyDD0CPNJmiHqmYGVzbAWKehzI6bwL2WnraWzc8TyK8poKny0
-         oVc3mfmN2XTUsUls0NTux2y5jbbztIUpjq96zKL0TWQCbIzhSv2sP9Oelweahb4sflpn
-         QAPashkUxyeonWn/+5zT0pD7CnKyunZjmwpuKPpr6KGVHUNVfOPMCeotWi/YoHoFgLrR
-         BLQLbLg6OqIEks5vTEPUNpke4qBn1kFss8umDke+0MXeiv3H9hVZIyc81Q2fd7ShrL+L
-         Px/319xe7h9VfYYd/OXxSvbRaQSbJSnFN/2hTexWmlntS6zXd5hZqZQesRuahvvz6Rir
-         WCIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwJOEkY3zjnSx4ysuzWaXiNMQL83B9BGJ8NyINiuQpQ15Y64vRiHhLG3YCRGK1LVah8h9bcapj@vger.kernel.org, AJvYcCXum0i+K04CHYJe/jwZBK4CxoBAFZF2jSXhBQaPAAp8OKBZ26iuLpCeMzmYX6VhgqHdEa8rqQjqkPztj90=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeBUB36HPTP9Lf+5vJj4ynTseWLQVOnuddk/CetRMVDJSca9Db
-	I+54PsKzyH5XbvlQrpg38U2QIJjyQPj09VhtAzdirZjxxcBO5alfC2Kzwg==
-X-Gm-Gg: ASbGncuBK96fXd0/sqeWXD+bYWzajq2tUhKpmmX0W4KW3EuojjMdFahQt3NeWUTsEWp
-	4QVUJCyaqZNv4mGT0u1ekXojINvfKffZgS4QFPuqdER66VFtuafG2jjDgFsfIOBxvVBaGyQ8zn1
-	gbRQePtAe0JJgHKkOyHxQmFDH7YTiRK7rmcd/6PRVHITjFN+P0eHV0f8o1K/cH8PvKdgrGM3O7l
-	2d0K5LQqML+/7GCKHWC9WOzWMOC/me4dUkDn4haymRF0DFXLf1+kqGTZH9csrkk8caPsw==
-X-Google-Smtp-Source: AGHT+IGgvauNvh9m+cA+HPEgnrS/JhpusrP9h+F/7ZiTPi1OPkgOAirn6c0/cnunadpKRCcoyowSmA==
-X-Received: by 2002:a05:6000:144a:b0:385:f417:ee3d with SMTP id ffacd0b85a97d-38880adb3c3mr9033977f8f.35.1734358228729;
-        Mon, 16 Dec 2024 06:10:28 -0800 (PST)
+        bh=kHGUggi4KWk7b9dNu2KvnRj9xlQayHW6VmghHC4yAKQ=;
+        b=qSCuZ0QhZzmG5OPtlQKuCH18AHLZXZu4c3AFle2LfKvysrh31rC/anhSFinbZC7Y6f
+         0LRet0MFzS11AxKn+NNPoBxjviG0hjWHHUWetMtsDU88MiGETF+ycC9ppqJbYjlmWiz8
+         5ZvYhhBkI7602lHWPfhNF6bWYTi9uC6cIf7gz+rk6y4yT55/YAXxP/DddYoCaq3cHztn
+         RvuuAJ8doPJLZeGV+ywU1hKqyamVC/LLu7ycgrCYO6h89AmnDhG43irVBVFlWSvlIrrt
+         aRwIK575rUU3XvvV4TYdGWqu7v3uo0R5ci/Be9i3tB/rz6g3tE+z8xtlzVknBpUQWjvB
+         QObw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8FhNr3DYLNrB9jtHCVshTVR4WjGyyGONbAJkqeiR5AUsP2NcsNXlDMJIezhkKE3DYg/fS7/nW@vger.kernel.org, AJvYcCXlxCHfSfzx1piyevkjmsY9BM1cUT0Gd3WxgFQIRjABzUuEAcCjvsiU2+rgxUt/as8sshPfHIdDRgzvQt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypcIdS21Zz2cE8d2LWjdaRb9ffhbdoB8fEqD5/zSIeSwJYEpJf
+	pN1/1vbd5lsrOe+88FqWBPkv168ERarg+TgZaJlAs428qveODMx+bJVUqA==
+X-Gm-Gg: ASbGnct1DIEzfob7gVVdOEx5MJpjxxYmeI8LsZmWhbLLYxfXqNasobMmujQRWK5z0JG
+	FuQM6VpsqwT0rb6FIn3g7T+uvUne0ka4/oJkTR4vohqgDUscDbJOJa705oHN1DzPMjpy0obwaRe
+	2iMO+B123613Rhzet4G4rvB7rlrKuNOE/XtbtpostnwvPKS2773jj43h4UV7QBsKjTEAJbVsY/P
+	Gr61N+vER1/fAI71idBEwmhnAsFgNaii9YETfFr+2JFap4+foR1U0keS5/R3C2Jd34O6g==
+X-Google-Smtp-Source: AGHT+IGtJ4fxS2nw2pH+7WL2/DgrrFUnSjqVji7IeZa5963Kda96Q5zkGx7RLV7LUDhgMfLKtnSI3g==
+X-Received: by 2002:a05:6000:1864:b0:385:df73:2f24 with SMTP id ffacd0b85a97d-3888e0f2d5bmr11187182f8f.39.1734358230282;
+        Mon, 16 Dec 2024 06:10:30 -0800 (PST)
 Received: from imac ([2a02:8010:60a0:0:3011:496e:7793:8f4c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c80602a1sm8225663f8f.97.2024.12.16.06.10.27
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559eb20sm143381465e9.21.2024.12.16.06.10.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 06:10:27 -0800 (PST)
+        Mon, 16 Dec 2024 06:10:29 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Jan Stancek <jstancek@redhat.com>
 Cc: stfomichev@gmail.com,  kuba@kernel.org,  jdamato@fastly.com,
   pabeni@redhat.com,  davem@davemloft.net,  edumazet@google.com,
   horms@kernel.org,  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] tools: ynl: add initial pyproject.toml for
- packaging
-In-Reply-To: <2a9b6d5a782acfa71ae5fb2f4d3cc538740013b6.1734345017.git.jstancek@redhat.com>
-	(Jan Stancek's message of "Mon, 16 Dec 2024 11:41:42 +0100")
-Date: Mon, 16 Dec 2024 13:52:09 +0000
-Message-ID: <m2ed2791me.fsf@gmail.com>
+Subject: Re: [PATCH v3 3/4] tools: ynl: add install target for generated
+ content
+In-Reply-To: <a2e4ffb9cbd4a9c2fd0d7944b603794bff66e593.1734345017.git.jstancek@redhat.com>
+	(Jan Stancek's message of "Mon, 16 Dec 2024 11:41:43 +0100")
+Date: Mon, 16 Dec 2024 14:01:06 +0000
+Message-ID: <m2a5cv917h.fsf@gmail.com>
 References: <cover.1734345017.git.jstancek@redhat.com>
-	<2a9b6d5a782acfa71ae5fb2f4d3cc538740013b6.1734345017.git.jstancek@redhat.com>
+	<a2e4ffb9cbd4a9c2fd0d7944b603794bff66e593.1734345017.git.jstancek@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -79,49 +79,118 @@ Content-Type: text/plain
 
 Jan Stancek <jstancek@redhat.com> writes:
 
-> Signed-off-by: Jan Stancek <jstancek@redhat.com>
-
-nit: missing patch description
-
-> ---
->  tools/net/ynl/pyproject.toml | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
->  create mode 100644 tools/net/ynl/pyproject.toml
+> Generate docs using ynl_gen_rst and add install target for
+> headers, specs and generates rst files.
 >
-> diff --git a/tools/net/ynl/pyproject.toml b/tools/net/ynl/pyproject.toml
-> new file mode 100644
-> index 000000000000..677ea8f4c185
-> --- /dev/null
-> +++ b/tools/net/ynl/pyproject.toml
-> @@ -0,0 +1,26 @@
-> +[build-system]
-> +requires = ["setuptools>=61.0"]
-> +build-backend = "setuptools.build_meta"
-> +
-> +[project]
-> +name = "pyynl"
-> +authors = [
-> +    {name = "Donald Hunter", email = "donald.hunter@gmail.com"},
-> +    {name = "Jakub Kicinski", email = "kuba@kernel.org"},
-> +]
-> +description = "yaml netlink (ynl)"
-> +version = "0.0.1"
-> +requires-python = ">=3.9"
-> +dependencies = [
-> +    "pyyaml==6.*",
-> +    "jsonschema==4.*"
-> +]
-> +
-> +[tool.setuptools.packages.find]
-> +include = ["pyynl", "pyynl.lib"]
-> +
-> +[project.scripts]
-> +ynl = "pyynl.cli:main"
-> +ynl-ethtool = "pyynl.ethtool:main"
-> +ynl-gen-c = "pyynl.ynl_gen_c:main"
-> +ynl-gen-rst = "pyynl.ynl_gen_rst:main"
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> ---
+>  tools/net/ynl/generated/.gitignore |  1 +
+>  tools/net/ynl/generated/Makefile   | 40 +++++++++++++++++++++++++++---
+>  2 files changed, 38 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/net/ynl/generated/.gitignore b/tools/net/ynl/generated/.gitignore
+> index ade488626d26..859a6fb446e1 100644
+> --- a/tools/net/ynl/generated/.gitignore
+> +++ b/tools/net/ynl/generated/.gitignore
+> @@ -1,2 +1,3 @@
+>  *-user.c
+>  *-user.h
+> +*.rst
+> diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
+> index 00af721b1571..208f7fead784 100644
+> --- a/tools/net/ynl/generated/Makefile
+> +++ b/tools/net/ynl/generated/Makefile
+> @@ -7,12 +7,19 @@ ifeq ("$(DEBUG)","1")
+>    CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
+>  endif
+>  
+> +INSTALL	    ?= install
 
-I'm not sure if we want to install ynl-gen-c or ynl-gen-rst since they
-are for in-tree use.
+nit: mix of tabs and spaces here
 
-Thoughts?
+> +prefix      ?= /usr
+> +datarootdir ?= $(prefix)/share
+> +docdir      ?= $(datarootdir)/doc
+> +includedir  ?= $(prefix)/include
+> +
+>  include ../Makefile.deps
+>  
+>  YNL_GEN_ARG_ethtool:=--user-header linux/ethtool_netlink.h \
+>  	--exclude-op stats-get
+>  
+>  TOOL:=../pyynl/ynl_gen_c.py
+> +TOOL_RST:=../pyynl/ynl_gen_rst.py
+>  
+>  GENS_PATHS=$(shell grep -nrI --files-without-match \
+>  		'protocol: netlink' \
+> @@ -22,7 +29,11 @@ SRCS=$(patsubst %,%-user.c,${GENS})
+>  HDRS=$(patsubst %,%-user.h,${GENS})
+>  OBJS=$(patsubst %,%-user.o,${GENS})
+>  
+> -all: protos.a $(HDRS) $(SRCS) $(KHDRS) $(KSRCS) $(UAPI)
+> +SPECS_PATHS=$(wildcard ../../../../Documentation/netlink/specs/*.yaml)
+
+You missed Jakub's request to factor out SPECS_DIR:
+
+  Maybe factor out:
+
+  SPECS_DIR := ../../../../Documentation/netlink/specs
+
+  ? It's pretty long and we repeat it all over the place.
+
+> +SPECS=$(patsubst ../../../../Documentation/netlink/specs/%.yaml,%,${SPECS_PATHS})
+> +RSTS=$(patsubst %,%.rst,${SPECS})
+> +
+> +all: protos.a $(HDRS) $(SRCS) $(KHDRS) $(KSRCS) $(UAPI) $(RSTS)
+>  
+>  protos.a: $(OBJS)
+>  	@echo -e "\tAR $@"
+> @@ -40,8 +51,12 @@ protos.a: $(OBJS)
+>  	@echo -e "\tCC $@"
+>  	@$(COMPILE.c) $(CFLAGS_$*) -o $@ $<
+>  
+> +%.rst: ../../../../Documentation/netlink/specs/%.yaml $(TOOL2)
+
+Did you miss Jakub's review comment: TOOL2 -> TOOL_RST ?
+
+> +	@echo -e "\tGEN_RST $@"
+> +	@$(TOOL_RST) -o $@ -i $<
+> +
+>  clean:
+> -	rm -f *.o
+> +	rm -f *.o *.rst
+
+Also Jakub's comment:
+
+  No strong preference but I'd count .rst as final artifacts so I'd clean
+  them up in distclean target only, not the clean target. The distinction
+  itself may be a local custom..
+
+>  distclean: clean
+>  	rm -f *.c *.h *.a
+> @@ -49,5 +64,24 @@ distclean: clean
+>  regen:
+>  	@../ynl-regen.sh
+>  
+> -.PHONY: all clean distclean regen
+> +install-headers: $(HDRS)
+> +	@echo -e "\tINSTALL generated headers"
+> +	@$(INSTALL) -d $(DESTDIR)$(includedir)/ynl
+> +	@$(INSTALL) -m 0644 *.h $(DESTDIR)$(includedir)/ynl/
+> +
+> +install-rsts: $(RSTS)
+> +	@echo -e "\tINSTALL generated docs"
+> +	@$(INSTALL) -d $(DESTDIR)$(docdir)/ynl
+> +	@$(INSTALL) -m 0644 $(RSTS) $(DESTDIR)$(docdir)/ynl/
+> +
+> +install-specs:
+> +	@echo -e "\tINSTALL specs"
+> +	@$(INSTALL) -d $(DESTDIR)$(datarootdir)/ynl
+> +	@$(INSTALL) -m 0644 ../../../../Documentation/netlink/*.yaml $(DESTDIR)$(datarootdir)/ynl/
+> +	@$(INSTALL) -d $(DESTDIR)$(datarootdir)/ynl/specs
+> +	@$(INSTALL) -m 0644 ../../../../Documentation/netlink/specs/*.yaml $(DESTDIR)$(datarootdir)/ynl/specs/
+> +
+> +install: install-headers install-rsts install-specs
+> +
+> +.PHONY: all clean distclean regen install install-headers install-rsts install-specs
+>  .DEFAULT_GOAL: all
