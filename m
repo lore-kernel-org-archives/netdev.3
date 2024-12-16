@@ -1,96 +1,108 @@
-Received: from mx18lb.world4you.com (mx18lb.world4you.com [81.19.149.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022D720C49C;
-	Mon, 16 Dec 2024 19:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC36C20C481;
+	Mon, 16 Dec 2024 19:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734378717; cv=none; b=tLmAk+bl+e/CmBEwIUmEg1tIla2D07rPThMoFniBK3RXPSVosfC9NokkSShE9WGMoyFndIi1JzpAc9hDRw4fWPgRdNjfFWBJvIyjvKde3UoMEgK/89S5u4DrgEW0n7suMtwoKhbUZVEHAj3VK7jMVCKz4hajvdY1meRbwalxYZQ=
+	t=1734378924; cv=none; b=Ag5rAfCDA0HHlW7ZL4+oADNwrzKL8v6Ihj1xwBAGFcE/WDIksXZ5RObHOJBKYzwpZidJ1qqcIrdSLw/G4qHIHFMMr8l/6lbGXe6jEucHjtQq/XaL+jhV1vg0xkty7+RlpOnO4wdsbKo6D/JxoaozlEr8AR2eFEiFgVjK0aIzSoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734378717; c=relaxed/simple;
-	bh=EC8xfRN5+YzDliZbYQ0yX+kHJRiKa2+JlNwYpk54GIM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=heL07Gw8EiV/EBBxZE75GVHdnvAKxB2/+MsgnNP/wBwKXa2mRN0FTikkp2tvRmoG2cwfX9Vghs6TnUT0XmCQh8khHTpZ5s4QKAxgzAGzzbg0ZSLt7tb/G9okRgXCjKIWfOpBPqlEtQfvK96KzGUlQDhS+pQ/JfaN4gpUu989Cds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=M/waF/MV; arc=none smtp.client-ip=81.19.149.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1734378924; c=relaxed/simple;
+	bh=Ix+OStVvszHNAz69L80aX5rSRrohehl4XpnZY9rnZY4=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dw1EL/F1Cm9NGrZg4mgBcMXokJmr0wNf04mg6YQfwEpDtNCaE6p1rh9YDEDnCI0/1PlEBXDBfipYjyJ1YPnGBzRL6zQ6pg7XcjnxPIr7z8gwAQNX1dqdViMGjJWCILEnWIW5eUFRxNkkk8fECpZuqHUKI2vmkHzzTpa98YdY3Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TRueQ+P2; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="M/waF/MV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jZMoa6c8V2RLO1SfPCDM3oUntBeI3z7ggEZ6Kaa61BY=; b=M/waF/MV2RXEMR3oDfl2pFU4iq
-	eCYoR4hWa4ROygWywRg5W/MftFYY6131NEcb27QecaKxoeLI9xcay1k7Vcn2vnegBqY1OvgEe7GqI
-	1IX9dL7u1ymi3xQlc1ENqQ2K11b32B5npD5Zpjvb2yMUhVw4yeCQfIm3c0tfqj8x/rVU=;
-Received: from [88.117.62.55] (helo=[10.0.0.160])
-	by mx18lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1tNGgM-000000003sc-1v0e;
-	Mon, 16 Dec 2024 20:23:06 +0100
-Message-ID: <047738af-69af-49aa-ae91-7dbca40ae559@engleder-embedded.com>
-Date: Mon, 16 Dec 2024 20:23:04 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRueQ+P2"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4361b0ec57aso44376235e9.0;
+        Mon, 16 Dec 2024 11:55:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734378921; x=1734983721; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=W98OVW28vlCYxfnu1q41kdPB6ICNjulMnB1+GiRL7VU=;
+        b=TRueQ+P2VHq4nHR6kCq2mJzXgHDigVeRAzxosCMNNTxoY2oZ33dmFXtTfURbHbxseE
+         8/gB3hI+lH466G2Nrzg0en2iFII/YeaLHqXcvfvMt0PQdNy4bFslh5pL44j4zdt6NW2p
+         tQ1fKSnt9sWw+hV4eTqG7KYH8vxBFFILVpkyJAGMei8uZWWYfYlxW75Ni/cCfWCadK6M
+         Pjf+0jzMP3z1+FS04rJnczW7Ri7dXqdMtwY3NS1QMTAU8RDpomN4m6gstZ5PrmA8GjFT
+         TNGPNcmCVj6dzL04m3N6Ju6RZJY/3lRTRd5sdCOS33EEw1Qdpka0tjt10/A0apVho0xU
+         8lfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734378921; x=1734983721;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W98OVW28vlCYxfnu1q41kdPB6ICNjulMnB1+GiRL7VU=;
+        b=d30o47uQofK7ZXW3pR84fDYou5C3LMQvFkygMcmxzRul63XJNywcn98pQ1Y05/thE7
+         7ILm9c4izbpdot+I95v2gABwaamFAdZQg6H0+d502YRhjTsduaYloHDs1KMNBEQa8Ov/
+         AZpQnJGK07Y0H7UeiOrKSJzrEe2mIsUq5hjAaI4TPYV3/6Pj1cIt6NDPEvffTi5fKIAS
+         OtknkUv4k/qD3W91WJSTkfoPn+ntBmMCAHXac7ITBLor9YE/v7SiG3M+7ifmzV4GlvWr
+         CluyapgHgcC6m1eOdg72lHSDmy6W7kTQJhjW79aBpiRulPVOAR/FpYwQRl8SbMsdFf3E
+         krxA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbr8yxBg7WVZ5Fb+HEAP3shp0aMO/s/wUXnC+haESymksdUJZylMhZydicL810LiW+wy66Lyen@vger.kernel.org, AJvYcCWCyvW3gyvWwB94MV41k4NV5OpnzYMq0opAvaj7LNYq/U3puiD2AWR3wfpnP7U00UT8NtziEWUaJFSN//c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFLYpUzrHoEDevPogtQPLgtHQ0fC30iv0caMu2u7+EZTCdH7IA
+	8RR9eptWUCW73oY8yCupci/+Ww7Hm9xdjvvk6L1MR7inpSC8RtzS
+X-Gm-Gg: ASbGnctMumbe5gkS3ZkcWJHB2rzaibzv4MascoW4vttFKcLpELdFXJPXECW0nUCvAdj
+	fXCav8tO9cEpa1EronKqJYszq4ErFcatRoacriUJ1EOQJEgV+/SwVp13uuhV/OxT88yew99KFUZ
+	oS9pFV9natLuITtNca1bha0o0AfC+dBJ9xBWyWG98jk9wd3ynMnnJn3H+VAG+5wPe0jgIXN5Hic
+	RJ53kslOZrKgWKp6Mz2wtJ+NU2WfDO5iM/QB3YeNLfKbs/l1i6Rv1XXEBsfEIH2i3H0mC76gkPp
+	n32/fINzLG6o
+X-Google-Smtp-Source: AGHT+IELnzR0viSji2/pIpUSmP64URG2MdrjxLFfFnvniU2WwXuHh4pwu5JvQWBZe7h7C9cHgcqbEw==
+X-Received: by 2002:a05:600c:a4f:b0:435:21a1:b109 with SMTP id 5b1f17b1804b1-4362aa26d8dmr141570455e9.2.1734378920660;
+        Mon, 16 Dec 2024 11:55:20 -0800 (PST)
+Received: from Ansuel-XPS. (93-34-91-161.ip49.fastwebnet.it. [93.34.91.161])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43625706cc6sm149972175e9.30.2024.12.16.11.55.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2024 11:55:19 -0800 (PST)
+Message-ID: <676085a7.050a0220.1e6031.2193@mx.google.com>
+X-Google-Original-Message-ID: <Z2CFoZPnnSztWnzc@Ansuel-XPS.>
+Date: Mon, 16 Dec 2024 20:55:13 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: dsa: qca8k: Fix inconsistent use of
+ jiffies vs milliseconds
+References: <20241215-qca8k-jiffies-v1-1-5a4d313c76ea@lunn.ch>
+ <20241215231334.imva5oorpyq7lavl@skbuf>
+ <87195b12-6dfa-4778-b0c0-39f3a64a399e@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v3] e1000e: Fix real-time violations on link up
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, bhelgaas@google.com,
- pmenzel@molgen.mpg.de, Gerhard Engleder <eg@keba.com>
-References: <20241214191623.7256-1-gerhard@engleder-embedded.com>
- <231abdb7-3b16-4c3c-be17-5d0e6a556f28@intel.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <231abdb7-3b16-4c3c-be17-5d0e6a556f28@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AV-Do-Run: Yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87195b12-6dfa-4778-b0c0-39f3a64a399e@lunn.ch>
 
->> @@ -331,8 +331,15 @@ void e1000e_update_mc_addr_list_generic(struct 
->> e1000_hw *hw,
->>       }
->>       /* replace the entire MTA table */
->> -    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--)
->> +    for (i = hw->mac.mta_reg_count - 1; i >= 0; i--) {
->>           E1000_WRITE_REG_ARRAY(hw, E1000_MTA, i, hw->mac.mta_shadow[i]);
->> +
->> +        /* do not queue up too many posted writes to prevent increased
->> +         * latency for other devices on the interconnect
->> +         */
->> +        if ((i % 8) == 0 && i != 0)
->> +            e1e_flush();
+On Mon, Dec 16, 2024 at 10:21:12AM +0100, Andrew Lunn wrote:
+> On Mon, Dec 16, 2024 at 01:13:34AM +0200, Vladimir Oltean wrote:
+> > On Sun, Dec 15, 2024 at 05:43:55PM +0000, Andrew Lunn wrote:
+> > > wait_for_complete_timeout() expects a timeout in jiffies. With the
+> > > driver, some call sites converted QCA8K_ETHERNET_TIMEOUT to jiffies,
+> > > others did not. Make the code consistent by changes the #define to
+> > > include a call to msecs_to_jiffies, and remove all other calls to
+> > > msecs_to_jiffies.
+> > > 
+> > > Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+> > > ---
+> > 
+> > If my calculations are correct, for CONFIG_HZ=100, 5 jiffies last 50 ms.
+> > So, assuming that configuration, the patch would be _decreasing_ the timeout
+> > from 50 ms to 5 ms. The change should be tested to confirm it's enough.
+> > Christian, could you do that?
 > 
-> 
-> I would prefer to avoid adding this code to all devices, particularly 
-> those that don't operate on real-time systems. Implementing this code 
-> will introduce three additional MMIO transactions which will increase 
-> the driver start time in various flows (up, probe, etc.).
-> 
-> Is there a specific reason not to use if (IS_ENABLED(CONFIG_PREEMPT_RT)) 
-> as Andrew initially suggested?
+> I've have an qca8k system now, and have tested this patch. However, a
+> Tested-by: from Christian would be very welcome.
+>
 
-Andrew made two suggestions: IS_ENABLED(CONFIG_PREEMPT_RT) which I used
-in the first version after the RFC. And he suggested to check for a
-compromise between RT and none RT performance, as some distros might
-enable PREEMPT_RT in the future.
-Przemek suggested to remove the PREEMPT_RT check as "this change sounds
-reasonable also for the standard kernel" after the first version with
-IS_ENABLED(CONFIG_PREEMPT_RT).
+Hi need 1-2 days to test this, hope that is O.K.
 
-I used the PREEMPT_RT dependency to limit effects to real-time systems,
-to not make none real-time systems slower. But I could also follow the
-reasoning of Andrew and Przemek. With that said, I have no problem to
-add IS_ENABLED(CONFIG_PREEMPT_RT) again.
-
-Gerhard
+-- 
+	Ansuel
