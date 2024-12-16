@@ -1,88 +1,126 @@
-Received: from cvsmtppost23.nm.naver.com (cvsmtppost23.nm.naver.com [114.111.35.162])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2662F9D6
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 06:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35AE19258E
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 06:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734331011; cv=none; b=nhYfeXdl+0cGfscSCQOiYvnOKdk3tIi6UMjFHzsSC2SjOr1fzwl7cxEMxElKPqqFKW2kk7PCeW8fb/TH4wJM1WHr2+dFxn5VaxSNzJjDsJeXffg76ZGaAzWdQs09GrddMsvIJQCmmc/BcQ8NXykfsqNDwSt9I8DIBtZxFe4f6YQ=
+	t=1734331421; cv=none; b=R61aIWAvG3tu3s1toETS5l2YIhYQ+7z1M/umFUihLwqOQtCzw8SvnGXtxRDfJJzaEkIzNYUKoi3xvxB5WSKlbDJ+VU0j/b7RxPKrrGHm23DfUfgfHbY800dt9f22SiHDr2OKcYPMiFC4hU9JibHK/GsVGkTsyRFXu+Nlcm9WaFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734331011; c=relaxed/simple;
-	bh=ayZS94VE5tZVTwJ9DpvjUG9tb4ws5zhFpr6/AsctdA0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ghzYbFqFuOFxXD707tKhjvBt9FbCyoRgaeHhdgWMnAWmxrhuenIHArOyAV8ynRdxIMRwcPVaDyq2tN9q6d6ZObooP1nXYAzino8W8dxYEPnfiGvMeNr/5+pFHK/TP+w8cd6XpkR1iJpN182bdhuE19LFBw3QRgdrw4lNPTvdGOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=YTtVwuZf; arc=none smtp.client-ip=114.111.35.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
+	s=arc-20240116; t=1734331421; c=relaxed/simple;
+	bh=ChfLP4zPu919XKwzljMZw3LmmcV3xj7gqkrVOcXQJz4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+hBZzyeRwNwiEFcGfy++QBYT27eOazi2WY/JrF7fHlgAkqS3ZCH6nszxAY49mACHX+1rcitEq+svSEEjZpTsUKTGoH1SLh3bEA1z1mODjq7xpF7hMc2ItXQHzbSyOq3lr9a60eWSjD3gyyLaX3E/2B/Q4S+fkILUAnc6PzaHo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DJhfPsGB; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="YTtVwuZf"
-Received: from cvsendbo011.nm ([10.112.22.32])
-  by cvsmtppost23.nm.naver.com with ESMTP id Kc2WQyJwQJ6CnbuBOBbz7A
-  for <netdev@vger.kernel.org>;
-  Mon, 16 Dec 2024 06:16:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
-	t=1734329793; bh=ayZS94VE5tZVTwJ9DpvjUG9tb4ws5zhFpr6/AsctdA0=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=YTtVwuZfTzfvUI7EdrIeBuQZSdn3hD0hvhNWwihmv7Zk4pIwvz3SiA6PiTaEWYd08
-	 wjn6lh+hwZPJu45uP7zE924KboUrZc7AycGhZVVx/HGn77S7LVZmUvlJ28gGEsR/ed
-	 rLirSWnZJWPiemUIdH+XKPBMdWxSnHCAnySq9Gk+21lqpLKgK3Lt6qxgqGYxs65XPs
-	 oMXHiIvSQLlCVJrn5C+t8lD3rzPZpCnCfgyJY6RXXLZyxfmr4nil76cQ+Q/SKeKJlb
-	 jxGGKEusroad4JWuJLUugHT21M3THbD2kGnvMLeZnSEDP0+SKzUAuWqgZk39llseMR
-	 owCR1bWhH6QJg==
-X-Session-ID: nez-X4wiQqaQCni22iXOzQ
-X-Works-Send-Opt: pYb/jAJYjHmdFxb/FxJYFoKwaBwkx0eFjAJYKg==
-X-Works-Smtp-Source: PdblKotqFqJZ+HmZaxKX+6E=
-Received: from junoshon.. ([59.10.11.192])
-  by cvnsmtp009.nm.naver.com with ESMTP id nez-X4wiQqaQCni22iXOzQ
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Mon, 16 Dec 2024 06:16:32 -0000
-From: Junho Shon <sanoldfox@naver.com>
-To: edumazet@google.com,
-	davem@davemloft.net
-Cc: dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	junoshon <sanoldfox@naver.com>
-Subject: [PATCH] Staging: rtl8723bs: Remove unnecessary static variable initialization
-Date: Mon, 16 Dec 2024 15:16:25 +0900
-Message-Id: <20241216061625.2118125-1-sanoldfox@naver.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DJhfPsGB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734331420; x=1765867420;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ChfLP4zPu919XKwzljMZw3LmmcV3xj7gqkrVOcXQJz4=;
+  b=DJhfPsGBAsyK/YjPpLi2HP9Of8gMgYFCkxcEd8dPKO8sHvLe0vpL8wax
+   BtmwnbNbLKR0nwHqDKmtV2YAuEFxjA10FVVIVn90Rgp7rkF+WhWz63Tke
+   puNsn6i7ufriyHVoh0am2k/PGFaTmml8oKi68YgLXoTu9RbPhligqW+rN
+   FiukK+k3RQHJB9QC/Lw6gno017YRVACOdDXsweEKLdg8wcsOR2GZf2clD
+   MHWqADbyhn/YkarNm83Z2qk2dfUu61bOe4jgAk9WyZNhbF3R/eLKN+yut
+   X1Gl0fMDFzws8vBUsp1Fs7XCPInMNsscJkRsc79k5pQI4zZRrDRfs1mmP
+   Q==;
+X-CSE-ConnectionGUID: mlwHJsFHT9Se8mRqUBTnHg==
+X-CSE-MsgGUID: dJ7dG4ilR+O5pyKdy5E4pw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34582666"
+X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
+   d="scan'208";a="34582666"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 22:43:39 -0800
+X-CSE-ConnectionGUID: GZUokINAQWehMNC9uAAw6Q==
+X-CSE-MsgGUID: 4cExk9YjQAeRNty/dsfTKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
+   d="scan'208";a="97658437"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 22:43:37 -0800
+Date: Mon, 16 Dec 2024 07:40:33 +0100
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: sebastian.hesselbarth@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org
+Subject: Re: [PATCH v2] net: mv643xx_eth: fix an OF node reference leak
+Message-ID: <Z1/LYQJrO73BaDKS@mev-dev.igk.intel.com>
+References: <20241216042247.492287-1-joe@pf.is.s.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241216042247.492287-1-joe@pf.is.s.u-tokyo.ac.jp>
 
-From: junoshon <sanoldfox@naver.com>
+On Mon, Dec 16, 2024 at 01:22:47PM +0900, Joe Hattori wrote:
+> Current implementation of mv643xx_eth_shared_of_add_port() calls
+> of_parse_phandle(), but does not release the refcount on error. Call
+> of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
+> 
+> This bug was found by an experimental static analysis tool that I am
+> developing.
+> 
+> Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> ---
+> Changes in v2:
+> - Insert a null check before accessing the platform data.
+> ---
+>  drivers/net/ethernet/marvell/mv643xx_eth.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+> index a06048719e84..917ff7bd43d4 100644
+> --- a/drivers/net/ethernet/marvell/mv643xx_eth.c
+> +++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+> @@ -2705,8 +2705,12 @@ static struct platform_device *port_platdev[3];
+>  static void mv643xx_eth_shared_of_remove(void)
+>  {
+>  	int n;
+> +	struct mv643xx_eth_platform_data *pd;
+>  
+>  	for (n = 0; n < 3; n++) {
+> +		pd = dev_get_platdata(&port_platdev[n]->dev);
+> +		if (pd)
+> +			of_node_put(pd->phy_node);
+>  		platform_device_del(port_platdev[n]);
+>  		port_platdev[n] = NULL;
+>  	}
+> @@ -2769,8 +2773,10 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+>  	}
+>  
+>  	ppdev = platform_device_alloc(MV643XX_ETH_NAME, dev_num);
+> -	if (!ppdev)
+> -		return -ENOMEM;
+> +	if (!ppdev) {
+> +		ret = -ENOMEM;
+> +		goto put_err;
+> +	}
+>  	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+>  	ppdev->dev.of_node = pnp;
+>  
+> @@ -2792,6 +2798,8 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+>  
+>  port_err:
+>  	platform_device_put(ppdev);
+> +put_err:
+> +	of_node_put(ppd.phy_node);
+>  	return ret;
+>  }
+>
+Looks good
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Fixed a coding style issue where the static variable '__tcp_tx_delay_enabled'
-was explicitly initialized to 0. Static variables are automatically zero-initialized
-by the compiler, so the explicit initialization is redundant.
-
-Signed-off-by: Junho Shon <sanoldfox@naver.com>
----
- net/ipv4/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 0d704bda6..b67887a69 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3498,7 +3498,7 @@ EXPORT_SYMBOL(tcp_tx_delay_enabled);
- static void tcp_enable_tx_delay(void)
- {
- 	if (!static_branch_unlikely(&tcp_tx_delay_enabled)) {
--		static int __tcp_tx_delay_enabled = 0;
-+		static int __tcp_tx_delay_enabled;
- 
- 		if (cmpxchg(&__tcp_tx_delay_enabled, 0, 1) == 0) {
- 			static_branch_enable(&tcp_tx_delay_enabled);
--- 
-2.34.1
-
+Thanks
+> -- 
+> 2.34.1
