@@ -1,351 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A66D203D77
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 10:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADF2203D53;
+	Mon, 16 Dec 2024 10:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734345732; cv=none; b=dT9rUyqrQZxa7sZW66Cwc8GcEVYhFPBQMO7+GOMY0dDUTZn/ubPu71brsMNvSxGKyf3zVfrwOUT37mnxX2GzKqSl/qXbZQI1nryxWto8Ypl4sTPYNc+5YMXEhP8eAQkI/almPeEnCKF+rep/QahMluWF+snX+8qBLNHw1BmmNKE=
+	t=1734345732; cv=none; b=QMbf2g+A3PD+T9DbKYtvLeMFeaeKOOdw7Xj+nLz1kSdnBzIwGD1DQIvDHg5o3E8rukl8wK8HpGa4rT5VaUMvMvh7EVef0SjshMnBb2SKDOsLah5WMOg8d2vWySEu3TtGQdVXo6z+jxuuCj2Acu0TMQnqOD3TIALOFE/enivvQqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734345732; c=relaxed/simple;
-	bh=5FuMwi7o2xRwdUfs1aV90j5M8c0AOHVcS7+vgnVx8qk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=Btwo6nT+Osq/sYfyGsI2DUVyPAKodMos1wR5eUbzUeHTamuho2aCZI7tpWSYBzaeiXVhgIKzY8wl33WZXGMJdXugvruuzVUM46DoYXv8NMi8E/qoi1Ri4mruDexIiFtFrV1YzYXmgM84UjgVszTSqknts9JQFQuZuR1e6gGI31c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ietB+qup; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	bh=wYHyds/oC/bIXn1FOZ3FfxUd/venFVAC8H+IayFbp3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QtkXSChmdno7FZUD88RKGWX0co0ApuxJ4twtpeqGIYCZrzjVCIF21lmujyBYthM84J0cuEZdClDNcj7DQvKPj6BXAIqwwt7n4mAeCz7rQr33fHJTmPV/3qOCsYE+MA2rrdL91tCalyj5oMOJXEbWOM4e9zYPCB5IF1Kf2UOwdh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oqcYIiEa; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ietB+qup"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734345729;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oqcYIiEa"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8FC2620003;
+	Mon, 16 Dec 2024 10:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1734345721;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hTqrHx/rHjwvoh4VZ+UElp504YgxK2FnTVLIGZu5YYE=;
-	b=ietB+qupIKZ9wBrbjzvHjefvnfXWpqU9ohpU2obll4ImqUc/E6JTcSSFJf5DNPeAvu8h//
-	masBb+B5lrKUeVYQ2AcqUBz3gNMzbRHhQ0DaXRo1FPfOopcZPmQ+MrLn7oenKthypaLp6+
-	rONDrN8bFyUtqfWGU9U9AfPZFpyFhwg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-JUQ33SK6P46VH6h4dn5ZMA-1; Mon,
- 16 Dec 2024 05:42:05 -0500
-X-MC-Unique: JUQ33SK6P46VH6h4dn5ZMA-1
-X-Mimecast-MFC-AGG-ID: JUQ33SK6P46VH6h4dn5ZMA
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 426601955F10;
-	Mon, 16 Dec 2024 10:42:04 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.45.225.0])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6DE2430044C1;
-	Mon, 16 Dec 2024 10:42:00 +0000 (UTC)
-From: Jan Stancek <jstancek@redhat.com>
-To: donald.hunter@gmail.com,
-	stfomichev@gmail.com,
-	kuba@kernel.org,
-	jdamato@fastly.com
-Cc: pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jstancek@redhat.com
-Subject: [PATCH v3 1/4] tools: ynl: move python code to separate sub-directory
-Date: Mon, 16 Dec 2024 11:41:41 +0100
-Message-ID: <64b1dda576e9502c5d704b3b31fda2337a189e19.1734345017.git.jstancek@redhat.com>
-In-Reply-To: <cover.1734345017.git.jstancek@redhat.com>
-References: <cover.1734345017.git.jstancek@redhat.com>
+	bh=tcrvnYxItVVme/Ppg4krYaiv+M+aU8FG8UoKAi5Pjng=;
+	b=oqcYIiEad4rgc71cps3pZPHKUjfxnfC/h+9Jwv86EATSIos1zHyfSWk0LI7LT6ruTObGbA
+	rOv1o9iGgNyEIPgAc8S1O7SkW7RkpYvZXVM8V5s3aesCLvyN8WouNZu0RvxHl/sCSbokqv
+	xSoEHHqTbFg6JTl9ouXJRkPTZKjOy2J7iVx9s/beUky1KvE7Qtsq/4agmdKpBk6Oy8/t9o
+	G9YxkPW1ihIBDt/5pydjLpdqmKtPxdZBGXFWoLjaqHTO6l45paRdc1pPAyA6QEVXuwyiwY
+	NLG6lYdezTCu25nVlYFS+LuxzTCiwqWiwyvZA1Qu5jfhipEHVRkCSpwH9jwp7A==
+Date: Mon, 16 Dec 2024 11:41:58 +0100
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl, andi.shyti@kernel.org, mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net,
+	jdelvare@suse.com, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-can@vger.kernel.org, netdev@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v3 7/7] rtc: Add Nuvoton NCT6694 RTC support
+Message-ID: <202412161041586ed7c0ff@mail.local>
+References: <20241210104524.2466586-1-tmyu0@nuvoton.com>
+ <20241210104524.2466586-8-tmyu0@nuvoton.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210104524.2466586-8-tmyu0@nuvoton.com>
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-Move python code to a separate directory so it can be
-packaged as a python module. Updates existing references
-in selftests and docs.
+On 10/12/2024 18:45:24+0800, Ming Yu wrote:
+> +static int nct6694_rtc_probe(struct platform_device *pdev)
+> +{
+> +	struct nct6694_rtc_data *data;
+> +	struct nct6694 *nct6694 = dev_get_drvdata(pdev->dev.parent);
+> +	int ret, irq;
+> +
+> +	irq = irq_create_mapping(nct6694->domain, NCT6694_IRQ_RTC);
+> +	if (!irq)
+> +		return -EINVAL;
+> +
+> +	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	data->xmit_buf = devm_kcalloc(&pdev->dev, NCT6694_MAX_PACKET_SZ,
+> +				      sizeof(unsigned char), GFP_KERNEL);
+> +	if (!data->xmit_buf)
+> +		return -ENOMEM;
+> +
+> +	data->rtc = devm_rtc_allocate_device(&pdev->dev);
+> +	if (IS_ERR(data->rtc))
+> +		return PTR_ERR(data->rtc);
+> +
+> +	data->nct6694 = nct6694;
+> +	data->rtc->ops = &nct6694_rtc_ops;
+> +	data->rtc->range_min = RTC_TIMESTAMP_BEGIN_2000;
+> +	data->rtc->range_max = RTC_TIMESTAMP_END_2099;
+> +
+> +	mutex_init(&data->lock);
 
-Also rename ynl-gen-[c|rst] to ynl_gen_[c|rst], avoid
-dashes as these prevent easy imports for entrypoints.
+You should use rtc_lock/rtc_unlock instead of having your own lock. The
+core will take and release the lock appropriately before calling the
+rtc_ops so you only have to do it in the irq handler.
 
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
----
- Documentation/Makefile                                 | 2 +-
- Documentation/networking/multi-pf-netdev.rst           | 4 ++--
- Documentation/networking/napi.rst                      | 4 ++--
- Documentation/networking/netlink_spec/readme.txt       | 2 +-
- Documentation/userspace-api/netlink/intro-specs.rst    | 8 ++++----
- tools/net/ynl/Makefile                                 | 2 ++
- tools/net/ynl/generated/Makefile                       | 2 +-
- tools/net/ynl/lib/.gitignore                           | 1 -
- tools/net/ynl/lib/Makefile                             | 1 -
- tools/net/ynl/pyynl/.gitignore                         | 2 ++
- tools/net/ynl/pyynl/__init__.py                        | 0
- tools/net/ynl/{ => pyynl}/cli.py                       | 0
- tools/net/ynl/{ => pyynl}/ethtool.py                   | 0
- tools/net/ynl/{ => pyynl}/lib/__init__.py              | 0
- tools/net/ynl/{ => pyynl}/lib/nlspec.py                | 0
- tools/net/ynl/{ => pyynl}/lib/ynl.py                   | 0
- tools/net/ynl/{ynl-gen-c.py => pyynl/ynl_gen_c.py}     | 0
- tools/net/ynl/{ynl-gen-rst.py => pyynl/ynl_gen_rst.py} | 0
- tools/net/ynl/ynl-regen.sh                             | 2 +-
- tools/testing/selftests/net/lib/py/ynl.py              | 4 ++--
- tools/testing/selftests/net/ynl.mk                     | 3 ++-
- 21 files changed, 20 insertions(+), 17 deletions(-)
- create mode 100644 tools/net/ynl/pyynl/.gitignore
- create mode 100644 tools/net/ynl/pyynl/__init__.py
- rename tools/net/ynl/{ => pyynl}/cli.py (100%)
- rename tools/net/ynl/{ => pyynl}/ethtool.py (100%)
- rename tools/net/ynl/{ => pyynl}/lib/__init__.py (100%)
- rename tools/net/ynl/{ => pyynl}/lib/nlspec.py (100%)
- rename tools/net/ynl/{ => pyynl}/lib/ynl.py (100%)
- rename tools/net/ynl/{ynl-gen-c.py => pyynl/ynl_gen_c.py} (100%)
- rename tools/net/ynl/{ynl-gen-rst.py => pyynl/ynl_gen_rst.py} (100%)
+> +
+> +	device_set_wakeup_capable(&pdev->dev, 1);
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index fa71602ec961..52c6c5a3efa9 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -104,7 +104,7 @@ quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
- YNL_INDEX:=$(srctree)/Documentation/networking/netlink_spec/index.rst
- YNL_RST_DIR:=$(srctree)/Documentation/networking/netlink_spec
- YNL_YAML_DIR:=$(srctree)/Documentation/netlink/specs
--YNL_TOOL:=$(srctree)/tools/net/ynl/ynl-gen-rst.py
-+YNL_TOOL:=$(srctree)/tools/net/ynl/pyynl/ynl_gen_rst.py
- 
- YNL_RST_FILES_TMP := $(patsubst %.yaml,%.rst,$(wildcard $(YNL_YAML_DIR)/*.yaml))
- YNL_RST_FILES := $(patsubst $(YNL_YAML_DIR)%,$(YNL_RST_DIR)%, $(YNL_RST_FILES_TMP))
-diff --git a/Documentation/networking/multi-pf-netdev.rst b/Documentation/networking/multi-pf-netdev.rst
-index 2cd25d81aaa7..2f5a5bb3ca9a 100644
---- a/Documentation/networking/multi-pf-netdev.rst
-+++ b/Documentation/networking/multi-pf-netdev.rst
-@@ -89,7 +89,7 @@ Observability
- =============
- The relation between PF, irq, napi, and queue can be observed via netlink spec::
- 
--  $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml --dump queue-get --json='{"ifindex": 13}'
-+  $ ./tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/netdev.yaml --dump queue-get --json='{"ifindex": 13}'
-   [{'id': 0, 'ifindex': 13, 'napi-id': 539, 'type': 'rx'},
-    {'id': 1, 'ifindex': 13, 'napi-id': 540, 'type': 'rx'},
-    {'id': 2, 'ifindex': 13, 'napi-id': 541, 'type': 'rx'},
-@@ -101,7 +101,7 @@ The relation between PF, irq, napi, and queue can be observed via netlink spec::
-    {'id': 3, 'ifindex': 13, 'napi-id': 542, 'type': 'tx'},
-    {'id': 4, 'ifindex': 13, 'napi-id': 543, 'type': 'tx'}]
- 
--  $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml --dump napi-get --json='{"ifindex": 13}'
-+  $ ./tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/netdev.yaml --dump napi-get --json='{"ifindex": 13}'
-   [{'id': 543, 'ifindex': 13, 'irq': 42},
-    {'id': 542, 'ifindex': 13, 'irq': 41},
-    {'id': 541, 'ifindex': 13, 'irq': 40},
-diff --git a/Documentation/networking/napi.rst b/Documentation/networking/napi.rst
-index 02720dd71a76..6083210ab2a4 100644
---- a/Documentation/networking/napi.rst
-+++ b/Documentation/networking/napi.rst
-@@ -199,13 +199,13 @@ parameters mentioned above use hyphens instead of underscores:
- 
- Per-NAPI configuration can be done programmatically in a user application
- or by using a script included in the kernel source tree:
--``tools/net/ynl/cli.py``.
-+``tools/net/ynl/pyynl/cli.py``.
- 
- For example, using the script:
- 
- .. code-block:: bash
- 
--  $ kernel-source/tools/net/ynl/cli.py \
-+  $ kernel-source/tools/net/ynl/pyynl/cli.py \
-             --spec Documentation/netlink/specs/netdev.yaml \
-             --do napi-set \
-             --json='{"id": 345,
-diff --git a/Documentation/networking/netlink_spec/readme.txt b/Documentation/networking/netlink_spec/readme.txt
-index 6763f99d216c..030b44aca4e6 100644
---- a/Documentation/networking/netlink_spec/readme.txt
-+++ b/Documentation/networking/netlink_spec/readme.txt
-@@ -1,4 +1,4 @@
- SPDX-License-Identifier: GPL-2.0
- 
- This file is populated during the build of the documentation (htmldocs) by the
--tools/net/ynl/ynl-gen-rst.py script.
-+tools/net/ynl/pyynl/ynl_gen_rst.py script.
-diff --git a/Documentation/userspace-api/netlink/intro-specs.rst b/Documentation/userspace-api/netlink/intro-specs.rst
-index bada89699455..a4435ae4628d 100644
---- a/Documentation/userspace-api/netlink/intro-specs.rst
-+++ b/Documentation/userspace-api/netlink/intro-specs.rst
-@@ -15,7 +15,7 @@ developing Netlink related code. The tool is implemented in Python
- and can use a YAML specification to issue Netlink requests
- to the kernel. Only Generic Netlink is supported.
- 
--The tool is located at ``tools/net/ynl/cli.py``. It accepts
-+The tool is located at ``tools/net/ynl/pyynl/cli.py``. It accepts
- a handul of arguments, the most important ones are:
- 
-  - ``--spec`` - point to the spec file
-@@ -27,7 +27,7 @@ YAML specs can be found under ``Documentation/netlink/specs/``.
- 
- Example use::
- 
--  $ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/ethtool.yaml \
-+  $ ./tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/ethtool.yaml \
-         --do rings-get \
- 	--json '{"header":{"dev-index": 18}}'
-   {'header': {'dev-index': 18, 'dev-name': 'eni1np1'},
-@@ -75,7 +75,7 @@ the two marker lines like above to a file, add that file to git,
- and run the regeneration tool. Grep the tree for ``YNL-GEN``
- to see other examples.
- 
--The code generation itself is performed by ``tools/net/ynl/ynl-gen-c.py``
-+The code generation itself is performed by ``tools/net/ynl/pyynl/ynl_gen_c.py``
- but it takes a few arguments so calling it directly for each file
- quickly becomes tedious.
- 
-@@ -84,7 +84,7 @@ YNL lib
- 
- ``tools/net/ynl/lib/`` contains an implementation of a C library
- (based on libmnl) which integrates with code generated by
--``tools/net/ynl/ynl-gen-c.py`` to create easy to use netlink wrappers.
-+``tools/net/ynl/pyynl/ynl_gen_c.py`` to create easy to use netlink wrappers.
- 
- YNL basics
- ----------
-diff --git a/tools/net/ynl/Makefile b/tools/net/ynl/Makefile
-index d1cdf2a8f826..5268b91bf7ed 100644
---- a/tools/net/ynl/Makefile
-+++ b/tools/net/ynl/Makefile
-@@ -21,5 +21,7 @@ clean distclean:
- 		fi \
- 	done
- 	rm -f libynl.a
-+	rm -rf pyynl/__pycache__
-+	rm -rf pyynl/lib/__pycache__
- 
- .PHONY: all clean distclean $(SUBDIRS)
-diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
-index 7db5240de58a..00af721b1571 100644
---- a/tools/net/ynl/generated/Makefile
-+++ b/tools/net/ynl/generated/Makefile
-@@ -12,7 +12,7 @@ include ../Makefile.deps
- YNL_GEN_ARG_ethtool:=--user-header linux/ethtool_netlink.h \
- 	--exclude-op stats-get
- 
--TOOL:=../ynl-gen-c.py
-+TOOL:=../pyynl/ynl_gen_c.py
- 
- GENS_PATHS=$(shell grep -nrI --files-without-match \
- 		'protocol: netlink' \
-diff --git a/tools/net/ynl/lib/.gitignore b/tools/net/ynl/lib/.gitignore
-index 296c4035dbf2..a4383358ec72 100644
---- a/tools/net/ynl/lib/.gitignore
-+++ b/tools/net/ynl/lib/.gitignore
-@@ -1,2 +1 @@
--__pycache__/
- *.d
-diff --git a/tools/net/ynl/lib/Makefile b/tools/net/ynl/lib/Makefile
-index 94c49cca3dca..4b2b98704ff9 100644
---- a/tools/net/ynl/lib/Makefile
-+++ b/tools/net/ynl/lib/Makefile
-@@ -19,7 +19,6 @@ ynl.a: $(OBJS)
- 
- clean:
- 	rm -f *.o *.d *~
--	rm -rf __pycache__
- 
- distclean: clean
- 	rm -f *.a
-diff --git a/tools/net/ynl/pyynl/.gitignore b/tools/net/ynl/pyynl/.gitignore
-new file mode 100644
-index 000000000000..b801cd2d016e
---- /dev/null
-+++ b/tools/net/ynl/pyynl/.gitignore
-@@ -0,0 +1,2 @@
-+__pycache__/
-+lib/__pycache__/
-diff --git a/tools/net/ynl/pyynl/__init__.py b/tools/net/ynl/pyynl/__init__.py
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tools/net/ynl/cli.py b/tools/net/ynl/pyynl/cli.py
-similarity index 100%
-rename from tools/net/ynl/cli.py
-rename to tools/net/ynl/pyynl/cli.py
-diff --git a/tools/net/ynl/ethtool.py b/tools/net/ynl/pyynl/ethtool.py
-similarity index 100%
-rename from tools/net/ynl/ethtool.py
-rename to tools/net/ynl/pyynl/ethtool.py
-diff --git a/tools/net/ynl/lib/__init__.py b/tools/net/ynl/pyynl/lib/__init__.py
-similarity index 100%
-rename from tools/net/ynl/lib/__init__.py
-rename to tools/net/ynl/pyynl/lib/__init__.py
-diff --git a/tools/net/ynl/lib/nlspec.py b/tools/net/ynl/pyynl/lib/nlspec.py
-similarity index 100%
-rename from tools/net/ynl/lib/nlspec.py
-rename to tools/net/ynl/pyynl/lib/nlspec.py
-diff --git a/tools/net/ynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-similarity index 100%
-rename from tools/net/ynl/lib/ynl.py
-rename to tools/net/ynl/pyynl/lib/ynl.py
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-similarity index 100%
-rename from tools/net/ynl/ynl-gen-c.py
-rename to tools/net/ynl/pyynl/ynl_gen_c.py
-diff --git a/tools/net/ynl/ynl-gen-rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
-similarity index 100%
-rename from tools/net/ynl/ynl-gen-rst.py
-rename to tools/net/ynl/pyynl/ynl_gen_rst.py
-diff --git a/tools/net/ynl/ynl-regen.sh b/tools/net/ynl/ynl-regen.sh
-index a37304dcc88e..81b4ecd89100 100755
---- a/tools/net/ynl/ynl-regen.sh
-+++ b/tools/net/ynl/ynl-regen.sh
-@@ -1,7 +1,7 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- 
--TOOL=$(dirname $(realpath $0))/ynl-gen-c.py
-+TOOL=$(dirname $(realpath $0))/pyynl/ynl_gen_c.py
- 
- force=
- search=
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index a0d689d58c57..9c0e5a89eb12 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -13,14 +13,14 @@ try:
-         SPEC_PATH = KSFT_DIR / "net/lib/specs"
- 
-         sys.path.append(tools_full_path.as_posix())
--        from net.lib.ynl.lib import YnlFamily, NlError
-+        from net.lib.ynl.pyynl.lib import YnlFamily, NlError
-     else:
-         # Running in tree
-         tools_full_path = KSRC / "tools"
-         SPEC_PATH = KSRC / "Documentation/netlink/specs"
- 
-         sys.path.append(tools_full_path.as_posix())
--        from net.ynl.lib import YnlFamily, NlError
-+        from net.ynl.pyynl.lib import YnlFamily, NlError
- except ModuleNotFoundError as e:
-     ksft_pr("Failed importing `ynl` library from kernel sources")
-     ksft_pr(str(e))
-diff --git a/tools/testing/selftests/net/ynl.mk b/tools/testing/selftests/net/ynl.mk
-index d43afe243779..12e7cae251be 100644
---- a/tools/testing/selftests/net/ynl.mk
-+++ b/tools/testing/selftests/net/ynl.mk
-@@ -31,7 +31,8 @@ $(OUTPUT)/libynl.a: $(YNL_SPECS) $(OUTPUT)/.libynl-$(YNL_GENS_HASH).sig
- 	$(Q)cp $(top_srcdir)/tools/net/ynl/libynl.a $(OUTPUT)/libynl.a
- 
- EXTRA_CLEAN += \
--	$(top_srcdir)/tools/net/ynl/lib/__pycache__ \
-+	$(top_srcdir)/tools/net/ynl/pyynl/__pycache__ \
-+	$(top_srcdir)/tools/net/ynl/pyynl/lib/__pycache__ \
- 	$(top_srcdir)/tools/net/ynl/lib/*.[ado] \
- 	$(OUTPUT)/.libynl-*.sig \
- 	$(OUTPUT)/libynl.a
+This will cause a memory leak later on, see the discussion here:
+
+https://lore.kernel.org/linux-rtc/a88475b6-08bf-4c7c-ad63-efd1f29307e3@pf.is.s.u-tokyo.ac.jp/T/#mf51fdce6036efa3ea12fe75bd5126d4ac0c6813e
+
+> +
+> +	platform_set_drvdata(pdev, data);
+> +
+> +	ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
+> +					nct6694_irq, IRQF_ONESHOT,
+> +					"nct6694-rtc", data);
+> +	if (ret < 0)
+> +		return dev_err_probe(&pdev->dev, ret, "Failed to request irq\n");
+> +
+> +	/* Register rtc device to RTC framework */
+> +	return devm_rtc_register_device(data->rtc);
+> +}
+> +
+> +static struct platform_driver nct6694_rtc_driver = {
+> +	.driver = {
+> +		.name	= "nct6694-rtc",
+> +	},
+> +	.probe		= nct6694_rtc_probe,
+> +};
+> +
+> +module_platform_driver(nct6694_rtc_driver);
+> +
+> +MODULE_DESCRIPTION("USB-RTC driver for NCT6694");
+> +MODULE_AUTHOR("Ming Yu <tmyu0@nuvoton.com>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:nct6694-rtc");
+> -- 
+> 2.34.1
+> 
+
 -- 
-2.43.0
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
