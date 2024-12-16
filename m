@@ -1,46 +1,47 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDF3204680
-	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFB6204587
+	for <netdev@vger.kernel.org>; Mon, 16 Dec 2024 12:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734350487; cv=none; b=ez9eQrSmkRDgNDu1GW6CooRnmjM8iQW8k2VP1TMb2SwqV1CUkB7k/Pz3paXTACSDICjaNPi9fKKXUf5BAKPMUcQC0cWeEIXG9l8L6fajPtK40qj3n86faEArA0fyIj+lcoP6DB5brOntmdy1QI9AS8mXMZt8rfh2vDQfTup+2R0=
+	t=1734350488; cv=none; b=r1hxkuW10auxx6McewFCs9dB6VlxjkLxXqSJeknGpWrvSg3T9LkpxV9UEJB5gpf5oFLObUzU0VF409u5UIgK9glLAc6eWOkJ4vLUZSczHCarPwsCMqUUG9k79ujtP7G9nNH7f66E7s9iQTkjuyqGLqODRn+BJe1uh7Eu1GGjc4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734350487; c=relaxed/simple;
-	bh=XfomszMmFIq6Y1tK8xdav/BMWjlKeVakOfSpjd7HEMM=;
+	s=arc-20240116; t=1734350488; c=relaxed/simple;
+	bh=n3RsoAPnmyplCXfQfW1WlF3Ru8GvNgAdBJf7ibY/2TY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Nbrd/FXB6EvafLd121c5wVR3TsJLi/kM3A6KP68kjadrO2XuQZXsN8S1Ku/5uwKta5bYfaaulFhLk7OnFxxgW/AskQ3h8yDTDlPPY6ayagqkOH51KLA/83eO7zSKqlFrKT86dmDQhP5iClr/1ih08HtJvk1mXu574dkIsM2lM/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=BJpsTkeX; arc=none smtp.client-ip=185.226.149.37
+	 In-Reply-To:To:Cc; b=X4iTZ0NTWVQVC6zBPdmPmsgNPNLGaLg/Id4NRADEbwHFVTJXt0dC3HFwO4WsL5O2OJzfBTxlgx/mq6oyRGZKTHLLlJVw87YhJ2QdsuCmZk2Lh7rYszgWxwU5ECwYxkIV9J1Qs9cYGd7N+Vel5a2HNlN6MXGMZmXDkCIJLQaCjEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=ReqnNvkH; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="BJpsTkeX"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="ReqnNvkH"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1tN9mt-00FlkN-3k; Mon, 16 Dec 2024 13:01:23 +0100
+	id 1tN9mq-00Flk8-TU
+	for netdev@vger.kernel.org; Mon, 16 Dec 2024 13:01:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=QjMJ9KU1Zu7fsKIXFX6pPbLiygSOfaJ1WiQH0I2fNxY=; b=BJpsTkeXj/Z1puWRYtHeR0E2RL
-	vHTDmnfBcErFzp24nrwjaXAAn10SSXSyqS76YAwdr54FqDq4M1okxy7w/vn2k+nLT8sGb267s+wNR
-	3fBBOnelNdwsUwlR16kmAmgbLH0bicaeFjnB8Q6tLru1itoqXx08QkyG04Vn3Ux01R5Pd0ctfrmC4
-	C87jlRwYZOoC1PogiqbnEzKZncEuCedCKoPlOeJ7C7hb6ZXnVTmfRum39W4IqyD66uW4yrhfwC8eA
-	uaYuZFWATafTD6rqWyJQsYgI6ZklcZKrJSqmLA1/nna2Vz4udvU++WWGDUYRhTakH5uszrxMwlsQ2
-	oPFom8hQ==;
+	bh=gJGXaPFHctiVMj0P7oolhApDrayAs5sV29Kv6O+qyNY=; b=ReqnNvkHT6SRzJ8ZcEoEMdR8Hb
+	wYyeMhcNtEUpKaA9oNXknN2IhgAaeQs5/xtfkbnXgR3vpyf4E50qWX4w69OSzsku2gsgd6L5njIoW
+	jrHS4fIAvMM58F3rDLHHPEjHCQwm65VQLKDLnkuQTaP4vlDsk2yXw1FdEOsBDbt5RmvVUJHhXZNDc
+	nCdtm2PZzq6rVZJxOI8mj9B2C56ykmapP8OjD7n7m/ascFaOPVjLgCEsryq2b78f6E2l5Odzk3Pbc
+	5QEvF0cDeLEcvnboRBoqAPjp6CRbDcnFnmemQCDEAwaY74ovKbe9/vWCsg2p0kcOL1IJSSmM471Df
+	kD+y1iJw==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1tN9ms-0007oY-O0; Mon, 16 Dec 2024 13:01:22 +0100
+	id 1tN9mq-0001JZ-Iu; Mon, 16 Dec 2024 13:01:20 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1tN9mk-00DDDe-PE; Mon, 16 Dec 2024 13:01:14 +0100
+	id 1tN9mj-00DDDe-On; Mon, 16 Dec 2024 13:01:13 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Mon, 16 Dec 2024 13:01:02 +0100
-Subject: [PATCH net-next v2 6/6] vsock/test: Add test for MSG_ZEROCOPY
- completion memory leak
+Date: Mon, 16 Dec 2024 13:00:58 +0100
+Subject: [PATCH net-next v2 2/6] vsock/test: Introduce option to run a
+ single test
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,196 +50,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241216-test-vsock-leaks-v2-6-55e1405742fc@rbox.co>
+Message-Id: <20241216-test-vsock-leaks-v2-2-55e1405742fc@rbox.co>
 References: <20241216-test-vsock-leaks-v2-0-55e1405742fc@rbox.co>
 In-Reply-To: <20241216-test-vsock-leaks-v2-0-55e1405742fc@rbox.co>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: netdev@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Exercise the ENOMEM error path by attempting to hit net.core.optmem_max
-limit on send().
-
-Test aims to create a memory leak, kmemleak should be employed.
-
-Fixed by commit 60cf6206a1f5 ("virtio/vsock: Improve MSG_ZEROCOPY error
-handling").
+Allow for singling out a specific test ID to be executed.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- tools/testing/vsock/vsock_test.c | 152 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 152 insertions(+)
+ tools/testing/vsock/util.c       | 20 ++++++++++++++++++--
+ tools/testing/vsock/util.h       |  2 ++
+ tools/testing/vsock/vsock_test.c | 10 ++++++++++
+ 3 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index d2970198967e3a2d02ac461921b946e3b0498837..8f145b6db77d904f3f888ec8fbe76298e7dd91de 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -1560,6 +1560,153 @@ static void test_stream_msgzcopy_leak_errq_server(const struct test_opts *opts)
- 	close(fd);
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index 34e9dac0a105f8aeb8c9af379b080d5ce8cb2782..5a3b5908ba88e5011906d67fb82342d2a6a6ba74 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -486,8 +486,7 @@ void list_tests(const struct test_case *test_cases)
+ 	exit(EXIT_FAILURE);
  }
  
-+/* Test msgzcopy_leak_zcskb is meant to exercise sendmsg() error handling path,
-+ * that might leak an skb. The idea is to fail virtio_transport_init_zcopy_skb()
-+ * by hitting net.core.optmem_max limit in sock_omalloc(), specifically
-+ *
-+ *   vsock_connectible_sendmsg
-+ *     virtio_transport_stream_enqueue
-+ *       virtio_transport_send_pkt_info
-+ *         virtio_transport_init_zcopy_skb
-+ *         . msg_zerocopy_realloc
-+ *         .   msg_zerocopy_alloc
-+ *         .     sock_omalloc
-+ *         .       sk_omem_alloc + size > sysctl_optmem_max
-+ *         return -ENOMEM
-+ *
-+ * We abuse the implementation detail of net/socket.c:____sys_sendmsg().
-+ * sk_omem_alloc can be precisely bumped by sock_kmalloc(), as it is used to
-+ * fetch user-provided control data.
-+ *
-+ * While this approach works for now, it relies on assumptions regarding the
-+ * implementation and configuration (for example, order of net.core.optmem_max
-+ * can not exceed MAX_PAGE_ORDER), which may not hold in the future. A more
-+ * resilient testing could be implemented by leveraging the Fault injection
-+ * framework (CONFIG_FAULT_INJECTION), e.g.
-+ *
-+ *   client# echo N > /sys/kernel/debug/failslab/ignore-gfp-wait
-+ *   client# echo 0 > /sys/kernel/debug/failslab/verbose
-+ *
-+ *   void client(const struct test_opts *opts)
-+ *   {
-+ *       char buf[16];
-+ *       int f, s, i;
-+ *
-+ *       f = open("/proc/self/fail-nth", O_WRONLY);
-+ *
-+ *       for (i = 1; i < 32; i++) {
-+ *           control_writeulong(CONTINUE);
-+ *
-+ *           s = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+ *           enable_so_zerocopy_check(s);
-+ *
-+ *           sprintf(buf, "%d", i);
-+ *           write(f, buf, strlen(buf));
-+ *
-+ *           send(s, &(char){ 0 }, 1, MSG_ZEROCOPY);
-+ *
-+ *           write(f, "0", 1);
-+ *           close(s);
-+ *       }
-+ *
-+ *       control_writeulong(DONE);
-+ *       close(f);
-+ *   }
-+ *
-+ *   void server(const struct test_opts *opts)
-+ *   {
-+ *       int fd;
-+ *
-+ *       while (control_readulong() == CONTINUE) {
-+ *           fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+ *           vsock_wait_remote_close(fd);
-+ *           close(fd);
-+ *       }
-+ *   }
-+ *
-+ * Refer to Documentation/fault-injection/fault-injection.rst.
-+ */
-+#define MAX_PAGE_ORDER	10	/* usually */
-+#define PAGE_SIZE	4096
-+
-+/* Test for a memory leak. User is expected to run kmemleak scan, see README. */
-+static void test_stream_msgzcopy_leak_zcskb_client(const struct test_opts *opts)
-+{
-+	size_t optmem_max, ctl_len, chunk_size;
-+	struct msghdr msg = { 0 };
-+	struct iovec iov;
-+	char *chunk;
-+	int fd, res;
-+	FILE *f;
-+
-+	f = fopen("/proc/sys/net/core/optmem_max", "r");
-+	if (!f) {
-+		perror("fopen(optmem_max)");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fscanf(f, "%zu", &optmem_max) != 1) {
-+		fprintf(stderr, "fscanf(optmem_max) failed\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	fclose(f);
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	enable_so_zerocopy_check(fd);
-+
-+	ctl_len = optmem_max - 1;
-+	if (ctl_len > PAGE_SIZE << MAX_PAGE_ORDER) {
-+		fprintf(stderr, "Try with net.core.optmem_max = 100000\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	chunk_size = CMSG_SPACE(ctl_len);
-+	chunk = malloc(chunk_size);
-+	if (!chunk) {
-+		perror("malloc");
-+		exit(EXIT_FAILURE);
-+	}
-+	memset(chunk, 0, chunk_size);
-+
-+	iov.iov_base = &(char){ 0 };
-+	iov.iov_len = 1;
-+
-+	msg.msg_iov = &iov;
-+	msg.msg_iovlen = 1;
-+	msg.msg_control = chunk;
-+	msg.msg_controllen = ctl_len;
-+
-+	errno = 0;
-+	res = sendmsg(fd, &msg, MSG_ZEROCOPY);
-+	if (res >= 0 || errno != ENOMEM) {
-+		fprintf(stderr, "Expected ENOMEM, got errno=%d res=%d\n",
-+			errno, res);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(fd);
+-void skip_test(struct test_case *test_cases, size_t test_cases_len,
+-	       const char *test_id_str)
++static unsigned long parse_test_id(const char *test_id_str, size_t test_cases_len)
+ {
+ 	unsigned long test_id;
+ 	char *endptr = NULL;
+@@ -505,9 +504,26 @@ void skip_test(struct test_case *test_cases, size_t test_cases_len,
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	return test_id;
 +}
 +
-+static void test_stream_msgzcopy_leak_zcskb_server(const struct test_opts *opts)
++void skip_test(struct test_case *test_cases, size_t test_cases_len,
++	       const char *test_id_str)
 +{
-+	int fd;
++	unsigned long test_id = parse_test_id(test_id_str, test_cases_len);
+ 	test_cases[test_id].skip = true;
+ }
+ 
++void pick_test(struct test_case *test_cases, size_t test_cases_len,
++	       const char *test_id_str)
++{
++	unsigned long i, test_id;
 +
-+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	vsock_wait_remote_close(fd);
-+	close(fd);
++	test_id = parse_test_id(test_id_str, test_cases_len);
++	for (i = 0; i < test_cases_len; ++i)
++		test_cases[i].skip = (i != test_id);
 +}
 +
- static struct test_case test_cases[] = {
- 	{
- 		.name = "SOCK_STREAM connection reset",
-@@ -1700,6 +1847,11 @@ static struct test_case test_cases[] = {
- 		.run_client = test_stream_msgzcopy_leak_errq_client,
- 		.run_server = test_stream_msgzcopy_leak_errq_server,
+ unsigned long hash_djb2(const void *data, size_t len)
+ {
+ 	unsigned long hash = 5381;
+diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
+index ba84d296d8b71e1bcba2abdad337e07aac45e75e..e62f46b2b92a7916e83e1e623b43c811b077db3e 100644
+--- a/tools/testing/vsock/util.h
++++ b/tools/testing/vsock/util.h
+@@ -62,6 +62,8 @@ void run_tests(const struct test_case *test_cases,
+ void list_tests(const struct test_case *test_cases);
+ void skip_test(struct test_case *test_cases, size_t test_cases_len,
+ 	       const char *test_id_str);
++void pick_test(struct test_case *test_cases, size_t test_cases_len,
++	       const char *test_id_str);
+ unsigned long hash_djb2(const void *data, size_t len);
+ size_t iovec_bytes(const struct iovec *iov, size_t iovnum);
+ unsigned long iovec_hash_djb2(const struct iovec *iov, size_t iovnum);
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 38fd8d96eb83ef1bd45728cfaac6adb3c1e07cfe..1ad1fbba10307c515e31816a2529befd547f7fd7 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -1644,6 +1644,11 @@ static const struct option longopts[] = {
+ 		.has_arg = required_argument,
+ 		.val = 's',
  	},
 +	{
-+		.name = "SOCK_STREAM MSG_ZEROCOPY leak completion skb",
-+		.run_client = test_stream_msgzcopy_leak_zcskb_client,
-+		.run_server = test_stream_msgzcopy_leak_zcskb_server,
++		.name = "test",
++		.has_arg = required_argument,
++		.val = 't',
 +	},
- 	{},
- };
- 
+ 	{
+ 		.name = "help",
+ 		.has_arg = no_argument,
+@@ -1681,6 +1686,7 @@ static void usage(void)
+ 		"  --peer-cid <cid>       CID of the other side\n"
+ 		"  --peer-port <port>     AF_VSOCK port used for the test [default: %d]\n"
+ 		"  --list                 List of tests that will be executed\n"
++		"  --test <test_id>       Single test ID to be executed\n"
+ 		"  --skip <test_id>       Test ID to skip;\n"
+ 		"                         use multiple --skip options to skip more tests\n",
+ 		DEFAULT_PEER_PORT
+@@ -1737,6 +1743,10 @@ int main(int argc, char **argv)
+ 			skip_test(test_cases, ARRAY_SIZE(test_cases) - 1,
+ 				  optarg);
+ 			break;
++		case 't':
++			pick_test(test_cases, ARRAY_SIZE(test_cases) - 1,
++				  optarg);
++			break;
+ 		case '?':
+ 		default:
+ 			usage();
 
 -- 
 2.47.1
